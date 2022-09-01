@@ -87,7 +87,7 @@ TiDB 版本：6.1.1
     - 修复了聚合运算下推后为 partial aggregation 设置了错误的默认值导致结果错误的问题 [#35295](https://github.com/pingcap/tidb/issues/35295) @[tiancaiamao](https://github.com/tiancaiamao)
 
     <!-- <sql-infra> -->
-    - 修复了在某些情况下查询分区表可能返回 `index-out-of-range` and `non used index` 错误的问题 [#35181](https://github.com/pingcap/tidb/issues/35181) @[mjonss](https://github.com/mjonss)
+    - 修复了在某些情况下查询分区表可能返回 `index-out-of-range` 错误的问题 [#35181](https://github.com/pingcap/tidb/issues/35181) @[mjonss](https://github.com/mjonss)
     - 修复了在查询分区表中如果查询条件中有分区键且两者使用了不同的 COLLATE 时会错误的进行分区裁剪的问题 [#32749](https://github.com/pingcap/tidb/issues/32749) @[mjonss](https://github.com/mjonss)
     - 修复了在开启 TiDB Binlog 时，TiDB 执行 `ALTER SEQUENCE` 会产生错误的元信息版本号，进而导致 Drainer 报错退出的问题 [#36276](https://github.com/pingcap/tidb/issues/36276) @[AilinKid](https://github.com/AilinKid)
     - 修复了在极端情况下，启动 TiDB 可能进入错误状态的问题 [#36791](https://github.com/pingcap/tidb/issues/36791) @[xhebox](https://github.com/xhebox)
