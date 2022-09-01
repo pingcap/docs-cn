@@ -287,6 +287,10 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
     非事务 DML 语句的一个 batch 报错，语句中止，请参考[非事务 DML 语句](/non-transactional-dml.md)
 
+* Error Number: 8147
+
+    在悲观事务中关闭 [`tidb_constraint_check_in_place_pessimistic`](/system-variables.md#tidb_constraint_check_in_place_pessimistic) 的情况下，语句执行报错，惰性唯一性检查可能无法顺利进行，abort 当前事务。
+
 * Error Number: 8200
 
     尚不支持的 DDL 语法。请参考[与 MySQL DDL 的兼容性](/mysql-compatibility.md#ddl-的限制)。

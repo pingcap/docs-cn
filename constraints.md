@@ -79,6 +79,8 @@ SELECT * FROM users;
 
 ## 唯一约束
 
+### 乐观事务
+
 在 TiDB 的乐观事务中，默认会对唯一约束进行[惰性检查](/transaction-overview.md#惰性检查)。通过在事务提交时再进行批量检查，TiDB 能够减少网络开销、提升性能。例如：
 
 {{< copyable "sql" >}}
@@ -91,19 +93,6 @@ CREATE TABLE users (
  UNIQUE KEY (username)
 );
 INSERT INTO users (username) VALUES ('dave'), ('sarah'), ('bill');
-```
-
-默认的悲观事务模式下：
-
-{{< copyable "sql" >}}
-
-```sql
-BEGIN;
-INSERT INTO users (username) VALUES ('jane'), ('chris'), ('bill');
-```
-
-```
-ERROR 1062 (23000): Duplicate entry 'bill' for key 'username'
 ```
 
 乐观事务模式下且 `tidb_constraint_check_in_place=0`：
@@ -144,7 +133,7 @@ ERROR 1062 (23000): Duplicate entry 'bill' for key 'username'
 
 在乐观事务的示例中，唯一约束的检查推迟到事务提交时才进行。由于 `bill` 值已经存在，这一行为导致了重复键错误。
 
-你可通过设置 `tidb_constraint_check_in_place` 为 `1` 停用此行为（该变量设置对悲观事务无效，悲观事务始终在语句执行时检查约束）。当 `tidb_constraint_check_in_place` 设置为 `1` 时，则会在执行语句时就对唯一约束进行检查。例如：
+你可通过设置 `tidb_constraint_check_in_place` 为 `1` 停用此行为（该变量设置对悲观事务无效，悲观事务通过 `tidb_constraint_check_in_place_pessimistic` 设置）。当 `tidb_constraint_check_in_place` 设置为 `1` 时，则会在执行语句时就对唯一约束进行检查。例如：
 
 ```sql
 DROP TABLE IF EXISTS users;
@@ -188,6 +177,113 @@ ERROR 1062 (23000): Duplicate entry 'bill' for key 'username'
 ```
 
 第一条 `INSERT` 语句导致了重复键错误。这会造成额外的网络通信开销，并可能降低插入操作的吞吐量。
+
+### 悲观事务
+
+在 TiDB 的悲观事务中，默认在每一条语句加锁时对唯一约束进行检查：
+
+{{< copyable "sql" >}}
+
+```sql
+DROP TABLE IF EXISTS users;
+CREATE TABLE users (
+ id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+ username VARCHAR(60) NOT NULL,
+ UNIQUE KEY (username)
+);
+INSERT INTO users (username) VALUES ('dave'), ('sarah'), ('bill');
+
+BEGIN;
+INSERT INTO users (username) VALUES ('jane'), ('chris'), ('bill');
+```
+
+```
+ERROR 1062 (23000): Duplicate entry 'bill' for key 'username'
+```
+
+悲观事务可以通过设置变量 [`tidb_constraint_check_in_place_pessimistic`](/system-variables.md#tidb_constraint_check_in_place_pessimistic) 为 `OFF` 来推迟唯一约束的检查到下一次对该唯一索引项加锁时或事务提交时，同时也跳过这个悲观锁加锁，以获得更好的性能。此时需要注意：
+- 关闭该变量会导致悲观事务中可能报出一个新的错误类型 `8174: LazyUniquenessCheckFailure`，返回该错误时当前事务 abort，而像其他错误的仅仅回滚报错的语句。
+- 关闭该变量时，commit 语句可能会报出 `write conflict` 错误或 `duplicate entry` 错误，两种错误都意味着事务回滚。
+- 由于唯一性约束被推迟检查，读取时可能读到不满足唯一性约束的结果，但该事务最后一定会回滚。
+
+例如在提交时检查并报错：
+
+{{< copyable "sql" >}}
+
+```sql
+SET tidb_constraint_check_in_place_pessimistic = OFF;
+BEGIN PESSIMISTIC;
+INSERT INTO users (username) VALUES ('jane'), ('chris'), ('bill'); -- Query OK, 3 rows affected
+SELECT * FROM users FOR UPDATE;
+```
+
+读到了不满足唯一性约束的结果：有两个 `bill`。
+
+```sql
++----+----------+
+| id | username |
++----+----------+
+| 1  | dave     |
+| 2  | sarah    |
+| 3  | bill     |
+| 7  | jane     |
+| 8  | chris    |
+| 9  | bill     |
++----+----------+
+```
+
+在提交时进行唯一约束检查，该事务无法提交成功，回滚。
+
+```sql
+COMMIT;
+```
+
+```
+ERROR 1062 (23000): Duplicate entry 'bill' for key 'username'
+```
+
+例如在其后的需要对该唯一索引加锁的语句时检查，即会在该语句报错：
+
+```sql
+SET tidb_constraint_check_in_place_pessimistic = OFF;
+BEGIN PESSIMISTIC;
+INSERT INTO users (username) VALUES ('jane'), ('chris'), ('bill'); -- Query OK, 3 rows affected
+DELETE FROM users where username = 'bill';
+```
+
+```
+ERROR 8174 (23000): transaction aborted because lazy uniqueness check is enabled and an error occurred: [kv:1062]Duplicate entry 'bill' for key 'username'
+```
+
+再例如在有并发事务写入时，跳过悲观锁可能导致提交时报出 write conflict 错误：
+
+```sql
+DROP TABLE IF EXISTS users;
+CREATE TABLE users (
+ id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+ username VARCHAR(60) NOT NULL,
+ UNIQUE KEY (username)
+);
+
+SET tidb_constraint_check_in_place_pessimistic = OFF;
+BEGIN PESSIMISTIC;
+INSERT INTO users (username) VALUES ('jane'), ('chris'), ('bill'); -- Query OK, 3 rows affected
+```
+
+然后另一个会话中写入了 bill：
+```sql
+INSERT INTO users (username) VALUES ('bill'); -- Query OK, 1 row affected
+```
+
+在第一个会话中提交，会报出 write conflict 错误。
+
+```sql
+COMMIT;
+```
+
+```
+ERROR 9007 (HY000): Write conflict, txnStartTS=435688780611190794, conflictStartTS=435688783311536129, conflictCommitTS=435688783311536130, key={tableID=74, indexID=1, indexValues={bill, }} primary={tableID=74, indexID=1, indexValues={bill, }} [try again later]
+```
 
 ## 主键约束
 
