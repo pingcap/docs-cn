@@ -30,7 +30,7 @@ TiDB 版本：6.1.1
     - `blackbox_exporter-{version}-linux-amd64.tar.gz`
     - `node_exporter-{version}-linux-amd64.tar.gz`
 
-- 针对不同操作系统和 CPU 架构的组合，引入不同级别质量标准的支持，见[操作系统及平台要求](https://docs.pingcap.com/zh/tidb/v6.1/hardware-and-software-requirements#操作系统及平台要求)。
+- 针对不同操作系统和 CPU 架构的组合，引入不同级别质量标准的支持，见[操作系统及平台要求](/hardware-and-software-requirements.md#操作系统及平台要求)。
 
 ## 提升改进
 
@@ -41,7 +41,7 @@ TiDB 版本：6.1.1
 + TiKV
 
     - 支持通过 gzip 压缩 metrics 响应减少 HTTP body 大小 [#12355](https://github.com/tikv/tikv/issues/12355) @[winoros](https://github.com/winoros)
-    - 支持使用 [`server.simplify-metrics`](https://docs.pingcap.com/zh/tidb/v6.1/tikv-configuration-file#simplify-metrics-从-v611-版本开始引入) 配置项过滤部分 Metrics 采样数据以减少每次请求返回的 Metrics 数据量 [#12355](https://github.com/tikv/tikv/issues/12355) @[glorv](https://github.com/glorv)
+    - 支持使用 [`server.simplify-metrics`](/tikv-configuration-file.md#simplify-metrics-从-v611-版本开始引入) 配置项过滤部分 Metrics 采样数据以减少每次请求返回的 Metrics 数据量 [#12355](https://github.com/tikv/tikv/issues/12355) @[glorv](https://github.com/glorv)
     - 支持动态调整 RocksDB 进行 subcompaction 的并发个数 (`rocksdb.max-sub-compactions`) [#13145](https://github.com/tikv/tikv/issues/13145) @[ethercflow](https://github.com/ethercflow)
 
 + PD
