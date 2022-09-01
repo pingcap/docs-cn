@@ -382,7 +382,7 @@ Configuration items related to storage.
 + The name of the temporary file is `space_placeholder_file`, located in the `storage.data-dir` directory. When TiKV goes offline because its disk space ran out, if you restart TiKV, the temporary file is automatically deleted and TiKV tries to reclaim the space.
 + When the remaining space is insufficient, TiKV does not create the temporary file. The effectiveness of the protection is related to the size of the reserved space. The size of the reserved space is the larger value between 5% of the disk capacity and this configuration value. When the value of this configuration item is `"0MB"`, TiKV disables this disk protection feature.
 + Default value: `"5GB"`
-+ Unite: MB|GB
++ Unit: MB|GB
 
 ### `enable-ttl`
 
