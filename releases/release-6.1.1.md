@@ -30,7 +30,7 @@ TiDB 版本：6.1.1
     - `blackbox_exporter-{version}-linux-amd64.tar.gz`
     - `node_exporter-{version}-linux-amd64.tar.gz`
 
-- 引入对不同操作系统或平台的差异化支持，见 []
+- 针对不同操作系统和 CPU 架构的组合，引入不同级别质量标准的支持，见[操作系统及平台要求](https://docs.pingcap.com/zh/tidb/v6.1/hardware-and-software-requirements#操作系统及平台要求)。
 
 ## 提升改进
 
