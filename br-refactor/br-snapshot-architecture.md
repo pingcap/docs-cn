@@ -11,46 +11,46 @@ TiDB 的备份恢复功能，以 br、tidb-operator 为使用入口，创建相�
 
 ![BR snapshot backup and restore architecture](/media/br/br-snapshot-arch.png)
 
-对 TiDB 集群进行快照数据备份时：
+### 对 TiDB 集群进行快照数据备份
 
-1. br 收到 `br backup full` 命令
-   -  解析并校验用户操作的输入，获得快照 TSO（backup ts） 、备份存储地址
-2. br 配置 TiDB 集群，防止接下来要备份的数据被 GC 机制回收掉
-3. br 分配和调度备份任务
-   - 访问 pd 获取所有 tikv 节点访问地址，以及数据分布的位置信息
-   - 创建 BackupRequest 发送给相应的 tikv 节点，BackupRequest 包含有 backup ts、需要备份的 kvs，备份存储访问信息
-4. br 监听每个 BackupRequest 的执行结果，并对结果进行处理
-   - 局部备份数据备份因为 region 调度发生变化，则计算这些数据的数据分布位置，然后发送给对应的 tikv 节点进行重新备份
-   - 存在数据备份失败，则备份任务失败
-   - 全部数据备份成功后，则备份任务成功
-5. br 备份 schema，并且按照表对备份数据计算 checksum
-6. br 生成 backup metadata，并写入备份存储。backup metadata 包含 backup ts，备份的表，表对应的备份文件，table data checksum 和文件 checksum 等信息
-7. tikv 节点执行备份任务
-   - tikv 节点接收到 BackupRequest 后，启动 backup worker 进程
-   - 从 raft group 角色为 leader 的 region 读取对应 backup ts 的数据
-   - 将读取到的数据生成 SST 文件，保存在本地临时目录中
-   - 上传 SST 到备份存储中
-   - 返回备份结果给 br，包含备份结果、备份的文件信等信息
+1. br 收到 `br backup full` 命令，执行全量备份操作
+   - 解析并校验用户操作的输入，获得快照点（backup ts）、备份存储地址
+   - 配置 TiDB 集群，防止接下来要备份的数据被 [TiDB GC 机制](/garbage-collection-overview.md)回收掉
+   - 创建和分配备份任务
+     - 访问 pd 获取所有 tikv 节点访问地址，以及数据的 region 分布的位置信息
+     - 创建 BackupRequest 发送给相应的 tikv 节点，BackupRequest 包含 backup ts、需要备份的 kv region、备份存储地址
+   - 监听发送给每个 tikv 节点的 BackupRequest 的执行结果，并对结果进行处理
+     - 局部备份数据因为 region split/merge/schedule 而备份失败。br 重新计算这些数据的 region 分布位置，然后发送给对应的 tikv 节点进行重新备份
+     - 任意数据被判断备份失败，则备份任务失败
+     - 全部数据备份成功后，则备份任务成功
+   - 数据备份成功后，备份 schema 并且计算 data checksum
+   - 生成 backup metadata，写入备份存储。backup metadata 包含 backup ts、表和对应的备份文件、data checksum 和 file checksum 等信息
+2. tikv 节点执行备份任务
+   - tikv 节点接收到 BackupRequest 后，启动 backup worker
+   - backup worker 从 raft group 角色为 leader 的 region 读取 backup ts 的快照数据
+   - backup worker 将读取到的数据生成 SST 文件，保存在本地临时目录中
+   - backup worker 上传 SST 到备份存储中
+   - backup worker 返回备份结果给 br，包含备份结果、备份的文件信等信息
 
-恢复某个快照备份数据时：
+### 恢复某个快照备份数据
 
-1. br 收到 `br restore` 命令
-   - 解析并校验用户操作的输入，获得快照备份数据存储地址
-   - 计算需要恢复数据对象（db/table），并检查要恢复的表是否符合要求不存在
-2. br 请求 pd 关闭一切调度
-3. br 读取备份数据的 schema 信息， 创建需要恢复的 database 和 table
-4. br 访问 pd 分配恢复数据的 region。这里需要注意 pd 生成 region 可能经过随机调度，与备份集群的数据分布不一样
-   - br 根据的备份数据的信息 - table 、对应的备份数据文件数量和大小，请求 PD 为备份数据 split region，并且 scatter region 使得 region 均匀的分布到存储节点上
-5. br 根据 pd 调度结果，创建 RestoreRquest 发送到对应的 tikv 节点，RestoreRquest 包含要恢复的备份数据等信息
-6. br 监听每个 RestoreRquest 的执行结果，并对结果进行处理
-   - 存在备份数据恢复失败，则恢复任务失败
-   - 全部备份都回复成功后，则恢复任务成功
-7. tikv 节点恢复备份数据
+1. br 收到 `br restore` 命令，执行恢复全量备份数据的操作
+   - 解析并校验用户操作的输入，获得快照备份数据存储地址，和要恢复 db/table 
+   - 检查要恢复的 table 是否符合要求不存在
+   - 请求 pd 关闭自动的 region split/merge/schedule
+   - 读取备份数据的 schema 信息， 创建需要恢复的 database 和 table
+   - table 创建后，访问 pd 分配恢复数据的 region（这里注意 pd 生成 region 可能经过随机调度，与备份集群的数据分布不一样）。
+     - br 基于备份数据信息，请求 pd 分配 region （split region), 并调度 region 均匀的分布到存储节点上 （scatter region）。 每个 region 都有明确的数据范围[start key, end key] 用于恢复数据写入。
+   - 根据 pd 分配 region 结果，创建 RestoreRquest 发送到对应的 tikv 节点，RestoreRquest 包含要恢复的备份数据、新创建的 table ID
+   - 监听每个 RestoreRquest 的执行结果，并对结果进行处理
+     - 存在备份数据恢复失败，则恢复任务失败
+     - 全部备份都回复成功后，则恢复任务成功
+2. tikv 节点恢复备份数据
    - tikv 节点接收到 RestoreRquest 后，启动一个 restore worker
-   - 根据 RestoreRquest 中要恢复的备份数据，从备份存储中 download 相应的备份数据到本地
-   - 根据 br 创建的表的 table ID 对备份数据的 kv 进行 rewrite，将原有的 tableID 替换为新创建的 tableID，同样的 indexID 也需要相同的处理
-   - 将处理好的 SST 文件 ingest 到 rocksdb
-   - 返回恢复结果给 br
+   - restore worker 根据 RestoreRquest 从备份存储中 download 相应的备份数据到本地
+   - restore worker 根据新建表 table ID， 对备份数据相应表的 kv 进行重写 —— 将原有的 tableID 替换为新创建的 tableID。同样的 indexID 也需要相同的处理
+   - restore worker 将处理好的 SST 文件 ingest 到 rocksdb 中
+   - restore worker 返回恢复结果给 br
 
 快照备份恢复流程的详细设计可以参考[备份恢复设计方案](https://github.com/pingcap/tidb/blob/master/br/docs/cn/2019-08-05-new-design-of-backup-restore.md)。
 
