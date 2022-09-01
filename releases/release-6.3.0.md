@@ -49,6 +49,13 @@ TiDB 版本：6.3.0-DMR
 
     [用户文档]() [#issue]() @[贡献者 GitHub ID]()
 
+* TiFlash 优化提升多并发场景下的数据扫描性能
+
+    TiFlash 通过合并相同数据的读取操作，减少对于相同数据的重复读取，优化了多并发任务情况下的资源开销，提升多并发下的数据扫描性能。避免了以往在多并发任务下，如果涉及相同数据，同一份数据需要在每个任务中分别进行读取的情况，以及可能出现在同一时间内对相同数据进行多次读取的情况。
+    该功能在 v6.2.0 版本以实验特性发布，并在 v6.3.0 版本作为正式功能发布。
+
+    [用户文档](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml) [#5376](https://github.com/pingcap/tiflash/issues/5376) @[JinheLin](https://github.com/JinheLin)
+
 ### 事务
 
 * 功能标题
