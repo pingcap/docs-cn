@@ -12,7 +12,7 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-create-user/','/docs-cn/dev
 
 ```ebnf+diagram
 CreateUserStmt ::=
-    'CREATE' 'USER' IfNotExists UserSpecList RequireClauseOpt ConnectionOptions PasswordOrLockOptions
+    'CREATE' 'USER' IfNotExists UserSpecList RequireClauseOpt ConnectionOptions LockOption
 
 IfNotExists ::=
     ('IF' 'NOT' 'EXISTS')?
@@ -29,6 +29,8 @@ AuthOption ::=
 StringName ::=
     stringLit
 |   Identifier
+
+LockOption ::= ( 'ACCOUNT' 'LOCK' | 'ACCOUNT' 'UNLOCK' )?
 ```
 
 ## 示例
@@ -86,7 +88,6 @@ Query OK, 1 row affected (0.02 sec)
 * TiDB 不支持 `WITH MAX_QUERIES_PER_HOUR`、`WITH MAX_UPDATES_PER_HOUR`、`WITH MAX_USER_CONNECTIONS` 等 `CREATE` 选项。
 * TiDB 不支持 `DEFAULT ROLE` 选项。
 * TiDB 不支持 `PASSWORD EXPIRE`、`PASSWORD HISTORY` 等有关密码限制的 `CREATE` 选项。
-* TiDB 不支持 `ACCOUNT LOCK` 和 `ACCOUNT UNLOCK` 选项。
 * 对于 TiDB 尚不支持的 `CREATE` 选项。这些选项可被解析，但会被忽略。
 
 ## 另请参阅
