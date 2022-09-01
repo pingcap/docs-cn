@@ -30,7 +30,7 @@ TiDB 作为一款开源分布式 NewSQL 数据库，可以很好地部署和运�
 
     |  操作系统   |   支持的 CPU 架构   |
     |   :---   |   :---   |
-    |   MacOS Catalina 及以上的版本  |  <ul><li>x86_64</li><li>ARM 64</li></ul>  |
+    |   macOS Catalina 及以上的版本  |  <ul><li>x86_64</li><li>ARM 64</li></ul>  |
     |  Oracle Enterprise Linux 7.3 及以上的 7.x 版本  |  x86_64           |
     |   Ubuntu LTS 18.04 及以上的版本  |  x86_64           |
     |  Debian 9 (Stretch) 及以上的版本  |  x86_64           |
