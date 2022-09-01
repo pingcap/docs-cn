@@ -102,38 +102,38 @@ TiDB 版本：6.1.1
 
 + TiKV
 
-    - 修复 Raftstore 线程繁忙时，可能会出现 Region 重叠的问题 [#13160](https://github.com/tikv/tikv/issues/13160) @[5kbpers (5kbpers)](https://github.com/5kbpers)
-    - 修复 PD Region heartbeat 连接异常中断后未重新连接的问题 [#12934](https://github.com/tikv/tikv/issues/12934) @[bufferflies (buffer)](https://github.com/bufferflies)
+    - 修复 Raftstore 线程繁忙时，可能会出现 Region 重叠的问题 [#13160](https://github.com/tikv/tikv/issues/13160) @[5kbpers](https://github.com/5kbpers)
+    - 修复 PD Region heartbeat 连接异常中断后未重新连接的问题 [#12934](https://github.com/tikv/tikv/issues/12934) @[bufferflies](https://github.com/bufferflies)
     - 修复了对空字符串进行类型转换导致 TiKV panic 的问题 [#12673](https://github.com/tikv/tikv/issues/12673) @[wshwsh12 (Shenghui Wu)](https://github.com/wshwsh12)
-    - 修复了 TiKV 和 PD 配置文件中 Region size 不一致的问题 [#12518](https://github.com/tikv/tikv/issues/12518) @[5kbpers (5kbpers)](https://github.com/5kbpers)
+    - 修复了 TiKV 和 PD 配置文件中 Region size 不一致的问题 [#12518](https://github.com/tikv/tikv/issues/12518) @[5kbpers](https://github.com/5kbpers)
     - 修复了启用 Raft Engine 时未清理加密密钥的问题 [#12890](https://github.com/tikv/tikv/issues/12890) @[tabokie (Xinye Tao)](https://github.com/tabokie)
-    - 修复同时分裂和销毁一个 peer 时可能导致 panic 的问题 [#12825](https://github.com/tikv/tikv/issues/12825) @[BusyJay (Jay)](https://github.com/BusyJay)
-    - 修复在 Region merge 时 source peer 通过 snapshot 追日志时可能导致 panic 的问题 [#12663](https://github.com/tikv/tikv/issues/12663) @[BusyJay (Jay)](https://github.com/BusyJay)
-    - 修复了 PD 客户端遇到报错时频繁重连的问题 [#12345](https://github.com/tikv/tikv/issues/12345) @[Connor1996 (Connor)](https://github.com/Connor1996)
+    - 修复同时分裂和销毁一个 peer 时可能导致 panic 的问题 [#12825](https://github.com/tikv/tikv/issues/12825) @[BusyJay](https://github.com/BusyJay)
+    - 修复在 Region merge 时 source peer 通过 snapshot 追日志时可能导致 panic 的问题 [#12663](https://github.com/tikv/tikv/issues/12663) @[BusyJay](https://github.com/BusyJay)
+    - 修复了 PD 客户端遇到报错时频繁重连的问题 [#12345](https://github.com/tikv/tikv/issues/12345) @[Connor1996](https://github.com/Connor1996)
     - 修复了开启 Raft Engine 并发恢复时 TiKV 可能会 panic 的问题 [#13123](https://github.com/tikv/tikv/issues/13123) @[tabokie (Xinye Tao)](https://github.com/tabokie)
-    - 修复了新创建的 Region Commit Log Duration 较高导致 QPS 下降的问题 [#13077](https://github.com/tikv/tikv/issues/13077) @[Connor1996 (Connor)](https://github.com/Connor1996)
+    - 修复了新创建的 Region Commit Log Duration 较高导致 QPS 下降的问题 [#13077](https://github.com/tikv/tikv/issues/13077) @[Connor1996](https://github.com/Connor1996)
     - 修复启用 Raft Engine 后特殊情况下 TiKV 会 panic 的问题 [#12698](https://github.com/tikv/tikv/issues/12698) @[tabokie (Xinye Tao)](https://github.com/tabokie)
     - 修复无法找到 proc filesystem (procfs) 时警告级别日志过多的问题 [#13116](https://github.com/tikv/tikv/issues/13116) @[tabokie (Xinye Tao)](https://github.com/tabokie)
     - 修复 Dashboard 中 Unified Read Pool CPU 表达式错误的问题 [#13086](https://github.com/tikv/tikv/issues/13086) @[glorv](https://github.com/glorv)
     - 修复 Region 较大时，默认 [`region-split-check-diff`](/tikv-configuration-file.md#region-split-check-diff) 可能会大于 bucket 大小的问题 [#12598](https://github.com/tikv/tikv/issues/12598) @[tonyxuqqi](https://github.com/tonyxuqqi)
     - 修复启用 Raft Engine 后，中止 Apply Snapshot 时可能会 panic 的问题 [#12470](https://github.com/tikv/tikv/issues/12470) @[tabokie (Xinye Tao)](https://github.com/tabokie)
-    - 修复 PD 客户端可能会出现死锁的问题 [#13191](https://github.com/tikv/tikv/issues/13191) @[bufferflies (buffer)](https://github.com/bufferflies) [#12933](https://github.com/tikv/tikv/issues/12933) @[BurtonQin (Boqin Qin(秦 伯钦)@MetaSecure)](https://github.com/BurtonQin)
+    - 修复 PD 客户端可能会出现死锁的问题 [#13191](https://github.com/tikv/tikv/issues/13191) @[bufferflies](https://github.com/bufferflies) [#12933](https://github.com/tikv/tikv/issues/12933) @[BurtonQin](https://github.com/BurtonQin)
 
 + PD
 
     - 修复当集群中节点的 label 设置异常时，store 上线进度评估不准确的问题 [#5234](https://github.com/tikv/pd/issues/5234) @[rleungx (Ryan Leung)](https://github.com/rleungx)
-    - 修复开启 `enable-forwarding` 时 gRPC 处理返回错误不恰当导致 PD panic 的问题 [#5373](https://github.com/tikv/pd/issues/5373) @[bufferflies (buffer)](https://github.com/bufferflies)
+    - 修复开启 `enable-forwarding` 时 gRPC 处理返回错误不恰当导致 PD panic 的问题 [#5373](https://github.com/tikv/pd/issues/5373) @[bufferflies](https://github.com/bufferflies)
     - 修复 `/regions/replicated` 返回状态错误的问题 [#5095](https://github.com/tikv/pd/issues/5095) @[rleungx (Ryan Leung)](https://github.com/rleungx)
 
 + TiFlash
 
-    - 修复在 clustered index 表删除列导致 TiFlash 崩溃的问题 [#5154](https://github.com/pingcap/tiflash/issues/5154) @[hongyunyan (hongyunyan)](https://github.com/hongyunyan)
+    - 修复在 clustered index 表删除列导致 TiFlash 崩溃的问题 [#5154](https://github.com/pingcap/tiflash/issues/5154) @[hongyunyan](https://github.com/hongyunyan)
     - 修复 `format` 函数可能会报 `Data truncated` 错误的问题 [#4891](https://github.com/pingcap/tiflash/issues/4891) @[xzhangxian1008](https://github.com/xzhangxian1008)
     - 修复存储中残留过期数据且无法删除的问题 [#5659](https://github.com/pingcap/tiflash/issues/5659) @[lidezhu](https://github.com/lidezhu)
-    - 修复个别场景消耗不必要 CPU 的问题 [#5409](https://github.com/pingcap/tiflash/issues/5409) @[breezewish (Wenxuan)](https://github.com/breezewish)
+    - 修复个别场景消耗不必要 CPU 的问题 [#5409](https://github.com/pingcap/tiflash/issues/5409) @[breezewish](https://github.com/breezewish)
     - 修复 TiFlash 无法在使用 IPv6 的集群运行的问题 [#5247](https://github.com/pingcap/tiflash/issues/5247) @[solotzg (Zhigao Tong)](https://github.com/solotzg)
     - 修复并行聚合出错时可能导致 TiFlash crash 的问题 [#5356](https://github.com/pingcap/tiflash/issues/5356) @[gengliqi (Liqi Geng)](https://github.com/gengliqi)
-    - 修复 `MinTSOScheduler` 在查询出错时可能会泄露线程资源问题 [#5556](https://github.com/pingcap/tiflash/issues/5556) @[windtalker (xufei)](https://github.com/windtalker)
+    - 修复 `MinTSOScheduler` 在查询出错时可能会泄露线程资源问题 [#5556](https://github.com/pingcap/tiflash/issues/5556) @[windtalker](https://github.com/windtalker)
 
 + Tools
 
@@ -143,41 +143,41 @@ TiDB 版本：6.1.1
         - 修复 `read index not ready` 问题，增加重试机制 [#36566](https://github.com/pingcap/tidb/issues/36566) @[D3Hunter](https://github.com/D3Hunter)
         - 修复服务器模式下日志敏感信息被打印的问题 [#36374](https://github.com/pingcap/tidb/issues/36374) @[lichunzhu (Chunzhu Li)](https://github.com/lichunzhu)
         - 修复 TiDB Lightning 不支持 Parquet 文件中以斜线 (`/`)、数字、非 ASCII 字符开头的特殊列名的问题 [#36980](https://github.com/pingcap/tidb/issues/36980) @[D3Hunter](https://github.com/D3Hunter)
-        - 修复极端情况下重复去重可能会 panic 的问题 [#34163](https://github.com/pingcap/tidb/issues/34163) @[ForwardStar (ForwardStar)](https://github.com/ForwardStar)
+        - 修复极端情况下重复去重可能会 panic 的问题 [#34163](https://github.com/pingcap/tidb/issues/34163) @[ForwardStar](https://github.com/ForwardStar)
 
     + TiDB Data Migration (DM)
 
-        - 修复 `txn-entry-size-limit` 在 DM 不生效的问题 [#6161](https://github.com/pingcap/tiflow/issues/6161) @
-        - 修复 `check-task` 命令不能处理特殊编码的问题 [#5895](https://github.com/pingcap/tiflow/issues/5895) @
-        - 修复 `query-status` 内可能存在 data race 的问题 [#4811](https://github.com/pingcap/tiflow/issues/4811) @
-        - 修复 `operate-schema` 显示不一致问题 [#5688](https://github.com/pingcap/tiflow/issues/5688) @
-        - 修复 relay 报错时可能导致 goroutine 泄露问题 [#6193](https://github.com/pingcap/tiflow/issues/6193) @
-        - 修复 DM Worker 因 DB Conn 获取可能卡住的问题 [#3733](https://github.com/pingcap/tiflow/issues/3733) @
-        - 修复 DM IPv6 支持问题 [#6249](https://github.com/pingcap/tiflow/issues/6249) @
+        - 修复 `txn-entry-size-limit` 在 DM 不生效的问题 [#6161](https://github.com/pingcap/tiflow/issues/6161) @[ForwardStar](https://github.com/ForwardStar)
+        - 修复 `check-task` 命令不能处理特殊编码的问题 [#5895](https://github.com/pingcap/tiflow/issues/5895) @[Ehco1996](https://github.com/Ehco1996)
+        - 修复 `query-status` 内可能存在 data race 的问题 [#4811](https://github.com/pingcap/tiflow/issues/4811) @[lyzx2001](https://github.com/lyzx2001)
+        - 修复 `operate-schema` 显示不一致问题 [#5688](https://github.com/pingcap/tiflow/issues/5688) @[ForwardStar](https://github.com/ForwardStar)
+        - 修复 relay 报错时可能导致 goroutine 泄露问题 [#6193](https://github.com/pingcap/tiflow/issues/6193) @[lance6716](https://github.com/lance6716)
+        - 修复 DM Worker 因 DB Conn 获取可能卡住的问题 [#3733](https://github.com/pingcap/tiflow/issues/3733) @[lance6716](https://github.com/lance6716)
+        - 修复 DM IPv6 支持问题 [#6249](https://github.com/pingcap/tiflow/issues/6249) @[D3Hunter](https://github.com/D3Hunter)
 
     + TiCDC
 
-        - 修复最大兼容版本错误的问题 [#6039](https://github.com/pingcap/tiflow/issues/6039) @
-        - 修复 cdc server 启动未完成接受请求时出现 panic 的问题 [#5639](https://github.com/pingcap/tiflow/issues/5639) @
-        - 修复打开 sync-point 时 ddl sink 可能出现 panic 的问题 [#4934](https://github.com/pingcap/tiflow/issues/4934) @
-        - 修复打开 sync-point 功能在某些特殊场景下出现卡住 changefeed 的问题 [#6827](https://github.com/pingcap/tiflow/issues/6827) @
-        - 修复 cdc server 重启时 API 工作不正常的问题 [#5837](https://github.com/pingcap/tiflow/issues/5837) @
-        - 修复 black hole sink 场景下出现 data race 问题 [#6206](https://github.com/pingcap/tiflow/issues/6206) @
-        - 修复 `enable-old-value = false` 时可能出现的 cdc panic 问题 [#6198](https://github.com/pingcap/tiflow/issues/6198) @
-        - 修复在开启 redo 功能时可能出现数据不一致问题 [#6189](https://github.com/pingcap/tiflow/issues/6189) [#6368](https://github.com/pingcap/tiflow/issues/6368) [#6277](https://github.com/pingcap/tiflow/issues/6277) [#6456](https://github.com/pingcap/tiflow/issues/6456) [#6695](https://github.com/pingcap/tiflow/issues/6695) [#6764](https://github.com/pingcap/tiflow/issues/6764) [#6859](https://github.com/pingcap/tiflow/issues/6859) @
-        - 修复了 redo log 的性能问题，采取异步写的方式提升 redo 吞吐 [#6011](https://github.com/pingcap/tiflow/issues/6011) @
-        - 修复 MySQL sink 无法连接 IPv6 地址的问题 [#6135](https://github.com/pingcap/tiflow/issues/6135) @
+        - 修复最大兼容版本错误的问题 [#6039](https://github.com/pingcap/tiflow/issues/6039) @[hi-rustin (二手掉包工程师)](https://github.com/hi-rustin)
+        - 修复 cdc server 启动未完成接受请求时出现 panic 的问题 [#5639](https://github.com/pingcap/tiflow/issues/5639) @[asddongmen](https://github.com/asddongmen)
+        - 修复打开 sync-point 时 ddl sink 可能出现 panic 的问题 [#4934](https://github.com/pingcap/tiflow/issues/4934) @[asddongmen](https://github.com/asddongmen)
+        - 修复打开 sync-point 功能在某些特殊场景下出现卡住 changefeed 的问题 [#6827](https://github.com/pingcap/tiflow/issues/6827) @[hicqu](https://github.com/hicqu)
+        - 修复 cdc server 重启时 API 工作不正常的问题 [#5837](https://github.com/pingcap/tiflow/issues/5837) @[asddongmen](https://github.com/asddongmen)
+        - 修复 black hole sink 场景下出现 data race 问题 [#6206](https://github.com/pingcap/tiflow/issues/6206) @[asddongmen](https://github.com/asddongmen)
+        - 修复 `enable-old-value = false` 时可能出现的 cdc panic 问题 [#6198](https://github.com/pingcap/tiflow/issues/6198) @[hi-rustin (二手掉包工程师)](https://github.com/hi-rustin)
+        - 修复在开启 redo 功能时可能出现数据不一致问题 [#6189](https://github.com/pingcap/tiflow/issues/6189) [#6368](https://github.com/pingcap/tiflow/issues/6368) [#6277](https://github.com/pingcap/tiflow/issues/6277) [#6456](https://github.com/pingcap/tiflow/issues/6456) [#6695](https://github.com/pingcap/tiflow/issues/6695) [#6764](https://github.com/pingcap/tiflow/issues/6764) [#6859](https://github.com/pingcap/tiflow/issues/6859) @[asddongmen](https://github.com/asddongmen)
+        - 修复了 redo log 的性能问题，采取异步写的方式提升 redo 吞吐 [#6011](https://github.com/pingcap/tiflow/issues/6011) @[CharlesCheung96](https://github.com/CharlesCheung96)
+        - 修复 MySQL sink 无法连接 IPv6 地址的问题 [#6135](https://github.com/pingcap/tiflow/issues/6135) @[hi-rustin (二手掉包工程师)](https://github.com/hi-rustin)
 
     + Backup & Restore (BR)
 
-        - 修复了 RawKV 模式下 BR 报 `ErrRestoreTableIDMismatch` 错误的问题 [#35279](https://github.com/pingcap/tidb/issues/35279) @
-        - 优化了全量备份数据组织形式，解决大规模集群备份时遇到的 S3 限流问题 [#30087](https://github.com/pingcap/tidb/issues/30087) @
-        - 修复日志中统计备份耗时不正确的问题 [#35553](https://github.com/pingcap/tidb/issues/35553) @
+        - 修复了 RawKV 模式下 BR 报 `ErrRestoreTableIDMismatch` 错误的问题 [#35279](https://github.com/pingcap/tidb/issues/35279) @[3pointer](https://github.com/3pointer)
+        - 优化了全量备份数据组织形式，解决大规模集群备份时遇到的 S3 限流问题 [#30087](https://github.com/pingcap/tidb/issues/30087) @[MoCuishle28](https://github.com/MoCuishle28)
+        - 修复日志中统计备份耗时不正确的问题 [#35553](https://github.com/pingcap/tidb/issues/35553) @[ixuh12 (Xi Hu)](https://github.com/ixuh12)
 
     + Dumpling
 
-        - 修复 GetDSN 方法不支持 IPv6 的问题 [#36112](https://github.com/pingcap/tidb/issues/36112) @
+        - 修复 GetDSN 方法不支持 IPv6 的问题 [#36112](https://github.com/pingcap/tidb/issues/36112) @[D3Hunter](https://github.com/D3Hunter)
 
     + TiDB Binlog
 
-        - 修复 `compressor` 设为 `gzip` 时 Drainer 无法正确发送请求至 Pump 的问题 [#1152](https://github.com/pingcap/tidb-binlog/issues/1152) @
+        - 修复 `compressor` 设为 `gzip` 时 Drainer 无法正确发送请求至 Pump 的问题 [#1152](https://github.com/pingcap/tidb-binlog/issues/1152) @[lichunzhu (Chunzhu Li)](https://github.com/lichunzhu)
