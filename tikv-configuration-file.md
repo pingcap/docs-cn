@@ -206,6 +206,11 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 + 该配置项指定 TiKV 中发送 Raft 消息的缓冲区大小。如果存在消息发送不及时导致缓冲区满、消息被丢弃的情况，可以适当调大该配置项值以提升系统运行的稳定性。
 + 默认值：8192
 
+### `simplify-metrics` <span class="version-mark">从 v6.1.1 版本开始引入</span>
+
++ 是否精简返回的监控指标 Metrics 数据。设置为 `true` 后，TiKV 可以通过过滤部分 Metrics 采样数据以减少每次请求返回的 Metrics 数据量。
++ 默认值：false
+
 ### `forward-max-connections-per-address` <span class="version-mark">从 v5.0.0 版本开始引入</span>
 
 + 设置服务与转发请求的连接池大小。设置过小会影响请求的延迟和负载均衡。
