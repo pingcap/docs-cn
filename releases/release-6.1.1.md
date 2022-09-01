@@ -37,7 +37,7 @@ TiDB 版本：6.1.1
 + TiDB
 
     <!-- <planner> -->
-     - 引入新的优化器提示 `SEMI_JOIN_REWRITE` 改善 `EXISTS` 查询性能 [#35323](https://github.com/pingcap/tidb/issues/35323)
+     - 引入新的优化器提示 `SEMI_JOIN_REWRITE` 改善 `EXISTS` 查询性能 [#35323](https://github.com/pingcap/tidb/issues/35323) @[winoros](https://github.com/winoros)
 
 + TiKV
 
@@ -62,8 +62,8 @@ TiDB 版本：6.1.1
     + TiCDC
 
         - 在 changefeed 的配置中增加参数 `transaction-atomicity` 来控制是否拆分大事务，从而大幅减少大事务的延时和内存消耗 [#5231](https://github.com/pingcap/tiflow/issues/5231) @[CharlesCheung96](https://github.com/CharlesCheung96)
-        - - 优化了多 Region 场景下，runtime 上下文切换带来过多性能开销的问题 [#5610](https://github.com/pingcap/tiflow/issues/5610) @[hicqu](https://github.com/hicqu)
-        - 优化 MySQL sink，实现自动关闭 safe mode。[#5611](https://github.com/pingcap/tiflow/issues/5611) @[overvenus](https://github.com/overvenus)
+        - 优化了多 Region 场景下，runtime 上下文切换带来过多性能开销的问题 [#5610](https://github.com/pingcap/tiflow/issues/5610) @[hicqu](https://github.com/hicqu)
+        - 优化 MySQL sink，实现自动关闭 safe mode [#5611](https://github.com/pingcap/tiflow/issues/5611) @[overvenus](https://github.com/overvenus)
 
 ## Bug 修复
 
