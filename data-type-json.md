@@ -56,7 +56,7 @@ mysql> select json_extract(a, '$.a') = "base64:type15:VQ==" as result from test;
 
 - 支持对 JSON ARRAY/OBJECT 的 `order by`
 
-如果在 MySQL 中对 JSON ARRAY 使用 order by 会得到一个 warning，且结果与比较运算不一致:
+如果在 MySQL 中对 JSON ARRAY/OBJECT 使用 order by 会得到一个 warning，且结果与比较运算不一致:
 
 {{< copyable "sql" >}}
 
