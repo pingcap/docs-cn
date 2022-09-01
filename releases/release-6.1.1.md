@@ -164,7 +164,7 @@ TiDB 版本：6.1.1
 
         - 修复了 RawKV 模式下 BR 报 `ErrRestoreTableIDMismatch` 错误的问题 [#35279](https://github.com/pingcap/tidb/issues/35279) @[3pointer](https://github.com/3pointer)
         - 优化了全量备份数据组织形式，解决大规模集群备份时遇到的 S3 限流问题 [#30087](https://github.com/pingcap/tidb/issues/30087) @[MoCuishle28](https://github.com/MoCuishle28)
-        - 修复日志中统计备份耗时不正确的问题 [#35553](https://github.com/pingcap/tidb/issues/35553) @[ixuh12 (Xi Hu)](https://github.com/ixuh12)
+        - 修复日志中统计备份耗时不正确的问题 [#35553](https://github.com/pingcap/tidb/issues/35553) @[ixuh12](https://github.com/ixuh12)
 
     + Dumpling
 
