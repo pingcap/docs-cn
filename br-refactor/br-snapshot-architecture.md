@@ -41,7 +41,7 @@ TiDB 的备份恢复功能，以 br、tidb-operator 为使用入口，创建相�
    - 请求 pd 关闭自动的 region split/merge/schedule
    - 读取备份数据的 schema 信息， 创建需要恢复的 database 和 table
    - table 创建后，访问 pd 分配恢复数据的 region（注意 pd 生成 region 可能经过随机调度，与备份集群的数据分布不一样）。
-     - br 基于备份数据信息，请求 pd 分配 region（split region), 并调度 region 均匀分布到存储节点上（scatter region）。每个 region 都有明确的数据范围[start key, end key] 用于恢复数据写入。
+     - split & scatter region —— br 基于备份数据信息，请求 pd 分配 region（split region), 并调度 region 均匀分布到存储节点上（scatter region）。每个 region 都有明确的数据范围[start key, end key] 用于解析来恢复数据写入。
    - 根据 pd 分配 region 结果，创建 RestoreRquest 发送到对应的 tikv 节点，RestoreRquest 包含要恢复的备份数据、新建表的 table ID
    - 监听每个 RestoreRquest 的执行结果，并对结果进行处理
      - 存在备份数据恢复失败，则恢复任务失败
