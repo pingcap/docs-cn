@@ -50,7 +50,7 @@ BR
    - **Restore schema**: 读取备份数据的 schema， 恢复的 database 和 table (注意新建表的 table id 与备份数据可能不一样)
 
 3. 恢复全量备份
-   -  进行快照备份数据恢复，恢复流程参考 [恢复快照备份数据]()
+   -  进行快照备份数据恢复，恢复流程参考 [恢复快照备份数据](/br-refactor/br-snapshot-architecture.md#恢复某个快照备份数据)
 
 4. 恢复日志备份
    - **Read backup data**: 读取日志备份数据，计算需要恢复的日志备份数据
