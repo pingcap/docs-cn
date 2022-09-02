@@ -28,9 +28,8 @@ BR
   - 全部数据备份成功后，则进入 backup finalization
 
   4. Backup finalization
-  - 备份 schema 并且计算 data checksum
-  - 生成 backup metadata。backup metadata 包含 backup ts、表和对应的备份文件、data checksum 和 file checksum 等信息
-  - **Put backup metadata**：上传 metadata 到备份存储
+  - **Backup schema**：备份 schema 并且计算 table data checksum
+  - **Put backup metadata**：生成 backup metadata，并上传到备份存储。 backup metadata 包含 backup ts、表和对应的备份文件、data checksum 和 file checksum 等信息
 
 TiKV
   1. Initial backup worker 
@@ -38,9 +37,9 @@ TiKV
   - backup worker 计算需要备份的 kv region
 
   2. Backup data
-  - backup worker region (only leader) 读取 backup ts 的快照数据
-  - backup worker 将读取到的数据生成 SST 文件，保存在本地临时目录中
-  - **Put sst file**: backup worker 上传 SST 到备份存储中
+  - **Scan KVs**：backup worker region (only leader) 读取 backup ts 的快照数据
+  - **Generate SST file**：backup worker 将读取到的数据生成 SST 文件，保存在本地临时目录中
+  - **Put SST file**: backup worker 上传 SST 到备份存储中
   - **Report backup result**：backup worker 返回备份结果给 br，包含备份结果、备份的文件信等信息
 
 ### 恢复某个快照备份数据
@@ -50,15 +49,13 @@ BR
   - 获得快照备份数据存储地址、要恢复 db/table
   - 检查要恢复的 table 是否符合要求不存在
 
-2. Restore schema
-  -  读取备份数据的 schema， 恢复的 database 和 table (注意新建表的 table id 与备份数据可能不一样)
-
-3. Restore data scheudle
+2. Restore scheudle
   - **Pause region scheudle**：请求 pd 在恢复期间关闭自动的 region split/merge/schedule
+  - **Restore schema**: 读取备份数据的 schema， 恢复的 database 和 table (注意新建表的 table id 与备份数据可能不一样)
   - **Split & scatter region**：br 基于备份数据信息，请求 pd 分配 region（split region), 并调度 region 均匀分布到存储节点上（scatter region）。每个 region 都有明确的数据范围[start key, end key] 用于解析来恢复数据写入。
   - **Request TiKV to restore data**：根据 pd 分配 region 结果，创建 RestoreRquest 发送到对应的 tikv 节点，RestoreRquest 包含要恢复的备份数据、新建表的 table ID
 
-4. Watch & handle restore result
+3. Watch & handle restore result
   - 存在备份数据恢复失败，则恢复任务失败
   - 全部备份都回复成功后，则恢复任务成功
 
