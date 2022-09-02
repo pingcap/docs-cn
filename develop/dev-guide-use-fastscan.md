@@ -61,6 +61,7 @@ set global tiflash_fastscan=ON;
 
 ```sql
 set session tiflash_fastscan=OFF;
+set global tiflash_fastscan=OFF;
 ```
 
 ## 实现机制
