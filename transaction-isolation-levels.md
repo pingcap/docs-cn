@@ -59,7 +59,7 @@ MySQL 可重复读隔离级别在更新时并不检验当前版本是否可见�
 >
 > Read Committed 隔离级别仅在[悲观事务模式](/pessimistic-transaction.md)下生效。在[乐观事务模式](/optimistic-transaction.md)下设置事务隔离级别为 Read Committed 将不会生效，事务将仍旧使用可重复读隔离级别。
 
-从 v6.0.0 版本开始，TiDB 支持使用系统变量 [`tidb_rc_read_check_ts`](/system-variables.md#tidb_rc_read_check_ts从-v600-版本开始引入) 对读写冲突较少情况下优化时间戳的获取。开启此变量后，`SELECT` 语句会尝试使用前一个有效的时间戳进行数据读取，初始值为事务的 `start_ts`。
+从 v6.0.0 版本开始，TiDB 支持使用系统变量 [`tidb_rc_read_check_ts`](/system-variables.md#tidb_rc_read_check_ts-从-v600-版本开始引入) 对读写冲突较少情况下优化时间戳的获取。开启此变量后，`SELECT` 语句会尝试使用前一个有效的时间戳进行数据读取，初始值为事务的 `start_ts`。
 
 - 如果整个读取过程没有遇到更新的数据版本，则返回结果给客户端且 `SELECT` 语句执行成功。
 - 如果读取过程中遇到更新的数据版本：
