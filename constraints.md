@@ -202,11 +202,10 @@ ERROR 1062 (23000): Duplicate entry 'bill' for key 'username'
 ```
 
 悲观事务可以通过设置变量 [`tidb_constraint_check_in_place_pessimistic`](/system-variables.md#tidb_constraint_check_in_place_pessimistic) 为 `OFF` 来推迟唯一约束的检查到下一次对该唯一索引项加锁时或事务提交时，同时也跳过这个悲观锁加锁，以获得更好的性能。此时需要注意：
-- 关闭该变量会导致悲观事务中可能报出一个新的错误类型 `8174: LazyUniquenessCheckFailure`，返回该错误时当前事务 abort，而像其他错误的仅仅回滚报错的语句。
-- 关闭该变量时，commit 语句可能会报出 `write conflict` 错误或 `duplicate entry` 错误，两种错误都意味着事务回滚。
-- 由于唯一性约束被推迟检查，读取时可能读到不满足唯一性约束的结果，但该事务最后一定会回滚。
 
-例如在提交时检查并报错：
+1. 由于唯一性约束被推迟检查，读取时可能读到不满足唯一性约束的结果。如果读到这样的结果，该事务最后一定会回滚。
+
+下面这个例子跳过了对 bill 的加锁，因此可以读到不满足唯一性约束的结果：
 
 {{< copyable "sql" >}}
 
@@ -217,7 +216,7 @@ INSERT INTO users (username) VALUES ('jane'), ('chris'), ('bill'); -- Query OK, 
 SELECT * FROM users FOR UPDATE;
 ```
 
-读到了不满足唯一性约束的结果：有两个 `bill`。
+读到了不满足唯一性约束的结果：有两个 bill。
 
 ```sql
 +----+----------+
@@ -232,8 +231,6 @@ SELECT * FROM users FOR UPDATE;
 +----+----------+
 ```
 
-在提交时进行唯一约束检查，该事务无法提交成功，回滚。
-
 ```sql
 COMMIT;
 ```
@@ -242,20 +239,12 @@ COMMIT;
 ERROR 1062 (23000): Duplicate entry 'bill' for key 'username'
 ```
 
-例如在其后的需要对该唯一索引加锁的语句时检查，即会在该语句报错：
+2. 关闭该变量时，commit 语句可能会报出 `write conflict` 错误或 `duplicate entry` 错误，两种错误都意味着事务回滚。
 
-```sql
-SET tidb_constraint_check_in_place_pessimistic = OFF;
-BEGIN PESSIMISTIC;
-INSERT INTO users (username) VALUES ('jane'), ('chris'), ('bill'); -- Query OK, 3 rows affected
-DELETE FROM users where username = 'bill';
-```
+例如上面的例子，在提交时进行唯一约束检查，该事务报出了 `duplicate entry` 错误并回滚。
 
-```
-ERROR 8174 (23000): transaction aborted because lazy uniqueness check is enabled and an error occurred: [kv:1062]Duplicate entry 'bill' for key 'username'
-```
+在下面这个例子中，在有并发事务写入时，跳过悲观锁可能导致提交时报出 write conflict 错误并回滚。
 
-再例如在有并发事务写入时，跳过悲观锁可能导致提交时报出 write conflict 错误：
 
 ```sql
 DROP TABLE IF EXISTS users;
@@ -271,6 +260,7 @@ INSERT INTO users (username) VALUES ('jane'), ('chris'), ('bill'); -- Query OK, 
 ```
 
 然后另一个会话中写入了 bill：
+
 ```sql
 INSERT INTO users (username) VALUES ('bill'); -- Query OK, 1 row affected
 ```
@@ -283,6 +273,21 @@ COMMIT;
 
 ```
 ERROR 9007 (HY000): Write conflict, txnStartTS=435688780611190794, conflictStartTS=435688783311536129, conflictCommitTS=435688783311536130, key={tableID=74, indexID=1, indexValues={bill, }} primary={tableID=74, indexID=1, indexValues={bill, }} [try again later]
+```
+
+3. 关闭该变量会导致悲观事务中可能报出一个新的错误类型 `8174: LazyUniquenessCheckFailure`，返回该错误时当前事务 abort，而不是像其它一些错误仅仅回滚报错的语句。
+
+例如在跳过一次加锁后，在另一个语句中对该唯一索引加锁并检查，即会在该语句报错：
+
+```sql
+SET tidb_constraint_check_in_place_pessimistic = OFF;
+BEGIN PESSIMISTIC;
+INSERT INTO users (username) VALUES ('jane'), ('chris'), ('bill'); -- Query OK, 3 rows affected
+DELETE FROM users where username = 'bill';
+```
+
+```
+ERROR 8174 (23000): transaction aborted because lazy uniqueness check is enabled and an error occurred: [kv:1062]Duplicate entry 'bill' for key 'username'
 ```
 
 ## 主键约束
