@@ -1818,3 +1818,13 @@ Raft Engine 相关的配置项。
 + TiKV 会根据前一周期的使用情况，来调整时间戳的缓存数量。如果本地缓存使用率偏低，TiKV 会逐步降低缓存数量，直至等于 `renew-batch-min-size`。如果业务中经常出现突发的大流量写入，可以适当调大这个参数。注意这个参数是单个 tikv-server 的缓存大小，如果配置过大、而同时集群中 tikv-server 较多，会导致 TSO 消耗过快。
 + Grafana **TiKV-Raw** 面板下 **Causal timestamp** 中的 **TSO batch size** 是根据业务负载动态调整后的本地缓存数量。可以参考该监控指标值调整这个参数的大小。
 + 默认值：100
+
+### `s3-multi-part-size` <span class="version-mark">从 v5.3.0 版本开始引入</span>
+
+> **注意：**
+>
+> 该配置项最初是为了解决备份期间遇到的 s3 限流问题，后来在 v6.2.0/v6.1.1/v5.4.3 中采用划分备份前缀方案后，该配置项已不再推荐使用。 
+
++ 备份阶段 s3 分块上传的块大小。
++ TiKV 备份数据到 s3 时，当备份文件大于该配置设置的大小时，会自动进行分块上传(https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/API/API_UploadPart.html)。96MB region 产生的备份文件根据压缩率的不同大约在 10MB~30MB 之间，因此该配置项也可以适当调整，来控制备份期间整体发往 s3 的请求数量。
++ 默认值：5MB
