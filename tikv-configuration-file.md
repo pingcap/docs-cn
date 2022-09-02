@@ -1605,6 +1605,11 @@ Raft Engine 相关的配置项。
 + 日志备份任务的备份数据达到一定大小时，自动 flush 到外部存储中。
 + 默认值：256MB
 
+### `merged-file-size-limit` <span class="version-mark">从 v6.3.0 版本开始引入</span>
+
++ 日志备份任务的备份数据在合并过程中的划分阈值。
++ 默认值：256MB
+
 ### `initial-scan-pending-memory-quota` <span class="version-mark">从 v6.2.0 版本开始引入</span>
 
 + 日志备份任务在扫描增量数据时，用于存放扫描数据的缓存大小。
