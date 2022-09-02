@@ -89,7 +89,7 @@ PITR 可用于满足以下业务需求：
 - 如果备份集群包含 TiFlash，执行 PITR 后恢复集群的数据不包含 TiFlash 副本，需要手动恢复 TiFlash 副本。具体操作参考[手动设置 schema 或 table 的 TiFlash 副本](/br/pitr-troubleshoot.md#在使用-br-restore-point-命令恢复下游集群后无法从-tiflash-引擎中查询到数据该如何处理)。
 - 上游数据库使用 TiDB Lightning Physical 方式导入的数据，无法作为数据日志备份下来。推荐在数据导入后执行一次全量备份，细节参考[上游数据库使用 TiDB Lightning Physical 方式导入数据的恢复](/br/pitr-known-issues.md#上游数据库使用-tidb-lightning-physical-方式导入数据导致无法使用日志备份功能)。
 - 备份过程中不支持分区交换 (Exchange Partition)，参考[日志备份过程中执行分区交换](/br/pitr-troubleshoot.md#日志备份过程中执行分区交换-exchange-partition-ddl在-pitr-恢复时会报错该如何处理)。
-- 不支持在恢复中重复恢复某段时间区间的日志，如果多次重复恢复 [t1=10, ts2=20) 区间的日志备份数据，可能会造成恢复后的数据不一致。
+- 不支持在恢复中重复恢复某段时间区间的日志，如果多次重复恢复 [t1=10, t2=20) 区间的日志备份数据，可能会造成恢复后的数据不一致。
 - 其他已知问题，请参考 [PITR 已知问题](/br/pitr-known-issues.md)。
 
 ## PITR 架构
