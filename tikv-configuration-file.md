@@ -1820,7 +1820,7 @@ Raft Engine 相关的配置项。
 + Grafana **TiKV-Raw** 面板下 **Causal timestamp** 中的 **TSO batch size** 是根据业务负载动态调整后的本地缓存数量。可以参考该监控指标值调整这个参数的大小。
 + 默认值：100
 
-### `s3-multi-part-size` <span class="version-mark">从 v5.3.0 版本开始引入</span>
+### `s3-multi-part-size` <span class="version-mark">从 v5.3.2 版本开始引入</span>
 
 > **注意：**
 >
