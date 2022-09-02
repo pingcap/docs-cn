@@ -54,7 +54,7 @@ mysql> select json_extract(a, '$.a') = "base64:type15:VQ==" as result from test;
 ```
 详情可见此 [issue](https://github.com/pingcap/tidb/issues/37443)
 
-- 修复了 MySQL 错误的将 `enum/set` 转换为 `json` 的 bug:
+- 修复了 MySQL 错误的将 `enum/set` 转换为 `json` 的 bug, 下面 SQL 在 TiDB 中会报错:
 
 {{< copyable "sql" >}}
 
