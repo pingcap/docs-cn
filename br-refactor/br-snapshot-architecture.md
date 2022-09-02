@@ -18,7 +18,7 @@ BR
       - 获得快照点（backup ts）、备份存储地址，确定备份对象
 
   2. 调度备份数据
-      - **Pause TiDB data GC**: 配置 TiDB 集群，防止接下来要备份的数据被 [TiDB GC 机制](/garbage-collection-overview.md)回收掉
+      - **Pause GC**: 配置 TiDB 集群，防止接下来要备份的数据被 [TiDB GC 机制](/garbage-collection-overview.md)回收掉
       - **Fetch TiKV and region info**: 访问 pd 获取所有 tikv 节点访问地址，以及数据的 region 分布的位置信息
       - **Request TiKV to backup data**: 创建 BackupRequest 发送给相应的 tikv 节点，BackupRequest 包含 backup ts、需要备份的 kv region、备份存储地址
 
