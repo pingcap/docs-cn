@@ -13,7 +13,7 @@ TiDB 的备份恢复功能，以 br、tidb-operator 为使用入口，创建相�
 
 ### 对 TiDB 集群进行快照数据备份
 
-1. br 收到 `br backup full` 命令，执行全量备份操作
+1. br 收到 `br backup full` 命令，执行快照数据备份操作
    - 解析并校验用户操作的输入，获得快照点（backup ts）、备份存储地址
    - 配置 TiDB 集群，防止接下来要备份的数据被 [TiDB GC 机制](/garbage-collection-overview.md)回收掉
    - 创建和分配备份任务
@@ -34,7 +34,7 @@ TiDB 的备份恢复功能，以 br、tidb-operator 为使用入口，创建相�
 
 ### 恢复某个快照备份数据
 
-1. br 收到 `br restore` 命令，执行恢复全量备份数据的操作
+1. br 收到 `br restore` 命令，执行恢复快找备份数据的操作
    - 解析并校验用户操作的输入
      - 获得快照备份数据存储地址，和要恢复 db/table
      - 检查要恢复的 table 是否符合要求不存在
