@@ -30,6 +30,30 @@ TiDB includes a cost-based optimizer. In most cases, the optimizer chooses the o
 
 In addition, you can also use the [SQL binding](/sql-plan-management.md#sql-binding) to fix the query plan for a particular SQL statement.
 
+## How to prevent the execution of a particular SQL statement (or blacklist a SQL statement)?
+
+You can create [SQL bindings](/sql-plan-management.md#sql-binding) with the [`MAX_EXECUTION_TIME`](/optimizer-hints.md#max_execution_timen) hint to limit the execution time of a particular statement to a small value (for example, 1ms). In this way, the statement is terminated automatically by the threshold.
+
+For example, to prevent the execution of `SELECT * FROM t1, t2 WHERE t1.id = t2.id`, you can use the following SQL binding to limit the execution time of the statement to 1ms:
+
+```sql
+CREATE GLOBAL BINDING for
+    SELECT * FROM t1, t2 WHERE t1.id = t2.id
+USING
+    SELECT /*+ MAX_EXECUTION_TIME(1) */ * FROM t1, t2 WHERE t1.id = t2.id;
+```
+
+> **Note:**
+>
+> The precision of `MAX_EXECUTION_TIME` is roughly 100ms. Before TiDB terminates the SQL statement, the tasks in TiKV might be started. To reduce the TiKV resource consumption in such case, it is recommended to set [`tidb_enable_paging`](/system-variables.md#tidb_enable_paging-new-in-v540) to `ON`.
+
+Dropping this SQL binding will remove the limit.
+
+```sql
+DROP GLOBAL BINDING for
+    SELECT * FROM t1, t2 WHERE t1.id = t2.id;
+```
+
 ## What are the MySQL variables that TiDB is compatible with?
 
 See [System Variables](/system-variables.md).
