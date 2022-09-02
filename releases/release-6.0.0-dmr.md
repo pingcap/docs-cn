@@ -286,7 +286,7 @@ v6.0.0 是 DMR 版本，版本名称为 6.0.0-DMR。
 | `tidb_enable_alter_placement` | 删除 | 该变量用于开启 [Placement Rules in SQL](/placement-rules-in-sql.md)。 |
 | `tidb_mem_quota_hashjoin`<br/>`tidb_mem_quota_indexlookupjoin`<br/>`tidb_mem_quota_indexlookupreader` <br/>`tidb_mem_quota_mergejoin`<br/>`tidb_mem_quota_sort`<br/>`tidb_mem_quota_topn` | 删除 | 从 TiDB v5.0.0 起，这几个变量被 `tidb_mem_quota_query` 取代并从系统变量文档中移除，为了保证兼容性代码中还保留。从 TiDB v6.0.0 起，代码中也正式移除这些变量。 |
 | [`tidb_enable_mutation_checker`](/system-variables.md#tidb_enable_mutation_checker从-v600-版本开始引入) | 新增 | 设置是否开启 mutation checker，默认开启。如果从低于 v6.0.0 的版本升级到 v6.0.0，升级后默认关闭。 |
-| [`tidb_ignore_prepared_cache_close_stmt`](/system-variables.md#tidb_ignore_prepared_cache_close_stmt从-v60-版本开始引入) | 新增 | 设置是否忽略关闭 Prepared Statement 的指令，默认值为 `OFF`。 |
+| [`tidb_ignore_prepared_cache_close_stmt`](/system-variables.md#tidb_ignore_prepared_cache_close_stmt从-v600-版本开始引入) | 新增 | 设置是否忽略关闭 Prepared Statement 的指令，默认值为 `OFF`。 |
 | [`tidb_mem_quota_binding_cache`](/system-variables.md#tidb_mem_quota_binding_cache从-v60-版本开始引入) | 新增 | 设置存放 `binding` 的缓存的内存使用阈值，默认值为 `67108864` (64 MiB)。 |
 | [`tidb_placement_mode`](/system-variables.md#tidb_placement_mode从-v600-版本开始引入) | 新增 | 控制 DDL 语句是否忽略 [Placement Rules in SQL](/placement-rules-in-sql.md) 指定的放置规则。默认值为 `strict`，表示不忽略。 |
 | [`tidb_rc_read_check_ts`](/system-variables.md#tidb_rc_read_check_ts从-v600-版本开始引入) | 新增 | <ul><li> 优化事务内读语句延迟。如果读写冲突较为严重，开启此变量会增加额外开销和延迟，造成性能回退。默认关闭。</li><li>该变量与 [replica-read](/system-variables.md#tidb_replica_read-从-v40-版本开始引入) 尚不兼容，开启 `tidb_rc_read_check_ts` 的读请求无法使用 [replica-read](/system-variables.md#tidb_replica_read-从-v40-版本开始引入)，请勿同时开启两个变量。</li></ul> |
