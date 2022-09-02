@@ -11,8 +11,13 @@ summary: 了解 TiDB 的备份和恢复功能的架构设计
 
 全量数据备份和恢复
 
-- [集群快找数据备份和恢复](/br-refactor/br-snapshot-architecture.md)
+- [备份集群快照数据](/br-refactor/br-snapshot-architecture.md#备份集群快照数据)
+- [恢复快照备份数据](/br-refactor/br-snapshot-architecture.md#恢复快照备份数据)
 
-数据变更日志备份和恢复
+数据变更日志备份
 
-- [kv 数据变更日志备份和恢复](/br-refactor/br-log-architecture.md)
+- [日志备份 - 备份 kv 数据变更](/br-refactor/br-log-architecture.md#进行日志备份)
+
+PITR（Point in time recovery）
+
+- [恢复到指定时间点](/br-refactor/br-log-architecture.md#进行-pitr)

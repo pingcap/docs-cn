@@ -11,7 +11,7 @@ summary: 了解 TiDB 快照备份和恢复功能的架构设计
 
 ![BR snapshot backup and restore architecture](/media/br/br-snapshot-arch.png)
 
-### 对 TiDB 集群进行快照数据备份
+### 备份集群快照数据
 
 BR 
   1. 接收备份命令 (`br backup full`)
@@ -42,7 +42,7 @@ TiKV
       - **Upload SST**: backup worker 上传 SST 到备份存储中
       - **Report backup result**：backup worker 返回备份结果给 br，包含备份结果、备份的文件信等信息
 
-### 恢复某个快照备份数据
+### 恢复快照备份数据
 
 BR 
 1. 接收恢复命令 (`br restore`)

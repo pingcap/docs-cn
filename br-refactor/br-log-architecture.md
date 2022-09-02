@@ -38,7 +38,7 @@ TiKV
    - **Configure GC**：请求 PD 阻止大于 self checkpoint ts 且未备份的数据被 [TiDB GC 机制](/garbage-collection-overview.md)回收掉
 
 
-### 进行 PITR 恢复
+### 进行 PITR
 
 BR
 
