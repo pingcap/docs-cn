@@ -18,7 +18,7 @@ BR
   - 获得快照点（backup ts）、备份存储地址，确定备份对象
 
   2. Backup scheudle
-  - 配置 TiDB 集群，防止接下来要备份的数据被 [TiDB GC 机制](/garbage-collection-overview.md)回收掉
+  - **Pause TiDB data GC**: 配置 TiDB 集群，防止接下来要备份的数据被 [TiDB GC 机制](/garbage-collection-overview.md)回收掉
   - **Fetch TiKV and region info**: 访问 pd 获取所有 tikv 节点访问地址，以及数据的 region 分布的位置信息
   - **Request TiKV to backup data**: 创建 BackupRequest 发送给相应的 tikv 节点，BackupRequest 包含 backup ts、需要备份的 kv region、备份存储地址
 
@@ -30,7 +30,7 @@ BR
   4. Backup finalization
   - 备份 schema 并且计算 data checksum
   - 生成 backup metadata。backup metadata 包含 backup ts、表和对应的备份文件、data checksum 和 file checksum 等信息
-  - **Put backup metadata**
+  - **Put backup metadata**：上传 metadata 到备份存储
 
 TiKV
   1. Initial backup worker 
@@ -54,10 +54,9 @@ BR
   -  读取备份数据的 schema， 恢复的 database 和 table (注意新建表的 table id 与备份数据可能不一样)
 
 3. Restore data scheudle
-  - 配置 TiDB 集群调度，关闭自动的 region split/merge/schedule
-  - 访问 pd 分配恢复数据的 region（注意 pd 生成 region 可能经过随机调度，与备份集群的数据分布不一样）
-  - **Split & scatter region**: br 基于备份数据信息，请求 pd 分配 region（split region), 并调度 region 均匀分布到存储节点上（scatter region）。每个 region 都有明确的数据范围[start key, end key] 用于解析来恢复数据写入。
-  - **Request TiKV to restore data**: 根据 pd 分配 region 结果，创建 RestoreRquest 发送到对应的 tikv 节点，RestoreRquest 包含要恢复的备份数据、新建表的 table ID
+  - **Pause region scheudle**：请求 pd 在恢复期间关闭自动的 region split/merge/schedule
+  - **Split & scatter region**：br 基于备份数据信息，请求 pd 分配 region（split region), 并调度 region 均匀分布到存储节点上（scatter region）。每个 region 都有明确的数据范围[start key, end key] 用于解析来恢复数据写入。
+  - **Request TiKV to restore data**：根据 pd 分配 region 结果，创建 RestoreRquest 发送到对应的 tikv 节点，RestoreRquest 包含要恢复的备份数据、新建表的 table ID
 
 4. Watch & handle restore result
   - 存在备份数据恢复失败，则恢复任务失败
@@ -71,7 +70,7 @@ TiKV
 
 2. Restore data
   - **Download SST**：restore worker 从备份存储中 download 相应的备份数据到本地
-  - Rewrite KV：restore worker 根据新建表 table ID， 对备份数据相应表的 kv 进行重写 —— 将原有的 tableID 替换为新创建的 tableID。同样的 indexID 也需要相同的处理
+  - **Rewrite KV**：restore worker 根据新建表 table ID， 对备份数据相应表的 kv 进行重写 —— 将原有的 tableID 替换为新创建的 tableID。同样的 indexID 也需要相同的处理
   - **Ingest SST**：restore worker 将处理好的 SST 文件 ingest 到 rocksdb 中
   - **Report restore result**：restore worker 返回恢复结果给 br
 
