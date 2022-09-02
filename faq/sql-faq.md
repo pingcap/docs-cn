@@ -30,7 +30,7 @@ TiDB includes a cost-based optimizer. In most cases, the optimizer chooses the o
 
 In addition, you can also use the [SQL binding](/sql-plan-management.md#sql-binding) to fix the query plan for a particular SQL statement.
 
-## How to prevent the execution of a particular SQL statement (or blacklist a SQL statement)?
+## How to prevent the execution of a particular SQL statement?
 
 You can create [SQL bindings](/sql-plan-management.md#sql-binding) with the [`MAX_EXECUTION_TIME`](/optimizer-hints.md#max_execution_timen) hint to limit the execution time of a particular statement to a small value (for example, 1ms). In this way, the statement is terminated automatically by the threshold.
 
