@@ -17,7 +17,7 @@ summary: 介绍通过使用 Fast Mode 来加速 OLAP 场景的查询的方法。
 
 ## 启用 FastScan
 
-默认情况下，session 和 global 级别的变量 ```tiflash_fastscan=OFF```,即没有开启 FastScan 功能, 你可以通过以下语句来查看对应的变量信息。
+默认情况下，session 和 global 级别的变量 ```tiflash_fastscan=OFF```，即没有开启 FastScan 功能，你可以通过以下语句来查看对应的变量信息。
 
 {{< copyable "sql" >}}
 
