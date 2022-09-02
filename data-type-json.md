@@ -27,7 +27,7 @@ SELECT id FROM city WHERE population >= 100;
 
 # MySQL 兼容性
 
-- 修复了 MySQL 使用二进制类型数据创建 JSON 时错误的将其标记为 STRING TYPE 的 bug。如下：
+- 修复了 MySQL 使用二进制类型数据创建 JSON 时错误的将其标记为 STRING TYPE 的 bug：
 
 {{< copyable "sql" >}}
 
@@ -43,16 +43,28 @@ mysql> select json_extract(json_object('a', b'01010101'), '$.a') = "base64:type1
 +--------+
 1 row in set (0.02 sec)
 
--- MySQL 的 bug，结果应与上一条 SQL 相同。
+-- 在 MySQL 中下面 SQL 结果为 1.
 mysql> select json_extract(a, '$.a') = "base64:type15:VQ==" as result from test;
 +--------+
 | result |
 +--------+
-|      1 |
+|      0 |
 +--------+
 1 row in set (0.02 sec)
 ```
 详情可见此 [issue](https://github.com/pingcap/tidb/issues/37443)
+
+- 修复了 MySQL 错误的将 `enum/set` 转换为 `json` 的 bug:
+
+{{< copyable "sql" >}}
+
+```sql
+create table t(e enum('a'));
+insert into t values ('a');
+mysql> select cast(e as json) from t;
+ERROR 3140 (22032): Invalid JSON text: The document root must not be followed by other values.
+```
+详情可见此 [issue](https://github.com/pingcap/tidb/issues/9999)
 
 - 支持对 JSON ARRAY/OBJECT 的 `order by`
 
@@ -73,17 +85,16 @@ mysql> select j from t where j < json_array(5);
 +--------------+
 1 row in set (0.00 sec)
 
+-- 在 MySQL 中下面 SQL 会抛出 warning: This version of MySQL doesn't yet support 'sorting of non-scalar JSON values'. 且结果与 `<` 比较结果不一致
 mysql> select j from t order by j;
 +--------------+
 | j            |
 +--------------+
-| [5]          |
 | [1, 2, 3, 4] |
+| [5]          |
 +--------------+
-2 rows in set, 1 warning (0.00 sec)
--- warning: This version of MySQL doesn't yet support 'sorting of non-scalar JSON values'
+2 rows in set (0.00 sec)
 ```
-可以看到在 MySQL 中 `order by` 与 `<` 比较结果不一致，在 TiDB 中结果一致。
 详情可见此 [issue](https://github.com/pingcap/tidb/issues/37506)
 
 - 暂不支持 JSON PATH 中范围选取的语法，以下 SQL 会在 TiDB 中报错:
