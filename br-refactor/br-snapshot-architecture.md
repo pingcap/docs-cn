@@ -29,7 +29,7 @@ BR
 
   4. Backup finalization
   - **Backup schema**：备份 schema 并且计算 table data checksum
-  - **Put backup metadata**：生成 backup metadata，并上传到备份存储。 backup metadata 包含 backup ts、表和对应的备份文件、data checksum 和 file checksum 等信息
+  - **Upload metadata**：生成 backup metadata，并上传到备份存储。 backup metadata 包含 backup ts、表和对应的备份文件、data checksum 和 file checksum 等信息
 
 TiKV
   1. Initial backup worker 
@@ -38,8 +38,8 @@ TiKV
 
   2. Backup data
   - **Scan KVs**：backup worker region (only leader) 读取 backup ts 的快照数据
-  - **Generate SST file**：backup worker 将读取到的数据生成 SST 文件，保存在本地临时目录中
-  - **Put SST file**: backup worker 上传 SST 到备份存储中
+  - **Generate SST**：backup worker 将读取到的数据生成 SST 文件，保存在本地临时目录中
+  - **Upload SST**: backup worker 上传 SST 到备份存储中
   - **Report backup result**：backup worker 返回备份结果给 br，包含备份结果、备份的文件信等信息
 
 ### 恢复某个快照备份数据
@@ -67,7 +67,7 @@ TiKV
 
 2. Restore data
   - **Download SST**：restore worker 从备份存储中 download 相应的备份数据到本地
-  - **Rewrite KV**：restore worker 根据新建表 table ID， 对备份数据相应表的 kv 进行重写 —— 将原有的 tableID 替换为新创建的 tableID。同样的 indexID 也需要相同的处理
+  - **Rewrite KVs**：restore worker 根据新建表 table ID， 对备份数据相应表的 kv 进行重写 —— 将原有的 tableID 替换为新创建的 tableID。同样的 indexID 也需要相同的处理
   - **Ingest SST**：restore worker 将处理好的 SST 文件 ingest 到 rocksdb 中
   - **Report restore result**：restore worker 返回恢复结果给 br
 
