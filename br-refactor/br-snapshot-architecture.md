@@ -5,13 +5,13 @@ summary: 了解 TiDB 快照备份和恢复功能的架构设计
 
 下面以使用 br 工具进行备份恢复为例，介绍 TiDB 全量备份的集群快照数据备份和恢复的架构设计。
 
-## 快照数据备份和恢复
+# 快照数据备份和恢复
 
 快照数据备份和恢复的架构实现如下：
 
 ![BR snapshot backup and restore architecture](/media/br/br-snapshot-arch.png)
 
-### 备份集群快照数据
+## 备份集群快照数据
 
 BR 
   1. 接收备份命令 (`br backup full`)
@@ -42,7 +42,7 @@ TiKV
       - **Upload SST**: backup worker 上传 SST 到备份存储中
       - **Report backup result**：backup worker 返回备份结果给 br，包含备份结果、备份的文件信等信息
 
-### 恢复快照备份数据
+## 恢复快照备份数据
 
 BR 
 1. 接收恢复命令 (`br restore`)
@@ -73,7 +73,7 @@ TiKV
 
 快照数据备份恢复流程的详细设计可以参考[备份恢复设计方案](https://github.com/pingcap/tidb/blob/master/br/docs/cn/2019-08-05-new-design-of-backup-restore.md)。
 
-### 快照数据备份文件
+## 快照数据备份文件
 
 快照备份会产生几种类型文件：
 
@@ -81,7 +81,7 @@ TiKV
 - `backupmeta` 文件：存储本次备份的元信息，包括备份文件数、备份文件的 Key 区间、备份文件大小和备份文件 Hash (sha256) 值
 - `backup.lock` 文件：用于防止多次备份到同一目录
 
-#### SST 文件的命名格式
+### SST 文件的命名格式
 
 SST 文件以 `storeID_regionID_regionEpoch_keyHash_timestamp_cf` 的格式命名。格式名的解释如下：
 
@@ -94,12 +94,12 @@ SST 文件以 `storeID_regionID_regionEpoch_keyHash_timestamp_cf` 的格式命�
 
 当备份数据到 Amazon S3 或网络盘上时，SST 文件以 `regionID_regionEpoch_keyHash_timestamp_cf` 的格式命名。
 
-#### SST 文件存储格式
+### SST 文件存储格式
 
 - 关于 SST 文件存储格式，可以参考 [RocksDB SST table 介绍](https://github.com/facebook/rocksdb/wiki/Rocksdb-BlockBasedTable-Format)。
 - 关于 SST 文件中存储的备份数据编码格式，可以参考 [TiDB 表数据与 Key-Value 的映射关系](/tidb-computing.md#表数据与-key-value-的映射关系)。
 
-#### 备份文件布局
+### 备份文件布局
 
 将数据备份到 Google Cloud Storage 或 Azure Blob Storage 上时，SST 文件、 backupmeta 文件和 backup.lock 文件在同一目录下。布局如下：
 

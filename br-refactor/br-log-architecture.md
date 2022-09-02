@@ -11,7 +11,7 @@ TiDB 的备份恢复功能，以 br、tidb-operator 为使用入口，创建相�
 
 ![BR log backup and PITR architecture](/media/br/br-log-arch.png)
 
-### 进行日志备份
+## 进行日志备份
 
 BR
 
@@ -23,7 +23,7 @@ TiDB
 
 1. 监控日志备份任务进度
    - **Polling subtasks**：轮询所有 TiKV 节点，获取其日志备份子任务的 checkpoint ts
-   - **Calculate global checkpoint ts**：计算整个备份任务的 global checkpoint ts，然后保存到 pd 中（该状态可以通过 `br log status` 查询）
+   - **Report global checkpoint ts**：计算整个备份任务的 global checkpoint ts，然后保存到 pd 中（该状态可以通过 `br log status` 查询）
 
 TiKV
 
@@ -38,7 +38,7 @@ TiKV
    - **Configure GC**：请求 PD 阻止大于 self checkpoint ts 且未备份的数据被 [TiDB GC 机制](/garbage-collection-overview.md)回收掉
 
 
-### 进行 PITR
+## 进行 PITR
 
 BR
 
@@ -73,4 +73,4 @@ TiKV
     - **Apply KVs**：log restore worker 将处理好的 kv 通过 raft 接口写 kv store
     - **Report restore result**：log restore worker 返回恢复结果给 br
 
-### 日志备份文件
+## 日志备份文件
