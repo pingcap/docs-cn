@@ -482,8 +482,8 @@ I/O rate limiter 相关的配置项。
 ### `mode`
 
 + 确定哪些类型的 I/O 操作被计数并受 `max-bytes-per-sec` 阈值的限流。当前 TiKV 只支持 write-only 只写模式。
-+ 可选值：write-only
-+ 默认值：write-only
++ 可选值：`"read-only"`，`"write-only"`，`"all-io"`
++ 默认值：`"all-io"`
 
 ## raftstore
 
@@ -1779,7 +1779,7 @@ Raft Engine 相关的配置项。
 > **注意：**
 >
 > 该配置项可以通过 `SHOW CONFIG` 查询到，但暂未生效。设置该配置项的值不生效。
- 
+
 + 限制后台事务写入的带宽，这是一个软限制。
 + 默认值：0KB（即无限制）
 
