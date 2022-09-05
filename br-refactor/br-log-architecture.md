@@ -77,19 +77,15 @@ TiKV
 
 快照备份会产生几种类型文件：
 
-- `backup.lock` 文件：用于防止多个日志备份备份任务备份到同一目录
-- `backupmeta` 文件：存储 schema 信息
 - `{min_ts}-{uuid}.log` 文件：存储备份下来的 kv 数据变更记录。其中 {min_ts} 是该文件中所有 kv 数据变更记录数对应的最小 ts；{uuid} 是生成该文件的时候随机生成的。
 - `{checkpoint_ts}-{uuid}.meta` 文件: 每个 tikv 节点每次上传日志备份数据时会生成一个该文件，其包本 tikv 节点本次上传的所有日志备份数据文件。 其中 {checkpoint_ts} 是本节点的日志备份的 checkpoint，所有 tikv 节点的最小的 checkpoint 就是日志备份任务最新的 checkpoint；{uuid} 是生成该文件的时候随机生成的。
-- `{store_id}.ts` 文件：保存每个 TiKV 节点节点了解最新的 global checkpoint ts，所有 TiKV 节点的最大的 checkpoint ts 就是日志备份任务最新的 checkpoint。 其中 {store_id} 是 TiKV 的 store ID。 
+- `{store_id}.ts` 文件：保存每个 tikv 节点节点了解最新的 global checkpoint ts，所有 tikv 节点的最大的 checkpoint ts 就是日志备份任务最新的 checkpoint。 其中 {store_id} 是 tikv 的 store ID。 
 - `v1_stream_trancate_safepoint.txt` 文件：保存最近一次通过 `br log truncate` 删除日志备份数据后，存储中最早的日志备份数据对应的 ts。
 
 ### 备份文件布局
 
 ```
 .
-├── backup.lock
-├── backupmeta
 ├── v1
 │   ├── backupmeta
 │   │   ├── {min_restored_ts}-{uuid}.meta
@@ -108,8 +104,6 @@ TiKV
 
 ```
 .
-├── backupmeta
-├── backup.lock
 ├── v1
 │   ├── backupmeta
 │   │   ├── ...
