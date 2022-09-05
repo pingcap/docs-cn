@@ -40,7 +40,7 @@ DELETE FROM {table} WHERE {filter}
 - 需要删除大量行(数万或更多)的时候，使用[批量删除](#批量删除)，这是因为 TiDB 单个事务大小限制为 [txn-total-size-limit](/tidb-configuration-file.md#txn-total-size-limit)（默认为 100MB）。
 - 如果你需要删除表内的所有数据，请勿使用 `DELETE` 语句，而应该使用 [TRUNCATE](/sql-statements/sql-statement-truncate.md) 语句。
 - 查看 [性能注意事项](#性能注意事项)。
-- 在需要大批量删除数据的场景下，[非事务批量删除](#非事务批量删除)对性能的提升十分明显。但与之相对的，这将丢失删除的事务性，因此***无法***进行回滚，请务必正确进行操作选择。
+- 在需要大批量删除数据的场景下，[非事务批量删除](#非事务批量删除)对性能的提升十分明显。但与之相对的，这将丢失删除的事务性，因此**无法**进行回滚，请务必正确进行操作选择。
 
 ## 例子
 
@@ -303,7 +303,7 @@ func deleteBatch(db *sql.DB, startTime, endTime time.Time) (int64, error) {
 
 > **注意：**
 >
-> TiDB 从 v6.1.0 版本开始支持[非事务 DML 语句](/non-transactional-dml.md)特性。在 TiDB v6.1.0 以下版本上无法使用此特性。
+> TiDB 从 v6.1.0 版本开始支持[非事务 DML 语句](/non-transactional-dml.md)特性。在 TiDB v6.1.0 以下版本中无法使用此特性。
 
 ### 使用前提
 
