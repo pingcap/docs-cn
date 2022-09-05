@@ -298,7 +298,7 @@ curl -X GET http://127.0.0.1:8300/api/v1/changefeeds?state=normal
 - id：同步任务的 ID
 - state：同步任务当前所处的[状态](/ticdc/manage-ticdc.md#同步任务状态流转)。
 - checkpoint_tso：同步任务当前 checkpoint 的 TSO 表示。
-- checkpoint_tso：同步任务当前checkpoint 的格式化时间表示。
+- checkpoint_time：同步任务当前 checkpoint 的格式化时间表示。
 - error：同步任务的错误信息。
 
 ## 查询特定同步任务

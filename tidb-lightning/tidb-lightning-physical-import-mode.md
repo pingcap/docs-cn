@@ -1,5 +1,6 @@
 ---
 title: Physical Import Mode
+summary: 了解 TiDB Lightning 的 Physical Import Mode。
 ---
 
 # Physical Import Mode
@@ -8,7 +9,10 @@ Physical Import Mode 不经过 SQL 接口，而是直接将数据以键值对的
 
 ## 原理说明
 
-1. 在导入数据之前，TiDB Lightning  会自动将 TiKV 节点切换为“导入模式” (import mode)，优化写入效率并停止 PD 调度和自动压缩。
+1. 在导入数据之前，`tidb-lightning` 会自动将 TiKV 节点切换为“导入模式” (import mode)，优化写入效率并停止自动压缩。`tidb-lightning` 会根据 TiDB 集群的版本决定是否停止全局调度。
+
+    - 当 TiDB 集群版本 >= v6.1.0 且 TiDB Lightning 版本 >= v6.2.0 时，`tidb-lightning` 在向 TiKV 导入数据时，只会暂停目标表数据范围所在 region 的调度，并在目标表导入完成后恢复调度。
+    - 当 TiDB 集群版本 < v6.1.0 或 TiDB Lightning 版本 < v6.2.0 时，`tidb-lightning` 会暂停全局调度。
 
 2. `tidb-lightning` 在目标数据库建立表结构，并获取其元数据。
 
@@ -24,7 +28,7 @@ Physical Import Mode 不经过 SQL 接口，而是直接将数据以键值对的
 
     表的自增 ID 是通过行数的**上界**估计值得到的，与表的数据文件总大小成正比。因此，最后的自增 ID 通常比实际行数大得多。这属于正常现象，因为在 TiDB 中自增 ID [不一定是连续分配的](/mysql-compatibility.md#自增-id)。
 
-7. 在所有步骤完毕后，`tidb-lightning` 自动将 TiKV 切换回“普通模式” (normal mode)，此后 TiDB 集群可以正常对外提供服务。
+7. 在所有步骤完毕后，`tidb-lightning` 自动将 TiKV 切换回“普通模式” (normal mode)，并恢复可能被暂停的全局调度，此后 TiDB 集群可以正常对外提供服务。
 
 ## 必要条件及限制
 
@@ -52,7 +56,7 @@ Physical Import Mode 不经过 SQL 接口，而是直接将数据以键值对的
 
 ### 使用限制
 
-- 请勿使用 Physical Import Mode 向已经投入生产的 TiDB 集群导入数据，这将对在线业务产生严重影响。
+- 请勿直接使用 Physical Import Mode 向已经投入生产的 TiDB 集群导入数据，这将对在线业务产生严重影响。如需向生产集群导入数据，请参考[导入时限制调度范围从集群降低到表级别](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#导入时限制调度范围从集群降低到表级别)。
 
 - 默认情况下，不应同时启动多个 TiDB Lightning 实例向同一 TiDB 集群导入数据，而应考虑使用[并行导入](/tidb-lightning/tidb-lightning-distributed-import.md)特性。
 

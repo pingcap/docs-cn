@@ -6,7 +6,7 @@ aliases: ['/zh/tidb/dev/migrate-from-csv-using-tidb-lightning/','/docs-cn/dev/ti
 
 # TiDB Lightning 数据源
 
-TiDB Lightning 支持从多种类型的文件导入数据到 TiDB 集群。通过以下配置为 Lightning 指定数据文件所在位置。
+TiDB Lightning 支持从多种类型的文件导入数据到 TiDB 集群。通过以下配置为 TiDB Lightning 指定数据文件所在位置。
 
 ```toml
 [mydumper]
@@ -14,16 +14,16 @@ TiDB Lightning 支持从多种类型的文件导入数据到 TiDB 集群。通�
 data-source-dir = "/data/my_database"
 ```
 
-Lightning 运行时将查找 `data-source-dir` 中所有符合命令规则的文件。
+TiDB Lightning 运行时将查找 `data-source-dir` 中所有符合命令规则的文件。
 
 | 文件类型 | 分类 | 命名规则 |
 |:--|:--|:---|
 |Schema 文件|包含 DDL 语句 `CREATE TABLE` 的文件|`${db_name}.${table_name}-schema.sql`|
 |Schema 文件|包含 `CREATE DATABASE` DDL 语句的文件|`${db_name}-schema-create.sql`|
-|数据文件|包含整张表的数据文件，该文件会被导入 `${db_name}.${table_name}` 表 | `${db_name}.${table_name}.${csv|sql|parquet}`|
-|数据文件| 如果一个表分布于多个数据文件，这些文件命名需加上文件编号的后缀 | `${db_name}.${table_name}.001.${csv|sql|parquet}` |
+|数据文件|包含整张表的数据文件，该文件会被导入 `${db_name}.${table_name}` 表 | <code>\${db_name}.\${table_name}.\${csv\|sql\|parquet}</code>|
+|数据文件| 如果一个表分布于多个数据文件，这些文件命名需加上文件编号的后缀 | <code>\${db_name}.\${table_name}.001.\${csv\|sql\|parquet}</code> |
 
-Lightning 尽量并行处理数据，由于文件必须顺序读取，所以数据处理协程是文件级别的并发（通过 `region-concurrency` 配置控制）。因此导入大文件时性能比较差。通常建议单个文件尺寸为 256MiB，以获得最好的性能。
+TiDB Lightning 尽量并行处理数据，由于文件必须顺序读取，所以数据处理协程是文件级别的并发（通过 `region-concurrency` 配置控制）。因此导入大文件时性能比较差。通常建议单个文件尺寸为 256MiB，以获得最好的性能。
 
 ## CSV
 
@@ -264,11 +264,11 @@ backslash-escape = false
 
 ## SQL
 
-Lightning 在处理 SQL 文件时，由于无法对单个文件进行快速分割，因此无法通过增加并发提高单个文件的导入速度。鉴于此，导出数据为 SQL 文件时应尽量避免单个 SQL 文件过大，通常单文件在 256MiB 左右可以达到最佳性能。
+TiDB Lightning 在处理 SQL 文件时，由于无法对单个文件进行快速分割，因此无法通过增加并发提高单个文件的导入速度。鉴于此，导出数据为 SQL 文件时应尽量避免单个 SQL 文件过大，通常单文件在 256MiB 左右可以达到最佳性能。
 
 ## Parquet
 
-Lightning 目前仅支持由 Amazon Aurora 导出快照生成的 Parquet 文件。要识别其在 S3 的文件组织形式，需要使用如下配置匹配到所有的数据文件：
+TiDB Lightning 目前仅支持由 Amazon Aurora 导出快照生成的 Parquet 文件。要识别其在 S3 的文件组织形式，需要使用如下配置匹配到所有的数据文件：
 
 ```
 [[mydumper.files]]
@@ -285,9 +285,9 @@ type = '$3'
 
 ## 自定义文件匹配
 
-Lightning 仅识别符合命名要求的数据文件，但在某些情况下已提供的数据文件并不符合要求，因此可能出现 Lightning 在极短的时间结束，处理文件数量为 0 的情况。
+TiDB Lightning 仅识别符合命名要求的数据文件，但在某些情况下已提供的数据文件并不符合要求，因此可能出现 TiDB Lightning 在极短的时间结束，处理文件数量为 0 的情况。
 
-为了解决此类问题，Lightning 提供了 `[[mydumper.files]]` 配置用于通过自定义表达式匹配数据文件。
+为了解决此类问题，TiDB Lightning 提供了 `[[mydumper.files]]` 配置用于通过自定义表达式匹配数据文件。
 
 以 AWS Aurora 导出至 S3 的快照文件为例，Parquet 文件的完整路径为：`S3://some-bucket/some-subdir/some-database/some-database.some-table/part-00000-c5a881bb-58ff-4ee6-1111-b41ecff340a3-c000.gz.parquet`。
 
@@ -295,7 +295,7 @@ Lightning 仅识别符合命名要求的数据文件，但在某些情况下已�
 
 根据上述 Parquet 文件的路径，你可以编写正则表达式 `(?i)^(?:[^/]*/)*([a-z0-9_]+)\.([a-z0-9_]+)/(?:[^/]*/)*(?:[a-z0-9\-_.]+\.(parquet))$`，得到的 match group 中 index=1 的内容为 `some-database` ，index=2 的内容为 `some-table`，index=3 的内容为 `parquet`。
 
-根据上述正则表达式及相应的 index 编写配置文件，Lightning 即可识别非默认命名规则的文件，最终实际配置如下：
+根据上述正则表达式及相应的 index 编写配置文件，TiDB Lightning 即可识别非默认命名规则的文件，最终实际配置如下：
 
 ```
 [[mydumper.files]]
