@@ -74,3 +74,65 @@ TiKV
     - **Report restore result**：log restore worker 返回恢复结果给 br
 
 ## 日志备份文件
+
+快照备份会产生几种类型文件：
+
+- `backup.lock` 文件：用于防止多个日志备份备份任务备份到同一目录
+- `backupmeta` 文件：存储 schema 信息
+- `{min_ts}-{uuid}.log` 文件：存储备份下来的 kv 数据变更记录。其中 {min_ts} 是该文件中所有 kv 数据变更记录数对应的最小 ts；{uuid} 是生成该文件的时候随机生成的。
+- `{checkpoint_ts}-{uuid}.meta` 文件: 每个 tikv 节点每次上传日志备份数据时会生成一个该文件，其包本 tikv 节点本次上传的所有日志备份数据文件。 其中 {checkpoint_ts} 是本节点的日志备份的 checkpoint，所有 tikv 节点的最小的 checkpoint 就是日志备份任务最新的 checkpoint；{uuid} 是生成该文件的时候随机生成的。
+- `{store_id}.ts` 文件：保存每个 TiKV 节点节点了解最新的 global checkpoint ts，所有 TiKV 节点的最大的 checkpoint ts 就是日志备份任务最新的 checkpoint。 其中 {store_id} 是 TiKV 的 store ID。 
+- `v1_stream_trancate_safepoint.txt` 文件：保存最近一次通过 `br log truncate` 删除日志备份数据后，存储中最早的日志备份数据对应的 ts。
+
+### 备份文件布局
+
+```
+.
+├── backup.lock
+├── backupmeta
+├── v1
+│   ├── backupmeta
+│   │   ├── {min_restored_ts}-{uuid}.meta
+│   │   ├── {checkpoint}-{uuid}.meta
+│   ├── global_checkpoint
+│   │   ├── {store_id}.ts
+│   ├── {date}
+│   │   ├── {hour}
+│   │   │   ├── {store_id}
+│   │   │   │   ├── {min_ts}-{uuid}.log
+│   │   │   │   ├── {min_ts}-{uuid}.log
+├── v1_stream_trancate_safepoint.txt 
+```   
+
+示例如下
+
+```
+.
+├── backupmeta
+├── backup.lock
+├── v1
+│   ├── backupmeta
+│   │   ├── ...
+│   │   ├── 435213818858112001-e2569bda-a75a-4411-88de-f469b49d6256.meta
+│   │   ├── 435214043785779202-1780f291-3b8a-455e-a31d-8a1302c43ead.meta
+│   │   ├── 435214443785779202-224f1408-fff5-445f-8e41-ca4fcfbd2a67.meta
+│   ├── global_checkpoint
+│   │   ├── 1.ts
+│   │   ├── 2.ts
+│   │   ├── 3.ts
+│   ├── 20220811
+│   │   ├── 03
+│   │   │   ├── 1
+│   │   │   │   ├── ...
+│   │   │   │   ├── 435213866703257604-60fcbdb6-8f55-4098-b3e7-2ce604dafe54.log
+│   │   │   │   ├── 435214023989657606-72ce65ff-1fa8-4705-9fd9-cb4a1e803a56.log
+│   │   │   ├── 2
+│   │   │   │   ├── ...
+│   │   │   │   ├── 435214102632857605-11deba64-beff-4414-bc9c-7a161b6fb22c.log
+│   │   │   │   ├── 435214417205657604-e6980303-cbaa-4629-a863-1e745d7b8aed.log
+│   │   │   ├── 3
+│   │   │   │   ├── ...
+│   │   │   │   ├── 435214495848857605-7bf65e92-8c43-427e-b81e-f0050bd40be0.log
+│   │   │   │   ├── 435214574492057604-80d3b15e-3d9f-4b0c-b133-87ed3f6b2697.log
+├── v1_stream_trancate_safepoint.txt 
+```
