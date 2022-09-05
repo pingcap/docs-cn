@@ -31,12 +31,12 @@ TiDB 版本：6.3.0-DMR
 
     [用户文档](/placement-rules-in-sql.md#使用限制) [#37171](https://github.com/pingcap/tidb/issues/37171) @[lcwangchao](https://github.com/lcwangchao)
 
-* 实现窗口函数框架，支持以下分析函数：
+* 增加支持以下窗口分析函数：
 
     * `LEAD()`
     * `LAG()`
 
-  [用户文档](/tiflash/tiflash-supported-pushdown-calculations.md)，[#37365](https://github.com/pingcap/tidb/issues/37365) @[SeaRise](https://github.com/SeaRise)
+  [用户文档](/tiflash/tiflash-supported-pushdown-calculations.md)，[#5579](https://github.com/pingcap/tiflash/issues/5579) @[SeaRise](https://github.com/SeaRise)
 
 ### 安全
 
@@ -61,6 +61,14 @@ TiDB 版本：6.3.0-DMR
     功能描述
 
     [用户文档]() [#issue]() @[贡献者 GitHub ID]()
+
+* TiFlash 调整 FastScan 功能使用方式（实验特性）
+
+    TiFlash 从 v6.2.0 版本开始引入的快速扫描功能 (FastScan)，性能上符合预期，但是使用方式上缺乏灵活性。因此，TiFlash 在 v6.3.0 版本调整 FastScan 功能的使用方式，停止使用对表设定是否开启 FastScan 功能的方式，改为使用变量```tiflash_fastscan``` 控制是否开启 FastScan 功能。
+
+    从 v6.2.0 版本升级到 v6.3.0 版本时，在 v6.2.0 版本的所有 FastScan 设定将失效，需要重新使用变量方式进行 FastScan 设定，但不影响数据的正常读取。从更早版本升级到 v6.3.0 时，所有会话默认不开启 FastScan 功能，而是保持一致性的数据扫描功能。
+
+    [用户文档](/develop/dev-guide-use-fastscan.md) [#5252](https://github.com/pingcap/tiflash/issues/5252) @[hongyunyan](https://github.com/hongyunyan)
 
 * TiFlash 优化提升多并发场景下的数据扫描性能
 
