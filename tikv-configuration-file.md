@@ -1828,4 +1828,4 @@ Raft Engine 相关的配置项。
 
 + 备份阶段 S3 分块上传的块大小。可通过调整该参数来控制备份时发往 S3 的请求数量。
 + TiKV 备份数据到 S3 时，如果备份文件大于该配置项的值，会自动进行[分块上传](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/API/API_UploadPart.html)。根据压缩率的不同，96 MB Region 产生的备份文件大约在 10 MB~30 MB 之间。
-+ 默认值：5 MB
++ 默认值：5MiB
