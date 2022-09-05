@@ -29,7 +29,14 @@ TiDB 版本：6.3.0-DMR
 
     TiDB 在 v6.0.0 版本提供基于 SQL 的数据放置规则功能，但是由于实现机制冲突，该功能和构建 TiFlash 副本功能不兼容。v6.3.0 版本进行改进优化，完善了这两个功能的兼容性。
 
-    [用户文档](/placement-rules-in-sql.md#使用限制) [#issue](https://github.com/pingcap/tidb/issues/37171) @[lcwangchao](https://github.com/lcwangchao)
+    [用户文档](/placement-rules-in-sql.md#使用限制) [#37171](https://github.com/pingcap/tidb/issues/37171) @[lcwangchao](https://github.com/lcwangchao)
+
+* 实现窗口函数框架，支持以下分析函数：
+
+    * `LEAD()`
+    * `LAG()`
+
+  [用户文档](/tiflash/tiflash-supported-pushdown-calculations.md)，[#37365](https://github.com/pingcap/tidb/issues/37365) @[SeaRise](https://github.com/SeaRise)
 
 ### 安全
 
