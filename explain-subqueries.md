@@ -200,7 +200,7 @@ tidb> explain select * from t where (a,b) in (select * from s);
 
 `NOT IN`, `!= ALL` 的集合运算运算具有特殊的三值属性（true、false、NULL）。这也意味这在其所转化得到的 join 类型中需要对 join key 两侧的 null 进行特殊的感知和处理。
 
-对于 `NOT IN`, `!= ALL` 算子而言，其所引导的子查询，会对应的转为 Anti Semi Join 和 Anti Left Outer Semi Join。在上述的 Anti Semi Join 小节中，由于其 join key 的两侧列 test.t3.t1_id 和 test.t1.id 都是 not null 属性的，所以 anti semi join 本身不需要 null aware 的性质来辅助计算。在 TiDB v6.3 及后续的版本中，TiDB 引入了针对 Null Aware Anti Join 的特殊优化，1：利用 NA-EQ 构建哈希连接； 2：利用两侧数据源 null 值的特殊性质加速匹配结果的返回。由于集合操作符引入的等值需要对等值两侧操作符号的 null 值做特殊处理，这里称需要 null-aware 的等值条件为 NA-EQ 条件。不同以往的是，TiDB 不会再将 NA-EQ 条件处理成普通 EQ 条件，专门放置于 join 后置的 other condition 中，匹配完笛卡尔积之后再去判断结果集的合法性。在本次优化中，NA-EQ 这种弱化的等值条件会依然会被用来构建哈希值（hash join）加速匹配过程，大大简略了匹配时候所需要遍历的数据量，在 build 表 distinct 值很大的时候，效果会有质的提升。此外，由于 Anti Semi Join 自身具有 CNF 表达式的属性，其任何一侧出现的 null 值都会导致结果的确定性，利用这种性质我们可以来整个加速匹配过程的返回。 以下为 null aware 的例子：
+对于 `NOT IN`, `!= ALL` 算子而言，其所引导的子查询，会对应的转为 Anti Semi Join 和 Anti Left Outer Semi Join。在上述的 Anti Semi Join 小节中，由于其 join key 的两侧列 test.t3.t1_id 和 test.t1.id 都是 not null 属性的，所以 Anti Semi Join 本身不需要 null aware 的性质来辅助计算。在 TiDB v6.3 及后续的版本中，TiDB 引入了针对 Null Aware Anti Join 的特殊优化，1：利用 NA-EQ 构建哈希连接； 2：利用两侧数据源 null 值的特殊性质加速匹配结果的返回。由于集合操作符引入的等值需要对等值两侧操作符数的 null 值做特殊处理，这里称需要 null-aware 的等值条件为 NA-EQ 条件。不同以往的是，TiDB 不会再将 NA-EQ 条件处理成普通 EQ 条件，专门放置于 join 后置的 other condition 中，匹配完笛卡尔积之后再去判断结果集的合法性。在本次优化中，NA-EQ 这种弱化的等值条件会依然会被用来构建哈希值（hash join）加速匹配过程，大大简略了匹配时候所需要遍历的数据量，在 build 表 distinct 值很大的时候，效果会有质的提升。此外，由于 Anti Semi Join 自身具有 CNF 表达式的属性，其任何一侧出现的 null 值都会导致结果的确定性，利用这种性质我们可以来整个加速匹配过程的返回。 以下为 null aware 的例子：
 
 ```sql
 create table t(a int, b int);
