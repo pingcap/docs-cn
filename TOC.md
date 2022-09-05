@@ -518,7 +518,6 @@
       - [Integrate TiDB with Confluent and Snowflake](/ticdc/integrate-confluent-using-ticdc.md)
     - [FAQs](/ticdc/ticdc-faq.md)
     - [Glossary](/ticdc/ticdc-glossary.md)
-  - [Dumpling](/dumpling-overview.md)
   - sync-diff-inspector
     - [Overview](/sync-diff-inspector/sync-diff-inspector-overview.md)
     - [Data Check for Tables with Different Schema/Table Names](/sync-diff-inspector/route-diff.md)
