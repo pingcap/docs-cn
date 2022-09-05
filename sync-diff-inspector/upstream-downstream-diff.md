@@ -5,9 +5,36 @@ aliases: ['/docs-cn/dev/sync-diff-inspector/upstream-downstream-diff/','/docs-cn
 
 # TiDB 主从集群的数据校验
 
-在你使用 TiDB Binlog 搭建 TiDB 的主从集群，Drainer 在把数据同步到 TiDB 时，保存 checkpoint 的同时也会将上下游的 TSO 对应关系保存为 `ts-map`。在 sync-diff-inspector 中配置 `snapshot` 即可对 TiDB 主从集群的数据进行校验。
-
 ## 获取 ts-map
+
+### 基于 TiCDC 的主从集群数据校验
+
+在你使用 TiCDC 搭建 TiDB 的主从集群，Sink 在把数据同步到 TiDB 时，保存 syncpoint 的同时也会将 changefeed 上下游的 TSO 对应关系保存为一条 TSO 记录。在 sync-diff-inspector 中配置 `snapshot` 即可对 TiDB 主从集群的数据进行校验。
+
+在下游 TiDB 中执行以下 SQL 语句：
+
+{{< copyable "sql" >}}
+
+```sql
+select * from tidb_cdc.syncpoint_v1;
+```
+
+```
++-----------------------------------+--------------------+--------------------+
+| cf                                | primary_ts         | secondary_ts       |
++-----------------------------------+--------------------+--------------------+
+| default_simple-replication-task   | 435782288912416770 | 435782288872570881 |
+| default_simple-replication-task   | 435782291533856768 | 435782291546439681 |
++-----------------------------------+--------------------+--------------------+
+```
+
+其中 cf 由 changefeed 的 namespace 和 id 拼接而成： {namespace}_{changefeed_id} 。
+
+从结果中可以获取上游TSO（primary_ts）和下游TSO（secondary_ts）信息。
+
+## 基于 TiDB Binlog 的主从集群数据校验
+
+在你使用 TiDB Binlog 搭建 TiDB 的主从集群，Drainer 在把数据同步到 TiDB 时，保存 checkpoint 的同时也会将上下游的 TSO 对应关系保存为 `ts-map`。在 sync-diff-inspector 中配置 `snapshot` 即可对 TiDB 主从集群的数据进行校验。
 
 在下游 TiDB 中执行以下 SQL 语句：
 
