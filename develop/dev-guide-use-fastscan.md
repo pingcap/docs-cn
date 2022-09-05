@@ -13,11 +13,11 @@ summary: 介绍通过使用 Fast Mode 来加速 OLAP 场景的查询的方法。
 
 默认情况下，TiFlash 能够保证查询结果精度以及数据一致性。如果使用 FastScan，TiFlash 可以实现更高效的查询性能，但不保证查询结果精度和数据一致性。
 
-某些 OLAP 对查询结果精度可以容忍一定误差。如果对查询性能有更高要求，可以在对应 session 会话中开启 FastScan 功能，你可以通过修改变量```tiflash_fastscan```的值来选择是否启用 FastScan 功能。
+某些 OLAP 对查询结果精度可以容忍一定误差。如果对查询性能有更高要求，可以在对应 session 会话中开启 FastScan 功能，你可以通过修改变量 `tiflash_fastscan` 的值来选择是否启用 FastScan 功能。
 
 ## 启用 FastScan
 
-默认情况下，session 和 global 级别的变量 ```tiflash_fastscan=OFF```，即没有开启 FastScan 功能，你可以通过以下语句来查看对应的变量信息。
+默认情况下，session 和 global 级别的变量 `tiflash_fastscan=OFF`，即没有开启 FastScan 功能，你可以通过以下语句来查看对应的变量信息。
 
 {{< copyable "sql" >}}
 
@@ -45,13 +45,13 @@ show global variables like 'tiflash_fastscan';
 +------------------+-------+
 ```
 
-变量```tiflash_fastscan```支持 session 级别和 global 级别的修改，如果需要在当前 session 中启用 FastScan 功能，可以通过以下语句来设置:
+变量 `tiflash_fastscan` 支持 session 级别和 global 级别的修改。如果需要在当前 session 中启用 FastScan 功能，可以通过以下语句来设置:
 
 ```
 set session tiflash_fastscan=ON;
 ```
 
-也可以对 global 级别的 ```tiflash_fastscan``` 进行设置, 则设置后新建的会话中默认 session 和 global 变量```tiflash_fastscan``` 启用新值。
+也可以对 global 级别的 `tiflash_fastscan` 进行设置，则设置后新建的会话中默认 session 和 global 变量 `tiflash_fastscan` 启用新值。
 
 ```
 set global tiflash_fastscan=ON;
