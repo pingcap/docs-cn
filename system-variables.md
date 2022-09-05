@@ -1492,7 +1492,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 默认值：`tikv,tiflash,tidb`
 - 这个变量用于设置 TiDB 在读取数据时可以使用的存储引擎列表。
 
-### `tidb_last_ddl_info` <span class="version-mark">New in v6.0.0</span>
+### `tidb_last_ddl_info` <span class="version-mark">从 v6.0.0 版本开始引入</span>
 
 - 作用域：SESSION
 - 是否持久化到集群：否
