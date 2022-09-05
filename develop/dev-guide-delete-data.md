@@ -41,6 +41,7 @@ DELETE FROM {table} WHERE {filter}
 - 需要删除大量行(数万或更多)的时候，使用[批量删除](#批量删除)，这是因为 TiDB 单个事务大小限制为 [txn-total-size-limit](/tidb-configuration-file.md#txn-total-size-limit)（默认为 100MB）。
 - 如果你需要删除表内的所有数据，请勿使用 `DELETE` 语句，而应该使用 [TRUNCATE](/sql-statements/sql-statement-truncate.md) 语句。
 - 查看 [性能注意事项](#性能注意事项)。
+- 在需要大批量删除数据的场景下，[非事务批量删除](#非事务批量删除)对性能的提升十分明显。但与之相对的，这将丢失删除的事务性，因此**无法**进行回滚，请务必正确进行操作选择。
 
 ## 例子
 
@@ -298,3 +299,41 @@ func deleteBatch(db *sql.DB, startTime, endTime time.Time) (int64, error) {
 </div>
 
 </SimpleTab>
+
+## 非事务批量删除
+
+> **注意：**
+>
+> TiDB 从 v6.1.0 版本开始支持[非事务 DML 语句](/non-transactional-dml.md)特性。在 TiDB v6.1.0 以下版本中无法使用此特性。
+
+### 使用前提
+
+在使用非事务批量删除前，请先**仔细**阅读[非事务 DML 语句](/non-transactional-dml.md)。非事务批量删除，本质是以牺牲事务的原子性、隔离性为代价，增强批量数据处理场景下的性能和易用性。
+
+因此在使用过程中，需要极为小心，否则，因为操作的非事务特性，在误操作时会导致严重的后果（如数据丢失等）。
+
+### 非事务批量删除 SQL 语法
+
+非事务批量删除的 SQL 语法如下：
+
+{{< copyable "sql" >}}
+
+```sql
+BATCH ON {dividing_column} LIMIT {batch_size} {delete_statement};
+```
+
+|    参数    |      描述      |
+| :--------: | :------------: |
+| `{dividing_column}`  |      非事务批量删除的划分列      |
+| `{batch_size}` | 非事务批量删除的每批大小 |
+| `{delete_statement}` | 删除语句 |
+
+此处仅展示非事务批量删除的简单用法，详细文档可参考 TiDB 的[非事务 DML 语句](/non-transactional-dml.md)。
+
+### 非事务批量删除使用示例
+
+以上方[批量删除例子](#批量删除例子)场景为例，可使用以下 SQL 语句进行非事务批量删除：
+
+```sql
+BATCH ON `rated_at` LIMIT 1000 DELETE FROM `ratings` WHERE `rated_at` >= "2022-04-15 00:00:00" AND `rated_at` <= "2022-04-15 00:15:00";
+```
