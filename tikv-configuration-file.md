@@ -1501,3 +1501,13 @@ raftdb 相关配置项。
 
 + 开启流水线式加悲观锁流程。开启该功能后，TiKV 在检测数据满足加锁要求后，立刻通知 TiDB 执行后面的请求，并异步写入悲观锁，从而降低大部分延迟，显著提升悲观事务的性能。但有较低概率出现悲观锁异步写入失败的情况，可能会导致悲观事务提交失败。
 + 默认值：true
+
+### `s3-multi-part-size` <span class="version-mark">从 v5.3.2 版本开始引入</span>
+
+> **注意：**
+>
+> 引入该配置项是为了解决备份期间遇到的 S3 限流导致备份失败的问题。该问题已通过[优化 BR 备份数据存储的目录结构](https://docs.pingcap.com/zh/tidb/stable/backup-and-restore-design#备份文件布局)得到解决。因此，该配置项自 v6.1.1 起开始废弃，不再推荐使用。
+
++ 备份阶段 S3 分块上传的块大小。可通过调整该参数来控制备份时发往 S3 的请求数量。
++ TiKV 备份数据到 S3 时，如果备份文件大于该配置项的值，会自动进行[分块上传](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/API/API_UploadPart.html)。根据压缩率的不同，96 MiB Region 产生的备份文件大约在 10 MiB~30 MiB 之间。
++ 默认值：5MiB
