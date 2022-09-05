@@ -64,6 +64,10 @@ TiDB 支持使用大部分 MySQL 5.7 中提供的[字符串函数](https://dev.m
 | [`UCASE()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_ucase)       | 与 `UPPER()` 功能相同   |
 | [`UNHEX()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_unhex)  | 返回一个数的十六进制表示，形式为字符串 |
 | [`UPPER()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_upper)   | 参数转换为大写形式  |
+| [`REGEXP_LIKE()`](https://dev.mysql.com/doc/refman/8.0/en/regexp.html#function_regexp-like) | 判断字符是否满足正则表达式(与MySQL不完全兼容) |
+| [`REGEXP_INSTR()`](https://dev.mysql.com/doc/refman/8.0/en/regexp.html#function_regexp-instr) | 返回满足正则的字串的第一个索引位置(与MySQL不完全兼容) |
+| [`REGEXP_SUBSTR()`](https://dev.mysql.com/doc/refman/8.0/en/regexp.html#function_regexp-substr) | 返回满足正则表达式的字串(与MySQL不完全兼容) |
+| [`REGEXP_REPLACE()`](https://dev.mysql.com/doc/refman/8.0/en/regexp.html#function_regexp-replace) | 替换满足正则表达式的字串(与MySQL不完全兼容) |
 
 ## 不支持的函数
 
@@ -72,3 +76,17 @@ TiDB 支持使用大部分 MySQL 5.7 中提供的[字符串函数](https://dev.m
 * `SOUNDEX()`
 * `SOUNDS LIKE`
 * `WEIGHT_STRING()`
+
+## 正则函数与MySQL的兼容性
+
+### 语法兼容性
+
+MySQL的实现使用的是ICU库，TiDB的实现使用的是re2库，两个库之间的语法差异可以查阅[ICU文档](https://unicode-org.github.io/icu/userguide/)和[re2文档](https://github.com/google/re2/wiki/Syntax)
+
+### Match Type兼容性
+
+match_type的差异：
+- MySQL中的n标记对应于TiDB的s标记
+    - 例：在MySQL中写为`select regexp_like(a, b, "n") from t1;`，TiDB中需要写为`select regexp_like(a, b, "s") from t1;`
+- MySQL支持u标记，TiDB不支持
+
