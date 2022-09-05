@@ -1,9 +1,9 @@
 ---
-title: Fast Mode
-summary: 介绍通过使用 Fast Mode 来加速 OLAP 场景的查询的方法。
+title: FastScan
+summary: 介绍通过使用 FastScan 来加速 OLAP 场景的查询的方法。
 ---
 
-# Fast Mode
+# FastScan
 
 > **警告：**
 >
@@ -15,9 +15,9 @@ summary: 介绍通过使用 Fast Mode 来加速 OLAP 场景的查询的方法。
 
 某些 OLAP 对查询结果精度可以容忍一定误差。如果对查询性能有更高要求，可以在对应 session 会话中开启 FastScan 功能，你可以通过修改变量 `tiflash_fastscan` 的值来选择是否启用 FastScan 功能。
 
-## 启用 FastScan
+## 启用和禁用 FastScan
 
-默认情况下，session 和 global 级别的变量 `tiflash_fastscan=OFF`，即没有开启 FastScan 功能，你可以通过以下语句来查看对应的变量信息。
+默认情况下，session 和 global 级别的变量 `tiflash_fastscan=OFF`，即没有开启 FastScan 功能。你可以通过以下语句来查看对应的变量信息。
 
 {{< copyable "sql" >}}
 
@@ -57,7 +57,7 @@ set session tiflash_fastscan=ON;
 set global tiflash_fastscan=ON;
 ```
 
-可以用下面语句禁用 FastScan。
+可以用下面语句禁用 FastScan：
 
 ```sql
 set session tiflash_fastscan=OFF;
