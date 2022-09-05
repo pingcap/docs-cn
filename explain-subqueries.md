@@ -148,6 +148,101 @@ EXPLAIN SELECT * FROM t3 WHERE t1_id NOT IN (SELECT id FROM t1 WHERE int_col < 1
 
 上述查询首先读取了表 `t3`，然后根据主键开始探测 (probe) 表 `t1`。连接类型是 _anti semi join_，即反半连接：之所以使用 _anti_，是因为上述示例有不存在匹配值（即 `NOT IN`）的情况；使用 `Semi Join` 则是因为仅需要匹配第一行后就可以停止查询。
 
+## Null Aware Semi Join （`IN`, `= ANY` 子查询）
+
+`IN`, `= ANY` 的集合运算符号具有特殊的三值属性（true、false、NULL）。这也意味这在其所转化得到的 join 类型中需要对 join key 两侧的 null 进行特殊的感知和处理。
+
+对于 `IN`, `= ANY` 算子而言，其所引导的子查询，会对应的转为 Semi Join 和 Left Outer Semi Join，在上述 Semi Join 小节中， 由于其 join key 的两侧列 test.t1.id 和 test.t2.t1_id 都是 not null 属性的，所以 semi join 本身不需要 null aware 的性质来辅助运算。当前 TiDB 对于 Null Aware Semi Join 没有特定的优化，其实现本质都是基于笛卡尔积加 filter 的模式。以下为 null aware 的例子：
+
+```sql
+create table t(a int, b int);
+create table s(a int, b int);
+explain select (a,b) in (select * from s) from t;
+explain select * from t where (a,b) in (select * from s);
+```
+
+```sql
+tidb> explain select (a,b) in (select * from s) from t;
++-----------------------------+---------+-----------+---------------+-------------------------------------------------------------------------------------------+
+| id                          | estRows | task      | access object | operator info                                                                             |
++-----------------------------+---------+-----------+---------------+-------------------------------------------------------------------------------------------+
+| HashJoin_8                  | 1.00    | root      |               | CARTESIAN left outer semi join, other cond:eq(test.t.a, test.s.a), eq(test.t.b, test.s.b) |
+| ├─TableReader_12(Build)     | 1.00    | root      |               | data:TableFullScan_11                                                                     |
+| │ └─TableFullScan_11        | 1.00    | cop[tikv] | table:s       | keep order:false, stats:pseudo                                                            |
+| └─TableReader_10(Probe)     | 1.00    | root      |               | data:TableFullScan_9                                                                      |
+|   └─TableFullScan_9         | 1.00    | cop[tikv] | table:t       | keep order:false, stats:pseudo                                                            |
++-----------------------------+---------+-----------+---------------+-------------------------------------------------------------------------------------------+
+5 rows in set (0.00 sec)
+
+tidb> explain select * from t where (a,b) in (select * from s);
++------------------------------+---------+-----------+---------------+-----------------------------------------------------------------------------------------------------+
+| id                           | estRows | task      | access object | operator info                                                                                       |
++------------------------------+---------+-----------+---------------+-----------------------------------------------------------------------------------------------------+
+| HashJoin_11                  | 1.00    | root      |               | inner join, equal:[eq(test.t.a, test.s.a) eq(test.t.b, test.s.b)]                                   |
+| ├─TableReader_14(Build)      | 1.00    | root      |               | data:Selection_13                                                                                   |
+| │ └─Selection_13             | 1.00    | cop[tikv] |               | not(isnull(test.t.a)), not(isnull(test.t.b))                                                        |
+| │   └─TableFullScan_12       | 1.00    | cop[tikv] | table:t       | keep order:false, stats:pseudo                                                                      |
+| └─HashAgg_17(Probe)          | 1.00    | root      |               | group by:test.s.a, test.s.b, funcs:firstrow(test.s.a)->test.s.a, funcs:firstrow(test.s.b)->test.s.b |
+|   └─TableReader_24           | 1.00    | root      |               | data:Selection_23                                                                                   |
+|     └─Selection_23           | 1.00    | cop[tikv] |               | not(isnull(test.s.a)), not(isnull(test.s.b))                                                        |
+|       └─TableFullScan_22     | 1.00    | cop[tikv] | table:s       | keep order:false, stats:pseudo                                                                      |
++------------------------------+---------+-----------+---------------+-----------------------------------------------------------------------------------------------------+
+8 rows in set (0.01 sec)
+```
+
+第一个查询中，由于 t 表和 s 表的 a，b 列都是 nullable 的，所以其所转化 left outer semi join 是具有 null aware 性质的。其实现是先通过笛卡尔乘积，然后将 `IN` 或者 `= ANY` 所连接的列作为普通等值条件放到 other condition 做过滤（笛卡尔积之后的 filter）实现的。
+
+第二个查询中，由于 t 表和 s 表的 a，b 列都是 nullable 的，`IN` 属性本应该转为 null aware 性质的 semi join，但当前 TiDB 会有一层优化，会直接将 semi 转为了 inner join + aggregate 的方式来实现。（因为在非 scalar 输出的 `IN` sub-query 中，NULL 和 false 具有等效结果，其下推过滤的 NULL 行，就其本身来说都是导致 where 子句的否定语义，因此可以事先忽略这些行）
+
+注意：`Exists` 操作符也会转成 Semi Join，但是 Exists 操作符号本身不具有集合运算 null-aware 的性质。
+
+## Null Aware Anti Semi Join （`NOT IN`, `!= ALL` 子查询）
+
+`NOT IN`, `!= ALL` 的集合运算运算具有特殊的三值属性（true、false、NULL）。这也意味这在其所转化得到的 join 类型中需要对 join key 两侧的 null 进行特殊的感知和处理。
+
+对于 `NOT IN`, `!= ALL` 算子而言，其所引导的子查询，会对应的转为 Anti Semi Join 和 Anti Left Outer Semi Join。在上述的 Anti Semi Join 小节中，由于其 join key 的两侧列 test.t3.t1_id 和 test.t1.id 都是 not null 属性的，所以 anti semi join 本身不需要 null aware 的性质来辅助计算。在 TiDB v6.3 及后续的版本中，TiDB 引入了针对 Null Aware Anti Join 的特殊优化，1：利用 NA-EQ 构建哈希连接； 2：利用两侧数据源 null 值的特殊性质加速匹配结果的返回。由于集合操作符引入的等值需要对等值两侧操作符号的 null 值做特殊处理，这里称需要 null-aware 的等值条件为 NA-EQ 条件。不同以往的是，TiDB 不会再将 NA-EQ 条件处理成普通 EQ 条件，专门放置于 join 后置的 other condition 中，匹配完笛卡尔积之后再去判断结果集的合法性。在本次优化中，NA-EQ 这种弱化的等值条件会依然会被用来构建哈希值（hash join）加速匹配过程，大大简略了匹配时候所需要遍历的数据量，在 build 表 distinct 值很大的时候，效果会有质的提升。此外，由于 Anti Semi Join 自身具有 CNF 表达式的属性，其任何一侧出现的 null 值都会导致结果的确定性，利用这种性质我们可以来整个加速匹配过程的返回。 以下为 null aware 的例子：
+
+```sql
+create table t(a int, b int);
+create table s(a int, b int);
+explain select  (a, b) not in (select * from s) from t;
+explain select * from t where (a, b) not in (select * from s);
+```
+
+```sql
+tidb> explain select  (a, b) not in (select * from s) from t;
++-----------------------------+---------+-----------+---------------+---------------------------------------------------------------------------------------+
+| id                          | estRows | task      | access object | operator info                                                                         |
++-----------------------------+---------+-----------+---------------+---------------------------------------------------------------------------------------+
+| HashJoin_8                  | 1.00    | root      |               | NAAJ anti left outer semi join, equal:[eq(test.t.b, test.s.b) eq(test.t.a, test.s.a)] |
+| ├─TableReader_12(Build)     | 1.00    | root      |               | data:TableFullScan_11                                                                 |
+| │ └─TableFullScan_11        | 1.00    | cop[tikv] | table:s       | keep order:false, stats:pseudo                                                        |
+| └─TableReader_10(Probe)     | 1.00    | root      |               | data:TableFullScan_9                                                                  |
+|   └─TableFullScan_9         | 1.00    | cop[tikv] | table:t       | keep order:false, stats:pseudo                                                        |
++-----------------------------+---------+-----------+---------------+---------------------------------------------------------------------------------------+
+5 rows in set (0.00 sec)
+
+tidb> explain select * from t where (a, b) not in (select * from s);
++-----------------------------+---------+-----------+---------------+----------------------------------------------------------------------------+
+| id                          | estRows | task      | access object | operator info                                                              |
++-----------------------------+---------+-----------+---------------+----------------------------------------------------------------------------+
+| HashJoin_8                  | 0.80    | root      |               | NAAJ anti semi join, equal:[eq(test.t.b, test.s.b) eq(test.t.a, test.s.a)] |
+| ├─TableReader_12(Build)     | 1.00    | root      |               | data:TableFullScan_11                                                      |
+| │ └─TableFullScan_11        | 1.00    | cop[tikv] | table:s       | keep order:false, stats:pseudo                                             |
+| └─TableReader_10(Probe)     | 1.00    | root      |               | data:TableFullScan_9                                                       |
+|   └─TableFullScan_9         | 1.00    | cop[tikv] | table:t       | keep order:false, stats:pseudo                                             |
++-----------------------------+---------+-----------+---------------+----------------------------------------------------------------------------+
+5 rows in set (0.00 sec)
+```
+
+第一个查询中，由于 t 表和 s 表的 a，b 列都是 nullable 的，所以其所转化的 left outer semi join 是具有 null aware 性质的。不同的是，NAAJ 优化会将 NA-EQ 等值条件也作为了 hash join 的连接条件，大大加速的了 join 的计算。
+
+第二个查询中，由于 t 表和 s 表的 a，b 列都是 nullable 的，所以其所转化的 anti semi join 是具有 null aware 性质的。不同的是，NAAJ 优化将 NA-EQ 等值条件也作为了 hash join 的连接条件，大大加速的了 join 的计算。
+
+当前 TiDB 仅针对 Anti Semi Join 和 Anti Left Outer Semi Join 实现了 null 感知，当前仅支持 Hash Join 类型且其 build 表只能固定为右侧表。NAAJ 摒弃了之前基于笛卡尔乘积和 other condition filter 的实现方式，利用 NA-EQ 构建哈希连接，并利用 null 值在 Anti Join 集合运算中的快速返回的性质加速了整个 join 的匹配过程。
+
+注意：`Not Exists` 操作符也会转成 Anti Semi Join，但是 `Not Exists` 符号本身不具有集合运算 null-aware 的性质。
+
 ## 其他类型查询的执行计划
 
 + [MPP 模式查询的执行计划](/explain-mpp.md)
