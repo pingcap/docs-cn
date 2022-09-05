@@ -1,40 +1,40 @@
 ---
-title: PiTR 功能介绍
-summary: 了解 PiTR 功能设计和使用。
+title: PITR 功能介绍
+summary: 了解 PITR 功能设计和使用。
 ---
 
-# PiTR 功能介绍
+# PITR 功能介绍
 
-使用 PiTR (Point-in-time recovery) 功能，你可以在新集群上恢复备份集群的历史任意时刻点的快照。TiDB 自 v6.2.0 开始在 [BR](/br/backup-and-restore-overview.md) 工具引入 PiTR 功能。
+使用 PITR (Point-in-time recovery) 功能，你可以在新集群上恢复备份集群的历史任意时刻点的快照。TiDB 自 v6.2.0 开始在 [BR](/br/backup-and-restore-overview.md) 工具引入 PITR 功能。
 
-PiTR 可用于满足以下业务需求：
+PITR 可用于满足以下业务需求：
 
 - 降低灾备场景下的 RPO，如 RPO 不超过十几分钟。
 - 处理业务数据写错的案例，如回滚业务数据到出错事件前。
 - 审计业务的历史数据，满足司法审查的需求。
 
-本文档介绍 PiTR 的功能设计、能力边界与架构。如需了解如何使用 PiTR，请查阅[使用 PiTR](/br/pitr-usage.md)。
+本文档介绍 PITR 的功能设计、能力边界与架构。如需了解如何使用 PITR，请查阅[使用 PITR](/br/pitr-usage.md)。
 
-## 在业务中使用 PiTR
+## 在业务中使用 PITR
 
-[BR](/br/backup-and-restore-overview.md) 是 PiTR 功能的使用入口，通过 BR 工具，你可以完成 PiTR 的所有操作，包含数据备份（快照备份、日志备份）、一键恢复到指定时间点、备份数据管理。
+[BR](/br/backup-and-restore-overview.md) 是 PITR 功能的使用入口，通过 BR 工具，你可以完成 PITR 的所有操作，包含数据备份（快照备份、日志备份）、一键恢复到指定时间点、备份数据管理。
 
-下图为 PiTR 功能使用示意：
+下图为 PITR 功能使用示意：
 
 ![Point-in-Time Recovery](/media/br/pitr-usage.png)
 
 ### 备份数据
 
-为了实现 PiTR，你需要执行以下备份任务：
+为了实现 PITR，你需要执行以下备份任务：
 
 - 启动一个日志备份。运行 `br log start` 命令来启动数据库日志备份任务。该任务在 TiDB 集群后台持续地运行，及时地将 KV storage 的变更日志保存到备份存储中。
 - 定期地执行[快照（全量）备份](/br/br-usage-backup.md#备份-tidb-集群快照)。运行 `br backup full` 命令来备份集群快照到备份存储，例如在每天零点进行集群快照备份。
 
 ### 一键恢复数据
 
-当你执行 PiTR 一键恢复数据时，你需要运行 `br restore point` 命令来调用恢复程序读取快照备份和日志备份的数据，将新集群恢复到指定时间点。
+当你执行 PITR 一键恢复数据时，你需要运行 `br restore point` 命令来调用恢复程序读取快照备份和日志备份的数据，将新集群恢复到指定时间点。
 
-使用 `br restore point` 执行 PiTR 时，需要指定恢复时间点之前的最近的快照备份数据以及日志备份数据。BR 程序会先恢复快照备份数据，然后读取并应用快照备份时间点到恢复时间点之间的日志备份数据。
+使用 `br restore point` 执行 PITR 时，需要指定恢复时间点之前的最近的快照备份数据以及日志备份数据。BR 程序会先恢复快照备份数据，然后读取并应用快照备份时间点到恢复时间点之间的日志备份数据。
 
 ### 管理备份数据
 
@@ -53,17 +53,17 @@ PiTR 可用于满足以下业务需求：
 
 ## 功能指标
 
-- PiTR 的日志备份对集群的影响在 5% 左右
-- PiTR 的日志备份和全量备份一起运行时，对集群的影响在 20% 以内
-- PiTR 恢复速度，平均到单台 TiKV 节点：全量恢复为 280 GB/h ，日志恢复为 30 GB/h
-- PiTR 功能提供的灾备 RPO 低至十几分钟，RTO 根据要恢复的数据规模几分钟到几个小时不等
+- PITR 的日志备份对集群的影响在 5% 左右
+- PITR 的日志备份和全量备份一起运行时，对集群的影响在 20% 以内
+- PITR 恢复速度，平均到单台 TiKV 节点：全量恢复为 280 GB/h ，日志恢复为 30 GB/h
+- PITR 功能提供的灾备 RPO 低至十几分钟，RTO 根据要恢复的数据规模几分钟到几个小时不等
 - 使用 BR 清理过期的日志备份数据速度为 600 GB/h
 
 > **注意：**
 >
 > - 以上功能指标是根据下述两个场景测试得出的结论，如有出入，建议以实际测试结果为准
 > - 全量恢复速度 = 全量恢复集群数据量 / (时间 * TiKV 数量)
-> - 日志恢复数据 = 日志恢复总量 / (时间 * TiKV 数量)
+> - 日志恢复速度 = 日志恢复总量 / (时间 * TiKV 数量)
 
 测试场景 1（[TiDB Cloud](https://tidbcloud.com) 上部署）
 
@@ -82,19 +82,19 @@ PiTR 可用于满足以下业务需求：
 ## 使用限制
 
 - 单个集群只支持启动一个日志备份任务。
-- 仅支持恢复到空集群。为了避免对集群的业务请求和数据产生影响，不能在原集群（in-place）和其他已有数据集群执行 PiTR。
+- 仅支持恢复到空集群。为了避免对集群的业务请求和数据产生影响，不能在原集群（in-place）和其他已有数据集群执行 PITR。
 - 存储支持 AWS S3 和共享的文件系统（如 NFS 等），暂不支持使用 GCS 和 Azure Blob Storage 作为备份存储。
-- 仅支持集群粒度的 PiTR，不支持对单个 database 或 table 执行 PiTR。
+- 仅支持集群粒度的 PITR，不支持对单个 database 或 table 执行 PITR。
 - 不支持恢复用户表和权限表的数据。
-- 如果备份集群包含 TiFlash，执行 PiTR 后恢复集群的数据不包含 TiFlash 副本，需要手动恢复 TiFlash 副本。具体操作参考[手动设置 schema 或 table 的 TiFlash 副本](/br/pitr-troubleshoot.md#在使用-br-restore-point-命令恢复下游集群后无法从-tiflash-引擎中查询到数据该如何处理)。
+- 如果备份集群包含 TiFlash，执行 PITR 后恢复集群的数据不包含 TiFlash 副本，需要手动恢复 TiFlash 副本。具体操作参考[手动设置 schema 或 table 的 TiFlash 副本](/br/pitr-troubleshoot.md#在使用-br-restore-point-命令恢复下游集群后无法从-tiflash-引擎中查询到数据该如何处理)。
 - 上游数据库使用 TiDB Lightning Physical 方式导入的数据，无法作为数据日志备份下来。推荐在数据导入后执行一次全量备份，细节参考[上游数据库使用 TiDB Lightning Physical 方式导入数据的恢复](/br/pitr-known-issues.md#上游数据库使用-tidb-lightning-physical-方式导入数据导致无法使用日志备份功能)。
 - 备份过程中不支持分区交换 (Exchange Partition)，参考[日志备份过程中执行分区交换](/br/pitr-troubleshoot.md#日志备份过程中执行分区交换-exchange-partition-ddl在-pitr-恢复时会报错该如何处理)。
 - 不支持在恢复中重复恢复某段时间区间的日志，如果多次重复恢复 [t1=10, ts2=20) 区间的日志备份数据，可能会造成恢复后的数据不一致。
-- 其他已知问题，请参考 [PiTR 已知问题](/br/pitr-known-issues.md)。
+- 其他已知问题，请参考 [PITR 已知问题](/br/pitr-known-issues.md)。
 
-## PiTR 架构
+## PITR 架构
 
-PiTR 主要用于快照备份恢复和日志备份恢复。关于快照备份恢复，请参考 [BR 设计原理](/br/backup-and-restore-design.md)。本节介绍日志备份和恢复的实现。
+PITR 主要用于快照备份恢复和日志备份恢复。关于快照备份恢复，请参考 [BR 设计原理](/br/backup-and-restore-design.md)。本节介绍日志备份和恢复的实现。
 
 日志备份恢复的架构实现如下：
 
@@ -119,5 +119,5 @@ PiTR 主要用于快照备份恢复和日志备份恢复。关于快照备份恢
 ## 探索更多
 
 - [日志备份和恢复功能命令使用介绍](/br/br-log-command-line.md)
-- [PiTR 使用教程](/br/pitr-usage.md)
-- [PiTR 监控告警](/br/pitr-monitoring-and-alert.md)
+- [PITR 使用教程](/br/pitr-usage.md)
+- [PITR 监控告警](/br/pitr-monitoring-and-alert.md)

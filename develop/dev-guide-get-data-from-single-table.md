@@ -24,8 +24,8 @@ aliases: ['/zh/tidb/dev/get-data-from-single-table']
 
 在 Bookshop 应用程序的数据库当中，`authors` 表存放了作家们的基础信息，可以通过 `SELECT ... FROM ...` 语句将数据从数据库当中调取出去。
 
-<SimpleTab>
-<div label="SQL">
+<SimpleTab groupId="language">
+<div label="SQL" value="sql">
 
 在 MySQL Client 等客户端输入并执行如下 SQL 语句：
 
@@ -57,7 +57,7 @@ SELECT id, name FROM authors;
 ```
 
 </div>
-<div label="Java">
+<div label="Java" value="java">
 
 在 Java 语言当中，可以通过声明一个 `Author` 类来定义如何存放作者的基础信息，根据数据的[类型](/data-type-overview.md)和[取值范围](/data-type-numeric.md)从 Java 语言当中选择合适的数据类型来存放对应的数据，例如：
 
@@ -121,8 +121,8 @@ public class AuthorDAO {
 
 例如，想要查找众多作家当中找出在 1998 年出生的作家：
 
-<SimpleTab>
-<div label="SQL">
+<SimpleTab groupId="language">
+<div label="SQL" value="sql">
 
 在 SQL 中，可以使用 `WHERE` 子句添加筛选的条件：
 
@@ -133,7 +133,7 @@ SELECT * FROM authors WHERE birth_year = 1998;
 ```
 
 </div>
-<div label="Java">
+<div label="Java" value="java">
 
 对于 Java 程序而言，可以通过同一个 SQL 来处理带有动态参数的数据查询请求。
 

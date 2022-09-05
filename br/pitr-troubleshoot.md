@@ -11,7 +11,7 @@ summary: 了解日志备份常见故障以及解决方法。
 
 ## 在使用 `br restore point` 命令恢复下游集群后，无法从 TiFlash 引擎中查询到数据，该如何处理？
 
-在 v6.2.0 版本中，使用 PiTR 功能恢复下游集群数据时，并不支持恢复下游的 TiFlash 副本。恢复数据之后，需要执行如下命令手动设置 schema 或 table 的 TiFlash 副本：
+在 v6.2.0 版本中，使用 PITR 功能恢复下游集群数据时，并不支持恢复下游的 TiFlash 副本。恢复数据之后，需要执行如下命令手动设置 schema 或 table 的 TiFlash 副本：
 
 ``` shell
 ALTER TABLE table_name SET TIFLASH REPLICA count;
@@ -70,14 +70,14 @@ Error: failed to check gc safePoint, checkpoint ts 433177834291200000: GC safepo
 
 暂停日志备份任务后，备份程序为了防止生成变更日志的 MVCC 数据被 GC，暂停任务程序会自动将当前备份点 checkpoint 设置为 service safepoint，允许保留最近 24 小时内的 MVCC 数据。当超过 24 小时后，备份点 checkpoint 的 MVCC 数据已经被 GC，此时程序会拒绝恢复备份任务。
 
-此场景的处理办法是：先执行 `br log stop` 命令来删除当前的任务，然后执行 `br log start` 重新创建新的日志备份任务，同时做一个全量备份，便于后续做 PiTR 恢复操作。
+此场景的处理办法是：先执行 `br log stop` 命令来删除当前的任务，然后执行 `br log start` 重新创建新的日志备份任务，同时做一个全量备份，便于后续做 PITR 恢复操作。
 
-## 日志备份过程中执行分区交换 (Exchange Partition) DDL，在 PiTR 恢复时会报错，该如何处理？
+## 日志备份过程中执行分区交换 (Exchange Partition) DDL，在 PITR 恢复时会报错，该如何处理？
 
-在执行 PiTR 恢复日志过程中，出现如下报错：
+在执行 PITR 恢复日志过程中，出现如下报错：
 
 ```shell
 restore of ddl `exchange-table-partition` is not supported
 ```
 
-因为当前 v6.2.0 版本的日志备份功能尚且不兼容分区交换 (Exchange Partition) DDL，在使用日志备份功能时，应尽量避免执行分区交换 DDL。如果已经执行此 DDL，需要立即做一次全量备份操作，PiTR 即可恢复本次全量备份点之后的日志数据。
+因为当前 v6.2.0 版本的日志备份功能尚且不兼容分区交换 (Exchange Partition) DDL，在使用日志备份功能时，应尽量避免执行分区交换 DDL。如果已经执行此 DDL，需要立即做一次全量备份操作，PITR 即可恢复本次全量备份点之后的日志数据。
