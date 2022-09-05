@@ -1,5 +1,6 @@
 ---
 title: TiDB 产品文档
+aliases: ['/tidb/v5.4/adopters', '/tidb/stable/adopters']
 hide_sidebar: true
 hide_commit: true
 ---
