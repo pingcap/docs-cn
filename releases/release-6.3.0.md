@@ -308,6 +308,12 @@ TiDB 版本：6.3.0-DMR
 
 + Tools
 
+    + TiDB Dashboard
+
+        - 优化 TiDB Dashboard 的展示样式 [#issue]() @[贡献者 GitHub ID]()
+        - 在 SQL 语句分析、慢查询等页面，提供当前返回的数据行数 [#issue]() @[贡献者 GitHub ID]()
+        - 优化一些报错信息展示样式  [#issue]() @[贡献者 GitHub ID]()
+
     + Backup & Restore (BR)
 
         - note [#issue]() @[贡献者 GitHub ID]()
