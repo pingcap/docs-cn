@@ -1,9 +1,9 @@
 ---
-title: Fast Mode
-summary: 介绍通过使用 Fast Mode 来加速 OLAP 场景的查询的方法。
+title: FastScan
+summary: 介绍通过使用 FastScan 来加速 OLAP 场景的查询的方法。
 ---
 
-# Fast Mode
+# FastScan
 
 > **警告：**
 >
