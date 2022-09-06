@@ -16,6 +16,8 @@ TiDB 版本：6.3.0-DMR
 - JSON 数据类型和 JSON 函数 GA
 - TiDB 支持 Null Aware Anti Join
 - 提供“执行时间”的细粒度指标
+- 分区表新增简化 Range 分区的语法糖衣，避免在 DDL 中枚举所有分区
+- Range Columns 分区方式在 PARTITION BY RANGE COLUMNS (column_list) 处支持定义多列
 
 ## 新功能
 
@@ -33,12 +35,29 @@ TiDB 版本：6.3.0-DMR
 
     [用户文档]() [#issue]() @[mjonss](https://github.com/mjonss)
 
+* 分区表 EXCHANGE PARTITION 功能 GA
+
+    EXCHANGE PARTITION 功能通过性能和稳定性提升，由实验功能转为正式功能。 
+
+    [用户文档]() [#35996](https://github.com/pingcap/tidb/issues/35996) @[ymkzpx](https://github.com/ymkzpx)
+
 * 增加支持以下窗口分析函数：
 
     * `LEAD()`
     * `LAG()`
 
   [用户文档](/tiflash/tiflash-supported-pushdown-calculations.md)，[#5579](https://github.com/pingcap/tiflash/issues/5579) @[SeaRise](https://github.com/SeaRise)
+
+* 新增简化 Range 分区定义的语法糖衣
+
+    新的定义 Range 分区的方式，不需要枚举若有分区，可大幅度缩短现有 Range 分区表定义语句冗长的书写方式，语义与原有 Range 分区等价。
+
+    [用户文档](https://github.com/pingcap/docs/pull/9751) [#9751](https://github.com/pingcap/docs/pull/9751) @[mjonss](https://github.com/mjonss)
+
+* Range Columns 分区方式支持定义多列
+     PARTITION BY RANGE COLUMNS (column_list) 处，`column_list` 不再限定为单一列，基本功能与 MySQL 等同。
+
+     [用户文档](https://to be u p da te) [#0000](https://to be u p da te) @[mjonss](https://github.com/mjonss)
 
 * CREATE USER 支持 ACCOUNT LOCK/UNLOCK 选项
 
