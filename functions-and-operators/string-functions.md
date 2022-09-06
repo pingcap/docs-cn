@@ -81,7 +81,7 @@ TiDB 支持使用大部分 MySQL 5.7 中提供的[字符串函数](https://dev.m
 
 ### 语法兼容性
 
-MySQL 的实现使用的是 ICU 库，TiDB 的实现使用的是 re2 库，两个库之间的语法差异可以查阅 [ICU 文档](https://unicode-org.github.io/icu/userguide/)和 [re2 文档](https://github.com/google/re2/wiki/Syntax)
+MySQL 的实现使用的是 [ICU](https://github.com/unicode-org/icu) (International Components for Unicode) 库，TiDB 的实现使用的是 [RE2](https://github.com/google/re2) 库，两个库之间的语法差异可以查阅 [ICU 文档](https://unicode-org.github.io/icu/userguide/)和 [RE2 文档](https://github.com/google/re2/wiki/Syntax)。
 
 ### Match Type 兼容性
 
