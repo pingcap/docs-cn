@@ -12,7 +12,7 @@ This statement changes an existing user inside the TiDB privilege system. In the
 
 ```ebnf+diagram
 AlterUserStmt ::=
-    'ALTER' 'USER' IfExists (UserSpecList RequireClauseOpt ConnectionOptions PasswordOrLockOptions | 'USER' '(' ')' 'IDENTIFIED' 'BY' AuthString)
+    'ALTER' 'USER' IfExists (UserSpecList RequireClauseOpt ConnectionOptions LockOption | 'USER' '(' ')' 'IDENTIFIED' 'BY' AuthString)
 
 UserSpecList ::=
     UserSpec ( ',' UserSpec )*
@@ -25,6 +25,8 @@ Username ::=
 
 AuthOption ::=
     ( 'IDENTIFIED' ( 'BY' ( AuthString | 'PASSWORD' HashString ) | 'WITH' StringName ( 'BY' AuthString | 'AS' HashString )? ) )?
+
+LockOption ::= ( 'ACCOUNT' 'LOCK' | 'ACCOUNT' 'UNLOCK' )?
 ```
 
 ## Examples
@@ -52,6 +54,18 @@ mysql> SHOW CREATE USER 'newuser';
 +----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 1 row in set (0.00 sec)
 ```
+
+```sql
+ALTER USER 'newuser' ACCOUNT LOCK;
+```
+
+```
+Query OK, 0 rows affected (0.02 sec)
+```
+
+> **Note:**
+>
+> Do not use `ACCOUNT UNLOCK` to unlock a [role](/sql-statements/sql-statement-create-role.md). Otherwise, the unlocked role can be used to log in to TiDB without password.
 
 ## MySQL compatibility
 

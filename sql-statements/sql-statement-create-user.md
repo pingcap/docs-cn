@@ -12,7 +12,7 @@ This statement creates a new user, specified with a password. In the MySQL privi
 
 ```ebnf+diagram
 CreateUserStmt ::=
-    'CREATE' 'USER' IfNotExists UserSpecList RequireClauseOpt ConnectionOptions PasswordOrLockOptions
+    'CREATE' 'USER' IfNotExists UserSpecList RequireClauseOpt ConnectionOptions LockOption
 
 IfNotExists ::=
     ('IF' 'NOT' 'EXISTS')?
@@ -29,6 +29,8 @@ AuthOption ::=
 StringName ::=
     stringLit
 |   Identifier
+
+LockOption ::= ( 'ACCOUNT' 'LOCK' | 'ACCOUNT' 'UNLOCK' )?
 ```
 
 ## Examples
@@ -61,6 +63,16 @@ CREATE USER 'newuser4'@'%' REQUIRE ISSUER '/C=US/ST=California/L=San Francisco/O
 Query OK, 1 row affected (0.02 sec)
 ```
 
+Create a user who is locked upon creation.
+
+```sql
+CREATE USER 'newuser5'@'%' ACCOUNT LOCK;
+```
+
+```
+Query OK, 1 row affected (0.02 sec)
+```
+
 ## MySQL compatibility
 
 The following `CREATE USER` options are not yet supported by TiDB, and will be parsed but ignored:
@@ -68,7 +80,6 @@ The following `CREATE USER` options are not yet supported by TiDB, and will be p
 * TiDB does not support `WITH MAX_QUERIES_PER_HOUR`, `WITH MAX_UPDATES_PER_HOUR`, and `WITH MAX_USER_CONNECTIONS` options.
 * TiDB does not support the `DEFAULT ROLE` option.
 * TiDB does not support `PASSWORD EXPIRE`, `PASSWORD HISTORY` or other options related to password.
-* TiDB does not support the `ACCOUNT LOCK` and `ACCOUNT UNLOCK` options.
 
 ## See also
 
