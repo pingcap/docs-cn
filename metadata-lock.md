@@ -56,7 +56,8 @@ TiDB 中实现的是 Online DDL 的模式，一个 DDL 语句在执行过程中�
 | INSERT INTO T VALUES(1);                                  |                                                 | 
 | BEGIN;                                                    |                                                 |
 |                                                           | ALTER TABLE t ADD COLUMN b INT                  |    
-| SELECT * FROM t;  采用 t 表当前的元数据版本，返回(a=1，b=NULL)，同时给表 t 上锁 |                                                 |
+| SELECT * FROM t;  
+|#采用 t 表当前的元数据版本，返回(a=1，b=NULL)，同时给表 t 上锁  |                                                                                   
  |                                                           | ALTER TABLE t ADD COLUMN c INT (被 session 1 阻塞) |
 
 在可重复读隔离级别下，如果事务开始到确定一个表的元数据过程中，执行了加索引或者列类型变更这类需要更改数据的 DDL。则有以下表现：
