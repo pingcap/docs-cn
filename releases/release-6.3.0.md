@@ -62,6 +62,19 @@ TiDB 版本：6.3.0-DMR
 
     [用户文档](/data-type-json.md) [#36993](https://github.com/pingcap/tidb/issues/36993) @[xiongjiwei](https://github.com/xiongjiwei)
 
+* 提供轻量级元数据锁提升 DDL 变更过程 DML 的成功率
+
+    TiDB 采用 F1 论文中的在线异步变更算法实现 DDL 变更：事务在执行时会获取开始时对应的元数据快照，如果事务执行过程中相关表上发生了元数据的更改，为了保证数据的一致性，TiDB 会返回 `Information schema is changed` 的异常，导致用户事务提交失败。为了解决这个问题，在 v6.3.0 版本中，TiDB 在 Online DDL 算法中引入了元数据锁特性，通过协调表元数据变更过程中 DML 语句和 DDL 语句的优先级，让执行中的 DDL 语句等待持有旧版本元数据的 DML 语句提交，尽可能避免 DML 语句报错。
+    
+    [用户文档](/metadata-lock.md) [#37275](https://github.com/pingcap/tidb/issues/37275) @[wjhuang2016](https://github.com/wjhuang2016)
+
+
+* 提升添加索引的性能并减少对 DML 事务的影响
+
+    开启该特性后，TiDB 预期提升添加索引性能为原来的 3 倍。
+    
+    [用户文档](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) [#35983](https://github.com/pingcap/tidb/issues/35983) @[benjamin2037](https://github.com/benjamin2037)   
+    
 ### 安全
 
 * 功能标题
@@ -144,7 +157,11 @@ TiDB 版本：6.3.0-DMR
     该功能在 v6.2.0 版本以实验特性发布，并在 v6.3.0 版本作为正式功能发布。
 
     [用户文档](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml) [#5376](https://github.com/pingcap/tiflash/issues/5376) @[JinheLin](https://github.com/JinheLin)
+* TiKV 日志循环使用
 
+    TiKV Raft Engine 默认开启日志循环功能。该特性优化了Raft Engine的日志写入过程，减少了 raft 日志追加过程中的长尾，提升了 TiKV 在 write 负载下的性能。
+
+    [用户文档](/tikv-configuration-file.md#enable-log-recycle-new-in-v630) [raft-engine#214](https://github.com/tikv/raft-engine/issues/214) @[LykxSassinator](https://github.com/LykxSassinator)
 * TiDB 支持 Null Aware Anti Join
 
     TiDB 在新版本中引入了新的连接类型 Null Aware Anti Join (NAAJ)。 NAAJ 在集合操作时能够感知集合是否为空，或是否有空值，优化了一部分操作比如`IN`、`= ANY` 的执行效率，提升SQL性能。 
@@ -185,7 +202,11 @@ TiDB 版本：6.3.0-DMR
     功能描述
 
     [用户文档]() [#issue]() @[贡献者 GitHub ID]()
+* TiKV 后台 IO 任务限制增强 (TiKV I/O Rate Limiter)
 
+    改进算法，提供对磁盘读 I/O 的动态限流能力。
+
+    [用户文档](/tikv-configuration-file.md#storageio-rate-limit) [#10867](https://github.com/tikv/tikv/issues/10867) @[贡献者 GitHub ID]()
 * 优化 `IN` 条件元素过多引发的大量内存消耗
 
     当 SQL 中的 `IN` 条件包含的元素过多时，TiDB在执行过程中可能会消耗大量的内存。 在新版中，TiDB 引入了新的内存控制机制对这类操作进行了优化，减少内存消耗，提升SQL执行效率和系统稳定性。 
@@ -197,7 +218,11 @@ TiDB 版本：6.3.0-DMR
     在 v5.3.0 版本时，TiDB 引入变量 `tidb_enable_pseudo_for_outdated_stats` 控制优化器过期的加载策略，默认为 `ON`，即保持旧版本行为不变：当 SQL 涉及的对象的统计信息过期时，优化器认为该表上除总行数以外的统计信息不再可靠，转而使用 pseudo 统计信息。 经过一系列测试和用户实际场景分析， TiDB 在新版本中将  `tidb_enable_pseudo_for_outdated_stats` 的默认值改为 `OFF`, 即使统计信息过期，优化器也仍会使用该表上的统计信息，这有利于执行计划的稳定性。 
 
     [用户文档]() [#issue]() @[贡献者 GitHub ID]()
+* TiKV Titan 关闭功能正式发布
 
+    正式支持对在线 TiKV 节点关闭 Titan 引擎。
+    
+    [用户文档](/titan-configuration#disable-titan) [#issue]() @[贡献者 GitHub ID]()
 ### 易用性
 
 * 优化 TiFlash 数据同步进度的准确性
