@@ -14,6 +14,9 @@ TiDB 版本：6.3.0-DMR
 - 关键特性 2
 - 关键特性 3
 - ......
+- TiKV/TiFlash 静态加密支持国密算法 SM4
+- TiDB 支持基于国密算法 SM3 插件的身份验证
+- SQL语句CREATE USER / ALTER USER支持ACCOUNT LOCK/UNLOCK 选项
 
 ## 新功能
 
@@ -44,6 +47,18 @@ TiDB 版本：6.3.0-DMR
 
     [用户文档](/information-schema/information-schema-tiflash-replica.md) [#4902](https://github.com/pingcap/tiflash/issues/4902) @[hehechen](https://github.com/hehechen)
 
+* CREATE USER 支持 ACCOUNT LOCK/UNLOCK 选项
+
+    在执行CREATE USER创建用户时，允许使用ACCOUNT LOCK / UNLOCK 选项，限定被创建的用户是否被锁定。锁定后的用户不能正常登录数据库。
+    
+    [用户文档]( / sql-statements/sql-statement-create-user.md),[#37051](https://github.com/pingcap/tidb/issues/37051) @[CbcWestwolf](https://github.com/CbcWestwolf)
+
+* ALTER USER 支持 ACCOUNT LOCK/UNLOCK 选项
+
+    对于已存在的用户，可以通过ALTER USER 使用 ACCOUNT LOCK / UNLOCK 选项，修改用户的锁定状态。
+    
+    [用户文档]( /sql-statements/sql-statement-alter-user.md),[#37051](https://github.com/pingcap/tidb/issues/37051) @[CbcWestwolf](https://github.com/CbcWestwolf)
+
 ### 安全
 
 * 功能标题
@@ -51,6 +66,30 @@ TiDB 版本：6.3.0-DMR
     功能描述
 
     [用户文档]() [#issue]() @[贡献者 GitHub ID]()
+    
+* 静态加密 TiKV 支持国密算法SM4
+
+    TiKV 静态加密中新增加密算法SM4，用户在配置静态加密时，支持配置 data-encryption-method 参数为 "sm4-ctr"，以启用基于国密算法SM4的静态加密能力。
+    
+    [用户文档](/encryption-at-rest.md) [#13041](https://github.com/tikv/tikv/issues/13041) @[jiayang-zheng](https://github.com/jiayang-zheng)
+    
+* 静态加密 TiFlash 支持国密算法SM4
+
+    TiFlash 静态加密中新增加密算法SM4，用户在配置静态加密时，支持配置 data-encryption-method 参数为 "sm4-ctr"，以启用基于国密算法SM4的静态加密能力。
+
+    [用户文档](/encryption-at-rest.md) [#5714](https://github.com/pingcap/tiflash/issues/5714) @[lidezhu](https://github.com/lidezhu)
+    
+* TiDB 支持国密算法 SM3 的身份验证
+
+    TiDB 身份验证新增基于国密算法 SM3 的插件“tidb_sm3_password”，启用此插件后，用户密码将通过SM3进行加密存储和验证。
+    
+    [用户文档](/system-variables.md) [#36192](https://github.com/pingcap/tidb/issues/36192) @[CbcWestwolf](https://github.com/CbcWestwolf)
+
+* JDBC 支持国密算法 SM3 的身份验证
+
+    用户密码的身份验证需要客户端的支持，现在 JDBC 支持国密算法 SM3 的能力，用户可以通过 JDBC 连接到 TiDB 使用国密算法 SM3 的身份验证能力。
+
+    [用户文档]() []() @[]()
 
 ### 可观测性
 
@@ -150,7 +189,7 @@ TiDB 版本：6.3.0-DMR
 
 | 变量名 | 修改类型（包括新增/修改/删除） | 描述 |
 | ------ | ------ | ------ |
-|  |  |  |
+| default_authentication_plugin | 修改 | 扩展可选值范围：增加 tidb_sm3_password，设置为 tidb_sm3_password 时，用户密码验证的加密算法为国密算法SM3 |
 |  |  |  |
 |  |  |  |
 |  |  |  |
@@ -159,12 +198,14 @@ TiDB 版本：6.3.0-DMR
 
 | 配置文件 | 配置项 | 修改类型 | 描述 |
 | -------- | -------- | -------- | -------- |
-|          |          |          |          |
+| TiKV | data-encryption-method | 修改 | 扩展可选值范围：增加：sm4-ctr，设置为 sm4-ctr 时，数据将采用国密算法SM4加密后进行存储 |
+| TiFlash | data-encryption-method | 修改 | 扩展可选值范围：增加：sm4-ctr，设置为 sm4-ctr 时，数据将采用国密算法SM4加密后进行存储 |
 |          |          |          |          |
 |          |          |          |          |
 |          |          |          |          |
 
 ### 其他
+* 提升对 MySQL 的兼容性：修复 MySQL 兼容性不支持项 “TiDB 不支持 ACCOUNT LOCK 和 ACCOUNT UNLOCK 选项”
 
 ## 废弃功能
 
@@ -173,6 +214,7 @@ TiDB 版本：6.3.0-DMR
 + TiDB
 
     - note [#issue]() @[贡献者 GitHub ID]()
+    - 支持 ACCOUNT LOCK/UNLOCK [#37051](https://github.com/pingcap/tidb/issues/37051) @[CbcWestwolf](https://github.com/CbcWestwolf)
 
 + TiKV
 
