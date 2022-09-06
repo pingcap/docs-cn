@@ -223,8 +223,8 @@ TiDB 版本：6.3.0-DMR
 | 变量名 | 修改类型（包括新增/修改/删除） | 描述 |
 | ------ | ------ | ------ |
 | default_authentication_plugin | 修改 | 扩展可选值范围：增加 tidb_sm3_password，设置为 tidb_sm3_password 时，用户密码验证的加密算法为国密算法SM3 |
-|  |  |  |
-|  |  |  |
+|  tidb_constraint_check_in_place_pessimistic | 新增 | 控制悲观事务中唯一约束检查的时间点 |
+| tidb_enable_pseudo_for_outdated_stats | 修改 | 控制优化器过期的加载策略。 默认值由 `ON` 改为 `OFF`，即使统计信息过期，优化器也仍会使用该表上的统计信息。  | 
 |  |  |  |
 
 ### 配置文件参数
