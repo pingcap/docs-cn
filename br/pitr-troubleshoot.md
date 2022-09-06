@@ -23,7 +23,7 @@ ALTER TABLE table_name SET TIFLASH REPLICA @count;
 SELECT * FROM INFORMATION_SCHEMA.tiflash_replica;
 ```
 
-需要注意，PITR 目前不支持在恢复阶段直接将数据写入 TiFlash ，因此 TiFlash 副本在 PITR 完成之后并不能马上可用，而是需要等待一定时间从 TiKV 节点同步数据。要查看同步进度，可以执行 `INFORMATION_SCHEMA.tiflash_replica` 表，查看 `progress` 信息。
+需要注意，PITR 目前不支持在恢复阶段直接将数据写入 TiFlash ，因此 TiFlash 副本在 PITR 完成之后并不能马上可用，而是需要等待一定时间从 TiKV 节点同步数据。要查看同步进度，可以查询 `INFORMATION_SCHEMA.tiflash_replica` 表，查看 `progress` 信息。
 
 ## 日志备份任务的 `status` 变为 `ERROR`，该如何处理？
 
