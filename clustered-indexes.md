@@ -67,7 +67,7 @@ For statements that do not explicitly specify the keyword `CLUSTERED`/`NONCLUSTE
 - `ON` indicates that primary keys are created as clustered indexes by default.
 - `INT_ONLY` indicates that the behavior is controlled by the configuration item `alter-primary-key`. If `alter-primary-key` is set to `true`, primary keys are created as non-clustered indexes by default. If it is set to `false`, only the primary keys which consist of an integer column are created as clustered indexes.
 
-The default value of `@@global.tidb_enable_clustered_index` is `INT_ONLY`.
+The default value of `@@global.tidb_enable_clustered_index` is `ON`.
 
 ### Add or drop clustered indexes
 
