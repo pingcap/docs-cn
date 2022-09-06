@@ -11,38 +11,46 @@ summary: 了解 TiDB 快照备份和恢复功能的架构设计
 
 ![BR snapshot backup and restore architecture](/media/br/br-snapshot-arch.png)
 
-## 备份集群快照数据
+## 备份集群快照数据流程
 
-BR 
-  1. 接收备份命令 (`br backup full`)
-      - 获得快照点（backup ts）、备份存储地址，确定备份对象
+**BR**
 
-  2. 调度备份数据
-      - **Pause GC**: 配置 TiDB 集群，防止接下来要备份的数据被 [TiDB GC 机制](/garbage-collection-overview.md)回收掉
-      - **Fetch TiKV and region info**: 访问 pd 获取所有 tikv 节点访问地址，以及数据的 region 分布的位置信息
-      - **Request TiKV to backup data**: 创建 BackupRequest 发送给相应的 tikv 节点，BackupRequest 包含 backup ts、需要备份的 kv region、备份存储地址
+1 接收备份命令 (`br backup full`)
 
-  5. 获取备份结果
-      - 局部数据因为 region split/merge/schedule 而备份失败。br 重新计算这些数据的 region 分布位置，然后发送给对应的 tikv 节点进行重新备份
-      - 任意数据被判断备份失败，则备份任务失败
-      - 全部数据备份成功后，则进入 backup finalization
+    1.1 获得快照点（backup ts）、备份存储地址，确定备份对象
 
-  6. 备份元信息
-      - **Backup schemas**：备份 table schema 并且计算 table data checksum
-      - **Upload metadata**：生成 backup metadata，并上传到备份存储。 backup metadata 包含 backup ts、表和对应的备份文件、data checksum 和 file checksum 等信息
+2 调度备份数据
 
-TiKV
-  3. 初始化 backup worker
-      - tikv 节点接收到 BackupRequest 后，启动 backup worker
-      - backup worker 计算需要备份的 kv region
+    2.1 **Pause GC**: 配置 TiDB 集群，防止接下来要备份的数据被 [TiDB GC 机制](/garbage-collection-overview.md)回收掉
+    2.2 **Fetch TiKV and region info**: 访问 pd 获取所有 tikv 节点访问地址，以及数据的 region 分布的位置信息
+    2.3 **Request TiKV to backup data**: 创建 BackupRequest 发送给相应的 tikv 节点，BackupRequest 包含 backup ts、需要备份的 kv region、备份存储地址
 
-  4. 备份数据
-      - **Scan KVs**：backup worker region (only leader) 读取 backup ts 的快照数据
-      - **Generate SST**：backup worker 将读取到的数据生成 SST 文件，保存在本地临时目录中
-      - **Upload SST**: backup worker 上传 SST 到备份存储中
-      - **Report backup result**：backup worker 返回备份结果给 br，包含备份结果、备份的文件信等信息
+5 获取备份结果
 
-## 恢复快照备份数据
+    5.1 局部数据因为 region 变动而备份失败。br 重新计算这些数据的 region 分布位置，然后发送给对应的 tikv 节点进行重新备份
+    5.2 任意数据被判断备份失败，则备份任务失败
+    5.3 全部数据备份成功后，则进入 backup finalization
+
+6 备份元信息
+
+    6.1 **Backup schemas**：备份 table schema 并且计算 table data checksum
+    6.2 **Upload metadata**：生成 backup metadata，并上传到备份存储。 backup metadata 包含 backup ts、表和对应的备份文件、data checksum 和 file checksum 等信息
+
+**TiKV**
+
+3 初始化 backup worker
+
+    3.1 tikv 节点接收到 BackupRequest 后，启动 backup worker
+    3.2 backup worker 计算需要备份的 kv region
+
+4 备份数据
+
+    4.1 **Scan KVs**：backup worker region (only leader) 读取 backup ts 的快照数据
+    4.2 **Generate SST**：backup worker 将读取到的数据生成 SST 文件，保存在本地临时目录中
+    4.3 **Upload SST**: backup worker 上传 SST 到备份存储中
+    4.4 **Report backup result**：backup worker 返回备份结果给 br，包含备份结果、备份的文件信等信息
+
+## 恢复快照备份数据流程
 
 BR 
 1. 接收恢复命令 (`br restore`)
