@@ -1495,6 +1495,27 @@ Configuration items related to Raft Engine.
 + When this configuration value is not set, 15% of the available system memory is used.
 + Default value: `Total machine memory * 15%`
 
+### `format-version` <span class="version-mark">New in v6.3.0</span>
+
+> **Warning:**
+>
+> After `format-version` is set to `2`, you **cannot** downgrade the TiKV cluster to a version earlier than v6.3.0. Otherwise, data corruption might occur.
+
++ Specifies the version of log files in Raft Engine.
++ Value Options:
+    + `1`: Default log file version for TiKV earlier than v6.3.0. Can be read by TiKV >= v6.1.0.
+    + `2`: Supports log recycling. Can be read by TiKV >= v6.3.0.
++ Default value: `2`
+
+### `enable-log-recycle` <span class="version-mark">New in v6.3.0</span>
+
+> **Note:**
+>
+> This configuration item is only available when [`format-version`](#format-version-new-in-v630) >= 2.
+
++ Determines whether to recycle stale log files in Raft Engine. When it is enabled, logically purged log files will be reserved for recycling. This reduces the long tail latency on write workloads.
++ Default value: `true`
+
 ## security
 
 Configuration items related to security.
