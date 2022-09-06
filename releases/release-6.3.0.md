@@ -115,6 +115,11 @@ TiDB 版本：6.3.0-DMR
 
     [用户文档]() [#issue]() @[贡献者 GitHub ID]()
 
+### 备份恢复
+
+* PITR 支持以 GCS/Azure Blob Storage 作为备份存储目标。部署在 GCP 或者 Azure 上的用户，升级 TiDB 集群到 v6.3.0 后，就可以使用 PITR 功能了。
+[用户文档](xxx)  @[joccau](https://github.com/joccau)
+
 ### 数据迁移
 
 * 功能标题
