@@ -5,7 +5,11 @@ summary: 了解如何使用 TiDB Lightning 的 Physical Import Mode。
 
 # 使用 Physical Import Mode
 
+<<<<<<< HEAD
 本文档介绍如何编写 Physical Import Mode 的配置文件，如何进行性能调优等内容。
+=======
+本文档介绍如何编写 [Physical Import Mode](/tidb-lightning/tidb-lightning-physical-import-mode.md) 的配置文件，如何进行性能调优、使用磁盘资源配额等内容。
+>>>>>>> 0dafd0ca5 (lightning: clarify backends and import mode (#10645))
 
 ## 配置及使用
 
