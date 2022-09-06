@@ -4,7 +4,7 @@ title: 使用 Logical Import Mode
 
 # 使用 Logical Import Mode
 
-本文档介绍如何编写 Logical Import Mode 的配置文件，如何进行性能调优等内容。
+本文档介绍如何编写 [Logical Import Mode](/tidb-lightning/tidb-lightning-logical-import-mode.md) 的配置文件，如何进行性能调优等内容。
 
 ## 配置及使用
 
