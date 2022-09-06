@@ -83,10 +83,13 @@ TiDB 支持使用大部分 MySQL 5.7 中提供的[字符串函数](https://dev.m
 
 MySQL 的实现使用的是 [ICU](https://github.com/unicode-org/icu) (International Components for Unicode) 库，TiDB 的实现使用的是 [RE2](https://github.com/google/re2) 库，两个库之间的语法差异可以查阅 [ICU 文档](https://unicode-org.github.io/icu/userguide/)和 [RE2 文档](https://github.com/google/re2/wiki/Syntax)。
 
-### Match Type 兼容性
+### 匹配模式 `match_type` 兼容性
 
-match_type 的差异：
+TiDB 与 MySQL 在 `match_type` 上的差异：
 
-- MySQL 中的 n 标记对应于 TiDB 的 s 标记
-    - 例：在 MySQL 中写为 `SELECT REGEXP_LIKE(a, b, "n") FROM t1;`，TiDB 中需要写为 `SELECT REGEXP_LIKE(a, b, "s") FROM t1;`
-- MySQL 支持 u 标记，TiDB 不支持
+- TiDB 中 `match_type` 可选值为：`"c"`、`"i"`、`"m"`、`"s"`，MySQL 中 `match_type` 可选值为：`"c"`、`"i"`、`"m"`、`"n"`、`"u"`
+- TiDB 中 `"s"` 对应 MySQL 中的 `"n"`，即 `.` 字符匹配行结束符
+
+    例如：MySQL 中 `SELECT REGEXP_LIKE(a, b, "n") FROM t1;` 在 TiDB 中需要修改为 `SELECT REGEXP_LIKE(a, b, "s") FROM t1;`
+
+- TiDB 不支持 `match_type` 为 `"u"`
