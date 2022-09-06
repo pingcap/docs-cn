@@ -41,6 +41,12 @@ ACID 是指数据库管理系统在写入或更新资料的过程中，为保证
 
 缓存表 (Cached Table) 是指 TiDB 把整张表的数据加载到服务器的内存中，直接从内存中获取表数据，避免从 TiKV 获取表数据，从而提升读性能。详情参见[缓存表](/cached-tables.md)。
 
+### Common table expression (CTE)
+
+公共表表达式 (CTE) 是一个临时的中间结果集，能够在 SQL 语句中引用多次，提高 SQL 语句的可读性与执行效率。在 TiDB 中可以通过 `WITH` 语句使用公共表表达式。公共表表达式可以分为非递归和递归两种类型。
+
+详情参见[公共表表达式 (CTE)](/develop/dev-guide-use-common-table-expression.md)。
+
 ### Cluster
 
 TiDB 数据库以及各组件的集合，部署在多节点服务器上，每个节点上运行实例，向客户端提供服务。
@@ -55,9 +61,21 @@ TiDB 数据库以及各组件的集合，部署在多节点服务器上，每个
 
 ## D
 
+### Dumpling
+
+Dumpling 是一款数据导出工具，用于将存储在 TiDB 或 MySQL 中的数据导出为 SQL 或 CSV 格式，用于逻辑全量备份。Dumpling 也支持将数据导出到 Amazon S3 中。详情参见使用 [Dumpling 导出数据](/dumpling-overview.md)。
+
 ### Dynamic Pruning
 
 动态裁剪 (Dynamic Pruning) 是 TiDB 访问分区表的两种模式之一。在动态裁剪模式下，TiDB 的每个算子都支持直接访问多个分区，省略 Union 操作，提高执行效率，还避免了 Union 并发管理的问题。
+
+## E
+
+### Expression index
+
+表达式索引 (expression index) 是一种特殊的索引，能将索引建立于表达式上。在创建了表达式索引后，基于表达式的查询便可以使用上索引，极大提升查询的性能。
+
+详情参见 [CREATE INDEX - 表达式索引](/sql-statements/sql-statement-create-index.md#表达式索引)。
 
 ## G
 
@@ -69,11 +87,18 @@ TiDB 数据库以及各组件的集合，部署在多节点服务器上，每个
 
 热点 (Hotspot) 指 TiKV 的读写负载集中于某一个或几个 Region 或节点的现象，此时可能会造成性能瓶颈，使性能无法达到最佳。要解决热点问题，可参考 [TiDB 热点问题处理](/troubleshoot-hot-spot-issues.md)。
 
+### HTAP
+
+全称为 "Hybrid Transactional and Analytical Processing"，即在线事务与在线分析处理。TiDB HTAP 可以满足企业海量数据的增长需求、降低运维的风险成本、与现有的大数据栈无缝缝合，从而实现数据资产价值的实时变现。在 TiDB 中，面向在线事务处理的行存储引擎 TiKV 与面向实时分析场景的列存储引擎 TiFlash 同时存在，自动同步，保持强一致性。
+
+详情参见 [HTAP 快速上手指南](/quick-start-with-htap.md)和 [HTAP 深入探索指南](/explore-htap.md)
+
 ## I
 
 ### Index Merge
 
 索引合并 (Index Merge) 是在 TiDB v4.0 版本中作为实验特性引入的一种查询执行方式的优化，可以大幅提高查询在扫描多列数据时条件过滤的效率。自 v5.4 版本起，Index Merge 成为正式功能，详情参见[用 EXPLAIN 查看索引合并的 SQL 执行计划](/explain-index-merge.md)。
+
 
 ### In-Memory Pessimistic Lock
 
@@ -85,7 +110,19 @@ TiDB 数据库以及各组件的集合，部署在多节点服务器上，每个
 
 它们分别对应 [Peer](#regionpeerraft-group) 的三种角色。其中 Leader 负责响应客户端的读写请求；Follower 被动地从 Leader 同步数据，当 Leader 失效时会进行选举产生新的 Leader；Learner 是一种特殊的角色，它只参与同步 raft log 而不参与投票，在目前的实现中只短暂存在于添加副本的中间步骤。
 
+### Lock View
+
+Lock View 特性用于提供关于悲观锁的锁冲突和锁等待的更多信息，方便 DBA 通过锁视图功能来观察事务加锁情况以及排查死锁问题。
+
+详情参见系统表文档 [TIDB_TRX](/information-schema/information-schema-tidb-trx.md)、[DATA_LOCK_WAITS](/information-schema/information-schema-data-lock-waits.md) 和 [DEADLOCKS](/information-schema/information-schema-deadlocks.md)。
+
 ## M
+
+### MPP
+
+TiDB 在 v5.0 版本引入的计算架构，即在计算中引入跨节点的数据交换（data shuffle 过程），使得大型表连接类查询可以由不同 TiFlash 节点分担来共同完成，从而加速计算过程，提升查询性能。
+
+详情参见[使用 MPP 模式](/tiflash/use-tiflash-mpp-mode.md)。
 
 ### Multi-version concurrency control (MVCC)
 
@@ -136,6 +173,16 @@ Operator Step 是 Operator 执行过程的一个步骤，一个 Operator 常常�
 
 Pending 和 Down 是 Peer 可能出现的两种特殊状态。其中 Pending 表示 Follower 或 Learner 的 raft log 与 Leader 有较大差距，Pending 状态的 Follower 无法被选举成 Leader。Down 是指 Leader 长时间没有收到对应 Peer 的消息，通常意味着对应节点发生了宕机或者网络隔离。
 
+### PD Control (pd-ctl)
+
+PD Control（或 pd-ctl）是 PD 的命令行工具，用于获取集群状态信息和调整集群。详情参见 [PD Control 使用说明](/pd-control.md)。
+
+### Placement Rules
+
+Placement Rules 特性用于通过 SQL 接口配置数据在 TiKV 集群中的放置位置。通过该功能，用户可以将表和分区指定部署至不同的地域、机房、机柜、主机。适用场景包括低成本优化数据高可用策略、保证本地的数据副本可用于本地 Stale Read 读取、遵守数据本地要求等。
+
+详情参见 [Placement Rules in SQL](/placement-rules-in-sql.md)。
+
 ### Predicate columns
 
 执行 SQL 语句时，优化器在大多数情况下只会用到部分列（例如， `WHERE`、`JOIN`、`ORDER BY`、`GROUP BY` 子句中出现的列）的统计信息，这些用到的列称为 `PREDICATE COLUMNS`。详情参见[收集部分列的统计信息](/statistics.md#收集部分列的统计信息)。
@@ -172,6 +219,18 @@ TiKV 集群中的 Region 不是一开始就划分好的，而是随着数据写�
 
 ## S
 
+### Stale Read
+
+Stale Read 是一种读取历史数据版本的机制，读取 TiDB 中存储的历史数据版本。通过 Stale Read 功能，你能从指定时间点或时间范围内读取对应的历史数据，从而避免数据同步带来延迟。当使用 Stale Read 时，TiDB 默认会随机选择一个副本来读取数据，因此能利用所有副本。
+
+详情参见 [Stale Read](/stale-read.md)。
+
+### Security Enhanced Mode
+
+即安全增强模式，用于对 TiDB 管理员进行更细粒度的权限划分。安全增强模式受[安全增强式 Linux](https://zh.wikipedia.org/wiki/安全增强式Linux) 等系统设计的启发，削减拥有 MySQL `SUPER` 权限的用户能力，转而使用细粒度的 `RESTRICTED` 权限作为替代。
+
+详情参见[系统变量文档 - `tidb_enable_enhanced_security`](/system-variables.md#tidb_enable_enhanced_security)。
+
 ### Scheduler
 
 Scheduler（调度器）是 PD 中生成调度的组件。PD 中每个调度器是独立运行的，分别服务于不同的调度目的。常用的调度器及其调用目标有：
@@ -186,6 +245,40 @@ Scheduler（调度器）是 PD 中生成调度的组件。PD 中每个调度器�
 PD 中的 Store 指的是集群中的存储节点，也就是 tikv-server 实例。Store 与 TiKV 实例是严格一一对应的，即使在同一主机甚至同一块磁盘部署多个 TiKV 实例，这些实例也对会对应不同的 Store。
 
 ## T
+
+### Temporary table
+
+临时表 (temporary table) 解决了业务中间计算结果的临时存储问题，让用户免于频繁地建表和删表等操作。用户可将业务上的中间计算数据存入临时表，用完数据后 TiDB 自动清理回收临时表。这避免了用户业务过于复杂，减少了表管理开销，并提升了性能。
+
+详情参见[临时表](/temporary-tables.md)。
+
+### TiDB Data Migration (DM)
+
+TiDB Data Migration (DM) 是一款便捷的数据迁移工具，支持从与 MySQL 协议兼容的数据库（MySQL、MariaDB、Aurora MySQL）到 TiDB 的全量数据迁移和增量数据同步。使用 DM 工具有利于简化数据迁移过程，降低数据迁移运维成本。
+
+更多关于 DM 的概念和术语，参见 [TiDB Data Migration 术语表](/dm/dm-glossary.md)。
+
+### TiDB Lightning
+
+TiDB Lightning 是一款数据导入工具，用于从静态文件导入 TB 级数据到 TiDB 集群，常用于 TiDB 集群的初始化数据导入。
+
+更多关于 TiDB Lightning 的概念和术语，参见 [TiDB Lightning 术语表](/tidb-lightning/tidb-lightning-glossary.md)。
+
+### TiCDC
+
+TiCDC 是一款 TiDB 增量数据同步工具，通过拉取上游 TiKV 的数据变更日志，TiCDC 可以将数据解析为有序的行级变更数据输出到下游。更多关于 TiCDC 的概念和术语，参见 [TiCDC 术语表](/ticdc/ticdc-glossary.md)。
+
+### TiFlash
+
+TiFlash 是 TiDB HTAP 形态的关键组件，它是 TiKV 的列存扩展，在提供良好隔离性的同时，也兼顾了强一致性。列存副本通过 Raft Learner 协议异步复制，但是在读取的时候通过 Raft 校对索引配合 MVCC 的方式获得 Snapshot Isolation 的一致性隔离级别。这个架构很好地解决了 HTAP 场景的隔离性以及列存同步的问题。
+
+更多详情参见 [TiFlash 简介](/tiflash/tiflash-overview.md)。
+
+### TiUP
+
+TiDB 于 v4.0 版本引入的包管理工具，用于 TiDB 集群的部署、升级、管理，管理着 TiDB 生态下众多的组件，如 TiDB、PD、TiKV 等。用户想要运行 TiDB 生态中任何组件时，只需要执行 TiUP 一行命令即可，相比以前，大大降低了管理难度。
+
+详情参见 [TiUP 简介](/tiup/tiup-overview.md)。
 
 ### Top SQL
 
