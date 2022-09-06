@@ -158,6 +158,13 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：true
 + 当该配置项值为 `true` 时，`KILL` 语句和 `KILL TIDB` 语句均能跨节点终止查询或连接，无需担心错误地终止其他查询或连接。当你使用客户端连接到任何一个 TiDB 节点执行 `KILL` 语句或 `KILL TIDB` 语句时，该语句会被转发给对应的 TiDB 节点。当客户端和 TiDB 中间有代理时，`KILL` 语句或 `KILL TIDB` 语句也会被转发给对应的 TiDB 节点执行。目前暂时不支持在 `enable-global-kill` 为 `true` 时用 MySQL 命令行 <kbd>ctrl</kbd>+<kbd>c</kbd> 终止查询或连接。关于 `KILL` 语句的更多信息，请参考 [KILL [TIDB]](/sql-statements/sql-statement-kill.md)。
 
+### `enable-forwarding` <span class="version-mark">从 v5.0.0 版本开始引入</span>
+
++ 控制 TiDB 中的 PD client 以及 TiKV client 在疑似网络隔离的情况下是否通过 follower 将请求转发给 leader。
++ 默认值：false
++ 如果确认环境存在网络隔离的可能，开启这个参数可以减少服务不可用的窗口期。
++ 如果无法准确判断隔离、网络中断、宕机等情况，这个机制存在误判情况从而导致可用性、性能降低。如果网络中从未发生过网络故障，不推荐开启此选项。
+
 ## log
 
 日志相关的配置项。
@@ -391,17 +398,6 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
     - `mysql.stats_histograms`/`mysql.stats_buckets` 和 `mysql.stats_top_n`：TiDB 不再自动 analyze 和主动更新统计信息
     - `mysql.stats_feedback`：TiDB 不再根据被查询的数据反馈的部分统计信息更新表和索引的统计信息
 
-### `feedback-probability`
-
-+ TiDB 对查询收集统计信息反馈的概率。
-+ 默认值：0
-+ 此功能默认关闭，暂不建议开启。如果开启此功能，对于每一个查询，TiDB 会以 `feedback-probability` 的概率收集查询的反馈，用于更新统计信息。
-
-### `query-feedback-limit`
-
-+ 在内存中缓存的最大 Query Feedback 数量，超过这个数量的 Feedback 会被丢弃。
-+ 默认值：512
-
 ### `pseudo-estimate-ratio`
 
 + 修改过的行数/表的总行数的比值，超过该值时系统会认为统计信息已经过期，会采用 pseudo 的统计信息。
@@ -413,7 +409,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 + 把所有的语句优先级设置为 force-priority 的值。
 + 默认值：NO_PRIORITY
-+ 可选值：NO_PRIORITY, LOW_PRIORITY, HIGH_PRIORITY, DELAYED。
++ 可选值：默认值 NO_PRIORITY 表示不强制改变执行语句的优先级，其它优先级从低到高可设置为 LOW_PRIORITY、DELAYED 或 HIGH_PRIORITY。
 
 ### `distinct-agg-push-down`
 
@@ -476,16 +472,16 @@ opentracing.sampler 相关的设置。
 
 ### `type`
 
-+ opentracing 采样器的类型。
++ opentracing 采样器的类型。字符串取值大小写不敏感。
 + 默认值："const"
-+ 可选值："const"，"probabilistic"，"rateLimiting"，remote"
++ 可选值："const"，"probabilistic"，"ratelimiting"，remote"
 
 ### `param`
 
 + 采样器参数。
     - 对于 const 类型，可选值为 0 或 1，表示是否开启。
     - 对于 probabilistic 类型，参数为采样概率，可选值为 0 到 1 之间的浮点数。
-    - 对于 rateLimiting 类型，参数为每秒采样 span 的个数。
+    - 对于 ratelimiting 类型，参数为每秒采样 span 的个数。
     - 对于 remote 类型，参数为采样概率，可选值为 0 到 1 之间的浮点数。
 + 默认值：1.0
 

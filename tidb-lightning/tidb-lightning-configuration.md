@@ -136,6 +136,8 @@ addr = "172.16.31.10:8287"
 # sorted-kv-dir = ""
 # Physical Import Mode TiKV 写入 KV 数据的并发度。当 TiDB Lightning 和 TiKV 直接网络传输速度超过万兆的时候，可以适当增加这个值。
 # range-concurrency = 16
+# Physical Import Mode 限制 TiDB Lightning 向每个 TiKV 节点写入的带宽大小，默认为 0，表示不限制。
+# store-write-bwlimit = "128MiB"
 
 [mydumper]
 # 设置文件读取的区块大小，确保该值比数据源的最长字符串长。

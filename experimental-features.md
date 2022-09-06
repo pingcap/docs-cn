@@ -13,18 +13,21 @@ aliases: ['/docs-cn/dev/experimental-features-4.0/','/zh/tidb/dev/experimental-f
 + [支持收集部分列的统计信息](/statistics.md#收集部分列的统计信息)（v5.4 实验特性）
 + [支持统计信息的同步加载](/statistics.md#统计信息的加载)（v5.4 实验特性）
 + [限制 ANALYZE 的内存使用量](/statistics.md#统计信息收集的内存限制) (v6.1.0 实验特性)
++ [使用线程池处理存储引擎的读请求](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml)（v6.2.0 实验特性）
++ [Cost Model Version 2](/cost-model.md#cost-model-version-2)（v6.2.0 实验特性）
++ [FastScan](/develop/dev-guide-use-fastscan.md)（v6.2.0 实验特性）
++ [随机采样约 10000 行数据来快速构建统计信息](/system-variables.md#tidb_enable_fast_analyze)（v3.0 实验特性）
 
 ## 稳定性
 
-+ 提升优化器选择索引的稳定性（v5.0 实验特性）
-    + 扩展统计信息功能，收集多列顺序依赖性信息，帮助优化器选择相对较优的索引。
-    + 重构统计信息模块，帮助优化器选择相对较优的索引，包括从 `CMSKetch` 和直方图中删除 `TopN` 值，为索引的直方图维护 Bucket NDV。详情参阅[统计信息简介 - `tidb_analyze_version = 2` 的介绍](/statistics.md)。
-+ 当 TiKV 部署的机型资源有限时，如果 TiKV 前台处理的读写请求量过大，会占用 TiKV 后台处理请求所需的 CPU 资源，最终影响 TiKV 性能的稳定性。此时，你可以使用[前台限流](/tikv-configuration-file.md#quota)以限制前台各类请求占用的 CPU 资源。（v6.0 实验特性）
++ 提升优化器选择索引的稳定性：扩展统计信息功能，收集多列顺序依赖性信息，帮助优化器选择相对较优的索引（v5.0 实验特性）
++ [后台限流](/tikv-configuration-file.md#后台限流)（v6.2.0 实验特性）
+
+    你可以使用后台限流相关的 quota 配置项以限制后台各类请求占用的 CPU 资源。触发该限制的请求会被强制等待一段时间以让出 CPU 资源。
 
 ## 调度功能
 
-+ Cascading Placement Rules 是一套副本规则系统，用于指导 PD 针对不同类型的数据生成对应的调度。通过组合不同的调度规则，用户可以精细地控制任何一段连续数据的副本数量、存放位置、主机类型、是否参与 Raft 投票、是否可以担任 Raft leader 等属性。详情参阅：[Cascading Placement Rules](/configure-placement-rules.md)。（v4.0 实验特性）
-+ 弹性调度功能。结合 Kubernetes，可根据实时负载状态，动态扩缩节点，能够有效地缓解业务高峰的压力并且节约不必要的成本开销。详情参阅：[启用 TidbCluster 弹性伸缩](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/enable-tidb-cluster-auto-scaling)。（v4.0 实验特性）
+弹性调度功能。结合 Kubernetes，可根据实时负载状态，动态扩缩节点，能够有效地缓解业务高峰的压力并且节约不必要的成本开销。详情参阅：[启用 TidbCluster 弹性伸缩](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/enable-tidb-cluster-auto-scaling)。（v4.0 实验特性）
 
 ## SQL 功能
 
@@ -32,16 +35,8 @@ aliases: ['/docs-cn/dev/experimental-features-4.0/','/zh/tidb/dev/experimental-f
 + [生成列](/generated-columns.md#生成列)。（v2.1 实验特性）
 + [自定义变量](/user-defined-variables.md#用户自定义变量)。（v2.1 实验特性）
 + [JSON 数据类型](/data-type-json.md)及 [JSON 函数](/functions-and-operators/json-functions.md)。（v2.1 实验特性）
-+ [View](/information-schema/information-schema-views.md)。（v2.1 实验特性）
++ [Cascades Planner](/system-variables.md#tidb_enable_cascades_planner)：基于 Cascades 框架的自顶向下查询优化器。（v3.0 实验特性）
 + [`ALTER TABLE ... COMPACT`](/sql-statements/sql-statement-alter-table-compact.md)。（v6.1.0 实验特性）
-
-## 配置管理
-
-+ [SHOW CONFIG](/sql-statements/sql-statement-show-config.md)。（v4.0 实验特性）
-
-## TiDB 数据共享订阅
-
-+ TiCDC 集成第三方生态 [Kafka Connect (Confluent Platform)](/ticdc/integrate-confluent-using-ticdc.md)（v5.0 实验特性）
 
 ## 存储
 
@@ -50,13 +45,15 @@ aliases: ['/docs-cn/dev/experimental-features-4.0/','/zh/tidb/dev/experimental-f
 + 将 Region 划分为更小的区间 bucket，并且[以 bucket 作为并发查询单位](/tune-region-performance.md#使用-bucket-增加并发)，以提高扫描数据的并发度。（v6.1.0 实验特性）
 + TiKV 引入 [API v2](/tikv-configuration-file.md#api-version-从-v610-版本开始引入)。（v6.1.0 实验特性）
 
-## 备份与恢复
-
-+ [RawKV 备份和恢复](/br/rawkv-backup-and-restore.md)。（v3.1 实验特性）
-
 ## 数据迁移
 
 + [使用 WebUI](/dm/dm-webui-guide.md) 管理 DM 迁移任务。（v6.0 实验特性）
++ 为 TiDB Lightning 设置[磁盘资源配额](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#磁盘资源配额-从-v620-版本开始引入)（v6.2.0 实验特性）
++ [DM 增量数据校验](/dm/dm-continuous-data-validation.md)（v6.2.0 实验特性）
+
+## 数据共享订阅
+
++ [RawKV 跨集群复制](/tikv-configuration-file.md#api-version-从-v610-版本开始引入)（v6.2.0 实验特性）
 
 ## 垃圾回收
 

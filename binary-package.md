@@ -64,6 +64,12 @@ TiDB 提供两个二进制离线包：`TiDB-community-server` 软件包和 `TiDB
 | reparo |  |
 | arbiter |  |
 | mydumper | 从 v6.0.0 起新增 |
+| server-{version}-linux-amd64.tar.gz | 从 v6.2.0 起新增 |
+| grafana-{version}-linux-amd64.tar.gz | 从 v6.2.0 起新增 |
+| alertmanager-{version}-linux-amd64.tar.gz | 从 v6.2.0 起新增 |
+| prometheus-{version}-linux-amd64.tar.gz | 从 v6.2.0 起新增 |
+| blackbox_exporter-{version}-linux-amd64.tar.gz | 从 v6.2.0 起新增 |
+| node_exporter-{version}-linux-amd64.tar.gz | 从 v6.2.0 起新增 |
 
 ## 延伸阅读
 
