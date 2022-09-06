@@ -777,7 +777,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 默认值：`INT_ONLY`
+- 默认值：`ON`
 - 可选值：`OFF`，`ON`，`INT_ONLY`
 - 这个变量用于控制默认情况下表的主键是否使用[聚簇索引](/clustered-indexes.md)。“默认情况”即不显式指定 `CLUSTERED`/`NONCLUSTERED` 关键字的情况。可设置为 `OFF`/`ON`/`INT_ONLY`。
     - `OFF` 表示所有主键默认使用非聚簇索引。
@@ -1367,6 +1367,16 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 作用域：SESSION
 - 默认值：`tikv,tiflash,tidb`
 - 这个变量用于设置 TiDB 在读取数据时可以使用的存储引擎列表。
+
+### `tidb_last_ddl_info` <span class="version-mark">从 v6.0.0 版本开始引入</span>
+
+- 作用域：SESSION
+- 是否持久化到集群：否
+- 默认值：""
+- 类型：字符串
+- 该变量为只读变量，TiDB 内部使用该变量获取当前会话中上一个 DDL 操作的信息。
+    - "query"：上一个 DDL 查询字符串。
+    - "seq_num"：每个 DDL 操作的序列号，用于标识 DDL 操作的顺序。
 
 ### `tidb_last_query_info` <span class="version-mark">从 v4.0.14 版本开始引入</span>
 
