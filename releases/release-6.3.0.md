@@ -38,6 +38,12 @@ TiDB 版本：6.3.0-DMR
 
   [用户文档](/tiflash/tiflash-supported-pushdown-calculations.md)，[#5579](https://github.com/pingcap/tiflash/issues/5579) @[SeaRise](https://github.com/SeaRise)
 
+* 优化 TiFlash 数据同步进度的准确性
+
+    TiDB 的 information_schema.tiflash_replica 表中的 PROGRESS 字段表示对应表 TiFlash 副本与 TiKV 数据的同步进度。在之前的版本中，PROCESS 字段只显示创建 TiFlash 副本过程中的数据同步进度。当 TiFlash 副本创建完毕，进行数据导入后，该值不会更新数据同步进度。v6.3.0 版本改进了 TiFlash 副本数据同步进度更新机制，在创建 TiFlash 副本后，进行数据导入等操作，TiFlash 副本需要和 TiKV 数据进行同步时，information_schema.tiflash_replica 表中的 PROGRESS 值将会更新，显示实际的数据同步进度。通过 TiFlash 数据同步进度的准确性优化，用户可以了解数据同步的实际进度，具有更好的使用体验。
+
+    [用户文档](/information-schema/information-schema-tiflash-replica.md) [#4902](https://github.com/pingcap/tiflash/issues/4902) @[hehechen](https://github.com/hehechen)
+
 ### 安全
 
 * 功能标题
