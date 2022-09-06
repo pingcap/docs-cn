@@ -105,7 +105,7 @@ loaders:                             # load 处理单元的运行配置参数
     pool-size: 16                    # load 处理单元并发执行 dump 处理单元的 SQL 文件的线程数量，默认值为 16，当有多个实例同时向 TiDB 迁移数据时可根据负载情况适当调小该值
 
     # 保存上游全量导出数据的目录。该配置项的默认值为 "./dumped_data"。
-    # 支持配置为本地文件系统路径，也支持配置为 Amazon S3 路径，如: s3://dm_bucket/dumped_data?region=us-west-2&endpoint=s3-website.us-east-2.amazonaws.com&access_key=s3accesskey&secret_access_key=s3secretkey&force_path_style=true
+    # 支持配置为本地文件系统路径，也支持配置为 Amazon S3 路径，如: s3://dm_bucket/dumped_data?endpoint=s3-website.us-east-2.amazonaws.com&access_key=s3accesskey&secret_access_key=s3secretkey&force_path_style=true
     dir: "./dumped_data"
 
     # 全量阶段数据导入的模式。可以设置为如下几种模式：
@@ -137,6 +137,15 @@ syncers:                             # sync 处理单元的运行配置参数
     # 如 DELETE FROM tb WHERE a=1; DELETE FROM tb WHERE a=2 会变成 DELETE FROM tb WHERE (a) IN (1),(2)；其中 a 为主键
     multiple-rows: false
 
+validators:              # 增量数据校验的运行配置参数
+  global:                # 配置名称
+    # full：校验每一行中每一列数据是否正确
+    # fast：仅校验这一行是否有成功迁移到下游
+    # none：不校验
+    mode: full           # 可选填 full，fast 和 none，默认是 none，即不开启校验。
+    worker-count: 4      # 后台校验的 validation worker 数量，默认是 4 个
+    row-error-delay: 30m # 某一行多久没有校验通过会被标记为 error row，默认是 30 分钟
+
 # ----------- 实例配置 -----------
 mysql-instances:
   -
@@ -154,7 +163,7 @@ mysql-instances:
     mydumper-config-name: "global"          # mydumpers 配置的名称
     loader-config-name: "global"            # loaders 配置的名称
     syncer-config-name: "global"            # syncers 配置的名称
-
+    validator-config-name: "global"         # validators 配置的名称
   -
     source-id: "mysql-replica-02"  # 对应 source.toml 中的 `source-id`
     mydumper-thread: 4             # dump 处理单元用于导出数据的线程数量，等同于 mydumpers 配置中的 `threads`，当同时指定它们时 `mydumper-thread` 优先级更高

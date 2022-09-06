@@ -81,16 +81,16 @@ BR 和 TiDB 集群的兼容性问题分为两方面：
 
 #### 版本兼容检查
 
-BR 内置版本会在执行备份和恢复操作前，对 TiDB 集群版本和自身版本进行对比检查。如果大版本不匹配（比如 BR v4.x 和 TiDB v5.x 上），BR 会提示退出。如要跳过版本检查，可以通过设置 `--check-requirements=false` 强行跳过版本检查。
+BR 内置版本会在执行备份和恢复操作前，对 TiDB 集群版本和自身版本进行对比检查。如果大版本不匹配（比如 BR v4.x 和 TiDB v5.x 上），BR 会提示退出。如要跳过版本检查，可以通过设置 `--check-requirements=false` 强行跳过版本检查。需要注意的是，跳过检查可能会遇到版本不兼容的问题。
 
-需要注意的是，跳过检查可能会遇到版本不兼容的问题。BR 和 TiDB 各版本兼容情况如下表所示：
+BR 和 TiDB 各版本兼容情况如下表所示：
 
-| 恢复版本（横向）\ 备份版本（纵向）   | 用 BR nightly 恢复 TiDB nightly | 用 BR v5.0 恢复 TiDB v5.0| 用 BR v4.0 恢复 TiDB v4.0 |
-|  ----  |  ----  | ---- | ---- |
-| 用 BR nightly 备份 TiDB nightly | ✅ | ✅ | ❌（如果恢复了使用非整数类型聚簇主键的表到 v4.0 的 TiDB 集群，BR 会无任何警告地导致数据错误） |
-| 用 BR v5.0 备份 TiDB v5.0 | ✅ | ✅ | ❌（如果恢复了使用非整数类型聚簇主键的表到 v4.0 的 TiDB 集群，BR 会无任何警告地导致数据错误）
-| 用 BR v4.0 备份 TiDB v4.0 | ✅ | ✅  | ✅（如果 TiKV >= v4.0.0-rc.1，BR 包含 [#233](https://github.com/pingcap/br/pull/233) Bug 修复，且 TiKV 不包含 [#7241](https://github.com/tikv/tikv/pull/7241) Bug 修复，那么 BR 会导致 TiKV 节点重启) |
-| 用 BR nightly 或 v5.0 备份 TiDB v4.0 | ❌（当 TiDB 版本小于 v4.0.9 时会出现 [#609](https://github.com/pingcap/br/issues/609) 问题) | ❌（当 TiDB 版本小于 v4.0.9 会出现 [#609](https://github.com/pingcap/br/issues/609) 问题) | ❌（当 TiDB 版本小于 v4.0.9 会出现 [#609](https://github.com/pingcap/br/issues/609) 问题) |
+| 恢复版本（横向）\ 备份版本（纵向）   | 用 BR v5.4 恢复 TiDB v5.4 | 用 BR v6.0 恢复 TiDB v6.0 | 用 BR v6.1 恢复 TiDB v6.1| 用 BR v6.2 恢复 TiDB v6.2 |
+|  ----  |  ----  | ---- | ---- | ---- |
+|用 BR v5.4 备份 TiDB v5.4| 兼容 | 不兼容（调整恢复集群的 [新 collation](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap) 配置跟备份集群相同后，可以恢复）| 不兼容（调整恢复集群的 [新 collation](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap) 配置跟备份集群相同后，可以恢复） | 不兼容（调整恢复集群的 [新 collation](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap) 配置跟备份集群相同后，可以恢复）|
+|用 BR v6.0 备份 TiDB v6.0| 不兼容 |兼容 | 兼容 | 兼容 |
+|用 BR v6.1 备份 TiDB v6.1| 不兼容 | 兼容（已知问题，如果备份数据中包含空库可能导致报错，参考 [#36379](https://github.com/pingcap/tidb/issues/36379)） | 兼容 | 兼容 |
+|用 BR v6.2 备份 TiDB v6.2| 不兼容 | 兼容（已知问题，如果备份数据中包含空库可能导致报错，参考 [#36379](https://github.com/pingcap/tidb/issues/36379)） | 兼容 | 兼容 |
 
 ### 使用建议
 

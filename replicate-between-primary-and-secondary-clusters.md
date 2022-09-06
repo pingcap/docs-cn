@@ -41,8 +41,6 @@ summary: 了解如何配置一个 TiDB 集群以及该集群的 TiDB 或 MySQL �
 
     测试集群中默认创建了 test 数据库，因此可以使用 [sysbench](https://github.com/akopytov/sysbench#linux) 工具生成测试数据，用以模拟真实集群中的历史数据。
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     sysbench oltp_write_only --config-file=./tidb-config --tables=10 --table-size=10000 prepare
     ```
@@ -66,8 +64,6 @@ summary: 了解如何配置一个 TiDB 集群以及该集群的 TiDB 或 MySQL �
 
     实际生产集群的数据迁移过程中，通常原集群还会写入新的业务数据，本文中可以通过 sysbench 工具模拟持续的写入负载，下面的命令会使用 10 个 worker 在数据库中的 sbtest1、sbtest2 和 sbtest3 三张表中持续写入数据，其总 tps 限制为 100。
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     sysbench oltp_write_only --config-file=./tidb-config --tables=3 run
     ```
@@ -75,8 +71,6 @@ summary: 了解如何配置一个 TiDB 集群以及该集群的 TiDB 或 MySQL �
 4. 准备外部存储。
 
     在全量数据备份中，上下游集群均需访问备份文件，因此推荐使用[外部存储](/br/backup-and-restore-storages.md)存储备份文件，本文中通过 Minio 模拟兼容 S3 的存储服务：
-
-    {{< copyable "shell-regular" >}}
 
     ```shell
     wget https://dl.min.io/server/minio/release/linux-amd64/minio
@@ -101,8 +95,6 @@ summary: 了解如何配置一个 TiDB 集群以及该集群的 TiDB 或 MySQL �
 
     其访问链接为如下:
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     s3://backup?access-key=minio&secret-access-key=miniostorage&endpoint=http://${HOST_IP}:6060&force-path-style=true
     ```
@@ -113,18 +105,31 @@ summary: 了解如何配置一个 TiDB 集群以及该集群的 TiDB 或 MySQL �
 
 > **注意：**
 >
-> 上下游集群版本不一致时，应检查 BR 工具的[兼容性](/br/backup-and-restore-overview.md#使用前须知)。本文假设上下游集群版本相同。
+> - 在生产集群中，关闭 GC 机制和备份操作会一定程度上降低集群的读性能，建议在业务低峰期进行备份，并设置合适的 `RATE_LIMIT` 限制备份操作对线上业务的影响。
+>
+> - 上下游集群版本不一致时，应检查 BR 工具的[兼容性](/br/backup-and-restore-overview.md#使用前须知)。本文假设上下游集群版本相同。
 
 1. 关闭 GC。
 
     为了保证增量迁移过程中新写入的数据不丢失，在开始备份之前，需要关闭上游集群的垃圾回收 (GC) 机制，以确保系统不再清理历史数据。
 
-    {{< copyable "sql" >}}
+    执行如下命令关闭 GC：
 
     ```sql
     MySQL [test]> SET GLOBAL tidb_gc_enable=FALSE;
+    ```
+
+    ```
     Query OK, 0 rows affected (0.01 sec)
+    ```
+
+    查询 `tidb_gc_enable` 的取值，判断 GC 是否已关闭：
+
+    ```sql
     MySQL [test]> SELECT @@global.tidb_gc_enable;
+    ```
+
+    ```
     +-------------------------+
     | @@global.tidb_gc_enable |
     +-------------------------+
@@ -133,18 +138,15 @@ summary: 了解如何配置一个 TiDB 集群以及该集群的 TiDB 或 MySQL �
     1 row in set (0.00 sec)
     ```
 
-    > **注意：**
-    >
-    > 在生产集群中，关闭 GC 机制和备份操作会一定程度上降低集群的读性能，建议在业务低峰期进行备份，并设置合适的 RATE_LIMIT 限制备份操作对线上业务的影响。
-
 2. 备份数据。
 
     在上游集群中执行 BACKUP 语句备份数据：
 
-    {{< copyable "sql" >}}
-
     ```sql
     MySQL [(none)]> BACKUP DATABASE * TO '`s3://backup?access-key=minio&secret-access-key=miniostorage&endpoint=http://${HOST_IP}:6060&force-path-style=true`' RATE_LIMIT = 120 MB/SECOND;
+    ```
+
+    ```
     +----------------------+----------+--------------------+---------------------+---------------------+
     | Destination          | Size     | BackupTS           | Queue Time          | Execution Time      |
     +----------------------+----------+--------------------+---------------------+---------------------+
@@ -159,10 +161,11 @@ summary: 了解如何配置一个 TiDB 集群以及该集群的 TiDB 或 MySQL �
 
     在下游集群中执行 RESTORE 语句恢复数据：
 
-    {{< copyable "sql" >}}
-
     ```sql
     mysql> RESTORE DATABASE * FROM '`s3://backup?access-key=minio&secret-access-key=miniostorage&endpoint=http://${HOST_IP}:6060&force-path-style=true`';
+    ```
+
+    ```
     +----------------------+----------+--------------------+---------------------+---------------------+
     | Destination          | Size     | BackupTS           | Queue Time          | Execution Time      |
     +----------------------+----------+--------------------+---------------------+---------------------+
@@ -174,8 +177,6 @@ summary: 了解如何配置一个 TiDB 集群以及该集群的 TiDB 或 MySQL �
 4. （可选）校验数据。
 
     通过 [sync-diff-inspector](/sync-diff-inspector/sync-diff-inspector-overview.md) 工具，可以验证上下游数据在某个时间点的一致性。从上述备份和恢复命令的输出可以看到，上游集群备份的时间点为 431434047157698561，下游集群完成数据恢复的时间点为 431434141450371074。
-
-    {{< copyable "shell-regular" >}}
 
     ```shell
     sync_diff_inspector -C ./config.yaml
@@ -223,8 +224,6 @@ summary: 了解如何配置一个 TiDB 集群以及该集群的 TiDB 或 MySQL �
 
     创建 changefeed 配置文件并保存为 `changefeed.toml`。
 
-    {{< copyable "toml" >}}
-
     ```toml
     [consistent]
     # 一致性级别，配置成 eventual 表示开启一致性复制
@@ -234,8 +233,6 @@ summary: 了解如何配置一个 TiDB 集群以及该集群的 TiDB 或 MySQL �
     ```
 
     在上游集群中，执行以下命令创建从上游到下游集群的同步链路：
-
-    {{< copyable "shell-regular" >}}
 
     ```shell
     tiup cdc cli changefeed create --pd=http://172.16.6.122:2379 --sink-uri="mysql://root:@172.16.6.125:4000" --changefeed-id="primary-to-secondary" --start-ts="431434047157698561"
@@ -253,12 +250,23 @@ summary: 了解如何配置一个 TiDB 集群以及该集群的 TiDB 或 MySQL �
 
     TiCDC 可以保证未同步的历史数据不会被回收。因此，创建完从上游到下游集群的 changefeed 之后，就可以执行如下命令恢复集群的垃圾回收功能。详情请参考 [TiCDC GC safepoint 的完整行为](/ticdc/ticdc-faq.md#ticdc-gc-safepoint-的完整行为是什么)。
 
-    {{< copyable "sql" >}}
+   执行如下命令打开 GC：
 
     ```sql
     MySQL [test]> SET GLOBAL tidb_gc_enable=TRUE;
+    ```
+
+    ```
     Query OK, 0 rows affected (0.01 sec)
+    ```
+
+    查询 `tidb_gc_enable` 的取值，判断 GC 是否已开启：
+
+    ```sql
     MySQL [test]> SELECT @@global.tidb_gc_enable;
+    ```
+
+    ```
     +-------------------------+
     | @@global.tidb_gc_enable |
     +-------------------------+
@@ -275,8 +283,6 @@ summary: 了解如何配置一个 TiDB 集群以及该集群的 TiDB 或 MySQL �
 
 在正常同步过程中，为了提高 TiCDC 的吞吐能力，TiCDC 会将事务并行写入下游。因此，当 TiCDC 同步链路意外中断时，下游可能不会恰好停在与上游一致的状态。我们这里需要使用 TiCDC 的命令行工具来向下游重放 redo log，使下游达到最终一致性状态。
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 tiup cdc redo apply --storage "s3://redo?access-key=minio&secret-access-key=miniostorage&endpoint=http://172.16.6.123:6060&force-path-style=true" --tmp-dir /tmp/redo --sink-uri "mysql://root:@172.16.6.124:4000"
 ```
@@ -291,15 +297,11 @@ tiup cdc redo apply --storage "s3://redo?access-key=minio&secret-access-key=mini
 
 1. 在 NodeA 重新搭建一个新的 TiDB 集群作为新的主集群。
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     tiup --tag upstream playground v5.4.0 --host 0.0.0.0 --db 1 --pd 1 --kv 1 --tiflash 0 --ticdc 1
     ```
 
 2. 使用 BR 将从集群数据全量备份恢复到主集群。
-
-    {{< copyable "shell-regular" >}}
 
     ```shell
     # 全量备份从集群的数据
@@ -309,8 +311,6 @@ tiup cdc redo apply --storage "s3://redo?access-key=minio&secret-access-key=mini
     ```
 
 3. 创建一个 TiCDC 同步任务，备份主集群数据到从集群。
-
-    {{< copyable "shell-regular" >}}
 
     ```shell
     # 创建 changefeed

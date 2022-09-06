@@ -9,14 +9,14 @@ aliases: ['/docs-cn/dev/ticdc/manage-ticdc/','/docs-cn/dev/reference/tools/ticdc
 
 ## 使用 TiUP 升级 TiCDC
 
-本部分介绍如何使用 TiUP 来升级 TiCDC 集群。在以下例子中，假设需要将 TiCDC 组件和整个 TiDB 集群升级到 v6.1.0。
+本部分介绍如何使用 TiUP 来升级 TiCDC 集群。在以下例子中，假设需要将 TiCDC 组件和整个 TiDB 集群升级到 v6.2.0。
 
 {{< copyable "shell-regular" >}}
 
 ```shell
 tiup update --self && \
 tiup update --all && \
-tiup cluster upgrade <cluster-name> v6.1.0
+tiup cluster upgrade <cluster-name> v6.2.0
 ```
 
 ### 升级的注意事项
@@ -148,14 +148,14 @@ Info: {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":
     [scheme]://[userinfo@][host]:[port][/path]?[query_parameters]
     ```
 
-    URI 中包含特殊字符时，需要以 URL 编码对特殊字符进行处理。
+    URI 中包含特殊字符时，如 `! * ' ( ) ; : @ & = + $ , / ? % # [ ]`，需要对 URI 特殊字符进行转义处理。你可以在 [URI Encoder](https://meyerweb.com/eric/tools/dencoder/) 中对 URI 进行转义。
 
 - `--start-ts`：指定 changefeed 的开始 TSO。TiCDC 集群将从这个 TSO 开始拉取数据。默认为当前时间。
 - `--target-ts`：指定 changefeed 的目标 TSO。TiCDC 集群拉取数据直到这个 TSO 停止。默认为空，即 TiCDC 不会自动停止。
 - `--sort-engine`：指定 changefeed 使用的排序引擎。因 TiDB 和 TiKV 使用分布式架构，TiCDC 需要对数据变更记录进行排序后才能输出。该项支持 `unified`（默认）/`memory`/`file`：
 
     - `unified`：优先使用内存排序，内存不足时则自动使用硬盘暂存数据。该选项默认开启。
-    - `memory`：在内存中进行排序。 **不建议使用，同步大量数据时易引发 OOM。**
+    - `memory`：在内存中进行排序。 **已经弃用，不建议在任何情况使用。**
     - `file`：完全使用磁盘暂存数据。**已经弃用，不建议在任何情况使用。**
 
 - `--config`：指定 changefeed 配置文件。
@@ -168,7 +168,7 @@ Info: {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":
 {{< copyable "shell-regular" >}}
 
 ```shell
---sink-uri="mysql://root:123456@127.0.0.1:3306/?worker-count=16&max-txn-row=5000"
+--sink-uri="mysql://root:123456@127.0.0.1:3306/?worker-count=16&max-txn-row=5000&transaction-atomicity=table"
 ```
 
 URI 中可配置的参数如下：
@@ -185,6 +185,7 @@ URI 中可配置的参数如下：
 | `ssl-cert`     | 连接下游 MySQL 实例所需的证书文件路径（可选） |
 | `ssl-key`      | 连接下游 MySQL 实例所需的证书密钥文件路径（可选） |
 | `time-zone`    | 连接下游 MySQL 实例时使用的时区名称，从 v4.0.8 开始生效。（可选。如果不指定该参数，使用 TiCDC 服务进程的时区；如果指定该参数但使用空值，则表示连接 MySQL 时不指定时区，使用下游默认时区） |
+| `transaction-atomicity`      | 指定事务的原子性级别（可选，默认值为 `table`）。当该值为 `table` 时 TiCDC 保证单表事务的原子性，当该值为 `none` 时 TiCDC 会拆分单表事务 |
 
 #### Sink URI 配置 `kafka`
 
@@ -522,9 +523,14 @@ cdc cli changefeed pause --pd=http://10.0.10.25:2379 --changefeed-id simple-repl
 cdc cli changefeed resume --pd=http://10.0.10.25:2379 --changefeed-id simple-replication-task
 ```
 
-以上命令中：
-
 - `--changefeed-id=uuid` 为需要操作的 `changefeed` ID。
+- `--overwrite-checkpoint-ts`：从 v6.2 开始支持指定 changefeed 恢复的起始 TSO。TiCDC 集群将从这个 TSO 开始拉取数据。该项支持 `now` 或一个具体的 TSO（如 434873584621453313），指定的 TSO 应在 (GC safe point, CurrentTSO] 范围内。如未指定该参数，默认从当前的 `checkpoint-ts` 同步数据。
+- `--no-confirm`：恢复同步任务时无需用户确认相关信息。默认为 false。
+
+> **注意：**
+>
+> - 若 `--overwrite-checkpoint-ts` 指定的 TSO `t2` 大于 changefeed 的当前 checkpoint TSO `t1`（可通过 `cdc cli changefeed query` 命令获取），则会导致 `t1` 与 `t2` 之间的数据不会同步到下游，造成数据丢失。
+> - 若 `--overwrite-checkpoint-ts` 指定的 TSO `t2` 小于 changefeed 的当前 checkpoint TSO `t1`，则会导致 TiCDC 集群从一个旧的时间点 `t2` 重新拉取数据，可能会造成数据重复（例如 TiCDC 下游为 MQ sink）。
 
 ### 删除同步任务
 
@@ -630,9 +636,24 @@ ignore-txn-start-ts = [1, 2]
 # 过滤规则语法：https://docs.pingcap.com/zh/tidb/stable/table-filter#表库过滤语法
 rules = ['*.*', '!test.*']
 
-[mounter]
-# mounter 线程数，用于解码 TiKV 输出的数据
-worker-num = 16
+# 事件过滤器规则
+# 事件过滤器的详细配置规则在下方的 Event Filter 配置规则中描述
+# 第一个事件过滤器规则
+[[filter.event-filters]]
+matcher = ["test.worker"] # matcher 是一个白名单，表示该过滤规则只应用于 test 库中的 worker 表
+ignore-event = ["insert"] # 过滤掉 insert 事件
+ignore-sql = ["^drop", "add column"] # 过滤掉以 "drop" 开头或者包含 "add column" 的 DDL
+ignore-delete-value-expr = "name = 'john'" # 过滤掉包含 name = 'john' 条件的 delete DML
+ignore-insert-value-expr = "id >= 100" # 过滤掉包含 id >= 100 条件的 insert DML 
+ignore-update-old-value-expr = "age < 18" # 过滤掉旧值 age < 18 的 update DML
+ignore-update-new-value-expr = "gender = 'male'" # 过滤掉新值 gender = 'male' 的 update DML
+
+# 第二个事件过滤器规则
+[[filter.event-filters]]
+matcher = ["test.fruit"] # 该事件过滤器只应用于 test.fruit 表
+ignore-event = ["drop table"] # 忽略 drop table 事件
+ignore-sql = ["delete"] # 忽略 delete DML
+ignore-insert-value-expr = "price > 1000 and origin = 'no where'" # 忽略包含 price > 1000 和 origin = 'no where' 条件的 insert DML
 
 [sink]
 # 对于 MQ 类的 Sink，可以通过 dispatchers 配置 event 分发器
@@ -650,10 +671,70 @@ dispatchers = [
 protocol = "canal-json"
 ```
 
+### Event Filter 配置规则 <span class="version-mark">从 v6.2.0 版本开始引入</span>
+
+TiCDC 在 v6.2.0 中新增了事件过滤器功能，你可以通过配置该规则来过滤符合指定条件的 DML 和 DDL 事件。
+
+以下是事件过滤器的配置规则示例：
+
+```toml
+[filter]
+# 事件过滤器的规则应该写在 filter 配置项之下，可以同时配置多个事件过滤器。
+
+[[filter.event-filters]]
+matcher = ["test.worker"] # 该过滤规则只应用于 test 库中的 worker 表
+ignore-event = ["insert"] # 过滤掉 insert 事件
+ignore-sql = ["^drop", "add column"] # 过滤掉以 "drop" 开头或者包含 "add column" 的 DDL
+ignore-delete-value-expr = "name = 'john'" # 过滤掉包含 name = 'john' 条件的 delete DML
+ignore-insert-value-expr = "id >= 100" # 过滤掉包含 id >= 100 条件的 insert DML 
+ignore-update-old-value-expr = "age < 18 or name = 'lili'" # 过滤掉旧值 age < 18 或 name = 'lili' 的 update DML
+ignore-update-new-value-expr = "gender = 'male' and age > 18" # 过滤掉新值 gender = 'male' 且 age > 18 的 update DML
+```
+
+事件过滤器的规则应该写在 filter 配置项之下，具体写法可以参考[同步任务配置文件描述](#同步任务配置文件描述)。
+
+配置参数说明：
+
+- `matcher`: 该事件过滤器所要匹配的数据库名和表名，其匹配规则和[表库过滤规则](/table-filter.md)相一致。
+- `ignore-event`:要过滤的事件类型，它是一个字符串数组，可以配置多个事件类型。目前支持的类型如下表所示:
+
+| Event           | 分类 | 别名 |说明                    |
+| --------------- | ---- | -|--------------------------|
+| all dml         |      | |匹配所有 DML events         |
+| all ddl         |      | |匹配所有 DDL events         |
+| insert          | DML  | |匹配 insert DML event      |
+| update          | DML  | |匹配 update DML event      |
+| delete          | DML  | |匹配 delete DML event      |
+| create schema   | DDL  | create database |匹配 create database event |
+| drop schema     | DDL  | drop database  |匹配 drop database event |
+| create table    | DDL  | |匹配 create table event    |
+| drop table      | DDL  | |匹配 drop table event      |
+| rename table    | DDL  | |匹配 rename table event    |
+| truncate table  | DDL  | |匹配 truncate table event  |
+| alter table     | DDL  | |匹配 alter table event (包含 alter table 的所有子句和 create/drop index)     |
+| add table partition    | DDL  | |匹配 add table partition event     |
+| drop table partition    | DDL  | |匹配 drop table partition event     |
+| truncate table partition    | DDL  | |匹配 truncate table partition event     |
+| create view     | DDL  | |匹配 create view event     |
+| drop view     | DDL  | |匹配 drop view event     |
+
+- `ignore-sql`：要过滤的 DDL 语句的正则表达式。该参数接受一个字符串数组，数组中可以配置多条正则表达式。该配置仅对 DDL 事件生效。
+- `ignore-delete-value-expr`: 配置一个 SQL 表达式，对带有指定值的 DELETE 类型的 DML 事件生效。
+- `ignore-insert-value-expr`: 配置一个 SQL 表达式，对带有指定值的 INSERT 类型的 DML 事件生效。
+- `ignore-update-old-value-expr`: 配置一个 SQL 表达式，对带有指定旧值的 UPDATE 类型的 DML 事件生效。
+- `ignore-update-new-value-expr`: 配置一个 SQL 表达式，对带有指定新值的 UPDATE 类型的 DML 事件生效。
+
+> **注意：**
+>
+> - TiDB 在更新聚簇索引的列值时，会将一个 UPDATE 事件拆分成为 DELETE 和 INSERT 事件，TiCDC 无法将该类事件识别为 UPDATE 事件，因此无法正确地进行过滤。
+>
+> - 在配置 SQL 表达式时，请确保符合 matcher 规则的所有表均包含了对应 SQL 表达式中指明的所有列，否则同步任务将无法创建成功。此外，若在同步的过程中表的结构发生变化，不再包含 SQL 表达式中的列，那么同步任务将会进入无法自动恢复的错误状态，你需要手动修改配置并进行恢复操作。
+
 ### 配置文件兼容性的注意事项
 
 * TiCDC v4.0.0 中移除了 `ignore-txn-commit-ts`，添加了 `ignore-txn-start-ts`，使用 start_ts 过滤事务。
 * TiCDC v4.0.2 中移除了 `db-dbs`/`db-tables`/`ignore-dbs`/`ignore-tables`，添加了 `rules`，使用新版的数据库和数据表过滤规则，详细语法参考[表库过滤](/table-filter.md)。
+* TiCDC v6.1.0 及之后移除了 `mounter` 配置项，用户配置该项不会报错，也不会生效。
 
 ## 自定义 Kafka Sink 的 Topic 和 Partition 的分发规则
 
@@ -789,16 +870,10 @@ cdc cli --pd="http://10.0.10.25:2379" changefeed query --changefeed-id=simple-re
 
 > **注意：**
 >
-> + 如果服务器使用机械硬盘或其他有延迟或吞吐有瓶颈的存储设备，请谨慎开启 Unified Sorter。
+> + 如果服务器使用机械硬盘或其他有延迟或吞吐有瓶颈的存储设备，Unified Sorter 性能会受到较大影响。
 > + Unified Sorter 默认使用 `data_dir` 储存临时文件。建议保证硬盘的空闲容量大于等于 500 GiB。对于生产环境，建议保证每个节点上的磁盘可用空间大于（业务允许的最大）`checkpoint-ts` 延迟 * 业务高峰上游写入流量。此外，如果在 `changefeed` 创建后预期需要同步大量历史数据，请确保每个节点的空闲容量大于等于要追赶的同步数据。
-> + Unified Sorter 默认开启，如果您的服务器不符合以上条件，并希望关闭 Unified Sorter，请手动将 changefeed 的 `sort-engine` 设为 `memory`。
-> + 如需在已使用 `memory` 排序的 changefeed 上开启 Unified Sorter，参见[同步任务中断，尝试再次启动后 TiCDC 发生 OOM，如何处理](/ticdc/troubleshoot-ticdc.md#同步任务中断尝试再次启动后-ticdc-发生-oom应该如何处理)回答中提供的方法。
 
 ## 灾难场景的最终一致性复制
-
-> **警告：**
->
-> 暂不推荐使用灾难场景的最终一致性复制功能。详见 [critical bug #6189](https://github.com/pingcap/tiflow/issues/6189)。
 
 从 v5.3.0 版本开始，TiCDC 支持将上游 TiDB 的增量数据备份到下游集群的 S3 存储或 NFS 文件系统。当上游集群出现了灾难，完全无法使用时，TiCDC 可以将下游集群恢复到最近的一致状态，即提供灾备场景的最终一致性复制能力，确保应用可以快速切换到下游集群，避免数据库长时间不可用，提高业务连续性。
 
