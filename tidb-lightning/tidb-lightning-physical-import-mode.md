@@ -56,7 +56,7 @@ Physical Import Mode 不经过 SQL 接口，而是直接将数据以键值对的
 
 ### 使用限制
 
-- 请勿直接使用 Physical Import Mode 向已经投入生产的 TiDB 集群导入数据，这将对在线业务产生严重影响。如需向生产集群导入数据，请参考[导入数据到生产集群](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#导入数据到生产集群)。
+- 请勿直接使用 Physical Import Mode 向已经投入生产的 TiDB 集群导入数据，这将对在线业务产生严重影响。如需向生产集群导入数据，请参考[导入时限制调度范围从集群降低到表级别](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#导入时限制调度范围从集群降低到表级别)。
 
 - 默认情况下，不应同时启动多个 TiDB Lightning 实例向同一 TiDB 集群导入数据，而应考虑使用[并行导入](/tidb-lightning/tidb-lightning-distributed-import.md)特性。
 
