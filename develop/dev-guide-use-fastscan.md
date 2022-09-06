@@ -68,7 +68,7 @@ set global tiflash_fastscan=OFF;
 
 TiFlash 存储层的数据主要存放在 Delta 层和 Stable 层。
 
-Normal Mode 中 TableScan 算子过程整体包括了以下步骤:
+在普通状态下(即未开启 FastScan 功能下) TableScan 算子过程整体包括了以下步骤:
 
 1. Read data：在 Delta 层 和 Stable 层分别建立数据流，进行各自数据的读取。
 2. Sort Merge：将步骤 1 中建立的数据流进行合并，并且将数据按照 (handle, version) 顺序排列返回。
