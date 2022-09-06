@@ -46,6 +46,10 @@ TiDB 支持使用大部分 MySQL 5.7 中提供的[字符串函数](https://dev.m
 | [`POSITION()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_position)  | 与 `LOCATE()` 功能相同   |
 | [`QUOTE()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_quote)   | 使参数逃逸，为了在 SQL 语句中使用   |
 | [`REGEXP`](https://dev.mysql.com/doc/refman/5.7/en/regexp.html#operator_regexp)  | 使用正则表达式匹配模式  |
+| [`REGEXP_INSTR()`](https://dev.mysql.com/doc/refman/8.0/en/regexp.html#function_regexp-instr) | 返回满足正则的字串的第一个索引位置（与 MySQL 不完全兼容） |
+| [`REGEXP_LIKE()`](https://dev.mysql.com/doc/refman/8.0/en/regexp.html#function_regexp-like) | 判断字符是否满足正则表达式（与 MySQL 不完全兼容） |
+| [`REGEXP_REPLACE()`](https://dev.mysql.com/doc/refman/8.0/en/regexp.html#function_regexp-replace) | 替换满足正则表达式的字串（与 MySQL 不完全兼容）|
+| [`REGEXP_SUBSTR()`](https://dev.mysql.com/doc/refman/8.0/en/regexp.html#function_regexp-substr) | 返回满足正则表达式的字串（与 MySQL 不完全兼容）|
 | [`REPEAT()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_repeat)   | 以指定次数重复一个字符串    |
 | [`REPLACE()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_replace)  | 替换所有出现的指定字符串   |
 | [`REVERSE()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_reverse)   | 反转字符串里的所有字符  |
@@ -64,10 +68,6 @@ TiDB 支持使用大部分 MySQL 5.7 中提供的[字符串函数](https://dev.m
 | [`UCASE()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_ucase)       | 与 `UPPER()` 功能相同   |
 | [`UNHEX()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_unhex)  | 返回一个数的十六进制表示，形式为字符串 |
 | [`UPPER()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_upper)   | 参数转换为大写形式  |
-| [`REGEXP_LIKE()`](https://dev.mysql.com/doc/refman/8.0/en/regexp.html#function_regexp-like) | 判断字符是否满足正则表达式(与MySQL不完全兼容) |
-| [`REGEXP_INSTR()`](https://dev.mysql.com/doc/refman/8.0/en/regexp.html#function_regexp-instr) | 返回满足正则的字串的第一个索引位置(与MySQL不完全兼容) |
-| [`REGEXP_SUBSTR()`](https://dev.mysql.com/doc/refman/8.0/en/regexp.html#function_regexp-substr) | 返回满足正则表达式的字串(与MySQL不完全兼容) |
-| [`REGEXP_REPLACE()`](https://dev.mysql.com/doc/refman/8.0/en/regexp.html#function_regexp-replace) | 替换满足正则表达式的字串(与MySQL不完全兼容) |
 
 ## 不支持的函数
 
@@ -77,16 +77,16 @@ TiDB 支持使用大部分 MySQL 5.7 中提供的[字符串函数](https://dev.m
 * `SOUNDS LIKE`
 * `WEIGHT_STRING()`
 
-## 正则函数与MySQL的兼容性
+## 正则函数与 MySQL 的兼容性
 
 ### 语法兼容性
 
-MySQL的实现使用的是ICU库，TiDB的实现使用的是re2库，两个库之间的语法差异可以查阅[ICU文档](https://unicode-org.github.io/icu/userguide/)和[re2文档](https://github.com/google/re2/wiki/Syntax)
+MySQL 的实现使用的是 ICU 库，TiDB 的实现使用的是 re2 库，两个库之间的语法差异可以查阅 [ICU 文档](https://unicode-org.github.io/icu/userguide/)和 [re2 文档](https://github.com/google/re2/wiki/Syntax)
 
-### Match Type兼容性
+### Match Type 兼容性
 
-match_type的差异：
-- MySQL中的n标记对应于TiDB的s标记
-    - 例：在MySQL中写为`select regexp_like(a, b, "n") from t1;`，TiDB中需要写为`select regexp_like(a, b, "s") from t1;`
-- MySQL支持u标记，TiDB不支持
+match_type 的差异：
 
+- MySQL 中的 n 标记对应于 TiDB 的 s 标记
+    - 例：在 MySQL 中写为 `SELECT REGEXP_LIKE(a, b, "n") FROM t1;`，TiDB 中需要写为 `SELECT REGEXP_LIKE(a, b, "s") FROM t1;`
+- MySQL 支持 u 标记，TiDB 不支持
