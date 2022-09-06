@@ -19,6 +19,7 @@ TiDB 版本：6.3.0-DMR
 - SQL语句CREATE USER / ALTER USER支持ACCOUNT LOCK/UNLOCK 选项
 - JSON 数据类型和 JSON 函数 GA
 - TiDB 支持 Null Aware Anti Join
+- 提供“执行时间”的细粒度指标
 
 ## 新功能
 
@@ -57,7 +58,7 @@ TiDB 版本：6.3.0-DMR
 
 * JSON 数据类型和 JSON 函数 GA
 
-    JSON 是一种流行的数据格式，被大量的程序设计所采用。TiDB 在早起版本就引入了 JSON 支持， 兼容 MySQL 的 JSON 数据类型 和一部分 JSON 函数。在 v6.3.0 版本中，我们正式将这些功能 GA ，用户可以安全地在生产环境中使用 JSON 相关的功能。 JSON 功能的 GA，为 TiDB 提供了更丰富的数据类型支持，同时也进一步提升的 TiDB 对 MySQL 的兼容能力。
+    JSON 是一种流行的数据格式，被大量的程序设计所采用。TiDB 在早期版本就引入了 JSON 支持， 兼容 MySQL 的 JSON 数据类型 和一部分 JSON 函数。在 v6.3.0 版本中，我们正式将这些功能 GA ，用户可以安全地在生产环境中使用 JSON 相关的功能。 JSON 功能的 GA，为 TiDB 提供了更丰富的数据类型支持，同时也进一步提升的 TiDB 对 MySQL 的兼容能力。
 
     [用户文档](/data-type-json.md) [#36993](https://github.com/pingcap/tidb/issues/36993) @[xiongjiwei](https://github.com/xiongjiwei)
 
@@ -100,6 +101,26 @@ TiDB 版本：6.3.0-DMR
     功能描述
 
     [用户文档]() [#issue]() @[贡献者 GitHub ID]()
+
+* 提供“执行时间”的细粒度指标
+
+    性能问题的诊断通常从时间入手。 对执行时间的细粒度观测能力，是衡量数据库可观测性的重要标准。 TiDB 在新版中正式提供了细化数据指标，用于对执行时间进行细化观测。 通过完整而又细分的指标数据，用户可以清晰的了解数据库的主要的时间消耗，进而快速发现关键问题，节省故障诊断的时间。 “执行时间”的细粒度观测能力，使得 TiDB 的观测性迈上了一个新的台阶。
+
+    [用户文档](/latency-breakdown.md) [#34106](https://github.com/pingcap/tidb/issues/34106) @[cfzjywxk](https://github.com/cfzjywxk)
+    
+* 增强的 slow log 和 trace 语句
+
+    在新版本中 TiDB 增强了 slow log 的内容和 trace 命令的输出。 用户可以观测到 SQL 语句执行过程中，从 tidb parse 到 kv rocksdb 落盘全链路的延迟数据，进一步增强 TiDB 的诊断能力。 
+
+    [用户文档]() [#34487](https://github.com/pingcap/tidb/issues/34487) @[cfzjywxk](https://github.com/cfzjywxk)
+
+* Dashboard 中显示死锁的历史记录
+
+    新版本将死锁的历史记录加入到了 Dashboard 中。 当用户通过 Dashboard 的慢日志等手段发现某些 SQL 等待锁的时间较长的时候，Dashboard 上的死锁的历史记录有助于对问题的分析，提供了诊断的易用性。 
+
+     [用户文档]() [#issue]() @[贡献者 GitHub ID]()
+
+
 
 ### 性能
 
