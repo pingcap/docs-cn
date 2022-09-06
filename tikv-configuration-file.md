@@ -1607,8 +1607,9 @@ Raft Engine 相关的配置项。
 
 ### `merged-file-size-limit` <span class="version-mark">从 v6.3.0 版本开始引入</span>
 
-+ 日志备份任务的备份数据在合并过程中的划分阈值。
-+ 默认值：256MB
++ 日志备份任务中，合并备份数据的阈值。如果待上传的备份数据文件大小总和达到该配置项的取值，则将这些备份数据文件合并为一个备份文件，从而避免产生过多小文件。
++ 默认值：256MiB
++ 注意：`merged-file-size-limit` 的值一般情况下会大于存储系统上备份文件显示的大小，这是因为在上传备份文件前进行了压缩。
 
 ### `initial-scan-pending-memory-quota` <span class="version-mark">从 v6.2.0 版本开始引入</span>
 
