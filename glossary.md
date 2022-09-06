@@ -27,6 +27,10 @@ ACID 是指数据库管理系统在写入或更新资料的过程中，为保证
 
 自动捕获绑定 (Baseline Capturing) 会对符合捕获条件的查询进行捕获，为符合条件的查询生成相应的绑定。通常用于升级时的[计划回退防护](/sql-plan-management.md#升级时的计划回退防护)。
 
+### Binlog
+
+在 TiDB 中，Binlog 指由 TiDB、MySQL 或 MariaDB 生成的一种二进制日志 (binary log)，用于记录 TiDB 或上下游的数据库表结构变更（例如 `CREATE`、`ALTER TABLE` 语句等）和表数据修改（例如 `INSERT`、`DELETE`、`UPDATE` 语句等）。
+
 ### Bucket
 
 一个 [Region](#regionpeerraft-group) 在逻辑上划分为多个小范围，称为 bucket。TiKV 按 bucket 收集查询统计数据，并将 bucket 的情况报告给 PD。详情参见 [Bucket 设计文档](https://github.com/tikv/rfcs/blob/master/text/0082-dynamic-size-region.md#bucket)。
@@ -37,6 +41,14 @@ ACID 是指数据库管理系统在写入或更新资料的过程中，为保证
 
 缓存表 (Cached Table) 是指 TiDB 把整张表的数据加载到服务器的内存中，直接从内存中获取表数据，避免从 TiKV 获取表数据，从而提升读性能。详情参见[缓存表](/cached-tables.md)。
 
+### Cluster
+
+TiDB 数据库以及各组件的集合，部署在多节点服务器上，每个节点上运行实例，向客户端提供服务。
+
+### Coprocessor
+
+一种替 TiDB 分担计算的协处理机制。位于存储层（TiKV 或 TiFlash），以 Region 为单位协同处理从 TiDB 下推的计算。
+
 ### Continuous Profiling
 
 持续性能分析 (Continuous Profiling) 是从 TiDB v5.3 起引入的一种从系统调用层面解读资源开销的方法。引入该方法后，TiDB 可提供数据库源码级性能观测，通过火焰图的形式帮助研发、运维人员定位性能问题的根因。详情参见 [TiDB Dashboard 实例性能分析 - 持续分析页面](/dashboard/continuous-profiling.md)。
@@ -46,6 +58,16 @@ ACID 是指数据库管理系统在写入或更新资料的过程中，为保证
 ### Dynamic Pruning
 
 动态裁剪 (Dynamic Pruning) 是 TiDB 访问分区表的两种模式之一。在动态裁剪模式下，TiDB 的每个算子都支持直接访问多个分区，省略 Union 操作，提高执行效率，还避免了 Union 并发管理的问题。
+
+## G
+
+### GC (Garbage Collection)
+
+垃圾回收（GC 或 Garbage collection）是 TiDB 中的内存资源管理机制。当动态内存里的旧数据不再需要时，便予以清理，让出内存。详情参见 [GC 机制](/garbage-collection-overview.md)。
+
+### Hotspot
+
+热点 (Hotspot) 指 TiKV 的读写负载集中于某一个或几个 Region 或节点的现象，此时可能会造成性能瓶颈，使性能无法达到最佳。要解决热点问题，可参考 [TiDB 热点问题处理](/troubleshoot-hot-spot-issues.md)。
 
 ## I
 
@@ -63,11 +85,21 @@ ACID 是指数据库管理系统在写入或更新资料的过程中，为保证
 
 它们分别对应 [Peer](#regionpeerraft-group) 的三种角色。其中 Leader 负责响应客户端的读写请求；Follower 被动地从 Leader 同步数据，当 Leader 失效时会进行选举产生新的 Leader；Learner 是一种特殊的角色，它只参与同步 raft log 而不参与投票，在目前的实现中只短暂存在于添加副本的中间步骤。
 
+## M
+
+### Multi-version concurrency control (MVCC)
+
+TiDB 中的并发控制机制，对事务内读取到的内存做处理，实现对 TiDB 的并发访问，避免并发读写冲突造成的阻塞。
+
 ## O
 
 ### Old value
 
 Old value 特指在 TiCDC 输出的增量变更日志中的“原始值”。可以通过配置来指定 TiCDC 输出的增量变更日志是否包含“原始值”。
+
+### Online transactional processing (OLTP)
+
+全称为在线事务处理，即使用计算机系统来处理事务数据。
 
 ### Operator
 
@@ -88,7 +120,17 @@ Operator Step 是 Operator 执行过程的一个步骤，一个 Operator 常常�
 - `PromoteLearner`：将指定 Learner 提升为 Follower
 - `SplitRegion`：将指定 Region 一分为二
 
+### Optimistic transaction
+
+使用乐观并发控制的事务，在并发环境中，外界对数据的操作一般不会造成冲突。开启乐观事务后，TiDB 只在事务最终提交时才会检测冲突。乐观事务模式适合读多写少的并发场景，能提高 TiDB 性能。
+
+自 v3.0.8 开始，TiDB 集群默认使用悲观事务模式。但如果从 3.0.7 及之前版本创建的集群升级到 3.0.8 及之后的版本，不会改变默认事务模式，即只有新创建的集群才会默认使用悲观事务模式。详情参见 [TiDB 乐观事务模型](/optimistic-transaction.md)。
+
 ## P
+
+### Partition table
+
+将 TiDB 中的一张表根据某些条件在物理上拆分为若干张表存放，以提高查询的效率。详情参考[分区表](/partitioned-table.md)文档。
 
 ### Pending/Down
 
@@ -123,6 +165,10 @@ TiKV 集群中的 Region 不是一开始就划分好的，而是随着数据写�
 ### Restore
 
 备份操作的逆过程，即利用保存的备份数据还原出原始数据的过程。
+
+### RocksDB
+
+一款提供键值存储与读写功能的 LSM-tree 架构引擎，由 Facebook 基于 LevelDB 开发。RocksDB 是 TiKV 的核心存储引擎，用于存储 Raft 日志以及用户数据。
 
 ## S
 
