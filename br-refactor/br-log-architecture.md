@@ -100,7 +100,7 @@ TiKV
 ├── v1_stream_trancate_safepoint.txt 
 ```   
 
-示例如下
+具体示例如下
 
 ```
 .
