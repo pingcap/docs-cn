@@ -64,7 +64,7 @@ TiDB 版本：6.3.0-DMR
 
 * TiFlash 调整 FastScan 功能使用方式（实验特性）
 
-    TiFlash 从 v6.2.0 版本开始引入的快速扫描功能 (FastScan)，性能上符合预期，但是使用方式上缺乏灵活性。因此，TiFlash 在 v6.3.0 版本调整 FastScan 功能的使用方式，停止使用对表设定是否开启 FastScan 功能的方式，改为使用变量```tiflash_fastscan``` 控制是否开启 FastScan 功能。
+    TiFlash 从 v6.2.0 版本开始引入的快速扫描功能 (FastScan)，性能上符合预期，但是使用方式上缺乏灵活性。因此，TiFlash 在 v6.3.0 版本调整 FastScan 功能的使用方式，停止使用对表设定是否开启 FastScan 功能的方式，改为使用变量 `tiflash_fastscan` 控制是否开启 FastScan 功能。
 
     从 v6.2.0 版本升级到 v6.3.0 版本时，在 v6.2.0 版本的所有 FastScan 设定将失效，需要重新使用变量方式进行 FastScan 设定，但不影响数据的正常读取。从更早版本升级到 v6.3.0 时，所有会话默认不开启 FastScan 功能，而是保持一致性的数据扫描功能。
 
