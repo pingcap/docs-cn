@@ -142,6 +142,13 @@ TiDB 版本：6.3.0-DMR
 
     [用户文档](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml) [#5376](https://github.com/pingcap/tiflash/issues/5376) @[JinheLin](https://github.com/JinheLin)
 
+* TiFlash 副本同步性能优化
+
+    TiFlash 副本通过 Raft 协议和 TiKV 数据同步时，需要一定的时间。在 v6.3.0 版本之前，TiFlash 副本同步速度比 TiKV 写入数据速度慢。在大量数据同步的场景下，例如 BR 恢复、Lightning 导入，可能出现 TiKV 数据已经就绪、但是 TiFlash 副本还没有完成同步的情况，此时任务下发到 TiFlash 会导致执行报错。v6.3.0 版本优化了 TiFlash 副本同步性能，保证大量数据同步场景下 TiKV 数据写入完毕时，TiFlash 副本同步操作也正常完成，TiDB 可以正常进行查询。
+    同时，TiFlash 副本同步性能的提升，可以有效减少增加 TiFlash 副本的时间。
+
+    [#5237](https://github.com/pingcap/tiflash/issues/5237) @[breezewish](https://github.com/breezewish)
+
 * TiKV 日志循环使用
 
     TiKV Raft Engine 默认开启日志循环功能。该特性显著降低 Raft 日志追加过程中的长尾延迟，提升了 TiKV 写入负载下的性能。
