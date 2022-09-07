@@ -586,7 +586,7 @@ Empty set (0.00 sec)
 此外， `EXCHANGE PARTITION` 和其他组件兼容性上存在一些限制，需要保证分区表和非分区表的一致性：
 
 - TiFlash：TiFlash Replica 定义不同时，无法执行 `EXCHANGE PARTITION` 操作。
-- TiCDC：都有主键或者唯一键时，TiCDC 同步 `EXCHANGE PARTITION` 操作；反之 TiCDC 将不会同步。
+- TiCDC：分区表和非分区表都有主键或者唯一键时，TiCDC 同步 `EXCHANGE PARTITION` 操作；反之 TiCDC 将不会同步。
 - Lightning 和 BR：使用 Lightning 和 BR 导入、恢复过程中，不要执行 `EXCHANGE PARTITION` 操作。
 
 ### Range 分区管理
