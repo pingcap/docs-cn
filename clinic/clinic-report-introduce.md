@@ -46,7 +46,7 @@ Clinic 报告基于集群诊断数据生成，需要使用 Diag 采集数据并�
 #### 解读报告
 
 打开 Clinic 集群页面，点击页面上的“ Benchmark Report”,  点击“View” 可以查看报告。
-    [jpg 贴图，后面补充]
+[benchmark-report](/media/clinic-benchmark-report.png)
 
 报告分为以下几个部分：
 
@@ -68,7 +68,8 @@ Clinic 报告基于集群诊断数据生成，需要使用 Diag 采集数据并�
 #### 解读报告
 
 对比报告会基于所选的两个时间段的 metrics 和日志进行对比分析。打开 Clinic 集群页面，点击页面上的“ Comparison Report”，在 Report 列表中点击“View” 可以查看。
-    [jpg 贴图，后面补充]
+[comparison-report](/media/clinic-comparison-report.png)
+
 报告中的 Metrics 计算方法是对两个时间段相应的指标时间序列数据取均值，然后将均值进行对比。
 
 报告分为以下几个部分：
