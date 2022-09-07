@@ -41,6 +41,61 @@ TiDB 与 MySQL 有差异：
 
 有关一个完整的实例应用程序，可参阅使用 [TiDB 和 JDBC 构建一个 Java 应用](/develop/dev-guide-sample-application-java.md#第-2-步获取代码)。
 
+
+**TiDB-JDBC**
+
+支持等级：**Full**
+
+[ REPO 地址](https://github.com/pingcap/mysql-connector-j)
+
+> 注意：
+>
+> 该版本是基于 Mysql 8.0.29 版本基础上定制的版本，当前仓库为个人仓库。
+> 1. 基于官方 8.0.29 版本编译。
+> 2. 修复 prepare 模式下多参数、多字段 EOF bug。
+> 3. 新增 TiCDC snapshot 自动维护。
+> 4. 新增 SM3 认证插件
+
+如果你使用的是 **Maven**，请将以下内容添加到你的 `<dependencies></dependencies>`：
+
+```xml
+<dependency>
+  <groupId>io.github.lastincisor</groupId>
+  <artifactId>mysql-connector-java</artifactId>
+  <version>8.0.29-tidb-1.0.0</version>
+</dependency>
+```
+
+如果SM3认证的用户，请将以下内容添加到你的 `<dependencies></dependencies>`：
+
+```xml
+<dependency>
+  <groupId>io.github.lastincisor</groupId>
+  <artifactId>mysql-connector-java</artifactId>
+  <version>8.0.29-tidb-1.0.0</version>
+</dependency>
+<dependency>
+    <groupId>org.bouncycastle</groupId>
+    <artifactId>bcprov-jdk15on</artifactId>
+    <version>1.67</version>
+</dependency>
+<dependency>
+    <groupId>org.bouncycastle</groupId>
+    <artifactId>bcpkix-jdk15on</artifactId>
+    <version>1.67</version>
+</dependency>
+```
+
+如果你使用的是 `Gradle`，请将以下内容添加到你的 `dependencies`：
+
+{{< copyable "" >}}
+
+```gradle
+implementation group: 'io.github.lastincisor', name: 'mysql-connector-java', version: '8.0.29-tidb-1.0.0'
+implementation group: 'org.bouncycastle', name: 'bcprov-jdk15on', version: '1.67'
+implementation group: 'org.bouncycastle', name: 'bcpkix-jdk15on', version: '1.67'
+```
+
 ### Java ORM Framework
 
 **Hibernate**
@@ -86,3 +141,41 @@ implementation 'mysql:mysql-connector-java:5.1.49'
 - 有关 Spring 使用 Spring Data JPA、Hibernate 进行 TiDB 应用程序构建的例子，可参阅[使用 Spring Boot 构建 TiDB 应用程序](/develop/dev-guide-sample-application-spring-boot.md)。
 
 额外的，你需要在 [Hibernate 配置文件](https://www.tutorialspoint.com/hibernate/hibernate_configuration.htm)中指定 TiDB 方言： `org.hibernate.dialect.TiDBDialect`，此方言在 Hibernate `6.0.0.Beta2` 以上才可支持。若你无法升级 Hibernate 版本，那么请你直接使用 MySQL 5.7 的方言 `org.hibernate.dialect.MySQL57Dialect`。但这可能造成不可预料的使用结果，及部分 TiDB 特有特性的缺失，如：[序列](/sql-statements/sql-statement-create-sequence.md)等。
+
+
+### tidb-loadbalance
+
+[ REPO 地址](https://github.com/pingcap/tidb-loadbalance)
+
+> 注意：
+>
+> 1. 需要配合 mysql-connector-j 一起使用。
+> 2. 自动维护 TiDB Server 的节点信息，根据节点信息使用 tidb-loadbalance 策略分发 JDBC Connection 。
+> 3. 实现了轮询、随机、权重负载均衡策略。
+> 4. 在客户端分发 Connection 。 客户 APP 和 TiDB Server 是使用 JDBC 直连的方式。性能比使用负载均衡组件后的高。
+
+
+
+如果你使用的是 **Maven**，请将以下内容添加到你的 `<dependencies></dependencies>`：
+
+```xml
+<dependency>
+  <groupId>io.github.lastincisor</groupId>
+  <artifactId>mysql-connector-java</artifactId>
+  <version>8.0.29-tidb-1.0.0</version>
+</dependency>
+<dependency>
+  <groupId>io.github.lastincisor</groupId>
+  <artifactId>tidb-loadbalance</artifactId>
+  <version>0.0.5</version>
+</dependency>
+```
+
+如果你使用的是 `Gradle`，请将以下内容添加到你的 `dependencies`：
+
+{{< copyable "" >}}
+
+```gradle
+implementation group: 'io.github.lastincisor', name: 'mysql-connector-java', version: '8.0.29-tidb-1.0.0'
+implementation group: 'io.github.lastincisor', name: 'tidb-loadbalance', version: '0.0.5'
+```
