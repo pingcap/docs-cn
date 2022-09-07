@@ -470,7 +470,7 @@ INSERT INTO t VALUES ('a');
 Query OK, 1 row affected
 ```
 
-以上命令，在 TiDB 会执行成功，而在 MySQL 中，由于 `utf8mb4_general_ci` 大小写不敏感，报错 Duplicate entry 'a'。
+以上语句，在 TiDB 会执行成功，而在 MySQL 中，由于 `utf8mb4_general_ci` 大小写不敏感，报错 `Duplicate entry 'a'`。
 
 ```sql
 INSERT INTO t VALUES ('a ');
@@ -480,7 +480,7 @@ INSERT INTO t VALUES ('a ');
 Query OK, 1 row affected
 ```
 
-以上命令，在TiDB 会执行成功，而在 MySQL 中，由于补齐空格比较，报错 Duplicate entry 'a '。
+以上语句，在 TiDB 会执行成功，而在 MySQL 中，由于补齐空格比较，报错 `Duplicate entry 'a '`。
 
 ### 新框架下的排序规则支持
 
