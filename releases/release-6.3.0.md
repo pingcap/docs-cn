@@ -48,17 +48,6 @@ TiDB 版本：6.3.0-DMR
 
   [用户文档](/tiflash/tiflash-supported-pushdown-calculations.md)，[#5579](https://github.com/pingcap/tiflash/issues/5579) @[SeaRise](https://github.com/SeaRise)
 
-* 新增简化 Range 分区定义的语法糖衣
-
-    新的定义 Range 分区的方式，不需要枚举若有分区，可大幅度缩短现有 Range 分区表定义语句冗长的书写方式，语义与原有 Range 分区等价。
-
-    [用户文档](https://github.com/pingcap/docs/pull/9751) [#9751](https://github.com/pingcap/docs/pull/9751) @[mjonss](https://github.com/mjonss)
-
-* Range Columns 分区方式支持定义多列
-     PARTITION BY RANGE COLUMNS (column_list) 处，`column_list` 不再限定为单一列，基本功能与 MySQL 等同。
-
-     [用户文档](https://to be u p da te) [#0000](https://to be u p da te) @[mjonss](https://github.com/mjonss)
-
 * CREATE USER 支持 ACCOUNT LOCK/UNLOCK 选项
 
     在执行CREATE USER创建用户时，允许使用ACCOUNT LOCK / UNLOCK 选项，限定被创建的用户是否被锁定。锁定后的用户不能正常登录数据库。
