@@ -15,8 +15,8 @@ summary: 了解 TiDB 的备份和恢复功能使用。
 
 TiDB 支持两种类型的备份，应该使用哪种备份？全量备份包含集群某个时间点的全部数据，日志备份包含集群历史数据变更记录，这两种备份方式推荐配合一起使用：
 
-- **启动一个日志备份**。运行 `br log start` 命令来启动数据库日志备份任务。该任务在 TiDB 集群后台持续地运行，及时地将 KV storage 的变更日志保存到备份存储中。
-- **定期地执行[全量（快照）备份](/br/br-usage-backup.md#备份-tidb-集群快照)**。运行 `br backup full` 命令来备份集群快照到备份存储，例如在隔天零点进行集群快照备份。
+- **启动日志备份任务**：运行 `br log start` 命令来启动日志备份任务，任务会在每个 TiKV 节点上持续运行，以小批量的形式定期钟将 TiDB 变更数据备份到指定存储中。
+- **定期地执行[快照（全量）备份](/br/br-usage-backup.md#备份-tidb-集群快照)**：运行 `br backup full` 命令来备份集群快照到备份存储，例如在每天零点进行集群快照备份。
 
 ### 如何管理备份数据？
 
@@ -43,7 +43,6 @@ TiDB 支持两种类型的备份，应该使用哪种备份？全量备份包含
 
 - 如果你只有全量备份数据，或者想恢复某个确定的全量备份，那么可以使用 `br restore`  恢复指定的全量备份
 - 如果你按照以上推荐的的方式进行备份，那么你可以使用 `br restore point` 恢复到保存的备份数据保留期的任意时间点。
-
 
 ## BR 使用部署
 
@@ -80,3 +79,9 @@ TiDB 支持使用 SQL 语句进行备份和恢复
 ### 在 Kubernetes 环境下通过 TiDB Operator
 
 在 Kubernetes 环境下，支持通过 TiDB Operator 支持以 S3、GCS、Azure blob storage 作为备份存储。 使用文档请参阅[使用 TiDB Operator 进行备份恢复](https://docs.pingcap.com/tidb-in-kubernetes/stable/backup-restore-overview)。
+
+## 进一步阅读
+
+* [全量备份恢复 —— 快照备份和恢复功能使用](/br-refactor/use-guide/br-snapshot-guide.md)
+* [日志备份和 PITR 功能使用](/br-refactor/use-guide/br-pitr-guide.md)
+* [TiDB 集群备份和恢复实践示例](/br-refactor/use-guide/br-usage.md)
