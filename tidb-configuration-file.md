@@ -208,12 +208,6 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：1
 + 0 表示关闭，1 表示开启，默认开启，该值作为系统变量 [`tidb_record_plan_in_slow_log`](/system-variables.md#tidb_record_plan_in_slow_log) 的初始值。
 
-### `expensive-threshold`
-
-+ 输出 `expensive` 操作的行数阈值。
-+ 默认值：10000
-+ 当查询的行数（包括中间结果，基于统计信息）大于这个值，该操作会被认为是 `expensive` 查询，并输出一个前缀带有 `[EXPENSIVE_QUERY]` 的日志。
-
 ## log.file
 
 日志文件相关的配置项。
