@@ -344,6 +344,7 @@
     - [概述](/clinic/clinic-introduction.md)
     - [快速上手](/clinic/quick-start-with-clinic.md)
     - [使用 PingCAP Clinic 诊断 TiDB 集群](/clinic/clinic-user-guide-for-tiup.md)
+    - [采集 SQL 查询计划信息](/clinic/clinic-collect-sql-query-plan.md)
     - [数据采集说明](/clinic/clinic-data-instruction-for-tiup.md)
   - [TiDB Operator](/tidb-operator-overview.md)
   - [Dumpling](/dumpling-overview.md)
@@ -358,13 +359,13 @@
       - [SQL](/tidb-lightning/tidb-lightning-data-source.md#sql)
       - [Parquet](/tidb-lightning/tidb-lightning-data-source.md#parquet)
       - [自定义文件匹配](/tidb-lightning/tidb-lightning-data-source.md#自定义文件匹配)
-    - Physical 导入模式
+    - Physical Import Mode
       - [概述](/tidb-lightning/tidb-lightning-physical-import-mode.md)
       - [必要条件及限制](/tidb-lightning/tidb-lightning-physical-import-mode.md#必要条件及限制)
       - [配置及使用](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md)
       - [冲突检测](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#冲突数据检测)
       - [性能调优](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#性能调优)
-    - Logical 导入模式
+    - Logical Import Mode
       - [概述](/tidb-lightning/tidb-lightning-logical-import-mode.md)
       - [必要条件及限制](/tidb-lightning/tidb-lightning-logical-import-mode.md#必要条件及限制)
       - [配置及使用](/tidb-lightning/tidb-lightning-logical-import-mode-usage.md)
@@ -899,6 +900,7 @@
   - [错误码](/error-codes.md)
   - [通过拓扑 label 进行副本调度](/schedule-replicas-by-topology-labels.md)
 - 常见问题解答 (FAQ)
+  - [FAQ 汇总](/faq/faq-overview.md)
   - [产品 FAQ](/faq/tidb-faq.md)
   - [SQL FAQ](/faq/sql-faq.md)
   - [安装部署 FAQ](/faq/deploy-and-maintain-faq.md)
@@ -914,8 +916,9 @@
   - [TiDB 版本规则](/releases/versioning.md)
   - [TiDB 离线包](/binary-package.md)
   - v6.2
-    - [6.2.0](/releases/release-6.2.0.md)
+    - [6.2.0-DMR](/releases/release-6.2.0.md)
   - v6.1
+    - [6.1.1](/releases/release-6.1.1.md)
     - [6.1.0](/releases/release-6.1.0.md)
   - v6.0
     - [6.0.0-DMR](/releases/release-6.0.0-dmr.md)

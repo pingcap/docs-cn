@@ -777,7 +777,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 默认值：`INT_ONLY`
+- 默认值：`ON`
 - 可选值：`OFF`，`ON`，`INT_ONLY`
 - 这个变量用于控制默认情况下表的主键是否使用[聚簇索引](/clustered-indexes.md)。“默认情况”即不显式指定 `CLUSTERED`/`NONCLUSTERED` 关键字的情况。可设置为 `OFF`/`ON`/`INT_ONLY`。
     - `OFF` 表示所有主键默认使用非聚簇索引。
@@ -880,7 +880,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 默认值：`ON`
 - 这个变量用来设置是否开启 `LIST (COLUMNS) TABLE PARTITION` 特性。
 
-### `tidb_enable_mutation_checker`（从 v6.0.0 版本开始引入）
+### `tidb_enable_mutation_checker` <span class="version-mark">从 v6.0.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
@@ -1296,7 +1296,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 这个变量用来设置并行 hash aggregation 算法 partial 阶段的执行并发度。对于聚合函数参数不为 distinct 的情况，HashAgg 分为 partial 和 final 阶段分别并行执行。
 - 默认值 `-1` 表示使用 `tidb_executor_concurrency` 的值。
 
-### `tidb_ignore_prepared_cache_close_stmt`（从 v6.0 版本开始引入）
+### `tidb_ignore_prepared_cache_close_stmt` <span class="version-mark">从 v6.0.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
@@ -1367,6 +1367,26 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 作用域：SESSION
 - 默认值：`tikv,tiflash,tidb`
 - 这个变量用于设置 TiDB 在读取数据时可以使用的存储引擎列表。
+
+### `tidb_last_ddl_info` <span class="version-mark">从 v6.0.0 版本开始引入</span>
+
+- 作用域：SESSION
+- 是否持久化到集群：否
+- 默认值：""
+- 类型：字符串
+- 该变量为只读变量，TiDB 内部使用该变量获取当前会话中上一个 DDL 操作的信息。
+    - "query"：上一个 DDL 查询字符串。
+    - "seq_num"：每个 DDL 操作的序列号，用于标识 DDL 操作的顺序。
+
+### `tidb_last_query_info` <span class="version-mark">从 v4.0.14 版本开始引入</span>
+
+- 作用域：SESSION
+- 默认值：""
+- 这是一个只读变量。用于在 TiDB 内部查询上一条 DML 语句的事务信息。查询的事务信息包括：
+    - `txn_scope`：事务的作用域，可能为 `global` 或 `local`。
+    - `start_ts`：事务开始的时间戳。
+    - `for_update_ts`：先前执行的 DML 语句的 `for_update_ts` 信息。这是 TiDB 用于测试的内部术语。通常，你可以忽略此信息。
+    - `error`：错误消息（如果有）。
 
 ### `tidb_last_txn_info` <span class="version-mark">从 v4.0.9 版本开始引入</span>
 
@@ -1462,7 +1482,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 这个变量用来设置 `Apply` 算子中局部 Cache 的内存使用阈值。
 - `Apply` 算子中局部 Cache 用来加速 `Apply` 算子的计算，该变量可以设置 `Apply` Cache 的内存使用阈值。设置变量值为 `0` 可以关闭 `Apply` Cache 功能。
 
-### `tidb_mem_quota_binding_cache`（从 v6.0 版本开始引入）
+### `tidb_mem_quota_binding_cache` <span class="version-mark">从 v6.0.0 版本开始引入</span>
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
@@ -1836,7 +1856,7 @@ explain select * from t where age=5;
 - 默认值：`ON`
 - 这个变量用于控制是否开启 [ANALYZE 配置持久化](/statistics.md#analyze-配置持久化)特性。
 
-### `tidb_placement_mode`（从 v6.0.0 版本开始引入）
+### `tidb_placement_mode` <span class="version-mark">从 v6.0.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
@@ -1894,7 +1914,7 @@ explain select * from t where age=5;
 - 该变量控制 SQL 语句输出的最大长度。当一条 SQL 语句的输出长度大于 `tidb_query_log_max_len` 时，输出将会被截断。
 - 在 v6.1.0 之前这个开关也可以通过 TiDB 配置文件 (`log.query-log-max-len`) 进行配置，升级到 v6.1.0 后仅可通过系统变量配置。
 
-### `tidb_rc_read_check_ts`（从 v6.0.0 版本开始引入）
+### `tidb_rc_read_check_ts` <span class="version-mark">从 v6.0.0 版本开始引入</span>
 
 > **警告：**
 >
@@ -1996,6 +2016,14 @@ explain select * from t where age=5;
 - 默认值：`OFF`
 - TiDB 默认会在建表时为新表分裂 Region。开启该变量后，会在建表语句执行时，同步打散刚分裂出的 Region。适用于批量建表后紧接着批量写入数据，能让刚分裂出的 Region 先在 TiKV 分散而不用等待 PD 进行调度。为了保证后续批量写入数据的稳定性，建表语句会等待打散 Region 完成后再返回建表成功，建表语句执行时间会是该变量关闭时的数倍。
 - 如果建表时设置了 `SHARD_ROW_ID_BITS` 和 `PRE_SPLIT_REGIONS`，建表成功后会均匀切分出指定数量的 Region。
+
+### `tidb_shard_allocate_step` <span class="version-mark">从 v5.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 默认值：`9223372036854775807`
+- 范围：`[1, 9223372036854775807]`
+- 该变量设置为 [`AUTO_RANDOM`](/auto-random.md) 或 [`SHARD_ROW_ID_BITS`](/shard-row-id-bits.md) 属性列分配的最大连续 ID 数。通常，`AUTO_RANDOM` ID 或带有 `SHARD_ROW_ID_BITS` 属性的行 ID 在一个事务中是增量和连续的。你可以使用该变量来解决大事务场景下的热点问题。
 
 ### `tidb_skip_ascii_check` <span class="version-mark">从 v5.0 版本开始引入</span>
 
@@ -2166,14 +2194,14 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 范围：`[0, 9223372036854775807]`
 - 这个变量用于限制 TiDB 同时向 TiKV 发送的请求的最大数量，0 表示没有限制。
 
-### `tidb_sysdate_is_now`（从 v6.0.0 版本开始引入）
+### `tidb_sysdate_is_now` <span class="version-mark">从 v6.0.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 默认值：`OFF`
 - 这个变量用于控制 `SYSDATE` 函数能否替换为 `NOW` 函数，其效果与 MYSQL 中的 [`sysdate-is-now`](https://dev.mysql.com/doc/refman/8.0/en/server-options.html#option_mysqld_sysdate-is-now) 一致。
 
-### `tidb_table_cache_lease`（从 v6.0.0 版本开始引入）
+### `tidb_table_cache_lease` <span class="version-mark">从 v6.0.0 版本开始引入</span>
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
@@ -2222,7 +2250,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 >
 > 如果 PD leader 的 TSO RPC 延迟升高，但其现象并非由 CPU 使用率达到瓶颈而导致（可能存在网络等问题），此时，调高 `tidb_tso_client_batch_max_wait_time` 可能会导致 TiDB 的语句执行延迟上升，影响集群的 QPS 表现。
 
-### `tidb_txn_assertion_level`（从 v6.0.0 版本开始引入）
+### `tidb_txn_assertion_level` <span class="version-mark">从 v6.0.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
@@ -2254,7 +2282,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 但如果从 3.0.7 及之前的版本升级到 >= 3.0.8 的版本，不会改变默认事务模式，即**只有新创建的集群才会默认使用悲观事务模式**。
 - 将该变量设置为 "optimistic" 或 "" 时，将会使用[乐观事务模式](/optimistic-transaction.md)。
 
-### `tidb_use_plan_baselines`（从 v4.0 版本开始引入）
+### `tidb_use_plan_baselines` <span class="version-mark">从 v4.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
