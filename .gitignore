@@ -6,7 +6,7 @@
 .idea/
 .vscode/
 *.iml
-*.uml
+uml/
 out
 gen
 .DS_Store

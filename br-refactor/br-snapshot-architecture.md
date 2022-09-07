@@ -11,7 +11,7 @@ summary: 了解 TiDB 快照备份和恢复功能的架构设计
 
 ![BR snapshot backup and restore architecture](/media/br/br-snapshot-arch.png)
 
-## 备份集群快照数据流程
+## 备份集群快照数据
 
 集群快照数据备份的流程如下：
 
@@ -41,7 +41,7 @@ summary: 了解 TiDB 快照备份和恢复功能的架构设计
     * **Backup schemas**：备份 table schema 并且计算 table data checksum
     * **Upload metadata**：生成 backup metadata，并上传到备份存储。 backup metadata 包含 backup ts、表和对应的备份文件、data checksum 和 file checksum 等信息
 
-## 恢复快照备份数据流程
+## 恢复快照备份数据
 
 恢复集群快照备份数据的流程如下：
 
