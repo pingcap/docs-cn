@@ -11,8 +11,6 @@ TiDB 支持的约束与 MySQL 的基本相同。
 
 TiDB 支持的非空约束规则与 MySQL 支持的一致。例如：
 
-{{< copyable "sql" >}}
-
 ```sql
 CREATE TABLE users (
  id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -20,8 +18,6 @@ CREATE TABLE users (
  last_login TIMESTAMP
 );
 ```
-
-{{< copyable "sql" >}}
 
 ```sql
 INSERT INTO users (id,age,last_login) VALUES (NULL,123,NOW());
@@ -31,8 +27,6 @@ INSERT INTO users (id,age,last_login) VALUES (NULL,123,NOW());
 Query OK, 1 row affected (0.02 sec)
 ```
 
-{{< copyable "sql" >}}
-
 ```sql
 INSERT INTO users (id,age,last_login) VALUES (NULL,NULL,NOW());
 ```
@@ -40,8 +34,6 @@ INSERT INTO users (id,age,last_login) VALUES (NULL,NULL,NOW());
 ```
 ERROR 1048 (23000): Column 'age' cannot be null
 ```
-
-{{< copyable "sql" >}}
 
 ```sql
 INSERT INTO users (id,age,last_login) VALUES (NULL,123,NULL);
@@ -63,8 +55,6 @@ TiDB 会解析并忽略 `CHECK` 约束。该行为与 MySQL 5.7 的相兼容。
 
 示例如下：
 
-{{< copyable "sql" >}}
-
 ```sql
 DROP TABLE IF EXISTS users;
 CREATE TABLE users (
@@ -83,8 +73,6 @@ SELECT * FROM users;
 
 在 TiDB 的乐观事务中，默认会对唯一约束进行[惰性检查](/transaction-overview.md#惰性检查)。通过在事务提交时再进行批量检查，TiDB 能够减少网络开销、提升性能。例如：
 
-{{< copyable "sql" >}}
-
 ```sql
 DROP TABLE IF EXISTS users;
 CREATE TABLE users (
@@ -97,8 +85,6 @@ INSERT INTO users (username) VALUES ('dave'), ('sarah'), ('bill');
 
 乐观事务模式下且 `tidb_constraint_check_in_place=0`：
 
-{{< copyable "sql" >}}
-
 ```sql
 BEGIN OPTIMISTIC;
 INSERT INTO users (username) VALUES ('jane'), ('chris'), ('bill');
@@ -110,8 +96,6 @@ Query OK, 3 rows affected (0.00 sec)
 Records: 3  Duplicates: 0  Warnings: 0
 ```
 
-{{< copyable "sql" >}}
-
 ```sql
 INSERT INTO users (username) VALUES ('steve'),('elizabeth');
 ```
@@ -120,8 +104,6 @@ INSERT INTO users (username) VALUES ('steve'),('elizabeth');
 Query OK, 2 rows affected (0.00 sec)
 Records: 2  Duplicates: 0  Warnings: 0
 ```
-
-{{< copyable "sql" >}}
 
 ```sql
 COMMIT;
@@ -145,8 +127,6 @@ CREATE TABLE users (
 INSERT INTO users (username) VALUES ('dave'), ('sarah'), ('bill');
 ```
 
-{{< copyable "sql" >}}
-
 ```sql
 SET tidb_constraint_check_in_place = 1;
 ```
@@ -154,8 +134,6 @@ SET tidb_constraint_check_in_place = 1;
 ```
 Query OK, 0 rows affected (0.00 sec)
 ```
-
-{{< copyable "sql" >}}
 
 ```sql
 BEGIN OPTIMISTIC;
@@ -165,24 +143,19 @@ BEGIN OPTIMISTIC;
 Query OK, 0 rows affected (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
-
 ```sql
 INSERT INTO users (username) VALUES ('jane'), ('chris'), ('bill');
 ```
 
 ```
 ERROR 1062 (23000): Duplicate entry 'bill' for key 'username'
-..
 ```
 
 第一条 `INSERT` 语句导致了重复键错误。这会造成额外的网络通信开销，并可能降低插入操作的吞吐量。
 
 ### 悲观事务
 
-在 TiDB 的悲观事务中，默认在每一条语句加锁时对唯一约束进行检查：
-
-{{< copyable "sql" >}}
+在 TiDB 的悲观事务中，默认在每条语句执行时对该语句需要的锁进行加锁，并在加锁时进行该语句需要的唯一约束检查：
 
 ```sql
 DROP TABLE IF EXISTS users;
@@ -193,7 +166,7 @@ CREATE TABLE users (
 );
 INSERT INTO users (username) VALUES ('dave'), ('sarah'), ('bill');
 
-BEGIN;
+BEGIN PESSIMISTIC;
 INSERT INTO users (username) VALUES ('jane'), ('chris'), ('bill');
 ```
 
@@ -201,100 +174,95 @@ INSERT INTO users (username) VALUES ('jane'), ('chris'), ('bill');
 ERROR 1062 (23000): Duplicate entry 'bill' for key 'username'
 ```
 
-悲观事务可以通过设置变量 [`tidb_constraint_check_in_place_pessimistic`](/system-variables.md#tidb_constraint_check_in_place_pessimistic) 为 `OFF` 来推迟唯一约束的检查到下一次对该唯一索引项加锁时或事务提交时，同时也跳过这个悲观锁加锁，以获得更好的性能。此时需要注意：
+悲观事务可以通过设置变量 [`tidb_constraint_check_in_place_pessimistic`](/system-variables.md#tidb_constraint_check_in_place_pessimistic) 为 `0` 来推迟唯一约束的检查到下一次对该唯一索引项加锁时或事务提交时，同时也跳过这个悲观锁加锁，以获得更好的性能。此时需要注意：
 
-1. 由于唯一性约束被推迟检查，读取时可能读到不满足唯一性约束的结果，执行 `COMMIT` 语句时可能返回 `Duplicate entry` 错误。如果返回 `Duplicate entry` 错误，该事务最后一定会回滚。
+- 由于唯一性约束被推迟检查，读取时可能读到不满足唯一性约束的结果，执行 `COMMIT` 语句时可能返回 `Duplicate entry` 错误。如果返回 `Duplicate entry` 错误，该事务最后一定会回滚。
 
-下面这个例子跳过了对 bill 的加锁，因此可以读到不满足唯一性约束的结果：
+    下面这个例子跳过了对 bill 的加锁，因此可以读到不满足唯一性约束的结果：
 
-{{< copyable "sql" >}}
+    ```sql
+    SET tidb_constraint_check_in_place_pessimistic = 0;
+    BEGIN PESSIMISTIC;
+    INSERT INTO users (username) VALUES ('jane'), ('chris'), ('bill'); -- Query OK, 3 rows affected
+    SELECT * FROM users FOR UPDATE;
+    ```
 
-```sql
-SET tidb_constraint_check_in_place_pessimistic = OFF;
-BEGIN PESSIMISTIC;
-INSERT INTO users (username) VALUES ('jane'), ('chris'), ('bill'); -- Query OK, 3 rows affected
-SELECT * FROM users FOR UPDATE;
-```
+    读到了不满足唯一性约束的结果：有两个 bill。
 
-读到了不满足唯一性约束的结果：有两个 bill。
+    ```sql
+    +----+----------+
+    | id | username |
+    +----+----------+
+    | 1  | dave     |
+    | 2  | sarah    |
+    | 3  | bill     |
+    | 7  | jane     |
+    | 8  | chris    |
+    | 9  | bill     |
+    +----+----------+
+    ```
 
-```sql
-+----+----------+
-| id | username |
-+----+----------+
-| 1  | dave     |
-| 2  | sarah    |
-| 3  | bill     |
-| 7  | jane     |
-| 8  | chris    |
-| 9  | bill     |
-+----+----------+
-```
+    ```sql
+    COMMIT;
+    ```
 
-```sql
-COMMIT;
-```
+    ```
+    ERROR 1062 (23000): Duplicate entry 'bill' for key 'username'
+    ```
 
-```
-ERROR 1062 (23000): Duplicate entry 'bill' for key 'username'
-```
+- 关闭该变量时，`COMMIT` 语句可能会返回 `Write conflict` 错误或 `Duplicate entry` 错误，两种错误都意味着事务回滚。
 
-2. 关闭该变量时，`COMMIT` 语句可能会返回 `Write conflict` 错误或 `Duplicate entry` 错误，两种错误都意味着事务回滚。
+    例如上面的例子，在提交时进行唯一约束检查，该事务报出了 `Duplicate entry` 错误并回滚。
 
-例如上面的例子，在提交时进行唯一约束检查，该事务报出了 `duplicate entry` 错误并回滚。
+    在下面这个例子中，在有并发事务写入时，跳过悲观锁可能导致提交时报出 `Write conflict` 错误并回滚。
 
-在下面这个例子中，在有并发事务写入时，跳过悲观锁可能导致提交时报出 write conflict 错误并回滚。
+    ```sql
+    DROP TABLE IF EXISTS users;
+    CREATE TABLE users (
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    username VARCHAR(60) NOT NULL,
+    UNIQUE KEY (username)
+    );
 
+    SET tidb_constraint_check_in_place_pessimistic = 0;
+    BEGIN PESSIMISTIC;
+    INSERT INTO users (username) VALUES ('jane'), ('chris'), ('bill'); -- Query OK, 3 rows affected
+    ```
 
-```sql
-DROP TABLE IF EXISTS users;
-CREATE TABLE users (
- id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
- username VARCHAR(60) NOT NULL,
- UNIQUE KEY (username)
-);
+    然后另一个会话中写入了 bill：
 
-SET tidb_constraint_check_in_place_pessimistic = OFF;
-BEGIN PESSIMISTIC;
-INSERT INTO users (username) VALUES ('jane'), ('chris'), ('bill'); -- Query OK, 3 rows affected
-```
+    ```sql
+    INSERT INTO users (username) VALUES ('bill'); -- Query OK, 1 row affected
+    ```
 
-然后另一个会话中写入了 bill：
+    在第一个会话中提交，会报出 `Write conflict` 错误。
 
-```sql
-INSERT INTO users (username) VALUES ('bill'); -- Query OK, 1 row affected
-```
+    ```sql
+    COMMIT;
+    ```
 
-在第一个会话中提交，会报出 write conflict 错误。
+    ```
+    ERROR 9007 (HY000): Write conflict, txnStartTS=435688780611190794, conflictStartTS=435688783311536129, conflictCommitTS=435688783311536130, key={tableID=74, indexID=1, indexValues={bill, }} primary={tableID=74, indexID=1, indexValues={bill, }} [try again later]
+    ```
 
-```sql
-COMMIT;
-```
+- 关闭该变量会导致悲观事务中可能报出错误 `8147: LazyUniquenessCheckFailure`。返回该错误时当前事务回滚，而不是像其它一些错误仅仅回滚报错的语句。例如一个普通 DML 语句报出 `1062: Duplicate entry` 错误时，只会回滚该 DML 语句，而不会回滚整个事务。
 
-```
-ERROR 9007 (HY000): Write conflict, txnStartTS=435688780611190794, conflictStartTS=435688783311536129, conflictCommitTS=435688783311536130, key={tableID=74, indexID=1, indexValues={bill, }} primary={tableID=74, indexID=1, indexValues={bill, }} [try again later]
-```
+    例如在跳过一次加锁后，在另一个语句中对该唯一索引加锁并检查，即会在该语句报错：
 
-3. 关闭该变量会导致悲观事务中可能报出一个新的错误类型 `8174: LazyUniquenessCheckFailure`，返回该错误时当前事务 abort，而不是像其它一些错误仅仅回滚报错的语句。
+    ```sql
+    SET tidb_constraint_check_in_place_pessimistic = 0;
+    BEGIN PESSIMISTIC;
+    INSERT INTO users (username) VALUES ('jane'), ('chris'), ('bill'); -- Query OK, 3 rows affected
+    DELETE FROM users where username = 'bill';
+    ```
 
-例如在跳过一次加锁后，在另一个语句中对该唯一索引加锁并检查，即会在该语句报错：
-
-```sql
-SET tidb_constraint_check_in_place_pessimistic = OFF;
-BEGIN PESSIMISTIC;
-INSERT INTO users (username) VALUES ('jane'), ('chris'), ('bill'); -- Query OK, 3 rows affected
-DELETE FROM users where username = 'bill';
-```
-
-```
-ERROR 8174 (23000): transaction aborted because lazy uniqueness check is enabled and an error occurred: [kv:1062]Duplicate entry 'bill' for key 'username'
-```
+    ```
+    ERROR 8147 (23000): transaction aborted because lazy uniqueness check is enabled and an error occurred: [kv:1062]Duplicate entry 'bill' for key 'username'
+    ```
 
 ## 主键约束
 
 与 MySQL 行为一样，主键约束包含了唯一约束，即创建了主键约束相当于拥有了唯一约束。此外，TiDB 其他的主键约束规则也与 MySQL 相似。例如：
-
-{{< copyable "sql" >}}
 
 ```sql
 CREATE TABLE t1 (a INT NOT NULL PRIMARY KEY);
@@ -304,8 +272,6 @@ CREATE TABLE t1 (a INT NOT NULL PRIMARY KEY);
 Query OK, 0 rows affected (0.12 sec)
 ```
 
-{{< copyable "sql" >}}
-
 ```sql
 CREATE TABLE t2 (a INT NULL PRIMARY KEY);
 ```
@@ -314,8 +280,6 @@ CREATE TABLE t2 (a INT NULL PRIMARY KEY);
 ERROR 1171 (42000): All parts of a PRIMARY KEY must be NOT NULL; if you need NULL in a key, use UNIQUE instead
 ```
 
-{{< copyable "sql" >}}
-
 ```sql
 CREATE TABLE t3 (a INT NOT NULL PRIMARY KEY, b INT NOT NULL PRIMARY KEY);
 ```
@@ -323,8 +287,6 @@ CREATE TABLE t3 (a INT NOT NULL PRIMARY KEY, b INT NOT NULL PRIMARY KEY);
 ```
 ERROR 1068 (42000): Multiple primary key defined
 ```
-
-{{< copyable "sql" >}}
 
 ```sql
 CREATE TABLE t4 (a INT NOT NULL, b INT NOT NULL, PRIMARY KEY (a,b));
@@ -342,8 +304,6 @@ Query OK, 0 rows affected (0.10 sec)
 
 除上述规则外，TiDB 目前仅支持对 `NONCLUSTERED` 的主键进行添加和删除操作。例如：
 
-{{< copyable "sql" >}}
-
 ```sql
 CREATE TABLE t5 (a INT NOT NULL, b INT NOT NULL, PRIMARY KEY (a,b) CLUSTERED);
 ALTER TABLE t5 DROP PRIMARY KEY;
@@ -352,8 +312,6 @@ ALTER TABLE t5 DROP PRIMARY KEY;
 ```
 ERROR 8200 (HY000): Unsupported drop primary key when the table is using clustered index
 ```
-
-{{< copyable "sql" >}}
 
 ```sql
 CREATE TABLE t5 (a INT NOT NULL, b INT NOT NULL, PRIMARY KEY (a,b) NONCLUSTERED);
@@ -387,8 +345,6 @@ CREATE TABLE orders (
 );
 ```
 
-{{< copyable "sql" >}}
-
 ```sql
 SELECT table_name, column_name, constraint_name, referenced_table_name, referenced_column_name
 FROM information_schema.key_column_usage WHERE table_name IN ('users', 'orders');
@@ -406,8 +362,6 @@ FROM information_schema.key_column_usage WHERE table_name IN ('users', 'orders')
 ```
 
 TiDB 也支持使用 `ALTER TABLE` 命令来删除外键 (`DROP FOREIGN KEY`) 和添加外键 (`ADD FOREIGN KEY`)：
-
-{{< copyable "sql" >}}
 
 ```sql
 ALTER TABLE orders DROP FOREIGN KEY fk_user_id;
