@@ -656,7 +656,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 默认值：`107374182400` (100 GiB)
 - 范围：`[107374182400, 1125899906842624]` ([100 GiB, 1 PiB])
 - 单位：字节
-- 这个变量用来设置 `ADD INDEX` 回填过程中本地存储的使用限制。
+- 这个变量仅在 `tidb_ddl_enable_fast_reorg` 开启的情况下生效，用于设置创建索引的回填过程中本地存储空间的使用限制。
 
 ### `tidb_default_string_match_selectivity` <span class="version-mark">从 v6.2.0 版本开始引入</span>
 
