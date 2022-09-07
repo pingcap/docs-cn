@@ -575,7 +575,7 @@ Empty set (0.00 sec)
 
 例如，`ALTER TABLE partitioned_table EXCHANGE PARTITION p1 WITH TABLE non_partitioned_table` 交换的是 `p1` 分区的 `non_partitioned_table` 表和 `partitioned_table` 表。
 
-确保要交换入分区中的所有行与分区定义匹配；否则，你将无法找到这些行，并导致意外情况出现。
+确保要交换入分区中的所有行与分区定义匹配；否则，交换将失败。
 
 请注意 TiDB 有一些专有特性，当表结构中包含这些特性时，在 TiDB 中使用 `EXCHANGE PARTITION` 功能不仅需要满足 [MySQL 的 EXCHANGE PARTITION 条件](https://dev.mysql.com/doc/refman/8.0/en/partitioning-management-exchange.html)，还要保证这些专有特性对于分区表和非分区表上定义相同，这些专有特性包括：
 
