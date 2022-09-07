@@ -27,7 +27,7 @@ TiDB Lightning 支持从以下位置读取：
 
 ![TiDB Lightning 整体架构](/media/tidb-lightning-architecture.png)
 
-TiDB Lightning 目前支持两种导入方式，通过`backend`配置区分。不同的模式决定 TiDB Lightning 如何将数据导入到目标 TiDB 集群。
+TiDB Lightning 目前支持两种导入方式，通过 `backend` 配置区分。不同的模式决定 TiDB Lightning 如何将数据导入到目标 TiDB 集群。
 
 - [Physical Import Mode](/tidb-lightning/tidb-lightning-physical-import-mode.md)：TiDB Lightning 首先将数据编码成键值对并排序存储在本地临时目录，然后将这些键值对上传到各个 TiKV 节点，最后调用 TiKV Ingest 接口将数据插入到 TiKV 的 RocksDB 中。如果用于初始化导入，请优先考虑使用 Physical Import Mode，其拥有较高的导入速度。Physical Import Mode 对应的后端模式为 `local`。
 
