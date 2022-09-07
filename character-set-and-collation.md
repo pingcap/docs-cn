@@ -469,16 +469,20 @@ INSERT INTO t VALUES ('a');
 ```
 
 ```sql
-Query OK, 1 row affected # In TiDB, it is successfully executed. In MySQL, because utf8mb4_general_ci is case-insensitive, the `Duplicate entry 'a'` error is reported.
+Query OK, 1 row affected
 ```
+
+In TiDB, the preceding statement is successfully executed. In MySQL, because `utf8mb4_general_ci` is case-insensitive, the `Duplicate entry 'a'` error is reported.
 
 ```sql
 INSERT INTO t1 VALUES ('a ');
 ```
 
 ```sql
-Query OK, 1 row affected # In TiDB, it is successfully executed. In MySQL, because comparison is performed after the spaces are filled in, the `Duplicate entry 'a '` error is returned.
+Query OK, 1 row affected
 ```
+
+In TiDB, the preceding statement is successfully executed. In MySQL, because comparison is performed after the spaces are filled in, the `Duplicate entry 'a '` error is returned.
 
 ### New framework for collations
 
