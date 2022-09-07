@@ -131,9 +131,9 @@ COMMIT;
 ERROR 1062 (23000): Duplicate entry 'bill' for key 'username'
 ```
 
-在乐观事务的示例中，唯一约束的检查推迟到事务提交时才进行。由于 `bill` 值已经存在，这一行为导致了重复键错误。
+在以上乐观事务的示例中，唯一约束的检查推迟到事务提交时才进行。由于 `bill` 值已经存在，这一行为导致了重复键错误。
 
-你可通过设置 `tidb_constraint_check_in_place` 为 `1` 停用此行为（该变量设置对悲观事务无效，悲观事务通过 `tidb_constraint_check_in_place_pessimistic` 设置）。当 `tidb_constraint_check_in_place` 设置为 `1` 时，则会在执行语句时就对唯一约束进行检查。例如：
+你可通过设置 [`tidb_constraint_check_in_place`](/system-variables.md#tidb_constraint_check_in_place) 为 `1` 停用此行为（该变量仅适用于乐观事务，悲观事务需通过 `tidb_constraint_check_in_place_pessimistic` 设置）。当 `tidb_constraint_check_in_place` 设置为 `1` 时，TiDB 会在执行语句时就对唯一约束进行检查。例如：
 
 ```sql
 DROP TABLE IF EXISTS users;
@@ -203,7 +203,7 @@ ERROR 1062 (23000): Duplicate entry 'bill' for key 'username'
 
 悲观事务可以通过设置变量 [`tidb_constraint_check_in_place_pessimistic`](/system-variables.md#tidb_constraint_check_in_place_pessimistic) 为 `OFF` 来推迟唯一约束的检查到下一次对该唯一索引项加锁时或事务提交时，同时也跳过这个悲观锁加锁，以获得更好的性能。此时需要注意：
 
-1. 由于唯一性约束被推迟检查，读取时可能读到不满足唯一性约束的结果。如果读到这样的结果，该事务最后一定会回滚。
+1. 由于唯一性约束被推迟检查，读取时可能读到不满足唯一性约束的结果，执行 `COMMIT` 语句时可能返回 `Duplicate entry` 错误。如果返回 `Duplicate entry` 错误，该事务最后一定会回滚。
 
 下面这个例子跳过了对 bill 的加锁，因此可以读到不满足唯一性约束的结果：
 
@@ -239,7 +239,7 @@ COMMIT;
 ERROR 1062 (23000): Duplicate entry 'bill' for key 'username'
 ```
 
-2. 关闭该变量时，commit 语句可能会报出 `write conflict` 错误或 `duplicate entry` 错误，两种错误都意味着事务回滚。
+2. 关闭该变量时，`COMMIT` 语句可能会返回 `Write conflict` 错误或 `Duplicate entry` 错误，两种错误都意味着事务回滚。
 
 例如上面的例子，在提交时进行唯一约束检查，该事务报出了 `duplicate entry` 错误并回滚。
 

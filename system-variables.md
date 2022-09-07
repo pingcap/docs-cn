@@ -588,13 +588,13 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 悲观事务模式中的行为由 `tidb_constraint_check_in_place_pessimistic` 单独控制。
 
-### `tidb_constraint_check_in_place_pessimistic`
+### `tidb_constraint_check_in_place_pessimistic` <span class="version-mark">从 v6.3.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 默认值：`ON`
 - 该变量仅适用于悲观事务模型。当这个变量设置为 `OFF` 时，唯一索引的重复值检查会被推迟到下一次需要对这个索引加锁的语句，或事务提交时才进行。这有助于提高性能，但对于某些应用，可能导致非预期的行为。详情见[约束](/constraints.md)。
-- 关闭该变量会导致悲观事务中可能报出一个新的错误类型 `LazyUniquenessCheckFailure`，返回该错误时当前事务 abort，而像其他错误的仅仅回滚报错的语句。
+- 关闭该变量可能会导致悲观事务中返回 `LazyUniquenessCheckFailure` 报错，返回该错误时当前事务 abort，而像其他错误的仅仅回滚报错的语句。
 - 关闭该变量时，commit 语句可能会报出 `write conflict` 错误或 `duplicate entry` 错误，两种错误都意味着事务回滚。
 
     - 悲观事务模型下将 `tidb_constraint_check_in_place_pessimistic` 设置为 0：
