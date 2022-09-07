@@ -2310,6 +2310,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 默认值 `-1` 表示使用 `tidb_executor_concurrency` 的值。
 
 ### `tiflash_fastscan` <span class="version-mark">从 v6.3.0 版本开始引入</span>
+
 - 作用域：SESSION | GLOBAL
 - 默认值：`false`
 - 范围：`true | false`
