@@ -78,6 +78,12 @@ TiDB 版本：6.3.0-DMR
 
     [用户文档](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) [#35983](https://github.com/pingcap/tidb/issues/35983) @[benjamin2037](https://github.com/benjamin2037)
 
+* TiDB 支持更多正则表达式
+
+    TiDB 新增支持 `REGEXP_SUBSTR`、`REGEXP_REPLACE`、`REGEXP_LIKE` 和 `REGEXP_INSTR` 4 个正则表达式函数，支持基于模式的模糊查询和正则替换等操作。
+
+    [用户文档](/functions-and-operators/string-functions.md#支持的函数) [#](https://github.com/pingcap/tidb/issues/) @[windtalker](https://github.com/windtalker)
+
 ### 安全
 
 * 静态加密 TiKV 支持国密算法SM4
@@ -295,7 +301,6 @@ TiDB 版本：6.3.0-DMR
 + TiDB
 
     - note [#issue]() @[贡献者 GitHub ID]()
-    - 支持 ACCOUNT LOCK/UNLOCK [#37051](https://github.com/pingcap/tidb/issues/37051) @[CbcWestwolf](https://github.com/CbcWestwolf)
 
 + TiKV
 
