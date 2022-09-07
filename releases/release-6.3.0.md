@@ -37,7 +37,7 @@ TiDB 版本：6.3.0-DMR
 
 * 分区表 EXCHANGE PARTITION 功能 GA
 
-    EXCHANGE PARTITION 功能通过性能和稳定性提升，由实验功能转为正式功能。 
+    EXCHANGE PARTITION 功能通过性能和稳定性提升，由实验功能转为正式功能。
 
     [用户文档]() [#35996](https://github.com/pingcap/tidb/issues/35996) @[ymkzpx](https://github.com/ymkzpx)
 
@@ -102,7 +102,7 @@ TiDB 版本：6.3.0-DMR
 
     用户密码的身份验证需要客户端的支持，现在 JDBC 支持国密算法 SM3 的能力，用户可以通过 JDBC 连接到 TiDB 使用国密算法 SM3 的身份验证能力。
 
-    [用户文档]() []() @[]()
+    [用户文档]() []() @[lastincisor](https://github.com/lastincisor)
 
 ### 可观测性
 
@@ -122,7 +122,7 @@ TiDB 版本：6.3.0-DMR
 
     新版本将死锁的历史记录加入到了 Dashboard 中。 当用户通过 Dashboard 的慢日志等手段发现某些 SQL 等待锁的时间较长的时候，Dashboard 上的死锁的历史记录有助于对问题的分析，提供了诊断的易用性。
 
-     [用户文档]() [#issue]() @[贡献者 GitHub ID]()
+     [用户文档]() [#issue]() @[cfzjywxk](https://github.com/cfzjywxk)
 
 ### 性能
 
@@ -152,13 +152,13 @@ TiDB 版本：6.3.0-DMR
 
     TiDB 在新版本中引入了新的连接类型 Null Aware Anti Join (NAAJ)。 NAAJ 在集合操作时能够感知集合是否为空，或是否有空值，优化了一部分操作比如`IN`、`= ANY` 的执行效率，提升 SQL 性能。
 
-    [用户文档](/explain-subqueries.md) [#issue]() @[贡献者 GitHub ID]()
+    [用户文档](/explain-subqueries.md) [#issue]() @[Arenatlx](https://github.com/Arenatlx)
 
 * 增加优化器 hint 控制哈希连接的驱动端
 
     在新版本中，优化器引入了两个新的 hint `HASH_JOIN_BUILD()` 和 `HASH_JOIN_PROBE()` 用来指定哈希连接时的驱动端和被驱动端。 这两个新的 hint 与原有的 `LEADING()` 和 `HASH_JOIN` 兼容，可以组合使用，从而达到细粒度的执行计划控制。 在没有选到最优执行计划的情况下，提供了更丰富的干预手段。
 
-    [用户文档](/explain-subqueries.md) [#issue]() @[贡献者 GitHub ID]()
+    [用户文档](/explain-subqueries.md) [#issue]() @[Reminiscent](https://github.com/Reminiscent)
 
 ### 事务
 
@@ -166,13 +166,13 @@ TiDB 版本：6.3.0-DMR
 
     提供系统变量 `tidb_constraint_check_in_place_pessimistic` 来控制悲观事务中唯一约束检查的时间点。当变量设为 `ON` 时，TiDB 会把加锁操作和唯一约束检测推迟到必要的时候进行，以此提升批量DML操作的性能。
 
-    [用户文档](/constraints.md#唯一约束) [#36579](https://github.com/pingcap/tidb/issues/36579) @[贡献者 GitHub ID]()
+    [用户文档](/constraints.md#唯一约束) [#36579](https://github.com/pingcap/tidb/issues/36579) @[ekexium](https://github.com/ekexium)
 
 * 优化 Read-Committed 隔离级别中对 TSO 的获取
 
-    在 Read-Committed 隔离级别中， 引入新的系统变量控制语句对 TSO 的获取方式。 在Plan Cache 命中的情况下，通过降低对 TSO 的获取频率提升批量 DML 的执行效率，降低跑批类任务的执行时间。
+    在 Read-Committed 隔离级别中， 引入新的系统变量控制语句对 TSO 的获取方式。 在 Plan Cache 命中的情况下，通过降低对 TSO 的获取频率提升批量 DML 的执行效率，降低跑批类任务的执行时间。
 
-    [用户文档]() [#36812](https://github.com/pingcap/tidb/issues/36812) @[贡献者 GitHub ID]()
+    [用户文档]() [#36812](https://github.com/pingcap/tidb/issues/36812) @[TonsnakeLin](https://github.com/TonsnakeLin)
 
 ### 稳定性
 
@@ -180,7 +180,7 @@ TiDB 版本：6.3.0-DMR
 
     改进算法，提供对磁盘读 I/O 的动态限流能力。
 
-    [用户文档](/tikv-configuration-file.md#storageio-rate-limit) [#10867](https://github.com/tikv/tikv/issues/10867) @[贡献者 GitHub ID]()
+    [用户文档](/tikv-configuration-file.md#storageio-rate-limit) [#10867](https://github.com/tikv/tikv/issues/10867) @[tabokie](https://github.com/tabokie)
 
 * 优化 `IN` 条件元素过多引发的大量内存消耗
 
@@ -192,13 +192,13 @@ TiDB 版本：6.3.0-DMR
 
     在 v5.3.0 版本时，TiDB 引入系统变量 `tidb_enable_pseudo_for_outdated_stats` 控制优化器过期的加载策略，默认为 `ON`，即保持旧版本行为不变：当 SQL 涉及的对象的统计信息过期时，优化器认为该表上除总行数以外的统计信息不再可靠，转而使用 pseudo 统计信息。 经过一系列测试和用户实际场景分析， TiDB 在新版本中将  `tidb_enable_pseudo_for_outdated_stats` 的默认值改为 `OFF`，即使统计信息过期，优化器也仍会使用该表上的统计信息，这有利于执行计划的稳定性。
 
-    [用户文档]() [#issue]() @[贡献者 GitHub ID]()
+    [用户文档]() [#issue]() @[xuyifangreeneyes](https://github.com/xuyifangreeneyes)
 
 * TiKV Titan 关闭功能正式发布
 
     正式支持对在线 TiKV 节点关闭 Titan 引擎。
 
-    [用户文档](/titan-configuration#disable-titan) [#issue]() @[贡献者 GitHub ID]()
+    [用户文档](/titan-configuration#disable-titan) [#issue]() @[tabokie](https://github.com/tabokie)
 
 ### 易用性
 
@@ -230,15 +230,11 @@ TiDB 版本：6.3.0-DMR
 
 * 功能标题
 
-    功能描述
-
-    [用户文档]() [#issue]() @[贡献者 GitHub ID]()
-
 * TiDB Lightning 支持将 Apache Hive 导出的 Parquet 文件导入到 TiDB
 
     TiDB Lightning 支持将 Apache Hive 导出的 Parquet 文件导入到 TiDB ，从而实现 Hive 到 TiDB 之间的数据流转。
 
-    [用户文档]() [#issue]() @[贡献者 GitHub ID]()
+    [用户文档]() [#issue]() @[buchuitoudegou](https://github.com/buchuitoudegou)
 
 * DM支持对同步到TiDB的表增加字段并对该字段赋值
 
@@ -252,21 +248,13 @@ TiDB 版本：6.3.0-DMR
 
     为了提供一套 TiDB 集群的数据能复制到多个不同的异地数据系统的能力，自 v6.3.0 开始，TiCDC 节点可以部署到多个不同的异地的机房中，来分别负责对应机房的数据复制任务，以支撑各种复杂的异地数据复制使用场景和部署形态。
 
-    [用户文档]() [#issue]() @[贡献者 GitHub ID]()
+    [用户文档]() [#issue]() @[sdojjy](https://github.com/sdojjy)
 
 * TiCDC 支持维护上下游数据一致性快照（Sync point）
 
     在灾备复制场景下，TiCDC 支持周期性的维护一个下游数据快照，使得该下游快照能保持与上游数据的快照一致性。借助此能力，TiCDC 能更好的匹配读写分离应用场景，帮助用户降本增效。
 
-    [用户文档]() [#issue]() @[贡献者 GitHub ID]()
-
-### 部署及运维
-
-* 功能标题
-
-    功能描述
-
-    [用户文档]() [#issue]() @[贡献者 GitHub ID]()
+    [用户文档]() [#issue]() @[asddongmen](https://github.com/asddongmen)
 
 ## 兼容性变更
 
