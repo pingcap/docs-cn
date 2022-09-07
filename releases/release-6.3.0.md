@@ -136,7 +136,7 @@ TiDB 版本：6.3.0-DMR
 
 * TiKV 日志循环使用
 
-    TiKV Raft Engine 默认开启日志循环功能。该特性优化了Raft Engine的日志写入过程，减少了 raft 日志追加过程中的长尾，提升了 TiKV 在 write 负载下的性能。
+    TiKV Raft Engine 默认开启日志循环功能。该特性显著降低 Raft 日志追加过程中的长尾延迟，提升了 TiKV 写入负载下的性能。
 
     [用户文档](/tikv-configuration-file.md#enable-log-recycle-new-in-v630) [raft-engine#214](https://github.com/tikv/raft-engine/issues/214) @[LykxSassinator](https://github.com/LykxSassinator)
 
