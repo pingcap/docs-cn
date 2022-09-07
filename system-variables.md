@@ -2392,6 +2392,19 @@ explain select * from t where age=5;
 - 默认值：`OFF`
 - 指定是否允许优化器将 `Projection` 算子下推到 TiKV 或者 TiFlash。
 
+### `tidb_opt_range_mem_quota` <span class="version-mark">从 v6.3.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 默认值：`67108864` (64 MiB)
+- 范围：`[0, 9223372036854775807]`
+- 单位：字节
+- 该变量是优化器构造扫描范围的内存最大限制。当该变量为 `0` 时，表示对扫描范围没有内存限制。当优化器发现构造精确的扫描范围会超出内存限制，优化器会使用更宽松的扫描范围（比如 `[[NULL,+inf]]`）。如果发现执行计划中未使用精确的扫描范围，可以调大该变量让优化器构造精确的扫描范围。
+
+```sql
+
+```
+
 ### `tidb_opt_scan_factor`
 
 - 作用域：SESSION | GLOBAL
