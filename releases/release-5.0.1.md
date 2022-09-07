@@ -12,12 +12,12 @@ TiDB 版本：5.0.1
 
 + TiDB 配置文件
 
-    - [`committer-concurrency`](/tidb-configuration-file.md#committer-concurrency) 配置项的默认值由 16 改成 128。
+    - `committer-concurrency` 配置项的默认值由 16 改成 128。
 
 ## 改进提升
 
 + TiDB
-    
+
     - 支持 `VITESS_HASH()` 函数 [#23915](https://github.com/pingcap/tidb/pull/23915)
 
 + TiKV

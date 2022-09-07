@@ -8,6 +8,10 @@ aliases: ['/docs-cn/dev/auto-increment/']
 
 本文介绍列属性 `AUTO_INCREMENT` 的基本概念、实现原理、自增相关的特性，以及使用限制。
 
+> **注意：**
+>
+> 使用 `AUTO_INCREMENT` 可能会给生产环境带热点问题，因此推荐使用 [`AUTO_RANDOM`](/auto-random.md) 代替。详情请参考 [TiDB 热点问题处理](/troubleshoot-hot-spot-issues.md#tidb-热点问题处理)。
+
 ## 基本概念
 
 `AUTO_INCREMENT` 是用于自动填充缺省列值的列属性。当 `INSERT` 语句没有指定 `AUTO_INCREMENT` 列的具体值时，系统会自动地为该列分配一个值。
@@ -122,11 +126,54 @@ Records: 3  Duplicates: 0  Warnings: 0
 3 rows in set (0.00 sec)
 ```
 
+TiDB 能保证自增值的单调性，但并不能保证其连续性。参考以下示例：
+
+```sql
+CREATE TABLE t (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, a VARCHAR(10), cnt INT NOT NULL DEFAULT 1, UNIQUE KEY (a));
+INSERT INTO t (a) VALUES ('A'), ('B');
+SELECT * FROM t;
+INSERT INTO t (a) VALUES ('A'), ('C') ON DUPLICATE KEY UPDATE cnt = cnt + 1;
+SELECT * FROM t;
+```
+
+```sql
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 2 rows affected (0.00 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
++----+------+-----+
+| id | a    | cnt |
++----+------+-----+
+|  1 | A    |   1 |
+|  2 | B    |   1 |
++----+------+-----+
+2 rows in set (0.00 sec)
+
+Query OK, 3 rows affected (0.00 sec)
+Records: 2  Duplicates: 1  Warnings: 0
+
++----+------+-----+
+| id | a    | cnt |
++----+------+-----+
+|  1 | A    |   2 |
+|  2 | B    |   1 |
+|  4 | C    |   1 |
++----+------+-----+
+3 rows in set (0.00 sec)
+```
+
+在以上示例 `INSERT INTO t (a) VALUES ('A'), ('C') ON DUPLICATE KEY UPDATE cnt = cnt + 1;` 语句中，自增值 `3` 被分配为 `A` 键对应的 `id` 值，但实际上 `3` 并未作为 `id` 值插入进表中。这是因为该 `INSERT` 语句包含一个重复键 `A`，使得自增序列不连续，出现了间隙。该行为尽管与 MySQL 不同，但仍是合法的。MySQL 在其他情况下也会出现自增序列不连续的情况，例如事务被中止和回滚时。
+
+## AUTO_ID_CACHE
+
 如果在另一台服务器上执行插入操作，那么 `AUTO_INCREMENT` 值的顺序可能会剧烈跳跃，这是由于每台服务器都有各自缓存的 `AUTO_INCREMENT` 自增值。
 
 {{< copyable "sql" >}}
 
 ```sql
+CREATE TABLE t (a INT PRIMARY KEY AUTO_INCREMENT, b TIMESTAMP NOT NULL DEFAULT NOW());
+INSERT INTO t (a) VALUES (NULL), (NULL), (NULL);
 INSERT INTO t (a) VALUES (NULL);
 SELECT * FROM t;
 ```

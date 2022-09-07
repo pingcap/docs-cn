@@ -16,7 +16,7 @@ aliases: ['/docs-cn/tidb-data-migration/dev/deploy-a-dm-cluster-using-ansible/']
 
 ## 前提条件
 
-当 DM 执行全量数据复制任务时，每个 DM-worker 只绑定一个上游数据库。DM-worker 首先在上游导出全部数据，然后将数据导入下游数据库。因此，DM-worker 的主机需要有足够的存储空间，具体存储路径在后续创建迁移任务时指定。
+当 DM 执行全量数据复制任务时，每个 DM-worker 只绑定一个上游数据库。DM-worker 首先在上游导出全部数据，然后将数据导入下游数据库。因此，DM-worker 的主机空间需要容纳所有要导出的上游表，具体存储路径在后续创建迁移任务时指定。
 
 另外，部署 DM 集群需参照 [DM 集群软硬件环境需求](/dm/dm-hardware-and-software-requirements.md)，满足相应要求。
 

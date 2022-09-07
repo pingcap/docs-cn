@@ -7,7 +7,7 @@ aliases: ['/docs-cn/dev/grafana-tikv-dashboard/','/docs-cn/dev/reference/key-mon
 
 使用 TiUP 部署 TiDB 集群时，一键部署监控系统 (Prometheus & Grafana)，监控架构参见 [TiDB 监控框架概述](/tidb-monitoring-framework.md)。
 
-目前 Grafana Dashboard 整体分为 PD、TiDB、TiKV、Node\_exporter、Overview 等。
+目前 Grafana Dashboard 整体分为 PD、TiDB、TiKV、Node\_exporter、Overview、Performance\_overview 等。
 
 对于日常运维，我们通过观察 **TiKV-Details** 面板上的指标，可以了解 TiKV 当前的状态。根据[性能地图](https://asktug.com/_/tidb-performance-map/#/)可以检查集群的状态是否符合预期。
 
@@ -41,8 +41,9 @@ aliases: ['/docs-cn/dev/grafana-tikv-dashboard/','/docs-cn/dev/reference/key-mon
 - gRPC message error：每个 TiKV 实例上 gRPC 消息发生错误的个数
 - Leader drop：每个 TiKV 实例上 drop leader 的个数
 - Leader missing：每个 TiKV 实例上 missing leader 的个数
+- Log Replication Rejected：每个 TiKV 实例上由于内存不足而拒绝 logappend 消息的个数
 
-![TiKV Dashboard - Errors metrics](/media/tikv-dashboard-errors.png)
+![TiKV Dashboard - Errors metrics](/media/tikv-dashboard-errors-v610.png)
 
 ## Server
 
@@ -355,15 +356,17 @@ aliases: ['/docs-cn/dev/grafana-tikv-dashboard/','/docs-cn/dev/reference/key-mon
 - Blob GC output file size：Titan GC 输出文件的大小
 - Blob GC file count：Titan GC 涉及的 blob 文件数量
 
-## Lock manager
+## Pessimistic Locking
 
-- Thread CPU：lock manager 的线程 CPU 使用率
-- Handled tasks：lock manager 处理的任务数量
+- Lock Manager Thread CPU：lock manager 的线程 CPU 使用率
+- Lock Manager Handled tasks：lock manager 处理的任务数量
 - Waiter lifetime duration：事务等待锁释放的时间
 - Wait table：wait table 的状态信息，包括锁的数量和等锁事务的数量
 - Deadlock detect duration：处理死锁检测请求的耗时
 - Detect error：死锁检测遇到的错误数量，包含死锁的数量
 - Deadlock detector leader：死锁检测器 leader 所在节点的信息
+- Total pessimistic locks memory size：内存悲观锁占用内存的总大小
+- In-memory pessimistic locking result：将悲观锁仅保存到内存的结果，其中 full 表示因为超过内存限制而无法将悲观锁保存至内存的次数
 
 ## Memory
 

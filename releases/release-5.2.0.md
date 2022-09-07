@@ -45,7 +45,7 @@ TiDB 版本：5.2.0
 | :---------- | :----------- | :----------- | :----------- |
 | TiDB 配置文件 | [`pessimistic-txn.deadlock-history-collect-retryable`](/tidb-configuration-file.md#deadlock-history-collect-retryable) | 新增 | 控制 [`INFORMATION\_SCHEMA.DEADLOCKS`](/information-schema/information-schema-deadlocks.md) 表中是否收集可重试的死锁错误信息。 |
 | TiDB 配置文件 | [`security.auto-tls`](/tidb-configuration-file.md#auto-tls) | 新增 | 控制 TiDB 启动时是否自动生成 TLS 证书，默认值为 `false`。 |
-| TiDB 配置文件 | [`stmt-summary.max-stmt-count`](/tidb-configuration-file.md#max-stmt-count) | 修改 | 表示 statement summary tables 中保存的 SQL 种类的最大数量。默认值从 `200` 修改为 `3000`。 |
+| TiDB 配置文件 | `stmt-summary.max-stmt-count` | 修改 | 表示 statement summary tables 中保存的 SQL 种类的最大数量。默认值从 `200` 修改为 `3000`。 | 
 | TiDB 配置文件 | `experimental.allow-expression-index`  | 废弃 | 废弃 TiDB 配置文件中`allow-expression-index` 配置项 |
 | TiKV 配置文件 | [`raftstore.cmd-batch`](/tikv-configuration-file.md#cmd-batch)  | 新增 | 对请求进行攒批的控制开关，开启后可显著提升写入性能。默认值为 `true`。 |
 | TiKV 配置文件 | [`raftstore.inspect-interval`](/tikv-configuration-file.md#inspect-interval)  | 新增 | TiKV 每隔一段时间会检测 Raftstore 组件的延迟情况，该配置项设置检测的时间间隔。当检测的延迟超过该时间，该检测会被记为超时。默认值为 `500ms`。|
@@ -53,7 +53,7 @@ TiDB 版本：5.2.0
 | TiKV 配置文件 | [`server.raft-client-queue-size`](/tikv-configuration-file.md#raft-client-queue-size)  | 新增 | 指定 TiKV 中发送 Raft 消息的缓冲区大小。默认值为 8192。 |
 | TiKV 配置文件 | [`storage.flow-control.enable`](/tikv-configuration-file.md#enable)  | 新增 | 表示是否开启 TiKV 流量控制机制。默认值为 `true`。 |
 | TiKV 配置文件 | [`storage.flow-control.memtables-threshold`](/tikv-configuration-file.md#memtables-threshold)  | 新增 | 当 KvDB 的 memtable 的个数达到该阈值时，流控机制开始工作。默认值为 5。 |
-| TiKV 配置文件 | [`storage.flow-control.l0-files-threshold`](/tikv-configuration-file.md#l0-files-threshold)  | 新增 | 当 KvDB 的 L0 文件个数达到该阈值时，流控机制开始工作。默认值为 9。 | 
+| TiKV 配置文件 | [`storage.flow-control.l0-files-threshold`](/tikv-configuration-file.md#l0-files-threshold)  | 新增 | 当 KvDB 的 L0 文件个数达到该阈值时，流控机制开始工作。默认值为 9。 |
 | TiKV 配置文件 | [`storage.flow-control.soft-pending-compaction-bytes-limit`](/tikv-configuration-file.md#soft-pending-compaction-bytes-limit)  | 新增 | 当 KvDB 的 pending compaction bytes 达到该阈值时，流控机制开始拒绝部分写入请求并报错。默认值为 "192GB"。 |
 | TiKV 配置文件 | [`storage.flow-control.hard-pending-compaction-bytes-limit`](/tikv-configuration-file.md#hard-pending-compaction-bytes-limit)  | 新增 | 当 KvDB 的 pending compaction bytes 达到该阈值时，流控机制开始拒绝所有写入请求并报错。默认值为 "1024GB"。 |
 
@@ -61,7 +61,7 @@ TiDB 版本：5.2.0
 
 - 升级前，请检查系统变量 [`tidb_evolve_plan_baselines`](/system-variables.md#tidb_evolve_plan_baselines-从-v40-版本开始引入) 的值是否为 `ON`。如果为 `ON`，需要将其改成 `OFF`，否则会导致升级失败。
 - v4.0 集群升级到 v5.2 集群后，[`tidb_multi_statement_mode`](/system-variables.md#tidb_multi_statement_mode-从-v4011-版本开始引入) 变量的默认值由 `WARN` 变为 `OFF`。
-- 升级前，请检查 TiDB 配置项 [`feedback-probability`](/tidb-configuration-file.md#feedback-probability) 的值。如果不为 0，升级后会触发 "panic in the recoverable goroutine" 报错，但不影响升级。
+- 升级前，请检查 TiDB 配置项 [`feedback-probability`](https://docs.pingcap.com/zh/tidb/v5.2/tidb-configuration-file#feedback-probability) 的值。如果不为 0，升级后会触发 "panic in the recoverable goroutine" 报错，但不影响升级。
 - 兼容 MySQL 5.7 的 noop 变量 `innodb_default_row_format`，配置此变量无实际效果 [#23541](https://github.com/pingcap/tidb/issues/23541)。
 
 - 从 TiDB 5.2 起，为了提高系统安全性，建议（但不要求）对来自客户端的连接进行传输层加密，TiDB 提供 Auto TLS 功能在 TiDB 服务器端自动配置并开启加密。要使用 Auto TLS 功能，请在 TiDB 升级前将 TiDB 配置文件中的 [`security.auto-tls`](/tidb-configuration-file.md#auto-tls) 设置为 `true`。

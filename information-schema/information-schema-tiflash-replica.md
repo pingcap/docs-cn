@@ -25,6 +25,7 @@ DESC tiflash_replica;
 | LOCATION_LABELS | varchar(64) | YES  |      | NULL    |       |
 | AVAILABLE       | tinyint(1)  | YES  |      | NULL    |       |
 | PROGRESS        | double      | YES  |      | NULL    |       |
+| TABLE_MODE      | varchar(64) | YES  |      | NULL    |       |
 +-----------------+-------------+------+------+---------+-------+
-7 rows in set (0.01 sec)
+8 rows in set (0.01 sec)
 ```

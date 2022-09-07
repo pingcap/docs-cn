@@ -14,7 +14,7 @@ aliases: ['/docs-cn/dev/faq/migration-tidb-faq/']
 - [TiDB Binlog 常见问题](/tidb-binlog/tidb-binlog-faq.md)
 - [TiDB Lightning 常见问题](/tidb-lightning/tidb-lightning-faq.md)
 - [Data Migration 常见问题](/dm/dm-faq.md)
-- [TiCDC 常见问题和故障处理](/ticdc/troubleshoot-ticdc.md)
+- [TiCDC 常见问题](/ticdc/ticdc-faq.md)
 
 ## 全量数据导出导入
 
@@ -163,7 +163,7 @@ DELETE，TRUNCATE 和 DROP 都不会立即释放空间。对于 TRUNCATE 和 DRO
 
 ### TiDB 是否支持 replace into 语法？
 
-支持，但是 load data 不支持 replace into 语法。
+支持。
 
 ### 数据删除后查询速度为何会变慢？
 

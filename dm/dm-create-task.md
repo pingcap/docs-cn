@@ -16,13 +16,24 @@ help start-task
 
 ```
 Starts a task as defined in the configuration file
+
 Usage:
   dmctl start-task [-s source ...] [--remove-meta] <config-file> [flags]
+
 Flags:
-  -h, --help          Help for start-task
-      --remove-meta   Whether to remove task's metadata
+  -h, --help                help for start-task
+      --remove-meta         whether to remove task's meta data
+      --start-time string   specify the start time of binlog replication, e.g. '2021-10-21 00:01:00' or 2021-10-21T00:01:00
+
 Global Flags:
-  -s, --source strings   MySQL Source ID
+      --config string        Path to config file.
+      --master-addr string   Master API server address, this parameter is required when interacting with the dm-master
+      --rpc-timeout string   RPC timeout, default is 10m. (default "10m")
+  -s, --source strings       MySQL Source ID.
+      --ssl-ca string        Path of file that contains list of trusted SSL CAs for connection.
+      --ssl-cert string      Path of file that contains X509 certificate in PEM format for connection.
+      --ssl-key string       Path of file that contains X509 key in PEM format for connection.
+  -V, --version              Prints version and exit.
 ```
 
 ## 命令用法示例
@@ -45,6 +56,12 @@ start-task [ -s "mysql-replica-01"] ./task.yaml
 + `remove-meta`:
     - 可选
     - 如果设置，则在启动指定任务时会移除该任务之前存在的 metadata
++ `start-time`:
+    - 可选，格式为 `'2021-10-21 00:01:00'` 或 `2021-10-21T00:01:00`
+    - 对于增量任务，可以通过该参数大致指定任务起始位点，该参数比任务配置文件中的 binlog 位置优先级更高，也比下游 checkpoint 中的 binlog 位置优先级更高
+    - 当该任务存在 checkpoint 时，如果通过这种方式启动任务，DM 会自动开启 safe mode 直到同步过 checkpoint，以避免重置任务到更早位置时遇到数据重复的报错。向前重置起始位点时，如果起始位点的表结构与下游当前表结构不一致可能会在同步时报错；向后重置起始位点时，需要注意跳过的 binlog 可能在下游残留脏数据
+    - 指定了过早的时间时，会从最早的 binlog 开始同步
+    - 指定了过晚的时间时，会报错 `start-time {input-time} is too late, no binlog location matches it`
 
 ## 返回结果示例
 

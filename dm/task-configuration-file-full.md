@@ -1,6 +1,6 @@
 ---
 title: DM 任务完整配置文件介绍
-aliases: ['/docs-cn/tidb-data-migration/dev/task-configuration-file-full/','/docs-cn/tidb-data-migration/dev/dm-portal/']
+aliases: ['/docs-cn/tidb-data-migration/dev/task-configuration-file-full/','/docs-cn/tidb-data-migration/dev/dm-portal/','/zh/tidb/dev/task-configuration-file']
 ---
 
 # DM 任务完整配置文件介绍
@@ -22,7 +22,6 @@ aliases: ['/docs-cn/tidb-data-migration/dev/task-configuration-file-full/','/doc
 ## ********* 基本信息配置 *********
 name: test                      # 任务名称，需要全局唯一
 task-mode: all                  # 任务模式，可设为 "full" - "只进行全量数据迁移"、"incremental" - "Binlog 实时同步"、"all" - "全量 + Binlog 实时同步"
-is-sharding: true               # 该配置项从 DM v2.0.0 起弃用，其功能被 `shard-mode` 取代，建议使用 `shard-mode` 代替 `is-sharding`
 shard-mode: "pessimistic"       # 任务协调模式，可选的模式有 ""、"pessimistic、"optimistic"。默认值为 "" 即无需协调。如果是分库分表合并任务，请设置为悲观协调模式 "pessimistic"。
                                 # 在 v2.0.6 版本后乐观模式逐渐成熟，深入了解乐观协调模式的原理和使用限制后，也可以设置为乐观协调模式 "optimistic"
 meta-schema: "dm_meta"          # 下游储存 `meta` 信息的数据库
@@ -32,7 +31,8 @@ case-sensitive: false           # schema/table 是否大小写敏感
 online-ddl: true                # 支持上游 "gh-ost" 、"pt" 的自动处理
 online-ddl-scheme: "gh-ost"     # `online-ddl-scheme` 已被弃用，建议使用 `online-ddl`。
 clean-dump-file: true           # 是否清理 dump 阶段产生的文件，包括 metadata 文件、建库建表 SQL 文件以及数据导入 SQL 文件
-collation_compatible: "loose"   # 同步 CREATE 语句中缺省 Collation 的方式，可选 "loose" 和 "strict"，默认为 "loose"。"loose" 模式不会显式补充上游缺省的 Collation，"strict" 会显式补充上游缺省的 Collation。当使用 "strict" 模式，但下游不支持上游缺省的 Collation 时，下游可能会报错。 
+collation_compatible: "loose"   # 同步 CREATE 语句中缺省 Collation 的方式，可选 "loose" 和 "strict"，默认为 "loose"。"loose" 模式不会显式补充上游缺省的 Collation，"strict" 会显式补充上游缺省的 Collation。当使用 "strict" 模式，但下游不支持上游缺省的 Collation 时，下游可能会报错。
+ignore-checking-items: []       # 忽略检查项。可用值请参考 precheck 说明页面。
 
 target-database:                # 下游数据库实例配置
   host: "192.168.0.1"
@@ -96,15 +96,27 @@ block-allow-list:                    # 定义数据源迁移表的过滤规则�
 
 mydumpers:                           # dump 处理单元的运行配置参数
   global:                            # 配置名称
-    threads: 4                       # dump 处理单元从上游数据库实例导出数据的线程数量，默认值为 4
+    threads: 4                       # dump 处理单元从上游数据库实例导出数据和 check-task 访问上游的线程数量，默认值为 4
     chunk-filesize: 64               # dump 处理单元生成的数据文件大小，默认值为 64，单位为 MB
     extra-args: "--consistency none" # dump 处理单元的其他参数，不需要在 extra-args 中配置 table-list，DM 会自动生成
 
 loaders:                             # load 处理单元的运行配置参数
   global:                            # 配置名称
     pool-size: 16                    # load 处理单元并发执行 dump 处理单元的 SQL 文件的线程数量，默认值为 16，当有多个实例同时向 TiDB 迁移数据时可根据负载情况适当调小该值
-    dir: "./dumped_data"             # dump 处理单元输出 SQL 文件的目录，同时也是 load 处理单元读取文件的目录。该配置项的默认值为 "./dumped_data"。同实例对应的不同任务必须配置不同的目录
 
+    # 保存上游全量导出数据的目录。该配置项的默认值为 "./dumped_data"。
+    # 支持配置为本地文件系统路径，也支持配置为 Amazon S3 路径，如: s3://dm_bucket/dumped_data?endpoint=s3-website.us-east-2.amazonaws.com&access_key=s3accesskey&secret_access_key=s3secretkey&force_path_style=true
+    dir: "./dumped_data"
+
+    # 全量阶段数据导入的模式。可以设置为如下几种模式：
+    # - "sql"(默认)。使用 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) TiDB-backend 进行导入。
+    # - "loader"。使用 Loader 导入。此模式仅作为兼容模式保留，目前用于支持 TiDB Lightning 尚未包含的功能，预计会在后续的版本废弃。
+    import-mode: "sql"
+    # 全量导入阶段针对冲突数据的解决方式：
+    # - "replace"（默认值）。仅支持 import-mode 为 "sql"，表示用最新数据替代已有数据。
+    # - "ignore"。仅支持 import-mode 为 "sql"，保留已有数据，忽略新数据。
+    # - "error"。仅支持 import-mode 为 "loader"。插入重复数据时报错并停止同步任务。
+    on-duplicate: "replace"
 
 syncers:                             # sync 处理单元的运行配置参数
   global:                            # 配置名称
@@ -125,6 +137,15 @@ syncers:                             # sync 处理单元的运行配置参数
     # 如 DELETE FROM tb WHERE a=1; DELETE FROM tb WHERE a=2 会变成 DELETE FROM tb WHERE (a) IN (1),(2)；其中 a 为主键
     multiple-rows: false
 
+validators:              # 增量数据校验的运行配置参数
+  global:                # 配置名称
+    # full：校验每一行中每一列数据是否正确
+    # fast：仅校验这一行是否有成功迁移到下游
+    # none：不校验
+    mode: full           # 可选填 full，fast 和 none，默认是 none，即不开启校验。
+    worker-count: 4      # 后台校验的 validation worker 数量，默认是 4 个
+    row-error-delay: 30m # 某一行多久没有校验通过会被标记为 error row，默认是 30 分钟
+
 # ----------- 实例配置 -----------
 mysql-instances:
   -
@@ -142,7 +163,7 @@ mysql-instances:
     mydumper-config-name: "global"          # mydumpers 配置的名称
     loader-config-name: "global"            # loaders 配置的名称
     syncer-config-name: "global"            # syncers 配置的名称
-
+    validator-config-name: "global"         # validators 配置的名称
   -
     source-id: "mysql-replica-02"  # 对应 source.toml 中的 `source-id`
     mydumper-thread: 4             # dump 处理单元用于导出数据的线程数量，等同于 mydumpers 配置中的 `threads`，当同时指定它们时 `mydumper-thread` 优先级更高

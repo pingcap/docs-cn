@@ -152,11 +152,13 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 ### `max-days`
 
 + 日志保留的最长天数。
++ 如果未设置本参数或把本参数设置为默认值 `0`，PD 不清理日志文件。
 + 默认：0
 
 ### `max-backups`
 
 + 日志文件保留的最大个数。
++ 如果未设置本参数或把本参数设置为默认值 `0`，PD 会保留所有的日志文件。
 + 默认：0
 
 ## metric
@@ -176,6 +178,7 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 
 + 控制 Region Merge 的 size 上限，当 Region Size 大于指定值时 PD 不会将其与相邻的 Region 合并。
 + 默认：20
++ 单位：MiB
 
 ### `max-merge-region-keys`
 
@@ -206,6 +209,11 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 
 + PD 认为失联 store 无法恢复的时间，当超过指定的时间没有收到 store 的心跳后，PD 会在其他节点补充副本。
 + 默认值：30m
+
+### `max-store-preparing-time` <span class="version-mark">从 v6.1.0 版本开始引入</span>
+
++ 控制 store 上线阶段的最长等待时间。在 store 的上线阶段，PD 可以查询该 store 的上线进度。当超过该配置项指定的时间后，PD 会认为该 store 已完成上线，无法再次查询这个 store 的上线进度，但是不影响 Region 向这个新上线 store 的迁移。通常用户无需修改该配置项。
++ 默认值：48h
 
 ### `leader-schedule-limit`
 
@@ -282,7 +290,7 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 * 设置 PD 存储 Hot Region 信息时间间隔。
 * 默认值：10m
 
-> 注意：
+> **注意：**
 >
 > Hot Region 的信息一般 3 分钟更新一次。如果设置时间间隔小于 3 分钟，中间部分的更新可能没有意义。
 

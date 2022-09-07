@@ -90,10 +90,12 @@ SHOW COLLATION WHERE CHARSET = 'gbk';
 
 ## 组件兼容性
 
-* TiCDC 和 TiFlash 目前不支持 GBK 字符集。
+* TiFlash 目前不支持 GBK 字符集。
 
 * TiDB Data Migration (DM) 在 v5.4.0 之前不支持将 `charset=GBK` 的表迁移到 TiDB。
 
 * TiDB Lightning 在 v5.4.0 之前不支持导入 `charset=GBK` 的表。
+
+* TiCDC 在 v6.1.0 之前不支持同步 `charset=GBK` 的表。另外，任何版本的 TiCDC 都不支持同步 `charset=GBK` 的表到 6.1.0 之前的 TiDB 集群。
 
 * TiDB Backup & Restore（BR）在 v5.4.0 之前不支持恢复 `charset=GBK` 的表。另外，任何版本的 BR 都不支持恢复 `charset=GBK` 的表到 5.4.0 之前的 TiDB 集群。
