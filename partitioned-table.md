@@ -583,7 +583,7 @@ Empty set (0.00 sec)
 * [TiFlash](/tikv-overview.md)：TiFlash Replica 数量相同。
 * [聚簇索引](/clustered-indexes.md)：分区表和非分区表要么都是聚簇索引，要么都不是聚簇索引。
 
-此外， `EXCHANGE PARTITION` 和其他组件兼容性上存在一些限制，需要保证分区表和非分区表：
+此外， `EXCHANGE PARTITION` 和其他组件兼容性上存在一些限制，需要保证分区表和非分区表的一致性：
 
 - TiFlash：TiFlash Replica 定义不同时，无法执行 `EXCHANGE PARTITION` 操作。
 - TiCDC：都有主键或者唯一键时，TiCDC 同步 `EXCHANGE PARTITION` 操作；反之 TiCDC 将不会同步。
