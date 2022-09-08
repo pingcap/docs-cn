@@ -161,6 +161,115 @@ Range 分区在下列条件之一或者多个都满足时，尤其有效：
 * 使用包含时间或者日期的列，或者是其它按序生成的数据。
 * 频繁查询分区使用的列。例如执行这样的查询 `EXPLAIN SELECT COUNT(*) FROM employees WHERE separated BETWEEN '2000-01-01' AND '2000-12-31' GROUP BY store_id;` 时，TiDB 可以迅速确定，只需要扫描 `p2` 分区的数据，因为其它的分区不满足 `where` 条件。
 
+### Range INTERVAL partitioning
+
+INTERVAL partitioning is introduced in TiDB v6.3 as syntactic sugar:
+
+```
+PARTITION BY RANGE [COLUMNS] (<partitioning expression>)
+INTERVAL (<interval expression>)
+FIRST PARTITION LESS THAN (<expression>)
+LAST PARTITION LESS THAN (<expression>)
+[NULL PARTITION]
+[MAXVALUE PARTITION]
+```
+
+Example:
+
+```
+CREATE TABLE employees (
+    id int unsigned NOT NULL,
+    fname varchar(30),
+    lname varchar(30),
+    hired date NOT NULL DEFAULT '1970-01-01',
+    separated date DEFAULT '9999-12-31',
+    job_code int,
+    store_id int NOT NULL
+) PARTITION BY RANGE (id)
+INTERVAL (100) FIRST PARTITION LESS THAN (100) LAST PARTITION LESS THAN (10000) MAXVALUE PARTITION
+```
+
+Which creates the following table:
+
+```
+CREATE TABLE `employees` (
+  `id` int unsigned NOT NULL,
+  `fname` varchar(30) DEFAULT NULL,
+  `lname` varchar(30) DEFAULT NULL,
+  `hired` date NOT NULL DEFAULT '1970-01-01',
+  `separated` date DEFAULT '9999-12-31',
+  `job_code` int DEFAULT NULL,
+  `store_id` int NOT NULL
+)
+PARTITION BY RANGE (`id`)
+(PARTITION `P_LT_100` VALUES LESS THAN (100),
+ PARTITION `P_LT_200` VALUES LESS THAN (200),
+...
+ PARTITION `P_LT_9900` VALUES LESS THAN (9900),
+ PARTITION `P_LT_10000` VALUES LESS THAN (10000),
+ PARTITION `P_MAXVALUE` VALUES LESS THAN (MAXVALUE))
+```
+
+It also works with RANGE COLUMNS partitioning:
+
+```
+CREATE TABLE monthly_report_status (
+    report_id int NOT NULL,
+    report_status varchar(20) NOT NULL,
+    report_date date NOT NULL
+)
+PARTITION BY RANGE COLUMNS (report_date)
+INTERVAL (1 MONTH) FIRST PARTITION LESS THAN ('2000-01-01') LAST PARTITION LESS THAN ('2025-01-01')
+```
+
+Which creates this table:
+
+```
+CREATE TABLE `monthly_report_status` (
+  `report_id` int(11) NOT NULL,
+  `report_status` varchar(20) NOT NULL,
+  `report_date` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin
+PARTITION BY RANGE COLUMNS(`report_date`)
+(PARTITION `P_LT_2000-01-01` VALUES LESS THAN ('2000-01-01'),
+ PARTITION `P_LT_2000-02-01` VALUES LESS THAN ('2000-02-01'),
+...
+ PARTITION `P_LT_2024-11-01` VALUES LESS THAN ('2024-11-01'),
+ PARTITION `P_LT_2024-12-01` VALUES LESS THAN ('2024-12-01'),
+ PARTITION `P_LT_2025-01-01` VALUES LESS THAN ('2025-01-01'))
+```
+
+The optional `NULL PARTITION` creates a partition where the partitioning expression evaluates to `NULL` is placed. In the partitioning expression, `NULL` is considered to be less than any other value. See [Handling of NULL with Range partitioning](#handling-of-null-with-range-partitioning).
+
+The optional `MAXVALUE PARTITION` creates a last partition as `PARTITION P_MAXVALUE VALUES LESS THAN (MAXVALUE)`
+
+#### ALTER INTERVAL Partitioned tables
+
+INTERVAL partitioning also adds simpler syntax for adding and dropping partitions.
+
+The following statement changes the first partition, meaning dropping partitions with lower ranges and older data.
+
+```
+ALTER TABLE table_name FIRST PARTITION LESS THAN (<expression>)
+```
+
+It will drop all partitions whose value is lower than the given expression, making the matched partition the new first partition. It does not affect a NULL PARTITION.
+
+The following statement changes the last partition, meaning adding more partitions with higher ranges and room for new data.
+
+```
+ALTER TABLE table_name LAST PARTITION LESS THAN (<expression>)
+```
+
+It will add new partitions with the current INTERVAL up to and including the given expression. It does not work if a `MAXVALUE PARTITION` exists, because it needs data reorganisation.
+
+#### INTERVAL Partitioning details and limitations
+
+- The INTERVAL partitioning feature is about `CREATE/ALTER TABLE` syntax only. There is no change in metadata, so tables created or altered with the new syntax is still MySQL-compatible.
+- There is no change in the output format of `SHOW CREATE TABLE` to keep MySQL compatibility.
+- Existing tables conforming to INTERVAL can use the new `ALTER` syntax. They do not need to be created with `INTERVAL` syntax.
+- For `RANGE COLUMNS`, only integer types, date and datetime column types are supported.
+
 ### List 分区
 
 在创建 List 分区表之前，需要先将 session 变量 `tidb_enable_list_partition` 的值设置为 `ON`。
