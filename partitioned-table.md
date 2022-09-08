@@ -163,7 +163,7 @@ Range 分区在下列条件之一或者多个都满足时，尤其有效：
 
 ### Range INTERVAL partitioning
 
-INTERVAL partitioning is introduced in TiDB v6.3 as syntactic sugar:
+TiDB v6.3.0 新增了 INTERVAL partitioning 特性，作为语法糖（syntactic sugar）引入。 其语法如下：
 
 ```
 PARTITION BY RANGE [COLUMNS] (<partitioning expression>)
@@ -174,7 +174,7 @@ LAST PARTITION LESS THAN (<expression>)
 [MAXVALUE PARTITION]
 ```
 
-Example:
+示例：
 
 ```
 CREATE TABLE employees (
@@ -189,7 +189,7 @@ CREATE TABLE employees (
 INTERVAL (100) FIRST PARTITION LESS THAN (100) LAST PARTITION LESS THAN (10000) MAXVALUE PARTITION
 ```
 
-Which creates the following table:
+上述命令创建的表格如下：
 
 ```
 CREATE TABLE `employees` (
