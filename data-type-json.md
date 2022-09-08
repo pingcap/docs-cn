@@ -63,7 +63,7 @@ SELECT id FROM city WHERE population >= 100;
     mysql> SELECT CAST(e AS JSON) FROM t;
     ERROR 3140 (22032): Invalid JSON text: The document root must not be followed by other values.
     ```
-    详情可见此 [issue](https://github.com/pingcap/tidb/issues/9999)
+    详情可见此 [issue](https://github.com/pingcap/tidb/issues/9999)。
 
 - TiDB 支持使用 `ORDER BY` 对 JSON Array 或 JSON Object 进行排序。
 
