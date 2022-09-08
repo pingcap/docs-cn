@@ -82,7 +82,7 @@ SELECT id FROM city WHERE population >= 100;
     +--------------+
     1 row in set (0.00 sec)
 
-    -- 在 MySQL 中，执行以下 SQL 语句会返回警告 “This version of MySQL doesn't yet support 'sorting of non-scalar JSON values'. ”，且排序结果与 `<` 比较结果不一致。
+    -- 在 TiDB 中，执行以下 SQL 语句返回结果如下所示。在 MySQL 中，执行以下 SQL 语句会返回警告 “This version of MySQL doesn't yet support 'sorting of non-scalar JSON values'. ”，且排序结果与 `<` 比较结果不一致。
     mysql> SELECT j FROM t ORDER BY j;
     +--------------+
     | j            |
