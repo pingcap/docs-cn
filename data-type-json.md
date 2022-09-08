@@ -98,7 +98,8 @@ SELECT id FROM city WHERE population >= 100;
 
     ```sql
     CREATE TABLE t(col JSON);
-    -- TiDB INSERT 成功，MySQL 会报错: Invalid JSON text
+
+    -- 在 TiDB 中，执行以下 INSERT 语句成功。在 MySQL 中，执行以下 INSERT 语句将返回 Invalid JSON text 错误。
     INSERT INTO t VALUES (3);
     ```
 
