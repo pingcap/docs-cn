@@ -86,7 +86,7 @@
   - Cloud Native Development Environment
     - [Gitpod](/develop/dev-guide-playground-gitpod.md)
   - Third-party Support
-    - [Third-Party Libraries Support](/develop/dev-guide-third-party-support.md)
+    - [Third-Party Tools Supported by TiDB](/develop/dev-guide-third-party-support.md)
     - [Integrate with ProxySQL](/develop/dev-guide-proxysql-integration.md)
 - Deploy
   - [Software and Hardware Requirements](/hardware-and-software-requirements.md)
