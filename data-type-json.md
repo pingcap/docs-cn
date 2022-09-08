@@ -27,7 +27,7 @@ SELECT id FROM city WHERE population >= 100;
 
 # 使用限制
 
-- 暂不支持 JSON PATH 中范围选取的语法，以下 SQL 会在 TiDB 中报错:
+- TiDB 暂不支持 JSON PATH 中范围选取的语法，以下 SQL 语句会在 TiDB 中报错:
 
     ```sql
     SELECT j->'$[1 to 2]' FROM t;
@@ -44,7 +44,7 @@ SELECT id FROM city WHERE population >= 100;
     CREATE TABLE test(a json);
     INSERT INTO test SELECT json_objectagg('a', b'01010101');
 
-    -- TiDB 结果如下所示, 在 MySQL 中下面 SQL 结果为 `0, 1`.
+    -- TiDB 结果如下所示, 在 MySQL 中下面 SQL 结果为 `0, 1`。
     mysql> SELECT JSON_EXTRACT(JSON_OBJECT('a', b'01010101'), '$.a') = "base64:type15:VQ==" AS r1, JSON_EXTRACT(a, '$.a') = "base64:type15:VQ==" AS r2 FROM test;
     +------+------+
     | r1   | r2   |
@@ -65,7 +65,7 @@ SELECT id FROM city WHERE population >= 100;
     ```
     详情可见此 [issue](https://github.com/pingcap/tidb/issues/9999)
 
-- TiDB 支持对 JSON ARRAY/OBJECT 的 `order by`
+- TiDB 支持使用 `ORDER BY` 对 JSON Array 或 JSON Object 进行排序。
 
     当使用 `ORDER BY` 对 JSON Array 或 JSON Object 进行排序时，MySQL 会返回一个警告，且排序结果与比较运算结果不一致:
 
@@ -82,7 +82,7 @@ SELECT id FROM city WHERE population >= 100;
     +--------------+
     1 row in set (0.00 sec)
 
-    -- 在 MySQL 中下面 SQL 会抛出 warning: This version of MySQL doesn't yet support 'sorting of non-scalar JSON values'. 且结果与 `<` 比较结果不一致
+    -- 在 MySQL 中，执行以下 SQL 语句会返回警告 “This version of MySQL doesn't yet support 'sorting of non-scalar JSON values'. ”，且排序结果与 `<` 比较结果不一致。
     mysql> SELECT j FROM t ORDER BY j;
     +--------------+
     | j            |
