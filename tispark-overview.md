@@ -41,6 +41,7 @@ TiSpark 和 TiDB 可以让用户无需创建和维护 ETL，直接在同一个�
 | 2.4.x-scala_2.11 | 5.x，4.x             | 2.3.x，2.4.x   | 2.11          |
 | 2.4.x-scala_2.12 | 5.x，4.x             | 2.4.x         | 2.12          |
 | 2.5.x            | 5.x，4.x             | 3.0.x，3.1.x   | 2.12          |
+| 3.0.x            | 5.x，4.x             | 3.0.x，3.1.x，3.2.x | 2.12      |
 
 TiSpark 可以在 YARN，Mesos，Standalone 等任意 Spark 模式下运行。
 

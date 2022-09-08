@@ -44,6 +44,7 @@ Information Schema 提供了一种查看系统元数据的 ANSI 标准方法。�
 | `TABLE_PRIVILEGES`                                                                                                         | TiDB 未实现，返回零行。                                                           |
 | `TRIGGERS`                                                                                                                 | TiDB 未实现，返回零行。                                                           |
 | [`USER_PRIVILEGES`](/information-schema/information-schema-user-privileges.md)                                             | 汇总与当前用户相关的权限。                                                        |
+| [`VARIABLES_INFO`](/information-schema/information-schema-variables-info.md)                                               | 提供 TiDB 系统变量的信息。                                               |
 | [`VIEWS`](/information-schema/information-schema-views.md)                                                                 | 提供当前用户可见的视图列表。类似于 `SHOW FULL TABLES WHERE table_type = 'VIEW'`。 |
 
 ## TiDB 中的扩展表

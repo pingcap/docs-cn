@@ -123,7 +123,8 @@ tiup dmctl check-task ./task.yaml
 |binlog_enable|检查上游数据库是否已启用 binlog|
 |table_schema|检查上游 MySQL 表结构的兼容性|
 |schema_of_shard_tables|检查上游 MySQL 多实例分库分表的表结构一致性|
-|auto_increment_ID|关闭检查上游 MySQL 多实例分库分表的自增主键冲突|
+|auto_increment_ID|检查上游 MySQL 多实例分库分表的自增主键冲突|
+|online_ddl|检查上游是否处于 [Online-DDL](/dm/feature-online-ddl.md) 过程中|
 
 > **注意：**
 >

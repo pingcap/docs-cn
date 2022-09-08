@@ -27,7 +27,7 @@ PD Control 是 PD 的命令行工具，用于获取集群状态信息和调整�
 
 > **注意：**
 >
-> 下载链接中的 `{version}` 为 TiDB 的版本号。例如 `v6.1.0` 版本的下载链接为 `https://download.pingcap.org/tidb-community-server-v6.1.0-linux-amd64.tar.gz`。
+> 下载链接中的 `{version}` 为 TiDB 的版本号。例如 `v6.2.0` 版本的下载链接为 `https://download.pingcap.org/tidb-community-server-v6.2.0-linux-amd64.tar.gz`。
 
 ### 源码编译
 
@@ -237,9 +237,9 @@ config show cluster-version
     config set max-pending-peer-count 64
     ```
 
-- `max-merge-region-size` 控制 Region Merge 的 size 上限（单位是 M）。当 Region Size 大于指定值时 PD 不会将其与相邻的 Region 合并。设置为 0 表示不开启 Region Merge 功能。
+- `max-merge-region-size` 控制 Region Merge 的 size 上限（单位是 MiB）。当 Region Size 大于指定值时 PD 不会将其与相邻的 Region 合并。设置为 0 表示不开启 Region Merge 功能。
 
-    设置 Region Merge 的 size 上限为 16 M：
+    设置 Region Merge 的 size 上限为 16 MiB：
 
     {{< copyable "" >}}
 
