@@ -75,13 +75,11 @@ TiDB 中实现的是 Online DDL 的模式，一个 DDL 语句在执行过程中�
 |                                                     | ALTER TABLE t MODIFY COLUMN a CHAR(10)          |
 | SELECT * FROM t; (报错 Information schema is changed) |                                                 |
 
-## TiDB MDL 优化
-因为增加了 MDL 锁机制，会给 TiDB DDL 任务的执行带来一定的性能影响，为了降低 MDL 对于 DDL 任务的影响，在分析完成 DML 事务的特征之后，梳理出来一些不需要添加 MDL 锁的场景
-### 不需要加元数据锁的场景
+## TiDB 元数据锁优化
 
-并不是所有的 DML 语句都需要加元数据锁，例如：
+因为增加了元数据锁机制，会给 TiDB DDL 任务的执行带来一定的性能影响。为了降低元数据锁对 DDL 任务的影响，下面列出了部分不需要加元数据锁的场景：
 
-+ Autocommit 的查询语句
++ autocommit 的查询语句
 + 开启了 Stale Read
 + 访问临时表
 
