@@ -29,7 +29,8 @@ TiDB 与 MySQL 有差异：
 
 ### Java Drivers
 
-**JDBC**
+<SimpleTab>
+<div label="JDBC">
 
 支持等级：**Full**
 
@@ -41,16 +42,17 @@ TiDB 与 MySQL 有差异：
 
 有关一个完整的实例应用程序，可参阅使用 [TiDB 和 JDBC 构建一个 Java 应用](/develop/dev-guide-sample-application-java.md#第-2-步获取代码)。
 
-
-**TiDB-JDBC**
+</div>
+<div label="TiDB-JDBC">
 
 支持等级：**Full**
 
-[ REPO 地址](https://github.com/pingcap/mysql-connector-j)
+[REPO 地址](https://github.com/pingcap/mysql-connector-j)
 
 > 注意：
 >
 > 该版本是基于 Mysql 8.0.29 版本基础上定制的版本，当前仓库为个人仓库。
+>
 > 1. 基于官方 8.0.29 版本编译。
 > 2. 修复 prepare 模式下多参数、多字段 EOF bug。
 > 3. 新增 TiCDC snapshot 自动维护。
@@ -66,7 +68,7 @@ TiDB 与 MySQL 有差异：
 </dependency>
 ```
 
-如果SM3认证的用户，请将以下内容添加到你的 `<dependencies></dependencies>`：
+如果 SM3 认证的用户，请将以下内容添加到你的 `<dependencies></dependencies>`：
 
 ```xml
 <dependency>
@@ -88,13 +90,14 @@ TiDB 与 MySQL 有差异：
 
 如果你使用的是 `Gradle`，请将以下内容添加到你的 `dependencies`：
 
-{{< copyable "" >}}
-
 ```gradle
 implementation group: 'io.github.lastincisor', name: 'mysql-connector-java', version: '8.0.29-tidb-1.0.0'
 implementation group: 'org.bouncycastle', name: 'bcprov-jdk15on', version: '1.67'
 implementation group: 'org.bouncycastle', name: 'bcpkix-jdk15on', version: '1.67'
 ```
+
+</div>
+</SimpleTab>
 
 ### Java ORM Framework
 
