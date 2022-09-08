@@ -5,94 +5,93 @@ summary: 了解 TiDB 的快照备份和恢复功能使用。
 
 # 使用快照备份和恢复功能
 
-快照备份是集群全量备份的一种实现。它基于 TiDB 集群快照机制，将该快照包含的所有数据备份到目标存储中，备份下来的数据大小约等于集群单副本数据大小。 其后，你可以在一个空集群上恢复备份的快照数据，将集群恢复到与照备份对应数据状态，同时根据集群副本设置恢复出多副本。
+本教程介绍快照备份和恢复功能的使用。快照备份是集群全量备份的一种实现。它基于 TiDB 的 [MVCC](/tidb-storage#mvcc) 实现，将指定快照包含的所有数据备份到目标存储中。备份下来的数据大小约等于集群单副本数据大小。 备份完成之后，你可以在一个空集群上恢复备份的数据，将集群恢复到与快照备份对应的数据状态，同时恢复功能会依据集群副本设置恢复出多副本。
 
-除了备份和恢复功能，快照备份和恢复还提供以下的功能
+除了基础的备份和恢复功能，快照备份恢复还提供以下的功能
 
-* 支持配置备份指定的集群快照数据
+* 支持配置备份指定时间点的快照数据
 * 只恢复指定 db/table 数据
 
 ## 对集群进行快照备份
 
-使用 `br backup full` 可以备份 TiDB 最新的或者指定时间点的快照数据。执行 `br backup full --help` 可获取该命令的使用帮助。
+使用 `br backup full` 可以进行一次快照备份。 该命令的详细使用帮助可以通过执行 `br backup full --help` 查看。
 
 ```shell
-br backup full --pd "${PDIP}:2379" \
-    --backupts '2022-01-30 07:42:23' \
-    --storage "s3://backup-data/2022-01-30/" \
+tiup br backup full --pd "${PD IP}:2379" \
+    --backupts '2022-09-08 13:30:00'
+    --storage "s3://backup-101/snapshot-202209081330?access_key=${access key}&secret_access_key=${secret access key}" \
     --ratelimit 128 \
 ```
 
 以上命令中：
 
-- `--backupts`：快照对应的物理时间点。如果该快照的数据被 GC 了，那么 `br backup` 命令会报错退出；如果你没有指定该参数，那么 BR 会选取备份开始的时间点所对应的快照。
-- `--ratelimit`：**每个 TiKV** 执行备份任务的速度上限（单位 MiB/s）。
-- `storage`: 数据备份到存储地址。 快照备份支持以 S3/GCS/Azure Blob Storage 为备份存储，以上命令以 S3 为示例。详细配置参考[备份存储](xxx) 
+- `--backupts`：快照对应的物理时间点。如果该快照的数据被 GC 了，那么 `br backup` 命令会报错退出；如果你没有指定该参数，那么 br 会选取备份开始的时间点所对应的快照。
+- `--ratelimit`：**每个 TiKV** 备份数据的速度上限（单位 MiB/s）。
+- `storage`: 数据备份到的存储地址。快照备份支持以 S3/GCS/Azure Blob Storage 为备份存储，以上命令以 S3 为示例。详细配置参考[备份存储](xxx) 
 
-备份期间有进度条在终端中显示，显示效果如下。当进度条前进到 100% 时，说明备份已完成。
+备份时间有进度条会在终端显示，进度条效果如下。在备份完成后，br 会输出备份耗时、速度、备份数据大小等信息。
 
 ```shell
-Full Backup <---------/................................................> 17.12%.
+Full Backup <-------------------------------------------------------------------------------> 100.00%
+Checksum <----------------------------------------------------------------------------------> 100.00%
+[2022/09/08 13:38:47.191 +08:00] [INFO] [collector.go:69] ["Full Backup success summary"] [total-ranges=18] [ranges-succeed=18] [ranges-failed=0] [backup-checksum=3.597416ms] [backup-fast-checksum=2.36975ms] [backup-total-ranges=71] [backup-total-regions=71] [total-take=4.715509333s] [BackupTS=435844546560000000] [total-kv=1131] [total-kv-size=250kB] [average-speed=53.02kB/s] [backup-data-size(after-compressed)=71.33kB] [Size=71330]
 ```
 
 ## 查询备份快照的时间点信息
 
-管理快照备份数据的时候，可以通过以下命令查询备份对应快照时间点
+出于管理备份数的需要，如果你需要查看某个快照备份对应的快照物理时间点，可以执行下面的命令：
 
 ```shell
-br validate decode --field="end-version" -s s3://backup-data/2022-01-30/ | tail -n1
+tiup br validate decode --field="end-version" -s "s3://backup-101/snapshot-202209081330?access_key=${access key}&secret_access_key=${secret access key}" | tail -n1
 ```
 
-结果输出
+结果输出，对应物理时间 `2022-09-08 13:30:00 +0800 CST`
 
 ```
-430814417205657604
+435844546560000000
 ```
 
 ## 恢复快照备份数据
 
-使用 `br restore full` 恢复快照备份。执行 `br restore full --help` 可获取该命令的使用帮助。
+如果你需要恢复备份的快照数据，则可以使用 `br restore full`。该命令的详细使用帮助可以通过执行 `br restore full --help` 查看。
 
-用例：将 s3 的名为 `backup-data` bucket 下的 `2022-01-30/` 前缀目录中属于 `2022-01-30 07:42:23` 时刻点的快照数据恢复到目标机群。
+用例：将上文备份的快照数据恢复到目标机群。
 
 ```shell
-br restore full --pd "${PDIP}:2379" --storage "s3://backup-data/2022-01-30/"
+tiup br restore full --pd "${PD IP}:2379" --storage "s3://backup-101/snapshot-202209081330?access_key=${access key}&secret_access_key=${secret access key}"
 ```
 
-以上命令中，
-
-- `--ratelimit`：**每个 TiKV** 执行恢复任务的速度上限（单位 MiB/s）
-
-恢复期间还有进度条会在终端中显示，进度条效果如下。当进度条前进到 100% 时，说明恢复已完成。在完成恢复后，BR 为了确保数据安全性，还会校验恢复数据。
+恢复期间有进度条会在终端中显示，进度条效果如下。在完成恢复后, br 会输出恢复耗时、速度、恢复数据大小等信息。
 
 ```shell
-Full Restore <---------/...............................................> 17.12%.
+Full Restore <------------------------------------------------------------------------------> 100.00%
+["Full Restore success summary"] [total-ranges=12] [ranges-succeed=12] [ranges-failed=0] [split-region=16.181208ms] [restore-ranges=3] [total-take=4.344617542s] [total-kv=5] [total-kv-size=327B] [average-speed=75.27B/s] [restore-data-size(after-compressed)=4.813kB] [Size=4813] [BackupTS=435844901803917314]
 ```
 
 ### 恢复备份数据中指定库表的数据
 
-BR 支持只恢复备份数据中指定库/表的局部数据。该功能在恢复过程中过滤掉不需要的数据，可以用于往 TiDB 集群上恢复指定库/表的数据。
+BR 支持只恢复备份数据中指定库/表的局部数据，该功能在恢复过程中过滤掉不需要的数据。
 
 **恢复单个数据库的数据**
 
 要将备份数据中的某个数据库恢复到集群中，可以使用 `br restore db` 命令。 以下示例只恢复 `test` 库的相关数据：
 
 ```shell
-br restore db --pd "${PDIP}:2379" --db "test" --storage "s3://backup-data/db-test/2022-01-30/"
+tiup br restore db --pd "${PDIP}:2379" --db "test" --storage "s3://backup-101/snapshot-202209081330?access_key=${access key}&secret_access_key=${secret access key}"
 ```
 
-以上命令中 `--db` 选项指定了需要恢复的数据库名字。其余选项的含义与[恢复快照备份数据](#恢复快照备份数据)相同。
+以上命令中 `--db` 选项指定了需要恢复的数据库名字。
 
 **恢复单张表的数据**
 
 要将备份数据中的某张数据表恢复到集群中，可以使用 `br restore table` 命令。以下示例只恢复 `test`.`usertable` 表的相关的数据
 
 ```shell
-br restore table --pd "${PDIP}:2379" --db "test" --table "usertable" \
---storage "s3://backup-data/table-db-usertable/2022-01-30/"
+tiup br restore table --pd "${PDIP}:2379" --db "test" --table "usertable" \
+--storage "s3://backup-101/snapshot-202209081330?access_key=${access key}&secret_access_key=${secret access key}"
 ```
 
-以上命令中 `--db` 选项指定了需要恢复的数据库名字，`--table` 选项指定了需要恢复的表名。其余选项的含义与[恢复单个数据库](#恢复单个数据库的数据)相同。
+以上命令中 `--db` 选项指定了需要恢复的数据库名字，`--table` 选项指定了需要恢复的表名。
 
 **使用表库功能过滤恢复数据**
 
@@ -101,12 +100,12 @@ br restore table --pd "${PDIP}:2379" --db "test" --table "usertable" \
 以下示例恢复 `db*.tbl*`的表的相关的数据。
 
 ```shell
-br restore full --pd "${PDIP}:2379" --filter 'db*.tbl*' --storage "s3://backup-data/table-filter/2022-01-30/"
+tiup br restore full --pd "${PDIP}:2379" --filter 'db*.tbl*' --storage "s3://backup-101/snapshot-202209081330?access_key=${access key}&secret_access_key=${secret access key}"
 ```
 
 ### 恢复 `mysql` 数据库下的表
 
-自 BR v5.1.0 开始，全量备份会备份**系统表数据**，而不会恢复系统表数据。自 BR v6.2.0 开始，如果备份数据中包含系统表数据，在设置 `--with-sys-table` 下，恢复数据时 BR 将同时恢复**部分系统表相关数据**。
+自 BR v5.1.0 开始，快照备份会备份**mysql schema 下的系统表数据**，而不会默认恢复这些数据。自 BR v6.2.0 开始，在设置 `--with-sys-table` 下，恢复数据时将同时恢复**部分系统表相关数据**。
 
 **BR 可恢复的部分系统表**：
 
@@ -137,7 +136,7 @@ br restore full --pd "${PDIP}:2379" --filter 'db*.tbl*' --storage "s3://backup-d
     - 目标集群系统权限表**列数**需要跟备份数据中一致，列顺序可以有差异。
     - 目标集群系统权限表列需要跟备份数据兼容，如果为带长度类型（包括整形、字符等类型），前者长度需 >= 后者，如果为 enum 类型，则应该为后者超集。
 
-## 快照备份恢复功能的性能与影响
+## 性能与影响
 
 ### 快照备份的性能与影响
 
