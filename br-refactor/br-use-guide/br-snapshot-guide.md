@@ -3,6 +3,11 @@ title: TiDB 快照备份和恢复功能使用
 summary: 了解 TiDB 的快照备份和恢复功能使用。
 ---
 
+以下教程介绍了如何进行快照备份和恢复，如果你想要了解 br 命令行的使用可以参考
+
+- [介绍 br 工具命令行](/br-refactor/br-manual/use-br-command-line.md)
+- [快照备份和恢复命令介绍](/br-refactor/br-manual/br-snapshot-manual.md)
+
 # 使用快照备份和恢复功能
 
 本教程介绍快照备份和恢复功能的使用。快照备份是集群全量备份的一种实现。它基于 TiDB 的 [MVCC](/tidb-storage#mvcc) 实现，将指定快照包含的所有数据备份到目标存储中。备份下来的数据大小约等于集群单副本数据大小。 备份完成之后，你可以在一个空集群上恢复备份的数据，将集群恢复到与快照备份对应的数据状态，同时恢复功能会依据集群副本设置恢复出多副本。
@@ -11,11 +16,6 @@ summary: 了解 TiDB 的快照备份和恢复功能使用。
 
 * 支持配置备份指定时间点的快照数据
 * 只恢复指定 db/table 数据
-
-以下教程介绍了如何进行快照备份和恢复，如果你想要了解 br 命令行的使用可以参考
-
-- [介绍 br 工具命令行](/br-refactor/br-manual/use-br-command-line.md)
-- [快照备份和恢复命令介绍](/br-refactor/br-manual/br-snapshot-manual.md)
 
 ## 对集群进行快照备份
 
