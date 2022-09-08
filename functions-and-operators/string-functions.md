@@ -89,9 +89,9 @@ MySQL 的实现使用的是 [ICU](https://github.com/unicode-org/icu) (Internati
 
 TiDB 与 MySQL 在 `match_type` 上的差异：
 
-- TiDB 中 `match_type` 可选值为：`"c"`、`"i"`、`"m"`、`"s"`，MySQL 中 `match_type` 可选值为：`"c"`、`"i"`、`"m"`、`"n"`、`"u"`
-- TiDB 中 `"s"` 对应 MySQL 中的 `"n"`，即 `.` 字符匹配行结束符
+- TiDB 中 `match_type` 可选值为：`"c"`、`"i"`、`"m"`、`"s"`。MySQL 中 `match_type` 可选值为：`"c"`、`"i"`、`"m"`、`"n"`、`"u"`。
+- TiDB 中 `"s"` 对应 MySQL 中的 `"n"`，即 `.` 字符匹配行结束符。
 
-    例如：MySQL 中 `SELECT REGEXP_LIKE(a, b, "n") FROM t1;` 在 TiDB 中需要修改为 `SELECT REGEXP_LIKE(a, b, "s") FROM t1;`
+    例如：MySQL 中 `SELECT REGEXP_LIKE(a, b, "n") FROM t1;` 在 TiDB 中需要修改为 `SELECT REGEXP_LIKE(a, b, "s") FROM t1;`。
 
-- TiDB 不支持 `match_type` 为 `"u"`
+- TiDB 不支持 `match_type` 为 `"u"`。
