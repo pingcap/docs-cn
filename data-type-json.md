@@ -44,7 +44,7 @@ SELECT id FROM city WHERE population >= 100;
     CREATE TABLE test(a json);
     INSERT INTO test SELECT json_objectagg('a', b'01010101');
 
-    -- TiDB 结果如下所示, 在 MySQL 中下面 SQL 结果为 `0, 1`。
+    -- 在 TiDB 中，执行以下 SQL 语句返回结果如下所示。在 MySQL 中，执行以下 SQL 语句的结果为 `0, 1`。
     mysql> SELECT JSON_EXTRACT(JSON_OBJECT('a', b'01010101'), '$.a') = "base64:type15:VQ==" AS r1, JSON_EXTRACT(a, '$.a') = "base64:type15:VQ==" AS r2 FROM test;
     +------+------+
     | r1   | r2   |
