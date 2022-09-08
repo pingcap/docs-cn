@@ -115,6 +115,6 @@ SQL_DIGESTS: ["begin","select * from `t`"]
 如果想要中止该事务的执行以使得该 DDL 能够继续执行，我们可以通过 Global Kill 命令将其杀死，然后 DDL 便能继续执行下去：
 
 ```sql
-mysql> kill 2199023255957;
+mysql> KILL 2199023255957;
 Query OK, 0 rows affected (0.00 sec)
 ```
