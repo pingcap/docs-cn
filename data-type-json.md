@@ -55,7 +55,7 @@ SELECT id FROM city WHERE population >= 100;
     ```
     详情可见此 [issue](https://github.com/pingcap/tidb/issues/37443)。
 
-- 当 `enum/set` 转换为 JSON 时，TiDB 会检查其格式正确性。下面 SQL 在 TiDB 中会报错:
+- 当 `enum/set` 转换为 JSON 时，TiDB 会检查其格式正确性。例如，当执行下面的 SQL 语句时，TiDB 中会报错：
 
     ```sql
     CREATE TABLE t(e ENUM('a'));
