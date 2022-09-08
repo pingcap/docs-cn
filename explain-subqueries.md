@@ -226,28 +226,28 @@ EXPLAIN SELECT * FROM t WHERE (a, b) NOT IN (select * FROM s);
 ```
 
 ```sql
-tidb> EXPLAIN SELECT (a, b) NOT IN (SELECT * FROM s) FROM t;
-+-----------------------------+---------+-----------+---------------+---------------------------------------------------------------------------------------+
-| id                          | estRows | task      | access object | operator info                                                                         |
-+-----------------------------+---------+-----------+---------------+---------------------------------------------------------------------------------------+
-| HashJoin_8                  | 1.00    | root      |               | NAAJ anti left outer semi join, equal:[eq(test.t.b, test.s.b) eq(test.t.a, test.s.a)] |
-| ├─TableReader_12(Build)     | 1.00    | root      |               | data:TableFullScan_11                                                                 |
-| │ └─TableFullScan_11        | 1.00    | cop[tikv] | table:s       | keep order:false, stats:pseudo                                                        |
-| └─TableReader_10(Probe)     | 1.00    | root      |               | data:TableFullScan_9                                                                  |
-|   └─TableFullScan_9         | 1.00    | cop[tikv] | table:t       | keep order:false, stats:pseudo                                                        |
-+-----------------------------+---------+-----------+---------------+---------------------------------------------------------------------------------------+
+tidb> explain select  (a, b) not in (select * from s) from t;
++-----------------------------+----------+-----------+---------------+---------------------------------------------------------------------------------------------+
+| id                          | estRows  | task      | access object | operator info                                                                               |
++-----------------------------+----------+-----------+---------------+---------------------------------------------------------------------------------------------+
+| HashJoin_8                  | 10000.00 | root      |               | Null-aware anti left outer semi join, equal:[eq(test.t.b, test.s.b) eq(test.t.a, test.s.a)] |
+| ├─TableReader_12(Build)     | 10000.00 | root      |               | data:TableFullScan_11                                                                       |
+| │ └─TableFullScan_11        | 10000.00 | cop[tikv] | table:s       | keep order:false, stats:pseudo                                                              |
+| └─TableReader_10(Probe)     | 10000.00 | root      |               | data:TableFullScan_9                                                                        |
+|   └─TableFullScan_9         | 10000.00 | cop[tikv] | table:t       | keep order:false, stats:pseudo                                                              |
++-----------------------------+----------+-----------+---------------+---------------------------------------------------------------------------------------------+
 5 rows in set (0.00 sec)
 
-tidb> EXPLAIN SELECT * FROM t WHERE (a, b) NOT IN (select * FROM s);
-+-----------------------------+---------+-----------+---------------+----------------------------------------------------------------------------+
-| id                          | estRows | task      | access object | operator info                                                              |
-+-----------------------------+---------+-----------+---------------+----------------------------------------------------------------------------+
-| HashJoin_8                  | 0.80    | root      |               | NAAJ anti semi join, equal:[eq(test.t.b, test.s.b) eq(test.t.a, test.s.a)] |
-| ├─TableReader_12(Build)     | 1.00    | root      |               | data:TableFullScan_11                                                      |
-| │ └─TableFullScan_11        | 1.00    | cop[tikv] | table:s       | keep order:false, stats:pseudo                                             |
-| └─TableReader_10(Probe)     | 1.00    | root      |               | data:TableFullScan_9                                                       |
-|   └─TableFullScan_9         | 1.00    | cop[tikv] | table:t       | keep order:false, stats:pseudo                                             |
-+-----------------------------+---------+-----------+---------------+----------------------------------------------------------------------------+
+tidb> explain select * from t where (a, b) not in (select * from s);
++-----------------------------+----------+-----------+---------------+----------------------------------------------------------------------------------+
+| id                          | estRows  | task      | access object | operator info                                                                    |
++-----------------------------+----------+-----------+---------------+----------------------------------------------------------------------------------+
+| HashJoin_8                  | 8000.00  | root      |               | Null-aware anti semi join, equal:[eq(test.t.b, test.s.b) eq(test.t.a, test.s.a)] |
+| ├─TableReader_12(Build)     | 10000.00 | root      |               | data:TableFullScan_11                                                            |
+| │ └─TableFullScan_11        | 10000.00 | cop[tikv] | table:s       | keep order:false, stats:pseudo                                                   |
+| └─TableReader_10(Probe)     | 10000.00 | root      |               | data:TableFullScan_9                                                             |
+|   └─TableFullScan_9         | 10000.00 | cop[tikv] | table:t       | keep order:false, stats:pseudo                                                   |
++-----------------------------+----------+-----------+---------------+----------------------------------------------------------------------------------+
 5 rows in set (0.00 sec)
 ```
 
