@@ -25,85 +25,81 @@ INSERT INTO city (id,detail) VALUES (1, '{"name": "Beijing", "population": 100}'
 SELECT id FROM city WHERE population >= 100;
 ```
 
-# MySQL 兼容性
-
-- 修复了 MySQL 使用二进制类型数据创建 JSON 时错误的将其标记为 STRING TYPE 的 bug：
-
-{{< copyable "sql" >}}
-
-```sql
-create table test (a json);
-insert into test select json_objectagg('a', b'01010101');
-
-mysql> select json_extract(json_object('a', b'01010101'), '$.a') = "base64:type15:VQ==" as result;
-+--------+
-| result |
-+--------+
-|      0 |
-+--------+
-1 row in set (0.02 sec)
-
--- 在 MySQL 中下面 SQL 结果为 1.
-mysql> select json_extract(a, '$.a') = "base64:type15:VQ==" as result from test;
-+--------+
-| result |
-+--------+
-|      0 |
-+--------+
-1 row in set (0.02 sec)
-```
-详情可见此 [issue](https://github.com/pingcap/tidb/issues/37443)
-
-- 修复了 MySQL 错误的将 `enum/set` 转换为 `json` 的 bug, 下面 SQL 在 TiDB 中会报错:
-
-{{< copyable "sql" >}}
-
-```sql
-create table t(e enum('a'));
-insert into t values ('a');
-mysql> select cast(e as json) from t;
-ERROR 3140 (22032): Invalid JSON text: The document root must not be followed by other values.
-```
-详情可见此 [issue](https://github.com/pingcap/tidb/issues/9999)
-
-- 支持对 JSON ARRAY/OBJECT 的 `order by`
-
-如果在 MySQL 中对 JSON ARRAY/OBJECT 使用 order by 会得到一个 warning，且结果与比较运算不一致:
-
-{{< copyable "sql" >}}
-
-```sql
-create table t(j JSON);
-insert into t values ('[1,2,3,4]');
-insert into t values ('[5]');
-
-mysql> select j from t where j < json_array(5);
-+--------------+
-| j            |
-+--------------+
-| [1, 2, 3, 4] |
-+--------------+
-1 row in set (0.00 sec)
-
--- 在 MySQL 中下面 SQL 会抛出 warning: This version of MySQL doesn't yet support 'sorting of non-scalar JSON values'. 且结果与 `<` 比较结果不一致
-mysql> select j from t order by j;
-+--------------+
-| j            |
-+--------------+
-| [1, 2, 3, 4] |
-| [5]          |
-+--------------+
-2 rows in set (0.00 sec)
-```
-详情可见此 [issue](https://github.com/pingcap/tidb/issues/37506)
+# 使用限制
 
 - 暂不支持 JSON PATH 中范围选取的语法，以下 SQL 会在 TiDB 中报错:
 
-{{< copyable "sql" >}}
+    ```sql
+    SELECT j->'$[1 to 2]' FROM t;
+    SELECT j->'$[last]' FROM t;
+    ```
 
-```sql
-select j->'$[1 to 2]' from t;
-select j->'$[last]' from t;
-```
+- 请勿使用 BR 工具将备份的 `>=6.3` 版本包含 JSON 列的数据恢复至 `<6.3` 版本的集群中，否则有几率出现无法查询 JSON 的问题。
+
+# MySQL 兼容性
+
+- 当使用二进制类型数据创建 JSON 时，目前 MySQL 会将其误标记为 STRING 类型。
+
+    ```sql
+    CREATE TABLE test(a json);
+    INSERT INTO test SELECT json_objectagg('a', b'01010101');
+
+    -- TiDB 结果如下所示, 在 MySQL 中下面 SQL 结果为 `0, 1`.
+    mysql> SELECT JSON_EXTRACT(JSON_OBJECT('a', b'01010101'), '$.a') = "base64:type15:VQ==" AS r1, JSON_EXTRACT(a, '$.a') = "base64:type15:VQ==" AS r2 FROM test;
+    +------+------+
+    | r1   | r2   |
+    +------+------+
+    |    0 |    0 |
+    +------+------+
+    1 row in set (0.01 sec)
+    ```
+    详情可见此 [issue](https://github.com/pingcap/tidb/issues/37443)
+
+- 当 `enum/set` 转换为 JSON 时，TiDB 会检查其格式正确性。下面 SQL 在 TiDB 中会报错:
+
+    ```sql
+    CREATE TABLE t(e ENUM('a'));
+    INSERT INTO t VALUES ('a');
+    mysql> SELECT CAST(e AS JSON) FROM t;
+    ERROR 3140 (22032): Invalid JSON text: The document root must not be followed by other values.
+    ```
+    详情可见此 [issue](https://github.com/pingcap/tidb/issues/9999)
+
+- TiDB 支持对 JSON ARRAY/OBJECT 的 `order by`
+
+    如果在 MySQL 中对 JSON ARRAY/OBJECT 使用 order by 会得到一个 warning，且结果与比较运算不一致:
+
+    ```sql
+    CREATE TABLE t(j JSON);
+    INSERT INTO t VALUES ('[1,2,3,4]');
+    INSERT INTO t VALUES ('[5]');
+
+    mysql> SELECT j FROM t WHERE j < JSON_ARRAY(5);
+    +--------------+
+    | j            |
+    +--------------+
+    | [1, 2, 3, 4] |
+    +--------------+
+    1 row in set (0.00 sec)
+
+    -- 在 MySQL 中下面 SQL 会抛出 warning: This version of MySQL doesn't yet support 'sorting of non-scalar JSON values'. 且结果与 `<` 比较结果不一致
+    mysql> SELECT j FROM t ORDER BY j;
+    +--------------+
+    | j            |
+    +--------------+
+    | [1, 2, 3, 4] |
+    | [5]          |
+    +--------------+
+    2 rows in set (0.00 sec)
+    ```
+    详情可见此 [issue](https://github.com/pingcap/tidb/issues/37506)
+
+- 在 INSERT JSON 列时，TiDB 会将值隐式转换为 JSON
+
+    ```sql
+    CREATE TABLE t(col JSON);
+    -- TiDB INSERT 成功，MySQL 会报错: Invalid JSON text
+    INSERT INTO t VALUES (3);
+    ```
 
 有关 JSON 的更多信息，可以参考 [JSON 函数](/functions-and-operators/json-functions.md)和[生成列](/generated-columns.md)。
