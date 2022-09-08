@@ -90,9 +90,9 @@ TiDB 中实现的是 Online DDL 的模式，一个 DDL 语句在执行过程中�
 
 ## DDL 阻塞的排查
 
-TiDB 在 6.3 版本中引入了一个视图 `mysql.tidb_ddl_lock`, 可以用于查看当前阻塞的 DDL 的相关信息。
+TiDB 在 v6.3 版本中引入了 `mysql.tidb_ddl_lock` 视图，可以用于查看当前阻塞的 DDL 的相关信息。
 
-以给表 `t` 添加索引为例，假设有 DDL 语句 `ALTER TABLE t ADD INDEX idx(a)` 。
+以给表 `t` 添加索引为例，假设有 DDL 语句 `ALTER TABLE t ADD INDEX idx(a)`：
 
 ```sql
 SELECT * FROM mysql.tidb_ddl_lock\G
