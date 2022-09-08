@@ -86,7 +86,7 @@ TiDB 中实现的是 Online DDL 的模式，一个 DDL 语句在执行过程中�
 
 ## 启用元数据锁
 
-使用系统变量 [`tidb_enable_mdl`](/system-variables.md#tidb_enable_mdl-span-classversion-mark-v63-span) 启动或者关闭元数据锁特性。
+使用系统变量 [`tidb_enable_mdl`](/system-variables.md#tidb_enable_mdl-从-v630-版本开始引入) 启动或者关闭元数据锁特性。
 
 ## DDL 阻塞的排查
 
