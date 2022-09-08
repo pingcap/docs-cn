@@ -65,15 +65,15 @@ TiDB 中实现的是 Online DDL 的模式，一个 DDL 语句在执行过程中�
  
 | session 1                                           | session 2                                       |
 |:----------------------------------------------------|:------------------------------------------------|
-| CREATE TABLE t (a INT);                             |                                                 |
-| INSERT INTO T VALUES(1);                            |                                                 |
-| BEGIN;                                              |                                                 |
-|                                                     | ALTER TABLE t ADD INDEX idx(a)                  |
-| SELECT * FROM t; (索引 idx 不可用)                       |                                                 |
-| COMMIT;                                             |                                                 |
-| BEGIN;                                              |                                                 | 
-|                                                     | ALTER TABLE t MODIFY COLUMN a CHAR(10)          |
-| SELECT * FROM t; (报错 Information schema is changed) |                                                 |
+| `CREATE TABLE t (a INT);`                             |                                                 |
+| `INSERT INTO t VALUES(1);`                           |                                                 |
+| `BEGIN;`                                              |                                                 |
+|                                                     | `ALTER TABLE t ADD INDEX idx(a);`                  |
+| `SELECT * FROM t;` (索引 idx 不可用)                       |                                                 |
+| `COMMIT;`                                            |                                                 |
+| `BEGIN;`                                              |                                                 | 
+|                                                     | `ALTER TABLE t MODIFY COLUMN a CHAR(10);`         |
+| `SELECT * FROM t;` (报错 `Information schema is changed`) |                                                 |
 
 ## TiDB 元数据锁优化
 
