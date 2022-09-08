@@ -12,12 +12,16 @@ summary: 了解 TiDB 的日志备份和 PITR 功能使用。
 
 ## 对集群进行备份
 
+### 打开日志备份功能开关
+
+使用日志备份功能前，需将 TiKV 配置项 [`log-backup.enable`](/tikv-configuration-file.md#enable-从-v620-版本开始引入) 设为 `true`。修改配置参数的方法，请参考[修改配置参数](/maintain-tidb-using-tiup.md#修改配置参数)。
+
 ### 启动日志备份
 
 使用 `br log start` 启动日志备份任务，一个集群只能启动一个日志备份任务。日志备份任务启动后，该命令就会立即返回：
 
 ```shell
-tiup br log start --task-name=pitr --pd "${PDIP}:2379" --storage 's3://backup-101/logbackup'
+tiup br log start --task-name=pitr --pd "${PDIP}:2379" --storage 's3://backup-101/logbackup?access_key=${access key}&secret_access_key=${secret access key}"'
 ```
 
 日志备份任务在 TiDB 集群后台持续地运行，直到你手动暂停它。 如果你需要查询日志备份任务当前状态，运行下面的命令：
@@ -45,7 +49,7 @@ checkpoint[global]: 2022-05-13 11:31:47.2 +0800; gap=4m53s
 使用快照备份功能作为全量备份的方法，以固定的周期（比如 2 天）进行全量备份
 
 ```shell
-tiup br backup full --pd "${PDIP}:2379" --storage 's3://backup-101/snapshot-{date}'
+tiup br backup full --pd "${PDIP}:2379" --storage 's3://backup-101/snapshot-{date}?access_key=${access key}&secret_access_key=${secret access key}"'
 ```
 
 ## 进行 PITR
@@ -54,8 +58,8 @@ tiup br backup full --pd "${PDIP}:2379" --storage 's3://backup-101/snapshot-{dat
 
 ```shell
 br restore point --pd "${PDIP}:2379" \
---storage='s3://backup-101//logbackup' \
---full-backup-storage='s3://backup-101//snapshot-{date}' \
+--storage='s3://backup-101/logbackup?access_key=${access key}&secret_access_key=${secret access key}"' \
+--full-backup-storage='s3://backup-101/snapshot-{date}?access_key=${access key}&secret_access_key=${secret access key}"' \
 --restored-ts '2022-05-15 18:00:00+0800'
 ```
 恢复期间有进度条会在终端中显示，进度条效果如下。 恢复分为两个阶段：全量恢复（Full Restore）和日志恢复（Restore Meta Files 和 Restore KV files。 每个阶段完成恢复后, br 都会输出恢复耗时、恢复数据大小等信息。
@@ -85,7 +89,7 @@ Restore KV Files <--------------------------------------------------------------
 2. 清理该快照备份(< FULL_BACKUP_TS)之前的日志备份数据
 
   ```shell
-  tiup br log truncate --until=${FULL_BACKUP_TS} --storage='s3://backup-101//logbackup'
+  tiup br log truncate --until=${FULL_BACKUP_TS} --storage='s3://backup-101/logbackup?access_key=${access key}&secret_access_key=${secret access key}"'
   ```
 
 3. 清理该快照备份(< FULL_BACKUP_TS)之前的快照备份

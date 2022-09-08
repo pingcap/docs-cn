@@ -12,13 +12,18 @@ summary: 了解 TiDB 的快照备份和恢复功能使用。
 * 支持配置备份指定时间点的快照数据
 * 只恢复指定 db/table 数据
 
+以下教程介绍了如何进行快照备份和恢复，如果你想要了解 br 命令行的使用可以参考
+
+- [介绍 br 工具命令行](/br-refactor/br-manual/use-br-command-line.md)
+- [快照备份和恢复命令介绍](/br-refactor/br-manual/br-snapshot-manual.md)
+
 ## 对集群进行快照备份
 
-使用 `br backup full` 可以进行一次快照备份。 该命令的详细使用帮助可以通过执行 `br backup full --help` 查看。
+使用 `br backup full` 可以进行一次快照备份。
 
 ```shell
 tiup br backup full --pd "${PD IP}:2379" \
-    --backupts '2022-09-08 13:30:00'
+    --backupts '2022-09-08 13:30:00' \
     --storage "s3://backup-101/snapshot-202209081330?access_key=${access key}&secret_access_key=${secret access key}" \
     --ratelimit 128 \
 ```
