@@ -174,7 +174,7 @@ INSERT INTO users (username) VALUES ('jane'), ('chris'), ('bill');
 ERROR 1062 (23000): Duplicate entry 'bill' for key 'username'
 ```
 
-悲观事务可以通过设置变量 [`tidb_constraint_check_in_place_pessimistic`](/system-variables.md#tidb_constraint_check_in_place_pessimistic) 为 `0` 来推迟唯一约束的检查到下一次对该唯一索引项加锁时或事务提交时，同时也跳过这个悲观锁加锁，以获得更好的性能。此时需要注意：
+对于悲观事务，你可以设置变量 [`tidb_constraint_check_in_place_pessimistic`](/system-variables.md#tidb_constraint_check_in_place_pessimistic) 为 `0` 来推迟唯一约束检查到下一次对该唯一索引项加锁时或事务提交时，同时也跳过这个悲观锁加锁，以获得更好的性能。此时需要注意：
 
 - 由于推迟了唯一约束检查，TiDB 可能会读取到不满足唯一约束的结果，执行 `COMMIT` 语句时可能返回 `Duplicate entry` 错误。返回该错误时，TiDB 会回滚当前事务。
 
@@ -202,7 +202,7 @@ ERROR 1062 (23000): Duplicate entry 'bill' for key 'username'
     +----+----------+
     ```
 
-此时，如果提交事务，TiDB 将进行唯一约束检查，报出 `Duplicate entry` 错误并回滚事务。
+    此时，如果提交事务，TiDB 将进行唯一约束检查，报出 `Duplicate entry` 错误并回滚事务。
 
     ```sql
     COMMIT;
@@ -247,9 +247,9 @@ ERROR 1062 (23000): Duplicate entry 'bill' for key 'username'
 
 - 关闭该变量会导致悲观事务中可能报出错误 `8147: LazyUniquenessCheckFailure`。
 
-> **注意：**
->
-> **返回 8147 错误时当前事务回滚**。
+    > **注意：**
+    >
+    > **返回 8147 错误时当前事务回滚**。
 
     下面的例子在 INSERT 语句执行时跳过了一次加锁后，在 DELETE 语句执行时对该唯一索引加锁并检查，即会在该语句报错：
 
