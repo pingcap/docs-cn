@@ -49,10 +49,6 @@ TiDB 与 MySQL 有差异：
 
 [TiDB-JDBC](https://github.com/pingcap/mysql-connector-j) 是基于 MySQL 8.0.29 的定制版本。TiDB-JDBC 基于 MySQL 官方 8.0.29 版本编译，修复了原 JDBC 在 prepare 模式下多参数、多字段 EOF 的错误，并新增 TiCDC snapshot 自动维护和 SM3 认证插件等功能。
 
-> **注意：**
->
-> TiDB-JDBC 当前仓库为个人仓库。
-
 如果你使用的是 **Maven**，请将以下内容添加到你的 `<dependencies></dependencies>`：
 
 ```xml
@@ -142,7 +138,7 @@ implementation 'mysql:mysql-connector-java:5.1.49'
 
 ### tidb-loadbalance
 
-[tidb-loadbalance](https://github.com/pingcap/tidb-loadbalance) 是应用端的负载均衡组件。通过 tidb-loadbalance，你可以实现自动维护 TiDB Server 的节点信息，根据节点信息使用 tidb-loadbalance 策略在客户端分发 JDBC Connection。客户端应用与 TiDB Server 之间使用 JDBC 直连，性能高于使用负载均衡组件。
+[tidb-loadbalance](https://github.com/pingcap/tidb-loadbalance) 是应用端的负载均衡组件。通过 tidb-loadbalance，你可以实现自动维护 TiDB server 的节点信息，根据节点信息使用 tidb-loadbalance 策略在客户端分发 JDBC 连接。客户端应用与 TiDB server 之间使用 JDBC 直连，性能高于使用负载均衡组件。
 
 目前 tidb-loadbalance 已实现轮询、随机、权重等负载均衡策略。
 
