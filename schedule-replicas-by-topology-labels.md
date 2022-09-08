@@ -55,6 +55,26 @@ rack = "<rack>"
 host = "<host>"
 ```
 
+### 设置 TiDB 的 `labels` （可选）
+
+如果需要使用 [Follower Read](/follower-read.md) 功能，需要为 TiDB 节点配置标签以支持优先从同区域的副本读取。
+
+TiDB 支持使用配置文件的方式设置 labels：
+
+{{< copyable "" >}}
+
+```
+[labels]
+zone = "<zone>"
+dc = "<dc>"
+rack = "<rack>"
+host = "<host>"
+```
+
+> **注意：**
+>
+> TiDB 目前依赖 label `zone` 支持选择同区域的副本，如果需要使用此功能，需要在 PD 的 `location-labels` 配置中包含 `zone` label, 并在 TiDB、TiKV 和 TiFlash 设置的 `labels` 中包含 label `zone`。
+
 ### 设置 PD 的 `location-labels` 配置
 
 根据前面的描述，标签可以是用来描述 TiKV 属性的任意键值对，但 PD 无从得知哪些标签是用来标识地理位置的，而且也无从得知这些标签的层次关系。因此，PD 也需要一些配置来使得 PD 理解 TiKV 节点拓扑。
