@@ -81,7 +81,7 @@
   - 云原生开发环境
     - [Gitpod](/develop/dev-guide-playground-gitpod.md)
   - 第三方软件支持
-    - [PingCAP 维护的三方库](/develop/dev-guide-third-party-support.md)
+    - [TiDB 支持的第三方工具](/develop/dev-guide-third-party-support.md)
     - [TiDB 与 ProxySQL 集成](/develop/dev-guide-proxysql-integration.md)
 - 部署标准集群
   - [软硬件环境需求](/hardware-and-software-requirements.md)
