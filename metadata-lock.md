@@ -95,7 +95,7 @@ TiDB 在 6.3 版本中引入了一个视图 `mysql.tidb_ddl_lock`, 可以用于�
 以给表 `t` 添加索引为例，假设有 DDL 语句 `ALTER TABLE t ADD INDEX idx(a)` 。
 
 ```sql
-select * from mysql.tidb_ddl_lock\G
+SELECT * FROM mysql.tidb_ddl_lock\G
 *************************** 1. row ***************************
     JOB_ID: 141
    DB_NAME: test
