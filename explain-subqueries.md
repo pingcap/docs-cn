@@ -123,7 +123,7 @@ EXPLAIN SELECT * FROM t1 WHERE id IN (SELECT t1_id FROM t2 WHERE t1_id != t1.int
 
 可以将原语句视为*关联子查询*，因为它引入了子查询外的 `t1.int_col` 列。然而，`EXPLAIN` 语句的返回结果显示的是[关联子查询去关联](/correlated-subquery-optimization.md)后的执行计划。条件 `t1_id != t1.int_col` 会被重写为 `t1.id != t1.int_col`。TiDB 可以从表 `t1` 中读取数据并且在 `└─Selection_21` 中执行此操作，因此这种去关联和重写操作会极大提高执行效率。
 
-## Anti Semi Join （`NOT IN` 子查询）
+## Anti Semi Join（`NOT IN` 子查询）
 
 在以下示例中，*除非*子查询中存在 `t3.t1_id`，否则该查询将（从语义上）返回表 `t3` 中的所有行：
 
@@ -148,11 +148,11 @@ EXPLAIN SELECT * FROM t3 WHERE t1_id NOT IN (SELECT id FROM t1 WHERE int_col < 1
 
 上述查询首先读取了表 `t3`，然后根据主键开始探测 (probe) 表 `t1`。连接类型是 _anti semi join_，即反半连接：之所以使用 _anti_，是因为上述示例有不存在匹配值（即 `NOT IN`）的情况；使用 `Semi Join` 则是因为仅需要匹配第一行后就可以停止查询。
 
-## Null Aware Semi Join （`IN`、`= ANY` 子查询）
+## Null-Aware Semi Join（`IN`、`= ANY` 子查询）
 
-`IN`、`= ANY` 的集合运算符号具有特殊的三值属性（`true`、`false`、`NULL`）。这也意味这在其所转化得到的 join 类型中需要对 join key 两侧的 null 进行特殊的感知和处理。
+`IN`、`= ANY` 的集合运算符号具有特殊的三值属性（`true`、`false`、`NULL`），这意味着在其所转化得到的 Join 类型中需要对 Join key 两侧的 `NULL` 进行特殊的感知和处理。
 
-对于 `IN`、`= ANY` 算子而言，其所引导的子查询，会对应的转为 Semi Join 和 Left Outer Semi Join，在上述 Semi Join 小节中， 由于其 join key 的两侧列 `test.t1.id` 和 `test.t2.t1_id` 都是 not null 属性的，所以 semi join 本身不需要 null aware 的性质来辅助运算。当前 TiDB 对于 Null Aware Semi Join 没有特定的优化，其实现本质都是基于笛卡尔积加 filter 的模式。以下为 null aware 的例子：
+对于 `IN`、`= ANY` 算子而言，其所引导的子查询，会对应地转为 Semi Join 和 Left Outer Semi Join。在上述 [Semi Join](#semi-join关联查询) 小节中， 由于其 Join key 的两侧列 `test.t1.id` 和 `test.t2.t1_id` 都是 `not NULL` 属性的，所以 Semi Join 本身不需要 Null-Aware 的性质来辅助运算。当前 TiDB 对于 Null-Aware Semi Join 没有特定的优化，其实现本质都是基于笛卡尔积加过滤 (filter) 的模式。以下为 Null-Aware 的例子：
 
 ```sql
 CREATE TABLE t(a INT, b INT);
@@ -190,17 +190,33 @@ tidb> EXPLAIN SELECT * FROM t WHERE (a,b) IN (SELECT * FROM s);
 8 rows in set (0.01 sec)
 ```
 
-第一个查询中，由于 `t` 表和 `s` 表的 `a`，`b` 列都是 nullable 的，所以其所转化 left outer semi join 是具有 null aware 性质的。其实现是先通过笛卡尔乘积，然后将 `IN` 或者 `= ANY` 所连接的列作为普通等值条件放到 other condition 做过滤（笛卡尔积之后的 filter）实现的。
+第一个查询 `EXPLAIN SELECT (a,b) IN (SELECT * FROM s) FROM t;` 中，由于 `t` 表和 `s` 表的 `a`、`b` 列都是 NULLABLE 的，所以其所转化 Left Outer Semi Join 是具有 Null-Aware 性质的。其实现是先通过笛卡尔乘积，然后将 `IN` 或者 `= ANY` 所连接的列作为普通等值条件放到 other condition 做过滤（笛卡尔积之后的 filter）实现的。
 
-第二个查询中，由于 `t` 表和 `s` 表的 `a`，`b` 列都是 nullable 的，`IN` 属性本应该转为 null aware 性质的 semi join，但当前 TiDB 会有一层优化，会直接将 semi 转为了 inner join + aggregate 的方式来实现。（因为在非 scalar 输出的 `IN` sub-query 中，NULL 和 false 具有等效结果，其下推过滤的 NULL 行，就其本身来说都是导致 where 子句的否定语义，因此可以事先忽略这些行）
+第二个查询 `EXPLAIN SELECT * FROM t WHERE (a,b) IN (SELECT * FROM s);` 中，由于 `t` 表和 `s` 表的 `a`、`b` 列都是 NULLABLE 的，`IN` 属性本应该转为 Null-Aware 性质的 Semi Join，但当前 TiDB 有一层优化，直接将 Semi Join 转为了 Inner Join + aggregate 的方式来实现。这是因为在非 scalar 输出的 `IN` sub-query 中，`NULL` 和 `false` 具有等效结果，其下推过滤的 `NULL` 行，就其本身来说都是导致 `WHERE` 子句的否定语义，因此可以事先忽略这些行。
 
-注意：`Exists` 操作符也会转成 Semi Join，但是 Exists 操作符号本身不具有集合运算 null-aware 的性质。
+> **注意：**
+>
+> `Exists` 操作符也会转成 Semi Join，但是 `Exists` 操作符号本身不具有集合运算 Null-Aware 的性质。
 
-## Null Aware Anti Semi Join （`NOT IN`、`!= ALL` 子查询）
+## Null-Aware Anti Semi Join（`NOT IN`、`!= ALL` 子查询）
 
-`NOT IN`、`!= ALL` 的集合运算运算具有特殊的三值属性（`true`、`false`、`NULL`）。这也意味这在其所转化得到的 join 类型中需要对 join key 两侧的 null 进行特殊的感知和处理。
+`NOT IN`、`!= ALL` 的集合运算运算具有特殊的三值属性（`true`、`false`、`NULL`），这意味着在其所转化得到的 Join 类型中需要对 Join key 两侧的 `NULL` 进行特殊的感知和处理。
 
-对于 `NOT IN`、`!= ALL` 算子而言，其所引导的子查询，会对应的转为 Anti Semi Join 和 Anti Left Outer Semi Join。在上述的 Anti Semi Join 小节中，由于其 join key 的两侧列 `test.t3.t1_id` 和 `test.t1.id` 都是 not null 属性的，所以 Anti Semi Join 本身不需要 null aware 的性质来辅助计算。在 TiDB v6.3.0 及后续的版本中，TiDB 引入了针对 Null Aware Anti Join 的特殊优化，1：利用 NA-EQ 构建哈希连接； 2：利用两侧数据源 null 值的特殊性质加速匹配结果的返回。由于集合操作符引入的等值需要对等值两侧操作符数的 null 值做特殊处理，这里称需要 null-aware 的等值条件为 NA-EQ 条件。不同以往的是，TiDB 不会再将 NA-EQ 条件处理成普通 EQ 条件，专门放置于 join 后置的 other condition 中，匹配完笛卡尔积之后再去判断结果集的合法性。在本次优化中，NA-EQ 这种弱化的等值条件会依然会被用来构建哈希值（hash join）加速匹配过程，大大简略了匹配时候所需要遍历的数据量，在 build 表 distinct 值很大的时候，效果会有质的提升。此外，由于 Anti Semi Join 自身具有 CNF 表达式的属性，其任何一侧出现的 null 值都会导致结果的确定性，利用这种性质我们可以来整个加速匹配过程的返回。 以下为 null aware 的例子：
+对于 `NOT IN`、`!= ALL` 算子而言，其所引导的子查询，会对应的转为 Anti Semi Join 和 Anti Left Outer Semi Join。在上述的 [Anti Semi Join](#anti-semi-joinnot-in-子查询) 小节中，由于其 Join key 的两侧列 `test.t3.t1_id` 和 `test.t1.id` 都是 `not NULL` 属性的，所以 Anti Semi Join 本身不需要 Null-Aware 的性质来辅助计算。
+
+在 TiDB v6.3.0 及后续的版本中，TiDB 引入了针对 Null-Aware Anti Join (NAJJ) 的特殊优化：
+
+- 利用 Null-Aware 的等值条件 (NA-EQ) 构建哈希连接
+
+    由于集合操作符引入的等值需要对等值两侧操作符数的 `NULL` 值做特殊处理，这里称需要 Null-Aware 的等值条件为 NA-EQ 条件。与 v6.3.0 之前版本不同的是，TiDB 不会再将 NA-EQ 条件处理成普通 EQ 条件，而是专门放置于 Join 后置的 other condition 中，匹配完笛卡尔积之后再判断结果集的合法性。
+
+    在 TiDB v6.3.0 及之后版本的优化中，NA-EQ 这种弱化的等值条件依然会被用来构建哈希值 (Hash Join)，大大减少了匹配时所需遍历的数据量，加速匹配过程。在 build 表 `DISTINCT()` 值很大的时候，效果会有质的提升。
+
+- 利用两侧数据源 `NULL` 值的特殊性质加速匹配结果的返回
+
+    由于 Anti Semi Join 自身具有 CNF (Conjunctive normal form) 表达式的属性，其任何一侧出现的 `NULL` 值都会导致结果的确定性，利用这种性质可以来加速整个匹配过程的返回。
+
+以下为 Null-Aware 的例子：
 
 ```sql
 CREATE TABLE t(a INT, b INT);
@@ -235,15 +251,15 @@ tidb> EXPLAIN SELECT * FROM t WHERE (a, b) NOT IN (select * FROM s);
 5 rows in set (0.00 sec)
 ```
 
-第一个查询中，由于 `t` 表和 `s` 表的 `a`，`b` 列都是 nullable 的，所以其所转化的 left outer semi join 是具有 null aware 性质的。不同的是，NAAJ 优化会将 NA-EQ 等值条件也作为了 hash join 的连接条件，大大加速的了 join 的计算。
+第一个查询 `EXPLAIN SELECT (a, b) NOT IN (SELECT * FROM s) FROM t;` 中，由于 `t` 表和 `s` 表的 `a`，`b` 列都是 NULLABLE 的，所以其所转化的 Left Outer Semi Join 是具有 Null-Aware 性质的。不同的是，NAAJ 优化将 NA-EQ 等值条件也作为了 Hash Join 的连接条件，大大加速的了 Join 的计算。
 
-第二个查询中，由于 `t` 表和 `s` 表的 `a`，`b` 列都是 nullable 的，所以其所转化的 anti semi join 是具有 null aware 性质的。不同的是，NAAJ 优化将 NA-EQ 等值条件也作为了 hash join 的连接条件，大大加速的了 join 的计算。
+第二个查询 `EXPLAIN SELECT * FROM t WHERE (a, b) NOT IN (select * FROM s);` 中，由于 `t` 表和 `s` 表的 `a`，`b` 列都是 NULLABLE 的，所以其所转化的 Anti Semi Join 是具有 Null-Aware 性质的。不同的是，NAAJ 优化将 NA-EQ 等值条件也作为了 Hash Join 的连接条件，大大加速的了 Join 的计算。
 
-当前 TiDB 仅针对 Anti Semi Join 和 Anti Left Outer Semi Join 实现了 null 感知，当前仅支持 Hash Join 类型且其 build 表只能固定为右侧表。NAAJ 摒弃了之前基于笛卡尔乘积和 other condition filter 的实现方式，利用 NA-EQ 构建哈希连接，并利用 null 值在 Anti Join 集合运算中的快速返回的性质加速了整个 join 的匹配过程。
+当前 TiDB 仅针对 Anti Semi Join 和 Anti Left Outer Semi Join 实现了 `NULL` 感知。目前仅支持 Hash Join 类型且其 build 表只能固定为右侧表。
 
 > **注意：**
 >
->`Not Exists` 操作符也会转成 Anti Semi Join，但是 `Not Exists` 符号本身不具有集合运算 null-aware 的性质。
+> `Not Exists` 操作符也会转成 Anti Semi Join，但是 `Not Exists` 符号本身不具有集合运算 Null-Aware 的性质。
 
 ## 其他类型查询的执行计划
 
