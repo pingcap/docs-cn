@@ -67,7 +67,7 @@ SELECT id FROM city WHERE population >= 100;
 
 - TiDB 支持对 JSON ARRAY/OBJECT 的 `order by`
 
-    如果在 MySQL 中对 JSON ARRAY/OBJECT 使用 order by 会得到一个 warning，且结果与比较运算不一致:
+    当使用 `ORDER BY` 对 JSON Array 或 JSON Object 进行排序时，MySQL 会返回一个警告，且排序结果与比较运算结果不一致:
 
     ```sql
     CREATE TABLE t(j JSON);
