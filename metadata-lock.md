@@ -106,7 +106,7 @@ SQL_DIGESTS: ["begin","select * from `t`"]
 
 > **注意：**
 >
-> 查询这个视图需要有 `PROCESS` 权限。
+> 查询这个视图需要有 [`PROCESS` 权限](https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_process)。
 
 这时可以从上面的输出结果中了解到有一个 SESSION ID 为 `2199023255957` 的事务阻塞了该 DDL 的执行，并且其事务执行的 SQL 语句如 SQL_DIGESTS 中所示，即 ["begin","select * from `t`"]。如果想要中止该事务的执行以使得该 DDL 能够继续执行，可以通过如下 Global KILL 命令将其杀死，然后 DDL 便能继续执行：
 
