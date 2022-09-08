@@ -155,7 +155,7 @@ ERROR 1062 (23000): Duplicate entry 'bill' for key 'username'
 
 ### 悲观事务
 
-在 TiDB 的悲观事务中，默认在每条语句执行时对该语句需要的锁进行加锁，并在加锁时进行该语句需要的唯一约束检查：
+在 TiDB 的悲观事务中，默认在执行任何一条需要插入或更新唯一索引的 SQL 语句时都会进行唯一约束检查：
 
 ```sql
 DROP TABLE IF EXISTS users;
