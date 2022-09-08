@@ -880,7 +880,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 默认值：`ON`
 - 这个变量用来设置是否开启 `LIST (COLUMNS) TABLE PARTITION` 特性。
 
-### `tidb_enable_mdl` <span class="version-mark">从 v6.3 版本开始引入</span>
+### `tidb_enable_mdl` <span class="version-mark">从 v6.3.0 版本开始引入</span>
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
