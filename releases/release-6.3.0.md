@@ -150,8 +150,7 @@ TiDB 版本：6.3.0-DMR
 
 * TiFlash 副本同步性能优化
 
-    TiFlash 副本通过 Raft 协议和 TiKV 数据同步时，需要一定的时间。在 v6.3.0 版本之前，TiFlash 副本同步速度比 TiKV 写入数据速度慢。在大量数据同步的场景下，例如 BR 恢复、Lightning 导入，可能出现 TiKV 数据已经就绪、但是 TiFlash 副本还没有完成同步的情况，此时任务下发到 TiFlash 会导致执行报错。v6.3.0 版本优化了 TiFlash 副本同步机制，大幅度提升同步速度，减小了大量数据同步场景下 TiFlash 副本未完成同步导致执行报错的概率。
-    同时，TiFlash 副本同步性能的提升，可以有效减少增加 TiFlash 副本的时间。
+    TiFlash 使用 Raft 协议与 TiKV 进行副本数据同步。在 v6.3.0 版本之前，同步大量副本数据时往往需要比较长的时间。v6.3.0 版本优化了 TiFlash 副本同步机制，大幅度提升了副本同步速度。因此，使用 BR 恢复数据、使用 Lightning 导入数据，或全新增加 TiFlash 副本时，副本将更迅速地完成同步，用户可以更及时地使用 TiFlash 进行查询。此外，在 TiFlash 扩缩容或修改 TiFlash 副本数时，TiFlash 副本也将更快地达到安全、均衡的状态。
 
     [#5237](https://github.com/pingcap/tiflash/issues/5237) @[breezewish](https://github.com/breezewish)
 
