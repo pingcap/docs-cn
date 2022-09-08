@@ -176,9 +176,9 @@ ERROR 1062 (23000): Duplicate entry 'bill' for key 'username'
 
 悲观事务可以通过设置变量 [`tidb_constraint_check_in_place_pessimistic`](/system-variables.md#tidb_constraint_check_in_place_pessimistic) 为 `0` 来推迟唯一约束的检查到下一次对该唯一索引项加锁时或事务提交时，同时也跳过这个悲观锁加锁，以获得更好的性能。此时需要注意：
 
-- 由于唯一性约束被推迟检查，读取时可能读到不满足唯一性约束的结果，执行 `COMMIT` 语句时可能返回 `Duplicate entry` 错误。如果返回 `Duplicate entry` 错误，该事务最后一定会回滚。
+- 由于推迟了唯一约束检查，TiDB 可能会读取到不满足唯一约束的结果，执行 `COMMIT` 语句时可能返回 `Duplicate entry` 错误。返回该错误时，TiDB 会回滚当前事务。
 
-    下面这个例子跳过了对 bill 的加锁，因此可以读到不满足唯一性约束的结果：
+    下面这个例子跳过了对 `bill` 的加锁，因此 TiDB 可能读到不满足唯一性约束的结果：
 
     ```sql
     SET tidb_constraint_check_in_place_pessimistic = 0;
@@ -187,7 +187,7 @@ ERROR 1062 (23000): Duplicate entry 'bill' for key 'username'
     SELECT * FROM users FOR UPDATE;
     ```
 
-    读到了不满足唯一性约束的结果：有两个 bill。
+    TiDB 读到了不满足唯一性约束的结果：有两个 `bill`。
 
     ```sql
     +----+----------+
@@ -202,6 +202,8 @@ ERROR 1062 (23000): Duplicate entry 'bill' for key 'username'
     +----+----------+
     ```
 
+此时，如果提交事务，TiDB 将进行唯一约束检查，报出 `Duplicate entry` 错误并回滚事务。
+
     ```sql
     COMMIT;
     ```
@@ -210,11 +212,9 @@ ERROR 1062 (23000): Duplicate entry 'bill' for key 'username'
     ERROR 1062 (23000): Duplicate entry 'bill' for key 'username'
     ```
 
-- 关闭该变量时，`COMMIT` 语句可能会返回 `Write conflict` 错误或 `Duplicate entry` 错误，两种错误都意味着事务回滚。
+- 关闭该变量时，如果在事务中写入数据，执行 `COMMIT` 语句可能会返回 `Write conflict` 错误。返回该错误时，TiDB 会回滚当前事务。
 
-    例如上面的例子，在提交时进行唯一约束检查，该事务报出了 `Duplicate entry` 错误并回滚。
-
-    在下面这个例子中，在有并发事务写入时，跳过悲观锁可能导致提交时报出 `Write conflict` 错误并回滚。
+    在下面这个例子中，当有并发事务写入时，跳过悲观锁导致事务提交时报出 `Write conflict` 错误并回滚。
 
     ```sql
     DROP TABLE IF EXISTS users;
@@ -229,7 +229,7 @@ ERROR 1062 (23000): Duplicate entry 'bill' for key 'username'
     INSERT INTO users (username) VALUES ('jane'), ('chris'), ('bill'); -- Query OK, 3 rows affected
     ```
 
-    然后另一个会话中写入了 bill：
+    然后另一个会话中写入了 `bill`：
 
     ```sql
     INSERT INTO users (username) VALUES ('bill'); -- Query OK, 1 row affected
@@ -247,7 +247,7 @@ ERROR 1062 (23000): Duplicate entry 'bill' for key 'username'
 
 - 关闭该变量会导致悲观事务中可能报出错误 `8147: LazyUniquenessCheckFailure`。返回该错误时当前事务回滚，而不是像其它一些错误仅仅回滚报错的语句。例如一个普通 DML 语句报出 `1062: Duplicate entry` 错误时，只会回滚该 DML 语句，而不会回滚整个事务。
 
-    例如在跳过一次加锁后，在另一个语句中对该唯一索引加锁并检查，即会在该语句报错：
+    下面的例子在 INSERT 语句执行时跳过了一次加锁后，在 DELETE 语句执行时对该唯一索引加锁并检查，即会在该语句报错：
 
     ```sql
     SET tidb_constraint_check_in_place_pessimistic = 0;
