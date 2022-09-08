@@ -59,11 +59,11 @@ tiup cluster edit-config <cluster-name>
 
 ## 使用 `cdc cli` 工具来管理集群状态和数据同步
 
-本部分介绍如何使用 `cdc cli` 工具来管理集群状态和数据同步。`cdc cli` 是指通过 `cdc` binary 执行 `cli` 子命令。在以下描述中，通过 `cdc` binary 直接执行 `cli` 命令，PD 的监听 IP 地址为 `10.0.10.25`，端口为 `2379`。
+本部分介绍如何使用 `cdc cli` 工具来管理集群状态和数据同步。`cdc cli` 是指通过 `cdc` binary 执行 `cli` 子命令。在以下描述中，通过 `cdc` binary 直接执行 `cli` 命令，TiCDC 的监听 IP 地址为 `10.0.10.25`，端口为 `8300`。
 
 > **注意：**
 >
-> PD 监听的 IP 和端口对应为 `pd-server` 启动时指定的 `advertise-client-urls` 参数。多个 `pd-server` 会包含多个该参数，用户可以指定其中任意一个或多个参数。例如 `--pd=http://10.0.10.25:2379` 或 `--pd=http://10.0.10.25:2379,http://10.0.10.26:2379,http://10.0.10.27:2379`。
+> TiCDC 监听的 IP 和端口对应为 `cdc server` 启动时指定的 `--addr` 参数。从 TiCDC v6.2.0 开始，`cdc cli` 将通过 TiCDC 的 Open API 直接与 TiCDC server 进行交互，你可以使用 `--server` 参数指定 TiCDC 的 server 地址。`--pd` 参数将被废弃，不再推荐使用。
 
 如果你使用的 TiCDC 是用 TiUP 部署的，需要将以下命令中的 `cdc cli` 替换为 `tiup ctl cdc`。
 
@@ -74,7 +74,7 @@ tiup cluster edit-config <cluster-name>
     {{< copyable "shell-regular" >}}
 
     ```shell
-    cdc cli capture list --pd=http://10.0.10.25:2379
+    cdc cli capture list --server=http://10.0.10.25:8300
     ```
 
     ```
@@ -130,7 +130,7 @@ tiup cluster edit-config <cluster-name>
 {{< copyable "shell-regular" >}}
 
 ```shell
-cdc cli changefeed create --pd=http://10.0.10.25:2379 --sink-uri="mysql://root:123456@127.0.0.1:3306/" --changefeed-id="simple-replication-task" --sort-engine="unified"
+cdc cli changefeed create --server=http://10.0.10.25:8300 --sink-uri="mysql://root:123456@127.0.0.1:3306/" --changefeed-id="simple-replication-task" --sort-engine="unified"
 ```
 
 ```shell
@@ -155,7 +155,7 @@ Info: {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":
 - `--sort-engine`：指定 changefeed 使用的排序引擎。因 TiDB 和 TiKV 使用分布式架构，TiCDC 需要对数据变更记录进行排序后才能输出。该项支持 `unified`（默认）/`memory`/`file`：
 
     - `unified`：优先使用内存排序，内存不足时则自动使用硬盘暂存数据。该选项默认开启。
-    - `memory`：在内存中进行排序。 **不建议使用，同步大量数据时易引发 OOM。**
+    - `memory`：在内存中进行排序。 **已经弃用，不建议在任何情况使用。**
     - `file`：完全使用磁盘暂存数据。**已经弃用，不建议在任何情况使用。**
 
 - `--config`：指定 changefeed 配置文件。
@@ -360,7 +360,7 @@ URI 中可配置的的参数如下：
 {{< copyable "shell-regular" >}}
 
 ```shell
-cdc cli changefeed create --pd=http://10.0.10.25:2379 --sink-uri="mysql://root:123456@127.0.0.1:3306/" --config changefeed.toml
+cdc cli changefeed create --server=http://10.0.10.25:8300 --sink-uri="mysql://root:123456@127.0.0.1:3306/" --config changefeed.toml
 ```
 
 其中 `changefeed.toml` 为同步任务的配置文件。
@@ -372,7 +372,7 @@ cdc cli changefeed create --pd=http://10.0.10.25:2379 --sink-uri="mysql://root:1
 {{< copyable "shell-regular" >}}
 
 ```shell
-cdc cli changefeed list --pd=http://10.0.10.25:2379
+cdc cli changefeed list --server=http://10.0.10.25:8300
 ```
 
 ```
@@ -402,7 +402,7 @@ cdc cli changefeed list --pd=http://10.0.10.25:2379
 {{< copyable "shell-regular" >}}
 
 ```shell
-cdc cli changefeed query -s --pd=http://10.0.10.25:2379 --changefeed-id=simple-replication-task
+cdc cli changefeed query -s --server=http://10.0.10.25:8300 --changefeed-id=simple-replication-task
 ```
 
 ```
@@ -424,7 +424,7 @@ cdc cli changefeed query -s --pd=http://10.0.10.25:2379 --changefeed-id=simple-r
 {{< copyable "shell-regular" >}}
 
 ```shell
-cdc cli changefeed query --pd=http://10.0.10.25:2379 --changefeed-id=simple-replication-task
+cdc cli changefeed query --server=http://10.0.10.25:8300 --changefeed-id=simple-replication-task
 ```
 
 ```
@@ -506,7 +506,7 @@ cdc cli changefeed query --pd=http://10.0.10.25:2379 --changefeed-id=simple-repl
 {{< copyable "shell-regular" >}}
 
 ```shell
-cdc cli changefeed pause --pd=http://10.0.10.25:2379 --changefeed-id simple-replication-task
+cdc cli changefeed pause --server=http://10.0.10.25:8300 --changefeed-id simple-replication-task
 ```
 
 以上命令中：
@@ -520,7 +520,7 @@ cdc cli changefeed pause --pd=http://10.0.10.25:2379 --changefeed-id simple-repl
 {{< copyable "shell-regular" >}}
 
 ```shell
-cdc cli changefeed resume --pd=http://10.0.10.25:2379 --changefeed-id simple-replication-task
+cdc cli changefeed resume --server=http://10.0.10.25:8300 --changefeed-id simple-replication-task
 ```
 
 - `--changefeed-id=uuid` 为需要操作的 `changefeed` ID。
@@ -539,7 +539,7 @@ cdc cli changefeed resume --pd=http://10.0.10.25:2379 --changefeed-id simple-rep
 {{< copyable "shell-regular" >}}
 
 ```shell
-cdc cli changefeed remove --pd=http://10.0.10.25:2379 --changefeed-id simple-replication-task
+cdc cli changefeed remove --server=http://10.0.10.25:8300 --changefeed-id simple-replication-task
 ```
 
 - `--changefeed-id=uuid` 为需要操作的 `changefeed` ID。
@@ -551,9 +551,9 @@ TiCDC 从 4.0.4 开始支持非动态修改同步任务配置，修改 changefee
 {{< copyable "shell-regular" >}}
 
 ```shell
-cdc cli changefeed pause -c test-cf --pd=http://10.0.10.25:2379
-cdc cli changefeed update -c test-cf --pd=http://10.0.10.25:2379 --sink-uri="mysql://127.0.0.1:3306/?max-txn-row=20&worker-number=8" --config=changefeed.toml
-cdc cli changefeed resume -c test-cf --pd=http://10.0.10.25:2379
+cdc cli changefeed pause -c test-cf --server=http://10.0.10.25:8300
+cdc cli changefeed update -c test-cf --server=http://10.0.10.25:8300 --sink-uri="mysql://127.0.0.1:3306/?max-txn-row=20&worker-number=8" --config=changefeed.toml
+cdc cli changefeed resume -c test-cf --server=http://10.0.10.25:8300
 ```
 
 当前支持修改的配置包括：
@@ -570,7 +570,7 @@ cdc cli changefeed resume -c test-cf --pd=http://10.0.10.25:2379
     {{< copyable "shell-regular" >}}
 
     ```shell
-    cdc cli processor list --pd=http://10.0.10.25:2379
+    cdc cli processor list --server=http://10.0.10.25:8300
     ```
 
     ```
@@ -588,7 +588,7 @@ cdc cli changefeed resume -c test-cf --pd=http://10.0.10.25:2379
     {{< copyable "shell-regular" >}}
 
     ```shell
-    cdc cli processor query --pd=http://10.0.10.25:2379 --changefeed-id=simple-replication-task --capture-id=b293999a-4168-4988-a4f4-35d9589b226b
+    cdc cli processor query --server=http://10.0.10.25:8300 --changefeed-id=simple-replication-task --capture-id=b293999a-4168-4988-a4f4-35d9589b226b
     ```
 
     ```
@@ -863,23 +863,17 @@ Unified Sorter 是 TiCDC 中的排序引擎功能，用于缓解以下场景造�
 {{< copyable "shell-regular" >}}
 
 ```shell
-cdc cli --pd="http://10.0.10.25:2379" changefeed query --changefeed-id=simple-replication-task | grep 'sort-engine'
+cdc cli --server="http://10.0.10.25:8300" changefeed query --changefeed-id=simple-replication-task | grep 'sort-engine'
 ```
 
 以上命令的返回结果中，如果 `sort-engine` 的值为 "unified"，则说明 Unified Sorter 已在该 changefeed 上开启。
 
 > **注意：**
 >
-> + 如果服务器使用机械硬盘或其他有延迟或吞吐有瓶颈的存储设备，请谨慎开启 Unified Sorter。
+> + 如果服务器使用机械硬盘或其他有延迟或吞吐有瓶颈的存储设备，Unified Sorter 性能会受到较大影响。
 > + Unified Sorter 默认使用 `data_dir` 储存临时文件。建议保证硬盘的空闲容量大于等于 500 GiB。对于生产环境，建议保证每个节点上的磁盘可用空间大于（业务允许的最大）`checkpoint-ts` 延迟 * 业务高峰上游写入流量。此外，如果在 `changefeed` 创建后预期需要同步大量历史数据，请确保每个节点的空闲容量大于等于要追赶的同步数据。
-> + Unified Sorter 默认开启，如果您的服务器不符合以上条件，并希望关闭 Unified Sorter，请手动将 changefeed 的 `sort-engine` 设为 `memory`。
-> + 如需在已使用 `memory` 排序的 changefeed 上开启 Unified Sorter，参见[同步任务中断，尝试再次启动后 TiCDC 发生 OOM，如何处理](/ticdc/troubleshoot-ticdc.md#同步任务中断尝试再次启动后-ticdc-发生-oom应该如何处理)回答中提供的方法。
 
 ## 灾难场景的最终一致性复制
-
-> **警告：**
->
-> 暂不推荐使用灾难场景的最终一致性复制功能。详见 [critical bug #6189](https://github.com/pingcap/tiflow/issues/6189)。
 
 从 v5.3.0 版本开始，TiCDC 支持将上游 TiDB 的增量数据备份到下游集群的 S3 存储或 NFS 文件系统。当上游集群出现了灾难，完全无法使用时，TiCDC 可以将下游集群恢复到最近的一致状态，即提供灾备场景的最终一致性复制能力，确保应用可以快速切换到下游集群，避免数据库长时间不可用，提高业务连续性。
 
