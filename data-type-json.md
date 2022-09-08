@@ -53,7 +53,7 @@ SELECT id FROM city WHERE population >= 100;
     +------+------+
     1 row in set (0.01 sec)
     ```
-    详情可见此 [issue](https://github.com/pingcap/tidb/issues/37443)
+    详情可见此 [issue](https://github.com/pingcap/tidb/issues/37443)。
 
 - 当 `enum/set` 转换为 JSON 时，TiDB 会检查其格式正确性。下面 SQL 在 TiDB 中会报错:
 
