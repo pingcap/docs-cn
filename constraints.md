@@ -235,7 +235,7 @@ ERROR 1062 (23000): Duplicate entry 'bill' for key 'username'
     INSERT INTO users (username) VALUES ('bill'); -- Query OK, 1 row affected
     ```
 
-    在第一个会话中提交，会报出 `Write conflict` 错误。
+    在第一个会话中提交时，TiDB 会报出 `Write conflict` 错误。
 
     ```sql
     COMMIT;
