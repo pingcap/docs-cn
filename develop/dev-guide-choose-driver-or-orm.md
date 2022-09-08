@@ -83,7 +83,7 @@ TiDB 与 MySQL 有差异：
 </dependency>
 ```
 
-如果你使用的是 `Gradle`，请将以下内容添加到你的 `dependencies`：
+如果你使用的是 Gradle，请将以下内容添加到你的 `dependencies`：
 
 ```gradle
 implementation group: 'io.github.lastincisor', name: 'mysql-connector-java', version: '8.0.29-tidb-1.0.0'
@@ -140,11 +140,12 @@ implementation 'mysql:mysql-connector-java:5.1.49'
 
 额外的，你需要在 [Hibernate 配置文件](https://www.tutorialspoint.com/hibernate/hibernate_configuration.htm)中指定 TiDB 方言： `org.hibernate.dialect.TiDBDialect`，此方言在 Hibernate `6.0.0.Beta2` 以上才可支持。若你无法升级 Hibernate 版本，那么请你直接使用 MySQL 5.7 的方言 `org.hibernate.dialect.MySQL57Dialect`。但这可能造成不可预料的使用结果，及部分 TiDB 特有特性的缺失，如：[序列](/sql-statements/sql-statement-create-sequence.md)等。
 
-
 ### tidb-loadbalance
 
-[tidb-loadbalance](https://github.com/pingcap/tidb-loadbalance) 是应用端的负载均衡组件。通过 tidb-loadbalance ，你可以实现自动维护 TiDB Server 的节点信息，根据节点信息使用 tidb-loadbalance 策略在客户端分发 JDBC Connection。客户端应用与 TiDB Server 之间使用 JDBC 直连，性能高于使用负载均衡组件。
+[tidb-loadbalance](https://github.com/pingcap/tidb-loadbalance) 是应用端的负载均衡组件。通过 tidb-loadbalance，你可以实现自动维护 TiDB Server 的节点信息，根据节点信息使用 tidb-loadbalance 策略在客户端分发 JDBC Connection。客户端应用与 TiDB Server 之间使用 JDBC 直连，性能高于使用负载均衡组件。
+
 目前 tidb-loadbalance 已实现轮询、随机、权重等负载均衡策略。
+
 > **注意：**
 >
 > tidb-loadbalance 需配合 mysql-connector-j 一起使用。
@@ -164,7 +165,7 @@ implementation 'mysql:mysql-connector-java:5.1.49'
 </dependency>
 ```
 
-如果你使用的是 `Gradle`，请将以下内容添加到你的 `dependencies`：
+如果你使用的是 Gradle，请将以下内容添加到你的 `dependencies`：
 
 {{< copyable "" >}}
 
