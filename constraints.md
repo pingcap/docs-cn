@@ -245,7 +245,7 @@ ERROR 1062 (23000): Duplicate entry 'bill' for key 'username'
     ERROR 9007 (HY000): Write conflict, txnStartTS=435688780611190794, conflictStartTS=435688783311536129, conflictCommitTS=435688783311536130, key={tableID=74, indexID=1, indexValues={bill, }} primary={tableID=74, indexID=1, indexValues={bill, }} [try again later]
     ```
 
-- 关闭该变量会导致悲观事务中可能报出错误 `8147: LazyUniquenessCheckFailure`。返回该错误时当前事务回滚，而不是像其它一些错误仅仅回滚报错的语句。例如一个普通 DML 语句报出 `1062: Duplicate entry` 错误时，只会回滚该 DML 语句，而不会回滚整个事务。
+- 关闭该变量时，悲观事务中可能返回 `8147: LazyUniquenessCheckFailure` 错误。注意，返回该错误时，TiDB 将会回滚当前事务，而不是像事务中的其它报错一样仅回滚报错的语句。
 
     下面的例子在 INSERT 语句执行时跳过了一次加锁后，在 DELETE 语句执行时对该唯一索引加锁并检查，即会在该语句报错：
 
