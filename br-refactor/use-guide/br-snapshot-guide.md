@@ -34,7 +34,7 @@ tiup br backup full --pd "${PD IP}:2379" \
 ```shell
 Full Backup <-------------------------------------------------------------------------------> 100.00%
 Checksum <----------------------------------------------------------------------------------> 100.00%
-[2022/09/08 13:38:47.191 +08:00] [INFO] [collector.go:69] ["Full Backup success summary"] [total-ranges=18] [ranges-succeed=18] [ranges-failed=0] [backup-checksum=3.597416ms] [backup-fast-checksum=2.36975ms] [backup-total-ranges=71] [backup-total-regions=71] [total-take=4.715509333s] [BackupTS=435844546560000000] [total-kv=1131] [total-kv-size=250kB] [average-speed=53.02kB/s] [backup-data-size(after-compressed)=71.33kB] [Size=71330]
+*** ["Full Backup success summary"] [total-ranges=18] [ranges-succeed=18] [ranges-failed=0] [backup-checksum=3.597416ms] [backup-fast-checksum=2.36975ms] [backup-total-ranges=71] [backup-total-regions=71] [total-take=4.715509333s] [BackupTS=435844546560000000] [total-kv=1131] [total-kv-size=250kB] [average-speed=53.02kB/s] [backup-data-size(after-compressed)=71.33kB] [Size=71330]
 ```
 
 ## 查询备份快照的时间点信息
@@ -65,7 +65,7 @@ tiup br restore full --pd "${PD IP}:2379" --storage "s3://backup-101/snapshot-20
 
 ```shell
 Full Restore <------------------------------------------------------------------------------> 100.00%
-["Full Restore success summary"] [total-ranges=12] [ranges-succeed=12] [ranges-failed=0] [split-region=16.181208ms] [restore-ranges=3] [total-take=4.344617542s] [total-kv=5] [total-kv-size=327B] [average-speed=75.27B/s] [restore-data-size(after-compressed)=4.813kB] [Size=4813] [BackupTS=435844901803917314]
+*** ["Full Restore success summary"] [total-ranges=12] [ranges-succeed=12] [ranges-failed=0] [split-region=16.181208ms] [restore-ranges=3] [total-take=4.344617542s] [total-kv=5] [total-kv-size=327B] [average-speed=75.27B/s] [restore-data-size(after-compressed)=4.813kB] [Size=4813] [BackupTS=435844901803917314]
 ```
 
 ### 恢复备份数据中指定库表的数据

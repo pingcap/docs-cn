@@ -5,7 +5,7 @@ summary: 了解 TiDB 的日志备份和 PITR 功能使用。
 
 # 使用日志备份和 PITR
 
-TiDB 日志备份能够及时的将 TiDB 变更数据备份到指定存储中。如果你需要灵活的选择恢复的时间点，可以按照以下方式进行备份。它是实现 PITR(Point in time recovery) 的基础。
+全量备份包含集群某个时间点的全量数据，但是不包含其他时间点的更新数据，而 TiDB 日志备份能够将业务写入 TiDB 的数据记录及时地备份到指定存储中。如果你需要灵活的选择恢复的时间点，可以按照以下方式配合地使用两种备份方式。它是实现 PITR(Point in time recovery) 的基础。
 
 - **启动日志备份任务**：运行 br log start 命令来启动日志备份任务，任务会在每个 TiKV 节点上持续运行，以小批量的形式定期钟将 TiDB 变更数据备份到指定存储中。
 - **定期地执行快照（全量）备份**：运行 br backup full 命令来备份集群快照到备份存储，例如在每天零点进行集群快照备份。
@@ -14,19 +14,19 @@ TiDB 日志备份能够及时的将 TiDB 变更数据备份到指定存储中。
 
 ### 启动日志备份
 
-使用 `br log start` 启动日志备份任务，一个集群只能启动一个日志备份任务：
+使用 `br log start` 启动日志备份任务，一个集群只能启动一个日志备份任务。日志备份任务启动后，该命令就会立即返回：
 
 ```shell
-br log start --task-name=pitr --pd "${PDIP}:2379" --storage='s3://{tidb_cluster_id}/backup-data/log-backup'
+tiup br log start --task-name=pitr --pd "${PDIP}:2379" --storage 's3://backup-101/logbackup'
 ```
 
-启动日志备份任务后，可以查询日志备份任务状态：
+日志备份任务在 TiDB 集群后台持续地运行，直到你手动暂停它。 如果你需要查询日志备份任务当前状态，运行下面的命令：
 
 ```shell
-br log status --task-name=pitr --pd "${PDIP}:2379"
+tiup br log status --task-name=pitr --pd "${PDIP}:2379"
 ```
 
-输出结果如下
+日志备份任务状态输出如下
 
 ```
 ● Total 1 Tasks.
@@ -35,7 +35,7 @@ br log status --task-name=pitr --pd "${PDIP}:2379"
     status: ● NORMAL
     start: 2022-05-13 11:09:40.7 +0800
       end: 2035-01-01 00:00:00 +0800
-    storage: s3://tidb_cluster_ud/backup-data/log-backup
+    storage: s3://backup-101/log-backup
     speed(est.): 0.00 ops/s
 checkpoint[global]: 2022-05-13 11:31:47.2 +0800; gap=4m53s
 ```
@@ -45,26 +45,56 @@ checkpoint[global]: 2022-05-13 11:31:47.2 +0800; gap=4m53s
 使用快照备份功能作为全量备份的方法，以固定的周期（比如 2 天）进行全量备份
 
 ```shell
-br backup full --pd "${PDIP}:2379" --storage 's3://{tidb_cluster_id}/backup-data/full-backup-{date}'
+tiup br backup full --pd "${PDIP}:2379" --storage 's3://backup-101/snapshot-{date}'
 ```
 
 ## 进行 PITR
 
-如果你想恢复到备份保留期内的任意时间点，可以使用 `br restore point` 进行一键恢复，你只需要指定要恢复的时间点、恢复时间点之前最近的快照数据备份以及日志备份数据。 br 会自动判断和读取恢复需要的数据，然后将这些数据依次恢复到指定的集群。
+如果你想恢复到备份保留期内的任意时间点，可以使用 `br restore point` 进行一键恢复。使用这个命令，你只需要指定**要恢复的时间点**、**恢复时间点之前最近的快照备份**以及**日志备份数据**。 br 会自动判断和读取恢复需要的数据，然后将这些数据依次恢复到指定的集群。
 
 ```shell
 br restore point --pd "${PDIP}:2379" \
---storage='s3://{tidb_cluster_id}/backup-data/log-backup' \
---full-backup-storage='s3://{tidb_cluster_id}/backup-data/full-backup-{date}' \
+--storage='s3://backup-101//logbackup' \
+--full-backup-storage='s3://backup-101//snapshot-{date}' \
 --restored-ts '2022-05-15 18:00:00+0800'
 ```
+恢复期间有进度条会在终端中显示，进度条效果如下。 恢复分为两个阶段：全量恢复（Full Restore）和日志恢复（Restore Meta Files 和 Restore KV files。 每个阶段完成恢复后, br 都会输出恢复耗时、恢复数据大小等信息。
 
-## PITR 功能指标
+```shell
+Full Restore <--------------------------------------------------------------------------------------------------------------------------------------------------------> 100.00%
+*** ["Full Restore success summary"] ****** [total-take=xxx.xxxs] [restore-data-size(after-compressed)=xxx.xxx] [Size=xxxx] [BackupTS={TS}] [total-kv=xxx] [total-kv-size=xxx] [average-speed=xxx]
+Restore Meta Files <--------------------------------------------------------------------------------------------------------------------------------------------------> 100.00%
+Restore KV Files <----------------------------------------------------------------------------------------------------------------------------------------------------> 100.00%
+*** ["restore log success summary"] [total-take=xxx.xx] [restore-from={TS}] [restore-to={TS}] [total-kv-count=xxx] [total-size=xxx]
+```
+
+## 清理过期的日志备份数据
+
+如[使用指南概览](/br-refactor/use-guide/br-use-overview.md)所述：
+
+* 对于超过备份保留期的日志备份。使用 `br log truncate` 删除指定时间点之前的日志备份数据。因为进行 PITR 需要 1、恢复时间点之前最近的全量备份；2、全量备份和恢复时间点之间的日志备份。**建议只清理全量快照之前的日志备份**
+
+我们可以按照下面的步骤清理超过**备份保留期**的日志备份数据：
+
+1. 查找备份保留期之外的**最近的一个全量备份**，使用 `validate` 指令获取它对应的时间点。例如，你要清理 2022/09/01 之前的备份数据，那么应该查找该日期之前的最近一个全量备份，且必须保证它不会被清理。执行下面的命令获取这个全量备份对应的时间点
+
+  ```shell
+  FULL_BACKUP_TS=`tiup br validate decode --field="end-version" -s "s3://backup-101/snapshot-{date}?access_key=${access key}&secret_access_key=${secret access key}"| tail -n1`
+  ```
+
+2. 清理该快照备份(< FULL_BACKUP_TS)之前的日志备份数据
+
+  ```shell
+  tiup br log truncate --until=${FULL_BACKUP_TS} --storage='s3://backup-101//logbackup'
+  ```
+
+3. 清理该快照备份(< FULL_BACKUP_TS)之前的快照备份
+
+## PITR 的功能指标
 
 ### 能力指标
 
-- PITR 的日志备份对集群的影响在 5% 左右
-- PITR 的日志备份和全量备份一起运行时，对集群的影响在 20% 以内
+- PITR 的日志备份和全量备份一起运行时，对集群的影响在 20% 以内；单独运行日志备份对集群的影响在 5% 左右
 - PITR 恢复速度，平均到单台 TiKV 节点：全量恢复为 280 GB/h ，日志恢复为 30 GB/h
 - PITR 功能提供的灾备 RPO 低至十几分钟，RTO 根据要恢复的数据规模几分钟到几个小时不等
 - 使用 BR 清理过期的日志备份数据速度为 600 GB/h
@@ -91,15 +121,11 @@ br restore point --pd "${PDIP}:2379" \
 
 ### 使用限制
 
-- 单个集群只支持启动一个日志备份任务。
 - 仅支持恢复到空集群。为了避免对集群的业务请求和数据产生影响，不能在原集群（in-place）和其他已有数据集群执行 PITR。
-- 存储支持 AWS S3 和共享的文件系统（如 NFS 等），暂不支持使用 GCS 和 Azure Blob Storage 作为备份存储。
 - 仅支持集群粒度的 PITR，不支持对单个 database 或 table 执行 PITR。
 - 不支持恢复用户表和权限表的数据。
-- 如果备份集群包含 TiFlash，执行 PITR 后恢复集群的数据不包含 TiFlash 副本，需要手动恢复 TiFlash 副本。具体操作参考[手动设置 schema 或 table 的 TiFlash 副本](/br/pitr-troubleshoot.md#在使用-br-restore-point-命令恢复下游集群后无法从-tiflash-引擎中查询到数据该如何处理)。
 - 上游数据库使用 TiDB Lightning Physical 方式导入的数据，无法作为数据日志备份下来。推荐在数据导入后执行一次全量备份，细节参考[上游数据库使用 TiDB Lightning Physical 方式导入数据的恢复](/br/pitr-known-issues.md#上游数据库使用-tidb-lightning-physical-方式导入数据导致无法使用日志备份功能)。
-- 备份过程中不支持分区交换 (Exchange Partition)，参考[日志备份过程中执行分区交换](/br/pitr-troubleshoot.md#日志备份过程中执行分区交换-exchange-partition-ddl在-pitr-恢复时会报错该如何处理)。
-- 不支持在恢复中重复恢复某段时间区间的日志，如果多次重复恢复 [t1=10, ts2=20) 区间的日志备份数据，可能会造成恢复后的数据不一致。
+- 不支持在恢复中重复恢复某段时间区间的日志，如果多次重复恢复 [t1=10, t2=20) 区间的日志备份数据，可能会造成恢复后的数据不一致。
 - 其他已知问题，请参考 [PITR 已知问题](/br/pitr-known-issues.md)。
 
 ## 进一步阅读
