@@ -163,6 +163,10 @@ BR 在 v6.0.0 之前不支持[放置规则](/placement-rules-in-sql.md)。BR v6.
 
 ## 使用 local://${path} 进行备份恢复的问题
 
+> **注意：**
+>
+> - 如果没有挂载 NFS 到 BR 或 TiKV 节点，或者使用了支持 S3、GCS 或 Azure Blob Storage 协议的远端存储，那么 BR 备份的数据会在各个 TiKV 节点生成。**注意这不是推荐的 BR 使用方式** ，因为备份数据会分散在各个节点的本地文件系统中，聚集这些备份数据可能会造成数据冗余和运维上的麻烦，而且在不聚集这些数据便直接恢复的时候会遇到 `SST file not found` 报错。
+
 ### 使用 local storage 的时候，BR 备份的文件会存在哪里？
 
 在使用 local storage 的时候，会在运行 BR 的节点生成 `backupmeta`，在各个 Region 的 Leader 节点生成备份文件。
