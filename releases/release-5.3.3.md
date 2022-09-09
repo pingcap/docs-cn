@@ -12,7 +12,7 @@ TiDB 版本：5.3.3
 
 + TiKV
 
-    - 修复了 transfer PD leader 或重启 PD 后，在集群中执行 SQL 语句会出现持续报错的问题。
+    - 修复了 PD leader 发生切换或重启 PD 后，在集群中执行 SQL 语句会出现持续报错的问题。
 
         该问题是由于 TiKV 存在 bug，在遇到 error 时无法向 PD 继续发送 Region 心跳，PD 也无法向 TiKV 发送调度。这样，PD 中相关 Region 的信息会逐步过旧，使得 TiDB 无法获取最新的 Region 信息，导致 SQL 执行出错。
 
