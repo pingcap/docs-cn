@@ -168,7 +168,7 @@ TiDB 版本：6.3.0-DMR
 
 * 增加优化器 hint 控制哈希连接的驱动端
 
-    在新版本中，优化器引入了两个新的 hint `HASH_JOIN_BUILD()` 和 `HASH_JOIN_PROBE()` 用来指定哈希连接时的驱动端和被驱动端。 这两个新的 hint 与原有的 `LEADING()` 和 `HASH_JOIN` 兼容，可以组合使用，从而达到细粒度的执行计划控制。 在没有选到最优执行计划的情况下，提供了更丰富的干预手段。
+    在新版本中，优化器引入了两个新的 hint `HASH_JOIN_BUILD()` 和 `HASH_JOIN_PROBE()` 用来指定哈希连接，并指定其驱动端和被驱动端。 在没有选到最优执行计划的情况下，提供了更丰富的干预手段。
 
     [用户文档](/explain-subqueries.md) [#issue]() @[Reminiscent](https://github.com/Reminiscent)
 
