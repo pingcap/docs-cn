@@ -31,26 +31,6 @@ Issue 链接：[#36648](https://github.com/pingcap/tidb/issues/36648)
 
 在创建日志备份任务的上游集群中，请尽量避免使用 TiDB Lightning Physical 方式导入数据。可以选择使用 TiDB Lightning Logical 方式导入数据。若确实需要使用 Physical 导入方式，可在导入完成之后做一次快照备份操作，这样，PITR 就可以恢复到快照备份之后的时间点。
 
-## 使用自建的 Minio 系统作为日志备份的存储，执行 `br restore point` 或者 `br log truncate` 出现 `RequestCanceled` 错误
-
-Issue 链接：[#36515](https://github.com/pingcap/tidb/issues/36515)
-
-```shell
-[error="RequestCanceled: request context canceled\ncaused by: context canceled"]
-```
-
-出现此错误的原因是，当前日志备份会产生大量小文件，自建的 Minio 存储系统的支持能力不能满足当前日志备份功能的需求。
-
-如需解决该问题，需要将 Minio 系统升级到更大规模的分布式集群，或者直接使用 Amazon S3 存储系统作为日志备份的存储。
-
-## 集群负载过高，Region 过多，存储达到性能瓶颈（比如使用自建的 Minio 系统作为日志备份的存储）等情况下，备份进度 checkpoint 延迟可能超过 10 分钟
-
-Issue 链接：[#13030](https://github.com/tikv/tikv/issues/13030)
-
-因为日志备份会产生大量小文件，而自建的 Minio 系统在规模上难以支撑日志备份对于大量小文件的写入需求，导致备份进度缓慢。
-
-如需解决该问题，需将 Minio 系统升级到更大规模，或者直接使用 Amazon S3 存储系统作为日志备份的存储。
-
 ## 集群已经恢复了网络分区故障，日志备份任务进度 checkpoint 仍然不推进 
 
 Issue 链接：[#13126](https://github.com/tikv/tikv/issues/13126)

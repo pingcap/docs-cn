@@ -81,7 +81,7 @@
   - 云原生开发环境
     - [Gitpod](/develop/dev-guide-playground-gitpod.md)
   - 第三方软件支持
-    - [PingCAP 维护的三方库](/develop/dev-guide-third-party-support.md)
+    - [TiDB 支持的第三方工具](/develop/dev-guide-third-party-support.md)
     - [TiDB 与 ProxySQL 集成](/develop/dev-guide-proxysql-integration.md)
 - 部署标准集群
   - [软硬件环境需求](/hardware-and-software-requirements.md)
@@ -344,6 +344,7 @@
     - [概述](/clinic/clinic-introduction.md)
     - [快速上手](/clinic/quick-start-with-clinic.md)
     - [使用 PingCAP Clinic 诊断 TiDB 集群](/clinic/clinic-user-guide-for-tiup.md)
+    - [使用 PingCAP Clinic 生成诊断报告](/clinic/clinic-report.md)
     - [采集 SQL 查询计划信息](/clinic/clinic-collect-sql-query-plan.md)
     - [数据采集说明](/clinic/clinic-data-instruction-for-tiup.md)
   - [TiDB Operator](/tidb-operator-overview.md)
