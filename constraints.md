@@ -242,7 +242,7 @@ ERROR 1062 (23000): Duplicate entry 'bill' for key 'username'
     ```
 
     ```
-    ERROR 9007 (HY000): Write conflict, txnStartTS=435688780611190794, conflictStartTS=435688783311536129, conflictCommitTS=435688783311536130, key={tableID=74, indexID=1, indexValues={bill, }} primary={tableID=74, indexID=1, indexValues={bill, }} [try again later]
+    ERROR 9007 (HY000): Write conflict, txnStartTS=435688780611190794, conflictStartTS=435688783311536129, conflictCommitTS=435688783311536130, key={tableID=74, indexID=1, indexValues={bill, }} primary={tableID=74, indexID=1, indexValues={bill, }}, reason=LazyUniquenessCheck [try again later]
     ```
 
 - 关闭该变量会导致悲观事务中可能报出错误 `8147: LazyUniquenessCheckFailure`。
