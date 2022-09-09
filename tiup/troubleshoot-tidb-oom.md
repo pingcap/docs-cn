@@ -19,66 +19,66 @@ TiDB OOM ，需要区分以下两种情况。
 
 针对上述的第二种情况，报错可能如下：
 
-1. tidb.log show 
-  1. Alerm:  [WARN] [memory_usage_alarm.go:139] ["tidb-server has the risk of OOM. Running SQLs and heap profile will be recorded in record path"] 
-  2. 重启相关日志：[INFO] [printer.go:33] ["Welcome to TiDB."] 
+1. tidb.log show
+    - Alerm:  [WARN] [memory_usage_alarm.go:139] ["tidb-server has the risk of OOM. Running SQLs and heap profile will be recorded in record path"]
+    - 重启相关日志：[INFO] [printer.go:33] ["Welcome to TiDB."]
 
 2. SQL 返回：ERROR 1105 (HY000): Out Of Memory Quota![conn_id=54] 。注意：此报错为配置了 tidb_mem_quota_query 后的正常行为。
 
 针对两种情况，一些共同的症状：
 
 - 客户端报错：SQL error, errno = 2013, state = 'HY000': Lost connection to MySQL server during query
-- grafana 上的监控，看是否有因内存超阈发生过重启：
-  1. TiDB --> Server --> Memory Usage 达到某一阈值的锯齿形
-  2. TiDB --> Server --> Events OPM 显示 ‘server kill’
-  3. TiDB --> Server --> Uptime 显示掉零重启
-  4. TiDB-Runtime --> Memory Usage , 看到 estimate-inuse 在持续升高
-  5. TiDB --> Server --> Memory Usage, process/heapInuse 在持续升高
+- Grafana 上的监控，看是否有因内存超阈发生过重启：
+    - TiDB --> Server --> Memory Usage 达到某一阈值的锯齿形
+    - TiDB --> Server --> Events OPM 显示 ‘server kill’
+    - TiDB --> Server --> Uptime 显示掉零重启
+    - TiDB-Runtime --> Memory Usage , 看到 estimate-inuse 在持续升高
+    - TiDB --> Server --> Memory Usage, process/heapInuse 在持续升高
 
 ## 排查方向
 
 1. 首先需要确认 OOM 的出发点，是上述情况一 还是情况二。
-2. OS 层面，检查资源配置、混布的影响
-3. DB 层面，常见情况包括
-  - TiDB 处理较大的数据流量，如大查询，大写入，数据导入等
-  - TiDB 的高并发场景，多条 SQL 并发消耗资源或者算子并发高
-  - TiDB 内存泄露，资源不释放
+2. OS 层面，检查资源配置、混布的影响。
+3. DB 层面，常见情况包括:
+    - TiDB 处理较大的数据流量，如大查询，大写入，数据导入等
+    - TiDB 的高并发场景，多条 SQL 并发消耗资源或者算子并发高
+    - TiDB 内存泄露，资源不释放
 
 ## 需要收集的诊断信息
 
 1. 操作系统上的内存相关配置
-  - TiUP 上的配置： resource_control.memory_limit
-  - 操作系统的配置：
-    - cat /proc/meminfo
-    - Sys config:
-      - vm.overcommit_memory
-      - sysctl -a| grep oom
-  - 是否 NUMA and number of nodes:  numactl --hardware ; numactl --show
+    - TiUP 上的配置：resource_control.memory_limit
+    - 操作系统的配置：
+      - cat /proc/meminfo
+      - Sys config:
+        - vm.overcommit_memory
+        - sysctl -a| grep oom
+    - 是否 NUMA and number of nodes:  numactl --hardware ; numactl --show
 
 2. DB 层的内存相关配置
-  - tidb version
-  - tidb_mem_quota_query, memory-usage-alarm-ratio, mem-quota-query
-  - oom-action
-  - tidb_enable_rate_limit_action
-  - Server-memory-quota
-  - Oom-use-tmp-storage, tmp-storage-path, tmp-storage-quota
-  - tidb_analyze_version
+    - tidb version
+    - tidb_mem_quota_query, memory-usage-alarm-ratio, mem-quota-query
+    - oom-action
+    - tidb_enable_rate_limit_action
+    - Server-memory-quota
+    - Oom-use-tmp-storage, tmp-storage-path, tmp-storage-quota
+    - tidb_analyze_version
 
 3. TiDB 内存的日常使用情况，checked by TiDB --> Server --> Memory Usage
 
 4. SQL with Top memory consumption：
 
-  - SQL dashboard 中 SQL 语句分析/慢查询，查看内存用量
-  - information_schema 的 SLOW_QUERY/CLUSTER_SLOW_QUERY
-  - 各个 TiDB 节点的 tidb_slow_query.log
-  - 设置了 memory-quota-query 的，在 tidb.log 中 grep "expensive_query"  看 mem_max 字段，特别是当 SQL 是 unsuccessful 的，只能通过 log 里的 expensive query 来排查。
-  - SQL 的 explain analyze or explain 看算子层的内存消耗
-  - SELECT * FROM information_schema.processlist; See column MEM
+    - SQL dashboard 中 SQL 语句分析/慢查询，查看内存用量
+    - information_schema 的 SLOW_QUERY/CLUSTER_SLOW_QUERY
+    - 各个 TiDB 节点的 tidb_slow_query.log
+    - 设置了 memory-quota-query 的，在 tidb.log 中 grep "expensive_query"  看 mem_max 字段，特别是当 SQL 是 unsuccessful 的，只能通过 log 里的 expensive query 来排查。
+    - SQL 的 explain analyze or explain 看算子层的内存消耗
+    - SELECT * FROM information_schema.processlist; See column MEM
 
 5. 内存使用率高的时候 TiDB 的 Profile 信息： curl -G http://{TiDBIP}:10080/debug/zip?seconds=10" > profile.zip
 
-6. tmp 目录下的 dump 文件(该文件的路径会在 tidb.log 中打印出来 。
-  1. e.g. ["tidb-server has the risk of OOM. Running SQLs and heap profile will be recorded in record path"] ["is server-memory-quota set"=false] ["system memory total"=14388137984] ["system memory usage"=11897434112] ["tidb-server memory usage"=11223572312] [memory-usage-alarm-ratio=0.8] ["record path"="/tmp/0_tidb/MC4wLjAuMDo0MDAwLzAuMC4wLjA6MTAwODA=/tmp-storage/record"]
+6. tmp 目录下的 dump 文件，该文件的路径会在 tidb.log 中打印出来。例如：
+    ["tidb-server has the risk of OOM. Running SQLs and heap profile will be recorded in record path"] ["is server-memory-quota set"=false] ["system memory total"=14388137984] ["system memory usage"=11897434112] ["tidb-server memory usage"=11223572312] [memory-usage-alarm-ratio=0.8] ["record path"="/tmp/0_tidb/MC4wLjAuMDo0MDAwLzAuMC4wLjA6MTAwODA=/tmp-storage/record"]
 
 ## 常见原因和解决办法
 
