@@ -56,7 +56,7 @@ PingCAP Clinic Server 云诊断平台（以下简称为 Clinic Server）可以�
 
 ![benchmark-report](/media/clinic-benchmark-report.png)
 
-> **说明：**
+> **注意：**
 >
 > 报告功能会持续优化，实际生成的内容可能比下面的说明更丰富。
 
@@ -89,7 +89,7 @@ Comparison Report 会基于所选的两个时间段的 Metrics 和日志进行�
 
 ![comparison-report](/media/clinic-comparison-report.png)
 
-> **说明：**
+> **注意：**
 >
 > 报告功能会持续优化，实际生成的内容可能比下面的说明更丰富。
 
