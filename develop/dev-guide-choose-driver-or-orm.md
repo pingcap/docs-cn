@@ -35,7 +35,7 @@ TiDB 与 MySQL 有差异：
 
 按照 [MySQL 文档](https://dev.mysql.com/doc/connector-j/5.1/en/)中的说明下载并配置 Java JDBC 驱动程序即可使用。
 
-> 注意：
+> **注意：**
 >
 > 强烈建议使用 JDBC 5.1 的最后一个版本 5.1.49。因为当前 8.0.29 版本有未合并的 [Bug 修复](https://bugs.mysql.com/bug.php?id=106252)，在与 TiDB 共同使用时可能会导致线程卡死。在 MySQL JDBC 8.0 未合并此修复之前，建议不要升级至 8.0 版本。
 
