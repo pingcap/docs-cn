@@ -55,11 +55,11 @@ rack = "<rack>"
 host = "<host>"
 ```
 
-### 设置 TiDB 的 `labels` （可选）
+### 设置 TiDB 的 `labels`（可选）
 
-如果需要使用 [Follower Read](/follower-read.md) 功能，需要为 TiDB 节点配置标签以支持优先从同区域的副本读取。
+如果需要使用 [Follower Read](/follower-read.md) 的优先读同区域副本的功能，需要为 TiDB 节点配置相关的 `labels`。
 
-TiDB 支持使用配置文件的方式设置 labels：
+TiDB 支持使用配置文件的方式设置 `labels`：
 
 {{< copyable "" >}}
 
@@ -73,7 +73,7 @@ host = "<host>"
 
 > **注意：**
 >
-> TiDB 目前依赖 label `zone` 支持选择同区域的副本，如果需要使用此功能，需要在 PD 的 `location-labels` 配置中包含 `zone` label, 并在 TiDB、TiKV 和 TiFlash 设置的 `labels` 中包含 label `zone`。
+> 目前，TiDB 依赖 label `zone` 匹配选择同一区域的副本。如果需要使用此功能，需要在 PD [`location-labels` 配置]((#设置-pd-的-isolation-level-配置))中包含 `zone`，并在 TiDB、TiKV 和 TiFlash 设置的 `labels` 中包含 `zone`。关于如何设置 TiKV 和 TiFlash 的 `labels`，可参考 [设置 TiKV 和 TiFlash 的 `labels`](#设置-tikv-和-tiflash-的-labels)。
 
 ### 设置 PD 的 `location-labels` 配置
 
