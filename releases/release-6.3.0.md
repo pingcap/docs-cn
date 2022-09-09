@@ -280,7 +280,7 @@ TiDB 版本：6.3.0-DMR
 | ------ | ------ | ------ |
 | default_authentication_plugin | 修改 | 扩展可选值范围：增加 tidb_sm3_password，设置为 tidb_sm3_password 时，用户密码验证的加密算法为国密算法SM3 |
 |  tidb_constraint_check_in_place_pessimistic | 新增 | 控制悲观事务中唯一约束检查的时间点 |
-| tidb_enable_pseudo_for_outdated_stats | 修改 | 控制优化器过期的加载策略。 默认值由 `ON` 改为 `OFF`，即使统计信息过期，优化器也仍会使用该表上的统计信息。  |
+| tidb_enable_pseudo_for_outdated_stats | 修改 | 控制优化器在统计信息过期时的行为。 默认值由 `ON` 改为 `OFF`，即使统计信息过期，优化器也仍会使用该表上的统计信息。  |
 | tidb_opt_force_inline_cte | 新增 | 这个变量用来控制是否强制开启 inline CTE。默认值为 `OFF`，即默认不强制开启 inline CTE |
 | tidb_opt_range_mem_quota | 新增 | 控制优化器构造 range 时允许的最大内存使用 |
 |  |  |  |
