@@ -170,11 +170,13 @@ TiDB 版本：6.3.0-DMR
 
     在新版本中，优化器引入了两个新的 hint `HASH_JOIN_BUILD()` 和 `HASH_JOIN_PROBE()` 用来指定哈希连接，并指定其驱动端和被驱动端。 在没有选到最优执行计划的情况下，提供了更丰富的干预手段。
 
-    [用户文档](/explain-subqueries.md) [#issue]() @[Reminiscent](https://github.com/Reminiscent)
+    [用户文档](/optimizer-hints.md) [#issue]() @[Reminiscent](https://github.com/Reminiscent)
 
 * 会话级允许 CTE 内联展开
 
     在 v6.2.0 中， 我们引入在优化器提示 `MERGE` ， 允许对 CTE 内联进行展开，使得 CTE 查询结果的消费者能够在 TiFlash 内并行执行。 在版本 v6.3.0 中，我们添加了会话级变量 `tidb_opt_force_inline_cte`，允许在会话级修改这个行为，提升了易用性。 
+
+    [用户文档](/system-variables.md#tidboptforceinlinecte) [#36514](https://github.com/pingcap/tidb/issues/36514) @[elsa0520](https://github.com/elsa0520)
 
 ### 事务
 
