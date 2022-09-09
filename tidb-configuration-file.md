@@ -687,6 +687,12 @@ PROXY 协议相关的配置项。
 >
 > 需谨慎使用 `*` 符号，因为 `*` 允许来自任何 IP 的客户端自行汇报其 IP 地址，从而可能引入安全风险。另外，`*` 可能导致部分直接连接 TiDB 的内部组件无法使用，例如 TiDB Dashboard。
 
+### `temp-dir` <span class="version-mark">从 v6.3.0 版本开始引入</span>
+
++ TiDB 用于存放临时数据的路径。需要使用 TiDB 节点本地存储的功能会将数据临时存放在这个目录下。
++ 在创建索引的过程中，如果开启了[创建索引加速](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入)，那么新创建索引需要回填的数据会被先存放在 TiDB 本地临时存储路径，然后批量导入到 TiKV，从而提升索引创建速度。
++ 默认值："/tmp/tidb"
++ 
 ## experimental
 
 experimental 部分为 TiDB 实验功能相关的配置。该部分从 v3.1.0 开始引入。
@@ -695,9 +701,3 @@ experimental 部分为 TiDB 实验功能相关的配置。该部分从 v3.1.0 �
 
 + 用于控制是否能创建表达式索引。自 v5.2.0 版本起，如果表达式中的函数是安全的，你可以直接基于该函数创建表达式索引，不需要打开该配置项。如果要创建基于其他函数的表达式索引，可以打开该配置项，但可能存在正确性问题。通过查询 `tidb_allow_function_for_expression_index` 变量可得到能直接用于创建表达式的安全函数。
 + 默认值：false
-
-### `temp-dir` <span class="version-mark">从 v6.3.0 版本开始引入</span>
-
-+ TiDB 用于存放临时数据的路径。需要使用 TiDB 节点本地存储的功能会将数据临时存放在这个目录下。
-+ 在创建索引的过程中，如果开启了[创建索引加速](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入)，那么新创建索引需要回填的数据会被先存放在 TiDB 本地临时存储路径，然后批量导入到 TiKV，从而提升索引创建速度。
-+ 默认值："/tmp/tidb"
