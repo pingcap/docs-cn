@@ -1,0 +1,23 @@
+---
+title: TiDB 5.3.3 Release Note
+---
+
+# TiDB 5.3.3 Release Note
+
+Release date: 2022 年 9 月 x 日
+
+TiDB version: 5.3.3
+
+## Bug fix
+
++ TiKV
+
+    - 修复了 transfer PD leader 或重启 PD 后，在集群中执行 SQL 语句会出现持续报错的问题。
+
+        该问题是由于 TiKV 存在 bug，在遇到 error 时无法向 PD 继续发送 Region 心跳，PD 也无法向 TiKV 发送调度。这样，PD 中相关 Region 的信息会逐步过旧，使得 TiDB 无法获取最新的 Region 信息，导致 SQL 执行出错。
+
+        目前该问题已在 v5.3 版本上修复。你可以升级 TiKV 至 v5.3.3 或以上的 v5.3 版本。
+
+        你还可以重启无法向 PD 发送 Region 心跳的 TiKV 节点，直至不再有待发送的 Region 心跳为止。
+
+        Bug 详情参见 [#12934](https://github.com/tikv/tikv/issues/12934)。
