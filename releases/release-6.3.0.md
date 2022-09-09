@@ -208,7 +208,7 @@ TiDB 版本：6.3.0-DMR
 
 * 修改优化统计信息过期时的默认加载策略
 
-    在 v5.3.0 版本时，TiDB 引入系统变量 `tidb_enable_pseudo_for_outdated_stats` 控制优化器过期的加载策略，默认为 `ON`，即保持旧版本行为不变：当 SQL 涉及的对象的统计信息过期时，优化器认为该表上除总行数以外的统计信息不再可靠，转而使用 pseudo 统计信息。 经过一系列测试和用户实际场景分析， TiDB 在新版本中将  `tidb_enable_pseudo_for_outdated_stats` 的默认值改为 `OFF`，即使统计信息过期，优化器也仍会使用该表上的统计信息，这有利于执行计划的稳定性。
+    在 v5.3.0 版本时，TiDB 引入系统变量 `tidb_enable_pseudo_for_outdated_stats` 控制优化器在统计信息过期时的行为，默认为 `ON`，即保持旧版本行为不变：当 SQL 涉及的对象的统计信息过期时，优化器认为该表上除总行数以外的统计信息不再可靠，转而使用 pseudo 统计信息。 经过一系列测试和用户实际场景分析，TiDB 在新版本中将  `tidb_enable_pseudo_for_outdated_stats` 的默认值改为 `OFF`，即使统计信息过期，优化器也仍会使用该表上的统计信息，这有利于执行计划的稳定性。
 
     [用户文档]() [#issue]() @[xuyifangreeneyes](https://github.com/xuyifangreeneyes)
 
