@@ -99,16 +99,17 @@ Comparison Report 会基于所选的两个时间段的 Metrics 和日志进行�
 - 主要指标对比：列出最关键的 12 个指标在前后两个时间段的对比。
 - 业务指标对比：列出以下 5 个关键业务指标的对比：
 
-    - QPS：每秒钟的请求次数，支持对比不同请求类型的 QPS
-    - Connection_count：连接数量，支持对比不同 TiDB 节点的连接数量
+    - QPS：每秒钟的请求次数。可以点击 **More** 对比不同请求类型的 QPS
+    - Connection_count：连接数量。可以点击 **More** 对比不同 TiDB 节点的连接数量
     - Active_connection_count：活跃连接数量
-    - CPS：每秒处理的命令数，支持对比不同命令类型
+    - CPS：每秒处理的命令数。可以点击 **More** 对比不同命令类型的 CPS
+    - Plan_cache_OPS：所有 TiDB 实例每秒使用 Plan Cache 的查询数量
 
 - 性能指标对比：列出系统中最重要的二十多个性能指标的对比，包括以下几个部分：
 
-    - 基础指标：数据库时间 (DB Time) 和延迟等最基础的性能指标对比
+    - 基础指标：数据库时间和延迟等最基础的性能指标对比
     - 基于 SQL Phase 拆分的数据库时间对比
-    - 数据库时间中耗时最长的 SQL 类型比对
+    - 数据库时间中耗时最长的 SQL 类型对比
     - SQL_execute_time 指标中耗时最长的请求类型对比
     - Duration 指标中耗时最长的 SQL 类型对比
     - KV request 细节数据对比
@@ -123,6 +124,7 @@ Comparison Report 会基于所选的两个时间段的 Metrics 和日志进行�
 - 在 TiUP 部署环境使用 PingCAP Clinic
 
     - [快速上手 PingCAP Clinic](/clinic/quick-start-with-clinic.md)
+    - [PingCAP Clinic 诊断服务简介](/clinic/clinic-introduction.md)
     - [使用 PingCAP Clinic 诊断 TiDB 集群](/clinic/clinic-user-guide-for-tiup.md)
     - [PingCAP Clinic 数据采集说明](/clinic/clinic-data-instruction-for-tiup.md)
 
