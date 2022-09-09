@@ -1499,6 +1499,27 @@ Raft Engine 相关的配置项。
 + 当该配置项未设置时，Raft Engine 默认使用系统总内存的 15%。
 + 默认值：`系统总内存 * 15%`
 
+### `format-version` <span class="version-mark">从 v6.3.0 版本开始引入</span>
+
+> **警告：**
+>
+> `format-version` 的值设置为 `2` 后，TiKV 集群无法降级至 v6.3.0 以前的版本，否则会导致数据损坏。
+
++ 指定 Raft Engine 的日志文件格式版本。
++ 可选值：
+    + `1`：v6.3.0 以前的默认日志文件格式。v6.1.0 及以后版本的 TiKV 可以读取该格式。
+    + `2`：支持日志回收。v6.3.0 及以后版本的 TiKV 可以读取该格式。
++ 默认值：`2`
+
+### `enable-log-recycle` <span class="version-mark">从 v6.3.0 版本开始引入</span>
+
+> **注意：**
+>
+> 仅在 [`format-version`](#format-version-从-v630-版本开始引入) 的值大于等于 2 时，该配置项才生效。
+
++ 控制 Raft Engine 是否回收过期的日志文件。该配置项启用时，Raft Engine 将保留逻辑上被清除的日志文件，用于日志回收，减少写负载的长尾延迟。
++ 默认值：`true`
+
 ## security
 
 安全相关配置项。
@@ -1602,8 +1623,9 @@ Raft Engine 相关的配置项。
 
 ### `file-size-limit` <span class="version-mark">从 v6.2.0 版本开始引入</span>
 
-+ 日志备份任务的备份数据达到一定大小时，自动 flush 到外部存储中。
-+ 默认值：256MB
++ 日志备份任务中，保存到存储的备份文件大小。
++ 默认值：256MiB
++ 注意：一般情况下，`file-size-limit` 的值会大于存储系统上显示的备份文件大小，这是因为备份文件在上传时会被压缩。
 
 ### `initial-scan-pending-memory-quota` <span class="version-mark">从 v6.2.0 版本开始引入</span>
 
@@ -1779,7 +1801,7 @@ Raft Engine 相关的配置项。
 > **注意：**
 >
 > 该配置项可以通过 `SHOW CONFIG` 查询到，但暂未生效。设置该配置项的值不生效。
- 
+
 + 限制后台事务写入的带宽，这是一个软限制。
 + 默认值：0KB（即无限制）
 

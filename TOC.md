@@ -81,7 +81,7 @@
   - 云原生开发环境
     - [Gitpod](/develop/dev-guide-playground-gitpod.md)
   - 第三方软件支持
-    - [PingCAP 维护的三方库](/develop/dev-guide-third-party-support.md)
+    - [TiDB 支持的第三方工具](/develop/dev-guide-third-party-support.md)
     - [TiDB 与 ProxySQL 集成](/develop/dev-guide-proxysql-integration.md)
 - 部署标准集群
   - [软硬件环境需求](/hardware-and-software-requirements.md)
@@ -359,13 +359,13 @@
       - [SQL](/tidb-lightning/tidb-lightning-data-source.md#sql)
       - [Parquet](/tidb-lightning/tidb-lightning-data-source.md#parquet)
       - [自定义文件匹配](/tidb-lightning/tidb-lightning-data-source.md#自定义文件匹配)
-    - Physical 导入模式
+    - Physical Import Mode
       - [概述](/tidb-lightning/tidb-lightning-physical-import-mode.md)
       - [必要条件及限制](/tidb-lightning/tidb-lightning-physical-import-mode.md#必要条件及限制)
       - [配置及使用](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md)
       - [冲突检测](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#冲突数据检测)
       - [性能调优](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#性能调优)
-    - Logical 导入模式
+    - Logical Import Mode
       - [概述](/tidb-lightning/tidb-lightning-logical-import-mode.md)
       - [必要条件及限制](/tidb-lightning/tidb-lightning-logical-import-mode.md#必要条件及限制)
       - [配置及使用](/tidb-lightning/tidb-lightning-logical-import-mode-usage.md)
