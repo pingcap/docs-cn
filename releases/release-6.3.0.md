@@ -122,13 +122,13 @@ TiDB 版本：6.3.0-DMR
 
     在新版本中 TiDB 增强了 slow log 的内容和 trace 命令的输出。用户可以观测到 SQL 语句执行过程中，从 tidb parse 到 kv rocksdb 落盘全链路的延迟数据，进一步增强 TiDB 的诊断能力。
 
-    [用户文档]() [#34487](https://github.com/pingcap/tidb/issues/34487) @[cfzjywxk](https://github.com/cfzjywxk)
+    [用户文档]() [#34106](https://github.com/pingcap/tidb/issues/34106) @[cfzjywxk](https://github.com/cfzjywxk)
 
 * Dashboard 中显示死锁的历史记录
 
     新版本将死锁的历史记录加入到了 Dashboard 中。 当用户通过 Dashboard 的慢日志等手段发现某些 SQL 等待锁的时间较长的时候，Dashboard 上的死锁的历史记录有助于对问题的分析，提供了诊断的易用性。
 
-     [用户文档]() [#issue]() @[cfzjywxk](https://github.com/cfzjywxk)
+     [用户文档]() [#34106](https://github.com/pingcap/tidb/issues/34106) @[cfzjywxk](https://github.com/cfzjywxk)
 
 ### 性能
 
@@ -171,6 +171,10 @@ TiDB 版本：6.3.0-DMR
     在新版本中，优化器引入了两个新的 hint `HASH_JOIN_BUILD()` 和 `HASH_JOIN_PROBE()` 用来指定哈希连接，并指定其驱动端和被驱动端。 在没有选到最优执行计划的情况下，提供了更丰富的干预手段。
 
     [用户文档](/explain-subqueries.md) [#issue]() @[Reminiscent](https://github.com/Reminiscent)
+
+* 会话级允许 CTE 内联展开
+
+    在 v6.2.0 中， 我们引入在优化器提示 `MERGE` ， 允许对 CTE 内联进行展开，使得 CTE 查询结果的消费者能够在 TiFlash 内并行执行。 在版本 v6.3.0 中，我们添加了会话级变量 `tidb_opt_force_inline_cte`，允许在会话级修改这个行为，提升了易用性。 
 
 ### 事务
 
@@ -277,6 +281,8 @@ TiDB 版本：6.3.0-DMR
 | default_authentication_plugin | 修改 | 扩展可选值范围：增加 tidb_sm3_password，设置为 tidb_sm3_password 时，用户密码验证的加密算法为国密算法SM3 |
 |  tidb_constraint_check_in_place_pessimistic | 新增 | 控制悲观事务中唯一约束检查的时间点 |
 | tidb_enable_pseudo_for_outdated_stats | 修改 | 控制优化器过期的加载策略。 默认值由 `ON` 改为 `OFF`，即使统计信息过期，优化器也仍会使用该表上的统计信息。  |
+| tidb_opt_force_inline_cte | 新增 | 这个变量用来控制是否强制开启 inline CTE。默认值为 `OFF`，即默认不强制开启 inline CTE |
+| tidb_opt_range_mem_quota | 新增 | 控制优化器构造 range 时允许的最大内存使用 |
 |  |  |  |
 
 ### 配置文件参数
