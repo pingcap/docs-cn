@@ -73,4 +73,4 @@ PingCAP 与开源社区合作，通过三方工具提供以下支持：
 | [DataGrip](https://www.jetbrains.com/datagrip/) | N/A | Compatible | N/A |
 | [IntelliJ IDEA](https://www.jetbrains.com/idea/) | N/A | Compatible | N/A |
 | [Visual Studio Code](https://code.visualstudio.com/) | [TiDE](https://marketplace.visualstudio.com/items?itemName=dragonly.ticode) | Compatible | N/A |
-| Visual Studio Code | [MySQL](https://marketplace.visualstudio.com/items?itemName=formulahendry.vscode-mysql) | Compatible | N/A |
+| [Visual Studio Code](https://code.visualstudio.com/) | [MySQL](https://marketplace.visualstudio.com/items?itemName=formulahendry.vscode-mysql) | Compatible | N/A |
