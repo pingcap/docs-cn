@@ -202,7 +202,7 @@ TiDB 版本：6.3.0-DMR
 
 * 优化 `IN` 条件元素过多引发的大量内存消耗
 
-    当 SQL 中的 `IN` 条件包含的元素过多时，TiDB在执行过程中可能会消耗大量的内存。 在新版中，TiDB 引入了新的内存控制机制对这类操作进行了优化，减少内存消耗，提升SQL执行效率和系统稳定性。
+    当 SQL 中的 `IN` 条件包含的元素过多时，TiDB 在优化器构造扫描范围时可能会消耗大量的内存。在新版中，TiDB 引入了对扫描范围的内存控制机制，对这类操作进行了优化，减少内存消耗，提升 SQL 执行效率和系统稳定性。
 
     [用户文档]() [#30755](https://github.com/pingcap/tidb/issues/30755) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes)
 
