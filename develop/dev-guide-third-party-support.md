@@ -1,9 +1,13 @@
 ---
-title: PingCAP 维护的三方库
+title: TiDB 支持的第三方工具
 aliases: ['/zh/tidb/dev/supported-by-pingcap']
 ---
 
-# PingCAP 维护的三方库
+# TiDB 支持的第三方工具
+
+> **注意：**
+>
+> 本文档仅列举了常见的 TiDB 支持的第三方工具，未被列入其中的第三方工具并非代表不支持，但 PingCAP 无法了解其是否使用到 TiDB 不支持的特性，从而无法保证兼容性。
 
 TiDB 对 MySQL 协议的支持，使得大部分适配 MySQL 的 Driver、ORM 及其他工具与 TiDB 兼容。本文主要介绍这些工具和它们的支持等级。
 
@@ -45,6 +49,7 @@ PingCAP 与开源社区合作，通过三方工具提供以下支持：
 | Java                  | [MyBatis](https://mybatis.org/mybatis-3/)                                                                                                                                     | v3.5.10     | Full | N/A                                                    | [TiDB 和 Java 的简单 CRUD 应用程序](/develop/dev-guide-sample-application-java.md) |
 | Java                  | [Spring Data JPA](https://spring.io/projects/spring-data-jpa/) | 2.7.2 | Full | N/A                                                    |   [使用 Spring Boot 构建 TiDB 应用程序](/develop/dev-guide-sample-application-spring-boot.md)   |
 | Java                  | [jOOQ](https://github.com/jOOQ/jOOQ)                                                                                                                                     | v3.16.7 (Open Source)     | Full | N/A                                                    | N/A                                                                            |
+| Ruby | [Active Record](https://guides.rubyonrails.org/active_record_basics.html) | v7.0 | Full | N/A | N/A |
 | JavaScript/TypeScript | [sequelize](https://www.npmjs.com/package/sequelize)                                                                                                                          | v6.20.1     | Compatible | N/A                                                    | N/A                                                                            |
 | JavaScript/TypeScript | [Knex.js](https://knexjs.org/)                                                                                                                                                | v1.0.7      | Compatible | N/A                                                    | N/A                                                                            |
 | JavaScript/TypeScript | [Prisma Client](https://www.prisma.io/)                                                                                                                                       | 3.15.1      | Compatible | N/A                                                    | N/A                                                                            |
