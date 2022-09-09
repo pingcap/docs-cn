@@ -699,5 +699,5 @@ experimental 部分为 TiDB 实验功能相关的配置。该部分从 v3.1.0 �
 ### `temp-dir` <span class="version-mark">从 v6.3.0 版本开始引入</span>
 
 + TiDB 用于存放临时数据的路径。需要使用 TiDB 节点本地存储的功能会将数据临时存放在这个目录下。
-+ 在创建索引的过程中，如果开启了[创建索引加速](/system-variables.md##tidb_ddl_enable_fast_reorg-从-v630-版本开始引入)，那么新创建索引需要回填的数据会被先存放在 TiDB 本地临时存储路径，然后批量导入到 TiKV，从而提升索引创建速度。
++ 在创建索引的过程中，如果开启了[创建索引加速](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入)，那么新创建索引需要回填的数据会被先存放在 TiDB 本地临时存储路径，然后批量导入到 TiKV，从而提升索引创建速度。
 + 默认值："/tmp/tidb"
