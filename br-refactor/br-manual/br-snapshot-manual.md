@@ -1,11 +1,11 @@
 ---
-title: 快照备份和恢复命令介绍
-summary: 了解快照备份和恢复的命令行使用
+title: 快照备份和恢复命令行手册
+summary: 介绍快照备份和恢复的命令行
 ---
 
-# 使用 BR 备份和恢复集群
+# 快照备份和恢复命令行手册
 
-本文介绍备份和恢复 TiDB 集群的方式，包括：
+本文介绍快照备份和恢复的命令行，包括：
 
 - [备份 TiDB 集群快照](#备份-tidb-集群快照)
 - [备份单个数据库的数据](#备份单个数据库的数据)
@@ -20,15 +20,12 @@ summary: 了解快照备份和恢复的命令行使用
 
 如果你想了解如何进行备份和恢复，可以参考以下教程
 
-- [全量备份恢复 —— 快照备份和恢复功能使用](/br-refactor/use-guide/br-snapshot-guide.md)
+- [全量备份恢复 —— 快照备份和恢复功能使用指南](/br-refactor/use-guide/br-snapshot-guide.md)
 - [TiDB 集群备份和恢复实践示例](/br-refactor/use-guide/br-usage.md)
-
 
 ## 备份 TiDB 集群快照
 
-TiDB 集群快照数据是只包含某个物理时间点上集群满足事务一致性的数据。使用 `br backup full` 可以备份 TiDB 最新的或者指定时间点的快照数据。执行 `br backup full --help` 可获取该命令的使用帮助。
-
-用例：将时间为 '2022-09-08 13:30:00' 的集群快照数据备份到 S3 的名为 `backup-101` bucket 下的 `snapshot-202209081330/` 前缀目录中。
+使用 `br backup full` 可以备份 TiDB 最新的或者指定时间点的快照数据。执行 `br backup full --help` 可获取该命令的使用帮助。
 
 {{< copyable "shell-regular" >}}
 
@@ -36,7 +33,7 @@ TiDB 集群快照数据是只包含某个物理时间点上集群满足事务一
 br backup full \
     --pd "${PDIP}:2379" \
     --backupts '2022-09-08 13:30:00' \
-    --storage "s3://backup-101/snapshot-202209081330?access_key=${access key}&secret_access_key=${secret access key}" \
+    --storage "s3://${backup collection addr}/snapshot-${date}?access_key=${access key}&secret_access_key=${secret access key}" \
     --ratelimit 128 \
     --log-file backupfull.log
 ```
@@ -53,17 +50,15 @@ br backup full \
 Full Backup <---------/................................................> 17.12%.
 ```
 
-在完成备份后，BR 会将备份数据的 checksum 同集群 [admin checksum table](/sql-statements/sql-statement-admin-checksum-table.md) 的结果比较，以确保备份数据正确性。
-
 ## 备份 TiDB 集群的指定库表的数据
 
 BR 支持只备份集群快照和增量数据中指定库/表的局部数据。该功能在快照备份和增量数据备份的基础上，过滤掉不需要的数据，帮助用户备份实现只备份关键业务的数据。
 
 ### 备份单个数据库的数据
 
-要备份集群中指定单个数据库的数据，可使用 `br backup db` 命令。同样可通过 `br backup db --help` 来获取子命令 `db` 的使用帮助。
+使用 `br backup db` 命令备份集群中指定单个数据库的数据。
 
-用例：将数据库 `test` 备份到 s3 的名为 `backup-101` 的 bucket 下面的 `db-test-202209081330/` 前缀目录下。
+示例：将单个数据库 `test` 备份到 s3。
 
 {{< copyable "shell-regular" >}}
 
@@ -71,7 +66,7 @@ BR 支持只备份集群快照和增量数据中指定库/表的局部数据。�
 br backup db \
     --pd "${PDIP}:2379" \
     --db test \
-    --storage "s3://backup-101/db-test-202209081330/?access_key=${access key}&secret_access_key=${secret access key}" \
+    --storage "s3://${backup collection addr}/snapshot-${date}?access_key=${access key}&secret_access_key=${secret access key}" \
     --ratelimit 128 \
     --log-file backuptable.log
 ```
@@ -80,9 +75,9 @@ br backup db \
 
 ### 备份单张表的数据
 
-要备份集群中指定单张表的数据，可使用 `br backup table` 命令。同样可通过 `br backup table --help` 来获取子命令 `table` 的使用帮助。
+使用 `br backup table` 命令。
 
-用例：将表 `test.usertable` 备份到 s3 的名为 `backup-101` 的 bucket 下面的 `table-db-usertable-202209081330/` 前缀目录下。
+用例：将表 `test.usertable` 备份到 s3。
 
 {{< copyable "shell-regular" >}}
 
@@ -91,7 +86,7 @@ br backup table \
     --pd "${PDIP}:2379" \
     --db test \
     --table usertable \
-    --storage "s3://backup-101/table-db-usertable-202209081330/?access_key=${access key}&secret_access_key=${secret access key}" \
+    --storage "s3://${backup collection addr}/snapshot-${date}?access_key=${access key}&secret_access_key=${secret access key}" \
     --ratelimit 128 \
     --log-file backuptable.log
 ```
@@ -102,7 +97,7 @@ br backup table \
 
 如果你需要以更复杂的过滤条件来备份多个库/表，执行 `br backup full` 命令，并使用 `--filter` 或 `-f` 来指定[表库过滤](/table-filter.md)规则。
 
-用例：以下命令将所有 `db*.tbl*` 形式的表格数据备份到 s3 的名为 `backup-101` 的 bucket 下面的 `table-filter-202209081330/` 前缀目录下。
+示例：以下命令将所有 `db*.tbl*` 形式的表格数据备份到 s3。
 
 {{< copyable "shell-regular" >}}
 
@@ -110,7 +105,7 @@ br backup table \
 br backup full \
     --pd "${PDIP}:2379" \
     --filter 'db*.tbl*' \
-    --storage "s3://backup-101/table-filter-202209081330/?access_key=${access key}&secret_access_key=${secret access key}" \
+    --storage "s3://${backup collection addr}/snapshot-${date}?access_key=${access key}&secret_access_key=${secret access key}" \
     --ratelimit 128 \
     --log-file backupfull.log
 ```
@@ -138,7 +133,7 @@ BR 支持在备份端，或备份到 Amazon S3 的时候在存储服务端，进
 ```shell
 br backup full\
     --pd ${PDIP}:2379 \
-    --storage "s3://backup-101/snapshot-202209081330?access_key=${access key}&secret_access_key=${secret access key}" \
+    --storage "s3://${backup collection addr}/snapshot-${date}?access_key=${access key}&secret_access_key=${secret access key}" \
     --crypter.method aes128-ctr \
     --crypter.key 0123456789abcdef0123456789abcdef
 ```
@@ -152,58 +147,16 @@ br backup full\
 
 BR 支持对备份到 S3 的数据进行 S3 服务端加密 (SSE)。BR S3 服务端加密也支持使用用户自行创建的 AWS KMS 密钥进行加密，详细信息请参考 [BR S3 服务端加密](/encryption-at-rest.md#br-s3-服务端加密)。
 
-## 校验备份数据
-
-使用 BR 完成数据备份后，你可以对备份数据进行校验，包括检查备份数据是否完整，以及通过解码 backupmeta 来查看 TSO 等元信息。
-
-### 检查备份数据的完整性
-
-要检查数据完整性，可以执行 `tiup br debug checksum` 命令对备份数据计算校验和。
-
-用例：在 Amazon S3 上名为 `backup-101` 的 bucket 下，计算 `snapshot-202209081330` 前缀目录下备份的校验和。
-
-```shell
-br debug checksum \
-    --storage "s3://backup-101/snapshot-202209081330?access_key=${access key}&secret_access_key=${secret access key}" \
-    --log-file checksum.log
-```
-
-### 将备份的 backupmeta 解码为 json 格式的可读文件
-
-在备份完成后，可通过 `tiup br debug decode` 命令将备份的 `backupmeta` 解码为 json 格式的可读文件，从而查看快照对应的 TSO 等元信息。
-
-用例：在 Amazon S3 上名为 `backup-101` 的 bucket 下，将 `snapshot-202209081330` 前缀目录下备份的 `backupmeta` 解码为 json 格式的文件 `backupmeta.json`，解码后的文件存储路径为 `s3://backup-101/snapshot-202209081330/backupmeta.json`。
-
-```shell
-br debug decode \
-    --storage "s3://backup-101/snapshot-202209081330?access_key=${access key}&secret_access_key=${secret access key}" \
-    --log-file decode-backupmeta.log
-```
-
-然后打开 `backupmeta.json` 文件，搜索 `end_version` 可以查看到快照对应的 TSO。
-
-如有需要，你也可以将 json 格式的 `backupmeta` 文件编码回解码前的状态。执行 `tiup br debug encode` 命令，生成的文件名为 `backupmeta_from_json`。
-
-用例：在 Amazon S3 上名为 `backup-101` 的 bucket 下，将 `snapshot-202209081330` 前缀目录下备份的 `backupmeta.json` 文件编码为 `backupmeta` 文件，编码后的文件名为 `backupmeta_from_json`，存储路径为 `s3://backup-101/snapshot-202209081330/backupmeta_from_json`。
-
-```shell
-br debug encode \
-    --storage "s3://backup-101/snapshot-202209081330?access_key=${access key}&secret_access_key=${secret access key}" \
-    --log-file encode-backupmeta.log
-```
-
 ## 恢复快照备份数据
 
-BR 支持在一个空集群上执行快照备份恢复，将该集群恢复到快照备份时刻点的集群最新状态。
-
-用例：将 s3 的名为 `backup-101` bucket 下的 `snapshot-202209081330/` 前缀目录中的快照数据恢复到目标集群。
+使用 `br restore full` 恢复一个快照备份恢复，将该集群恢复到快照备份对应的数据状态。
 
 {{< copyable "shell-regular" >}}
 
 ```shell
 br restore full \
     --pd "${PDIP}:2379" \
-    --storage "s3://backup-101/snapshot-202209081330?access_key=${access key}&secret_access_key=${secret access key}" \
+    --storage "s3://${backup collection addr}/snapshot-${date}?access_key=${access key}&secret_access_key=${secret access key}" \
     --ratelimit 128 \
     --log-file restorefull.log
 ```
@@ -225,9 +178,9 @@ BR 支持只恢复备份数据中指定库/表的局部数据。该功能在恢�
 
 ### 恢复单个数据库的数据
 
-要将备份数据中的某个数据库恢复到集群中，可以使用 `br restore db` 命令。执行 `br restore db --help` 可获取该命令的使用帮助。
+使用 `br restore db` 命令
 
-用例：将 s3 的名为 `backup-101` 的 bucket 下面的 `snapshot-202209081330/` 中的 `test` 库的相关数据恢复到集群中。
+用例：将 s3 中的 `test` 库的相关数据恢复到集群中。
 
 {{< copyable "shell-regular" >}}
 
@@ -236,7 +189,7 @@ br restore db \
     --pd "${PDIP}:2379" \
     --db "test" \
     --ratelimit 128 \
-    --storage "s3://backup-101/snapshot-202209081330?access_key=${access key}&secret_access_key=${secret access key}" \
+    --storage "s3://${backup collection addr}/snapshot-${date}?access_key=${access key}&secret_access_key=${secret access key}" \
     --log-file restore_db.log
 ```
 
@@ -248,9 +201,9 @@ br restore db \
 
 ### 恢复单张表的数据
 
-要将备份数据中的某张数据表恢复到集群中，可以使用 `br restore table` 命令。该命令的使用帮助可通过 `br restore table --help` 来获取。
+使用 `br restore table` 命令。
 
-用例：将 s3 中名为 `backup-101` 的 bucket 下面的 `snapshot-202209081330/` 中的 `test`.`usertable` 表的相关的数据恢复的集群中。
+用例：将 s3 中 `test`.`usertable` 表的相关的数据恢复的集群中。
 
 {{< copyable "shell-regular" >}}
 
@@ -260,7 +213,7 @@ br restore table \
     --db "test" \
     --table "usertable" \
     --ratelimit 128 \
-    --storage "s3://backup-101/snapshot-202209081330?access_key=${access key}&secret_access_key=${secret access key}" \
+    --storage "s3://${backup collection addr}/snapshot-${date}?access_key=${access key}&secret_access_key=${secret access key}" \
     --log-file restore_table.log
 ```
 
@@ -270,7 +223,7 @@ br restore table \
 
 如果你需要用复杂的过滤条件来恢复多个表，执行 `br restore full` 命令，并用 `--filter` 或 `-f` 指定使用[表库过滤](/table-filter.md)。
 
-用例：将 s3 中名为 `backup-101` 的 bucket 下面的 `snapshot-202209081330/` 中能匹配上 `db*.tbl*`的表的相关的数据恢复的集群中。
+用例：将 s3 中能匹配上 `db*.tbl*`的表的相关的数据恢复的集群中。
 
 {{< copyable "shell-regular" >}}
 
@@ -278,7 +231,7 @@ br restore table \
 br restore full \
     --pd "${PDIP}:2379" \
     --filter 'db*.tbl*' \
-    --storage "s3://backup-101/snapshot-202209081330?access_key=${access key}&secret_access_key=${secret access key}" \
+    --storage "s3://${backup collection addr}/snapshot-${date}?access_key=${access key}&secret_access_key=${secret access key}" \
     --log-file restorefull.log
 ```
 
@@ -295,7 +248,7 @@ br restore full \
 ```shell
 br restore full\
     --pd ${PDIP}:2379 \
-    --storage "s3://backup-101/snapshot-202209081330?access_key=${access key}&secret_access_key=${secret access key}" \
+    --storage "s3://${backup collection addr}/snapshot-${date}?access_key=${access key}&secret_access_key=${secret access key}" \
     --crypter.method aes128-ctr \
     --crypter.key 0123456789abcdef0123456789abcdef
 ```

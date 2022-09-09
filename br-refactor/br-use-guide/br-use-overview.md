@@ -5,7 +5,7 @@ summary: 了解 TiDB 的备份和恢复功能使用。
 
 # 备份恢复功能使用介绍
 
-[TiDB 备份和恢复功能](/br-refactor/br-overview.md) 介绍了备份和恢复功能，在此基础上，下文将会介绍备份和恢复功能的使用。 
+[TiDB 备份和恢复功能](/br-refactor/br-overview.md) 介绍了备份和恢复功能，在此基础上，本教程将会介绍备份和恢复功能的使用，并提供了使用示例。 
 
 ## 业务使用概览
 
@@ -66,7 +66,7 @@ summary: 了解 TiDB 的备份和恢复功能使用。
 TiDB 支持使用 br 工具进行备份恢复。
 
 - 安装方法可以使用[使用 TiUP 在线安装](/migration-tools.md#使用-tiup-快速安装)：`tiup install br`。
-- 使用请参阅
+- 了解如何使用 `br` 命令含工具进行备份和恢复，请参阅
   - [全量备份恢复 —— 快照备份和恢复功能使用](/br-refactor/use-guide/br-snapshot-guide.md)
   - [日志备份和 PITR 功能使用](/br-refactor/use-guide/br-pitr-guide.md)
   - [TiDB 集群备份和恢复实践示例](/br-refactor/use-guide/br-usage.md)

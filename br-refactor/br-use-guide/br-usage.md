@@ -1,5 +1,5 @@
 ---
-title: 使用 BR 进行 PITR 示例
+title: TiDB 备份和恢复实践示例
 summary: 了解如何使用 br 进行备份和恢复
 ---
 

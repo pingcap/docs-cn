@@ -1,11 +1,7 @@
 ---
-title: TiDB 日志备份和 PITR 功能使用
+title: TiDB 日志备份和 PITR 功能使用指南
 summary: 了解 TiDB 的日志备份和 PITR 功能使用。
 ---
-
-以下教程介绍了如何进行快照备份和恢复，如果你想要了解 br 命令行的使用可以参考
-
-- [介绍 br 工具命令行](/br-refactor/br-manual/use-br-command-line.md)
 
 # 使用日志备份和 PITR
 
@@ -139,3 +135,4 @@ Restore KV Files <--------------------------------------------------------------
 ## 进一步阅读
 
 * [TiDB 集群备份和恢复实践示例](/br-refactor/use-guide/br-usage.md)
+* [br 命令行手册](/br-refactor/br-manual/use-br-command-line.md)

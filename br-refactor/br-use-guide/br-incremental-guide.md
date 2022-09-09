@@ -1,5 +1,5 @@
 ---
-title: TiDB 增量备份和恢复功能使用
+title: TiDB 增量备份和恢复功能使用指南
 summary: 了解 TiDB 的增量备份和恢复功能使用。
 ---
 
