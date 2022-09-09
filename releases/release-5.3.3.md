@@ -4,11 +4,11 @@ title: TiDB 5.3.3 Release Note
 
 # TiDB 5.3.3 Release Note
 
-Release date: 2022 年 9 月 x 日
+发版日期：2022 年 9 月 x 日
 
-TiDB version: 5.3.3
+TiDB 版本：5.3.3
 
-## Bug fix
+## Bug 修复
 
 + TiKV
 
