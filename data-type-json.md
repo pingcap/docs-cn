@@ -55,6 +55,7 @@ SELECT id FROM city WHERE population >= 100;
     +------+------+
     1 row in set (0.01 sec)
     ```
+
     详情可见此 [issue](https://github.com/pingcap/tidb/issues/37443)。
 
 - 当 `enum/set` 转换为 JSON 时，TiDB 会检查其格式正确性。例如，当执行下面的 SQL 语句时，TiDB 中会报错：
@@ -65,6 +66,7 @@ SELECT id FROM city WHERE population >= 100;
     mysql> SELECT CAST(e AS JSON) FROM t;
     ERROR 3140 (22032): Invalid JSON text: The document root must not be followed by other values.
     ```
+
     详情可见此 [issue](https://github.com/pingcap/tidb/issues/9999)。
 
 - TiDB 支持使用 `ORDER BY` 对 JSON Array 或 JSON Object 进行排序。
@@ -94,6 +96,7 @@ SELECT id FROM city WHERE population >= 100;
     +--------------+
     2 rows in set (0.00 sec)
     ```
+    
     详情可见此 [issue](https://github.com/pingcap/tidb/issues/37506)。
 
 - 在 INSERT JSON 列时，TiDB 会将值隐式转换为 JSON
