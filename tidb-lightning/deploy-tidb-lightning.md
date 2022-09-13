@@ -1,10 +1,6 @@
 ---
 title: 部署 TiDB Lightning
-<<<<<<< HEAD
-=======
 summary: 了解如何部署 TiDB Lightning，包括在线部署和离线部署。
-aliases: ['/docs-cn/dev/tidb-lightning/deploy-tidb-lightning/','/docs-cn/dev/reference/tools/tidb-lightning/deployment/']
->>>>>>> 25d27e379 (lightning: fix format and language in logical import mode (#11128))
 ---
 
 # 部署 TiDB Lightning
