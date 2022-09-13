@@ -1,5 +1,10 @@
 ---
 title: 部署 TiDB Lightning
+<<<<<<< HEAD
+=======
+summary: 了解如何部署 TiDB Lightning，包括在线部署和离线部署。
+aliases: ['/docs-cn/dev/tidb-lightning/deploy-tidb-lightning/','/docs-cn/dev/reference/tools/tidb-lightning/deployment/']
+>>>>>>> 25d27e379 (lightning: fix format and language in logical import mode (#11128))
 ---
 
 # 部署 TiDB Lightning
@@ -7,7 +12,7 @@ title: 部署 TiDB Lightning
 本文主要介绍 TiDB Lightning 进行数据导入的硬件需求，以及手动部署 TiDB Lightning 的方式。Lightning 不同的导入模式，其硬件要求有所不同，请先阅读：
 
 - [Physical Import Mode 必要条件及限制](/tidb-lightning/tidb-lightning-physical-import-mode.md#必要条件及限制)
-- [Logical Import Mode 必要条件及限制](/tidb-lightning/tidb-lightning-logical-import-mode.md#必要条件及限制)
+- [Logical Import Mode 必要条件及限制](/tidb-lightning/tidb-lightning-logical-import-mode.md#必要条件)
 
 ## 使用 TiUP 联网部署（推荐）
 
