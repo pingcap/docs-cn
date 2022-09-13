@@ -19,7 +19,7 @@ select * from tidb_cdc.syncpoint_v1;;
 
 ```
 +------------------+----------------+--------------------+--------------------+---------------------+
-| ticdc_cluster_id | cf             | primary_ts         | secondary_ts       | created_at          |
+| ticdc_cluster_id | changefeed     | primary_ts         | secondary_ts       | created_at          |
 +------------------+----------------+--------------------+--------------------+---------------------+
 | default          | default_test-2 | 435953225454059520 | 435953235516456963 | 2022-09-13 08:40:15 |
 +------------------+----------------+--------------------+--------------------+---------------------+
@@ -28,7 +28,7 @@ select * from tidb_cdc.syncpoint_v1;;
 以上 `syncpoint_v1` 表中各列所代表的信息如下:
 
 - `ticdc_cluster_id`: 插入该条记录的 TiCDC 集群的 ID。
-- `cf`: 插入该条记录的 Changefeed 的 ID，由于不同的 TiCDC 集群可能会存在重名的 Changefeed，所以需要通过 TiCDC 集群 ID 和 Changefeed 的 ID 来唯一确认一个 Changefeed 所插入的 `ts-map`。
+- `changefeed`: 插入该条记录的 Changefeed 的 ID，由于不同的 TiCDC 集群可能会存在重名的 Changefeed，所以需要通过 TiCDC 集群 ID 和 Changefeed 的 ID 来唯一确认一个 Changefeed 所插入的 `ts-map`。
 - `primary_ts`: 上游数据库 snapshot 的 ts。
 - `secondary_ts`: 下游数据库 snapshot 的 ts。
 - `created_at`: 插入该条记录的时间。
