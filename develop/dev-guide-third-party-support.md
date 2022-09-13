@@ -9,7 +9,7 @@ aliases: ['/zh/tidb/dev/supported-by-pingcap']
 >
 > 本文档仅列举了常见的 TiDB 支持的第三方工具，未被列入其中的第三方工具并非代表不支持，但 PingCAP 无法了解其是否使用到 TiDB 不支持的特性，从而无法保证兼容性。
 
-TiDB 对 MySQL 协议的支持，使得大部分适配 MySQL 的 Driver、ORM 及其他工具与 TiDB 兼容。本文主要介绍这些工具和它们的支持等级。
+TiDB [高度兼容 MySQL 协议](/mysql-compatibility.md)，使得大部分适配 MySQL 的 Driver、ORM 及其他工具与 TiDB 兼容。本文主要介绍这些工具和它们的支持等级。
 
 ## 支持等级
 
@@ -28,10 +28,9 @@ PingCAP 与开源社区合作，通过三方工具提供以下支持：
 
 | 编程语言 | 驱动 | 最新已测试版本 | 支持等级 | TiDB 适配器 | 教程 |
 | - | - | - | - | - | - |
-| C | [MySQL Connector/C](https://downloads.mysql.com/archives/c-c/) | 6.1.11 | Full | N/A | N/A |
 | C | [libmysqlclient](https://dev.mysql.com/doc/c-api/8.0/en/c-api-introduction.html) | 8.0 | Compatible | N/A | N/A |
 | C#(.Net) | [MySQL Connector/NET](https://downloads.mysql.com/archives/c-net/) | 8.0 | Compatible | N/A | N/A |
-| C#(.Net) | [MySQL Connector/ODBC](https://downloads.mysql.com/archives/c-odbc/) | 8.0 | Compatible | N/A | N/A |
+| ODBC | [MySQL Connector/ODBC](https://downloads.mysql.com/archives/c-odbc/) | 8.0 | Compatible | N/A | N/A |
 | Go | [go-sql-driver/mysql](https://github.com/go-sql-driver/mysql) | v1.6.0 | Full | N/A | [TiDB 和 Golang 的简单 CRUD 应用程序](/develop/dev-guide-sample-application-golang.md) |
 | Java | [JDBC](https://dev.mysql.com/downloads/connector/j/) | 5.1.46；8.0.29 | Full | 5.1.46：N/A；8.0.29：[pingcap/mysql-connector-j](https://github.com/pingcap/mysql-connector-j/tree/release/8.0) | [TiDB 和 Java 的简单 CRUD 应用程序](/develop/dev-guide-sample-application-java.md) |
 | JavaScript | [mysql](https://github.com/mysqljs/mysql) | v2.18.1 | Compatible | N/A | N/A |
