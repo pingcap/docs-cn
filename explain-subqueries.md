@@ -152,7 +152,7 @@ EXPLAIN SELECT * FROM t3 WHERE t1_id NOT IN (SELECT id FROM t1 WHERE int_col < 1
 
 `IN`、`= ANY` 的集合运算符号具有特殊的三值属性（`true`、`false`、`NULL`），这意味着在其所转化得到的 Join 类型中需要对 Join key 两侧的 `NULL` 进行特殊的感知和处理。
 
-对于 `IN`、`= ANY` 算子而言，其所引导的子查询，会对应地转为 Semi Join 和 Left Outer Semi Join。在上述 [Semi Join](#semi-join关联查询) 小节中， 由于其 Join key 的两侧列 `test.t1.id` 和 `test.t2.t1_id` 都是 `not NULL` 属性的，所以 Semi Join 本身不需要 Null-Aware 的性质来辅助运算。当前 TiDB 对于 Null-Aware Semi Join 没有特定的优化，其实现本质都是基于笛卡尔积加过滤 (filter) 的模式。以下为 Null-Aware 的例子：
+`IN` 和 `= ANY` 算子引导的子查询会对应地转为 Semi Join 和 Left Outer Semi Join。在上述 [Semi Join](#semi-join关联查询) 小节中，由于示例中 Join key 两侧的列 `test.t1.id` 和 `test.t2.t1_id` 都是 `not NULL` 属性的，所以 Semi Join 本身不需要 Null-Aware 的性质来辅助运算。当前 TiDB 对于 Null-Aware Semi Join 没有特定的优化，其实现本质都是基于笛卡尔积加过滤 (filter) 的模式。以下为 Null-Aware Semi Join 的例子：
 
 ```sql
 CREATE TABLE t(a INT, b INT);
