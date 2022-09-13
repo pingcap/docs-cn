@@ -131,13 +131,13 @@ Titan 对 RocksDB 兼容，也就是说，使用 RocksDB 存储引擎的现有 T
     discardable-ratio = 1.0
     ```
 
-2. 使用 tikv-ctl 执行全量 compaction。这一步骤将消耗大量 I/O 和 CPU 资源。
+2. 使用 `tikv-ctl` 执行全量数据整理 (Compaction)。这一步骤将消耗大量 I/O 和 CPU 资源。
 
     ```bash
     tikv-ctl --pd <PD_ADDR> compact-cluster --bottommost force
     ```
 
-3. compaction 结束后，通过 **TiKV-Details**/**Titan - kv** 监控面板确认 **Blob file count** 指标降为 0。
+3. 数据整理结束后，通过 **TiKV-Details**/**Titan - kv** 监控面板确认 **Blob file count** 指标降为 0。
 
 4. 更新 TiKV 节点的配置，关闭 Titan。
 
