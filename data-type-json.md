@@ -25,7 +25,7 @@ INSERT INTO city (id,detail) VALUES (1, '{"name": "Beijing", "population": 100}'
 SELECT id FROM city WHERE population >= 100;
 ```
 
-# 使用限制
+## 使用限制
 
 - 暂不支持将 JSON 函数下推至 TiFlash。
 - TiDB 暂不支持 JSON PATH 中范围选取的语法，以下 SQL 语句会在 TiDB 中报错:
