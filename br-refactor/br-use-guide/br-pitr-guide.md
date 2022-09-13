@@ -136,3 +136,4 @@ Restore KV Files <--------------------------------------------------------------
 
 * [TiDB 集群备份和恢复实践示例](/br-refactor/use-guide/br-usage.md)
 * [br 命令行手册](/br-refactor/br-manual/use-br-command-line.md)
+* [日志备份和 PITR 架构设计](/br-refactor/br-log-architecture.md)
