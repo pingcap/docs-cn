@@ -1,5 +1,6 @@
 ---
 title: 使用 Logical Import Mode
+summary: 了解在 TiDB Lightning 的 Logical Import Mode 下，如何编写数据导入任务的配置文件，如何进行性能调优等。
 ---
 
 # 使用 Logical Import Mode
