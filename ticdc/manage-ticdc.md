@@ -630,9 +630,13 @@ enable-old-value = true
 
 # 是否开启 sync point 功能，从 v6.3.0 开始支持
 enable-sync-point = true
-# sync point 功能对齐上下游 snapshot 的时间间隔，最小值为 30s
+# sync point 功能对齐上下游 snapshot 的时间间隔
+# 配置格式为 h m s, 例如 "1h30m30s"
+# 默认值为 10m，最小值为 30s
 sync-point-interval = "5m"
 # sync point 功能在下游表中保存的数据的时长，超过这个时间的数据会被清理
+# 配置格式为 h m s, 例如 "24h30m30s"
+# 默认值为 24h
 sync-point-retention = "1h"
 
 [filter]
