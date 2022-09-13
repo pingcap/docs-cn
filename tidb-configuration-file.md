@@ -700,6 +700,12 @@ Configuration items related to the PROXY protocol.
 >
 > Use `*` with caution because it might introduce security risks by allowing a client of any IP address to report its IP address. In addition, using `*` might also cause the internal component that directly connects to TiDB (such as TiDB Dashboard) to be unavailable.
 
+### `temp-dir` <span class="version-mark">New in v6.3.0</span>
+
++ File system location used by TiDB to store temporary data. If a feature requires local storage in TiDB nodes, TiDB stores the corresponding temporary data in this location.
++ When creating an index, if [`tidb_ddl_enable_fast_reorg`](/system-variables.md#tidb_ddl_enable_fast_reorg-new-in-v630) is enabled, data that needs to be backfilled for a newly created index will be at first stored in the TiDB local temporary directory, and then imported into TiKV in batches, thus accelerating the index creation.
++ Default value: `"/tmp/tidb"`
+
 ## experimental
 
 The `experimental` section, introduced in v3.1.0, describes the configurations related to the experimental features of TiDB.

@@ -814,6 +814,24 @@ Constraint checking is always performed in place for pessimistic transactions (d
 - Default value: `0`
 - This variable is read-only. It is used to obtain the timestamp of the current transaction.
 
+### tidb_ddl_disk_quota <span class="version-mark">New in v6.3.0</span>
+
+- Scope: GLOBAL
+- Persists to cluster: Yes
+- Type: Integer
+- Default value: `107374182400` (100 GiB)
+- Range: `[107374182400, 1125899906842624]` ([100 GiB, 1 PiB])
+- Unit: Bytes
+- This variable only takes effect when [`tidb_ddl_enable_fast_reorg`](#tidb_ddl_enable_fast_reorg-new-in-v630) is enabled. It sets the usage limit of local storage during backfilling when creating an index.
+
+### tidb_ddl_enable_fast_reorg <span class="version-mark">New in v6.3.0</span>
+
+- Scope: GLOBAL
+- Persists to cluster: Yes
+- Type: Boolean
+- Default value: `OFF`
+- This variable controls whether to enable the acceleration of `ADD INDEX` and `CREATE INDEX` DDl operations to improve the speed of backfilling when creating an index. If this variable is enabled, TiDB uses a more effective way to create an index.
+
 ### tidb_ddl_error_count_limit
 
 - Scope: GLOBAL
