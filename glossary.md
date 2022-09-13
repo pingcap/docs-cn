@@ -43,7 +43,7 @@ ACID 是指数据库管理系统在写入或更新资料的过程中，为保证
 
 ### Common table expression (CTE)
 
-公共表表达式 (CTE) 是一个临时的中间结果集，能够在 SQL 语句中引用多次，提高 SQL 语句的可读性与执行效率。在 TiDB 中可以通过 `WITH` 语句使用公共表表达式。公共表表达式可以分为非递归和递归两种类型。
+公共表表达式 (CTE) 是一个临时的中间结果集，能够在 SQL 语句中引用多次，提高 SQL 语句的可读性与执行效率。在 TiDB 中可以通过 `WITH` 语句使用公共表表达式。公共表表达式分为非递归和递归两种类型。
 
 详情参见[公共表表达式 (CTE)](/develop/dev-guide-use-common-table-expression.md)。
 
@@ -63,7 +63,7 @@ TiDB 数据库以及各组件的集合，部署在多节点服务器上，每个
 
 ### Dumpling
 
-Dumpling 是一款数据导出工具，用于将存储在 TiDB 或 MySQL 中的数据导出为 SQL 或 CSV 格式，用于逻辑全量备份。Dumpling 也支持将数据导出到 Amazon S3 中。详情参见使用 [Dumpling 导出数据](/dumpling-overview.md)。
+Dumpling 是一款数据导出工具，用于将存储在 TiDB 或 MySQL 中的数据导出为 SQL 或 CSV 格式，用于逻辑全量备份。Dumpling 也支持将数据导出到 Amazon S3 中。详情参见[使用 Dumpling 导出数据](/dumpling-overview.md)。
 
 ### Dynamic Pruning
 
@@ -81,7 +81,7 @@ Dumpling 是一款数据导出工具，用于将存储在 TiDB 或 MySQL 中的�
 
 ### GC (Garbage Collection)
 
-垃圾回收（GC 或 Garbage collection）是 TiDB 中的内存资源管理机制。当动态内存里的旧数据不再需要时，便予以清理，让出内存。详情参见 [GC 机制](/garbage-collection-overview.md)。
+垃圾回收（GC 或 Garbage collection）是 TiDB 中的内存资源管理机制。当不再需要动态内存里的旧数据时，便予以清理，让出内存。详情参见 [GC 机制](/garbage-collection-overview.md)。
 
 ### Hotspot
 
@@ -91,7 +91,7 @@ Dumpling 是一款数据导出工具，用于将存储在 TiDB 或 MySQL 中的�
 
 全称为 "Hybrid Transactional and Analytical Processing"，即在线事务与在线分析处理。TiDB HTAP 可以满足企业海量数据的增长需求、降低运维的风险成本、与现有的大数据栈无缝缝合，从而实现数据资产价值的实时变现。在 TiDB 中，面向在线事务处理的行存储引擎 TiKV 与面向实时分析场景的列存储引擎 TiFlash 同时存在，自动同步，保持强一致性。
 
-详情参见 [HTAP 快速上手指南](/quick-start-with-htap.md)和 [HTAP 深入探索指南](/explore-htap.md)
+详情参见 [HTAP 快速上手指南](/quick-start-with-htap.md)和 [HTAP 深入探索指南](/explore-htap.md)。
 
 ## I
 
@@ -164,7 +164,7 @@ Operator Step 是 Operator 执行过程的一个步骤，一个 Operator 常常�
 
 ## P
 
-### Partition table
+### Partitioned table
 
 将 TiDB 中的一张表根据某些条件在物理上拆分为若干张表存放，以提高查询的效率。详情参考[分区表](/partitioned-table.md)文档。
 
@@ -253,31 +253,27 @@ PD 中的 Store 指的是集群中的存储节点，也就是 tikv-server 实例
 
 ### TiDB Data Migration (DM)
 
-TiDB Data Migration (DM) 是一款便捷的数据迁移工具，支持从与 MySQL 协议兼容的数据库（MySQL、MariaDB、Aurora MySQL）到 TiDB 的全量数据迁移和增量数据同步。使用 DM 工具有利于简化数据迁移过程，降低数据迁移运维成本。
+[TiDB Data Migration (DM)](/dm/dm-overview.md) 是一款便捷的数据迁移工具，支持从与 MySQL 协议兼容的数据库（MySQL、MariaDB、Aurora MySQL）到 TiDB 的全量数据迁移和增量数据同步。使用 DM 工具有利于简化数据迁移过程，降低数据迁移运维成本。
 
 更多关于 DM 的概念和术语，参见 [TiDB Data Migration 术语表](/dm/dm-glossary.md)。
 
 ### TiDB Lightning
 
-TiDB Lightning 是一款数据导入工具，用于从静态文件导入 TB 级数据到 TiDB 集群，常用于 TiDB 集群的初始化数据导入。
+[TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 是一款数据导入工具，用于从静态文件导入 TB 级数据到 TiDB 集群，常用于 TiDB 集群的初始化数据导入。
 
 更多关于 TiDB Lightning 的概念和术语，参见 [TiDB Lightning 术语表](/tidb-lightning/tidb-lightning-glossary.md)。
 
 ### TiCDC
 
-TiCDC 是一款 TiDB 增量数据同步工具，通过拉取上游 TiKV 的数据变更日志，TiCDC 可以将数据解析为有序的行级变更数据输出到下游。更多关于 TiCDC 的概念和术语，参见 [TiCDC 术语表](/ticdc/ticdc-glossary.md)。
+[TiCDC](/ticdc/ticdc-overview.md) 是一款 TiDB 增量数据同步工具，通过拉取上游 TiKV 的数据变更日志，TiCDC 可以将数据解析为有序的行级变更数据输出到下游。更多关于 TiCDC 的概念和术语，参见 [TiCDC 术语表](/ticdc/ticdc-glossary.md)。
 
 ### TiFlash
 
-TiFlash 是 TiDB HTAP 形态的关键组件，它是 TiKV 的列存扩展，在提供良好隔离性的同时，也兼顾了强一致性。列存副本通过 Raft Learner 协议异步复制，但是在读取的时候通过 Raft 校对索引配合 MVCC 的方式获得 Snapshot Isolation 的一致性隔离级别。这个架构很好地解决了 HTAP 场景的隔离性以及列存同步的问题。
-
-更多详情参见 [TiFlash 简介](/tiflash/tiflash-overview.md)。
+[TiFlash](/tiflash/tiflash-overview.md) 是 TiDB HTAP 形态的关键组件，它是 TiKV 的列存扩展，在提供良好隔离性的同时，也兼顾了强一致性。列存副本通过 Raft Learner 协议异步复制，但是在读取的时候通过 Raft 校对索引配合 MVCC 的方式获得 Snapshot Isolation 的一致性隔离级别。这个架构很好地解决了 HTAP 场景的隔离性以及列存同步的问题。
 
 ### TiUP
 
-TiDB 于 v4.0 版本引入的包管理工具，用于 TiDB 集群的部署、升级、管理，管理着 TiDB 生态下众多的组件，如 TiDB、PD、TiKV 等。用户想要运行 TiDB 生态中任何组件时，只需要执行 TiUP 一行命令即可，相比以前，大大降低了管理难度。
-
-详情参见 [TiUP 简介](/tiup/tiup-overview.md)。
+[TiUP](/tiup/tiup-overview.md) 是 TiDB 于 v4.0 版本引入的包管理工具，用于 TiDB 集群的部署、升级、管理，管理着 TiDB 生态下众多的组件，如 TiDB、PD、TiKV 等。用户想要运行 TiDB 生态中任何组件时，只需要执行 TiUP 一行命令即可，相比以前，大大降低了管理难度。
 
 ### Top SQL
 
