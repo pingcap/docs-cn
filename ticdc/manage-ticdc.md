@@ -628,6 +628,13 @@ case-sensitive = true
 # 是否输出 old value，从 v4.0.5 开始支持，从 v5.0 开始默认为 true
 enable-old-value = true
 
+# 是否开启 sync point 功能，从 v6.3.0 开始支持
+enable-sync-point = true
+# sync point 功能对齐上下游 snapshot 的时间间隔，最小值为 30s
+sync-point-interval = "5m"
+# sync point 功能在下游表中保存的数据的时长，超过这个时间的数据会被清理
+sync-point-retention = "1h"
+
 [filter]
 # 忽略指定 start_ts 的事务
 ignore-txn-start-ts = [1, 2]
