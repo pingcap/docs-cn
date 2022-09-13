@@ -216,7 +216,7 @@ tidb> EXPLAIN SELECT * FROM t WHERE (a,b) IN (SELECT * FROM s);
 
     由于 Anti Semi Join 自身具有 CNF (Conjunctive normal form) 表达式的属性，其任何一侧出现的 `NULL` 值都会导致结果的确定性，利用这种性质可以来加速整个匹配过程的返回。
 
-以下为 Null-Aware 的例子：
+以下为 Null-Aware Anti Semi Join 的例子：
 
 ```sql
 CREATE TABLE t(a INT, b INT);
