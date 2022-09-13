@@ -192,7 +192,7 @@ tidb> EXPLAIN SELECT * FROM t WHERE (a,b) IN (SELECT * FROM s);
 
 第一个查询 `EXPLAIN SELECT (a,b) IN (SELECT * FROM s) FROM t;` 中，由于 `t` 表和 `s` 表的 `a`、`b` 列都是 NULLABLE 的，所以其所转化 Left Outer Semi Join 是具有 Null-Aware 性质的。其实现是先通过笛卡尔乘积，然后将 `IN` 或者 `= ANY` 所连接的列作为普通等值条件放到 other condition 做过滤（笛卡尔积之后的 filter）实现的。
 
-第二个查询 `EXPLAIN SELECT * FROM t WHERE (a,b) IN (SELECT * FROM s);` 中，由于 `t` 表和 `s` 表的 `a`、`b` 列都是 NULLABLE 的，`IN` 属性本应该转为 Null-Aware 性质的 Semi Join，但当前 TiDB 有一层优化，直接将 Semi Join 转为了 Inner Join + aggregate 的方式来实现。这是因为在非 scalar 输出的 `IN` sub-query 中，`NULL` 和 `false` 具有等效结果，其下推过滤的 `NULL` 行，就其本身来说都是导致 `WHERE` 子句的否定语义，因此可以事先忽略这些行。
+第二个查询 `EXPLAIN SELECT * FROM t WHERE (a,b) IN (SELECT * FROM s);` 中，由于 `t` 表和 `s` 表的 `a`、`b` 列都是 NULLABLE 的，`IN` 子查询本应该转为具有 Null-Aware 性质的 Semi Join，但当前 TiDB 进行了优化，直接将 Semi Join 转为了 Inner Join + aggregate 的方式来实现。这是因为在非 scalar 输出的 `IN` 子查询中，`NULL` 和 `false` 具有等效结果，其下推过滤的 `NULL` 行导致了 `WHERE` 子句的否定语义，因此可以事先忽略这些行。
 
 > **注意：**
 >
