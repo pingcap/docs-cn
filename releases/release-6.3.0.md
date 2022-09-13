@@ -243,6 +243,11 @@ TiDB 版本：6.3.0-DMR
     PITR 支持以 GCS 或 Azure Blob Storage 作为备份存储目标。部署在 GCP 或者 Azure 上的用户，升级 TiDB 集群到 v6.3.0 后，就可以使用 PITR 功能了。
 
     [用户文档](xxx) [#issue]() @[joccau](https://github.com/joccau)
+* BR 支持 [AWS S3 Object Lock](https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lock.html)
+
+    用户在 S3 开启 Object Lock 后，可以防止备份数据写入后被修改或者删除。 
+
+    [用户文档](xxx) [#issue]() @[3pointer](https://github.com/3pointer)
 
 ### 数据迁移
 
