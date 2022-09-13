@@ -1,5 +1,6 @@
 ---
 title: 使用 Logical Import Mode
+summary: 了解在 TiDB Lightning 的 Logical Import Mode 下，如何编写数据导入任务的配置文件，如何进行性能调优等。
 ---
 
 # 使用 Logical Import Mode
@@ -48,13 +49,13 @@ password = ""
 log-level = "error"
 ```
 
-Lightning 的完整配置文件可参考[完整配置及命令行参数](/tidb-lightning/tidb-lightning-configuration.md)。
+TiDB Lightning 的完整配置文件可参考[完整配置及命令行参数](/tidb-lightning/tidb-lightning-configuration.md)。
 
 ## 冲突数据检测
 
-冲突数据，即两条或两条以上的记录存在 PK/UK 列数据重复的情况。当数据源中的记录存在冲突数据，将导致该表真实总行数和使用唯一索引查询的总行数不一致的情况。Lightning 的 Logical Import Mode 通过 `on-duplicate` 配置冲突数据检测的策略，根据策略 Lightning 使用不同的 SQL 语句进行插入。
+冲突数据，即两条或两条以上的记录存在主键或唯一键列数据重复的情况。当数据源中的记录存在冲突数据，将导致该表真实总行数和使用唯一索引查询的总行数不一致的情况。TiDB Lightning 的 Logical Import Mode 通过 `on-duplicate` 配置冲突数据检测的策略，TiDB Lightning 根据策略使用不同的 SQL 语句进行插入。
 
-| 设置 | 冲突时默认行为 | 对应 SQL 语句 |
+| 策略 | 冲突时默认行为 | 对应 SQL 语句 |
 |:---|:---|:---|
 | `replace` | 新数据替代旧数据 | `REPLACE INTO ...` |
 | `ignore` | 保留旧数据，忽略新数据 | `INSERT IGNORE INTO ...` |
@@ -62,14 +63,13 @@ Lightning 的完整配置文件可参考[完整配置及命令行参数](/tidb-l
 
 ## 性能调优
 
-- Lightning Logical Import Mode 性能很大程度上取决于目标 TiDB 集群的写入性能，当遇到性能瓶颈时可参考 TiDB 相关[性能优化文档](/best-practices/high-concurrency-best-practices.md)
+- TiDB Lightning 的 Logical Import Mode 性能很大程度上取决于目标 TiDB 集群的写入性能，当遇到性能瓶颈时可参考 TiDB 相关[性能优化文档](/best-practices/high-concurrency-best-practices.md)。
 
-- 如果发现目标 TiDB 集群的的写入尚未达到瓶颈，可以考虑增加 Lightning 配置中 `region-concurrency` 的值。 `region-concurrency`默认值为 CPU 核数，其含义在 Physical Import Mode 和 Logical Import Mode 下有所不同，Logical Import Mode 的 `region-concurrency` 表示写入并发数。配置示例：
+- 如果发现目标 TiDB 集群的的写入尚未达到瓶颈，可以考虑增加 Lightning 配置中 `region-concurrency` 的值。`region-concurrency` 默认值为 CPU 核数，其含义在 Physical Import Mode 和 Logical Import Mode 下有所不同，Logical Import Mode 的 `region-concurrency` 表示写入并发数。配置示例：
 
     ```toml
     [lightning]
-
     region-concurrency = 32
     ```
 
-- 调整目标 TiDB 集群的[raftstore.apply-pool-size](/tikv-configuration-file.md#apply-pool-size)和[raftstore.store-pool-size](/tikv-configuration-file.md#store-pool-size)参数也可能提升导入速度。
+- 调整目标 TiDB 集群的 [`raftstore.apply-pool-size`](/tikv-configuration-file.md#apply-pool-size) 和 [`raftstore.store-pool-size`](/tikv-configuration-file.md#store-pool-size) 参数也可能提升导入速度。
