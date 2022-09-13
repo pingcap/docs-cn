@@ -124,7 +124,7 @@ TiDB 版本：6.3.0-DMR
 
 * 增加优化器 hint 控制哈希连接的驱动端 [#issue]() @[Reminiscent](https://github.com/Reminiscent)
 
-    在新版本中，优化器引入了两个新的 [hint `HASH_JOIN_BUILD()` 和 `HASH_JOIN_PROBE()`](/optimizer-hints.md) 用来指定哈希连接，并指定其驱动端和被驱动端。 在没有选到最优执行计划的情况下，提供了更丰富的干预手段。
+    在新版本中，优化器引入了两个新的 [hint `HASH_JOIN_BUILD()` 和 `HASH_JOIN_PROBE()`](/optimizer-hints.md) 隐式地指定哈希连接的行为，并同时分别指定哈希连接的驱动端和被驱动端。 在没有选到最优执行计划的情况下，提供了更丰富的执行计划干预手段。
 
 * 会话级允许 CTE 内联展开 [#36514](https://github.com/pingcap/tidb/issues/36514) @[elsa0520](https://github.com/elsa0520)
 
@@ -150,13 +150,17 @@ TiDB 版本：6.3.0-DMR
 
     当 SQL 中的 `IN` 条件包含的元素过多时，TiDB 在优化器构造扫描范围时可能会消耗大量的内存。在新版中，TiDB 引入了系统变量 [`tidb_opt_range_max_size`](/system-variables.md#tidb_opt_range_max_size-从-v630-版本开始引入) 实现对扫描范围的内存控制机制，对这类操作进行了优化，减少内存消耗，提升 SQL 执行效率和系统稳定性。
 
-* 修改优化统计信息过期时的默认加载策略 [#issue]() @[xuyifangreeneyes](https://github.com/xuyifangreeneyes)
+* 修改优化器统计信息过期时的默认统计信息使用策略 [#issue]() @[xuyifangreeneyes](https://github.com/xuyifangreeneyes)
 
     在 v5.3.0 版本时，TiDB 引入系统变量 [`tidb_enable_pseudo_for_outdated_stats`](/system-variables.md#tidb_enable_pseudo_for_outdated_stats-从-v530-版本开始引入) 控制优化器在统计信息过期时的行为，默认为 `ON`，即保持旧版本行为不变：当 SQL 涉及的对象的统计信息过期时，优化器认为该表上除总行数以外的统计信息不再可靠，转而使用 pseudo 统计信息。 经过一系列测试和用户实际场景分析，TiDB 在新版本中将  `tidb_enable_pseudo_for_outdated_stats` 的默认值改为 `OFF`，即使统计信息过期，优化器也仍会使用该表上的统计信息，这有利于执行计划的稳定性。
 
 * TiKV Titan 关闭功能正式发布 [#issue]() @[tabokie](https://github.com/tabokie)
 
     正式支持对在线 TiKV 节点[关闭 Titan 引擎](/titan-configuration#disable-titan)。
+
+* 缺少 GlobalStats 时自动选择分区静态剪裁 [#37535](https://github.com/pingcap/tidb/issues/37535) @[Yisaer](https://github.com/Yisaer)
+
+    当启用分区[动态剪裁](/partitioned-table.md#动态裁剪模式)时，优化器依赖 [GlobalStats](/statistics.md#动态裁剪模式下的分区表统计信息) 进行执行计划的选择。 当 [GlobalStats](/statistics.md#动态裁剪模式下的分区表统计信息) 收集还没有完成的情况下，使用 pseudo 统计信息可能会造成性能回退。 在新版本中， 如果 [GlobalStats](/statistics.md#动态裁剪模式下的分区表统计信息) 收集还没有完成， TiDB 会维持原本静态分区剪裁的行为，直到 [GlobalStats](/statistics.md#动态裁剪模式下的分区表统计信息) 收集完成， 保证了在分区剪裁策略更迭时的性能稳定。
 
 ### 易用性
 
