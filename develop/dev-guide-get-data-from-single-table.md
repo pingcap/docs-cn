@@ -98,7 +98,7 @@ public class AuthorDAO {
             ResultSet rs = stmt.executeQuery("SELECT id, name FROM authors");
             while (rs.next()) {
                 Author author = new Author();
-                author.setId( rs.getLong("id"));
+                author.setId(rs.getLong("id"));
                 author.setName(rs.getString("name"));
                 authors.add(author);
             }
@@ -154,7 +154,7 @@ public List<Author> getAuthorsByBirthYear(Short birthYear) throws SQLException {
         ResultSet rs = stmt.executeQuery();
         while (rs.next()) {
             Author author = new Author();
-            author.setId( rs.getLong("id"));
+            author.setId(rs.getLong("id"));
             author.setName(rs.getString("name"));
             authors.add(author);
         }
@@ -172,6 +172,9 @@ public List<Author> getAuthorsByBirthYear(Short birthYear) throws SQLException {
 
 例如，可以通过下面的 SQL 语句令 `authors` 表的数据根据 `birth_year` 列进行降序（`DESC`）排序，从而得到最年轻的作家列表。
 
+<SimpleTab groupId="language">
+<div label="SQL" value="sql">
+
 {{< copyable "sql" >}}
 
 ```sql
@@ -179,6 +182,37 @@ SELECT id, name, birth_year
 FROM authors
 ORDER BY birth_year DESC;
 ```
+
+</div>
+
+<div label="Java" value="java">
+
+{{< copyable "" >}}
+
+```java
+public List<Author> getAuthorsSortByBirthYear() throws SQLException {
+    List<Author> authors = new ArrayList<>();
+    try (Connection conn = ds.getConnection()) {
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery("""
+            SELECT id, name, birth_year
+            FROM authors
+            ORDER BY birth_year DESC;
+            """);
+
+        while (rs.next()) {
+            Author author = new Author();
+            author.setId(rs.getLong("id"));
+            author.setName(rs.getString("name"));
+            authors.add(author);
+        }
+    }
+    return authors;
+}
+```
+
+</div>
+</SimpleTab>
 
 查询结果如下：
 
@@ -204,6 +238,9 @@ ORDER BY birth_year DESC;
 
 如果希望 TiDB 只返回部分结果，可以使用 `LIMIT` 语句限制查询结果返回的记录数。
 
+<SimpleTab groupId="language">
+<div label="SQL" value="sql">
+
 {{< copyable "sql" >}}
 
 ```sql
@@ -212,6 +249,38 @@ FROM authors
 ORDER BY birth_year DESC
 LIMIT 10;
 ```
+
+</div>
+
+<div label="Java" value="java">
+
+{{< copyable "" >}}
+
+```java
+public List<Author> getAuthorsWithLimit(Integer limit) throws SQLException {
+    List<Author> authors = new ArrayList<>();
+    try (Connection conn = ds.getConnection()) {
+        PreparedStatement stmt = conn.prepareStatement("""
+            SELECT id, name, birth_year
+            FROM authors
+            ORDER BY birth_year DESC
+            LIMIT ?;
+            """);
+        stmt.setInt(1, limit);
+        ResultSet rs = stmt.executeQuery();
+        while (rs.next()) {
+            Author author = new Author();
+            author.setId(rs.getLong("id"));
+            author.setName(rs.getString("name"));
+            authors.add(author);
+        }
+    }
+    return authors;
+}
+```
+
+</div>
+</SimpleTab>
 
 查询结果如下：
 
@@ -241,6 +310,9 @@ LIMIT 10;
 
 比如说，你希望知道哪些年出生的作家比较多，你可以将作家基本信息按照 `birth_year` 列进行分组，然后分别统计在当年出生的作家数量：
 
+<SimpleTab groupId="language">
+<div label="SQL" value="sql">
+
 {{< copyable "sql" >}}
 
 ```sql
@@ -249,6 +321,47 @@ FROM authors
 GROUP BY birth_year
 ORDER BY author_count DESC;
 ```
+
+</div>
+
+<div label="Java" value="java">
+
+{{< copyable "" >}}
+
+```java
+public class AuthorCount {
+    private Short birthYear;
+    private Integer authorCount;
+
+    public AuthorCount() {}
+
+     // Skip the getters and setters.
+}
+
+public List<AuthorCount> getAuthorCountsByBirthYear() throws SQLException {
+    List<AuthorCount> authorCounts = new ArrayList<>();
+    try (Connection conn = ds.getConnection()) {
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery("""
+            SELECT birth_year, COUNT(DISTINCT id) AS author_count
+            FROM authors
+            GROUP BY birth_year
+            ORDER BY author_count DESC;
+            """);
+
+        while (rs.next()) {
+            AuthorCount authorCount = new AuthorCount();
+            authorCount.setBirthYear(rs.getShort("birth_year"));
+            authorCount.setAuthorCount(rs.getInt("author_count"));
+            authorCounts.add(authorCount);
+        }
+    }
+    return authorCount;
+}
+```
+
+</div>
+</SimpleTab>
 
 查询结果如下：
 
