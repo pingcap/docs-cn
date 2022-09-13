@@ -152,6 +152,14 @@ PingCAP Clinic 由 Diag 诊断客户端（以下简称为 Diag）和 Clinic Serv
 
 ## 探索更多
 
-- [PingCAP Clinic 诊断服务简介](/clinic/clinic-introduction.md)
-- [使用 PingCAP Clinic 诊断 TiDB 集群](/clinic/clinic-user-guide-for-tiup.md)
-- [PingCAP Clinic 数据采集说明](/clinic/clinic-data-instruction-for-tiup.md)
+- 在 TiUP 部署环境使用 PingCAP Clinic
+
+    - [PingCAP Clinic 诊断服务简介](/clinic/clinic-introduction.md)
+    - [使用 PingCAP Clinic 诊断 TiDB 集群](/clinic/clinic-user-guide-for-tiup.md)
+    - [使用 PingCAP Clinic 生成诊断报告](/clinic/clinic-report.md)
+    - [PingCAP Clinic 数据采集说明](/clinic/clinic-data-instruction-for-tiup.md)
+
+- 在 TiDB Operator 部署环境使用 PingCAP Clinic
+
+    - [使用 PingCAP Clinic](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/clinic-user-guide)
+    - [PingCAP Clinic 数据采集说明](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/clinic-data-instruction)
