@@ -188,7 +188,7 @@ EXPLAIN DELETE FROM t1 WHERE c1=3;
 | ------ | ------ |
 | 未指定  | 同 row |
 | row    | `EXPLAIN` 语句将以表格格式输出结果。更多信息，可参阅 [TiDB 执行计划概览](/explain-overview.md) |
-| brief  | `EXPLAIN` 语句输出结果中的算子 ID 将被隐藏，较之未指定 `FORMAT` 时输出结果的算子 ID 更为简化 |
+| brief  | `EXPLAIN` 语句输出结果中的算子 ID 将被简化，较之未指定 `FORMAT` 时输出结果的算子 ID 更为简化 |
 | dot    | `EXPLAIN` 语句将输出 dot 格式的执行计划，可以通过 `dot` 程序（在 `graphviz` 包中）生成 PNG 文件 |
 
 
@@ -256,7 +256,7 @@ label = "cop"
 1 row in set (0.00 sec)
 ```
 
-如果你的计算机上安装了 `dot` 程序（在 `graphviz` 包中），可使用以下方法生成 PNG 文件：
+如果你的计算机上安装了 `dot` 程序，可使用以下方法生成 PNG 文件：
 
 {{< copyable "shell-regular" >}}
 
