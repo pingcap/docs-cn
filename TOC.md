@@ -344,6 +344,7 @@
     - [概述](/clinic/clinic-introduction.md)
     - [快速上手](/clinic/quick-start-with-clinic.md)
     - [使用 PingCAP Clinic 诊断 TiDB 集群](/clinic/clinic-user-guide-for-tiup.md)
+    - [使用 PingCAP Clinic 生成诊断报告](/clinic/clinic-report.md)
     - [采集 SQL 查询计划信息](/clinic/clinic-collect-sql-query-plan.md)
     - [数据采集说明](/clinic/clinic-data-instruction-for-tiup.md)
   - [TiDB Operator](/tidb-operator-overview.md)
@@ -367,7 +368,7 @@
       - [性能调优](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#性能调优)
     - Logical Import Mode
       - [概述](/tidb-lightning/tidb-lightning-logical-import-mode.md)
-      - [必要条件及限制](/tidb-lightning/tidb-lightning-logical-import-mode.md#必要条件及限制)
+      - [必要条件及限制](/tidb-lightning/tidb-lightning-logical-import-mode.md#必要条件)
       - [配置及使用](/tidb-lightning/tidb-lightning-logical-import-mode-usage.md)
       - [冲突检测](/tidb-lightning/tidb-lightning-logical-import-mode-usage.md#冲突数据检测)
       - [性能调优](/tidb-lightning/tidb-lightning-logical-import-mode-usage.md#性能调优)
