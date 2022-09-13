@@ -1,15 +1,14 @@
 ---
-title: TiCDC 部署运维
+title: TiCDC 集群部署运维
 summary: 了解 TiCDC 软硬件环境要求以及如何部署运维 TiCDC。
 ---
 
 # TiCDC 集群部署
 
-本文档介绍 TiCDC 集群的软硬件环境要求，以及如何安装部署 TiCDC 集群。你可以选择随新集群一起部署 TiCDC，也可以对原有 TiDB 集群新增 TiCDC 组件。
+本文档主要包括如下内容：
 
-TiCDC 支持基于 Kubernetes 环境部署，详情参考 [在 Kubernetes 上部署 TiCDC](https://docs.pingcap.com/zh/tidb-in-kubernetes/dev/deploy-ticdc)
-
-本文档主要介绍如何使用 TiUP 部署运维 TiCDC 集群，如有特殊情况也可以用 binary 部署。
+* 介绍 TiCDC 集群的软硬件环境要求。
+* 使用 TiUP 部署运维 TiCDC 集群。
 
 ## 软件和硬件环境推荐配置
 
@@ -26,11 +25,17 @@ TiCDC 支持基于 Kubernetes 环境部署，详情参考 [在 Kubernetes 上部
 
 更多信息参见 [TiDB 软件和硬件环境建议配置](/hardware-and-software-requirements.md)。
 
-## 使用 TiUP 部署包含 TiCDC 组件的全新 TiDB 集群
+## 使用 TiUP 部署运维 TiCDC
+
+TiCDC 支持基于 Kubernetes 环境部署，详情参考 [在 Kubernetes 上部署 TiCDC](https://docs.pingcap.com/zh/tidb-in-kubernetes/dev/deploy-ticdc)。
+
+本文档主要介绍如何使用 TiUP 部署运维 TiCDC 集群，如有特殊情况也可以用 binary 部署。用户可以选择在部署新的 TiDB 集群时一起部署 TiCDC，也可以对原有 TiDB 集群新增 TiCDC 组件。
+
+### 部署全新含有 TiCDC 组件的 TiDB 集群
 
 在使用 TiUP 部署全新 TiDB 集群时，支持同时部署 TiCDC 组件。只需在 TiUP 启动 TiDB 集群时的配置文件中加入 `TiCDC` 部分即可，详细操作参考[编辑初始化配置文件](/production-deployment-using-tiup.md#第-3-步初始化集群拓扑文件)，具体可配置字段参考[通过 TiUP 配置 `cdc_servers`](/tiup/tiup-cluster-topology-reference.md#cdc_servers)。
 
-## 使用 TiUP 在原有 TiDB 集群上新增 TiCDC 组件
+### 在原有 TiDB 集群新增 TiCDC 组件
 
 目前也支持在原有 TiDB 集群上使用 TiUP 新增 TiCDC 组件，操作步骤如下：
 
