@@ -204,7 +204,7 @@ tidb> EXPLAIN SELECT * FROM t WHERE (a,b) IN (SELECT * FROM s);
 
 `NOT IN` 和 `!= ALL` 算子引导的子查询会对应地转为 Anti Semi Join 和 Anti Left Outer Semi Join。在上述的 [Anti Semi Join](#anti-semi-joinnot-in-子查询) 小节中，由于示例中 Join key 两侧的列 `test.t3.t1_id` 和 `test.t1.id` 都是 `not NULL` 属性的，所以 Anti Semi Join 本身不需要 Null-Aware 的性质来辅助计算。
 
-在 TiDB v6.3.0 及后续的版本中，TiDB 引入了针对 Null-Aware Anti Join (NAJJ) 的特殊优化：
+在 TiDB v6.3.0 及后续的版本中，TiDB 引入了针对 Null-Aware Anti Join (NAAJ) 的特殊优化：
 
 - 利用 Null-Aware 的等值条件 (NA-EQ) 构建哈希连接
 
