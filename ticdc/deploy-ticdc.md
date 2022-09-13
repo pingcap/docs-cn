@@ -104,6 +104,7 @@ TiCDC 从 v6.3.0 版本开始在内部实现了支持滚动升级的能力，使
 假设当前版本为 v6.3.0，使用 TiUP 升级集群到 v6.4.0 ：
 
 {{< copyable "shell-regular" >}}
+
 ```shell
 tiup cluster upgrade test-cluster v6.4.0 --transfer-timeout 600 --force false
 ```
