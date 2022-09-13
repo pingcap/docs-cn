@@ -44,7 +44,7 @@ TiDB 版本：6.3.0-DMR
 * 增加支持以下窗口分析函数：
 
     * `LEAD`
-    * `LAG()`
+    * `LAG`
 
   [用户文档](/tiflash/tiflash-supported-pushdown-calculations.md)，[#5579](https://github.com/pingcap/tiflash/issues/5579) @[SeaRise](https://github.com/SeaRise)
 
