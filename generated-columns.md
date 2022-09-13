@@ -149,6 +149,8 @@ desc select a+1 from t where a+1=3;
 > 上例中，`a` 的类型是 int，而 `a+1` 的列类型是 bigint，如果将生成列的类型定为 int，就不会发生替换。
 >
 > 关于类型转换规则，可以参见[表达式求值的类型转换](/functions-and-operators/type-conversion-in-expression-evaluation.md)。
+> 
+> 若待替换的表达式类型和生成列类型都是字符类型，且只在长度不同时可使用系统变量 `tidb_enable_unsafe_substitute` 来允许其替换。在使用此系统变量时用户需要自己保证生成列计算得到的值严格满足生成列的定义，否则有可能得到错误的[结果](https://github.com/pingcap/tidb/issues/35490#issuecomment-1211658886)。
 
 ## 生成列的局限性
 
