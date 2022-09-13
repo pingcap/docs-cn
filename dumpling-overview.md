@@ -393,7 +393,7 @@ SET GLOBAL tidb_gc_life_time = '10m';
 
 <CustomContent platform="tidb">
 
-Finally, all the exported data can be imported back to TiDB using [TiDB Lightning](/tidb-lightning/tidb-lightning-backends.md).
+Finally, all the exported data can be imported back to TiDB using [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md).
 
 </CustomContent>
 

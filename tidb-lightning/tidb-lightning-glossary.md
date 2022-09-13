@@ -32,7 +32,7 @@ Because TiDB Lightning imports data without going through TiDB, the `AUTO_INCREM
 
 Back end is the destination where TiDB Lightning sends the parsed result. Also spelled as "backend".
 
-See [TiDB Lightning Backends](/tidb-lightning/tidb-lightning-backends.md) for details.
+See [TiDB Lightning architecture](/tidb-lightning/tidb-lightning-overview.md) for details.
 
 <!-- C -->
 

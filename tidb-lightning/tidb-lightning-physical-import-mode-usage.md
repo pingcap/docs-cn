@@ -9,7 +9,7 @@ This document introduces how to use the physical import mode in TiDB Lightning, 
 
 ## Configure and use the physical import mode
 
-You can use the following configuration file to execute data import using Physical Import Mode:
+You can use the following configuration file to execute data import using the physical import mode:
 
 ```toml
 [lightning]
@@ -38,7 +38,7 @@ duplicate-resolution = 'remove'
 sorted-kv-dir = "./some-dir"
 
 # Limits the bandwidth in which TiDB Lightning writes data into each TiKV
-# node in physical import mode. 0 by default, which means no limit.
+# node in the physical import mode. 0 by default, which means no limit.
 # store-write-bwlimit = "128MiB"
 
 [tidb]
@@ -52,7 +52,7 @@ password = ""
 status-port = 10080
 # Required. The address of any pd-server from the cluster.
 pd-addr = "172.16.31.4:2379"
-# tidb-lightning import the TiDB library, and generates some logs.
+# tidb-lightning imports the TiDB library, and generates some logs.
 # Set the log level of the TiDB library.
 log-level = "error"
 
@@ -77,7 +77,7 @@ analyze = "optional"
 
 For the complete configuration file, refer to [the configuration file and command line parameters](/tidb-lightning/tidb-lightning-configuration.md).
 
-### Conflict detection
+## Conflict detection
 
 Conflicting data refers to two or more records with the same PK/UK column data. When the data source contains conflicting data, the actual number of rows in the table is different from the total number of rows returned by the query using unique index.
 
@@ -132,7 +132,7 @@ You can manually identify the records that need to be retained and insert these 
 
 ## Import data into a cluster in production
 
-Starting from TiDB Lightning v6.2.0, you can import data into a cluster in production using physical import mode. TiDB Lightning implements a new mechanism to limit the impact of the import on the online application.
+Starting from TiDB Lightning v6.2.0, you can import data into a cluster in production using the physical import mode. TiDB Lightning implements a new mechanism to limit the impact of the import on the online application.
 
 With the new mechanism, TiDB Lightning does not pause the global scheduling, but only pauses scheduling for the region that stores the target table data. This significantly reduces the impact of the import on the online application.
 
@@ -146,7 +146,7 @@ By default, TiDB Lightning pauses the cluster scheduling for the minimum range p
 
 ```toml
 [tikv-importer]
-# Limits the bandwidth in which TiDB Lightning writes data into each TiKV node in physical import mode.
+# Limits the bandwidth in which TiDB Lightning writes data into each TiKV node in the physical import mode.
 store-write-bwlimit = "128MiB"
 
 [tidb]
@@ -184,7 +184,7 @@ Therefore, if your TiDB cluster has a latency-sensitive application and a low co
 - **Upgrade the hardware of the node where Lightning is deployed, especially the CPU and the storage device of `sorted-key-dir`.**
 - **Use the [parallel import](/tidb-lightning/tidb-lightning-distributed-import.md) feature to achieve horizontal scaling.**
 
-Lightning provides some concurrency-related configurations to affect Physical Import Mode import performance. However, from long-term experience, it is recommended to keep the following four configuration items in the default value. Adjusting the four configuration items does not bring significant performance boost.
+TiDB Lightning provides some concurrency-related configurations to affect import performance in the physical import mode. However, from long-term experience, it is recommended to keep the following four configuration items in the default value. Adjusting the four configuration items does not bring significant performance boost.
 
 ```
 [lightning]
@@ -228,7 +228,7 @@ The [`num-threads`](/tikv-configuration-file.md#num-threads) configuration of Ti
 >
 > Disk quota is still an experimental feature. It is **NOT** recommended that you use it in the production environment.
 
-When you import data in physical import mode, TiDB Lightning creates a large number of temporary files on the local disk to encode, sort, and split the original data. When the local disk space is insufficient, TiDB Lightning reports an error and exits because of write failure.
+When you import data in the physical import mode, TiDB Lightning creates a large number of temporary files on the local disk to encode, sort, and split the original data. When the local disk space is insufficient, TiDB Lightning reports an error and exits because of write failure.
 
 To avoid this situation, you can configure disk quota for TiDB Lightning. When the size of the temporary files exceeds the disk quota, TiDB Lightning pauses the process of reading the source data and writing temporary files. TiDB Lightning prioritizes writing the sorted key-value pairs to TiKV. After deleting the local temporary files, TiDB Lightning continues the import process.
 
