@@ -253,7 +253,7 @@ tidb> EXPLAIN SELECT * FROM t WHERE (a, b) NOT IN (select * FROM s);
 
 第一个查询 `EXPLAIN SELECT (a, b) NOT IN (SELECT * FROM s) FROM t;` 中，由于 `t` 表和 `s` 表的 `a`，`b` 列都是 NULLABLE 的，所以其所转化的 Left Outer Semi Join 是具有 Null-Aware 性质的。不同的是，NAAJ 优化将 NA-EQ 等值条件也作为了 Hash Join 的连接条件，大大加速的了 Join 的计算。
 
-第二个查询 `EXPLAIN SELECT * FROM t WHERE (a, b) NOT IN (select * FROM s);` 中，由于 `t` 表和 `s` 表的 `a`，`b` 列都是 NULLABLE 的，所以其所转化的 Anti Semi Join 是具有 Null-Aware 性质的。不同的是，NAAJ 优化将 NA-EQ 等值条件也作为了 Hash Join 的连接条件，大大加速的了 Join 的计算。
+第二个查询 `EXPLAIN SELECT * FROM t WHERE (a, b) NOT IN (select * FROM s);` 中，由于 `t` 表和 `s` 表的 `a`，`b` 列都是 NULLABLE 的，所以 `NOT IN` 子查询所转化的 Anti Semi Join 是具有 Null-Aware 性质的。不同的是，NAAJ 优化将 NA-EQ 条件也作为了 Hash Join 的连接条件，大大加速了 Join 的计算。
 
 当前 TiDB 仅针对 Anti Semi Join 和 Anti Left Outer Semi Join 实现了 `NULL` 感知。目前仅支持 Hash Join 类型且其 build 表只能固定为右侧表。
 
