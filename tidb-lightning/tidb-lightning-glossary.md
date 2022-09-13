@@ -52,7 +52,7 @@ In TiDB Lightning, the checksum of a table is a set of 3 numbers calculated from
 
 TiDB Lightning [validates the imported data](/tidb-lightning/tidb-lightning-faq.md#how-to-ensure-the-integrity-of-the-imported-data) by comparing the [local](/tidb-lightning/tidb-lightning-glossary.md#local-checksum) and [remote checksums](/tidb-lightning/tidb-lightning-glossary.md#remote-checksum) of every table. The program would stop if any pair does not match. You can skip this check by setting the `post-restore.checksum` configuration to `false`.
 
-See also the [FAQs](/tidb-lightning/tidb-lightning-faq.md#checksum-failed-checksum-mismatched-remote-vs-local) for how to properly handle checksum mismatch.
+See also the [FAQs](/tidb-lightning/troubleshoot-tidb-lightning.md#checksum-failed-checksum-mismatched-remote-vs-local) for how to properly handle checksum mismatch.
 
 ### Chunk
 
@@ -114,7 +114,7 @@ See [Table Filter](/table-filter.md) for details.
 
 A configuration that optimizes TiKV for writing at the cost of degraded read speed and space usage.
 
-TiDB Lightning automatically switches to and off the import mode while running. However, if TiKV gets stuck in import mode, you can use `tidb-lightning-ctl` to [force revert](/tidb-lightning/tidb-lightning-faq.md#why-my-tidb-cluster-is-using-lots-of-cpu-resources-and-running-very-slowly-after-using-tidb-lightning) to [normal mode](/tidb-lightning/tidb-lightning-glossary.md#normal-mode).
+TiDB Lightning automatically switches to and off the import mode while running. However, if TiKV gets stuck in import mode, you can use `tidb-lightning-ctl` to [force revert](/tidb-lightning/troubleshoot-tidb-lightning.md#the-tidb-cluster-uses-lots-of-cpu-resources-and-runs-very-slowly-after-using-tidb-lightning) to [normal mode](/tidb-lightning/tidb-lightning-glossary.md#normal-mode).
 
 ### Index engine
 
