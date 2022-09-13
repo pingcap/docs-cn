@@ -38,7 +38,7 @@ SELECT id FROM city WHERE population >= 100;
 - TiDB Backup & Restore（BR）在 v6.3.0 之前不支持恢复包含 JSON 列的数据。另外，任何版本的 BR 都不支持恢复包含 JSON 列的数据到 v6.3.0 之前的 TiDB 集群。
 - 请勿使用任何同步工具同步非标准 JSON 类型（例如 DATE/DATETIME/TIME 等）的数据。
 
-# MySQL 兼容性
+## MySQL 兼容性
 
 - 当使用二进制类型数据创建 JSON 时，目前 MySQL 会将其误标记为 STRING 类型。
 
