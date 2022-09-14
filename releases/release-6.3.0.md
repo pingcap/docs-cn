@@ -226,6 +226,7 @@ TiDB 版本：6.3.0-DMR
 | [`tidb_enable_clustered_index`](/system-variables.md#tidb_enable_clustered_index-从-v50-版本开始引入) | 修改 | 默认值从 `INT_ONLY` 修改为 `ON`。 |
 | [`tidb_adaptive_closest_read_threshold`](/system-variables.md#tidb_adaptive_closest_read_threshold-从-v630-版本开始引入) | 新增 | 用于控制开启 TiDB Follower Read 功能。 |
 | [`tidb_opt_join_reorder_threshold`](/system-variables.md#tidb_opt_join_reorder_threshold-从-v630-版本开始引入) | 新增 | 用来控制 TIDB Join Reorder 算法的选择。 |
+| [`tidb_enable_unsafe_substitute`](/system-variables.md#tidb_enable_unsafe_substitute-从-v630-版本开始引入) | 新增 | 这个变量用于控制是否对生成列中表达式替换使用不安全的替换方式。 |
 
 ### 配置文件参数
 
