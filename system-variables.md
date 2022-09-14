@@ -2416,4 +2416,4 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 默认值：`OFF`
-- 这个变量用于控制是否对生成列中表达式替换使用不安全的替换方式。详情见[生成列](/generated-columns.md)。
+- 这个变量用于控制是否对生成列中表达式替换使用不安全的替换方式。默认值为 `OFF`，即默认关闭不安全的替换方式。详情见[生成列](/generated-columns.md)。
