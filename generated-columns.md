@@ -120,6 +120,7 @@ ERROR 1048 (23000): Column 'city' cannot be null
 ```sql
 create table t(a int);
 desc select a+1 from t where a+1=3;
+```
 
 ```sql
 +---------------------------+----------+-----------+---------------+--------------------------------+
