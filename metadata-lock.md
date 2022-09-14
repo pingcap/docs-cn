@@ -13,17 +13,27 @@ summary: 介绍 TiDB 中元数据锁的原理、实现和影响。
 
 为了解决这个问题，在 TiDB v6.3 版本中，online DDL 算法中引入了元数据锁特性。通过协调表元数据变更过程中 DML 语句和 DDL 语句的优先级，让执行中的 DDL 语句等待持有旧版本元数据的 DML 语句提交，尽可能避免 DML 语句报错。
 
-元数据锁适用于所有的 DDL 语句，包括 [`ADD INDEX`](/sql-statements/sql-statement-add-index.md)、[`DROP COLUMN`](/sql-statements/sql-statement-drop-column.md)、[`DROP INDEX`](/sql-statements/sql-statement-drop-index.md)、[`DROP PARTITION`](/partitioned-table.md#分区管理)、[`TRUNCATE TABLE`](/sql-statements/sql-statement-truncate.md)、[`EXCHANGE PARTITION`](/partitioned-table.md#分区管理)、[`MODIFY COLUMN`](/sql-statements/sql-statement-modify-column.md) 等。
+## 适用场景
 
-## 元数据锁的使用
+元数据锁适用于所有的 DDL 语句，包括：
 
-使用系统变量 [`tidb_enable_mdl`](/system-variables.md#tidb_enable_mdl-从-v630-版本开始引入) 启用或者关闭元数据锁特性。
+- [`ADD INDEX`](/sql-statements/sql-statement-add-index.md)
+- [`DROP COLUMN`](/sql-statements/sql-statement-drop-column.md)
+- [`DROP INDEX`](/sql-statements/sql-statement-drop-index.md)
+- [`DROP PARTITION`](/partitioned-table.md#分区管理)
+- [`TRUNCATE TABLE`](/sql-statements/sql-statement-truncate.md)
+- [`EXCHANGE PARTITION`](/partitioned-table.md#分区管理)
+- [`MODIFY COLUMN`](/sql-statements/sql-statement-modify-column.md)
 
-因为使用元数据锁机制，会给 TiDB DDL 任务的执行带来一定的性能影响。所以，为了降低元数据锁对 DDL 任务的影响，下面列出了部分不需要加元数据锁的场景：
+使用元数据锁机制会给 TiDB DDL 任务的执行带来一定的性能影响。为了降低元数据锁对 DDL 任务的影响，下列场景不需要加元数据锁：
 
 - 开启了 autocommit 的查询语句
 - 开启了 Stale Read 功能
 - 访问临时表
+
+## 使用元数据锁
+
+使用系统变量 [`tidb_enable_mdl`](/system-variables.md#tidb_enable_mdl-从-v630-版本开始引入) 启用或者关闭元数据锁特性。
 
 ## 元数据锁的原理
 
@@ -45,7 +55,7 @@ TiDB 中 DDL 操作使用的是 online DDL 模式。一个 DDL 语句在执行�
 | txn6 | WriteOnly  | WriteReorg | 1   |
 | txn7 | Public     | Public     | 0   |
 
-其中 `txn4` 提交时采用的元数据版本与集群最新的元数据版本相差了两个版本，会导致数据正确性问题。
+其中 `txn4` 提交时采用的元数据版本与集群最新的元数据版本相差了两个版本，会影响数据正确性。
 
 ### 实现
 
@@ -60,29 +70,28 @@ TiDB 中 DDL 操作使用的是 online DDL 模式。一个 DDL 语句在执行�
 - 开启元数据锁后，事务中某个元数据对象的元数据信息在第一次访问时确定，之后不再变化。
 - 对于 DDL 语句来说，在进行元数据状态变更时，会被涉及相关元数据的旧事务所阻塞。例如以下的执行流程：
 
-  | Session 1 | Session 2 |
-  |:---------------------------|:----------|
-  | `CREATE TABLE t (a INT);`  |           |
-  | `INSERT INTO t VALUES(1);` |           |
-  | `BEGIN;`                   |           |
-  |                            | `ALTER TABLE t ADD COLUMN b INT;` |
-  | `SELECT * FROM t;`         |           |
-  |#采用 `t` 表当前的元数据版本，返回 `(a=1，b=NULL)`，同时给表 `t` 加锁 | |
-  |                            | `ALTER TABLE t ADD COLUMN c INT;`（被 Session 1 阻塞）|
+    | Session 1 | Session 2 |
+    |:---------------------------|:----------|
+    | `CREATE TABLE t (a INT);`  |           |
+    | `INSERT INTO t VALUES(1);` |           |
+    | `BEGIN;`                   |           |
+    |                            | `ALTER TABLE t ADD COLUMN b INT;` |
+    | `SELECT * FROM t;`<br/>（采用 `t` 表当前的元数据版本，返回 `(a=1，b=NULL)`，同时给表 `t` 加锁）|           |
+    |                            | `ALTER TABLE t ADD COLUMN c INT;`（被 Session 1 阻塞）|
 
-  在可重复读隔离级别下，如果从事务开始到确定一个表的元数据过程中，执行了加索引或者变更列类型等需要更改数据的 DDL。则有以下表现：
+    在可重复读隔离级别下，如果从事务开始到确定一个表的元数据过程中，执行了加索引或者变更列类型等需要更改数据的 DDL，则有以下表现：
 
-  | Session 1                  | Session 2                                 |
-  |:---------------------------|:------------------------------------------|
-  | `CREATE TABLE t (a INT);`  |                                           |
-  | `INSERT INTO t VALUES(1);` |                                           |
-  | `BEGIN;`                   |                                           |
-  |                            | `ALTER TABLE t ADD INDEX idx(a);`         |
-  | `SELECT * FROM t;`（索引 `idx` 不可用）|                                 |
-  | `COMMIT;`                  |                                           |
-  | `BEGIN;`                   |                                           |
-  |                            | `ALTER TABLE t MODIFY COLUMN a CHAR(10);` |
-  | `SELECT * FROM t;` (报错 `Information schema is changed`) |             |
+    | Session 1                  | Session 2                                 |
+    |:---------------------------|:------------------------------------------|
+    | `CREATE TABLE t (a INT);`  |                                           |
+    | `INSERT INTO t VALUES(1);` |                                           |
+    | `BEGIN;`                   |                                           |
+    |                            | `ALTER TABLE t ADD INDEX idx(a);`         |
+    | `SELECT * FROM t;`（索引 `idx` 不可用）|                                 |
+    | `COMMIT;`                  |                                           |
+    | `BEGIN;`                   |                                           |
+    |                            | `ALTER TABLE t MODIFY COLUMN a CHAR(10);` |
+    | `SELECT * FROM t;` (报错 `Information schema is changed`) |             |
 
 ## 排查阻塞的 DDL
 
@@ -107,7 +116,7 @@ SQL_DIGESTS: ["begin","select * from `t`"]
 1 row in set (0.02 sec)
 ```
 
-可以从上面的输出结果中了解到有一个 SESSION ID 为 `2199023255957` 的事务阻塞了该添加索引 DDL 的执行。并且事务执行的 SQL 语句如 SQL_DIGESTS 中所示，即 ["begin","select * from `t`"]。如果想要使得阻塞的 DDL 能够继续执行，可以通过如下 Global `KILL` 命令中止 SESSION ID 为 `2199023255957` 的事务：
+可以从上面的输出结果中了解到，有一个 `SESSION ID` 为 `2199023255957` 的事务阻塞了该添加索引 DDL 的执行。该事务执行的 SQL 语句如 `SQL_DIGESTS` 中所示，即 ``["begin","select * from `t`"]``。如果想要使被阻塞的 DDL 能够继续执行，可以通过如下 Global `KILL` 命令中止 `SESSION ID` 为 `2199023255957` 的事务：
 
 ```sql
 mysql> KILL 2199023255957;
