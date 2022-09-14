@@ -483,7 +483,7 @@ I/O rate limiter 相关的配置项。
 
 + 确定哪些类型的 I/O 操作被计数并受 `max-bytes-per-sec` 阈值的限流。当前 TiKV 只支持 write-only 只写模式。
 + 可选值：`"read-only"`，`"write-only"`，`"all-io"`
-+ 默认值：`"all-io"`
++ 默认值：`"write-only"`
 
 ## raftstore
 
