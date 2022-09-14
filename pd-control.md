@@ -1117,7 +1117,7 @@ region check miss-peer
 
 用于查看 `balance-region-scheduler` 的运行状态和相应的诊断信息。
 
-从 TiDB v6.3.0 起，PD 为 `balance-region-scheduler` 和 `balance-leader-scheduler` 提供了运行状态和简要诊断信息的功能，其余 scheduler 和 checker 暂未支持。你可以通过 `pd-ctl` 修改 [`enable-diagnosis`](/pd-configuration-file.md#enable-diagnosis-从-v630-版本开始引入) 配置项开启该功能。
+从 TiDB v6.3.0 起，PD 为 `balance-region-scheduler` 和 `balance-leader-scheduler` 提供了运行状态和简要诊断信息的功能，其余 scheduler 和 checker 暂未支持。你可以通过 `pd-ctl` 修改 [`enable-diagnostic`](/pd-configuration-file.md#enable-diagnosis-从-v630-版本开始引入) 配置项开启该功能。
 
 调度器运行状态有以下几种类型：
 
