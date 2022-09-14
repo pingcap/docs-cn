@@ -33,7 +33,7 @@ summary: 介绍 TiDB 中元数据锁的原理、实现和影响。
 
 ## 使用元数据锁
 
-使用系统变量 [`tidb_enable_mdl`](/system-variables.md#tidb_enable_mdl-从-v630-版本开始引入) 启用或者关闭元数据锁特性。
+使用系统变量 [`tidb_enable_metadata_lock`](/system-variables.md#tidb_enable_metadata_lock-从-v630-版本开始引入) 启用或者关闭元数据锁特性。
 
 ## 元数据锁的原理
 
