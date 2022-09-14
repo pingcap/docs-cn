@@ -227,6 +227,7 @@ TiDB 版本：6.3.0-DMR
 | [`tidb_adaptive_closest_read_threshold`](/system-variables.md#tidb_adaptive_closest_read_threshold-从-v630-版本开始引入) | 新增 | 用于控制开启 TiDB Follower Read 功能。 |
 | [`tidb_opt_join_reorder_threshold`](/system-variables.md#tidb_opt_join_reorder_threshold-从-v630-版本开始引入) | 新增 | 用来控制 TIDB Join Reorder 算法的选择。 |
 | [`tidb_enable_unsafe_substitute`](/system-variables.md#tidb_enable_unsafe_substitute-从-v630-版本开始引入) | 新增 | 这个变量用于控制是否对生成列中表达式替换使用不安全的替换方式。 |
+| [`tidb_opt_three_stage_distinct_agg`](/system-variables.md#tidb_opt_three_stage_distinct_agg-从-v630-版本开始引入) | 新增 | 该变量用于控制在 MPP 模式下是否将 `COUNT(DISTINCT)` 聚合改写为三阶段分布式执行的聚合。默认为 `OFF` |
 
 ### 配置文件参数
 
