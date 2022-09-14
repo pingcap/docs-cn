@@ -1598,6 +1598,14 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 该变量用于控制用于控制 TiDB 执行 `ONLY_FULL_GOUP_BY` 检查时的行为。有关 `ONLY_FULL_GROUP_BY` 的信息可以参考 [MySQL 文档](https://dev.mysql.com/doc/refman/8.0/en/sql-mode.html#sqlmode_only_full_group_by)。在 v6.1 中 TiDB 对该项检查做了更严格正确的处理。
 - 由于可能存在版本升级造成的兼容性问题，在 v6.1 中该变量默认值是 `OFF`，即默认关闭。
 
+### `tidb_opt_3stage_distinct_agg` <span class="version-mark">从 v6.3.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 默认值：`ON`
+- 该变量用于控制用于控制在MPP模式下是否将 `COUNT(DISTINCT)` 聚合改写为3阶段分布式执行的聚合。
+- 该变量目前仅对只有一个 `COUNT(DISTINCT)` 的聚合生效。
+
 ### `tidb_opt_agg_push_down`
 
 - 作用域：SESSION
