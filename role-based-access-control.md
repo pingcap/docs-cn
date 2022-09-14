@@ -52,7 +52,7 @@ You can use the following statement to grant the `app_write` role the privilege 
 {{< copyable "sql" >}}
 
 ```sql
-GRANT INSERT, UPDATE, DELETE ON app_db.* TO 'app_write'@'%';;
+GRANT INSERT, UPDATE, DELETE ON app_db.* TO 'app_write'@'%';
 ```
 
 You can use the following statement to grant the `app_developer` role all privileges on the `app_db` database:
