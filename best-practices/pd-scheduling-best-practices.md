@@ -206,7 +206,7 @@ PD 的打分机制决定了一般情况下，不同 Store 的 Leader Count 和 R
 
 - 存在热点导致负载不均衡。可以参考[热点分布不均匀](#热点分布不均匀)中的解决办法进行分析处理。
 - 存在大量空 Region 或小 Region，因此不同 Store 的 Leader 数量差别特别大，导致 Raftstore 负担过重。此时需要开启 [Region Merge](#region-merge) 并尽可能加速合并。
-- 不同 Store 的软硬件环境存在差异。可以酌情调整 `leader-weight` 和 `region-weight` 来控制 Leader/Region 的分布。
+- 不同 Store 的软硬件环境存在差异。可以参考[负载均衡](#负载均衡)一节视实际情况调整 `leader-weight` 和 `region-weight` 来控制 Leader/Region 的分布。
 - 其他不明原因。仍可以通过调整 `leader-weight` 和 `region-weight` 来控制 Leader/Region 的分布。
 
 如果不同 Store 的分数差异较大，需要进一步检查 Operator 的相关 Metrics，特别关注 Operator 的生成和执行情况，这时大体上又分两种情况：
