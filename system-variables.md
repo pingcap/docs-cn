@@ -1829,7 +1829,7 @@ SELECT @@tidb_opt_range_max_size;
 1 row in set (0.01 sec)
 ```
 
-```
+```sql
 explain select * from t use index (idx) where a in (10,20,30) and b in (40,50,60);
 ```
 
@@ -1868,7 +1868,7 @@ explain select * from t use index (idx) where a in (10,20,30) and b in (40,50,60
 4 rows in set, 1 warning (0.00 sec)
 ```
 
-```
+```sql
 show warnings;
 ```
 
@@ -1881,7 +1881,7 @@ show warnings;
 1 row in set (0.00 sec)
 ```
 
-```
+```sql
 set @@tidb_opt_range_max_size = 100;
 ```
 
