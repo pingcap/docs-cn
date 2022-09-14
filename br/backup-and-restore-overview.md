@@ -10,6 +10,8 @@ aliases: ['/docs-cn/dev/br/backup-and-restore-tool/','/docs-cn/dev/reference/too
 
 本文介绍了 BR 的架构、功能和使用前须知（限制、使用建议）。
 
+关于 EBS snapshot 相关的 Backup 和 Restore， 请参考 [TiDB in Kubernetes 用户文档](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/)
+
 ## BR 架构
 
 BR 将备份或恢复操作命令下发到各个 TiKV 节点。TiKV 收到命令后执行相应的备份或恢复操作。在一次备份或恢复中，各个 TiKV 节点都会有一个对应的备份路径，TiKV 备份时产生的备份文件将会保存在该路径下，恢复时也会从该路径读取相应的备份文件。
