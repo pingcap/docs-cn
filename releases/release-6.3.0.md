@@ -35,7 +35,7 @@ TiDB 版本：6.3.0-DMR
 
     [EXCHANGE PARTITION 功能]((/partitioned-table.md#partition-management)通过性能和稳定性提升，由实验功能转为正式功能。
 
-* 增加支持以下[窗口分析函数](/tiflash/tiflash-supported-pushdown-calculations.md)：[#5579](https://github.com/pingcap/tiflash/issues/5579) @[SeaRise](https://github.com/SeaRise)
+* 新增支持以下[窗口函数](/tiflash/tiflash-supported-pushdown-calculations.md)：[#5579](https://github.com/pingcap/tiflash/issues/5579) @[SeaRise](https://github.com/SeaRise)
 
     * `LEAD`
     * `LAG`
@@ -76,7 +76,7 @@ TiDB 版本：6.3.0-DMR
 
 * TiDB 支持国密算法 SM3 的身份验证 [#36192](https://github.com/pingcap/tidb/issues/36192) @[CbcWestwolf](https://github.com/CbcWestwolf)
 
-    TiDB 身份验证新增基于国密算法 SM3 的插件 [tidb_sm3_password](/system-variables.md#default_authentication_plugin)，启用此插件后，用户密码将通过SM3进行加密存储和验证。
+    TiDB 身份验证新增基于国密算法 SM3 的插件 [tidb_sm3_password](/system-variables.md#default_authentication_plugin)，启用此插件后，用户密码将通过 SM3 进行加密存储和验证。
 
 * JDBC 支持国密算法 SM3 的身份验证 [issue]() @[lastincisor](https://github.com/lastincisor)
 
@@ -94,7 +94,7 @@ TiDB 版本：6.3.0-DMR
 
 * Dashboard 中显示死锁的历史记录 [#34106](https://github.com/pingcap/tidb/issues/34106) @[cfzjywxk](https://github.com/cfzjywxk)
 
-    新版本将死锁的历史记录加入到了 Dashboard 中。 当用户通过 Dashboard 的慢日志等手段发现某些 SQL 等待锁的时间较长的时候，Dashboard 上的死锁的历史记录有助于对问题的分析，提供了诊断的易用性。
+    从 v6.3.0 起，死锁的历史记录将添加到 TiDB Dashboard。当用户通过 TiDB Dashboard 的慢日志等手段发现某些 SQL 等待锁的时间较长时，TiDB Dashboard 上的死锁历史记录可用来分析问题，提升了诊断的易用性。
 
 ### 性能
 
@@ -102,7 +102,7 @@ TiDB 版本：6.3.0-DMR
 
     TiFlash 从 v6.2.0 版本开始引入的快速扫描功能 (FastScan)，性能上符合预期，但是使用方式上缺乏灵活性。因此，TiFlash 在 v6.3.0 版本[调整 FastScan 功能的使用方式](/develop/dev-guide-use-fastscan.md)，停止使用对表设定是否开启 FastScan 功能的方式，改为使用系统变量 [`tiflash_fastscan`](/system-variables.md#tiflash_fastscan-从-v630-版本开始引入) 控制是否开启 FastScan 功能。
 
-    从 v6.2.0 版本升级到 v6.3.0 版本时，在 v6.2.0 版本的所有 FastScan 设置将失效，你需要重新使用变量方式进行 FastScan 设置，但不影响数据的正常读取。从更早版本升级到 v6.3.0 时，所有会话默认不开启 FastScan 功能，而是保持一致性的数据扫描功能。
+    从 v6.2.0 版本升级到 v6.3.0 版本时，在 v6.2.0 版本的所有 FastScan 设置将失效，但不影响数据的正常读取。你需要重新使用变量方式进行 FastScan 设置。从更早版本升级到 v6.3.0 时，所有会话默认不开启 FastScan 功能，而是保持一致性的数据扫描功能。
 
 * TiFlash 优化提升多并发场景下的数据扫描性能 [#5376](https://github.com/pingcap/tiflash/issues/5376) @[JinheLin](https://github.com/JinheLin)
 
@@ -112,7 +112,7 @@ TiDB 版本：6.3.0-DMR
 
 * TiFlash 副本同步性能优化 [#5237](https://github.com/pingcap/tiflash/issues/5237) @[breezewish](https://github.com/breezewish)
 
-    TiFlash 使用 Raft 协议与 TiKV 进行副本数据同步。在 v6.3.0 版本之前，同步大量副本数据时往往需要比较长的时间。v6.3.0 版本优化了 TiFlash 副本同步机制，大幅度提升了副本同步速度。因此，使用 BR 恢复数据、使用 Lightning 导入数据，或全新增加 TiFlash 副本时，副本将更迅速地完成同步，用户可以更及时地使用 TiFlash 进行查询。此外，在 TiFlash 扩缩容或修改 TiFlash 副本数时，TiFlash 副本也将更快地达到安全、均衡的状态。
+    TiFlash 使用 Raft 协议与 TiKV 进行副本数据同步。在 v6.3.0 版本之前，同步大量副本数据时往往需要比较长的时间。v6.3.0 版本优化了 TiFlash 副本同步机制，大幅度提升了副本同步速度。因此，使用 BR 恢复数据、使用 TiDB Lightning 导入数据，或全新增加 TiFlash 副本时，副本将更迅速地完成同步，用户可以更及时地使用 TiFlash 进行查询。此外，在 TiFlash 扩缩容或修改 TiFlash 副本数时，TiFlash 副本也将更快地达到安全、均衡的状态。
 
 * TiKV 日志循环使用 [#214](https://github.com/tikv/raft-engine/issues/214) @[LykxSassinator](https://github.com/LykxSassinator)
 
@@ -124,11 +124,11 @@ TiDB 版本：6.3.0-DMR
 
 * 增加优化器 hint 控制哈希连接的驱动端 [#issue]() @[Reminiscent](https://github.com/Reminiscent)
 
-    在新版本中，优化器引入了两个新的 [hint `HASH_JOIN_BUILD()` 和 `HASH_JOIN_PROBE()`](/optimizer-hints.md) 隐式地指定哈希连接的行为，并同时分别指定哈希连接的驱动端和被驱动端。 在没有选到最优执行计划的情况下，提供了更丰富的执行计划干预手段。
+    在 v6.3.0 版本中，优化器引入了两个新的 hint，[hint `HASH_JOIN_BUILD()` 和 `HASH_JOIN_PROBE()`](/optimizer-hints.md)，用于隐式地指定哈希连接的行为，同时分别指定哈希连接的驱动端和被驱动端。在没有选到最优执行计划的情况下，可以使用这两个 hint 来干预执行计划。
 
 * 会话级允许 CTE 内联展开 [#36514](https://github.com/pingcap/tidb/issues/36514) @[elsa0520](https://github.com/elsa0520)
 
-    在 v6.2.0 中， 我们引入在优化器提示 `MERGE` ， 允许对 CTE 内联进行展开，使得 CTE 查询结果的消费者能够在 TiFlash 内并行执行。 在版本 v6.3.0 中，我们添加了会话级变量 [`tidb_opt_force_inline_cte`](/system-variables.md#tidb_opt_force_inline_cte-从-v630-版本开始引入)，允许在会话级修改这个行为，提升了易用性。
+    在 v6.2.0 中， 我们引入了优化器提示 `MERGE`，允许对 CTE 内联进行展开，使得 CTE 查询结果的消费者能够在 TiFlash 内并行执行。在 v6.3.0 中，我们添加了会话级变量 [`tidb_opt_force_inline_cte`](/system-variables.md#tidb_opt_force_inline_cte-从-v630-版本开始引入)，允许在会话级修改这个行为，提升了易用性。
 
 ### 事务
 
@@ -142,9 +142,6 @@ TiDB 版本：6.3.0-DMR
 
 ### 稳定性
 
-* TiKV 后台 IO 任务限制增强 (TiKV I/O Rate Limiter) [#10867](https://github.com/tikv/tikv/issues/10867) @[tabokie](https://github.com/tabokie)
-
-    改进算法，提供对[磁盘读 I/O 的动态限流能力](/tikv-configuration-file.md#storageio-rate-limit)。
 
 * 优化 `IN` 条件元素过多引发的大量内存消耗 [#30755](https://github.com/pingcap/tidb/issues/30755) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes)
 
@@ -160,7 +157,7 @@ TiDB 版本：6.3.0-DMR
 
 * 缺少 GlobalStats 时自动选择分区静态剪裁 [#37535](https://github.com/pingcap/tidb/issues/37535) @[Yisaer](https://github.com/Yisaer)
 
-    当启用分区[动态剪裁](/partitioned-table.md#动态裁剪模式)时，优化器依赖 [GlobalStats](/statistics.md#动态裁剪模式下的分区表统计信息) 进行执行计划的选择。 当 [GlobalStats](/statistics.md#动态裁剪模式下的分区表统计信息) 收集还没有完成的情况下，使用 pseudo 统计信息可能会造成性能回退。 在新版本中， 如果 [GlobalStats](/statistics.md#动态裁剪模式下的分区表统计信息) 收集还没有完成， TiDB 会维持原本静态分区剪裁的行为，直到 [GlobalStats](/statistics.md#动态裁剪模式下的分区表统计信息) 收集完成， 保证了在分区剪裁策略更迭时的性能稳定。
+    当启用分区[动态剪裁](/partitioned-table.md#动态裁剪模式)时，优化器依赖 [GlobalStats](/statistics.md#动态裁剪模式下的分区表统计信息) 进行执行计划的选择。在 [GlobalStats](/statistics.md#动态裁剪模式下的分区表统计信息) 收集完成前，使用 pseudo 统计信息可能会造成性能回退。在 v6.3.0 版本中， 如果在 [GlobalStats](/statistics.md#动态裁剪模式下的分区表统计信息) 收集未完成的情况下打开动态分区裁剪开关，TiDB 会维持静态分区剪裁的状态，直到 GlobalStats 收集完成。该方式确保在切换分区剪裁策略时系统性能保持稳定。
 
 ### 易用性
 
@@ -180,11 +177,11 @@ TiDB 版本：6.3.0-DMR
 
 * PITR 支持 GCS 和 Azure Blob Storage 作为备份存储 [#issue]() @[joccau](https://github.com/joccau)
 
-    PITR 支持[以 GCS 或 Azure Blob Storage 作为备份存储目标]()。部署在 GCP 或者 Azure 上的用户，升级 TiDB 集群到 v6.3.0 后，就可以使用 PITR 功能了。
+    PITR 支持 [GCS 和 Azure Blob Storage 作为备份存储目标]()。部署在 GCP 或者 Azure 上的用户，将 TiDB 集群升级至 v6.3.0 就可以使用 PITR 功能。
 
 * BR 支持 AWS S3 Object Lock [#issue]() @[3pointer](https://github.com/3pointer)
 
-    用户在 S3 开启 [Object Lock](https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lock.html) 后，可以防止备份数据写入后被修改或者删除。
+    开启 S3 [Object Lock](https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lock.html) 可以防止备份数据写入后被修改或者删除。
 
 ### 数据迁移
 
@@ -206,6 +203,9 @@ TiDB 版本：6.3.0-DMR
 
     在灾备复制场景下，[TiCDC 支持周期性的维护一个下游数据快照](用户文档链接)，使得该下游快照能保持与上游数据的快照一致性。借助此能力，TiCDC 能更好的匹配读写分离应用场景，帮助用户降本增效。
 
+* TiCDC 支持优雅滚动升级 [#4757](https://github.com/pingcap/tiflow/issues/4757) @[overvenus](https://github.com/overvenus) @[3AceShowHand](https://github.com/3AceShowHand)
+
+    用户使用最新的 TiUP(>=v1.11.0) 和 TiDB-Operator (>=v1.3.8) 可以优雅滚动升级 TiCDC 集群，升级期间数据同步延时保持在 30 秒内，提高了稳定性，让 TiCDC 能更好的支持延时敏感型业务。
 ## 兼容性变更
 
 ### 系统变量
@@ -234,7 +234,6 @@ TiDB 版本：6.3.0-DMR
 | 配置文件 | 配置项 | 修改类型 | 描述 |
 | -------- | -------- | -------- | -------- |
 | TiDB | [`temp-dir`](/tidb-configuration-file.md#temp-dir-从-v630-版本开始引入) | 新增 | TiDB 用于存放临时数据的路径。需要使用 TiDB 节点本地存储的功能会将数据临时存放在这个目录下。默认值为 `/tmp/tidb`。 |
-| TiKV | [`storage.io-rate-limit.mode`](/tikv-configuration-file.md#mode) | 修改 | 增加可选值 `"read-only"` 和 `"all-io"`，并将默认值改为 `"all-io"`。 |
 | TiKV | [`data-encryption-method`](/tikv-configuration-file.md#data-encryption-method) | 修改 | 扩展可选值范围：增加 `sm4-ctr`，设置为 `sm4-ctr` 时，数据将采用国密算法 SM4 加密后进行存储。 |
 | TiKV | [`format-version`](/tikv-configuration-file.md#format-version-从-v630-版本开始引入) | 新增 | 指定 Raft Engine 的日志文件格式版本。v6.3.0 以前的默认值为 `1`。v6.1.0 及以后版本的 TiKV 可以读取该格式。v6.3.0 及以后版本，该配置项默认值为 `2`，TiKV 可以读取该格式。`format-version` 的值设置为 `2` 后，TiKV 集群无法降级至 v6.3.0 以前的版本，否则会导致数据损坏。 |
 | TiKV | [`enable-log-recycle`](/tikv-configuration-file.md#enable-log-recycle-从-v630-版本开始引入) | 新增 | 控制 Raft Engine 是否回收过期的日志文件。该配置项启用时，Raft Engine 将保留逻辑上被清除的日志文件，用于日志回收，减少写负载的长尾延迟。仅在 format-version 的值大于等于 2 时，该配置项才生效。 |
