@@ -291,6 +291,8 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
    当 [`tidb_constraint_check_in_place_pessimistic`](/system-variables.md#tidb_constraint_check_in_place_pessimistic-从-v630-版本开始引入) 设置为 0 时，悲观事务中的唯一约束检查可能无法通过，导致 SQL 语句执行报错并中止当前事务。
 
+   注意，为保证事务的正确性，在开启该变量时，SQL 语句执行产生的任何报错都可能最终返回该错误并中止当前事务。错误信息里包含具体的错误原因。
+
 * Error Number: 8200
 
     尚不支持的 DDL 语法。请参考[与 MySQL DDL 的兼容性](/mysql-compatibility.md#ddl-的限制)。
