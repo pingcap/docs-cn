@@ -1603,7 +1603,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 默认值：`ON`
-- 该变量用于控制用于控制在MPP模式下是否将 `COUNT(DISTINCT)` 聚合改写为3阶段分布式执行的聚合。
+- 该变量用于控制在 MPP 模式下是否将 `COUNT(DISTINCT)` 聚合改写为 3 阶段分布式执行的聚合。
 - 该变量目前仅对只有一个 `COUNT(DISTINCT)` 的聚合生效。
 
 ### `tidb_opt_agg_push_down`
