@@ -6,10 +6,6 @@ aliases: ['/docs-cn/dev/auto-random/','/docs-cn/dev/reference/sql/attributes/aut
 
 # AUTO_RANDOM <span class="version-mark">从 v3.1.0 版本开始引入</span>
 
-> **注意：**
->
-> `AUTO_RANDOM` 属性已于 v4.0.3 版本成为正式功能。
-
 ## 使用场景
 
 由于 `AUTO_RANDOM` 的值具有随机性和唯一性，因此 `AUTO_RANDOM` 通常用于代替 [`AUTO_INCREMENT`](/auto-increment.md)，以避免 TiDB 分配连续的 ID 值造成单个存储节点的写热点问题。如果当前表的 `AUTO_INCREMENT` 列是主键列，且列类型为 `BIGINT`，可以通过 `ALTER TABLE t MODIFY COLUMN id BIGINT AUTO_RANDOM(5);` 从 `AUTO_INCREMENT` 切换成 `AUTO_RANDOM`。
@@ -58,13 +54,13 @@ tidb> SELECT * FROM t;
 +---+--------+
 1 row in set (0.01 sec)
 
-mysql> INSERT INTO t(b) VALUES ('string2');
+tidb> INSERT INTO t(b) VALUES ('string2');
 Query OK, 1 row affected (0.00 sec)
 
-mysql> INSERT INTO t(b) VALUES ('string3');
+tidb> INSERT INTO t(b) VALUES ('string3');
 Query OK, 1 row affected (0.00 sec)
 
-mysql> SELECT * FROM t;
+tidb> SELECT * FROM t;
 +---------------------+---------+
 | a                   | b       |
 +---------------------+---------+
@@ -89,7 +85,7 @@ TiDB 自动分配的 `AUTO_RANDOM(S, R)` 列值共有 64 位：
 - 符号位的长度由该列是否存在 `UNSIGNED` 属性决定：存在则为 `0`，否则为 `1`。
 - 保留位的长度为 `64-R`，保留位的内容始终为 `0`。
 - 分片位的内容通过计算当前事务的开始时间的哈希值而得。要使用不同的分片位数量（例如 10），可以在建表时指定 `AUTO_RANDOM(10)`。
-- 自增位的值保存在存储引擎中，按顺序分配，每次分配完值后会自增 1。自增位保证了 `AUTO_RANDOM` 列值全局唯一。当自增位耗尽以后，再次自动分配时会报 "Failed to read auto-increment value from storage engine" 的错误。
+- 自增位的值保存在存储引擎中，按顺序分配，每次分配完值后会自增 1。自增位保证了 `AUTO_RANDOM` 列值全局唯一。当自增位耗尽后，再次自动分配时会报 `Failed to read auto-increment value from storage engine` 的错误。
 
 > **注意：**
 >
