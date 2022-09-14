@@ -95,16 +95,16 @@ TiDB 中 DDL 操作使用的是 online DDL 模式。一个 DDL 语句在执行�
 
 ## 排查阻塞的 DDL
 
-TiDB 在 v6.3 版本中引入了 `mysql.tidb_ddl_lock` 视图，可以用于查看当前阻塞的 DDL 的相关信息。
+TiDB 在 v6.3 版本中引入了 `mysql.tidb_mdl_view` 视图，可以用于查看当前阻塞的 DDL 的相关信息。
 
 > **注意：**
 >
-> 查询 `mysql.tidb_ddl_lock` 视图需要有 [`PROCESS` 权限](https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_process)。
+> 查询 `mysql.tidb_mdl_view` 视图需要有 [`PROCESS` 权限](https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_process)。
 
 下面以给表 `t` 添加索引为例，假设有 DDL 语句 `ALTER TABLE t ADD INDEX idx(a)`：
 
 ```sql
-SELECT * FROM mysql.tidb_ddl_lock\G
+SELECT * FROM mysql.tidb_mdl_view\G
 *************************** 1. row ***************************
     JOB_ID: 141
    DB_NAME: test
@@ -121,4 +121,11 @@ SQL_DIGESTS: ["begin","select * from `t`"]
 ```sql
 mysql> KILL 2199023255957;
 Query OK, 0 rows affected (0.00 sec)
+```
+
+Kill 掉该事务后，再次查询这个视图，这时不再查到前面的信息，说明 DDL 不再被阻塞：
+
+```sql
+SELECT * FROM mysql.tidb_mdl_view\G
+Empty set (0.01 sec)
 ```
