@@ -52,10 +52,10 @@ PingCAP 与开源社区合作，通过三方工具提供以下支持：
    </thead>
    <tbody>
       <tr>
-         <td rowspan=4>Go</td>
+         <td rowspan="4">Go</td>
          <td><a href="https://github.com/go-gorm/gorm" target="_blank" referrerpolicy="no-referrer-when-downgrade">gorm</a></td>
          <td>v1.23.5</td>
-         <td rowspan=4>Full</td>
+         <td rowspan="4">Full</td>
          <td>N/A</td>
          <td><a href="/tidb/dev/dev-guide-sample-application-golang">Build a Simple CRUD App with TiDB and Golang</a></td>
       </tr>
@@ -78,10 +78,10 @@ PingCAP 与开源社区合作，通过三方工具提供以下支持：
          <td>N/A</td>
       </tr>
       <tr>
-         <td rowspan=4>Java</td>
+         <td rowspan="4">Java</td>
          <td><a href="https://hibernate.org/orm/" target="_blank" referrerpolicy="no-referrer-when-downgrade">Hibernate</a></td>
          <td>6.1.0.Final</td>
-         <td rowspan=4>Full</td>
+         <td rowspan="4">Full</td>
          <td>N/A</td>
          <td><a href="/tidb/dev/dev-guide-sample-application-java">Build a Simple CRUD App with TiDB and Java</a></td>
       </tr>
@@ -112,7 +112,7 @@ PingCAP 与开源社区合作，通过三方工具提供以下支持：
          <td>N/A</td>
       </tr>
       <tr>
-         <td rowspan=4>JavaScript<br/>TypeScript</td>
+         <td rowspan="4">JavaScript<br/>TypeScript</td>
          <td><a href="https://www.npmjs.com/package/sequelize" target="_blank" referrerpolicy="no-referrer-when-downgrade">sequelize</a></td>
          <td>v6.20.1</td>
          <td>Compatible</td>
@@ -149,7 +149,7 @@ PingCAP 与开源社区合作，通过三方工具提供以下支持：
          <td>N/A</td>
       </tr>
       <tr>
-         <td rowspan=4>Python</td>
+         <td rowspan="4">Python</td>
          <td><a href="https://pypi.org/project/Django/" target="_blank" referrerpolicy="no-referrer-when-downgrade">Django</a></td>
          <td>v4.0.5</td>
          <td>Compatible</td>
@@ -211,7 +211,7 @@ PingCAP 与开源社区合作，通过三方工具提供以下支持：
          <td>N/A</td>
       </tr>
       <tr>
-         <td rowspan=2><a href="https://code.visualstudio.com/" target="_blank" referrerpolicy="no-referrer-when-downgrade">Visual Studio Code</a></td>
+         <td rowspan="2"><a href="https://code.visualstudio.com/" target="_blank" referrerpolicy="no-referrer-when-downgrade">Visual Studio Code</a></td>
          <td><a href="https://marketplace.visualstudio.com/items?itemName=dragonly.ticode" target="_blank" referrerpolicy="no-referrer-when-downgrade">TiDE</a></td>
          <td>Compatible</td>
          <td>N/A</td>
