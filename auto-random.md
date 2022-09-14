@@ -18,7 +18,7 @@ aliases: ['/docs-cn/dev/auto-random/','/docs-cn/dev/reference/sql/attributes/aut
 
 ## 基本概念
 
-`AUTO_RANDOM` 是应用在 `BIGINT` 类型列的列属性，用于列值的自动分配。其自动分配的值满足**随机性**和**唯一性**。
+`AUTO_RANDOM` 是应用在 `BIGINT` 类型列的属性，用于列值的自动分配。其自动分配的值满足**随机性**和**唯一性**。
 
 以下语句均可创建包含 `AUTO_RANDOM` 列的表，其中 `AUTO_RANDOM` 列必须被包含在主键中，且主键只有该列。
 
@@ -42,8 +42,6 @@ CREATE TABLE t (a BIGINT  /*T![auto_rand] AUTO_RANDOM(5, 54) */, b VARCHAR(255),
 
 - 如果语句中显式指定了 `AUTO_RANDOM` 列的值，则该值会被正常插入到表中。
 - 如果语句中没有显式指定 `AUTO_RANDOM` 列的值，TiDB 会自动生成一个随机的值插入到表中。
-
-例如，在如下语句中，`INSERT INTO t(a, b) VALUES (1, 'string');` 指定了 `AUTO_RANDOM` 列 `a` 的值为 `1`，插入时 `a` 值为 `1`，`b` 值为 `string`。`INSERT INTO t(b) VALUES ('string2');` 没有指定 `AUTO_RANDOM` 列 `a` 的值，插入时 `a` 值为随机值 `1152921504606846978`，`b` 值为 `string2`。
 
 ```sql
 tidb> CREATE TABLE t (a BIGINT PRIMARY KEY AUTO_RANDOM, b VARCHAR(255));
@@ -79,8 +77,8 @@ mysql> SELECT * FROM t;
 
 TiDB 自动分配的 `AUTO_RANDOM(S, R)` 列值共有 64 位：
 
-- `S` 表示分片位的数量，取值范围是 `1` 到 `15`，默认为 `5`
-- `R` 表示自动分配值域的总长度，取值范围是 `32` 到 `64`，默认为 `64`
+- `S` 表示分片位的数量，取值范围是 `1` 到 `15`。默认为 `5`。
+- `R` 表示自动分配值域的总长度，取值范围是 `32` 到 `64`。默认为 `64`。
 
 即 `AUTO_RANDOM` 等价于 `AUTO_RANDOM(5)` 或 `AUTO_RANDOM(5, 64)`。
 
@@ -92,8 +90,8 @@ TiDB 自动分配的 `AUTO_RANDOM(S, R)` 列值共有 64 位：
 
 - 符号位的长度由该列是否存在 `UNSIGNED` 属性决定：存在则为 `0`，否则为 `1`。
 - 保留位的长度为 `64-R`，保留位的内容始终为 `0`。
-- 分片位的内容通过计算当前事务的开始时间的 HASH 值而得。要使用不同的分片位数量（例如 10），可以在建表时指定 `AUTO_RANDOM(10)`。
-- 自增位的值保存在存储引擎中，按顺序分配，每次分配完值后会加一。自增位保证了 `AUTO_RANDOM` 列值全局唯一。当自增位耗尽以后，再次自动分配时会报 "Failed to read auto-increment value from storage engine" 的错误。
+- 分片位的内容通过计算当前事务的开始时间的哈希值而得。要使用不同的分片位数量（例如 10），可以在建表时指定 `AUTO_RANDOM(10)`。
+- 自增位的值保存在存储引擎中，按顺序分配，每次分配完值后会自增 1。自增位保证了 `AUTO_RANDOM` 列值全局唯一。当自增位耗尽以后，再次自动分配时会报 "Failed to read auto-increment value from storage engine" 的错误。
 
 > **注意：**
 >
