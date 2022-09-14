@@ -45,7 +45,7 @@ If you want to speed up the writing process, compact data of the whole TiKV clus
 
 > **Note:**
 >
-> When Titan is disabled, RocksDB cannot read data that has been migrated to Titan. If Titan is incorrectly disabled on a TiKV instance with Titan already enabled (mistakenly set `rocksdb.titan.enabled` to `false`), TiKV will fail to start, and the `You have disabled titan when its data directory is not empty` error appears in the TiKV log. To correctly disabled Titan, see [Disable Titan](#disable-titan-experimental).
+> When Titan is disabled, RocksDB cannot read data that has been migrated to Titan. If Titan is incorrectly disabled on a TiKV instance with Titan already enabled (mistakenly set `rocksdb.titan.enabled` to `false`), TiKV will fail to start, and the `You have disabled titan when its data directory is not empty` error appears in the TiKV log. To correctly disabled Titan, see [Disable Titan](#disable-titan).
 
 ## Parameters
 
@@ -110,7 +110,7 @@ To adjust Titan-related parameters using TiUP, refer to [Modify the configuratio
     rate-bytes-per-sec = 0
     ```
 
-## Disable Titan (experimental)
+## Disable Titan
 
 To disable Titan, you can configure the `rocksdb.defaultcf.titan.blob-run-mode` option. The optional values for `blob-run-mode` are as follows:
 
@@ -118,11 +118,33 @@ To disable Titan, you can configure the `rocksdb.defaultcf.titan.blob-run-mode` 
 - When the option is set to `read-only`, all newly written values are written into RocksDB, regardless of the value size.
 - When the option is set to `fallback`, all newly written values are written into RocksDB, regardless of the value size. Also, all compacted values stored in the Titan blob file are automatically moved back to RocksDB.
 
-To disable Titan, set `blob-run-mode = "fallback"` and perform a full compaction using tikv-ctl. After that, check the monitoring metrics, confirm that the blob file size decreases to `0`. Then you can set `rocksdb.titan.enabled` to `false` and restart TiKV.
+To fully disable Titan for all existing and future data, you can follow these steps:
 
-> **Warning:**
->
-> Disabling Titan is an experimental feature. It is **NOT** recommended to use it if not necessary.
+1. Update the configuration of the TiKV nodes you wish to disable Titan for. You can update configuration in two methods:
+
+    + Execute `tiup cluster edit-config`, edit the configuration file, and execute `tiup cluster reload -R tikv`.
+    + Manually update the configuration file and restart TiKV.
+
+    ```toml
+    [rocksdb.defaultcf.titan]
+    blob-run-mode = "fallback"
+    discardable-ratio = 1.0
+    ```
+
+2. Perform a full compaction using tikv-ctl. This process will consume large amount of I/O and CPU resources.
+
+    ```bash
+    tikv-ctl --pd <PD_ADDR> compact-cluster --bottommost force
+    ```
+
+3. After the compaction is finished, you should wait for the **Blob file count** metrics under **TiKV-Details**/**Titan - kv** to decrease to `0`.
+
+4. Update the configuration of these TiKV nodes to disable Titan.
+
+    ```toml
+    [rocksdb.titan]
+    enabled = false
+    ```
 
 ## Level Merge (experimental)
 
