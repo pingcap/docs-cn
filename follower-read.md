@@ -40,8 +40,8 @@ set [session | global] tidb_replica_read = '<目标值>';
 
 > **注意：**
 >
-> - 当设置为 `closest-replicas` 或 `closest-adaptive` 时，数据读取方式依赖集群的各个副本按照指定的设置分布在各个区域。请参考[通过拓扑 label 进行副本调度](/schedule-replicas-by-topology-labels.md)为 PD 配置 `location-labels` 并为 TiDB 和 TiKV 设置正确的 `labels`。TiDB 依赖 `zone` 匹配位于同一区域的 TiKV，因此请**务必**在 PD 的 `location-labels` 配置中包含 `zone` 并确保每个 TiDB 和 TiKV 节点的 `labels` 配置中包含 `zone`。如果是使用 TiDB Operator 部署的集群，请参考[配置副本跨区域分布](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/configure-a-tidb-cluster#%E6%95%B0%E6%8D%AE%E7%9A%84%E9%AB%98%E5%8F%AF%E7%94%A8)进行配置。
-> - 当设置为 `closest-adaptive` 时，为了防止读流量在各个区域分布不均衡，TiDB 会动态检测当前在线的所有 TiDB 和 TiKV 的区域分布是否均衡。如果发现在某一个区域内仅包含 TiDB 或 TiKV 的节点，则会强制使用 leader 读取。例如，如果某个区域的 TiDB 全部挂掉，此时其他在线的 TiDB 将会降级至 leader 读取。当此区域至少 1 个 TiDB 节点重新上线后，则会恢复优先从同一区域的副本读取。
+> - 当设置为 `closest-replicas` 或 `closest-adaptive` 时，集群的各个副本应当按照指定的设置分布在各个区域。请参考[通过拓扑 label 进行副本调度](/schedule-replicas-by-topology-labels.md)为 PD 配置 `location-labels` 并为 TiDB 和 TiKV 设置正确的 `labels`。TiDB 依赖 `zone` 标签匹配位于同一区域的 TiKV，因此请**务必**在 PD 的 `location-labels` 配置中包含 `zone` 并确保每个 TiDB 和 TiKV 节点的 `labels` 配置中包含 `zone`。如果是使用 TiDB Operator 部署的集群，请参考[配置副本跨区域分布](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/configure-a-tidb-cluster#%E6%95%B0%E6%8D%AE%E7%9A%84%E9%AB%98%E5%8F%AF%E7%94%A8)进行配置。
+> - 当设置为 `closest-adaptive` 时，为了防止读流量在各个区域分布不均衡，TiDB 会动态检测当前在线的所有 TiDB 和 TiKV 的区域分布是否均衡。如果发现在某一个区域内仅包含 TiDB 或 TiKV 的节点，则会强制使用 leader 读取。例如，如果某个区域的 TiDB 全部无法连接，此时其他在线的 TiDB 将会降级至 leader 读取。当此区域有至少 1 个 TiDB 节点重新上线，则会恢复优先从同一区域的副本读取。
 
 ## 实现机制
 
