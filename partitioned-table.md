@@ -163,7 +163,7 @@ Range 分区在下列条件之一或者多个都满足时，尤其有效：
 
 ### Range INTERVAL partitioning
 
-TiDB v6.3.0 新增了 INTERVAL partitioning 特性，作为语法糖（syntactic sugar）引入。 其语法如下：
+TiDB v6.3.0 新增了 INTERVAL partitioning 特性，作为语法糖（syntactic sugar）引入。其语法如下：
 
 ```
 PARTITION BY RANGE [COLUMNS] (<partitioning expression>)
@@ -247,23 +247,23 @@ PARTITION BY RANGE COLUMNS(`report_date`)
 
 INTERVAL partitioning 还增加了添加和删除分区的更加简单易用的语法。
 
-下面的语句会变更第一个分区，删除了小于某个范围的分区和旧数据。该语句会删除所有小于给定表达式的分区，使匹配的分区成为新的第一个分区。它不会影响 NULL PARTITION。
+下面的语句会变更第一个分区，该语句会删除所有小于给定表达式的分区，使匹配的分区成为新的第一个分区。它不会影响 NULL PARTITION。
 
 ```
 ALTER TABLE table_name FIRST PARTITION LESS THAN (<expression>)
 ```
 
-下面的语句会变更最后一个分区，会添加更多的分区，分区范围变大，从而可以容纳更多的数据。该语句会添加新的分区，分区范围扩大到给定的表达式。如果存在 `MAXVALUE PARTITION`，则该语句不会生效，因为它需要数据重组。
+下面的语句会变更最后一个分区，该语句会添加新的分区，分区范围扩大到给定的表达式的值。如果存在 `MAXVALUE PARTITION`，则该语句不会生效，因为它需要数据重组。
 
 ```
 ALTER TABLE table_name LAST PARTITION LESS THAN (<expression>)
 ```
 
-#### INTERVAL Partitioning 相关限制
+#### INTERVAL Partitioning 相关细节和限制
 
-- INTERVAL partitioning 特性仅涉及 `CREATE/ALTER TABLE` 语法。元数据保持不变，因此使用该新语法创建或变更的表仍然是兼容 MySQL。
+- INTERVAL partitioning 特性仅涉及 `CREATE/ALTER TABLE` 语法。元数据保持不变，因此使用该新语法创建或变更的表仍然兼容 MySQL。
 - 为保持兼容 MySQL，`SHOW CREATE TABLE` 的输出格式保持不变。
-- 遵循 INTERVAL 的存量表可以使用新的 `ALTER` 语法。不需要使用 `INTERVAL` 语法创建。
+- 遵循 INTERVAL 的存量表可以使用新的 `ALTER` 语法。不需要使用 `INTERVAL` 语法重新创建这些表。
 - 对于 `RANGE COLUMNS`，仅支持整数 (integer) 类型、日期 (date) 和日期时间 (datetime) 列类型。
 
 ### List 分区
