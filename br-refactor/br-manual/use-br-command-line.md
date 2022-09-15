@@ -1,6 +1,7 @@
 ---
 title: br 命令行手册
 summary: 介绍 br 命令行工具
+aliases: ['/br/use-br-command-line-tool.md', '/br/br-log-command-line.md']
 ---
 
 # br 命令行工具

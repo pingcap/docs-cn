@@ -1,6 +1,7 @@
 ---
 title: RawKV 备份和恢复
 summary: 了解如何使用 BR 备份和恢复 RawKV 数据。
+aliases: ['/br/rawkv-backup-and-restore.md']
 ---
 
 # RawKV 备份和恢复

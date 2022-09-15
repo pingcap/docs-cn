@@ -1,6 +1,7 @@
 ---
 title: TiDB 备份和恢复实践示例
 summary: 了解如何使用 br 进行备份和恢复
+aliases: ['/br/backup-and-restore-use-cases.md', '/br/pitr-usage.md']
 ---
 
 # 使用 BR 进行 PITR
