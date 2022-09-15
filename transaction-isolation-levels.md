@@ -78,7 +78,6 @@ MySQL 可重复读隔离级别在更新时并不检验当前版本是否可见�
  
 在使用 `READ-COMMITTED` 隔离级别且单个事务中点写语句较多、点写冲突较少的场景，可通过开启此变量来避免获取全局 timestamp 带来的延迟和开销。
 
-
 ### 与 MySQL Read Committed 隔离级别的区别
 
 MySQL 的 Read Committed 隔离级别大部分符合一致性读特性，但其中存在某些特例，如半一致性读 ([semi-consistent read](https://dev.mysql.com/doc/refman/8.0/en/innodb-transaction-isolation-levels.html))，TiDB 没有兼容这个特殊行为。
