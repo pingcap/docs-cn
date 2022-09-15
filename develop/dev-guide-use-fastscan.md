@@ -43,13 +43,13 @@ show global variables like 'tiflash_fastscan';
 +------------------+-------+
 ```
 
-变量 `tiflash_fastscan` 支持 session 级别和 global 级别的修改。如果需要在当前 session 中启用 FastScan 功能，可以通过以下语句来设置:
+变量 `tiflash_fastscan` 支持 session 级别和 global 级别的修改。如果需要在当前 session 中启用 FastScan 功能，可以通过以下语句设置:
 
 ```
 set session tiflash_fastscan=ON;
 ```
 
-也可以对 global 级别的 `tiflash_fastscan` 进行设置，设置后新建的会话中默认 session 和 global 变量 `tiflash_fastscan` 启用新值。
+如果对 global 级别的 `tiflash_fastscan` 进行设置，设置后新建的会话中默认 session 和 global 变量 `tiflash_fastscan` 启用新值。设置方式如下：
 
 ```
 set global tiflash_fastscan=ON;
