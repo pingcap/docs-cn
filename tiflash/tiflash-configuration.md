@@ -188,9 +188,6 @@ delta_index_cache_size = 0
     ## 从 v6.2.0 引入，表示 PageStorage 单个数据文件中有效数据的最低比例。当某个数据文件的有效数据比例低于该值时，会触发 GC 对该文件的数据进行整理。默认为 0.5。
     dt_page_gc_threshold = 0.5
 
-    ## 该参数从 v6.3.0 开始废弃，默认开启此功能且不能关闭。
-    # dt_enable_read_thread = false
-
 ## 安全相关配置，从 v4.0.5 开始生效
 [security]
     ## 从 v5.0 引入，控制是否开启日志脱敏
