@@ -135,7 +135,7 @@ SELECT /*+ HASH_JOIN_BUILD(t1) */ * FROM t1, t2 WHERE t1.id = t2.id;
 
 ### HASH_JOIN_PROBE(t1_name [, tl_name ...])
 
-`HASH_JOIN_PROBE(t1_name [, tl_name ...])` 提示优化器对指定表使用 Hash Join 算法，同时将指定表作为 Hash Join 算法的 Probe 端，即用指定表作为探测端来执行 Hash Join 算法。例如：
+`HASH_JOIN_PROBE(t1_name [, tl_name ...])` 提示优化器对指定表使用 Hash Join 算法，同时将指定表作为 Hash Join 算法的探测（Probe）端，即用指定表作为探测端来执行 Hash Join 算法。例如：
 
 {{< copyable "sql" >}}
 
