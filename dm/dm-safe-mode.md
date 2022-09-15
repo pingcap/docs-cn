@@ -65,7 +65,7 @@ REPLACE INTO dummydb.dummytbl (id, int_value, str_value) VALUES (999, 888888, 'a
     
     第二种情况下，DM 并不知道哪些 checkpoint 之后的 binlog 已经被执行过。为了保险起见，只要没有在 checkpoint 找到 `safemode_exit_point` 信息，DM 就会在前 2 个 checkpoint 间隔中都开启安全模式，确保这段时间里的 binlog 被重复执行不会引发问题。默认的 checkpoint 间隔是 30 秒，也就是说，一个正常的增量同步任务开始时，前 2 * 30 = 60 秒会自动强制开启安全模式。
     
-如果你需要调整增量同步任务开始时安全模式的持续时间，可以设置 syncer 的配置项 [`safe-mode-duration`](/dm/task-configuration-file-full.md)。
+如果你需要调整增量同步任务开始时安全模式的持续时间，可以设置 `syncers` 的配置项 [`safe-mode-duration`](/dm/task-configuration-file-full.md)。
 
 ### 手动开启
 
