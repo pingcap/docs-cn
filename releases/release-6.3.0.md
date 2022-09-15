@@ -50,7 +50,7 @@ TiDB 版本：6.3.0-DMR
 
 * JSON 数据类型和 JSON 函数 GA [#36993](https://github.com/pingcap/tidb/issues/36993) @[xiongjiwei](https://github.com/xiongjiwei)
 
-    JSON 是一种流行的数据格式，被大量的程序设计所采用。TiDB 在早期版本就引入了 [JSON 支持](/data-type-json.md)， 兼容 MySQL 的 JSON 数据类型 和一部分 JSON 函数。在 v6.3.0 版本中，我们正式将这些功能 GA ，用户可以安全地在生产环境中使用 JSON 相关的功能。 JSON 功能的 GA，为 TiDB 提供了更丰富的数据类型支持，同时也进一步提升的 TiDB 对 MySQL 的兼容能力。
+    JSON 是一种流行的数据格式，被大量的程序设计所采用。TiDB 在早期版本就引入了 [JSON 支持](/data-type-json.md)，兼容 MySQL 的 JSON 数据类型和一部分 JSON 函数。在 v6.3.0 版本中，这些功能正式 GA，为 TiDB 提供了更丰富的数据类型支持，同时也进一步提升了 TiDB 对 MySQL 的兼容能力。
 
 * 提供轻量级元数据锁提升 DDL 变更过程 DML 的成功率 [#37275](https://github.com/pingcap/tidb/issues/37275) @[wjhuang2016](https://github.com/wjhuang2016) **tw: Oreoxmt**
 
@@ -134,7 +134,7 @@ TiDB 版本：6.3.0-DMR
 
 * 悲观事务可以延迟唯一性检查 [#36579](https://github.com/pingcap/tidb/issues/36579) @[ekexium](https://github.com/ekexium)
 
-    提供系统变量 `tidb_constraint_check_in_place_pessimistic` 来控制悲观事务中[唯一约束](/constraints.md#唯一约束)检查的时间点。当变量设为 `ON` 时，TiDB 会把加锁操作和唯一约束检测推迟到必要的时候进行，以此提升批量 DML 操作的性能。
+    提供系统变量 [`tidb_constraint_check_in_place_pessimistic`](system-variables.md#tidbconstraintcheckinplacepessimistic-span-classversion-mark从-v630-版本开始引入span) 来控制悲观事务中[唯一约束](/constraints.md#悲观事务)检查的时间点。该变量默认关闭。当将变量设为 `ON` 时，TiDB 会将悲观事务中的加锁操作和唯一约束检测推迟到必要的时候进行，以此提升批量 DML 操作的性能。
 
 * 优化 Read-Committed 隔离级别中对 TSO 的获取 [#36812](https://github.com/pingcap/tidb/issues/36812) @[TonsnakeLin](https://github.com/TonsnakeLin)
 
