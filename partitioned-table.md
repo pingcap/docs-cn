@@ -210,7 +210,7 @@ PARTITION BY RANGE (`id`)
  PARTITION `P_MAXVALUE` VALUES LESS THAN (MAXVALUE))
 ```
 
-It also works with RANGE COLUMNS partitioning:
+还可以配合 RANGE COLUMNS 分区一起使用。如下面的示例：
 
 ```
 CREATE TABLE monthly_report_status (
@@ -222,7 +222,7 @@ PARTITION BY RANGE COLUMNS (report_date)
 INTERVAL (1 MONTH) FIRST PARTITION LESS THAN ('2000-01-01') LAST PARTITION LESS THAN ('2025-01-01')
 ```
 
-Which creates this table:
+该语句创建了下表：
 
 ```
 CREATE TABLE `monthly_report_status` (
