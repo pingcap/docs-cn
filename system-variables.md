@@ -363,7 +363,7 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 默认值：`4096`
-- 这个变量用于控制开启 TiDB [Follower Read](/follower-read.md)功能时，当 `tidb_replica_read` 设置为 `closest-adaptive` 时，优先将读请求发送至 TiDB server 所在区域副本的阈值。当读请求预估的返回结果的大小超过此阈值时，TiDB 会将读请求优先发送至同一区域的副本，否则会发送至 leader 副本。
+- 这个变量用于控制当 [`replica-read`](#tidb_replica_read-从-v40-版本开始引入) 设置为 `closest-adaptive` 时，优先将读请求发送至 TiDB server 所在区域副本的阈值。当读请求预估的返回结果的大小超过此阈值时，TiDB 会将读请求优先发送至同一区域的副本，否则会发送至 leader 副本。
 
 ### `tidb_allow_batch_cop` <span class="version-mark">从 v4.0 版本开始引入</span>
 
@@ -1987,12 +1987,14 @@ explain select * from t where age=5;
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 默认值：`leader`
-- 可选值：`leader`，`follower`，`leader-and-follower`
-- 这个变量用于控制 TiDB 读取数据的位置，有以下三个选择：
+- 可选值：`leader`，`follower`，`leader-and-follower`，`closest-replicas`，`closest-adaptive`
+- 这个变量用于控制 TiDB 读取数据的位置，有以下几个选择：
 
-    * leader：只从 leader 节点读取
-    * follower：只从 follower 节点读取
-    * leader-and-follower：从 leader 或 follower 节点读取
+    * `leader`：只从 leader 节点读取。
+    * `follower`：只从 follower 节点读取。
+    * `leader-and-follower`：从 leader 或 follower 节点读取。
+    * `closest-replicas`：优先从分布在同一区域的 leader 或 follower 节点读取，如果同一区域内没有副本分布，则会从 leader 读取。
+    * `closest-adaptive`：当一个读请求的预估返回结果大于或等于变量 [`tidb_adaptive_closest_read_threshold`](/system-variables.md#tidb_adaptive_closest_read_threshold-从-v630-版本开始引入) 的值时，优先从分布在同一区域的 leader 或 follower 节点读取，否则从 leader 节点读取。
 
 更多细节，见 [Follower Read](/follower-read.md)。
 
