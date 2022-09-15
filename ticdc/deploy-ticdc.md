@@ -67,7 +67,7 @@ cdc server --cluster-id=default --pd=http://10.0.10.25:2379 --log-file=ticdc_3.l
 
 ## 使用 TiUP 滚动升级 TiCDC 集群
 
-TiCDC 从 v6.3.0 版本开始支持滚动升级能力，使用 TiUP 对 TiCDC 集群进行滚动升级，扩容 / 缩容操作时，同步延迟保持平稳。该功能要求如下：
+TiCDC 从 v6.3.0 版本开始支持滚动升级，使用 TiUP 对 TiCDC 集群进行滚动升级，能够保证同步延迟稳定，不发生剧烈波动。该功能要求如下：
 
 * 升级前 TiCDC 版本至少为 v6.3.0，且至少有 2 个正在运行的 TiCDC 实例。
 * TiUP 版本至少为 v1.11.0。
