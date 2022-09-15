@@ -10,6 +10,38 @@ aliases: ['/docs-cn/dev/br/backup-and-restore-faq/']
 
 如果遇到未包含在此文档且无法解决的问题，可以在 [AskTUG](https://asktug.com/) 社区中提问。
 
+## 恢复集群的时候，在 MySQL 下的业务表为什么没有恢复？
+
+自 BR v5.1.0 开始，全量备份会备份**mysql schema 下的表**。BR v6.2.0 以前的版本，在默认设置不会恢复**mysql schema 下的表**。
+
+如果需要恢复 `mysql` 下的用户创建的表（非系统表），可以通过 [table filter](/table-filter.md#表库过滤语法) 来显式地包含目标表。以下示例中命令会在执行正常的恢复的同时恢复 `mysql.usertable`。
+
+{{< copyable "shell-regular" >}}
+
+```shell
+br restore full -f '*.*' -f '!mysql.*' -f 'mysql.usertable' -s $external_storage_url --with-sys-table
+```
+
+在上面的命令中，
+
+- `-f '*.*'` 用于覆盖掉默认的规则。
+- `-f '!mysql.*'` 指示 BR 不要恢复 `mysql` 中的表，除非另有指定。
+- `-f 'mysql.usertable'` 则指定需要恢复 `mysql.usertable`。
+
+如果只需要恢复 `mysql.usertable`，而无需恢复其他表，可以使用以下命令：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+br restore full -f 'mysql.usertable' -s $external_storage_url --with-sys-table
+```
+
+此外请注意，即使设置了 [table filter](/table-filter.md#表库过滤语法) 后，**BR 也不会恢复以下系统表**：
+
+- 统计信息表（`mysql.stat_*`）
+- 系统变量表（`mysql.tidb`、`mysql.global_variables`）
+- [其他系统表](https://github.com/pingcap/tidb/blob/master/br/pkg/restore/systable_restore.go#L31)
+
 ## 在 TiDB v5.4.0 及后续版本中，当在有负载的集群进行备份时，备份速度为什么会变得很慢？
 
 从 TiDB v5.4.0 起，TiKV 的备份新增了自动调节功能。对于 v5.4.0 及以上版本，该功能会默认开启。当集群负载较高时，该功能会自动限制备份任务使用的资源，从而减少备份对在线集群的性能造成的影响。如需了解关于自动调节功能的更多信息，请参见[自动调节](/br/br-auto-tune.md)。
