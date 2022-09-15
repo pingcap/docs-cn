@@ -113,7 +113,7 @@ aliases: ['/docs-cn/dev/command-line-flags-for-tidb-configuration/','/docs-cn/de
 
 > **注意：**
 >
-> 如果使用 AWS 的 NLB 并开启 PROXY Protocol 协议，需要设置 NLB 的 `target group` 属性：`proxy_protocol_v2.client_to_server.header_place` 到 `on_first_ack`，并同时向AWS 的 Support 提工单开通此功能的支持。由于 AWS NLB 在开启 PROXY Protocol 协议的默认行为为只有在客户端发送数据之后才会发送 PROXY Protocol 的报文，同时在客户端发送数据包之前，服务器端发送的任何数据包都会在内网被丢弃，所以对于 MySQL 协议来说，客户端无法获取服务器端的握手报文，因此会一直阻塞到客户端超时。
+> 如果使用 AWS 的 Network Load Balancer (简称 NLB) 并开启 PROXY Protocol 协议，需要设置 NLB 的 `target group` 属性：`proxy_protocol_v2.client_to_server.header_place` 到 `on_first_ack`，并同时向AWS 的 Support 提工单开通此功能的支持。由于 AWS NLB 在开启 PROXY Protocol 协议的默认行为为只有在客户端发送数据之后才会发送 PROXY Protocol 的报文，同时在客户端发送数据包之前，服务器端发送的任何数据包都会在内网被丢弃，所以对于 MySQL 协议来说，客户端无法获取服务器端的握手报文，因此会一直阻塞到客户端超时。
 
 ## `--proxy-protocol-header-timeout`
 
@@ -127,7 +127,7 @@ aliases: ['/docs-cn/dev/command-line-flags-for-tidb-configuration/','/docs-cn/de
 
 > **弃用：**
 >
-> 新版本中，读取 PROXY Protocol 报头的动作会在第一次读取网络数据时进行，因此为避免影响首次读取网络数据时设置的超时时间，此参数被弃用。
+> 在 TiDB 6.3.0 版以后，读取 PROXY Protocol 报头的动作会在第一次读取网络数据时进行，因此为避免影响首次读取网络数据时设置的超时时间，此参数被弃用。
 
 ## `--report-status`
 
