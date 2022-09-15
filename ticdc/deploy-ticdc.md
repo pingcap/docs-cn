@@ -64,3 +64,16 @@ The following are descriptions of options available in the `cdc server` command:
 - `key`: Specifies the path of the private key file in PEM format for TLS connection (optional).
 - `tz`: Time zone used by the TiCDC service. TiCDC uses this time zone when it internally converts time data types such as `TIMESTAMP` or when it replicates data to the downstream. The default is the local time zone in which the process runs. If you specify `time-zone` (in `sink-uri`) and `tz` at the time, the internal TiCDC processes use the time zone specified by `tz`, and the sink uses the time zone specified by `time-zone` for replicating data to the downstream.
 - `cluster-id`: (optional) The ID of the TiCDC cluster. The default value is `default`. `cluster-id` is the unique identifier of a TiCDC cluster. TiCDC nodes with the same `cluster-id` belong to the same cluster. The length of a `cluster-id` is 128 characters at most. `cluster-id` must follow the pattern of `^[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*$` and cannot be one of the following: `owner`, `capture`, `task`, `changefeed`, `job`, and `meta`.
+
+## Rolling upgrade TiCDC using TiUP
+
+From v6.3.0, TiCDC supports rolling upgrades using TiUP. This feature helps keep TiCDC replication latency within a stable range without drastic fluctuations. To perform a rolling upgrade, ensure that:
+
+* At least two TiCDC instances are running in the cluster.
+* The TiUP version is v1.11.0 or later.
+
+If the preceding conditions are met, you can run the `tiup cluster upgrade` command to perform a rolling upgrade of the cluster:
+
+```shell
+tiup cluster upgrade test-cluster ${target-version} --transfer-timeout 600 --force false
+```
