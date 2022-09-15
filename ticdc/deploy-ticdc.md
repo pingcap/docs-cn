@@ -73,9 +73,6 @@ TiCDC 从 v6.3.0 版本开始支持滚动升级，使用 TiUP 对 TiCDC 集群�
 * TiUP 版本至少为 v1.11.0。
 
 满足上述条件后，即可执行 `tiup cluster upgrade` 命令对集群进行滚动升级：
-
-{{< copyable "shell-regular" >}}
-
 ```shell
 tiup cluster upgrade test-cluster ${target-version} --transfer-timeout 600 --force false
 ```
