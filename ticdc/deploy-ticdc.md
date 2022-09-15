@@ -72,7 +72,6 @@ TiCDC 从 v6.3.0 版本开始支持滚动升级能力，使用 TiUP 对 TiCDC �
 * 升级前 TiCDC 版本至少为 v6.3.0，且至少有 2 个正在运行的 TiCDC 实例。
 * TiUP 版本至少为 v1.11.0。
 
-
 满足上述条件后，使用 TiUP upgrade 命令升级集群版本，即可获得滚动升级带来的稳定性提升：
 
 {{< copyable "shell-regular" >}}
