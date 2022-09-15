@@ -1,6 +1,6 @@
 ---
 title: 元数据锁
-summary: 介绍 TiDB 中元数据锁的原理、实现和影响。
+summary: 介绍 TiDB 中元数据锁的概念、原理、实现和影响。
 ---
 
 # 元数据锁
@@ -11,7 +11,7 @@ summary: 介绍 TiDB 中元数据锁的原理、实现和影响。
 
 在 TiDB 中，对元数据对象的更改采用的是在线异步变更算法。事务在执行时会获取开始时对应的元数据快照。如果事务执行过程中相关表上发生了元数据的更改，为了保证数据的一致性，TiDB 会返回 `Information schema is changed` 的错误，导致用户事务提交失败。
 
-为了解决这个问题，在 TiDB v6.3 版本中，online DDL 算法中引入了元数据锁特性。通过协调表元数据变更过程中 DML 语句和 DDL 语句的优先级，让执行中的 DDL 语句等待持有旧版本元数据的 DML 语句提交，尽可能避免 DML 语句报错。
+为了解决这个问题，在 TiDB v6.3.0 中，online DDL 算法中引入了元数据锁特性。通过协调表元数据变更过程中 DML 语句和 DDL 语句的优先级，让执行中的 DDL 语句等待持有旧版本元数据的 DML 语句提交，尽可能避免 DML 语句报错。
 
 ## 适用场景
 
@@ -27,7 +27,7 @@ summary: 介绍 TiDB 中元数据锁的原理、实现和影响。
 
 使用元数据锁机制会给 TiDB DDL 任务的执行带来一定的性能影响。为了降低元数据锁对 DDL 任务的影响，下列场景不需要加元数据锁：
 
-- 开启了 autocommit 的查询语句
+- 开启了 auto-commit 的查询语句
 - 开启了 Stale Read 功能
 - 访问临时表
 
@@ -95,7 +95,7 @@ TiDB 中 DDL 操作使用的是 online DDL 模式。一个 DDL 语句在执行�
 
 ## 排查阻塞的 DDL
 
-TiDB 在 v6.3 版本中引入了 `mysql.tidb_mdl_view` 视图，可以用于查看当前阻塞的 DDL 的相关信息。
+TiDB v6.3.0 引入了 `mysql.tidb_mdl_view` 视图，可以用于查看当前阻塞的 DDL 的相关信息。
 
 > **注意：**
 >
@@ -123,7 +123,7 @@ mysql> KILL 2199023255957;
 Query OK, 0 rows affected (0.00 sec)
 ```
 
-Kill 掉该事务后，再次查询这个视图，这时不再查到前面的信息，说明 DDL 不再被阻塞：
+中止该事务后，再次查询 `mysql.tidb_mdl_view` 视图。此时，查询结果不再显示上面的事务信息，说明 DDL 不再被阻塞：
 
 ```sql
 SELECT * FROM mysql.tidb_mdl_view\G
