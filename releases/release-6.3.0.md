@@ -66,13 +66,13 @@ TiDB 版本：6.3.0-DMR
 
 ### 安全
 
-* 静态加密 TiKV 支持国密算法 SM4 [#13041](https://github.com/tikv/tikv/issues/13041) @[jiayang-zheng](https://github.com/jiayang-zheng)
+* TiKV 静态加密支持国密算法 SM4 [#13041](https://github.com/tikv/tikv/issues/13041) @[jiayang-zheng](https://github.com/jiayang-zheng)
 
-    TiKV 静态加密中新增[加密算法 SM4](/encryption-at-rest.md)，用户在配置静态加密时，支持配置 data-encryption-method 参数为 "sm4-ctr"，以启用基于国密算法SM4的静态加密能力。
+    TiKV 的静态加密新增 [SM4 算法](/encryption-at-rest.md)，用户在配置静态加密时，可将 "data-encryption-method" 参数设为 "sm4-ctr"，以启用基于国密算法 SM4 的静态加密能力。
 
-* 静态加密 TiFlash 支持国密算法 SM4 [#5714](https://github.com/pingcap/tiflash/issues/5714) @[lidezhu](https://github.com/lidezhu)
+* TiFlash 静态加密支持国密算法 SM4 [#5714](https://github.com/pingcap/tiflash/issues/5714) @[lidezhu](https://github.com/lidezhu)
 
-    TiFlash 静态加密中新增[加密算法 SM4](/encryption-at-rest.md)，用户在配置静态加密时，支持配置 data-encryption-method 参数为 "sm4-ctr"，以启用基于国密算法SM4的静态加密能力。
+    TiFlash 静态加密新增 [SM4 算法](/encryption-at-rest.md)，用户在配置静态加密时，可将 "data-encryption-method" 参数设为 "sm4-ctr"，以启用基于国密算法 SM4 的静态加密能力。
 
 * TiDB 支持国密算法 SM3 的身份验证 [#36192](https://github.com/pingcap/tidb/issues/36192) @[CbcWestwolf](https://github.com/CbcWestwolf)
 
@@ -124,7 +124,7 @@ TiDB 版本：6.3.0-DMR
 
 * 增加优化器 hint 控制哈希连接的驱动端 [#issue]() @[Reminiscent](https://github.com/Reminiscent)
 
-    在 v6.3.0 版本中，优化器引入了两个新的 hint，[hint `HASH_JOIN_BUILD()` 和 `HASH_JOIN_PROBE()`](/optimizer-hints.md)，用于隐式地指定哈希连接的行为，同时分别指定哈希连接的驱动端和被驱动端。在没有选到最优执行计划的情况下，可以使用这两个 hint 来干预执行计划。
+    在 v6.3.0 版本中，优化器引入了两个新的 hint，[`HASH_JOIN_BUILD()` 和 `HASH_JOIN_PROBE()`](/optimizer-hints.md)，用于隐式地指定哈希连接的行为，同时分别指定哈希连接的驱动端和被驱动端。如果优化器未选到最优执行计划，可以使用这两个 hint 来干预执行计划。
 
 * 会话级允许 CTE 内联展开 [#36514](https://github.com/pingcap/tidb/issues/36514) @[elsa0520](https://github.com/elsa0520)
 
@@ -143,13 +143,13 @@ TiDB 版本：6.3.0-DMR
 ### 稳定性
 
 
-* 优化 `IN` 条件元素过多引发的大量内存消耗 [#30755](https://github.com/pingcap/tidb/issues/30755) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes)
+* 优化 `IN` 条件元素过多引发的大量内存消耗的问题 [#30755](https://github.com/pingcap/tidb/issues/30755) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes)
 
-    当 SQL 中的 `IN` 条件包含的元素过多时，TiDB 在优化器构造扫描范围时可能会消耗大量的内存。在新版中，TiDB 引入了系统变量 [`tidb_opt_range_max_size`](/system-variables.md#tidb_opt_range_max_size-从-v630-版本开始引入) 实现对扫描范围的内存控制机制，对这类操作进行了优化，减少内存消耗，提升 SQL 执行效率和系统稳定性。
+    当 SQL 语句中的 `IN` 条件包含的元素过多时，TiDB 在优化器构造扫描范围时可能会消耗大量的内存。在 v6.3.0 中，TiDB 引入了系统变量 [`tidb_opt_range_max_size`](/system-variables.md#tidb_opt_range_max_size-从-v630-版本开始引入) 实现对扫描范围的内存控制，减少内存消耗，提升 SQL 执行效率和系统稳定性。
 
 * 修改优化器统计信息过期时的默认统计信息使用策略 [#issue]() @[xuyifangreeneyes](https://github.com/xuyifangreeneyes)
 
-    在 v5.3.0 版本时，TiDB 引入系统变量 [`tidb_enable_pseudo_for_outdated_stats`](/system-variables.md#tidb_enable_pseudo_for_outdated_stats-从-v530-版本开始引入) 控制优化器在统计信息过期时的行为，默认为 `ON`，即保持旧版本行为不变：当 SQL 涉及的对象的统计信息过期时，优化器认为该表上除总行数以外的统计信息不再可靠，转而使用 pseudo 统计信息。 经过一系列测试和用户实际场景分析，TiDB 在新版本中将  `tidb_enable_pseudo_for_outdated_stats` 的默认值改为 `OFF`，即使统计信息过期，优化器也仍会使用该表上的统计信息，这有利于执行计划的稳定性。
+    在 v5.3.0 版本时，TiDB 引入系统变量 [`tidb_enable_pseudo_for_outdated_stats`](/system-variables.md#tidb_enable_pseudo_for_outdated_stats-从-v530-版本开始引入) 控制优化器在统计信息过期时的行为，默认为 `ON`，即保持旧版本行为不变：当 SQL 涉及的对象的统计信息过期时，优化器认为该表上除总行数以外的统计信息不再可靠，转而使用 pseudo 统计信息。 经过一系列测试和用户实际场景分析，TiDB 在新版本中将 `tidb_enable_pseudo_for_outdated_stats` 的默认值改为 `OFF`，即使统计信息过期，优化器也仍会使用该表上的统计信息，这有利于执行计划的稳定性。
 
 * TiKV Titan 关闭功能正式发布 [#issue]() @[tabokie](https://github.com/tabokie)
 
@@ -201,7 +201,7 @@ TiDB 版本：6.3.0-DMR
 
 * TiCDC 支持维护上下游数据一致性快照 (Sync point) [#issue]() @[asddongmen](https://github.com/asddongmen)
 
-    在灾备复制场景下，[TiCDC 支持周期性的维护一个下游数据快照](用户文档链接)，使得该下游快照能保持与上游数据的快照一致性。借助此能力，TiCDC 能更好的匹配读写分离应用场景，帮助用户降本增效。
+    在灾备复制场景下，TiCDC 支持[周期性地维护一个下游数据快照](用户文档链接)，使得该下游快照能与上游数据的快照保持一致。借助此能力，TiCDC 能更好地匹配读写分离应用场景，帮助用户降本增效。
 
 * TiCDC 支持优雅滚动升级 [#4757](https://github.com/pingcap/tiflow/issues/4757) @[overvenus](https://github.com/overvenus) @[3AceShowHand](https://github.com/3AceShowHand)
 
