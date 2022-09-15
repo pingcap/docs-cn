@@ -54,7 +54,7 @@ Diagram(
 )
 ```
 
-通用 SQL 层的延迟可以使用 `e2e duration` 指标观察。它的计算方法是：
+通用 SQL 层的延迟可以使用 `e2e duration` 指标观察。它的计算方式是：
 
 ```text
 e2e duration =
@@ -66,8 +66,8 @@ e2e duration =
 
 - `tidb_server_get_token_duration_seconds` 代表令牌 (Token) 等待耗时，它通常小于 1 微秒，因而足以被忽略。
 - `tidb_session_parse_duration_seconds` 代表把 SQL 查询解析成抽象语法树 (AST, Abstract Syntax Tree) 的耗时。要跳过这部分的耗时，可以使用 [`PREPARE/EXECUTE` 语句](/develop/dev-guide-optimize-sql-best-practices.md#use-prepare)。
-- `tidb_session_compile_duration_seconds` 记录了把 AST 编译成执行计划的耗时。要跳过这部分的耗时，可以使用[执行计划缓存](/sql-prepared-plan-cache.md)。
-- `tidb_session_execute_duration_seconds{type="general"}` 记录了执行各种不同用户查询的耗时。这部分的耗时需要进行细粒度的拆解，以用来分析性能问题或瓶颈。
+- `tidb_session_compile_duration_seconds` 代表把抽象语法树编译成执行计划的耗时。要跳过这部分的耗时，可以使用[执行计划缓存](/sql-prepared-plan-cache.md)。
+- `tidb_session_execute_duration_seconds{type="general"}` 代表执行各种不同用户查询的耗时。这部分的耗时需要进行细粒度的拆解，以用来分析性能问题或瓶颈。
 
 通常来说，OLTP (Online Transactional Processing) 工作负载可以分为读请求和写请求两类。下面的小节会分别对[读请求](#读请求)和[写请求](#写请求)进行介绍。这两类请求共享了一些关键代码，但执行方式是不一样的。
 
@@ -75,7 +75,7 @@ e2e duration =
 
 读请求只有一种处理形式。
 
-### 点查
+### 点查 (Point Get)
 
 下面是点查操作的时间消耗图：
 
@@ -104,7 +104,7 @@ tidb_session_execute_duration_seconds{type="general"} =
     read value duration
 ```
 
-`pd_client_cmd_handle_cmds_duration_seconds{type="wait"}` 代表从 PD 中读取 [TSO (Timestamp Oracle)](/glossary.md#tso) 的耗时。在 auto-commit 事务模式下从聚簇索引主键中读取，或者从快照中读取时，该数值为 0。
+`pd_client_cmd_handle_cmds_duration_seconds{type="wait"}` 代表从 PD 中读取 [TSO](/glossary.md#tso) 的耗时。在 auto-commit 事务模式下从聚簇索引主键或者快照中读取时，该数值为 0。
 
 `read handle duration` 和 `read value duration` 使用如下方式计算：
 
@@ -119,7 +119,7 @@ read handle duration = read value duration =
     tidb_tikvclient_rpc_net_latency_seconds{store="?"}
 ```
 
-`tidb_tikvclient_request_seconds{type="Get"}` 代表通过 gRPC 发往 TiKV 的批量 get 请求耗时。要了解更多关于 `tidb_tikvclient_batch_wait_duration`、`tidb_tikvclient_batch_send_latency` 和 `tidb_tikvclient_rpc_net_latency_seconds{store="?"}` 等批量请求客户端耗时的细节，请参考[批量请求](#批量请求)小节。
+`tidb_tikvclient_request_seconds{type="Get"}` 代表通过 gRPC 发往 TiKV 的批量 get 请求耗时。关于 `tidb_tikvclient_batch_wait_duration`、`tidb_tikvclient_batch_send_latency` 和 `tidb_tikvclient_rpc_net_latency_seconds{store="?"}` 等批量请求客户端的耗时计算方式，请参考[批量请求](#批量请求)小节。
 
 `tikv_grpc_msg_duration_seconds{type="kv_get"}` 使用如下方式计算：
 
@@ -131,7 +131,7 @@ tikv_grpc_msg_duration_seconds{type="kv_get"} =
     read value duration(non-short value)
 ```
 
-此时，请求已经到达 TiKV。TiKV 在处理 get 请求时，会进行一次 seek 和一到两次 read 操作。其中，短数据的键和值被编码在一个写列族 (column family) 中，因而只需要进行一次 read 操作。TiKV 在处理读请求前会先获取一个快照。要了解更多关于 TiKV 快照的细节，请参考 [TiKV 快照](#tikv-快照)小节。
+此时，请求已经到达 TiKV。TiKV 在处理 get 请求时，会进行一次 seek 和一到两次 read 操作。其中，短数据的键和值被编码在一个 write CF 中，因而只需要进行一次 read 操作。TiKV 在处理 get 请求前会先获取一个快照。关于 TiKV 快照耗时的计算方式，请参考 [TiKV 快照](#tikv-快照)小节。
 
 `read value duration(from disk)` 使用如下方式计算：
 
@@ -140,9 +140,9 @@ read value duration(from disk) =
     sum(rate(tikv_storage_rocksdb_perf{metric="block_read_time",req="get/batch_get_command"})) / sum(rate(tikv_storage_rocksdb_perf{metric="block_read_count",req="get/batch_get_command"}))
 ```
 
-TiKV 采用 RocksDB 作为存储引擎。如果块缓存中找不到要求的值，TiKV 需要从磁盘中读取。对于 `tikv_storage_rocksdb_perf`，获取请求可以是 `get` 或者 `batch_get_command`。
+TiKV 采用 RocksDB 作为存储引擎。如果 block cache 中找不到要求的值，TiKV 需要从磁盘中读取。对于 `tikv_storage_rocksdb_perf`，get 请求可以是 `get` 或者 `batch_get_command`。
 
-### 批量点查
+### 批量点查 (Batch Point Get)
 
 下面是批量点查操作的时间消耗图：
 
@@ -167,7 +167,7 @@ tidb_session_execute_duration_seconds{type="general"} =
     read values duration
 ```
 
-批量点查的过程几乎与[点查](#点查)一致。不同的是，批量点查会同时得到多个值。
+批量点查的过程几乎与[点查](#点查-point-get)一致。不同的是，批量点查会同时得到多个值。
 
 `read handles duration` 和 `read values duration` 使用如下方式计算：
 
@@ -182,7 +182,7 @@ read handles duration = read values duration =
     tidb_tikvclient_rpc_net_latency_seconds{store="?"}(transaction)
 ```
 
-要了解更多关于 `tidb_tikvclient_batch_wait_duration`、`tidb_tikvclient_batch_send_latency` 和 `tidb_tikvclient_rpc_net_latency_seconds{store="?"}` 等批量请求客户端耗时的细节，请参考[批量请求](#批量请求)小节。
+关于 `tidb_tikvclient_batch_wait_duration`、`tidb_tikvclient_batch_send_latency` 和 `tidb_tikvclient_rpc_net_latency_seconds{store="?"}` 等批量请求客户端耗时的计算方式，请参考[批量请求](#批量请求)小节。
 
 耗时 `tikv_grpc_msg_duration_seconds{type="kv_batch_get"}` 使用如下方式计算：
 
@@ -199,9 +199,9 @@ read value duration(from disk) =
     sum(rate(tikv_storage_rocksdb_perf{metric="block_read_time",req="batch_get"})) / sum(rate(tikv_storage_rocksdb_perf{metric="block_read_count",req="batch_get"}))
 ```
 
-TiKV 会首先得到一个快照，然后从同一个快照中读取多个值。read 操作的耗时和[点查](#点查)中的一致。当数据从磁盘中读取时，其平均耗时可以通过带有 `req="batch_get"` 属性的 `tikv_storage_rocksdb_perf` 来计算。
+TiKV 会首先得到一个快照，然后从同一个快照中读取多个值。read 操作的耗时和[点查](#点查-point-get)中的一致。当数据从磁盘中读取时，其平均耗时可以通过带有 `req="batch_get"` 属性的 `tikv_storage_rocksdb_perf` 来计算。
 
-### 表扫描和索引扫描
+### 表扫描和索引扫描 (Table Scan 和 Index Scan)
 
 下面是表扫描和索引扫描的时间消耗图：
 
@@ -251,9 +251,9 @@ req_per_copr = rate(tidb_distsql_handle_query_duration_seconds_count) / rate(tid
 
 在 TiKV 中，表扫描的类型是 `select`，而索引扫描的类型是 `index`。`select` 和 `index` 类型的内部耗时是一致的。
 
-### 索引查找
+### 索引回表 (Index Look Up)
 
-下面是索引查找的时间消耗图：
+下面是通过索引回表操作的时间消耗图：
 
 ```railroad+diagram
 Diagram(
@@ -271,7 +271,7 @@ Diagram(
 )
 ```
 
-在索引查找的过程中，耗时 `tidb_session_execute_duration_seconds{type="general"}` 使用如下方式计算:
+在通过索引回表的过程中，耗时 `tidb_session_execute_duration_seconds{type="general"}` 使用如下方式计算:
 
 ```text
 tidb_session_execute_duration_seconds{type="general"} =
@@ -286,7 +286,7 @@ tidb_session_execute_duration_seconds{type="general"} =
 req_per_copr = rate(tidb_distsql_handle_query_duration_seconds_count) / rate(tidb_distsql_scan_keys_partial_num_count)
 ```
 
-一次索引查找结合了索引查找和表查找。索引查找和表查找使用流水线方式处理。
+一次通过索引回表的过程结合了索引查找和表查找，其中索引查找和表查找按流水线方式处理。
 
 ## 写请求
 
@@ -308,24 +308,24 @@ Diagram(
 )
 ```
 
-|                | 悲观事务        | 乐观事务   |
-|----------------|----------------|------------|
-| Auto-commit    | 执行 + 锁 + 提交 | 执行 + 提交 |
-| 非 auto-commit | 执行 + 锁        | 执行       |
+|                | 悲观事务          | 乐观事务    |
+|----------------|------------------|------------|
+| Auto-commit    | 执行 + 加锁 + 提交 | 执行 + 提交 |
+| 非 auto-commit | 执行 + 加锁        | 执行       |
 
 一次写请求可以被分解成以下三个阶段：
 
 - 执行阶段：执行并把更改写入 TiDB 的内存中
-- 锁定阶段：获取执行结果的悲观锁
+- 加锁阶段：获取执行结果的悲观锁
 - 提交阶段：通过两阶段提交协议 (2PC) 来提交事务
 
 在执行阶段，TiDB 在内存中修改数据，其延迟主要源自读取所需的数据。对于更新和删除查询，TiDB 先从 TiKV 读取数据，再更新或删除内存中的数据。
 
-带有点查和批量点查的锁定时读取操作 (`SELECT FOR UPDATE`) 是一个例外。该操作会在单个 RPC (Remote Procedure Call) 请求中完成读取和锁定操作。
+带有点查和批量点查的加锁时读取操作 (`SELECT FOR UPDATE`) 是一个例外。该操作会在单个 RPC (Remote Procedure Call) 请求中完成读取和加锁操作。
 
-### 锁定时点查
+### 加锁时点查
 
-下面是锁定时点查的时间消耗图：
+下面是加锁时点查的时间消耗图：
 
 ```railroad+diagram
 Diagram(
@@ -342,7 +342,7 @@ Diagram(
 )
 ```
 
-在锁定时点查过程中，耗时 `execution(clustered PK)` 和 `execution(non-clustered PK or UK)` 使用如下方式计算：
+在加锁时点查过程中，耗时 `execution(clustered PK)` 和 `execution(non-clustered PK or UK)` 使用如下方式计算：
 
 ```text
 execution(clustered PK) =
@@ -351,11 +351,11 @@ execution(non-clustered PK or UK) =
     2 * tidb_tikvclient_txn_cmd_duration_seconds{type="lock_keys"}
 ```
 
-锁定时点查会锁定键并获取其对应的值。相比先执行再获取锁的方式，该操作可以节省一次来回通信。锁定时点查的耗时可以看作与[锁定耗时](#锁定)是一样的。
+加锁时点查会锁定键并获取其对应的值。相比先执行再获取锁的方式，该操作可以节省一次来回通信。加锁时点查的耗时可以看作与[加锁耗时](#加锁阶段)是一样的。
 
-### 锁定时批量点查
+### 加锁时批量点查
 
-下面是锁定时批量点查的时间消耗图：
+下面是加锁时批量点查的时间消耗图：
 
 ```railroad+diagram
 Diagram(
@@ -369,7 +369,7 @@ Diagram(
 )
 ```
 
-在锁定时批量点查过程中，耗时 `execution(clustered PK)` 和 `execution(non-clustered PK or UK)` 使用如下方式计算：
+在加锁时批量点查过程中，耗时 `execution(clustered PK)` 和 `execution(non-clustered PK or UK)` 使用如下方式计算：
 
 ```text
 execution(clustered PK) =
@@ -379,11 +379,11 @@ execution(non-clustered PK or UK) =
     tidb_tikvclient_txn_cmd_duration_seconds{type="lock_keys"}
 ```
 
-锁定时批量点查的执行过程与[锁定时点查](#锁定时点查)相似。不同的点在于，锁定时批量点查会在单个 RPC 请求中读取多个值。要了解更多关于耗时 `tidb_tikvclient_txn_cmd_duration_seconds{type="batch_get"}` 的细节，请参考[批量点查](#批量点查)小节。
+加锁时批量点查的执行过程与[加锁时点查](#加锁时点查)相似。不同的点在于，加锁时批量点查会在单个 RPC 请求中读取多个值。关于 `tidb_tikvclient_txn_cmd_duration_seconds{type="batch_get"}` 耗时的计算方式，请参考[批量点查](#批量点查-batch-point-get)小节。
 
-### 锁定阶段
+### 加锁阶段
 
-本小节介绍锁定阶段的耗时。
+本小节介绍加锁阶段的耗时。
 
 ```text
 round = ceil(
@@ -408,7 +408,7 @@ tidb_tikvclient_request_seconds{type="PessimisticLock"} =
     tidb_tikvclient_rpc_net_latency_seconds{store="?"}
 ```
 
-要了解关于 `tidb_tikvclient_batch_wait_duration`、`tidb_tikvclient_batch_send_latency` 和 `tidb_tikvclient_rpc_net_latency_seconds{store="?"}` 等批量请求客户端耗时的更多信息，请参考[批量请求](#批量请求)小节。
+关于 `tidb_tikvclient_batch_wait_duration`、`tidb_tikvclient_batch_send_latency` 和 `tidb_tikvclient_rpc_net_latency_seconds{store="?"}` 等批量请求客户端耗时的计算方式，请参考[批量请求](#批量请求)小节。
 
 耗时 `tikv_grpc_msg_duration_seconds{type="kv_pessimistic_lock"}` 使用如下方式计算：
 
@@ -421,7 +421,7 @@ tikv_grpc_msg_duration_seconds{type="kv_pessimistic_lock"} =
     lock write duration
 ```
 
-- 自 TiDB v6.0 起，TiKV 默认使用[内存悲观锁](/pessimistic-transaction.md#in-memory-pessimistic-lock)。内存悲观锁会跳过异步写入的过程。
+- 自 TiDB v6.0 起，TiKV 默认使用[内存悲观锁](/pessimistic-transaction.md#内存悲观锁)。内存悲观锁会跳过异步写入的过程。
 - `lock in-mem key count` 和 `lock on-disk key count` 使用如下方式计算：
 
     ```text
@@ -434,14 +434,14 @@ tikv_grpc_msg_duration_seconds{type="kv_pessimistic_lock"} =
         sum(rate(tikv_grpc_msg_duration_seconds_count{type="kv_pessimistic_lock"}}))
     ```
 
-    内存和磁盘中被锁定的键数量可以从内存锁计数中计算得出。TiKV 在得到锁之前会读取键对应的值，其读取耗时可以从 RocksDB 的性能上下文中计算得出：
+    内存和磁盘中被加锁的键数量可以从内存锁计数中计算得出。TiKV 在得到锁之前会读取键对应的值，其读取耗时可以从 RocksDB performance context 中计算得出：
 
     ```text
     lock read duration(from disk) =
         sum(rate(tikv_storage_rocksdb_perf{metric="block_read_time",req="acquire_pessimistic_lock"})) / sum(rate(tikv_storage_rocksdb_perf{metric="block_read_count",req="acquire_pessimistic_lock"}))
     ```
 
-- `lock write duration` 是写入磁盘锁的耗时。要了解更多关于此的细节，请参考[异步写入](#异步写入)小节。
+- `lock write duration` 是写入磁盘锁的耗时，具体计算方式请参考[异步写入](#异步写入)小节。
 
 ### 提交阶段
 
@@ -542,7 +542,7 @@ tidb_tikvclient_request_seconds{type="Commit"} =
     tidb_tikvclient_rpc_net_latency_seconds{store="?"}
 ```
 
-要了解关于 `tidb_tikvclient_batch_wait_duration`、`tidb_tikvclient_batch_send_latency` 和 `tidb_tikvclient_rpc_net_latency_seconds{store="?"}` 等批量请求客户端耗时的更多信息，请参考[批量请求](#批量请求)小节。
+关于 `tidb_tikvclient_batch_wait_duration`、`tidb_tikvclient_batch_send_latency` 和 `tidb_tikvclient_rpc_net_latency_seconds{store="?"}` 等批量请求客户端耗时的计算方式，请参考[批量请求](#批量请求)小节。
 
 `tikv_grpc_msg_duration_seconds{type="kv_prewrite"}` 使用如下方式计算：
 
@@ -559,7 +559,7 @@ prewrite read duration(from disk) =
     sum(rate(tikv_storage_rocksdb_perf{metric="block_read_time",req="prewrite"})) / sum(rate(tikv_storage_rocksdb_perf{metric="block_read_count",req="prewrite"}))
 ```
 
-与 TiKV 中的锁一样，预先写在读取和写入阶段均进行了处理。读取阶段的耗时可以从 RocksDB 性能上下文计算。有关写入阶段耗时的更多信息，请参考[异步写入](#异步写入)部分。
+与 TiKV 中的锁一样，预先写在读取和写入阶段均进行了处理。读取阶段的耗时可以从 RocksDB performance context 计算。有关写入阶段耗时的计算方式，请参考[异步写入](#异步写入)部分。
 
 `tikv_grpc_msg_duration_seconds{type="kv_commit"}`使用如下方式计算：
 
@@ -576,7 +576,7 @@ commit read duration(from disk) =
     sum(rate(tikv_storage_rocksdb_perf{metric="block_read_time",req="commit"})) / sum(rate(tikv_storage_rocksdb_perf{metric="block_read_count",req="commit"})) (storage)
 ```
 
-`kv_commit` 的耗时与 `kv_prewrite` 几乎一致。要了解更多关于写入耗时的细节，请参考[异步写入](#异步写入)小节。
+`kv_commit` 的耗时与 `kv_prewrite` 几乎一致。关于写入阶段耗时的计算方式，请参考[异步写入](#异步写入)小节。
 
 ## 批量请求
 
@@ -608,7 +608,7 @@ Diagram(
 - 总体的发送请求耗时看作 `tidb_tikvclient_request_seconds`。
 - RPC 客户端为每个存储维护各自的连接池（称为 ConnArray），每个连接池都包含带有一个批量请求（发送）通道的 BatchConn。
 - 批量请求会在存储是 TiKV 并且 batch 大小为正数时开启。这符合绝大多数的情况。
-- 批量请求通道的大小是 [`tikv-client.max-batch-size`](/tidb-configuration-file.md#max-batch-size)（默认值为 `128`。请求入队的耗时看作 `tidb_tikvclient_batch_wait_duration`。
+- 批量请求通道的大小是 [`tikv-client.max-batch-size`](/tidb-configuration-file.md#max-batch-size)（默认值为 `128`）。请求入队的耗时看作 `tidb_tikvclient_batch_wait_duration`。
 - 一共有 `CmdBatchCop`、`CmdCopStream` 和 `CmdMPPConn` 三种流式请求。流式请求会引入一个额外的 `recv()` 调用来获取流中的第一个相应。
 
 尽管有一些延迟没有被考虑，`tidb_tikvclient_request_seconds` 大致使用如下方式计算：
@@ -660,9 +660,9 @@ tikv_storage_engine_async_request_duration_seconds{type="snapshot"} =
 
 ## 异步写入
 
-Async write is the process that TiKV writes data into the Raft-based replicated state machine asynchronously with callback.
+异步写入是 TiKV 通过回调将数据异步写入基于 Raft 的复制状态机 (Replicated State Machine) 的过程。
 
-- The following is the time cost diagram of async write operations when the asynchronous IO is disabled:
+- 下面是异步 IO 未开启时，异步写入过程的时间消耗图：
 
     ```railroad+diagram
     Diagram(
@@ -684,7 +684,7 @@ Async write is the process that TiKV writes data into the Raft-based replicated 
     )
     ```
 
-- The following is the time cost diagram of async write operations when the asynchronous IO is enabled:
+- 下面是异步 IO 开启时，异步写入过程的时间消耗图：
 
     ```railroad+diagram
     Diagram(
@@ -703,7 +703,7 @@ Async write is the process that TiKV writes data into the Raft-based replicated 
     )
     ```
 
-The async write duration is calculated as:
+异步写入耗时的计算方式如下：
 
 ```text
 async write duration(async io disabled) =
@@ -719,13 +719,13 @@ async write duration(async io enabled) =
     tikv_raftstore_apply_log_duration_seconds
 ```
 
-Async write can be broken down into the following three phases:
+异步写入可以拆解为以下三个阶段：
 
-- Propose
-- Commit
-- Apply: `tikv_raftstore_apply_wait_time_duration_secs + tikv_raftstore_apply_log_duration_seconds` in the preceding formula
+- 提案阶段 (Propose)
+- 提交阶段 (Commit)
+- 应用阶段 (Apply)：对应上面公式中的 `tikv_raftstore_apply_wait_time_duration_secs + tikv_raftstore_apply_log_duration_seconds`
 
-The duration of propose phase is calculated as:
+提案阶段耗时的计算方式如下：
 
 ```text
 propose =
@@ -740,9 +740,9 @@ propose duration =
     tikv_raftstore_store_wf_batch_wait_duration_seconds
 ```
 
-The Raft process is recorded in a waterfall manner. So the propose duration is calculated from the difference between the two metrics.
+Raft 过程以瀑布方式记录，因此，提案阶段的耗时是根据 `tikv_raftstore_store_wf_send_to_queue_duration_seconds` 和 `tikv_raftstore_store_wf_batch_wait_duration_seconds` 两个指标之间的差值计算的。
 
-The duration of commit phase is calculated as:
+提交阶段耗时的计算方式如下：
 
 ```text
 async io disabled commit = max(
@@ -756,7 +756,7 @@ async io enabled commit = max(
 )
 ```
 
-Since v5.3.0, TiKV supports Async IO Raft (write Raft log by a StoreWriter thread pool). The Async IO Raft is only enabled when the [`store-io-pool-size`](/tikv-configuration-file.md#store-io-pool-size-new-in-v530) is set to a positive value, which changes the process of commit. The `persist log locally duration` and `wait by write worker duration` are calculated as:
+从 TiDB v5.3.0 开始，TiKV 支持通过 StoreWriter 线程池写入 Raft 日志，即异步 IO。异步 IO 会改变提交过程，仅在 [`store-io-pool-size`](/tikv-configuration-file.md#store-io-pool-size-从-v530-版本开始引入) 数值大于 0 时启用。耗时 `persist log locally duration` 和 `wait by write worker duration` 的计算方式如下：
 
 ```text
 persist log locally duration =
@@ -776,9 +776,9 @@ wait by write worker duration =
     tikv_raftstore_store_wf_send_to_queue_duration_seconds
 ```
 
-The difference between with and without Async IO is the duration of persisting log locally. With Async IO, the duration of persisting log locally can be calculated from the waterfall metrics directly (skip the batch wait duration).
+是否开启异步 IO 的区别在于本地持久化日志的耗时。使用异步 IO 可以直接从瀑布指标中计算本地持久化日志的耗时，忽略批处理等待耗时。
 
-The replicate log duration records the duration of log persisted in quorum peers, which contains an RPC duration and the duration of log persisting in the majority. The `replicate log duration` is calculated as:
+`replicate log duration` 代表 quorum 副本中日志持久化的耗时，其中包含 RPC 耗时和大多数日志持久化的耗时。`replicate log duration` 耗时的计算方式如下：
 
 ```text
 replicate log duration =
@@ -796,7 +796,7 @@ commit log wait duration =
 
 ### Raft DB
 
-The following is the time cost diagram of Raft DB operations:
+下面是 Raft DB 的时间消耗图：
 
 ```railroad+diagram
 Diagram(
@@ -822,13 +822,13 @@ raft db write duration(raft engine disabled) =
     tikv_raftstore_store_perf_context_time_duration_secs{type="write_memtable_time"}
 ```
 
-Because `commit log wait duration` is the slowest duration of quorum peers, it might be larger than `raft db write duration`.
+`commit log wait duration` 是 quorum 副本中最长的耗时，可能大于 `raft db write duration`。
 
-Since v6.1.0, TiKV uses [Raft Engine](/tikv-configuration-file.md#raft-engine) as its default log storage engine, which changes the process of writing log.
+从 TiDB v6.1.0 开始，TiKV 默认使用 [Raft Engine](/glossary.md#raft-engine) 作为日志存储引擎，这将改变写入日志的过程。
 
 ### KV DB
 
-The following is the time cost diagram of KV DB operations:
+下面是 KV DB 的时间消耗图：
 
 ```railroad+diagram
 Diagram(
@@ -852,23 +852,23 @@ tikv_raftstore_apply_log_duration_seconds =
     tikv_raftstore_apply_perf_context_time_duration_secs{type="write_memtable_time"}
 ```
 
-In the async write process, committed logs need to be applied into the KV DB. The applying duration can be calculated from the RocksDB performance context.
+在异步写入过程中，提交的日志需要应用到 KV DB 中，应用耗时可以根据 RocksDB performance context 进行计算。
 
 ## 诊断场景
 
-The preceding sections explain the details about time cost metrics during querying. This section introduces common procedures of metrics analysis when you encounter slow read or write queries. All metrics can be checked in the DB Time panel of [Performance Overview Dashboard](/grafana-performance-overview-dashboard.md).
+前面的部分详细介绍了 SQL 查询过程中执行时间的细粒度指标。本小节主要介绍遇到慢读取或慢写入查询时常见的指标分析过程。所有指标均可在 [Performance Overview 面板](/grafana-performance-overview-dashboard.md)的 Database Time 中查看。
 
-### Slow read queries
+### 慢读取查询
 
-If `SELECT` statements account for a significant portion of the DB time, you can assume that TiDB is slow at read queries.
+如果 `SELECT` 语句占 Database Time 的很大一部分，你可以认为 TiDB 在读查询时速度很慢。
 
-The execution plans of slow queries can be found in the [Top SQL statements](/dashboard/dashboard-overview.md#top-sql-statements) panel of TiDB Dashboard. To investigate the time costs of slow read queries, you can analyze [Point get](#point-get), [Batch point get](#batch-point-get) and some [simple coprocessor queries](#table-scan--index-scan) according to the preceding descriptions.
+慢查询的执行计划可以在 TiDB Dashboard 中的 [Top SQL 语句](/dashboard/dashboard-overview.md#top-sql-语句) 区域查看。要分析慢读取查询的耗时，你可以根据前面的描述分析[点查](#点查-point-get)、[批量点查](#批量点查-batch-point-get)和[表扫描和索引扫描](#表扫描和索引扫描-table-scan-和-index-scan)的耗时情况。
 
-### Slow write queries
+### 慢写入查询
 
-Before investigating slow writes, you need to troubleshoot the cause of the conflicts by checking `tikv_scheduler_latch_wait_duration_seconds_sum{type="acquire_pessimistic_lock"} by (instance)`:
+在分析慢写入查询之前，你需要检查 `tikv_scheduler_latch_wait_duration_seconds_sum{type="acquire_pessimistic_lock"} by (instance)` 指标来确认冲突的原因：
 
-- If this metric is high in some specific TiKV instances, there might be conflicts in hot Regions.
-- If this metric is high across all instances, there might be conflicts in the application.
+- 如果这个指标在某些特定的 TiKV 实例中很高，则在热点区域可能会存在冲突。
+- 如果这个指标在所有实例中都很高，则业务中可能存在冲突。
 
-After confirming the cause of conflicts from application, you can investigate slow write queries by analyzing the duration of [Lock](#lock) and [Commit](#commit).
+如果是业务中存在冲突，那么你可以分析[加锁](#加锁阶段)和[提交](#提交阶段)阶段的耗时。
