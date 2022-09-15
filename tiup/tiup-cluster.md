@@ -370,12 +370,12 @@ Global Flags:
   -y, --yes               跳过所有的确认步骤
 ```
 
-例如，把集群升级到 v6.2.0 的命令为：
+例如，把集群升级到 v6.3.0 的命令为：
 
 {{< copyable "shell-regular" >}}
 
 ```bash
-tiup cluster upgrade tidb-test v6.2.0
+tiup cluster upgrade tidb-test v6.3.0
 ```
 
 ## 更新配置
