@@ -129,10 +129,6 @@ aliases: ['/docs-cn/dev/command-line-flags-for-tidb-configuration/','/docs-cn/de
 >
 > 不要将该参数配置为 `0`。除非特殊情况，一般使用默认值即可。
 
-> **弃用：**
->
-> 在 TiDB 6.3.0 版以后，读取 PROXY Protocol 报头的动作会在第一次读取网络数据时进行，因此为避免影响首次读取网络数据时设置的超时时间，此参数被弃用。
-
 ## `--report-status`
 
 + 用于打开或者关闭服务状态监听端口
