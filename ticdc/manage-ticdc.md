@@ -65,11 +65,11 @@ For details about using encrypted data transmission (TLS), see [Enable TLS Betwe
 This section introduces how to use `cdc cli` to manage a TiCDC cluster and data replication tasks. `cdc cli` is the `cli` sub-command executed using the `cdc` binary. The following description assumes that:
 
 - `cli` commands are executed directly using the `cdc` binary;
-- PD listens on `10.0.10.25` and the port is `2379`.
+- TiCDC listens on `10.0.10.25` and the port is `8300`.
 
 > **Note:**
 >
-> The IP address and port that PD listens on correspond to the `advertise-client-urls` parameter specified during the `pd-server` startup. Multiple `pd-server`s have multiple `advertise-client-urls` parameters and you can specify one or multiple parameters. For example, `--pd=http://10.0.10.25:2379` or `--pd=http://10.0.10.25:2379,http://10.0.10.26:2379,http://10.0.10.27:2379`.
+> The IP address and port that TiCDC listens on correspond to the `advertise-client-urls` parameter specified during the `cdc-server` startup. Starting from TiCDC v6.2.0, the `cdc cli` command can directly interact with TiCDC server via TiCDC Open API. You can specify the address of TiCDC server using the `--server` parameter. `--pd` is deprecated and no longer recommended.
 
 If you deploy TiCDC using TiUP, replace `cdc cli` in the following commands with `tiup ctl cdc`.
 
@@ -77,13 +77,11 @@ If you deploy TiCDC using TiUP, replace `cdc cli` in the following commands with
 
 - Query the `capture` list:
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
-    cdc cli capture list --pd=http://10.0.10.25:2379
+    cdc cli capture list --server=http://10.0.10.25:8300
     ```
 
-    ```
+    ```json
     [
       {
         "id": "806e3a1b-0e31-477f-9dd6-f3f2c570abdd",
@@ -133,10 +131,8 @@ The numbers in the above state transfer diagram are described as follows.
 
 Execute the following commands to create a replication task:
 
-{{< copyable "shell-regular" >}}
-
 ```shell
-cdc cli changefeed create --pd=http://10.0.10.25:2379 --sink-uri="mysql://root:123456@127.0.0.1:3306/" --changefeed-id="simple-replication-task" --sort-engine="unified"
+cdc cli changefeed create --server=http://10.0.10.25:8300 --sink-uri="mysql://root:123456@127.0.0.1:3306/" --changefeed-id="simple-replication-task" --sort-engine="unified"
 ```
 
 ```shell
@@ -357,10 +353,8 @@ For more replication configuration (for example, specify replicating a single ta
 
 You can use a configuration file to create a replication task in the following way:
 
-{{< copyable "shell-regular" >}}
-
 ```shell
-cdc cli changefeed create --pd=http://10.0.10.25:2379 --sink-uri="mysql://root:123456@127.0.0.1:3306/" --config changefeed.toml
+cdc cli changefeed create --server=http://10.0.10.25:8300 --sink-uri="mysql://root:123456@127.0.0.1:3306/" --config changefeed.toml
 ```
 
 In the command above, `changefeed.toml` is the configuration file for the replication task.
@@ -372,7 +366,7 @@ Execute the following command to query the replication task list:
 {{< copyable "shell-regular" >}}
 
 ```shell
-cdc cli changefeed list --pd=http://10.0.10.25:2379
+cdc cli changefeed list --server=http://10.0.10.25:8300
 ```
 
 ```shell
@@ -399,10 +393,8 @@ cdc cli changefeed list --pd=http://10.0.10.25:2379
 
 To query a specific replication task, execute the `changefeed query` command. The query result includes the task information and the task state. You can specify the `--simple` or `-s` argument to simplify the query result that will only include the basic replication state and the checkpoint information. If you do not specify this argument, detailed task configuration, replication states, and replication table information are output.
 
-{{< copyable "shell-regular" >}}
-
 ```shell
-cdc cli changefeed query -s --pd=http://10.0.10.25:2379 --changefeed-id=simple-replication-task
+cdc cli changefeed query -s --server=http://10.0.10.25:8300 --changefeed-id=simple-replication-task
 ```
 
 ```
@@ -421,10 +413,8 @@ In the command and result above:
 + `checkpoint` represents the corresponding time of the largest transaction TSO in the current `changefeed` that has been successfully replicated to the downstream.
 + `error` records whether an error has occurred in the current `changefeed`.
 
-{{< copyable "shell-regular" >}}
-
 ```shell
-cdc cli changefeed query --pd=http://10.0.10.25:2379 --changefeed-id=simple-replication-task
+cdc cli changefeed query --server=http://10.0.10.25:8300 --changefeed-id=simple-replication-task
 ```
 
 ```
@@ -503,10 +493,8 @@ In the command and result above:
 
 Execute the following command to pause a replication task:
 
-{{< copyable "shell-regular" >}}
-
 ```shell
-cdc cli changefeed pause --pd=http://10.0.10.25:2379 --changefeed-id simple-replication-task
+cdc cli changefeed pause --server=http://10.0.10.25:8300 --changefeed-id simple-replication-task
 ```
 
 In the above command:
@@ -517,10 +505,8 @@ In the above command:
 
 Execute the following command to resume a paused replication task:
 
-{{< copyable "shell-regular" >}}
-
 ```shell
-cdc cli changefeed resume --pd=http://10.0.10.25:2379 --changefeed-id simple-replication-task
+cdc cli changefeed resume --server=http://10.0.10.25:8300 --changefeed-id simple-replication-task
 ```
 
 - `--changefeed-id=uuid` represents the ID of the `changefeed` that corresponds to the replication task you want to resume.
@@ -539,7 +525,7 @@ Execute the following command to remove a replication task:
 {{< copyable "shell-regular" >}}
 
 ```shell
-cdc cli changefeed remove --pd=http://10.0.10.25:2379 --changefeed-id simple-replication-task
+cdc cli changefeed remove --server=http://10.0.10.25:8300 --changefeed-id simple-replication-task
 ```
 
 In the above command:
@@ -550,12 +536,10 @@ In the above command:
 
 Starting from v4.0.4, TiCDC supports modifying the configuration of the replication task (not dynamically). To modify the `changefeed` configuration, pause the task, modify the configuration, and then resume the task.
 
-{{< copyable "shell-regular" >}}
-
 ```shell
-cdc cli changefeed pause -c test-cf --pd=http://10.0.10.25:2379
-cdc cli changefeed update -c test-cf --pd=http://10.0.10.25:2379 --sink-uri="mysql://127.0.0.1:3306/?max-txn-row=20&worker-number=8" --config=changefeed.toml
-cdc cli changefeed resume -c test-cf --pd=http://10.0.10.25:2379
+cdc cli changefeed pause -c test-cf --server=http://10.0.10.25:8300
+cdc cli changefeed update -c test-cf --server=http://10.0.10.25:8300 --sink-uri="mysql://127.0.0.1:3306/?max-txn-row=20&worker-number=8" --config=changefeed.toml
+cdc cli changefeed resume -c test-cf --server=http://10.0.10.25:8300
 ```
 
 Currently, you can modify the following configuration items:
@@ -569,13 +553,11 @@ Currently, you can modify the following configuration items:
 
 - Query the `processor` list:
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
-    cdc cli processor list --pd=http://10.0.10.25:2379
+    cdc cli processor list --server=http://10.0.10.25:8300
     ```
 
-    ```
+    ```json
     [
             {
                     "id": "9f84ff74-abf9-407f-a6e2-56aa35b33888",
@@ -587,13 +569,11 @@ Currently, you can modify the following configuration items:
 
 - Query a specific `changefeed` which corresponds to the status of a specific replication task:
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
-    cdc cli processor query --pd=http://10.0.10.25:2379 --changefeed-id=simple-replication-task --capture-id=b293999a-4168-4988-a4f4-35d9589b226b
+    cdc cli processor query --server=http://10.0.10.25:8300 --changefeed-id=simple-replication-task --capture-id=b293999a-4168-4988-a4f4-35d9589b226b
     ```
 
-    ```
+    ```json
     {
       "status": {
         "tables": {
@@ -860,10 +840,8 @@ For the changefeeds created using `cdc cli` after v4.0.13, Unified Sorter is ena
 
 To check whether or not the Unified Sorter feature is enabled on a changefeed, you can execute the following example command (assuming the IP address of the PD instance is `http://10.0.10.25:2379`):
 
-{{< copyable "shell-regular" >}}
-
 ```shell
-cdc cli --pd="http://10.0.10.25:2379" changefeed query --changefeed-id=simple-replication-task | grep 'sort-engine'
+cdc cli --server="http://10.0.10.25:8300" changefeed query --changefeed-id=simple-replication-task | grep 'sort-engine'
 ```
 
 In the output of the above command, if the value of `sort-engine` is "unified", it means that Unified Sorter is enabled on the changefeed.
