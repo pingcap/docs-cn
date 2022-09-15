@@ -239,36 +239,32 @@ PARTITION BY RANGE COLUMNS(`report_date`)
  PARTITION `P_LT_2025-01-01` VALUES LESS THAN ('2025-01-01'))
 ```
 
-The optional `NULL PARTITION` creates a partition where the partitioning expression evaluates to `NULL` is placed. In the partitioning expression, `NULL` is considered to be less than any other value. See [Handling of NULL with Range partitioning](#handling-of-null-with-range-partitioning).
+可选参数 `NULL PARTITION` 会创建一个分区，其中分区表达式的值为 `NULL`。在分区表达式中，`NULL` 会被认为是小于任何其他值。参见 [Handling of NULL with Range partitioning](#range-分区对-null-的处理)。
 
-The optional `MAXVALUE PARTITION` creates a last partition as `PARTITION P_MAXVALUE VALUES LESS THAN (MAXVALUE)`
+可选参数 `MAXVALUE PARTITION` 会创建一个最后的分区，其值为 `PARTITION P_MAXVALUE VALUES LESS THAN (MAXVALUE)`。
 
 #### ALTER INTERVAL Partitioned tables
 
-INTERVAL partitioning also adds simpler syntax for adding and dropping partitions.
+INTERVAL partitioning 还增加了添加和删除分区的更加简单易用的语法。
 
-The following statement changes the first partition, meaning dropping partitions with lower ranges and older data.
+下面的语句会变更第一个分区，删除了小于某个范围的分区和旧数据。该语句会删除所有小于给定表达式的分区，使匹配的分区成为新的第一个分区。它不会影响 NULL PARTITION。
 
 ```
 ALTER TABLE table_name FIRST PARTITION LESS THAN (<expression>)
 ```
 
-It will drop all partitions whose value is lower than the given expression, making the matched partition the new first partition. It does not affect a NULL PARTITION.
-
-The following statement changes the last partition, meaning adding more partitions with higher ranges and room for new data.
+下面的语句会变更最后一个分区，会添加更多的分区，分区范围变大，从而可以容纳更多的数据。该语句会添加新的分区，分区范围扩大到给定的表达式。如果存在 `MAXVALUE PARTITION`，则该语句不会生效，因为它需要数据重组。
 
 ```
 ALTER TABLE table_name LAST PARTITION LESS THAN (<expression>)
 ```
 
-It will add new partitions with the current INTERVAL up to and including the given expression. It does not work if a `MAXVALUE PARTITION` exists, because it needs data reorganisation.
+#### INTERVAL Partitioning 相关限制
 
-#### INTERVAL Partitioning details and limitations
-
-- The INTERVAL partitioning feature is about `CREATE/ALTER TABLE` syntax only. There is no change in metadata, so tables created or altered with the new syntax is still MySQL-compatible.
-- There is no change in the output format of `SHOW CREATE TABLE` to keep MySQL compatibility.
-- Existing tables conforming to INTERVAL can use the new `ALTER` syntax. They do not need to be created with `INTERVAL` syntax.
-- For `RANGE COLUMNS`, only integer types, date and datetime column types are supported.
+- INTERVAL partitioning 特性仅涉及 `CREATE/ALTER TABLE` 语法。元数据保持不变，因此使用该新语法创建或变更的表仍然是兼容 MySQL。
+- 为保持兼容 MySQL，`SHOW CREATE TABLE` 的输出格式保持不变。
+- 遵循 INTERVAL 的存量表可以使用新的 `ALTER` 语法。不需要使用 `INTERVAL` 语法创建。
+- 对于 `RANGE COLUMNS`，仅支持整数 (integer) 类型、日期 (date) 和日期时间 (datetime) 列类型。
 
 ### List 分区
 
