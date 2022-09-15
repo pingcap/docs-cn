@@ -143,10 +143,6 @@ TiDB 版本：6.3.0-DMR
 ### 稳定性
 
 
-* 优化 `IN` 条件元素过多引发的大量内存消耗的问题 [#30755](https://github.com/pingcap/tidb/issues/30755) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes)
-
-    当 SQL 语句中的 `IN` 条件包含的元素过多时，TiDB 在优化器构造扫描范围时可能会消耗大量的内存。在 v6.3.0 中，TiDB 引入了系统变量 [`tidb_opt_range_max_size`](/system-variables.md#tidb_opt_range_max_size-从-v630-版本开始引入) 实现对扫描范围的内存控制，减少内存消耗，提升 SQL 执行效率和系统稳定性。
-
 * 修改优化器统计信息过期时的默认统计信息使用策略 [#issue]() @[xuyifangreeneyes](https://github.com/xuyifangreeneyes)
 
     在 v5.3.0 版本时，TiDB 引入系统变量 [`tidb_enable_pseudo_for_outdated_stats`](/system-variables.md#tidb_enable_pseudo_for_outdated_stats-从-v530-版本开始引入) 控制优化器在统计信息过期时的行为，默认为 `ON`，即保持旧版本行为不变：当 SQL 涉及的对象的统计信息过期时，优化器认为该表上除总行数以外的统计信息不再可靠，转而使用 pseudo 统计信息。 经过一系列测试和用户实际场景分析，TiDB 在新版本中将 `tidb_enable_pseudo_for_outdated_stats` 的默认值改为 `OFF`，即使统计信息过期，优化器也仍会使用该表上的统计信息，这有利于执行计划的稳定性。
@@ -218,7 +214,6 @@ TiDB 版本：6.3.0-DMR
 | [`tidb_opt_force_inline_cte`](/system-variables.md#tidb_opt_force_inline_cte-从-v630-版本开始引入) | 新增 | 这个变量用来控制是否强制开启 inline CTE。默认值为 `OFF`，即默认不强制开启 inline CTE。 |
 | [`tidb_opt_range_mem_quota`](/system-variables.md#tidb_opt_force_inline_cte-从-v630-版本开始引入) | 新增 | 控制优化器构造 range 时允许的最大内存使用。 |
 | [`tidb_rc_write_check_ts`](/system-variables.md#tidb_rc_write_check_ts-从-v630-版本开始引入)  | 新增 | 用于优化时间戳的获取，适用于悲观事务 READ-COMMITTED 隔离级别下点写冲突较少的场景，开启此变量可以避免点写语句获取全局 timestamp 带来的延迟和开销。 |
-| [`tidb_opt_range_max_size`](/system-variables.md#tidb_opt_range_max_size-从-v630-版本开始引入) | 新增 | 优化器构造扫描范围的内存最大限制。当该变量为 0 时，表示对扫描范围没有内存限制。当优化器发现构造精确的扫描范围会超出内存限制，优化器会使用更宽松的扫描范围（比如 [[NULL,+inf]]）。 |
 | [`tiflash_fastscan`](/system-variables.md#tiflash_fastscan-从-v630-版本开始引入) | 新增 | 控制是否启用 FastScan 功能。如果开启 FastScan 功能（设置为 `true` 时），TiFlash 可以提供更高效的查询性能，但不保证查询结果的精度和数据一致性。 |
 | [`tidb_enable_mdl`](/system-variables.md#tidb_enable_mdl-从-v630-版本开始引入)| 新增 | 用来设置是否开启[元数据锁](/metadata-lock.md)特性。 |
 | [`tidb_ddl_disk_quota`](/system-variables.md#tidb_ddl_disk_quota-从-v630-版本开始引入) | 新增 | 用于设置创建索引的回填过程中本地存储空间的使用限制，仅在 [`tidb_ddl_enable_fast_reorg`](#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 开启的情况下生效。 |
