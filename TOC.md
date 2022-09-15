@@ -834,6 +834,7 @@
         - [`VARIABLES_INFO`](/information-schema/information-schema-variables-info.md)
         - [`VIEWS`](/information-schema/information-schema-views.md)
       - [`METRICS_SCHEMA`](/metrics-schema.md)
+    - [元数据锁](/metadata-lock.md)
   - UI
     - TiDB Dashboard
       - [简介](/dashboard/dashboard-intro.md)
