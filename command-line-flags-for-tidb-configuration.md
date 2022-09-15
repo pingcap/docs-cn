@@ -113,7 +113,7 @@ aliases: ['/docs-cn/dev/command-line-flags-for-tidb-configuration/','/docs-cn/de
 
 > **注意：**
 >
-> 如果使用 AWS 的 Network Load Balancer (简称 NLB) 并开启 PROXY Protocol 协议，需要设置 NLB 的 `target group` 属性：`proxy_protocol_v2.client_to_server.header_place` 到 `on_first_ack`，并同时向AWS 的 Support 提工单开通此功能的支持。由于 AWS NLB 在开启 PROXY Protocol 协议的默认行为为只有在客户端发送数据之后才会发送 PROXY Protocol 的报文，同时在客户端发送数据包之前，服务器端发送的任何数据包都会在内网被丢弃，所以对于 MySQL 协议来说，客户端无法获取服务器端的握手报文，因此会一直阻塞到客户端超时。
+> 如果使用 AWS 的 Network Load Balancer (NLB) 并开启 PROXY 协议，需要设置 NLB 的 `target group` 属性：将 `proxy_protocol_v2.client_to_server.header_place` 设为 `on_first_ack`。同时向 AWS 的 Support 提工单开通此功能的支持。由于 AWS NLB 在开启 PROXY 协议后，默认只在客户端发送数据之后才会发送 PROXY 的报文，同时，在客户端发送数据包之前，服务器端发送的任何数据包都会在内网被丢弃，所以，对于 MySQL 协议来说，客户端无法获取服务器端的握手报文，因此会一直阻塞到客户端超时。
 
 ## `--proxy-protocol-header-timeout`
 
