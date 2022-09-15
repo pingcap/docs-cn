@@ -103,7 +103,7 @@ Region 负载均衡调度主要依赖 `balance-leader` 和 `balance-region` 两�
 
 Region merge 指的是为了避免删除数据后大量小甚至空的 Region 消耗系统资源，通过调度把相邻的小 Region 合并的过程。Region merge 由 `mergeChecker` 负责，其过程与 `replicaChecker` 类似：PD 在后台遍历，发现连续的小 Region 后发起调度。
 
-具体来说，当某个新分裂出来的 Region 存在的时间超过配置项 [`split-merge-interval`](/pd-configuration-file.md#split-merge-interval) 的值（默认 1h）后，如果出现以下任意情况，该 Region 会触发 Region merge 调度：
+具体来说，当某个新分裂出来的 Region 存在的时间超过配置项 [`split-merge-interval`](/pd-configuration-file.md#split-merge-interval) 的值（默认 1h）后，如果同时满足以下情况，该 Region 会触发 Region merge 调度：
 
 - 该 Region 大小小于配置项 [`max-merge-region-size`](/pd-configuration-file.md#max-merge-region-size) 的值（默认 20 MiB）
 - 该 Region 中 key 的数量小于配置项 [`max-merge-region-keys`](/pd-configuration-file.md#max-merge-region-keys) 的值（默认 200000）
@@ -206,7 +206,7 @@ PD 的打分机制决定了一般情况下，不同 Store 的 Leader Count 和 R
 
 - 存在热点导致负载不均衡。可以参考[热点分布不均匀](#热点分布不均匀)中的解决办法进行分析处理。
 - 存在大量空 Region 或小 Region，因此不同 Store 的 Leader 数量差别特别大，导致 Raftstore 负担过重。此时需要开启 [Region Merge](#region-merge) 并尽可能加速合并。
-- 不同 Store 的软硬件环境存在差异。可以酌情调整 `leader-weight` 和 `region-weight` 来控制 Leader/Region 的分布。
+- 不同 Store 的软硬件环境存在差异。可以参考[负载均衡](#负载均衡)一节视实际情况调整 `leader-weight` 和 `region-weight` 来控制 Leader/Region 的分布。
 - 其他不明原因。仍可以通过调整 `leader-weight` 和 `region-weight` 来控制 Leader/Region 的分布。
 
 如果不同 Store 的分数差异较大，需要进一步检查 Operator 的相关 Metrics，特别关注 Operator 的生成和执行情况，这时大体上又分两种情况：
