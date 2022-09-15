@@ -2312,8 +2312,8 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 ### `tiflash_fastscan` <span class="version-mark">从 v6.3.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
-- 默认值：`false`
-- 范围：`true | false`
+- 默认值：`OFF`
+- 范围：`ON| OFF`
 - 如果开启 FastScan 功能（设置为 `true` 时），TiFlash 可以提供更高效的查询性能，但不保证查询结果的精度和数据一致性。
 
 ### `tiflash_fine_grained_shuffle_batch_size` <span class="version-mark">从 v6.2.0 版本开始引入</span>
