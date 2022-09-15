@@ -1931,7 +1931,7 @@ explain select * from t where age=5;
 
 > **警告：**
 >
-> - 本变量对应的特性与 [`replica-read`](#tidb_replica_read-从-v40-版本开始引入) 尚不兼容。开启本变量后，请求无法使用 [`replica-read`](#tidb_replica_read-从-v40-版本开始引入)，因此请勿同时开启两项特性。
+> - 本变量对应的特性与 [`replica-read`](#tidb_replica_read-从-v40-版本开始引入) 尚不兼容。开启本变量后，客户端发送的所有请求都将无法使用 [`replica-read`](#tidb_replica_read-从-v40-版本开始引入)，因此请勿同时开启 `replica-read` 和 `replica-read`。
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
