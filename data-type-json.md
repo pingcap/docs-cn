@@ -99,7 +99,7 @@ SELECT id FROM city WHERE population >= 100;
 
     详情可见此 [issue](https://github.com/pingcap/tidb/issues/37506)。
 
-- 在 INSERT JSON 列时，TiDB 会将值隐式转换为 JSON
+- 在 INSERT JSON 列时，TiDB 会将值隐式转换为 JSON：
 
     ```sql
     CREATE TABLE t(col JSON);
