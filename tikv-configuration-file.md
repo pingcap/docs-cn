@@ -1619,7 +1619,7 @@ Raft Engine 相关的配置项。
 ### `enable` <span class="version-mark">从 v6.2.0 版本开始引入</span>
 
 + 用于开启日志备份功能。
-+ 默认值：false
++ 默认值：true
 
 ### `file-size-limit` <span class="version-mark">从 v6.2.0 版本开始引入</span>
 
@@ -1640,7 +1640,7 @@ Raft Engine 相关的配置项。
 ### `max-flush-interval` <span class="version-mark">从 v6.2.0 版本开始引入</span>
 
 + 日志备份任务将备份数据写入到外部存储的最大间隔时间。
-+ 默认值：5min
++ 默认值：3min
 
 ### `num-threads` <span class="version-mark">从 v6.2.0 版本开始引入</span>
 
