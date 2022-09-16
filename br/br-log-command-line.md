@@ -332,7 +332,7 @@ Global Flags:
 
 该命令只需要访问备份存储，不需要访问备份集群。
 
-以上示例中，`--storage` 为常用参数，它用来指定备份存储地址。日志备份支持共享的文件系统、Amazon S3、GCS 和 Azure Blob Storage 作为备份存储，详细介绍请参考 [AWS S3 storage](/br/backup-storage-S3.md)、[GCS storage](/br/backup-storage-gcs.md) 和 [Azura blob storage](/br/backup-storage-azblob.md)。
+以上示例中，`--storage` 为常用参数，它用来指定备份存储地址。日志备份支持共享的文件系统、Amazon S3、GCS 和 Azure Blob Storage 作为备份存储，详细介绍请参考 [AWS S3 storage](/br/backup-storage-S3.md)、[GCS storage](/br/backup-storage-gcs.md) 和 [Azure blob storage](/br/backup-storage-azblob.md)。
 
 使用示例：
 
