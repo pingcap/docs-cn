@@ -381,7 +381,7 @@ Global Flags:
 - `--start-ts`：指定日志备份恢复的起始时间点。如果你只恢复日志备份数据，不恢复快照备份，需要指定这个参数。
 - `--pd`：指定恢复集群的 PD 访问地址。
 - `ca`,`cert`,`key`：指定使用 mTLS 加密方式与 TiKV 和 PD 进行通讯。
-- `--storage`：指定日志备份的存储地址。日志备份支持共享的文件系统、Amazon S3、GCS 和 Azure Blob Storage 作为备份存储，详细介绍请参考 [AWS S3 storage](/br/backup-storage-S3.md)、[GCS storage](/br/backup-storage-gcs.md) 和 [Azura blob storage](/br/backup-storage-azblob.md)。
+- `--storage`：指定日志备份的存储地址。日志备份支持共享的文件系统、Amazon S3、GCS 和 Azure Blob Storage 作为备份存储，详细介绍请参考 [AWS S3 storage](/br/backup-storage-S3.md)、[GCS storage](/br/backup-storage-gcs.md) 和 [Azure blob storage](/br/backup-storage-azblob.md)。
 
 使用示例：
 
