@@ -5,7 +5,7 @@ aliases: ['/docs-cn/dev/sync-diff-inspector/upstream-downstream-diff/','/docs-cn
 
 # TiDB 主从集群的数据校验
 
-在正常的同步模式中，TiCDC 只提供了数据的最终一致性的保证，而无法确保在同步的过程中数据的一致性。当你使用 TiCDC 搭建 TiDB 的主从集群时，可能会需要在不停止同步的情况下中对上下游的数据进行一致性验证。然而，对动态变更的数据进行一致性校验是非常困难的，为了满足这一需求，TiCDC 提供了 Syncpoint 功能。
+当你使用 TiCDC 搭建 TiDB 的主从集群时，可能会需要在不停止同步的情况下对上下游的数据进行一致性验证。在普通的同步模式中，TiCDC 只提供数据的最终一致性的保证，而无法确保在同步的过程中数据的一致性。因此，对动态变更的数据进行一致性校验非常困难，为了满足这一需求，TiCDC 提供了 Syncpoint 功能。
 
 Syncpoint 通过利用 TiDB 提供的 snapshot 特性，让 TiCDC 在同步过程维护了一个上下游具有一致性 snapshot 的 `ts-map`。把动态的数据一致性校验问题转化成了静态的 snapshot 数据一致性校验问题，达到了接近数据一致性实时校验的效果。
 
