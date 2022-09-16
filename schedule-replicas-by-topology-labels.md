@@ -16,11 +16,11 @@ To make this mechanism effective, you need to properly configure TiKV and PD so 
 
 ## Configure `labels` based on the cluster topology
 
-### Configure `labels` for TiKV
+### Configure `labels` for TiKV and TiFlash
 
-You can use the command-line flag or set the TiKV configuration file to bind some attributes in the form of key-value pairs. These attributes are called `labels`. After TiKV is started, it reports its `labels` to PD so users can identify the location of TiKV nodes.
+You can use the command-line flag or set the TiKV or TiFlash configuration file to bind some attributes in the form of key-value pairs. These attributes are called `labels`. After TiKV and TiFlash are started, it reports its `labels` to PD so users can identify the location of TiKV and TiFlash nodes.
 
-Assume that the topology has three layers: zone > rack > host, and you can use these labels (zone, rack, host) to set the TiKV location in one of the following methods:
+Assume that the topology has three layers: zone > rack > host, and you can use these labels (zone, rack, host) to set the TiKV and TiFlash location. To set labels for TiKV, you can use one of the following methods:
 
 + Use the command-line flag to start a TiKV instance:
 
@@ -38,6 +38,35 @@ Assume that the topology has three layers: zone > rack > host, and you can use t
     [server]
     labels = "zone=<zone>,rack=<rack>,host=<host>"
     ```
+
+To set labels for TiFlash, you can use the `tiflash-learner.toml` file, which is the configuration file of tiflash-proxy:
+
+  ```toml
+  [server]
+  [server.labels]
+  zone = "<zone>"
+  dc = "<dc>"
+  rack = "<rack>"
+  host = "<host>"
+  ```
+
+### (Optional) Configure `labels` for TiDB
+
+When [Follower read](/follower-read.md) is enabled, if you want TiDB to prefer to read data from the same region, you need to configure `labels` for TiDB nodes.
+
+You can set `labels` for TiDB using the configuration file:
+
+```toml
+[labels]
+zone = "<zone>"
+dc = "<dc>"
+rack = "<rack>"
+host = "<host>"
+```
+
+> **Note:**
+>
+> Currently, TiDB depends on the `zone` label to match and select replicas that are in the same region. To use this feature, you need to include `zone` when [configuring `location-labels` for PD](#configure-location-labels-for-pd), and configure `zone` when configuring `labels` for TiDB, TiKV, and TiFlash. For more details, see [Configure `labels` for TiKV and TiFlash](#configure-labels-for-tikv-and-tiflash).
 
 ### Configure `location-labels` for PD
 

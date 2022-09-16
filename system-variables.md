@@ -520,6 +520,13 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 - Default value: (system dependent)
 - This variable shows the system time zone from when TiDB was first bootstrapped. See also [`time_zone`](#time_zone).
 
+### `tidb_adaptive_closest_read_threshold` <span class="version-mark">New in v6.3.0</span>
+
+- Scope: SESSION | GLOBAL
+- Persists to cluster: Yes
+- Default value: `4096`
+- This variable is used to control the threshold at which the TiDB server prefers to send read requests to the replica in the same region as the TiDB server when [`tidb_replica_read`](#tidb_replica_read-new-in-v40) is set to `closest-adaptive`. If the estimated result is higher than or equal to this threshold, TiDB prefers to send read requests to the replica in the same region. Otherwise, TiDB sends read requests to the leader replica.
+
 ### tidb_allow_batch_cop <span class="version-mark">New in v4.0</span>
 
 - Scope: SESSION | GLOBAL
@@ -2591,12 +2598,9 @@ explain select * from t where age=5;
 - Persists to cluster: Yes
 - Type: Enumeration
 - Default value: `leader`
-- Possible values: `leader`, `follower`, `leader-and-follower`, `closest-replicas`
-- This variable is used to control where TiDB reads data. Here are three options:
-    - leader: Read only from leader node
-    - follower: Read only from follower node
-    - leader-and-follower: Read from leader or follower node
-- See [follower reads](/follower-read.md) for additional details.
+- Possible values: `leader`, `follower`, `leader-and-follower`, `closest-replicas`, `closest-adaptive`
+- This variable is used to control where TiDB reads data.
+- For more details about usage and implementation, see [Follower read](/follower-read.md).
 
 ### tidb_restricted_read_only <span class="version-mark">New in v5.2.0</span>
 

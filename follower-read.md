@@ -34,7 +34,17 @@ This variable is used to set the expected data read mode.
 
 - When the value of `tidb_replica_read` is set to `leader` or an empty string, TiDB maintains its original behavior and sends all read operations to the leader replica to perform.
 - When the value of `tidb_replica_read` is set to `follower`, TiDB selects a follower replica of the Region to perform all read operations.
-- When the value of `tidb_replica_read` is set to `leader-and-follower`, TiDB can select any replicas to perform read operations.
+- When the value of `tidb_replica_read` is set to `leader-and-follower`, TiDB can select any replicas to perform read operations. In this mode, read requests are load balanced between the leader and follower.
+- When the value of `tidb_replica_read` is set to `closest-replicas`, TiDB prefers to select a replica in the same region to perform read operations, which can be a leader or a follower. If there is no replica in the same region, TiDB reads from the leader replica.
+- When the value of `tidb_replica_read` is set to `closest-adaptive`, if the estimated result of a read request is greater than or equal to the value of [`tidb_adaptive_closest_read_threshold`](/system-variables.md#tidb_adaptive_closest_read_threshold-new-in-v630), TiDB prefers to read from a replica in the same region. Otherwise, TiDB reads from the leader replica. To prevent unbalanced read traffic distribution in various regions, TiDB dynamically detects whether the region distribution of all online TiDB and TiKV nodes is balanced. If a region contains only TiDB or TiKV nodes, TiDB forces to select the leader replica to perform read operations. For example, if all TiDB nodes in a region are down, then other online TiDB nodes are downgraded to read using leader replicas. After at least one TiDB node in this region is back online, all TiDB nodes switch back to preferring to select the replica in the same region to perform read operations.
+
+<CustomContent platform="tidb">
+
+> **Note:**
+>
+> When the value of `tidb_replica_read` is set to `closest-replicas` or `closest-adaptive`, you need to configure the cluster to ensure that replicas are distributed across regions according to the specified configuration. To configure `location-labels` for PD and set the correct `labels` for TiDB and TiKV, refer to [Schedule replicas by topology labels](/schedule-replicas-by-topology-labels.md). TiDB depends on the `zone` label to match TiKV nodes in the same region, so you need to make sure that the `zone` label is included in the `location-labels` of PD and `zone` is included in the configuration of each TiDB and TiKV node. If your cluster is deployed using TiDB Operator, refer to [High availability of data](https://docs.pingcap.com/tidb-in-kubernetes/stable/configure-a-tidb-cluster#high-availability-of-data).
+
+</CustomContent>
 
 ## Implementation mechanism
 
