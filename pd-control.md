@@ -1232,6 +1232,8 @@ scheduler config balance-hot-region-scheduler  // 显示 balance-hot-region 调�
 
 ### `store [delete | cancel-delete | label | weight | remove-tombstone | limit ] <store_id> [--jq="<query string>"]`
 
+#### store 查询
+
 用于显示 store 信息或者删除指定 store。使用 jq 格式化输出请参考 [jq 格式化 json 输出示例](#jq-格式化-json-输出示例)。示例如下。
 
 显示所有 store 信息：
@@ -1261,12 +1263,14 @@ store 1
 ......
 ```
 
+### store 下线
+
 下线 store id 为 1 的 store：
 
 {{< copyable "" >}}
 
 ```bash
-store delete 1
+store delete 1 // 下线一台 store 
 ```
 
 撤销已使用 store delete 下线并处于 Offline 状态的 store。撤销后，该 store 会从 Offline 状态变为 Up 状态。注意，该命令无法使 Tombstone 状态的 store 变回 Up 状态。以下示例撤销已使用 store delete 下线的 store，其 store id 为 1：
@@ -1274,33 +1278,54 @@ store delete 1
 {{< copyable "" >}}
 
 ```bash
-store cancel-delete 1
+>> store cancel-delete 1                // 取消下线
+>> store remove-tombstone              // 删除所有 tombstone 状态的 store
 ```
 
 > **注意：**
 >
 > 若下线过程中切换了 PD leader，需要手动修改 store limit。
 
+#### store label 命令
+
 设置 store id 为 1 的 store 的键为 "zone" 的 label 的值为 "cn"：
 
 {{< copyable "" >}}
 
 ```bash
-store label 1 zone cn
+store label 1 zone=cn
 ```
 
-清除 store id 为 1 的 label：
+更新 store id 为 1 的 label，并添加一个新的 label：
 
 {{< copyable "" >}}
 
 ```bash
-store label 1 --force
+store label 1 zone=us disk=hdd
+```
+
+重写 store id 为 1 的所有 label：
+
+{{< copyable "" >}}
+
+```bash
+store label 1 region=us-est-1 zone=az1 disk=ssd --rewrite
+```
+
+删除指定 store 的对应 label：
+
+{{< copyable "" >}}
+
+```bash
+store label 1 disk --delete
 ```
 
 > **注意：**
 >
 > - store 的 label 更新方法使用的是合并策略。如果修改了 TiKV 配置文件中的 store label，进程重启之后，PD 会将自身存储的 store label 与其进行合并更新，并持久化合并后的结果。
 > - 如果希望使用 TiUP 统一管理 store label 的话，可以在集群重启前，使用 PD Control 的 `store label <id> --force` 命令将 PD 存储的 store label 清空。
+
+#### store weight 命令
 
 设置 store id 为 1 的 store 的 leader weight 为 5，Region weight 为 10：
 
@@ -1312,8 +1337,12 @@ store weight 1 5 10
 
 {{< copyable "" >}}
 
+### store limit 命令
+
+详细解释：[store limit](/configure-store-limit.md)
+
 ```bash
->> store remove-tombstone              // 删除所有 tombstone 状态的 store
+
 >> store limit                         // 显示所有 store 添加和删除 peer 的速度上限
 >> store limit add-peer                // 显示所有 store 添加 peer 的速度上限
 >> store limit remove-peer             // 显示所有 store 删除 peer 的速度上限

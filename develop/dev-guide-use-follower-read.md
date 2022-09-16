@@ -1,12 +1,12 @@
 ---
-title: Follower Read
-summary: 使用 Follower Read 在特定情况下加速查询。
+title: Replicas Read - Follower/Leader Read
+summary: TiDB 提供多种使用 Follower Read 在特定情况下加速查询, 选择特定副本进行读(Replicas Read).
 aliases: ['/zh/tidb/dev/use-follower-read']
 ---
 
-# Follower Read
+# Replicas Read
 
-本章将介绍使用 Follower Read 在特定情况下加速查询的方法。
+本章将介绍 TiDB 读取数据的方式，并且介绍如何切换 Leader/ Follower Read, 在特定情况下加速查询的方法。
 
 ## 简介
 
@@ -14,13 +14,15 @@ aliases: ['/zh/tidb/dev/use-follower-read']
 
 默认情况下，TiDB 只会在同一个 Region 的 leader 上读写数据。当系统中存在读取热点 Region 导致 leader 资源紧张成为整个系统读取瓶颈时，启用 Follower Read 功能可明显降低 leader 的负担，并且通过在多个 follower 之间均衡负载，显著地提升整体系统的吞吐能力。
 
-## 何时使用
+## 何时使用 Follower Read
 
 你可以在 [TiDB Dashboard 流量可视化页面](/dashboard/dashboard-key-visualizer.md)当中通过可视化的方法分析你的应用程序是否存在热点 Region。你可以通过将「指标选择框」选择到 `Read (bytes)` 或 `Read (keys)` 查看是否存在读取热点 Region。
 
 如果发现确实存在热点问题，你可以通过阅读 [TiDB 热点问题处理](/troubleshoot-hot-spot-issues.md)章节进行逐一排查，以便从应用程序层面上避免热点的产生。
 
 如果读取热点的确无法避免或者改动的成本很大，你可以尝试通过 Follower Read 功能将读取请求更好的负载均衡到 follower region。
+
+Follower Read 默认情况下是保证强一致性的，因此默认情况下其实是 Follower Strong Read, Follower Storng Read 会产生 Follower 和 Leader 之间的通信校验开销，为了减少与 Leader 的通信，Follower Strong Read 更适合大查询的场景, 即查询读取数据的耗时远远大于 rpc 通信时间。 
 
 ## 开启 Follower Read
 
