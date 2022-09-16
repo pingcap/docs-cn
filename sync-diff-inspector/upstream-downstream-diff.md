@@ -50,7 +50,6 @@ select * from tidb_cdc.syncpoint_v1;
 - `secondary_ts`：下游数据库 snapshot 的时间戳。
 - `created_at`：插入该条记录的时间。
 
-
 ## 配置 snapshot
 
 使用上一步骤获取的 ts-map 信息来配置上下游数据库的 snapshot 信息。其中的 `Datasource config` 部分示例配置如下：
