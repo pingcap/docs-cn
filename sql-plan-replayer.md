@@ -60,9 +60,36 @@ MySQL [test]> plan replayer dump explain select * from t;
 +------------------------------------------------------------------+
 | Dump_link                                                        |
 +------------------------------------------------------------------+
-| replayer_single_JOGvpu4t7dssySqJfTtS4A==_1635750890568691080.zip |
+| replayer_JOGvpu4t7dssySqJfTtS4A==_1635750890568691080.zip |
 +------------------------------------------------------------------+
 1 row in set (0.015 sec)
+```
+
+你同样可以通过 `tidb_last_plan_replayer_token` 这个会话变量来获取上一次 plan replayer dump 执行的结果。
+
+```sql
+mysql> select @@tidb_last_plan_replayer_token;
++-----------------------------------------------------------+
+| @@tidb_last_plan_replayer_token                           |
++-----------------------------------------------------------+
+| replayer_Fdamsm3C7ZiPJ-LQqgVjkA==_1663304195885090000.zip |
++-----------------------------------------------------------+
+1 row in set (0.00 sec)
+```
+
+对于多条 sql 的情况，你可以通过文件的方式来获取 plan replayer dump 的结果，多条 sql 在文件中以 `;` 进行分割。
+
+```sql
+mysql> plan replayer dump explain 'sqls.txt';
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> select @@tidb_last_plan_replayer_token;
++-----------------------------------------------------------+
+| @@tidb_last_plan_replayer_token                           |
++-----------------------------------------------------------+
+| replayer_LEDKg8sb-K0u24QesiH8ig==_1663226556509182000.zip |
++-----------------------------------------------------------+
+1 row in set (0.00 sec)
 ```
 
 因为 MySQL Client 无法下载文件，所以需要通过 TiDB HTTP 接口和文件标识下载文件：
