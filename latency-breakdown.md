@@ -65,7 +65,7 @@ e2e duration =
 ```
 
 - `tidb_server_get_token_duration_seconds` 代表令牌 (Token) 等待耗时，它通常小于 1 微秒，因而足以被忽略。
-- `tidb_session_parse_duration_seconds` 代表把 SQL 查询解析成抽象语法树 (AST, Abstract Syntax Tree) 的耗时。要跳过这部分的耗时，可以使用 [`PREPARE/EXECUTE` 语句](/develop/dev-guide-optimize-sql-best-practices.md#use-prepare)。
+- `tidb_session_parse_duration_seconds` 代表把 SQL 查询解析成抽象语法树 (AST, Abstract Syntax Tree) 的耗时。要跳过这部分的耗时，可以使用 [`PREPARE/EXECUTE` 语句](/develop/dev-guide-optimize-sql-best-practices.md#使用-prepare)。
 - `tidb_session_compile_duration_seconds` 代表把抽象语法树编译成执行计划的耗时。要跳过这部分的耗时，可以使用[执行计划缓存](/sql-prepared-plan-cache.md)。
 - `tidb_session_execute_duration_seconds{type="general"}` 代表执行各种不同用户查询的耗时。这部分的耗时需要进行细粒度的拆解，以用来分析性能问题或瓶颈。
 
