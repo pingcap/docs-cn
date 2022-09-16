@@ -26,11 +26,10 @@ TiDB 目前支持的身份验证方式可在以下的表格中查找到。服务
 | `sha256_password`        | 否               |
 | `caching_sha2_password`  | 是（5.2.0 版本起） |
 | `auth_socket`            | 是（5.3.0 版本起） |
-| [TLS Certificates]       | 是              |
+| `tidb_sm3_password`      | 是（6.3.0 版本起） |
+| TLS 证书       | 是              |
 | LDAP                     | 否               |
 | PAM                      | 否               |
 | ed25519 (MariaDB)        | 否               |
 | GSSAPI (MariaDB)         | 否               |
 | FIDO                     | 否               |
-
-[TLS 证书]: /enable-tls-between-clients-and-servers.md
