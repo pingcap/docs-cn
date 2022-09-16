@@ -1943,7 +1943,7 @@ explain select * from t where age=5;
 >
 > - 该特性与 [`replica-read`](#tidb_replica_read-从-v40-版本开始引入) 尚不兼容，开启 `tidb_rc_read_check_ts` 的读请求无法使用 [`replica-read`](#tidb_replica_read-从-v40-版本开始引入)，请勿同时开启两项特性。
 > - 如果客户端使用游标操作，建议不开启 `tidb_rc_read_check_ts` 这一特性，避免前一批返回数据已经被客户端使用而语句最终会报错的情况。
-> - tidb_rc_read_check_ts 在 v6.3.0 版本中由 GLOBAL/SESSION 修改为 INSTANCE 级别。
+> - 自 v6.3.0 起，`tidb_rc_read_check_ts` 的作用域由 GLOBAL 或 SESSION 修改为 INSTANCE 级别。
 
 - 作用域：GLOBAL
 - 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
