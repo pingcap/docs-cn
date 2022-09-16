@@ -1946,7 +1946,7 @@ explain select * from t where age=5;
 > - tidb_rc_read_check_ts 在 v6.3.0 版本中由 GLOBAL/SESSION 修改为 INSTANCE 级别。
 
 - 作用域：INSTANCE
-- 是否持久化到集群：是
+- 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
 - 默认值：`OFF`
 - 该变量用于优化时间戳的获取，适用于悲观事务 `READ-COMMITTED` 隔离级别下读写冲突较少的场景，开启此变量可以避免获取全局 timestamp 带来的延迟和开销，并优化事务内读语句延迟。
 - 如果读写冲突较为严重，开启此功能会增加额外开销和延迟，造成性能回退。更详细的说明，请参考[读已提交隔离级别 (Read Committed) 文档](/transaction-isolation-levels.md#读已提交隔离级别-read-committed)。
