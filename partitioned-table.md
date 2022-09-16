@@ -161,7 +161,7 @@ Range 分区在下列条件之一或者多个都满足时，尤其有效：
 * 使用包含时间或者日期的列，或者是其它按序生成的数据。
 * 频繁查询分区使用的列。例如执行这样的查询 `EXPLAIN SELECT COUNT(*) FROM employees WHERE separated BETWEEN '2000-01-01' AND '2000-12-31' GROUP BY store_id;` 时，TiDB 可以迅速确定，只需要扫描 `p2` 分区的数据，因为其它的分区不满足 `where` 条件。
 
-### Range COLUMNS partitioning
+### Range COLUMNS 分区
 
 Range COLUMNS 分区是 Range 分区的一种变体。你可以使用一个或者多个列作为分区键，分区列的数据类型可以是整数 (integer)、字符串（`char`/`varchar`），`DATE` 和 `DATETIME`。不能使用任何表达式，如 COLUMNS 分区，只能直接使用列。
 
