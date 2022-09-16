@@ -1836,9 +1836,9 @@ explain select * from t where age=5;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 类型：布尔
+- 类型：布尔型
 - 默认值：`OFF`
-- 这个变量用来控制是否强制开启 inline CTE。默认值为 `OFF`，即默认不强制开启 inline CTE，注意，此时依旧可以通过 `MERGE（）hint` 来开启个别 CTE 的 inline。如果设置为 `ON`，则当前 session 中所有查询的 CTE (recursive CTE 除外) 都会是 inline 。
+- 这个变量用来控制是否强制开启 inline CTE。默认值为 `OFF`，即默认不强制开启 inline CTE。注意，此时依旧可以通过 `MERGE()` hint 来开启个别 CTE 的 inline。如果设置为 `ON`，则当前 session 中所有查询的 CTE（递归 CTE 除外）都会是 inline。
 
 ### `tidb_partition_prune_mode` <span class="version-mark">从 v5.1 版本开始引入</span>
 
