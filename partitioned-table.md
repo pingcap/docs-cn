@@ -163,9 +163,9 @@ Range 分区在下列条件之一或者多个都满足时，尤其有效：
 
 ### Range COLUMNS partitioning
 
-Range COLUMNS partitioning is a variant of Range partitioning. You can use one or more columns as partitioning key and the partition columns data type can be integer, string (`char`/`varchar`), `date` and `datetime`. You cannot use any expressions, like non-COLUMNS partitioning, only the columns directly.
+Range COLUMNS 分区是 Range 分区的一种变体。你可以使用一个或者多个列作为分区键，分区列的数据类型可以是整数 (integer)、字符串（`char`/`varchar`），`DATE` 和 `DATETIME`。不能使用任何表达式，如 COLUMNS 分区，只能直接使用列。
 
-Suppose you want to partition by name as well as be able to easily drop older no-longer valid data, then you can create a table like this:
+假设你想要按名字进行分区，并且能够轻松地删除旧的无效数据，那么你可以创建一个表格，如下所示：
 
 ```sql
 CREATE TABLE t (
@@ -188,7 +188,7 @@ PARTITION BY RANGE COLUMNS(name,valid_until)
  PARTITION `p2024-` VALUES LESS THAN (0x7f,'2025-01-01 00:00:00'))
 ```
 
-Which will split the data per year and names in the ranges [''-'G'), ['G'-'M'), ['M'-'S'), ['S',) allowing to easily drop unvalid data while still benefit from partition pruning on both name and valid_until columns.
+该语句将按年份和名字的范围 [''-'G')、['G'-'M')、['M'-'S')、['S',) 进行分区，删除无效数据，同时仍然可以在 `name` 和 `valid_until` 列上进行分区裁剪。
 
 ### List 分区
 
