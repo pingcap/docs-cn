@@ -247,6 +247,11 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 + 默认值：2000
 + 最小值：2
 
+### `auto-adjust-pool-size` <span class="version-mark">从 v6.3.0 版本开始引入</span>
+
++ 是否开启自动基于当前的 CPU 使用情况调整线程池的线程数量。开启此配置可以通过自动调整统一处理读请求的线程池的线程数量优化 TiKV 的读性能。目前线程池自动调整的范围为：`[max-thread-count, CPU]`。
++ 默认值：false
+
 ## readpool.storage
 
 存储线程池相关的配置项。
