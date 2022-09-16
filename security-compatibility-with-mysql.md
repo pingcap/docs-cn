@@ -33,5 +33,3 @@ TiDB 目前支持的身份验证方式可在以下的表格中查找到。服务
 | ed25519 (MariaDB)        | 否               |
 | GSSAPI (MariaDB)         | 否               |
 | FIDO                     | 否               |
-
-[TLS 证书]: /enable-tls-between-clients-and-servers.md
