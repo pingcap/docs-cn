@@ -37,7 +37,7 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
     完整的报错信息为 `ERROR 8005 (HY000) : Write Conflict, txnStartTS is stale`。
 
-    事务在 TiDB 中遇到了写入冲突。
+    事务在 TiDB 中遇到了写入冲突。请检查业务逻辑，重试写入操作。
 
 * Error Number: 8018
 
@@ -291,7 +291,7 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
    当 [`tidb_constraint_check_in_place_pessimistic`](/system-variables.md#tidb_constraint_check_in_place_pessimistic-从-v630-版本开始引入) 设置为 0 时，悲观事务中的唯一约束检查可能无法通过，导致 SQL 语句执行报错并中止当前事务。
 
-   注意，为保证事务的正确性，在开启该变量时，SQL 语句执行产生的任何报错都可能最终返回该错误并中止当前事务。错误信息里包含具体的错误原因。
+   当 [`tidb_constraint_check_in_place_pessimistic`](/system-variables.md#tidb_constraint_check_in_place_pessimistic-从-v630-版本开始引入) 设置为 1 时，为保证事务的正确性，SQL 语句执行时产生的任何错误都可能导致 TiDB 返回 `8147` 报错并中止当前事务。具体的错误原因，请参考对应的报错信息。
 
 * Error Number: 8200
 
