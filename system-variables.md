@@ -1988,15 +1988,8 @@ explain select * from t where age=5;
 - 是否持久化到集群：是
 - 默认值：`leader`
 - 可选值：`leader`，`follower`，`leader-and-follower`，`closest-replicas`，`closest-adaptive`
-- 这个变量用于控制 TiDB 读取数据的位置，有以下几个选择：
-
-    * `leader`：只从 leader 节点读取。
-    * `follower`：只从 follower 节点读取。
-    * `leader-and-follower`：从 leader 或 follower 节点读取。
-    * `closest-replicas`：优先从分布在同一区域的 leader 或 follower 节点读取，如果同一区域内没有副本分布，则会从 leader 读取。
-    * `closest-adaptive`：当一个读请求的预估返回结果大于或等于变量 [`tidb_adaptive_closest_read_threshold`](/system-variables.md#tidb_adaptive_closest_read_threshold-从-v630-版本开始引入) 的值时，优先从分布在同一区域的 leader 或 follower 节点读取，否则从 leader 节点读取。
-
-更多细节，见 [Follower Read](/follower-read.md)。
+- 这个变量用于控制 TiDB 的 Follower Read 功能的行为。
+- 关于使用方式与实现原理，见 [Follower Read](/follower-read.md)。
 
 ### `tidb_retry_limit`
 
