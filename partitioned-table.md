@@ -573,7 +573,7 @@ Empty set (0.00 sec)
 
 `EXCHANGE PARTITION` 语句用来交换分区和非分区表，类似于重命名表如 `RENAME TABLE t1 TO t1_tmp, t2 TO t1, t1_tmp TO t2` 的操作。
 
-例如，`ALTER TABLE partitioned_table EXCHANGE PARTITION p1 WITH TABLE non_partitioned_table` 交换的是 `p1` 分区的 `non_partitioned_table` 表和 `partitioned_table` 表。
+例如，`ALTER TABLE partitioned_table EXCHANGE PARTITION p1 WITH TABLE non_partitioned_table` 交换的是 `p1` 分区的 `partitioned_table` 表和 `non_partitioned_table` 表。
 
 确保要交换入分区中的所有行与分区定义匹配；否则，交换将失败。
 
