@@ -81,19 +81,19 @@ Restore KV Files <--------------------------------------------------------------
 
 我们可以按照下面的步骤清理超过**备份保留期**的日志备份数据：
 
-1. 查找备份保留期之外的**最近的一个全量备份**，使用 `validate` 指令获取它对应的时间点。例如，你要清理 2022/09/01 之前的备份数据，那么应该查找该日期之前的最近一个全量备份，且必须保证它不会被清理。执行下面的命令获取这个全量备份对应的时间点
+* 查找备份保留期之外的**最近的一个全量备份**，使用 `validate` 指令获取它对应的时间点。例如，你要清理 2022/09/01 之前的备份数据，那么应该查找该日期之前的最近一个全量备份，且必须保证它不会被清理。执行下面的命令获取这个全量备份对应的时间点
 
   ```shell
   FULL_BACKUP_TS=`tiup br validate decode --field="end-version" -s "s3://backup-101/snapshot-{date}?access_key=${access key}&secret_access_key=${secret access key}"| tail -n1`
   ```
 
-2. 清理该快照备份(< FULL_BACKUP_TS)之前的日志备份数据
+* 清理该快照备份(< FULL_BACKUP_TS)之前的日志备份数据
 
   ```shell
   tiup br log truncate --until=${FULL_BACKUP_TS} --storage='s3://backup-101/logbackup?access_key=${access key}&secret_access_key=${secret access key}"'
   ```
 
-3. 清理该快照备份(< FULL_BACKUP_TS)之前的快照备份
+* 清理该快照备份(< FULL_BACKUP_TS)之前的快照备份
 
 ## 性能与影响
 
