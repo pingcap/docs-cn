@@ -52,9 +52,9 @@ cdc cli changefeed create --pd=http://10.0.10.25:2379 --sink-uri="mysql://root:1
 - Table resolved ts：同步任务中各数据表的同步进度。
 - Changefeed checkpoint：同步任务同步到下游的进度，正常情况下绿柱应和黄线相接。
 - PD etcd requests/s：TiCDC 节点每秒向 PD 读写数据的次数。
-- Exit error count：每分钟内导致同步中断的错误发生次数。
+- Exit error count/m：每分钟内导致同步中断的错误发生次数。
 - Changefeed checkpoint lag：同步任务上下游数据的进度差（以时间计算）。
-- Changefeed resolved ts lag：TiCDC 节点内部同步状态与上游的进度差（以时间计算）。
+- Processor resolved ts lag：TiCDC 节点内部同步状态与上游的进度差（以时间计算）。
 
 ![TiCDC Dashboard - Changefeed metrics 2](/media/ticdc/ticdc-dashboard-changefeed-2.png)
 
