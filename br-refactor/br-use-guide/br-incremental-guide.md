@@ -30,6 +30,7 @@ tiup br backup full --pd ${PDIP}:2379 --storage "s3://backup-101/snapshot-202209
 - `--lastbackupts`：上一次的备份时间戳.
 - `--ratelimit`：**每个 TiKV** 执行备份任务的速度上限（单位 MiB/s）。
 - `storage`: 数据备份到存储地址。 增量备份数据需要与快照备份数据保存在不同的路径下，例如上例保存在全量备份数据下的 `incr` 目录中。详细参考[备份存储 URL 配置](/br-refactor/backup-and-restore-storages.md#url-格式)。
+
 ## 恢复增量备份数据
 
 恢复增量数据的时候，需要保证备份时指定的 `last backup ts` 之前备份的数据已经全部恢复到目标集群。同时因为增量恢复的时候会更新数据，因此你需要保证此时不会有其他写入，避免出现冲突。
