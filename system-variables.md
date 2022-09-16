@@ -358,6 +358,13 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 - 默认值：（随系统）
 - 该变量显示首次引导启动 TiDB 时的系统时区。另请参阅 [`time_zone`](#time_zone)。
 
+### `tidb_adaptive_closest_read_threshold` <span class="version-mark">从 v6.3.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 默认值：`4096`
+- 这个变量用于控制当 [`replica-read`](#tidb_replica_read-从-v40-版本开始引入) 设置为 `closest-adaptive` 时，优先将读请求发送至 TiDB server 所在区域副本的阈值。当读请求预估的返回结果的大小超过此阈值时，TiDB 会将读请求优先发送至同一区域的副本，否则会发送至 leader 副本。
+
 ### `tidb_allow_batch_cop` <span class="version-mark">从 v4.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
@@ -2003,14 +2010,9 @@ explain select * from t where age=5;
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 默认值：`leader`
-- 可选值：`leader`，`follower`，`leader-and-follower`
-- 这个变量用于控制 TiDB 读取数据的位置，有以下三个选择：
-
-    * leader：只从 leader 节点读取
-    * follower：只从 follower 节点读取
-    * leader-and-follower：从 leader 或 follower 节点读取
-
-更多细节，见 [Follower Read](/follower-read.md)。
+- 可选值：`leader`，`follower`，`leader-and-follower`，`closest-replicas`，`closest-adaptive`
+- 这个变量用于控制 TiDB 的 Follower Read 功能的行为。
+- 关于使用方式与实现原理，见 [Follower Read](/follower-read.md)。
 
 ### `tidb_retry_limit`
 
