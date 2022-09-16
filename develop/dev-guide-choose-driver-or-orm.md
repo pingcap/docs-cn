@@ -30,7 +30,8 @@ TiDB provides the following two support levels for Java:
 
 ### Java Drivers
 
-**JDBC**
+<SimpleTab>
+<div label="JDBC">
 
 Support level: **Full**
 
@@ -41,6 +42,54 @@ You can follow the [MySQL documentation](https://dev.mysql.com/doc/connector-j/5
 > It is strongly recommended to use version 5.1.49, which is the latest version of JDBC 5.1. Since there is an [unresolved bug](https://bugs.mysql.com/bug.php?id=106252) in the current version 8.0.29, which might cause threads to hang when using TiDB. It is recommended that you do not upgrade to version 8.0 until MySQL JDBC 8.0 merges this fix.
 
 For an example of how to build a complete application, see [Build a Simple CRUD App with TiDB and JDBC](/develop/dev-guide-sample-application-java.md).
+
+</div>
+<div label="TiDB-JDBC">
+
+Support level: **Full**
+
+[TiDB-JDBC](https://github.com/pingcap/mysql-connector-j) is a customized Java driver based on MySQL 8.0.29. Compiled based on MySQL official version 8.0.29, TiDB-JDBC fixes the bug of multi-parameter and multi-field EOF in the prepare mode in the original JDBC, and adds features such as automatic TiCDC snapshot maintenance and the SM3 authentication plugin.
+
+If you use Maven, add the following content to the `<dependencies></dependencies>` section in the `pom.xml` file:
+
+```xml
+<dependency>
+  <groupId>io.github.lastincisor</groupId>
+  <artifactId>mysql-connector-java</artifactId>
+  <version>8.0.29-tidb-1.0.0</version>
+</dependency>
+```
+
+If you need to enable SM3 authentication, add the following content to the `<dependencies></dependencies>` section in the `pom.xml` file:
+
+```xml
+<dependency>
+  <groupId>io.github.lastincisor</groupId>
+  <artifactId>mysql-connector-java</artifactId>
+  <version>8.0.29-tidb-1.0.0</version>
+</dependency>
+<dependency>
+    <groupId>org.bouncycastle</groupId>
+    <artifactId>bcprov-jdk15on</artifactId>
+    <version>1.67</version>
+</dependency>
+<dependency>
+    <groupId>org.bouncycastle</groupId>
+    <artifactId>bcpkix-jdk15on</artifactId>
+    <version>1.67</version>
+</dependency>
+```
+
+If you use Gradle, add the following content to `dependencies`:
+
+```gradle
+implementation group: 'io.github.lastincisor', name: 'mysql-connector-java', version: '8.0.29-tidb-1.0.0'
+implementation group: 'org.bouncycastle', name: 'bcprov-jdk15on', version: '1.67'
+implementation group: 'org.bouncycastle', name: 'bcpkix-jdk15on', version: '1.67'
+```
+
+</div>
+</SimpleTab>
 
 ### Java ORM framework
 
@@ -91,3 +140,35 @@ In addition, you need to specify the TiDB dialect in your [Hibernate configurati
 > **Note:**
 >
 > If you are unable to upgrade your `Hibernate` version, use the MySQL 5.7 dialect `org.hibernate.dialect.MySQL57Dialect` instead. However, this setting might cause unpredictable results and the absence of some TiDB-specific features, such as [sequences](/sql-statements/sql-statement-create-sequence.md).
+
+### tidb-loadbalance
+
+[tidb-loadbalance](https://github.com/pingcap/tidb-loadbalance) is a load balancing component on the application side. With tidb-loadbalance, you can automatically maintain the node information of TiDB server and distribute JDBC connections on the client using the tidb-loadbalance policies. Using a direct JDBC connection between the client application and TiDB server has higher performance than using the load balancing component.
+
+Currently, tidb-loadbalance supports the following policies: roundrobin, random, and weight.
+
+> **Note:**
+>
+> tidb-loadbalance must be used with [mysql-connector-j](https://github.com/pingcap/mysql-connector-j).
+
+If you use Maven, add the following content to the element body of `<dependencies></dependencies>` in the `pom.xml` file:
+
+```xml
+<dependency>
+  <groupId>io.github.lastincisor</groupId>
+  <artifactId>mysql-connector-java</artifactId>
+  <version>8.0.29-tidb-1.0.0</version>
+</dependency>
+<dependency>
+  <groupId>io.github.lastincisor</groupId>
+  <artifactId>tidb-loadbalance</artifactId>
+  <version>0.0.5</version>
+</dependency>
+```
+
+If you use Gradle, add the following content to `dependencies`:
+
+```gradle
+implementation group: 'io.github.lastincisor', name: 'mysql-connector-java', version: '8.0.29-tidb-1.0.0'
+implementation group: 'io.github.lastincisor', name: 'tidb-loadbalance', version: '0.0.5'
+```
