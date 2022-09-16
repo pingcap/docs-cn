@@ -245,7 +245,7 @@ PARTITION BY RANGE COLUMNS(`report_date`)
 
 #### ALTER INTERVAL Partitioned tables
 
-INTERVAL partitioning 还增加了添加和删除分区的更加简单易用的语法。
+INTERVAL 分区还增加了添加和删除分区的更加简单易用的语法。
 
 下面的语句会变更第一个分区，该语句会删除所有小于给定表达式的分区，使匹配的分区成为新的第一个分区。它不会影响 NULL PARTITION。
 
