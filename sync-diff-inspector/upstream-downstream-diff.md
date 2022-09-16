@@ -16,8 +16,10 @@ Syncpoint 通过利用 TiDB 提供的 snapshot 特性，让 TiCDC 在同步过�
 ```toml
 # 开启 SyncPoint
 enable-sync-point = true
+
 # 每隔 5 分钟对齐一次上下游的 snapshot
 sync-point-interval = "5m"
+
 # 每隔 1 小时清理一次下游 tidb_cdc.syncpoint_v1 表中的 ts-map 数据
 sync-point-retention = "1h"
 ```
