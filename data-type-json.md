@@ -40,7 +40,7 @@ SELECT id FROM city WHERE population >= 100;
 
 ## MySQL 兼容性
 
-- 当使用二进制类型数据创建 JSON 时，目前 MySQL 会将其误标记为 STRING 类型，而 TiDB 会维持正确的二进制类型。
+- 当使用二进制类型数据创建 JSON 时，目前 MySQL 会将其误标记为 STRING 类型，而 TiDB 会保持正确的二进制类型。
 
     ```sql
     CREATE TABLE test(a json);
