@@ -1303,7 +1303,7 @@ store delete 1 // 下线一台 store
 
 #### store label 命令
 
-设置 store id 为 1 的 store 的键为 "zone" 的 label 的值为 "cn"：
+添加 label，为 store id 为 1 的 store 添加键为 "zone" 的 label 的值为 "cn" 得 label：
 
 {{< copyable "" >}}
 
@@ -1311,20 +1311,20 @@ store delete 1 // 下线一台 store
 store label 1 zone=cn
 ```
 
-更新 store id 为 1 的 label，并添加一个新的 label：
+更新 store id 为 1 的 label：
 
 {{< copyable "" >}}
 
 ```bash
-store label 1 zone=us disk=hdd
+store label 1 zone=us
 ```
 
-重写 store id 为 1 的所有 label：
+重写 store id 为 1 的所有 label, 之前有的 label 会被覆盖：
 
 {{< copyable "" >}}
 
 ```bash
-store label 1 region=us-est-1 zone=az1 disk=ssd --rewrite
+store label 1 region=us-est-1 disk=ssd --rewrite
 ```
 
 删除指定 store 的对应 label：
