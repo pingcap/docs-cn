@@ -2353,6 +2353,13 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 这个变量用于设置 window 算子的并行度。
 - 默认值 `-1` 表示使用 `tidb_executor_concurrency` 的值。
 
+### `tiflash_fastscan` <span class="version-mark">从 v6.3.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 默认值：`OFF`
+- 范围：`ON | OFF`
+- 如果开启 [FastScan 功能](/develop/dev-guide-use-fastscan.md)（设置为 `ON` 时），TiFlash 可以提供更高效的查询性能，但不保证查询结果的精度和数据一致性。
+
 ### `tiflash_fine_grained_shuffle_batch_size` <span class="version-mark">从 v6.2.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
