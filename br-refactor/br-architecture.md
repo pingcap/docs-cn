@@ -6,7 +6,7 @@ aliases: ['/br/backup-and-restore-design.md']
 
 # TiDB 备份和恢复功能架构
 
-正如 [TiDB 备份恢复功能介绍](/br-refactor/br-overview.md)，TiDB 备份恢复功能包含了多种不同类型的集群数据对象的备份和恢复实现。它们都以 br、tidb-operator 为使用入口，创建相应的任务从各个 TiKV 存储节备份数据，或者恢复数据到 TiKV 节点。
+正如 [TiDB 备份恢复功能介绍](/br-refactor/br-overview.md)，TiDB 备份恢复功能包含了多种不同类型的集群数据对象的备份和恢复实现。它们都以 br、tidb-operator 为使用入口，创建相应的任务从 TiKV 节点上备份数据，或者恢复数据到 TiKV 节点。
 
 下面是各种备份恢复功能的实现架构介绍。
 

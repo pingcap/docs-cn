@@ -137,7 +137,7 @@
     - [TiDB 备份恢复功能介绍](/br-refactor/br-overview.md)
     - [TiDB 备份恢复架构设计](/br-refactor/br-architecture.md)
     - [备份存储支持](/br-refactor/backup-and-restore-storages.md)
-    - [使用 br 进行备份与恢复](/br-refactor/br-use-guide/br-use-overview.md)
+    + [使用 br 进行备份与恢复](/br-refactor/br-use-guide/br-use-overview.md)
       - [使用 br 进行（全量）快照备份与恢复](/br-refactor/br-use-guide/br-snapshot-guide.md)
       - [使用 br 进行 PITR](/br-refactor/br-use-guide/br-pitr-guide.md)
       - [备份与恢复场景使用示例](/br-refactor/br-use-guide/br-usage.md)

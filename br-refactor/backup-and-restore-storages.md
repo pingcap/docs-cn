@@ -132,7 +132,7 @@ br backup full --pd "${PDIP}:2379" --storage "s3://${host}/${path}"
 
 在 URL 配置 `account-name` 和 `account-key`，则使用该参数指定的密钥。 除了在 URL 中指定密钥文件外，还支持以下的方式
 
-1. BR 读取 `$AZURE_STORAGE_KEY`。
+* BR 读取 `$AZURE_STORAGE_KEY`。
 
 **使用 Azure AD 备份恢复**
 
