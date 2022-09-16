@@ -31,7 +31,7 @@ sync-point-retention = "1h"
 {{< copyable "sql" >}}
 
 ```sql
-select * from tidb_cdc.syncpoint_v1;;
+select * from tidb_cdc.syncpoint_v1;
 ```
 
 ```
