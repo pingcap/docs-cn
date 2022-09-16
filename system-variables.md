@@ -545,7 +545,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 默认值：`OFF`
-- 该变量仅适用于乐观事务模型。悲观事务模式中的行为由 `tidb_constraint_check_in_place_pessimistic` 控制。
+- 该变量仅适用于乐观事务模型。悲观事务模式中的行为由 [`tidb_constraint_check_in_place_pessimistic`](#tidb_constraint_check_in_place_pessimistic-从-v630-版本开始引入) 控制。
 - 当这个变量设置为 `OFF` 时，唯一索引的重复值检查会被推迟到事务提交时才进行。这有助于提高性能，但对于某些应用，可能导致非预期的行为。详情见[约束](/constraints.md#乐观事务)。
 
     - 乐观事务模型下将 `tidb_constraint_check_in_place` 设置为 0：
@@ -592,7 +592,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 默认值：`1`
-- 该变量仅适用于悲观事务模型。乐观事务模式中的行为由 `tidb_constraint_check_in_place` 控制。
+- 该变量仅适用于悲观事务模型。乐观事务模式中的行为由 [`tidb_constraint_check_in_place`](#tidb_constraint_check_in_place) 控制。
 - 当这个变量设置为 `0` 时，唯一约束检查会被推迟到下一次需要对这个索引加锁的语句执行时，或事务提交时才进行。这有助于提高性能，但对于某些应用，可能导致非预期的行为。详情见[约束](/constraints.md#悲观事务)。
 - 关闭该变量可能会导致悲观事务中返回 `LazyUniquenessCheckFailure` 报错。返回该错误时，TiDB 将会回滚当前事务。
 - 关闭该变量后，悲观事务中不支持使用 [`SAVEPOINT`](/sql-statements/sql-statement-savepoint.md) 功能。
