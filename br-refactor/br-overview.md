@@ -120,9 +120,10 @@ TiDB 支持将数据备份到 Amazon S3、Google Cloud Storage (GCS)、Azure Blo
 
 BR 内置版本会在执行备份和恢复操作前，对 TiDB 集群版本和自身版本进行对比检查。如果版本之间不兼容，BR 会提示报错并退出。如要跳过版本检查，可以通过设置 `--check-requirements=false` 强行跳过版本检查。需要注意的是，跳过检查可能会遇到版本不兼容的问题。
 
-| 恢复版本（横向）\ 备份版本（纵向）   | 用 BR v5.4 恢复 TiDB v5.4 | 用 BR v6.0 恢复 TiDB v6.0 | 用 BR v6.1 恢复 TiDB v6.1| 用 BR v6.2 恢复 TiDB v6.2 |
+| 恢复版本（横向）\ 备份版本（纵向）   | 恢复到 TiDB v6.0 | 恢复到 TiDB v6.1| 恢复到 TiDB v6.2 | 恢复到 TiDB v6.3 |
 |  ----  |  ----  | ---- | ---- | ---- |
-|用 BR v5.4 备份 TiDB v5.4| 兼容 | 不兼容（调整恢复集群的 [新 collation](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap) 配置跟备份集群相同后，可以恢复）| 不兼容（调整恢复集群的 [新 collation](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap) 配置跟备份集群相同后，可以恢复） | 不兼容（调整恢复集群的 [新 collation](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap) 配置跟备份集群相同后，可以恢复）|
-|用 BR v6.0 备份 TiDB v6.0| 不兼容 |兼容 | 兼容 | 兼容 |
-|用 BR v6.1 备份 TiDB v6.1| 不兼容 | 兼容（已知问题，如果备份数据中包含空库可能导致报错，参考 [#36379](https://github.com/pingcap/tidb/issues/36379)） | 兼容 | 兼容 |
-|用 BR v6.2 备份 TiDB v6.2| 不兼容 | 兼容（已知问题，如果备份数据中包含空库可能导致报错，参考 [#36379](https://github.com/pingcap/tidb/issues/36379)） | 兼容 | 兼容 |
+| TiDB v6.0 快照 | 兼容 | 兼容 | 兼容 | 兼容 |
+| TiDB v6.1 快照备份 | 兼容（已知问题，如果备份数据中包含空库可能导致报错，参考 [#36379](https://github.com/pingcap/tidb/issues/36379)） | 兼容 | 兼容 | 兼容 |
+| TiDB v6.2 快照备份 | 兼容（已知问题，如果备份数据中包含空库可能导致报错，参考 [#36379](https://github.com/pingcap/tidb/issues/36379)） | 兼容 | 兼容 | 兼容 |
+| TiDB v6.3 快照备份 | 兼容（已知问题，如果备份数据中包含空库可能导致报错，参考 [#36379](https://github.com/pingcap/tidb/issues/36379)） | 兼容 | 兼容 | 兼容 |
+| TiDB v6.3 PITR 日志备份| \ | \ | 不兼容 | 兼容 |

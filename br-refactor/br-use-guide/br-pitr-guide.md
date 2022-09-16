@@ -12,10 +12,6 @@ summary: 了解 TiDB 的日志备份和 PITR 功能使用。
 
 ## 对集群进行备份
 
-### 打开日志备份功能开关
-
-使用日志备份功能前，需将 TiKV 配置项 [`log-backup.enable`](/tikv-configuration-file.md#enable-从-v620-版本开始引入) 设为 `true`。修改配置参数的方法，请参考[修改配置参数](/maintain-tidb-using-tiup.md#修改配置参数)。
-
 ### 启动日志备份
 
 使用 `br log start` 启动日志备份任务，一个集群只能启动一个日志备份任务。日志备份任务启动后，该命令就会立即返回：

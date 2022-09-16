@@ -83,16 +83,22 @@ summary: 了解 TiDB 快照备份和恢复功能的架构设计
 
 ### SST 文件的命名格式
 
-SST 文件以 `storeID_regionID_regionEpoch_keyHash_timestamp_cf` 的格式命名。格式名的解释如下：
+当备份数据到 Google Cloud Storage 或 Azure Blob Storage 时，SST 文件以 `storeID_regionID_regionEpoch_keyHash_timestamp_cf` 的格式命名。格式名的解释如下：
 
-- storeID：TiKV 节点编号
-- regionID：Region 编号
-- regionEpoch：Region 版本号
-- keyHash：Range startKey 的 Hash (sha256) 值，确保唯一性
-- timestamp：TiKV 节点生成 SST 文件名时刻的 Unix 时间戳
-- cf：RocksDB 的 ColumnFamily（只备份 cf 为 `default` 或 `write` 的数据）
+- `storeID`：TiKV 节点编号
+- `regionID`：Region 编号
+- `regionEpoch`：Region 版本号
+- `keyHash`：Range startKey 的 Hash (sha256) 值，确保唯一性
+- `timestamp`：TiKV 节点生成 SST 文件名时刻的 Unix 时间戳
+- `cf`：RocksDB 的 ColumnFamily（只备份 cf 为 `default` 或 `write` 的数据）
 
 当备份数据到 Amazon S3 或网络盘上时，SST 文件以 `regionID_regionEpoch_keyHash_timestamp_cf` 的格式命名。
+
+- `regionID`：Region 编号
+- `regionEpoch`：Region 版本号
+- `keyHash`：Range startKey 的 Hash (sha256) 值，确保唯一性
+- `timestamp`：TiKV 节点生成 SST 文件名时刻的 Unix 时间戳
+- `cf`：RocksDB 的 ColumnFamily（只备份 cf 为 `default` 或 `write` 的数据）
 
 ### SST 文件存储格式
 

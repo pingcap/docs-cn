@@ -188,3 +188,7 @@ br backup full --pd "${PDIP}:2379" --storage "s3://${host}/${path}"
 ### Amazon S3 存储服务端加密备份数据
 
 BR 支持对备份到 S3 的数据进行 S3 服务端加密 (SSE)。BR S3 服务端加密也支持使用用户自行创建的 AWS KMS 密钥进行加密，详细信息请参考 [BR S3 服务端加密](/encryption-at-rest.md#br-s3-服务端加密)。
+
+## Cloud Storage 其他功能支持
+
+* BR v6.3 版本支持 AWS S3 Object lock 功能。用户可以在 AWS 开启 [S3 Object Lock](https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lock.html) 功能来防止备份数据写入后被修改或者删除。 
