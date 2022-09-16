@@ -231,6 +231,11 @@ Configuration items related to scheduling
 + The number of Region scheduling tasks performed at the same time
 + Default value: `2048`
 
+### `enable-diagnostic` <span class="version-mark">New in v6.3.0</span>
+
++ Controls whether to enable the diagnostic feature. When it is enabled, PD records the state during scheduling to help diagnose. If enabled, it might slightly affect the scheduling speed and consume more memory when there are many stores.
++ Default value: false
+
 ### `hot-region-schedule-limit`
 
 + Controls the hot Region scheduling tasks that are running at the same time. It is independent of the Region scheduling.
@@ -276,7 +281,7 @@ Configuration items related to scheduling
 + Determines whether to enable the merging of cross-table Regions
 + Default value: `true`
 
-### `region-score-formula-version` <span class="version-mark">New in v5.0</span> 
+### `region-score-formula-version` <span class="version-mark">New in v5.0</span>
 
 + Controls the version of the Region score formula
 + Default value: `v2`
@@ -297,7 +302,7 @@ Configuration items related to scheduling
 + Default value: `10m`
 
 > **Note:**
-> 
+>
 > The information about hot Regions is updated every three minutes. If the interval is set to less than three minutes, updates during the interval might be meaningless.
 
 ### `hot-regions-reserved-days` <span class="version-mark">New in v5.4.0</span>

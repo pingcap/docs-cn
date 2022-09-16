@@ -750,7 +750,7 @@ Usage:
 }
 ```
 
-### `scheduler [show | add | remove | pause | resume | config]`
+### `scheduler [show | add | remove | pause | resume | config | describe]`
 
 Use this command to view and control the scheduling policy.
 
@@ -770,7 +770,22 @@ Usage:
 >> scheduler resume balance-region-scheduler      // Continue to run the balance-region scheduler
 >> scheduler resume all                           // Continue to run all schedulers
 >> scheduler config balance-hot-region-scheduler  // Display the configuration of the balance-hot-region scheduler
+>> scheduler describe balance-region-scheduler    // Display the running state and related diagnostic information of the balance-region scheduler
 ```
+
+### `scheduler describe balance-region-scheduler`
+
+Use this command to view the running state and related diagnostic information of the `balance-region-scheduler`.
+
+Since TiDB v6.3.0, PD provides the running state and brief diagnostic information for `balance-region-scheduler` and `balance-leader-scheduler`. Other schedulers and checkers are not supported yet. To enable this feature, you can modify the [`enable-diagnostic`](/pd-configuration-file.md#enable-diagnostic-new-in-v630) configuration item using `pd-ctl`.
+
+The state of the scheduler can be one of the following:
+
+- `disabled`: the scheduler is unavailable or removed.
+- `paused`: the scheduler is paused.
+- `scheduling`: the scheduler is generating scheduling operators.
+- `pending`: the scheduler cannot generate scheduling operators. For a scheduler in the `pending` state, brief diagnostic information is returned. The brief information describes the state of stores and explains why these stores cannot be selected for scheduling.
+- `normal`: there is no need to generate scheduling operators.
 
 ### `scheduler config balance-leader-scheduler`
 
