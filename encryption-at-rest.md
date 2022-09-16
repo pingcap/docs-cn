@@ -20,7 +20,7 @@ aliases: ['/docs-cn/dev/encryption-at-rest/']
 
 ### TiKV
 
-TiKV 支持静态加密，即在 [CTR](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation) 模式下使用 [AES](https://en.wikipedia.org/wiki/Advanced_Encryption_Standard) 或 [SM4](https://en.wikipedia.org/wiki/SM4_(cipher)) 对数据文件进行透明加密。要启用静态加密，用户需提供一个加密密钥，即主密钥。TiKV 自动轮换 (rotate) 用于加密实际数据文件的密钥，主密钥则可以由用户手动轮换。请注意，静态加密仅加密静态数据（即磁盘上的数据），而不加密网络传输中的数据。建议 TLS 与静态加密一起使用。
+TiKV 支持静态加密，即在 [CTR](https://zh.wikipedia.org/wiki/分组密码工作模式) 模式下使用 [AES](https://zh.wikipedia.org/wiki/高级加密标准) 或 [SM4](https://zh.wikipedia.org/wiki/SM4) 对数据文件进行透明加密。要启用静态加密，用户需提供一个加密密钥，即主密钥。TiKV 自动轮换 (rotate) 用于加密实际数据文件的密钥，主密钥则可以由用户手动轮换。请注意，静态加密仅加密静态数据（即磁盘上的数据），而不加密网络传输中的数据。建议 TLS 与静态加密一起使用。
 
 可以选择将 AWS KMS (Key Management Service) 用于云上部署或本地部署，也可以指定将密钥以明文形式存储在文件中。
 
@@ -28,7 +28,7 @@ TiKV 当前不从核心转储 (core dumps) 中排除加密密钥和用户数据�
 
 TiKV 使用文件的绝对路径来跟踪已加密的数据文件。一旦 TiKV 节点开启了加密功能，用户就不应更改数据文件的路径配置，例如 `storage.data-dir`，`raftstore.raftdb-path`，`rocksdb.wal-dir` 和 `raftdb.wal-dir`。
 
-SM4 加密只在 v6.3.0 及之后版本的 TiKV 上支持。v6.3.0 之前的 TiKV 仅支持 AES 加密。
+SM4 加密只在 v6.3.0 及之后版本的 TiKV 上支持。v6.3.0 之前的 TiKV 仅支持 AES 加密。SM4 加密会对吞吐造成 50% 到 80% 的回退。
 
 ### TiFlash
 
