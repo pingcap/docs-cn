@@ -1625,7 +1625,7 @@ Raft Engine 相关的配置项。
 
 + 日志备份任务中，保存到存储的备份文件大小。
 + 默认值：256MiB
-+ 注意：一般情况下，`file-size-limit` 的值会大于存储系统上显示的备份文件大小，这是因为备份文件在上传时会被压缩。
++ 注意：一般情况下，`file-size-limit` 的值会大于外部存储上显示的备份文件大小，这是因为备份文件在上传时会被压缩。
 
 ### `initial-scan-pending-memory-quota` <span class="version-mark">从 v6.2.0 版本开始引入</span>
 
