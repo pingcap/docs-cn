@@ -606,9 +606,9 @@ Diagram(
 ```
 
 - 总体的发送请求耗时看作 `tidb_tikvclient_request_seconds`。
-- RPC 客户端为每个存储维护各自的连接池（称为 ConnArray），每个连接池都包含带有一个批量请求（发送）通道的 BatchConn。
+- RPC 客户端为每个存储维护各自的连接池（称为 ConnArray），每个连接池都包含带有一个发送批量请求 channel 的 BatchConn
 - 批量请求会在存储是 TiKV 并且 batch 大小为正数时开启。这符合绝大多数的情况。
-- 批量请求通道的大小是 [`tikv-client.max-batch-size`](/tidb-configuration-file.md#max-batch-size)（默认值为 `128`）。请求入队的耗时看作 `tidb_tikvclient_batch_wait_duration`。
+- 批量请求 channel 的大小是 [`tikv-client.max-batch-size`](/tidb-configuration-file.md#max-batch-size)（默认值为 `128`）。请求入队的耗时看作 `tidb_tikvclient_batch_wait_duration`。
 - 一共有 `CmdBatchCop`、`CmdCopStream` 和 `CmdMPPConn` 三种流式请求。流式请求会引入一个额外的 `recv()` 调用来获取流中的第一个相应。
 
 尽管有一些延迟没有被考虑，`tidb_tikvclient_request_seconds` 大致使用如下方式计算：
