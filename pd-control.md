@@ -1278,7 +1278,7 @@ store 1
 ......
 ```
 
-### store 下线
+#### store 下线
 
 下线 store id 为 1 的 store：
 
@@ -1352,12 +1352,11 @@ store weight 1 5 10
 
 {{< copyable "" >}}
 
-### store limit 命令
+#### store limit 命令
 
 详细解释：[store limit](/configure-store-limit.md)
 
 ```bash
-
 >> store limit                         // 显示所有 store 添加和删除 peer 的速度上限
 >> store limit add-peer                // 显示所有 store 添加 peer 的速度上限
 >> store limit remove-peer             // 显示所有 store 删除 peer 的速度上限
