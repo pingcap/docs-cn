@@ -78,7 +78,7 @@ TiDB 版本：6.3.0-DMR
 
     TiDB 身份验证新增基于国密算法 SM3 的插件 [tidb_sm3_password](/system-variables.md#default_authentication_plugin)，启用此插件后，用户密码将通过 SM3 进行加密存储和验证。
 
-* JDBC 支持国密算法 SM3 的身份验证 [issue]() @[lastincisor](https://github.com/lastincisor)
+* JDBC 支持国密算法 SM3 的身份验证 [#25](https://github.com/pingcap/mysql-connector-j/issues/25) @[lastincisor](https://github.com/lastincisor)
 
     用户密码的身份验证需要客户端的支持，现在 [JDBC 支持国密算法 SM3](/develop/dev-guide-choose-driver-or-orm.md#java-drivers) 的能力，用户可以通过 JDBC 连接到 TiDB 使用国密算法 SM3 的身份验证能力。
 
