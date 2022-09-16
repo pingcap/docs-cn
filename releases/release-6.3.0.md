@@ -223,6 +223,7 @@ TiDB 版本：6.3.0-DMR
 | [`tidb_enable_unsafe_substitute`](/system-variables.md#tidb_enable_unsafe_substitute-从-v630-版本开始引入) | 新增 | 这个变量用于控制是否对生成列中表达式替换使用不安全的替换方式。 |
 | [`tidb_opt_three_stage_distinct_agg`](/system-variables.md#tidb_opt_three_stage_distinct_agg-从-v630-版本开始引入) | 新增 | 该变量用于控制在 MPP 模式下是否将 `COUNT(DISTINCT)` 聚合改写为三阶段分布式执行的聚合。默认为 `ON`。 |
 | [`tidb_enable_rate_limit_action`](/system-variables.md#tidbenableratelimitaction) | 修改 | 这个变量控制是否为读数据的算子开启动态内存控制功能。 打开该变量可能会导致内存不受 [tidb_mem_quota_query 控制](/system-variables.md#tidb_mem_quota_query) 控制，而加剧 OOM 风险，故将默认值由 `ON` 调整为 `OFF`。 |
+| [`tidb_rc_read_check_ts`](/system-variables.md#tidbrcreadcheckts-span-classversion-mark从-v600-版本开始引入span) | 修改 | 该变量用于优化时间戳的获取，适用于悲观事务 `READ-COMMITTED` 隔离级别下读写冲突较少的场景。 由于这个行为只针对特定业务负载，而对其他类型的负载可能造成性能回退，所以将变量作用域由全局变成实例级， 允许客户只针对部分 TiDB 实例打开。 |
 
 ### 配置文件参数
 
