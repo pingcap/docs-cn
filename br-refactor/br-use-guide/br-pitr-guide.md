@@ -62,6 +62,7 @@ br restore point --pd "${PDIP}:2379" \
 --full-backup-storage='s3://backup-101/snapshot-{date}?access_key=${access key}&secret_access_key=${secret access key}"' \
 --restored-ts '2022-05-15 18:00:00+0800'
 ```
+
 恢复期间有进度条会在终端中显示，进度条效果如下。 恢复分为两个阶段：全量恢复（Full Restore）和日志恢复（Restore Meta Files 和 Restore KV files。 每个阶段完成恢复后, br 都会输出恢复耗时、恢复数据大小等信息。
 
 ```shell

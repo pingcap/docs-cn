@@ -33,7 +33,8 @@ BR 只提供备份和恢复功能的基础功能，尚不支持备份管理的�
 
 Amazon S3、Google Cloud Storage (GCS)、Azure Blob Storage 是 BR 推荐的存储系统选择，使用这些系统用户无需担心备份容量、备份带宽规划等。
 
-如果 TiDB 集群部署在自建机房中， 那么推荐以下方式
+如果 TiDB 集群部署在自建机房中， 那么推荐以下方式：
+
 * 搭建 [minio](https://docs.min.io/docs/minio-quickstart-guide.html) 作为备份存储系统，使用 S3 协议将数据备份到 MinIO 中。
 * 挂载 NFS (如 NAS) 盘到 BR 和所有的 TiKV 实例，使用 Posix file system 接口将备份数据写入对应的 NFS 目录中。
 
@@ -76,6 +77,7 @@ TiDB 支持使用 br 工具进行备份恢复。
 
 - 安装方法可以使用[使用 TiUP 在线安装](/migration-tools.md#使用-tiup-快速安装)：`tiup install br`。
 - 了解如何使用 `br` 命令含工具进行备份和恢复，请参阅
+
   - [全量备份恢复 —— 快照备份和恢复功能使用](/br-refactor/br-use-guide/br-snapshot-guide.md)
   - [日志备份和 PITR 功能使用](/br-refactor/br-use-guide/br-pitr-guide.md)
   - [TiDB 集群备份和恢复实践示例](/br-refactor/br-use-guide/br-usage.md)

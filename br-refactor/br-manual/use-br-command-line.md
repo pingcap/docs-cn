@@ -40,7 +40,7 @@ br 由多层命令组成。目前，BR 包含的重要命令有：
 ### 常用选项
 
 * `--pd`：PD 访问地址选项，例如 `"${PDIP}:2379"`
-* `-s, --storage`: 备份数据的存储地址选项。BR 支持以 S3/GCS/Azure Blob Storage/NFS 为备份存储。详细配置参考[备份存储](xxx) 
+* `-s, --storage`: 备份数据的存储地址选项。BR 支持以 S3/GCS/Azure Blob Storage/NFS 为备份存储。详细参考[备份存储 URL 配置](/br-refactor/backup-and-restore-storages.md#url-格式)。 
 * `--ca`：指定 PEM 格式的受信任 CA 的证书文件路径。
 * `--cert`：指定 PEM 格式的 SSL 证书文件路径。
 * `--key`：指定 PEM 格式的 SSL 证书密钥文件路径。

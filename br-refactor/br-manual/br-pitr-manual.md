@@ -81,7 +81,7 @@ Global Flags:
 - `--start-ts`：指定开始备份日志的起始时间点。如果未指定，备份程序选取当前时间作为 start-ts。
 - `--pd`：指定备份集群的 PD 访问地址。BR 需要访问 PD 发起日志备份任务。
 - `ca`,`cert`,`key`：指定使用 mTLS 加密方式与 TiKV 和 PD 进行通讯。
-- `--storage`：指定备份存储地址。日志备份支持以 S3/GCS/Azure Blob Storage 为备份存储，以上命令以 S3 为示例。详细配置参考[备份存储](xxx) 
+- `--storage`：指定备份存储地址。日志备份支持以 S3/GCS/Azure Blob Storage 为备份存储，以上命令以 S3 为示例。详细参考[备份存储 URL 配置](/br-refactor/backup-and-restore-storages.md#url-格式)。
 
 使用示例：
 

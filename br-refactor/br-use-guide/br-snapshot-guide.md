@@ -27,7 +27,7 @@ tiup br backup full --pd "${PD IP}:2379" \
 
 - `--backupts`：快照对应的物理时间点。如果该快照的数据被 GC 了，那么 `br backup` 命令会报错退出；如果你没有指定该参数，那么 br 会选取备份开始的时间点所对应的快照。
 - `--ratelimit`：**每个 TiKV** 备份数据的速度上限（单位 MiB/s）。
-- `storage`: 数据备份到的存储地址。快照备份支持以 S3/GCS/Azure Blob Storage 为备份存储，以上命令以 S3 为示例。详细配置参考[备份存储](xxx) 
+- `storage`: 数据备份到的存储地址。快照备份支持以 S3/GCS/Azure Blob Storage 为备份存储，以上命令以 S3 为示例。详细参考[备份存储 URL 配置](/br-refactor/backup-and-restore-storages.md#url-格式)。
 
 备份时间有进度条会在终端显示，进度条效果如下。在备份完成后，br 会输出备份耗时、速度、备份数据大小等信息。
 
