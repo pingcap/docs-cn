@@ -161,9 +161,9 @@ Range 分区在下列条件之一或者多个都满足时，尤其有效：
 * 使用包含时间或者日期的列，或者是其它按序生成的数据。
 * 频繁查询分区使用的列。例如执行这样的查询 `EXPLAIN SELECT COUNT(*) FROM employees WHERE separated BETWEEN '2000-01-01' AND '2000-12-31' GROUP BY store_id;` 时，TiDB 可以迅速确定，只需要扫描 `p2` 分区的数据，因为其它的分区不满足 `where` 条件。
 
-### Range INTERVAL partitioning
+### Range INTERVAL 分区
 
-TiDB v6.3.0 新增了 INTERVAL partitioning 特性，作为语法糖（syntactic sugar）引入。其语法如下：
+TiDB v6.3.0 新增了 INTERVAL 分区特性，作为语法糖（syntactic sugar）引入。其语法如下：
 
 ```
 PARTITION BY RANGE [COLUMNS] (<partitioning expression>)
