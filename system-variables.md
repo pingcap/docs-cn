@@ -206,7 +206,7 @@ mysql> SELECT * FROM t1;
 - Persists to cluster: Yes
 - Type: Enumeration
 - Default value: `mysql_native_password`
-- Possible values: `mysql_native_password` and `caching_sha2_password`
+- Possible values: `mysql_native_password`, `caching_sha2_password`, and `tidb_sm3_password`
 - This variable sets the authentication method that the server advertises when the server-client connection is being established.
 
 <CustomContent platform="tidb">

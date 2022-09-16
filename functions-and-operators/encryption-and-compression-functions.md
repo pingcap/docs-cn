@@ -17,6 +17,7 @@ TiDB supports most of the [encryption and compression functions](https://dev.mys
 | [`RANDOM_BYTES()`](https://dev.mysql.com/doc/refman/5.7/en/encryption-functions.html#function_random-bytes)                                           | Return a random byte vector                       |
 | [`SHA1(), SHA()`](https://dev.mysql.com/doc/refman/5.7/en/encryption-functions.html#function_sha1)                                                    | Calculate an SHA-1 160-bit checksum               |
 | [`SHA2()`](https://dev.mysql.com/doc/refman/5.7/en/encryption-functions.html#function_sha2)                                                           | Calculate an SHA-2 checksum                       |
+| [`SM3()`](https://en.wikipedia.org/wiki/SM3_(hash_function))                                                    | Calculate an SM3 checksum (currently MySQL does not support this function)                      |
 | [`AES_DECRYPT()`](https://dev.mysql.com/doc/refman/5.7/en/encryption-functions.html#function_aes-decrypt)                                             | Decrypt using AES                                 |
 | [`AES_ENCRYPT()`](https://dev.mysql.com/doc/refman/5.7/en/encryption-functions.html#function_aes-encrypt)                                             | Encrypt using AES                                 |
 | [`COMPRESS()`](https://dev.mysql.com/doc/refman/5.7/en/encryption-functions.html#function_compress)                                                   | Return result as a binary string                  |
