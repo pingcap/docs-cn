@@ -9,7 +9,7 @@ aliases: ['/docs-cn/dev/sync-diff-inspector/upstream-downstream-diff/','/docs-cn
 
 Syncpoint 通过利用 TiDB 提供的 snapshot 特性，让 TiCDC 在同步过程中维护了一个上下游具有一致性 snapshot 的 `ts-map`。把校验动态数据的一致性问题转化为了校验静态 snapshot 数据的一致性问题，达到了接近数据一致性实时校验的效果。
 
-你可以在创建同步任务时把 `enable-sync-point` 设置为 `true` 来开启 SyncPoint 功能。如果开启了 Syncpoint 功能，那么 TiCDC 在数据的同步过程中会根据你所配置的 `sync-point-interval` 来定时对齐上下游的 snapshot, 并将上下游的 TSO 对应关系保存在下游的 `tidb_cdc.syncpoint_v1` 表中。
+要开启 SyncPoint 功能，你可以在创建同步任务时把 TiCDC 的配置项 `enable-sync-point` 设置为 `true`。开启 Syncpoint 功能后，TiCDC 在数据的同步过程中会根据你所配置的 TiCDC 参数 `sync-point-interval` 来定时对齐上下游的 snapshot，并将上下游的 TSO 对应关系保存在下游的 `tidb_cdc.syncpoint_v1` 表中。
 
 然后，你只需要在 sync-diff-inspector 中配置 `snapshot` 即可对 TiDB 主从集群的数据进行校验。以下为创建一个开启 Syncpoint 功能的同步任务的配置示例。
 
