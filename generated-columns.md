@@ -113,7 +113,7 @@ ERROR 1048 (23000): Column 'city' cannot be null
 
 当查询中出现的某个表达式与一个含索引的生成列严格同等时，TiDB 会将这个表达式替换为对应的生成列，这样就可以在生成查询计划时考虑使用这个索引。
 
-下面的例子为 `a+1` 这个表达式创建生成列并添加索引，从而加速了查询。其中，`a` 的类型是 int，而 `a+1` 的列类型是 bigint，如果将生成列的类型定为 int，就不会发生替换。关于类型转换规则，可以参见[表达式求值的类型转换](/functions-and-operators/type-conversion-in-expression-evaluation.md)。
+下面的例子为 `a+1` 这个表达式创建生成列并添加索引，从而加速查询。其中，`a` 的列类型是 int，而 `a+1` 的列类型是 bigint。如果将生成列的类型改为 int，就不会发生替换。关于类型转换的规则，可以参见[表达式求值的类型转换](/functions-and-operators/type-conversion-in-expression-evaluation.md)。
 
 {{< copyable "sql" >}}
 
