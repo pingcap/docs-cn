@@ -142,21 +142,13 @@ You can drop an expression index in the same way as dropping an ordinary index:
 DROP INDEX idx1 ON t1;
 ```
 
-Expression index involves various kinds of expressions. To ensure correctness, only some fully tested functions are allowed for creating an expression index. This means that only these functions are allowed in expressions in a production environment. You can get these functions by querying `tidb_allow_function_for_expression_index` variable.
+Expression index involves various kinds of expressions. To ensure correctness, only some fully tested functions are allowed for creating an expression index. This means that only these functions are allowed in expressions in a production environment. You can get these functions by querying the `tidb_allow_function_for_expression_index` variable. Currently, the allowed functions are as follows:
 
-{{< copyable "sql" >}}
-
-```sql
-mysql> select @@tidb_allow_function_for_expression_index;
-+--------------------------------------------+
-| @@tidb_allow_function_for_expression_index |
-+--------------------------------------------+
-| lower, md5, reverse, upper, vitess_hash    |
-+--------------------------------------------+
-1 row in set (0.00 sec)
+```
+json_array, json_array_append, json_array_insert, json_contains, json_contains_path, json_depth, json_extract, json_insert, json_keys, json_length, json_merge_patch, json_merge_preserve, json_object, json_pretty, json_quote, json_remove, json_replace, json_search, json_set, json_storage_size, json_type, json_unquote, json_valid, lower, md5, reverse, tidb_shard, upper, vitess_hash
 ```
 
-For the functions that are not included in the returned result above, those functions are not fully tested and not recommended for a production environment, which can be seen as experimental. Other expressions such as operators, `cast`, and `case when` are also seen as experimental and not recommended for production.
+For the functions that are not included in the above list, those functions are not fully tested and not recommended for a production environment, which can be seen as experimental. Other expressions such as operators, `cast`, and `case when` are also seen as experimental and not recommended for production.
 
 <CustomContent platform="tidb">
 
