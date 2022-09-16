@@ -513,6 +513,8 @@ drainer_servers:
 
 - `resource_control`: Resource control for the service. If this field is configured, the field content is merged with the `resource_control` content in `global` (if the two fields overlap, the content of this field takes effect). Then, a systemd configuration file is generated and sent to the machine specified in `host`. The configuration rules of `resource_control` are the same as the `resource_control` content in `global`.
 
+- `ticdc_cluster_id`: Specifies the TiCDC cluster ID corresponding to the service. If this field is not specified, the service joins the default TiCDC cluster. This field only takes effect in TiDB v6.3.0 or later versions.
+
 For the above fields, you cannot modify these configured fields after the deployment:
 
 - `host`
@@ -522,6 +524,7 @@ For the above fields, you cannot modify these configured fields after the deploy
 - `log_dir`
 - `arch`
 - `os`
+- `ticdc_cluster_id`
 
 A `cdc_servers` configuration example is as follows:
 
