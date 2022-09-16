@@ -44,11 +44,11 @@ select * from tidb_cdc.syncpoint_v1;;
 
 以上 `syncpoint_v1` 表中各列所代表的信息如下:
 
-- `ticdc_cluster_id`: 插入该条记录的 TiCDC 集群的 ID。
-- `changefeed`: 插入该条记录的 Changefeed 的 ID，由于不同的 TiCDC 集群可能会存在重名的 Changefeed，所以需要通过 TiCDC 集群 ID 和 Changefeed 的 ID 来唯一确认一个 Changefeed 所插入的 `ts-map`。
-- `primary_ts`: 上游数据库 snapshot 的 ts。
-- `secondary_ts`: 下游数据库 snapshot 的 ts。
-- `created_at`: 插入该条记录的时间。
+- `ticdc_cluster_id`：插入该条记录的 TiCDC 集群的 ID。
+- `changefeed`：插入该条记录的 Changefeed 的 ID。由于不同的 TiCDC 集群可能会存在重名的 Changefeed，所以需要通过 TiCDC 集群 ID 和 Changefeed 的 ID 来确认一个 Changefeed 所插入的唯一 `ts-map`。
+- `primary_ts`：上游数据库 snapshot 的时间戳。
+- `secondary_ts`：下游数据库 snapshot 的时间戳。
+- `created_at`：插入该条记录的时间。
 
 
 ## 配置 snapshot
