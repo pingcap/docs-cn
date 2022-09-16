@@ -69,6 +69,8 @@ SELECT * FROM users;
 
 ## 唯一约束
 
+唯一约束是指唯一索引和主键列中所有的非空值都是唯一的。
+
 ### 乐观事务
 
 在 TiDB 的乐观事务中，默认会对唯一约束进行[惰性检查](/transaction-overview.md#惰性检查)。通过在事务提交时再进行批量检查，TiDB 能够减少网络开销、提升性能。例如：
@@ -91,7 +93,6 @@ INSERT INTO users (username) VALUES ('jane'), ('chris'), ('bill');
 ```
 
 ```
-Query OK, 0 rows affected (0.00 sec)
 Query OK, 3 rows affected (0.00 sec)
 Records: 3  Duplicates: 0  Warnings: 0
 ```
