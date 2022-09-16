@@ -3,9 +3,11 @@ title: Physical Import Mode
 summary: 了解 TiDB Lightning 的 Physical Import Mode。
 ---
 
-# Physical Import Mode
+# Physical Import Mode 简介
 
-Physical Import Mode 不经过 SQL 接口，而是直接将数据以键值对的形式插入 TiKV 节点，是一种高效、快速的导入模式。Physical Import Mode 适合导入最高 100 TB 数据量，使用前请务必自行阅读[必要条件及限制](/tidb-lightning/tidb-lightning-physical-import-mode.md#必要条件及限制)。
+Physical Import Mode 是 TiDB Lightning 支持的一种数据导入方式。Physical Import Mode 不经过 SQL 接口，而是直接将数据以键值对的形式插入 TiKV 节点，是一种高效、快速的导入模式。Physical Import Mode 适合导入最高 100 TB 数据量，使用前请务必自行阅读[必要条件及限制](/tidb-lightning/tidb-lightning-physical-import-mode.md#必要条件及限制)。
+
+Physical Import Mode 对应的后端模式为 `local`。
 
 ## 原理说明
 
@@ -46,7 +48,7 @@ Physical Import Mode 不经过 SQL 接口，而是直接将数据以键值对的
 
 **存储空间**：配置项 `sorted-kv-dir` 设置排序的键值对的临时存放地址，目标路径必须是一个空目录，目录空间须大于待导入数据集的大小。建议与 `data-source-dir` 使用不同的存储设备，独占 IO 会获得更好的导入性能，且建议优先考虑配置闪存等高性能存储介质。
 
-**网络**：建议使用 10Gbps 以太网卡。
+**网络**：建议使用 10 Gbps 以太网卡。
 
 ### 版本要求
 
@@ -56,7 +58,7 @@ Physical Import Mode 不经过 SQL 接口，而是直接将数据以键值对的
 
 ### 使用限制
 
-- 请勿直接使用 Physical Import Mode 向已经投入生产的 TiDB 集群导入数据，这将对在线业务产生严重影响。如需向生产集群导入数据，请参考[导入数据到生产集群](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#导入数据到生产集群)。
+- 请勿直接使用 Physical Import Mode 向已经投入生产的 TiDB 集群导入数据，这将对在线业务产生严重影响。如需向生产集群导入数据，请参考[导入时限制调度范围从集群降低到表级别](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#导入时限制调度范围从集群降低到表级别)。
 
 - 默认情况下，不应同时启动多个 TiDB Lightning 实例向同一 TiDB 集群导入数据，而应考虑使用[并行导入](/tidb-lightning/tidb-lightning-distributed-import.md)特性。
 
