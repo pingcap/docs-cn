@@ -18,7 +18,7 @@ summary: 了解如何使用 br log 命令行工具进行日志备份并恢复日
 
 ### 启用日志备份
 
-使用日志备份功能前，需将 TiKV 配置项 [`log-backup.enable`](/tikv-configuration-file.md#enable-从-v620-版本开始引入) 设为 `true`。修改配置参数的方法，请参考[修改配置参数](/maintain-tidb-using-tiup.md#修改配置参数)。
+使用日志备份功能前，需确保 TiKV 配置项 [`log-backup.enable`](/tikv-configuration-file.md#enable-从-v620-版本开始引入) 设为默认值 `true`。修改配置参数的方法，请参考[修改配置参数](/maintain-tidb-using-tiup.md#修改配置参数)。
 
 ## 使用日志备份
 
