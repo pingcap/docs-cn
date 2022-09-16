@@ -134,9 +134,20 @@
     - [使用 TiUP（推荐）](/scale-tidb-using-tiup.md)
     - [使用 TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/scale-a-tidb-cluster)
   - 备份与恢复
-    - [使用 BR 备份集群](/br-usage-backup-for-maintain.md)
-    - [使用 BR 恢复集群](/br-usage-restore-for-maintain.md)
-    - [BR 备份恢复场景示例](/backup-and-restore-use-cases-for-maintain.md)
+    - [TiDB 备份恢复功能介绍](/br-refactor/br-overview.md)
+    - [TiDB 备份恢复架构设计](/br-refactor/br-architecture.md)
+    - [备份存储支持](/br-refactor/backup-and-restore-storages.md)
+    - [使用 br 进行备份与恢复](/br-refactor/br-use-guide/br-use-overview.md)
+      - [使用 br 进行（全量）快照备份与恢复](/br-refactor/br-use-guide/br-snapshot-guide.md)
+      - [使用 br 进行 PITR](/br-refactor/br-use-guide/br-pitr-guide.md)
+      - [备份与恢复场景使用示例](/br-refactor/br-use-guide/br-usage.md)
+    - [br cli 命令手册](/br-refactor/br-manual/use-br-command-line.md)
+    - 参考指南
+      - BR 特性设计
+        - [自动调节](/br-refactor/br-features-design/br-auto-tune.md)
+        - [批量建表](/br-refactor/br-features-design/br-batch-create-table.md)
+      - [使用 Dumpling 和 TiDB Lightning 备份和恢复数据](/backup-and-restore-using-dumpling-lightning.md)
+      - [BR 常见问题](/faq/br-faq.md)
   - [修改时区](/configure-time-zone.md)
   - [日常巡检](/daily-check.md)
   - [TiFlash 常用运维操作](/tiflash/maintain-tiflash.md)

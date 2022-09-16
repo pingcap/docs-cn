@@ -78,9 +78,9 @@ TiDB 支持使用 br 工具进行备份恢复。
 * 安装方法可以使用[使用 TiUP 在线安装](/migration-tools.md#使用-tiup-快速安装)：`tiup install br`。
 * 了解如何使用 `br` 命令含工具进行备份和恢复，请参阅
 
-  * [（全量）快照备份和恢复功能使用](/br-refactor/br-use-guide/br-snapshot-guide.md)
-  * [日志备份和 PITR 功能使用](/br-refactor/br-use-guide/br-pitr-guide.md)
-  * [TiDB 集群备份和恢复实践示例](/br-refactor/br-use-guide/br-usage.md)
+    * [（全量）快照备份和恢复功能使用](/br-refactor/br-use-guide/br-snapshot-guide.md)
+    * [日志备份和 PITR 功能使用](/br-refactor/br-use-guide/br-pitr-guide.md)
+    * [TiDB 集群备份和恢复实践示例](/br-refactor/br-use-guide/br-usage.md)
 
 ### 通过 SQL 语句
 
