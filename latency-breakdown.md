@@ -199,7 +199,7 @@ read value duration(from disk) =
     sum(rate(tikv_storage_rocksdb_perf{metric="block_read_time",req="batch_get"})) / sum(rate(tikv_storage_rocksdb_perf{metric="block_read_count",req="batch_get"}))
 ```
 
-TiKV 会首先得到一个快照，然后从同一个快照中读取多个值。read 操作的耗时和[点查](#点查-point-get)中的一致。当数据从磁盘中读取时，其平均耗时可以通过带有 `req="batch_get"` 属性的 `tikv_storage_rocksdb_perf` 来计算。
+TiKV 会首先得到一个快照，然后从同一个快照中读取多个值。read 操作的耗时和[点查](#点查-point-get)中的一致。当从磁盘中读取数据时，其平均耗时可以通过带有 `req="batch_get"` 属性的 `tikv_storage_rocksdb_perf` 来计算。
 
 ### 表扫描和索引扫描 (Table Scan 和 Index Scan)
 
@@ -422,6 +422,7 @@ tikv_grpc_msg_duration_seconds{type="kv_pessimistic_lock"} =
 ```
 
 - 自 TiDB v6.0 起，TiKV 默认使用[内存悲观锁](/pessimistic-transaction.md#内存悲观锁)。内存悲观锁会跳过异步写入的过程。
+- `tikv_storage_engine_async_request_duration_seconds{type="snapshot"}`是快照类型耗时，详情请参考 [TiKV 快照](#tikv-快照)小节.
 - `lock in-mem key count` 和 `lock on-disk key count` 使用如下方式计算：
 
     ```text
@@ -607,11 +608,11 @@ Diagram(
 
 - 总体的发送请求耗时看作 `tidb_tikvclient_request_seconds`。
 - RPC 客户端为每个存储维护各自的连接池（称为 ConnArray），每个连接池都包含带有一个发送批量请求 channel 的 BatchConn
-- 批量请求会在存储是 TiKV 并且 batch 大小为正数时开启。这符合绝大多数的情况。
-- 批量请求 channel 的大小是 [`tikv-client.max-batch-size`](/tidb-configuration-file.md#max-batch-size)（默认值为 `128`）。请求入队的耗时看作 `tidb_tikvclient_batch_wait_duration`。
-- 一共有 `CmdBatchCop`、`CmdCopStream` 和 `CmdMPPConn` 三种流式请求。流式请求会引入一个额外的 `recv()` 调用来获取流中的第一个相应。
+- 绝大多数情况下，当存储是 TiKV 并且 batch 大小为正数时，批量请求开启。
+- 批量请求 channel 的大小是 [`tikv-client.max-batch-size`](/tidb-configuration-file.md#max-batch-size) 的值（默认值为 `128`）。请求入队的耗时看作 `tidb_tikvclient_batch_wait_duration`。
+- 一共有 `CmdBatchCop`、`CmdCopStream` 和 `CmdMPPConn` 三种流式请求。流式请求会引入一个额外的 `recv()` 调用来获取流中的第一个响应。
 
-尽管有一些延迟没有被考虑，`tidb_tikvclient_request_seconds` 大致使用如下方式计算：
+`tidb_tikvclient_request_seconds` 大致使用如下方式计算（部分延迟不包含在内）：
 
 ```text
 tidb_tikvclient_request_seconds{type="?"} =
@@ -644,7 +645,7 @@ Diagram(
 )
 ```
 
-一个 TiKV 快照的总体耗时可以使用 `tikv_storage_engine_async_request_duration_seconds{type="snapshot"}` 指标观察，它的计算方式如下：
+一个 TiKV 快照的总体耗时可以从 `tikv_storage_engine_async_request_duration_seconds{type="snapshot"}` 指标查看，它的计算方式如下：
 
 ```text
 tikv_storage_engine_async_request_duration_seconds{type="snapshot"} =
@@ -866,7 +867,7 @@ tikv_raftstore_apply_log_duration_seconds =
 
 ### 慢写入查询
 
-在分析慢写入查询之前，你需要检查 `tikv_scheduler_latch_wait_duration_seconds_sum{type="acquire_pessimistic_lock"} by (instance)` 指标来确认冲突的原因：
+在分析慢写入查询之前，你需要查看 `tikv_scheduler_latch_wait_duration_seconds_sum{type="acquire_pessimistic_lock"} by (instance)` 指标来确认冲突的原因：
 
 - 如果这个指标在某些特定的 TiKV 实例中很高，则在热点区域可能会存在冲突。
 - 如果这个指标在所有实例中都很高，则业务中可能存在冲突。
