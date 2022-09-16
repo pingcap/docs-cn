@@ -1856,6 +1856,7 @@ explain select * from t where age=5;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
+- 类型：布尔型
 - 默认值：`ON`
 - 该变量用于控制在 MPP 模式下是否将 `COUNT(DISTINCT)` 聚合改写为三阶段分布式执行的聚合。
 - 该变量目前仅对只有一个 `COUNT(DISTINCT)` 的聚合生效。
