@@ -581,7 +581,7 @@ Empty set (0.00 sec)
 
 * [Placement Rules in SQL](/placement-rules-in-sql.md)：Placement Policy 定义相同。
 * [TiFlash](/tikv-overview.md)：TiFlash Replica 数量相同。
-* [聚簇索引](/clustered-indexes.md)：分区表和非分区表要么都是聚簇索引，要么都不是聚簇索引。
+* [聚簇索引](/clustered-indexes.md)：分区表和非分区表要么都是聚簇索引 (CLUSTERED)，要么都不是聚簇索引 (NONCLUSTERED)。
 
 此外，`EXCHANGE PARTITION` 和其他组件兼容性上存在一些限制，需要保证分区表和非分区表的一致性：
 
