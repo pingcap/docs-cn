@@ -289,9 +289,9 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 8147
 
-   当 [`tidb_constraint_check_in_place_pessimistic`](/system-variables.md#tidb_constraint_check_in_place_pessimistic-从-v630-版本开始引入) 设置为 0 时，悲观事务中的唯一约束检查可能无法通过，导致 SQL 语句执行报错并中止当前事务。
+   当 [`tidb_constraint_check_in_place_pessimistic`](/system-variables.md#tidb_constraint_check_in_place_pessimistic-从-v630-版本开始引入) 设置为 `0` 时，悲观事务中的唯一约束检查可能无法通过，导致 SQL 语句执行报错并中止当前事务。
 
-   当 [`tidb_constraint_check_in_place_pessimistic`](/system-variables.md#tidb_constraint_check_in_place_pessimistic-从-v630-版本开始引入) 设置为 1 时，为保证事务的正确性，SQL 语句执行时产生的任何错误都可能导致 TiDB 返回 `8147` 报错并中止当前事务。具体的错误原因，请参考对应的报错信息。
+   当 [`tidb_constraint_check_in_place_pessimistic`](/system-variables.md#tidb_constraint_check_in_place_pessimistic-从-v630-版本开始引入) 设置为 `1` 时，为保证事务的正确性，SQL 语句执行时产生的任何错误都可能导致 TiDB 返回 `8147` 报错并中止当前事务。具体的错误原因，请参考对应的报错信息。
 
 * Error Number: 8200
 
