@@ -23,9 +23,9 @@ TiDB 版本：6.3.0-DMR
 
 ### SQL
 
-* 新增简化 Range 分区定义的语法糖（syntactic sugar）[#35683](https://github.com/pingcap/tidb/issues/35683) @[mjonss](https://github.com/mjonss)
+* 新增简化 Range 分区定义的语法糖 (syntactic sugar) Range INTERVAL 分区特性 [#35683](https://github.com/pingcap/tidb/issues/35683) @[mjonss](https://github.com/mjonss)
 
-    [提供了新的定义 Range 分区的方式](/partitioned-table.md#range-interval-partitioning)，不需要枚举所有分区，可大幅度缩短现有 Range 分区表定义语句冗长的书写方式。语义与原有 Range 分区等价。
+    提供了新的定义 Range 分区的方式 [Range INTERVAL 分区](/partitioned-table.md#range-interval-partitioning)，不需要枚举所有分区，可大幅度缩短现有 Range 分区表定义语句冗长的书写方式。语义与原有 Range 分区等价。
 
 * Range Columns 分区方式支持定义多列 [#36636](https://github.com/pingcap/tidb/issues/36636) @[mjonss](https://github.com/mjonss)
 
