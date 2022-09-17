@@ -83,12 +83,11 @@ PITR 可用于满足以下业务需求：
 
 - 单个集群只支持启动一个日志备份任务。
 - 仅支持恢复到空集群。为了避免对集群的业务请求和数据产生影响，不能在原集群（in-place）和其他已有数据集群执行 PITR。
-- 存储支持 AWS S3 和共享的文件系统（如 NFS 等），暂不支持使用 GCS 和 Azure Blob Storage 作为备份存储。
+- 存储支持共享的文件系统（如 NFS 等）、 AWS S3、GCS 和 Azure Blob Storage 作为备份存储，详细介绍请参考 [AWS S3 storage](/br/backup-storage-S3.md)、[GCS storage](/br/backup-storage-gcs.md) 和 [Azure blob storage](/br/backup-storage-azblob.md)。
 - 仅支持集群粒度的 PITR，不支持对单个 database 或 table 执行 PITR。
 - 不支持恢复用户表和权限表的数据。
 - 如果备份集群包含 TiFlash，执行 PITR 后恢复集群的数据不包含 TiFlash 副本，而是需要在恢复完成之后从 TiKV 同步数据，这会消耗一定时间。因此，恢复完成之后，TiFlash 不会立即可用。
 - 上游数据库使用 TiDB Lightning Physical 方式导入的数据，无法作为数据日志备份下来。推荐在数据导入后执行一次全量备份，细节参考[上游数据库使用 TiDB Lightning Physical 方式导入数据的恢复](/br/pitr-known-issues.md#上游数据库使用-tidb-lightning-physical-方式导入数据导致无法使用日志备份功能)。
-- 备份过程中不支持分区交换 (Exchange Partition)，参考[日志备份过程中执行分区交换](/br/pitr-troubleshoot.md#日志备份过程中执行分区交换-exchange-partition-ddl在-pitr-恢复时会报错该如何处理)。
 - 不支持在恢复中重复恢复某段时间区间的日志，如果多次重复恢复 [t1=10, t2=20) 区间的日志备份数据，可能会造成恢复后的数据不一致。
 - 其他已知问题，请参考 [PITR 已知问题](/br/pitr-known-issues.md)。
 

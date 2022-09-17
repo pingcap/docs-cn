@@ -79,13 +79,3 @@ Error: failed to check gc safePoint, checkpoint ts 433177834291200000: GC safepo
 暂停日志备份任务后，备份程序为了防止生成变更日志的 MVCC 数据被 GC，暂停任务程序会自动将当前备份点 checkpoint 设置为 service safepoint，允许保留最近 24 小时内的 MVCC 数据。当超过 24 小时后，备份点 checkpoint 的 MVCC 数据已经被 GC，此时程序会拒绝恢复备份任务。
 
 此场景的处理办法是：先执行 `br log stop` 命令来删除当前的任务，然后执行 `br log start` 重新创建新的日志备份任务，同时做一个全量备份，便于后续做 PITR 恢复操作。
-
-## 日志备份过程中执行分区交换 (Exchange Partition) DDL，在 PITR 恢复时会报错，该如何处理？
-
-在执行 PITR 恢复日志过程中，出现如下报错：
-
-```shell
-restore of ddl `exchange-table-partition` is not supported
-```
-
-因为当前 v6.2.0 版本的日志备份功能尚且不兼容分区交换 (Exchange Partition) DDL，在使用日志备份功能时，应尽量避免执行分区交换 DDL。如果已经执行此 DDL，需要立即做一次全量备份操作，PITR 即可恢复本次全量备份点之后的日志数据。
