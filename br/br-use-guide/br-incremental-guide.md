@@ -9,7 +9,7 @@ TiDB 集群增量数据包含在某个时间段的起始和结束两个快照的
 
 > **警告：**
 >
-> 当前该功能已经停止开发迭代，推荐你选[择日志备份和恢复功能](/br-refactor/br-use-guide/br-pitr-guide.md)代替。
+> 当前该功能已经停止开发迭代，推荐你选[择日志备份和恢复功能](/br/br-use-guide/br-pitr-guide.md)代替。
 
 ## 对集群进行增量备份
 
@@ -29,7 +29,7 @@ tiup br backup full --pd ${PDIP}:2379 --storage "s3://backup-101/snapshot-202209
 
 - `--lastbackupts`：上一次的备份时间戳.
 - `--ratelimit`：**每个 TiKV** 执行备份任务的速度上限（单位 MiB/s）。
-- `storage`: 数据备份到存储地址。 增量备份数据需要与快照备份数据保存在不同的路径下，例如上例保存在全量备份数据下的 `incr` 目录中。详细参考[备份存储 URL 配置](/br-refactor/backup-and-restore-storages.md#url-格式)。
+- `storage`: 数据备份到存储地址。 增量备份数据需要与快照备份数据保存在不同的路径下，例如上例保存在全量备份数据下的 `incr` 目录中。详细参考[备份存储 URL 配置](/br/backup-and-restore-storages.md#url-格式)。
 
 ## 恢复增量备份数据
 

@@ -27,7 +27,7 @@ tiup br backup full --pd "${PD IP}:2379" \
 
 - `--backupts`：快照对应的物理时间点。如果该快照的数据被 GC 了，那么 `br backup` 命令会报错退出；如果你没有指定该参数，那么 br 会选取备份开始的时间点所对应的快照。
 - `--ratelimit`：**每个 TiKV** 备份数据的速度上限（单位 MiB/s）。
-- `storage`: 数据备份到的存储地址。快照备份支持以 S3/GCS/Azure Blob Storage 为备份存储，以上命令以 S3 为示例。详细参考[备份存储 URL 配置](/br-refactor/backup-and-restore-storages.md#url-格式)。
+- `storage`: 数据备份到的存储地址。快照备份支持以 S3/GCS/Azure Blob Storage 为备份存储，以上命令以 S3 为示例。详细参考[备份存储 URL 配置](/br/backup-and-restore-storages.md#url-格式)。
 
 备份时间有进度条会在终端显示，进度条效果如下。在备份完成后，br 会输出备份耗时、速度、备份数据大小等信息。
 
@@ -167,6 +167,6 @@ TiDB 备份功能对集群性能（事务延迟和 QPS）有一定的影响，�
 
 ## 进一步阅读
 
-* [TiDB 集群备份和恢复实践示例](/br-refactor/use-guide/br-usage.md)
-* [br 命令行手册](/br-refactor/br-manual/use-br-command-line.md)
-* [快照备份和恢复架构设计](/br-refactor/br-snapshot-architecture.md)
+* [TiDB 集群备份和恢复实践示例](/br/use-guide/br-usage.md)
+* [br 命令行手册](/br/br-manual/use-br-command-line.md)
+* [快照备份和恢复架构设计](/br/br-snapshot-architecture.md)

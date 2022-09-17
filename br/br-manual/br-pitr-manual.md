@@ -1,41 +1,24 @@
 ---
-title: 使用 BR 进行日志备份与恢复
-summary: 了解如何使用 br log 命令行工具进行日志备份并恢复日志备份的数据。
+title: 日志备份与 PITR 命令行手册
+summary: 介绍日志备份和 PITR 命令行
 ---
 
-# 使用 BR 进行日志备份与恢复
+# 日志备份与 PITR 命令行手册
 
-通过使用 `br log` 命令，你可以对 TiDB 集群进行日志备份。本文档介绍 `br log` 命令的使用方法。
+本文介绍 TiDB 日志备份和 PITR 命令行。
 
-## 前置条件
+如果你想了解如何进行备份和恢复，可以参考以下教程
 
-### 安装 BR
+- [日志备份和 PITR 功能使用指南](/br/use-guide/br-pitr-guide.md)
+- [TiDB 集群备份和恢复实践示例](/br/use-guide/br-usage.md)
 
-使用日志备份前，你需要安装 BR。你可以选择以下任一方式安装 BR：
-
-* [使用 TiUP 在线安装](/migration-tools.md#使用-tiup-快速安装)（推荐）
-* [下载 TiDB 离线包](/download-ecosystem-tools.md)
-
-### 启用日志备份
+## 打开日志备份功能开关
 
 使用日志备份功能前，需将 TiKV 配置项 [`log-backup.enable`](/tikv-configuration-file.md#enable-从-v620-版本开始引入) 设为 `true`。修改配置参数的方法，请参考[修改配置参数](/maintain-tidb-using-tiup.md#修改配置参数)。
 
-## 使用日志备份
+## 日志备份命令行介绍
 
-你可以使用 `br log` 命令来备份日志，通过该命令的子命令，你可以完成如下操作：
-
-- 启动日志备份
-- 查询备份状态
-- 暂停和重启备份
-- 停止备份任务并删除备份数据
-- 清理备份数据
-- 查看元信息
-
-本章节将介绍 `br log` 的子命令，并以示例介绍如何完成以上操作。
-
-### `br log` 子命令
-
-执行如下命令，可获取 `br log` 的命令帮助信息：
+使用 `br log` 命令来打开和管理备份日志。
 
 ```shell
 ./br log --help
@@ -65,7 +48,7 @@ Available Commands:
 - `br log truncate`：从备份存储中清理日志备份数据
 - `br log metadata`：查询备份存储中备份数据的元信息
 
-### 启动日志备份任务
+### 启动日志备份
 
 执行 `br log start` 命令，你可以在备份集群启动一个日志备份任务。该任务在 TiDB 集群持续地运行，及时地将 KV 变更日志保存到备份存储中。
 
@@ -98,12 +81,12 @@ Global Flags:
 - `--start-ts`：指定开始备份日志的起始时间点。如果未指定，备份程序选取当前时间作为 start-ts。
 - `--pd`：指定备份集群的 PD 访问地址。BR 需要访问 PD 发起日志备份任务。
 - `ca`,`cert`,`key`：指定使用 mTLS 加密方式与 TiKV 和 PD 进行通讯。
-- `--storage`：指定备份存储地址。日志备份暂时只支持共享的文件系统和 Amazon S3 作为备份存储，详细介绍请参考 [AWS S3 storage](/br/backup-storage-S3.md)。
+- `--storage`：指定备份存储地址。日志备份支持以 S3/GCS/Azure Blob Storage 为备份存储，以上命令以 S3 为示例。详细参考[备份存储 URL 配置](/br/backup-and-restore-storages.md#url-格式)。
 
 使用示例：
 
 ```shell
-./br log start --task-name=pitr --pd=172.16.102.95:2379 --storage='s3://tidb-pitr-bucket/backup-data/log-backup'
+./br log start --task-name=pitr --pd=172.16.102.95:2379 --storage='s3://backup-101/logbackup?access_key=${access key}&secret_access_key=${secret access key}"'
 ```
 
 ### 查询日志备份任务
@@ -149,7 +132,7 @@ Global Flags:
             status: ● NORMAL
              start: 2022-07-14 20:08:03.268 +0800
                end: 2090-11-18 22:07:45.624 +0800
-           storage: s3://tmp/store-by-storeid/log1
+           storage: s3://backup-101/logbackup
        speed(est.): 0.82 ops/s
 checkpoint[global]: 2022-07-25 22:52:15.518 +0800; gap=2m52s
 ```
@@ -292,12 +275,12 @@ Global Flags:
 
 - `--dry-run`：运行命令，但是不删除文件。
 - `--until`：早于该参数指定时间点的日志备份数据会被删除。建议使用快照备份的时间点作为该参数值。
-- `--storage`：指定备份存储地址。日志备份暂时只支持共享的文件系统和 Amazon S3 作为备份存储，详细介绍请参考 [AWS S3 storage](/br/backup-storage-S3.md)。
+- `--storage`：指定备份存储地址。日志备份支持以 S3/GCS/Azure Blob Storage 为备份存储，以上命令以 S3 为示例。详细参考[备份存储 URL 配置](/br/backup-and-restore-storages.md#url-格式)。
 
 使用示例：
 
 ```shell
-./br log truncate --until='2022-07-26 21:20:00+0800' –-storage='s3://tidb-pitr-bucket/backup-data/log-backup'
+./br log truncate --until='2022-07-26 21:20:00+0800' –-storage='s3://backup-101/logbackup?access_key=${access key}&secret_access_key=${secret access key}"'
 ```
 
 该子命令运行后输出以下信息：
@@ -337,7 +320,7 @@ Global Flags:
 使用示例：
 
 ```shell
-./br log metadata –-storage='s3://tidb-pitr-bucket/backup-data/log-backup'
+./br log metadata –-storage='s3://backup-101/logbackup?access_key=${access key}&secret_access_key=${secret access key}"'
 ```
 
 该子命令运行后输出以下信息：
@@ -346,7 +329,7 @@ Global Flags:
 [2022/07/25 23:02:57.236 +08:00] [INFO] [collector.go:69] ["log metadata"] [log-min-ts=434582449885806593] [log-min-date="2022-07-14 20:08:03.268 +0800"] [log-max-ts=434834300106964993] [log-max-date="2022-07-25 23:00:15.618 +0800"]
 ```
 
-## 恢复日志备份数据
+## 恢复到指定时间点 PITR
 
 执行 `br restore point` 命令，你可以在新集群上进行 PiTR ，或者只恢复日志备份数据。
 
@@ -387,12 +370,17 @@ Global Flags:
 
 ```shell
 ./br restore point --pd=172.16.102.95:2379
---storage='s3://tidb-pitr-bucket/backup-data/log-backup'
---full-backup-storage='s3://tidb-pitr-bucket/backup-data/snapshot-20220512000000'
+--storage='s3://backup-101/logbackup?access_key=${access key}&secret_access_key=${secret access key}"'
+--full-backup-storage='s3://backup-101/snapshot-202205120000?access_key=${access key}&secret_access_key=${secret access key}"'
 
 Full Restore <--------------------------------------------------------------------------------------------------------------------------------------------------------> 100.00%
-[2022/07/19 18:15:39.132 +08:00] [INFO] [collector.go:69] ["Full Restore success summary"] [total-ranges=12] [ranges-succeed=12] [ranges-failed=0] [split-region=546.663µs] [restore-ranges=3] [total-take=3.112928252s] [restore-data-size(after-compressed)=5.056kB] [Size=5056] [BackupTS=434693927394607136] [total-kv=4] [total-kv-size=290B] [average-speed=93.16B/s]
+*** ***["Full Restore success summary"] ****** [total-take=3.112928252s] [restore-data-size(after-compressed)=5.056kB] [Size=5056] [BackupTS=434693927394607136] [total-kv=4] [total-kv-size=290B] [average-speed=93.16B/s]
 Restore Meta Files <--------------------------------------------------------------------------------------------------------------------------------------------------> 100.00%
 Restore KV Files <----------------------------------------------------------------------------------------------------------------------------------------------------> 100.00%
-[2022/07/19 18:15:39.325 +08:00] [INFO] [collector.go:69] ["restore log success summary"] [total-take=192.955533ms] [restore-from=434693681289625602] [restore-to=434693753549881345] [total-kv-count=33] [total-size=21551]
+"restore log success summary"] [total-take=192.955533ms] [restore-from=434693681289625602] [restore-to=434693753549881345] [total-kv-count=33] [total-size=21551]
 ```
+
+> **注意：**
+>
+> - 不支持重复恢复某段时间区间的日志，如多次重复恢复 [t1=10, t2=20) 区间的日志数据，可能会造成恢复后的数据不正确。
+> - 多次恢复不同时间区间的日志时，需保证恢复日志的连续性。如先后恢复 [t1, t2)、[t2, t3) 和 [t3, t4) 三个区间的日志可以保证正确性，而在恢复 [t1, t2) 后跳过 [t2, t3) 直接恢复 [t3, t4) 的区间可能导致恢复之后的数据不正确。
