@@ -7,6 +7,10 @@ summary: Learn how to use BR to back up data to and restore data from Amazon S3 
 
 The Backup & Restore (BR) tool supports using Amazon S3 or other Amazon S3-compatible file storages as the external storage for backing up and restoring data.
 
+> **Note:**
+>
+> To back up data to an S3 bucket with Object Lock enabled, make sure that your TiDB cluster is v6.3.0 or later.
+
 ## Application scenarios
 
 By using Amazon S3, you can quickly back up the data of a TiDB cluster deployed on Amazon EC2 to Amazon S3, or quickly restore a TiDB cluster from the backup data in Amazon S3.
