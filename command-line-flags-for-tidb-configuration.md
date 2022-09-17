@@ -108,14 +108,22 @@ When you start the TiDB cluster, you can use command-line options or environment
 >
 > Use `*` with caution because it might introduce security risks by allowing a client of any IP address to report its IP address. In addition, using `*` might also cause the internal component that directly connects to TiDB (such as TiDB Dashboard) to be unavailable.
 
+> **Note:**
+>
+> To use an AWS Network Load Balancer (NLB) with the PROXY protocol enabled, you need to configure the `target group` property of NLB. Specifically, set `proxy_protocol_v2.client_to_server.header_place` to `on_first_ack`. At the same time, you need to submit a ticket to AWS Support. Note that after the PROXY protocol is enabled, the client will fail to obtain handshake packets from the server and the packets are blocked until the client times out. This is because NLB sends proxy packets only after the client sends data. However, before the client sends any data packets, data packets sent by the server are dropped in the internal network.
+
 ## `--proxy-protocol-header-timeout`
 
 - Timeout for the PROXY protocol header read
 - Default: `5` (seconds)
 
-    > **Note:**
-    >
-    > Do not set the value to `0`. Use the default value except for special situations.
+> **Warning:**
+>
+> Since v6.3.0, this parameter is deprecated. It is no longer used because the PROXY protocol header will be read upon the first time network data is read. Deprecating this parameter avoids affecting the timeout set when network data is read for the first time.
+
+> **Note:**
+>
+> Do not set the value to `0`. Use the default value except for special situations.
 
 ## `--report-status`
 
