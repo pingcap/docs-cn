@@ -1088,7 +1088,7 @@ region check miss-peer
 }
 ```
 
-### `scheduler [show | add | remove | pause | resume | config]`
+### `scheduler [show | add | remove | pause | resume | config | describe]`
 
 用于显示和控制调度策略。
 
@@ -1110,7 +1110,22 @@ region check miss-peer
 >> scheduler resume balance-region-scheduler              // 继续运行 balance-region 调度器
 >> scheduler resume all                                   // 继续运行所有的调度器
 >> scheduler config balance-hot-region-scheduler          // 显示 balance-hot-region 调度器的配置
+>> scheduler describe balance-region-scheduler            // 显示 balance-region 的运行状态和相应的诊断信息
 ```
+
+### `scheduler describe balance-region-scheduler`
+
+用于查看 `balance-region-scheduler` 的运行状态和相应的诊断信息。
+
+从 TiDB v6.3.0 起，PD 为 `balance-region-scheduler` 和 `balance-leader-scheduler` 提供了运行状态和简要诊断信息的功能，其余 scheduler 和 checker 暂未支持。你可以通过 `pd-ctl` 修改 [`enable-diagnostic`](/pd-configuration-file.md#enable-diagnostic-从-v630-版本开始引入) 配置项开启该功能。
+
+调度器运行状态有以下几种类型：
+
+- `disabled`：表示当前调度器不可用或被移除。
+- `paused`：表示当前调度器暂停工作。
+- `scheduling`：表示当前调度器正在生成调度。
+- `pending`：表示当前调度器无法产生调度。`pending` 状态的调度器，会返回一个概览信息，来帮助用户诊断。概览信息包含了 store 的一些状态信息，解释了它们为什么不能被选中进行调度。
+- `normal`：表示当前调度器无需进行调度。
 
 ### `scheduler config balance-leader-scheduler`
 

@@ -573,13 +573,21 @@ Empty set (0.00 sec)
 
 `EXCHANGE PARTITION` 语句用来交换分区和非分区表，类似于重命名表如 `RENAME TABLE t1 TO t1_tmp, t2 TO t1, t1_tmp TO t2` 的操作。
 
-例如，`ALTER TABLE partitioned_table EXCHANGE PARTITION p1 WITH TABLE non_partitioned_table` 交换的是 `p1` 分区的 `non_partitioned_table` 表和 `partitioned_table` 表。
+例如，`ALTER TABLE partitioned_table EXCHANGE PARTITION p1 WITH TABLE non_partitioned_table` 交换的是 `p1` 分区的 `partitioned_table` 表和 `non_partitioned_table` 表。
 
-确保要交换入分区中的所有行与分区定义匹配；否则，你将无法找到这些行，并导致意外情况出现。
+确保要交换入分区中的所有行与分区定义匹配；否则，交换将失败。
 
-> **警告：**
->
-> `EXCHANGE PARTITION` 是实验性功能，不建议在生产环境中使用。要启用 `EXCHANGE PARTITION`，将系统变量 `tidb_enable_exchange_partition` 设置为 `ON`。
+请注意对于以下 TiDB 专有的特性，当表结构中包含这些特性时，在 TiDB 中使用 `EXCHANGE PARTITION` 功能不仅需要满足 [MySQL 的 EXCHANGE PARTITION 条件](https://dev.mysql.com/doc/refman/8.0/en/partitioning-management-exchange.html)，还要保证这些专有特性对于分区表和非分区表的定义相同。
+
+* [Placement Rules in SQL](/placement-rules-in-sql.md)：Placement Policy 定义相同。
+* [TiFlash](/tikv-overview.md)：TiFlash Replica 数量相同。
+* [聚簇索引](/clustered-indexes.md)：分区表和非分区表要么都是聚簇索引 (CLUSTERED)，要么都不是聚簇索引 (NONCLUSTERED)。
+
+此外，`EXCHANGE PARTITION` 和其他组件兼容性上存在一些限制，需要保证分区表和非分区表的一致性：
+
+- TiFlash：TiFlash Replica 定义不同时，无法执行 `EXCHANGE PARTITION` 操作。
+- TiCDC：分区表和非分区表都有主键或者唯一键时，TiCDC 同步 `EXCHANGE PARTITION` 操作；反之 TiCDC 将不会同步。
+- TiDB Lightning 和 BR：使用 TiDB Lightning 导入或使用 BR 恢复的过程中，不要执行 `EXCHANGE PARTITION` 操作。
 
 ### Range 分区管理
 
@@ -1296,7 +1304,7 @@ select * from t;
 
 ### 动态裁剪模式
 
-TiDB 访问分区表有两种模式，`dynamic` 和 `static`，目前默认使用 `static` 模式。如果想开启 `dynamic` 模式，需要手动将 `tidb_partition_prune_mode` 设置为 `dynamic`。
+TiDB 访问分区表有两种模式，`dynamic` 和 `static`，目前默认使用 `static` 模式。如果想开启 `dynamic` 模式，需要手动将 `tidb_partition_prune_mode` 设置为 `dynamic`, 并且需要有表级别的汇总统计信息，即 GlobalStats。详见[动态裁剪模式下的分区表统计信息](/statistics.md#动态裁剪模式下的分区表统计信息)。
 
 {{< copyable "sql" >}}
 
@@ -1306,7 +1314,7 @@ set @@session.tidb_partition_prune_mode = 'dynamic'
 
 普通查询和手动 analyze 使用的是 session 级别的 `tidb_partition_prune_mode` 设置，后台的 auto-analyze 使用的是 global 级别的 `tidb_partition_prune_mode` 设置。
 
-静态裁剪模式下，分区表使用的是分区级别的统计信息，而动态裁剪模式下，分区表用的是表级别的汇总统计信息，即 GlobalStats。详见[动态裁剪模式下的分区表统计信息](/statistics.md#动态裁剪模式下的分区表统计信息)。
+静态裁剪模式下，分区表使用的是分区级别的统计信息，而动态裁剪模式下，分区表用的是表级别的汇总统计信息。
 
 从 `static` 静态裁剪模式切到 `dynamic` 动态裁剪模式时，需要手动检查和收集统计信息。在刚切换到 `dynamic` 时，分区表上仍然只有分区的统计信息，需要等到全局 `dynamic` 动态裁剪模式开启后的下一次 `auto-analyze` 周期，才会更新生成汇总统计信息。
 
