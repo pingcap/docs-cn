@@ -37,26 +37,6 @@ Currently, the log backup feature is not fully adapted to TiDB Lightning. Theref
 
 In upstream clusters where you create log backup tasks, avoid using the TiDB Lightning physical mode to import data. Instead, you can use TiDB Lightning logical mode. If you do need to use the physical mode, perform a snapshot backup after the import is complete, so that PITR can be restored to the time point after the snapshot backup.
 
-## When you use the self-built Minio system as the storage for log backups, running `br restore point` or `br log truncate` returns a `RequestCanceled` error
-
-Issue: [#36515](https://github.com/pingcap/tidb/issues/36515)
-
-```shell
-[error="RequestCanceled: request context canceled\ncaused by: context canceled"]
-```
-
-This error occurs because the current log backup generates a large number of small files. The self-built Minio storage system fails to store all these files.
-
-To resolve this issue, you need to upgrade your Minio system to a large distributed cluster, or use the Amazon S3 storage system as the storage for log backups.
-
-## If the cluster load is too high, there are too many Regions, and the storage has reached a performance bottleneck (for example, a self-built Minio system is used as storage for log backups), the backup progress checkpoint delay may exceed 10 minutes
-
-Issue: [#13030](https://github.com/tikv/tikv/issues/13030)
-
-Because the current log backup generates a large number of small files, the self-built Minio system is not able to support the writing requirements, which results in slow backup progress.
-
-To resolve this issue, you need to upgrade your Minio system to a large distributed cluster, or use the Amazon S3 storage system as the storage for log backups.
-
 ## The cluster has recovered from the network partition failure, but the checkpoint of the log backup task progress still does not resume
 
 Issue: [#13126](https://github.com/tikv/tikv/issues/13126)
