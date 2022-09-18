@@ -83,11 +83,10 @@ Testing scenario 2 (on-premises):
 
 - A single cluster can only run one log backup task.
 - You can only restore data to an empty cluster. To avoid impact on the services and data of the cluster, do not perform PITR in-place or on a non-empty cluster.
-- You can use Amazon S3 or a shared filesystem (such as NFS) to store the backup data. Currently, GCS and Azure Blob Storage are not supported.
+- You can store backup data to a shared filesystem (such as NFS), Amazon S3, GCS, or Azure Blob Storage.
 - You can only perform cluster-level PITR. Database-level and table-level PITR are not supported.
 - You cannot restore data in the user tables or the privilege tables.
 - If the backup cluster has a TiFlash replica, after you perform PITR, the restoration cluster does not contain the data in the TiFlash replica. To restore data from the TiFlash replica, you need to [manually configure the TiFlash replica in the schema or the table](/br/pitr-troubleshoot.md#after-restoring-a-downstream-cluster-using-the-br-restore-point-command-data-cannot-be-accessed-from-tiflash-what-should-i-do).
 - If the upstream database uses TiDB Lightning's physical import mode to import data, the data cannot be backed up in log backup. It is recommended to perform a full backup after the data import. For details, refer to [The upstream database uses TiDB Lightning Physical Mode to import data](/br/pitr-known-issues.md#the-upstream-database-imports-data-using-tidb-lightning-in-the-physical-import-mode-which-makes-it-impossible-to-use-the-log-backup-feature).
-- During the backup process, do not exchange partition. For details, refer to [Executing the Exchange Partition DDL during PITR recovery](/br/pitr-troubleshoot.md#what-should-i-do-if-an-error-occurs-when-executing-the-exchange-partition-ddl-during-pitr-log-restoration).
 - Do not restore the log backup data of a certain time period repeatedly. If you restore the log backup data of a range `[t1=10, t2=20)` repeatedly, the restored data might be inconsistent.
 - For other known limitations, refer to [PITR Known Issues](/br/pitr-known-issues.md).

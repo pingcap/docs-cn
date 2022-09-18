@@ -69,13 +69,3 @@ Error: failed to check gc safePoint, checkpoint ts 433177834291200000: GC safepo
 After you pause a log backup task, to prevent the MVCC data from being garbage collected, the pausing task program sets the current checkpoint as the service safepoint automatically. This ensures that the MVCC data generated within 24 hours can remain. If the MVCC data of the backup checkpoint has been generated for more than 24 hours, the data of the checkpoint will be garbage collected, and the backup task is unable to resume.
 
 To address this problem, delete the current task using `br log stop`, and then create a log backup task using `br log start`. At the same time, you can perform a full backup for subsequent PITR.
-
-## What should I do if an error occurs when executing the Exchange Partition DDL during PITR log restoration?
-
-The following error occurs during PITR log restoration:
-
-```
-restore of ddl `exchange-table-partition` is not supported
-```
-
-In v6.2.0, the log backup feature is not compatible with the Exchange Partition DDL. It is recommended not to use this DDL during log backup. If you have executed the DDL, you must perform a full backup immediately. Then, PITR can restore the log data after the full backup checkpoint.
