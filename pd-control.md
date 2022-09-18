@@ -1247,11 +1247,11 @@ scheduler config balance-hot-region-scheduler  // 显示 balance-hot-region 调�
 
 ### `store [delete | cancel-delete | label | weight | remove-tombstone | limit ] <store_id> [--jq="<query string>"]`
 
-#### store 查询
+使用 jq 格式化输出请参考 [jq 格式化 json 输出示例](#jq-格式化-json-输出示例)。
 
-用于显示 store 信息或者删除指定 store。使用 jq 格式化输出请参考 [jq 格式化 json 输出示例](#jq-格式化-json-输出示例)。示例如下。
+#### 查询 store
 
-显示所有 store 信息：
+通过 `store` 显示所有 store 信息：
 
 {{< copyable "" >}}
 
