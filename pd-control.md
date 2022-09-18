@@ -1303,7 +1303,9 @@ store delete 1 // 下线一台 store
 
 #### store label 命令
 
-添加 label，为 store id 为 1 的 store 添加键为 "zone" 的 label 的值为 "cn" 得 label：
+`store label` 用于管理 store label。
+
+为 store id 为 1 的 store 添加键为 `"zone"` 的值为 `"cn"` 的 label：
 
 {{< copyable "" >}}
 
