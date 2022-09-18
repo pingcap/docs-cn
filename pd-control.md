@@ -1288,7 +1288,7 @@ store 1
 store delete 1 // 下线一台 store 
 ```
 
-撤销已使用 store delete 下线并处于 Offline 状态的 store。撤销后，该 store 会从 Offline 状态变为 Up 状态。注意，该命令无法使 Tombstone 状态的 store 变回 Up 状态。以下示例撤销已使用 store delete 下线的 store，其 store id 为 1：
+撤销已使用 `store delete` 下线并处于 Offline 状态的 store。撤销后，该 store 会从 Offline 状态变为 Up 状态。注意，该命令无法使 Tombstone 状态的 store 变回 Up 状态。以下示例撤销已使用 `store delete` 下线的 store id 为 1 的 store，并删除所有 Tombstone 状态的 store：
 
 {{< copyable "" >}}
 
