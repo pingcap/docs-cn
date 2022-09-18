@@ -1356,7 +1356,7 @@ store weight 1 5 10
 
 #### store limit 命令
 
-详细解释：[store limit](/configure-store-limit.md)
+关于 `store limit` 的原理和使用方法，请参考 [`store limit`](/configure-store-limit.md)。
 
 ```bash
 >> store limit                         // 显示所有 store 添加和删除 peer 的速度上限
