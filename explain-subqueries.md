@@ -150,9 +150,9 @@ EXPLAIN SELECT * FROM t3 WHERE t1_id NOT IN (SELECT id FROM t1 WHERE int_col < 1
 
 ## Null-Aware Semi Join（`IN` 和 `= ANY` 子查询）
 
-`IN` 和 `= ANY` 的集合运算符号具有特殊的三值属性（`true`、`false` 和 `NULL`）。这意味着在其所转化得到的 Join 类型中需要对 Join key 两侧的 `NULL` 进行特殊的感知和处理。
+`IN` 和 `= ANY` 的集合运算符号具有特殊的三值属性（`true`、`false` 和 `NULL`）。这意味着在该运算符所转化得到的 Join 类型中需要对 Join key 两侧的 `NULL` 进行特殊的感知和处理。
 
-`IN` 和 `= ANY` 算子引导的子查询会对应地转为 Semi Join 和 Left Outer Semi Join。在上述 [Semi Join](#semi-join关联查询) 小节中，由于示例中 Join key 两侧的列 `test.t1.id` 和 `test.t2.t1_id` 都是 `not NULL` 属性的，所以 Semi Join 本身不需要 Null-Aware 的性质来辅助运算，即不需要特殊处理 `NULL`。当前 TiDB 对于 Null-Aware Semi Join 没有特定的优化，其实现本质都是基于笛卡尔积加过滤 (filter) 的模式。以下为 Null-Aware Semi Join 的例子：
+`IN` 和 `= ANY` 算子引导的子查询会分别转为 Semi Join 和 Left Outer Semi Join。在上述 [Semi Join](#semi-join关联查询) 小节中，示例中 Join key 两侧的列 `test.t1.id` 和 `test.t2.t1_id` 都为 `not NULL` 属性，所以 Semi Join 本身不需要 Null-Aware 的性质来辅助运算，即不需要特殊处理 `NULL`。当前 TiDB 对于 Null-Aware Semi Join 没有特定的优化，其实现本质都是基于笛卡尔积加过滤 (filter) 的模式。以下为 Null-Aware Semi Join 的例子：
 
 ```sql
 CREATE TABLE t(a INT, b INT);
@@ -204,7 +204,7 @@ tidb> EXPLAIN SELECT * FROM t WHERE (a,b) IN (SELECT * FROM s);
 
 `NOT IN` 和 `!= ALL` 算子引导的子查询会对应地转为 Anti Semi Join 和 Anti Left Outer Semi Join。在上述的 [Anti Semi Join](#anti-semi-joinnot-in-子查询) 小节中，由于示例中 Join key 两侧的列 `test.t3.t1_id` 和 `test.t1.id` 都是 `not NULL` 属性的，所以 Anti Semi Join 本身不需要 Null-Aware 的性质来辅助计算，即不需要特殊处理 `NULL`。
 
-在 TiDB v6.3.0 及后续的版本中，TiDB 引入了针对 Null-Aware Anti Join (NAAJ) 的特殊优化：
+在 TiDB v6.3.0 版本，TiDB 引入了针对 Null-Aware Anti Join (NAAJ) 的如下特殊优化：
 
 - 利用 Null-Aware 的等值条件 (NA-EQ) 构建哈希连接
 
@@ -214,7 +214,7 @@ tidb> EXPLAIN SELECT * FROM t WHERE (a,b) IN (SELECT * FROM s);
 
 - 利用两侧数据源 `NULL` 值的特殊性质加速匹配结果的返回
 
-    由于 Anti Semi Join 自身具有 CNF (Conjunctive normal form) 表达式的属性，其任何一侧出现的 `NULL` 值都会导致确定的结果。利用这个性质可以来加速整个匹配过程的返回。
+    由于 Anti Semi Join 自身具有 CNF (Conjunctive normal form) 表达式的属性，其任何一侧出现的 `NULL` 值都会导致确定的结果。利用这个性质可以来加速整个匹配过程。
 
 以下为 Null-Aware Anti Semi Join 的例子：
 
