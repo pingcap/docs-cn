@@ -178,6 +178,7 @@
     - [Performance Tuning Overview](/performance-tuning-overview.md)
     - [Performance Analysis and Tuning](/performance-tuning-methods.md)
     - [Performance Tuning Practices for OLTP Scenarios](/performance-tuning-practices.md)
+    - [Latency Breakdown](/latency-breakdown.md)
   - Configuration Tuning
     - System Tuning
       - [Operating System Tuning](/tune-operating-system.md)
