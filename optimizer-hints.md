@@ -191,6 +191,68 @@ EXPLAIN SELECT * FROM t WHERE EXISTS (SELECT /*+ SEMI_JOIN_REWRITE() */ 1 FROM t
 
 在上述例子中可以看到，在使用了 Hint 之后，TiDB 可以选择由表 `t1` 作为驱动表的 IndexJoin 的执行方式。
 
+### NO_DECORRELATE()
+
+`NO_DECORRELATE()` 提示优化器不要尝试对指定查询块对应的子查询解除关联。该 Hint 作用于包含关联列的 `EXISTS`、`IN`、`ANY/ALL/SOME` 和标量子查询，即通常所说的关联子查询。
+
+将该 Hint 写在一个查询块中时，该子查询和其外部查询块之间会保持关联列，使用 Apply 算子来执行。
+
+默认情况下，TiDB 会尝试对关联子查询[解除关联](/correlated-subquery-optimization.md)，以达到更高的执行效率。但是在[一部分场景](/correlated-subquery-optimization.md#限制)下，解除关联会让执行效率变得更低。这种情况下，可以使用该 Hint 来人工提示优化器不要进行解除关联操作。例如：
+
+{{< copyable "sql" >}}
+
+```sql
+create table t1(a int, b int);
+create table t2(a int, b int, index idx(b));
+```
+
+{{< copyable "sql" >}}
+
+```sql
+-- 不使用 NO_DECORRELATE()
+explain select * from t1 where t1.a < (select sum(t2.a) from t2 where t2.b = t1.b);
+```
+
+```
++----------------------------------+----------+-----------+---------------+--------------------------------------------------------------------------------------------------------------+
+| id                               | estRows  | task      | access object | operator info                                                                                                |
++----------------------------------+----------+-----------+---------------+--------------------------------------------------------------------------------------------------------------+
+| HashJoin_11                      | 9990.00  | root      |               | inner join, equal:[eq(test.t1.b, test.t2.b)], other cond:lt(cast(test.t1.a, decimal(10,0) BINARY), Column#7) |
+| ├─HashAgg_23(Build)              | 7992.00  | root      |               | group by:test.t2.b, funcs:sum(Column#8)->Column#7, funcs:firstrow(test.t2.b)->test.t2.b                      |
+| │ └─TableReader_24               | 7992.00  | root      |               | data:HashAgg_16                                                                                              |
+| │   └─HashAgg_16                 | 7992.00  | cop[tikv] |               | group by:test.t2.b, funcs:sum(test.t2.a)->Column#8                                                           |
+| │     └─Selection_22             | 9990.00  | cop[tikv] |               | not(isnull(test.t2.b))                                                                                       |
+| │       └─TableFullScan_21       | 10000.00 | cop[tikv] | table:t2      | keep order:false, stats:pseudo                                                                               |
+| └─TableReader_15(Probe)          | 9990.00  | root      |               | data:Selection_14                                                                                            |
+|   └─Selection_14                 | 9990.00  | cop[tikv] |               | not(isnull(test.t1.b))                                                                                       |
+|     └─TableFullScan_13           | 10000.00 | cop[tikv] | table:t1      | keep order:false, stats:pseudo                                                                               |
++----------------------------------+----------+-----------+---------------+--------------------------------------------------------------------------------------------------------------+
+```
+
+{{< copyable "sql" >}}
+
+```sql
+-- 使用 NO_DECORRELATE()
+explain select * from t1 where t1.a < (select /*+ NO_DECORRELATE() */ sum(t2.a) from t2 where t2.b = t1.b);
+```
+
+```
++----------------------------------------+----------+-----------+------------------------+--------------------------------------------------------------------------------------+
+| id                                     | estRows  | task      | access object          | operator info                                                                        |
++----------------------------------------+----------+-----------+------------------------+--------------------------------------------------------------------------------------+
+| Projection_10                          | 10000.00 | root      |                        | test.t1.a, test.t1.b                                                                 |
+| └─Apply_12                             | 10000.00 | root      |                        | CARTESIAN inner join, other cond:lt(cast(test.t1.a, decimal(10,0) BINARY), Column#7) |
+|   ├─TableReader_14(Build)              | 10000.00 | root      |                        | data:TableFullScan_13                                                                |
+|   │ └─TableFullScan_13                 | 10000.00 | cop[tikv] | table:t1               | keep order:false, stats:pseudo                                                       |
+|   └─MaxOneRow_15(Probe)                | 1.00     | root      |                        |                                                                                      |
+|     └─HashAgg_27                       | 1.00     | root      |                        | funcs:sum(Column#10)->Column#7                                                       |
+|       └─IndexLookUp_28                 | 1.00     | root      |                        |                                                                                      |
+|         ├─IndexRangeScan_25(Build)     | 10.00    | cop[tikv] | table:t2, index:idx(b) | range: decided by [eq(test.t2.b, test.t1.b)], keep order:false, stats:pseudo         |
+|         └─HashAgg_17(Probe)            | 1.00     | cop[tikv] |                        | funcs:sum(test.t2.a)->Column#10                                                      |
+|           └─TableRowIDScan_26          | 10.00    | cop[tikv] | table:t2               | keep order:false, stats:pseudo                                                       |
++----------------------------------------+----------+-----------+------------------------+--------------------------------------------------------------------------------------+
+```
+
 ### HASH_AGG()
 
 `HASH_AGG()` 提示优化器对指定查询块中所有聚合函数使用 Hash Aggregation 算法。这个算法多线程并发执行，执行速度较快，但会消耗较多内存。例如：
