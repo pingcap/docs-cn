@@ -142,7 +142,7 @@ br backup full --pd "${PDIP}:2379" --storage "s3://${host}/${path}"
 
     > **注意：**
     >
-    > 该流程在第 3 步中需要重启 TiKV。如果你的集群不适合重启，请使用[方法二](#方法二使用访问密钥备份恢复简易)进行备份恢复。
+    > 该流程在第 3 步中需要重启 TiKV。如果你的集群不适合重启，请使用**指定访问密钥的方式**进行备份恢复。
 
     1. 假设该节点上 TiKV 端口为 24000（即 systemd 服务名为 tikv-24000）：
 
@@ -177,7 +177,7 @@ br backup full --pd "${PDIP}:2379" --storage "s3://${host}/${path}"
 - 使用 BR 将数据备份至 Azure Blob Storage
 
     ```shell
-    ./br backup full -u "${PD IP}:2379" -s "azure://external/backup-20220915?account-name=${account name}&account-key=${account key}"
+    ./br backup full -u "${PD IP}:2379" -s "azure://external/backup-20220915?account-name=${account name}"
     ```
 
 </div>
