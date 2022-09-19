@@ -9,8 +9,11 @@ summary: 了解如何定位、排查 TiDB Out Of Memory (OOM) 问题。
 
 TiDB OOM，需要区分以下两种情况。
 
-- 操作系统 (Operating System, OS) 层面 `oom-killer kill tidb-server`。该场景更多是 OS 容量规划问题和 TiUP resource limit 配置问题、或者是否有混布情况，导致 TiDB 作为受害者被 oom-killer killed。
-- 数据库 (Database, DB) 层面 SQL 发生 'Out of Memory Quota'。该场景更多是 DB 内的内存使用控制行为。
+- 操作系统 (Operating System, OS) 层面 `oom-killer kill tidb-server`。该场景常见的原因有：
+  - OS 容量规划不当
+  - TiUP resource limit 配置问题
+  - 有混布情况，导致 TiDB 作为受害者被 oom-killer killed
+- 数据库 (Database, DB) 层面 SQL 发生 'Out of Memory Quota'。该场景主要是 DB 内的内存使用控制行为导致的。
 
 针对上述的第一种情况，报错可能如下：
 
@@ -22,7 +25,7 @@ TiDB OOM，需要区分以下两种情况。
     - Alerm:  [WARN] [memory_usage_alarm.go:139] ["tidb-server has the risk of OOM. Running SQLs and heap profile will be recorded in record path"]
     - 重启相关日志：[INFO] [printer.go:33] ["Welcome to TiDB."]
 
-- SQL 返回：ERROR 1105 (HY000): Out Of Memory Quota![conn_id=54] 。注意：此报错为配置了 tidb_mem_quota_query 后的正常行为。
+- SQL 返回：ERROR 1105 (HY000): Out Of Memory Quota![conn_id=54]。注意此报错为配置了 `tidb_mem_quota_query` 后的正常行为。
 
 不论是操作系统还是数据库层面的问题触发 OOM，还有一些共同的报错情况：
 
