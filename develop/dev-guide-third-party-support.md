@@ -68,7 +68,7 @@ PingCAP 与开源社区合作，通过三方工具提供以下支持：
 | [Navicat for MySQL](https://www.navicat.com/) | 16.0.14 | Compatible | N/A |
 | [MySQL Workbench](https://www.mysql.com/products/workbench/) | 8.0 | Compatible | N/A |
 
-| IDE | 插件  | 支持等级 | 教程 |
+| IDE | 插件 | 支持等级 | 教程 |
 | - | - | - | - |
 | [DataGrip](https://www.jetbrains.com/datagrip/) | N/A | Compatible | N/A |
 | [IntelliJ IDEA](https://www.jetbrains.com/idea/) | N/A | Compatible | N/A |
