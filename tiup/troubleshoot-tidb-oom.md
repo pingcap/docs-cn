@@ -34,7 +34,7 @@ TiDB OOM，需要区分以下两种情况。
     - TiDB --> Server --> Memory Usage 达到某一阈值的锯齿形
     - TiDB --> Server --> Events OPM 显示 ‘server kill’
     - TiDB --> Server --> Uptime 显示掉零重启
-    - TiDB-Runtime --> Memory Usage , 看到 estimate-inuse 在持续升高
+    - TiDB-Runtime --> Memory Usage，观察到 estimate-inuse 在持续升高
     - TiDB --> Server --> Memory Usage, process/heapInuse 在持续升高
 
 ## 排查方法
