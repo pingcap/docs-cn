@@ -33,7 +33,7 @@ TiDB 版本：6.3.0-DMR
 
 * 分区表 EXCHANGE PARTITION 功能 GA [#35996](https://github.com/pingcap/tidb/issues/35996) @[ymkzpx](https://github.com/ymkzpx)
 
-    [EXCHANGE PARTITION 功能]((/partitioned-table.md#partition-management)通过性能和稳定性提升，由实验功能转为正式功能。
+    [EXCHANGE PARTITION 功能](/partitioned-table.md#partition-management) 通过性能和稳定性提升，由实验功能转为正式功能。
 
 * 新增支持以下[窗口函数](/tiflash/tiflash-supported-pushdown-calculations.md)：[#5579](https://github.com/pingcap/tiflash/issues/5579) @[SeaRise](https://github.com/SeaRise)
 
