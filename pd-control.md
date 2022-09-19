@@ -1303,7 +1303,7 @@ store delete 1
 
 #### 管理 store label
 
-`store label` 用于管理 store label。
+`store label` 命令用于管理 store label。
 
 为 store id 为 1 的 store 添加键为 `"zone"` 的值为 `"cn"` 的 label：
 
