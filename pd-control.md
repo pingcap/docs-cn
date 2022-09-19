@@ -1278,7 +1278,7 @@ store 1
 ......
 ```
 
-#### store 下线
+#### 下线 store
 
 下线 store id 为 1 的 store：
 
