@@ -1615,7 +1615,7 @@ Configuration items related to log backup.
 ### `enable` <span class="version-mark">New in v6.2.0</span>
 
 + Determines whether to enable log backup.
-+ Default value: `false`
++ Default value: `true`
 
 ### `file-size-limit` <span class="version-mark">New in v6.2.0</span>
 
@@ -1636,7 +1636,7 @@ Configuration items related to log backup.
 ### `max-flush-interval` <span class="version-mark">New in v6.2.0</span>
 
 + The maximum interval for writing backup data to external storage in log backup.
-+ Default value: 5min
++ Default value: 3min
 
 ### `num-threads` <span class="version-mark">New in v6.2.0</span>
 

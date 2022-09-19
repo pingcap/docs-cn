@@ -18,7 +18,7 @@ Before performing log backup, you need to install Backup & Restore (BR). You can
 
 ### Enable log backup
 
-Before you use log backup, set [`log-backup.enable`](/tikv-configuration-file.md#enable-new-in-v620) in the TiKV configuration file to `true`. For the method to modify configuration, refer to [Modify the configuration](/maintain-tidb-using-tiup.md#modify-the-configuration).
+Before you use log backup, ensure that [`log-backup.enable`](/tikv-configuration-file.md#enable-new-in-v620) in the TiKV configuration file is in its default value `true`. For the method to modify configuration, refer to [Modify the configuration](/maintain-tidb-using-tiup.md#modify-the-configuration).
 
 ## Perform log backup
 

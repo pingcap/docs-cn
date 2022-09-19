@@ -90,3 +90,12 @@ Testing scenario 2 (on-premises):
 - If the upstream database uses TiDB Lightning's physical import mode to import data, the data cannot be backed up in log backup. It is recommended to perform a full backup after the data import. For details, refer to [The upstream database uses TiDB Lightning Physical Mode to import data](/br/pitr-known-issues.md#the-upstream-database-imports-data-using-tidb-lightning-in-the-physical-import-mode-which-makes-it-impossible-to-use-the-log-backup-feature).
 - Do not restore the log backup data of a certain time period repeatedly. If you restore the log backup data of a range `[t1=10, t2=20)` repeatedly, the restored data might be inconsistent.
 - For other known limitations, refer to [PITR Known Issues](/br/pitr-known-issues.md).
+
+### Version compatibility check
+
+In v6.3.0, backup files generated after PITR are compressed in a new method. Small files are merged before being stored (to solve problems caused by too many small files). However, TiDB clusters of the earlier version are not compatible with backup data generated in v6.3 clusters. See the following table:
+
+| Restore version (horizontal) \ Backup version (vertical)   | Use PITR v6.2.0 to restore TiDB v6.2.0 | Use PITR v6.3.0 to restore TiDB v6.3.0 |
+|  ----  |  ----  | ---- |
+|Use PITR v6.2.0 to back up TiDB v6.2.0 | Compatible | Compatible |
+|Use PITR v6.3.0 to back up TiDB v6.3.0 | Incompatible |Compatible |
