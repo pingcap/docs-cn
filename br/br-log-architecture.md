@@ -60,7 +60,7 @@ Point in time recovery 的流程如下：
 
 5. TiKV 恢复日志备份数据
    * **Download KVs**：log restore worker 根据日志回复请求中要恢复的备份数据，从备份存储中下载相应的备份数据到本地
-   * **Rewrite KVs**：log restore worker 根据恢复集群表的 table ID 对备份数据的 kv 进行重写 —— 将原有的 [kv 编码](/tidb-computing#mapping-table-data-to-key-value)中的 tableID 替换为新创建的 tableID。同样的 indexID 也需要相同的处理
+   * **Rewrite KVs**：log restore worker 根据恢复集群表的 table ID 对备份数据的 kv 进行重写 —— 将原有的 [kv 编码](/tidb-computing.md#表数据与-key-value-的映射关系)中的 tableID 替换为新创建的 tableID。同样的 indexID 也需要相同的处理
    * **Apply KVs**：log restore worker 将处理好的 kv 通过 raft 接口写 store（rocksdb） 中
    * **Report restore result**：log restore worker 返回恢复结果给 br
 

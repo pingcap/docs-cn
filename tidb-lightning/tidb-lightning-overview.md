@@ -22,7 +22,7 @@ TiDB Lightning 支持从以下位置读取：
 
 - 本地
 - [Amazon S3](/br/misc/external-storage.md#s3-的-url-参数
-- [Google GCS](br/misc/external-storage.md#gcs-的-url-参数)
+- [Google GCS](/br/misc/external-storage.md#gcs-的-url-参数)
 
 ## TiDB Lightning 整体架构
 
