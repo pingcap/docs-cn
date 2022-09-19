@@ -116,7 +116,7 @@ ERROR 1062 (23000): Duplicate entry 'bill' for key 'username'
 
 在以上乐观事务的示例中，唯一约束的检查推迟到事务提交时才进行。由于 `bill` 值已经存在，这一行为导致了重复键错误。
 
-你可通过设置 [`tidb_constraint_check_in_place`](/system-variables.md#tidb_constraint_check_in_place) 为 `1` 停用此行为（该变量仅适用于乐观事务，悲观事务需通过 `tidb_constraint_check_in_place_pessimistic` 设置）。当 `tidb_constraint_check_in_place` 设置为 `1` 时，TiDB 会在执行语句时就对唯一约束进行检查。例如：
+你可通过设置 [`tidb_constraint_check_in_place`](/system-variables.md#tidb_constraint_check_in_place) 为 `ON` 停用此行为（该变量仅适用于乐观事务，悲观事务需通过 `tidb_constraint_check_in_place_pessimistic` 设置）。当 `tidb_constraint_check_in_place` 设置为 `ON` 时，TiDB 会在执行语句时就对唯一约束进行检查。例如：
 
 ```sql
 DROP TABLE IF EXISTS users;
@@ -175,7 +175,7 @@ INSERT INTO users (username) VALUES ('jane'), ('chris'), ('bill');
 ERROR 1062 (23000): Duplicate entry 'bill' for key 'username'
 ```
 
-对于悲观事务，你可以设置变量 [`tidb_constraint_check_in_place_pessimistic`](/system-variables.md#tidb_constraint_check_in_place_pessimistic-从-v630-版本开始引入) 为 `0` 来推迟唯一约束检查，到下一次对该唯一索引项加锁时或事务提交时再进行检查，同时也跳过对该悲观锁加锁，以获得更好的性能。此时需要注意：
+对于悲观事务，你可以设置变量 [`tidb_constraint_check_in_place_pessimistic`](/system-variables.md#tidb_constraint_check_in_place_pessimistic-从-v630-版本开始引入) 为 `OFF` 来推迟唯一约束检查，到下一次对该唯一索引项加锁时或事务提交时再进行检查，同时也跳过对该悲观锁加锁，以获得更好的性能。此时需要注意：
 
 - 由于推迟了唯一约束检查，TiDB 可能会读取到不满足唯一约束的结果，执行 `COMMIT` 语句时可能返回 `Duplicate entry` 错误。返回该错误时，TiDB 会回滚当前事务。
 
