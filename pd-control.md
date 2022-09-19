@@ -907,24 +907,105 @@ Usage:
 
 ### `store [delete | cancel-delete | label | weight | remove-tombstone | limit ] <store_id> [--jq="<query string>"]`
 
-Use this command to view the store information or remove a specified store. For a jq formatted output, see [jq-formatted-json-output-usage](#jq-formatted-json-output-usage).
+For a jq formatted output, see [jq-formatted-json-output-usage](#jq-formatted-json-output-usage).
 
-Usage:
+#### Get a store
+
+To display the information of all stores, run the following command:
 
 ```bash
->> store                               // Display information of all stores
+store
+```
+
+```
 {
   "count": 3,
   "stores": [...]
 }
->> store 1                             // Get the store with the store id of 1
+```
+
+To get the store with id of 1, run the following command:
+
+```bash
+store 1
+```
+
+```
 ......
->> store delete 1                      // Delete the store with the store id of 1
-......
->> store cancel-delete 1               // Cancel the delete operation previously performed on the store with the id of 1 which is in the offline state. After the cancellation, the store will enter the up state. Note that this command cannot make the tombstone store back to the up state. If the PD leader has been switched during the offline process, you need to manually modify the store limit.
->> store label 1 zone cn               // Set the value of the label with the "zone" key to "cn" for the store with the store id of 1
->> store weight 1 5 10                 // Set the leader weight to 5 and Region weight to 10 for the store with the store id of 1
->> store remove-tombstone              // Remove stores that are in tombstone state
+```
+
+#### Delete a store
+
+To delete the store with id of 1, run the following command:
+
+```bash
+store delete 1
+```
+
+To cancel deleting `Offline` state stores which are deleted using `store delete`, run the `store cancel-delete` command. After canceling, the store changes from `Offline` to `Up`. Note that the `store cancel-delete` command cannot change a `Tombstone` state store to the `Up` state.
+
+To cancel deleting the store with id of 1, run the following command:
+
+```bash
+store cancel-delete 1
+```
+
+To delete all stores in `Tombstone` state, run the following command:
+
+```bash
+store remove-tombstone
+```
+
+> **Note:**
+>
+> If the PD leader changes during store deletion, you need to modify the store limit manually using the [`store limit`](#configure-store-scheduling-speed) command.
+
+#### Manage store labels
+
+To manage the labels of a store, run the `store label` command.
+
+- To set a label with the key being `"zone"` and value being `"cn"` to the store with id of 1, run the following command:
+
+    ```bash
+    store label 1 zone=cn
+    ```
+
+- To update the label of a store, for example, changing the value of the key `"zone"` from `"cn"` to `"us"` for the store with id of 1, run the following command:
+
+    ```bash
+    store label 1 zone=us
+    ```
+
+- To rewrite all labels of a store with id of 1, use the `--rewrite` option. Note that this option overwrites all existing labels:
+
+    ```bash
+    store label 1 region=us-est-1 disk=ssd --rewrite
+    ```
+
+- To delete the `"disk"` label for the store with id of 1, use the `--delete` option:
+
+    ```bash
+    store label 1 disk --delete
+    ```
+
+> **Note:**
+>
+> - The label of a store is updated by merging the label in TiKV and that in PD. Specifically, after you modify a store label in the TiKV configuration file and restart the cluster, PD merges its own store label with the TiKV store label, updates the label, and persists the merged result.
+> - To manage labels of a store using TiUP, you can run the `store label <id> --force` command to empty the labels stored in PD before restarting the cluster.
+
+#### Configure store weight
+
+To set the leader weight to 5 and Region weight to 10 for the store with id of 1, run the following command:
+
+```bash
+store weight 1 5 10
+```
+
+#### Configure store scheduling speed
+
+You can set the scheduling speed of stores by using `store limit`. For more details about the principles and usage of `store limit`, see [`store limit`](/configure-store-limit.md).
+
+```bash
 >> store limit                         // Show the speed limit of adding-peer operations and the limit of removing-peer operations per minute in all stores
 >> store limit add-peer                // Show the speed limit of adding-peer operations per minute in all stores
 >> store limit remove-peer             // Show the limit of removing-peer operations per minute in all stores
@@ -939,7 +1020,7 @@ Usage:
 > **Note:**
 >
 > - The original `region-add` and `region-remove` parameters of the `store limit` command are deprecated and are replaced with `add-peer` and `remove-peer`.
-> - You can use `pd-ctl` to check the status (Up, Disconnect, Offline, Down, or Tombstone) of a TiKV store. For the relationship between each status, refer to [Relationship between each status of a TiKV store](/tidb-scheduling.md#information-collection).
+> - You can use `pd-ctl` to check the state (`Up`, `Disconnect`, `Offline`, `Down`, or `Tombstone`) of a TiKV store. For the relationship between each state, refer to [Relationship between each state of a TiKV store](/tidb-scheduling.md#information-collection).
 
 ### `log [fatal | error | warn | info | debug]`
 
