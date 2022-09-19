@@ -231,7 +231,7 @@ mysql> SELECT * FROM t1; -- MySQL returns 1 2; TiDB returns 1.
 1 row in set (0.01 sec)
 ```
 
-The lazy check optimization improves performance by batching constraint checks and reducing network communication. The behavior can be disabled by setting [`tidb_constraint_check_in_place=TRUE`](/system-variables.md#tidb_constraint_check_in_place).
+The lazy check optimization improves performance by batching constraint checks and reducing network communication. The behavior can be disabled by setting [`tidb_constraint_check_in_place=ON`](/system-variables.md#tidb_constraint_check_in_place).
 
 > **Note:**
 >

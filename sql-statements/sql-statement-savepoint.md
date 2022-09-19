@@ -15,7 +15,8 @@ RELEASE SAVEPOINT identifier
 
 > **Warning:**
 >
-> You cannot use `SAVEPOINT` with TiDB Binlog enabled.
+> - You cannot use `SAVEPOINT` with TiDB Binlog enabled.
+> - You cannot use `SAVEPOINT` in pessimistic transactions when [`tidb_constraint_check_in_place_pessimistic`](/system-variables.md#tidb_constraint_check_in_place_pessimistic-new-in-v630) is disabled.
 
 - `SAVEPOINT` is used to set a savepoint of a specified name in the current transaction. If a savepoint with the same name already exists, it will be deleted and a new savepoint with the same name will be set.
 

@@ -775,9 +775,10 @@ MPP is a distributed computing framework provided by the TiFlash engine, which a
 - Persists to cluster: Yes
 - Type: Boolean
 - Default value: `OFF`
-- This setting only applies to optimistic transactions. When this variable is set to `OFF`, checking for duplicate values in UNIQUE indexes is deferred until the transaction commits. This helps improve performance, but might be an unexpected behavior for some applications. See [Constraints](/constraints.md) for details.
+- This variable only applies to optimistic transactions. For pessimistic transactions, use [`tidb_constraint_check_in_place_pessimistic`](#tidb_constraint_check_in_place_pessimistic-new-in-v630) instead.
+- When this variable is set to `OFF`, checking for duplicate values in unique indexes is deferred until the transaction commits. This helps improve performance but might be an unexpected behavior for some applications. See [Constraints](/constraints.md#optimistic-transactions) for details.
 
-    - When set to zero and using optimistic transactions:
+    - When setting `tidb_constraint_check_in_place` to `OFF` and using optimistic transactions：
 
         ```sql
         tidb> create table t (i int key);
@@ -789,16 +790,61 @@ MPP is a distributed computing framework provided by the TiFlash engine, which a
         ERROR 1062 : Duplicate entry '1' for key 'PRIMARY'
         ```
 
-    - When set to 1 and using optimistic transactions:
+    - When setting `tidb_constraint_check_in_place` to `ON` and using optimistic transactions:
 
         ```sql
-        tidb> set @@tidb_constraint_check_in_place=1;
+        tidb> set @@tidb_constraint_check_in_place=ON;
         tidb> begin optimistic;
         tidb> insert into t values (1);
         ERROR 1062 : Duplicate entry '1' for key 'PRIMARY'
         ```
 
-Constraint checking is always performed in place for pessimistic transactions (default).
+### `tidb_constraint_check_in_place_pessimistic` <span class="version-mark">New in v6.3.0</span>
+
+- Scope: SESSION | GLOBAL
+- Persists to cluster: Yes
+- Default value: `ON`
+- This variable only applies to pessimistic transactions. For optimistic transactions, use [`tidb_constraint_check_in_place`](#tidb_constraint_check_in_place) instead.
+- When this variable is set to `OFF`, TiDB defers the unique constraint check of a unique index (to the next time when executing a statement that requires a lock to the index or to the time when committing the transaction). This helps improve performance but might be an unexpected behavior for some applications. See [Constraints](/constraints.md#pessimistic-transactions) for details.
+- Disabling this variable might cause TiDB to return a `LazyUniquenessCheckFailure` error in pessimistic transactions. When this error occurs, TiDB rolls back the current transaction.
+- When this variable is disabled, you cannot use [`SAVEPOINT`](/sql-statements/sql-statement-savepoint.md) in pessimistic transactions.
+- When this variable is disabled, committing a pessimistic transaction might return a `Write conflict` or `Duplicate entry` error. When such an error occurs, TiDB rolls back the current transaction.
+
+    - When setting `tidb_constraint_check_in_place_pessimistic` to `OFF` and using pessimistic transactions：
+
+        {{< copyable "sql" >}}
+
+        ```sql
+        set @@tidb_constraint_check_in_place_pessimistic=OFF;
+        create table t (i int key);
+        insert into t values (1);
+        begin pessimistic;
+        insert into t values (1);
+        ```
+
+        ```
+        Query OK, 1 row affected
+        ```
+
+        ```sql
+        tidb> commit; -- Check only when a transaction is committed.
+        ```
+
+        ```
+        ERROR 1062 : Duplicate entry '1' for key 'PRIMARY'
+        ```
+
+    - When setting `tidb_constraint_check_in_place_pessimistic` to `ON` and using pessimistic transactions：
+
+        ```sql
+        set @@tidb_constraint_check_in_place_pessimistic=ON;
+        begin pessimistic;
+        insert into t values (1);
+        ```
+
+        ```
+        ERROR 1062 : Duplicate entry '1' for key 'PRIMARY'
+        ```
 
 ### tidb_cost_model_version <span class="version-mark">New in v6.2.0</span>
 
