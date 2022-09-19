@@ -355,12 +355,12 @@ Global Flags:
 
 以上示例只展示了常用的参数，这些参数作用如下：
 
-- `--full-backup-storage`：指定快照（全量）备份的存储地址。如果你要使用 PITR，需要指定该参数，并选择恢复时间点之前最近的快照备份；如果只恢复日志备份数据，则不需要指定该参数。目前支持共享的文件系统、Amazon S3、GCS 和 Azure Blob Storage 作为备份存储，详细介绍请参考 [AWS S3 storage](/br/backup-storage-S3.md)、[GCS storage](/br/backup-storage-gcs.md) 和 [Azure blob storage](/br/backup-storage-azblob.md)。
+- `--full-backup-storage`：指定快照（全量）备份的存储地址。如果你要使用 PITR，需要指定该参数，并选择恢复时间点之前最近的快照备份；如果只恢复日志备份数据，则不需要指定该参数。快照备份支持以 S3/GCS/Azure Blob Storage 为备份存储。详细参考[备份存储 URL 配置](/br/backup-and-restore-storages.md#url-格式)。
 - `--restored-ts`：指定恢复到的时间点。如果没有指定该参数，则恢复到日志备份数据最后的可恢复时间点（备份数据的 checkpoint）。
 - `--start-ts`：指定日志备份恢复的起始时间点。如果你只恢复日志备份数据，不恢复快照备份，需要指定这个参数。
 - `--pd`：指定恢复集群的 PD 访问地址。
 - `ca`,`cert`,`key`：指定使用 mTLS 加密方式与 TiKV 和 PD 进行通讯。
-- `--storage`：指定备份存储地址。日志备份支持以 S3/GCS/Azure Blob Storage 为备份存储，以上命令以 S3 为示例。详细参考[备份存储 URL 配置](/br/backup-and-restore-storages.md#url-格式)。
+- `--storage`：指定备份存储地址。日志备份支持以 S3/GCS/Azure Blob Storage 为备份存储。详细参考[备份存储 URL 配置](/br/backup-and-restore-storages.md#url-格式)。
 
 使用示例：
 
