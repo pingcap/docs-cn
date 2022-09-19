@@ -1251,9 +1251,7 @@ scheduler config balance-hot-region-scheduler  // 显示 balance-hot-region 调�
 
 #### 查询 store
 
-通过 `store` 显示所有 store 信息：
-
-{{< copyable "" >}}
+显示所有 store 信息：
 
 ```bash
 store
@@ -1266,9 +1264,7 @@ store
 }
 ```
 
-获取 store id 为 1 的 store：
-
-{{< copyable "" >}}
+获取 id 为 1 的 store：
 
 ```bash
 store 1
@@ -1280,79 +1276,72 @@ store 1
 
 #### 下线 store
 
-下线 store id 为 1 的 store：
-
-{{< copyable "" >}}
+下线 id 为 1 的 store：
 
 ```bash
 store delete 1
 ```
 
-你可以撤销已使用 `store delete` 下线并处于 Offline 状态的 store。撤销后，该 store 会从 Offline 状态变为 Up 状态。注意，该命令无法使 Tombstone 状态的 store 变回 Up 状态。以下示例撤销已使用 `store delete` 下线的 store id 为 1 的 store，并删除所有 Tombstone 状态的 store：
+执行 `store cancel-delete` 命令，你可以撤销已使用 `store delete` 下线并处于 `Offline` 状态的 store。撤销后，该 store 会从 `Offline` 状态变为 `Up` 状态。注意， `store cancel-delete` 命令无法使 `Tombstone` 状态的 store 变回 `Up` 状态。
 
-{{< copyable "" >}}
+撤销通过 `store delete` 下线 id 为 1 的 store：
 
 ```bash
-store cancel-delete 1                // 取消下线
-store remove-tombstone              // 删除所有 Tombstone 状态的 store
+store cancel-delete 1
+```
+
+删除所有 Tombstone 状态的 store：
+
+```bash
+store remove-tombstone
 ```
 
 > **注意：**
 >
-> 若下线过程中切换了 PD leader，需要手动修改 store limit。
+> 若下线过程中切换了 PD leader，需要使用 `store limit` 命令修改 [store 调度限速](#设置-store-调度限速)。
 
 #### 管理 store label
 
 `store label` 命令用于管理 store label。
 
-为 store id 为 1 的 store 添加键为 `"zone"` 的值为 `"cn"` 的 label：
+- 为 id 为 1 的 store 设置键为 `"zone"`、值为 `"cn"` 的 label：
 
-{{< copyable "" >}}
+    ```bash
+    store label 1 zone=cn
+    ```
 
-```bash
-store label 1 zone=cn
-```
+- 更新 id 为 1 的 store 的 label：
 
-更新 store id 为 1 的 label：
+    ```bash
+    store label 1 zone=us
+    ```
 
-{{< copyable "" >}}
+- 通过 `--rewrite` 选项重写 id 为 1 的 store 的所有 label，之前的 label 会被覆盖：
 
-```bash
-store label 1 zone=us
-```
+    ```bash
+    store label 1 region=us-est-1 disk=ssd --rewrite
+    ```
 
-通过 `--rewrite` 重写 store id 为 1 的所有 label，之前有的 label 会被覆盖：
+- 删除 id 为 1 的 store 的键为 `"disk"` 的 label ：
 
-{{< copyable "" >}}
-
-```bash
-store label 1 region=us-est-1 disk=ssd --rewrite
-```
-
-删除指定 store 的对应 label：
-
-{{< copyable "" >}}
-
-```bash
-store label 1 disk --delete
-```
+    ```bash
+    store label 1 disk --delete
+    ```
 
 > **注意：**
 >
 > - store 的 label 更新方法使用的是合并策略。如果修改了 TiKV 配置文件中的 store label，进程重启之后，PD 会将自身存储的 store label 与其进行合并更新，并持久化合并后的结果。
-> - 如果希望使用 TiUP 统一管理 store label 的话，可以在集群重启前，使用 PD Control 的 `store label <id> --force` 命令将 PD 存储的 store label 清空。
+> - 如果希望使用 TiUP 统一管理 store label，你可以在集群重启前，使用 PD Control 的 `store label <id> --force` 命令将 PD 存储的 store label 清空。
 
-#### `store weight` 命令
+#### 设置 store weight
 
-设置 store id 为 1 的 store 的 leader weight 为 5，Region weight 为 10：
-
-{{< copyable "" >}}
+将 id 为 1 的 store 的 leader weight 设为 5，Region weight 设为 10：
 
 ```bash
 store weight 1 5 10
 ```
 
-#### `store limit` 命令
+#### 设置 store 调度限速
 
 关于 `store limit` 的原理和使用方法，请参考 [`store limit`](/configure-store-limit.md)。
 
@@ -1371,7 +1360,7 @@ store weight 1 5 10
 > **注意：**
 >
 > * `store limit` 命令原有的 `region-add` 和 `region-remove` 子命令已废弃，请使用 `add-peer` 和 `remove-peer` 来替代。
-> * 使用 `pd-ctl` 可以查看 TiKV 节点的状态信息，即 Up，Disconnect，Offline，Down，或 Tombstone。如需查看各个状态之间的关系，请参考 [TiKV Store 状态之间的关系](/tidb-scheduling.md#信息收集)。
+> * 使用 `pd-ctl` 可以查看 TiKV 节点的状态信息，即 `Up`，`Disconnect`，`Offline`，`Down`，或 `Tombstone`。如需查看各个状态之间的关系，请参考 [TiKV Store 状态之间的关系](/tidb-scheduling.md#信息收集)。
 
 ### `log [fatal | error | warn | info | debug]`
 
