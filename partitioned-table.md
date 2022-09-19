@@ -10,9 +10,9 @@ This document introduces TiDB's implementation of partitioning.
 
 ## Partitioning types
 
-This section introduces the types of partitioning in TiDB. Currently, TiDB supports [Range partitioning](#range-partitioning), [List partitioning](#list-partitioning), [List COLUMNS partitioning](#list-columns-partitioning), and [Hash partitioning](#hash-partitioning).
+This section introduces the types of partitioning in TiDB. Currently, TiDB supports [Range partitioning](#range-partitioning), [Range COLUMNS partitioning](#range-columns-partitioning), [List partitioning](#list-partitioning), [List COLUMNS partitioning](#list-columns-partitioning), and [Hash partitioning](#hash-partitioning).
 
-Range partitioning, List partitioning and List COLUMNS partitioning are used to resolve the performance issues caused by a large amount of deletions in the application, and support fast drop partition operations. Hash partitioning is used to scatter the data when there are a large amount of writes.
+Range partitioning, Range COLUMNS partitioning, List partitioning and List COLUMNS partitioning are used to resolve the performance issues caused by a large amount of deletions in the application, and support fast drop partition operations. Hash partitioning is used to scatter the data when there are a large amount of writes.
 
 ### Range partitioning
 
@@ -163,6 +163,35 @@ Range partitioning is particularly useful when one or more of the following cond
 * You want to delete the old data. If you use the `employees` table in the previous example, you can delete all records of employees who left this company before the year 1991 by simply using `ALTER TABLE employees DROP PARTITION p0;`. It is faster than executing the `DELETE FROM employees WHERE YEAR(separated) <= 1990;` operation.
 * You want to use a column that contains time or date values, or containing values arising from some other series.
 * You need to frequently run queries on the columns used for partitioning. For example, when executing a query like `EXPLAIN SELECT COUNT(*) FROM employees WHERE separated BETWEEN '2000-01-01' AND '2000-12-31' GROUP BY store_id;`, TiDB can quickly know that only the data in the `p2` partition needs to be scanned, because the other partitions do not match the `WHERE` condition.
+
+### Range COLUMNS partitioning
+
+Range COLUMNS partitioning is a variant of Range partitioning. You can use one or more columns as partitioning keys. The data types of partition columns can be integer, string (`CHAR` or `VARCHAR`), `DATE`, and `DATETIME`. Any expressions, such as non-COLUMNS partitioning, are not supported.
+
+Suppose that you want to partition by name, and drop old and invalid data, then you can create a table as follows:
+
+```sql
+CREATE TABLE t (
+  valid_until datetime,
+  name varchar(255) CHARACTER SET ascii,
+  notes text
+)
+PARTITION BY RANGE COLUMNS(name,valid_until)
+(PARTITION `p2022-g` VALUES LESS THAN ('G','2023-01-01 00:00:00'),
+ PARTITION `p2023-g` VALUES LESS THAN ('G','2024-01-01 00:00:00'),
+ PARTITION `p2024-g` VALUES LESS THAN ('G','2025-01-01 00:00:00'),
+ PARTITION `p2022-m` VALUES LESS THAN ('M','2023-01-01 00:00:00'),
+ PARTITION `p2023-m` VALUES LESS THAN ('M','2024-01-01 00:00:00'),
+ PARTITION `p2024-m` VALUES LESS THAN ('M','2025-01-01 00:00:00'),
+ PARTITION `p2022-s` VALUES LESS THAN ('S','2023-01-01 00:00:00'),
+ PARTITION `p2023-s` VALUES LESS THAN ('S','2024-01-01 00:00:00'),
+ PARTITION `p2024-s` VALUES LESS THAN ('S','2025-01-01 00:00:00'),
+ PARTITION `p2022-` VALUES LESS THAN (0x7f,'2023-01-01 00:00:00'),
+ PARTITION `p2023-` VALUES LESS THAN (0x7f,'2024-01-01 00:00:00'),
+ PARTITION `p2024-` VALUES LESS THAN (0x7f,'2025-01-01 00:00:00'))
+```
+
+It will split the data by year and by name in the ranges [''-'G'), ['G'-'M'), ['M'-'S'), ['S',), allowing you to easily drop invalid data while still benefit from partition pruning on both `name` and `valid_until` columns.
 
 ### Range INTERVAL partitioning
 
@@ -1307,9 +1336,7 @@ YEARWEEK()
 
 ### Compatibility with MySQL
 
-Currently, TiDB supports Range partitioning, List partitioning, List COLUMNS partitioning, and Hash partitioning. Other partitioning types that are available in MySQL such as key partitioning are not supported yet in TiDB.
-
-For a table partitioned by `RANGE COLUMNS`, currently TiDB only supports using a single partitioning column.
+Currently, TiDB supports Range partitioning, Range COLUMNS partitioning, List partitioning, List COLUMNS partitioning, and Hash partitioning. Other partitioning types that are available in MySQL such as key partitioning are not supported yet in TiDB.
 
 With regard to partition management, any operation that requires moving data in the bottom implementation is not supported currently, including but not limited to: adjust the number of partitions in a Hash partitioned table, modify the Range of a Range partitioned table, merge partitions and exchange partitions.
 
