@@ -79,7 +79,7 @@ connections = ((core_count * 2) + effective_spindle_count)
 
 这里的说明让你在使用 SSD 时，需探求其他的经验公式。
 
-可以参考 CockroachDB 对[数据库连接池](https://www.cockroachlabs.com/docs/stable/connection-pooling.html?#sizing-connection-pools)中的描述，推荐的连接数大小公式为：
+依照经验，连接数大小的推荐公式为：
 
 ```
 connections = (number of cores * 4)

@@ -137,7 +137,7 @@ SELECT * FROM authors WHERE birth_year = 1998;
 
 对于 Java 程序而言，可以通过同一个 SQL 来处理带有动态参数的数据查询请求。
 
-将参数拼接到 SQL 语句当中也许是一种方法，但是这可能不是一个好的主意，因为这会给应用程序带来潜在的 [SQL 注入](https://zh.wikipedia.org/wiki/SQL%E6%B3%A8%E5%85%A5) 风险。
+将参数拼接到 SQL 语句当中也许是一种方法，但是这可能不是一个好的主意，因为这会给应用程序带来潜在的 [SQL 注入](https://zh.wikipedia.org/wiki/SQL%E6%B3%A8%E5%85%A5)风险。
 
 在处理这类查询时，应该使用 [PreparedStatement](/develop/dev-guide-prepared-statement.md) 来替代普通的 Statement。
 
@@ -233,7 +233,7 @@ LIMIT 10;
 10 rows in set (0.11 sec)
 ```
 
-通过观察查询结果你会发现，在使用 `LIMIT` 语句之后，查询的时间明显缩短，这是 TiDB 对 LIMIT 子句进行优化后的结果，你可以通过[TopN 和 Limit 下推](/topn-limit-push-down.md)章节了解更多细节。
+通过观察查询结果你会发现，在使用 `LIMIT` 语句之后，查询的时间明显缩短，这是 TiDB 对 LIMIT 子句进行优化后的结果，你可以通过 [TopN 和 Limit 下推](/topn-limit-push-down.md)章节了解更多细节。
 
 ## 聚合查询
 
@@ -271,4 +271,4 @@ ORDER BY author_count DESC;
 71 rows in set (0.00 sec)
 ```
 
-除了 `COUNT` 函数外，TiDB 还支持了许多实用的聚合函数，你可以通过浏览[GROUP BY 聚合函数](/functions-and-operators/aggregate-group-by-functions.md)章节进行进一步了解。
+除了 `COUNT` 函数外，TiDB 还支持了许多实用的聚合函数，你可以通过浏览 [GROUP BY 聚合函数](/functions-and-operators/aggregate-group-by-functions.md)章节进行进一步了解。

@@ -10,7 +10,7 @@ aliases: ['/zh/tidb/dev/sql-development-specification']
 
 ## 建表删表规范
 
-- 基本原则：表的建立在遵循表命名规范前提下，建议业务应用内部封装建表删表语句增加判断逻辑，防止业务流程异常中断。
+- 基本原则：在遵循表命名规范前提下，建议业务应用内部封装建表删表语句，并增加判断逻辑，防止业务流程异常中断。
 - 详细说明：`create table if not exists table_name` 或者 `drop table if exists table_name` 语句建议增加 if 判断，避免应用侧由于 SQL 命令运行异常造成的异常中断。
 
 ## SELECT \* 使用规范

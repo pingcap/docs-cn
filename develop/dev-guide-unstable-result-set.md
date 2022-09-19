@@ -12,12 +12,31 @@ aliases: ['/zh/tidb/dev/unstable-result-set']
 
 出于便捷的考量，MySQL “扩展” 了 group by 语法，使 select 子句可以引用未在 group by 子句中声明的非聚集字段，也就是 non-full group by 语法。在其他数据库中，这被认为是一种语法错误，因为这会导致结果集不稳定。
 
-在下例的 3 条 SQL 语句中，第一条 SQL 使用了 full group by 语法 ，所有在 select 子句中引用的字段，都在 group by 子句中有所声明，所以它的结果集是稳定的，可以看到 class 与 stuname 的全部组合共有三种；第二条与第三条是同一个 SQL，但它在两次执行时得到了不同的结果，这条 SQL 的 group by 子句中仅声明了一个 class 字段，因此结果集只会针对 class 进行聚集，class 的唯一值有两个，也就是说结果集中只会包含两行数据，而 class 与 stuname 的全部组合共有三种，班级 2018_CS_03 有两位同学，每次执行时返回哪位同学是没有语义上的限制的，都是符合语义的结果。
+举个例子，我们有两张表：`stu_info` 用于保存学生信息数据，`stu_score` 用于保存学生考试成绩。
+
+那么就可以编写这样的 SQL 查询语句：
 
 {{< copyable "sql" >}}
 
 ```sql
-mysql> SELECT a.class, a.stuname, max(b.courscore) from stu_info a join stu_score b on a.stuno=b.stuno group by a.class, a.stuname order by a.class, a.stuname;
+SELECT
+    `a`.`class`,
+    `a`.`stuname`,
+    max( `b`.`courscore` )
+FROM
+    `stu_info` `a`
+    JOIN `stu_score` `b` ON `a`.`stuno` = `b`.`stuno`
+GROUP BY
+    `a`.`class`,
+    `a`.`stuname`
+ORDER BY
+    `a`.`class`,
+    `a`.`stuname`;
+```
+
+结果如下：
+
+```sql
 +------------+--------------+------------------+
 | class      | stuname      | max(b.courscore) |
 +------------+--------------+------------------+
@@ -26,28 +45,54 @@ mysql> SELECT a.class, a.stuname, max(b.courscore) from stu_info a join stu_scor
 | 2018_CS_03 | SpongeBob    |             95.0 |
 +------------+--------------+------------------+
 3 rows in set (0.00 sec)
-
-mysql> select a.class, a.stuname, max(b.courscore) from stu_info a join stu_score b on a.stuno=b.stuno group by a.class order by a.class, a.stuname;
-+------------+--------------+------------------+
-| class      | stuname      | max(b.courscore) |
-+------------+--------------+------------------+
-| 2018_CS_01 | MonkeyDLuffy |             95.5 |
-| 2018_CS_03 | SpongeBob    |             99.0 |
-+------------+--------------+------------------+
-2 rows in set (0.01 sec)
-
-mysql> select a.class, a.stuname, max(b.courscore) from stu_info a join stu_score b on a.stuno=b.stuno group by a.class order by a.class, a.stuname;
-+------------+--------------+------------------+
-| class      | stuname      | max(b.courscore) |
-+------------+--------------+------------------+
-| 2018_CS_01 | MonkeyDLuffy |             95.5 |
-| 2018_CS_03 | PatrickStar  |             99.0 |
-+------------+--------------+------------------+
-2 rows in set (0.01 sec)
-
 ```
 
-因此，想保障 group by 语句结果集的稳定，请使用 full group by 语法。
+可以看到，由于在 `GROUP BY` 中指定了 `a`.`class` 和 `a`.`stuname` 字段。而选择的列为 `a`.`class`， `a`.`stuname` 和 `b`.`courscore` 三个列，唯一不在 `GROUP BY` 条件中的列 `b`.`courscore` 也使用了 max() 函数指定了唯一的值。即：满足这条 SQL 的语句的结果，有且仅有一种，不会产生任何歧义，这就被称为 `FULL GROUP BY` 语法。
+
+而反例就是 `NON-FULL GROUP BY` 语法，举个例子，还是这两张表，编写如下 SQL 查询（删除了上方 `GROUP BY` 中的 `a`.`stuname`）：
+
+{{< copyable "sql" >}}
+
+```sql
+SELECT
+    `a`.`class`,
+    `a`.`stuname`,
+    max( `b`.`courscore` )
+FROM
+    `stu_info` `a`
+    JOIN `stu_score` `b` ON `a`.`stuno` = `b`.`stuno`
+GROUP BY
+    `a`.`class`
+ORDER BY
+    `a`.`class`,
+    `a`.`stuname`;
+```
+
+那么符合这个 SQL 的返回值，将会有两个：
+
+- 第一种返回值：
+
+   ```sql
+   +------------+--------------+------------------------+
+   | class      | stuname      | max( `b`.`courscore` ) |
+   +------------+--------------+------------------------+
+   | 2018_CS_01 | MonkeyDLuffy |                   95.5 |
+   | 2018_CS_03 | PatrickStar  |                   99.0 |
+   +------------+--------------+------------------------+
+   ```
+
+- 第二种返回值：
+
+   ```sql
+   +------------+--------------+------------------+
+   | class      | stuname      | max(b.courscore) |
+   +------------+--------------+------------------+
+   | 2018_CS_01 | MonkeyDLuffy |             95.5 |
+   | 2018_CS_03 | SpongeBob    |             99.0 |
+   +------------+--------------+------------------+
+   ```
+
+这种情况的出现，是因为你在 SQL 中**_并未指定_**如何对 `a`.`stuname` 字段取值，两种结果都是符合 SQL 语义的。从而导致了结果集的不稳定。因此，想保障 `GROUP BY` 语句结果集的稳定，请使用 `FULL GROUP BY` 语法。
 
 MySQL 提供了一个 SQL_MODE 开关 ONLY_FULL_GROUP_BY 来控制是否进行 full group by 语法的检查，TiDB 也兼容了这个 SQL_MODE 开关：
 
