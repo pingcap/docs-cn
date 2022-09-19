@@ -6,20 +6,45 @@ aliases: ['/docs/dev/sync-diff-inspector/upstream-downstream-diff/','/docs/dev/r
 
 # Data Check for TiDB Upstream and Downstream Clusters
 
-You can use TiDB Binlog to build upstream and downstream clusters of TiDB. When Drainer replicates data to TiDB, the checkpoint is saved and the TSO mapping relationship between the upstream and downstream is also saved as `ts-map`. To check data between the upstream and downstream, configure `snapshot` in sync-diff-inspector.
+When you use TiCDC to build upstream and downstream clusters of TiDB, you might need to verify the consistency of upstream and downstream data without stopping replication. In the regular replication mode, TiCDC only guarantees that the data is eventually consistent, but cannot guarantee that the data is consistent during the replication process. Therefore, it is difficult to verify the consistency of dynamically changing data. To meet such a need, TiCDC provides the Syncpoint feature.
+
+Syncpoint uses the snapshot feature provided by TiDB and enables TiCDC to maintain a `ts-map` that has consistency between upstream and downstream snapshots during the replication process. In this way, the issue of verifying the consistency of dynamic data is converted to the issue of verifying the consistency of static snapshot data, which achieves the effect of nearly real-time verification.
+
+To enable the Syncpoint feature, set the value of the TiCDC configuration item `enable-sync-point` to `true` when creating a replication task. After enabling Syncpoint, TiCDC will periodically align the upstream and downstream snapshots according to the TiCDC parameter `sync-point-interval` during the data replication process, and will save the upstream and downstream TSO correspondences in the downstream `tidb_cdc.syncpoint_v1` table.
+
+Then, you only need to configure `snapshot` in sync-diff-inspector to verify the data of the TiDB upstream-downstream clusters. The following TiCDC configuration example enables Syncpoint for a created replication task:
+
+```toml
+# Enables SyncPoint.
+enable-sync-point = true
+
+# Aligns the upstream and downstream snapshots every 5 minutes
+sync-point-interval = "5m"
+
+# Cleans up the ts-map data in the downstream tidb_cdc.syncpoint_v1 table every hour
+sync-point-retention = "1h"
+```
 
 ## Step 1: obtain `ts-map`
 
 To obtain `ts-map`, execute the following SQL statement in the downstream TiDB cluster:
 
 ```sql
-mysql> select * from tidb_binlog.checkpoint;
-+---------------------+---------------------------------------------------------------------------------------------------------+
-| clusterID           | checkPoint                                                                                              |
-+---------------------+---------------------------------------------------------------------------------------------------------+
-| 6711243465327639221 | {"commitTS":409622383615541249,"ts-map":{"primary-ts":409621863377928194,"secondary-ts":409621863377928345}} |
-+---------------------+---------------------------------------------------------------------------------------------------------+
+select * from tidb_cdc.syncpoint_v1;
++------------------+----------------+--------------------+--------------------+---------------------+
+| ticdc_cluster_id | changefeed     | primary_ts         | secondary_ts       | created_at          |
++------------------+----------------+--------------------+--------------------+---------------------+
+| default          | default_test-2 | 435953225454059520 | 435953235516456963 | 2022-09-13 08:40:15 |
++------------------+----------------+--------------------+--------------------+---------------------+
 ```
+
+The fields in the preceding `syncpoint_v1` table are described as follows:
+
+- `ticdc_cluster_id`: The ID of the TiCDC cluster in this record.
+- `changefeed`: The ID of the changefeed in this record. Because different TiCDC clusters might have changefeeds with the same name, you need to confirm the `ts-map` inserted by a changefeed with the TiCDC cluster ID and changefeed ID.
+- `primary_ts`: The timestamp of the upstream database snapshot.
+- `secondary_ts`: The timestamp of the downstream database snapshot.
+- `created_at`: The time when this record is inserted.
 
 ## Step 2: configure snapshot
 
@@ -34,18 +59,18 @@ Here is a configuration example of the `Datasource config` section:
     port = 4000
     user = "root"
     password = ""
-    snapshot = "409621863377928194"
+    snapshot = "435953225454059520"
 
 [data-sources.downtidb]
     host = "172.16.0.2"
     port = 4000
     user = "root"
-    snapshot = "409621863377928345"
+    snapshot = "435953235516456963"
 ```
 
 > **Note:**
 >
-> - Set `db-type` of Drainer to `tidb` to ensure that `ts-map` is saved in the checkpoint.
+> - Before TiCDC creates a changefeed, make sure that the value of the TiCDC configuration item `enable-sync-point` is set to `true`. Only in this way, Syncpoint is enabled and the `ts-map` is saved in the downstream. For the complete configuration, see [TiCDC task configuration file](/ticdc/manage-ticdc.md#task-configuration-file).
 > - Modify the Garbage Collection (GC) time of TiKV to ensure that the historical data corresponding to snapshot is not collected by GC during the data check. It is recommended that you modify the GC time to 1 hour and recover the setting after the check.
 > - In some versions of TiDB Binlog, `master-ts` and `slave-ts` are stored in `ts-map`. `master-ts` is equivalent to `primary-ts` and `slave-ts` is equivalent to `secondary-ts`.
 > - The above example only shows the section of `Datasource config`. For complete configuration, refer to [sync-diff-inspector User Guide](/sync-diff-inspector/sync-diff-inspector-overview.md).

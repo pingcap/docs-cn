@@ -611,6 +611,19 @@ case-sensitive = true
 # Specifies whether to output the old value. New in v4.0.5. Since v5.0, the default value is `true`.
 enable-old-value = true
 
+# Specifies whether to enable the Syncpoint feature, which is supported since v6.3.0.
+enable-sync-point = true
+
+# Specifies the interval at which Syncpoint aligns the upstream and downstream snapshots.
+# The format is in h m s. For example, "1h30m30s".
+# The default value is "10m" and the minimum value is "30s".
+sync-point-interval = "5m"
+
+# Specifies how long the data is retained by Syncpoint in the downstream table. When this duration is exceeded, the data is cleaned up.
+# The format is in h m s. For example, "24h30m30s".
+# The default value is "24h".
+sync-point-retention = "1h"
+
 [filter]
 # Ignores the transaction of specified start_ts.
 ignore-txn-start-ts = [1, 2]
