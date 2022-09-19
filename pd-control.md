@@ -1293,8 +1293,8 @@ store delete 1
 {{< copyable "" >}}
 
 ```bash
->> store cancel-delete 1                // 取消下线
->> store remove-tombstone              // 删除所有 tombstone 状态的 store
+store cancel-delete 1                // 取消下线
+store remove-tombstone              // 删除所有 Tombstone 状态的 store
 ```
 
 > **注意：**
