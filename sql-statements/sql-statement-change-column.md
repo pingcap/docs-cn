@@ -151,8 +151,12 @@ ERROR 8200 (HY000): Unsupported modify column: change from original type decimal
 
 ## MySQL 兼容性
 
+<<<<<<< HEAD
 * 不支持在单个 `ALTER TABLE` 语句中进行多个更改。
 * 不支持主键列上 [Reorg-Data](/sql-statements/sql-statement-modify-column.md#Reorg-Data Change) 类型的变更。
+=======
+* 不支持主键列上 [Reorg-Data](/sql-statements/sql-statement-modify-column.md#reorg-data-change) 类型的变更。
+>>>>>>> fb3cf1508 (fix a link in sql-statement-change-column.md (#11331))
 * 不支持分区表上的列类型变更。
 * 不支持生成列上的列类型变更。
 * 不支持部分数据类型（例如，部分时间类型、Bit、Set、Enum、JSON 等）的变更，因为 TiDB 中 `CAST` 函数与 MySQL 的行为存在兼容性问题。
