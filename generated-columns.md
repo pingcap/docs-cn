@@ -69,7 +69,7 @@ SELECT name, id FROM person WHERE city = 'Beijing';
 EXPLAIN SELECT name, id FROM person WHERE city = 'Beijing';
 ```
 
-```
+```sql
 +---------------------------------+---------+-----------+--------------------------------+-------------------------------------------------------------+
 | id                              | estRows | task      | access object                  | operator info                                               |
 +---------------------------------+---------+-----------+--------------------------------+-------------------------------------------------------------+
@@ -109,13 +109,16 @@ ERROR 1048 (23000): Column 'city' cannot be null
 
 ## Generated columns index replacement rule
 
-When an expression in a query is equivalent to a generated column with an index, TiDB replaces the expression with the corresponding generated column, so that the optimizer can take that index into account during execution plan construction.
+When an expression in a query is strictly equivalent to a generated column with an index, TiDB replaces the expression with the corresponding generated column, so that the optimizer can take that index into account during execution plan construction.
 
-For example, the following example creates a generated column for the expression `a+1` and adds an index:
+The following example creates a generated column for the expression `a+1` and adds an index. The column type of `a` is int and the column type of `a+1` is bigint. If the type of the generated column is set to int, the replacement will not occur. For type conversion rules, see [Type Conversion of Expression Evaluation](/functions-and-operators/type-conversion-in-expression-evaluation.md).
 
 ```sql
 create table t(a int);
 desc select a+1 from t where a+1=3;
+```
+
+```sql
 +---------------------------+----------+-----------+---------------+--------------------------------+
 | id                        | estRows  | task      | access object | operator info                  |
 +---------------------------+----------+-----------+---------------+--------------------------------+
@@ -125,10 +128,15 @@ desc select a+1 from t where a+1=3;
 |     └─TableFullScan_5     | 10000.00 | cop[tikv] | table:t       | keep order:false, stats:pseudo |
 +---------------------------+----------+-----------+---------------+--------------------------------+
 4 rows in set (0.00 sec)
+```
 
+```sql
 alter table t add column b bigint as (a+1) virtual;
 alter table t add index idx_b(b);
 desc select a+1 from t where a+1=3;
+```
+
+```sql
 +------------------------+---------+-----------+-------------------------+---------------------------------------------+
 | id                     | estRows | task      | access object           | operator info                               |
 +------------------------+---------+-----------+-------------------------+---------------------------------------------+
@@ -140,11 +148,7 @@ desc select a+1 from t where a+1=3;
 
 > **Note:**
 >
-> Only when the expression type and the generated column type are strictly equal, the replacement is performed.
->
-> In the above example, the column type of `a` is int and the column type of `a+1` is bigint. If the type of the generated column is set to int, the replacement will not occur.
->
-> For type conversion rules, see [Type Conversion of Expression Evaluation](/functions-and-operators/type-conversion-in-expression-evaluation.md).
+> If the expression to be replaced and the generated column are both the string type but with different lengths, you can still replace the expression by setting the system variable [`tidb_enable_unsafe_substitute`](/system-variables.md#tidb_enable_unsafe_substitute-new-in-v630) to `ON`. When configuring this system variable, ensure that the value calculated by the generated column strictly satisfies the definition of the generated column. Otherwise, the data might be truncated due to the difference in length, resulting in an incorrect result. See GitHub issue [#35490](https://github.com/pingcap/tidb/issues/35490#issuecomment-1211658886).
 
 ## Limitations
 

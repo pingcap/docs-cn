@@ -1434,6 +1434,14 @@ Query OK, 0 rows affected (0.09 sec)
 >
 > Suppose that the TSO RPC latency increases for reasons other than a CPU usage bottleneck of the PD leader (such as network issues). In this case, enabling the TSO Follower Proxy might increase the execution latency in TiDB and affect the QPS performance of the cluster.
 
+### `tidb_enable_unsafe_substitute` <span class="version-mark">New in v6.3.0</span>
+
+- Scope: SESSION | GLOBAL
+- Persists to cluster: Yes
+- Type: Boolean
+- Default value: `OFF`
+- This variable controls whether to replace expressions with generated columns in an unsafe way. The default value is `OFF`, which means that unsafe replacement is disabled by default. For more details, see [Generated Columns](/generated-columns.md).
+
 ### tidb_enable_vectorized_expression <span class="version-mark">New in v4.0</span>
 
 - Scope: SESSION | GLOBAL
