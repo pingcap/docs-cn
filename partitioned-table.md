@@ -163,7 +163,8 @@ Range 分区在下列条件之一或者多个都满足时，尤其有效：
 
 ### Range INTERVAL 分区
 
-TiDB v6.3.0 新增了 INTERVAL 分区特性，作为语法糖（syntactic sugar）引入。其语法如下：
+Range INTERVAL partitioning is an extension of Range partitioning, which allows you to create partitions of a specified interval easily. Starting from v6.3.0, INTERVAL partitioning is introduced in TiDB as syntactic sugar:
+TiDB v6.3.0 新增了 Range INTERVAL 分区特性，作为语法糖（syntactic sugar）引入。Range INTERVAL 分区是对 Range 分区的扩展。你可以使用特定的间隔（interval）轻松创建分区。其语法如下：
 
 ```
 PARTITION BY RANGE [COLUMNS] (<partitioning expression>)
