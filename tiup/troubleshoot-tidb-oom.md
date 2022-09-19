@@ -102,9 +102,9 @@ TiDB 节点启动后需要加载统计信息到内存中。TiDB 从 v6.1.0 开�
 统计信息的收集过程会消耗内存。
 
 - 可以使用指定采样率、指定只收集特定列的统计信息、减少 analyze 并发度的方式减少内存使用。
-- TiDB 从 v6.1.0 开始引入了统计信息收集的内存限制，可以使用 [tidb_mem_quota_analyze](/system-variables.md#tidb_mem_quota_analyze-从-v610-版本开始引入) 变量来控制 TiDB 更新统计信息时的最大总内存占用。
+- TiDB 从 v6.1.0 开始引入了统计信息收集的内存限制，可以使用 [`tidb_mem_quota_analyze`](/system-variables.md#tidb_mem_quota_analyze-从-v610-版本开始引入) 变量来控制 TiDB 更新统计信息时的最大总内存占用。
 
-更多信息参见[统计信息简介](/statistics.md)。
+更多信息请参见[统计信息简介](/statistics.md)。
 
 ### 大查询 SQL 在 TiDB 节点上消耗太多内存
 
@@ -119,13 +119,13 @@ TiDB 节点启动后需要加载统计信息到内存中。TiDB 从 v6.1.0 开�
 
 针对单条大事务，也可通过拆分的方式调小事务尺寸。
 
-### Prepare statment 使用过量
+### Prepared Statment 使用过量
 
-例如：客户端不断 prepare stmt 但未 deallocate prepare stmt 导致的内存持续上涨，最终导致 TiDB OOM。
+客户端不断 Prepared Statment 但未执行 [`deallocate prepare stmt`](/sql-prepared-plan-cache.md#忽略-com_stmt_close-指令和-deallocate-prepare-语句) 导致的内存持续上涨，最终导致 TiDB OOM。
 
-原因是：prepare statment 占用的内存要在 session 关闭后才会释放。这一点在长连接下尤需注意。
+原因是由于 Prepared Statment 占用的内存要在 session 关闭后才会释放。这一点在长连接下尤需注意。
 
-解决办法：可以调整 session 的 生命周期、连接池的 lift time 时长或者 SQL 重置策略，也可使用系统变量 max_prepared_stmt_count 进行限制。
+要解决该问题，可以调整 session 的生命周期、连接池的 lift time 时长或者 SQL 重置策略，也可使用系统变量 [max_prepared_stmt_count](/system-variables.md#max_prepared_stmt_count) 进行限制。
 
 ### 客户端 OOM 问题
 
