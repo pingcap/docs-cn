@@ -249,13 +249,13 @@ INTERVAL 分区还增加了添加和删除分区的更加简单易用的语法�
 
 下面的语句会变更第一个分区，该语句会删除所有小于给定表达式的分区，使匹配的分区成为新的第一个分区。它不会影响 `NULL PARTITION`。
 
-```
+```sql
 ALTER TABLE table_name FIRST PARTITION LESS THAN (<expression>)
 ```
 
 下面的语句会变更最后一个分区，该语句会添加新的分区，分区范围扩大到给定的表达式的值。如果存在 `MAXVALUE PARTITION`，则该语句不会生效，因为它需要数据重组。
 
-```
+```sql
 ALTER TABLE table_name LAST PARTITION LESS THAN (<expression>)
 ```
 
