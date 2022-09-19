@@ -1301,7 +1301,7 @@ store delete 1
 >
 > 若下线过程中切换了 PD leader，需要手动修改 store limit。
 
-#### store label 命令
+#### 管理 store label
 
 `store label` 用于管理 store label。
 
