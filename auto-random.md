@@ -21,7 +21,6 @@ summary: 本文介绍了 TiDB 的 `AUTO_RANDOM` 列属性。
 CREATE TABLE t (a BIGINT AUTO_RANDOM, b VARCHAR(255), PRIMARY KEY (a));
 CREATE TABLE t (a BIGINT PRIMARY KEY AUTO_RANDOM, b VARCHAR(255));
 CREATE TABLE t (a BIGINT AUTO_RANDOM(6), b VARCHAR(255), PRIMARY KEY (a));
-CREATE TABLE t (a BIGINT AUTO_RANDOM(5, 54), b VARCHAR(255), PRIMARY KEY (a));
 ```
 
 `AUTO_RANDOM` 关键字可以被包裹在 TiDB 可执行注释中，注释语法请参考 [TiDB 可执行注释](/comment-syntax.md#tidb-可执行的注释语法)。
@@ -30,7 +29,6 @@ CREATE TABLE t (a BIGINT AUTO_RANDOM(5, 54), b VARCHAR(255), PRIMARY KEY (a));
 CREATE TABLE t (a bigint /*T![auto_rand] AUTO_RANDOM */, b VARCHAR(255), PRIMARY KEY (a));
 CREATE TABLE t (a bigint PRIMARY KEY /*T![auto_rand] AUTO_RANDOM */, b VARCHAR(255));
 CREATE TABLE t (a BIGINT /*T![auto_rand] AUTO_RANDOM(6) */, b VARCHAR(255), PRIMARY KEY (a));
-CREATE TABLE t (a BIGINT  /*T![auto_rand] AUTO_RANDOM(5, 54) */, b VARCHAR(255), PRIMARY KEY (a));
 ```
 
 在用户执行 `INSERT` 语句时：
@@ -70,19 +68,17 @@ tidb> SELECT * FROM t;
 3 rows in set (0.00 sec)
 ```
 
-TiDB 自动分配的 `AUTO_RANDOM(S, R)` 列值共有 64 位：
+TiDB 自动分配的 `AUTO_RANDOM(S)` 列值共有 64 位：
 
 - `S` 表示分片位的数量，取值范围是 `1` 到 `15`。默认为 `5`。
-- `R` 表示自动分配值域的总长度，取值范围是 `32` 到 `64`。默认为 `64`。
 
 `AUTO_RANDOM` 列值的具体结构如下：
 
-| 总位数   | 符号位    | 保留位       | 分片位  | 自增位        |
-|---------|----------|-------------|--------|--------------|
-| 64 bits | 0/1 bit  | (64-R) bits | S bits | (R-1-S) bits |
+| 总位数   | 符号位    | 分片位  | 自增位         |
+|---------|----------|--------|---------------|
+| 64 bits | 0/1 bit  | S bits | (64-1-S) bits |
 
 - 符号位的长度由该列是否存在 `UNSIGNED` 属性决定：存在则为 `0`，否则为 `1`。
-- 保留位的长度为 `64-R`，保留位的内容始终为 `0`。
 - 分片位的内容通过计算当前事务的开始时间的哈希值而得。要使用不同的分片位数量（例如 10），可以在建表时指定 `AUTO_RANDOM(10)`。
 - 自增位的值保存在存储引擎中，按顺序分配，每次分配完值后会自增 1。自增位保证了 `AUTO_RANDOM` 列值全局唯一。当自增位耗尽后，再次自动分配时会报 `Failed to read auto-increment value from storage engine` 的错误。
 
@@ -93,11 +89,6 @@ TiDB 自动分配的 `AUTO_RANDOM(S, R)` 列值共有 64 位：
 > - 由于总位数固定为 64 位，分片位的数量会影响到自增位的数量：当分片位数增加时，自增位数会减少，反之亦然。因此，你需要权衡“自动分配值的随机性”以及“可用空间”。
 > - 最佳实践是将分片位设置为 `log(2, x)`，其中 `x` 为当前集群存储引擎的数量。例如，一个 TiDB 集群中存在 16 个 TiKV，分片位可以设置为 `log(2, 16)`，即 `4`。在所有 Region 被均匀调度到各个 TiKV 上以后，此时大批量写入的负载可被均匀分布到不同 TiKV 节点，以实现资源最大化利用。
 > 由于总位数固定为 64 位，分片位的数量会影响到自增位的数量：当分片位数增加时，自增位数会减少，反之亦然。因此，你需要权衡“自动分配值的随机性”以及“可用空间”。
->
-> 值域长度 (`R`) 的选取：
->
-> - 通常，在应用程序的数值类型无法表示完整的 64 位整数时需要设置 `R` 参数。
-> - 例如：JSON number 类型的取值范围为 `[-(2^53)+1, (2^53)-1]`，而 TiDB 很容易会为 `AUTO_RANDOM(5)` 的列分配超出该范围的整数，导致应用程序读取该列的值时出现异常。此时，你可以用 `AUTO_RANDOM(5, 54)` 代替 `AUTO_RANDOM(5)`，使得 TiDB 不会分配出大于 `9007199254740991` (2^53-1) 的整数。
 
 `AUTO RANDOM` 列隐式分配的值会影响 `last_insert_id()`。可以使用 `SELECT last_insert_id()` 获取上一次 TiDB 隐式分配的 ID。
 
