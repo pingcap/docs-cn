@@ -116,7 +116,7 @@ TiDB 版本：6.3.0-DMR
 
 * TiKV 日志循环使用 [#214](https://github.com/tikv/raft-engine/issues/214) @[LykxSassinator](https://github.com/LykxSassinator)
 
-    TiKV Raft Engine 默认开启[日志循环](/tikv-configuration-file.md#enable-log-recycle-new-in-v630)功能。该特性显著降低 Raft 日志追加过程中的长尾延迟，提升了 TiKV 写入负载下的性能。
+    TiKV Raft Engine 支持[日志循环](/tikv-configuration-file.md#enable-log-recycle-new-in-v630)功能。该特性能够显著降低网络磁盘上 Raft 日志追加过程中的长尾延迟，提升了 TiKV 写入负载下的性能。
 
 * TiDB 支持 Null-Aware Anti Join [#issue]() @[Arenatlx](https://github.com/Arenatlx) **tw: Oreoxmt**
 
