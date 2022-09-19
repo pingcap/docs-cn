@@ -1945,7 +1945,7 @@ explain select * from t where age=5;
 > - 如果客户端使用游标操作，建议不开启 `tidb_rc_read_check_ts` 这一特性，避免前一批返回数据已经被客户端使用而语句最终会报错的情况。
 > - 自 v6.3.0 起，`tidb_rc_read_check_ts` 的作用域由 GLOBAL 或 SESSION 修改为 INSTANCE 级别。
 
-- 作用域：GLOBAL
+- 作用域：INSTANCE
 - 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
 - 默认值：`OFF`
 - 该变量用于优化时间戳的获取，适用于悲观事务 `READ-COMMITTED` 隔离级别下读写冲突较少的场景，开启此变量可以避免获取全局 timestamp 带来的延迟和开销，并优化事务内读语句延迟。
