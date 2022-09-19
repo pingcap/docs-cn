@@ -1343,7 +1343,7 @@ store weight 1 5 10
 
 #### 设置 store 调度限速
 
-关于 `store limit` 的原理和使用方法，请参考 [`store limit`](/configure-store-limit.md)。
+通过 `store-limit`，你可以设置 store 的调度速度。关于 `store limit` 的原理和使用方法，请参考 [`store limit`](/configure-store-limit.md)。
 
 ```bash
 >> store limit                         // 显示所有 store 添加和删除 peer 的速度上限
