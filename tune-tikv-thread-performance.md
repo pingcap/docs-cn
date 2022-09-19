@@ -84,6 +84,8 @@ Starting from TiKV v5.0, all read requests use the unified thread pool for queri
 
     If the peak value of the `TiKV-Details.Thread CPU.Unified read pool CPU` on Grafana does not exceed 800%, then it is recommended to set `readpool.unified.max-thread-count` to `10`. Too many threads can cause more frequent thread switching, and take up resources of other thread pools.
 
+    Since v6.3.0, TiKV supports automatically adjusting the UnifyReadPool thread pool size based on the current CPU usage. To enable this feature, you can set the [`readpool.unified.auto-adjust-pool-size = true`](/tikv-configuration-file.md#auto-adjust-pool-size-new-in-v630). It is recommended to automatically adjust the thread pool size for clusters that are reread and whose maximum CPU usage exceeds 80%.
+
 * The RocksDB thread pool.
 
     The RocksDB thread pool is a thread pool for RocksDB to compact and flush tasks. Usually, you do not need to configure it.

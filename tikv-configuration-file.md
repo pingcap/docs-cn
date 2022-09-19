@@ -246,6 +246,11 @@ Configuration items related to the single thread pool serving read requests. Thi
 + Default value: `2000`
 + Minimum value: `2`
 
+### `auto-adjust-pool-size` <span class="version-mark">New in v6.3.0</span>
+
++ Controls whether to automatically adjust the thread pool size. When it is enabled, the read performance of TiKV is optimized by automatically adjusting the UnifyReadPool thread pool size based on the current CPU usage. The possible range of the thread pool is `[max-thread-count, MAX(4, CPU)]`. The maximum value is the same as the one of [`max-thread-count`](#max-thread-count).
++ Default value: `false`
+
 ## readpool.storage
 
 Configuration items related to storage thread pool.
