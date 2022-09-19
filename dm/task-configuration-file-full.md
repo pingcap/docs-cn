@@ -129,6 +129,14 @@ syncers:
 
     # If set to true, `INSERT` statements from upstream are rewritten to `REPLACE` statements, and `UPDATE` statements are rewritten to `DELETE` and `REPLACE` statements. This ensures that DML statements can be imported repeatedly during data migration when there is any primary key or unique index in the table schema.
     safe-mode: false
+    # The duration of the automatic safe mode.
+    # If this value is not set or set to "", the default value is twice of `checkpoint-flush-interval` (30s by default), which is 60s.
+    # If this value is set to "0s", DM reports an error when it automatically enters the safe mode.
+    # If this value is set to a normal value, such as "1m30s", when the task pauses abnormally, when DM fails to
+    # record safemode_exit_point, or when DM exits unexpectedly, the duration of the automatic safe mode is set to
+    # 1 minute 30 seconds.
+    safe-mode-duration: "60s"
+
     # If set to true, DM compacts as many upstream statements on the same rows as possible into a single statements without increasing latency.
     # For example, `INSERT INTO tb(a,b) VALUES(1,1); UPDATE tb SET b=11 WHERE a=1`;` will be compacted to `INSERT INTO tb(a,b) VALUES(1,11);`, where "a" is the primary key
     # `UPDATE tb SET b=1 WHERE a=1; UPDATE tb(a,b) SET b=2 WHERE a=1;` will be compacted to `UPDATE tb(a,b) SET b=2 WHERE a=1;`, where "a" is the primary key
