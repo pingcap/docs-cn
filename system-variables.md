@@ -208,6 +208,7 @@ mysql> SELECT * FROM t1;
 - Default value: `mysql_native_password`
 - Possible values: `mysql_native_password`, `caching_sha2_password`, and `tidb_sm3_password`
 - This variable sets the authentication method that the server advertises when the server-client connection is being established.
+- To authenticate using the `tidb_sm3_password` method, you can connect to TiDB using [TiDB-JDBC](https://github.com/pingcap/mysql-connector-j/tree/release/8.0-sm3).
 
 <CustomContent platform="tidb">
 
@@ -1906,7 +1907,7 @@ For a system upgraded to v5.0 from an earlier version, if you have not modified 
 - Type: String
 - This is a read-only variable. It is internally used in TiDB to get the information of the last DDL operation within the current session.
     - "query": The last DDL query string.
-    - "seq_num": The sequence number for each DDL operation. It is used to identify the order of DDL operations. 
+    - "seq_num": The sequence number for each DDL operation. It is used to identify the order of DDL operations.
 
 ### tidb_last_query_info <span class="version-mark">New in v4.0.14</span>
 
@@ -2195,7 +2196,7 @@ For a system upgraded to v5.0 from an earlier version, if you have not modified 
 - Type: Integer
 - Default value: `1`
 - Range: `[0, 2]`
-- Indicates whether to allow the Broadcast Cartesian Join. 
+- Indicates whether to allow the Broadcast Cartesian Join.
 - `0` means that the Broadcast Cartesian Join is not allowed. `1` means that it is allowed based on [`tidb_broadcast_join_threshold_count`](#tidb_broadcast_join_threshold_count-new-in-v50). `2` means that it is always allowed even if the table size exceeds the threshold.
 - This variable is internally used in TiDB, and it is **NOT** recommended to modify its value.
 
