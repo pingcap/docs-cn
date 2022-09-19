@@ -189,7 +189,7 @@ CREATE TABLE employees (
 INTERVAL (100) FIRST PARTITION LESS THAN (100) LAST PARTITION LESS THAN (10000) MAXVALUE PARTITION
 ```
 
-上述命令创建的表格如下：
+该示例创建的表与如下 SQL 语句相同：
 
 ```
 CREATE TABLE `employees` (
@@ -222,7 +222,7 @@ PARTITION BY RANGE COLUMNS (report_date)
 INTERVAL (1 MONTH) FIRST PARTITION LESS THAN ('2000-01-01') LAST PARTITION LESS THAN ('2025-01-01')
 ```
 
-该语句创建了下表：
+该示例创建的表与如下 SQL 语句相同：
 
 ```
 CREATE TABLE `monthly_report_status` (
@@ -239,11 +239,12 @@ PARTITION BY RANGE COLUMNS(`report_date`)
  PARTITION `P_LT_2025-01-01` VALUES LESS THAN ('2025-01-01'))
 ```
 
-可选参数 `NULL PARTITION` 会创建一个分区，其中分区表达式推导出的值为 `NULL` 的数据会放到该分区。在分区表达式中，`NULL` 会被认为是小于任何其他值。参见 [Handling of NULL with Range partitioning](#range-分区对-null-的处理)。
+可选参数 `NULL PARTITION` 会创建一个分区，其中分区表达式推导出的值为 `NULL` 的数据会放到该分区。在分区表达式中，`NULL` 会被认为是小于任何其他值。参见 [分区对 NULL 值的处理
+](#range-分区对-null-的处理)。
 
 可选参数 `MAXVALUE PARTITION` 会创建一个最后的分区，其值为 `PARTITION P_MAXVALUE VALUES LESS THAN (MAXVALUE)`。
 
-#### ALTER INTERVAL Partitioned tables
+#### ALTER INTERVAL 分区
 
 INTERVAL 分区还增加了添加和删除分区的更加简单易用的语法。
 
