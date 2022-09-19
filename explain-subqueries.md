@@ -151,3 +151,131 @@ EXPLAIN SELECT * FROM t3 WHERE t1_id NOT IN (SELECT id FROM t1 WHERE int_col < 1
 ```
 
 This query starts by reading the table `t3` and then probes the table `t1` based on the `PRIMARY KEY`. The join type is an _anti semi join_; anti because this example is for the non-existence of the value (`NOT IN`) and semi-join because only the first row needs to match before the join is rejected.
+
+## Null-aware semi join (`IN` and `= ANY` subqueries)
+
+The value of the `IN` or `= ANY` set operator is three-valued (`true`, `false`, and `NULL`). For the join type converted from either of the two operators, TiDB needs to be aware of the `NULL` on both sides of the join key and process it in a special way.
+
+Subqueries containing `IN` and `= ANY` operators are converted to semi join and left outer semi join respectively. In the preceding example of [Semi join](#semi-join-correlated-subquery), since columns `test.t1.id` and `test.t2.t1_id` on both sides of the join key are `not NULL`, the semi join does not need to be considered as null-aware (`NULL` is not processed specially). TiDB processes the null-aware semi join based on the Cartesian product and filter without special optimization. The following is an example:
+
+```sql
+CREATE TABLE t(a INT, b INT);
+CREATE TABLE s(a INT, b INT);
+EXPLAIN SELECT (a,b) IN (SELECT * FROM s) FROM t;
+EXPLAIN SELECT * FROM t WHERE (a,b) IN (SELECT * FROM s);
+```
+
+```sql
+tidb> EXPLAIN SELECT (a,b) IN (SELECT * FROM s) FROM t;
++-----------------------------+---------+-----------+---------------+-------------------------------------------------------------------------------------------+
+| id                          | estRows | task      | access object | operator info                                                                             |
++-----------------------------+---------+-----------+---------------+-------------------------------------------------------------------------------------------+
+| HashJoin_8                  | 1.00    | root      |               | CARTESIAN left outer semi join, other cond:eq(test.t.a, test.s.a), eq(test.t.b, test.s.b) |
+| ├─TableReader_12(Build)     | 1.00    | root      |               | data:TableFullScan_11                                                                     |
+| │ └─TableFullScan_11        | 1.00    | cop[tikv] | table:s       | keep order:false, stats:pseudo                                                            |
+| └─TableReader_10(Probe)     | 1.00    | root      |               | data:TableFullScan_9                                                                      |
+|   └─TableFullScan_9         | 1.00    | cop[tikv] | table:t       | keep order:false, stats:pseudo                                                            |
++-----------------------------+---------+-----------+---------------+-------------------------------------------------------------------------------------------+
+5 rows in set (0.00 sec)
+
+tidb> EXPLAIN SELECT * FROM t WHERE (a,b) IN (SELECT * FROM s);
++------------------------------+---------+-----------+---------------+-----------------------------------------------------------------------------------------------------+
+| id                           | estRows | task      | access object | operator info                                                                                       |
++------------------------------+---------+-----------+---------------+-----------------------------------------------------------------------------------------------------+
+| HashJoin_11                  | 1.00    | root      |               | inner join, equal:[eq(test.t.a, test.s.a) eq(test.t.b, test.s.b)]                                   |
+| ├─TableReader_14(Build)      | 1.00    | root      |               | data:Selection_13                                                                                   |
+| │ └─Selection_13             | 1.00    | cop[tikv] |               | not(isnull(test.t.a)), not(isnull(test.t.b))                                                        |
+| │   └─TableFullScan_12       | 1.00    | cop[tikv] | table:t       | keep order:false, stats:pseudo                                                                      |
+| └─HashAgg_17(Probe)          | 1.00    | root      |               | group by:test.s.a, test.s.b, funcs:firstrow(test.s.a)->test.s.a, funcs:firstrow(test.s.b)->test.s.b |
+|   └─TableReader_24           | 1.00    | root      |               | data:Selection_23                                                                                   |
+|     └─Selection_23           | 1.00    | cop[tikv] |               | not(isnull(test.s.a)), not(isnull(test.s.b))                                                        |
+|       └─TableFullScan_22     | 1.00    | cop[tikv] | table:s       | keep order:false, stats:pseudo                                                                      |
++------------------------------+---------+-----------+---------------+-----------------------------------------------------------------------------------------------------+
+8 rows in set (0.01 sec)
+```
+
+In the first query statement `EXPLAIN SELECT (a,b) IN (SELECT * FROM s) FROM t;`, since columns `a` and `b` of tables `t` and `s` are NULLABLE, the left outer semi join converted by the `IN` subquery is null-aware. Specifically, the Cartesian product is calculated first, then the column connected by `IN` or `= ANY` is put into other conditions as a normal equality query for filtering.
+
+In the second query statement `EXPLAIN SELECT * FROM t WHERE (a,b) IN (SELECT * FROM s);`, since columns `a` and `b` of tables `t` and `s` are NULLABLE, the `IN` subquery should have been converted to a null-aware semi join. But TiDB optimizes it by converting semi join to inner join and aggregate. This is because `NULL` and `false` are equivalent in `IN` subqueries for non-scalar output. The `NULL` rows in the push-down filter results in the negative semantics of the `WHERE` clause. Therefore, these rows can be ignored beforehand.
+
+> **Note:**
+>
+> The `Exists` operator is also converted to semi join, but it is not null-aware.
+
+## Null-aware anti semi join (`NOT IN` and `!= ALL` subqueries)
+
+The value of the `NOT IN` or `!= ALL` set operator is three-valued (`true`, `false`, and `NULL`). For the join type converted from either of the two operators, TiDB needs to be aware of the `NULL` on both sides of the join key and process it in a special way.
+
+Subqueries containing `NOT IN` and `! = ALL` operators are converted to anti semi join and anti left outer semi join respectively. In the preceding example of [Anti semi join](#anti-semi-join-not-in-subquery), since columns `test.t3.t1_id` and `test.t1.id` on both sides of the join key are `not NULL`, the anti semi join does not need to be considered as null-aware (`NULL` is not processed specially).
+
+TiDB v6.3.0 optimizes null-aware anti join (NAAJ) as follows:
+
+- Build hash join using the null-aware equality condition (NA-EQ)
+
+    Set operators introduce the equality condition, which requires a special process for the `NULL` value of operators on both sides of the condition. The equality condition that requires null-aware is called NA-EQ. Different from earlier versions, TiDB v6.3.0 no longer processes NA-EQ as before, but places it in other conditions after join, and then determines the legitimacy of the result set after matching the Cartesian product.
+
+    Since TiDB v6.3.0, NA-EQ, a weakened equality condition, is still used to build hash join. This reduces the matching amount of data that needs to be traversed and speeds up the matching process. The acceleration is more significant when the percentage of total `DISTINCT()` values of the build table is almost 100%.
+
+- Speed up the return of matching results using the special property of `NULL`
+
+    Since anti semi join is a conjunctive normal form (CNF), a `NULL` on either side of the join leads to a definite result. This property can be used to speed up the return of the entire matching process.
+
+The following is an example:
+
+```sql
+CREATE TABLE t(a INT, b INT);
+CREATE TABLE s(a INT, b INT);
+EXPLAIN SELECT (a, b) NOT IN (SELECT * FROM s) FROM t;
+EXPLAIN SELECT * FROM t WHERE (a, b) NOT IN (SELECT * FROM s);
+```
+
+```sql
+tidb> EXPLAIN SELECT (a, b) NOT IN (SELECT * FROM s) FROM t;
++-----------------------------+----------+-----------+---------------+---------------------------------------------------------------------------------------------+
+| id                          | estRows  | task      | access object | operator info                                                                               |
++-----------------------------+----------+-----------+---------------+---------------------------------------------------------------------------------------------+
+| HashJoin_8                  | 10000.00 | root      |               | Null-aware anti left outer semi join, equal:[eq(test.t.b, test.s.b) eq(test.t.a, test.s.a)] |
+| ├─TableReader_12(Build)     | 10000.00 | root      |               | data:TableFullScan_11                                                                       |
+| │ └─TableFullScan_11        | 10000.00 | cop[tikv] | table:s       | keep order:false, stats:pseudo                                                              |
+| └─TableReader_10(Probe)     | 10000.00 | root      |               | data:TableFullScan_9                                                                        |
+|   └─TableFullScan_9         | 10000.00 | cop[tikv] | table:t       | keep order:false, stats:pseudo                                                              |
++-----------------------------+----------+-----------+---------------+---------------------------------------------------------------------------------------------+
+5 rows in set (0.00 sec)
+
+tidb> EXPLAIN SELECT * FROM t WHERE (a, b) NOT IN (SELECT * FROM s);
++-----------------------------+----------+-----------+---------------+----------------------------------------------------------------------------------+
+| id                          | estRows  | task      | access object | operator info                                                                    |
++-----------------------------+----------+-----------+---------------+----------------------------------------------------------------------------------+
+| HashJoin_8                  | 8000.00  | root      |               | Null-aware anti semi join, equal:[eq(test.t.b, test.s.b) eq(test.t.a, test.s.a)] |
+| ├─TableReader_12(Build)     | 10000.00 | root      |               | data:TableFullScan_11                                                            |
+| │ └─TableFullScan_11        | 10000.00 | cop[tikv] | table:s       | keep order:false, stats:pseudo                                                   |
+| └─TableReader_10(Probe)     | 10000.00 | root      |               | data:TableFullScan_9                                                             |
+|   └─TableFullScan_9         | 10000.00 | cop[tikv] | table:t       | keep order:false, stats:pseudo                                                   |
++-----------------------------+----------+-----------+---------------+----------------------------------------------------------------------------------+
+5 rows in set (0.00 sec)
+```
+
+In the first query statement `EXPLAIN SELECT (a, b) NOT IN (SELECT * FROM s) FROM t;`, since columns `a` and `b` of tables `t` and `s` are NULLABLE, the left outer semi join converted by `NOT IN` subquery is null-aware. The difference is that NAAJ optimization also uses the NA-EQ as the hash join condition, which greatly speeds up the join calculation.
+
+In the second query statement `EXPLAIN SELECT * FROM t WHERE (a, b) NOT IN (SELECT * FROM s);`, since columns `a` and `b` of tables `t` and `s` are NULLABLE, the anti semi join converted by `NOT IN` subquery is null-aware. The difference is that NAAJ optimization also uses the NA-EQ as the hash join condition, which greatly speeds up the join calculation.
+
+Currently, TiDB can only be null-aware of anti semi join and anti left outer semi join. Only the hash join type is supported and its build table should be fixed to the right table.
+
+> **Note:**
+>
+> The `Not Exists` operator is also converted to the anti semi join, but it is not null-aware.
+
+## Explain statements using other types of subqueries
+
++ [Explain Statements in the MPP Mode](/explain-mpp.md)
++ [Explain Statements That Use Indexes](/explain-indexes.md)
++ [Explain Statements That Use Joins](/explain-joins.md)
++ [Explain Statements That Use Aggregation](/explain-aggregation.md)
++ [Explain Statements Using Views](/explain-views.md)
++ [Explain Statements Using Partitions](/explain-partitions.md)
+
+<CustomContent platform="tidb">
+
++ [Explain Statements Using Index Merge](/explain-index-merge.md)
+
+</CustomContent>
