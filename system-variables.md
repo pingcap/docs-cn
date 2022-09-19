@@ -303,7 +303,7 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 * 作用域：SESSION | GLOBAL
 * 默认值：67108864
 * 范围：`[1024, 1073741824]`，且必须为 1024 的整数倍
-* 服务器端和客户端在一次传送数据包的过程中允许最大的数据包大小，单位为字节
+* 服务器端和客户端在一次传送数据包的过程中允许最大的数据包大小，单位为字节。
 
 ### `plugin_dir`
 
