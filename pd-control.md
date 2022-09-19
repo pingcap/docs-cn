@@ -1321,7 +1321,7 @@ store label 1 zone=cn
 store label 1 zone=us
 ```
 
-重写 store id 为 1 的所有 label, 之前有的 label 会被覆盖：
+通过 `--rewrite` 重写 store id 为 1 的所有 label，之前有的 label 会被覆盖：
 
 {{< copyable "" >}}
 
