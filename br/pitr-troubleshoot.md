@@ -12,8 +12,18 @@ This document summarizes common problems during log backup and the solutions.
 In v6.2.0, PITR does not support restoring the TiFlash replicas of a cluster. After restoring data, you need to execute the following statement to set the TiFlash replica of the schema or table.
 
 ```sql
-ALTER TABLE table_name SET TIFLASH REPLICA count;
+ALTER TABLE table_name SET TIFLASH REPLICA @count;
 ```
+
+In v6.3.0 and later versions, after PITR completes data restore, BR automatically executes the `ALTER TABLE SET TIFLASH REPLICA` DDL statement according to the number of TiFlash replicas in the upstream cluster at the corresponding time. You can check the TiFlash replica setting using the following SQL statement:
+
+``` sql
+SELECT * FROM INFORMATION_SCHEMA.tiflash_replica;
+```
+
+> **Note:**
+>
+> Currently, PITR does not support writing data directly to TiFlash during the restore phase. Therefore, TiFlash replicas are not available immediately after PITR completes data restore. Instead, you need to wait for a certain period of time for the data to be replicated from TiKV nodes. To check the replication progress, check the `progress` information in the `INFORMATION_SCHEMA.tiflash_replica` table.
 
 ## What should I do if the `status` of a log backup task becomes `ERROR`?
 
