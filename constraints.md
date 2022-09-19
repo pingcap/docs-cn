@@ -85,7 +85,7 @@ CREATE TABLE users (
 INSERT INTO users (username) VALUES ('dave'), ('sarah'), ('bill');
 ```
 
-乐观事务模式下且 `tidb_constraint_check_in_place=0`：
+乐观事务模式下且 `tidb_constraint_check_in_place=OFF`：
 
 ```sql
 BEGIN OPTIMISTIC;
@@ -129,7 +129,7 @@ INSERT INTO users (username) VALUES ('dave'), ('sarah'), ('bill');
 ```
 
 ```sql
-SET tidb_constraint_check_in_place = 1;
+SET tidb_constraint_check_in_place = ON;
 ```
 
 ```
@@ -182,7 +182,7 @@ ERROR 1062 (23000): Duplicate entry 'bill' for key 'username'
     下面这个例子跳过了对 `bill` 的加锁，因此 TiDB 可能读到不满足唯一性约束的结果：
 
     ```sql
-    SET tidb_constraint_check_in_place_pessimistic = 0;
+    SET tidb_constraint_check_in_place_pessimistic = OFF;
     BEGIN PESSIMISTIC;
     INSERT INTO users (username) VALUES ('jane'), ('chris'), ('bill'); -- Query OK, 3 rows affected
     SELECT * FROM users FOR UPDATE;
@@ -225,7 +225,7 @@ ERROR 1062 (23000): Duplicate entry 'bill' for key 'username'
     UNIQUE KEY (username)
     );
 
-    SET tidb_constraint_check_in_place_pessimistic = 0;
+    SET tidb_constraint_check_in_place_pessimistic = OFF;
     BEGIN PESSIMISTIC;
     INSERT INTO users (username) VALUES ('jane'), ('chris'), ('bill'); -- Query OK, 3 rows affected
     ```
@@ -255,7 +255,7 @@ ERROR 1062 (23000): Duplicate entry 'bill' for key 'username'
     下面的例子在 INSERT 语句执行时跳过了一次加锁后，在 DELETE 语句执行时对该唯一索引加锁并检查，即会在该语句报错：
 
     ```sql
-    SET tidb_constraint_check_in_place_pessimistic = 0;
+    SET tidb_constraint_check_in_place_pessimistic = OFF;
     BEGIN PESSIMISTIC;
     INSERT INTO users (username) VALUES ('jane'), ('chris'), ('bill'); -- Query OK, 3 rows affected
     DELETE FROM users where username = 'bill';

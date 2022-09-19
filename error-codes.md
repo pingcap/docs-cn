@@ -385,7 +385,7 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
     报错信息以 `ERROR 9007 (HY000) : Write conflict` 开头。
 
-    如果报错信息中含有 "reason=LazyUniquenessCheck"，说明是悲观事务并且设置了 `@@tidb_constraint_check_in_place_pessimistic=0`，业务中存在唯一索引上的写冲突，此时悲观事务不能保证执行成功。可以在应用测重试事务，或将该变量设置成 `1` 绕过。详见[约束](/constraints.md#悲观事务)。
+    如果报错信息中含有 "reason=LazyUniquenessCheck"，说明是悲观事务并且设置了 `@@tidb_constraint_check_in_place_pessimistic=OFF`，业务中存在唯一索引上的写冲突，此时悲观事务不能保证执行成功。可以在应用测重试事务，或将该变量设置成 `ON` 绕过。详见[约束](/constraints.md#悲观事务)。
 
 * Error Number: 9008
 

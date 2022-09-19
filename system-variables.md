@@ -578,7 +578,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
         {{< copyable "sql" >}}
 
         ```sql
-        set @@tidb_constraint_check_in_place=on;
+        set @@tidb_constraint_check_in_place=ON;
         begin optimistic;
         insert into t values (1);
         ```
@@ -603,7 +603,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
         {{< copyable "sql" >}}
 
         ```sql
-        set @@tidb_constraint_check_in_place_pessimistic=off;
+        set @@tidb_constraint_check_in_place_pessimistic=OFF;
         create table t (i int key);
         insert into t values (1);
         begin pessimistic;
@@ -625,7 +625,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
     - 悲观事务模型下将 `tidb_constraint_check_in_place_pessimistic` 设置为 `ON`：
 
         ```sql
-        set @@tidb_constraint_check_in_place_pessimistic=on;
+        set @@tidb_constraint_check_in_place_pessimistic=ON;
         begin pessimistic;
         insert into t values (1);
         ```
