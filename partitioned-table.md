@@ -247,7 +247,7 @@ PARTITION BY RANGE COLUMNS(`report_date`)
 
 INTERVAL 分区还增加了添加和删除分区的更加简单易用的语法。
 
-下面的语句会变更第一个分区，该语句会删除所有小于给定表达式的分区，使匹配的分区成为新的第一个分区。它不会影响 NULL PARTITION。
+下面的语句会变更第一个分区，该语句会删除所有小于给定表达式的分区，使匹配的分区成为新的第一个分区。它不会影响 `NULL PARTITION`。
 
 ```
 ALTER TABLE table_name FIRST PARTITION LESS THAN (<expression>)
@@ -264,7 +264,7 @@ ALTER TABLE table_name LAST PARTITION LESS THAN (<expression>)
 - INTERVAL 分区特性仅涉及 `CREATE/ALTER TABLE` 语法。元数据保持不变，因此使用该新语法创建或变更的表仍然兼容 MySQL。
 - 为保持兼容 MySQL，`SHOW CREATE TABLE` 的输出格式保持不变。
 - 遵循 INTERVAL 的存量表可以使用新的 `ALTER` 语法。不需要使用 `INTERVAL` 语法重新创建这些表。
-- 对于 `RANGE COLUMNS`，仅支持整数 (integer) 类型、日期 (date) 和日期时间 (datetime) 列类型。
+- 对于 `RANGE COLUMNS`，仅支持整数 (INTEGER) 类型、日期 (DATE) 和日期时间 (DATETIME) 列类型。
 
 ### List 分区
 
