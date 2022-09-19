@@ -1351,6 +1351,7 @@ store label 1 disk --delete
 ```bash
 store weight 1 5 10
 ```
+
 #### store limit 命令
 
 关于 `store limit` 的原理和使用方法，请参考 [`store limit`](/configure-store-limit.md)。
