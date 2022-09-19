@@ -212,7 +212,7 @@ tidb> EXPLAIN SELECT * FROM t WHERE (a,b) IN (SELECT * FROM s);
 
     在 TiDB v6.3.0 版本中，NA-EQ 这种弱化的等值条件依然会被用来构建哈希值 (Hash Join)，大大减少了匹配时所需遍历的数据量，加速匹配过程。在 build 表 `DISTINCT` 值比例趋近 1 的时候，加速效果更为显著。
 
-- 利用两侧数据源 `NULL` 值的特殊性质加速匹配结果的返回
+- 利用两侧数据源 `NULL` 值的特殊性质加速匹配过程的返回
 
     由于 Anti Semi Join 自身具有 CNF (Conjunctive normal form) 表达式的属性，其任何一侧出现的 `NULL` 值都会导致确定的结果。利用这个性质可以来加速整个匹配过程。
 
