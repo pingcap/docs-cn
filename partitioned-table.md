@@ -165,7 +165,7 @@ Range 分区在下列条件之一或者多个都满足时，尤其有效：
 
 TiDB v6.3.0 新增了 Range INTERVAL 分区特性，作为语法糖（syntactic sugar）引入。Range INTERVAL 分区是对 Range 分区的扩展。你可以使用特定的间隔（interval）轻松创建分区。其语法如下：
 
-```
+```sql
 PARTITION BY RANGE [COLUMNS] (<partitioning expression>)
 INTERVAL (<interval expression>)
 FIRST PARTITION LESS THAN (<expression>)
@@ -176,7 +176,7 @@ LAST PARTITION LESS THAN (<expression>)
 
 示例：
 
-```
+```sql
 CREATE TABLE employees (
     id int unsigned NOT NULL,
     fname varchar(30),
@@ -191,7 +191,7 @@ INTERVAL (100) FIRST PARTITION LESS THAN (100) LAST PARTITION LESS THAN (10000) 
 
 该示例创建的表与如下 SQL 语句相同：
 
-```
+```sql
 CREATE TABLE `employees` (
   `id` int unsigned NOT NULL,
   `fname` varchar(30) DEFAULT NULL,
@@ -212,7 +212,7 @@ PARTITION BY RANGE (`id`)
 
 Range INTERVAL 还可以配合 RANGE COLUMNS 分区一起使用。如下面的示例：
 
-```
+```sql
 CREATE TABLE monthly_report_status (
     report_id int NOT NULL,
     report_status varchar(20) NOT NULL,
@@ -224,7 +224,7 @@ INTERVAL (1 MONTH) FIRST PARTITION LESS THAN ('2000-01-01') LAST PARTITION LESS 
 
 该示例创建的表与如下 SQL 语句相同：
 
-```
+```sql
 CREATE TABLE `monthly_report_status` (
   `report_id` int(11) NOT NULL,
   `report_status` varchar(20) NOT NULL,
@@ -239,7 +239,7 @@ PARTITION BY RANGE COLUMNS(`report_date`)
  PARTITION `P_LT_2025-01-01` VALUES LESS THAN ('2025-01-01'))
 ```
 
-可选参数 `NULL PARTITION` 会创建一个分区，其中分区表达式推导出的值为 `NULL` 的数据会放到该分区。在分区表达式中，`NULL` 会被认为是小于任何其他值。参见 [分区对 NULL 值的处理](#range-分区对-null-的处理)。
+可选参数 `NULL PARTITION` 会创建一个分区，其中分区表达式推导出的值为 `NULL` 的数据会放到该分区。在分区表达式中，`NULL` 会被认为是小于任何其他值。参见[分区对 NULL 值的处理](#range-分区对-null-的处理)。
 
 可选参数 `MAXVALUE PARTITION` 会创建一个最后的分区，其值为 `PARTITION P_MAXVALUE VALUES LESS THAN (MAXVALUE)`。 
 
