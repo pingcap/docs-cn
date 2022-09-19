@@ -210,7 +210,7 @@ PARTITION BY RANGE (`id`)
  PARTITION `P_MAXVALUE` VALUES LESS THAN (MAXVALUE))
 ```
 
-还可以配合 RANGE COLUMNS 分区一起使用。如下面的示例：
+Range INTERVAL 还可以配合 RANGE COLUMNS 分区一起使用。如下面的示例：
 
 ```
 CREATE TABLE monthly_report_status (
