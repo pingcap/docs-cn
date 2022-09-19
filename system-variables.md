@@ -553,9 +553,10 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 默认值：`OFF`
-- 该变量仅适用于乐观事务模型。当这个变量设置为 `OFF` 时，唯一索引的重复值检查会被推迟到事务提交时才进行。这有助于提高性能，但对于某些应用，可能导致非预期的行为。详情见[约束](/constraints.md)。
+- 该变量仅适用于乐观事务模型。悲观事务模式中的行为由 [`tidb_constraint_check_in_place_pessimistic`](#tidb_constraint_check_in_place_pessimistic-从-v630-版本开始引入) 控制。
+- 当这个变量设置为 `OFF` 时，唯一索引的重复值检查会被推迟到事务提交时才进行。这有助于提高性能，但对于某些应用，可能导致非预期的行为。详情见[约束](/constraints.md#乐观事务)。
 
-    - 乐观事务模型下将 `tidb_constraint_check_in_place` 设置为 0：
+    - 乐观事务模型下将 `tidb_constraint_check_in_place` 设置为 `OFF`：
 
         {{< copyable "sql" >}}
 
@@ -580,12 +581,12 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
         ERROR 1062 : Duplicate entry '1' for key 'PRIMARY'
         ```
 
-    - 乐观事务模型下将 `tidb_constraint_check_in_place` 设置为 1：
+    - 乐观事务模型下将 `tidb_constraint_check_in_place` 设置为 `ON`：
 
         {{< copyable "sql" >}}
 
         ```sql
-        set @@tidb_constraint_check_in_place=1;
+        set @@tidb_constraint_check_in_place=ON;
         begin optimistic;
         insert into t values (1);
         ```
@@ -594,7 +595,52 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
         ERROR 1062 : Duplicate entry '1' for key 'PRIMARY'
         ```
 
-悲观事务模式中，始终默认执行约束检查。
+### `tidb_constraint_check_in_place_pessimistic` <span class="version-mark">从 v6.3.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 默认值：`ON`
+- 该变量仅适用于悲观事务模型。乐观事务模式中的行为由 [`tidb_constraint_check_in_place`](#tidb_constraint_check_in_place) 控制。
+- 当这个变量设置为 `OFF` 时，唯一约束检查会被推迟到下一次需要对这个索引加锁的语句执行时，或事务提交时才进行。这有助于提高性能，但对于某些应用，可能导致非预期的行为。详情见[约束](/constraints.md#悲观事务)。
+- 关闭该变量可能会导致悲观事务中返回 `LazyUniquenessCheckFailure` 报错。返回该错误时，TiDB 将会回滚当前事务。
+- 关闭该变量后，悲观事务中不支持使用 [`SAVEPOINT`](/sql-statements/sql-statement-savepoint.md) 功能。
+- 关闭该变量时，commit 语句可能会报出 `Write conflict` 错误或 `Duplicate entry` 错误，两种错误都意味着事务回滚。
+
+    - 悲观事务模型下将 `tidb_constraint_check_in_place_pessimistic` 设置为 `OFF`：
+
+        {{< copyable "sql" >}}
+
+        ```sql
+        set @@tidb_constraint_check_in_place_pessimistic=OFF;
+        create table t (i int key);
+        insert into t values (1);
+        begin pessimistic;
+        insert into t values (1);
+        ```
+
+        ```
+        Query OK, 1 row affected
+        ```
+
+        ```sql
+        tidb> commit; -- 事务提交时才检查
+        ```
+
+        ```
+        ERROR 1062 : Duplicate entry '1' for key 'PRIMARY'
+        ```
+
+    - 悲观事务模型下将 `tidb_constraint_check_in_place_pessimistic` 设置为 `ON`：
+
+        ```sql
+        set @@tidb_constraint_check_in_place_pessimistic=ON;
+        begin pessimistic;
+        insert into t values (1);
+        ```
+
+        ```
+        ERROR 1062 : Duplicate entry '1' for key 'PRIMARY'
+        ```
 
 ### `tidb_cost_model_version` <span class="version-mark">从 v6.2.0 版本开始引入</span>
 
