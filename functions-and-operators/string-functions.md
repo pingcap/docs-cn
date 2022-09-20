@@ -98,7 +98,7 @@ TiDB 与 MySQL 在 `match_type` 上的差异：
 
 ### 数据类型兼容性
 
-TiDB 与 MySQL 在二进制字符串 (binary string)数据类型上的差异：
+TiDB 与 MySQL 在二进制字符串 (binary string) 数据类型上的差异：
 
 - MySQL 8.0.22 及以上版本中正则函数不支持二进制字符串，具体信息可查看 [MySQL 文档](https://dev.mysql.com/doc/refman/8.0/en/regexp.html)。但在实际使用过程中，如果所有参数或者返回值的数据类型都是二进制字符串，则正则函数可以正常使用，否则报错。
 - TiDB 目前完全禁止使用二进制字符串，无论什么情况都会报错。
