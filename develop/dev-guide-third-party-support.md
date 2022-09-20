@@ -45,6 +45,7 @@ If you encounter problems when connecting to TiDB using the tools listed in this
 | Go | [beego](https://github.com/beego/beego) | v2.0.3 | Full | N/A | N/A |
 | Go | [upper/db](https://github.com/upper/db) | v4.5.2 | Full | N/A | N/A |
 | Go | [xorm](https://gitea.com/xorm/xorm) | v1.3.1 | Full | N/A | N/A |
+| Go | [ent](https://github.com/ent/ent) | v0.11.0 | Compatible | N/A | N/A |
 | Java | [Hibernate](https://hibernate.org/orm/) | 6.1.0.Final | Full | N/A | [Build a Simple CRUD App with TiDB and Java](/develop/dev-guide-sample-application-java.md) |
 | Java | [MyBatis](https://mybatis.org/mybatis-3/) | v3.5.10 | Full | N/A | [Build a Simple CRUD App with TiDB and Java](/develop/dev-guide-sample-application-java.md) |
 | Java | [Spring Data JPA](https://spring.io/projects/spring-data-jpa/) | 2.7.2 | Full | N/A | [Build a TiDB Application Using Spring Boot](/develop/dev-guide-sample-application-spring-boot.md) |
