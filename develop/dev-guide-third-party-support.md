@@ -112,7 +112,7 @@ PingCAP 与开源社区合作，通过三方工具提供以下支持：
          <td>N/A</td>
       </tr>
       <tr>
-         <td rowspan="4">JavaScript<br/>TypeScript</td>
+         <td rowspan="4">JavaScript / TypeScript</td>
          <td><a href="https://www.npmjs.com/package/sequelize" target="_blank" referrerpolicy="no-referrer-when-downgrade">sequelize</a></td>
          <td>v6.20.1</td>
          <td>Compatible</td>
