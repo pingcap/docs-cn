@@ -949,7 +949,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 类型：布尔型
 - 默认值：`ON`
 - 该变量用于设置是否启用 [`exchange partitions with tables`](/partitioned-table.md#partition-management) 特性。默认值为 `ON`，即默认开启该功能。
-- 当该变量设置为 `OFF`，即该功能禁用时，如果你尝试使用 `exchange partitions with tables`，TiDB 会返回警告。
+该变量的值始终为 'ON'，设置成 'OFF' 也不会生效。该变量将在今后的版本移除。
 
 ### `tidb_enable_fast_analyze`
 
