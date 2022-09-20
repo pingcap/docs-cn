@@ -95,3 +95,11 @@ TiDB 与 MySQL 在 `match_type` 上的差异：
     例如：MySQL 中 `SELECT REGEXP_LIKE(a, b, "n") FROM t1;` 在 TiDB 中需要修改为 `SELECT REGEXP_LIKE(a, b, "s") FROM t1;`。
 
 - TiDB 不支持 `match_type` 为 `"u"`。
+
+### 数据类型兼容性
+
+[MySQL文档](https://dev.mysql.com/doc/refman/8.0/en/regexp.html#function_regexp-like:~:text=use%20of%20a%20binary%20string%20with%20any%20of%20the%20MySQL%20regular%20expression%20functions%20is%20rejected)显示正则函数不会支持binary string，但在实际使用过程中，假如所有参数或者返回值的数据类型都是binary string，正则函数是可以正常使用的，否则报错。TiDB目前完全禁止使用binary string，无论什么情况都会报错。
+
+### 其它兼容性
+
+- 对于`regexp_replace("", "^$", "123")`这样替换空字符串的操作，MySQL是不会对空串进行替换的，但是TiDB会选择替换，所以在本例中，MySQL和TiDB的结果分别为`""`和`"123"`
