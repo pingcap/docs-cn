@@ -170,7 +170,7 @@ TiDB 版本：6.3.0-DMR
 
 * BR 支持 AWS S3 Object Lock [#issue]() @[3pointer](https://github.com/3pointer)
 
-    开启 S3 [Object Lock](https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lock.html) 可以防止备份数据写入后被修改或者删除。
+    用户可以在 AWS 开启 [S3 Object Lock](https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lock.html) 功能来防止备份数据写入后被修改或者删除。
 
 ### 数据迁移
 
@@ -204,6 +204,7 @@ TiDB 版本：6.3.0-DMR
 | ------ | ------ | ------ |
 | [`default_authentication_plugin`](/system-variables.md#default_authentication_plugin) | 修改 | 扩展可选值范围：增加 `tidb_sm3_password`，设置为 `tidb_sm3_password` 时，用户密码验证的加密算法为国密算法 SM3。 |
 | [`tidb_constraint_check_in_place_pessimistic`](/system-variables.md#tidb_constraint_check_in_place_pessimistic-从-v630-版本开始引入) | 新增 | 控制悲观事务中唯一约束检查的时间点。 |
+| [`tidb_enable_exchange_partition`](/system-variables.md#tidb_enable_exchange_partition) | 废弃 | 该变量用于设置是否启用 [`exchange partitions with tables`](/partitioned-table.md#partition-management) 特性。  |
 | [`tidb_enable_pseudo_for_outdated_stats`](/system-variables.md#tidb_enable_pseudo_for_outdated_stats-从-v530-版本开始引入) | 修改 | 控制优化器在统计信息过期时的行为。 默认值由 `ON` 改为 `OFF`，即使统计信息过期，优化器也仍会使用该表上的统计信息。  |
 | [`tidb_opt_force_inline_cte`](/system-variables.md#tidb_opt_force_inline_cte-从-v630-版本开始引入) | 新增 | 这个变量用来控制是否强制开启 inline CTE。默认值为 `OFF`，即默认不强制开启 inline CTE。 |
 | [`tidb_opt_range_mem_quota`](/system-variables.md#tidb_opt_force_inline_cte-从-v630-版本开始引入) | 新增 | 控制优化器构造 range 时允许的最大内存使用。 |
@@ -250,7 +251,7 @@ TiDB 版本：6.3.0-DMR
 + TiDB
 
     - note [#issue]() @[贡献者 GitHub ID]()
-    - Plan Replayer 一次导出多条SQL [#37798](https://github.com/pingcap/tidb/issues/37798) @[Yisaer](https://github.com/Yisaer)
+    - `PLAN REPLAYER` 命令支持一次导出多条 SQL 语句的执行计划信息，提升了问题排查效率 [#37798](https://github.com/pingcap/tidb/issues/37798) @[Yisaer](https://github.com/Yisaer)
 
 + TiKV
 
