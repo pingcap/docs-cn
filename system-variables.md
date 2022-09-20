@@ -910,6 +910,15 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 当集群开启只读模式后，所有用户（包括 `SUPER` 用户）都无法执行可能写入数据的 SQL 语句，除非该用户被显式地授予了 `RESTRICTED_REPLICA_WRITER_ADMIN` 权限。
 - 拥有 `RESTRICTED_VARIABLES_ADMIN` 或 `SUPER` 权限的用户可以修改该变量。如果用户开启了[安全增强模式 (Security Enhanced Mode)](/system-variables.md#tidb_enable_enhanced_security)，则只有 `RESTRICTED_VARIABLES_ADMIN` 权限的用户才能修改该变量。
 
+### `tidb_enable_exchange_partition`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 类型：布尔型
+- 默认值：`ON`
+- 该变量用于设置是否启用 [`exchange partitions with tables`](/partitioned-table.md#分区管理) 特性。默认值为 `ON`，即默认开启该功能。
+- 该变量自 v6.3.0 开始废弃，其取值将固定为默认值 `ON`，即默认开启 `exchange partitions with tables`。
+
 ### `tidb_enable_fast_analyze`
 
 > **警告：**
