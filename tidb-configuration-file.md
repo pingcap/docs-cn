@@ -409,7 +409,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 + 把所有的语句优先级设置为 force-priority 的值。
 + 默认值：NO_PRIORITY
-+ 可选值：NO_PRIORITY, LOW_PRIORITY, HIGH_PRIORITY, DELAYED。
++ 可选值：默认值 NO_PRIORITY 表示不强制改变执行语句的优先级，其它优先级从低到高可设置为 LOW_PRIORITY、DELAYED 或 HIGH_PRIORITY。
 
 ### `distinct-agg-push-down`
 
@@ -472,16 +472,16 @@ opentracing.sampler 相关的设置。
 
 ### `type`
 
-+ opentracing 采样器的类型。
++ opentracing 采样器的类型。字符串取值大小写不敏感。
 + 默认值："const"
-+ 可选值："const"，"probabilistic"，"rateLimiting"，remote"
++ 可选值："const"，"probabilistic"，"ratelimiting"，remote"
 
 ### `param`
 
 + 采样器参数。
     - 对于 const 类型，可选值为 0 或 1，表示是否开启。
     - 对于 probabilistic 类型，参数为采样概率，可选值为 0 到 1 之间的浮点数。
-    - 对于 rateLimiting 类型，参数为每秒采样 span 的个数。
+    - 对于 ratelimiting 类型，参数为每秒采样 span 的个数。
     - 对于 remote 类型，参数为采样概率，可选值为 0 到 1 之间的浮点数。
 + 默认值：1.0
 
@@ -686,6 +686,12 @@ PROXY 协议相关的配置项。
 > **警告：**
 >
 > 需谨慎使用 `*` 符号，因为 `*` 允许来自任何 IP 的客户端自行汇报其 IP 地址，从而可能引入安全风险。另外，`*` 可能导致部分直接连接 TiDB 的内部组件无法使用，例如 TiDB Dashboard。
+
+### `temp-dir` <span class="version-mark">从 v6.3.0 版本开始引入</span>
+
++ TiDB 用于存放临时数据的路径。如果一个功能需要使用 TiDB 节点的本地存储，TiDB 将把对应数据临时存放在这个目录下。
++ 在创建索引的过程中，如果开启了[创建索引加速](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入)，那么新创建索引需要回填的数据会被先存放在 TiDB 本地临时存储路径，然后批量导入到 TiKV，从而提升索引创建速度。
++ 默认值："/tmp/tidb"
 
 ## experimental
 
