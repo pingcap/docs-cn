@@ -81,6 +81,13 @@ PingCAP 与开源社区合作，通过三方工具提供以下支持：
          <td>N/A</td>
       </tr>
       <tr>
+         <td><a href="https://github.com/ent/ent" target="_blank" referrerpolicy="no-referrer-when-downgrade">ent</a></td>
+         <td>v0.11.0</td>
+         <td>Compatible</td>
+         <td>N/A</td>
+         <td>N/A</td>
+      </tr>
+      <tr>
          <td rowspan="4">Java</td>
          <td><a href="https://hibernate.org/orm/" target="_blank" referrerpolicy="no-referrer-when-downgrade">Hibernate</a></td>
          <td>6.1.0.Final</td>
