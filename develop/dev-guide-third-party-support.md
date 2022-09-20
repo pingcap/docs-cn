@@ -32,7 +32,7 @@ PingCAP 与开源社区合作，通过三方工具提供以下支持：
 | C#(.Net) | [MySQL Connector/NET](https://downloads.mysql.com/archives/c-net/) | 8.0 | Compatible | N/A | N/A |
 | ODBC | [MySQL Connector/ODBC](https://downloads.mysql.com/archives/c-odbc/) | 8.0 | Compatible | N/A | N/A |
 | Go | [go-sql-driver/mysql](https://github.com/go-sql-driver/mysql) | v1.6.0 | Full | N/A | [TiDB 和 Golang 的简单 CRUD 应用程序](/develop/dev-guide-sample-application-golang.md) |
-| Java | [JDBC](https://dev.mysql.com/downloads/connector/j/) | 8.0 | Full | [pingcap/mysql-connector-j](/develop/dev-guide-choose-driver-or-orm.md#java-drivers) <hr style="margin: 5px 0; height: 0.1em"/> [pingcap/tidb-loadbalance](/develop/dev-guide-choose-driver-or-orm.md#tidb-loadbalance) | [TiDB 和 Java 的简单 CRUD 应用程序](/develop/dev-guide-sample-application-java.md) |
+| Java | [JDBC](https://dev.mysql.com/downloads/connector/j/) | 8.0 | Full | <ul><li><a href="/develop/dev-guide-choose-driver-or-orm.md#java-drivers">pingcap/mysql-connector-j</a></li> <li><a href="/develop/dev-guide-choose-driver-or-orm.md#tidb-loadbalance">pingcap/tidb-loadbalance</a></li></ul> | [TiDB 和 Java 的简单 CRUD 应用程序](/develop/dev-guide-sample-application-java.md) |
 | JavaScript | [mysql](https://github.com/mysqljs/mysql) | v2.18.1 | Compatible | N/A | N/A |
 | PHP | [mysqlnd](https://dev.mysql.com/downloads/connector/php-mysqlnd/) | PHP 5.4+ | Compatible | N/A | N/A |
 | Python | [MySQL Connector/Python](https://downloads.mysql.com/archives/c-python/) | 8.0 | Compatible | N/A | N/A |
@@ -55,25 +55,28 @@ PingCAP 与开源社区合作，通过三方工具提供以下支持：
          <td rowspan="4">Go</td>
          <td><a href="https://github.com/go-gorm/gorm" target="_blank" referrerpolicy="no-referrer-when-downgrade">gorm</a></td>
          <td>v1.23.5</td>
-         <td rowspan="4">Full</td>
+         <td>Full</td>
          <td>N/A</td>
          <td><a href="/tidb/dev/dev-guide-sample-application-golang">Build a Simple CRUD App with TiDB and Golang</a></td>
       </tr>
       <tr>
          <td><a href="https://github.com/beego/beego" target="_blank" referrerpolicy="no-referrer-when-downgrade">beego</a></td>
          <td>v2.0.3</td>
+         <td>Full</td>
          <td>N/A</td>
          <td>N/A</td>
       </tr>
       <tr>
          <td><a href="https://github.com/upper/db" target="_blank" referrerpolicy="no-referrer-when-downgrade">upper/db</a></td>
          <td>v4.5.2</td>
+         <td>Full</td>
          <td>N/A</td>
          <td>N/A</td>
       </tr>
       <tr>
          <td><a href="https://gitea.com/xorm/xorm" target="_blank" referrerpolicy="no-referrer-when-downgrade">xorm</a></td>
          <td>v1.3.1</td>
+         <td>Full</td>
          <td>N/A</td>
          <td>N/A</td>
       </tr>
@@ -81,25 +84,28 @@ PingCAP 与开源社区合作，通过三方工具提供以下支持：
          <td rowspan="4">Java</td>
          <td><a href="https://hibernate.org/orm/" target="_blank" referrerpolicy="no-referrer-when-downgrade">Hibernate</a></td>
          <td>6.1.0.Final</td>
-         <td rowspan="4">Full</td>
+         <td>Full</td>
          <td>N/A</td>
          <td><a href="/tidb/dev/dev-guide-sample-application-java">Build a Simple CRUD App with TiDB and Java</a></td>
       </tr>
       <tr>
          <td><a href="https://mybatis.org/mybatis-3/" target="_blank" referrerpolicy="no-referrer-when-downgrade">MyBatis</a></td>
          <td>v3.5.10</td>
+         <td>Full</td>
          <td>N/A</td>
          <td><a href="/tidb/dev/dev-guide-sample-application-java">Build a Simple CRUD App with TiDB and Java</a></td>
       </tr>
       <tr>
          <td><a href="https://spring.io/projects/spring-data-jpa/" target="_blank" referrerpolicy="no-referrer-when-downgrade">Spring Data JPA</a></td>
          <td>2.7.2</td>
+         <td>Full</td>
          <td>N/A</td>
          <td><a href="/tidb/dev/dev-guide-sample-application-spring-boot">Build a TiDB Application Using Spring Boot</a></td>
       </tr>
       <tr>
          <td><a href="https://github.com/jOOQ/jOOQ" target="_blank" referrerpolicy="no-referrer-when-downgrade">jOOQ</a></td>
          <td>v3.16.7 (Open Source)</td>
+         <td>Full</td>
          <td>N/A</td>
          <td>N/A</td>
       </tr>
