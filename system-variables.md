@@ -163,8 +163,9 @@ mysql> SELECT * FROM t1;
 - 作用域：GLOBAL
 - 是否持久化到集群：是
 - 默认值：`mysql_native_password`
-- 可选值：`mysql_native_password`，`caching_sha2_password`
+- 可选值：`mysql_native_password`，`caching_sha2_password`，`tidb_sm3_password`
 - 服务器和客户端建立连接时，这个变量用于设置服务器对外通告的默认身份验证方式。如要了解该变量的其他可选值，参见[可用的身份验证插件](/security-compatibility-with-mysql.md#可用的身份验证插件)。
+- 若要在用户登录时使用 `tidb_sm3_password` 插件，需要使用 [TiDB-JDBC](https://github.com/pingcap/mysql-connector-j/tree/release/8.0-sm3) 进行连接。
 
 ### `foreign_key_checks`
 
@@ -358,6 +359,13 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 - 默认值：（随系统）
 - 该变量显示首次引导启动 TiDB 时的系统时区。另请参阅 [`time_zone`](#time_zone)。
 
+### `tidb_adaptive_closest_read_threshold` <span class="version-mark">从 v6.3.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 默认值：`4096`
+- 这个变量用于控制当 [`replica-read`](#tidb_replica_read-从-v40-版本开始引入) 设置为 `closest-adaptive` 时，优先将读请求发送至 TiDB server 所在区域副本的阈值。当读请求预估的返回结果的大小超过此阈值时，TiDB 会将读请求优先发送至同一区域的副本，否则会发送至 leader 副本。
+
 ### `tidb_allow_batch_cop` <span class="version-mark">从 v4.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
@@ -545,9 +553,10 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 默认值：`OFF`
-- 该变量仅适用于乐观事务模型。当这个变量设置为 `OFF` 时，唯一索引的重复值检查会被推迟到事务提交时才进行。这有助于提高性能，但对于某些应用，可能导致非预期的行为。详情见[约束](/constraints.md)。
+- 该变量仅适用于乐观事务模型。悲观事务模式中的行为由 [`tidb_constraint_check_in_place_pessimistic`](#tidb_constraint_check_in_place_pessimistic-从-v630-版本开始引入) 控制。
+- 当这个变量设置为 `OFF` 时，唯一索引的重复值检查会被推迟到事务提交时才进行。这有助于提高性能，但对于某些应用，可能导致非预期的行为。详情见[约束](/constraints.md#乐观事务)。
 
-    - 乐观事务模型下将 `tidb_constraint_check_in_place` 设置为 0：
+    - 乐观事务模型下将 `tidb_constraint_check_in_place` 设置为 `OFF`：
 
         {{< copyable "sql" >}}
 
@@ -572,12 +581,12 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
         ERROR 1062 : Duplicate entry '1' for key 'PRIMARY'
         ```
 
-    - 乐观事务模型下将 `tidb_constraint_check_in_place` 设置为 1：
+    - 乐观事务模型下将 `tidb_constraint_check_in_place` 设置为 `ON`：
 
         {{< copyable "sql" >}}
 
         ```sql
-        set @@tidb_constraint_check_in_place=1;
+        set @@tidb_constraint_check_in_place=ON;
         begin optimistic;
         insert into t values (1);
         ```
@@ -586,7 +595,52 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
         ERROR 1062 : Duplicate entry '1' for key 'PRIMARY'
         ```
 
-悲观事务模式中，始终默认执行约束检查。
+### `tidb_constraint_check_in_place_pessimistic` <span class="version-mark">从 v6.3.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 默认值：`ON`
+- 该变量仅适用于悲观事务模型。乐观事务模式中的行为由 [`tidb_constraint_check_in_place`](#tidb_constraint_check_in_place) 控制。
+- 当这个变量设置为 `OFF` 时，唯一约束检查会被推迟到下一次需要对这个索引加锁的语句执行时，或事务提交时才进行。这有助于提高性能，但对于某些应用，可能导致非预期的行为。详情见[约束](/constraints.md#悲观事务)。
+- 关闭该变量可能会导致悲观事务中返回 `LazyUniquenessCheckFailure` 报错。返回该错误时，TiDB 将会回滚当前事务。
+- 关闭该变量后，悲观事务中不支持使用 [`SAVEPOINT`](/sql-statements/sql-statement-savepoint.md) 功能。
+- 关闭该变量时，commit 语句可能会报出 `Write conflict` 错误或 `Duplicate entry` 错误，两种错误都意味着事务回滚。
+
+    - 悲观事务模型下将 `tidb_constraint_check_in_place_pessimistic` 设置为 `OFF`：
+
+        {{< copyable "sql" >}}
+
+        ```sql
+        set @@tidb_constraint_check_in_place_pessimistic=OFF;
+        create table t (i int key);
+        insert into t values (1);
+        begin pessimistic;
+        insert into t values (1);
+        ```
+
+        ```
+        Query OK, 1 row affected
+        ```
+
+        ```sql
+        tidb> commit; -- 事务提交时才检查
+        ```
+
+        ```
+        ERROR 1062 : Duplicate entry '1' for key 'PRIMARY'
+        ```
+
+    - 悲观事务模型下将 `tidb_constraint_check_in_place_pessimistic` 设置为 `ON`：
+
+        ```sql
+        set @@tidb_constraint_check_in_place_pessimistic=ON;
+        begin pessimistic;
+        insert into t values (1);
+        ```
+
+        ```
+        ERROR 1062 : Duplicate entry '1' for key 'PRIMARY'
+        ```
 
 ### `tidb_cost_model_version` <span class="version-mark">从 v6.2.0 版本开始引入</span>
 
@@ -608,6 +662,22 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 作用域：SESSION
 - 默认值：`0`
 - 这个变量是一个只读变量，用来获取当前事务的时间戳。
+
+### `tidb_ddl_disk_quota` <span class="version-mark">从 v6.3.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 默认值：`107374182400` (100 GiB)
+- 范围：`[107374182400, 1125899906842624]` ([100 GiB, 1 PiB])
+- 单位：字节
+- 这个变量仅在 [`tidb_ddl_enable_fast_reorg`](#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 开启的情况下生效，用于设置创建索引的回填过程中本地存储空间的使用限制。
+
+### `tidb_ddl_enable_fast_reorg` <span class="version-mark">从 v6.3.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 默认值：`OFF`
+- 这个变量是用来控制是否开启添加索引加速功能，来提升创建索引回填过程的速度。如果本开关启动，TiDB 在进行创建索引任务时将会采用更加高效的方式完成索引创建。
 
 ### `tidb_ddl_error_count_limit`
 
@@ -840,6 +910,15 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 当集群开启只读模式后，所有用户（包括 `SUPER` 用户）都无法执行可能写入数据的 SQL 语句，除非该用户被显式地授予了 `RESTRICTED_REPLICA_WRITER_ADMIN` 权限。
 - 拥有 `RESTRICTED_VARIABLES_ADMIN` 或 `SUPER` 权限的用户可以修改该变量。如果用户开启了[安全增强模式 (Security Enhanced Mode)](/system-variables.md#tidb_enable_enhanced_security)，则只有 `RESTRICTED_VARIABLES_ADMIN` 权限的用户才能修改该变量。
 
+### `tidb_enable_exchange_partition`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 类型：布尔型
+- 默认值：`ON`
+- 该变量用于设置是否启用 [`exchange partitions with tables`](/partitioned-table.md#分区管理) 特性。默认值为 `ON`，即默认开启该功能。
+- 该变量自 v6.3.0 开始废弃，其取值将固定为默认值 `ON`，即默认开启 `exchange partitions with tables`。
+
 ### `tidb_enable_fast_analyze`
 
 > **警告：**
@@ -879,6 +958,17 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 是否持久化到集群：是
 - 默认值：`ON`
 - 这个变量用来设置是否开启 `LIST (COLUMNS) TABLE PARTITION` 特性。
+
+### `tidb_enable_metadata_lock` <span class="version-mark">从 v6.3.0 版本开始引入</span>
+
+> **警告：**
+>
+> 当前该功能为实验特性，不建议在生产环境中使用。
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 默认值：`OFF`
+- 这个变量用来设置是否开启[元数据锁](/metadata-lock.md)特性。需要注意，在设置该变量时，集群中不能有 DDL 任务，以免造成非预期数据正确性、一致性问题。
 
 ### `tidb_enable_mutation_checker` <span class="version-mark">从 v6.0.0 版本开始引入</span>
 
@@ -960,11 +1050,11 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 默认值：`ON`
+- 默认值：`OFF`
 - 这个变量用来控制优化器在一张表上的统计信息过期时的行为。
 - 统计信息过期的判断标准：最近一次对某张表执行 `ANALYZE` 获得统计信息后，该表数据被修改的行数大于该表总行数的 80%，便可判定该表的统计信息已过期。该比例可通过 [`pseudo-estimate-ratio`](/tidb-configuration-file.md#pseudo-estimate-ratio) 配置参数调整。
-- 默认情况下（即该变量值为 `ON` 时），某张表上的统计信息过期后，优化器认为该表上除总行数以外的统计信息不再可靠，转而使用 pseudo 统计信息。将该变量值设为 `OFF` 后，即使统计信息过期，优化器也仍会使用该表上的统计信息。
-- 如果表数据修改较频繁，没有及时对表执行 `ANALYZE`，但又希望执行计划保持稳定，可以将该变量值设为 `OFF`。
+- 默认情况下（即该变量值为 `OFF` 时），某张表上的统计信息过期后，优化器仍会使用该表上的统计信息。将该变量值设为 `ON` 时，当统计信息过期后，优化器认为该表上除总行数以外的统计信息不再可靠，转而使用 pseudo 统计信息。
+- 如果表数据修改较频繁，没有及时对表执行 `ANALYZE`，但又希望执行计划保持稳定，推荐将该变量值设为 `OFF`。
 
 ### `tidb_enable_rate_limit_action`
 
@@ -1053,6 +1143,14 @@ Query OK, 0 rows affected (0.09 sec)
 > **注意：**
 >
 > 如果 PD leader 的 TSO RPC 延迟升高，但其现象并非由 CPU 使用率达到瓶颈而导致（可能存在网络等问题），此时，打开 TSO Follower Proxy 可能会导致 TiDB 的语句执行延迟上升，从而影响集群的 QPS 表现。
+
+### `tidb_enable_unsafe_substitute` <span class="version-mark">从 v6.3.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 类型：布尔型
+- 默认值：`OFF`
+- 这个变量用于控制是否对生成列中表达式替换使用不安全的替换方式。默认值为 `OFF`，即默认关闭不安全的替换方式。详情见[生成列](/generated-columns.md)。
 
 ### `tidb_enable_vectorized_expression` <span class="version-mark">从 v4.0 版本开始引入</span>
 
@@ -1836,11 +1934,28 @@ explain select * from t where age=5;
 - 默认值：`OFF`
 - 这个变量用来设置优化器是否将带有 `DISTINCT` 的聚合函数（例如 `SELECT b, count(DISTINCT a) FROM t GROUP BY b`）改写为两层聚合函数（例如 `SELECT b, count(a) FROM (SELECT b, a FROM t GROUP BY b, a) t GROUP BY b`）。当聚合列有严重的数据倾斜，且 `DISTINCT` 列有很多不同的值时，这种改写能够避免查询执行过程中的数据倾斜，从而提升查询性能。
 
+### `tidb_opt_three_stage_distinct_agg` <span class="version-mark">从 v6.3.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 类型：布尔型
+- 默认值：`ON`
+- 该变量用于控制在 MPP 模式下是否将 `COUNT(DISTINCT)` 聚合改写为三阶段分布式执行的聚合。
+- 该变量目前仅对只有一个 `COUNT(DISTINCT)` 的聚合生效。
+
 ### `tidb_opt_write_row_id`
 
 - 作用域：SESSION
 - 默认值：`OFF`
 - 这个变量用来设置是否允许 `INSERT`、`REPLACE` 和 `UPDATE` 操作 `_tidb_rowid` 列，默认是不允许操作。该选项仅用于 TiDB 工具导数据时使用。
+
+### `tidb_opt_force_inline_cte` <span class="version-mark">从 v6.3.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 类型：布尔型
+- 默认值：`OFF`
+- 这个变量用来控制是否强制 inline CTE。默认值为 `OFF`，即默认不强制 inline CTE。注意，此时依旧可以通过 `MERGE()` hint 来开启个别 CTE 的 inline。如果设置为 `ON`，则当前 session 中所有查询的 CTE（递归 CTE 除外）都会 inline。
 
 ### `tidb_partition_prune_mode` <span class="version-mark">从 v5.1 版本开始引入</span>
 
@@ -1921,11 +2036,23 @@ explain select * from t where age=5;
 > - 该特性与 [`replica-read`](#tidb_replica_read-从-v40-版本开始引入) 尚不兼容，开启 `tidb_rc_read_check_ts` 的读请求无法使用 [`replica-read`](#tidb_replica_read-从-v40-版本开始引入)，请勿同时开启两项特性。
 > - 如果客户端使用游标操作，建议不开启 `tidb_rc_read_check_ts` 这一特性，避免前一批返回数据已经被客户端使用而语句最终会报错的情况。
 
-- 作用域：SESSION | GLOBAL
-- 是否持久化到集群：是
+- 作用域：INSTANCE。自 v6.3.0 起，该变量的作用域由 GLOBAL 或 SESSION 修改为 INSTANCE 级别。
+- 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
 - 默认值：`OFF`
 - 该变量用于优化时间戳的获取，适用于悲观事务 `READ-COMMITTED` 隔离级别下读写冲突较少的场景，开启此变量可以避免获取全局 timestamp 带来的延迟和开销，并优化事务内读语句延迟。
 - 如果读写冲突较为严重，开启此功能会增加额外开销和延迟，造成性能回退。更详细的说明，请参考[读已提交隔离级别 (Read Committed) 文档](/transaction-isolation-levels.md#读已提交隔离级别-read-committed)。
+
+### `tidb_rc_write_check_ts` <span class="version-mark">从 v6.3.0 版本开始引入</span>
+
+> **警告：**
+>
+> 该特性与 [`replica-read`](#tidb_replica_read-从-v40-版本开始引入) 尚不兼容。开启本变量后，客户端发送的所有请求都将无法使用 `replica-read`，因此请勿同时开启 `tidb_rc_write_check_ts` 和 `replica-read`。
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 默认值：`OFF`
+- 该变量用于优化时间戳的获取，适用于悲观事务 `READ-COMMITTED` 隔离级别下点写冲突较少的场景。开启此变量可以避免点写语句获取全局时间戳带来的延迟和开销。目前该变量适用的点写语句包括 `UPDATE`、`DELETE`、`SELECT ...... FOR UPDATE` 三种类型。点写语句是指将主键或者唯一键作为过滤条件且最终执行算子包含 `POINT-GET` 的写语句。
+- 如果点写冲突较为严重，开启此变量会增加额外开销和延迟，造成性能回退。更详细的说明，请参考[读已提交隔离级别 (Read Committed) 文档](/transaction-isolation-levels.md#读已提交隔离级别-read-committed)。
 
 ### `tidb_read_consistency` <span class="version-mark">New in v5.4.0</span>
 
@@ -1980,14 +2107,9 @@ explain select * from t where age=5;
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 默认值：`leader`
-- 可选值：`leader`，`follower`，`leader-and-follower`
-- 这个变量用于控制 TiDB 读取数据的位置，有以下三个选择：
-
-    * leader：只从 leader 节点读取
-    * follower：只从 follower 节点读取
-    * leader-and-follower：从 leader 或 follower 节点读取
-
-更多细节，见 [Follower Read](/follower-read.md)。
+- 可选值：`leader`，`follower`，`leader-and-follower`，`closest-replicas`，`closest-adaptive`
+- 这个变量用于控制 TiDB 的 Follower Read 功能的行为。
+- 关于使用方式与实现原理，见 [Follower Read](/follower-read.md)。
 
 ### `tidb_retry_limit`
 
@@ -2318,6 +2440,13 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 范围：`[1, 256]`
 - 这个变量用于设置 window 算子的并行度。
 - 默认值 `-1` 表示使用 `tidb_executor_concurrency` 的值。
+
+### `tiflash_fastscan` <span class="version-mark">从 v6.3.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 默认值：`OFF`
+- 范围：`ON | OFF`
+- 如果开启 [FastScan 功能](/develop/dev-guide-use-fastscan.md)（设置为 `ON` 时），TiFlash 可以提供更高效的查询性能，但不保证查询结果的精度和数据一致性。
 
 ### `tiflash_fine_grained_shuffle_batch_size` <span class="version-mark">从 v6.2.0 版本开始引入</span>
 

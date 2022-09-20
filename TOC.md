@@ -174,6 +174,7 @@
     - [优化概述](/performance-tuning-overview.md)
     - [优化方法](/performance-tuning-methods.md)
     - [优化实践](/performance-tuning-practices.md)
+    - [延迟的拆解分析](/latency-breakdown.md)
   - 配置调优
       - [操作系统性能参数调优](/tune-operating-system.md)
       - [TiDB 内存调优](/configure-memory-usage.md)
@@ -368,7 +369,7 @@
       - [性能调优](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#性能调优)
     - Logical Import Mode
       - [概述](/tidb-lightning/tidb-lightning-logical-import-mode.md)
-      - [必要条件及限制](/tidb-lightning/tidb-lightning-logical-import-mode.md#必要条件及限制)
+      - [必要条件及限制](/tidb-lightning/tidb-lightning-logical-import-mode.md#必要条件)
       - [配置及使用](/tidb-lightning/tidb-lightning-logical-import-mode-usage.md)
       - [冲突检测](/tidb-lightning/tidb-lightning-logical-import-mode-usage.md#冲突数据检测)
       - [性能调优](/tidb-lightning/tidb-lightning-logical-import-mode-usage.md#性能调优)
@@ -615,7 +616,6 @@
       - [`ALTER PLACEMENT POLICY`](/sql-statements/sql-statement-alter-placement-policy.md)
       - [`ALTER TABLE`](/sql-statements/sql-statement-alter-table.md)
       - [`ALTER TABLE COMPACT`](/sql-statements/sql-statement-alter-table-compact.md)
-      - [`ALTER TABLE SET TIFLASH MODE`](/sql-statements/sql-statement-set-tiflash-mode.md)
       - [`ALTER USER`](/sql-statements/sql-statement-alter-user.md)
       - [`ANALYZE TABLE`](/sql-statements/sql-statement-analyze-table.md)
       - [`BACKUP`](/sql-statements/sql-statement-backup.md)
@@ -834,6 +834,7 @@
         - [`VARIABLES_INFO`](/information-schema/information-schema-variables-info.md)
         - [`VIEWS`](/information-schema/information-schema-views.md)
       - [`METRICS_SCHEMA`](/metrics-schema.md)
+    - [元数据锁](/metadata-lock.md)
   - UI
     - TiDB Dashboard
       - [简介](/dashboard/dashboard-intro.md)
@@ -928,6 +929,7 @@
     - [5.4.1](/releases/release-5.4.1.md)
     - [5.4.0](/releases/release-5.4.0.md)
   - v5.3
+    - [5.3.3](/releases/release-5.3.3.md)
     - [5.3.2](/releases/release-5.3.2.md)
     - [5.3.1](/releases/release-5.3.1.md)
     - [5.3.0](/releases/release-5.3.0.md)

@@ -46,26 +46,32 @@ cdc cli changefeed create --pd=http://10.0.10.25:2379 --sink-uri="mysql://root:1
 **Changefeed** 面板示例如下：
 
 ![TiCDC Dashboard - Changefeed metrics 1](/media/ticdc/ticdc-dashboard-changefeed-1.png)
-![TiCDC Dashboard - Changefeed metrics 2](/media/ticdc/ticdc-dashboard-changefeed-2.png)
-![TiCDC Dashboard - Changefeed metrics 3](/media/ticdc/ticdc-dashboard-changefeed-3.png)
-
-**Changefeed** 面板的各指标说明如下：
 
 - Changefeed table count：一个同步任务中分配到各个 TiCDC 节点同步的数据表个数。
 - Processor resolved ts：TiCDC 节点内部状态中已同步的时间点。
 - Table resolved ts：同步任务中各数据表的同步进度。
 - Changefeed checkpoint：同步任务同步到下游的进度，正常情况下绿柱应和黄线相接。
 - PD etcd requests/s：TiCDC 节点每秒向 PD 读写数据的次数。
-- Exit error count：每分钟内导致同步中断的错误发生次数。
+- Exit error count/m：每分钟内导致同步中断的错误发生次数。
 - Changefeed checkpoint lag：同步任务上下游数据的进度差（以时间计算）。
-- Changefeed resolved ts lag：TiCDC 节点内部同步状态与上游的进度差（以时间计算）。
-- Flush sink duration：TiCDC 异步刷写数据入下游的耗时直方图。
-- Flush sink duration percentile：每秒钟中 95%、99% 和 99.9% 的情况下，TiCDC 异步刷写数据入下游所花费的时间。
+- Processor resolved ts lag：TiCDC 节点内部同步状态与上游的进度差（以时间计算）。
+
+![TiCDC Dashboard - Changefeed metrics 2](/media/ticdc/ticdc-dashboard-changefeed-2.png)
+
 - Sink write duration：TiCDC 将一个事务的更改写到下游的耗时直方图。
 - Sink write duration percentile：每秒钟中 95%、99% 和 99.9% 的情况下，TiCDC 将一个事务的更改写到下游所花费的时间。
+- Flush sink duration：TiCDC 异步刷写数据入下游的耗时直方图。
+- Flush sink duration percentile：每秒钟中 95%、99% 和 99.9% 的情况下，TiCDC 异步刷写数据入下游所花费的时间。
+
+![TiCDC Dashboard - Changefeed metrics 3](/media/ticdc/ticdc-dashboard-changefeed-3.png)
+
 - MySQL sink conflict detect duration：MySQL 写入冲突检测耗时直方图。
 - MySQL sink conflict detect duration percentile：每秒钟中 95%、99% 和 99.9% 的情况下，MySQL 写入冲突检测耗时。
 - MySQL sink worker load：TiCDC 节点中写 MySQL 线程的负载情况。
+
+![TiCDC Dashboard - Changefeed metrics 4](/media/ticdc/ticdc-dashboard-changefeed-4.png)
+
+- Changefeed catch-up ETA：同步完上游写入的数据所需时间的估计值。当上游的写入速度大于 TiCDC 同步速度时，该值可能会异常的大。(由于 TiCDC 的同步速度受到较多因素制约，因此该值仅供参考，不能完全代表实际所需的同步时间。)
 
 ## Events 面板
 

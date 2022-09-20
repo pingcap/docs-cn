@@ -5,10 +5,6 @@ aliases: ['/docs-cn/dev/functions-and-operators/json-functions/','/docs-cn/dev/r
 
 # JSON 函数
 
-> **警告：**
->
-> 当前该功能为实验特性，不建议在生产环境中使用。
-
 TiDB 支持 MySQL 5.7 GA 版本发布的大多数 JSON 函数。
 
 ## 创建 JSON 值的函数
