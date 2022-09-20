@@ -174,6 +174,7 @@
     - [优化概述](/performance-tuning-overview.md)
     - [优化方法](/performance-tuning-methods.md)
     - [优化实践](/performance-tuning-practices.md)
+    - [延迟的拆解分析](/latency-breakdown.md)
   - 配置调优
       - [操作系统性能参数调优](/tune-operating-system.md)
       - [TiDB 内存调优](/configure-memory-usage.md)
@@ -615,7 +616,6 @@
       - [`ALTER PLACEMENT POLICY`](/sql-statements/sql-statement-alter-placement-policy.md)
       - [`ALTER TABLE`](/sql-statements/sql-statement-alter-table.md)
       - [`ALTER TABLE COMPACT`](/sql-statements/sql-statement-alter-table-compact.md)
-      - [`ALTER TABLE SET TIFLASH MODE`](/sql-statements/sql-statement-set-tiflash-mode.md)
       - [`ALTER USER`](/sql-statements/sql-statement-alter-user.md)
       - [`ANALYZE TABLE`](/sql-statements/sql-statement-analyze-table.md)
       - [`BACKUP`](/sql-statements/sql-statement-backup.md)
