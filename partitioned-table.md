@@ -191,13 +191,13 @@ PARTITION BY RANGE COLUMNS(name,valid_until)
  PARTITION `p2024-` VALUES LESS THAN (0x7f,'2025-01-01 00:00:00'))
 ```
 
-It will split the data by year and by name in the ranges [''-'G'), ['G'-'M'), ['M'-'S'), ['S',), allowing you to easily drop invalid data while still benefit from partition pruning on both `name` and `valid_until` columns.
+It will partition the data by year and by name in the ranges ['', 'G'), ['G', 'M'), ['M', 'S') and ['S',). It allows you to easily drop invalid data while still benefit from partition pruning on both `name` and `valid_until` columns. In this example, `[,)` indicates a left-closed, right-open range. For example, ['G', 'M') indicates a range containing `G` and from `G` to `M`, but excluding `M`.
 
 ### Range INTERVAL partitioning
 
 Range INTERVAL partitioning is an extension of Range partitioning, which allows you to create partitions of a specified interval easily. Starting from v6.3.0, INTERVAL partitioning is introduced in TiDB as syntactic sugar:
 
-```
+```sql
 PARTITION BY RANGE [COLUMNS] (<partitioning expression>)
 INTERVAL (<interval expression>)
 FIRST PARTITION LESS THAN (<expression>)
@@ -208,7 +208,7 @@ LAST PARTITION LESS THAN (<expression>)
 
 For example:
 
-```
+```sql
 CREATE TABLE employees (
     id int unsigned NOT NULL,
     fname varchar(30),
@@ -223,7 +223,7 @@ INTERVAL (100) FIRST PARTITION LESS THAN (100) LAST PARTITION LESS THAN (10000) 
 
 It creates the following table:
 
-```
+```sql
 CREATE TABLE `employees` (
   `id` int unsigned NOT NULL,
   `fname` varchar(30) DEFAULT NULL,
@@ -246,7 +246,7 @@ INTERVAL partitioning also works with RANGE COLUMNS partitioning.
 
 For example: 
 
-```
+```sql
 CREATE TABLE monthly_report_status (
     report_id int NOT NULL,
     report_status varchar(20) NOT NULL,
