@@ -266,7 +266,6 @@
     - [概述](/clinic/clinic-introduction.md)
     - [快速上手](/clinic/quick-start-with-clinic.md)
     - [使用 PingCAP Clinic 诊断集群](/clinic/clinic-user-guide-for-tiup.md)
-    - [采集 SQL 查询计划信息](/clinic/clinic-collect-sql-query-plan.md)
     - [数据采集说明](/clinic/clinic-data-instruction-for-tiup.md)
   - [TiDB Operator](/tidb-operator-overview.md)
   - [Dumpling](/dumpling-overview.md)
