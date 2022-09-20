@@ -164,7 +164,7 @@ public List<Author> getAuthorsByBirthYear(Short birthYear) throws SQLException {
 
 使用 `ORDER BY` 语句可以让查询结果按照期望的方式进行排序。
 
-例如，可以通过下面的 SQL 语对 `authors` 表的数据按照 `birth_year` 列进行降序 (`DESC`) 排序，从而得到最年轻的作家列表。
+例如，可以通过下面的 SQL 语句对 `authors` 表的数据按照 `birth_year` 列进行降序 (`DESC`) 排序，从而得到最年轻的作家列表。
 
 <SimpleTab groupId="language">
 <div label="SQL" value="sql">
