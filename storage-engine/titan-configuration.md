@@ -117,7 +117,31 @@ Titan 对 RocksDB 兼容，也就是说，使用 RocksDB 存储引擎的现有 T
 - 当设置为 `read-only` 时，新写入的 value 不论大小均会写入 RocksDB。
 - 当设置为 `fallback` 时，新写入的 value 不论大小均会写入 RocksDB，并且当 RocksDB 进行 compaction 时，会自动把所碰到的存储在 Titan blob file 中的 value 移回 RocksDB。
 
-当需要关闭 Titan 时，可以设置 `blob-run-mode = "fallback"`，并通过 tikv-ctl 执行全量 compaction。此后通过监控确认 blob file size 降到 `0` 以后，可以更改 `rocksdb.titan.enabled = false` 并重启 TiKV。
+要关闭 Titan，执行以下步骤：
+
+1. 更新需要关闭 Titan 的 TiKV 节点的配置，然后重启 TiKV。
+
+    ```toml
+    [rocksdb.defaultcf.titan]
+    blob-run-mode = "fallback"
+    discardable-ratio = 1.0
+    merge-small-file-threshold = "0KB"
+    ```
+
+2. 使用 `tikv-ctl` 执行全量数据整理 (Compaction)。这一步骤将消耗大量 I/O 和 CPU 资源。
+
+    ```shell
+    tikv-ctl --pd <PD_ADDR> compact-cluster --bottommost force
+    ```
+
+3. 数据整理结束后，通过 **TiKV-Details/Titan - kv** 监控面板确认 **Blob file count** 指标降为 `0`。
+
+4. 更新 TiKV 节点的配置，关闭 Titan。
+
+    ```toml
+    [rocksdb.titan]
+    enabled = false
+    ```
 
 > **警告：**
 >
