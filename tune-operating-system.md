@@ -1,10 +1,10 @@
 ---
-title: Operating System Tuning
+title: Tune Operating System Performance
 summary: Learn how to tune the parameters of the operating system.
 aliases: ['/docs/dev/tune-operating-system/']
 ---
 
-# Operating System Tuning
+# Tune Operating System Performance
 
 This document introduces how to tune each subsystem of CentOS 7.
 

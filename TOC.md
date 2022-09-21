@@ -181,17 +181,17 @@
     - [Performance Tuning Practices for OLTP Scenarios](/performance-tuning-practices.md)
     - [Latency Breakdown](/latency-breakdown.md)
   - Configuration Tuning
-    - System Tuning
-      - [Operating System Tuning](/tune-operating-system.md)
-    - Software Tuning
-      - Configuration
-        - [Tune TiDB Memory](/configure-memory-usage.md)
-        - [Tune TiKV Threads](/tune-tikv-thread-performance.md)
-        - [Tune TiKV Memory](/tune-tikv-memory-performance.md)
-        - [TiKV Follower Read](/follower-read.md)
-        - [Tune Region Performance](/tune-region-performance.md)
-        - [Tune TiFlash Performance](/tiflash/tune-tiflash-performance.md)
-      - [Coprocessor Cache](/coprocessor-cache.md)
+    - [Tune Operating System Performance](/tune-operating-system.md)
+    - [Tune TiDB Memory](/configure-memory-usage.md)
+    - [Tune TiKV Threads](/tune-tikv-thread-performance.md)
+    - [Tune TiKV Memory](/tune-tikv-memory-performance.md)
+    - [TiKV Follower Read](/follower-read.md)
+    - [Tune Region Performance](/tune-region-performance.md)
+    - [Tune TiFlash Performance](/tiflash/tune-tiflash-performance.md)
+    - [Coprocessor Cache](/coprocessor-cache.md)
+    - Garbage Collection (GC)
+      - [Overview](/garbage-collection-overview.md)
+      - [Configuration](/garbage-collection-configuration.md)
   - SQL Tuning
     - [Overview](/sql-tuning-overview.md)
     - Understanding the Query Execution Plan
@@ -746,9 +746,6 @@
       - [Optimistic Transactions](/optimistic-transaction.md)
       - [Pessimistic Transactions](/pessimistic-transaction.md)
       - [Non-Transactional DML Statements](/non-transactional-dml.md)
-    - Garbage Collection (GC)
-      - [Overview](/garbage-collection-overview.md)
-      - [Configuration](/garbage-collection-configuration.md)
     - [Views](/views.md)
     - [Partitioning](/partitioned-table.md)
     - [Temporary Tables](/temporary-tables.md)
