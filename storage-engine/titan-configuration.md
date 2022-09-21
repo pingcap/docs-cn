@@ -126,6 +126,7 @@ Titan 对 RocksDB 兼容，也就是说，使用 RocksDB 存储引擎的现有 T
     blob-run-mode = "fallback"
     discardable-ratio = 1.0
     merge-small-file-threshold = "0KB"
+    ```
 
 2. 使用 `tikv-ctl` 执行全量数据整理 (Compaction)。这一步骤将消耗大量 I/O 和 CPU 资源。
 
