@@ -1528,14 +1528,6 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
     - "query"：上一个 DDL 查询字符串。
     - "seq_num"：每个 DDL 操作的序列号，用于标识 DDL 操作的顺序。
 
-### `tidb_last_plan_replayer_token` <span class="version-mark">从 v6.3.0 版本开始引入</span>
-
-- 作用域：
-- 是否持久化到集群：
-- 默认值：
-- 范围：
-- 这个变量用来 XXX。
-
 ### `tidb_last_query_info` <span class="version-mark">从 v4.0.14 版本开始引入</span>
 
 - 作用域：SESSION
