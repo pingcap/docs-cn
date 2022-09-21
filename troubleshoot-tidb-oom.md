@@ -10,9 +10,9 @@ summary: 了解如何定位、排查 TiDB Out Of Memory (OOM) 问题。
 TiDB OOM，需要区分以下两种情况。
 
 - 操作系统 (Operating System, OS) 层面 `oom-killer kill tidb-server`。该场景常见的原因有：
-  - OS 容量规划不当
-  - TiUP resource limit 配置问题
-  - 有混布情况，导致 TiDB 作为受害者被 oom-killer killed
+    - OS 容量规划不当
+    - TiUP resource limit 配置问题
+    - 有混布情况，导致 TiDB 作为受害者被 oom-killer killed
 - 数据库 (Database, DB) 层面 SQL 发生 'Out of Memory Quota'。该场景主要是 DB 内的内存使用控制行为导致的。
 
 针对上述的第一种情况，报错可能如下：
@@ -77,7 +77,11 @@ TiDB OOM，需要区分以下两种情况。
     - SQL 的 explain analyze or explain 看算子层的内存消耗
     - SELECT * FROM information_schema.processlist; See column MEM
 
-5. 内存使用率高的时候 TiDB 的 Profile 信息：curl -G http://{TiDBIP}:10080/debug/zip?seconds=10" > profile.zip
+5. 内存使用率高的时候 TiDB 的 Profile 信息：
+
+    ```shell
+    curl -G http://{TiDBIP}:10080/debug/zip?seconds=10" > profile.zip
+    ```
 
 6. tmp 目录下的 dump 文件，该文件的路径会在 tidb.log 中打印出来。例如：
 
@@ -87,18 +91,18 @@ TiDB OOM，需要区分以下两种情况。
 
 ### 系统配置不合理
 
-检查操作系统的内存配置使用是否合理、OOM killer 配置是否符合预期。注意为使 dmesg 能抓到 OOM killer 信息, 需确保 sysconfig vm.overcommit_memory=1。
+检查操作系统的内存配置使用是否合理、OOM killer 配置是否符合预期。注意为使 dmesg 能抓到 OOM killer 信息, 需确保 `sysconfig vm.overcommit_memory=1`。
 
 DB 参数配置
 
-    - 详见 [TiDB 内存控制文档](/configure-memory-usage.md)，了解如何限制一条 SQL 或者一个 TiDB instance 的内存使用总量，以及 [`memory-usage-alarm-ratio`](system-variables.md#tidb_memory_usage_alarm_ratio)、流量控制、数据落盘等机制。
-    - 注意在设置了流量控制 [`tidb_enable_rate_limit_action`](/system-variables.md#tidb_enable_rate_limit_action) 后，它会改变了 oom-cancel 的表现时间。因为它会首先尝试在内存阈值范围内，逐一停下线程。在只剩一个线程的时候才触发 cancel。
+- 详见 [TiDB 内存控制文档](/configure-memory-usage.md)，了解如何限制一条 SQL 或者一个 TiDB instance 的内存使用总量，以及 [`memory-usage-alarm-ratio`](system-variables.md#tidb_memory_usage_alarm_ratio)、流量控制、数据落盘等机制。
+- 注意在设置了流量控制 [`tidb_enable_rate_limit_action`](/system-variables.md#tidb_enable_rate_limit_action) 后，它会改变了 oom-cancel 的表现时间。因为它会首先尝试在内存阈值范围内，逐一停下线程。在只剩一个线程的时候才触发 cancel。
 
 业务的形态：了解负载形态，平时 session 的并发度，单个 session 所使用的内存的预期，以准备好对应的容量配置。
 
 ### Go 内存释放时间
 
-目前 TiDB TiUP 在 run_tidb.sh 中已经包含了 GODEBUG=madvdontneed=1 环境变量，表示 GC 时立即将内存返还给操作系统。
+目前 TiDB TiUP 在 run_tidb.sh 中已经包含了 `GODEBUG=madvdontneed=1` 环境变量，表示 GC 时立即将内存返还给操作系统。
 
 ### 统计信息的收集和加载过程需要使用内存
 
