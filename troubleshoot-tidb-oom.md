@@ -91,7 +91,7 @@ TiDB OOM，需要区分以下两种情况。
 
 DB 参数配置
 
-    - 详见 [TiDB 内存控制文档](/configure-memory-usage.md)，了解如何限制一条 SQL 或者一个 TiDB instance 的内存使用总量，以及 memory-usage-alarm-ratio、流量控制、数据落盘等机制。
+    - 详见 [TiDB 内存控制文档](/configure-memory-usage.md)，了解如何限制一条 SQL 或者一个 TiDB instance 的内存使用总量，以及 [`memory-usage-alarm-ratio`](system-variables.md#tidb_memory_usage_alarm_ratio)、流量控制、数据落盘等机制。
     - 注意在设置了流量控制 `tidb_enable_rate_limit_action` 后，它会改变了 oom-cancel 的表现时间。因为它会首先尝试在内存阈值范围内，逐一停下线程。在只剩一个线程的时候才触发 cancel。
 
 业务的形态：了解负载形态，平时 session 的并发度，单个 session 所使用的内存的预期，以准备好对应的容量配置。
