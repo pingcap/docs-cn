@@ -673,6 +673,10 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 ### `tidb_restricted_read_only` <span class="version-mark">从 v5.2.0 版本开始引入</span>
 
+> **警告：**
+>
+> 在低于 v5.3.1 或 v5.4.1 的 TiDB 版本中，该变量存在缺陷，使用它可能会导致非预期的结果。使用该变量前，请确保你的 TiDB 版本不低于 v5.3.1 或 v5.4.1。
+
 - 作用域：GLOBAL
 - 默认值：`OFF`
 - 可选值：`OFF` 和 `ON`
@@ -1572,9 +1576,11 @@ set tidb_slow_log_threshold = 200;
 - 范围：`[0, 9223372036854775807]`
 - 这个变量用于限制 TiDB 同时向 TiKV 发送的请求的最大数量，0 表示没有限制。
 
-<<<<<<< HEAD
-=======
 ### `tidb_super_read_only` <span class="version-mark">从 v5.3.1 版本开始引入</span>
+
+> **警告：**
+>
+> 在低于 v5.3.1 或 v5.4.1 的 TiDB 版本中，该变量存在缺陷，使用它可能会导致非预期的结果。使用该变量前，请确保你的 TiDB 版本不低于 v5.3.1 或 v5.4.1。
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
@@ -1592,23 +1598,6 @@ set tidb_slow_log_threshold = 200;
 - 当集群开启只读模式后，所有用户（包括 `SUPER` 用户）都无法执行可能写入数据的 SQL 语句，除非该用户被显式地授予了 `RESTRICTED_REPLICA_WRITER_ADMIN` 权限。
 - 当系统变量 [`tidb_restricted_read_only`](#tidb_restricted_read_only-从-v520-版本开始引入) 为 `ON` 时，`tidb_super_read_only` 的值会受到 [`tidb_restricted_read_only`](#tidb_restricted_read_only-从-v520-版本开始引入) 的影响。详情请参见[`tidb_restricted_read_only`](#tidb_restricted_read_only-从-v520-版本开始引入) 中的描述。
 
-### `tidb_sysdate_is_now` <span class="version-mark">从 v6.0.0 版本开始引入</span>
-
-- 作用域：SESSION | GLOBAL
-- 是否持久化到集群：是
-- 默认值：`OFF`
-- 这个变量用于控制 `SYSDATE` 函数能否替换为 `NOW` 函数，其效果与 MYSQL 中的 [`sysdate-is-now`](https://dev.mysql.com/doc/refman/8.0/en/server-options.html#option_mysqld_sysdate-is-now) 一致。
-
-### `tidb_table_cache_lease` <span class="version-mark">从 v6.0.0 版本开始引入</span>
-
-- 作用域：GLOBAL
-- 是否持久化到集群：是
-- 默认值：`3`
-- 范围：`[1, 10]`
-- 单位：秒
-- 这个变量用来控制[缓存表](/cached-tables.md)的 lease 时间，默认值是 3 秒。该变量值的大小会影响缓存表的修改。在缓存表上执行修改操作后，最长可能出现 `tidb_table_cache_lease` 变量值时长的等待。如果业务表为只读表，或者能接受很高的写入延迟，则可以将该变量值调大，从而增加缓存的有效时间，减少 lease 续租的频率。
-
->>>>>>> 72065f78b (Add tidb super read only (#10801))
 ### `tidb_tmp_table_max_size` <span class="version-mark">从 v5.3 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
