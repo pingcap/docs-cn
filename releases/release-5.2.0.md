@@ -61,7 +61,7 @@ TiDB 版本：5.2.0
 
 - 升级前，请检查系统变量 [`tidb_evolve_plan_baselines`](/system-variables.md#tidb_evolve_plan_baselines-从-v40-版本开始引入) 的值是否为 `ON`。如果为 `ON`，需要将其改成 `OFF`，否则会导致升级失败。
 - v4.0 集群升级到 v5.2 集群后，[`tidb_multi_statement_mode`](/system-variables.md#tidb_multi_statement_mode-从-v4011-版本开始引入) 变量的默认值由 `WARN` 变为 `OFF`。
-- 升级前，请检查 TiDB 配置项 [`feedback-probability`](/tidb-configuration-file.md#feedback-probability) 的值。如果不为 0，升级后会触发 "panic in the recoverable goroutine" 报错，但不影响升级。
+- 升级前，请检查 TiDB 配置项 [`feedback-probability`](https://docs.pingcap.com/zh/tidb/v5.2/tidb-configuration-file#feedback-probability) 的值。如果不为 0，升级后会触发 "panic in the recoverable goroutine" 报错，但不影响升级。
 - 兼容 MySQL 5.7 的 noop 变量 `innodb_default_row_format`，配置此变量无实际效果 [#23541](https://github.com/pingcap/tidb/issues/23541)。
 
 - 从 TiDB 5.2 起，为了提高系统安全性，建议（但不要求）对来自客户端的连接进行传输层加密，TiDB 提供 Auto TLS 功能在 TiDB 服务器端自动配置并开启加密。要使用 Auto TLS 功能，请在 TiDB 升级前将 TiDB 配置文件中的 [`security.auto-tls`](/tidb-configuration-file.md#auto-tls) 设置为 `true`。
