@@ -80,6 +80,7 @@ TiDB OOM，需要区分以下两种情况。
 5. 内存使用率高的时候 TiDB 的 Profile 信息：curl -G http://{TiDBIP}:10080/debug/zip?seconds=10" > profile.zip
 
 6. tmp 目录下的 dump 文件，该文件的路径会在 tidb.log 中打印出来。例如：
+
     ["tidb-server has the risk of OOM. Running SQLs and heap profile will be recorded in record path"] ["is server-memory-quota set"=false] ["system memory total"=14388137984] ["system memory usage"=11897434112] ["tidb-server memory usage"=11223572312] [memory-usage-alarm-ratio=0.8] ["record path"="/tmp/0_tidb/MC4wLjAuMDo0MDAwLzAuMC4wLjA6MTAwODA=/tmp-storage/record"]
 
 ## 常见原因和解决办法
@@ -89,6 +90,7 @@ TiDB OOM，需要区分以下两种情况。
 检查操作系统的内存配置使用是否合理、OOM killer 配置是否符合预期。注意为使 dmesg 能抓到 OOM killer 信息, 需确保 sysconfig vm.overcommit_memory=1。
 
 DB 参数配置
+
     - 详见 [TiDB 内存控制文档](/configure-memory-usage.md)，了解如何限制一条 SQL 或者一个 TiDB instance 的内存使用总量，以及 memory-usage-alarm-ratio、流量控制、数据落盘等机制。
     - 注意在设置了流量控制 `tidb_enable_rate_limit_action` 后，它会改变了 oom-cancel 的表现时间。因为它会首先尝试在内存阈值范围内，逐一停下线程。在只剩一个线程的时候才触发 cancel。
 
