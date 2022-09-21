@@ -98,7 +98,7 @@ DB 参数配置
 
 ### Go 内存释放时间
 
-目前 TiDB TiUP 在 run_tidb.sh 中已经包含了 GODEBUG=madvdontneed=1 环境变量，表示 GC 时立即将内存返还给操作系统。请检查您的 TiUP 版本是否过旧；新版本的 TiUP 包含这个配置。
+目前 TiDB TiUP 在 run_tidb.sh 中已经包含了 GODEBUG=madvdontneed=1 环境变量，表示 GC 时立即将内存返还给操作系统。
 
 ### 统计信息的收集和加载过程需要使用内存
 
