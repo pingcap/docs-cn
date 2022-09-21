@@ -609,6 +609,10 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 ### `tidb_restricted_read_only` <span class="version-mark">从 v5.2.0 版本开始引入</span>
 
+> **警告：**
+>
+> 在 v5.3.1 或 v5.4.1 之前的 TiDB 版本中，使用该变量可能导致非预期的结果。如需使用该变量，请确保你的 TiDB 版本高于 v5.3.1 或 v5.4.1。
+
 - 作用域：GLOBAL
 - 默认值：`0`
 - 可选值：`0` 和 `1`
