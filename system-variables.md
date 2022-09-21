@@ -950,14 +950,14 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 ### `tidb_enable_foreign_key` <span class="version-mark">从 v6.3.0 版本开始引入</span>
 
 - 作用域：
-- 是否持久化到集群：是
+- 是否持久化到集群：
 - 默认值：
 - 这个变量用于 XXX。
 
 ### `tidb_enable_general_plan_cache` <span class="version-mark">从 v6.3.0 版本开始引入</span>
 
 - 作用域：
-- 是否持久化到集群：是
+- 是否持久化到集群：
 - 默认值：
 - 这个变量用于 XXX。
 
@@ -1039,7 +1039,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 ### `tidb_enable_null_aware_anti_join` <span class="version-mark">从 v6.3.0 版本开始引入</span>
 
 - 作用域：
-- 是否持久化到集群：是
+- 是否持久化到集群：
 - 默认值：
 - 这个变量用于 XXX。
 
@@ -1159,7 +1159,7 @@ Query OK, 0 rows affected (0.09 sec)
 ### `tidb_enable_tiflash_read_for_write_stmt` <span class="version-mark">从 v6.3.0 版本开始引入</span>
 
 - 作用域：
-- 是否持久化到集群：是
+- 是否持久化到集群：
 - 默认值：
 - 这个变量用于 XXX。
 
