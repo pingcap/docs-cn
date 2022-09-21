@@ -274,6 +274,9 @@ TiDB 版本：6.3.0-DMR
     - Implement TSO batch list to improve tolerance to TSO service fault. [#12794](https://github.com/tikv/tikv/issues/12794) @[pingyu](https://github.com/pingyu)
     - Make max_subcompactions dynamically changeable [#13145](https://github.com/tikv/tikv/issues/13145) @[ethercflow](https://github.com/ethercflow)
     - Optimize the performance of merging empty regions [#12421](https://github.com/tikv/tikv/issues/12421) @[tabokie](https://github.com/tabokie)
+    - Support more regular expression functions. [#13483](https://github.com/tikv/tikv/issues/13483) @[gengliqi](https://github.com/gengliqi)
+    - Support automatically scale read pool thread count based on the CPU usage. [#13313](https://github.com/tikv/tikv/issues/13313) @[glorv](https://github.com/glorv)
+
 
 + PD
 
@@ -357,6 +360,8 @@ TiDB 版本：6.3.0-DMR
         - support some adminStmt in read-only mode [#37631](https://github.com/pingcap/tidb/issues/37631) @[Defined2014](https://github.com/Defined2014)
         - fix resume pd schedule and cancel for `flashback cluster` [#37584](https://github.com/pingcap/tidb/issues/37584) @[Defined2014](https://github.com/Defined2014)
         - fix resume pd schedule and cancel for `flashback cluster` [#37580](https://github.com/pingcap/tidb/issues/37580) @[Defined2014](https://github.com/Defined2014)
+        - Fix the issue that the user cannot update from json 'null' to NULL [#37852](https://github.com/pingcap/tidb/issues/37852) @[YangKeao](https://github.com/YangKeao)
+
 
     - execution
 
@@ -393,6 +398,10 @@ TiDB 版本：6.3.0-DMR
     - Reduce false-positive PessimisticLockNotFound errors in conflicting auto-commit workloads. [#13425](https://github.com/tikv/tikv/issues/13425) @[sticnarf](https://github.com/sticnarf)
     - Fix a bug that may cause PiTR losing some data when there are too many adjacent short row putting. [#13281](https://github.com/tikv/tikv/issues/13281) @[YuJuncen](https://github.com/YuJuncen)
     - Fix a bug that caused checkpoint not advanced when there are some long pessimistic transactions. [#13304](https://github.com/tikv/tikv/issues/13304) @[YuJuncen](https://github.com/YuJuncen)
+    - Fix the issue that TiKV doesn't distinguish the `DATETIME/DATE/TIMESTAMP/TIME` and `STRING` in json type. [#13417](https://github.com/tikv/tikv/issues/13417) @[YangKeao](https://github.com/YangKeao)
+    - Fix the issue that comparison between json bool and other json value is not compatible with TiDB and MySQL [#13386](https://github.com/tikv/tikv/issues/13386) @[YangKeao](https://github.com/YangKeao)
+    - Fix the issue that comparison between json bool and other json value is not compatible with TiDB and MySQL [#37481](https://github.com/pingcap/tidb/issues/37481) @[YangKeao](https://github.com/YangKeao)
+
 
 + PD
 
@@ -406,12 +415,16 @@ TiDB 版本：6.3.0-DMR
 
         - Fix the bug that window function may cause tiflash crash when canceled. [#5814](https://github.com/pingcap/tiflash/issues/5814) @[SeaRise](https://github.com/SeaRise)
         - fix error data input for date(CAST(value AS DATETIME)) causing high TiFlash sys CPU [#5097](https://github.com/pingcap/tiflash/issues/5097) @[xzhangxian1008](https://github.com/xzhangxian1008)
+        - fix that the result of expression casting real or decimal as time is inconsistent with mysql. [#3779](https://github.com/pingcap/tiflash/issues/3779) @[mengxin9014](https://github.com/mengxin9014)
+
 
     - storage
 
         - fix the problem that there may be some obsolete data left in storage which cannot be deleted [#5570](https://github.com/pingcap/tiflash/issues/5570) @[JaySon-Huang](https://github.com/JaySon-Huang)
         - fix the problem that there may be some obsolete data left in storage which cannot be deleted [#5659](https://github.com/pingcap/tiflash/issues/5659) @[lidezhu](https://github.com/lidezhu)
         - Fix the bug that page GC may block creating tables [#5697](https://github.com/pingcap/tiflash/issues/5697) @[JaySon-Huang](https://github.com/JaySon-Huang)
+        - Fix the panic issue after creating the primary index with a column containing `NULL` value [#5859](https://github.com/pingcap/tiflash/issues/5859) @[JaySon-Huang](https://github.com/JaySon-Huang)
+
 
 + Tools
 
@@ -421,6 +434,8 @@ TiDB 版本：6.3.0-DMR
         - br: raw restore fail in integration test "br_rawkv [#36490](https://github.com/pingcap/tidb/issues/36490) @[pingyu](https://github.com/pingyu)
         - Fix a bug that may cause the information of the checkpoint being stale. [#36423](https://github.com/pingcap/tidb/issues/36423) @[YuJuncen](https://github.com/YuJuncen) 
         - Fix a bug caused when restoring with high `concurrency` the regions aren't balanced. [#37549](https://github.com/pingcap/tidb/issues/37549) @[3pointer](https://github.com/3pointer)
+        - Fix a bug that may cause log backup checkpoint TS stuck when some weird ranged regions exist. [#37822](https://github.com/pingcap/tidb/issues/37822) @[YuJuncen](https://github.com/YuJuncen)
+
 
     + TiCDC
         
