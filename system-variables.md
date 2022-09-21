@@ -345,6 +345,14 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 - 默认值：`ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION`
 - 这个变量控制许多 MySQL 兼容行为。详情见 [SQL 模式](/sql-mode.md)。
 
+### `sql_require_primary_key` <span class="version-mark">从 v6.3.0 版本开始引入</span>
+
+- 作用域：
+- 是否持久化到集群：
+- 默认值：
+- 范围：
+- 这个变量用来 XXX。
+
 ### `sql_select_limit` <span class="version-mark">从 v4.0.2 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
@@ -687,6 +695,14 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 范围：`[0, 9223372036854775807]`
 - 这个变量用来控制 DDL 操作失败重试的次数。失败重试次数超过该参数的值后，会取消出错的 DDL 操作。
 
+### `tidb_ddl_flashback_concurrency` <span class="version-mark">从 v6.3.0 版本开始引入</span>
+
+- 作用域：
+- 是否持久化到集群：
+- 默认值：
+- 范围：
+- 这个变量用来 XXX。
+
 ### `tidb_ddl_reorg_batch_size`
 
 - 作用域：GLOBAL
@@ -894,6 +910,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
     - `RESTRICTED_VARIABLES_ADMIN`：能够在 `SHOW [GLOBAL] VARIABLES` 和 `SET` 命令中查看和设置包含敏感内容的变量。
     - `RESTRICTED_USER_ADMIN`：能够阻止其他用户更改或删除用户帐户。
 
+
 ### `tidb_restricted_read_only` <span class="version-mark">从 v5.2.0 版本开始引入</span>
 
 - 作用域：GLOBAL
@@ -930,6 +947,20 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 默认值：`OFF`
 - 这个变量用来控制是否启用统计信息快速分析功能。默认值 0 表示不开启。
 - 快速分析功能开启后，TiDB 会随机采样约 10000 行的数据来构建统计信息。因此在数据分布不均匀或者数据量比较少的情况下，统计信息的准确度会比较低。这可能导致执行计划不优，比如选错索引。如果可以接受普通 `ANALYZE` 语句的执行时间，则推荐关闭快速分析功能。
+
+### `tidb_enable_foreign_key` <span class="version-mark">从 v6.3.0 版本开始引入</span>
+
+- 作用域：
+- 是否持久化到集群：是
+- 默认值：
+- 这个变量用于 XXX。
+
+### `tidb_enable_general_plan_cache` <span class="version-mark">从 v6.3.0 版本开始引入</span>
+
+- 作用域：
+- 是否持久化到集群：是
+- 默认值：
+- 这个变量用于 XXX。
 
 ### `tidb_enable_index_merge` <span class="version-mark">从 v4.0 版本开始引入</span>
 
@@ -1005,6 +1036,13 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
     * `SHOW [SESSION | GLOBAL] VARIABLES` 的结果不显示 `noop` 的系统变量。
     * 使用 `SELECT` 读取 `noop` 的系统变量时会报 `"variable *variable_name* has no effect in TiDB"` 的警告。
 - 你可以通过 `SELECT * FROM INFORMATION_SCHEMA.CLIENT_ERRORS_SUMMARY_GLOBAL;` 语句来检查 TiDB 实例是否曾设置和读取 `noop` 系统变量。
+
+### `tidb_enable_null_aware_anti_join` <span class="version-mark">从 v6.3.0 版本开始引入</span>
+
+- 作用域：
+- 是否持久化到集群：是
+- 默认值：
+- 这个变量用于 XXX。
 
 ### `tidb_enable_outer_join_reorder` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
@@ -1118,6 +1156,13 @@ Query OK, 0 rows affected (0.09 sec)
 - 是否持久化到集群：是
 - 默认值：`ON`
 - 这个变量用于动态地控制 TiDB 遥测功能是否开启。设置为 `OFF` 可以关闭 TiDB 遥测功能。当所有 TiDB 实例都设置 [`enable-telemetry`](/tidb-configuration-file.md#enable-telemetry-从-v402-版本开始引入) 为 `false` 时将忽略该系统变量并总是关闭 TiDB 遥测功能。参阅[遥测](/telemetry.md)了解该功能详情。
+
+### `tidb_enable_tiflash_read_for_write_stmt` <span class="version-mark">从 v6.3.0 版本开始引入</span>
+
+- 作用域：
+- 是否持久化到集群：是
+- 默认值：
+- 这个变量用于 XXX。
 
 ### `tidb_enable_top_sql` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 
@@ -1345,6 +1390,14 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
     - `txn_mode`：事务模式。可选值：`OPTIMISTIC`（乐观事务模式），或 `PESSIMISTIC`（悲观事务模式）
     - `sql`：当前查询对应的 SQL 语句
 
+### `tidb_general_plan_cache_size` <span class="version-mark">从 v6.3.0 版本开始引入</span>
+
+- 作用域：
+- 是否持久化到集群：
+- 默认值：
+- 范围：
+- 这个变量用来 XXX。
+
 ### `tidb_guarantee_linearizability` <span class="version-mark">从 v5.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
@@ -1475,6 +1528,14 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 该变量为只读变量，TiDB 内部使用该变量获取当前会话中上一个 DDL 操作的信息。
     - "query"：上一个 DDL 查询字符串。
     - "seq_num"：每个 DDL 操作的序列号，用于标识 DDL 操作的顺序。
+
+### `tidb_last_plan_replayer_token` <span class="version-mark">从 v6.3.0 版本开始引入</span>
+
+- 作用域：
+- 是否持久化到集群：
+- 默认值：
+- 范围：
+- 这个变量用来 XXX。
 
 ### `tidb_last_query_info` <span class="version-mark">从 v4.0.14 版本开始引入</span>
 
