@@ -12,7 +12,7 @@ TiDB 版本：6.3.0-DMR
 
 - TiKV/TiFlash 静态加密支持国密算法 SM4
 - TiDB 支持基于国密算法 SM3 插件的身份验证
-- SQL语句CREATE USER / ALTER USER支持ACCOUNT LOCK/UNLOCK 选项
+- SQL 语句` CREATE USER` / `ALTER USER` 支持 `ACCOUNT LOCK/UNLOCK` 选项
 - JSON 数据类型和 JSON 函数 GA
 - TiDB 支持 Null-Aware Anti Join
 - 提供“执行时间”的细粒度指标
@@ -76,7 +76,7 @@ TiDB 版本：6.3.0-DMR
 
 * JDBC 支持国密算法 SM3 的身份验证 [#25](https://github.com/pingcap/mysql-connector-j/issues/25) @[lastincisor](https://github.com/lastincisor)
 
-    用户密码的身份验证需要客户端的支持，现在 [JDBC 支持国密算法 SM3](/develop/dev-guide-choose-driver-or-orm.md#java-drivers) 的能力，用户可以通过 JDBC 连接到 TiDB 使用国密算法 SM3 的身份验证能力。
+    用户密码的身份验证需要客户端的支持，现在 [JDBC 支持国密算法 SM3](/develop/dev-guide-choose-driver-or-orm.md#java-drivers)，用户可以通过 JDBC 连接到 TiDB 使用国密算法 SM3 的身份验证能力。
 
 ### 可观测性
 
@@ -142,7 +142,7 @@ TiDB 版本：6.3.0-DMR
 
     在 v5.3.0 版本时，TiDB 引入系统变量 [`tidb_enable_pseudo_for_outdated_stats`](/system-variables.md#tidb_enable_pseudo_for_outdated_stats-从-v530-版本开始引入) 控制优化器在统计信息过期时的行为，默认为 `ON`，即保持旧版本行为不变：当 SQL 涉及的对象的统计信息过期时，优化器认为该表上除总行数以外的统计信息不再可靠，转而使用 pseudo 统计信息。 经过一系列测试和用户实际场景分析，TiDB 在新版本中将 `tidb_enable_pseudo_for_outdated_stats` 的默认值改为 `OFF`，即使统计信息过期，优化器也仍会使用该表上的统计信息，这有利于执行计划的稳定性。
 
-* TiKV Titan 关闭功能正式发布 [#issue]() @[tabokie](https://github.com/tabokie)
+* TiKV 正式支持关闭 Titan 引擎 [#issue]() @[tabokie](https://github.com/tabokie)
 
     正式支持对在线 TiKV 节点[关闭 Titan 引擎](/titan-configuration#disable-titan)。
 
@@ -184,9 +184,9 @@ TiDB 版本：6.3.0-DMR
 
 ### 数据共享与订阅
 
-* TiCDC 支持对多个异地目标数据源进行数据复制的复杂部署形态 [#issue]() @[sdojjy](https://github.com/sdojjy)
+* TiCDC 支持对多个异地目标数据源进行数据复制 [#issue]() @[sdojjy](https://github.com/sdojjy)
 
-    为了提供一套 TiDB 集群的数据能复制到多个不同的异地数据系统的能力，自 v6.3.0 开始，TiCDC 节点可以[部署到多个不同的异地的机房](用户文档链接)中，来分别负责对应机房的数据复制任务，以支撑各种复杂的异地数据复制使用场景和部署形态。
+    为了支持从一个 TiDB 集群复制数据到多个不同的异地数据系统，自 v6.3.0 开始，TiCDC 节点可以[部署到多个不同的异地的机房](用户文档链接)中，来分别负责对应机房的数据复制任务，以支撑各种复杂的异地数据复制使用场景和部署形态。
 
 * TiCDC 支持维护上下游数据一致性快照 (Sync point) [#issue]() @[asddongmen](https://github.com/asddongmen)
 
@@ -299,12 +299,6 @@ TiDB 版本：6.3.0-DMR
         - Calculate the io throughput in background in ReadLimiter [#5401](https://github.com/pingcap/tiflash/issues/5401), [#5091](https://github.com/pingcap/tiflash/issues/5091) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
 
 + Tools
-
-    + TiDB Dashboard
-
-        - 优化 TiDB Dashboard 的展示样式 [#issue]() @[贡献者 GitHub ID]()
-        - 在 SQL 语句分析、慢查询等页面，提供当前返回的数据行数 [#issue]() @[贡献者 GitHub ID]()
-        - 优化一些报错信息展示样式  [#issue]() @[贡献者 GitHub ID]()
 
     + Backup & Restore (BR)
 
