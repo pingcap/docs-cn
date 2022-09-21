@@ -697,11 +697,11 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 ### `tidb_ddl_flashback_concurrency` <span class="version-mark">从 v6.3.0 版本开始引入</span>
 
-- 作用域：
-- 是否持久化到集群：
-- 默认值：
-- 范围：
-- 这个变量用来 XXX。
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 默认值：`64`
+- 范围：`[1, 256]`
+- 这个变量用来控制 `flashback cluster` 的并发数。
 
 ### `tidb_ddl_reorg_batch_size`
 
