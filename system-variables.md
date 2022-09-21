@@ -630,12 +630,11 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 ### `tidb_restricted_read_only` <span class="version-mark">从 v5.2.0 版本开始引入</span>
 
+> **警告：**
+>
+> 在低于 v5.3.1 或 v5.4.1 的 TiDB 版本中，该变量存在缺陷，使用它可能会导致非预期的结果。使用该变量前，请确保你的 TiDB 版本不低于 v5.3.1 或 v5.4.1。
+
 - 作用域：GLOBAL
-<<<<<<< HEAD
-- 默认值：`0`
-- 可选值：`0` 和 `1`
-- 该变量可以控制整个集群的只读状态。开启后（即该值为 `1`），整个集群中的 TiDB 服务器都将进入只读状态，只有 `SELECT`、`USE`、`SHOW` 等不会修改数据的语句才能被执行，其他如 `INSERT`、`UPDATE` 等语句会被拒绝执行。
-=======
 - 是否持久化到集群：是
 - 默认值：`OFF`
 - 可选值：`OFF` 和 `ON`
@@ -649,9 +648,8 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 - 对于 TiDB 的 DBaaS 供应商，当 TiDB 为另一个数据库的下游数据库时，如果要将整个 TiDB 集群设置为只读模式，你需要开启[安全增强模式](#tidb_enable_enhanced_security) 并将 `tidb_restricted_read_only` 设置为 `ON`，从而防止你的用户通过 [`tidb_super_read_only`](#tidb_super_read_only-从-v531-版本开始引入) 将 TiDB 集群设置为可写。实现方法：首先开启[安全增强模式](#tidb_enable_enhanced_security)，然后由你（作为 DBaaS 的控制面）使用一个 admin 用户控制 `tidb_restricted_read_only`（需要拥有 `SYSTEM_VARIABLES_ADMIN` 和 `RESTRICTED_VARIABLES_ADMIN` 权限），由你的数据库用户使用 root 用户控制 [`tidb_super_read_only`](#tidb_super_read_only-从-v531-版本开始引入)（需要拥有 `SUPER` 权限）。
 - 该变量可以控制整个集群的只读状态。开启后（即该值为 `ON`），整个集群中的 TiDB 服务器都将进入只读状态，只有 `SELECT`、`USE`、`SHOW` 等不会修改数据的语句才能被执行，其他如 `INSERT`、`UPDATE` 等语句会被拒绝执行。
->>>>>>> 72065f78b (Add tidb super read only (#10801))
 - 该变量开启只读模式只保证整个集群最终进入只读模式，当变量修改状态还没被同步到其他 TiDB 服务器时，尚未同步的 TiDB 仍然停留在非只读模式。
-- 在执行 SQL 语句之前，TiDB 会检查集群的只读标志。从 v6.2.0 起，在提交 SQL 语句之前，TiDB 也会检查该标志，从而防止在服务器被置于只读模式后某些长期运行的 [auto commit](/transaction-overview.md#自动提交) 语句可能修改数据的情况。
+- 在变量开启时，正在执行的 SQL 语句不会受影响，只对新执行的 SQL 语句进行是否只读的检查。
 - 在变量开启时，对于尚未提交的事务：
     - 如果有尚未提交的只读事务，可正常提交该事务。
     - 如果尚未提交的事务为非只读事务，在事务内执行写入的 SQL 语句会被拒绝。
@@ -1466,9 +1464,11 @@ set tidb_slow_log_threshold = 200;
 - 范围：`[0, 9223372036854775807]`
 - 这个变量用于限制 TiDB 同时向 TiKV 发送的请求的最大数量，0 表示没有限制。
 
-<<<<<<< HEAD
-=======
 ### `tidb_super_read_only` <span class="version-mark">从 v5.3.1 版本开始引入</span>
+
+> **警告：**
+>
+> 在低于 v5.3.1 或 v5.4.1 的 TiDB 版本中，该变量存在缺陷，使用它可能会导致非预期的结果。使用该变量前，请确保你的 TiDB 版本不低于 v5.3.1 或 v5.4.1。
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
@@ -1478,7 +1478,7 @@ set tidb_slow_log_threshold = 200;
 - 拥有 `SUPER` 或 `SYSTEM_VARIABLES_ADMIN` 权限的用户可以修改该变量。
 - 该变量可以控制整个集群的只读状态。开启后（即该值为 `ON`），整个集群中的 TiDB 服务器都将进入只读状态，只有 `SELECT`、`USE`、`SHOW` 等不会修改数据的语句才能被执行，其他如 `INSERT`、`UPDATE` 等语句会被拒绝执行。
 - 该变量开启只读模式只保证整个集群最终进入只读模式，当变量修改状态还没被同步到其他 TiDB 服务器时，尚未同步的 TiDB 仍然停留在非只读模式。
-- 在执行 SQL 语句之前，TiDB 会检查集群的只读标志。从 v6.2.0 起，在提交 SQL 语句之前，TiDB 也会检查该标志，从而防止在服务器被置于只读模式后某些长期运行的 [auto commit](/transaction-overview.md#自动提交) 语句可能修改数据的情况。
+- 在变量开启时，正在执行的 SQL 语句不会受影响，只对新执行的 SQL 语句进行是否只读的检查。
 - 在变量开启时，对于尚未提交的事务：
     - 如果有尚未提交的只读事务，可正常提交该事务。
     - 如果尚未提交的事务为非只读事务，在事务内执行写入的 SQL 语句会被拒绝。
@@ -1486,23 +1486,6 @@ set tidb_slow_log_threshold = 200;
 - 当集群开启只读模式后，所有用户（包括 `SUPER` 用户）都无法执行可能写入数据的 SQL 语句，除非该用户被显式地授予了 `RESTRICTED_REPLICA_WRITER_ADMIN` 权限。
 - 当系统变量 [`tidb_restricted_read_only`](#tidb_restricted_read_only-从-v520-版本开始引入) 为 `ON` 时，`tidb_super_read_only` 的值会受到 [`tidb_restricted_read_only`](#tidb_restricted_read_only-从-v520-版本开始引入) 的影响。详情请参见[`tidb_restricted_read_only`](#tidb_restricted_read_only-从-v520-版本开始引入) 中的描述。
 
-### `tidb_sysdate_is_now` <span class="version-mark">从 v6.0.0 版本开始引入</span>
-
-- 作用域：SESSION | GLOBAL
-- 是否持久化到集群：是
-- 默认值：`OFF`
-- 这个变量用于控制 `SYSDATE` 函数能否替换为 `NOW` 函数，其效果与 MYSQL 中的 [`sysdate-is-now`](https://dev.mysql.com/doc/refman/8.0/en/server-options.html#option_mysqld_sysdate-is-now) 一致。
-
-### `tidb_table_cache_lease` <span class="version-mark">从 v6.0.0 版本开始引入</span>
-
-- 作用域：GLOBAL
-- 是否持久化到集群：是
-- 默认值：`3`
-- 范围：`[1, 10]`
-- 单位：秒
-- 这个变量用来控制[缓存表](/cached-tables.md)的 lease 时间，默认值是 3 秒。该变量值的大小会影响缓存表的修改。在缓存表上执行修改操作后，最长可能出现 `tidb_table_cache_lease` 变量值时长的等待。如果业务表为只读表，或者能接受很高的写入延迟，则可以将该变量值调大，从而增加缓存的有效时间，减少 lease 续租的频率。
-
->>>>>>> 72065f78b (Add tidb super read only (#10801))
 ### `tidb_tmp_table_max_size` <span class="version-mark">从 v5.3 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
