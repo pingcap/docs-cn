@@ -249,7 +249,7 @@ The system variables associated with the `CREATE INDEX` statement are `tidb_ddl_
 
 ## MySQL compatibility
 
-* `FULLTEXT`, `HASH` and `SPATIAL` indexes are not supported.
+* TiDB supports parsing the `FULLTEXT` and `SPATIAL` syntax but does not support using the `FULLTEXT`, `HASH`, and `SPATIAL` indexes.
 * Descending indexes are not supported (similar to MySQL 5.7).
 * Adding the primary key of the `CLUSTERED` type to a table is not supported. For more details about the primary key of the `CLUSTERED` type, refer to [clustered index](/clustered-indexes.md).
 * Expression indexes are incompatible with views. When a query is executed using a view, the expression index cannot be used at the same time.
