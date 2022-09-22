@@ -128,7 +128,7 @@ TiDB 版本：6.3.0-DMR
 
 * 悲观事务可以延迟唯一性检查 [#36579](https://github.com/pingcap/tidb/issues/36579) @[ekexium](https://github.com/ekexium)
 
-    提供系统变量 [`tidb_constraint_check_in_place_pessimistic`](system-variables.md#tidbconstraintcheckinplacepessimistic-span-classversion-mark从-v630-版本开始引入span) 来控制悲观事务中[唯一约束](/constraints.md#悲观事务)检查的时间点。该变量默认关闭。当将变量设为 `ON` 时，TiDB 会将悲观事务中的加锁操作和唯一约束检测推迟到必要的时候进行，以此提升批量 DML 操作的性能。
+    提供系统变量 [`tidb_constraint_check_in_place_pessimistic`](system-variables.md#tidb_constraint_check_in_place_pessimistic-从-v630-版本开始引入) 来控制悲观事务中[唯一约束](/constraints.md#悲观事务)检查的时间点。该变量默认关闭。当将变量开启时（设为 `ON`），TiDB 会将悲观事务中的加锁操作和唯一约束检测推迟到必要的时候进行，以此提升批量 DML 操作的性能。
 
 * 优化 Read-Committed 隔离级别中对 TSO 的获取 [#36812](https://github.com/pingcap/tidb/issues/36812) @[TonsnakeLin](https://github.com/TonsnakeLin)
 
