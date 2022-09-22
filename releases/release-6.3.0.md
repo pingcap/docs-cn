@@ -70,7 +70,7 @@ TiDB 版本：6.3.0-DMR
 
 * TiDB 支持国密算法 SM3 的身份验证 [#36192](https://github.com/pingcap/tidb/issues/36192) @[CbcWestwolf](https://github.com/CbcWestwolf)
 
-    TiDB 身份验证新增基于国密算法 SM3 的插件 [tidb_sm3_password](/system-variables.md#default_authentication_plugin)，启用此插件后，用户密码将通过 SM3 进行加密存储和验证。
+    TiDB 身份验证新增基于国密算法 SM3 的插件 [`tidb_sm3_password`](/system-variables.md#default_authentication_plugin)，启用此插件后，用户密码将通过 SM3 进行加密存储和验证。
 
 * JDBC 支持国密算法 SM3 的身份验证 [#25](https://github.com/pingcap/mysql-connector-j/issues/25) @[lastincisor](https://github.com/lastincisor)
 
@@ -110,7 +110,7 @@ TiDB 版本：6.3.0-DMR
 
 * TiKV 日志循环使用 [#214](https://github.com/tikv/raft-engine/issues/214) @[LykxSassinator](https://github.com/LykxSassinator)
 
-    TiKV Raft Engine 支持[日志循环](/tikv-configuration-file.md#enable-log-recycle-new-in-v630)功能。该特性能够显著降低网络磁盘上 Raft 日志追加过程中的长尾延迟，提升了 TiKV 写入负载下的性能。
+    TiKV Raft Engine 支持[日志回收](/tikv-configuration-file.md#enable-log-recycle-从-v630-版本开始引入)功能。该特性能够显著降低网络磁盘上 Raft 日志追加过程中的长尾延迟，提升了 TiKV 写入负载下的性能。
 
 * TiDB 支持 Null-Aware Anti Join [#37525](https://github.com/pingcap/tidb/issues/37525) @[Arenatlx](https://github.com/Arenatlx) **tw: Oreoxmt**
 
@@ -142,7 +142,7 @@ TiDB 版本：6.3.0-DMR
 
 * TiKV 正式支持关闭 Titan 引擎 [#issue]() @[tabokie](https://github.com/tabokie)
 
-    正式支持对在线 TiKV 节点[关闭 Titan 引擎](/titan-configuration#disable-titan)。
+    正式支持对在线 TiKV 节点[关闭 Titan 引擎](/titan-configuration.md#关闭-titan)。
 
 * 缺少 GlobalStats 时自动选择分区静态剪裁 [#37535](https://github.com/pingcap/tidb/issues/37535) @[Yisaer](https://github.com/Yisaer)
 
@@ -174,12 +174,12 @@ TiDB 版本：6.3.0-DMR
 
 * TiDB Lightning 支持将 Apache Hive 导出的 Parquet 文件导入到 TiDB [#issue]() @[buchuitoudegou](https://github.com/buchuitoudegou)
 
-    TiDB Lightning [支持将 Apache Hive 导出的 Parquet 文件导入到 TiDB](migrate-from-parquet-files-to-tidb.md)，从而实现 Hive 到 TiDB 之间的数据流转。
+    TiDB Lightning 支持[将 Apache Hive 导出的 Parquet 文件导入到 TiDB](/tidb-lightning/tidb-lightning-data-source.md#parquet)，从而实现 Hive 到 TiDB 之间的数据流转。
 
-* DM 支持对同步到 TiDB 的表增加字段并对该字段赋值 [#3262](https://github.com/pingcap/tiflow/pull/3262), [#3340](https://github.com/pingcap/tiflow/issues/3340) @[yufan022](https://github.com/yufan022)
 
-    [DM 支持对同步到 TiDB 的表增加字段并对该字段赋值](用户文档链接)。在上游分库分表合并到下游TiDB的场景，可以用于区分目标表的记录是来自于上游那个分库分表。
+* DM 任务配置文件中新增一个配置项 `safe-mode-duration`  [#6224] (https://github.com/pingcap/tiflow/issues/6224) @[[okJiang](https://github.com/okJiang)]
 
+DM 任务配置文件中新增一个配置项 `safe-mode-duration`，用户可以自行调节 DM 异常重启后进入安全模式的持续时间，默认值 60 秒。当设置为 "0s" 时，表示 DM 异常重启后不会自动进入安全模式。
 ### 数据共享与订阅
 
 * TiCDC 支持对多个异地目标数据源进行数据复制 [#issue]() @[sdojjy](https://github.com/sdojjy)
@@ -190,9 +190,9 @@ TiDB 版本：6.3.0-DMR
 
     在灾备复制场景下，TiCDC 支持[周期性地维护一个下游数据快照](用户文档链接)，使得该下游快照能与上游数据的快照保持一致。借助此能力，TiCDC 能更好地匹配读写分离应用场景，帮助用户降本增效。
 
-* TiCDC 支持优雅滚动升级 [#4757](https://github.com/pingcap/tiflow/issues/4757) @[overvenus](https://github.com/overvenus) @[3AceShowHand](https://github.com/3AceShowHand)
+* TiCDC 支持平滑升级 [#4757](https://github.com/pingcap/tiflow/issues/4757) @[overvenus](https://github.com/overvenus) @[3AceShowHand](https://github.com/3AceShowHand)
 
-    用户使用最新的 TiUP(>=v1.11.0) 和 TiDB-Operator (>=v1.3.8) 可以优雅滚动升级 TiCDC 集群，升级期间数据同步延时保持在 30 秒内，提高了稳定性，让 TiCDC 能更好的支持延时敏感型业务。
+    用户使用 [TiUP](/ticdc/deploy-ticdc.md#使用-tiup-滚动升级-ticdc-集群) (>=v1.11.0) 和 [TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/dev/configure-a-tidb-cluster#配置-ticdc-平滑升级) (>=v1.3.8) 可以平滑滚动升级 TiCDC 集群。升级期间数据同步延时保持在 30 秒内，提高了稳定性，让 TiCDC 能更好地支持延时敏感型业务。
 
 ## 兼容性变更
 
