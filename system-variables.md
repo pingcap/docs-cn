@@ -1161,7 +1161,7 @@ Query OK, 0 rows affected (0.09 sec)
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 默认值：`OFF`
-- 这个变量用于控制写 SQL 中的读取是否会下推 TiFlash。**需要注意该功能目前仅供测试，请勿在正式环境中使用，该功能正式 release 之后该参数不会保留**
+- 这个变量用于控制写 SQL 中的读取是否会下推到 TiFlash。注意，该功能目前仅供测试，请保留其默认值 `OFF`。
 
 ### `tidb_enable_top_sql` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 
