@@ -251,6 +251,7 @@ TiDB 版本：6.3.0-DMR
 + TiDB
 
     - `PLAN REPLAYER` 命令支持一次导出多条 SQL 语句的执行计划信息，提升了问题排查效率 [#37798](https://github.com/pingcap/tidb/issues/37798) @[Yisaer](https://github.com/Yisaer)
+    - improve warning log when new connection arrives [#34964](https://github.com/pingcap/tidb/issues/34964) @[xiongjiwei](https://github.com/xiongjiwei)
 
     - sql-infra
 
@@ -258,6 +259,7 @@ TiDB 版本：6.3.0-DMR
         - Grant privilege of a table to an user checks the target table exist first, in the past, the table name comparison works in a case sensitive manner, now it's changed to case insensitive. [#34610](https://github.com/pingcap/tidb/issues/34610) @[tiancaiamao](https://github.com/tiancaiamao)
         - Support AWS NLB proxy protocol [#36312](https://github.com/pingcap/tidb/issues/36312) @[hawkingrei](https://github.com/hawkingrei)
         - Previously, TiDB users can set `init_connect` without any checking. From now on, the value of `init_connect` should be checked by the sql parser. [#35324](https://github.com/pingcap/tidb/issues/35324) @[CbcWestwolf](https://github.com/CbcWestwolf)
+        - Add support `flashback database` command. [#37386](https://github.com/pingcap/tidb/issues/37386) @[tiancaiamao](https://github.com/tiancaiamao)
 
     - execution
 
@@ -277,25 +279,22 @@ TiDB 版本：6.3.0-DMR
     - Support more regular expression functions. [#13483](https://github.com/tikv/tikv/issues/13483) @[gengliqi](https://github.com/gengliqi)
     - Support automatically scale read pool thread count based on the CPU usage. [#13313](https://github.com/tikv/tikv/issues/13313) @[glorv](https://github.com/glorv)
 
-
 + PD
 
     - Updates metrics query. Renames `metrics` to `monitoring` on TiDB Dashboard. [#5366](https://github.com/tikv/pd/issues/5366) @[YiniXu9506](https://github.com/YiniXu9506)
-   
+
 + TiFlash
 
     - compute
-    
+
         - Support to pushdown elt to TiFlash [#5104](https://github.com/pingcap/tiflash/issues/5104) @[Willendless](https://github.com/Willendless)
         - Support to pushdown leftShift to TiFlash [#5099](https://github.com/pingcap/tiflash/issues/5099) @[AnnieoftheStars](https://github.com/AnnieoftheStars)
         - Support to pushdown castTimeAsDuration to TiFlash [#5306](https://github.com/pingcap/tiflash/issues/5306) @[AntiTopQuark](https://github.com/AntiTopQuark)
-        - Support to pushdown castTimeAsDuration to TiFlash [#5306](https://github.com/pingcap/tiflash/issues/5306) @[AntiTopQuark](https://github.com/AntiTopQuark)
         - Support Planner Interpreter. [#4739](https://github.com/pingcap/tiflash/issues/4739) @[SeaRise](https://github.com/SeaRise)
-        - Support to pushdown hexInt and hexStr to TiFlash [#5107](https://github.com/pingcap/tiflash/issues/5107), [#5462](https://github.com/pingcap/tiflash/issues/5462) 
+        - Support to pushdown hexInt and hexStr to TiFlash [#5107](https://github.com/pingcap/tiflash/issues/5107), [#5462](https://github.com/pingcap/tiflash/issues/5462)
         - Support to pushdown elt to TiFlash [#5104](https://github.com/pingcap/tiflash/issues/5104) @[Willendless](https://github.com/Willendless)
         - Support to pushdown shiftLeft to TiFlash [#5099](https://github.com/pingcap/tiflash/issues/5099) @[AnnieoftheStars](https://github.com/AnnieoftheStars)
         - Suppress the "tcp set inq" loggings [#4940](https://github.com/pingcap/tiflash/issues/4940)
-        - Support to pushdown CastTimeAsDuration to TiFlash [#5306](https://github.com/pingcap/tiflash/issues/5306) @[AntiTopQuark](https://github.com/AntiTopQuark)
 
     - storage
 
@@ -333,13 +332,13 @@ TiDB 版本：6.3.0-DMR
 
     - Fix handling of prepared statement flags in the classic MySQL protocol [#36731](https://github.com/pingcap/tidb/issues/36731) @[hawkingrei](https://github.com/hawkingrei)
     - update pd-client to ensure tidb-server get clusterID correctly [#36505](https://github.com/pingcap/tidb/issues/36505), [#36478](https://github.com/pingcap/tidb/issues/36478) @[Defined2014](https://github.com/Defined2014)
-    - Fix that incorrect TiDB states may appear on startup under very, very, very extreme cases [#36791](https://github.com/pingcap/tidb/issues/36791) 
-    - Fix a bug that UnionScan's Next() function skips reading data when the passed chunk's capacity is 0 [#36903](https://github.com/pingcap/tidb/issues/36903) 
-    - Fix a bug about variables information leak. [#37586](https://github.com/pingcap/tidb/issues/37586) 
+    - Fix that incorrect TiDB states may appear on startup under very, very, very extreme cases [#36791](https://github.com/pingcap/tidb/issues/36791)
+    - Fix a bug that UnionScan's Next() function skips reading data when the passed chunk's capacity is 0 [#36903](https://github.com/pingcap/tidb/issues/36903)
+    - Fix a bug about variables information leak. [#37586](https://github.com/pingcap/tidb/issues/37586)
     - Fix the issue that the action order of [#37058](https://github.com/pingcap/tidb/issues/37058) @[YangKeao](https://github.com/YangKeao)
-    - Fix the issue that comparison between json opaque will cause panic [#37315](https://github.com/pingcap/tidb/issues/37315) 
+    - Fix the issue that comparison between json opaque will cause panic [#37315](https://github.com/pingcap/tidb/issues/37315)
     - Fix the issue that the single precision float cannot be used in json aggregation funtions [#37287](https://github.com/pingcap/tidb/issues/37287) @[YangKeao](https://github.com/YangKeao)
-    - fix that the result of expression castRealAsTime is inconsistent with mysql. [#37462](https://github.com/pingcap/tidb/issues/37462) 
+    - fix that the result of expression castRealAsTime is inconsistent with mysql. [#37462](https://github.com/pingcap/tidb/issues/37462)
 
     - sql-infra
 
@@ -351,17 +350,17 @@ TiDB 版本：6.3.0-DMR
         - Fix panic of enterprise plugin on 6.1 [#37319](https://github.com/pingcap/tidb/issues/37319)
         - Fix incorrect output of `show create placement policy` with a policy of double quotes [#37526](https://github.com/pingcap/tidb/issues/37526) @[xhebox](https://github.com/xhebox)
         - store flashback history in TiKV, avoid overlapped flashback TS range [#37585](https://github.com/pingcap/tidb/issues/37585) @[Defined2014](https://github.com/Defined2014)
-        - When exchange partition with temporary table, an error will be returned. [#37201](https://github.com/pingcap/tidb/issues/37201) 
+        - When exchange partition with temporary table, an error will be returned. [#37201](https://github.com/pingcap/tidb/issues/37201)
         - planner: fix partition table getting error result when select `TIKV_REGION_STATUS` with `table_id`. [#37436](https://github.com/pingcap/tidb/issues/37436) @[zimulala](https://github.com/zimulala)
         - In test_driver, parser didn't deal with RestoreStringWithoutCharset and RestoreStringWithoutDefaultCharset flags, add support for those two flags. [#37175](https://github.com/pingcap/tidb/issues/37175) @[Defined2014](https://github.com/Defined2014)
         - planner: fix show View Privilege behave for view table [#34326](https://github.com/pingcap/tidb/issues/34326) @[hawkingrei](https://github.com/hawkingrei)
         - Support send flashback RPC. [#37651](https://github.com/pingcap/tidb/issues/37651) @[Defined2014](https://github.com/Defined2014)
         - Fix a wrong casting in building union plan [#31678](https://github.com/pingcap/tidb/issues/31678) @[bb7133](https://github.com/bb7133)
         - support some adminStmt in read-only mode [#37631](https://github.com/pingcap/tidb/issues/37631) @[Defined2014](https://github.com/Defined2014)
-        - fix resume pd schedule and cancel for `flashback cluster` [#37584](https://github.com/pingcap/tidb/issues/37584) @[Defined2014](https://github.com/Defined2014)
-        - fix resume pd schedule and cancel for `flashback cluster` [#37580](https://github.com/pingcap/tidb/issues/37580) @[Defined2014](https://github.com/Defined2014)
+        - fix resume pd schedule and cancel for `flashback cluster` [#37584](https://github.com/pingcap/tidb/issues/37584), [#37580](https://github.com/pingcap/tidb/issues/37580) @[Defined2014](https://github.com/Defined2014)
         - Fix the issue that the user cannot update from json 'null' to NULL [#37852](https://github.com/pingcap/tidb/issues/37852) @[YangKeao](https://github.com/YangKeao)
-
+        - Optimize DDL history HTTP API, and add support for 'start_job_id' parameter. [#35838](https://github.com/pingcap/tidb/issues/35838) @[tiancaiamao](https://github.com/tiancaiamao)
+        - fix inaccuate row_count num [#25968](https://github.com/pingcap/tidb/issues/25968) @[Defined2014](https://github.com/Defined2014)
 
     - execution
 
@@ -372,25 +371,26 @@ TiDB 版本：6.3.0-DMR
 
     - transaction
 
-        - bugfix: do not acquire pessimistic lock for non-unique index keys [#36235](https://github.com/pingcap/tidb/issues/36235) 
+        - bugfix: do not acquire pessimistic lock for non-unique index keys [#36235](https://github.com/pingcap/tidb/issues/36235)
         - Fix the auto-commit mode change related transaction commit behaviours. [#36581](https://github.com/pingcap/tidb/issues/36581) @[cfzjywxk](https://github.com/cfzjywxk)
 
     - planner
 
-         - fix update plan's projection elimination will cause column resolution error. [#37568](https://github.com/pingcap/tidb/issues/37568) @[AilinKid](https://github.com/AilinKid)
-         - planner: fix outer join reorder will push down its outer join condition [#37238](https://github.com/pingcap/tidb/issues/37238) @[AilinKid](https://github.com/AilinKid)
-         - make the both side operand of NAAJ & refuse partial column substitute in projection elimination [#37032](https://github.com/pingcap/tidb/issues/37032) @[AilinKid](https://github.com/AilinKid)
+        - fix update plan's projection elimination will cause column resolution error. [#37568](https://github.com/pingcap/tidb/issues/37568) @[AilinKid](https://github.com/AilinKid)
+        - planner: fix outer join reorder will push down its outer join condition [#37238](https://github.com/pingcap/tidb/issues/37238) @[AilinKid](https://github.com/AilinKid)
+        - make the both side operand of NAAJ & refuse partial column substitute in projection elimination [#37032](https://github.com/pingcap/tidb/issues/37032) @[AilinKid](https://github.com/AilinKid)
+        - planner: correct the redundant field meaning in join full schema when join coalesce [#36420](https://github.com/pingcap/tidb/issues/36420) @[AilinKid](https://github.com/AilinKid)
 
     - diagnosis
 
-        -  fix metric sql error [#35856](https://github.com/pingcap/tidb/issues/35856) @[Defined2014](https://github.com/Defined2014)
+        - fix metric sql error [#35856](https://github.com/pingcap/tidb/issues/35856) @[Defined2014](https://github.com/Defined2014)
 
 + TiKV
-    
+
     - fix the bug that the consume should be refresh if region heartbeat send failed. [#12934](https://github.com/tikv/tikv/issues/12934) @[bufferflies](https://github.com/bufferflies)
-    - Fix a bug that regions may be overlapped if raftstore is too busy [#13160](https://github.com/tikv/tikv/issues/13160) @[5kbpers](https://github.com/5kbpers) 
+    - Fix a bug that regions may be overlapped if raftstore is too busy [#13160](https://github.com/tikv/tikv/issues/13160) @[5kbpers](https://github.com/5kbpers)
     - Fix potential deadlock in `RpcClient` when two read locks are interleaved by a write lock. [#12933](https://github.com/tikv/tikv/issues/12933) @[BurtonQin](https://github.com/BurtonQin)
-     - Fix a double-lock bug in components/engine_test [#13186](https://github.com/tikv/tikv/issues/13186) @[SpadeA-Tang](https://github.com/SpadeA-Tang)
+    - Fix a double-lock bug in components/engine_test [#13186](https://github.com/tikv/tikv/issues/13186) @[SpadeA-Tang](https://github.com/SpadeA-Tang)
     - Fix plaintext iv debug assert while disable encryption. [#13081](https://github.com/tikv/tikv/issues/13081) @[jiayang-zheng](https://github.com/jiayang-zheng)
     - Fix a expression error that causes unified read pool cpu cannot be shown correctly. [#13086](https://github.com/tikv/tikv/issues/13086) @[glorv](https://github.com/glorv)
     - Fix the problem that QPS may drop to zero for several mintues when a tikv is partitioned. [#12966](https://github.com/tikv/tikv/issues/12966) @[cosven](https://github.com/cosven)
@@ -401,7 +401,6 @@ TiDB 版本：6.3.0-DMR
     - Fix the issue that TiKV doesn't distinguish the `DATETIME/DATE/TIMESTAMP/TIME` and `STRING` in json type. [#13417](https://github.com/tikv/tikv/issues/13417) @[YangKeao](https://github.com/YangKeao)
     - Fix the issue that comparison between json bool and other json value is not compatible with TiDB and MySQL [#13386](https://github.com/tikv/tikv/issues/13386) @[YangKeao](https://github.com/YangKeao)
     - Fix the issue that comparison between json bool and other json value is not compatible with TiDB and MySQL [#37481](https://github.com/pingcap/tidb/issues/37481) @[YangKeao](https://github.com/YangKeao)
-
 
 + PD
 
@@ -417,7 +416,6 @@ TiDB 版本：6.3.0-DMR
         - fix error data input for date(CAST(value AS DATETIME)) causing high TiFlash sys CPU [#5097](https://github.com/pingcap/tiflash/issues/5097) @[xzhangxian1008](https://github.com/xzhangxian1008)
         - fix that the result of expression casting real or decimal as time is inconsistent with mysql. [#3779](https://github.com/pingcap/tiflash/issues/3779) @[mengxin9014](https://github.com/mengxin9014)
 
-
     - storage
 
         - fix the problem that there may be some obsolete data left in storage which cannot be deleted [#5570](https://github.com/pingcap/tiflash/issues/5570) @[JaySon-Huang](https://github.com/JaySon-Huang)
@@ -425,20 +423,18 @@ TiDB 版本：6.3.0-DMR
         - Fix the bug that page GC may block creating tables [#5697](https://github.com/pingcap/tiflash/issues/5697) @[JaySon-Huang](https://github.com/JaySon-Huang)
         - Fix the panic issue after creating the primary index with a column containing `NULL` value [#5859](https://github.com/pingcap/tiflash/issues/5859) @[JaySon-Huang](https://github.com/JaySon-Huang)
 
-
 + Tools
 
     + Backup & Restore (BR)
 
         - Fix issues in "br/tests/up.sh". [#36743](https://github.com/pingcap/tidb/issues/36743) @[pingyu](https://github.com/pingyu)
         - br: raw restore fail in integration test "br_rawkv [#36490](https://github.com/pingcap/tidb/issues/36490) @[pingyu](https://github.com/pingyu)
-        - Fix a bug that may cause the information of the checkpoint being stale. [#36423](https://github.com/pingcap/tidb/issues/36423) @[YuJuncen](https://github.com/YuJuncen) 
+        - Fix a bug that may cause the information of the checkpoint being stale. [#36423](https://github.com/pingcap/tidb/issues/36423) @[YuJuncen](https://github.com/YuJuncen)
         - Fix a bug caused when restoring with high `concurrency` the regions aren't balanced. [#37549](https://github.com/pingcap/tidb/issues/37549) @[3pointer](https://github.com/3pointer)
         - Fix a bug that may cause log backup checkpoint TS stuck when some weird ranged regions exist. [#37822](https://github.com/pingcap/tidb/issues/37822) @[YuJuncen](https://github.com/YuJuncen)
 
-
     + TiCDC
-        
+
         - handle error correctly with wrong pd address but with a grpc service [#6458](https://github.com/pingcap/tiflow/issues/6458) @[crelax](https://github.com/crelax)
 
     + TiDB Data Migration (DM)
@@ -461,4 +457,22 @@ TiDB 版本：6.3.0-DMR
 
 感谢来自 TiDB 社区的贡献者们：
 
-- [贡献者 GitHub ID]()
+- @[AntiTopQuark](https://github.com/AntiTopQuark)
+- @[eltociear](https://github.com/eltociear)
+- @[morgo](https://github.com/morgo)
+- @[fuzhe1989](https://github.com/fuzhe1989)
+- @[crelax](https://github.com/crelax)
+- @[Ziy1-Tan](https://github.com/Ziy1-Tan)
+- @[AnnieoftheStars](https://github.com/AnnieoftheStars)
+- @[An-DJ](https://github.com/An-DJ)
+- @[erwadba](https://github.com/erwadba)
+- @[whitekeepwork](https://github.com/whitekeepwork)
+- @[blacktear23](https://github.com/blacktear23)
+- @[rzrymiak](https://github.com/rzrymiak)
+- @[AnnieoftheStars](https://github.com/AnnieoftheStars)
+- @[jianzhiyao](https://github.com/jianzhiyao)
+- @[peakji](https://github.com/peakji)
+- @[joycse06](https://github.com/joycse06)
+- @[onlyacat](https://github.com/onlyacat)
+- @[tisonkun](https://github.com/tisonkun)
+- @[BurtonQin](https://github.com/BurtonQin)：首次贡献者
