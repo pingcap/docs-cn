@@ -1973,6 +1973,14 @@ explain select * from t where age=5;
 - 默认值：`OFF`
 - 这个变量用来控制是否强制 inline CTE。默认值为 `OFF`，即默认不强制 inline CTE。注意，此时依旧可以通过 `MERGE()` hint 来开启个别 CTE 的 inline。如果设置为 `ON`，则当前 session 中所有查询的 CTE（递归 CTE 除外）都会 inline。
 
+### `tidb_optimizer_selectivity_level`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 默认值：`1`
+- 可选值：`1` 和 `2`，不建议设为 `2`
+- 控制优化器估算逻辑的更迭。更改该变量值后，优化器的估算逻辑会产生较大的改变。目前该变量的有效值只有 `1`，不建议设为 `2`。
+
 ### `tidb_partition_prune_mode` <span class="version-mark">从 v5.1 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
