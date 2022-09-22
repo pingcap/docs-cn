@@ -12,7 +12,7 @@ TiDB 版本：6.3.0-DMR
 
 - TiKV/TiFlash 静态加密支持国密算法 SM4
 - TiDB 支持基于国密算法 SM3 插件的身份验证
-- SQL 语句` CREATE USER` / `ALTER USER` 支持 `ACCOUNT LOCK/UNLOCK` 选项
+- SQL 语句 `CREATE USER` 和 `ALTER USER` 支持 `ACCOUNT LOCK/UNLOCK` 选项
 - JSON 数据类型和 JSON 函数 GA
 - TiDB 支持 Null-Aware Anti Join
 - 提供 TiDB SQL 查询执行时间的细粒度指标
