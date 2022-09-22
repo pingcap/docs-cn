@@ -62,3 +62,4 @@ summary: 了解 TiDB 各版本的实验特性。
 
 + [SQL 诊断](/information-schema/information-schema-sql-diagnostics.md)。（v4.0 实验特性）
 + [集群诊断](/dashboard/dashboard-diagnostics-access.md)。（v4.0 实验特性）
++ [TiKV-FastTune 监控面板](/grafana-tikv-dashboard.md#tikv-fasttune-面板)。（v4.0 实验特性）
