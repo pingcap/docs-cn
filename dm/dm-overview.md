@@ -50,6 +50,8 @@ tiup install dm dmctl
 
     - DM 遇到不兼容的 DDL 语句时会报错。要解决此报错，需要使用 dmctl 手动处理，要么跳过该 DDL 语句，要么用指定的 DDL 语句来替换它。详见[如何处理不兼容的 DDL 语句](/dm/dm-faq.md#如何处理不兼容的-ddl-语句)。
 
+    - DM 不会将视图的 DDL 语句同步到下游的 TiDB 集群，也不会将针对视图的 DML 语句同步到下游。在该场景下，建议用户在下游 TiDB 集群中自行创建视图。
+
 + GBK 字符集兼容性限制
 
     - DM 在 v5.4.0 之前不支持将 `charset=GBK` 的表迁移到 TiDB。
