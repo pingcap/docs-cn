@@ -33,7 +33,7 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-diagnostics-usage/']
 上面诊断结果显示，在诊断的时间内可能有大查询，下面的每一行的含义是：
 
 * `tidb_qps`：QPS 下降 0.93 倍。
-* `tidb_query_duration`：P999的查询延迟上升 1.54 倍。
+* `tidb_query_duration`：P999 的查询延迟上升 1.54 倍。
 * `tidb_cop_duration`：P999 的 COP 请求的处理延迟上升 2.48 倍。
 * `tidb_kv_write_num`：P999 的 tidb 的事务写入 kv 数量上升 7.61 倍。
 * `tikv_cop_scan_keys_total_nun`：TiKV 的 coprocessor 扫描 key/value 的数量分别在 3 台 TiKV 上有很大的提升。
@@ -98,7 +98,7 @@ MESSAGE  | [expensivequery.go:167] [expensive_query] [cost_time=60.085949605s] [
 
 上图中，也是在跑 go-ycsb 的压测，可以发现，在 `2020-05-22 22:14:00` 时，QPS 突然开始下降，大概在持续 3 分钟后恢复。
 
-生成以下2个时间范围的对比报告：
+生成以下 2 个时间范围的对比报告：
 
 - t1: 2020-05-22 22:11:00 - 2020-05-22 22:14:00，正常时间段。
 - t2: 2020-05-22 22:14:00 - 2020-05-22 22:17:00，QPS 开始下降的异常时间段。

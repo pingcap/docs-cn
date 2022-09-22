@@ -37,7 +37,7 @@ summary: 了解如何登录 TiUniManager 并进行产品初始化。
 
 首次登录 TiUniManager 系统后，需要完成对 TiDB 所在数据中心、TiDB 产品组件、TiDB 版本信息的初始化。
 
-数据中心当前默认为本地数据中心 (Local)，本地数据中心下按照区域 (Region) - 可用区(Available Zone) 2层层级来组织主机资源。
+数据中心当前默认为本地数据中心 (Local)，本地数据中心下按照区域 (Region) - 可用区 (Available Zone) 2 层层级来组织主机资源。
 
 以下为主机资源组织结构示例：
 

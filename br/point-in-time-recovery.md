@@ -122,7 +122,7 @@ PITR 主要用于快照备份恢复和日志备份恢复。关于快照备份恢
 2. BR 读取备份存储中的日志备份数据，并计算筛选出来需要恢复的日志备份数据。
 3. BR 请求 PD 创建用于恢复日志备份数据的 region (split regions)，将 region 调度到对应的 TiKV (scatter regions)。
 4. PD 调度 region 成功后，BR 将恢复数据请求发送到各个 TiKV restore executor 模块。
-5. TiKV restore executor从备份存储下载日志备份数据，并将其写入对应的 region。
+5. TiKV restore executor 从备份存储下载日志备份数据，并将其写入对应的 region。
 
 ## 探索更多
 

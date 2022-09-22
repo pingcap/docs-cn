@@ -116,7 +116,7 @@ delta_index_cache_size = 0
 
 [flash]
     tidb_status_addr = tidb status 端口地址 # 多个地址以逗号分割
-    service_addr =  TiFlash raft 服务 和 coprocessor 服务监听地址
+    service_addr =  TiFlash raft 服务和 coprocessor 服务监听地址
 
 # 多个 TiFlash 节点会选一个 master 来负责往 PD 增删 placement rule，通过 flash.flash_cluster 中的参数控制。
 [flash.flash_cluster]

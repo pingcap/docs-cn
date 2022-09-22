@@ -222,13 +222,13 @@ TiUniManager 正常运行需要网络环境提供如下端口配置，管理员�
     su - tidb
 
     # 将集群 <cluster-name> 升级到特定版本 <version>
-    # 目前仅支持原地停机升级，并且暂不支持版本降级和回退。为安全起见，请按照 停止集群 > 备份 tiunimanager 元数据 > 升级集群的流程操作
+    # 目前仅支持原地停机升级，并且暂不支持版本降级和回退。为安全起见，请按照停止集群 > 备份 tiunimanager 元数据 > 升级集群的流程操作
     TIUP_HOME=/home/tidb/.em tiup em upgrade <cluster-name> <version>
     ```
 
 ## 升级 TiUniManager v1.0.0 至 v1.0.1
 
-本节介绍的方法适用于 从 v1.0.0 升级至 v1.0.1。如需升级至更高版本，请先升级至 v1.0.1，再参考[升级 TiUniManager（适用于 v1.0.1 及以上版本）](#升级-tiunimanager适用于-v101-及以上版本)进行升级。如首次安装可跳过本节。
+本节介绍的方法适用于从 v1.0.0 升级至 v1.0.1。如需升级至更高版本，请先升级至 v1.0.1，再参考[升级 TiUniManager（适用于 v1.0.1 及以上版本）](#升级-tiunimanager适用于-v101-及以上版本)进行升级。如首次安装可跳过本节。
 
 > **注意：**
 >

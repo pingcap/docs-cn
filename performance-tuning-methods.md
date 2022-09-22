@@ -94,7 +94,7 @@ Performance Overview 面板提供了以下三个面积堆叠图，帮助你了�
 
 ![OLTP](/media/performance/oltp_normal_db_time.png)
 
-- Database Time by SQL Type：主要消耗时间的语句为 select、commit、update和 insert 语句。其中，select 占据绝大部分的数据库时间。
+- Database Time by SQL Type：主要消耗时间的语句为 select、commit、update 和 insert 语句。其中，select 占据绝大部分的数据库时间。
 - Database Time by SQL Phase：主要消耗时间的阶段为绿色的 execute 阶段。
 - SQL Execute Time Overview：执行阶段主要消耗时间为深褐色的 pd tso_wait、蓝色的 KV Get 和绿色的 Prewrite 和 Commit。
 
@@ -210,7 +210,7 @@ StmtPreare 次数 = StmtExecute 次数 = StmtClose 次数 ~= StmtFetch 次数，
 ![TPC-C](/media/performance/tpcc_cpu_io.png)
 
 - TiDB 平均 CPU 为 883%。最大 CPU 为 962%，delta CPU 为 153%。
-- TiKV 平均 CPU 为 1288%，最大 CPU 1360%。delta CPU 为 126%。TiKV 的平均 IO 吞吐为130 MB/s，最大 IO 吞吐为 153 MB/s，delta IO 吞吐为 53.7 MB/s。
+- TiKV 平均 CPU 为 1288%，最大 CPU 1360%。delta CPU 为 126%。TiKV 的平均 IO 吞吐为 130 MB/s，最大 IO 吞吐为 153 MB/s，delta IO 吞吐为 53.7 MB/s。
 
 由此可以判断，TiKV 的 CPU 消耗更高，因为 TPC-C 是一个写密集场景，这是正常现象，可以考虑扩容 TiKV 节点提升性能。
 
