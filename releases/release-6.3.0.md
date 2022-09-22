@@ -2,7 +2,7 @@
 title: TiDB 6.3.0 Release Notes
 ---
 
-# TiDB v6.3.0 Release Notes
+# TiDB 6.3.0 Release Notes
 
 发版日期：2022 年 x 月 xx 日
 
@@ -66,7 +66,7 @@ TiDB 版本：6.3.0-DMR
 
 * TiFlash 静态加密支持国密算法 SM4 [#5714](https://github.com/pingcap/tiflash/issues/5714) @[lidezhu](https://github.com/lidezhu)
 
-    TiFlash 静态加密新增 [SM4 算法](/encryption-at-rest.md)，用户在配置静态加密时，可将 "data-encryption-method" 参数设为 "sm4-ctr"，以启用基于国密算法 SM4 的静态加密能力。
+    TiFlash 静态加密新增 [SM4 算法](/encryption-at-rest.md)，用户在配置静态加密时，可将 `data-encryption-method` 参数设为 `sm4-ctr`，以启用基于国密算法 SM4 的静态加密能力。
 
 * TiDB 支持国密算法 SM3 的身份验证 [#36192](https://github.com/pingcap/tidb/issues/36192) @[CbcWestwolf](https://github.com/CbcWestwolf)
 
