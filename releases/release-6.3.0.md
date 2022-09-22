@@ -180,6 +180,7 @@ TiDB 版本：6.3.0-DMR
 * DM 任务配置文件中新增一个配置项 `safe-mode-duration`  [#6224] (https://github.com/pingcap/tiflow/issues/6224) @[[okJiang](https://github.com/okJiang)]
 
 DM 任务配置文件中新增一个配置项 `safe-mode-duration`，用户可以自行调节 DM 异常重启后进入安全模式的持续时间，默认值 60 秒。当设置为 "0s" 时，表示 DM 异常重启后不会自动进入安全模式。
+
 ### 数据共享与订阅
 
 * TiCDC 支持对多个异地目标数据源进行数据复制 [#issue]() @[sdojjy](https://github.com/sdojjy)
