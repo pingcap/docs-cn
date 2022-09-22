@@ -14,7 +14,7 @@ aliases: ['/zh/tidb/dev/migrate-from-aurora-using-lightning/','/docs-cn/dev/migr
 ## 前提条件
 
 - [安装 Dumpling 和 Lightning](/migration-tools.md)。
-- [获取 Dumpling 所需 上游数据库权限](/dumpling-overview.md#需要的权限)。
+- [获取 Dumpling 所需上游数据库权限](/dumpling-overview.md#需要的权限)。
 - [获取 Lightning 所需下游数据库权限](/tidb-lightning/tidb-lightning-faq.md#tidb-lightning-对下游数据库的账号权限要求是怎样的)。
 
 ## 导入全量数据到 TiDB
@@ -101,7 +101,7 @@ pd-addr = "${ip}:${port}"     # 集群 PD 的地址，lightning 通过 PD 获取
 
 [tikv-importer]
 # "local"：默认使用该模式，适用于 TB 级以上大数据量，但导入期间下游 TiDB 无法对外提供服务。
-# "tidb"：TB 级以下数据量也可以采用`tidb`后端模式，下游 TiDB 可正常提供服务。 关于后端模式更多信息请参阅：https://docs.pingcap.com/tidb/stable/tidb-lightning-backends
+# "tidb"：TB 级以下数据量也可以采用`tidb`后端模式，下游 TiDB 可正常提供服务。关于后端模式更多信息请参阅：https://docs.pingcap.com/tidb/stable/tidb-lightning-backends
 backend = "local"
 
 # 设置排序的键值对的临时存放地址，目标路径必须是一个空目录，目录空间须大于待导入数据集的大小，建议设为与 `data-source-dir` 不同的磁盘目录并使用闪存介质，独占 IO 会获得更好的导入性能。

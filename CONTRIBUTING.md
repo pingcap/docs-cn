@@ -192,7 +192,7 @@ TiDB 中文文档使用 Markdown 语言进行编写，为了保证文档质量�
 | `/assign` | 将 PR 分配给指定的人，需 @指定用户的 GitHub ID，多个 GitHub ID 间用逗号分隔。如果想要将 PR 分配给自己，`/assign`后可不跟 GitHub ID。 | `/assign @CharLotteiu` |
 | `/unassign` | 移除 PR 之前指定的 assignee。 | `/unassign @CharLotteiu` |
 | `/cc` | 将 PR 分配给指定的 reviewer，需 @指定用户的 GitHub ID，多个 GitHub ID 间用逗号分隔。 | `/cc @TomShawn, @yikeke` |
-| `/uncc` | 移除 PR 之前指定的 reviewer。  | `/uncc @TomShawn`|
+| `/uncc` | 移除 PR 之前指定的 reviewer。 | `/uncc @TomShawn`|
 
 ## 版本选择指南
 

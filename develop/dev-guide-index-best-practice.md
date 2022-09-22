@@ -144,7 +144,7 @@ CREATE TABLE `books` (
 
 - 当查询条件有多个索引可供使用，但你知道用哪一个索引是最优的时，推荐使用 [优化器 Hint](/optimizer-hints.md) 来强制优化器使用这个索引，这样可以避免优化器因为统计信息不准或其他问题时，选错索引。
 
-    例如下面查询中，假设在列 `id` 和 列 `title` 上都各自有索引 `id_idx` 和 `title_idx`，你知道 `id_idx` 的过滤性更好，就可以在 SQL 中使用 `USE INDEX` Hint 来强制优化器使用 `id_idx` 索引。
+    例如下面查询中，假设在列 `id` 和列 `title` 上都各自有索引 `id_idx` 和 `title_idx`，你知道 `id_idx` 的过滤性更好，就可以在 SQL 中使用 `USE INDEX` Hint 来强制优化器使用 `id_idx` 索引。
 
     {{< copyable "sql" >}}
 

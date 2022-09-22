@@ -25,7 +25,7 @@ Usage of Reparo:
 -data-dir string
     Drainer 输出的 protobuf 格式 binlog 文件的存储路径 (默认值：data.drainer)。
 -dest-type string
-    下游服务类型。 取值为 print, mysql（默认值：print）。当值为 print 时，只做解析打印到标准输出，不执行 SQL；如果为 mysql，则需要在配置文件内配置 host、port、user、password 等信息。
+    下游服务类型。取值为 print, mysql（默认值：print）。当值为 print 时，只做解析打印到标准输出，不执行 SQL；如果为 mysql，则需要在配置文件内配置 host、port、user、password 等信息。
 -log-file string
     log 文件路径。
 -log-rotate string
@@ -58,7 +58,7 @@ log-level = "info"
 # start-tso = 0
 # stop-tso = 0
 
-# 下游服务类型。 取值为 print, mysql（默认值：print）。当值为 print 时，只做解析打印到标准输出，不执行 SQL；如果为 mysql，则需要在 [dest-db] 中配置 host、port、user、password 等信息。
+# 下游服务类型。取值为 print, mysql（默认值：print）。当值为 print 时，只做解析打印到标准输出，不执行 SQL；如果为 mysql，则需要在 [dest-db] 中配置 host、port、user、password 等信息。
 dest-type = "mysql"
 
 # 输出到下游数据库一个事务的 SQL 语句数量（默认 20）。
@@ -101,6 +101,6 @@ password = ""
 > - data-dir 用于指定 Drainer 输出的 binlog 文件目录。
 > - start-datatime 和 start-tso 效果一样，只是时间格式上的区别，用于指定开始恢复的时间点；如果不指定，则默认在第一个 binlog 文件开始恢复。
 > - stop-datetime 和 stop-tso 效果一样，只是时间格式上的区别，用于指定结束恢复的时间点；如果不指定，则恢复到最后一个 binlog 文件的结尾。
-> - dest-type 指定目标类型，取值为 `mysql`、`print`。 当值为 `mysql` 时，可以恢复到 MySQL/TiDB 等使用或兼容 MySQL 协议的数据库，需要在配置下面的 [dest-db] 填写数据库信息；当取值为 `print` 的时候，只是打印 binlog 信息，通常用于 debug，以及查看 binlog 的内容，此时不需要填写 `[dest-db]`。
+> - dest-type 指定目标类型，取值为 `mysql`、`print`。当值为 `mysql` 时，可以恢复到 MySQL/TiDB 等使用或兼容 MySQL 协议的数据库，需要在配置下面的 [dest-db] 填写数据库信息；当取值为 `print` 的时候，只是打印 binlog 信息，通常用于 debug，以及查看 binlog 的内容，此时不需要填写 `[dest-db]`。
 > - replicate-do-db 用于指定恢复的库，不指定的话，则全部都恢复。
 > - replicate-do-table 用于指定要恢复的表，不指定的话，则全部都恢复。

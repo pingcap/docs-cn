@@ -34,7 +34,7 @@ Gitpod 是一个开源 Kubernetes 应用程序（GitHub 仓库地址 <https://gi
 
 页面中的这个场景使用了 [TiUP](https://docs.pingcap.com/zh/tidb/stable/tiup-overview) 来搭建一个 TiDB Playground。你可以在终端的左侧查看进度。
 
-一旦 TiDB Playground 准备就绪，另一个 `Spring JPA Hibernate` 任务将运行。 你可以在终端的右侧查看进度。
+一旦 TiDB Playground 准备就绪，另一个 `Spring JPA Hibernate` 任务将运行。你可以在终端的右侧查看进度。
 
 完成所有任务后，你可以看到如下所示的页面，并在左侧导航栏的 `REMOTE EXPLORER` 中找到你的端口 `8080` URL（Gitpod 支持基于 URL 的端口转发）。
 
@@ -94,9 +94,9 @@ ports:
 
 ### 自定义 Gitpod Docker 镜像
 
-默认情况下，Gitpod 使用名为 Workspace-Full 的标准 Docker 镜像作为工作空间的基础。 基于此默认镜像启动的工作区预装了 Docker、Go、Java、Node.js、C/C++、Python、Ruby、Rust、PHP 以及 Homebrew、Tailscale、Nginx 等工具。
+默认情况下，Gitpod 使用名为 Workspace-Full 的标准 Docker 镜像作为工作空间的基础。基于此默认镜像启动的工作区预装了 Docker、Go、Java、Node.js、C/C++、Python、Ruby、Rust、PHP 以及 Homebrew、Tailscale、Nginx 等工具。
 
-你可以提供公共 Docker 镜像或 Dockerfile。 并为你的项目安装所需的任何依赖项。
+你可以提供公共 Docker 镜像或 Dockerfile。并为你的项目安装所需的任何依赖项。
 
 这是一个 Dockerfile 示例：[示例 .gitpod.Dockerfile](https://github.com/pingcap-inc/tidb-example-java/blob/main/.gitpod.Dockerfile)
 

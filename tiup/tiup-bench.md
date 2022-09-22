@@ -63,7 +63,7 @@ Available Commands:
 Flags:
       --check-all        运行所有的一致性检测
   -h, --help             tpcc 的帮助信息
-      --parts int        分区仓库 的数量(默认 1)
+      --parts int        分区仓库的数量(默认 1)
       --warehouses int   仓库的数量 (默认 10)
 ```
 

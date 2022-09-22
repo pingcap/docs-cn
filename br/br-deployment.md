@@ -9,7 +9,7 @@ summary: 了解如何部署和使用 BR。
 
 ## 部署 BR
 
-- 生产环境中，推荐 BR 运行在（8 核+/16 GB+）的节点上。 操作系统版本要求可参考 [TiDB 对操作系统版本及平台的要求](/hardware-and-software-requirements.md#操作系统及平台要求)。
+- 生产环境中，推荐 BR 运行在（8 核+/16 GB+）的节点上。操作系统版本要求可参考 [TiDB 对操作系统版本及平台的要求](/hardware-and-software-requirements.md#操作系统及平台要求)。
 - 推荐使用支持 Amazon S3、GCS 或 Azure Blob Storage 来保存备份数据。
 - 建议为备份和恢复配置足够的资源：
 
@@ -36,4 +36,4 @@ TiDB 支持使用 BR 命令行工具进行备份恢复。使用文档请参阅 [
 
 ### 在 Kubernetes 环境下
 
-在 Kubernetes 环境下，支持通过 TiDB Operator 备份 TiDB 集群数据到 S3、Google Cloud Storage 以及持久卷，并可以从中读取备份进行集群恢复。 使用文档请参阅[使用 TiDB Operator 进行备份恢复](https://docs.pingcap.com/tidb-in-kubernetes/stable/backup-restore-overview)。
+在 Kubernetes 环境下，支持通过 TiDB Operator 备份 TiDB 集群数据到 S3、Google Cloud Storage 以及持久卷，并可以从中读取备份进行集群恢复。使用文档请参阅[使用 TiDB Operator 进行备份恢复](https://docs.pingcap.com/tidb-in-kubernetes/stable/backup-restore-overview)。

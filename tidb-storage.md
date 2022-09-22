@@ -52,7 +52,7 @@ TiKV 选择了第二种方式，将整个 Key-Value 空间分成很多段，每�
 
 ![Region in TiDB](/media/tidb-storage-2.png)
 
-注意，这里的 Region 还是和 SQL 中的表没什么关系。 这里的讨论依然不涉及 SQL，只和 KV 有关。
+注意，这里的 Region 还是和 SQL 中的表没什么关系。这里的讨论依然不涉及 SQL，只和 KV 有关。
 
 将数据划分成 Region 后，TiKV 将会做两件重要的事情：
 

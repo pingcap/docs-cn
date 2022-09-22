@@ -247,7 +247,7 @@ checksum-table-concurrency = 16
 # 解析和执行 SQL 语句的默认 SQL 模式。
 sql-mode = "ONLY_FULL_GROUP_BY,NO_ENGINE_SUBSTITUTION"
 # `max-allowed-packet` 设置数据库连接允许的最大数据包大小，
-# 对应于系统参数中的 `max_allowed_packet`。 如果设置为 0，
+# 对应于系统参数中的 `max_allowed_packet`。如果设置为 0，
 # 会使用下游数据库 global 级别的 `max_allowed_packet`。
 max-allowed-packet = 67_108_864
 

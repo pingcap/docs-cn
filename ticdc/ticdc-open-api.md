@@ -111,14 +111,14 @@ curl -X GET http://127.0.0.1:8300/api/v1/health
 
 | 参数名                    | 说明                                                   |
 | :------------------------ | :----------------------------------------------------- |
-| `changefeed_id`           | `STRING` 类型，同步任务的 ID。 （非必选）                |
+| `changefeed_id`           | `STRING` 类型，同步任务的 ID。（非必选）                |
 | `start_ts`                | `UINT64` 类型，指定 changefeed 的开始 TSO。（非必选）    |
 | `target_ts`               | `UINT64` 类型，指定 changefeed 的目标 TSO。（非必选）    |
 | **`sink_uri`**            | `STRING` 类型，同步任务下游的地址。（**必选**）          |
 | `force_replicate`         | `BOOLEAN` 类型，是否强制同步没有唯一索引的表。（非必选）    |
 | `ignore_ineligible_table` | `BOOLEAN` 类型，是否忽略无法进行同步的表。（非必选）        |
 | `filter_rules`            | `STRING` 类型数组，表库过滤的规则。（非必选）            |
-| `ignore_txn_start_ts`     | `UINT64` 类型数组，忽略指定 start_ts 的事务。 （非必选） |
+| `ignore_txn_start_ts`     | `UINT64` 类型数组，忽略指定 start_ts 的事务。（非必选） |
 | `mounter_worker_num`      | `INT` 类型，mounter 线程数。（非必选）                   |
 | `sink_config`             | sink 的配置参数。（非必选）                            |
 
@@ -226,7 +226,7 @@ curl -X DELETE http://127.0.0.1:8300/api/v1/changefeeds/test1
 | `target_ts`           | `UINT64` 类型，指定 changefeed 的目标 TSO。（非必选）    |
 | `sink_uri`            | `STRING` 类型，同步任务下游的地址。（非必选)             |
 | `filter_rules`        | `STRING` 类型数组，表库过滤的规则。（非必选）            |
-| `ignore_txn_start_ts` | `UINT64` 类型数组，忽略指定 start_ts 的事务。 （非必选） |
+| `ignore_txn_start_ts` | `UINT64` 类型数组，忽略指定 start_ts 的事务。（非必选） |
 | `mounter_worker_num`  | `INT` 类型，mounter 线程数。（非必选）                   |
 | `sink_config`         | sink 的配置参数。（非必选）                            |
 

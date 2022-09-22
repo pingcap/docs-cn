@@ -199,7 +199,7 @@ StmtPreare 次数 = StmtExecute 次数 = StmtClose 次数 ~= StmtFetch 次数，
 ![TPC-C](/media/performance/tidb_high_cpu.png)
 
 - TiDB 平均 CPU 为 575%。最大 CPU 为 643%，delta CPU 为 136%。
-- TiKV 平均 CPU 为 146%，最大 CPU 215%。delta CPU 为 118%。TiKV 的平均 IO 吞吐为 9.06 MB/s，最大 IO 吞吐为 19.7 MB/s，delta IO 吞吐 为 17.1 MB/s。
+- TiKV 平均 CPU 为 146%，最大 CPU 215%。delta CPU 为 118%。TiKV 的平均 IO 吞吐为 9.06 MB/s，最大 IO 吞吐为 19.7 MB/s，delta IO 吞吐为 17.1 MB/s。
 
 由此可以判断，TiDB 的 CPU 消耗明显更高，并接近于 8 CPU 的瓶颈，可以考虑扩容 TiDB。
 
@@ -349,14 +349,14 @@ TiKV 对于写请求的处理流程如下图
 
     Raftstore 分为 store 线程和 apply 线程。：
 
-    - store 线程负载处理 Raft 消息和新的 `proposals`。 当收到新的 `proposals` 时，leader 节点的 store 线程会写入本地 Raft DB，并将消息复制到多个 follower 节点。当这个 `proposals` 在多数实例持久化成功之后，`proposals` 成功被提交。
+    - store 线程负载处理 Raft 消息和新的 `proposals`。当收到新的 `proposals` 时，leader 节点的 store 线程会写入本地 Raft DB，并将消息复制到多个 follower 节点。当这个 `proposals` 在多数实例持久化成功之后，`proposals` 成功被提交。
     - apply 线程会负载将提交的内容写入到 KV DB 中。当写操作的内容被成功的写入 KV 数据库中，apply 线程会通知外层请求写请求已经完成。
 
 ![TiKV Write](/media/performance/store_apply.png)
 
 Storage Async Write Duration 指标记录写请求进入 raftstore 之后的延迟，采集的粒度具体到每个请求的级别。
 
-Storage Async Write Duration 分为 Store Duration 和 Apply Duration。你可以通过以下公式定位写请求的瓶颈主要是 在 Store 还是 Apply 步骤。
+Storage Async Write Duration 分为 Store Duration 和 Apply Duration。你可以通过以下公式定位写请求的瓶颈主要是在 Store 还是 Apply 步骤。
 
 ```
 avg Storage Async Write Duration  = avg Store Duration + avg Apply Duration
@@ -412,7 +412,7 @@ Apply Log Duration 慢的常见场景：
 
 **示例 1：同一个 OLTP 负载在 v5.3.0 和 v5.4.0 版本的对比**
 
-v5.4.0 版本，一个写密集的 OLTP 负载 QPS 比 v5.3.0 提升了 14%。 对比这三个关键延迟：
+v5.4.0 版本，一个写密集的 OLTP 负载 QPS 比 v5.3.0 提升了 14%。对比这三个关键延迟：
 
 | Avg Duration   | v5.3.0(ms)   |    v5.4.0(ms)  |
 |:----------|:----------|:----------|

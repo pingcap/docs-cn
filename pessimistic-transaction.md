@@ -76,7 +76,7 @@ BEGIN /*T! PESSIMISTIC */;
 
 - 如果 `Point Get` 和 `Batch Point Get` 算子没有读到数据，依然会对给定的主键或者唯一键加锁，阻塞其他事务对相同主键唯一键加锁或者进行写入操作。
 
-- 支持 `FOR UPDATE OF TABLES` 语法，对于存在多表 join 的语句，只对 `OF TABLES` 中包含的表关联的行进行悲观锁加锁操作。 
+- 支持 `FOR UPDATE OF TABLES` 语法，对于存在多表 join 的语句，只对 `OF TABLES` 中包含的表关联的行进行悲观锁加锁操作。
 
 ## 和 MySQL InnoDB 的差异
 

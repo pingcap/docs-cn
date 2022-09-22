@@ -155,7 +155,7 @@ Info: {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":
 - `--sort-engine`：指定 changefeed 使用的排序引擎。因 TiDB 和 TiKV 使用分布式架构，TiCDC 需要对数据变更记录进行排序后才能输出。该项支持 `unified`（默认）/`memory`/`file`：
 
     - `unified`：优先使用内存排序，内存不足时则自动使用硬盘暂存数据。该选项默认开启。
-    - `memory`：在内存中进行排序。 **已经弃用，不建议在任何情况使用。**
+    - `memory`：在内存中进行排序。**已经弃用，不建议在任何情况使用。**
     - `file`：完全使用磁盘暂存数据。**已经弃用，不建议在任何情况使用。**
 
 - `--config`：指定 changefeed 配置文件。

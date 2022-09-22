@@ -199,7 +199,7 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
 * 规则描述：
 
-    PD 长时间（默认配置是 30 分钟）没有收到 TiKV/TiFlash 心跳。 
+    PD 长时间（默认配置是 30 分钟）没有收到 TiKV/TiFlash 心跳。
 
 * 处理方法：
 

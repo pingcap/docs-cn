@@ -216,7 +216,7 @@ tiup dmctl --master-addr ${advertise-addr} query-status ${task-name}
 
 - 通过 Grafana 查看
 
-    如果使用 TiUP 部署 DM 集群时，正确部署了 Prometheus、Alertmanager 与 Grafana，则使用部署时填写的 IP 及 端口进入 Grafana，选择 DM 的 dashboard 查看 DM 相关监控项。
+    如果使用 TiUP 部署 DM 集群时，正确部署了 Prometheus、Alertmanager 与 Grafana，则使用部署时填写的 IP 及端口进入 Grafana，选择 DM 的 dashboard 查看 DM 相关监控项。
 
 - 通过日志查看
 

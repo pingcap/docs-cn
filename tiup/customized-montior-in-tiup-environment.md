@@ -124,7 +124,7 @@ grafana_servers:
 
 目前，TiUP 支持自定义配置 Alertmanager 的监听地址。
 
-TiUP 部署的 Alertmanager 默认监听 alertmanager_servers.host，如果你使用代理，则无法访问 Alertmanager。此时，你可以在集群配置文件 topology.yaml 中添加 listen_host 指定监听地址，使得 Alertmanager 可以通过代理访问。 推荐配置为 0.0.0.0。
+TiUP 部署的 Alertmanager 默认监听 alertmanager_servers.host，如果你使用代理，则无法访问 Alertmanager。此时，你可以在集群配置文件 topology.yaml 中添加 listen_host 指定监听地址，使得 Alertmanager 可以通过代理访问。推荐配置为 0.0.0.0。
 
 以下示例将 listen_host 字段设置为 `0.0.0.0`。
 
