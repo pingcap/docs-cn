@@ -1158,10 +1158,10 @@ Query OK, 0 rows affected (0.09 sec)
 
 ### `tidb_enable_tiflash_read_for_write_stmt` <span class="version-mark">从 v6.3.0 版本开始引入</span>
 
-- 作用域：
-- 是否持久化到集群：
-- 默认值：
-- 这个变量用于 XXX。
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 默认值：`OFF`
+- 这个变量用于控制写 SQL 中的读取是否会下推 TiFlash。**需要注意该功能目前仅供测试，请勿在正式环境中使用，该功能正式 release 之后该参数不会保留**
 
 ### `tidb_enable_top_sql` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 
