@@ -10,7 +10,7 @@ TiDB 版本：6.3.0-DMR
 
 在 6.3.0-DMR 版本中，你可以获得以下关键特性：
 
-- TiKV/TiFlash 静态加密支持国密算法 SM4
+- TiKV 静态加密支持国密算法 SM4
 - TiDB 支持基于国密算法 SM3 插件的身份验证
 - SQL 语句 `CREATE USER` 和 `ALTER USER` 支持 `ACCOUNT LOCK/UNLOCK` 选项
 - JSON 数据类型和 JSON 函数 GA
@@ -40,16 +40,6 @@ TiDB 版本：6.3.0-DMR
     * `LEAD`
     * `LAG`
 
-* `CREATE USER` 和 `ALTER USER` 支持 `ACCOUNT LOCK/UNLOCK` 选项 [#37051](https://github.com/pingcap/tidb/issues/37051) @[CbcWestwolf](https://github.com/CbcWestwolf)
-
-    在执行 [`CREATE USER`](/sql-statements/sql-statement-create-user.md) 创建用户时，允许使用 `ACCOUNT LOCK/UNLOCK` 选项，限定被创建的用户是否被锁定。锁定后的用户不能正常登录数据库。
-
-    对于已存在的用户，可以通过 [`ALTER USER`](/sql-statements/sql-statement-alter-user.md) 使用 `ACCOUNT LOCK/UNLOCK` 选项，修改用户的锁定状态。
-
-* JSON 数据类型和 JSON 函数 GA [#36993](https://github.com/pingcap/tidb/issues/36993) @[xiongjiwei](https://github.com/xiongjiwei)
-
-    JSON 是一种流行的数据格式，被大量的程序设计所采用。TiDB 在早期版本就引入了 [JSON 支持](/data-type-json.md)，兼容 MySQL 的 JSON 数据类型和一部分 JSON 函数。在 v6.3.0 版本中，这些功能正式 GA，为 TiDB 提供了更丰富的数据类型支持，同时[表达式索引](/sql-statements/sql-statement-create-index.md#表达式索引)和[生成列](/generated-columns.md)也增加了对 JSON 函数的支持，进一步提升了 TiDB 对 MySQL 的兼容能力。
-
 * 提供轻量级元数据锁提升 DDL 变更过程 DML 的成功率（实验特性）[#37275](https://github.com/pingcap/tidb/issues/37275) @[wjhuang2016](https://github.com/wjhuang2016) **tw: Oreoxmt**
 
     在 TiDB 中，对元数据对象的更改采用的是在线异步变更算法。事务在执行时会获取开始时对应的元数据快照。如果事务执行过程中相关表上发生了元数据的更改，为了保证数据的一致性，TiDB 会返回 `Information schema is changed` 的错误，导致用户事务提交失败。为了解决这个问题，在 TiDB v6.3.0 中，online DDL 算法中引入了[元数据锁](/metadata-lock.md)特性。通过协调表元数据变更过程中 DML 语句和 DDL 语句的优先级，让执行中的 DDL 语句等待持有旧版本元数据的 DML 语句提交，尽可能避免 DML 语句报错。
@@ -63,10 +53,6 @@ TiDB 版本：6.3.0-DMR
 * TiKV 静态加密支持国密算法 SM4 [#13041](https://github.com/tikv/tikv/issues/13041) @[jiayang-zheng](https://github.com/jiayang-zheng)
 
     TiKV 的静态加密新增 [SM4 算法](/encryption-at-rest.md)，用户在配置静态加密时，可将 "data-encryption-method" 参数设为 "sm4-ctr"，以启用基于国密算法 SM4 的静态加密能力。
-
-* TiFlash 静态加密支持国密算法 SM4 [#5714](https://github.com/pingcap/tiflash/issues/5714) @[lidezhu](https://github.com/lidezhu)
-
-    TiFlash 静态加密新增 [SM4 算法](/encryption-at-rest.md)，用户在配置静态加密时，可将 `data-encryption-method` 参数设为 `sm4-ctr`，以启用基于国密算法 SM4 的静态加密能力。
 
 * TiDB 支持国密算法 SM3 的身份验证 [#36192](https://github.com/pingcap/tidb/issues/36192) @[CbcWestwolf](https://github.com/CbcWestwolf)
 
@@ -159,6 +145,16 @@ TiDB 版本：6.3.0-DMR
 * 完善基于 SQL 的数据放置规则功能的兼容性 [#37171](https://github.com/pingcap/tidb/issues/37171) @[lcwangchao](https://github.com/lcwangchao)
 
     TiDB 在 v6.0.0 版本提供基于 SQL 的数据放置规则功能，但是由于实现机制冲突，该功能和构建 TiFlash 副本功能不兼容。v6.3.0 版本进行改进优化，[完善了这两个功能的兼容性](/placement-rules-in-sql.md#使用限制)。
+
+* `CREATE USER` 和 `ALTER USER` 支持 `ACCOUNT LOCK/UNLOCK` 选项 [#37051](https://github.com/pingcap/tidb/issues/37051) @[CbcWestwolf](https://github.com/CbcWestwolf)
+
+    在执行 [`CREATE USER`](/sql-statements/sql-statement-create-user.md) 创建用户时，允许使用 `ACCOUNT LOCK/UNLOCK` 选项，限定被创建的用户是否被锁定。锁定后的用户不能正常登录数据库。
+
+    对于已存在的用户，可以通过 [`ALTER USER`](/sql-statements/sql-statement-alter-user.md) 使用 `ACCOUNT LOCK/UNLOCK` 选项，修改用户的锁定状态。
+
+* JSON 数据类型和 JSON 函数 GA [#36993](https://github.com/pingcap/tidb/issues/36993) @[xiongjiwei](https://github.com/xiongjiwei)
+
+    JSON 是一种流行的数据格式，被大量的程序设计所采用。TiDB 在早期版本就引入了 [JSON 支持](/data-type-json.md)，兼容 MySQL 的 JSON 数据类型和一部分 JSON 函数。在 v6.3.0 版本中，这些功能正式 GA，为 TiDB 提供了更丰富的数据类型支持，同时[表达式索引](/sql-statements/sql-statement-create-index.md#表达式索引)和[生成列](/generated-columns.md)也增加了对 JSON 函数的支持，进一步提升了 TiDB 对 MySQL 的兼容能力。
 
 ### 备份恢复
 
