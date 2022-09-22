@@ -48,7 +48,7 @@ TiDB 版本：6.3.0-DMR
 
 * JSON 数据类型和 JSON 函数 GA [#36993](https://github.com/pingcap/tidb/issues/36993) @[xiongjiwei](https://github.com/xiongjiwei)
 
-    JSON 是一种流行的数据格式，被大量的程序设计所采用。TiDB 在早期版本就引入了 [JSON 支持](/data-type-json.md)，兼容 MySQL 的 JSON 数据类型和一部分 JSON 函数。在 v6.3.0 版本中，这些功能正式 GA，为 TiDB 提供了更丰富的数据类型支持，同时也进一步提升了 TiDB 对 MySQL 的兼容能力。
+    JSON 是一种流行的数据格式，被大量的程序设计所采用。TiDB 在早期版本就引入了 [JSON 支持](/data-type-json.md)，兼容 MySQL 的 JSON 数据类型和一部分 JSON 函数。在 v6.3.0 版本中，这些功能正式 GA，为 TiDB 提供了更丰富的数据类型支持，同时[表达式索引](/sql-statements/sql-statement-create-index.md#表达式索引)和[生成列](/generated-columns.md)也增加了对 JSON 函数的支持，进一步提升了 TiDB 对 MySQL 的兼容能力。
 
 * 提供轻量级元数据锁提升 DDL 变更过程 DML 的成功率（实验特性）[#37275](https://github.com/pingcap/tidb/issues/37275) @[wjhuang2016](https://github.com/wjhuang2016) **tw: Oreoxmt**
 
