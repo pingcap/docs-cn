@@ -43,14 +43,14 @@ TiUniManager 默认包含以下告警规则，以便接受相应的告警通知�
 
 ### cluster-server request error rate
 
-* 报警规则： `sum(increase(em_micro_requests_total{service="cluster-server", code!="0"}[1m]) / increase(em_micro_requests_total{service="cluster-server"}[1m])) by(service, method) > 0.05`
-* 规则描述： 接口失败率超过 5% 时告警。
+* 报警规则：`sum(increase(em_micro_requests_total{service="cluster-server", code!="0"}[1m]) / increase(em_micro_requests_total{service="cluster-server"}[1m])) by(service, method) > 0.05`
+* 规则描述：接口失败率超过 5% 时告警。
 * 处理方法：可以查看系统日志或系统追踪，或者联系 TiUniManager 开发人员。
 
 ### openapi-server request error rate
 
-* 报警规则： `sum(increase(em_http_requests_total{service="openapi-server", code!="200"}[1m]) / increase(em_http_requests_total{service="openapi-server"}[1m])) by(service, handler, method) > 0.05`
-* 规则描述： 接口失败率超过 5% 时告警。
+* 报警规则：`sum(increase(em_http_requests_total{service="openapi-server", code!="200"}[1m]) / increase(em_http_requests_total{service="openapi-server"}[1m])) by(service, handler, method) > 0.05`
+* 规则描述：接口失败率超过 5% 时告警。
 * 处理方法：可以查看系统日志或系统追踪，或者联系 TiUniManager 开发人员。
 
 ## TiUniManager 告警设置

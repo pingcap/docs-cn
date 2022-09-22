@@ -93,7 +93,7 @@ SAVEPOINT sp2;
 Query OK, 0 rows affected (0.01 sec)
 ```
 
-释放保存点 `sp2`： 
+释放保存点 `sp2`：
 
 ```sql
 RELEASE SAVEPOINT sp2;

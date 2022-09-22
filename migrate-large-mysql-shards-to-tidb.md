@@ -14,8 +14,8 @@ summary: 使用 Dumpling 和 TiDB Lightning 合并导入分表数据到 TiDB，�
 本文将以三个步骤演示导入流程：
 
 1. 使用 Dumpling 导出全量数据备份。在本文档示例中，分别从两个源数据库中各导出两个表：
-    - 从 实例 1 MySQL 的 my_db1 导出 table1、table2
-    - 从 实例 2 MySQL 的 my_db2 导出 table3、table4
+    - 从实例 1 MySQL 的 my_db1 导出 table1、table2
+    - 从实例 2 MySQL 的 my_db2 导出 table3、table4
 2. 启动 TiDB Lightning 执行导入 TiDB 中的 mydb.table5
 3. 使用 DM 进行增量数据迁移（可选）
 
@@ -361,7 +361,7 @@ tiup dmctl --master-addr ${advertise-addr} query-status ${task-name}
 
 - 通过 Grafana 查看
 
-    如果使用 TiUP 部署 DM 集群时，正确部署了 Prometheus、Alertmanager 与 Grafana，则使用部署时填写的 IP 及 端口进入 Grafana，选择 DM 的 dashboard 查看 DM 相关监控项。
+    如果使用 TiUP 部署 DM 集群时，正确部署了 Prometheus、Alertmanager 与 Grafana，则使用部署时填写的 IP 及端口进入 Grafana，选择 DM 的 dashboard 查看 DM 相关监控项。
 
 - 通过日志查看
 

@@ -85,7 +85,7 @@ tiup install dumpling tidb-lightning
 >
 > 如果需要安装特定版本，可以使用 `tiup install <component>[:version]` 命令.
 
-### 第 3 步： 更新 TiUP 及组件 (可选)
+### 第 3 步：更新 TiUP 及组件 (可选)
 
 建议先查看新版本的更新日志及兼容性说明
 

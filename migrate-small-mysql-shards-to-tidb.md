@@ -13,7 +13,7 @@ aliases: ['/zh/tidb/dev/usage-scenario-shard-merge/','/zh/tidb/dev/usage-scenari
 
 若要迁移分表总和 1 TiB 以上的数据，则 DM 工具耗时较长，可参考[从大数据量分库分表 MySQL 合并迁移数据到 TiDB](/migrate-large-mysql-shards-to-tidb.md)。
 
-在本文档的示例中，数据源 MySQL 实例 1 和 实例 2 均使用以下表结构，计划将 store_01 和 store_02 中 sale 开头的表合并导入下游 store.sale 表。
+在本文档的示例中，数据源 MySQL 实例 1 和实例 2 均使用以下表结构，计划将 store_01 和 store_02 中 sale 开头的表合并导入下游 store.sale 表。
 
 |Schema|Tables|
 |-|-|
@@ -210,7 +210,7 @@ tiup dmctl --master-addr ${advertise-addr} query-status ${task-name}
 
 关于查询结果的详细解读，请参考[查询状态](/dm/dm-query-status.md)。
 
-## 第 5 步： 监控任务与查看日志(可选)
+## 第 5 步：监控任务与查看日志(可选)
 
 你可以通过 Grafana 或者日志查看迁移任务的历史状态以及各种内部运行指标。
 

@@ -212,7 +212,7 @@ scrape_configs:
 
     计算出现 TiKV 节点没有充足空间上传 SST 文件现象的次数。标签：
 
-    - **store_id**： TiKV 存储 ID。
+    - **store_id**：TiKV 存储 ID。
 
 - **`tikv_import_upload_chunk_duration`**（直方图）
 

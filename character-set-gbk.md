@@ -77,7 +77,7 @@ SHOW COLLATION WHERE CHARSET = 'gbk';
 
 * 目前 TiDB 不支持通过 `ALTER TABLE` 语句将其它字符集类型改成 `gbk` 或者从 `gbk` 转成其它字符集类型。
 
-* TiDB 不支持使用 `_gbk`， 比如：
+* TiDB 不支持使用 `_gbk`，比如：
 
   ```sql
   CREATE TABLE t(a CHAR(10) CHARSET BINARY);

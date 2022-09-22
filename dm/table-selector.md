@@ -32,8 +32,8 @@ table selector 在 `schema-pattern`/`table-pattern` 中可以使用以下两个�
 - 匹配所有库名以 `schema_` 开头的 schema 和 table
 
     ```yaml
-    schema-pattern： "schema_*"
-    table-pattern： ""
+    schema-pattern: "schema_*"
+    table-pattern: ""
     ```
 
 - 匹配所有库名以 `schema_` 为前缀，并且表名以 `table_` 前缀的表

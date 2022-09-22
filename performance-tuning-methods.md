@@ -110,7 +110,7 @@ Performance Overview 面板提供了以下三个面积堆叠图，帮助你了�
 >
 > 示例 3 select 语句需要从多个 TiKV 并行读取几千行数据，BatchGet 请求的总时间远大于执行时间。
 
-**示例 4： 锁争用负载**
+**示例 4：锁争用负载**
 
 ![OLTP](/media/performance/oltp_lock_contention_db_time.png)
 

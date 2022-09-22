@@ -97,7 +97,7 @@ Queries Using Plan Cache OPS：所有 TiDB 实例每秒使用 Plan Cache 的查�
     - 由于 TiDB 支持 Multi-Query，因此，客户端可以一次性发送多条 SQL 语句，如 `select 1; select 1; select 1;`。此时的执行时间是所有 SQL 语句执行完成的总时间。
 
 - avg：所有请求命令的平均执行时间
-- 99： 所有请求命令的 P99 执行时间
+- 99：所有请求命令的 P99 执行时间
 - avg by type：按 `SELECT`、`INSERT`、`UPDATE` 类型统计所有 TiDB 实例上所有请求命令的平均执行时间
 
 ### Connection Idle Duration

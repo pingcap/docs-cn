@@ -827,8 +827,8 @@ dsn := "root:123456@tcp(xxx.tidbcloud.com:4000)/test?charset=utf8mb4"
 运行 `make all`，这是以下三个操作的组合：
 
 - 创建表 (make mysql)：`mysql --host 127.0.0.1 --port 4000 -u root<sql/dbinit.sql`
-- 构建二进制 (make build)： `go build -o bin/sql-driver-example`
-- 运行 (make run)： `./bin/sql-driver-example`
+- 构建二进制 (make build)：`go build -o bin/sql-driver-example`
+- 运行 (make run)：`./bin/sql-driver-example`
 
 你也可以单独运行这三个 make 命令或原生命令。
 

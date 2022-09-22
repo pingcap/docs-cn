@@ -23,7 +23,7 @@ Usage of Reparo:
 -config string
     配置文件路径，如果指定了配置文件，Reparo 会首先读取配置文件的配置；如果对应的配置在命令行参数里面也存在，Reparo 就会使用命令行参数的配置来覆盖配置文件里面的。
 -data-dir string
-    Drainer 输出的 protobuf 格式 binlog 文件的存储路径 (默认值： data.drainer)。
+    Drainer 输出的 protobuf 格式 binlog 文件的存储路径 (默认值：data.drainer)。
 -dest-type string
     下游服务类型。 取值为 print, mysql（默认值：print）。当值为 print 时，只做解析打印到标准输出，不执行 SQL；如果为 mysql，则需要在配置文件内配置 host、port、user、password 等信息。
 -log-file string

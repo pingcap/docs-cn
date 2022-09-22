@@ -1745,8 +1745,8 @@ mysql --connect-timeout 15 -u root -h xxx.tidbcloud.com -P 4000 -p
 
 运行 `make`，这是以下两个操作的组合：
 
-- 清理并构建 (make build)： `mvn clean package`
-- 运行 (make run)： `java -jar target/plain-java-jdbc-0.0.1-jar-with-dependencies.jar`
+- 清理并构建 (make build)：`mvn clean package`
+- 运行 (make run)：`java -jar target/plain-java-jdbc-0.0.1-jar-with-dependencies.jar`
 
 你也可以单独运行这两个 make 命令或原生命令。
 
