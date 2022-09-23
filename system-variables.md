@@ -1435,7 +1435,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 作用域：SESSION
 - 是否持久化到集群：否
 - 类型：字符串
-- 此变量用于获取当前会话中最后一个 plan replayer dump 的结果。这是一个只读变量。
+- 这个变量是一个只读变量，用于获取当前会话中最后一个 `PLAN REPLAYER dump` 的结果。
 
 ### `tidb_log_file_max_days` <span class="version-mark">从 v5.3.0 版本开始引入</span>
 

@@ -65,11 +65,10 @@ MySQL [test]> plan replayer dump explain select * from t;
 1 row in set (0.015 sec)
 ```
 
-你同样可以通过 `tidb_last_plan_replayer_token` 这个会话变量来获取上一次 plan replayer dump 执行的结果。
+你同样可以通过 [`tidb_last_plan_replayer_token`](/system-variables.md#tidb_last_plan_replayer_token-从-v630-版本开始引入) 这个会话变量来获取上一次 `PLAN REPLAYER dump` 执行的结果。
 
 ```sql
-mysql> select @@tidb_last_plan_replayer_token;
-+-----------------------------------------------------------+
+SELECT @@tidb_last_plan_replayer_token;
 | @@tidb_last_plan_replayer_token                           |
 +-----------------------------------------------------------+
 | replayer_Fdamsm3C7ZiPJ-LQqgVjkA==_1663304195885090000.zip |
@@ -77,13 +76,12 @@ mysql> select @@tidb_last_plan_replayer_token;
 1 row in set (0.00 sec)
 ```
 
-对于多条 sql 的情况，你可以通过文件的方式来获取 plan replayer dump 的结果，多条 sql 在文件中以 `;` 进行分割。
+对于多条 SQL 的情况，你可以通过文件的方式来获取 plan replayer dump 的结果，多条 SQL 语句在文件中以 `;` 进行分隔。
 
 ```sql
-mysql> plan replayer dump explain 'sqls.txt';
-Query OK, 0 rows affected (0.03 sec)
+plan replayer dump explain 'sqls.txt';
 
-mysql> select @@tidb_last_plan_replayer_token;
+mysql> SELECT @@tidb_last_plan_replayer_token;
 +-----------------------------------------------------------+
 | @@tidb_last_plan_replayer_token                           |
 +-----------------------------------------------------------+
