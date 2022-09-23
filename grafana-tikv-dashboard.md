@@ -10,11 +10,13 @@ If you use TiUP to deploy the TiDB cluster, the monitoring system (Prometheus/Gr
 
 The Grafana dashboard is divided into a series of sub dashboards which include Overview, PD, TiDB, TiKV, Node\_exporter, Performance\_overview, and so on. A lot of metrics are there to help you diagnose.
 
+## TiKV-Details dashboard
+
 You can get an overview of the component TiKV status from the **TiKV-Details** dashboard, where the key metrics are displayed. According to the [Performance Map](https://asktug.com/_/tidb-performance-map/#/), you can check whether the status of the cluster is as expected.
 
-This document provides a detailed description of these key metrics on the **TiKV-Details** dashboard.
+This section provides a detailed description of these key metrics on the **TiKV-Details** dashboard.
 
-## Cluster
+### Cluster
 
 - Store size: The storage size per TiKV instance
 - Available size: The available capacity per TiKV instance
@@ -31,7 +33,7 @@ This document provides a detailed description of these key metrics on the **TiKV
 
 ![TiKV Dashboard - Cluster metrics](/media/tikv-dashboard-cluster.png)
 
-## Errors
+### Errors
 
 - Critical error: The number of critical errors
 - Server is busy: Indicates occurrences of events that make the TiKV instance unavailable temporarily, such as Write Stall, Channel Full, and so on. It should be `0` in normal case.
@@ -46,7 +48,7 @@ This document provides a detailed description of these key metrics on the **TiKV
 
 ![TiKV Dashboard - Errors metrics](/media/tikv-dashboard-errors-v610.png)
 
-## Server
+### Server
 
 - CF size: The size of each column family
 - Store size: The storage size per TiKV instance
@@ -59,7 +61,7 @@ This document provides a detailed description of these key metrics on the **TiKV
 
 ![TiKV Dashboard - Server metrics](/media/tikv-dashboard-server.png)
 
-## gRPC
+### gRPC
 
 - gRPC message count: The rate of gRPC messages per type
 - gRPC message failed: The rate of failed gRPC messages
@@ -68,7 +70,7 @@ This document provides a detailed description of these key metrics on the **TiKV
 - gRPC batch size: The batch size of gRPC messages between TiDB and TiKV
 - Raft message batch size: The batch size of Raft messages between TiKV instances
 
-## Thread CPU
+### Thread CPU
 
 - Raft store CPU: The CPU utilization of the `raftstore` thread. The CPU utilization should be less than 80% * `raftstore.store-pool-size` in normal case.
 - Async apply CPU: The CPU utilization of the `async apply` thread. The CPU utilization should be less than 90% * `raftstore.apply-pool-size` in normal cases.
@@ -81,14 +83,14 @@ This document provides a detailed description of these key metrics on the **TiKV
 - GC worker CPU: The CPU utilization of the `GC worker` thread
 - BackGround worker CPU: The CPU utilization of the `background worker` thread
 
-## PD
+### PD
 
 - PD requests: The rate at which TiKV sends to PD
 - PD request duration (average): The average duration of processing requests that TiKV sends to PD
 - PD heartbeats: The rate at which heartbeat messages are sent from TiKV to PD
 - PD validate peers: The rate at which messages are sent from TiKV to PD to validate TiKV peers
 
-## Raft IO
+### Raft IO
 
 - Apply log duration: The time consumed for Raft to apply logs
 - Apply log duration per server: The time consumed for Raft to apply logs per TiKV instance
@@ -99,7 +101,7 @@ This document provides a detailed description of these key metrics on the **TiKV
 
 ![TiKV Dashboard - Raft IO metrics](/media/tikv-dashboard-raftio.png)
 
-## Raft process
+### Raft process
 
 - Ready handled: The number of handled ready operations per type per second
     - count: The number of handled ready operations per second
@@ -115,7 +117,7 @@ This document provides a detailed description of these key metrics on the **TiKV
 
 ![TiKV Dashboard - Raft process metrics](/media/tikv-dashboard-raft-process.png)
 
-## Raft message
+### Raft message
 
 - Sent messages per server: The number of Raft messages sent by each TiKV instance per second
 - Flush messages per server: The number of Raft messages flushed by the Raft client in each TiKV instance per second
@@ -126,7 +128,7 @@ This document provides a detailed description of these key metrics on the **TiKV
 
 ![TiKV Dashboard - Raft message metrics](/media/tikv-dashboard-raft-message.png)
 
-## Raft propose
+### Raft propose
 
 - Raft apply proposals per ready: The histogram of the number of proposals that each ready operation contains in a batch while applying proposal.
 - Raft read/write proposals: The number of proposals per type per second
@@ -140,7 +142,7 @@ This document provides a detailed description of these key metrics on the **TiKV
 
 ![TiKV Dashboard - Raft propose metrics](/media/tikv-dashboard-raft-propose.png)
 
-## Raft admin
+### Raft admin
 
 - Admin proposals: The number of admin proposals per second
 - Admin apply: The number of processed apply commands per second
@@ -149,19 +151,19 @@ This document provides a detailed description of these key metrics on the **TiKV
 
 ![TiKV Dashboard - Raft admin metrics](/media/tikv-dashboard-raft-admin.png)
 
-## Local reader
+### Local reader
 
 - Local reader requests: The number of total requests and the number of rejections from the local read thread
 
 ![TiKV Dashboard - Local reader metrics](/media/tikv-dashboard-local-reader.png)
 
-## Unified Read Pool
+### Unified Read Pool
 
 - Time used by level: The time consumed for each level in the unified read pool. Level 0 means small queries.
 - Level 0 chance: The proportion of level 0 tasks in unified read pool
 - Running tasks: The number of tasks running concurrently in the unified read pool
 
-## Storage
+### Storage
 
 - Storage command total: The number of received command by type per second
 - Storage async request error: The number of engine asynchronous request errors per second
@@ -170,7 +172,7 @@ This document provides a detailed description of these key metrics on the **TiKV
 
 ![TiKV Dashboard - Storage metrics](/media/tikv-dashboard-storage.png)
 
-## Scheduler
+### Scheduler
 
 - Scheduler stage total: The number of commands at each stage per second. There should not be a lot of errors in a short time.
 - Scheduler writing bytes: The total written bytes by commands processed on each TiKV instance
@@ -179,7 +181,7 @@ This document provides a detailed description of these key metrics on the **TiKV
 
 ![TiKV Dashboard - Scheduler metrics](/media/tikv-dashboard-scheduler.png)
 
-## Scheduler - commit
+### Scheduler - commit
 
 - Scheduler stage total: The number of commands at each stage per second when executing the commit command. There should not be a lot of errors in a short time.
 - Scheduler command duration: The time consumed when executing the commit command. It should be less than `1s`.
@@ -193,7 +195,7 @@ This document provides a detailed description of these key metrics on the **TiKV
 
 ![TiKV Dashboard - Scheduler commit metrics](/media/tikv-dashboard-scheduler-commit.png)
 
-## Scheduler - pessimistic_rollback
+### Scheduler - pessimistic_rollback
 
 - Scheduler stage total: The number of commands at each stage per second when executing the `pessimistic_rollback` command. There should not be a lot of errors in a short time.
 - Scheduler command duration: The time consumed when executing the `pessimistic_rollback` command. It should be less than `1s`.
@@ -205,7 +207,7 @@ This document provides a detailed description of these key metrics on the **TiKV
 - Scheduler scan details [write]: The keys scan details of write CF when executing the `pessimistic_rollback` command
 - Scheduler scan details [default]: The keys scan details of default CF when executing the `pessimistic_rollback` command
 
-## Scheduler - prewrite
+### Scheduler - prewrite
 
 - Scheduler stage total: The number of commands at each stage per second when executing the prewrite command. There should not be a lot of errors in a short time.
 - Scheduler command duration: The time consumed when executing the prewrite command. It should be less than `1s`.
@@ -217,7 +219,7 @@ This document provides a detailed description of these key metrics on the **TiKV
 - Scheduler scan details [write]: The keys scan details of write CF when executing the prewrite command
 - Scheduler scan details [default]: The keys scan details of default CF when executing the prewrite command
 
-## Scheduler - rollback
+### Scheduler - rollback
 
 - Scheduler stage total: The number of commands at each stage per second when executing the rollback command. There should not be a lot of errors in a short time.
 - Scheduler command duration: The time consumed when executing the rollback command. It should be less than `1s`.
@@ -229,7 +231,7 @@ This document provides a detailed description of these key metrics on the **TiKV
 - Scheduler scan details [write]: The keys scan details of write CF when executing the rollback command
 - Scheduler scan details [default]: The keys scan details of default CF when executing the rollback command
 
-## GC
+### GC
 
 - GC tasks: The count of GC tasks processed by gc_worker
 - GC tasks Duration: The time consumed when executing GC tasks
@@ -243,7 +245,7 @@ This document provides a detailed description of these key metrics on the **TiKV
 - GC interval: The interval of TiDB GC
 - GC in Compaction Filter: The count of filtered versions in the compaction filter of write CF.
 
-## Snapshot
+### Snapshot
 
 - Rate snapshot message: The rate at which Raft snapshot messages are sent
 - 99% Handle snapshot duration: The time consumed to handle snapshots (P99)
@@ -251,14 +253,14 @@ This document provides a detailed description of these key metrics on the **TiKV
 - 99.99% Snapshot size: The snapshot size (P99.99)
 - 99.99% Snapshot KV count: The number of KV within a snapshot (P99.99)
 
-## Task
+### Task
 
 - Worker handled tasks: The number of tasks handled by worker per second
 - Worker pending tasks: Current number of pending and running tasks of worker per second. It should be less than `1000` in normal case.
 - FuturePool handled tasks: The number of tasks handled by future pool per second
 - FuturePool pending tasks: Current number of pending and running tasks of future pool per second
 
-## Coprocessor Overview
+### Coprocessor Overview
 
 - Request duration: The total duration from the time of receiving the coprocessor request to the time of finishing processing the request
 - Total Requests: The number of requests by type per second
@@ -269,7 +271,7 @@ This document provides a detailed description of these key metrics on the **TiKV
 - Total RocksDB Perf Statistics: The statistics of RocksDB performance
 - Total Response Size: The total size of coprocessor response
 
-## Coprocessor Detail
+### Coprocessor Detail
 
 - Handle duration: The histogram of time spent actually processing coprocessor requests per minute
 - 95% Handle duration by store: The time consumed to handle coprocessor requests per TiKV instance per second (P95)
@@ -282,14 +284,14 @@ This document provides a detailed description of these key metrics on the **TiKV
 - Total Ops Details by CF (Table Scan): The number of RocksDB internal operations for each CF per second when executing select scan in coprocessor
 - Total Ops Details by CF (Index Scan): The number of RocksDB internal operations for each CF per second when executing index scan in coprocessor
 
-## Threads
+### Threads
 
 - Threads state: The state of TiKV threads
 - Threads IO: The I/O traffic of each TiKV thread
 - Thread Voluntary Context Switches: The number of TiKV threads voluntary context switches
 - Thread Nonvoluntary Context Switches: The number of TiKV threads nonvoluntary context switches
 
-## RocksDB - kv/raft
+### RocksDB - kv/raft
 
 - Get operations: The count of get operations per second
 - Get duration: The time consumed when executing get operations
@@ -326,7 +328,7 @@ This document provides a detailed description of these key metrics on the **TiKV
 - Ingest SST duration seconds: The time consumed to ingest SST files
 - Stall conditions changed of each CF: Stall conditions changed of each column family
 
-## Titan - All
+### Titan - All
 
 - Blob file count: The number of Titan blob files
 - Blob file size: The total size of Titan blob file
@@ -356,7 +358,7 @@ This document provides a detailed description of these key metrics on the **TiKV
 - Blob GC output file size: The size of Titan GC output file
 - Blob GC file count: The count of blob files involved in Titan GC
 
-## Pessimistic Locking
+### Pessimistic Locking
 
 - Lock Manager Thread CPU: The CPU utilization of the lock manager thread
 - Lock Manager Handled tasks: The number of tasks handled by lock manager
@@ -368,11 +370,11 @@ This document provides a detailed description of these key metrics on the **TiKV
 - Total pessimistic locks memory size: The memory size occupied by the in-memory pessimistic locks
 - In-memory pessimistic locking result: The result of only saving pessimistic locks to memory. `full` means the number of times that the pessimistic lock is not saved to memory because the memory limit is exceeded.
 
-## Memory
+### Memory
 
 - Allocator Stats: The statistics of the memory allocator
 
-## Backup
+### Backup
 
 - Backup CPU: The CPU utilization of the backup thread
 - Range Size: The histogram of backup range size
@@ -382,7 +384,7 @@ This document provides a detailed description of these key metrics on the **TiKV
 - Backup Range Duration: The time consumed for backing up a range
 - Backup Errors: The number of errors encountered during a backup
 
-## Encryption
+### Encryption
 
 - Encryption data keys: The total number of encrypted data keys
 - Encrypted files: The number of encrypted files
@@ -391,9 +393,9 @@ This document provides a detailed description of these key metrics on the **TiKV
 - Encrypt/decrypt data nanos: The histogram of duration on encrypting/decrypting data each time
 - Read/write encryption meta duration: The time consumed for reading/writing encryption meta files
 
-## Explanation of Common Parameters
+### Explanation of Common Parameters
 
-### gRPC Message Type
+#### gRPC Message Type
 
 1. Transactional API:
 
@@ -424,3 +426,15 @@ This document provides a detailed description of these key metrics on the **TiKV
     - raw_delete: The command of deleting a key/value pair
     - raw_batch_delete: The command of a batch of key/value pairs
     - raw_delete_range: The command of deleting a range of data
+
+## TiKV-FastTune dashboard
+
+If performance issues of TiKV occur, such as QPS jitter, latency jitter, and latency increasing trend, you can check the **TiKV-FastTune** dashboard. This dashboard contains a set of panels that help you with diagnostics, especially when the write workload in your cluster is medium or large.
+
+When write-related performance issues occur, you can first check the TiDB dashboard, and **TiKV latency** panel of the **TiDB Summary** dashboard in Grafana. If the issues are at the storage side, open the **TiKV-FastTune** page, browse and check every panel on it.
+
+In the **TiKV-FastTune** dashboard, you can see a title that suggests a possible cause of the performance issues. To check whether the suggested cause is true, check the graph on the page.
+
+The left-Y-axis of the graph represents the write-RPC QPS of the storage side, and a set of graphs on the right-Y-axis are drawn upside down. If the shape of the left graph matches that of the right graphs, the suggested cause is true.
+
+For detailed metrics and descriptions, see the dashboard [user manual](https://docs.google.com/presentation/d/1aeBF2VCKf7eo4-3TMyP7oPzFWIih6UBA53UI8YQASCQ/edit#slide=id.gab6b984c2a_1_352).

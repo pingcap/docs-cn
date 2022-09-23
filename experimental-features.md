@@ -59,3 +59,4 @@ Elastic scheduling feature. It enables the TiDB cluster to dynamically scale out
 
 + [SQL diagnostics](/information-schema/information-schema-sql-diagnostics.md) (Introduced in v4.0)
 + [Cluster diagnostics](/dashboard/dashboard-diagnostics-access.md) (Introduced in v4.0)
++ [TiKV-FastTune dashboard](/grafana-tikv-dashboard.md#tikv-fasttune-dashboard) (Introduced in v4.0)
