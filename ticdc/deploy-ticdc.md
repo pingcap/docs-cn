@@ -75,5 +75,5 @@ From v6.3.0, TiCDC supports rolling upgrades using TiUP. This feature helps keep
 If the preceding conditions are met, you can run the `tiup cluster upgrade` command to perform a rolling upgrade of the cluster:
 
 ```shell
-tiup cluster upgrade test-cluster ${target-version} --transfer-timeout 600 --force false
+tiup cluster upgrade test-cluster ${target-version} --transfer-timeout 600
 ```
