@@ -98,7 +98,7 @@ EXPLAIN SELECT * FROM t1 WHERE intkey >= 99 AND intkey <= 103;
 * `├─IndexRangeScan_8(Build)` 算子节点对 `intkey` 列的索引执行范围扫描，并检索内部的 `RowID` 值（对此表而言，即为主键）。
 * `└─TableRowIDScan_9(Probe)` 算子节点随后从表数据中检索整行。
 
-`IndexLookup` 任务分以上两步执行。如果满足条件的行较多，SQL 优化器可能会根据[统计信息](/statistics.md)选择使用 `TableFullScan` 算子。在以下示例中，很多行都满足 `intkey > 100` 这一条件，因此优化器选择了 `TableFullScan`：
+`IndexLookup` 任务分以上两步执行。如果满足条件的行较多，SQL 优化器可能会根据[常规统计信息](/statistics.md)选择使用 `TableFullScan` 算子。在以下示例中，很多行都满足 `intkey > 100` 这一条件，因此优化器选择了 `TableFullScan`：
 
 {{< copyable "sql" >}}
 

@@ -71,4 +71,4 @@ Empty set (0.00 sec)
 
 ## 另请参阅
 
-* [统计信息简介](/statistics.md)
+* [使用常规统计信息](/statistics.md)
