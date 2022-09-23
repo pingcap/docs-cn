@@ -10,7 +10,7 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-analyze-table/','/docs-cn/d
 
 当 TiDB 逐渐发现这些统计数据与预估不一致时，也会自动更新其统计数据。
 
-目前 TiDB 收集统计信息分为全量收集和增量收集两种方式，分别通过 `ANALYZE TABLE` 和 `ANALYZE INCREMENTAL TABLE` 语句来实现。关于这两种语句的详细使用方式，可参考[使用常规统计信息](/statistics.md)。
+目前 TiDB 收集统计信息分为全量收集和增量收集两种方式，分别通过 `ANALYZE TABLE` 和 `ANALYZE INCREMENTAL TABLE` 语句来实现。关于这两种语句的详细使用方式，可参考[使用基础统计信息](/statistics.md)。
 
 ## 语法图
 

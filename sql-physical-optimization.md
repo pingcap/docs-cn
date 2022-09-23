@@ -10,7 +10,7 @@ aliases: ['/docs-cn/dev/sql-physical-optimization/']
 [理解 TiDB 执行计划](/explain-overview.md)文档已对每个物理算子进行了一些介绍。本章重点介绍以下方面：
 
 - [索引的选择](/choose-index.md)：介绍 TiDB 在一张表有多个索引时，如何选择最优的索引进行表的访问。
-- [使用统计信息](/statistics.md)：介绍 TiDB 收集了哪些统计信息来获得表的数据分布情况。
+- [使用基础统计信息](/statistics.md)：介绍 TiDB 收集了哪些统计信息来获得表的数据分布情况。
 - [使用扩展统计信息](/extended-statistics.md)：介绍如何使用扩展统计信息来指导 SQL 优化。
 - [错误索引的解决方案](/wrong-index-solution.md)：介绍当发现 TiDB 索引选错时，你应该使用那些手段来让它使用正确的索引
 - [Distinct 优化](/agg-distinct-optimization.md)：介绍在物理优化中会做的一个有关 `DISTINCT` 关键字的优化，在这一小节中会介绍它的优缺点以及如何使用它。

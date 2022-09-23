@@ -64,4 +64,4 @@ show stats_histograms where table_name = 't2';
 ## 另请参阅
 
 * [ANALYZE](/sql-statements/sql-statement-analyze-table.md)
-* [使用常规统计信息](/statistics.md)
+* [使用基础统计信息](/statistics.md)
