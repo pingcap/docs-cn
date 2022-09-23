@@ -1,12 +1,11 @@
 ---
-title: 使用常规统计信息
-summary: 了解如何使用常规统计信息来指导优化。
+title: 使用统计信息
 aliases: ['/docs-cn/dev/statistics/','/docs-cn/dev/reference/performance/statistics/']
 ---
 
-# 使用常规统计信息
+# 使用统计信息
 
-TiDB 使用统计信息来决定[索引的选择](/choose-index.md)。变量 `tidb_analyze_version` 用于控制所收集到的常规统计信息。目前 TiDB 中支持两种常规统计信息：`tidb_analyze_version = 1` 以及 `tidb_analyze_version = 2`。在 v5.3.0 及之后的版本中，该变量的默认值为 `2`。如果从 v5.3.0 之前版本的集群升级至 v5.3.0 及之后的版本，`tidb_analyze_version` 的默认值不发生变化。
+TiDB 使用统计信息来决定[索引的选择](/choose-index.md)。变量 `tidb_analyze_version` 用于控制所收集到的统计信息。目前 TiDB 中支持两种常规统计信息：`tidb_analyze_version = 1` 以及 `tidb_analyze_version = 2`。在 v5.3.0 及之后的版本中，该变量的默认值为 `2`。如果从 v5.3.0 之前版本的集群升级至 v5.3.0 及之后的版本，`tidb_analyze_version` 的默认值不发生变化。
 
 > **注意：**
 >
