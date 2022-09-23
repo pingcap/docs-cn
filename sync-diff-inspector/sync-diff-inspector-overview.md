@@ -108,7 +108,7 @@ check-struct-only = false
 
     #（可选）使用 TiDB 的 snapshot 功能，如果开启的话会使用历史数据进行对比
     # snapshot = "386902609362944000"
-    # 当 snapshot 设置为 "auto" 时，使用 cdc 在上下游的同步时间点，具体参考 https://github.com/pingcap/tidb-tools/issues/663
+    # 当 snapshot 设置为 "auto" 时，使用 TiCDC 在上下游的同步时间点，具体参考 <https://github.com/pingcap/tidb-tools/issues/663>
     # snapshot = "auto"
 
 ########################### Routes ###########################
