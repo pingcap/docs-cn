@@ -431,7 +431,7 @@ aliases: ['/docs-cn/dev/grafana-tikv-dashboard/','/docs-cn/dev/reference/key-mon
 
 当 TiKV 出现 QPS 抖动、延迟抖动、延迟增加趋势等性能问题时，你可以查看 **TiKV-FastTune** 面板。**TiKV-FastTune** 包括多组子面板，可帮助你诊断性能问题，尤其适用于集群中写入负载较大的场景。
 
-当出现写入相关的性能问题时，可以先在 Grafana 中查看 TiDB 面板，**TiDB Summary** 面板下的 **TiKV latency** 指标。如果问题出在存储端，打开 **TiKV-FastTune** 面板，浏览并检查上面的每个指标。
+当出现写入相关的性能问题时，可以先在 Grafana 中查看 TiDB 面板。如果问题出在存储端，打开 **TiKV-FastTune** 面板，浏览并检查上面的每个指标。
 
 在 **TiKV-FastTune** 的面板中，指标标题描述了性能问题的可能成因。要验证成因是否正确，你需要检查具体的图表曲线。
 
