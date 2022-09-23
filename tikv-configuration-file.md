@@ -1506,9 +1506,11 @@ Raft Engine 相关的配置项。
 
 ### `format-version` <span class="version-mark">从 v6.3.0 版本开始引入</span>
 
-> **警告：**
+> **注意：**
 >
-> `format-version` 的值设置为 `2` 后，TiKV 集群无法降级至 v6.3.0 以前的版本，否则会导致数据损坏。
+> - `format-version` 的值设置为 `2` 后，如果你需要将 TiKV 集群降级至 v6.3.0 以前的版本，你需要在降级**之前**按照如下步骤执行准备工作：
+>   - 先关闭 Raft Engine（即把 `enable` 配置项设置为 `false`，并重启 TiKV 使配置生效）；
+>   - 将`format-version` 的值重新设置为 `1`，并重新打开 Raft Engine（即把 `enable` 配置项重设为 `true`，并重启 TiKV 使配置生效）；
 
 + 指定 Raft Engine 的日志文件格式版本。
 + 可选值：
@@ -1520,7 +1522,7 @@ Raft Engine 相关的配置项。
 
 > **注意：**
 >
-> 仅在 [`format-version`](#format-version-从-v630-版本开始引入) 的值大于等于 2 时，该配置项才生效。
+> - 仅在 [`format-version`](#format-version-从-v630-版本开始引入) 的值大于等于 2 时，该配置项才生效。
 
 + 控制 Raft Engine 是否回收过期的日志文件。该配置项启用时，Raft Engine 将保留逻辑上被清除的日志文件，用于日志回收，减少写负载的长尾延迟。
 + 默认值：`false`
