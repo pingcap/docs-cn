@@ -1164,6 +1164,26 @@ MPP is a distributed computing framework provided by the TiFlash engine, which a
 - This variable controls whether to enable the [`exchange partitions with tables`](/partitioned-table.md#partition-management) feature. The default value is `ON`, that is, `exchange partitions with tables` is enabled by default.
 - This variable is deprecated since v6.3.0. Its value will be fixed to the default value `ON`, that is, `exchange partitions with tables` is enabled by default.
 
+### tidb_enable_extended_stats
+
+<CustomContent platform="tidb-cloud">
+
+> **Note:**
+>
+> This TiDB variable is not applicable to TiDB Cloud.
+
+</CustomContent>
+
+<CustomContent platform="tidb">
+
+- Scope: SESSION | GLOBAL
+- Persists to cluster: Yes
+- Type: Boolean
+- Default value: `OFF`
+- This variable indicates whether TiDB can collect the extended statistic to guide the optimizer. See [Introduction to Extended Statistics](/extended-statistics.md) for more information.
+
+</CustomContent>
+
 ### tidb_enable_fast_analyze
 
 > **Warning:**
@@ -2499,6 +2519,14 @@ explain select * from t where age=5;
 - Type: Boolean
 - Default value: `OFF`
 - This variable is used to control whether common table expressions (CTEs) in the entire session are inlined or not. The default value is `OFF`, which means that inlining CTE is not enforced by default. However, you can still inline CTE by specifying the `MERGE()` hint. If the variable is set to `ON`, all CTEs (except recursive CTE) in this session are forced to be inlined.
+
+### tidb_optimizer_selectivity_level
+
+- Scope: SESSION | GLOBAL
+- Persists to cluster: Yes
+- Default value: `1`
+- Value options: `1` and `2` (not recommended)
+- This variable controls the iteration of the optimizer's estimation logic. After changing the value of this variable, the estimation logic of the optimizer will change greatly. Currently, `1` is the only valid value. It is not recommended to set the value to `2`.
 
 ### tidb_partition_prune_mode <span class="version-mark">New in v5.1</span>
 
