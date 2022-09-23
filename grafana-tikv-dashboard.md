@@ -431,7 +431,7 @@ This section provides a detailed description of these key metrics on the **TiKV-
 
 If performance issues of TiKV occur, such as QPS jitter, latency jitter, and latency increasing trend, you can check the **TiKV-FastTune** dashboard. This dashboard contains a set of panels that help you with diagnostics, especially when the write workload in your cluster is medium or large.
 
-When write-related performance issues occur, you can first check the TiDB dashboard, and **TiKV latency** panel of the **TiDB Summary** dashboard in Grafana. If the issues are at the storage side, open the **TiKV-FastTune** page, browse and check every panel on it.
+When write-related performance issues occur, you can first check the TiDB-related dashboards. If the issues are at the storage side, open the **TiKV-FastTune** page, browse and check every panel on it.
 
 In the **TiKV-FastTune** dashboard, you can see a title that suggests a possible cause of the performance issues. To check whether the suggested cause is true, check the graph on the page.
 
