@@ -1,24 +1,24 @@
 ---
-title: 扩展统计简介
-summary: 了解如何使用扩展统计信息来指导优化器。
+title: 使用扩展统计信息
+summary: 了解如何使用扩展统计信息来指导 SQL 优化。
 ---
 
-# 扩展统计简介
+# 使用扩展统计信息
 
-TiDB 可以收集以下两种统计信息：
+本文介绍如何使用扩展统计信息来指导 SQL 优化。TiDB 可以收集以下两种统计信息：
 
-- 常规统计信息：直方图和 Count-Min Sketch 等。更多详细信息，请参阅[常规统计信息简介](/statistics.md)。
+- 常规统计信息：如直方图和 Count-Min Sketch 等。更多详细信息，请参阅[常规统计信息](/statistics.md)。
 - 扩展统计信息：按表和列过滤的统计信息。
 
 > **建议：**
 >
-> 在阅读本文档之前，建议先阅读[常规统计简介](/statistics.md)。
+> 在阅读本文档之前，建议先阅读[使用常规统计信息](/statistics.md)。
 
 手动或自动执行 `ANALYZE` 语句时，TiDB 默认只收集常规统计信息，不收集扩展统计信息。这是因为扩展统计信息仅用于特定场景下的优化器估算，而且收集扩展统计信息会造成额外的开销。
 
 默认情况下，TiDB 不收集扩展统计信息。要使用扩展统计信息，你需要先启用扩展统计信息，然后单独注册每个扩展统计信息对象。
 
-注册完成再执行 `ANALYZE` 语句时，TiDB 会同时收集常规统计信息和注册的扩展统计信息。
+注册完成后，再执行 `ANALYZE` 语句时，TiDB 会同时收集常规统计信息和注册的扩展统计信息。
 
 ## 使用限制
 
@@ -60,7 +60,7 @@ ALTER TABLE table_name ADD STATS_EXTENDED IF NOT EXISTS stats_name stats_type(co
 <details>
 <summary>工作原理</summary>
 
-每个 TiDB 节点都会在系统表 `mysql.stats_extended` 中维护一个缓存，以更高效访问扩展统计信息。注册扩展统计信息后再执行 `ANALYZE` 语句时，如果系统表 `mysql.stats_extended` 中有对应的对象，TiDB 会收集扩展统计信息。
+每个 TiDB 节点都会在系统表 `mysql.stats_extended` 中维护一个缓存，以更高效地访问扩展统计信息。注册扩展统计信息后再执行 `ANALYZE` 语句时，如果系统表 `mysql.stats_extended` 中有对应的对象，TiDB 会收集扩展统计信息。
 
 `mysql.stats_extended` 表中的每行都有 `version` 列。一旦某行更新了，该行对应的 `version` 值会增加。这样，TiDB 将表增量加载到内存中，而不是全量加载。
 
@@ -107,11 +107,11 @@ ALTER TABLE table_name DROP STATS_EXTENDED stats_name;
 
 ### 导出和导入扩展统计信息
 
-导出或导入扩展统计的方式与导出或导入常规统计相同。详见[统计简介-进出口统计](/statistics.md#统计信息的导入导出)。
+导出或导入扩展统计信息的方式与导出或导入常规统计信息相同。详见[常规统计信息的导入导出](/statistics.md#统计信息的导入导出)。
 
 ## 顺序相关性扩展统计信息的使用示例
 
-目前 TiDB 只支持顺序相关性类型 (correlation) 的扩展统计信息，用于估算范围查询 (range query) 中的行数并改进索引选择。以下示例展示了如何使用顺序相关性类型扩展统计信息来估计范围查询中的行数。
+目前 TiDB 只支持顺序相关性类型 (correlation) 的扩展统计信息，用于估算范围查询 (range query) 中的行数并改进索引选择。以下示例展示了如何使用顺序相关性类型的扩展统计信息来估计范围查询中的行数。
 
 ### 第 1 步：定义表
 
