@@ -112,6 +112,8 @@ TiDB 默认使用的字符集为 utf8mb4。建议同步上下游及应用统一�
 - [字符集和排序规则](/character-set-and-collation.md)
 - [GBK 兼容情况](/character-set-gbk.md#与-mysql-的兼容性)
 
+### 实施侧要点
+
 ## 数据迁移中的最佳实践
 
 ## 数据迁移后的最佳实践
