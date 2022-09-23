@@ -8,9 +8,9 @@ title: TiKV 监控指标详解
 
 目前 Grafana Dashboard 整体分为 PD、TiDB、TiKV、Node\_exporter、Overview、Performance\_overview 等。
 
-对于日常运维，我们通过观察 **TiKV-Details** 面板上的指标，可以了解 TiKV 当前的状态。根据[性能地图](https://asktug.com/_/tidb-performance-map/#/)可以检查集群的状态是否符合预期。
-
 ## TiKV-Details 面板
+
+对于日常运维，通过观察 **TiKV-Details** 面板上的指标，可以了解 TiKV 当前的状态。根据[性能地图](https://asktug.com/_/tidb-performance-map/#/)可以检查集群的状态是否符合预期。
 
 以下为 **TiKV-Details** 默认的监控信息：
 
@@ -428,12 +428,12 @@ title: TiKV 监控指标详解
 
 ## TiKV-FastTune 面板
 
-当 TiKV 出现 QPS 抖动、延迟抖动、延迟增加趋势等性能问题时，你可以查看 **TiKV-FastTune** 页面。**TiKV-FastTune** 包括多组面板，可帮助你诊断性能问题，尤其适用于集群中写入负载较大的场景。
+当 TiKV 出现 QPS 抖动、延迟抖动、延迟增加趋势等性能问题时，你可以查看 **TiKV-FastTune** 面板。**TiKV-FastTune** 包括多组子面板，可帮助你诊断性能问题，尤其适用于集群中写入负载较大的场景。
 
-当出现写入相关的性能问题时，可以先查看 TiDB 页面，以及 Grafana 中 **TiDB Summary** 页面下的 **TiKV latency** 面板。如果问题出在存储端，打开 **TiKV-FastTune** 页面，浏览并检查上面的每个面板。
+当出现写入相关的性能问题时，可以先在 Grafana 中查看 TiDB 面板，**TiDB Summary** 面板下的 **TiKV latency** 指标。如果问题出在存储端，打开 **TiKV-FastTune** 面板，浏览并检查上面的每个指标。
 
-在 **TiKV-FastTune** 每个面板中，标题描述了性能问题的可能成因。要验证成因是否正确，你需要检查左右两组页面上的图表曲线。
+在 **TiKV-FastTune** 的面板中，指标标题描述了性能问题的可能成因。要验证成因是否正确，你需要检查具体的图表曲线。
 
-左边 Y 轴表示存储端的 write-RPC QPS，右边 Y 轴上的一组图是倒置绘制的。如果左边 Y 轴的曲线形状与右边的形状匹配，则面板标题描述的问题成因是正确的。
+左边 Y 轴表示存储端的 write-RPC QPS，右边 Y 轴上的一组图是倒置绘制的。如果左边 Y 轴的曲线形状与右边的形状匹配，则指标标题描述的问题成因是正确的。
 
-有关该面板的监控项以及解释，参考 [TiKV-FastTune 用户手册（英文）](https://docs.google.com/presentation/d/1aeBF2VCKf7eo4-3TMyP7oPzFWIih6UBA53UI8YQASCQ/edit#slide=id.gab6b984c2a_1_352)。
+有关该面板的具体监控项以及解释，参考 [TiKV-FastTune 用户手册（英文）](https://docs.google.com/presentation/d/1aeBF2VCKf7eo4-3TMyP7oPzFWIih6UBA53UI8YQASCQ/edit#slide=id.gab6b984c2a_1_352)。
