@@ -177,6 +177,8 @@ update t set a = 10 where id = 1; update t set a = 11 where id = 2; update t set
 `useConfigs = maxPerformance` 会包含一组配置：
 
 ```ini
+cachePrepStmts = true
+cacheCallableStmts = true
 cacheServerConfiguration = true
 useLocalSessionState = true
 elideSetAutoCommits = true

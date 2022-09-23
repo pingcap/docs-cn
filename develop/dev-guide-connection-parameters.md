@@ -249,6 +249,8 @@ UPDATE `t` SET `a` = 12 WHERE `id` = 3;
 `useConfigs = maxPerformance` 会包含一组配置：
 
 ```conf
+cachePrepStmts = true
+cacheCallableStmts = true
 cacheServerConfiguration = true
 useLocalSessionState = true
 elideSetAutoCommits = true
