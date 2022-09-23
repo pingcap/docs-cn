@@ -93,6 +93,8 @@ Slow Query 基础信息：
 * `Write_keys`：表示该事务向 TiKV 的 Write CF 写入 Key 的数量。
 * `Write_size`：表示事务提交时写 key 或 value 的总大小。
 * `Prewrite_region`：表示事务两阶段提交中第一阶段（prewrite 阶段）涉及的 TiKV Region 数量。每个 Region 会触发一次远程过程调用。
+* `Wait_prewrite_binlog_time`: 表示事务提交时写 binlog 的时间。
+* `Resolve_lock_time`: 表示事务提交时遇到锁后，清理或者等待锁过期的时间。
 
 和内存使用相关的字段：
 
@@ -131,6 +133,19 @@ Slow Query 基础信息：
 * `Cop_backoff_{backoff-type}_max_addr`：因某种错误造成的最大 backoff 时间的 cop-task 地址。
 * `Cop_backoff_{backoff-type}_avg_time`：因某种错误造成的平均 backoff 时间。
 * `Cop_backoff_{backoff-type}_p90_time`：因某种错误造成的 P90 分位 backoff 时间。
+
+`Backoff_types` 一般有以下几种：
+
+* `tikvRPC`：给 TiKV 发送 RPC 请求失败而产生的 backoff。
+* `tiflashRPC`：给 TiFlash 发送 RPC 请求失败而产生的 backoff。
+* `pdRPC`：给 PD 发送 RPC 请求失败而产生的 backoff。
+* `txnLock`：遇到锁冲突后产生的 backoff。
+* `regionMiss`：是 Region 发生分裂或者合并后，导致 TiDB 的 region 缓存信息过期导致请求失败而产生的 backoff。
+* `regionScheduling`：是 Region 还在调度中，还没有选出 Leader 导致无法处理请求而产生的 backoff。
+* `tikvServerBusy`：因为 TiKV 负载太高无法处理新请求而产生的 backoff。
+* `tiflashServerBusy`：因为 TiFlash 负载太高无法处理新请求而产生的 backoff。
+* `tikvDiskFull`：因为 TiKV 的磁盘满了而产生的 backoff。
+* `txnLockFast`：因为读数据时遇到了锁而产生的 backoff。
 
 ## 相关系统变量
 
