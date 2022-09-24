@@ -114,8 +114,97 @@ TiDB 默认使用的字符集为 utf8mb4。建议同步上下游及应用统一�
 
 ### 实施侧要点
 
+#### Master 与 Woker 部署实践
+
+DM 整体架构分为 DM-Master 与 DM-worker。
+
+- DM-Master 主要负责同步任务的元数据管理，及 DM-worker 个中心调度。是整个 DM 平台的核心。所以 DM-Master 是可以部署为集群模式的，以此保证 DM 同步平台的可用性。
+- DM-Worker 负责执行上下游同步任务，是无状态节点。最多可以部署 1000 个节点。在需要将 DM 作为数据同步平台的场景可以预留一部分空闲的 DM-worker，以此保证同步任务的高可用。
+
+#### 同步任务规划
+
+拆分同步任务后只能保证数据同步的最终一致性，实时一致性因各种原因可能出现较大偏差。
+
+- 分库分表场景。在分库分表迁移场景，根据上游分库分表的种类进行同步任务的拆分，如 usertable_1 ~50 和 Logtable_1~50 是两类分表，那么就应该分别建两个 Task 任务进行同步。这样做的好处是可有效简化同步任务模板的复杂度，并有效控制数据同步中断的影响范围。
+
+- 大规模数据迁移同步场景。可以参考以下两种思路进行 Task 任务拆分：
+    - 如果上游需要同步多个数据库，可以按照不同数据库拆分 Task。
+    - 根据上游写入压力拆分任务。及将上游 DML 操作频繁的表，拆分到单独的 Task 任务中，将其他表使用同一个 Task 任务进行同步。此方式可在一定程度上加速同步任务的推进能力。尤其是在上游有大量 Log 写入，但业务关注的是其他表。此时可以有效解决此类问题。
+
+那么在不同的数据迁移与同步场景，应该如何部署 DM-Master 与 DM-Worker 呢？下表给出了推荐方案。
+
+| 场景 |  DM-Master 部署 | DM-worker 部署 |
+| :--- | :--- | :--- |
+| 小规模数据 （1 TB 以下），一次性数据迁移场景  |  部署 1 个 DM-master 节点   | 根据上游数据源数量，部署 1 ~ N 个 Worker 节点，一般情况下 1 个 Worker 节点。   |
+| 大规模数据 （1 TB 以上）及分库分表，一次性数据迁移场景  | 推荐部署 3 个 DM-master 节点。来保证在长时间数据迁移时 DM 集群的可用性   | 根据数据源数量或同步任务数量部署 Worker 节点，推荐多部署 1~3 个空闲 Worker 节点   |
+|  长期数据同步迁移场景  | 务必部署 3 个 DM-master 节点。如在云上部署， 尽量将 DM-master 部署在不同的可用区（AZ）    |   根据数据源数量或同步任务数量部署 Worker 节点。务必部署实际需要 Worker 节点数量的 1.5 ~ 2 倍的 Worker 节点数量。 |
+
+#### 上游数据源选择与设置
+
+DM 是支持存量数据迁移的，但在做全量迁移时会对整库进行全量数据备份。DM 采用的备份方式为并行逻辑备份，备份期间会加一把比较重的锁 [`FLUSH TABLES WITH READ LOCK`](https://dev.mysql.com/doc/refman/8.0/en/flush.html#flush-tables-with-read-lock)。此时会短暂的阻塞上游数据库的 DML 和 DDL 操作。所以强烈建议使用备库来进行全量备份，并同时在数据源开启 GTID 的功能 `enable-gtid: true`。这样即可避免存量迁移时对上游业务的影响，也可以在增量同步期间再切换到上游主库节点降低数据同步的延迟。切换上游 MySQL 数据源的方法具体，请参考[切换 DM-worker 与上游 MySQL 实例的连接](/dm/usage-scenario-master-slave-switch.md#切换-dm-worker-与上游-mysql-实例的连接)。
+
+下面是一些特殊场景下的注意事项：
+
+- 只能在上游主库进行全量备份
+    在该场景中，可以在同步任务配置中设置 一致性参数为 none，mydumpers.global.extra-args: "--consistency none" 避免给主库加大锁，但有可能破坏全量备份的数据一致性，导致最终上下游数据不一致。
+- 利用备份快照解决存量迁移（只适用 AWS 上 MySQL RDS 和 Aurora RDS 的迁移）
+    如果要迁移的数据库正好为 AWS MySQL RDS 或者 Aurora RDS，可以利用 RDS Snapshot 备份将 Amazon S3 中的备份数据直接迁移到 TiDB，以此保证存量数据迁移的一致性。整个操作流程以及后续增量同步方法，请参考[从 Amazon Aurora 迁移数据到 TiDB](/migrate-aurora-to-tidb.mdm#从-amazon-aurora-迁移数据到-tidb)。
+
+### 配置细节详解
+
+#### 大小写
+
+TiDB 默认情况下是对 Schema name 大小写不敏感的，即 `lower_case_table_names:2`。但上游 MySQL 大多为 Linux 系统，默认对大小写敏感。此时需要注意，在 DM 数据同步任务设置时 将 `case-sensitive` 设置为 `true`，保证可以正确同步上游的 Schema。
+
+特殊情况下，如果上游一个数据库中，既有大写表如 `Table`，又有小写表如 `table`，那么 Schema 创建时将报错。
+`ERROR 1050 (42S01): Table '{tablename}' already exists`
+
+#### 过滤规则
+
+这里不会重点讲同步任务的过滤规则相关注意事项。而是要请大家注意到现在在配置数据源时即可配置过滤规则。在数据配置过滤规则的好处：
+
+- 可以减少下游处理 Binglog Event 的数量，提升同步效能
+- 可以减少不必要的 Relay log 的落盘，节约磁盘空间
+
+> **注意：**
+>
+> 在分库分表场景中，如果你在数据源配置了过滤规则，请一定检查好数据源与同步任务的匹配情况，。如果不匹配，将会出现同步任务长期接收不到增量数据的窘境。
+
+#### Relay Log 的使用
+
+我们知道 MySQL 的主从复制，在 Slave 端是会保存一份 Relay log，以此保证异步复制的可靠性与效能。DM 现在也支持在 DM-worker 侧保存一份 Relay log，并可设置存储位置、过期清理时间等信息。使用此功能可以有效应对以下场景：
+
+- 在进行全量 + 增量数据迁移时，因为全量迁移数据量较大，整个过程耗费时间超过了上游 Binlog 归档的时间，导致增量同步任务不能正常拉起，如果开启 Relay Log 在全量同步拉起同时，DM-worker 即会开始接收 Relay log，避免增量任务拉起失败。
+- 在使用 DM 进行长期数据同步的场景中，有时因为各种原因导致同步任务长时间阻塞，此时开启了 Relay log 功能，可以有效应对同步任务阻塞而导致的上游 binglog 被回收问题。
+
+在使用 Relay Log 功能时也会有一定的限制。DM 支持高可用，当某个 DM-worker 出现故障，会尝试将空闲的 DM-worker 实例提升为工作实例，如果此时上游 Binlog 没有包含必要的同步日志，将可能出现同步中断情况。此时需要人工干预，尽快将 Relay log 复制到新的 DM-worker 节点上来，并修改相应的 Relay meta 文件，。具体方法请参考 [relay 处理单元报错 event from * in * diff from passed-in event * 或迁移任务中断并包含 get binlog error ERROR 1236 (HY000)、binlog checksum mismatch, data may be corrupted 等 binlog 获取或解析失败错误](/dm/dm-error-handling.md#relay-处理单元报错-event-from--in--diff-from-passed-in-event--或迁移任务中断并包含-get-binlog-error-error-1236-hy000binlog-checksum-mismatch-data-may-be-corrupted-等-binlog-获取或解析失败错误)。
+
+#### 上游使用在线变更工具 PT-osc\GH-ost
+
+在日常运维 MySQL 时，想要在线变更表结构，一般会使用 PT-osc\GH-ost 这类工具，以此保证 DDL 变更的对线上业务的最小影响。但整个过程会被如实的记录到 MySQL Binlog 中，如果全部同步到下游 TiDB 产生大量的写放大，既不高效也不经济。DM 在设置 Task 任务时候可以设置支持三方数据同步工具 PT-osc 或 GH-ost，配置后将不再同步大量冗余数据，并且能保证数据同步的一致性。具体设置方式请参考[迁移使用 GH-ost/PT-osc 的源数据库](/dm/feature-online-ddl.md)。
+
 ## 数据迁移中的最佳实践
 
-## 数据迁移后的最佳实践
+在这个环节基本上遇到的问题都是 Troubleshooting 类的问题，在这里给大家列举一些场景的问题及处理方式。
+
+### 上游与下游 Schema 不一致的场景
+
+此类场景主要出现在下游 TiDB 中增加或修改了索引，或者下游比上游更多列的场景。总之出现 `messages: Column count doesn't match value count: 3 (columns) vs 2 (values)` ，以及 `Schema/Column doesn't match` 诸如此类的同步报错信息，就要考虑是不是上下游 Schema 不一致导致的同步中断。此时只要通过将 DM 中缓存的 Schema 信息更新成与下游 TiDB Schema 一致，即可解决问题。具体方法参考[管理迁移表的表结构](/dm/dm-manage-schema.md)。
+
+如果是下游比上游多列的场景，请参考[下游存在更多列的迁移场景](/migrate-with-more-columns-downstream.md)。
+
+### 处理因为 DDL 中断的数据同步任务
+
+DM 支持跳过或者替换，导致同步任务中断的 DDL 语句。并且针对是否为和库合并场景有对应不同的操作，具体请参考[处理出错的 DDL 语句](/dm/handle-failed-ddl-statements.md#使用示例)。
+
+## 数据迁移后的数据校验
+
+一般在完成数据迁移后，会对新旧数据进行数据一致性校验。TiDB 官方提供了相应的同步工具  [sync-diff-inspector](/sync-diff-inspector/sync-diff-inspector-overview.md) 来帮助你完成数据校验工作。
+
+现在 sync diff 工具可以通过管理 DM 中的同步任务自动管理需要进行数据一致性检查的 Table List，相较之前的手动配置更加的高效。具体参考[基于 DM 同步场景下的数据校验](/sync-diff-inspector/dm-diff.md)。
+
+在 DM v6.2 版本后，还支持了增量同步时同时进行数据校验。具体参考 [DM 增量数据校验](/dm/dm-continuous-data-validation.md)。
 
 ## 数据长期同步的最佳实践
+
+如果将 DM 作为持续的数据同步平台，做好必要的元信息备份是非常必要的。一来是保证同步集群故障重建的能力，另一方面可以通过版本控制能力，实现同步任务的版本控制。具体实现方式参考[导出和导入集群的数据源和任务配置](/dm/dm-export-import-config.md)。
