@@ -1,11 +1,11 @@
 ---
 title: 数据迁移最佳实践
-summary: 了解使用 Data Migration (DM) 进行数据迁移的一些最佳实践。
+summary: 了解使用 TiDB Data Migration (DM) 进行数据迁移的一些最佳实践。
 ---
 
 # 数据迁移最佳实践
 
-Data Migration (DM) 是由 PingCAP 开发维护的数据迁移同步工具，主要支持的源数据库类型为各类 MySQL 协议标准的关系型数据库，如 MySQL、Percona MySQL、MariaDB、AWS MYSQL RDS、AWS Aurora 等。DM 主要有以下几个使用场景：
+TiDB Data Migration (DM) 是由 PingCAP 开发维护的数据迁移同步工具，主要支持的源数据库类型为各类 MySQL 协议标准的关系型数据库，如 MySQL、Percona MySQL、MariaDB、AWS MYSQL RDS、AWS Aurora 等。DM 主要有以下几个使用场景：
 
 - 单一实例全量和增量迁移
 - 将分库分表的各个库表归并到一张总表的全量和增量迁移
