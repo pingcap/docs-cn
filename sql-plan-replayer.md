@@ -57,6 +57,9 @@ plan replayer dump explain select * from t;
 
 ```sql
 MySQL [test]> plan replayer dump explain select * from t;
+```
+
+```sql
 +------------------------------------------------------------------+
 | Dump_link                                                        |
 +------------------------------------------------------------------+
@@ -69,6 +72,9 @@ MySQL [test]> plan replayer dump explain select * from t;
 
 ```sql
 SELECT @@tidb_last_plan_replayer_token;
+```
+
+```sql
 | @@tidb_last_plan_replayer_token                           |
 +-----------------------------------------------------------+
 | replayer_Fdamsm3C7ZiPJ-LQqgVjkA==_1663304195885090000.zip |
@@ -80,8 +86,13 @@ SELECT @@tidb_last_plan_replayer_token;
 
 ```sql
 plan replayer dump explain 'sqls.txt';
+```
 
-mysql> SELECT @@tidb_last_plan_replayer_token;
+```sql
+SELECT @@tidb_last_plan_replayer_token;
+```
+
+```sql
 +-----------------------------------------------------------+
 | @@tidb_last_plan_replayer_token                           |
 +-----------------------------------------------------------+
