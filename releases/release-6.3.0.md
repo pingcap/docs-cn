@@ -175,7 +175,7 @@ TiDB 版本：6.3.0-DMR
 
 * DM 任务配置文件中新增一个配置项 `safe-mode-duration` [#6224] (https://github.com/pingcap/tiflow/issues/6224) @[[okJiang](https://github.com/okJiang)]
 
-DM 任务配置文件中新增一个配置项 `safe-mode-duration`，用户可以自行调节 DM 异常重启后进入安全模式的持续时间，默认值 60 秒。当设置为 "0s" 时，表示 DM 异常重启后不会自动进入安全模式。
+DM 任务配置文件中新增一个配置项 [`safe-mode-duration`](/dm/task-configuration-file-full.md#完整配置文件示例)，用户可以自行调节 DM 异常重启后进入安全模式的持续时间，默认值 60 秒。当设置为 "0s" 时，表示 DM 异常重启后不会自动进入安全模式。
 
 ### 数据共享与订阅
 
@@ -198,40 +198,42 @@ DM 任务配置文件中新增一个配置项 `safe-mode-duration`，用户可�
 | 变量名 | 修改类型 | 描述 |
 | ------ | ------ | ------ |
 | [`default_authentication_plugin`](/system-variables.md#default_authentication_plugin) | 修改 | 扩展可选值范围：增加 `tidb_sm3_password`，设置为 `tidb_sm3_password` 时，用户密码验证的加密算法为国密算法 SM3。 |
+| [`tidb_adaptive_closest_read_threshold`](/system-variables.md#tidb_adaptive_closest_read_threshold-从-v630-版本开始引入) | 新增 | 这个变量用于控制当 [`replica-read`](#tidb_replica_read-从-v40-版本开始引入) 设置为 `closest-adaptive` 时，优先将读请求发送至 TiDB server 所在区域副本的阈值。 |
 | [`tidb_constraint_check_in_place_pessimistic`](/system-variables.md#tidb_constraint_check_in_place_pessimistic-从-v630-版本开始引入) | 新增 | 控制悲观事务中唯一约束检查的时间点。 |
-| [`tidb_enable_exchange_partition`](/system-variables.md#tidb_enable_exchange_partition) | 废弃 | 该变量用于设置是否启用 [`exchange partitions with tables`](/partitioned-table.md#partition-management) 特性。  |
-| [`tidb_enable_pseudo_for_outdated_stats`](/system-variables.md#tidb_enable_pseudo_for_outdated_stats-从-v530-版本开始引入) | 修改 | 控制优化器在统计信息过期时的行为。 默认值由 `ON` 改为 `OFF`，即使统计信息过期，优化器也仍会使用该表上的统计信息。  |
-| [`tidb_opt_force_inline_cte`](/system-variables.md#tidb_opt_force_inline_cte-从-v630-版本开始引入) | 新增 | 这个变量用来控制是否强制开启 inline CTE。默认值为 `OFF`，即默认不强制开启 inline CTE。 |
-| [`tidb_opt_range_mem_quota`](/system-variables.md#tidb_opt_force_inline_cte-从-v630-版本开始引入) | 新增 | 控制优化器构造 range 时允许的最大内存使用。 |
-| [`tidb_rc_write_check_ts`](/system-variables.md#tidb_rc_write_check_ts-从-v630-版本开始引入)  | 新增 | 用于优化时间戳的获取，适用于悲观事务 READ-COMMITTED 隔离级别下点写冲突较少的场景，开启此变量可以避免点写语句获取全局 timestamp 带来的延迟和开销。 |
-| [`tiflash_fastscan`](/system-variables.md#tiflash_fastscan-从-v630-版本开始引入) | 新增 | 控制是否启用 FastScan 功能。如果开启 FastScan 功能（设置为 `true` 时），TiFlash 可以提供更高效的查询性能，但不保证查询结果的精度和数据一致性。 |
-| [`tidb_enable_mdl`](/system-variables.md#tidb_enable_mdl-从-v630-版本开始引入)| 新增 | 用来设置是否开启[元数据锁](/metadata-lock.md)特性。 |
 | [`tidb_ddl_disk_quota`](/system-variables.md#tidb_ddl_disk_quota-从-v630-版本开始引入) | 新增 | 用于设置创建索引的回填过程中本地存储空间的使用限制，仅在 [`tidb_ddl_enable_fast_reorg`](#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 开启的情况下生效。 |
 | [`tidb_ddl_enable_fast_reorg`](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) | 新增 | 用于控制是否开启添加索引加速功能，来提升创建索引回填过程的速度。 |
 | [`tidb_enable_clustered_index`](/system-variables.md#tidb_enable_clustered_index-从-v50-版本开始引入) | 修改 | 默认值从 `INT_ONLY` 修改为 `ON`。 |
-| [`tidb_adaptive_closest_read_threshold`](/system-variables.md#tidb_adaptive_closest_read_threshold-从-v630-版本开始引入) | 新增 | 用于控制开启 TiDB Follower Read 功能。 |
+| [`tidb_enable_exchange_partition`](/system-variables.md#tidb_enable_exchange_partition) | 废弃 | 该变量用于设置是否启用 [`exchange partitions with tables`](/partitioned-table.md#分区管理) 特性。自 v6.3.0 开始，其取值将固定为默认值 `ON`，即默认开启 `exchange partitions with tables`。  |
+| [`tidb_enable_metadata_lock`](/system-variables.md#tidb_enable_metadata_lock-从-v630-版本开始引入)| 新增 | 用来设置是否开启[元数据锁](/metadata-lock.md)特性。 |
+| [`tidb_enable_pseudo_for_outdated_stats`](/system-variables.md#tidb_enable_pseudo_for_outdated_stats-从-v530-版本开始引入) | 修改 | 控制优化器在统计信息过期时的行为。 默认值由 `ON` 改为 `OFF`，即使统计信息过期，优化器也仍会使用该表上的统计信息。  |
+| [`tidb_enable_rate_limit_action`](/system-variables.md#tidb_enable_rate_limit_action) | 修改 | 这个变量控制是否为读数据的算子开启动态内存控制功能。 打开该变量可能会导致内存不受 [tidb_mem_quota_query 控制](/system-variables.md#tidb_mem_quota_query) 控制，而加剧 OOM 风险，故将默认值由 `ON` 调整为 `OFF`。 |
 | [`tidb_enable_unsafe_substitute`](/system-variables.md#tidb_enable_unsafe_substitute-从-v630-版本开始引入) | 新增 | 这个变量用于控制是否对生成列中表达式替换使用不安全的替换方式。 |
-| [`tidb_opt_three_stage_distinct_agg`](/system-variables.md#tidb_opt_three_stage_distinct_agg-从-v630-版本开始引入) | 新增 | 该变量用于控制在 MPP 模式下是否将 `COUNT(DISTINCT)` 聚合改写为三阶段分布式执行的聚合。默认为 `ON`。 |
-| [`tidb_enable_rate_limit_action`](/system-variables.md#tidbenableratelimitaction) | 修改 | 这个变量控制是否为读数据的算子开启动态内存控制功能。 打开该变量可能会导致内存不受 [tidb_mem_quota_query 控制](/system-variables.md#tidb_mem_quota_query) 控制，而加剧 OOM 风险，故将默认值由 `ON` 调整为 `OFF`。 |
-| [`tidb_rc_read_check_ts`](/system-variables.md#tidbrcreadcheckts-span-classversion-mark从-v600-版本开始引入span) | 修改 | 该变量用于优化读语句时间戳的获取，适用于悲观事务 `READ-COMMITTED` 隔离级别下读写冲突较少的场景。由于这个行为只针对特定业务负载，而对其他类型的负载可能造成性能回退，所以将变量作用域变为实例级，允许客户只针对部分 TiDB 实例打开。 |
 | [`tidb_last_plan_replayer_token`](/system-variables.md#tidb_last_plan_replayer_token-从-v630-版本开始引入) | 新增 | 只读变量。 用于获取当前会话中最后一个 plan replayer dump 的结果。 |
+| [`tidb_opt_force_inline_cte`](/system-variables.md#tidb_opt_force_inline_cte-从-v630-版本开始引入) | 新增 | 这个变量用来控制是否强制开启 inline CTE。默认值为 `OFF`，即默认不强制开启 inline CTE。 |
+| [`tidb_opt_three_stage_distinct_agg`](/system-variables.md#tidb_opt_three_stage_distinct_agg-从-v630-版本开始引入) | 新增 | 该变量用于控制在 MPP 模式下是否将 `COUNT(DISTINCT)` 聚合改写为三阶段分布式执行的聚合。默认为 `ON`。 |
+| [`tidb_partition_prune_mode`](/system-variables.md#tidb_partition_prune_mode-从-v51-版本开始引入) | 修改 | 用来设置是否开启分区表动态裁剪模式。自 v6.3.0 起，该变量默认值修改为 `dynamic`。 |
+| [`tidb_rc_read_check_ts`](/system-variables.md#tidbrcreadcheckts-span-classversion-mark从-v600-版本开始引入span) | 修改 | 该变量用于优化读语句时间戳的获取，适用于悲观事务 `READ-COMMITTED` 隔离级别下读写冲突较少的场景。由于这个行为只针对特定业务负载，而对其他类型的负载可能造成性能回退，自 v6.3.0 起，该变量的作用域由 GLOBAL 或 SESSION 修改为 INSTANCE 级别，允许只针对部分 TiDB 实例打开。 |
+| [`tidb_rc_write_check_ts`](/system-variables.md#tidb_rc_write_check_ts-从-v630-版本开始引入)  | 新增 | 用于优化时间戳的获取，适用于悲观事务 READ-COMMITTED 隔离级别下点写冲突较少的场景，开启此变量可以避免点写语句获取全局 timestamp 带来的延迟和开销。 |
+| [`tiflash_fastscan`](/system-variables.md#tiflash_fastscan-从-v630-版本开始引入) | 新增 | 控制是否启用 FastScan 功能。如果开启 FastScan 功能（设置为 `true` 时），TiFlash 可以提供更高效的查询性能，但不保证查询结果的精度和数据一致性。 |
 
 ### 配置文件参数
 
 | 配置文件 | 配置项 | 修改类型 | 描述 |
 | -------- | -------- | -------- | -------- |
 | TiDB | [`temp-dir`](/tidb-configuration-file.md#temp-dir-从-v630-版本开始引入) | 新增 | TiDB 用于存放临时数据的路径。需要使用 TiDB 节点本地存储的功能会将数据临时存放在这个目录下。默认值为 `/tmp/tidb`。 |
+| TiKV | [`auto-adjust-pool-size`](/tikv-configuration-file.md#auto-adjust-pool-size-从-v630-版本开始引入) | 新增 | 控制是否开启自动调整线程池的大小。开启此配置可以基于当前的 CPU 使用情况，自动调整统一处理读请求的线程池 (UnifyReadPool) 的大小，优化 TiKV 的读性能。|
 | TiKV | [`data-encryption-method`](/tikv-configuration-file.md#data-encryption-method) | 修改 | 扩展可选值范围：增加 `sm4-ctr`，设置为 `sm4-ctr` 时，数据将采用国密算法 SM4 加密后进行存储。 |
-| TiKV | [`format-version`](/tikv-configuration-file.md#format-version-从-v630-版本开始引入) | 新增 | 指定 Raft Engine 的日志文件格式版本。v6.3.0 以前的默认值为 `1`。v6.1.0 及以后版本的 TiKV 可以读取该格式。v6.3.0 及以后版本，该配置项默认值为 `2`，TiKV 可以读取该格式。`format-version` 的值设置为 `2` 后，TiKV 集群无法降级至 v6.3.0 以前的版本，否则会导致数据损坏。 |
 | TiKV | [`enable-log-recycle`](/tikv-configuration-file.md#enable-log-recycle-从-v630-版本开始引入) | 新增 | 控制 Raft Engine 是否回收过期的日志文件。该配置项启用时，Raft Engine 将保留逻辑上被清除的日志文件，用于日志回收，减少写负载的长尾延迟。仅在 format-version 的值大于等于 2 时，该配置项才生效。 |
+| TiKV | [`format-version`](/tikv-configuration-file.md#format-version-从-v630-版本开始引入) | 新增 | 指定 Raft Engine 的日志文件格式版本。v6.3.0 以前的默认值为 `1`。v6.1.0 及以后版本的 TiKV 可以读取该格式。v6.3.0 及以后版本，该配置项默认值为 `2`，TiKV 可以读取该格式。 |
 | TiKV | [`log-backup.enable`](/tikv-configuration-file.md#enable-从-v620-版本开始引入) | 修改 | 默认值在 v6.3.0 以前是 `false`，v6.3.0 开始设为 `true`。 |
 | TiKV | [`log-backup.max-flush-interval`](/tikv-configuration-file.md#max-flush-interval-从-v620-版本开始引入) | 修改 | 默认值在 v6.3.0 以前是 `5min`，v6.3.0 开始设为 `3min`。 |
-| TiFlash | [`data-encryption-method`]() | 修改 | 扩展可选值范围：增加：sm4-ctr，设置为 sm4-ctr 时，数据将采用国密算法SM4加密后进行存储。 |
+| PD | [enable-diagnostic](/pd-configuration-file.md#enable-diagnostic-从-v630-版本开始引入) | 新增 | 控制是否开启诊断功能。默认值为 `false`。 |
 | TiFlash | [`dt_enable_read_thread`](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml) | 废弃 | 该参数从 v6.3.0 开始废弃，默认开启此功能且不能关闭。 |
+| DM | [`safe-mode-duration`(/dm/task-configuration-file-full.md#完整配置文件示例) ] 
 | TiCDC | [`enable-sync-point`](/ticdc/manage-ticdc.md#同步任务配置文件描述) | 新增 | 控制是否开启 sync point 功能。 |
 | TiCDC | [`sync-point-interval`](/ticdc/manage-ticdc.md#同步任务配置文件描述) | 新增 | 控制 sync point 功能对齐上下游 snapshot 的时间间隔。 |
 | TiCDC | [`sync-point-retention`](/ticdc/manage-ticdc.md#同步任务配置文件描述) | 新增 | sync point 功能在下游表中保存的数据的时长，超过这个时间的数据会被清理。 |
-| TiCDC | [`--sink-uri.memory`](/ticdc/manage-ticdc.md#创建同步任务) | 废弃 | 已经弃用，不建议在任何情况使用。|
+| TiCDC | [`sink-uri.memory`](/ticdc/manage-ticdc.md#创建同步任务) | 废弃 | 已经弃用，不建议在任何情况使用。|
 
 ### 其他
 
