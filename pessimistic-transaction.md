@@ -142,7 +142,7 @@ TiDB 悲观锁复用了乐观锁的两阶段提交逻辑，重点在 DML 执行�
 
 在两阶段提交之前增加了 Acquire Pessimistic Lock 阶段，简要步骤如下。
 
-1. （同乐观锁）TiDB 收到来自客户端的 begin 请求，获取当前版本号作为本事务的 StartTS。
+1. （同乐观锁）TiDB 收到来自客户端的 begin 请求，获取当前时间戳作为本事务的 StartTS。
 2. TiDB 收到来自客户端的更新数据的请求：TiDB 向 TiKV 发起加悲观锁请求，该锁持久化到 TiKV。
 3. （同乐观锁）客户端发起 commit，TiDB 开始执行与乐观锁一样的两阶段提交。
 
