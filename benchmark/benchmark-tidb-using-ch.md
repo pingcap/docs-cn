@@ -1,15 +1,15 @@
 ---
-title: 如何对 TiDB 进行 CH Benchmark 测试
-summary: 本文介绍如何对 TiDB 进行 CH Benchmark 测试。
+title: 如何对 TiDB 进行 CH-benCHmark 测试
+summary: 本文介绍如何对 TiDB 进行 CH-benCHmark 测试。
 ---
 
-# 如何对 TiDB 进行 CH Benchmark 测试
+# 如何对 TiDB 进行 CH-benCHmark 测试
 
-本文介绍如何对 TiDB 进行 CH Benchmark 测试。
+本文介绍如何对 TiDB 进行 CH-benCHmark 测试。
 
-CH Benchmark 是包含 [TPC-C](http://www.tpc.org/tpcc/) 和 [TPC-H](http://www.tpc.org/tpch/) 的混合负载，也是用于测试 HTAP 系统的最常见负载。更多信息，请参考 [The mixed workload CH-benCHmark](https://research.tableau.com/sites/default/files/a8-cole.pdf)。
+CH-benCHmark 是包含 [TPC-C](http://www.tpc.org/tpcc/) 和 [TPC-H](http://www.tpc.org/tpch/) 的混合负载，也是用于测试 HTAP 系统的最常见负载。更多信息，请参考 [The mixed workload CH-benCHmark](https://research.tableau.com/sites/default/files/a8-cole.pdf)。
 
-在进行 CH Benchmark 测试前，你需要先部署 TiDB 的 HTAP 组件 [TiFlash](/tiflash/tiflash-overview.md)。部署 TiFlash 并[创建 TiFlash 副本](#创建-tiflash-副本)后，对于 TPC-C 联机交易数据，系统将实时同步最新的数据到 TiFlash 组件；TiDB 优化器会自动将 TPC-H 负载的 OLAP 查询下推到 TiFlash MPP 引擎进行高效执行。
+在进行 CH-benCHmark 测试前，你需要先部署 TiDB 的 HTAP 组件 [TiFlash](/tiflash/tiflash-overview.md)。部署 TiFlash 并[创建 TiFlash 副本](#创建-tiflash-副本)后，对于 TPC-C 联机交易数据，系统将实时同步最新的数据到 TiFlash 组件；TiDB 优化器会自动将 TPC-H 负载的 OLAP 查询下推到 TiFlash MPP 引擎进行高效执行。
 
 本文使用 [go-tpc](https://github.com/pingcap/go-tpc) 作为 CH 测试实现，可以通过 [TiUP](/tiup/tiup-overview.md) 命令下载测试程序：
 
@@ -27,7 +27,7 @@ tiup install bench
 
 **导入数据通常是整个 TPC-C 测试中最耗时，也是最容易出问题的阶段。**
 
-本文将以 1000 WAREHOUSE 为例进行导入和测试。在 shell 中运行 TiUP 命令：
+本文以 1000 WAREHOUSE 为例，在 shell 中运行以下 TiUP 命令进行数据导入和测试。注意你需要将本文中的 `172.16.5.140` 和 `4000` 替换为你实际的 TiDB host 和 port 值。
 
 {{< copyable "shell-regular" >}}
 
@@ -69,7 +69,7 @@ creating view revenue1
 部署 TiFlash 后，TiFlash 并不会自动同步 TiKV 数据，你需要执行以下 SQL 语句创建整库的 TiFlash 副本。创建 TiFlash 副本后，系统自动实时同步最新数据到 TiFlash 组件。以下例子中，集群中部署了两个 TiFlash 节点，将 replica 设置为 2。
 
 ```
-alter database tpcc set tiflash replica 2;
+ALTER DATABASE tpcc SET tiflash replica 2;
 ```
 
 可通过如下 SQL 语句确认所有表（通过 WHERE 语句可以指定需要确认的表，去掉 WHERE 语句则查看所有表）的 TiFlash 副本的状态是否完成同步：
@@ -101,7 +101,7 @@ analyze table stock;
 analyze table warehouse;
 analyze table nation;
 analyze table region;
-analyze table supplier
+analyze table supplier;
 ```
 
 ## 运行测试
