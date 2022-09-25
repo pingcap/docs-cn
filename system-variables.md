@@ -1506,6 +1506,13 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
     - 事务从异步提交或一阶段提交到两阶段提交的回退信息
     - 遇到的错误
 
+### `tidb_last_plan_replayer_token` <span class="version-mark">从 v6.3.0 版本开始引入</span>
+
+- 作用域：SESSION
+- 是否持久化到集群：否
+- 类型：字符串
+- 这个变量是一个只读变量，用于获取当前会话中最后一个 `PLAN REPLAYER dump` 的结果。
+
 ### `tidb_log_file_max_days` <span class="version-mark">从 v5.3.0 版本开始引入</span>
 
 - 作用域：SESSION
