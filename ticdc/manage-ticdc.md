@@ -142,7 +142,7 @@ Info: {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":
 ```
 
 - `--changefeed-id`: The ID of the replication task. The format must match the `^[a-zA-Z0-9]+(\-[a-zA-Z0-9]+)*$` regular expression. If this ID is not specified, TiCDC automatically generates a UUID (the version 4 format) as the ID.
-- `--sink-uri`: The downstream address of the replication task. Configure `--sink-uri` according to the following format. Currently, the scheme supports `mysql`/`tidb`/`kafka`/`pulsar`/`s3`/`local`.
+- `--sink-uri`: The downstream address of the replication task. Configure `--sink-uri` according to the following format. Currently, the scheme supports `mysql`, `tidb`, and `kafka`.
 
     {{< copyable "" >}}
 
@@ -309,43 +309,6 @@ dispatchers = [
 ```
 
 For detailed integration guide, see [Quick Start Guide on Integrating TiDB with Confluent Platform](/ticdc/integrate-confluent-using-ticdc.md).
-
-#### Configure sink URI with `pulsar`
-
-> **Warning:**
->
-> This is still an experimental feature. Do **NOT** use it in a production environment.
-
-Sample configuration:
-
-{{< copyable "shell-regular" >}}
-
-```shell
---sink-uri="pulsar://127.0.0.1:6650/topic-name?connectionTimeout=2s"
-```
-
-The following are descriptions of parameters that can be configured for the sink URI with `pulsar`:
-
-| Parameter  | Description                                            |
-| :------------------ | :------------------------------------------------------------ |
-| `connectionTimeout` | The timeout for establishing a connection to the downstream Pulsar, which is optional and defaults to 30 (seconds) |
-| `operationTimeout` | The timeout for performing an operation on the downstream Pulsar, which is optional and defaults to 30 (seconds) |
-| `tlsTrustCertsFilePath` | The path of the CA certificate file needed to connect to the downstream Pulsar instance (optional) |
-| `tlsAllowInsecureConnection` | Determines whether to allow unencrypted connection after TLS is enabled (optional) |
-| `tlsValidateHostname` |  Determines whether to verify the host name of the certificate from the downstream Pulsar (optional) |
-| `maxConnectionsPerBroker` | The maximum number of connections allowed to a single downstream Pulsar broker, which is optional and defaults to 1 |
-| `auth.tls` | Uses the TLS mode to verify the downstream Pulsar (optional). For example, `auth=tls&auth.tlsCertFile=/path/to/cert&auth.tlsKeyFile=/path/to/key`. |
-| `auth.token` | Uses the token mode to verify the downstream Pulsar (optional). For example, `auth=token&auth.token=secret-token` or `auth=token&auth.file=path/to/secret-token-file`. |
-| `name` | The name of Pulsar producer in TiCDC (optional) |
-| `protocol` | The protocol with which messages are output to Pulsar. The value options are `canal-json`, `open-protocol`, `canal`, `avro`, and `maxwell`. |
-| `maxPendingMessages` | Sets the maximum size of the pending message queue, which is optional and defaults to 1000. For example, pending for the confirmation message from Pulsar. |
-| `disableBatching` |  Disables automatically sending messages in batches (optional) |
-| `batchingMaxPublishDelay` | Sets the duration within which the messages sent are batched (default: 10ms) |
-| `compressionType` | Sets the compression algorithm used for sending messages (optional). The value options are `NONE`, `LZ4`, `ZLIB`, and `ZSTD`. (`NONE` by default) |
-| `hashingScheme` | The hash algorithm used for choosing the partition to which a message is sent (optional). The value options are `JavaStringHash` (default) and `Murmur3`. |
-| `properties.*` | The customized properties added to the Pulsar producer in TiCDC (optional). For example, `properties.location=Hangzhou`. |
-
-For more parameters of Pulsar, see [pulsar-client-go ClientOptions](https://godoc.org/github.com/apache/pulsar-client-go/pulsar#ClientOptions) and [pulsar-client-go ProducerOptions](https://godoc.org/github.com/apache/pulsar-client-go/pulsar#ProducerOptions).
 
 #### Use the task configuration file
 
