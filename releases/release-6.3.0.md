@@ -363,6 +363,7 @@ TiDB 版本：6.3.0-DMR
         - bugfix: do not acquire pessimistic lock for non-unique index keys [#36235](https://github.com/pingcap/tidb/issues/36235)
         - Fix the auto-commit mode change related transaction commit behaviours [#36581](https://github.com/pingcap/tidb/issues/36581) @[cfzjywxk](https://github.com/cfzjywxk)
         - Fix the issue explain analyze with DML executors may respond to the client before the transaction commit has finished [#37273](https://github.com/pingcap/tidb/issues/37373) @[cfzjywxk](https://github.com/cfzjywxk)
+        - 修复了 explain analyze 语句可能在事务提交完成前返回结果的问题 [#37273](https://github.com/pingcap/tidb/issues/37373) @[cfzjywxk](https://github.com/cfzjywxk)
 
     - planner
 
