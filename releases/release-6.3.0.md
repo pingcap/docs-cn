@@ -299,7 +299,8 @@ TiDB 版本：6.3.0-DMR
 
     + Backup & Restore (BR)
 
-        - note [#issue]() @[贡献者 GitHub ID]()
+        - PITR 如今会聚合各批文件，大幅缩小备份所需的文件数量 [#13232](https://github.com/tikv/tikv/issues/13232) @[Leavrth](https://github.com/Leavrth)
+        - PITR 如今支持在恢复完成后自动按照上游集群配置设置 TiFlash 副本 [#37208](https://github.com/pingcap/tidb/issues/37208) @[YuJuncen](https://github.com/YuJuncen)
 
     + TiDB Binlog
 
