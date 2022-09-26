@@ -5,13 +5,15 @@ summary: 了解使用 TiDB Data Migration (DM) 进行数据迁移的一些最佳
 
 # 数据迁移最佳实践
 
-TiDB Data Migration (DM) 是由 PingCAP 开发维护的数据迁移同步工具，主要支持的源数据库类型为各类 MySQL 协议标准的关系型数据库，如 MySQL、Percona MySQL、MariaDB、AWS MYSQL RDS、AWS Aurora 等。DM 主要有以下几个使用场景：
+TiDB Data Migration (DM) 是由 PingCAP 开发维护的数据迁移同步工具，主要支持的源数据库类型为各类 MySQL 协议标准的关系型数据库，如 MySQL、Percona MySQL、MariaDB、AWS MYSQL RDS、AWS Aurora 等。
+
+DM 的使用场景主要有：
 
 - 单一实例全量和增量迁移
 - 将分库分表的各个库表归并到一张总表的全量和增量迁移
 - 在“业务数据中台、业务数据实时汇聚”等 DataHUB 场景中，作为数据同步中间件来使用
 
-本文档介绍了如何优雅高效的使用 DM，以及如何规避使用 DM 时的常见误区。
+本文档介绍了如何优雅高效的使用 DM，以及如何规避使用 DM 的常见误区。
 
 ## 性能边界定位
 
@@ -25,11 +27,11 @@ TiDB Data Migration (DM) 是由 PingCAP 开发维护的数据迁移同步工具�
 |   每个 Task 处理的表数量  | 无限制 |
 
 - DM 支持同时管理 1000 个同步节点（Work Node），最大同步任务数量为 600 个。为了保证同步节点的高可用，应预留一部分 Work Node 节点作为备用节点，保证数据同步的高可用。预留已开启同步任务 Work Node 数量的 20% ~ 50%。
-- 单机部署 Work Node 数量。在服务器配置较好情况下，要保证每个 Work Node 至少有 2 核 CPU 加 4G 内存的工作资源可以使用，并且应为主机预留  10% ~ 20% 的系统资源。
-- 单个同步节点（Work Node ），理论最大同步 QPS 在 30K QPS/worker（不同 Schema 和 workload 会有所差异），处理上游 Binlog 的能力最高为 20MB/。
-- 如果将 DM 作为需要长期使用的数据同步中间件，SLA 可以达到 3 个 9 以上。但需要注意 DM 组件的部署架构，参见[xxx](#xxx)。
+- 单机部署 Work Node 数量。在服务器配置较好情况下，要保证每个 Work Node 至少有 2 核 CPU 加 4G 内存的可用工作资源，并且应为主机预留 10% ~ 20% 的系统资源。
+- 单个同步节点（Work Node），理论最大同步 QPS 在 30K QPS/worker（不同 Schema 和 workload 会有所差异），处理上游 Binlog 的能力最高为 20 MB/s/worker。
+- 如果将 DM 作为需要长期使用的数据同步中间件，SLA 可以达到 3 个 9 以上，但需要注意 DM 组件的部署架构。请参见 [Master 与 Woker 部署实践](#master-与-woker-部署实践)。
 
-## 数据迁移前的最佳实践
+## 数据迁移前
 
 在所有数据迁移之前，整体方案的设计是至关重要的。尤其以迁移前的一系列方案设计，是整个方案实施好坏的重中之重。下面我们分别从业务侧要点及实施侧要点两个方面讲一下相关的实践经验和适用场景。
 
@@ -48,16 +50,20 @@ TiDB 的 AUTO_INCREMENT 与 MySQL AUTO_INCREMENT 整体上看是相互兼容的�
 TiDB 在建表时可以声明为主键创建聚簇索引或非聚簇索引。下面介绍各方案的优势和劣势。
 
 - 聚簇索引
+
     [聚簇索引](/clustered-indexes.md#聚簇索引)使用主键作为数据存储的 handle ID（行 ID），在使用主键查询时可以减少一次回表的操作，有效提升查询效能。但如果表有大量数据写入且主键使用 [AUTO_INCREMENT](/auto-increment.md#实现原理)，非常容易造成数据存储的[写入热点问题](/best-practices/high-concurrency-best-practices.md#高并发批量插入场景)，导致集群整体效能不能充分利用，出现单存储节点的性能瓶颈问题。
 
 - 非聚簇索引 + `shard row id bit`
-    使用非聚簇索引，再配合表提示 `shard row id bit`，可以在继续使用 AUTO_INCREMENT 的情况下有效避免数据写入热点的产生。但此时使用主键查询数据，因为多了一次回表操作，查询性能将有所影响。
+
+    使用非聚簇索引，再配合表提示 `shard row id bit`，可以在继续使用 AUTO_INCREMENT 的情况下有效避免数据写入热点的产生。但是由于多了一次回表操作，此时使用主键查询数据，查询性能将有所影响。
 
 - 聚簇索引 + 外部分布式发号器
-    如果想使用聚簇索引，但还希望 ID 是单调递增的，那么可以考虑使用外部分布式发号器，如 Snowflake、Leaf 等，来解决问题。由应用程序产生序列 ID，可以一定程度上保证 ID 的单调递增性，并同时也保留了使用聚簇索引带来的收益。但相对的应用程序需要进行改造。
+
+    如果想使用聚簇索引，但还希望 ID 是单调递增的，那么可以考虑使用外部分布式发号器，如 Snowflake、Leaf 等，来解决问题。由应用程序产生序列 ID，可以一定程度上保证 ID 的单调递增性，同时也保留了使用聚簇索引带来的收益。但相关应用程序需要进行改造。
 
 - 聚簇索引 + AUTO_RANDOM
-    此方案是目前分布式数据库既能避免出现写入热点问题，同时又能保留聚簇索引带来的查询收益的方案。整体改造也相对轻量，可以在业务切换使用 TiDB 作为写库时，修改 Schema 属性来达到目的。那么在后续查询时一定要利用 ID 列进行排序，可以使用 AUTO_RANDOM ID 再列左移 5 位来保证查询数据的顺序性。示例：
+
+    此方案是目前分布式数据库既能避免出现写入热点问题，又能保留聚簇索引带来的查询收益的方案。整体改造也相对轻量，可以在业务切换使用 TiDB 作为写库时，修改 Schema 属性来达到目的。那么在后续查询时一定要利用 ID 列进行排序，可以使用 AUTO_RANDOM ID 再列左移 5 位来保证查询数据的顺序性。示例：
 
     ```sql
     CREATE TABLE t (a bigint PRIMARY KEY AUTO_RANDOM, b varchar(255));
@@ -183,7 +189,7 @@ TiDB 默认情况下是对 Schema name 大小写不敏感的，即 `lower_case_t
 
 在日常运维 MySQL 时，想要在线变更表结构，一般会使用 PT-osc\GH-ost 这类工具，以此保证 DDL 变更的对线上业务的最小影响。但整个过程会被如实的记录到 MySQL Binlog 中，如果全部同步到下游 TiDB 产生大量的写放大，既不高效也不经济。DM 在设置 Task 任务时候可以设置支持三方数据同步工具 PT-osc 或 GH-ost，配置后将不再同步大量冗余数据，并且能保证数据同步的一致性。具体设置方式请参考[迁移使用 GH-ost/PT-osc 的源数据库](/dm/feature-online-ddl.md)。
 
-## 数据迁移中的最佳实践
+## 数据迁移中
 
 在这个环节基本上遇到的问题都是 Troubleshooting 类的问题，在这里给大家列举一些场景的问题及处理方式。
 
