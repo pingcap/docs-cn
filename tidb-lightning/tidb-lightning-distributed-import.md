@@ -102,13 +102,6 @@ backend = "local"
 
 # Specify the path for local sorting data.
 sorted-kv-dir = "/path/to/sorted-dir"
-
-# Specify the routes for shard schemas and tables.
-[[routes]]
-schema-pattern = "my_db"
-table-pattern = "my_table_*"
-target-schema = "my_db"
-target-table = "my_table"
 ```
 
 If the data source is stored in external storage such as Amazon S3 or GCS, see [External Storages](/br/backup-and-restore-storages.md).
@@ -126,7 +119,7 @@ nohup tiup tidb-lightning -config tidb-lightning.toml > nohup.out &
 
 During parallel import, TiDB Lightning automatically performs the following checks after starting the task.
 
-- Check whether there is enough space on the local disk (controlled by the `sort-kv-dir` configuration) and on the TiKV cluster for importing data. To learn the required disk space, see [Downstream storage space requirements](/tidb-lightning/tidb-lightning-requirements.md#downstream-storage-space-requirements) and [Resource requirements](/tidb-lightning/tidb-lightning-requirements.md#resource-requirements). TiDB Lightning samples the data sources and estimates the percentage of the index size from the sample result. Because indexes are included in the estimation, there might be cases where the size of the source data is less than the available space on the local disk, but still the check fails.
+- Check whether there is enough space on the local disk (controlled by the `sort-kv-dir` configuration) and on the TiKV cluster for importing data. To learn the required disk space, see [Downstream storage space requirements](/tidb-lightning/tidb-lightning-requirements.md#storage-space-of-the-target-database) and [Resource requirements](/tidb-lightning/tidb-lightning-physical-import-mode.md#environment-requirements). TiDB Lightning samples the data sources and estimates the percentage of the index size from the sample result. Because indexes are included in the estimation, there might be cases where the size of the source data is less than the available space on the local disk, but still the check fails.
 - Check whether the regions in the TiKV cluster are distributed evenly and whether there are too many empty regions. If the number of empty regions exceeds max(1000, number of tables * 3), i.e. greater than the bigger one of "1000" or "3 times the number of tables ", then the import cannot be executed.
 - Check whether the data is imported in order from the data sources. The size of `mydumper.batch-size` is automatically adjusted based on the result of the check. Therefore, the `mydumper.batch-size` configuration is no longer available.
 

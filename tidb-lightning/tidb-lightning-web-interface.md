@@ -11,7 +11,7 @@ TiDB Lightning provides a webpage for viewing the import progress and performing
 To enable server mode, either start `tidb-lightning` with the `--server-mode` flag
 
 ```sh
-./tidb-lightning --server-mode --status-addr :8289
+tiup tidb-lightning --server-mode --status-addr :8289
 ```
 
 or set the `lightning.server-mode` setting in the configuration file.

@@ -31,8 +31,8 @@ Before getting started, see the following documents to prepare for the migration
 - [Deploy a DM Cluster Using TiUP](/dm/deploy-a-dm-cluster-using-tiup.md)
 - [Use TiUP to Deploy Dumpling and Lightning](/migration-tools.md)
 - [Downstream privilege requirements for Dumpling](/dumpling-overview.md#export-data-from-tidbmysql)
-- [Downstream privilege requirements for TiDB Lightning](/tidb-lightning/tidb-lightning-requirements.md#downstream-privilege-requirements)
-- [Downstream storage space for TiDB Lightning](/tidb-lightning/tidb-lightning-requirements.md#downstream-storage-space-requirements)
+- [Downstream privilege requirements for TiDB Lightning](/tidb-lightning/tidb-lightning-requirements.md)
+- [Downstream storage space for TiDB Lightning](/tidb-lightning/tidb-lightning-requirements.md)
 - [Privileges required by DM-worker](/dm/dm-worker-intro.md)
 
 ### Check conflicts for Sharded Tables
