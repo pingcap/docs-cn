@@ -228,7 +228,7 @@ TiDB 版本：6.3.0-DMR
 | TiKV | [`log-backup.max-flush-interval`](/tikv-configuration-file.md#max-flush-interval-从-v620-版本开始引入) | 修改 | 默认值在 v6.3.0 以前是 `5min`，v6.3.0 开始设为 `3min`。 |
 | PD | [enable-diagnostic](/pd-configuration-file.md#enable-diagnostic-从-v630-版本开始引入) | 新增 | 控制是否开启诊断功能。默认值为 `false`。 |
 | TiFlash | [`dt_enable_read_thread`](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml) | 废弃 | 该参数从 v6.3.0 开始废弃，默认开启此功能且不能关闭。 |
-| DM | [`safe-mode-duration`(/dm/task-configuration-file-full.md#完整配置文件示例) ] 
+| DM | [`safe-mode-duration`](/dm/task-configuration-file-full.md#完整配置文件示例) ] | 
 | TiCDC | [`enable-sync-point`](/ticdc/manage-ticdc.md#同步任务配置文件描述) | 新增 | 控制是否开启 sync point 功能。 |
 | TiCDC | [`sync-point-interval`](/ticdc/manage-ticdc.md#同步任务配置文件描述) | 新增 | 控制 sync point 功能对齐上下游 snapshot 的时间间隔。 |
 | TiCDC | [`sync-point-retention`](/ticdc/manage-ticdc.md#同步任务配置文件描述) | 新增 | sync point 功能在下游表中保存的数据的时长，超过这个时间的数据会被清理。 |
@@ -316,6 +316,7 @@ TiDB 版本：6.3.0-DMR
     + TiDB Data Migration (DM)
 
         - Improve compatibility for MySQL 8.0 upstream [#6448](https://github.com/pingcap/tiflow/issues/6448) @[lance6716](https://github.com/lance6716)
+        - 优化 DDL 执行逻辑，当执行 DDL 超时时，转为异步查询 DDL 执行结果 [#4689](https://github.com/pingcap/tiflow/issues/4689) @[lyzx2001](https://github.com/lyzx2001)
 
     + TiDB Lightning
 
@@ -392,7 +393,7 @@ TiDB 版本：6.3.0-DMR
 
 + PD
 
-    - grpc: fix the wrong error handler [#5373](https://github.com/tikv/pd/issues/5373) @[bufferflies](https://github.com/bufferflies)
+    - Fix PD panics caused by the issue that gRPC handles errors inappropriately when `enable-forwarding` is enabled [#5373](https://github.com/tikv/pd/issues/5373) @[bufferflies](https://github.com/bufferflies)
     - Fix the issue that unhealthy region cause panic [#5491](https://github.com/tikv/pd/issues/5491) @[nolouch](https://github.com/nolouch)
     - Fix the bug where the Learner Peer of TiFlash Replica might not be created [#5401](https://github.com/tikv/pd/issues/5401) @[HunDunDM](https://github.com/HunDunDM)
 
@@ -415,11 +416,11 @@ TiDB 版本：6.3.0-DMR
 
     + Backup & Restore (BR)
 
-        - Fix issues in "br/tests/up.sh" [#36743](https://github.com/pingcap/tidb/issues/36743) @[pingyu](https://github.com/pingyu)
-        - br: raw restore fail in integration test "br_rawkv [#36490](https://github.com/pingcap/tidb/issues/36490) @[pingyu](https://github.com/pingyu)
-        - Fix a bug that may cause the information of the checkpoint being stale [#36423](https://github.com/pingcap/tidb/issues/36423) @[YuJuncen](https://github.com/YuJuncen)
-        - Fix a bug caused when restoring with high `concurrency` the regions aren't balanced [#37549](https://github.com/pingcap/tidb/issues/37549) @[3pointer](https://github.com/3pointer)
-        - Fix a bug that may cause log backup checkpoint TS stuck when some weird ranged regions exist [#37822](https://github.com/pingcap/tidb/issues/37822) @[YuJuncen](https://github.com/YuJuncen)
+        - 修复了一个曾导致 PITR 的延迟信息展示不准的问题 [#36423](https://github.com/pingcap/tidb/issues/36423) @[YuJuncen](https://github.com/YuJuncen)
+        - 修复了在恢复时配置了过高的 concurrency 会导致 Region 不均衡的问题 [#37549](https://github.com/pingcap/tidb/issues/37549) @[3pointer](https://github.com/3pointer)
+        - 修复了在 TiCDC 存在时，PITR 进度无法推进的问题 [#37822](https://github.com/pingcap/tidb/issues/37822) @[YuJuncen](https://github.com/YuJuncen)
+        - 修复了在 Backup Meta V2 启动时，有超出预期数量文件生成的问题 [#37244](https://github.com/pingcap/tidb/issues/37244) [@MoCuishle28](https://github.com/MoCuishle28)
+        - 修复了当外部存储的鉴权 Key 中存在某些特殊符号时，会导致备份恢复失败的问题 [#37469](https://github.com/pingcap/tidb/issues/37469) [@MoCuishle28](https://github.com/MoCuishle28)
 
     + TiCDC
 
