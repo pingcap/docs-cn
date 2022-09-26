@@ -60,7 +60,7 @@ TiDB 版本：6.3.0-DMR
 
 * JDBC 支持国密算法 SM3 的身份验证 [#25](https://github.com/pingcap/mysql-connector-j/issues/25) @[lastincisor](https://github.com/lastincisor)
 
-    用户密码的身份验证需要客户端的支持，现在 [JDBC 支持国密算法 SM3](/develop/dev-guide-choose-driver-or-orm.md#java-drivers)，用户可以通过 JDBC 连接到 TiDB 使用国密算法 SM3 的身份验证能力。
+    用户密码的身份验证需要客户端的支持，现在 [JDBC 支持国密算法 SM3](/develop/dev-guide-choose-driver-or-orm.md#java-drivers)，你可以使用国密算法 SM3 的身份验证能力通过 JDBC 连接到 TiDB 。
 
 ### 可观测性
 
