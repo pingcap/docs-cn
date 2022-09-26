@@ -61,7 +61,7 @@ Issue 链接：[#13304](https://github.com/tikv/tikv/issues/13304)
 
 Issue 链接：[#38045](https://github.com/pingcap/tidb/issues/38045)
 
-当前[索引加速功能](/system-variables.md#tidbddlenablefastreorg-span-class"version-mark"从-v630-版本开始引入span)与 PITR 功能不兼容。在使用索引加速功能时，需要确保后台没有启动 PITR 备份任务，否则可能会出现非预期结果。非预期场景包括：
+当前[索引加速功能](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入)与 PITR 功能不兼容。在使用索引加速功能时，需要确保后台没有启动 PITR 备份任务，否则可能会出现非预期结果。非预期场景包括：
 
 - 如果先启动 PITR 备份任务，再添加索引，此时即使索引加速功能打开，也不会使用加速索引功能，但不影响索引兼容性。
 - 如果先启动添加索引加速任务，再创建 PITR 备份任务，此时 PITR 备份任务会报错，但不影响正在添加索引的任务。
