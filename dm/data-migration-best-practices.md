@@ -5,25 +5,26 @@ summary: 了解使用 TiDB Data Migration (DM) 进行数据迁移的一些最佳
 
 # DM 数据迁移最佳实践
 
-TiDB Data Migration (DM) 是由 PingCAP 开发维护的数据迁移同步工具，主要支持的源数据库类型为各类 MySQL 协议标准的关系型数据库，如 MySQL、Percona MySQL、MariaDB、AWS MYSQL RDS、AWS Aurora 等。
+TiDB Data Migration (DM) 是由 PingCAP 开发维护的数据迁移同步工具，主要支持的源数据库类型为各类 MySQL 协议标准的关系型数据库，如 MySQL、Percona MySQL、MariaDB、AWS MySQL RDS、AWS Aurora 等。
 
 DM 的使用场景主要有：
 
-- 单一实例全量和增量迁移
-- 将分库分表的各个库表归并到一张总表的全量和增量迁移
+- 从兼容 MySQL 的单一实例中全量和增量迁移数据到 TiDB
+- 将小数据量分库分表 MySQL 合并迁移数据到 TiDB
 - 在“业务数据中台、业务数据实时汇聚”等 DataHUB 场景中，作为数据同步中间件来使用
 
 本文档介绍了如何优雅高效的使用 DM，以及如何规避使用 DM 的常见误区。
 
 ## 性能边界定位
 
+DM 的性能参数如下表所示。
 | 参数 | 限制 |
 | -------- | :------: |
 |  最大同步节点（Work Nodes ） |  1000  |
-|  最大同步任务数量 |  600  |
-|  最大同步 QPS   |  30k QPS/worker |
-|  最大 Binlog 吞吐量  |  20 MB/s/worker |
-|   每个 Task 处理的表数量  | 无限制 |
+|  最大同步任务数量         |  600  |
+|  最大同步 QPS            |  30k QPS/worker |
+|  最大 Binlog 吞吐量      |  20 MB/s/worker |
+|  每个 Task 处理的表数量   | 无限制 |
 
 - DM 支持同时管理 1000 个同步节点（Work Node），最大同步任务数量为 600 个。为了保证同步节点的高可用，应预留一部分 Work Node 节点作为备用节点，保证数据同步的高可用。预留已开启同步任务 Work Node 数量的 20% ~ 50%。
 - 单机部署 Work Node 数量。在服务器配置较好情况下，要保证每个 Work Node 至少有 2 核 CPU 加 4G 内存的可用工作资源，并且应为主机预留 10% ~ 20% 的系统资源。
