@@ -155,7 +155,7 @@ DM 是支持存量数据迁移的，但在做全量迁移时会对整库进行�
 
 - 利用备份快照解决存量迁移（只适用 AWS 上 MySQL RDS 和 Aurora RDS 的迁移）
 
-    如果要迁移的数据库正好为 AWS MySQL RDS 或者 Aurora RDS，可以利用 RDS Snapshot 备份将 Amazon S3 中的备份数据直接迁移到 TiDB，以此保证存量数据迁移的一致性。整个操作流程以及后续增量同步方法，请参考[从 Amazon Aurora 迁移数据到 TiDB](/migrate-aurora-to-tidb.mdm#从-amazon-aurora-迁移数据到-tidb)。
+    如果要迁移的数据库正好为 AWS MySQL RDS 或者 Aurora RDS，可以利用 RDS Snapshot 备份将 Amazon S3 中的备份数据直接迁移到 TiDB，以此保证存量数据迁移的一致性。整个操作流程以及后续增量同步方法，请参考[从 Amazon Aurora 迁移数据到 TiDB](/migrate-aurora-to-tidb.md#从-amazon-aurora-迁移数据到-tidb)。
 
 ### 配置细节详解
 
