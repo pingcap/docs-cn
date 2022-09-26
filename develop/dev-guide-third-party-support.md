@@ -38,27 +38,159 @@ PingCAP 与开源社区合作，通过三方工具提供以下支持：
 
 ## ORM
 
-| 编程语言 | ORM 框架 | 最新已测试版本 | 支持等级 | TiDB 适配器 | 教程 |
-| - | - | - | - | - | - |
-| Go | [gorm](https://github.com/go-gorm/gorm) | v1.23.5 | Full | N/A | [TiDB 和 Golang 的简单 CRUD 应用程序](/develop/dev-guide-sample-application-golang.md) |
-| Go | [beego](https://github.com/beego/beego) | v2.0.3 | Full | N/A | N/A |
-| Go | [upper/db](https://github.com/upper/db) | v4.5.2 | Full | N/A | N/A |
-| Go | [xorm](https://gitea.com/xorm/xorm) | v1.3.1 | Full | N/A | N/A |
-| Go | [ent](https://github.com/ent/ent) | v0.11.0 | Compatible | N/A | N/A |
-| Java | [Hibernate](https://hibernate.org/orm/) | 6.1.0.Final | Full | N/A | [TiDB 和 Java 的简单 CRUD 应用程序](/develop/dev-guide-sample-application-java.md) |
-| Java | [MyBatis](https://mybatis.org/mybatis-3/) | v3.5.10 | Full | N/A | [TiDB 和 Java 的简单 CRUD 应用程序](/develop/dev-guide-sample-application-java.md) |
-| Java | [Spring Data JPA](https://spring.io/projects/spring-data-jpa/) | 2.7.2 | Full | N/A | [使用 Spring Boot 构建 TiDB 应用程序](/develop/dev-guide-sample-application-spring-boot.md) |
-| Java | [jOOQ](https://github.com/jOOQ/jOOQ) | v3.16.7 (Open Source) | Full | N/A | N/A |
-| Ruby | [Active Record](https://guides.rubyonrails.org/active_record_basics.html) | v7.0 | Full | N/A | N/A |
-| JavaScript/TypeScript | [sequelize](https://www.npmjs.com/package/sequelize) | v6.20.1 | Compatible | N/A | N/A |
-| JavaScript/TypeScript | [Knex.js](https://knexjs.org/) | v1.0.7 | Compatible | N/A | N/A |
-| JavaScript/TypeScript | [Prisma Client](https://www.prisma.io/) | 3.15.1 | Compatible | N/A | N/A |
-| JavaScript/TypeScript | [TypeORM](https://www.npmjs.com/package/typeorm) | v0.3.6 | Compatible | N/A | N/A |
-| PHP | [laravel](https://laravel.com/) | v9.1.10 | Compatible | [laravel-tidb](https://github.com/colopl/laravel-tidb) | N/A |
-| Python | [Django](https://pypi.org/project/Django/) | v4.0.5 | Compatible | [django-tidb](https://github.com/pingcap/django-tidb) | N/A |
-| Python | [peewee](https://github.com/coleifer/peewee/) | v3.14.10 | Compatible | N/A | N/A |
-| Python | [PonyORM](https://ponyorm.org/) | v0.7.16 | Compatible | N/A | N/A |
-| Python | [SQLAlchemy](https://www.sqlalchemy.org/) | v1.4.37 | Compatible | N/A | N/A |
+<table>
+   <thead>
+      <tr>
+         <th>编程语言</th>
+         <th>ORM 框架</th>
+         <th>最新已测试版本</th>
+         <th>支持等级</th>
+         <th>TiDB 适配器</th>
+         <th>教程</th>
+      </tr>
+   </thead>
+   <tbody>
+      <tr>
+         <td rowspan="5">Go</td>
+         <td><a href="https://github.com/go-gorm/gorm" target="_blank" referrerpolicy="no-referrer-when-downgrade">gorm</a></td>
+         <td>v1.23.5</td>
+         <td>Full</td>
+         <td>N/A</td>
+         <td><a href="/tidb/dev/dev-guide-sample-application-golang">Build a Simple CRUD App with TiDB and Golang</a></td>
+      </tr>
+      <tr>
+         <td><a href="https://github.com/beego/beego" target="_blank" referrerpolicy="no-referrer-when-downgrade">beego</a></td>
+         <td>v2.0.3</td>
+         <td>Full</td>
+         <td>N/A</td>
+         <td>N/A</td>
+      </tr>
+      <tr>
+         <td><a href="https://github.com/upper/db" target="_blank" referrerpolicy="no-referrer-when-downgrade">upper/db</a></td>
+         <td>v4.5.2</td>
+         <td>Full</td>
+         <td>N/A</td>
+         <td>N/A</td>
+      </tr>
+      <tr>
+         <td><a href="https://gitea.com/xorm/xorm" target="_blank" referrerpolicy="no-referrer-when-downgrade">xorm</a></td>
+         <td>v1.3.1</td>
+         <td>Full</td>
+         <td>N/A</td>
+         <td>N/A</td>
+      </tr>
+      <tr>
+         <td><a href="https://github.com/ent/ent" target="_blank" referrerpolicy="no-referrer-when-downgrade">ent</a></td>
+         <td>v0.11.0</td>
+         <td>Compatible</td>
+         <td>N/A</td>
+         <td>N/A</td>
+      </tr>
+      <tr>
+         <td rowspan="4">Java</td>
+         <td><a href="https://hibernate.org/orm/" target="_blank" referrerpolicy="no-referrer-when-downgrade">Hibernate</a></td>
+         <td>6.1.0.Final</td>
+         <td>Full</td>
+         <td>N/A</td>
+         <td><a href="/tidb/dev/dev-guide-sample-application-java">Build a Simple CRUD App with TiDB and Java</a></td>
+      </tr>
+      <tr>
+         <td><a href="https://mybatis.org/mybatis-3/" target="_blank" referrerpolicy="no-referrer-when-downgrade">MyBatis</a></td>
+         <td>v3.5.10</td>
+         <td>Full</td>
+         <td>N/A</td>
+         <td><a href="/tidb/dev/dev-guide-sample-application-java">Build a Simple CRUD App with TiDB and Java</a></td>
+      </tr>
+      <tr>
+         <td><a href="https://spring.io/projects/spring-data-jpa/" target="_blank" referrerpolicy="no-referrer-when-downgrade">Spring Data JPA</a></td>
+         <td>2.7.2</td>
+         <td>Full</td>
+         <td>N/A</td>
+         <td><a href="/tidb/dev/dev-guide-sample-application-spring-boot">Build a TiDB Application Using Spring Boot</a></td>
+      </tr>
+      <tr>
+         <td><a href="https://github.com/jOOQ/jOOQ" target="_blank" referrerpolicy="no-referrer-when-downgrade">jOOQ</a></td>
+         <td>v3.16.7 (Open Source)</td>
+         <td>Full</td>
+         <td>N/A</td>
+         <td>N/A</td>
+      </tr>
+      <tr>
+         <td>Ruby</td>
+         <td><a href="https://guides.rubyonrails.org/active_record_basics.html" target="_blank" referrerpolicy="no-referrer-when-downgrade">Active Record</a></td>
+         <td>v7.0</td>
+         <td>Full</td>
+         <td>N/A</td>
+         <td>N/A</td>
+      </tr>
+      <tr>
+         <td rowspan="4">JavaScript / TypeScript</td>
+         <td><a href="https://www.npmjs.com/package/sequelize" target="_blank" referrerpolicy="no-referrer-when-downgrade">sequelize</a></td>
+         <td>v6.20.1</td>
+         <td>Compatible</td>
+         <td>N/A</td>
+         <td>N/A</td>
+      </tr>
+      <tr>
+         <td><a href="https://knexjs.org/" target="_blank" referrerpolicy="no-referrer-when-downgrade">Knex.js</a></td>
+         <td>v1.0.7</td>
+         <td>Compatible</td>
+         <td>N/A</td>
+         <td>N/A</td>
+      </tr>
+      <tr>
+         <td><a href="https://www.prisma.io/" target="_blank" referrerpolicy="no-referrer-when-downgrade">Prisma Client</a></td>
+         <td>3.15.1</td>
+         <td>Compatible</td>
+         <td>N/A</td>
+         <td>N/A</td>
+      </tr>
+      <tr>
+         <td><a href="https://www.npmjs.com/package/typeorm" target="_blank" referrerpolicy="no-referrer-when-downgrade">TypeORM</a></td>
+         <td>v0.3.6</td>
+         <td>Compatible</td>
+         <td>N/A</td>
+         <td>N/A</td>
+      </tr>
+      <tr>
+         <td>PHP</td>
+         <td><a href="https://laravel.com/" target="_blank" referrerpolicy="no-referrer-when-downgrade">laravel</a></td>
+         <td>v9.1.10</td>
+         <td>Compatible</td>
+         <td><a href="https://github.com/colopl/laravel-tidb" target="_blank" referrerpolicy="no-referrer-when-downgrade">laravel-tidb</a></td>
+         <td>N/A</td>
+      </tr>
+      <tr>
+         <td rowspan="4">Python</td>
+         <td><a href="https://pypi.org/project/Django/" target="_blank" referrerpolicy="no-referrer-when-downgrade">Django</a></td>
+         <td>v4.0.5</td>
+         <td>Compatible</td>
+         <td><a href="https://github.com/pingcap/django-tidb" target="_blank" referrerpolicy="no-referrer-when-downgrade">django-tidb</a></td>
+         <td>N/A</td>
+      </tr>
+      <tr>
+         <td><a href="https://github.com/coleifer/peewee/" target="_blank" referrerpolicy="no-referrer-when-downgrade">peewee</a></td>
+         <td>v3.14.10</td>
+         <td>Compatible</td>
+         <td>N/A</td>
+         <td>N/A</td>
+      </tr>
+      <tr>
+         <td><a href="https://ponyorm.org/" target="_blank" referrerpolicy="no-referrer-when-downgrade">PonyORM</a></td>
+         <td>v0.7.16</td>
+         <td>Compatible</td>
+         <td>N/A</td>
+         <td>N/A</td>
+      </tr>
+      <tr>
+         <td><a href="https://www.sqlalchemy.org/" target="_blank" referrerpolicy="no-referrer-when-downgrade">SQLAlchemy</a></td>
+         <td>v1.4.37</td>
+         <td>Compatible</td>
+         <td>N/A</td>
+         <td>N/A</td>
+      </tr>
+   </tbody>
+</table>
 
 ## GUI
 
@@ -68,9 +200,38 @@ PingCAP 与开源社区合作，通过三方工具提供以下支持：
 | [Navicat for MySQL](https://www.navicat.com/) | 16.0.14 | Compatible | N/A |
 | [MySQL Workbench](https://www.mysql.com/products/workbench/) | 8.0 | Compatible | N/A |
 
-| IDE | 插件  | 支持等级 | 教程 |
-| - | - | - | - |
-| [DataGrip](https://www.jetbrains.com/datagrip/) | N/A | Compatible | N/A |
-| [IntelliJ IDEA](https://www.jetbrains.com/idea/) | N/A | Compatible | N/A |
-| [Visual Studio Code](https://code.visualstudio.com/) | [TiDE](https://marketplace.visualstudio.com/items?itemName=dragonly.ticode) | Compatible | N/A |
-| [Visual Studio Code](https://code.visualstudio.com/) | [MySQL](https://marketplace.visualstudio.com/items?itemName=formulahendry.vscode-mysql) | Compatible | N/A |
+<table>
+   <thead>
+      <tr>
+         <th>IDE</th>
+         <th>插件</th>
+         <th>支持等级</th>
+         <th>教程</th>
+      </tr>
+   </thead>
+   <tbody>
+      <tr>
+         <td><a href="https://www.jetbrains.com/datagrip/" target="_blank" referrerpolicy="no-referrer-when-downgrade">DataGrip</a></td>
+         <td>N/A</td>
+         <td>Compatible</td>
+         <td>N/A</td>
+      </tr>
+      <tr>
+         <td><a href="https://www.jetbrains.com/idea/" target="_blank" referrerpolicy="no-referrer-when-downgrade">IntelliJ IDEA</a></td>
+         <td>N/A</td>
+         <td>Compatible</td>
+         <td>N/A</td>
+      </tr>
+      <tr>
+         <td rowspan="2"><a href="https://code.visualstudio.com/" target="_blank" referrerpolicy="no-referrer-when-downgrade">Visual Studio Code</a></td>
+         <td><a href="https://marketplace.visualstudio.com/items?itemName=dragonly.ticode" target="_blank" referrerpolicy="no-referrer-when-downgrade">TiDE</a></td>
+         <td>Compatible</td>
+         <td>N/A</td>
+      </tr>
+      <tr>
+         <td><a href="https://marketplace.visualstudio.com/items?itemName=formulahendry.vscode-mysql" target="_blank" referrerpolicy="no-referrer-when-downgrade">MySQL</a></td>
+         <td>Compatible</td>
+         <td>N/A</td>
+      </tr>
+   </tbody>
+</table>
