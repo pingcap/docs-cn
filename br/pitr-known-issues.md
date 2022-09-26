@@ -68,3 +68,13 @@ For the current version, it is recommended that you perform a snapshot backup af
 Issue: [#13304](https://github.com/tikv/tikv/issues/13304)
 
 When there is a large transaction, the log checkpoint lag is not updated before the transaction is committed. Therefore, the checkpoint lag is increased by a period of time close to the commit time of the transaction.
+
+## The acceleration of adding indexes feature is not compatible with PITR
+
+Issue: [#38045](https://github.com/pingcap/tidb/issues/38045)
+
+Currently, the [acceleration of adding indexes](/system-variables.md#tidb_ddl_enable_fast_reorg-new-in-v630) feature is not compatible with PITR. When using index acceleration, you need to ensure that there are no PITR log backup tasks running in the background. Otherwise, unexpected behaviors might occur, including:
+
+- If you start a log backup task first, and then add an index. The adding index process is not accelerated even if index acceleration is enabled. But the index is added in a slow way.
+- If you start an index acceleration task first, and then start a log backup task. The log backup task returns an error. But the index acceleration is not affected.
+- If you start a log backup task and an index acceleration task at the same time, the two tasks might not be aware of each other. This might result in PITR failing to back up the newly added index.
