@@ -52,7 +52,7 @@ PingCAP 与开源社区合作，通过三方工具提供以下支持：
    </thead>
    <tbody>
       <tr>
-         <td rowspan="4">Go</td>
+         <td rowspan="5">Go</td>
          <td><a href="https://github.com/go-gorm/gorm" target="_blank" referrerpolicy="no-referrer-when-downgrade">gorm</a></td>
          <td>v1.23.5</td>
          <td>Full</td>
