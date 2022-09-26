@@ -185,7 +185,7 @@ TiDB 默认情况下是对 Schema name 大小写不敏感的，即 `lower_case_t
 - 在进行全量 + 增量数据迁移时，因为全量迁移数据量较大，整个过程耗费时间超过了上游 Binlog 归档的时间，导致增量同步任务不能正常拉起，如果开启 Relay Log 在全量同步拉起同时，DM-worker 即会开始接收 Relay log，避免增量任务拉起失败。
 - 在使用 DM 进行长期数据同步的场景中，有时因为各种原因导致同步任务长时间阻塞，此时开启了 Relay log 功能，可以有效应对同步任务阻塞而导致的上游 Binglog 被回收问题。
 
-在使用 Relay Log 功能时也会有一定的限制。DM 支持高可用，当某个 DM-worker 出现故障，会尝试将空闲的 DM-worker 实例提升为工作实例，如果此时上游 Binlog 没有包含必要的同步日志，将可能出现同步中断情况。此时需要人工干预，尽快将 Relay log 复制到新的 DM-worker 节点上来，并修改相应的 Relay meta 文件。具体方法请参考 [relay 处理单元报错 event from * in * diff from passed-in event * 或迁移任务中断并包含 get binlog error ERROR 1236 (HY000)、binlog checksum mismatch, data may be corrupted 等 binlog 获取或解析失败错误](/dm/dm-error-handling.md#relay-处理单元报错-event-from--in--diff-from-passed-in-event--或迁移任务中断并包含-get-binlog-error-error-1236-hy000binlog-checksum-mismatch-data-may-be-corrupted-等-binlog-获取或解析失败错误)。
+在使用 Relay Log 功能时也会有一定的限制。DM 支持高可用，当某个 DM-worker 出现故障，会尝试将空闲的 DM-worker 实例提升为工作实例，如果此时上游 Binlog 没有包含必要的同步日志，将可能出现同步中断情况。此时需要人工干预，尽快将 Relay log 复制到新的 DM-worker 节点上来，并修改相应的 Relay meta 文件。具体方法请参考 [relay 处理单元报错 event from \* in \* diff from passed-in event \* 或迁移任务中断并包含 get binlog error ERROR 1236 (HY000)、binlog checksum mismatch, data may be corrupted 等 binlog 获取或解析失败错误](/dm/dm-error-handling.md#relay-处理单元报错-event-from--in--diff-from-passed-in-event--或迁移任务中断并包含-get-binlog-error-error-1236-hy000binlog-checksum-mismatch-data-may-be-corrupted-等-binlog-获取或解析失败错误)。
 
 #### 上游使用在线变更工具 PT-osc\GH-ost
 
