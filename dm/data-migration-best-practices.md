@@ -23,13 +23,12 @@ DM 的使用场景主要有：
 |  最大同步任务数量 |  600  |
 |  最大同步 QPS   |  30k QPS/worker |
 |  最大 Binlog 吞吐量  |  20 MB/s/worker |
-|   SLA     |  >99.9% |
 |   每个 Task 处理的表数量  | 无限制 |
 
 - DM 支持同时管理 1000 个同步节点（Work Node），最大同步任务数量为 600 个。为了保证同步节点的高可用，应预留一部分 Work Node 节点作为备用节点，保证数据同步的高可用。预留已开启同步任务 Work Node 数量的 20% ~ 50%。
 - 单机部署 Work Node 数量。在服务器配置较好情况下，要保证每个 Work Node 至少有 2 核 CPU 加 4G 内存的可用工作资源，并且应为主机预留 10% ~ 20% 的系统资源。
 - 单个同步节点（Work Node），理论最大同步 QPS 在 30K QPS/worker（不同 Schema 和 workload 会有所差异），处理上游 Binlog 的能力最高为 20 MB/s/worker。
-- 如果将 DM 作为需要长期使用的数据同步中间件，SLA 可以达到 3 个 9 以上，但需要注意 DM 组件的部署架构。请参见 [Master 与 Woker 部署实践](#master-与-woker-部署实践)。
+- 如果将 DM 作为需要长期使用的数据同步中间件，需要注意 DM 组件的部署架构。请参见 [Master 与 Woker 部署实践](#master-与-woker-部署实践)。
 
 ## 数据迁移前
 
