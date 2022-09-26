@@ -7,18 +7,18 @@ summary: Learn how to use extended statistics to guide the optimizer.
 
 TiDB can collect the following two types of statistics:
 
-- Regular statistics: statistics such as histograms and Count-Min Sketch. See [Introduction to Statistics](/statistics.md) for details.
+- Basic statistics: statistics such as histograms and Count-Min Sketch. See [Introduction to Statistics](/statistics.md) for details.
 - Extended statistics: statistics filtered by tables and columns.
 
 > **Tip:**
 >
 > Before reading this document, it is recommended that you read [Introduction to Statistics](/statistics.md) first.
 
-When the `ANALYZE` statement is executed manually or automatically, TiDB by default only collects the regular statistics and does not collect the extended statistics. This is because the extended statistics are only used for optimizer estimates in specific scenarios, and collecting them requires additional overhead.
+When the `ANALYZE` statement is executed manually or automatically, TiDB by default only collects the basic statistics and does not collect the extended statistics. This is because the extended statistics are only used for optimizer estimates in specific scenarios, and collecting them requires additional overhead.
 
 Extended statistics are disabled by default. To collect extended statistics, you need to first enable the extended statistics, and then register each individual extended statistics object.
 
-After the registration, the next time the `ANALYZE` statement is executed, TiDB collects both the regular statistics and the registered extended statistics.
+After the registration, the next time the `ANALYZE` statement is executed, TiDB collects both the basic statistics and the registered extended statistics.
 
 ## Limitations
 
@@ -107,7 +107,7 @@ Other TiDB nodes will read this change and delete the object in their memory cac
 
 ### Export and import extended statistics
 
-The way of exporting or importing extended statistics is the same as exporting or importing regular statistics. See [Introduction to Statistics - Import and export statistics](/statistics.md#import-and-export-statistics) for details.
+The way of exporting or importing extended statistics is the same as exporting or importing basic statistics. See [Introduction to Statistics - Import and export statistics](/statistics.md#import-and-export-statistics) for details.
 
 ## Usage examples for correlation-type extended statistics
 
