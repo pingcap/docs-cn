@@ -250,22 +250,23 @@ TiDB 版本：6.3.0-DMR
 
 + TiDB
 
-    - `PLAN REPLAYER` 命令支持一次导出多条 SQL 语句的执行计划信息，提升了问题排查效率 [#37798](https://github.com/pingcap/tidb/issues/37798) @[Yisaer](https://github.com/Yisaer)
-    - Improve warning log when new connection arrives [#34964](https://github.com/pingcap/tidb/issues/34964) @[xiongjiwei](https://github.com/xiongjiwei)
-
     - sql-infra
 
         - Grant privilege of a table to an user checks the target table exist first, in the past, the table name comparison works in a case sensitive manner, now it's changed to case insensitive [#34610](https://github.com/pingcap/tidb/issues/34610) @[tiancaiamao](https://github.com/tiancaiamao)
         - Previously, TiDB users can set `init_connect` without any checking. From now on, the value of `init_connect` should be checked by the sql parser [#35324](https://github.com/pingcap/tidb/issues/35324) @[CbcWestwolf](https://github.com/CbcWestwolf)
+        - 改进新连接产生时的警告日志 [#34964](https://github.com/pingcap/tidb/issues/34964) @[xiongjiwei](https://github.com/xiongjiwei)
 
     - execution
 
-        - report error if json path has the wrong syntax [#22525](https://github.com/pingcap/tidb/issues/22525) @[xiongjiwei](https://github.com/xiongjiwei)
-        - report error if json path has the wrong syntax [#34959](https://github.com/pingcap/tidb/issues/34959) @[xiongjiwei](https://github.com/xiongjiwei)
+        - Report error if json path has the wrong syntax [#22525](https://github.com/pingcap/tidb/issues/22525) @[xiongjiwei](https://github.com/xiongjiwei)
+        - Report error if json path has the wrong syntax [#34959](https://github.com/pingcap/tidb/issues/34959) @[xiongjiwei](https://github.com/xiongjiwei)
+        - Improve the performance of Join by fix a false sharing problem. [#37641](https://github.com/pingcap/tidb/issues/37641)
+        - Improve the MySQL compatibility of `CAST` function in terms of float-to-time conversion [#37462](https://github.com/pingcap/tidb/issues/37462) @[mengxin9014](https://github.com/mengxin9014)
 
     - planner
 
-        - planner: just pop cte's handleHelper map out since it shouldn't be considered [#35758](https://github.com/pingcap/tidb/issues/35758) @[AilinKid](https://github.com/AilinKid)
+        - just pop cte's handleHelper map out since it shouldn't be considered [#35758](https://github.com/pingcap/tidb/issues/35758) @[AilinKid](https://github.com/AilinKid)
+        - `PLAN REPLAYER` 命令支持一次导出多条 SQL 语句的执行计划信息，提升了问题排查效率 [#37798](https://github.com/pingcap/tidb/issues/37798) @[Yisaer](https://github.com/Yisaer)
 
 + TiKV
 
@@ -290,6 +291,8 @@ TiDB 版本：6.3.0-DMR
         - Support Planner Interpreter [#4739](https://github.com/pingcap/tiflash/issues/4739) @[SeaRise](https://github.com/SeaRise)
         - Support to pushdown hex to TiFlash [#5107](https://github.com/pingcap/tiflash/issues/5107) @[YangKeao](https://github.com/YangKeao)
         - Suppress the "tcp set inq" loggings [#4940](https://github.com/pingcap/tiflash/issues/4940)
+        - Improve the accuracy of memory tracker in TiFlash [#5610](https://github.com/pingcap/tiflash/pull/5610)
+        - Improve the performance of string column with `UTF8_BIN/ASCII_BIN/LATIN1_BIN/UTF8MB4_BIN` collation [#5294](https://github.com/pingcap/tiflash/issues/5294)
 
     - storage
 
@@ -299,8 +302,8 @@ TiDB 版本：6.3.0-DMR
 
     + Backup & Restore (BR)
 
-        - PITR 如今会聚合各批文件，大幅缩小备份所需的文件数量 [#13232](https://github.com/tikv/tikv/issues/13232) @[Leavrth](https://github.com/Leavrth)
-        - PITR 如今支持在恢复完成后自动按照上游集群配置设置 TiFlash 副本 [#37208](https://github.com/pingcap/tidb/issues/37208) @[YuJuncen](https://github.com/YuJuncen)
+        - PITR 可以聚合各批文件，大幅缩小备份所需的文件数量 [#13232](https://github.com/tikv/tikv/issues/13232) @[Leavrth](https://github.com/Leavrth)
+        - PITR 支持在恢复完成后自动按照上游集群配置设置 TiFlash 副本 [#37208](https://github.com/pingcap/tidb/issues/37208) @[YuJuncen](https://github.com/YuJuncen)
 
     + TiDB Binlog
 
@@ -318,23 +321,9 @@ TiDB 版本：6.3.0-DMR
 
         - Add query parameters for S3 external storage URL, in order to support accessing the S3 data in another account by assuming a given role [#36891](https://github.com/pingcap/tidb/issues/36891) [dsdashun](https://github.com/dsdashun)
 
-    + TiUP
-
-        - note [#issue]() @[贡献者 GitHub ID]()
-
 ## 错误修复
 
 + TiDB
-
-    - Fix handling of prepared statement flags in the classic MySQL protocol [#36731](https://github.com/pingcap/tidb/issues/36731) @[hawkingrei](https://github.com/hawkingrei)
-    - update pd-client to ensure tidb-server get clusterID correctly [#36505](https://github.com/pingcap/tidb/issues/36505), [#36478](https://github.com/pingcap/tidb/issues/36478) @[Defined2014](https://github.com/Defined2014)
-    - Fix that incorrect TiDB states may appear on startup under very, very, very extreme cases [#36791](https://github.com/pingcap/tidb/issues/36791)
-    - Fix a bug that UnionScan's Next() function skips reading data when the passed chunk's capacity is 0 [#36903](https://github.com/pingcap/tidb/issues/36903)
-    - Fix a bug about variables information leak [#37586](https://github.com/pingcap/tidb/issues/37586)
-    - Fix the issue that the action order of [#37058](https://github.com/pingcap/tidb/issues/37058) @[YangKeao](https://github.com/YangKeao)
-    - Fix the issue that comparison between json opaque will cause panic [#37315](https://github.com/pingcap/tidb/issues/37315)
-    - Fix the issue that the single precision float cannot be used in json aggregation funtions [#37287](https://github.com/pingcap/tidb/issues/37287) @[YangKeao](https://github.com/YangKeao)
-    - fix that the result of expression castRealAsTime is inconsistent with mysql [#37462](https://github.com/pingcap/tidb/issues/37462)
 
     - sql-infra
 
@@ -351,6 +340,9 @@ TiDB 版本：6.3.0-DMR
         - Optimize DDL history HTTP API, and add support for 'start_job_id' parameter [#35838](https://github.com/pingcap/tidb/issues/35838) @[tiancaiamao](https://github.com/tiancaiamao)
         - Fix the issue that `row_count` of DDL jobs is inaccurate [#25968](https://github.com/pingcap/tidb/issues/25968) @[Defined2014](https://github.com/Defined2014)
         - Fix the issue that `FLASHBACK TABLE` does not work properly [#37386](https://github.com/pingcap/tidb/issues/37386) @[tiancaiamao](https://github.com/tiancaiamao)
+        - Fix handling of prepared statement flags in the classic MySQL protocol [#36731](https://github.com/pingcap/tidb/issues/36731) @[dveeden](https://github.com/dveeden)
+        - Fix data-race issue on start up in rare cases [#36791](https://github.com/pingcap/tidb/issues/36791) @[xhebox](https://github.com/xhebox)
+        - Fix the issue that `information_schema.variables_info` does not respect SEM [#37586](https://github.com/pingcap/tidb/issues/37586) @[CbcWestwolf](https://github.com/CbcWestwolf)
 
     - execution
 
@@ -358,6 +350,9 @@ TiDB 版本：6.3.0-DMR
         - Fix the issue that the cast and comparison between binary string and json is incompatible with MySQL [#31918](https://github.com/pingcap/tidb/issues/31918) @[YangKeao](https://github.com/YangKeao)
         - Fix the issue that the cast and comparison between binary string and json is incompatible with MySQL [#25053](https://github.com/pingcap/tidb/issues/25053) @[YangKeao](https://github.com/YangKeao)
         - Fix the issue that the json_objectagg and json_arrayagg is not compatible with MySQL on binary value [#25053](https://github.com/pingcap/tidb/issues/25053) @[YangKeao](https://github.com/YangKeao)
+        - Fix the issue that comparison between json opaque causes panic [#37315](https://github.com/pingcap/tidb/issues/37315) @[YangKeao](https://github.com/YangKeao)
+        - Fix the issue that the single precision float cannot be used in json aggregation funtions [#37287](https://github.com/pingcap/tidb/issues/37287) @[YangKeao](https://github.com/YangKeao)
+        - Fix the issue that `UNION` may returns unexpected empty result [#36903](https://github.com/pingcap/tidb/issues/36903) @[tiancaiamao](https://github.com/tiancaiamao)
 
     - transaction
 
@@ -441,10 +436,6 @@ TiDB 版本：6.3.0-DMR
     + TiDB Lightning
 
         - Fix the issue that TiDB Lightning does not support columns starting with slash, number, or non-ascii characters in Parquet files  [#36980](https://github.com/pingcap/tidb/issues/36980) @[D3Hunter](https://github.com/D3Hunter)
-
-    + TiUP
-
-        - note [#issue]() @[贡献者 GitHub ID]()
 
 ## 贡献者
 
