@@ -16,7 +16,7 @@ TiDB 在 v3.0.8 后支持通过 TiDB 配置文件中的 [`server-version`](/tidb
 
 ```
 server_configs:
-    tidb:
+  tidb:
     server-version: 'YOUR_VERSION_STRING'
 ```
 
