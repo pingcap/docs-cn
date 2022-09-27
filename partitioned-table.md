@@ -155,6 +155,10 @@ Range 分区在下列条件之一或者多个都满足时，尤其有效：
 
 Range COLUMNS 分区是 Range 分区的一种变体。你可以使用一个或者多个列作为分区键，分区列的数据类型可以是整数 (integer)、字符串（`CHAR`/`VARCHAR`），`DATE` 和 `DATETIME`。不支持使用任何表达式。
 
+> **警告：**
+>
+> 当前该功能为实验特性，不建议在生产环境中使用。
+
 假设你想要按名字进行分区，并且能够轻松地删除旧的无效数据，那么你可以创建一个表格，如下所示：
 
 ```sql
@@ -182,7 +186,13 @@ PARTITION BY RANGE COLUMNS(name,valid_until)
 
 ### Range INTERVAL 分区
 
-TiDB v6.3.0 新增了 Range INTERVAL 分区特性，作为语法糖（syntactic sugar）引入。Range INTERVAL 分区是对 Range 分区的扩展。你可以使用特定的间隔（interval）轻松创建分区。其语法如下：
+TiDB v6.3.0 新增了 Range INTERVAL 分区特性，作为语法糖（syntactic sugar）引入。Range INTERVAL 分区是对 Range 分区的扩展。你可以使用特定的间隔（interval）轻松创建分区。
+
+> **警告：**
+>
+> 当前该功能为实验特性，不建议在生产环境中使用。
+
+其语法如下：
 
 ```sql
 PARTITION BY RANGE [COLUMNS] (<partitioning expression>)
@@ -229,7 +239,7 @@ PARTITION BY RANGE (`id`)
  PARTITION `P_MAXVALUE` VALUES LESS THAN (MAXVALUE))
 ```
 
-Range INTERVAL 还可以配合 RANGE COLUMNS 分区一起使用。如下面的示例：
+Range INTERVAL 还可以配合 [Range COLUMNS](#range-columns-分区) 分区一起使用。如下面的示例：
 
 ```sql
 CREATE TABLE monthly_report_status (
