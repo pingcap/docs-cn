@@ -956,11 +956,14 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 ### `tidb_enable_general_plan_cache` <span class="version-mark">从 v6.3.0 版本开始引入</span>
 
-- 作用域：
-- 是否持久化到集群：
-- 默认值：
-- 这个变量用于 XXX。
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 默认值：`OFF`
+- 这个变量用来控制是否开启 General Plan Cache。
 
+> **警告：**
+>
+> 当前版本中该变量控制的功能尚未完全生效，请保留默认值。
 ### `tidb_enable_index_merge` <span class="version-mark">从 v4.0 版本开始引入</span>
 
 > **注意：**
@@ -1391,12 +1394,15 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 ### `tidb_general_plan_cache_size` <span class="version-mark">从 v6.3.0 版本开始引入</span>
 
-- 作用域：
-- 是否持久化到集群：
-- 默认值：
-- 范围：
-- 这个变量用来 XXX。
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 默认值：`100`
+- 范围：`[1, 100000]`
+- 这个变量用来控制 General Plan Cache 最多能够缓存的计划数量。
 
+> **警告：**
+>
+> 当前版本中该变量控制的功能尚未完全生效，请保留默认值。
 ### `tidb_guarantee_linearizability` <span class="version-mark">从 v5.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
