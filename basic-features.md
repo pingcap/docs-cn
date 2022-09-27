@@ -118,7 +118,9 @@ aliases: ['/docs-cn/dev/basic-features/']
 | [List 分区](/partitioned-table.md)                   | Y | Y | Y | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |    N    |
 | [List COLUMNS 分区](/partitioned-table.md)           | Y | Y | Y | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |    N    |
 | [`EXCHANGE PARTITION`](/partitioned-table.md)               | Y  | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |    N    |
-| [动态裁剪](/partitioned-table.md#动态裁剪模式) | Y | Y | Y | Y | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |      N       |    N    |
+| [动态裁剪](/partitioned-table.md#动态裁剪模式) | Y | Y | Y | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |      N       |    N    |
+| [Range COLUMNS 分区](/partitioned-table.md#range-columns-分区) | Y | N | N | N | N | N |N | N | N |      N       |    N    |
+| [Range INTERVAL 分区](/partitioned-table.md#range-interval-分区) | 实验特性 | N | N | N | N | N |N | N | N |      N       |    N    |
 
 ## 统计信息
 
@@ -130,7 +132,6 @@ aliases: ['/docs-cn/dev/basic-features/']
 | [统计反馈](/statistics.md#自动更新)                       | 已废弃 | 已废弃 | 已废弃 | 已废弃 |  已废弃  | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
 | [统计信息自动更新](/statistics.md#自动更新) |   Y |   Y  |   Y   |   Y   |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
 | [快速分析](/system-variables.md#tidb_enable_fast_analyze) | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
-| [动态剪裁](/partitioned-table.md#动态裁剪模式) | Y | Y | Y | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | N | N |
 
 ## 安全
 
