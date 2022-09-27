@@ -3,7 +3,11 @@ title: Oracle 与 TiDB 函数对照表
 summary: 了解 Oracle 与 TiDB 函数对照表。
 ---
 
-| 序号 | 语法差异 | Oracle 用法 | TiDB 用法 | 说明 |
+# Oracle 与 TiDB 函数对照表
+
+本文为您提供 Oracle 与 TiDB 的函数对照表，方便您根据 Oracle 函数查找对应的 TiDB 函数。
+
+| 序号 | 语法差异 | Oracle | TiDB  | 说明 |
 |---|---|---|---|---|
 | 1 | 数据类型转换函数 | to_number(key) | convert(key, dataType) | 转换表字段值数据类型（TiDB支持BINARY、CHAR、DATE、DATETIME、TIME、SIGNED INTEGER、UNSIGNED   INTEGER、DECIMAL） |
 | 2 | 数据类型转换函数 | to_char(key) | convert(key, dataType) | 转换表字段值数据类型（TiDB支持BINARY、CHAR、DATE、DATETIME、TIME、SIGNED INTEGER、UNSIGNED INTEGER、DECIMAL） |
