@@ -48,6 +48,6 @@ Depending on which tools you want to use, you can install the corresponding offl
 | [PD Control](/pd-control.md)  | `pd-recover-{version}-linux-{arch}.tar` |
 | [PD Recover](/pd-recover.md)  | `etcdctl` |
 
-> **Note**:
+> **Note:**
 >
 > `{version}` depends on the version of the tool you are installing. `{arch}` depends on the architecture of the system, which can be `amd64` or `arm64`.

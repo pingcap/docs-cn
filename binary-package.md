@@ -32,7 +32,7 @@ The `TiDB-community-server` package contains the following contents.
 | influxdb-{version}-linux-{arch}.tar.gz |  |
 | playground-{version}-linux-{arch}.tar.gz |  |
 
-> **Note**:
+> **Note:**
 >
 > `{version}` depends on the version of the component or server you are installing. `{arch}` depends on the architecture of the system, which can be `amd64` or `arm64`.
 
@@ -75,7 +75,7 @@ The `TiDB-community-toolkit` package contains the following contents.
 | blackbox_exporter-{version}-linux-{arch}.tar.gz | New in v6.2.0  |
 | node_exporter-{version}-linux-{arch}.tar.gz | New in v6.2.0  |
 
-> **Note**:
+> **Note:**
 >
 > `{version}` depends on the version of the tool you are installing. `{arch}` depends on the architecture of the system, which can be `amd64` or `arm64`.
 

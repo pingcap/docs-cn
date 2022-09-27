@@ -233,7 +233,7 @@ This method significantly improves the efficiency of batch processing by avoidin
 
 For non-clustered index tables (also known as "non-index-organized tables"), the internal field `_tidb_rowid` can be used as a pagination key, and the pagination method is the same as that of single-field primary key tables.
 
-> **Tips:**
+> **Tip:**
 >
 > You can use the `SHOW CREATE TABLE users;` statement to check whether the table primary key uses [clustered index](/clustered-indexes.md).
 
