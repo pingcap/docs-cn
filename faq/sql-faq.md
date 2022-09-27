@@ -94,7 +94,8 @@ TiDB 字符集默认就是 UTF8 而且目前只支持 UTF8，字符串就是 mem
 
 ## TiDB 中，为什么出现后插入数据的自增 ID 反而小？
 
-TiDB 的自增 ID (`AUTO_INCREMENT`) 只保证自增且唯一，并不保证连续分配。TiDB 目前采用批量分配的方式，所以如果在多个 TiD-server 上同时插入数据，分配的自增 ID 会不连续。当多个线程并发往不同的 TiDB-server 插入数据的时候，有可能会出现后插入的数据自增 ID 小的情况。此外，TiDB 允许给整型类型的字段指定 AUTO_INCREMENT，且一个表只允许一个属性为 `AUTO_INCREMENT` 的字段。详情可参考 [CREATE TABLE 语法](/mysql-compatibility.md#自增-id)和 [AUTO_INCREMENT](/auto-increment.md)。
+TiDB 的自增 ID (`AUTO_INCREMENT`) 只保证自增且唯一，并不保证连续分配。TiDB 目前采用批量分配的方式，所以如果在多台 TiDB server 上同时插入数据，分配的自增 ID 会不连续。当多个线程并发往不同的 TiDB server 插入数据的时候，有可能会出现后插入的数据自增 ID 小的情况。此外，TiDB 允许给整型类型的字段指定 AUTO_INCREMENT，且一个表只允许一个属性为 `AUTO_INCREMENT` 的字段。详情可参考 [CREATE TABLE 语法](/mysql-compatibility.md#自增-id)和 [AUTO_INCREMENT](/auto-increment.md)。
+
 
 ## 如何在 TiDB 中修改 `sql_mode`？
 
@@ -172,7 +173,7 @@ TiDB 支持改变 [per-session](/system-variables.md#tidb_force_priority)、[全
 
 触发策略：如果一张新表达到 1000 条记录，并且在 1 分钟内没有写入，会自动触发。
 
-当表的（修改数/当前总行数）比例大于 `tidb_auto_analyze_ratio` 的时候，会自动触发 `analyze` 语句。`tidb_auto_analyze_ratio` 的默认值为 0.5，即默认开启自动触发 auto analyze。为了保险起见，在开启 auto analyze 的时候，`tidb_auto_analyze_ratio`  的最小值为 0.3。但是该变量值不能大于等于 `pseudo-estimate-ratio`（默认值为 0.8），否则会有一段时间使用 pseudo 统计信息，建议设置值为 0.5。
+当表的（修改数/当前总行数）比例大于 `tidb_auto_analyze_ratio` 的时候，会自动触发 `analyze` 语句。`tidb_auto_analyze_ratio` 的默认值为 0.5，即默认开启自动触发 auto analyze。为了保险起见，在开启 auto analyze 的时候，`tidb_auto_analyze_ratio` 的最小值为 0.3。但是该变量值不能大于等于 `pseudo-estimate-ratio`（默认值为 0.8），否则会有一段时间使用 pseudo 统计信息，建议设置值为 0.5。
 
 你可以用系统变量 [`tidb_enable_auto_analyze`](/system-variables.md#tidb_enable_auto_analyze-从-v610-版本开始引入) 关闭 auto analyze。
 
