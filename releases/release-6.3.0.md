@@ -58,9 +58,9 @@ TiDB 版本：6.3.0-DMR
 
     TiDB 身份验证新增基于国密算法 SM3 的插件 [`tidb_sm3_password`](/system-variables.md#default_authentication_plugin)，启用此插件后，用户密码将通过 SM3 进行加密存储和验证。
 
-* JDBC 支持国密算法 SM3 的身份验证 [#25](https://github.com/pingcap/mysql-connector-j/issues/25) @[lastincisor](https://github.com/lastincisor)
+* TiDB-JDBC 支持国密算法 SM3 的身份验证 [#25](https://github.com/pingcap/mysql-connector-j/issues/25) @[lastincisor](https://github.com/lastincisor)
 
-    用户密码的身份验证需要客户端的支持，现在 [JDBC 支持国密算法 SM3](/develop/dev-guide-choose-driver-or-orm.md#java-drivers)，你可以使用国密算法 SM3 的身份验证能力通过 JDBC 连接到 TiDB 。
+    用户密码的身份验证需要客户端的支持，现在 [TiDB-JDBC 支持国密算法 SM3](/develop/dev-guide-choose-driver-or-orm.md#java-drivers)，你可以使用国密算法 SM3 的身份验证能力通过 TiDB-JDBC 连接到 TiDB 。
 
 ### 可观测性
 
@@ -174,7 +174,7 @@ TiDB 版本：6.3.0-DMR
 
 * DM 任务配置文件中新增一个配置项 `safe-mode-duration` [#6224] (https://github.com/pingcap/tiflow/issues/6224) @[[okJiang](https://github.com/okJiang)]
 
-    DM 任务配置文件中新增一个配置项 [`safe-mode-duration`](/dm/task-configuration-file-full.md#完整配置文件示例)，用户可以自行调节 DM 异常重启后进入安全模式的持续时间，默认值 60 秒。当设置为 "0s" 时，表示 DM 异常重启后不会自动进入安全模式。
+    DM 任务配置文件中新增一个配置项 [`safe-mode-duration`](/dm/task-configuration-file-full.md#完整配置文件示例)，用户可以自行调节 DM 异常重启后进入安全模式的持续时间，默认值 60 秒。当设置为 "0s" 时，表示 DM 异常重启后尝试进入安全模式会报错。
 
 ### 数据共享与订阅
 
