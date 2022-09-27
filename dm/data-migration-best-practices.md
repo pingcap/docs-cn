@@ -5,15 +5,15 @@ summary: 了解使用 TiDB Data Migration (DM) 进行数据迁移的一些最佳
 
 # DM 数据迁移最佳实践
 
-TiDB Data Migration (DM) 是由 PingCAP 开发维护的数据迁移同步工具，主要支持的源数据库类型为各类 MySQL 协议标准的关系型数据库，如 MySQL、Percona MySQL、MariaDB、AWS MySQL RDS、AWS Aurora 等。
+[TiDB Data Migration (DM)](https://github.com/pingcap/tiflow/tree/master/dm) 是由 PingCAP 开发维护的数据迁移同步工具，主要支持的源数据库类型为各类遵循 MySQL 协议标准的关系型数据库，如 MySQL、Percona MySQL、MariaDB、Amazon RDS for MySQL、Amazon Aurora 等。
 
 DM 的使用场景主要有：
 
 - 从兼容 MySQL 的单一实例中全量和增量迁移数据到 TiDB
 - 将小数据量分库分表 MySQL 合并迁移数据到 TiDB
-- 在“业务数据中台、业务数据实时汇聚”等 DataHUB 场景中，作为数据同步中间件来使用
+- 在“业务数据中台、业务数据实时汇聚”等 Data Hub 场景中，作为数据同步中间件来使用
 
-本文档介绍了如何优雅高效的使用 DM，以及如何规避使用 DM 的常见误区。
+本文档介绍了如何优雅高效地使用 DM，以及如何规避使用 DM 的常见误区。
 
 ## 性能边界定位
 
@@ -27,7 +27,7 @@ DM 的性能参数如下表所示。
 |  最大 Binlog 吞吐量      |  20 MB/s/worker |
 |  每个 Task 处理的表数量   | 无限制 |
 
-- DM 支持同时管理 1000 个同步节点（Work Node），最大同步任务数量为 600 个。为了保证同步节点的高可用，应预留一部分 Work Node 节点作为备用节点。预留已开启同步任务 Work Node 数量的 20% ~ 50%。
+- DM 支持同时管理 1000 个同步节点（Work Node），最大同步任务数量为 600 个。为了保证同步节点的高可用，应预留一部分同步节点作为备用节点。建议预留的节点数量为已开启同步任务的同步节点数量的 20% ~ 50%。
 - 单机部署 Work Node 数量。在服务器配置较好情况下，要保证每个 Work Node 至少有 2 核 CPU 加 4G 内存的可用工作资源，并且应为主机预留 10% ~ 20% 的系统资源。
 - 单个同步节点（Work Node），理论最大同步 QPS 在 30K QPS/worker（不同 Schema 和 workload 会有所差异），处理上游 Binlog 的能力最高为 20 MB/s/worker。
 - 如果将 DM 作为需要长期使用的数据同步中间件，需要注意 DM 组件的部署架构。请参见 [Master 与 Woker 部署实践](#master-与-woker-部署实践)。
@@ -42,7 +42,7 @@ DM 的性能参数如下表所示。
 
 #### Schema 的设计中 AUTO_INCREMENT 对业务的影响
 
-TiDB 的 AUTO_INCREMENT 与 MySQL AUTO_INCREMENT 整体上看是相互兼容的。但因为 TiDB 作为分布式数据库，一般会有多个计算节点（client 端入口），应用数据写入时会将负载均分开，这就导致在有 AUTO_INCREMENT 列的表上，可能出现不连续的自增 ID。详细原理参考 [AUTO_INCREMENT](/auto-increment.md#实现原理)。
+TiDB 的 `AUTO_INCREMENT` 与 MySQL 的 `AUTO_INCREMENT` 整体上看是相互兼容的。但因为 TiDB 作为分布式数据库，一般会有多个计算节点（client 端入口），应用数据写入时会将负载均分开，这就导致在有 `AUTO_INCREMENT` 列的表上，可能出现不连续的自增 ID。详细原理参考 [`AUTO_INCREMENT`](/auto-increment.md#实现原理)。
 
 如果业务对自增 ID 有强依赖，可以考虑使用 [SEQUENCE 函数](/sql-statements/sql-statement-create-sequence.md#sequence-函数)。
 
@@ -76,7 +76,7 @@ TiDB 在建表时可以声明为主键创建聚簇索引或非聚簇索引。下
 | 场景 | 推荐方案 | 优势 | 劣势 |
 | :--- | :--- | :--- | :--- |
 |  TIDB 未来作为主库使用，并会有大量数据写入。业务逻辑强依赖主键 ID 的连续性。  |  将表建立为非聚簇索引，并设置 SHARD_ROW_ID_BIT。使用 SEQUENCE 作为主键列。   |  可以有效避免数据写入热点，保证业务数据的连续性和单调递增。 | 数据写入的吞吐能力会下降（为保证数据写入连续性）；主键查询性能有所下降。 |
-|   TIDB 未来作为主库使用，并会有大量数据写入。业务逻辑强依赖主键 ID 的递增特性。  |  将表建立为非聚簇索引，并设置 SHARD_ROW_ID_BIT；使用应用程序发号器来定义主键 ID。 |   可以有效避免数据写入热点；可以保证数据写入性能；可以有效保证业务数据是趋势性递增 但不能保证数据连续性。   |  对原有代码有一定的改造成本；外部发号器对时钟准确性有强依赖，引入新的故障风险点。 |
+|   TIDB 未来作为主库使用，并会有大量数据写入。业务逻辑强依赖主键 ID 的递增特性。  |  将表建立为非聚簇索引，并设置 SHARD_ROW_ID_BIT；使用应用程序发号器来定义主键 ID。 |   可以有效避免数据写入热点；可以保证数据写入性能；可以有效保证业务数据是趋势性递增，但不能保证数据连续性。   |  对原有代码有一定的改造成本；外部发号器对时钟准确性有强依赖，引入新的故障风险点。 |
 |   **数据迁移推荐方案**：TIDB 未来作为主库使用，并会有大量数据写入。业务逻辑不依赖主键 ID 的连续性。   |  将表建立为聚簇索引表；主键列设置为 AUTO_RANDOM 属性。   |  可以有效避免数据写入热点；有非常有限的写入吞吐能力；主键查询性能优异；可以平滑将 AUTO_INCREMENT 属性切换为 AUTO_RANDOM 属性。    | 主键 ID 是完全随机的，业务数据排序建议使用插入时间列来完成。如果一定要使用主键 ID 排序，可以用 ID 左移 5 的方式查询，此方式查询的数据可以保证趋势递增的特性。  |
 |  **数据中台推荐方案**：TIDB 未来作为只读数据库使用。  |  将表建立为非聚簇索引，并设置 SHARD_ROW_ID_BIT；使主键列维持与源数据库类型一致即可。  |  可以有效避免数据写入热点；改造成本低。   | 主键查询性能有所下降。  |
 
@@ -84,7 +84,9 @@ TiDB 在建表时可以声明为主键创建聚簇索引或非聚簇索引。下
 
 #### 分与合
 
-DM 支持[将上游分库分表的数据合并到下游 TiDB 中的同一个表](/migrate-small-mysql-shards-to-tidb.md)，这也是 TiDB 推荐的一种方式，合并后的收益不再赘述。这里想说另外的一个场景，就是数据归档场景。数据不断写入，随着时间流逝，大量的数据从热数据逐渐转变为温冷数据。在 TiDB 中可以通过 [Placement Rules](/configure-placement-rules.md) 放置规则来按照一定规则对数据设置不同的放置规则。而最小粒度即为[分区表（Partition）](/partitioned-table.md)。
+DM 支持[将上游分库分表的数据合并到下游 TiDB 中的同一个表](/migrate-small-mysql-shards-to-tidb.md)，这也是 TiDB 推荐的一种方式，合并后的收益不再赘述。
+
+本小节介绍另外的一个场景，就是**数据归档**场景。数据不断写入，随着时间流逝，大量的数据从热数据逐渐转变为温冷数据。在 TiDB 中，你可以通过 [Placement Rules](/configure-placement-rules.md) 放置规则来按照一定规则对数据设置不同的放置规则，而最小粒度即为[分区表 (Partition)](/partitioned-table.md)。
 
 所以建议在遇到有大规模数据写入的场景，一开始就规划好未来是否需要归档或者有冷热数据分别存储在不同介质的需要。如果有，那么在迁移前请设置好分区表规则（目前 TiDB 还不支持 Table Rebuild 操作）。避免因为初期考虑不周，导致后期出现重新建表及数据导入这样的问题。
 
@@ -113,7 +115,7 @@ DM 支持[将上游分库分表的数据合并到下游 TiDB 中的同一个表]
 
 自 TiDB v6.0.0 以后，默认使用新排序规则。如果需要 TiDB 支持 utf8_general_ci、utf8mb4_general_ci、utf8_unicode_ci、utf8mb4_unicode_ci、gbk_chinese_ci 和 gbk_bin 这几种排序规则，需要在集群创建时声明，将 `new_collations_enabled_on_first_bootstrap` 的值设为 `true`。更详细信息请参考[字符集和排序规则](/character-set-and-collation.md#新框架下的排序规则支持)。
 
-TiDB 默认使用的字符集为 utf8mb4。建议同步上下游及应用统一使用 utf8mb4。如果上游有显示指定字符集或者排序规则需要确认 TiDB 是否支持。自 TiDB v6.0.0 版本支持 GBK 字符集。有关字符集的限制详见：
+TiDB 默认使用的字符集为 utf8mb4。建议同步上下游及应用统一使用 utf8mb4。如果上游有显式指定的字符集或者排序规则，需要确认 TiDB 是否支持。自 TiDB v6.0.0 版本支持 GBK 字符集。有关字符集的限制详见：
 
 - [字符集和排序规则](/character-set-and-collation.md)
 - [GBK 兼容情况](/character-set-gbk.md#与-mysql-的兼容性)
@@ -124,7 +126,7 @@ TiDB 默认使用的字符集为 utf8mb4。建议同步上下游及应用统一�
 
 DM 整体架构分为 DM-Master 与 DM-worker。
 
-- DM-Master 主要负责同步任务的元数据管理，及 DM-worker 个中心调度。是整个 DM 平台的核心。所以 DM-Master 可以部署为集群模式，以保证 DM 同步平台的可用性。
+- DM-Master 主要负责同步任务的元数据管理，以及 DM-worker 的中心调度，是整个 DM 平台的核心。所以 DM-Master 可以部署为集群模式，以保证 DM 同步平台的可用性。
 - DM-Worker 负责执行上下游同步任务，是无状态节点。最多可以部署 1000 个节点。在需要将 DM 作为数据同步平台的场景，可以预留一部分空闲的 DM-worker，以保证同步任务的高可用。
 
 #### 同步任务规划
@@ -135,19 +137,19 @@ DM 整体架构分为 DM-Master 与 DM-worker。
 
 - 大规模数据迁移同步场景。可以参考以下思路进行 Task 任务拆分：
     - 如果上游需要同步多个数据库，可以按照不同数据库拆分 Task。
-    - 根据上游写入压力拆分任务。及将上游 DML 操作频繁的表，拆分到单独的 Task 任务中，将其他表使用同一个 Task 任务进行同步。此方式可在一定程度上加速同步任务的推进能力。尤其是在上游有大量 Log 写入，但业务关注的是其他表，此方法可以有效解决此类问题。
+    - 根据上游写入压力拆分任务。即把上游 DML 操作频繁的表，拆分到单独的 Task 任务中，将其他没有频繁 DML 操作的表使用另一个 Task 任务进行同步。此方式可在一定程度上加速同步任务的推进能力。尤其是在上游有大量 Log 写入某张表，但业务关注的是其他表时，此方法可以有效解决此类问题。
 
-那么在不同的数据迁移与同步场景，应该如何部署 DM-Master 与 DM-Worker 呢？下表给出了推荐方案。
+下表给出了在不同的数据迁移与同步场景下部署 DM-Master 与 DM-Worker 的推荐方案。
 
 | 场景 |  DM-Master 部署 | DM-worker 部署 |
 | :--- | :--- | :--- |
 | 小规模数据 （1 TB 以下），一次性数据迁移场景  |  部署 1 个 DM-master 节点   | 根据上游数据源数量，部署 1 ~ N 个 Worker 节点，一般情况下 1 个 Worker 节点。   |
-| 大规模数据 （1 TB 以上）及分库分表，一次性数据迁移场景  | 推荐部署 3 个 DM-master 节点。来保证在长时间数据迁移时 DM 集群的可用性   | 根据数据源数量或同步任务数量部署 Worker 节点，推荐多部署 1~3 个空闲 Worker 节点   |
+| 大规模数据 （1 TB 以上）及分库分表，一次性数据迁移场景  | 推荐部署 3 个 DM-master 节点，来保证在长时间数据迁移时 DM 集群的可用性   | 根据数据源数量或同步任务数量部署 DM-Worker 节点，推荐多部署 1~3 个空闲 DM-Worker 节点   |
 |  长期数据同步迁移场景  | 务必部署 3 个 DM-master 节点。如在云上部署，尽量将 DM-master 部署在不同的可用区（AZ）    |   根据数据源数量或同步任务数量部署 Worker 节点。务必部署实际需要 Worker 节点数量的 1.5 ~ 2 倍的 Worker 节点数量。 |
 
 #### 上游数据源选择与设置
 
-DM 是支持存量数据迁移的，但在做全量迁移时会对整库进行全量数据备份。DM 采用的备份方式为并行逻辑备份，备份期间会加一把比较重的锁 [`FLUSH TABLES WITH READ LOCK`](https://dev.mysql.com/doc/refman/8.0/en/flush.html#flush-tables-with-read-lock)。此时会短暂的阻塞上游数据库的 DML 和 DDL 操作。所以强烈建议使用备库来进行全量备份，并同时在数据源开启 GTID 的功能 `enable-gtid: true`。这样即可避免存量迁移时对上游业务的影响，也可以在增量同步期间再切换到上游主库节点降低数据同步的延迟。切换上游 MySQL 数据源的方法，请参考[切换 DM-worker 与上游 MySQL 实例的连接](/dm/usage-scenario-master-slave-switch.md#切换-dm-worker-与上游-mysql-实例的连接)。
+DM 是支持存量数据迁移的，但在做全量迁移时会对整库进行全量数据备份。DM 采用的备份方式为并行逻辑备份，备份期间会加一把比较重的锁 [`FLUSH TABLES WITH READ LOCK`](https://dev.mysql.com/doc/refman/8.0/en/flush.html#flush-tables-with-read-lock)。此时会短暂的阻塞上游数据库的 DML 和 DDL 操作。所以强烈建议使用备库来进行全量备份，并同时在数据源开启 GTID 的功能 (`enable-gtid: true`)。这样既可避免存量迁移时对上游业务的影响，也可以在增量同步期间再切换到上游主库节点降低数据同步的延迟。切换上游 MySQL 数据源的方法，请参考[切换 DM-worker 与上游 MySQL 实例的连接](/dm/usage-scenario-master-slave-switch.md#切换-dm-worker-与上游-mysql-实例的连接)。
 
 下面是一些特殊场景下的注意事项：
 
@@ -187,11 +189,11 @@ TiDB 默认情况下是对 Schema name 大小写不敏感的，即 `lower_case_t
 - 在进行全量 + 增量数据迁移时，因为全量迁移数据量较大，整个过程耗费时间超过了上游 Binlog 归档的时间，导致增量同步任务不能正常拉起，如果开启 Relay Log 在全量同步拉起同时，DM-worker 即会开始接收 Relay log，避免增量任务拉起失败。
 - 在使用 DM 进行长期数据同步的场景中，有时因为各种原因导致同步任务长时间阻塞，此时开启了 Relay log 功能，可以有效应对同步任务阻塞而导致的上游 Binglog 被回收问题。
 
-在使用 Relay Log 功能时也会有一定的限制。DM 支持高可用，当某个 DM-worker 出现故障，会尝试将空闲的 DM-worker 实例提升为工作实例，如果此时上游 Binlog 没有包含必要的同步日志，将可能出现同步中断情况。此时需要人工干预，尽快将 Relay log 复制到新的 DM-worker 节点上来，并修改相应的 Relay meta 文件。具体方法请参考 [relay 处理单元报错 event from \* in \* diff from passed-in event \* 或迁移任务中断并包含 get binlog error ERROR 1236 (HY000)、binlog checksum mismatch, data may be corrupted 等 binlog 获取或解析失败错误](/dm/dm-error-handling.md#relay-处理单元报错-event-from--in--diff-from-passed-in-event--或迁移任务中断并包含-get-binlog-error-error-1236-hy000binlog-checksum-mismatch-data-may-be-corrupted-等-binlog-获取或解析失败错误)。
+在使用 Relay Log 功能时也会有一定的限制。DM 支持高可用，当某个 DM-worker 出现故障，会尝试将空闲的 DM-worker 实例提升为工作实例，如果此时上游 Binlog 没有包含必要的同步日志，将可能出现同步中断情况。此时需要人工干预，尽快将 Relay log 复制到新的 DM-worker 节点上来，并修改相应的 Relay meta 文件。具体方法请参考[故障处理](/dm/dm-error-handling.md#relay-处理单元报错-event-from--in--diff-from-passed-in-event--或迁移任务中断并包含-get-binlog-error-error-1236-hy000binlog-checksum-mismatch-data-may-be-corrupted-等-binlog-获取或解析失败错误)。
 
-#### 上游使用在线变更工具 PT-osc\GH-ost
+#### 上游使用在线变更工具 PT-osc/GH-ost
 
-在日常运维 MySQL 时，想要在线变更表结构，一般会使用 PT-osc\GH-ost 这类工具，以此保证 DDL 变更的对线上业务的最小影响。但整个过程会被如实的记录到 MySQL Binlog 中，如果全部同步到下游 TiDB 产生大量的写放大，既不高效也不经济。DM 在设置 Task 任务时候可以设置支持三方数据同步工具 PT-osc 或 GH-ost，配置后将不再同步大量冗余数据，并且能保证数据同步的一致性。具体设置方式请参考[迁移使用 GH-ost/PT-osc 的源数据库](/dm/feature-online-ddl.md)。
+在日常运维 MySQL 时，想要在线变更表结构，一般会使用 PT-osc/GH-ost 这类工具，以此保证 DDL 变更对线上业务的影响最小。但整个过程会被如实地记录到 MySQL Binlog 中，如果全部同步到下游 TiDB，将产生大量的写放大，既不高效也不经济。DM 在设置 Task 任务时候可以设置支持三方数据同步工具 PT-osc 或 GH-ost，配置后将不再同步大量冗余数据，并且能保证数据同步的一致性。具体设置方式请参考[迁移使用 GH-ost/PT-osc 的源数据库](/dm/feature-online-ddl.md)。
 
 ## 数据迁移中
 
@@ -206,19 +208,19 @@ TiDB 默认情况下是对 Schema name 大小写不敏感的，即 `lower_case_t
 
 此类问题主要原因是下游 TiDB 中增加或修改了索引，或者下游比上游更多列。出现此类的同步报错信息，就要考虑是不是上下游 Schema 不一致导致的同步中断。
 
-解决此类问题，只要通过将 DM 中缓存的 Schema 信息更新成与下游 TiDB Schema 一致即可。具体方法参考[管理迁移表的表结构](/dm/dm-manage-schema.md)。
+解决此类问题，只要将 DM 中缓存的 Schema 信息更新成与下游 TiDB Schema 一致即可。具体方法参考[管理迁移表的表结构](/dm/dm-manage-schema.md)。
 
 如果是下游比上游多列的场景，请参考[下游存在更多列的迁移场景](/migrate-with-more-columns-downstream.md)。
 
 ### 处理因为 DDL 中断的数据同步任务
 
-DM 支持跳过或者替换，导致同步任务中断的 DDL 语句。并且针对是否为分库分表合并场景有对应不同的操作，具体请参考[处理出错的 DDL 语句](/dm/handle-failed-ddl-statements.md#使用示例)。
+DM 支持跳过或者替换_导致同步任务中断的 DDL 语句_。并且针对是否为分库分表合并场景有对应不同的操作，具体请参考[处理出错的 DDL 语句](/dm/handle-failed-ddl-statements.md#使用示例)。
 
 ## 数据迁移后的数据校验
 
-一般在完成数据迁移后，会对新旧数据进行数据一致性校验。TiDB 官方提供了相应的同步工具  [sync-diff-inspector](/sync-diff-inspector/sync-diff-inspector-overview.md) 来帮助你完成数据校验工作。
+一般在完成数据迁移后，会对新旧数据进行数据一致性校验。TiDB 官方提供了相应的同步工具 [sync-diff-inspector](/sync-diff-inspector/sync-diff-inspector-overview.md) 来帮助你完成数据校验工作。
 
-现在 sync-diff-inspector 工具可以通过管理 DM 中的同步任务自动管理需要进行数据一致性检查的 Table List，相较之前的手动配置更加的高效。具体参考[基于 DM 同步场景下的数据校验](/sync-diff-inspector/dm-diff.md)。
+现在 sync-diff-inspector 工具可以通过管理 DM 中的同步任务自动管理需要进行数据一致性检查的 Table 列表，相较之前的手动配置更加的高效。具体参考[基于 DM 同步场景下的数据校验](/sync-diff-inspector/dm-diff.md)。
 
 自 DM v6.2 版本开始，还支持增量同步时同时进行数据校验。具体参考 [DM 增量数据校验](/dm/dm-continuous-data-validation.md)。
 
