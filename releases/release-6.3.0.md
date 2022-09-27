@@ -311,7 +311,13 @@ TiDB 版本：6.3.0-DMR
 
     + TiCDC
 
-        - Improve compatibility for MySQL 8.0 upstream [#6506](https://github.com/pingcap/tiflow/issues/6506) @[lance6716](https://github.com/lance6716)
+        - 提升上游为 MySQL 8.0 时的兼容性 [#6506](https://github.com/pingcap/tiflow/issues/6506) @[lance6716](https://github.com/lance6716)
+        - 当 MySL sink 出错时打印 DML 的 start ts [#6460](https://github.com/pingcap/tiflow/issues/6460) @[overvenus](https://github.com/overvenus)
+        - API `api/v1/health` 将反应 TiCDC 集群的健康状态 [#4757](https://github.com/pingcap/tiflow/issues/4757) @[overvenus](https://github.com/overvenus)
+        - 采用异步的模式实现 mq sink 和 mysql sink ，提升sink 的吞吐能力 [#5928](https://github.com/pingcap/tiflow/issues/5928) @[hicqu]https://github.com/hicqu @[hi-rustin](https://github.com/hi-rustin)
+        - 将 memory sorter 废弃, 并全部由 unified sorter 代替 [#7087](https://github.com/pingcap/tiflow/issues/5928) @[hi-rustin](https://github.com/hi-rustin)
+        - 删除已经废弃了的 pulsar sink [#7087](https://github.com/pingcap/tiflow/issues/7087) @[hi-rustin](https://github.com/hi-rustin)
+        - 忽略掉与 changefeed 不相关的 DDL 以提升同步性能. [#6447](https://github.com/pingcap/tiflow/issues/6447) @[asddongmen](https://github.com/asddongmen)
 
     + TiDB Data Migration (DM)
 
@@ -421,7 +427,9 @@ TiDB 版本：6.3.0-DMR
 
     + TiCDC
 
-        - handle error correctly with wrong pd address but with a grpc service [#6458](https://github.com/pingcap/tiflow/issues/6458) @[crelax](https://github.com/crelax)
+        - 修复了使用一个含有 grpc 服务的非法的 pd 地址的错误处理问题 [#6458](https://github.com/pingcap/tiflow/issues/6458) @[crelax](https://github.com/crelax)
+        - 修复了 `cdc cli changefeed list` 命令不返回 failed changefeed 的问题 [#6334](https://github.com/pingcap/tiflow/issues/6334) @[asddongmen](https://github.com/asddongmen)
+        - 修复了如果 changefeed 初始化失败会导致 cdc 不可用的问题  [#6859](https://github.com/pingcap/tiflow/issues/6859) @[asddongmen](https://github.com/asddongmen)
 
     + TiDB Data Migration (DM)
 
