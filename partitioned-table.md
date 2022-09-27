@@ -186,7 +186,7 @@ TiDB v6.3.0 新增了 Range INTERVAL 分区特性，作为语法糖（syntactic 
 
 > **警告：**
 >
-> 当前该功能为实验特性，不建议在生产环境中使用。
+> 该功能目前是实验性功能，请注意使用场景限制。该功能会在未事先通知的情况下发生变化或删除。语法和实现可能会在 GA 前发生变化。如果发现 bug，请提 [Issues · pingcap/tidb](https://github.com/pingcap/tidb/issues) 反馈。
 
 其语法如下：
 
