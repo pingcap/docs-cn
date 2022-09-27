@@ -402,7 +402,7 @@ TiDB 版本：6.3.0-DMR
     - compute
 
         - Fix the bug that window function may cause tiflash crash when canceled [#5814](https://github.com/pingcap/tiflash/issues/5814) @[SeaRise](https://github.com/SeaRise)
-        - fix error data input for date(CAST(value AS DATETIME)) causing high TiFlash sys CPU [#5097](https://github.com/pingcap/tiflash/issues/5097) @[xzhangxian1008](https://github.com/xzhangxian1008)
+        - Fix the bug that wrong data input for cast(value as datetime) causing high TiFlash sys CPU [#5097](https://github.com/pingcap/tiflash/issues/5097) @[xzhangxian1008](https://github.com/xzhangxian1008)
         - fix that the result of expression casting real or decimal as time is inconsistent with mysql [#3779](https://github.com/pingcap/tiflash/issues/3779) @[mengxin9014](https://github.com/mengxin9014)
 
     - storage
