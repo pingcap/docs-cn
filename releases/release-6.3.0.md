@@ -270,12 +270,12 @@ TiDB 版本：6.3.0-DMR
 
 + TiKV
 
-    - Add a new option to make unreachable_backoff of raftstore configurable [#13054](https://github.com/tikv/tikv/issues/13054)
-    - Implement TSO batch list to improve tolerance to TSO service fault [#12794](https://github.com/tikv/tikv/issues/12794) @[pingyu](https://github.com/pingyu)
+    - 增加 Raftstore 配置项 `unreachable_backoff` [#13054](https://github.com/tikv/tikv/issues/13054)
+    - 实现 TSO batch list 提高 TSO 服务不可用的容忍度 [#12794](https://github.com/tikv/tikv/issues/12794) @[pingyu](https://github.com/pingyu)
     - (dup) 支持动态调整 RocksDB 进行 subcompaction 的并发个数 (`rocksdb.max-sub-compactions`) [#13145](https://github.com/tikv/tikv/issues/13145) @[ethercflow](https://github.com/ethercflow)
-    - Optimize the performance of merging empty regions [#12421](https://github.com/tikv/tikv/issues/12421) @[tabokie](https://github.com/tabokie)
-    - Support more regular expression functions [#13483](https://github.com/tikv/tikv/issues/13483) @[gengliqi](https://github.com/gengliqi)
-    - Support automatically scale read pool thread count based on the CPU usage [#13313](https://github.com/tikv/tikv/issues/13313) @[glorv](https://github.com/glorv)
+    - 优化合并空 Region 的性能 [#12421](https://github.com/tikv/tikv/issues/12421) @[tabokie](https://github.com/tabokie)
+    - 支持更多正则表达式函数 [#13483](https://github.com/tikv/tikv/issues/13483) @[gengliqi](https://github.com/gengliqi)
+    - 支持根据 CPU 使用情况自动调整 UnifyReadPool 线程池的大小 [#13313](https://github.com/tikv/tikv/issues/13313) @[glorv](https://github.com/glorv)
 
 + PD
 
@@ -384,16 +384,14 @@ TiDB 版本：6.3.0-DMR
     - (dup) 修复 PD Region heartbeat 连接异常中断后未重新连接的问题 [#12934](https://github.com/tikv/tikv/issues/12934) @[bufferflies](https://github.com/bufferflies)
     - (dup) 修复 Raftstore 线程繁忙时，可能会出现 Region 重叠的问题 [#13160](https://github.com/tikv/tikv/issues/13160) @[5kbpers](https://github.com/5kbpers)
     - (dup) 修复 PD 客户端可能会出现死锁的问题 [#12933](https://github.com/tikv/tikv/issues/12933) @[BurtonQin](https://github.com/BurtonQin), [#13191](https://github.com/tikv/tikv/issues/13191) @[bufferflies](https://github.com/bufferflies)
-    - Fix a double-lock bug in components/engine_test [#13186](https://github.com/tikv/tikv/issues/13186) @[SpadeA-Tang](https://github.com/SpadeA-Tang)
-    - Fix plaintext iv debug assert while disable encryption [#13081](https://github.com/tikv/tikv/issues/13081) @[jiayang-zheng](https://github.com/jiayang-zheng)
+    - 修复关闭已有加密时 TiKV panic 的问题 [#13081](https://github.com/tikv/tikv/issues/13081) @[jiayang-zheng](https://github.com/jiayang-zheng)
     - (dup) 修复 Dashboard 中 Unified Read Pool CPU 表达式错误的问题 [#13086](https://github.com/tikv/tikv/issues/13086) @[glorv](https://github.com/glorv)
-    - Fix the problem that QPS may drop to zero for several mintues when a tikv is partitioned [#12966](https://github.com/tikv/tikv/issues/12966) @[cosven](https://github.com/cosven)
-    - Reduce false-positive PessimisticLockNotFound errors in conflicting auto-commit workloads [#13425](https://github.com/tikv/tikv/issues/13425) @[sticnarf](https://github.com/sticnarf)
-    - Fix a bug that may cause PiTR losing some data when there are too many adjacent short row putting [#13281](https://github.com/tikv/tikv/issues/13281) @[YuJuncen](https://github.com/YuJuncen)
-    - Fix a bug that caused checkpoint not advanced when there are some long pessimistic transactions [#13304](https://github.com/tikv/tikv/issues/13304) @[YuJuncen](https://github.com/YuJuncen)
-    - Fix the issue that TiKV doesn't distinguish the `DATETIME/DATE/TIMESTAMP/TIME` and `STRING` in json type [#13417](https://github.com/tikv/tikv/issues/13417) @[YangKeao](https://github.com/YangKeao)
-    - Fix the issue that comparison between json bool and other json value is not compatible with TiDB and MySQL [#13386](https://github.com/tikv/tikv/issues/13386) @[YangKeao](https://github.com/YangKeao)
-    - Fix the issue that comparison between json bool and other json value is not compatible with TiDB and MySQL [#37481](https://github.com/pingcap/tidb/issues/37481) @[YangKeao](https://github.com/YangKeao)
+    - 修复当有一个 TiKV 网络隔离时可能导致整体 QPS 掉 0 的问题 [#12966](https://github.com/tikv/tikv/issues/12966) @[cosven](https://github.com/cosven)
+    - 修复错误报错 `PessimisticLockNotFound` 的问题 [#13425](https://github.com/tikv/tikv/issues/13425) @[sticnarf](https://github.com/sticnarf)
+    - 修复当有太多临近的 short row 时 PITR 可能丢失数据的问题 [#13281](https://github.com/tikv/tikv/issues/13281) @[YuJuncen](https://github.com/YuJuncen)
+    - 修复长时间悲观事务导致 checkpoint 没有推进的问题 [#13304](https://github.com/tikv/tikv/issues/13304) @[YuJuncen](https://github.com/YuJuncen)
+    - 修复 JSON 中的 `DATETIME/DATE/TIMESTAMP/TIME` 和 `STRING` 无法区分的问题 [#13417](https://github.com/tikv/tikv/issues/13417) @[YangKeao](https://github.com/YangKeao)
+    - 修复 JSON bool 和其他 JSON value 的比较行为与 MySQL 不兼容的问题 [#13386](https://github.com/tikv/tikv/issues/13386) @[YangKeao](https://github.com/YangKeao)
 
 + PD
 
