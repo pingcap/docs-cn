@@ -1,19 +1,10 @@
 ---
-title: TiDB Lightning Tutorial
+title: Get Started with TiDB Lightning
 summary: Learn how to deploy TiDB Lightning and import full backup data to TiDB.
 aliases: ['/docs/dev/get-started-with-tidb-lightning/','/docs/dev/how-to/get-started/tidb-lightning/']
 ---
 
-# TiDB Lightning Tutorial
-
-[TiDB Lightning](https://github.com/pingcap/tidb-lightning) is a tool used for fast full import of large amounts of data into a TiDB cluster. Currently, TiDB Lightning supports reading SQL dump exported via SQL or CSV data source. You can use it in the following two scenarios:
-
-+ Import **large amounts** of **new** data **quickly**
-+ Back up and restore all the data
-
-![Architecture of TiDB Lightning tool set](/media/tidb-lightning-architecture.png)
-
-## Prerequisites
+# Get Started with TiDB Lightning
 
 This tutorial assumes you use several new and clean CentOS 7 instances. You can use VMware, VirtualBox or other tools to deploy a virtual machine locally or a small cloud virtual machine on a vendor-supplied platform. Because TiDB Lightning consumes a large amount of computer resources, it is recommended that you allocate at least 16 GB memory and CPU of 32 cores for running it with the best performance.
 
@@ -28,7 +19,7 @@ First, use [`dumpling`](/dumpling-overview.md) to export data from MySQL:
 {{< copyable "shell-regular" >}}
 
 ```sh
-./dumpling -h 127.0.0.1 -P 3306 -u root -t 16 -F 256MB -B test -f 'test.t[12]' -o /data/my_database/
+tiup dumpling -h 127.0.0.1 -P 3306 -u root -t 16 -F 256MB -B test -f 'test.t[12]' -o /data/my_database/
 ```
 
 In the above command:
@@ -42,7 +33,7 @@ After executing this command, the full backup data is exported to the `/data/my_
 
 ## Deploy TiDB Lightning
 
-### Step 1: Deploy TiDB cluster
+### Step 1: Deploy a TiDB cluster
 
 Before the data import, you need to deploy a TiDB cluster. In this tutorial, TiDB v5.4.0 is used as an example. For the deployment method, refer to [Deploy a TiDB Cluster Using TiUP](/production-deployment-using-tiup.md).
 
@@ -67,7 +58,7 @@ The TiDB Lightning installation package is included in the TiDB Toolkit. To down
     file = "tidb-lightning.log"
 
     [tikv-importer]
-    # Uses the Local-backend
+    # Configure the import mode
     backend = "local"
     # Sets the directory for temporarily storing the sorted key-value pairs.
     # The target directory must be empty.
@@ -98,7 +89,7 @@ The TiDB Lightning installation package is included in the TiDB Toolkit. To down
 
     ```sh
     #!/bin/bash
-    nohup ./tidb-lightning -config tidb-lightning.toml > nohup.out &
+    nohup tiup tidb-lightning -config tidb-lightning.toml > nohup.out &
     ```
 
 ### Step 4: Check data integrity
