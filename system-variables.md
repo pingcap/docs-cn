@@ -1073,7 +1073,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 作用域：SESSION ｜GLOBAL
 - 是否持久化到集群：是
 - 默认值：`OFF`
-- 自 v6.3.0 起，TiDB 的对特殊集合算子 `NOT IN` 和 `!= ALL` 引导子查询而产生的 ANTI JOIN 将可以使用此开关控制是否采用 Null Aware Hash Join 的执行方式。该开关默认为 `OFF`。
+- 这个变量用于控制 TiDB 对特殊集合算子 `NOT IN` 和 `!= ALL` 引导的子查询产生的 ANTI JOIN 是否采用 Null Aware Hash Join 的执行方式。
 
 ### `tidb_enable_outer_join_reorder` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
