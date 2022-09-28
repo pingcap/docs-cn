@@ -15,20 +15,20 @@ summary: 了解 Oracle 与 TiDB 函数对照表。
 | 4 | 日期转换字符串函数 | to_char(sysdate, 'yyyy-MM-dd')       | date_format(now(), '%Y-%m-%d') | 日期类型转换字符型函数。TiDB 的年月日时分秒字符大小写必须严格按要求走写。将原来的修改为 date_formate 修改为 date_format。 |
 | 5 | 字符串转换日期函数 | to_date('2021-05-28 17:31:37', 'yyyy-MM-dd hh24:mi:ss') | str_to_date('2021-05-28   17:31:37', '%Y-%m-%d %H:%i:%s') | 字符型转换日期型函数，TiDB 的年月日时分秒字符大小写必须严格按要求写。 |
 | 6 | 字符串转换日期函数 | to_date('2021-05-28',   'yyyy-MM-dd hh24:mi:ss')       | str_to_date('2021-05-28',   '%Y-%m-%d%T') | 字符型转换日期型函数，TiDB 年月日时分秒字符大小写必须严格按要求写。 |
-| 7 | Sysdate 关键字 | SYSDATE | NOW() | 获取系统当前时间 |
+| 7 | Sysdate 关键字 | SYSDATE | NOW() | 获取系统当前时间。 |
 | 8 | 获取两个日期相差的天数 | date1 - date2 | datediff(date1, date2) | 获取 date1 - date2 两个日期之间相差的天数，只能精确到天。 |
 | 9 | 日期数据 +/- n 天 | dateVal + n | date_add(dateVal, INTERVAL n DAY) | 日期数据增加 `n` 天，`n` 可为负数 |
-| 10 | 日期数据 +/- n 月 date_add() 函数替换 add_months() 函数 | add_months(dateVal, 1) | date_add(dateVal,   INTERVAL n MONTH) | 日期数据增加 `n` 月，`n` 可为负数 |
-| 11 | TRUNC()函数 | TRUNC(sysdate) | cast(now() as date) | 获取时间的（2019-07-26 00:00:00）格式返回值。Oracle 中的 TRUNC(sysdate) 只是截取到日，不会截取到时分秒，而 TiDB 中与之对应的截取日写法是 cast(now() as date) |
-| 12 | TRUNC()函数 | TRUNC(sysdate) | date_format(now(),'%Y-%m-%d') | cast 数据库执行正常，程序中报错，可修改为date_format |
+| 10 | 日期数据 +/- n 月 date_add() 函数替换 add_months() 函数 | add_months(dateVal, 1) | date_add(dateVal,   INTERVAL n MONTH) | 日期数据增加 `n` 月，`n` 可为负数。 |
+| 11 | TRUNC()函数 | TRUNC(sysdate) | cast(now() as date) | 获取时间的（2019-07-26 00:00:00）格式返回值。Oracle 中的 TRUNC(sysdate) 只是截取到日，不会截取到时分秒，而 TiDB 中与之对应的截取日写法是 cast(now() as date)。 |
+| 12 | TRUNC()函数 | TRUNC(sysdate) | date_format(now(),'%Y-%m-%d') | cast 数据库执行正常，程序中报错，可修改为 date_format。 |
 | 13 | TRUNC()函数 | Trunc(sysdate,'mm') | date_add(curdate(),interval -day(curdate())+1 day)  | 获取当月第一天 |
 | 14 | TRUNC 函数 | TRUNC(2.136) => 2 TRUNC(2.136, 2) => 2.14 | TRUNCATE(2.136, 0) => 2 TRUNCATE(2.136, 2) => 2.14 | 数据精度保留，直接截取相应小数位，不涉及四舍五入。 |
-| 15 | 字符串连接 | a' \|\| 'b' | CONCAT('a', 'b') | 字符串拼接 |
-| 16 | DELETE关键字 | DELETE   FROM tName t WWHER t.xxx = xxx; | DELETE FROM table_name WHERE xxx = xxx; | 删除语句，TiDB 不支持删除语句中对表起别名（有问题，tidb支持这种表别名写法） |
-| 17 | 获取序列值 | sequenceName.nextVal | NEXTVAL(sequenceName) | 获取序列的下一个值 |
-| 18 | 左/右关联 | SELECT \* FROM taba, tabb WHERE taba.id = tabb.id(+); SELECT \* FROM taba, tabb WHERE taba.id(+) = tabb.id; | SELECT \* FROM taba LEFT JOIN tabb ON taba.id = tabb.id; SELECT \* FROM taba RIGHT JOIN tabb ON taba.id = tabb.id;       | 关联查询时，TiDB 不支持使用 (+) 实现左/右关联，只能通过 left/right join 实现（原来例子中写反了左外连接和右外连接的顺序） |
-| 19 | 获取随机序列值 | SYS_GUID() | UUID() | 返回一个通用唯一识别码 (UUID) |
-| 20 | nvl()函数 | nvl(key, val) | ifnull(key, val) | 如果该字段值为空，则返回 val 值，否则返回该字段的值 |
+| 15 | 字符串连接 | a' \|\| 'b' | CONCAT('a', 'b') | 字符串拼接。 |
+| 16 | DELETE关键字 | DELETE   FROM tName t WWHER t.xxx = xxx; | DELETE FROM table_name WHERE xxx = xxx; | 删除语句，TiDB 不支持删除语句中对表起别名（有问题，tidb支持这种表别名写法）。 |
+| 17 | 获取序列值 | sequenceName.nextVal | NEXTVAL(sequenceName) | 获取序列的下一个值。 |
+| 18 | 左/右关联 | SELECT \* FROM taba, tabb WHERE taba.id = tabb.id(+); SELECT \* FROM taba, tabb WHERE taba.id(+) = tabb.id; | SELECT \* FROM taba LEFT JOIN tabb ON taba.id = tabb.id; SELECT \* FROM taba RIGHT JOIN tabb ON taba.id = tabb.id;       | 关联查询时，TiDB 不支持使用 (+) 实现左/右关联，只能通过 left/right join 实现（原来例子中写反了左外连接和右外连接的顺序）。 |
+| 19 | 获取随机序列值 | SYS_GUID() | UUID() | 返回一个通用唯一识别码 (UUID)。 |
+| 20 | nvl()函数 | nvl(key, val) | ifnull(key, val) | 如果该字段值为空，则返回 val 值，否则返回该字段的值。 |
 | 21 | nal2()函数 nvl2() | nvl(key, val1, val2) nvl2() | if(key is null, val1, val2) | 如果该字段值非 NULL，则返回 val1 值，否则返回 val2 值。       |
 | 22 | decode()函数 | DECODE(key, val1, val2, val3) | if(key = val1, val2, val3) | 如果该字段值对于 val1，则返回 val2，反之返回。 |
 | 23 | decode()函数 | DECODE(value, if1, val1, if2,val2,...,ifn, valn, val) | case when value=if1 then val1 when value=if2 then val2,,,when value=ifn then valn else val end | 当该字段值等于条件 1 时，返回 val1，等于条件 2 时，返回 val2… |
