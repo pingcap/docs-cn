@@ -75,7 +75,6 @@ Usage of ./bin/tidb-server:
 - [官方博客](https://cn.pingcap.com/blog/)：了解产品技术解读、观点洞察、案例实践。
 - [AskTUG 社区论坛](https://asktug.com)：与社区用户、技术专家互动交流。
 - [PingCAP Education](https://cn.pingcap.com/education/)：学习线上课程，获得数据库能力认证。
-- [info@pingcap.com](mailto:info@pingcap.com)：发邮件进行沟通。
 
 ### 1.1.11 TiDB 用户名长度限制？
 
