@@ -270,10 +270,9 @@ TiDB 版本：6.3.0-DMR
 
     - execution
 
-        - Report error if json path has the wrong syntax [#22525](https://github.com/pingcap/tidb/issues/22525) @[xiongjiwei](https://github.com/xiongjiwei)
-        - Report error if json path has the wrong syntax [#34959](https://github.com/pingcap/tidb/issues/34959) @[xiongjiwei](https://github.com/xiongjiwei)
-        - Improve the performance of Join by fix a false sharing problem. [#37641](https://github.com/pingcap/tidb/issues/37641)
-        - Improve the MySQL compatibility of `CAST` function in terms of float-to-time conversion [#37462](https://github.com/pingcap/tidb/issues/37462) @[mengxin9014](https://github.com/mengxin9014)
+        - 在 JSON 路径的语法有误时报错 [#22525](https://github.com/pingcap/tidb/issues/22525) [#34959](https://github.com/pingcap/tidb/issues/34959) @[xiongjiwei](https://github.com/xiongjiwei)
+        - 修复一个伪共享问题，提升 Join 操作的性能 [#37641](https://github.com/pingcap/tidb/issues/37641)
+        - 提升 `CAST` 函数将浮点类型转换为时间类型的 MySQL 兼容性 [#37462](https://github.com/pingcap/tidb/issues/37462) @[mengxin9014](https://github.com/mengxin9014)
 
     - planner
 
@@ -365,19 +364,18 @@ TiDB 版本：6.3.0-DMR
 
     - execution
 
-        - Fix wrong result when enabling dynamic mode in partition table for tiflash [#37254](https://github.com/pingcap/tidb/issues/37254) @[wshwsh12](https://github.com/wshwsh12)
-        - Fix the issue that the cast and comparison between binary string and json is incompatible with MySQL [#31918](https://github.com/pingcap/tidb/issues/31918) @[YangKeao](https://github.com/YangKeao)
-        - Fix the issue that the cast and comparison between binary string and json is incompatible with MySQL [#25053](https://github.com/pingcap/tidb/issues/25053) @[YangKeao](https://github.com/YangKeao)
-        - Fix the issue that the json_objectagg and json_arrayagg is not compatible with MySQL on binary value [#25053](https://github.com/pingcap/tidb/issues/25053) @[YangKeao](https://github.com/YangKeao)
-        - Fix the issue that comparison between json opaque causes panic [#37315](https://github.com/pingcap/tidb/issues/37315) @[YangKeao](https://github.com/YangKeao)
-        - Fix the issue that the single precision float cannot be used in json aggregation funtions [#37287](https://github.com/pingcap/tidb/issues/37287) @[YangKeao](https://github.com/YangKeao)
-        - Fix the issue that `UNION` may returns unexpected empty result [#36903](https://github.com/pingcap/tidb/issues/36903) @[tiancaiamao](https://github.com/tiancaiamao)
+        - 修复在 TiFlash 中为分区表开启动态模式时出现的错误结果 [#37254](https://github.com/pingcap/tidb/issues/37254) @[wshwsh12](https://github.com/wshwsh12)
+        - 修复 TiDB 中二进制字符串和 JSON 之间的转换和对比行为与 MySQL 不兼容的问题 [#31918](https://github.com/pingcap/tidb/issues/31918) [#25053](https://github.com/pingcap/tidb/issues/25053) @[YangKeao](https://github.com/YangKeao)
+        - 修复 TiDB 中的 `json_objectagg` 和 `json_arrayagg` 在二进制值上与 MySQL 不兼容的问题 [#25053](https://github.com/pingcap/tidb/issues/25053) @[YangKeao](https://github.com/YangKeao)
+        - 修复比较 JSON opaque 值时造成崩溃的问题 [#37315](https://github.com/pingcap/tidb/issues/37315) @[YangKeao](https://github.com/YangKeao)
+        - 修复 JSON 聚合函数不能使用单精度浮点数的问题 [#37287](https://github.com/pingcap/tidb/issues/37287) @[YangKeao](https://github.com/YangKeao)
+        - 修复 `UNION` 运算符可能会非预期地返回空结果的问题 [#36903](https://github.com/pingcap/tidb/issues/36903) @[tiancaiamao](https://github.com/tiancaiamao)
 
     - transaction
 
-        - bugfix: do not acquire pessimistic lock for non-unique index keys [#36235](https://github.com/pingcap/tidb/issues/36235)
-        - Fix the auto-commit mode change related transaction commit behaviours [#36581](https://github.com/pingcap/tidb/issues/36581) @[cfzjywxk](https://github.com/cfzjywxk)
-        - 修复了 explain analyze 语句可能在事务提交完成前返回结果的问题 [#37273](https://github.com/pingcap/tidb/issues/37373) @[cfzjywxk](https://github.com/cfzjywxk)
+        - 修复悲观 DML 操作锁定非唯一索引键的问题 [#36235](https://github.com/pingcap/tidb/issues/36235)
+        - 修复与自动提交 (auto-commit) 模式更改相关的事务提交行为 [#36581](https://github.com/pingcap/tidb/issues/36581) @[cfzjywxk](https://github.com/cfzjywxk)
+        - 修复了带 DML 算子的 `EXPLAIN ANALYZE` 语句可能在事务提交完成前返回结果的问题 [#37273](https://github.com/pingcap/tidb/issues/37373) @[cfzjywxk](https://github.com/cfzjywxk)
 
     - planner
 
