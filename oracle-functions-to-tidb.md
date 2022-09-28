@@ -1,6 +1,6 @@
 ---
-title: Oracle 与 TiDB 函数对照表
-summary: 了解 Oracle 与 TiDB 函数对照表。
+title: Oracle 与 TiDB 函数和语法差异对照
+summary: 了解 Oracle 与 TiDB 函数和语法差异对照。
 ---
 
 # Oracle 与 TiDB 函数和语法差异对照
