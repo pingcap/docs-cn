@@ -142,7 +142,7 @@ TiDB 版本：6.3.0-DMR
 
 * 新增支持 `REGEXP_INSTR()`、`REGEXP_LIKE()`、`REGEXP_REPLACE()` 和 `REGEXP_SUBSTR()` 4 个正则表达式函数，提升 TiDB 与 MySQL 8.0 的兼容性 [#23881](https://github.com/pingcap/tidb/issues/23881) @[windtalker](https://github.com/windtalker)
 
-    这些函数与 MySQL 的兼容性可参考[正则函数与 MySQL 的兼容性](/functions-and-operators/string-functions.md#正则函数与-MySQL-的兼容性)。
+    这些函数与 MySQL 的兼容性可参考[正则函数与 MySQL 的兼容性](/functions-and-operators/string-functions.md#正则函数与-mysql-的兼容性)。
 
 * 完善基于 SQL 的数据放置规则功能的兼容性 [#37171](https://github.com/pingcap/tidb/issues/37171) @[lcwangchao](https://github.com/lcwangchao)
 
@@ -199,9 +199,9 @@ TiDB 版本：6.3.0-DMR
 | 变量名 | 修改类型 | 描述 |
 | ------ | ------ | ------ |
 | [`default_authentication_plugin`](/system-variables.md#default_authentication_plugin) | 修改 | 扩展可选值范围：增加 `tidb_sm3_password`，设置为 `tidb_sm3_password` 时，用户密码验证的加密算法为国密算法 SM3。 |
-| [`tidb_adaptive_closest_read_threshold`](/system-variables.md#tidb_adaptive_closest_read_threshold-从-v630-版本开始引入) | 新增 | 用于控制当 [`replica-read`](/system-variables.md#tidb_replica_read-new-in-v40) 设置为 `closest-adaptive` 时，优先将读请求发送至 TiDB server 所在区域副本的阈值。 |
+| [`tidb_adaptive_closest_read_threshold`](/system-variables.md#tidb_adaptive_closest_read_threshold-从-v630-版本开始引入) | 新增 | 用于控制当 [`tidb_replica_read`](/system-variables.md#tidb_replica_read-从-v40-版本开始引入) 设置为 `closest-adaptive` 时，优先将读请求发送至 TiDB server 所在区域副本的阈值。 |
 | [`tidb_constraint_check_in_place_pessimistic`](/system-variables.md#tidb_constraint_check_in_place_pessimistic-从-v630-版本开始引入) | 新增 |  用于控制悲观事务中唯一约束检查的时间点。 |
-| [`tidb_ddl_disk_quota`](/system-variables.md#tidb_ddl_disk_quota-从-v630-版本开始引入) | 新增 | 用于设置创建索引的回填过程中本地存储空间的使用限制，仅在 [`tidb_ddl_enable_fast_reorg`](/system-variables.md#tidb_ddl_enable_fast_reorg-new-in-v630) 开启的情况下生效。 |
+| [`tidb_ddl_disk_quota`](/system-variables.md#tidb_ddl_disk_quota-从-v630-版本开始引入) | 新增 | 用于设置创建索引的回填过程中本地存储空间的使用限制，仅在 [`tidb_ddl_enable_fast_reorg`](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 开启的情况下生效。 |
 | [`tidb_ddl_enable_fast_reorg`](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) | 新增 | 用于控制是否开启添加索引加速功能，来提升创建索引回填过程的速度。 |
 | [`tidb_enable_clustered_index`](/system-variables.md#tidb_enable_clustered_index-从-v50-版本开始引入) | 修改 | 默认值从 `INT_ONLY` 修改为 `ON`。 |
 | [`tidb_enable_exchange_partition`](/system-variables.md#tidb_enable_exchange_partition) | 废弃 | 用于设置是否启用 [`exchange partitions with tables`](/partitioned-table.md#分区管理) 特性。自 v6.3.0 开始，其取值将固定为默认值 `ON`，即默认开启 `exchange partitions with tables`。  |
@@ -213,7 +213,7 @@ TiDB 版本：6.3.0-DMR
 | [`tidb_opt_force_inline_cte`](/system-variables.md#tidb_opt_force_inline_cte-从-v630-版本开始引入) | 新增 | 用于控制是否强制开启 inline CTE。默认值为 `OFF`，即默认不强制开启 inline CTE。 |
 | [`tidb_opt_three_stage_distinct_agg`](/system-variables.md#tidb_opt_three_stage_distinct_agg-从-v630-版本开始引入) | 新增 | 用于控制在 MPP 模式下是否将 `COUNT(DISTINCT)` 聚合改写为三阶段分布式执行的聚合。默认为 `ON`。 |
 | [`tidb_partition_prune_mode`](/system-variables.md#tidb_partition_prune_mode-从-v51-版本开始引入) | 修改 | 用于设置是否开启分区表动态裁剪模式。自 v6.3.0 起，该变量默认值修改为 `dynamic`。 |
-| [`tidb_rc_read_check_ts`](/system-variables.md#tidbrcreadcheckts-span-classversion-mark从-v600-版本开始引入span) | 修改 | 用于优化读语句时间戳的获取，适用于悲观事务 RC 隔离级别下读写冲突较少的场景。由于这个行为只针对特定业务负载，而对其他类型的负载可能造成性能回退，自 v6.3.0 起，该变量的作用域由 GLOBAL 或 SESSION 修改为 INSTANCE 级别，允许只针对部分 TiDB 实例打开。 |
+| [`tidb_rc_read_check_ts`](/system-variables.md#tidb_rc_read_check_ts-从-v600-版本开始引入) | 修改 | 用于优化读语句时间戳的获取，适用于悲观事务 RC 隔离级别下读写冲突较少的场景。由于这个行为只针对特定业务负载，而对其他类型的负载可能造成性能回退，自 v6.3.0 起，该变量的作用域由 GLOBAL 或 SESSION 修改为 INSTANCE 级别，允许只针对部分 TiDB 实例打开。 |
 | [`tidb_rc_write_check_ts`](/system-variables.md#tidb_rc_write_check_ts-从-v630-版本开始引入)  | 新增 | 用于优化时间戳的获取，适用于悲观事务 READ-COMMITTED 隔离级别下点写冲突较少的场景，开启此变量可以避免点写语句获取全局 timestamp 带来的延迟和开销。 |
 | [`tiflash_fastscan`](/system-variables.md#tiflash_fastscan-从-v630-版本开始引入) | 新增 | 用于控制是否启用 FastScan 功能。如果开启 FastScan 功能（设置为 `ON` 时），TiFlash 可以提供更高效的查询性能，但不保证查询结果的精度和数据一致性。 |
 | [`sql_require_primary_key`](/system-variables.md#sql_require_primary_key-从-v630-版本开始引入)   |  新增  |  用于控制表是否必须有主键。启用该变量后，如果在没有主键的情况下创建或修改表，将返回错误。 |
@@ -379,7 +379,7 @@ TiDB 版本：6.3.0-DMR
         - 修复了 update 语句在某些情况下错误地消除了 projection 导致 Can't find column 报错的问题 [#37568](https://github.com/pingcap/tidb/issues/37568) @[AilinKid](https://github.com/AilinKid)
         - (dup) 修复了执行 Join Reorder 操作时会错误地下推 Outer Join 条件的问题 [#37238](https://github.com/pingcap/tidb/issues/37238) @[AilinKid](https://github.com/AilinKid)
         - 修复了 IN/NOT IN 子查询在某些 pattern 下会报 Can't find column 的问题 [#37032](https://github.com/pingcap/tidb/issues/37032) @[AilinKid](https://github.com/AilinKid)
-        - - 修复了 `UPDATE` 语句中带 CTE 的情况下会报 `Can't find column` 的问题 [#35758](https://github.com/pingcap/tidb/issues/35758) @[AilinKid](https://github.com/AilinKid)
+        - 修复了 `UPDATE` 语句中带公共表表达式 (CTE) 的情况下会报 `Can't find column` 的问题 [#35758](https://github.com/pingcap/tidb/issues/35758) @[AilinKid](https://github.com/AilinKid)
 
     - diagnosis
 
