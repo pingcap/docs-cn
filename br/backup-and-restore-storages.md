@@ -51,6 +51,15 @@ S3、 GCS 和 Azblob 等云存储有时需要额外的连接配置，你可以�
         -d 's3://my-bucket/sql-backup?force-path-style=true&endpoint=http://10.154.10.132:8088'
     ```
 
+* 用 TiDB Lightning 从 S3 导入数据（使用特定 IAM 角色来访问 S3 数据）：
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    ./tidb-lightning --tidb-port=4000 --pd-urls=127.0.0.1:2379 --backend=local --sorted-kv-dir=/tmp/sorted-kvs \
+        -d 's3://my-bucket/test-data?role-arn=arn:aws:iam::888888888888:role/my-role'
+    ```
+
 * 用 BR 备份到 GCS：
 
     {{< copyable "shell-regular" >}}
@@ -82,12 +91,14 @@ S3、 GCS 和 Azblob 等云存储有时需要额外的连接配置，你可以�
 | `sse` | 用于加密上传的服务器端加密算法（可以设置为空、`AES256` 或 `aws:kms`） |
 | `sse-kms-key-id` | 如果 `sse` 设置为 `aws:kms`，则使用该参数指定 KMS ID |
 | `acl` | 上传对象的 canned ACL（例如，`private`、`authenticated-read`） |
+| `role-arn` | 当需要使用特定的 [IAM 角色](https://docs.aws.amazon.com/zh_cn/IAM/latest/UserGuide/id_roles.html)来访问第三方 Amazon S3 的数据时，使用这个参数来指定 IAM 角色的对应 [Amazon Resource Name (ARN)](https://docs.aws.amazon.com/zh_cn/general/latest/gr/aws-arns-and-namespaces.html)（例如 `arn:aws:iam::888888888888:role/my-role`）。关于使用 IAM 角色访问第三方 Amazon S3 数据的场景，请参考 [AWS 相关文档介绍](https://docs.aws.amazon.com/zh_cn/IAM/latest/UserGuide/id_roles_common-scenarios_third-party.html) |
+| `external-id` | 当需要使用特定的 [IAM 角色](https://docs.aws.amazon.com/zh_cn/IAM/latest/UserGuide/id_roles.html)来访问第三方 Amazon S3 的数据时，可能需要同时提供正确的[外部 ID](https://docs.aws.amazon.com/zh_cn/IAM/latest/UserGuide/id_roles_create_for-user_externalid.html) 来确保用户有权限代入该 IAM 角色。这个参数用来指定对应的外部 ID ，使得代入 IAM 角色能够顺利进行。外部 ID 可以是任意字符串，并且不是必须的。一般由控制 Amazon S3 数据访问的第三方来指定。如果第三方对于 IAM 角色没有指定特定的外部 ID，则可以不需要提供该参数也能顺利代入对应的 IAM 角色，从而访问对应的 Amazon S3 数据 |
 
 > **注意：**
 >
 > 不建议在存储 URL 中直接传递访问密钥和 secret 访问密钥，因为这些密钥是明文记录的。
 
-如果没有指定访问密钥和 secret 访问密钥，迁移工具尝试按照以下顺序从环境中推断这些密钥：
+如果没有指定访问密钥和 secret 访问密钥，并且也没有提供特定的 IAM 角色 ARN 和外部 ID，迁移工具尝试按照以下顺序从环境中推断这些密钥：
 
 1. `$AWS_ACCESS_KEY_ID` 和 `$AWS_SECRET_ACCESS_KEY` 环境变量
 2. `$AWS_ACCESS_KEY` 和 `$AWS_SECRET_KEY` 环境变量
@@ -137,7 +148,12 @@ S3、 GCS 和 Azblob 等云存储有时需要额外的连接配置，你可以�
 
 ```bash
 ./dumpling -u root -h 127.0.0.1 -P 3306 -B mydb -F 256MiB \
-    -o 's3://my-bucket/sql-backup'
+    -o 's3://my-bucket/sql-backup' \
+    --s3.role-arn="arn:aws:iam::888888888888:role/my-role"
+# same as:
+# ./dumpling -u root -h 127.0.0.1 -P 3306 -B mydb -F 256MiB \
+#     -o 's3://my-bucket/sql-backup&role-arn=arn:aws:iam::888888888888:role/my-role'
+
 ```
 
 如果同时指定了 URL 参数和命令行参数，命令行参数会覆盖 URL 参数。
@@ -152,6 +168,8 @@ S3、 GCS 和 Azblob 等云存储有时需要额外的连接配置，你可以�
 | `--s3.sse-kms-key-id` | 如果 `--s3.sse` 设置为 `aws:kms`，则使用该参数指定 KMS ID |
 | `--s3.acl` | 上传对象的 canned ACL（例如，`private` 或 `authenticated-read`） |
 | `--s3.provider` | S3 兼容服务类型（支持 `aws`、`alibaba`、`ceph`、`netease` 或 `other`） |
+| `--s3.role-arn` | 当需要使用特定的 [IAM 角色](https://docs.aws.amazon.com/zh_cn/IAM/latest/UserGuide/id_roles.html)来访问第三方 Amazon S3 的数据时，使用这个可选参数来指定 IAM 角色的对应 [Amazon Resource Name (ARN)](https://docs.aws.amazon.com/zh_cn/general/latest/gr/aws-arns-and-namespaces.html)（例如 `arn:aws:iam::888888888888:role/my-role`）。关于使用 IAM 角色访问第三方 Amazon S3 数据的场景，请参考 [AWS 相关文档介绍](https://docs.aws.amazon.com/zh_cn/IAM/latest/UserGuide/id_roles_common-scenarios_third-party.html) |
+| `--s3.external-id` | 当需要使用特定的 [IAM 角色](https://docs.aws.amazon.com/zh_cn/IAM/latest/UserGuide/id_roles.html)来访问第三方 Amazon S3 的数据时，可能需要同时提供正确的[外部 ID](https://docs.aws.amazon.com/zh_cn/IAM/latest/UserGuide/id_roles_create_for-user_externalid.html) 来确保用户有权限代入该 IAM 角色。这个可选参数用来指定对应的外部 ID ，使得代入 IAM 角色能够顺利进行。外部 ID 可以是任意字符串，并且不是必须的。一般由控制 Amazon S3 数据访问的第三方来指定。如果第三方对于 IAM 角色没有指定特定的外部 ID，则可以不需要提供该参数也能顺利代入对应的 IAM 角色，从而访问对应的 Amazon S3 数据 |
 
 如果要将数据导出到非 AWS 的 S3 云存储，你需要指定云服务商名字，以及是否使用 virtual-hosted style。将数据导出至阿里云的 OSS 存储为例：
 
