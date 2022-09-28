@@ -9,8 +9,8 @@ summary: 了解 Oracle 与 TiDB 函数对照表。
 
 | 序号 | 语法差异点 | Oracle | TiDB  | 说明 |
 |---|---|---|---|---|
-| 1 | 数据类型转换函数 | to_number(key) | convert(key, dataType) | 转换表字段值数据类型，TiDB 支持 BINARY、CHAR、DATE、DATETIME、TIME、SIGNED INTEGER、UNSIGNED INTEGER、DECIMAL |
-| 2 | 数据类型转换函数 | to_char(key) | convert(key, dataType) | 转换表字段值数据类型，TiDB 支持 BINARY、CHAR、DATE、DATETIME、TIME、SIGNED INTEGER、UNSIGNED INTEGER、DECIMAL |
+| 1 | 数据类型转换函数 | to_number(key) | convert(key, dataType) | 转换表字段值数据类型，TiDB 支持 BINARY、CHAR、DATE、DATETIME、TIME、SIGNED INTEGER、UNSIGNED INTEGER、DECIMAL。 |
+| 2 | 数据类型转换函数 | to_char(key) | convert(key, dataType) | 转换表字段值数据类型，TiDB 支持 BINARY、CHAR、DATE、DATETIME、TIME、SIGNED INTEGER、UNSIGNED INTEGER、DECIMAL。 |
 | 3 | 日期转换字符串函数 | to_char(sysdate,'yyyy-MM-dd hh24:mi:ss')       | date_format(now(), '%Y-%m-%d %H:%i:%s') | 日期类型转换字符型函数，TiDB 的年月日时分秒字符大小写必须严格按要求写。将原来的修改为 date_formate 修改为了修改为 date_format。 |
 | 4 | 日期转换字符串函数 | to_char(sysdate, 'yyyy-MM-dd')       | date_format(now(), '%Y-%m-%d') | 日期类型转换字符型函数。TiDB 的年月日时分秒字符大小写必须严格按要求走写。将原来的修改为 date_formate 修改为 date_format。 |
 | 5 | 字符串转换日期函数 | to_date('2021-05-28 17:31:37', 'yyyy-MM-dd hh24:mi:ss') | str_to_date('2021-05-28   17:31:37', '%Y-%m-%d %H:%i:%s') | 字符型转换日期型函数，TiDB 的年月日时分秒字符大小写必须严格按要求写。 |
@@ -21,7 +21,7 @@ summary: 了解 Oracle 与 TiDB 函数对照表。
 | 10 | 日期数据 +/- n 月 date_add() 函数替换 add_months() 函数 | add_months(dateVal, 1) | date_add(dateVal,   INTERVAL n MONTH) | 日期数据增加 `n` 月，`n` 可为负数。 |
 | 11 | TRUNC()函数 | TRUNC(sysdate) | cast(now() as date) | 获取时间的（2019-07-26 00:00:00）格式返回值。Oracle 中的 TRUNC(sysdate) 只是截取到日，不会截取到时分秒，而 TiDB 中与之对应的截取日写法是 cast(now() as date)。 |
 | 12 | TRUNC()函数 | TRUNC(sysdate) | date_format(now(),'%Y-%m-%d') | cast 数据库执行正常，程序中报错，可修改为 date_format。 |
-| 13 | TRUNC()函数 | Trunc(sysdate,'mm') | date_add(curdate(),interval -day(curdate())+1 day)  | 获取当月第一天 |
+| 13 | TRUNC()函数 | Trunc(sysdate,'mm') | date_add(curdate(),interval -day(curdate())+1 day)  | 获取当月第一天。 |
 | 14 | TRUNC 函数 | TRUNC(2.136) => 2 TRUNC(2.136, 2) => 2.14 | TRUNCATE(2.136, 0) => 2 TRUNCATE(2.136, 2) => 2.14 | 数据精度保留，直接截取相应小数位，不涉及四舍五入。 |
 | 15 | 字符串连接 | a' \|\| 'b' | CONCAT('a', 'b') | 字符串拼接。 |
 | 16 | DELETE关键字 | DELETE   FROM tName t WWHER t.xxx = xxx; | DELETE FROM table_name WHERE xxx = xxx; | 删除语句，TiDB 不支持删除语句中对表起别名（有问题，tidb支持这种表别名写法）。 |
