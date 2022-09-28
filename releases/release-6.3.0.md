@@ -430,9 +430,9 @@ TiDB 版本：6.3.0-DMR
 
     + TiCDC
 
-        - 修复了使用一个含有 grpc 服务的非法的 pd 地址的错误处理问题 [#6458](https://github.com/pingcap/tiflow/issues/6458) @[crelax](https://github.com/crelax)
+        - 修复 TiCDC 对含有 grpc 服务的非法 PD 地址报错不准确的问题 [#6458](https://github.com/pingcap/tiflow/issues/6458) @[crelax](https://github.com/crelax)
         - 修复了 `cdc cli changefeed list` 命令不返回 failed changefeed 的问题 [#6334](https://github.com/pingcap/tiflow/issues/6334) @[asddongmen](https://github.com/asddongmen)
-        - 修复了如果 changefeed 初始化失败会导致 cdc 不可用的问题  [#6859](https://github.com/pingcap/tiflow/issues/6859) @[asddongmen](https://github.com/asddongmen)
+        - 修复了如果 changefeed 初始化失败会导致 TiCDC 不可用的问题  [#6859](https://github.com/pingcap/tiflow/issues/6859) @[asddongmen](https://github.com/asddongmen)
 
     + TiDB Data Migration (DM)
 
