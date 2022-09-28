@@ -11,7 +11,7 @@ summary: 了解 Oracle 与 TiDB 函数对照表。
 |---|---|---|---|---|
 | 1 | 数据类型转换函数 | to_number(key) | convert(key, dataType) | 转换表字段值数据类型，TiDB 支持 BINARY、CHAR、DATE、DATETIME、TIME、SIGNED INTEGER、UNSIGNED INTEGER、DECIMAL。 |
 | 2 | 数据类型转换函数 | to_char(key) | convert(key, dataType) | 转换表字段值数据类型，TiDB 支持 BINARY、CHAR、DATE、DATETIME、TIME、SIGNED INTEGER、UNSIGNED INTEGER、DECIMAL。 |
-| 3 | 日期转换字符串函数 | to_char(sysdate,'yyyy-MM-dd hh24:mi:ss')       | date_format(now(), '%Y-%m-%d %H:%i:%s') | 日期类型转换字符型函数，TiDB 的年月日时分秒字符大小写必须严格按要求写。将原来的修改为 date_formate 修改为了修改为 date_format。 |
+| 3 | 日期转换字符串函数 | to_char(sysdate,'yyyy-MM-dd hh24:mi:ss')       | date_format(now(), '%Y-%m-%d %H:%i:%s') | 日期类型转换字符型函数，TiDB 的年月日时分秒字符大小写必须严格按要求写。 |
 | 4 | 日期转换字符串函数 | to_char(sysdate, 'yyyy-MM-dd')       | date_format(now(), '%Y-%m-%d') | 日期类型转换字符型函数。TiDB 的年月日时分秒字符大小写必须严格按要求走写。将原来的修改为 date_formate 修改为 date_format。 |
 | 5 | 字符串转换日期函数 | to_date('2021-05-28 17:31:37', 'yyyy-MM-dd hh24:mi:ss') | str_to_date('2021-05-28   17:31:37', '%Y-%m-%d %H:%i:%s') | 字符型转换日期型函数，TiDB 的年月日时分秒字符大小写必须严格按要求写。 |
 | 6 | 字符串转换日期函数 | to_date('2021-05-28',   'yyyy-MM-dd hh24:mi:ss')       | str_to_date('2021-05-28',   '%Y-%m-%d%T') | 字符型转换日期型函数，TiDB 年月日时分秒字符大小写必须严格按要求写。 |
