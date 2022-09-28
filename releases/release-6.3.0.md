@@ -247,7 +247,6 @@ TiDB 版本：6.3.0-DMR
 
 ### 其他
 
-* 提升对 MySQL 的兼容性：修复 MySQL 兼容性不支持项 “TiDB 不支持 ACCOUNT LOCK 和 ACCOUNT UNLOCK 选项”。
 * 日志备份支持 GCS 和 Azure Blob Storage 作为备份存储。
 * 日志备份功能兼容分区交换 (Exchange Partition) DDL。
 * 废弃了通过 `ALTER TABLE ...SET TiFLASH MODE ...` 语法启用或禁用 FastScan 功能。
