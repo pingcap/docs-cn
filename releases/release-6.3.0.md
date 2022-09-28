@@ -270,8 +270,8 @@ TiDB 版本：6.3.0-DMR
 
 + TiKV
 
-    - 增加 Raftstore 配置项 `unreachable_backoff` [#13054](https://github.com/tikv/tikv/issues/13054)
-    - 实现 TSO batch list 提高 TSO 服务不可用的容忍度 [#12794](https://github.com/tikv/tikv/issues/12794) @[pingyu](https://github.com/pingyu)
+    - 支持配置 `unreachable_backoff` 避免 Raftstore 发现某个 Peer 无法连接时广播过多消息 [#13054](https://github.com/tikv/tikv/issues/13054) @[5kbpers](https://github.com/5kbpers)
+    - 提升 TSO 服务不可用的容忍度 [#12794](https://github.com/tikv/tikv/issues/12794) @[pingyu](https://github.com/pingyu)
     - (dup) 支持动态调整 RocksDB 进行 subcompaction 的并发个数 (`rocksdb.max-sub-compactions`) [#13145](https://github.com/tikv/tikv/issues/13145) @[ethercflow](https://github.com/ethercflow)
     - 优化合并空 Region 的性能 [#12421](https://github.com/tikv/tikv/issues/12421) @[tabokie](https://github.com/tabokie)
     - 支持更多正则表达式函数 [#13483](https://github.com/tikv/tikv/issues/13483) @[gengliqi](https://github.com/gengliqi)
@@ -279,7 +279,8 @@ TiDB 版本：6.3.0-DMR
 
 + PD
 
-    - Updates metrics query. Renames `metrics` to `monitoring` on TiDB Dashboard [#5366](https://github.com/tikv/pd/issues/5366) @[YiniXu9506](https://github.com/YiniXu9506)
+    - 更新 TiDB Dashboard 中 TiKV IO MBps 指标的计算方式 [#5366](https://github.com/tikv/pd/issues/5366) @[YiniXu9506](https://github.com/YiniXu9506)
+    - 将 TiDB Dashboard 中 `metrics` 更改为 `monitoring` [#5366](https://github.com/tikv/pd/issues/5366) @[YiniXu9506](https://github.com/YiniXu9506)
 
 + TiFlash
 
@@ -383,21 +384,21 @@ TiDB 版本：6.3.0-DMR
 
     - (dup) 修复 PD Region heartbeat 连接异常中断后未重新连接的问题 [#12934](https://github.com/tikv/tikv/issues/12934) @[bufferflies](https://github.com/bufferflies)
     - (dup) 修复 Raftstore 线程繁忙时，可能会出现 Region 重叠的问题 [#13160](https://github.com/tikv/tikv/issues/13160) @[5kbpers](https://github.com/5kbpers)
-    - (dup) 修复 PD 客户端可能会出现死锁的问题 [#12933](https://github.com/tikv/tikv/issues/12933) @[BurtonQin](https://github.com/BurtonQin), [#13191](https://github.com/tikv/tikv/issues/13191) @[bufferflies](https://github.com/bufferflies)
-    - 修复关闭已有加密时 TiKV panic 的问题 [#13081](https://github.com/tikv/tikv/issues/13081) @[jiayang-zheng](https://github.com/jiayang-zheng)
+    - (dup) 修复 PD 客户端可能会出现死锁的问题 [#13191](https://github.com/tikv/tikv/issues/13191) @[bufferflies](https://github.com/bufferflies) [#12933](https://github.com/tikv/tikv/issues/12933) @[BurtonQin](https://github.com/BurtonQin)
+    - 修复关闭加密时 TiKV panic 的问题 [#13081](https://github.com/tikv/tikv/issues/13081) @[jiayang-zheng](https://github.com/jiayang-zheng)
     - (dup) 修复 Dashboard 中 Unified Read Pool CPU 表达式错误的问题 [#13086](https://github.com/tikv/tikv/issues/13086) @[glorv](https://github.com/glorv)
-    - 修复当有一个 TiKV 网络隔离时可能导致整体 QPS 掉 0 的问题 [#12966](https://github.com/tikv/tikv/issues/12966) @[cosven](https://github.com/cosven)
+    - 修复当有一个 TiKV 出现网络隔离时，一段时间内服务不可用问题 [#12966](https://github.com/tikv/tikv/issues/12966) @[cosven](https://github.com/cosven)
     - 修复错误报错 `PessimisticLockNotFound` 的问题 [#13425](https://github.com/tikv/tikv/issues/13425) @[sticnarf](https://github.com/sticnarf)
-    - 修复当有太多临近的 short row 时 PITR 可能丢失数据的问题 [#13281](https://github.com/tikv/tikv/issues/13281) @[YuJuncen](https://github.com/YuJuncen)
-    - 修复长时间悲观事务导致 checkpoint 没有推进的问题 [#13304](https://github.com/tikv/tikv/issues/13304) @[YuJuncen](https://github.com/YuJuncen)
-    - 修复 JSON 中的 `DATETIME/DATE/TIMESTAMP/TIME` 和 `STRING` 无法区分的问题 [#13417](https://github.com/tikv/tikv/issues/13417) @[YangKeao](https://github.com/YangKeao)
-    - 修复 JSON bool 和其他 JSON value 的比较行为与 MySQL 不兼容的问题 [#13386](https://github.com/tikv/tikv/issues/13386) @[YangKeao](https://github.com/YangKeao)
+    - 修复某些场景下 PITR 可能丢失数据的问题 [#13281](https://github.com/tikv/tikv/issues/13281) @[YuJuncen](https://github.com/YuJuncen)
+    - 修复存在时间较长的悲观事务时 checkpoint 没有推进的问题 [#13304](https://github.com/tikv/tikv/issues/13304) @[YuJuncen](https://github.com/YuJuncen)
+    - 修复 TiKV 无法区分 JSON 中时间类型（`DATETIME`、`DATE`、`TIMESTAMP` 和 `TIME`）和 `STRING` 类型的问题 [#13417](https://github.com/tikv/tikv/issues/13417) @[YangKeao](https://github.com/YangKeao)
+    - 修复 JSON bool 和其他 JSON value 的比较行为与 MySQL 不兼容的问题 [#13386](https://github.com/tikv/tikv/issues/13386) [#37481](https://github.com/pingcap/tidb/issues/37481) @[YangKeao](https://github.com/YangKeao)
 
 + PD
 
-    - (dup) 修复开启 enable-forwarding 时 gRPC 处理返回错误不恰当导致 PD panic 的问题 [#5373](https://github.com/tikv/pd/issues/5373) @[bufferflies](https://github.com/bufferflies)
-    - Fix the issue that unhealthy region cause panic [#5491](https://github.com/tikv/pd/issues/5491) @[nolouch](https://github.com/nolouch)
-    - Fix the bug where the Learner Peer of TiFlash Replica might not be created [#5401](https://github.com/tikv/pd/issues/5401) @[HunDunDM](https://github.com/HunDunDM)
+    - (dup) 修复开启 `enable-forwarding` 时 gRPC 处理返回错误不恰当导致 PD panic 的问题 [#5373](https://github.com/tikv/pd/issues/5373) @[bufferflies](https://github.com/bufferflies)
+    - 修复不健康的 Region 可能导致 PD panic 的问题 [#5491](https://github.com/tikv/pd/issues/5491) @[nolouch](https://github.com/nolouch)
+    - 修复 PD 可能没创建 TiFlash Learner 副本的问题 [#5401](https://github.com/tikv/pd/issues/5401) @[HunDunDM](https://github.com/HunDunDM)
 
 + TiFlash
 
