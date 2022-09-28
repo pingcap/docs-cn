@@ -35,11 +35,11 @@ TiDB provides the following two support levels for Java:
 
 Support level: **Full**
 
-You can follow the [MySQL documentation](https://dev.mysql.com/doc/connector-j/5.1/en/) to download and configure a Java JDBC driver.
+You can follow the [MySQL documentation](https://dev.mysql.com/doc/connector-j/8.0/en/) to download and configure a Java JDBC driver. It is recommended to use MySQL Connector/J 8.0.29 or later with TiDB v6.3.0 and newer.
 
-> **Note:**
+> **Tip:**
 >
-> It is strongly recommended to use version 5.1.49, which is the latest version of JDBC 5.1. Since there is an [unresolved bug](https://bugs.mysql.com/bug.php?id=106252) in the current version 8.0.29, which might cause threads to hang when using TiDB. It is recommended that you do not upgrade to version 8.0 until MySQL JDBC 8.0 merges this fix.
+> Since there is an [unresolved bug](https://bugs.mysql.com/bug.php?id=106252) in the current version 8.0.30, which might cause threads to hang when using TiDB versions earlier than v6.3.0. It is recommended that, if you are not yet using TiDB v6.3.0 or later versions, you do not upgrade to version 8.0 until MySQL Connector/J 8.0 fixes this bug, or use the TiDB version of MySQL Connector/J as that addresses this bug (see the *TiDB-JDBC* tab).
 
 For an example of how to build a complete application, see [Build a Simple CRUD App with TiDB and JDBC](/develop/dev-guide-sample-application-java.md).
 
@@ -49,6 +49,8 @@ For an example of how to build a complete application, see [Build a Simple CRUD 
 Support level: **Full**
 
 [TiDB-JDBC](https://github.com/pingcap/mysql-connector-j) is a customized Java driver based on MySQL 8.0.29. Compiled based on MySQL official version 8.0.29, TiDB-JDBC fixes the bug of multi-parameter and multi-field EOF in the prepare mode in the original JDBC, and adds features such as automatic TiCDC snapshot maintenance and the SM3 authentication plugin.
+
+Using SM3-based authentication is only supported with the TiDB version of MySQL Connector/J.
 
 If you use Maven, add the following content to the `<dependencies></dependencies>` section in the `pom.xml` file:
 
