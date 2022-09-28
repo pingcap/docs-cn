@@ -72,7 +72,7 @@ Usage of ./bin/tidb-server:
 
 ### 1.1.10 除了官方文档，有没有其他 TiDB 知识获取途径？
 
-- [官方文档](/overview.md)：获取 TiDB 相关知识最主要、最及时的途径。
+- [官方文档](https://docs.pingcap.com/zh/tidb/stable)：获取 TiDB 相关知识最主要、最及时的途径。
 - [官方博客](https://cn.pingcap.com/blog/)：了解产品技术解读、观点洞察、案例实践。
 - [AskTUG 社区论坛](https://asktug.com)：与社区用户、技术专家互动交流。
 - [PingCAP Education](https://cn.pingcap.com/education/)：学习线上课程，获得数据库能力认证。
