@@ -158,7 +158,6 @@ S3、 GCS 和 Azblob 等云存储有时需要额外的连接配置，你可以�
 ./dumpling -u root -h 127.0.0.1 -P 3306 -B mydb -F 256MiB \
      -o 's3://my-bucket/sql-backup&role-arn=arn:aws:iam::888888888888:role/my-role'
 ```
-```
 
 如果同时指定了 URL 参数和命令行参数，命令行参数会覆盖 URL 参数。
 
