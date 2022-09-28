@@ -16,4 +16,4 @@ aliases: ['/docs-cn/dev/faq/high-availability-faq/']
 
 ## TiDB 是否提供三中心跨机房多活部署的推荐方案？
 
-从架构来看，TiDB 支持真正意义上的跨中心异地多活。从实现层面看，多地部署方案依赖数据中心之间的网络延迟和稳定性，一般建议延迟在 5ms 以下。目前 TiDB 已经有相似的客户部署方案，参见[两地三中心部署方案](three-data-centers-in-two-cities-deployment.md)。
+从架构来看，TiDB 支持真正意义上的跨中心异地多活。从实现层面看，多地部署方案依赖数据中心之间的网络延迟和稳定性，一般建议延迟在 5ms 以下。目前 TiDB 已经有相似的客户部署方案，参见[两地三中心部署方案](/three-data-centers-in-two-cities-deployment.md)。
