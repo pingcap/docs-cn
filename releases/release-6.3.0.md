@@ -273,7 +273,6 @@ TiDB 版本：6.3.0-DMR
 
     - planner
 
-        - 修复了 update 语句中带 CTE 的情况下会报 Can't find column 的问题 [#35758](https://github.com/pingcap/tidb/issues/35758) @[AilinKid](https://github.com/AilinKid)
         - `PLAN REPLAYER` 命令支持一次导出多条 SQL 语句的执行计划信息，提升了问题排查效率 [#37798](https://github.com/pingcap/tidb/issues/37798) @[Yisaer](https://github.com/Yisaer)
 
 + TiKV
@@ -380,7 +379,7 @@ TiDB 版本：6.3.0-DMR
         - 修复了 update 语句在某些情况下错误地消除了 projection 导致 Can't find column 报错的问题 [#37568](https://github.com/pingcap/tidb/issues/37568) @[AilinKid](https://github.com/AilinKid)
         - (dup) 修复了执行 Join Reorder 操作时会错误地下推 Outer Join 条件的问题 [#37238](https://github.com/pingcap/tidb/issues/37238) @[AilinKid](https://github.com/AilinKid)
         - 修复了 IN/NOT IN 子查询在某些 pattern 下会报 Can't find column 的问题 [#37032](https://github.com/pingcap/tidb/issues/37032) @[AilinKid](https://github.com/AilinKid)
-        - Fix a wrong casting in building union plan [#31678](https://github.com/pingcap/tidb/issues/31678) @[bb7133](https://github.com/bb7133)
+        - - 修复了 `UPDATE` 语句中带 CTE 的情况下会报 `Can't find column` 的问题 [#35758](https://github.com/pingcap/tidb/issues/35758) @[AilinKid](https://github.com/AilinKid)
 
     - diagnosis
 
