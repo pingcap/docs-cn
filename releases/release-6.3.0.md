@@ -428,7 +428,6 @@ TiDB 版本：6.3.0-DMR
         - 修复了一个导致 PITR 的 checkpoint 信息过时的问题 [#36423](https://github.com/pingcap/tidb/issues/36423) @[YuJuncen](https://github.com/YuJuncen)
         - 修复了在恢复时配置了过高的 concurrency 会导致 Region 不均衡的问题 [#37549](https://github.com/pingcap/tidb/issues/37549) @[3pointer](https://github.com/3pointer)
         - 修复了在 TiCDC 存在时，PITR 进度无法推进的问题 [#37822](https://github.com/pingcap/tidb/issues/37822) @[YuJuncen](https://github.com/YuJuncen)
-        - 修复有超出预期数量的备份元信息文件 (backupmeta) 生成的问题 [#37244](https://github.com/pingcap/tidb/issues/37244) @[MoCuishle28](https://github.com/MoCuishle28)
         - 修复了当外部存储的鉴权 Key 中存在某些特殊符号时，会导致备份恢复失败的问题 [#37469](https://github.com/pingcap/tidb/issues/37469) @[MoCuishle28](https://github.com/MoCuishle28)
 
     + TiCDC
