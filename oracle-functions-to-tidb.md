@@ -11,10 +11,10 @@ summary: 了解 Oracle 与 TiDB 函数对照表。
 |---|---|---|---|---|
 | 1 | 数据类型转换函数 | to_number(key) | convert(key, dataType) | 转换表字段值数据类型，TiDB 支持 BINARY、CHAR、DATE、DATETIME、TIME、SIGNED INTEGER、UNSIGNED INTEGER、DECIMAL。 |
 | 2 | 数据类型转换函数 | to_char(key) | convert(key, dataType) | 转换表字段值数据类型，TiDB 支持 BINARY、CHAR、DATE、DATETIME、TIME、SIGNED INTEGER、UNSIGNED INTEGER、DECIMAL。 |
-| 3 | 日期转换字符串函数 | to_char(sysdate,'yyyy-MM-dd hh24:mi:ss')       | date_format(now(), '%Y-%m-%d %H:%i:%s') | 日期类型转换字符型函数，TiDB 的年月日时分秒字符大小写必须严格按要求写。 |
+| 3 | 日期转换字符串函数 | to_char(sysdate, 'yyyy-MM-dd hh24:mi:ss')       | date_format(now(), '%Y-%m-%d %H:%i:%s') | 日期类型转换字符型函数，TiDB 的年月日时分秒字符大小写必须严格按要求写。 |
 | 4 | 日期转换字符串函数 | to_char(sysdate, 'yyyy-MM-dd')       | date_format(now(), '%Y-%m-%d') | 日期类型转换字符型函数。TiDB 的年月日时分秒字符大小写必须严格按要求走写。 |
-| 5 | 字符串转换日期函数 | to_date('2021-05-28 17:31:37', 'yyyy-MM-dd hh24:mi:ss') | str_to_date('2021-05-28   17:31:37', '%Y-%m-%d %H:%i:%s') | 字符型转换日期型函数，TiDB 的年月日时分秒字符大小写必须严格按要求写。 |
-| 6 | 字符串转换日期函数 | to_date('2021-05-28',   'yyyy-MM-dd hh24:mi:ss')       | str_to_date('2021-05-28',   '%Y-%m-%d%T') | 字符型转换日期型函数，TiDB 年月日时分秒字符大小写必须严格按要求写。 |
+| 5 | 字符串转换日期函数 | to_date('2021-05-28 17:31:37', 'yyyy-MM-dd hh24:mi:ss') | str_to_date('2021-05-28 17:31:37', '%Y-%m-%d %H:%i:%s') | 字符型转换日期型函数，TiDB 的年月日时分秒字符大小写必须严格按要求写。 |
+| 6 | 字符串转换日期函数 | to_date('2021-05-28', 'yyyy-MM-dd hh24:mi:ss')       | str_to_date('2021-05-28', '%Y-%m-%d%T') | 字符型转换日期型函数，TiDB 年月日时分秒字符大小写必须严格按要求写。 |
 | 7 | Sysdate 关键字 | SYSDATE | NOW() | 获取系统当前时间。 |
 | 8 | 获取两个日期相差的天数 | date1 - date2 | datediff(date1, date2) | 获取 date1 - date2 两个日期之间相差的天数，只能精确到天。 |
 | 9 | 日期数据 +/- n 天 | dateVal + n | date_add(dateVal, INTERVAL n DAY) | 日期数据增加 `n` 天，`n` 可为负数 |
@@ -51,4 +51,4 @@ summary: 了解 Oracle 与 TiDB 函数对照表。
 | 40 | 分页查询 | select \* from tables OFFSET 0 ROWS FETCH NEXT 2000 ROWS ONLY | select \* from tables limit 2000 offset 0 | 分页查询，offset m 表示跳过 m 行数据，FETCH NEXT n ROWS ONLY 表示取 n 条数据，TiDB 使用 limit n offset m 进行等价改写。 |
 | 41 | 获取当前时间 systimestamp | systimestamp | CURRENT_TIMESTAMP(6) | 获取当前时间，时间值带微秒。 |
 | 42 | 特殊字符 ASCII 码值 | chr(n) | char(n) | ASCII 值转换函数，可将 ASCII 值转换为对应的字符, Oracle 中制表符 chr(9)/换行符 chr(10)/回车符 chr(13) 对应 TiDB 中的 char(9)/char(10)/char(13)。 |
-| 43 | Oracle 和 TiDB 排序 null 的顺序不同 | order by colum asc nulls first | order by colum asc | Oracle 结论：order by colum asc 时，null默认被放在最后；order by colum desc 时，null 默认被放在最前。nulls first 时，强制 null 放在最前，非 null 的仍然按声明顺序 [asc|desc] 进行排序。nulls last 时，强制 null 放在最后，非 null 的仍然按声明顺序 [asc|desc] 进行排序。MySql&TiDB 结论：order by colum asc 时，null默认被放在最前。order by colum desc 时，null 默认被放在最后。`O：select * from t1 order by name nulls first;` 等价于 `T：select * from t1 order by NAME ;` 。`O：select * from t1 order by name desc nulls last;` 等价于 `T：select * from t1 order by name desc;`。 `O：select * from t1 order by name desc nulls first;` 等价于 `T：select * from t1 order by  isnull(name) desc ,name desc;`。`O：select * from t1 order by name asc nulls last;` 等价于 `T：select * from t1 order by  isnull(name) ,name;` |
+| 43 | Oracle 和 TiDB 排序 null 的顺序不同 | order by colum asc nulls first | order by colum asc | Oracle 结论：order by colum asc 时，null默认被放在最后；order by colum desc 时，null 默认被放在最前。nulls first 时，强制 null 放在最前，非 null 的仍然按声明顺序 [asc\|desc] 进行排序。nulls last 时，强制 null 放在最后，非 null 的仍然按声明顺序 [asc\|desc] 进行排序。MySql&TiDB 结论：order by colum asc 时，null默认被放在最前。order by colum desc 时，null 默认被放在最后。`O：select * from t1 order by name nulls first;` 等价于 `T：select * from t1 order by NAME ;` 。`O：select * from t1 order by name desc nulls last;` 等价于 `T：select * from t1 order by name desc;`。 `O：select * from t1 order by name desc nulls first;` 等价于 `T：select * from t1 order by  isnull(name) desc ,name desc;`。`O：select * from t1 order by name asc nulls last;` 等价于 `T：select * from t1 order by  isnull(name) ,name;` |
