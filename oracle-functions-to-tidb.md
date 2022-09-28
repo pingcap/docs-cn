@@ -35,14 +35,14 @@ summary: 了解 Oracle 与 TiDB 函数对照表。
 | 字符串引号识别区别 | 'a' | 'a' / "a" | Oracle 只能识别单引号，TiDB 能识别单引号与双引号。 |
 | null 与空串区别 | 不区分 null 和 '' | 区分 null 和 '' | Oracle 空串就是 null，TiDB 需要把空串转换为 null 数据。TiDB 中 null 和 '' 是有区别的。 |
 | 是否支持插入本表中查询出来的数据 | `INSERT INTO table1 VALUES (feild1,(select feild2 from table1 where...))` | `INSERT into table1 VALUES（feild1,(SELECT T.fields2 FROM table1 T WHERE...)` | TiDB 不支持在同一个表中先查这个表再更新该表。 |
-| 获取日期之间间隔月份 | `MONTHS_BETWEEN(enddate,sysdate)` | `TIMESTAMPDIFF (MONTH,sysdate,enddate)` |  MONTHS_BETWEEN 函数返回两个日期之间的月份值，可以用 `TIMESTAMPDIFF` 替换，但是结果上会有误差，TIMESTAMPDIFF 只保留整数月，应该测试后按照业务看是否替换，另外注意参数位置相反。 |
+| 获取日期之间间隔月份 | `MONTHS_BETWEEN(enddate,sysdate)` | `TIMESTAMPDIFF(MONTH,sysdate,enddate)` |  MONTHS_BETWEEN 函数返回两个日期之间的月份值，可以用 `TIMESTAMPDIFF` 替换，但是结果上会有误差，TIMESTAMPDIFF 只保留整数月，应该测试后按照业务看是否替换，另外注意参数位置相反。 |
 | 限制取前 n 条数据 | `ROWNUM <= 10` | `LIMIT 10` | 可以使用 LIMIT 等价代替，如：ROWNUM=1 使用 LIMIT 1 替换，hql 方式运行带 LIMIT 的 SQL 语句会出现错误，需要将 HIBERNATE 的运行方式改为 SQL 方式运行。 |
 | update 语句写法差异 | `UPDATE test1 SET(test1.name,test1.age)= (SELECT test2.name,test2.age FROM test2 WHERE test2.id=test1.id)` | `UPDATE test1,test2 SET test1.name=test2.name,test1.age=test2.age WHERE test1.id=test2.id` | TiDB 在多表更新的时候，需要在 SET 的时候把具体的字段更新关系都列出来。 |
 | 派生表别名 | `SELECT \* FROM (SELECT \* FROM test)` | `SELECT \* FROM (SELECT \* FROM test)` t | TiDB 多表查询的时候，每一个派生出来的表都必须有一个自己的别名。 |
 | MINUS 差集运算 | `SELECT \* FROM t1 MINUS SELECT \* FROM t2;` | `SELECT \* FROM t1 EXCEPT SELECT \* FROM t2;` | TiDB 不支持 MINUS，需要改写为 EXCEPT。 |
 | 空值取别名差异 | `SELECT null AS xx FROM dual` | `SELECT '' AS xx FROM dual` | TiDB 数据库下，SQL 中字段直接为 NULL AS 的，在程序中运行会导致报错，需要改成 ''。NULL 与 '' 在 TiDB 中含义不同。 |
 | 注释差异 |  --注释 |  -- 注释 | Oracle 的 -- 后面不需要空格，TiDB 的 -- 后面则需要有一个空格。 |
-| 列转行函数差异 | LISTAGG(concat(E.dimensionid,'---',E.DIMENSIONNAME),'***') within GROUP(ORDER BY  DIMENSIONNAME) | GROUP_CONCAT(concat(E.dimensionid,'---',E.DIMENSIONNAME) ORDER BY DIMENSIONNAME SEPARATOR '***') | Oracle 中的 LISTAGG 需要改写为 TiDB 的 GROUP_CONCAT 函数；将一列字段合并为一行并根据 *** 符号进行分割。 |
+| 列转行函数差异 | `LISTAGG(concat(E.dimensionid,'---',E.DIMENSIONNAME),'\*\*\*') within GROUP(ORDER BY  DIMENSIONNAME)` | `GROUP_CONCAT(concat(E.dimensionid,'---',E.DIMENSIONNAME) ORDER BY DIMENSIONNAME SEPARATOR '\*\*\*')` | Oracle 中的 LISTAGG 需要改写为 TiDB 的 GROUP_CONCAT 函数；将一列字段合并为一行并根据 *** 符号进行分割。 |
 | 分页查询 | `SELECT \* FROM tables OFFSET 0 ROWS FETCH NEXT 2000 ROWS ONLY` | `SELECT \* FROM tables LIMIT 2000 OFFSET 0` | 分页查询，OFFSET m 表示跳过 m 行数据，FETCH NEXT n ROWS ONLY 表示取 n 条数据，TiDB 使用 LIMIT n OFFSET m 进行等价改写。 |
 | 获取当前时间 `SYSTIMESTAMP` | `SYSTIMESTAMP` | `CURRENT_TIMESTAMP(6)` | 获取当前时间，时间值带微秒。 |
 | 特殊字符 ASCII 码值 | CHR(n) | CHAR(n) | ASCII 值转换函数，可将 ASCII 值转换为对应的字符, Oracle 中制表符 CHR(9)/换行符 CHR(10)/回车符 CHR(13) 对应 TiDB 中的 CHAR(9)/CHAR(10)/CHAR(13)。 |
