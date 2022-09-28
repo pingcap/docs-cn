@@ -17,8 +17,8 @@ summary: 了解 Oracle 与 TiDB 函数对照表。
 | 6 | 字符串转换日期函数 | to_date('2021-05-28',   'yyyy-MM-dd hh24:mi:ss')       | str_to_date('2021-05-28',   '%Y-%m-%d%T') | 字符型转换日期型函数，TiDB 年月日时分秒字符大小写必须严格按要求写。 |
 | 7 | Sysdate 关键字 | SYSDATE | NOW() | 获取系统当前时间 |
 | 8 | 获取两个日期相差的天数 | date1 - date2 | datediff(date1, date2) | 获取 date1 - date2 两个日期之间相差的天数，只能精确到天。 |
-| 9 | 日期数据   +/- n 天 | dateVal   + n | date_add(dateVal, INTERVAL n DAY) | 日期数据增加 `n` 天，`n` 可为负数 |
-| 10 | 日期数据   +/- n 月 date_add() 函数替换 add_months() 函数 | add_months(dateVal, 1) | date_add(dateVal,   INTERVAL n MONTH) | 日期数据增加 `n` 月，`n` 可为负数 |
+| 9 | 日期数据 +/- n 天 | dateVal + n | date_add(dateVal, INTERVAL n DAY) | 日期数据增加 `n` 天，`n` 可为负数 |
+| 10 | 日期数据 +/- n 月 date_add() 函数替换 add_months() 函数 | add_months(dateVal, 1) | date_add(dateVal,   INTERVAL n MONTH) | 日期数据增加 `n` 月，`n` 可为负数 |
 | 11 | TRUNC()函数 | TRUNC(sysdate) | cast(now() as date) | 获取时间的（2019-07-26 00:00:00）格式返回值。Oracle 中的 TRUNC(sysdate) 只是截取到日，不会截取到时分秒，而 TiDB 中与之对应的截取日写法是 cast(now() as date) |
 | 12 | TRUNC()函数 | TRUNC(sysdate) | date_format(now(),'%Y-%m-%d') | cast 数据库执行正常，程序中报错，可修改为date_format |
 | 13 | TRUNC()函数 | Trunc(sysdate,'mm') | date_add(curdate(),interval -day(curdate())+1 day)  | 获取当月第一天 |
