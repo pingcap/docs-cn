@@ -45,12 +45,12 @@ summary: 了解 Oracle 与 TiDB 函数对照表。
 | 34 | Rowunm | Rownum <= 10 | limit 10 | 可以使用 limit 等价代替，如：Rownum=1 使用 limit 1 替换，hql 方式运行带 limit 的 SQL 语句会出现错误，需要将 hibernate 的运行方式改为 SQL 方式运行。 |
 | 35 | update 语句写法差异 | update test1 set (test1.name,test1.age)= (select test2.name,test2.age from test2 where test2.id=test1.id) | update test1,test2 set test1.name=test2.name,test1.age=test2.age where test1.id=test2.id | TiDB 在多表更新的时候，需要在 set 的时候 把具体的字段更新关系都列出来。 |
 | 36 | 派生表别名 | select \* from (select \* from test) | select \* from (select \* from test) t | TiDB 多表查询的时候，每一个派生出来的表都必须有一个自己的别名。 |
-| 37 | minus 差集运算 | select \* from t1 minus select \* from t2; | select \* from t1 except select \* from t2; | TiDB 不支持 minus，需要改写为 except |
+| 37 | minus 差集运算 | select \* from t1 minus select \* from t2; | select \* from t1 except select \* from t2; | TiDB 不支持 minus，需要改写为 except。 |
 | 38 | select null as xx from dual | select   null as xx from dual | select '' as xx from dual | TiDB 数据库下，SQL 中字段直接为 null as 的，在程序中运行会导致报错，需要改成 ''。null 与 '' 在 TiDB 中含义不同。 |
 | 39 | decimal 字段在 hibernate 中返回类型差异 | 0.00000000 在 Oracle 中返回 0 | 0.00000000 在 Oracle 中返回科学计数法 | TiDB 中小数类型如：0.00000000 返回到程序中后还是 0.00000000，导致在 BIGDECIMAL 进行科学计数法后会变成 0E-8，而 Oracle 则是直接返回为 0。 |
 | 40 | 注释差异 |  --注释 |  -- 注释 | Oracle 的 -- 后面不需要空格，TiDB 的 -- 后面则需要有一个空格。 |
-| 41 | 列转行函数差异 | listagg(concat(E.dimensionid,'---',E.DIMENSIONNAME),'***')   within GROUP(ORDER BY  DIMENSIONNAME) | GROUP_CONCAT(concat(E.dimensionid,'---',E.DIMENSIONNAME)   ORDER BY DIMENSIONNAME SEPARATOR '***') | Oracle 中的 listagg 需要改写为 TiDB 的 group_concat 函数；将一列字段合并为一行并根据 *** 符号进行分割 |
-| 42 | 分页查询 | select \* from tables OFFSET 0 ROWS FETCH NEXT 2000 ROWS ONLY | select \* from tables limit 2000 offset 0 | 分页查询，offset m 表示跳过 m 行数据，FETCH NEXT n ROWS ONLY 表示取 n 条数据，TiDB 使用 limit n offset m 进行等价改写 |
+| 41 | 列转行函数差异 | listagg(concat(E.dimensionid,'---',E.DIMENSIONNAME),'***')   within GROUP(ORDER BY  DIMENSIONNAME) | GROUP_CONCAT(concat(E.dimensionid,'---',E.DIMENSIONNAME)   ORDER BY DIMENSIONNAME SEPARATOR '***') | Oracle 中的 listagg 需要改写为 TiDB 的 group_concat 函数；将一列字段合并为一行并根据 *** 符号进行分割。 |
+| 42 | 分页查询 | select \* from tables OFFSET 0 ROWS FETCH NEXT 2000 ROWS ONLY | select \* from tables limit 2000 offset 0 | 分页查询，offset m 表示跳过 m 行数据，FETCH NEXT n ROWS ONLY 表示取 n 条数据，TiDB 使用 limit n offset m 进行等价改写。 |
 | 43 | 获取当前时间 systimestamp | systimestamp | CURRENT_TIMESTAMP(6) | 获取当前时间，时间值带微秒。 |
 | 44 | 特殊字符 ASCII 码值 | chr(n) | char(n) | ASCII 值转换函数，可将 ASCII 值转换为对应的字符, Oracle 中制表符 chr(9)/换行符 chr(10)/回车符 chr(13) 对应 TiDB 中的 char(9)/char(10)/char(13)。 |
 | 45 | Oracle 和 TiDB 排序 null 的顺序不同 | order by colum asc nulls first | order by colum asc | MySQL 和 TiDB 结：order by colum asc 时，null 默认被放在最前, order by colum desc 时，null 默认被放在最后。O：select \* from t1 order by name nulls first; 等价于 T：select \* from t1 order by NAME ; O：select \* from t1 order by name desc nulls last; 等价于 T：select \* from t1 order by name desc; O：select * from t1 order by name desc nulls first; 等价于 T：select \* from t1 order by  isnull(name) desc, name desc; O：select \* from t1 order by name asc nulls last; 等价于 T：select \* from t1 order by isnull(name), name; |
