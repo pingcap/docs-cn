@@ -212,8 +212,8 @@ In addition to the MySQL standard result format, TiDB also supports DotGraph and
 {{< copyable "sql" >}}
 
 ```sql
-create table t(a bigint, b bigint);
-desc format = "dot" select A.a, B.b from t A join t B on A.a > B.b where A.a < 10;
+CREATE TABLE t(a bigint, b bigint);
+EXPLAIN format = "dot" SELECT A.a, B.b FROM t A JOIN t B ON A.a > B.b WHERE A.a < 10;
 ```
 
 ```sql
