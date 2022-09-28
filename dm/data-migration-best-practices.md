@@ -167,7 +167,7 @@ DM 是支持存量数据迁移的，但在做全量迁移时会对整库进行�
 
 TiDB 默认情况下是对 Schema name 大小写不敏感的，即 `lower_case_table_names:2`。但上游 MySQL 大多为 Linux 系统，默认对大小写敏感。此时需要注意，在 DM 数据同步任务设置时将 `case-sensitive` 设置为 `true`，保证可以正确同步上游的 Schema。
 
-特殊情况下，如果上游一个数据库中，既有大写表如 `Table`，又有小写表如 `table`，那么 Schema 创建时将报错:
+特殊情况下，比如上游一个数据库中，既有大写表如 `Table`，又有小写表如 `table`，那么 Schema 创建时将报错:
 
 `ERROR 1050 (42S01): Table '{tablename}' already exists`
 
