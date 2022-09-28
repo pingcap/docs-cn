@@ -118,7 +118,7 @@ TiDB 版本：6.3.0-DMR
 
 * 悲观事务可以延迟唯一约束检查 [#36579](https://github.com/pingcap/tidb/issues/36579) @[ekexium](https://github.com/ekexium)
 
-    你可以通过系统变量 [`tidb_constraint_check_in_place_pessimistic`](system-variables.md#tidb_constraint_check_in_place_pessimistic-从-v630-版本开始引入) 来控制悲观事务中[唯一约束](/constraints.md#悲观事务)检查的时间点。该变量默认关闭。当开启该变量时（设为 `ON`），TiDB 会将悲观事务中的加锁操作和唯一约束检测推迟到必要的时候进行，以此提升批量 DML 操作的性能。
+    你可以通过系统变量 [`tidb_constraint_check_in_place_pessimistic`](/system-variables.md#tidb_constraint_check_in_place_pessimistic-从-v630-版本开始引入) 来控制悲观事务中[唯一约束](/constraints.md#悲观事务)检查的时间点。该变量默认关闭。当开启该变量时（设为 `ON`），TiDB 会将悲观事务中的加锁操作和唯一约束检测推迟到必要的时候进行，以此提升批量 DML 操作的性能。
 
 * 优化 Read-Committed 隔离级别中对 TSO 的获取 [#36812](https://github.com/pingcap/tidb/issues/36812) @[TonsnakeLin](https://github.com/TonsnakeLin)
 
@@ -132,7 +132,7 @@ TiDB 版本：6.3.0-DMR
 
 * TiKV 正式支持关闭 Titan 引擎 @[tabokie](https://github.com/tabokie)
 
-    正式支持对在线 TiKV 节点[关闭 Titan 引擎](/titan-configuration.md#关闭-titan)。
+    正式支持对在线 TiKV 节点[关闭 Titan 引擎](/storage-engine/titan-configuration.md#关闭-titan)。
 
 * 缺少 GlobalStats 时自动选择分区静态剪裁 [#37535](https://github.com/pingcap/tidb/issues/37535) @[Yisaer](https://github.com/Yisaer)
 
@@ -269,7 +269,6 @@ TiDB 版本：6.3.0-DMR
 
         - 在 JSON 路径的语法有误时报错 [#22525](https://github.com/pingcap/tidb/issues/22525) [#34959](https://github.com/pingcap/tidb/issues/34959) @[xiongjiwei](https://github.com/xiongjiwei)
         - 修复一个伪共享问题，提升 Join 操作的性能 [#37641](https://github.com/pingcap/tidb/issues/37641) @[gengliqi](https://github.com/gengliqi)
-        - 修复 `castRealAsTime` 表达式的结果和 MySQL 不兼容的问题 [#37462](https://github.com/pingcap/tidb/issues/37462) @[mengxin9014](https://github.com/mengxin9014)
 
     - planner
 
@@ -322,7 +321,7 @@ TiDB 版本：6.3.0-DMR
         - 提升上游为 MySQL 8.0 时的兼容性 [#6506](https://github.com/pingcap/tiflow/issues/6506) @[lance6716](https://github.com/lance6716)
         - 当 MySL sink 出错时打印 DML 的 start ts [#6460](https://github.com/pingcap/tiflow/issues/6460) @[overvenus](https://github.com/overvenus)
         - API `api/v1/health` 将反应 TiCDC 集群的健康状态 [#4757](https://github.com/pingcap/tiflow/issues/4757) @[overvenus](https://github.com/overvenus)
-        - 采用异步的模式实现 mq sink 和 mysql sink ，提升sink 的吞吐能力 [#5928](https://github.com/pingcap/tiflow/issues/5928) @[hicqu]https://github.com/hicqu @[hi-rustin](https://github.com/hi-rustin)
+        - 采用异步的模式实现 mq sink 和 mysql sink ，提升sink 的吞吐能力 [#5928](https://github.com/pingcap/tiflow/issues/5928) @[hicqu](https://github.com/hicqu) @[hi-rustin](https://github.com/hi-rustin)
         - 将 memory sorter 废弃, 并全部由 unified sorter 代替 [#7087](https://github.com/pingcap/tiflow/issues/5928) @[hi-rustin](https://github.com/hi-rustin)
         - 删除已经废弃了的 pulsar sink [#7087](https://github.com/pingcap/tiflow/issues/7087) @[hi-rustin](https://github.com/hi-rustin)
         - 忽略掉与 changefeed 不相关的 DDL 以提升同步性能. [#6447](https://github.com/pingcap/tiflow/issues/6447) @[asddongmen](https://github.com/asddongmen)
@@ -357,7 +356,7 @@ TiDB 版本：6.3.0-DMR
         - 修复无法处理典型 MySQL 协议中 `prepared` 语句 flag 的问题  [#36731](https://github.com/pingcap/tidb/issues/36731) @[dveeden](https://github.com/dveeden)
         - (dup) 修复了在极端情况下，启动 TiDB 可能进入错误状态的问题 [#36791](https://github.com/pingcap/tidb/issues/36791) @[xhebox](https://github.com/xhebox)
         - 修复 `information_schema.variables_info` 不遵循安全增强模式 (SEM) 的问题 [#37586](https://github.com/pingcap/tidb/issues/37586) @[CbcWestwolf](https://github.com/CbcWestwolf)
-- 修复在构建 union plan 时转换出错的问题 [#31678](https://github.com/pingcap/tidb/issues/31678) @[bb7133](https://github.com/bb7133)
+        - 修复带 UNION 算子的查询中转换字符串出错的问题 [#31678](https://github.com/pingcap/tidb/issues/31678) @[cbcwestwolf](https://github.com/cbcwestwolf)
 
     - execution
 
@@ -367,6 +366,7 @@ TiDB 版本：6.3.0-DMR
         - 修复比较 JSON opaque 值时造成崩溃的问题 [#37315](https://github.com/pingcap/tidb/issues/37315) @[YangKeao](https://github.com/YangKeao)
         - 修复 JSON 聚合函数不能使用单精度浮点数的问题 [#37287](https://github.com/pingcap/tidb/issues/37287) @[YangKeao](https://github.com/YangKeao)
         - 修复 `UNION` 运算符可能会非预期地返回空结果的问题 [#36903](https://github.com/pingcap/tidb/issues/36903) @[tiancaiamao](https://github.com/tiancaiamao)
+        - 修复 `castRealAsTime` 表达式的结果和 MySQL 不兼容的问题 [#37462](https://github.com/pingcap/tidb/issues/37462) @[mengxin9014](https://github.com/mengxin9014)
 
     - transaction
 
