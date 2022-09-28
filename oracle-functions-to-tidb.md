@@ -49,7 +49,7 @@ summary: 了解 Oracle 与 TiDB 函数对照表。
 | 38 | select null as xx from dual | select   null as xx from dual | select '' as xx from dual | TiDB 数据库下，SQL 中字段直接为 null as 的，在程序中运行会导致报错，需要改成 ''。null 与 '' 在 TiDB 中含义不同。 |
 | 39 | decimal 字段在 hibernate 中返回类型差异 | 0.00000000 在 Oracle 中返回 0 | 0.00000000 在 Oracle 中返回科学计数法 | TiDB 中小数类型如：0.00000000 返回到程序中后还是 0.00000000，导致在 BIGDECIMAL 进行科学计数法后会变成 0E-8，而 Oracle 则是直接返回为 0。 |
 | 40 | 注释差异 |  --注释 |  -- 注释 | Oracle 的 -- 后面不需要空格，TiDB 的 -- 后面则需要有一个空格。 |
-| 41 | 列转行函数差异 | listagg(concat(E.dimensionid,'---',E.DIMENSIONNAME),'***')   within GROUP(ORDER BY  DIMENSIONNAME) | GROUP_CONCAT(concat(E.dimensionid,'---',E.DIMENSIONNAME)   ORDER BY DIMENSIONNAME SEPARATOR '***') | Oracle 中的 listagg 需要改写为 TiDB 的 group_concat 函数；将一列字段合并为一行并根据 *** 符号进行分割。 |
+| 41 | 列转行函数差异 | listagg(concat(E.dimensionid,'---',E.DIMENSIONNAME),'***') within GROUP(ORDER BY  DIMENSIONNAME) | GROUP_CONCAT(concat(E.dimensionid,'---',E.DIMENSIONNAME) ORDER BY DIMENSIONNAME SEPARATOR '***') | Oracle 中的 listagg 需要改写为 TiDB 的 group_concat 函数；将一列字段合并为一行并根据 *** 符号进行分割。 |
 | 42 | 分页查询 | select \* from tables OFFSET 0 ROWS FETCH NEXT 2000 ROWS ONLY | select \* from tables limit 2000 offset 0 | 分页查询，offset m 表示跳过 m 行数据，FETCH NEXT n ROWS ONLY 表示取 n 条数据，TiDB 使用 limit n offset m 进行等价改写。 |
 | 43 | 获取当前时间 systimestamp | systimestamp | CURRENT_TIMESTAMP(6) | 获取当前时间，时间值带微秒。 |
 | 44 | 特殊字符 ASCII 码值 | chr(n) | char(n) | ASCII 值转换函数，可将 ASCII 值转换为对应的字符, Oracle 中制表符 chr(9)/换行符 chr(10)/回车符 chr(13) 对应 TiDB 中的 char(9)/char(10)/char(13)。 |
