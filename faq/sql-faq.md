@@ -123,7 +123,7 @@ TiDB 支持在会话或全局作用域上修改 [`sql_mode`](/system-variables.m
 
 ## TiDB 有像 Oracle 那样的 Flashback Query 功能么，DDL 支持么？
 
-有，也支持 DDL。详细参考[使用 AS OF TIMESTAMP 语法读取历史数据](/as-of-timestamp)。
+有，也支持 DDL。详细参考[使用 AS OF TIMESTAMP 语法读取历史数据](/as-of-timestamp.md)。
 
 ## TiDB 中删除数据后会立即释放空间吗？
 
