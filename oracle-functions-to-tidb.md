@@ -18,7 +18,7 @@ summary: 了解 Oracle 与 TiDB 函数对照表。
 | 日期数据 +/- n 月 | `ADD_MONTHS(dateVal,n)`| `DATE_ADD(dateVal,INTERVAL n MONTH)` | 日期数据增加 `n` 月，`n` 可为负数。 |
 | TRUNC()函数截取日期到日 | `TRUNC(sysdate)` | <li>`CAST(now() as date)`</li><li>`DATE_FORMAT(now(),'%Y-%m-%d')`</li> | <li>获取时间的（2019-07-26 00:00:00）格式返回值。Oracle 中的 TRUNC(sysdate) 只是截取到日，不会截取到时分秒，而 TiDB 中与之对应的截取日写法是 CAST(now() as date)。</li><li>CAST 与 DATE_FORMAT 结果一致。</li> |
 | TRUNC()函数获取日期当月第一天 | `TRUNC(sysdate,'mm')` | `DATE_ADD(curdate(),interval -day(curdate())+1 day)`  | 获取当月第一天。 |
-| TRUNC 函数截取数据 | TRUNC(2.136) => 2 TRUNC(2.136, 2) => 2.14 | TRUNCATE(2.136, 0) => 2 TRUNCATE(2.136, 2) => 2.14 | 数据精度保留，直接截取相应小数位，不涉及四舍五入。 |
+| TRUNC 函数截取数据 | `TRUNC(2.136) => 2`<br> `TRUNC(2.136, 2) => 2.14` | TRUNCATE(2.136, 0) => 2<br> TRUNCATE(2.136, 2) => 2.14 | 数据精度保留，直接截取相应小数位，不涉及四舍五入。 |
 | 字符串连接 | a' \|\| 'b' | CONCAT('a', 'b') | 字符串拼接。 |
 | 删除语句中对表加别名 | DELETE FROM test t WHERE t.xxx = xxx; | DELETE FROM test  WHERE xxx = xxx; | 删除语句，TiDB 不支持删除语句中对表起别名。 |
 | 获取序列下一个值 | sequenceName.nextVal | NEXTVAL(sequenceName) | 获取序列的下一个值。 |
