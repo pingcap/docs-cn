@@ -322,12 +322,12 @@ TiDB 版本：6.3.0-DMR
 
     + TiDB Data Migration (DM)
 
-        - Improve compatibility for MySQL 8.0 upstream [#6448](https://github.com/pingcap/tiflow/issues/6448) @[lance6716](https://github.com/lance6716)
+        - 提升与 MySQL 8.0 数据源的兼容性 [#6448](https://github.com/pingcap/tiflow/issues/6448) @[lance6716](https://github.com/lance6716)
         - 优化 DDL 执行逻辑，当执行 DDL 超时时，转为异步查询 DDL 执行结果 [#4689](https://github.com/pingcap/tiflow/issues/4689) @[lyzx2001](https://github.com/lyzx2001)
 
     + TiDB Lightning
 
-        - Add query parameters for S3 external storage URL, in order to support accessing the S3 data in another account by assuming a given role [#36891](https://github.com/pingcap/tidb/issues/36891) [dsdashun](https://github.com/dsdashun)
+        - 在 S3 URL 中添加新参数 `role-arn` 和 `external-id`，支持从其他账户访问 S3 数据 [#36891](https://github.com/pingcap/tidb/issues/36891) @[dsdashun](https://github.com/dsdashun)
 
 ## 错误修复
 
@@ -418,7 +418,7 @@ TiDB 版本：6.3.0-DMR
 
     + Backup & Restore (BR)
 
-        - 修复了一个曾导致 PITR 的延迟信息展示不准的问题 [#36423](https://github.com/pingcap/tidb/issues/36423) @[YuJuncen](https://github.com/YuJuncen)
+        - 修复了一个导致 PITR 的 checkpoint 信息过时的问题 [#36423](https://github.com/pingcap/tidb/issues/36423) @[YuJuncen](https://github.com/YuJuncen)
         - 修复了在恢复时配置了过高的 concurrency 会导致 Region 不均衡的问题 [#37549](https://github.com/pingcap/tidb/issues/37549) @[3pointer](https://github.com/3pointer)
         - 修复了在 TiCDC 存在时，PITR 进度无法推进的问题 [#37822](https://github.com/pingcap/tidb/issues/37822) @[YuJuncen](https://github.com/YuJuncen)
         - 修复了在 Backup Meta V2 启动时，有超出预期数量文件生成的问题 [#37244](https://github.com/pingcap/tidb/issues/37244) [@MoCuishle28](https://github.com/MoCuishle28)
@@ -432,11 +432,11 @@ TiDB 版本：6.3.0-DMR
 
     + TiDB Data Migration (DM)
 
-        - Fix a problem that DM will report `Specified key was too long` error [#5315](https://github.com/pingcap/tiflow/issues/5315) @[lance6716](https://github.com/lance6716)
+        - 修复 DM 报错 `Specified key was too long` 的问题 [#5315](https://github.com/pingcap/tiflow/issues/5315) @[lance6716](https://github.com/lance6716)
         - (dup) 修复 relay 报错时可能导致 goroutine 泄露问题 [#6193](https://github.com/pingcap/tiflow/issues/6193) @[lance6716](https://github.com/lance6716)
-        - Fix when use "strict" collation_compatible, DM sometimes generate SQL with duplicated collation [#6832](https://github.com/pingcap/tiflow/issues/6832) @[lance6716](https://github.com/lance6716)
-        - Reduce the appearing time of the warning message "found error when getting timezone from binlog status_vars" in dm-worker log [#6628](https://github.com/pingcap/tiflow/issues/6628) @[lyzx2001](https://github.com/lyzx2001)
-        - Fix a bug that latin1 data may be corrupt when replicating [#7028](https://github.com/pingcap/tiflow/issues/7028) @[lance6716](https://github.com/lance6716)
+        - 修复当 `collation_compatible` 设置为 `"strict"` 时，DM 可能生成有重复排序规则的 SQL 语句的问题 [#6832](https://github.com/pingcap/tiflow/issues/6832) @[lance6716](https://github.com/lance6716)
+        - 减少 DM-worker 日志中警告信息 "found error when get timezone from binlog status_vars" 的出现次数 [#6628](https://github.com/pingcap/tiflow/issues/6628) @[lyzx2001](https://github.com/lyzx2001)
+        - 修复数据同步过程中，latin1 字符集数据可能损坏的问题 [#7028](https://github.com/pingcap/tiflow/issues/7028) @[lance6716](https://github.com/lance6716)
 
     + TiDB Lightning
 
