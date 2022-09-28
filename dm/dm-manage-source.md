@@ -32,7 +32,7 @@ help operate-source
 ```
 
 ```
-`create`/`update`/`stop`/`show` upstream MySQL/MariaDB source.
+`create`/`stop`/`show` upstream MySQL/MariaDB source.
 
 Usage:
   dmctl operate-source <operate-type> [config-file ...] [--print-sample-config] [flags]
@@ -48,8 +48,6 @@ Global Flags:
 ### 参数解释
 
 + `create`：创建一个或多个上游的数据库源。创建多个数据源失败时，会尝试回滚到执行命令之前的状态
-
-+ `update`：更新一个上游的数据库源
 
 + `stop`：停止一个或多个上游的数据库源。停止多个数据源失败时，可能有部分数据源已成功停止
 
