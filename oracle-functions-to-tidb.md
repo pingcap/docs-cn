@@ -34,7 +34,7 @@ summary: 了解 Oracle 与 TiDB 函数对照表。
 | 23 | decode()函数 | DECODE(value, if1, val1, if2,val2,...,ifn, valn, val) | case when value=if1 then val1 when value=if2 then val2,,,when value=ifn then valn else val end | 当该字段值等于条件 1 时，返回 val1，等于条件 2 时，返回 val2… |
 | 24 | 获取字符串长度 | length(str) | char_length(str) | 获取字符串长度。 |
 | 25 | 截取字符串函数 | substr('abcdefg', 0, 2) => ab substr('abcdefg', 1, 2) => ab | substring('abcdefg', 0, 2) => 空 substring('abcdefg', 1, 2) => ab | 截取字符串，Oracle 中起始位置 0 与 1 作用一样，TiDB 中 0 开始截取为空，若需从头开始截全，则应从 1 开始，TiDB 支持 subString 和 subStr 函数，作用相同，不用修改。但是要注意下标，TiDB 必须从 1 开始。 |
-| 26 | 字符查找函数 instr | instr('abcdefg', 'b', 1, 1) | instr('abcdefg', 'b') | 字符查找函数。从字符串 ’abcabc’ 第 1 个字符开始查询，返回 ‘b‘ 字符串第 1 次出现按的位置。 |
+| 26 | 字符查找函数 instr | instr('abcdefg', 'b', 1, 1) | instr('abcdefg', 'b') | 字符查找函数。从字符串 ’abcdefg’ 第 1 个字符开始查询，返回 ‘b‘ 字符串第 1 次出现按的位置。 |
 | 27 | 字符查找函数 instr | instr('stst', 's', 1, 2) | LENGTH(SUBSTRING_INDEX('stst','s',2))+1 | 字符查找函数。从字符串 'stst' 第一个字符开始查找，返回 's' 字符第 2 次出现的位置，查找非第一次出现的位置时使用。 |
 | 28 | 字符查找函数 | instr(‘abcabc’, 'b', 2, 1) | LOCATE(’b’，'abcabc’,2) | 字符查找函数。从字符串 ’abcabc’ 第 2 个字符开始查询，返回 ‘b‘ 字符串第 1 次出现按的位置。 |
 | 29 | 字符串引号识别区别 | 'a' | 'a' / "a" | Oracle 只能识别单引号，TiDB 能识别单引号与双引号。 |
