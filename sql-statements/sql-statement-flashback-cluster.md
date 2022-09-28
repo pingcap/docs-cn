@@ -35,6 +35,8 @@ SELECT * FROM mysql.tidb WHERE variable_name = 'tikv_gc_safe_point';
 
 ## 示例
 
+* 恢复新插入的数据
+
 ```sql
 mysql> create table t(a int);
 Query OK, 0 rows affected (0.09 sec)
