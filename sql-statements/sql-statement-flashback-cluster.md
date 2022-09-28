@@ -29,8 +29,8 @@ FlashbackClusterStmt ::=
 SELECT * FROM mysql.tidb WHERE variable_name = 'tikv_gc_safe_point';
 ```
 * 仅支持拥有 `SUPER` 权限的用户执行 `FLASHBACK CLUSTER` 操作。
-* 在 `FLASHBACK CLUSTER` 指定的时间点到开始执行的时间段内不能存在非 `FLASHBACK CLUSTER` 的 DDL 记录。
-* 在执行 `FLASHBACK CLUSTER` 之前，TiDB 会主动断开所有非 `FLASHBACK CLUSTER` 的链接，并在 TiKV 上将相关 Region 上锁，禁止任何的读写操作，直到 `FLASHBACK CLUSTER` 完成。
+* 在 `FLASHBACK CLUSTER` 指定的时间点到开始执行的时间段内不能存在非 `FLASHBACK CLUSTER` 类型的 DDL 记录。
+* 在执行 `FLASHBACK CLUSTER` 期间，TiDB 会主动断开所有非 `FLASHBACK CLUSTER` 的链接，并在禁止对相关字段进行读写操作，直到 `FLASHBACK CLUSTER` 完成。
 * `FLASHBACK CLUSTER` 命令不能取消，一旦开始执行会一直重试，直到成功。
 
 ## 示例
