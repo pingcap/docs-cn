@@ -10,7 +10,7 @@ summary: 了解 Oracle 与 TiDB 函数对照表。
 | 语法差异点 | Oracle | TiDB  | 说明 |
 |---|---|---|---|
 | 数据类型转换函数 | <li>`TO_NUMBER(key)`</li> <li>`TO_CHAR(key)`</li> | `CONVERT(key,dataType)` | 转换表字段值数据类型，TiDB 支持 BINARY、CHAR、DATE、DATETIME、TIME、SIGNED INTEGER、UNSIGNED INTEGER、DECIMAL。 |
-| 日期转换字符串函数 | <li>`TO_CHAR(sysdate,'yyyy-MM-dd hh24:mi:ss')`</li> <li>`TO_CHAR(sysdate,'yyyy-MM-dd')` <li>      | <li>`DATE_FORMAT(now(),'%Y-%m-%d %H:%i:%s')`</li> `DATE_FORMAT(now(),'%Y-%m-%d')`</li> | 日期类型转换字符型函数，TiDB 的年月日时分秒字符大小写必须严格按要求写。 |
+| 日期转换字符串函数 | <li>`TO_CHAR(sysdate,'yyyy-MM-dd hh24:mi:ss')`</li> <li>`TO_CHAR(sysdate,'yyyy-MM-dd')` </li>      | <li>`DATE_FORMAT(now(),'%Y-%m-%d %H:%i:%s')`</li> `DATE_FORMAT(now(),'%Y-%m-%d')`</li> | 日期类型转换字符型函数，TiDB 的年月日时分秒字符大小写必须严格按要求写。 |
 | 字符串转换日期函数 | <li>`TO_DATE('2021-05-28 17:31:37','yyyy-MM-dd hh24:mi:ss')`</li><li>`TO_DATE('2021-05-28','yyyy-MM-dd hh24:mi:ss')` </li> | <li>`STR_TO_DATE('2021-05-28 17:31:37','%Y-%m-%d %H:%i:%s')`</li><li>`STR_TO_DATE('2021-05-28','%Y-%m-%d%T')` </li> | 字符型转换日期型函数，TiDB 的年月日时分秒字符大小写必须严格按要求写。 |
 | 获取当前时间，精确到 s | `SYSDATE` | `NOW()` | 获取系统当前时间。 |
 | 获取两个日期相差的天数 | `DATE1 - DATE2` | `DATEDIFF(date1, date2)` | 获取 `DATE1 - DATE2` 两个日期之间相差的天数，只能精确到天。 |
