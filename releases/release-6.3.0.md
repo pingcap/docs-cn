@@ -94,6 +94,10 @@ TiDB 版本：6.3.0-DMR
 
     TiFlash 使用 Raft 协议与 TiKV 进行副本数据同步。在 v6.3.0 版本之前，同步大量副本数据往往耗时较长。v6.3.0 版本优化了 TiFlash 副本同步机制，大幅度提升了副本同步速度。因此，使用 BR 恢复数据、使用 TiDB Lightning 导入数据、或全新增加 TiFlash 副本时，副本将迅速地完成同步，你可以及时地使用 TiFlash 进行查询。此外，在 TiFlash 扩容、缩容、或修改 TiFlash 副本数时，TiFlash 副本也将更快地达到安全、均衡的状态。
 
+* TiFlash 针对单个 `COUNT(DISTINCT)` 进行三阶段聚合 [#37202](https://github.com/pingcap/tidb/issues/37202) @[fixdb](https://github.com/fixdb)
+
+     TiFlash 将有且仅有单个 `COUNT(DISTINCT)` 聚合的查询改写为[三阶段分布式执行的聚合](/system-variables.md#tidb_opt_three_stage_distinct_agg-从-v630-版本开始引入)，从而提高并发度，并提升性能。
+
 * TiKV 日志循环使用 [#214](https://github.com/tikv/raft-engine/issues/214) @[LykxSassinator](https://github.com/LykxSassinator)
 
     TiKV Raft Engine 支持[日志回收](/tikv-configuration-file.md#enable-log-recycle-从-v630-版本开始引入)功能。该特性能够显著降低网络磁盘上 Raft 日志追加过程中的长尾延迟，提升了 TiKV 写入负载下的性能。
@@ -214,6 +218,13 @@ TiDB 版本：6.3.0-DMR
 | [`tidb_rc_read_check_ts`](/system-variables.md#tidbrcreadcheckts-span-classversion-mark从-v600-版本开始引入span) | 修改 | 该变量用于优化读语句时间戳的获取，适用于悲观事务 `READ-COMMITTED` 隔离级别下读写冲突较少的场景。由于这个行为只针对特定业务负载，而对其他类型的负载可能造成性能回退，自 v6.3.0 起，该变量的作用域由 GLOBAL 或 SESSION 修改为 INSTANCE 级别，允许只针对部分 TiDB 实例打开。 |
 | [`tidb_rc_write_check_ts`](/system-variables.md#tidb_rc_write_check_ts-从-v630-版本开始引入)  | 新增 | 用于优化时间戳的获取，适用于悲观事务 READ-COMMITTED 隔离级别下点写冲突较少的场景，开启此变量可以避免点写语句获取全局 timestamp 带来的延迟和开销。 |
 | [`tiflash_fastscan`](/system-variables.md#tiflash_fastscan-从-v630-版本开始引入) | 新增 | 控制是否启用 FastScan 功能。如果开启 FastScan 功能（设置为 `true` 时），TiFlash 可以提供更高效的查询性能，但不保证查询结果的精度和数据一致性。 |
+| [`sql_require_primary_key`](/system-variables.md#sql_require_primary_key-从-v630-版本开始引入)   |  新增  |  用于控制表是否必须有主键。启用该变量后，如果在没有主键的情况下创建或修改表，将返回错误。 |
+| [`tidb_ddl_flashback_concurrency`](/system-variables.md#tidb_ddl_flashback_concurrency-从-v630-版本开始引入) | 新增 | 用于控制 `flashback cluster` 的并发数。当前版本中该变量控制的功能尚未完全生效，请保留默认值。  |
+| [`tidb_enable_foreign_key`](/system-variables.md#tidb_enable_foreign_key-从-v630-版本开始引入) | 新增 |  用于控制是否开启 `FOREIGN KEY` 特性。当前版本中该变量控制的功能尚未完全生效，请保留默认值。 |
+| [`tidb_enable_general_plan_cache`](/system-variables.md#tidb_enable_general_plan_cache-从-v630-版本开始引入) | 新增 |  用于控制是否开启 General Plan Cache。当前版本中该变量控制的功能尚未完全生效，请保留默认值。 |
+| [`tidb_enable_null_aware_anti_join`](/system-variables.md#tidb_enable_null_aware_anti_join-从-v630-版本开始引入) | 新增 |  用于控制 TiDB 对特殊集合算子 `NOT IN` 和 `!= ALL` 引导的子查询产生的 ANTI JOIN 是否采用 Null Aware Hash Join 的执行方式。|
+| [`tidb_enable_tiflash_read_for_write_stmt`](/system-variables.md#tidb_enable_tiflash_read_for_write_stmt-从-v630-版本开始引入) | 新增 |  用于控制写 SQL 中的读取是否会下推到 TiFlash。当前版本中该变量控制的功能尚未完全生效，请保留默认值。 |
+| [`tidb_general_plan_cache_size`](/system-variables.md#tidb_general_plan_cache_size-从-v630-版本开始引入) | 新增 | 用于控制 General Plan Cache 最多能够缓存的计划数量。当前版本中该变量控制的功能尚未完全生效，请保留默认值。 |
 
 ### 配置文件参数
 
@@ -255,6 +266,7 @@ TiDB 版本：6.3.0-DMR
         - 改进表名检查方式，由大小写敏感变为大小写不敏感 [#34610](https://github.com/pingcap/tidb/issues/34610) @[tiancaiamao](https://github.com/tiancaiamao)
         - 增加解析 `init_connect`  取值的流程，提升了与 MySQL 的兼容性 [#35324](https://github.com/pingcap/tidb/issues/35324) @[CbcWestwolf](https://github.com/CbcWestwolf)
         - 改进新连接产生时的警告日志 [#34964](https://github.com/pingcap/tidb/issues/34964) @[xiongjiwei](https://github.com/xiongjiwei)
+        - 优化用于查询 DDL 历史任务的 HTTP API，提供对 `start_job_id` 参数的支持 [#35838](https://github.com/pingcap/tidb/issues/35838) @[tiancaiamao](https://github.com/tiancaiamao)
 
     - execution
 
@@ -345,7 +357,6 @@ TiDB 版本：6.3.0-DMR
         - 修复查询 `INFORMATION_SCHEMA.TIKV_REGION_STATUS` 返回不正确结果的问题 @[zimulala](https://github.com/zimulala)
         - 修复使用 `EXPLAIN` 查询视图时不进行权限检查的问题 [#34326](https://github.com/pingcap/tidb/issues/34326) @[hawkingrei](https://github.com/hawkingrei)
         - 修复 JSON `null` 不能被更新为 `NULL` 的问题 [#37852](https://github.com/pingcap/tidb/issues/37852) @[YangKeao](https://github.com/YangKeao)
-        - Optimize DDL history HTTP API, and add support for 'start_job_id' parameter [#35838](https://github.com/pingcap/tidb/issues/35838) @[tiancaiamao](https://github.com/tiancaiamao)
         - 修复 DDL 任务的 `row_count` 不准确的问题 [#25968](https://github.com/pingcap/tidb/issues/25968) @[Defined2014](https://github.com/Defined2014)
         - 修复 `FLASHBACK TABLE` 运行不正常的问题 [#37386](https://github.com/pingcap/tidb/issues/37386) @[tiancaiamao](https://github.com/tiancaiamao)
         - 修复无法处理典型 MySQL 协议中 `prepared` 语句 flag 的问题  [#36731](https://github.com/pingcap/tidb/issues/36731) @[dveeden](https://github.com/dveeden)
@@ -370,10 +381,9 @@ TiDB 版本：6.3.0-DMR
 
     - planner
 
-        - fix update plan's projection elimination will cause column resolution error [#37568](https://github.com/pingcap/tidb/issues/37568) @[AilinKid](https://github.com/AilinKid)
-        - (dup) 修复执行 Join Reorder 操作时会错误地下推 Outer Join 条件的问题 [#37238](https://github.com/pingcap/tidb/issues/37238) @[AilinKid](https://github.com/AilinKid)
-        - make the both side operand of NAAJ & refuse partial column substitute in projection elimination [#37032](https://github.com/pingcap/tidb/issues/37032) @[AilinKid](https://github.com/AilinKid)
-        - planner: correct the redundant field meaning in join full schema when join coalesce [#36420](https://github.com/pingcap/tidb/issues/36420) @[AilinKid](https://github.com/AilinKid)
+        - 修复了 update 语句在某些情况下错误地消除了 projection 导致 Can't find column 报错的问题 [#37568](https://github.com/pingcap/tidb/issues/37568) @[AilinKid](https://github.com/AilinKid)
+        - (dup) 修复了执行 Join Reorder 操作时会错误地下推 Outer Join 条件的问题 [#37238](https://github.com/pingcap/tidb/issues/37238) @[AilinKid](https://github.com/AilinKid)
+        - 修复了 IN/NOT IN 子查询在某些 pattern 下会报 Can't find column 的问题 [#37032](https://github.com/pingcap/tidb/issues/37032) @[AilinKid](https://github.com/AilinKid)
         - Fix a wrong casting in building union plan [#31678](https://github.com/pingcap/tidb/issues/31678) @[bb7133](https://github.com/bb7133)
 
     - diagnosis
