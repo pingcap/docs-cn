@@ -130,15 +130,13 @@ TiDB 版本：6.3.0-DMR
 
     在 v5.3.0 版本，TiDB 引入系统变量 [`tidb_enable_pseudo_for_outdated_stats`](/system-variables.md#tidb_enable_pseudo_for_outdated_stats-从-v530-版本开始引入) 控制优化器在统计信息过期时的行为，默认为 `ON`，即保持旧版本行为不变：当 SQL 涉及的对象的统计信息过期时，优化器认为该表上除总行数以外的统计信息不再可靠，转而使用 pseudo 统计信息。经过一系列测试和用户实际场景分析，TiDB 在新版本中将 `tidb_enable_pseudo_for_outdated_stats` 的默认值改为 `OFF`，即使统计信息过期，优化器也仍会使用该表上的统计信息，这有利于执行计划的稳定性。
 
-* TiKV 正式支持关闭 Titan 引擎 [#issue]() @[tabokie](https://github.com/tabokie)
+* TiKV 正式支持关闭 Titan 引擎 @[tabokie](https://github.com/tabokie)
 
     正式支持对在线 TiKV 节点[关闭 Titan 引擎](/titan-configuration.md#关闭-titan)。
 
 * 缺少 GlobalStats 时自动选择分区静态剪裁 [#37535](https://github.com/pingcap/tidb/issues/37535) @[Yisaer](https://github.com/Yisaer)
 
     当启用分区[动态剪裁](/partitioned-table.md#动态裁剪模式)时，优化器依赖 [GlobalStats](/statistics.md#动态裁剪模式下的分区表统计信息) 进行执行计划的选择。在 [GlobalStats](/statistics.md#动态裁剪模式下的分区表统计信息) 收集完成前，使用 pseudo 统计信息可能会造成性能回退。在 v6.3.0 版本中，如果在 [GlobalStats](/statistics.md#动态裁剪模式下的分区表统计信息) 收集未完成的情况下打开动态分区裁剪开关，TiDB 会维持静态分区剪裁的状态，直到 GlobalStats 收集完成。该方式确保在切换分区剪裁策略时系统性能保持稳定。
-
-### 易用性
 
 ### MySQL 兼容性
 
@@ -166,29 +164,29 @@ TiDB 版本：6.3.0-DMR
 
     PITR 支持 [GCS](/br/backup-storage-gcs.md) 和 [Azure Blob Storage](/br/backup-storage-azblob.md) 作为备份存储目标。部署在 GCP 或者 Azure 上的用户，将 TiDB 集群升级至 v6.3.0 就可以使用 PITR 功能。
 
-* BR 支持 AWS S3 Object Lock [#issue]() @[3pointer](https://github.com/3pointer)
+* BR 支持 AWS S3 Object Lock [#13442](https://github.com/tikv/tikv/issues/13442) @[3pointer](https://github.com/3pointer)
 
     你可以在 AWS 开启 [S3 Object Lock](https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lock.html) 功能来防止备份数据写入后被修改或者删除。
 
 ### 数据迁移
 
-* TiDB Lightning 支持将 Apache Hive 导出的 Parquet 文件导入到 TiDB [#issue]() @[buchuitoudegou](https://github.com/buchuitoudegou)
+* TiDB Lightning 支持将 Apache Hive 导出的 Parquet 文件导入到 TiDB [#37536](https://github.com/pingcap/tidb/issues/37536) @[buchuitoudegou](https://github.com/buchuitoudegou)
 
     TiDB Lightning 支持[将 Apache Hive 导出的 Parquet 文件导入到 TiDB](/tidb-lightning/tidb-lightning-data-source.md#parquet)，从而实现 Hive 到 TiDB 之间的数据流转。
 
-* DM 任务配置文件中新增一个配置项 `safe-mode-duration` [#6224] (https://github.com/pingcap/tiflow/issues/6224) @[[okJiang](https://github.com/okJiang)]
+* DM 任务配置文件中新增一个配置项 `safe-mode-duration` [#6224](https://github.com/pingcap/tiflow/issues/6224) @[okJiang](https://github.com/okJiang)
 
     DM 任务配置文件中新增一个配置项 [`safe-mode-duration`](/dm/task-configuration-file-full.md#完整配置文件示例)，用户可以自行调节 DM 异常重启后进入安全模式的持续时间，默认值 60 秒。当设置为 "0s" 时，表示 DM 异常重启后尝试进入安全模式会报错。
 
 ### 数据共享与订阅
 
-* TiCDC 支持对多个异地目标数据源进行数据复制 [#issue]() @[sdojjy](https://github.com/sdojjy)
+* TiCDC 支持对多个异地目标数据源进行数据复制 [#5301](https://github.com/pingcap/tiflow/issues/5301) @[sdojjy](https://github.com/sdojjy)
 
-    为了支持从一个 TiDB 集群复制数据到多个不同的异地数据系统，自 v6.3.0 开始，TiCDC 节点可以[部署到多个不同的异地的机房](用户文档链接)中，来分别负责对应机房的数据复制任务，以支撑各种复杂的异地数据复制使用场景和部署形态。
+    为了支持从一个 TiDB 集群复制数据到多个不同的异地数据系统，自 v6.3.0 开始，TiCDC 节点可以[部署到多个不同的异地的机房](/ticdc/deploy-ticdc.md)中，来分别负责对应机房的数据复制任务，以支撑各种复杂的异地数据复制使用场景和部署形态。
 
-* TiCDC 支持维护上下游数据一致性快照 (Sync point) [#issue]() @[asddongmen](https://github.com/asddongmen)
+* TiCDC 支持维护上下游数据一致性快照 (Sync point) [#6977](https://github.com/pingcap/tiflow/issues/6977) @[asddongmen](https://github.com/asddongmen)
 
-    在灾备复制场景下，TiCDC 支持[周期性地维护一个下游数据快照](用户文档链接)，使得该下游快照能与上游数据的快照保持一致。借助此能力，TiCDC 能更好地匹配读写分离应用场景，帮助用户降本增效。
+    在灾备复制场景下，TiCDC 支持[周期性地维护一个下游数据快照](/sync-diff-inspector/upstream-downstream-diff.md#tidb-主从集群的数据校验)，使得该下游快照能与上游数据的快照保持一致。借助此能力，TiCDC 能更好地匹配读写分离应用场景，帮助用户降本增效。
 
 * TiCDC 支持平滑升级 [#4757](https://github.com/pingcap/tiflow/issues/4757) @[overvenus](https://github.com/overvenus) @[3AceShowHand](https://github.com/3AceShowHand)
 
@@ -215,7 +213,7 @@ TiDB 版本：6.3.0-DMR
 | [`tidb_opt_force_inline_cte`](/system-variables.md#tidb_opt_force_inline_cte-从-v630-版本开始引入) | 新增 | 用于控制是否强制开启 inline CTE。默认值为 `OFF`，即默认不强制开启 inline CTE。 |
 | [`tidb_opt_three_stage_distinct_agg`](/system-variables.md#tidb_opt_three_stage_distinct_agg-从-v630-版本开始引入) | 新增 | 用于控制在 MPP 模式下是否将 `COUNT(DISTINCT)` 聚合改写为三阶段分布式执行的聚合。默认为 `ON`。 |
 | [`tidb_partition_prune_mode`](/system-variables.md#tidb_partition_prune_mode-从-v51-版本开始引入) | 修改 | 用于设置是否开启分区表动态裁剪模式。自 v6.3.0 起，该变量默认值修改为 `dynamic`。 |
-| [`tidb_rc_read_check_ts`](/system-variables.md#tidbrcreadcheckts-span-classversion-mark从-v600-版本开始引入span) | 修改 | 用于优化读语句时间戳的获取，适用于悲观事务 `READ-COMMITTED` 隔离级别下读写冲突较少的场景。由于这个行为只针对特定业务负载，而对其他类型的负载可能造成性能回退，自 v6.3.0 起，该变量的作用域由 GLOBAL 或 SESSION 修改为 INSTANCE 级别，允许只针对部分 TiDB 实例打开。 |
+| [`tidb_rc_read_check_ts`](/system-variables.md#tidbrcreadcheckts-span-classversion-mark从-v600-版本开始引入span) | 修改 | 用于优化读语句时间戳的获取，适用于悲观事务 RC 隔离级别下读写冲突较少的场景。由于这个行为只针对特定业务负载，而对其他类型的负载可能造成性能回退，自 v6.3.0 起，该变量的作用域由 GLOBAL 或 SESSION 修改为 INSTANCE 级别，允许只针对部分 TiDB 实例打开。 |
 | [`tidb_rc_write_check_ts`](/system-variables.md#tidb_rc_write_check_ts-从-v630-版本开始引入)  | 新增 | 用于优化时间戳的获取，适用于悲观事务 READ-COMMITTED 隔离级别下点写冲突较少的场景，开启此变量可以避免点写语句获取全局 timestamp 带来的延迟和开销。 |
 | [`tiflash_fastscan`](/system-variables.md#tiflash_fastscan-从-v630-版本开始引入) | 新增 | 用于控制是否启用 FastScan 功能。如果开启 FastScan 功能（设置为 `ON` 时），TiFlash 可以提供更高效的查询性能，但不保证查询结果的精度和数据一致性。 |
 | [`sql_require_primary_key`](/system-variables.md#sql_require_primary_key-从-v630-版本开始引入)   |  新增  |  用于控制表是否必须有主键。启用该变量后，如果在没有主键的情况下创建或修改表，将返回错误。 |
@@ -239,7 +237,7 @@ TiDB 版本：6.3.0-DMR
 | TiKV | [`log-backup.max-flush-interval`](/tikv-configuration-file.md#max-flush-interval-从-v620-版本开始引入) | 修改 | 默认值在 v6.3.0 以前是 `5min`，v6.3.0 开始设为 `3min`。 |
 | PD | [enable-diagnostic](/pd-configuration-file.md#enable-diagnostic-从-v630-版本开始引入) | 新增 | 控制是否开启诊断功能。默认值为 `false`。 |
 | TiFlash | [`dt_enable_read_thread`](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml) | 废弃 | 该参数从 v6.3.0 开始废弃，默认开启此功能且不能关闭。 |
-| DM | [`safe-mode-duration`](/dm/task-configuration-file-full.md#完整配置文件示例) ] | 新增 | 自动安全模式的持续时间。
+| DM | [`safe-mode-duration`](/dm/task-configuration-file-full.md#完整配置文件示例) | 新增 | 自动安全模式的持续时间。
 | TiCDC | [`enable-sync-point`](/ticdc/manage-ticdc.md#同步任务配置文件描述) | 新增 | 控制是否开启 sync point 功能。 |
 | TiCDC | [`sync-point-interval`](/ticdc/manage-ticdc.md#同步任务配置文件描述) | 新增 | 控制 sync point 功能对齐上下游 snapshot 的时间间隔。 |
 | TiCDC | [`sync-point-retention`](/ticdc/manage-ticdc.md#同步任务配置文件描述) | 新增 | sync point 功能在下游表中保存的数据的时长，超过这个时间的数据会被清理。 |
@@ -275,7 +273,7 @@ TiDB 版本：6.3.0-DMR
 
     - planner
 
-        - just pop cte's handleHelper map out since it shouldn't be considered [#35758](https://github.com/pingcap/tidb/issues/35758) @[AilinKid](https://github.com/AilinKid)
+        - 修复了 update 语句中带 CTE 的情况下会报 Can't find column 的问题 [#35758](https://github.com/pingcap/tidb/issues/35758) @[AilinKid](https://github.com/AilinKid)
         - `PLAN REPLAYER` 命令支持一次导出多条 SQL 语句的执行计划信息，提升了问题排查效率 [#37798](https://github.com/pingcap/tidb/issues/37798) @[Yisaer](https://github.com/Yisaer)
 
 + TiKV
@@ -360,6 +358,7 @@ TiDB 版本：6.3.0-DMR
         - 修复无法处理典型 MySQL 协议中 `prepared` 语句 flag 的问题  [#36731](https://github.com/pingcap/tidb/issues/36731) @[dveeden](https://github.com/dveeden)
         - (dup) 修复了在极端情况下，启动 TiDB 可能进入错误状态的问题 [#36791](https://github.com/pingcap/tidb/issues/36791) @[xhebox](https://github.com/xhebox)
         - 修复 `information_schema.variables_info` 不遵循安全增强模式 (SEM) 的问题 [#37586](https://github.com/pingcap/tidb/issues/37586) @[CbcWestwolf](https://github.com/CbcWestwolf)
+- 修复在构建 union plan 时转换出错的问题 [#31678](https://github.com/pingcap/tidb/issues/31678) @[bb7133](https://github.com/bb7133)
 
     - execution
 
