@@ -78,15 +78,14 @@ Empty set (0.00 sec)
 `FLASHBACK CLUSTER` 可以简单的分为下面几个阶段，
 
 * 在正式开始 `FLASHBACK CLUSTER` 之前，TiDB 会将 `FLASHBACK CLUSTER` 的 `JobID` 更新到 TiKV 对应的 Key 上从而禁止别的 DDL Job 在 `FLASHBACK CLUSTER` 期间被执行。
-* 进行一些前置检查
-    * 检查是否有 DDL 记录在要 `FLASHBACK` 到的时间点到现在存在，如有则结束 `FLASHBACK CLUSTER` 操作。
-    * 检查要 `FLASHBACK` 到的时间点是否在 `tikv_gc_safe_point` 之前，如是则结束 `FLASHBACK CLUSTER` 操作。
-    * 检查集群中是否有别的 DDL job 正在执行，如有则结束 `FLASHBACK CLUSTER` 操作。
-在所有检查通过之后，TiDB 会主动关闭集群的 GC 和调度。
+* 进行一些前置检查，在所有检查通过之后，TiDB 会主动关闭集群的 GC 和调度，具体检查如下，
+  * 检查是否有 DDL 记录在要 `FLASHBACK` 到的时间点到现在存在，如有则结束 `FLASHBACK CLUSTER` 操作。
+  * 检查要 `FLASHBACK` 到的时间点是否在 `tikv_gc_safe_point` 之前，如是则结束 `FLASHBACK CLUSTER` 操作。
+  * 检查集群中是否有别的 DDL job 正在执行，如有则结束 `FLASHBACK CLUSTER` 操作。
 * TiDB 向相关 Region 发起 `PrepareFlashbackToVersion` 请求。TiKV 收到请求后会对这些 Region 上锁，禁止对该 Region 进行读写操作。
-* 在锁上所有的 Region 之后，DDL Owner 会推进 Schema Version，并同步到所有的 TiDB 上。TiDB 在更新类型为 `FLAHSBACK CLUSTER` 的 `Schema Diff` 时，会主动断开所有的链接。
+* 在锁上所有的 Region 之后，DDL Owner 会推进 Schema Version，并同步到所有的 TiDB 上。TiDB 在 apply 类型为 `FLAHSBACK CLUSTER` 的 `Schema Diff` 时，会主动断开所有非 `FLASHBACK CLUSTER` 的链接。
 * TiDB 向相关 Region 发起 `FlashbackToVersion` 的 RPC 请求。TiKV 收到请求后会读取旧版本的数据，并将其用最新的 `CommitTS` 重新写回。当所有 Region 处理完后，TiKV 会统一将其解锁。
-* 当 `FLASHBACK CLUSTER` 执行完成后，TiDB 会删除对应的 `JobID` 恢复 DDL 功能，同时通知 `Stats Handle` 从 TiKV 处重新加载统计信息。
+* `FLASHBACK CLUSTER` 执行完成后，TiDB 会删除对应的 `JobID` 恢复 DDL 功能，同时通知 `Stats Handle` 从 TiKV 处重新加载统计信息。
 
 ## MySQL 兼容性
 
