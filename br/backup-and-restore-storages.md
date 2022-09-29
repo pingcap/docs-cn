@@ -51,6 +51,13 @@ Cloud storages such as S3, GCS and Azblob sometimes require additional configura
         -d 's3://my-bucket/sql-backup?force-path-style=true&endpoint=http://10.154.10.132:8088'
     ```
 
++ Use TiDB Lightning to import data from S3 (access S3 data by using a specific IAM role):
+
+    ```bash
+    ./tidb-lightning --tidb-port=4000 --pd-urls=127.0.0.1:2379 --backend=local --sorted-kv-dir=/tmp/sorted-kvs \
+        -d 's3://my-bucket/test-data?role-arn=arn:aws:iam::888888888888:role/my-role'
+    ```
+
 + Use BR to back up data to GCS:
 
     {{< copyable "shell-regular" >}}
@@ -82,12 +89,14 @@ Cloud storages such as S3, GCS and Azblob sometimes require additional configura
 | `sse` | Server-side encryption algorithm used to encrypt the upload (empty, `AES256` or `aws:kms`) |
 | `sse-kms-key-id` | If `sse` is set to `aws:kms`, specifies the KMS ID |
 | `acl` | Canned ACL of the uploaded objects (for example, `private`, `authenticated-read`) |
+| `role-arn` | When you need to access Amazon S3 data from a third party using a specified [IAM role](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html), you can specify the corresponding [Amazon Resource Name (ARN)](https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html) of the IAM role with the `role-arn` URL query parameter, such as `arn:aws:iam::888888888888:role/my-role`. For more information about using an IAM role to access Amazon S3 data from a third party, see [AWS documentation](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_common-scenarios_third-party.html). |
+| `external-id` | When you access Amazon S3 data from a third party, you might need to specify a correct [external ID](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-user_externalid.html) to assume [the IAM role](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html). In this case, you can use this `external-id` URL query parameter to specify the external ID. An external ID is an arbitrary string provided by the third party together with the IAM role ARN to access the Amazon S3 data. Providing an external ID is optional when assuming an IAM role, which means if the third party does not specify an external ID for the IAM role, you can assume the role and access the corresponding S3 data without providing this parameter. |
 
 > **Note:**
 >
 > It is not recommended to pass in the access key and secret access key directly in the storage URL, because these keys are logged in plain text.
 
-If the access key and secret access key are not specified, the migration tools try to infer these keys from the environment in the following order:
+If neither the access key and secret access key nor IAM role ARN (`role-arn`) and external ID (`external-id`) are provided, the migration tools try to infer these keys from the environment in the following order:
 
 1. `$AWS_ACCESS_KEY_ID` and `$AWS_SECRET_ACCESS_KEY` environment variables
 2. `$AWS_ACCESS_KEY` and `$AWS_SECRET_KEY` environment variables
@@ -137,7 +146,15 @@ In addition to the URL parameters, BR and Dumpling also support specifying these
 
 ```bash
 ./dumpling -u root -h 127.0.0.1 -P 3306 -B mydb -F 256MiB \
-    -o 's3://my-bucket/sql-backup'
+    -o 's3://my-bucket/sql-backup' \
+    --s3.role-arn="arn:aws:iam::888888888888:role/my-role"
+```
+
+The preceding command is equivalent to the following:
+
+```bash
+./dumpling -u root -h 127.0.0.1 -P 3306 -B mydb -F 256MiB \
+     -o 's3://my-bucket/sql-backup&role-arn=arn:aws:iam::888888888888:role/my-role'
 ```
 
 If you have specified URL parameters and command-line parameters at the same time, the URL parameters are overwritten by the command-line parameters.
@@ -152,6 +169,8 @@ If you have specified URL parameters and command-line parameters at the same tim
 | `--s3.sse-kms-key-id` | If `--s3.sse` is configured as `aws:kms`, this parameter is used to specify the KMS ID. |
 | `--s3.acl` | The canned ACL of the upload object. For example, `private` or `authenticated-read`. |
 | `--s3.provider` | The type of the S3-compatible service. The supported types are `aws`, `alibaba`, `ceph`, `netease` and `other`. |
+| `--s3.role-arn` | When you need to access Amazon S3 data from a third party using a specified [IAM role](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html), you can specify the corresponding [Amazon Resource Name (ARN)](https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html) of the IAM role with the `--s3.role-arn` option, such as `arn:aws:iam::888888888888:role/my-role`. For more information about using an IAM role to access Amazon S3 data from a third party, see [AWS documentation](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_common-scenarios_third-party.html). |
+| `--s3.external-id` | When you access Amazon S3 data from a third party, you might need to specify a correct [external ID](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-user_externalid.html) to assume [the IAM role](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html). In this case, you can use this `--s3.external-id` option to specify the external ID. An external ID is an arbitrary string provided by the third party together with the IAM role ARN to access the Amazon S3 data. Providing an external ID is optional when assuming an IAM role, which means if the third party does not specify an external ID for the IAM role, you can assume the role and access the corresponding S3 data without providing this parameter. |
 
 To export data to non-AWS S3 cloud storage, specify the cloud provider and whether to use `virtual-hosted style`. In the following examples, data is exported to the Alibaba Cloud OSS storage:
 
