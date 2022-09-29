@@ -66,11 +66,8 @@ summary: 了解 Oracle 与 TiDB 函数和语法差异对照。
 
 ### `INSERT` 语句中读写同一张表
 
-Oracle：`INSERT INTO table1 VALUES (feild1,(SELECT feild2 FROM table1 WHERE...))`
-
-TiDB：`INSERT INTO table1 VALUES（feild1,(SELECT T.fields2 FROM table1 T WHERE...)`
-
-说明：TiDB 不支持在同一个表中先查这个表再更新该表。
+- Oracle：支持 `INSERT` 语句中读写同一张表。例如，`INSERT INTO table1 VALUES (feild1,(SELECT feild2 FROM table1 WHERE...))`。
+- TiDB：不支持 `INSERT` 语句中读写同一张表。例如，`INSERT INTO table1 VALUES（feild1,(SELECT T.fields2 FROM table1 T WHERE...)`。
 
 ### 获取前 n 条数据
 
