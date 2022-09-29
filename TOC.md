@@ -4,7 +4,7 @@
 - [文档中心](https://docs.pingcap.com/zh)
 - 关于 TiDB
   - [TiDB 简介](/overview.md)
-  - [TiDB 6.2 Release Notes](/releases/release-6.2.0.md)
+  - [TiDB 6.3 Release Notes](/releases/release-6.3.0.md)
   - [基本功能](/basic-features.md)
   - [实验特性](/experimental-features.md)
   - [与 MySQL 的兼容性](/mysql-compatibility.md)
