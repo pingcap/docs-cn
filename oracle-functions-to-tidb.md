@@ -25,9 +25,9 @@ summary: 了解 Oracle 与 TiDB 函数和语法差异对照。
 | 日期增加/减少 n 天 | `DATEVAL + n` | `DATE_ADD(dateVal,INTERVAL n DAY)` | `n` 可为负数。|
 | 日期增加/减少 n 月 | `ADD_MONTHS(dateVal,n)`| `DATE_ADD(dateVal,INTERVAL n MONTH)` | `n` 可为负数。|
 | 获取日期到日 | `TRUNC(SYSDATE)` | <li>`CAST(NOW() AS DATE)`</li><li>`DATE_FORMAT(NOW(),'%Y-%m-%d')`</li> | TiDB 中 `CAST` 与 `DATE_FORMAT` 结果一致。|
-| 获取日期的月份 | `TRUNC(SYSDATE,'mm')` | `DATE_ADD(CURDATE(),interval - day(CURDATE()) + 1 day)`  | |
+| 获取日期当月第一天 | `TRUNC(SYSDATE,'mm')` | `DATE_ADD(CURDATE(),interval - day(CURDATE()) + 1 day)`  | |
 | 向下取整 | `TRUNC(2.136) = 2`<br/> `TRUNC(2.136,2) = 2.14` | `TRUNCATE(2.136,0) = 2`<br/> `TRUNCATE(2.136,2) = 2.14` |  |
-| 拼接字符串 `a` 和 `b` | `'a' || 'b'` | `CONCAT('a','b')` | |
+| 拼接字符串 `a` 和 `b` | `'a' \|\| 'b'` | `CONCAT('a','b')` | |
 | 获取序列下一个值 | `SEQUENCENAME.NEXTVAL` | `NEXTVAL(sequenceName)` | |
 | 左/右外连接 | `SELECT * FROM a, b WHERE a.id = b.id(+);`<br/>`SELECT * FROM a, b WHERE a.id(+) = b.id;` | `SELECT * FROM a LEFT JOIN b ON a.id = b.id;`<br/>`SELECT * FROM a RIGHT JOIN b ON a.id = b.id;` | 关联查询时，TiDB 不支持使用 (+) 实现左/右关联，只能通过 `LEFT JOIN` 或 `RIGHT JOIN` 实现。|
 | 获取随机序列值 | `SYS_GUID()` | `UUID()` | TiDB 返回一个通用唯一识别码 (UUID)。|
