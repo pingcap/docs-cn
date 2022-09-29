@@ -61,7 +61,7 @@ TiDB 使用 [ADMIN CHECK [TABLE|INDEX]](/sql-statements/sql-statement-admin-chec
 
 转为使用 `ADMIN CHECK [TABLE|INDEX]`。
 
-## MySQL Connector/J
+## MySQL Connector/J 不兼容
 
 - 测试版本：8.0.29
 
@@ -126,12 +126,33 @@ TiDB 暂不支持 UpdatableResultSet，即请勿指定 `ResultSet.CONCUR_UPDATAB
 
 使用额外的 `UPDATE` 语句进行数据更新，可使用事务保证数据一致性。
 
-### 不支持 `useLocalTransactionState` 参数
+## MySQL Connector/J Bug
+
+### `useLocalTransactionState` 和 `rewriteBatchedStatements` 同时开启将导致事务无法提交
 
 **描述**
 
-TiDB 依赖 `COMMIT()` 与 `ROLLBACK()` 进行事务的提交或回滚。[useLocalTransactionState](https://dev.mysql.com/doc/connector-j/8.0/en/connector-j-connp-props-performance-extensions.html) 参数可能会省略在 MySQL 场景下不必要的 `COMMIT()` 与 `ROLLBACK()`，但这对 TiDB 来说是必要的。
+`useLocalTransactionState` 和 `rewriteBatchedStatements` 两参数同时开启时，将导致事务无法提交的问题。你可以使用[代码](https://github.com/Icemap/tidb-java-gitpod/tree/reproduction-local-transaction-state-txn-error)复现。
 
 **规避方法**
 
+> **注意：**
+>
+> 已向 MySQL 报告此 Bug，可关注此 [Bug Report](https://bugs.mysql.com/bug.php?id=108643) 进行最新消息的跟踪。
+
 请勿开启 `useLocalTransactionState`，这有可能导致事务无法提交或回滚。
+
+### 新版本 Connector 无法兼容旧版本 Server
+
+**描述**
+
+新版本的 MySQL Connector/J 在与 5.7.5 版本以下的 MySQL 服务端，或使用 5.7.5 版本以下 MySQL 服务端协议的数据库（如 TiDB 6.3 版本以下）一起工作时。将在一定情况下引起连接的挂起，可查看此 [Bug Report](https://bugs.mysql.com/bug.php?id=106252) 了解更细节的信息。
+
+**规避方法**
+
+这是一个已知的问题，MySQL Connector/J 至今未合并修复代码。
+
+PingCAP 对其进行了两个维度的修复：
+
+- 客户端方面：可使用 [pingcap/mysql-connector-j](https://github.com/pingcap/mysql-connector-j) 替换官方的 MySQL Connector/J。**pingcap/mysql-connector-j** 中修复了该 Bug。
+- 服务端方面：可升级服务端至 6.3 版本或以上。TiDB 在 6.3 版本修复了此兼容问题。
