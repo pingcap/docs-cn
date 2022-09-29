@@ -184,7 +184,7 @@ TiDB 中 `ORDER BY` 语句对 `NULL` 的排序规则：
 
 - `ORDER BY COLUM DESC` 时，`NULL` 默认被放在最后。
 
-Oracle 与 TiDB 中等价 `ORDER BY` 语句示例：
+下表是 Oracle 与 TiDB 中等价 `ORDER BY` 语句示例。
 
 | Oracle 中的 `ORDER BY`  | TiDB 中的 `ORDER BY`|
 | :------------------- | :----------------- |
