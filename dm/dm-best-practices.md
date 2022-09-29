@@ -147,8 +147,8 @@ DM 整体架构分为 DM-master 与 DM-worker。
 
 | 场景 |  DM-master 部署 | DM-worker 部署 |
 | :--- | :--- | :--- |
-| 小规模数据 （1 TB 以下），一次性数据迁移场景  |  部署 1 个 DM-master 节点   | 根据上游数据源数量，部署 1 ~ N 个 DM-worker 节点，一般情况下 1 个 DM-worker 节点。   |
-| 大规模数据 （1 TB 以上）及分库分表，一次性数据迁移场景  | 推荐部署 3 个 DM-master 节点，来保证在长时间数据迁移时 DM 集群的可用性   | 根据数据源数量或同步任务数量部署 DM-Worker 节点，推荐多部署 1~3 个空闲 DM-Worker 节点   |
+| 小规模数据 （1 TB 以下），一次性数据迁移场景  |  部署 1 个 DM-master 节点   | 根据上游数据源数量，部署 1 ~ N 个 DM-worker 节点。一般情况下 1 个 DM-worker 节点。   |
+| 大规模数据 （1 TB 以上）及分库分表，一次性数据迁移场景  | 推荐部署 3 个 DM-master 节点，来保证在长时间数据迁移时 DM 集群的可用性   | 根据数据源数量或同步任务数量部署 DM-Worker 节点。推荐多部署 1~3 个空闲 DM-Worker 节点。   |
 |  长期数据同步迁移场景  | 务必部署 3 个 DM-master 节点。如在云上部署，尽量将 DM-master 部署在不同的可用区（AZ）    |   根据数据源数量或同步任务数量部署 DM-worker 节点。务必部署实际需要 DM-worker 节点数量的 1.5 ~ 2 倍的 DM-worker 节点数量。 |
 
 #### 上游数据源选择与设置
@@ -159,7 +159,7 @@ DM 是支持存量数据迁移的，但在做全量迁移时会对整库进行�
 
 - 只能在上游主库进行全量备份
 
-    在该场景中，可以在同步任务配置中设置一致性参数为 none，`mydumpers.global.extra-args: "--consistency none"` 避免给主库加大锁，但有可能破坏全量备份的数据一致性，导致最终上下游数据不一致。
+    在该场景中，可以在同步任务配置中设置一致性参数为 none，`mydumpers.global.extra-args: "--consistency none"` 避免给主库加全局只读锁，但有可能破坏全量备份的数据一致性，导致最终上下游数据不一致。
 
 - 利用备份快照解决存量迁移（只适用 AWS 上 MySQL RDS 和 Aurora RDS 的迁移）
 
@@ -169,7 +169,7 @@ DM 是支持存量数据迁移的，但在做全量迁移时会对整库进行�
 
 #### 大小写
 
-TiDB 默认情况下是对 Schema name 大小写不敏感的，即 `lower_case_table_names:2`。但上游 MySQL 大多为 Linux 系统，默认对大小写敏感。此时需要注意，在 DM 数据同步任务设置时将 `case-sensitive` 设置为 `true`，保证可以正确同步上游的 Schema。
+TiDB 默认情况下对 Schema name 大小写不敏感，即 `lower_case_table_names:2`。但上游 MySQL 大多为 Linux 系统，默认对大小写敏感。此时需要注意，在 DM 数据同步任务设置时将 `case-sensitive` 设置为 `true`，保证可以正确同步上游的 Schema。
 
 特殊情况下，比如上游一个数据库中，既有大写表如 `Table`，又有小写表如 `table`，那么 Schema 创建时将报错:
 
@@ -177,20 +177,22 @@ TiDB 默认情况下是对 Schema name 大小写不敏感的，即 `lower_case_t
 
 #### 过滤规则
 
-这里不会重点讲同步任务的过滤规则相关注意事项。而是要请大家注意，现在在配置数据源时即可配置过滤规则。配置过滤规则的好处有：
+在配置数据源时即可配置过滤规则。配置方法请参考[数据迁移任务配置向导](/dm/dm-task-configuration-guide.md)。
+
+配置过滤规则的好处有：
 
 - 可以减少下游处理 Binglog Event 的数量，提升同步效能
 - 可以减少不必要的 Relay log 的落盘，节约磁盘空间
 
 > **注意：**
 >
-> 在分库分表场景中，如果你在数据源配置了过滤规则，请一定检查好数据源与同步任务的匹配情况。如果不匹配，将会导致同步任务长期接收不到增量数据的情况。
+> 在分库分表场景中，如果你在数据源配置了过滤规则，请确保数据源与同步任务中设置的过滤规则相匹配。如果不匹配，将会导致同步任务长期接收不到增量数据。
 
 #### Relay Log 的使用
 
-我们知道 MySQL 的主从复制，在 Secondary 端会保存一份 Relay log，以此保证异步复制的可靠性与效能。DM 现在也支持在 DM-worker 侧保存一份 Relay log，并可设置存储位置、过期清理时间等信息。此功能适用于以下场景：
+MySQL 的主从复制在 Secondary 端会保存一份 Relay log，以此保证异步复制的可靠性与效能。DM 也支持在 DM-worker 侧保存一份 Relay log，并可设置存储位置、过期清理时间等信息。此功能适用于以下场景：
 
-- 在进行全量 + 增量数据迁移时，因为全量迁移数据量较大，整个过程耗费时间超过了上游 Binlog 归档的时间，导致增量同步任务不能正常拉起，如果开启 Relay Log 在全量同步拉起同时，DM-worker 即会开始接收 Relay log，避免增量任务拉起失败。
+- 在进行全量 + 增量数据迁移时，因为全量迁移数据量较大，整个过程耗费时间超过了上游 Binlog 归档的时间，导致增量同步任务不能正常启动，如果开启 Relay Log 在全量同步启动同时，DM-worker 即会开始接收 Relay log，避免增量任务启动失败。
 - 在使用 DM 进行长期数据同步的场景中，有时因为各种原因导致同步任务长时间阻塞，此时开启了 Relay log 功能，可以有效应对同步任务阻塞而导致的上游 Binglog 被回收问题。
 
 在使用 Relay Log 功能时也会有一定的限制。DM 支持高可用，当某个 DM-worker 出现故障，会尝试将空闲的 DM-worker 实例提升为工作实例，如果此时上游 Binlog 没有包含必要的同步日志，将可能出现同步中断情况。此时需要人工干预，尽快将 Relay log 复制到新的 DM-worker 节点上来，并修改相应的 Relay meta 文件。具体方法请参考[故障处理](/dm/dm-error-handling.md#relay-处理单元报错-event-from--in--diff-from-passed-in-event--或迁移任务中断并包含-get-binlog-error-error-1236-hy000binlog-checksum-mismatch-data-may-be-corrupted-等-binlog-获取或解析失败错误)。
@@ -210,24 +212,24 @@ TiDB 默认情况下是对 Schema name 大小写不敏感的，即 `lower_case_t
 - `messages: Column count doesn't match value count: 3 (columns) vs 2 (values)`
 - `Schema/Column doesn't match`
 
-此类问题主要原因是下游 TiDB 中增加或修改了索引，或者下游比上游更多列。出现此类的同步报错信息，就要考虑是不是上下游 Schema 不一致导致的同步中断。
+此类问题主要原因是下游 TiDB 中增加或修改了索引，或者下游比上游更多列。当出现此类的同步报错信息时，请检查是否是上下游 Schema 不一致导致的同步中断。
 
-解决此类问题，只要将 DM 中缓存的 Schema 信息更新成与下游 TiDB Schema 一致即可。具体方法参考[管理迁移表的表结构](/dm/dm-manage-schema.md)。
+要解决此类问题，只需将 DM 中缓存的 Schema 信息更新成与下游 TiDB Schema 一致即可。具体方法参考[管理迁移表的表结构](/dm/dm-manage-schema.md)。
 
 如果是下游比上游多列的场景，请参考[下游存在更多列的迁移场景](/migrate-with-more-columns-downstream.md)。
 
 ### 处理因为 DDL 中断的数据同步任务
 
-DM 支持跳过或者替换_导致同步任务中断的 DDL 语句_。并且针对是否为分库分表合并场景有对应不同的操作，具体请参考[处理出错的 DDL 语句](/dm/handle-failed-ddl-statements.md#使用示例)。
+DM 支持跳过或者替换导致同步任务中断的 DDL 语句。并且针对是否为分库分表合并场景有对应不同的操作，具体请参考[处理出错的 DDL 语句](/dm/handle-failed-ddl-statements.md#使用示例)。
 
 ## 数据迁移后的数据校验
 
-一般在完成数据迁移后，会对新旧数据进行数据一致性校验。TiDB 官方提供了相应的同步工具 [sync-diff-inspector](/sync-diff-inspector/sync-diff-inspector-overview.md) 来帮助你完成数据校验工作。
+在完成数据迁移后，建议对新旧数据进行数据一致性校验。TiDB 提供了相应的同步工具 [sync-diff-inspector](/sync-diff-inspector/sync-diff-inspector-overview.md) 来帮助你完成数据校验工作。
 
 通过管理 DM 中的同步任务，sync-diff-inspector 可以自动管理需要进行数据一致性检查的 Table 列表，相较之前的手动配置更加的高效。具体参考[基于 DM 同步场景下的数据校验](/sync-diff-inspector/dm-diff.md)。
 
-自 DM v6.2 版本开始，还支持增量同步时同时进行数据校验。具体参考 [DM 增量数据校验](/dm/dm-continuous-data-validation.md)。
+自 DM v6.2 版本开始，DM 支持在增量同步的同时进行数据校验。具体参考 [DM 增量数据校验](/dm/dm-continuous-data-validation.md)。
 
 ## 数据长期同步
 
-如果将 DM 作为持续的数据同步平台，做好必要的元信息备份是非常必要的。一方面是保证同步集群故障重建的能力，另一方面可以实现同步任务的版本控制。具体实现方式参考[导出和导入集群的数据源和任务配置](/dm/dm-export-import-config.md)。
+如果将 DM 作为持续的数据同步平台，建议一定要做好必要的元信息备份。一方面是保证同步集群故障重建的能力，另一方面可以实现同步任务的版本控制。具体实现方式参考[导出和导入集群的数据源和任务配置](/dm/dm-export-import-config.md)。
