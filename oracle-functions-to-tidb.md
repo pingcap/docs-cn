@@ -28,7 +28,7 @@ summary: 了解 Oracle 与 TiDB 函数和语法差异对照。
 | 获取日期当月第一天 | `TRUNC(SYSDATE,'mm')` | `DATE_ADD(CURDATE(),interval - day(CURDATE()) + 1 day)`  | |
 | 截取数据 | `TRUNC(2.136) = 2`<br/> `TRUNC(2.136,2) = 2.13` | `TRUNCATE(2.136,0) = 2`<br/> `TRUNCATE(2.136,2) = 2.13` | 数据精度保留，直接截取相应小数位，不涉及四舍五入。 |
 | 拼接字符串 `a` 和 `b` | `'a' \|\| 'b'` | `CONCAT('a','b')` | |
-| 获取序列下一个值 | `SEQUENCENAME.NEXTVAL` | `NEXTVAL(sequenceName)` | |
+| 获取序列下一个值 | `sequence_name.NEXTVAL` | `NEXTVAL(sequence_name)` | |
 | 左/右外连接 | `SELECT * FROM a, b WHERE a.id = b.id(+);`<br/>`SELECT * FROM a, b WHERE a.id(+) = b.id;` | `SELECT * FROM a LEFT JOIN b ON a.id = b.id;`<br/>`SELECT * FROM a RIGHT JOIN b ON a.id = b.id;` | 关联查询时，TiDB 不支持使用 (+) 实现左/右关联，只能通过 `LEFT JOIN` 或 `RIGHT JOIN` 实现。|
 | 获取随机序列值 | `SYS_GUID()` | `UUID()` | TiDB 返回一个通用唯一识别码 (UUID)。|
 | `NVL()` | `NVL(key,val)` | `IFNULL(key,val)` | 如果该字段值为 `NULL`，则返回 val 值，否则返回该字段的值。 |
@@ -48,20 +48,6 @@ summary: 了解 Oracle 与 TiDB 函数和语法差异对照。
 
 本节介绍 Oracle 部分语法与 TiDB 的差异。
 
-### 删除语句中为表加别名
-
-Oracle 支持在删除语句中为表起别名。例如：
-
-```sql
-DELETE FROM test t WHERE t.xxx = xxx
-```
-
-TiDB 不支持在删除语句中为表起别名。例如
-
-```sql
-DELETE FROM test WHERE xxx = xxx
-```
-
 ### 字符串语法
 
 - Oracle：字符串只能使用单引号 ('')。例如 `'a'`。
@@ -70,7 +56,7 @@ DELETE FROM test WHERE xxx = xxx
 ### `NULL` 与空字符串的区分
 
 - Oracle：不区分 `NULL` 和空字符串 `''`，即 `NULL` 与 `''` 是等价的。
-- TiDB：区分 `NULL` 和空字符串 `''`，TiDB 需要将 `''` 转换为 `NULL`。
+- TiDB：区分 `NULL` 和空字符串 `''`。
 
 ### `INSERT` 语句中读写同一张表
 
@@ -131,20 +117,6 @@ TiDB 不支持 `MINUS`，需要改写为 `EXCEPT`。例如：
 
 ```sql
 SELECT * FROM t1 EXCEPT SELECT * FROM t2
-```
-
-### 空值取别名
-
-Oracle 中`NULL` 与 `''` 是等价的，为空值起别名时，不需要特殊转换。例如：
-
-```sql
-SELECT NULL AS ... FROM DUAL
-```
-
-TiDB 中 `NULL` 与 `''` 含义不同，为空值起别名时，需要将 `NULL` 改写为 `''`。例如：
-
-```sql
-SELECT '' AS ... FROM DUAL
 ```
 
 ### 注释语法
