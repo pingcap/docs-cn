@@ -1,4 +1,4 @@
----
+ ---
 title: 使用 TiUP 命令管理组件
 aliases: ['/docs-cn/dev/tiup/tiup-component-management/','/docs-cn/dev/reference/tools/tiup/manage-component/','/docs-cn/dev/reference/tools/tiup/manage-tiup-component/']
 ---
@@ -69,12 +69,12 @@ tiup install tidb
 tiup install tidb:nightly
 ```
 
-示例三：使用 TiUP 安装 v6.2.0 版本的 TiKV
+示例三：使用 TiUP 安装 v6.3.0 版本的 TiKV
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup install tikv:v6.2.0
+tiup install tikv:v6.3.0
 ```
 
 ## 升级组件
@@ -127,12 +127,12 @@ Flags:
 
 如果想要多次启动同一个组件并复用之前的工作目录，就可以在启动时用 `--tag` 指定相同的名字。指定 tag 后，在实例终止时就*不会自动删除*工作目录，方便下次启动时复用。
 
-示例一：运行 v6.2.0 版本的 TiDB
+示例一：运行 v6.3.0 版本的 TiDB
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup tidb:v6.2.0
+tiup tidb:v6.3.0
 ```
 
 示例二：指定 tag 运行 TiKV
@@ -218,12 +218,12 @@ component 为要卸载的组件名称，version 为要卸载的版本，这两�
 - 若省略版本，加 `--all` 表示卸载该组件所有版本
 - 若版本和组件都省略，则加 `--all` 表示卸载所有组件及其所有版本
 
-示例一：卸载 v6.2.0 版本的 TiDB
+示例一：卸载 v6.3.0 版本的 TiDB
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup uninstall tidb:v6.2.0
+tiup uninstall tidb:v6.3.0
 ```
 
 示例二：卸载所有版本的 TiKV
