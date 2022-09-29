@@ -5,7 +5,7 @@ summary: 了解日志备份的已知问题。
 
 # 日志备份的已知问题
 
-本文列出了在使用日志备份功能时，可能会遇到的问题及相应的解决方法。 
+本文列出了在使用日志备份功能时，可能会遇到的问题及相应的解决方法。
 
 如果遇到未包含在此文档且无法解决的问题，可以在 [AskTUG](https://asktug.com/) 社区中搜索答案或提问。
 
@@ -31,7 +31,7 @@ Issue 链接：[#36648](https://github.com/pingcap/tidb/issues/36648)
 
 在创建日志备份任务的上游集群中，请尽量避免使用 TiDB Lightning Physical 方式导入数据。可以选择使用 TiDB Lightning Logical 方式导入数据。若确实需要使用 Physical 导入方式，可在导入完成之后做一次快照备份操作，这样，PITR 就可以恢复到快照备份之后的时间点。
 
-## 集群已经恢复了网络分区故障，日志备份任务进度 checkpoint 仍然不推进 
+## 集群已经恢复了网络分区故障，日志备份任务进度 checkpoint 仍然不推进
 
 Issue 链接：[#13126](https://github.com/tikv/tikv/issues/13126)
 
@@ -56,3 +56,13 @@ Issue 链接：[#37207](https://github.com/pingcap/tidb/issues/37207)
 Issue 链接：[#13304](https://github.com/tikv/tikv/issues/13304)
 
 当场景中有大事务时，日志 checkpoint lag 在事务提交前都不会更新，因此会增加一段接近于大事务提交时长的时间。
+
+## 索引加速功能与 PITR 功能不兼容
+
+Issue 链接：[#38045](https://github.com/pingcap/tidb/issues/38045)
+
+当前[索引加速功能](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入)与 PITR 功能不兼容。在使用索引加速功能时，需要确保后台没有启动 PITR 备份任务，否则可能会出现非预期结果。非预期场景包括：
+
+- 如果先启动 PITR 备份任务，再添加索引，此时即使索引加速功能打开，也不会使用加速索引功能，但不影响索引兼容性。
+- 如果先启动添加索引加速任务，再创建 PITR 备份任务，此时 PITR 备份任务会报错，但不影响正在添加索引的任务。
+- 如果同时启动 PITR 备份任务和添加索引加速任务，可能会由于两个任务无法察觉到对方而导致 PITR 不能成功备份增加的索引数据。
