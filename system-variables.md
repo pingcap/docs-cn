@@ -2036,6 +2036,7 @@ explain select * from t where age=5;
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
+- 类型：布尔型
 - 默认值：`OFF`
 - 该变量开启后，TiDB 将不会收集或记录 Grafana 面板未使用到的 metrics。
 
