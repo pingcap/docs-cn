@@ -201,7 +201,7 @@ mysql> SELECT * FROM t1;
 
 ### `identity` <span class="version-mark">从 v5.3.0 版本开始引入</span>
 
-- `last_insert_id` 的别名。
+- 该变量为变量 [`last_insert_id`](#last_insert_id-从-v530-版本开始引入) 的别名。
 
 ### `init_connect`
 
