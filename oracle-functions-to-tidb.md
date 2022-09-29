@@ -99,11 +99,8 @@ TiDB：`INSERT INTO table1 VALUES（feild1,(SELECT T.fields2 FROM table1 T WHERE
 
 ### 注释语法
 
-Oracle：`--注释`
-
-TiDB： `-- 注释`
-
-说明：Oracle 的 `--` 后面不需要空格，TiDB 的 `--` 后面需要有一个空格。
+- Oracle：`--注释`。
+- TiDB：`-- 注释`。需要注意的是 Oracle 的 `--` 后面不需要空格，TiDB 的 `--` 后面需要有一个空格。
 
 ### 分页查询
 
