@@ -333,11 +333,11 @@ TiDB 版本：6.3.0-DMR
     - 修复 `FLASHBACK TABLE` 运行不正常的问题 [#37386](https://github.com/pingcap/tidb/issues/37386) @[tiancaiamao](https://github.com/tiancaiamao)
     - 修复无法处理典型 MySQL 协议中 `prepared` 语句 flag 的问题  [#36731](https://github.com/pingcap/tidb/issues/36731) @[dveeden](https://github.com/dveeden)
     - 修复在极端情况下，启动 TiDB 可能进入错误状态的问题 [#36791](https://github.com/pingcap/tidb/issues/36791) @[xhebox](https://github.com/xhebox)
-    - 修复 `information_schema.variables_info` 不遵循安全增强模式 (SEM) 的问题 [#37586](https://github.com/pingcap/tidb/issues/37586) @[CbcWestwolf](https://github.com/CbcWestwolf)
+    - 修复 `INFORMATION_SCHEMA.VARIABLES_INFO` 不遵循安全增强模式 (SEM) 的问题 [#37586](https://github.com/pingcap/tidb/issues/37586) @[CbcWestwolf](https://github.com/CbcWestwolf)
     - 修复带 UNION 算子的查询中转换字符串出错的问题 [#31678](https://github.com/pingcap/tidb/issues/31678) @[cbcwestwolf](https://github.com/cbcwestwolf)
     - 修复在 TiFlash 中为分区表开启动态模式时结果出错的问题 [#37254](https://github.com/pingcap/tidb/issues/37254) @[wshwsh12](https://github.com/wshwsh12)
     - 修复 TiDB 中二进制字符串和 JSON 之间的转换和对比行为与 MySQL 不兼容的问题 [#31918](https://github.com/pingcap/tidb/issues/31918) [#25053](https://github.com/pingcap/tidb/issues/25053) @[YangKeao](https://github.com/YangKeao)
-    - 修复 TiDB 中的 `json_objectagg` 和 `json_arrayagg` 在二进制值上与 MySQL 不兼容的问题 [#25053](https://github.com/pingcap/tidb/issues/25053) @[YangKeao](https://github.com/YangKeao)
+    - 修复 TiDB 中的 `JSON_OBJECTAGG` 和 `JSON_ARRAYAGG` 在二进制值上与 MySQL 不兼容的问题 [#25053](https://github.com/pingcap/tidb/issues/25053) @[YangKeao](https://github.com/YangKeao)
     - 修复比较 JSON opaque 值时造成崩溃的问题 [#37315](https://github.com/pingcap/tidb/issues/37315) @[YangKeao](https://github.com/YangKeao)
     - 修复 JSON 聚合函数不能使用单精度浮点数的问题 [#37287](https://github.com/pingcap/tidb/issues/37287) @[YangKeao](https://github.com/YangKeao)
     - 修复 `UNION` 运算符可能会非预期地返回空结果的问题 [#36903](https://github.com/pingcap/tidb/issues/36903) @[tiancaiamao](https://github.com/tiancaiamao)
@@ -419,7 +419,7 @@ TiDB 版本：6.3.0-DMR
 - @[AnnieoftheStars](https://github.com/AnnieoftheStars)
 - @[AntiTopQuark](https://github.com/AntiTopQuark)
 - @[blacktear23](https://github.com/blacktear23)
-- @[BurtonQin](https://github.com/BurtonQin)：首次贡献者
+- @[BurtonQin](https://github.com/BurtonQin)（首次贡献者）
 - @[crelax](https://github.com/crelax)
 - @[eltociear](https://github.com/eltociear)
 - @[fuzhe1989](https://github.com/fuzhe1989)
