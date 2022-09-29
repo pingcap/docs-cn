@@ -1554,7 +1554,7 @@ mysql> desc select count(distinct a) from test.t;
     select t.* from t, t1 where t.a=t1.aa;
     ```
 
-### `tidb_opt_join_reorder_threshold` <span class="version-mark">从 v6.3.0 版本开始引入</span>
+### `tidb_opt_join_reorder_threshold`
 
 - 作用域: SESSION | GLOBAL
 - 是否持久化到集群：是
