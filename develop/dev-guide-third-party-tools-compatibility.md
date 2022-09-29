@@ -61,9 +61,9 @@ TiDB 使用 [ADMIN CHECK [TABLE|INDEX]](/sql-statements/sql-statement-admin-chec
 
 转为使用 `ADMIN CHECK [TABLE|INDEX]`。
 
-## MySQL Connector/J 不兼容
+## MySQL JDBC 不兼容
 
-- 测试版本：8.0.29
+- 测试版本：MySQL Connector/J 8.0.29
 
 ### 默认排序规则不一致
 
@@ -126,7 +126,7 @@ TiDB 暂不支持 UpdatableResultSet，即请勿指定 `ResultSet.CONCUR_UPDATAB
 
 使用额外的 `UPDATE` 语句进行数据更新，可使用事务保证数据一致性。
 
-## MySQL Connector/J Bug
+## MySQL JDBC Bug
 
 ### `useLocalTransactionState` 和 `rewriteBatchedStatements` 同时开启将导致事务无法提交
 
