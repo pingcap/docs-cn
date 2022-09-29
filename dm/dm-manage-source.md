@@ -32,7 +32,7 @@ help operate-source
 ```
 
 ```
-`create`/`update`/`stop`/`show` upstream MySQL/MariaDB source.
+`create`/`stop`/`show` upstream MySQL/MariaDB source.
 
 Usage:
   dmctl operate-source <operate-type> [config-file ...] [--print-sample-config] [flags]
@@ -47,11 +47,9 @@ Global Flags:
 
 ### Flags description
 
-+ `create`: Creates one or more upstream database source(s). When creating multiple data sources fails, DM rolls back to the state where the command was not executed.
++ `create`: Creates one or more upstream database sources. When creating multiple data sources fails, DM rolls back to the state where the command was not executed.
 
-+ `update`: Updates an upstream database source.
-
-+ `stop`: Stops one or more upstream database source(s). When stopping multiple data sources fails, some data sources might be stopped.
++ `stop`: Stops one or more upstream database sources. When stopping multiple data sources fails, some data sources might be stopped.
 
 + `show`: Shows the added data source and the corresponding DM-worker.
 
