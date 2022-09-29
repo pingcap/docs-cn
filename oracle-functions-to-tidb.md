@@ -50,8 +50,17 @@ summary: 了解 Oracle 与 TiDB 函数和语法差异对照。
 
 ### 删除语句中为表加别名
 
-- Oracle：支持在删除语句中为表起别名。例如，`DELETE FROM test t WHERE t.xxx = xxx;`。
-- TiDB：不支持在删除语句中为表起别名。例如，`DELETE FROM test WHERE xxx = xxx;`。
+Oracle 支持在删除语句中为表起别名。例如：
+
+```sql
+DELETE FROM test t WHERE t.xxx = xxx
+```
+
+TiDB 不支持在删除语句中为表起别名。例如
+
+```sql
+DELETE FROM test WHERE xxx = xxx
+```
 
 ### 字符串语法
 
@@ -65,8 +74,17 @@ summary: 了解 Oracle 与 TiDB 函数和语法差异对照。
 
 ### `INSERT` 语句中读写同一张表
 
-- Oracle：支持 `INSERT` 语句中读写同一张表。例如，`INSERT INTO table1 VALUES (feild1,(SELECT feild2 FROM table1 WHERE...))`。
-- TiDB：不支持 `INSERT` 语句中读写同一张表。例如，`INSERT INTO table1 VALUES（feild1,(SELECT T.fields2 FROM table1 T WHERE...)`。
+Oracle 支持 `INSERT` 语句中读写同一张表。例如:
+
+```sql
+INSERT INTO table1 VALUES (feild1,(SELECT feild2 FROM table1 WHERE...))
+```
+
+TiDB 不支持 `INSERT` 语句中读写同一张表。例如：
+
+```sql
+INSERT INTO table1 VALUES（feild1,(SELECT T.fields2 FROM table1 T WHERE...)
+```
 
 ### 获取前 n 条数据
 
@@ -75,51 +93,102 @@ summary: 了解 Oracle 与 TiDB 函数和语法差异对照。
 
 ### `UPDATE` 语句多表更新
 
-- Oracle：多表更新时不需要列出具体的字段更新关系。例如，`UPDATE test1 SET(test1.name,test1.age) = (SELECT test2.name,test2.age FROM test2 WHERE test2.id=test1.id)`。
-- TiDB：多表更新时需要在 `SET` 时把具体的字段更新关系都列出来。例如，`UPDATE test1,test2 SET test1.name=test2.name,test1.age=test2.age WHERE test1.id=test2.id`。
+Oracle 多表更新时不需要列出具体的字段更新关系。例如：
+
+```sql
+UPDATE test1 SET(test1.name,test1.age) = (SELECT test2.name,test2.age FROM test2 WHERE test2.id=test1.id)
+```
+
+TiDB 多表更新时需要在 `SET` 时把具体的字段更新关系都列出来。例如：
+
+```sql
+UPDATE test1,test2 SET test1.name=test2.name,test1.age=test2.age WHERE test1.id=test2.id
+```
 
 ### 派生表别名
 
-- Oracle：多表查询时，派生表可以不起别名。例如，`SELECT * FROM (SELECT * FROM test)`。
-- TiDB：多表查询时，每一个派生出来的表都必须有一个自己的别名。例如，`SELECT * FROM (SELECT * FROM test) t`。
+Oracle 多表查询时，派生表可以不起别名。例如：
+
+```sql
+SELECT * FROM (SELECT * FROM test)
+```
+
+TiDB 多表查询时，每一个派生出来的表都必须有一个自己的别名。例如：
+
+```sql
+SELECT * FROM (SELECT * FROM test) t
+```
 
 ### 差集运算
 
-- Oracle：使用 `MINUS` 进行差集运算。例如，`SELECT * FROM t1 MINUS SELECT * FROM t2;`。
-- TiDB：不支持 `MINUS`，需要改写为 `EXCEPT`。例如，`SELECT * FROM t1 EXCEPT SELECT * FROM t2;`。
+Oracle 使用 `MINUS` 进行差集运算。例如：
+
+```sql
+SELECT * FROM t1 MINUS SELECT * FROM t2
+```
+
+TiDB 不支持 `MINUS`，需要改写为 `EXCEPT`。例如：
+
+```sql
+SELECT * FROM t1 EXCEPT SELECT * FROM t2
+```
 
 ### 空值取别名
 
-- Oracle：`NULL` 与 `''` 是等价的，为空值起别名时，不需要特殊转换。例如，`SELECT NULL AS ... FROM DUAL`。
-- TiDB：TiDB 中 `NULL` 与 `''` 含义不同，为空值起别名时，需要将 `NULL` 改写为 `''`。例如，`SELECT '' AS ... FROM DUAL`。
+Oracle 中`NULL` 与 `''` 是等价的，为空值起别名时，不需要特殊转换。例如：
+
+```sql
+SELECT NULL AS ... FROM DUAL
+```
+
+TiDB 中 `NULL` 与 `''` 含义不同，为空值起别名时，需要将 `NULL` 改写为 `''`。例如：
+
+```sql
+SELECT '' AS ... FROM DUAL
+```
 
 ### 注释语法
 
-- Oracle：`--注释`。
-- TiDB：`-- 注释`。需要注意的是 Oracle 的 `--` 后面不需要空格，TiDB 的 `--` 后面需要有一个空格。
+- Oracle：`--注释`。Oracle 的 `--` 后面不需要空格。
+- TiDB：`-- 注释`。TiDB 的 `--` 后面需要有一个空格。
 
 ### 分页查询
 
-- Oracle：分页查询时 `OFFSET m` 表示跳过 `m` 行数据，`FETCH NEXT n ROWS ONLY` 表示取 `n` 条数据。例如，`SELECT * FROM tables OFFSET 0 ROWS FETCH NEXT 2000 ROWS ONLY`。
-- TiDB：使用 `LIMIT n OFFSET m` 等价改写 `OFFSET m ROWS FETCH NEXT n ROWS ONLY`。例如，`SELECT * FROM tables LIMIT 2000 OFFSET 0`。
+Oracle 分页查询时 `OFFSET m` 表示跳过 `m` 行数据，`FETCH NEXT n ROWS ONLY` 表示取 `n` 条数据。例如：
+
+```sql
+SELECT * FROM tables OFFSET 0 ROWS FETCH NEXT 2000 ROWS ONLY
+```
+
+TiDB 使用 `LIMIT n OFFSET m` 等价改写 `OFFSET m ROWS FETCH NEXT n ROWS ONLY`。例如：
+
+```sql
+SELECT * FROM tables LIMIT 2000 OFFSET 0
+```
 
 ### `ORDER BY` 语句对 `NULL` 的排序规则
 
-- Oracle 中 `ORDER BY` 语句对 `NULL` 的排序规则：
+Oracle 中 `ORDER BY` 语句对 `NULL` 的排序规则：
 
-    - `ORDER BY COLUM ASC` 时，`NULL` 默认被放在最后。
-    - `ORDER BY COLUM DESC` 时，`NULL` 默认被放在最前。
-    - `ORDER BY COLUM [ASC|DESC] NULLS FIRST` 时，强制 `NULL` 放在最前，非 `NULL` 的值仍然按声明顺序 `ASC|DESC` 进行排序。
-    - `ORDER BY COLUM [ASC|DESC] NULLS LAST` 时，强制 `NULL` 放在最后，非 `NULL` 的值仍然按声明顺序 `ASC|DESC` 进行排序。
+- `ORDER BY COLUM ASC` 时，`NULL` 默认被放在最后。
 
-- TiDB 中 `ORDER BY` 语句对 `NULL` 的排序规则：
+- `ORDER BY COLUM DESC` 时，`NULL` 默认被放在最前。
 
-    - `ORDER BY COLUM ASC` 时，`NULL` 默认被放在最前。
-    - `ORDER BY COLUM DESC` 时，`NULL` 默认被放在最后。
+- `ORDER BY COLUM [ASC|DESC] NULLS FIRST` 时，强制 `NULL` 放在最前，非 `NULL` 的值仍然按声明顺序 `ASC|DESC` 进行排序。
 
-- Oracle 与 TiDB 中等价 `ORDER BY` 语句示例：
+- `ORDER BY COLUM [ASC|DESC] NULLS LAST` 时，强制 `NULL` 放在最后，非 `NULL` 的值仍然按声明顺序 `ASC|DESC` 进行排序。
 
-    - Oracle 中 `SELECT * FROM t1 ORDER BY name NULLS FIRST;` 等价于 TiDB 中 `SELECT * FROM t1 ORDER BY NAME ;`
-    - Oracle 中 `SELECT * FROM t1 ORDER BY name DESC NULLS LAST;` 等价于 TiDB 中 `SELECT * FROM t1 ORDER BY NAME DESC;`
-    - Oracle 中 `SELECT * FROM t1 ORDER BY NAME DESC NULLS FIRST;` 等价于 TiDB 中 `SELECT * FROM t1 ORDER BY ISNULL(name) DESC, name DESC;`
-    - Oracle 中 `SELECT * FROM t1 ORDER BY name ASC NULLS LAST;` 等价于 TiDB 中 `SELECT * FROM t1 ORDER BY ISNULL(name), name;`
+TiDB 中 `ORDER BY` 语句对 `NULL` 的排序规则：
+
+- `ORDER BY COLUM ASC` 时，`NULL` 默认被放在最前。
+
+- `ORDER BY COLUM DESC` 时，`NULL` 默认被放在最后。
+
+Oracle 与 TiDB 中等价 `ORDER BY` 语句示例：
+
+| Oracle 中的 `ORDER BY`  | TiDB 中的 `ORDER BY`|
+| :------------------- | :----------------- |
+| `SELECT * FROM t1 ORDER BY name NULLS FIRST;`      | `SELECT * FROM t1 ORDER BY NAME ;`        |
+| `SELECT * FROM t1 ORDER BY name DESC NULLS LAST;`  | `SELECT * FROM t1 ORDER BY NAME DESC;`    |
+| `SELECT * FROM t1 ORDER BY NAME DESC NULLS FIRST;` |  `SELECT * FROM t1 ORDER BY ISNULL(name) DESC, name DESC;` |
+| `SELECT * FROM t1 ORDER BY name ASC NULLS LAST;`   | `SELECT * FROM t1 ORDER BY ISNULL(name), name;`            |
