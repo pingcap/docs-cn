@@ -4,7 +4,7 @@ title: TiDB 6.3.0 Release Notes
 
 # TiDB 6.3.0 Release Notes
 
-发版日期：2022 年 x 月 xx 日
+发版日期：2022 年 9 月 30 日
 
 TiDB 版本：6.3.0-DMR
 
@@ -199,15 +199,22 @@ TiDB 版本：6.3.0-DMR
 | 变量名 | 修改类型 | 描述 |
 | ------ | ------ | ------ |
 | [`default_authentication_plugin`](/system-variables.md#default_authentication_plugin) | 修改 | 扩展可选值范围：增加 `tidb_sm3_password`，设置为 `tidb_sm3_password` 时，用户密码验证的加密算法为国密算法 SM3。 |
+| [`sql_require_primary_key`](/system-variables.md#sql_require_primary_key-从-v630-版本开始引入)   |  新增  |  用于控制表是否必须有主键。启用该变量后，如果在没有主键的情况下创建或修改表，将返回错误。 |
 | [`tidb_adaptive_closest_read_threshold`](/system-variables.md#tidb_adaptive_closest_read_threshold-从-v630-版本开始引入) | 新增 | 用于控制当 [`tidb_replica_read`](/system-variables.md#tidb_replica_read-从-v40-版本开始引入) 设置为 `closest-adaptive` 时，优先将读请求发送至 TiDB server 所在区域副本的阈值。 |
 | [`tidb_constraint_check_in_place_pessimistic`](/system-variables.md#tidb_constraint_check_in_place_pessimistic-从-v630-版本开始引入) | 新增 |  用于控制悲观事务中唯一约束检查的时间点。 |
 | [`tidb_ddl_disk_quota`](/system-variables.md#tidb_ddl_disk_quota-从-v630-版本开始引入) | 新增 | 用于设置创建索引的回填过程中本地存储空间的使用限制，仅在 [`tidb_ddl_enable_fast_reorg`](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 开启的情况下生效。 |
 | [`tidb_ddl_enable_fast_reorg`](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) | 新增 | 用于控制是否开启添加索引加速功能，来提升创建索引回填过程的速度。 |
+| [`tidb_ddl_flashback_concurrency`](/system-variables.md#tidb_ddl_flashback_concurrency-从-v630-版本开始引入) | 新增 | 用于控制 `flashback cluster` 的并发数。当前版本中该变量控制的功能尚未完全生效，请保留默认值。  |
 | [`tidb_enable_clustered_index`](/system-variables.md#tidb_enable_clustered_index-从-v50-版本开始引入) | 修改 | 默认值从 `INT_ONLY` 修改为 `ON`。 |
 | [`tidb_enable_exchange_partition`](/system-variables.md#tidb_enable_exchange_partition) | 废弃 | 用于设置是否启用 [`exchange partitions with tables`](/partitioned-table.md#分区管理) 特性。自 v6.3.0 开始，其取值将固定为默认值 `ON`，即默认开启 `exchange partitions with tables`。  |
+| [`tidb_enable_foreign_key`](/system-variables.md#tidb_enable_foreign_key-从-v630-版本开始引入) | 新增 |  用于控制是否开启 `FOREIGN KEY` 特性。当前版本中该变量控制的功能尚未完全生效，请保留默认值。 |
+| [`tidb_enable_general_plan_cache`](/system-variables.md#tidb_enable_general_plan_cache-从-v630-版本开始引入) | 新增 |  用于控制是否开启 General Plan Cache。当前版本中该变量控制的功能尚未完全生效，请保留默认值。 |
+| [`tidb_general_plan_cache_size`](/system-variables.md#tidb_general_plan_cache_size-从-v630-版本开始引入) | 新增 | 用于控制 General Plan Cache 最多能够缓存的计划数量。当前版本中该变量控制的功能尚未完全生效，请保留默认值。 |
 | [`tidb_enable_metadata_lock`](/system-variables.md#tidb_enable_metadata_lock-从-v630-版本开始引入)|  新增 | 用于设置是否开启[元数据锁](/metadata-lock.md)特性。 |
+| [`tidb_enable_null_aware_anti_join`](/system-variables.md#tidb_enable_null_aware_anti_join-从-v630-版本开始引入) | 新增 |  用于控制 TiDB 对特殊集合算子 `NOT IN` 和 `!= ALL` 引导的子查询产生的 ANTI JOIN 是否采用 Null Aware Hash Join 的执行方式。|
 | [`tidb_enable_pseudo_for_outdated_stats`](/system-variables.md#tidb_enable_pseudo_for_outdated_stats-从-v530-版本开始引入) | 修改 | 用于控制优化器在统计信息过期时的行为。 默认值由 `ON` 改为 `OFF`，即使统计信息过期，优化器也仍会使用该表上的统计信息。  |
 | [`tidb_enable_rate_limit_action`](/system-variables.md#tidb_enable_rate_limit_action) | 修改 | 用于控制是否为读数据的算子开启动态内存控制功能。打开该变量可能会导致内存不受 [tidb_mem_quota_query 控制](/system-variables.md#tidb_mem_quota_query) 控制，而加剧 OOM 风险，故将默认值由 `ON` 调整为 `OFF`。 |
+| [`tidb_enable_tiflash_read_for_write_stmt`](/system-variables.md#tidb_enable_tiflash_read_for_write_stmt-从-v630-版本开始引入) | 新增 |  用于控制写 SQL 中的读取是否会下推到 TiFlash。当前版本中该变量控制的功能尚未完全生效，请保留默认值。 |
 | [`tidb_enable_unsafe_substitute`](/system-variables.md#tidb_enable_unsafe_substitute-从-v630-版本开始引入) | 新增 | 用于控制是否对生成列中表达式替换使用不安全的替换方式。 |
 | [`tidb_last_plan_replayer_token`](/system-variables.md#tidb_last_plan_replayer_token-从-v630-版本开始引入) | 新增 | 只读变量，用于获取当前会话中最后一个 `PLAN REPLAYER DUMP` 的结果。 |
 | [`tidb_opt_force_inline_cte`](/system-variables.md#tidb_opt_force_inline_cte-从-v630-版本开始引入) | 新增 | 用于控制是否强制开启 inline CTE。默认值为 `OFF`，即默认不强制开启 inline CTE。 |
@@ -216,13 +223,6 @@ TiDB 版本：6.3.0-DMR
 | [`tidb_rc_read_check_ts`](/system-variables.md#tidb_rc_read_check_ts-从-v600-版本开始引入) | 修改 | 用于优化读语句时间戳的获取，适用于悲观事务 RC 隔离级别下读写冲突较少的场景。由于这个行为只针对特定业务负载，而对其他类型的负载可能造成性能回退，自 v6.3.0 起，该变量的作用域由 GLOBAL 或 SESSION 修改为 INSTANCE 级别，允许只针对部分 TiDB 实例打开。 |
 | [`tidb_rc_write_check_ts`](/system-variables.md#tidb_rc_write_check_ts-从-v630-版本开始引入)  | 新增 | 用于优化时间戳的获取，适用于悲观事务 READ-COMMITTED 隔离级别下点写冲突较少的场景，开启此变量可以避免点写语句获取全局 timestamp 带来的延迟和开销。 |
 | [`tiflash_fastscan`](/system-variables.md#tiflash_fastscan-从-v630-版本开始引入) | 新增 | 用于控制是否启用 FastScan 功能。如果开启 FastScan 功能（设置为 `ON` 时），TiFlash 可以提供更高效的查询性能，但不保证查询结果的精度和数据一致性。 |
-| [`sql_require_primary_key`](/system-variables.md#sql_require_primary_key-从-v630-版本开始引入)   |  新增  |  用于控制表是否必须有主键。启用该变量后，如果在没有主键的情况下创建或修改表，将返回错误。 |
-| [`tidb_ddl_flashback_concurrency`](/system-variables.md#tidb_ddl_flashback_concurrency-从-v630-版本开始引入) | 新增 | 用于控制 `flashback cluster` 的并发数。当前版本中该变量控制的功能尚未完全生效，请保留默认值。  |
-| [`tidb_enable_foreign_key`](/system-variables.md#tidb_enable_foreign_key-从-v630-版本开始引入) | 新增 |  用于控制是否开启 `FOREIGN KEY` 特性。当前版本中该变量控制的功能尚未完全生效，请保留默认值。 |
-| [`tidb_enable_general_plan_cache`](/system-variables.md#tidb_enable_general_plan_cache-从-v630-版本开始引入) | 新增 |  用于控制是否开启 General Plan Cache。当前版本中该变量控制的功能尚未完全生效，请保留默认值。 |
-| [`tidb_enable_null_aware_anti_join`](/system-variables.md#tidb_enable_null_aware_anti_join-从-v630-版本开始引入) | 新增 |  用于控制 TiDB 对特殊集合算子 `NOT IN` 和 `!= ALL` 引导的子查询产生的 ANTI JOIN 是否采用 Null Aware Hash Join 的执行方式。|
-| [`tidb_enable_tiflash_read_for_write_stmt`](/system-variables.md#tidb_enable_tiflash_read_for_write_stmt-从-v630-版本开始引入) | 新增 |  用于控制写 SQL 中的读取是否会下推到 TiFlash。当前版本中该变量控制的功能尚未完全生效，请保留默认值。 |
-| [`tidb_general_plan_cache_size`](/system-variables.md#tidb_general_plan_cache_size-从-v630-版本开始引入) | 新增 | 用于控制 General Plan Cache 最多能够缓存的计划数量。当前版本中该变量控制的功能尚未完全生效，请保留默认值。 |
 
 ### 配置文件参数
 
@@ -258,27 +258,19 @@ TiDB 版本：6.3.0-DMR
 
 + TiDB
 
-    - sql-infra
-
-        - 改进表名检查方式，由大小写敏感变为大小写不敏感 [#34610](https://github.com/pingcap/tidb/issues/34610) @[tiancaiamao](https://github.com/tiancaiamao)
-        - 为 `init_connect`  值增加解析器检查流程，提升了与 MySQL 的兼容性 [#35324](https://github.com/pingcap/tidb/issues/35324) @[CbcWestwolf](https://github.com/CbcWestwolf)
-        - 改进新连接产生时的警告日志 [#34964](https://github.com/pingcap/tidb/issues/34964) @[xiongjiwei](https://github.com/xiongjiwei)
-        - 优化用于查询 DDL 历史任务的 HTTP API，提供对 `start_job_id` 参数的支持 [#35838](https://github.com/pingcap/tidb/issues/35838) @[tiancaiamao](https://github.com/tiancaiamao)
-
-    - execution
-
-        - 在 JSON 路径的语法有误时报错 [#22525](https://github.com/pingcap/tidb/issues/22525) [#34959](https://github.com/pingcap/tidb/issues/34959) @[xiongjiwei](https://github.com/xiongjiwei)
-        - 修复一个伪共享问题，提升 Join 操作的性能 [#37641](https://github.com/pingcap/tidb/issues/37641) @[gengliqi](https://github.com/gengliqi)
-
-    - planner
-
-        - `PLAN REPLAYER` 命令支持一次导出多条 SQL 语句的执行计划信息，提升了问题排查效率 [#37798](https://github.com/pingcap/tidb/issues/37798) @[Yisaer](https://github.com/Yisaer)
+    - 改进表名检查方式，由大小写敏感变为大小写不敏感 [#34610](https://github.com/pingcap/tidb/issues/34610) @[tiancaiamao](https://github.com/tiancaiamao)
+    - 为 `init_connect`  值增加解析器检查流程，提升了与 MySQL 的兼容性 [#35324](https://github.com/pingcap/tidb/issues/35324) @[CbcWestwolf](https://github.com/CbcWestwolf)
+    - 改进新连接产生时的警告日志 [#34964](https://github.com/pingcap/tidb/issues/34964) @[xiongjiwei](https://github.com/xiongjiwei)
+    - 优化用于查询 DDL 历史任务的 HTTP API，提供对 `start_job_id` 参数的支持 [#35838](https://github.com/pingcap/tidb/issues/35838) @[tiancaiamao](https://github.com/tiancaiamao)
+    - 在 JSON 路径的语法有误时报错 [#22525](https://github.com/pingcap/tidb/issues/22525) [#34959](https://github.com/pingcap/tidb/issues/34959) @[xiongjiwei](https://github.com/xiongjiwei)
+    - 修复一个伪共享问题，提升 Join 操作的性能 [#37641](https://github.com/pingcap/tidb/issues/37641) @[gengliqi](https://github.com/gengliqi)
+    - `PLAN REPLAYER` 命令支持一次导出多条 SQL 语句的执行计划信息，提升了问题排查效率 [#37798](https://github.com/pingcap/tidb/issues/37798) @[Yisaer](https://github.com/Yisaer)
 
 + TiKV
 
     - 支持配置 `unreachable_backoff` 避免 Raftstore 发现某个 Peer 无法连接时广播过多消息 [#13054](https://github.com/tikv/tikv/issues/13054) @[5kbpers](https://github.com/5kbpers)
     - 提升 TSO 服务不可用的容忍度 [#12794](https://github.com/tikv/tikv/issues/12794) @[pingyu](https://github.com/pingyu)
-    - (dup) 支持动态调整 RocksDB 进行 subcompaction 的并发个数 (`rocksdb.max-sub-compactions`) [#13145](https://github.com/tikv/tikv/issues/13145) @[ethercflow](https://github.com/ethercflow)
+    - 支持动态调整 RocksDB 进行 subcompaction 的并发个数 (`rocksdb.max-sub-compactions`) [#13145](https://github.com/tikv/tikv/issues/13145) @[ethercflow](https://github.com/ethercflow)
     - 优化合并空 Region 的性能 [#12421](https://github.com/tikv/tikv/issues/12421) @[tabokie](https://github.com/tabokie)
     - 支持更多正则表达式函数 [#13483](https://github.com/tikv/tikv/issues/13483) @[gengliqi](https://github.com/gengliqi)
     - 支持根据 CPU 使用情况自动调整 UnifyReadPool 线程池的大小 [#13313](https://github.com/tikv/tikv/issues/13313) @[glorv](https://github.com/glorv)
@@ -290,19 +282,14 @@ TiDB 版本：6.3.0-DMR
 
 + TiFlash
 
-    - 计算
-
-        - 支持下推 `elt` 到 TiFlash [#5104](https://github.com/pingcap/tiflash/issues/5104) @[Willendless](https://github.com/Willendless)
-        - 支持下推 `leftShift` 到 TiFlash [#5099](https://github.com/pingcap/tiflash/issues/5099) @[AnnieoftheStars](https://github.com/AnnieoftheStars)
-        - 支持下推 `castTimeAsDuration` 到 TiFlash [#5306](https://github.com/pingcap/tiflash/issues/5306) @[AntiTopQuark](https://github.com/AntiTopQuark)
-        - 支持下推 `HexIntArg/HexStrArg` 到 TiFlash [#5107](https://github.com/pingcap/tiflash/issues/5107) @[YangKeao](https://github.com/YangKeao)
-        - 重构改进 TiFlash 的执行流解释器，支持新的解释器 Planner [#4739](https://github.com/pingcap/tiflash/issues/4739) @[SeaRise](https://github.com/SeaRise)
-        - 改进了 TiFlash memory tracker 的准确度 [#5609](https://github.com/pingcap/tiflash/issues/5609) @[bestwoody](https://github.com/bestwoody)
-        - 提升了 UTF8_BIN/ASCII_BIN/LATIN1_BIN/UTF8MB4_BIN collation 的列相关运算的速度 [#5294](https://github.com/pingcap/tiflash/issues/5294) @[solotzg](https://github.com/solotzg)
-
-    - 存储
-
-        - 在后台计算 ReadLimiter 的 I/O 吞吐量 [#5401](https://github.com/pingcap/tiflash/issues/5401), [#5091](https://github.com/pingcap/tiflash/issues/5091) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
+    - 支持下推 `elt` 到 TiFlash [#5104](https://github.com/pingcap/tiflash/issues/5104) @[Willendless](https://github.com/Willendless)
+    - 支持下推 `leftShift` 到 TiFlash [#5099](https://github.com/pingcap/tiflash/issues/5099) @[AnnieoftheStars](https://github.com/AnnieoftheStars)
+    - 支持下推 `castTimeAsDuration` 到 TiFlash [#5306](https://github.com/pingcap/tiflash/issues/5306) @[AntiTopQuark](https://github.com/AntiTopQuark)
+    - 支持下推 `HexIntArg/HexStrArg` 到 TiFlash [#5107](https://github.com/pingcap/tiflash/issues/5107) @[YangKeao](https://github.com/YangKeao)
+    - 重构改进 TiFlash 的执行流解释器，支持新的解释器 Planner [#4739](https://github.com/pingcap/tiflash/issues/4739) @[SeaRise](https://github.com/SeaRise)
+    - 改进了 TiFlash memory tracker 的准确度 [#5609](https://github.com/pingcap/tiflash/issues/5609) @[bestwoody](https://github.com/bestwoody)
+    - 提升了 UTF8_BIN/ASCII_BIN/LATIN1_BIN/UTF8MB4_BIN collation 的列相关运算的速度 [#5294](https://github.com/pingcap/tiflash/issues/5294) @[solotzg](https://github.com/solotzg)
+    - 在后台计算 ReadLimiter 的 I/O 吞吐量 [#5401](https://github.com/pingcap/tiflash/issues/5401), [#5091](https://github.com/pingcap/tiflash/issues/5091) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
 
 + Tools
 
@@ -313,13 +300,13 @@ TiDB 版本：6.3.0-DMR
 
     + TiDB Binlog
 
-        - (dup) 修复 compressor 设为 `gzip` 时 Drainer 无法正确发送请求至 Pump 的问题 [#1152](https://github.com/pingcap/tidb-binlog/issues/1152) @[lichunzhu](https://github.com/lichunzhu)
+        - 修复 compressor 设为 `gzip` 时 Drainer 无法正确发送请求至 Pump 的问题 [#1152](https://github.com/pingcap/tidb-binlog/issues/1152) @[lichunzhu](https://github.com/lichunzhu)
 
     + TiCDC
 
         - 提升上游为 MySQL 8.0 时的兼容性 [#6506](https://github.com/pingcap/tiflow/issues/6506) @[lance6716](https://github.com/lance6716)
         - 支持在 MySL sink 出错时将 DML 语句的 `start ts` 输出到日志文件 [#6460](https://github.com/pingcap/tiflow/issues/6460) @[overvenus](https://github.com/overvenus)
-        - API `api/v1/health` 将反应 TiCDC 集群的健康状态 [#4757](https://github.com/pingcap/tiflow/issues/4757) @[overvenus](https://github.com/overvenus)
+        - 优化 API `api/v1/health`，使其返回的 TiCDC 集群健康状态更准确 [#4757](https://github.com/pingcap/tiflow/issues/4757) @[overvenus](https://github.com/overvenus)
         - 采用异步的模式实现 MQ sink 和 MySQL sink，提升 sink 的吞吐能力 [#5928](https://github.com/pingcap/tiflow/issues/5928) @[hicqu](https://github.com/hicqu) @[hi-rustin](https://github.com/hi-rustin)
         - 删除已经废弃了的 pulsar sink [#7087](https://github.com/pingcap/tiflow/issues/7087) @[hi-rustin](https://github.com/hi-rustin)
         - 忽略掉与 changefeed 不相关的 DDL 语句以提升同步性能 [#6447](https://github.com/pingcap/tiflow/issues/6447) @[asddongmen](https://github.com/asddongmen)
@@ -337,59 +324,45 @@ TiDB 版本：6.3.0-DMR
 
 + TiDB
 
-    - sql-infra
-
-        - 修复权限检查跳过 `PREAPRE` 语句的问题 [#35784](https://github.com/pingcap/tidb/issues/35784) @[lcwangchao](https://github.com/lcwangchao)
-        - 修复系统变量 `tidb_enable_noop_variable` 能够设置为 `WARN` 的问题 [#36647](https://github.com/pingcap/tidb/issues/36647) @[lcwangchao](https://github.com/lcwangchao)
-        - 修复存在表达式索引定义时，`INFORMAITON_SCHEMA`.`COLUMNS` 表的 `ORDINAL_POSITION` 列可能不正确的问题 [#31200](https://github.com/pingcap/tidb/issues/31200) @[bb7133](https://github.com/bb7133)
-        - 修复时间戳大于 `MAXINT32` 时 TiDB 不报错的问题  [#31585](https://github.com/pingcap/tidb/issues/31585) @[bb7133](https://github.com/bb7133)
-        - 修复使用企业版插件时无法启动 TiDB server 的问题 [#37319](https://github.com/pingcap/tidb/issues/37319) @[xhebox](https://github.com/xhebox)
-        - 修复 `SHOW CREATE PLACEMENT POLICY` 输出结果不正确的问题 [#37526](https://github.com/pingcap/tidb/issues/37526) @[xhebox](https://github.com/xhebox)
-        - 修复临时表能用于交换分区的问题 [#37201](https://github.com/pingcap/tidb/issues/37201) @[lcwangchao](https://github.com/lcwangchao)
-        - 修复查询 `INFORMATION_SCHEMA.TIKV_REGION_STATUS` 返回不正确结果的问题 @[zimulala](https://github.com/zimulala)
-        - 修复使用 `EXPLAIN` 查询视图时不进行权限检查的问题 [#34326](https://github.com/pingcap/tidb/issues/34326) @[hawkingrei](https://github.com/hawkingrei)
-        - 修复 JSON `null` 不能被更新为 `NULL` 的问题 [#37852](https://github.com/pingcap/tidb/issues/37852) @[YangKeao](https://github.com/YangKeao)
-        - 修复 DDL 任务的 `row_count` 不准确的问题 [#25968](https://github.com/pingcap/tidb/issues/25968) @[Defined2014](https://github.com/Defined2014)
-        - 修复 `FLASHBACK TABLE` 运行不正常的问题 [#37386](https://github.com/pingcap/tidb/issues/37386) @[tiancaiamao](https://github.com/tiancaiamao)
-        - 修复无法处理典型 MySQL 协议中 `prepared` 语句 flag 的问题  [#36731](https://github.com/pingcap/tidb/issues/36731) @[dveeden](https://github.com/dveeden)
-        - (dup) 修复了在极端情况下，启动 TiDB 可能进入错误状态的问题 [#36791](https://github.com/pingcap/tidb/issues/36791) @[xhebox](https://github.com/xhebox)
-        - 修复 `information_schema.variables_info` 不遵循安全增强模式 (SEM) 的问题 [#37586](https://github.com/pingcap/tidb/issues/37586) @[CbcWestwolf](https://github.com/CbcWestwolf)
-        - 修复带 UNION 算子的查询中转换字符串出错的问题 [#31678](https://github.com/pingcap/tidb/issues/31678) @[cbcwestwolf](https://github.com/cbcwestwolf)
-
-    - execution
-
-        - 修复在 TiFlash 中为分区表开启动态模式时结果出错的问题 [#37254](https://github.com/pingcap/tidb/issues/37254) @[wshwsh12](https://github.com/wshwsh12)
-        - 修复 TiDB 中二进制字符串和 JSON 之间的转换和对比行为与 MySQL 不兼容的问题 [#31918](https://github.com/pingcap/tidb/issues/31918) [#25053](https://github.com/pingcap/tidb/issues/25053) @[YangKeao](https://github.com/YangKeao)
-        - 修复 TiDB 中的 `json_objectagg` 和 `json_arrayagg` 在二进制值上与 MySQL 不兼容的问题 [#25053](https://github.com/pingcap/tidb/issues/25053) @[YangKeao](https://github.com/YangKeao)
-        - 修复比较 JSON opaque 值时造成崩溃的问题 [#37315](https://github.com/pingcap/tidb/issues/37315) @[YangKeao](https://github.com/YangKeao)
-        - 修复 JSON 聚合函数不能使用单精度浮点数的问题 [#37287](https://github.com/pingcap/tidb/issues/37287) @[YangKeao](https://github.com/YangKeao)
-        - 修复 `UNION` 运算符可能会非预期地返回空结果的问题 [#36903](https://github.com/pingcap/tidb/issues/36903) @[tiancaiamao](https://github.com/tiancaiamao)
-        - 修复 `castRealAsTime` 表达式的结果和 MySQL 不兼容的问题 [#37462](https://github.com/pingcap/tidb/issues/37462) @[mengxin9014](https://github.com/mengxin9014)
-
-    - transaction
-
-        - 修复悲观 DML 操作锁定非唯一索引键的问题 [#36235](https://github.com/pingcap/tidb/issues/36235) @[ekexium](https://github.com/ekexium)
-        - 修复与自动提交 (auto-commit) 模式更改相关的事务提交行为 [#36581](https://github.com/pingcap/tidb/issues/36581) @[cfzjywxk](https://github.com/cfzjywxk)
-        - 修复了带 DML 算子的 `EXPLAIN ANALYZE` 语句可能在事务提交完成前返回结果的问题 [#37373](https://github.com/pingcap/tidb/issues/37373) @[cfzjywxk](https://github.com/cfzjywxk)
-
-    - planner
-
-        - 修复了在某些情况下 UPDATE 语句错误地消除了 projection 导致 `Can't find column` 报错的问题 [#37568](https://github.com/pingcap/tidb/issues/37568) @[AilinKid](https://github.com/AilinKid)
-        - (dup) 修复了执行 Join Reorder 操作时会错误地下推 Outer Join 条件的问题 [#37238](https://github.com/pingcap/tidb/issues/37238) @[AilinKid](https://github.com/AilinKid)
-        - 修复了 `IN` 和 `NOT IN` 子查询在某些 pattern 下会报 `Can't find column` 的问题 [#37032](https://github.com/pingcap/tidb/issues/37032) @[AilinKid](https://github.com/AilinKid)
-        - 修复了 `UPDATE` 语句中带公共表表达式 (CTE) 的情况下会报 `Can't find column` 的问题 [#35758](https://github.com/pingcap/tidb/issues/35758) @[AilinKid](https://github.com/AilinKid)
-
-    - diagnosis
-
-        - 修复错误的 `PromQL` [#35856](https://github.com/pingcap/tidb/issues/35856) @[Defined2014](https://github.com/Defined2014)
+    - 修复权限检查跳过 `PREAPRE` 语句的问题 [#35784](https://github.com/pingcap/tidb/issues/35784) @[lcwangchao](https://github.com/lcwangchao)
+    - 修复系统变量 `tidb_enable_noop_variable` 能够设置为 `WARN` 的问题 [#36647](https://github.com/pingcap/tidb/issues/36647) @[lcwangchao](https://github.com/lcwangchao)
+    - 修复存在表达式索引定义时，`INFORMAITON_SCHEMA`.`COLUMNS` 表的 `ORDINAL_POSITION` 列可能不正确的问题 [#31200](https://github.com/pingcap/tidb/issues/31200) @[bb7133](https://github.com/bb7133)
+    - 修复时间戳大于 `MAXINT32` 时 TiDB 不报错的问题  [#31585](https://github.com/pingcap/tidb/issues/31585) @[bb7133](https://github.com/bb7133)
+    - 修复使用企业版插件时无法启动 TiDB server 的问题 [#37319](https://github.com/pingcap/tidb/issues/37319) @[xhebox](https://github.com/xhebox)
+    - 修复 `SHOW CREATE PLACEMENT POLICY` 输出结果不正确的问题 [#37526](https://github.com/pingcap/tidb/issues/37526) @[xhebox](https://github.com/xhebox)
+    - 修复临时表能用于交换分区的问题 [#37201](https://github.com/pingcap/tidb/issues/37201) @[lcwangchao](https://github.com/lcwangchao)
+    - 修复查询 `INFORMATION_SCHEMA.TIKV_REGION_STATUS` 返回不正确结果的问题 @[zimulala](https://github.com/zimulala)
+    - 修复使用 `EXPLAIN` 查询视图时不进行权限检查的问题 [#34326](https://github.com/pingcap/tidb/issues/34326) @[hawkingrei](https://github.com/hawkingrei)
+    - 修复 JSON `null` 不能被更新为 `NULL` 的问题 [#37852](https://github.com/pingcap/tidb/issues/37852) @[YangKeao](https://github.com/YangKeao)
+    - 修复 DDL 任务的 `row_count` 不准确的问题 [#25968](https://github.com/pingcap/tidb/issues/25968) @[Defined2014](https://github.com/Defined2014)
+    - 修复 `FLASHBACK TABLE` 运行不正常的问题 [#37386](https://github.com/pingcap/tidb/issues/37386) @[tiancaiamao](https://github.com/tiancaiamao)
+    - 修复无法处理典型 MySQL 协议中 `prepared` 语句 flag 的问题  [#36731](https://github.com/pingcap/tidb/issues/36731) @[dveeden](https://github.com/dveeden)
+    - 修复了在极端情况下，启动 TiDB 可能进入错误状态的问题 [#36791](https://github.com/pingcap/tidb/issues/36791) @[xhebox](https://github.com/xhebox)
+    - 修复 `information_schema.variables_info` 不遵循安全增强模式 (SEM) 的问题 [#37586](https://github.com/pingcap/tidb/issues/37586) @[CbcWestwolf](https://github.com/CbcWestwolf)
+    - 修复带 UNION 算子的查询中转换字符串出错的问题 [#31678](https://github.com/pingcap/tidb/issues/31678) @[cbcwestwolf](https://github.com/cbcwestwolf)
+    - 修复在 TiFlash 中为分区表开启动态模式时结果出错的问题 [#37254](https://github.com/pingcap/tidb/issues/37254) @[wshwsh12](https://github.com/wshwsh12)
+    - 修复 TiDB 中二进制字符串和 JSON 之间的转换和对比行为与 MySQL 不兼容的问题 [#31918](https://github.com/pingcap/tidb/issues/31918) [#25053](https://github.com/pingcap/tidb/issues/25053) @[YangKeao](https://github.com/YangKeao)
+    - 修复 TiDB 中的 `json_objectagg` 和 `json_arrayagg` 在二进制值上与 MySQL 不兼容的问题 [#25053](https://github.com/pingcap/tidb/issues/25053) @[YangKeao](https://github.com/YangKeao)
+    - 修复比较 JSON opaque 值时造成崩溃的问题 [#37315](https://github.com/pingcap/tidb/issues/37315) @[YangKeao](https://github.com/YangKeao)
+    - 修复 JSON 聚合函数不能使用单精度浮点数的问题 [#37287](https://github.com/pingcap/tidb/issues/37287) @[YangKeao](https://github.com/YangKeao)
+    - 修复 `UNION` 运算符可能会非预期地返回空结果的问题 [#36903](https://github.com/pingcap/tidb/issues/36903) @[tiancaiamao](https://github.com/tiancaiamao)
+    - 修复 `castRealAsTime` 表达式的结果和 MySQL 不兼容的问题 [#37462](https://github.com/pingcap/tidb/issues/37462) @[mengxin9014](https://github.com/mengxin9014)
+    - 修复悲观 DML 操作锁定非唯一索引键的问题 [#36235](https://github.com/pingcap/tidb/issues/36235) @[ekexium](https://github.com/ekexium)
+    - 修复与自动提交 (auto-commit) 模式更改相关的事务提交行为 [#36581](https://github.com/pingcap/tidb/issues/36581) @[cfzjywxk](https://github.com/cfzjywxk)
+    - 修复了带 DML 算子的 `EXPLAIN ANALYZE` 语句可能在事务提交完成前返回结果的问题 [#37373](https://github.com/pingcap/tidb/issues/37373) @[cfzjywxk](https://github.com/cfzjywxk)
+    - 修复了在某些情况下 UPDATE 语句错误地消除了 projection 导致 `Can't find column` 报错的问题 [#37568](https://github.com/pingcap/tidb/issues/37568) @[AilinKid](https://github.com/AilinKid)
+    - 修复了执行 Join Reorder 操作时会错误地下推 Outer Join 条件的问题 [#37238](https://github.com/pingcap/tidb/issues/37238) @[AilinKid](https://github.com/AilinKid)
+    - 修复了 `IN` 和 `NOT IN` 子查询在某些 pattern 下会报 `Can't find column` 的问题 [#37032](https://github.com/pingcap/tidb/issues/37032) @[AilinKid](https://github.com/AilinKid)
+    - 修复了 `UPDATE` 语句中带公共表表达式 (CTE) 的情况下会报 `Can't find column` 的问题 [#35758](https://github.com/pingcap/tidb/issues/35758) @[AilinKid](https://github.com/AilinKid)
+    - 修复错误的 `PromQL` [#35856](https://github.com/pingcap/tidb/issues/35856) @[Defined2014](https://github.com/Defined2014)
 
 + TiKV
 
-    - (dup) 修复 PD Region heartbeat 连接异常中断后未重新连接的问题 [#12934](https://github.com/tikv/tikv/issues/12934) @[bufferflies](https://github.com/bufferflies)
-    - (dup) 修复 Raftstore 线程繁忙时，可能会出现 Region 重叠的问题 [#13160](https://github.com/tikv/tikv/issues/13160) @[5kbpers](https://github.com/5kbpers)
-    - (dup) 修复 PD 客户端可能会出现死锁的问题 [#13191](https://github.com/tikv/tikv/issues/13191) @[bufferflies](https://github.com/bufferflies) [#12933](https://github.com/tikv/tikv/issues/12933) @[BurtonQin](https://github.com/BurtonQin)
+    - 修复 PD Region heartbeat 连接异常中断后未重新连接的问题 [#12934](https://github.com/tikv/tikv/issues/12934) @[bufferflies](https://github.com/bufferflies)
+    - 修复 Raftstore 线程繁忙时，可能会出现 Region 重叠的问题 [#13160](https://github.com/tikv/tikv/issues/13160) @[5kbpers](https://github.com/5kbpers)
+    - 修复 PD 客户端可能会出现死锁的问题 [#13191](https://github.com/tikv/tikv/issues/13191) @[bufferflies](https://github.com/bufferflies) [#12933](https://github.com/tikv/tikv/issues/12933) @[BurtonQin](https://github.com/BurtonQin)
     - 修复关闭加密时 TiKV panic 的问题 [#13081](https://github.com/tikv/tikv/issues/13081) @[jiayang-zheng](https://github.com/jiayang-zheng)
-    - (dup) 修复 Dashboard 中 Unified Read Pool CPU 表达式错误的问题 [#13086](https://github.com/tikv/tikv/issues/13086) @[glorv](https://github.com/glorv)
+    - 修复 Dashboard 中 Unified Read Pool CPU 表达式错误的问题 [#13086](https://github.com/tikv/tikv/issues/13086) @[glorv](https://github.com/glorv)
     - 修复当有一个 TiKV 实例出现网络隔离时，一段时间内服务不可用问题 [#12966](https://github.com/tikv/tikv/issues/12966) @[cosven](https://github.com/cosven)
     - 修复错误报错 `PessimisticLockNotFound` 的问题 [#13425](https://github.com/tikv/tikv/issues/13425) @[sticnarf](https://github.com/sticnarf)
     - 修复某些场景下 PITR 可能丢失数据的问题 [#13281](https://github.com/tikv/tikv/issues/13281) @[YuJuncen](https://github.com/YuJuncen)
@@ -399,23 +372,18 @@ TiDB 版本：6.3.0-DMR
 
 + PD
 
-    - (dup) 修复开启 `enable-forwarding` 时 gRPC 处理返回错误不恰当导致 PD panic 的问题 [#5373](https://github.com/tikv/pd/issues/5373) @[bufferflies](https://github.com/bufferflies)
+    - 修复开启 `enable-forwarding` 时 gRPC 处理返回错误不恰当导致 PD panic 的问题 [#5373](https://github.com/tikv/pd/issues/5373) @[bufferflies](https://github.com/bufferflies)
     - 修复不健康的 Region 可能导致 PD panic 的问题 [#5491](https://github.com/tikv/pd/issues/5491) @[nolouch](https://github.com/nolouch)
     - 修复 PD 可能没创建 TiFlash Learner 副本的问题 [#5401](https://github.com/tikv/pd/issues/5401) @[HunDunDM](https://github.com/HunDunDM)
 
 + TiFlash
 
-    - 计算
-
-        - 修复取消查询时 window function 可能会导致 TiFlash 崩溃的问题 [#5814](https://github.com/pingcap/tiflash/issues/5814) @[SeaRise](https://github.com/SeaRise)
-        - 修复 `CAST(value as datetime)` 输入数据无法转成 DATETIME 时会导致 TiFlash sys CPU 异常高的问题 [#5097](https://github.com/pingcap/tiflash/issues/5097) @[xzhangxian1008](https://github.com/xzhangxian1008)
-        - 修复 `cast(Real/Decimal)AsTime` 函数执行结果与 MySQL 不一致的问题 [#3779](https://github.com/pingcap/tiflash/issues/3779) @[mengxin9014](https://github.com/mengxin9014)
-
-    - 存储
-
-        - 修复存储中的过时数据可能无法删除的问题 [#5570](https://github.com/pingcap/tiflash/issues/5570) @[JaySon-Huang](https://github.com/JaySon-Huang)
-        - 修复 page GC 可能导致无法创建表格的问题 [#5697](https://github.com/pingcap/tiflash/issues/5697) @[JaySon-Huang](https://github.com/JaySon-Huang)
-        - 修复使用包含 `NULL` 值的列创建主键时导致崩溃的问题 [#5859](https://github.com/pingcap/tiflash/issues/5859) @[JaySon-Huang](https://github.com/JaySon-Huang)        
+    - 修复取消查询时 window function 可能会导致 TiFlash 崩溃的问题 [#5814](https://github.com/pingcap/tiflash/issues/5814) @[SeaRise](https://github.com/SeaRise)
+    - 修复 `CAST(value as datetime)` 输入数据无法转成 DATETIME 时会导致 TiFlash sys CPU 异常高的问题 [#5097](https://github.com/pingcap/tiflash/issues/5097) @[xzhangxian1008](https://github.com/xzhangxian1008)
+    - 修复 `cast(Real/Decimal)AsTime` 函数执行结果与 MySQL 不一致的问题 [#3779](https://github.com/pingcap/tiflash/issues/3779) @[mengxin9014](https://github.com/mengxin9014)
+    - 修复存储中的过时数据可能无法删除的问题 [#5570](https://github.com/pingcap/tiflash/issues/5570) @[JaySon-Huang](https://github.com/JaySon-Huang)
+    - 修复 page GC 可能导致无法创建表格的问题 [#5697](https://github.com/pingcap/tiflash/issues/5697) @[JaySon-Huang](https://github.com/JaySon-Huang)
+    - 修复使用包含 `NULL` 值的列创建主键时导致崩溃的问题 [#5859](https://github.com/pingcap/tiflash/issues/5859) @[JaySon-Huang](https://github.com/JaySon-Huang)
 
 + Tools
 
@@ -435,35 +403,34 @@ TiDB 版本：6.3.0-DMR
     + TiDB Data Migration (DM)
 
         - 修复 DM 报错 `Specified key was too long` 的问题 [#5315](https://github.com/pingcap/tiflow/issues/5315) @[lance6716](https://github.com/lance6716)
-        - (dup) 修复 relay 报错时可能导致 goroutine 泄露问题 [#6193](https://github.com/pingcap/tiflow/issues/6193) @[lance6716](https://github.com/lance6716)
+        - 修复 relay 报错时可能导致 goroutine 泄露问题 [#6193](https://github.com/pingcap/tiflow/issues/6193) @[lance6716](https://github.com/lance6716)
         - 修复当 `collation_compatible` 设置为 `"strict"` 时，DM 可能生成有重复排序规则的 SQL 语句的问题 [#6832](https://github.com/pingcap/tiflow/issues/6832) @[lance6716](https://github.com/lance6716)
         - 减少 DM-worker 日志中警告信息 "found error when get timezone from binlog status_vars" 的出现次数 [#6628](https://github.com/pingcap/tiflow/issues/6628) @[lyzx2001](https://github.com/lyzx2001)
         - 修复数据同步过程中，latin1 字符集数据可能损坏的问题 [#7028](https://github.com/pingcap/tiflow/issues/7028) @[lance6716](https://github.com/lance6716)
 
     + TiDB Lightning
 
-        - (dup) 修复 TiDB Lightning 不支持 Parquet 文件中以斜线 (`/`)、数字、非 ASCII 字符开头的特殊列名的问题 [#36980](https://github.com/pingcap/tidb/issues/36980) @[D3Hunter](https://github.com/D3Hunter)
+        - 修复 TiDB Lightning 不支持 Parquet 文件中以斜线 (`/`)、数字、非 ASCII 字符开头的特殊列名的问题 [#36980](https://github.com/pingcap/tidb/issues/36980) @[D3Hunter](https://github.com/D3Hunter)
 
 ## 贡献者
 
 感谢来自 TiDB 社区的贡献者们：
 
-- @[AntiTopQuark](https://github.com/AntiTopQuark)
-- @[eltociear](https://github.com/eltociear)
-- @[morgo](https://github.com/morgo)
-- @[fuzhe1989](https://github.com/fuzhe1989)
-- @[crelax](https://github.com/crelax)
-- @[Ziy1-Tan](https://github.com/Ziy1-Tan)
-- @[AnnieoftheStars](https://github.com/AnnieoftheStars)
 - @[An-DJ](https://github.com/An-DJ)
-- @[erwadba](https://github.com/erwadba)
-- @[whitekeepwork](https://github.com/whitekeepwork)
-- @[blacktear23](https://github.com/blacktear23)
-- @[rzrymiak](https://github.com/rzrymiak)
 - @[AnnieoftheStars](https://github.com/AnnieoftheStars)
-- @[jianzhiyao](https://github.com/jianzhiyao)
-- @[peakji](https://github.com/peakji)
-- @[joycse06](https://github.com/joycse06)
-- @[onlyacat](https://github.com/onlyacat)
-- @[tisonkun](https://github.com/tisonkun)
+- @[AntiTopQuark](https://github.com/AntiTopQuark)
+- @[blacktear23](https://github.com/blacktear23)
 - @[BurtonQin](https://github.com/BurtonQin)：首次贡献者
+- @[crelax](https://github.com/crelax)
+- @[eltociear](https://github.com/eltociear)
+- @[fuzhe1989](https://github.com/fuzhe1989)
+- @[erwadba](https://github.com/erwadba)
+- @[jianzhiyao](https://github.com/jianzhiyao)
+- @[joycse06](https://github.com/joycse06)
+- @[morgo](https://github.com/morgo)
+- @[onlyacat](https://github.com/onlyacat)
+- @[peakji](https://github.com/peakji)
+- @[rzrymiak](https://github.com/rzrymiak)
+- @[tisonkun](https://github.com/tisonkun)
+- @[whitekeepwork](https://github.com/whitekeepwork)
+- @[Ziy1-Tan](https://github.com/Ziy1-Tan)
