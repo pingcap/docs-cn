@@ -174,13 +174,13 @@ TiDB 支持改变 [per-session](/system-variables.md#tidb_force_priority)、[全
 
 触发策略：如果一张新表达到 1000 条记录，并且在 1 分钟内没有写入，会自动触发。
 
-当表的（修改数/当前总行数）比例大于 `tidb_auto_analyze_ratio` 的时候，会自动触发 `analyze` 语句。`tidb_auto_analyze_ratio` 的默认值为 0.5，即默认开启自动触发 auto analyze。为了保险起见，在开启 auto analyze 的时候，`tidb_auto_analyze_ratio` 的最小值为 0.3。但是该变量值不能大于等于 `pseudo-estimate-ratio`（默认值为 0.8），否则会有一段时间使用 pseudo 统计信息，建议设置值为 0.5。
+当表的（修改数/当前总行数）比例大于 `tidb_auto_analyze_ratio` 的时候，会自动触发 `analyze` 语句。`tidb_auto_analyze_ratio` 的默认值为 0.5，即默认开启触发 auto analyze。为了保险起见，在开启 auto analyze 的时候，`tidb_auto_analyze_ratio` 的最小值为 0.3。但是该变量值不能大于等于 `pseudo-estimate-ratio`（默认值为 0.8），否则会有一段时间使用 pseudo 统计信息，建议设置值为 0.5。
 
 你可以用系统变量 [`tidb_enable_auto_analyze`](/system-variables.md#tidb_enable_auto_analyze-从-v610-版本开始引入) 关闭 auto analyze。
 
 ## 可以使用 Optimizer Hints 控制优化器行为吗？
 
-在 TiDB 中，你可以用多种方法控制查询优化器的默认行为，包括使用 [Optimizer Hints](/optimizer-hints.md) 和 [SQL 执行计划管理 (SPM)](/sql-plan-management.md)。基本用法同 MySQL 中的一致，还包含若干 TiDB 特有的用法，例如：`select column_name from table_name use index（index_name）where where_condition;`
+在 TiDB 中，你可以用多种方法控制查询优化器的默认行为，包括使用 [Optimizer Hints](/optimizer-hints.md) 和 [SQL 执行计划管理 (SPM)](/sql-plan-management.md)。基本用法同 MySQL 中的一致，还包含若干 TiDB 特有的用法，例如：`select column_name from table_name use index（index_name）where where_condition;`。
 
 ## 触发 Information schema is changed 错误的原因？
 
@@ -263,7 +263,7 @@ RUNNING_JOBS: ID:121, Type:add index, State:running, SchemaState:write reorganiz
 
 ### 如何确定某张表是否需要做 analyze ？
 
-可以通过 `SHOW STATS HEALTHY` 来查看 Healthy 字段，一般该字段值小于等于 60 的表需要做 analyze。
+可以通过 `SHOW STATS_HEALTHY` 来查看 Healthy 字段，一般该字段值小于等于 60 的表需要做 analyze。
 
 ### SQL 的执行计划展开成了树，ID 的序号有什么规律吗？这棵树的执行顺序会是怎么样的？
 

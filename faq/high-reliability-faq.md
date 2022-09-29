@@ -12,7 +12,7 @@ aliases: ['/docs-cn/dev/faq/high-reliability-faq/']
 
 TiDB 在 v3.0.8 后支持通过 TiDB 配置文件中的 [`server-version`](/tidb-configuration-file.md#server-version) 配置项来修改 server 版本号。
 
-对于 v4.0 及以上版本的集群，在使用 TiUP 部署集群时，可以通过 `tiup cluster edit-config <cluster-name>` 修改配置文件中以下部分来设置合适的版本号：
+对于 v4.0 及以上版本的集群，如果使用 TiUP 部署集群，可以通过 `tiup cluster edit-config <cluster-name>` 修改配置文件中以下部分来设置合适的版本号：
 
 ```
 server_configs:
