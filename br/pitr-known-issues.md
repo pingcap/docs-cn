@@ -71,7 +71,7 @@ Issue 链接：[#38045](https://github.com/pingcap/tidb/issues/38045)
 
 Issue 链接：[#38229](https://github.com/pingcap/tidb/issues/38229)
 
-在 GCS 或 Azure Blob Storage 上**第一次**执行 PITR Truncate 时会提示文件 `v1_stream_trancate_safepoint.txt` 不存在。解决方法如下：
+在 GCS 或 Azure Blob Storage 上**第一次**执行 `PITR Truncate` 时会提示文件 `v1_stream_trancate_safepoint.txt` 不存在。解决方法如下：
 
 在 PITR 的备份根目录下，创建内容为 `0` 的文件 `v1_stream_trancate_safepoint.txt`。注意文件不得包含其他字符，并且只需要在第一次执行 `PITR Truncate` 命令时添加。
 <!-- TODO: v6.4.0 发版时，取消注释以下文字  -->
