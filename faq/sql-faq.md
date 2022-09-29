@@ -99,6 +99,7 @@ TiDB 的自增 ID (`AUTO_INCREMENT`) 只保证自增且唯一，并不保证连�
 ## 如何在 TiDB 中修改 `sql_mode`？
 
 TiDB 支持在会话或全局作用域上修改 [`sql_mode`](/system-variables.md#sql_mode) 系统变量。
+
 - 对全局作用域变量的修改，设置后将作用于集群中的其它服务器，并且重启后更改依然有效。因此，你无需在每台 TiDB 服务器上都更改 `sql_mode` 的值。
 - 对会话作用域变量的修改，设置后只影响当前会话，重启后更改消失。
 
