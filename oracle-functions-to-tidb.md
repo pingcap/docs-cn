@@ -17,7 +17,7 @@ summary: 了解 Oracle 与 TiDB 函数和语法差异对照。
 
 | 函数 | Oracle 语法 | TiDB 语法 | 说明 |
 |---|---|---|---|
-| 转换数据类型 | <li>`TO_NUMBER(key)`</li><li>`TO_CHAR(key)`</li> | `CONVERT(key,dataType)` | TiDB 支持转换 `BINARY`、`CHAR`、`DATE`、`DATETIME`、`TIME`、`SIGNED INTEGER`、`UNSIGNED INTEGER` 和 `DECIMAL` 类型。 |
+| 转换数据类型 | <li>`TO_NUMBER(key)`</li><li>`TO_CHAR(key)`</li> | `CONVERT(key,dataType)` | TiDB 支持转换为下面类型：`BINARY`、`CHAR`、`DATE`、`DATETIME`、`TIME`、`SIGNED INTEGER`、`UNSIGNED INTEGER` 和 `DECIMAL`。 |
 | 日期类型转换为字符串类型 | <li>`TO_CHAR(SYSDATE,'yyyy-MM-dd hh24:mi:ss')`</li> <li>`TO_CHAR(SYSDATE,'yyyy-MM-dd')`</li> | <li>`DATE_FORMAT(NOW(),'%Y-%m-%d %H:%i:%s')`</li><li>`DATE_FORMAT(NOW(),'%Y-%m-%d')`</li> | TiDB 的格式化字符串大小写敏感。 |
 | 字符串类型转换为日期类型 | <li>`TO_DATE('2021-05-28 17:31:37','yyyy-MM-dd hh24:mi:ss')`</li><li>`TO_DATE('2021-05-28','yyyy-MM-dd hh24:mi:ss')`</li> | <li>`STR_TO_DATE('2021-05-28 17:31:37','%Y-%m-%d %H:%i:%s')`</li><li>`STR_TO_DATE('2021-05-28','%Y-%m-%d%T')` </li> | TiDB 的格式化字符串大小写敏感。 |
 | 获取系统当前时间（精确到秒）| `SYSDATE` | `NOW()` | |
@@ -26,7 +26,7 @@ summary: 了解 Oracle 与 TiDB 函数和语法差异对照。
 | 日期增加/减少 n 月 | `ADD_MONTHS(dateVal,n)`| `DATE_ADD(dateVal,INTERVAL n MONTH)` | `n` 可为负数。|
 | 获取日期到日 | `TRUNC(SYSDATE)` | <li>`CAST(NOW() AS DATE)`</li><li>`DATE_FORMAT(NOW(),'%Y-%m-%d')`</li> | TiDB 中 `CAST` 与 `DATE_FORMAT` 结果一致。|
 | 获取日期当月第一天 | `TRUNC(SYSDATE,'mm')` | `DATE_ADD(CURDATE(),interval - day(CURDATE()) + 1 day)`  | |
-| 截取数据 | `TRUNC(2.136) = 2`<br/> `TRUNC(2.136,2) = 2.14` | `TRUNCATE(2.136,0) = 2`<br/> `TRUNCATE(2.136,2) = 2.14` |  |
+| 截取数据 | `TRUNC(2.136) = 2`<br/> `TRUNC(2.136,2) = 2.13` | `TRUNCATE(2.136,0) = 2`<br/> `TRUNCATE(2.136,2) = 2.13` | 数据精度保留，直接截取相应小数位，不涉及四舍五入。 |
 | 拼接字符串 `a` 和 `b` | `'a' \|\| 'b'` | `CONCAT('a','b')` | |
 | 获取序列下一个值 | `SEQUENCENAME.NEXTVAL` | `NEXTVAL(sequenceName)` | |
 | 左/右外连接 | `SELECT * FROM a, b WHERE a.id = b.id(+);`<br/>`SELECT * FROM a, b WHERE a.id(+) = b.id;` | `SELECT * FROM a LEFT JOIN b ON a.id = b.id;`<br/>`SELECT * FROM a RIGHT JOIN b ON a.id = b.id;` | 关联查询时，TiDB 不支持使用 (+) 实现左/右关联，只能通过 `LEFT JOIN` 或 `RIGHT JOIN` 实现。|
