@@ -380,7 +380,7 @@ TiDB 版本：6.3.0-DMR
 
     - 修复取消查询时 window function 可能会导致 TiFlash 崩溃的问题 [#5814](https://github.com/pingcap/tiflash/issues/5814) @[SeaRise](https://github.com/SeaRise)
     - 修复 `CAST(value as datetime)` 输入数据无法转成 DATETIME 时会导致 TiFlash sys CPU 异常高的问题 [#5097](https://github.com/pingcap/tiflash/issues/5097) @[xzhangxian1008](https://github.com/xzhangxian1008)
-    - 修复 `cast(Real/Decimal)AsTime` 函数执行结果与 MySQL 不一致的问题 [#3779](https://github.com/pingcap/tiflash/issues/3779) @[mengxin9014](https://github.com/mengxin9014)
+    - 修复 `CAST(Real/Decimal AS time)` 函数执行结果与 MySQL 不一致的问题 [#3779](https://github.com/pingcap/tiflash/issues/3779) @[mengxin9014](https://github.com/mengxin9014)
     - 修复存储中的过时数据可能无法删除的问题 [#5570](https://github.com/pingcap/tiflash/issues/5570) @[JaySon-Huang](https://github.com/JaySon-Huang)
     - 修复 page GC 可能导致无法创建表格的问题 [#5697](https://github.com/pingcap/tiflash/issues/5697) @[JaySon-Huang](https://github.com/JaySon-Huang)
     - 修复使用包含 `NULL` 值的列创建主键时导致崩溃的问题 [#5859](https://github.com/pingcap/tiflash/issues/5859) @[JaySon-Huang](https://github.com/JaySon-Huang)
