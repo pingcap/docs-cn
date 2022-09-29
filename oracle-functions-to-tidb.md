@@ -42,8 +42,7 @@ summary: 了解 Oracle 与 TiDB 函数和语法差异对照。
 | 获取日期之间间隔月份 | `MONTHS_BETWEEN(ENDDATE,SYSDATE)` | `TIMESTAMPDIFF(MONTH,SYSDATE,ENDDATE)` | Oracle 中 `MONTHS_BETWEEN()` 函数与 TiDB 中 `TIMESTAMPDIFF()` 函数的结果会有误差。`TIMESTAMPDIFF()` 只保留整数月。使用时需要注意，两个函数的参数位置相反。 |
 | 列合并为行 | `LISTAGG(CONCAT(E.dimensionid,'---',E.DIMENSIONNAME),'***') within GROUP(ORDER BY  DIMENSIONNAME)` | `GROUP_CONCAT(CONCAT(E.dimensionid,'---',E.DIMENSIONNAME) ORDER BY DIMENSIONNAME SEPARATOR '***')` | 将一列字段合并为一行并根据 `***` 符号进行分割。 |
 | 获取当前时间（精确到微秒）| `SYSTIMESTAMP` | `CURRENT_TIMESTAMP(6)` | |
-| ASCII 值转化为对应字符 | `CHR(n)` | `CHAR(n)` | Oracle 中制表符 (`CHR(9)`)、换行符 
- (`CHR(10)`)、回车符 (`CHR(13)`) 对应 TiDB 中的 `CHAR(9)`、`CHAR(10)`、`CHAR(13)`。 |
+| ASCII 值转化为对应字符 | `CHR(n)` | `CHAR(n)` | Oracle 中制表符 (`CHR(9)`)、换行符 (`CHR(10)`)、回车符 (`CHR(13)`) 对应 TiDB 中的 `CHAR(9)`、`CHAR(10)`、`CHAR(13)`。 |
 
 ## 语法差异
 
