@@ -17,7 +17,7 @@ summary: 了解 Oracle 与 TiDB 函数和语法差异对照。
 
 | 函数 | Oracle 语法 | TiDB 语法 | 说明 |
 |---|---|---|---|
-| 转换表字段值数据类型 | <li>`TO_NUMBER(key)`</li><li>`TO_CHAR(key)`</li> | `CONVERT(key,dataType)` | TiDB 支持转换 `BINARY`、`CHAR`、`DATE`、`DATETIME`、`TIME`、`SIGNED INTEGER`、`UNSIGNED INTEGER` 和 `DECIMAL` 类型。 |
+| 转换数据类型 | <li>`TO_NUMBER(key)`</li><li>`TO_CHAR(key)`</li> | `CONVERT(key,dataType)` | TiDB 支持转换 `BINARY`、`CHAR`、`DATE`、`DATETIME`、`TIME`、`SIGNED INTEGER`、`UNSIGNED INTEGER` 和 `DECIMAL` 类型。 |
 | 日期类型转换为字符串类型 | <li>`TO_CHAR(SYSDATE,'yyyy-MM-dd hh24:mi:ss')`</li> <li>`TO_CHAR(SYSDATE,'yyyy-MM-dd')`</li> | <li>`DATE_FORMAT(NOW(),'%Y-%m-%d %H:%i:%s')`</li><li>`DATE_FORMAT(NOW(),'%Y-%m-%d')`</li> | TiDB 的格式化字符串大小写敏感。 |
 | 字符串类型转换为日期类型 | <li>`TO_DATE('2021-05-28 17:31:37','yyyy-MM-dd hh24:mi:ss')`</li><li>`TO_DATE('2021-05-28','yyyy-MM-dd hh24:mi:ss')`</li> | <li>`STR_TO_DATE('2021-05-28 17:31:37','%Y-%m-%d %H:%i:%s')`</li><li>`STR_TO_DATE('2021-05-28','%Y-%m-%d%T')` </li> | TiDB 的格式化字符串大小写敏感。 |
 | 获取系统当前时间（精确到秒）| `SYSDATE` | `NOW()` | |
@@ -35,7 +35,7 @@ summary: 了解 Oracle 与 TiDB 函数和语法差异对照。
 | `NVL2()` | `NVL2(key, val1, val2)`  | `IF(key is NULL, val1, val2)` | 如果该字段值非 `NULL`，则返回 val1 值，否则返回 val2 值。|
 | `DECODE()` | <li>`DECODE(key,val1,val2,val3)`</li><li>`DECODE(value,if1,val1,if2,val2,...,ifn,valn,val)`</li> | <li>`IF(key=val1,val2,val3)`</li><li>`CASE WHEN value=if1 THEN val1 WHEN value=if2 THEN val2,...,WHEN value=ifn THEN valn ELSE val END`</li> | <li>如果该字段值等于 val1，则返回 val2，否则返回 val3。</li><li>当该字段值满足条件 1 (if1) 时，返回 val1，满足条件 2 (if2) 时，返回 val2，满足条件 3 (if3) 时，返回 val3。</li> |
 | 获取字符串长度 | `LENGTH(str)` | `CHAR_LENGTH(str)` | |
-| 截取字符串 | `SUBSTR('abcdefg',0,2)` => ab<br/> `SUBSTR('abcdefg',1,2)` => ab | `SUBSTRING('abcdefg',0,2)` => 空<br/>`SUBSTRING('abcdefg',1,2)` => ab | Oracle 中起始位置 0 与 1 作用一样，TiDB 中 0 开始截取为空，若需从头开始截全，则应从 1 开始，TiDB 支持 SUBSTRING 和 SUBSTR 函数，作用相同，不用修改。但是注意 TiDB 的下表必须从 1 开始。 |
+| 获取子串 | `SUBSTR('abcdefg',0,2) = 'ab'`<br/> `SUBSTR('abcdefg',1,2) = 'ab'` | `SUBSTRING('abcdefg',0,2) = ''`<br/>`SUBSTRING('abcdefg',1,2) = 'ab'` | <li>Oracle 中起始位置 0 与 1 作用一样。</li><li>TiDB 中 0 开始获取的子串为空，若需从字符串的起始位置开始，则应从 1 开始。<li> |
 | 查找字符串 | `INSTR('abcdefg','b',1,1)` | `INSTR('abcdefg','b')` | 从字符串 'abcdefg' 第一个字符开始查询，返回 'b' 字符串第一次出现的位置。 |
 | 查找字符串 | `INSTR('stst','s',1,2)` | `LENGTH(SUBSTRING_INDEX('stst','s',2)) + 1` | 从字符串 'stst' 第一个字符开始查找，返回 's' 字符第二次出现的位置。 |
 | 查找字符串 | `INSTR('abcabc','b',2,1)` | `LOCATE('b','abcabc',2)` | 从字符串 `abcabc` 第二个字符开始查询，返回 `b` 字符第一次出现的位置。 |
