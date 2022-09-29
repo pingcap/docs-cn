@@ -31,9 +31,7 @@ TiDB 版本：6.3.0-DMR
 
     支持 [Range COLUMNS 分区](/partitioned-table.md#range-columns-分区)，`column_list` 不再限定为单一列，基本功能与 MySQL 等同。
 
-* 分区表 EXCHANGE PARTITION 功能 GA [#35996](https://github.com/pingcap/tidb/issues/35996) @[ymkzpx](https://github.com/ymkzpx)
-
-    [EXCHANGE PARTITION 功能](/partitioned-table.md#分区管理)通过性能和稳定性提升，由实验特性转为正式功能。
+* 分区表 [EXCHANGE PARTITION 功能](/partitioned-table.md#分区管理) GA [#35996](https://github.com/pingcap/tidb/issues/35996) @[ymkzpx](https://github.com/ymkzpx)
 
 * TiFlash 新支持两个[窗口函数](/tiflash/tiflash-supported-pushdown-calculations.md) [#5579](https://github.com/pingcap/tiflash/issues/5579) @[SeaRise](https://github.com/SeaRise)
 
@@ -138,15 +136,17 @@ TiDB 版本：6.3.0-DMR
 
     当启用分区[动态剪裁](/partitioned-table.md#动态裁剪模式)时，优化器依赖 [GlobalStats](/statistics.md#动态裁剪模式下的分区表统计信息) 进行执行计划的选择。在 [GlobalStats](/statistics.md#动态裁剪模式下的分区表统计信息) 收集完成前，使用 pseudo 统计信息可能会造成性能回退。在 v6.3.0 版本中，如果在 [GlobalStats](/statistics.md#动态裁剪模式下的分区表统计信息) 收集未完成的情况下打开动态分区裁剪开关，TiDB 会维持静态分区剪裁的状态，直到 GlobalStats 收集完成。该方式确保在切换分区剪裁策略时系统性能保持稳定。
 
+### 易用性
+
+* 完善基于 SQL 的数据放置规则功能的兼容性 [#37171](https://github.com/pingcap/tidb/issues/37171) @[lcwangchao](https://github.com/lcwangchao)
+
+    TiDB 在 v6.0.0 版本提供基于 SQL 的数据放置规则功能，但是由于实现机制冲突，该功能和构建 TiFlash 副本功能不兼容。v6.3.0 版本进行改进优化，[完善了这两个功能的兼容性](/placement-rules-in-sql.md#使用限制)。
+
 ### MySQL 兼容性
 
 * 新增支持 `REGEXP_INSTR()`、`REGEXP_LIKE()`、`REGEXP_REPLACE()` 和 `REGEXP_SUBSTR()` 4 个正则表达式函数，提升 TiDB 与 MySQL 8.0 的兼容性 [#23881](https://github.com/pingcap/tidb/issues/23881) @[windtalker](https://github.com/windtalker)
 
     这些函数与 MySQL 的兼容性可参考[正则函数与 MySQL 的兼容性](/functions-and-operators/string-functions.md#正则函数与-mysql-的兼容性)。
-
-* 完善基于 SQL 的数据放置规则功能的兼容性 [#37171](https://github.com/pingcap/tidb/issues/37171) @[lcwangchao](https://github.com/lcwangchao)
-
-    TiDB 在 v6.0.0 版本提供基于 SQL 的数据放置规则功能，但是由于实现机制冲突，该功能和构建 TiFlash 副本功能不兼容。v6.3.0 版本进行改进优化，[完善了这两个功能的兼容性](/placement-rules-in-sql.md#使用限制)。
 
 * `CREATE USER` 和 `ALTER USER` 支持 `ACCOUNT LOCK/UNLOCK` 选项 [#37051](https://github.com/pingcap/tidb/issues/37051) @[CbcWestwolf](https://github.com/CbcWestwolf)
 
@@ -160,9 +160,9 @@ TiDB 版本：6.3.0-DMR
 
 ### 备份恢复
 
-* PITR 支持 GCS 和 Azure Blob Storage 作为备份存储 @[joccau](https://github.com/joccau)
+* PITR 支持 [GCS](/br/backup-storage-gcs.md) 和 [Azure Blob Storage](/br/backup-storage-azblob.md) 作为备份存储 @[joccau](https://github.com/joccau)
 
-    PITR 支持 [GCS](/br/backup-storage-gcs.md) 和 [Azure Blob Storage](/br/backup-storage-azblob.md) 作为备份存储目标。部署在 GCP 或者 Azure 上的用户，将 TiDB 集群升级至 v6.3.0 就可以使用 PITR 功能。
+    部署在 GCP 或者 Azure 上的用户，将 TiDB 集群升级至 v6.3.0 就可以使用 PITR 功能。
 
 * BR 支持 AWS S3 Object Lock [#13442](https://github.com/tikv/tikv/issues/13442) @[3pointer](https://github.com/3pointer)
 
@@ -170,11 +170,9 @@ TiDB 版本：6.3.0-DMR
 
 ### 数据迁移
 
-* TiDB Lightning 支持将 Apache Hive 导出的 Parquet 文件导入到 TiDB [#37536](https://github.com/pingcap/tidb/issues/37536) @[buchuitoudegou](https://github.com/buchuitoudegou)
+* TiDB Lightning 支持[将 Apache Hive 导出的 Parquet 文件导入到 TiDB](/tidb-lightning/tidb-lightning-data-source.md#parquet) [#37536](https://github.com/pingcap/tidb/issues/37536) @[buchuitoudegou](https://github.com/buchuitoudegou)
 
-    TiDB Lightning 支持[将 Apache Hive 导出的 Parquet 文件导入到 TiDB](/tidb-lightning/tidb-lightning-data-source.md#parquet)，从而实现 Hive 到 TiDB 之间的数据流转。
-
-* DM 任务配置文件中新增一个配置项 `safe-mode-duration` [#6224](https://github.com/pingcap/tiflow/issues/6224) @[okJiang](https://github.com/okJiang)
+* DM 新增配置项 `safe-mode-duration` [#6224](https://github.com/pingcap/tiflow/issues/6224) @[okJiang](https://github.com/okJiang)
 
     DM 任务配置文件中新增一个配置项 [`safe-mode-duration`](/dm/task-configuration-file-full.md#完整配置文件示例)，用户可以自行调节 DM 异常重启后进入安全模式的持续时间，默认值 60 秒。当设置为 "0s" 时，表示 DM 异常重启后尝试进入安全模式会报错。
 
@@ -247,7 +245,7 @@ TiDB 版本：6.3.0-DMR
 
 * 日志备份支持 GCS 和 Azure Blob Storage 作为备份存储。
 * 日志备份功能兼容分区交换 (Exchange Partition) DDL。
-* 废弃了通过 `ALTER TABLE ...SET TiFLASH MODE ...` 语法启用或禁用 FastScan 功能。从 v6.2.0 版本升级到 v6.3.0 版本时，在 v6.2.0 版本的 FastScan 设置将失效，但不影响数据的正常读取。你需要重新使用变量方式设置 FastScan。从 v6.2.0 及更早版本升级到 v6.3.0 时，所有会话默认不开启 FastScan 功能，而是保持一致性的数据扫描功能。
+* 不再支持通过 `ALTER TABLE ...SET TiFLASH MODE ...` 语法启用或禁用 [FastScan]((/develop/dev-guide-use-fastscan.md)) 功能。从 v6.2.0 版本升级到 v6.3.0 版本时，在 v6.2.0 版本的 FastScan 设置将失效，但不影响数据的正常读取。你需要重新使用变量方式设置 FastScan。从 v6.2.0 及更早版本升级到 v6.3.0 时，所有会话默认不开启 FastScan 功能，而是保持一致性的数据扫描功能。
 
 ## 废弃功能
 
