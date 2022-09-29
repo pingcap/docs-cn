@@ -287,7 +287,7 @@ df.write.
 UPDATE mysql.tidb SET VARIABLE_VALUE="6h" WHERE VARIABLE_NAME="tikv_gc_life_time";
 ```
 
-详细使用手册请参考 [TiDB 数据源 API 用户指南](https://github.com/pingcap/tispark/blob/master/docs/datasource_api_userguide.md)。
+详细使用手册请参考 [TiDB 数据源 API 用户指南](https://github.com/pingcap/tispark/blob/master/docs/features/datasource_api_userguide.md)。
 
 ## 通过 JDBC 将 Dataframe 写入 TiDB
 
@@ -348,7 +348,7 @@ spark.sql.tidb.user $your_tidb_server_user
 spark.sql.tidb.password $your_tidb_server_password
 ```
 
-更多详细信息，请参考 [TiSpark 鉴权与授权指南](https://github.com/pingcap/tispark/blob/master/docs/authorization_userguide.md)。
+更多详细信息，请参考 [TiSpark 鉴权与授权指南](https://github.com/pingcap/tispark/blob/master/docs/features/authorization_userguide.md)。
 
 > **注意：**
 >

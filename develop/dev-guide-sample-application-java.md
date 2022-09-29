@@ -1486,7 +1486,7 @@ public class HibernateExample
 
 <div label="使用 JDBC" value="jdbc">
 
-> **建议:**
+> **建议：**
 >
 > 在 Gitpod Playground 中尝试 JDBC：[现在就试试](https://gitpod.io/#targetMode=plain-java-jdbc/https://github.com/pingcap-inc/tidb-example-java)
 
@@ -1512,7 +1512,7 @@ mysql --host 127.0.0.1 --port 4000 -u root<src/main/resources/dbinit.sql
 
 <div label="使用 Mybatis（推荐）" value="mybatis">
 
-> **建议:**
+> **建议：**
 >
 > 在 Gitpod Playground 中尝试 JDBC：[现在就试试](https://gitpod.io/#targetMode=plain-java-mybatis/https://github.com/pingcap-inc/tidb-example-java)
 
@@ -1538,7 +1538,7 @@ mysql --host 127.0.0.1 --port 4000 -u root < src/main/resources/dbinit.sql
 
 <div label="使用 Hibernate（推荐）" value="hibernate">
 
-> **建议:**
+> **建议：**
 >
 > 在 Gitpod Playground 中尝试 Hibernate：[现在就试试](https://gitpod.io/#targetMode=plain-java-jdbc/https://github.com/pingcap-inc/tidb-example-java)
 

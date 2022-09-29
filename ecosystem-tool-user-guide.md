@@ -130,7 +130,7 @@ TiUniManager 不仅提供对 TiDB 集群的全生命周期的可视化管理，�
 基本信息：
 
 - TiCDC 的输入：TiDB 集群
-- TiCDC 的输出：TiDB 集群、MySQL、Kafka、Apache Pulsar、Confluent
+- TiCDC 的输出：TiDB 集群、MySQL、Kafka、Confluent
 - 适用 TiDB 版本：v4.0.6 及以上
 
 ### TiDB 增量日志同步 - TiDB Binlog
