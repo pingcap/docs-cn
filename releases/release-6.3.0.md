@@ -241,7 +241,7 @@ TiDB 版本：6.3.0-DMR
 | TiCDC | [`enable-sync-point`](/ticdc/manage-ticdc.md#同步任务配置文件描述) | 新增 | 控制是否开启 sync point 功能。 |
 | TiCDC | [`sync-point-interval`](/ticdc/manage-ticdc.md#同步任务配置文件描述) | 新增 | 控制 sync point 功能对齐上下游 snapshot 的时间间隔。 |
 | TiCDC | [`sync-point-retention`](/ticdc/manage-ticdc.md#同步任务配置文件描述) | 新增 | sync point 功能在下游表中保存的数据的时长，超过这个时间的数据会被清理。 |
-| TiCDC | [`sink-uri.memory`](/ticdc/manage-ticdc.md#创建同步任务) | 废弃 | 已经弃用，不建议在任何情况使用。|
+| TiCDC | [`sink-uri.memory`](/ticdc/manage-ticdc.md#创建同步任务) | 废弃 | 废弃 `memory` 排序方式，不建议在任何情况下使用。可以通过 `unified` 排序方式替代。 |
 
 ### 其他
 
@@ -319,12 +319,11 @@ TiDB 版本：6.3.0-DMR
     + TiCDC
 
         - 提升上游为 MySQL 8.0 时的兼容性 [#6506](https://github.com/pingcap/tiflow/issues/6506) @[lance6716](https://github.com/lance6716)
-        - 当 MySL sink 出错时打印 DML 的 start ts [#6460](https://github.com/pingcap/tiflow/issues/6460) @[overvenus](https://github.com/overvenus)
+        - 支持在 MySL sink 出错时将 DML 语句的 `start ts` 输出到日志文件 [#6460](https://github.com/pingcap/tiflow/issues/6460) @[overvenus](https://github.com/overvenus)
         - API `api/v1/health` 将反应 TiCDC 集群的健康状态 [#4757](https://github.com/pingcap/tiflow/issues/4757) @[overvenus](https://github.com/overvenus)
-        - 采用异步的模式实现 mq sink 和 mysql sink ，提升sink 的吞吐能力 [#5928](https://github.com/pingcap/tiflow/issues/5928) @[hicqu](https://github.com/hicqu) @[hi-rustin](https://github.com/hi-rustin)
-        - 将 memory sorter 废弃, 并全部由 unified sorter 代替 [#7087](https://github.com/pingcap/tiflow/issues/5928) @[hi-rustin](https://github.com/hi-rustin)
+        - 采用异步的模式实现 MQ sink 和 MySQL sink，提升 sink 的吞吐能力 [#5928](https://github.com/pingcap/tiflow/issues/5928) @[hicqu](https://github.com/hicqu) @[hi-rustin](https://github.com/hi-rustin)
         - 删除已经废弃了的 pulsar sink [#7087](https://github.com/pingcap/tiflow/issues/7087) @[hi-rustin](https://github.com/hi-rustin)
-        - 忽略掉与 changefeed 不相关的 DDL 以提升同步性能. [#6447](https://github.com/pingcap/tiflow/issues/6447) @[asddongmen](https://github.com/asddongmen)
+        - 忽略掉与 changefeed 不相关的 DDL 语句以提升同步性能 [#6447](https://github.com/pingcap/tiflow/issues/6447) @[asddongmen](https://github.com/asddongmen)
 
     + TiDB Data Migration (DM)
 
@@ -432,7 +431,7 @@ TiDB 版本：6.3.0-DMR
 
         - 修复 TiCDC 对含有 grpc 服务的非法 PD 地址报错不准确的问题 [#6458](https://github.com/pingcap/tiflow/issues/6458) @[crelax](https://github.com/crelax)
         - 修复了 `cdc cli changefeed list` 命令不返回 failed changefeed 的问题 [#6334](https://github.com/pingcap/tiflow/issues/6334) @[asddongmen](https://github.com/asddongmen)
-        - 修复了如果 changefeed 初始化失败会导致 TiCDC 不可用的问题  [#6859](https://github.com/pingcap/tiflow/issues/6859) @[asddongmen](https://github.com/asddongmen)
+        - 修复了如果 changefeed 初始化失败会导致 TiCDC 不可用的问题 [#6859](https://github.com/pingcap/tiflow/issues/6859) @[asddongmen](https://github.com/asddongmen)
 
     + TiDB Data Migration (DM)
 
