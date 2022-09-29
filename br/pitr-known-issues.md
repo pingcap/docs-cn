@@ -66,3 +66,12 @@ Issue 链接：[#38045](https://github.com/pingcap/tidb/issues/38045)
 - 如果先启动 PITR 备份任务，再添加索引，此时即使索引加速功能打开，也不会使用加速索引功能，但不影响索引兼容性。
 - 如果先启动添加索引加速任务，再创建 PITR 备份任务，此时 PITR 备份任务会报错，但不影响正在添加索引的任务。
 - 如果同时启动 PITR 备份任务和添加索引加速任务，可能会由于两个任务无法察觉到对方而导致 PITR 不能成功备份增加的索引数据。
+
+## 在 GCS 或 Azure Blob Storage 上第一次执行 PITR Truncate 时出错
+
+Issue 链接：[#38229](https://github.com/pingcap/tidb/issues/38229)
+
+在 GCS 或 Azure Blob Storage 上**第一次**执行 PITR Truncate 时会提示文件 `v1_stream_trancate_safepoint.txt` 不存在。有以下两种解决方法：
+
+1. 在 PITR 的备份根目录下创建文件 `v1_stream_trancate_safepoint.txt`，文件内容为 `0`。注意没有别的额外字符，并且只需要在第一次做 truncate 命令时添加。
+2. 使用新版本的 BR。
