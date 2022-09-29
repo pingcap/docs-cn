@@ -1,11 +1,11 @@
 ---
-title: FLASHBACK CLUSTER
-aliases: ['/docs-cn/dev/sql-statements/sql-statement-flashback-cluster/', '/docs-cn/dev/reference/sql/statements/flashback-cluster/']
+title: FLASHBACK CLUSTER TO TIMESTAMP
+aliases: ['/docs-cn/dev/sql-statements/sql-statement-flashback-cluster-to-timestamp/', '/docs-cn/dev/reference/sql/statements/flashback-cluster-to-timestamp/']
 ---
 
 # FLASHBACK CLUSTER
 
-在 TiDB 6.4 中，引入了 `FLASHBACK CLUSTER` 语法，其功能是将集群的状态恢复到指定的时间点。
+在 TiDB 6.4 中，引入了 `FLASHBACK CLUSTER TO TIMESTAMP` 语法，其功能是将指定范围的数据恢复到特定的时间点。
 
 ## 语法
 
@@ -24,7 +24,7 @@ FlashbackClusterStmt ::=
 
 ## 注意事项
 
-* `FLASHBACK CLUSTER` 指定的时间点需要在 Garbage Collection (GC) life time 时间内，可以使用系统变量 `tidb_gc_life_time` 配置数据的历史版本的保留时间（默认值是 10m0s）。可以使用以下 SQL 语句查询当前的 safePoint，即 GC 已经清理到的时间点：
+* `FLASHBACK` 指定的时间点需要在 Garbage Collection (GC) life time 时间内，可以使用系统变量 `tidb_gc_life_time` 配置数据的历史版本的保留时间（默认值是 10m0s）。可以使用以下 SQL 语句查询当前的 safePoint，即 GC 已经清理到的时间点：
 
 ```sql
 SELECT * FROM mysql.tidb WHERE variable_name = 'tikv_gc_safe_point';
@@ -78,8 +78,8 @@ Empty set (0.00 sec)
 
 `FLASHBACK CLUSTER` 可以简单的分为下面几个阶段，
 
-* 在正式开始 `FLASHBACK CLUSTER` 之前，TiDB 会将 `FLASHBACK CLUSTER` 的 `JobID` 更新到 TiKV 对应的 Key 上从而禁止别的 DDL Job 在 `FLASHBACK CLUSTER` 期间被执行。
-* 进行一些前置检查，在所有检查通过之后，TiDB 会主动关闭集群的 GC 和调度，具体检查如下，
+* 在正式开始之前，TiDB 会将 `FLASHBACK` 过程中需要修改的变量值保存在 `Job.Args` 上，并在结束后恢复。
+* 进行前置检查，在所有检查通过之后，TiDB 会主动关闭集群的 GC 和调度，具体检查如下，
     * 检查是否有 DDL 记录在要 `FLASHBACK` 到的时间点到现在存在，如有则结束 `FLASHBACK CLUSTER` 操作。
     * 检查要 `FLASHBACK` 到的时间点是否在 `tikv_gc_safe_point` 之前，如是则结束 `FLASHBACK CLUSTER` 操作。
     * 检查集群中是否有别的 DDL job 正在执行，如有则结束 `FLASHBACK CLUSTER` 操作。
