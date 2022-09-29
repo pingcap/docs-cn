@@ -13,7 +13,7 @@ aliases: ['/docs-cn/dev/faq/tidb-faq/','/docs-cn/dev/faq/tidb/']
 
 ### 1.1.2 TiDB 整体架构
 
-参见 [TiDB 整体架构](/tidb-architecture.md)，以及 TiDB 数据库的[存储](/tidb-storage.md)、[计算](/tidb-configuration-file.md)与[调度](/tidb-scheduling.md)。
+参见 [TiDB 整体架构](/tidb-architecture.md)，以及 TiDB 数据库的[存储](/tidb-storage.md)、[计算](/tidb-computing.md)与[调度](/tidb-scheduling.md)。
 
 ### 1.1.3 TiDB 是基于 MySQL 开发的吗？
 
