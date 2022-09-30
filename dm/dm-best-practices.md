@@ -228,7 +228,7 @@ DM 支持跳过或者替换导致同步任务中断的 DDL 语句。并且针对
 
 通过管理 DM 中的同步任务，sync-diff-inspector 可以自动管理需要进行数据一致性检查的 Table 列表，相较之前的手动配置更加的高效。具体参考[基于 DM 同步场景下的数据校验](/sync-diff-inspector/dm-diff.md)。
 
-自 DM v6.2 版本开始，DM 支持在增量同步的同时进行数据校验。具体参考 [DM 增量数据校验](/dm/dm-continuous-data-validation.md)。
+自 DM v6.2.0 版本开始，DM 支持在增量同步的同时进行数据校验。具体参考 [DM 增量数据校验](/dm/dm-continuous-data-validation.md)。
 
 ## 数据长期同步
 
