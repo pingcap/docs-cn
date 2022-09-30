@@ -1,7 +1,6 @@
 ---
 title: PLACEMENT_POLICIES
 summary: 了解 information_schema 表 `PLACEMENT_POLICIES`。
-aliases: ['/zh/tidb/dev/information-schema-placement-rules']
 ---
 
 # PLACEMENT_POLICIES

@@ -1,6 +1,5 @@
 ---
 title: TiDB 最佳实践
-aliases: ['/docs-cn/dev/best-practices/tidb-best-practices/']
 ---
 
 # TiDB 最佳实践

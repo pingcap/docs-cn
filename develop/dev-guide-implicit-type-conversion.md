@@ -1,7 +1,6 @@
 ---
 title: 避免隐式类型转换
 summary: 介绍 TiDB 中隐式类型转换可能会带来的后果和避免方法。
-aliases: ['/zh/tidb/dev/implicit-type-conversion']
 ---
 
 # 避免隐式类型转换

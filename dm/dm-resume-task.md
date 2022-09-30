@@ -1,7 +1,6 @@
 ---
 title: 恢复数据迁移任务
 summary: 了解 TiDB Data Migration 如何恢复数据迁移任务。
-aliases: ['/docs-cn/tidb-data-migration/dev/resume-task/']
 ---
 
 # 恢复数据迁移任务
