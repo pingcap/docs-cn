@@ -84,7 +84,7 @@ TiDB 在建表时可以声明为主键创建聚簇索引或非聚簇索引。下
 
 #### 分与合
 
-DM 支持[将上游分库分表的数据合并到下游 TiDB 中的同一个表](/migrate-small-mysql-shards-to-tidb.md)，这也是 TiDB 推荐的一种方式，合并后的收益不再赘述。
+DM 支持[将上游分库分表的数据合并到下游 TiDB 中的同一个表](/migrate-small-mysql-shards-to-tidb.md)，这也是 TiDB 推荐的一种方式。
 
 除了数据合并场景外，另一个典型场景为 **数据归档**场景。在此场景中，数据不断写入，随着时间流逝，大量的数据从热数据逐渐转变为温冷数据。在 TiDB 中，你可以通过 [Placement Rules](/configure-placement-rules.md) 放置规则来按照一定规则对数据设置不同的放置规则，而最小粒度即为[分区表 (Partition)](/partitioned-table.md)。
 
