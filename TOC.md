@@ -4,7 +4,7 @@
 - [Docs Home](https://docs.pingcap.com/)
 - About TiDB
   - [TiDB Introduction](/overview.md)
-  - [TiDB 6.2 Release Notes](/releases/release-6.2.0.md)
+  - [TiDB 6.3 Release Notes](/releases/release-6.3.0.md)
   - [Basic Features](/basic-features.md)
   - [Experimental Features](/experimental-features.md)
   - [MySQL Compatibility](/mysql-compatibility.md)
@@ -888,6 +888,8 @@
   - [Release Timeline](/releases/release-timeline.md)
   - [TiDB Versioning](/releases/versioning.md)
   - [TiDB Installation Packages](/binary-package.md)
+  - v6.3
+    - [6.3.0-DMR](/releases/release-6.3.0.md)
   - v6.2
     - [6.2.0-DMR](/releases/release-6.2.0.md)
   - v6.1
