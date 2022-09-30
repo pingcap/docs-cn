@@ -1,6 +1,6 @@
 ---
 title: 使用 Dumpling 和 TiDB Lightning 备份与恢复
-summary: 了解如何使用 Dumpling 和 TiDB Lightning 备份与恢复集群数据。
+summary: 了解如何使用 Dumpling 和 TiDB Lightning 备份及恢复集群数据。
 ---
 
 # 使用 Dumpling 和 TiDB Lightning 备份与恢复
