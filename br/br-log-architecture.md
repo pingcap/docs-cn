@@ -74,7 +74,7 @@ Point in time recovery 的流程如下：
    * **Report restore result**：log restore worker 返回恢复结果给 br
 
 6. BR 从各个 TiKV 获取恢复结果
-   * 如果局部数据恢复因为 RegionNotFound/EpochNotMatch 等原因失败，比如 TiKV 节点故障等，br 重试恢复这些数据
+   * 如果局部数据恢复因为 RegionNotFound/EpochNotMatch 等原因失败，比如 TiKV 节点故障，br 重试恢复这些数据
    * 如果存在备份数据不可重试的恢复失败，则恢复任务失败
    * 全部备份数据都恢复成功后，则恢复任务成功
 
