@@ -73,13 +73,7 @@ summary: 了解如何处理 TiDB 集群常见问题。
 
 - 3.1.3 TiDB 日志中报 `information schema is changed` 的错误：
 
-    - 原因 1：正在执行的 DML 所涉及的表和正在执行 DDL 的表相同，可以通过命令 `admin show ddl job` 查看正在运行的 DDL 操作。
-
-    - 原因 2：当前执行的 DML 时间太久，且这段时间内执行了很多 DDL（新版本 `lock table` 也会导致 schema 版本变化），导致中间 `schema version` 变更超过 1024 个版本数。
-
-    - 原因 3：当前执行 DML 请求的 TiDB 实例长时间不能加载到新的 `schema information`（与 PD 或者 TiKV 网络问题等都会导致此问题），而这段时间内执行了很多 DDL 语句（也包括 `lock table` 语句），导致中间 `schema version` 变更超过 1024 个版本数。
-
-    - 解决方法：前 2 种原因都不会导致业务问题，相应的 DML 会在失败后重试；第 3 种原因需要检查 TiDB 实例和 PD 及 TiKV 的网络情况。
+    - 报错的详细原因以及解决办法参见[触发 Information schema is changed 错误的原因](/faq/sql-faq.md#触发-information-schema-is-changed-错误的原因)。
 
     - 背景知识：`schema version` 的增长数量与每个 DDL 变更操作的 `schema state` 个数一致，例如 `create table` 操作会有 1 个版本变更，`add column` 操作会有 4 个版本变更（详情可以参考 [online schema change](https://static.googleusercontent.com/media/research.google.com/zh-CN//pubs/archive/41376.pdf)），所以太多的 column 变更操作会导致 `schema version` 增长得很快。
 
