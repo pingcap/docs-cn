@@ -385,6 +385,7 @@
     - [About TiDB Data Migration](/dm/dm-overview.md)
     - [Architecture](/dm/dm-arch.md)
     - [Quick Start](/dm/quick-start-with-dm.md)
+    - [Best Practices](/dm/dm-best-practices.md)
     - Deploy a DM cluster
       - [Hardware and Software Requirements](/dm/dm-hardware-and-software-requirements.md)
       - [Use TiUP (Recommended)](/dm/deploy-a-dm-cluster-using-tiup.md)
