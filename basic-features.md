@@ -54,7 +54,7 @@ This document lists the features supported in each TiDB version. Note that suppo
 | `INSERT ON DUPLICATE KEY UPDATE`                             | Y | Y | Y | Y | Y            |      Y       |      Y       |      Y       |      Y       |      Y       |
 | `LOAD DATA INFILE`                                           | Y | Y | Y | Y | Y            |      Y       |      Y       |      Y       |      Y       |      Y       |
 | `SELECT INTO OUTFILE`                                        | Y | Y | Y | Y | Y            |      Y       |      Y       |      Y       |      Y       |      Y       |
-| `INNER JOIN`, `LEFT\|RIGHT [OUTER] JOIN`                     | Y | Y | Y | Y | Y            |      Y       |      Y       |      Y       |      Y       |      Y       |
+| `INNER JOIN`, <code>LEFT\|RIGHT [OUTER] JOIN</code>                     | Y | Y | Y | Y | Y            |      Y       |      Y       |      Y       |      Y       |      Y       |
 | `UNION`, `UNION ALL`                                         | Y | Y | Y | Y | Y            |      Y       |      Y       |      Y       |      Y       |      Y       |
 | [`EXCEPT` and `INTERSECT` operators](/functions-and-operators/set-operators.md) | Y | Y | Y | Y | Y            |      Y       |      Y       |      Y       |      Y       |      N       |
 | `GROUP BY`, `ORDER BY`                                       | Y | Y | Y | Y | Y            |      Y       |      Y       |      Y       |      Y       |      Y       |
