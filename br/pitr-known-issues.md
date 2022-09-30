@@ -78,3 +78,14 @@ Currently, the [acceleration of adding indexes](/system-variables.md#tidb_ddl_en
 - If you start a log backup task first, and then add an index. The adding index process is not accelerated even if index acceleration is enabled. But the index is added in a slow way.
 - If you start an index acceleration task first, and then start a log backup task. The log backup task returns an error. But the index acceleration is not affected.
 - If you start a log backup task and an index acceleration task at the same time, the two tasks might not be aware of each other. This might result in PITR failing to back up the newly added index.
+
+## An error occurs when you run the `PITR Truncate` command on GCS or Azure Blob Storage for the first time
+
+Issue: [#38229](https://github.com/pingcap/tidb/issues/38229)
+
+When you run `PITR Truncate` on GCS or Azure Blob Storage for the first time, you are reminded that the file `v1_stream_trancate_safepoint.txt` does not exist. To address this issue, take the following steps:
+
+In the backup root directory of PITR, create a file `v1_stream_trancate_safepoint.txt` and write `0` in it. Note that this file should not include any other characters and should be created only when you run `PITR Truncate` for the first time.
+
+<!-- TODO: Add the following content upon v6.4.0 release  -->
+<!-- Alternatively, use BR of v6.4.0 or later. -->
