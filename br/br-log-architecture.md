@@ -19,8 +19,8 @@ TiDB 的备份恢复功能，以 br、tidb-operator 为使用入口，创建相�
 
 其中的一些关键概念
 
-* TiKV local checkpoint ts (in local metadata)：表示这个 TiKV 中所有小于 local checkpoint ts 的日志数据已经完成备份。
-* global checkpoint ts：计算所有 TiKV local checkpoint ts 所得，表示所有 TiKV 中小于 global checkpoint ts 的日志数据已经完成备份
+* TiKV **local checkpoint ts** (in local metadata)：表示这个 TiKV 中所有小于 local checkpoint ts 的日志数据已经完成备份。
+* **global checkpoint ts**：计算所有 TiKV local checkpoint ts 所得，表示所有 TiKV 中小于 global checkpoint ts 的日志数据已经完成备份
 
 完整的备份交互流程描述如下：
 
