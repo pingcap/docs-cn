@@ -1,7 +1,6 @@
 ---
 title: ALTER INDEX
 summary: TiDB 数据库中 ALTER INDEX 的使用概况。
-aliases: ['/docs-cn/dev/sql-statements/sql-statement-alter-index/','/docs-cn/dev/reference/sql/statements/alter-index/']
 ---
 
 # ALTER INDEX

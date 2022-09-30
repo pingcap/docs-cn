@@ -1,7 +1,6 @@
 ---
 title: 选择驱动或 ORM 框架
 summary: 选择驱动或 ORM 框架连接 TiDB。
-aliases: ['/zh/tidb/dev/choose-driver-or-orm']
 ---
 
 # 选择驱动或 ORM 框架

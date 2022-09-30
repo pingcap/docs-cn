@@ -1,6 +1,5 @@
 ---
 title: Max/Min 函数消除规则
-aliases: ['/docs-cn/dev/max-min-eliminate/','/docs-cn/dev/reference/performance/max-min-eliminate/']
 ---
 
 # Max/Min 函数消除规则

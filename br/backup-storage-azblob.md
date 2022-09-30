@@ -1,7 +1,6 @@
 ---
 title: 使用 BR 在 Azure Blob Storage 备份和恢复数据
 summary: 介绍使用 BR 在外部存储 Azure Blob Storage 上进行备份与恢复时的方法。
-aliases: ['/zh/tidb/dev/backup-and-restore-azblob']
 ---
 
 # 使用 BR 在 Azure Blob Storage 备份和恢复数据
