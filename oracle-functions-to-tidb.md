@@ -74,8 +74,8 @@ INSERT INTO table1 VALUES (feild1,(SELECT T.fields2 FROM table1 T WHERE...))
 
 ### 获取前 n 行数据
 
-- Oracle：通过 `ROWNUM <= n` 获取前 n 条数据。例如，`ROWNUM <= 10`。
-- TiDB：通过 `LIMIT n` 获取前 n 条数据。例如，`LIMIT 10`。Hibernate Query Language (HQL) 方式运行带 `LIMIT` 的 SQL 语句会出现错误，需要将 Hibernate 的运行方式改为 SQL 方式运行。
+- Oracle：通过 `ROWNUM <= n` 获取前 n 行数据。例如，`ROWNUM <= 10`。
+- TiDB：通过 `LIMIT n` 获取前 n 行数据。例如，`LIMIT 10`。Hibernate Query Language (HQL) 方式运行带 `LIMIT` 的 SQL 语句会出现错误，需要将 Hibernate 的运行方式改为 SQL 方式运行。
 
 ### `UPDATE` 语句多表更新
 
