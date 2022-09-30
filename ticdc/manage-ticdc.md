@@ -8,14 +8,14 @@ title: TiCDC 运维操作及任务管理
 
 ## 使用 TiUP 升级 TiCDC
 
-本部分介绍如何使用 TiUP 来升级 TiCDC 集群。在以下例子中，假设需要将 TiCDC 组件和整个 TiDB 集群升级到 v6.2.0。
+本部分介绍如何使用 TiUP 来升级 TiCDC 集群。在以下例子中，假设需要将 TiCDC 组件和整个 TiDB 集群升级到 v6.3.0。
 
 {{< copyable "shell-regular" >}}
 
 ```shell
 tiup update --self && \
 tiup update --all && \
-tiup cluster upgrade <cluster-name> v6.2.0
+tiup cluster upgrade <cluster-name> v6.3.0
 ```
 
 ### 升级的注意事项
@@ -661,7 +661,7 @@ matcher = ["test.worker"] # 该过滤规则只应用于 test 库中的 worker �
 ignore-event = ["insert"] # 过滤掉 insert 事件
 ignore-sql = ["^drop", "add column"] # 过滤掉以 "drop" 开头或者包含 "add column" 的 DDL
 ignore-delete-value-expr = "name = 'john'" # 过滤掉包含 name = 'john' 条件的 delete DML
-ignore-insert-value-expr = "id >= 100" # 过滤掉包含 id >= 100 条件的 insert DML 
+ignore-insert-value-expr = "id >= 100" # 过滤掉包含 id >= 100 条件的 insert DML
 ignore-update-old-value-expr = "age < 18 or name = 'lili'" # 过滤掉旧值 age < 18 或 name = 'lili' 的 update DML
 ignore-update-new-value-expr = "gender = 'male' and age > 18" # 过滤掉新值 gender = 'male' 且 age > 18 的 update DML
 ```
