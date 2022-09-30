@@ -173,8 +173,6 @@ SELECT * FROM users;
 >
 > When you insert data to a cached table, second-level write latency might occur. The latency is controlled by the global environment variable [`tidb_table_cache_lease`](/system-variables.md#tidb_table_cache_lease-new-in-v600). You can decide whether to use the cached table feature by checking whether the latency is acceptable based on your application. For example, in a read-only scenario, you can increase the value of `tidb_table_cache_lease`:
 >
-> {{< copyable "sql" >}}
->
 > ```sql
 > set @@global.tidb_table_cache_lease = 10;
 > ```

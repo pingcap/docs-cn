@@ -59,8 +59,6 @@ The initial value of the `tidb_enforce_mpp` session variable is equal to the [`e
 >
 > If TiDB optimizer cannot select the MPP mode due to reasons other than cost estimation, when you use the `EXPLAIN` statement to check out the execution plan, a warning is returned to explain the reason. For example:
 >
-> {{< copyable "sql" >}}
->
 > ```sql
 > set @@session.tidb_enforce_mpp=1;
 > create table t(a int);

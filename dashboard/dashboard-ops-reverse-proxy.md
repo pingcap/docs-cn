@@ -34,8 +34,6 @@ http://192.168.0.123:2379/dashboard/
 > <details>
 > <summary>Upgrade TiUP Cluster</summary>
 >
-> {{< copyable "shell-regular" >}}
->
 > ```bash
 > tiup update --self
 > tiup update cluster --force
