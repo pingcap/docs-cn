@@ -8,6 +8,12 @@ aliases: ['/docs/dev/functions-and-operators/string-functions/','/docs/dev/refer
 
 TiDB supports most of the [string functions](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html) available in MySQL 5.7, some of the [string functions](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html) available in MySQL 8.0, and some of the [functions](https://docs.oracle.com/en/database/oracle/oracle-database/21/sqlqr/SQL-Functions.html#GUID-93EC62F8-415D-4A7E-B050-5D5B2C127009) available in Oracle 21.
 
+<CustomContent platform="tidb">
+
+For comparisons between functions and syntax of Oracle and TiDB, see [Comparisons between Functions and Syntax of Oracle and TiDB](/oracle-functions-to-tidb.md).
+
+</CustomContent>
+
 ## Supported functions
 
 | Name                                                                                                                                          | Description                                                                                                                               |
