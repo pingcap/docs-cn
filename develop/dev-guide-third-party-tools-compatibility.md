@@ -138,7 +138,7 @@ TiDB 暂不支持 UpdatableResultSet，即请勿指定 `ResultSet.CONCUR_UPDATAB
 
 > **注意：**
 >
-> 已向 MySQL 报告此 Bug，可关注此 [Bug Report](https://bugs.mysql.com/bug.php?id=108643) 进行最新消息的跟踪。
+> 已向 MySQL JDBC 报告此 Bug，可关注此 [Bug Report](https://bugs.mysql.com/bug.php?id=108643) 进行最新消息的跟踪。
 
 请勿开启 `useLocalTransactionState`，这有可能导致事务无法提交或回滚。
 
