@@ -1761,8 +1761,8 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 作用域：GLOBAL
 - 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
 - 默认值：`0.8`
-- TiDB 内存使用占总内存的比例超过一定阈值时会报警。该功能的详细介绍和使用方法可以参考 [`tidb_memory_usage_alarm_ratio`](/tidb-configuration-file.md#tidb_memory_usage_alarm_ratio-从-v610-版本开始引入)。
-- 该变量的初始值可通过 [`tidb_memory_usage_alarm_ratio`](/tidb-configuration-file.md#tidb_memory_usage_alarm_ratio-从-v610-版本开始引入) 进行配置。
+- TiDB 内存使用占总内存的比例超过一定阈值时会报警。该功能的详细介绍和使用方法可以参考 [`tidb_memory_usage_alarm_ratio`](/tidb-configuration-file.md#tidb_memory_usage_alarm_ratio)。
+- 该变量的初始值可通过 [`tidb_memory_usage_alarm_ratio`](/tidb-configuration-file.md#tidb_memory_usage_alarm_ratio) 进行配置。
 
 ### `tidb_metric_query_range_duration` <span class="version-mark">从 v4.0 版本开始引入</span>
 
