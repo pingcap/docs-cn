@@ -299,7 +299,7 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 1 row in set (0.00 sec)
 ```
 
-### `max_connections` <span class="version-mark">从 v6.3.0 版本开始引入</span>
+### `max_connections` <span class="version-mark">从 v6.2.0 版本开始引入</span>
 
 - 作用域：GLOBAL
 - 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
@@ -933,7 +933,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 可选值：`OFF`，`ON`
 - 用于设置该 TiDB 服务器是否运行 DDL 语句。
 
-### `tidb_enable_collect_execution_info`
+### `tidb_enable_collect_execution_info` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
 - 作用域：GLOBAL
 - 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
@@ -1181,7 +1181,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 当读数据的算子只剩 1 个线程且当单条 SQL 语句的内存使用继续超过 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 时，该 SQL 语句会触发其它的内存控制行为，例如[落盘](/system-variables.md#tidb_enable_tmp_storage_on_oom-从-v630-版本开始引入)。
 - 该变量在单条查询仅涉及读数据的情况下，对内存控制效果较好。若还存在额外的计算操作（如连接、聚合等），打开该变量可能会导致内存不受 `tidb_mem_quota_query` 控制，加剧 OOM 风险。
 
-### `tidb_enable_slow_log`
+### `tidb_enable_slow_log` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
 - 作用域：GLOBAL
 - 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
@@ -1387,7 +1387,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 单位：秒
 - 这个变量用来控制打印 expensive query 日志的阈值时间，默认值是 60 秒。expensive query 日志和慢日志的差别是，慢日志是在语句执行完后才打印，expensive query 日志可以把正在执行中的语句且执行时间超过阈值的语句及其相关信息打印出来。
 
-### `tidb_force_priority`
+### `tidb_force_priority` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
 - 作用域：GLOBAL
 - 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
@@ -1756,7 +1756,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 如果一条查询语句执行过程中使用的内存空间超过该阈值，会触发系统变量 [`tidb_mem_oom_action`](#tidb_mem_oom_action-从-v610-版本开始引入) 中指定的行为。
 - 在 v6.1.0 之前这个开关通过 TiDB 配置文件 (`mem-quota-query`) 进行配置，且作用域为 `SESSION`。升级到 v6.1.0 时会自动继承原有设置，作用域变更为 `SESSION | GLOBAL`。
 
-### `tidb_memory_usage_alarm_ratio`
+### `tidb_memory_usage_alarm_ratio` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
 - 作用域：GLOBAL
 - 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
@@ -2225,7 +2225,7 @@ explain select * from t where age=5;
 - 范围 `[-2147483648, 0]`
 - 这个变量用于设置当前会话允许读取的历史数据范围。设置后，TiDB 会从参数允许的范围内选出一个尽可能新的时间戳，并影响后继的所有读操作。比如，如果该变量的值设置为 `-5`，TiDB 会在 5 秒时间范围内，保证 TiKV 拥有对应历史版本数据的情况下，选择尽可能新的一个时间戳。
 
-### `tidb_record_plan_in_slow_log`
+### `tidb_record_plan_in_slow_log` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
 - 作用域：GLOBAL
 - 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
@@ -2346,7 +2346,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 >
 > 跳过字符检查可能会使 TiDB 检测不到应用写入的非法 UTF-8 字符，进一步导致执行 `ANALYZE` 时解码错误，以及引入其他未知的编码问题。如果应用不能保证写入字符串的合法性，不建议跳过该检查。
 
-### `tidb_slow_log_threshold`
+### `tidb_slow_log_threshold` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
 - 作用域：GLOBAL
 - 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例

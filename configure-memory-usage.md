@@ -60,7 +60,7 @@ server-memory-quota = 34359738368
 
 ## tidb-server 内存占用过高时的报警
 
-默认配置下，tidb-server 实例会在机器内存使用达到总内存量的 80% 时打印报警日志，并记录相关状态文件。该内存使用率可以通过系统变量 [`tidb_memory_usage_alarm_ratio`](/system-variables.md#tidb_memory_usage_alarm_ratio) 进行设置。具体报警规则请参考该配置项的说明部分。
+默认配置下，tidb-server 实例会在机器内存使用达到总内存量的 80% 时打印报警日志，并记录相关状态文件。该内存使用率可以通过系统变量 [`tidb_memory_usage_alarm_ratio`](/system-variables.md#tidb_memory_usage_alarm_ratio-从-v610-版本开始引入) 进行设置。具体报警规则请参考该配置项的说明部分。
 
 注意，当触发一次报警后，只有在内存使用率连续低于阈值超过 10 秒并再次达到阈值时，才会再次触发报警。此外，为避免报警时产生的状态文件积累过多，目前只会保留最近 5 次报警时所生成的状态文件。
 
@@ -92,7 +92,7 @@ server-memory-quota = 34359738368
     * `system memory total`：表示当前系统的总内存
     * `system memory usage`：表示当前系统的内存使用量
     * `tidb-server memory usage`：表示 tidb-server 实例的内存使用量
-    * `memory-usage-alarm-ratio`：表示系统变量 [`tidb_memory_usage_alarm_ratio`](/system-variables.md#tidb_memory_usage_alarm_ratio) 的值
+    * `memory-usage-alarm-ratio`：表示系统变量 [`tidb_memory_usage_alarm_ratio`](/system-variables.md#tidb_memory_usage_alarm_ratio-从-v610-版本开始引入) 的值
     * `record path`：表示状态文件存放的目录
 
 5. 通过访问状态文件所在目录（该示例中的目录为 `/tmp/1000_tidb/MC4wLjAuMDo0MDAwLzAuMC4wLjA6MTAwODA=/tmp-storage/record`），可以得到一组文件，其中包括 `goroutinue`、`heap`、`running_sql` 3 个文件，文件以记录状态文件的时间为后缀。这 3 个文件分别用来记录报警时的 goroutine 栈信息，堆内存使用状态，及正在运行的 SQL 信息。其中 `running_sql` 文件内的日志格式请参考 [`expensive-queries`](/identify-expensive-queries.md)。
