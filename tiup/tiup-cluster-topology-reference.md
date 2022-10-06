@@ -391,6 +391,7 @@ drainer_servers:
 - `os`：`host` 字段所指定的机器的操作系统，若不指定该字段，则默认为 `global` 中的 `os`
 - `arch`：`host` 字段所指定的机器的架构，若不指定该字段，则默认为 `global` 中的 `arch`
 - `resource_control`：针对该服务的资源控制，如果配置了该字段，会将该字段和 `global` 中的 `resource_control` 内容合并（若字段重叠，以本字段内容为准），然后生成 systemd 配置文件并下发到 `host` 指定机器。`resource_control` 的配置规则同 `global` 中的 `resource_control`
+- `ticdc_cluster_id`：指定该服务器对应的 TiCDC 集群 ID。若不指定该字段，则自动加入默认 TiCDC 集群。该配置只在 v6.3.0 及以上 TiDB 版本中才生效。
 
 以上所有字段中，部分字段部署完成之后不能再修改。如下所示：
 
@@ -401,6 +402,7 @@ drainer_servers:
 - `log_dir`
 - `arch`
 - `os`
+- `ticdc_cluster_id`
 
 `cdc_servers` 配置示例：
 

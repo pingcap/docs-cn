@@ -5,7 +5,7 @@ summary: 了解日志备份的已知问题。
 
 # 日志备份的已知问题
 
-本文列出了在使用日志备份功能时，可能会遇到的问题及相应的解决方法。 
+本文列出了在使用日志备份功能时，可能会遇到的问题及相应的解决方法。
 
 如果遇到未包含在此文档且无法解决的问题，可以在 [AskTUG](https://asktug.com/) 社区中搜索答案或提问。
 
@@ -31,27 +31,7 @@ Issue 链接：[#36648](https://github.com/pingcap/tidb/issues/36648)
 
 在创建日志备份任务的上游集群中，请尽量避免使用 TiDB Lightning Physical 方式导入数据。可以选择使用 TiDB Lightning Logical 方式导入数据。若确实需要使用 Physical 导入方式，可在导入完成之后做一次快照备份操作，这样，PITR 就可以恢复到快照备份之后的时间点。
 
-## 使用自建的 Minio 系统作为日志备份的存储，执行 `br restore point` 或者 `br log truncate` 出现 `RequestCanceled` 错误
-
-Issue 链接：[#36515](https://github.com/pingcap/tidb/issues/36515)
-
-```shell
-[error="RequestCanceled: request context canceled\ncaused by: context canceled"]
-```
-
-出现此错误的原因是，当前日志备份会产生大量小文件，自建的 Minio 存储系统的支持能力不能满足当前日志备份功能的需求。
-
-如需解决该问题，需要将 Minio 系统升级到更大规模的分布式集群，或者直接使用 Amazon S3 存储系统作为日志备份的存储。
-
-## 集群负载过高，Region 过多，存储达到性能瓶颈（比如使用自建的 Minio 系统作为日志备份的存储）等情况下，备份进度 checkpoint 延迟可能超过 10 分钟
-
-Issue 链接：[#13030](https://github.com/tikv/tikv/issues/13030)
-
-因为日志备份会产生大量小文件，而自建的 Minio 系统在规模上难以支撑日志备份对于大量小文件的写入需求，导致备份进度缓慢。
-
-如需解决该问题，需将 Minio 系统升级到更大规模，或者直接使用 Amazon S3 存储系统作为日志备份的存储。
-
-## 集群已经恢复了网络分区故障，日志备份任务进度 checkpoint 仍然不推进 
+## 集群已经恢复了网络分区故障，日志备份任务进度 checkpoint 仍然不推进
 
 Issue 链接：[#13126](https://github.com/tikv/tikv/issues/13126)
 
@@ -76,3 +56,23 @@ Issue 链接：[#37207](https://github.com/pingcap/tidb/issues/37207)
 Issue 链接：[#13304](https://github.com/tikv/tikv/issues/13304)
 
 当场景中有大事务时，日志 checkpoint lag 在事务提交前都不会更新，因此会增加一段接近于大事务提交时长的时间。
+
+## 索引加速功能与 PITR 功能不兼容
+
+Issue 链接：[#38045](https://github.com/pingcap/tidb/issues/38045)
+
+当前[索引加速功能](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入)与 PITR 功能不兼容。在使用索引加速功能时，需要确保后台没有启动 PITR 备份任务，否则可能会出现非预期结果。非预期场景包括：
+
+- 如果先启动 PITR 备份任务，再添加索引，此时即使索引加速功能打开，也不会使用加速索引功能，但不影响索引兼容性。
+- 如果先启动添加索引加速任务，再创建 PITR 备份任务，此时 PITR 备份任务会报错，但不影响正在添加索引的任务。
+- 如果同时启动 PITR 备份任务和添加索引加速任务，可能会由于两个任务无法察觉到对方而导致 PITR 不能成功备份增加的索引数据。
+
+## 在 GCS 或 Azure Blob Storage 上第一次执行 `PITR Truncate` 命令时报错
+
+Issue 链接：[#38229](https://github.com/pingcap/tidb/issues/38229)
+
+在 GCS 或 Azure Blob Storage 上**第一次**执行 `PITR Truncate` 时会提示文件 `v1_stream_trancate_safepoint.txt` 不存在。解决方法如下：
+
+在 PITR 的备份根目录下，创建文件 `v1_stream_trancate_safepoint.txt`，然后写入 `0`。注意文件不得包含其他字符。在第一次执行 `PITR Truncate` 命令时，添加该文件即可。
+<!-- TODO: v6.4.0 发版时，取消注释以下文字  -->
+<!-- 或者，使用 v6.4.0 及以上版本的 BR。 -->

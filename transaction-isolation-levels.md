@@ -69,6 +69,15 @@ MySQL 可重复读隔离级别在更新时并不检验当前版本是否可见�
 
 在使用 `READ-COMMITTED` 隔离级别且单个事务中 `SELECT` 语句较多、读写冲突较少的场景，可通过开启此变量来避免获取全局 timestamp 带来的延迟和开销。
 
+从 v6.3.0 版本开始，TiDB 支持通过开启系统变量 [`tidb_rc_write_check_ts`](/system-variables.md#tidb_rc_write_check_ts-从-v630-版本开始引入) 对点写冲突较少情况下优化时间戳的获取。开启此变量后，点写语句会尝试使用当前事务有效的时间戳进行数据读取和加锁操作，且在读取数据时按照开启 [`tidb_rc_read_check_ts`](/system-variables.md#tidb_rc_read_check_ts-从-v600-版本开始引入) 的方式读取数据。目前该变量适用的点写语句包括 `UPDATE`、`DELETE`、`SELECT ...... FOR UPDATE` 三种类型。点写语句是指将主键或者唯一键作为过滤条件且最终执行算子包含 `POINT-GET` 的写语句。目前这三种点写语句的共同点是会先根据 key 值做点查，如果 key 存在再加锁，如果不存在则直接返回空集。
+
+- 如果点写语句的整个读取过程中没有遇到更新的数据版本，则继续使用当前事务的时间戳进行加锁。
+    - 如果加锁过程中遇到因时间戳旧而导致写冲突，则重新获取最新的全局时间戳进行加锁。
+    - 如果加锁过程中没有遇到写冲突或其他错误，则加锁成功。
+- 如果读取过程中遇到更新的数据版本，则尝试重新获取一个新的时间戳重试此语句。
+ 
+在使用 `READ-COMMITTED` 隔离级别且单个事务中点写语句较多、点写冲突较少的场景，可通过开启此变量来避免获取全局时间戳带来的延迟和开销。
+
 ### 与 MySQL Read Committed 隔离级别的区别
 
 MySQL 的 Read Committed 隔离级别大部分符合一致性读特性，但其中存在某些特例，如半一致性读 ([semi-consistent read](https://dev.mysql.com/doc/refman/8.0/en/innodb-transaction-isolation-levels.html))，TiDB 没有兼容这个特殊行为。

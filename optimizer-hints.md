@@ -125,6 +125,22 @@ SELECT /*+ HASH_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id = t2.id;
 >
 > `HASH_JOIN` 的别名是 `TIDB_HJ`，在 3.0.x 及之前版本仅支持使用该别名；之后的版本同时支持使用这两种名称，推荐使用 `HASH_JOIN`。
 
+### HASH_JOIN_BUILD(t1_name [, tl_name ...])
+
+`HASH_JOIN_BUILD(t1_name [, tl_name ...])` 提示优化器对指定表使用 Hash Join 算法，同时将指定表作为 Hash Join 算法的 Build 端，即用指定表来构建哈希表。例如：
+
+```sql
+SELECT /*+ HASH_JOIN_BUILD(t1) */ * FROM t1, t2 WHERE t1.id = t2.id;
+```
+
+### HASH_JOIN_PROBE(t1_name [, tl_name ...])
+
+`HASH_JOIN_PROBE(t1_name [, tl_name ...])` 提示优化器对指定表使用 Hash Join 算法，同时将指定表作为 Hash Join 算法的探测（Probe）端，即用指定表作为探测端来执行 Hash Join 算法。例如：
+
+```sql
+SELECT /*+ HASH_JOIN_PROBE(t2) */ * FROM t1, t2 WHERE t1.id = t2.id;
+```
+
 ### SEMI_JOIN_REWRITE()
 
 `SEMI_JOIN_REWRITE()` 提示优化器将查询语句中的半连接 (Semi Join) 改写为普通的内连接。目前该 Hint 只作用于 `EXISTS` 子查询。

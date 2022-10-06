@@ -247,6 +247,11 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 + 默认值：2000
 + 最小值：2
 
+### `auto-adjust-pool-size` <span class="version-mark">从 v6.3.0 版本开始引入</span>
+
++ 是否开启自动调整线程池的大小。开启此配置可以基于当前的 CPU 使用情况，自动调整统一处理读请求的线程池 (UnifyReadPool) 的大小，优化 TiKV 的读性能。目前线程池自动调整的范围为：`[max-thread-count, MAX(4, CPU)]`(上限与 [`max-thread-count`](#max-thread-count) 可设置的最大值相同)。
++ 默认值：false
+
 ## readpool.storage
 
 存储线程池相关的配置项。
@@ -482,8 +487,8 @@ I/O rate limiter 相关的配置项。
 ### `mode`
 
 + 确定哪些类型的 I/O 操作被计数并受 `max-bytes-per-sec` 阈值的限流。当前 TiKV 只支持 write-only 只写模式。
-+ 可选值：write-only
-+ 默认值：write-only
++ 可选值：`"read-only"`，`"write-only"`，`"all-io"`
++ 默认值：`"write-only"`
 
 ## raftstore
 
@@ -1499,6 +1504,31 @@ Raft Engine 相关的配置项。
 + 当该配置项未设置时，Raft Engine 默认使用系统总内存的 15%。
 + 默认值：`系统总内存 * 15%`
 
+### `format-version` <span class="version-mark">从 v6.3.0 版本开始引入</span>
+
+> **注意：**
+>
+> `format-version` 的值设置为 `2` 后，如果你需要将 TiKV 集群降级至 v6.3.0 以前的版本，你需要在降级**之前**执行如下操作：
+>
+> 1. 关闭 Raft Engine。将 [`enable`](/tikv-configuration-file.md#enable-1) 配置项设置为 `false`，并重启 TiKV 使配置生效。
+> 2. 将 `format-version` 的值重新设置为 `1`。
+> 3. 重新打开 Raft Engine，即把 `enable` 配置项重设为 `true`，并重启 TiKV 使配置生效。
+
++ 指定 Raft Engine 的日志文件格式版本。
++ 可选值：
+    + `1`：v6.3.0 以前的默认日志文件格式。v6.1.0 及以后版本的 TiKV 可以读取该格式。
+    + `2`：支持日志回收。v6.3.0 及以后版本的 TiKV 可以读取该格式。
++ 默认值：`2`
+
+### `enable-log-recycle` <span class="version-mark">从 v6.3.0 版本开始引入</span>
+
+> **注意：**
+>
+> 仅在 [`format-version`](#format-version-从-v630-版本开始引入) 的值大于等于 2 时，该配置项才生效。
+
++ 控制 Raft Engine 是否回收过期的日志文件。该配置项启用时，Raft Engine 将保留逻辑上被清除的日志文件，用于日志回收，减少写负载的长尾延迟。
++ 默认值：`false`
+
 ## security
 
 安全相关配置项。
@@ -1535,7 +1565,7 @@ Raft Engine 相关的配置项。
 ### `data-encryption-method`
 
 + 数据文件的加密方法。
-+ 可选值：`"plaintext"`，`"aes128-ctr"`，`"aes192-ctr"`，`"aes256-ctr"`
++ 可选值：`"plaintext"`，`"aes128-ctr"`，`"aes192-ctr"`，`"aes256-ctr"`， `"sm4-ctr"`（从 v6.3.0 开始支持）
 + 选择 `"plaintext"` 以外的值则表示启用加密功能。此时必须指定主密钥。
 + 默认值：`"plaintext"`
 
@@ -1598,12 +1628,13 @@ Raft Engine 相关的配置项。
 ### `enable` <span class="version-mark">从 v6.2.0 版本开始引入</span>
 
 + 用于开启日志备份功能。
-+ 默认值：false
++ 默认值：true
 
 ### `file-size-limit` <span class="version-mark">从 v6.2.0 版本开始引入</span>
 
-+ 日志备份任务的备份数据达到一定大小时，自动 flush 到外部存储中。
-+ 默认值：256MB
++ 日志备份任务中，保存到存储的备份文件大小。
++ 默认值：256MiB
++ 注意：一般情况下，`file-size-limit` 的值会大于外部存储上显示的备份文件大小，这是因为备份文件在上传时会被压缩。
 
 ### `initial-scan-pending-memory-quota` <span class="version-mark">从 v6.2.0 版本开始引入</span>
 
@@ -1618,7 +1649,7 @@ Raft Engine 相关的配置项。
 ### `max-flush-interval` <span class="version-mark">从 v6.2.0 版本开始引入</span>
 
 + 日志备份任务将备份数据写入到外部存储的最大间隔时间。
-+ 默认值：5min
++ 默认值：3min
 
 ### `num-threads` <span class="version-mark">从 v6.2.0 版本开始引入</span>
 
@@ -1779,7 +1810,7 @@ Raft Engine 相关的配置项。
 > **注意：**
 >
 > 该配置项可以通过 `SHOW CONFIG` 查询到，但暂未生效。设置该配置项的值不生效。
- 
+
 + 限制后台事务写入的带宽，这是一个软限制。
 + 默认值：0KB（即无限制）
 
