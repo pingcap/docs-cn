@@ -567,7 +567,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 这个变量用于控制是否开启[自动捕获绑定](/sql-plan-management.md#自动捕获绑定-baseline-capturing)功能。该功能依赖 Statement Summary，因此在使用自动绑定之前需打开 Statement Summary 开关。
 - 开启该功能后会定期遍历一次 Statement Summary 中的历史 SQL 语句，并为至少出现两次的 SQL 语句自动创建绑定。
 
-### `tidb_check_mb4_value_in_utf8`
+### `tidb_check_mb4_value_in_utf8` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
 - 作用域：GLOBAL
 - 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
