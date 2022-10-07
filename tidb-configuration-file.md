@@ -116,13 +116,13 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 单位：Byte
 + 目前的合法值范围 `[3072, 3072*4]`。MySQL 和 TiDB v3.0.11 之前版本（不包含 v3.0.11）没有此配置项，不过都对新建索引的长度做了限制。MySQL 对此的长度限制为 `3072`，TiDB 在 v3.0.7 以及之前版本该值为 `3072*4`，在 v3.0.7 之后版本（包含 v3.0.8、v3.0.9 和 v3.0.10）的该值为 `3072`。为了与 MySQL 和 TiDB 之前版本的兼容，添加了此配置项。
 
-### `table-column-count-limit` <span class="version-mark">从 v5.0 版本开始引入</span>
+### `table-column-count-limit` （从 v5.0 版本开始引入）
 
 + 用于设置单个表中列的数量限制
 + 默认值：1017
 + 目前的合法值范围 `[1017, 4096]`。
 
-### `index-limit` <span class="version-mark">从 v5.0 版本开始引入</span>
+### `index-limit` （从 v5.0 版本开始引入）
 
 + 用于设置单个表中索引的数量限制
 + 默认值：64
@@ -340,7 +340,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 当 TiDB 检测到 tidb-server 的内存使用超过了阈值，则会认为存在内存溢出的风险，会将当前正在执行的所有 SQL 语句中内存使用最高的 10 条语句和运行时间最长的 10 条语句以及 heap profile 记录到目录 [`tmp-storage-path/record`](/tidb-configuration-file.md#tmp-storage-path) 中，并输出一条包含关键字 `tidb-server has the risk of OOM` 的日志。
 + 该值作为系统变量 [`tidb_memory_usage_alarm_ratio`](/system-variables.md#tidb_memory_usage_alarm_ratio) 的初始值。
 
-### `txn-entry-size-limit` <span class="version-mark">从 v5.0 版本开始引入</span>
+### `txn-entry-size-limit` （从 v5.0 版本开始引入）
 
 + TiDB 单行数据的大小限制
 + 默认值：6291456
