@@ -107,7 +107,7 @@ The value options of `match_type` between TiDB and MySQL are:
 
 The difference between TiDB and MySQL support for the binary string type:
 
-- MySQL deos not support binary strings in regular expression functions since 8.0.22. For more details, refer to [MySQL documentation](https://dev.mysql.com/doc/refman/8.0/en/regexp.html). But in practice, regular functions can work in MySQL when all parameters or return types are binary strings. Otherwise, an error will be reported.
+- MySQL does not support binary strings in regular expression functions since 8.0.22. For more details, refer to [MySQL documentation](https://dev.mysql.com/doc/refman/8.0/en/regexp.html). But in practice, regular functions can work in MySQL when all parameters or return types are binary strings. Otherwise, an error will be reported.
 - Currently, TiDB prohibits using binary strings and an error will be reported under any circumstances.
 
 ### Other compatibility
