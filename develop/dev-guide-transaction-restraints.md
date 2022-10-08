@@ -32,9 +32,9 @@ TiDB 的 SI 隔离级别不能克服写偏斜异常（Write Skew），需要使�
 
 现在出现这样一种情况，Alice 和 Bob 是两位值班医生。两人都感到不适，所以他们都决定请假。不幸的是，他们恰好在同一时间点击按钮下班。下面用程序来模拟一下这个过程。
 
-<SimpleTab>
+<SimpleTab groupId="language">
 
-<div label="Java">
+<div label="Java" value="java">
 
 Java 程序示例如下：
 
@@ -159,7 +159,7 @@ public class EffectWriteSkew {
 
 </div>
 
-<div label="Golang">
+<div label="Golang" value="golang">
 
 在 Golang 中，首先，封装一个用于适配 TiDB 事务的工具包 [util](https://github.com/pingcap-inc/tidb-example-golang/tree/main/util)，随后编写以下代码：
 
@@ -367,9 +367,9 @@ mysql> SELECT * FROM doctors;
 
 现在更改示例程序，使用 `SELECT FOR UPDATE` 来克服写偏斜问题：
 
-<SimpleTab>
+<SimpleTab groupId="language">
 
-<div label="Java">
+<div label="Java" value="java">
 
 Java 中使用 `SELECT FOR UPDATE` 来克服写偏斜问题的示例如下：
 
@@ -494,7 +494,7 @@ public class EffectWriteSkew {
 
 </div>
 
-<div label="Golang">
+<div label="Golang" value="golang">
 
 Golang 中使用 `SELECT FOR UPDATE` 来克服写偏斜问题的示例如下：
 

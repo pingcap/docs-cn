@@ -118,7 +118,7 @@ while True:
             sleep(sleep_ms) # make sure your sleep() takes milliseconds
 ```
 
-> 注意：
+> **注意：**
 >
 > 如果你经常遇到 `Error 9007: Write conflict` 错误，你可能需要进一步评估你的 Schema 设计和数据存取模型，找到冲突的根源并从设计上避免冲突。
 > 关于如何定位和解决事务冲突，请参考[TiDB 锁冲突问题处理](/troubleshoot-lock-conflicts.md)。

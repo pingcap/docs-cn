@@ -55,8 +55,8 @@ TiDB 的临时表分为本地临时表和全局临时表：
 
 在创建本地临时表前，你需要给当前数据库用户添加上 `CREATE TEMPORARY TABLES` 权限。
 
-<SimpleTab>
-<div label="SQL">
+<SimpleTab groupId="language">
+<div label="SQL" value="sql">
 
 在 SQL 中，通过 `CREATE TEMPORARY TABLE <table_name>` 语句创建临时表，默认临时表的类型为本地临时表，它只能被当前会话所访问。
 
@@ -91,7 +91,7 @@ Records: 50  Duplicates: 0  Warnings: 0
 ```
 
 </div>
-<div label="Java">
+<div label="Java" value="java">
 
 在 Java 中创建本地临时表的示例如下：
 
@@ -137,8 +137,8 @@ public List<Author> getTop50EldestAuthorInfo() throws SQLException {
 
 ### 创建全局临时表
 
-<SimpleTab>
-<div label="SQL">
+<SimpleTab groupId="language">
+<div label="SQL" value="sql">
 
 在 SQL 中，你可以通过加上 `GLOBAL` 关键字来声明你所创建的是全局临时表。创建全局临时表时必须在末尾 `ON COMMIT DELETE ROWS` 修饰，这表明该全局数据表的所有数据行将在事务结束后被删除。
 
@@ -156,7 +156,7 @@ CREATE GLOBAL TEMPORARY TABLE IF NOT EXISTS top_50_eldest_authors_global (
 在对全局临时表导入数据时，你需要特别注意，你必须通过 `BEGIN` 显式声明事务的开始。否则导入的数据在 `INSERT INTO` 语句执行后就清除掉，因为 Auto Commit 模式下，`INSERT INTO` 语句的执行结束，事务会自动被提交，事务结束，全局临时表的数据便被清空了。
 
 </div>
-<div label="Java">
+<div label="Java" value="java">
 
 在 Java 中使用全局临时表时，你需要将 Auto Commit 模式先关闭。在 Java 语言当中，你可以通过 `conn.setAutoCommit(false);` 语句来实现，当你使用完成后，可以通过 `conn.commit();` 显式地提交事务。事务在提交或取消后，在事务过程中对全局临时表添加的数据将会被清除。
 

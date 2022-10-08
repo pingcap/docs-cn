@@ -9,10 +9,16 @@ summary: 了解如何使用 br log 命令行工具进行日志备份并恢复日
 
 ## 前置条件
 
+### 安装 BR
+
 使用日志备份前，你需要安装 BR。你可以选择以下任一方式安装 BR：
 
 * [使用 TiUP 在线安装](/migration-tools.md#使用-tiup-快速安装)（推荐）
 * [下载 TiDB 离线包](/download-ecosystem-tools.md)
+
+### 启用日志备份
+
+使用日志备份功能前，需确保 TiKV 配置项 [`log-backup.enable`](/tikv-configuration-file.md#enable-从-v620-版本开始引入) 设为默认值 `true`。修改配置参数的方法，请参考[修改配置参数](/maintain-tidb-using-tiup.md#修改配置参数)。
 
 ## 使用日志备份
 
@@ -92,7 +98,7 @@ Global Flags:
 - `--start-ts`：指定开始备份日志的起始时间点。如果未指定，备份程序选取当前时间作为 start-ts。
 - `--pd`：指定备份集群的 PD 访问地址。BR 需要访问 PD 发起日志备份任务。
 - `ca`,`cert`,`key`：指定使用 mTLS 加密方式与 TiKV 和 PD 进行通讯。
-- `--storage`：指定备份存储地址。日志备份暂时只支持共享的文件系统和 Amazon S3 作为备份存储，详细介绍请参考 [AWS S3 storage](/br/backup-storage-S3.md)。
+- `--storage`：指定备份存储地址。日志备份支持共享的文件系统、Amazon S3、GCS 和 Azure Blob Storage 作为备份存储，详细介绍请参考 [AWS S3 storage](/br/backup-storage-S3.md)、[GCS storage](/br/backup-storage-gcs.md) 和 [Azure blob storage](/br/backup-storage-azblob.md)。
 
 使用示例：
 
@@ -286,7 +292,7 @@ Global Flags:
 
 - `--dry-run`：运行命令，但是不删除文件。
 - `--until`：早于该参数指定时间点的日志备份数据会被删除。建议使用快照备份的时间点作为该参数值。
-- `--storage`：指定备份存储地址。日志备份暂时只支持共享的文件系统和 Amazon S3 作为备份存储，详细介绍请参考 [AWS S3 storage](/br/backup-storage-S3.md)。
+- `--storage`：指定备份存储地址。日志备份支持共享的文件系统、Amazon S3、GCS 和 Azure Blob Storage 作为备份存储，详细介绍请参考 [AWS S3 storage](/br/backup-storage-S3.md)、[GCS storage](/br/backup-storage-gcs.md) 和 [Azure blob storage](/br/backup-storage-azblob.md)。
 
 使用示例：
 
@@ -326,7 +332,7 @@ Global Flags:
 
 该命令只需要访问备份存储，不需要访问备份集群。
 
-以上示例中，`--storage` 为常用参数，它用来指定备份存储地址。日志备份暂时只支持共享的文件系统和 Amazon S3 作为备份存储，使用 S3 作为 storage 的详细介绍请参考 [AWS S3 storage](/br/backup-storage-S3.md)。
+以上示例中，`--storage` 为常用参数，它用来指定备份存储地址。日志备份支持共享的文件系统、Amazon S3、GCS 和 Azure Blob Storage 作为备份存储，详细介绍请参考 [AWS S3 storage](/br/backup-storage-S3.md)、[GCS storage](/br/backup-storage-gcs.md) 和 [Azure blob storage](/br/backup-storage-azblob.md)。
 
 使用示例：
 
@@ -370,12 +376,12 @@ Global Flags:
 
 以上示例只展示了常用的参数，这些参数作用如下：
 
-- `--full-backup-storage`：指定快照（全量）备份的存储地址。如果你要使用 PiTR，需要指定该参数，并选择恢复时间点之前最近的快照备份；如果只恢复日志备份数据，则不需要指定该参数。如需使用 Amazon S3 作为存储地址，请参考 [AWS S3 storage](/br/backup-storage-S3.md)。
+- `--full-backup-storage`：指定快照（全量）备份的存储地址。如果你要使用 PITR，需要指定该参数，并选择恢复时间点之前最近的快照备份；如果只恢复日志备份数据，则不需要指定该参数。目前支持共享的文件系统、Amazon S3、GCS 和 Azure Blob Storage 作为备份存储，详细介绍请参考 [AWS S3 storage](/br/backup-storage-S3.md)、[GCS storage](/br/backup-storage-gcs.md) 和 [Azure blob storage](/br/backup-storage-azblob.md)。
 - `--restored-ts`：指定恢复到的时间点。如果没有指定该参数，则恢复到日志备份数据最后的可恢复时间点（备份数据的 checkpoint）。
 - `--start-ts`：指定日志备份恢复的起始时间点。如果你只恢复日志备份数据，不恢复快照备份，需要指定这个参数。
 - `--pd`：指定恢复集群的 PD 访问地址。
 - `ca`,`cert`,`key`：指定使用 mTLS 加密方式与 TiKV 和 PD 进行通讯。
-- `--storage`：指定日志备份的存储地址。日志备份暂时只支持 Amazon S3 作为备份存储，使用 S3 作为 storage 详细介绍请参考 [AWS S3 storage](/br/backup-storage-S3.md)。
+- `--storage`：指定日志备份的存储地址。日志备份支持共享的文件系统、Amazon S3、GCS 和 Azure Blob Storage 作为备份存储，详细介绍请参考 [AWS S3 storage](/br/backup-storage-S3.md)、[GCS storage](/br/backup-storage-gcs.md) 和 [Azure blob storage](/br/backup-storage-azblob.md)。
 
 使用示例：
 
@@ -394,5 +400,5 @@ Restore KV Files <--------------------------------------------------------------
 > **注意：**
 >
 > - 建议使用 `br restore point` 命令执行 PiTR 来恢复数据，参考 [PiTR 功能](/br/point-in-time-recovery.md)，不建议在集群上直接恢复一段时间区间内日志。
-> - 不支持重复恢复某段时间区间的日志，如多次重复恢复 [t1=10, ts2=20) 区间的日志数据，可能会造成恢复后的数据不正确。
+> - 不支持重复恢复某段时间区间的日志，如多次重复恢复 [t1=10, t2=20) 区间的日志数据，可能会造成恢复后的数据不正确。
 > - 多次恢复不同时间区间的日志时，需保证恢复日志的连续性。如先后恢复 [t1, t2)、[t2, t3) 和 [t3, t4) 三个区间的日志可以保证正确性，而在恢复 [t1, t2) 后跳过 [t2, t3) 直接恢复 [t3, t4) 的区间可能导致恢复之后的数据不正确。

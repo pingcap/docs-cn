@@ -1,6 +1,6 @@
 ---
 title: TiDB 产品文档
-aliases: ["/docs/dev/", "/docs/dev/adopters/", "/tidb/dev/adopters"]
+aliases: ['/docs-cn/dev/','/docs-cn/','/docs-cn/stable/']
 hide_sidebar: true
 hide_commit: true
 ---
@@ -41,7 +41,7 @@ hide_commit: true
 
 [软硬件环境需求](https://docs.pingcap.com/zh/tidb/dev/hardware-and-software-requirements)
 
-[使用 TiUP 部署 TiDB 集群（推荐方式）](https://docs.pingcap.com/zh/tidb/dev/production-deployment-using-tiup)
+[使用 TiUP 部署 TiDB（推荐）](https://docs.pingcap.com/zh/tidb/dev/production-deployment-using-tiup)
 
 [在 Kubernetes 上部署 TiDB](https://docs.pingcap.com/zh/tidb/dev/tidb-in-kubernetes)
 
@@ -120,6 +120,16 @@ hide_commit: true
 [TiDB Operator](https://docs.pingcap.com/zh/tidb/dev/tidb-operator-overview)
 
 [TiSpark](https://docs.pingcap.com/zh/tidb/dev/tispark-overview)
+
+</LearningPath>
+
+<LearningPath label="参考" icon="cloud-dev">
+
+[系统变量](https://docs.pingcap.com/zh/tidb/dev/system-variables)
+
+[发布历史](https://docs.pingcap.com/zh/tidb/dev/release-notes)
+
+[常见问题](https://docs.pingcap.com/zh/tidb/dev/faq-overview)
 
 </LearningPath>
 
