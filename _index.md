@@ -117,7 +117,17 @@ hide_commit: true
 
 [TiDB Operator](https://docs.pingcap.com/tidb/dev/tidb-operator-overview)
 
-[TiSpark](https://docs.pingcap.com/tidb/dev/tispark-overview) 
+[TiSpark](https://docs.pingcap.com/tidb/dev/tispark-overview)
+
+<LearningPath label="Reference" icon="cloud-dev">
+
+[System Variables](https://docs.pingcap.com/tidb/dev/system-variables)
+
+[Release Notes](https://docs.pingcap.com/tidb/dev/release-notes)
+
+[FAQ Summary](https://docs.pingcap.com/tidb/dev/faq-overview)
+
+</LearningPath>
 
 </LearningPath>
 
