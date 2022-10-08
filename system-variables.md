@@ -301,6 +301,7 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 ### `max_allowed_packet` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
 - 默认值：67108864
 - 取值范围：`[1024, 1073741824]`，且必须为 1024 的整数倍
 - 服务器端和客户端在一次传送数据包的过程中所允许最大的数据包大小，单位为字节。
