@@ -195,7 +195,7 @@ EXPLAIN SELECT * FROM t WHERE EXISTS (SELECT /*+ SEMI_JOIN_REWRITE() */ 1 FROM t
 
 `NO_DECORRELATE()` 提示优化器不要尝试对指定查询块对应的子查询解除关联。该 Hint 作用于包含关联列的 `EXISTS`、`IN`、`ANY/ALL/SOME` 和标量子查询，即通常所说的关联子查询。
 
-将该 Hint 写在一个查询块中时，该子查询和其外部查询块之间会保持关联列，使用 Apply 算子来执行。
+将该 Hint 写在一个查询块中时，对于该子查询和其外部查询块之间的关联列，优化器将不再尝试解关联，而是始终使用 Apply 算子来执行。
 
 默认情况下，TiDB 会尝试对关联子查询[解除关联](/correlated-subquery-optimization.md)，以达到更高的执行效率。但是在[一部分场景](/correlated-subquery-optimization.md#限制)下，解除关联会让执行效率变得更低。这种情况下，可以使用该 Hint 来人工提示优化器不要进行解除关联操作。例如：
 
