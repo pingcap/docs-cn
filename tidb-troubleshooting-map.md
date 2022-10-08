@@ -595,7 +595,7 @@ Check the specific cause for busy by viewing the monitor **Grafana** -> **TiKV**
 
 - 7.2.3 `TxnLockNotFound`.
 
-    This transaction commit is too slow, which is rolled back by other transactions after TTL (3 seconds for a small transaction by default). This transaction will automatically retry, so the business is usually not affected.
+    This transaction commit is too slow, causing it to be rolled back by other transactions after Time To Live (TTL). This transaction will automatically retry, so the business is usually not affected. For a transaction with a size of 0.25 MB or smaller, the default TTL is 3 seconds.
 
 - 7.2.4  `PessimisticLockNotFound`.
 
