@@ -2270,6 +2270,27 @@ explain select * from t where age=5;
 - TiDB 默认会在建表时为新表分裂 Region。开启该变量后，会在建表语句执行时，同步打散刚分裂出的 Region。适用于批量建表后紧接着批量写入数据，能让刚分裂出的 Region 先在 TiKV 分散而不用等待 PD 进行调度。为了保证后续批量写入数据的稳定性，建表语句会等待打散 Region 完成后再返回建表成功，建表语句执行时间会是该变量关闭时的数倍。
 - 如果建表时设置了 `SHARD_ROW_ID_BITS` 和 `PRE_SPLIT_REGIONS`，建表成功后会均匀切分出指定数量的 Region。
 
+### `tidb_server_memory_limit` <span class="version-mark">从 v6.4.0 版本开始引入</span>
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 默认值：80%
+- 范围：百分比格式 [1%, 99%], 内存大小格式 [0, 9,223,372,036,854,775,807]。 0 表示关闭该功能。
+- TiDB 实例的内存限制。TiDB 会在内存使用达到限制时，对当前内存使用 Top1 SQL 进行 Cancel 操作。 在该 SQL 被成功 Cancel 掉后，TiDB 会尝试调用 Golang GC 立刻进行内存回收，以最快的速度缓解内存压力。
+- 只有内存使用大于 `tidb_server_memory_limit_sess_min_size` 的 SQL 会被选定为最大需要被 Cancel 的 SQL。
+- 目前 TiDB 一次只会 Cancel 一条 SQL。等其完全 Cancel 并回收资源后并且内存使用依旧大于限制，才会开始下一次 Cancel 操作。
+
+### `tidb_server_memoru_limit_gc_trigger` <span class="version-mark">从 v6.4.0 版本开始引入</span>
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 默认值：70%
+- TiDB 尝试触发 GC 的阈值。当 TiDB 的内存使用达到 `tidb_server_memory_limit`*`tidb_server_memoru_limit_gc_trigger`，则会主动触发一次 Golang GC。主动触发的 GC 在一分钟之内只会触发一次。
+
+### `tidb_server_memory_limit_sess_min_size` <span class="version-mark">从 v6.4.0 版本开始引入</span>
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 默认值：128MB
+- 允许成为 `tidb_server_memory_limit` 中被 Cancel 的 Top1 SQL 的最小内存使用。
+
 ### `tidb_shard_allocate_step` <span class="version-mark">从 v5.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL

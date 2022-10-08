@@ -40,23 +40,29 @@ SET tidb_mem_quota_query = 8 << 10;
 
 ## 如何配置 tidb-server 实例使用内存的阈值
 
-可以在配置文件中设置 tidb-server 实例的内存使用阈值。相关配置项为 [`server-memory-quota`](/tidb-configuration-file.md#server-memory-quota-从-v409-版本开始引入) 。
+可以在系统变量 `tidb_server_memory_limit` 设置 tidb-server 实例的内存使用阈值。相关系统变量为 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit)
 
 例如，配置 tidb-server 实例的内存使用总量，将其设置成为 32 GB：
 
 {{< copyable "" >}}
 
-```toml
-[performance]
-server-memory-quota = 34359738368
+```sql
+set global tidb_server_memory_limit="32GB";
 ```
 
-在该配置下，当 tidb-server 实例内存使用到达 32 GB 时，正在执行的 SQL 语句会被随机强制终止，直至 tidb-server 实例内存使用下降到 32 GB 以下。被强制终止的 SQL 操作会向客户端返回 `Out Of Global Memory Limit!` 错误信息。
+在该配置下，当 tidb-server 实例内存使用到达 32 GB 时，其会依次终止正在执行的内存使用最大的 SQL，直至 tidb-server 实例内存使用下降到 32 GB 以下。被强制终止的 SQL 操作会向客户端返回 `Out Of Memory Limit!` 错误信息。
 
 > **警告：**
 >
-> + `server-memory-quota` 目前为实验性特性，不建议在生产环境中使用。
-> + `server-memory-quota` 默认值为 0，表示无内存限制。
+> + `server-memory-quota` 配置项已被废弃。为了保证兼容性，该配置项会覆盖 `tidb_server_memory_limit` 系统变量，并且只单实例生效。
+
+在 tidb-server 实例内存使用到达总内存对一定比例(`tidb_server_memory_limit_gc_trigger`), 其会尝试触发一次 Golang GC 以缓解内存压力。为了避免频繁 GC 可能导致的性能问题，该 GC 方式 1 分钟只会触发 1 次。
+
+## 使用内存表观测当前 tidb-server 的内存使用情况
+
+可以通过查询系统表 performance_schema.(cluster_)memory_usage 来查询本实例（集群）的内存使用情况。
+
+可以通过查询系统表 performance_schema.(cluster_)memory_usage_ops_history 来查询本实例（集群）内存相关对操作和依据（每个实例保留最近50条记录）。
 
 ## tidb-server 内存占用过高时的报警
 
