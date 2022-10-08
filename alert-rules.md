@@ -191,7 +191,7 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
 ### 紧急级别报警项
 
-#### `PD_cluster_down_store_nums`
+#### `PD_cluster_down_tikv_nums`
 
 * 报警规则：
 
@@ -241,7 +241,7 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
 ### 警告级别报警项
 
-#### `PD_cluster_lost_connect_store_nums`
+#### `PD_cluster_lost_connect_tikv_nums`
 
 * 报警规则：
 
