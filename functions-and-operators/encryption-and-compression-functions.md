@@ -31,9 +31,9 @@ TiDB 支持使用 MySQL 5.7 中提供的大部分[加密和压缩函数](https:/
 | [`ASYMMETRIC_SIGN()`](https://dev.mysql.com/doc/refman/5.7/en/enterprise-encryption-functions.html#function_asymmetric-sign)                          | 从摘要创建签名                    |
 | [`ASYMMETRIC_VERIFY()`](https://dev.mysql.com/doc/refman/5.7/en/enterprise-encryption-functions.html#function_asymmetric-verify)                      | 验证签名字符串是否匹配摘要字符串             |
 
-## Related system variables
+## 相关系统变量
 
-The `block_encryption_mode` variable sets the encryption mode that is used for `AES_ENCRYPT()` and `AES_DECRYPT()`.
+`block_encryption_mode` 变量设置 `AES_ENCRYPT()` 和 `AES_DECRYPT()` 所使用的加密模式。
 
 ## 不支持的函数
 
