@@ -197,7 +197,7 @@ TiDB 将密码存在 `mysql.user` 系统数据库里面。只有拥有 `CREATE U
 
 ## 忘记 `root` 密码
 
-1. 修改配置文件，在 `security` 部分添加 `skip-grant-table`：
+1. 修改配置文件，登录其中一台tidb-server所在机器，在tidb节点部署目录下的conf目录中，找到tidb.toml配置文件，在 `security` 部分添加 `skip-grant-table`，如无`security` 部分则将如下两行添加至tidb.toml配置文件尾部：
 
     {{< copyable "" >}}
 
@@ -206,13 +206,31 @@ TiDB 将密码存在 `mysql.user` 系统数据库里面。只有拥有 `CREATE U
     skip-grant-table = true
     ```
 
-2. 使用修改之后的配置启动 TiDB，然后使用 `root` 登录后修改密码：
+2. 停掉tidb-server进程
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    ps aux |grep tikv-server
+    ```
+
+    找到tikv-server对应的pid并使用kill命令停掉进程
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    kill -9 pid
+    ```    
+
+3. 使用修改之后的配置启动 TiDB，在tidb节点部署目录下的scripts目录中，切换到操作系统`root`账号下在前台执行`run_tidb.sh`脚本，然后另开一个终端使用 `root` 登录后修改密码：
 
     {{< copyable "shell-regular" >}}
 
     ```bash
     mysql -h 127.0.0.1 -P 4000 -u root
     ```
+
+4. 第3步中前台运行的`run_tidb.sh`脚本停掉，并去掉第1步中配置文件中添加的内容，等待确认tidb-server自启动
 
 设置 `skip-grant-table` 之后，启动 TiDB 进程会增加操作系统用户检查，只有操作系统的 `root` 用户才能启动 TiDB 进程。
 
