@@ -5,7 +5,7 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-flashback-cluster-to-timest
 
 # FLASHBACK CLUSTER
 
-在 TiDB 6.4 中，引入了 `FLASHBACK CLUSTER TO TIMESTAMP` 语法，其功能是将指定范围的数据恢复到特定的时间点。
+在 TiDB 6.4 中，引入了 `FLASHBACK CLUSTER TO TIMESTAMP` 语法，其功能是将集群的数据恢复到特定的时间点。
 
 ## 语法
 
