@@ -18,15 +18,16 @@ PD Control 是 PD 的命令行工具，用于获取集群状态信息和调整�
 
 ### 下载安装包
 
-如需下载最新版本的 `pd-ctl`，直接下载 TiDB 安装包即可。`pd-ctl` 位于 TiDB 安装包的 `ctl-{version}-linux-amd64.tar.gz` 包中。
+如需下载最新版本的 `pd-ctl`，直接下载 TiDB 安装包即可。`pd-ctl` 位于 TiDB 安装包的 `ctl-{version}-linux-{arch}.tar.gz` 包中。
 
 | 安装包                                                                    | 操作系统 | 架构  | SHA256 校验和                                                    |
 | :------------------------------------------------------------------------ | :------- | :---- | :--------------------------------------------------------------- |
 | `https://download.pingcap.org/tidb-community-server-{version}-linux-amd64.tar.gz` (pd-ctl) | Linux    | amd64 | `https://download.pingcap.org/tidb-community-server-{version}-linux-amd64.sha256` |
+| `https://download.pingcap.org/tidb-community-server-{version}-linux-arm64.tar.gz` (pd-ctl) | Linux | arm64 | `https://download.pingcap.org/tidb-community-server-{version}-linux-arm64.sha256` |
 
 > **注意：**
 >
-> 下载链接中的 `{version}` 为 TiDB 的版本号。例如 `v6.3.0` 版本的下载链接为 `https://download.pingcap.org/tidb-community-server-v6.3.0-linux-amd64.tar.gz`。
+> 下载链接中的 `{version}` 为 TiDB 的版本号。例如，amd64 架构的 `v6.3.0` 版本的下载链接为 `https://download.pingcap.org/tidb-community-server-v6.3.0-linux-amd64.tar.gz`。
 
 ### 源码编译
 
