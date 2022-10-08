@@ -119,6 +119,8 @@ hide_commit: true
 
 [TiSpark](https://docs.pingcap.com/tidb/dev/tispark-overview)
 
+</LearningPath>
+
 <LearningPath label="Reference" icon="cloud-dev">
 
 [System Variables](https://docs.pingcap.com/tidb/dev/system-variables)
@@ -126,8 +128,6 @@ hide_commit: true
 [Release Notes](https://docs.pingcap.com/tidb/dev/release-notes)
 
 [FAQ Summary](https://docs.pingcap.com/tidb/dev/faq-overview)
-
-</LearningPath>
 
 </LearningPath>
 
