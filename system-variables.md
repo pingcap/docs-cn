@@ -303,16 +303,6 @@ mysql> SELECT * FROM t1;
 - 默认值：`OFF`
 - 该变量表示是否使用 [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md)。
 
-### `max_allowed_packet`
-
-- 作用域：SESSION | GLOBAL
-- 是否持久化到集群：是
-- 类型：整数
-- 默认值：`67108864`
-- 取值范围：`[1024, 1073741824]`
-- 单位：字节
-- 该变量表示 MySQL 协议的最大包大小。
-
 ### `max_connections`
 
 - 作用域：GLOBAL
