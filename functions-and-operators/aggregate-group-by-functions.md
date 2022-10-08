@@ -185,6 +185,6 @@ from tbl_name
 group by id, val;
 ```
 
-## Related system variables
+## 相关系统变量
 
-The `group_concat_max_len` variable sets the maximum number of items for the `GROUP_CONCAT()` function.
+`group_concat_max_len` 变量设置 `GROUP_CONCAT()` 函数中的最大项目数。
