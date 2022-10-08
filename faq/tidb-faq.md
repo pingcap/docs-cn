@@ -14,11 +14,11 @@ This document lists the Most Frequently Asked Questions about TiDB.
 
 ### What is TiDB?
 
-TiDB is a distributed SQL database that features in horizontal scalability, high availability and consistent distributed transactions. It also enables you to use MySQL's SQL syntax and protocol to manage and retrieve data.
+[TiDB](https://github.com/pingcap/tidb) is an open-source NewSQL database that supports Hybrid Transactional and Analytical Processing (HTAP) workloads. It is MySQL compatible and features horizontal scalability, strong consistency, and high availability. The goal of TiDB is to provide users with a one-stop database solution that covers OLTP (Online Transactional Processing), OLAP (Online Analytical Processing), and HTAP services. TiDB is suitable for various use cases that require high availability and strong consistency with large-scale data.
 
 ### What is TiDB's architecture?
 
-The TiDB cluster has three components: the TiDB server, the PD (Placement Driver) server, and the TiKV server. For more details, see [TiDB architecture](/tidb-architecture.md).
+The TiDB cluster has three components: the TiDB server, the PD (Placement Driver) server, and the TiKV server. For more details, see [TiDB architecture](/tidb-architecture.md), [TiDB storage](/tidb-storage.md), [TiDB computing](/tidb-computing.md), and [TiDB scheduling](/tidb-scheduling.md).
 
 ### Is TiDB based on MySQL?
 
@@ -77,7 +77,9 @@ Usage of ./bin/tidb-server:
 
 ### In addition to the TiDB documentation, are there any other ways to acquire TiDB knowledge?
 
-Currently [TiDB documentation](/overview.md#tidb-introduction) is the most important and timely way to get TiDB related knowledge. In addition, we also have some technical communication groups. If you have any needs, contact [info@pingcap.com](mailto:info@pingcap.com).
+- [TiDB documentation](https://docs.pingcap.com/): the most important and timely way to get TiDB related knowledge.
+- [TiDB blogs](https://www.pingcap.com/blog/): learn technical articles, product insights, and case studies.
+- [PingCAP Education](https://www.pingcap.com/education/?from=en): take online courses and certification programs.
 
 ### What is the length limit for the TiDB user name?
 
@@ -96,7 +98,7 @@ No. The JDBC driver of TiDB is MySQL JDBC (Connector/J). When using Atomikos, se
 
 After you configure the two data sources of Atomikos, set the JDBC drives to XA. When Atomikos operates TM and RM (DB), Atomikos sends the command including XA to the JDBC layer. Taking MySQL for an example, when XA is enabled in the JDBC layer, JDBC will send a series of XA logic operations to InnoDB, including using DML to change the `redo` log. This is the operation of the two-phase commit. The current TiDB version does not support the upper application layer JTA/XA and does not parse XA operations sent by Atomikos.
 
-As a standalone database, MySQL can only implement across-database transactions using XA; while TiDB supports distributed transactions using Google Percolator transaction model and its performance stability is higher than XA, so TiDB does not support XA and there is no need for TiDB to support XA.
+As a standalone database, MySQL can only implement across-database transactions using XA; while TiDB supports distributed transactions using Google Percolator transaction model and its performance stability is higher than XA, so TiDB does not support JTA/XA and there is no need for TiDB to support XA.
 
 ### How could TiDB support high concurrent `INSERT` or `UPDATE` operations to the columnar storage engine (TiFlash) without hurting performance?
 
@@ -111,12 +113,12 @@ Yes. TiFlash maintains strong data consistency by default.
 
 ### TiKV for data storage
 
-See [TiDB Internal (I) - Data Storage](https://en.pingcap.com/blog/tidb-internal-data-storage/).
+See [TiDB Internal (I) - Data Storage](https://www.pingcap.com/blog/tidb-internal-data-storage/?from=en).
 
 ### TiDB for data computing
 
-See [TiDB Internal (II) - Computing](https://en.pingcap.com/blog/tidb-internal-computing/).
+See [TiDB Internal (II) - Computing](https://www.pingcap.com/blog/tidb-internal-computing/?from=en).
 
 ### PD for scheduling
 
-See [TiDB Internal (III) - Scheduling](https://en.pingcap.com/blog/tidb-internal-scheduling/).
+See [TiDB Internal (III) - Scheduling](https://www.pingcap.com/blog/tidb-internal-scheduling/?from=en).

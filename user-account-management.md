@@ -12,7 +12,7 @@ This document describes how to manage a TiDB user account.
 
 TiDB stores the user accounts in the table of the `mysql.user` system database. Each account is identified by a user name and the client host. Each account may have a password.
 
-You can connect to the TiDB server using the MySQL client, and use the specified account and password to login:
+You can connect to the TiDB server using the MySQL client, and use the specified account and password to login. For each user name, make sure that it contains no more than 32 characters.
 
 ```sql
 shell> mysql --port 4000 --user xxx --password
