@@ -13,15 +13,17 @@ Yes. To encrypt data in the network traffic, you can [enable TLS between TiDB cl
 
 ## Does TiDB support modifying the MySQL version string of the server to a specific one that is required by the security vulnerability scanning tool?
 
-Since v3.0.8, TiDB supports modifying the version string of the server by modifying [`server-version`](/tidb-configuration-file.md#server-version) in the configuration file. When you deploy TiDB using TiUP, you can also specify the proper version string by executing `tiup cluster edit-config <cluster-name>`:
+- Since v3.0.8, TiDB supports modifying the version string of the server by modifying [`server-version`](/tidb-configuration-file.md#server-version) in the configuration file.
 
-```
-server_configs:
-  tidb:
-    server-version: 'YOUR_VERSION_STRING'
-```
+- Since v4.0, if you deploy TiDB using TiUP, you can also specify the proper version string by executing `tiup cluster edit-config <cluster-name>` to edit the following section:
 
-Use the `tiup cluster reload <cluster-name> -R tidb` command to make the modification above take effect to avoid the failure of security vulnerability scan.
+    ```
+    server_configs:
+      tidb:
+        server-version: 'YOUR_VERSION_STRING'
+    ```
+
+    Then, use the `tiup cluster reload <cluster-name> -R tidb` command to make the preceding modification effective to avoid the failure of security vulnerability scan.
 
 ## What authentication protocols does TiDB support? What's the process?
 
