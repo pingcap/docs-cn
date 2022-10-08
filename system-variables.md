@@ -135,6 +135,27 @@ mysql> SELECT * FROM t1;
 - 默认值：`utf8mb4`
 - 当 `CREATE SCHEMA` 中没有指定字符集时，该变量表示这些新建的表结构所使用的字符集。
 
+### `collation_connection`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 默认值：`utf8mb4_bin`
+- 该变量表示连接中所使用的排序规则。与 MySQL 中的 `collation_connection` 一致。
+
+### `collation_database`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 默认值：`utf8mb4_bin`
+- 该变量表示默认数据库中所使用的排序规则。与 MySQL 中的 `collation_database` 一致。
+
+### `collation_server`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 默认值：`utf8mb4_bin`
+- 该变量表示创建数据库时默认的排序规则。
+
 ### `cte_max_recursion_depth`
 
 - 作用域：SESSION | GLOBAL
@@ -180,6 +201,10 @@ mysql> SELECT * FROM t1;
 - 默认值：（系统主机名）
 - 这个变量一个只读变量，表示 TiDB server 的主机名。
 
+### `identity` <span class="version-mark">从 v5.3.0 版本开始引入</span>
+
+- 该变量为变量 [`last_insert_id`](#last_insert_id-从-v530-版本开始引入) 的别名。
+
 ### `init_connect`
 
 - 作用域：GLOBAL
@@ -204,6 +229,12 @@ mysql> SELECT * FROM t1;
 - 范围：`[1, 31536000]`
 - 单位：秒
 - 该变量表示交互式用户会话的空闲超时。交互式用户会话是指使用 `CLIENT_INTERACTIVE` 选项调用 [`mysql_real_connect()`](https://dev.mysql.com/doc/c-api/5.7/en/mysql-real-connect.html) API 建立的会话（例如：MySQL shell 客户端）。该变量与 MySQL 完全兼容。
+
+### `last_insert_id` <span class="version-mark">从 v5.3.0 版本开始引入</span>
+
+- 返回 `LAST_INSERT_ID()` 的结果。这个变量是一个只读变量，与 MySQL 中的 `last_insert_id` 一致。
+- 作用域：SESSION
+- 默认值：`0`
 
 ### `last_plan_from_binding` <span class="version-mark">从 v4.0 版本开始引入</span>
 
