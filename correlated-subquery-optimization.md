@@ -18,7 +18,7 @@ TiDB 之所以要进行这样的改写，是因为关联子查询每次子查询
 
 这种改写的弊端在于，在关联没有被解除时，优化器是可以使用关联列上的索引的。也就是说，虽然这个子查询可能被重复执行多次，但是每次都可以使用索引过滤数据。而解除关联的变换上，通常是会导致关联列的位置发生改变而导致虽然子查询只被执行了一次，但是单次执行的时间会比没有解除关联时的单次执行时间长。
 
-因此，在外部的值比较少的情况下，不解除关联依赖反而可能对执行性能更有帮助。这时可以通过使用 Hint [`NO_DECORRELATE`](/optimizer-hints.md#no_decorrelate) 或[优化规则及表达式下推的黑名单](/blocklist-control-plan.md)中关闭`子查询去关联`优化规则的方式来关闭这个优化。在一般情况下，使用 Hint 并在需要时配合[执行计划管理](/sql-plan-management.md)功能是更推荐的方式。
+因此，在外部的值比较少的情况下，不解除关联依赖反而可能对执行性能更有帮助。这时可以通过使用 Optimizer Hint [`NO_DECORRELATE`](/optimizer-hints.md#no_decorrelate) 或[优化规则及表达式下推的黑名单](/blocklist-control-plan.md)中关闭“子查询去关联”优化规则的方式来关闭这个优化。在一般情况下，推荐使用 Optimizer Hint 并在需要时配合[执行计划管理](/sql-plan-management.md)功能来禁止解除关联。
 
 ## 样例
 
@@ -49,7 +49,7 @@ explain select * from t1 where t1.a < (select sum(t2.a) from t2 where t2.b = t1.
 
 上面是优化生效的情况，可以看到 `HashJoin_11` 是一个普通的 `inner join`。
 
-接下来，通过 Hint 提示优化器不要对该子查询解除关联：
+接下来，通过 Optimizer Hint `NO_DECORRELATE` 提示优化器不对该子查询解除关联：
 
 {{< copyable "sql" >}}
 
@@ -57,7 +57,7 @@ explain select * from t1 where t1.a < (select sum(t2.a) from t2 where t2.b = t1.
 explain select * from t1 where t1.a < (select /*+ NO_DECORRELATE() */ sum(t2.a) from t2 where t2.b = t1.b);
 ```
 
-```
+```sql
 +----------------------------------------+----------+-----------+------------------------+--------------------------------------------------------------------------------------+
 | id                                     | estRows  | task      | access object          | operator info                                                                        |
 +----------------------------------------+----------+-----------+------------------------+--------------------------------------------------------------------------------------+
