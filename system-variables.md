@@ -234,6 +234,15 @@ mysql> SELECT * FROM t1;
 >
 > `max_execution_time` 目前对所有类型的语句生效，并非只对 `SELECT` 语句生效，与 MySQL 不同（只对`SELECT` 语句生效）。实际精度在 100ms 级别，而非更准确的毫秒级别。
 
+### `max_allowed_packet` <span class="version-mark">从 v6.1.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 默认值：67108864
+- 取值范围：`[1024, 1073741824]`，且应当为 1024 的整数倍；若取值无法被 1024 整除，则会提示 warning 并向下取整。例如设置为 1025 时，则 TiDB 中的实际取值为 1024。
+- 服务器端和客户端在一次传送数据包的过程中所允许最大的数据包大小，单位为字节。
+- 该变量的行为与 MySQL 兼容。
+
 ### `plugin_dir`
 
 - 作用域：GLOBAL
