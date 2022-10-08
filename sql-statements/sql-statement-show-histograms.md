@@ -57,6 +57,12 @@ show stats_histograms where table_name = 't2';
 2 rows in set (0.00 sec)
 ```
 
+ `SHOW STATS_HISTOGRAMS`只会显示加载到内存中的统计信息，对于列的统计信息，当有查询条件涉及到该列时，tidb 才会将该列的统计信息加载到内存中。当展示结果中没有想要查看的列信息，可以使用where中带有待查看列的查询语句先执行一遍。例如，上述t2表中想要展示c列信息，可以先执行如下语句之后，在执行 `SHOW STATS_HISTOGRAMS`
+
+```sql
+select count(1) from t2 where c>'';
+```
+
 ## MySQL 兼容性
 
 该语句是 TiDB 对 MySQL 语法的扩展。
