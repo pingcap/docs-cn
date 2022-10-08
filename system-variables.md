@@ -100,6 +100,13 @@ mysql> SELECT * FROM t1;
 - 默认值：`ON`
 - 用于设置在非显式事务时是否自动提交事务。更多信息，请参见[事务概述](/transaction-overview.md#自动提交)。
 
+### `block_encryption_mode`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 默认值：`aes-128-ecb`
+- 用于设置 `AES_ENCRYPT()` 和 `AES_DECRYPT()` 函数的加密模式。
+
 ### character_set_client
 
 - 作用域：SESSION | GLOBAL
@@ -188,12 +195,48 @@ mysql> SELECT * FROM t1;
 - 服务器和客户端建立连接时，这个变量用于设置服务器对外通告的默认身份验证方式。如要了解该变量的其他可选值，参见[可用的身份验证插件](/security-compatibility-with-mysql.md#可用的身份验证插件)。
 - 若要在用户登录时使用 `tidb_sm3_password` 插件，需要使用 [TiDB-JDBC](https://github.com/pingcap/mysql-connector-j/tree/release/8.0-sm3) 进行连接。
 
+### `default_week_format`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 类型：整数
+- 默认值：`0`
+- 取值范围：`[0, 7]`
+- 设置 `WEEK()` 函数使用的周格式。
+
+### `error_count`
+
+- 作用域：NONE
+- 类型：整数
+- 表示上一条生成消息的 SQL 语句中的错误数。该变量为只读变量。
+
 ### `foreign_key_checks`
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 默认值：`OFF`
 - 为保持兼容，TiDB 对外键检查返回 `OFF`。
+
+### `group_concat_max_len`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 类型：整数
+- 默认值：`1024`
+- 取值范围：`[4, 18446744073709551615]`
+- 表示 `GROUP_CONCAT()` 函数中，项目的最大缓冲区大小。
+
+### `have_openssl`
+
+- 作用域：NONE
+- 默认值：`DISABLED`
+- 用于 MySQL 兼容性的只读变量。当服务器启用 TLS 时，服务器将其设置为 `YES`。
+
+### `have_ssl`
+
+- 作用域：NONE
+- 默认值：`DISABLED`
+- 用于 MySQL 兼容性的只读变量。当服务器启用 TLS 时，服务器将其设置为 `YES`。
 
 ### `hostname`
 
@@ -253,6 +296,33 @@ mysql> SELECT * FROM t1;
 - 作用域：NONE
 - 默认值：`Apache License 2.0`
 - 这个变量表示 TiDB 服务器的安装许可证。
+
+### `log_bin`
+
+- 作用域：NONE
+- 类型：布尔型
+- 默认值：`OFF`
+- 该变量表示是否使用 [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md)。
+
+### `max_allowed_packet`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 类型：整数
+- 默认值：`67108864`
+- 取值范围：`[1024, 1073741824]`
+- 单位：字节
+- 该变量表示 MySQL 协议的最大包大小。
+
+### `max_connections`
+
+- 作用域：GLOBAL
+- 是否持久化到集群：否
+- 类型：整数
+- 默认值：`0`
+- 取值范围：`[0, 100000]`
+- 该变量表示 TiDB 实例允许的最大连接数。
+- 该变量值为 `0` 时表示无限制。
 
 ### `max_execution_time`
 
@@ -328,7 +398,7 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 - 该变量用于为 SQL 函数 `RAND()` 中使用的随机值生成器添加种子。
 - 该变量的行为与 MySQL 兼容。
 
-### rand_seed2
+### `rand_seed2`
 
 - 作用域：SESSION
 - 默认值：`0`
@@ -336,7 +406,7 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 - 该变量用于为 SQL 函数 `RAND()` 中使用的随机值生成器添加种子。
 - 该变量的行为与 MySQL 兼容。
 
-### require_secure_transport <span class="version-mark">从 v6.1.0 版本开始引入</span>
+### `require_secure_transport` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
@@ -345,7 +415,7 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 - 该变量设置为 `ON` 时，必须使用开启 TLS 的会话连接到 TiDB，防止在 TLS 配置不正确时出现锁定的情况。
 - 在 v6.1.0 之前这个开关通过 TiDB 配置文件 (`security.require-secure-transport`) 进行配置，升级到 v6.1.0 时会自动继承原有设置。
 
-### skip_name_resolve <span class="version-mark">从 v5.2.0 版本开始引入</span>
+### `skip_name_resolve` <span class="version-mark">从 v5.2.0 版本开始引入</span>
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
@@ -368,6 +438,18 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 - 作用域：NONE
 - 默认值：""
 - 使用 MySQL 协议时，tidb-server 所监听的本地 unix 套接字文件。
+
+### `sql_log_bin`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 类型：布尔型
+- 默认值：`ON`
+- 表示是否将更改写入 TiDB Binlog。
+
+> **注意：**
+>
+> 不建议将 `sql_log_bin` 设置为全局变量，因为 TiDB 的未来版本可能只允许将其设置为会话变量。
 
 ### `sql_mode`
 
@@ -393,6 +475,24 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 - 默认值：`18446744073709551615`
 - 范围：`[0, 18446744073709551615]`
 - `SELECT` 语句返回的最大行数。
+
+### `ssl_ca`
+
+- 作用域：NONE
+- 默认值：""
+- 证书颁发机构 (CA) 文件的位置（如果有）。该变量的值由 TiDB 配置项 [`ssl-ca`](/tidb-configuration-file.md#ssl-ca) 定义。
+
+### `ssl_cert`
+
+- 作用域：NONE
+- 默认值：""
+- 用于 SSL/TLS 连接的证书文件（如果有文件）的位置。该变量的值由 TiDB 配置项 [`ssl-cert`](/tidb-configuration-file.md#ssl-cert) 定义。
+
+### `ssl_key`
+
+- 作用域：NONE
+- 默认值：""
+- 用于 SSL/TLS 连接的私钥文件（如果有）的位置。该变量的值由 TiDB 配置项 [`ssl-key`](/tidb-configuration-file.md#ssl-cert) 定义。
 
 ### `system_time_zone`
 
@@ -2636,7 +2736,9 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 ### `timestamp`
 
 - 作用域：SESSION
+- 类型：浮点数
 - 默认值：`0`
+- 取值范围：`[0, 2147483647]`
 - 一个 Unix 时间戳。变量值非空时，表示 `CURRENT_TIMESTAMP()`、`NOW()` 等函数的时间戳。该变量通常用于数据恢复或数据复制。
 
 ### `transaction_isolation`

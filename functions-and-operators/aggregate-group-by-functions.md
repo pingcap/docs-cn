@@ -184,3 +184,7 @@ select id, floor(value/100) as val
 from tbl_name
 group by id, val;
 ```
+
+## Related system variables
+
+The `group_concat_max_len` variable sets the maximum number of items for the `GROUP_CONCAT()` function.
