@@ -128,7 +128,7 @@ hide_commit: true
 
 [发布历史](https://docs.pingcap.com/zh/tidb/v6.1/release-notes)
 
-[常见问题](https://docs.pingcap.com/zh/tidb/v6.1/faq-overview)
+[常见问题](https://docs.pingcap.com/zh/tidb/v6.1/faq-overview) 
 
 </LearningPath>
 
