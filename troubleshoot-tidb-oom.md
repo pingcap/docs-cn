@@ -9,7 +9,9 @@ summary: 了解如何定位、排查 TiDB Out Of Memory (OOM) 问题。
 
 ## 整体排查思路
 
-1. 首先需要确认是 OOM 问题。查看操作系统日志，执行下面命令，在结果中有问题发生附近时间点的 OOM-killer 的日志。
+在排查 OOM 问题试，整体遵循以下排查思路：
+
+1. 首先需要确认是否是 OOM 问题。执行下面命令查看操作系统日志，查看查询结果中有问题发生附近时间点的 OOM-killer 的日志。
 
     ```shell
     dmesg -T | grep tidb-server
@@ -17,7 +19,7 @@ summary: 了解如何定位、排查 TiDB Out Of Memory (OOM) 问题。
 
     注意为使 dmesg 能抓到 OOM killer 信息, 要确保 `sysconfig vm.overcommit_memory=1`。
 
-2. 确认触发原因，是由于部署不当导致，还是由于数据库导致。
+2. 确认触发原因是由于部署问题导致还是由于数据库导致。
 
     - 如果是部署不当触发，需要排查资源配置、混布的影响。
 
@@ -28,16 +30,15 @@ summary: 了解如何定位、排查 TiDB Out Of Memory (OOM) 问题。
 
 ## 常见故障现象
 
-不论是部署不当还是数据库导致的 OOM，都有可能出现以下报错情况：
+不论是部署问题还是数据库问题导致的 OOM，都可能出现以下报错情况：
 
 - 客户端报错：`SQL error, errno = 2013, state = 'HY000': Lost connection to MySQL server during query`
 
 - Grafana 上的监控，看是否有因内存超阈发生过重启：
-    - TiDB --> Server --> Memory Usage 达到某一阈值的锯齿形
-    - TiDB --> Server --> Events OPM 显示 ‘server kill’
-    - TiDB --> Server --> Uptime 显示为掉零
-    - TiDB-Runtime --> Memory Usage，观察到 estimate-inuse 在持续升高
-    - TiDB --> Server --> Memory Usage, process/heapInuse 在持续升高
+    - **TiDB** > **Server** > **Memory Usage** 达到某一阈值的锯齿形
+    - **TiDB** > **Server** > **Uptime** 显示为掉零
+    - **TiDB-Runtime** > **Memory Usage**，观察到 estimate-inuse 在持续升高
+    - **TiDB** > **Server** > **Memory Usage**, 观察到 process/heapInuse 在持续升高
 
 - 查看 tidb.log，可发现如下日志条目：
     - Alerm: [WARN] [memory_usage_alarm.go:139] ["tidb-server has the risk of OOM. Running SQLs and heap profile will be recorded in record path"]。关于该日志的详细说明，请参考 [`memory-usage-alarm-ratio`](/system-variables.md#tidb_memory_usage_alarm_ratio)。
@@ -61,9 +62,11 @@ TiDB 出现 OOM 问题，一般从以下几个方面进行排查：
 
 ### 数据库问题
 
-说明：
+本节介绍了由于数据库问题导致的 OOM 问题和解决办法。
 
-- SQL 返回 `ERROR 1105 (HY000): Out Of Memory Quota![conn_id=54]`。注意如果配置了 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query)，此报错为正常行为，不属于故障。这是由于数据库层面 SQL 发生 'Out of Memory Quota'。该场景主要是数据库的内存使用控制行为导致的。
+> **说明：**
+>
+> 如果 SQL 返回 `ERROR 1105 (HY000): Out Of Memory Quota![conn_id=54]`，是由于配置了 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query)，是由数据库的内存使用控制行为导致的。此报错为正常行为，不属于故障，可以忽略。
 
 #### 统计信息的收集和加载过程消耗太多内存
 
@@ -119,7 +122,7 @@ TiDB 节点启动后需要加载统计信息到内存中。TiDB 从 v6.1.0 开�
 
 若客户端发生 OOM，则需要排查以下方面：
 
-- 观察 Grafana TiDB Details --> Server --> Client Data Traffic, 趋势和速度，看是否存在网路阻塞。
+- 观察 **Grafana TiDB Details** > **Server** > **Client Data Traffic**, 趋势和速度，看是否存在网路阻塞。
 
 - 检查是否存在错误的 JDBC 配置参数导致的应用 OOM，例如流式读取的一个相关参数 `defaultFetchSize` 配置有误，造成数据在客户端大量缓存。
 
