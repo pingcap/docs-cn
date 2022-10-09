@@ -6,22 +6,6 @@ title: TiDB 版本发布历史
 
 TiDB 历史版本发布声明如下：
 
-<<<<<<< HEAD
-=======
-## 6.3
-
-- [6.3.0-DMR](/releases/release-6.3.0.md): 2022-09-30
-
-## 6.2
-
-- [6.2.0-DMR](/releases/release-6.2.0.md): 2022-08-23
-
-## 6.1
-
-- [6.1.1](/releases/release-6.1.1.md): 2022-09-01
-- [6.1.0](/releases/release-6.1.0.md): 2022-06-13
-
->>>>>>> eba429239 (Release notes: add release date (#11500))
 ## 6.0
 
 - [6.0.0-DMR](/releases/release-6.0.0-dmr.md): 2022-04-07
