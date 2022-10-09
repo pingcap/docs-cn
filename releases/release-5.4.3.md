@@ -12,7 +12,7 @@ TiDB 版本：5.4.3
 
 ## 提升改进
 
-+ TiDB
++ TiDB **TW: @TomShawn**
 
     <!--sql-infra **owner: @zimulala**-->
 
@@ -24,36 +24,36 @@ TiDB 版本：5.4.3
 
     <!--diagnosis **owner: @mornyx**-->
 
-+ TiKV **owner: @tabokie**
++ TiKV **owner: @tabokie, TW: @Oreoxmt**
 
     - 支持将 RocksDB write stall 设置为比流量控制阈值更小的值 [#13467](https://github.com/tikv/tikv/issues/13467)
     - (dup) 支持配置 `unreachable_backoff` 避免 Raftstore 发现某个 Peer 无法连接时广播过多消息 [#13054](https://github.com/tikv/tikv/issues/13054)
 
-+ PD **owner: @nolouch**
++ PD **owner: @nolouch, TW: @Oreoxmt**
 
-+ TiFlash
++ TiFlash **TW: @shichun-0415**
 
 + Tools
 
-    + TiDB Lightning **owner: @niubell**
+    + TiDB Lightning **owner: @niubell, TW: @ran-huang**
 
         - (dup) 优化 Scatter Region 为批量模式，提升 Scatter Region 过程的稳定性 [#33618](https://github.com/pingcap/tidb/issues/33618)
 
-    + TiDB Data Migration (DM) **owner: @niubell**
+    + TiDB Data Migration (DM) **owner: @niubell, TW: @ran-huang**
 
-    + TiCDC **owner: @nongfushanquan**
+    + TiCDC **owner: @nongfushanquan, TW: @shichun-0415**
 
         - (dup) 优化了多 Region 场景下，runtime 上下文切换带来过多性能开销的问题 [#5610](https://github.com/pingcap/tiflow/issues/5610)
 
-    + Backup & Restore (BR) **owner: @3pointer**
+    + Backup & Restore (BR) **owner: @3pointer, TW: @shichun-0415**
 
-    + Dumpling **owner: @niubell**
+    + Dumpling **owner: @niubell, TW: @ran-huang**
 
     + TiDB Binlog
 
 ## Bug 修复
 
-+ TiDB
++ TiDB **TW: @TomShawn**
 
     <!--sql-infra **owner: @zimulala**-->
     - (dup) 修复 `SHOW CREATE PLACEMENT POLICY` 输出结果不正确的问题 [#37526](https://github.com/pingcap/tidb/issues/37526)
@@ -85,20 +85,20 @@ TiDB 版本：5.4.3
 
     <!--diagnosis **owner: @mornyx**-->
 
-+ TiKV **owner: @tabokie**
++ TiKV **owner: @tabokie, TW: @Oreoxmt**
 
     - 修复 Web 身份提供程序报错并失效自动恢复默认提供程序时权限拒绝的问题 [#13122](https://github.com/tikv/tikv/issues/13122)
     - (dup) 修复 PD 客户端可能会出现死锁的问题 [#13191](https://github.com/tikv/tikv/issues/13191)
     - (dup) 修复 PD Region heartbeat 连接异常中断后未重新连接的问题 [#12934](https://github.com/tikv/tikv/issues/12934)
     - (dup) 修复 Raftstore 线程繁忙时，可能会出现 Region 重叠的问题 [#13160](https://github.com/tikv/tikv/issues/13160)
 
-+ PD **owner: @nolouch**
++ PD **owner: @nolouch, TW: @Oreoxmt**
 
     - 修复 PD 无法正确处理 dashboard 代理请求的问题 [#5321](https://github.com/tikv/pd/issues/5321)
     - (dup) 修复已清除的 `tombstone store` 信息在切换 PD leader 后再次出现的问题 [#4941](https://github.com/tikv/pd/issues/4941)
     - (dup) 修复 PD 可能没创建 TiFlash Learner 副本的问题 [#5401](https://github.com/tikv/pd/issues/5401)
 
-+ TiFlash
++ TiFlash **TW: @shichun-0415**
 
     <!--compute **owner: @zanmato1984**-->
 
@@ -111,14 +111,14 @@ TiDB 版本：5.4.3
 
 + Tools
 
-    + TiDB Lightning **owner: @niubell**
+    + TiDB Lightning **owner: @niubell, TW: @ran-huang**
 
         - 修复 BigInt 自增列可能越界的问题 [#27397](https://github.com/pingcap/tidb/issues/27937)
         - (dup) 修复极端情况下去重可能会导致 TiDB Lightning panic 的问题 [#34163](https://github.com/pingcap/tidb/issues/34163)
         - (dup) 修复 TiDB Lightning 不支持 Parquet 文件中以斜线 (`/`)、数字、非 ASCII 字符开头的特殊列名的问题 [#36980](https://github.com/pingcap/tidb/issues/36980)
         - (dup) 修复了使用 IPv6 host 时无法连接到 TiDB 的问题 [#35880](https://github.com/pingcap/tidb/issues/35880)
 
-    + TiDB Data Migration (DM) **owner: @niubell**
+    + TiDB Data Migration (DM) **owner: @niubell, TW: @ran-huang**
 
         - (dup) 修复 DM Worker 获取 DB 连接时可能卡住的问题 [#3733](https://github.com/pingcap/tiflow/issues/3733)
         - (dup) 修复 DM 报错 `Specified key was too long` 的问题 [#5315](https://github.com/pingcap/tiflow/issues/5315)
@@ -127,16 +127,16 @@ TiDB 版本：5.4.3
         - (dup) 修复 `query-status` 内可能存在 data race 的问题 [#4811](https://github.com/pingcap/tiflow/issues/4811)
         - (dup) 修复 relay 报错时可能导致 goroutine 泄露问题 [#6193](https://github.com/pingcap/tiflow/issues/6193)
 
-    + TiCDC **owner: @nongfushanquan**
+    + TiCDC **owner: @nongfushanquan, TW: @shichun-0415**
 
         - (dup) 修复 `enable-old-value = false` 时可能出现的 cdc panic 问题 [#6198](https://github.com/pingcap/tiflow/issues/6198)
 
-    + Backup & Restore (BR) **owner: @3pointer**
+    + Backup & Restore (BR) **owner: @3pointer, TW: @shichun-0415**
 
         - (dup) 修复当外部存储的鉴权 Key 中存在某些特殊符号时，会导致备份恢复失败的问题 [#37469](https://github.com/pingcap/tidb/issues/37469)
         - (dup) 修复在恢复时配置过高的 concurrency 会导致 Region 不均衡的问题 [#37549](https://github.com/pingcap/tidb/issues/37549)
 
-    + Dumpling **owner: @niubell**
+    + Dumpling **owner: @niubell, TW: @ran-huang**
 
         - (dup) 修复 GetDSN 方法不支持 IPv6 的问题 [#36112](https://github.com/pingcap/tidb/issues/36112)
 
