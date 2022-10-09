@@ -1447,6 +1447,10 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 > * [Connector/J](https://dev.mysql.com/doc/connector-j/8.0/en/connector-j-reference-configuration-properties.html) (`allowMultiQueries`)
 > * PHP [mysqli](https://dev.mysql.com/doc/apis-php/en/apis-php-mysqli.quickstart.multiple-statement.html) (`mysqli_multi_query`)
 
+### `tidb_enable_new_cost_interface`
+
+该变量与自 v6.2.0 起可用的功能相关，但在 v6.1 中不可用。详情参阅 v6.2 文档 [`tidb_enable_new_cost_interface`](https://docs.pingcap.com/zh/tidb/v6.2/system-variables#tidb_enable_new_cost_interface-span-classversion-mark从-v620-版本开始引入span)。
+
 ### `tidb_enable_new_only_full_group_by_check` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
