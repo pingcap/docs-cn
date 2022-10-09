@@ -63,13 +63,13 @@ mysql -h 127.0.0.1 -uroot -P4000
 
 TiDB 目前支持 [`wait_timeout`](/system-variables.md#wait_timeout) 和 [`interactive_timeout`](/system-variables.md#interactive_timeout) 两种超时。
 
-### TiDB 的版本管理策略是怎么样的
+### TiDB 的版本管理策略是怎么样的？
 
 关于 TiDB 版本的管理策略，可以参考 [TiDB 版本规则](/releases/versioning.md)。
 
 ### 分不清 TiDB master 版本之间的区别，应该怎么办？
 
-TiDB 目前社区非常活跃，同时，还在不断的优化和修改 BUG，因此 TiDB 的版本更新周期比较快，会不定期有新版本发布，请关注我们的[版本发布时间线](/releases/release-timeline.md)。此外 TiDB 安装推荐[使用 TiUP 进行安装](/production-deployment-using-tiup.md)或[使用 TiDB Operator 进行安装](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable)。TiDB 的版本号目前实现了统一管理，你可以通过如下任意方式查看 TiDB 的版本号：
+TiDB 目前社区非常活跃，同时，我们还在不断的优化和修改 BUG，因此 TiDB 的版本更新周期比较快，会不定期有新版本发布，请关注我们的[版本发布时间线](/releases/release-timeline.md)。此外 TiDB 安装推荐[使用 TiUP 进行安装](/production-deployment-using-tiup.md)或[使用 TiDB Operator 进行安装](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable)。TiDB 的版本号目前实现了统一管理，你可以通过如下任意方式查看 TiDB 的版本号：
 
 - 通过 `select tidb_version()` 进行查看
 - 通过执行 `tidb-server -V` 进行查看
