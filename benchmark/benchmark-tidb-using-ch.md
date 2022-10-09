@@ -25,7 +25,7 @@ tiup install bench
 
 ### 导入 TPC-C 数据
 
-**导入数据通常是整个 TPC-C 测试中最耗时，也是最容易出问题的阶段。**
+**导入数据通常是整个 TPC-C 测试中最耗时、也是最容易出问题的阶段。**
 
 本文以 1000 WAREHOUSE 为例，在 shell 中运行以下 TiUP 命令进行数据导入和测试。注意你需要将本文中的 `172.16.5.140` 和 `4000` 替换为你实际的 TiDB host 和 port 值。
 
@@ -69,7 +69,7 @@ creating view revenue1
 部署 TiFlash 后，TiFlash 并不会自动同步 TiKV 数据，你需要执行以下 SQL 语句创建整库的 TiFlash 副本。创建 TiFlash 副本后，系统自动实时同步最新数据到 TiFlash 组件。以下例子中，集群中部署了两个 TiFlash 节点，将 replica 设置为 2。
 
 ```
-ALTER DATABASE tpcc SET tiflash replica 2;
+ALTER DATABASE tpcc SET TIFLASH REPLICA 2;
 ```
 
 可通过如下 SQL 语句确认所有表（通过 WHERE 语句可以指定需要确认的表，去掉 WHERE 语句则查看所有表）的 TiFlash 副本的状态是否完成同步：
