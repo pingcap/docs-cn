@@ -147,7 +147,7 @@ mysql> SELECT * FROM t1;
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 默认值：`utf8mb4_bin`
-- 该变量表示当前数据库默认所使用的排序规则。与 MySQL 中的 `collation_database` 一致。 **不建议设置此变量**， 当前使用的数据库变动时，此变量会被 TiDB 修改。
+- 该变量表示当前数据库默认所使用的排序规则。与 MySQL 中的 `collation_database` 一致。**不建议设置此变量**，当前使用的数据库变动时，此变量会被 TiDB 修改。
 
 ### `collation_server`
 
