@@ -93,11 +93,10 @@ TiUniManager 不仅提供对 TiDB 集群的全生命周期的可视化管理，�
 
 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 是一个用于将全量数据导入到 TiDB 集群的工具。
 
-使用 TiDB Lightning 导入数据到 TiDB 时，有三种模式：
+使用 TiDB Lightning 导入数据到 TiDB 时，有以下模式：
 
-- `local` 模式：TiDB Lightning 将数据解析为有序的键值对，并直接将其导入 TiKV。这种模式一般用于导入大量的数据（TB 级别）到新集群，但在数据导入过程中集群无法提供正常的服务。
-- `importer` 模式：和 `local` 模式类似，但是需要部署额外的组件 `tikv-importer` 协助完成键值对的导入。对于 4.0 以上的目标集群，请优先使用 `local` 模式进行导入。
-- `tidb` 模式：以 TiDB/MySQL 作为后端，这种模式相比 `local` 和 `importer` 模式的导入速度较慢，但是可以在线导入，同时也支持将数据导入到 MySQL。
+- `Physical Import Mode` 模式：TiDB Lightning 将数据解析为有序的键值对，并直接将其导入 TiKV。这种模式一般用于导入大量的数据（TB 级别）到新集群，但在数据导入过程中集群无法提供正常的服务。
+- `Logical Import Mode` 模式：以 TiDB/MySQL 作为后端，这种模式相比 `Physical Import Mode`，导入速度较慢，但是可以在线导入，同时也支持将数据导入到 MySQL。
 
 基本信息：
 
@@ -152,10 +151,6 @@ TiUniManager 不仅提供对 TiDB 集群的全生命周期的可视化管理，�
 - sync-diff-inspector 的输出：TiDB、MySQL
 - 适用 TiDB 版本：所有版本
 
-## OLAP 分析工具
-
-TiDB 提供了 OLAP 分析工具 TiSpark。通过 TiSpark，你可以像使用原生 Spark 一样查询 TiDB 表。
-
-### 使用 Spark 查询 TiKV 数据源 - TiSpark
+## OLAP 分析工具 - TiSpark
 
 [TiSpark](/tispark-overview.md) 是 PingCAP 为解决用户复杂 OLAP 需求而推出的产品。它借助 Spark 平台，同时融合 TiKV 分布式集群的优势，和 TiDB 一起为用户一站式解决 HTAP (Hybrid Transactional/Analytical Processing) 的需求。
