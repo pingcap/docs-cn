@@ -587,21 +587,6 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 悲观事务模式中，始终默认执行约束检查。
 
-### `tidb_cost_model_version` <span class="version-mark">从 v6.2.0 版本开始引入</span>
-
-> **警告：**
->
-> - 当前 Cost Model Version 2 为实验特性，不建议在生产环境中使用。
-> - 切换代价模型版本可能会引起查询计划的变动。
-
-- 作用域：SESSION | GLOBAL
-- 是否持久化到集群：是
-- 默认值：`1`
-- 可选值：`[1, 2]`
-- TiDB v6.2.0 引入了代价模型 [Cost Model Version 2](/cost-model.md#cost-model-version-2)，在内部测试中比此前版本的代价模型更加准确。
-- 通过将 `tidb_cost_model_version` 设置为 `2` 可以启用 Cost Model Version 2 代价模型，设置为 `1` 则继续使用 Cost Model Version 1 代价模型。
-- 代价模型会影响优化器对计划的选择，具体可见[代价模型](/cost-model.md)。
-
 ### `tidb_current_ts`
 
 - 作用域：SESSION
@@ -1462,15 +1447,9 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 > * [Connector/J](https://dev.mysql.com/doc/connector-j/8.0/en/connector-j-reference-configuration-properties.html) (`allowMultiQueries`)
 > * PHP [mysqli](https://dev.mysql.com/doc/apis-php/en/apis-php-mysqli.quickstart.multiple-statement.html) (`mysqli_multi_query`)
 
-### `tidb_enable_new_cost_interface` <span class="version-mark">从 v6.2.0 版本开始引入</span>
+### `tidb_enable_new_cost_interface`
 
-- 作用域：SESSION | GLOBAL
-- 是否持久化到集群：是
-- 默认值：`ON`
-- 可选值：`OFF`，`ON`
-- TiDB v6.2.0 对代价模型的实现进行了代码层面的重构，这个变量用来控制是否使用重构后的代价模型 [Cost Model Version 2](/cost-model.md#cost-model-version-2)。
-- 重构后的代价模型使用完全一样的代价公式，因此不会引起计划选择的变动，此开关默认打开。
-- 从 v6.2.0 及之前版本升级至 v6.2.0 或之后版本的用户，此开关保持原版本的 `OFF` 状态，用户无需修改。
+该变量与自 v6.2.0 起可用的功能相关，但在 v6.1 中不可用。详情参阅 v6.2 文档 [`tidb_enable_new_cost_interface`](https://docs.pingcap.com/zh/tidb/v6.2/system-variables#tidb_enable_new_cost_interface-span-classversion-mark从-v620-版本开始引入span)。
 
 ### `tidb_enable_new_only_full_group_by_check` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
