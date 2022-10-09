@@ -147,7 +147,7 @@ mysql> SELECT * FROM t1;
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 默认值：`utf8mb4_bin`
-- 该变量表示默认数据库中所使用的排序规则。与 MySQL 中的 `collation_database` 一致。
+- 该变量表示当前数据库默认所使用的排序规则。与 MySQL 中的 `collation_database` 一致。**不建议设置此变量**，当前使用的数据库变动时，此变量会被 TiDB 修改。
 
 ### `collation_server`
 
@@ -232,7 +232,7 @@ mysql> SELECT * FROM t1;
 
 ### `last_insert_id` <span class="version-mark">从 v5.3.0 版本开始引入</span>
 
-- 返回 `LAST_INSERT_ID()` 的结果。这个变量是一个只读变量，与 MySQL 中的 `last_insert_id` 一致。
+- 返回由 INSERT 语句产生的最新 `AUTO_INSCRENT` 或者 `AUTO_RANDOM` 值，与 `LAST_INSERT_ID()` 的返回的结果相同。与 MySQL 中的 `last_insert_id` 一致。
 - 作用域：SESSION
 - 默认值：`0`
 
