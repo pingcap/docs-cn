@@ -131,8 +131,8 @@ Slow Query 基础信息：
 * `Rocksdb_key_skipped_count`：RocksDB 扫数据时遇到的已删除 (tombstone) Key 数量。
 * `Rocksdb_block_cache_hit_count`：RocksDB 从 Block Cache 缓存中读数据的次数。
 * `Rocksdb_block_read_count`：RocksDB 从文件系统中读数据的次数。
-* `Rocksdb_block_read_byte`：ocksDB 从文件系统中读数据的数据量。
-* `Rocksdb_block_read_time`：ocksDB 从文件系统中读数据的时间。
+* `Rocksdb_block_read_byte`：RocksDB 从文件系统中读数据的数据量。
+* `Rocksdb_block_read_time`：RocksDB 从文件系统中读数据的时间。
 * `Cop_backoff_{backoff-type}_total_times`：因某种错误造成的 backoff 总次数。
 * `Cop_backoff_{backoff-type}_total_time`：因某种错误造成的 backoff 总时间。
 * `Cop_backoff_{backoff-type}_max_time`：因某种错误造成的最大 backoff 时间。
