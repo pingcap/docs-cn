@@ -28,7 +28,7 @@ PingCAP Clinic Server 云诊断平台（以下简称为 Clinic Server）可以�
 
 ## 前提条件
 
-要生成 PingCAP Clinic 报告，需要使用 Diag 诊断客户端采集集群诊断数据，并上传到 Clinic Server。具体使用 Diag 采集诊断数据的方法，在 TiUP 部署环境参见[使用 PingCAP Clinic 诊断 TiDB 集群](/clinic/clinic-user-guide-for-tiup.md)，TiDB Operator 部署环境参见[使用 PingCAP Clinic](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/clinic-user-guide)。
+要生成 PingCAP Clinic 报告，需要使用 Diag 诊断客户端采集集群诊断数据，并上传到 Clinic Server。具体使用 Diag 采集诊断数据的方法，在 TiUP 部署环境参见[使用 PingCAP Clinic 诊断集群](/clinic/clinic-user-guide-for-tiup.md)，TiDB Operator 部署环境参见[使用 PingCAP Clinic](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/clinic-user-guide)。
 
 ## 使用方法
 
@@ -125,7 +125,7 @@ Comparison Report 会基于所选的两个时间段的 Metrics 和日志进行�
 
     - [快速上手 PingCAP Clinic](/clinic/quick-start-with-clinic.md)
     - [PingCAP Clinic 诊断服务简介](/clinic/clinic-introduction.md)
-    - [使用 PingCAP Clinic 诊断 TiDB 集群](/clinic/clinic-user-guide-for-tiup.md)
+    - [使用 PingCAP Clinic 诊断集群](/clinic/clinic-user-guide-for-tiup.md)
     - [PingCAP Clinic 数据采集说明](/clinic/clinic-data-instruction-for-tiup.md)
 
 - 在 TiDB Operator 部署环境使用 PingCAP Clinic

@@ -96,7 +96,7 @@ select * from employee where id in (...) and salary between ? and ?;
 
 `statements_summary`、`statements_summary_history` 和 `statements_summary_evicted` 仅显示单台 TiDB server 的 statement summary 数据。若要查询整个集群的数据，需要查询 `cluster_statements_summary`、`cluster_statements_summary_history` 或 `cluster_statements_summary_evicted` 表。
 
-`cluster_statements_summary` 显示各台 TiDB server 的 `statements_summary` 数据，`cluster_statements_summary_history` 显示各台 TiDB server 的 `statements_summary_history` 数据，而 `cluster_statements_summary_evicted` 则显示各台 TiDB server 的 `statements_summary_evicted` 数据。这三张表用字段 `INSTANCE` 表示 TiDB server 的地址，其他字段与 `statements_summary` 相同。
+`cluster_statements_summary` 显示各台 TiDB server 的 `statements_summary` 数据，`cluster_statements_summary_history` 显示各台 TiDB server 的 `statements_summary_history` 数据，而 `cluster_statements_summary_evicted` 则显示各台 TiDB server 的 `statements_summary_evicted` 数据。这三张表用字段 `INSTANCE` 表示 TiDB server 的地址，其他字段与 `statements_summary`、`statements_summary_history` 和 `statements_summary_evicted` 表相同。
 
 ## 参数配置
 

@@ -39,10 +39,10 @@ aliases: ['/docs-cn/dev/br/backup-and-restore-use-cases/','/docs-cn/dev/referenc
 
 ### 集群版本
 
-* TiDB: v6.2.0
-* TiKV: v6.2.0
-* PD: v6.2.0
-* BR: v6.2.0
+* TiDB: v6.3.0
+* TiKV: v6.3.0
+* PD: v6.3.0
+* BR: v6.3.0
 
 > **注意：**
 >

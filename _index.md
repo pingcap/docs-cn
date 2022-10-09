@@ -123,4 +123,14 @@ hide_commit: true
 
 </LearningPath>
 
+<LearningPath label="参考" icon="cloud-dev">
+
+[系统变量](https://docs.pingcap.com/zh/tidb/dev/system-variables)
+
+[发布历史](https://docs.pingcap.com/zh/tidb/dev/release-notes)
+
+[常见问题](https://docs.pingcap.com/zh/tidb/dev/faq-overview)
+
+</LearningPath>
+
 </LearningPathContainer>

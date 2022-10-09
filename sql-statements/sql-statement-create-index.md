@@ -196,11 +196,9 @@ DROP INDEX idx1 ON t1;
 > ```
 > json_array, json_array_append, json_array_insert, json_contains, json_contains_path, json_depth, json_extract, json_insert, json_keys, json_length, json_merge_patch, json_merge_preserve, json_object, json_pretty, json_quote, json_remove, json_replace, json_search, json_set, json_storage_size, json_type, json_unquote, json_valid, lower, md5, reverse, tidb_shard, upper, vitess_hash
 > ```
-> 
+>
 > 对于以上列表之外的函数，由于未完成充分测试，当前仍为实验特性，不建议在生产环境中使用。其他的表达式例如运算符、`cast` 和 `case when` 也同样为实验特性，不建议在生产环境中使用。如果仍然希望使用，可以在 [TiDB 配置文件](/tidb-configuration-file.md#allow-expression-index-从-v400-版本开始引入)中进行以下设置：
-> 
-> {{< copyable "sql" >}}
-> 
+>
 > ```sql
 > allow-expression-index = true
 > ```
@@ -288,7 +286,7 @@ CREATE UNIQUE INDEX c1 ON t1 (c1) INVISIBLE;
 
 ## MySQL 兼容性
 
-* 不支持 `FULLTEXT`，`HASH` 和 `SPATIAL` 索引。
+* TiDB 支持解析 `FULLTEXT` 和 `SPATIAL` 语法，但尚不支持使用 `FULLTEXT`，`HASH` 和 `SPATIAL` 索引。
 * 不支持降序索引 （类似于 MySQL 5.7）。
 * 无法向表中添加 `CLUSTERED` 类型的 `PRIMARY KEY`。要了解关于 `CLUSTERED` 主键的详细信息，请参考[聚簇索引](/clustered-indexes.md)。
 * 表达式索引与视图存在兼容性问题。通过视图进行查询时，无法使用上表达式索引。
