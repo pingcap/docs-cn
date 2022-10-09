@@ -140,7 +140,7 @@ Slow Query 基础信息：
 * `Cop_backoff_{backoff-type}_avg_time`：因某种错误造成的平均 backoff 时间。
 * `Cop_backoff_{backoff-type}_p90_time`：因某种错误造成的 P90 分位 backoff 时间。
 
-`Backoff_types` 一般有以下几种：
+`backoff-type` 一般有以下几种：
 
 * `tikvRPC`：给 TiKV 发送 RPC 请求失败而产生的 backoff。
 * `tiflashRPC`：给 TiFlash 发送 RPC 请求失败而产生的 backoff。
