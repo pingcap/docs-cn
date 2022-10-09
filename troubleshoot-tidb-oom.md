@@ -30,18 +30,18 @@ summary: 了解如何定位、排查 TiDB Out Of Memory (OOM) 问题。
 
 不论是部署不当还是数据库导致的 OOM，都有可能出现以下报错情况：
 
-- 客户端报错：SQL error, errno = 2013, state = 'HY000': Lost connection to MySQL server during query
+- 客户端报错：`SQL error, errno = 2013, state = 'HY000': Lost connection to MySQL server during query`
 
 - Grafana 上的监控，看是否有因内存超阈发生过重启：
     - TiDB --> Server --> Memory Usage 达到某一阈值的锯齿形
     - TiDB --> Server --> Events OPM 显示 ‘server kill’
-    - TiDB --> Server --> Uptime 显示掉零重启
+    - TiDB --> Server --> Uptime 显示为掉零
     - TiDB-Runtime --> Memory Usage，观察到 estimate-inuse 在持续升高
     - TiDB --> Server --> Memory Usage, process/heapInuse 在持续升高
 
 - 查看 tidb.log，可发现如下日志条目：
     - Alerm: [WARN] [memory_usage_alarm.go:139] ["tidb-server has the risk of OOM. Running SQLs and heap profile will be recorded in record path"]。关于该日志的详细说明，请参考 [`memory-usage-alarm-ratio`](/system-variables.md#tidb_memory_usage_alarm_ratio)。
-    - 重启相关日志：[INFO] [printer.go:33] ["Welcome to TiDB."]
+    - 和重启相关的日志：[INFO] [printer.go:33] ["Welcome to TiDB."]
 
 ## 常见故障原因
 
@@ -49,7 +49,6 @@ TiDB 出现 OOM 问题，一般从以下几个方面进行排查：
 
 - 部署问题
 - 数据库问题
-- 业务形态
 - 客户端问题
 
 ### 部署问题
@@ -64,13 +63,9 @@ TiDB 出现 OOM 问题，一般从以下几个方面进行排查：
 
 说明：
 
-- SQL 返回 `ERROR 1105 (HY000): Out Of Memory Quota![conn_id=54]`。注意如果配置了 `tidb_mem_quota_query`，此报错为正常行为，不属于故障。这是由于数据库层面 SQL 发生 'Out of Memory Quota'。该场景主要是数据库的内存使用控制行为导致的。
+- SQL 返回 `ERROR 1105 (HY000): Out Of Memory Quota![conn_id=54]`。注意如果配置了 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query)，此报错为正常行为，不属于故障。这是由于数据库层面 SQL 发生 'Out of Memory Quota'。该场景主要是数据库的内存使用控制行为导致的。
 
-#### Go 内存释放时间
-
-目前 TiDB TiUP 在 run_tidb.sh 中已经包含了 `GODEBUG=madvdontneed=1` 环境变量，表示 GC 时立即将内存返还给操作系统。
-
-#### 统计信息的收集和加载过程需要使用内存
+#### 统计信息的收集和加载过程消耗太多内存
 
 TiDB 节点启动后需要加载统计信息到内存中。TiDB 从 v6.1.0 开始引入了 [`enable_tidb_stats_cache_mem_quota`](/tidb-configuration-file.md#enable-stats-cache-mem-quota-从-v610-版本开始引入) 对统计信息内存使用进行了改善。
 
@@ -81,46 +76,52 @@ TiDB 节点启动后需要加载统计信息到内存中。TiDB 从 v6.1.0 开�
 
 更多信息请参见[统计信息简介](/statistics.md)。
 
-#### 大查询 SQL 在 TiDB 节点上消耗太多内存
+#### 执行 SQL 语句时在 TiDB 节点上消耗太多内存
 
-如果大查询 SQL 在 TiDB 节点上消耗太多内存，可以通过以下方式减少内存使用：
+可以通过以下方式减少内存使用：
 
-- SQL 的执行计划不优，比如由于缺少合适的索引、统计信息过期、优化器的 bug 等原因，导致了 SQL 的执行计划选错，或者出现了巨大的中间结果集累积在内存中。需要考虑添加合适的索引、使用执行算子的数据落盘功能、以及检查表之间的关联方式以让筛选性好的表优先 join、加 hint 方式以做调优。
-- 一些算子和函数不支持下推到存储层，所以需要先拉取数据到 TiDB 层。
-- SQL 上存在扫描、聚合内容过大的情况，并且执行计划中可见算子 HashAgg。HashAgg 是多线程并发执行，执行速度较快，但会消耗较多内存。可以尝试使用 hint stream_agg 替代。
-- 调整控制一次读取的 Region 数量，减少因并发高导致的内存问题。对应系统变量：[`tidb_distsql_scan_concurrency`](/system-variables.md#tidb_distsql_scan_concurrency)，[`tidb_index_serial_scan_concurrency`](/system-variables.md#tidb_index_serial_scan_concurrency) 或 [`tidb_executor_concurrency`](/system-variables.md#tidb_executor_concurrency-从-v50-版本开始引入)。
+- SQL 的执行计划不优，比如由于缺少合适的索引、统计信息过期、优化器的 bug 等原因，导致选错了 SQL 的执行计划，进而出现巨大的中间结果集累积在内存中。需要考虑添加合适的索引、使用算子的落盘功能、以及调整表之间的 JOIN 顺序或使用 hint 进行调优。
+- 一些算子和函数不支持下推到存储层，进而出现巨大的中间结果集累积，此时可能需要改写业务 SQL，或使用 hint 进行调优，来使用可下推的函数或算子。
+- 执行计划中存在算子 HashAgg。HashAgg 是多线程并发执行，执行速度较快，但会消耗较多内存。可以尝试使用 hint `stream_agg` 替代。
+- 调小同时读取的 Region 的数量，或算子并发度，以避免因高并发导致的内存问题。对应系统变量：
+    - [`tidb_distsql_scan_concurrency`](/system-variables.md#tidb_distsql_scan_concurrency)、
+    - [`tidb_index_serial_scan_concurrency`](/system-variables.md#tidb_index_serial_scan_concurrency)
+    - [`tidb_executor_concurrency`](/system-variables.md#tidb_executor_concurrency-从-v50-版本开始引入)
+- 问题发生时间附近，session 的并发度过高。可能需要添加节点进行扩容。
 
 #### 大事务或大写入在 TiDB 节点上消耗太多内存
 
-需要提前进行内存的容量规划，这是因为执行事务时 TiDB 进程的内存消耗相对于事务大小会存在一定程度的放大，最大可能达到提交事务大小的 2 倍 到 3 倍以上。
+需要提前进行内存的容量规划，这是因为执行事务时 TiDB 进程的内存消耗相对于事务大小会存在一定程度的放大，最大可能达到提交事务大小的 2 倍到 3 倍以上。
 
-针对单条大事务，也可通过拆分的方式调小事务尺寸。
+针对单个大事务，也可通过拆分的方式调小事务尺寸。
 
 #### Prepared Statement 使用过量
 
-客户端不断 Prepared Statement 但未执行 [`deallocate prepare stmt`](/sql-prepared-plan-cache.md#忽略-com_stmt_close-指令和-deallocate-prepare-语句) 导致的内存持续上涨，最终导致 TiDB OOM。
+客户端不断创建 Prepared Statement 但未执行 [`deallocate prepare stmt`](/sql-prepared-plan-cache.md#忽略-com_stmt_close-指令和-deallocate-prepare-语句) 导致的内存持续上涨，最终导致 TiDB OOM。
 
 原因是由于 Prepared Statement 占用的内存要在 session 关闭后才会释放。这一点在长连接下尤需注意。
 
-要解决该问题，可以调整 session 的生命周期、连接池的 lift time 时长或者 SQL 重置策略，也可使用系统变量 [max_prepared_stmt_count](/system-variables.md#max_prepared_stmt_count) 进行限制。
+要解决该问题，可以考虑以下措施：
+
+- 调整 session 的生命周期
+- 调整连接池的 life time 时长
+- 使用系统变量 [max_prepared_stmt_count](/system-variables.md#max_prepared_stmt_count) 进行限制
 
 #### 系统变量配置不当
 
-注意如果设置了流量控制 [`tidb_enable_rate_limit_action`](/system-variables.md#tidb_enable_rate_limit_action) ，它会改变 oom-cancel 的表现时间。因为它会首先尝试在内存阈值范围内，逐一停下线程，在只剩一个线程的时候才触发 cancel。
+系统变量 [`tidb_enable_rate_limit_action`](/system-variables.md#tidb_enable_rate_limit_action) 在单条查询仅涉及读数据的情况下，对内存控制效果较好。
 
-### 业务形态
+若还存在额外的计算操作（如连接、聚合等），打开该变量可能会导致内存不受 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 控制，加剧 OOM 风险。
 
-检查以下业务相关的信息，以准备好对应的容量配置：
-
-- 了解负载形态
-- 平时 session 的并发度
-- 单个 session 所使用的内存的预期大小
+建议关闭该变量。该变量在 TiDB v6.3.0 开始默认关闭。
 
 ### 客户端 OOM 问题
 
-观察 Grafana TiDB Details --> Server --> Client Data Traffic, 趋势和速度，看是否存在网路阻塞。
+若客户端发生 OOM，则需要排查以下方面：
 
-客户端错误 JDBC 配置参数导致的应用 OOM，流式读取的一个相关参数 (defaultFetchSize) 配置有误，造成数据在客户端大量缓存。
+- 观察 Grafana TiDB Details --> Server --> Client Data Traffic, 趋势和速度，看是否存在网路阻塞。
+
+- 检查是否存在错误的 JDBC 配置参数导致的应用 OOM，例如流式读取的一个相关参数 `defaultFetchSize` 配置有误，造成数据在客户端大量缓存。
 
 ## 需要收集的诊断信息
 
@@ -129,39 +130,37 @@ TiDB 节点启动后需要加载统计信息到内存中。TiDB 从 v6.1.0 开�
 1. 操作系统的内存相关配置
     - TiUP 上的配置：resource_control.memory_limit
     - 操作系统的配置：
-      - cat /proc/meminfo
-      - Sys config:
-        - vm.overcommit_memory
-        - sysctl -a| grep oom
-    - 是否 NUMA and number of nodes:  numactl --hardware ; numactl --show
+      - 内存信息：`cat /proc/meminfo`
+      - 相关内核参数：`vm.overcommit_memory`
+    - NUMA 相关信息: `numactl --hardware`、`numactl --show`
 
 2. 数据库的内存相关配置
     - tidb version
-    - tidb_mem_quota_query, memory-usage-alarm-ratio, mem-quota-query
-    - oom-action
-    - tidb_enable_rate_limit_action
-    - Server-memory-quota
-    - Oom-use-tmp-storage, tmp-storage-path, tmp-storage-quota
-    - tidb_analyze_version
+    - `tidb_mem_quota_query`, `memory-usage-alarm-ratio`, `mem-quota-query`
+    - `oom-action`
+    - `tidb_enable_rate_limit_action`
+    - `Server-memory-quota`
+    - `Oom-use-tmp-storage`, `tmp-storage-path`, `tmp-storage-quota`
+    - `tidb_analyze_version`
 
-3. TiDB 内存的日常使用情况: TiDB --> Server --> Memory Usage
+3. 在 Grafana 查看 TiDB 内存的日常使用情况: TiDB --> Server --> Memory Usage
 
-4. SQL with Top memory consumption：
+4. 查看内存消耗较多的 SQL 语句：
 
-    - SQL Dashboard 中 SQL 语句分析/慢查询，查看内存用量
-    - information_schema 的 SLOW_QUERY/CLUSTER_SLOW_QUERY
+    - 可以从 SQL Dashboard 中查看 SQL 语句分析/慢查询，查看内存使用量
+    - information_schema 的 `SLOW_QUERY`、`CLUSTER_SLOW_QUERY`
     - 各个 TiDB 节点的 tidb_slow_query.log
-    - 设置了 memory-quota-query 的，在 tidb.log 中 grep "expensive_query" 查看 mem_max 字段，特别是当 SQL 是 unsuccessful 的，只能通过 log 里的 expensive query 来排查。
-    - SQL 的 explain analyze or explain 看算子层的内存消耗
-    - SELECT * FROM information_schema.processlist; See column MEM
+    - 在 tidb.log 中 grep "expensive_query" 查看对应的日志条目
+    - 执行 EXPLAIN ANALYZE，查看算子的对应内存消耗
+    - 执行 `SELECT * FROM information_schema.processlist;` 查看 SQL 对应的 MEM 列的值
 
-5. 内存使用率高的时候 TiDB 的 Profile 信息：
+5. 执行以下命令，收集内存使用率高的时候 TiDB 的 Profile 信息：
 
     ```shell
     curl -G http://{TiDBIP}:10080/debug/zip?seconds=10" > profile.zip
     ```
 
-6. tmp 目录下的 dump 文件，该文件的路径会在 tidb.log 中打印出来。例如：
+6. 在 tidb.log 中，grep 关键字 "tidb-server has the risk of OOM"，可以看到 TiDB Server 自己收集的告警文件路径，例如：
 
     ["tidb-server has the risk of OOM. Running SQLs and heap profile will be recorded in record path"] ["is server-memory-quota set"=false] ["system memory total"=14388137984] ["system memory usage"=11897434112] ["tidb-server memory usage"=11223572312] [memory-usage-alarm-ratio=0.8] ["record path"="/tmp/0_tidb/MC4wLjAuMDo0MDAwLzAuMC4wLjA6MTAwODA=/tmp-storage/record"]
 
