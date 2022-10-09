@@ -59,7 +59,7 @@ TiDB 版本：5.4.3
     - (dup) 修复 `SHOW CREATE PLACEMENT POLICY` 输出结果不正确的问题 [#37526](https://github.com/pingcap/tidb/issues/37526)
     - (dup) 修复集群的 PD 节点被替换后一些 DDL 语句会卡住一段时间的问题 [#33908](https://github.com/pingcap/tidb/issues/33908)
     - (dup) 修复 `KILL TIDB` 在空闲连接上无法立即生效的问题 [#24031](https://github.com/pingcap/tidb/issues/24031)
-    - (dup) 修复 TiDB 在执行 `SHOW COLUMNS` 时会发出协处理器请求的问题 [#36496](https://github.com/pingcap/tidb/issues/36496)
+    - 修复 TiDB 执行 `SHOW COLUMNS` 的 `DATA_TYPE` 和 `COLUMN_TYPE` 列结果不正确的问题 [#36496](https://github.com/pingcap/tidb/issues/36496)
     - (dup) 修复了在开启 TiDB Binlog 时，TiDB 执行 `ALTER SEQUENCE` 会产生错误的元信息版本号，进而导致 Drainer 报错退出的问题 [#36276](https://github.com/pingcap/tidb/issues/36276)
 
     <!--execution **owner: @zanmato1984**-->
