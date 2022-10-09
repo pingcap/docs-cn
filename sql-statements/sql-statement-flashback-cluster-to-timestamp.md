@@ -34,6 +34,11 @@ SELECT * FROM mysql.tidb WHERE variable_name = 'tikv_gc_safe_point';
 * 在 `FLASHBACK CLUSTER` 指定的时间点到开始执行的时间段内不能存在非 `FLASHBACK CLUSTER` 类型的 DDL 记录。
 * 在执行 `FLASHBACK CLUSTER` 期间，TiDB 会主动断开所有非 `FLASHBACK CLUSTER` 的链接，并在禁止对相关字段进行读写操作，直到 `FLASHBACK CLUSTER` 完成。
 * `FLASHBACK CLUSTER` 命令不能取消，一旦开始执行会一直重试，直到成功。
+* 用户可以通过日志查看 flashback 执行进度，具体的日志如下所示：
+
+```
+[2022/10/09 17:25:59.316 +08:00] [INFO] [cluster.go:463] ["flashback cluster stats"] ["complete regions"=9] ["total regions"=10] []
+```
 
 ## 示例
 
@@ -70,6 +75,24 @@ Query OK, 0 rows affected (0.20 sec)
 
 mysql> select * from t;
 Empty set (0.00 sec)
+```
+
+* flashback 指定的时间段内有 DDL 记录，执行失败
+
+```sql
+mysql> select now();
++---------------------+
+| now()               |
++---------------------+
+| 2022-10-09 16:40:51 |
++---------------------+
+1 row in set (0.01 sec)
+
+mysql> create table t(a int);
+Query OK, 0 rows affected (0.12 sec)
+
+mysql> flashback cluster to timestamp '2022-10-09 16:40:51';
+ERROR 1105 (HY000): Had ddl history during [2022-10-09 16:40:51 +0800 CST, now), can't do flashback
 ```
 
 ## 工作原理
