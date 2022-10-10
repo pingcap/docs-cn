@@ -147,7 +147,7 @@ mysql> SELECT * FROM t1;
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 默认值：`utf8mb4_bin`
-- 该变量表示默认数据库中所使用的排序规则。与 MySQL 中的 `collation_database` 一致。
+- 该变量表示当前数据库默认所使用的排序规则。与 MySQL 中的 `collation_database` 一致。**不建议设置此变量**，当前使用的数据库变动时，此变量会被 TiDB 修改。
 
 ### `collation_server`
 
@@ -232,7 +232,7 @@ mysql> SELECT * FROM t1;
 
 ### `last_insert_id` <span class="version-mark">从 v5.3.0 版本开始引入</span>
 
-- 返回 `LAST_INSERT_ID()` 的结果。这个变量是一个只读变量，与 MySQL 中的 `last_insert_id` 一致。
+- 返回由 INSERT 语句产生的最新 `AUTO_INSCRENT` 或者 `AUTO_RANDOM` 值，与 `LAST_INSERT_ID()` 的返回的结果相同。与 MySQL 中的 `last_insert_id` 一致。
 - 作用域：SESSION
 - 默认值：`0`
 
@@ -298,6 +298,15 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 +-------------------------+---------+
 1 row in set (0.00 sec)
 ```
+
+### `max_allowed_packet` <span class="version-mark">从 v6.1.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 默认值：67108864
+- 取值范围：`[1024, 1073741824]`，且应当为 1024 的整数倍；若取值无法被 1024 整除，则会提示 warning 并向下取整。例如设置为 1025 时，则 TiDB 中的实际取值为 1024。
+- 服务器端和客户端在一次传送数据包的过程中所允许最大的数据包大小，单位为字节。
+- 该变量的行为与 MySQL 兼容。
 
 ### `plugin_dir`
 
