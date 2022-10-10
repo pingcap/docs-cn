@@ -7,6 +7,8 @@ aliases: ['/docs-cn/dev/functions-and-operators/string-functions/','/docs-cn/dev
 
 TiDB 支持使用大部分 MySQL 5.7 中提供的[字符串函数](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html)、一部分 MySQL 8.0 中提供的[字符串函数](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html)和一部分 Oracle 21 所提供的[函数](https://docs.oracle.com/en/database/oracle/oracle-database/21/sqlqr/SQL-Functions.html#GUID-93EC62F8-415D-4A7E-B050-5D5B2C127009)。
 
+关于 Oracle 函数和 TiDB 函数的对照关系，请参考 [Oracle 与 TiDB 函数和语法差异对照](/oracle-functions-to-tidb.md)。
+
 ## 支持的函数
 
 | 函数名   | 功能描述          |
@@ -95,3 +97,19 @@ TiDB 与 MySQL 在 `match_type` 上的差异：
     例如：MySQL 中 `SELECT REGEXP_LIKE(a, b, "n") FROM t1;` 在 TiDB 中需要修改为 `SELECT REGEXP_LIKE(a, b, "s") FROM t1;`。
 
 - TiDB 不支持 `match_type` 为 `"u"`。
+
+### 数据类型兼容性
+
+TiDB 与 MySQL 在二进制字符串 (binary string) 数据类型上的差异：
+
+- MySQL 8.0.22 及以上版本中正则函数不支持二进制字符串，具体信息可查看 [MySQL 文档](https://dev.mysql.com/doc/refman/8.0/en/regexp.html)。但在实际使用过程中，如果所有参数或者返回值的数据类型都是二进制字符串，则正则函数可以正常使用，否则报错。
+- TiDB 目前完全禁止使用二进制字符串，无论什么情况都会报错。
+
+### 其它兼容性
+
+TiDB 与 MySQL 在替换空字符串上的差异：
+
+下面以 `REGEXP_REPLACE("", "^$", "123")` 为例：
+
+- MySQL 不会对空串进行替换，其结果为 `""`。
+- TiDB 会对空串进行替换，其结果为 `"123"`。

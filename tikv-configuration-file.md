@@ -1506,9 +1506,13 @@ Raft Engine 相关的配置项。
 
 ### `format-version` <span class="version-mark">从 v6.3.0 版本开始引入</span>
 
-> **警告：**
+> **注意：**
 >
-> `format-version` 的值设置为 `2` 后，TiKV 集群无法降级至 v6.3.0 以前的版本，否则会导致数据损坏。
+> `format-version` 的值设置为 `2` 后，如果你需要将 TiKV 集群降级至 v6.3.0 以前的版本，你需要在降级**之前**执行如下操作：
+>
+> 1. 关闭 Raft Engine。将 [`enable`](/tikv-configuration-file.md#enable-1) 配置项设置为 `false`，并重启 TiKV 使配置生效。
+> 2. 将 `format-version` 的值重新设置为 `1`。
+> 3. 重新打开 Raft Engine，即把 `enable` 配置项重设为 `true`，并重启 TiKV 使配置生效。
 
 + 指定 Raft Engine 的日志文件格式版本。
 + 可选值：
@@ -1523,7 +1527,7 @@ Raft Engine 相关的配置项。
 > 仅在 [`format-version`](#format-version-从-v630-版本开始引入) 的值大于等于 2 时，该配置项才生效。
 
 + 控制 Raft Engine 是否回收过期的日志文件。该配置项启用时，Raft Engine 将保留逻辑上被清除的日志文件，用于日志回收，减少写负载的长尾延迟。
-+ 默认值：`true`
++ 默认值：`false`
 
 ## security
 
@@ -1561,7 +1565,7 @@ Raft Engine 相关的配置项。
 ### `data-encryption-method`
 
 + 数据文件的加密方法。
-+ 可选值：`"plaintext"`，`"aes128-ctr"`，`"aes192-ctr"`，`"aes256-ctr"`
++ 可选值：`"plaintext"`，`"aes128-ctr"`，`"aes192-ctr"`，`"aes256-ctr"`， `"sm4-ctr"`（从 v6.3.0 开始支持）
 + 选择 `"plaintext"` 以外的值则表示启用加密功能。此时必须指定主密钥。
 + 默认值：`"plaintext"`
 
