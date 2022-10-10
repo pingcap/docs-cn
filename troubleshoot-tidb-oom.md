@@ -72,18 +72,6 @@ TiDB 出现 OOM 问题，一般从以下几个方面进行排查：
 >
 > 如果 SQL 返回 `ERROR 1105 (HY000): Out Of Memory Quota![conn_id=54]`，是由于配置了 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query)，数据库的内存使用控制行为会出发该报错。此报错为正常行为，不是故障，可以忽略。
 
-#### 收集和加载统计信息的过程中消耗太多内存
-
-TiDB 节点启动后需要加载统计信息到内存中。TiDB 从 v6.1.0 开始引入了 [`enable_tidb_stats_cache_mem_quota`](/tidb-configuration-file.md#enable-stats-cache-mem-quota-从-v610-版本开始引入) 对统计信息内存使用进行了改善。
-
-统计信息的收集过程会消耗内存。可以通过以下方式控制内存使用量：
-
-- 使用指定采样率、指定只收集特定列的统计信息、减少 analyze 并发度等手段减少内存使用。
-
-- TiDB 从 v6.1.0 开始引入了统计信息收集的内存限制，可以使用系统变量 [`tidb_mem_quota_analyze`](/system-variables.md#tidb_mem_quota_analyze-从-v610-版本开始引入) 来控制 TiDB 更新统计信息时的最大总内存占用。
-
-更多信息请参见[统计信息简介](/statistics.md)。
-
 #### 执行 SQL 语句时在 TiDB 节点上消耗太多内存
 
 可以根据以下不同的触发 OOM 的原因，采取相应的措施减少 SQL 的内存使用：
@@ -110,6 +98,18 @@ TiDB 节点启动后需要加载统计信息到内存中。TiDB 从 v6.1.0 开�
 需要提前进行内存的容量规划，这是因为执行事务时 TiDB 进程的内存消耗相对于事务大小会存在一定程度的放大，最大可能达到提交事务大小的 2 倍到 3 倍以上。
 
 针对单个大事务，也可通过拆分的方式调小事务大小。
+
+#### 收集和加载统计信息的过程中消耗太多内存
+
+TiDB 节点启动后需要加载统计信息到内存中。TiDB 从 v6.1.0 开始引入了 [`enable_tidb_stats_cache_mem_quota`](/tidb-configuration-file.md#enable-stats-cache-mem-quota-从-v610-版本开始引入) 对统计信息内存使用进行了改善。
+
+统计信息的收集过程会消耗内存。可以通过以下方式控制内存使用量：
+
+- 使用指定采样率、指定只收集特定列的统计信息、减少 analyze 并发度等手段减少内存使用。
+
+- TiDB 从 v6.1.0 开始引入了统计信息收集的内存限制，可以使用系统变量 [`tidb_mem_quota_analyze`](/system-variables.md#tidb_mem_quota_analyze-从-v610-版本开始引入) 来控制 TiDB 更新统计信息时的最大总内存占用。
+
+更多信息请参见[统计信息简介](/statistics.md)。
 
 #### Prepared Statement 使用过量
 
