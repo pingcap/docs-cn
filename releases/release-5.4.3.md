@@ -82,6 +82,8 @@ TiDB 版本：5.4.3
     - (dup) 修复 `UnionScan` 无法保序导致的查询结果不正确的问题 [#33175](https://github.com/pingcap/tidb/issues/33175)
     - (dup) 修复在某些情况下 `UPDATE` 语句错误地消除了 projection 导致 `Can't find column` 报错的问题 [#37568](https://github.com/pingcap/tidb/issues/37568)
     - (dup) 修复某些情况下分区表无法充分利用索引来扫描数据的问题 [#33966](https://github.com/pingcap/tidb/issues/33966)
+    - 修复某些情况下，`EXECUTE` 命令可能抛出异常的问题 [#37187](https://github.com/pingcap/tidb/issues/37187)
+    - 修复开启 prepared plan cache 时，使用 `BIT` 类型的索引可能会导致查询结果错误的问题 [#33067](https://github.com/pingcap/tidb/issues/33067)
 
     <!--diagnosis **owner: @mornyx**-->
 
