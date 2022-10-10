@@ -57,15 +57,9 @@ By default, TiDB/PD/TiKV outputs standard error in the logs. If a log file is sp
 
 TiDB currently supports two timeouts, [`wait_timeout`](/system-variables.md#wait_timeout) and [`interactive_timeout`](/system-variables.md#interactive_timeout).
 
-### What is the TiDB version management strategy for production environment? How to avoid frequent upgrade?
+### What is the TiDB version management strategy?
 
-Currently, TiDB has a standard management of various versions. Each release contains a detailed change log and [release notes](/releases/release-notes.md). Whether it is necessary to upgrade in the production environment depends on the application system. It is recommended to learn the details about the functional differences between the previous and later versions before upgrading.
-
-Take `Release Version: v1.0.3-1-ga80e796` as an example of version number description:
-
-- `v1.0.3` indicates the standard GA version.
-- `-1` indicates the current version has one commit.
-- `ga80e796` indicates the version `git-hash`.
+For details about TiDB version management, see [TiDB versioning](/releases/versioning.md).
 
 ### How about the operating cost of deploying and maintaining a TiDB cluster?
 
@@ -77,9 +71,9 @@ TiDB provides a few features and [tools](/ecosystem-tool-user-guide.md), with wh
 
 ### What's the difference between various TiDB master versions?
 
-The TiDB community is highly active. The engineers have been keeping optimizing and fixing bugs. Therefore, the TiDB version is updated quite fast. If you want to keep informed of the latest version, see [TiDB Release Timeline](/releases/release-timeline.md).
+The TiDB community is highly active. The engineers have been keeping optimizing features and fixing bugs. Therefore, the TiDB version is updated quite fast. If you want to keep informed of the latest version, see [TiDB Release Timeline](/releases/release-timeline.md).
 
-It is recommeneded to [deploy TiDB using TiUP](/production-deployment-using-tiup.md). TiDB has a unified management of the version number. You can view the version number using the following two methods:
+It is recommeneded to deploy TiDB [using TiUP](/production-deployment-using-tiup.md) or [using TiDB Operator](https://docs.pingcap.com/tidb-in-kubernetes/stable). TiDB has a unified management of the version number. You can view the version number using one of the following methods:
 
 - `select tidb_version()`
 - `tidb-server -V`
