@@ -59,7 +59,7 @@ TiDB 版本：5.4.3
     - (dup) 修复 `SHOW CREATE PLACEMENT POLICY` 输出结果不正确的问题 [#37526](https://github.com/pingcap/tidb/issues/37526)
     - (dup) 修复集群的 PD 节点被替换后一些 DDL 语句会卡住一段时间的问题 [#33908](https://github.com/pingcap/tidb/issues/33908)
     - (dup) 修复 `KILL TIDB` 在空闲连接上无法立即生效的问题 [#24031](https://github.com/pingcap/tidb/issues/24031)
-    - 修复 TiDB 执行 `SHOW COLUMNS` 的 `DATA_TYPE` 和 `COLUMN_TYPE` 列结果不正确的问题 [#36496](https://github.com/pingcap/tidb/issues/36496)
+    - 修复在 TiDB 上查询 `INFORMATION_SCHEMA.COLUMNS` 系统表得到的 `DATA_TYPE` 和 `COLUMN_TYPE` 列结果不正确的问题 [#36496](https://github.com/pingcap/tidb/issues/36496)
     - (dup) 修复了在开启 TiDB Binlog 时，TiDB 执行 `ALTER SEQUENCE` 会产生错误的元信息版本号，进而导致 Drainer 报错退出的问题 [#36276](https://github.com/pingcap/tidb/issues/36276)
 
     <!--execution **owner: @zanmato1984**-->
@@ -71,7 +71,7 @@ TiDB 版本：5.4.3
 
     <!--transaction **owner: @cfzjywxk**-->
 
-    - Fix `invalid transaction` error when doing stale read in RC isolation level [#30872](https://github.com/pingcap/tidb/issues/30872)
+    - 修复在读已提交隔离级别 (RC isolation level) 执行 Stale Read 报 `invalid transaction` 错误的问题 [#30872](https://github.com/pingcap/tidb/issues/30872)
     - (dup) 修复带 DML 算子的 `EXPLAIN ANALYZE` 语句可能在事务提交完成前返回结果的问题 [#37373](https://github.com/pingcap/tidb/issues/37373)
     - (dup) 修复开启 TiDB Binlog 后插入重复数据导致 data and columnID count not match 错误的问题 [#33608](https://github.com/pingcap/tidb/issues/33608)
 
@@ -82,8 +82,8 @@ TiDB 版本：5.4.3
     - (dup) 修复 `UnionScan` 无法保序导致的查询结果不正确的问题 [#33175](https://github.com/pingcap/tidb/issues/33175)
     - (dup) 修复在某些情况下 `UPDATE` 语句错误地消除了 projection 导致 `Can't find column` 报错的问题 [#37568](https://github.com/pingcap/tidb/issues/37568)
     - (dup) 修复某些情况下分区表无法充分利用索引来扫描数据的问题 [#33966](https://github.com/pingcap/tidb/issues/33966)
-    - 修复某些情况下，`EXECUTE` 命令可能抛出异常的问题 [#37187](https://github.com/pingcap/tidb/issues/37187)
-    - 修复开启 prepared plan cache 时，使用 `BIT` 类型的索引可能会导致查询结果错误的问题 [#33067](https://github.com/pingcap/tidb/issues/33067)
+    - 修复某些情况下，`EXECUTE` 语句可能抛出非预期异常的问题 [#37187](https://github.com/pingcap/tidb/issues/37187)
+    - 修复开启 Prepared Plan Cache 后，使用 `BIT` 类型的索引可能会导致查询结果错误的问题 [#33067](https://github.com/pingcap/tidb/issues/33067)
 
     <!--diagnosis **owner: @mornyx**-->
 
