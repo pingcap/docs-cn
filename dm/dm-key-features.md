@@ -90,7 +90,7 @@ routes:
 
 假设存在分库分表场景，需要将上游两个 MySQL 实例的表 `test_{11,12,13...}`.`t_{1,2,3...}` 迁移到下游 TiDB 的一张表 `test`.`t`，同时需要提取分表数据源信息写入下游合表中。
 
-为了迁移上游分表来源信息数据到下游合表，**必须在启动任务前手动**在下游创建好对应合表，且用于存放分表源数据信息的扩展列**应当为表末尾列**。
+为了迁移上游分表来源信息数据到下游合表，**必须在启动任务前手动**在下游创建好对应合表，合表需要包含所有定义的扩展列 `target-column`，且用于存放分表源数据信息的扩展列**必须为表末尾列且必须为字符类型**。
 
 为了迁移到下游实例的表 `test`.`t`，需要创建和上一章类似的 table routing 规则，并在其中增加 `extract-table`/`extract-schema`/`extract-source` 配置用于提取分库分表源数据信息：
 
@@ -183,13 +183,35 @@ mysql> select * from test.t;
 
 ##### 错误的合表建表示例
 
-`c-table` 列不在末尾，`c-source` 列缺失
+- `c-table` 列不在末尾
 
 ```sql
 CREATE TABLE `test`.`t` (
-    c_table varchar(5) DEFAULT NULL,
+    c_table varchar(10) DEFAULT NULL,
     a int(11) PRIMARY KEY,
-    c_schema varchar(5) DEFAULT NULL,
+    c_schema varchar(10) DEFAULT NULL,
+    c_source varchar(10) DEFAULT NULL
+);
+```
+
+- `c-source` 列缺失
+
+```sql
+CREATE TABLE `test`.`t` (
+    a int(11) PRIMARY KEY,
+    c_table varchar(10) DEFAULT NULL,
+    c_schema varchar(10) DEFAULT NULL,
+);
+```
+
+- `c-c_schema` 列为非 string 类型
+
+```sql
+CREATE TABLE `test`.`t` (
+    a int(11) PRIMARY KEY,
+    c_table varchar(10) DEFAULT NULL,
+    c_schema int(11) DEFAULT NULL,
+    c_source varchar(10) DEFAULT NULL,
 );
 ```
 
