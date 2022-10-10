@@ -89,7 +89,7 @@ TiDB 版本：5.4.3
 
 + TiKV **owner: @tabokie, TW: @Oreoxmt**
 
-    - 修复 Web 身份提供程序报错并失效自动恢复默认提供程序时权限拒绝的问题 [#13122](https://github.com/tikv/tikv/issues/13122)
+    - 修复 Web 身份提供程序 (web identity provider) 报错并失效后，自动恢复为默认提供程序 (default provider) 时出现权限拒绝的问题 [#13122](https://github.com/tikv/tikv/issues/13122)
     - (dup) 修复 PD 客户端可能会出现死锁的问题 [#13191](https://github.com/tikv/tikv/issues/13191)
     - (dup) 修复 PD Region heartbeat 连接异常中断后未重新连接的问题 [#12934](https://github.com/tikv/tikv/issues/12934)
     - (dup) 修复 Raftstore 线程繁忙时，可能会出现 Region 重叠的问题 [#13160](https://github.com/tikv/tikv/issues/13160)
