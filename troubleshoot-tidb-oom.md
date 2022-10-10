@@ -49,8 +49,8 @@ OOM 常见的故障现象包括（但不限于）：
 - 查看 Grafana 监控，发现以下现象：
     - **TiDB** > **Server** > **Memory Usage** 达到某一阈值的锯齿形
     - **TiDB** > **Server** > **Uptime** 显示为掉零
-    - **TiDB-Runtime** > **Memory Usage** 观察到 estimate-inuse 在持续升高
-    - **TiDB** > **Server** > **Memory Usage** 观察到 process/heapInuse 在持续升高
+    - **TiDB-Runtime** > **Memory Usage** 显示 estimate-inuse 在持续升高
+    - **TiDB** > **Server** > **Memory Usage** 显示 process/heapInuse 在持续升高
 
 - 查看 tidb.log，可发现如下日志条目：
     - OOM 相关的 Alerm：[WARN] [memory_usage_alarm.go:139] ["tidb-server has the risk of OOM. Running SQLs and heap profile will be recorded in record path"]。关于该日志的详细说明，请参考 [`memory-usage-alarm-ratio`](/system-variables.md#tidb_memory_usage_alarm_ratio)。
@@ -58,13 +58,11 @@ OOM 常见的故障现象包括（但不限于）：
 
 ## 常见故障原因和解决方法
 
-TiDB 出现 OOM 问题，一般从以下几个方面进行排查：
+一般从以下几个方面排查 TiDB OOM 问题：
 
 - [部署问题](#部署问题)
 - [数据库问题](#数据库问题)
 - [客户端问题](#客户端问题)
-
-以下章节分别进行介绍。
 
 ### 部署问题
 
@@ -72,7 +70,7 @@ TiDB 出现 OOM 问题，一般从以下几个方面进行排查：
 
 - 操作系统内存容量规划偏小，导致内存不足。
 - TiUP [`resource_control`](/tiup/tiup-cluster-topology-reference.md#global) 配置不合理。
-- 在混合部署的情况下（指 TiDB 和其他应用程序部署在同一台服务器上），导致 TiDB 作为受害者被 OOM-killer killed。
+- 在混合部署的情况下（指 TiDB 和其他应用程序部署在同一台服务器上），TiDB 作为受害者被 OOM-killer killed。
 
 ### 数据库问题
 
@@ -80,15 +78,15 @@ TiDB 出现 OOM 问题，一般从以下几个方面进行排查：
 
 > **注意：**
 >
-> 如果 SQL 返回 `ERROR 1105 (HY000): Out Of Memory Quota![conn_id=54]`，是由于配置了 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query)，数据库的内存使用控制行为会触发该报错。此报错为正常行为，不是故障，可以忽略。
+> 如果 SQL 返回 `ERROR 1105 (HY000): Out Of Memory Quota![conn_id=54]`，是由于配置了 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query)，数据库的内存使用控制行为会触发该报错。此报错为正常行为，可以忽略。
 
 #### 执行 SQL 语句时在 TiDB 节点上消耗太多内存
 
 可以根据以下不同的触发 OOM 的原因，采取相应的措施减少 SQL 的内存使用：
 
-- 如果 OOM 是由于 SQL 的执行计划不优，比如由于缺少合适的索引、统计信息过期、优化器 bug 等原因，导致选错了 SQL 的执行计划，进而出现巨大的中间结果集累积在内存中。这种情况下可以考虑采取以下措施：
+- 如果 SQL 的执行计划不优，比如由于缺少合适的索引、统计信息过期、优化器 bug 等原因，会导致选错 SQL 的执行计划，进而出现巨大的中间结果集累积在内存中。这种情况下可以考虑采取以下措施：
     - 添加合适的索引
-    - 使用算子的落盘功能
+    - 使用[算子的落盘功能](/configure-memory-usage#数据落盘)
     - 调整表之间的 JOIN 顺序
     - 使用 hint 进行调优
 
