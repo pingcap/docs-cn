@@ -2392,7 +2392,7 @@ explain select * from t where age=5;
 - 默认值：`OFF`
 - 指定是否允许优化器将 `Projection` 算子下推到 TiKV 或者 TiFlash。
 
-### `tidb_opt_range_max_size` <span class="version-mark">从 v6.3.0 版本开始引入</span>
+### `tidb_opt_range_max_size` <span class="version-mark">从 v6.4.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
