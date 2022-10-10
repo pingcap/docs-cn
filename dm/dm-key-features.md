@@ -53,7 +53,7 @@ routes:
 ### 参数解释
 
 - 将根据 [`schema-pattern`/`table-pattern`](/dm/table-selector.md) 匹配上该规则的上游 MySQL/MariaDB 实例的表迁移到下游的 `target-schema`/`target-table`。
-- 对于匹配上 `schema-pattern`/`table-pattern` 规则的分表，通过 `extract-table`/`table-regexp`，`extract-schema`/`schema-regexp`，`extract-source`/`source-regexp` 正则表达提取出分表/分库/数据来源实例的特征信息写入下游合表对应 `target-column` 中。
+- 对于匹配上 `schema-pattern`/`table-pattern` 规则的分表，通过 `extract-table`.`table-regexp`，`extract-schema`.`schema-regexp`，`extract-source`.`source-regexp` 正则表达提取出分表/分库/数据来源实例的特征信息写入下游合表对应 `target-column` 中。
 
 ### 使用示例
 
