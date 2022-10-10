@@ -11,13 +11,13 @@ summary: 了解如何定位、排查 TiDB Out Of Memory (OOM) 问题。
 
 在排查 OOM 问题时，整体遵循以下排查思路：
 
-1. 首先需要确认是否是 OOM 问题。执行下面命令查看操作系统日志，结果中存在问题发生附近时间点的 OOM-killer 的日志。
+1. 首先需要确认是否属于 OOM 问题。执行下面命令查看操作系统日志，如果结果中存在问题发生附近时间点的 OOM-killer 的日志，则可以确定是 OOM 问题。
 
     ```shell
     dmesg -T | grep tidb-server
     ```
 
-2. 如果确认是 OOM 问题，可以进一步排查触发原因是由部署问题导致还是由数据库问题导致。
+2. 确认是 OOM 问题之后，可以进一步排查触发原因是由部署问题导致还是由数据库问题导致。
 
     - 如果是部署问题触发 OOM，需要排查资源配置、混合部署的影响。
 
@@ -28,11 +28,11 @@ summary: 了解如何定位、排查 TiDB Out Of Memory (OOM) 问题。
 
 ## 常见故障现象
 
-OOM 问题常见的故障现象包括（但不限于）：
+OOM 常见的故障现象包括（但不限于）：
 
 - 客户端报错：`SQL error, errno = 2013, state = 'HY000': Lost connection to MySQL server during query`
 
-- 在 Grafana 上监控，发现因内存超阈发生过重启：
+- 查看 Grafana 监控，发现以下现象：
     - **TiDB** > **Server** > **Memory Usage** 达到某一阈值的锯齿形
     - **TiDB** > **Server** > **Uptime** 显示为掉零
     - **TiDB-Runtime** > **Memory Usage** 观察到 estimate-inuse 在持续升高
@@ -60,7 +60,7 @@ TiDB 出现 OOM 问题，一般从以下几个方面进行排查：
 
 - 操作系统内存容量规划偏小，导致内存不足
 
-- TiUP [`resource_control`](/tiup/tiup-cluster-topology-reference.md#global) 配置问题
+- TiUP [`resource_control`](/tiup/tiup-cluster-topology-reference.md#global) 配置不合理
 
 - 有混合部署的情况（指 TiDB 和其他应用程序部署在同一台服务器上），导致 TiDB 作为受害者被 oom-killer killed
 
@@ -86,24 +86,24 @@ TiDB 节点启动后需要加载统计信息到内存中。TiDB 从 v6.1.0 开�
 
 #### 执行 SQL 语句时在 TiDB 节点上消耗太多内存
 
-可以根据以下不同的场景，采取相应的措施减少 SQL 的内存使用：
+可以根据以下不同的触发 OOM 的原因，采取相应的措施减少 SQL 的内存使用：
 
 - 如果 OOM 是由于 SQL 的执行计划不优，比如由于缺少合适的索引、统计信息过期、优化器的 bug 等原因，导致选错了 SQL 的执行计划，进而出现巨大的中间结果集累积在内存中。这种情况下可以考虑采取以下措施：
     - 添加合适的索引
     - 使用算子的落盘功能
-    - 以及调整表之间的 JOIN 顺序
+    - 调整表之间的 JOIN 顺序
     - 使用 hint 进行调优
 
 - 一些算子和函数不支持下推到存储层，导致出现巨大的中间结果集累积。此时可能需要改写业务 SQL，或使用 hint 进行调优，来使用可下推的函数或算子。
 
 - 执行计划中存在算子 HashAgg。HashAgg 是多线程并发执行，虽然执行速度较快，但会消耗较多内存。可以尝试使用 hint `stream_agg` 替代。
 
-- 调小同时读取的 Region 的数量，或算子并发度，以避免因高并发导致的内存问题。对应的系统变量包括：
+- 调小同时读取的 Region 的数量，或降低算子并发度，以避免因高并发导致的内存问题。对应的系统变量包括：
     - [`tidb_distsql_scan_concurrency`](/system-variables.md#tidb_distsql_scan_concurrency)、
     - [`tidb_index_serial_scan_concurrency`](/system-variables.md#tidb_index_serial_scan_concurrency)
     - [`tidb_executor_concurrency`](/system-variables.md#tidb_executor_concurrency-从-v50-版本开始引入)
 
-- 问题发生时间附近，session 的并发度过高。可能需要添加节点进行扩容。
+- 问题发生时间附近，session 的并发度过高。此时可能需要添加节点进行扩容。
 
 #### 大事务或大写入在 TiDB 节点上消耗太多内存
 
@@ -117,7 +117,7 @@ TiDB 节点启动后需要加载统计信息到内存中。TiDB 从 v6.1.0 开�
 
 原因是由于 Prepared Statement 占用的内存要在 session 关闭后才会释放。这一点在长连接下尤需注意。
 
-要解决该问题，可以考虑以下措施：
+要解决该问题，可以考虑采取以下措施：
 
 - 调整 session 的生命周期
 
@@ -131,7 +131,7 @@ TiDB 节点启动后需要加载统计信息到内存中。TiDB 从 v6.1.0 开�
 
 如果还存在额外的计算操作（如连接、聚合等），启动该变量可能会导致内存不受 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 控制，加剧 OOM 风险。
 
-建议关闭该变量。该变量在 TiDB v6.3.0 开始默认关闭。
+建议关闭该变量。从 TiDB v6.3.0 开始，该变量默认关闭。
 
 ### 客户端 OOM 问题
 
@@ -146,19 +146,21 @@ TiDB 节点启动后需要加载统计信息到内存中。TiDB 从 v6.1.0 开�
 为定位 OOM 故障，通常需要收集以下信息：
 
 - 操作系统的内存相关配置
-    - TiUP 上的配置：resource_control.memory_limit
+    - TiUP 上的配置：`resource_control.memory_limit`
     - 操作系统的配置：
-      - 内存信息：`cat /proc/meminfo`
-      - 相关内核参数：`vm.overcommit_memory`
-    - NUMA 相关信息: `numactl --hardware`、`numactl --show`
+        - 内存信息：`cat /proc/meminfo`
+        - 相关内核参数：`vm.overcommit_memory`
+    - NUMA 相关信息:
+        - `numactl --hardware`
+        - `numactl --show`
 
 - 数据库的内存相关配置
     - tidb version
-    - `tidb_mem_quota_query`, `memory-usage-alarm-ratio`, `mem-quota-query`
+    - `tidb_mem_quota_query`、`memory-usage-alarm-ratio`、`mem-quota-query`
     - `oom-action`
     - `tidb_enable_rate_limit_action`
-    - `Server-memory-quota`
-    - `Oom-use-tmp-storage`, `tmp-storage-path`, `tmp-storage-quota`
+    - `server-memory-quota`
+    - `oom-use-tmp-storage`、`tmp-storage-path`、`tmp-storage-quota`
     - `tidb_analyze_version`
 
 - 在 Grafana 查看 TiDB 内存的日常使用情况: **TiDB** > **Server** > **Memory Usage**
@@ -169,7 +171,7 @@ TiDB 节点启动后需要加载统计信息到内存中。TiDB 从 v6.1.0 开�
     - `information_schema` 的 `SLOW_QUERY`、`CLUSTER_SLOW_QUERY`
     - 各个 TiDB 节点的 tidb_slow_query.log
     - 在 tidb.log 中 grep "expensive_query" 查看对应的日志条目
-    - 执行 `EXPLAIN ANALYZE`，查看算子的对应内存消耗
+    - 执行 `EXPLAIN ANALYZE` 查看算子的内存消耗
     - 执行 `SELECT * FROM information_schema.processlist;` 查看 SQL 对应的 `MEM` 列的值
 
 - 执行以下命令，收集内存使用率高的时候 TiDB 的 Profile 信息：
