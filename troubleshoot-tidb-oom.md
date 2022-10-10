@@ -17,6 +17,21 @@ summary: 了解如何定位、排查 TiDB Out Of Memory (OOM) 问题。
     dmesg -T | grep tidb-server
     ```
 
+    下面是输出示例：
+
+    ```shell
+    ......
+    Mar 14 16:55:03 localhost kernel: tidb-server invoked oom-killer: gfp_mask=0x201da, order=0, oom_score_adj=0
+    Mar 14 16:55:03 localhost kernel: tidb-server cpuset=/ mems_allowed=0
+    Mar 14 16:55:03 localhost kernel: CPU: 14 PID: 21966 Comm: tidb-server Kdump: loaded Not tainted 3.10.0-1160.el7.x86_64 #1
+    Mar 14 16:55:03 localhost kernel: Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.14.0-0-g155821a1990b-prebuilt.qemu.org 04/01/2014
+    ......
+    Mar 14 16:55:03 localhost kernel: Out of memory: Kill process 21945 (tidb-server) score 956 or sacrifice child
+    Mar 14 16:55:03 localhost kernel: Killed process 21945 (tidb-server), UID 1000, total-vm:33027492kB, anon-rss:31303276kB, file-rss:0kB, shmem-rss:0kB
+    Mar 14 16:55:07 localhost systemd: tidb-4000.service: main process exited, code=killed, status=9/KILL
+    ......
+    ```
+
 2. 确认是 OOM 问题之后，可以进一步排查触发 OOM 的原因是由部署问题导致还是由数据库问题导致。
 
     - 如果是部署问题触发 OOM，需要排查资源配置、混合部署的影响。
@@ -159,7 +174,7 @@ TiDB 节点启动后需要加载统计信息到内存中。从 TiDB v6.1.0 开�
     - 可以从 SQL Dashboard 中查看 SQL 语句分析、慢查询，查看内存使用量
     - `INFORMATION_SCHEMA` 的 `SLOW_QUERY`、`CLUSTER_SLOW_QUERY`
     - 各个 TiDB 节点的 `tidb_slow_query.log`
-    - 在 `tidb.log` 中 `grep` `"expensive_query"` 查看对应的日志条目
+    - 执行 `grep "expensive_query" tidb.log` 在 `tidb.log` 中查看对应的日志条目
     - 执行 `EXPLAIN ANALYZE` 查看算子的内存消耗
     - 执行 `SELECT * FROM information_schema.processlist;` 查看 SQL 对应的 `MEM` 列的值
 
@@ -169,9 +184,9 @@ TiDB 节点启动后需要加载统计信息到内存中。从 TiDB v6.1.0 开�
     curl -G http://{TiDBIP}:10080/debug/zip?seconds=10" > profile.zip
     ```
 
-- 在 `tidb.log` 中，`grep` 关键字 `"tidb-server has the risk of OOM"`，可以看到 TiDB Server 收集的告警文件路径，例如：
+- 执行 `grep "tidb-server has the risk of OOM" tidb.log`，可以看到 TiDB Server 收集的告警文件路径，例如：
 
-    ```
+    ```shell
     ["tidb-server has the risk of OOM. Running SQLs and heap profile will be recorded in record path"] ["is server-memory-quota set"=false] ["system memory total"=14388137984] ["system memory usage"=11897434112] ["tidb-server memory usage"=11223572312] [memory-usage-alarm-ratio=0.8] ["record path"="/tmp/0_tidb/MC4wLjAuMDo0MDAwLzAuMC4wLjA6MTAwODA=/tmp-storage/record"]
     ```
 
