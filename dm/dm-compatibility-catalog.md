@@ -30,7 +30,7 @@ DM supports migrating data from different sources to TiDB clusters. Based on the
 >
 > DM v5.3.0 is not recommended. If you have enabled GTID replication but do not enable relay log in DM v5.3.0, data replication fails with low probability.
 
-|Data source|Compatibility level|DM version|
+|Target database|Compatibility level|DM version|
 |-|-|-|
 |TiDB 6.0|GA|≥ 5.3.1|
 |TiDB 5.4|GA|≥ 5.3.1|
