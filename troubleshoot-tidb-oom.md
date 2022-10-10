@@ -95,9 +95,9 @@ TiDB 出现 OOM 问题，一般从以下几个方面进行排查：
 
 #### 大事务或大写入在 TiDB 节点上消耗太多内存
 
-需要提前进行内存的容量规划，这是因为执行事务时 TiDB 进程的内存消耗相对于事务大小会存在一定程度的放大，最大可能达到提交事务大小的 2 倍到 3 倍以上。
+需要提前进行内存的容量规划，这是因为执行事务时 TiDB 进程的内存消耗相对于事务大小会存在一定程度的放大，最大可以达到提交事务大小的 2 倍到 3 倍以上。
 
-针对单个大事务，也可通过拆分的方式调小事务大小。
+针对单个大事务，可以通过拆分的方式调小事务大小。
 
 #### 收集和加载统计信息的过程中消耗太多内存
 
@@ -113,9 +113,7 @@ TiDB 节点启动后需要加载统计信息到内存中。从 TiDB v6.1.0 开�
 
 #### Prepared Statement 使用过量
 
-客户端不断创建 Prepared Statement 但未执行 [`deallocate prepare stmt`](/sql-prepared-plan-cache.md#忽略-com_stmt_close-指令和-deallocate-prepare-语句) 导致的内存持续上涨，最终导致 TiDB OOM。
-
-原因是由于 Prepared Statement 占用的内存要在 session 关闭后才会释放。这一点在长连接下尤需注意。
+客户端不断创建 Prepared Statement 但未执行 [`deallocate prepare stmt`](/sql-prepared-plan-cache.md#忽略-com_stmt_close-指令和-deallocate-prepare-语句) 会导致内存持续上涨，最终触发 TiDB OOM。原因是由于 Prepared Statement 占用的内存要在 session 关闭后才会释放。这一点在长连接下尤需注意。
 
 要解决该问题，可以考虑采取以下措施：
 
