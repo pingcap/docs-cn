@@ -156,6 +156,7 @@
   - [定位慢查询](/identify-slow-queries.md)
   - [分析慢查询](/analyze-slow-queries.md)
   - [SQL 诊断](/information-schema/information-schema-sql-diagnostics.md)
+  - [TiDB OOM 故障排查](/troubleshoot-tidb-oom.md)
   - [使用 Top SQL 定位系统资源消耗过多的查询](/dashboard/top-sql.md)
   - [通过日志定位消耗系统资源多的查询](/identify-expensive-queries.md)
   - [SQL 语句统计](/statement-summary-tables.md)
