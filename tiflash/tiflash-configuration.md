@@ -255,6 +255,10 @@ delta_index_cache_size = 0
 
 In addition to the items above, other parameters are the same as those of TiKV. Note that the `label` whose key is `engine` is reserved and cannot be configured manually.
 
+### Schedule replicas by topology labels
+
+See [Set available zones](/tiflash/create-tiflash-replicas.md#set-available-zones).
+
 ### Multi-disk deployment
 
 TiFlash supports multi-disk deployment. If there are multiple disks in your TiFlash node, you can make full use of those disks by configuring the parameters described in the following sections. For TiFlash's configuration template to be used for TiUP, see [The complex template for the TiFlash topology](https://github.com/pingcap/docs/blob/master/config-templates/complex-tiflash.yaml).

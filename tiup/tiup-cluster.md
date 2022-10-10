@@ -91,6 +91,11 @@ tikv_servers:
   - host: 172.16.5.139
   - host: 172.16.5.140
 
+tiflash_servers:
+  - host: 172.16.5.141
+  - host: 172.16.5.142
+  - host: 172.16.5.143
+
 grafana_servers:
   - host: 172.16.5.134
 
@@ -128,17 +133,20 @@ During the execution, TiUP asks you to confirm your topology again and requires 
 Please confirm your topology:
 TiDB Cluster: prod-cluster
 TiDB Version: v6.3.0
-Type        Host          Ports        Directories
-----        ----          -----        -----------
-pd          172.16.5.134  2379/2380    deploy/pd-2379,data/pd-2379
-pd          172.16.5.139  2379/2380    deploy/pd-2379,data/pd-2379
-pd          172.16.5.140  2379/2380    deploy/pd-2379,data/pd-2379
-tikv        172.16.5.134  20160/20180  deploy/tikv-20160,data/tikv-20160
-tikv        172.16.5.139  20160/20180  deploy/tikv-20160,data/tikv-20160
-tikv        172.16.5.140  20160/20180  deploy/tikv-20160,data/tikv-20160
-tidb        172.16.5.134  4000/10080   deploy/tidb-4000
-tidb        172.16.5.139  4000/10080   deploy/tidb-4000
-tidb        172.16.5.140  4000/10080   deploy/tidb-4000
+Type        Host          Ports                            OS/Arch       Directories
+----        ----          -----                            -------       -----------
+pd          172.16.5.134  2379/2380                        linux/x86_64  deploy/pd-2379,data/pd-2379
+pd          172.16.5.139  2379/2380                        linux/x86_64  deploy/pd-2379,data/pd-2379
+pd          172.16.5.140  2379/2380                        linux/x86_64  deploy/pd-2379,data/pd-2379
+tikv        172.16.5.134  20160/20180                      linux/x86_64  deploy/tikv-20160,data/tikv-20160
+tikv        172.16.5.139  20160/20180                      linux/x86_64  deploy/tikv-20160,data/tikv-20160
+tikv        172.16.5.140  20160/20180                      linux/x86_64  deploy/tikv-20160,data/tikv-20160
+tidb        172.16.5.134  4000/10080                       linux/x86_64  deploy/tidb-4000
+tidb        172.16.5.139  4000/10080                       linux/x86_64  deploy/tidb-4000
+tidb        172.16.5.140  4000/10080                       linux/x86_64  deploy/tidb-4000
+tiflash     172.16.5.141  9000/8123/3930/20170/20292/8234  linux/x86_64  deploy/tiflash-9000,data/tiflash-9000
+tiflash     172.16.5.142  9000/8123/3930/20170/20292/8234  linux/x86_64  deploy/tiflash-9000,data/tiflash-9000
+tiflash     172.16.5.143  9000/8123/3930/20170/20292/8234  linux/x86_64  deploy/tiflash-9000,data/tiflash-9000
 prometheus  172.16.5.134  9090         deploy/prometheus-9090,data/prometheus-9090
 grafana     172.16.5.134  3000         deploy/grafana-3000
 Attention:
@@ -198,19 +206,22 @@ tiup cluster display prod-cluster
 Starting /root/.tiup/components/cluster/v1.11.0/cluster display prod-cluster
 TiDB Cluster: prod-cluster
 TiDB Version: v6.3.0
-ID                  Role        Host          Ports        Status     Data Dir              Deploy Dir
---                  ----        ----          -----        ------     --------              ----------
-172.16.5.134:3000   grafana     172.16.5.134  3000         Up         -                     deploy/grafana-3000
-172.16.5.134:2379   pd          172.16.5.134  2379/2380    Up|L       data/pd-2379          deploy/pd-2379
-172.16.5.139:2379   pd          172.16.5.139  2379/2380    Up|UI      data/pd-2379          deploy/pd-2379
-172.16.5.140:2379   pd          172.16.5.140  2379/2380    Up         data/pd-2379          deploy/pd-2379
-172.16.5.134:9090   prometheus  172.16.5.134  9090         Up         data/prometheus-9090  deploy/prometheus-9090
-172.16.5.134:4000   tidb        172.16.5.134  4000/10080   Up         -                     deploy/tidb-4000
-172.16.5.139:4000   tidb        172.16.5.139  4000/10080   Up         -                     deploy/tidb-4000
-172.16.5.140:4000   tidb        172.16.5.140  4000/10080   Up         -                     deploy/tidb-4000
-172.16.5.134:20160  tikv        172.16.5.134  20160/20180  Up         data/tikv-20160       deploy/tikv-20160
-172.16.5.139:20160  tikv        172.16.5.139  20160/20180  Up         data/tikv-20160       deploy/tikv-20160
-172.16.5.140:20160  tikv        172.16.5.140  20160/20180  Up         data/tikv-20160       deploy/tikv-20160
+ID                  Role        Host          Ports                            OS/Arch       Status  Data Dir              Deploy Dir
+--                  ----        ----          -----                            -------       ------  --------              ----------
+172.16.5.134:3000   grafana     172.16.5.134  3000                             linux/x86_64  Up      -                     deploy/grafana-3000
+172.16.5.134:2379   pd          172.16.5.134  2379/2380                        linux/x86_64  Up|L    data/pd-2379          deploy/pd-2379
+172.16.5.139:2379   pd          172.16.5.139  2379/2380                        linux/x86_64  Up|UI   data/pd-2379          deploy/pd-2379
+172.16.5.140:2379   pd          172.16.5.140  2379/2380                        linux/x86_64  Up      data/pd-2379          deploy/pd-2379
+172.16.5.134:9090   prometheus  172.16.5.134  9090                             linux/x86_64  Up      data/prometheus-9090  deploy/prometheus-9090
+172.16.5.134:4000   tidb        172.16.5.134  4000/10080                       linux/x86_64  Up      -                     deploy/tidb-4000
+172.16.5.139:4000   tidb        172.16.5.139  4000/10080                       linux/x86_64  Up      -                     deploy/tidb-4000
+172.16.5.140:4000   tidb        172.16.5.140  4000/10080                       linux/x86_64  Up      -                     deploy/tidb-4000
+172.16.5.141:9000   tiflash     172.16.5.141  9000/8123/3930/20170/20292/8234  linux/x86_64  Up      data/tiflash-9000     deploy/tiflash-9000
+172.16.5.142:9000   tiflash     172.16.5.142  9000/8123/3930/20170/20292/8234  linux/x86_64  Up      data/tiflash-9000     deploy/tiflash-9000
+172.16.5.143:9000   tiflash     172.16.5.143  9000/8123/3930/20170/20292/8234  linux/x86_64  Up      data/tiflash-9000     deploy/tiflash-9000
+172.16.5.134:20160  tikv        172.16.5.134  20160/20180                      linux/x86_64  Up      data/tikv-20160       deploy/tikv-20160
+172.16.5.139:20160  tikv        172.16.5.139  20160/20180                      linux/x86_64  Up      data/tikv-20160       deploy/tikv-20160
+172.16.5.140:20160  tikv        172.16.5.140  20160/20180                      linux/x86_64  Up      data/tikv-20160       deploy/tikv-20160
 ```
 
 The `Status` column uses `Up` or `Down` to indicate whether the service is running normally.
@@ -225,12 +236,12 @@ For the PD component, `|L` or `|UI` might be appended to `Up` or `Down`. `|L` in
 
 Scaling in a cluster means making some node(s) offline. This operation removes the specific node(s) from the cluster and deletes the remaining files.
 
-Because the offline process of the TiKV and TiDB Binlog components is asynchronous (which requires removing the node through API), and the process takes a long time (which requires continuous observation on whether the node is successfully taken offline), special treatment is given to the TiKV and TiDB Binlog components.
+Because the offline process of the TiKV, TiFlash, and TiDB Binlog components is asynchronous (which requires removing the node through API), and the process takes a long time (which requires continuous observation on whether the node is successfully taken offline), special treatment is given to the TiKV, TiFlash, and TiDB Binlog components.
 
-- For TiKV and Binlog:
+- For TiKV, TiFlash, and Binlog:
 
     - TiUP cluster takes the node offline through API and directly exits without waiting for the process to be completed.
-    - Afterwards, when a command related to the cluster operation is executed, TiUP cluster examines whether there is a TiKV/Binlog node that has been taken offline. If not, TiUP cluster continues with the specified operation; If there is, TiUP cluster takes the following steps:
+    - Afterwards, when a command related to the cluster operation is executed, TiUP cluster examines whether there is a TiKV, TiFlash, or Binlog node that has been taken offline. If not, TiUP cluster continues with the specified operation; If there is, TiUP cluster takes the following steps:
 
         1. Stop the service of the node that has been taken offline.
         2. Clean up the data files related to the node.
@@ -269,19 +280,22 @@ tiup cluster display prod-cluster
 Starting /root/.tiup/components/cluster/v1.11.0/cluster display prod-cluster
 TiDB Cluster: prod-cluster
 TiDB Version: v6.3.0
-ID                  Role        Host          Ports        Status     Data Dir              Deploy Dir
---                  ----        ----          -----        ------     --------              ----------
-172.16.5.134:3000   grafana     172.16.5.134  3000         Up         -                     deploy/grafana-3000
-172.16.5.134:2379   pd          172.16.5.134  2379/2380    Up|L       data/pd-2379          deploy/pd-2379
-172.16.5.139:2379   pd          172.16.5.139  2379/2380    Up|UI      data/pd-2379          deploy/pd-2379
-172.16.5.140:2379   pd          172.16.5.140  2379/2380    Up         data/pd-2379          deploy/pd-2379
-172.16.5.134:9090   prometheus  172.16.5.134  9090         Up         data/prometheus-9090  deploy/prometheus-9090
-172.16.5.134:4000   tidb        172.16.5.134  4000/10080   Up         -                     deploy/tidb-4000
-172.16.5.139:4000   tidb        172.16.5.139  4000/10080   Up         -                     deploy/tidb-4000
-172.16.5.140:4000   tidb        172.16.5.140  4000/10080   Up         -                     deploy/tidb-4000
-172.16.5.134:20160  tikv        172.16.5.134  20160/20180  Up         data/tikv-20160       deploy/tikv-20160
-172.16.5.139:20160  tikv        172.16.5.139  20160/20180  Up         data/tikv-20160       deploy/tikv-20160
-172.16.5.140:20160  tikv        172.16.5.140  20160/20180  Offline    data/tikv-20160       deploy/tikv-20160
+ID                  Role        Host          Ports                            OS/Arch       Status   Data Dir              Deploy Dir
+--                  ----        ----          -----                            -------       ------   --------              ----------
+172.16.5.134:3000   grafana     172.16.5.134  3000                             linux/x86_64  Up       -                     deploy/grafana-3000
+172.16.5.134:2379   pd          172.16.5.134  2379/2380                        linux/x86_64  Up|L     data/pd-2379          deploy/pd-2379
+172.16.5.139:2379   pd          172.16.5.139  2379/2380                        linux/x86_64  Up|UI    data/pd-2379          deploy/pd-2379
+172.16.5.140:2379   pd          172.16.5.140  2379/2380                        linux/x86_64  Up       data/pd-2379          deploy/pd-2379
+172.16.5.134:9090   prometheus  172.16.5.134  9090                             linux/x86_64  Up       data/prometheus-9090  deploy/prometheus-9090
+172.16.5.134:4000   tidb        172.16.5.134  4000/10080                       linux/x86_64  Up       -                     deploy/tidb-4000
+172.16.5.139:4000   tidb        172.16.5.139  4000/10080                       linux/x86_64  Up       -                     deploy/tidb-4000
+172.16.5.140:4000   tidb        172.16.5.140  4000/10080                       linux/x86_64  Up       -                     deploy/tidb-4000
+172.16.5.141:9000   tiflash     172.16.5.141  9000/8123/3930/20170/20292/8234  linux/x86_64  Up       data/tiflash-9000     deploy/tiflash-9000
+172.16.5.142:9000   tiflash     172.16.5.142  9000/8123/3930/20170/20292/8234  linux/x86_64  Up       data/tiflash-9000     deploy/tiflash-9000
+172.16.5.143:9000   tiflash     172.16.5.143  9000/8123/3930/20170/20292/8234  linux/x86_64  Up       data/tiflash-9000     deploy/tiflash-9000
+172.16.5.134:20160  tikv        172.16.5.134  20160/20180                      linux/x86_64  Up       data/tikv-20160       deploy/tikv-20160
+172.16.5.139:20160  tikv        172.16.5.139  20160/20180                      linux/x86_64  Up       data/tikv-20160       deploy/tikv-20160
+172.16.5.140:20160  tikv        172.16.5.140  20160/20180                      linux/x86_64  Offline  data/tikv-20160       deploy/tikv-20160
 ```
 
 After PD schedules the data on the node to other TiKV nodes, this node will be deleted automatically.

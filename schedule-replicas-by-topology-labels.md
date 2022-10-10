@@ -18,25 +18,25 @@ To make this mechanism effective, you need to properly configure TiKV and PD so 
 
 ### Configure `labels` for TiKV and TiFlash
 
-You can use the command-line flag or set the TiKV or TiFlash configuration file to bind some attributes in the form of key-value pairs. These attributes are called `labels`. After TiKV and TiFlash are started, it reports its `labels` to PD so users can identify the location of TiKV and TiFlash nodes.
+You can use the command-line flag or set the TiKV or TiFlash configuration file to bind some attributes in the form of key-value pairs. These attributes are called `labels`. After TiKV and TiFlash are started, they report their `labels` to PD so users can identify the location of TiKV and TiFlash nodes.
 
-Assume that the topology has three layers: zone > rack > host, and you can use these labels (zone, rack, host) to set the TiKV and TiFlash location. To set labels for TiKV, you can use one of the following methods:
+Assume that the topology has four layers: zone > data center (dc) > rack > host, and you can use these labels (zone, dc, rack, host) to set location of the TiKV and TiFlash. To set labels for TiKV and TiFlash, you can use one of the following methods:
 
 + Use the command-line flag to start a TiKV instance:
 
-    {{< copyable "" >}}
-
-    ```
-    tikv-server --labels zone=<zone>,rack=<rack>,host=<host>
+     ```shell
+    tikv-server --labels zone=<zone>,dc=<dc>,rack=<rack>,host=<host>
     ```
 
 + Configure in the TiKV configuration file:
 
-    {{< copyable "" >}}
-
     ```toml
     [server]
-    labels = "zone=<zone>,rack=<rack>,host=<host>"
+    [server.labels]
+    zone = "<zone>"
+    dc = "<dc>"
+    rack = "<rack>"
+    host = "<host>"
     ```
 
 To set labels for TiFlash, you can use the `tiflash-learner.toml` file, which is the configuration file of tiflash-proxy:
@@ -129,9 +129,9 @@ The `location-level` configuration is an array of strings, which needs to corres
 
 ### Configure a cluster using TiUP (recommended)
 
-When using TiUP to deploy a cluster, you can configure the TiKV location in the [initialization configuration file](/production-deployment-using-tiup.md#step-3-initialize-cluster-topology-file). TiUP will generate the corresponding TiKV and PD configuration files during deployment.
+When using TiUP to deploy a cluster, you can configure the TiKV location in the [initialization configuration file](/production-deployment-using-tiup.md#step-3-initialize-cluster-topology-file). TiUP will generate the corresponding configuration files for TiKV, PD, and TiFlash during deployment.
 
-In the following example, a two-layer topology of `zone/host` is defined. The TiKV nodes of the cluster are distributed among three zones, each zone with two hosts. In z1, two TiKV instances are deployed per host. In z2 and z3, one TiKV instance is deployed per host. In the following example, `tikv-n` represents the IP address of the `n`th TiKV node.
+In the following example, a two-layer topology of `zone/host` is defined. The TiKV nodes of the cluster are distributed among three zones, z1, z2, and z3, with each zone having four hosts, h1, h2, h3, and h4. In z1, four TiKV instances are deployed on two hosts, `tikv-1` and `tikv-2` on h1, and `tikv-3` and `tikv-4` on h2. Two TiFlash instances are deployed on the other two hosts, `tiflash-1` on h3 and `tiflash-2` on h4. In z2 and z3, two TiKV instances are deployed on two hosts, and two TiFlash instances are deployed on the other two hosts. In the following example, `tikv-n` represents the IP address of the `n`th TiKV node, and `tiflash-n` represents the IP address of the `n`th TiFlash node.
 
 ```
 server_configs:
@@ -182,6 +182,40 @@ tikv_servers:
       server.labels:
         zone: z3
         host: h2s
+tiflash_servers:
+# z1
+  - host: tiflash-1
+    learner_config:
+      server.labels:
+        zone: z1
+        host: h3
+   - host: tiflash-2
+    learner_config:
+      server.labels:
+        zone: z1
+        host: h4
+# z2
+  - host: tiflash-3
+    learner_config:
+      server.labels:
+        zone: z2
+        host: h3
+   - host: tiflash-4
+    learner_config:
+      server.labels:
+        zone: z2
+        host: h4
+# z3
+  - host: tiflash-5
+    learner_config:
+      server.labels:
+        zone: z3
+        host: h3
+  - host: tiflash-6
+    learner_config:
+      server.labels:
+        zone: z3
+        host: h4
 ```
 
 For details, see [Geo-distributed Deployment topology](/geo-distributed-deployment-topology.md).
