@@ -331,15 +331,14 @@ This variable is an alias for [`last_insert_id`](#last_insert_id).
 - Default value: `OFF`
 - This variable indicates whether [TiDB Binlog](https://docs.pingcap.com/tidb/stable/tidb-binlog-overview) is used.
 
-### max_allowed_packet
+### max_allowed_packet <span class="version-mark">New in v6.1.0</span>
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
-- Type: Integer
 - Default value: `67108864`
-- Range: `[1024, 1073741824]`
-- Unit: Bytes
-- The maximum size of a packet for the MySQL protocol.
+- Range: `[1024, 1073741824]`. The value should be an integer multiple of 1024. If the value is not divisible by 1024, a warning will be prompted and the value will be rounded down. For example, when the value is set to 1025, the actual value in TiDB is 1024.
+- The maximum packet size allowed by the server and the client in one transmission of packets, in bytes.
+- This variable is compatible with MySQL.
 
 ### max_connections
 
@@ -396,15 +395,6 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 +-------------------------+---------+
 1 row in set (0.00 sec)
 ```
-
-### max_allowed_packet <span class="version-mark">New in v6.1.0</span>
-
-- Scope: SESSION | GLOBAL
-- Persists to cluster: Yes
-- Default value: `67108864`
-- Range: `[1024, 1073741824]`. The value should be an integer multiple of 1024. If the value is not divisible by 1024, a warning will be prompted and the value will be rounded down. For example, when the value is set to 1025, the actual value in TiDB is 1024.
-- The maximum packet size allowed by the server and the client in one transmission of packets, in bytes.
-- This variable is compatible with MySQL.
 
 ### plugin_dir
 
