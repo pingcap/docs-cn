@@ -56,7 +56,7 @@ set global tidb_server_memory_limit="32GB";
 >
 > + `server-memory-quota` 配置项已被废弃。为了保证兼容性，该配置项会覆盖 `tidb_server_memory_limit` 系统变量，并且只单实例生效。
 
-在 tidb-server 实例内存使用到达总内存对一定比例(`tidb_server_memory_limit_gc_trigger`), 其会尝试触发一次 Golang GC 以缓解内存压力。为了避免频繁 GC 可能导致的性能问题，该 GC 方式 1 分钟只会触发 1 次。
+在 tidb-server 实例内存使用到达总内存的一定比例 [`tidb_server_memory_limit_gc_trigger`](/system-variables.md#tidb_server_memory_limit_gc_trigger) 时, tidb-server 会尝试触发一次 Golang GC 以缓解内存压力。为了避免频繁 GC 可能导致的性能问题，该 GC 方式 1 分钟只会触发 1 次。
 
 ## 使用内存表观测当前 tidb-server 的内存使用情况
 
