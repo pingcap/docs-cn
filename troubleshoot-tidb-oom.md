@@ -21,7 +21,7 @@ summary: 了解如何定位、排查 TiDB Out Of Memory (OOM) 问题。
 
     - 如果是部署问题触发 OOM，需要排查资源配置、混合部署的影响。
 
-    - 如果是数据库问题触发 OOM，常见原因有:
+    - 如果是数据库问题触发 OOM，常见原因有：
         - TiDB 处理较大的数据流量，如大查询、大写入、数据导入等
         - TiDB 的高并发场景，多条 SQL 并发消耗资源，或者算子并发高
         - TiDB 内存泄露，资源没有释放
@@ -39,7 +39,7 @@ OOM 常见的故障现象包括（但不限于）：
     - **TiDB** > **Server** > **Memory Usage** 观察到 process/heapInuse 在持续升高
 
 - 查看 tidb.log，可发现如下日志条目：
-    - OOM 相关的 Alerm: [WARN] [memory_usage_alarm.go:139] ["tidb-server has the risk of OOM. Running SQLs and heap profile will be recorded in record path"]。关于该日志的详细说明，请参考 [`memory-usage-alarm-ratio`](/system-variables.md#tidb_memory_usage_alarm_ratio)。
+    - OOM 相关的 Alerm：[WARN] [memory_usage_alarm.go:139] ["tidb-server has the risk of OOM. Running SQLs and heap profile will be recorded in record path"]。关于该日志的详细说明，请参考 [`memory-usage-alarm-ratio`](/system-variables.md#tidb_memory_usage_alarm_ratio)。
     - 重启相关的日志条目：[INFO] [printer.go:33] ["Welcome to TiDB."]
 
 ## 常见故障原因和解决方法
@@ -148,7 +148,7 @@ TiDB 节点启动后需要加载统计信息到内存中。从 TiDB v6.1.0 开�
     - 操作系统的配置：
         - 内存信息：`cat /proc/meminfo`
         - 相关内核参数：`vm.overcommit_memory`
-    - NUMA 相关信息:
+    - NUMA 相关信息：
         - `numactl --hardware`
         - `numactl --show`
 
@@ -161,7 +161,7 @@ TiDB 节点启动后需要加载统计信息到内存中。从 TiDB v6.1.0 开�
     - `oom-use-tmp-storage`、`tmp-storage-path`、`tmp-storage-quota`
     - `tidb_analyze_version`
 
-- 在 Grafana 查看 TiDB 内存的日常使用情况: **TiDB** > **Server** > **Memory Usage**
+- 在 Grafana 查看 TiDB 内存的日常使用情况：**TiDB** > **Server** > **Memory Usage**
 
 - 查看内存消耗较多的 SQL 语句：
 
