@@ -34,7 +34,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 + 单条 SQL 语句的内存使用超出系统变量 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 限制时，某些算子的临时磁盘存储位置。
 + 默认值：`<操作系统临时文件夹>/<操作系统用户ID>_tidb/MC4wLjAuMDo0MDAwLzAuMC4wLjA6MTAwODA=/tmp-storage`。其中 `MC4wLjAuMDo0MDAwLzAuMC4wLjA6MTAwODA=` 是对 `<host>:<port>/<statusHost>:<statusPort>` 进行 `Base64` 编码的输出结果。
-+ 此配置仅在 [`tidb_enable_tmp_storage_on_oom`](/system-variables.md#tidb_enable_tmp_storage_on_oom-从-v630-版本开始引入) 为 true 时有效。
++ 此配置仅在系统变量 [`tidb_enable_tmp_storage_on_oom`](/system-variables.md#tidb_enable_tmp_storage_on_oom-从-v630-版本开始引入) 的值为 true 时有效。
 
 ### `tmp-storage-quota`
 
@@ -62,7 +62,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 + 开启检查 utf8mb4 字符的开关，如果开启此功能，字符集是 utf8，且在 utf8 插入 mb4 字符，系统将会报错。
 + 默认值：true
-+ 在版本 v6.1.0 之后，该功能已改用配置 `[instance].tidb_check_mb4_value_in_utf8` 或系统变量 `tidb_check_mb4_value_in_utf8` 进行设置。
++ 自 v6.1.0 起，utf8mb4 字符检查改为通过 TiDB 配置项 `[instance].tidb_check_mb4_value_in_utf8` 或系统变量 `tidb_check_mb4_value_in_utf8` 进行设置。
 
 ### `treat-old-version-utf8-as-utf8mb4`
 
