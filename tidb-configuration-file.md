@@ -62,7 +62,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 + 开启检查 utf8mb4 字符的开关，如果开启此功能，字符集是 utf8，且在 utf8 插入 mb4 字符，系统将会报错。
 + 默认值：true
-+ 在版本 v6.1.0 之后，该功能已改用配置 `[instance].tidb_check_mb4_value_in_utf8` 或系统变量 `tidb_check_mb4_value_in_utf8` 进行设置。
++ 自 v6.1.0 起，utf8mb4 字符检查改为通过 TiDB 配置项 `[instance].tidb_check_mb4_value_in_utf8` 或系统变量 `tidb_check_mb4_value_in_utf8` 进行设置。
 
 ### `treat-old-version-utf8-as-utf8mb4`
 
