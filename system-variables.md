@@ -308,12 +308,14 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 - 服务器端和客户端在一次传送数据包的过程中所允许最大的数据包大小，单位为字节。
 - 该变量的行为与 MySQL 兼容。
 
-### `max_connections` <span class="version-mark">从 v6.2.0 版本开始引入</span>
+### `max_connections`
 
 - 作用域：GLOBAL
 - 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
-- TiDB 中同时允许的最大客户端连接数，用于资源控制。
+- 类型：整数
 - 默认值：`0`
+- 范围：`[0, 100000]`
+- TiDB 中同时允许的最大客户端连接数，用于资源控制。
 - 默认情况下，TiDB 不限制客户端连接数。当本配置项的值大于 `0` 且客户端连接数到达此值时，TiDB 服务端将会拒绝新的客户端连接。
 
 ### `plugin_dir`
@@ -576,7 +578,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 这个变量用于控制是否开启[自动捕获绑定](/sql-plan-management.md#自动捕获绑定-baseline-capturing)功能。该功能依赖 Statement Summary，因此在使用自动绑定之前需打开 Statement Summary 开关。
 - 开启该功能后会定期遍历一次 Statement Summary 中的历史 SQL 语句，并为至少出现两次的 SQL 语句自动创建绑定。
 
-### `tidb_check_mb4_value_in_utf8` <span class="version-mark">从 v6.1.0 版本开始引入</span>
+### `tidb_check_mb4_value_in_utf8`
 
 - 作用域：GLOBAL
 - 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
@@ -934,7 +936,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
     - `ON` 表示所有主键默认使用聚簇索引。
     - `INT_ONLY` 此时的行为受配置项 `alter-primary-key` 控制。如果该配置项取值为 `true`，则所有主键默认使用非聚簇索引；如果该配置项取值为 `false`，则由单个整数类型的列构成的主键默认使用聚簇索引，其他类型的主键默认使用非聚簇索引。
 
-### `tidb_enable_ddl` <span class="version-mark">从 v6.3.0 版本开始引入</span>
+### `tidb_enable_ddl`
 
 - 作用域：GLOBAL
 - 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
@@ -1190,7 +1192,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 当读数据的算子只剩 1 个线程且当单条 SQL 语句的内存使用继续超过 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 时，该 SQL 语句会触发其它的内存控制行为，例如[落盘](/system-variables.md#tidb_enable_tmp_storage_on_oom-从-v630-版本开始引入)。
 - 该变量在单条查询仅涉及读数据的情况下，对内存控制效果较好。若还存在额外的计算操作（如连接、聚合等），打开该变量可能会导致内存不受 `tidb_mem_quota_query` 控制，加剧 OOM 风险。
 
-### `tidb_enable_slow_log` <span class="version-mark">从 v6.1.0 版本开始引入</span>
+### `tidb_enable_slow_log`
 
 - 作用域：GLOBAL
 - 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
@@ -1396,7 +1398,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 单位：秒
 - 这个变量用来控制打印 expensive query 日志的阈值时间，默认值是 60 秒。expensive query 日志和慢日志的差别是，慢日志是在语句执行完后才打印，expensive query 日志可以把正在执行中的语句且执行时间超过阈值的语句及其相关信息打印出来。
 
-### `tidb_force_priority` <span class="version-mark">从 v6.1.0 版本开始引入</span>
+### `tidb_force_priority`
 
 - 作用域：GLOBAL
 - 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
@@ -1765,7 +1767,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 如果一条查询语句执行过程中使用的内存空间超过该阈值，会触发系统变量 [`tidb_mem_oom_action`](#tidb_mem_oom_action-从-v610-版本开始引入) 中指定的行为。
 - 在 v6.1.0 之前这个开关通过 TiDB 配置文件 (`mem-quota-query`) 进行配置，且作用域为 `SESSION`。升级到 v6.1.0 时会自动继承原有设置，作用域变更为 `SESSION | GLOBAL`。
 
-### `tidb_memory_usage_alarm_ratio` <span class="version-mark">从 v6.1.0 版本开始引入</span>
+### `tidb_memory_usage_alarm_ratio`
 
 - 作用域：GLOBAL
 - 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
@@ -2234,7 +2236,7 @@ explain select * from t where age=5;
 - 范围 `[-2147483648, 0]`
 - 这个变量用于设置当前会话允许读取的历史数据范围。设置后，TiDB 会从参数允许的范围内选出一个尽可能新的时间戳，并影响后继的所有读操作。比如，如果该变量的值设置为 `-5`，TiDB 会在 5 秒时间范围内，保证 TiKV 拥有对应历史版本数据的情况下，选择尽可能新的一个时间戳。
 
-### `tidb_record_plan_in_slow_log` <span class="version-mark">从 v6.1.0 版本开始引入</span>
+### `tidb_record_plan_in_slow_log`
 
 - 作用域：GLOBAL
 - 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
@@ -2355,7 +2357,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 >
 > 跳过字符检查可能会使 TiDB 检测不到应用写入的非法 UTF-8 字符，进一步导致执行 `ANALYZE` 时解码错误，以及引入其他未知的编码问题。如果应用不能保证写入字符串的合法性，不建议跳过该检查。
 
-### `tidb_slow_log_threshold` <span class="version-mark">从 v6.1.0 版本开始引入</span>
+### `tidb_slow_log_threshold`
 
 - 作用域：GLOBAL
 - 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
