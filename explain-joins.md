@@ -230,7 +230,7 @@ TiDB 会按照以下顺序执行 `HashJoin_27` 算子：
 
 ### 运行数据
 
-如果在执行操作时，内存使用超过了 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 规定的值（默认为 1GB），且 [`tidb_enable_tmp_storage_on_oom`](/system-variables.md#tidb_enable_tmp_storage_on_oom-从-v630-版本开始引入) 的值为 `ON` （默认为 `ON`），那么 TiDB 会尝试使用临时存储，在磁盘上创建 Hash Join 的 Build 端。`EXPLAIN ANALYZE` 返回结果中的 `execution info` 一栏记录了有关内存使用情况等运行数据。下面的例子展示了 `tidb_mem_quota_query` 的值分别设为 1GB（默认）及 500MB 时，`EXPLAIN ANALYZE` 的返回结果（当内存配额设为 500MB 时，磁盘用作临时存储区）：
+如果在执行操作时，内存使用超过了 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 规定的值（默认为 1GB），且 [`tidb_enable_tmp_storage_on_oom`](/system-variables.md#tidb_enable_tmp_storage_on_oom) 的值为 `ON` （默认为 `ON`），那么 TiDB 会尝试使用临时存储，在磁盘上创建 Hash Join 的 Build 端。`EXPLAIN ANALYZE` 返回结果中的 `execution info` 一栏记录了有关内存使用情况等运行数据。下面的例子展示了 `tidb_mem_quota_query` 的值分别设为 1GB（默认）及 500MB 时，`EXPLAIN ANALYZE` 的返回结果（当内存配额设为 500MB 时，磁盘用作临时存储区）：
 
 ```sql
 EXPLAIN ANALYZE SELECT /*+ HASH_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id = t2.id;
