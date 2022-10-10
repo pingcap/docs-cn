@@ -70,7 +70,7 @@ TiDB 出现 OOM 问题，一般从以下几个方面进行排查：
 
 > **说明：**
 >
-> 如果 SQL 返回 `ERROR 1105 (HY000): Out Of Memory Quota![conn_id=54]`，是由于配置了 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query)，数据库的内存使用控制行为会出发该报错。此报错为正常行为，不是故障，可以忽略。
+> 如果 SQL 返回 `ERROR 1105 (HY000): Out Of Memory Quota![conn_id=54]`，是由于配置了 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query)，数据库的内存使用控制行为会触发该报错。此报错为正常行为，不是故障，可以忽略。
 
 #### 执行 SQL 语句时在 TiDB 节点上消耗太多内存
 
