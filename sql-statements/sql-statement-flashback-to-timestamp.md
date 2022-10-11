@@ -28,7 +28,7 @@ FlashbackToTimestampStmt ::=
 * `FLASHBACK` 指定的时间点需要在 Garbage Collection (GC) life time 时间内，可以使用系统变量 [`tidb_gc_life_time`](/system-variables.md#tidb_gc_life_time-从-v50-版本开始引入) 配置数据的历史版本的保留时间（默认值是 10m0s）。可以使用以下 SQL 语句查询当前的 safePoint，即 GC 已经清理到的时间点：
 
 ```sql
-SELECT * FROM mysql.tidb WHERE variable_name = 'tikv_gc_safe_point';
+    SELECT * FROM mysql.tidb WHERE variable_name = 'tikv_gc_safe_point';
 ```
 
 * 仅支持拥有对应权限的用户执行该 SQL 命令,
@@ -49,54 +49,54 @@ SELECT * FROM mysql.tidb WHERE variable_name = 'tikv_gc_safe_point';
 恢复新插入的数据:
 
 ```sql
-mysql> CREATE TABLE t(a INT);
-Query OK, 0 rows affected (0.09 sec)
+    mysql> CREATE TABLE t(a INT);
+    Query OK, 0 rows affected (0.09 sec)
 
-mysql> SELECT * FROM t;
-Empty set (0.01 sec)
+    mysql> SELECT * FROM t;
+    Empty set (0.01 sec)
 
-mysql> SELECT now();
-+---------------------+
-| now()               |
-+---------------------+
-| 2022-09-28 17:24:16 |
-+---------------------+
-1 row in set (0.02 sec)
+    mysql> SELECT now();
+    +---------------------+
+    | now()               |
+    +---------------------+
+    | 2022-09-28 17:24:16 |
+    +---------------------+
+    1 row in set (0.02 sec)
 
-mysql> INSERT INTO t VALUES (1);
-Query OK, 1 row affected (0.02 sec)
+    mysql> INSERT INTO t VALUES (1);
+    Query OK, 1 row affected (0.02 sec)
 
-mysql> SELECT * FROM t;
-+------+
-| a    |
-+------+
-|    1 |
-+------+
-1 row in set (0.01 sec)
+    mysql> SELECT * FROM t;
+    +------+
+    | a    |
+    +------+
+    |    1 |
+    +------+
+    1 row in set (0.01 sec)
 
-mysql> FLASHBACK CLUSTER TO TIMESTAMP '2022-09-28 17:24:16';
-Query OK, 0 rows affected (0.20 sec)
+    mysql> FLASHBACK CLUSTER TO TIMESTAMP '2022-09-28 17:24:16';
+    Query OK, 0 rows affected (0.20 sec)
 
-mysql> SELECT * FROM t;
-Empty set (0.00 sec)
+    mysql> SELECT * FROM t;
+    Empty set (0.00 sec)
 ```
 
 flashback 指定的时间段内有 DDL 记录，执行失败:
 
 ```sql
-mysql> SELECT now();
-+---------------------+
-| now()               |
-+---------------------+
-| 2022-10-09 16:40:51 |
-+---------------------+
-1 row in set (0.01 sec)
+    mysql> SELECT now();
+    +---------------------+
+    | now()               |
+    +---------------------+
+    | 2022-10-09 16:40:51 |
+    +---------------------+
+    1 row in set (0.01 sec)
 
-mysql> CREATE TABLE t(a int);
-Query OK, 0 rows affected (0.12 sec)
+    mysql> CREATE TABLE t(a int);
+    Query OK, 0 rows affected (0.12 sec)
 
-mysql> FLASHBACK CLUSTER TO TIMESTAMP '2022-10-09 16:40:51';
-ERROR 1105 (HY000): Had ddl history during [2022-10-09 16:40:51 +0800 CST, now), can't do flashback
+    mysql> FLASHBACK CLUSTER TO TIMESTAMP '2022-10-09 16:40:51';
+    ERROR 1105 (HY000): Had ddl history during [2022-10-09 16:40:51 +0800 CST, now), can't do flashback
 ```
 
 ## MySQL 兼容性
