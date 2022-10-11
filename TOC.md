@@ -4,13 +4,9 @@
 - [文档中心](https://docs.pingcap.com/zh)
 - 关于 TiDB
   - [TiDB 简介](/overview.md)
-  - [TiDB 6.2 Release Notes](/releases/release-6.2.0.md)
+  - [TiDB 6.3 Release Notes](/releases/release-6.3.0.md)
   - [基本功能](/basic-features.md)
   - [实验特性](/experimental-features.md)
-  - 性能测试报告
-    - [Sysbench 性能对比 - v6.2 对比 v6.1](/benchmark/benchmark-sysbench-v6.2.0-vs-v6.1.0.md)
-    - [TPC-C 性能对比 - v6.2 对比 v6.1](/benchmark/v6.2-performance-benchmarking-with-tpcc.md)
-    - [TiFlash 与 Greenplum/Spark 性能比较](/benchmark/v6.2-performance-benchmarking-with-tpch.md)
   - [与 MySQL 的兼容性](/mysql-compatibility.md)
   - [使用限制](/tidb-limitations.md)
   - [荣誉列表](/credits.md)
@@ -81,7 +77,7 @@
   - 云原生开发环境
     - [Gitpod](/develop/dev-guide-playground-gitpod.md)
   - 第三方软件支持
-    - [PingCAP 维护的三方库](/develop/dev-guide-third-party-support.md)
+    - [TiDB 支持的第三方工具](/develop/dev-guide-third-party-support.md)
     - [TiDB 与 ProxySQL 集成](/develop/dev-guide-proxysql-integration.md)
 - 部署标准集群
   - [软硬件环境需求](/hardware-and-software-requirements.md)
@@ -101,7 +97,7 @@
   - 测试集群性能
     - [用 Sysbench 测试 TiDB](/benchmark/benchmark-tidb-using-sysbench.md)
     - [对 TiDB 进行 TPC-C 测试](/benchmark/benchmark-tidb-using-tpcc.md)
-    - [对 TiDB 进行 CH Benchmark 测试](/benchmark/benchmark-tidb-using-ch.md)
+    - [对 TiDB 进行 CH-benCHmark 测试](/benchmark/benchmark-tidb-using-ch.md)
 - 数据迁移
   - [数据迁移概述](/migration-overview.md)
   - [迁移工具](/migration-tools.md)
@@ -174,6 +170,7 @@
     - [优化概述](/performance-tuning-overview.md)
     - [优化方法](/performance-tuning-methods.md)
     - [优化实践](/performance-tuning-practices.md)
+    - [延迟的拆解分析](/latency-breakdown.md)
   - 配置调优
       - [操作系统性能参数调优](/tune-operating-system.md)
       - [TiDB 内存调优](/configure-memory-usage.md)
@@ -343,7 +340,8 @@
   - PingCAP Clinic 诊断服务
     - [概述](/clinic/clinic-introduction.md)
     - [快速上手](/clinic/quick-start-with-clinic.md)
-    - [使用 PingCAP Clinic 诊断 TiDB 集群](/clinic/clinic-user-guide-for-tiup.md)
+    - [使用 PingCAP Clinic 诊断集群](/clinic/clinic-user-guide-for-tiup.md)
+    - [使用 PingCAP Clinic 生成诊断报告](/clinic/clinic-report.md)
     - [采集 SQL 查询计划信息](/clinic/clinic-collect-sql-query-plan.md)
     - [数据采集说明](/clinic/clinic-data-instruction-for-tiup.md)
   - [TiDB Operator](/tidb-operator-overview.md)
@@ -359,15 +357,15 @@
       - [SQL](/tidb-lightning/tidb-lightning-data-source.md#sql)
       - [Parquet](/tidb-lightning/tidb-lightning-data-source.md#parquet)
       - [自定义文件匹配](/tidb-lightning/tidb-lightning-data-source.md#自定义文件匹配)
-    - Physical 导入模式
+    - Physical Import Mode
       - [概述](/tidb-lightning/tidb-lightning-physical-import-mode.md)
       - [必要条件及限制](/tidb-lightning/tidb-lightning-physical-import-mode.md#必要条件及限制)
       - [配置及使用](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md)
       - [冲突检测](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#冲突数据检测)
       - [性能调优](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#性能调优)
-    - Logical 导入模式
+    - Logical Import Mode
       - [概述](/tidb-lightning/tidb-lightning-logical-import-mode.md)
-      - [必要条件及限制](/tidb-lightning/tidb-lightning-logical-import-mode.md#必要条件及限制)
+      - [必要条件及限制](/tidb-lightning/tidb-lightning-logical-import-mode.md#必要条件)
       - [配置及使用](/tidb-lightning/tidb-lightning-logical-import-mode-usage.md)
       - [冲突检测](/tidb-lightning/tidb-lightning-logical-import-mode-usage.md#冲突数据检测)
       - [性能调优](/tidb-lightning/tidb-lightning-logical-import-mode-usage.md#性能调优)
@@ -388,6 +386,7 @@
     - [关于 Data Migration](/dm/dm-overview.md)
     - [架构简介](/dm/dm-arch.md)
     - [快速开始](/dm/quick-start-with-dm.md)
+    - [最佳实践](/dm/dm-best-practices.md)
     - 部署 DM 集群
       - [软硬件要求](/dm/dm-hardware-and-software-requirements.md)
       - [使用 TiUP 联网部署（推荐）](/dm/deploy-a-dm-cluster-using-tiup.md)
@@ -614,7 +613,6 @@
       - [`ALTER PLACEMENT POLICY`](/sql-statements/sql-statement-alter-placement-policy.md)
       - [`ALTER TABLE`](/sql-statements/sql-statement-alter-table.md)
       - [`ALTER TABLE COMPACT`](/sql-statements/sql-statement-alter-table-compact.md)
-      - [`ALTER TABLE SET TIFLASH MODE`](/sql-statements/sql-statement-set-tiflash-mode.md)
       - [`ALTER USER`](/sql-statements/sql-statement-alter-user.md)
       - [`ANALYZE TABLE`](/sql-statements/sql-statement-analyze-table.md)
       - [`BACKUP`](/sql-statements/sql-statement-backup.md)
@@ -761,6 +759,7 @@
       - [集合运算](/functions-and-operators/set-operators.md)
       - [下推到 TiKV 的表达式列表](/functions-and-operators/expressions-pushed-down.md)
       - [TiDB 特有的函数](/functions-and-operators/tidb-functions.md)
+      - [Oracle 与 TiDB 函数和语法差异对照](/oracle-functions-to-tidb.md)
     - [聚簇索引](/clustered-indexes.md)
     - [约束](/constraints.md)
     - [生成列](/generated-columns.md)
@@ -833,6 +832,7 @@
         - [`VARIABLES_INFO`](/information-schema/information-schema-variables-info.md)
         - [`VIEWS`](/information-schema/information-schema-views.md)
       - [`METRICS_SCHEMA`](/metrics-schema.md)
+    - [元数据锁](/metadata-lock.md)
   - UI
     - TiDB Dashboard
       - [简介](/dashboard/dashboard-intro.md)
@@ -915,6 +915,8 @@
   - [版本发布时间线](/releases/release-timeline.md)
   - [TiDB 版本规则](/releases/versioning.md)
   - [TiDB 离线包](/binary-package.md)
+  - v6.3
+    - [6.3.0-DMR](/releases/release-6.3.0.md)
   - v6.2
     - [6.2.0-DMR](/releases/release-6.2.0.md)
   - v6.1
@@ -927,6 +929,7 @@
     - [5.4.1](/releases/release-5.4.1.md)
     - [5.4.0](/releases/release-5.4.0.md)
   - v5.3
+    - [5.3.3](/releases/release-5.3.3.md)
     - [5.3.2](/releases/release-5.3.2.md)
     - [5.3.1](/releases/release-5.3.1.md)
     - [5.3.0](/releases/release-5.3.0.md)

@@ -57,12 +57,48 @@ plan replayer dump explain select * from t;
 
 ```sql
 MySQL [test]> plan replayer dump explain select * from t;
+```
+
+```sql
 +------------------------------------------------------------------+
 | Dump_link                                                        |
 +------------------------------------------------------------------+
-| replayer_single_JOGvpu4t7dssySqJfTtS4A==_1635750890568691080.zip |
+| replayer_JOGvpu4t7dssySqJfTtS4A==_1635750890568691080.zip |
 +------------------------------------------------------------------+
 1 row in set (0.015 sec)
+```
+
+你同样可以通过 [`tidb_last_plan_replayer_token`](/system-variables.md#tidb_last_plan_replayer_token-从-v630-版本开始引入) 这个会话变量来获取上一次 `PLAN REPLAYER dump` 执行的结果。
+
+```sql
+SELECT @@tidb_last_plan_replayer_token;
+```
+
+```sql
+| @@tidb_last_plan_replayer_token                           |
++-----------------------------------------------------------+
+| replayer_Fdamsm3C7ZiPJ-LQqgVjkA==_1663304195885090000.zip |
++-----------------------------------------------------------+
+1 row in set (0.00 sec)
+```
+
+对于多条 SQL 的情况，你可以通过文件的方式来获取 plan replayer dump 的结果，多条 SQL 语句在文件中以 `;` 进行分隔。
+
+```sql
+plan replayer dump explain 'sqls.txt';
+```
+
+```sql
+SELECT @@tidb_last_plan_replayer_token;
+```
+
+```sql
++-----------------------------------------------------------+
+| @@tidb_last_plan_replayer_token                           |
++-----------------------------------------------------------+
+| replayer_LEDKg8sb-K0u24QesiH8ig==_1663226556509182000.zip |
++-----------------------------------------------------------+
+1 row in set (0.00 sec)
 ```
 
 因为 MySQL Client 无法下载文件，所以需要通过 TiDB HTTP 接口和文件标识下载文件：
@@ -78,7 +114,7 @@ http://${tidb-server-ip}:${tidb-server-status-port}/plan_replayer/dump/${file_to
 {{< copyable "shell-regular" >}}
 
 ```shell
-curl http://127.0.0.1:10080/plan_replayer/dump/replayer_single_JOGvpu4t7dssySqJfTtS4A==_1635750890568691080.zip > plan_replayer.zip
+curl http://127.0.0.1:10080/plan_replayer/dump/replayer_JOGvpu4t7dssySqJfTtS4A==_1635750890568691080.zip > plan_replayer.zip
 ```
 
 ## 使用 `PLAN REPLAYER` 导入集群信息
