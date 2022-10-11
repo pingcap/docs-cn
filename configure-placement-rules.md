@@ -452,7 +452,7 @@ The following example shows a more complicated `label_constraints` configuration
 }
 ```
 
-### Scenario 5: Migrate a table to the TiFlash cluster
+### Scenario 5: Migrate a table to the nodes with SSD disks
 
 Different from scenario 3, this scenario is not to add new replica(s) on the basis of the existing configuration, but to forcibly override the other configuration of a data range. So you need to specify an `index` value large enough and set `override` to `true` in the rule group configuration to override the existing rule.
 
@@ -462,16 +462,16 @@ The rule:
 
 ```json
 {
-  "group_id": "tiflash-override",
-  "id": "learner-replica-table-ttt",
+  "group_id": "ssd-override",
+  "id": "ssd-table-45",
   "start_key": "7480000000000000ff2d5f720000000000fa",
   "end_key": "7480000000000000ff2e00000000000000f8",
   "role": "voter",
   "count": 3,
   "label_constraints": [
-    {"key": "engine", "op": "in", "values": ["tiflash"]}
+    {"key": "disk", "op": "in", "values": ["ssd"]}
   ],
-  "location_labels": ["host"]
+  "location_labels": ["rack", "host"]
 }
 ```
 
@@ -481,7 +481,7 @@ The rule group:
 
 ```json
 {
-  "id": "tiflash-override",
+  "id": "ssd-override",
   "index": 1024,
   "override": true,
 }
