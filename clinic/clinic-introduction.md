@@ -76,7 +76,7 @@ First, Diag gets cluster topology information from the deployment tool TiUP (tiu
 
 - Use PingCAP Clinic in an on-premise environment
     - [Quick Start with PingCAP Clinic](/clinic/quick-start-with-clinic.md)
-    - [Troubleshoot TiDB Cluster using PingCAP Clinic](/clinic/clinic-user-guide-for-tiup.md)
+    - [Troubleshoot Clusters using PingCAP Clinic](/clinic/clinic-user-guide-for-tiup.md)
     - [PingCAP Clinic Diagnostic Data](/clinic/clinic-data-instruction-for-tiup.md)
 
 - Use PingCAP Clinic in Kubernetes
