@@ -11,13 +11,15 @@ summary: 了解如何定位、排查 TiDB Out Of Memory (OOM) 问题。
 
 在排查 OOM 问题时，整体遵循以下排查思路：
 
-1. 首先需要确认是否属于 OOM 问题。执行下面命令查看操作系统日志，如果结果中存在问题发生附近时间点的 OOM-killer 的日志，则可以确定是 OOM 问题。
+1. 首先需要确认是否属于 OOM 问题。
+
+    执行下面命令查看操作系统日志，如果结果中存在问题发生附近时间点的 oom-killer 的日志，则可以确定是 OOM 问题。
 
     ```shell
     dmesg -T | grep tidb-server
     ```
 
-    下面是输出示例：
+    下面是包含 oom-killer 的日志输出示例：
 
     ```shell
     ......
@@ -51,9 +53,9 @@ OOM 常见的故障现象包括（但不限于）：
     - **TiDB** > **Server** > **Uptime** 显示为掉零
     - **TiDB-Runtime** > **Memory Usage** 显示 estimate-inuse 在持续升高
 
-- 查看 tidb.log，可发现如下日志条目：
-    - OOM 相关的 Alarm：[WARN] [memory_usage_alarm.go:139] ["tidb-server has the risk of OOM. Running SQLs and heap profile will be recorded in record path"]。关于该日志的详细说明，请参考 [`memory-usage-alarm-ratio`](/system-variables.md#tidb_memory_usage_alarm_ratio)。
-    - 重启相关的日志条目：[INFO] [printer.go:33] ["Welcome to TiDB."]
+- 查看 `tidb.log`，可发现如下日志条目：
+    - OOM 相关的 Alarm：`[WARN] [memory_usage_alarm.go:139] ["tidb-server has the risk of OOM. Running SQLs and heap profile will be recorded in record path"]`。关于该日志的详细说明，请参考 [`memory-usage-alarm-ratio`](/system-variables.md#tidb_memory_usage_alarm_ratio)。
+    - 重启相关的日志条目：`[INFO] [printer.go:33] ["Welcome to TiDB."]`
 
 ## 常见故障原因和解决方法
 
@@ -69,7 +71,7 @@ OOM 常见的故障现象包括（但不限于）：
 
 - 操作系统内存容量规划偏小，导致内存不足。
 - TiUP [`resource_control`](/tiup/tiup-cluster-topology-reference.md#global) 配置不合理。
-- 在混合部署的情况下（指 TiDB 和其他应用程序部署在同一台服务器上），TiDB 作为受害者被 OOM-killer killed。
+- 在混合部署的情况下（指 TiDB 和其他应用程序部署在同一台服务器上），TiDB 作为受害者被 oom-killer killed。
 
 ### 数据库问题
 
@@ -77,7 +79,7 @@ OOM 常见的故障现象包括（但不限于）：
 
 > **注意：**
 >
-> 如果 SQL 返回 `ERROR 1105 (HY000): Out Of Memory Quota![conn_id=54]`，是由于配置了 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query)，数据库的内存使用控制行为会触发该报错。此报错为正常行为，可以忽略。
+> 如果 SQL 返回 `ERROR 1105 (HY000): Out Of Memory Quota![conn_id=54]`，这是由于配置了 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query)，数据库的内存使用控制行为会触发该报错。此报错为正常行为，可以忽略。
 
 #### 执行 SQL 语句时在 TiDB 节点上消耗太多内存
 
@@ -91,14 +93,14 @@ OOM 常见的故障现象包括（但不限于）：
 
 - 一些算子和函数不支持下推到存储层，导致出现巨大的中间结果集累积。此时可能需要改写业务 SQL，或使用 hint 进行调优，来使用可下推的函数或算子。
 
-- 执行计划中存在算子 HashAgg。HashAgg 是多线程并发执行，虽然执行速度较快，但会消耗较多内存。可以尝试使用 `STREAM_AGG()` hint 替代。
+- 执行计划中存在算子 HashAgg。HashAgg 是多线程并发执行，虽然执行速度较快，但会消耗较多内存。可以尝试使用 `STREAM_AGG()` 替代。
 
 - 调小同时读取的 Region 的数量，或降低算子并发度，以避免因高并发导致的内存问题。对应的系统变量包括：
     - [`tidb_distsql_scan_concurrency`](/system-variables.md#tidb_distsql_scan_concurrency)
     - [`tidb_index_serial_scan_concurrency`](/system-variables.md#tidb_index_serial_scan_concurrency)
     - [`tidb_executor_concurrency`](/system-variables.md#tidb_executor_concurrency-从-v50-版本开始引入)
 
-- 问题发生时间附近，session 的并发度过高。此时可能需要添加节点进行扩容。
+- 问题发生时间附近，session 的并发度过高，此时可能需要添加节点进行扩容。
 
 #### 大事务或大写入在 TiDB 节点上消耗太多内存
 
@@ -173,7 +175,7 @@ TiDB 节点启动后需要加载统计信息到内存中。从 TiDB v6.1.0 开�
     - 可以从 SQL Dashboard 中查看 SQL 语句分析、慢查询，查看内存使用量
     - `INFORMATION_SCHEMA` 的 `SLOW_QUERY`、`CLUSTER_SLOW_QUERY`
     - 各个 TiDB 节点的 `tidb_slow_query.log`
-    - 执行 `grep "expensive_query" tidb.log` 在 `tidb.log` 中查看对应的日志条目
+    - 执行 `grep "expensive_query" tidb.log` 查看对应的日志条目
     - 执行 `EXPLAIN ANALYZE` 查看算子的内存消耗
     - 执行 `SELECT * FROM information_schema.processlist;` 查看 SQL 对应的 `MEM` 列的值
 
