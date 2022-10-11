@@ -3454,6 +3454,14 @@ For details, see [Identify Slow Queries](/identify-slow-queries.md).
 
 This variable is an alias for `transaction_isolation`.
 
+### tx_isolation_one_shot
+
+> **Note:**
+>
+> This variable is internally used in TiDB. You are not expected to use it.
+
+Internally, the TiDB parser transforms the `SET TRANSACTION ISOLATION LEVEL [READ COMMITTED| REPEATABLE READ | ...]` statements to `SET @@SESSION.TX_ISOLATION_ONE_SHOT = [READ COMMITTED| REPEATABLE READ | ...]`.
+
 ### version
 
 - Scope: NONE
