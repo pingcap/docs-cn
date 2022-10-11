@@ -33,7 +33,7 @@ summary: 了解 TiDB 快照备份和恢复功能的架构设计
     * **Upload SST & SST**: backup worker 上传 SST 到备份存储中
 
 5. BR 从各个 TiKV 获取恢复结果
-    * 如果局部数据因为 region 变动而备份失败。br 重试这些数据的备份
+    * 如果局部数据因为 region 变动而备份失败，比如 TiKV 节点故障，br 重试这些数据的备份
     * 如果任意数据被判断不重试的备份失败，则备份任务失败
     * 全部数据备份成功后，则在最后完成元信息备份
 
@@ -67,7 +67,7 @@ summary: 了解 TiDB 快照备份和恢复功能的架构设计
     * **Report restore result**：restore worker 返回恢复结果给 br
 
 5. 从各个 TiKV 获取恢复结果
-    * 如果局部数据恢复因为 RegionNotFound/EpochNotMatch 等原因失败，br 重试恢复这些数据
+    * 如果局部数据恢复因为 RegionNotFound/EpochNotMatch 等原因失败，比如 TiKV 节点故障，br 重试恢复这些数据
     * 如果存在备份数据不可重试的恢复失败，则恢复任务失败
     * 全部备份都回复成功后，则恢复任务成功
 
