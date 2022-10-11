@@ -143,8 +143,7 @@
         - [自动调节](/br/br-features-design/br-auto-tune.md)
         - [批量建表](/br/br-features-design/br-batch-create-table.md)
       - [使用 Dumpling 和 TiDB Lightning 备份和恢复数据](/backup-and-restore-using-dumpling-lightning.md)
-      - [BR 常见问题](/faq/br-faq.md)
-      - [监控告警](/br/misc/br-monitoring-and-alert.md)
+      - [RawKV 备份和恢复](/br/misc/rawkv-backup-and-restore.md)
   - [修改时区](/configure-time-zone.md)
   - [日常巡检](/daily-check.md)
   - [TiFlash 常用运维操作](/tiflash/maintain-tiflash.md)
@@ -160,6 +159,7 @@
   - [TiDB 集群报警规则与处理方法](/alert-rules.md)
   - [TiFlash 报警规则与处理方法](/tiflash/tiflash-alert-rules.md)
   - [自定义监控组件的配置](/tiup/customized-montior-in-tiup-environment.md)
+  - [BR 监控告警](/br/misc/br-monitoring-and-alert.md)
 - 故障诊断
   - [定位慢查询](/identify-slow-queries.md)
   - [分析慢查询](/analyze-slow-queries.md)
@@ -896,6 +896,7 @@
   - [集群管理 FAQ](/faq/manage-cluster-faq.md)
   - [高可用 FAQ](/faq/high-availability-faq.md)
   - [高可靠 FAQ](/faq/high-reliability-faq.md)
+  - [BR 常见问题](/faq/br-faq.md)
 - 版本发布历史
   - [发布版本汇总](/releases/release-notes.md)
   - [版本发布时间线](/releases/release-timeline.md)
