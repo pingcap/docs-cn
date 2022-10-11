@@ -302,14 +302,12 @@ middle_key_by_approximate_size:
 
     ```shell
     tikv-ctl --data-dir /path/to/tikv compact --db kv
-    success!
     ```
 
 - 在远程模式 compact data，执行如下命令：
 
     ```shell
     tikv-ctl --host ip:port compact --db kv
-    success!
     ```
 
 ### 手动 compact 整个 TiKV 集群的数据
