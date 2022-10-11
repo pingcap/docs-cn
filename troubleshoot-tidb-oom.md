@@ -52,7 +52,7 @@ OOM 常见的故障现象包括（但不限于）：
     - **TiDB-Runtime** > **Memory Usage** 显示 estimate-inuse 在持续升高
 
 - 查看 tidb.log，可发现如下日志条目：
-    - OOM 相关的 Alerm：[WARN] [memory_usage_alarm.go:139] ["tidb-server has the risk of OOM. Running SQLs and heap profile will be recorded in record path"]。关于该日志的详细说明，请参考 [`memory-usage-alarm-ratio`](/system-variables.md#tidb_memory_usage_alarm_ratio)。
+    - OOM 相关的 Alarm：[WARN] [memory_usage_alarm.go:139] ["tidb-server has the risk of OOM. Running SQLs and heap profile will be recorded in record path"]。关于该日志的详细说明，请参考 [`memory-usage-alarm-ratio`](/system-variables.md#tidb_memory_usage_alarm_ratio)。
     - 重启相关的日志条目：[INFO] [printer.go:33] ["Welcome to TiDB."]
 
 ## 常见故障原因和解决方法
