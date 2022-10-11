@@ -1,0 +1,102 @@
+---
+title: FLASHBACK [CLUSTER | DATABASE | TABLE] TO TIMESTAMP
+---
+
+# FLASHBACK [CLUSTER | DATABASE | TABLE] TO TIMESTAMP
+
+在 TiDB 6.4 中，引入了 `FLASHBACK [CLUSTER | DATABASE | TABLE] TO TIMESTAMP` 语法，其功能是将集群的数据恢复到特定的时间点。
+
+## 语法
+
+{{< copyable "sql" >}}
+
+```sql
+FLASHBACK CLUSTER TO TIMESATMP '2022-09-21 16:02:50';
+```
+
+### 语法图
+
+```ebnf+diagram
+FlashbackToTimestampStmt ::=
+    "FLASHBACK" ("TABLE" TableNameList | "DATABASE" DBNameList | "CLUSTER") "TO" "TIMESTAMP" stringLit
+```
+
+## 注意事项
+
+* `FLASHBACK` 指定的时间点需要在 Garbage Collection (GC) life time 时间内，可以使用系统变量 [`tidb_gc_life_time`](/system-variables.md#tidb_gc_life_time-从-v50-版本开始引入) 配置数据的历史版本的保留时间（默认值是 10m0s）。可以使用以下 SQL 语句查询当前的 safePoint，即 GC 已经清理到的时间点：
+
+```sql
+SELECT * FROM mysql.tidb WHERE variable_name = 'tikv_gc_safe_point';
+```
+
+* 仅支持拥有对应权限的用户执行该 SQL 命令,
+    * 执行 `FLASHBACK CLUSTER` 操作需要有 `SUPER` 权限。
+    * 执行 `FLASHBACK DATABASE` 操作需要有 `DATABASE` 权限。
+    * 执行 `FLASHBACK TABLE` 操作需要有 `TALBE` 权限。
+* 在 `FLASHBACK` 指定的时间点到开始执行的时间段内不能存在相关表结构变更的 DDL 记录，若存在，TiDB 会拒绝该 DDL 操作。
+* 在执行 `FLASHBACK [CLUSTER | DATABASE | TABLE] TO TIMESTAMP` 前，TiDB 会主动断开所有相关表上的链接，并在禁止对这些表进行读写操作，直到 `FLASHBACK` 完成。
+* `FLASHBACK [CLUSTER | DATABASE | TABLE] TO TIMESTAMP` 命令不能取消，一旦开始执行 TiDB 会一直重试，直到成功。
+* 用户可以通过日志查看 flashback 执行进度，具体的日志如下所示：
+
+```
+[2022/10/09 17:25:59.316 +08:00] [INFO] [cluster.go:463] ["flashback cluster stats"] ["complete regions"=9] ["total regions"=10] []
+```
+
+## 示例
+
+* 恢复新插入的数据
+
+```sql
+mysql> CREATE TABLE t(a INT);
+Query OK, 0 rows affected (0.09 sec)
+
+mysql> SELECT * FROM t;
+Empty set (0.01 sec)
+
+mysql> SELECT now();
++---------------------+
+| now()               |
++---------------------+
+| 2022-09-28 17:24:16 |
++---------------------+
+1 row in set (0.02 sec)
+
+mysql> INSERT INTO t VALUES (1);
+Query OK, 1 row affected (0.02 sec)
+
+mysql> SELECT * FROM t;
++------+
+| a    |
++------+
+|    1 |
++------+
+1 row in set (0.01 sec)
+
+mysql> FLASHBACK CLUSTER TO TIMESTAMP '2022-09-28 17:24:16';
+Query OK, 0 rows affected (0.20 sec)
+
+mysql> SELECT * FROM t;
+Empty set (0.00 sec)
+```
+
+* flashback 指定的时间段内有 DDL 记录，执行失败
+
+```sql
+mysql> SELECT now();
++---------------------+
+| now()               |
++---------------------+
+| 2022-10-09 16:40:51 |
++---------------------+
+1 row in set (0.01 sec)
+
+mysql> CREATE TABLE t(a int);
+Query OK, 0 rows affected (0.12 sec)
+
+mysql> FLASHBACK CLUSTER TO TIMESTAMP '2022-10-09 16:40:51';
+ERROR 1105 (HY000): Had ddl history during [2022-10-09 16:40:51 +0800 CST, now), can't do flashback
+```
+
+## MySQL 兼容性
+
+该语句是 TiDB 对 MySQL 语法的扩展。
