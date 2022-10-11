@@ -196,11 +196,9 @@ DROP INDEX idx1 ON t1;
 > ```
 > json_array, json_array_append, json_array_insert, json_contains, json_contains_path, json_depth, json_extract, json_insert, json_keys, json_length, json_merge_patch, json_merge_preserve, json_object, json_pretty, json_quote, json_remove, json_replace, json_search, json_set, json_storage_size, json_type, json_unquote, json_valid, lower, md5, reverse, tidb_shard, upper, vitess_hash
 > ```
-> 
+>
 > 对于以上列表之外的函数，由于未完成充分测试，当前仍为实验特性，不建议在生产环境中使用。其他的表达式例如运算符、`cast` 和 `case when` 也同样为实验特性，不建议在生产环境中使用。如果仍然希望使用，可以在 [TiDB 配置文件](/tidb-configuration-file.md#allow-expression-index-从-v400-版本开始引入)中进行以下设置：
-> 
-> {{< copyable "sql" >}}
-> 
+>
 > ```sql
 > allow-expression-index = true
 > ```
