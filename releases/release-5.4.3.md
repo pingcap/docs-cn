@@ -115,7 +115,7 @@ TiDB 版本：5.4.3
 
     + TiDB Lightning **owner: @niubell, TW: @ran-huang**
 
-        - 修复 BigInt 自增列可能越界的问题 [#27397](https://github.com/pingcap/tidb/issues/27937)
+        - 修复 `BIGINT` 类型自增列可能越界的问题 [#27397](https://github.com/pingcap/tidb/issues/27937)
         - (dup) 修复极端情况下去重可能会导致 TiDB Lightning panic 的问题 [#34163](https://github.com/pingcap/tidb/issues/34163)
         - (dup) 修复 TiDB Lightning 不支持 Parquet 文件中以斜线 (`/`)、数字、非 ASCII 字符开头的特殊列名的问题 [#36980](https://github.com/pingcap/tidb/issues/36980)
         - (dup) 修复了使用 IPv6 host 时无法连接到 TiDB 的问题 [#35880](https://github.com/pingcap/tidb/issues/35880)
