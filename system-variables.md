@@ -2712,6 +2712,23 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 这个变量是 `transaction_isolation` 的别名。
 
+### `tx_read_ts`
+
+- 作用域：SESSION
+- 是否持续化到集群：否
+- 默认值：`0`
+- 该变量仅用于 TiDB 内部实现，**不推荐设置该变量**。
+- 在 Stale Read 场景下，该会话变量用于帮助记录 Stable Read ts 值。
+
+### `txn_scope`
+
+- 作用域：SESSION
+- 是否持续化到集群：否
+- 默认值：`global`
+- 可选值：`global` 和 `local`
+- 该变量仅用于 TiDB 内部实现，**不推荐设置该变量**。
+- 该变量用于设置当前会话下事务为全局事务还是局部事务。
+
 ### `version`
 
 - 作用域：NONE
