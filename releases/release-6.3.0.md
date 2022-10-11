@@ -18,6 +18,7 @@ In v6.3.0-DMR, the key new features and improvements are as follows:
 - TiDB provides execution time metrics at a finer granularity.
 - A new syntactic sugar is added to simplify Range partition definitions.
 - Range COLUMNS partitioning supports defining multiple columns.
+- The performance of adding indexes is tripled.
 
 ## New features
 
@@ -44,7 +45,7 @@ In v6.3.0-DMR, the key new features and improvements are as follows:
 
 * Improve the performance of adding indexes and reduce its impact on DML transactions (experimental) [#35983](https://github.com/pingcap/tidb/issues/35983) @[benjamin2037](https://github.com/benjamin2037)
 
-    To improve the speed of backfilling when creating an index, TiDB v6.3.0 accelerates the `ADD INDEX` and `CREATE INDEX` DDL operations when the [`tidb_ddl_enable_fast_reorg`](/system-variables.md#tidb_ddl_enable_fast_reorg-new-in-v630) system variable is enabled. When the feature is enabled, the performance of adding indexes is about trippled.
+    To improve the speed of backfilling when creating an index, TiDB v6.3.0 accelerates the `ADD INDEX` and `CREATE INDEX` DDL operations when the [`tidb_ddl_enable_fast_reorg`](/system-variables.md#tidb_ddl_enable_fast_reorg-new-in-v630) system variable is enabled. When the feature is enabled, the performance of adding indexes is about tripled.
 
 ### Security
 
