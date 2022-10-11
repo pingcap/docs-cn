@@ -230,20 +230,28 @@ The properties can be used to check whether the Region is healthy or not. If not
 
 ### Compact data of each TiKV manually
 
-Use the `compact` command to manually compact data of each TiKV. If you specify the `--from` and `--to` options, then their flags are also in the form of escaped raw key.
+Use the `compact` command to manually compact data of each TiKV.
 
-- Use the `--host` option to specify the TiKV that needs to perform compaction.
-- Use the `-d` option to specify the RocksDB that performs compaction. The optional values are `kv` and `raft`.
+- Use the `--from` and `--to` options to specify the compaction range in the form of escaped raw key. If not set, the whole range will be compacted.
+- Use the `--region` option to compact the range of a specific region. If set, `--from` and `--to` will be ignored.
+- Use the `--db` option to specify the RocksDB that performs compaction. The optional values are `kv` and `raft`.
 - Use the `--threads` option allows you to specify the concurrency for the TiKV compaction and its default value is `8`. Generally, a higher concurrency comes with a faster compaction speed, which might yet affect the service. You need to choose an appropriate concurrency count based on your scenario.
 - Use the `--bottommost` option to include or exclude the bottommost files when TiKV performs compaction. The value options are `default`, `skip`, and `force`. The default value is `default`.
     - `default` means that the bottommost files are included only when the Compaction Filter feature is enabled.
     - `skip` means that the bottommost files are excluded when TiKV performs compaction.
     - `force` means that the bottommost files are always included when TiKV performs compaction.
 
-```bash
-$ tikv-ctl --data-dir /path/to/tikv compact -d kv
-success!
-```
+- To compact data in the local mode, use the following command:
+
+    ```shell
+    tikv-ctl --data-dir /path/to/tikv compact --db kv
+    ```
+
+- To compact data in the remote mode, use the following command:
+
+    ```shell
+    tikv-ctl --host ip:port compact --db kv
+    ```
 
 ### Compact data of the whole TiKV cluster manually
 
