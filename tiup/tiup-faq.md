@@ -27,7 +27,7 @@ The TiUP playground component is mainly used to build a stand-alone development 
 
 ## How do I write the topology file for the TiUP cluster component?
 
-Refer to [these templates](https://github.com/pingcap/tiup/tree/master/examples) to write the topology file. The templates include:
+Refer to [these templates](https://github.com/pingcap/tiup/tree/master/embed/examples/cluster) to write the topology file. The templates include:
 
 - Multi-DC deployment topology
 - Minimal deployment topology
