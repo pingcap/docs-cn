@@ -99,3 +99,33 @@ In v6.3.0, backup files generated after PITR are compressed in a new method. Sma
 |  ----  |  ----  | ---- |
 |Use PITR v6.2.0 to back up TiDB v6.2.0 | Compatible | Compatible |
 |Use PITR v6.3.0 to back up TiDB v6.3.0 | Incompatible |Compatible |
+
+## Architecture
+
+PITR is used for snapshot backup and restoration *and* log backup and restoration. For snapshot backup and restoration, refer to [BR Design Principles](/br/backup-and-restore-design.md). This section describes the implementation of log backup and restoration.
+
+Log backup and restoration are implemented as follows:
+
+![BR log backup and restore architecture](/media/br/br-log-arch.png)
+
+When a log backup task is performed:
+
+1. BR receives the `br log start` command.
+2. BR registers a log backup task with PD and saves the log backup metadata in PD.
+3. The TiKV backup executor module listens on the creation of a log backup task in PD. When it detects the creation of a log backup task, it starts to perform log backup.
+4. The TiKV backup executor module reads the KV data changes and writes into the local SST files.
+5. The TiKV backup executor module periodically writes the SST files to the backup storage and updates the metadata in the backup storage.
+
+When a log restoration task is performed:
+
+1. BR receives the `br log restore` command.
+2. BR reads the log backup data from the backup storage, and calculates and filters the log backup data that needs to be restored.
+3. BR requests PD to create a region for restoring log backup data (split regions) and schedule the region to the corresponding TiKV node (scatter regions).
+4. After PD finishes scheduling, BR sends the restoration request to each TiKV restore executor module.
+5. The TiKV restore executor module downloads the log backup data from the backup storage and writes the data to the corresponding region.
+
+## Learn more
+
+- [Perform Log Backup and Restoration Using BR](/br/br-log-command-line.md)
+- [Use PITR](/br/pitr-usage.md)
+- [PITR Monitoring and Alert](/br/pitr-monitoring-and-alert.md)
