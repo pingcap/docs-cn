@@ -46,7 +46,7 @@ SELECT * FROM mysql.tidb WHERE variable_name = 'tikv_gc_safe_point';
 
 ## 示例
 
-* 恢复新插入的数据
+恢复新插入的数据:
 
 ```sql
 mysql> CREATE TABLE t(a INT);
@@ -81,7 +81,7 @@ mysql> SELECT * FROM t;
 Empty set (0.00 sec)
 ```
 
-* flashback 指定的时间段内有 DDL 记录，执行失败
+flashback 指定的时间段内有 DDL 记录，执行失败:
 
 ```sql
 mysql> SELECT now();
