@@ -172,7 +172,7 @@ TiDB 节点启动后需要加载统计信息到内存中。从 TiDB v6.1.0 开�
 
 - 查看内存消耗较多的 SQL 语句：
 
-    - 可以从 SQL Dashboard 中查看 SQL 语句分析、慢查询，查看内存使用量
+    - 可以从 TiDB Dashboard 中查看 SQL 语句分析、慢查询，查看内存使用量
     - `INFORMATION_SCHEMA` 的 `SLOW_QUERY`、`CLUSTER_SLOW_QUERY`
     - 各个 TiDB 节点的 `tidb_slow_query.log`
     - 执行 `grep "expensive_query" tidb.log` 查看对应的日志条目
