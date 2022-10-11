@@ -1053,6 +1053,14 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 默认值：`ON`
 - 这个变量用于控制是否开启 index merge 功能。
 
+### `tidb_enable_index_merge_join`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 类型：布尔型
+- 默认值：`false`
+- 表示是否启用 `IndexMergeJoin` 算子。该变量为 TiDB 内部变量，**不推荐使用**，否则可能会造成数据正确性问题。
+
 ### `tidb_enable_legacy_instance_scope` <span class="version-mark">从 v6.0.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
@@ -1161,6 +1169,14 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 是否持久化到集群：是
 - 默认值：0
 - 这个变量用于控制是否开启 Apply 算子并发，并发数由 `tidb_executor_concurrency` 变量控制。Apply 算子用来处理关联子查询且默认无并发，所以执行速度较慢。打开 Apply 并发开关可增加并发度，提高执行速度。目前默认关闭。
+
+### `tidb_enable_piplelined_window_function`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 类型：布尔型
+- 默认值：`true`
+- 该变量指定是否对窗口函数采用流水线的执行算法。
 
 ### `tidb_enable_prepared_plan_cache` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
@@ -1789,6 +1805,14 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 默认值：`0.8`
 - TiDB 内存使用占总内存的比例超过一定阈值时会报警。该功能的详细介绍和使用方法可以参考 [`memory-usage-alarm-ratio`](/tidb-configuration-file.md#memory-usage-alarm-ratio-从-v409-版本开始引入)。
 - 该变量的初始值可通过 [`memory-usage-alarm-ratio`](/tidb-configuration-file.md#memory-usage-alarm-ratio-从-v409-版本开始引入) 进行配置。
+
+### `tidb_merge_join_concurrency`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 默认值：`1`
+- 设置 `MergeJoin` 算子执行查询时的并发度。
+- 警告：**不推荐设置该变量，修改该变量值可能会造成数据正确性问题**。
 
 ### `tidb_metric_query_range_duration` <span class="version-mark">从 v4.0 版本开始引入</span>
 
@@ -2486,6 +2510,14 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 范围：`[1, 2147483647]`
 - 单位：秒
 - 这个变量设置了 [statement summary tables](/statement-summary-tables.md) 的刷新时间。
+
+### `tidb_streamagg_concurrency`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 默认值：`1`
+- 设置 `StreamAgg` 算子执行查询时的并发度。
+- 警告：**不推荐设置该变量，修改该变量值可能会造成数据正确性问题**。
 
 ### `tidb_top_sql_max_meta_count` <span class="version-mark">从 v6.0.0 版本开始引入</span>
 
