@@ -67,7 +67,7 @@ server-memory-quota = 34359738368
 - 触发内存阈值，且距离上一次告警超过 60s
 - 触发内存阈值，且(本次内存用量-上次告警时内存用量)/ 最大可用内存量 > 10%。
 
-此外，为避免报警时产生的状态文件积累过多，目前默认保留最近 5 次报警时所生成的状态文件，保留文件数量可通过系统变量 [`tidb_memory_usage_alarm_keep_record_num`](/system-variables.md#tidb_memory_usage_alarm_keep_record_num)。
+此外，为避免报警时产生的状态文件积累过多，目前默认保留最近 5 次报警时所生成的状态文件，保留文件数量可通过系统变量 [`tidb_memory_usage_alarm_keep_record_num`](/system-variables.md#tidb_memory_usage_alarm_keep_record_num) 配置。
 
 下例通过构造一个占用大量内存的 SQL 语句触发报警，对该报警功能进行演示：
 
