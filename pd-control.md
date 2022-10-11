@@ -1247,11 +1247,15 @@ scheduler config balance-hot-region-scheduler  // 显示 balance-hot-region 调�
     scheduler config balance-hot-region-scheduler set enable-for-tiflash true
     ```
 
-- `rank-formula-version` 用于控制热点调度使用的调度策略的算法版本，支持的值有 `["v1", "v2"]`。`v1` 版本为旧有策略，主要关注点为调度是否降低了不同 Store 之间的负载差值，以及是否在另一维度引入副作用。`v2` 版本是新引入的实验性算法，改为关注 Store 之间均衡度的提升率，同时降低了对副作用的关注度，对比 `strict-picking-store` 为 `true` 的 `v1` 算法更注重优先均衡第一维度，对比 `strict-picking-store` 为 `false` 的 `v1` 算法兼顾了第二维度的均衡。在特定场景下，`strict-picking-store` 为 `true` 的 `v1` 版本算法更为保守，只有当两个维度都变好的时候才会进行调度，有可能出现因为维度冲突无法继续均衡的情况，需要将 `strict-picking-store` 改为 `false` 才能取得更好的均衡效果。`v2` 版本算法则可以获得更好的均衡效果并减少无效调度。目前该配置的默认值为 `v1`。 <span class="version-mark">从 v6.3.0 版本开始引入</span>
+- `rank-formula-version` 用于控制热点调度使用的调度策略的算法版本，支持的值有 `["v1", "v2"]`。目前该配置的默认值为 `v1`。
+
+    - `v1` 版本为 v6.3.0 之前的策略，主要关注点为调度是否降低了不同 Store 之间的负载差值，以及是否在另一维度引入副作用。
+    - `v2` 版本是 v6.3.0 引入的实验特性算法，改为关注 Store 之间均衡度的提升率，同时降低了对副作用的关注度。`v2` 版本对比 `strict-picking-store` 为 `true` 的 `v1` 算法更注重优先均衡第一维度，对比 `strict-picking-store` 为 `false` 的 `v1` 算法兼顾了第二维度的均衡。
+    - 在特定场景下，`strict-picking-store` 为 `true` 的 `v1` 版本算法更为保守，只有当两个维度都变好的时候才会进行调度，有可能出现因为维度冲突无法继续均衡的情况，需要将 `strict-picking-store` 改为 `false` 才能取得更好的均衡效果。`v2` 版本算法则可以获得更好的均衡效果并减少无效调度。
 
     > **警告：**
     >
-    > 将 rank-formula-version 配置为 v2 目前为实验性特性，不建议在生产环境中使用。
+    > 将 `rank-formula-version` 设置为 `v2` 目前为实验性特性，不建议在生产环境中使用。
 
     ```bash
     scheduler config balance-hot-region-scheduler set rank-formula-version v2
