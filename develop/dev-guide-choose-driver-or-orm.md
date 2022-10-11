@@ -8,12 +8,12 @@ aliases: ['/zh/tidb/dev/choose-driver-or-orm']
 
 > **注意：**
 >
-> 支持等级说明
+> TiDB 支持等级说明：
 >
-> - Full: 此 Driver 或 ORM 没有已知的 issues
-> - Verified: 你可能会因为 TiDB 兼容性问题，导致出现错误
+> - **Full**：此 Driver 或 ORM 没有已知的 issues。
+> - **Verified**：可能会因为 TiDB 与 MySQL 的兼容性问题，导致出现错误。
 >
-> 你可以在 [TiDB 支持的第三方工具](/develop/dev-guide-third-party-support.md)一章查看更多 TiDB 支持的第三方工具。
+> 关于更多 TiDB 支持的第三方工具，你可以查看 [TiDB 支持的第三方工具](/develop/dev-guide-third-party-support.md)。
 
 TiDB 兼容 MySQL 的协议，但存在部分与 MySQL 不兼容的特性，例如：
 
@@ -103,7 +103,7 @@ implementation group: 'org.bouncycastle', name: 'bcpkix-jdk15on', version: '1.67
 > **注意：**
 >
 > - Hibernate 当前[不支持嵌套事务](https://stackoverflow.com/questions/37927208/nested-transaction-in-spring-app-with-jpa-postgres)。
-> - TiDB 从 v6.2.0 版本开始支持 [Savepoint](/sql-statements/sql-statement-savepoint.md)。因此，请确认你的 TiDB 版本为 v6.2.0 版本或更新。否则，在 **@Transactional** 中请勿使用 `Propagation.NESTED` 事务传播选项，即：`@Transactional(propagation = Propagation.NESTED)`。
+> - TiDB 从 v6.2.0 版本开始支持 [Savepoint](/sql-statements/sql-statement-savepoint.md)。因此，请确认你的 TiDB 版本为 v6.2.0 或以上。否则，在 `@Transactional` 中请勿使用 `Propagation.NESTED` 事务传播选项，即：`@Transactional(propagation = Propagation.NESTED)`。
 
 <SimpleTab>
 <div label="Hibernate">
@@ -146,9 +146,9 @@ implementation 'mysql:mysql-connector-java:5.1.49'
 
 支持等级：**Full**
 
-你可以使用 [Gradle](https://gradle.org/install) 或 [Maven](https://maven.apache.org/install.html) 获取你的应用程序的所有依赖项，且会帮你下载依赖项的间接依赖，而无需你手动管理复杂的依赖关系。
+你可以使用 [Gradle](https://gradle.org/install) 或 [Maven](https://maven.apache.org/install.html) 获取应用程序的所有依赖项包括间接依赖，无需手动管理复杂的依赖关系。
 
-如果你使用的是 **Maven**，请将以下内容添加到你的 `<dependencies></dependencies>`：
+如果你使用的是 Maven，请将以下内容添加到你的 `<dependencies></dependencies>`：
 
 ```xml
 <dependency>
@@ -164,7 +164,7 @@ implementation 'mysql:mysql-connector-java:5.1.49'
 </dependency>
 ```
 
-如果你使用的是 `Gradle`，请将以下内容添加到你的 `dependencies`：
+如果你使用的是 Gradle，请将以下内容添加到你的 `dependencies`：
 
 ```gradle
 implementation 'org.mybatis:mybatis:3.5.9'
