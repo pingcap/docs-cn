@@ -1744,10 +1744,20 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 ### `tidb_memory_usage_alarm_ratio`
 
 - 作用域：GLOBAL
-- 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
-- 默认值：`0.8`
-- TiDB 内存使用占总内存的比例超过一定阈值时会报警。该功能的详细介绍和使用方法可以参考 [`memory-usage-alarm-ratio`](/tidb-configuration-file.md#memory-usage-alarm-ratio-从-v409-版本开始引入)。
-- 该变量的初始值可通过 [`memory-usage-alarm-ratio`](/tidb-configuration-file.md#memory-usage-alarm-ratio-从-v409-版本开始引入) 进行配置。
+- 是否持久化到集群：是
+- 默认值：`0.7`
+- 范围：`[0.0, 1.0]`
+- TiDB 内存使用占总内存的比例超过一定阈值时会报警，如果配置该选项为 `0` 或 `1`，则表示关闭内存阈值报警功能。
+- 当内存阈值报警功能开启时，如果配置项 [`server-memory-quota`](/tidb-configuration-file.md#server-memory-quota-从-v409-版本开始引入) 未设置，则内存报警阈值为 `tidb_memory-usage-alarm-ratio * 系统内存大小`；如果 `server-memory-quota` 被设置且大于 0，则内存报警阈值为 `tidb_memory-usage-alarm-ratio * server-memory-quota`。
+- 当 TiDB 检测到 tidb-server 的内存使用超过了阈值，则会认为存在内存溢出的风险，会将当前正在执行的所有 SQL 语句中内存使用最高的 10 条语句和运行时间最长的 10 条语句的相关信息, goroutine 栈信息以及 heap profile 记录到 TiDB 日志文件 [`filename`](tidb-configuration-file.md#filename) 所在目录中，并输出一条包含关键字 `tidb-server has the risk of OOM` 的日志。
+
+### `tidb_memory_usage_alarm_keep_record_num`
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 默认值：`5`
+- 范围： `[1, 10000]`
+- 这个变量设置了内存阈值报警功能开启时，当触发报警时最多保留几次最近 dump 下来的相关信息。
 
 ### `tidb_metric_query_range_duration` <span class="version-mark">从 v4.0 版本开始引入</span>
 
