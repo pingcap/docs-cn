@@ -1895,16 +1895,6 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 类型：整数型
-- 默认值：`1`
-- 取值范围：`[0,2]`
-- 该变量为 TiDB 内部变量，**不推荐用户设置该变量**。
-- 该变量决定在 TiDB 优化器遍历执行计划时，是否生成 broadcast cartesian join 的 MPP 计划。`0` 表示不允许生成该计划，`1` 表示在满足当前 broadcast threshold 情况下生成该计划，`2` 表示始终生成该计划。
-
-### `tidb_opt_cartesian_bcj`
-
-- 作用域：SESSION | GLOBAL
-- 是否持久化到集群：是
 - 类型：整数
 - 默认值：`1`
 - 范围：`[0, 2]`
@@ -1921,7 +1911,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 默认值：`3.0`
 - 表示在 TiDB 中开启一个 Golang goroutine 的 CPU 开销。该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
 
-### `tidb_opt_cop_cpu_factor`
+### `tidb_opt_copcpu_factor`
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
@@ -1955,7 +1945,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 默认值：`3.0`
 - 表示 TiDB 处理一行数据的 CPU 开销。该变量是[代价模型](/cost-model.md)内部使用的变量，不建议修改该变量的值。
 
-### `tidb_opt_desc_scan_factor`
+### `tidb_opt_desc_factor`
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
