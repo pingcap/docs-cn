@@ -191,4 +191,4 @@ BR 支持对备份到 S3 的数据进行 S3 服务端加密 (SSE)。BR S3 服务
 
 ## Cloud Storage 其他功能支持
 
-* BR v6.3 版本支持 AWS S3 Object lock 功能。用户可以在 AWS 开启 [S3 Object Lock](https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lock.html) 功能来防止备份数据写入后被修改或者删除。 
+* BR v6.3 版本支持 AWS S3 Object lock 功能。用户可以在 AWS 开启 [S3 Object Lock](https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lock.html) 功能来防止备份数据写入后被修改或者删除。
