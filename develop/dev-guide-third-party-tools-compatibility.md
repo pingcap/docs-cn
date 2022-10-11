@@ -17,19 +17,19 @@ summary: 介绍在测试中发现的 TiDB 与第三方工具的兼容性问题�
 > - 空间类型的函数
 > - `XA` 语法
 >
-> 这样的功能不兼容将被视为预期行为，将不再重复叙述。可查看[与 MySQL 兼容性对比](/mysql-compatibility.md)获得更多不支持或与 MySQL 不一致的特性说明。
+> 这些不支持的功能不兼容将被视为预期行为，不再重复叙述。关于更多 TiDB 与 MySQL 的兼容性对比，你可以查看[与 MySQL 兼容性对比](/mysql-compatibility.md)。
 
 ## 通用
 
-### `SELECT CONNECTION_ID()` 返回结果类型为 64 位整型
+### TiDB 中 `SELECT CONNECTION_ID()` 返回结果类型为 64 位整型
 
 **描述**
 
-TiDB 的 `SELECT CONNECTION_ID()` 返回值为 64 位，如 `2199023260887`。而 MySQL 为 32 位，如 `391650`。
+TiDB 中 `SELECT CONNECTION_ID()` 的返回值为 64 位，如 `2199023260887`。而 MySQL 中返回值为 32 位，如 `391650`。
 
 **规避方法**
 
-请注意使用各语言的 64 位整型类型（或字符串类型）存储 `SELECT CONNECTION_ID()` 的结果，防止溢出。如 Java 应使用 `Long` 或 `String` 进行接收，JavaScript/TypeScript 应使用 `string` 类型进行接收。
+在 TiDB 应用程序中，请注意使用各语言的 64 位整型类型（或字符串类型）存储 `SELECT CONNECTION_ID()` 的结果，防止溢出。如 Java 应使用 `Long` 或 `String` 进行接收，JavaScript/TypeScript 应使用 `string` 类型进行接收。
 
 ### TiDB 未设置 `Com_*` 计数器
 
@@ -45,13 +45,13 @@ MySQL 维护了一系列 [`Com_` 开头的服务端变量](https://dev.mysql.com
 
 **描述**
 
-TiDB 错误日志区分 `TIMESTAMP ` 与 `DATETIME`，而 MySQL 不区分，全部返回为 `DATETIME`。即 MySQL 会将 `TIMESTAMP` 类型的报错信息错误地写为 `DATETIME` 类型。
+TiDB 错误日志区分 `TIMESTAMP` 与 `DATETIME`，而 MySQL 不区分，全部返回为 `DATETIME`。即 MySQL 会将 `TIMESTAMP` 类型的报错信息错误地写为 `DATETIME` 类型。
 
 **规避方法**
 
 请勿使用错误日志进行字符串匹配，而是使用[错误码](/error-codes.md)进行故障诊断。
 
-### 不支持 `CHECK TABLE` 语句
+### TiDB 不支持 `CHECK TABLE` 语句
 
 **描述**
 
@@ -59,7 +59,7 @@ TiDB 使用 [`ADMIN CHECK [TABLE|INDEX]`](/sql-statements/sql-statement-admin-ch
 
 **规避方法**
 
-转为使用 [`ADMIN CHECK [TABLE|INDEX]`](/sql-statements/sql-statement-admin-check-table-index.md)。
+在 TiDB 中转为使用 [`ADMIN CHECK [TABLE|INDEX]`](/sql-statements/sql-statement-admin-check-table-index.md)。
 
 ## MySQL JDBC 不兼容
 
@@ -74,9 +74,9 @@ MySQL Connector/J 的排序规则保存在客户端内，通过获取的服务�
 已知的客户端与服务端排序规则不一致的字符集：
 
 | 字符集 | 客户端默认排序规则 | 服务端默认排序规则 |
-| - | - | - |
-| `ascii` | `ascii_general_ci` | `ascii_bin` |
-| `latin1` | `latin1_swedish_ci` | `latin1_bin` |
+| --------- | -------------------- | ------------- |
+| `ascii`   | `ascii_general_ci`   | `ascii_bin`   |
+| `latin1`  | `latin1_swedish_ci`  | `latin1_bin`  |
 | `utf8mb4` | `utf8mb4_0900_ai_ci` | `utf8mb4_bin` |
 
 **规避方法**
@@ -91,7 +91,7 @@ MySQL Connector/J 的排序规则保存在客户端内，通过获取的服务�
 
 **规避方法**
 
-不搭配使用 `NO_BACKSLASH_ESCAPES` 与 `\`，而是使用正常的 `\\` 进行 SQL 编写。
+不搭配使用 `NO_BACKSLASH_ESCAPES` 与 `\`，而是使用 `\\` 进行 SQL 编写。
 
 ### 未设置索引使用情况参数
 
@@ -110,13 +110,13 @@ TiDB 在通讯协议中未设置 `SERVER_QUERY_NO_GOOD_INDEX_USED` 与 `SERVER_Q
 
 **描述**
 
-TiDB 不支持 [enablePacketDebug](https://dev.mysql.com/doc/connector-j/8.0/en/connector-j-connp-props-debugging-profiling.html) 参数，这是一个 MySQL Connector/J 用于调试的参数，将保留数据包的 Buffer。这将导致连接的**_意外关闭_**，**_请勿_**打开。
+TiDB 不支持 [enablePacketDebug](https://dev.mysql.com/doc/connector-j/8.0/en/connector-j-connp-props-debugging-profiling.html) 参数，这是一个 MySQL Connector/J 用于调试的参数，将保留数据包的 Buffer。这将导致连接的**意外关闭**，**请勿**打开。
 
 **规避方法**
 
 不设置 `enablePacketDebug` 参数。
 
-### 不支持 `UpdatableResultSet`
+### 不支持 UpdatableResultSet
 
 **描述**
 
@@ -146,7 +146,7 @@ TiDB 暂不支持 UpdatableResultSet，即请勿指定 `ResultSet.CONCUR_UPDATAB
 
 **描述**
 
-新版本的 MySQL Connector/J 在与 5.7.5 版本以下的 MySQL 服务端，或使用 5.7.5 版本以下 MySQL 服务端协议的数据库（如 TiDB 6.3 版本以下）一起工作时。将在一定情况下引起连接的挂起，可查看此 [Bug Report](https://bugs.mysql.com/bug.php?id=106252) 了解更细节的信息。
+新版本的 MySQL Connector/J 在与 5.7.5 版本以下的 MySQL 服务端，或使用 5.7.5 版本以下 MySQL 服务端协议的数据库（如 TiDB 6.3.0 版本以下）一起工作时，将在一定情况下引起连接的挂起。关于更多细节信息，可查看此 [Bug Report](https://bugs.mysql.com/bug.php?id=106252)。
 
 **规避方法**
 
@@ -155,4 +155,4 @@ TiDB 暂不支持 UpdatableResultSet，即请勿指定 `ResultSet.CONCUR_UPDATAB
 TiDB 对其进行了两个维度的修复：
 
 - 客户端方面：可使用 [pingcap/mysql-connector-j](https://github.com/pingcap/mysql-connector-j) 替换官方的 MySQL Connector/J。**pingcap/mysql-connector-j** 中修复了该 Bug。
-- 服务端方面：可升级服务端至 6.3 版本或以上。TiDB 在 6.3 版本修复了此兼容问题。
+- 服务端方面：可升级服务端至 6.3.0 版本或以上。TiDB 在 6.3.0 版本修复了此兼容问题。
