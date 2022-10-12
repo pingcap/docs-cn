@@ -11,15 +11,15 @@ summary: 了解如何定位、排查 TiDB Out Of Memory (OOM) 问题。
 
 在排查 OOM 问题时，整体遵循以下排查思路：
 
-1. 首先需要确认是否属于 OOM 问题。
+1. 确认是否属于 OOM 问题。
 
-    执行下面命令查看操作系统日志，如果结果中存在问题发生附近时间点的 oom-killer 的日志，则可以确定是 OOM 问题。
+    执行下面命令查看操作系统日志。如果故障发生的时间点附近存在 `oom-killer` 的日志，则可以确定是 OOM 问题。
 
     ```shell
     dmesg -T | grep tidb-server
     ```
 
-    下面是包含 oom-killer 的日志输出示例：
+    下面是包含 `oom-killer` 的日志输出示例：
 
     ```shell
     ......
@@ -55,7 +55,7 @@ OOM 常见的故障现象包括（但不限于）：
 
 - 查看 `tidb.log`，可发现如下日志条目：
     - OOM 相关的 Alarm：`[WARN] [memory_usage_alarm.go:139] ["tidb-server has the risk of OOM. Running SQLs and heap profile will be recorded in record path"]`。关于该日志的详细说明，请参考 [`memory-usage-alarm-ratio`](/system-variables.md#tidb_memory_usage_alarm_ratio)。
-    - 重启相关的日志条目：`[INFO] [printer.go:33] ["Welcome to TiDB."]`
+    - 重启相关的日志条目：`[INFO] [printer.go:33] ["Welcome to TiDB."]`。
 
 ## 常见故障原因和解决方法
 
@@ -145,7 +145,7 @@ TiDB 节点启动后需要加载统计信息到内存中。统计信息的收集
 
 为定位 OOM 故障，通常需要收集以下信息：
 
-- 操作系统的内存相关配置
+- 操作系统的内存相关配置：
     - TiUP 上的配置：`resource_control.memory_limit`
     - 操作系统的配置：
         - 内存信息：`cat /proc/meminfo`
@@ -154,7 +154,7 @@ TiDB 节点启动后需要加载统计信息到内存中。统计信息的收集
         - `numactl --hardware`
         - `numactl --show`
 
-- 数据库的内存相关配置
+- 数据库的内存相关配置：
     - tidb version
     - `tidb_mem_quota_query`
     - `memory-usage-alarm-ratio`
