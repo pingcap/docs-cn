@@ -71,16 +71,10 @@ server-memory-quota = 34359738368
 1. 配置报警比例为 `0.7`：
 
     {{< copyable "" >}}
-
-    ```toml
-    mem-quota-query = 34359738368
-    ```
-    {{< copyable "" >}}
     
     ```sql
     SET GLOBAL tidb_memory_usage_alarm_ratio = 0.7;
     ```
-
 2. 创建单表 `CREATE TABLE t(a int);` 并插入 1000 行数据。
 
 3. 执行 `select * from t t1 join t t2 join t t3 order by t1.a`。该 SQL 语句会输出 1000000000 条记录，占用巨大的内存，进而触发报警。
@@ -88,7 +82,7 @@ server-memory-quota = 34359738368
 4. 检查 `tidb.log` 文件，其中会记录系统总内存、系统当前内存使用量、tidb-server 实例的内存使用量以及状态文件所在目录。
 
     ```
-    [2022/10/11 16:39:02.281 +08:00] [WARN] [memoryusagealarm.go:212] ["tidb-server has the risk of OOM because of memory usage exceeds alarm ratio. Running SQLs and heap profile will be recorded in record path"] ["is server-memory-quota set"=true] ["system memory total"=33682427904] ["system memory usage"=22120655360] ["tidb-server memory usage"=21468556992] [memory-usage-alarm-ratio=0.7] ["record path"=/tiup/deploy/tidb-4000/log/oom_record]
+    [2022/10/11 16:39:02.281 +08:00] [WARN] [memoryusagealarm.go:212] ["tidb-server has the risk of OOM because of memory usage exceeds alarm ratio. Running SQLs and heap profile will be recorded in record path"] ["is server-memory-quota set"=false] ["system memory total"=33682427904] ["system memory usage"=22120655360] ["tidb-server memory usage"=21468556992] [memory-usage-alarm-ratio=0.7] ["record path"=/tiup/deploy/tidb-4000/log/oom_record]
     ```
 
     以上 Log 字段的含义如下：
