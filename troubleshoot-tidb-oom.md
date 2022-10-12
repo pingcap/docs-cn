@@ -7,6 +7,21 @@ summary: 了解如何定位、排查 TiDB Out of Memory (OOM) 问题。
 
 本文总结了 TiDB Out Of Memory (OOM) 常见问题的解决思路、故障现象、故障原因、解决方法、以及需要收集的诊断信息。在遇到 OOM 问题时，你可以参考本文档来排查错误原因并进行处理。
 
+## 常见故障现象
+
+OOM 常见的故障现象包括（但不限于）：
+
+- 客户端报错：`SQL error, errno = 2013, state = 'HY000': Lost connection to MySQL server during query`
+
+- 查看 Grafana 监控，发现以下现象：
+    - **TiDB** > **Server** > **Memory Usage** 显示 process/heapInUse 持续升高，达到阈值后掉零
+    - **TiDB** > **Server** > **Uptime** 显示为掉零
+    - **TiDB-Runtime** > **Memory Usage** 显示 estimate-inuse 持续升高
+
+- 查看 `tidb.log`，可发现如下日志条目：
+    - OOM 相关的 Alarm：`[WARN] [memory_usage_alarm.go:139] ["tidb-server has the risk of OOM. Running SQLs and heap profile will be recorded in record path"]`。关于该日志的详细说明，请参考 [`memory-usage-alarm-ratio`](/system-variables.md#tidb_memory_usage_alarm_ratio)。
+    - 重启相关的日志条目：`[INFO] [printer.go:33] ["Welcome to TiDB."]`。
+
 ## 整体排查思路
 
 在排查 OOM 问题时，整体遵循以下排查思路：
@@ -42,20 +57,7 @@ summary: 了解如何定位、排查 TiDB Out of Memory (OOM) 问题。
         - TiDB 的高并发场景，多条 SQL 并发消耗资源，或者算子并发高。
         - TiDB 内存泄露，资源没有释放。
 
-## 常见故障现象
-
-OOM 常见的故障现象包括（但不限于）：
-
-- 客户端报错：`SQL error, errno = 2013, state = 'HY000': Lost connection to MySQL server during query`
-
-- 查看 Grafana 监控，发现以下现象：
-    - **TiDB** > **Server** > **Memory Usage** 显示 process/heapInUse 持续升高，达到阈值后掉零
-    - **TiDB** > **Server** > **Uptime** 显示为掉零
-    - **TiDB-Runtime** > **Memory Usage** 显示 estimate-inuse 持续升高
-
-- 查看 `tidb.log`，可发现如下日志条目：
-    - OOM 相关的 Alarm：`[WARN] [memory_usage_alarm.go:139] ["tidb-server has the risk of OOM. Running SQLs and heap profile will be recorded in record path"]`。关于该日志的详细说明，请参考 [`memory-usage-alarm-ratio`](/system-variables.md#tidb_memory_usage_alarm_ratio)。
-    - 重启相关的日志条目：`[INFO] [printer.go:33] ["Welcome to TiDB."]`。
+    具体排查方法请参考下面的章节。
 
 ## 常见故障原因和解决方法
 
@@ -125,7 +127,7 @@ TiDB 节点启动后需要加载统计信息到内存中。统计信息的收集
 要解决该问题，可以考虑采取以下措施：
 
 - 调整 session 的生命周期。
-- 调整连接池的 life time 时长。
+- 调整[连接池的 `wait_timeout` 和 `max_execution_time` 时长](/develop/dev-guide-connection-parameters.md#超时参数)。
 - 使用系统变量 [`max_prepared_stmt_count`](/system-variables.md#max_prepared_stmt_count) 进行限制。
 
 #### 系统变量配置不当
