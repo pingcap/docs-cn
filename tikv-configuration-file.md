@@ -1708,13 +1708,13 @@ Raft Engine 相关的配置项。
 
 ### `raw-min-ts-outlier-threshold` <span class="version-mark">从 v6.2.0 版本开始引入</span>
 
+> **警告：**
+>
+> 这个配置项自 v6.4.0 版本起废弃，并将在后续版本删除。
+
 + 对 RawKV 的 Resolved TS 进行异常检测的阈值。
 + 如果某个 Region 的 Resolved TS 延迟超过这个阈值，将进入异常检测流程。此时，Resolved TS 延迟超过 3 x [IQR](https://en.wikipedia.org/wiki/Interquartile_range) 的 Region 将被认为出现锁释放缓慢，并触发 TiKV-CDC 重新订阅该 Region 的数据变更，从而重置锁资源状态。
 + 默认值：60s
-
-> **警告：**
->
-> - 这个配置项自 v6.4.0 版本起废弃，并将在后续版本删除。
 
 ## resolved-ts
 
@@ -1846,7 +1846,7 @@ Raft Engine 相关的配置项。
 
 + 时间戳可用时长。
 + 表示 TiKV 可以容忍的 TSO 服务故障时长。TiKV 会根据前一周期的使用情况，预估并请求 `available-interval` 时长所需要的 TSO 使用量，缓存在本地。
-+ 如果调大这个参数，会增加 TSO 消耗，并增加 TiKV 的内存开销。此外，建议同时修改 PD 的 `tso-update-physical-interval` 参数，以获得足够的 TSO 供应。参见 [PD 配置文件描述](/pd-configuration-file.md#tso-update-physical-interval)。
++ 如果调大这个参数，会增加 TSO 消耗，并增加 TiKV 的内存开销。此外，建议同时修改 PD 的 [`tso-update-physical-interval`](/pd-configuration-file.md#tso-update-physical-interval-从-v640-版本开始引入) 参数，以获得足够的 TSO 供应。
 + 在 PD 主节点故障并切换到其他节点过程中，根据测试，默认配置下写请求会短暂出现延迟增大和 QPS 下降（幅度约 15%）。
 + 如果希望业务不受影响，可以尝试采用以下配置：
     + `causal-ts.available-interval = "6s"`
@@ -1871,5 +1871,5 @@ Raft Engine 相关的配置项。
 ### `renew-batch-max-size` <span class="version-mark">从 v6.4.0 版本开始引入</span>
 
 + 时间戳单次请求的最大数量。
-+ PD 的 TSO 服务在每个物理时钟周期最多提供 262144 个 TSO，超过这个数量后 PD 会暂缓 TSO 请求的处理。这个配置用于避免 PD 的 TSO 消耗殆尽、影响其他业务的使用。如果为了提升高可用能力而调大这个参数，需要同时调小 PD 的 `tso-update-physical-interval` 参数，以获得足够的 TSO 供应。参见 [PD 配置文件描述](/pd-configuration-file.md#tso-update-physical-interval)。
++ PD 的 TSO 服务在每个物理时钟周期最多提供 262144 个 TSO，超过这个数量后 PD 会暂缓 TSO 请求的处理。这个配置用于避免 PD 的 TSO 消耗殆尽、影响其他业务的使用。如果为了提升高可用能力而调大这个参数，需要同时调小 PD 的 [`tso-update-physical-interval`](/pd-configuration-file.md#tso-update-physical-interval-从-v640-版本开始引入) 参数，以获得足够的 TSO 供应。
 + 默认值：8192
