@@ -12,7 +12,7 @@ TiDB 版本：5.4.3
 
 + TiKV
 
-    - 支持将 RocksDB write stall 设置为比流量控制阈值更小的值 [#13467](https://github.com/tikv/tikv/issues/13467)
+    - 支持将 RocksDB write stall 参数设置为比 flow control 流控阈值更小的值 [#13467](https://github.com/tikv/tikv/issues/13467)
     - 支持配置 `unreachable_backoff` 避免 Raftstore 发现某个 Peer 无法连接时广播过多消息 [#13054](https://github.com/tikv/tikv/issues/13054)
 
 + Tools
