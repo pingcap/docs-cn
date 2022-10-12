@@ -15,7 +15,7 @@ Placement Rules in SQL 特性用于通过 SQL 接口配置数据在 TiKV 集群�
 
 - 合并多个不同业务的数据库，大幅减少数据库常规运维管理的成本
 - 增加重要数据的副本数，提高业务可用性和数据可靠性
-- 将最新数据存入 SSD，历史数据存入 HDD，降低归档数据存储成本
+- 将最新数据存入 NVMe，历史数据存入 SSD，降低归档数据存储成本
 - 把热点数据的 leader 放到高性能的 TiKV 实例上
 - 将冷数据分离到不同的存储中以提高可用性
 - 支持物理隔离不同用户之间的计算资源，满足实例内部不同用户的隔离需求，以及不同混合负载 CPU、I/O、内存等资源隔离的需求
@@ -222,30 +222,30 @@ ALTER PLACEMENT POLICY p3 FOLLOWERS=3; -- 绑定策略 p3 的表，也就是 t4�
 以下示例设置了一个约束，要求数据必须位于某个 TiKV 节点，且该节点的 `disk` 标签必须匹配特定的值：
 
 ```sql
-CREATE PLACEMENT POLICY storeonfastssd CONSTRAINTS="[+disk=ssd]";
-CREATE PLACEMENT POLICY storeonhdd CONSTRAINTS="[+disk=hdd]";
+CREATE PLACEMENT POLICY storageonnvme CONSTRAINTS="[+disk=nvme]";
+CREATE PLACEMENT POLICY storageonssd CONSTRAINTS="[+disk=ssd]";
 CREATE PLACEMENT POLICY companystandardpolicy CONSTRAINTS="";
 
 CREATE TABLE t1 (id INT, name VARCHAR(50), purchased DATE)
 PLACEMENT POLICY=companystandardpolicy
 PARTITION BY RANGE( YEAR(purchased) ) (
-  PARTITION p0 VALUES LESS THAN (2000) PLACEMENT POLICY=storeonhdd,
+  PARTITION p0 VALUES LESS THAN (2000) PLACEMENT POLICY=storageonssd,
   PARTITION p1 VALUES LESS THAN (2005),
   PARTITION p2 VALUES LESS THAN (2010),
   PARTITION p3 VALUES LESS THAN (2015),
-  PARTITION p4 VALUES LESS THAN MAXVALUE PLACEMENT POLICY=storeonfastssd
+  PARTITION p4 VALUES LESS THAN MAXVALUE PLACEMENT POLICY=storageonnvme
 );
 ```
 
-该约束可通过列表格式 (`[+disk=ssd]`) 或字典格式 (`{+disk=ssd: 1,+disk=hdd: 2}`) 指定。
+该约束可通过列表格式 (`[+disk=ssd]`) 或字典格式 (`{+disk=ssd: 1,+disk=nvme: 2}`) 指定。
 
-在列表格式中，约束以键值对列表格式。键以 `+` 或 `-` 开头。`+disk=ssd` 表示 `disk` 标签必须设为 `ssd`，`-disk=hdd` 表示 `disk` 标签值不能为 `hdd`。
+在列表格式中，约束以键值对列表格式。键以 `+` 或 `-` 开头。`+disk=nvme` 表示 `disk` 标签必须设为 `nvme`，`-disk=nvme` 表示 `disk` 标签值不能为 `nvme`。
 
-在字典格式中，约束还指定了适用于该规则的多个实例。例如，`FOLLOWER_CONSTRAINTS="{+region=us-east-1: 1,+region=us-east-2: 1,+region=us-west-1: 1}";` 表示 1 个 follower 位于 `us-east-1`，1 个 follower 位于 `us-east-2`，1 个 follower 位于 `us-west-1`。再例如，`FOLLOWER_CONSTRAINTS='{"+region=us-east-1,+disk=hdd": 1,"+region=us-west-1": 1}';` 表示 1 个 follower 位于 `us-east-1` 区域中有 `hdd` 硬盘的机器上，1 个 follower 位于 `us-west-1`。
+在字典格式中，约束还指定了适用于该规则的多个实例。例如，`FOLLOWER_CONSTRAINTS="{+region=us-east-1: 1,+region=us-east-2: 1,+region=us-west-1: 1}";` 表示 1 个 follower 位于 `us-east-1`，1 个 follower 位于 `us-east-2`，1 个 follower 位于 `us-west-1`。再例如，`FOLLOWER_CONSTRAINTS='{"+region=us-east-1,+disk=nvme": 1,"+region=us-west-1": 1}';` 表示 1 个 follower 位于 `us-east-1` 区域中有 `nvme` 硬盘的机器上，1 个 follower 位于 `us-west-1`。
 
 > **注意：**
 >
-> 字典和列表格式都基于YAML解析，但 YAML 语法有些时候不能被正常解析。例如 YAML 会把 "{+disk=ssd:1,+disk=hdd:2}" 错误地解析成 '{"+disk=ssd:1": null, "+disk=hdd:1": null}'，不符合预期。但 "{+disk=ssd: 1,+disk=hdd: 1}" 能被正确解析成 '{"+disk=ssd": 1, "+disk=hdd": 1}'。
+> 字典和列表格式都基于YAML解析，但 YAML 语法有些时候不能被正常解析。例如 YAML 会把 "{+disk=ssd:1,+disk=nvme:2}" 错误地解析成 '{"+disk=ssd:1": null, "+disk=nvme:2": null}'，不符合预期。但 "{+disk=ssd: 1,+disk=nvme: 2}" 能被正确解析成 '{"+disk=ssd": 1, "+disk=nvme": 2}'。
 
 ## 工具兼容性
 
@@ -262,5 +262,4 @@ PARTITION BY RANGE( YEAR(purchased) ) (
 
 * 临时表不支持放置规则。
 * 设置 `PRIMARY_REGION` 和 `REGIONS` 时允许存在语法糖。但在未来版本中，我们计划为 `PRIMARY_RACK`、`PRIMARY_ZONE` 和 `PRIMARY_HOST` 添加变体支持，见 [issue #18030](https://github.com/pingcap/tidb/issues/18030)。
-* 不能通过放置规则语法配置 TiFlash 副本。
 * 放置规则仅保证静态数据被放置在正确的 TiKV 节点上。该规则不保证传输中的数据（通过用户查询或内部操作）只出现在特定区域内。

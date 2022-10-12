@@ -14,7 +14,7 @@ aliases: ['/docs-cn/dev/ticdc/ticdc-overview/','/docs-cn/dev/reference/tools/tic
 
 要快速了解 TiCDC 的基本原理和使用方法，建议先观看下面的培训视频（时长 33 分钟）。注意本视频只为学习参考，具体操作步骤和最新功能，请以文档内容为准。
 
-<video src="https://tidb-docs.s3.us-east-2.amazonaws.com/compressed+-+Lesson+22.mp4" width="600px" height="450px" controls="controls" poster="https://tidb-docs.s3.us-east-2.amazonaws.com/thumbnail+-+lesson+22.png"></video>
+<video src="https://download.pingcap.com/docs-cn%2FLesson22_ticdc.mp4" width="100%" height="100%" controls="controls" poster="https://tidb-docs.s3.us-east-2.amazonaws.com/thumbnail+-+lesson+22.png"></video>
 
 ## TiCDC 架构
 
@@ -63,6 +63,10 @@ TiCDC 的系统架构如下图所示：
     - TiCDC **不保证**下游事务的执行顺序和上游完全一致。
     - TiCDC 以表为单位拆分跨表事务，**不保证**跨表事务的原子性。
     - TiCDC **保证**单行的更新与上游更新顺序一致。
+
+> **注意：**
+>
+> 从 v6.2 版本起，你可以通过配置 sink uri 参数 [`transaction-atomicity`](/ticdc/manage-ticdc.md#sink-uri-配置-mysqltidb) 来控制 TiCDC 是否拆分单表事务。拆分事务可以大幅降低 MySQL sink 同步大事务的延时和内存消耗。
 
 - Kafka sink
 

@@ -75,10 +75,10 @@ Rows matched: 1  Changed: 1  Warnings: 0
 
 ## 语句级别
 
-<SimpleTab>
-<div label="SQL" href="statement-sql">
+<SimpleTab groupId="language">
+<div label="SQL" value="sql">
 
-你可以在上述价格的查询语句当中添加上 `AS OF TIMESTAMP <datetime>` 语句查看到固定时间点之前这本书的价格。
+在 SQL 中，你可以在上述价格的查询语句当中添加上 `AS OF TIMESTAMP <datetime>` 语句查看到固定时间点之前这本书的价格。
 
 {{< copyable "sql" >}}
 
@@ -122,9 +122,9 @@ ERROR 9006 (HY000): cannot set read timestamp to a future time.
 ```
 
 </div>
-<div label="Java" href="statement-java">
+<div label="Java" value="java">
 
-{{< copyable "" >}}
+在 Java 中的示例如下：
 
 ```java
 public class BookDAO {
@@ -237,10 +237,10 @@ WARN: GC life time is shorter than transaction duration.
 
 通过 `START TRANSACTION READ ONLY AS OF TIMESTAMP` 语句，你可以开启一个基于历史时间的只读事务，该事务基于所提供的历史时间来读取历史数据。
 
-<SimpleTab>
-<div label="SQL" href="txn-sql">
+<SimpleTab groupId="language">
+<div label="SQL" value="sql">
 
-例如：
+在 SQL 中的示例如下：
 
 {{< copyable "sql" >}}
 
@@ -287,9 +287,9 @@ SELECT id, title, type, price FROM books ORDER BY published_at DESC LIMIT 5;
 ```
 
 </div>
-<div label="Java" href="txn-java">
+<div label="Java" value="java">
 
-可以先定义一个事务的工具类，将开启事务级别 Stale Read 的命令封装成工具方法。
+在 Java 中，可以先定义一个事务的工具类，将开启事务级别 Stale Read 的命令封装成工具方法。
 
 {{< copyable "" >}}
 
@@ -390,8 +390,8 @@ The latest book price (after the transaction commit): 150
 
 通过 `SET TRANSACTION READ ONLY AS OF TIMESTAMP` 语句，你可以将当前事务或下一个事务设置为基于指定历史时间的只读事务。该事务将会基于所提供的历史时间来读取历史数据。
 
-<SimpleTab>
-<div label="SQL" href="next-txn-sql">
+<SimpleTab groupId="language">
+<div label="SQL" value="sql">
 
 例如，可以通过下面这个 SQL 将已开启的事务切换到只读模式，通过 `AS OF TIMESTAMP` 语句开启能够读取 5 秒前的历史数据 Stale Read 功能。
 
@@ -402,7 +402,7 @@ SET TRANSACTION READ ONLY AS OF TIMESTAMP NOW() - INTERVAL 5 SECOND;
 ```
 
 </div>
-<div label="Java" href="next-txn-java">
+<div label="Java" value="java">
 
 可以先定义一个事务的工具类，将开启事务级别 Stale Read 的命令封装成工具方法。
 
@@ -474,8 +474,8 @@ public class BookDAO {
 
 为支持读取历史版本数据，TiDB 从 5.4 版本起引入了一个新的系统变量 `tidb_read_staleness`。系统变量 `tidb_read_staleness` 用于设置当前会话允许读取的历史数据范围，其数据类型为 int，作用域为 SESSION。
 
-<SimpleTab>
-<div label="SQL" href="session-sql">
+<SimpleTab groupId="language">
+<div label="SQL" value="sql">
 
 在会话中开启 Stale Read：
 
@@ -496,9 +496,9 @@ set @@tidb_read_staleness="";
 ```
 
 </div>
-<div label="Java" href="session-java">
+<div label="Java" value="java">
 
-{{< copyable "" >}}
+在 Java 中示例如下：
 
 ```java
 public static class StaleReadHelper{

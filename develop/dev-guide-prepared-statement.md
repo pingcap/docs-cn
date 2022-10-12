@@ -73,11 +73,11 @@ DEALLOCATE PREPARE {prepared_statement_name};
 
 例如，需要查询 [Bookshop 应用](/develop/dev-guide-bookshop-schema-design.md#books-表) 中，`id` 为 1 的书籍信息。
 
-<SimpleTab>
+<SimpleTab groupId="language">
 
-<div label="SQL" href="read-sql">
+<div label="SQL" value="sql">
 
-{{< copyable "sql" >}}
+使用 SQL 查询示例：
 
 ```sql
 PREPARE `books_query` FROM 'SELECT * FROM `books` WHERE `id` = ?';
@@ -120,9 +120,9 @@ EXECUTE `books_query` USING @id;
 
 </div>
 
-<div label="Java" href="read-java">
+<div label="Java" value="java">
 
-{{< copyable "" >}}
+使用 Java 查询示例：
 
 ```java
 // ds is an entity of com.mysql.cj.jdbc.MysqlDataSource
@@ -152,11 +152,11 @@ try (Connection connection = ds.getConnection()) {
 
 还是使用 [books 表](/develop/dev-guide-bookshop-schema-design.md#books-表) 为例，需要插入一个 `title` 为 `TiDB Developer Guide`, `type` 为 `Science & Technology`, `stock` 为 `100`, `price` 为 `0.0`, `published_at` 为 `插入的当前时间` 的书籍信息。需要注意的是，`books` 表的主键包含 `AUTO_RANDOM` 属性，无需指定它。如果你对插入数据还不了解，可以在[插入数据](/develop/dev-guide-insert-data.md)一节了解更多数据插入的相关信息。
 
-<SimpleTab>
+<SimpleTab groupId="language">
 
-<div label="SQL" href="write-sql">
+<div label="SQL" value="sql">
 
-{{< copyable "sql" >}}
+使用 SQL 插入数据示例如下：
 
 ```sql
 PREPARE `books_insert` FROM 'INSERT INTO `books` (`title`, `type`, `stock`, `price`, `published_at`) VALUES (?, ?, ?, ?, ?);';
@@ -198,9 +198,9 @@ Query OK, 1 row affected (0.03 sec)
 
 </div>
 
-<div label="Java" href="write-java">
+<div label="Java" value="java">
 
-{{< copyable "" >}}
+使用 Java 插入数据示例如下：
 
 ```java
 try (Connection connection = ds.getConnection()) {

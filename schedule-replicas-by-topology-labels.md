@@ -7,7 +7,7 @@ aliases: ['/docs-cn/dev/schedule-replicas-by-topology-labels/','/docs-cn/dev/how
 
 > **注意：**
 >
-> TiDB 在 v5.3.0 中引入了实验特性 [Placement Rules in SQL](/placement-rules-in-sql.md)。使用该功能，你可以更方便地配置表和分区的位置。在未来版本中，Placement Rules in SQL 可能取代通过 PD 配置放置规则的功能。
+> TiDB 在 v5.3.0 中引入了 [Placement Rules in SQL](/placement-rules-in-sql.md)。使用该功能，你可以更方便地配置表和分区的位置。在未来版本中，Placement Rules in SQL 可能取代通过 PD 配置放置规则的功能。
 
 为了提升 TiDB 集群的高可用性和数据容灾能力，我们推荐让 TiKV 节点尽可能在物理层面上分散，例如让 TiKV 节点分布在不同的机架甚至不同的机房。PD 调度器根据 TiKV 的拓扑信息，会自动在后台通过调度使得 Region 的各个副本尽可能隔离，从而使得数据容灾能力最大化。
 
@@ -15,18 +15,18 @@ aliases: ['/docs-cn/dev/schedule-replicas-by-topology-labels/','/docs-cn/dev/how
 
 ## 根据集群拓扑配置 labels
 
-### 设置 TiKV 的 `labels` 配置
+### 设置 TiKV 和 TiFlash 的 `labels`
 
-TiKV 支持在命令行参数或者配置文件中以键值对的形式绑定一些属性，我们把这些属性叫做标签 (label)。TiKV 在启动后，会将自身的标签上报给 PD，因此我们可以使用标签来标识 TiKV 节点的地理位置。
+TiKV 和 TiFlash 支持在命令行参数或者配置文件中以键值对的形式绑定一些属性，我们把这些属性叫做标签 (label)。TiKV 和 TiFlash 在启动后，会将自身的标签上报给 PD，因此可以使用标签来标识 TiKV 和 TiFlash 节点的地理位置。
 
-比如集群的拓扑结构分成三层：机房 (zone) -> 机架 (rack) -> 主机 (host)，就可以使用这 3 个标签来设置 TiKV 的位置。
+比如集群的拓扑结构分成四层：机房 (zone) -> 数据中心 (dc) -> 机架 (rack) -> 主机 (host)，就可以使用这 4 个标签来设置 TiKV 和 TiFlash 的位置。
 
 使用命令行参数的方式启动一个 TiKV 实例：
 
 {{< copyable "" >}}
 
 ```
-tikv-server --labels zone=<zone>,rack=<rack>,host=<host>
+tikv-server --labels zone=<zone>,dc=<dc>,rack=<rack>,host=<host>
 ```
 
 使用配置文件的方式：
@@ -35,8 +35,45 @@ tikv-server --labels zone=<zone>,rack=<rack>,host=<host>
 
 ```toml
 [server]
-labels = "zone=<zone>,rack=<rack>,host=<host>"
+[server.labels]
+zone = "<zone>"
+dc = "<dc>"
+rack = "<rack>"
+host = "<host>"
 ```
+
+TiFlash 支持通过 tiflash-learner.toml （tiflash-proxy 的配置文件）的方式设置 labels：
+
+{{< copyable "" >}}
+
+```toml
+[server]
+[server.labels]
+zone = "<zone>"
+dc = "<dc>"
+rack = "<rack>"
+host = "<host>"
+```
+
+### 设置 TiDB 的 `labels`（可选）
+
+如果需要使用 [Follower Read](/follower-read.md) 的优先读同一区域副本的功能，需要为 TiDB 节点配置相关的 `labels`。
+
+TiDB 支持使用配置文件的方式设置 `labels`：
+
+{{< copyable "" >}}
+
+```
+[labels]
+zone = "<zone>"
+dc = "<dc>"
+rack = "<rack>"
+host = "<host>"
+```
+
+> **注意：**
+>
+> 目前，TiDB 依赖 `zone` 标签匹配选择同一区域的副本。如果需要使用此功能，需要在 PD [`location-labels` 配置](#设置-pd-的-isolation-level-配置)中包含 `zone`，并在 TiDB、TiKV 和 TiFlash 设置的 `labels` 中包含 `zone`。关于如何设置 TiKV 和 TiFlash 的 `labels`，可参考 [设置 TiKV 和 TiFlash 的 `labels`](#设置-tikv-和-tiflash-的-labels)。
 
 ### 设置 PD 的 `location-labels` 配置
 
@@ -97,9 +134,9 @@ pd-ctl config set isolation-level zone
 
 ### 使用 TiUP 进行配置（推荐）
 
-如果使用 TiUP 部署集群，可以在[初始化配置文件](/production-deployment-using-tiup.md#第-3-步初始化集群拓扑文件)中统一进行 location 相关配置。TiUP 会负责在部署时生成对应的 TiKV 和 PD 配置文件。
+如果使用 TiUP 部署集群，可以在[初始化配置文件](/production-deployment-using-tiup.md#第-3-步初始化集群拓扑文件)中统一进行 location 相关配置。TiUP 会负责在部署时生成对应的 TiKV、PD 和 TiFlash 配置文件。
 
-下面的例子定义了 `zone/host` 两层拓扑结构。集群的 TiKV 分布在三个 zone，每个 zone 内有两台主机，其中 z1 每台主机部署两个 TiKV 实例，z2 和 z3 每台主机部署 1 个实例。以下例子中 `tikv-n` 代表第 n 个 TiKV 节点的 IP 地址。
+下面的例子定义了 `zone` 和 `host` 两层拓扑结构。集群的 TiKV 和 TiFlash 分布在三个 zone，z1、z2 和 z3。每个 zone 内有四台主机，z1 两台主机分别部署两个 TiKV 实例，另外两台分别部署一个 TiFlash 实例，z2 和 z3 其中两台主机分别部署一个 TiKV实例，另外两台分别部署一个 TiFlash 实例。以下例子中 `tikv-n` 代表第 n 个 TiKV 节点的 IP 地址，`tiflash-n` 代表第 n 个 TiFlash 节点的 IP 地址。
 
 ```
 server_configs:
@@ -150,6 +187,41 @@ tikv_servers:
       server.labels:
         zone: z3
         host: h2
+
+tiflash_servers:
+# z1
+  - host: tiflash-1
+    learner_config:
+      server.labels:
+        zone: z1
+        host: h3
+   - host: tiflash-2
+    learner_config:
+      server.labels:
+        zone: z1
+        host: h4
+# z2
+  - host: tiflash-3
+    learner_config:
+      server.labels:
+        zone: z2
+        host: h3
+   - host: tiflash-4
+    learner_config:
+      server.labels:
+        zone: z2
+        host: h4
+# z3
+  - host: tiflash-5
+    learner_config:
+      server.labels:
+        zone: z3
+        host: h3
+  - host: tiflash-6
+    learner_config:
+      server.labels:
+        zone: z3
+        host: h4
 ```
 
 详情参阅 [TiUP 跨数据中心部署拓扑](/geo-distributed-deployment-topology.md)。

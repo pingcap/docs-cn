@@ -96,7 +96,7 @@ select * from employee where id in (...) and salary between ? and ?;
 
 `statements_summary`、`statements_summary_history` 和 `statements_summary_evicted` 仅显示单台 TiDB server 的 statement summary 数据。若要查询整个集群的数据，需要查询 `cluster_statements_summary`、`cluster_statements_summary_history` 或 `cluster_statements_summary_evicted` 表。
 
-`cluster_statements_summary` 显示各台 TiDB server 的 `statements_summary` 数据，`cluster_statements_summary_history` 显示各台 TiDB server 的 `statements_summary_history` 数据，而 `cluster_statements_summary_evicted` 则显示各台 TiDB server 的 `statements_summary_evicted` 数据。这三张表用字段 `INSTANCE` 表示 TiDB server 的地址，其他字段与 `statements_summary` 相同。
+`cluster_statements_summary` 显示各台 TiDB server 的 `statements_summary` 数据，`cluster_statements_summary_history` 显示各台 TiDB server 的 `statements_summary_history` 数据，而 `cluster_statements_summary_evicted` 则显示各台 TiDB server 的 `statements_summary_evicted` 数据。这三张表用字段 `INSTANCE` 表示 TiDB server 的地址，其他字段与 `statements_summary`、`statements_summary_history` 和 `statements_summary_evicted` 表相同。
 
 ## 参数配置
 
@@ -245,6 +245,7 @@ SQL 的基础信息：
 - `SAMPLE_USER`：执行这类 SQL 的用户名，多个用户名只取其中一个
 - `PLAN_DIGEST`：执行计划的 digest
 - `PLAN`：原执行计划，多条语句只取其中一条的执行计划
+- `BINARY_PLAN`：以二进制格式编码后的原执行计划，存在多条语句时，只取其中一条语句的执行计划。用 `select tidb_decode_binary_plan('xxx...')` SQL 语句可以解析出具体的执行计划。
 - `PLAN_CACHE_HITS`：这类 SQL 语句命中 plan cache 的总次数
 - `PLAN_IN_CACHE`：这类 SQL 语句的上次执行是否命中了 plan cache
 

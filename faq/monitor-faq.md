@@ -1,9 +1,9 @@
 ---
-title: 监控 FAQ
+title: TiDB 监控常见问题
 summary: 介绍在监控 TiDB 集群时的常见问题、原因及解决方法。
 ---
 
-# 监控 FAQ
+# TiDB 监控常见问题
 
 本文介绍在监控 TiDB 集群时的常见问题、原因及解决方法。
 

@@ -94,6 +94,10 @@ Operator Step 是 Operator 执行过程的一个步骤，一个 Operator 常常�
 
 Pending 和 Down 是 Peer 可能出现的两种特殊状态。其中 Pending 表示 Follower 或 Learner 的 raft log 与 Leader 有较大差距，Pending 状态的 Follower 无法被选举成 Leader。Down 是指 Leader 长时间没有收到对应 Peer 的消息，通常意味着对应节点发生了宕机或者网络隔离。
 
+### Point get
+
+点查 (point get) 是指通过主键或唯一索引直接读取一行的查询方式。点查的返回结果最多是一行数据。
+
 ### Predicate columns
 
 执行 SQL 语句时，优化器在大多数情况下只会用到部分列（例如， `WHERE`、`JOIN`、`ORDER BY`、`GROUP BY` 子句中出现的列）的统计信息，这些用到的列称为 `PREDICATE COLUMNS`。详情参见[收集部分列的统计信息](/statistics.md#收集部分列的统计信息)。
@@ -108,7 +112,7 @@ Pending 和 Down 是 Peer 可能出现的两种特殊状态。其中 Pending 表
 
 ## Raft Engine
 
-一种内置的持久化存储引擎，有着日志结构的设计，为 TiKV 提供 multi-Raft 日志存储。从 v5.4 起，TiDB 支持使用 Raft Engine 作为 TiKV 的日志存储引擎（实验特性，默认关闭）。详情参见 [Raft Engine](/tikv-configuration-file.md#raft-engine)。
+一种内置的持久化存储引擎，有着日志结构的设计，为 TiKV 提供 multi-Raft 日志存储。从 v5.4 起，TiDB 支持使用 Raft Engine 作为 TiKV 的日志存储引擎。详情参见 [Raft Engine](/tikv-configuration-file.md#raft-engine)。
 
 ### Region/Peer/Raft Group
 

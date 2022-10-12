@@ -226,7 +226,7 @@ BATCH ON id LIMIT 2 DELETE /*+ USE_INDEX(t)*/ FROM t where v < 6;
 - 不能与 `prepare` 语句一起使用。
 - 划分列不支持 `ENUM`，`BIT`，`SET`，`JSON` 类型。
 - 不支持用在[临时表](/temporary-tables.md)上。
-- 不支持[公共表表达式](/develop/dev-guide-use-common-table-expression.md）。
+- 不支持[公共表表达式](/develop/dev-guide-use-common-table-expression.md)。
 
 ## 控制 batch 执行失败
 

@@ -9,7 +9,7 @@ summary: 了解如何部署和使用 BR。
 
 ## 部署 BR
 
-- 生产环境中，推荐 BR 运行在（8 核+/16 GB+）的节点上。 操作系统版本要求可参考 [Linux 操作系统版本要求](/hardware-and-software-requirements.md#linux-操作系统版本要求)。
+- 生产环境中，推荐 BR 运行在（8 核+/16 GB+）的节点上。 操作系统版本要求可参考 [TiDB 对操作系统版本及平台的要求](/hardware-and-software-requirements.md#操作系统及平台要求)。
 - 推荐使用支持 Amazon S3、GCS 或 Azure Blob Storage 来保存备份数据。
 - 建议为备份和恢复配置足够的资源：
 
@@ -28,7 +28,7 @@ summary: 了解如何部署和使用 BR。
 
 ### 通过 SQL 语句
 
-TiDB 支持使用 SQL 语句 [`BACKUP`](/sql-statements/sql-statement-backup.md) 和 [`RESTORE`](/sql-statements/sql-statement-restore.md) 进行备份恢复。如果要查看备份恢复的进度，你可以使用 [`SHOW BACKUPS| RESTORE`](/sql-statements/sql-statement-show-backups.md) 语句。
+TiDB 支持使用 SQL 语句 [`BACKUP`](/sql-statements/sql-statement-backup.md) 和 [`RESTORE`](/sql-statements/sql-statement-restore.md) 进行备份恢复。如果要查看备份恢复的进度，你可以使用 [`SHOW BACKUPS|RESTORES`](/sql-statements/sql-statement-show-backups.md) 语句。
 
 ### 通过命令行工具
 

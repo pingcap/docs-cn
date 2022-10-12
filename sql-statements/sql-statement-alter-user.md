@@ -12,7 +12,7 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-alter-user/','/docs-cn/dev/
 
 ```ebnf+diagram
 AlterUserStmt ::=
-    'ALTER' 'USER' IfExists (UserSpecList RequireClauseOpt ConnectionOptions PasswordOrLockOptions | 'USER' '(' ')' 'IDENTIFIED' 'BY' AuthString)
+    'ALTER' 'USER' IfExists (UserSpecList RequireClauseOpt ConnectionOptions LockOption | 'USER' '(' ')' 'IDENTIFIED' 'BY' AuthString)
 
 UserSpecList ::=
     UserSpec ( ',' UserSpec )*
@@ -25,6 +25,8 @@ Username ::=
 
 AuthOption ::=
     ( 'IDENTIFIED' ( 'BY' ( AuthString | 'PASSWORD' HashString ) | 'WITH' StringName ( 'BY' AuthString | 'AS' HashString )? ) )?
+
+LockOption ::= ( 'ACCOUNT' 'LOCK' | 'ACCOUNT' 'UNLOCK' )?
 ```
 
 ## 示例
@@ -78,6 +80,20 @@ SHOW CREATE USER 'newuser';
 +----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 1 row in set (0.00 sec)
 ```
+
+{{< copyable "sql" >}}
+
+```sql
+ALTER USER 'newuser' ACCOUNT LOCK;
+```
+
+```
+Query OK, 0 rows affected (0.02 sec)
+```
+
+> **注意：**
+>
+> 不要使用 `ACCOUNT UNLOCK` 解锁一个[角色 (Role)](/sql-statements/sql-statement-create-role.md)，否则通过被解锁的角色可以免密码登入 TiDB。
 
 ## MySQL 兼容性
 

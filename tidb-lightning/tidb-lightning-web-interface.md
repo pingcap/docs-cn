@@ -13,7 +13,7 @@ TiDB Lightning 支持在网页上查看导入进度或执行一些简单任务�
 1. 在启动 `tidb-lightning` 时加上命令行参数 `--server-mode`。
 
     ```sh
-    ./tidb-lightning --server-mode --status-addr :8289
+    tiup tidb-lightning --server-mode --status-addr :8289
     ```
 
 2. 在配置文件中设置 `lightning.server-mode`。

@@ -9,15 +9,13 @@ aliases: ['/docs-cn/dev/partitioned-table/','/docs-cn/dev/reference/sql/partitio
 
 ## 分区类型
 
-本节介绍 TiDB 中的分区类型。当前支持的类型包括 [Range 分区](#range-分区)、[List 分区](#list-分区)、[List COLUMNS 分区](#list-columns-分区)和 [Hash 分区](#hash-分区)。Range 分区，List 分区和 List COLUMNS 分区可以用于解决业务中大量删除带来的性能问题，支持快速删除分区。Hash 分区则可以用于大量写入场景下的数据打散。
+本节介绍 TiDB 中的分区类型。当前支持的类型包括 [Range 分区](#range-分区)、[Range COLUMNS 分区](#range-columns-分区)、[Range INTERVAL 分区](#range-interval-分区)、[List 分区](#list-分区)、[List COLUMNS 分区](#list-columns-分区)和 [Hash 分区](#hash-分区)。Range 分区、Range COLUMNS 分区、List 分区和 List COLUMNS 分区可以用于解决业务中大量删除带来的性能问题，支持快速删除分区。Hash 分区则可以用于大量写入场景下的数据打散。
 
 ### Range 分区
 
 一个表按 Range 分区是指，对于表的每个分区中包含的所有行，按分区表达式计算的值都落在给定的范围内。Range 必须是连续的，并且不能有重叠，通过使用 `VALUES LESS THAN` 进行定义。
 
 下列场景中，假设你要创建一个人事记录的表：
-
-{{< copyable "sql" >}}
 
 ```sql
 CREATE TABLE employees (
@@ -32,8 +30,6 @@ CREATE TABLE employees (
 ```
 
 你可以根据需求按各种方式进行 Range 分区。其中一种方式是按 `store_id` 列进行分区：
-
-{{< copyable "sql" >}}
 
 ```sql
 CREATE TABLE employees (
@@ -58,8 +54,6 @@ PARTITION BY RANGE (store_id) (
 
 新插入一行数据 `(72, 'Tom', 'John', '2015-06-25', NULL, NULL, 15)` 将会落到分区 `p2` 里面。但如果你插入一条 `store_id` 大于 20 的记录，则会报错，因为 TiDB 无法知晓应该将它插入到哪个分区。这种情况下，可以在建表时使用最大值：
 
-{{< copyable "sql" >}}
-
 ```sql
 CREATE TABLE employees (
     id INT NOT NULL,
@@ -83,8 +77,6 @@ PARTITION BY RANGE (store_id) (
 
 你也可以按员工的职位编号进行分区，也就是使用 `job_code` 列的值进行分区。假设两位数字编号是用于普通员工，三位数字编号是用于办公室以及客户支持，四位数字编号是管理层职位，那么你可以这样建表：
 
-{{< copyable "sql" >}}
-
 ```sql
 CREATE TABLE employees (
     id INT NOT NULL,
@@ -106,8 +98,6 @@ PARTITION BY RANGE (job_code) (
 在这个例子中，所有普通员工存储在 `p0` 分区，办公室以及支持人员在 `p1` 分区，管理者在 `p2` 分区。
 
 除了可以按 `store_id` 切分，你还可以按日期切分。例如，假设按员工离职的年份进行分区：
-
-{{< copyable "sql" >}}
 
 ```sql
 CREATE TABLE employees (
@@ -160,6 +150,146 @@ Range 分区在下列条件之一或者多个都满足时，尤其有效：
 * 删除旧数据。如果你使用之前的 `employees` 表的例子，你可以简单使用 `ALTER TABLE employees DROP PARTITION p0;` 删除所有在 1991 年以前停止继续在这家公司工作的员工记录。这会比使用 `DELETE FROM employees WHERE YEAR(separated) <= 1990;` 执行快得多。
 * 使用包含时间或者日期的列，或者是其它按序生成的数据。
 * 频繁查询分区使用的列。例如执行这样的查询 `EXPLAIN SELECT COUNT(*) FROM employees WHERE separated BETWEEN '2000-01-01' AND '2000-12-31' GROUP BY store_id;` 时，TiDB 可以迅速确定，只需要扫描 `p2` 分区的数据，因为其它的分区不满足 `where` 条件。
+
+### Range COLUMNS 分区
+
+Range COLUMNS 分区是 Range 分区的一种变体。你可以使用一个或者多个列作为分区键，分区列的数据类型可以是整数 (integer)、字符串（`CHAR`/`VARCHAR`），`DATE` 和 `DATETIME`。不支持使用任何表达式。
+
+假设你想要按名字进行分区，并且能够轻松地删除旧的无效数据，那么你可以创建一个表格，如下所示：
+
+```sql
+CREATE TABLE t (
+  valid_until datetime,
+  name varchar(255) CHARACTER SET ascii,
+  notes text
+)
+PARTITION BY RANGE COLUMNS(name,valid_until)
+(PARTITION `p2022-g` VALUES LESS THAN ('G','2023-01-01 00:00:00'),
+ PARTITION `p2023-g` VALUES LESS THAN ('G','2024-01-01 00:00:00'),
+ PARTITION `p2024-g` VALUES LESS THAN ('G','2025-01-01 00:00:00'),
+ PARTITION `p2022-m` VALUES LESS THAN ('M','2023-01-01 00:00:00'),
+ PARTITION `p2023-m` VALUES LESS THAN ('M','2024-01-01 00:00:00'),
+ PARTITION `p2024-m` VALUES LESS THAN ('M','2025-01-01 00:00:00'),
+ PARTITION `p2022-s` VALUES LESS THAN ('S','2023-01-01 00:00:00'),
+ PARTITION `p2023-s` VALUES LESS THAN ('S','2024-01-01 00:00:00'),
+ PARTITION `p2024-s` VALUES LESS THAN ('S','2025-01-01 00:00:00'),
+ PARTITION `p2022-` VALUES LESS THAN (0x7f,'2023-01-01 00:00:00'),
+ PARTITION `p2023-` VALUES LESS THAN (0x7f,'2024-01-01 00:00:00'),
+ PARTITION `p2024-` VALUES LESS THAN (0x7f,'2025-01-01 00:00:00'))
+```
+
+该语句将按年份和名字的范围 ['', 'G')、['G', 'M')、['M', 'S')、['S',) 进行分区，删除无效数据，同时仍然可以在 `name` 和 `valid_until` 列上进行分区裁剪。其中，`[,)` 是一个半开半闭区间，比如 ['G', 'M')，表示包含 `G`、大于 `G` 并小于 `M` 的数据，但不包含 `M`。
+
+### Range INTERVAL 分区
+
+TiDB v6.3.0 新增了 Range INTERVAL 分区特性，作为语法糖（syntactic sugar）引入。Range INTERVAL 分区是对 Range 分区的扩展。你可以使用特定的间隔（interval）轻松创建分区。
+
+> **警告：**
+>
+> 该功能目前是实验性功能，请注意使用场景限制。该功能会在未事先通知的情况下发生变化或删除。语法和实现可能会在 GA 前发生变化。如果发现 bug，请提 [Issues · pingcap/tidb](https://github.com/pingcap/tidb/issues) 反馈。
+
+其语法如下：
+
+```sql
+PARTITION BY RANGE [COLUMNS] (<partitioning expression>)
+INTERVAL (<interval expression>)
+FIRST PARTITION LESS THAN (<expression>)
+LAST PARTITION LESS THAN (<expression>)
+[NULL PARTITION]
+[MAXVALUE PARTITION]
+```
+
+示例：
+
+```sql
+CREATE TABLE employees (
+    id int unsigned NOT NULL,
+    fname varchar(30),
+    lname varchar(30),
+    hired date NOT NULL DEFAULT '1970-01-01',
+    separated date DEFAULT '9999-12-31',
+    job_code int,
+    store_id int NOT NULL
+) PARTITION BY RANGE (id)
+INTERVAL (100) FIRST PARTITION LESS THAN (100) LAST PARTITION LESS THAN (10000) MAXVALUE PARTITION
+```
+
+该示例创建的表与如下 SQL 语句相同：
+
+```sql
+CREATE TABLE `employees` (
+  `id` int unsigned NOT NULL,
+  `fname` varchar(30) DEFAULT NULL,
+  `lname` varchar(30) DEFAULT NULL,
+  `hired` date NOT NULL DEFAULT '1970-01-01',
+  `separated` date DEFAULT '9999-12-31',
+  `job_code` int DEFAULT NULL,
+  `store_id` int NOT NULL
+)
+PARTITION BY RANGE (`id`)
+(PARTITION `P_LT_100` VALUES LESS THAN (100),
+ PARTITION `P_LT_200` VALUES LESS THAN (200),
+...
+ PARTITION `P_LT_9900` VALUES LESS THAN (9900),
+ PARTITION `P_LT_10000` VALUES LESS THAN (10000),
+ PARTITION `P_MAXVALUE` VALUES LESS THAN (MAXVALUE))
+```
+
+Range INTERVAL 还可以配合 [Range COLUMNS](#range-columns-分区) 分区一起使用。如下面的示例：
+
+```sql
+CREATE TABLE monthly_report_status (
+    report_id int NOT NULL,
+    report_status varchar(20) NOT NULL,
+    report_date date NOT NULL
+)
+PARTITION BY RANGE COLUMNS (report_date)
+INTERVAL (1 MONTH) FIRST PARTITION LESS THAN ('2000-01-01') LAST PARTITION LESS THAN ('2025-01-01')
+```
+
+该示例创建的表与如下 SQL 语句相同：
+
+```sql
+CREATE TABLE `monthly_report_status` (
+  `report_id` int(11) NOT NULL,
+  `report_status` varchar(20) NOT NULL,
+  `report_date` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin
+PARTITION BY RANGE COLUMNS(`report_date`)
+(PARTITION `P_LT_2000-01-01` VALUES LESS THAN ('2000-01-01'),
+ PARTITION `P_LT_2000-02-01` VALUES LESS THAN ('2000-02-01'),
+...
+ PARTITION `P_LT_2024-11-01` VALUES LESS THAN ('2024-11-01'),
+ PARTITION `P_LT_2024-12-01` VALUES LESS THAN ('2024-12-01'),
+ PARTITION `P_LT_2025-01-01` VALUES LESS THAN ('2025-01-01'))
+```
+
+可选参数 `NULL PARTITION` 会创建一个分区，其中分区表达式推导出的值为 `NULL` 的数据会放到该分区。在分区表达式中，`NULL` 会被认为是小于任何其他值。参见[分区对 NULL 值的处理](#range-分区对-null-的处理)。
+
+可选参数 `MAXVALUE PARTITION` 会创建一个最后的分区，其值为 `PARTITION P_MAXVALUE VALUES LESS THAN (MAXVALUE)`。 
+
+#### ALTER INTERVAL 分区
+
+INTERVAL 分区还增加了添加和删除分区的更加简单易用的语法。
+
+下面的语句会变更第一个分区，该语句会删除所有小于给定表达式的分区，使匹配的分区成为新的第一个分区。它不会影响 `NULL PARTITION`。
+
+```sql
+ALTER TABLE table_name FIRST PARTITION LESS THAN (<expression>)
+```
+
+下面的语句会变更最后一个分区，该语句会添加新的分区，分区范围扩大到给定的表达式的值。如果存在 `MAXVALUE PARTITION`，则该语句不会生效，因为它需要数据重组。
+
+```sql
+ALTER TABLE table_name LAST PARTITION LESS THAN (<expression>)
+```
+
+#### INTERVAL 分区相关细节和限制
+
+- INTERVAL 分区特性仅涉及 `CREATE/ALTER TABLE` 语法。元数据保持不变，因此使用该新语法创建或变更的表仍然兼容 MySQL。
+- 为保持兼容 MySQL，`SHOW CREATE TABLE` 的输出格式保持不变。
+- 遵循 INTERVAL 的存量表可以使用新的 `ALTER` 语法。不需要使用 `INTERVAL` 语法重新创建这些表。
+- 对于 `RANGE COLUMNS`，仅支持整数 (INTEGER) 类型、日期 (DATE) 和日期时间 (DATETIME) 列类型。
 
 ### List 分区
 
@@ -573,13 +703,21 @@ Empty set (0.00 sec)
 
 `EXCHANGE PARTITION` 语句用来交换分区和非分区表，类似于重命名表如 `RENAME TABLE t1 TO t1_tmp, t2 TO t1, t1_tmp TO t2` 的操作。
 
-例如，`ALTER TABLE partitioned_table EXCHANGE PARTITION p1 WITH TABLE non_partitioned_table` 交换的是 `p1` 分区的 `non_partitioned_table` 表和 `partitioned_table` 表。
+例如，`ALTER TABLE partitioned_table EXCHANGE PARTITION p1 WITH TABLE non_partitioned_table` 交换的是 `p1` 分区的 `partitioned_table` 表和 `non_partitioned_table` 表。
 
-确保要交换入分区中的所有行与分区定义匹配；否则，你将无法找到这些行，并导致意外情况出现。
+确保要交换入分区中的所有行与分区定义匹配；否则，交换将失败。
 
-> **警告：**
->
-> `EXCHANGE PARTITION` 是实验性功能，不建议在生产环境中使用。要启用 `EXCHANGE PARTITION`，将系统变量 `tidb_enable_exchange_partition` 设置为 `ON`。
+请注意对于以下 TiDB 专有的特性，当表结构中包含这些特性时，在 TiDB 中使用 `EXCHANGE PARTITION` 功能不仅需要满足 [MySQL 的 EXCHANGE PARTITION 条件](https://dev.mysql.com/doc/refman/8.0/en/partitioning-management-exchange.html)，还要保证这些专有特性对于分区表和非分区表的定义相同。
+
+* [Placement Rules in SQL](/placement-rules-in-sql.md)：Placement Policy 定义相同。
+* [TiFlash](/tikv-overview.md)：TiFlash Replica 数量相同。
+* [聚簇索引](/clustered-indexes.md)：分区表和非分区表要么都是聚簇索引 (CLUSTERED)，要么都不是聚簇索引 (NONCLUSTERED)。
+
+此外，`EXCHANGE PARTITION` 和其他组件兼容性上存在一些限制，需要保证分区表和非分区表的一致性：
+
+- TiFlash：TiFlash Replica 定义不同时，无法执行 `EXCHANGE PARTITION` 操作。
+- TiCDC：分区表和非分区表都有主键或者唯一键时，TiCDC 同步 `EXCHANGE PARTITION` 操作；反之 TiCDC 将不会同步。
+- TiDB Lightning 和 BR：使用 TiDB Lightning 导入或使用 BR 恢复的过程中，不要执行 `EXCHANGE PARTITION` 操作。
 
 ### Range 分区管理
 
@@ -792,7 +930,7 @@ SELECT fname, lname, region_code, dob
     create table t (id int) partition by range (id) (
         partition p0 values less than (5),
         partition p1 values less than (10));
-    select * from t where t > 6;
+    select * from t where id > 6;
     ```
 
     分区表达式是 `fn(col)` 的形式，`fn` 是我们支持的单调函数 `to_days`：
@@ -803,7 +941,7 @@ SELECT fname, lname, region_code, dob
     create table t (dt datetime) partition by range (to_days(id)) (
         partition p0 values less than (to_days('2020-04-01')),
         partition p1 values less than (to_days('2020-05-01')));
-    select * from t where t > '2020-04-18';
+    select * from t where dt > '2020-04-18';
     ```
 
     有一处例外是 `floor(unix_timestamp(ts))` 作为分区表达式，TiDB 针对这个场景做了特殊处理，可以支持分区裁剪。
@@ -815,7 +953,7 @@ SELECT fname, lname, region_code, dob
     partition by range (floor(unix_timestamp(ts))) (
         partition p0 values less than (unix_timestamp('2020-04-01 00:00:00')),
         partition p1 values less than (unix_timestamp('2020-05-01 00:00:00')));
-    select * from t where t > '2020-04-18 02:00:42.123';
+    select * from t where ts > '2020-04-18 02:00:42.123';
     ```
 
 ## 分区选择
@@ -1296,7 +1434,7 @@ select * from t;
 
 ### 动态裁剪模式
 
-TiDB 访问分区表有两种模式，`dynamic` 和 `static`，目前默认使用 `static` 模式。如果想开启 `dynamic` 模式，需要手动将 `tidb_partition_prune_mode` 设置为 `dynamic`。
+TiDB 访问分区表有两种模式，`dynamic` 和 `static`。从 v6.3.0 开始，默认使用 `dynamic` 模式。但是注意，`dynamic` 模式仅在表级别汇总统计信息（即 GlobalStats）收集完成的情况下生效。如果选择了 `dynamic` 但 GlobalStats 未收集完成，TiDB 会仍采用 `static` 模式。关于 GlobalStats 更多信息，请参考[动态裁剪模式下的分区表统计信息](/statistics.md#动态裁剪模式下的分区表统计信息)。
 
 {{< copyable "sql" >}}
 
@@ -1306,7 +1444,7 @@ set @@session.tidb_partition_prune_mode = 'dynamic'
 
 普通查询和手动 analyze 使用的是 session 级别的 `tidb_partition_prune_mode` 设置，后台的 auto-analyze 使用的是 global 级别的 `tidb_partition_prune_mode` 设置。
 
-静态裁剪模式下，分区表使用的是分区级别的统计信息，而动态裁剪模式下，分区表用的是表级别的汇总统计信息，即 GlobalStats。详见[动态裁剪模式下的分区表统计信息](/statistics.md#动态裁剪模式下的分区表统计信息)。
+静态裁剪模式下，分区表使用的是分区级别的统计信息，而动态裁剪模式下，分区表用的是表级别的汇总统计信息。
 
 从 `static` 静态裁剪模式切到 `dynamic` 动态裁剪模式时，需要手动检查和收集统计信息。在刚切换到 `dynamic` 时，分区表上仍然只有分区的统计信息，需要等到全局 `dynamic` 动态裁剪模式开启后的下一次 `auto-analyze` 周期，才会更新生成汇总统计信息。
 

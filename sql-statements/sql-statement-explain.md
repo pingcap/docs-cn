@@ -183,9 +183,36 @@ EXPLAIN DELETE FROM t1 WHERE c1=3;
 4 rows in set (0.01 sec)
 ```
 
-如果未指定 `FORMAT`，或未指定 `FORMAT ="row"`，那么 `EXPLAIN` 语句将以表格格式输出结果。更多信息，可参阅 [Understand the Query Execution Plan](https://pingcap.com/docs/dev/reference/performance/understanding-the-query-execution-plan/)。
+在 `EXPLAIN` 中使用 `FORMAT = "xxx"` 语法可以指定输出的内容和格式。
 
-除 MySQL 标准结果格式外，TiDB 还支持 DotGraph。需按照下列所示指定 `FORMAT ="dot"`：
+| FORMAT | 作用 |
+| ------ | ------ |
+| 未指定  | 同 row |
+| `row`    | `EXPLAIN` 语句将以表格格式输出结果。更多信息，可参阅 [TiDB 执行计划概览](/explain-overview.md) |
+| `brief`  | `EXPLAIN` 语句输出结果中的算子 ID 将被简化，较之未指定 `FORMAT` 时输出结果的算子 ID 更为简化 |
+| `dot`    | `EXPLAIN` 语句将输出 dot 格式的执行计划，可以通过 `dot` 程序（在 `graphviz` 包中）生成 PNG 文件 |
+
+在 `EXPLAIN` 中指定 `FORMAT = "brief"` 时，示例如下:
+
+{{< copyable "sql" >}}
+
+```sql
+EXPLAIN FORMAT = "brief" DELETE FROM t1 WHERE c1=3;
+```
+
+```
++-------------------------+---------+-----------+---------------+--------------------------------+
+| id                      | estRows | task      | access object | operator info                  |
++-------------------------+---------+-----------+---------------+--------------------------------+
+| Delete                  | N/A     | root      |               | N/A                            |
+| └─TableReader           | 0.00    | root      |               | data:Selection                 |
+|   └─Selection           | 0.00    | cop[tikv] |               | eq(test.t1.c1, 3)              |
+|     └─TableFullScan     | 3.00    | cop[tikv] | table:t1      | keep order:false, stats:pseudo |
++-------------------------+---------+-----------+---------------+--------------------------------+
+4 rows in set (0.001 sec)
+```
+
+除 MySQL 标准结果格式外，TiDB 还支持 DotGraph，需要在 `EXPLAIN` 中指定 `FORMAT = "dot"`，示例如下：
 
 {{< copyable "sql" >}}
 
@@ -229,7 +256,7 @@ label = "cop"
 1 row in set (0.00 sec)
 ```
 
-如果你的计算机上安装了 `dot` 程序（在 `graphviz` 包中），可使用以下方法生成 PNG 文件：
+如果你的计算机上安装了 `dot` 程序，可使用以下方法生成 PNG 文件：
 
 {{< copyable "shell-regular" >}}
 

@@ -184,9 +184,3 @@ select id, floor(value/100) as val
 from tbl_name
 group by id, val;
 ```
-
-## TiDB 不支持的聚合函数
-
-TiDB 目前不支持的聚合函数如下所示，相关进展参阅 [TiDB #7623](https://github.com/pingcap/tidb/issues/7623)。
-
-- `JSON_ARRAYAGG`

@@ -34,7 +34,7 @@ MySQL jdbc 的查询超时设置 `setQueryTimeout()` 对 TiDB 不起作用。这
 
 TiDB 提供了三个与 MySQL 兼容的超时控制参数：
 
-- **wait_timeout**,控制与 Java 应用连接的非交互式空闲超时时间, 默认值为 0，即允许连接无限闲置。
+- **wait_timeout**，控制与 Java 应用连接的非交互式空闲超时时间。在 TiDB v5.4 及以上版本中，默认值为 `28800` 秒，即空闲超时为 8 小时。在 v5.4 之前，默认值为 `0`，即没有时间限制。
 - **interactive_timeout**，控制与 Java 应用连接的交互式空闲超时时间，默认值为 8 小时。
 - **max_execution_time**，控制连接中 SQL 执行的超时时间，默认值是 0，即允许连接无限忙碌（一个 SQL 语句执行无限的长的时间）。
 

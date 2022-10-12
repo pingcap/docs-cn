@@ -49,7 +49,7 @@ tiup dmctl --master-addr ${advertise-addr} operate-source create source1.yaml
 
 |参数           |描述|
 |-              |-|
-|`--master-addr`  |`dmctl` 要连接的集群的任意 DM-master 节点的 {advertise-addr}，例如：172.16.10.71:8261|
+|`--master-addr`  |`dmctl` 要连接的集群的任意 DM-master 节点的 `{advertise-addr}`，例如：172.16.10.71:8261|
 |`operate-source create` |向 DM 集群加载数据源|
 
 ## 第 2 步：创建迁移任务
@@ -115,7 +115,7 @@ tiup dmctl --master-addr ${advertise-addr} start-task task.yaml
 
 |参数|描述|
 |-|-|
-|`--master-addr`|`dmctl` 要连接的集群的任意 DM-master 节点的 {advertise-addr}，例如： 172.16.10.71:8261|
+|`--master-addr`|`dmctl` 要连接的集群的任意 DM-master 节点的 `{advertise-addr}`，例如： 172.16.10.71:8261|
 |`start-task`|参数用于启动数据迁移任务|
 
 如果任务启动失败，可根据返回结果的提示进行配置变更后执行 start-task task.yaml 命令重新启动任务。遇到问题请参考[故障及处理方法](/dm/dm-error-handling.md) 以及[常见问题](/dm/dm-faq.md)。
@@ -138,7 +138,7 @@ tiup dmctl --master-addr ${advertise-addr} query-status ${task-name}
 
 如果使用 TiUP 部署 DM 集群时，正确部署了 Prometheus、Alertmanager 与 Grafana，则使用部署时填写的 IP 及端口进入 Grafana，选择 DM 的 Dashboard 查看 DM 相关监控项。
 
-DM 在运行过程中，DM-worker, DM-master 及 dmctl 都会通过日志输出相关信息。各组件的日志目录如下：
+DM 在运行过程中，DM-worker、DM-master 及 dmctl 都会通过日志输出相关信息。各组件的日志目录如下：
 
 - DM-master 日志目录：通过 DM-master 进程参数 `--log-file`设置。如果使用 TiUP 部署 DM，则日志目录默认位于 `/dm-deploy/dm-master-8261/log/`。
 - DM-worker 日志目录：通过 DM-worker 进程参数 `--log-file` 设置。如果使用 TiUP 部署 DM，则日志目录默认位于 `/dm-deploy/dm-worker-8262/log/`。

@@ -6,7 +6,7 @@ aliases: ['/docs-cn/dev/br/backup-and-restore-tool/','/docs-cn/dev/reference/too
 
 # BR 简介
 
-[BR](https://github.com/pingcap/br) 全称为 Backup & Restore，是 TiDB **分布式备份恢复**的命令行工具，用于对 TiDB 集群进行数据备份和恢复。BR 除了可以用来进行常规的备份恢复外，也可以在保证兼容性前提下用来做大规模的数据迁移。
+[BR](https://github.com/pingcap/tidb/tree/master/br) 全称为 Backup & Restore，是 TiDB **分布式备份恢复**的命令行工具，用于对 TiDB 集群进行数据备份和恢复。BR 除了可以用来进行常规的备份恢复外，也可以在保证兼容性前提下用来做大规模的数据迁移。
 
 本文介绍了 BR 的架构、功能和使用前须知（限制、使用建议）。
 
@@ -81,16 +81,16 @@ BR 和 TiDB 集群的兼容性问题分为两方面：
 
 #### 版本兼容检查
 
-BR 内置版本会在执行备份和恢复操作前，对 TiDB 集群版本和自身版本进行对比检查。如果大版本不匹配（比如 BR v4.x 和 TiDB v5.x 上），BR 会提示退出。如要跳过版本检查，可以通过设置 `--check-requirements=false` 强行跳过版本检查。
+BR 内置版本会在执行备份和恢复操作前，对 TiDB 集群版本和自身版本进行对比检查。如果大版本不匹配（比如 BR v4.x 和 TiDB v5.x 上），BR 会提示退出。如要跳过版本检查，可以通过设置 `--check-requirements=false` 强行跳过版本检查。需要注意的是，跳过检查可能会遇到版本不兼容的问题。
 
-需要注意的是，跳过检查可能会遇到版本不兼容的问题。BR 和 TiDB 各版本兼容情况如下表所示：
+BR 和 TiDB 各版本兼容情况如下表所示：
 
-| 恢复版本（横向）\ 备份版本（纵向）   | 用 BR nightly 恢复 TiDB nightly | 用 BR v5.0 恢复 TiDB v5.0| 用 BR v4.0 恢复 TiDB v4.0 |
-|  ----  |  ----  | ---- | ---- |
-| 用 BR nightly 备份 TiDB nightly | ✅ | ✅ | ❌（如果恢复了使用非整数类型聚簇主键的表到 v4.0 的 TiDB 集群，BR 会无任何警告地导致数据错误） |
-| 用 BR v5.0 备份 TiDB v5.0 | ✅ | ✅ | ❌（如果恢复了使用非整数类型聚簇主键的表到 v4.0 的 TiDB 集群，BR 会无任何警告地导致数据错误）
-| 用 BR v4.0 备份 TiDB v4.0 | ✅ | ✅  | ✅（如果 TiKV >= v4.0.0-rc.1，BR 包含 [#233](https://github.com/pingcap/br/pull/233) Bug 修复，且 TiKV 不包含 [#7241](https://github.com/tikv/tikv/pull/7241) Bug 修复，那么 BR 会导致 TiKV 节点重启) |
-| 用 BR nightly 或 v5.0 备份 TiDB v4.0 | ❌（当 TiDB 版本小于 v4.0.9 时会出现 [#609](https://github.com/pingcap/br/issues/609) 问题) | ❌（当 TiDB 版本小于 v4.0.9 会出现 [#609](https://github.com/pingcap/br/issues/609) 问题) | ❌（当 TiDB 版本小于 v4.0.9 会出现 [#609](https://github.com/pingcap/br/issues/609) 问题) |
+| 恢复版本（横向）\ 备份版本（纵向）   | 用 BR v5.4 恢复 TiDB v5.4 | 用 BR v6.0 恢复 TiDB v6.0 | 用 BR v6.1 恢复 TiDB v6.1| 用 BR v6.2 恢复 TiDB v6.2 |
+|  ----  |  ----  | ---- | ---- | ---- |
+|用 BR v5.4 备份 TiDB v5.4| 兼容 | 不兼容（调整恢复集群的 [新 collation](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap) 配置跟备份集群相同后，可以恢复）| 不兼容（调整恢复集群的 [新 collation](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap) 配置跟备份集群相同后，可以恢复） | 不兼容（调整恢复集群的 [新 collation](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap) 配置跟备份集群相同后，可以恢复）|
+|用 BR v6.0 备份 TiDB v6.0| 不兼容 |兼容 | 兼容 | 兼容 |
+|用 BR v6.1 备份 TiDB v6.1| 不兼容 | 兼容（已知问题，如果备份数据中包含空库可能导致报错，参考 [#36379](https://github.com/pingcap/tidb/issues/36379)） | 兼容 | 兼容 |
+|用 BR v6.2 备份 TiDB v6.2| 不兼容 | 兼容（已知问题，如果备份数据中包含空库可能导致报错，参考 [#36379](https://github.com/pingcap/tidb/issues/36379)） | 兼容 | 兼容 |
 
 ### 使用建议
 
@@ -100,8 +100,7 @@ BR 内置版本会在执行备份和恢复操作前，对 TiDB 集群版本和�
 - BR 只支持恢复数据到新集群，会尽可能多的使用恢复集群的资源。不推荐向正在提供服务的生产集群执行恢复，恢复期间会对业务产生不可避免的影响；
 - 不推荐多个 BR 备份和恢复任务并行运行。不同的任务并行，不仅会导致备份或恢复的性能降低，影响在线业务；还会因为任务之间缺少协调机制造成任务失败，甚至对集群的状态产生影响；
 - 推荐使用支持 S3/GCS/Azure Blob Storage 协议的存储系统保存备份数据；
-- 应确保 BR、TiKV 节点和备份存储系统有足够的网络带宽，备份存储系统能提供足够的写入/读取性能，否则，它们有可能成为备份恢复时的性能瓶颈；
-- BR 默认会分别在备份、恢复完成后，进行一轮数据校验，将备份数据的 checksum 同集群 [admin checksum table](/sql-statements/sql-statement-admin-checksum-table.md) 的结果比较，来保证正确性。但是 `admin checksum table` 执行耗时久，并且对集群性能影响比较大，可以根据你的情况，选择备份时关闭校验(`--checksum=false`)，只在恢复时开启校验。
+- 应确保 BR、TiKV 节点和备份存储系统有足够的网络带宽，备份存储系统能提供足够的写入/读取性能，否则，它们有可能成为备份恢复时的性能瓶颈。
 
 ### 探索更多
 

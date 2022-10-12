@@ -14,7 +14,7 @@ HTAP 是 Hybrid Transactional / Analytical Processing 的缩写。传统意义�
 
 ## 数据准备
 
-在开始之前，你可以[通过 `tiup demo` 命令导入](/develop/dev-guide-bookshop-schema-design.md#通过-tiup-demo-命令行)更加大量的示例数据，例如：
+在开始之前，你可以[通过 `tiup demo` 命令导入](/develop/dev-guide-bookshop-schema-design.md#方法一通过-tiup-demo-命令行)更加大量的示例数据，例如：
 
 {{< copyable "shell-regular" >}}
 
@@ -22,7 +22,7 @@ HTAP 是 Hybrid Transactional / Analytical Processing 的缩写。传统意义�
 tiup demo bookshop prepare --users=200000 --books=500000 --authors=100000 --ratings=1000000 --orders=1000000 --host 127.0.0.1 --port 4000 --drop-tables
 ```
 
-或[使用 TiDB Cloud 的 Import 功能导入](/develop/dev-guide-bookshop-schema-design.md#通过-tidb-cloud-import-功能)预先准备好的示例数据。
+或[使用 TiDB Cloud 的 Import 功能导入](/develop/dev-guide-bookshop-schema-design.md#方法二通过-tidb-cloud-import-功能)预先准备好的示例数据。
 
 ## 窗口函数
 
@@ -257,11 +257,11 @@ SELECT * FROM acc;
 
 如果你通过 `EXPLAIN` 语句查看上面 SQL 的执行计划，你会发现 task 列中会同时出现 `cop[tiflash]` 和 `cop[tikv]` ，这意味着 TiDB 在处理这个查询的时候会同时调度行存查询引擎和列存查询引擎来完成查询任务。需要指出的是，因为 tiflash 和 tikv 存储引擎通常属于不同的计算节点，所以两种查询类型互相之间不受影响。
 
-你可以通过阅读[使用 TiDB 读取 TiFlash](/tiflash/use-tiflash.md#使用-tidb-读取-tiflash) 小节进一步了解 TiDB 如何选择使用 TiFlash 作为查询引擎。
+你可以通过阅读[使用 TiDB 读取 TiFlash](/tiflash/use-tidb-to-read-tiflash.md) 小节进一步了解 TiDB 如何选择使用 TiFlash 作为查询引擎。
 
 ## 扩展阅读
 
 - [HTAP 快速上手指南](/quick-start-with-htap.md)
 - [HTAP 深入探索指南](/explore-htap.md)
 - [窗口函数](/functions-and-operators/window-functions.md)
-- [使用 TiFlash](/tiflash/use-tiflash.md)
+- [使用 TiFlash](/tiflash/tiflash-overview.md#使用-tiflash)

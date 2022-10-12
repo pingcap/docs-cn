@@ -1,11 +1,11 @@
 ---
-title: ADMIN SHOW DDL [JOBS|QUERIES]
-summary: TiDB 数据库中 ADMIN SHOW DDL [JOBS|QUERIES] 的使用概况。
+title: ADMIN SHOW DDL [JOBS|JOB QUERIES]
+summary: TiDB 数据库中 ADMIN SHOW DDL [JOBS|JOB QUERIES] 的使用概况。
 ---
 
-# ADMIN SHOW DDL [JOBS|QUERIES]
+# ADMIN SHOW DDL [JOBS|JOB QUERIES]
 
-`ADMIN SHOW DDL [JOBS|QUERIES]` 语句显示了正在运行和最近完成的 DDL 作业的信息。
+`ADMIN SHOW DDL [JOBS|JOB QUERIES]` 语句显示了正在运行和最近完成的 DDL 作业的信息。
 
 ## 语法图
 
@@ -115,7 +115,7 @@ ADMIN SHOW DDL JOB QUERIES 51;
 
 ## MySQL 兼容性
 
-`ADMIN SHOW DDL [JOBS|QUERIES]` 语句是 TiDB 对 MySQL 语法的扩展。
+`ADMIN SHOW DDL [JOBS|JOB QUERIES]` 语句是 TiDB 对 MySQL 语法的扩展。
 
 ## 另请参阅
 

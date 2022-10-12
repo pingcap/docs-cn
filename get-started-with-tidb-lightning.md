@@ -3,14 +3,7 @@ title: TiDB Lightning 教程
 aliases: ['/docs-cn/dev/get-started-with-tidb-lightning/','/docs-cn/dev/how-to/get-started/tidb-lightning/']
 ---
 
-# TiDB Lightning 教程
-
-TiDB Lightning 是一个将全量数据高速导入到 TiDB 集群的工具，目前支持 SQL 或 CSV 输出格式的数据源。你可以在以下两种场景下使用 TiDB Lightning：
-
-- **迅速**导入**大量新**数据。
-- 备份恢复所有数据。
-
-![TiDB Lightning 整体架构](/media/tidb-lightning-architecture.png)
+# TiDB Lightning 快速上手
 
 本教程假设使用的是若干新的、纯净版 CentOS 7 实例，你可以（使用 VMware、VirtualBox 及其他工具）在本地虚拟化或在供应商提供的平台上部署一台小型的云虚拟主机。因为 TiDB Lightning 对计算机资源消耗较高，建议分配 16 GB 以上的内存以及 32 核以上的 CPU 以获取最佳性能。
 
@@ -25,7 +18,7 @@ TiDB Lightning 是一个将全量数据高速导入到 TiDB 集群的工具，�
 {{< copyable "shell-regular" >}}
 
 ```sh
-./dumpling -h 127.0.0.1 -P 3306 -u root -t 16 -F 256MB -B test -f 'test.t[12]' -o /data/my_database/
+tiup dumpling -h 127.0.0.1 -P 3306 -u root -t 16 -F 256MB -B test -f 'test.t[12]' -o /data/my_database/
 ```
 
 其中：
@@ -62,7 +55,7 @@ TiDB Lightning 的安装包位于 TiDB 离线工具包中。下载方式，请�
     file = "tidb-lightning.log"
 
     [tikv-importer]
-    # 选择使用的 local 后端
+    # 选择使用的导入模式
     backend = "local"
     # 设置排序的键值对的临时存放地址，目标路径需要是一个空目录
     sorted-kv-dir = "/mnt/ssd/sorted-kv-dir"
@@ -92,7 +85,7 @@ TiDB Lightning 的安装包位于 TiDB 离线工具包中。下载方式，请�
 
     ```sh
     #!/bin/bash
-    nohup ./tidb-lightning -config tidb-lightning.toml > nohup.out &
+    nohup tiup tidb-lightning -config tidb-lightning.toml > nohup.out &
     ```
 
 ### 第 4 步：检查数据

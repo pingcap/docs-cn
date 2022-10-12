@@ -17,6 +17,7 @@ TiDB 版本：6.1.0
 - TiFlash 支持按需触发物理数据整理（Compaction）
 - MPP 实现窗口函数框架
 - TiCDC 支持将 changelogs 以 Avro 协议输出到 Kafka
+- TiCDC 支持在数据复制过程中拆分大事务，能够有效降低大事务带来的复制延迟
 - DM 合库合表迁移场景的乐观 DDL 协调模式 GA
 
 ## 新功能
@@ -39,7 +40,7 @@ TiDB 版本：6.1.0
     * `DENSE_RANK()`
     * `ROW_NUMBER()`
 
-  [用户文档](/tiflash/use-tiflash.md#tiflash-支持的计算下推)，[#33072](https://github.com/pingcap/tidb/issues/33072)
+  [用户文档](/tiflash/tiflash-supported-pushdown-calculations.md)，[#33072](https://github.com/pingcap/tidb/issues/33072)
 
 ### 可观测性
 
@@ -83,13 +84,13 @@ TiDB 版本：6.1.0
     * `TO_SECONDS`
     * `WEEKOFYEAR`
 
-  [用户文档](/tiflash/use-tiflash.md#tiflash-支持的计算下推)，[#4679](https://github.com/pingcap/tiflash/issues/4679)，[#4678](https://github.com/pingcap/tiflash/issues/4678)，[#4677](https://github.com/pingcap/tiflash/issues/4677)
+  [用户文档](/tiflash/tiflash-supported-pushdown-calculations.md)，[#4679](https://github.com/pingcap/tiflash/issues/4679)，[#4678](https://github.com/pingcap/tiflash/issues/4678)，[#4677](https://github.com/pingcap/tiflash/issues/4677)
 
 * 支持分区表动态裁剪
 
     支持分区表动态裁剪功能，以提升数据分析场景下的性能。v6.0.0 以前版本的用户升级完成后建议及时手动刷新既存分区表的统计信息，以达到最好的性能表现（全新安装，或在 v6.1.0 升级完成后新创建的分区表无需此动作）。
 
-    用户文档：[MPP 模式访问分区表](/tiflash/use-tiflash.md#mpp-模式访问分区表)，[动态裁剪模式](/partitioned-table.md#动态裁剪模式)，[#3873](https://github.com/pingcap/tiflash/issues/3873)
+    用户文档：[MPP 模式访问分区表](/tiflash/use-tiflash-mpp-mode.md#mpp-模式访问分区表)，[动态裁剪模式](/partitioned-table.md#动态裁剪模式)，[#3873](https://github.com/pingcap/tiflash/issues/3873)
 
 ### 稳定性
 
@@ -351,6 +352,10 @@ TiDB 版本：6.1.0
 
         - 优化 Scatter Region 为批量模式，提升 Scatter Region 过程的稳定性 [#33618](https://github.com/pingcap/tidb/issues/33618)
 
+    + TiCDC
+
+        - TiCDC 支持在数据复制过程中拆分大事务，能够有效降低大事务带来的复制延迟 [#5280](https://github.com/pingcap/tiflow/issues/5280)
+
 ## 错误修复
 
 + TiDB
@@ -390,14 +395,13 @@ TiDB 版本：6.1.0
 
 + TiFlash
 
-    - 修复大量 INSERT 和 DELETE 操作后可能导致 TiFlash 数据不一致的问题 [#4956](https://github.com/pingcap/tiflash/issues/4956</span>)
+    - 修复大量 INSERT 和 DELETE 操作后可能导致 TiFlash 数据不一致的问题 [#4956](https://github.com/pingcap/tiflash/issues/4956)
 
 + Tools
 
     + TiCDC
 
         - 优化了 ddl schema 缓存方式，降低了内存消耗 [#1386](https://github.com/pingcap/tiflow/issues/1386)
-        - 避免大事务导致的 OOM 问题 [#5280](https://github.com/pingcap/tiflow/issues/5280)
         - 修复了增量扫描特殊场景下的数据丢失问题 [#5468](https://github.com/pingcap/tiflow/issues/5468)
 
     + TiDB Data Migration (DM)

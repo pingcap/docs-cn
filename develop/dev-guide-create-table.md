@@ -16,7 +16,7 @@ aliases: ['/zh/tidb/dev/create-table']
 
 在阅读本页面之前，你需要准备以下事项：
 
-- [使用 TiDB Cloud (DevTier) 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md)。
+- [使用 TiDB Cloud (Developer Tier) 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md)。
 - 阅读[数据库模式概览](/develop/dev-guide-schema-design-overview.md)。
 - [创建一个数据库](/develop/dev-guide-create-database.md)。
 
@@ -273,7 +273,7 @@ ALTER TABLE {table_name} SET TIFLASH REPLICA {count};
 - `{table_name}`: 表名。
 - `{count}`: 同步副本数，若为 0，则表示删除同步副本。
 
-随后，TiFlash 将同步该表，查询时，TiDB 将会自动基于成本优化，考虑使用 **TiKV (行存)** 或 **TiFlash (列存)** 进行数据查询。当然，除了自动的方法，你也可以直接指定查询是否使用 TiFlash 副本，使用方法可查看[使用 TiDB 读取 TiFlash](/tiflash/use-tiflash.md#使用-tidb-读取-tiflash) 文档。
+随后，TiFlash 将同步该表，查询时，TiDB 将会自动基于成本优化，考虑使用 **TiKV (行存)** 或 **TiFlash (列存)** 进行数据查询。当然，除了自动的方法，你也可以直接指定查询是否使用 TiFlash 副本，使用方法可查看[使用 TiDB 读取 TiFlash](/tiflash/use-tidb-to-read-tiflash.md) 文档。
 
 ### 使用 HTAP 的示例
 
@@ -287,7 +287,7 @@ ALTER TABLE `bookshop`.`ratings` SET TIFLASH REPLICA 1;
 
 > **注意：**
 >
-> 如果你的集群，不包含 TiFlash 节点，此 SQL 语句将会报错：`1105 - the tiflash replica count: 1 should be less than the total tiflash server count: 0` 你可以[使用 TiDB Cloud (DevTier) 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md#第-1-步创建免费集群) 来创建一个含有 TiFlash 的免费集群。
+> 如果你的集群，不包含 TiFlash 节点，此 SQL 语句将会报错：`1105 - the tiflash replica count: 1 should be less than the total tiflash server count: 0` 你可以[使用 TiDB Cloud (Developer Tier) 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md#第-1-步创建免费集群) 来创建一个含有 TiFlash 的免费集群。
 
 随后正常进行查询即可：
 

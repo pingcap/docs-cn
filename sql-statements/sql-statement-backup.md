@@ -103,7 +103,7 @@ BR 支持备份数据到 Amazon S3 或 Google Cloud Storage (GCS)：
 {{< copyable "sql" >}}
 
 ```sql
-BACKUP DATABASE `test` TO 's3://example-bucket-2020/backup-05/?region=us-west-2&access-key={YOUR_ACCESS_KEY}&secret-access-key={YOUR_SECRET_KEY}';
+BACKUP DATABASE `test` TO 's3://example-bucket-2020/backup-05/?access-key={YOUR_ACCESS_KEY}&secret-access-key={YOUR_SECRET_KEY}';
 ```
 
 有关详细的 URL 语法，见[外部存储](/br/backup-and-restore-storages.md)。
@@ -113,7 +113,7 @@ BACKUP DATABASE `test` TO 's3://example-bucket-2020/backup-05/?region=us-west-2&
 {{< copyable "sql" >}}
 
 ```sql
-BACKUP DATABASE `test` TO 's3://example-bucket-2020/backup-05/?region=us-west-2'
+BACKUP DATABASE `test` TO 's3://example-bucket-2020/backup-05/'
     SEND_CREDENTIALS_TO_TIKV = FALSE;
 ```
 

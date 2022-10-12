@@ -78,9 +78,9 @@ CREATE TABLE `messages` (
 
     | 参数            |  描述 |
     | :---           | :--- |
-    | --master-addr  | 指定 dmctl 要连接的集群的任意 DM-master 节点的 `${advertise-addr}`。`${advertise-addr}` 表示 DM-master 向外界宣告的地址。 |
-    | binlog-schema update| 手动更新 schema 信息 |
-    | -s             | 指定 source。`${source-id}` 表示 MySQL 数据源 ID。 |
+    | `--master-addr`  | 指定 dmctl 要连接的集群的任意 DM-master 节点的 `${advertise-addr}`。`${advertise-addr}` 表示 DM-master 向外界宣告的地址。 |
+    | `binlog-schema update` | 手动更新 schema 信息 |
+    | `-s`             | 指定 source。`${source-id}` 表示 MySQL 数据源 ID。 |
     | `${task-name}` | 指定 task。表示数据同步任务配置文件 `task.yaml` 中定义的同步任务名称。|
     | `${database-name}` | 指定 database。表示上游数据库名。 |
     | `${table-name}` | 指定 table。表示上游数据表名。|

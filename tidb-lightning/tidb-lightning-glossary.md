@@ -32,7 +32,7 @@ aliases: ['/docs-cn/dev/tidb-lightning/tidb-lightning-glossary/','/docs-cn/dev/r
 
 也称作 Back end（后端），用于接受 TiDB Lightning 解析结果。
 
-详情参阅 [TiDB Lightning Backends](/tidb-lightning/tidb-lightning-backends.md)。
+详情参阅 [TiDB Lightning Backends](/tidb-lightning/tidb-lightning-overview.md)。
 
 <!-- C -->
 
@@ -56,7 +56,7 @@ aliases: ['/docs-cn/dev/tidb-lightning/tidb-lightning-glossary/','/docs-cn/dev/r
 
 TiDB Lightning 通过比较每个表的[本地校验和](#local-checksum)和[远程校验和](#remote-checksum)来验证导入数据的正确性。如果有任一对校验和不匹配，导入进程就会停止。如果你需要跳过校验和检查，可以将 `post-restore.checksum` 设置为 `false` 。
 
-遇到校验和不匹配的问题时，参考[常见问题](/tidb-lightning/tidb-lightning-faq.md#checksum-failed-checksum-mismatched-remote-vs-local)进行处理。
+遇到校验和不匹配的问题时，参考[常见问题](/tidb-lightning/troubleshoot-tidb-lightning.md#checksum-failed-checksum-mismatched-remote-vs-local)进行处理。
 
 ### Chunk
 
@@ -118,7 +118,7 @@ TiDB Lightning 通过引擎将数据传送到 TiKV Importer 中。TiDB Lightning
 
 导入模式。指通过降低读取速度和减少空间使用，来优化 TiKV 写入的配置模式。
 
-导入过程中，TiDB Lightning 自动在导入模式和[普通模式](#normal-mode)中来回切换。如果 TiKV 卡在导入模式，你可以使用 `tidb-lightning-ctl` [强制切换回普通模式](/tidb-lightning/tidb-lightning-faq.md#为什么用过-tidb-lightning-之后tidb-集群变得又慢又耗-cpu)。
+导入过程中，TiDB Lightning 自动在导入模式和[普通模式](#normal-mode)中来回切换。如果 TiKV 卡在导入模式，你可以使用 `tidb-lightning-ctl` [强制切换回普通模式](/tidb-lightning/troubleshoot-tidb-lightning.md#使用-tidb-lightning-后tidb-集群变慢cpu-占用高)。
 
 ### Index engine
 

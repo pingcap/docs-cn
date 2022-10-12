@@ -278,11 +278,11 @@ tiup cluster display <cluster-name>
 ```
 
 ```
-Starting /root/.tiup/components/cluster/v1.10.0/cluster display <cluster-name>
+Starting /root/.tiup/components/cluster/v1.10.3/cluster display <cluster-name>
 
 TiDB Cluster: <cluster-name>
 
-TiDB Version: v6.1.0
+TiDB Version: v6.3.0
 
 ID       Role         Host    Ports                            Status  Data Dir        Deploy Dir
 
@@ -369,7 +369,7 @@ tiup cluster display <cluster-name>
     alter table <db-name>.<table-name> set tiflash replica 0;
     ```
 
-2. 等待相关表的 TiFlash 副本被删除（按照[查看表同步进度](/tiflash/use-tiflash.md#查看表同步进度)一节操作，查不到相关表的同步信息时即为副本被删除）。
+2. 等待相关表的 TiFlash 副本被删除（按照[查看表同步进度](/tiflash/create-tiflash-replicas.md#查看表同步进度)一节操作，查不到相关表的同步信息时即为副本被删除）。
 
 ### 2. 执行缩容操作
 
@@ -433,12 +433,12 @@ tiup cluster display <cluster-name>
 
 4. 手动删除 TiFlash 的数据文件，具体位置可查看在集群拓扑配置文件中 TiFlash 配置部分下的 data_dir 目录。
 
-5. 手动更新 TiUP 的集群配置文件，在编辑模式中手动删除我们已经下线的 TiFlash 节点信息：
+5. 从 TiUP 拓扑信息中删除已经下线的 TiFlash 节点信息：
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    tiup cluster edit-config <cluster-name>
+    tiup cluster scale-in <cluster-name> --node <pd_ip>:<pd_port> --force
     ```
 
 > **注意：**
