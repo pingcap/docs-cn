@@ -38,10 +38,10 @@ title: BR 备份与恢复场景示例
 
 ### 集群版本
 
-* TiDB: v6.1.1
-* TiKV: v6.1.1
-* PD: v6.1.1
-* BR: v6.1.1
+* TiDB：v6.1.2
+* TiKV：v6.1.2
+* PD：v6.1.2
+* BR：v6.1.2
 
 > **注意：**
 >
@@ -59,8 +59,8 @@ title: BR 备份与恢复场景示例
 
 BR 可以直接将命令下发到 TiKV 集群来执行备份和恢复，不依赖 TiDB server 组件，因此无需对 TiDB server 进行配置。
 
-* TiKV: 默认配置
-* PD: 默认配置
+* TiKV：默认配置
+* PD：默认配置
 
 ### 其他
 
@@ -90,7 +90,7 @@ BR 可以直接将命令下发到 TiKV 集群来执行备份和恢复，不依�
 > **注意：**
 >
 > * 因为备份时候只备份单副本 (leader) 数据，所以即使集群中存在 TiFlash 副本，无需挂载 TiFlash 节点 BR 也能完成备份。
-> * BR 在恢复数据时，会恢复全部副本的数据。因此在恢复时，TiFlash 节点需要有备份数据的访问权限 BR 才能完成恢复，此时也必须将 TiFlash 节点挂载到 NFS server 上 。
+> * BR 在恢复数据时，会恢复全部副本的数据。因此在恢复时，TiFlash 节点需要有备份数据的访问权限 BR 才能完成恢复，此时也必须将 TiFlash 节点挂载到 NFS server 上。
 
 ### 部署拓扑
 
@@ -183,7 +183,7 @@ BR 会在备份结束时输出备份总结到控制台。
 * `backup checksum`：校验耗时
 * `backup fast checksum`：计算各表 checksum、KV 和 bytes 信息总和的耗时
 * `backup total regions`：备份 Region 总数
-* `BackupTS`:备份存档的快照时间戳
+* `BackupTS`：备份存档的快照时间戳
 * `Size`：备份存档经压缩后在磁盘中的实际大小
 
 通过以上数据可以计算得到单个 TiKV 实例的吞吐为：`avg speed(MB/s)`/`tikv_count` = `62.86`。
@@ -212,7 +212,7 @@ bin/br backup table \
 
 性能调优后的结果如下（保持数据大小不变）：
 
-* 备份耗时 (`total take(s)`)： 从 `986.43` 减少到 `535.53`
+* 备份耗时 (`total take(s)`)：从 `986.43` 减少到 `535.53`
 * 数据大小 (`total size(MB)`)：353227.18
 * 备份吞吐 (`avg speed(MB/s)`)：从 `358.09` 提升到 `659.59`
 * 单个 TiKV 实例的吞吐 (`avg speed(MB/s)/tikv_count`)：从 `89` 提升到 `164.89`

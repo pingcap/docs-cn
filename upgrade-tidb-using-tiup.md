@@ -169,7 +169,7 @@ tiup cluster upgrade <cluster-name> <version>
 {{< copyable "shell-regular" >}}
 
 ```
-tiup cluster upgrade <cluster-name> v6.1.1
+tiup cluster upgrade <cluster-name> v6.1.2
 ```
 
 > **注意：**
@@ -221,7 +221,7 @@ tiup cluster display <cluster-name>
 ```
 Cluster type:       tidb
 Cluster name:       <cluster-name>
-Cluster version:    v6.1.1
+Cluster version:    v6.1.2
 ```
 
 > **注意：**
@@ -271,7 +271,7 @@ tiup cluster upgrade <cluster-name> <version> --force
 {{< copyable "" >}}
 
 ```
-tiup install ctl:v6.1.1
+tiup install ctl:v6.1.2
 ```
 
 ## 5. TiDB 6.1.0 兼容性变化
