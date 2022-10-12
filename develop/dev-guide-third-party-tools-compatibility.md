@@ -14,7 +14,7 @@ summary: 介绍在测试中发现的 TiDB 与第三方工具的兼容性问题�
 > - 事件
 > - 自定义函数
 > - 外键约束
-> - 空间类型的函数
+> - 空间类型的函数、数据类型和索引
 > - `XA` 语法
 >
 > 这些不支持的功能不兼容将被视为预期行为，不再重复叙述。关于更多 TiDB 与 MySQL 的兼容性对比，你可以查看[与 MySQL 兼容性对比](/mysql-compatibility.md)。
@@ -41,7 +41,7 @@ MySQL 维护了一系列 [`Com_` 开头的服务端变量](https://dev.mysql.com
 
 请勿使用这样的变量，常见的使用场景如监控等。TiDB 的可观测性较为完善，无需从服务端变量进行查询。如需定制监控工具，可阅读 [TiDB 监控框架概述](/tidb-monitoring-framework.md)来获得更多信息。
 
-### TiDB 错误日志区分 `TIMESTAMP` 与 `DATETIME` 类型，MySQL 不区分
+### TiDB 错误日志区分 `TIMESTAMP` 与 `DATETIME` 类型
 
 **描述**
 
@@ -49,21 +49,21 @@ TiDB 错误日志区分 `TIMESTAMP` 与 `DATETIME`，而 MySQL 不区分，全�
 
 **规避方法**
 
-请勿使用错误日志进行字符串匹配，而是使用[错误码](/error-codes.md)进行故障诊断。
+请勿使用错误日志进行字符串匹配，要使用[错误码](/error-codes.md)进行故障诊断。
 
 ### TiDB 不支持 `CHECK TABLE` 语句
 
 **描述**
 
-TiDB 使用 [`ADMIN CHECK [TABLE|INDEX]`](/sql-statements/sql-statement-admin-check-table-index.md) 语句进行表中数据和对应索引的一致性校验。不支持 `CHECK TABLE` 语句。
+TiDB 不支持 `CHECK TABLE` 语句。
 
 **规避方法**
 
-在 TiDB 中转为使用 [`ADMIN CHECK [TABLE|INDEX]`](/sql-statements/sql-statement-admin-check-table-index.md)。
+在 TiDB 中使用 [`ADMIN CHECK [TABLE|INDEX]`](/sql-statements/sql-statement-admin-check-table-index.md) 语句进行表中数据和对应索引的一致性校验。
 
 ## MySQL JDBC 不兼容
 
-测试版本为 MySQL Connector/J 8.0.29
+测试版本为 MySQL Connector/J 8.0.29。
 
 ### 默认排序规则不一致
 
@@ -71,7 +71,7 @@ TiDB 使用 [`ADMIN CHECK [TABLE|INDEX]`](/sql-statements/sql-statement-admin-ch
 
 MySQL Connector/J 的排序规则保存在客户端内，通过获取的服务端版本进行判别。
 
-已知的客户端与服务端排序规则不一致的字符集：
+下表列出了已知的客户端与服务端排序规则不一致的字符集：
 
 | 字符集 | 客户端默认排序规则 | 服务端默认排序规则 |
 | --------- | -------------------- | ------------- |
@@ -81,7 +81,7 @@ MySQL Connector/J 的排序规则保存在客户端内，通过获取的服务�
 
 **规避方法**
 
-手动设置排序规则，不要依赖客户端默认排序规则（客户端默认排序规则由 MySQL Connector/J 配置文件保存）。
+手动设置排序规则，不要依赖客户端默认排序规则。客户端默认排序规则由 MySQL Connector/J 配置文件保存。
 
 ### 参数 `NO_BACKSLASH_ESCAPES` 不生效
 
@@ -132,7 +132,7 @@ TiDB 暂不支持 UpdatableResultSet，即请勿指定 `ResultSet.CONCUR_UPDATAB
 
 **描述**
 
-`useLocalTransactionState` 和 `rewriteBatchedStatements` 两参数同时开启时，将导致事务无法提交的问题。你可以使用[代码](https://github.com/Icemap/tidb-java-gitpod/tree/reproduction-local-transaction-state-txn-error)复现。
+`useLocalTransactionState` 和 `rewriteBatchedStatements` 两参数同时开启时，将导致事务无法提交。你可以使用[代码](https://github.com/Icemap/tidb-java-gitpod/tree/reproduction-local-transaction-state-txn-error)复现。
 
 **规避方法**
 
@@ -142,11 +142,11 @@ TiDB 暂不支持 UpdatableResultSet，即请勿指定 `ResultSet.CONCUR_UPDATAB
 
 请勿开启 `useLocalTransactionState`，这有可能导致事务无法提交或回滚。
 
-### 新版本 Connector 无法兼容旧版本 Server
+### Connector 无法兼容 5.7.5 版本以下的服务端
 
 **描述**
 
-新版本的 MySQL Connector/J 在与 5.7.5 版本以下的 MySQL 服务端，或使用 5.7.5 版本以下 MySQL 服务端协议的数据库（如 TiDB 6.3.0 版本以下）一起工作时，将在一定情况下引起连接的挂起。关于更多细节信息，可查看此 [Bug Report](https://bugs.mysql.com/bug.php?id=106252)。
+MySQL Connector/J 8.0.29 在与 5.7.5 版本以下的 MySQL 服务端，或使用 5.7.5 版本以下 MySQL 服务端协议的数据库（如 TiDB 6.3.0 版本以下）同时使用时，将在某些情况下导致数据库连接的挂起。关于更多细节信息，可查看此 [Bug Report](https://bugs.mysql.com/bug.php?id=106252)。
 
 **规避方法**
 
