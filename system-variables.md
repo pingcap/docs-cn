@@ -2414,6 +2414,14 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 范围：`[-1, 256]`
 - TiFlash 中 request 执行的最大并发度。默认值为 -1，表示该系统变量无效。0 表示由 TiFlash 系统自动设置该值。
 
+### `tidb_mpp_store_fail_ttl`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 类型：Duration
+- 默认值：`60s`
+- 刚重启的 TiFlash 可能不能正常提供服务。为了防止查询失败，TiDB 会限制 tidb-server 向刚重启的 TiFlash 节点发送查询。这个变量表示刚重启的 TiFlash 不被发送请求的时间范围。
+
 ### `tidb_slow_query_file`
 
 - 作用域：SESSION
