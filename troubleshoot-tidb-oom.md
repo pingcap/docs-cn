@@ -79,7 +79,7 @@ OOM 常见的故障现象包括（但不限于）：
 
 > **注意：**
 >
-> 如果 SQL 返回 `ERROR 1105 (HY000): Out Of Memory Quota![conn_id=54]`，这是由于配置了 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query)，数据库的内存使用控制行为会触发该报错。此报错为正常行为，可以忽略。
+> 如果 SQL 返回 `ERROR 1105 (HY000): Out Of Memory Quota![conn_id=54]`，是由于配置了 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 导致，数据库的内存使用控制行为会触发该报错。此报错为正常行为，可以忽略。
 
 #### 执行 SQL 语句时消耗太多内存
 
@@ -87,7 +87,7 @@ OOM 常见的故障现象包括（但不限于）：
 
 - 如果 SQL 的执行计划不优，比如由于缺少合适的索引、统计信息过期、优化器 bug 等原因，会导致选错 SQL 的执行计划，进而出现巨大的中间结果集累积在内存中。这种情况下可以考虑采取以下措施：
     - 添加合适的索引
-    - 使用[算子的落盘功能](/configure-memory-usage.md#数据落盘)
+    - 使用[算子的数据落盘功能](/configure-memory-usage.md#数据落盘)
     - 调整表之间的 JOIN 顺序
     - 使用 hint 进行调优
 
