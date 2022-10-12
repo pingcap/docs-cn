@@ -115,7 +115,7 @@ OOM 常见的故障现象包括（但不限于）：
 TiDB 节点启动后需要加载统计信息到内存中。统计信息的收集过程会消耗内存，可以通过以下方式控制内存使用量：
 
 - 使用指定采样率、指定只收集特定列的统计信息、减少 `ANALYZE` 并发度等手段减少内存使用。
-- 从 TiDB v6.1.0 开始引入了系统变量 [`tidb_stats_cache_mem_quota`](/tidb-configuration-file.md#tidb_stats_cache_mem_quota-从-v610-版本开始引入)，可以对统计信息的内存使用进行限制。
+- 从 TiDB v6.1.0 开始引入了系统变量 [`tidb_stats_cache_mem_quota`](/system-variables.md#tidb_stats_cache_mem_quota-从-v610-版本开始引入)，可以对统计信息的内存使用进行限制。
 - TiDB v6.1.0 开始引入了系统变量 [`tidb_mem_quota_analyze`](/system-variables.md#tidb_mem_quota_analyze-从-v610-版本开始引入)，用于控制 TiDB 更新统计信息时的最大总内存占用。
 
 更多信息请参见[统计信息简介](/statistics.md)。
