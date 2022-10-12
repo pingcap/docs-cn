@@ -1,6 +1,6 @@
 ---
 title: TiDB OOM 故障排查
-summary: 了解如何定位、排查 TiDB Out Of Memory (OOM) 问题。
+summary: 了解如何定位、排查 TiDB Out of Memory (OOM) 问题。
 ---
 
 # TiDB OOM 故障排查
