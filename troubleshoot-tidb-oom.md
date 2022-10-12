@@ -71,7 +71,7 @@ OOM 常见的故障现象包括（但不限于）：
 
 - 操作系统内存容量规划偏小，导致内存不足。
 - TiUP [`resource_control`](/tiup/tiup-cluster-topology-reference.md#global) 配置不合理。
-- 在混合部署的情况下（指 TiDB 和其他应用程序部署在同一台服务器上），TiDB 作为受害者被 oom-killer 关掉（killed）。
+- 在混合部署的情况下（指 TiDB 和其他应用程序部署在同一台服务器上），TiDB 作为受害者被 oom-killer 关闭（killed）。
 
 ### 数据库问题
 
@@ -81,7 +81,7 @@ OOM 常见的故障现象包括（但不限于）：
 >
 > 如果 SQL 返回 `ERROR 1105 (HY000): Out Of Memory Quota![conn_id=54]`，这是由于配置了 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query)，数据库的内存使用控制行为会触发该报错。此报错为正常行为，可以忽略。
 
-#### 执行 SQL 语句时在 TiDB 节点上消耗太多内存
+#### 执行 SQL 语句时消耗太多内存
 
 可以根据以下不同的触发 OOM 的原因，采取相应的措施减少 SQL 的内存使用：
 
@@ -102,7 +102,7 @@ OOM 常见的故障现象包括（但不限于）：
 
 - 问题发生时间附近，session 的并发度过高，此时可能需要添加节点进行扩容。
 
-#### 大事务或大写入在 TiDB 节点上消耗太多内存
+#### 大事务或大写入消耗太多内存
 
 需要提前进行内存的容量规划，这是因为执行事务时 TiDB 消耗的内存最大可以达到提交事务大小的 2 倍到 3 倍以上。
 
@@ -119,9 +119,9 @@ TiDB 节点启动后需要加载统计信息到内存中。从 TiDB v6.1.0 开�
 
 更多信息请参见[统计信息简介](/statistics.md)。
 
-#### Prepared Statement 使用过量
+#### 预处理语句（Prepared Statement）使用过量
 
-客户端不断创建 Prepared Statement 但未执行 [`deallocate prepare stmt`](/sql-prepared-plan-cache.md#忽略-com_stmt_close-指令和-deallocate-prepare-语句) 会导致内存持续上涨，最终触发 TiDB OOM。原因是由于 Prepared Statement 占用的内存要在 session 关闭后才会释放。这一点在长连接下尤需注意。
+客户端不断创建预处理语句但未执行 [`deallocate prepare stmt`](/sql-prepared-plan-cache.md#忽略-com_stmt_close-指令和-deallocate-prepare-语句) 会导致内存持续上涨，最终触发 TiDB OOM。原因是由于预处理语句占用的内存要在 session 关闭后才会释放。这一点在长连接下尤需注意。
 
 要解决该问题，可以考虑采取以下措施：
 
