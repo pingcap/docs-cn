@@ -1594,8 +1594,6 @@ Raft Engine 相关的配置项。
 + 在集群资源占用率较高的情况下，是否允许 BR 自动限制备份使用的资源，减少对集群的影响。详情见[自动调节](/br/br-auto-tune.md)。
 + 默认值：true
 
-<<<<<<< HEAD
-=======
 ### `s3-multi-part-size` <span class="version-mark">从 v5.3.2 版本开始引入</span>
 
 > **注意：**
@@ -1606,48 +1604,6 @@ Raft Engine 相关的配置项。
 + TiKV 备份数据到 S3 时，如果备份文件大于该配置项的值，会自动进行[分块上传](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/API/API_UploadPart.html)。根据压缩率的不同，96 MiB Region 产生的备份文件大约在 10 MiB~30 MiB 之间。
 + 默认值：5MiB
 
-## log-backup
-
-用于日志备份相关的配置项。
-
-### `enable` <span class="version-mark">从 v6.2.0 版本开始引入</span>
-
-+ 用于开启日志备份功能。
-+ 默认值：true
-
-### `file-size-limit` <span class="version-mark">从 v6.2.0 版本开始引入</span>
-
-+ 日志备份任务中，保存到存储的备份文件大小。
-+ 默认值：256MiB
-+ 注意：一般情况下，`file-size-limit` 的值会大于外部存储上显示的备份文件大小，这是因为备份文件在上传时会被压缩。
-
-### `initial-scan-pending-memory-quota` <span class="version-mark">从 v6.2.0 版本开始引入</span>
-
-+ 日志备份任务在扫描增量数据时，用于存放扫描数据的缓存大小。
-+ 默认值：`min(机器总内存 * 10%, 512 MB)`
-
-### `initial-scan-rate-limit` <span class="version-mark">从 v6.2.0 版本开始引入</span>
-
-+ 日志备份任务在扫描增量数据时的吞吐限流参数。
-+ 默认值：60，即默认限流 60 MB/s
-
-### `max-flush-interval` <span class="version-mark">从 v6.2.0 版本开始引入</span>
-
-+ 日志备份任务将备份数据写入到外部存储的最大间隔时间。
-+ 默认值：3min
-
-### `num-threads` <span class="version-mark">从 v6.2.0 版本开始引入</span>
-
-+ 日志备份功能占用的线程数目。
-+ 默认值：CPU * 0.5
-+ 可调整范围：[2, 12]
-
-### `temp-path` <span class="version-mark">从 v6.2.0 版本开始引入</span>
-
-+ 日志文件存放的临时目录，日志文件预先写入临时目录，然后 flush 到外部存储中。
-+ 默认值：`${deploy-dir}/data/log-backup-temp`
-
->>>>>>> 6d549a3c9 (backup: change the location for s3-multi-part-size (#11568))
 ## cdc
 
 用于 TiCDC 捕捉变更数据相关的配置项。
