@@ -1033,6 +1033,14 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 默认值：`OFF`
 - 这个变量用来控制是否开启 General Plan Cache。
 
+### `tidb_enable_historical_stats`
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 类型：布尔型
+- 默认值：`OFF`
+- 该变量用于一个未发布的特性，**请勿修改该变量值**。
+
 ### `tidb_enable_index_merge` <span class="version-mark">从 v4.0 版本开始引入</span>
 
 > **注意：**
@@ -1046,7 +1054,16 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 默认值：`ON`
 - 这个变量用于控制是否开启 index merge 功能。
 
-### tidb_enable_legacy_instance_scope <span class="version-mark">从 v6.0.0 版本开始引入</span>
+### `tidb_enable_index_merge_join`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 类型：布尔型
+- 默认值：`OFF`
+- 表示是否启用 `IndexMergeJoin` 算子。
+- 该变量为 TiDB 内部变量，**不推荐使用**，否则可能会造成数据正确性问题。
+
+### `tidb_enable_legacy_instance_scope` <span class="version-mark">从 v6.0.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
@@ -1060,6 +1077,14 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 是否持久化到集群：是
 - 默认值：`ON`
 - 这个变量用来设置是否开启 `LIST (COLUMNS) TABLE PARTITION` 特性。
+
+### `tidb_enable_local_txn`
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 类型：布尔型
+- 默认值：`OFF`
+- 该变量用于一个未发布的特性，**请勿修改该变量值**。
 
 ### `tidb_enable_metadata_lock` <span class="version-mark">从 v6.3.0 版本开始引入</span>
 
@@ -1146,6 +1171,14 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 是否持久化到集群：是
 - 默认值：0
 - 这个变量用于控制是否开启 Apply 算子并发，并发数由 `tidb_executor_concurrency` 变量控制。Apply 算子用来处理关联子查询且默认无并发，所以执行速度较慢。打开 Apply 并发开关可增加并发度，提高执行速度。目前默认关闭。
+
+### `tidb_enable_pipelined_window_function`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 类型：布尔型
+- 默认值：`ON`
+- 该变量指定是否对窗口函数采用流水线的执行算法。
 
 ### `tidb_enable_prepared_plan_cache` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
@@ -1488,6 +1521,15 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 如果将该变量值设为 `ON`，从 PD 获取的时间戳的操作会被省掉，这种情况下只保证因果一致性但不保证线性一致性。详情请参考 PingCAP 博文 [Async Commit 原理介绍](https://pingcap.com/zh/blog/async-commit-principle)。
 - 对于需要只保证因果一致性的场景，可将此变量设为 `ON` 以提升性能。
 
+### `tidb_hash_exchange_with_new_collation`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 类型：布尔型
+- 默认值：`ON`
+- 该值表示是否在开启 new collation 的集群里生成 MPP hash partition exchange 算子。`true` 表示生成此算子，`false`表示不生成。
+- 该变量为 TiDB 内部变量，**不推荐设置该变量**。
+
 ### `tidb_hash_join_concurrency`
 
 > **警告：**
@@ -1684,7 +1726,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 范围：`[100, 16384]`
 - 这个变量用来设置缓存 schema 版本信息（对应版本修改的相关 table IDs）的个数限制，可设置的范围 100 - 16384。此变量在 2.1.18 及之后版本支持。
 
-### tidb_mem_oom_action <span class="version-mark">从 v6.1.0 版本开始引入</span>
+### `tidb_mem_oom_action` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
@@ -1741,6 +1783,24 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 如果一条查询语句执行过程中使用的内存空间超过该阈值，会触发系统变量 [`tidb_mem_oom_action`](#tidb_mem_oom_action-从-v610-版本开始引入) 中指定的行为。
 - 在 v6.1.0 之前这个开关通过 TiDB 配置文件 (`mem-quota-query`) 进行配置，且作用域为 `SESSION`。升级到 v6.1.0 时会自动继承原有设置，作用域变更为 `SESSION | GLOBAL`。
 
+### `tidb_memory_debug_mode_alarm_ratio`
+
+- 作用域：SESSION
+- 是否持久化到集群：否
+- 类型：浮点型
+- 默认值：`0`
+- 该变量表示在 TiDB memory debug 模式下，允许的内存统计误差值。
+- 该变量用于 TiDB 内部测试，**不推荐修改该变量值**。
+
+### `tidb_memory_debug_mode_min_heap_inuse`
+
+- 作用域：SESSION
+- 是否持久化到集群：否
+- 类型：INT64
+- 默认值：`0`
+- 该变量用于 TiDB 内部测试，**不推荐修改该变量值**，因为开启后会影响 TiDB 的性能。
+- 配置此参数后，TiDB 会进入 memory debug 模式进行内存追踪准确度的分析。TiDB 会在后续执行 SQL 语句的过程中频繁触发 GC，并将实际内存使用和内存统计值做对比。若当前内存使用大于 `tidb_memory_debug_mode_min_heap_inuse` 且内存统计误差超过 `tidb_memory_debug_mode_alarm_ratio`，则会输出相关内存信息到日志和文件中。
+
 ### `tidb_memory_usage_alarm_ratio`
 
 - 作用域：GLOBAL
@@ -1748,6 +1808,14 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 默认值：`0.8`
 - TiDB 内存使用占总内存的比例超过一定阈值时会报警。该功能的详细介绍和使用方法可以参考 [`memory-usage-alarm-ratio`](/tidb-configuration-file.md#memory-usage-alarm-ratio-从-v409-版本开始引入)。
 - 该变量的初始值可通过 [`memory-usage-alarm-ratio`](/tidb-configuration-file.md#memory-usage-alarm-ratio-从-v409-版本开始引入) 进行配置。
+
+### `tidb_merge_join_concurrency`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 默认值：`1`
+- 设置 `MergeJoin` 算子执行查询时的并发度。
+- **不推荐设置该变量**，修改该变量值可能会造成数据正确性问题。
 
 ### `tidb_metric_query_range_duration` <span class="version-mark">从 v4.0 版本开始引入</span>
 
@@ -1826,7 +1894,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 默认值：`OFF`
 - 这个变量用来设置优化器是否执行聚合函数下推到 Join，Projection 和 UnionAll 之前的优化操作。当查询中聚合操作执行很慢时，可以尝试设置该变量为 ON。
 
-### `tidb_opt_cartesian_bcj`
+### `tidb_opt_broadcast_cartesian_join`
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
@@ -1846,7 +1914,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 默认值：`3.0`
 - 表示在 TiDB 中开启一个 Golang goroutine 的 CPU 开销。该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
 
-### `tidb_opt_cop_cpu_factor`
+### `tidb_opt_copcpu_factor`
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
@@ -1880,7 +1948,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 默认值：`3.0`
 - 表示 TiDB 处理一行数据的 CPU 开销。该变量是[代价模型](/cost-model.md)内部使用的变量，不建议修改该变量的值。
 
-### `tidb_opt_desc_scan_factor`
+### `tidb_opt_desc_factor`
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
@@ -1993,7 +2061,7 @@ mysql> desc select count(distinct a) from test.t;
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 类型：布尔型
-- 默认值：`ON`
+- 默认值：`OFF`
 - 当该变量值为 `ON` 时，左连接始终使用内表作为构建端，右连接始终使用外表作为构建端。将该变量值设为 `OFF` 后，外连接可以灵活选择任意一边表作为构建端。
 
 ### `tidb_opt_network_factor`
@@ -2349,6 +2417,14 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 范围：`[-1, 256]`
 - TiFlash 中 request 执行的最大并发度。默认值为 -1，表示该系统变量无效。0 表示由 TiFlash 系统自动设置该值。
 
+### `tidb_mpp_store_fail_ttl`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 类型：Duration
+- 默认值：`60s`
+- 刚重启的 TiFlash 可能不能正常提供服务。为了防止查询失败，TiDB 会限制 tidb-server 向刚重启的 TiFlash 节点发送查询。这个变量表示刚重启的 TiFlash 不被发送请求的时间范围。
+
 ### `tidb_slow_query_file`
 
 - 作用域：SESSION
@@ -2435,6 +2511,14 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 范围：`[1, 2147483647]`
 - 单位：秒
 - 这个变量设置了 [statement summary tables](/statement-summary-tables.md) 的刷新时间。
+
+### `tidb_streamagg_concurrency`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 默认值：`1`
+- 设置 `StreamAgg` 算子执行查询时的并发度。
+- **不推荐设置该变量**，修改该变量值可能会造成数据正确性问题。
 
 ### `tidb_top_sql_max_meta_count` <span class="version-mark">从 v6.0.0 版本开始引入</span>
 
@@ -2659,6 +2743,23 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 ### `tx_isolation`
 
 这个变量是 `transaction_isolation` 的别名。
+
+### `tx_read_ts`
+
+- 作用域：SESSION
+- 是否持续化到集群：否
+- 默认值：`0`
+- 在 Stale Read 场景下，该会话变量用于帮助记录 Stable Read TS 值。
+- 该变量仅用于 TiDB 内部实现，**不推荐设置该变量**。
+
+### `txn_scope`
+
+- 作用域：SESSION
+- 是否持续化到集群：否
+- 默认值：`global`
+- 可选值：`global` 和 `local`
+- 该变量用于设置当前会话下事务为全局事务（设为 `global`）还是局部事务（设为 `local`）。
+- 该变量仅用于 TiDB 内部实现，**不推荐设置该变量**。
 
 ### `version`
 
