@@ -5,7 +5,7 @@ summary: 了解如何定位、排查 TiDB Out of Memory (OOM) 问题。
 
 # TiDB OOM 故障排查
 
-本文总结了 TiDB Out of Memory (OOM) 常见问题的故障现象、解决思路、故障原因、解决方法、以及需要收集的诊断信息。在遇到 OOM 问题时，你可以参考本文档来排查错误原因并进行处理。
+本文总结了 TiDB Out of Memory (OOM) 常见问题的解决思路、故障现象、故障原因、解决方法、以及需要收集的诊断信息。在遇到 OOM 问题时，你可以参考本文档来排查错误原因并进行处理。
 
 ## 常见故障现象
 
@@ -157,7 +157,7 @@ TiDB 节点启动后需要加载统计信息到内存中。统计信息的收集
         - `numactl --show`
 
 - 数据库的版本和内存相关配置：
-    - tidb version
+    - TiDB 版本
     - `tidb_mem_quota_query`
     - `memory-usage-alarm-ratio`
     - `mem-quota-query`
