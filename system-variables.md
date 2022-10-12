@@ -1060,7 +1060,8 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 是否持久化到集群：是
 - 类型：布尔型
 - 默认值：`false`
-- 表示是否启用 `IndexMergeJoin` 算子。该变量为 TiDB 内部变量，**不推荐使用**，否则可能会造成数据正确性问题。
+- 表示是否启用 `IndexMergeJoin` 算子。
+- 该变量为 TiDB 内部变量，**不推荐使用**，否则可能会造成数据正确性问题。
 
 ### `tidb_enable_legacy_instance_scope` <span class="version-mark">从 v6.0.0 版本开始引入</span>
 
@@ -1526,8 +1527,8 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 是否持久化到集群：是
 - 类型：布尔型
 - 默认值：`true`
-- 该变量为 TiDB 内部变量，**不推荐设置该变量**。
 - 该值表示是否在开启 new collation 的集群里生成 MPP hash partition exchange 算子。`true` 表示生成此算子，`false`表示不生成。
+- 该变量为 TiDB 内部变量，**不推荐设置该变量**。
 
 ### `tidb_hash_join_concurrency`
 
@@ -1788,7 +1789,8 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 是否持久化到集群：否
 - 类型：浮点型
 - 默认值：`0`
-- 该变量用于 TiDB 内部测试，**不推荐修改该变量值**。表示在 TiDB memory debug 模式下，允许的内存统计误差值。
+- 该变量表示在 TiDB memory debug 模式下，允许的内存统计误差值。
+- 该变量用于 TiDB 内部测试，**不推荐修改该变量值**。
 
 ### `tidb_memory_debug_mode_min_heap_inuse`
 
@@ -2747,8 +2749,8 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 作用域：SESSION
 - 是否持续化到集群：否
 - 默认值：`0`
-- 该变量仅用于 TiDB 内部实现，**不推荐设置该变量**。
 - 在 Stale Read 场景下，该会话变量用于帮助记录 Stable Read ts 值。
+- 该变量仅用于 TiDB 内部实现，**不推荐设置该变量**。
 
 ### `txn_scope`
 
@@ -2756,8 +2758,8 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 是否持续化到集群：否
 - 默认值：`global`
 - 可选值：`global` 和 `local`
-- 该变量仅用于 TiDB 内部实现，**不推荐设置该变量**。
 - 该变量用于设置当前会话下事务为全局事务还是局部事务。
+- 该变量仅用于 TiDB 内部实现，**不推荐设置该变量**。
 
 ### `version`
 
