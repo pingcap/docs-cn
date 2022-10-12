@@ -1058,7 +1058,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 类型：布尔型
-- 默认值：`false`
+- 默认值：`OFF`
 - 表示是否启用 `IndexMergeJoin` 算子。
 - 该变量为 TiDB 内部变量，**不推荐使用**，否则可能会造成数据正确性问题。
 
@@ -1171,12 +1171,12 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 默认值：0
 - 这个变量用于控制是否开启 Apply 算子并发，并发数由 `tidb_executor_concurrency` 变量控制。Apply 算子用来处理关联子查询且默认无并发，所以执行速度较慢。打开 Apply 并发开关可增加并发度，提高执行速度。目前默认关闭。
 
-### `tidb_enable_piplelined_window_function`
+### `tidb_enable_pipelined_window_function`
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 类型：布尔型
-- 默认值：`true`
+- 默认值：`ON`
 - 该变量指定是否对窗口函数采用流水线的执行算法。
 
 ### `tidb_enable_prepared_plan_cache` <span class="version-mark">从 v6.1.0 版本开始引入</span>
@@ -1525,7 +1525,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 类型：布尔型
-- 默认值：`true`
+- 默认值：`ON`
 - 该值表示是否在开启 new collation 的集群里生成 MPP hash partition exchange 算子。`true` 表示生成此算子，`false`表示不生成。
 - 该变量为 TiDB 内部变量，**不推荐设置该变量**。
 
@@ -1814,7 +1814,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 是否持久化到集群：是
 - 默认值：`1`
 - 设置 `MergeJoin` 算子执行查询时的并发度。
-- 警告：**不推荐设置该变量，修改该变量值可能会造成数据正确性问题**。
+- **不推荐设置该变量**，修改该变量值可能会造成数据正确性问题。
 
 ### `tidb_metric_query_range_duration` <span class="version-mark">从 v4.0 版本开始引入</span>
 
@@ -2517,7 +2517,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 是否持久化到集群：是
 - 默认值：`1`
 - 设置 `StreamAgg` 算子执行查询时的并发度。
-- 警告：**不推荐设置该变量，修改该变量值可能会造成数据正确性问题**。
+- **不推荐设置该变量**，修改该变量值可能会造成数据正确性问题。
 
 ### `tidb_top_sql_max_meta_count` <span class="version-mark">从 v6.0.0 版本开始引入</span>
 
@@ -2748,7 +2748,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 作用域：SESSION
 - 是否持续化到集群：否
 - 默认值：`0`
-- 在 Stale Read 场景下，该会话变量用于帮助记录 Stable Read ts 值。
+- 在 Stale Read 场景下，该会话变量用于帮助记录 Stable Read TS 值。
 - 该变量仅用于 TiDB 内部实现，**不推荐设置该变量**。
 
 ### `txn_scope`
@@ -2757,7 +2757,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 是否持续化到集群：否
 - 默认值：`global`
 - 可选值：`global` 和 `local`
-- 该变量用于设置当前会话下事务为全局事务还是局部事务。
+- 该变量用于设置当前会话下事务为全局事务（设为 `global`）还是局部事务（设为 `local`）。
 - 该变量仅用于 TiDB 内部实现，**不推荐设置该变量**。
 
 ### `version`
