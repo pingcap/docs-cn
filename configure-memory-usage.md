@@ -75,7 +75,7 @@ server-memory-quota = 34359738368
     ```sql
     SET GLOBAL tidb_memory_usage_alarm_ratio = 0.7;
     ```
-   
+
 2. 创建单表 `CREATE TABLE t(a int);` 并插入 1000 行数据。
 
 3. 执行 `select * from t t1 join t t2 join t t3 order by t1.a`。该 SQL 语句会输出 1000000000 条记录，占用巨大的内存，进而触发报警。
