@@ -824,30 +824,6 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 这个变量用来控制是否启用统计信息快速分析功能。默认值 0 表示不开启。
 - 快速分析功能开启后，TiDB 会随机采样约 10000 行的数据来构建统计信息。因此在数据分布不均匀或者数据量比较少的情况下，统计信息的准确度会比较低。这可能导致执行计划不优，比如选错索引。如果可以接受普通 `ANALYZE` 语句的执行时间，则推荐关闭快速分析功能。
 
-<<<<<<< HEAD
-=======
-### `tidb_enable_foreign_key` <span class="version-mark">从 v6.3.0 版本开始引入</span>
-
-> **警告：**
->
-> 当前版本中该变量控制的功能尚未完全生效，请保留默认值。
-
-- 作用域：GLOBAL
-- 是否持久化到集群：是
-- 默认值：`OFF`
-- 这个变量用于控制是否开启 `FOREIGN KEY` 特性。
-
-### `tidb_enable_general_plan_cache` <span class="version-mark">从 v6.3.0 版本开始引入</span>
-
-> **警告：**
->
-> 当前版本中该变量控制的功能尚未完全生效，请保留默认值。
-
-- 作用域：SESSION | GLOBAL
-- 是否持久化到集群：是
-- 默认值：`OFF`
-- 这个变量用来控制是否开启 General Plan Cache。
-
 ### `tidb_enable_historical_stats`
 
 - 作用域：GLOBAL
@@ -856,7 +832,6 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 默认值：`OFF`
 - 该变量用于一个未发布的特性，**请勿修改该变量值**。
 
->>>>>>> 5aa1850de (sysvar: add 12 sysvars to docs-cn (#11567))
 ### `tidb_enable_index_merge` <span class="version-mark">从 v4.0 版本开始引入</span>
 
 > **注意：**
@@ -894,8 +869,6 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 默认值：`ON`
 - 这个变量用来设置是否开启 `LIST (COLUMNS) TABLE PARTITION` 特性。
 
-<<<<<<< HEAD
-=======
 ### `tidb_enable_local_txn`
 
 - 作用域：GLOBAL
@@ -904,18 +877,6 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 默认值：`OFF`
 - 该变量用于一个未发布的特性，**请勿修改该变量值**。
 
-### `tidb_enable_metadata_lock` <span class="version-mark">从 v6.3.0 版本开始引入</span>
-
-> **警告：**
->
-> 当前该功能为实验特性，不建议在生产环境中使用。
-
-- 作用域：GLOBAL
-- 是否持久化到集群：是
-- 默认值：`OFF`
-- 这个变量用来设置是否开启[元数据锁](/metadata-lock.md)特性。需要注意，在设置该变量时，集群中不能有 DDL 任务，以免造成非预期数据正确性、一致性问题。
-
->>>>>>> 5aa1850de (sysvar: add 12 sysvars to docs-cn (#11567))
 ### `tidb_enable_mutation_checker` <span class="version-mark">从 v6.0.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
@@ -1263,20 +1224,6 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
     - `txn_mode`：事务模式。可选值：`OPTIMISTIC`（乐观事务模式），或 `PESSIMISTIC`（悲观事务模式）
     - `sql`：当前查询对应的 SQL 语句
 
-<<<<<<< HEAD
-=======
-### `tidb_general_plan_cache_size` <span class="version-mark">从 v6.3.0 版本开始引入</span>
-
-> **警告：**
->
-> 当前版本中该变量控制的功能尚未完全生效，请保留默认值。
-
-- 作用域：SESSION | GLOBAL
-- 是否持久化到集群：是
-- 默认值：`100`
-- 范围：`[1, 100000]`
-- 这个变量用来控制 General Plan Cache 最多能够缓存的计划数量。
-
 ### `tidb_guarantee_linearizability` <span class="version-mark">从 v5.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
@@ -1296,7 +1243,6 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 该值表示是否在开启 new collation 的集群里生成 MPP hash partition exchange 算子。`true` 表示生成此算子，`false`表示不生成。
 - 该变量为 TiDB 内部变量，**不推荐设置该变量**。
 
->>>>>>> 5aa1850de (sysvar: add 12 sysvars to docs-cn (#11567))
 ### `tidb_hash_join_concurrency`
 
 > **警告：**
