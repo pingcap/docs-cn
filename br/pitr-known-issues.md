@@ -51,12 +51,6 @@ Issue 链接：[#37207](https://github.com/pingcap/tidb/issues/37207)
 
 - 当前版本中建议在集群初始化后，进行一次有效快照备份，并且以此作为基础进行 PITR 恢复。
 
-## 当存在大事务的时候，事务的提交时间会影响日志备份 checkpoint lag
-
-Issue 链接：[#13304](https://github.com/tikv/tikv/issues/13304)
-
-当场景中有大事务时，日志 checkpoint lag 在事务提交前都不会更新，因此会增加一段接近于大事务提交时长的时间。
-
 ## 索引加速功能与 PITR 功能不兼容
 
 Issue 链接：[#38045](https://github.com/pingcap/tidb/issues/38045)
