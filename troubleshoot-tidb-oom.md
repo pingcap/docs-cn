@@ -73,7 +73,7 @@ OOM 常见的故障现象包括（但不限于）：
 
 - 操作系统内存容量规划偏小，导致内存不足。
 - TiUP [`resource_control`](/tiup/tiup-cluster-topology-reference.md#global) 配置不合理。
-- 在混合部署的情况下（指 TiDB 和其他应用程序部署在同一台服务器上），其他应用程序抢占资源导致 TiDB 被 oom-killer 关闭。
+- 在混合部署的情况下（指 TiDB 和其他应用程序部署在同一台服务器上），其他应用程序抢占资源导致 TiDB 被 `oom-killer` 关闭。
 
 ### 数据库问题
 
