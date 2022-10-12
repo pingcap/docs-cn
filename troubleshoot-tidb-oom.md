@@ -110,12 +110,11 @@ OOM 常见的故障现象包括（但不限于）：
 
 #### 收集和加载统计信息的过程中消耗太多内存
 
-TiDB 节点启动后需要加载统计信息到内存中。从 TiDB v6.1.0 开始引入了 [`enable_tidb_stats_cache_mem_quota`](/tidb-configuration-file.md#enable-stats-cache-mem-quota-从-v610-版本开始引入) 对统计信息的内存使用进行了改善。
+TiDB 节点启动后需要加载统计信息到内存中。统计信息的收集过程会消耗内存，可以通过以下方式控制内存使用量：
 
-统计信息的收集过程会消耗内存，可以通过以下方式控制内存使用量：
-
-- 使用指定采样率、指定只收集特定列的统计信息、减少 analyze 并发度等手段减少内存使用。
-- TiDB v6.1.0 开始引入了系统变量 [`tidb_mem_quota_analyze`](/system-variables.md#tidb_mem_quota_analyze-从-v610-版本开始引入) 来控制 TiDB 更新统计信息时的最大总内存占用。
+- 使用指定采样率、指定只收集特定列的统计信息、减少 `ANALYZE` 并发度等手段减少内存使用。
+- 从 TiDB v6.1.0 开始引入了系统变量 [`enable_tidb_stats_cache_mem_quota`](/tidb-configuration-file.md#enable-stats-cache-mem-quota-从-v610-版本开始引入)，可以对统计信息的内存使用进行限制。
+- TiDB v6.1.0 开始引入了系统变量 [`tidb_mem_quota_analyze`](/system-variables.md#tidb_mem_quota_analyze-从-v610-版本开始引入)，用于控制 TiDB 更新统计信息时的最大总内存占用。
 
 更多信息请参见[统计信息简介](/statistics.md)。
 
@@ -131,7 +130,7 @@ TiDB 节点启动后需要加载统计信息到内存中。从 TiDB v6.1.0 开�
 
 #### 系统变量配置不当
 
-系统变量 [`tidb_enable_rate_limit_action`](/system-variables.md#tidb_enable_rate_limit_action) 在单条查询仅涉及读数据的情况下，对内存控制效果较好。若还存在额外的计算操作（如连接、聚合等），打开该变量可能会导致内存不受 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 控制，加剧 OOM 风险。
+系统变量 [`tidb_enable_rate_limit_action`](/system-variables.md#tidb_enable_rate_limit_action) 在单条查询仅涉及读数据的情况下，对内存控制效果较好。若还存在额外的计算操作（如连接、聚合等），启动该变量可能会导致内存不受 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 控制，加剧 OOM 风险。
 
 建议关闭该变量。从 TiDB v6.3.0 开始，该变量默认关闭。
 
@@ -173,7 +172,7 @@ TiDB 节点启动后需要加载统计信息到内存中。从 TiDB v6.1.0 开�
 - 查看内存消耗较多的 SQL 语句：
 
     - 可以从 TiDB Dashboard 中查看 SQL 语句分析、慢查询，查看内存使用量
-    - `INFORMATION_SCHEMA` 的 `SLOW_QUERY`、`CLUSTER_SLOW_QUERY`
+    - 查看 `INFORMATION_SCHEMA` 中的 `SLOW_QUERY` 和 `CLUSTER_SLOW_QUERY`
     - 各个 TiDB 节点的 `tidb_slow_query.log`
     - 执行 `grep "expensive_query" tidb.log` 查看对应的日志条目
     - 执行 `EXPLAIN ANALYZE` 查看算子的内存消耗
@@ -185,7 +184,7 @@ TiDB 节点启动后需要加载统计信息到内存中。从 TiDB v6.1.0 开�
     curl -G http://{TiDBIP}:10080/debug/zip?seconds=10" > profile.zip
     ```
 
-- 执行 `grep "tidb-server has the risk of OOM" tidb.log`，可以看到 TiDB Server 收集的告警文件路径，例如：
+- 执行 `grep "tidb-server has the risk of OOM" tidb.log` 查看 TiDB Server 收集的告警文件路径，例如：
 
     ```shell
     ["tidb-server has the risk of OOM. Running SQLs and heap profile will be recorded in record path"] ["is server-memory-quota set"=false] ["system memory total"=14388137984] ["system memory usage"=11897434112] ["tidb-server memory usage"=11223572312] [memory-usage-alarm-ratio=0.8] ["record path"="/tmp/0_tidb/MC4wLjAuMDo0MDAwLzAuMC4wLjA6MTAwODA=/tmp-storage/record"]
