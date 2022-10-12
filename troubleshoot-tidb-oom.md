@@ -51,7 +51,7 @@ OOM 常见的故障现象包括（但不限于）：
 - 查看 Grafana 监控，发现以下现象：
     - **TiDB** > **Server** > **Memory Usage** 显示 process/heapInUse 持续升高，达到阈值后掉零
     - **TiDB** > **Server** > **Uptime** 显示为掉零
-    - **TiDB-Runtime** > **Memory Usage** 显示 estimate-inuse 在持续升高
+    - **TiDB-Runtime** > **Memory Usage** 显示 estimate-inuse 持续升高
 
 - 查看 `tidb.log`，可发现如下日志条目：
     - OOM 相关的 Alarm：`[WARN] [memory_usage_alarm.go:139] ["tidb-server has the risk of OOM. Running SQLs and heap profile will be recorded in record path"]`。关于该日志的详细说明，请参考 [`memory-usage-alarm-ratio`](/system-variables.md#tidb_memory_usage_alarm_ratio)。
@@ -71,7 +71,7 @@ OOM 常见的故障现象包括（但不限于）：
 
 - 操作系统内存容量规划偏小，导致内存不足。
 - TiUP [`resource_control`](/tiup/tiup-cluster-topology-reference.md#global) 配置不合理。
-- 在混合部署的情况下（指 TiDB 和其他应用程序部署在同一台服务器上），TiDB 作为受害者被 oom-killer killed。
+- 在混合部署的情况下（指 TiDB 和其他应用程序部署在同一台服务器上），TiDB 作为受害者被 oom-killer 关掉（killed）。
 
 ### 数据库问题
 
