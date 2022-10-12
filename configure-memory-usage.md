@@ -62,24 +62,22 @@ server-memory-quota = 34359738368
 
 默认配置下，tidb-server 实例会在机器内存使用达到总内存量的 70% 时打印报警日志，并记录相关状态文件。该内存使用率可以通过配置系统变量 [`tidb_memory_usage_alarm_ratio`](/system-variables.md#tidb_memory_usage_alarm_ratio) 进行设置。具体报警规则请参考该配置项的说明部分。
 
-注意，内存使用量超过阈值，且满足如下任一条件时，才会进行告警
-- 第一次触发内存阈值
-- 触发内存阈值，且距离上一次告警超过 60s
-- 触发内存阈值，且(本次内存用量-上次告警时内存用量)/ 最大可用内存量 > 10%。
+注意，内存使用量超过阈值，且满足如下任一条件时，才会进行告警，1. 第一次触发内存阈值；2. 触发内存阈值，且距离上一次告警超过 60s；3. 触发内存阈值，且(本次内存用量-上次告警时内存用量)/ 最大可用内存量 > 10%。
 
 此外，为避免报警时产生的状态文件积累过多，目前默认保留最近 5 次报警时所生成的状态文件，保留文件数量可通过系统变量 [`tidb_memory_usage_alarm_keep_record_num`](/system-variables.md#tidb_memory_usage_alarm_keep_record_num) 配置。
 
 下例通过构造一个占用大量内存的 SQL 语句触发报警，对该报警功能进行演示：
 
-1. 配置报警比例为 `0.7`：   
-    tidb.toml 配置  
+1. 配置报警比例为 `0.7`：
+
     {{< copyable "" >}}
+
     ```toml
     mem-quota-query = 34359738368
     ```
-   tidb 中执行  
-   {{< copyable "" >}}
-   ```sql
+    {{< copyable "" >}}
+    
+    ```sql
     SET GLOBAL tidb_memory_usage_alarm_ratio = 0.7;
     ```
 
