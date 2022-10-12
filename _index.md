@@ -127,7 +127,7 @@ hide_commit: true
 
 [系统变量](https://docs.pingcap.com/zh/tidb/dev/system-variables)
 
-[发布历史](https://docs.pingcap.com/zh/tidb/dev/release-notes)
+[分区表](https://docs.pingcap.com/zh/tidb/dev/partitioned-table)
 
 [常见问题](https://docs.pingcap.com/zh/tidb/dev/faq-overview)
 
