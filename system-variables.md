@@ -1448,24 +1448,6 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 如果一条查询语句执行过程中使用的内存空间超过该阈值，会触发系统变量 [`tidb_mem_oom_action`](#tidb_mem_oom_action-从-v610-版本开始引入) 中指定的行为。
 - 在 v6.1.0 之前这个开关通过 TiDB 配置文件 (`mem-quota-query`) 进行配置，且作用域为 `SESSION`。升级到 v6.1.0 时会自动继承原有设置，作用域变更为 `SESSION | GLOBAL`。
 
-### `tidb_memory_debug_mode_alarm_ratio`
-
-- 作用域：SESSION
-- 是否持久化到集群：否
-- 类型：浮点型
-- 默认值：`0`
-- 该变量表示在 TiDB memory debug 模式下，允许的内存统计误差值。
-- 该变量用于 TiDB 内部测试，**不推荐修改该变量值**。
-
-### `tidb_memory_debug_mode_min_heap_inuse`
-
-- 作用域：SESSION
-- 是否持久化到集群：否
-- 类型：INT64
-- 默认值：`0`
-- 该变量用于 TiDB 内部测试，**不推荐修改该变量值**，因为开启后会影响 TiDB 的性能。
-- 配置此参数后，TiDB 会进入 memory debug 模式进行内存追踪准确度的分析。TiDB 会在后续执行 SQL 语句的过程中频繁触发 GC，并将实际内存使用和内存统计值做对比。若当前内存使用大于 `tidb_memory_debug_mode_min_heap_inuse` 且内存统计误差超过 `tidb_memory_debug_mode_alarm_ratio`，则会输出相关内存信息到日志和文件中。
-
 ### `tidb_memory_usage_alarm_ratio`
 
 - 作用域：GLOBAL
@@ -1544,8 +1526,6 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 默认值：`OFF`
 - 这个变量用来设置优化器是否执行聚合函数下推到 Join，Projection 和 UnionAll 之前的优化操作。当查询中聚合操作执行很慢时，可以尝试设置该变量为 ON。
 
-<<<<<<< HEAD
-=======
 ### `tidb_opt_broadcast_cartesian_join`
 
 - 作用域：SESSION | GLOBAL
@@ -1575,7 +1555,6 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 默认值：`3.0`
 - 表示 TiKV 协处理器处理一行数据的 CPU 开销。该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
 
->>>>>>> 5aa1850de (sysvar: add 12 sysvars to docs-cn (#11567))
 ### `tidb_opt_correlation_exp_factor`
 
 - 作用域：SESSION | GLOBAL
@@ -1592,8 +1571,6 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 这个变量用来设置优化器启用交叉估算 row count 方法的阈值。如果列和 handle 列之间的顺序相关性超过这个阈值，就会启用交叉估算方法。
 - 交叉估算方法可以简单理解为，利用这个列的直方图来估算 handle 列需要扫的行数。
 
-<<<<<<< HEAD
-=======
 ### `tidb_opt_cpu_factor`
 
 - 作用域：SESSION | GLOBAL
@@ -1621,7 +1598,6 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 默认值：`1.5`
 - 表示 TiDB 往临时磁盘读写一个字节数据的 I/O 开销。该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
 
->>>>>>> 5aa1850de (sysvar: add 12 sysvars to docs-cn (#11567))
 ### `tidb_opt_distinct_agg_push_down`
 
 - 作用域：SESSION
@@ -1703,8 +1679,6 @@ mysql> desc select count(distinct a) from test.t;
 - 这个变量用来设置将 Limit 和 TopN 算子下推到 TiKV 的阈值。
 - 如果 Limit 或者 TopN 的取值小于等于这个阈值，则 Limit 和 TopN 算子会被强制下推到 TiKV。该变量可以解决部分由于估算误差导致 Limit 或者 TopN 无法被下推的问题。
 
-<<<<<<< HEAD
-=======
 ### `tidb_opt_memory_factor`
 
 - 作用域：SESSION | GLOBAL
@@ -1731,7 +1705,6 @@ mysql> desc select count(distinct a) from test.t;
 - 默认值：`1.0`
 - 表示传输 1 比特数据的网络净开销。该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
 
->>>>>>> 5aa1850de (sysvar: add 12 sysvars to docs-cn (#11567))
 ### `tidb_opt_prefer_range_scan` <span class="version-mark">从 v5.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
