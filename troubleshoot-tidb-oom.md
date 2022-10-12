@@ -71,7 +71,7 @@ OOM 常见的故障现象包括（但不限于）：
 
 - 操作系统内存容量规划偏小，导致内存不足。
 - TiUP [`resource_control`](/tiup/tiup-cluster-topology-reference.md#global) 配置不合理。
-- 在混合部署的情况下（指 TiDB 和其他应用程序部署在同一台服务器上），TiDB 作为受害者被 oom-killer 关闭（killed）。
+- 在混合部署的情况下（指 TiDB 和其他应用程序部署在同一台服务器上），其他应用程序抢占资源导致 TiDB 被 oom-killer 关闭。
 
 ### 数据库问题
 
@@ -154,7 +154,7 @@ TiDB 节点启动后需要加载统计信息到内存中。统计信息的收集
         - `numactl --hardware`
         - `numactl --show`
 
-- 数据库的内存相关配置：
+- 数据库的版本和内存相关配置：
     - tidb version
     - `tidb_mem_quota_query`
     - `memory-usage-alarm-ratio`
