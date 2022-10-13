@@ -35,11 +35,11 @@ TiDB 中 `SELECT CONNECTION_ID()` 的返回值为 64 位，如 `2199023260887`�
 
 **描述**
 
-MySQL 维护了一系列 [`Com_` 开头的服务端变量](https://dev.mysql.com/doc/refman/8.0/en/server-status-variables.html#statvar_Com_xxx)来记录你对数据库的操作总数，如 `Com_select` 记录了 MySQL 数据库从上次启动开始，总共发起的 `SELECT` 语句数（即使语句并未成功执行）。而 TiDB 并未维护此变量。你可以使用语句 `SHOW GLOBAL STATUS LIKE 'Com_%'` 观察 TiDB 与 MySQL 的差异。
+MySQL 维护了一系列 [`Com_` 开头的服务端变量](https://dev.mysql.com/doc/refman/8.0/en/server-status-variables.html#statvar_Com_xxx)来记录你对数据库的操作总数，如 `Com_select` 记录了 MySQL 数据库从上次启动开始，总共发起的 `SELECT` 语句数（即使语句并未成功执行）。而 TiDB 并未维护此变量。你可以使用语句 [`SHOW GLOBAL STATUS LIKE 'Com_%'`](/sql-statements/sql-statement-show-status.md) 观察 TiDB 与 MySQL 的差异。
 
 **规避方法**
 
-请勿使用这样的变量，常见的使用场景如监控等。TiDB 的可观测性较为完善，无需从服务端变量进行查询。如需定制监控工具，可阅读 [TiDB 监控框架概述](/tidb-monitoring-framework.md)来获得更多信息。
+请勿使用这样的变量。在 MySQL 中 `Com_*` 常见的使用场景之一是监控。TiDB 的可观测性较为完善，无需从服务端变量进行查询。如需定制监控工具，可阅读 [TiDB 监控框架概述](/tidb-monitoring-framework.md)来获得更多信息。
 
 ### TiDB 错误日志区分 `TIMESTAMP` 与 `DATETIME` 类型
 
@@ -128,7 +128,7 @@ TiDB 暂不支持 UpdatableResultSet，即请勿指定 `ResultSet.CONCUR_UPDATAB
 
 ## MySQL JDBC Bug
 
-### `useLocalTransactionState` 和 `rewriteBatchedStatements` 同时开启将导致事务无法提交
+### `useLocalTransactionState` 和 `rewriteBatchedStatements` 同时开启将导致事务无法提交或回滚
 
 **描述**
 
@@ -150,7 +150,7 @@ MySQL Connector/J 8.0.29 在与 5.7.5 版本以下的 MySQL 服务端，或使�
 
 **规避方法**
 
-这是一个已知的问题，MySQL Connector/J 至今未合并修复代码。
+这是一个已知的问题，截至 2022 年 10 月 12 日，MySQL Connector/J 未合并修复代码。
 
 TiDB 对其进行了两个维度的修复：
 
