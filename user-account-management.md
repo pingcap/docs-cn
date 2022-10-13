@@ -214,7 +214,7 @@ TiDB 将密码存在 `mysql.user` 系统数据库里面。只有拥有 `CREATE U
     查看 tidb-server 的进程：
 
     ```bash
-    ps aux | grep tikv-server
+    ps aux | grep tidb-server
     ```
 
     找到 tidb-server 对应的进程 ID (PID) 并使用 `kill` 命令停掉该进程：
