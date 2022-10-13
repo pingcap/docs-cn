@@ -134,6 +134,8 @@ Refer to [5 PD issues](#5-pd-issues).
 
     - The SQL contains multiple sub-queries connected by `Union`. See [case-1828](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case1828.md) in Chinese.
 
+For more information about troubleshooting OOM, see [Troubleshoot TiDB OOM Issues](/troubleshoot-tidb-oom.md).
+
 ### 3.3 Wrong execution plan
 
 - 3.3.1 Symptom

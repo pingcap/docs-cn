@@ -164,6 +164,7 @@
   - [Troubleshoot Hotspot Issues](/troubleshoot-hot-spot-issues.md)
   - [Troubleshoot Increased Read and Write Latency](/troubleshoot-cpu-issues.md)
   - [Save and Restore the On-Site Information of a Cluster](/sql-plan-replayer.md)
+  - [Troubleshoot TiDB OOM Issues](/troubleshoot-tidb-oom.md)
   - [Troubleshoot Cluster Setup](/troubleshoot-tidb-cluster.md)
   - [Troubleshoot High Disk I/O Usage](/troubleshoot-high-disk-io.md)
   - [Troubleshoot Lock Conflicts](/troubleshoot-lock-conflicts.md)
