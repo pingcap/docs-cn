@@ -30,6 +30,10 @@ TiDB 支持使用 MySQL 5.7 中提供的大部分[加密和压缩函数](https:/
 | [`ASYMMETRIC_SIGN()`](https://dev.mysql.com/doc/refman/5.7/en/enterprise-encryption-functions.html#function_asymmetric-sign)                          | 从摘要创建签名                    |
 | [`ASYMMETRIC_VERIFY()`](https://dev.mysql.com/doc/refman/5.7/en/enterprise-encryption-functions.html#function_asymmetric-verify)                      | 验证签名字符串是否匹配摘要字符串             |
 
+## 相关系统变量
+
+`block_encryption_mode` 变量设置 `AES_ENCRYPT()` 和 `AES_DECRYPT()` 所使用的加密模式。
+
 ## 不支持的函数
 
 * `DES_DECRYPT()`、`DES_ENCRYPT()`、`OLD_PASSWORD()` 和 `ENCRYPT()`：这些函数在 MySQL 5.7 中被废弃，并且已在 MySQL 8.0 中移除。
