@@ -217,7 +217,7 @@ TiDB 将密码存在 `mysql.user` 系统数据库里面。只有拥有 `CREATE U
     ps aux | grep tikv-server
     ```
 
-    找到tikv-server对应的pid并使用kill命令停掉进程
+    找到 tidb-server 对应的进程 ID (PID) 并使用 `kill` 命令停掉该进程：
 
     {{< copyable "shell-regular" >}}
 
