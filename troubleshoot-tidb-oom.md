@@ -5,7 +5,7 @@ summary: 了解如何定位、排查 TiDB Out of Memory (OOM) 问题。
 
 # TiDB OOM 故障排查
 
-本文总结了 TiDB Out of Memory (OOM) 常见问题的解决思路、故障现象、故障原因、解决方法、以及需要收集的诊断信息。在遇到 OOM 问题时，你可以参考本文档来排查错误原因并进行处理。
+本文总结了 TiDB Out of Memory (OOM) 常见问题的解决思路、故障现象、故障原因、解决方法，以及需要收集的诊断信息。在遇到 OOM 问题时，你可以参考本文档来排查错误原因并进行处理。
 
 ## 常见故障现象
 
@@ -28,7 +28,7 @@ OOM 常见的故障现象包括（但不限于）：
 
 1. 确认是否属于 OOM 问题。
 
-    执行下面命令查看操作系统日志。如果故障发生的时间点附近存在 `oom-killer` 的日志，则可以确定是 OOM 问题。
+    执行以下命令查看操作系统日志。如果故障发生的时间点附近存在 `oom-killer` 的日志，则可以确定是 OOM 问题。
 
     ```shell
     dmesg -T | grep tidb-server
@@ -49,7 +49,7 @@ OOM 常见的故障现象包括（但不限于）：
     ......
     ```
 
-2. 确认是 OOM 问题之后，可以进一步排查触发 OOM 的原因是由部署问题导致、还是由数据库问题导致。
+2. 确认是 OOM 问题之后，可以进一步排查触发 OOM 的原因是部署问题还是数据库问题。
 
     - 如果是部署问题触发 OOM，需要排查资源配置、混合部署的影响。
     - 如果是数据库问题触发 OOM，常见原因有：
@@ -77,7 +77,7 @@ OOM 常见的故障现象包括（但不限于）：
 
 ### 数据库问题
 
-本节介绍由于数据库问题导致的 OOM 问题和解决办法。
+本节介绍由数据库问题导致的 OOM 问题和解决办法。
 
 > **注意：**
 >
@@ -120,9 +120,9 @@ TiDB 节点启动后需要加载统计信息到内存中。统计信息的收集
 
 更多信息请参见[统计信息简介](/statistics.md)。
 
-#### 预处理语句（Prepared Statement）使用过量
+#### 预处理语句 (Prepared Statement) 使用过量
 
-客户端不断创建预处理语句但未执行 [`deallocate prepare stmt`](/sql-prepared-plan-cache.md#忽略-com_stmt_close-指令和-deallocate-prepare-语句) 会导致内存持续上涨，最终触发 TiDB OOM。原因是由于预处理语句占用的内存要在 session 关闭后才会释放。这一点在长连接下尤需注意。
+客户端不断创建预处理语句但未执行 [`deallocate prepare stmt`](/sql-prepared-plan-cache.md#忽略-com_stmt_close-指令和-deallocate-prepare-语句) 会导致内存持续上涨，最终触发 TiDB OOM。原因是预处理语句占用的内存要在 session 关闭后才会释放。这一点在长连接下尤需注意。
 
 要解决该问题，可以考虑采取以下措施：
 
