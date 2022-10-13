@@ -70,7 +70,7 @@ Load Base Split 后的 Region 不会被迅速 Merge。一方面，PD 的 `MergeC
     {{< copyable "sql" >}}
 
     ```sql
-    show config where type='tikv' and name like '%split.qps-threshold%'
+    show config where type='tikv' and name like '%split.qps-threshold%';
     ```
 
 - 通过 TiKV 查看，例如：
