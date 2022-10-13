@@ -182,14 +182,12 @@ from tbl_name
 group by id, val;
 ```
 
-<<<<<<< HEAD
+## 相关系统变量
+
+`group_concat_max_len` 变量设置 `GROUP_CONCAT()` 函数中的最大项目数。
+
 ## TiDB 不支持的聚合函数
 
 TiDB 目前不支持的聚合函数如下所示，相关进展参阅 [TiDB #7623](https://github.com/pingcap/tidb/issues/7623)。
 
 - `JSON_ARRAYAGG`
-=======
-## 相关系统变量
-
-`group_concat_max_len` 变量设置 `GROUP_CONCAT()` 函数中的最大项目数。
->>>>>>> 0c875e6a0 (sysvar: add 12 sysvars to docs-cn (#11495))
