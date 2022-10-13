@@ -239,7 +239,7 @@ TiDB 将密码存在 `mysql.user` 系统数据库里面。只有拥有 `CREATE U
     mysql -h 127.0.0.1 -P 4000 -u root
     ```
 
-4. 第3步中前台运行的`run_tidb.sh`脚本停掉，并去掉第1步中配置文件中添加的内容，等待确认tidb-server自启动
+4. 停止运行 `run_tidb.sh` 脚本，并去掉 第 1 步 中在 TiDB 配置文件中添加的内容，等待 tidb-server 自启动。
 
 设置 `skip-grant-table` 之后，启动 TiDB 进程会增加操作系统用户检查，只有操作系统的 `root` 用户才能启动 TiDB 进程。
 
