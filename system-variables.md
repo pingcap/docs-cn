@@ -305,20 +305,7 @@ mysql> SELECT * FROM t1;
 - 该变量用于为 SQL 函数 `RAND()` 中使用的随机值生成器添加种子。
 - 该变量的行为与 MySQL 兼容。
 
-<<<<<<< HEAD
 ### skip_name_resolve <span class="version-mark">从 v5.2.0 版本开始引入</span>
-=======
-### `require_secure_transport` <span class="version-mark">从 v6.1.0 版本开始引入</span>
-
-- 作用域：GLOBAL
-- 是否持久化到集群：是
-- 默认值：`OFF`
-- 该变量控制是否所有 TiDB 的连接都在本地 socket 上进行通信，或使用 TLS。详情见[为 TiDB 客户端服务端间通信开启加密传输](/enable-tls-between-clients-and-servers.md)。
-- 该变量设置为 `ON` 时，必须使用开启 TLS 的会话连接到 TiDB，防止在 TLS 配置不正确时出现锁定的情况。
-- 在 v6.1.0 之前这个开关通过 TiDB 配置文件 (`security.require-secure-transport`) 进行配置，升级到 v6.1.0 时会自动继承原有设置。
-
-### `skip_name_resolve` <span class="version-mark">从 v5.2.0 版本开始引入</span>
->>>>>>> 0c875e6a0 (sysvar: add 12 sysvars to docs-cn (#11495))
 
 - 作用域：GLOBAL
 - 默认值：`OFF`
@@ -1778,8 +1765,6 @@ set tidb_slow_log_threshold = 200;
 - 数据库所使用的时区。这个变量值可以写成时区偏移的形式，如 '-8:00'，也可以写成一个命名时区，如 'America/Los_Angeles'。
 - 默认值 `SYSTEM` 表示时区应当与系统主机的时区相同。系统的时区可通过 [`system_time_zone`](#system_time_zone) 获取。
 
-<<<<<<< HEAD
-=======
 ### `timestamp`
 
 - 作用域：SESSION
@@ -1788,7 +1773,6 @@ set tidb_slow_log_threshold = 200;
 - 取值范围：`[0, 2147483647]`
 - 一个 Unix 时间戳。变量值非空时，表示 `CURRENT_TIMESTAMP()`、`NOW()` 等函数的时间戳。该变量通常用于数据恢复或数据复制。
 
->>>>>>> 0c875e6a0 (sysvar: add 12 sysvars to docs-cn (#11495))
 ### `transaction_isolation`
 
 - 作用域：SESSION | GLOBAL
