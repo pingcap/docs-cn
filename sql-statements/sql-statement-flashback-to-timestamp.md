@@ -4,26 +4,26 @@ title: FLASHBACK [CLUSTER | DATABASE | TABLE] TO TIMESTAMP
 
 # FLASHBACK [CLUSTER | DATABASE | TABLE] TO TIMESTAMP
 
-TiDB v6.4.0 引入了 `FLASHBACK [CLUSTER | DATABASE | TABLE] TO TIMESTAMP` 语法，其功能是将集群的数据恢复到特定的时间点。
+TiDB v6.4.0 引入了 `FLASHBACK [CLUSTER | DATABASE | TABLE] TO TIMESTAMP` 语法，其功能是将集群、数据库、数据表的数据恢复到特定的时间点。
 
 ## 语法
 
 ```sql
-FLASHBACK TABLE tbl1, tbl2 TO TIMESATMP '2022-09-21 16:02:50';
-FLASHBACK DATABASE db1, db2 TO TIMESATMP '2022-09-21 16:02:50';
 FLASHBACK CLUSTER TO TIMESATMP '2022-09-21 16:02:50';
+FLASHBACK DATABASE db1, db2 TO TIMESATMP '2022-09-21 16:02:50';
+FLASHBACK TABLE tbl1, tbl2 TO TIMESATMP '2022-09-21 16:02:50';
 ```
 
 ### 语法图
 
 ```ebnf+diagram
 FlashbackToTimestampStmt ::=
-    "FLASHBACK" ("TABLE" TableNameList | "DATABASE" DBNameList | "CLUSTER") "TO" "TIMESTAMP" stringLit
+    "FLASHBACK" ("CLUSTER" | "DATABASE" DBNameList | "TABLE" TableNameList) "TO" "TIMESTAMP" stringLit
 ```
 
 ## 注意事项
 
-* `FLASHBACK` 指定的时间点需要在 Garbage Collection (GC) life time 时间内，可以使用系统变量 [`tidb_gc_life_time`](/system-variables.md#tidb_gc_life_time-从-v50-版本开始引入) 配置数据的历史版本的保留时间（默认值是 10m0s）。可以使用以下 SQL 语句查询当前的 safePoint，即 GC 已经清理到的时间点：
+* `FLASHBACK` 指定的时间点需要在 Garbage Collection (GC) life time 时间内，可以使用系统变量 [`tidb_gc_life_time`](/system-variables.md#tidb_gc_life_time-从-v50-版本开始引入) 配置数据的历史版本的保留时间（默认值是 `10m0s`）。可以使用以下 SQL 语句查询当前的 safePoint，即 GC 已经清理到的时间点：
 
 ```sql
 SELECT * FROM mysql.tidb WHERE variable_name = 'tikv_gc_safe_point';
@@ -34,9 +34,9 @@ SELECT * FROM mysql.tidb WHERE variable_name = 'tikv_gc_safe_point';
     * 执行 `FLASHBACK DATABASE` 操作需要有 `DATABASE` 权限。
     * 执行 `FLASHBACK TABLE` 操作需要有 `TALBE` 权限。
 * 在 `FLASHBACK` 指定的时间点到开始执行的时间段内不能存在相关表结构变更的 DDL 记录，若存在，TiDB 会拒绝该 DDL 操作。
-* 在执行 `FLASHBACK [CLUSTER | DATABASE | TABLE] TO TIMESTAMP` 前，TiDB 会主动断开所有相关表上的链接，并在禁止对这些表进行读写操作，直到 `FLASHBACK` 完成。
+* 在执行 `FLASHBACK [CLUSTER | DATABASE | TABLE] TO TIMESTAMP` 前，TiDB 会主动断开所有相关表上的链接，并禁止对这些表进行读写操作，直到 `FLASHBACK` 完成。
 * `FLASHBACK [CLUSTER | DATABASE | TABLE] TO TIMESTAMP` 命令不能取消，一旦开始执行 TiDB 会一直重试，直到成功。
-* 用户可以通过日志查看 flashback 执行进度，具体的日志如下所示：
+* 用户可以通过日志查看 `FLASHBACK` 执行进度，具体的日志如下所示：
 
 ```
 [2022/10/09 17:25:59.316 +08:00] [INFO] [cluster.go:463] ["flashback cluster stats"] ["complete regions"=9] ["total regions"=10] []
