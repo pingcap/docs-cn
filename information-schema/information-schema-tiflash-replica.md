@@ -28,6 +28,8 @@ DESC tiflash_replica;
 +-----------------+-------------+------+------+---------+-------+
 7 rows in set (0.01 sec)
 ```
+`TIFLASH_REPLICA` 表中各列的字段含义如下：
+
 `TABLE_SCHEMA`：表所属的数据库的名称。
 `TABLE_NAME`：表的名称。
 `TABLE_ID`：表的内部 ID，该 ID 在一个 TiDB 集群内部唯一。
