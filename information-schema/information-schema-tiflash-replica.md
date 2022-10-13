@@ -34,4 +34,4 @@ DESC tiflash_replica;
 `REPLICA_COUNT`：TiFlash 副本数。
 `LOCATION_LABELS`：设置 TiFlash 副本时设置的 LocationLabelList。
 `AVAILABLE`：是否支持在 TiFlash 上做查询。如果为 1，TiDB 优化器将依据查询代价智能选择下推查询到 TiKV 或 TiFlash；如果为 0，TiDB 将不会下推查询到 TiFlash。
-`PROGRESS`：TiFlash 副本同步进度，范围是[0,1]，精确到小数点后两位，刷新的精度为分钟级。如果 `PROGRESS` 小于 1，表示 TiFlash 副本落后 TiKV 较多，查询很可能会因为等待数据同步超时而失败。
+`PROGRESS`：TiFlash 副本同步进度，范围是 [0, 1]，精确到小数点后两位，刷新的精度为分钟级。如果 `PROGRESS` 小于 1，表示 TiFlash 副本落后 TiKV 较多，查询很可能会因为等待数据同步超时而失败。
