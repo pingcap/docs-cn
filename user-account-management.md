@@ -211,7 +211,7 @@ TiDB 将密码存在 `mysql.user` 系统数据库里面。只有拥有 `CREATE U
 
 2. 终止该 tidb-server 的进程：
 
-    {{< copyable "shell-regular" >}}
+    查看 tidb-server 的进程：
 
     ```bash
     ps aux | grep tikv-server
