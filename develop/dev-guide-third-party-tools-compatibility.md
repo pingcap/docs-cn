@@ -124,7 +124,7 @@ TiDB 暂不支持 UpdatableResultSet，即请勿指定 `ResultSet.CONCUR_UPDATAB
 
 **规避方法**
 
-使用额外的 `UPDATE` 语句进行数据更新，可使用事务保证数据一致性。
+使用 `UPDATE` 语句进行数据更新，可使用事务保证数据一致性。
 
 ## MySQL JDBC Bug
 
