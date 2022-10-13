@@ -202,28 +202,24 @@ TiDB 将密码存在 `mysql.user` 系统数据库里面。只有拥有 `CREATE U
     2. 进入 TiDB 节点的部署目录下的 `conf` 目录，找到 `tidb.toml` 配置文件。
     3. 在配置文件的 `security` 部分添加配置项 `skip-grant-table`。如无 `security` 部分，则将以下两行内容添加至 tidb.toml 配置文件尾部：
 
-    {{< copyable "" >}}
-
-    ```
-    [security]
-    skip-grant-table = true
-    ```
+        ```
+        [security]
+        skip-grant-table = true
+        ```
 
 2. 终止该 tidb-server 的进程：
 
-    查看 tidb-server 的进程：
+    1. 查看 tidb-server 的进程：
 
-    ```bash
-    ps aux | grep tidb-server
-    ```
+        ```bash
+        ps aux | grep tidb-server
+        ```
 
-    找到 tidb-server 对应的进程 ID (PID) 并使用 `kill` 命令停掉该进程：
+    2. 找到 tidb-server 对应的进程 ID (PID) 并使用 `kill` 命令停掉该进程：
 
-    {{< copyable "shell-regular" >}}
-
-    ```bash
-    kill -9 <pid>
-    ```    
+        ```bash
+        kill -9 <pid>
+        ```    
 
 3. 使用修改之后的配置启动 TiDB：
 
@@ -232,11 +228,9 @@ TiDB 将密码存在 `mysql.user` 系统数据库里面。只有拥有 `CREATE U
     3. 在前台执行目录中的 `run_tidb.sh` 脚本。
     4. 在新的终端窗口中使用 `root` 登录后修改密码：
 
-    {{< copyable "shell-regular" >}}
-
-    ```bash
-    mysql -h 127.0.0.1 -P 4000 -u root
-    ```
+        ```bash
+        mysql -h 127.0.0.1 -P 4000 -u root
+        ```
 
 4. 停止运行 `run_tidb.sh` 脚本，并去掉 第 1 步 中在 TiDB 配置文件中添加的内容，等待 tidb-server 自启动。
 
