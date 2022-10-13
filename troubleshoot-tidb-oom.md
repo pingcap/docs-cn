@@ -128,7 +128,7 @@ TiDB 节点启动后需要加载统计信息到内存中。统计信息的收集
 
 - 调整 session 的生命周期。
 - 调整[连接池的 `wait_timeout` 和 `max_execution_time` 时长](/develop/dev-guide-connection-parameters.md#超时参数)。
-- 使用系统变量 [`max_prepared_stmt_count`](/system-variables.md#max_prepared_stmt_count) 进行限制。
+- 使用系统变量 `max_prepared_stmt_count` 进行限制。
 
 #### 系统变量配置不当
 
