@@ -1847,6 +1847,15 @@ mysql> desc select count(distinct a) from test.t;
     select t.* from t, t1 where t.a=t1.aa;
     ```
 
+### `tidb_opt_join_reorder_threshold`
+
+- 作用域: SESSION | GLOBAL
+- 是否持久化到集群：是
+- 默认值：`0`
+- 范围：`[0, 2147483647]`
+- 这个变量用来控制 TiDB Join Reorder 算法的选择。当参与 Join Reorder 的节点个数大于该阈值时，TiDB 选择贪心算法，小于该阈值时 TiDB 选择动态规划 (dynamic programming) 算法。
+- 目前对于 OLTP 的查询，推荐保持默认值。对于 OLAP 的查询，推荐将变量值设为 10~15 来获得 AP 场景下更好的连接顺序。
+
 ### `tidb_opt_limit_push_down_threshold`
 
 - 作用域：SESSION | GLOBAL
