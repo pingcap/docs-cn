@@ -43,8 +43,6 @@ Load Base Split 后的 Region 不会被迅速 Merge。一方面，PD 的 `MergeC
     SET config tikv split.qps-threshold=1500;
     # 设置 Byte 阈值为 15 MiB (15 * 1024 * 1024)
     SET config tikv split.byte-threshold=15728640;
-    # 设置 CPU 使用率阈值为 50%
-    SET config tikv split.region-cpu-overload-threshold-ratio=0.5;
     ```
 
 - 通过 TiKV 修改，例如：
@@ -54,7 +52,6 @@ Load Base Split 后的 Region 不会被迅速 Merge。一方面，PD 的 `MergeC
     ```shell
     curl -X POST "http://ip:status_port/config" -H "accept: application/json" -d '{"split.qps-threshold":"1500"}'
     curl -X POST "http://ip:status_port/config" -H "accept: application/json" -d '{"split.byte-threshold":"15728640"}'
-    curl -X POST "http://ip:status_port/config" -H "accept: application/json" -d '{"split.region-cpu-overload-threshold-ratio":"0.5"}'
     ```
 
 同理，目前也有两种办法查看配置：
@@ -64,7 +61,7 @@ Load Base Split 后的 Region 不会被迅速 Merge。一方面，PD 的 `MergeC
     {{< copyable "sql" >}}
 
     ```sql
-    show config where type='tikv' and name like '%split.qps-threshold%'
+    show config where type='tikv' and name like '%split.qps-threshold%';
     ```
 
 - 通过 TiKV 查看，例如：
