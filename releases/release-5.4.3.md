@@ -53,7 +53,7 @@ TiDB 版本：5.4.3
 
     - 修复了 PD leader 发生切换或重启 PD 后，在集群中执行 SQL 语句会出现持续报错的问题 [#12934](https://github.com/tikv/tikv/issues/12934)
         - 问题原因：该问题是由于 TiKV 存在 bug，TiKV 向 PD client 发送心跳请求失败后不会重试，只能等待与 PD client 重连。这样，故障 TiKV 节点上的 Region 的信息会逐步变旧，使得 TiDB 无法获取最新的 Region 信息，导致 SQL 执行出错。
-        - 影响版本：v5.3.2 和 v5.4.2。目前该问题已在 v5.3.3 和 v5.3.4 上修复。如果你使用 v5.4.2 的 TiDB 集群，可以升级至 v5.4.3。
+        - 影响版本：v5.3.2 和 v5.4.2。目前该问题已在 v5.3.3 和 v5.4.3 上修复。如果你使用 v5.4.2 的 TiDB 集群，可以升级至 v5.4.3。
         - 规避方法：除升级外，你还可以重启无法向 PD 发送 Region 心跳的 TiKV 节点，直至不再有待发送的 Region 心跳为止。
     - 修复 Web 身份提供程序 (web identity provider) 报错并失效后，自动恢复为默认提供程序 (default provider) 时出现权限拒绝的问题 [#13122](https://github.com/tikv/tikv/issues/13122)
     - 修复 PD 客户端可能会出现死锁的问题 [#13191](https://github.com/tikv/tikv/issues/13191)
