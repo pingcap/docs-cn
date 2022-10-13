@@ -226,7 +226,12 @@ TiDB 将密码存在 `mysql.user` 系统数据库里面。只有拥有 `CREATE U
     kill -9 <pid>
     ```    
 
-3. 使用修改之后的配置启动 TiDB，在tidb节点部署目录下的scripts目录中，切换到操作系统`root`账号下在前台执行`run_tidb.sh`脚本，然后另开一个终端使用 `root` 登录后修改密码：
+3. 使用修改之后的配置启动 TiDB：
+
+    1. 进入 TiDB 节点部署目录下的 `scripts` 目录。
+    2. 切换到操作系统 `root` 账号。
+    3. 在前台执行目录中的 `run_tidb.sh` 脚本。
+    4. 在新的终端窗口中使用 `root` 登录后修改密码：
 
     {{< copyable "shell-regular" >}}
 
