@@ -183,3 +183,7 @@ select id, floor(value/100) as val
 from tbl_name
 group by id, val;
 ```
+
+## 相关系统变量
+
+`group_concat_max_len` 变量设置 `GROUP_CONCAT()` 函数中的最大项目数。
