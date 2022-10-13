@@ -46,9 +46,9 @@ Load Base Split 后的 Region 不会被迅速 Merge。一方面，PD 的 `MergeC
 
     ```sql
     # 设置 QPS 阈值为 1500
-    set config tikv split.qps-threshold=1500;
+    SET config tikv split.qps-threshold=1500;
     # 设置 Byte 阈值为 15 MiB (15 * 1024 * 1024)
-    set config tikv split.byte-threshold=15728640;
+    SET config tikv split.byte-threshold=15728640;
     ```
 
 - 通过 TiKV 修改，例如：
