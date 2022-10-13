@@ -196,7 +196,11 @@ TiDB 将密码存在 `mysql.user` 系统数据库里面。只有拥有 `CREATE U
 
 ## 忘记 `root` 密码
 
-1. 修改配置文件，登录其中一台tidb-server所在机器，在tidb节点部署目录下的conf目录中，找到tidb.toml配置文件，在 `security` 部分添加 `skip-grant-table`，如无`security` 部分则将如下两行添加至tidb.toml配置文件尾部：
+1. 修改 TiDB 配置文件：
+
+    1. 登录其中一台 tidb-server 实例所在的机器。
+    2. 进入 TiDB 节点的部署目录下的 `conf` 目录，找到 `tidb.toml` 配置文件。
+    3. 在配置文件的 `security` 部分添加配置项 `skip-grant-table`。如无 `security` 部分，则将以下两行内容添加至 tidb.toml 配置文件尾部：
 
     {{< copyable "" >}}
 
