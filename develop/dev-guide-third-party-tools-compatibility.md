@@ -120,7 +120,7 @@ TiDB 不支持 [enablePacketDebug](https://dev.mysql.com/doc/connector-j/8.0/en/
 
 **描述**
 
-TiDB 暂不支持 UpdatableResultSet，即请勿指定 `ResultSet.CONCUR_UPDATABLE` 参数，并在 ResultSet 内部进行数据更新。
+TiDB 暂不支持 `UpdatableResultSet`，即请勿指定 `ResultSet.CONCUR_UPDATABLE` 参数，也不要在 `ResultSet` 内部进行数据更新。
 
 **规避方法**
 
