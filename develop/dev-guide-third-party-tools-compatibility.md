@@ -61,7 +61,7 @@ TiDB 不支持 `CHECK TABLE` 语句。
 
 在 TiDB 中使用 [`ADMIN CHECK [TABLE|INDEX]`](/sql-statements/sql-statement-admin-check-table-index.md) 语句进行表中数据和对应索引的一致性校验。
 
-## 与 MySQL JDBC 兼容性说明
+## 与 MySQL JDBC 的兼容性
 
 测试版本为 MySQL Connector/J 8.0.29。
 
@@ -81,17 +81,17 @@ MySQL Connector/J 的排序规则保存在客户端内，通过获取的服务�
 
 **规避方法**
 
-手动设置排序规则，不要依赖客户端默认排序规则。客户端默认排序规则由 MySQL Connector/J 配置文件保存。
+在 TiDB 中手动设置排序规则，不要依赖客户端默认排序规则。客户端默认排序规则由 MySQL Connector/J 配置文件保存。
 
 ### 参数 `NO_BACKSLASH_ESCAPES` 不生效
 
 **描述**
 
-无法使用 `NO_BACKSLASH_ESCAPES` 参数从而不进行 `\` 字符的转义。已提 [issue](https://github.com/pingcap/tidb/issues/35302)。
+TiDB 中 无法使用 `NO_BACKSLASH_ESCAPES` 参数从而不进行 `\` 字符的转义。已提 [issue](https://github.com/pingcap/tidb/issues/35302)。
 
 **规避方法**
 
-不搭配使用 `NO_BACKSLASH_ESCAPES` 与 `\`，而是使用 `\\` 进行 SQL 编写。
+在 TiDB 中不搭配使用 `NO_BACKSLASH_ESCAPES` 与 `\`，而是使用 `\\` 编写 SQL 语句。
 
 ### 未设置索引使用情况参数
 
@@ -154,5 +154,5 @@ MySQL Connector/J 8.0.29 在与 5.7.5 版本以下的 MySQL 服务端，或使�
 
 TiDB 对其进行了两个维度的修复：
 
-- 客户端方面：可使用 [pingcap/mysql-connector-j](https://github.com/pingcap/mysql-connector-j) 替换官方的 MySQL Connector/J。**pingcap/mysql-connector-j** 中修复了该 Bug。
-- 服务端方面：可升级服务端至 6.3.0 版本或以上。TiDB 在 6.3.0 版本修复了此兼容问题。
+- 客户端方面：**pingcap/mysql-connector-j** 中修复了该 Bug，你可以使用 [pingcap/mysql-connector-j](https://github.com/pingcap/mysql-connector-j) 替换官方的 MySQL Connector/J。
+- 服务端方面：TiDB v6.3.0 修复了此兼容性问题，你可以升级服务端至 v6.3.0 或以上版本。
