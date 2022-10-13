@@ -61,7 +61,7 @@ TiDB 不支持 `CHECK TABLE` 语句。
 
 在 TiDB 中使用 [`ADMIN CHECK [TABLE|INDEX]`](/sql-statements/sql-statement-admin-check-table-index.md) 语句进行表中数据和对应索引的一致性校验。
 
-## MySQL JDBC 不兼容
+## 与 MySQL JDBC 兼容性说明
 
 测试版本为 MySQL Connector/J 8.0.29。
 
