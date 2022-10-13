@@ -197,24 +197,47 @@ TiDB 将密码存在 `mysql.user` 系统数据库里面。只有拥有 `CREATE U
 
 ## 忘记 `root` 密码
 
-1. 修改配置文件，在 `security` 部分添加 `skip-grant-table`：
+1. 修改 TiDB 配置文件：
 
-    {{< copyable "" >}}
+    1. 登录其中一台 tidb-server 实例所在的机器。
+    2. 进入 TiDB 节点的部署目录下的 `conf` 目录，找到 `tidb.toml` 配置文件。
+    3. 在配置文件的 `security` 部分添加配置项 `skip-grant-table`。如无 `security` 部分，则将以下两行内容添加至 tidb.toml 配置文件尾部：
 
-    ```
-    [security]
-    skip-grant-table = true
-    ```
+        ```
+        [security]
+        skip-grant-table = true
+        ```
 
-2. 使用修改之后的配置启动 TiDB，然后使用 `root` 登录后修改密码：
+2. 终止该 tidb-server 的进程：
 
-    {{< copyable "shell-regular" >}}
+    1. 查看 tidb-server 的进程：
 
-    ```bash
-    mysql -h 127.0.0.1 -P 4000 -u root
-    ```
+        ```bash
+        ps aux | grep tidb-server
+        ```
 
-设置 `skip-grant-table` 之后，启动 TiDB 进程会增加操作系统用户检查，只有操作系统的 `root` 用户才能启动 TiDB 进程。
+    2. 找到 tidb-server 对应的进程 ID (PID) 并使用 `kill` 命令停掉该进程：
+
+        ```bash
+        kill -9 <pid>
+        ```    
+
+3. 使用修改之后的配置启动 TiDB：
+
+    > **注意：**
+    >
+    > 设置 `skip-grant-table` 之后，启动 TiDB 进程会增加操作系统用户检查，只有操作系统的 `root` 用户才能启动 TiDB 进程。
+
+    1. 进入 TiDB 节点部署目录下的 `scripts` 目录。
+    2. 切换到操作系统 `root` 账号。
+    3. 在前台执行目录中的 `run_tidb.sh` 脚本。
+    4. 在新的终端窗口中使用 `root` 登录后修改密码：
+
+        ```bash
+        mysql -h 127.0.0.1 -P 4000 -u root
+        ```
+
+4. 停止运行 `run_tidb.sh` 脚本，并去掉 第 1 步 中在 TiDB 配置文件中添加的内容，等待 tidb-server 自启动。
 
 ## `FLUSH PRIVILEGES`
 
