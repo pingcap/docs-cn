@@ -223,6 +223,10 @@ TiDB 将密码存在 `mysql.user` 系统数据库里面。只有拥有 `CREATE U
 
 3. 使用修改之后的配置启动 TiDB：
 
+    > **注意：**
+    >
+    > 设置 `skip-grant-table` 之后，启动 TiDB 进程会增加操作系统用户检查，只有操作系统的 `root` 用户才能启动 TiDB 进程。
+
     1. 进入 TiDB 节点部署目录下的 `scripts` 目录。
     2. 切换到操作系统 `root` 账号。
     3. 在前台执行目录中的 `run_tidb.sh` 脚本。
@@ -233,8 +237,6 @@ TiDB 将密码存在 `mysql.user` 系统数据库里面。只有拥有 `CREATE U
         ```
 
 4. 停止运行 `run_tidb.sh` 脚本，并去掉 第 1 步 中在 TiDB 配置文件中添加的内容，等待 tidb-server 自启动。
-
-设置 `skip-grant-table` 之后，启动 TiDB 进程会增加操作系统用户检查，只有操作系统的 `root` 用户才能启动 TiDB 进程。
 
 ## `FLUSH PRIVILEGES`
 
