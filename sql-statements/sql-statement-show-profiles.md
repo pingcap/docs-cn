@@ -19,7 +19,7 @@ The `SHOW PROFILES` statement currently only returns an empty result.
 {{< copyable "sql" >}}
 
 ```sql
-SHOW PROFILES
+SHOW PROFILES;
 ```
 
 ```

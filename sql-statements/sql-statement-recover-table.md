@@ -13,13 +13,13 @@ aliases: ['/docs/dev/sql-statements/sql-statement-recover-table/','/docs/dev/ref
 {{< copyable "sql" >}}
 
 ```sql
-RECOVER TABLE table_name
+RECOVER TABLE table_name;
 ```
 
 {{< copyable "sql" >}}
 
 ```sql
-RECOVER TABLE BY JOB ddl_job_id
+RECOVER TABLE BY JOB ddl_job_id;
 ```
 
 ## Synopsis

@@ -15,7 +15,7 @@ This statement is used to list all supported storage engines. The syntax is incl
 ![ShowEnginesStmt](/media/sqlgram/ShowEnginesStmt.png)
 
 ```sql
-SHOW ENGINES
+SHOW ENGINES;
 ```
 
 ## Examples

@@ -47,10 +47,13 @@ To modify the parameter, take either of the following two methods:
 
 - Use a SQL statement:
 
-    {{< copyable "sql" >}}
-
     ```sql
-    set config tikv split.qps-threshold=3000
+    # Set the QPS threshold to 1500
+    SET config tikv split.qps-threshold=1500;
+    # Set the byte threshold to 15 MiB (15 * 1024 * 1024)
+    SET config tikv split.byte-threshold=15728640;
+    # Set the CPU usage threshold to 50%
+    SET config tikv split.region-cpu-overload-threshold-ratio=0.5;
     ```
 
 - Use TiKV:
@@ -58,7 +61,9 @@ To modify the parameter, take either of the following two methods:
     {{< copyable "shell-regular" >}}
 
     ```shell
-    curl -X POST "http://ip:status_port/config" -H "accept: application/json" -d '{"split.qps-threshold":"3000"}'
+    curl -X POST "http://ip:status_port/config" -H "accept: application/json" -d '{"split.qps-threshold":"1500"}'
+    curl -X POST "http://ip:status_port/config" -H "accept: application/json" -d '{"split.byte-threshold":"15728640"}'
+    curl -X POST "http://ip:status_port/config" -H "accept: application/json" -d '{"split.region-cpu-overload-threshold-ratio":"0.5"}'
     ```
 
 Accordingly, you can view the configuration by either of the following two methods:
@@ -68,7 +73,7 @@ Accordingly, you can view the configuration by either of the following two metho
     {{< copyable "sql" >}}
 
     ```sql
-    show config where type='tikv' and name like '%split.qps-threshold%'
+    show config where type='tikv' and name like '%split.qps-threshold%';
     ```
 
 - Use TiKV:
