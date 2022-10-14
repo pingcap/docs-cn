@@ -325,7 +325,6 @@ mysql> SELECT * FROM t1;
 >
 > `max_execution_time` 目前对所有类型的语句生效，并非只对 `SELECT` 语句生效，与 MySQL 不同（只对`SELECT` 语句生效）。实际精度在 100ms 级别，而非更准确的毫秒级别。
 
-<<<<<<< HEAD
 ### `max_allowed_packet` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
@@ -334,7 +333,6 @@ mysql> SELECT * FROM t1;
 - 取值范围：`[1024, 1073741824]`，且应当为 1024 的整数倍；若取值无法被 1024 整除，则会提示 warning 并向下取整。例如设置为 1025 时，则 TiDB 中的实际取值为 1024。
 - 服务器端和客户端在一次传送数据包的过程中所允许最大的数据包大小，单位为字节。
 - 该变量的行为与 MySQL 兼容。
-=======
 ### `max_prepared_stmt_count`
 
 - 作用域：GLOBAL
@@ -366,7 +364,6 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 +-------------------------+---------+
 1 row in set (0.00 sec)
 ```
->>>>>>> ba24d105b (sysvar: add 12 missing planner sysvars (#10940))
 
 ### `plugin_dir`
 
@@ -1658,11 +1655,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 默认值：`OFF`
 - 这个变量用来设置优化器是否执行聚合函数下推到 Join，Projection 和 UnionAll 之前的优化操作。当查询中聚合操作执行很慢时，可以尝试设置该变量为 ON。
 
-<<<<<<< HEAD
 ### `tidb_opt_broadcast_cartesian_join`
-=======
-### `tidb_opt_cartesian_bcj`
->>>>>>> ba24d105b (sysvar: add 12 missing planner sysvars (#10940))
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
@@ -1682,11 +1675,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 默认值：`3.0`
 - 表示在 TiDB 中开启一个 Golang goroutine 的 CPU 开销。该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
 
-<<<<<<< HEAD
 ### `tidb_opt_copcpu_factor`
-=======
-### `tidb_opt_cop_cpu_factor`
->>>>>>> ba24d105b (sysvar: add 12 missing planner sysvars (#10940))
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
@@ -1720,11 +1709,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 默认值：`3.0`
 - 表示 TiDB 处理一行数据的 CPU 开销。该变量是[代价模型](/cost-model.md)内部使用的变量，不建议修改该变量的值。
 
-<<<<<<< HEAD
 ### `tidb_opt_desc_factor`
-=======
-### `tidb_opt_desc_scan_factor`
->>>>>>> ba24d105b (sysvar: add 12 missing planner sysvars (#10940))
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
@@ -1890,8 +1875,6 @@ explain select * from t where age=5;
 3 rows in set (0.00 sec)
 ```
 
-<<<<<<< HEAD
-=======
 ### `tidb_opt_projection_push_down` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
 - 作用域：SESSION
@@ -1918,18 +1901,6 @@ explain select * from t where age=5;
 - 默认值：`20`
 - 表示 TiDB 从 TiKV 请求数据的初始开销。该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
 
-### `tidb_opt_skew_distinct_agg` <span class="version-mark">从 v6.2.0 版本开始引入</span>
-
-> **注意：**
->
-> 开启该变量带来的查询性能优化仅对 TiFlash 有效。
-
-- 作用域：SESSION | GLOBAL
-- 是否持久化到集群：是
-- 默认值：`OFF`
-- 这个变量用来设置优化器是否将带有 `DISTINCT` 的聚合函数（例如 `SELECT b, count(DISTINCT a) FROM t GROUP BY b`）改写为两层聚合函数（例如 `SELECT b, count(a) FROM (SELECT b, a FROM t GROUP BY b, a) t GROUP BY b`）。当聚合列有严重的数据倾斜，且 `DISTINCT` 列有很多不同的值时，这种改写能够避免查询执行过程中的数据倾斜，从而提升查询性能。
-
->>>>>>> ba24d105b (sysvar: add 12 missing planner sysvars (#10940))
 ### `tidb_opt_write_row_id`
 
 - 作用域：SESSION
