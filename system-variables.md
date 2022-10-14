@@ -1358,18 +1358,12 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-<<<<<<< HEAD
 - 类型：布尔型
 - 默认值：`ON`
-=======
-- 类型：布尔值
-- 默认值：`OFF`
->>>>>>> 744737e3a (Add 3 transaction related sysvar (#10908))
 - 此变量控制异步提交 (Async Commit) 中提交时间戳的计算方式。默认情况下（使用 `OFF` 值），两阶段提交从 PD 服务器请求一个新的时间戳，并使用该时间戳计算最终提交的时间戳，这样可保证所有并发事务可线性化。
 - 如果将该变量值设为 `ON`，从 PD 获取的时间戳的操作会被省掉，这种情况下只保证因果一致性但不保证线性一致性。详情请参考 PingCAP 博文 [Async Commit 原理介绍](https://pingcap.com/zh/blog/async-commit-principle)。
 - 对于需要只保证因果一致性的场景，可将此变量设为 `ON` 以提升性能。
 
-<<<<<<< HEAD
 ### `tidb_hash_exchange_with_new_collation`
 
 - 作用域：SESSION | GLOBAL
@@ -1379,8 +1373,6 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 该值表示是否在开启 new collation 的集群里生成 MPP hash partition exchange 算子。`true` 表示生成此算子，`false`表示不生成。
 - 该变量为 TiDB 内部变量，**不推荐设置该变量**。
 
-=======
->>>>>>> 744737e3a (Add 3 transaction related sysvar (#10908))
 ### `tidb_hash_join_concurrency`
 
 > **警告：**
