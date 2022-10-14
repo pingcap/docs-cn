@@ -17,8 +17,10 @@ TiDB 作为一款开源分布式 NewSQL 数据库，可以很好地部署和运�
 
     |  操作系统   |   支持的 CPU 架构   |
     |   :---   |   :---   |
-    | <ul><li>Red Hat Enterprise Linux 8.4 及以上的 8.x 版本</li><li>CentOS 8.4 及以上的 8.x 版本</li></ul>  |  <ul><li>x86_64</li><li>ARM 64</li></ul>  |
+    | Red Hat Enterprise Linux 8.4 及以上的 8.x 版本  |  <ul><li>x86_64</li><li>ARM 64</li></ul>  |
+    | CentOS 8 Stream |  <ul><li>x86_64</li><li>ARM 64</li></ul>  |
     | <ul><li>Red Hat Enterprise Linux 7.3 及以上的 7.x 版本</li><li>CentOS 7.3 及以上的 7.x 版本</li></ul>  |  <ul><li>x86_64</li><li>ARM 64</li></ul>   |
+    |  Amazon Linux 2         |  <ul><li>x86_64</li><li>ARM 64</li></ul>   |
     | 麒麟欧拉版 V10 SP1/SP2   |   <ul><li>x86_64</li><li>ARM 64</li></ul>   |
     | UOS V20                 |   <ul><li>x86_64</li><li>ARM 64</li></ul>   |
 
