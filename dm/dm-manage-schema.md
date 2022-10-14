@@ -7,30 +7,38 @@ summary: Learn how to manage the schema of the table to be migrated in DM.
 
 This document describes how to manage the schema of the table in DM during migration using [dmctl](/dm/dmctl-introduction.md).
 
+When DM performs incremental replication, it first reads the upstream binlog, then creates SQL statements and executes them in the downstream. However, the upstream binlog does not contain the complete table schema. To generate the SQL statements, DM maintains internally the schema information of the table to be migrated. This is called the internal table schema.
+
+To deal with some special occasions, or to handle migration interruptions caused by mismatch of the table schemas, DM provides the `binlog-schema` command to obtain, modify, and delete the internal table schema.
+
 ## Implementation principles
 
-When you migrate tables using DM, DM performs the following operations on the table schema:
+The internal table schema comes from the following sources:
 
-- For full export and import, DM directly exports the upstream table schema of the current time to SQL files and applies the table schema to the downstream.
+- For full data migration (`task-mode=all`), the migration task goes through three stages: dump/load/sync, which means full export, full import, and incremental replication. In the dump stage, DM exports the table schema information along with the data and automatically creates the corresponding table in the downstream. In the sync stage, this table schema is used as the starting table scheme for incremental replication.
+- In the sync stage, when DM handles DDL statements such as `ALTER TABLE`, it updates the internal table schema at the same time.
+- If the task is an incremental migration (`task-mode=incremental`), in which the downstream has completed creating the table to be migrated, DM obtains the table schema information from the downstream database. This behavior varies with DM versions.
 
-- For incremental replication, the whole data link contains the following table schemas, which might be the same or different:
+For incremental replication, schema maintenance is complicated. During the whole data replication, the following four table schemas are involved. These schemas might be the consistent or inconsistent with one another:
 
-    ![schema](/media/dm/operate-schema.png)
+![schema](/media/dm/operate-schema.png)
 
-    * The upstream table schema at the current time, identified as `schema-U`.
-    * The table schema of the binlog event currently being consumed by DM, identified as `schema-B`. This schema corresponds to the upstream table schema at a historical time.
-    * The table schema currently maintained in DM (the schema tracker component), identified as `schema-I`.
-    * The table schema in the downstream TiDB cluster, identified as `schema-D`.
+* The upstream table schema at the current time, identified as `schema-U`.
+* The table schema of the binlog event currently being consumed by DM, identified as `schema-B`. This schema corresponds to the upstream table schema at a historical time.
+* The table schema currently maintained in DM (the schema tracker component), identified as `schema-I`.
+* The table schema in the downstream TiDB cluster, identified as `schema-D`.
 
-    In most cases, the four table schemas above are the same.
+In most cases, the preceding four table schemas are consistent.
 
 When the upstream database performs a DDL operation to change the table schema, `schema-U` is changed. By applying the DDL operation to the internal schema tracker component and the downstream TiDB cluster, DM updates `schema-I` and `schema-D` in an orderly manner to keep them consistent with `schema-U`. Therefore, DM can then normally consume the binlog event corresponding to the `schema-B` table schema. That is, after the DDL operation is successfully migrated, `schema-U`, `schema-B`, `schema-I`, and `schema-D` are still consistent.
 
-However, during the migration with [optimistic mode sharding DDL support](/dm/feature-shard-merge-optimistic.md) enabled, the `schema-D` of the downstream table might be inconsistent with the `schema-B` and `schema-I` of some upstream sharded tables. In such cases, DM still keeps `schema-I` and `schema-B` consistent to ensure that the binlog event corresponding to DML can be parsed normally.
+Note the following situations that might cause inconsistency:
 
-In addition, in some scenarios (such as when the downstream table has more columns than the upstream table), `schema-D` might be inconsistent with `schema-B` and `schema-I`.
+- During the migration with [optimistic mode sharding DDL support](/dm/feature-shard-merge-optimistic.md) enabled, the `schema-D` of the downstream table might be inconsistent with the `schema-B` and `schema-I` of some upstream sharded tables. In such cases, DM still keeps `schema-I` and `schema-B` consistent to ensure that the binlog event corresponding to DML can be parsed normally.
 
-To support the scenarios mentioned above and handle other migration interruptions caused by schema inconsistency, DM provides the `binlog-schema` command to obtain, modify, and delete the `schema-I` table schema maintained in DM.
+- When the downstream table has more columns than the upstream table, `schema-D` might be inconsistent with `schema-B` and `schema-I`. In the full data migration (`task-mode=all`), DM automatically handles inconsistency. In the incremental migration (`task-mode=incremental`), because the task is on a first start and there is no internal schema information yet, DM automatically reads the downstream schema (`schema-D`) and updates `schema-I` (this behavior varies with DM versions). After that, if DM uses `schema-I` to parse `schema-B`'s binlog, it will report `Column count doesn't match value count` error. For details, refer to [Migrate Data to a Downstream TiDB Table with More Columns](/migrate-with-more-columns-downstream.md).
+
+You can run the `binlog-schema` command to obtain, modify, or delete the `schema-I` table schema maintained in DM.
 
 > **Note:**
 >

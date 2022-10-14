@@ -56,7 +56,7 @@ When DM tries to use the downstream table schema to parse the binlog event gener
 
 In such cases, you can use the `binlog-schema` command to set a table schema for the table to be migrated from the data source. The specified table schema needs to correspond to the binlog event data to be replicated by DM. If you are migrating sharded tables, for each sharded table, you need to set a table schema in DM to parse binlog event data. The steps are as follows:
 
-1. Create a SQL file in DM and add the `CREATE TABLE` statement that corresponds to the upstream table schema to the file. For example, save the following table schema to `log.messages.sql`.
+1. Create a SQL file in DM and add the `CREATE TABLE` statement that corresponds to the upstream table schema to the file. For example, save the following table schema to `log.messages.sql`. For DM v6.0 or later versions, you can update the table schema by adding the `--from-source` or `--from-target` flag without creating a SQL file. For details, see [Manage Table Schemas of Tables to be Migrated](/dm/dm-manage-schema.md).
 
     ```sql
     # Upstream table schema
