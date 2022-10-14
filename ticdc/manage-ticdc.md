@@ -350,6 +350,9 @@ URI 中可配置的的参数如下：
 
 更多关于 Pulsar 的参数解释，参见 [“pulsar-client-go ClientOptions 文档”](https://godoc.org/github.com/apache/pulsar-client-go/pulsar#ClientOptions) 和 [“pulsar-client-go ProducerOptions 文档”](https://godoc.org/github.com/apache/pulsar-client-go/pulsar#ProducerOptions) 。
 
+#### Sink URI 配置 `s3`/`azure blob storage`/`gcs`/`nfs`
+
+
 #### 使用同步任务配置文件
 
 如需设置更多同步任务的配置，比如指定同步单个数据表，请参阅[同步任务配置文件描述](#同步任务配置文件描述)。
@@ -648,6 +651,9 @@ dispatchers = [
 # 对于 MQ 类的 Sink，可以指定消息的协议格式
 # 目前支持 canal-json、open-protocol、canal、avro 和 maxwell 五种协议。
 protocol = "canal-json"
+
+[sink.csv]
+
 ```
 
 ### 配置文件兼容性的注意事项
