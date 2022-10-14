@@ -17,7 +17,7 @@ TiDB 存储节点在后台会自动发起数据整理（Compaction）。数据�
 
 ```ebnf+diagram
 AlterTableCompactStmt ::=
-    'ALTER' 'TABLE' TableName 'COMPACT' ( 'TIFLASH' 'REPLICA' )?
+    'ALTER' 'TABLE' TableName 'COMPACT' ( 'PARTITION' PartitionNameList )? ( 'TIFLASH' 'REPLICA' )?
 ```
 
 自 v6.2.0 起，语法中 `TIFLASH REPLICA` 部分可以被省略。省略后语句含义不变，同样只对 TiFlash 列存有效。
@@ -50,6 +50,11 @@ ALTER TABLE employees SET TIFLASH REPLICA 2;
 
 ```sql
 ALTER TABLE employees COMPACT TIFLASH REPLICA;
+```
+
+执行以下语句可对 `employees` 表上 pNorth、pEast 这两个分区的 2 个 TiFlash 副本立即进行数据整理：
+```sql
+ALTER TABLE employees COMPACT PARTITION pNorth,pEast TIFLASH REPLICA;
 ```
 
 ## 并发度
@@ -143,7 +148,7 @@ SELECT PARTITION_NAME, TOTAL_DELTA_ROWS, TOTAL_STABLE_ROWS
 +----------------+------------------+-------------------+
 -- 一些分区上有数据可被整理
 
-ALTER TABLE employees COMPACT TIFLASH REPLICA;
+ALTER TABLE employees COMPACT PARTITION pNorth,pEast TIFLASH REPLICA;
 
 SELECT PARTITION_NAME, TOTAL_DELTA_ROWS, TOTAL_STABLE_ROWS
     FROM INFORMATION_SCHEMA.TIFLASH_TABLES t, INFORMATION_SCHEMA.PARTITIONS p
