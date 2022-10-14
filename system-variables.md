@@ -1484,8 +1484,6 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 默认值：`tikv,tiflash,tidb`
 - 这个变量用于设置 TiDB 在读取数据时可以使用的存储引擎列表。
 
-<<<<<<< HEAD
-=======
 ### `tidb_last_query_info` <span class="version-mark">从 v4.0.14 版本开始引入</span>
 
 - 作用域：SESSION
@@ -1508,7 +1506,6 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
     - 事务从异步提交或一阶段提交到两阶段提交的回退信息
     - 遇到的错误
 
->>>>>>> 4bb02439c (add doc for tidb_last_query_info and tidb_shard_allocate_step (#11045))
 ### `tidb_log_file_max_days` <span class="version-mark">从 v5.3.0 版本开始引入</span>
 
 - 作用域：SESSION
