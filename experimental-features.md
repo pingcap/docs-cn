@@ -26,7 +26,8 @@ aliases: ['/docs-cn/dev/experimental-features-4.0/','/zh/tidb/dev/experimental-f
 
 ## 调度功能
 
-弹性调度功能。结合 Kubernetes，可根据实时负载状态，动态扩缩节点，能够有效地缓解业务高峰的压力并且节约不必要的成本开销。详情参阅：[启用 TidbCluster 弹性伸缩](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/enable-tidb-cluster-auto-scaling)。（v4.0 实验特性）
++ 弹性调度功能。结合 Kubernetes，可根据实时负载状态，动态扩缩节点，能够有效地缓解业务高峰的压力并且节约不必要的成本开销。详情参阅：[启用 TidbCluster 弹性伸缩](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/enable-tidb-cluster-auto-scaling)。（v4.0 实验特性）
++ [调整 PD 中的热点均衡调度器使用的算法版本](./pd-control.md#scheduler-config-balance-hot-region-scheduler)
 
 ## SQL 功能
 
