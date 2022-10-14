@@ -98,7 +98,7 @@ implementation group: 'org.bouncycastle', name: 'bcpkix-jdk15on', version: '1.67
 </div>
 </SimpleTab>
 
-### Java ORM Framework
+### Java ORM 框架
 
 > **注意：**
 >
@@ -227,7 +227,7 @@ implementation group: 'io.github.lastincisor', name: 'tidb-loadbalance', version
 
 有关一个完整的实例应用程序，可参阅使用 [TiDB 和 go-sql-driver/mysql 构建一个 Golang 应用](/develop/dev-guide-sample-application-golang.md#第-2-步获取代码)。
 
-### Golang ORM Framework
+### Golang ORM 框架
 
 **GORM**
 
