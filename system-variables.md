@@ -334,6 +334,38 @@ mysql> SELECT * FROM t1;
 - 服务器端和客户端在一次传送数据包的过程中所允许最大的数据包大小，单位为字节。
 - 该变量的行为与 MySQL 兼容。
 
+### `max_prepared_stmt_count`
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 类型：整数
+- 默认值：`-1`
+- 范围：`[-1, 1048576]`
+- 指定一个会话中 [`PREPARE`](/sql-statements/sql-statement-prepare.md) 语句的最大数量。
+- 值为 `-1` 时表示不对会话中的 `PREPARE` 语句数量进行限制。
+- 如果将变量值设为超过上限 `1048576`，则使用上限值 `1048576`：
+
+```sql
+mysql> SET GLOBAL max_prepared_stmt_count = 1048577;
+Query OK, 0 rows affected, 1 warning (0.01 sec)
+
+mysql> SHOW WARNINGS;
++---------+------+--------------------------------------------------------------+
+| Level   | Code | Message                                                      |
++---------+------+--------------------------------------------------------------+
+| Warning | 1292 | Truncated incorrect max_prepared_stmt_count value: '1048577' |
++---------+------+--------------------------------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
++-------------------------+---------+
+| Variable_name           | Value   |
++-------------------------+---------+
+| max_prepared_stmt_count | 1048576 |
++-------------------------+---------+
+1 row in set (0.00 sec)
+```
+
 ### `plugin_dir`
 
 - 作用域：GLOBAL
@@ -999,6 +1031,14 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 默认值：在 v6.1.0 中为 `ON`，即默认开启。在 v6.1.0 之后的版本中为 `OFF`，即默认关闭。
 - 自 v6.1.0 起，TiDB 的 [Join Reorder 算法](/join-reorder.md) 开始支持 Outer Join。该变量用于控制这个支持行为。默认关闭，即不启用 Outer Join 的 Join Reorder。
 - 对于从 v6.1.0 之前版本升级到 v6.1.0 及之后的版本，该变量的默认值为 `OFF`。对于从 v6.1.0 版本升级到之后的版本，该变量默认值为 `ON`。
+
+### `tidb_enable_ordered_result_mode`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 默认值：`OFF`
+- 指定是否对最终的输出结果进行自动排序。
+- 例如，开启该变量后，TiDB 会将 `SELECT a, MAX(b) FROM t GROUP BY a` 处理为 `SELECT a, MAX(b) FROM t GROUP BY a ORDER BY a, MAX(b)`。
 
 ### `tidb_enable_paging` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 
@@ -1835,6 +1875,32 @@ explain select * from t where age=5;
 +-------------------------------+------------+-----------+-----------------------------+-------------------------------+
 3 rows in set (0.00 sec)
 ```
+
+### `tidb_opt_projection_push_down` <span class="version-mark">从 v6.1.0 版本开始引入</span>
+
+- 作用域：SESSION
+- 是否持久化到集群：否
+- 类型：布尔值
+- 默认值：`OFF`
+- 指定是否允许优化器将 `Projection` 算子下推到 TiKV 或者 TiFlash。
+
+### `tidb_opt_scan_factor`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 类型：浮点数
+- 范围：`[0, 2147483647]`
+- 默认值：`1.5`
+- 表示升序扫描时，TiKV 在磁盘上扫描一行数据的开销。该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
+
+### `tidb_opt_seek_factor`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 类型：浮点数
+- 范围：`[0, 2147483647]`
+- 默认值：`20`
+- 表示 TiDB 从 TiKV 请求数据的初始开销。该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
 
 ### `tidb_opt_write_row_id`
 
