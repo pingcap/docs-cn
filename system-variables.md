@@ -1748,7 +1748,10 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 默认值：`0.7`
 - 范围：`[0.0, 1.0]`
 - TiDB 内存使用占总内存的比例超过一定阈值时会报警，如果配置该选项为 `0` 或 `1`，则表示关闭内存阈值报警功能。
-- 当内存阈值报警功能开启时，如果配置项 [`server-memory-quota`](/tidb-configuration-file.md#server-memory-quota-从-v409-版本开始引入) 未设置，则内存报警阈值为 `tidb_memory-usage-alarm-ratio * 系统内存大小`；如果 `server-memory-quota` 被设置且大于 0，则内存报警阈值为 `tidb_memory-usage-alarm-ratio * server-memory-quota`。
+- 当内存阈值报警功能开启时：
+
+    - 如果配置项 [`server-memory-quota`](/tidb-configuration-file.md#server-memory-quota-从-v409-版本开始引入) 未设置，则内存报警阈值为 `tidb_memory-usage-alarm-ratio * 系统内存大小`。
+    - 如果配置项 `server-memory-quota` 被设置且大于 0，则内存报警阈值为 `tidb_memory-usage-alarm-ratio * server-memory-quota`。
 - 当 TiDB 检测到 tidb-server 的内存使用超过了阈值，则会认为存在内存溢出的风险，会将当前正在执行的所有 SQL 语句中内存使用最高的 10 条语句和运行时间最长的 10 条语句的相关信息, goroutine 栈信息以及 heap profile 记录到 TiDB 日志文件 [`filename`](tidb-configuration-file.md#filename) 所在目录中，并输出一条包含关键字 `tidb-server has the risk of OOM` 以及内存相关系统变量的日志。
 - 其中包含的内存相关系统变量有：[`tidb_mem_oom_action`](#tidb_mem_oom_action-span-classversion-mark-v610-span), [`tidb_mem_quota_query`](#tidb_mem_quota_query), [`tidb_server_memory_limit`](#tidb_server_memory_limit), [`tidb_analyze_version`](#tidb_analyze_version-span-classversion-mark-v510-span), [`tidb_enable_rate_limit_action`](#tidb_enable_rate_limit_action)
 
