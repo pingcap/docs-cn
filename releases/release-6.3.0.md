@@ -204,7 +204,6 @@ TiDB 版本：6.3.0-DMR
 | [`tidb_ddl_disk_quota`](/system-variables.md#tidb_ddl_disk_quota-从-v630-版本开始引入) | 新增 | 用于设置创建索引的回填过程中本地存储空间的使用限制。仅在 [`tidb_ddl_enable_fast_reorg`](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 开启的情况下生效。 |
 | [`tidb_ddl_enable_fast_reorg`](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) | 新增 | 用于控制是否开启添加索引加速功能，来提升创建索引回填过程的速度。 |
 | [`tidb_ddl_flashback_concurrency`](/system-variables.md#tidb_ddl_flashback_concurrency-从-v630-版本开始引入) | 新增 | 用于控制 `flashback cluster` 的并发数。在 v6.3.0，该变量控制的功能尚未完全生效，请保留默认值。  |
-| [`tidb_enable_clustered_index`](/system-variables.md#tidb_enable_clustered_index-从-v50-版本开始引入) | 修改 | 默认值从 `INT_ONLY` 修改为 `ON`。 |
 | [`tidb_enable_exchange_partition`](/system-variables.md#tidb_enable_exchange_partition) | 废弃 | 用于设置是否启用 [`exchange partitions with tables`](/partitioned-table.md#分区管理) 特性。自 v6.3.0 开始，其取值将固定为默认值 `ON`，即默认开启 `exchange partitions with tables`。  |
 | [`tidb_enable_foreign_key`](/system-variables.md#tidb_enable_foreign_key-从-v630-版本开始引入) | 新增 |  用于控制是否开启 `FOREIGN KEY` 特性。在 v6.3.0，该变量控制的功能尚未完全生效，请保留默认值。 |
 | [`tidb_enable_general_plan_cache`](/system-variables.md#tidb_enable_general_plan_cache-从-v630-版本开始引入) | 新增 |  用于控制是否开启 General Plan Cache。在 v6.3.0，该变量控制的功能尚未完全生效，请保留默认值。 |

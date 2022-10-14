@@ -1009,7 +1009,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 默认值：`ON`
+- 默认值：`INT_ONLY`
 - 可选值：`OFF`，`ON`，`INT_ONLY`
 - 这个变量用于控制默认情况下表的主键是否使用[聚簇索引](/clustered-indexes.md)。“默认情况”即不显式指定 `CLUSTERED`/`NONCLUSTERED` 关键字的情况。可设置为 `OFF`/`ON`/`INT_ONLY`。
     - `OFF` 表示所有主键默认使用非聚簇索引。
