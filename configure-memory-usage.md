@@ -60,7 +60,7 @@ server-memory-quota = 34359738368
 
 ## tidb-server 内存占用过高时的报警
 
-默认配置下，tidb-server 实例会在机器内存使用达到总内存量的 70% 时打印报警日志，并记录相关状态文件。该内存使用率可以通过配置系统变量 [`tidb_memory_usage_alarm_ratio`](/system-variables.md#tidb_memory_usage_alarm_ratio) 进行设置。具体报警规则请参考该配置项的说明部分。
+默认配置下，tidb-server 实例会在机器内存使用达到总内存量的 70% 时打印报警日志，并记录相关状态文件。该内存使用率可以通过配置系统变量 [`tidb_memory_usage_alarm_ratio`](/system-variables.md#tidb_memory_usage_alarm_ratio) 进行设置。具体报警规则请参考该变量的文档。
 
 注意，内存使用量超过阈值，且满足如下任一条件时，才会进行告警，1. 第一次触发内存阈值；2. 触发内存阈值，且距离上一次告警超过 60s；3. 触发内存阈值，且(本次内存用量-上次告警时内存用量)/ 最大可用内存量 > 10%。
 
