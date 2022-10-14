@@ -1842,14 +1842,15 @@ Raft Engine 相关的配置项。
 
 为了降低写请求延迟，TiKV 会定期获取一批时间戳缓存在本地，避免频繁访问 PD，并容忍短时间的 TSO 服务故障。
 
-### `available-interval` <span class="version-mark">从 v6.4.0 版本开始引入</span>
+### `alloc-ahead-buffer` <span class="version-mark">从 v6.4.0 版本开始引入</span>
 
-+ 时间戳可用时长。
-+ 表示 TiKV 可以容忍的 TSO 服务故障时长。TiKV 会根据前一周期的使用情况，预估并请求 `available-interval` 时长所需要的 TSO 使用量，缓存在本地。
++ 预分配 TSO 缓存大小（以时长计算）。
++ 表示 TiKV 将按照这个参数指定的时长，预分配 TSO 缓存。TiKV 会根据前一周期的使用情况，预估并请求满足 `alloc-ahead-buffer` 时长所需要的 TSO 数量，缓存在本地。
++ 这个参数通常用于提高 TiKV API V2 对于 PD 故障的容忍度。
 + 如果调大这个参数，会增加 TSO 消耗，并增加 TiKV 的内存开销。此外，建议同时修改 PD 的 [`tso-update-physical-interval`](/pd-configuration-file.md#tso-update-physical-interval-从-v640-版本开始引入) 参数，以获得足够的 TSO 供应。
 + 在 PD 主节点故障并切换到其他节点过程中，根据测试，默认配置下写请求会短暂出现延迟增大和 QPS 下降（幅度约 15%）。
 + 如果希望业务不受影响，可以尝试采用以下配置：
-    + `causal-ts.available-interval = "6s"`
+    + `causal-ts.alloc-ahead-buffer = "6s"`
     + `causal-ts.renew-batch-max-size = 65536`
     + `causal-ts.renew-batch-min-size = 2048`
     + 此外，在 PD 中配置 `tso-update-physical-interval = "1ms"`
@@ -1858,18 +1859,18 @@ Raft Engine 相关的配置项。
 ### `renew-interval`
 
 + 更新本地缓存时间戳的周期。
-+ TiKV 会每隔 `renew-interval` 发起一次时间戳更新，并根据前一周期的使用情况以及 `available-interval` 参数，来调整时间戳的缓存数量。这个参数配置过大会导致不能及时反映最新的 TiKV 负载变化。而配置过小则会增加 PD 的负载。如果写流量剧烈变化、频繁出现时间戳耗尽、写延迟增加，可以适当调小这个参数，但需要同时关注 PD 的负载情况。
++ TiKV 会每隔 `renew-interval` 发起一次时间戳更新，并根据前一周期的使用情况以及 `alloc-ahead-buffer` 参数，来调整时间戳的缓存数量。这个参数配置过大会导致不能及时反映最新的 TiKV 负载变化。而配置过小则会增加 PD 的负载。如果写流量剧烈变化、频繁出现时间戳耗尽、写延迟增加，可以适当调小这个参数，但需要同时关注 PD 的负载情况。
 + 默认值：100ms
 
 ### `renew-batch-min-size`
 
 + 时间戳单次请求的最小数量。
-+ TiKV 会根据前一周期的使用情况以及 `available-interval` 参数，来调整时间戳的缓存数量。如果 TSO 需求量较低，TiKV 会降低单次 TSO 请求量，直至等于 `renew-batch-min-size`。如果业务中经常出现突发的大流量写入，可以适当调大这个参数。注意这个参数是单个 tikv-server 的缓存大小，如果配置过大、而同时集群中 tikv-server 较多，会导致 TSO 消耗过快。
++ TiKV 会根据前一周期的使用情况以及 `alloc-ahead-buffer` 参数，来调整时间戳的缓存数量。如果 TSO 需求量较低，TiKV 会降低单次 TSO 请求量，直至等于 `renew-batch-min-size`。如果业务中经常出现突发的大流量写入，可以适当调大这个参数。注意这个参数是单个 tikv-server 的缓存大小，如果配置过大、而同时集群中 tikv-server 较多，会导致 TSO 消耗过快。
 + Grafana **TiKV-Raw** 面板下 **Causal timestamp** 中的 **TSO batch size** 是根据业务负载动态调整后的本地缓存数量。可以参考该监控指标值调整这个参数的大小。
 + 默认值：100
 
 ### `renew-batch-max-size` <span class="version-mark">从 v6.4.0 版本开始引入</span>
 
 + 时间戳单次请求的最大数量。
-+ PD 的 TSO 服务在每个物理时钟周期最多提供 262144 个 TSO，超过这个数量后 PD 会暂缓 TSO 请求的处理。这个配置用于避免 PD 的 TSO 消耗殆尽、影响其他业务的使用。如果为了提升高可用能力而调大这个参数，需要同时调小 PD 的 [`tso-update-physical-interval`](/pd-configuration-file.md#tso-update-physical-interval-从-v640-版本开始引入) 参数，以获得足够的 TSO 供应。
++ PD 的 TSO 服务在每个物理时钟周期最多提供 262144 个 TSO，超过这个数量后 PD 会暂缓 TSO 请求的处理。这个配置用于避免 PD 的 TSO 消耗殆尽、影响其他业务的使用。如果增大这个参数，建议同时减小 PD 的 [`tso-update-physical-interval`](/pd-configuration-file.md#tso-update-physical-interval-从-v640-版本开始引入) 参数，以获得足够的 TSO 供应。
 + 默认值：8192
