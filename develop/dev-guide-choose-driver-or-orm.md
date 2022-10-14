@@ -31,7 +31,7 @@ TiDB 与 MySQL 有差异：
 
 ## Java
 
-本节叙述 Java 语言的 Driver 及 ORM 的使用方式。
+本节介绍 Java 语言的 Driver 及 ORM 的使用方式。
 
 ### Java Drivers
 
@@ -103,7 +103,7 @@ implementation group: 'org.bouncycastle', name: 'bcpkix-jdk15on', version: '1.67
 > **注意：**
 >
 > - Hibernate 当前[不支持嵌套事务](https://stackoverflow.com/questions/37927208/nested-transaction-in-spring-app-with-jpa-postgres)。
-> - TiDB 从 v6.2.0 版本开始支持 [Savepoint](/sql-statements/sql-statement-savepoint.md)。因此，请确认你的 TiDB 版本为 v6.2.0 或以上。否则，在 `@Transactional` 中请勿使用 `Propagation.NESTED` 事务传播选项，即：`@Transactional(propagation = Propagation.NESTED)`。
+> - TiDB 从 v6.2.0 版本开始支持 [Savepoint](/sql-statements/sql-statement-savepoint.md)。如需在 `@Transactional` 中使用 `Propagation.NESTED` 事务传播选项，即 `@Transactional(propagation = Propagation.NESTED)`，请确认你的 TiDB 版本为 v6.2.0 或以上。
 
 <SimpleTab>
 <div label="Hibernate">
@@ -215,7 +215,7 @@ implementation group: 'io.github.lastincisor', name: 'tidb-loadbalance', version
 
 ## Golang
 
-本节叙述 Golang 语言的 Driver 及 ORM 的使用方式。
+本节介绍 Golang 语言的 Driver 及 ORM 的使用方式。
 
 ### Golang Drivers
 
