@@ -2864,7 +2864,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 > **注意：**
 >
-> 该变量用于 TiDB 内部运行，用户不应该修改该变量。
+> 该变量仅用于 TiDB 内部实现，不推荐设置该变量。
 
 在 TiDB 内部实现中，TiDB 解释器会将 `SET TRANSACTION ISOLATION LEVEL [READ COMMITTED| REPEATABLE READ | ...]` 语句转化为 `SET @@SESSION.TX_ISOLATION_ONE_SHOT = [READ COMMITTED| REPEATABLE READ | ...]`。
 
