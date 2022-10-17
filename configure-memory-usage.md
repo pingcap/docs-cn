@@ -60,9 +60,60 @@ set global tidb_server_memory_limit="32GB";
 
 ## 使用内存表观测当前 tidb-server 的内存使用情况
 
-可以通过查询系统表 performance_schema.(cluster_)memory_usage 来查询本实例（集群）的内存使用情况。
+可以通过查询系统表 INFORMATION_SCHEMA.(CLUSTER_)MEMORY_USAGE 来查询本实例（集群）的内存使用情况。
 
-可以通过查询系统表 performance_schema.(cluster_)memory_usage_ops_history 来查询本实例（集群）内存相关对操作和依据（每个实例保留最近50条记录）。
+{{< copyable "" >}}
+
+```sql
+USE INFORMATION_SCHEMA;
+DESC MEMORY_USAGE;
+```
+```sql
++--------------------+-------------+------+------+---------+-------+
+| Field              | Type        | Null | Key  | Default | Extra |
++--------------------+-------------+------+------+---------+-------+
+| MEMORY_TOTAL       | bigint(21)  | NO   |      | NULL    |       |
+| MEMORY_LIMIT       | bigint(21)  | NO   |      | NULL    |       |
+| MEMORY_CURRENT     | bigint(21)  | NO   |      | NULL    |       |
+| MEMORY_MAX_USED    | bigint(21)  | NO   |      | NULL    |       |
+| CURRENT_OPS        | varchar(50) | YES  |      | NULL    |       |
+| SESSION_KILL_LAST  | datetime    | YES  |      | NULL    |       |
+| SESSION_KILL_TOTAL | bigint(21)  | NO   |      | NULL    |       |
+| GC_LAST            | datetime    | YES  |      | NULL    |       |
+| GC_TOTAL           | bigint(21)  | NO   |      | NULL    |       |
+| DISK_USAGE         | bigint(21)  | NO   |      | NULL    |       |
+| QUERY_FORCE_DISK   | bigint(21)  | NO   |      | NULL    |       |
++--------------------+-------------+------+------+---------+-------+
+11 rows in set (0.001 sec)
+```
+
+可以通过查询系统表 INFORMATION_SCHEMA.(CLUSTER_)MEMORY_USAGE_OPS_HISTORY 来查询本实例（集群）内存相关对操作和依据（每个实例保留最近50条记录）。
+
+{{< copyable "" >}}
+
+```sql
+USE INFORMATION_SCHEMA;
+DESC MEMORY_USAGE_OPS_HISTORY;
+```
+```sql
++----------------+---------------------+------+------+---------+-------+
+| Field          | Type                | Null | Key  | Default | Extra |
++----------------+---------------------+------+------+---------+-------+
+| TIME           | datetime            | NO   |      | NULL    |       |
+| OPS            | varchar(20)         | NO   |      | NULL    |       |
+| MEMORY_LIMIT   | bigint(21)          | NO   |      | NULL    |       |
+| MEMORY_CURRENT | bigint(21)          | NO   |      | NULL    |       |
+| PROCESSID      | bigint(21) unsigned | YES  |      | NULL    |       |
+| MEM            | bigint(21) unsigned | YES  |      | NULL    |       |
+| DISK           | bigint(21) unsigned | YES  |      | NULL    |       |
+| CLIENT         | varchar(64)         | YES  |      | NULL    |       |
+| DB             | varchar(64)         | YES  |      | NULL    |       |
+| USER           | varchar(16)         | YES  |      | NULL    |       |
+| SQL_DIGEST     | varchar(64)         | YES  |      | NULL    |       |
+| SQL_TEXT       | varchar(256)        | YES  |      | NULL    |       |
++----------------+---------------------+------+------+---------+-------+
+12 rows in set (0.000 sec)
+```
 
 ## tidb-server 内存占用过高时的报警
 
