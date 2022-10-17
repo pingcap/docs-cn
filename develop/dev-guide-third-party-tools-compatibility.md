@@ -190,7 +190,9 @@ TiDB 不支持`SERIALIZABLE`隔离级别。
 
 **规避方法**
 
-设置 `tidb_skip_isolation_level_check` 为 `1`，此后如果对 `tx_isolation` 赋值一个 TiDB 不支持的隔离级别，不会报错，有助于兼容其他设置了（但不依赖于）不同隔离级别的应用。
+使用 TiDB 支持的 `REPEATABLE-READ` 或 `READ-COMMITTED` 隔离级别。
+
+如果目的是兼容其他设置（但不依赖） `SERIALIZABLE` 隔离级别的应用，可以设置 `tidb_skip_isolation_level_check` 为 `1`，此后如果对 `tx_isolation`（`transaction_isolation` 别名）赋值一个 TiDB 不支持的隔离级别（`READ-UNCOMMITTED` 和 `SERIALIZABLE`），不会报错。
 
 ### 默认不允许修改列的`AUTO_INCREMENT`属性
 
