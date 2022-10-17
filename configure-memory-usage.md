@@ -83,7 +83,7 @@ SELECT * FROM MEMORY_USAGE;
 - memory_total: TiDB 的可用内存总量，单位为 byte。
 - memory_limit: TIDB 的内存使用限制，单位为 byte。其值和 tidb_server_memory_limit 相同。
 - memory_current: TiDB 当前的内存使用量，单位为 byte。
-- memory_max_used: 从 TiDB 启动到现在的最大内存使用量，单位为 byte。
+- memory_max_used: 从 TiDB 启动到当前的最大内存使用量，单位为 byte。
 - current_ops: “shrinking” | null。“shrinking” 表示 TiDB 正在实施收缩内存的操作。
 - session_kill_last: 上一次 Kill Session 的时间戳
 - session_kill_total: 从 TiDB 启动到现在的累计 Kill Session 的次数
