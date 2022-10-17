@@ -109,7 +109,7 @@ hide_commit: true
 
 [Data Migration](https://docs.pingcap.com/zh/tidb/dev/dm-overview)
 
-[Backup & Restore (BR)](https://docs.pingcap.com/zh/tidb/dev/br-overview)
+[Backup & Restore (BR)](https://docs.pingcap.com/zh/tidb/dev/backup-and-restore-overview)
 
 [TiCDC](https://docs.pingcap.com/zh/tidb/dev/ticdc-overview)
 

@@ -113,7 +113,7 @@ aliases: ['/zh/tidb/dev/incremental-replication-between-clusters/']
 >
 > - 在生产集群中，关闭 GC 机制和备份操作会一定程度上降低集群的读性能，建议在业务低峰期进行备份，并设置合适的 `RATE_LIMIT` 限制备份操作对线上业务的影响。
 >
-> - 上下游集群版本不一致时，应检查 BR 工具的[兼容性](/br/br-overview.md#使用须知)。本文假设上下游集群版本相同。
+> - 上下游集群版本不一致时，应检查 BR 工具的[兼容性](/br/backup-and-restore-overview.md#使用须知)。本文假设上下游集群版本相同。
 
 1. 关闭 GC。
 

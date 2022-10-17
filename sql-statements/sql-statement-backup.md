@@ -8,7 +8,7 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-backup/']
 
 `BACKUP` 语句用于对 TiDB 集群执行分布式备份操作。
 
-`BACKUP` 语句使用的引擎与 [BR](/br/br-overview.md) 相同，但备份过程是由 TiDB 本身驱动，而非单独的 BR 工具。BR 工具的优势和警告也适用于 `BACKUP` 语句。
+`BACKUP` 语句使用的引擎与 [BR](/br/backup-and-restore-overview.md) 相同，但备份过程是由 TiDB 本身驱动，而非单独的 BR 工具。BR 工具的优势和警告也适用于 `BACKUP` 语句。
 
 执行 `BACKUP` 需要 `BACKUP_ADMIN` 或 `SUPER` 权限。此外，执行备份的 TiDB 节点和集群中的所有 TiKV 节点都必须有对目标存储的读或写权限。
 

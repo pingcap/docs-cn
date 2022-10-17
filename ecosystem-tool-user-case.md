@@ -32,7 +32,7 @@ aliases: ['/docs-cn/dev/ecosystem-tool-user-case/']
 
 ## TiDB 集群备份与恢复
 
-当需要对 TiDB 集群进行备份或在之后对 TiDB 集群进行恢复时，可使用 [BR](/br/br-overview.md)。
+当需要对 TiDB 集群进行备份或在之后对 TiDB 集群进行恢复时，可使用 [BR](/br/backup-and-restore-overview.md)。
 
 ## 迁出数据到 TiDB
 

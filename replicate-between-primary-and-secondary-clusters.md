@@ -11,7 +11,7 @@ summary: 了解如何配置一个 TiDB 集群以及该集群的 TiDB 或 MySQL �
 2. 将增量数据实时从主集群同步到从集群。
 3. 在主集群发生灾难利用 Redo log 恢复一致性数据。
 
-如果你需要配置一个运行中的 TiDB 集群和其从集群，以进行实时增量数据同步，可使用 [Backup & Restore (BR)](/br/br-overview.md) 和 [TiCDC](/ticdc/ticdc-overview.md)。
+如果你需要配置一个运行中的 TiDB 集群和其从集群，以进行实时增量数据同步，可使用 [Backup & Restore (BR)](/br/backup-and-restore-overview.md) 和 [TiCDC](/ticdc/ticdc-overview.md)。
 
 ## 第 1 步：搭建环境
 
@@ -107,7 +107,7 @@ summary: 了解如何配置一个 TiDB 集群以及该集群的 TiDB 或 MySQL �
 >
 > - 在生产集群中，关闭 GC 机制和备份操作会一定程度上降低集群的读性能，建议在业务低峰期进行备份，并设置合适的 `RATE_LIMIT` 限制备份操作对线上业务的影响。
 >
-> - 上下游集群版本不一致时，应检查 BR 工具的[兼容性](/br/br-overview.md#使用建议)。本文假设上下游集群版本相同。
+> - 上下游集群版本不一致时，应检查 BR 工具的[兼容性](/br/backup-and-restore-overview.md#使用建议)。本文假设上下游集群版本相同。
 
 1. 关闭 GC。
 

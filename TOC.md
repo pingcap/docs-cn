@@ -141,7 +141,7 @@
       - [使用 br 进行（全量）快照备份与恢复](/br/br-snapshot-guide.md)
       - [使用 br 进行日志备份和 PITR](/br/br-pitr-guide.md)
       - [备份和恢复实践示例](/br/br-usage.md)
-    - [br cli 命令手册](/br/use-br-command-line.md)
+    - [br cli 命令手册](/br/use-br-command-line-tool.md)
       - [快照备份和恢复命令手册](/br/br-snapshot-manual.md)
       - [日志备份和 PITR 命令手册](/br/br-pitr-manual.md)
     - 参考指南
