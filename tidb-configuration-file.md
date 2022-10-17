@@ -686,32 +686,37 @@ TiDB 服务状态相关配置。
 
 ### `tidb_enable_collect_execution_info`
 
-- 用于控制是否同时将各个执行算子的执行信息记录入 slow query log 中。
-- 默认值：true
++ 用于控制是否同时将各个执行算子的执行信息记录入 slow query log 中。
++ 默认值：true
++ 在版本 v6.1.0 之前，该功能由配置 `enable-collect-execution-info` 进行设置。
 
 ### `tidb_enable_slow_log`
 
 + 是否开启慢查询日志。
 + 默认值：true
 + 可以设置成 `true` 或 `false` 来启用或禁用慢查询日志。
++ 在版本 v6.1.0 之前，该功能由配置 `enable-slow-log` 进行设置。
 
 ### `tidb_slow_log_threshold`
 
 + 输出慢日志的耗时阈值。
 + 默认值：300ms
 + 当查询大于这个值，就会当做是一个慢查询，输出到慢查询日志。
++ 在版本 v6.1.0 之前，该功能由配置 `slow-threshold` 进行设置。
 
 ### `tidb_record_plan_in_slow_log`
 
 + 在慢日志中记录执行计划。
 + 默认值：1
 + 0 表示关闭，1 表示开启，默认开启，该值作为系统变量 [`tidb_record_plan_in_slow_log`](/system-variables.md#tidb_record_plan_in_slow_log) 的初始值。
++ 在版本 v6.1.0 之前，该功能由配置 `record-plan-in-slow-log` 进行设置。
 
 ### `tidb_force_priority`
 
 + 把所有的语句优先级设置为系统变量 `tidb_force_priority` 的值。
 + 默认值：NO_PRIORITY
 + 默认值 NO_PRIORITY 表示不强制改变执行语句的优先级，其它优先级从低到高可设置为 LOW_PRIORITY、DELAYED 或 HIGH_PRIORITY。
++ 在版本 v6.1.0 之前，该功能由配置 `force-priority` 进行设置。
 
 ### `max_connections`
 
@@ -719,6 +724,7 @@ TiDB 服务状态相关配置。
 + 默认值：0
 + 默认情况下，TiDB 不限制客户端连接数。当本配置项的值大于 `0` 且客户端连接数到达此值时，TiDB 服务端将会拒绝新的客户端连接。
 + 该值作为系统变量 [`max_connections`](/system-variables.md#max_connections) 的初始值。
++ 在版本 v6.2.0 之前，该功能由配置 `max-server-connections` 进行设置。
 
 ### `tidb_memory_usage_alarm_ratio`
 
@@ -734,6 +740,7 @@ TiDB 服务状态相关配置。
 + 用于表示该 tidb-server 是否运行 DDL 语句。
 + 默认值：true
 + 该值作为系统变量 [`tidb_enable_ddl`](/system-variables.md#tidb_enable_ddl) 的初始值。
++ 在版本 v6.3.0 之前，该功能由配置 `run-ddl` 进行设置。
 
 ## proxy-protocol
 
