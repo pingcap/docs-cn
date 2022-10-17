@@ -54,9 +54,9 @@ set global tidb_server_memory_limit="32GB";
 
 当前 `tidb_server_memory_limit` **不终止**以下 SQL 操作：
 
-- DDL
-- INSERT,UPDATE,DELETE 操作
-- 包含 windows function 和 cte 的 SQL 操作
+- DDL 操作
+- INSERT、UPDATE、DELETE 操作
+- 包含窗口函数和公共表表达式的 SQL 操作
 
 > **警告：**
 >
