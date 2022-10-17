@@ -140,8 +140,10 @@
     + [使用 br 进行备份与恢复](/br/br-use-overview.md)
       - [使用 br 进行（全量）快照备份与恢复](/br/br-snapshot-guide.md)
       - [使用 br 进行日志备份和 PITR](/br/br-pitr-guide.md)
-      - [备份与恢复场景使用示例](/br/br-usage.md)
+      - [备份和恢复实践示例](/br/br-usage.md)
     - [br cli 命令手册](/br/use-br-command-line.md)
+      - [快照备份和恢复命令手册](/br/br-snapshot-manual.md)
+      - [日志备份和 PITR 命令手册](/br/br-pitr-manual.md)
     - 参考指南
       - BR 特性设计
         - [自动调节](/br/br-auto-tune.md)
@@ -163,7 +165,7 @@
   - [TiDB 集群报警规则与处理方法](/alert-rules.md)
   - [TiFlash 报警规则与处理方法](/tiflash/tiflash-alert-rules.md)
   - [自定义监控组件的配置](/tiup/customized-montior-in-tiup-environment.md)
-  - [BR 监控告警](/br/misc/br-monitoring-and-alert.md)
+  - [BR 监控告警](/br/br-monitoring-and-alert.md)
 - 故障诊断
   - [定位慢查询](/identify-slow-queries.md)
   - [分析慢查询](/analyze-slow-queries.md)
