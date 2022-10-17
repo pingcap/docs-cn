@@ -86,8 +86,8 @@ TiDB 支持 Amazon S3、Google Cloud Storage (GCS) 、Azure Blob Storage 和 NFS
 
 在备份之前，为 BR 访问 S3 中的备份目录设置相应的访问权限。
 
-- 备份时 TiKV 和 BR 需要的最小权限，赋予备份数据目录 `s3:ListBucket`、`s3:PutObject` 和 `s3:AbortMultipartUpload`。
-- 恢复时 TiKV 和 BR 需要的最小权限，赋予备份数据目录 `s3:ListBucket` 和 `s3:GetObject`。
+- 备份时 TiKV 和 BR 需要的访问备份数据目录的最小权限： `s3:ListBucket`、`s3:PutObject` 和 `s3:AbortMultipartUpload`。
+- 恢复时 TiKV 和 BR 需要的访问备份数据目录的最小权限： `s3:ListBucket` 和 `s3:GetObject`。
 
 如果你还没有创建备份数据保存目录，可以参照 [AWS 官方文档](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/user-guide/create-bucket.html)在指定的 `Region` 区域中创建一个 S3 桶 `Bucket`；如果有需要，还可以参照 [AWS 官方文档](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/user-guide/create-folder.html)在 Bucket 中创建一个文件夹 `Folder`。
 

@@ -22,7 +22,7 @@ TiDB 的备份恢复功能，以 br、tidb-operator 为使用入口，创建相�
 * **local checkpoint ts** (in local metadata)：表示这个 TiKV 中所有小于 local checkpoint ts 的日志数据已经备份到目标存储。
 * **global checkpoint ts**：表示所有 TiKV 中小于 global checkpoint ts 的日志数据已经备份到目标存储。它由运行在 TiDB 中的 Coordinator 模块收集所有 TiKV 的 local checkpoint ts 计算所得，然后上报给 PD。
 * **TiDB Coordinator 组件**： TiDB 集群的某个节点会被选举为 Coordinator，负责收集和计算整个日志备份任务的进度（global checkpoint ts）。该组件设计上无状态，在其故障后可以从存活的 TiDB 节点中重新选出一个节点作为 Coordinator。
-* **TiKV log executor 组件**：运行在 TiDB 集群的每个 TiKV 节点，负责从 tikv 读取和备份日志数据。 TiKV 节点故障的话，该节点负责备份数据范围，在 region 重新选举后，会被其他 tikv 节点负责，这些节点会从 global checkpoint ts 重新备份故障范围的数据。
+* **TiKV log observer 组件**：运行在 TiDB 集群的每个 TiKV 节点，负责从 tikv 读取和备份日志数据。 TiKV 节点故障的话，该节点负责备份数据范围，在 region 重新选举后，会被其他 tikv 节点负责，这些节点会从 global checkpoint ts 重新备份故障范围的数据。
 
 完整的备份交互流程描述如下：
 
@@ -31,9 +31,9 @@ TiDB 的备份恢复功能，以 br、tidb-operator 为使用入口，创建相�
    * **Register log backup task**：在 pd 注册日志备份任务（log backup task）
 
 2. TiKV 监控日志备份任务创建/更新
-   * **Fetch log backup task**：每个 tikv 节点的 log backup executor 监听 pd 中日志备份任务的创建/更新，然后备份该节点上在备份范围内的数据
+   * **Fetch log backup task**：每个 tikv 节点的 log backup observer 监听 pd 中日志备份任务的创建/更新，然后备份该节点上在备份范围内的数据
 
-3. TiKV log backup executor 持续地备份 KV 变更日志
+3. TiKV log backup observer 持续地备份 KV 变更日志
    * **Read kv change data**：读取 kv 数据变更，然后保存到[自定义格式的备份文件](#日志备份文件)中
    * **Fetch global checkpoint ts**：定期从 pd 查询 global checkpoint ts
    * **Generate local metadata**：定期生成 local metadata（包含 local checkpoint ts、global checkpoint ts、备份文件信息）
@@ -41,8 +41,8 @@ TiDB 的备份恢复功能，以 br、tidb-operator 为使用入口，创建相�
    * **Configure GC**：请求 PD 阻止未备份的数据（大于 local checkpoint ts）被 [TiDB GC 机制](/garbage-collection-overview.md)回收掉
 
 4. TiDB Coordinator 监控日志备份进度
-   * **Watch backup progress**：轮询所有 TiKV 节点，获取各个 tikv 的备份进度（local checkpoint ts）
-   * **Report global checkpoint ts**：根据各个 tikv 的 local checkpoint ts，计算整个日志备份任务的进度（global checkpoint ts），然后上报给 pd
+   * **Watch backup progress**：轮询所有 TiKV 节点，获取各个 region 的备份进度 (region checkpoint ts）
+   * **Report global checkpoint ts**：根据各个 region checkpoint ts，计算整个日志备份任务的进度（global checkpoint ts），然后上报给 pd
 
 5. PD 持久化日志备份任务状态。可以通过 `br log status` 查询
 
@@ -65,7 +65,7 @@ Point in time recovery 的流程如下：
    * **Request TiKV to restore data**: 创建日志恢复请求发送到对应的 tikv 日志恢复请求包含要恢复的日志备份数据信息
 
 4. TiKV 接受 BR 的恢复请求，初始化 log restore worker
-   * log restore worker 计算恢复数据需要读取的日志备份数据
+   * log restore worker 获取需要恢复的日志备份数据
 
 5. TiKV 恢复日志备份数据
    * **Download KVs**：log restore worker 根据日志回复请求中要恢复的备份数据，从备份存储中下载相应的备份数据到本地

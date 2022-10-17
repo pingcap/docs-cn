@@ -169,13 +169,33 @@ TiCDC 可以通过配置项中的 [`filter.rules`](https://github.com/pingcap/ti
 
 BR 在 v6.0.0 之前不支持[放置规则](/placement-rules-in-sql.md)。BR v6.0.0 及以上版本开始支持并提供了命令行选项 `--with-tidb-placement-mode=strict/ignore` 来控制放置规则的导入模式。默认值为 `strict`，代表导入并检查放置规则，当`--with-tidb-placement-mode` 设置为 `ignore` 时，BR 会忽略所有的放置规则。
 
-## 使用 local://${path} 进行备份恢复的问题
+## 进行数据恢复的问题
+
+### BR 遇到错误信息 `Io(Os...)`，该如何处理？
+
+这类问题几乎都是 TiKV 在写盘的时候遇到的系统调用错误。例如遇到 `Io(Os { code: 13, kind: PermissionDenied...})` 或者 `Io(Os { code: 2, kind: NotFound...})`。
+
+首先检查备份目录的挂载方式和文件系统，尝试备份到其它文件夹或者硬盘。
+
+目前已知备份到 samba 搭建的网盘时可能会遇到 `Code: 22(invalid argument)` 错误。
+
+### BR 遇到错误信息 `rpc error: code = Unavailable desc =...`，该如何处理？
+
+该问题一般是因为使用 BR 恢复数据的时候，恢复集群的性能不足导致的。可以从恢复集群的监控或者 TiKV 日志来辅助确认。
+
+要解决这类问题，可以尝试扩大集群资源，以及调小恢复时的并发度 (concurrency)，打开限速 (ratelimit) 设置。
+
+### 使用 BR 恢复备份数据时，BR 会报错 `entry too large, the max entry size is 6291456, the size of data is 7690800`
+
+你可以尝试降低并发批量建表的大小，将 `--ddl-batch-size` 设置为 `128` 或者更小的值。
+
+在 [`--ddl-batch-size`](/br/br-features-design/br-batch-create-table.md#使用方法) 的值大于 `1` 的情况下，使用 BR 恢复数据时，TiDB 会把执行创建表任务的 DDL job 队列写到 TiKV 上。由于 TiDB 能够一次性发送的 job message 的最大值默认为 `6 MB`（**不建议**修改此值，具体内容，参考 [txn-entry-size-limit](/tidb-configuration-file.md#txn-entry-size-limit-从-v50-版本开始引入) 和 [raft-entry-max-size](/tikv-configuration-file.md#raft-entry-max-size)），TiDB 单次发送的所有表的 schema 大小总和也不应该超过 6 MB。因此，如果你设置的 `--ddl-batch-size` 的值过大，TiDB 单次发送的批量表的 schema 大小就会超出规定值，从而导致 BR 报 `entry too large, the max entry size is 6291456, the size of data is 7690800` 错误。
+
+### 使用 local storage 的时候，BR 备份的文件会存在哪里？
 
 > **注意：**
 >
 > - 如果没有挂载 NFS 到 BR 或 TiKV 节点，或者使用了支持 S3、GCS 或 Azure Blob Storage 协议的远端存储，那么 BR 备份的数据会在各个 TiKV 节点生成。**注意这不是推荐的 BR 使用方式** ，因为备份数据会分散在各个节点的本地文件系统中，聚集这些备份数据可能会造成数据冗余和运维上的麻烦，而且在不聚集这些数据便直接恢复的时候会遇到 `SST file not found` 报错。
-
-### 使用 local storage 的时候，BR 备份的文件会存在哪里？
 
 在使用 local storage 的时候，会在运行 BR 的节点生成 `backupmeta`，在各个 Region 的 Leader 节点生成备份文件。
 
@@ -299,28 +319,6 @@ br restore full -f 'mysql.usertable' -s $external_storage_url --with-sys-table
 - 统计信息表（`mysql.stat_*`）
 - 系统变量表（`mysql.tidb`、`mysql.global_variables`）
 - [其他系统表](https://github.com/pingcap/tidb/blob/master/br/pkg/restore/systable_restore.go#L31)
-
-## 运行备份恢复报错
-
-### BR 遇到错误信息 `Io(Os...)`，该如何处理？
-
-这类问题几乎都是 TiKV 在写盘的时候遇到的系统调用错误。例如遇到 `Io(Os { code: 13, kind: PermissionDenied...})` 或者 `Io(Os { code: 2, kind: NotFound...})`。
-
-首先检查备份目录的挂载方式和文件系统，尝试备份到其它文件夹或者硬盘。
-
-目前已知备份到 samba 搭建的网盘时可能会遇到 `Code: 22(invalid argument)` 错误。
-
-### BR 遇到错误信息 `rpc error: code = Unavailable desc =...`，该如何处理？
-
-该问题一般是因为使用 BR 恢复数据的时候，恢复集群的性能不足导致的。可以从恢复集群的监控或者 TiKV 日志来辅助确认。
-
-要解决这类问题，可以尝试扩大集群资源，以及调小恢复时的并发度 (concurrency)，打开限速 (ratelimit) 设置。
-
-### 使用 BR 恢复备份数据时，BR 会报错 `entry too large, the max entry size is 6291456, the size of data is 7690800`
-
-你可以尝试降低并发批量建表的大小，将 `--ddl-batch-size` 设置为 `128` 或者更小的值。
-
-在 [`--ddl-batch-size`](/br/br-features-design/br-batch-create-table.md#使用方法) 的值大于 `1` 的情况下，使用 BR 恢复数据时，TiDB 会把执行创建表任务的 DDL job 队列写到 TiKV 上。由于 TiDB 能够一次性发送的 job message 的最大值默认为 `6 MB`（**不建议**修改此值，具体内容，参考 [txn-entry-size-limit](/tidb-configuration-file.md#txn-entry-size-limit-从-v50-版本开始引入) 和 [raft-entry-max-size](/tikv-configuration-file.md#raft-entry-max-size)），TiDB 单次发送的所有表的 schema 大小总和也不应该超过 6 MB。因此，如果你设置的 `--ddl-batch-size` 的值过大，TiDB 单次发送的批量表的 schema 大小就会超出规定值，从而导致 BR 报 `entry too large, the max entry size is 6291456, the size of data is 7690800` 错误。
 
 ## 备份恢复功能相关知识
 

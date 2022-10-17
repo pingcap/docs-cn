@@ -14,13 +14,13 @@ aliases: ['/br/use-br-command-line-tool.md', '/br/br-log-command-line.md']
 
 以下是一条完整的 `br` 命令行：
 
-`br backup full --pd "${PDIP}:2379" -s "s3://backup-101/snapshot-202209081330/"`
+`br backup full --pd "${PDIP}:2379" -s "s3://backup-data/snapshot-202209081330/"`
 
 命令行各部分的解释如下：
 
 * `backup`：`br` 的子命令
 * `full`：`backup` 的子命令
-* `-s` 或 `--storage`：备份数据的存储地址选项。`"s3://backup-data/2022-01-30/"` 是 `-s` 的参数值
+* `-s` 或 `--storage`：备份数据的存储地址选项。`"s3://backup-data/snapshot-202209081330/"` 是 `-s` 的参数值
 * `--pd`：PD 访问地址选项。`"${PDIP}:2379"`是`--pd` 的参数值。
 
 ### 命令和子命令
