@@ -176,7 +176,6 @@ TiDB 对其进行了两个维度的修复：
 **描述**
 
 1. TiDB 不支持外键约束。
-
 2. [Sequelize 的多对多关系](https://sequelize.org/docs/v6/core-concepts/assocs/#philosophy-2)使用了一个额外的模型，该模型将具有两个外键列。因此，Sequelize 无法在 TiDB 上使用多对多关系。
 
 ### 不支持`GEOMETRY`相关
