@@ -135,7 +135,7 @@ SELECT TABLE_NAME FROM information_schema.tables where TABLE_SCHEMA = "<db_name>
 
 新增 TiFlash 副本时，各个 TiKV 实例将进行全表数据扫描，并将扫描得到的数据快照发送给 TiFlash 从而形成副本。默认情况下，为了降低对 TiKV 及 TiFlash 线上业务的影响，TiFlash 新增副本速度较慢、占用资源较少。如果集群中 TiKV 及 TiFlash 的 CPU 和磁盘 IO 资源有富余，你可以按以下步骤操作来提升 TiFlash 副本同步速度：
 
-1. 修改 TiFlash Proxy 及 TiKV 配置，临时调高各个 TiKV 及 TiFlash 实例的数据快照写入速度及快照处理速度。以 TiUP 为例，需要填写以下配置：
+1. 修改 TiFlash Proxy 及 TiKV 配置，临时调高各个 TiKV 及 TiFlash 实例的数据快照写入速度及快照处理速度。以 TiUP 为例，需要修改的配置项如下：
 
    ```yaml
    tikv:
@@ -152,11 +152,11 @@ SELECT TABLE_NAME FROM information_schema.tables where TABLE_SCHEMA = "<db_name>
    SET CONFIG tikv `server.snap-max-write-bytes-per-sec` = '300MiB';
    ```
 
-   以上配置修改完毕后，由于副本同步速度还受到 PD 副本速度控制，因此当前你还无法观察到副本同步速度提升。
+   由于副本同步速度还受到 PD 副本速度控制，因此以上配置修改完毕后，当前你还无法立即观察到副本同步速度提升。
 
 2. 使用 [PD Control](/pd-control.md) 逐步放开新增副本速度限制：
 
-   TiFlash 默认新增副本速度是 30。执行以下命令将调整所有 TiFlash 实例的新增副本速度到 60，即原来的 2 倍速度：
+   TiFlash 默认新增副本速度是 30（每分钟大约 30 个 Region 将会新增 TiFlash 副本）。执行以下命令将调整所有 TiFlash 实例的新增副本速度到 60，即原来的 2 倍速度：
 
    ```shell
    tiup ctl:v6.1.0 pd -u http://<PD_ADDRESS>:2379 store limit all engine tiflash 60 add-peer
@@ -178,7 +178,7 @@ SELECT TABLE_NAME FROM information_schema.tables where TABLE_SCHEMA = "<db_name>
    tiup ctl:v6.1.0 pd -u http://<PD_ADDRESS>:2379 store limit all engine tiflash 30 add-peer
    ```
 
-   TiUP 中注释掉新增的配置项，使其回复到默认值：
+   在 TiUP 中注释掉新增的配置项，使其恢复到默认值：
 
    ```yaml
    # tikv:
