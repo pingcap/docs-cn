@@ -251,7 +251,7 @@ In real customer scenarios, it is not rare that the bottleneck is outside the da
 
 In this TPC-C workload:
 
-- The average latency and P99 latency of all SQL statements are 477 us and 3.13 ms, respectively. The average latencies of the commit statement, insert statement, and query statement are 2.02 ms, 609 ms, and 468 us, respectively.
+- The average latency and P99 latency of all SQL statements are 477 us and 3.13 ms, respectively. The average latencies of the commit statement, insert statement, and query statement are 2.02 ms, 609 us, and 468 us, respectively.
 - The average connection idle time in transactions `avg-in-txn` is 171 us.
 
 The average query latency is significantly greater than `avg-in-txn`, which means the main bottleneck in transactions is inside the database.
@@ -324,7 +324,7 @@ The relationship between `Avg TiDB KV Request Duration` and `Avg TiKV GRPC Durat
 Avg TiDB KV Request Duration = Avg TiKV GRPC Duration + Network latency between TiDB and TiKV + TiKV gRPC processing time + TiDB gRPC processing time and scheduling latency
 ```
 
-The difference between `Avg TiDB KV Request Duration` and `Avg TiKV GRPC Duration` is closely related to the network traffic, network latency, and resouce usage by TiDB and TiKV.
+The difference between `Avg TiDB KV Request Duration` and `Avg TiKV GRPC Duration` is closely related to the network traffic, network latency, and resource usage by TiDB and TiKV.
 
 - In the same data center: The difference is generally less than 2 ms.
 - In different availability zones in the same region: The difference is generally less than 5 ms.
