@@ -40,7 +40,7 @@ SET tidb_mem_quota_query = 8 << 10;
 
 ## 如何配置 tidb-server 实例使用内存的阈值
 
-可以在系统变量 `tidb_server_memory_limit` 设置 tidb-server 实例的内存使用阈值。相关系统变量为 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit)
+可以在系统变量 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit) 设置 tidb-server 实例的内存使用阈值。
 
 例如，配置 tidb-server 实例的内存使用总量，将其设置成为 32 GB：
 
@@ -50,11 +50,12 @@ SET tidb_mem_quota_query = 8 << 10;
 set global tidb_server_memory_limit="32GB";
 ```
 
-在该配置下，当 tidb-server 实例内存使用到达 32 GB 时，其会依次终止正在执行的内存使用最大的 SQL，直至 tidb-server 实例内存使用下降到 32 GB 以下。被强制终止的 SQL 操作会向客户端返回 `Out Of Memory Limit!` 错误信息。
+在该配置下，当 tidb-server 实例内存使用到达 32 GB 时，其会依次终止正在执行的内存使用最大的 SQL，直至 tidb-server 实例内存使用下降到 32 GB 以下。被强制终止的 SQL 操作会向客户端返回 `Out Of Memory Quota!` 错误信息。
 
 > **警告：**
 >
 > + `server-memory-quota` 配置项已被废弃。为了保证兼容性，该配置项会覆盖 `tidb_server_memory_limit` 系统变量，并且只单实例生效。
+> + 因 tidb 目前对 DDL, 写入语句，window_function, cte 以及内部 SQL 的内存追踪还未完善，`tidb_server_memory_limit`功能不会对上述语句进行终止操作。
 
 在 tidb-server 实例内存使用到达总内存的一定比例 [`tidb_server_memory_limit_gc_trigger`](/system-variables.md#tidb_server_memory_limit_gc_trigger) 时, tidb-server 会尝试触发一次 Golang GC 以缓解内存压力。为了避免频繁 GC 可能导致的性能问题，该 GC 方式 1 分钟只会触发 1 次。
 
@@ -66,26 +67,23 @@ set global tidb_server_memory_limit="32GB";
 
 ```sql
 USE INFORMATION_SCHEMA;
-DESC MEMORY_USAGE;
+SELECT * FROM MEMORY_USAGE;
 ```
-```sql
-+--------------------+-------------+------+------+---------+-------+
-| Field              | Type        | Null | Key  | Default | Extra |
-+--------------------+-------------+------+------+---------+-------+
-| MEMORY_TOTAL       | bigint(21)  | NO   |      | NULL    |       |
-| MEMORY_LIMIT       | bigint(21)  | NO   |      | NULL    |       |
-| MEMORY_CURRENT     | bigint(21)  | NO   |      | NULL    |       |
-| MEMORY_MAX_USED    | bigint(21)  | NO   |      | NULL    |       |
-| CURRENT_OPS        | varchar(50) | YES  |      | NULL    |       |
-| SESSION_KILL_LAST  | datetime    | YES  |      | NULL    |       |
-| SESSION_KILL_TOTAL | bigint(21)  | NO   |      | NULL    |       |
-| GC_LAST            | datetime    | YES  |      | NULL    |       |
-| GC_TOTAL           | bigint(21)  | NO   |      | NULL    |       |
-| DISK_USAGE         | bigint(21)  | NO   |      | NULL    |       |
-| QUERY_FORCE_DISK   | bigint(21)  | NO   |      | NULL    |       |
-+--------------------+-------------+------+------+---------+-------+
-11 rows in set (0.001 sec)
-```
+
+字段含义说明：
+
+- instance: 实例信息。只有 CLUSTER_ 表存在该字段
+- memory_total: TiDB 的可用内存总量
+- memory_limit: TIDB 的内存使用限制。其值和 tidb_server_memory_limit 相同
+- memory_current: TiDB 当前的内存使用量
+- memory_max_used: 从 TiDB 启动到现在的最大内存使用量
+- current_ops: “shrinking” | null。“shrinking” 表示 TiDB 在进行内存相关的控制操作
+- session_kill_last: 上一次 Kill Session 的时间戳
+- session_kill_total: 从 TiDB 启动到现在的累计 Kill Session 的次数
+- gc_last: 上一次 Golang GC 的时间戳
+- gc_total: 从 TiDB 启动到现在的累计 Golang GC 的次数
+- disk_usage: 当前的数据落盘的硬盘使用量
+- query_force_disk: 从 TiDB 启动到现在的累计的落盘次数
 
 可以通过查询系统表 INFORMATION_SCHEMA.(CLUSTER_)MEMORY_USAGE_OPS_HISTORY 来查询本实例（集群）内存相关对操作和依据（每个实例保留最近50条记录）。
 
@@ -95,25 +93,22 @@ DESC MEMORY_USAGE;
 USE INFORMATION_SCHEMA;
 DESC MEMORY_USAGE_OPS_HISTORY;
 ```
-```sql
-+----------------+---------------------+------+------+---------+-------+
-| Field          | Type                | Null | Key  | Default | Extra |
-+----------------+---------------------+------+------+---------+-------+
-| TIME           | datetime            | NO   |      | NULL    |       |
-| OPS            | varchar(20)         | NO   |      | NULL    |       |
-| MEMORY_LIMIT   | bigint(21)          | NO   |      | NULL    |       |
-| MEMORY_CURRENT | bigint(21)          | NO   |      | NULL    |       |
-| PROCESSID      | bigint(21) unsigned | YES  |      | NULL    |       |
-| MEM            | bigint(21) unsigned | YES  |      | NULL    |       |
-| DISK           | bigint(21) unsigned | YES  |      | NULL    |       |
-| CLIENT         | varchar(64)         | YES  |      | NULL    |       |
-| DB             | varchar(64)         | YES  |      | NULL    |       |
-| USER           | varchar(16)         | YES  |      | NULL    |       |
-| SQL_DIGEST     | varchar(64)         | YES  |      | NULL    |       |
-| SQL_TEXT       | varchar(256)        | YES  |      | NULL    |       |
-+----------------+---------------------+------+------+---------+-------+
-12 rows in set (0.000 sec)
-```
+
+字段含义说明：
+
+- instance: 实例信息。只有 CLUSTER_ 表存在该字段
+- time: Kill Session 的时间戳
+- ops: “SessionKill”
+- memory_limit: TiDB 当时的内存使用限制。其值和 tidb_server_memory_limit 相同
+- memory_current: TiDB 当时的内存使用量
+- processid: 被 Kill 掉的 Session 的客户连接 ID
+- mem: 被 Kill 掉的 Session 已使用的内存，单位是 byte。
+- disk: 被 Kill 掉的 Session 已使用的硬盘，单位是 byte。
+- client: 被 Kill 掉的 Session 的客户连接的地址
+- db: 被 Kill 掉的 Session 连接的数据库名
+- user: 被 Kill 掉的 Session 的用户名
+- sql_digest: 被 Kill 掉的 Session 正在执行 SQL 的 digest
+- sql_text: 被 Kill 掉的 Session 正在执行 SQL。
 
 ## tidb-server 内存占用过高时的报警
 
