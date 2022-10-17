@@ -161,7 +161,7 @@ TiDB 对其进行了两个维度的修复：
 
 本小节描述的兼容性信息基于 [Sequelize v6.21.4](https://www.npmjs.com/package/sequelize/v/6.21.4) 测试。
 
-根据测试结果，TiDB 支持绝大部分 Sequelize 功能（使用 MySQL8 作为方言），不支持的功能有：
+根据测试结果，TiDB 支持绝大部分 Sequelize 功能（[使用 `MySQL` 作为方言](https://sequelize.org/docs/v6/other-topics/dialect-specific-things/#mysql)），不支持的功能有：
 
 - 不支持与外键约束相关的功能（包括多对多关联）。
 - [不支持 `GEOMETRY`](https://github.com/pingcap/tidb/issues/6347) 相关。
@@ -187,7 +187,7 @@ TiDB 不支持 `READ-UNCOMMITTED` 和 `SERIALIZABLE` 隔离级别。设置事务
 
 仅使用 TiDB 支持的 `REPEATABLE-READ` 或 `READ-COMMITTED` 隔离级别。
 
-如果你的目的是兼容其他设置 `SERIALIZABLE` 隔离级别的应用，但不依赖于 `SERIALIZABLE`，你可以设置 [`tidb_skip_isolation_level_check`](/system-variables.md#tidb_skip_isolation_level_check) 为 `1`，此后如果对 `tx_isolation`（[`transaction_isolation`](/system-variable.md#transaction_isolation) 别名）赋值一个 TiDB 不支持的隔离级别（`READ-UNCOMMITTED` 和 `SERIALIZABLE`），不会报错。
+如果你的目的是兼容其他设置 `SERIALIZABLE` 隔离级别的应用，但不依赖于 `SERIALIZABLE`，你可以设置 [`tidb_skip_isolation_level_check`](/system-variables.md#tidb_skip_isolation_level_check) 为 `1`，此后如果对 `tx_isolation`（[`transaction_isolation`](/system-variables.md#transaction_isolation) 别名）赋值一个 TiDB 不支持的隔离级别（`READ-UNCOMMITTED` 和 `SERIALIZABLE`），不会报错。
 
 ### 默认不允许修改列的 `AUTO_INCREMENT` 属性
 
