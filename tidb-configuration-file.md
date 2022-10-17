@@ -709,7 +709,7 @@ TiDB 服务状态相关配置。
 
 ### `tidb_force_priority`
 
-+ 把所有的语句优先级设置为 tidb_force_priority 的值。
++ 把所有的语句优先级设置为系统变量 `tidb_force_priority` 的值。
 + 默认值：NO_PRIORITY
 + 默认值 NO_PRIORITY 表示不强制改变执行语句的优先级，其它优先级从低到高可设置为 LOW_PRIORITY、DELAYED 或 HIGH_PRIORITY。
 
