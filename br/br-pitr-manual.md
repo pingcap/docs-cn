@@ -1,17 +1,17 @@
 ---
-title: 日志备份与 PITR 命令行手册
+title: TiDB 日志备份与 PITR 命令行手册
 summary: 介绍日志备份和 PITR 命令行
 aliases: ['/zh/tidb/dev/br-log-command-line/']
 ---
 
-# 日志备份与 PITR 命令行手册
+# TiDB 日志备份与 PITR 命令行手册
 
 本文介绍 TiDB 日志备份和 PITR 命令行。
 
 如果你想了解如何进行备份和恢复，可以参考以下教程
 
-- [日志备份和 PITR 功能使用指南](/br/br-use-guide/br-pitr-guide.md)
-- [TiDB 集群备份和恢复实践示例](/br/br-use-guide/br-usage.md)
+- [日志备份和 PITR 功能使用指南](/br/br-pitr-guide.md)
+- [TiDB 集群备份和恢复实践示例](/br/br-usage.md)
 
 ## 日志备份命令行介绍
 

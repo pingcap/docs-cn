@@ -167,6 +167,6 @@ TiDB 备份功能对集群性能（事务延迟和 QPS）有一定的影响，�
 
 ## 进一步阅读
 
-* [TiDB 集群备份和恢复实践示例](/br/br-use-guide/br-usage.md)
-* [br 命令行手册](/br/br-manual/use-br-command-line.md)
+* [TiDB 集群备份和恢复实践示例](/br/br-usage.md)
+* [br 命令行手册](/br/use-br-command-line.md)
 * [快照备份和恢复架构设计](/br/br-snapshot-architecture.md)

@@ -71,7 +71,7 @@ Restore KV Files <--------------------------------------------------------------
 
 ## 清理过期的日志备份数据
 
-如[使用指南概览](/br/br-use-guide/br-use-overview.md)所述：
+如[使用指南概览](/br/br-use-overview.md)所述：
 
 * 对于超过备份保留期的日志备份。使用 `br log truncate` 删除指定时间点之前的日志备份数据。因为进行 PITR 需要 1、恢复时间点之前最近的全量备份；2、全量备份和恢复时间点之间的日志备份。**建议只清理全量快照之前的日志备份**
 
@@ -122,6 +122,6 @@ Restore KV Files <--------------------------------------------------------------
 
 ## 进一步阅读
 
-* [TiDB 集群备份和恢复实践示例](/br/br-use-guide/br-usage.md)
-* [br 命令行手册](/br/br-manual/use-br-command-line.md)
+* [TiDB 集群备份和恢复实践示例](/br/br-usage.md)
+* [br 命令行手册](/br/use-br-command-line.md)
 * [日志备份和 PITR 架构设计](/br/br-log-architecture.md)

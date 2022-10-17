@@ -16,7 +16,7 @@ summary: 了解 TiDB 的备份和恢复功能使用。
 **TiDB 支持两种类型的备份，应该使用哪种备份？** 全量备份包含集群某个时间点的全量数据，日志备份包含业务写入在 TiDB 产生的数据变更记录。我们推荐这两种备份方式配合一起使用：
 
 - **启动日志备份任务**：运行 `br log start` 命令来启动日志备份任务，任务会在每个 TiKV 节点上持续运行，以小批量的形式定期钟将 TiDB 变更数据备份到指定存储中。
-- **定期地执行[快照（全量）备份](/br/br-use-guide/br-snapshot-guide.md#对集群进行快照备份)**：运行 `br backup full` 命令来备份集群快照到备份存储，例如在每天零点进行集群快照备份。
+- **定期地执行[快照（全量）备份](/br/br-snapshot-guide.md#对集群进行快照备份)**：运行 `br backup full` 命令来备份集群快照到备份存储，例如在每天零点进行集群快照备份。
 
 ### 如何管理备份数据？
 
@@ -78,9 +78,9 @@ TiDB 支持使用 br 工具进行备份恢复。
 * 安装方法可以使用[使用 TiUP 在线安装](/migration-tools.md#使用-tiup-快速安装)：`tiup install br`。
 * 了解如何使用 `br` 命令含工具进行备份和恢复，请参阅
 
-    * [（全量）快照备份和恢复功能使用](/br/br-use-guide/br-snapshot-guide.md)
-    * [日志备份和 PITR 功能使用](/br/br-use-guide/br-pitr-guide.md)
-    * [TiDB 集群备份和恢复实践示例](/br/br-use-guide/br-usage.md)
+    * [（全量）快照备份和恢复功能使用](/br/br-snapshot-guide.md)
+    * [日志备份和 PITR 功能使用](/br/br-pitr-guide.md)
+    * [TiDB 集群备份和恢复实践示例](/br/br-usage.md)
 
 ### 通过 SQL 语句
 

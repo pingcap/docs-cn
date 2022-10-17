@@ -21,7 +21,7 @@ ACID 是指数据库管理系统在写入或更新资料的过程中，为保证
 
 ### Batch Create Table
 
-批量建表 (Batch Create Table) 是在 TiDB v6.0.0 中引入的新功能，此功能默认开启。当需要恢复的数据中带有大量的表（约 50000 张）时，批量建表功能显著提升数据恢复的速度。详情参见 [批量建表](/br/br-features-design/br-batch-create-table.md)。
+批量建表 (Batch Create Table) 是在 TiDB v6.0.0 中引入的新功能，此功能默认开启。当需要恢复的数据中带有大量的表（约 50000 张）时，批量建表功能显著提升数据恢复的速度。详情参见 [批量建表](/br/br-batch-create-table.md)。
 
 ### Baseline Capturing
 

@@ -1618,7 +1618,7 @@ Raft Engine 相关的配置项。
 
 ### `enable-auto-tune` <span class="version-mark">从 v5.4 版本开始引入</span>
 
-+ 在集群资源占用率较高的情况下，是否允许 BR 自动限制备份使用的资源，减少对集群的影响。详情见[自动调节](/br/br-features-design/br-auto-tune.md)。
++ 在集群资源占用率较高的情况下，是否允许 BR 自动限制备份使用的资源，减少对集群的影响。详情见[自动调节](/br/br-auto-tune.md)。
 + 默认值：true
 
 ### `s3-multi-part-size` <span class="version-mark">从 v5.3.2 版本开始引入</span>

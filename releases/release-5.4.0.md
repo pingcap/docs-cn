@@ -208,7 +208,7 @@ TiDB 版本：5.4.0
 
     Backup & Restore (BR) 增加了备份线程自动调节功能（默认开启）。该功能通过监控集群资源的使用率自动调节备份的线程数的方式，降低备份过程对集群的影响。在某些 Case 验证中，通过增加集群用于备份的资源和开启备份线程自动调节功能，备份的影响可以降低到 10% 以下。
 
-    [用户文档](/br/br-features-design/br-auto-tune.md)
+    [用户文档](/br/br-auto-tune.md)
 
 - **支持 Azure Blob Storage 作为备份目标存储**
 

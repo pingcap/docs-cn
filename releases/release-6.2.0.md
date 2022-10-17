@@ -19,7 +19,7 @@ TiDB 版本：6.2.0-DMR
 - TiKV 支持[自适应调整 CPU 使用率](/tikv-configuration-file.md#后台限流)，确保数据库稳定高效运行。
 - 支持 [point-in-time recovery (PITR)](/br/br-overview.md)，允许恢复备份集群的历史任意时间点的快照。
 - TiDB Lightning 使用 Physical Import Mode [导入时限制调度范围从集群降低到表级别](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#导入时限制调度范围从集群降低到表级别)。
-- Backup & Restore (BR) 支持[恢复用户和权限数据](/br/br-use-guide/br-snapshot-guide.md#恢复-mysql-数据库下的表)，备份恢复体验更平滑。
+- Backup & Restore (BR) 支持[恢复用户和权限数据](/br/br-snapshot-guide.md#恢复-mysql-数据库下的表)，备份恢复体验更平滑。
 - TiCDC 支持[过滤指定类型的 DDL 事件](/ticdc/manage-ticdc.md#event-filter-配置规则-从-v620-版本开始引入)，解锁更多数据同步场景。
 - 事务中支持 [`SAVEPOINT` 机制](/sql-statements/sql-statement-savepoint.md)，可以灵活地控制事务内的回退节点。
 - [单 `ALTER TABLE` 语句增删改多个列或索引](/sql-statements/sql-statement-alter-table.md)，方便实现 SQL 功能，提升产品易用性。
@@ -169,7 +169,7 @@ TiDB 版本：6.2.0-DMR
 
     BR 快照备份和恢复支持恢复用户和权限数据，用户不再需要额外的方案恢复用户和权限数据，只需要在使用 BR 恢复数据时指定参数 `--with-sys-table`。
 
-    [用户文档](/br/br-use-guide/br-snapshot-guide.md#恢复-mysql-数据库下的表) [#35395](https://github.com/pingcap/tidb/issues/35395) @[D3Hunter](https://github.com/D3Hunter)
+    [用户文档](/br/br-snapshot-guide.md#恢复-mysql-数据库下的表) [#35395](https://github.com/pingcap/tidb/issues/35395) @[D3Hunter](https://github.com/D3Hunter)
 
 * 支持基于变更日志的备份和恢复实现 Point-in-time recovery
 
@@ -180,7 +180,7 @@ TiDB 版本：6.2.0-DMR
     - 业务历史数据审计，满足司法审查的需求。
     - 该功能初版存在着一些使用限制，详细情况请参考功能使用文档。
 
-    [用户文档](/br/br-use-guide/br-use-overview.md) [#29501](https://github.com/pingcap/tidb/issues/29501) @[joccau](https://github.com/joccau)
+    [用户文档](/br/br-use-overview.md) [#29501](https://github.com/pingcap/tidb/issues/29501) @[joccau](https://github.com/joccau)
 
 * DM 支持增量持续数据校验（实验特性）
 
