@@ -34,7 +34,7 @@ In v6.3.0-DMR, the key new features and improvements are as follows:
 
 * [EXCHANGE PARTITION](/partitioned-table.md#partition-management) becomes GA [#35996](https://github.com/pingcap/tidb/issues/35996) @[ymkzpx](https://github.com/ymkzpx)
 
-* TiDB supports two more [window functions](/tiflash/tiflash-supported-pushdown-calculations.md) [#5579](https://github.com/pingcap/tiflash/issues/5579) @[SeaRise](https://github.com/SeaRise)
+* Support pushdown of two more [window functions](/tiflash/tiflash-supported-pushdown-calculations.md) to TiFlash [#5579](https://github.com/pingcap/tiflash/issues/5579) @[SeaRise](https://github.com/SeaRise)
 
     * `LEAD()`
     * `LAG()`
