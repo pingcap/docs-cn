@@ -161,7 +161,7 @@ TiDB 对其进行了两个维度的修复：
 
 基于 [Sequelize v6.21.4](https://www.npmjs.com/package/sequelize/v/6.21.4) 测试。
 
-根据测试结果，TiDB 支持绝大部分 Sequelize 功能（使用 MySQL8 作为方言），不支持的功能主要有：
+根据测试结果，TiDB 支持绝大部分 Sequelize 功能（使用 MySQL8 作为方言），不支持的功能有：
 
 - 不支持与外键约束相关的功能(包括多对多关联)；
 - 不支持`GEOMETRY`相关；
@@ -170,19 +170,6 @@ TiDB 对其进行了两个维度的修复：
 - 不支持`SERIALIZABLE`隔离级别；
 - 默认不允许修改列的`AUTO_INCREMENT`属性；
 - 不支持`FULLTEXT`、`HASH`和`SPATIAL`索引；
-
-### 不支持与外键约束相关的功能
-
-**描述**
-
-1. TiDB 不支持外键约束。
-2. [Sequelize 的多对多关系](https://sequelize.org/docs/v6/core-concepts/assocs/#philosophy-2)使用了一个额外的模型，该模型将具有两个外键列。因此，Sequelize 无法在 TiDB 上使用多对多关系。
-
-### 不支持`GEOMETRY`相关
-
-**描述**
-
-TiDB 不支持空间类型的函数（即`SPATIAL`，或者`GIS`/`GEOMETRY`）、数据类型和索引。
 
 ### 不支持删除整数主键
 
@@ -194,12 +181,6 @@ TiDB 不支持空间类型的函数（即`SPATIAL`，或者`GIS`/`GEOMETRY`）�
 **规避方法**
 
 [使用 `AUTO_RANDOM` 处理自增主键热点表](/troubleshoot-hot-spot-issues.md#使用-auto_random-处理自增主键热点表)，而不是 `AUTO_INCREMENT`。
-
-### 不支持`PROCEDURE`相关
-
-**描述**
-
-TiDB 不支持存储过程。
 
 ### 不支持`SERIALIZABLE`隔离级别
 
