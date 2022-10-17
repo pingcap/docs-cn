@@ -133,9 +133,9 @@ SELECT TABLE_NAME FROM information_schema.tables where TABLE_SCHEMA = "<db_name>
 
 ## 加快 TiFlash 副本同步速度
 
-新增 TiFlash 副本时，各个 TiKV 实例将进行全表数据扫描，并将扫描得到的数据快照发送给 TiFlash 从而形成副本。默认情况下，为了降低对 TiKV 及 TiFlash 线上业务的影响，TiFlash 新增副本速度较低、占用较低资源。如果你发现集群中 TiKV 及 TiFlash 的 CPU 和磁盘 IO 资源比较富裕，希望提升 TiFlash 副本同步速度，则可以按以下步骤操作：
+新增 TiFlash 副本时，各个 TiKV 实例将进行全表数据扫描，并将扫描得到的数据快照发送给 TiFlash 从而形成副本。默认情况下，为了降低对 TiKV 及 TiFlash 线上业务的影响，TiFlash 新增副本速度较慢、占用资源较少。如果集群中 TiKV 及 TiFlash 的 CPU 和磁盘 IO 资源有富余，你可以按以下步骤操作来提升 TiFlash 副本同步速度：
 
-1. 通过 [SQL 语句在线修改配置](/dynamic-config.md)，临时放开各个 TiKV 及 TiFlash 实例的数据快照写入速度：
+1. 通过 [SQL 语句在线修改配置](/dynamic-config.md)，临时调高各个 TiKV 及 TiFlash 实例的数据快照写入速度：
 
    ```sql
    -- 这两个参数默认值都为 100MiB，即用于副本同步的快照最大占用的磁盘带宽不超过 100MiB/s。
@@ -143,9 +143,9 @@ SELECT TABLE_NAME FROM information_schema.tables where TABLE_SCHEMA = "<db_name>
    SET CONFIG tiflash `raftstore-proxy.server.snap-max-write-bytes-per-sec` = '300MiB';
    ```
 
-   以上 SQL 语句执行后配置修改立即生效，无需重启集群。但由于副本同步速度还受到 PD 副本速度控制，因此当前你还无法观察到副本同步速度提升。
+   以上 SQL 语句执行后，配置修改立即生效，无需重启集群。但由于副本同步速度还受到 PD 副本速度控制，因此当前你还无法观察到副本同步速度提升。
 
-2. 使用 [PD Control](/pd-control.md) 逐步放开新增副本速度控制：
+2. 使用 [PD Control](/pd-control.md) 逐步放开新增副本速度限制：
 
    TiFlash 默认新增副本速度是 30。执行以下命令将调整所有 TiFlash 实例的新增副本速度到 60，即原来的 2 倍速度：
 
