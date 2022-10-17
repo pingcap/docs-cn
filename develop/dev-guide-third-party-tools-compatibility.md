@@ -198,9 +198,11 @@ TiDB 不支持`SERIALIZABLE`隔离级别。
 
 **描述**
 
-默认不允许通过 `ALTER TABLE MODIFY` 或 `ALTER TABLE CHANGE` 来移除某个列的 `AUTO_INCREMENT` 属性。
+默认不允许通过 `ALTER TABLE MODIFY` 或 `ALTER TABLE CHANGE` 来增加或移除某个列的 `AUTO_INCREMENT` 属性。
 
 **规避方法**
+
+参考[auto_increment 的使用限制](/auto-increment.md#使用限制)。
 
 设置 `@@tidb_allow_remove_auto_inc` 为 `true`，即可允许移除 `AUTO_INCREMENT` 属性。
 
