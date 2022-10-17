@@ -47,7 +47,7 @@ SET tidb_mem_quota_query = 8 << 10;
 {{< copyable "" >}}
 
 ```sql
-set global tidb_server_memory_limit="32GB";
+SET GLOBAL tidb_server_memory_limit = "32GB";
 ```
 
 设置该变量后，当 tidb-server 实例的内存用量到达 32 GB 时，TiDB 会依次终止正在执行的 SQL 操作中内存用量最大的 SQL 操作，直至 tidb-server 实例内存使用下降到 32 GB 以下。被强制终止的 SQL 操作会向客户端返回 `Out Of Memory Quota!` 错误信息。
@@ -60,15 +60,15 @@ set global tidb_server_memory_limit="32GB";
 
 > **警告：**
 >
-> + TiDB 在启动过程中不保证 `tidb_server_memory_limit` 限制。 如果操作系统的空闲内存不足，TiDB 仍有可能引发 OOM。 用户必须保证 TiDB 实例的可用内存。
+> + TiDB 在启动过程中不保证 `tidb_server_memory_limit` 限制。 如果操作系统的空闲内存不足，TiDB 仍有可能引发 OOM。 你需要保证 TiDB 实例的可用内存。
 > + 在内存控制过程中，TiDB 的整体内存使用量可能会略微超过 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 的限制。
-> + `server-memory-quota` 配置项已被废弃。为了保证兼容性，`server-memory-quota` 在单个实例中覆盖 `tidb_server_memory_limit`。没有配置 `server-memory-quota` 的实例取值来自 `tidb_server_memory_limit`。建议移除配置项 `server-memory-quota` ，并使用 `tidb_server_memory_limit` 来动态配置。我们将在未来的版本中让配置项 `server-memory-quota` 失效。
+> + `server-memory-quota` 配置项自 v6.4.0 起被废弃。为了保证兼容性，在 v6.4.0 或更高版本的集群中，`server-memory-quota` 会在单个实例中覆盖 `tidb_server_memory_limit`。如果集群在升级至 v6.4.0 或更高版本前没有配置 `server-memory-quota`，则 tidb-server 实例内存用量限制的阈值取值来自 `tidb_server_memory_limit`。
 
 在 tidb-server 实例内存用量到达总内存的一定比例时（比例由系统变量 [`tidb_server_memory_limit_gc_trigger`](/system-variables.md#tidb_server_memory_limit_gc_trigger-从-v640-版本开始引入) 控制）, tidb-server 会尝试主动触发一次 Golang GC 以缓解内存压力。为了避免实例内存在阈值上下范围不断波动导致频繁 GC 进而带来的性能问题，该 GC 方式 1 分钟最多只会触发 1 次。
 
 ## 使用 INFORMATION_SCHEMA 系统表查看当前 tidb-server 的内存用量
 
-可以通过查询系统表 INFORMATION_SCHEMA.(CLUSTER_)MEMORY_USAGE 来查询本实例（集群）的内存使用情况。
+要查看当前实例或集群的内存使用情况，你可以查询系统表 `INFORMATION_SCHEMA.(CLUSTER_)MEMORY_USAGE`。
 
 {{< copyable "" >}}
 
@@ -85,14 +85,14 @@ SELECT * FROM MEMORY_USAGE;
 - memory_current: TiDB 当前的内存使用量，单位为 byte。
 - memory_max_used: 从 TiDB 启动到当前的最大内存使用量，单位为 byte。
 - current_ops: “shrinking” | null。“shrinking” 表示 TiDB 正在实施收缩内存的操作。
-- session_kill_last: 上一次 Kill Session 的时间戳
-- session_kill_total: 从 TiDB 启动到现在的累计 Kill Session 的次数
+- session_kill_last: 上一次终止会话的时间戳
+- session_kill_total: 从 TiDB 启动到当前累计终止会话的次数
 - gc_last: 上一次由内存使用引发 Golang GC 的时间戳
-- gc_total: 从 TiDB 启动到现在的累计的由内存使用引发 Golang GC 的次数
-- disk_usage: 当前的数据落盘的硬盘使用量，单位为 byte。
-- query_force_disk: 从 TiDB 启动到现在的累计的落盘次数
+- gc_total: 从 TiDB 启动到当前累计由内存使用引发 Golang GC 的次数
+- disk_usage: 当前数据落盘的硬盘使用量，单位为 byte。
+- query_force_disk: 从 TiDB 启动到当前累计的落盘次数
 
-可以通过查询系统表 INFORMATION_SCHEMA.(CLUSTER_)MEMORY_USAGE_OPS_HISTORY 来查询本实例（集群）内存相关对操作和依据（每个实例保留最近50条记录）。
+可以通过查询系统表 INFORMATION_SCHEMA.(CLUSTER_)MEMORY_USAGE_OPS_HISTORY 来查询本实例（集群）内存相关的操作和执行依据（每个实例保留最近50条记录）。
 
 {{< copyable "" >}}
 
@@ -104,18 +104,18 @@ DESC MEMORY_USAGE_OPS_HISTORY;
 字段含义说明：
 
 - instance: 实例信息。只有 CLUSTER_ 表存在该字段
-- time: Kill Session 的时间戳
+- time: 终止对会话的时间戳
 - ops: “SessionKill”
 - memory_limit: TiDB 当时的内存使用限制，单位为 byte。其值和 tidb_server_memory_limit 相同
 - memory_current: TiDB 当时的内存使用量，单位为 byte。
-- processid: 被 Kill 掉的 Session 的客户连接 ID
-- mem: 被 Kill 掉的 Session 已使用的内存，单位是 byte。
-- disk: 被 Kill 掉的 Session 已使用的硬盘，单位是 byte。
-- client: 被 Kill 掉的 Session 的客户连接的地址
-- db: 被 Kill 掉的 Session 连接的数据库名
-- user: 被 Kill 掉的 Session 的用户名
-- sql_digest: 被 Kill 掉的 Session 正在执行 SQL 的 digest
-- sql_text: 被 Kill 掉的 Session 正在执行 SQL。
+- processid: 被终止的会话的客户连接 ID
+- mem: 被终止的会话已使用的内存使用量，单位是 byte。
+- disk: 被终止的会话已使用的硬盘使用量，单位是 byte。
+- client: 被终止的会话的客户连接的地址
+- db: 被终止的会话连接的数据库名
+- user: 被终止的会话的用户名
+- sql_digest: 被终止的会话正在执行 SQL 的 digest
+- sql_text: 被终止的会话正在执行 SQL。
 
 ## tidb-server 内存占用过高时的报警
 
