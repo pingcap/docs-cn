@@ -165,22 +165,17 @@ TiDB 对其进行了两个维度的修复：
 
 - 不支持与外键约束相关的功能(包括多对多关联)；
 - 不支持`GEOMETRY`相关；
-- 不支持删除整数主键；
+- 不支持修改整数主键；
 - 不支持`PROCEDURE`相关；
 - 不支持`SERIALIZABLE`隔离级别；
 - 默认不允许修改列的`AUTO_INCREMENT`属性；
 - 不支持`FULLTEXT`、`HASH`和`SPATIAL`索引；
 
-### 不支持删除整数主键
+### 不支持修改整数主键
 
 **描述**
 
-1. 不支持删除整数类型的主键 [#18090](https://github.com/pingcap/tidb/issues/18090)；
-2. 当表的 `pkIsHandle` 变量为 `true` 时，不支持删除主键；
-
-**规避方法**
-
-[使用 `AUTO_RANDOM` 处理自增主键热点表](/troubleshoot-hot-spot-issues.md#使用-auto_random-处理自增主键热点表)，而不是 `AUTO_INCREMENT`。
+不支持修改整数类型的主键，这是由于当主键为整数类型时，TiDB 使用其作为数据组织的索引。你可以在此 [Issue](https://github.com/pingcap/tidb/issues/18090) 或[聚簇索引](/clustered-indexes.md)一节中获取更多信息。
 
 ### 不支持`SERIALIZABLE`隔离级别
 
