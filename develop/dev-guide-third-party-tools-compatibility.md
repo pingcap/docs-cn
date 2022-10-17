@@ -181,7 +181,7 @@ TiDB 对其进行了两个维度的修复：
 
 **描述**
 
-TiDB 不支持 `READ-UNCOMMITTED`，`SERIALIZABLE` 隔离级别。设置事物隔离级别为 `READ-UNCOMMITTED`，`SERIALIZABLE` 时将报错。
+TiDB 不支持 `READ-UNCOMMITTED`，`SERIALIZABLE` 隔离级别。设置事务隔离级别为 `READ-UNCOMMITTED`，`SERIALIZABLE` 时将报错。
 
 **规避方法**
 
