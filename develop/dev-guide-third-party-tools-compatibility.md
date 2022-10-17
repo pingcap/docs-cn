@@ -189,7 +189,6 @@ TiDB 不支持空间类型的函数（即`SPATIAL`，或者`GIS`/`GEOMETRY`）�
 **描述**
 
 1. 不支持删除整数类型的主键 [#18090](https://github.com/pingcap/tidb/issues/18090)；
-
 2. 当表的 `pkIsHandle` 变量为 `true` 时，不支持删除主键；
 
 **规避方法**
