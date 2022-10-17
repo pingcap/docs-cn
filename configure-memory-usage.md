@@ -52,10 +52,15 @@ set global tidb_server_memory_limit="32GB";
 
 在该配置下，当 tidb-server 实例内存使用到达 32 GB 时，其会依次终止正在执行的内存使用最大的 SQL，直至 tidb-server 实例内存使用下降到 32 GB 以下。被强制终止的 SQL 操作会向客户端返回 `Out Of Memory Quota!` 错误信息。
 
+`tidb_server_memory_limit` 暂时不会对下述语句进行终止操作：
+
+- DDL
+- INSERT,UPDATE,DELETE 操作
+- 包含 windows function 和 cte 的 SQL 操作
+
 > **警告：**
 >
 > + `server-memory-quota` 配置项已被废弃。为了保证兼容性，该配置项会覆盖 `tidb_server_memory_limit` 系统变量，并且只单实例生效。
-> + 因 tidb 目前对 DDL, 写入语句，window_function, cte 以及内部 SQL 的内存追踪还未完善，`tidb_server_memory_limit`功能不会对上述语句进行终止操作。
 
 在 tidb-server 实例内存使用到达总内存的一定比例 [`tidb_server_memory_limit_gc_trigger`](/system-variables.md#tidb_server_memory_limit_gc_trigger) 时, tidb-server 会尝试触发一次 Golang GC 以缓解内存压力。为了避免频繁 GC 可能导致的性能问题，该 GC 方式 1 分钟只会触发 1 次。
 
@@ -77,10 +82,10 @@ SELECT * FROM MEMORY_USAGE;
 - memory_limit: TIDB 的内存使用限制。其值和 tidb_server_memory_limit 相同
 - memory_current: TiDB 当前的内存使用量
 - memory_max_used: 从 TiDB 启动到现在的最大内存使用量
-- current_ops: “shrinking” | null。“shrinking” 表示 TiDB 在进行内存相关的控制操作
+- current_ops: “shrinking” | null。“shrinking” 表示 TiDB 正在实施收缩内存的操作。
 - session_kill_last: 上一次 Kill Session 的时间戳
 - session_kill_total: 从 TiDB 启动到现在的累计 Kill Session 的次数
-- gc_last: 上一次 Golang GC 的时间戳
+- gc_last: 上一次由内存使用引发 Golang GC 的时间戳
 - gc_total: 从 TiDB 启动到现在的累计 Golang GC 的次数
 - disk_usage: 当前的数据落盘的硬盘使用量
 - query_force_disk: 从 TiDB 启动到现在的累计的落盘次数

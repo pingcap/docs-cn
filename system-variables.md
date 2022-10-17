@@ -2280,13 +2280,13 @@ explain select * from t where age=5;
 - 只有内存使用大于 `tidb_server_memory_limit_sess_min_size` 的 SQL 会被选定为最大需要被 Cancel 的 SQL。
 - 目前 TiDB 一次只会 Cancel 一条 SQL。等其完全 Cancel 并回收资源后并且内存使用依旧大于限制，才会开始下一次 Cancel 操作。
 
-### `tidb_server_memoru_limit_gc_trigger` <span class="version-mark">从 v6.4.0 版本开始引入</span>
+### `tidb_server_memory_limit_gc_trigger` <span class="version-mark">从 v6.4.0 版本开始引入</span>
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
 - 默认值：`70%`
 - 范围：`[50%, 99%]`
-- TiDB 尝试触发 GC 的阈值。当 TiDB 的内存使用达到 `tidb_server_memory_limit`*`tidb_server_memoru_limit_gc_trigger`，则会主动触发一次 Golang GC。主动触发的 GC 在一分钟之内只会触发一次。
+- TiDB 尝试触发 GC 的阈值。当 TiDB 的内存使用达到 `tidb_server_memory_limit`*`tidb_server_memory_limit_gc_trigger`，则会主动触发一次 Golang GC。主动触发的 GC 在一分钟之内只会触发一次。
 
 ### `tidb_server_memory_limit_sess_min_size` <span class="version-mark">从 v6.4.0 版本开始引入</span>
 
@@ -2294,7 +2294,7 @@ explain select * from t where age=5;
 - 是否持久化到集群：是
 - 默认值：`128MB`
 - 范围：`[128, 9223372036854775807]`
-- 允许成为 `tidb_server_memory_limit` 中被 Cancel 的 Top1 SQL 的最小内存使用。
+- 允许成为 `tidb_server_memory_limit` 中被 Cancel 的 Top1 SQL 的最小内存使用。如果 TiDB 实例的内存超限是由大量内存使用量不显著的会话导致的，可以适当调小这个值，使得更多会话成为 Cancel 的对象。
 
 ### `tidb_shard_allocate_step` <span class="version-mark">从 v5.0 版本开始引入</span>
 
