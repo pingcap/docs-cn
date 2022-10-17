@@ -2275,7 +2275,7 @@ explain select * from t where age=5;
 - 作用域：GLOBAL
 - 是否持久化到集群：是
 - 默认值：80%
-- 范围：百分比格式 [1%, 99%], 内存大小格式 [0, 9,223,372,036,854,775,807]。 0 表示关闭该功能。
+- 范围：百分比格式 [1%, 99%]。内存大小格式 [0, 9,223,372,036,854,775,807]，单位 Byte。 支持带单位的内存格式“KB|MB|GB|TB”。0表示关闭该功能。
 - TiDB 实例的内存限制。TiDB 会在内存使用达到限制时，对当前内存使用 Top1 SQL 进行 Cancel 操作。 在该 SQL 被成功 Cancel 掉后，TiDB 会尝试调用 Golang GC 立刻进行内存回收，以最快的速度缓解内存压力。
 - 只有内存使用大于 `tidb_server_memory_limit_sess_min_size` 的 SQL 会被选定为最大需要被 Cancel 的 SQL。
 - 目前 TiDB 一次只会 Cancel 一条 SQL。等其完全 Cancel 并回收资源后并且内存使用依旧大于限制，才会开始下一次 Cancel 操作。
@@ -2292,8 +2292,8 @@ explain select * from t where age=5;
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 默认值：`128MB`
-- 范围：`[128, 9223372036854775807]`
+- 默认值：`134217728` （128MB）
+- 范围：`[128, 9223372036854775807]`，单位 Byte。
 - 允许成为 `tidb_server_memory_limit` 中被 Cancel 的 Top1 SQL 的最小内存使用。如果 TiDB 实例的内存超限是由大量内存使用量不显著的会话导致的，可以适当调小这个值，使得更多会话成为 Cancel 的对象。
 
 ### `tidb_shard_allocate_step` <span class="version-mark">从 v5.0 版本开始引入</span>
