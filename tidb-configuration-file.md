@@ -703,7 +703,7 @@ TiDB 服务状态相关配置。
 
 ### `tidb_record_plan_in_slow_log`
 
-+ 在慢日志中记录执行计划
++ 在慢日志中记录执行计划。
 + 默认值：1
 + 0 表示关闭，1 表示开启，默认开启，该值作为系统变量 [`tidb_record_plan_in_slow_log`](/system-variables.md#tidb_record_plan_in_slow_log) 的初始值。
 
