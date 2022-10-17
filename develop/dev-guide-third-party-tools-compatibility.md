@@ -156,3 +156,75 @@ TiDB 对其进行了两个维度的修复：
 
 - 客户端方面：**pingcap/mysql-connector-j** 中修复了该 Bug，你可以使用 [pingcap/mysql-connector-j](https://github.com/pingcap/mysql-connector-j) 替换官方的 MySQL Connector/J。
 - 服务端方面：TiDB v6.3.0 修复了此兼容性问题，你可以升级服务端至 v6.3.0 或以上版本。
+
+## 与 Sequelize 的兼容性
+
+基于 [Sequelize v6.21.4](https://www.npmjs.com/package/sequelize/v/6.21.4) 测试。
+
+根据测试结果，TiDB 支持绝大部分 Sequelize 功能（使用 MySQL8 作为方言），不支持的功能主要有：
+
+- 不支持与外键约束相关的功能(包括多对多关联)；
+- 不支持`GEOMETRY`相关；
+- 不支持删除整数主键；
+- 不支持`PROCEDURE`相关；
+- 不支持`SERIALIZABLE`隔离级别；
+- 默认不允许修改列的`AUTO_INCREMENT`属性；
+- 不支持`FULLTEXT`、`HASH`和`SPATIAL`索引；
+
+### 不支持与外键约束相关的功能
+
+**描述**
+
+1. TiDB 不支持外键约束。
+
+2. [Sequelize 的多对多关系](https://sequelize.org/docs/v6/core-concepts/assocs/#philosophy-2)使用了一个额外的模型，该模型将具有两个外键列。因此，Sequelize 无法在 TiDB 上使用多对多关系。
+
+### 不支持`GEOMETRY`相关
+
+**描述**
+
+TiDB 不支持空间类型的函数（即`SPATIAL`，或者`GIS`/`GEOMETRY`）、数据类型和索引。
+
+### 不支持删除整数主键
+
+**描述**
+
+1. 不支持删除整数类型的主键 [#18090](https://github.com/pingcap/tidb/issues/18090)；
+
+2. 当表的 `pkIsHandle` 变量为 `true` 时，不支持删除主键；
+
+**规避方法**
+
+[使用 `AUTO_RANDOM` 处理自增主键热点表](/troubleshoot-hot-spot-issues.md#使用-auto_random-处理自增主键热点表)，而不是 `AUTO_INCREMENT`。
+
+### 不支持`PROCEDURE`相关
+
+**描述**
+
+TiDB 不支持存储过程。
+
+### 不支持`SERIALIZABLE`隔离级别
+
+**描述**
+
+TiDB 不支持`SERIALIZABLE`隔离级别。
+
+**规避方法**
+
+设置 `tidb_skip_isolation_level_check` 为 `1`，此后如果对 `tx_isolation` 赋值一个 TiDB 不支持的隔离级别，不会报错，有助于兼容其他设置了（但不依赖于）不同隔离级别的应用。
+
+### 默认不允许修改列的`AUTO_INCREMENT`属性
+
+**描述**
+
+默认不允许通过 `ALTER TABLE MODIFY` 或 `ALTER TABLE CHANGE` 来移除某个列的 `AUTO_INCREMENT` 属性。
+
+**规避方法**
+
+设置 `@@tidb_allow_remove_auto_inc` 为 `true`，即可允许移除 `AUTO_INCREMENT` 属性。
+
+### 不支持`FULLTEXT`、`HASH`和`SPATIAL`索引
+
+**描述**
+
+TiDB 不支持`FULLTEXT`、`HASH`和`SPATIAL`索引。
