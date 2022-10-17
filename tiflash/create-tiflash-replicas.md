@@ -153,9 +153,9 @@ SELECT TABLE_NAME FROM information_schema.tables where TABLE_SCHEMA = "<db_name>
    tiup ctl:v6.1.0 pd -u http://<PD_ADDRESS>:2379 store limit all engine tiflash 60 add-peer
    ```
 
-   执行完毕后，你将可以在几分钟时间内观察到 TiFlash 节点的 CPU 及磁盘 IO 资源占用显著提升，TiFlash 将更快地创建副本。TiKV 节点的 CPU 及磁盘 IO 资源占用也将有所上升。
+   执行完毕后，几分钟内，你将观察到 TiFlash 节点的 CPU 及磁盘 IO 资源占用显著提升，TiFlash 将更快地创建副本。同时，TiKV 节点的 CPU 及磁盘 IO 资源占用也将有所上升。
 
-   如果此时 TiKV 及 TiFlash 节点的资源仍然比较富裕，且线上业务的延迟没有显著上升，则可以考虑进一步放开调度速度，例如放开新增副本的速度为原来的 3 倍：
+   如果此时 TiKV 及 TiFlash 节点的资源仍有富余，且线上业务的延迟没有显著上升，则可以考虑进一步放开调度速度，例如将新增副本的速度增加为原来的 3 倍：
 
    ```shell
    tiup ctl:v6.1.0 pd -u http://<PD_ADDRESS>:2379 store limit all engine tiflash 90 add-peer
