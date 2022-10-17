@@ -147,7 +147,7 @@ SELECT TABLE_NAME FROM information_schema.tables where TABLE_SCHEMA = "<db_name>
 
 2. 使用 [PD Control](/pd-control.md) 逐步放开新增副本速度限制：
 
-   TiFlash 默认新增副本速度是 30。执行以下命令将调整所有 TiFlash 实例的新增副本速度到 60，即原来的 2 倍速度：
+   TiFlash 默认新增副本速度是 30（每分钟大约 30 个 Region 将会新增 TiFlash 副本）。执行以下命令将调整所有 TiFlash 实例的新增副本速度到 60，即原来的 2 倍速度：
 
    ```shell
    tiup ctl:v6.1.0 pd -u http://<PD_ADDRESS>:2379 store limit all engine tiflash 60 add-peer
