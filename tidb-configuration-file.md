@@ -31,7 +31,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 > **注意：**
 > 
-> 在 v6.3.0 之后（含 v6.3.0）该配置项已被废弃，其功能由系统变量 [`tidb_enable_tmp_storage_on_oom`](/system-variables.md#tidb_enable_tmp_storage_on_oom) 代替，升级到 v6.3.0 时会自动继承原有设置，升级后该配置项的设置不再生效。
+> 自 v6.3.0 起，该配置项被废弃，其功能由系统变量 [`tidb_enable_tmp_storage_on_oom`](/system-variables.md#tidb_enable_tmp_storage_on_oom) 代替。你的集群升级到 v6.3.0 及之后的版本后，会自动继承升级前的 `oom-use-tmp-storage` 设置，升级后设置 `oom-use-tmp-storage` 不再生效。
 
 ### `tmp-storage-path`
 
