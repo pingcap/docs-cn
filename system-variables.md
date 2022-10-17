@@ -2460,6 +2460,14 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 这个变量是 `transaction_isolation` 的别名。
 
+### `tx_isolation_one_shot`
+
+> **注意：**
+>
+> 该变量仅用于 TiDB 内部实现，不推荐设置该变量。
+
+在 TiDB 内部实现中，TiDB 解释器会将 `SET TRANSACTION ISOLATION LEVEL [READ COMMITTED| REPEATABLE READ | ...]` 语句转化为 `SET @@SESSION.TX_ISOLATION_ONE_SHOT = [READ COMMITTED| REPEATABLE READ | ...]`。
+
 ### `tx_read_ts`
 
 - 作用域：SESSION
