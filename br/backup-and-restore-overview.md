@@ -1,7 +1,7 @@
 ---
 title: TiDB 备份和恢复功能
 summary: 了解 TiDB 的备份和恢复功能。
-aliases: ['/br/backup-and-restore-overview.md', '/br/point-in-time-recovery.md']
+aliases: ['/zh/tidb/dev/point-in-time-recovery/']
 ---
 
 # TiDB 备份和恢复功能

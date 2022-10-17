@@ -1,10 +1,10 @@
 ---
 title: TiDB 备份和恢复实践示例
 summary: 了解如何使用 br 进行备份和恢复
-aliases: ['/br/backup-and-restore-use-cases.md', '/br/pitr-usage.md']
+aliases: ['/zh/tidb/dev/backup-and-restore-use-cases', '/zh/tidb/dev/pitr-usage']
 ---
 
-# 使用 BR 进行 PITR
+# TiDB 备份和恢复实践示例
 
 本文档介绍如何使用 br 进行备份和 PITR，可以帮助你顺利上手使用该功能。介绍具体操作前，设想有如下使用场景。你在 AWS 部署了一套 TiDB 生产集群，业务团队提出如下需求：
 

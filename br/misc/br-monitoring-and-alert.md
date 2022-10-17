@@ -1,7 +1,6 @@
 ---
 title: PITR 监控告警
 summary: PITR 监控告警介绍。
-aliases: ['/br/pitr-monitoring-and-alert.md']
 ---
 
 # PITR 监控告警

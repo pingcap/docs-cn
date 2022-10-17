@@ -1,7 +1,7 @@
 ---
 title: 快照备份和恢复命令行手册
 summary: 介绍快照备份和恢复的命令行
-aliases: ['/br/br-usage-backup.md', '/br/br-usage-restore.md']
+aliases: ['/zh/tidb/dev/br-usage-backup', '/zh/tidb/dev/br-usage-restore']
 ---
 
 # 快照备份和恢复命令行手册

@@ -4,7 +4,7 @@ summary: 了解 BR 支持的备份存储和使用方式。
 aliases: ['/docs-cn/dev/br/backup-and-restore-storages/']
 ---
 
-# 外部存储
+# 备份存储
 
 TiDB 支持 Amazon S3、Google Cloud Storage (GCS) 、Azure Blob Storage 和 NFS 作为备份恢复的存储。具体来说，可以在 BR 的 `--storage (-s)` 参数传入存储的 URL 来定义备份存储。
 

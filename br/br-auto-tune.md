@@ -1,7 +1,6 @@
 ---
 title: BR 自动调节
 summary: 了解 BR 自动调节功能，在集群资源占用率较高的情况下，BR 会自动限制备份使用的资源以求减少对集群的影响。
-aliases: ['/br/br-auto-tune.md']
 ---
 
 # BR 自动调节 <span class="version-mark">从 v5.4 版本开始引入</span>

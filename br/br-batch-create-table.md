@@ -1,7 +1,6 @@
 ---
 title: 批量建表
 summary: 了解如何使用批量建表功能。在恢复备份数据时，BR 可以通过批量建表功能加快数据的恢复速度。
-aliases: ['/br/br-batch-create-table.md']
 ---
 
 # 批量建表

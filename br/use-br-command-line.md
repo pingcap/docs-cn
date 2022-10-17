@@ -1,14 +1,14 @@
 ---
 title: br 命令行手册
 summary: 介绍 br 命令行工具
-aliases: ['/br/use-br-command-line-tool.md', '/br/br-log-command-line.md']
+aliases: ['/zh/tidb/stable/use-br-command-line-tool/']
 ---
 
-# br 命令行工具
+# br 命令行手册
 
-本文时 br 命令行工具的使用手册，将会详细介绍了各个 br 命令行功能的使用。
+本文详细介绍了 br 各个命令行功能的使用。
 
-## BR 命令行描述
+## br 命令行描述
 
 `br` 命令是由子命令、选项和参数组成的。子命令即不带 `-` 或者 `--` 的字符。选项即以 `-` 或者 `--` 开头的字符。参数即子命令或选项字符后紧跟的、并传递给命令和选项的字符。
 
