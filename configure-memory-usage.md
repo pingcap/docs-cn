@@ -66,7 +66,7 @@ set global tidb_server_memory_limit="32GB";
 
 在 tidb-server 实例内存用量到达总内存的一定比例时（比例由系统变量 [`tidb_server_memory_limit_gc_trigger`](/system-variables.md#tidb_server_memory_limit_gc_trigger-从-v640-版本开始引入) 控制）, tidb-server 会尝试主动触发一次 Golang GC 以缓解内存压力。为了避免实例内存在阈值上下范围不断波动导致频繁 GC 进而带来的性能问题，该 GC 方式 1 分钟最多只会触发 1 次。
 
-## 使用内存表观测当前 tidb-server 的内存使用情况
+## 使用 INFORMATION_SCHEMA 系统表查看当前 tidb-server 的内存用量
 
 可以通过查询系统表 INFORMATION_SCHEMA.(CLUSTER_)MEMORY_USAGE 来查询本实例（集群）的内存使用情况。
 
