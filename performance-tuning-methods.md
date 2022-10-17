@@ -332,7 +332,7 @@ Avg TiDB KV Request Duration 和 Avg TiKV GRPC Duration 的差值跟网络流量
 
 ![Cloud Env ](/media/performance/cloud_kv_tso.png)
 
-在此示例中，TiDB 集群部署在同一个地区的不同机房。TiDB 侧平均 Commit 请求延迟为 12.7 ms，TiKV 内部 kv_commit 平均处理延迟为 10.2 ms，相差 2.5 ms 左右。TSO wait 平均延迟为 3.12 ms，rpc 时间为 693us。
+在此示例中，TiDB 集群部署在同一个地区的不同机房。TiDB 侧平均 Commit 请求延迟为 12.7 ms，TiKV 内部 kv_commit 平均处理延迟为 10.2 ms，相差 2.5 ms 左右。TSO wait 平均延迟为 3.12 ms，rpc 时间为 693 us。
 
 **示例 3：公有云集群，资源严重过载**
 
