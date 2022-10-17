@@ -50,7 +50,7 @@ SET tidb_mem_quota_query = 8 << 10;
 set global tidb_server_memory_limit="32GB";
 ```
 
-在该配置下，当 tidb-server 实例内存使用到达 32 GB 时，其会依次终止正在执行的内存使用最大的 SQL，直至 tidb-server 实例内存使用下降到 32 GB 以下。被强制终止的 SQL 操作会向客户端返回 `Out Of Memory Quota!` 错误信息。
+设置该变量后，当 tidb-server 实例的内存用量到达 32 GB 时，TiDB 会依次终止正在执行的 SQL 操作中内存用量最大的 SQL 操作，直至 tidb-server 实例内存使用下降到 32 GB 以下。被强制终止的 SQL 操作会向客户端返回 `Out Of Memory Quota!` 错误信息。
 
 `tidb_server_memory_limit` 暂时不会对下述语句进行终止操作：
 
