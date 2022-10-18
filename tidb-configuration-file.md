@@ -347,7 +347,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 当内存阈值报警功能开启时，如果配置项 [`server-memory-quota`](/tidb-configuration-file.md#server-memory-quota-从-v409-版本开始引入) 未设置，则内存报警阈值为 `memory-usage-alarm-ratio * 系统内存大小`；如果 `server-memory-quota` 被设置且大于 0，则内存报警阈值为 `memory-usage-alarm-ratio * server-memory-quota`。
 + 当 TiDB 检测到 tidb-server 的内存使用超过了阈值，则会认为存在内存溢出的风险，会将当前正在执行的所有 SQL 语句中内存使用最高的 10 条语句和运行时间最长的 10 条语句以及 heap profile 记录到目录 [`tmp-storage-path/record`](/tidb-configuration-file.md#tmp-storage-path) 中，并输出一条包含关键字 `tidb-server has the risk of OOM` 的日志。
 + 该值作为系统变量 [`tidb_memory_usage_alarm_ratio`](/system-variables.md#tidb_memory_usage_alarm_ratio) 的初始值。
-+ 在版本 v6.1.0 之后，该功能已改用配置 [`instance.tidb_memory_usage_alarm_ratio`](/tidb-configuration-file.md#tidb_memory_usage_alarm_ratio) 或系统变量 [`tidb_memory_usage_alarm_ratio`](/system-variables.md#tidb_memory_usage_alarm_ratio) 进行设置。出于兼容性考虑，该配置项仍可使用，但如果同时设置了该配置项与配置 `instance.tidb_memory_usage_alarm_ratio`，TiDB 将采用 `instance.tidb_memory_usage_alarm_ratio` 的值。
++ 自 v6.1.0 起，已改用配置项 [`instance.tidb_memory_usage_alarm_ratio`](/tidb-configuration-file.md#tidb_memory_usage_alarm_ratio) 或系统变量 [`tidb_memory_usage_alarm_ratio`](/system-variables.md#tidb_memory_usage_alarm_ratio) 来设置 tidb-server 实例内存使用占总内存比例的报警阈值。出于兼容性考虑，`memory-usage-alarm-ratio` 仍可使用，但如果同时设置了 `memory-usage-alarm-ratio` 与配置 `instance.tidb_memory_usage_alarm_ratio`，TiDB 将采用 `instance.tidb_memory_usage_alarm_ratio` 的值。
 
 ### `txn-entry-size-limit` <span class="version-mark">从 v5.0 版本开始引入</span>
 
