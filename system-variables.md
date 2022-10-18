@@ -2287,7 +2287,7 @@ explain select * from t where age=5;
 - 作用域：GLOBAL
 - 是否持久化到集群：是
 - 默认值：`70%`
-- 范围：`[50%, 99%]`
+- 取值范围：`[50%, 99%]`
 - TiDB 尝试触发 GC 的阈值。当 TiDB 的内存使用达到 `tidb_server_memory_limit`*`tidb_server_memory_limit_gc_trigger`，则会主动触发一次 Golang GC。主动触发的 GC 在一分钟之内只会触发一次。
 
 ### `tidb_server_memory_limit_sess_min_size` <span class="version-mark">从 v6.4.0 版本开始引入</span>
