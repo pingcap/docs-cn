@@ -68,74 +68,9 @@ SET GLOBAL tidb_server_memory_limit = "32GB";
 
 ## 使用 INFORMATION_SCHEMA 系统表查看当前 tidb-server 的内存用量
 
-要查看当前实例或集群的内存使用情况，你可以查询系统表 `INFORMATION_SCHEMA.(CLUSTER_)MEMORY_USAGE`。
+要查看当前实例或集群的内存使用情况，你可以查询系统表 [`INFORMATION_SCHEMA.(CLUSTER_)MEMORY_USAGE`](/information-schema/information-schema-memory-usage.md)。
 
-{{< copyable "" >}}
-
-```sql
-USE INFORMATION_SCHEMA;
-SELECT * FROM CLUSTER_MEMORY_USAGE;
-```
-
-```sql
-+-----------------+--------------+--------------+----------------+-----------------+-------------+---------------------+--------------------+---------------------+----------+------------+------------------+
-| INSTANCE        | MEMORY_TOTAL | MEMORY_LIMIT | MEMORY_CURRENT | MEMORY_MAX_USED | CURRENT_OPS | SESSION_KILL_LAST   | SESSION_KILL_TOTAL | GC_LAST             | GC_TOTAL | DISK_USAGE | QUERY_FORCE_DISK |
-+-----------------+--------------+--------------+----------------+-----------------+-------------+---------------------+--------------------+---------------------+----------+------------+------------------+
-| 127.0.0.1:10080 |  33674170368 |  10737418240 |     5097644032 |     10826604544 | NULL        | 2022-10-17 22:47:47 |                  1 | 2022-10-17 22:47:47 |       20 |          0 |                0 |
-| 127.0.0.1:10081 |  33674170368 |  10737418240 |       66519040 |     10880237568 | NULL        | 2022-10-17 22:46:25 |                  1 | 2022-10-17 22:48:25 |       33 |          0 |                0 |
-+-----------------+--------------+--------------+----------------+-----------------+-------------+---------------------+--------------------+---------------------+----------+------------+------------------+
-2 rows in set (0.002 sec)
-```
-
-字段含义说明：
-
-- INSTANCE：实例信息。只有 `CLUSTER_` 表存在该字段。
-- MEMORY_TOTAL：TiDB 的可用内存总量，单位为 byte。
-- MEMORY_LIMIT：TIDB 的内存使用限制，单位为 byte。其值与系统变量 `tidb_server_memory_limit` 的值相同。
-- MEMORY_CURRENT：TiDB 当前的内存使用量，单位为 byte。
-- MEMORY_MAX_USED：从 TiDB 启动到当前的最大内存使用量，单位为 byte。
-- CURRENT_OPS："shrinking" | null。"shrinking" 表示 TiDB 正在执行收缩内存用量的操作。
-- SESSION_KILL_LAST：上一次终止会话的时间戳。
-- SESSION_KILL_TOTAL：从 TiDB 启动到当前累计终止会话的次数。
-- GC_LAST：上一次由内存使用触发 Golang GC 的时间戳。
-- GC_TOTAL：从 TiDB 启动到当前累计由内存使用触发 Golang GC 的次数。
-- DISK_USAGE：当前数据落盘的硬盘使用量，单位为 byte。
-- QUERY_FORCE_DISK：从 TiDB 启动到当前累计的落盘次数。
-
-要查看本实例或集群中内存相关的操作和执行依据，可以查询系统表 `INFORMATION_SCHEMA.(CLUSTER_)MEMORY_USAGE_OPS_HISTORY`。对于每个实例，该表保留最近 50 条记录。
-
-{{< copyable "" >}}
-
-```sql
-USE INFORMATION_SCHEMA;
-SELECT * FROM CLUSTER_MEMORY_USAGE_OPS_HISTORY;
-```
-
-```sql
-+-----------------+---------------------+-------------+--------------+----------------+---------------------+------------+------+-----------------+------+------+------------------------------------------------------------------+----------------------------------------------------------------------+
-| INSTANCE        | TIME                | OPS         | MEMORY_LIMIT | MEMORY_CURRENT | PROCESSID           | MEM        | DISK | CLIENT          | DB   | USER | SQL_DIGEST                                                       | SQL_TEXT                                                             |
-+-----------------+---------------------+-------------+--------------+----------------+---------------------+------------+------+-----------------+------+------+------------------------------------------------------------------+----------------------------------------------------------------------+
-| 127.0.0.1:10081 | 2022-10-17 22:46:25 | SessionKill |  10737418240 |    10880237568 | 6718275530455515543 | 7905028235 |    0 | 127.0.0.1:34394 | test | root | 146b3d812852663a20635fbcf02be01688f52c8d433dafec0d496a14f0b59df6 | desc analyze select * from t t1 join t t2 on t1.a=t2.a order by t1.a |
-| 127.0.0.1:10080 | 2022-10-17 22:47:47 | SessionKill |  10737418240 |    10826604544 | 1461220166988726681 | 7083888090 |    0 | 127.0.0.1:56912 | test | root | a46176e39847c128268109d3b6f23ff6dff28a5316d66851f0a1e008df74dc16 | desc analyze select * from t t1 join t t2 on t1.a=t2.a order by t2.a |
-+-----------------+---------------------+-------------+--------------+----------------+---------------------+------------+------+-----------------+------+------+------------------------------------------------------------------+----------------------------------------------------------------------+
-2 rows in set (0.002 sec)
-```
-
-字段含义说明：
-
-- INSTANCE：实例信息。只有 `CLUSTER_` 表存在该字段。
-- TIME：终止会话的时间戳。
-- OPS："SessionKill"
-- MEMORY_LIMIT：TiDB 当时的内存使用限制，单位为 byte。其值和系统变量 `tidb_server_memory_limit` 相同。
-- MEMORY_CURRENT：TiDB 当前的内存使用量，单位为 byte。
-- PROCESSID：被终止会话的客户连接 ID。
-- MEM：被终止的会话已使用的内存使用量，单位是 byte。
-- DISK：被终止的会话已使用的硬盘使用量，单位是 byte。
-- CLIENT：被终止的会话的客户连接的地址。
-- DB：被终止的会话所连接的数据库名。
-- USER：被终止的会话的用户名。
-- SQL_DIGEST：被终止的会话正在执行 SQL 语句的 digest。
-- SQL_TEXT: 被终止的会话正在执行的 SQL 语句。
+要查看本实例或集群中内存相关的操作和执行依据，可以查询系统表 [`INFORMATION_SCHEMA.(CLUSTER_)MEMORY_USAGE_OPS_HISTORY`](/information-schema/information-schema-memory-usage-ops-history.md)。对于每个实例，该表保留最近 50 条记录。
 
 ## tidb-server 内存占用过高时的报警
 
