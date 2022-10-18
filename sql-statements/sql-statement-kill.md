@@ -30,6 +30,7 @@ SELECT ID, USER, INSTANCE, INFO FROM INFORMATION_SCHEMA.CLUSTER_PROCESSLIST;
 | 2 | root | 127.0.0.1:10080 | SELECT ID, USER, INSTANCE, INFO FROM INFORMATION_SCHEMA.CLUSTER_PROCESSLIST |
 +---------------------+------+-----------------+-------------------------------------------------------------
 2 rows in set (0.00 sec)
+
 ```
 
 {{< copyable "sql" >}}
