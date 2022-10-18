@@ -135,7 +135,7 @@ SELECT * FROM CLUSTER_MEMORY_USAGE_OPS_HISTORY;
 - DB：被终止的会话所连接的数据库名。
 - USER：被终止的会话的用户名。
 - SQL_DIGEST：被终止的会话正在执行 SQL 语句的 digest。
-- sql_text: 被终止的会话正在执行的 SQL 语句。
+- SQL_TEXT: 被终止的会话正在执行的 SQL 语句。
 
 ## tidb-server 内存占用过高时的报警
 
