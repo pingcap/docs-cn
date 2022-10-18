@@ -202,7 +202,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 是否开启慢查询日志
 + 默认值：true
 + 可以设置成 `true` 或 `false` 来启用或禁用慢查询日志。
-+ 在版本 v6.1.0 之后，该功能已改用配置 `instance.tidb_enable_slow_log` 或系统变量 `tidb_enable_slow_log` 进行设置。出于兼容性考虑，该配置项仍可使用，但如果同时设置了该配置项与配置 `instance.tidb_enable_slow_log`，TiDB 将采用 `instance.tidb_enable_slow_log` 的值。
++ 自 v6.1.0 起，已改用配置项 `instance.tidb_enable_slow_log` 或系统变量 `tidb_enable_slow_log` 来设置否开启慢查询日志。出于兼容性考虑，`enable-slow-log` 仍可使用，但如果同时设置了 `enable-slow-log` 与 `instance.tidb_enable_slow_log`，TiDB 将采用 `instance.tidb_enable_slow_log` 的值。
 
 ### `slow-query-file`
 
