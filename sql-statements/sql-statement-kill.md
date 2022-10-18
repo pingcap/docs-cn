@@ -22,6 +22,7 @@ KillOrKillTiDB ::= 'KILL' 'TIDB'?
 ```sql
 SHOW PROCESSLIST;
 ```
+
 ```
 +------+------+-----------+------+---------+------+-------+------------------+
 | Id   | User | Host      | db   | Command | Time | State | Info             |
@@ -30,13 +31,16 @@ SHOW PROCESSLIST;
 |    2 | root | 127.0.0.1 |      | Sleep   |    4 | 2     |                  |
 +------+------+-----------+------+---------+------+-------+------------------+
 2 rows in set (0.00 sec)
-```sql
+```
 
-查询INFORMATION_SCHEMA.CLUSTER_PROCESSLIST的INSTANCE列，获取被kill会话连接的TiDB Server信息。
+可以查询INFORMATION_SCHEMA.CLUSTER_PROCESSLIST的INSTANCE列，获取被kill会话连接的TiDB Server信息。
+
+{{< copyable "sql" >}}
 
 ```sql
 SELECT ID, USER, INSTANCE, INFO FROM INFORMATION_SCHEMA.CLUSTER_PROCESSLIST;
 ```
+
 ```
 +---------------------+------+-----------------+-----------------------------------------------------------------------------+
 | ID | USER | INSTANCE | INFO |
@@ -48,13 +52,13 @@ SELECT ID, USER, INSTANCE, INFO FROM INFORMATION_SCHEMA.CLUSTER_PROCESSLIST;
 
 ```
 
-{{< copyable "sql" >}}
-
 连接到与被kill会话相同的 TiDB 节点，执行 KILL TIDB 语句。
 
 ```
 mysql -h127.0.0.1 -P10080 -uroot -p
 ```
+
+{{< copyable "sql" >}}
 
 ```sql
 KILL TIDB 2;
