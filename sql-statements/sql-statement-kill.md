@@ -34,7 +34,7 @@ SELECT ID, USER, INSTANCE, INFO FROM INFORMATION_SCHEMA.CLUSTER_PROCESSLIST;
 
 {{< copyable "sql" >}}
 
-在与被kill会话相同的 TiDB 节点，执行 KILL TIDB 语句。
+连接到与被kill会话相同的 TiDB 节点，执行 KILL TIDB 语句。
 
 ```
 mysql -h127.0.0.1 -P10080 -uroot -p
