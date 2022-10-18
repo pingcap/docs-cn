@@ -154,7 +154,7 @@ To understand the key metrics displayed on the TiDB dashboard, check the followi
     - Meta Operations Duration 99: the latency of Meta operations
 
 - GC
-    - Worker Action OPM: the number of GC related operations, including `run_job`, `resolve_lock`, and `delete\_range`
+    - Worker Action OPM: the number of GC related operations, including `run_job`, `resolve_lock`, and `delete_range`
     - Duration 99: the time consumed by GC related operations
     - Config: the configuration of GC data life time and GC running interval
     - GC Failure OPM: the number of failed GC related operations
