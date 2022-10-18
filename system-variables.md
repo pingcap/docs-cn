@@ -1899,7 +1899,7 @@ Query OK, 0 rows affected (0.00 sec)
 ```
 
 ```sql
-explain select * from t use index (idx) where a in (10,20,30) and b in (40,50,60);
+EXPLAIN SELECT * FROM t USE INDEX (idx) WHERE a IN (10,20,30) AND b IN (40,50,60);
 ```
 
 在 100B 的内存最大限制约束下，优化器选择了 `IndexFullScan`，并用 warning 提示用户构造精确的扫描范围需要的内存超出了 `tidb_opt_range_max_size`。
