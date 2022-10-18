@@ -60,7 +60,7 @@ SET GLOBAL tidb_server_memory_limit = "32GB";
 
 > **警告：**
 >
-> + TiDB 在启动过程中不保证 `tidb_server_memory_limit` 限制。 如果操作系统的空闲内存不足，TiDB 仍有可能引发 OOM。 你需要保证 TiDB 实例的可用内存。
+> + TiDB 在启动过程中不保证 `tidb_server_memory_limit` 限制。 如果操作系统的空闲内存不足，TiDB 仍有可能出现 OOM。 你需要保证 TiDB 实例有足够的可用内存。
 > + 在内存控制过程中，TiDB 的整体内存使用量可能会略微超过 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 的限制。
 > + `server-memory-quota` 配置项自 v6.4.0 起被废弃。为了保证兼容性，在 v6.4.0 或更高版本的集群中，`server-memory-quota` 会在单个实例中覆盖 `tidb_server_memory_limit`。如果集群在升级至 v6.4.0 或更高版本前没有配置 `server-memory-quota`，则 tidb-server 实例内存用量限制的阈值取值来自 `tidb_server_memory_limit`。
 
