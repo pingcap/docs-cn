@@ -102,7 +102,7 @@ SELECT * FROM CLUSTER_MEMORY_USAGE;
 - DISK_USAGE：当前数据落盘的硬盘使用量，单位为 byte。
 - QUERY_FORCE_DISK：从 TiDB 启动到当前累计的落盘次数。
 
-可以通过查询系统表 INFORMATION_SCHEMA.(CLUSTER_)MEMORY_USAGE_OPS_HISTORY 来查询本实例（集群）内存相关的操作和执行依据（每个实例保留最近50条记录）。
+要查看本实例或集群中内存相关的操作和执行依据，可以查询系统表 `INFORMATION_SCHEMA.(CLUSTER_)MEMORY_USAGE_OPS_HISTORY`。对于每个实例，该表保留最近 50 条记录。
 
 {{< copyable "" >}}
 
