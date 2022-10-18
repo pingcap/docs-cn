@@ -176,7 +176,7 @@ aliases: ['/docs-cn/dev/basic-features/']
 | [TiUP 部署](/tiup/tiup-overview.md)                                      |    Y     |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
 | Ansible 部署                                                              |    N    |    N    |    N     |    N     |    N     |    N     |    N     |    N     |    N     | 已废弃   |
 | [Kubernetes operator](https://docs.pingcap.com/tidb-in-kubernetes/stable) |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
-| [内置物理备份](/br/backup-and-restore-use-cases.md)                        |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
+| [内置物理备份](/br/backup-and-restore-overview.md)                        |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
 | [Global Kill](/sql-statements/sql-statement-kill.md)                     | Y  | Y | Y | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
 | [Lock View](/information-schema/information-schema-data-lock-waits.md)    |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     | 实验特性 | 实验特性 | 实验特性 |
 | [`SHOW CONFIG`](/sql-statements/sql-statement-show-config.md)             | Y | Y| Y | Y | Y | Y | Y | Y | Y | Y |
