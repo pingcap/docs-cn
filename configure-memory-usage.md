@@ -76,7 +76,8 @@ SET GLOBAL tidb_server_memory_limit = "32GB";
 USE INFORMATION_SCHEMA;
 SELECT * FROM CLUSTER_MEMORY_USAGE;
 ```
-```
+
+```sql
 +-----------------+--------------+--------------+----------------+-----------------+-------------+---------------------+--------------------+---------------------+----------+------------+------------------+
 | INSTANCE        | MEMORY_TOTAL | MEMORY_LIMIT | MEMORY_CURRENT | MEMORY_MAX_USED | CURRENT_OPS | SESSION_KILL_LAST   | SESSION_KILL_TOTAL | GC_LAST             | GC_TOTAL | DISK_USAGE | QUERY_FORCE_DISK |
 +-----------------+--------------+--------------+----------------+-----------------+-------------+---------------------+--------------------+---------------------+----------+------------+------------------+
