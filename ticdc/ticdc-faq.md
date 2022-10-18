@@ -132,15 +132,15 @@ For more information, refer to [Create a replication task](/ticdc/manage-ticdc.m
     * Increase the `replica.fetch.max.bytes` value in `server.properties` to `1073741824` (1 GB).
     * Increase the `fetch.message.max.bytes` value in `consumer.properties` to make it larger than the `message.max.bytes` value.
 
-## When TiCDC replicates data to Kafka, does it write all the changes in a transaction into one message? If not, on what basis does it divide the changes?
-
-No. According to the different distribution strategies configured, TiCDC divides the changes on different bases, including `default`, `row id`, `table`, and `ts`.
-
-For more information, refer to [Replication task configuration file](/ticdc/manage-ticdc.md#task-configuration-file).
-
 ## When TiCDC replicates data to Kafka, can I control the maximum size of a single message in TiDB?
 
-Yes. You can set the `max-message-bytes` parameter to control the maximum size of data sent to the Kafka broker each time (optional, `10MB` by default). You can also set `max-batch-size` to specify the maximum number of change records in each Kafka message. Currently, the setting only takes effect when Kafka's `protocol` is `open-protocol` (optional, `16` by default).
+When `protocol` is set to `avro` or `canal-json`, messages are sent per row change. A single Kafka message contains only one row change and is generally no larger than Kafka's limit. Therefore, there is no need to limit the size of a single message. If the size of a single Kafka message does exceed Kakfa's limit, refer to [Why does the latency from TiCDC to Kafka become higher and higher?](/ticdc/ticdc-faq.md#why-does-the-latency-from-ticdc-to-kafka-become-higher-and-higher).
+
+When `protocol` is set to `open-protocol`, messages are sent in batches. Therefore, one Kafka message might be excessively large. To avoid this situation, you can configure the `max-message-bytes` parameter to control the maximum size of data sent to the Kafka broker each time (optional, `10MB` by default). You can also configure the `max-batch-size` parameter (optional, `16` by default) to specify the maximum number of change records in each Kafka message.
+
+## If I modify a row multiple times in a transaction, will TiCDC output multiple row change events?
+
+No. When you modify the same row in one transaction multiple times, TiDB only sends the latest modification to TiKV. Therefore, TiCDC can only obtain the result of the latest modification.
 
 ## When TiCDC replicates data to Kafka, does a message contain multiple types of data changes?
 
@@ -260,3 +260,7 @@ When upstream write traffic is at peak hours, the downstream may fail to consume
 ## Why does replication using TiCDC stall or even stop after data restore using TiDB Lightning and BR from upstream?
 
 Currently, TiCDC is not yet fully compatible with TiDB Lightning and BR. Therefore, please avoid using TiDB Lightning and BR on tables that are replicated by TiCDC.
+
+## After a changefeed resumes from pause, its replication latency gets higher and higher and returns to normal only after a few minutes. Why?
+
+When a changefeed is resumed, TiCDC needs to scan the historical versions of data in TiKV to catch up with the incremental data logs generated during the pause. The replication process proceeds only after the scan is completed. The scan process might take several to tens of minutes.
