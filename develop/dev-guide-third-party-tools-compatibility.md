@@ -35,7 +35,7 @@ TiDB 中 `SELECT CONNECTION_ID()` 的返回值为 64 位，如 `2199023260887`�
 
 **描述**
 
-MySQL 维护了一系列 [`Com_` 开头的服务端变量](https://dev.mysql.com/doc/refman/8.0/en/server-status-variables.html#statvar_Com_xxx)来记录你对数据库的操作总数，如 `Com_select` 记录了 MySQL 数据库从上次启动开始，总共发起的 `SELECT` 语句数（即使语句并未成功执行）。而 TiDB 并未维护此变量。你可以使用语句 [`SHOW GLOBAL STATUS LIKE 'Com_%'`](/sql-statements/sql-statement-show-status.md) 观察 TiDB 与 MySQL 的差异。
+MySQL 维护了一系列 [`Com_` 开头的服务端变量](https://dev.mysql.com/doc/refman/8.0/en/server-status-variables.html#statvar_Com_xxx)来记录你对数据库的操作总数，如 `Com_select` 记录了 MySQL 数据库从上次启动开始，总共发起的 `SELECT` 语句数（即使语句并未成功执行）。而 TiDB 并未维护此变量。你可以使用语句 [<code>SHOW GLOBAL STATUS LIKE 'Com_%'</code>](/sql-statements/sql-statement-show-status.md) 观察 TiDB 与 MySQL 的差异。
 
 **规避方法**
 
