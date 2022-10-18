@@ -327,7 +327,8 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 > **警告：**
 >
 > `server-memory-quota` 目前为实验性特性，不建议在生产环境中使用。
-> 自 v6.4.0 版本起该配置项被废弃，被新的系统变量 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit) 所取代
+>
+> 自 v6.4.0 版本起该配置项被废弃，被系统变量 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit) 所取代。
 
 + 设置 tidb-server 实例的最大内存用量，单位为字节。
 + 默认值：0
