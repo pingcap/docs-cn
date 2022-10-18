@@ -2296,7 +2296,7 @@ explain select * from t where age=5;
 - 是否持久化到集群：是
 - 默认值：`134217728`（即 128 MB）
 - 取值范围：`[128, 9223372036854775807]`，单位 Byte。
-- 允许成为 `tidb_server_memory_limit` 中被 Cancel 的 Top1 SQL 的最小内存使用。如果 TiDB 实例的内存超限是由大量内存使用量不显著的会话导致的，可以适当调小这个值，使得更多会话成为 Cancel 的对象。
+- 该变量指定允许成为 `tidb_server_memory_limit` 中被 Cancel 的 Top1 SQL 语句的最小内存使用。如果 TiDB 实例的内存超限是由许多内存使用量不明显的会话导致的，可以适当调小该变量值，使得更多会话成为 Cancel 的对象。
 
 ### `tidb_shard_allocate_step` <span class="version-mark">从 v5.0 版本开始引入</span>
 
