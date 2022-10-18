@@ -1916,7 +1916,7 @@ explain select * from t use index (idx) where a in (10,20,30) and b in (40,50,60
 ```
 
 ```sql
-show warnings;
+SHOW WARNINGS;
 ```
 
 ```sql
