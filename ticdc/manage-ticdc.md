@@ -352,6 +352,44 @@ URI 中可配置的的参数如下：
 
 #### Sink URI 配置 `s3`/`azure blob storage`/`gcs`/`nfs`
 
+TiCDC 从 v6.4 开始支持将行变更事件保存至 S3、GCS 和 Azblob 等云存储系统中。
+
+S3 配置样例如下:
+
+{{< copyable "shell-regular" >}}
+
+```shell
+--sink-uri="s3://my-bucket/prefix?region=us-west-2&worker-count=4"
+```
+
+S3 的 URL 参数与 BR 相同，详细参数请参考 [S3 的 URL 参数](/br/backup-and-restore-storages.md#s3-的-url-参数)
+
+GCS 配置样例如下：
+
+{{< copyable "shell-regular">}}
+
+```shell
+--sink-uri="gcs://my-bucket/prefix?flush-interval=15s"
+```
+
+GCS 的 URL 参数与 BR 相同，详细参数请参考 [GCS 的 URL 参数](/br/backup-and-restore-storages.md#gcs-的-url-参数)
+
+Azblob 配置样例如下：
+
+{{< copyable "shell-regular">}}
+
+```shell
+--sink-uri="azblob://my-bucket/prefix"
+```
+
+Azblob 的 URL 参数与 BR 相同，详细参数请参考 [Azblob 的 URL 参数](/br/backup-and-restore-storages.md#azblob-的-url-参数)
+
+URI 中其他可配置的参数如下：
+
+| 参数         | 解析                                             |
+| :------------ | :------------------------------------------------ |
+| `worker-count` | 向下游云存储保存数据变更记录的并发度（可选，默认值为 `16`）|
+| `flush-interval` | 向下游云存储保存数据变更记录的间隔（可选，默认值为 `10s`）|
 
 #### 使用同步任务配置文件
 
@@ -652,8 +690,24 @@ dispatchers = [
 # 目前支持 canal-json、open-protocol、canal、avro 和 maxwell 五种协议。
 protocol = "canal-json"
 
-[sink.csv]
+# 以下三个配置项仅在云存储类的 Sink 中使用。
+# 换行符。空值代表使用 "\r\n" 作为换行符。默认值为空。
+terminator = ''
+# 文件路径的日期分隔类型。可选类型有 `none`、`year`、`month`、`day`。默认值为 `none`，即不使用日期分隔。
+date-separator = 'none'
+# 是否使用 partition 作为分隔字符串。
+enable-partition-separator = false
 
+# 从 v6.4 开始，TiCDC 支持以 CSV 格式将数据变更记录保存至云存储中。
+[sink.csv]
+# 字段之间的分隔符。必须为 ASCII 字符，默认值为 `,`
+delimiter = ','
+# 用于围住字段的引号字符。空值代表不使用引号字符。默认值为 `"`。
+quote = '"'
+# csv 列为 null 时将被表示的字符。默认值为 `\N`
+null = '\N'
+# 是否在 csv 行中包含 commit-ts。默认值为 false。
+include-commit-ts = false
 ```
 
 ### 配置文件兼容性的注意事项
@@ -740,6 +794,207 @@ partition 分发器用 partition = "xxx" 来指定，支持 default、ts、index
 > ```
 > {matcher = ['*.*'], dispatcher = "ts", partition = "table"},
 > ```
+
+## 云存储类 Sink
+
+### 数据变更记录
+
+数据变更记录将会存储到以下路径：
+
+```shell
+{protocol}://{prefix}/{schema}/{table}/{table-version-separator}/{partition-separator}/{date-separator}/CDC{num}.{extension}
+```
+
+- protocol: protocol 为数据传输协议，也即存储类型。例如：`s3://xxxxx`
+- prefix: prefix 为用户指定的父目录。例如：`s3://bucket/bbb/ccc`
+- schema: schema 为表所属的库名。例如：`s3://bucket/bbb/ccc/test`
+- table: table 为表名。例如：`s3://bucket/bbb/ccc/test/table1`
+- table-version-separator: 将文件路径按照表的版本进行分隔。例如：`s3://bucket/bbb/ccc/test/table1/9999`
+- partition-separator: 将文件路径按照表的分区号进行分隔。例如：`s3://bucket/bbb/ccc/test/table1/9999/20`
+- date-separator: 将文件路径按照事务提交的日期进行分隔。date-separator 可选值如下：
+    - none: 不以 date-separator 分隔文件路径。例如：`test.table1` 版本号为 9999 的所有文件都存到 `s3://bucket/bbb/ccc/test/table1/9999` 路径下。
+    - year: 以事务提交的年份分隔文件路径。例如：`s3://bucket/bbb/ccc/test/table1/9999/2022`。
+    - month: 以事务提交的年份和月份分隔文件路径。例如：`s3://bucket/bbb/ccc/test/table1/9999/2022-01`。
+    - day: 以事务提交的年月日来分隔文件路径。例如：`s3://bucket/bbb/ccc/test/table1/9999/2022-01-02`。
+- num: 存储数据变更记录的目录下文件的序号。例如：`s3://bucket/bbb/ccc/test/table1/9999/2022-01-02/CDC000005.csv`。
+- extension: 文件的扩展名，v6.4 只支持 csv 格式。
+
+### 元数据
+
+元数据信息将会存储到以下路径：
+
+```shell
+{protocol}://{prefix}/metadata
+```
+
+元数据信息以 JSON 格式存储到如下的文件中：
+
+```shell
+{
+    "checkpoint-ts":433305438660591626
+}
+```
+
+- checkpoint-ts: commit-ts 小于等于此 checkpoint-ts 的事务都被写入下游存储当中。
+
+### DDL 事件
+
+当 DDL 事件引起表的版本变更时，TiCDC 将会切换到新的路径下写入数据变更记录，例如 `test.table1` 的版本从 `9999` 变更为 `10000` 时将会在 `s3://bucket/bbb/ccc/test/table1/10000/2022-01-02/CDC000001.csv` 路径中写入数据。并且，当 DDL 事件发生时，TiCDC 将生成一个 `schema.json` 文件存储表结构信息。
+
+表结构信息将会存储到以下路径：
+
+```shell
+{protocol}://{prefix}/{schema}/{table}/{table-version-separator}/schema.json
+```
+
+一个示例 `schema.json` 文件如下：
+
+```shell
+{
+    "Table":"employee",
+    "Schema":"hr",
+    "Version":123123,
+    "TableColumns":[
+        {
+            "ColumnName":"Id",
+            "ColumnType":"INT",
+            "ColumnNullable":"false",
+            "ColumnIsPk":"true"
+        },
+        {
+            "ColumnName":"LastName",
+            "ColumnType":"CHAR",
+            "ColumnLength":"20"
+        },
+        {
+            "ColumnName":"FirstName",
+            "ColumnType":"VARCHAR",
+            "ColumnLength":"30"
+        },
+        {
+            "ColumnName":"HireDate",
+            "ColumnType":"DATETIME"
+        },
+        {
+            "ColumnName":"OfficeLocation",
+            "ColumnType":"BLOB",
+            "ColumnLength":"20"
+        }
+    ],
+    "TableColumnsTotal":"5"
+}
+```
+
+- Table: 表名。
+- Schema: 表所属的库名。
+- Version: 表的版本号。
+- TableColumns: 该数组表示表中每一列的详细信息。
+    - ColumnName: 列名。
+    - ColumnType: 该列的类型。详见 [数据类型](/ticdc/manage-ticdc.md#数据类型)。
+    - ColumnLength: 该列的长度。详见 [数据类型](/ticdc/manage-ticdc.md#数据类型)。
+    - ColumnPrecision: 该列的精度。详见 [数据类型](/ticdc/manage-ticdc.md#数据类型)。
+    - ColumnScale: 该列小数位的长度。详见 [数据类型](/ticdc/manage-ticdc.md#数据类型)。
+    - ColumnNullable: 值为 true 时表示该列可以含 NULL 值。
+    - ColumnIsPk: 值为 true 时表示该列是主键的一部分。
+- TableColumnsTotal: TableColumns 数组的大小。
+
+### 数据类型
+
+数据类型定义为 T(M[, D])，详见 [数据类型概述](/data-type-overview.md#数据类型概述)。
+
+#### 整数类型
+
+TiDB 中整数类型可被定义为 `IT[(M)] [UNSIGNED]`，其中：
+
+- IT 为整数类型，包括 `TINYINT`、`SMALLINT`、`MEDIUMINT`、`INT`、`BIGINT` 和 `BIT`。
+- M 为该类型的显示宽度。
+
+故 `schema.json` 文件中对整数类型定义如下：
+
+```shell
+{
+    "ColumnName":"COL1",
+    "ColumnType":"{IT} [UNSIGNED]",
+    "ColumnPrecision":"{M}"
+}
+```
+
+#### 小数类型
+
+TiDB 中的小数类型可被定义为 `DT[(M,D)][UNSIGNED]`，其中：
+
+- DT 为小数类型，包括 `FLOAT`、`DOUBLE`、`DECIMAL` 和 `NUMERIC`。
+- M 为该类型数据的精度，即整数位加上小数位的总长度。
+- D 为小数位的长度。
+
+故 `schema.json` 文件中对小数类型的定义如下：
+
+```shell
+{
+    "ColumnName":"COL1",
+    "ColumnType":"{DT} [UNSIGNED]",
+    "ColumnPrecision":"{M}",
+    "ColumnScale":"{D}"
+}
+```
+
+#### 时间和日期类型
+
+TiDB 中的日期类型可被定义为 `DT`，其中：
+
+- DT 为日期类型，包括 `DATE` 和 `YEAR`。
+
+故 `schema.json` 文件中对日期类型的定义如下：
+
+```shell
+{
+    "ColumnName":"COL1",
+    "ColumnType":"{DT}"
+}
+```
+
+TiDB 中的时间类型可被定义为 `TT[(M)]`，其中：
+
+- TT 为时间类型，包括 `TIME`、`DATETIME` 和 `TIMESTAMP`。
+- M 为秒的精度，取值范围为 0~6。
+
+故 `schema.json` 文件中对时间类型的定义如下：
+
+```shell
+{
+    "ColumnName":"COL1",
+    "ColumnType":"{TT}",
+    "ColumnScale":"{M}"
+}
+```
+
+#### 字符串类型
+
+TiDB 中的字符串类型可被定义为 `ST[(M)]`，其中：
+
+- ST 为字符串类型，包括 `CHAR`、`VARCHAR`、`TEXT`、`BINARY`、`BLOB`、`JSON` 等。
+- M 表示字符串的最大长度。
+
+故 `schema.json` 文件中对字符串类型的定义如下：
+
+```shell
+{
+    "ColumnName":"COL1",
+    "ColumnType":"{ST}",
+    "ColumnLength":"{M}"
+}
+```
+
+#### Enum/Set 类型
+
+`schema.json` 文件中对 enum/set 类型的定义如下：
+
+```shell
+{
+    "ColumnName":"COL1",
+    "ColumnType":"{ENUM/SET}",
+}
+```
 
 ## 输出行变更的历史值 <span class="version-mark">从 v4.0.5 版本开始引入</span>
 
