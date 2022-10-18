@@ -1846,9 +1846,9 @@ Raft Engine 相关的配置项。
 
 + 预分配 TSO 缓存大小（以时长计算）。
 + 表示 TiKV 将按照这个参数指定的时长，预分配 TSO 缓存。TiKV 会根据前一周期的使用情况，预估并请求满足 `alloc-ahead-buffer` 时长所需要的 TSO 数量，缓存在本地。
-+ 这个参数通常用于提高 TiKV API V2 对于 PD 故障的容忍度。
-+ 如果调大这个参数，会增加 TSO 消耗，并增加 TiKV 的内存开销。此外，建议同时修改 PD 的 [`tso-update-physical-interval`](/pd-configuration-file.md#tso-update-physical-interval-从-v640-版本开始引入) 参数，以获得足够的 TSO 供应。
-+ 在 PD 主节点故障并切换到其他节点过程中，根据测试，默认配置下写请求会短暂出现延迟增大和 QPS 下降（幅度约 15%）。
++ 这个参数通常用于提高 TiKV API V2 (`storage.api-version = 2`) 对 PD 故障的容忍度。
++ 调大这个参数会增加 TSO 消耗，并增加 TiKV 的内存开销。为了获得足够的 TSO 供应，建议同时调小 PD 的 [`tso-update-physical-interval`](/pd-configuration-file.md#tso-update-physical-interval-从-v640-版本开始引入) 参数。
++ 根据测试，在 PD 主节点故障并切换到其他节点过程中，默认配置下写请求会短暂出现延迟增大和 QPS 下降（幅度约 15%）。
 + 如果希望业务不受影响，可以尝试采用以下配置：
     + `causal-ts.alloc-ahead-buffer = "6s"`
     + `causal-ts.renew-batch-max-size = 65536`
