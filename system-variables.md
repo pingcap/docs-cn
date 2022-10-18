@@ -308,16 +308,6 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 - 服务器端和客户端在一次传送数据包的过程中所允许最大的数据包大小，单位为字节。
 - 该变量的行为与 MySQL 兼容。
 
-### `max_connections`
-
-- 作用域：GLOBAL
-- 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
-- 类型：整数
-- 默认值：`0`
-- 范围：`[0, 100000]`
-- TiDB 中同时允许的最大客户端连接数，用于资源控制。
-- 默认情况下，TiDB 不限制客户端连接数。当本配置项的值大于 `0` 且客户端连接数到达此值时，TiDB 服务端将会拒绝新的客户端连接。
-
 ### `plugin_dir`
 
 - 作用域：GLOBAL

@@ -26,12 +26,12 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 ### `oom-use-tmp-storage`（已废弃）
 
-+ 设置是否在单条 SQL 语句的内存使用超出系统变量 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 限制时为某些算子启用临时磁盘。
-+ 默认值：true
-
 > **注意：**
 > 
 > 自 v6.3.0 起，该配置项被废弃，其功能由系统变量 [`tidb_enable_tmp_storage_on_oom`](/system-variables.md#tidb_enable_tmp_storage_on_oom) 代替。你的集群升级到 v6.3.0 及之后的版本后，会自动继承升级前的 `oom-use-tmp-storage` 设置，升级后设置 `oom-use-tmp-storage` 不再生效。
+
++ 设置是否在单条 SQL 语句的内存使用超出系统变量 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 限制时为某些算子启用临时磁盘。
++ 默认值：true
 
 ### `tmp-storage-path`
 
