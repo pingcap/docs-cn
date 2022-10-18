@@ -347,7 +347,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 当内存阈值报警功能开启时，如果配置项 [`server-memory-quota`](/tidb-configuration-file.md#server-memory-quota-从-v409-版本开始引入) 未设置，则内存报警阈值为 `memory-usage-alarm-ratio * 系统内存大小`；如果 `server-memory-quota` 被设置且大于 0，则内存报警阈值为 `memory-usage-alarm-ratio * server-memory-quota`。
 + 当 TiDB 检测到 tidb-server 的内存使用超过了阈值，则会认为存在内存溢出的风险，会将当前正在执行的所有 SQL 语句中内存使用最高的 10 条语句和运行时间最长的 10 条语句以及 heap profile 记录到目录 [`tmp-storage-path/record`](/tidb-configuration-file.md#tmp-storage-path) 中，并输出一条包含关键字 `tidb-server has the risk of OOM` 的日志。
 + 该值作为系统变量 [`tidb_memory_usage_alarm_ratio`](/system-variables.md#tidb_memory_usage_alarm_ratio) 的初始值。
-+ 自 v6.1.0 起，已改用配置项 [`instance.tidb_memory_usage_alarm_ratio`](/tidb-configuration-file.md#tidb_memory_usage_alarm_ratio) 或系统变量 [`tidb_memory_usage_alarm_ratio`](/system-variables.md#tidb_memory_usage_alarm_ratio) 来设置 tidb-server 实例内存使用占总内存比例的报警阈值。`memory-usage-alarm-ratio` 仍可使用，但如果同时设置了 `memory-usage-alarm-ratio` 与配置 `instance.tidb_memory_usage_alarm_ratio`，TiDB 将采用 `instance.tidb_memory_usage_alarm_ratio` 的值。
++ 自 v6.1.0 起，已改用配置项 [`instance.tidb_memory_usage_alarm_ratio`](/tidb-configuration-file.md#tidb_memory_usage_alarm_ratio) 或系统变量 [`tidb_memory_usage_alarm_ratio`](/system-variables.md#tidb_memory_usage_alarm_ratio) 来设置 tidb-server 实例内存使用占总内存比例的报警阈值。`memory-usage-alarm-ratio` 仍可使用，但如果同时设置了 `memory-usage-alarm-ratio` 与 `instance.tidb_memory_usage_alarm_ratio`，TiDB 将采用 `instance.tidb_memory_usage_alarm_ratio` 的值。
 
 ### `txn-entry-size-limit` <span class="version-mark">从 v5.0 版本开始引入</span>
 
@@ -419,7 +419,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 把所有的语句优先级设置为 force-priority 的值。
 + 默认值：NO_PRIORITY
 + 可选值：默认值 NO_PRIORITY 表示不强制改变执行语句的优先级，其它优先级从低到高可设置为 LOW_PRIORITY、DELAYED 或 HIGH_PRIORITY。
-+ 自 v6.1.0 起，已改用配置项 [`instance.tidb_force_priority`](/tidb-configuration-file.md#tidb_force_priority) 或系统变量 [`tidb_force_priority`](/system-variables.md#tidb_force_priority) 来将所有语句优先级设为 force-priority 的值。`force-priority` 仍可使用，但如果同时设置了 `force-priority` 与配置 `instance.tidb_force_priority`，TiDB 将采用 `instance.tidb_force_priority` 的值。
++ 自 v6.1.0 起，已改用配置项 [`instance.tidb_force_priority`](/tidb-configuration-file.md#tidb_force_priority) 或系统变量 [`tidb_force_priority`](/system-variables.md#tidb_force_priority) 来将所有语句优先级设为 force-priority 的值。`force-priority` 仍可使用，但如果同时设置了 `force-priority` 与 `instance.tidb_force_priority`，TiDB 将采用 `instance.tidb_force_priority` 的值。
 
 ### `distinct-agg-push-down`
 
@@ -688,35 +688,35 @@ TiDB 服务状态相关配置。
 
 + 用于控制是否同时将各个执行算子的执行信息记录入 slow query log 中。
 + 默认值：true
-+ 在版本 v6.1.0 之前，该功能由配置 `enable-collect-execution-info` 进行设置。
++ 在 v6.1.0 之前，该功能通过配置项 `enable-collect-execution-info` 进行设置。
 
 ### `tidb_enable_slow_log`
 
 + 是否开启慢查询日志。
 + 默认值：true
 + 可以设置成 `true` 或 `false` 来启用或禁用慢查询日志。
-+ 在版本 v6.1.0 之前，该功能由配置 `enable-slow-log` 进行设置。
++ 在 v6.1.0 之前，该功能通过配置项 `enable-slow-log` 进行设置。
 
 ### `tidb_slow_log_threshold`
 
 + 输出慢日志的耗时阈值。
 + 默认值：300ms
 + 当查询大于这个值，就会当做是一个慢查询，输出到慢查询日志。
-+ 在版本 v6.1.0 之前，该功能由配置 `slow-threshold` 进行设置。
++ 在 v6.1.0 之前，该功能通过配置项 `slow-threshold` 进行设置。
 
 ### `tidb_record_plan_in_slow_log`
 
 + 在慢日志中记录执行计划。
 + 默认值：1
 + 0 表示关闭，1 表示开启，默认开启，该值作为系统变量 [`tidb_record_plan_in_slow_log`](/system-variables.md#tidb_record_plan_in_slow_log) 的初始值。
-+ 在版本 v6.1.0 之前，该功能由配置 `record-plan-in-slow-log` 进行设置。
++ 在 v6.1.0 之前，该功能通过配置项 `record-plan-in-slow-log` 进行设置。
 
 ### `tidb_force_priority`
 
 + 把所有的语句优先级设置为系统变量 `tidb_force_priority` 的值。
 + 默认值：NO_PRIORITY
 + 默认值 NO_PRIORITY 表示不强制改变执行语句的优先级，其它优先级从低到高可设置为 LOW_PRIORITY、DELAYED 或 HIGH_PRIORITY。
-+ 在版本 v6.1.0 之前，该功能由配置 `force-priority` 进行设置。
++ 在 v6.1.0 之前，该功能通过配置项 `force-priority` 进行设置。
 
 ### `max_connections`
 
@@ -724,7 +724,7 @@ TiDB 服务状态相关配置。
 + 默认值：0
 + 默认情况下，TiDB 不限制客户端连接数。当本配置项的值大于 `0` 且客户端连接数到达此值时，TiDB 服务端将会拒绝新的客户端连接。
 + 该值作为系统变量 [`max_connections`](/system-variables.md#max_connections) 的初始值。
-+ 在版本 v6.2.0 之前，该功能由配置 `max-server-connections` 进行设置。
++ 在 v6.2.0 之前，该功能通过配置项 `max-server-connections` 进行设置。
 
 ### `tidb_memory_usage_alarm_ratio`
 
@@ -733,14 +733,14 @@ TiDB 服务状态相关配置。
 + 当内存阈值报警功能开启时，如果配置项 [`server-memory-quota`](/tidb-configuration-file.md#server-memory-quota-从-v409-版本开始引入) 未设置，则内存报警阈值为 `tidb_memory_usage_alarm_ratio * 系统内存大小`；如果 `server-memory-quota` 被设置且大于 0，则内存报警阈值为 `tidb_memory_usage_alarm_ratio * server-memory-quota`。
 + 当 TiDB 检测到 tidb-server 的内存使用超过了阈值，则会认为存在内存溢出的风险，会将当前正在执行的所有 SQL 语句中内存使用最高的 10 条语句和运行时间最长的 10 条语句以及 heap profile 记录到目录 [`tmp-storage-path/record`](/tidb-configuration-file.md#tmp-storage-path) 中，并输出一条包含关键字 `tidb-server has the risk of OOM` 的日志。
 + 该值作为系统变量 [`tidb_memory_usage_alarm_ratio`](/system-variables.md#tidb_memory_usage_alarm_ratio) 的初始值。
-+ 在版本 v6.1.0 之前，该功能由配置 `memory-usage-alarm-ratio` 进行设置。
++ 在版本 v6.1.0 之前，该功能通过配置项 `memory-usage-alarm-ratio` 进行设置。
 
 ### `tidb_enable_ddl`
 
 + 用于表示该 tidb-server 是否运行 DDL 语句。
 + 默认值：true
 + 该值作为系统变量 [`tidb_enable_ddl`](/system-variables.md#tidb_enable_ddl) 的初始值。
-+ 在版本 v6.3.0 之前，该功能由配置 `run-ddl` 进行设置。
++ 在 v6.3.0 之前，该功能由配置项 `run-ddl` 进行设置。
 
 ## proxy-protocol
 
