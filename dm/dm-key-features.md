@@ -35,7 +35,7 @@ routes:
     table-pattern: "t_*"
     target-schema: "test"
     target-table: "t"
-    # extract-table/extract-schema/extract-source 为可选配置，仅在有提取分表数据源信息需求时填写
+    # extract-table/extract-schema/extract-source 为可选配置，仅在需要提取分表、分库和数据源信息时填写
     extract-table:
       table-regexp: "t_(.*)"
       target-column: "c_table"
@@ -52,8 +52,8 @@ routes:
 
 ### 参数解释
 
-- 将根据 [`schema-pattern`/`table-pattern`](/dm/table-selector.md) 匹配上该规则的上游 MySQL/MariaDB 实例的表迁移到下游的 `target-schema`/`target-table`。
-- 对于匹配上 `schema-pattern`/`table-pattern` 规则的分表，通过 `extract-table`.`table-regexp`，`extract-schema`.`schema-regexp`，`extract-source`.`source-regexp` 正则表达提取出分表/分库/数据来源实例的特征信息写入下游合表对应 `target-column` 中。
+- 对于匹配上 [`schema-pattern`/`table-pattern`](/dm/table-selector.md) 规则的上游 MySQL/MariaDB 实例的表，DM 将它们迁移到下游的 `target-schema`/`target-table`。
+- 对于匹配上 `schema-pattern`/`table-pattern` 规则的分表，DM 通过 `extract-table`.`table-regexp`、`extract-schema`.`schema-regexp` 和 `extract-source`.`source-regexp` 正则表达分别提取分表、分库和数据来源信息写入下游合表对应的 `target-column` 中。
 
 ### 使用示例
 
@@ -90,13 +90,13 @@ routes:
 
 假设存在分库分表场景，需要将上游两个 MySQL 实例的表 `test_{11,12,13...}`.`t_{1,2,3...}` 迁移到下游 TiDB 的一张表 `test`.`t`，同时需要提取分表数据源信息写入下游合表中。
 
-为了迁移上游分表来源信息数据到下游合表，**必须在启动任务前手动**在下游创建好对应合表，合表需要包含所有定义的扩展列 `target-column`，且用于存放分表源数据信息的扩展列**必须为表末尾列且必须为字符类型**。
+为了迁移上游分表来源信息数据到下游合表，**必须在启动迁移任务前手动**在下游创建好对应合表，合表应包含 table routing 规则定义的扩展列 `target-column`，且用于存放分表源数据信息的扩展列**必须为表的末尾列且为字符类型**。
 
 为了迁移到下游实例的表 `test`.`t`，需要创建和上一章类似的 table routing 规则，并在其中增加 `extract-table`/`extract-schema`/`extract-source` 配置用于提取分库分表源数据信息：
 
-- `extract-table` 用来迁移匹配上 `schema-pattern`/`table-pattern` 的分表并根据 `table-regexp` 提取分表去除 `t_` 后的后缀信息写入合表的 `target-column` 即 `c_table` 列中。
-- `extract-schema` 用来迁移匹配上 `schema-pattern`/`table-pattern` 的分库并根据 `schema-regexp` 提取分库去除 `test_` 后的后缀信息写入合表的 `target-column` 即 `c_schema` 列中。
-- `extract-source` 用来迁移匹配上 `schema-pattern`/`table-pattern` 的分表的数据库来源并根据 `source-regexp` 将 source 信息写入合表的 `target-column` 即 `c_source` 列中。
+- `extract-table`：对于匹配上 `schema-pattern`/`table-pattern` 的分表，DM 根据 `table-regexp` 提取分表，并将去除 `t_` 后的后缀信息写入合表的 `target-column`，即 `c_table` 列中。
+- `extract-schema`：对于匹配上 `schema-pattern`/`table-pattern` 的分库，DM 根据 `schema-regexp` 提取分库，并将去除 `test_` 后的后缀信息写入合表的 `target-column`，即 `c_schema` 列中。
+- `extract-source`：对于匹配上 `schema-pattern`/`table-pattern` 的分表，DM 将其数据源信息写入合表的 `target-column`，即 `c_source` 列中。
 
 {{< copyable "" >}}
 
@@ -204,7 +204,7 @@ CREATE TABLE `test`.`t` (
 );
 ```
 
-- `c-c_schema` 列为非 string 类型
+- `c_schema` 列为非 string 类型
 
 ```sql
 CREATE TABLE `test`.`t` (
