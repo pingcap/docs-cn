@@ -1876,7 +1876,7 @@ EXPLAIN SELECT * FROM t USE INDEX (idx) WHERE a IN (10,20,30) AND b IN (40,50,60
 
 
 ```sql
-show warnings;
+SHOW WARNINGS;
 ```
 
 ```sql
