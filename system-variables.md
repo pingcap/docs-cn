@@ -1848,7 +1848,7 @@ EXPLAIN SELECT * FROM t use index (idx) WHERE a IN (10,20,30) AND b IN (40,50,60
 ```
 
 ```sql
-set @@tidb_opt_range_max_size = 1500;
+SET @@tidb_opt_range_max_size = 1500;
 ```
 
 ```sql
