@@ -98,7 +98,7 @@ aliases: ['/zh/tidb/dev/sample-application-java']
 
 ### 使用云原生开发环境
 
-基于 Git 的预配置的开发环境: [现在就试试](/develop/dev-guide-playground-gitpod.md)
+基于 Git 的预配置的开发环境：[现在就试试](/develop/dev-guide-playground-gitpod.md)。
 
 该环境会自动克隆代码，并通过 TiUP 部署测试集群。
 
@@ -1514,9 +1514,9 @@ mysql --host 127.0.0.1 --port 4000 -u root<src/main/resources/dbinit.sql
 
 > **建议：**
 >
-> 在 Gitpod Playground 中尝试 JDBC：[现在就试试](https://gitpod.io/#targetMode=plain-java-mybatis/https://github.com/pingcap-inc/tidb-example-java)
+> 在 Gitpod Playground 中尝试 Mybatis：[现在就试试](https://gitpod.io/#targetMode=plain-java-mybatis/https://github.com/pingcap-inc/tidb-example-java)
 
-使用 JDBC 时，需手动初始化数据库表。若你本地已经安装了 `mysql-client`，且使用本地集群，可直接在 `plain-java-mybatis` 目录下通过 `make prepare` 运行：
+使用 Mybatis 时，需手动初始化数据库表。若你本地已经安装了 `mysql-client`，且使用本地集群，可直接在 `plain-java-mybatis` 目录下通过 `make prepare` 运行：
 
 {{< copyable "shell-regular" >}}
 
@@ -1803,6 +1803,12 @@ mysql --connect-timeout 15 -u root -h xxx.tidbcloud.com -P 4000 -p
 <div label="使用 JDBC" value="jdbc">
 
 [JDBC 预期输出](https://github.com/pingcap-inc/tidb-example-java/blob/main/Expected-Output.md#plain-java-jdbc)
+
+</div>
+
+<div label="使用 Mybatis（推荐）" value="mybatis">
+
+[Mybatis 预期输出](https://github.com/pingcap-inc/tidb-example-java/blob/main/Expected-Output.md#plain-java-mybatis)
 
 </div>
 
