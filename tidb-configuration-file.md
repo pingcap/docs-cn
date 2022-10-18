@@ -113,7 +113,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + TiDB 中同时允许的最大客户端连接数，用于资源控制。
 + 默认值：0
 + 默认情况下，TiDB 不限制客户端连接数。当本配置项的值大于 `0` 且客户端连接数到达此值时，TiDB 服务端将会拒绝新的客户端连接。
-+ 在版本 v6.2.0 之后，该功能已改用配置 [`instance.max_connections`](/tidb-configuration-file.md#max_connections) 或系统变量 [`max_connections`](/system-variables.md#max_connections) 进行设置。出于兼容性考虑，该配置项仍可使用，但如果同时设置了该配置项与配置 `instance.max_connections`，TiDB 将采用 `instance.max_connections` 的值。
++ 自 v6.2.0 起，客户端连接数已改用配置项 [`instance.max_connections`](/tidb-configuration-file.md#max_connections) 或系统变量 [`max_connections`](/system-variables.md#max_connections) 进行设置。出于兼容性考虑，`max-server-connections` 仍可使用，但如果同时设置了 `max-server-connections` 与 `instance.max_connections`，TiDB 将采用 `instance.max_connections` 的值。
 
 ### `max-index-length`
 
