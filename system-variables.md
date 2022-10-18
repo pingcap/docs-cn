@@ -2432,6 +2432,8 @@ EXPLAIN SELECT * FROM t use index (idx) WHERE a IN (10,20,30) AND b IN (40,50,60
 3 rows in set (0.00 sec)
 ```
 
+现将优化器构造扫描范围的内存用量上限设为 1500 字节。
+
 ```sql
 SET @@tidb_opt_range_max_size = 1500;
 ```
