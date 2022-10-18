@@ -2473,6 +2473,8 @@ SHOW WARNINGS;
 1 row in set (0.00 sec)
 ```
 
+再将优化器构造扫描范围的内存用量上限设为 100 字节。
+
 ```sql
 set @@tidb_opt_range_max_size = 100;
 ```
