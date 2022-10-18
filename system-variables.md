@@ -1335,7 +1335,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 默认值：`ON`
 - 可选值：`OFF`，`ON`
 - 设置是否在单条 SQL 语句的内存使用超出系统变量 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 限制时为某些算子启用临时磁盘。
-- 在 v6.3.0 之前这个开关通过 TiDB 配置文件 (`oom-use-tmp-storage`) 进行配置，升级到 v6.3.0 时会自动使用原有配置的值来初始化该开关，配置文件中 `oom-use-tmp-storage` 的设置不再影响该开关。
+- 在 v6.3.0 之前这个开关可通过 TiDB 配置文件中的 `oom-use-tmp-storage` 项进行配置。在升级到 v6.3.0 及更新的版本后，集群会自动使用原 `oom-use-tmp-storage` 的值来初始化该开关，配置文件中 `oom-use-tmp-storage` 的新设置不再影响该开关。
 
 ### `tidb_enable_stmt_summary` <span class="version-mark">从 v3.0.4 版本开始引入</span>
 
