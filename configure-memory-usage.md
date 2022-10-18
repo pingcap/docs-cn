@@ -123,19 +123,19 @@ SELECT * FROM CLUSTER_MEMORY_USAGE_OPS_HISTORY;
 
 字段含义说明：
 
-- instance: 实例信息。只有 CLUSTER_ 表存在该字段
-- time: 终止对会话的时间戳
-- ops: “SessionKill”
-- memory_limit: TiDB 当时的内存使用限制，单位为 byte。其值和 tidb_server_memory_limit 相同
-- memory_current: TiDB 当时的内存使用量，单位为 byte。
-- processid: 被终止的会话的客户连接 ID
-- mem: 被终止的会话已使用的内存使用量，单位是 byte。
-- disk: 被终止的会话已使用的硬盘使用量，单位是 byte。
-- client: 被终止的会话的客户连接的地址
-- db: 被终止的会话连接的数据库名
-- user: 被终止的会话的用户名
-- sql_digest: 被终止的会话正在执行 SQL 的 digest
-- sql_text: 被终止的会话正在执行 SQL。
+- INSTANCE：实例信息。只有 `CLUSTER_` 表存在该字段。
+- TIME：终止会话的时间戳。
+- OPS："SessionKill"
+- MEMORY_LIMIT：TiDB 当时的内存使用限制，单位为 byte。其值和系统变量 `tidb_server_memory_limit` 相同。
+- MEMORY_CURRENT：TiDB 当前的内存使用量，单位为 byte。
+- PROCESSID：被终止会话的客户连接 ID。
+- MEM：被终止的会话已使用的内存使用量，单位是 byte。
+- DISK：被终止的会话已使用的硬盘使用量，单位是 byte。
+- CLIENT：被终止的会话的客户连接的地址。
+- DB：被终止的会话所连接的数据库名。
+- USER：被终止的会话的用户名。
+- SQL_DIGEST：被终止的会话正在执行 SQL 语句的 digest。
+- sql_text: 被终止的会话正在执行的 SQL 语句。
 
 ## tidb-server 内存占用过高时的报警
 
