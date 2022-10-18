@@ -20,14 +20,29 @@ KillOrKillTiDB ::= 'KILL' 'TIDB'?
 {{< copyable "sql" >}}
 
 ```sql
+SHOW PROCESSLIST;
+```
+```
++------+------+-----------+------+---------+------+-------+------------------+
+| Id   | User | Host      | db   | Command | Time | State | Info             |
++------+------+-----------+------+---------+------+-------+------------------+
+|    1 | root | 127.0.0.1 | test | Query   |    0 | 2     | SHOW PROCESSLIST |
+|    2 | root | 127.0.0.1 |      | Sleep   |    4 | 2     |                  |
++------+------+-----------+------+---------+------+-------+------------------+
+2 rows in set (0.00 sec)
+```sql
+
+查询INFORMATION_SCHEMA.CLUSTER_PROCESSLIST的INSTANCE列，获取被kill会话连接的TiDB Server信息。
+
+```sql
 SELECT ID, USER, INSTANCE, INFO FROM INFORMATION_SCHEMA.CLUSTER_PROCESSLIST;
 ```
 ```
 +---------------------+------+-----------------+-----------------------------------------------------------------------------+
 | ID | USER | INSTANCE | INFO |
 +---------------------+------+-----------------+-----------------------------------------------------------------------------+
-| 1 | root | 127.0.0.1:10082 | select sleep(30), 'foo' |
-| 2 | root | 127.0.0.1:10080 | SELECT ID, USER, INSTANCE, INFO FROM INFORMATION_SCHEMA.CLUSTER_PROCESSLIST |
+| 1 | root | 127.0.0.1:10082 | SELECT ID, USER, INSTANCE, INFO FROM INFORMATION_SCHEMA.CLUSTER_PROCESSLIST |
+| 2 | root | 127.0.0.1:10080 |  |
 +---------------------+------+-----------------+-------------------------------------------------------------
 2 rows in set (0.00 sec)
 
