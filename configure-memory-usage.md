@@ -89,18 +89,18 @@ SELECT * FROM CLUSTER_MEMORY_USAGE;
 
 字段含义说明：
 
-- instance: 实例信息。只有 CLUSTER_ 表存在该字段
-- memory_total: TiDB 的可用内存总量，单位为 byte。
-- memory_limit: TIDB 的内存使用限制，单位为 byte。其值和 tidb_server_memory_limit 相同。
-- memory_current: TiDB 当前的内存使用量，单位为 byte。
-- memory_max_used: 从 TiDB 启动到当前的最大内存使用量，单位为 byte。
-- current_ops: “shrinking” | null。“shrinking” 表示 TiDB 正在实施收缩内存的操作。
-- session_kill_last: 上一次终止会话的时间戳
-- session_kill_total: 从 TiDB 启动到当前累计终止会话的次数
-- gc_last: 上一次由内存使用引发 Golang GC 的时间戳
-- gc_total: 从 TiDB 启动到当前累计由内存使用引发 Golang GC 的次数
-- disk_usage: 当前数据落盘的硬盘使用量，单位为 byte。
-- query_force_disk: 从 TiDB 启动到当前累计的落盘次数
+- INSTANCE：实例信息。只有 `CLUSTER_` 表存在该字段。
+- MEMORY_TOTAL：TiDB 的可用内存总量，单位为 byte。
+- MEMORY_LIMIT：TIDB 的内存使用限制，单位为 byte。其值与系统变量 `tidb_server_memory_limit` 的值相同。
+- MEMORY_CURRENT：TiDB 当前的内存使用量，单位为 byte。
+- MEMORY_MAX_USED：从 TiDB 启动到当前的最大内存使用量，单位为 byte。
+- CURRENT_OPS："shrinking" | null。"shrinking" 表示 TiDB 正在执行收缩内存用量的操作。
+- SESSION_KILL_LAST：上一次终止会话的时间戳。
+- SESSION_KILL_TOTAL：从 TiDB 启动到当前累计终止会话的次数。
+- GC_LAST：上一次由内存使用触发 Golang GC 的时间戳。
+- GC_TOTAL：从 TiDB 启动到当前累计由内存使用触发 Golang GC 的次数。
+- DISK_USAGE：当前数据落盘的硬盘使用量，单位为 byte。
+- QUERY_FORCE_DISK：从 TiDB 启动到当前累计的落盘次数。
 
 可以通过查询系统表 INFORMATION_SCHEMA.(CLUSTER_)MEMORY_USAGE_OPS_HISTORY 来查询本实例（集群）内存相关的操作和执行依据（每个实例保留最近50条记录）。
 
