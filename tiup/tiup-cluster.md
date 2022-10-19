@@ -696,12 +696,13 @@ TiUP 相关的数据都存储在用户 home 目录的 `.tiup` 目录下，若要
 
 ## 备份与恢复集群部署和运维所需的 meta 文件
 
-如果运维所需的 meta 文件丢失，会导致无法继续使用 TiUP 管理集群，建议通过以下方式定期备份 meta 文件。
+如果运维所需的 meta 文件丢失，会导致无法继续使用 TiUP 管理集群，建议通过以下方式定期备份 meta 文件：
 
 ```bash
 tiup cluster meta backup ${cluster_name}
+```
 
-可以使用以下方法恢复 meta 文件：
+如果 meta 文件丢失，可以使用以下方法恢复 meta 文件：
 
 ```bash
 tiup cluster meta restore ${cluster_name} ${backup_file}
