@@ -1,7 +1,6 @@
 ---
 title: MEMORY_USAGE
 summary: 了解 information_schema 表 `MEMORY_USAGE`。
-aliases: ['/docs-cn/dev/information-schema/information-schema-memory-usage/']
 ---
 
 # MEMORY_USAGE
@@ -40,7 +39,7 @@ DESC memory_usage;
 SELECT * FROM information_schema.memory_usage;
 ```
 
-```
+```sql
 +--------------+--------------+----------------+-----------------+-------------+---------------------+--------------------+---------------------+----------+------------+------------------+
 | MEMORY_TOTAL | MEMORY_LIMIT | MEMORY_CURRENT | MEMORY_MAX_USED | CURRENT_OPS | SESSION_KILL_LAST   | SESSION_KILL_TOTAL | GC_LAST             | GC_TOTAL | DISK_USAGE | QUERY_FORCE_DISK |
 +--------------+--------------+----------------+-----------------+-------------+---------------------+--------------------+---------------------+----------+------------+------------------+

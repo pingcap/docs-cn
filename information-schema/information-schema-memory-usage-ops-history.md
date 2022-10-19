@@ -1,12 +1,11 @@
 ---
 title: MEMORY_USAGE_OPS_HISTORY
 summary: 了解 information_schema 表 `MEMORY_USAGE_OPS_HISTORY`。
-aliases: ['/docs-cn/dev/information-schema/information-schema-memory-usage-ops-history/']
 ---
 
 # MEMORY_USAGE_OPS_HISTORY
 
-`MEMORY_USAGE_OPS_HISTORY` 表描述了 TiDB 实例的内存相关的历史操作和执行依据。
+`MEMORY_USAGE_OPS_HISTORY` 表描述了 TiDB 实例内存相关的历史操作和执行依据。
 
 {{< copyable "sql" >}}
 
@@ -41,7 +40,7 @@ DESC memory_usage_ops_history;
 SELECT * FROM information_schema.memory_usage_ops_history;
 ```
 
-```
+```sql
 +---------------------+-------------+--------------+----------------+---------------------+------------+------+-----------------+------+------+------------------------------------------------------------------+----------------------------------------------------------------------+
 | TIME                | OPS         | MEMORY_LIMIT | MEMORY_CURRENT | PROCESSID           | MEM        | DISK | CLIENT          | DB   | USER | SQL_DIGEST                                                       | SQL_TEXT                                                             |
 +---------------------+-------------+--------------+----------------+---------------------+------------+------+-----------------+------+------+------------------------------------------------------------------+----------------------------------------------------------------------+
