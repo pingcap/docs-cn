@@ -251,7 +251,7 @@ batch-dml is a mechanism for splitting a transaction into multiple transaction c
 
 > **Note:**
 >
-> It is not recommended to use batch-dml. When the batch-dml feature is not properly used, there is a risk of data index inconsistency. batch-dml will be deprecated in a later release of TiDB.
+> It is not recommended to use batch-dml which has been deprecated. When the batch-dml feature is not properly used, there is a risk of data index inconsistency.
 
 Non-transactional DML statements are not yet a replacement for all batch-dml usage scenarios. Their main differences are as follows:
 
