@@ -40,7 +40,7 @@ SET tidb_mem_quota_query = 8 << 10;
 
 ## 如何配置 tidb-server 实例使用内存的阈值
 
-可以通过系统变量 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit) 设置 tidb-server 实例的内存使用阈值。
+可以通过系统变量 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 设置 tidb-server 实例的内存使用阈值。
 
 例如，配置 tidb-server 实例的内存使用总量，将其设置成为 32 GB：
 
