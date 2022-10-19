@@ -10,7 +10,7 @@ aliases: ['/docs-cn/dev/dumpling-overview/','/docs-cn/dev/mydumper-overview/','/
 
 要快速了解 Dumpling 的基本功能，建议先观看下面的培训视频（时长 28 分钟）。注意本视频只作为功能介绍、学习参考，具体操作步骤和最新功能，请以文档内容为准。
 
-<video src="https://download.pingcap.com/docs-cn%2FLesson18_dumpling.mp4" width="600px" height="450px" controls="controls" poster="https://tidb-docs.s3.us-east-2.amazonaws.com/thumbnail+-+lesson+18.png"></video>
+<video src="https://download.pingcap.com/docs-cn%2FLesson18_dumpling.mp4" width="100%" height="100%" controls="controls" poster="https://tidb-docs.s3.us-east-2.amazonaws.com/thumbnail+-+lesson+18.png"></video>
 
 你可以通过下列任意方式获取 Dumpling：
 
@@ -176,12 +176,10 @@ export AWS_SECRET_ACCESS_KEY=${SecretKey}
 
 Dumpling 同时还支持从 `~/.aws/credentials` 读取凭证文件。更多 Dumpling 存储配置可以参考[外部存储](/br/backup-and-restore-storages.md)。
 
-在进行 Dumpling 备份时，显式指定参数 `--s3.region`，即表示 Amazon S3 存储所在的区域，例如 `ap-northeast-1`。
-
 {{< copyable "shell-regular" >}}
 
 ```shell
-./dumpling -u root -P 4000 -h 127.0.0.1 -r 200000 -o "s3://${Bucket}/${Folder}" --s3.region "${region}"
+./dumpling -u root -P 4000 -h 127.0.0.1 -r 200000 -o "s3://${Bucket}/${Folder}"
 ```
 
 ### 筛选导出的数据

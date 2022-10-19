@@ -7,6 +7,10 @@ summary: 简单介绍 TiDB 中的事务。
 
 TiDB 支持完整的分布式事务，提供[乐观事务](/optimistic-transaction.md)与[悲观事务](/pessimistic-transaction.md)（TiDB 3.0 中引入）两种事务模型。本文主要介绍涉及到事务的语句、乐观事务和悲观事务、事务的隔离级别，以及乐观事务应用端重试和错误处理。
 
+## 拓展学习视频
+
+[TiDB 特有功能与事务控制 - TiDB v6](https://learn.pingcap.com/learner/course/750002/?utm_source=docs-cn-dev-guide)：了解可用于应用程序的 TiDB 独特功能，如 `AUTO_RANDOM` 及 `AUTO_INCREMENT` 特别注意事项、全局临时表、如何使用 TiFlash 启用 HTAP 以及放置策略等。
+
 ## 通用语句
 
 本章介绍在 TiDB 中如何使用事务。 将使用下面的示例来演示一个简单事务的控制流程：

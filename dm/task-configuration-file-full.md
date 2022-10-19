@@ -105,7 +105,7 @@ loaders:                             # load 处理单元的运行配置参数
     pool-size: 16                    # load 处理单元并发执行 dump 处理单元的 SQL 文件的线程数量，默认值为 16，当有多个实例同时向 TiDB 迁移数据时可根据负载情况适当调小该值
 
     # 保存上游全量导出数据的目录。该配置项的默认值为 "./dumped_data"。
-    # 支持配置为本地文件系统路径，也支持配置为 Amazon S3 路径，如: s3://dm_bucket/dumped_data?region=us-west-2&endpoint=s3-website.us-east-2.amazonaws.com&access_key=s3accesskey&secret_access_key=s3secretkey&force_path_style=true
+    # 支持配置为本地文件系统路径，也支持配置为 Amazon S3 路径，如: s3://dm_bucket/dumped_data?endpoint=s3-website.us-east-2.amazonaws.com&access_key=s3accesskey&secret_access_key=s3secretkey&force_path_style=true
     dir: "./dumped_data"
 
     # 全量阶段数据导入的模式。可以设置为如下几种模式：
@@ -126,6 +126,11 @@ syncers:                             # sync 处理单元的运行配置参数
 
     # 设置为 true，则将来自上游的 `INSERT` 改写为 `REPLACE`，将 `UPDATE` 改写为 `DELETE` 与 `REPLACE`，保证在表结构中存在主键或唯一索引的条件下迁移数据时可以重复导入 DML。
     safe-mode: false
+    # 自动安全模式的持续时间
+    # 如不设置或者设置为 ""，则默认为 `checkpoint-flush-interval`（默认为 30s）的两倍，即 60s。
+    # 如设置为 "0s"，则在 DM 自动进入安全模式的时候报错。
+    # 如设置为正常值，例如 "1m30s"，则在该任务异常暂停、记录 `safemode_exit_point` 失败、或是 DM 进程异常退出时，把安全模式持续时间调整为 1 分 30 秒。详情可见[自动开启安全模式](https://docs.pingcap.com/zh/tidb/stable/dm-safe-mode#自动开启) 。
+    safe-mode-duration: "60s"
     # 设置为 true，DM 会在不增加延迟的情况下，尽可能地将上游对同一条数据的多次操作压缩成一次操作。
     # 如 INSERT INTO tb(a,b) VALUES(1,1); UPDATE tb SET b=11 WHERE a=1; 会被压缩成 INSERT INTO tb(a,b) VALUES(1,11); 其中 a 为主键
     # 如 UPDATE tb SET b=1 WHERE a=1; UPDATE tb(a,b) SET b=2 WHERE a=1; 会被压缩成 UPDATE tb(a,b) SET b=2 WHERE a=1; 其中 a 为主键
@@ -136,6 +141,15 @@ syncers:                             # sync 处理单元的运行配置参数
     # 如 UPDATE tb SET b=11 WHERE a=1; UPDATE tb(a,b) set b=22 WHERE a=2; 会变成 INSERT INTO tb(a,b) VALUES(1,11),(2,22) ON DUPLICATE KEY UPDATE a=VALUES(a), b=VALUES(b); 其中 a 为主键
     # 如 DELETE FROM tb WHERE a=1; DELETE FROM tb WHERE a=2 会变成 DELETE FROM tb WHERE (a) IN (1),(2)；其中 a 为主键
     multiple-rows: false
+
+validators:              # 增量数据校验的运行配置参数
+  global:                # 配置名称
+    # full：校验每一行中每一列数据是否正确
+    # fast：仅校验这一行是否有成功迁移到下游
+    # none：不校验
+    mode: full           # 可选填 full，fast 和 none，默认是 none，即不开启校验。
+    worker-count: 4      # 后台校验的 validation worker 数量，默认是 4 个
+    row-error-delay: 30m # 某一行多久没有校验通过会被标记为 error row，默认是 30 分钟
 
 # ----------- 实例配置 -----------
 mysql-instances:
@@ -154,7 +168,7 @@ mysql-instances:
     mydumper-config-name: "global"          # mydumpers 配置的名称
     loader-config-name: "global"            # loaders 配置的名称
     syncer-config-name: "global"            # syncers 配置的名称
-
+    validator-config-name: "global"         # validators 配置的名称
   -
     source-id: "mysql-replica-02"  # 对应 source.toml 中的 `source-id`
     mydumper-thread: 4             # dump 处理单元用于导出数据的线程数量，等同于 mydumpers 配置中的 `threads`，当同时指定它们时 `mydumper-thread` 优先级更高

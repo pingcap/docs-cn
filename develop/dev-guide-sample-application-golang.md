@@ -43,9 +43,9 @@ summary: 给出一个 TiDB 和 Golang 的简单 CRUD 应用程序示例。
 git clone https://github.com/pingcap-inc/tidb-example-golang.git
 ```
 
-<SimpleTab>
+<SimpleTab groupId="language">
 
-<div label="使用 go-sql-driver/mysql">
+<div label="使用 go-sql-driver/mysql" value="sqldriver">
 
 使用 go-sql-driver/mysql 时，首先进入目录 `sqldriver`：
 
@@ -495,7 +495,7 @@ const (
 
 </div>
 
-<div label="使用 GORM（推荐）">
+<div label="使用 GORM（推荐）" value="gorm">
 
 可以看到，go-sql-driver/mysql 实现的代码略显冗余，需要自己管控错误处理逻辑，手动关闭 `*sql.Rows`，且不能很好的复用代码。并非最佳实践。
 
@@ -720,9 +720,9 @@ func buyGoods(db *gorm.DB, sellID, buyID string, amount, price int) error {
 
 ### 第 3 步第 1 部分：go-sql-driver/mysql 表初始化
 
-<SimpleTab>
+<SimpleTab groupId="language">
 
-<div label="使用 go-sql-driver/mysql">
+<div label="使用 go-sql-driver/mysql" value="sqldriver">
 
 > **注意：**
 >
@@ -748,7 +748,7 @@ mysql --host 127.0.0.1 --port 4000 -u root<sql/dbinit.sql
 
 </div>
 
-<div label="使用 GORM（推荐）">
+<div label="使用 GORM（推荐）" value="gorm">
 
 > **注意：**
 >
@@ -762,9 +762,9 @@ mysql --host 127.0.0.1 --port 4000 -u root<sql/dbinit.sql
 
 ### 第 3 步第 2 部分：TiDB Cloud 更改参数
 
-<SimpleTab>
+<SimpleTab groupId="language">
 
-<div label="使用 go-sql-driver/mysql">
+<div label="使用 go-sql-driver/mysql" value="sqldriver">
 
 若你使用非本地默认集群、TiDB Cloud 或其他远程集群，更改 `sqldriver.go` 内 `dsn` 参数的值：
 
@@ -790,7 +790,7 @@ dsn := "root:123456@tcp(xxx.tidbcloud.com:4000)/test?charset=utf8mb4"
 
 </div>
 
-<div label="使用 GORM（推荐）">
+<div label="使用 GORM（推荐）" value="gorm">
 
 若你使用非本地默认集群、TiDB Cloud 或其他远程集群，更改 `gorm.go` 内 `dsn` 参数值：
 
@@ -820,9 +820,9 @@ dsn := "root:123456@tcp(xxx.tidbcloud.com:4000)/test?charset=utf8mb4"
 
 ### 第 3 步第 3 部分：运行
 
-<SimpleTab>
+<SimpleTab groupId="language">
 
-<div label="使用 go-sql-driver/mysql">
+<div label="使用 go-sql-driver/mysql" value="sqldriver">
 
 运行 `make all`，这是以下三个操作的组合：
 
@@ -834,7 +834,7 @@ dsn := "root:123456@tcp(xxx.tidbcloud.com:4000)/test?charset=utf8mb4"
 
 </div>
 
-<div label="使用 GORM（推荐）">
+<div label="使用 GORM（推荐）" value="gorm">
 
 运行 `make all`，这是以下两个操作的组合：
 
@@ -849,15 +849,15 @@ dsn := "root:123456@tcp(xxx.tidbcloud.com:4000)/test?charset=utf8mb4"
 
 ## 第 4 步：预期输出
 
-<SimpleTab>
+<SimpleTab groupId="language">
 
-<div label="使用 go-sql-driver/mysql">
+<div label="使用 go-sql-driver/mysql" value="sqldriver">
 
 [go-sql-driver/mysql 预期输出](https://github.com/pingcap-inc/tidb-example-golang/blob/main/Expected-Output.md#sqldriver)
 
 </div>
 
-<div label="使用 GORM（推荐）">
+<div label="使用 GORM（推荐）" value="gorm">
 
 [GORM 预期输出](https://github.com/pingcap-inc/tidb-example-golang/blob/main/Expected-Output.md#gorm)
 

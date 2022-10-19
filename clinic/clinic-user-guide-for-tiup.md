@@ -1,9 +1,9 @@
 ---
-title: 使用 PingCAP Clinic 诊断 TiDB 集群
-summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clinic 诊断服务远程定位集群问题和本地快速检查集群状态。
+title: 使用 PingCAP Clinic 诊断集群
+summary: 详细介绍在使用 TiUP 部署的 TiDB 集群或 DM 集群上如何通过 PingCAP Clinic 诊断服务远程定位集群问题和本地快速检查集群状态。
 ---
 
-# 使用 PingCAP Clinic 诊断 TiDB 集群
+# 使用 PingCAP Clinic 诊断集群
 
 对于使用 TiUP 部署的 TiDB 集群和 DM 集群，PingCAP Clinic 诊断服务（以下简称为 PingCAP Clinic）可以通过 Diag 诊断客户端（以下简称为 Diag）与 Clinic Server 云诊断平台（以下简称为 Clinic Server）实现远程定位集群问题和本地快速检查集群状态。
 
@@ -55,14 +55,14 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clini
 
     - 登录 Clinic Server。
 
-        <SimpleTab>
-        <div label="Clinic Server 中国区">
+        <SimpleTab groupId="clinicServer">
+        <div label="Clinic Server 中国区" value="clinic-cn">
 
         [Clinic Server 中国区](https://clinic.pingcap.com.cn)，数据存储在亚马逊云服务中国区。
 
         </div>
 
-        <div label="Clinic Server 美国区">
+        <div label="Clinic Server 美国区" value="clinic-us">
 
         [Clinic Server 美国区](https://clinic.pingcap.com)，数据存储在亚马逊云服务美国区。
 
@@ -95,8 +95,8 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clini
     > - 对于 Diag v0.9.0 之前的版本，数据默认上传到 Clinic Server 中国区。
     > - 如果你的 Diag 是 v0.9.0 之前的版本，你可以通过 `tiup update diag` 命令将其升级至最新版本后设置 `region`。
 
-    <SimpleTab>
-    <div label="Clinic Server 中国区">
+    <SimpleTab groupId="clinicServer">
+    <div label="Clinic Server 中国区" value="clinic-cn">
 
     对于 Clinic Server 中国区，参考以下命令，将 `region` 设置为 `CN`：
 
@@ -106,7 +106,7 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clini
 
     </div>
 
-    <div label="Clinic Server 美国区">
+    <div label="Clinic Server 美国区" value="clinic-us">
 
     对于 Clinic Server 美国区，参考以下命令，将 `region` 设置为 `US`：
 
@@ -129,21 +129,33 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clini
 
 如需查看 Diag 支持采集的数据的详细列表，请参阅 [PingCAP Clinic 数据采集说明](/clinic/clinic-data-instruction-for-tiup.md)。
 
-建议收集监控数据、配置信息等全量诊断数据，有助于提升后续诊断效率。具体方法，请参考[采集 TiDB 集群的数据](#采集-tidb-集群的数据)。
+建议收集监控数据、配置信息等全量诊断数据，有助于提升后续诊断效率。具体方法，请参考[采集集群的数据](#第-2-步采集数据)。
 
 ### 第 2 步：采集数据
 
 你可以使用 Diag 采集使用 TiUP 部署的 TiDB 集群和 DM 集群的数据。
 
-#### 采集 TiDB 集群的数据
-
 1. 运行 Diag 数据采集命令。
 
-    例如，如需采集从当前时间的 4 小时前到 2 小时前的诊断数据，可以运行以下命令：
+    例如，如需采集集群从当前时间的 4 小时前到 2 小时前的诊断数据，可以运行以下命令：
+
+    <SimpleTab>
+    <div label="TiDB 集群">
 
     ```bash
     tiup diag collect ${cluster-name} -f="-4h" -t="-2h"
     ```
+
+    </div>
+
+    <div label="DM 集群">
+
+    ```bash
+    tiup diag collectdm ${dm-cluster-name} -f="-4h" -t="-2h"
+    ```
+
+    </div>
+    </SimpleTab>
 
     采集参数说明：
 
@@ -152,7 +164,7 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clini
 
     参数使用提示：
 
-    除了指定采集时间，你还可以使用 Diag 指定更多参数。如需查看所有参数，请使用 `tiup diag collect -h` 命令。
+    除了指定采集时间，你还可以使用 Diag 指定更多参数。如需查看所有参数，请使用 `tiup diag collect -h` 或 `tiup diag collectdm -h` 命令。
 
     > **注意：**
     >
@@ -160,7 +172,7 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clini
     > - Diag 默认**不收集**性能数据 (`perf`)和 Debug 数据 (`debug`)。
     > - 如需收集全量诊断数据，可以使用命令 `tiup diag collect <cluster-name> --include="system,monitor,log,config,db_vars,perf,debug"`。
 
-    - `-l`：传输文件时的带宽限制，单位为 Kbit/s, 默认值为 `100000`（即 scp 的 `-l` 参数）。
+    - `-l`：传输文件时的带宽限制，单位为 Kbit/s，默认值为 `100000`（即 scp 的 `-l` 参数）。
     - `-N/--node`：支持只收集指定节点的数据，格式为 `ip:port`。
     - `--include`：只收集特定类型的数据，可选值为 `system`，`monitor`，`log`，`config`，`db_vars`。如需同时列出多种类型的数据，你可以使用逗号 `,` 来分割不同的数据类型。
     - `--exclude`：不收集特定类型的数据，可选值为 `system`，`monitor`，`log`，`config`，`db_vars`。如需同时列出多种类型的数据，你可以使用逗号 `,` 来分割不同的数据类型。
@@ -176,7 +188,7 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clini
     ... ...
     172.16.7.179       325 B      /tidb-deploy/tikv-20160/conf/tikv.toml
     Total              2.01 GB    (inaccurate)
-    These data will be stored in /home/qiaodan/diag-fNTnz5MGhr6
+    These data will be stored in /home/user/diag-fNTnz5MGhr6
     Do you want to continue? [y/N]: (default=N)
     ```
 
@@ -187,31 +199,7 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clini
     采集完成后，Diag 会提示采集数据所在的文件夹路径。例如：
 
     ```bash
-    Collected data are stored in /home/qiaodan/diag-fNTnz5MGhr6
-    ```
-
-#### 采集 DM 集群的数据
-
-1. 运行 Diag 数据采集命令。
-
-    例如，如需采集从当前时间的 4 小时前到 2 小时前的诊断数据，可以运行以下命令：
-
-    ```bash
-    tiup diag collectdm ${cluster-name} -f="-4h" -t="-2h"
-    ```
-
-    如需了解在上述命令中使用的参数说明或需要查看使用 Diag 工具时会使用的其他参数，请参考[采集 TiDB 集群的数据](#采集-tidb-集群的数据)。
-
-    运行 Diag 数据采集命令后，Diag 不会立即开始采集数据，而会在输出中提供预估数据量大小和数据存储路径，并询问你是否进行数据收集。
-
-2. 如果确认要开始采集数据，请输入 `Y`。
-
-    采集数据需要一定的时间，具体所需时间与需要收集的数据量有关。例如，在测试环境中收集 1 GB 数据，大概需要 10 分钟。
-
-    采集完成后，Diag 会提示采集数据所在的文件夹路径。例如：
-
-    ```bash
-    Collected data are stored in /home/qiaodan/diag-fNTnz5MGhr6
+    Collected data are stored in /home/user/diag-fNTnz5MGhr6
     ```
 
 ### 第 3 步：本地查看数据（可选步骤）
@@ -266,7 +254,7 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clini
 
     ```bash
     Starting component `diag`: /root/.tiup/components/diag/v0.7.0/diag package diag-fNTnz5MGhr6
-    packaged data set saved to /home/qiaodan/diag-fNTnz5MGhr6.diag
+    packaged data set saved to /home/user/diag-fNTnz5MGhr6.diag
     ```
 
     完成打包后，数据包为 `.diag` 格式。只有上传到 Clinic Server 后，该数据包才能被解密并查看。如需直接转发已收集的数据，而不在 Clinic Server 中查看，你可以自行压缩后转发数据。
