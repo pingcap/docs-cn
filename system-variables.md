@@ -975,7 +975,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 范围：`[0, 2147483647]`
 - 这个变量的值大于 `0` 时，TiDB 会将 `INSERT` 或 `LOAD DATA` 等语句在更小的事务中批量提交。这样可减少内存使用，确保大批量修改时事务大小不会达到 `txn-total-size-limit` 限制。
 - 只有变量值为 `0` 时才符合 ACID 要求。否则无法保证 TiDB 的原子性和隔离性要求。
-- 要使该特性生效，还需要开启 `tidb_enable_batch_dml` 以及 `tidb_batch_insert` 和 `tidb_batch_delete` 中的至少一个。
+- 要使该特性生效，还需要开启 `tidb_enable_batch_dml`，以及至少开启 `tidb_batch_insert` 和 `tidb_batch_delete` 中的一个。
 
 ### `tidb_enable_1pc` <span class="version-mark">从 v5.0 版本开始引入</span>
 
