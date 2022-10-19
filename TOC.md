@@ -76,8 +76,9 @@
       - [SQL 开发规范](/develop/dev-guide-sql-development-specification.md)
   - 云原生开发环境
     - [Gitpod](/develop/dev-guide-playground-gitpod.md)
-  - 第三方软件支持
+  - 第三方工具支持
     - [TiDB 支持的第三方工具](/develop/dev-guide-third-party-support.md)
+    - [已知的第三方工具兼容问题](/develop/dev-guide-third-party-tools-compatibility.md)
     - [TiDB 与 ProxySQL 集成](/develop/dev-guide-proxysql-integration.md)
 - 部署标准集群
   - [软硬件环境需求](/hardware-and-software-requirements.md)
@@ -926,6 +927,7 @@
   - v6.0
     - [6.0.0-DMR](/releases/release-6.0.0-dmr.md)
   - v5.4
+    - [5.4.3](/releases/release-5.4.3.md)
     - [5.4.2](/releases/release-5.4.2.md)
     - [5.4.1](/releases/release-5.4.1.md)
     - [5.4.0](/releases/release-5.4.0.md)
