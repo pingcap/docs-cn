@@ -705,6 +705,7 @@ tiup cluster meta backup ${cluster_name}
 ```bash
 tiup cluster meta restore ${cluster_name} ${backup_file}
 ```
+
 > **注意：**
 >
 > 恢复操作会覆盖当前的 meta 文件，建议在 meta 文件丢失的情况下才进行恢复。
