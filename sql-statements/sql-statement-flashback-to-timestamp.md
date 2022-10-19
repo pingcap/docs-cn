@@ -1,5 +1,6 @@
 ---
 title: FLASHBACK [CLUSTER | DATABASE | TABLE] TO TIMESTAMP
+summary: TiDB 数据库中 FLASHBACK [CLUSTER | DATABASE | TABLE] TO TIMESTAMP 的使用概况。
 ---
 
 # FLASHBACK [CLUSTER | DATABASE | TABLE] TO TIMESTAMP
@@ -23,24 +24,24 @@ FlashbackToTimestampStmt ::=
 
 ## 注意事项
 
-* `FLASHBACK` 指定的时间点需要在 Garbage Collection (GC) life time 时间内，可以使用系统变量 [`tidb_gc_life_time`](/system-variables.md#tidb_gc_life_time-从-v50-版本开始引入) 配置数据的历史版本的保留时间（默认值是 `10m0s`）。可以使用以下 SQL 语句查询当前的 safePoint，即 GC 已经清理到的时间点：
+* `FLASHBACK` 指定的时间点需要在 Garbage Collection (GC) life time 时间内。你可以使用系统变量 [`tidb_gc_life_time`](/system-variables.md#tidb_gc_life_time-从-v50-版本开始引入) 配置数据的历史版本的保留时间（默认值是 `10m0s`）。可以使用以下 SQL 语句查询当前的 `safePoint`，即 GC 已经清理到的时间点：
 
-```sql
-SELECT * FROM mysql.tidb WHERE variable_name = 'tikv_gc_safe_point';
-```
+    ```sql
+    SELECT * FROM mysql.tidb WHERE variable_name = 'tikv_gc_safe_point';
+    ```
 
 * 仅支持拥有对应权限的用户执行该 SQL 命令：
     * 执行 `FLASHBACK CLUSTER` 操作需要有 `SUPER` 权限。
     * 执行 `FLASHBACK DATABASE` 操作需要有 `DATABASE` 权限。
-    * 执行 `FLASHBACK TABLE` 操作需要有 `TALBE` 权限。
-* 在 `FLASHBACK` 指定的时间点到开始执行的时间段内不能存在相关表结构变更的 DDL 记录，若存在，TiDB 会拒绝该 DDL 操作。
-* 在执行 `FLASHBACK [CLUSTER | DATABASE | TABLE] TO TIMESTAMP` 前，TiDB 会主动断开所有相关表上的链接，并禁止对这些表进行读写操作，直到 `FLASHBACK` 完成。
+    * 执行 `FLASHBACK TABLE` 操作需要有 `TABLE` 权限。
+* 在 `FLASHBACK` 指定的时间点到开始执行的时间段内不能存在相关表结构变更的 DDL 记录。若存在，TiDB 会拒绝该 DDL 操作。
+* 在执行 `FLASHBACK [CLUSTER | DATABASE | TABLE] TO TIMESTAMP` 前，TiDB 会主动断开所有相关表上的连接，并禁止对这些表进行读写操作，直到 `FLASHBACK` 完成。
 * `FLASHBACK [CLUSTER | DATABASE | TABLE] TO TIMESTAMP` 命令不能取消，一旦开始执行 TiDB 会一直重试，直到成功。
-* 用户可以通过日志查看 `FLASHBACK` 执行进度，具体的日志如下所示：
+* 可以通过日志查看 `FLASHBACK` 执行进度，具体的日志如下所示：
 
-```
-[2022/10/09 17:25:59.316 +08:00] [INFO] [cluster.go:463] ["flashback cluster stats"] ["complete regions"=9] ["total regions"=10] []
-```
+    ```
+    [2022/10/09 17:25:59.316 +08:00] [INFO] [cluster.go:463] ["flashback cluster stats"] ["complete regions"=9] ["total regions"=10] []
+    ```
 
 ## 示例
 
@@ -79,7 +80,7 @@ mysql> SELECT * FROM t;
 Empty set (0.00 sec)
 ```
 
-`FLASHBACK` 指定的时间段内有 DDL 记录，执行失败：
+如果从 `FLASHBACK` 指定的时间点到开始执行的时间段内有改变表结构的 DDL 记录，那么将执行失败：
 
 ```sql
 mysql> SELECT now();
