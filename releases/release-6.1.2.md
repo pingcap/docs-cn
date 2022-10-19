@@ -24,8 +24,6 @@ TiDB 版本：6.1.2
 
     <!--transaction **owner: @cfzjywxk**-->
 
-    - Reduce the risk of data race of SelectLock under parallel executors [#37141](https://github.com/pingcap/tidb/issues/37141)
-
     <!--planner **owner: @fixdb**-->
 
 + TiKV **owner: @ethercflow**
@@ -69,6 +67,8 @@ TiDB 版本：6.1.2
 
     <!--transaction **owner: @cfzjywxk**-->
 
+    - 修复 Region 合并情况下 Region cache 没有及时清理的问题 [#37141](https://github.com/pingcap/tidb/issues/37141)
+    - 修复 KV client 发送不必要 ping 消息的问题 [#36861](https://github.com/pingcap/tidb/issues/36861)
     - (dup) 修复带 DML 算子的 `EXPLAIN ANALYZE` 语句可能在事务提交完成前返回结果的问题 [#37373](https://github.com/pingcap/tidb/issues/37373)
 
     <!--planner **owner: @fixdb**-->
