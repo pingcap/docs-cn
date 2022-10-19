@@ -7,8 +7,6 @@ summary: 了解 information_schema 表 `MEMORY_USAGE`。
 
 `MEMORY_USAGE` 表描述了 TiDB 实例当前的内存使用情况。
 
-{{< copyable "sql" >}}
-
 ```sql
 USE information_schema;
 DESC memory_usage;

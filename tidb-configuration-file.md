@@ -322,7 +322,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：0
 + 默认值为 0 表示使用机器上所有的 CPU；如果设置成 n，那么 TiDB 会使用 n 个 CPU 数量。
 
-### `server-memory-quota`（已废弃） <span class="version-mark">从 v4.0.9 版本开始引入</span> 
+### `server-memory-quota` <span class="version-mark">从 v4.0.9 版本开始引入</span>
 
 > **警告：**
 >

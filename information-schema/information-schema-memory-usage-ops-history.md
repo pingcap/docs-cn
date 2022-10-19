@@ -7,8 +7,6 @@ summary: 了解 information_schema 表 `MEMORY_USAGE_OPS_HISTORY`。
 
 `MEMORY_USAGE_OPS_HISTORY` 表描述了 TiDB 实例内存相关的历史操作和执行依据。
 
-{{< copyable "sql" >}}
-
 ```sql
 USE information_schema;
 DESC memory_usage_ops_history;
