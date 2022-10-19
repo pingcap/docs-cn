@@ -950,7 +950,7 @@ Currently, partition pruning does not work with `LIKE` conditions.
     create table t (id int) partition by range (id) (
             partition p0 values less than (5),
             partition p1 values less than (10));
-    select * from t where t > 6;
+    select * from t where id > 6;
     ```
 
     Or the partition expression is in the form of `fn(col)` where `fn` is `to_days`:
@@ -961,7 +961,7 @@ Currently, partition pruning does not work with `LIKE` conditions.
     create table t (dt datetime) partition by range (to_days(id)) (
             partition p0 values less than (to_days('2020-04-01')),
             partition p1 values less than (to_days('2020-05-01')));
-    select * from t where t > '2020-04-18';
+    select * from t where dt > '2020-04-18';
     ```
 
     An exception is `floor(unix_timestamp())` as the partition expression. TiDB does some optimization for that case by case, so it is supported by partition pruning.
@@ -973,7 +973,7 @@ Currently, partition pruning does not work with `LIKE` conditions.
     partition by range (floor(unix_timestamp(ts))) (
             partition p0 values less than (unix_timestamp('2020-04-01 00:00:00')),
             partition p1 values less than (unix_timestamp('2020-05-01 00:00:00')));
-    select * from t where t > '2020-04-18 02:00:42.123';
+    select * from t where ts > '2020-04-18 02:00:42.123';
     ```
 
 ## Partition selection
