@@ -722,6 +722,7 @@ TiDB 服务状态相关配置。
 
 + TiDB 中同时允许的最大客户端连接数，用于资源控制。
 + 默认值：0
++ 取值范围：`[0, 100000]`
 + 默认情况下，TiDB 不限制客户端连接数。当本配置项的值大于 `0` 且客户端连接数到达此值时，TiDB 服务端将会拒绝新的客户端连接。
 + 该值作为系统变量 [`max_connections`](/system-variables.md#max_connections) 的初始值。
 + 在 v6.2.0 之前，该功能通过配置项 `max-server-connections` 进行设置。
