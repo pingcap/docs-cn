@@ -118,6 +118,8 @@ TiDB 版本：6.1.2
         - Change log level from info to debug for some logs to avoid too many logs [#7235](https://github.com/pingcap/tiflow/issues/7235)
         - Fix a bug that may cause changefeed's redo log files be deleted wrongly [#6413](https://github.com/pingcap/tiflow/issues/6413)
         - Fix a bug that may cause cdc unavaliable by commit too many operation in a etcd transaction [#7131](https://github.com/pingcap/tiflow/issues/7131)
+        - Fix a bug which can lead inconsistency Change if non-reentrant DDLs can be executed twice [#6927](https://github.com/pingcap/tiflow/issues/6927)
+        - Enhance the region worker's performance by handling the resolved ts in the batch mode [#7078](https://github.com/pingcap/tiflow/issues/7078)
 
     + Backup & Restore (BR) **owner: @3pointer**
 
