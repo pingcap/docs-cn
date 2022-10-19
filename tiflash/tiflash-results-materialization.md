@@ -29,6 +29,7 @@ assignment:
 ## 使用场景和限制
 
 ### Execution of query
+
 * SELECT sub-statement will be executed by TiFlash
   1. Optimizer automatically chooses TiFlash
   2. Users can use "tidb_enforce_mpp = TRUE" (existing variable) to force the query making use of TiFlash (when necesary, say, the optimizer cannot choose the right plan)
@@ -43,7 +44,9 @@ Conceptually, Txn size should be inside the O(100 MB) scope (roughly less than 1
   * C_max  is not an enforced value, but a recommended/reference value to users
   * When txn size = Txn-Max, C_max = 10
   * When txn size = 100 MB, C_max = 30
+
 ### User Scenarios / Story
+
 1. Much more efficient BI solution
 Many BI applications need to repeatedly run the same query as end users may refresh the dashboard at any time. However, this is not an efficient way because the results are no different in a short time. This new feature allows persistent results for BI and avoids most meaningless queries and thus saves system resources and can also boot the BI performance;
 2. Serve downstream online services
