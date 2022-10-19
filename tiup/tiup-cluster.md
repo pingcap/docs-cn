@@ -700,6 +700,7 @@ TiUP 相关的数据都存储在用户 home 目录的 `.tiup` 目录下，若要
 
 ```bash
 tiup cluster meta backup ${cluster_name}
+
 可以使用以下方法恢复 meta 文件：
 
 ```bash
@@ -708,4 +709,4 @@ tiup cluster meta restore ${cluster_name} ${backup_file}
 
 > **注意：**
 >
-> 恢复操作会覆盖当前的 meta 文件，建议在 meta 文件丢失的情况下才进行恢复。
+> 恢复操作会覆盖当前的 meta 文件，建议仅在 meta 文件丢失的情况下进行恢复。
