@@ -116,7 +116,7 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 
 2. 如果出现了慢查询，可以从 Grafana 监控定位到出现慢查询的 tidb-server 以及时间点，然后在对应节点查找日志中记录的 SQL 信息。
 
-3. 除了日志，还可以通过 `admin show slow` 命令查看，详情可参考 [`admin show slow` 命令](/identify-slow-queries.md#admin-show-slow-命令)。
+3. 除了日志，还可以通过 `ADMIN SHOW SLOW` 命令查看，详情可参考 [`ADMIN SHOW SLOW` 命令](/identify-slow-queries.md#admin-show-slow-命令)。
 
 ### 首次部署 TiDB 集群时，没有配置 tikv 的 Label 信息，在后续如何添加配置 Label？
 
