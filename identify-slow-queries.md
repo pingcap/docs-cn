@@ -524,15 +524,15 @@ Not all of the `SLOW_QUERY` statements are problematic. Only those whose `proces
 
 The statements whose `wait_time` is very large and `process_time` is very small are usually not problematic. This is because the statement is blocked by real problematic statements and it has to wait in the execution queue, which leads to a much longer response time.
 
-### `admin show slow` command
+### `ADMIN SHOW SLOW` command
 
-In addition to the TiDB log file, you can identify slow queries by running the `admin show slow` command:
+In addition to the TiDB log file, you can identify slow queries by running the `ADMIN SHOW SLOW` command:
 
 {{< copyable "sql" >}}
 
 ```sql
-admin show slow recent N
-admin show slow top [internal | all] N
+ADMIN SHOW SLOW recent N
+ADMIN SHOW SLOW TOP [internal | all] N
 ```
 
 `recent N` shows the recent N slow query records, for example:
@@ -540,7 +540,7 @@ admin show slow top [internal | all] N
 {{< copyable "sql" >}}
 
 ```sql
-admin show slow recent 10
+ADMIN SHOW SLOW recent 10
 ```
 
 `top N` shows the slowest N query records recently (within a few days). If the `internal` option is provided, the returned results would be the inner SQL executed by the system; If the `all` option is provided, the returned results would be the user's SQL combinated with inner SQL; Otherwise, this command would only return the slow query records from the user's SQL.
@@ -548,9 +548,9 @@ admin show slow recent 10
 {{< copyable "sql" >}}
 
 ```sql
-admin show slow top 3
-admin show slow top internal 3
-admin show slow top all 5
+ADMIN SHOW SLOW top 3
+ADMIN SHOW SLOW top internal 3
+ADMIN SHOW SLOW top all 5
 ```
 
 TiDB stores only a limited number of slow query records because of the limited memory. If the value of `N` in the query command is greater than the records count, the number of returned records is smaller than `N`.

@@ -6,7 +6,7 @@ category: reference
 
 # ADMIN CANCEL DDL
 
-The `ADMIN CANCEL DDL` statement allows you to cancel a running DDL job. The `job_id` can be found by running `ADMIN SHOW DDL JOBS`.
+The `ADMIN CANCEL DDL` statement allows you to cancel a running DDL job. The `job_id` can be found by running [`ADMIN SHOW DDL JOBS`](/sql-statements/sql-statement-admin-show-ddl.md).
 
 ## Synopsis
 
@@ -33,7 +33,7 @@ If the operation fails to cancel the jobs, specific reasons are displayed.
 > **Note:**
 >
 > - Only this operation can cancel DDL jobs. All other operations and environment changes (such as machine restart and cluster restart) cannot cancel these jobs.
-> - This operation can cancel multiple DDL jobs at the same time. You can get the ID of DDL jobs using the `ADMIN SHOW DDL JOBS` statement.
+> - This operation can cancel multiple DDL jobs at the same time. You can get the ID of DDL jobs using the [`ADMIN SHOW DDL JOBS`](/sql-statements/sql-statement-admin-show-ddl.md) statement.
 > - If the jobs you want to cancel are finished, the cancellation operation fails.
 
 ## MySQL compatibility

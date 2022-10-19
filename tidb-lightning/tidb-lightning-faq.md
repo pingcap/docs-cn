@@ -52,7 +52,7 @@ If you are using Local-backend or TiDB-backend, the operations are the same as t
 
 TiDB Lightning by default performs checksum on the local data source and the imported tables. If there is checksum mismatch, the process would be aborted. These checksum information can be read from the log.
 
-You could also execute the `ADMIN CHECKSUM TABLE` SQL command on the target table to recompute the checksum of the imported data.
+You could also execute the [`ADMIN CHECKSUM TABLE`](/sql-statements/sql-statement-admin-checksum-table.md) SQL command on the target table to recompute the checksum of the imported data.
 
 ```sql
 ADMIN CHECKSUM TABLE `schema`.`table`;

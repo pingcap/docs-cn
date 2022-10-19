@@ -855,7 +855,7 @@ MPP is a distributed computing framework provided by the TiFlash engine, which a
 - Scope: SESSION
 - Default value: `4`
 - Unit: Threads
-- This variable is used to set the scan index concurrency of executing the `ADMIN CHECKSUM TABLE` statement.
+- This variable is used to set the scan index concurrency of executing the [`ADMIN CHECKSUM TABLE`](/sql-statements/sql-statement-admin-checksum-table.md) statement.
 - When the variable is set to a larger value, the execution performance of other queries is affected.
 
 ### tidb_committer_concurrency <span class="version-mark">New in v6.1.0</span>
