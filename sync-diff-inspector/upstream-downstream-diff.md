@@ -26,7 +26,7 @@ sync-point-retention = "1h"
 
 ## 获取 ts-map
 
-在下游 TiDB 中执行以下 SQL 语句，可以从结果中可以获取上游TSO（primary_ts）和下游TSO（secondary_ts）信息。
+在下游 TiDB 中执行以下 SQL 语句，从结果中可以获取上游 TSO (primary_ts) 和下游 TSO (secondary_ts) 信息。
 {{< copyable "sql" >}}
 
 ```sql
