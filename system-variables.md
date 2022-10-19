@@ -2466,7 +2466,6 @@ EXPLAIN SELECT * FROM t USE INDEX (idx) WHERE a IN (10,20,30) AND b IN (40,50,60
 4 rows in set, 1 warning (0.00 sec)
 ```
 
-
 ```sql
 SHOW WARNINGS;
 ```
