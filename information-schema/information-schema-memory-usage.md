@@ -49,7 +49,7 @@ SELECT * FROM information_schema.memory_usage;
 `MEMORY_USAGE` 表中列的含义如下：
 
 * MEMORY_TOTAL：TiDB 的可用内存总量，单位为 byte。
-* MEMORY_LIMIT：TIDB 的内存使用限制，单位为 byte。其值与系统变量 `tidb_server_memory_limit` 的值相同。
+* MEMORY_LIMIT：TiDB 的内存使用限制，单位为 byte。其值与系统变量 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 的值相同。
 * MEMORY_CURRENT：TiDB 当前的内存使用量，单位为 byte。
 * MEMORY_MAX_USED：从 TiDB 启动到当前的最大内存使用量，单位为 byte。
 * CURRENT_OPS："shrinking" | null。"shrinking" 表示 TiDB 正在执行收缩内存用量的操作。

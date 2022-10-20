@@ -50,7 +50,7 @@ SET tidb_mem_quota_query = 8 << 10;
 SET GLOBAL tidb_server_memory_limit = "32GB";
 ```
 
-设置该变量后，当 tidb-server 实例的内存用量到达 32 GB 时，TiDB 会依次终止正在执行的 SQL 操作中内存用量最大的 SQL 操作，直至 tidb-server 实例内存使用下降到 32 GB 以下。被强制终止的 SQL 操作会向客户端返回 `Out Of Memory Quota!` 错误信息。
+设置该变量后，当 tidb-server 实例的内存用量达到 32 GB 时，TiDB 会依次终止正在执行的 SQL 操作中内存用量最大的 SQL 操作，直至 tidb-server 实例内存使用下降到 32 GB 以下。被强制终止的 SQL 操作会向客户端返回报错信息 `Out Of Memory Quota!`。
 
 当前 `tidb_server_memory_limit` 所设的内存限制**不终止**以下 SQL 操作：
 
@@ -60,8 +60,8 @@ SET GLOBAL tidb_server_memory_limit = "32GB";
 
 > **警告：**
 >
-> + TiDB 在启动过程中不保证 `tidb_server_memory_limit` 限制。如果操作系统的空闲内存不足，TiDB 仍有可能出现 OOM。 你需要保证 TiDB 实例有足够的可用内存。
-> + 在内存控制过程中，TiDB 的整体内存使用量可能会略微超过 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 的限制。
+> + TiDB 在启动过程中不保证 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 限制生效。如果操作系统的空闲内存不足，TiDB 仍有可能出现 OOM。你需要确保 TiDB 实例有足够的可用内存。
+> + 在内存控制过程中，TiDB 的整体内存使用量可能会略微超过 `tidb_server_memory_limit` 的限制。
 > + `server-memory-quota` 配置项自 v6.4.0 起被废弃。为了保证兼容性，在 v6.4.0 或更高版本的集群中，`server-memory-quota` 会在单个实例中覆盖 `tidb_server_memory_limit`。如果集群在升级至 v6.4.0 或更高版本前没有配置 `server-memory-quota`，则 tidb-server 实例内存用量限制的阈值取值来自 `tidb_server_memory_limit`。
 
 在 tidb-server 实例内存用量到达总内存的一定比例时（比例由系统变量 [`tidb_server_memory_limit_gc_trigger`](/system-variables.md#tidb_server_memory_limit_gc_trigger-从-v640-版本开始引入) 控制）, tidb-server 会尝试主动触发一次 Golang GC 以缓解内存压力。为了避免实例内存在阈值上下范围不断波动导致频繁 GC 进而带来的性能问题，该 GC 方式 1 分钟最多只会触发 1 次。
