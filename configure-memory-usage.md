@@ -66,7 +66,7 @@ server-memory-quota = 34359738368
 
 - 第一次触发内存阈值。
 - 触发内存阈值，且距离上一次告警超过 60s。
-- 触发内存阈值，且 `(本次内存使用量-上次告警时内存使用量)/ 最大可用内存量 > 10%`。
+- 触发内存阈值，且 `(本次内存使用量 - 上次告警时内存使用量) / 最大可用内存量 > 10%`。
 
 为避免报警时产生的状态文件积累过多，目前 TiDB 默认只保留最近 5 次报警时所生成的状态文件。你可以通过系统变量 [`tidb_memory_usage_alarm_keep_record_num`](/system-variables.md#tidb_memory_usage_alarm_keep_record_num) 调整保留文件的数量。
 
