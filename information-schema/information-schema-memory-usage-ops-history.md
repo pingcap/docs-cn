@@ -51,7 +51,7 @@ SELECT * FROM information_schema.memory_usage_ops_history;
 
 * TIME：终止会话的时间戳。
 * OPS："SessionKill"
-* MEMORY_LIMIT：TiDB 当时的内存使用限制，单位为 byte。其值和系统变量 `tidb_server_memory_limit` 相同。
+* MEMORY_LIMIT：TiDB 终止会话时的内存使用限制，单位为 byte。其值和系统变量 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 相同。
 * MEMORY_CURRENT：TiDB 当前的内存使用量，单位为 byte。
 * PROCESSID：被终止会话的客户连接 ID。
 * MEM：被终止的会话已使用的内存使用量，单位是 byte。
