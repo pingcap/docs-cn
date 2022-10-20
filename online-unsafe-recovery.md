@@ -180,7 +180,7 @@ PD 下发恢复计划后，会等待 TiKV 上报执行的结果。如上述输�
     tiup cluster scale-in <cluster-name> -N <host> --force
     ```
 
-2. 清理 Tombstone 节点
+2. 清理 Tombstone 节点：
 
     {{< copyable "shell-regular" >}}
 
