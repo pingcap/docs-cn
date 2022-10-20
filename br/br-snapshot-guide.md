@@ -17,9 +17,9 @@ summary: 了解 TiDB 的快照备份和恢复功能使用。
 使用 `br backup full` 可以进行一次快照备份。
 
 ```shell
-tiup br backup full --pd "${PD IP}:2379" \
+tiup br backup full --pd "${PD_IP}:2379" \
     --backupts '2022-09-08 13:30:00' \
-    --storage "s3://backup-101/snapshot-202209081330?access_key=${access key}&secret_access_key=${secret access key}" \
+    --storage "s3://backup-101/snapshot-202209081330?access_key=${access_key}&secret_access_key=${secret_access_key}" \
     --ratelimit 128 \
 ```
 
@@ -42,7 +42,7 @@ Checksum <----------------------------------------------------------------------
 出于管理备份数的需要，如果你需要查看某个快照备份对应的快照物理时间点，可以执行下面的命令：
 
 ```shell
-tiup br validate decode --field="end-version" -s "s3://backup-101/snapshot-202209081330?access_key=${access key}&secret_access_key=${secret access key}" | tail -n1
+tiup br validate decode --field="end-version" -s "s3://backup-101/snapshot-202209081330?access_key=${access_key}&secret_access_key=${secret_access_key}" | tail -n1
 ```
 
 结果输出，对应物理时间 `2022-09-08 13:30:00 +0800 CST`
@@ -58,7 +58,7 @@ tiup br validate decode --field="end-version" -s "s3://backup-101/snapshot-20220
 用例：将上文备份的快照数据恢复到目标机群。
 
 ```shell
-tiup br restore full --pd "${PD IP}:2379" --storage "s3://backup-101/snapshot-202209081330?access_key=${access key}&secret_access_key=${secret access key}"
+tiup br restore full --pd "${PD_IP}:2379" --storage "s3://backup-101/snapshot-202209081330?access_key=${access_key}&secret_access_key=${secret_access_key}"
 ```
 
 恢复期间有进度条会在终端中显示，进度条效果如下。在完成恢复后, br 会输出恢复耗时、速度、恢复数据大小等信息。
@@ -77,7 +77,7 @@ BR 支持只恢复备份数据中指定库/表的局部数据，该功能在恢�
 要将备份数据中的某个数据库恢复到集群中，可以使用 `br restore db` 命令。 以下示例只恢复 `test` 库的相关数据：
 
 ```shell
-tiup br restore db --pd "${PDIP}:2379" --db "test" --storage "s3://backup-101/snapshot-202209081330?access_key=${access key}&secret_access_key=${secret access key}"
+tiup br restore db --pd "${PD_IP}:2379" --db "test" --storage "s3://backup-101/snapshot-202209081330?access_key=${access_key}&secret_access_key=${secret_access_key}"
 ```
 
 以上命令中 `--db` 选项指定了需要恢复的数据库名字。
@@ -87,8 +87,8 @@ tiup br restore db --pd "${PDIP}:2379" --db "test" --storage "s3://backup-101/sn
 要将备份数据中的某张数据表恢复到集群中，可以使用 `br restore table` 命令。以下示例只恢复 `test`.`usertable` 表的相关的数据
 
 ```shell
-tiup br restore table --pd "${PDIP}:2379" --db "test" --table "usertable" \
---storage "s3://backup-101/snapshot-202209081330?access_key=${access key}&secret_access_key=${secret access key}"
+tiup br restore table --pd "${PD_IP}:2379" --db "test" --table "usertable" \
+--storage "s3://backup-101/snapshot-202209081330?access_key=${access_key}&secret_access_key=${secret_access_key}"
 ```
 
 以上命令中 `--db` 选项指定了需要恢复的数据库名字，`--table` 选项指定了需要恢复的表名。
@@ -100,7 +100,7 @@ tiup br restore table --pd "${PDIP}:2379" --db "test" --table "usertable" \
 以下示例恢复 `db*.tbl*`的表的相关的数据。
 
 ```shell
-tiup br restore full --pd "${PDIP}:2379" --filter 'db*.tbl*' --storage "s3://backup-101/snapshot-202209081330?access_key=${access key}&secret_access_key=${secret access key}"
+tiup br restore full --pd "${PD_IP}:2379" --filter 'db*.tbl*' --storage "s3://backup-101/snapshot-202209081330?access_key=${access_key}&secret_access_key=${secret_access_key}"
 ```
 
 ### 恢复 `mysql` 数据库下的表

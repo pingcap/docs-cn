@@ -1,14 +1,14 @@
 ---
 title: BR 监控告警
 summary: BR 监控告警介绍。
-aliases: ['/zh/tidb/dev/pitr-monitoring-and-alert']
+aliases: ['/zh/tidb/dev/pitr-monitoring-and-alert/']
 ---
 
 # BR 监控告警
 
 下面介绍 BR 的监控和告警。
 
-## 日志备份监控和报警
+## 日志备份监控和告警
 
 日志备份支持功能使用 [Prometheus](https://prometheus.io/) 采集监控指标，目前所有的监控指标都内置在 TiKV 中。
 
@@ -50,7 +50,7 @@ aliases: ['/zh/tidb/dev/pitr-monitoring-and-alert']
 | **tikv_log_backup_task_status**                       | Gauge     | 日志备份任务状态，0-Running 1-Paused 2-Error <br/>`task :: string`                                                                                       |
 | **tikv_log_backup_pending_initial_scan**              | Gauge     | 尚未执行的增量扫的统计。<br/>`stage :: {"queuing", "executing"}`                                                                                            |
 
-### 日志备份报警
+### 日志备份告警
 
 #### 配置告警
 

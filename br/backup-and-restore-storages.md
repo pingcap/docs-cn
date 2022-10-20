@@ -1,7 +1,6 @@
 ---
 title: 备份存储
 summary: 了解 BR 支持的备份存储和使用方式。
-aliases: ['/docs-cn/dev/br/backup-and-restore-storages/']
 ---
 
 # 备份存储
@@ -33,13 +32,13 @@ TiDB 支持 Amazon S3、Google Cloud Storage (GCS) 、Azure Blob Storage 和 NFS
 **备份快照数据到 S3**
 
 ```shell
-./br backup full  -u "${PD IP}:2379" -s "s3://external/backup-20220915?access_key=${access key}&secret_access_key=${secret access key}"
+./br backup full  -u "${PD_IP}:2379" -s "s3://external/backup-20220915?access_key=${access_key}&secret_access_key=${secret_access_key}"
 ```
 
 **从 S3 恢复快照备份数据**
 
 ```shell
-./br restore full  -u "${PD IP}:2379" -s "s3://external/backup-20220915?access_key=${access key}&secret_access_key=${secret access key}"
+./br restore full  -u "${PD_IP}:2379" -s "s3://external/backup-20220915?access_key=${access_key}&secret_access_key=${secret_access_key}"
 ```
 
 </div>
@@ -48,13 +47,13 @@ TiDB 支持 Amazon S3、Google Cloud Storage (GCS) 、Azure Blob Storage 和 NFS
 **使用 BR 将数据备份至 GCS**
 
 ```shell
-./br backup full --pd "${PD IP}:2379" --Storage 'gcs://external/backup-20220915?credentials-file=${credentials-file-path}'
+./br backup full --pd "${PD_IP}:2379" --Storage 'gcs://external/backup-20220915?credentials-file=${credentials-file-path}'
 ```
 
 **从 GCS 恢复快照备份据**
 
 ```shell
-./br restore full --pd "${PD IP}:2379" --Storage 'gcs://external/backup-20220915?credentials-file=${credentials-file-path}'
+./br restore full --pd "${PD_IP}:2379" --Storage 'gcs://external/backup-20220915?credentials-file=${credentials-file-path}'
 ```
 
 </div>
@@ -63,13 +62,13 @@ TiDB 支持 Amazon S3、Google Cloud Storage (GCS) 、Azure Blob Storage 和 NFS
 **使用 BR 将数据备份至 Azure Blob Storage**
 
 ```shell
-./br backup full -u "${PD IP}:2379" -s "azure://external/backup-20220915?account-name=${account name}&account-key=${account key}"
+./br backup full -u "${PD_IP}:2379" -s "azure://external/backup-20220915?account-name=${account name}&account-key=${account key}"
 ```
 
 **从 Azure Blob Storage 只恢复快照备份中 test db 的数据**
 
 ```shell
-./br restore db --db test -u "${PD IP}:2379" -s "azure://external/backup-20220915account-name=${account name}&account-key=${account key}"
+./br restore db --db test -u "${PD_IP}:2379" -s "azure://external/backup-20220915account-name=${account name}&account-key=${account key}"
 ```
 
 </div>
@@ -107,7 +106,7 @@ TiDB 支持 Amazon S3、Google Cloud Storage (GCS) 、Azure Blob Storage 和 NFS
 为运行 TiKV 和 BR 的 EC2 实例关联一个配置了访问 S3 访问权限的 IAM role，正确设置后，BR 可以直接访问对应的 S3 中的备份目录，而不需要额外的设置。
 
 ```shell
-br backup full --pd "${PDIP}:2379" --storage "s3://${host}/${path}"
+br backup full --pd "${PD_IP}:2379" --storage "s3://${host}/${path}"
 ```
 
 </div>
@@ -177,13 +176,13 @@ br backup full --pd "${PDIP}:2379" --storage "s3://${host}/${path}"
 - 使用 BR 将数据备份至 Azure Blob Storage
 
     ```shell
-    ./br backup full -u "${PD IP}:2379" -s "azure://external/backup-20220915?account-name=${account name}"
+    ./br backup full -u "${PD_IP}:2379" -s "azure://external/backup-20220915?account-name=${account name}"
     ```
 
 </div>
 </SimpleTab>
 
-## Storage Service-side encryption
+## 存储服务端加密
 
 ### Amazon S3 存储服务端加密备份数据
 

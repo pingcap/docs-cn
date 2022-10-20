@@ -18,27 +18,27 @@ summary: 了解 TiDB 快照备份和恢复功能的架构设计。
 ![snapshot backup process design](/media/br/br-snapshot-backup-ts.png)
 
 1. BR 接收备份命令 (`br backup full`)
-    * 获得备份快照点（backup ts）、备份存储地址
+    * 获得备份快照点 (backup ts)、备份存储地址
 
 2. BR 调度备份数据
-    * **Pause GC**: 配置 TiDB GC，防止接下来要备份的数据被 [TiDB GC 机制](/garbage-collection-overview.md)回收掉
-    * **Fetch TiKV and region info**: 访问 pd 获取所有 tikv 节点访问地址，以及数据的 [region](/tidb-storage.md#region) 分布的位置信息
-    * **Request TiKV to backup data**: 创建备份请求发送给 tikv 节点，备份请求包含 backup ts、需要备份的 region、备份存储地址
+    * **Pause GC**：配置 TiDB GC，防止要备份的数据被 [TiDB GC 机制](/garbage-collection-overview.md)回收掉
+    * **Fetch TiKV and region info**：访问 PD 获取所有 TiKV 节点访问地址，以及数据的 [region](/tidb-storage.md#region) 分布的位置信息
+    * **Request TiKV to back up data**：创建备份请求发送给 TiKV 节点，备份请求包含 backup ts、需要备份的 region、备份存储地址
 
 3. TiKV 接受备份请求，初始化 backup worker
 
 4. TiKV 备份数据
     * **Scan KVs**：backup worker 从 region (only leader) 读取 backup ts 对应的数据
-    * **Generate SST**：backup worker 将读取到的数据保存到 SST 文件，存储在本地临时目录中
-    * **Upload SST & SST**: backup worker 上传 SST 到备份存储中
+    * **Generate SST**：backup worker 将读取到的数据保存到 SST 文件，存储在内存中
+    * **Upload SST**：backup worker 上传 SST 文件到备份存储中
 
 5. BR 从各个 TiKV 获取备份结果
-    * 如果局部数据因为 region 变动而备份失败，比如 TiKV 节点故障，BR 重试这些数据的备份
-    * 如果任意数据被判断不重试的备份失败，则备份任务失败
+    * 如果局部数据因为 region 变动而备份失败，比如 TiKV 节点故障，BR 将重试这些数据的备份
+    * 如果任意数据被判断为不可重试的备份失败，则备份任务失败
     * 全部数据备份成功后，则在最后完成元信息备份
 
 6. BR 备份元信息
-    * **Backup schemas**：备份 table schema 并且计算 table data checksum
+    * **Back up schemas**：备份 table schema 并且计算 table data checksum
     * **Upload metadata**：生成 backup metadata，并上传到备份存储。 backup metadata 包含 backup ts、表和对应的备份文件、data checksum 和 file checksum 等信息
 
 ## 恢复快照备份数据
@@ -54,15 +54,15 @@ summary: 了解 TiDB 快照备份和恢复功能的架构设计。
 2. BR 调度恢复数据
     * **Pause region scheudle**：请求 pd 在恢复期间关闭自动的 region schedule
     * **Restore schema**: 读取备份数据的 schema， 恢复的 database 和 table (注意新建表的 table id 与备份数据可能不一样)
-    * **Split & scatter region**：BR 基于备份数据信息，请求 pd 分配 region（split region), 并调度 region 均匀分布到存储节点上（scatter region）。每个 region 都有明确的数据范围[start key, end key]。
-    * **Request TiKV to restore data**：根据 pd 分配 region 结果回复请求发送到对应的 tikv 节点，恢复请求包含要恢复的备份数据、新建表的 table ID
+    * **Split & scatter region**：BR 基于备份数据信息，请求 pd 分配 region（split region), 并调度 region 均匀分布到存储节点上（scatter region）。每个 region 都有明确的数据范围 [start key, end key)。
+    * **Request TiKV to restore data**：根据 pd 分配 region 结果回复请求发送到对应的 tikv 节点，恢复请求包含要恢复的备份数据、rewrite 规则
 
 3. TiKV 接受恢复请求，初始化 restore worker 
     * restore worker 计算恢复数据需要读取的备份数据
 
 4. TiKV 恢复数据
     * **Download SST**：restore worker 从备份存储中下载相应的备份数据到本地
-    * **Rewrite KVs**：restore worker 根据新建表 table ID， 对备份数据 kv 进行重写 —— 将原有的 [kv 编码](/tidb-computing.md#表数据与-key-value-的映射关系)中的 tableID 替换为新创建的 tableID。同样的 indexID 也需要相同的处理
+    * **Rewrite KVs**：restore worker 根据新建表 table ID， 对备份数据 kv 进行重写 —— 将原有的 [kv 编码](/tidb-computing.md#表数据与-key-value-的映射关系)中的 table ID 替换为新创建的 table ID。index ID 也需要相同的处理
     * **Ingest SST**：restore worker 将处理好的 SST 文件 ingest 到 rocksdb 中
     * **Report restore result**：restore worker 返回恢复结果给 BR
 

@@ -32,9 +32,9 @@ aliases: ['/zh/tidb/dev/br-usage-backup', '/zh/tidb/dev/br-usage-restore']
 
 ```shell
 br backup full \
-    --pd "${PDIP}:2379" \
+    --pd "${PD_IP}:2379" \
     --backupts '2022-09-08 13:30:00' \
-    --storage "s3://${backup collection addr}/snapshot-${date}?access_key=${access key}&secret_access_key=${secret access key}" \
+    --storage "s3://${backup_collection_addr}/snapshot-${date}?access_key=${access_key}&secret_access_key=${secret_access_key}" \
     --ratelimit 128 \
     --log-file backupfull.log
 ```
@@ -65,9 +65,9 @@ BR 支持只备份集群快照和增量数据中指定库/表的局部数据。�
 
 ```shell
 br backup db \
-    --pd "${PDIP}:2379" \
+    --pd "${PD_IP}:2379" \
     --db test \
-    --storage "s3://${backup collection addr}/snapshot-${date}?access_key=${access key}&secret_access_key=${secret access key}" \
+    --storage "s3://${backup_collection_addr}/snapshot-${date}?access_key=${access_key}&secret_access_key=${secret_access_key}" \
     --ratelimit 128 \
     --log-file backuptable.log
 ```
@@ -84,10 +84,10 @@ br backup db \
 
 ```shell
 br backup table \
-    --pd "${PDIP}:2379" \
+    --pd "${PD_IP}:2379" \
     --db test \
     --table usertable \
-    --storage "s3://${backup collection addr}/snapshot-${date}?access_key=${access key}&secret_access_key=${secret access key}" \
+    --storage "s3://${backup_collection_addr}/snapshot-${date}?access_key=${access_key}&secret_access_key=${secret_access_key}" \
     --ratelimit 128 \
     --log-file backuptable.log
 ```
@@ -104,9 +104,9 @@ br backup table \
 
 ```shell
 br backup full \
-    --pd "${PDIP}:2379" \
+    --pd "${PD_IP}:2379" \
     --filter 'db*.tbl*' \
-    --storage "s3://${backup collection addr}/snapshot-${date}?access_key=${access key}&secret_access_key=${secret access key}" \
+    --storage "s3://${backup_collection_addr}/snapshot-${date}?access_key=${access_key}&secret_access_key=${secret_access_key}" \
     --ratelimit 128 \
     --log-file backupfull.log
 ```
@@ -133,8 +133,8 @@ BR 支持在备份端，或备份到 Amazon S3 的时候在存储服务端，进
 
 ```shell
 br backup full\
-    --pd ${PDIP}:2379 \
-    --storage "s3://${backup collection addr}/snapshot-${date}?access_key=${access key}&secret_access_key=${secret access key}" \
+    --pd ${PD_IP}:2379 \
+    --storage "s3://${backup_collection_addr}/snapshot-${date}?access_key=${access_key}&secret_access_key=${secret_access_key}" \
     --crypter.method aes128-ctr \
     --crypter.key 0123456789abcdef0123456789abcdef
 ```
@@ -156,8 +156,8 @@ BR 支持对备份到 S3 的数据进行 S3 服务端加密 (SSE)。BR S3 服务
 
 ```shell
 br restore full \
-    --pd "${PDIP}:2379" \
-    --storage "s3://${backup collection addr}/snapshot-${date}?access_key=${access key}&secret_access_key=${secret access key}" \
+    --pd "${PD_IP}:2379" \
+    --storage "s3://${backup_collection_addr}/snapshot-${date}?access_key=${access_key}&secret_access_key=${secret_access_key}" \
     --ratelimit 128 \
     --log-file restorefull.log
 ```
@@ -187,10 +187,10 @@ BR 支持只恢复备份数据中指定库/表的局部数据。该功能在恢�
 
 ```shell
 br restore db \
-    --pd "${PDIP}:2379" \
+    --pd "${PD_IP}:2379" \
     --db "test" \
     --ratelimit 128 \
-    --storage "s3://${backup collection addr}/snapshot-${date}?access_key=${access key}&secret_access_key=${secret access key}" \
+    --storage "s3://${backup_collection_addr}/snapshot-${date}?access_key=${access_key}&secret_access_key=${secret_access_key}" \
     --log-file restore_db.log
 ```
 
@@ -210,11 +210,11 @@ br restore db \
 
 ```shell
 br restore table \
-    --pd "${PDIP}:2379" \
+    --pd "${PD_IP}:2379" \
     --db "test" \
     --table "usertable" \
     --ratelimit 128 \
-    --storage "s3://${backup collection addr}/snapshot-${date}?access_key=${access key}&secret_access_key=${secret access key}" \
+    --storage "s3://${backup_collection_addr}/snapshot-${date}?access_key=${access_key}&secret_access_key=${secret_access_key}" \
     --log-file restore_table.log
 ```
 
@@ -230,9 +230,9 @@ br restore table \
 
 ```shell
 br restore full \
-    --pd "${PDIP}:2379" \
+    --pd "${PD_IP}:2379" \
     --filter 'db*.tbl*' \
-    --storage "s3://${backup collection addr}/snapshot-${date}?access_key=${access key}&secret_access_key=${secret access key}" \
+    --storage "s3://${backup_collection_addr}/snapshot-${date}?access_key=${access_key}&secret_access_key=${secret_access_key}" \
     --log-file restorefull.log
 ```
 
@@ -248,8 +248,8 @@ br restore full \
 
 ```shell
 br restore full\
-    --pd ${PDIP}:2379 \
-    --storage "s3://${backup collection addr}/snapshot-${date}?access_key=${access key}&secret_access_key=${secret access key}" \
+    --pd ${PD_IP}:2379 \
+    --storage "s3://${backup_collection_addr}/snapshot-${date}?access_key=${access_key}&secret_access_key=${secret_access_key}" \
     --crypter.method aes128-ctr \
     --crypter.key 0123456789abcdef0123456789abcdef
 ```

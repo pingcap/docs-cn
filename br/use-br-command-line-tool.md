@@ -13,14 +13,14 @@ summary: 介绍 br 命令行工具
 
 以下是一条完整的 `br` 命令行：
 
-`br backup full --pd "${PDIP}:2379" -s "s3://backup-data/snapshot-202209081330/"`
+`br backup full --pd "${PD_IP}:2379" -s "s3://backup-data/snapshot-202209081330/"`
 
 命令行各部分的解释如下：
 
 * `backup`：`br` 的子命令
 * `full`：`backup` 的子命令
 * `-s` 或 `--storage`：备份数据的存储地址选项。`"s3://backup-data/snapshot-202209081330/"` 是 `-s` 的参数值
-* `--pd`：PD 访问地址选项。`"${PDIP}:2379"`是`--pd` 的参数值。
+* `--pd`：PD 访问地址选项。`"${PD_IP}:2379"`是`--pd` 的参数值。
 
 ### 命令和子命令
 
@@ -38,7 +38,7 @@ br 由多层命令组成。目前，br 包含的重要命令有：
 
 ### 常用选项
 
-* `--pd`：PD 访问地址选项，例如 `"${PDIP}:2379"`
+* `--pd`：PD 访问地址选项，例如 `"${PD_IP}:2379"`
 * `-s, --storage`: 备份数据的存储地址选项。BR 支持以 S3/GCS/Azure Blob Storage/NFS 为备份存储。详细参考[备份存储 URL 配置](/br/backup-and-restore-storages.md#url-格式)。 
 * `--ca`：指定 PEM 格式的受信任 CA 的证书文件路径。
 * `--cert`：指定 PEM 格式的 SSL 证书文件路径。

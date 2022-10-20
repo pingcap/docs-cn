@@ -137,7 +137,7 @@
       - [日志备份 - 备份 kv 数据变更](/br/br-log-architecture.md#进行日志备份)
       - [恢复到指定时间点 PITR](/br/br-log-architecture.md#进行-pitr)
     - [备份存储](/br/backup-and-restore-storages.md)
-    + [使用 br 进行备份与恢复](/br/br-use-overview.md)
+    - [使用 br 进行备份与恢复](/br/br-use-overview.md)
       - [使用 br 进行（全量）快照备份与恢复](/br/br-snapshot-guide.md)
       - [使用 br 进行日志备份和 PITR](/br/br-pitr-guide.md)
       - [备份和恢复实践示例](/br/br-usage.md)

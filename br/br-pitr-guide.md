@@ -17,13 +17,13 @@ summary: 了解 TiDB 的日志备份和 PITR 功能使用。
 使用 `br log start` 启动日志备份任务，一个集群只能启动一个日志备份任务。日志备份任务启动后，该命令就会立即返回：
 
 ```shell
-tiup br log start --task-name=pitr --pd "${PDIP}:2379" --storage 's3://backup-101/logbackup?access_key=${access key}&secret_access_key=${secret access key}"'
+tiup br log start --task-name=pitr --pd "${PD_IP}:2379" --storage 's3://backup-101/logbackup?access_key=${access_key}&secret_access_key=${secret_access_key}"'
 ```
 
 日志备份任务在 TiDB 集群后台持续地运行，直到你手动暂停它。 如果你需要查询日志备份任务当前状态，运行下面的命令：
 
 ```shell
-tiup br log status --task-name=pitr --pd "${PDIP}:2379"
+tiup br log status --task-name=pitr --pd "${PD_IP}:2379"
 ```
 
 日志备份任务状态输出如下
@@ -45,7 +45,7 @@ checkpoint[global]: 2022-05-13 11:31:47.2 +0800; gap=4m53s
 使用快照备份功能作为全量备份的方法，以固定的周期（比如 2 天）进行全量备份
 
 ```shell
-tiup br backup full --pd "${PDIP}:2379" --storage 's3://backup-101/snapshot-{date}?access_key=${access key}&secret_access_key=${secret access key}"'
+tiup br backup full --pd "${PD_IP}:2379" --storage 's3://backup-101/snapshot-${date}?access_key=${access_key}&secret_access_key=${secret_access_key}"'
 ```
 
 ## 进行 PITR
@@ -53,9 +53,9 @@ tiup br backup full --pd "${PDIP}:2379" --storage 's3://backup-101/snapshot-{dat
 如果你想恢复到备份保留期内的任意时间点，可以使用 `br restore point` 进行一键恢复。使用这个命令，你只需要指定**要恢复的时间点**、**恢复时间点之前最近的快照备份**以及**日志备份数据**。 br 会自动判断和读取恢复需要的数据，然后将这些数据依次恢复到指定的集群。
 
 ```shell
-br restore point --pd "${PDIP}:2379" \
---storage='s3://backup-101/logbackup?access_key=${access key}&secret_access_key=${secret access key}"' \
---full-backup-storage='s3://backup-101/snapshot-{date}?access_key=${access key}&secret_access_key=${secret access key}"' \
+br restore point --pd "${PD_IP}:2379" \
+--storage='s3://backup-101/logbackup?access_key=${access_key}&secret_access_key=${secret_access_key}"' \
+--full-backup-storage='s3://backup-101/snapshot-${date}?access_key=${access_key}&secret_access_key=${secret_access_key}"' \
 --restored-ts '2022-05-15 18:00:00+0800'
 ```
 
@@ -80,13 +80,13 @@ Restore KV Files <--------------------------------------------------------------
 * 查找备份保留期之外的**最近的一个全量备份**，使用 `validate` 指令获取它对应的时间点。例如，你要清理 2022/09/01 之前的备份数据，那么应该查找该日期之前的最近一个全量备份，且必须保证它不会被清理。执行下面的命令获取这个全量备份对应的时间点
 
   ```shell
-  FULL_BACKUP_TS=`tiup br validate decode --field="end-version" -s "s3://backup-101/snapshot-{date}?access_key=${access key}&secret_access_key=${secret access key}"| tail -n1`
+  FULL_BACKUP_TS=`tiup br validate decode --field="end-version" -s "s3://backup-101/snapshot-${date}?access_key=${access_key}&secret_access_key=${secret_access_key}"| tail -n1`
   ```
 
 * 清理该快照备份(< FULL_BACKUP_TS)之前的日志备份数据
 
   ```shell
-  tiup br log truncate --until=${FULL_BACKUP_TS} --storage='s3://backup-101/logbackup?access_key=${access key}&secret_access_key=${secret access key}"'
+  tiup br log truncate --until=${FULL_BACKUP_TS} --storage='s3://backup-101/logbackup?access_key=${access_key}&secret_access_key=${secret_access_key}"'
   ```
 
 * 清理该快照备份(< FULL_BACKUP_TS)之前的快照备份
