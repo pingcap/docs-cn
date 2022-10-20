@@ -1,7 +1,7 @@
 ---
 title: Backup & Restore 常见问题
 summary: BR 相关的常见问题以及解决方法。
-aliases: ['/docs-cn/dev/br/backup-and-restore-faq/', '/zh/tidb/dev/pitr-troubleshoot/', '/zh/tidb/dev/pitr-known-issues/']
+aliases: ['/docs-cn/dev/br/backup-and-restore-faq/','/zh/tidb/dev/pitr-troubleshoot/','/zh/tidb/dev/pitr-known-issues/']
 ---
 
 # TiDB Backup & Restore 常见问题
