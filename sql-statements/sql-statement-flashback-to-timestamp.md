@@ -19,7 +19,7 @@ FLASHBACK TABLE tbl1, tbl2 TO TIMESTAMP '2022-09-21 16:02:50';
 
 ```ebnf+diagram
 FlashbackToTimestampStmt ::=
-    "FLASHBACK" ("CLUSTER" | "DATABASE" DBNameList | "TABLE" TableNameList) "TO" "TIMESTAMP" stringLit
+    "FLASHBACK" ("CLUSTER" | "DATABASE" DBName | "TABLE" TableNameList) "TO" "TIMESTAMP" stringLit
 ```
 
 ## 注意事项
