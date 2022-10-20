@@ -1,6 +1,7 @@
 ---
 title: 备份存储
 summary: 了解 BR 支持的备份存储和使用方式。
+aliases: ['/zh/tidb/dev/backup-storage-S3/','/zh/tidb/dev/backup-storage-azblob/','/zh/tidb/dev/backup-storage-gcs/']
 ---
 
 # 备份存储

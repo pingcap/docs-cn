@@ -1,6 +1,7 @@
 ---
 title: TiDB 备份和恢复功能使用概述
 summary: 了解 TiDB 的备份和恢复功能使用。
+aliases: ['/zh/tidb/dev/br-deployment/']
 ---
 
 # TiDB 备份和恢复功能使用概述
@@ -60,7 +61,7 @@ Amazon S3、Google Cloud Storage (GCS)、Azure Blob Storage 是 BR 推荐的存�
 - 如果你只有全量备份数据，或者想恢复某个确定的全量备份，那么可以使用 `br restore`  恢复指定的全量备份。
 - 如果你按照以上推荐的的方式进行备份，那么你可以使用 `br restore point` 恢复到备份保留期内任意时间点。
 
-## BR 使用部署
+## 部署和使用 BR
 
 使用备份恢复功能的部署要求
 
