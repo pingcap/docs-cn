@@ -197,7 +197,7 @@ EXPLAIN SELECT * FROM t WHERE EXISTS (SELECT /*+ SEMI_JOIN_REWRITE() */ 1 FROM t
 
 将该 Hint 写在一个查询块中后，对于该子查询和其外部查询块之间的关联列，优化器将不再尝试解除关联，而是始终使用 Apply 算子来执行查询。
 
-默认情况下，TiDB 会尝试对关联子查询[解除关联](/correlated-subquery-optimization.md)，以达到更高的执行效率。但是在[一部分场景](/correlated-subquery-optimization.md#限制)下，解除关联会让执行效率变得更低。这种情况下，可以使用该 Hint 来人工提示优化器不要进行解除关联操作。例如：
+默认情况下，TiDB 会尝试对关联子查询[解除关联](/correlated-subquery-optimization.md)，以达到更高的执行效率。但是在[一部分场景](/correlated-subquery-optimization.md#限制)下，解除关联反而会降低执行效率。这种情况下，可以使用该 Hint 来人工提示优化器不要进行解除关联操作。例如：
 
 {{< copyable "sql" >}}
 
