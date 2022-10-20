@@ -12,7 +12,7 @@ TiDB 版本：6.1.2
 
 ## 提升改进
 
-+ TiDB
++ TiDB **TW: @TomShawn**
 
     <!--sql-infra **owner: @wjhuang2016**-->
 
@@ -24,12 +24,12 @@ TiDB 版本：6.1.2
 
     <!--planner **owner: @fixdb**-->
 
-+ TiKV **owner: @ethercflow**
++ TiKV **owner: @ethercflow TW: @Oreoxmt**
 
     - (dup) 支持配置 `unreachable_backoff` 避免 Raftstore 发现某个 Peer 无法连接时广播过多消息 [#13054](https://github.com/tikv/tikv/issues/13054)
     - (dup) 支持将 RocksDB write stall 参数设置为比 flow control 流控阈值更小的值 [#13467](https://github.com/tikv/tikv/issues/13467)
 
-+ PD **owner: @nolouch**
++ PD **owner: @nolouch TW: @Oreoxmt**
 
 + TiFlash
 
@@ -39,7 +39,7 @@ TiDB 版本：6.1.2
 
 + Tools
 
-    + TiDB Lightning **owner: @niubell**
+    + TiDB Lightning **owner: @niubell TW: @shichun-0415**
 
         - Checksum 增加更多 TiKV 重试错误，提升成功率 [#37690](https://github.com/pingcap/tidb/issues/37690)
 
@@ -53,7 +53,7 @@ TiDB 版本：6.1.2
 
 ## Bug 修复
 
-+ TiDB
++ TiDB **TW: @TomShawn**
 
     <!--sql-infra **owner: @wjhuang2016**-->
 
@@ -78,21 +78,21 @@ TiDB 版本：6.1.2
     - (dup) 修复 `UPDATE` 语句中带公共表表达式 (CTE) 的情况下会报 `Can't find column` 的问题 [#35758](https://github.com/pingcap/tidb/issues/35758)
     - (dup) 修复某些情况下，`EXECUTE` 语句可能抛出非预期异常的问题 [#37187](https://github.com/pingcap/tidb/issues/37187)
 
-+ TiKV **owner: @ethercflow**
++ TiKV **owner: @ethercflow TW: @Oreoxmt**
 
     - 修复因引入跨 Region 批量 snapshot 导致 snapshot 数据不完整的问题 [#13553](https://github.com/tikv/tikv/issues/13553)
     - (dup) 修复开启流量控制且显式设置 `level0_slowdown_trigger` 时出现 QPS 下降的问题 [#11424](https://github.com/tikv/tikv/issues/11424)
     - (dup) 修复 Web 身份提供程序 (web identity provider) 报错并失效后，自动恢复为默认提供程序 (default provider) 时出现权限拒绝的问题 [#13122](https://github.com/tikv/tikv/issues/13122)
     - (dup) 修复当有一个 TiKV 实例出现网络隔离时，一段时间内服务不可用问题 [#12966](https://github.com/tikv/tikv/issues/12966)
 
-+ PD **owner: @nolouch**
++ PD **owner: @nolouch TW: @Oreoxmt**
 
     - 修复 Region tree 统计可能不准确的问题 [#5318](https://github.com/tikv/pd/issues/5318)
     - (dup) 修复 PD 可能没创建 TiFlash Learner 副本的问题 [#5401](https://github.com/tikv/pd/issues/5401)
     - (dup) 修复 PD 无法正确处理 dashboard 代理请求的问题 [#5321](https://github.com/tikv/pd/issues/5321)
     - (dup) 修复不健康的 Region 可能导致 PD panic 的问题 [#5491](https://github.com/tikv/pd/issues/5491)
 
-+ TiFlash
++ TiFlash **TW: @Oreoxmt**
 
     <!--compute **owner: @zanmato1984**-->
 
@@ -105,19 +105,19 @@ TiDB 版本：6.1.2
 
 + Tools
 
-    + TiDB Lightning **owner: @niubell**
+    + TiDB Lightning **owner: @niubell TW: @shichun-0415**
 
         - 修复 Metrics 打点可能导致 Panic 的问题 [#37338](https://github.com/pingcap/tidb/issues/37338)
 
-    + TiDB Data Migration (DM) **owner: @niubell**
+    + TiDB Data Migration (DM) **owner: @niubell TW: @shichun-0415**
 
-        - DM will try to persist upstream table structure from dump files when firstly switch to sync unit [#5010](https://github.com/pingcap/tiflow/issues/5010)，[#7159](https://github.com/pingcap/tiflow/issues/7159)
-        - DM precheck no longer reports lacking privileges of INFORMATION_SCHEMA [#7317](https://github.com/pingcap/tiflow/issues/7317)
+        - DM 在第一次切换到 Sync 阶段时持久化上游表结构解决 Sync 可能失败问题，同时拆分 SQL 解决大事务问题 [#5010](https://github.com/pingcap/tiflow/issues/5010)，[#7159](https://github.com/pingcap/tiflow/issues/7159)
+        - 解决 Pre-Check 阶段对 INFORMATION_SCHEMA 表需要 SELECT 权限问题 [#7317](https://github.com/pingcap/tiflow/issues/7317)
         - 修复开启 Validator 时 DM Workers 可能触发死锁问题 [#7241](https://github.com/pingcap/tiflow/issues/7241)
         - (dup) 修复 DM 报错 `Specified key was too long` 的问题 [#5315](https://github.com/pingcap/tiflow/issues/5315)
         - (dup) 修复数据同步过程中，latin1 字符集数据可能损坏的问题 [#7028](https://github.com/pingcap/tiflow/issues/7028)
 
-    + TiCDC **owner: @nongfushanquan**
+    + TiCDC **owner: @nongfushanquan TW: @hfxsd**
 
         - 修复了 cdc server 在没启动成功前收到 HTTP 请求导致 panic 的问题 [#6838](https://github.com/pingcap/tiflow/issues/6838)
         - 修复了日志太多的问题 [#7235](https://github.com/pingcap/tiflow/issues/7235)
@@ -126,7 +126,7 @@ TiDB 版本：6.1.2
         - 修复 Redo log 中 DDL 重复执行可能导致的数据不一致性问题 [#6927](https://github.com/pingcap/tiflow/issues/6927)
         - 采用批处理 resolved ts 的模式，提升 region worker 的性能 [#7078](https://github.com/pingcap/tiflow/issues/7078)
 
-    + Backup & Restore (BR) **owner: @3pointer**
+    + Backup & Restore (BR) **owner: @3pointer TW: @shichun-0415**
 
         - (dup) 修复在恢复时配置过高的 concurrency 会导致 Region 不均衡的问题 [#37549](https://github.com/pingcap/tidb/issues/37549)
         - (dup) 修复当外部存储的鉴权 Key 中存在某些特殊符号时，会导致备份恢复失败的问题 [#37469](https://github.com/pingcap/tidb/issues/37469)
