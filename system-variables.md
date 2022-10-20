@@ -2859,7 +2859,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 这个变量用于设置 window 算子的并行度。
 - 默认值 `-1` 表示使用 `tidb_executor_concurrency` 的值。
 
-### `tidb_write_by_ticdc` <span class="version-mark">从 v6.4 版本开始引入</span>
+### `tidb_write_by_ticdc` <span class="version-mark">从 v6.4.0 版本开始引入</span>
 
 - 作用域：SESSION
 - 是否持久化到集群：否
