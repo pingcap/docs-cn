@@ -5,7 +5,7 @@ summary: Learn how to back up data using BR commands
 
 # Use BR to Back Up Cluster Data
 
-This document describes how to back up cluster data using BR in the following scenarios:
+This document describes how to back up TiDB cluster data in the following scenarios:
 
 - [Back up TiDB cluster snapshots](#back-up-tidb-cluster-snapshots)
 - [Back up a database](#back-up-a-database)
@@ -15,10 +15,12 @@ This document describes how to back up cluster data using BR in the following sc
 - [Back up incremental data](#back-up-incremental-data)
 - [Encrypt backup data](#encrypt-backup-data)
 
-If you are not familiar with Backup & Restore (BR), it is recommended that you read the following documents to fully understand BR usage principles and methods:
+If you are not familiar with the backup and restore tools, it is recommended that you read the following documents to fully understand usage principles and methods of these tools:
 
 - [BR Overview](/br/backup-and-restore-overview.md)
 - [Use BR Command-line for Backup and Restoration](/br/use-br-command-line-tool.md)
+
+If you need to back up a small amount of data (for example, less than 50 GB) and do not require high backup speed, you can use Dumpling to export data to implement backup. For detailed backup operations, see [Use Dumpling to back up full data](/backup-and-restore-using-dumpling-lightning.md#use-dumpling-to-back-up-full-data).
 
 ## Back up TiDB cluster snapshots
 

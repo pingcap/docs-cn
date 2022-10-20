@@ -487,6 +487,7 @@
       - [Back Up and Restore Data on Azure Blob Storage Using BR](/br/backup-storage-azblob.md)
       - [Back Up and Restore Data on Google Cloud Storage Using BR](/br/backup-storage-gcs.md)
       - [Back Up and Restore RawKV](/br/rawkv-backup-and-restore.md)
+      - [Back up and Restore Data Using Dumpling and TiDB Lightning](/backup-and-restore-using-dumpling-lightning.md)
       - [BR FAQs](/br/backup-and-restore-faq.md)
   - Point-in-Time Recovery
     - [PITR Overview](/br/point-in-time-recovery.md)
