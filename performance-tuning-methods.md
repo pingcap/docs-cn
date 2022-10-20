@@ -244,7 +244,7 @@ Duration 面板包含了所有语句的 99 延迟和每种 SQL 类型的平均�
 
 在此 TPC-C 负载中：
 
-- 所有 SQL 语句的平均延迟 477 us，99 延迟 3.13ms。平均 commit 语句 2.02ms，平均 insert 语句 609ms，平均查询语句 468us。
+- 所有 SQL 语句的平均延迟 477 us，99 延迟 3.13 ms。平均 commit 语句 2.02 ms，平均 insert 语句 609 us，平均查询语句 468 us。
 - 事务中连接空闲时间 `avg-in-txn` 171 us。
 
 由此可以判断，平均的 query 延迟明显大于 `avg-in-txn`，说明事务处理中，主要的瓶颈在数据库内部。
@@ -253,7 +253,7 @@ Duration 面板包含了所有语句的 99 延迟和每种 SQL 类型的平均�
 
 ![TiDB is the Bottleneck](/media/performance/cloud_query_long_idle.png)
 
-在此负载中，平均 query 延迟为 1.69ms，事务中连接空闲时间 `avg-in-txn` 为 18ms。说明事务中，TiDB 平均花了 1.69ms 处理完一个 SQL 语句之后，需要等待 18ms 才能收到下一条语句。
+在此负载中，平均 query 延迟为 1.69 ms，事务中连接空闲时间 `avg-in-txn` 为 18 ms。说明事务中，TiDB 平均花了 1.69 ms 处理完一个 SQL 语句之后，需要等待 18 ms 才能收到下一条语句。
 
 由此可以判断，用户响应时间的瓶颈不在 TiDB 中。这个例子是在一个公有云环境下，因为应用和数据库不在同一个地区，应用和数据库之间的网络延迟高导致了超高的连接空闲时间。
 
@@ -277,7 +277,7 @@ avg Query Duration = avg Get Token + avg Parse Duration + avg Compile Duration +
 通常 execute 阶段会占 query 延迟的主要部分，在以下情况下，parse 和 compile 阶段也会占比明显。
 
 - parse 阶段延迟占比明显：比如 query 语句很长，文本解析消耗大量的 CPU。
-- compile 阶段延迟占比明显：如果应用没有使用执行计划缓存，每个语句都需要生成执行计划。compile 阶段的延迟可能达到几毫秒或者几十毫秒。如果无法命中执行计划缓存，compile 阶段需要进行逻辑优化和物理优化，这将消耗大量的 CPU 和内存，并给 Go Runtime 带来压力（因为 TiDB 是 [`Go`](https://go.dev/) 编写的），进一步影响 TiDB 其他组件的性能。这说明，OLTP 负载在 TiDB 中是否能高效运行，执行计划缓扮演了重要的角色。
+- compile 阶段延迟占比明显：如果应用没有使用执行计划缓存，每个语句都需要生成执行计划。compile 阶段的延迟可能达到几毫秒或者几十毫秒。如果无法命中执行计划缓存，compile 阶段需要进行逻辑优化和物理优化，这将消耗大量的 CPU 和内存，并给 Go Runtime 带来压力（因为 TiDB 是 [`Go`](https://go.dev/) 编写的），进一步影响 TiDB 其他组件的性能。这说明，OLTP 负载在 TiDB 中是否能高效运行，执行计划缓存扮演了重要的角色。
 
 **示例 1：数据库瓶颈在 compile 阶段**
 
@@ -332,13 +332,13 @@ Avg TiDB KV Request Duration 和 Avg TiKV GRPC Duration 的差值跟网络流量
 
 ![Cloud Env ](/media/performance/cloud_kv_tso.png)
 
-在此示例中，TiDB 集群部署在同一个地区的不同机房。TiDB 侧平均 Commit 请求延迟为 12.7 ms，TiKV 内部 kv_commit 平均处理延迟为 10.2ms，相差 2.5ms 左右。TSO wait 平均延迟为 3.12ms，rpc 时间为 693us。
+在此示例中，TiDB 集群部署在同一个地区的不同机房。TiDB 侧平均 Commit 请求延迟为 12.7 ms，TiKV 内部 kv_commit 平均处理延迟为 10.2 ms，相差 2.5 ms 左右。TSO wait 平均延迟为 3.12 ms，rpc 时间为 693 us。
 
 **示例 3：公有云集群，资源严重过载**
 
 ![Cloud Env, TiDB Overloaded](/media/performance/cloud_kv_tso_overloaded.png)
 
-在此示例中，TiDB 集群部署在同一个地区的不同机房，TiDB 网络和 CPU 资源严重过载。TiDB 侧平均 BatchGet 请求延迟为 38.6 ms，TiKV 内部 kv_batch_get 平均处理延迟为 6.15 ms，相差超过 32 ms，远高于正常值。TSO wait 平均延迟为 9.45ms，rpc 时间为 14.3ms。
+在此示例中，TiDB 集群部署在同一个地区的不同机房，TiDB 网络和 CPU 资源严重过载。TiDB 侧平均 BatchGet 请求延迟为 38.6 ms，TiKV 内部 kv_batch_get 平均处理延迟为 6.15 ms，相差超过 32 ms，远高于正常值。TSO wait 平均延迟为 9.45 ms，rpc 时间为 14.3 ms。
 
 #### Storage Async Write Duration、Store Duration 和 Apply Duration
 

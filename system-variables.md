@@ -588,6 +588,22 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
     - `tidb_auto_analyze_start_time='01:00 +0000'`
     - `tidb_auto_analyze_end_time='03:00 +0000'`
 
+### `tidb_auth_signing_cert`
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 类型：字符串
+- 默认值：`""`
+- 该变量与一个未发布的特性相关。**请勿**设置该变量。
+
+### `tidb_auth_signing_key`
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 类型：字符串
+- 默认值：`""`
+- 该变量与一个未发布的特性相关。**请勿**设置该变量。
+
 ### `tidb_max_auto_analyze_time` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
 - 作用域：GLOBAL
@@ -616,6 +632,42 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
     例如，TiDB 向 PD 取 TSO 的基础超时时间是 15 秒，当 `tidb_backoff_weight = 2` 时，取 TSO 的最大超时时间为：基础时间 \* 2 等于 30 秒。
 
     在网络环境较差的情况下，适当增大该变量值可以有效缓解因为超时而向应用端报错的情况；而如果应用端希望更快地接到报错信息，则应该尽量减小该变量的值。
+
+### `tidb_batch_commit`
+
+> **警告：**
+>
+> **不建议**开启此变量。
+
+- 作用域：SESSION
+- 是否持久化到集群：否
+- 类型：布尔型
+- 默认值：`OFF`
+- 该变量控制是否启用已废弃的 batch-commit 特性。当该变量开启时，事务可能会通过分组一些语句被拆分为多个事务，并被非原子地提交。不推荐使用这种方式。
+
+### `tidb_batch_delete`
+
+> **警告：**
+>
+> 该变量与废弃的 batch-dml 特性相关，可能会导致数据损坏。因此，不建议开启该变量来使用 batch-dml。作为替代，请使用[非事务 DML 语句](/non-transactional-dml.md)。
+
+- 作用域：SESSION
+- 是否持久化到集群：否
+- 类型：布尔型
+- 默认值：`OFF`
+- 该变量控制是否启用已废弃的 batch-dml 特性中的 batch-delete 特性。当该变量开启时，`DELETE` 语句可能会被拆分为多个事务，并被非原子地提交。要使该特性生效，还需要开启 `tidb_enable_batch_dml` 并将 `tidb_dml_batch_size` 的值设置为正数。不推荐使用这种方式。
+
+### `tidb_batch_insert`
+
+> **警告：**
+>
+> 该变量与废弃的 batch-dml 特性相关，可能会导致数据损坏。因此，不建议开启该变量来使用 batch-dml。作为替代，请使用[非事务 DML 语句](/non-transactional-dml.md)。
+
+- 作用域：SESSION
+- 是否持久化到集群：否
+- 类型：布尔型
+- 默认值：`OFF`
+- 该变量控制是否启用已废弃的 batch-dml 特性中的 batch-insert 特性。当该变量开启时，`INSERT` 语句可能会被拆分为多个事务，并被非原子地提交。要使该特性生效，还需要开启 `tidb_enable_batch_dml` 并将 `tidb_dml_batch_size` 的值设置为正数。不推荐使用这种方式。
 
 ### `tidb_batch_pending_tiflash_count` <span class="version-mark">从 v6.0 版本开始引入</span>
 
@@ -680,7 +732,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 - 作用域：SESSION
 - 默认值：`4`
-- 这个变量用来设置 `ADMIN CHECKSUM TABLE` 语句执行时扫描索引的并发度。当这个变量被设置得更大时，会对其它的查询语句执行性能产生一定影响。
+- 这个变量用来设置 [`ADMIN CHECKSUM TABLE`](/sql-statements/sql-statement-admin-checksum-table.md) 语句执行时扫描索引的并发度。当这个变量被设置得更大时，会对其它的查询语句执行性能产生一定影响。
 
 ### `tidb_config`
 
@@ -913,12 +965,17 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 ### `tidb_dml_batch_size`
 
+> **警告：**
+>
+> 该变量与废弃的 batch-dml 特性相关，可能会导致数据损坏。因此，不建议开启该变量来使用 batch-dml。作为替代，请使用[非事务 DML 语句](/non-transactional-dml.md)。
+
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 默认值：`0`
 - 范围：`[0, 2147483647]`
 - 这个变量的值大于 `0` 时，TiDB 会将 `INSERT` 或 `LOAD DATA` 等语句在更小的事务中批量提交。这样可减少内存使用，确保大批量修改时事务大小不会达到 `txn-total-size-limit` 限制。
 - 只有变量值为 `0` 时才符合 ACID 要求。否则无法保证 TiDB 的原子性和隔离性要求。
+- 要使该特性生效，还需要开启 `tidb_enable_batch_dml`，以及至少开启 `tidb_batch_insert` 和 `tidb_batch_delete` 中的一个。
 
 ### `tidb_enable_1pc` <span class="version-mark">从 v5.0 版本开始引入</span>
 
@@ -987,6 +1044,18 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 是否持久化到集群：是
 - 默认值：`OFF`
 - 这个变量用于控制是否允许在创建生成列或者表达式索引时引用自增列。
+
+### `tidb_enable_batch_dml`
+
+> **警告：**
+>
+> 该变量与废弃的 batch-dml 特性相关，可能会导致数据损坏。因此，不建议开启该变量来使用 batch-dml。作为替代，请使用[非事务 DML 语句](/non-transactional-dml.md)。
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 类型：布尔型
+- 默认值：`OFF`
+- 该变量控制是否启用废弃的 batch-dml 特性。启用该变量后，部分语句可能会被拆分为多个事务执行，这是非原子性的，使用时需谨慎。使用 batch-dml 时，必须确保正在操作的数据没有并发操作。要使该变量生效，还需要为 `tidb_batch_dml_size` 指定一个正值，并启用 `tidb_batch_insert` 和 `tidb_batch_delete` 中的至少一个。
 
 ### `tidb_enable_cascades_planner`
 
@@ -2844,6 +2913,14 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 ### `tx_isolation`
 
 这个变量是 `transaction_isolation` 的别名。
+
+### `tx_isolation_one_shot`
+
+> **注意：**
+>
+> 该变量仅用于 TiDB 内部实现，不推荐设置该变量。
+
+在 TiDB 内部实现中，TiDB 解释器会将 `SET TRANSACTION ISOLATION LEVEL [READ COMMITTED| REPEATABLE READ | ...]` 语句转化为 `SET @@SESSION.TX_ISOLATION_ONE_SHOT = [READ COMMITTED| REPEATABLE READ | ...]`。
 
 ### `tx_read_ts`
 

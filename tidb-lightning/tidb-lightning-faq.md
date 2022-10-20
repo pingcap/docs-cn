@@ -51,7 +51,7 @@ TiDB Lightning 的版本应与集群相同。如果使用 Local-backend 模式�
 
 TiDB Lightning 默认会对导入数据计算校验和 (checksum)，如果校验和不一致就会停止导入该表。可以在日志看到相关的信息。
 
-TiDB 也支持从 MySQL 命令行运行 `ADMIN CHECKSUM TABLE` 指令来计算校验和。
+TiDB 也支持从 MySQL 命令行运行 [`ADMIN CHECKSUM TABLE`](/sql-statements/sql-statement-admin-check-table-index.md) 指令来计算校验和。
 
 {{< copyable "sql" >}}
 
