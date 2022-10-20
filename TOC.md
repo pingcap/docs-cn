@@ -248,6 +248,7 @@
     - [TiKV Performance Tuning with Massive Regions](/best-practices/massive-regions-best-practices.md)
     - [Three-node Hybrid Deployment](/best-practices/three-nodes-hybrid-deployment.md)
     - [Local Read Under Three Data Centers Deployment](/best-practices/three-dc-local-read.md)
+    - [Use UUIDs](/best-practices/uuid.md)
   - [Use Placement Rules](/configure-placement-rules.md)
   - [Use Load Base Split](/configure-load-base-split.md)
   - [Use Store Limit](/configure-store-limit.md)
