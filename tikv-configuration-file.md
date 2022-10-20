@@ -1853,7 +1853,7 @@ Raft Engine 相关的配置项。
     + `causal-ts.alloc-ahead-buffer = "6s"`
     + `causal-ts.renew-batch-max-size = 65536`
     + `causal-ts.renew-batch-min-size = 2048`
-    + 此外，在 PD 中配置 `tso-update-physical-interval = "1ms"`
+    + `tso-update-physical-interval = "1ms"`
 + 默认值：3s
 
 ### `renew-interval`
@@ -1864,13 +1864,13 @@ Raft Engine 相关的配置项。
 
 ### `renew-batch-min-size`
 
-+ 时间戳单次请求的最小数量。
-+ TiKV 会根据前一周期的使用情况以及 `alloc-ahead-buffer` 参数，来调整时间戳的缓存数量。如果 TSO 需求量较低，TiKV 会降低单次 TSO 请求量，直至等于 `renew-batch-min-size`。如果业务中经常出现突发的大流量写入，可以适当调大这个参数。注意这个参数是单个 tikv-server 的缓存大小，如果配置过大、而同时集群中 tikv-server 较多，会导致 TSO 消耗过快。
++ 单次时间戳请求的最小数量。
++ TiKV 会根据前一周期的使用情况以及 `alloc-ahead-buffer` 参数设置，来调整时间戳的缓存数量。如果 TSO 需求量较低，TiKV 会降低单次 TSO 请求量，直至等于 `renew-batch-min-size`。如果业务中经常出现突发的大流量写入，可以适当调大这个参数。注意这个参数是单个 tikv-server 的缓存大小，如果配置过大、而同时集群中 tikv-server 较多，会导致 TSO 消耗过快。
 + Grafana **TiKV-Raw** 面板下 **Causal timestamp** 中的 **TSO batch size** 是根据业务负载动态调整后的本地缓存数量。可以参考该监控指标值调整这个参数的大小。
 + 默认值：100
 
 ### `renew-batch-max-size` <span class="version-mark">从 v6.4.0 版本开始引入</span>
 
-+ 时间戳单次请求的最大数量。
-+ 在默认的一个 TSO 物理时钟更新周期内 (50ms)，PD 最多提供 262144 个 TSO，超过这个数量后 PD 会暂缓 TSO 请求的处理。这个配置用于避免 PD 的 TSO 消耗殆尽、影响其他业务的使用。如果增大这个参数，建议同时减小 PD 的 [`tso-update-physical-interval`](/pd-configuration-file.md#tso-update-physical-interval) 参数，以获得足够的 TSO 供应。
++ 单次时间戳请求的最大数量。
++ 在默认的一个 TSO 物理时钟更新周期内 (50ms)，PD 最多提供 262144 个 TSO，超过这个数量后 PD 会暂缓 TSO 请求的处理。这个配置用于避免 PD 的 TSO 消耗殆尽、影响其他业务的使用。如果增大这个参数，建议同时减小 PD 的 [`tso-update-physical-interval`](/pd-configuration-file.md#tso-update-physical-interval) 参数，以获得足够的 TSO。
 + 默认值：8192
