@@ -41,6 +41,8 @@ TiDB 版本：6.1.2
 
     + TiDB Lightning **owner: @niubell**
 
+        - Checksum 增加更多 TiKV 重试错误，提升成功率 [#37690](https://github.com/pingcap/tidb/issues/37690)
+
     + TiDB Data Migration (DM) **owner: @niubell**
 
     + TiCDC **owner: @nongfushanquan**
@@ -105,11 +107,14 @@ TiDB 版本：6.1.2
 
     + TiDB Lightning **owner: @niubell**
 
+        - 修复 Metrics 打点可能导致 Panic 的问题 [#37338](https://github.com/pingcap/tidb/issues/37338)
+
     + TiDB Data Migration (DM) **owner: @niubell**
 
         - DM will try to persist upstream table structure from dump files when firstly switch to sync unit [#5010](https://github.com/pingcap/tiflow/issues/5010)
         - DM will try to persist upstream table structure from dump files when firstly switch to sync unit [#7159](https://github.com/pingcap/tiflow/issues/7159)
         - DM precheck no longer reports lacking privileges of INFORMATION_SCHEMA [#7317](https://github.com/pingcap/tiflow/issues/7317)
+        - 修复开启 Validator 时 DM Workers 可能触发死锁问题 [#7241](https://github.com/pingcap/tiflow/issues/7241)
         - (dup) 修复 DM 报错 `Specified key was too long` 的问题 [#5315](https://github.com/pingcap/tiflow/issues/5315)
         - (dup) 修复数据同步过程中，latin1 字符集数据可能损坏的问题 [#7028](https://github.com/pingcap/tiflow/issues/7028)
 
