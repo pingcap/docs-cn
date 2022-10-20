@@ -16,7 +16,7 @@ TiDB 版本：6.1.2
 
     <!--sql-infra **owner: @wjhuang2016**-->
 
-    - (dup) 解决基于 SQL 的数据放置规则功能和构建 TiFlash 副本功能的冲突 [#37171](https://github.com/pingcap/tidb/issues/37171)
+    - 允许在一张表上同时设置数据放置规则和 TiFlash 副本数 [#37171](https://github.com/pingcap/tidb/issues/37171)
 
     <!--execution **owner: @zanmato1984**-->
 
