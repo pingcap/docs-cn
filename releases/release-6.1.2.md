@@ -79,13 +79,14 @@ TiDB 版本：6.1.2
 
 + TiKV **owner: @ethercflow**
 
+    - 修复因引入跨 Region 批量 snapshot 导致 snapshot 数据不完整的问题 [#13553](https://github.com/tikv/tikv/issues/13553)
     - (dup) 修复开启流量控制且显式设置 `level0_slowdown_trigger` 时出现 QPS 下降的问题 [#11424](https://github.com/tikv/tikv/issues/11424)
     - (dup) 修复 Web 身份提供程序 (web identity provider) 报错并失效后，自动恢复为默认提供程序 (default provider) 时出现权限拒绝的问题 [#13122](https://github.com/tikv/tikv/issues/13122)
     - (dup) 修复当有一个 TiKV 实例出现网络隔离时，一段时间内服务不可用问题 [#12966](https://github.com/tikv/tikv/issues/12966)
 
 + PD **owner: @nolouch**
 
-    - Fix the issue that the statistics of the region tree may be not accurate [#5318](https://github.com/tikv/pd/issues/5318)
+    - 修复 Region tree 统计可能不准确的问题 [#5318](https://github.com/tikv/pd/issues/5318)
     - (dup) 修复 PD 可能没创建 TiFlash Learner 副本的问题 [#5401](https://github.com/tikv/pd/issues/5401)
     - (dup) 修复 PD 无法正确处理 dashboard 代理请求的问题 [#5321](https://github.com/tikv/pd/issues/5321)
     - (dup) 修复不健康的 Region 可能导致 PD panic 的问题 [#5491](https://github.com/tikv/pd/issues/5491)
@@ -94,6 +95,7 @@ TiDB 版本：6.1.2
 
     <!--compute **owner: @zanmato1984**-->
 
+    - 修复在大批量写入之后，iolimiter 可能错误的限制了读请求的 IO 吞吐量，从而降低查询性能的问题 [#5801](https://github.com/pingcap/tiflash/issues/5801)
     - (dup) 修复取消查询时 window function 可能会导致 TiFlash 崩溃的问题 [#5814](https://github.com/pingcap/tiflash/issues/5814)
 
     <!--storage **owner: @flowbehappy**-->
