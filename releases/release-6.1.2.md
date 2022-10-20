@@ -111,8 +111,7 @@ TiDB 版本：6.1.2
 
     + TiDB Data Migration (DM) **owner: @niubell**
 
-        - DM will try to persist upstream table structure from dump files when firstly switch to sync unit [#5010](https://github.com/pingcap/tiflow/issues/5010)
-        - DM will try to persist upstream table structure from dump files when firstly switch to sync unit [#7159](https://github.com/pingcap/tiflow/issues/7159)
+        - DM will try to persist upstream table structure from dump files when firstly switch to sync unit [#5010](https://github.com/pingcap/tiflow/issues/5010)，[#7159](https://github.com/pingcap/tiflow/issues/7159)
         - DM precheck no longer reports lacking privileges of INFORMATION_SCHEMA [#7317](https://github.com/pingcap/tiflow/issues/7317)
         - 修复开启 Validator 时 DM Workers 可能触发死锁问题 [#7241](https://github.com/pingcap/tiflow/issues/7241)
         - (dup) 修复 DM 报错 `Specified key was too long` 的问题 [#5315](https://github.com/pingcap/tiflow/issues/5315)
