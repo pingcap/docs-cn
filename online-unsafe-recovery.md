@@ -172,7 +172,7 @@ PD 下发恢复计划后，会等待 TiKV 上报执行的结果。如上述输�
 <SimpleTab>
 <div label="通过 TiUP 部署的节点">
 
-1. 缩容无法恢复的节点
+1. 缩容无法恢复的节点：
    
     {{< copyable "shell-regular" >}}
 
