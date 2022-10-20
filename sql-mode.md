@@ -17,7 +17,7 @@ Ensure that you have `SUPER` privilege when setting SQL mode at `GLOBAL` level, 
 ## Important `sql_mode` values
 
 * `ANSI`: This mode complies with standard SQL. In this mode, data is checked. If data does not comply with the defined type or length, the data type is adjusted or trimmed and a `warning` is returned.
-* `STRICT_TRANS_TABLES`: Strict mode, where data is strictly checked. When any incorrect data is inserted into a table, an error is returned.
+* `STRICT_TRANS_TABLES`: Strict mode, where data is strictly checked. If any data is incorrect, it cannot be inserted into a table and an error is returned.
 * `TRADITIONAL`: In this mode, TiDB behaves like a "traditional" SQL database system. An error instead of a warning is returned when any incorrect value is inserted into a column. Then, the `INSERT` or `UPDATE` statement is immediately stopped.
 
 ## SQL mode table
