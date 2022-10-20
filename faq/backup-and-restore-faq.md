@@ -1,6 +1,7 @@
 ---
-title: 备份和恢复功能的常见问题
-summary: 介绍备份和恢复功能相关的常见问题。
+title: Backup & Restore 常见问题
+summary: BR 相关的常见问题以及解决方法。
+aliases: ['/docs-cn/dev/br/backup-and-restore-faq/', '/zh/tidb/dev/pitr-troubleshoot/', '/zh/tidb/dev/pitr-known-issues/']
 ---
 
 # TiDB Backup & Restore 常见问题
@@ -50,7 +51,7 @@ Issue 链接：[#36648](https://github.com/pingcap/tidb/issues/36648)
 
 在创建日志备份任务的上游集群中，请尽量避免使用 TiDB Lightning Physical 方式导入数据。可以选择使用 TiDB Lightning Logical 方式导入数据。若确实需要使用 Physical 导入方式，可在导入完成之后做一次快照备份操作，这样，PITR 就可以恢复到快照备份之后的时间点。
 
-### 集群已经恢复了网络分区故障，日志备份任务进度 checkpoint 仍然不推进 
+### 集群已经恢复了网络分区故障，日志备份任务进度 checkpoint 仍然不推进
 
 Issue 链接：[#13126](https://github.com/tikv/tikv/issues/13126)
 

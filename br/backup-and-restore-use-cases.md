@@ -1,7 +1,6 @@
 ---
-title: TiDB 备份和恢复实践示例
-summary: 了解如何使用 br 进行备份和恢复
-aliases: ['/zh/tidb/dev/backup-and-restore-use-cases', '/zh/tidb/dev/pitr-usage']
+title: BR 备份与恢复场景示例
+aliases: ['/docs-cn/dev/br/backup-and-restore-use-cases/','/docs-cn/dev/reference/tools/br/use-cases/','/docs-cn/dev/how-to/maintain/backup-and-restore/br-best-practices/','/docs-cn/dev/reference/tools/br/br-best-practices/','/zh/tidb/dev/pitr-usage']
 ---
 
 # TiDB 备份和恢复实践示例
