@@ -1853,7 +1853,7 @@ Raft Engine 相关的配置项。
     + `causal-ts.alloc-ahead-buffer = "6s"`
     + `causal-ts.renew-batch-max-size = 65536`
     + `causal-ts.renew-batch-min-size = 2048`
-    + `tso-update-physical-interval = "1ms"`
+    + 在 PD 中配置 `tso-update-physical-interval = "1ms"`
 + 默认值：3s
 
 ### `renew-interval`
