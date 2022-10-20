@@ -20,8 +20,6 @@ TiDB 版本：6.1.2
 
     <!--execution **owner: @zanmato1984**-->
 
-    - (dup) 修复在 TiFlash 中为分区表开启动态模式时结果出错的问题 [#37254](https://github.com/pingcap/tidb/issues/37254)
-
     <!--transaction **owner: @cfzjywxk**-->
 
     <!--planner **owner: @fixdb**-->
@@ -57,13 +55,14 @@ TiDB 版本：6.1.2
 
     <!--sql-infra **owner: @wjhuang2016**-->
 
+    - Fix the issue that the database level privileges are cleaned up incorrectly [#38363](https://github.com/pingcap/tidb/issues/38363)
     - (dup) 修复 `SHOW CREATE PLACEMENT POLICY` 输出结果不正确的问题 [#37526](https://github.com/pingcap/tidb/issues/37526)
     - (dup) 修复了当某台 PD 宕机时，由于没有重试其他 PD 节点，导致查询表 `INFORMATION_SCHEMA.TIKV_REGION_STATUS` 时请求失败的问题 [#35708](https://github.com/pingcap/tidb/issues/35708)
     - (dup) 修复 `UNION` 运算符可能会非预期地返回空结果的问题 [#36903](https://github.com/pingcap/tidb/issues/36903)
 
     <!--execution **owner: @zanmato1984**-->
 
-    - Database level privileges are cleaned up correctly [#38363](https://github.com/pingcap/tidb/issues/38363)
+    - (dup) 修复在 TiFlash 中为分区表开启动态模式时结果出错的问题 [#37254](https://github.com/pingcap/tidb/issues/37254)
 
     <!--transaction **owner: @cfzjywxk**-->
 
@@ -116,12 +115,12 @@ TiDB 版本：6.1.2
 
     + TiCDC **owner: @nongfushanquan**
 
-        - 修复了 cdc server 在没启动成功前收到 HTTP 请求导致 panic 的问题  [#6838](https://github.com/pingcap/tiflow/issues/6838)
+        - 修复了 cdc server 在没启动成功前收到 HTTP 请求导致 panic 的问题 [#6838](https://github.com/pingcap/tiflow/issues/6838)
         - 修复了日志太多的问题 [#7235](https://github.com/pingcap/tiflow/issues/7235)
         - 修复 redo log 中错误清理非当前 changefeed 日志文件的问题 [#6413](https://github.com/pingcap/tiflow/issues/6413)
-        - 修复在一个 etcd 事务中提交太多数据导致 cdc 服务不可用问题  [#7131](https://github.com/pingcap/tiflow/issues/7131)
-        - 修复 Redo log 中 DDL 重复执行可能导致的数据不一致性问题  [#6927](https://github.com/pingcap/tiflow/issues/6927)
-        - 采用批处理 resolved ts 的模式，提升 region worker 的性能[#7078](https://github.com/pingcap/tiflow/issues/7078)
+        - 修复在一个 etcd 事务中提交太多数据导致 cdc 服务不可用问题 [#7131](https://github.com/pingcap/tiflow/issues/7131)
+        - 修复 Redo log 中 DDL 重复执行可能导致的数据不一致性问题 [#6927](https://github.com/pingcap/tiflow/issues/6927)
+        - 采用批处理 resolved ts 的模式，提升 region worker 的性能 [#7078](https://github.com/pingcap/tiflow/issues/7078)
 
     + Backup & Restore (BR) **owner: @3pointer**
 
