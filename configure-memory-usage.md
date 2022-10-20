@@ -60,22 +60,30 @@ server-memory-quota = 34359738368
 
 ## tidb-server 内存占用过高时的报警
 
-默认配置下，tidb-server 实例会在机器内存使用达到总内存量的 70% 时打印报警日志，并记录相关状态文件。该内存使用率可以通过配置系统变量 [`tidb_memory_usage_alarm_ratio`](/system-variables.md#tidb_memory_usage_alarm_ratio) 进行设置。具体报警规则请参考该变量的文档。
+当 tidb-server 实例的内存使用量超过内存阈值（默认为总内存量的 70%）且满足以下任一条件时，TiDB 将打印报警日志，并记录相关状态文件。
 
-注意，当内存使用量超过阈值，且满足以下任一条件时，才会进行告警。
+- 第一次内存使用量超过内存阈值。
+- 内存使用量超过内存阈值，且距离上一次报警超过 60s。
+- 内存使用量超过内存阈值，且 `(本次内存使用量 - 上次报警时内存使用量) / 最大可用内存量 > 10%`。
 
-- 第一次触发内存阈值。
-- 触发内存阈值，且距离上一次告警超过 60s。
-- 触发内存阈值，且 `(本次内存使用量 - 上次告警时内存使用量) / 最大可用内存量 > 10%`。
+你可以通过系统变量 [`tidb_memory_usage_alarm_ratio`](/system-variables.md#tidb_memory_usage_alarm_ratio) 修改触发该报警的内存使用比率，从而控制内存报警的阈值。
 
-为避免报警时产生的状态文件积累过多，目前 TiDB 默认只保留最近 5 次报警时所生成的状态文件。你可以通过系统变量 [`tidb_memory_usage_alarm_keep_record_num`](/system-variables.md#tidb_memory_usage_alarm_keep_record_num) 调整保留文件的数量。
+当打印报警日志时，TiDB 会将当前正在执行的所有 SQL 语句中内存使用最高的 10 条语句和运行时间最长的 10 条语句的相关信息、goroutine 栈信息以及 heap profile 记录到 TiDB 日志文件 [`filename`](tidb-configuration-file.md#filename) 所在目录中，并输出一条包含关键字 `tidb-server has the risk of OOM` 以及以下内存相关系统变量的日志。
+
+- [`tidb_mem_oom_action`](#tidb_mem_oom_action-span-classversion-mark-v610-span)
+- [`tidb_mem_quota_query`](#tidb_mem_quota_query)
+- [`tidb_server_memory_limit`](#tidb_server_memory_limit)
+- [`tidb_analyze_version`](#tidb_analyze_version-span-classversion-mark-v510-span)
+- [`tidb_enable_rate_limit_action`](#tidb_enable_rate_limit_action)
+
+为避免报警时产生的状态文件累积过多，目前 TiDB 默认只保留最近 5 次报警时所生成的状态文件。你可以通过配置系统变量 [`tidb_memory_usage_alarm_keep_record_num`](/system-variables.md#tidb_memory_usage_alarm_keep_record_num) 调整该次数。
 
 下例通过构造一个占用大量内存的 SQL 语句触发报警，对该报警功能进行演示：
 
 1. 配置报警比例为 `0.85`：
 
     {{< copyable "" >}}
-    
+
     ```sql
     SET GLOBAL tidb_memory_usage_alarm_ratio = 0.85;
     ```
