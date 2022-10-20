@@ -27,14 +27,14 @@ sync-point-retention = "1h"
 
 ## Step 1: obtain `ts-map`
 
-To obtain `ts-map`, execute the following SQL statement in the downstream TiDB cluster:
+You can execute the following SQL statement in the downstream TiDB cluster to obtain the upstream TSO (`primary_ts`) and downstream TSO (`secondary_ts`):
 
 ```sql
 select * from tidb_cdc.syncpoint_v1;
 +------------------+----------------+--------------------+--------------------+---------------------+
 | ticdc_cluster_id | changefeed     | primary_ts         | secondary_ts       | created_at          |
 +------------------+----------------+--------------------+--------------------+---------------------+
-| default          | default_test-2 | 435953225454059520 | 435953235516456963 | 2022-09-13 08:40:15 |
+| default          | test-2 | 435953225454059520 | 435953235516456963 | 2022-09-13 08:40:15 |
 +------------------+----------------+--------------------+--------------------+---------------------+
 ```
 
