@@ -22,7 +22,7 @@ aliases: ['/zh/tidb/dev/br-usage-backup', '/zh/tidb/dev/br-usage-restore']
 如果你想了解如何进行备份和恢复，可以参考以下教程
 
 - [全量备份恢复 —— 快照备份和恢复功能使用指南](/br/br-snapshot-guide.md)
-- [TiDB 集群备份和恢复实践示例](/br/br-usage.md)
+- [TiDB 集群备份和恢复实践示例](/br/backup-and-restore-use-cases.md)
 
 ## 备份 TiDB 集群快照
 

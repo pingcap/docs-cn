@@ -1,6 +1,6 @@
 ---
 title: BR 备份与恢复场景示例
-aliases: ['/docs-cn/dev/br/backup-and-restore-use-cases/','/docs-cn/dev/reference/tools/br/use-cases/','/docs-cn/dev/how-to/maintain/backup-and-restore/br-best-practices/','/docs-cn/dev/reference/tools/br/br-best-practices/','/zh/tidb/dev/pitr-usage']
+aliases: ['/docs-cn/dev/br/backup-and-restore-use-cases/','/docs-cn/dev/reference/tools/br/use-cases/','/docs-cn/dev/how-to/maintain/backup-and-restore/br-best-practices/','/docs-cn/dev/reference/tools/br/br-best-practices/','/zh/tidb/dev/pitr-usage', '/zh/tidb/dev/backup-and-restore-use-cases-for-maintain/']
 ---
 
 # TiDB 备份和恢复实践示例
@@ -18,12 +18,12 @@ aliases: ['/docs-cn/dev/br/backup-and-restore-use-cases/','/docs-cn/dev/referenc
 
 下表介绍了在 TiDB 集群中使用日志备份功能的推荐配置。
 
-|**组件** | **CPU** | **内存** |**硬盘类型** | **AWS 机型** | **实例数量** | 
-| --- | --- | --- | --- | --- | --- | 
+|**组件** | **CPU** | **内存** |**硬盘类型** | **AWS 机型** | **实例数量** |
+| --- | --- | --- | --- | --- | --- |
 | TiDB | 8 核+ | 16 GB+ | SAS | c5.2xlarge | 2 |
 | PD | 8 核+ | 16 GB+ | SSD | c5.2xlarge | 3 |
-| TiKV | 8 核+ | 32 GB+ | SSD | m5.2xlarge | 3 | 
-| BR | 8 核+ | 16 GB+ | SAS | c5.2xlarge | 1 | 
+| TiKV | 8 核+ | 32 GB+ | SSD | m5.2xlarge | 3 |
+| BR | 8 核+ | 16 GB+ | SAS | c5.2xlarge | 1 |
 | 监控 | 8 核+ | 16 GB+ | SAS | c5.2xlarge | 1 |
 
 > **注意：**

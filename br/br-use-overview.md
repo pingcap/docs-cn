@@ -80,7 +80,7 @@ TiDB 支持使用 br 工具进行备份恢复。
 
     * [（全量）快照备份和恢复功能使用](/br/br-snapshot-guide.md)
     * [日志备份和 PITR 功能使用](/br/br-pitr-guide.md)
-    * [TiDB 集群备份和恢复实践示例](/br/br-usage.md)
+    * [TiDB 集群备份和恢复实践示例](/br/backup-and-restore-use-cases.md)
 
 ### 通过 SQL 语句
 

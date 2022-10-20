@@ -11,7 +11,7 @@ aliases: ['/zh/tidb/dev/br-log-command-line/']
 如果你想了解如何进行备份和恢复，可以参考以下教程
 
 - [日志备份和 PITR 功能使用指南](/br/br-pitr-guide.md)
-- [TiDB 集群备份和恢复实践示例](/br/br-usage.md)
+- [TiDB 集群备份和恢复实践示例](/br/backup-and-restore-use-cases.md)
 
 ## 日志备份命令行介绍
 
@@ -201,7 +201,7 @@ Global Flags:
  -u, --pd strings             PD address (default [127.0.0.1:2379])
 ```
 
-暂停日志备份任务超过了 24 小时后，执行 `br log resume` 会报错，提示备份数据丢失。处理方法请参考[恢复日志备份任务失败](/faq/br-faq.md#执行-br-log-resume-命令恢复处于暂停状态的任务时报-errbackupgcsafepointexceeded-错误该如何处理)。
+暂停日志备份任务超过了 24 小时后，执行 `br log resume` 会报错，提示备份数据丢失。处理方法请参考[恢复日志备份任务失败](/faq/backup-and-restore-faq.md#执行-br-log-resume-命令恢复处于暂停状态的任务时报-errbackupgcsafepointexceeded-错误该如何处理)。
 
 使用示例：
 
