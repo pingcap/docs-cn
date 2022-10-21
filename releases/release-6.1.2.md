@@ -16,7 +16,7 @@ TiDB 版本：6.1.2
 
     <!--sql-infra **owner: @wjhuang2016**-->
 
-    - 允许在一张表上同时设置数据放置规则和 TiFlash 副本数 [#37171](https://github.com/pingcap/tidb/issues/37171)
+    - 允许在一张表上同时设置数据放置规则和 TiFlash 副本 [#37171](https://github.com/pingcap/tidb/issues/37171)
 
     <!--execution **owner: @zanmato1984**-->
 
@@ -57,7 +57,7 @@ TiDB 版本：6.1.2
 
     <!--sql-infra **owner: @wjhuang2016**-->
 
-    - Fix the issue that the database level privileges are cleaned up incorrectly [#38363](https://github.com/pingcap/tidb/issues/38363)
+    - 修复数据库级别的权限清理不正确的问题 [#38363](https://github.com/pingcap/tidb/issues/38363)
     - (dup) 修复 `SHOW CREATE PLACEMENT POLICY` 输出结果不正确的问题 [#37526](https://github.com/pingcap/tidb/issues/37526)
     - (dup) 修复了当某台 PD 宕机时，由于没有重试其他 PD 节点，导致查询表 `INFORMATION_SCHEMA.TIKV_REGION_STATUS` 时请求失败的问题 [#35708](https://github.com/pingcap/tidb/issues/35708)
     - (dup) 修复 `UNION` 运算符可能会非预期地返回空结果的问题 [#36903](https://github.com/pingcap/tidb/issues/36903)
@@ -68,13 +68,13 @@ TiDB 版本：6.1.2
 
     <!--transaction **owner: @cfzjywxk**-->
 
-    - 修复 Region 合并情况下 Region cache 没有及时清理的问题 [#37141](https://github.com/pingcap/tidb/issues/37141)
-    - 修复 KV client 发送不必要 ping 消息的问题 [#36861](https://github.com/pingcap/tidb/issues/36861)
+    - 修复 Region 合并情况下 Region cache 没有及时被清理的问题 [#37141](https://github.com/pingcap/tidb/issues/37141)
+    - 修复 KV 客户端发送不必要 ping 消息的问题 [#36861](https://github.com/pingcap/tidb/issues/36861)
     - (dup) 修复带 DML 算子的 `EXPLAIN ANALYZE` 语句可能在事务提交完成前返回结果的问题 [#37373](https://github.com/pingcap/tidb/issues/37373)
 
     <!--planner **owner: @fixdb**-->
 
-    - Fix the issue that GROUP CONCAT with ORDER BY might fail when the ORDER BY clause contains a correlated subquery [#18216](https://github.com/pingcap/tidb/issues/18216)
+    - 修复当 `ORDER BY` 子句里包含关联子查询时与 `GROUP CONCAT` 一起执行可能会导致出错的问题 [#18216](https://github.com/pingcap/tidb/issues/18216)
     - (dup) 修复 `UPDATE` 语句中带公共表表达式 (CTE) 的情况下会报 `Can't find column` 的问题 [#35758](https://github.com/pingcap/tidb/issues/35758)
     - (dup) 修复某些情况下，`EXECUTE` 语句可能抛出非预期异常的问题 [#37187](https://github.com/pingcap/tidb/issues/37187)
 
