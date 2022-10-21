@@ -41,7 +41,7 @@ TiDB 版本：6.1.2
 
     + TiDB Lightning **owner: @niubell TW: @shichun-0415**
 
-        - Checksum 增加更多 TiKV 重试错误，提升成功率 [#37690](https://github.com/pingcap/tidb/issues/37690)
+        - 增加 checksum 阶段可重试错误，提升鲁棒性 [#37690](https://github.com/pingcap/tidb/issues/37690)
 
     + TiDB Data Migration (DM) **owner: @niubell**
 
@@ -107,13 +107,14 @@ TiDB 版本：6.1.2
 
     + TiDB Lightning **owner: @niubell TW: @shichun-0415**
 
-        - 修复 Metrics 打点可能导致 Panic 的问题 [#37338](https://github.com/pingcap/tidb/issues/37338)
+        - 修复非法 metric 数值可能导致 TiDB Lightning panic 的问题 [#37338](https://github.com/pingcap/tidb/issues/37338)
 
     + TiDB Data Migration (DM) **owner: @niubell TW: @shichun-0415**
 
-        - DM 在第一次切换到 Sync 阶段时持久化上游表结构解决 Sync 可能失败问题，同时拆分 SQL 解决大事务问题 [#5010](https://github.com/pingcap/tiflow/issues/5010)，[#7159](https://github.com/pingcap/tiflow/issues/7159)
-        - 解决 Pre-Check 阶段对 INFORMATION_SCHEMA 表需要 SELECT 权限问题 [#7317](https://github.com/pingcap/tiflow/issues/7317)
-        - 修复开启 Validator 时 DM Workers 可能触发死锁问题 [#7241](https://github.com/pingcap/tiflow/issues/7241)
+        - 修复某些情况下，进入 sync unit 的任务中断导致的上游表结构信息丢失问题 [#7159](https://github.com/pingcap/tiflow/issues/7159)
+        - 通过在保存 checkpoint 时拆分 SQL 语句解决大事务问题 [#5010](https://github.com/pingcap/tiflow/issues/5010)
+        - 解决 Pre-Check 阶段 `INFORMATION_SCHEMA` 表需要 `SELECT` 权限的问题 [#7317](https://github.com/pingcap/tiflow/issues/7317)
+        - 修复开启 fast/full validator 时 DM Workers 可能触发死锁问题 [#7241](https://github.com/pingcap/tiflow/issues/7241)
         - (dup) 修复 DM 报错 `Specified key was too long` 的问题 [#5315](https://github.com/pingcap/tiflow/issues/5315)
         - (dup) 修复数据同步过程中，latin1 字符集数据可能损坏的问题 [#7028](https://github.com/pingcap/tiflow/issues/7028)
 
