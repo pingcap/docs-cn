@@ -53,6 +53,7 @@ ALTER TABLE employees COMPACT TIFLASH REPLICA;
 ```
 
 ### 对分区表中个别分区的 TiFlash 副本进行数据整理
+
 假设目前有一张 `employees` 表具有 4 个分区，且具有 2 个 TiFlash 副本：
 
 ```sql
