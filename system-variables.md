@@ -109,8 +109,10 @@ mysql> SELECT * FROM t1;
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Enumeration
 - Default value: `aes-128-ecb`
-- Defines the encryption mode for the `AES_ENCRYPT()` and `AES_DECRYPT()` functions.
+- Value options: `aes-128-ecb`, `aes-192-ecb`, `aes-256-ecb`, `aes-128-cbc`, `aes-192-cbc`, `aes-256-cbc`, `aes-128-ofb`, `aes-192-ofb`, `aes-256-ofb`, `aes-128-cfb`, `aes-192-cfb`, `aes-256-cfb`
+- This variable sets the encryption mode for the built-in functions `AES_ENCRYPT()` and `AES_DECRYPT()`.
 
 ### character_set_client
 
