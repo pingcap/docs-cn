@@ -236,7 +236,7 @@ mysql> explain select * from t t1, t t2 where t1.a>t2.a;
 
 下面是一组例子，假设表结构为 `create table t (id int, a int, b int, c int, primary key(id), key(a), key(b, c))`：
 
-1. `select * from t`: 没有过滤条件，会扫全表，所以会用 `TableFullScan` 算子读取数据；
+1. `select * from t`：没有过滤条件，会扫全表，所以会用 `TableFullScan` 算子读取数据；
 2. `select a from t where a=2`：有过滤条件且只读索引列，所以会用 `IndexReader` 算子读取数据；
 3. `select * from t where a=2`：在 `a` 有过滤条件，但索引 `a` 不能完全覆盖需要读取的内容，因此会采用 `IndexLookup`；
 4. `select b from t where c=3`：多列索引没有前缀条件就用不上，所以会用 `IndexFullScan`；
