@@ -2072,6 +2072,15 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 默认值：`3.0`
 - 表示在 TiDB 中开启一个 Golang goroutine 的 CPU 开销。该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
 
+### `tidb_opt_concurrency_factor_v2`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 类型：浮点数
+- 范围：`[0, 2147483647]`
+- 默认值：`3.0`
+- 表示在 TiDB 中开启一个 Golang goroutine 的 CPU 开销。该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
+
 ### `tidb_opt_copcpu_factor`
 
 - 作用域：SESSION | GLOBAL
@@ -2079,6 +2088,15 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 类型：浮点数
 - 范围：`[0, 2147483647]`
 - 默认值：`3.0`
+- 表示 TiKV 协处理器处理一行数据的 CPU 开销。该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
+
+### `tidb_opt_copcpu_factor_v2`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 类型：浮点数
+- 范围：`[0, 2147483647]`
+- 默认值：`30.0`
 - 表示 TiKV 协处理器处理一行数据的 CPU 开销。该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
 
 ### `tidb_opt_correlation_exp_factor`
@@ -2106,6 +2124,15 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 默认值：`3.0`
 - 表示 TiDB 处理一行数据的 CPU 开销。该变量是[代价模型](/cost-model.md)内部使用的变量，不建议修改该变量的值。
 
+### `tidb_opt_cpu_factor_v2`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 类型：浮点数
+- 范围：`[0, 2147483647]`
+- 默认值：`30.0`
+- 表示 TiDB 处理一行数据的 CPU 开销。该变量是[代价模型](/cost-model.md)内部使用的变量，不建议修改该变量的值。
+
 ### `tidb_opt_desc_factor`
 
 - 作用域：SESSION | GLOBAL
@@ -2115,7 +2142,25 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 默认值：`3.0`
 - 表示降序扫描时，TiKV 在磁盘上扫描一行数据的开销。该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
 
+### `tidb_opt_desc_factor_v2`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 类型：浮点数
+- 范围：`[0, 2147483647]`
+- 默认值：`150.0`
+- 表示降序扫描时，TiKV 在磁盘上扫描一行数据的开销。该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
+
 ### `tidb_opt_disk_factor`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 类型：浮点数
+- 范围：`[0, 2147483647]`
+- 默认值：`1.5`
+- 表示 TiDB 往临时磁盘读写一个字节数据的 I/O 开销。该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
+
+### `tidb_opt_disk_factor_v2`
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
@@ -2223,6 +2268,15 @@ mysql> desc select count(distinct a) from test.t;
 - 默认值：`0.001`
 - 表示 TiDB 存储一行数据的内存开销。该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
 
+### `tidb_opt_memory_factor_v2`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 类型：浮点数
+- 范围：`[0, 2147483647]`
+- 默认值：`0.001`
+- 表示 TiDB 存储一行数据的内存开销。该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
+
 ### `tidb_opt_mpp_outer_join_fixed_build_side` <span class="version-mark">从 v5.1.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
@@ -2238,6 +2292,15 @@ mysql> desc select count(distinct a) from test.t;
 - 类型：浮点数
 - 范围：`[0, 2147483647]`
 - 默认值：`1.0`
+- 表示传输 1 比特数据的网络净开销。该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
+
+### `tidb_opt_network_factor_v2`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 类型：浮点数
+- 范围：`[0, 2147483647]`
+- 默认值：`4.0`
 - 表示传输 1 比特数据的网络净开销。该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
 
 ### `tidb_opt_prefer_range_scan` <span class="version-mark">从 v5.0 版本开始引入</span>
@@ -2289,6 +2352,15 @@ explain select * from t where age=5;
 - 默认值：`1.5`
 - 表示升序扫描时，TiKV 在磁盘上扫描一行数据的开销。该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
 
+### `tidb_opt_scan_factor_v2`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 类型：浮点数
+- 范围：`[0, 2147483647]`
+- 默认值：`100.0`
+- 表示升序扫描时，TiKV 在磁盘上扫描一行数据的开销。该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
+
 ### `tidb_opt_seek_factor`
 
 - 作用域：SESSION | GLOBAL
@@ -2296,6 +2368,15 @@ explain select * from t where age=5;
 - 类型：浮点数
 - 范围：`[0, 2147483647]`
 - 默认值：`20`
+- 表示 TiDB 从 TiKV 请求数据的初始开销。该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
+
+### `tidb_opt_seek_factor_v2`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 类型：浮点数
+- 范围：`[0, 2147483647]`
+- 默认值：`9500000`
 - 表示 TiDB 从 TiKV 请求数据的初始开销。该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
 
 ### `tidb_opt_skew_distinct_agg` <span class="version-mark">从 v6.2.0 版本开始引入</span>
@@ -2309,6 +2390,7 @@ explain select * from t where age=5;
 - 默认值：`OFF`
 - 这个变量用来设置优化器是否将带有 `DISTINCT` 的聚合函数（例如 `SELECT b, count(DISTINCT a) FROM t GROUP BY b`）改写为两层聚合函数（例如 `SELECT b, count(a) FROM (SELECT b, a FROM t GROUP BY b, a) t GROUP BY b`）。当聚合列有严重的数据倾斜，且 `DISTINCT` 列有很多不同的值时，这种改写能够避免查询执行过程中的数据倾斜，从而提升查询性能。
 
+<<<<<<< HEAD
 ### `tidb_opt_three_stage_distinct_agg` <span class="version-mark">从 v6.3.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
@@ -2317,6 +2399,34 @@ explain select * from t where age=5;
 - 默认值：`ON`
 - 该变量用于控制在 MPP 模式下是否将 `COUNT(DISTINCT)` 聚合改写为三阶段分布式执行的聚合。
 - 该变量目前仅对只有一个 `COUNT(DISTINCT)` 的聚合生效。
+=======
+### `tidb_opt_tiflash_concurrency_factor`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 类型：浮点数
+- 范围：`[0, 2147483647]`
+- 默认值：`24.0`
+- 表示 TiFlash 计算的并发数。该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
+
+### `tidb_opt_tiflash_cpu_factor_v2`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 类型：浮点数
+- 范围：`[0, 2147483647]`
+- 默认值：`2.0`
+- 表示 TiFlash 处理一行数据的 CPU 开销。该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
+
+### `tidb_opt_tiflash_scan_factor_v2`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 类型：浮点数
+- 范围：`[0, 2147483647]`
+- 默认值：`15.0`
+- 表示 TiFlash 从磁盘中扫描一行数据的开销。该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
+>>>>>>> a784ba40a (sysvar: add 12 missing planner-related sysvars (#11707))
 
 ### `tidb_opt_write_row_id`
 
