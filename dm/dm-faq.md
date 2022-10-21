@@ -370,4 +370,4 @@ flush local meta, Rawcause: open relay-dir/xxx.000001/relay.metayyyy: no such fi
 
 ## Load 单元报错 `Unknown character set`
 
-由于 TiDB 只[支持部分 MySQL 字符集](/character-set-and-collation.md)，因此 DM 在全量导入流程中创建表结构时会报错。您可以结合数据内容选择 TiDB 支持的字符集，预先在下游创建表结构以绕过这个错误。
+由于 TiDB 只[支持部分 MySQL 字符集](/character-set-and-collation.md)，因此 DM 在全量导入流程中创建表结构时会报错。你可以结合数据内容选择 TiDB 支持的字符集，预先在下游创建表结构以绕过这个错误。
