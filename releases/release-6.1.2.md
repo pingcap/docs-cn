@@ -120,11 +120,11 @@ TiDB 版本：6.1.2
 
     + TiCDC **owner: @nongfushanquan TW: @hfxsd**
 
-        - 修复了 cdc server 在没启动成功前收到 HTTP 请求导致 panic 的问题 [#6838](https://github.com/pingcap/tiflow/issues/6838)
-        - 修复了日志太多的问题 [#7235](https://github.com/pingcap/tiflow/issues/7235)
+        - 修复 cdc server 在尚未启动成功前收到 HTTP 请求导致 panic 的问题 [#6838](https://github.com/pingcap/tiflow/issues/6838)
+        - 修复升级时日志数量过多的问题 [#7235](https://github.com/pingcap/tiflow/issues/7235)
         - 修复 redo log 中错误清理非当前 changefeed 日志文件的问题 [#6413](https://github.com/pingcap/tiflow/issues/6413)
-        - 修复在一个 etcd 事务中提交太多数据导致 cdc 服务不可用问题 [#7131](https://github.com/pingcap/tiflow/issues/7131)
-        - 修复 Redo log 中 DDL 重复执行可能导致的数据不一致性问题 [#6927](https://github.com/pingcap/tiflow/issues/6927)
+        - 修复在一个 etcd 事务中提交太多数据导致 TiCDC 服务不可用问题 [#7131](https://github.com/pingcap/tiflow/issues/7131)
+        - 修复 redo log 中 不可重入 DDL 重复执行可能导致的数据不一致性问题 [#6927](https://github.com/pingcap/tiflow/issues/6927)
         - 采用批处理 resolved ts 的模式，提升 region worker 的性能 [#7078](https://github.com/pingcap/tiflow/issues/7078)
 
     + Backup & Restore (BR) **owner: @3pointer TW: @shichun-0415**
