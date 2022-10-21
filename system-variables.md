@@ -2863,6 +2863,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 - 作用域：SESSION
 - 是否持久化到集群：否
+- 类型：布尔型
 - 默认值：`OFF`
 - 这个变量为 `ON` 时表示该 SESSION 之后写入的数据不会被 TiCDC 同步。不建议修改该变量，仅供内部使用。
 
