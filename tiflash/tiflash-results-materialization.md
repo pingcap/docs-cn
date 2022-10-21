@@ -28,26 +28,31 @@ assignment:
 
 ## 使用场景和限制
 
-### Execution of query
 
-* SELECT sub-statement will be executed by TiFlash
-  1. Optimizer automatically chooses TiFlash
-  2. Users can use "tidb_enforce_mpp = TRUE" (existing variable) to force the query making use of TiFlash (when necesary, say, the optimizer cannot choose the right plan)
-* The results of SELECT will be handled by a single TiDB server (the most spared one if possible)
-* The whole statement should hold ACID properties as other TiDB txn
-System Limitation for the size of records returned by  SELECT
-* The results size of TiFlash selection has a limitation:  Txn-max = 1 GB.
-Conceptually, Txn size should be inside the O(100 MB) scope (roughly less than 1 million rows).
-* If the SELECT returns more data than Txn-max, the whole txn will be abandoned
-  * Give the error message: "The query produced a too large intermediate result and thus failed"
-* Concurrency Constraints (maximum  supported concurrent queries: C_max )
-  * C_max  is not an enforced value, but a recommended/reference value to users
-  * When txn size = Txn-Max, C_max = 10
-  * When txn size = 100 MB, C_max = 30
+### 执行过程
 
-### User Scenarios / Story
 
-1. Much more efficient BI solution
-Many BI applications need to repeatedly run the same query as end users may refresh the dashboard at any time. However, this is not an efficient way because the results are no different in a short time. This new feature allows persistent results for BI and avoids most meaningless queries and thus saves system resources and can also boot the BI performance;
-2. Serve downstream online services
-TiFlash cannot serve online services because the concurrency is not that high (typically 30 ~ 50 QPS). By this feature, application developers can easily persistent analytical results inside TiDB and update when necessary, so that the application can use TiDB to serve the online services that access the results table in a very high concurrency. It became a closure inside TiDB without using 3rd party systems.
+* SELECT 子句在 TiFlash 上执行，一般情况下优化器会自动选择，需要用户手动干预时可以通过设置 "tidb_enforce_mpp = TRUE" 来强制查询计划走 TiFlash
+* SELECT 子句返回的结果首先回到集群中某单一 TiDB Server 节点，然后写入目标表（可以有 TiFlash 副本）
+* 整条语句的执行保证 ACID 特性
+
+
+### 限制
+* 对写入部分事务大小（SELECT 子句返回的结果集）的硬性限制为 1 GB，推荐的使用场景是 100 MB以下。
+
+* 若 SELECT 返回结果大小超过了 1GB，那么整条语句将会被强制终止
+  * 用户会得到以下出错信息: "The query produced a too large intermediate result and thus failed"
+* 并发限制
+  * 目前并没有硬性限制，但是推荐用户考虑一下用法
+  * 当“写事务”较大时，例如接近 1GB， 建议控制并发不超过 10
+  * 当“写事务”较小时，例如小于 100MB， 建议控制并发不超过 30
+  * 请基于测试和具体情况做出合理选择
+
+
+### 典型和推荐的使用场景
+
+1. 更高效的 BI 解决方案
+很多报表类应用有较重的分析查询，如果有很多用户在同时打开和刷新报表则会产生较多的查询请求。一个有效的解决方案是使用本功能在 TiDB 表中保存报表查询的结果，报表刷新时从结果表中抽取数据，则可以避免多次重复的分析计算。同理，在保存历史分析记录的基础上，可以进一步优化长时间历史数据分析的计算量。例如某报表 A 分析每日的销售利润，使用本功能保存了每日的分析结果在某结果记录表 T 中，那么在生成报表 B 分析过去一月窗口的销售利润时，可以直接使用 T 中的每日分析结果数据，不仅大幅降低计算量也提升了查询响应速度，减轻系统负载。
+
+2. 使用 TiFlash 服务在线应用
+TiFlash 通常可以支持的并发请求视数据量和查询复杂度不同，但一般不会超过 100 QPS。用户可以通过保存 TiFlash 查询结果的方式，使用结果表来支持在线的高并发请求。后台的结果表数据更新可以以较低的频率进行，例如以 0.5s 间隔更新结果表数据也远低于 TiFlash 的并发上限，同时仍然较好地保证了数据新鲜度。
