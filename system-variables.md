@@ -2215,7 +2215,7 @@ explain select * from t where age=5;
 - 类型：浮点数
 - 范围：`[0, 2147483647]`
 - 默认值：`24.0`
-- 该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
+- 表示 TiFlash 计算的并发数。该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
 
 ### `tidb_opt_tiflash_cpu_factor_v2`
 
