@@ -104,8 +104,10 @@ mysql> SELECT * FROM t1;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
+- 类型：枚举型
 - 默认值：`aes-128-ecb`
-- 用于设置 `AES_ENCRYPT()` 和 `AES_DECRYPT()` 函数的加密模式。
+- 可选值：`aes-128-ecb`、`aes-192-ecb`、`aes-256-ecb`、`aes-128-cbc`、`aes-192-cbc`、`aes-256-cbc`、`aes-128-ofb`、`aes-192-ofb`、`aes-256-ofb`、`aes-128-cfb`、`aes-192-cfb`、`aes-256-cfb`
+- 该变量用于设置 `AES_ENCRYPT()` 和 `AES_DECRYPT()` 函数的加密模式。
 
 ### character_set_client
 
