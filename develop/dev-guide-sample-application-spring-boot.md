@@ -155,14 +155,14 @@ After the configuration, the project can be used normally, but only in the same 
 
     ```xml
     <dependency>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-data-jpa</artifactId>
-    <exclusions>
-        <exclusion>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-core-jakarta</artifactId>
-        </exclusion>
-    </exclusions>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-data-jpa</artifactId>
+        <exclusions>
+            <exclusion>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-core-jakarta</artifactId>
+            </exclusion>
+        </exclusions>
     </dependency>
     ```
 
