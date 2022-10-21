@@ -96,7 +96,7 @@ TiDB 版本：6.1.2
 
     <!--compute **owner: @zanmato1984**-->
 
-    - 修复在大批量写入之后，iolimiter 可能错误的限制了读请求的 IO 吞吐量，从而降低查询性能的问题 [#5801](https://github.com/pingcap/tiflash/issues/5801)
+    - 修复在大批量写入之后，I/O Limiter 可能错误地限制了读请求的 IO 吞吐量，从而降低查询性能的问题 [#5801](https://github.com/pingcap/tiflash/issues/5801)
     - (dup) 修复取消查询时 window function 可能会导致 TiFlash 崩溃的问题 [#5814](https://github.com/pingcap/tiflash/issues/5814)
 
     <!--storage **owner: @flowbehappy**-->
