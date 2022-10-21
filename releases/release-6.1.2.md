@@ -47,6 +47,8 @@ TiDB 版本：6.1.2
 
     + TiCDC **owner: @nongfushanquan**
 
+        - 采用批处理 resolved ts 的模式，提升 region worker 的性能 [#7078](https://github.com/pingcap/tiflow/issues/7078)
+
     + Backup & Restore (BR) **owner: @3pointer**
 
     + Dumpling
@@ -125,7 +127,6 @@ TiDB 版本：6.1.2
         - 修复 redo log 中错误清理非当前 changefeed 日志文件的问题 [#6413](https://github.com/pingcap/tiflow/issues/6413)
         - 修复在一个 etcd 事务中提交太多数据导致 TiCDC 服务不可用问题 [#7131](https://github.com/pingcap/tiflow/issues/7131)
         - 修复 redo log 中 不可重入 DDL 重复执行可能导致的数据不一致性问题 [#6927](https://github.com/pingcap/tiflow/issues/6927)
-        - 采用批处理 resolved ts 的模式，提升 region worker 的性能 [#7078](https://github.com/pingcap/tiflow/issues/7078)
 
     + Backup & Restore (BR) **owner: @3pointer TW: @shichun-0415**
 
