@@ -12,7 +12,7 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-create-user/','/docs-cn/dev
 
 ```ebnf+diagram
 CreateUserStmt ::=
-    'CREATE' 'USER' IfNotExists UserSpecList RequireClauseOpt ConnectionOptions LockOption
+    'CREATE' 'USER' IfNotExists UserSpecList RequireClauseOpt ConnectionOptions LockOption AttributeOption
 
 IfNotExists ::=
     ('IF' 'NOT' 'EXISTS')?
@@ -31,6 +31,8 @@ StringName ::=
 |   Identifier
 
 LockOption ::= ( 'ACCOUNT' 'LOCK' | 'ACCOUNT' 'UNLOCK' )?
+
+AttributeOption ::= ( 'COMMENT' CommentString | 'ATTRIBUTE' AttributeString )?
 ```
 
 ## 示例
@@ -89,6 +91,30 @@ Query OK, 1 row affected (0.02 sec)
 
 ```sql
 CREATE USER 'newuser5'@'%' ACCOUNT LOCK;
+```
+
+```
+Query OK, 1 row affected (0.02 sec)
+```
+
+创建一个带注释的账户。
+
+{{< copyable "sql" >}}
+
+```sql
+CREATE USER 'newuser6'@'%' COMMENT 'This user is created only for test';
+```
+
+```
+Query OK, 1 row affected (0.02 sec)
+```
+
+创建一个带“邮箱”属性的账户。
+
+{{< copyable "sql" >}}
+
+```sql
+CREATE USER 'newuser7'@'%' ATTRIBUTE '{"email": "user@pingcap.com"}';
 ```
 
 ```
