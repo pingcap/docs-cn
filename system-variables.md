@@ -1079,6 +1079,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 类型：布尔型
 - 默认值：`ON`
 - 这个变量用于控制是否开启可感知到垃圾回收的内存追踪 (GC-Aware memory track)。
+
 ### `tidb_enable_historical_stats`
 
 - 作用域：GLOBAL
