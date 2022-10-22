@@ -1068,19 +1068,6 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 这个变量用来控制是否启用统计信息快速分析功能。默认值 0 表示不开启。
 - 快速分析功能开启后，TiDB 会随机采样约 10000 行的数据来构建统计信息。因此在数据分布不均匀或者数据量比较少的情况下，统计信息的准确度会比较低。这可能导致执行计划不优，比如选错索引。如果可以接受普通 `ANALYZE` 语句的执行时间，则推荐关闭快速分析功能。
 
-<<<<<<< HEAD
-=======
-### `tidb_enable_foreign_key` <span class="version-mark">从 v6.3.0 版本开始引入</span>
-
-> **警告：**
->
-> 当前版本中该变量控制的功能尚未完全生效，请保留默认值。
-
-- 作用域：GLOBAL
-- 是否持久化到集群：是
-- 默认值：`OFF`
-- 这个变量用于控制是否开启 `FOREIGN KEY` 特性。
-
 ### `tidb_enable_gc_aware_memory_track`
 
 > **警告：**
@@ -1092,19 +1079,6 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 类型：布尔型
 - 默认值：`ON`
 - 这个变量用于控制是否开启可感知到垃圾回收的内存追踪 (GC-Aware memory track)。
-
-### `tidb_enable_general_plan_cache` <span class="version-mark">从 v6.3.0 版本开始引入</span>
-
-> **警告：**
->
-> 当前版本中该变量控制的功能尚未完全生效，请保留默认值。
-
-- 作用域：SESSION | GLOBAL
-- 是否持久化到集群：是
-- 默认值：`OFF`
-- 这个变量用来控制是否开启 General Plan Cache。
-
->>>>>>> c14759419 (sysvar: add a sysvar (#11729))
 ### `tidb_enable_historical_stats`
 
 - 作用域：GLOBAL
