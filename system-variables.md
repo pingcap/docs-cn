@@ -1366,6 +1366,18 @@ MPP is a distributed computing framework provided by the TiFlash engine, which a
 - Default value: `OFF`
 - This variable controls whether to enable the `FOREIGN KEY` feature.
 
+### tidb_enable_gc_aware_memory_track
+
+> **Warning:**
+>
+> This variable is an internal variable for debugging in TiDB. It might be removed in a future release. **Do not** set this variable.
+
+- Scope: GLOBAL
+- Persists to cluster: Yes
+- Type: Boolean
+- Default value: `ON`
+- This variable controls whether to enable GC-Aware memory track.
+
 ### `tidb_enable_general_plan_cache` <span class="version-mark">New in v6.3.0</span>
 
 > **Warning:**
