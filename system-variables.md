@@ -1182,6 +1182,18 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 默认值：`OFF`
 - 这个变量用于控制是否开启 `FOREIGN KEY` 特性。
 
+### `tidb_enable_gc_aware_memory_track`
+
+> **警告：**
+>
+> 该变量为 TiDB 内部调试变量，可能会在未来版本中删除，**请勿**设置该变量。
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 类型：布尔型
+- 默认值：`ON`
+- 这个变量用于控制是否开启可感知到垃圾回收的内存追踪 (GC-Aware memory track)。
+
 ### `tidb_enable_general_plan_cache` <span class="version-mark">从 v6.3.0 版本开始引入</span>
 
 > **警告：**
