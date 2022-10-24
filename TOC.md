@@ -125,7 +125,7 @@
 - Integrate
   - [Overview](/integration-overview.md)
   - Integration Scenarios
-    - [Integrate with Confluent Cloud](/ticdc/integrate-confluent-using-ticdc.md)
+    - [Integrate with Confluent and Snowflake](/ticdc/integrate-confluent-using-ticdc.md)
     - [Integrate with Apache Kafka and Apache Flink](/replicate-data-to-kafka.md)
 - Maintain
   - Upgrade
@@ -529,7 +529,6 @@
       - [TiCDC Open Protocol](/ticdc/ticdc-open-protocol.md)
       - [TiCDC Avro Protocol](/ticdc/ticdc-avro-protocol.md)
       - [TiCDC Canal-JSON Protocol](/ticdc/ticdc-canal-json.md)
-      - [Integrate TiDB with Confluent and Snowflake](/ticdc/integrate-confluent-using-ticdc.md)
     - [FAQs](/ticdc/ticdc-faq.md)
     - [Glossary](/ticdc/ticdc-glossary.md)
   - sync-diff-inspector
