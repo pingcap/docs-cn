@@ -73,6 +73,7 @@ ALTER TABLE employees SET TIFLASH REPLICA 2;
 ```
 
 执行以下语句可对 `employees` 表上 `pNorth`、`pEast` 这两个分区的 2 个 TiFlash 副本立即进行数据整理：
+
 ```sql
 ALTER TABLE employees COMPACT PARTITION pNorth, pEast TIFLASH REPLICA;
 ```
