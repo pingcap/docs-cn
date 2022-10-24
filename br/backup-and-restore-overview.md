@@ -6,7 +6,7 @@ aliases: ['/docs-cn/dev/br/backup-and-restore-tool/','/docs-cn/dev/reference/too
 
 # TiDB 备份和恢复功能
 
-基于 Raft 协议和合理的部署拓扑规划，TiDB 实现了集群的高可用，当集群少数节点挂掉依然能对外提供服务。 在此基础上，为了更进一步保证用户数据的安全，TiDB 还提供了集群的备份恢复功能，作为数据安全的最后一道防线，使得集群能够免于严重的自然灾害、提供业务误操作 “复原” 的能力。
+基于 Raft 协议和合理的部署拓扑规划，TiDB 实现了集群的高可用，当集群中少数节点挂掉时依然能对外提供服务。在此基础上，为了更进一步保证用户数据的安全，TiDB 还提供了集群的备份和恢复功能，作为数据安全的最后一道防线，使得集群能够免于严重的自然灾害，提供业务误操作“复原”的能力。
 
 TiDB 备份恢复功能可以用于满足以下业务的需求：
 
@@ -21,8 +21,8 @@ TiDB 备份恢复功能可以用于满足以下业务的需求：
 
 其它 TiDB 的部署方式的备份恢复功能使用，可以参考
 
-- [TiDB on TiDB Cloud 的备份恢复](https://docs.pingcap.com/tidbcloud/backup-and-restore)。推荐在 [TiDB Cloud](https://en.pingcap.com/tidb-cloud/) 上创建 TiDB 集群，集群的运维管将由 TiDB Cloud 团队托管完成，你可以聚焦于业务。
-- [TiDB on K8S 的备份恢复](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/backup-restore-overview)。如果你使用 TiDB Operator 在 k8s 中部署了 TiDB 集群，建议通过 k8s CRD 来提交备份和恢复任务。
+- [备份恢复部署在 TiDB Cloud 上的 TiDB](https://docs.pingcap.com/tidbcloud/backup-and-restore)。推荐在 [TiDB Cloud](https://en.pingcap.com/tidb-cloud/) 上创建 TiDB 集群，集群的运维管理将由 TiDB Cloud 团队托管完成，你可以聚焦于业务。
+- [备份恢复部署在 Kubernetes 上的 TiDB](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/backup-restore-overview)。如果你使用 TiDB Operator 在 Kubernetes 中部署了 TiDB 集群，建议通过 Kubernetes CustomResourceDefinition (CRD) 来提交备份和恢复任务。
 
 ## 功能介绍
 
@@ -66,7 +66,7 @@ TiDB 备份恢复功能可以用于满足以下业务的需求：
 恢复的性能
 
 - 恢复集群快照数据备份，速度可以达到单 TiKV 存储节点 100 MB/s，恢复速度具有可扩展性；BR 只支持恢复数据到新集群，会尽可能多的使用恢复集群的资源。更详细说明请参考[恢复性能和影响](/br/br-snapshot-guide.md#快照恢复的性能与影响)。
-- 恢复日志备份数据，速度可以达到 30 GB/h。更详细说明请参考[PITR 性能和影响](/br/br-pitr-guide.md#性能与影响)。
+- 恢复日志备份数据，速度可以达到 30 GiB/h。更详细说明请参考 [PITR 性能和影响](/br/br-pitr-guide.md#性能与影响)。
 
 ## 备份存储
 
@@ -90,7 +90,7 @@ TiDB 支持将数据备份到 Amazon S3、Google Cloud Storage (GCS)、Azure Blo
 
 - BR 恢复数据时会尽可能多地占用恢复集群的资源，因此推荐恢复数据到新集群或离线集群。应避免向正在提供服务的生产集群执行恢复，否则，恢复期间会对业务产生不可避免的影响。 其中 PITR 仅支持恢复到空集群。
 
-进行PITR
+进行 PITR
 
 - PITR 仅支持集群粒度的恢复，不支持对单个 database 或 table 的恢复。
 - PITR 不支持恢复用户表和权限表的数据。
