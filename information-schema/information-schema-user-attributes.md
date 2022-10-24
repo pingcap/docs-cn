@@ -48,4 +48,4 @@ SELECT * FROM user_attributes;
 
 * `USER`：用户名。
 * `HOST`：用户的主机名。
-* `ATTRIBUTE`：用户注释和属性。
+* `ATTRIBUTE`：与当前用户相关的注释和属性。
