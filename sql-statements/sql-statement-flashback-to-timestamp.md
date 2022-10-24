@@ -37,11 +37,6 @@ FlashbackToTimestampStmt ::=
 * 在 `FLASHBACK` 指定的时间点到开始执行的时间段内不能存在相关表结构变更的 DDL 记录。若存在，TiDB 会拒绝该 DDL 操作。
 * 在执行 `FLASHBACK [CLUSTER | DATABASE | TABLE] TO TIMESTAMP` 前，TiDB 会主动断开所有相关表上的连接，并禁止对这些表进行读写操作，直到 `FLASHBACK` 完成。
 * `FLASHBACK [CLUSTER | DATABASE | TABLE] TO TIMESTAMP` 命令不能取消，一旦开始执行 TiDB 会一直重试，直到成功。
-* 可以通过日志查看 `FLASHBACK` 执行进度，具体的日志如下所示：
-
-    ```
-    [2022/10/09 17:25:59.316 +08:00] [INFO] [cluster.go:463] ["flashback cluster stats"] ["complete regions"=9] ["total regions"=10] []
-    ```
 
 ## 示例
 
@@ -96,6 +91,12 @@ Query OK, 0 rows affected (0.12 sec)
 
 mysql> FLASHBACK CLUSTER TO TIMESTAMP '2022-10-09 16:40:51';
 ERROR 1105 (HY000): Had ddl history during [2022-10-09 16:40:51 +0800 CST, now), can't do flashback
+```
+
+可以通过日志查看 `FLASHBACK` 执行进度，具体的日志如下所示：
+
+```
+[2022/10/09 17:25:59.316 +08:00] [INFO] [cluster.go:463] ["flashback cluster stats"] ["complete regions"=9] ["total regions"=10] []
 ```
 
 ## MySQL 兼容性
