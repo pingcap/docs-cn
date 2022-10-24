@@ -37,7 +37,7 @@ aliases: ['/docs-cn/dev/join-reorder/','/docs-cn/dev/reference/performance/join-
 
 ## Join Reorder 算法的控制
 
-目前 Join Reorder 算法由变量 [tidb_opt_join_reorder_threshold](/system-variables.md#tidb_opt_join_reorder_threshold) 控制，当参与 Join Reorder 的节点个数大于该阈值时选择贪心算法，反之选择动态规划算法。
+目前 Join Reorder 算法由变量 [`tidb_opt_join_reorder_threshold`](/system-variables.md#tidb_opt_join_reorder_threshold) 控制，当参与 Join Reorder 的节点个数大于该阈值时选择贪心算法，反之选择动态规划算法。
 
 ## Join reorder 算法限制
 
