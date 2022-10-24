@@ -169,11 +169,17 @@ After the recovery is completed, the data and index might be inconsistent. Use t
 <SimpleTab>
 <div label="Stores deployed using TiUP">
 
-{{< copyable "shell-regular" >}}
+1. Remove the unrecoverable nodes:
 
-```bash
-tiup cluster prune <cluster-name>
-```
+    ```bash
+    tiup cluster scale-in <cluster-name> -N <host> --force
+    ```
+
+2. Clean up Tombstone nodes:
+
+    ```bash
+    tiup cluster prune <cluster-name>
+    ```
 
 </div>
 <div label="Stores deployed using TiDB Operator">
