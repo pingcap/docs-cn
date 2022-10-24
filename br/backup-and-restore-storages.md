@@ -18,10 +18,10 @@ TiDB 支持 Amazon S3、Google Cloud Storage (GCS) 、Azure Blob Storage 和 NFS
 
 | 存储类型 | scheme | host | parameters |
 | :--- | :--- | :--- | :--- |
-| Amazon | `s3` | `bucket name` | `access-key`：访问密钥 </br> `secret-access-key`：secret 访问密钥 </br> `use-accelerate-endpoint`：是否在 Amazon S3 上使用加速端点（默认为 `false`）</br> `endpoint`：S3 兼容服务自定义端点的 URL（例如 `<https://s3.example.com/>`）</br> `force-path-style`：使用 path-style，而不是 virtual-hosted style（默认为 `true`）</br> `storage-class`：上传对象的存储类别（例如 `STANDARD`、`STANDARD_IA`）</br> `sse`：用于加密上传的服务器端加密算法（可以设置为空、`AES256` 或 `aws:kms`）</br> `sse-kms-key-id`：如果 `sse` 设置为 `aws:kms`，则使用该参数指定 KMS ID </br> `acl`：上传对象的 canned ACL（例如，`private`、`authenticated-read`）|
-| GCS | `gcs` 或 `gs` | `bucket name` | `credentials-file`：迁移工具节点上的凭证 JSON 文件的路径 </br> `storage-class`：上传对象的存储类别（例如 `STANDARD` 或 `COLDLINE`）</br> `predefined-acl`：上传对象的预定义 ACL（例如 `private` 或 `project-private`） |
-| Azure | `azure` 或 `azblob` | `container name` | `account-name`：存储账户名 </br> `account-key`：访问密钥 </br> `access-tier`：上传对象的存储类别（例如 `Hot`、`Cool`、`Archive`）。如果没有设置 `access-tier` 的值（该值为空），此值会默认设置为 `Hot`。 |
-| NFS/Local | `local` | "" | N/A |
+| Amazon | `s3` | `bucket name` | `access-key`：访问密钥 <br/> `secret-access-key`：secret 访问密钥 <br/> `use-accelerate-endpoint`：是否在 Amazon S3 上使用加速端点（默认为 `false`）<br/> `endpoint`：S3 兼容服务自定义端点的 URL（例如 `<https://s3.example.com/>`）<br/> `force-path-style`：使用 path-style，而不是 virtual-hosted style（默认为 `true`）<br/> `storage-class`：上传对象的存储类别（例如 `STANDARD`、`STANDARD_IA`）<br/> `sse`：用于加密上传的服务器端加密算法（可以设置为空、`AES256` 或 `aws:kms`）<br/> `sse-kms-key-id`：如果 `sse` 设置为 `aws:kms`，则使用该参数指定 KMS ID <br/> `acl`：上传对象的 canned ACL（例如 `private`、`authenticated-read`）|
+| GCS | `gcs` 或 `gs` | `bucket name` | `credentials-file`：迁移工具节点上的凭证 JSON 文件的路径 <br/> `storage-class`：上传对象的存储类别（例如 `STANDARD` 或 `COLDLINE`）<br/> `predefined-acl`：上传对象的预定义 ACL（例如 `private` 或 `project-private`） |
+| Azure | `azure` 或 `azblob` | `container name` | `account-name`：存储账户名 <br/> `account-key`：访问密钥 <br/> `access-tier`：上传对象的存储类别（例如 `Hot`、`Cool`、`Archive`）。如果没有设置 `access-tier` 的值（该值为空），此值会默认设置为 `Hot`。 |
+| NFS/Local | `local` | `""` | N/A |
 
 ### URL 示例
 
