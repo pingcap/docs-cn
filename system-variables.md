@@ -1754,7 +1754,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
     - 如果配置项 [`server-memory-quota`](/tidb-configuration-file.md#server-memory-quota-从-v409-版本开始引入) 未设置，则内存报警阈值为 `tidb_memory-usage-alarm-ratio * 系统内存大小`。
     - 如果配置项 `server-memory-quota` 被设置且大于 0，则内存报警阈值为 `tidb_memory-usage-alarm-ratio * server-memory-quota`。
 
-### `tidb_memory_usage_alarm_keep_record_num`
+### `tidb_memory_usage_alarm_keep_record_num` <span class="version-mark">从 v6.4.0 版本开始引入</span>
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
