@@ -23,6 +23,14 @@ DESC user_attributes;
 3 rows in set (0.00 sec)
 ```
 
+`USER_ATTRIBUTES` 表中列的含义如下：
+
+* `USER`：用户名。
+* `HOST`：用户可用于连接的主机。百分号（`％`）表示主机名不受限制。
+* `ATTRIBUTE`：与当前用户相关的注释和属性。
+
+示例：
+
 ```sql
 CREATE USER testuser1 COMMENT 'This user is created only for test';
 CREATE USER testuser2 ATTRIBUTE '{"email": "user@pingcap.com"}';
@@ -40,8 +48,3 @@ SELECT * FROM user_attributes;
 3 rows in set (0.00 sec)
 ```
 
-`USER_ATTRIBUTES` 表中列的含义如下：
-
-* `USER`：用户名。
-* `HOST`：用户的主机名。
-* `ATTRIBUTE`：与当前用户相关的注释和属性。
