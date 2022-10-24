@@ -7,8 +7,6 @@ summary: 了解 INFORMATION_SCHEMA 表 `USER_ATTRIBUTES`。
 
 `USER_ATTRIBUTES` 表提供了用户的注释和属性。该表的数据根据 `mysql.user` 系统表生成。
 
-{{< copyable "sql" >}}
-
 ```sql
 USE information_schema;
 DESC user_attributes;
@@ -24,8 +22,6 @@ DESC user_attributes;
 +-----------+--------------+------+------+---------+-------+
 3 rows in set (0.00 sec)
 ```
-
-{{< copyable "sql" >}}
 
 ```sql
 CREATE USER testuser1 COMMENT 'This user is created only for test';
