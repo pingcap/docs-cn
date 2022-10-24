@@ -104,8 +104,10 @@ mysql> SELECT * FROM t1;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
+- 类型：枚举型
 - 默认值：`aes-128-ecb`
-- 用于设置 `AES_ENCRYPT()` 和 `AES_DECRYPT()` 函数的加密模式。
+- 可选值：`aes-128-ecb`、`aes-192-ecb`、`aes-256-ecb`、`aes-128-cbc`、`aes-192-cbc`、`aes-256-cbc`、`aes-128-ofb`、`aes-192-ofb`、`aes-256-ofb`、`aes-128-cfb`、`aes-192-cfb`、`aes-256-cfb`
+- 该变量用于设置 `AES_ENCRYPT()` 和 `AES_DECRYPT()` 函数的加密模式。
 
 ### character_set_client
 
@@ -1180,6 +1182,18 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 是否持久化到集群：是
 - 默认值：`OFF`
 - 这个变量用于控制是否开启 `FOREIGN KEY` 特性。
+
+### `tidb_enable_gc_aware_memory_track`
+
+> **警告：**
+>
+> 该变量为 TiDB 内部调试变量，可能会在未来版本中删除，**请勿**设置该变量。
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 类型：布尔型
+- 默认值：`ON`
+- 这个变量用于控制是否开启可感知到垃圾回收的内存追踪 (GC-Aware memory track)。
 
 ### `tidb_enable_general_plan_cache` <span class="version-mark">从 v6.3.0 版本开始引入</span>
 
