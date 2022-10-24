@@ -15,13 +15,13 @@ DESC user_attributes;
 ```
 
 ```sql
-+-----------+--------------+------+-----+---------+-------+
-| Field     | Type         | Null | Key | Default | Extra |
-+-----------+--------------+------+-----+---------+-------+
-| USER      | varchar(32)  | NO   |     | <null>  |       |
-| HOST      | varchar(255) | NO   |     | <null>  |       |
-| ATTRIBUTE | longtext     | YES  |     | <null>  |       |
-+-----------+--------------+------+-----+---------+-------+
++-----------+--------------+------+------+---------+-------+
+| Field     | Type         | Null | Key  | Default | Extra |
++-----------+--------------+------+------+---------+-------+
+| USER      | varchar(32)  | NO   |      | NULL    |       |
+| HOST      | varchar(255) | NO   |      | NULL    |       |
+| ATTRIBUTE | longtext     | YES  |      | NULL    |       |
++-----------+--------------+------+------+---------+-------+
 3 rows in set (0.00 sec)
 ```
 
@@ -37,7 +37,7 @@ SELECT * FROM user_attributes;
 +-----------+------+---------------------------------------------------+
 | USER      | HOST | ATTRIBUTE                                         |
 +-----------+------+---------------------------------------------------+
-| root      | %    | <null>                                            |
+| root      | %    | NULL                                              |
 | testuser1 | %    | {"comment": "This user is created only for test"} |
 | testuser2 | %    | {"email": "user@pingcap.com"}                     |
 +-----------+------+---------------------------------------------------+
