@@ -1,6 +1,6 @@
 ---
 title: USER_ATTRIBUTES
-summary: 了解 information_schema 表 `USER_ATTRIBUTES`。
+summary: 了解 INFORMATION_SCHEMA 表 `USER_ATTRIBUTES`。
 ---
 
 # USER_ATTRIBUTES
