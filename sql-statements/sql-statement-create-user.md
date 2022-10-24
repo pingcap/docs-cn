@@ -97,7 +97,7 @@ CREATE USER 'newuser5'@'%' ACCOUNT LOCK;
 Query OK, 1 row affected (0.02 sec)
 ```
 
-创建一个带注释的账户。
+创建一个带注释的用户。
 
 {{< copyable "sql" >}}
 
@@ -109,7 +109,7 @@ CREATE USER 'newuser6'@'%' COMMENT 'This user is created only for test';
 Query OK, 1 row affected (0.02 sec)
 ```
 
-创建一个带“邮箱”属性的账户。
+创建一个具有邮箱 (`email`) 属性的用户。
 
 {{< copyable "sql" >}}
 

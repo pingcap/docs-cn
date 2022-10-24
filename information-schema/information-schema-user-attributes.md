@@ -46,6 +46,6 @@ SELECT * FROM user_attributes;
 
 `USER_ATTRIBUTES` 表中列的含义如下：
 
-* `USER`：账户的用户名。
-* `HOST`：账户的主机名。
+* `USER`：用户名。
+* `HOST`：用户的主机名。
 * `ATTRIBUTE`：用户注释和属性。
