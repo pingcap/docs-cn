@@ -71,12 +71,7 @@ server_configs:
   tikv:
     server.grpc-compression-type: gzip
   pd:
-<<<<<<< HEAD
     replication.location-labels:  ["dc","rack","zone","host"]
-    schedule.tolerant-size-ratio: 20.0
-=======
-    replication.location-labels:  ["dc","zone","rack","host"]
->>>>>>> 7b8ba423a (remove the info about configuring tolerant-size-ratio (#11761))
 
 pd_servers:
   - host: 10.63.10.10
