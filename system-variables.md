@@ -2364,7 +2364,7 @@ explain select * from t where age=5;
 - 范围：`[0, 1]`
 - 这个变量用来控制是否在 profile 输出中标记出对应的 SQL 语句，用于定位和排查性能问题。
 
-### `tidb_opt_prefix_index_single_scan` <span class="version-mark">从 v6.4 版本开始引入</span>
+### `tidb_opt_prefix_index_single_scan` <span class="version-mark">从 v6.4.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
