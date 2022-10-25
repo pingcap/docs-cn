@@ -198,15 +198,7 @@ In addition, because of a [client bug](https://bugs.mysql.com/bug.php?id=96623),
 
 Through monitoring, you might notice that although the application only performs `INSERT` operations to the TiDB cluster, there are a lot of redundant `SELECT` statements. Usually this happens because JDBC sends some SQL statements to query the settings, for example, `select @@session.transaction_read_only`. These SQL statements are useless for TiDB, so it is recommended that you configure `useConfigs=maxPerformance` to avoid extra overhead.
 
-`useConfigs=maxPerformance` configuration includes a group of configurations:
-
-```ini
-cacheServerConfiguration=true
-useLocalSessionState=true
-elideSetAutoCommits=true
-alwaysSendSetIsolation=false
-enableQueryTimeouts=false
-```
+`useConfigs=maxPerformance` includes a group of configurations. To get the detailed configurations in MySQL JDBC 8.0 and those in MySQL JDBC 5.1, see [mysql-connector-j 8.0](https://github.com/mysql/mysql-connector-j/blob/release/8.0/src/main/resources/com/mysql/cj/configurations/maxPerformance.properties) and [mysql-connector-j 5.1](https://github.com/mysql/mysql-connector-j/blob/release/5.1/src/com/mysql/jdbc/configs/maxPerformance.properties) respectively.
 
 After it is configured, you can check the monitoring to see a decreased number of `SELECT` statements.
 
