@@ -6,7 +6,7 @@ aliases: ['/zh/tidb/dev/pitr-monitoring-and-alert/']
 
 # BR 监控告警
 
-下面介绍 BR 的监控和告警。
+本文介绍 BR 的监控和告警，包括如何部署监控、监控指标及常用告警项。
 
 ## 日志备份监控
 
