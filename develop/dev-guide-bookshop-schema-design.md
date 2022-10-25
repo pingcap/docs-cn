@@ -92,7 +92,6 @@ tiup demo bookshop prepare --users=200000 --books=500000 --authors=100000 --rati
 
     ![导入数据中的填充数据来源步骤](/media/develop/import-data-fill-from.png)
 
-
 3. 点击 **Next** 按钮切换到 **File and filter** 步骤确认将要导入的文件的信息。
 
     ![导入数据中的文件和过滤器步骤](/media/develop/import-data-file-and-filter.png)
