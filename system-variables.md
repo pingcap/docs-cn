@@ -2372,10 +2372,12 @@ explain select * from t where age=5;
 - 这个变量用于控制是否应用一些优化使得使用前缀索引时避免不必要的回表。
 - 将该变量设置为 `ON` 时，假设 `col` 列是索引前缀列，`col is null` 或者 `col is not null` 会被归为索引上的过滤条件而不是回表时的过滤条件，从而避免不必要的回表。
 
-创建一张带前缀索引的表。
-```
-mysql> CREATE TABLE t (a INT, b VARCHAR(10), c INT, INDEX idx_a_b(a, b(5)));
-Query OK, 0 rows affected (0.02 sec)
+该变量的使用示例如下。
+
+创建一张带前缀索引的表：
+
+```sql
+CREATE TABLE t (a INT, b VARCHAR(10), c INT, INDEX idx_a_b(a, b(5)));
 ```
 
 关闭 `tidb_opt_prefix_index_single_scan`，执行计划走索引 `idx_a_b` 且需要回表。
