@@ -2865,7 +2865,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 是否持久化到集群：否
 - 类型：布尔型
 - 默认值：`OFF`
-- 这个变量为 `ON` 时表示该 SESSION 之后写入的数据不会被 TiCDC 同步。不建议修改该变量，仅供内部使用。
+- 当变量为 `ON` 时，该 SESSION 写入的数据将被视为是由 TiCDC 写入的。这个变量仅由 TiCDC 设置，任何时候都不应该手动调整该变量。
 
 ### `tiflash_fastscan` <span class="version-mark">从 v6.3.0 版本开始引入</span>
 
