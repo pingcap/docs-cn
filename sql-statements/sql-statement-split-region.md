@@ -222,8 +222,6 @@ SPLIT TABLE t INDEX idx3 BETWEEN ("2010-01-01 00:00:00", "a") AND ("2010-01-01 0
 
 对于 [`NONCLUSTERED`](/clustered-indexes.md) 的主键索引，切分 Region 时需要用反引号来转义 `PRIMARY` 关键字，例如：
 
-{{< copyable "sql" >}}
-
 ```sql
 SPLIT TABLE t INDEX `PRIMARY` BETWEEN (-9223372036854775808) AND (9223372036854775807) REGIONS 16;
 ```
