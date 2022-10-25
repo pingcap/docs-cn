@@ -9,6 +9,9 @@ aliases: ['/docs-cn/dev/join-reorder/','/docs-cn/dev/reference/performance/join-
 
 因此优化器需要实现一种决定 Join 顺序的算法。目前 TiDB 中存在两种 Join Reorder 算法，贪心算法和动态规划算法。
 
+- Join Reorder 贪心算法：在所有参与 Join 的节点中，选择行数最小的表与其他各表分别做一次 Join 的结果估算，然后选择其中结果最小的一对进行 Join，再继续这个过程进入下一轮的选择和 Join，直到所有的节点都完成 Join。
+- Join Reorder 动态规划算法：在所有参与 Join 的节点中，枚举所有可能的 Join 顺序，然后选择最优的 Join 顺序。
+
 ## Join Reorder 贪心算法实例
 
 以三个表 t1、t2、t3 的 Join 为例。首先获取所有参与 Join 的节点，将所有节点按照行数多少，从少到多进行排序。
