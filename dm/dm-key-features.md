@@ -53,7 +53,7 @@ routes:
 ### 参数解释
 
 - 对于匹配上 [`schema-pattern`/`table-pattern`](/dm/table-selector.md) 规则的上游 MySQL/MariaDB 实例的表，DM 将它们迁移到下游的 `target-schema`/`target-table`。
-- 对于匹配上 `schema-pattern`/`table-pattern` 规则的分表，DM 通过 `extract-table`.`table-regexp`、`extract-schema`.`schema-regexp` 和 `extract-source`.`source-regexp` 正则表达分别提取分表、分库和数据来源信息写入下游合表对应的 `target-column` 中。
+- 对于匹配上 `schema-pattern`/`table-pattern` 规则的分表，DM 通过 `extract-table`.`table-regexp` 提取分表信息，通过 `extract-schema`.`schema-regexp` 提取分库信息，通过 `extract-source`.`source-regexp` 提取数据来源信息，然后写入到下游合表对应的 `target-column` 中。
 
 ### 使用示例
 
@@ -88,13 +88,13 @@ routes:
 
 #### 提取分库分表数据源信息写入合表
 
-假设存在分库分表场景，需要将上游两个 MySQL 实例的表 `test_{11,12,13...}`.`t_{1,2,3...}` 迁移到下游 TiDB 的一张表 `test`.`t`，同时需要提取分表数据源信息写入下游合表中。
+假设存在分库分表场景，需要将上游两个 MySQL 实例的表 `test_{11,12,13...}`.`t_{1,2,3...}` 迁移到下游 TiDB 的一张表 `test`.`t`，同时需要提取分库分表的源信息写入下游合表中，用于标识合表中各行数据的来源。
 
-为了迁移到下游实例的表 `test`.`t`，需要创建和上一章类似的 table routing 规则，并在其中增加 `extract-table`/`extract-schema`/`extract-source` 配置用于提取分库分表源数据信息：
+为了迁移到下游实例的表 `test`.`t`，需要创建和[分库分表合并场景](#分库分表合并)类似的 table routing 规则，并在其中增加 `extract-table`、`extract-schema`、`extract-source` 配置用于提取分库分表源数据信息：
 
-- `extract-table`：对于匹配上 `schema-pattern`/`table-pattern` 的分表，DM 根据 `table-regexp` 提取分表，并将去除 `t_` 后的后缀信息写入合表的 `target-column`，即 `c_table` 列中。
-- `extract-schema`：对于匹配上 `schema-pattern`/`table-pattern` 的分库，DM 根据 `schema-regexp` 提取分库，并将去除 `test_` 后的后缀信息写入合表的 `target-column`，即 `c_schema` 列中。
-- `extract-source`：对于匹配上 `schema-pattern`/`table-pattern` 的分表，DM 将其数据源信息写入合表的 `target-column`，即 `c_source` 列中。
+- `extract-table`：对于匹配上 `schema-pattern` 和 `table-pattern` 的分表，DM 根据 `table-regexp` 提取分表，并将去除 `t_` 后的后缀信息写入合表的 `target-column`，即 `c_table` 列中。
+- `extract-schema`：对于匹配上 `schema-pattern`和 `table-pattern` 的分库，DM 根据 `schema-regexp` 提取分库，并将去除 `test_` 后的后缀信息写入合表的 `target-column`，即 `c_schema` 列中。
+- `extract-source`：对于匹配上 `schema-pattern` 和 `table-pattern` 的分表，DM 将其数据源信息写入合表的 `target-column`，即 `c_source` 列中。
 
 {{< copyable "" >}}
 
@@ -129,7 +129,7 @@ CREATE TABLE `test`.`t` (
 );
 ```
 
-上游源数据为：
+例如，上游源数据为：
 
 数据源 `mysql-01`:
 

@@ -142,7 +142,7 @@ routes:
     table-pattern: "sale_*"                                 # 合并上述库中的 sale_01 和 sale_02 表到下游 sale 表
     target-schema: "store"
     target-table:  "sale"
-    # 可选配置：提取各分库分表的源信息，并写入下游用户自建的列，用于标识合表中各行数据的来源，如果配置该项，需要提前在下游手动创建合表，具体可参考下面 Table routing 的用法
+    # 可选配置：提取各分库分表的源信息，并写入下游用户自建的列，用于标识合表中各行数据的来源。如果配置该项，需要提前在下游手动创建合表，具体可参考下面 Table routing 的用法
     # extract-table:                                        # 提取分表去除 sale_ 的后缀信息，并写入下游合表 c_table 列，例如，sale_01 分表的数据会提取 01 写入下游 c_table 列
     #   table-regexp: "sale_(.*)"
     #   target-column: "c_table"
