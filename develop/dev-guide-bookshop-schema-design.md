@@ -71,7 +71,7 @@ tiup demo bookshop prepare --users=200000 --books=500000 --authors=100000 --rati
 
 在 TiDB Cloud 的集群详情页面，你可以通过切换到 **Import** 标签页，点击 **Import** 按钮进入到 **Data Import** 页面，在该页面当中，按照以下步骤将 Bookshop 示例数据从 AWS S3 中导入到你的 TiDB Cloud 集群(详细步骤请参考 [Migrate From Amazon S3 or GCS (English Only)](https://docs.pingcap.com/tidbcloud/migrate-from-amazon-s3-or-gcs#step-3-import-data-into-tidb-cloud) 指南)：
 
-1. 选择 **Data Format** 为 **TiDB Dumpling**。
+1. 选择 **Data Format** 为 **SQL File**。
 2. 将以下 **Bucket URL** 和 **Role-ARN** 复制到页面上对应的输入框当中：
 
     **Bucket URL**:
@@ -90,17 +90,11 @@ tiup demo bookshop prepare --users=200000 --books=500000 --authors=100000 --rati
     arn:aws:iam::494090988690:role/s3-tidb-cloud-developer-access
     ```
 
-    ![导入数据中的填充数据来源步骤](/media/develop/import-data-fill-from.png)
-
 3. 点击 **Next** 按钮切换到 **File and filter** 步骤确认将要导入的文件的信息。
-
-    ![导入数据中的文件和过滤器步骤](/media/develop/import-data-file-and-filter.png)
 
 4. 点击 **Next** 按钮切换到 **Preview** 步骤确认将要导入的示例数据是否正确。
 
     在这个示例数据当中，预先生成了 20 万的用户信息、50 万条书籍信息、10 万条作者信息、100 万条评分记录以及 100 万条订单信息。
-
-    ![The preview step of import data](/media/develop/import-data-preview.png)
    
 5. 点击 **Start Import** 按钮开始导入数据，等待 TiDB Cloud 完成数据导入。
 
