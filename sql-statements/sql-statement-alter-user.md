@@ -103,6 +103,26 @@ ALTER USER 'newuser' ATTRIBUTE '{"newAttr": "value", "deprecatedAttr": null}';
 Query OK, 0 rows affected (0.02 sec)
 ```
 
+{{< copyable "sql" >}}
+
+```sql
+ALTER USER 'newuser' COMMENT 'Here is the comment';
+```
+
+```
+Query OK, 0 rows affected (0.02 sec)
+```
+
+{{< copyable "sql" >}}
+
+```sql
+ALTER USER 'newuser' ATTRIBUTE '{"comment": null}';
+```
+
+```
+Query OK, 0 rows affected (0.02 sec)
+```
+
 > **注意：**
 >
 > 不要使用 `ACCOUNT UNLOCK` 解锁一个[角色 (Role)](/sql-statements/sql-statement-create-role.md)，否则通过被解锁的角色可以免密码登入 TiDB。
