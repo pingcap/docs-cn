@@ -35,7 +35,7 @@ routes:
     table-pattern: "t_*"
     target-schema: "test"
     target-table: "t"
-    # extract-table/extract-schema/extract-source 为可选配置，仅在需要提取分表、分库和数据源信息时填写
+    # extract-table、extract-schema 和 extract-source 为可选配置，仅在需要提取分表、分库和数据源信息时填写
     extract-table:
       table-regexp: "t_(.*)"
       target-column: "c_table"
