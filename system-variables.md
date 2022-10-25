@@ -2380,12 +2380,16 @@ explain select * from t where age=5;
 CREATE TABLE t (a INT, b VARCHAR(10), c INT, INDEX idx_a_b(a, b(5)));
 ```
 
-关闭 `tidb_opt_prefix_index_single_scan`，执行计划走索引 `idx_a_b` 且需要回表。
-```
-mysql> SET tidb_opt_prefix_index_single_scan = 'OFF';
-Query OK, 0 rows affected (0.00 sec)
+此时关闭 `tidb_opt_prefix_index_single_scan`：
 
-mysql> EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
+```sql
+SET tidb_opt_prefix_index_single_scan = 'OFF';
+```
+
+对于以下查询，执行计划使用了前缀索引 `idx_a_b` 但需要回表（出现了 `TableRowIDScan` 算子）。
+
+```sql
+EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 +-------------------------------+---------+-----------+------------------------------+-------------------------------------------------------+
 | id                            | estRows | task      | access object                | operator info                                         |
 +-------------------------------+---------+-----------+------------------------------+-------------------------------------------------------+
@@ -2399,12 +2403,16 @@ mysql> EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NU
 6 rows in set (0.00 sec)
 ```
 
-打开 `tidb_opt_prefix_index_single_scan`，执行计划走索引 `idx_a_b` 且不需要回表。
-```
-mysql> SET tidb_opt_prefix_index_single_scan = 'ON';
-Query OK, 0 rows affected (0.00 sec)
+此时打开 `tidb_opt_prefix_index_single_scan`：
 
-mysql> EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
+```sql
+SET tidb_opt_prefix_index_single_scan = 'ON';
+```
+
+对于以下查询，执行计划使用了前缀索引 `idx_a_b` 且不需要回表。
+
+```sql
+EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 +--------------------------+---------+-----------+------------------------------+-------------------------------------------------------+
 | id                       | estRows | task      | access object                | operator info                                         |
 +--------------------------+---------+-----------+------------------------------+-------------------------------------------------------+
