@@ -214,7 +214,6 @@ cat default.json
     primary-replicas = 2
     dr-replicas = 1
     wait-store-timeout = "1m"
-    wait-sync-timeout = "1m"
     ```
 
 + 方法二：如果已经部署了集群，则使用 pd-ctl 命令修改 PD 的配置。

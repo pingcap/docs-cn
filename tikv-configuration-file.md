@@ -89,6 +89,13 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
     + 如果把此参数设置为非 `0` 的值，TiKV 最多会保留 `max-backups` 中指定的数量的旧日志文件。比如，如果该值设置为 `7`，TiKV 最多会保留 7 个旧的日志文件。
 + 默认值：0
 
+### `pd.enable-forwarding` <span class="version-mark">从 v5.0.0 版本开始引入</span>
+
++ 控制 TiKV 中的 PD client 在疑似网络隔离的情况下是否通过 follower 将请求转发给 leader。
++ 默认值：false
++ 如果确认环境存在网络隔离的可能，开启这个参数可以减少服务不可用的窗口期。
++ 如果无法准确判断隔离、网络中断、宕机等情况，这个机制存在误判情况从而导致可用性、性能降低。如果网络中从未发生过网络故障，不推荐开启此选项。
+
 ## server
 
 服务器相关的配置项。
@@ -200,6 +207,16 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 + 该配置项指定 TiKV 中发送 Raft 消息的缓冲区大小。如果存在消息发送不及时导致缓冲区满、消息被丢弃的情况，可以适当调大该配置项值以提升系统运行的稳定性。
 + 默认值：8192
 
+### `simplify-metrics` <span class="version-mark">从 v6.2.0 版本开始引入</span>
+
++ 是否精简返回的监控指标 Metrics 数据。设置为 `true` 后，TiKV 可以通过过滤部分 Metrics 采样数据以减少每次请求返回的 Metrics 数据量。
++ 默认值：false
+
+### `forward-max-connections-per-address` <span class="version-mark">从 v5.0.0 版本开始引入</span>
+
++ 设置服务与转发请求的连接池大小。设置过小会影响请求的延迟和负载均衡。
++ 默认值：4
+
 ## readpool.unified
 
 统一处理读请求的线程池相关的配置项。该线程池自 4.0 版本起取代原有的 storage 和 coprocessor 线程池。
@@ -229,6 +246,11 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 + 统一处理读请求的线程池中单个线程允许积压的最大任务数量，超出后会返回 Server Is Busy。
 + 默认值：2000
 + 最小值：2
+
+### `auto-adjust-pool-size` <span class="version-mark">从 v6.3.0 版本开始引入</span>
+
++ 是否开启自动调整线程池的大小。开启此配置可以基于当前的 CPU 使用情况，自动调整统一处理读请求的线程池 (UnifyReadPool) 的大小，优化 TiKV 的读性能。目前线程池自动调整的范围为：`[max-thread-count, MAX(4, CPU)]`(上限与 [`max-thread-count`](#max-thread-count) 可设置的最大值相同)。
++ 默认值：false
 
 ## readpool.storage
 
@@ -465,8 +487,8 @@ I/O rate limiter 相关的配置项。
 ### `mode`
 
 + 确定哪些类型的 I/O 操作被计数并受 `max-bytes-per-sec` 阈值的限流。当前 TiKV 只支持 write-only 只写模式。
-+ 可选值：write-only
-+ 默认值：write-only
++ 可选值：`"read-only"`，`"write-only"`，`"all-io"`
++ 默认值：`"write-only"`
 
 ## raftstore
 
@@ -1394,11 +1416,6 @@ rocksdb defaultcf titan 相关的配置项。
 + 是否通过开启 level-merge 来提升读性能，副作用是写放大会比不开启更大。
 + 默认值：false
 
-### `gc-merge-rewrite`
-
-+ 是否开启使用 merge operator 来进行 Titan GC 写回操作，减少 Titan GC 对于前台写入的影响。
-+ 默认值：false
-
 ## raftdb
 
 raftdb 相关配置项。
@@ -1487,6 +1504,31 @@ Raft Engine 相关的配置项。
 + 当该配置项未设置时，Raft Engine 默认使用系统总内存的 15%。
 + 默认值：`系统总内存 * 15%`
 
+### `format-version` <span class="version-mark">从 v6.3.0 版本开始引入</span>
+
+> **注意：**
+>
+> `format-version` 的值设置为 `2` 后，如果你需要将 TiKV 集群降级至 v6.3.0 以前的版本，你需要在降级**之前**执行如下操作：
+>
+> 1. 关闭 Raft Engine。将 [`enable`](/tikv-configuration-file.md#enable-1) 配置项设置为 `false`，并重启 TiKV 使配置生效。
+> 2. 将 `format-version` 的值重新设置为 `1`。
+> 3. 重新打开 Raft Engine，即把 `enable` 配置项重设为 `true`，并重启 TiKV 使配置生效。
+
++ 指定 Raft Engine 的日志文件格式版本。
++ 可选值：
+    + `1`：v6.3.0 以前的默认日志文件格式。v6.1.0 及以后版本的 TiKV 可以读取该格式。
+    + `2`：支持日志回收。v6.3.0 及以后版本的 TiKV 可以读取该格式。
++ 默认值：`2`
+
+### `enable-log-recycle` <span class="version-mark">从 v6.3.0 版本开始引入</span>
+
+> **注意：**
+>
+> 仅在 [`format-version`](#format-version-从-v630-版本开始引入) 的值大于等于 2 时，该配置项才生效。
+
++ 控制 Raft Engine 是否回收过期的日志文件。该配置项启用时，Raft Engine 将保留逻辑上被清除的日志文件，用于日志回收，减少写负载的长尾延迟。
++ 默认值：`false`
+
 ## security
 
 安全相关配置项。
@@ -1523,7 +1565,7 @@ Raft Engine 相关的配置项。
 ### `data-encryption-method`
 
 + 数据文件的加密方法。
-+ 可选值：`"plaintext"`，`"aes128-ctr"`，`"aes192-ctr"`，`"aes256-ctr"`
++ 可选值：`"plaintext"`，`"aes128-ctr"`，`"aes192-ctr"`，`"aes256-ctr"`， `"sm4-ctr"`（从 v6.3.0 开始支持）
 + 选择 `"plaintext"` 以外的值则表示启用加密功能。此时必须指定主密钥。
 + 默认值：`"plaintext"`
 
@@ -1579,6 +1621,57 @@ Raft Engine 相关的配置项。
 + 在集群资源占用率较高的情况下，是否允许 BR 自动限制备份使用的资源，减少对集群的影响。详情见[自动调节](/br/br-auto-tune.md)。
 + 默认值：true
 
+### `s3-multi-part-size` <span class="version-mark">从 v5.3.2 版本开始引入</span>
+
+> **注意：**
+>
+> 引入该配置项是为了解决备份期间遇到的 S3 限流导致备份失败的问题。该问题已通过[优化 BR 备份数据存储的目录结构](/br/backup-and-restore-design.md#备份文件布局)得到解决。因此，该配置项自 v6.1.1 起开始废弃，不再推荐使用。
+
++ 备份阶段 S3 分块上传的块大小。可通过调整该参数来控制备份时发往 S3 的请求数量。
++ TiKV 备份数据到 S3 时，如果备份文件大于该配置项的值，会自动进行[分块上传](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/API/API_UploadPart.html)。根据压缩率的不同，96 MiB Region 产生的备份文件大约在 10 MiB~30 MiB 之间。
++ 默认值：5MiB
+
+## log-backup
+
+用于日志备份相关的配置项。
+
+### `enable` <span class="version-mark">从 v6.2.0 版本开始引入</span>
+
++ 用于开启日志备份功能。
++ 默认值：true
+
+### `file-size-limit` <span class="version-mark">从 v6.2.0 版本开始引入</span>
+
++ 日志备份任务中，保存到存储的备份文件大小。
++ 默认值：256MiB
++ 注意：一般情况下，`file-size-limit` 的值会大于外部存储上显示的备份文件大小，这是因为备份文件在上传时会被压缩。
+
+### `initial-scan-pending-memory-quota` <span class="version-mark">从 v6.2.0 版本开始引入</span>
+
++ 日志备份任务在扫描增量数据时，用于存放扫描数据的缓存大小。
++ 默认值：`min(机器总内存 * 10%, 512 MB)`
+
+### `initial-scan-rate-limit` <span class="version-mark">从 v6.2.0 版本开始引入</span>
+
++ 日志备份任务在扫描增量数据时的吞吐限流参数。
++ 默认值：60，即默认限流 60 MB/s
+
+### `max-flush-interval` <span class="version-mark">从 v6.2.0 版本开始引入</span>
+
++ 日志备份任务将备份数据写入到外部存储的最大间隔时间。
++ 默认值：3min
+
+### `num-threads` <span class="version-mark">从 v6.2.0 版本开始引入</span>
+
++ 日志备份功能占用的线程数目。
++ 默认值：CPU * 0.5
++ 可调整范围：[2, 12]
+
+### `temp-path` <span class="version-mark">从 v6.2.0 版本开始引入</span>
+
++ 日志文件存放的临时目录，日志文件预先写入临时目录，然后 flush 到外部存储中。
++ 默认值：`${deploy-dir}/data/log-backup-temp`
+
 ## cdc
 
 用于 TiCDC 捕捉变更数据相关的配置项。
@@ -1613,6 +1706,17 @@ Raft Engine 相关的配置项。
 + 增量扫描历史数据任务的最大并发执行个数。
 + 默认值：6，即最多并发执行 6 个任务
 + 注意：`incremental-scan-concurrency` 需要大于等于 `incremental-scan-threads`，否则 TiKV 启动会报错。
+
+### `raw-min-ts-outlier-threshold` <span class="version-mark">从 v6.2.0 版本开始引入</span>
+
++ 对 RawKV 的 Resolved TS 进行异常检测的阈值。
++ 如果某个 Region 的 Resolved TS 延迟超过这个阈值，将进入异常检测流程。此时，Resolved TS 延迟超过 3 x [IQR](https://en.wikipedia.org/wiki/Interquartile_range) 的 Region 将被认为出现锁释放缓慢，并触发 TiKV-CDC 重新订阅该 Region 的数据变更，从而重置锁资源状态。
++ 默认值：60s
+
+> **警告：**
+>
+> - 这个配置项将在未来版本中废弃。为了避免遇到升级兼容性问题，不建议设置这个配置项。
+> - 大部分情况下不需要修改这个参数，因为出现锁释放缓慢的概率很小。如果参数设置过小，会导致异常检测出现误判，引起数据复制的抖动。
 
 ## resolved-ts
 
@@ -1653,7 +1757,7 @@ Raft Engine 相关的配置项。
 + 开启流水线式加悲观锁流程。开启该功能后，TiKV 在检测数据满足加锁要求后，立刻通知 TiDB 执行后面的请求，并异步写入悲观锁，从而降低大部分延迟，显著提升悲观事务的性能。但有较低概率出现悲观锁异步写入失败的情况，可能会导致悲观事务提交失败。
 + 默认值：true
 
-### `in-memory`（从 v6.0.0 版本开始引入）
+### `in-memory` <span class="version-mark">从 v6.0.0 版本开始引入</span>
 
 + 开启内存悲观锁功能。开启该功能后，悲观事务会尽可能在 TiKV 内存中存储悲观锁，而不将悲观锁写入磁盘，也不将悲观锁同步给其他副本，从而提升悲观事务的性能。但有较低概率出现悲观锁丢失的情况，可能会导致悲观事务提交失败。
 + 默认值：true
@@ -1661,35 +1765,78 @@ Raft Engine 相关的配置项。
 
 ## quota
 
-用于前台限流 (Quota Limiter) 相关的配置项。
+用于请求限流 (Quota Limiter) 相关的配置项。
 
-当 TiKV 部署的机型资源有限（如 4v CPU，16 G 内存）时，如果 TiKV 前台处理的读写请求量过大，以至于占用 TiKV 后台处理请求所需的 CPU 资源，最终影响 TiKV 性能的稳定性。此时，你可以使用前台限流相关的 quota 配置项以限制前台各类请求占用的 CPU 资源。触发该限制的请求会被强制等待一段时间以让出 CPU 资源。具体等待时间与新增请求量相关，最多不超过 [`max-delay-duration`](#max-delay-duration从-v600-版本开始引入) 的值。
+### `max-delay-duration` <span class="version-mark">从 v6.0.0 版本开始引入</span>
 
-> **警告：**
->
-> - 前台限流是 TiDB 在 v6.0.0 中引入的实验特性，不建议在生产环境中使用。
-> - 该功能仅适合在资源有限的环境中使用，以保证 TiKV 在该环境下可以长期稳定地运行。如果在资源丰富的机型环境中开启该功能，可能会导致读写请求量达到峰值时 TiKV 的性能下降的问题。
++ 单次读写请求被强制等待的最大时间。
++ 默认值：500ms
++ 推荐设置：一般使用默认值即可。如果实例出现了内存溢出或者是剧烈的性能抖动，可以设置为 1S，使得请求被延迟调节的时间不超过 1 秒。
 
-### `foreground-cpu-time`（从 v6.0.0 版本开始引入）
+### 前台限流
+
+用于前台限流相关的配置项。
+
+当 TiKV 部署的机型资源有限（如 4v CPU，16 G 内存）时，如果 TiKV 前台处理的读写请求量过大，以至于占用 TiKV 后台处理请求所需的 CPU 资源，最终影响 TiKV 性能的稳定性。此时，你可以使用前台限流相关的 quota 配置项以限制前台各类请求占用的 CPU 资源。触发该限制的请求会被强制等待一段时间以让出 CPU 资源。具体等待时间与新增请求量相关，最多不超过 [`max-delay-duration`](#max-delay-duration-从-v600-版本开始引入) 的值。
+
+#### `foreground-cpu-time` <span class="version-mark">从 v6.0.0 版本开始引入</span>
 
 + 限制处理 TiKV 前台读写请求所使用的 CPU 资源使用量，这是一个软限制。
 + 默认值：0（即无限制）
 + 单位：millicpu （当该参数值为 `1500` 时，前端请求会消耗 1.5v CPU）。
++ 推荐设置：对于 4 核以上的实例，使用默认值 `0` 即可；对 4 核实例，设置为 `1000` 到 `1500` 之间的值能取得比较均衡的效果；对 2 核实例，则不要超过 `1200`。
 
-### `foreground-write-bandwidth`（从 v6.0.0 版本开始引入）
+#### `foreground-write-bandwidth` <span class="version-mark">从 v6.0.0 版本开始引入</span>
 
-+ 限制事务写入的带宽，这是一个软限制。
++ 限制前台事务写入的带宽，这是一个软限制。
++ 默认值：0KB（即无限制）
++ 推荐设置：除非因为 `foreground-cpu-time` 设置不足以对写带宽做限制，一般情况下本配置项使用默认值 `0` 即可；否则，在 4 核及 4 核以下规格实例上，建议设置在 `50MB` 以下。
+
+#### `foreground-read-bandwidth` <span class="version-mark">从 v6.0.0 版本开始引入 </span>
+
++ 限制前台事务读取数据和 Coprocessor 读取数据的带宽，这是一个软限制。
++ 默认值：0KB（即无限制）
++ 推荐设置：除非因为 `foreground-cpu-time` 设置不足以对读带宽做限制，一般情况本配置项使用默认值 `0` 即可；否则，在 4 核及 4 核以下规格实例上，建议设置在 `20MB` 以内。
+
+### 后台限流
+
+用于后台限流相关的配置项。
+
+当 TiKV 部署的机型资源有限（如 4v CPU，16 G 内存）时，如果 TiKV 后台处理的计算或者读写请求量过大，以至于占用 TiKV 前台处理请求所需的 CPU 资源，最终影响 TiKV 性能的稳定性。此时，你可以使用后台限流相关的 quota 配置项以限制后台各类请求占用的 CPU 资源。触发该限制的请求会被强制等待一段时间以让出 CPU 资源。具体等待时间与新增请求量相关，最多不超过 [`max-delay-duration`](#max-delay-duration-从-v600-版本开始引入) 的值。
+
+> **警告：**
+>
+> - 后台限流是 TiDB 在 v6.2.0 中引入的实验特性，不建议在生产环境中使用。
+> - 该功能仅适合在资源有限的环境中使用，以保证 TiKV 在该环境下可以长期稳定地运行。如果在资源丰富的机型环境中开启该功能，可能会导致读写请求量达到峰值时 TiKV 的性能下降的问题。
+
+#### `background-cpu-time` <span class="version-mark">从 v6.2.0 版本开始引入</span>
+
++ 限制处理 TiKV 后台读写请求所使用的 CPU 资源使用量，这是一个软限制。
++ 默认值：0（即无限制）
++ 单位：millicpu（当该参数值为 `1500` 时，后端请求会消耗 1.5v CPU）。
+
+#### `background-write-bandwidth` <span class="version-mark">从 v6.2.0 版本开始引入</span>
+
+> **注意：**
+>
+> 该配置项可以通过 `SHOW CONFIG` 查询到，但暂未生效。设置该配置项的值不生效。
+
++ 限制后台事务写入的带宽，这是一个软限制。
 + 默认值：0KB（即无限制）
 
-### `foreground-read-bandwidth`（从 v6.0.0 版本开始引入）
+#### `background-read-bandwidth` <span class="version-mark">从 v6.2.0 版本开始引入</span>
 
-+ 限制事务读取数据和 Coprocessor 读取数据的带宽，这是一个软限制。
+> **注意：**
+>
+> 该配置项可以通过 `SHOW CONFIG` 查询到，但暂未生效。设置该配置项的值不生效。
+
++ 限制后台事务读取数据和 Coprocessor 读取数据的带宽，这是一个软限制。
 + 默认值：0KB（即无限制）
 
-### `max-delay-duration`（从 v6.0.0 版本开始引入）
+#### `enable-auto-tune` <span class="version-mark">从 v6.2.0 版本开始引入</span>
 
-+ 单次前台读写请求被强制等待的最大时间。
-+ 默认值：500ms
++ 是否支持 quota 动态调整。如果打开该配置项，TiKV 会根据 TiKV 实例的负载情况动态调整对后台请求的限制 quota。
++ 默认值：false（即关闭动态调整）
 
 ## causal-ts <span class="version-mark">从 v6.1.0 版本开始引入</span>
 

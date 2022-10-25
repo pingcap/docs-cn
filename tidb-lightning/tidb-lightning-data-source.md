@@ -20,8 +20,8 @@ TiDB Lightning 运行时将查找 `data-source-dir` 中所有符合命令规则�
 |:--|:--|:---|
 |Schema 文件|包含 DDL 语句 `CREATE TABLE` 的文件|`${db_name}.${table_name}-schema.sql`|
 |Schema 文件|包含 `CREATE DATABASE` DDL 语句的文件|`${db_name}-schema-create.sql`|
-|数据文件|包含整张表的数据文件，该文件会被导入 `${db_name}.${table_name}` 表 | `${db_name}.${table_name}.${csv\|sql\|parquet}`|
-|数据文件| 如果一个表分布于多个数据文件，这些文件命名需加上文件编号的后缀 | `${db_name}.${table_name}.001.${csv\|sql\|parquet}` |
+|数据文件|包含整张表的数据文件，该文件会被导入 `${db_name}.${table_name}` 表 | <code>\${db_name}.\${table_name}.\${csv\|sql\|parquet}</code>|
+|数据文件| 如果一个表分布于多个数据文件，这些文件命名需加上文件编号的后缀 | <code>\${db_name}.\${table_name}.001.\${csv\|sql\|parquet}</code> |
 
 TiDB Lightning 尽量并行处理数据，由于文件必须顺序读取，所以数据处理协程是文件级别的并发（通过 `region-concurrency` 配置控制）。因此导入大文件时性能比较差。通常建议单个文件尺寸为 256MiB，以获得最好的性能。
 
@@ -268,7 +268,7 @@ TiDB Lightning 在处理 SQL 文件时，由于无法对单个文件进行快速
 
 ## Parquet
 
-TiDB Lightning 目前仅支持由 Amazon Aurora 导出快照生成的 Parquet 文件。要识别其在 S3 的文件组织形式，需要使用如下配置匹配到所有的数据文件：
+TiDB Lightning 目前仅支持由 Amazon Aurora 或者 Hive 导出快照生成的 Parquet 文件。要识别其在 S3 的文件组织形式，需要使用如下配置匹配到所有的数据文件：
 
 ```
 [[mydumper.files]]

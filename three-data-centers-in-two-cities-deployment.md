@@ -76,8 +76,7 @@ server_configs:
   tikv:
     server.grpc-compression-type: gzip
   pd:
-    replication.location-labels:  ["az","replication zone","rack","host"]
-    schedule.tolerant-size-ratio: 20.0
+    replication.location-labels:  ["dc","zone","rack","host"]
 
 pd_servers:
   - host: 10.63.10.10
@@ -172,12 +171,6 @@ tikv_servers:
     server.grpc-compression-type: gzip
     ```
 
-- 调整 PD balance 缓冲区大小，提高 PD 容忍度，因为 PD 会根据节点情况计算出各个对象的 score 作为调度的依据，当两个 store 的 leader 或 Region 的得分差距小于指定倍数的 Region size 时，PD 会认为此时 balance 达到均衡状态。
-
-    ```
-    schedule.tolerant-size-ratio: 20.0
-    ```
-
 - 优化跨区域 AZ3 的TiKV 节点网络，修改 TiKV 的如下参数，拉长跨区域副本参与选举的时间，避免跨区域 TiKV 中的副本参与 Raft 选举。
 
     ```
@@ -196,7 +189,7 @@ tikv_servers:
     ```
     config set label-property reject-leader dc 3
     ```
-  
+
     > **注意：**
     >
     > TiDB 5.2 及以上版本默认不支持 `label-property` 配置。若要设置副本策略，请使用 [Placement Rules](/configure-placement-rules.md)。

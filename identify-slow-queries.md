@@ -67,6 +67,7 @@ Slow Query 基础信息：
 * `Succ`：表示语句是否执行成功。
 * `Backoff_time`：表示语句遇到需要重试的错误时在重试前等待的时间。常见的需要重试的错误有以下几种：遇到了 lock、Region 分裂、`tikv server is busy`。
 * `Plan`：表示语句的执行计划，用 `select tidb_decode_plan('xxx...')` SQL 语句可以解析出具体的执行计划。
+* `Binary_plan`：表示以二进制格式编码后的语句的执行计划，用 `select tidb_decode_binary_plan('xxx...')` SQL 语句可以解析出具体的执行计划。传递的信息和 `Plan` 字段基本相同，但是解析出的执行计划的格式会和 `Plan` 字段不同。
 * `Prepared`：表示这个语句是否是 `Prepare` 或 `Execute` 的请求。
 * `Plan_from_cache`：表示这个语句是否命中了执行计划缓存。
 * `Plan_from_binding`：表示这个语句是否用的绑定的执行计划。
@@ -535,20 +536,20 @@ pt-query-digest --report tidb-slow.log
 
 并不是所有 SLOW_QUERY 的语句都是有问题的。会造成集群整体压力增大的，是那些 process_time 很大的语句。wait_time 很大，但 process_time 很小的语句通常不是问题语句，是因为被问题语句阻塞，在执行队列等待造成的响应时间过长。
 
-## `admin show slow` 命令
+## `ADMIN SHOW SLOW` 命令
 
-除了获取 TiDB 日志，还有一种定位慢查询的方式是通过 `admin show slow` SQL 命令：
+除了获取 TiDB 日志，还有一种定位慢查询的方式是通过 `ADMIN SHOW SLOW` SQL 命令：
 
 {{< copyable "sql" >}}
 
 ```sql
-admin show slow recent N;
+ADMIN SHOW SLOW recent N;
 ```
 
 {{< copyable "sql" >}}
 
 ```sql
-admin show slow top [internal | all] N;
+ADMIN SHOW SLOW TOP [internal | all] N;
 ```
 
 `recent N` 会显示最近的 N 条慢查询记录，例如：
@@ -556,7 +557,7 @@ admin show slow top [internal | all] N;
 {{< copyable "sql" >}}
 
 ```sql
-admin show slow recent 10;
+ADMIN SHOW SLOW recent 10;
 ```
 
 `top N` 则显示最近一段时间（大约几天）内，最慢的查询记录。如果指定 `internal` 选项，则返回查询系统内部 SQL 的慢查询记录；如果指定 `all` 选项，返回系统内部和用户 SQL 汇总以后的慢查询记录；默认只返回用户 SQL 中的慢查询记录。
@@ -564,9 +565,9 @@ admin show slow recent 10;
 {{< copyable "sql" >}}
 
 ```sql
-admin show slow top 3;
-admin show slow top internal 3;
-admin show slow top all 5;
+ADMIN SHOW SLOW TOP 3;
+ADMIN SHOW SLOW TOP internal 3;
+ADMIN SHOW SLOW TOP all 5;
 ```
 
 由于内存限制，保留的慢查询记录的条数是有限的。当命令查询的 `N` 大于记录条数时，返回的结果记录条数会小于 `N`。

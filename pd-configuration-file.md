@@ -152,11 +152,13 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 ### `max-days`
 
 + 日志保留的最长天数。
++ 如果未设置本参数或把本参数设置为默认值 `0`，PD 不清理日志文件。
 + 默认：0
 
 ### `max-backups`
 
 + 日志文件保留的最大个数。
++ 如果未设置本参数或把本参数设置为默认值 `0`，PD 会保留所有的日志文件。
 + 默认：0
 
 ## metric
@@ -283,12 +285,17 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 + 是否使用 Joint Consensus 进行副本调度。关闭该特性时，PD 将采用一次调度一个副本的方式进行调度。
 + 默认值：true
 
+### `enable-diagnostic` <span class="version-mark">从 v6.3.0 版本开始引入</span>
+
++ 是否开启诊断功能。开启特性时，PD 将会记录调度中的一些状态来帮助诊断。开启时会略微影响调度速度，在 Store 数量较多时会消耗较大内存。
++ 默认值：false
+
 ### `hot-regions-write-interval` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 
 * 设置 PD 存储 Hot Region 信息时间间隔。
 * 默认值：10m
 
-> 注意：
+> **注意：**
 >
 > Hot Region 的信息一般 3 分钟更新一次。如果设置时间间隔小于 3 分钟，中间部分的更新可能没有意义。
 
@@ -326,9 +333,8 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 ### `enable-placement-rules`
 
 + 打开 `placement-rules`
-+ 默认值：false
-+ 参考[Placement Rules 使用文档](/configure-placement-rules.md)
-+ 4.0 实验性特性
++ 默认值：true
++ 参考 [Placement Rules 使用文档](/configure-placement-rules.md)
 
 ### `flow-round-by-digit` <span class="version-mark">从 v5.1 版本开始引入</span>
 

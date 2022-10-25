@@ -116,7 +116,7 @@ Java 应用尽管可以选择在不同的框架中封装，但在最底层一般
 
 对于批量插入更新，如果插入记录较多，可以选择使用 [addBatch/executeBatch API](https://www.tutorialspoint.com/jdbc/jdbc-batch-processing)。通过 addBatch 的方式将多条 SQL 的插入更新记录先缓存在客户端，然后在 executeBatch 时一起发送到数据库服务器。
 
-> 注意
+> **注意：**
 >
 > 对于 MySQL Connector/J 实现，默认 Batch 只是将多次 addBatch 的 SQL 发送时机延迟到调用 executeBatch 的时候，但实际网络发送还是会一条条的发送，通常不会降低与数据库服务器的网络交互次数。
 >
@@ -247,15 +247,7 @@ UPDATE `t` SET `a` = 12 WHERE `id` = 3;
 
 通过监控可能会发现，虽然业务只向集群进行 insert 操作，却看到有很多多余的 select 语句。通常这是因为 JDBC 发送了一些查询设置类的 SQL 语句（例如 `select @@session.transaction_read_only`）。这些 SQL 对 TiDB 无用，推荐配置 `useConfigs = maxPerformance` 来避免额外开销。
 
-`useConfigs = maxPerformance` 会包含一组配置：
-
-```conf
-cacheServerConfiguration = true
-useLocalSessionState = true
-elideSetAutoCommits = true
-alwaysSendSetIsolation = false
-enableQueryTimeouts = false
-```
+`useConfigs = maxPerformance` 会包含一组配置，可查看 mysql-connector-j [8.0 版本](https://github.com/mysql/mysql-connector-j/blob/release/8.0/src/main/resources/com/mysql/cj/configurations/maxPerformance.properties) 或 [5.1 版本](https://github.com/mysql/mysql-connector-j/blob/release/5.1/src/com/mysql/jdbc/configs/maxPerformance.properties) 来确认当前 MySQL JDBC 中 `maxPerformance` 包含的具体配置。
 
 配置后查看监控，可以看到多余语句减少。
 

@@ -16,7 +16,7 @@ tiup cluster
 ```
 
 ```
-Starting component `cluster`: /home/tidb/.tiup/components/cluster/v1.10.0/cluster
+Starting component `cluster`: /home/tidb/.tiup/components/cluster/v1.11.0/cluster
 Deploy a TiDB cluster for production
 
 Usage:
@@ -118,12 +118,12 @@ tidb_servers:
 ...
 ```
 
-假如我们想要使用 TiDB 的 v6.1.0 版本，集群名字为 `prod-cluster`，则执行以下命令：
+假如我们想要使用 TiDB 的 v6.3.0 版本，集群名字为 `prod-cluster`，则执行以下命令：
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup cluster deploy -p prod-cluster v6.1.0 /tmp/topology.yaml
+tiup cluster deploy -p prod-cluster v6.3.0 /tmp/topology.yaml
 ```
 
 执行过程中会再次确认拓扑结构并提示输入目标机器上的 root 密码（-p 表示使用密码）：
@@ -131,7 +131,7 @@ tiup cluster deploy -p prod-cluster v6.1.0 /tmp/topology.yaml
 ```bash
 Please confirm your topology:
 TiDB Cluster: prod-cluster
-TiDB Version: v6.1.0
+TiDB Version: v6.3.0
 Type        Host          Ports                            OS/Arch       Directories
 ----        ----          -----                            -------       -----------
 pd          172.16.5.134  2379/2380                        linux/x86_64  deploy/pd-2379,data/pd-2379
@@ -171,10 +171,10 @@ tiup cluster list
 ```
 
 ```
-Starting /root/.tiup/components/cluster/v1.10.0/cluster list
+Starting /root/.tiup/components/cluster/v1.11.0/cluster list
 Name          User  Version    Path                                               PrivateKey
 ----          ----  -------    ----                                               ----------
-prod-cluster  tidb  v6.1.0    /root/.tiup/storage/cluster/clusters/prod-cluster  /root/.tiup/storage/cluster/clusters/prod-cluster/ssh/id_rsa
+prod-cluster  tidb  v6.3.0    /root/.tiup/storage/cluster/clusters/prod-cluster  /root/.tiup/storage/cluster/clusters/prod-cluster/ssh/id_rsa
 ```
 
 ## 启动集群
@@ -200,9 +200,9 @@ tiup cluster display prod-cluster
 ```
 
 ```
-Starting /root/.tiup/components/cluster/v1.10.0/cluster display prod-cluster
+Starting /root/.tiup/components/cluster/v1.11.0/cluster display prod-cluster
 TiDB Cluster: prod-cluster
-TiDB Version: v6.1.0
+TiDB Version: v6.3.0
 ID                  Role        Host          Ports                            OS/Arch       Status  Data Dir              Deploy Dir
 --                  ----        ----          -----                            -------       ------  --------              ----------
 172.16.5.134:3000   grafana     172.16.5.134  3000                             linux/x86_64  Up      -                     deploy/grafana-3000
@@ -268,9 +268,9 @@ tiup cluster display prod-cluster
 ```
 
 ```
-Starting /root/.tiup/components/cluster/v1.10.0/cluster display prod-cluster
+Starting /root/.tiup/components/cluster/v1.11.0/cluster display prod-cluster
 TiDB Cluster: prod-cluster
-TiDB Version: v6.1.0
+TiDB Version: v6.3.0
 ID                  Role        Host          Ports                            OS/Arch       Status   Data Dir              Deploy Dir
 --                  ----        ----          -----                            -------       ------   --------              ----------
 172.16.5.134:3000   grafana     172.16.5.134  3000                             linux/x86_64  Up       -                     deploy/grafana-3000
@@ -370,12 +370,12 @@ Global Flags:
   -y, --yes               跳过所有的确认步骤
 ```
 
-例如，把集群升级到 v6.1.0 的命令为：
+例如，把集群升级到 v6.3.0 的命令为：
 
 {{< copyable "shell-regular" >}}
 
 ```bash
-tiup cluster upgrade tidb-test v6.1.0
+tiup cluster upgrade tidb-test v6.3.0
 ```
 
 ## 更新配置
@@ -552,14 +552,14 @@ tiup cluster audit
 ```
 
 ```
-Starting component `cluster`: /home/tidb/.tiup/components/cluster/v1.10.0/cluster audit
+Starting component `cluster`: /home/tidb/.tiup/components/cluster/v1.11.0/cluster audit
 ID      Time                       Command
 --      ----                       -------
-4BLhr0  2022-06-10T13:25:09+08:00  /home/tidb/.tiup/components/cluster/v1.10.0/cluster deploy test v6.1.0 /tmp/topology.yaml
-4BKWjF  2022-06-08T23:36:57+08:00  /home/tidb/.tiup/components/cluster/v1.10.0/cluster deploy test v6.1.0 /tmp/topology.yaml
-4BKVwH  2022-06-08T23:02:08+08:00  /home/tidb/.tiup/components/cluster/v1.10.0/cluster deploy test v6.1.0 /tmp/topology.yaml
-4BKKH1  2022-06-08T16:39:04+08:00  /home/tidb/.tiup/components/cluster/v1.10.0/cluster destroy test
-4BKKDx  2022-06-08T16:36:57+08:00  /home/tidb/.tiup/components/cluster/v1.10.0/cluster deploy test v6.1.0 /tmp/topology.yaml
+4BLhr0  2022-09-30T13:25:09+08:00  /home/tidb/.tiup/components/cluster/v1.11.0/cluster deploy test v6.3.0 /tmp/topology.yaml
+4BKWjF  2022-09-28T23:36:57+08:00  /home/tidb/.tiup/components/cluster/v1.11.0/cluster deploy test v6.3.0 /tmp/topology.yaml
+4BKVwH  2022-09-28T23:02:08+08:00  /home/tidb/.tiup/components/cluster/v1.11.0/cluster deploy test v6.3.0 /tmp/topology.yaml
+4BKKH1  2022-09-28T16:39:04+08:00  /home/tidb/.tiup/components/cluster/v1.11.0/cluster destroy test
+4BKKDx  2022-09-28T16:36:57+08:00  /home/tidb/.tiup/components/cluster/v1.11.0/cluster deploy test v6.3.0 /tmp/topology.yaml
 ```
 
 第一列为 audit-id，如果想看某个命令的执行日志，则传入这个 audit-id：
@@ -709,3 +709,21 @@ TiUP 相关的数据都存储在用户 home 目录的 `.tiup` 目录下，若要
 > **注意：**
 >
 > 为了避免中控机磁盘损坏等异常情况导致 TiUP 数据丢失，建议定时备份 `.tiup` 目录。
+
+## 备份与恢复集群部署和运维所需的 meta 文件
+
+如果运维所需的 meta 文件丢失，会导致无法继续使用 TiUP 管理集群，建议通过以下方式定期备份 meta 文件：
+
+```bash
+tiup cluster meta backup ${cluster_name}
+```
+
+如果 meta 文件丢失，可以使用以下方法恢复 meta 文件：
+
+```bash
+tiup cluster meta restore ${cluster_name} ${backup_file}
+```
+
+> **注意：**
+>
+> 恢复操作会覆盖当前的 meta 文件，建议仅在 meta 文件丢失的情况下进行恢复。

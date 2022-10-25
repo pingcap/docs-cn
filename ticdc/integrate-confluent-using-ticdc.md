@@ -1,16 +1,16 @@
 ---
-title: 与 Confluent Cloud 进行数据集成
-summary: 了解如何使用 TiCDC 从 TiDB 同步数据至 Confluent Cloud。
+title: 与 Confluent Cloud 和 Snowflake 进行数据集成
+summary: 了解如何使用 TiCDC 从 TiDB 同步数据至 Confluent Cloud 以及 Snowflake、ksqlDB、SQL Server。
 ---
 
-# 与 Confluent Cloud 进行数据集成
+# 与 Confluent Cloud 和 Snowflake 进行数据集成
 
-Confluent 是一个兼容 Apache Kafka 的数据流平台，能够访问、存储和管理连续的实时流数据，具备丰富的数据集成能力。自 v6.1.0 开始，TiCDC 支持将增量变更数据以 Avro 格式输出到 Confluent。本文档介绍如何使用 [TiCDC](/ticdc/ticdc-overview.md) 将 TiDB 的增量数据同步到 Confluent Cloud，并借助 Confluent Cloud 的能力最终将数据分别同步到 ksqlDB、Snowflake、SQL Server。主要内容包括：
+Confluent 是一个兼容 Apache Kafka 的数据流平台，能够访问、存储和管理连续的实时流数据，具备丰富的数据集成能力。自 v6.1.0 开始，TiCDC 支持将增量变更数据以 Avro 格式输出到 Confluent。本文档介绍如何使用 [TiCDC](/ticdc/ticdc-overview.md) 将 TiDB 的增量数据同步到 Confluent Cloud，并借助 Confluent Cloud 的能力最终将数据分别同步到 Snowflake、ksqlDB、SQL Server。主要内容包括：
 
 - 快速搭建包含 TiCDC 的 TiDB 集群
 - 创建将数据输出到 Confluent Cloud 的 changefeed
-- 创建将数据从 Confluent Cloud 输出到 ksqlDB、Snowflake、SQL Server 的连接器 (Connector)
-- 使用 go-tpc 写入数据到上游 TiDB，并观察 ksqlDB、Snowflake、SQL Server 中的数据
+- 创建将数据从 Confluent Cloud 输出到 Snowflake、ksqlDB 和 SQL Server 的连接器 (Connector)
+- 使用 go-tpc 写入数据到上游 TiDB，并观察 Snowflake、ksqlDB 和 SQL Server 中的数据
 
 上述过程将会基于实验环境进行，你也可以参考上述执行步骤，搭建生产级别的集群。
 
@@ -38,7 +38,9 @@ Confluent 是一个兼容 Apache Kafka 的数据流平台，能够访问、存�
 
 1. 创建 Cluster API Key。
 
-    在 Confluent 集群控制面板中依次点击 **Data Integration** > **API Keys** > **Create key** 来创建 Cluster API Key。创建成功后会得到一个 Key Pair 文件，内容如下：
+    在 Confluent 集群控制面板中依次点击 **Data integration** > **API keys** > **Create key**。在弹出的 **Select scope for API key** 页面，选择 **Global access**。
+
+    创建成功后会得到一个 Key Pair 文件，内容如下：
 
     ```
     === Confluent Cloud API key: xxx-xxxxx ===
@@ -61,9 +63,11 @@ Confluent 是一个兼容 Apache Kafka 的数据流平台，能够访问、存�
     https://yyy-yyyyy.us-east-2.aws.confluent.cloud
     ```
 
-3. 创建 Schema Registry API Key。
+3. 创建 Schema Registry API key。
 
-    在 Confluent 集群控制面板中，选择 **Schema Registry** > **API credentials** > **Create Key** 来创建 Schema Registry API Key。创建成功后会得到一个 Key Pair 文件，内容如下：
+    在 Confluent 集群控制面板中，选择 **Schema Registry** > **API credentials**，点击 **Edit** 和 **Create key**。
+
+    创建成功后会得到一个 Key Pair 文件，内容如下：
 
     ```
     === Confluent Cloud API key: yyy-yyyyy ===
@@ -95,7 +99,7 @@ Confluent 是一个兼容 Apache Kafka 的数据流平台，能够访问、存�
 2. 创建一个 changefeed，将增量数据输出到 Confluent Cloud：
 
     ```shell
-    tiup ctl:v6.1.0 cdc changefeed create --pd="http://127.0.0.1:2379" --sink-uri="kafka://<broker_endpoint>/ticdc-meta?protocol=avro&replication-factor=3&enable-tls=true&auto-create-topic=true&sasl-mechanism=plain&sasl-user=<broker_api_key>&sasl-password=<broker_api_secret>" --schema-registry="https://<schema_registry_api_key>:<schema_registry_api_secret>@<schema_registry_endpoint>" --changefeed-id="confluent-changefeed" --config changefeed.conf
+    tiup ctl:v6.3.0 cdc changefeed create --pd="http://127.0.0.1:2379" --sink-uri="kafka://<broker_endpoint>/ticdc-meta?protocol=avro&replication-factor=3&enable-tls=true&auto-create-topic=true&sasl-mechanism=plain&sasl-user=<broker_api_key>&sasl-password=<broker_api_secret>" --schema-registry="https://<schema_registry_api_key>:<schema_registry_api_secret>@<schema_registry_endpoint>" --changefeed-id="confluent-changefeed" --config changefeed.conf
     ```
 
     将如下字段替换为[第 2 步：创建 Access Key Pair](#第-2-步创建-access-key-pair)中创建和记录的值：
@@ -110,7 +114,7 @@ Confluent 是一个兼容 Apache Kafka 的数据流平台，能够访问、存�
     其中 `<schema_registry_api_secret>` 需要经过 [HTML URL 编码](https://www.w3schools.com/tags/ref_urlencode.asp)后再替换，替换完毕后示例如下：
 
     ```shell
-    tiup ctl:v6.1.0 cdc changefeed create --pd="http://127.0.0.1:2379" --sink-uri="kafka://xxx-xxxxx.ap-east-1.aws.confluent.cloud:9092/ticdc-meta?protocol=avro&replication-factor=3&enable-tls=true&auto-create-topic=true&sasl-mechanism=plain&sasl-user=L5WWA4GK4NAT2EQV&sasl-password=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" --schema-registry="https://7NBH2CAFM2LMGTH7:xxxxxxxxxxxxxxxxxx@yyy-yyyyy.us-east-2.aws.confluent.cloud" --changefeed-id="confluent-changefeed" --config changefeed.conf
+    tiup ctl:v6.3.0 cdc changefeed create --pd="http://127.0.0.1:2379" --sink-uri="kafka://xxx-xxxxx.ap-east-1.aws.confluent.cloud:9092/ticdc-meta?protocol=avro&replication-factor=3&enable-tls=true&auto-create-topic=true&sasl-mechanism=plain&sasl-user=L5WWA4GK4NAT2EQV&sasl-password=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" --schema-registry="https://7NBH2CAFM2LMGTH7:xxxxxxxxxxxxxxxxxx@yyy-yyyyy.us-east-2.aws.confluent.cloud" --changefeed-id="confluent-changefeed" --config changefeed.conf
     ```
 
     - 如果命令执行成功，将会返回被创建的 changefeed 的相关信息，包含被创建的 changefeed 的 ID 以及相关信息，内容如下：
@@ -126,7 +130,7 @@ Confluent 是一个兼容 Apache Kafka 的数据流平台，能够访问、存�
 3. Changefeed 创建成功后，执行如下命令，查看 changefeed 的状态：
 
     ```shell
-    tiup ctl:v6.1.0 cdc changefeed list --pd="http://127.0.0.1:2379"
+    tiup ctl:v6.3.0 cdc changefeed list --pd="http://127.0.0.1:2379"
     ```
 
     可以参考 [TiCDC 运维操作及任务管理](/ticdc/manage-ticdc.md)对 changefeed 状态进行管理。
@@ -148,9 +152,43 @@ Confluent 是一个兼容 Apache Kafka 的数据流平台，能够访问、存�
 
 2. 观察 Confluent 中数据传输情况。
 
-    ![Confluent topics](/media/integrate/confluent-topics.PNG)
+    ![Confluent topics](/media/integrate/confluent-topics.png)
 
     在 Confluent 集群控制面板中，可以观察到相应的 Topic 已经被自动创建，并有数据正在写入。至此，TiDB 数据库中的增量数据就被成功输出到了 Confluent Cloud。
+
+## 与 Snowflake 进行数据集成
+
+Snowflake 是一种云原生数据仓库。借助 Confluent 的能力，你只需要创建 Snowflake Sink Connector，就可以将 TiDB 的增量数据输出到 Snowflake。
+
+### 准备工作
+
+- 注册和创建 Snowflake 集群，参考 [Getting Started with Snowflake](https://docs.snowflake.com/en/user-guide-getting-started.html)。
+
+- 连接到 Snowflake 前，为 Snowflake 添加 Private Key，参考 [Key Pair Authentication & Key Pair Rotation](https://docs.snowflake.com/en/user-guide/key-pair-auth.html)。
+
+### 集成步骤
+
+1. 在 Snowflake 中创建 Database 和 Schema。
+
+    在 Snowflake 控制面板中，选择 **Data** > **Database**。创建名为 `TPCC` 的 Database 和名为 `TiCDC` 的 Schema。
+
+2. 在 Confluent 集群控制面板中，选择 **Data integration** > **Connectors** > **Snowflake Sink**，进入如下页面：
+
+    ![Add snowflake sink connector](/media/integrate/add-snowflake-sink-connector.png)
+
+3. 选择需要同步到 Snowflake 的 Topic 后，进入下一页面：
+
+    ![Credentials](/media/integrate/credentials.png)
+
+4. 填写 Snowflake 连接认证信息，其中 Database name 和 Schema name 填写在上一步创建的 Database 和 Schema 名，随后进入下一页面：
+
+    ![Configuration](/media/integrate/configuration.png)
+
+5. 在 **Configuration** 页面中，`record value format` 和 `record key format` 都选择 `AVRO`，点击 **Continue**，直到 Connector 创建完成。等待 Connector 状态变为 `RUNNING`，这个过程可能持续数分钟。
+
+    ![Data preview](/media/integrate/data-preview.png)
+
+6. 在 Snowflake 控制面板中，选择 **Data** > **Database** > **TPCC** > **TiCDC**，可以观察到 TiDB 中的增量数据实时同步到了 Snowflake，如上图。至此，就完成了 TiDB 与 Snowflake 的数据集成。
 
 ## 与 ksqlDB 进行数据集成
 
@@ -175,40 +213,6 @@ ksqlDB 是一种面向流式数据处理的数据库。你可以直接在 Conflu
     ![Select from orders](/media/integrate/select-from-orders.png)
 
 可以观察到 TiDB 中的增量数据实时同步到了 ksqlDB，如上图。至此，就完成了 TiDB 与 ksqlDB 的数据集成。
-
-## 与 Snowflake 进行数据集成
-
-Snowflake 是一种云原生数据仓库。借助 Confluent 的能力，你只需要创建 Snowflake Sink Connector，就可以将 TiDB 的增量数据输出到 Snowflake。
-
-### 准备工作
-
-- 注册和创建 Snowflake 集群，参考 [Getting Started with Snowflake](https://docs.snowflake.com/en/user-guide-getting-started.html)。
-
-- 连接到 Snowflake 前，为 Snowflake 添加 Private Key，参考 [Key Pair Authentication & Key Pair Rotation](https://docs.snowflake.com/en/user-guide/key-pair-auth.html)。
-
-### 集成步骤
-
-1. 在 Snowflake 中创建 Database 和 Schema。
-
-    在 Snowflake 控制面板中，选择 **Data** > **Database**。创建名为 `TPCC` 的 Database 和名为 `TiCDC` 的 Schema。
-
-2. 在 Confluent 集群控制面板中，选择 **Data Integration** > **Connectors** > **Snowflake Sink**，进入如下页面：
-
-    ![Add snowflake sink connector](/media/integrate/add-snowflake-sink-connector.png)
-
-3. 选择需要同步到 Snowflake 的 Topic 后，进入下一页面：
-
-    ![Credentials](/media/integrate/credentials.png)
-
-4. 填写 Snowflake 连接认证信息，其中 Database name 和 Schema name 填写在上一步创建的 Database 和 Schema 名，随后进入下一页面：
-
-    ![Configuration](/media/integrate/configuration.png)
-
-5. 在 **Configuration** 页面中，`record value format` 和 `record key format` 都选择 `AVRO`，点击 **Continue**，直到 Connector 创建完成。等待 Connector 状态变为 `RUNNING`，这个过程可能持续数分钟。
-
-    ![Data preview](/media/integrate/data-preview.png)
-
-6. 在 Snowflake 控制面板中，选择 **Data** > **Database** > **TPCC** > **TiCDC**，可以观察到 TiDB 中的增量数据实时同步到了 Snowflake，如上图。至此，就完成了 TiDB 与 Snowflake 的数据集成。
 
 ## 与 SQL Server 进行数据集成
 
@@ -235,7 +239,7 @@ SQL Server 是 Microsoft 推出的关系型数据库软件。借助 Confluent �
     (6 rows affected)
     ```
 
-2. 在 Confluent 集群控制面板中，选择 **Data Integration** > **Connectors** > **Microsoft SQL Server Sink**，进入如下页面：
+2. 在 Confluent 集群控制面板中，选择 **Data integration** > **Connectors** > **Microsoft SQL Server Sink**，进入如下页面：
 
     ![Topic selection](/media/integrate/topic-selection.png)
 
@@ -243,14 +247,13 @@ SQL Server 是 Microsoft 推出的关系型数据库软件。借助 Confluent �
 
     ![Authentication](/media/integrate/authentication.png)
 
-4. 在填写 SQL Server 的连接和认证信息后，进入下一页面：
-
-    ![Configuration](/media/integrate/configuration.png)
+4. 在填写 SQL Server 的连接和认证信息后，进入下一页面。
 
 5. 在 **Configuration** 界面，按下表进行配置：
 
-    | Input Kafka record value format | AVRO |
+    | 字段 | 取值 |
     | :- | :- |
+    | Input Kafka record value format | AVRO |
     | Insert mode | UPSERT |
     | Auto create table | true |
     | Auto add columns | true |

@@ -5,13 +5,9 @@ summary: TiDB 数据库中 ALTER TABLE ... COMPACT 语句的使用概况。
 
 # ALTER TABLE ... COMPACT
 
-> **警告：**
->
-> 该语句目前是实验性功能，不建议在生产环境中使用。
-
 TiDB 存储节点在后台会自动发起数据整理（Compaction）。数据整理时，表中的物理数据会被重写，如清理已删除的数据、合并多版本数据等，从而可以获得更高的访问性能，并减少磁盘空间占用。使用 `ALTER TABLE ... COMPACT` 语句可以立即对指定的表进行数据整理，而无需等待后台触发。
 
-该语句执行时不会阻塞现有 SQL 语句的执行或 TiDB 功能的使用，包括事务、DDL、GC 等，也不会改变通过 SQL 语句访问获得的数据内容。但执行过程中会占用一定量的 IO 及 CPU 资源，可能对业务延迟造成影响。
+该语句执行时不会阻塞现有 SQL 语句的执行或 TiDB 功能的使用，包括事务、DDL、GC 等，也不会改变通过 SQL 语句访问获得的数据内容。该语句执行时会消耗一定量的 IO 及 CPU 资源，请注意选择合适的时机执行，如资源空闲时段，避免对业务造成负面影响。
 
 该语句会等待表中所有副本都数据整理完毕后才结束运行并返回。在执行过程中，你可以通过 [`KILL`](/sql-statements/sql-statement-kill.md) 语句安全地中断本张表的数据整理过程。中断不会破坏数据一致性或丢失数据，也不会影响后续重新发起或自动触发后台数据整理。
 
@@ -21,8 +17,10 @@ TiDB 存储节点在后台会自动发起数据整理（Compaction）。数据�
 
 ```ebnf+diagram
 AlterTableCompactStmt ::=
-    'ALTER' 'TABLE' TableName 'COMPACT' 'TIFLASH' 'REPLICA'
+    'ALTER' 'TABLE' TableName 'COMPACT' ( 'TIFLASH' 'REPLICA' )?
 ```
+
+自 v6.2.0 起，语法中 `TIFLASH REPLICA` 部分可以被省略。省略后语句含义不变，同样只对 TiFlash 列存有效。
 
 ## 示例
 

@@ -163,7 +163,7 @@ DELETE，TRUNCATE 和 DROP 都不会立即释放空间。对于 TRUNCATE 和 DRO
 
 ### TiDB 是否支持 replace into 语法？
 
-支持，但是 load data 不支持 replace into 语法。
+支持。
 
 ### 数据删除后查询速度为何会变慢？
 
