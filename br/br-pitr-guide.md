@@ -20,7 +20,7 @@ summary: 了解 TiDB 的日志备份和 PITR 功能使用。
 tiup br log start --task-name=pitr --pd "${PD_IP}:2379" --storage 's3://backup-101/logbackup?access_key=${access_key}&secret_access_key=${secret_access_key}"'
 ```
 
-日志备份任务在 TiDB 集群后台持续地运行，直到你手动暂停它。 如果你需要查询日志备份任务当前状态，运行下面的命令：
+日志备份任务启动后，会在 TiDB 集群后台持续地运行，直到你手动将其暂停。如果你需要查询日志备份任务当前状态，运行下面的命令：
 
 ```shell
 tiup br log status --task-name=pitr --pd "${PD_IP}:2379"
@@ -50,7 +50,7 @@ tiup br backup full --pd "${PD_IP}:2379" --storage 's3://backup-101/snapshot-${d
 
 ## 进行 PITR
 
-如果你想恢复到备份保留期内的任意时间点，可以使用 `br restore point` 进行一键恢复。使用这个命令，你只需要指定**要恢复的时间点**、**恢复时间点之前最近的快照备份**以及**日志备份数据**。 br 会自动判断和读取恢复需要的数据，然后将这些数据依次恢复到指定的集群。
+如果你想恢复到备份保留期内的任意时间点，可以使用 `br restore point` 进行一键恢复。使用这个命令，你只需要指定**要恢复的时间点**、**恢复时间点之前最近的快照备份**以及**日志备份数据**。BR 会自动判断和读取恢复需要的数据，然后将这些数据依次恢复到指定的集群。
 
 ```shell
 br restore point --pd "${PD_IP}:2379" \
@@ -59,7 +59,7 @@ br restore point --pd "${PD_IP}:2379" \
 --restored-ts '2022-05-15 18:00:00+0800'
 ```
 
-恢复期间有进度条会在终端中显示，进度条效果如下。 恢复分为两个阶段：全量恢复（Full Restore）和日志恢复（Restore Meta Files 和 Restore KV files。 每个阶段完成恢复后, br 都会输出恢复耗时、恢复数据大小等信息。
+恢复期间，可通过终端中的进度条查看进度，如下。 恢复分为两个阶段：全量恢复 (Full Restore) 和日志恢复（Restore Meta Files 和 Restore KV files）。 每个阶段完成恢复后，BR 都会输出恢复耗时、恢复数据大小等信息。
 
 ```shell
 Full Restore <--------------------------------------------------------------------------------------------------------------------------------------------------------> 100.00%
