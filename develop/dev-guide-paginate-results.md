@@ -283,9 +283,9 @@ GROUP BY page_num
 ORDER BY page_num;
 ```
 
-> **Note:**
+> **注意：**
 >
-> 该 SQL 会以 `TableFullScan` 方式执行，当数据量较大时，查询速度会变慢，这里可以[使用 TiFlash](/tiflash/tiflash-overview.md#使用-tiflash)进行加速。
+> 该 SQL 会以全表扫描 (TableFullScan) 方式执行，当数据量较大时，查询速度会变慢，此时可以[使用 TiFlash](/tiflash/tiflash-overview.md#使用-tiflash) 进行加速。
 
 查询结果如下：
 
