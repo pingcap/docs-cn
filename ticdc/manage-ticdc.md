@@ -3,125 +3,13 @@ title: TiCDC 运维操作及任务管理
 aliases: ['/docs-cn/dev/ticdc/manage-ticdc/','/docs-cn/dev/reference/tools/ticdc/manage/','/docs-cn/dev/reference/tools/ticdc/sink/','/docs-cn/dev/ticdc/sink-url/']
 ---
 
-# TiCDC 运维操作及任务管理
+# TODO：待删除
 
 本文档介绍如何通过 TiCDC 提供的命令行工具 `cdc cli` 管理 TiCDC 集群和同步任务，并介绍了如何使用 TiUP 来升级和修改 TiCDC 集群的配置。你也可以通过 HTTP 接口，即 TiCDC OpenAPI 来管理 TiCDC 集群和同步任务，详见 [TiCDC OpenAPI](/ticdc/ticdc-open-api.md)。
 
-## 使用 TiUP 升级 TiCDC
-
-本部分介绍如何使用 TiUP 来升级 TiCDC 集群。在以下例子中，假设需要将 TiCDC 组件和整个 TiDB 集群升级到 v6.3.0。
-
-{{< copyable "shell-regular" >}}
-
-```shell
-tiup update --self && \
-tiup update --all && \
-tiup cluster upgrade <cluster-name> v6.3.0
-```
-
-### 升级的注意事项
-
-* TiCDC v4.0.2 对 `changefeed` 的配置做了调整，请参阅[配置文件兼容注意事项](/ticdc/manage-ticdc.md#配置文件兼容性的注意事项)。
-* 升级期间遇到的问题及其解决办法，请参阅[使用 TiUP 升级 TiDB](/upgrade-tidb-using-tiup.md#4-升级-faq)。
-
-## 使用 TiUP 修改 TiCDC 配置
-
-本节介绍如何使用 TiUP 的 [`tiup cluster edit-config`](/tiup/tiup-component-cluster-edit-config.md) 命令来修改 TiCDC 的配置。在以下例子中，假设需要把 TiCDC 的 `gc-ttl` 从默认值 `86400` 修改为 `3600`，即 1 小时。
-
-首先执行以下命令。将 `<cluster-name>` 替换成实际的集群名。
-
-{{< copyable "shell-regular" >}}
-
-```shell
-tiup cluster edit-config <cluster-name>
-```
-
-执行以上命令之后，进入到 vi 编辑器页面，修改 [`server-configs`](/tiup/tiup-cluster-topology-reference.md#server_configs) 下的 `cdc` 配置，如下所示：
-
-```shell
- server_configs:
-  tidb: {}
-  tikv: {}
-  pd: {}
-  tiflash: {}
-  tiflash-learner: {}
-  pump: {}
-  drainer: {}
-  cdc:
-    gc-ttl: 3600
-```
-
-修改完毕后执行 `tiup cluster reload -R cdc` 命令重新加载配置。
-
-## 使用加密传输 (TLS) 功能
-
-请参阅[为 TiDB 组件间通信开启加密传输](/enable-tls-between-components.md)。
-
-## 使用 `cdc cli` 工具来管理集群状态和数据同步
-
-本部分介绍如何使用 `cdc cli` 工具来管理集群状态和数据同步。`cdc cli` 是指通过 `cdc` binary 执行 `cli` 子命令。在以下描述中，通过 `cdc` binary 直接执行 `cli` 命令，TiCDC 的监听 IP 地址为 `10.0.10.25`，端口为 `8300`。
-
-> **注意：**
->
-> TiCDC 监听的 IP 和端口对应为 `cdc server` 启动时指定的 `--addr` 参数。从 TiCDC v6.2.0 开始，`cdc cli` 将通过 TiCDC 的 Open API 直接与 TiCDC server 进行交互，你可以使用 `--server` 参数指定 TiCDC 的 server 地址。`--pd` 参数将被废弃，不再推荐使用。
-
-如果你使用的 TiCDC 是用 TiUP 部署的，需要将以下命令中的 `cdc cli` 替换为 `tiup ctl cdc`。
-
-### 管理 TiCDC 服务进程 (`capture`)
-
-- 查询 `capture` 列表：
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    cdc cli capture list --server=http://10.0.10.25:8300
-    ```
-
-    ```
-    [
-      {
-        "id": "806e3a1b-0e31-477f-9dd6-f3f2c570abdd",
-        "is-owner": true,
-        "address": "127.0.0.1:8300"
-      },
-      {
-        "id": "ea2a4203-56fe-43a6-b442-7b295f458ebc",
-        "is-owner": false,
-        "address": "127.0.0.1:8301"
-      }
-    ]
-    ```
-
-    - `id`：服务进程的 ID。
-    - `is-owner`：表示该服务进程是否为 owner 节点。
-    - `address`：该服务进程对外提供接口的地址。
 
 ### 管理同步任务 (`changefeed`)
 
-#### 同步任务状态流转
-
-同步任务状态标识了同步任务的运行情况。在 TiCDC 运行过程中，同步任务可能会运行出错、手动暂停、恢复，或达到指定的 `TargetTs`，这些行为都可以导致同步任务状态发生变化。本节描述 TiCDC 同步任务的各状态以及状态之间的流转关系。
-
-![TiCDC state transfer](/media/ticdc/ticdc-state-transfer.png)
-
-以上状态流转图中的状态说明如下：
-
-- Normal：同步任务正常进行，checkpoint-ts 正常推进。
-- Stopped：同步任务停止，由于用户手动暂停 (pause) changefeed。处于这个状态的 changefeed 会阻挡 GC 推进。
-- Error：同步任务报错，由于某些可恢复的错误导致同步无法继续进行，处于这个状态的 changefeed 会不断尝试继续推进，直到状态转为 Normal。处于这个状态的 changefeed 会阻挡 GC 推进。
-- Finished：同步任务完成，同步任务进度已经达到预设的 TargetTs。处于这个状态的 changefeed 不会阻挡 GC 推进。
-- Failed：同步任务失败。由于发生了某些不可恢复的错误，导致同步无法继续进行，并且无法恢复。处于这个状态的 changefeed 不会阻挡 GC 推进。
-
-以上状态流转图中的编号说明如下：
-
-- ① 执行 `changefeed pause` 命令。
-- ② 执行 `changefeed resume` 恢复同步任务。
-- ③ `changefeed` 运行过程中发生可恢复的错误，自动进行恢复。
-- ④ 执行 `changefeed resume` 恢复同步任务。
-- ⑤ `changefeed` 运行过程中发生不可恢复的错误。
-- ⑥ `changefeed` 已经进行到预设的 TargetTs，同步自动停止。
-- ⑦ `changefeed` 停滞时间超过 `gc-ttl` 所指定的时长，不可被恢复。
-- ⑧ `changefeed` 尝试自动恢复过程中发生不可恢复的错误。
 
 #### 创建同步任务
 
