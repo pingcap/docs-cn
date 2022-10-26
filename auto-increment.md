@@ -330,9 +330,9 @@ SELECT * FROM t;
 
 从 v6.4.0 开始，TiDB 实现了中心化分配的服务，可以支持 TiDB 实例不缓存数据，而是每次请求都访问中心化服务获取 ID。
 
-当前中心化分配服务内置在 TiDB 进程，类似于 DDL Owner 的工作模式。有一个 TiDB 实例将充当 "主" 的角色提供 ID 分配服务，而其它的 TiDB 实例将充当 "备" 角色。当 "主" 节点发生故障时，会自动进行 "主备切换"，从而保证中心化服务的高可用。
+当前中心化分配服务内置在 TiDB 进程，类似于 DDL Owner 的工作模式。有一个 TiDB 实例将充当“主”的角色提供 ID 分配服务，而其它的 TiDB 实例将充当“备”角色。当“主”节点发生故障时，会自动进行“主备切换"，从而保证中心化服务的高可用。
 
-MySQL 兼容模式的使用方式是，建表时将 `AUTO_ID_CACHE` 设置为 1：
+MySQL 兼容模式的使用方式是，建表时将 `AUTO_ID_CACHE` 设置为 `1`：
 
 ```sql
 CREATE TABLE t(a int AUTO_INCREMENT key) AUTO_ID_CACHE 1;
