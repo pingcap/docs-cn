@@ -53,9 +53,9 @@ This document describes the common usage limitations of TiDB, including the maxi
 
 ## Limitation on a single row
 
-| Type       | Upper limit   |
+| Type       | Upper limit (default value)   |
 |:----------|:----------|
-| Size       | 6 MB  |
+| Size       | Defaults to 6 MiB and can be adjusted to 120 MiB  |
 
 <CustomContent platform="tidb">
 
@@ -65,11 +65,17 @@ You can adjust the size limit via the [`txn-entry-size-limit`](/tidb-configurati
 
 ## Limitation on a single column
 
-| Type       | Upper limit   |
+| Type       | Upper limit (default value)   |
 |:----------|:----------|
-| Size       | 6 MB       |
+| Size       | Defaults to 6 MiB and can be adjusted to 120 MiB  |
 
-## Limitations on string types
+<CustomContent platform="tidb">
+
+You can adjust the size limit via the [`txn-entry-size-limit`](/tidb-configuration-file.md#txn-entry-size-limit-new-in-v50) configuration item.
+
+</CustomContent>
+
+## Limitations on data types
 
 | Type       | Upper limit   |
 |:----------|:----------|
@@ -77,8 +83,8 @@ You can adjust the size limit via the [`txn-entry-size-limit`](/tidb-configurati
 | BINARY     | 256 characters      |
 | VARBINARY  | 65535 characters    |
 | VARCHAR    | 16383 characters    |
-| TEXT       | 6 MB                |
-| BLOB       | 6 MB                |
+| TEXT       | Defaults to 6 MiB and can be adjusted to 120 MiB                |
+| BLOB       | Defaults to 6 MiB and can be adjusted to 120 MiB               |
 
 ## Limitations on SQL statements
 
