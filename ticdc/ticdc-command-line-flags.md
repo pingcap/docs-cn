@@ -3,11 +3,9 @@ title: TiCDC 命令行参数
 summary: TODO
 ---
 
-# Title
+# TiCDC 命令行参数
 
-TODO
-
-## TiCDC `cdc server` 命令行参数说明
+## `cdc server` 命令行参数说明
 
 对于 `cdc server` 命令中可用选项解释如下：
 
@@ -25,3 +23,9 @@ TODO
 - `key`：TiCDC 创建 TLS 连接时使用的证书密钥文件路径，PEM 格式，可选。
 - `tz`：TiCDC 服务使用的时区。TiCDC 在内部转换 `TIMESTAMP` 等时间数据类型和向下游同步数据时使用该时区，默认为进程运行本地时区。（注意如果同时指定 `tz` 参数和 `sink-uri` 中的 `time-zone` 参数，TiCDC 进程内部使用 `tz` 指定的时区，sink 向下游执行时使用 `time-zone` 指定的时区）
 - `cluster-id`：TiCDC 集群的 ID。可选，默认值为 `default`。`cluster-id` 是 TiCDC 集群的唯一标识，拥有相同 `cluster-id` 的 TiCDC 节点同属一个集群。长度最大为 128，需要符合正则表达式 `^[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*$`，且不能是以下值：`owner`，`capture`，`task`，`changefeed`，`job`，`meta`。
+
+
+## `cdc cli` 命令行参数说明
+
+TODO
+

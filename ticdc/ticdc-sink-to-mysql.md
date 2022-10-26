@@ -3,6 +3,128 @@ title: 同步数据到 MySQL 兼容数据库
 summary: TODO
 ---
 
-# Title
+# 同步数据到 MySQL 兼容数据库
 
 TODO
+
+#### 创建同步任务
+
+使用以下命令来创建同步任务：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+cdc cli changefeed create \
+    --server=http://10.0.10.25:8300 \
+    --sink-uri="mysql://root:123456@127.0.0.1:3306/" \
+    --changefeed-id="simple-replication-task" \
+    --sort-engine="unified"
+```
+
+```shell
+Create changefeed successfully!
+ID: simple-replication-task
+Info: {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":"2020-03-12T22:04:08.103600025+08:00","start-ts":415241823337054209,"target-ts":0,"admin-job-type":0,"sort-engine":"unified","sort-dir":".","config":{"case-sensitive":true,"filter":{"rules":["*.*"],"ignore-txn-start-ts":null,"ddl-allow-list":null},"mounter":{"worker-num":16},"sink":{"dispatchers":null},"scheduler":{"type":"table-number","polling-time":-1}},"state":"normal","history":null,"error":null}
+```
+
+- `--changefeed-id`：同步任务的 ID，格式需要符合正则表达式 `^[a-zA-Z0-9]+(\-[a-zA-Z0-9]+)*$`。如果不指定该 ID，TiCDC 会自动生成一个 UUID（version 4 格式）作为 ID。
+- `--sink-uri`：同步任务下游的地址，需要按照以下格式进行配置，目前 scheme 支持 `mysql`、`tidb` 和 `kafka`。
+
+    {{< copyable "" >}}
+
+    ```
+    [scheme]://[userinfo@][host]:[port][/path]?[query_parameters]
+    ```
+
+    URI 中包含特殊字符时，如 `! * ' ( ) ; : @ & = + $ , / ? % # [ ]`，需要对 URI 特殊字符进行转义处理。你可以在 [URI Encoder](https://meyerweb.com/eric/tools/dencoder/) 中对 URI 进行转义。
+
+- `--start-ts`：指定 changefeed 的开始 TSO。TiCDC 集群将从这个 TSO 开始拉取数据。默认为当前时间。
+- `--target-ts`：指定 changefeed 的目标 TSO。TiCDC 集群拉取数据直到这个 TSO 停止。默认为空，即 TiCDC 不会自动停止。
+- `--config`：指定 changefeed 配置文件。
+
+
+
+
+#### Sink URI 配置 `mysql`/`tidb`
+
+配置样例如下所示：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+--sink-uri="mysql://root:123456@127.0.0.1:3306/?worker-count=16&max-txn-row=5000&transaction-atomicity=table"
+```
+
+URI 中可配置的参数如下：
+
+| 参数         | 解析                                             |
+| :------------ | :------------------------------------------------ |
+| `root`        | 下游数据库的用户名                             |
+| `123456`       | 下游数据库密码                                     |
+| `127.0.0.1`    | 下游数据库的 IP                                |
+| `3306`         | 下游数据的连接端口                                 |
+| `worker-count` | 向下游执行 SQL 的并发度（可选，默认值为 `16`）       |
+| `max-txn-row`  | 向下游执行 SQL 的 batch 大小（可选，默认值为 `256`） |
+| `ssl-ca`       | 连接下游 MySQL 实例所需的 CA 证书文件路径（可选） |
+| `ssl-cert`     | 连接下游 MySQL 实例所需的证书文件路径（可选） |
+| `ssl-key`      | 连接下游 MySQL 实例所需的证书密钥文件路径（可选） |
+| `time-zone`    | 连接下游 MySQL 实例时使用的时区名称，从 v4.0.8 开始生效。（可选。如果不指定该参数，使用 TiCDC 服务进程的时区；如果指定该参数但使用空值，则表示连接 MySQL 时不指定时区，使用下游默认时区） |
+| `transaction-atomicity`      | 指定事务的原子性级别（可选，默认值为 `table`）。当该值为 `table` 时 TiCDC 保证单表事务的原子性，当该值为 `none` 时 TiCDC 会拆分单表事务 |
+
+
+
+
+## 灾难场景的最终一致性复制
+
+从 v5.3.0 版本开始，TiCDC 支持将上游 TiDB 的增量数据备份到下游集群的 S3 存储或 NFS 文件系统。当上游集群出现了灾难，完全无法使用时，TiCDC 可以将下游集群恢复到最近的一致状态，即提供灾备场景的最终一致性复制能力，确保应用可以快速切换到下游集群，避免数据库长时间不可用，提高业务连续性。
+
+目前，TiCDC 支持将 TiDB 集群的增量数据复制到 TiDB 或兼容 MySQL 的数据库系统（包括 Aurora、MySQL 和 MariaDB）。当上游发生灾难时，如果 TiCDC 正常运行且上游 TiDB 集群没有出现数据复制延迟大幅度增加的情况，下游集群可以在 5 分钟之内恢复集群，并且最多丢失出现问题前 10 秒钟的数据，即 RTO <= 5 mins, P95 RPO <= 10s。
+
+当上游 TiDB 集群出现以下情况时，会导致 TiCDC 延迟上升，进而影响 RPO：
+
+- TPS 短时间内大幅度上升
+- 上游出现大事务或者长事务
+- Reload 或 Upgrade 上游 TiKV 集群或 TiCDC 集群
+- 执行耗时很长的 DDL 语句，例如：add index
+- 使用过于激进的 PD 调度策略，导致频繁 region leader 迁移或 region merge/split
+
+### 使用前提
+
+- 准备好具有高可用的 S3 存储或 NFS 系统，用于存储 TiCDC 的实时增量数据备份文件，在上游发生灾难情况下该文件存储可以访问。
+- TiCDC 对需要具备灾难场景最终一致性的 changefeed 开启该功能，开启方式是在 changefeed 配置文件中增加以下配置：
+
+```toml
+[consistent]
+# 一致性级别，选项有：
+# - none： 默认值，非灾难场景，只有在任务指定 finished-ts 情况下保证最终一致性。
+# - eventual： 使用 redo log，提供上游灾难情况下的最终一致性。
+level = "eventual"
+
+# 单个 redo log 文件大小，单位 MiB，默认值 64，建议该值不超过 128。
+max-log-size = 64
+
+# 刷新或上传 redo log 至 S3 的间隔，单位毫秒，默认 1000，建议范围 500-2000。
+flush-interval = 1000
+
+# 存储 redo log 的形式，包括 nfs（NFS 目录），S3（上传至S3）
+storage = "s3://logbucket/test-changefeed?endpoint=http://$S3_ENDPOINT/"
+```
+
+### 灾难恢复
+
+当上游发生灾难后，需要通过 `cdc redo` 命令在下游手动恢复。恢复流程如下：
+
+1. 确保 TiCDC 进程已经退出，防止在数据恢复过程中上游恢复服务，TiCDC 重新开始同步数据。
+2. 使用 cdc binary 进行数据恢复，具体命令如下：
+
+```shell
+cdc redo apply --tmp-dir="/tmp/cdc/redo/apply" \
+    --storage="s3://logbucket/test-changefeed?endpoint=http://10.0.10.25:24927/" \
+    --sink-uri="mysql://normal:123456@10.0.10.55:3306/"
+```
+
+以上命令中：
+
+- `tmp-dir` ：指定用于下载 TiCDC 增量数据备份文件的临时目录。
+- `storage` ：指定存储 TiCDC 增量数据备份文件的地址，为 S3 或者 NFS 目录。
+- `sink-uri` ：恢复数据到的下游地址。scheme 仅支持 `mysql`。

@@ -232,8 +232,6 @@ mysql root@127.0.0.1:test> show create table test;
 
 TiCDC 创建 changefeed 时会默认指定 `safe-mode` 为 `true`，从而为上游的 `INSERT`/`UPDATE` 语句生成 `REPLACE INTO` 的执行语句。
 
-目前用户暂时无法修改 `safe-mode` 设置，因此该问题暂无解决办法。
-
 ## 数据同步下游的 Sink 为 TiDB 或 MySQL 时，下游数据库的用户需要哪些权限？
 
 Sink 为 TiDB 或 MySQL 时，下游数据库的用户需要以下权限：

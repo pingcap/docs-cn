@@ -1,6 +1,6 @@
 ---
 title: TiCDC 安装部署与集群运维
-summary: 了解 TiCDC 软硬件环境要求以及如何安装部署 TiCDC。
+summary: 了解 TiCDC 软硬件环境要求以及如何安装部署和运维 TiCDC 集群。
 ---
 
 # TiCDC 安装部署与集群运维
@@ -40,54 +40,38 @@ cdc_servers:
 
 ## 使用 TiUP 在原有 TiDB 集群上新增或扩容 TiCDC 组件
 
-目前也支持在原有 TiDB 集群上使用 TiUP 新增 TiCDC 组件，操作步骤如下：
+TiUP 支持在原有 TiDB 集群上新增和扩容 TiCDC 组件，操作步骤如下：
 
 1. 首先确认当前 TiDB 的版本支持 TiCDC，否则需要先升级 TiDB 集群至 4.0.0 rc.1 或更新版本。TiCDC 在 4.0.6 版本已经 GA，建议使用 4.0.6 及以后的版本。
 
-2. 参考[扩容 TiDB/TiKV/PD/TiCDC 节点](/scale-tidb-using-tiup.md#扩容-ticdc-节点)章节对 TiCDC 进行部署。
+2. 参考[扩容 TiCDC 节点](/scale-tidb-using-tiup.md#扩容-ticdc-节点)章节对 TiCDC 进行部署。
 
 ## 使用 TiUP 在原有 TiDB 集群上移除或缩容 TiCDC 组件
 
+TiUP 支持在原有 TiDB 集群上移除和缩容 TiCDC 组件，请参考[缩容 TiCDC 节点](/scale-tidb-using-tiup.md#缩容-ticdc-节点)
+
 ## 使用 TiUP 升级 TiCDC 集群
 
-
-TiCDC 从 v6.3.0 版本开始支持滚动升级，使用 TiUP 对 TiCDC 集群进行滚动升级，能够保证同步延迟稳定，不发生剧烈波动。该功能要求如下：
-
-* 集群中至少有两个正在运行的 TiCDC 实例。
-* TiUP 版本至少为 v1.11.0。
-
-满足上述条件后，即可执行 `tiup cluster upgrade` 命令对集群进行滚动升级：
-
-```shell
-tiup cluster upgrade test-cluster ${target-version} --transfer-timeout 600
-```
-
-## 使用 TiUP 扩锁容 TiCDC 集群
-
-## 使用 TiUP 终止和启动 TiCDC 节点
-
-## 使用 TiUP 变更 TiCDC 集群配置
-
-
-
-## 使用 TiUP 升级 TiCDC
-
-本部分介绍如何使用 TiUP 来升级 TiCDC 集群。在以下例子中，假设需要将 TiCDC 组件和整个 TiDB 集群升级到 v6.3.0。
+TiUP 支持升级 TiDB 集群，包括 TiCDC 组件。执行升级指令时，TiUP 会自动升级 TiCDC 组件，无需额外操作。操作示例如下，将命令中的 `<cluster-name>` 替换为集群名字，`<cluster-version>` 替换为目标版本号（例如：v6.3.0）：
 
 {{< copyable "shell-regular" >}}
 
 ```shell
 tiup update --self && \
 tiup update --all && \
-tiup cluster upgrade <cluster-name> v6.3.0
+tiup cluster upgrade <cluster-name> <cluster-version> --transfer-timeout 600
 ```
 
 ### 升级的注意事项
 
 * TiCDC v4.0.2 对 `changefeed` 的配置做了调整，请参阅[配置文件兼容注意事项](/ticdc/manage-ticdc.md#配置文件兼容性的注意事项)。
 * 升级期间遇到的问题及其解决办法，请参阅[使用 TiUP 升级 TiDB](/upgrade-tidb-using-tiup.md#4-升级-faq)。
+* TiCDC 自 v6.3.0 起支持滚动升级，使用 TiUP 升级 TiCDC 节点期间，能够保证同步延迟稳定，不发生剧烈波动。满足以下条件将自动启用滚动升级：
+  * TiCDC 版本大于等于 v6.3.0
+  * TiUP 版本大于等于 v1.11.0
+  * 集群中至少有两个正在运行的 TiCDC 实例
 
-## 使用 TiUP 修改 TiCDC 配置
+## 使用 TiUP 变更 TiCDC 集群配置
 
 本节介绍如何使用 TiUP 的 [`tiup cluster edit-config`](/tiup/tiup-component-cluster-edit-config.md) 命令来修改 TiCDC 的配置。在以下例子中，假设需要把 TiCDC 的 `gc-ttl` 从默认值 `86400` 修改为 `3600`，即 1 小时。
 
@@ -116,45 +100,42 @@ tiup cluster edit-config <cluster-name>
 
 修改完毕后执行 `tiup cluster reload -R cdc` 命令重新加载配置。
 
+
+## 使用 TiUP 终止和启动 TiCDC 节点
+
+ - 终止 TiCDC 节点：`tiup cluster stop -R cdc`
+ - 启动 TiCDC 节点：`tiup cluster start -R cdc`
+ - 重启 TiCDC 节点：`tiup cluster restart -R cdc`
+
 ## 使用加密传输 (TLS) 功能
 
 请参阅[为 TiDB 组件间通信开启加密传输](/enable-tls-between-components.md)。
 
-## 使用 `cdc cli` 工具来管理集群状态和数据同步
+## 使用 TiCDC 命令行工具来查看集群状态
 
-本部分介绍如何使用 `cdc cli` 工具来管理集群状态和数据同步。`cdc cli` 是指通过 `cdc` binary 执行 `cli` 子命令。在以下描述中，通过 `cdc` binary 直接执行 `cli` 命令，TiCDC 的监听 IP 地址为 `10.0.10.25`，端口为 `8300`。
+本部分介绍如何使用 TiCDC 命令行工具来管理集群状态。执行以下命令来查看 TiCDC 集群运行状态，注意需要将 `<version>` 替换为 TiCDC 集群版本：
 
-> **注意：**
->
-> TiCDC 监听的 IP 和端口对应为 `cdc server` 启动时指定的 `--addr` 参数。从 TiCDC v6.2.0 开始，`cdc cli` 将通过 TiCDC 的 Open API 直接与 TiCDC server 进行交互，你可以使用 `--server` 参数指定 TiCDC 的 server 地址。`--pd` 参数将被废弃，不再推荐使用。
+{{< copyable "shell-regular" >}}
 
-如果你使用的 TiCDC 是用 TiUP 部署的，需要将以下命令中的 `cdc cli` 替换为 `tiup ctl cdc`。
+```shell
+tiup ctl:<version> cdc capture list --server=http://10.0.10.25:8300
+```
 
-### 管理 TiCDC 服务进程 (`capture`)
+```
+[
+  {
+    "id": "806e3a1b-0e31-477f-9dd6-f3f2c570abdd",
+    "is-owner": true,
+    "address": "127.0.0.1:8300"
+  },
+  {
+    "id": "ea2a4203-56fe-43a6-b442-7b295f458ebc",
+    "is-owner": false,
+    "address": "127.0.0.1:8301"
+  }
+]
+```
 
-- 查询 `capture` 列表：
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    cdc cli capture list --server=http://10.0.10.25:8300
-    ```
-
-    ```
-    [
-      {
-        "id": "806e3a1b-0e31-477f-9dd6-f3f2c570abdd",
-        "is-owner": true,
-        "address": "127.0.0.1:8300"
-      },
-      {
-        "id": "ea2a4203-56fe-43a6-b442-7b295f458ebc",
-        "is-owner": false,
-        "address": "127.0.0.1:8301"
-      }
-    ]
-    ```
-
-    - `id`：服务进程的 ID。
-    - `is-owner`：表示该服务进程是否为 owner 节点。
-    - `address`：该服务进程对外提供接口的地址。
+- `id`：服务进程的 ID。
+- `is-owner`：表示该服务进程是否为 owner 节点。
+- `address`：该服务进程对外提供接口的地址。
