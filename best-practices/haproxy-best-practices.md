@@ -10,20 +10,24 @@ This document describes best practices for configuration and usage of [HAProxy](
 
 ![HAProxy Best Practices in TiDB](/media/haproxy.jpg)
 
+> **Note:**
+>
+> The minimum version of HAProxy that works with all versions of TiDB is v1.5. Between v1.5 and v2.1, you need to set the `post-41` option in `mysql-check`. It is recommended to use HAProxy v2.2 or newer.
+
 ## HAProxy overview
 
 HAProxy is free, open-source software written in C language that provides a high availability load balancer and proxy server for TCP and HTTP-based applications. Because of its fast and efficient use of CPU and memory, HAProxy is now widely used by many well-known websites such as GitHub, Bitbucket, Stack Overflow, Reddit, Tumblr, Twitter, Tuenti, and AWS (Amazon Web Services).
 
-HAProxy is written in the year 2000 by Willy Tarreau, the core contributor to the Linux kernel, who is still responsible for the maintenance of the project and provides free software updates in the open-source community. In this guide, HAProxy [2.5.0](https://www.haproxy.com/blog/announcing-haproxy-2-5/) is used. It is recommended to use the latest stable version. See [the released version of HAProxy](http://www.haproxy.org/) for details.
+HAProxy is written in the year 2000 by Willy Tarreau, the core contributor to the Linux kernel, who is still responsible for the maintenance of the project and provides free software updates in the open-source community. In this guide, HAProxy [2.6](https://www.haproxy.com/blog/announcing-haproxy-2-6/) is used. It is recommended to use the latest stable version. See [the released version of HAProxy](http://www.haproxy.org/) for details.
 
 ## Basic features
 
-- [High Availability](http://cbonte.github.io/haproxy-dconv/2.5/intro.html#3.3.4): HAProxy provides high availability with support for a graceful shutdown and a seamless switchover;
-- [Load Balancing](http://cbonte.github.io/haproxy-dconv/2.5/configuration.html#4.2-balance): Two major proxy modes are supported: TCP, also known as layer 4, and HTTP, also known as layer 7. No less than 9 load balancing algorithms are supported, such as roundrobin, leastconn and random;
-- [Health Check](http://cbonte.github.io/haproxy-dconv/2.5/configuration.html#5.2-check): HAProxy periodically checks the status of HTTP or TCP mode of the server;
-- [Sticky Session](http://cbonte.github.io/haproxy-dconv/2.5/intro.html#3.3.6): HAProxy can stick a client to a specific server for the duration when the application does not support sticky sessions;
-- [SSL](http://cbonte.github.io/haproxy-dconv/2.5/intro.html#3.3.2): HTTPS communication and resolution are supported;
-- [Monitoring and Statistics](http://cbonte.github.io/haproxy-dconv/2.5/intro.html#3.3.3): Through the web page, you can monitor the service state and traffic flow in real time.
+- [High Availability](http://cbonte.github.io/haproxy-dconv/2.6/intro.html#3.3.4): HAProxy provides high availability with support for a graceful shutdown and a seamless switchover;
+- [Load Balancing](http://cbonte.github.io/haproxy-dconv/2.6/configuration.html#4.2-balance): Two major proxy modes are supported: TCP, also known as layer 4, and HTTP, also known as layer 7. No less than 9 load balancing algorithms are supported, such as roundrobin, leastconn and random;
+- [Health Check](http://cbonte.github.io/haproxy-dconv/2.6/configuration.html#5.2-check): HAProxy periodically checks the status of HTTP or TCP mode of the server;
+- [Sticky Session](http://cbonte.github.io/haproxy-dconv/2.6/intro.html#3.3.6): HAProxy can stick a client to a specific server for the duration when the application does not support sticky sessions;
+- [SSL](http://cbonte.github.io/haproxy-dconv/2.6/intro.html#3.3.2): HTTPS communication and resolution are supported;
+- [Monitoring and Statistics](http://cbonte.github.io/haproxy-dconv/2.6/intro.html#3.3.3): Through the web page, you can monitor the service state and traffic flow in real time.
 
 ## Before you begin
 
@@ -73,24 +77,24 @@ yum -y install epel-release gcc systemd-devel
 
 ## Deploy HAProxy
 
-You can easily use HAProxy to configure and set up a load-balanced database environment. This section shows general deployment operations. You can customize the [configuration file](http://cbonte.github.io/haproxy-dconv/2.5/configuration.html) based on your actual scenario.
+You can easily use HAProxy to configure and set up a load-balanced database environment. This section shows general deployment operations. You can customize the [configuration file](http://cbonte.github.io/haproxy-dconv/2.6/configuration.html) based on your actual scenario.
 
 ### Install HAProxy
 
-1. Download the package of the HAProxy 2.5.0 source code:
+1. Download the package of the HAProxy 2.6.2 source code:
 
     {{< copyable "shell-regular" >}}
 
     ```bash
-    wget https://github.com/haproxy/haproxy/archive/refs/tags/v2.5.0.zip
+    wget https://www.haproxy.org/download/2.6/src/haproxy-2.6.2.tar.gz
     ```
 
-2. Unzip the package:
+2. Extract the package:
 
     {{< copyable "shell-regular" >}}
 
     ```bash
-    unzip v2.5.0.zip
+    tar zxf haproxy-2.6.2.tar.gz
     ```
 
 3. Compile the application from the source code:
@@ -98,7 +102,7 @@ You can easily use HAProxy to configure and set up a load-balanced database envi
     {{< copyable "shell-regular" >}}
 
     ```bash
-    cd haproxy-2.5.0
+    cd haproxy-2.6.2
     make clean
     make -j 8 TARGET=linux-glibc USE_THREAD=1
     make PREFIX=${/app/haproxy} SBINDIR=${/app/haproxy/bin} install  # Replace `${/app/haproxy}` and `${/app/haproxy/bin}` with your custom directories.
@@ -110,6 +114,7 @@ You can easily use HAProxy to configure and set up a load-balanced database envi
 
     ```bash
     echo 'export PATH=/app/haproxy/bin:$PATH' >> /etc/profile
+    . /etc/profile
     ```
 
 5. Check whether the installation is successful:
@@ -159,7 +164,7 @@ haproxy --help
 | `-x <unix_socket>` | Connects to the specified socket and retrieves all the listening sockets from the old process. Then, these sockets are used instead of binding new ones. |
 | `-S <bind>[,<bind_options>...]` | In master-worker mode, creates a master CLI. This CLI enables access to the CLI of every worker. Useful for debugging, it's a convenient way of accessing a leaving process. |
 
-For more details on HAProxy command line options, refer to [Management Guide of HAProxy](http://cbonte.github.io/haproxy-dconv/2.5/management.html) and [General Commands Manual of HAProxy](https://manpages.debian.org/buster-backports/haproxy/haproxy.1.en.html).
+For more details on HAProxy command line options, refer to [Management Guide of HAProxy](http://cbonte.github.io/haproxy-dconv/2.6/management.html) and [General Commands Manual of HAProxy](https://manpages.debian.org/buster-backports/haproxy/haproxy.1.en.html).
 
 ### Configure HAProxy
 
