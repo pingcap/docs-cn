@@ -432,7 +432,7 @@ Add a separate rule for the row key of the table and limit `count` to `2`. Use `
 
 ### Scenario 4: Add two follower replicas for a table in the Beijing node with high-performance disks
 
-The following example shows a more complicated `label_constraints` configuration. In this rule, the replicas must be placed in the `bj1` or `bj2` machine room, and the disk type must not be `ssd`.
+The following example shows a more complicated `label_constraints` configuration. In this rule, the replicas must be placed in the `bj1` or `bj2` machine room, and the disk type must be `nvme`.
 
 {{< copyable "" >}}
 
@@ -446,7 +446,7 @@ The following example shows a more complicated `label_constraints` configuration
   "count": 2,
   "label_constraints": [
     {"key": "zone", "op": "in", "values": ["bj1", "bj2"]},
-    {"key": "disk", "op": "notIn", "values": ["ssd"]}
+    {"key": "disk", "op": "in", "values": ["nvme"]}
   ],
   "location_labels": ["host"]
 }
