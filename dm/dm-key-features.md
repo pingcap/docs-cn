@@ -1,10 +1,10 @@
 ---
-title: Key Features
+title: Key Features of TiDB Data Migration
 summary: Learn about the key features of DM and appropriate parameter configurations.
 aliases: ['/docs/tidb-data-migration/dev/feature-overview/']
 ---
 
-# Key Features
+# Key Features of TiDB Data Migration
 
 This document describes the data migration features provided by TiDB Data Migration (DM) and introduces appropriate parameter configurations.
 

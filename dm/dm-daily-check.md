@@ -1,10 +1,10 @@
 ---
-title: Daily Check
+title: Daily Check for TiDB Data Migration
 summary: Learn about the daily check of TiDB Data Migration (DM).
 aliases: ['/docs/tidb-data-migration/dev/daily-check/']
 ---
 
-# Daily Check
+# Daily Check for TiDB Data Migration
 
 This document summarizes how to perform a daily check on TiDB Data Migration (DM).
 

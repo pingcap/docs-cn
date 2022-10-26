@@ -1,9 +1,9 @@
 ---
-title: Create a Data Source
+title: Create a Data Source for TiDB Data Migration
 summary: Learn how to create a data source for Data Migration (DM).
 ---
 
-# Create a Data Source
+# Create a Data Source for TiDB Data Migration
 
 > **Note:**
 >

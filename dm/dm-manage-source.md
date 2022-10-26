@@ -1,9 +1,9 @@
 ---
-title: Manage Data Source Configurations
+title: Manage Data Source Configurations in TiDB Data Migration
 summary: Learn how to manage upstream MySQL instances in TiDB Data Migration.
 ---
 
-# Manage Data Source Configurations
+# Manage Data Source Configurations in TiDB Data Migration
 
 This document introduces how to manage data source configurations, including encrypting the MySQL password, operating the data source, and changing the bindings between upstream MySQL instances and DM-workers using [dmctl](/dm/dmctl-introduction.md).
 

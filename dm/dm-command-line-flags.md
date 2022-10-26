@@ -1,9 +1,9 @@
 ---
-title: Command-line Flags
+title: TiDB Data Migration Command-line Flags
 summary: Learn about the command-line flags in DM.
 ---
 
-# Command-line Flags
+# TiDB Data Migration Command-line Flags
 
 This document introduces DM's command-line flags.
 

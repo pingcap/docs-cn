@@ -1,11 +1,11 @@
 ---
-title: Generate Self-signed Certificates
+title: Generate Self-signed Certificates for TiDB Data Migration
 summary: Use `openssl` to generate self-signed certificates.
 ---
 
-# Generate Self-signed Certificates
+# Generate Self-signed Certificates for TiDB Data Migration
 
-This document provides an example of using `openssl` to generate a self-signed certificate. You can also generate certificates and keys that meet requirements according to your demands.
+This document provides an example of using `openssl` to generate a self-signed certificate for TiDB Data Migration (DM). You can also generate certificates and keys that meet requirements according to your demands.
 
 Assume that the topology of the instance cluster is as follows:
 

@@ -1,9 +1,9 @@
 ---
-title: Handle Alerts
+title: Handle Alerts in TiDB Data Migration
 summary: Understand how to deal with the alert information in DM.
 ---
 
-# Handle Alerts
+# Handle Alerts in TiDB Data Migration
 
 This document introduces how to deal with the alert information in DM.
 

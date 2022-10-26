@@ -1,10 +1,10 @@
 ---
-title: Table Selector
+title: Table Selector of TiDB Data Migration
 summary: Learn about Table Selector used by the table routing, binlog event filtering, and column mapping rule of Data Migration.
 aliases: ['/docs/tidb-data-migration/dev/table-selector/']
 ---
 
-# Table Selector
+# Table Selector of TiDB Data Migration
 
 Table selector provides a match rule based on [wildcard characters](https://en.wikipedia.org/wiki/Wildcard_character) for schema/table. To match a specified table, configure `schema-pattern`/`table-pattern`.
 
