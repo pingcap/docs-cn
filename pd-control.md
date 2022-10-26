@@ -1244,7 +1244,7 @@ scheduler config balance-hot-region-scheduler  // 显示 balance-hot-region 调�
 - `rank-formula-version` 适用于热点调度，其用来确定调度策略的算法版本，支持的值有 `["v1", "v2"]`。目前该配置的默认值为 `v2`。
 
     - `v1` 版本为 v6.3.0 之前的策略，主要关注调度是否降低了不同 Store 之间的负载差值，以及是否在另一维度引入副作用。
-    - `v2` 版本是 v6.3.0 引入的实验特性算法，主要关注 Store 之间均衡度的提升率，同时降低了对副作用的关注度。对比 `strict-picking-store` 为 `true` 的 `v1` 算法，`v2` 版本更注重优先均衡第一维度。对比 `strict-picking-store` 为 `false` 的 `v1` 算法，`v2` 版本兼顾了第二维度的均衡。
+    - `v2` 版本是 v6.3.0 引入的实验特性算法，在 v6.4.0 正式发布，主要关注 Store 之间均衡度的提升率，同时降低了对副作用的关注度。对比 `strict-picking-store` 为 `true` 的 `v1` 算法，`v2` 版本更注重优先均衡第一维度。对比 `strict-picking-store` 为 `false` 的 `v1` 算法，`v2` 版本兼顾了第二维度的均衡。
     - `strict-picking-store` 为 `true` 的 `v1` 版本算法较为保守，只有当存在两个维度的负载都偏高的 Store 时才能产生调度。在特定场景下有可能因为维度冲突导致无法继续均衡，需要将 `strict-picking-store` 改为 `false` 才能在第一维度取得更好的均衡效果。`v2` 版本算法则可以在两个维度都取得更好的均衡效果，并减少无效调度。
 
     ```bash
