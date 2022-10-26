@@ -210,7 +210,8 @@ Configuration items related to log.
 ### `slow-threshold`
 
 - Outputs the threshold value of consumed time in the slow log.
-- Default value: `300ms`
+- Default value: `300`
+- Unit: Milliseconds
 - If the value in a query is larger than the default value, it is a slow query and is output to the slow log.
 
 ### `record-plan-in-slow-log`
