@@ -133,7 +133,7 @@ MySQL [test]> select @@last_plan_from_cache;
 ```
 
 ## Prepared Plan Cache 的内存管理
-使用 Prepared Plan Cache 会有一定的内存开销，可以通过 Grafana 中的 [`Plan Cache Memory Usage`](/grafana-tidb-dashboard.md) 查看每台 TiDB 实例上所有 `SESSION` 所缓存的计划占用的总内存。
+使用 Prepared Plan Cache 会有一定的内存开销，可以通过 Grafana 中的 [`Plan Cache Memory Usage`](/grafana-tidb-dashboard.md)查看每台 TiDB 实例上所有 `SESSION` 所缓存的计划占用的总内存。
 
 > **注意：**
 >
