@@ -20,7 +20,7 @@ aliases: ['/docs-cn/dev/auto-increment/']
 
 > **注意：**
 >
-> 如果要求自增编号单调，并且 TiDB 版本在 v6.4.0 及以上，推荐使用 [MySQL 兼容模式](/auto-increment.md#MySQL-兼容模式)
+> 如果要求自增编号单调，并且 TiDB 版本在 v6.4.0 及以上，推荐使用 [MySQL 兼容模式](/auto-increment.md#mysql-兼容模式)。
 
 {{< copyable "sql" >}}
 
