@@ -232,7 +232,7 @@ mysql-instances:
   - source-id: "mysql-01"               # 数据源 ID，即 source1.yaml 中的 source-id
     block-allow-list: "listA"           # 引入上面黑白名单配置。
 #       syncer-config-name: "global"    # 引用上面的 syncers 增量数据配置。
-    meta:                               # `task-mode` 为 `incremental` 且下游数据库的 `checkpoint` 不存在时 binlog 迁移开始的位置; 如果 checkpoint 存在，则以 `checkpoint` 为准。如果 checkpoint 不存在且未配置该项，则从上游当前最新的 binlog 位置开始迁移。
+    meta:                               # `task-mode` 为 `incremental` 且下游数据库的 `checkpoint` 不存在时 binlog 迁移开始的位置; 如果 checkpoint 存在，则以 `checkpoint` 为准。如果 checkpoint 不存在且 meta 项不存在，则从上游当前最新的 binlog 位置开始迁移。
       binlog-name: "mysql-bin.000004"   # “Step 1. 导出 Aurora 快照文件到 Amazon S3” 中记录的日志位置，当上游存在主从切换时，必须使用 gtid。
       binlog-pos: 109227
       # binlog-gtid: "09bec856-ba95-11ea-850a-58f2b4af5188:1-9"
