@@ -36,7 +36,7 @@ TiFlash 支持静态加密。数据密钥由 TiFlash 生成。TiFlash（包括 T
 
 如果 TiFlash 中部署了 Grafana 组件，可以查看 **TiFlash-Proxy-Details** -> **Encryption**。
 
-SM4 加密只在 v6.3.0 及之后版本的 TiFlash 上支持。v6.3.0 之前的 TiFlash 仅支持 AES 加密。
+SM4 加密只在 v6.4.0 及之后版本的 TiFlash 上支持。v6.4.0 之前的 TiFlash 仅支持 AES 加密。
 
 ### PD
 
