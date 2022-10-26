@@ -1,16 +1,37 @@
 ---
 title: Changefeed 日志过滤器
-summary: TODO
+summary: 了解 TiCDC 的表过滤器和事件过滤器使用方法。
 ---
 
-# Title
+# Changefeed 日志过滤器
 
-TODO
+TiCDC 支持基于表和事件两个维度的过滤功能，本文分别介绍两种过滤器的使用方法。
 
+### Table Filter 表过滤器
 
+TiCDC 支持基于库表名的过滤功能，你可以通过下列配置来选定或过滤掉指定的表：
 
+```toml
+[filter]
+# 过滤器规则
+rules = ['*.*', '!test.*']
+```
 
-### Event Filter 配置规则 <span class="version-mark">从 v6.2.0 版本开始引入</span>
+常见的过滤器规则示例：
+
+- `rules = ['*.*']`
+  - 同步所有的表（不包含系统表）
+- `rules = ['test1.*']`
+  - 同步库 `test1` 下的所有表
+- `rules = ['*.*', '!scm1.tbl2']`
+  - 同步所有的表但排除表 `scm1.tbl2`
+- `rules = ['scm1.tbl2', 'scm1.tbl3']`
+  - 只同步表 `scm1.tbl2` 和 `scm1.tbl3`
+- `rules = ['scm1.tidb_*']`
+  - 同步库 `scm1` 下所有表名前缀为 `tidb_` 的表
+- 更多用法说明参见：[库表过滤语法](/table-filter.md#表库过滤语法)
+
+### Event Filter 事件过滤器 <span class="version-mark">从 v6.2.0 版本开始引入</span>
 
 TiCDC 在 v6.2.0 中新增了事件过滤器功能，你可以通过配置该规则来过滤符合指定条件的 DML 和 DDL 事件。
 
@@ -30,11 +51,9 @@ ignore-update-old-value-expr = "age < 18 or name = 'lili'" # 过滤掉旧值 age
 ignore-update-new-value-expr = "gender = 'male' and age > 18" # 过滤掉新值 gender = 'male' 且 age > 18 的 update DML
 ```
 
-事件过滤器的规则应该写在 filter 配置项之下，具体写法可以参考[同步任务配置文件描述](#同步任务配置文件描述)。
-
 配置参数说明：
 
-- `matcher`: 该事件过滤器所要匹配的数据库名和表名，其匹配规则和[表库过滤规则](/table-filter.md)相一致。
+- `matcher`: 该事件过滤器所要匹配的数据库名和表名，其匹配规则和[表库过滤规则](/table-filter.md#表库过滤语法)相一致。
 - `ignore-event`:要过滤的事件类型，它是一个字符串数组，可以配置多个事件类型。目前支持的类型如下表所示:
 
 | Event           | 分类 | 别名 |说明                    |

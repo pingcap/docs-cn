@@ -512,7 +512,6 @@
         - [同步数据到对象存储或 NFS](/ticdc/ticdc-sink-to-s3.md)
       - [管理 Changefeed](/ticdc/ticdc-manage-changefeed.md)
       - [日志过滤器](/ticdc/ticdc-filter.md)
-      - [旧文档](/ticdc/manage-ticdc.md)
     - 监控告警
       - [监控指标](/ticdc/monitor-ticdc.md)
       - [报警规则](/ticdc/ticdc-alert-rules.md)

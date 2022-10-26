@@ -40,15 +40,35 @@ cdc_servers:
 
 ## 使用 TiUP 在原有 TiDB 集群上新增或扩容 TiCDC 组件
 
-TiUP 支持在原有 TiDB 集群上新增和扩容 TiCDC 组件，操作步骤如下：
+扩容的方式与部署 TiCDC 集群的方式类似，推荐使用 TiUP 工具完成。 首先，编写一个名称为scale-out.yaml 的配置文件，包含需要扩容的节点的配置信息，下面是一个示例：
 
-1. 首先确认当前 TiDB 的版本支持 TiCDC，否则需要先升级 TiDB 集群至 4.0.0 rc.1 或更新版本。TiCDC 在 4.0.6 版本已经 GA，建议使用 4.0.6 及以后的版本。
+```
+cdc_servers:
+  - host: 10.1.1.1
+    gc-ttl: 86400
+    data_dir: /data/deploy/install/data/cdc-8300
+  - host: 10.1.1.2
+    gc-ttl: 86400
+    data_dir: /data/deploy/install/data/cdc-8300
+```
 
-2. 参考[扩容 TiCDC 节点](/scale-tidb-using-tiup.md#扩容-ticdc-节点)章节对 TiCDC 进行部署。
+之后，在 TiUP 中控机上执行类似下面的命令进行扩容。
+
+```
+tiup cluster scale-out <cluster-name> scale-out.yaml
+```
+
+更多用例说明请参考[扩容 TiCDC 节点](/scale-tidb-using-tiup.md#扩容-ticdc-节点)。
 
 ## 使用 TiUP 在原有 TiDB 集群上移除或缩容 TiCDC 组件
 
-TiUP 支持在原有 TiDB 集群上移除和缩容 TiCDC 组件，请参考[缩容 TiCDC 节点](/scale-tidb-using-tiup.md#缩容-ticdc-节点)
+推荐使用 TiUP 完成对 TiCDC 集群节点的所容。 使用类似下面的命令完成缩容。
+
+```
+tiup cluster scale-in <cluster-name> --node 10.0.1.4:8300
+```
+
+更多用例说明请参考[缩容 TiCDC 节点](/scale-tidb-using-tiup.md#缩容-ticdc-节点)
 
 ## 使用 TiUP 升级 TiCDC 集群
 

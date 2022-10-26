@@ -1,13 +1,13 @@
 ---
 title: 同步数据到 MySQL 兼容数据库
-summary: TODO
+summary: 了解如何使用 TiCDC 将数据同步到 TiDB 或 MySQL
 ---
 
 # 同步数据到 MySQL 兼容数据库
 
-TODO
+本文介绍如何使用 TiCDC 创建一个将增量数据复制到下游 TiDB 数据库，或其他兼容 MySQL 协议数据库的 Changefeed。同时介绍了如何使用 TiCDC 灾难场景的最终一致性复制功能。
 
-#### 创建同步任务
+## 创建同步任务，复制增量数据到 MySQL 兼容数据库
 
 使用以下命令来创建同步任务：
 
@@ -17,8 +17,7 @@ TODO
 cdc cli changefeed create \
     --server=http://10.0.10.25:8300 \
     --sink-uri="mysql://root:123456@127.0.0.1:3306/" \
-    --changefeed-id="simple-replication-task" \
-    --sort-engine="unified"
+    --changefeed-id="simple-replication-task" 
 ```
 
 ```shell
@@ -28,26 +27,21 @@ Info: {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":
 ```
 
 - `--changefeed-id`：同步任务的 ID，格式需要符合正则表达式 `^[a-zA-Z0-9]+(\-[a-zA-Z0-9]+)*$`。如果不指定该 ID，TiCDC 会自动生成一个 UUID（version 4 格式）作为 ID。
-- `--sink-uri`：同步任务下游的地址，需要按照以下格式进行配置，目前 scheme 支持 `mysql`、`tidb` 和 `kafka`。
-
-    {{< copyable "" >}}
-
-    ```
-    [scheme]://[userinfo@][host]:[port][/path]?[query_parameters]
-    ```
-
-    URI 中包含特殊字符时，如 `! * ' ( ) ; : @ & = + $ , / ? % # [ ]`，需要对 URI 特殊字符进行转义处理。你可以在 [URI Encoder](https://meyerweb.com/eric/tools/dencoder/) 中对 URI 进行转义。
-
+- `--sink-uri`：同步任务下游的地址，详见 TODO。
 - `--start-ts`：指定 changefeed 的开始 TSO。TiCDC 集群将从这个 TSO 开始拉取数据。默认为当前时间。
 - `--target-ts`：指定 changefeed 的目标 TSO。TiCDC 集群拉取数据直到这个 TSO 停止。默认为空，即 TiCDC 不会自动停止。
-- `--config`：指定 changefeed 配置文件。
+- `--config`：指定 changefeed 配置文件，详见 TODO。
 
+## Sink URI 配置 `mysql`/`tidb`
 
+Sink URI 用于指定 TiCDC 目标系统的连接信息，遵循以下格式：
 
+{{< copyable "" >}}
+```
+[scheme]://[userinfo@][host]:[port][/path]?[query_parameters]
+```
 
-#### Sink URI 配置 `mysql`/`tidb`
-
-配置样例如下所示：
+一个通用的配置样例如下所示：
 
 {{< copyable "shell-regular" >}}
 
@@ -71,8 +65,8 @@ URI 中可配置的参数如下：
 | `time-zone`    | 连接下游 MySQL 实例时使用的时区名称，从 v4.0.8 开始生效。（可选。如果不指定该参数，使用 TiCDC 服务进程的时区；如果指定该参数但使用空值，则表示连接 MySQL 时不指定时区，使用下游默认时区） |
 | `transaction-atomicity`      | 指定事务的原子性级别（可选，默认值为 `table`）。当该值为 `table` 时 TiCDC 保证单表事务的原子性，当该值为 `none` 时 TiCDC 会拆分单表事务 |
 
-
-
+> **注意：**
+> URI 中包含特殊字符时，如 `! * ' ( ) ; : @ & = + $ , / ? % # [ ]`，需要对 URI 特殊字符进行转义处理。你可以在 [URI Encoder](https://meyerweb.com/eric/tools/dencoder/) 中对 URI 进行转义。
 
 ## 灾难场景的最终一致性复制
 

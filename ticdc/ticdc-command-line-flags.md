@@ -29,3 +29,37 @@ summary: TODO
 
 TODO
 
+
+## 创建同步任务
+
+使用以下命令来创建同步任务：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+cdc cli changefeed create \
+    --server=http://10.0.10.25:8300 \
+    --sink-uri="mysql://root:123456@127.0.0.1:3306/" \
+    --changefeed-id="simple-replication-task" 
+```
+
+```shell
+Create changefeed successfully!
+ID: simple-replication-task
+Info: {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":"2020-03-12T22:04:08.103600025+08:00","start-ts":415241823337054209,"target-ts":0,"admin-job-type":0,"sort-engine":"unified","sort-dir":".","config":{"case-sensitive":true,"filter":{"rules":["*.*"],"ignore-txn-start-ts":null,"ddl-allow-list":null},"mounter":{"worker-num":16},"sink":{"dispatchers":null},"scheduler":{"type":"table-number","polling-time":-1}},"state":"normal","history":null,"error":null}
+```
+
+- `--changefeed-id`：同步任务的 ID，格式需要符合正则表达式 `^[a-zA-Z0-9]+(\-[a-zA-Z0-9]+)*$`。如果不指定该 ID，TiCDC 会自动生成一个 UUID（version 4 格式）作为 ID。
+- `--sink-uri`：同步任务下游的地址，需要按照以下格式进行配置，目前 scheme 支持 `mysql`、`tidb` 和 `kafka`。
+
+    {{< copyable "" >}}
+
+    ```
+    [scheme]://[userinfo@][host]:[port][/path]?[query_parameters]
+    ```
+
+    URI 中包含特殊字符时，如 `! * ' ( ) ; : @ & = + $ , / ? % # [ ]`，需要对 URI 特殊字符进行转义处理。你可以在 [URI Encoder](https://meyerweb.com/eric/tools/dencoder/) 中对 URI 进行转义。
+
+- `--start-ts`：指定 changefeed 的开始 TSO。TiCDC 集群将从这个 TSO 开始拉取数据。默认为当前时间。
+- `--target-ts`：指定 changefeed 的目标 TSO。TiCDC 集群拉取数据直到这个 TSO 停止。默认为空，即 TiCDC 不会自动停止。
+- `--config`：指定 changefeed 配置文件。

@@ -1,16 +1,13 @@
 ---
 title: 管理 Changefeed
-summary: TODO
+summary: 了解 Changefeed 相关的各种管理手段
 ---
 
-# Title
+# 管理 Changefeed
 
-TODO
+本文介绍 Changefeed 相关的各种管理手段，其中大部分功能是通过 TiCDC 的命令行工具来完成的。如果用户需要，也可以通过 TiCDC 暴露的 HTTP 接口实现类似功能，详细信息参考 [TiCDC OpenAPI](/ticdc/ticdc-open-api.md)。
 
-
-
-
-#### 查询同步任务列表
+## 查询同步任务列表
 
 使用以下命令来查询同步任务列表：
 
@@ -40,7 +37,7 @@ cdc cli changefeed list --server=http://10.0.10.25:8300
     - `removed`: 已删除任务（只在指定 `--all` 选项时才会显示该状态的任务。未指定时，可通过 `query` 查询该状态的任务）
     - `finished`: 任务已经同步到指定 `target-ts`，处于已完成状态（只在指定 `--all` 选项时才会显示该状态的任务。未指定时，可通过 `query` 查询该状态的任务）。
 
-#### 查询特定同步任务
+## 查询特定同步任务
 
 使用 `changefeed query` 命令可以查询特定同步任务（对应某个同步任务的信息和状态），指定 `--simple` 或 `-s` 参数会简化输出，提供最基本的同步状态和 checkpoint 信息。不指定该参数会输出详细的任务配置、同步状态和同步表信息。
 
@@ -144,7 +141,7 @@ cdc cli changefeed query --server=http://10.0.10.25:8300 --changefeed-id=simple-
         - `3`: 任务已删除，接口请求后会结束所有同步 `processor`，并清理同步任务配置信息。同步状态保留，只提供查询，没有其他实际功能。
 - `task-status` 代表查询 changefeed 所分配的各个同步子任务的状态信息。
 
-### 停止同步任务
+## 停止同步任务
 
 使用以下命令来停止同步任务：
 
@@ -158,7 +155,7 @@ cdc cli changefeed pause --server=http://10.0.10.25:8300 --changefeed-id simple-
 
 - `--changefeed-id=uuid` 为需要操作的 `changefeed` ID。
 
-### 恢复同步任务
+## 恢复同步任务
 
 使用以下命令恢复同步任务：
 
@@ -177,7 +174,7 @@ cdc cli changefeed resume --server=http://10.0.10.25:8300 --changefeed-id simple
 > - 若 `--overwrite-checkpoint-ts` 指定的 TSO `t2` 大于 changefeed 的当前 checkpoint TSO `t1`（可通过 `cdc cli changefeed query` 命令获取），则会导致 `t1` 与 `t2` 之间的数据不会同步到下游，造成数据丢失。
 > - 若 `--overwrite-checkpoint-ts` 指定的 TSO `t2` 小于 changefeed 的当前 checkpoint TSO `t1`，则会导致 TiCDC 集群从一个旧的时间点 `t2` 重新拉取数据，可能会造成数据重复（例如 TiCDC 下游为 MQ sink）。
 
-### 删除同步任务
+## 删除同步任务
 
 使用以下命令删除同步任务：
 
@@ -189,7 +186,7 @@ cdc cli changefeed remove --server=http://10.0.10.25:8300 --changefeed-id simple
 
 - `--changefeed-id=uuid` 为需要操作的 `changefeed` ID。
 
-### 更新同步任务配置
+## 更新同步任务配置
 
 TiCDC 从 4.0.4 开始支持非动态修改同步任务配置，修改 changefeed 配置需要按照 `暂停任务 -> 修改配置 -> 恢复任务` 的流程。
 
@@ -208,26 +205,7 @@ cdc cli changefeed resume -c test-cf --server=http://10.0.10.25:8300
 - changefeed 是否使用文件排序和排序目录
 - changefeed 的 `target-ts`
 
-
-
-### 管理同步任务 (`changefeed`)
-
-
-#### 使用同步任务配置文件
-
-如需设置更多同步任务的配置，比如指定同步单个数据表，请参阅[同步任务配置文件描述](#同步任务配置文件描述)。
-
-使用配置文件创建同步任务的方法如下：
-
-{{< copyable "shell-regular" >}}
-
-```shell
-cdc cli changefeed create --server=http://10.0.10.25:8300 --sink-uri="mysql://root:123456@127.0.0.1:3306/" --config changefeed.toml
-```
-
-其中 `changefeed.toml` 为同步任务的配置文件。
-
-### 管理同步子任务处理单元 (`processor`)
+## 管理同步子任务处理单元 (`processor`)
 
 - 查询 `processor` 列表：
 
