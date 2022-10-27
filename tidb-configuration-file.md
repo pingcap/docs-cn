@@ -166,6 +166,16 @@ The TiDB configuration file supports more options than command-line parameters. 
 + If the environment might have isolated network, enabling this parameter can reduce the window of service unavailability.
 + If you cannot accurately determine whether isolation, network interruption, or downtime has occurred, using this mechanism has the risk of misjudgment and causes reduced availability and performance. If network failure has never occurred, it is not recommended to enable this parameter.
 
+### `enable-table-lock` <span class="version-mark">New in v4.0.0</span>
+
+> **Warning:**
+>
+> The table lock is an experimental feature. It is not recommended that you use it in the production environment.
+
++ Controls whether to enable the table lock feature.
++ Default value: `false`
++ The table lock is used to coordinate concurrent access to the same table among multiple sessions. Currently, the `READ`, `WRITE`, and `WRITE LOCAL` lock types are supported. When the configuration item is set to `false`, executing the `LOCK TABLE` or `UNLOCK TABLE` statement does not take effect and returns the "LOCK/UNLOCK TABLES is not supported" warning.
+
 ## Log
 
 Configuration items related to log.
