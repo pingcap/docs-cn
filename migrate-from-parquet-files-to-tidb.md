@@ -29,7 +29,7 @@ Hive 中每个表都能通过标注 `STORED AS PARQUET LOCATION '/path/in/hdfs'`
 
     执行上述语句后，表数据就成功导出到 HDFS 系统里。
 
-2. 使用 `hdfs -get` 命令将 Parquet 文件导出到本地：
+2. 使用 `hdfs dfs -get` 命令将 Parquet 文件导出到本地：
 
     ```shell
     hdfs dfs -get /path/in/hdfs /path/in/local
