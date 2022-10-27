@@ -1,13 +1,13 @@
 ---
 title: Changefeed 概述
-summary: TODO
+summary: 了解 Changefeed 的基本概念和 Changefeed 状态的定义与流转
 ---
 
 # Changefeed 概述
 
-TODO
+Changefeed 是 TiCDC 中的单个同步任务。Changefeed 将一个 TiDB 集群中数张表的变更数据输出到一个指定的下游中。TiCDC 集群可以运行和管理多个 Changefeed。
 
-#### 同步任务状态流转
+## Changefeed 状态流转
 
 同步任务状态标识了同步任务的运行情况。在 TiCDC 运行过程中，同步任务可能会运行出错、手动暂停、恢复，或达到指定的 `TargetTs`，这些行为都可以导致同步任务状态发生变化。本节描述 TiCDC 同步任务的各状态以及状态之间的流转关系。
 
@@ -32,7 +32,7 @@ TODO
 - ⑦ `changefeed` 停滞时间超过 `gc-ttl` 所指定的时长，不可被恢复。
 - ⑧ `changefeed` 尝试自动恢复过程中发生不可恢复的错误。
 
-
+## 操作 Changefeed
 
 本文档介绍如何通过 TiCDC 提供的命令行工具 `cdc cli` 管理 TiCDC 集群和同步任务，并介绍了如何使用 TiUP 来升级和修改 TiCDC 集群的配置。你也可以通过 HTTP 接口，即 TiCDC OpenAPI 来管理 TiCDC 集群和同步任务，详见 [TiCDC OpenAPI](/ticdc/ticdc-open-api.md)。
 
