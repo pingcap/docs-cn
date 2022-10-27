@@ -26,8 +26,6 @@ aliases: ['/docs-cn/dev/join-reorder/','/docs-cn/dev/reference/performance/join-
 
 ![join-reorder-3](/media/join-reorder-3.png)
 
-以上就是当前 TiDB 中使用的 Join Reorder 贪心算法。
-
 ## Join Reorder 动态规划算法实例
 
 仍然以上述例子为例。动态规划算法会枚举所有的可能性，因此相对贪心算法必须从 `t1` 表开始枚举，动态规划算法可以枚举如下的 Join 顺序。
