@@ -19,6 +19,7 @@ aliases: ['/docs-cn/stable/experimental-features-4.0/','/docs-cn/v4.0/experiment
 - 支持表达式索引 (Expression Index) 功能，表达式索引也叫函数索引，在创建索引时索引的字段不一定要是一个具体的列，而可以由一个或者多个列计算出来的表达式。对于快速访问那些基于计算结果的表非常有用。详情参阅：[表达式索引](/sql-statements/sql-statement-create-index.md)。
 - [执行计划缓存](/sql-prepare-plan-cache.md)（v4.0 实验特性）。
 - [Cascades Planner](/system-variables.md#tidb_enable_cascades_planner)：基于 Cascades 框架的自顶向下查询优化器。（v3.0 实验特性）
+- [表级锁 (Table Lock)](/tidb-configuration-file.md#enable-table-lock-从-v400-版本开始引入)（v4.0.0 实验特性）
 
 ## 服务级别功能
 
