@@ -26,7 +26,7 @@ aliases: ['/docs-cn/dev/join-reorder/','/docs-cn/dev/reference/performance/join-
 
 ![join-reorder-3](/media/join-reorder-3.png)
 
-以上就是当前 TiDB 中使用的 Join reorder 贪心算法。
+以上就是当前 TiDB 中使用的 Join Reorder 贪心算法。
 
 ## Join Reorder 动态规划算法实例
 
@@ -36,18 +36,18 @@ aliases: ['/docs-cn/dev/join-reorder/','/docs-cn/dev/reference/performance/join-
 
 当该选择比贪心算法更优时，动态规划算法便可以选择到更优的 Join 顺序。
 
-相应的，因为会枚举所有的可能性，动态规划算法会消耗更多的时间，也会更容易受统计信息影响。
+相应地，因为会枚举所有的可能性，动态规划算法会消耗更多的时间，也会更容易受统计信息影响。
 
 ## Join Reorder 算法的控制
 
 目前 Join Reorder 算法由变量 [`tidb_opt_join_reorder_threshold`](/system-variables.md#tidb_opt_join_reorder_threshold) 控制，当参与 Join Reorder 的节点个数大于该阈值时选择贪心算法，反之选择动态规划算法。
 
-## Join reorder 算法限制
+## Join Reorder 算法限制
 
 当前的 Join Reorder 算法存在如下限制：
 
 - 受结果集的计算算法所限并不会保证一定会选到合适的 Join order
 - 目前默认关闭 Outer Join 的 Join Reorder。如需开启此功能，需要将系统变量 [`tidb_enable_outer_join_reorder`](/system-variables.md#tidb_enable_outer_join_reorder-从-v610-版本开始引入) 设为 `ON`。
-- 动态规划算法目前还无法进行 Outer Join 的 Join Reorder。
+- 目前动态规划算法无法进行 Outer Join 的 Join Reorder。
 
 目前 TiDB 中支持使用 `STRAIGHT_JOIN` 语法来强制指定一种 Join 顺序，参见[语法元素说明](/sql-statements/sql-statement-select.md#语法元素说明)。
