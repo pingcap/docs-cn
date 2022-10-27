@@ -32,6 +32,7 @@ summary: 了解 TiDB 各版本的实验特性。
 + [Cascades Planner](/system-variables.md#tidb_enable_cascades_planner)：基于 Cascades 框架的自顶向下查询优化器。（v3.0 实验特性）
 + [`ALTER TABLE ... COMPACT`](/sql-statements/sql-statement-alter-table-compact.md)。（v6.1.0 实验特性）
 + [使用 `ALTER TABLE` 修改多个列或索引](/system-variables.md#tidb_enable_change_multi_schema)。（v5.0.0 实验特性）
++ [表级锁 (Table Lock)](/tidb-configuration-file.md#enable-table-lock-从-v400-版本开始引入)（v4.0.0 实验特性）
 
 ## 存储
 
