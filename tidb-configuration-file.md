@@ -164,6 +164,16 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 如果确认环境存在网络隔离的可能，开启这个参数可以减少服务不可用的窗口期。
 + 如果无法准确判断隔离、网络中断、宕机等情况，这个机制存在误判情况从而导致可用性、性能降低。如果网络中从未发生过网络故障，不推荐开启此选项。
 
+### `enable-table-lock` <span class="version-mark">从 v4.0.0 版本开始引入</span>
+
+> **警告：**
+>
+> 表级锁 (Table Lock) 为实验特性，不建议在生产环境中使用。
+
++ 控制是否开启表级锁特性。
++ 默认值：false
++ 表级锁用于协调多个 session 之间对同一张表的并发访问。目前已支持的锁种类包括 `READ`、`WRITE` 和 `WRITE LOCAL`。当该配置项为 `false` 时，执行 `LOCK TABLE` 和 `UNLOCK TABLE` 语句不会生效，并且会报 "LOCK/UNLOCK TABLES is not supported" 的警告。
+
 ## log
 
 日志相关的配置项。

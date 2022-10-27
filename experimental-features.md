@@ -34,7 +34,8 @@ summary: 了解 TiDB 各版本的实验特性。
 + [生成列](/generated-columns.md#生成列)。（v2.1 实验特性）
 + [自定义变量](/user-defined-variables.md#用户自定义变量)。（v2.1 实验特性）
 + [Cascades Planner](/system-variables.md#tidb_enable_cascades_planner)：基于 Cascades 框架的自顶向下查询优化器。（v3.0 实验特性）
-+ [元数据锁](/metadata-lock.md) （v6.3.0 实验特性）
++ [表级锁 (Table Lock)](/tidb-configuration-file.md#enable-table-lock-从-v400-版本开始引入)（v4.0.0 实验特性）
++ [元数据锁](/metadata-lock.md)（v6.3.0 实验特性）
 + [Range INTERVAL 分区](/partitioned-table.md#range-interval-分区)（v6.3.0 实验特性）
 + [添加索引加速](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入)（v6.3.0 实验特性）
 
