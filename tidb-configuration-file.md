@@ -141,6 +141,50 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：true
 + 如果所有 TiDB 实例上该选项都设置为 `false`，那么将完全禁用 TiDB 遥测功能，且忽略 [`tidb_enable_telemetry`](/system-variables.md#tidb_enable_telemetry-从-v402-版本开始引入) 系统变量。参阅[遥测](/telemetry.md)了解该功能详情。
 
+<<<<<<< HEAD
+=======
+### `enable-tcp4-only` <span class="version-mark">从 v5.0 版本开始引入</span>
+
++ 控制是否只监听 TCP4。
++ 默认值：false
++ 当使用 LVS 为 TiDB 做负载均衡时，可开启此配置项。这是因为 [LVS 的 TOA 模块](https://github.com/alibaba/LVS/tree/master/kernel/net/toa)可以通过 TCP4 协议从 TCP 头部信息中解析出客户端的真实 IP。
+
+### `enable-enum-length-limit` <span class="version-mark">从 v5.0 版本开始引入</span>
+
++ 是否限制单个 `ENUM` 元素和单个 `SET` 元素的最大长度
++ 默认值：true
++ 当该配置项值为 `true` 时，`ENUM` 和 `SET` 单个元素的最大长度为 255 个字符，[与 MySQL 8 兼容](https://dev.mysql.com/doc/refman/8.0/en/string-type-syntax.html)；当该配置项值为 `false` 时，不对单个元素的长度进行限制，与 TiDB v5.0 之前的版本兼容。
+
+### `graceful-wait-before-shutdown` <span class="version-mark">从 v5.0 版本开始引入</span>
+
+- 指定关闭服务器时 TiDB 等待的秒数，使得客户端有时间断开连接。
+- 默认值：0
+- 在 TiDB 等待服务器关闭期间，HTTP 状态会显示失败，使得负载均衡器可以重新路由流量。
+
+### `enable-global-kill` <span class="version-mark">从 v6.1.0 版本开始引入</span>
+
++ 用于开启 Global Kill（跨节点终止查询或连接）功能。
++ 默认值：true
++ 当该配置项值为 `true` 时，`KILL` 语句和 `KILL TIDB` 语句均能跨节点终止查询或连接，无需担心错误地终止其他查询或连接。当你使用客户端连接到任何一个 TiDB 节点执行 `KILL` 语句或 `KILL TIDB` 语句时，该语句会被转发给对应的 TiDB 节点。当客户端和 TiDB 中间有代理时，`KILL` 语句或 `KILL TIDB` 语句也会被转发给对应的 TiDB 节点执行。目前暂时不支持在 `enable-global-kill` 为 `true` 时用 MySQL 命令行 <kbd>ctrl</kbd>+<kbd>c</kbd> 终止查询或连接。关于 `KILL` 语句的更多信息，请参考 [KILL [TIDB]](/sql-statements/sql-statement-kill.md)。
+
+### `enable-forwarding` <span class="version-mark">从 v5.0.0 版本开始引入</span>
+
++ 控制 TiDB 中的 PD client 以及 TiKV client 在疑似网络隔离的情况下是否通过 follower 将请求转发给 leader。
++ 默认值：false
++ 如果确认环境存在网络隔离的可能，开启这个参数可以减少服务不可用的窗口期。
++ 如果无法准确判断隔离、网络中断、宕机等情况，这个机制存在误判情况从而导致可用性、性能降低。如果网络中从未发生过网络故障，不推荐开启此选项。
+
+### `enable-table-lock` <span class="version-mark">从 v4.0.0 版本开始引入</span>
+
+> **警告：**
+>
+> 表级锁 (Table Lock) 为实验特性，不建议在生产环境中使用。
+
++ 控制是否开启表级锁特性。
++ 默认值：false
++ 表级锁用于协调多个 session 之间对同一张表的并发访问。目前已支持的锁种类包括 `READ`、`WRITE` 和 `WRITE LOCAL`。当该配置项为 `false` 时，执行 `LOCK TABLE` 和 `UNLOCK TABLE` 语句不会生效，并且会报 "LOCK/UNLOCK TABLES is not supported" 的警告。
+
+>>>>>>> 22684373f (add description for enable-table-lock (#11808))
 ## log
 
 日志相关的配置项。
