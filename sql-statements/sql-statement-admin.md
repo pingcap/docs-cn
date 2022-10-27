@@ -16,6 +16,8 @@ This statement is a TiDB extension syntax, used to view the status of TiDB and c
 
 ## DDL related statement
 
+<CustomContent platform="tidb-cloud">
+
 | Statement                                                                                | Description                 |
 |------------------------------------------------------------------------------------------|-----------------------------|
 | [`ADMIN CANCEL DDL JOBS`](/sql-statements/sql-statement-admin-cancel-ddl.md)             | Cancels a currently running DDL jobs. |
@@ -23,8 +25,16 @@ This statement is a TiDB extension syntax, used to view the status of TiDB and c
 | [<code>ADMIN CHECK [TABLE\|INDEX]</code>](/sql-statements/sql-statement-admin-check-table-index.md) | Checks for consistency of a table or index. |
 | [<code>ADMIN SHOW DDL [JOBS\|QUERIES]</code>](/sql-statements/sql-statement-admin-show-ddl.md)      | Shows details about currently running or recently completed DDL jobs. |
 
+</CustomContent>
+
 <CustomContent platform="tidb">
 
+| Statement                                                                                | Description                 |
+|------------------------------------------------------------------------------------------|-----------------------------|
+| [`ADMIN CANCEL DDL JOBS`](/sql-statements/sql-statement-admin-cancel-ddl.md)             | Cancels a currently running DDL jobs. |
+| [`ADMIN CHECKSUM TABLE`](/sql-statements/sql-statement-admin-checksum-table.md)          | Calculates the CRC64 of all rows + indexes of a table. |
+| [<code>ADMIN CHECK [TABLE\|INDEX]</code>](/sql-statements/sql-statement-admin-check-table-index.md) | Checks for consistency of a table or index. |
+| [<code>ADMIN SHOW DDL [JOBS\|QUERIES]</code>](/sql-statements/sql-statement-admin-show-ddl.md)      | Shows details about currently running or recently completed DDL jobs. |
 | [`ADMIN SHOW TELEMETRY`](/sql-statements/sql-statement-admin-show-telemetry.md)      | Shows information that will be reported back to PingCAP as part of the telemetry feature. |
 
 </CustomContent>
