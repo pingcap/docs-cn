@@ -38,7 +38,7 @@ Hive 中每个表都能通过标注 `STORED AS PARQUET LOCATION '/path/in/hdfs'`
     完成导出后，如果你需要将 HDFS 里导出的 Parquet 文件删除，可以直接将这个临时表删掉：
 
     ```sql
-    DROP TABLE test;
+    DROP TABLE temp;
     ```
 
 3. 从 Hive 导出的 Parquet 文件可能不带有 `.parquet` 的后缀，无法被 TiDB Lightning 正确识别。因此，在进行导入之前，需要对导出的文件进行重命名，添加 `.parquet` 后缀。
