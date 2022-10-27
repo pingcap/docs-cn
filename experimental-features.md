@@ -41,6 +41,7 @@ summary: 了解 TiDB 各版本的实验特性。
 ## TiDB 数据共享订阅
 
 + TiCDC 集成第三方生态 [Kafka Connect (Confluent Platform)](/ticdc/integrate-confluent-using-ticdc.md)（v5.0 实验特性）
++ [表级锁 (Table Lock)](/tidb-configuration-file.md#enable-table-lock-从-v400-版本开始引入)（v4.0.0 实验特性）
 
 ## 存储
 
