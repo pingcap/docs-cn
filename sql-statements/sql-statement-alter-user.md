@@ -93,8 +93,6 @@ ALTER USER 'newuser' ACCOUNT LOCK;
 Query OK, 0 rows affected (0.02 sec)
 ```
 
-{{< copyable "sql" >}}
-
 ```sql
 ALTER USER 'newuser' ATTRIBUTE '{"newAttr": "value", "deprecatedAttr": null}';
 ```
@@ -103,8 +101,6 @@ ALTER USER 'newuser' ATTRIBUTE '{"newAttr": "value", "deprecatedAttr": null}';
 Query OK, 0 rows affected (0.02 sec)
 ```
 
-{{< copyable "sql" >}}
-
 ```sql
 ALTER USER 'newuser' COMMENT 'Here is the comment';
 ```
@@ -112,8 +108,6 @@ ALTER USER 'newuser' COMMENT 'Here is the comment';
 ```
 Query OK, 0 rows affected (0.02 sec)
 ```
-
-{{< copyable "sql" >}}
 
 ```sql
 ALTER USER 'newuser' ATTRIBUTE '{"comment": null}';
