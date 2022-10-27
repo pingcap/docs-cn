@@ -320,8 +320,6 @@ TiCDC 从 v6.4 开始支持将行变更事件保存至 S3、GCS 和 Azblob 等�
 
 S3 配置样例如下:
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 --sink-uri="s3://my-bucket/prefix?region=us-west-2&worker-count=4"
 ```
@@ -329,8 +327,6 @@ S3 配置样例如下:
 S3 的 URL 参数与 BR 相同，详细参数请参考 [S3 的 URL 参数](/br/backup-and-restore-storages.md#s3-的-url-参数)
 
 GCS 配置样例如下：
-
-{{< copyable "shell-regular">}}
 
 ```shell
 --sink-uri="gcs://my-bucket/prefix?flush-interval=15s"
@@ -340,13 +336,11 @@ GCS 的 URL 参数与 BR 相同，详细参数请参考 [GCS 的 URL 参数](/br
 
 Azblob 配置样例如下：
 
-{{< copyable "shell-regular">}}
-
 ```shell
 --sink-uri="azblob://my-bucket/prefix"
 ```
 
-Azblob 的 URL 参数与 BR 相同，详细参数请参考 [Azblob 的 URL 参数](/br/backup-and-restore-storages.md#azblob-的-url-参数)
+Azblob 的 URL 参数与 BR 相同，详细参数请参考 [Azblob 的 URL 参数](/br/backup-and-restore-storages.md#azblob-的-url-参数)。
 
 URI 中其他可配置的参数如下：
 
@@ -862,19 +856,19 @@ partition 分发器用 partition = "xxx" 来指定，支持 default、ts、index
 {protocol}://{prefix}/{schema}/{table}/{table-version-separator}/{partition-separator}/{date-separator}/CDC{num}.{extension}
 ```
 
-- protocol: protocol 为数据传输协议，也即存储类型。例如：`s3://xxxxx`
-- prefix: prefix 为用户指定的父目录。例如：`s3://bucket/bbb/ccc`
-- schema: schema 为表所属的库名。例如：`s3://bucket/bbb/ccc/test`
-- table: table 为表名。例如：`s3://bucket/bbb/ccc/test/table1`
-- table-version-separator: 将文件路径按照表的版本进行分隔。例如：`s3://bucket/bbb/ccc/test/table1/9999`
-- partition-separator: 将文件路径按照表的分区号进行分隔。例如：`s3://bucket/bbb/ccc/test/table1/9999/20`
-- date-separator: 将文件路径按照事务提交的日期进行分隔。date-separator 可选值如下：
-    - none: 不以 date-separator 分隔文件路径。例如：`test.table1` 版本号为 9999 的所有文件都存到 `s3://bucket/bbb/ccc/test/table1/9999` 路径下。
-    - year: 以事务提交的年份分隔文件路径。例如：`s3://bucket/bbb/ccc/test/table1/9999/2022`。
-    - month: 以事务提交的年份和月份分隔文件路径。例如：`s3://bucket/bbb/ccc/test/table1/9999/2022-01`。
-    - day: 以事务提交的年月日来分隔文件路径。例如：`s3://bucket/bbb/ccc/test/table1/9999/2022-01-02`。
-- num: 存储数据变更记录的目录下文件的序号。例如：`s3://bucket/bbb/ccc/test/table1/9999/2022-01-02/CDC000005.csv`。
-- extension: 文件的扩展名，v6.4 只支持 csv 格式。
+- `protocol`：`protocol` 为数据传输协议，也即存储类型。例如：`s3://xxxxx`
+- `prefix`：`prefix` 为用户指定的父目录。例如：`s3://bucket/bbb/ccc`
+- `schema`：`schema` 为表所属的库名。例如：`s3://bucket/bbb/ccc/test`
+- `table`：`table` 为表名。例如：`s3://bucket/bbb/ccc/test/table1`
+- `table-version-separator`：将文件路径按照表的版本进行分隔。例如：`s3://bucket/bbb/ccc/test/table1/9999`
+- `partition-separator`：将文件路径按照表的分区号进行分隔。例如：`s3://bucket/bbb/ccc/test/table1/9999/20`
+- `date-separator`：将文件路径按照事务提交的日期进行分隔。date-separator 可选值如下：
+    - `none`：不以 date-separator 分隔文件路径。例如：`test.table1` 版本号为 9999 的所有文件都存到 `s3://bucket/bbb/ccc/test/table1/9999` 路径下。
+    - `year`：以事务提交的年份分隔文件路径。例如：`s3://bucket/bbb/ccc/test/table1/9999/2022`。
+    - `month`：以事务提交的年份和月份分隔文件路径。例如：`s3://bucket/bbb/ccc/test/table1/9999/2022-01`。
+    - `day`：以事务提交的年月日来分隔文件路径。例如：`s3://bucket/bbb/ccc/test/table1/9999/2022-01-02`。
+- `num`：存储数据变更记录的目录下文件的序号。例如：`s3://bucket/bbb/ccc/test/table1/9999/2022-01-02/CDC000005.csv`。
+- `extension`：文件的扩展名，v6.4 只支持 csv 格式。
 
 ### 元数据
 
