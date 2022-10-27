@@ -32,8 +32,15 @@ aliases: ['/zh/tidb/v5.0/experimental-features-4.0/']
 + [自定义变量](/user-defined-variables.md#用户自定义变量)。
 + [JSON 数据类型](/data-type-json.md) 及 [JSON 函数](/functions-and-operators/json-functions.md)。
 + [Cascades Planner](/system-variables.md#tidb_enable_cascades_planner)：基于 Cascades 框架的自顶向下查询优化器。（v3.0 实验特性）
+<<<<<<< HEAD
 + [执行计划缓存](/sql-prepare-plan-cache.md)。（v4.0 实验特性）
 + [使用 `ALTER TABLE` 修改多个列或索引](/system-variables.md#tidb_enable_change_multi_schema)。（v5.0.0 实验特性）
+=======
++ [表级锁 (Table Lock)](/tidb-configuration-file.md#enable-table-lock-从-v400-版本开始引入)（v4.0.0 实验特性）
++ [元数据锁](/metadata-lock.md)（v6.3.0 实验特性）
++ [Range INTERVAL 分区](/partitioned-table.md#range-interval-分区)（v6.3.0 实验特性）
++ [添加索引加速](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入)（v6.3.0 实验特性）
+>>>>>>> 22684373f (add description for enable-table-lock (#11808))
 
 ## 配置管理
 
