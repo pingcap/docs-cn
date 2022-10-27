@@ -95,7 +95,7 @@ pd-addr = "${ip}:${port}"     # 集群 PD 的地址，Lightning 通过 PD 获取
 
 1. 运行 `tidb-lightning`。
 
-    1. 如果从 Amazon S3 导入，需先将有权限访问该 S3 后端存储的账号的 SecretKey 和 AccessKey 作为环境变量传入 Lightning 节点。
+    - 如果从 Amazon S3 导入，需先将有权限访问该 S3 后端存储的账号的 SecretKey 和 AccessKey 作为环境变量传入 Lightning 节点。
 
         ```shell
         export AWS_ACCESS_KEY_ID=${access_key}
