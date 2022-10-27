@@ -20,7 +20,7 @@ db-type = "kafka"
 # the Kafka address
 kafka-addrs = "127.0.0.1:9092"
 # the Kafka version
-kafka-version = "0.8.2.0"
+kafka-version = "2.4.0"
 ```
 
 ## Customized development
