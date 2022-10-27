@@ -5,7 +5,7 @@ summary: 介绍如何使用 TiDB Lightning 从 Parquet 文件迁移数据到 TiD
 
 # 从 Parquet 文件迁移数据到 TiDB
 
-本文介绍如何使用 TiDB Lightning 从 Apache Parquet 文件迁移数据到 TiDB，以及如何生成 Parquet 文件。
+本文介绍如何从 Apache Hive 中生成 Parquet 文件以及如何使用 TiDB Lightning 从 Parquet 文件迁移数据到 TiDB。
 
 如果你从 Amazon Aurora 中导出 Parquet 文件，请参照[从 Amazon Aurora 迁移数据到 TiDB](/migrate-aurora-to-tidb.md)。
 
