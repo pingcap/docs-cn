@@ -172,7 +172,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 + 控制是否开启 LOCK TABLE 特性。
 + 默认值：false
-+ TABLE LOCK 用于协调多个 session 之间对同一张表的并发访问。目前已支持的锁种类包括 `READ`、`WRITE` 和 `WRITE LOCAL`。当该配置项为 `false` 时，执行 `LOCK TABLE` 和 `UNLOCK TABLE` 语句不会生效，并且会报 "LOCK/UNLOCK TABLES is not supported" 的警告。
++ LOCK TABLE 用于协调多个 session 之间对同一张表的并发访问。目前已支持的锁种类包括 `READ`、`WRITE` 和 `WRITE LOCAL`。当该配置项为 `false` 时，执行 `LOCK TABLE` 和 `UNLOCK TABLE` 语句不会生效，并且会报 "LOCK/UNLOCK TABLES is not supported" 的警告。
 
 ## log
 
