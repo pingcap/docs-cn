@@ -146,7 +146,7 @@ Grafana 中 `Plan Cache Memory Usage` 和 `Plan Cache Plan Num` 监控如下图�
 
 ![grafana_panels](/media/planCache-memoryUsage-planNum-panels.png)
 
-目前可以通过变量 `tidb_prepared_plan_cache_size` 来设置每个 `SESSION` 最多缓存的计划数量，针对不同的环境，推荐的设置如下，用户可结合监控调整：
+目前可以通过变量 `tidb_prepared_plan_cache_size` 来设置每个 `SESSION` 最多缓存的计划数量，针对不同的环境，推荐的设置如下，你可以结合监控进行调整：
 
 - TiDB Server 实例内存阈值 <= 64 GiB 时，`tidb_prepared_plan_cache_size = 50`
 - TiDB Server 实例内存阈值 > 64 GiB 时，`tidb_prepared_plan_cache_size = 100`
