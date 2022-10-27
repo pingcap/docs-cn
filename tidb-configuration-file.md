@@ -141,6 +141,16 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：true
 + 如果所有 TiDB 实例上该选项都设置为 `false`，那么将完全禁用 TiDB 遥测功能，且忽略 [`tidb_enable_telemetry`](/system-variables.md#tidb_enable_telemetry-从-v402-版本开始引入) 系统变量。参阅[遥测](/telemetry.md)了解该功能详情。
 
+### `enable-table-lock` <span class="version-mark">从 v4.0.0 版本开始引入</span>
+
+> **警告：**
+>
+> 表级锁 (Table Lock) 为实验特性，不建议在生产环境中使用。
+
++ 控制是否开启表级锁特性。
++ 默认值：false
++ 表级锁用于协调多个 session 之间对同一张表的并发访问。目前已支持的锁种类包括 `READ`、`WRITE` 和 `WRITE LOCAL`。当该配置项为 `false` 时，执行 `LOCK TABLE` 和 `UNLOCK TABLE` 语句不会生效，并且会报 "LOCK/UNLOCK TABLES is not supported" 的警告。
+
 ## log
 
 日志相关的配置项。
