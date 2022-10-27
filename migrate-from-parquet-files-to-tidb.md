@@ -104,7 +104,7 @@ pd-addr = "${ip}:${port}"     # 集群 PD 的地址，Lightning 通过 PD 获取
 
         此外，TiDB Lightning 还支持从 `~/.aws/credentials` 读取凭证文件。
 
-    2. 如果直接在命令行中启动程序，可能会因为 `SIGHUP` 信号而退出，建议配合 `nohup` 或 `screen` 等工具运行 `tidb-lightning`：
+    - 如果直接在命令行中启动程序，可能会因为 `SIGHUP` 信号而退出，建议配合 `nohup` 或 `screen` 等工具运行 `tidb-lightning`：
 
         ```shell
         nohup tiup tidb-lightning -config tidb-lightning.toml > nohup.out 2>&1 &
