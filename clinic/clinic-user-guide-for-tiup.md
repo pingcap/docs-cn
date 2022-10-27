@@ -75,7 +75,7 @@ Before using PingCAP Clinic, you need to install Diag (a component to collect da
 
     > **Note:**
     >
-    > - When accessing Clinic Server for the first time, before getting a token, you need to log in to [Clinic Server](https://clinic.pingcap.com.cn) using your AskTUG account and create an organization first.
+    > - When accessing Clinic Server for the first time, before getting a token, you need to prepare the environment by referring to [Quick Start with PingCAP Clinic](/clinic/quick-start-with-clinic.md#prerequisites).
     > - For data security, TiDB only displays the token upon the token creation. If you have lost the token, delete the old token and create a new one.
     > - A token is only used for uploading data.
 
