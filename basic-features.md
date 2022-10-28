@@ -146,7 +146,6 @@ aliases: ['/docs-cn/dev/basic-features/']
 | [`tidb_sm3_password` 认证](/system-variables.md#default_authentication_plugin)      |  Y  |  Y  |  N  |  N  |  N  |  N  |  N  |  N  |  N  |  N  |  N  |
 | [`tidb_auth_token` 认证](/system-variables.md#default_authentication_plugin)       |  Y  |  N  |  N  |  N  |  N  |  N  |  N  |  N  |  N  |  N  |  N  |
 | [与 MySQL 兼容的 `GRANT` 权限管理](/privilege-management.md)      |  Y  |  Y  |  Y  |  Y  |  Y  |  Y  |  Y  |  Y  |  Y  |  Y  |  Y  |
-| [与 MySQL 兼容的 `GRANT` 权限管理](/privilege-management.md)      |  Y  |  Y  |  Y  |  Y  |  Y  |  Y  |  Y  |  Y  |  Y  |  Y  |  Y  |
 | [动态权限](/privilege-management.md#动态权限)                    |  Y  |  Y  |  Y  |  Y  |  Y  |  Y  |  Y  |  Y  |  Y  |  N  |  N  |
 | [安全增强模式](/system-variables.md#tidb_enable_enhanced_security) |  Y  |  Y  |  Y  |  Y  |  Y  |  Y  |  Y  |  Y  |  Y  |  N  |  N  |
 | [日志脱敏](/log-redaction.md)                                  |  Y  |  Y  |  Y  |  Y  |  Y  |  Y  |  Y  |  Y  |  Y  |  Y  |  N  |
