@@ -812,6 +812,12 @@ raftstore 相关的配置项。
 + 默认值：1024
 + 最小值：大于 0
 
+### `apply-yield-msg-size`
+
++ Apply 线程一轮处理单个状态机的最大字节数，这是一个软限制。
++ 默认值：32KB
+最小值：大于 0
+
 ### `apply-max-batch-size`
 
 + Raft 状态机由 BatchSystem 批量执行数据写入请求，该配置项指定每批可执行请求的最多 Raft 状态机个数。
