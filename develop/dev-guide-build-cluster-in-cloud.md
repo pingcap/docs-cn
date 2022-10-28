@@ -1,12 +1,12 @@
 ---
-title: 使用 TiDB Cloud (Developer Tier) 构建 TiDB 集群
-summary: 使用 TiDB Cloud (Developer Tier) 构建 TiDB 集群，并连接 TiDB Cloud 集群。
+title: 使用 TiDB Cloud (Serverless Tier) 构建 TiDB 集群
+summary: 使用 TiDB Cloud (Serverless Tier) 构建 TiDB 集群，并连接 TiDB Cloud 集群。
 aliases: ['/zh/tidb/dev/build-cluster-in-cloud']
 ---
 
 <!-- markdownlint-disable MD029 -->
 
-# 使用 TiDB Cloud (Developer Tier) 构建 TiDB 集群
+# 使用 TiDB Cloud (Serverless Tier) 构建 TiDB 集群
 
 本章节将介绍以最快的方式开始使用 TiDB。你将使用 [TiDB Cloud](https://en.pingcap.com/tidb-cloud) 创建并启动一个免费的 TiDB 集群，使用 TiDB SQL 客户端，插入数据。随后将从示例程序读取出数据。
 
@@ -16,11 +16,11 @@ aliases: ['/zh/tidb/dev/build-cluster-in-cloud']
 
 1. 如果你还未拥有 TiDB Cloud 帐号，请先在此[注册](https://tidbcloud.com/free-trial)。
 2. 使用你的 TiDB Cloud 帐号[登录](https://tidbcloud.com/)。
-3. 在[方案](https://tidbcloud.com/console/plans)内选择一年内免费的 **Developer Tier** 方案，或在 [Clusters](https://tidbcloud.com/console/clusters) 页面中点击 **Create Cluster** 按钮。
-4. 在 **Create Cluster** 页面设置集群名称、云服务商（Developer Tier 默认为 AWS）、可用区（建议就近选择）后，点击 **Create** 按钮创建 Developer Tier 免费集群。
+3. 在[方案](https://tidbcloud.com/console/plans)内选择免费的 **Serverless Tier** 方案，或在 [Clusters](https://tidbcloud.com/console/clusters) 页面中点击 **Create Cluster** 按钮。
+4. 在 **Create Cluster** 页面设置集群名称、云服务商（Serverless Tier 默认为 AWS）、可用区（建议就近选择）后，点击 **Create** 按钮创建 Serverless Tier 免费集群。
 5. 在 **Security Settings** 对话框中，设置密码，并添加允许连接你的集群的 IP 地址，完成后点击 **Apply**。
 
-    你的 TiDB Cloud 集群将于 5~15 分钟后创建完毕。
+    你的 TiDB Cloud 集群将于 30 秒后创建完毕。
 
 6. 创建完毕后，点击右上角的 **Connect** 按钮。或点击集群名称，打开集群的详情页，再点击右上角的 **Connect** 按钮。这将显示一个连接对话框。
 7. 复制连接对话框 **Step 2: Connect with a SQL client** 中的连接字符串，供后续步骤使用。
@@ -29,7 +29,7 @@ aliases: ['/zh/tidb/dev/build-cluster-in-cloud']
 
     > **Note:**
     >
-    > 需要特别说明的是，在你使用 [Developer Tier clusters](https://docs.pingcap.com/tidbcloud/select-cluster-tier#developer-tier) 集群时，你需要给你设置的用户名加上前缀（如上图中的 `9ATyn6DhCXoo6U1`），若使用命令行连接，还需使用单引号包裹用户名。你可以在 [TiDB Cloud - 用户名前缀](https://docs.pingcap.com/tidbcloud/select-cluster-tier#user-name-prefix) 中获得更多信息。
+    > 需要特别说明的是，在你使用 [Serverless Tier clusters](https://docs.pingcap.com/tidbcloud/select-cluster-tier#serverless-tier) 集群时，你需要给你设置的用户名加上前缀（如上图中的 `9ATyn6DhCXoo6U1`），若使用命令行连接，还需使用单引号包裹用户名。你可以在 [TiDB Cloud - 用户名前缀](https://docs.pingcap.com/tidbcloud/select-cluster-tier#user-name-prefix) 中获得更多信息。
 
 ## 第 2 步：连接到集群
 
