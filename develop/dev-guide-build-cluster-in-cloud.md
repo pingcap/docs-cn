@@ -1,12 +1,6 @@
 ---
-<<<<<<< HEAD
-title: 使用 TiDB Cloud (Developer Tier) 构建 TiDB 集群
-summary: 使用 TiDB Cloud (Developer Tier) 构建 TiDB 集群，并连接 TiDB Cloud 集群。
-=======
 title: 使用 TiDB Cloud (Serverless Tier) 构建 TiDB 集群
 summary: 使用 TiDB Cloud (Serverless Tier) 构建 TiDB 集群，并连接 TiDB Cloud 集群。
-aliases: ['/zh/tidb/dev/build-cluster-in-cloud']
->>>>>>> a13045116 (Change Developer Tier to Serverless Tier in TOC.md (#11804))
 ---
 
 <!-- markdownlint-disable MD029 -->
