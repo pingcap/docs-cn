@@ -56,5 +56,5 @@ The following table provides the TiDB Cloud built-in alert conditions and the co
 
 > **Note:**
 >
-> - [Developer Tier clusters](/tidb-cloud/select-cluster-tier.md#developer-tier) only support a subset of alert conditions that are marked with `*` in the **Condition** column.
+> - [Serverless Tier clusters](/tidb-cloud/select-cluster-tier.md#serverless-tier) only support a subset of alert conditions that are marked with `*` in the **Condition** column.
 > - "cluster ABC" and "project XYZ" in the **Recommended Action** column are example names for reference.

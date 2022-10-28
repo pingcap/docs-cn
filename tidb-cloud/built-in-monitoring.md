@@ -9,7 +9,7 @@ TiDB Cloud collects and displays a full set of standard metrics of your cluster 
 
 > **Note:**
 >
-> Currently, the Monitoring page is unavailable for [Developer Tier clusters](/tidb-cloud/select-cluster-tier.md#developer-tier).
+> Currently, the Monitoring page is unavailable for [Serverless Tier clusters](/tidb-cloud/select-cluster-tier.md#serverless-tier).
 
 ## View the Monitoring page
 

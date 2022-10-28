@@ -5,7 +5,7 @@ summary: Learn about the release notes of TiDB Cloud in 2020.
 
 # TiDB Cloud Release Notes in 2020
 
-This page lists the release notes of [TiDB Cloud](https://en.pingcap.com/tidb-cloud/) in 2020.
+This page lists the release notes of [TiDB Cloud](https://www.pingcap.com/tidb-cloud/) in 2020.
 
 ## December 30, 2020
 

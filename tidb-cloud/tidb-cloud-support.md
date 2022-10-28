@@ -5,7 +5,7 @@ summary: Learn how to contact the support team of TiDB Cloud.
 
 # TiDB Cloud Support
 
-TiDB Cloud offers a free **Basic** support plan for each user and you can upgrade to a paid plan for extended services.
+TiDB Cloud offers a free basic support plan for each user and you can upgrade to a paid plan for extended services.
 
 The information of each support plan is available on the support page of the TiDB Cloud console. To access the page, see [Check or upgrade your support plan](#check-or-upgrade-your-support-plan).
 
@@ -13,17 +13,18 @@ The information of each support plan is available on the support page of the TiD
 
 To request support for your organization, project, or cluster, perform the following steps:
 
-1. On the TiDB Cloud console, click **Support** in the upper-right corner of the top navigation bar, and click **Create New Case**. A **Submit a request** page is displayed.
+1. In the TiDB Cloud console, click the **Help** icon in the lower-right corner.
+2. Fill in the request information.
 
     > **Tip:**
     >
-    > You can also directly click the **Help** icon on the lower right of the TiDB Cloud console.
+    > If you want to apply for a beta feature that is available upon request, fill in your application information in the **Description** field. For example, "Apply for TiDB Cloud API".
 
-2. On the **Submit a request** page, select **TiDB Cloud Support** from the drop-down list.
+3. Click **Send**.
 
-3. Fill in the request information.
+Alternatively, you can click **Support** in the upper-right corner and click **Create New Case** to request support. If you go with this way, you need to provide your Organization ID in the request form as well. To get the Organization ID, click your account name in the upper-right corner of the TiDB Cloud console and click **Organization Settings**.
 
-4. Click **Submit** to submit your ticket. After the support team receives your ticket, they will reply to you via email. The response time depends on the [support plan](#check-or-upgrade-your-support-plan) of your organization.
+After the support team receives your request, they will reply to you via email.
 
 ## Check your submitted request
 

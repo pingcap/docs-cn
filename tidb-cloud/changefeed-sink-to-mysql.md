@@ -7,7 +7,7 @@ Summary: Learn how to create a changefeed to stream data from TiDB Cloud to MySQ
 
 > **Warning:**
 >
-> Currently, **Sink to MySQL** is an experimental feature. It is not recommended that you use it for production environments.
+> Currently, the **Sink to MySQL** feature is in beta.
 
 This document describes how to stream data from TiDB Cloud to MySQL using the **Sink to MySQL** changefeed.
 

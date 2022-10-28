@@ -11,7 +11,7 @@ This document describes how to migrate incremental data from MySQL-compatible da
 
 Before you perform incremental data migration, you should have finished full data migration from MySQL-compatible databases to TiDB Cloud. For more information, see [Migrate Data from MySQL-Compatible Databases](/tidb-cloud/migrate-data-into-tidb.md).
 
-## Step 1. Deploy a DM Cluster
+## Step 1. Deploy a DM cluster
 
 The TiDB Cloud console does not provide incremental data migration feature yet. You need to deploy [TiDB Data Migration](https://docs.pingcap.com/tidb/stable/dm-overview) (DM) manually to perform incremental migration to TiDB Cloud. For installation steps, see [Deploy a DM Cluster Using TiUP](https://docs.pingcap.com/tidb/stable/deploy-a-dm-cluster-using-tiup).
 
@@ -79,7 +79,7 @@ Starting component `dmctl`: /root/.tiup/components/dmctl/v6.0.0/dmctl/dmctl /roo
 
 Create a `dm-task1.yaml` file for the migration. Configure the incremental migration mode and the starting point of the data source in the file.
 
-You can find the starting point in the metadata file exported by [Dumpling](https://docs.pingcap.com/tidb/stable/dumpling-overview). For example:
+You can find the starting point in the metadata file exported by [Dumpling](/dumpling-overview.md). For example:
 
 ```toml
 # Get the contents of the metadata in the file exported by Dumpling

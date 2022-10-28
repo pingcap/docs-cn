@@ -1,11 +1,11 @@
 ---
-title: Build a TiDB Cluster in TiDB Cloud (Developer Tier)
-summary: Learn how to build a TiDB cluster in TiDB Cloud (Developer Tier) and connect to a TiDB Cloud cluster.
+title: Build a TiDB Cluster in TiDB Cloud (Serverless Tier)
+summary: Learn how to build a TiDB cluster in TiDB Cloud (Serverless Tier) and connect to a TiDB Cloud cluster.
 ---
 
 <!-- markdownlint-disable MD029 -->
 
-# Build a TiDB Cluster in TiDB Cloud (Developer Tier)
+# Build a TiDB Cluster in TiDB Cloud (Serverless Tier)
 
 <CustomContent platform="tidb">
 
@@ -25,8 +25,8 @@ This document walks you through the quickest way to get started with TiDB Cloud.
 
 1. If you do not have a TiDB Cloud account, click [TiDB Cloud](https://tidbcloud.com/free-trial) to sign up for an account.
 2. [Sign in](https://tidbcloud.com/) with your TiDB Cloud account.
-3. To create a Developer Tier cluster for one year free, you can either select the **Developer Tier** plan on the [plan page](https://tidbcloud.com/console/plans) or click **Create Cluster** on the [**Clusters**](https://tidbcloud.com/console/clusters) page.
-4. On the **Create Cluster** page, set up your cluster name, cloud provider (for now, only AWS is available for Developer Tier), and region (a nearby region is recommended). Then click **Create** to create your cluster.
+3. To create a Serverless Tier cluster for free, you can either select the **Serverless Tier** plan on the [plan page](https://tidbcloud.com/console/plans) or click **Create Cluster** on the [**Clusters**](https://tidbcloud.com/console/clusters) page.
+4. On the **Create Cluster** page, set up your cluster name, cloud provider (for now, only AWS is available for Serverless Tier), and region (a nearby region is recommended). Then click **Create** to create your cluster.
 
     The cluster creation process starts and the **Security Settings** dialog box is displayed.
 
@@ -48,7 +48,7 @@ This document walks you through the quickest way to get started with TiDB Cloud.
 
     > **Note:**
     >
-    > For [Developer Tier clusters](https://docs.pingcap.com/tidbcloud/select-cluster-tier#developer-tier), when you connect to your cluster, you must include the prefix for your cluster in the user name and wrap the name with quotation marks. For more information, see [User name prefix](https://docs.pingcap.com/tidbcloud/select-cluster-tier#user-name-prefix).
+    > For [Serverless Tier clusters](https://docs.pingcap.com/tidbcloud/select-cluster-tier#serverless-tier), when you connect to your cluster, you must include the prefix for your cluster in the user name and wrap the name with quotation marks. For more information, see [User name prefix](https://docs.pingcap.com/tidbcloud/select-cluster-tier#user-name-prefix).
 
     </CustomContent>
 
@@ -56,7 +56,7 @@ This document walks you through the quickest way to get started with TiDB Cloud.
 
     > **Note:**
     >
-    > For [Developer Tier clusters](/tidb-cloud/select-cluster-tier.md#developer-tier), when you connect to your cluster, you must include the prefix for your cluster in the user name and wrap the name with quotation marks. For more information, see [User name prefix](/tidb-cloud/select-cluster-tier.md#user-name-prefix).
+    > For [Serverless Tier clusters](/tidb-cloud/select-cluster-tier.md#serverless-tier), when you connect to your cluster, you must include the prefix for your cluster in the user name and wrap the name with quotation marks. For more information, see [User name prefix](/tidb-cloud/select-cluster-tier.md#user-name-prefix).
 
     </CustomContent>
 

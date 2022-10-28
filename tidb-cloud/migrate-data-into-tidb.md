@@ -67,7 +67,7 @@ You can use several ways to dump data from MySQL, such as using `mysqldump` or `
 
 2. Export your MySQL database using Dumpling.
 
-    - To export your data to Amazon S3 cloud storage, see [Export data to Amazon S3 cloud storage](/dumpling-overview.md#export-data-to-amazon-s3-cloud-storage). 
+    - To export your data to Amazon S3 cloud storage, see [Export data to Amazon S3 cloud storage](/dumpling-overview.md#export-data-to-amazon-s3-cloud-storage).
     - To export your data to local data files, use the following command:
 
         {{< copyable "shell-regular" >}}
@@ -87,16 +87,16 @@ You can use several ways to dump data from MySQL, such as using `mysqldump` or `
 
 ## Step 3. Import data to TiDB Cloud
 
-Depending on the location and size of your source data, the importing methods are different.  
+Depending on the location and size of your source data, the importing methods are different.
 
 - If your source data is located in Amazon S3 cloud storage, take the following steps:
 
-    1. Configure Amazon S3 access to allow TiDB cloud to access the source data in your Amazon S3 bucket. For more information, see [configure Amazon S3 access](/tidb-cloud/config-s3-and-gcs-access.md#configure-amazon-s3-access). 
-    2. From the TiDB Cloud console, navigate to the TiDB Clusters page, and then click the name of your target cluster to go to its own overview page. In the upper-right corner, click **Import Data**, and then fill in the importing related information on the **Data Import Task** page.
+    1. Configure Amazon S3 access to allow TiDB cloud to access the source data in your Amazon S3 bucket. For more information, see [configure Amazon S3 access](/tidb-cloud/config-s3-and-gcs-access.md#configure-amazon-s3-access).
+    2. From the [TiDB Cloud console](https://tidbcloud.com/), navigate to the **Clusters** page, and then click the name of your target cluster to go to its own overview page. Click **Import Data**, and then fill in the importing related information on the **Data Import** page.
 
 - If your source data is in local files, do one of the following:
 
-    - If the data is larger than 1 TB, it is recommended that you use Amazon S3 or GCS as a staging area to import or migrate data into TiDB Cloud. For more information, see [Import or migrate from Amazon S3 or GCS to TiDB Cloud](/tidb-cloud/migrate-from-amazon-s3-or-gcs.md). 
+    - If the data is larger than 1 TB, it is recommended that you use Amazon S3 or GCS as a staging area to import or migrate data into TiDB Cloud. For more information, see [Import or migrate from Amazon S3 or GCS to TiDB Cloud](/tidb-cloud/migrate-from-amazon-s3-or-gcs.md).
     - If the data is less than 1 TB, you can use the logical import mode of TiDB Lightning according to the following steps in this document.
 
 The following steps show how to import local data to TiDB Cloud using the logical import mode of TiDB Lightning.
@@ -109,9 +109,9 @@ The following steps show how to import local data to TiDB Cloud using the logica
     tiup install tidb-lightning
     ```
 
-2. Create a TiDB Lightning configuration file and configure the importing information. 
+2. Create a TiDB Lightning configuration file and configure the importing information.
 
-    1. Create the TiDB Lightning configuration file. 
+    1. Create the TiDB Lightning configuration file.
 
         {{< copyable "shell-regular" >}}
 
@@ -119,37 +119,37 @@ The following steps show how to import local data to TiDB Cloud using the logica
         vim tidb-lighting.toml
         ```
 
-    2. Configure the importing information.       
+    2. Configure the importing information.
 
         {{< copyable "" >}}
 
         ```toml
-        [lightning] 
+        [lightning]
         # The address and port to check TiDB Lightning metrics.
         status-addr = '127.0.0.1:8289'
 
         [tidb]
-        # The target cluster information. Fill in one address of tidb-server. 
+        # The target cluster information. Fill in one address of tidb-server.
         # For example: 172.16.128.1
-        host = "${host}" 
+        host = "${host}"
         # The port number of the target cluster. For example: 4000
         port = ${port number}
         # The target database username. For example: root
-        user = "${user_name}" 
-        # The target database password. 
-        password = "${password}" 
+        user = "${user_name}"
+        # The target database password.
+        password = "${password}"
 
         [tikv-importer]
-        # The TiDB backend to be used for data importing. 
+        # The logical import mode to be used for data importing.
         backend = "tidb"
 
         [mydumper]
         # The data source directory, supporting local path and s3.
         # For example: `/data` for local path or `s3://bucket-name/data-path` for s3
-        data-source-dir = "${data_path}"  
+        data-source-dir = "${data_path}"
 
-        # When Dumpling is used to export data, the corresponding table schemas are exported too by default. 
-        # If you want TiDB Lightning to automatically create table schemas in TiDB Cloud according to the exported schemas, set no-schema to false. 
+        # When Dumpling is used to export data, the corresponding table schemas are exported too by default.
+        # If you want TiDB Lightning to automatically create table schemas in TiDB Cloud according to the exported schemas, set no-schema to false.
         no-schema = false
         ```
 

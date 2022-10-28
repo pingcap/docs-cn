@@ -27,6 +27,10 @@ ACID refers to the four key properties of a transaction: atomicity, consistency,
 
 Determines the functionality and capacity of your cluster. Different cluster tiers provide different numbers of TiDB, TiKV, and TiFlash nodes in your cluster.
 
+## Credit
+
+TiDB Cloud offers a certain number of credits for Proof of Concept (PoC) users. One credit is equivalent to one U.S. dollar. You can use credits to pay TiDB cluster fees before the credits become expired.
+
 ## M
 
 ### member
@@ -51,6 +55,12 @@ Organization members are users who are invited by the organization owner to join
 
 ## P
 
+### Playground
+
+Playground contains a pre-loaded dataset of GitHub events, which allows Serverless Tier users to get started with TiDB Cloud by running queries instantly, without importing data or connecting to a client.
+
+You can access Playground after [creating a Serverless Tier cluster](/tidb-cloud/tidb-cloud-quickstart.md#step-1-create-a-tidb-cluster).
+
 ### policy
 
 A document that defines permissions applying to a role, user, or organization, such as the access to specific actions or resources.
@@ -73,7 +83,7 @@ The place where the data of deleted clusters with valid backups is stored. Once 
 
 - TiDB Cloud region
 
-    A set of [TiKV](https://docs.pingcap.com/tidb/stable/tidb-storage) nodes deployed in the same geographical area. The set of TiKV nodes will be deployed across at least three different Availability Zones within that region.
+    A geographical area in which a TiDB Cloud cluster is deployed. A TiDB Cloud region comprises of at least 3 Availability Zones, and the cluster is deployed across these zones.
 
 - TiDB Region
 

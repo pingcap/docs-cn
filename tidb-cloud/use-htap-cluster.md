@@ -11,7 +11,7 @@ With TiDB Cloud, you can create an HTAP cluster easily by specifying one or more
 
 > **Note:**
 >
-> A Developer Tier cluster has one TiFlash node by default and you cannot change the number.
+> TiFlash is always enabled for Serverless Tier clusters. You cannot disable it.
 
 TiKV data is not replicated to TiFlash by default. You can select which table to replicate to TiFlash using the following SQL statement:
 

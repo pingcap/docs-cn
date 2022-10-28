@@ -12,6 +12,8 @@ Many `INFORMATION_SCHEMA` tables have a corresponding `SHOW` command. The benefi
 
 ## Tables for MySQL compatibility
 
+<CustomContent platform="tidb">
+
 | Table Name                                                                              | Description                 |
 |-----------------------------------------------------------------------------------------|-----------------------------|
 | [`CHARACTER_SETS`](/information-schema/information-schema-character-sets.md)            | Provides a list of character sets the server supports. |
@@ -47,6 +49,47 @@ Many `INFORMATION_SCHEMA` tables have a corresponding `SHOW` command. The benefi
 | [`USER_PRIVILEGES`](/information-schema/information-schema-user-privileges.md)          | Summarizes the privileges associated with the current user. |
 | [`VARIABLES_INFO`](/information-schema/information-schema-variables-info.md)            | Provides information about TiDB system variables. |
 | [`VIEWS`](/information-schema/information-schema-views.md)                              | Provides a list of views that the current user has visibility of. Similar to running `SHOW FULL TABLES WHERE table_type = 'VIEW'` |
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+| Table Name                                                                              | Description                 |
+|-----------------------------------------------------------------------------------------|-----------------------------|
+| [`CHARACTER_SETS`](/information-schema/information-schema-character-sets.md)            | Provides a list of character sets the server supports. |
+| [`COLLATIONS`](/information-schema/information-schema-collations.md)                    | Provides a list of collations that the server supports. |
+| [`COLLATION_CHARACTER_SET_APPLICABILITY`](/information-schema/information-schema-collation-character-set-applicability.md) | Explains which collations apply to which character sets. |
+| [`COLUMNS`](/information-schema/information-schema-columns.md)                          | Provides a list of columns for all tables. |
+| `COLUMN_PRIVILEGES`                                                                     | Not implemented by TiDB. Returns zero rows. |
+| `COLUMN_STATISTICS`                                                                     | Not implemented by TiDB. Returns zero rows. |
+| [`ENGINES`](/information-schema/information-schema-engines.md)                          | Provides a list of supported storage engines. |
+| `EVENTS`                                                                                | Not implemented by TiDB. Returns zero rows. |
+| `FILES`                                                                                 | Not implemented by TiDB. Returns zero rows. |
+| `GLOBAL_STATUS`                                                                         | Not implemented by TiDB. Returns zero rows. |
+| `GLOBAL_VARIABLES`                                                                      | Not implemented by TiDB. Returns zero rows. |
+| [`KEY_COLUMN_USAGE`](/information-schema/information-schema-key-column-usage.md)        | Describes the key constraints of the columns, such as the primary key constraint. |
+| `OPTIMIZER_TRACE`                                                                       | Not implemented by TiDB. Returns zero rows. |
+| `PARAMETERS`                                                                            | Not implemented by TiDB. Returns zero rows. |
+| [`PARTITIONS`](/information-schema/information-schema-partitions.md)                    | Provides a list of table partitions. |
+| `PLUGINS`                                                                               | Not implemented by TiDB. Returns zero rows. |
+| [`PROCESSLIST`](/information-schema/information-schema-processlist.md)                  | Provides similar information to the command `SHOW PROCESSLIST`. |
+| `PROFILING`                                                                             | Not implemented by TiDB. Returns zero rows. |
+| `REFERENTIAL_CONSTRAINTS`                                                               | Provides information on `FOREIGN KEY` constraints. |
+| `ROUTINES`                                                                              | Not implemented by TiDB. Returns zero rows. |
+| [`SCHEMATA`](/information-schema/information-schema-schemata.md)                        | Provides similar information to `SHOW DATABASES`. |
+| `SCHEMA_PRIVILEGES`                                                                     | Not implemented by TiDB. Returns zero rows. |
+| `SESSION_STATUS`                                                                        | Not implemented by TiDB. Returns zero rows. |
+| [`SESSION_VARIABLES`](/information-schema/information-schema-session-variables.md)      | Provides similar functionality to the command `SHOW SESSION VARIABLES` |
+| [`STATISTICS`](/information-schema/information-schema-statistics.md)                    | Provides information on table indexes. |
+| [`TABLES`](/information-schema/information-schema-tables.md)                            | Provides a list of tables that the current user has visibility of. Similar to `SHOW TABLES`. |
+| `TABLESPACES`                                                                           | Not implemented by TiDB. Returns zero rows. |
+| [`TABLE_CONSTRAINTS`](/information-schema/information-schema-table-constraints.md)      | Provides information on primary keys, unique indexes and foreign keys. |
+| `TABLE_PRIVILEGES`                                                                      | Not implemented by TiDB. Returns zero rows. |
+| `TRIGGERS`                                                                              | Not implemented by TiDB. Returns zero rows. |
+| [`USER_PRIVILEGES`](/information-schema/information-schema-user-privileges.md)          | Summarizes the privileges associated with the current user. |
+| [`VIEWS`](/information-schema/information-schema-views.md)                              | Provides a list of views that the current user has visibility of. Similar to running `SHOW FULL TABLES WHERE table_type = 'VIEW'` |
+
+</CustomContent>
 
 ## Tables that are TiDB extensions
 

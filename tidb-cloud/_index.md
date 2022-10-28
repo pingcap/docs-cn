@@ -47,9 +47,9 @@ hide_commit: true
 
 [Scale a Cluster](https://docs.pingcap.com/tidbcloud/scale-tidb-cluster)
 
-[Upgrade a Cluster](https://docs.pingcap.com/tidbcloud/upgrade-tidb-cluster)
+[Pause or Resume a TiDB Cluster](https://docs.pingcap.com/tidbcloud/pause-or-resume-tidb-cluster)
 
-[Delete a Cluster](https://docs.pingcap.com/tidbcloud/delete-tidb-cluster)
+[Use API (beta)](https://docs.pingcap.com/tidbcloud/api-overview)
 
 </LearningPath>
 
@@ -76,10 +76,6 @@ hide_commit: true
 [Built-in Monitoring](https://docs.pingcap.com/tidbcloud/built-in-monitoring)
 
 [Built-in Alerting](https://docs.pingcap.com/tidbcloud/monitor-built-in-alerting)
-
-[Use Datadog](https://docs.pingcap.com/tidbcloud/monitor-datadog-integration)
-
-[Use Prometheus and Grafana](https://docs.pingcap.com/tidbcloud/monitor-prometheus-and-grafana-integration)
 
 </LearningPath>
 
@@ -113,11 +109,33 @@ hide_commit: true
 
 <LearningPath label="Billing" icon="cloud2">
 
-[Costs](https://docs.pingcap.com/tidbcloud/tidb-cloud-billing)
+[Pricing](https://en.pingcap.com/tidb-cloud-pricing/)
 
 [Invoices](https://docs.pingcap.com/tidbcloud/tidb-cloud-billing#invoices)
 
-[Trial Points](https://docs.pingcap.com/tidbcloud/tidb-cloud-billing#trial-points)
+[Credits](https://docs.pingcap.com/tidbcloud/tidb-cloud-billing#credits)
+
+</LearningPath>
+
+<LearningPath label="Integrations" icon="cloud4">
+
+[Datadog](https://docs.pingcap.com/tidbcloud/monitor-datadog-integration)
+
+[Prometheus and Grafana](https://docs.pingcap.com/tidbcloud/monitor-prometheus-and-grafana-integration)
+
+[Terraform](https://docs.pingcap.com/tidbcloud/terraform-tidbcloud-provider-overview)
+
+[Vercel](https://docs.pingcap.com/tidbcloud/integrate-tidbcloud-with-vercel)
+
+</LearningPath>
+
+<LearningPath label="Reference" icon="cloud-dev">
+
+[System Variables](https://docs.pingcap.com/tidbcloud/system-variables)
+
+[Release Notes](https://docs.pingcap.com/tidbcloud/release-notes-2022)
+
+[SQL Reference](https://docs.pingcap.com/tidbcloud/basic-sql-operations)
 
 </LearningPath>
 

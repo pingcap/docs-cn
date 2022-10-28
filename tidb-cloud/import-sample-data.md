@@ -7,26 +7,28 @@ summary: Learn how to import sample data into TiDB Cloud via UI.
 
 This document describes how to import sample data into TiDB Cloud via the UI. The sample data used is the system data from Capital Bikeshare, released under the Capital Bikeshare Data License Agreement. Before importing the sample data, you need to have one TiDB cluster.
 
-1. Navigate to the **Active Clusters** page.
-2. Find the area of your cluster and click **Import Data** in the upper-right corner of the area. The **Data Import Task** page is displayed.
+1. Log in to the [TiDB Cloud console](https://tidbcloud.com/), and navigate to the **Clusters** page.
+
+2. Locate your cluster, click **...** in the upper-right corner of the cluster area, and select **Import Data**. The **Data Import** page is displayed.
 
     > **Tip:**
     >
-    > Alternatively, you can also click the name of your cluster on the **Active Clusters** page and click **Import Data** in the upper-right corner.
+    > Alternatively, you can also click the name of your cluster on the **Clusters** page and click **Import Data** in the **Import** area.
 
 3. Fill in the import parameters:
 
     <SimpleTab>
     <div label="AWS">
 
-    If your TiDB cluster is hosted by AWS (the Developer Tier is hosted by AWS by default), fill in the following parameters:
+    If your TiDB cluster is hosted by AWS (the Serverless Tier is hosted by AWS by default), fill in the following parameters:
 
-    - **Data Source Type**: `AWS S3`.
-    - **Bucket URL**: enter the sample data URL `s3://tidbcloud-samples/data-ingestion/`.
-    - **Data Format**: select **TiDB Dumpling**.
-    - **Setup Credentials**: enter `arn:aws:iam::385595570414:role/import-sample-access` for Role-ARN.
-    - **Target Cluster**: fill in the **Username** and **Password** fields.
-    - **DB/Tables Filter**: leave this field blank.
+    - **Data Format**: select **SQL File**.
+    - **Location**: `AWS`
+    - **Bucket URI**: enter the sample data URI `s3://tidbcloud-samples/data-ingestion/`
+    - **Role ARN**: enter `arn:aws:iam::385595570414:role/import-sample-access`
+    - **Target Cluster**: shows the cluster name and the region name.
+
+    If the region of the bucket is different from your cluster, confirm the compliance of cross region. Click **Next**.
 
     </div>
 
@@ -34,35 +36,33 @@ This document describes how to import sample data into TiDB Cloud via the UI. Th
 
     If your TiDB cluster is hosted by GCP, fill in the following parameters:
 
-    - **Data Source Type**: `Google Cloud Stroage`.
-    - **Bucket URL**: enter the sample data URL `gcs://tidbcloud-samples-us-west1`.
-    - **Data Format**: select **TiDB Dumpling**.
-    - **Target Cluster**: fill in the **Username** and **Password** fields.
-    - **DB/Tables Filter**: leave this field blank.
+    - **Data Format**: select **SQL File**.
+    - **Location**: `Google Cloud`
+    - **Bucket URI**: enter the sample data URI `gs://tidbcloud-samples-us-west1`.
+    - **Target Cluster**: shows the cluster name and the region name.
+
+    If the region of the bucket is different from your cluster, confirm the compliance of cross region. Click **Next**.
 
     </div>
     </SimpleTab>
 
-4. Click **Import**.
+4. Add the table filter rules if needed. For the sample data, you can safely skip this step and click **Next**.
 
-    A warning message about the database resource consumption is displayed.
+5. On the **Preview** page, confirm the data to be imported and then click **Start Import**.
 
-5. Click **Confirm**.
-
-    TiDB Cloud starts validating whether it can access the sample data in the specified bucket URL. After the validation is completed and successful, the import task starts automatically.
-
-The data import process will take 5 to 10 minutes. When the data import progress bar shows **Success**, you have successfully imported the sample data and the database schema to your database in TiDB Cloud.
+The data import process will take 5 to 10 minutes. When the data import progress shows **Finished**, you have successfully imported the sample data and the database schema to your database in TiDB Cloud.
 
 Once the cluster finishes the data importing process, you will get the sample data in your database.
 
-You can run some queries to check the result, for example:
+After connecting to the cluster, you can run some queries in your terminal to check the result, for example:
 
 1. Get the trip records starting at "12th & U St NW":
 
-    {{< copyable "sql" >}}
-
     ```sql
     use bikeshare;
+    ```
+
+    ```sql
     select * from `trips` where start_station_name='12th & U St NW' limit 10;
     ```
 
@@ -85,10 +85,11 @@ You can run some queries to check the result, for example:
 
 2. Get the trip records with electric bikes:
 
-    {{< copyable "sql" >}}
-
     ```sql
     use bikeshare;
+    ```
+
+    ```sql
     select * from `trips` where rideable_type="electric_bike" limit 10;
     ```
 

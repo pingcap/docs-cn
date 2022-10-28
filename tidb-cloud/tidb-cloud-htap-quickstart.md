@@ -24,6 +24,9 @@ For example, to replicate the `trips` table (in the Capital Bikeshare sample dat
 
 ```sql
 USE bikeshare;
+```
+
+```sql
 ALTER TABLE trips SET TIFLASH REPLICA 1;
 ```
 
@@ -33,10 +36,19 @@ To check the replication progress, execute the following statement:
 SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = 'bikeshare' and TABLE_NAME = 'trips';
 ```
 
+```sql
++--------------+------------+----------+---------------+-----------------+-----------+----------+------------+
+| TABLE_SCHEMA | TABLE_NAME | TABLE_ID | REPLICA_COUNT | LOCATION_LABELS | AVAILABLE | PROGRESS | TABLE_MODE |
++--------------+------------+----------+---------------+-----------------+-----------+----------+------------+
+| bikeshare    | trips      |       88 |             1 |                 |         1 |        1 | NORMAL     |
++--------------+------------+----------+---------------+-----------------+-----------+----------+------------+
+1 row in set (0.20 sec)
+```
+
 In the result of the preceding statement:
 
 - `AVAILABLE` indicates whether the TiFlash replica of a specific table is available or not. `1` means available and `0` means unavailable. Once a replica becomes available, this status does not change anymore.
-- `PROGRESS` means the progress of the replication. The value is between `0.0` and `1.0`. `1.0` means at least one replica is replicated.
+- `PROGRESS` means the progress of the replication. The value is between `0` and `1`. `1` means at least one replica is replicated.
 
 ### Step 2. Query data using HTAP
 

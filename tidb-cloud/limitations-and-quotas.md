@@ -26,6 +26,6 @@ TiDB Cloud limits how many of each kind of component you can create, and the com
 
 | Component | Quota (default) |
 |:-|:-|
-| Maximum number of total TiDB nodes for all clusters in your organization | 20 |
-| Maximum number of total TiKV nodes for all clusters in your organization | 30 |
-| Maximum number of total TiFlash nodes for all clusters in your organization | 30 |
+| Maximum number of total TiDB nodes for all clusters in your organization | 10 |
+| Maximum number of total TiKV nodes for all clusters in your organization | 15 |
+| Maximum number of total TiFlash nodes for all clusters in your organization | 5 |

@@ -20,7 +20,7 @@ This document describes how to integrate **TiDB** with **ProxySQL** using CentOS
 
 <div label="TiDB Cloud" value="tidb-cloud">
 
-You can refer to [Build a TiDB cluster in TiDB Cloud (Developer Tier)](/develop/dev-guide-build-cluster-in-cloud.md).
+You can refer to [Build a TiDB cluster in TiDB Cloud (Serverless Tier)](/develop/dev-guide-build-cluster-in-cloud.md).
 
 </div>
 

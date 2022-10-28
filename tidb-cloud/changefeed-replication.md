@@ -11,7 +11,7 @@ With TiDB Cloud Replication, you can perform quick disaster recovery of a databa
 
 > **Warning:**
 >
-> Currently, the **TiDB Cloud Replication** feature is in **Public Preview** with the following limitations:
+> Currently, the **TiDB Cloud Replication** feature is in beta with the following limitations:
 >
 > * One primary cluster can only have one replication.
 > * You cannot use a secondary cluster as a source of **TiDB Cloud Replication** to another cluster.

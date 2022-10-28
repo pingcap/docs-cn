@@ -5,7 +5,7 @@ summary: Learn about the release notes of TiDB Cloud in 2021.
 
 # TiDB Cloud Release Notes in 2021
 
-This page lists the release notes of [TiDB Cloud](https://en.pingcap.com/tidb-cloud/) in 2021.
+This page lists the release notes of [TiDB Cloud](https://www.pingcap.com/tidb-cloud/) in 2021.
 
 ## December 28, 2021
 
@@ -40,7 +40,7 @@ Bug fixes:
 
 ## November 8, 2021
 
-* Launch [Developer Tier](/tidb-cloud/select-cluster-tier.md#developer-tier), which offers you a one-year free trial of TiDB Cloud
+* Launch [Developer Tier](/tidb-cloud/select-cluster-tier.md#serverless-tier), which offers you a one-year free trial of TiDB Cloud
 
     Each Developer Tier cluster is a full-featured TiDB cluster and comes with the following:
     

@@ -21,7 +21,7 @@ The audit logging feature is disabled by default. To audit a cluster, you need t
 
 ## Prerequisites
 
-- You are using a TiDB Cloud Dedicated tier. Audit logging is not available for TiDB Cloud Developer Tier clusters.
+- You are using a TiDB Cloud Dedicated tier. Audit logging is not available for TiDB Cloud Serverless Tier clusters.
 - You are the audit administrator of your organization in TiDB Cloud. Otherwise, you cannot see the audit-related options in the TiDB Cloud console. For more information, see [Configure member roles](/tidb-cloud/manage-user-access.md#configure-member-roles).
 
 ## Enable audit logging for AWS or GCP
@@ -87,7 +87,7 @@ For more information, see [Creating a bucket](https://docs.aws.amazon.com/Amazon
 
 In the TiDB Cloud console, go back to the **Audit Logging** dialog box where you got the TiDB Cloud account ID and the External ID values, and then take the following steps:
 
-1. In the **Bucket URL** field, enter the URL of your S3 bucket where the audit log files are to be written.
+1. In the **Bucket URI** field, enter the URI of your S3 bucket where the audit log files are to be written.
 2. In the **Bucket Region** drop-down list, select the AWS region where the bucket locates.
 3. In the **Role ARN** field, fill in the Role ARN value that you copied in [Step 2. Configure Amazon S3 access](#step-2-configure-amazon-s3-access).
 4. Click **Test Connectivity** to verify whether TiDB Cloud can access and write to the bucket.
@@ -100,7 +100,7 @@ In the TiDB Cloud console, go back to the **Audit Logging** dialog box where you
 
 > **Note:**
 >
-> - After enabling audit logging, if you make any new changes to the bucket URL, location, or ARN, you must click **Restart** to load the changes and rerun the **Test Connectivity** check to make the changes effective.
+> - After enabling audit logging, if you make any new changes to the bucket URI, location, or ARN, you must click **Restart** to load the changes and rerun the **Test Connectivity** check to make the changes effective.
 > - To remove Amazon S3 access from TiDB Cloud, simply delete the trust policy that you added.
 
 ### Enable audit logging for GCP
@@ -150,7 +150,7 @@ For more information, see [Creating storage buckets](https://cloud.google.com/st
 
 In the TiDB Cloud console, go back to the **Audit Logging** dialog box where you got the TiDB Cloud account ID，and then take the following steps:
 
-1. In the **Bucket URL** field, enter your full GCS bucket name.
+1. In the **Bucket URI** field, enter your full GCS bucket name.
 2. In the **Bucket Region** field, select the GCS region where the bucket locates.
 3. Click **Test Connectivity** to verify whether TiDB Cloud can access and write to the bucket.
 
@@ -162,7 +162,7 @@ In the TiDB Cloud console, go back to the **Audit Logging** dialog box where you
 
 > **Note:**
 >
-> - After enabling audit logging, if you make any new changes to bucket URL or location, you must click **Restart** to load the changes and rerun the **Test Connectivity** check to make the changes effective.
+> - After enabling audit logging, if you make any new changes to bucket URI or location, you must click **Restart** to load the changes and rerun the **Test Connectivity** check to make the changes effective.
 > - To remove GCS access from TiDB Cloud, simply delete the principal that you added.
 
 ## Specify auditing filter rules
