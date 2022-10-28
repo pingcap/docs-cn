@@ -2372,7 +2372,8 @@ explain select * from t where age=5;
 - 这个变量用于控制 TiDB 优化器是否将某些过滤条件下推到前缀索引，尽量避免不必要的回表，从而提高查询性能。
 - 将该变量设置为 `ON` 时，会将过滤条件下推到前缀索引。此时，假设一张表中 `col` 列是索引前缀列，查询语句中的 `col is null` 或者 `col is not null` 条件会被归为索引上的过滤条件，而不是回表时的过滤条件，从而避免不必要的回表。
 
-该变量的使用示例如下。
+<details>
+<summary>该变量的使用示例如下：</summary>
 
 创建一张带前缀索引的表：
 
@@ -2409,7 +2410,7 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 SET tidb_opt_prefix_index_single_scan = 'ON';
 ```
 
-对于以下查询，执行计划使用了前缀索引 `idx_a_b` 且不需要回表。
+开启该变量后，对于以下查询，执行计划使用了前缀索引 `idx_a_b` 且不需要回表。
 
 ```sql
 EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
@@ -2423,6 +2424,8 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 +--------------------------+---------+-----------+------------------------------+-------------------------------------------------------+
 4 rows in set (0.00 sec)
 ```
+
+</details>
 
 ### `tidb_prepared_plan_cache_memory_guard_ratio` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
