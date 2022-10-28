@@ -2373,7 +2373,7 @@ explain select * from t where age=5;
 - 将该变量设置为 `ON` 时，会将过滤条件下推到前缀索引。此时，假设一张表中 `col` 列是索引前缀列，查询语句中的 `col is null` 或者 `col is not null` 条件会被归为索引上的过滤条件，而不是回表时的过滤条件，从而避免不必要的回表。
 
 <details>
-<summary>该变量的使用示例如下：</summary>
+<summary>该变量的使用示例</summary>
 
 创建一张带前缀索引的表：
 
