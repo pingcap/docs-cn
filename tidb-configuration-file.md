@@ -323,6 +323,16 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：""，支持 TLSv1.1 及以上版本。
 + 可选值：`"TLSv1.0"`、`"TLSv1.1"`、`"TLSv1.2"` 和 `"TLSv1.3"`
 
+### `auth-token-jwks`
+
++ 设置用于 `tidb_auth_token` 认证方式的 JWKS 的本地文件地址。
++ 默认值：""
+
+### `auth-token-refresh-interval`
+
++ 设置用于 `tidb_auth_token` 认证方式的 JWKS 刷新时间间隔。
++ 默认值：1h
+
 ## performance
 
 性能相关配置。
