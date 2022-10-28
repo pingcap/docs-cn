@@ -847,7 +847,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 默认值：`2`
 - 可选值：
     - `1`：使用 Cost Model Version 1 代价模型。
-    - `2`：使用 Cost Model Version 2 代价模型。TiDB v6.2.0 引入了代价模型 [Cost Model Version 2](/cost-model.md#cost-model-version-2)，在内部测试中比此前版本的代价模型更加准确。
+    - `2`：使用 Cost Model Version 2 代价模型。TiDB v6.2.0 引入了代价模型 [Cost Model Version 2](/cost-model.md#cost-model-version-2)，在内部测试中比 Version 1 版本的代价模型更加准确。
 - 代价模型会影响优化器对计划的选择，具体可见[代价模型](/cost-model.md)。
 
 ### `tidb_current_ts`
