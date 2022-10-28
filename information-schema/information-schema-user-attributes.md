@@ -27,7 +27,7 @@ DESC user_attributes;
 
 * `USER`：用户名。
 * `HOST`：用户可用于连接的主机。百分号（`％`）表示主机名不受限制。
-* `ATTRIBUTE`：与当前用户相关的注释和属性。
+* `ATTRIBUTE`：通过 [`CREATE USER`](/sql-statements/sql-statement-create-user.md) 或 [`ALTER USER`](/sql-statements/sql-statement-alter-user.md) 语句设置的用户相关的注释和属性。
 
 示例：
 
