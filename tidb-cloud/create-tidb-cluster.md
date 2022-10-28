@@ -72,7 +72,7 @@ To create a Serverless Tier cluster, take the following steps:
 
 4. View the cluster size of the Serverless Tier, and then click **Create**.
 
-    The cluster creation process starts and your TiDB Cloud cluster will be created in approximately 5 to 15 minutes.
+    The cluster creation process starts and your TiDB Cloud cluster will be created in approximately 30 seconds.
 
 5. During the creation process, perform security settings for your cluster:
 
