@@ -517,8 +517,8 @@
       - [报警规则](/ticdc/ticdc-alert-rules.md)
     - 参考指南
       - [架构设计与原理](/ticdc/ticdc-architecture.md)
-      - [命令行参数](/ticdc/ticdc-command-line-flags.md)
-      - [配置文件参数](/ticdc/ticdc-configuration-file.md)
+      - [TiCDC Server 配置参数](/ticdc/ticdc-server-config.md)
+      - [TiCDC Changefeed 配置参数](/ticdc/ticdc-changefeed-config.md)
       - 输出数据协议
         - [TiCDC Avro Protocol](/ticdc/ticdc-avro-protocol.md)
         - [TiCDC Canal-JSON Protocol](/ticdc/ticdc-canal-json.md)

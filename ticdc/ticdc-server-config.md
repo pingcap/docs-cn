@@ -1,9 +1,9 @@
 ---
-title: TiCDC 命令行参数
+title: TiCDC Server 配置
 summary: TODO
 ---
 
-# TiCDC 命令行参数
+# TiCDC Server 配置
 
 ## `cdc server` 命令行参数说明
 
@@ -12,7 +12,7 @@ summary: TODO
 - `addr`：TiCDC 的监听地址，提供服务的 HTTP API 查询地址和 Prometheus 查询地址，默认为 `127.0.0.1:8300`。
 - `advertise-addr`：TiCDC 对外开放地址，供客户端访问。如果未设置该参数值，地址默认与 `addr` 相同。
 - `pd`：TiCDC 监听的 PD 节点地址，用 `,` 来分隔多个 PD 节点地址。
-- `config`：可选项，表示 TiCDC 使用的配置文件地址。TiCDC 从 v5.0.0 开始支持该选项，TiUP 从 v1.4.0 开始支持在部署 TiCDC 时使用该配置。
+- `config`：可选项，表示 TiCDC 使用的配置文件地址。TiCDC 从 v5.0.0 开始支持该选项，TiUP 从 v1.4.0 开始支持在部署 TiCDC 时使用该配置。配置文件的格式说明详见：TODO
 - `data-dir`：指定 TiCDC 使用磁盘储存文件时的目录。目前 Unified Sorter 会使用该目录储存临时文件，建议确保该目录所在设备的可用空间大于等于 500 GiB。更详细的说明参见 [Unified Sorter](/ticdc/manage-ticdc.md#unified-sorter-功能)。对于使用 TiUP 的用户，本选项可以通过配置 [`cdc_servers`](/tiup/tiup-cluster-topology-reference.md#cdc_servers) 中的 `data_dir` 来指定或默认使用 `global` 中 `data_dir` 路径。
 - `gc-ttl`：TiCDC 在 PD 设置的服务级别 GC safepoint 的 TTL (Time To Live) 时长，和 TiCDC 同步任务所能够停滞的时长。单位为秒，默认值为 `86400`，即 24 小时。注意：TiCDC 同步任务的停滞会影响 TiCDC GC safepoint 的推进，即会影响上游 TiDB GC 的推进，详情可以参考 [TiCDC GC safepoint 的完整行为](/ticdc/ticdc-faq.md#ticdc-gc-safepoint-的完整行为是什么)。
 - `log-file`：TiCDC 进程运行时日志的输出地址，未设置时默认为标准输出 (stdout)。
@@ -24,42 +24,49 @@ summary: TODO
 - `tz`：TiCDC 服务使用的时区。TiCDC 在内部转换 `TIMESTAMP` 等时间数据类型和向下游同步数据时使用该时区，默认为进程运行本地时区。（注意如果同时指定 `tz` 参数和 `sink-uri` 中的 `time-zone` 参数，TiCDC 进程内部使用 `tz` 指定的时区，sink 向下游执行时使用 `time-zone` 指定的时区）
 - `cluster-id`：TiCDC 集群的 ID。可选，默认值为 `default`。`cluster-id` 是 TiCDC 集群的唯一标识，拥有相同 `cluster-id` 的 TiCDC 节点同属一个集群。长度最大为 128，需要符合正则表达式 `^[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*$`，且不能是以下值：`owner`，`capture`，`task`，`changefeed`，`job`，`meta`。
 
+## `cdc server` 配置文件说明
 
-## `cdc cli` 命令行参数说明
+对于 `cdc server` 命令中 config 参数指定的配置文件说明如下：
 
-TODO
-
-
-## 创建同步任务
-
-使用以下命令来创建同步任务：
-
-{{< copyable "shell-regular" >}}
-
-```shell
-cdc cli changefeed create \
-    --server=http://10.0.10.25:8300 \
-    --sink-uri="mysql://root:123456@127.0.0.1:3306/" \
-    --changefeed-id="simple-replication-task" 
 ```
+addr = "192.155.22.33:8887"
+advertise-addr = ""
+log-file = ""
+log-level = "info"
+data-dir = ""
+gc-ttl = 86400
+tz = "System"
+cluster-id = "default"
 
-```shell
-Create changefeed successfully!
-ID: simple-replication-task
-Info: {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":"2020-03-12T22:04:08.103600025+08:00","start-ts":415241823337054209,"target-ts":0,"admin-job-type":0,"sort-engine":"unified","sort-dir":".","config":{"case-sensitive":true,"filter":{"rules":["*.*"],"ignore-txn-start-ts":null,"ddl-allow-list":null},"mounter":{"worker-num":16},"sink":{"dispatchers":null},"scheduler":{"type":"table-number","polling-time":-1}},"state":"normal","history":null,"error":null}
+[security]
+  ca-path = ""
+  cert-path = ""
+  key-path = ""
+
+
+capture-session-ttl = 10
+owner-flush-interval = 50000000
+processor-flush-interval = 50000000
+per-table-memory-quota = 10485760
+
+[log]
+  error-output = "stderr"
+  [log.file]
+    max-size = 300
+    max-days = 0
+    max-backups = 0
+
+[sorter]
+  num-concurrent-worker = 4
+  chunk-size-limit = 999
+  max-memory-percentage = 30
+  max-memory-consumption = 17179869184
+  num-workerpool-goroutine = 16
+  sort-dir = "/tmp/sorter"
+
+[kv-client]
+  worker-concurrent = 8
+  worker-pool-size = 0
+  region-scan-limit = 40
+  region-retry-duration = 60000000000
 ```
-
-- `--changefeed-id`：同步任务的 ID，格式需要符合正则表达式 `^[a-zA-Z0-9]+(\-[a-zA-Z0-9]+)*$`。如果不指定该 ID，TiCDC 会自动生成一个 UUID（version 4 格式）作为 ID。
-- `--sink-uri`：同步任务下游的地址，需要按照以下格式进行配置，目前 scheme 支持 `mysql`、`tidb` 和 `kafka`。
-
-    {{< copyable "" >}}
-
-    ```
-    [scheme]://[userinfo@][host]:[port][/path]?[query_parameters]
-    ```
-
-    URI 中包含特殊字符时，如 `! * ' ( ) ; : @ & = + $ , / ? % # [ ]`，需要对 URI 特殊字符进行转义处理。你可以在 [URI Encoder](https://meyerweb.com/eric/tools/dencoder/) 中对 URI 进行转义。
-
-- `--start-ts`：指定 changefeed 的开始 TSO。TiCDC 集群将从这个 TSO 开始拉取数据。默认为当前时间。
-- `--target-ts`：指定 changefeed 的目标 TSO。TiCDC 集群拉取数据直到这个 TSO 停止。默认为空，即 TiCDC 不会自动停止。
-- `--config`：指定 changefeed 配置文件。
