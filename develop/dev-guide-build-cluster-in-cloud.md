@@ -42,8 +42,6 @@ This document walks you through the quickest way to get started with TiDB Cloud.
 
 7. In the dialog box, locate **Step 2: Connect with a SQL client**, and then copy the string to connect with a SQL client for later use.
 
-    ![SQL string](/media/develop/tidb-cloud-connect.png)
-
     <CustomContent platform="tidb">
 
     > **Note:**
