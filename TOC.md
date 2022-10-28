@@ -18,7 +18,7 @@
 - 应用开发
   - [概览](/develop/dev-guide-overview.md)
   - 快速开始
-    - [使用 TiDB Cloud (Developer Tier) 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md)
+    - [使用 TiDB Cloud (Serverless Tier) 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md)
     - [使用 TiDB 的增删改查 SQL](/develop/dev-guide-tidb-crud-sql.md)
     - 构建简单的 CRUD 应用程序
       - [Java](/develop/dev-guide-sample-application-java.md)
@@ -224,9 +224,9 @@
       - [执行计划管理](/sql-plan-management.md)
       - [优化规则及表达式下推的黑名单](/blocklist-control-plan.md)
 - 教程
-  - [同城多中心部署](/multi-data-centers-in-one-city-deployment.md)
-  - [两地三中心部署](/three-data-centers-in-two-cities-deployment.md)
-  - [同城两中心部署](/two-data-centers-in-one-city-deployment.md)
+  - [单区域多 AZ 部署](/multi-data-centers-in-one-city-deployment.md)
+  - [双区域多 AZ 部署](/three-data-centers-in-two-cities-deployment.md)
+  - [单区域双 AZ 部署](/two-data-centers-in-one-city-deployment.md)
   - 读取历史数据
     - 使用 Stale Read 功能读取历史数据（推荐）
       - [Stale Read 使用场景介绍](/stale-read.md)
@@ -922,6 +922,7 @@
   - v6.2
     - [6.2.0-DMR](/releases/release-6.2.0.md)
   - v6.1
+    - [6.1.2](/releases/release-6.1.2.md)
     - [6.1.1](/releases/release-6.1.1.md)
     - [6.1.0](/releases/release-6.1.0.md)
   - v6.0
