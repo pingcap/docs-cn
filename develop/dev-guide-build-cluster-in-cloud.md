@@ -20,7 +20,7 @@ aliases: ['/zh/tidb/dev/build-cluster-in-cloud']
 4. 在 **Create Cluster** 页面设置集群名称、云服务商（Serverless Tier 默认为 AWS）、可用区（建议就近选择）后，点击 **Create** 按钮创建 Serverless Tier 免费集群。
 5. 在 **Security Settings** 对话框中，设置密码，并添加允许连接你的集群的 IP 地址，完成后点击 **Apply**。
 
-    你的 TiDB Cloud 集群将于 5~15 分钟后创建完毕。
+    你的 TiDB Cloud 集群将于 30 秒后创建完毕。
 
 6. 创建完毕后，点击右上角的 **Connect** 按钮。或点击集群名称，打开集群的详情页，再点击右上角的 **Connect** 按钮。这将显示一个连接对话框。
 7. 复制连接对话框 **Step 2: Connect with a SQL client** 中的连接字符串，供后续步骤使用。
