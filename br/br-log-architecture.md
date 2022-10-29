@@ -3,15 +3,15 @@ title: 日志备份和 PITR 功能架构
 summary: 了解 TiDB 的日志备份和 PITR 的架构设计。
 ---
 
-TiDB 的备份恢复功能，以 br、tidb-operator 为使用入口，创建相应的备份或恢复子任务在各个 TiKV 存储节点运行，进行日志备份或者恢复。下面以使用 br 工具进行备份恢复为例，介绍备份和恢复的流程。
+TiDB 的备份恢复功能，以 BR 和 TiDB Operator 为使用入口，创建相应的备份或恢复子任务在各个 TiKV 存储节点运行，进行日志备份或者恢复。下面以使用 BR 工具进行备份恢复为例，介绍备份和恢复的流程。
 
 # 日志备份和 PITR 功能架构
 
-日志备份和 PITR 的架构实现如下：
+日志备份和 point in time recovery (PITR) 的架构实现如下：
 
 ![BR log backup and PITR architecture](/media/br/br-log-arch.png)
 
-## 进行日志备份
+## 日志备份
 
 日志备份的流程如下：
 
@@ -47,9 +47,9 @@ TiDB 的备份恢复功能，以 br、tidb-operator 为使用入口，创建相�
 
 5. PD 持久化日志备份任务状态。可以通过 `br log status` 查询
 
-## 进行 PITR
+## PITR
 
-Point in time recovery 的流程如下：
+PITR 的流程如下：
 
 ![Point in time recovery process design](/media/br/pitr-ts.png)
 
@@ -71,11 +71,11 @@ Point in time recovery 的流程如下：
 5. TiKV 恢复日志备份数据
    * **Download KVs**：log restore worker 根据日志回复请求中要恢复的备份数据，从备份存储中下载相应的备份数据到本地
    * **Rewrite KVs**：log restore worker 根据恢复集群表的 table ID 对备份数据的 kv 进行重写 —— 将原有的 [kv 编码](/tidb-computing.md#表数据与-key-value-的映射关系)中的 tableID 替换为新创建的 tableID。同样的 indexID 也需要相同的处理
-   * **Apply KVs**：log restore worker 将处理好的 kv 通过 raft 接口写 store（rocksdb） 中
-   * **Report restore result**：log restore worker 返回恢复结果给 br
+   * **Apply KVs**：log restore worker 将处理好的 kv 通过 raft 接口写入 store (RocksDB) 中
+   * **Report restore result**：log restore worker 返回恢复结果给 BR
 
 6. BR 从各个 TiKV 获取恢复结果
-   * 如果局部数据恢复因为 RegionNotFound/EpochNotMatch 等原因失败，比如 TiKV 节点故障，br 重试恢复这些数据
+   * 如果局部数据恢复因为 RegionNotFound/EpochNotMatch 等原因失败，比如 TiKV 节点故障，BR 重试恢复这些数据
    * 如果存在备份数据不可重试的恢复失败，则恢复任务失败
    * 全部备份数据都恢复成功后，则恢复任务成功
 
@@ -85,7 +85,7 @@ Point in time recovery 的流程如下：
 
 - `{min_ts}-{uuid}.log` 文件：存储备份下来的 kv 数据变更记录。其中 {min_ts} 是该文件中所有 kv 数据变更记录数对应的最小 ts；{uuid} 是生成该文件的时候随机生成的。
 - `{checkpoint_ts}-{uuid}.meta` 文件: 每个 tikv 节点每次上传日志备份数据时会生成一个该文件，保存本次上传的所有日志备份数据文件 其中 {checkpoint_ts} 是本节点的日志备份的 checkpoint，所有 tikv 节点的最小的 checkpoint 就是日志备份任务最新的 checkpoint；{uuid} 是生成该文件的时候随机生成的。
-- `{store_id}.ts` 文件：每个 tikv 节点每次上传日志备份数据时会使用 global checkpoint ts 更新该文件。 其中 {store_id} 是 tikv 的 store ID。 
+- `{store_id}.ts` 文件：每个 tikv 节点每次上传日志备份数据时会使用 global checkpoint ts 更新该文件。 其中 {store_id} 是 tikv 的 store ID。
 - `v1_stream_trancate_safepoint.txt` 文件：保存最近一次通过 `br log truncate` 删除日志备份数据后，存储中最早的日志备份数据对应的 ts。
 
 ### 备份文件布局

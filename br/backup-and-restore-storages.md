@@ -6,7 +6,7 @@ aliases: ['/zh/tidb/dev/backup-storage-S3/','/zh/tidb/dev/backup-storage-azblob/
 
 # 备份存储
 
-TiDB 支持 Amazon S3、Google Cloud Storage (GCS) 、Azure Blob Storage 和 NFS 作为备份恢复的存储。具体来说，可以在 BR 的 `--storage (-s)` 参数传入存储的 URL 来定义备份存储。
+TiDB 支持 Amazon S3、Google Cloud Storage (GCS) 、Azure Blob Storage 和 NFS 作为备份恢复的存储。具体来说，可以在 BR 的 `--storage (-s)` 参数传入存储的 URL 来定义备份存储。本文介绍不同存储系统中 URL 的定义及存储过程中的鉴权方案。
 
 ## URL 格式
 

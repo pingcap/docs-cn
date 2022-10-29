@@ -134,12 +134,10 @@
     - [功能介绍](/br/backup-and-restore-overview.md)
     - 架构设计
       - [架构概述](/br/backup-and-restore-design.md)
-      - [备份快照](/br/br-snapshot-architecture.md#备份集群快照数据)
-      - [恢复快照](/br/br-snapshot-architecture.md#恢复快照备份数据)
-      - [日志备份](/br/br-log-architecture.md#进行日志备份)
-      - [恢复到指定时间点](/br/br-log-architecture.md#进行-pitr)
+      - [快照备份和恢复架构](/br/br-snapshot-architecture.md)
+      - [日志备份和 PITR 架构](/br/br-log-architecture.md)
     - 使用 BR 进行备份与恢复
-      - [概述](/br/br-use-overview.md)
+      - [使用概述](/br/br-use-overview.md)
       - [快照备份和恢复](/br/br-snapshot-guide.md)
       - [日志备份和 PITR](/br/br-pitr-guide.md)
       - [实践示例](/br/backup-and-restore-use-cases.md)
