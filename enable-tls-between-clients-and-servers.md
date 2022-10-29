@@ -34,7 +34,7 @@ TiDB 服务端支持启用基于 TLS（传输层安全）协议的加密连接�
 
 要启用安全连接，请参考以下相关参数说明：
 
-- [`auto-tls`](/tidb-configuration-file.md#auto-tls): 启用证书自动生成功能（从 v5.2.0 开始）
+- [`auto-tls`](/tidb-configuration-file.md#auto-tls)：启用证书自动生成功能（从 v5.2.0 开始）
 - [`ssl-cert`](/tidb-configuration-file.md#ssl-cert)：指定 SSL 证书文件路径
 - [`ssl-key`](/tidb-configuration-file.md#ssl-key)：指定证书文件对应的私钥
 - [`ssl-ca`](/tidb-configuration-file.md#ssl-ca)：可选，指定受信任的 CA 证书文件路径
@@ -62,8 +62,8 @@ MySQL 5.7 及以上版本自带的客户端默认尝试使用安全连接，若�
 
 除此参数外，MySQL 8.0 客户端有两种 SSL 模式：
 
-- `--ssl-mode=VERIFY_CA`: 根据 `--ssl-ca` 签发的 CA 验证来自服务器的证书。
-- `--ssl-mode=VERIFY_IDENTITY`: 与 `VERIFY_CA` 相同，但也验证所连接的主机名是否与证书匹配。
+- `--ssl-mode=VERIFY_CA`：根据 `--ssl-ca` 签发的 CA 验证来自服务器的证书。
+- `--ssl-mode=VERIFY_IDENTITY`：与 `VERIFY_CA` 相同，但也验证所连接的主机名是否与证书匹配。
 
 详细信息请参阅 MySQL 文档中关于[客户端配置安全连接](https://dev.mysql.com/doc/refman/5.7/en/using-encrypted-connections.html#using-encrypted-connections-client-side-configuration)的部分。
 
