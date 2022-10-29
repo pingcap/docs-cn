@@ -6,15 +6,15 @@ aliases: ['/zh/tidb/dev/pitr-monitoring-and-alert/']
 
 # BR 监控告警
 
-下面介绍 BR 的监控和告警。
+本文介绍 BR 的监控和告警，包括如何部署监控、监控指标及常用告警项。
 
-## 日志备份监控和告警
+## 日志备份监控
 
 日志备份支持功能使用 [Prometheus](https://prometheus.io/) 采集监控指标，目前所有的监控指标都内置在 TiKV 中。
 
 ### 部署监控
 
-- 通过 TiUP 部署的集群，[Prometheus](https://prometheus.io/) 会自动采集相关的监控指标。
+- 通过 TiUP 部署的集群，Prometheus 会自动采集相关的监控指标。
 
 - 手动部署的集群，需要参考 [TiDB 集群监控部署](/deploy-monitoring-services.md)，在 Prometheus 配置文件的 `scrape_configs` 中加入 TiKV 相关的 job。
 
@@ -54,7 +54,7 @@ aliases: ['/zh/tidb/dev/pitr-monitoring-and-alert/']
 
 #### 配置告警
 
-目前 PiTR 还未内置告警项，本节介绍如何在 PiTR 中配置告警项，以及推荐的告警项规则。
+目前 PITR 还未内置告警项，本节介绍如何在 PITR 中配置告警项，以及推荐的告警项规则。
 
 告警规则配置可以参考下面的步骤：
 

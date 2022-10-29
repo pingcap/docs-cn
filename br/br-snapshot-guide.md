@@ -1,6 +1,6 @@
 ---
 title: TiDB 快照备份和恢复使用指南
-summary: 了解 TiDB 的快照备份和恢复功能使用。
+summary: 了解如何使用 BR 进行 TiDB 快照备份和恢复。
 ---
 
 # TiDB 快照备份和恢复使用指南

@@ -1,6 +1,6 @@
 ---
 title: TiDB 备份和恢复功能使用概述
-summary: 了解 TiDB 的备份和恢复功能使用。
+summary: 了解如何部署和使用 BR 进行 TiDB 集群的备份和恢复。
 aliases: ['/zh/tidb/dev/br-deployment/']
 ---
 
@@ -68,7 +68,7 @@ Amazon S3、Google Cloud Storage (GCS)、Azure Blob Storage 是 BR 推荐的存�
 - BR、TiKV 节点和备份存储系统需要提供大于备份速度的的网络带宽。当集群特别大的时候，备份和恢复速度上限受限于备份网络的带宽。
 - 备份存储系统还需要提供足够的写入/读取性能（IOPS），否则它有可能成为备份恢复时的性能瓶颈。
 - TiKV 节点需要为备份准备至少额外的两个 CPU core 和高性能的磁盘，否则备份将对集群上运行的业务产生影响。
-- 推荐 br 运行在（8 核+/16 GB+）的节点上。
+- 推荐 BR 运行在 8 核+/16 GB+的节点上。
 
 目前支持以下几种方式来使用 BR。
 
