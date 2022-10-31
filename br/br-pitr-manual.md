@@ -233,11 +233,6 @@ Global Flags:
  -u, --pd strings             PD address (default [127.0.0.1:2379])
 ```
 
-> **警告：**
->
-> - 请谨慎使用该命令。只有在你确认不再继续使用 PITR 的情况下，才可以停止日志备份任务。如果你只需暂停日志备份，请使用 `br log pause` 和 `br log resume` 命令。
-> - 如果你选择使用 `br log stop` 停止备份任务，在使用 `br log start` 重启备份任务时，需要指定一个与之前不同的日志备份存储路径，而不同的日志备份路径会导致你无法使用 `br restore point` 进行一键恢复。
-
 使用示例：
 
 ```shell

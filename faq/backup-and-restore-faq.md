@@ -33,14 +33,9 @@ TiKV 支持[动态配置](/tikv-control.md#动态修改-tikv-的配置)自动调
 
 Issue 链接：[#36648](https://github.com/pingcap/tidb/issues/36648)
 
-执行 PITR 恢复时遇到 BR OOM 问题，从以下几点考虑：
+执行 `br log truncate` 时遇到 br OOM 问题，从以下几点考虑：
 
-- PITR 恢复出现 OOM，是由于待恢复的索引日志数据过多，以下是两个典型场景。
-    - 恢复日志区间过大
-        - 建议恢复的日志区间不超过 2 天，最长不超过一周。即在 PITR 备份过程中，最好每 2 天做一次快照备份操作。
-    - 备份日志期间，存在长时间大量写入。
-        - 长时间大量写入的场景一般出现在初始化集群全量导入数据的阶段。建议在导入完成后进行一次快照备份，使用该备份进行恢复。
-- 删除日志时出现 OOM，是由于删除的日志区间过大。
+- 由于删除的日志区间过大。
     - 遇到此问题，解决方法是先减小删除的日志区间，可通过多次删除小区间日志来替代掉需要删除的大区间日志。
 - br 进程所在的节点内存配置过低。
     - 建议升级节点内存配置到至少 16 GB，确保 PITR 恢复有足够的内存资源。
@@ -51,17 +46,21 @@ Issue 链接：[#36648](https://github.com/pingcap/tidb/issues/36648)
 
 在创建日志备份任务的上游集群中，请尽量避免使用 TiDB Lightning Physical 方式导入数据。可以选择使用 TiDB Lightning Logical 方式导入数据。若确实需要使用 Physical 导入方式，可在导入完成之后做一次快照备份操作，这样，PITR 就可以恢复到快照备份之后的时间点。
 
+### 索引加速功能与 PITR 功能不兼容
+
+Issue 链接：[#38045](https://github.com/pingcap/tidb/issues/38045)
+
+当前[索引加速功能](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入)与 PITR 功能不兼容。在使用索引加速功能时，需要确保后台没有启动 PITR 备份任务，否则可能会出现非预期结果。非预期场景包括：
+
+- 如果先启动 PITR 备份任务，再添加索引，此时即使索引加速功能打开，也不会使用加速索引功能，但不影响索引兼容性。
+- 如果先启动添加索引加速任务，再创建 PITR 备份任务，此时 PITR 备份任务会报错，但不影响正在添加索引的任务。
+- 如果同时启动 PITR 备份任务和添加索引加速任务，可能会由于两个任务无法察觉到对方而导致 PITR 不能成功备份增加的索引数据。
+
 ### 集群已经恢复了网络分区故障，日志备份任务进度 checkpoint 仍然不推进
 
 Issue 链接：[#13126](https://github.com/tikv/tikv/issues/13126)
 
 在集群出现网络分区故障后，备份任务难以继续备份日志，并且在超过一定的重试时间后，任务会被置为 `ERROR` 状态。此时备份任务已经停止，需要手动执行 `br log resume` 命令来恢复日志备份任务。
-
-### 日志备份实际消耗的存储是集群监控显示的数据增量的 2~3 倍
-
-Issue 链接：[#13306](https://github.com/tikv/tikv/issues/13306)
-
-这是由于集群监控显示的是 RocksDB 压缩后的数据，而日志备份使用的是自定义的编码方式存储 KV 数据，因此造成压缩比率不一致，大约是 2~3 倍之间。日志备份没有使用 RocksDB 生成 SST 文件的方式存储数据，是因为日志备份期间生成的数据会遇到区间范围过大而实际区间内容较少的情况。这个情况下，通过 ingest SST 的方式恢复数据，并不能有效提升恢复性能。
 
 ### 执行 PITR 恢复时遇到 `execute over region id` 报错
 
@@ -73,19 +72,7 @@ Issue 链接：[#37207](https://github.com/pingcap/tidb/issues/37207)
 
 ### 在使用 `br restore point` 命令恢复下游集群后， TiFlash 引擎数据没有恢复？
 
-在 v6.2.0 版本中，使用 PITR 功能恢复下游集群数据时，并不支持恢复下游的 TiFlash 副本。恢复数据之后，需要执行如下命令手动设置 schema 或 table 的 TiFlash 副本：
-
-``` sql
-ALTER TABLE table_name SET TIFLASH REPLICA @count;
-```
-
-在 v6.3.0 及以上版本，PITR 恢复数据完成之后，BR 会自动依照上游对应时刻的 TiFlash 副本数量执行 `ALTER TABLE SET TIFLASH REPLICA` 语句。你可以通过以下 SQL 语句检查 TiFlash 副本的设置状态：
-
-``` sql
-SELECT * FROM INFORMATION_SCHEMA.tiflash_replica;
-```
-
-需要注意，PITR 目前不支持在恢复阶段直接将数据写入 TiFlash ，因此 TiFlash 副本在 PITR 完成恢复之后并不能马上可用，而是需要等待一段时间从 TiKV 节点同步数据。要查看同步进度，可以查询 `INFORMATION_SCHEMA.tiflash_replica` 表中的 `progress` 信息。
+PITR 目前不支持在恢复阶段直接将数据写入 TiFlash ，在数据恢复完成后，br 会执行 `ALTER TABLE table_name SET TIFLASH REPLICA ***`， 因此 TiFlash 副本在 PITR 完成恢复之后并不能马上可用，而是需要等待一段时间从 TiKV 节点同步数据。要查看同步进度，可以查询 `INFORMATION_SCHEMA.tiflash_replica` 表中的 `progress` 信息。
 
 ### 日志备份任务的 `status` 变为 `ERROR`，该如何处理？
 
