@@ -6,10 +6,6 @@ aliases: ['/docs/dev/system-tables/system-table-sql-diagnostics/','/docs/dev/ref
 
 # SQL Diagnostics
 
-> **Warning:**
->
-> SQL diagnostics is still an experimental feature. It is **NOT** recommended that you use it in the production environment.
-
 SQL diagnostics is a feature introduced in TiDB v4.0. You can use this feature to locate problems in TiDB with higher efficiency. Before TiDB v4.0, you need to use different tools to obtain different information.
 
 The SQL diagnostic system has the following advantages:
