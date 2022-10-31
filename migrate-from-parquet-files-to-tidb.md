@@ -35,7 +35,7 @@ Hive 中每个表都能通过标注 `STORED AS PARQUET LOCATION '/path/in/hdfs'`
     hdfs dfs -get /path/in/hdfs /path/in/local
     ```
 
-    完成导出后，如果你需要将 HDFS 里导出的 Parquet 文件删除，可以直接将这个临时表删掉：
+    完成导出后，如果你需要将 HDFS 里导出的 Parquet 文件删除，可以直接将这个临时表 (`temp`) 删掉：
 
     ```sql
     DROP TABLE temp;
