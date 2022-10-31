@@ -113,23 +113,23 @@ Flags:
     tiup bench tpcc --warehouses 4 cleanup
     ```
 
-当需要测试大数据集时，直接写入通常较慢，也可以通过如下命令生成 csv 数据集，然后通过 [lightning](/tidb-lightning/tidb-lightning-overview) 导入。
+当需要测试大数据集时，直接写入通常较慢，也可以通过如下命令生成 csv 数据集，然后通过 [lightning](/tidb-lightning/tidb-lightning-overview.md) 导入。
 
 - 生成 CSV 文件：
 
-    {{< copyable "shell-regular" >}}
+  {{< copyable "shell-regular" >}}
 
-    ```shell
-    tiup bench tpcc --warehouses 4 prepare --output-dir data --output-type=csv
-    ```
+  ```shell
+  tiup bench tpcc --warehouses 4 prepare --output-dir data --output-type=csv
+  ```
 
 - 为指定的表生成 CSV 文件：
 
-    {{< copyable "shell-regular" >}}
+  {{< copyable "shell-regular" >}}
 
-    ```shell
-    tiup bench tpcc --warehouses 4 prepare --output-dir data --output-type=csv --tables history,orders
-    ```
+  ```shell
+  tiup bench tpcc --warehouses 4 prepare --output-dir data --output-type=csv --tables history,orders
+  ```
 
 ## 使用 TiUP 运行 TPC-H 测试
 
