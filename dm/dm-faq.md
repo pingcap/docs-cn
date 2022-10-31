@@ -392,3 +392,7 @@ You can avoid this error by the following options:
     ```
 
 - Upgrade DM to v2.0.7 or later versions.
+
+## Why does the load unit report the `Unknown character set` error?
+
+TiDB does not support all MySQL character sets. Therefore, DM reports this error if an unsupported character set is used when creating the table schema during a full import. To bypass this error, you can create the table schema in the downstream in advance using the [character sets supported by TiDB](/character-set-and-collation.md) according to the specific data.

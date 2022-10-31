@@ -201,3 +201,7 @@ This error occurs usually because the CSV data file does not contain a header (t
 [mydumper.csv]
 header = false
 ```
+
+### `Unknown character set`
+
+TiDB does not support all MySQL character sets. Therefore, TiDB Lightning reports this error if an unsupported character set is used when creating the table schema during an import. To bypass this error, you can create the table schema in the downstream in advance using the [character sets supported by TiDB](/character-set-and-collation.md) according to the specific data.
