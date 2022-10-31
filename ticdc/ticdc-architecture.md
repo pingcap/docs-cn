@@ -42,7 +42,7 @@ dispatchers = [
 ]
 ```
 
-说明：对于以上命令的详细含义，请在文档的 Changefeed 管理部分查找 TODO
+说明：对于以上命令的详细含义，详见：[TiCDC Changefeed 配置参数](/ticdc/ticdc-changefeed-config.md)
 
 以上命令创建了一个到 Kafka 集群的 Changefeed，在这个 Changefeed 中，需要同步 `test1.tab1`, `test1.tab2`, `test3.tab3`, `test4.tab4` 这四张表。TiCDC 在接收到这个命令之后，会执行下面的步骤：
 1. 将这个任务发送给 TiCDC 的 owner Capture 进程。 

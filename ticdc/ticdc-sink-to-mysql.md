@@ -30,7 +30,7 @@ Info: {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":
 - `--sink-uri`：同步任务下游的地址，详见 [Sink URI 配置 `mysql`/`tidb`](/ticdc-sink-to-mysql.md#sink-uri-配置-mysqltidb)。
 - `--start-ts`：指定 changefeed 的开始 TSO。TiCDC 集群将从这个 TSO 开始拉取数据。默认为当前时间。
 - `--target-ts`：指定 changefeed 的目标 TSO。TiCDC 集群拉取数据直到这个 TSO 停止。默认为空，即 TiCDC 不会自动停止。
-- `--config`：指定 changefeed 配置文件，详见 TODO。
+- `--config`：指定 changefeed 配置文件，详见：[TiCDC Changefeed 配置参数](/ticdc/ticdc-changefeed-config.md)。
 
 ## Sink URI 配置 `mysql`/`tidb`
 
