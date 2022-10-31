@@ -1,6 +1,6 @@
 ---
 title: TiCDC Server 配置
-summary: TODO
+summary: 了解 TiCDC  详细的命令行参数和配置文件定义。
 ---
 
 # TiCDC Server 配置
