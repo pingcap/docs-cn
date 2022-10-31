@@ -812,9 +812,9 @@ raftstore 相关的配置项。
 + 默认值：1024
 + 最小值：大于 0
 
-### `apply-yield-msg-size` <span class="version-mark">从 v6.4.0 版本开始引入</span>
+### `apply-yield-write-size` <span class="version-mark">从 v6.4.0 版本开始引入</span>
 
-+ Apply 线程一轮处理单个状态机的最大字节数，这是一个软限制。
++ 单个状态机在 Apply 线程持续写入的最大数据量，这是个软限制。
 + 默认值：32KB
 + 最小值：大于 0
 
