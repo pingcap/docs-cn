@@ -49,8 +49,8 @@ tiup bench rawsql # 以自定义 SQL 文件作为 workload 压测
 
 - `--host` 和 `--port` 支持以逗号分隔传入多个值，以启用客户端负载均衡，例如指定 `--host 172.16.4.1,172.16.4.2 --port 4000,4001` 时，负载程序将以 round-robin 方式连接到 172.16.4.1:4000, 172.16.4.1:4001, 172.16.4.2:4000, 172.16.4.2:4001 这 4 个实例上。
 - `--conn-params` 需要符合 [query string](https://en.wikipedia.org/wiki/Query_string) 格式，不同数据库支持不同参数，如：
-  - `--conn-params tidb_isolation_read_engines='tiflash'` 设置 TiDB 查询走 TiFlash 。
-  - `--conn-params sslmode=disable` 设置连接 PostgreSQL 不启用加密。
+    - `--conn-params tidb_isolation_read_engines='tiflash'` 设置 TiDB 查询走 TiFlash 。
+    - `--conn-params sslmode=disable` 设置连接 PostgreSQL 不启用加密。
 - 当运行 CH-benCHmark 时，可以通过 `--ap-host`, `--ap-port`, `--ap-conn-params` 来指定独立的 tidb 实例用于 AP 查询。
 
 下文分别介绍如何使用 TiUP 运行 TPC-C, TPC-H 以及 YCSB 测试。
