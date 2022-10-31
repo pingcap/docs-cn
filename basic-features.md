@@ -169,6 +169,7 @@ aliases: ['/docs-cn/dev/basic-features/']
 | [TiDB Dashboard 持续性能分析功能](/dashboard/continuous-profiling.md)       |    Y    |    Y    |    Y    |    Y     |    Y     | 实验特性 | 实验特性 |    N     |    N     |    N     | N        |
 | [TiDB Dashboard Top SQL 功能](/dashboard/top-sql.md)                       |    Y    |    Y    |    Y     |    Y     |    Y     | 实验特性 |    N     |    N     |    N     |    N     | N        |
 | [TiDB Dashboard SQL 诊断功能](/information-schema/information-schema-sql-diagnostics.md)    |    Y    | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
+| [TiDB Dashboard 集群诊断功能](/dashboard/dashboard-diagnostics-access.md)   |    Y    | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
 | [Information schema](/information-schema/information-schema.md)           |    Y    |    Y    |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
 | [Metrics schema](/metrics-schema.md)                                      |    Y    |    Y    |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
 | [Statements summary tables](/statement-summary-tables.md)                 |    Y    |    Y    |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
