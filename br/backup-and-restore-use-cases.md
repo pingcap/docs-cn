@@ -38,8 +38,8 @@ aliases: ['/docs-cn/dev/br/backup-and-restore-use-cases/','/docs-cn/dev/referenc
 
 使用 TiUP 安装或升级 BR：
 
-- 安装：执行命令 `tiup install br:v6.2.0`
-- 升级：执行命令 `tiup update br:v6.2.0`
+- 安装：执行命令 `tiup install br:v6.4.0`
+- 升级：执行命令 `tiup update br:v6.4.0`
 
 ## 配置备份存储 (Amazon S3)
 
