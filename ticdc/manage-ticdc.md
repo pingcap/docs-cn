@@ -324,7 +324,7 @@ S3 配置样例如下:
 --sink-uri="s3://my-bucket/prefix?region=us-west-2&worker-count=4"
 ```
 
-S3 的 URL 参数与 BR 相同，详细参数请参考 [S3 的 URL 参数](/br/backup-and-restore-storages.md#s3-的-url-参数)
+S3 的 URL 参数与 BR 相同，详细参数请参考 [S3 的 URL 参数](/br/backup-and-restore-storages.md#s3-的-url-参数)。
 
 GCS 配置样例如下：
 
@@ -332,7 +332,7 @@ GCS 配置样例如下：
 --sink-uri="gcs://my-bucket/prefix?flush-interval=15s"
 ```
 
-GCS 的 URL 参数与 BR 相同，详细参数请参考 [GCS 的 URL 参数](/br/backup-and-restore-storages.md#gcs-的-url-参数)
+GCS 的 URL 参数与 BR 相同，详细参数请参考 [GCS 的 URL 参数](/br/backup-and-restore-storages.md#gcs-的-url-参数)。
 
 Azblob 配置样例如下：
 
@@ -856,7 +856,7 @@ partition 分发器用 partition = "xxx" 来指定，支持 default、ts、index
 {protocol}://{prefix}/{schema}/{table}/{table-version-separator}/{partition-separator}/{date-separator}/CDC{num}.{extension}
 ```
 
-- `protocol`：`protocol` 为数据传输协议，也即存储类型。例如：`s3://xxxxx`
+- `protocol`：`protocol` 为数据传输协议，即存储类型。例如：`s3://xxxxx`
 - `prefix`：`prefix` 为用户指定的父目录。例如：`s3://bucket/bbb/ccc`
 - `schema`：`schema` 为表所属的库名。例如：`s3://bucket/bbb/ccc/test`
 - `table`：`table` 为表名。例如：`s3://bucket/bbb/ccc/test/table1`
@@ -951,7 +951,7 @@ partition 分发器用 partition = "xxx" 来指定，支持 default、ts、index
 
 ### 数据类型
 
-数据类型定义为 T(M[, D])，详见 [数据类型概述](/data-type-overview.md#数据类型概述)。
+数据类型定义为 `T(M[, D])`，详见[数据类型概述](/data-type-overview.md#数据类型概述)。
 
 #### 整数类型
 

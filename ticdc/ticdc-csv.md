@@ -5,9 +5,10 @@ summary: 了解 TiCDC CSV Protocol 的概念和使用方法。
 
 # TiCDC CSV Protocol
 
+当使用云存储作为下游 sink 时，你可以使用 CSV 格式将 DML 事件发送到下游云存储。
+
 ## 使用 CSV
 
-当使用云存储作为下游 sink 时，你可以使用 CSV 格式将 DML 事件发送到下游云存储。
 
 使用 CSV 时的配置样例如下所示：
 
