@@ -9,9 +9,7 @@ summary: 了解 TiCDC CSV Protocol 的概念和使用方法。
 
 ## 使用 CSV
 
-
 使用 CSV 时的配置样例如下所示：
-
 
 ```shell
 cdc cli changefeed create --pd=http://127.0.0.1:2379 --changefeed-id="csv-test" --sink-uri="s3://bucket/prefix?worker-count=8&flush-interval=5s"  --config changefeed.toml
@@ -42,11 +40,11 @@ include-commit-ts = false
 
 CSV 行中的每一列定义如下：
 
-- Col1: The operation-type indicator: `I`, `D`, `U`; `I` means INSERT, `U` means UPDATE, `D` means DELETE.
-- Col2: Table name, the name of the source table.
-- Col3: Schema name, the name of the source schema.
-- Col4: Commit TS, the commit-ts of the source txn. The existence of this column can be configured.
-- Col5-n: one or more columns that represent the data to be changed.
+- 第一列：DML 操作指示符，取值包括 `I`、`D` 和 `U`。`I` 表示 `INSERT`，`U` 表示 `UPDATE`，`D` 表示 `DELETE`。
+- 第二列：表名。
+- 第三列：库名。
+- 第四列：`commit ts`，即原始事务的 commit ts。该列为可选配置。
+- 第五列-最后一列：变更数据的列，可为一列或多列。
 
 假设某张表 `hr`.`employee` 的表定义如下：
 
