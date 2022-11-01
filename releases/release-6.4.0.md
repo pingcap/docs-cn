@@ -49,6 +49,11 @@ TiDB 版本：6.4.0-DMR
 
     [用户文档]()
 
+* 新增支持下推两个[正则表达式函数](/tiflash/tiflash-supported-pushdown-calculations.md) 至 TiFlash。函数下推到 TiFlash 可以获得更强的计算性能。使用时，你不需要特别设定，优化器会根据 TiFlash 副本和函数信息进行判断，并在符合条件时，自动将这两个函数下推至 TiFlash 执行。[#5579](https://github.com/pingcap/tiflash/issues/6115) @[xzhangxian1008](https://github.com/xzhangxian1008)
+
+    * `REGEXP_LIKE()`
+    * `REGEXP_INSTR()`
+
 ### 事务
 
 * 功能简短描述
