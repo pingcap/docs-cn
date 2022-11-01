@@ -25,8 +25,6 @@ aliases: ['/zh/tidb/dev/build-cluster-in-cloud']
 6. 创建完毕后，点击右上角的 **Connect** 按钮。或点击集群名称，打开集群的详情页，再点击右上角的 **Connect** 按钮。这将显示一个连接对话框。
 7. 复制连接对话框 **Step 2: Connect with a SQL client** 中的连接字符串，供后续步骤使用。
 
-    ![SQL string](/media/develop/tidb-cloud-connect.png)
-
     > **Note:**
     >
     > 需要特别说明的是，在你使用 [Serverless Tier clusters](https://docs.pingcap.com/tidbcloud/select-cluster-tier#serverless-tier) 集群时，你需要给你设置的用户名加上前缀（如上图中的 `9ATyn6DhCXoo6U1`），若使用命令行连接，还需使用单引号包裹用户名。你可以在 [TiDB Cloud - 用户名前缀](https://docs.pingcap.com/tidbcloud/select-cluster-tier#user-name-prefix) 中获得更多信息。
