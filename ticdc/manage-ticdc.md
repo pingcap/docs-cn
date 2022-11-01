@@ -661,8 +661,9 @@ dispatchers = [
     {matcher = ['test6.*'], partition = "ts"}
 ]
 
-# 对于 MQ 类的 Sink，可以指定消息的协议格式
-# 目前支持 canal-json、open-protocol、canal、avro 和 maxwell 五种协议。
+# protocol 用于指定传递到下游的协议格式
+# 当下游类型是 Kafka 时，支持 canal-json、avro 两种协议。
+# 当下游类型是对象存储时，目前仅支持 csv 协议。
 protocol = "canal-json"
 
 # 以下三个配置项仅在云存储类的 Sink 中使用。
