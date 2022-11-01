@@ -9,7 +9,7 @@ TiDB v6.4.0 引入了 `FLASHBACK CLUSTER TO TIMESTAMP` 语法，其功能是将�
 
 > **警告：**
 >
-> 在执行 `FLASHBACK CLUSTER TO TIMESTAMP` 之前，需要暂停 PITR、TiCDC 等工具，待 `FLASHBACK` 执行完成后再启动，否则会造成同步失败等问题。
+> 在执行 `FLASHBACK CLUSTER TO TIMESTAMP` 之前，需要暂停 PITR 和 TiCDC 等工具上运行的同步任务，待 `FLASHBACK` 执行完成后再启动，否则会造成同步失败等问题。
 
 ## 语法
 
