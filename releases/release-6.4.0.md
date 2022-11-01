@@ -19,6 +19,13 @@ TiDB 版本：6.4.0-DMR
 
 ### SQL
 
+* 支持通过 SQL 语句对指定 Partition 的 TiFlash 副本立即触发物理数据整理 (Compaction)
+
+    v6.2.0 版本发布了针对全表的 TiFlash 副本立即触发 [物理数据整理 (Compaction)](/sql-statements/sql-statement-alter-table-compact.md#alter-table--compact) 功能，支持用户自行选择合适的时机、手动执行 SQL 语句来对 TiFlash 中的物理数据立即进行整理，从而减少存储空间占用，并提升查询性能。v6.4.0 版本细化了 TiFlash 副本物理数据整理的粒度，支持对表中的指定 Partition 的 TiFlash 副本立即触发物理数据整理。
+    通过 SQL 语句 `ALTER TABLE table_name COMPACT [PARTITION PartitionNameList] [engine_type REPLICA]` 可以立即触发指定 Partition 的 TiFlash 副本物理数据整理。
+
+    [用户文档](/sql-statements/sql-statement-alter-table-compact.md#alter-table--compact) [#5315](https://github.com/pingcap/tiflash/issues/5315) @[hehechen](https://github.com/hehechen)
+
 * 功能简短描述
 
     功能详细描述（功能是什么，对用户的价值是什么，怎么用） [#issue]() @[贡献者 GitHub ID]()
@@ -103,7 +110,6 @@ TiDB 版本：6.4.0-DMR
     v6.3.0 版本改进了 TiFlash 副本数据同步进度更新机制，在创建 TiFlash 副本后，进行数据导入等操作，TiFlash 副本需要和 TiKV 数据进行同步时，[`information_schema.tiflash_replica`](/information-schema/information-schema-tiflash-replica.md) 表中的 `PROGRESS` 值将会更新，显示实际的数据同步进度。通过此优化，你可以方便地查看 TiFlash 数据同步的实际进度。
 
     [用户文档](/information-schema/information-schema-tiflash-replica.md) [#4902](https://github.com/pingcap/tiflash/issues/4902) @[hehechen](https://github.com/hehechen)
-
 
 * 功能简短描述
 
