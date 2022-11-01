@@ -83,15 +83,11 @@ Flags:
 
 1. 通过 HASH 使用 4 个分区创建 4 个仓库：
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     tiup bench tpcc --warehouses 4 --parts 4 prepare
     ```
 
 2. 运行 TPC-C 测试：
-
-    {{< copyable "shell-regular" >}}
 
     ```shell
     tiup bench tpcc --warehouses 4 --time 10m run
@@ -99,15 +95,11 @@ Flags:
 
 3. 检查一致性：
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     tiup bench tpcc --warehouses 4 check
     ```
 
 4. 清理数据：
-
-    {{< copyable "shell-regular" >}}
 
     ```shell
     tiup bench tpcc --warehouses 4 cleanup
@@ -152,8 +144,6 @@ Flags:
 
 1. 准备数据：
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     tiup bench tpch --sf=1 prepare
     ```
@@ -178,8 +168,6 @@ Flags:
 
 3. 清理数据：
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     tiup bench tpch cleanup
     ```
@@ -192,15 +180,11 @@ Flags:
 
 1. 准备数据：
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     tiup bench ycsb load tidb -p tidb.instances="127.0.0.1:4000" -p recordcount=10000
     ```
 
 2. 运行 YCSB 测试：
-
-    {{< copyable "shell-regular" >}}
 
     ```shell
     # 默认读写比例为 95:5
@@ -211,15 +195,11 @@ Flags:
 
 1. 准备数据：
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     tiup bench ycsb load tikv -p tikv.pd="127.0.0.1:2379" -p recordcount=10000
     ```
 
 2. 运行 YCSB 测试：
-
-    {{< copyable "shell-regular" >}}
 
     ```shell
     # 默认读写比例为 95:5
