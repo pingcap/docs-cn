@@ -93,13 +93,24 @@ ALTER USER 'newuser' ACCOUNT LOCK;
 Query OK, 0 rows affected (0.02 sec)
 ```
 
+修改 `newuser` 的属性：
+
 ```sql
 ALTER USER 'newuser' ATTRIBUTE '{"newAttr": "value", "deprecatedAttr": null}';
+SELECT * FROM user_attributes;
 ```
 
+```sql
++-----------+------+---------------------------------------------------+
+| USER      | HOST | ATTRIBUTE                                         |
++-----------+------+---------------------------------------------------+
+| newuser   | %    | {"newAttr": "value", "deprecatedAttr": null}      |
++-----------+------+---------------------------------------------------+
+1 rows in set (0.00 sec)
 ```
-Query OK, 0 rows affected (0.02 sec)
-```
+
+
+通过 `ALTER USER ... COMMENT` 修改用户 `newuser` 的注释：
 
 ```sql
 ALTER USER 'newuser' COMMENT 'Here is the comment';
@@ -108,6 +119,8 @@ ALTER USER 'newuser' COMMENT 'Here is the comment';
 ```
 Query OK, 0 rows affected (0.02 sec)
 ```
+
+通过 `ALTER USER ... ATTRIBUTE` 修改用户 `newuser` 的注释：
 
 ```sql
 ALTER USER 'newuser' ATTRIBUTE '{"comment": null}';
