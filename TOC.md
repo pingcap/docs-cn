@@ -510,7 +510,6 @@
       - 创建 Changefeed
         - [同步数据到 MySQL 兼容数据库](/ticdc/ticdc-sink-to-mysql.md)
         - [同步数据到 Kafka](/ticdc/ticdc-sink-to-kafka.md)
-        - [同步数据到对象存储或 NFS](/ticdc/ticdc-sink-to-s3.md)
       - [管理 Changefeed](/ticdc/ticdc-manage-changefeed.md)
       - [日志过滤器](/ticdc/ticdc-filter.md)
     - 监控告警
