@@ -5,7 +5,7 @@ aliases: ['/docs-cn/dev/tiup/tiup-bench/','/docs-cn/dev/reference/tools/tiup/ben
 
 # 使用 TiUP bench 组件压测 TiDB
 
-在测试数据库性能时，经常需要对数据库进行压测，为了满足这一需求，TiUP 集成了 bench 组件。TiUP bench 组件提供多种压测的 workloads ，其命令入口如下：
+在测试数据库性能时，经常需要对数据库进行压测，为了满足这一需求，TiUP 集成了 bench 组件。TiUP bench 组件提供多种压测的 workloads，命令分别如下：
 
 {{< copyable "shell-root" >}}
 
