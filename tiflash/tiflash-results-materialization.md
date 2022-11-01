@@ -9,13 +9,13 @@ summary: 介绍如何在同一个事务中保存 TiFlash 的计算结果。
 >
 > 该功能目前是实验性功能，其形式和使用方法可能会在未来版本中发生变化。
 
-本文介绍如何在同一个事务（`INSERT INTO SELECT`）中实现 TiFlash 计算结果物化至某一指定的 TiDB 表中。
+本文介绍如何在同一个事务 (`INSERT INTO SELECT`) 中实现 TiFlash 计算结果物化至某一指定的 TiDB 表中。
 
 从 v6.4.0 起，执行 `INSERT INTO SELECT` 语句时，通过将 SELECT 子句下推到 TiFlash 可以把 TiFlash 计算得到的查询结果保存到指定的 TiDB 表中，即物化了 TiFlash 的查询结果。v6.4.0 之前的 TiDB 版本不允许此类行为，即通过 TiFlash 执行的查询必须是只读的，用户需要从应用程序层面接收 TiFlash 返回的结果，然后另行在其它事务或处理中保存结果。
 
 > **注意：**
 >
-> 默认情况下 ([`tidb_allow_mpp=on`](/system-variables#tidb_allow_mpp-从-v50-版本开始引入)), TiDB 优化器将依据查询代价智能选择下推查询到 TiKV 或 TiFlash。如需强制使用 TiFlash 查询，你可以设置系统变量 [`tidb_enforce_mpp=on`](/system-variables#tidb_enforce_mpp-从-v51-版本开始引入)。
+> 默认情况下 ([`tidb_allow_mpp = ON`](/system-variables#tidb_allow_mpp-从-v50-版本开始引入))，TiDB 优化器将依据查询代价智能选择下推查询到 TiKV 或 TiFlash。如需强制使用 TiFlash 查询，你可以设置系统变量 [`tidb_enforce_mpp = ON`](/system-variables#tidb_enforce_mpp-从-v51-版本开始引入)。
 
 `INSERT INTO SELECT` 语法如下：
 
@@ -52,16 +52,14 @@ SELECT app_name, country FROM t1;
 
 ## 执行过程
 
-* 在`INSERT INTO SELECT` 语句的执行过程中，TiFlash 首先将 SELECT 子句的查询结果返回到集群中某单一 TiDB Server 节点，然后再写入目标表（可以有 TiFlash 副本）。
+* 在 `INSERT INTO SELECT` 语句的执行过程中，TiFlash 首先将 SELECT 子句的查询结果返回到集群中某单一 TiDB server 节点，然后再写入目标表（可以有 TiFlash 副本）。
 * `INSERT INTO SELECT` 语句的执行保证 ACID 特性。
 
 ## 限制
 
 * TiDB 对 SELECT 子句返回的结果集（即 INSERT 写入的事务）大小的硬性限制为 1 GB，推荐的使用场景是 100 MB 以下。
 
-    若 SELECT 返回结果大小超过了 1 GB，那么整条语句将会被强制终止。用户会得到以下出错信息:
-
-    `The query produced a too large intermediate result and thus failed`
+    若 SELECT 返回结果大小超过了 1 GiB，那么整条语句将会被强制终止并返回 `The query produced a too large intermediate result and thus failed` 报错信息。
 
 * TiDB 对 `INSERT INTO SELECT` 语句的并发没有硬性限制，但是推荐考虑以下用法：
 
