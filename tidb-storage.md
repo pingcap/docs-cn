@@ -7,7 +7,7 @@ summary: Understand the storage layer of a TiDB database.
 
 This document introduces some design ideas and key concepts of [TiKV](https://github.com/tikv/tikv).
 
-![storage-architecture](/media/tidb-storage-architecture.png)
+![storage-architecture](/media/tidb-storage-architecture-1.png)
 
 ## Key-Value pairs
 
