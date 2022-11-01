@@ -22,7 +22,7 @@ tiup bench rawsql # 以自定义 SQL 文件作为 workload 压测
 ```bash
   -t, --acThreads int         OLAP 并发线程数，仅适用于 CH-benCHmark (默认 1)
       --conn-params string    数据库连接参数，例如：
-                              `--conn-params tidb_isolation_read_engines='tiflash'` 设置 TiDB 查询走 TiFlash ，
+                              `--conn-params tidb_isolation_read_engines='tiflash'` 设置 TiDB 通过 TiFlash 进行查询
                               `--conn-params sslmode=disable` 设置连接 PostgreSQL 不启用加密
       --count int             总执行次数, 0 表示无限次
   -D, --db string             被压测数据库名称 (默认为 "test")
