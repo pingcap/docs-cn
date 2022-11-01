@@ -74,7 +74,7 @@ Flags:
                              3: LIST (like HASH),
                              4: LIST (like RANGE)
       --parts int            分区仓库 的数量 (默认 1)
-      --warehouses int       仓库的数量 (默认 10)
+      --warehouses int       仓库的数量 (默认为 10)
 ```
 
 ### TPC-C 测试步骤
