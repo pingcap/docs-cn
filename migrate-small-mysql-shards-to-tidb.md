@@ -142,12 +142,22 @@ mysql-instances:
     block-allow-list:  "log-bak-ignored"
 
 # Configurations for merging MySQL shards
-routes:                       # Table renaming rules ('routes') from upstream to downstream tables, in order to support merging different sharded tables into a single target table.
-  sale-route-rule:            # Rule name. Migrate and merge tables from upstream to the downstream.
-    schema-pattern: "store_*" # Rule for matching upstream schema names. It supports the wildcards "*" and "?".
-    table-pattern: "sale_*"   # Rule for matching upstream table names. It supports the wildcards "*" and "?".
-    target-schema: "store"    # Name of the target schema.
-    target-table:  "sale"     # Name of the target table.
+routes:
+  sale-route-rule:
+    schema-pattern: "store_*"                               # Merge schemas store_01 and store_02 to the store schema in the downstream
+    table-pattern: "sale_*"                                 # Merge tables sale_01 and sale_02 of schemas store_01 and store_02 to the sale table in the downstream
+    target-schema: "store"
+    target-table:  "sale"
+    # Optional. Used for extracting the source information of sharded schemas and tables and writing the information to the user-defined columns in the downstream. If these options are configured, you need to manually create a merged table in the downstream. For details, see the following table routing setting.
+    # extract-table:                                        # Extracts and writes the table name suffix without the sale_ part to the c-table column of the merged table. For example, 01 is extracted and written to the c-table column for the sharded table sale_01.
+    #   table-regexp: "sale_(.*)"
+    #   target-column: "c_table"
+    # extract-schema:                                       # Extracts and writes the schema name suffix without the store_ part to the c_schema column of the merged table. For example, 02 is extracted and written to the c_schema column for the sharded schema store_02.
+    #   schema-regexp: "store_(.*)"
+    #   target-column: "c_schema"
+    # extract-source:                                       # Extracts and writes the source instance information to the c_source column of the merged table. For example, mysql-01 is extracted and written to the c_source column for the data source mysql-01.
+    #   source-regexp: "(.*)"
+    #   target-column: "c_source"
 
 # Filters out some DDL events.
 filters:
