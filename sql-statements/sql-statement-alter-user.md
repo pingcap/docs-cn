@@ -130,10 +130,16 @@ SELECT * FROM user_attributes;
 
 ```sql
 ALTER USER 'newuser' ATTRIBUTE '{"comment": null}';
+SELECT * FROM user_attributes;
 ```
 
-```
-Query OK, 0 rows affected (0.02 sec)
+```sql
++-----------+------+---------------------------------------------------+
+| USER      | HOST | ATTRIBUTE                                         |
++-----------+------+---------------------------------------------------+
+| newuser   | %    | {"comment": null, "newAttr": "value", "deprecatedAttr": null}      |
++-----------+------+---------------------------------------------------+
+1 rows in set (0.00 sec)
 ```
 
 > **注意：**

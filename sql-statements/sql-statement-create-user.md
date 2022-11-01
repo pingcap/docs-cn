@@ -98,21 +98,35 @@ Query OK, 1 row affected (0.02 sec)
 ```
 
 创建一个带注释的用户。
+
 ```sql
 CREATE USER 'newuser6'@'%' COMMENT 'This user is created only for test';
+SELECT * FROM user_attributes;
 ```
 
 ```
-Query OK, 1 row affected (0.02 sec)
++-----------+------+---------------------------------------------------+
+| USER      | HOST | ATTRIBUTE                                         |
++-----------+------+---------------------------------------------------+
+| newuser6  | %    | {"comment": "This user is created only for test"} |
++-----------+------+---------------------------------------------------+
+1 rows in set (0.00 sec)
 ```
 
 创建一个具有邮箱 (`email`) 属性的用户。
+
 ```sql
 CREATE USER 'newuser7'@'%' ATTRIBUTE '{"email": "user@pingcap.com"}';
+SELECT * FROM user_attributes;
 ```
 
-```
-Query OK, 1 row affected (0.02 sec)
+```sql
++-----------+------+---------------------------------------------------+
+| USER      | HOST | ATTRIBUTE                                         |
++-----------+------+---------------------------------------------------+
+| newuser7  | %    | {"email": "user@pingcap.com"} |
++-----------+------+---------------------------------------------------+
+1 rows in set (0.00 sec)
 ```
 
 ## MySQL 兼容性
