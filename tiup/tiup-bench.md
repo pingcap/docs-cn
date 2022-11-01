@@ -24,7 +24,7 @@ tiup bench rawsql # 以自定义 SQL 文件作为 workload 压测
       --conn-params string    数据库连接参数，例如：
                               `--conn-params tidb_isolation_read_engines='tiflash'` 设置 TiDB 通过 TiFlash 进行查询
                               `--conn-params sslmode=disable` 设置连接 PostgreSQL 不启用加密
-      --count int             总执行次数, 0 表示无限次
+      --count int             总执行次数，0 表示无限次
   -D, --db string             被压测数据库名称 (默认为 "test")
   -d, --driver string         数据库驱动: mysql, postgres (默认 "mysql")
       --dropdata              在 prepare 之前清除历史数据
