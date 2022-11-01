@@ -1,18 +1,20 @@
 ---
-title: FLASHBACK [CLUSTER | DATABASE | TABLE] TO TIMESTAMP
-summary: TiDB 数据库中 FLASHBACK [CLUSTER | DATABASE | TABLE] TO TIMESTAMP 的使用概况。
+title: FLASHBACK CLUSTER TO TIMESTAMP
+summary: TiDB 数据库中 FLASHBACK CLUSTER TO TIMESTAMP 的使用概况。
 ---
 
-# FLASHBACK [CLUSTER | DATABASE | TABLE] TO TIMESTAMP
+# FLASHBACK CLUSTER TO TIMESTAMP
 
-TiDB v6.4.0 引入了 `FLASHBACK [CLUSTER | DATABASE | TABLE] TO TIMESTAMP` 语法，其功能是将集群、数据库、数据表的数据恢复到特定的时间点。
+TiDB v6.4.0 引入了 `FLASHBACK CLUSTER TO TIMESTAMP` 语法，其功能是将集群的数据恢复到特定的时间点。
+
+> **警告：**
+>
+> 在执行 `FLASHBACK CLUSTER TO TIMESTAMP` 之前，需要暂停 PiTR、TiCDC 等工具，待 flashback 执行完成后再启动，不然会造成同步失败等问题。
 
 ## 语法
 
 ```sql
 FLASHBACK CLUSTER TO TIMESTAMP '2022-09-21 16:02:50';
-FLASHBACK DATABASE db TO TIMESTAMP '2022-09-21 16:02:50';
-FLASHBACK TABLE tbl1, tbl2 TO TIMESTAMP '2022-09-21 16:02:50';
 ```
 
 ### 语法图
@@ -32,11 +34,9 @@ FlashbackToTimestampStmt ::=
 
 * 仅支持拥有对应权限的用户执行该 SQL 命令：
     * 执行 `FLASHBACK CLUSTER` 操作需要有 `SUPER` 权限。
-    * 执行 `FLASHBACK DATABASE` 操作需要有 `DATABASE` 权限。
-    * 执行 `FLASHBACK TABLE` 操作需要有 `TABLE` 权限。
 * 在 `FLASHBACK` 指定的时间点到开始执行的时间段内不能存在相关表结构变更的 DDL 记录。若存在，TiDB 会拒绝该 DDL 操作。
-* 在执行 `FLASHBACK [CLUSTER | DATABASE | TABLE] TO TIMESTAMP` 前，TiDB 会主动断开所有相关表上的连接，并禁止对这些表进行读写操作，直到 `FLASHBACK` 完成。
-* `FLASHBACK [CLUSTER | DATABASE | TABLE] TO TIMESTAMP` 命令不能取消，一旦开始执行 TiDB 会一直重试，直到成功。
+* 在执行 `FLASHBACK CLUSTER TO TIMESTAMP` 前，TiDB 会主动断开所有相关表上的连接，并禁止对这些表进行读写操作，直到 `FLASHBACK` 完成。
+* `FLASHBACK CLUSTER TO TIMESTAMP` 命令不能取消，一旦开始执行 TiDB 会一直重试，直到成功。
 
 ## 示例
 
@@ -90,7 +90,7 @@ mysql> CREATE TABLE t(a int);
 Query OK, 0 rows affected (0.12 sec)
 
 mysql> FLASHBACK CLUSTER TO TIMESTAMP '2022-10-09 16:40:51';
-ERROR 1105 (HY000): Had ddl history during [2022-10-09 16:40:51 +0800 CST, now), can't do flashback
+ERROR 1105 (HY000): Detected schema change due to another DDL job during [2022-10-09 16:40:51 +0800 CST, now), can't do flashback
 ```
 
 可以通过日志查看 `FLASHBACK` 执行进度，具体的日志如下所示：
