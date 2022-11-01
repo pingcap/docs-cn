@@ -10,7 +10,7 @@ TiDB 版本：6.4.0-DMR
 
 在 6.4.0-DMR 版本中，你可以获得以下关键特性：
 
-- 关键特性 1
+- TiFlash 静态加密支持国密算法 SM4。
 - 关键特性 2
 - 关键特性 3
 - ......
@@ -34,11 +34,11 @@ TiDB 版本：6.4.0-DMR
 
 ### 安全
 
-* 功能简短描述
+*  TiKFlash 静态加密支持国密算法 SM4
 
-    功能详细描述（功能是什么，对用户的价值是什么，怎么用） [#issue]() @[贡献者 GitHub ID]()
+    TiFlash 的静态加密新增 SM4 算法，用户可以修改配置文件 tiflash-learner.toml 中的 data-encryption-method 参数，设置为 sm4-ctr，以启用基于国密算法 SM4 的静态加密能力。 [#5953](https://github.com/pingcap/tiflash/issues/5953) @[lidezhu](https://github.com/lidezhu)
 
-    [用户文档]()
+    [用户文档](/encryption-at-rest.md)
 
 ### 可观测性
 
@@ -159,6 +159,7 @@ TiDB 版本：6.4.0-DMR
 
 | 配置文件 | 配置项 | 修改类型 | 描述 |
 | -------- | -------- | -------- | -------- |
+| TiFlash | data-encryption-method | 修改 | 扩展可选值范围：增加 sm4-ctr。设置为 sm4-ctr 时，数据将采用国密算法 SM4 加密后进行存储。 |
 |          |          |          |          |
 |          |          |          |          |
 |          |          |          |          |
