@@ -1972,6 +1972,24 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 如果一条查询语句执行过程中使用的内存空间超过该阈值，会触发系统变量 [`tidb_mem_oom_action`](#tidb_mem_oom_action-从-v610-版本开始引入) 中指定的行为。
 - 在 v6.1.0 之前这个开关通过 TiDB 配置文件 (`mem-quota-query`) 进行配置，且作用域为 `SESSION`。升级到 v6.1.0 时会自动继承原有设置，作用域变更为 `SESSION | GLOBAL`。
 
+### `tidb_memory_debug_mode_alarm_ratio`
+
+- 作用域：SESSION
+- 是否持久化到集群：否
+- 类型：浮点型
+- 默认值：`0`
+- 该变量表示在 TiDB memory debug 模式下，允许的内存统计误差值。
+- 该变量用于 TiDB 内部测试，**不推荐修改该变量值**。
+
+### `tidb_memory_debug_mode_min_heap_inuse`
+
+- 作用域：SESSION
+- 是否持久化到集群：否
+- 类型：INT64
+- 默认值：`0`
+- 该变量用于 TiDB 内部测试，**不推荐修改该变量值**，因为开启后会影响 TiDB 的性能。
+- 配置此参数后，TiDB 会进入 memory debug 模式进行内存追踪准确度的分析。TiDB 会在后续执行 SQL 语句的过程中频繁触发 GC，并将实际内存使用和内存统计值做对比。若当前内存使用大于 `tidb_memory_debug_mode_min_heap_inuse` 且内存统计误差超过 `tidb_memory_debug_mode_alarm_ratio`，则会输出相关内存信息到日志和文件中。
+
 ### `tidb_memory_usage_alarm_ratio`
 
 - 作用域：GLOBAL
