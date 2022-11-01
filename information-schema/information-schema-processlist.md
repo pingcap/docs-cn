@@ -73,9 +73,9 @@ TxnStart:
 * `TIME` 列：当前 PROCESS 的已经执行的时间，单位是秒。
 * `STATE` 列：当前连接的状态。
 * `INFO` 列：正在处理的请求语句。
-* `DIGEST` 列: SQL 语句的 digest。
+* `DIGEST` 列：SQL 语句的 digest。
 * `MEM` 列：正在处理的请求已使用的内存，单位是 byte。
-* `DISK` 列: 磁盘空间使用情况，单位是 byte。
+* `DISK` 列：磁盘空间使用情况，单位是 byte。
 * `TxnStart`列：显示事务的开始时间
 
 ## CLUSTER_PROCESSLIST
