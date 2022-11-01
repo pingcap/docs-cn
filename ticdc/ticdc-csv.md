@@ -38,7 +38,7 @@ include-commit-ts = false
 
 ## 数据格式定义
 
-CSV 行中的每一列定义如下：
+CSV 文件中，单行的每一列定义如下：
 
 - 第一列：DML 操作指示符，取值包括 `I`、`D` 和 `U`。`I` 表示 `INSERT`，`U` 表示 `UPDATE`，`D` 表示 `DELETE`。
 - 第二列：表名。

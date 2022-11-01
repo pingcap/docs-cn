@@ -667,7 +667,7 @@ dispatchers = [
 protocol = "canal-json"
 
 # 以下三个配置项仅在云存储类的 Sink 中使用。
-# 换行符。空值代表使用 "\r\n" 作为换行符。默认值为空。
+# 换行符。默认值为空，表示使用 "\r\n" 作为换行符。
 terminator = ''
 # 文件路径的日期分隔类型。可选类型有 `none`、`year`、`month`、`day`。默认值为 `none`，即不使用日期分隔。
 date-separator = 'none'
