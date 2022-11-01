@@ -68,7 +68,15 @@ server-memory-quota = 34359738368
 
 你可以通过系统变量 [`tidb_memory_usage_alarm_ratio`](/system-variables.md#tidb_memory_usage_alarm_ratio) 修改触发该报警的内存使用比率，从而控制内存报警的阈值。
 
-当打印报警日志时，TiDB 会将当前正在执行的所有 SQL 语句中内存使用最高的 10 条语句和运行时间最长的 10 条语句的相关信息、goroutine 栈信息以及堆内存使用状态记录到 TiDB 日志文件 [`filename`](tidb-configuration-file.md#filename) 所在目录中，并输出一条包含关键字 `tidb-server has the risk of OOM` 以及以下内存相关系统变量的日志。
+当触发 tidb-server 内存占用过高的报警时，TiDB 的报警行为如下：
+
+- TiDB 将以下信息记录到 TiDB 日志文件 [`filename`](tidb-configuration-file.md#filename) 所在目录中。
+
+    - 当前正在执行的所有 SQL 语句中内存使用最高的 10 条语句和运行时间最长的 10 条语句的相关信息
+    - goroutine 栈信息
+    - 堆内存使用状态
+
+- TiDB 将输出一条包含关键字 `tidb-server has the risk of OOM` 以及以下内存相关系统变量的日志。
 
     - [`tidb_mem_oom_action`](#tidb_mem_oom_action-span-classversion-mark-v610-span)
     - [`tidb_mem_quota_query`](#tidb_mem_quota_query)
