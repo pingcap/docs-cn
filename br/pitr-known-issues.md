@@ -9,18 +9,13 @@ summary: 了解日志备份的已知问题。
 
 如果遇到未包含在此文档且无法解决的问题，可以在 [AskTUG](https://asktug.com/) 社区中搜索答案或提问。
 
-## BR 进程在执行 PITR 恢复或执行 `br log truncate` 命令时出现 OOM 问题
+## BR 进程在执行 `br log truncate` 命令时出现 OOM 问题
 
 Issue 链接：[#36648](https://github.com/pingcap/tidb/issues/36648)
 
-执行 PITR 恢复时遇到 BR OOM 问题，从以下几点考虑：
+执行 `br log truncate` 时遇到 br OOM 问题，从以下几点考虑：
 
-- PITR 恢复出现 OOM，是由于待恢复的索引日志数据过多，以下是两个典型场景。
-    - 恢复日志区间过大
-        - 建议恢复的日志区间不超过 2 天，最长不超过一周。即在 PITR 备份过程中，最好每 2 天做一次快照备份操作。
-    - 备份日志期间，存在长时间大量写入。
-        - 长时间大量写入的场景一般出现在初始化集群全量导入数据的阶段。建议在导入完成后进行一次快照备份，使用该备份进行恢复。
-- 删除日志时出现 OOM，是由于删除的日志区间过大。
+- 由于删除的日志区间过大。
     - 遇到此问题，解决方法是先减小删除的日志区间，可通过多次删除小区间日志来替代掉需要删除的大区间日志。
 - br 进程所在的节点内存配置过低。
     - 建议升级节点内存配置到至少 16 GB，确保 PITR 恢复有足够的内存资源。
@@ -36,12 +31,6 @@ Issue 链接：[#36648](https://github.com/pingcap/tidb/issues/36648)
 Issue 链接：[#13126](https://github.com/tikv/tikv/issues/13126)
 
 在集群出现网络分区故障后，备份任务难以继续备份日志，并且在超过一定的重试时间后，任务会被置为 `ERROR` 状态。此时备份任务已经停止，需要手动执行 `br log resume` 命令来恢复日志备份任务。
-
-## 日志备份实际消耗的存储是集群监控显示的数据增量的 2~3 倍
-
-Issue 链接：[#13306](https://github.com/tikv/tikv/issues/13306)
-
-这是由于集群监控显示的是 RocksDB 压缩后的数据，而日志备份使用的是自定义的编码方式存储 KV 数据，因此造成压缩比率不一致，大约是 2~3 倍之间。日志备份没有使用 RocksDB 生成 SST 文件的方式存储数据，是因为日志备份期间生成的数据会遇到区间范围过大而实际区间内容较少的情况。这个情况下，通过 ingest SST 的方式恢复数据，并不能有效提升恢复性能。
 
 ## 执行 PITR 恢复时遇到 `execute over region id` 报错
 
@@ -60,13 +49,3 @@ Issue 链接：[#38045](https://github.com/pingcap/tidb/issues/38045)
 - 如果先启动 PITR 备份任务，再添加索引，此时即使索引加速功能打开，也不会使用加速索引功能，但不影响索引兼容性。
 - 如果先启动添加索引加速任务，再创建 PITR 备份任务，此时 PITR 备份任务会报错，但不影响正在添加索引的任务。
 - 如果同时启动 PITR 备份任务和添加索引加速任务，可能会由于两个任务无法察觉到对方而导致 PITR 不能成功备份增加的索引数据。
-
-## 在 GCS 或 Azure Blob Storage 上第一次执行 `PITR Truncate` 命令时报错
-
-Issue 链接：[#38229](https://github.com/pingcap/tidb/issues/38229)
-
-在 GCS 或 Azure Blob Storage 上**第一次**执行 `PITR Truncate` 时会提示文件 `v1_stream_trancate_safepoint.txt` 不存在。解决方法如下：
-
-在 PITR 的备份根目录下，创建文件 `v1_stream_trancate_safepoint.txt`，然后写入 `0`。注意文件不得包含其他字符。在第一次执行 `PITR Truncate` 命令时，添加该文件即可。
-<!-- TODO: v6.4.0 发版时，取消注释以下文字  -->
-<!-- 或者，使用 v6.4.0 及以上版本的 BR。 -->
