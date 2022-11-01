@@ -293,6 +293,12 @@ mysql> SELECT * FROM t1;
 - 默认值：`OFF`
 - 这个变量用来显示上一个 `execute` 语句所使用的执行计划是不是直接从 plan cache 中取出来的。
 
+### `last_sql_use_alloc` <span class="version-mark">从 v6.4.0 版本开始引入</span>
+
+- 作用域：SESSION
+- 默认值：`OFF`
+- 这个变量用来显示上一个语句是否使用了 chunk alloc 。
+
 ### `license`
 
 - 作用域：NONE
@@ -1925,6 +1931,22 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 该变量默认值为 `CANCEL`，但在 TiDB v4.0.2 及之前的版本中，默认值为 `LOG`。
 - 在 v6.1.0 之前这个开关通过 TiDB 配置文件 (`oom-action`) 进行配置，升级到 v6.1.0 时会自动继承原有设置。
 
+### `tidb_max_reuse_chunk` <span class="version-mark">从 v6.4.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 默认值：`128`
+- 可选值：`[0, 2147483647]`
+- 该变量控制 chunk alloc 最多缓存的 chunk 对象数。
+
+### `tidb_max_reuse_column` <span class="version-mark">从 v6.4.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 默认值：`1024`
+- 可选值：`[0, 2147483647]`
+- 该变量控制 chunk alloc 最多缓存的 column 对象数。
+
 ### `tidb_mem_quota_analyze` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
 > **警告：**
@@ -2057,6 +2079,14 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 > * [go-sql-driver](https://github.com/go-sql-driver/mysql#multistatements) (`multiStatements`)
 > * [Connector/J](https://dev.mysql.com/doc/connector-j/8.0/en/connector-j-reference-configuration-properties.html) (`allowMultiQueries`)
 > * PHP [mysqli](https://dev.mysql.com/doc/apis-php/en/apis-php-mysqli.quickstart.multiple-statement.html) (`mysqli_multi_query`)
+
+### `tidb_enable_reuse_chunk` <span class="version-mark">从 v6.4.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 默认值：`ON`
+- 可选值：`OFF`，`ON`
+- 改变量用于控制 TiDB 是否启用 Chunk 对象缓存，如果为 ON 优先使用缓存中的对象不够才会从系统中申请，如果为OFF则直接从系统内存中申请。
 
 ### `tidb_enable_new_cost_interface` <span class="version-mark">从 v6.2.0 版本开始引入</span>
 
