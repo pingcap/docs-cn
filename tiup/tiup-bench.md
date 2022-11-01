@@ -79,7 +79,7 @@ Flags:
 
 ### TPC-C 测试步骤
 
-完整的测试流程可以参考[如何对 TiDB 进行 TPC-C 测试](/benchmark/benchmark-tidb-using-tpcc.md)，下面列举简化步骤：
+以下为简化后的关键步骤。完整的测试流程可以参考[如何对 TiDB 进行 TPC-C 测试](/benchmark/benchmark-tidb-using-tpcc.md)
 
 1. 通过 HASH 使用 4 个分区创建 4 个仓库：
 
