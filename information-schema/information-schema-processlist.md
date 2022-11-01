@@ -9,7 +9,9 @@ summary: Learn the `PROCESSLIST` information_schema table.
 
 The `PROCESSLIST` table has additional columns not present in `SHOW PROCESSLIST`:
 
+* A `DIGEST` column to show the digest of the SQL statement.
 * A `MEM` column to show the memory used by the request that is being processed, in bytes.
+* A `DISK` column to show the disk usage in bytes.
 * A `TxnStart` column to show the start time of the transaction
 
 {{< copyable "sql" >}}
@@ -30,11 +32,13 @@ DESC processlist;
 | COMMAND  | varchar(16)         | NO   |      |         |       |
 | TIME     | int(7)              | NO   |      | 0       |       |
 | STATE    | varchar(7)          | YES  |      | NULL    |       |
-| INFO     | binary(512)         | YES  |      | NULL    |       |
+| INFO     | longtext            | YES  |      | NULL    |       |
+| DIGEST   | varchar(64)         | YES  |      |         |       |
 | MEM      | bigint(21) unsigned | YES  |      | NULL    |       |
+| DISK     | bigint(21) unsigned | YES  |      | NULL    |       |
 | TxnStart | varchar(64)         | NO   |      |         |       |
 +----------+---------------------+------+------+---------+-------+
-10 rows in set (0.00 sec)
+12 rows in set (0.00 sec)
 ```
 
 {{< copyable "sql" >}}
@@ -68,7 +72,9 @@ Fields in the `PROCESSLIST` table are described as follows:
 * TIME: The current execution duration of `PROCESS`, in seconds.
 * STATE: The current connection state.
 * INFO: The requested statement that is being processed.
+* DIGEST: The digest of the SQL statement.
 * MEM: The memory used by the request that is being processed, in bytes.
+* DISK: The disk usage in bytes.
 * TxnStart: The start time of the transaction.
 
 ## CLUSTER_PROCESSLIST
