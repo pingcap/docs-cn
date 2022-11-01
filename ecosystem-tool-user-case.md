@@ -40,8 +40,8 @@ In addition, BR can also be used to perform [incremental backup](/br/br-usage-ba
 
 If you need to migrate data from a TiDB cluster to another TiDB cluster, use [Dumpling](/dumpling-overview.md) to export full data from TiDB as SQL dump files, and then use [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) to import data to another TiDB cluster.
 
-If you also need to migrate incremental data, use [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md).
+If you also need to migrate incremental data, you can use [TiCDC](/ticdc/ticdc-overview.md).
 
 ## TiDB incremental data subscription
 
-If you need to subscribe to TiDB's incremental changes, use [TiDB Binlog](/tidb-binlog/binlog-consumer-client.md).
+If you need to subscribe to TiDB's incremental changes, you can use [TiCDC](/ticdc/ticdc-overview.md).
