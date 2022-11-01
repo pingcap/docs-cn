@@ -6,6 +6,15 @@ aliases: ['/zh/tidb/dev/choose-driver-or-orm']
 
 # 选择驱动或 ORM 框架
 
+> **注意：**
+>
+> TiDB 支持等级说明：
+>
+> - **Full**：此 Driver 或 ORM 没有已知的 issues。
+> - **Verified**：可能会因为 TiDB 与 MySQL 的兼容性问题，导致出现错误。
+>
+> 关于更多 TiDB 支持的第三方工具，你可以查看 [TiDB 支持的第三方工具](/develop/dev-guide-third-party-support.md)。
+
 TiDB 兼容 MySQL 的协议，但存在部分与 MySQL 不兼容的特性，例如：
 
 TiDB 不支持：
@@ -22,15 +31,12 @@ TiDB 与 MySQL 有差异：
 
 ## Java
 
-支持等级说明
-
-- Full: 此 Driver 或 ORM 没有已知的 issues
-- Verified: 你可能会因为 TiDB 兼容性问题，导致出现错误
+本节介绍 Java 语言的 Driver 及 ORM 的使用方式。
 
 ### Java Drivers
 
 <SimpleTab>
-<div label="JDBC">
+<div label="MySQL-JDBC">
 
 支持等级：**Full**
 
@@ -92,23 +98,21 @@ implementation group: 'org.bouncycastle', name: 'bcpkix-jdk15on', version: '1.67
 </div>
 </SimpleTab>
 
-### Java ORM Framework
-
-**Hibernate**
-
-支持等级：**Full**
+### Java ORM 框架
 
 > **注意：**
 >
-> Hibernate 当前[不支持嵌套事务](https://stackoverflow.com/questions/37927208/nested-transaction-in-spring-app-with-jpa-postgres)，TiDB 从 v6.2.0 版本开始支持 [Savepoint](/sql-statements/sql-statement-savepoint.md)。
->
-> 若你使用 Spring Data JPA 等框架，在 **@Transactional** 中请勿使用 `Propagation.NESTED` 事务传播选项，即：`@Transactional(propagation = Propagation.NESTED)`。
+> - Hibernate 当前[不支持嵌套事务](https://stackoverflow.com/questions/37927208/nested-transaction-in-spring-app-with-jpa-postgres)。
+> - TiDB 从 v6.2.0 版本开始支持 [Savepoint](/sql-statements/sql-statement-savepoint.md)。如需在 `@Transactional` 中使用 `Propagation.NESTED` 事务传播选项，即 `@Transactional(propagation = Propagation.NESTED)`，请确认你的 TiDB 版本为 v6.2.0 或以上。
+
+<SimpleTab>
+<div label="Hibernate">
+
+支持等级：**Full**
 
 你可以使用 [Gradle](https://gradle.org/install) 或 [Maven](https://maven.apache.org/install.html) 获取你的应用程序的所有依赖项，且会帮你下载依赖项的间接依赖，而无需你手动管理复杂的依赖关系。注意，只有 Hibernate `6.0.0.Beta2` 及以上版本才支持 TiDB 方言。
 
 如果你使用的是 **Maven**，请将以下内容添加到你的 `<dependencies></dependencies>`：
-
-{{< copyable "" >}}
 
 ```xml
 <dependency>
@@ -126,8 +130,6 @@ implementation group: 'org.bouncycastle', name: 'bcpkix-jdk15on', version: '1.67
 
 如果你使用的是 `Gradle`，请将以下内容添加到你的 `dependencies`：
 
-{{< copyable "" >}}
-
 ```gradle
 implementation 'org.hibernate:hibernate-core:6.0.0.CR2'
 implementation 'mysql:mysql-connector-java:5.1.49'
@@ -138,7 +140,48 @@ implementation 'mysql:mysql-connector-java:5.1.49'
 
 额外的，你需要在 [Hibernate 配置文件](https://www.tutorialspoint.com/hibernate/hibernate_configuration.htm)中指定 TiDB 方言： `org.hibernate.dialect.TiDBDialect`，此方言在 Hibernate `6.0.0.Beta2` 以上才可支持。若你无法升级 Hibernate 版本，那么请你直接使用 MySQL 5.7 的方言 `org.hibernate.dialect.MySQL57Dialect`。但这可能造成不可预料的使用结果，及部分 TiDB 特有特性的缺失，如：[序列](/sql-statements/sql-statement-create-sequence.md)等。
 
-### tidb-loadbalance
+</div>
+
+<div label="MyBatis">
+
+支持等级：**Full**
+
+你可以使用 [Gradle](https://gradle.org/install) 或 [Maven](https://maven.apache.org/install.html) 获取应用程序的所有依赖项包括间接依赖，无需手动管理复杂的依赖关系。
+
+如果你使用的是 Maven，请将以下内容添加到你的 `<dependencies></dependencies>`：
+
+```xml
+<dependency>
+    <groupId>org.mybatis</groupId>
+    <artifactId>mybatis</artifactId>
+    <version>3.5.9</version>
+</dependency>
+
+<dependency>
+    <groupId>mysql</groupId>
+    <artifactId>mysql-connector-java</artifactId>
+    <version>5.1.49</version>
+</dependency>
+```
+
+如果你使用的是 Gradle，请将以下内容添加到你的 `dependencies`：
+
+```gradle
+implementation 'org.mybatis:mybatis:3.5.9'
+implementation 'mysql:mysql-connector-java:5.1.49'
+```
+
+使用 MyBatis 进行 TiDB 应用程序构建的例子，可参阅 [TiDB 和 Java 的简单 CRUD 应用程序 - 使用 Mybatis](/develop/dev-guide-sample-application-java.md#第-2-步获取代码)。
+
+</div>
+
+</SimpleTab>
+
+### Java 客户端负载均衡
+
+**tidb-loadbalance**
+
+支持等级：**Full**
 
 [tidb-loadbalance](https://github.com/pingcap/tidb-loadbalance) 是应用端的负载均衡组件。通过 tidb-loadbalance，你可以实现自动维护 TiDB server 的节点信息，根据节点信息使用 tidb-loadbalance 策略在客户端分发 JDBC 连接。客户端应用与 TiDB server 之间使用 JDBC 直连，性能高于使用负载均衡组件。
 
@@ -165,9 +208,36 @@ implementation 'mysql:mysql-connector-java:5.1.49'
 
 如果你使用的是 Gradle，请将以下内容添加到你的 `dependencies`：
 
-{{< copyable "" >}}
-
 ```gradle
 implementation group: 'io.github.lastincisor', name: 'mysql-connector-java', version: '8.0.29-tidb-1.0.0'
 implementation group: 'io.github.lastincisor', name: 'tidb-loadbalance', version: '0.0.5'
 ```
+
+## Golang
+
+本节介绍 Golang 语言的 Driver 及 ORM 的使用方式。
+
+### Golang Drivers
+
+**go-sql-driver/mysql**
+
+支持等级：**Full**
+
+按照 [go-sql-driver/mysql 文档](https://github.com/go-sql-driver/mysql)中的说明获取并配置 Golang 驱动程序即可使用。
+
+有关一个完整的实例应用程序，可参阅使用 [TiDB 和 go-sql-driver/mysql 构建一个 Golang 应用](/develop/dev-guide-sample-application-golang.md#第-2-步获取代码)。
+
+### Golang ORM 框架
+
+**GORM**
+
+支持等级：**Full**
+
+GORM 是一个流行的 Golang 的 ORM 框架，你可以使用 `go get` 获取你的应用程序的所有依赖项。
+
+```shell
+go get -u gorm.io/gorm
+go get -u gorm.io/driver/mysql
+```
+
+使用 GORM 进行 TiDB 应用程序构建的例子，可参阅 [TiDB 和 Golang 的简单 CRUD 应用程序 - 使用 GORM](/develop/dev-guide-sample-application-golang.md#第-2-步获取代码)。

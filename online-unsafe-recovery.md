@@ -161,7 +161,7 @@ PD 下发恢复计划后，会等待 TiKV 上报执行的结果。如上述输�
 
 ### 第 3 步：检查数据索引一致性（RawKV 不需要）
 
-执行完成后，可能会导致数据索引不一致。请使用 SQL 的 `ADMIN CHECK`、`ADMIN RECOVER`、`ADMIN CLEANUP` 命令对受影响的表（从 `"Unsafe recovery finished"` 输出的 `"Affected table ids"` 可知）进行数据索引的一致性检查及恢复。
+执行完成后，可能会导致数据索引不一致。请使用 SQL 的 [`ADMIN CHECK`](/sql-statements/sql-statement-admin-check-table-index.md)、`ADMIN RECOVER`、`ADMIN CLEANUP` 命令对受影响的表（从 `"Unsafe recovery finished"` 输出的 `"Affected table ids"` 可知）进行数据索引的一致性检查及恢复。
 
 > **注意：**
 >
@@ -172,11 +172,21 @@ PD 下发恢复计划后，会等待 TiKV 上报执行的结果。如上述输�
 <SimpleTab>
 <div label="通过 TiUP 部署的节点">
 
-{{< copyable "shell-regular" >}}
+1. 缩容无法恢复的节点：
+   
+    {{< copyable "shell-regular" >}}
 
-```bash
-tiup cluster prune <cluster-name>
-```
+    ```bash
+    tiup cluster scale-in <cluster-name> -N <host> --force
+    ```
+
+2. 清理 Tombstone 节点：
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    tiup cluster prune <cluster-name>
+    ```
 
 </div>
 <div label="通过 TiDB Operator 部署的节点">
