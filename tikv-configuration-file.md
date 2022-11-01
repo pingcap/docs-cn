@@ -427,7 +427,6 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 > **警告：**
 >
-> - API V2 是 TiKV 在 v6.1.0 中引入的实验特性，不建议在生产环境中使用。
 > - **只能**在部署新的 TiKV 集群时将 `api-version` 的值设置为 `2`，**不能**在已有的 TiKV 集群中修改该配置项的值。由于 API V1 和 API V2 存储的数据格式不相同，如果在已有的 TiKV 集群中修改该配置项，会造成不同格式的数据存储在同一个集群，导致数据损坏。这种情况下，启动 TiKV 集群时会报 "unable to switch storage.api_version" 错误。
 > - 启用 API V2 后，**不能**将 TiKV 集群回退到 v6.1.0 之前的版本，否则可能导致数据损坏。
 
@@ -1709,14 +1708,13 @@ Raft Engine 相关的配置项。
 
 ### `raw-min-ts-outlier-threshold` <span class="version-mark">从 v6.2.0 版本开始引入</span>
 
+> **警告：**
+>
+> 这个配置项自 v6.4.0 版本起废弃。
+
 + 对 RawKV 的 Resolved TS 进行异常检测的阈值。
 + 如果某个 Region 的 Resolved TS 延迟超过这个阈值，将进入异常检测流程。此时，Resolved TS 延迟超过 3 x [IQR](https://en.wikipedia.org/wiki/Interquartile_range) 的 Region 将被认为出现锁释放缓慢，并触发 TiKV-CDC 重新订阅该 Region 的数据变更，从而重置锁资源状态。
 + 默认值：60s
-
-> **警告：**
->
-> - 这个配置项将在未来版本中废弃。为了避免遇到升级兼容性问题，不建议设置这个配置项。
-> - 大部分情况下不需要修改这个参数，因为出现锁释放缓慢的概率很小。如果参数设置过小，会导致异常检测出现误判，引起数据复制的抖动。
 
 ## resolved-ts
 
@@ -1842,21 +1840,37 @@ Raft Engine 相关的配置项。
 
 用于 TiKV API V2（`storage.api-version = 2`）中时间戳获取相关的配置项。
 
-为了降低写请求延迟，TiKV 会定期获取一批时间戳缓存在本地，避免频繁访问 PD。当本地缓存的时间戳用完，会立即发起一次时间戳请求。这种情况下，部分写请求的延迟会增大。TiKV 会根据负载情况动态调整时间戳缓存的大小，以减少这种情况的发生，大部分情况下不需要做参数调整。
+为了降低写请求延迟，TiKV 会定期获取一批时间戳缓存在本地，避免频繁访问 PD，并容忍短时间的 TSO 服务故障。
 
-> **警告：**
->
-> - API V2 是 TiKV 在 v6.1.0 中引入的实验特性，不建议在生产环境中使用。
+### `alloc-ahead-buffer` <span class="version-mark">从 v6.4.0 版本开始引入</span>
+
++ 预分配 TSO 缓存大小（以时长计算）。
++ 表示 TiKV 将按照这个参数指定的时长，预分配 TSO 缓存。TiKV 会根据前一周期的使用情况，预估并请求满足 `alloc-ahead-buffer` 时长所需要的 TSO 数量，缓存在本地。
++ 这个参数通常用于提高 TiKV API V2 (`storage.api-version = 2`) 对 PD 故障的容忍度。
++ 调大这个参数会增加 TSO 消耗，并增加 TiKV 的内存开销。为了获得足够的 TSO，建议同时调小 PD 的 [`tso-update-physical-interval`](/pd-configuration-file.md#tso-update-physical-interval) 参数。
++ 根据测试，默认配置下，当 PD 主节点由于故障切换到其节点时，写请求会短暂出现延迟增大和 QPS 下降（幅度约 15%）。
++ 如果希望业务不受影响，可以尝试采用以下配置：
+    + `causal-ts.alloc-ahead-buffer = "6s"`
+    + `causal-ts.renew-batch-max-size = 65536`
+    + `causal-ts.renew-batch-min-size = 2048`
+    + 在 PD 中配置 `tso-update-physical-interval = "1ms"`
++ 默认值：3s
 
 ### `renew-interval`
 
-+ 刷新本地缓存时间戳的周期。
-+ TiKV 会每隔 `renew-interval` 发起一次时间戳更新，并根据前一周期的使用情况，来调整时间戳的缓存数量。这个参数配置过大会导致不能及时反映最新的 TiKV 负载变化。而配置过小则会增加 PD 的负载。如果写流量剧烈变化、频繁出现时间戳耗尽、写延迟增加，可以适当调小这个参数，但需要同时关注 PD 的负载情况。
++ 更新本地缓存时间戳的周期。
++ TiKV 会每隔 `renew-interval` 发起一次时间戳更新，并根据前一周期的使用情况以及 `alloc-ahead-buffer` 参数，来调整时间戳的缓存数量。这个参数配置过大会导致不能及时反映最新的 TiKV 负载变化。而配置过小则会增加 PD 的负载。如果写流量剧烈变化、频繁出现时间戳耗尽、写延迟增加，可以适当调小这个参数，但需要同时关注 PD 的负载情况。
 + 默认值：100ms
 
 ### `renew-batch-min-size`
 
-+ 时间戳缓存的最小数量。
-+ TiKV 会根据前一周期的使用情况，来调整时间戳的缓存数量。如果本地缓存使用率偏低，TiKV 会逐步降低缓存数量，直至等于 `renew-batch-min-size`。如果业务中经常出现突发的大流量写入，可以适当调大这个参数。注意这个参数是单个 tikv-server 的缓存大小，如果配置过大、而同时集群中 tikv-server 较多，会导致 TSO 消耗过快。
++ 单次时间戳请求的最小数量。
++ TiKV 会根据前一周期的使用情况以及 `alloc-ahead-buffer` 参数设置，来调整时间戳的缓存数量。如果 TSO 需求量较低，TiKV 会降低单次 TSO 请求量，直至等于 `renew-batch-min-size`。如果业务中经常出现突发的大流量写入，可以适当调大这个参数。注意这个参数是单个 tikv-server 的缓存大小，如果配置过大、而同时集群中 tikv-server 较多，会导致 TSO 消耗过快。
 + Grafana **TiKV-Raw** 面板下 **Causal timestamp** 中的 **TSO batch size** 是根据业务负载动态调整后的本地缓存数量。可以参考该监控指标值调整这个参数的大小。
 + 默认值：100
+
+### `renew-batch-max-size` <span class="version-mark">从 v6.4.0 版本开始引入</span>
+
++ 单次时间戳请求的最大数量。
++ 在默认的一个 TSO 物理时钟更新周期内 (50ms)，PD 最多提供 262144 个 TSO，超过这个数量后 PD 会暂缓 TSO 请求的处理。这个配置用于避免 PD 的 TSO 消耗殆尽、影响其他业务的使用。如果增大这个参数，建议同时减小 PD 的 [`tso-update-physical-interval`](/pd-configuration-file.md#tso-update-physical-interval) 参数，以获得足够的 TSO。
++ 默认值：8192
