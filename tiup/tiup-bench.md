@@ -186,6 +186,8 @@ Flags:
 
 ## 使用 TiUP 运行 YCSB 测试
 
+你可以使用 TiUP 对 TiDB 和 TiKV 节点分别进行 YCSB 测试。
+
 ### 测试 TiDB
 
 1. 准备数据：
