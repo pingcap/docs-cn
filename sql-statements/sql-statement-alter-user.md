@@ -114,10 +114,16 @@ SELECT * FROM user_attributes;
 
 ```sql
 ALTER USER 'newuser' COMMENT 'Here is the comment';
+SELECT * FROM user_attributes;
 ```
 
-```
-Query OK, 0 rows affected (0.02 sec)
+```sql
++-----------+------+---------------------------------------------------+
+| USER      | HOST | ATTRIBUTE                                         |
++-----------+------+---------------------------------------------------+
+| newuser   | %    | {"comment": "Here is the comment", "newAttr": "value", "deprecatedAttr": null}      |
++-----------+------+---------------------------------------------------+
+1 rows in set (0.00 sec)
 ```
 
 通过 `ALTER USER ... ATTRIBUTE` 修改用户 `newuser` 的注释：
