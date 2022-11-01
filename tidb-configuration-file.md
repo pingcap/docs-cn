@@ -327,7 +327,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 > **警告：**
 >
-> `tidb_auth_token` 认证方式仅用于 TiDB Cloud 内部实现，**不推荐修改该配置**。
+> `tidb_auth_token` 认证方式仅用于 TiDB Cloud 内部实现，**不要修改该配置**。
 
 + 设置用于 `tidb_auth_token` 认证方式的 JWKS 的本地文件地址。
 + 默认值：""
@@ -336,7 +336,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 > **警告：**
 >
-> `tidb_auth_token` 认证方式仅用于 TiDB Cloud 内部实现，**不推荐修改该配置**。
+> `tidb_auth_token` 认证方式仅用于 TiDB Cloud 内部实现，**不要修改该配置**。
 
 + 设置用于 `tidb_auth_token` 认证方式的 JWKS 刷新时间间隔。
 + 默认值：1h
