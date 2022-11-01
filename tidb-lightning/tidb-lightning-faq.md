@@ -168,3 +168,40 @@ See also [How to properly restart TiDB Lightning?](#how-to-properly-restart-tidb
     Check the log of TiDB Lightning. The log of `starting HTTP server` / `start HTTP server` / `started HTTP server` shows the newly enabled `status-port`.
 
 2. Access `http://<lightning-ip>:<status-port>/debug/pprof/goroutine?debug=2` to get the goroutine information.
+
+## Why is TiDB Lightning not compatible with Placement Rules in SQL?
+
+TiDB Lightning is not compatible with [Placement Rules in SQL](/placement-rules-in-sql.md). When TiDB Lightning imports data that contains placement policies, TiDB Lightning reports an error.
+
+The reason is explained as follows:
+
+The purpose of placement rule in SQL is to control the data location of certain TiKV nodes at the table or partition level. TiDB Lightning imports data in text files into the target TiDB cluster. If the data files is exported with the definition of placement rules, during the import process, TiDB Lightning must create the corresponding placement rule policy in the target cluster based on the definition. When the source cluster and the target cluster have different topology, this might cause problems.
+
+Suppose the source cluster has the following topology:
+
+![TiDB Lightning FAQ - source cluster topology](/media/lightning-faq-source-cluster-topology.jpg)
+
+The source cluster has the following placement policy:
+
+```sql
+CREATE PLACEMENT POLICY p1 PRIMARY_REGION="us-east" REGIONS="us-east,us-west";
+```
+
+**Situation 1:** The target cluster has 3 replicas, and the topology is different from the source cluster. In such cases, when TiDB Lightning creates the placement policy in the target cluster, it will not report an error. However, the semantics in the target cluster is wrong.
+
+![TiDB Lightning FAQ - situation 1](/media/lightning-faq-situation-1.jpg)
+
+**Situation 2:** The target cluster locates the follower replica in another TiKV node in region "us-mid" and does not have the region "us-west" in the topology. In such cases, when creating the placement policy in the target cluster, TiDB Lightning will report an error.
+
+![TiDB Lightning FAQ - situation 2](/media/lightning-faq-situation-2.jpg)
+
+**Workaround:**
+
+To use placement rules in SQL with TiDB Lightning, you need to make sure that the related labels and objects have been created in the target TiDB cluster **before** you import data into the target table. Because the placement rules in SQL acts at the PD and TiKV layer, TiDB Lightning can get the necessary information to find out which TiKV should be used to store the imported data. In this way, this placement rule in SQL is transparent to TiDB Lightning.
+
+The steps are as follows:
+
+1. Plan the data distribution topology.
+2. Configure the required labels for TiKV and PD.
+3. Create the placement rule policy and apply the created policy to the target table.
+4. Use TiDB Lightning to import data into the target table.
