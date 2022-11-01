@@ -9,7 +9,7 @@ TiDB v6.4.0 引入了 `FLASHBACK CLUSTER TO TIMESTAMP` 语法，其功能是将�
 
 > **警告：**
 >
-> 在执行 `FLASHBACK CLUSTER TO TIMESTAMP` 之前，需要暂停 PiTR、TiCDC 等工具，待 flashback 执行完成后再启动，不然会造成同步失败等问题。
+> 在执行 `FLASHBACK CLUSTER TO TIMESTAMP` 之前，需要暂停 PITR、TiCDC 等工具，待 `FLASHBACK` 执行完成后再启动，否则会造成同步失败等问题。
 
 ## 语法
 
@@ -21,7 +21,7 @@ FLASHBACK CLUSTER TO TIMESTAMP '2022-09-21 16:02:50';
 
 ```ebnf+diagram
 FlashbackToTimestampStmt ::=
-    "FLASHBACK" ("CLUSTER" | "DATABASE" DBName | "TABLE" TableNameList) "TO" "TIMESTAMP" stringLit
+    "FLASHBACK" "CLUSTER" "TO" "TIMESTAMP" stringLit
 ```
 
 ## 注意事项
@@ -32,8 +32,7 @@ FlashbackToTimestampStmt ::=
     SELECT * FROM mysql.tidb WHERE variable_name = 'tikv_gc_safe_point';
     ```
 
-* 仅支持拥有对应权限的用户执行该 SQL 命令：
-    * 执行 `FLASHBACK CLUSTER` 操作需要有 `SUPER` 权限。
+* 执行 `FLASHBACK CLUSTER` SQL 语句的用户需要有 `SUPER` 权限。
 * 在 `FLASHBACK` 指定的时间点到开始执行的时间段内不能存在相关表结构变更的 DDL 记录。若存在，TiDB 会拒绝该 DDL 操作。
 * 在执行 `FLASHBACK CLUSTER TO TIMESTAMP` 前，TiDB 会主动断开所有相关表上的连接，并禁止对这些表进行读写操作，直到 `FLASHBACK` 完成。
 * `FLASHBACK CLUSTER TO TIMESTAMP` 命令不能取消，一旦开始执行 TiDB 会一直重试，直到成功。
