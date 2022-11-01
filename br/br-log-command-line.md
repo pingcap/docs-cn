@@ -156,7 +156,7 @@ The output fields are described as follows:
 - `checkpoint[global]`: all data before this checkpoint is backed up to the backup storage. This is the latest timestamp available for restoring the backup data.
 - `error[store]`: the error the log backup program encounters on the storage node.
 
-### Pause and resume the backup task
+### Pause and resume a backup task
 
 You can run the `br log pause` command to pause a running backup task.
 
@@ -222,9 +222,13 @@ Usage example:
 ./br log resume --task-name=pitr --pd=172.16.102.95:2379
 ```
 
-### Stop the backup task (permanently)
+### Stop and restart a backup task
 
-You can run the `br log stop` command to stop a log backup task permanently. This command cleans up the task metadata in the backup cluster.
+You can stop a log backup task by running the `br log stop` command and restart a backup task that is stopped by using the original `--storage` directory.
+
+#### Stop a backup task
+
+You can run the `br log stop` command to stop a log backup task. This command cleans up the task metadata in the backup cluster.
 
 Run `br log stop --help` to see the help information:
 
@@ -246,16 +250,23 @@ Global Flags:
  -u, --pd strings             PD address (default [127.0.0.1:2379])
 ```
 
-> **Warning:**
+> **Note:**
 >
-> - Use this command with caution. Stop a log backup task only when you are sure that you do not need PITR any more. If you need to pause a log backup task, use `br log pause` and `br log resume` instead.
-> - If you stop a log backup task using `br log stop`, when you use `br log start` to restart the task, you must specify a log backup storage path that is different from the original path. However, different log backup paths results in a situation where you cannot restore data using `br restore point`.
+> Use this command with caution. If you need to pause a log backup task, use `br log pause` and `br log resume` instead.
 
 Usage example:
 
 ```shell
 ./br log stop --task-name=pitr --pd=172.16.102.95:2379
 ```
+
+#### Restart a backup task
+
+After running the `br log stop` command to stop a log backup task, you can create a new log backup task in another `--storage` directory or restart the log backup task in the original `--storage` directory by running the `br log start` command. If you restart the task in the original `--storage` directory, pay attention to the following points:
+
+- Parameters of the `--storage` directory for restarting a task must be the same as the task that is stopped.
+- The `--start-ts` does not need to be specified. BR automatically starts the backup from the last backup checkpoint.
+- If the task is stopped for a long time and multiple versions of the data have been garbage collected, the error `BR:Backup:ErrBackupGCSafepointExceeded` is reported when you attempt to restart the task. In this case, you have to create a new log backup task in another `--storage` directory.
 
 ### Clean up the backup data
 

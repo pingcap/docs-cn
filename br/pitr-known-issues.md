@@ -7,23 +7,13 @@ summary: Learn known issues in log backup.
 
 This document lists the known issues and corresponding workarounds when you use the log backup feature.
 
-## BR encounters the OOM problem during a PITR or after you run the `br log truncate` command
+## BR encounters the OOM problem after you run the `br log truncate` command
 
 Issue: [#36648](https://github.com/pingcap/tidb/issues/36648)
 
 Consider the following possible causes:
 
-- PITR experiences OOM because the log data to be recovered is too much. The following are two typical causes:
-
-    - The log range to be recovered is too large.
-
-        It is recommended that you recover logs of no more than two days, and one week to maximum. That is, perform a full backup operation at least once in two days during PITR backup process.
-
-    - There are a large number of writes for a long time during the log backup process.
-
-        A large number of writes for a long time usually occur when you perform a full data import to initialize the cluster. It is recommended that you perform a snapshot backup after the initial import and use that backup to restore the cluster.
-
-- OOM occurs when you delete logs because the range of logs to be deleted is too large.
+- The range of logs to be deleted is too large.
 
     To resolve this issue, reduce the range of logs to be deleted first and delete the target logs in several batches instead of deleting them once.
 
@@ -44,14 +34,6 @@ Issue: [#13126](https://github.com/tikv/tikv/issues/13126)
 After a network partition failure in the cluster, the backup task cannot continue backing up logs. After a certain retry time, the task will be set to `ERROR` state. At this point, the backup task has stopped.
 
 To resolve this issue, you need to manually execute the `br log resume` command to resume the log backup task.
-
-## The actual storage space used by log backup is 2~3 times the volume of the incremental data displayed in the cluster monitoring metrics
-
-Issue: [#13306](https://github.com/tikv/tikv/issues/13306)
-
-This issue occurs because log backup data use a customized encoding format. The different format leads to different data compression ratios, the difference of which is 2~3 times.
-
-Log backup does not store data the way RocksDB generates SST files, because the data generated during log backup might have a large range and a small content. In such cases, restoring data by ingesting SST files cannot improve the restoration performance.
 
 ## The error `execute over region id` is returned when you perform PITR
 
@@ -78,14 +60,3 @@ Currently, the [acceleration of adding indexes](/system-variables.md#tidb_ddl_en
 - If you start a log backup task first, and then add an index. The adding index process is not accelerated even if index acceleration is enabled. But the index is added in a slow way.
 - If you start an index acceleration task first, and then start a log backup task. The log backup task returns an error. But the index acceleration is not affected.
 - If you start a log backup task and an index acceleration task at the same time, the two tasks might not be aware of each other. This might result in PITR failing to back up the newly added index.
-
-## An error occurs when you run the `PITR Truncate` command on GCS or Azure Blob Storage for the first time
-
-Issue: [#38229](https://github.com/pingcap/tidb/issues/38229)
-
-When you run `PITR Truncate` on GCS or Azure Blob Storage for the first time, you are reminded that the file `v1_stream_trancate_safepoint.txt` does not exist. To address this issue, take the following steps:
-
-In the backup root directory of PITR, create a file `v1_stream_trancate_safepoint.txt` and write `0` in it. Note that this file should not include any other characters and should be created only when you run `PITR Truncate` for the first time.
-
-<!-- TODO: Add the following content upon v6.4.0 release  -->
-<!-- Alternatively, use BR of v6.4.0 or later. -->
