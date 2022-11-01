@@ -97,15 +97,15 @@ Query OK, 0 rows affected (0.02 sec)
 
 ```sql
 ALTER USER 'newuser' ATTRIBUTE '{"newAttr": "value", "deprecatedAttr": null}';
-SELECT * FROM user_attributes;
+SELECT * FROM information_schema.user_attributes;
 ```
 
 ```sql
-+-----------+------+---------------------------------------------------+
-| USER      | HOST | ATTRIBUTE                                         |
-+-----------+------+---------------------------------------------------+
-| newuser   | %    | {"newAttr": "value", "deprecatedAttr": null}      |
-+-----------+------+---------------------------------------------------+
++-----------+------+--------------------------+
+| USER      | HOST | ATTRIBUTE                |
++-----------+------+--------------------------+
+| newuser   | %    | {"newAttr": "value"}     |
++-----------+------+--------------------------+
 1 rows in set (0.00 sec)
 ```
 
@@ -114,31 +114,31 @@ SELECT * FROM user_attributes;
 
 ```sql
 ALTER USER 'newuser' COMMENT 'Here is the comment';
-SELECT * FROM user_attributes;
+SELECT * FROM information_schema.user_attributes;
 ```
 
 ```sql
-+-----------+------+---------------------------------------------------+
-| USER      | HOST | ATTRIBUTE                                         |
-+-----------+------+---------------------------------------------------+
-| newuser   | %    | {"comment": "Here is the comment", "newAttr": "value", "deprecatedAttr": null}      |
-+-----------+------+---------------------------------------------------+
++-----------+------+--------------------------------------------------------+
+| USER      | HOST | ATTRIBUTE                                              |
++-----------+------+--------------------------------------------------------+
+| newuser   | %    | {"comment": "Here is the comment", "newAttr": "value"} |
++-----------+------+--------------------------------------------------------+
 1 rows in set (0.00 sec)
 ```
 
-通过 `ALTER USER ... ATTRIBUTE` 修改用户 `newuser` 的注释：
+通过 `ALTER USER ... ATTRIBUTE` 删除用户 `newuser` 的注释：
 
 ```sql
 ALTER USER 'newuser' ATTRIBUTE '{"comment": null}';
-SELECT * FROM user_attributes;
+SELECT * FROM information_schema.user_attributes;
 ```
 
 ```sql
-+-----------+------+---------------------------------------------------+
-| USER      | HOST | ATTRIBUTE                                         |
-+-----------+------+---------------------------------------------------+
-| newuser   | %    | {"comment": null, "newAttr": "value", "deprecatedAttr": null}      |
-+-----------+------+---------------------------------------------------+
++-----------+------+---------------------------+
+| USER      | HOST | ATTRIBUTE                 |
++-----------+------+---------------------------+
+| newuser   | %    | {"newAttr": "value"}      |
++-----------+------+---------------------------+
 1 rows in set (0.00 sec)
 ```
 

@@ -101,7 +101,7 @@ Query OK, 1 row affected (0.02 sec)
 
 ```sql
 CREATE USER 'newuser6'@'%' COMMENT 'This user is created only for test';
-SELECT * FROM user_attributes;
+SELECT * FROM information_schema.user_attributes;
 ```
 
 ```
@@ -117,7 +117,7 @@ SELECT * FROM user_attributes;
 
 ```sql
 CREATE USER 'newuser7'@'%' ATTRIBUTE '{"email": "user@pingcap.com"}';
-SELECT * FROM user_attributes;
+SELECT * FROM information_schema.user_attributes;
 ```
 
 ```sql
