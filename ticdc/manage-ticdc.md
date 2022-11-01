@@ -314,39 +314,17 @@ dispatchers = [
 
 集成具体步骤详见 [TiDB 集成 Confluent Platform 快速上手指南](/ticdc/integrate-confluent-using-ticdc.md)。
 
-#### Sink URI 配置 `s3`/`azure blob storage`/`gcs`/`nfs`
+#### Sink URI 配置 `s3`
 
-TiCDC 从 v6.4 开始支持将行变更事件保存至 S3、GCS 和 Azblob 等云存储系统中。
+TiCDC 从 v6.4 开始支持将行变更事件保存至 S3 中。
 
 S3 配置样例如下:
-
-{{< copyable "shell-regular" >}}
 
 ```shell
 --sink-uri="s3://my-bucket/prefix?region=us-west-2&worker-count=4"
 ```
 
-S3 的 URL 参数与 BR 相同，详细参数请参考 [S3 的 URL 参数](/br/backup-and-restore-storages.md#s3-的-url-参数)
-
-GCS 配置样例如下：
-
-{{< copyable "shell-regular">}}
-
-```shell
---sink-uri="gcs://my-bucket/prefix?flush-interval=15s"
-```
-
-GCS 的 URL 参数与 BR 相同，详细参数请参考 [GCS 的 URL 参数](/br/backup-and-restore-storages.md#gcs-的-url-参数)
-
-Azblob 配置样例如下：
-
-{{< copyable "shell-regular">}}
-
-```shell
---sink-uri="azblob://my-bucket/prefix"
-```
-
-Azblob 的 URL 参数与 BR 相同，详细参数请参考 [Azblob 的 URL 参数](/br/backup-and-restore-storages.md#azblob-的-url-参数)
+S3 的 URL 参数与 BR 相同，详细参数请参考 [S3 的 URL 参数](/br/backup-and-restore-storages.md#s3-的-url-参数)。
 
 URI 中其他可配置的参数如下：
 
@@ -683,12 +661,13 @@ dispatchers = [
     {matcher = ['test6.*'], partition = "ts"}
 ]
 
-# 对于 MQ 类的 Sink，可以指定消息的协议格式
-# 目前支持 canal-json、open-protocol、canal、avro 和 maxwell 五种协议。
+# protocol 用于指定传递到下游的协议格式
+# 当下游类型是 Kafka 时，支持 canal-json、avro 两种协议。
+# 当下游类型是对象存储时，目前仅支持 csv 协议。
 protocol = "canal-json"
 
 # 以下三个配置项仅在云存储类的 Sink 中使用。
-# 换行符。空值代表使用 "\r\n" 作为换行符。默认值为空。
+# 换行符。默认值为空，表示使用 "\r\n" 作为换行符。
 terminator = ''
 # 文件路径的日期分隔类型。可选类型有 `none`、`year`、`month`、`day`。默认值为 `none`，即不使用日期分隔。
 date-separator = 'none'
@@ -699,11 +678,11 @@ enable-partition-separator = false
 [sink.csv]
 # 字段之间的分隔符。必须为 ASCII 字符，默认值为 `,`
 delimiter = ','
-# 用于围住字段的引号字符。空值代表不使用引号字符。默认值为 `"`。
+# 用于包裹字段的引号字符。空值代表不使用引号字符。默认值为 `"`。
 quote = '"'
-# csv 列为 null 时将被表示的字符。默认值为 `\N`
+# CSV 列为 null 时将以什么字符来表示。默认值为 `\N`
 null = '\N'
-# 是否在 csv 行中包含 commit-ts。默认值为 false。
+# 是否在 CSV 行中包含 commit-ts。默认值为 false。
 include-commit-ts = false
 ```
 
@@ -854,6 +833,8 @@ partition 分发器用 partition = "xxx" 来指定，支持 default、ts、index
 
 ## 云存储类 Sink
 
+本部分详细介绍云存储类 Sink。
+
 ### 数据变更记录
 
 数据变更记录将会存储到以下路径：
@@ -862,19 +843,19 @@ partition 分发器用 partition = "xxx" 来指定，支持 default、ts、index
 {protocol}://{prefix}/{schema}/{table}/{table-version-separator}/{partition-separator}/{date-separator}/CDC{num}.{extension}
 ```
 
-- protocol: protocol 为数据传输协议，也即存储类型。例如：`s3://xxxxx`
-- prefix: prefix 为用户指定的父目录。例如：`s3://bucket/bbb/ccc`
-- schema: schema 为表所属的库名。例如：`s3://bucket/bbb/ccc/test`
-- table: table 为表名。例如：`s3://bucket/bbb/ccc/test/table1`
-- table-version-separator: 将文件路径按照表的版本进行分隔。例如：`s3://bucket/bbb/ccc/test/table1/9999`
-- partition-separator: 将文件路径按照表的分区号进行分隔。例如：`s3://bucket/bbb/ccc/test/table1/9999/20`
-- date-separator: 将文件路径按照事务提交的日期进行分隔。date-separator 可选值如下：
-    - none: 不以 date-separator 分隔文件路径。例如：`test.table1` 版本号为 9999 的所有文件都存到 `s3://bucket/bbb/ccc/test/table1/9999` 路径下。
-    - year: 以事务提交的年份分隔文件路径。例如：`s3://bucket/bbb/ccc/test/table1/9999/2022`。
-    - month: 以事务提交的年份和月份分隔文件路径。例如：`s3://bucket/bbb/ccc/test/table1/9999/2022-01`。
-    - day: 以事务提交的年月日来分隔文件路径。例如：`s3://bucket/bbb/ccc/test/table1/9999/2022-01-02`。
-- num: 存储数据变更记录的目录下文件的序号。例如：`s3://bucket/bbb/ccc/test/table1/9999/2022-01-02/CDC000005.csv`。
-- extension: 文件的扩展名，v6.4 只支持 csv 格式。
+- `protocol`：`protocol` 为数据传输协议，即存储类型。例如：`s3://xxxxx`
+- `prefix`：`prefix` 为用户指定的父目录。例如：`s3://bucket/bbb/ccc`
+- `schema`：`schema` 为表所属的库名。例如：`s3://bucket/bbb/ccc/test`
+- `table`：`table` 为表名。例如：`s3://bucket/bbb/ccc/test/table1`
+- `table-version-separator`：将文件路径按照表的版本进行分隔。例如：`s3://bucket/bbb/ccc/test/table1/9999`
+- `partition-separator`：将文件路径按照表的分区号进行分隔。例如：`s3://bucket/bbb/ccc/test/table1/9999/20`
+- `date-separator`：将文件路径按照事务提交的日期进行分隔。date-separator 可选值如下：
+    - `none`：不以 date-separator 分隔文件路径。例如：`test.table1` 版本号为 9999 的所有文件都存到 `s3://bucket/bbb/ccc/test/table1/9999` 路径下。
+    - `year`：以事务提交的年份分隔文件路径。例如：`s3://bucket/bbb/ccc/test/table1/9999/2022`。
+    - `month`：以事务提交的年份和月份分隔文件路径。例如：`s3://bucket/bbb/ccc/test/table1/9999/2022-01`。
+    - `day`：以事务提交的年月日来分隔文件路径。例如：`s3://bucket/bbb/ccc/test/table1/9999/2022-01-02`。
+- `num`：存储数据变更记录的目录下文件的序号。例如：`s3://bucket/bbb/ccc/test/table1/9999/2022-01-02/CDC000005.csv`。
+- `extension`：文件的扩展名，v6.4 只支持 csv 格式。
 
 ### 元数据
 
@@ -957,7 +938,7 @@ partition 分发器用 partition = "xxx" 来指定，支持 default、ts、index
 
 ### 数据类型
 
-数据类型定义为 T(M[, D])，详见 [数据类型概述](/data-type-overview.md#数据类型概述)。
+数据类型定义为 `T(M[, D])`，详见[数据类型概述](/data-type-overview.md#数据类型概述)。
 
 #### 整数类型
 
