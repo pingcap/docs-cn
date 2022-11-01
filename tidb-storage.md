@@ -7,7 +7,7 @@ summary: 了解 TiDB 数据库的存储层。
 
 本文主要介绍 [TiKV](https://github.com/tikv/tikv) 的一些设计思想和关键概念。
 
-![storage-architecture](/media/tidb-storage-architecture.png)
+![storage-architecture](/media/tidb-storage-architecture-1.png)
 
 ## Key-Value Pairs（键值对）
 
