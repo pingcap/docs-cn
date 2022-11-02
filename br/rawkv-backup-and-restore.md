@@ -15,11 +15,9 @@ TiKV 有时可以独立于 TiDB，与 PD 构成 KV 数据库，此时的产品�
 
 在某些使用场景下，TiKV 可能会独立于 TiDB 运行。考虑到这点，BR 提供跳过 TiDB 层直接备份 TiKV 数据的功能：
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 br backup raw --pd $PD_ADDR \
-    -s "local://$BACKUP_DIR" \
+    --storage "local://$BACKUP_DIR" \
     --start 31 \
     --ratelimit 128 \
     --end 3130303030303030 \
@@ -50,11 +48,9 @@ br backup raw --pd $PD_ADDR \
 
 和[备份 RawKV](#备份-rawkv)相似，恢复 RawKV 的命令如下：
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 br restore raw --pd $PD_ADDR \
-    -s "local://$BACKUP_DIR" \
+    --storage "local://$BACKUP_DIR" \
     --start 31 \
     --end 3130303030303030 \
     --ratelimit 128 \

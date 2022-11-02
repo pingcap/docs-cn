@@ -14,7 +14,7 @@ aliases: ['/docs-cn/dev/br/backup-and-restore-use-cases/','/docs-cn/dev/referenc
 
 ## 部署 TiDB 集群和 BR
 
-使用 PITR 功能，需要部署 v6.2.0 及以上版本的 TiDB 集群，并且更新 BR 到与 TiDB 集群相同的版本，本文假设使用的是 v6.2.0 版本。
+使用 PITR 功能，需要部署 v6.2.0 或以上版本的 TiDB 集群，并且更新 BR 到与 TiDB 集群相同的版本，本文假设使用的是 v6.2.0 版本。
 
 下表介绍了在 TiDB 集群中使用日志备份功能的推荐配置。
 
@@ -34,7 +34,7 @@ aliases: ['/docs-cn/dev/br/backup-and-restore-use-cases/','/docs-cn/dev/referenc
 使用 TiUP 部署或升级 TiDB 集群：
 
 - 如果没有部署 TiDB 集群，请[部署 TiDB 集群](/production-deployment-using-tiup.md)。
-- 如果已经部署老版本 TiDB 集群，请[升级 TiDB 集群](/upgrade-tidb-using-tiup.md)。
+- 如果已经部署的 TiDB 集群版本低于 v6.2.0，请[升级 TiDB 集群](/upgrade-tidb-using-tiup.md)。
 
 使用 TiUP 安装或升级 BR：
 

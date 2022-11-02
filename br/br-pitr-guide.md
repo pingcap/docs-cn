@@ -81,7 +81,7 @@ Restore KV Files <--------------------------------------------------------------
 2. 使用 `validate` 指令获取该备份对应的时间点。假如需要清理 2022/09/01 之前的备份数据，则应查找该日期之前的最近一次全量备份，且保证它不会被清理。
 
     ```shell
-    FULL_BACKUP_TS=`tiup br validate decode --field="end-version" -s "s3://backup-101/snapshot-${date}?access_key=${access_key}&secret_access_key=${secret_access_key}"| tail -n1`
+    FULL_BACKUP_TS=`tiup br validate decode --field="end-version" --storage "s3://backup-101/snapshot-${date}?access_key=${access_key}&secret_access_key=${secret_access_key}"| tail -n1`
     ```
 
 3. 清理该快照备份 `FULL_BACKUP_TS` 之前的日志备份数据。
@@ -104,8 +104,8 @@ Restore KV Files <--------------------------------------------------------------
 > **注意：**
 >
 > - 以上功能指标是根据下述两个场景测试得出的结论，如有出入，建议以实际测试结果为准
-> - 全量恢复速度 = 全量恢复集群数据量 / （时间 * TiKV 数量）
-> - 日志恢复速度 = 日志恢复总量 / （时间 * TiKV 数量）
+> - 全量恢复速度 = 全量恢复集群数据量 /（时间 * TiKV 数量）
+> - 日志恢复速度 = 日志恢复总量 /（时间 * TiKV 数量）
 
 测试场景 1（[TiDB Cloud](https://tidbcloud.com) 上部署）
 

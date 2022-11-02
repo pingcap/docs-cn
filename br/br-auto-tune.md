@@ -27,8 +27,6 @@ summary: 了解 BR 自动调节功能，在集群资源占用率较高的情况�
 
 TiKV 支持[动态配置](/tikv-control.md#动态修改-tikv-的配置)自动调节功能，因此，在开启或关闭该功能时，无需重启集群。你可以运行以下命令动态启动或停止 BR 自动调节功能：
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 tikv-ctl modify-tikv-config -n backup.enable-auto-tune -v <true|false>
 ```

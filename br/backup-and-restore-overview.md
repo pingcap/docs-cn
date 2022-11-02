@@ -11,7 +11,7 @@ aliases: ['/docs-cn/dev/br/backup-and-restore-tool/','/docs-cn/dev/reference/too
 TiDB 备份恢复功能可以用于满足以下业务的需求：
 
 - 备份集群数据到灾备系统，并保证 RPO 低至 10 分钟，减少灾难场景下数据的丢失。
-- 处理业务数据写错的案例。 提供业务操作的 ”复原“ 的能力。
+- 处理业务数据写错的案例。 提供业务操作的“复原”的能力。
 - 审计业务的历史数据，满足司法审查的需求。
 - 复制 (Clone) 生产环境，方便问题诊断、性能调优验证、仿真测试等。
 
@@ -19,7 +19,7 @@ TiDB 备份恢复功能可以用于满足以下业务的需求：
 
 根据 TiDB 部署方式的不同，使用备份恢复功能的方式也不同。本文主要介绍在 On-Premise 物理部署方式下，如何使用 br 命令行工具进行 TiDB 的备份和恢复。
 
-其它 TiDB 的部署方式的备份恢复功能使用，可以参考
+其它 TiDB 的部署方式的备份恢复功能使用，可以参考：
 
 - [备份恢复部署在 TiDB Cloud 上的 TiDB](https://docs.pingcap.com/tidbcloud/backup-and-restore)。推荐在 [TiDB Cloud](https://en.pingcap.com/tidb-cloud/) 上创建 TiDB 集群，集群的运维管理将由 TiDB Cloud 团队托管完成，你可以聚焦于业务。
 - [备份恢复部署在 Kubernetes 上的 TiDB](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/backup-restore-overview)。如果你使用 TiDB Operator 在 Kubernetes 中部署了 TiDB 集群，建议通过 Kubernetes CustomResourceDefinition (CRD) 来提交备份和恢复任务。
