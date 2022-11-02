@@ -2392,7 +2392,6 @@ explain select * from t where age=5;
 ### `tidb_optimizer_selectivity_level`
 
 - 作用域：SESSION
-- 是否持久化到集群：是
 - 默认值：`0`
 - 取值范围：`[0, 2147483647]`
 - 控制优化器估算逻辑的更迭。更改该变量值后，优化器的估算逻辑会产生较大的改变。目前该变量的有效值只有 `0`，不建议设为其它值。
