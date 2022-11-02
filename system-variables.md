@@ -1230,6 +1230,14 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 默认值：`OFF`
 - 这个变量用来控制是否开启 General Plan Cache。
 
+### `tidb_enable_gogc_tuner`
+
+- 作用域：GLOBAL
+- 是否持久化到集群：否
+- 类型：布尔型
+- 默认值：`ON`
+- 该变量来用控制是否开启 GOGC Tuner。
+
 ### `tidb_enable_historical_stats`
 
 - 作用域：GLOBAL
@@ -1717,6 +1725,13 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 范围：`[1, 100000]`
 - 这个变量用来控制 General Plan Cache 最多能够缓存的计划数量。
 
+### `tidb_gogc_tuner_threshold`
+
+- 作用域：GLOBAL
+- 是否持久化到集群：否
+- 默认值：`0.6`
+- 范围：`[0, 0.9)`
+- 这个变量用来控制 GOGC Tuner 自动调节的最大内存阈值，超过阈值后 GOGC Tuner 会停止工作。
 ### `tidb_guarantee_linearizability` <span class="version-mark">从 v5.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
