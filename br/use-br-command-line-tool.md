@@ -39,7 +39,7 @@ br 由多层命令组成。目前，br 包含的重要命令有：
 ### 常用选项
 
 * `--pd`：PD 访问地址选项，例如 `"${PD_IP}:2379"`
-* `-s, --storage`: 备份数据的存储地址选项。BR 支持以 S3/GCS/Azure Blob Storage/NFS 为备份存储。详细参考[备份存储 URL 配置](/br/backup-and-restore-storages.md#url-格式)。 
+* `-s, --storage`: 备份数据的存储地址选项。BR 支持以 S3/GCS/Azure Blob Storage/NFS 为备份存储。详细参考[备份存储 URL 配置](/br/backup-and-restore-storages.md#url-格式)。
 * `--ca`：指定 PEM 格式的受信任 CA 的证书文件路径。
 * `--cert`：指定 PEM 格式的 SSL 证书文件路径。
 * `--key`：指定 PEM 格式的 SSL 证书密钥文件路径。
@@ -49,11 +49,11 @@ br 由多层命令组成。目前，br 包含的重要命令有：
 
 使用 `br backup` 命令来备份集群全量数据。可选择添加 `full` 或 `table` 子命令来指定备份的范围：全部集群数据或单张表的数据。
 
-- [备份集群快照数据](/br/br-snapshot-manual.md#备份-tidb-集群快照)
+- [备份集群快照数据](/br/br-snapshot-manual.md#备份集群快照)
 - [备份单个数据库的数据](/br/br-snapshot-manual.md#备份单个数据库的数据)
 - [备份单张表的数据](/br/br-snapshot-manual.md#备份单张表的数据)
 - [使用表库过滤功能备份多张表的数据](/br/br-snapshot-manual.md#使用表库过滤功能备份多张表的数据)
-- [加密快照备份数据](/br/br-snapshot-manual.md#备份端加密备份数据)
+- [加密快照备份数据](/br/backup-and-restore-storages.md#存储服务端加密)
 
 ## 日志备份命令行介绍
 
@@ -61,10 +61,10 @@ br 由多层命令组成。目前，br 包含的重要命令有：
 
 - [启动日志备份](/br/br-pitr-manual.md#启动日志备份)
 - [查询备份状态](/br/br-pitr-manual.md#查询日志备份任务)
-- [暂停和重启备份](/br/br-pitr-manual.md#暂停和重启日志备份任务)
-- [停止备份任务并删除备份数据](/br/br-pitr-manual.md#永久停止日志备份任务)
+- [暂停和恢复备份](/br/br-pitr-manual.md#暂停和恢复日志备份任务)
+- [停止和重启备份任务](/br/br-pitr-manual.md#停止和重启日志备份任务)
 - [清理备份数据](/br/br-pitr-manual.md#清理日志备份数据)
-- [查看元信息](/br/br-pitr-manual.md#查看备份数据元信息) 
+- [查看元信息](/br/br-pitr-manual.md#查看备份数据元信息)
 
 ## 恢复备份数据命令行介绍
 

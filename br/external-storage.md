@@ -138,7 +138,7 @@ S3、 GCS 和 Azblob 等云存储有时需要额外的连接配置，你可以�
 > **注意：**
 >
 > - 将 Azure Blob Storage 作为外部存储时，必须设置 `send-credentials-to-tikv = true`（即默认情况），否则会导致备份失败。
-> - `$AZURE_CLIENT_ID`、`$AZURE_TENANT_ID` 和 `$AZURE_CLIENT_SECRET` 分别代表 Azure 应用程序的应用程序 ID `client_id`、租户 ID `tenant_id` 和客户端密码 `client_secret`。如需了解如何确认运行环境中存在环境变量 `$AZURE_CLIENT_ID`、`$AZURE_TENANT_ID` 和 `$AZURE_CLIENT_SECRET`，或需要将环境变量配置为参数，请参考[配置环境变量](/br/backup-and-restore-storages.md#配置访问-azure-blob-storage-的账户)。
+> - `$AZURE_CLIENT_ID`、`$AZURE_TENANT_ID` 和 `$AZURE_CLIENT_SECRET` 分别代表 Azure 应用程序的应用程序 ID `client_id`、租户 ID `tenant_id` 和客户端密码 `client_secret`。如需了解如何确认运行环境中存在环境变量 `$AZURE_CLIENT_ID`、`$AZURE_TENANT_ID` 和 `$AZURE_CLIENT_SECRET`，或需要将环境变量配置为参数，请参考[鉴权](/br/backup-and-restore-storages.md#鉴权) Azure Blob Storage 部分。
 
 ## 命令行参数
 

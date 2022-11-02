@@ -58,7 +58,7 @@ PITR 的流程如下：
    * 查询备份数据中恢复数据对象（db/table），并检查要恢复的表是否符合要求不存在
 
 2. BR 恢复全量备份
-   * 进行快照备份数据恢复，恢复流程参考 [恢复快照备份数据](/br/br-snapshot-architecture.md#恢复快照备份数据)
+   * 进行快照备份数据恢复，恢复流程参考 [恢复快照备份数据](/br/br-snapshot-architecture.md#恢复流程)
 
 3. BR 恢复日志备份
    * **Read backup data**: 读取日志备份数据，计算需要恢复的日志备份数据
