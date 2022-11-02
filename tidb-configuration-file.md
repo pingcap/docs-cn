@@ -756,7 +756,6 @@ TiDB 服务状态相关配置。
 + 该值作为系统变量 [`tidb_enable_ddl`](/system-variables.md#tidb_enable_ddl) 的初始值。
 + 在 v6.3.0 之前，该功能由配置项 `run-ddl` 进行设置。
 
-
 ## proxy-protocol
 
 PROXY 协议相关的配置项。
