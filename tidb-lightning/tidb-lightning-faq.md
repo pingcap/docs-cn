@@ -195,4 +195,11 @@ CREATE PLACEMENT POLICY p1 PRIMARY_REGION="us-east" REGIONS="us-east,us-west";
 
 **解决方法：**
 
-如果要和 TiDB Lightning 同时使用 Placement Rules in SQL，你需要在导入数据到目标表之前，确保已经在目标 TiDB 集群中创建了相关的 label 和对象。因为 Placement Rules in SQL 作用于 PD 和 TiKV 层，TiDB Lightning 可以根据获取到的信息，决定应该使用哪个 TiKV 来存储导入的数据。使用这种方法后，Placement Rules in SQL 对 TiDB Lightning 是透明无感的。
+如果要在使用 TiDB Lightning 同时使用 Placement Rules in SQL，你需要在导入数据到目标表**之前**，确保已经在目标 TiDB 集群中创建了相关的 label 和对象。因为 Placement Rules in SQL 作用于 PD 和 TiKV 层，TiDB Lightning 可以根据获取到的信息，决定应该使用哪个 TiKV 来存储导入的数据。使用这种方法后，Placement Rules in SQL 对 TiDB Lightning 是透明无感的。
+
+具体操作步骤如下：
+
+1. 规划数据分布的拓扑结构。
+2. 为 TiKV 和 PD 配置必要的 label。
+3. 创建放置规则策略，并将策略应用到目标表上。
+4. 使用 TiDB Lightning 导入数据到目标表。
