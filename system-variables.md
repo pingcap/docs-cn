@@ -1379,7 +1379,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 ### `tidb_enable_prepared_plan_cache` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
-- 作用域：GLOBAL
+- 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 默认值：`ON`
 - 这个变量用来控制是否开启 [Prepared Plan Cache](/sql-prepared-plan-cache.md)。开启后，对 `Prepare`、`Execute` 请求的执行计划会进行缓存，以便在后续执行时跳过查询计划优化这个步骤，获得性能上的提升。
@@ -2419,9 +2419,16 @@ explain select * from t where age=5;
 - 这个变量用来控制 Prepared Plan Cache 触发内存保护机制的阈值，具体可见 [Prepared Plan Cache 的内存管理](/sql-prepared-plan-cache.md#prepared-plan-cache-的内存管理)。
 - 在 v6.1.0 之前这个开关通过 TiDB 配置文件 (`prepared-plan-cache.memory-guard-ratio`) 进行配置，升级到 v6.1.0 时会自动继承原有设置。
 
+### `tidb_prepared_plan_cache_memory_monitor` <span class="version-mark">从 v6.4.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 默认值：`ON`
+- 这个变量用来控制是否统计 Prepared Plan Cache 中所缓存的执行计划占用的内存，关闭后`Plan Cache Memory Usage`监控面板占用内存显示为0。具体可见 [Prepared Plan Cache 的内存管理](/sql-prepared-plan-cache.md#prepared-plan-cache-的内存管理)。
+
 ### `tidb_prepared_plan_cache_size` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
-- 作用域：GLOBAL
+- 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 默认值：`100`
 - 范围：`[1, 100000]`
