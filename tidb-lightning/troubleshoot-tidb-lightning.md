@@ -206,3 +206,7 @@ TiDB Lightning Local-backend 只支持导入到 v4.0.0 及以上版本的 TiDB �
 [mydumper.csv]
 header = false
 ```
+
+### `Unknown character set`
+
+由于 TiDB 只支持部分 MySQL 字符集，因此，在导入流程中，如果创建表结构时使用了 TiDB 不支持的字符集，TiDB Lightning 会报这个错误。你可以结合数据内容选择 [TiDB 支持的字符集](/character-set-and-collation.md)，预先在下游创建表结构以绕过这个错误。

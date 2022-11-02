@@ -18,7 +18,7 @@
 - 应用开发
   - [概览](/develop/dev-guide-overview.md)
   - 快速开始
-    - [使用 TiDB Cloud (Developer Tier) 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md)
+    - [使用 TiDB Cloud (Serverless Tier) 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md)
     - [使用 TiDB 的增删改查 SQL](/develop/dev-guide-tidb-crud-sql.md)
     - 构建简单的 CRUD 应用程序
       - [Java](/develop/dev-guide-sample-application-java.md)
@@ -110,6 +110,7 @@
     - [从大数据量分库分表 MySQL 合并迁移数据到 TiDB](/migrate-large-mysql-shards-to-tidb.md)
     - [从 CSV 文件迁移数据到 TiDB](/migrate-from-csv-files-to-tidb.md)
     - [从 SQL 文件迁移数据到 TiDB](/migrate-from-sql-files-to-tidb.md)
+    - [从 Parquet 文件迁移数据到 TiDB](/migrate-from-parquet-files-to-tidb.md)
     - [从 TiDB 集群迁移数据至另一 TiDB 集群](/migrate-from-tidb-to-tidb.md)
     - [从 TiDB 集群迁移数据至兼容 MySQL 的数据库](/migrate-from-tidb-to-mysql.md)
   - 复杂迁移场景
@@ -224,14 +225,15 @@
       - [执行计划管理](/sql-plan-management.md)
       - [优化规则及表达式下推的黑名单](/blocklist-control-plan.md)
 - 教程
-  - [同城多中心部署](/multi-data-centers-in-one-city-deployment.md)
-  - [两地三中心部署](/three-data-centers-in-two-cities-deployment.md)
-  - [同城两中心部署](/two-data-centers-in-one-city-deployment.md)
+  - [单区域多 AZ 部署](/multi-data-centers-in-one-city-deployment.md)
+  - [双区域多 AZ 部署](/three-data-centers-in-two-cities-deployment.md)
+  - [单区域双 AZ 部署](/two-data-centers-in-one-city-deployment.md)
   - 读取历史数据
     - 使用 Stale Read 功能读取历史数据（推荐）
       - [Stale Read 使用场景介绍](/stale-read.md)
       - [使用 `AS OF TIMESTAMP` 语法读取历史数据](/as-of-timestamp.md)
       - [使用系统变量 `tidb_read_staleness` 读取历史数据](/tidb-read-staleness.md)
+      - [使用系统变量 `tidb_external_ts` 读取历史数据](/tidb-external-ts.md)
     - [使用系统变量 `tidb_snapshot` 读取历史数据](/read-historical-data.md)
   - 最佳实践
     - [TiDB 最佳实践](/best-practices/tidb-best-practices.md)
@@ -922,6 +924,7 @@
   - v6.2
     - [6.2.0-DMR](/releases/release-6.2.0.md)
   - v6.1
+    - [6.1.2](/releases/release-6.1.2.md)
     - [6.1.1](/releases/release-6.1.1.md)
     - [6.1.0](/releases/release-6.1.0.md)
   - v6.0
