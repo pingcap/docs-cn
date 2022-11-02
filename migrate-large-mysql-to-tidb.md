@@ -214,7 +214,7 @@ If the import fails, refer to [TiDB Lightning FAQ](/tidb-lightning/tidb-lightnin
       - source-id: "mysql-01"            # Data source ID, i.e., source-id in source1.yaml
         block-allow-list: "bw-rule-1"    # You can use the block-allow-list configuration above.
         # syncer-config-name: "global"    # You can use the syncers incremental data configuration below.
-        meta:                            # When task-mode is "incremental" and the target database does not have a checkpoint, DM uses the binlog position as the starting point. If the target database has a checkpoint, DM uses the checkpoint as the starting point.
+        meta:                            # The position where the binlog replication starts when `task-mode` is `incremental` and the downstream database checkpoint does not exist. If the checkpoint exists, the checkpoint is used. If neither the `meta` configuration item nor the downstream database checkpoint exists, the migration starts from the latest binlog position of the upstream.
           # binlog-name: "mysql-bin.000004"  # The binlog position recorded in "Step 1. Export all data from MySQL". If the upstream database service is configured to switch master between different nodes automatically, GTID mode is required.
           # binlog-pos: 109227
           binlog-gtid: "09bec856-ba95-11ea-850a-58f2b4af5188:1-9"

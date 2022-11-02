@@ -232,7 +232,7 @@ mysql-instances:
   - source-id: "mysql-01"               # Data source ID, i.e., source-id in source1.yaml
     block-allow-list: "listA"           # References the block-allow-list configuration above.
 #       syncer-config-name: "global"    # References the syncers incremental data configuration.
-    meta:                               # When task-mode is "incremental" and the downstream database does not have a checkpoint, DM uses the binlog position as the starting point. If the downstream database has a checkpoint, DM uses the checkpoint as the starting point.
+    meta:                               # The position where the binlog replication starts when `task-mode` is `incremental` and the downstream database checkpoint does not exist. If the checkpoint exists, the checkpoint is used. If neither the `meta` configuration item nor the downstream database checkpoint exists, the migration starts from the latest binlog position of the upstream.
       binlog-name: "mysql-bin.000004"   # The binlog position recorded in "Step 1. Export an Aurora snapshot to Amazon S3". When the upstream database has source-replica switching, GTID mode is required.
       binlog-pos: 109227
       # binlog-gtid: "09bec856-ba95-11ea-850a-58f2b4af5188:1-9"

@@ -162,7 +162,7 @@ validators:
 mysql-instances:
   -
     source-id: "mysql-replica-01"                   # The `source-id` in source.toml.
-    meta:                                           # The position where the binlog replication starts when `task-mode` is `incremental` and the downstream database checkpoint does not exist. If the checkpoint exists, the checkpoint is used.
+    meta:                                           # The position where the binlog replication starts when `task-mode` is `incremental` and the downstream database checkpoint does not exist. If the checkpoint exists, the checkpoint is used. If neither the `meta` configuration item nor the downstream database checkpoint exists, the migration starts from the latest binlog position of the upstream.
 
       binlog-name: binlog.000001
       binlog-pos: 4
