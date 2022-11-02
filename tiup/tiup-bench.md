@@ -7,8 +7,6 @@ aliases: ['/docs-cn/dev/tiup/tiup-bench/','/docs-cn/dev/reference/tools/tiup/ben
 
 在测试数据库性能时，经常需要对数据库进行压测，为了满足这一需求，TiUP 集成了 bench 组件。TiUP bench 组件提供多种压测的 workloads，命令分别如下：
 
-{{< copyable "shell-root" >}}
-
 ```bash
 tiup bench tpcc   # 以 TPC-C 作为 workload 压测
 tiup bench tpch   # 以 TPC-H 作为 workload 压测
@@ -17,7 +15,7 @@ tiup bench ycsb   # 以 YCSB 作为 workload 压测
 tiup bench rawsql # 以自定义 SQL 文件作为 workload 压测
 ```
 
-其中 tpcc, tpch, ch, rawsql 支持如下命令行参数：
+其中 `tpcc`, `tpch`, `ch`, `rawsql` 支持如下命令行参数。`ycsb` 使用方法较为不同，它主要通过 properties 文件进行配置，详见 [go-ycsb 使用说明](https://github.com/pingcap/go-ycsb#usage)。
 
 ```bash
   -t, --acThreads int         OLAP 并发线程数，仅适用于 CH-benCHmark (默认 1)
@@ -109,15 +107,11 @@ Flags:
 
 - 生成 CSV 文件：
 
-  {{< copyable "shell-regular" >}}
-
   ```shell
   tiup bench tpcc --warehouses 4 prepare --output-dir data --output-type=csv
   ```
 
 - 为指定的表生成 CSV 文件：
-
-  {{< copyable "shell-regular" >}}
 
   ```shell
   tiup bench tpcc --warehouses 4 prepare --output-dir data --output-type=csv --tables history,orders
@@ -152,15 +146,11 @@ Flags:
 
     - 检查结果：
 
-        {{< copyable "shell-regular" >}}
-
         ```shell
         tiup bench tpch --count=22 --sf=1 --check=true run
         ```
 
     - 不检查结果：
-
-        {{< copyable "shell-regular" >}}
 
         ```shell
         tiup bench tpch --count=22 --sf=1 run
