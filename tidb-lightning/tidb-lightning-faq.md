@@ -173,7 +173,7 @@ TiDB Lightning 不兼容 [Placement Rules in SQL](/placement-rules-in-sql.md)。
 
 不兼容的原因如下：
 
-Placement Rules in SQL 的目的是从表或分区级别控制某些 TiKV 节点的数据位置。TiDB Lightning 将文本文件中的数据导入到目标 TiDB 集群中。如果导出的数据文件中包含了放置规则 (placement rules) 的定义，在导入过程中，TiDB Lightning 必须根据该定义在目标集群中创建相应的放置规则策略。然而，当源集群和目标集群有不同的拓扑结构时，这可能会导致问题。
+使用 Placement Rules in SQL，你可以从表或分区级别控制某些 TiKV 节点的数据存储位置。TiDB Lightning 从文本文件中读取数据，并导入到目标 TiDB 集群中。如果导出的数据文件中包含了放置规则 (placement rules) 的定义，在导入过程中，TiDB Lightning 必须根据该定义在目标集群中创建相应的放置规则策略。然而，当源集群和目标集群的拓扑结构不同时，这可能会导致问题。
 
 假设源集群有如下拓扑结构：
 
