@@ -208,6 +208,7 @@ mysql> SELECT * FROM t1;
 ### `error_count`
 
 - 作用域：SESSION
+- 默认值：`0`
 - 类型：整数
 - 表示上一条生成消息的 SQL 语句中的错误数。该变量为只读变量。
 
@@ -1917,7 +1918,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 是否持久化到集群：是
 - 默认值：`-1`
 - 范围：`[-1, 256]`
-- TiFlash 中 request 执行的最大并发度。默认值为 -1，表示该系统变量无效。0 表示由 TiFlash 系统自动设置该值。
+- TiFlash 中 request 执行的最大并发度。默认值为 `-1`，表示该系统变量无效。`0` 表示由 TiFlash 系统自动设置该值。
 
 ### `tidb_mem_oom_action` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
@@ -2484,7 +2485,7 @@ explain select * from t where age=5;
 
 - 作用域：SESSION
 - 默认值：`0`
-- 取值范围：`[0, 2147483647]`
+- 范围：`[0, 2147483647]`
 - 控制优化器估算逻辑的更迭。更改该变量值后，优化器的估算逻辑会产生较大的改变。目前该变量的有效值只有 `0`，不建议设为其它值。
 
 ### `tidb_partition_prune_mode` <span class="version-mark">从 v5.1 版本开始引入</span>
