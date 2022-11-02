@@ -47,7 +47,7 @@ ANALYZE TABLE t1, t2;
 
 > **注意：**
 >
-> 在 v6.4.0 之前的版本中，对于 `IndexJoin` 和 `Apply` 算子的 Probe 端所有子节点的 `estRows`，显示的行数的意义与之后的版本有所不同。细节请参考[TiDB 执行计划概览](/explain-overview.md#解读-explain-的返回结果)。
+> 在执行计划返回结果中，自 v6.4.0 版本起，特定算子（即 `IndexJoin` 和 `Apply` 算子的 Probe 端所有子节点）的 `estRows` 字段意义与 v6.4.0 版本之前的有所不同。细节请参考 [TiDB 执行计划概览](/explain-overview.md#解读-explain-的返回结果)。
 
 {{< copyable "sql" >}}
 
