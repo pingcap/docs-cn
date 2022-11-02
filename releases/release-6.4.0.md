@@ -122,11 +122,12 @@ TiDB 版本：6.4.0-DMR
 
     [用户文档](/mysql-compatibility.md)
 
-* 功能简短描述
+* 支持高性能、全局单调递增的 AUTO_INCREMENT 列属性
 
-    功能详细描述（功能是什么，对用户的价值是什么，怎么用） [#issue]() @[贡献者 GitHub ID]()
+    TiDB 现有的 AUTO_INCREMENT 列属性的全局单调性和性能不可兼得，提供高性能、全局单调递增的 AUTO_INCREMENT 列属性能够更完美的兼容 MySQL AUTO_INCREMENT 的功能，降低用户从 MySQL 迁移到 TiDB 的改造成本。例如，使用该特性能够轻松解决用户的查询结果需要按照自增 ID 排序的问题。[#38442](https://github.com/pingcap/tidb/issues/38442) @[tiancaiamao](https://github.com/tiancaiamao)
 
-    [用户文档]()
+    [用户文档](/auto-increment.md#mysql-兼容模式)
+
 
 ### 数据迁移
 
