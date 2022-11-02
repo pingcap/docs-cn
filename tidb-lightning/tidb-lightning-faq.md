@@ -167,3 +167,33 @@ sql-mode = ""
     查看 TiDB Lightning 的日志，其中 `starting HTTP server` / `start HTTP server` / `started HTTP server` 的日志会显示新开启的 `status-port`。
 
 2. 访问 `http://<lightning-ip>:<status-port>/debug/pprof/goroutine?debug=2` 可获取 goroutine 信息。
+
+## 为什么 TiDB Lightning 不兼容 Placement Rules in SQL？
+
+TiDB Lightning 不兼容 [Placement Rules in SQL](/placement-rules-in-sql.md)。当 TiDB Lightning 导入的数据中包含放置策略 (placement policy) 时，TiDB Lightning 会报错。
+
+不兼容的原因如下：
+
+Placement Rules in SQL 的目的是从表或分区级别控制某些 TiKV 节点的数据位置。TiDB Lightning 将文本文件中的数据导入到目标 TiDB 集群中。如果导出的数据文件中包含了放置规则 (placement rules) 的定义，在导入过程中，TiDB Lightning 必须根据该定义在目标集群中创建相应的放置规则策略。然而，当源集群和目标集群有不同的拓扑结构时，这可能会导致问题。
+
+假设源集群有如下拓扑结构：
+
+![TiDB Lightning FAQ - 源集群拓扑结构](/media/lightning-faq-source-cluster-topology.jpg)
+
+源集群中设置了这样的放置策略：
+
+```sql
+CREATE PLACEMENT POLICY p1 PRIMARY_REGION="us-east" REGIONS="us-east,us-west";
+```
+
+**场景 1：**目标集群中有 3 个副本，且拓扑结构与源集群不同。在这种情况下，当 TiDB Lightning 在目标集群中创建放置策略时，TiDB Lightning 不会报错，但目标集群中的语义是错误的。
+
+![TiDB Lightning FAQ - 场景 1](/media/lightning-faq-situation-1.jpg)
+
+**场景 2：**目标集群将 Follower 副本放置在区域 "us-mid" 的另一个 TiKV 节点上，且在拓扑结构中没有节点位于区域 "us-west" 中。在这种情况下，当 TiDB Lightning 在目标集群中创建放置策略时，TiDB Lightning 将报错。
+
+![TiDB Lightning FAQ - 场景 2](/media/lightning-faq-situation-2.jpg)
+
+**解决方法：**
+
+如果要和 TiDB Lightning 同时使用 Placement Rules in SQL，你需要在导入数据到目标表之前，确保已经在目标 TiDB 集群中创建了相关的 label 和对象。因为 Placement Rules in SQL 作用于 PD 和 TiKV 层，TiDB Lightning 可以根据获取到的信息，决定应该使用哪个 TiKV 来存储导入的数据。使用这种方法后，Placement Rules in SQL 对 TiDB Lightning 是透明无感的。
