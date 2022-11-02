@@ -569,6 +569,15 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
     - `tidb_auto_analyze_start_time='01:00 +0000'`
     - `tidb_auto_analyze_end_time='03:00 +0000'`
 
+### `tidb_auto_analyze_partition_batch_size` <span class="version-mark">从 v6.4.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 默认值: 1
+- 用于表示 TiDB [自动 analyze](/statistics.md#自动更新) 分区表（即自动收集分区表上的统计信息）时，每次同时 analyze 分区的个数。
+- 若该变量值小于分区表的分区数，则 TiDB 会分多批自动 analyze 该分区表的所有分区。若该变量值大于等于分区表的分区数，则 TiDB 会同时 analyze 该分区表的所有分区。
+- 若分区表个数远大于该变量值，且自动 analyze 花费时间较长，可调大 `tidb_auto_analyze_partition_batch_size` 的值从而减少花费时间。
+
 ### `tidb_auto_analyze_ratio`
 
 - 作用域：GLOBAL
@@ -3029,16 +3038,3 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 是否持久化到集群：是
 - 默认值：`ON`
 - 这个变量用于控制计算窗口函数时是否采用高精度模式。
-
-### `tidb_auto_analyze_partition_batch_size` <span class="version-mark">从 v6.4.0 版本开始引入</span>
-
-- 作用域：GLOBAL
-- 是否持久化到集群：是
-- 默认值: 1
-- 用于表示 TiDB [自动 analyze](/statistics.md#自动更新) 分区表（即自动收集分区表上的统计信息）时，每次同时 analyze 分区的个数。
-- 若该变量值小于分区表的分区数，则 TiDB 会分多批自动 analyze 该分区表的所有分区。 
-- 若该变量值大于等于分区表的分区数，则 TiDB 会同时 analyze 该分区表的所有分区。
-
-> **注意：**
->
-> 若分区表个数远大于该变量值，且自动 analyze 花费时间较长，可调大 `tidb_auto_analyze_partition_batch_size` 的值从而减少花费时间。
