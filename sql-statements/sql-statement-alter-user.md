@@ -145,10 +145,6 @@ SELECT * FROM information_schema.user_attributes;
 >
 > 不要使用 `ACCOUNT UNLOCK` 解锁一个[角色 (Role)](/sql-statements/sql-statement-create-role.md)，否则通过被解锁的角色可以免密码登入 TiDB。
 
-## MySQL 兼容性
-
-* 在 MySQL 中，`ALTER` 语句用于更改属性，例如使密码失效。但 TiDB 尚不支持此功能。
-
 ## 另请参阅
 
 * [Security Compatibility with MySQL](/security-compatibility-with-mysql.md)
