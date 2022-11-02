@@ -592,7 +592,7 @@ case-sensitive = true
 enable-old-value = true
 
 # 是否开启 Syncpoint 功能，从 v6.3.0 开始支持
-# 从 v6.4.0 开始，使用 Syncpoint 功能需要同步任务拥有下游集群的 super 权限
+# 从 v6.4.0 开始，使用 Syncpoint 功能需要同步任务拥有下游集群的 SUPER 权限
 enable-sync-point = true
 
 # Syncpoint 功能对齐上下游 snapshot 的时间间隔
@@ -905,49 +905,52 @@ cdc redo apply --tmp-dir="/tmp/cdc/redo/apply" \
 - `storage` ：指定存储 TiCDC 增量数据备份文件的地址，为 S3 或者 NFS 目录。
 - `sink-uri` ：恢复数据到的下游地址。scheme 仅支持 `mysql`。
 
-## 在下游 TiDB 集群中读取与上游一致的历史数据-从 v6.4.0 版本引入
+## 在下游 TiDB 集群中读取与上游一致的历史数据 <span class="version-mark">从 v6.4.0 版本开始引入</span>
 
-在某些应用场景中，可能需要在数据同步的过程中在下游集群读取与上游某个时刻一致的数据。
-TiCDC 提供的 Syncpoint 功能在下游的 TiDB 集群中维护了一个上下游具有一致性 snapshot 的 `ts-map`，利用该功能即可够满足这一需求。并且，通过与 TiDB 从 v6.4.0 引入的一个新的系统变量 [`tidb_external_ts`](/system-variables.md#tidb_external_ts-从-v640-版本开始引入)配合，用户无需手动读取 `ts-map` 的值来使用快照读，而只需通过在下游设置系统变量 [`tidb_enable_external_ts_read`](/system-variables.md#tidb_enable_external_ts_read-从-v640-版本开始引入)即可方便的读取与上游一致的历史数据。下面将会详细讲解该如何使用这一功能。
+在某些应用场景下，可能需要在数据同步的过程中在下游集群读取与上游某个时刻一致的数据。
 
-首先，准备同步任务准备使用的配置文件，假设该配置文件名为 `test.toml`：
+TiCDC 提供的 Syncpoint 功能在下游的 TiDB 集群中维护了一个上下游具有一致性快照的 `ts-map`，利用该功能即可够满足这一需求。同时，结合 TiDB v6.4.0 引入的系统变量 [`tidb_external_ts`](/system-variables.md#tidb_external_ts-从-v640-版本开始引入)，你无需手动读取 `ts-map` 的值来使用快照读，而只需通过在下游设置系统变量 [`tidb_enable_external_ts_read`](/system-variables.md#tidb_enable_external_ts_read-从-v640-版本开始引入) 即可方便地读取与上游一致的历史数据。
 
-```toml
-# 开启 SyncPoint
-enable-sync-point = true
+下面将详细描述如何在下游 TiDB 集群中读取与上游一致的历史数据。
 
-# 每隔 5 分钟写一次 ts-map，这样当下游使用 tidb_enable_external_ts_read 变量读取历史数据的时候
-# 能够保证读取到的数据和上游五分钟前是一致的
-sync-point-interval = "5m"
+1. 新建同步任务使用的配置文件，在本示例中该配置文件名为 `test.toml`：
 
-# 每隔 1 小时清理一次下游 tidb_cdc.syncpoint_v1 表中的 ts-map 数据
-sync-point-retention = "1h"
-```
+    ```toml
+    # 开启 SyncPoint
+    enable-sync-point = true
 
-然后，创建同步任务：
+    # 每隔 5 分钟写一次 ts-map，这样当下游使用 tidb_enable_external_ts_read 变量读取历史数据的时候
+    # 能够保证读取到的数据和上游五分钟前是一致的
+    sync-point-interval = "5m"
 
-```shell
-cdc cli changefeed create -c="test" --sink-uri="mysql://root@127.0.0.1:52015/?time-zone=" --config="./test.toml"
-```
+    # 每隔 1 小时清理一次下游 tidb_cdc.syncpoint_v1 表中的 ts-map 数据
+    sync-point-retention = "1h"
+    ```
 
-最后，同步任务正常同步数据之后，在下游 TiDB 集群中设置 `tidb_enable_external_ts_read` 来读取和上游一致的历史数据：
+2. 创建同步任务：
 
-```sql
-mysql> set tidb_enable_external_ts_read = ON;
-Query OK, 0 rows affected (0.00 sec)
+    > **注意：**
+    >
+    > - 由于在读取与上游一致的历史数据时，TiCDC 需要更新下游集群的 `tidb_external_ts` 系统变量，因此请确保创建 `changefeed` 时设置的 `--sink-uri` 中的用户拥有 `SUPER` 或 `SYSTEM_VARIABLES_ADMIN` 权限。
+    > - 如果你需要在下游 TiDB 集群使用 `tidb_enable_external_ts_read` 来读取和上游一致的数据，那么需要确保只有一个 `changefeed` 启用了 Syncpoint 功能。否则，将有可能造成读取到的数据与上游不一致。因为下游 TiDB 集群中只存在一个  `tidb_enable_external_ts_read` 系统变量，而每个开启了 Syncpoint 功能的 `changefeed` 都会去更新它。
 
-mysql> select * from t1;
-+------+
-| a    |
-+------+
-|    1 |
-|   12 |
-|   13 |
-+------+
-3 rows in set (0.01 sec)
-```
+    ```shell
+    cdc cli changefeed create -c="test" --sink-uri="mysql://root@127.0.0.1:52015/?time-zone=" --config="./test.toml"
+    ```
 
-### 注意事项
+3. 同步任务开始后，在下游 TiDB 集群中设置 `tidb_enable_external_ts_read` 来读取和上游一致的历史数据：
 
-- 请确保创建 `changefeed` 时配置的 `--sink-uri` 中的用户拥有 SUPER 或 SYSTEM_VARIABLES_ADMIN 权限，因为使用该功能时，TiCDC 需要更新下游集群的 `tidb_external_ts` 系统变量。
-- 如果你需要在下游使用 `tidb_enable_external_ts_read` 提供的功能来读取一致性数据，那么需要确保只有一个 `changefeed` 启用了 Syncpoint 功能。否则，将有可能造成读取到的数据与上游不一致，因为 `tidb_enable_external_ts_read` 系统变量只存在一个，而每个开启了 Syncpoint 功能的 `changefeed` 都会去更新它。
+    ```sql
+    mysql> SET tidb_enable_external_ts_read = ON;
+    Query OK, 0 rows affected (0.00 sec)
+
+    mysql> SELECT * FROM t1;
+    +------+
+    | a    |
+    +------+
+    |    1 |
+    |   12 |
+    |   13 |
+    +------+
+    3 rows in set (0.01 sec)
+    ```
