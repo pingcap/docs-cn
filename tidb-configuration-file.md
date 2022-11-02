@@ -756,15 +756,6 @@ TiDB 服务状态相关配置。
 + 该值作为系统变量 [`tidb_enable_ddl`](/system-variables.md#tidb_enable_ddl) 的初始值。
 + 在 v6.3.0 之前，该功能由配置项 `run-ddl` 进行设置。
 
-### `tidb_auto_analyze_partition_batch_size`
-
-+ 用于表示在自动 Analyze 分区表时，每次同时 analyze 分区的个数。
-+ 默认值: 1
-+ 若该值大于分区表的分区数，则会同时 Analyze 该分区表的所有分区。
-
-> **注意：**
->
-> 若分区表个数远大于 `tidb_auto_analyze_partition_batch_size` 且自动 Analyze 花费时间较久，可提高 `tidb_auto_analyze_partition_batch_size` 从而减少花费时间。
 
 ## proxy-protocol
 

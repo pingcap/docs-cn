@@ -3013,3 +3013,14 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 是否持久化到集群：是
 - 默认值：`ON`
 - 这个变量用于控制计算窗口函数时是否采用高精度模式。
+
+### `tidb_auto_analyze_partition_batch_size`
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 默认值: 1
+- 用于表示在自动 Analyze 分区表时，每次同时 analyze 分区的个数。若该值大于分区表的分区数，则会同时 Analyze 该分区表的所有分区。
+
+> **注意：**
+>
+> 若分区表个数远大于 `tidb_auto_analyze_partition_batch_size` 且自动 Analyze 花费时间较久，可提高 `tidb_auto_analyze_partition_batch_size` 从而减少花费时间。
