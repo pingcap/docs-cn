@@ -2391,7 +2391,7 @@ explain select * from t where age=5;
 
 ### `tidb_optimizer_selectivity_level`
 
-- 作用域：SESSION | GLOBAL
+- 作用域：SESSION
 - 是否持久化到集群：是
 - 默认值：`0`
 - 取值范围：`[0, 2147483647]`
