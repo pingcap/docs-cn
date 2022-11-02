@@ -12,7 +12,7 @@ By default, SQL queries with an execution time of more than 300 milliseconds are
 
 > **Note:**
 >
-> If the slow query log is disabled, this feature will be unavailable. The slow query log is enabled by default, and you can enable or disable the slow query log through the [`enable-slow-log`](/tidb-configuration-file.md#enable-slow-log) TiDB configuration item.
+> If the slow query log is disabled, this feature will be unavailable. The slow query log is enabled by default, and you can enable or disable it through the system variable [`tidb_enable_slow_log`](/system-variables.md#tidb_enable_slow_log).
 
 ## Access the page
 

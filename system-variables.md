@@ -350,8 +350,8 @@ This variable is an alias for [`last_insert_id`](#last_insert_id).
 - Type: Integer
 - Default value: `0`
 - Range: `[0, 100000]`
-- The maximum number of connections permitted for a single TiDB instance.
-- The value of `0` means no limit.
+- The maximum number of concurrent connections permitted for a single TiDB instance. This variable can be used for resources control.
+- The default value `0` means no limit. When the value of this variable is larger than `0`, and the number of connections reaches the value, the TiDB server rejects new connections from clients.
 
 ### max_execution_time
 
@@ -1245,6 +1245,14 @@ MPP is a distributed computing framework provided by the TiFlash engine, which a
     - `ON` indicates that primary keys are created as clustered indexes by default.
     - `INT_ONLY` indicates that the behavior is controlled by the configuration item `alter-primary-key`. If `alter-primary-key` is set to `true`, all primary keys are created as non-clustered indexes by default. If it is set to `false`, only the primary keys which consist of an integer column are created as clustered indexes.
 
+### tidb_enable_ddl
+
+- Scope: GLOBAL
+- Persists to cluster: No, only applicable to the current TiDB instance that you are connecting to. 
+- Default value: `ON`
+- Possible values: `OFF`, `ON`
+- This variable controls whether the corresponding TiDB server can run DDL statements or not.
+
 ### tidb_enable_collect_execution_info
 
 <CustomContent platform="tidb-cloud">
@@ -1626,7 +1634,7 @@ MPP is a distributed computing framework provided by the TiFlash engine, which a
 
 <CustomContent platform="tidb">
 
-- When the operator that reads data has only one thread left and the memory usage of a single SQL statement continues to exceed [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query), this SQL statement triggers other memory control behaviors, such as [spilling data to disk](/tidb-configuration-file.md#oom-use-tmp-storage).
+- When the operator that reads data has only one thread left and the memory usage of a single SQL statement constantly exceeds [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query), this SQL statement triggers other memory control behaviors, such as [spilling data to disk](/system-variables.md#tidb_enable_tmp_storage_on_oom).
 - This variable controls memory usage effectively when an SQL statement only reads data. If computing operations (such as join or aggregation operations) are required, memory usage might not be under the control of `tidb_mem_quota_query`, which increases the risk of OOM.
 
 </CustomContent>
@@ -1652,6 +1660,15 @@ MPP is a distributed computing framework provided by the TiFlash engine, which a
 - Type: Boolean
 - Default value: `ON`
 - This variable is used to control whether to enable the slow log feature.
+
+### tidb_enable_tmp_storage_on_oom
+
+- Scope: GLOBAL
+- Persists to cluster: Yes
+- Default value: `ON`
+- Value options: `OFF`, `ON`
+- Controls whether to enable the temporary storage for some operators when a single SQL statement exceeds the memory quota specified by the system variable [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query).
+- Before v6.3.0, you can enable or disable this feature by using the TiDB configuration item `oom-use-tmp-storage`. After upgrading the cluster to v6.3.0 or a later version, the TiDB cluster will initialize this variable using the value of `oom-use-tmp-storage` automatically. After that, changing the value of `oom-use-tmp-storage` **does not** take effect anymore.
 
 ### tidb_enable_stmt_summary <span class="version-mark">New in v3.0.4</span>
 
@@ -2450,14 +2467,14 @@ For a system upgraded to v5.0 from an earlier version, if you have not modified 
 
 <CustomContent platform="tidb">
 
-- TiDB triggers an alarm when the percentage of the memory it takes exceeds a certain threshold. For the detailed usage description of this feature, see [`memory-usage-alarm-ratio`](/tidb-configuration-file.md#memory-usage-alarm-ratio-new-in-v409).
-- You can set the initial value of this variable by configuring [`memory-usage-alarm-ratio`](/tidb-configuration-file.md#memory-usage-alarm-ratio-new-in-v409).
+- TiDB triggers an alarm when the percentage of the memory it consumes exceeds a certain threshold. For the detailed usage description of this feature, see [`tidb_memory_usage_alarm_ratio`](/tidb-configuration-file.md#tidb_memory_usage_alarm_ratio).
+- You can set the initial value of this variable by configuring [`tidb_memory_usage_alarm_ratio`](/tidb-configuration-file.md#tidb_memory_usage_alarm_ratio).
 
 </CustomContent>
 
 <CustomContent platform="tidb-cloud">
 
-- TiDB triggers an alarm when the percentage of the memory it takes exceeds a certain threshold. For the detailed usage description of this feature, see [`memory-usage-alarm-ratio`](https://docs.pingcap.com/tidb/stable/tidb-configuration-file#memory-usage-alarm-ratio-new-in-v409).
+- TiDB triggers an alarm when the percentage of the memory it consumes exceeds a certain threshold. For the detailed usage description of this feature, see [`tidb_memory_usage_alarm_ratio`](https://docs.pingcap.com/tidb/stable/tidb-configuration-file#tidb_memory_usage_alarm_ratio).
 
 </CustomContent>
 
@@ -2843,6 +2860,15 @@ explain select * from t where age=5;
 - Default value: `ON`
 - This variable specifies whether to rewrite a `COUNT(DISTINCT)` aggregation into a three-stage aggregation in MPP mode.
 - This variable currently applies to an aggregation that only contains one `COUNT(DISTINCT)`.
+
+### tidb_opt_tiflash_concurrency_factor
+
+- Scope: SESSION | GLOBAL
+- Persists to cluster: YES
+- Type: Float
+- Range: `[0, 2147483647]`
+- Default value: `24.0`
+- Indicates the concurrency number of TiFlash computation. This variable is internally used in the Cost Model, and it is NOT recommended to modify its value.
 
 ### tidb_opt_write_row_id
 

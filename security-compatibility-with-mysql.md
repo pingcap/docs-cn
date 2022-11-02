@@ -10,7 +10,7 @@ TiDB supports similar security functionality to MySQL 5.7, with the following ex
 
 - Column level permissions are not supported
 - Password expiry, as well as password last-changed tracking and password lifetime are not supported [#9709](https://github.com/pingcap/tidb/issues/9709)
-- The permission attributes `max_questions`, `max_updated`, `max_connections`, `max_user_connections` are not supported
+- These permission attributes are not supported: `max_questions`, `max_updated`, and `max_user_connections` 
 - Password validation is not currently supported [#9741](https://github.com/pingcap/tidb/issues/9741)
 
 ## Authentication plugin status

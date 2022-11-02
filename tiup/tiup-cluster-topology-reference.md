@@ -142,10 +142,10 @@ A `server_configs` configuration example is as follows:
 ```yaml
 server_configs:
   tidb:
-    run-ddl: true
     lease: "45s"
     split-table: true
     token-limit: 1000
+    instance.tidb_enable_ddl: true
   tikv:
     log-level: "info"
     readpool.unified.min-thread-count: 1

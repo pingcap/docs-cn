@@ -226,7 +226,7 @@ The TiClient Region Error indicator describes the error types and metrics that a
 
 ### What's the maximum number of concurrent connections that TiDB supports?
 
-By default, there is no limit on the maximum number of connections per TiDB server. If too large concurrency leads to an increase of response time, it is recommended to increase the capacity by adding TiDB nodes.
+By default, there is no limit on the maximum number of connections per TiDB server. If needed, you can limit the maximum number of connections by setting `instance.max_connections` in the `config.toml` file, or changing the value of the system variable [`max_connections`](/system-variables.md#max_connections). If too large concurrency leads to an increase of response time, it is recommended to increase the capacity by adding TiDB nodes.
 
 ### How to view the creation time of a table?
 

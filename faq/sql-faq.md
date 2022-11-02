@@ -197,7 +197,7 @@ The display content of TiDB `SHOW PROCESSLIST` is almost the same as that of MyS
 
 ## How to control or change the execution priority of SQL commits?
 
-TiDB supports changing the priority on a [per-session](/system-variables.md#tidb_force_priority), [global](/tidb-configuration-file.md#force-priority) or individual statement basis. Priority has the following meaning:
+TiDB supports changing the priority on a [per-session](/system-variables.md#tidb_force_priority), [global](/system-variables.md#tidb_force_priority) or individual statement basis. Priority has the following meaning:
 
 - `HIGH_PRIORITY`: this statement has a high priority, that is, TiDB gives priority to this statement and executes it first.
 
