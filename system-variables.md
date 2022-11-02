@@ -1937,7 +1937,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 是否持久化到集群：是
 - 默认值：`128`
 - 可选值：`[0, 2147483647]`
-- 该变量控制 chunk alloc 最多缓存的 chunk 对象数。
+- 该变量控制 chunk alloc 最多缓存的 chunk 对象数,配置的过大可能导致OOM。
 
 ### `tidb_max_reuse_column` <span class="version-mark">从 v6.4.0 版本开始引入</span>
 
@@ -1945,7 +1945,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 是否持久化到集群：是
 - 默认值：`1024`
 - 可选值：`[0, 2147483647]`
-- 该变量控制 chunk alloc 最多缓存的 column 对象数。
+- 该变量控制 chunk alloc 最多缓存的 column 对象数，配置的过大可能导致OOM。
 
 ### `tidb_mem_quota_analyze` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
