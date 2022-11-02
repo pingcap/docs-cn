@@ -297,7 +297,7 @@ mysql> SELECT * FROM t1;
 
 - 作用域：SESSION
 - 默认值：`OFF`
-- 这个变量用来显示上一个语句是否使用了 chunk alloc 。
+- 这个只读变量用来显示上一个语句是否使用了 chunk alloc 。
 
 ### `license`
 
