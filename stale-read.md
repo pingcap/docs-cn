@@ -27,10 +27,16 @@ If a transaction only involves read operations and is tolerant of data staleness
 
 ## Usages
 
-TiDB provides the methods of performing Stale Read at the statement level and the session level as follows:
+TiDB provides the methods of performing Stale Read at the statement level, the session level and the global level as follows:
 
 - Statement level
     - Specifying an exact point in time (**recommended**): If you need TiDB to read data that is globally consistent from a specific point in time without violating the isolation level, you can specify the corresponding timestamp of that point in time in the query statement. For detailed usage, see [`AS OF TIMESTAMP` clause](/as-of-timestamp.md#syntax).
     - Specifying a time range: If you need TiDB to read the data as new as possible within a time range without violating the isolation level, you can specify the time range in the query statement. Within the specified time range, TiDB selects a suitable timestamp to read the corresponding data. "Suitable" means there are no transactions that start before this timestamp and have not been committed on the accessed replica, that is, TiDB can perform read operations on the accessed replica and the read operations are not blocked. For detailed usage, refer to the introduction of the [`AS OF TIMESTAMP` Clause](/as-of-timestamp.md#syntax) and the [`TIDB_BOUNDED_STALENESS` function](/as-of-timestamp.md#syntax).
 - Session level
     - Specifying a time range: In a session, if you need TiDB to read the data as new as possible within a time range in subsequent queries without violating the isolation level, you can specify the time range by setting the `tidb_read_staleness` system variable. For detailed usage, refer to [`tidb_read_staleness`](/tidb-read-staleness.md).
+
+<CustomContent platform="tidb">
+
+Besides, TiDB provides a way to specify an exact point in time by setting the [`tidb_external_ts`](/system-variables.md#tidb_external_ts-new-in-v640) system variable on session or global level. For detailed usage, refer to [Perform Stale Read Using `tidb_external_ts`](/tidb-external-ts.md).
+
+</CustomContent>

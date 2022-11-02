@@ -884,7 +884,7 @@ MPP is a distributed computing framework provided by the TiFlash engine, which a
 - This variable only applies to optimistic transactions. For pessimistic transactions, use [`tidb_constraint_check_in_place_pessimistic`](#tidb_constraint_check_in_place_pessimistic-new-in-v630) instead.
 - When this variable is set to `OFF`, checking for duplicate values in unique indexes is deferred until the transaction commits. This helps improve performance but might be an unexpected behavior for some applications. See [Constraints](/constraints.md#optimistic-transactions) for details.
 
-    - When setting `tidb_constraint_check_in_place` to `OFF` and using optimistic transactions：
+    - When setting `tidb_constraint_check_in_place` to `OFF` and using optimistic transactions:
 
         ```sql
         tidb> create table t (i int key);
@@ -922,7 +922,7 @@ MPP is a distributed computing framework provided by the TiFlash engine, which a
 
 - When this variable is disabled, committing a pessimistic transaction might return a `Write conflict` or `Duplicate entry` error. When such an error occurs, TiDB rolls back the current transaction.
 
-    - When setting `tidb_constraint_check_in_place_pessimistic` to `OFF` and using pessimistic transactions：
+    - When setting `tidb_constraint_check_in_place_pessimistic` to `OFF` and using pessimistic transactions:
 
         {{< copyable "sql" >}}
 
@@ -946,7 +946,7 @@ MPP is a distributed computing framework provided by the TiFlash engine, which a
         ERROR 1062 : Duplicate entry '1' for key 'PRIMARY'
         ```
 
-    - When setting `tidb_constraint_check_in_place_pessimistic` to `ON` and using pessimistic transactions：
+    - When setting `tidb_constraint_check_in_place_pessimistic` to `ON` and using pessimistic transactions:
 
         ```sql
         set @@tidb_constraint_check_in_place_pessimistic=ON;
@@ -1337,6 +1337,22 @@ MPP is a distributed computing framework provided by the TiFlash engine, which a
 - This variable indicates whether TiDB can collect the extended statistic to guide the optimizer. See [Introduction to Extended Statistics](/extended-statistics.md) for more information.
 
 </CustomContent>
+
+### tidb_enable_external_ts_read <span class="version-mark">New in v6.4.0</span>
+
+- Scope: SESSION | GLOBAL
+- Persists to cluster: Yes
+- Type: Boolean
+- Default value: `OFF`
+- If this variable is set to `ON`, TiDB reads data with the timestamp specified by [`tidb_external_ts`](#tidb_external_ts-new-in-v640).
+
+### tidb_external_ts <span class="version-mark">New in v6.4.0</span>
+
+- Scope: GLOBAL
+- Persists to cluster: Yes
+- Type: Integer
+- Default value: `0`
+- If [`tidb_enable_external_ts_read`](#tidb_enable_external_ts_read-new-in-v640) is set to `ON`, TiDB reads data with the timestamp specified by this variable.
 
 ### tidb_enable_fast_analyze
 
@@ -2238,7 +2254,7 @@ For a system upgraded to v5.0 from an earlier version, if you have not modified 
 
 ### `tidb_last_plan_replayer_token` <span class="version-mark">New in v6.3.0</span>
 
-- Scope：SESSION
+- Scope: SESSION
 - Type: String
 - This variable is read-only and is used to obtain the result of the last `PLAN REPLAYER DUMP` execution in the current session.
 
