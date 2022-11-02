@@ -26,7 +26,7 @@ summary: 使用 TiDB Cloud (Serverless Tier) 构建 TiDB 集群，并连接 TiDB
 
     > **Note:**
     >
-    > 需要特别说明的是，在你使用 [Serverless Tier clusters](https://docs.pingcap.com/tidbcloud/select-cluster-tier#serverless-tier) 集群时，你需要给你设置的用户名加上前缀（如上图中的 `9ATyn6DhCXoo6U1`），若使用命令行连接，还需使用单引号包裹用户名。你可以在 [TiDB Cloud - 用户名前缀](https://docs.pingcap.com/tidbcloud/select-cluster-tier#user-name-prefix) 中获得更多信息。
+    > 需要特别说明的是，在你使用 [Serverless Tier clusters](https://docs.pingcap.com/tidbcloud/select-cluster-tier#serverless-tier) 集群时，你需要给你设置的用户名加上前缀（如 `2aEp24QWEDLqRFs.root` 中的 `2aEp24QWEDLqRFs`），若使用命令行连接，还需使用单引号包裹用户名。你可以在 [TiDB Cloud - 用户名前缀](https://docs.pingcap.com/tidbcloud/select-cluster-tier#user-name-prefix) 中获得更多信息。
 
 ## 第 2 步：连接到集群
 
@@ -116,55 +116,32 @@ summary: 使用 TiDB Cloud (Serverless Tier) 构建 TiDB 集群，并连接 TiDB
     {{< copyable "shell-regular" >}}
 
     ```shell
-    mysql --connect-timeout 15 -u '<prefix>.root' -h <host> -P 4000 -p
+    mysql --connect-timeout 15 -u '<prefix>.root' -h <host> -P 4000 -D test --ssl-mode=VERIFY_IDENTITY --ssl-ca=/etc/ssl/cert.pem -p
     ```
+
+> **注意：**
+>
+> - 此处使用 TLS 连接，是 TiDB Cloud Serverless Tier 的[强制要求](https://docs.pingcap.com/tidbcloud/secure-connections-to-serverless-tier-clusters)。
+> - 如果你在连接时遇到问题，可阅读 TiDB Cloud [Serverless Tier Clusters](https://docs.pingcap.com/tidbcloud/secure-connections-to-serverless-tier-clusters) 来获得更多信息。
 
 3. 填写密码，完成登录。
 
-## 第 3 步：运行示例应用程序
+## 第 3 步：运行 SQL
 
-1. 克隆 tidb-example-java 项目。
+尝试运行一下你在 TiDB Cloud 上的的第一个 SQL 吧：
 
-    {{< copyable "shell-regular" >}}
+```sql
+SELECT 'Hello TiDB Cloud!';
+```
 
-    ```shell
-    git clone https://github.com/pingcap-inc/tidb-example-java.git
-    ```
+你将看到这样的输出：
 
-2. 更改连接参数。
+```sql
++-------------------+
+| Hello TiDB Cloud! |
++-------------------+
+| Hello TiDB Cloud! |
++-------------------+
+```
 
-    对于非本地默认集群、TiDB Cloud 或其他远程集群，需要更改 `plain-java-jdbc/src/main/java/com/pingcap/JDBCExample.java` 内关于 Host、Port、User、Password 的参数：
-
-    {{< copyable "" >}}
-
-    ```java
-    mysqlDataSource.setServerName("localhost");
-    mysqlDataSource.setPortNumber(4000);
-    mysqlDataSource.setDatabaseName("test");
-    mysqlDataSource.setUser("<prefix>.root");
-    mysqlDataSource.setPassword("");
-    ```
-
-    若你设定的密码为 `123456`，而且从 TiDB Cloud 得到的连接字符串为：
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    mysql --connect-timeout 15 -u '9ATyn6DhCXoo6U1.root' -h xxx.tidbcloud.com -P 4000 -D test -p
-    ```
-
-    那么此处应将参数更改为：
-
-    {{< copyable "" >}}
-
-    ```java
-    mysqlDataSource.setServerName("xxx.tidbcloud.com");
-    mysqlDataSource.setPortNumber(4000);
-    mysqlDataSource.setDatabaseName("test");
-    mysqlDataSource.setUser("9ATyn6DhCXoo6U1.root");
-    mysqlDataSource.setPassword("123456");
-    ```
-
-3. 运行 `make plain-java-jdbc`。
-
-    输出应如[预期](https://github.com/pingcap-inc/tidb-example-java/blob/main/Expected-Output.md#plain-java-jdbc)所示
+如果你看到了这样的输出。恭喜，你已经在 TiDB Cloud 上成功地运行了自己的 SQL。
