@@ -11,7 +11,7 @@ TiDB 版本：6.4.0-DMR
 在 6.4.0-DMR 版本中，你可以获得以下关键特性：
 
 - TiFlash 静态加密支持国密算法 SM4。
-- 关键特性 2
+- 支持通过 FLASHBACK CLUSTER 命令将集群快速回退到过去某一个指定的时间点
 - 关键特性 3
 - ......
 
@@ -26,11 +26,11 @@ TiDB 版本：6.4.0-DMR
 
     [用户文档](/sql-statements/sql-statement-alter-table-compact.md#alter-table--compact) [#5315](https://github.com/pingcap/tiflash/issues/5315) @[hehechen](https://github.com/hehechen)
 
-* 功能简短描述
+* 支持通过 FLASHBACK CLUSTER 命令将集群快速回退到过去某一个指定的时间点
 
-    功能详细描述（功能是什么，对用户的价值是什么，怎么用） [#issue]() @[贡献者 GitHub ID]()
+    FLASHBACK CLUSTER 支持在 Garbage Collection (GC) life time 时间内，快速回退整个集群到指定的时间点。使用该特性可以轻松快速撤消 DML 误操作，例如，用户误执行了没有 WHERE 子句的 DELETE，FLASHBACK CLUSTER 能够在几分钟内回退原数据库集群到指点时间点。该特性不依赖于数据库备份，支持在时间线上反复回退以确定特定数据更改发生的时间。FLASHBACK CLUSTER 不能替代数据库备份。[#37197](https://github.com/pingcap/tidb/issues/37197) [#13303](https://github.com/tikv/tikv/issues/13303)  @[Defined2014](https://github.com/Defined2014) @[bb7133](https://github.com/bb7133) @[JmPotato](https://github.com/JmPotato) @[Connor1996](https://github.com/Connor1996) @[HuSharp](https://github.com/HuSharp) @[CalvinNeo](https://github.com/CalvinNeo) 
 
-    [用户文档]()
+    [用户文档](/sql-statements/sql-statement-flashback-to-timestamp.md)
 
 ### 安全
 
