@@ -109,7 +109,6 @@ SELECT * FROM information_schema.user_attributes;
 1 rows in set (0.00 sec)
 ```
 
-
 通过 `ALTER USER ... COMMENT` 修改用户 `newuser` 的注释：
 
 ```sql
