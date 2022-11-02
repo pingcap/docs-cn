@@ -297,7 +297,7 @@ mysql> SELECT * FROM t1;
 
 - 作用域：SESSION
 - 默认值：`OFF`
-- 这个只读变量用来显示上一个语句是否使用了 chunk alloc 。
+- 这个变量是一个只读变量，用来显示上一个语句是否使用了 Chunk allocation。
 
 ### `license`
 
@@ -1936,16 +1936,16 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 默认值：`64`
-- 可选值：`[0, 2147483647]`
-- 该变量控制 chunk alloc 最多缓存的 chunk 对象数，配置的过大会增加 OOM 的风险。
+- 范围：`[0, 2147483647]`
+- 该变量控制 Chunk allocation 最多缓存的 Chunk 对象数。配置过大会增加 OOM 的风险。
 
 ### `tidb_max_reuse_column` <span class="version-mark">从 v6.4.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 默认值：`256`
-- 可选值：`[0, 2147483647]`
-- 该变量控制 chunk alloc 最多缓存的 column 对象数，配置的过大会增加 OOM 的风险。
+- 范围：`[0, 2147483647]`
+- 该变量控制 Chunk allocation 最多缓存的 column 对象数。配置过大会增加 OOM 的风险。
 
 ### `tidb_mem_quota_analyze` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
@@ -2086,7 +2086,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 是否持久化到集群：是
 - 默认值：`ON`
 - 可选值：`OFF`，`ON`
-- 改变量用于控制 TiDB 是否启用 Chunk 对象缓存，如果为 ON 优先使用缓存中的对象不够才会从系统中申请，如果为 OFF 则直接从系统内存中申请。
+- 该变量用于控制 TiDB 是否启用 Chunk 对象缓存。如果为 `ON` 则优先使用缓存中的对象，不够时才会从系统内存中申请。如果为 `OFF` 则直接从系统内存中申请。
 
 ### `tidb_enable_new_cost_interface` <span class="version-mark">从 v6.2.0 版本开始引入</span>
 
