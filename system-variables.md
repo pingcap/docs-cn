@@ -2663,26 +2663,18 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 ### `tidb_stats_load_sync_wait` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 
-> **警告：**
->
-> 统计信息同步加载目前为实验性特性，不建议在生产环境中使用。
-
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 默认值：`0`
+- 默认值：`100`
 - 单位：毫秒
 - 范围：`[0, 2147483647]`
-- 这个变量用于控制是否开启统计信息的同步加载模式（默认为 `0` 代表不开启，即为异步加载模式），以及开启的情况下，SQL 执行同步加载完整统计信息等待多久后会超时。更多信息，请参考[统计信息的加载](/statistics.md#统计信息的加载)。
+- 这个变量用于控制是否开启统计信息的同步加载模式（为 `0` 代表不开启，即为异步加载模式），以及开启的情况下，SQL 执行同步加载完整统计信息等待多久后会超时。更多信息，请参考[统计信息的加载](/statistics.md#统计信息的加载)。
 
 ### `tidb_stats_load_pseudo_timeout` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 
-> **警告：**
->
-> 统计信息同步加载目前为实验性特性，不建议在生产环境中使用。
-
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 默认值：`OFF`
+- 默认值：`ON`
 - 这个变量用于控制统计信息同步加载超时后，SQL 是执行失败（`OFF`），还是退回使用 pseudo 的统计信息（`ON`）。
 
 ### `tidb_stmt_summary_history_size` <span class="version-mark">从 v4.0 版本开始引入</span>
