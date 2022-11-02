@@ -3059,7 +3059,6 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 ### `tx_read_ts`
 
 - 作用域：SESSION
-- 是否持续化到集群：否
 - 默认值：`0`
 - 在 Stale Read 场景下，该会话变量用于帮助记录 Stable Read TS 值。
 - 该变量仅用于 TiDB 内部实现，**不推荐设置该变量**。
@@ -3067,7 +3066,6 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 ### `txn_scope`
 
 - 作用域：SESSION
-- 是否持续化到集群：否
 - 默认值：`global`
 - 可选值：`global` 和 `local`
 - 该变量用于设置当前会话下事务为全局事务（设为 `global`）还是局部事务（设为 `local`）。
