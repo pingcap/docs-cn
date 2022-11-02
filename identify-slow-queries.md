@@ -5,9 +5,9 @@ aliases: ['/docs-cn/dev/identify-slow-queries/','/docs-cn/dev/how-to/maintain/id
 
 # 慢查询日志
 
-TiDB 会将执行时间超过 [slow-threshold](/tidb-configuration-file.md#slow-threshold)（默认值为 300 毫秒）的语句输出到 [slow-query-file](/tidb-configuration-file.md#slow-query-file)（默认值："tidb-slow.log"）日志文件中，用于帮助用户定位慢查询语句，分析和解决 SQL 执行的性能问题。
+TiDB 会将执行时间超过 [`tidb_enable_slow_log`](/system-variables.md#tidb_enable_slow_log)（默认值为 300 毫秒）的语句输出到 [slow-query-file](/tidb-configuration-file.md#slow-query-file)（默认值："tidb-slow.log"）日志文件中，用于帮助用户定位慢查询语句，分析和解决 SQL 执行的性能问题。
 
-TiDB 默认启用慢查询日志，可以修改配置 [`enable-slow-log`](/tidb-configuration-file.md#enable-slow-log) 来启用或禁用它。
+TiDB 默认启用慢查询日志，可以修改系统变量 [`tidb_enable_slow_log`](/system-variables.md#tidb_enable_slow_log) 来启用或禁用它。
 
 ## 日志示例
 
@@ -536,20 +536,20 @@ pt-query-digest --report tidb-slow.log
 
 并不是所有 SLOW_QUERY 的语句都是有问题的。会造成集群整体压力增大的，是那些 process_time 很大的语句。wait_time 很大，但 process_time 很小的语句通常不是问题语句，是因为被问题语句阻塞，在执行队列等待造成的响应时间过长。
 
-## `admin show slow` 命令
+## `ADMIN SHOW SLOW` 命令
 
-除了获取 TiDB 日志，还有一种定位慢查询的方式是通过 `admin show slow` SQL 命令：
+除了获取 TiDB 日志，还有一种定位慢查询的方式是通过 `ADMIN SHOW SLOW` SQL 命令：
 
 {{< copyable "sql" >}}
 
 ```sql
-admin show slow recent N;
+ADMIN SHOW SLOW recent N;
 ```
 
 {{< copyable "sql" >}}
 
 ```sql
-admin show slow top [internal | all] N;
+ADMIN SHOW SLOW TOP [internal | all] N;
 ```
 
 `recent N` 会显示最近的 N 条慢查询记录，例如：
@@ -557,7 +557,7 @@ admin show slow top [internal | all] N;
 {{< copyable "sql" >}}
 
 ```sql
-admin show slow recent 10;
+ADMIN SHOW SLOW recent 10;
 ```
 
 `top N` 则显示最近一段时间（大约几天）内，最慢的查询记录。如果指定 `internal` 选项，则返回查询系统内部 SQL 的慢查询记录；如果指定 `all` 选项，返回系统内部和用户 SQL 汇总以后的慢查询记录；默认只返回用户 SQL 中的慢查询记录。
@@ -565,9 +565,9 @@ admin show slow recent 10;
 {{< copyable "sql" >}}
 
 ```sql
-admin show slow top 3;
-admin show slow top internal 3;
-admin show slow top all 5;
+ADMIN SHOW SLOW TOP 3;
+ADMIN SHOW SLOW TOP internal 3;
+ADMIN SHOW SLOW TOP all 5;
 ```
 
 由于内存限制，保留的慢查询记录的条数是有限的。当命令查询的 `N` 大于记录条数时，返回的结果记录条数会小于 `N`。
