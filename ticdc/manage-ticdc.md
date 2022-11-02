@@ -949,6 +949,5 @@ mysql> select * from t1;
 
 ### 注意事项
 
-- 请确保创建 `changefeed` 时配置的 `--sink-uri` 中的用户具有 super 权限，因为使用该功能时，TiCDC 需要更新下游集群的 `tidb_external_ts` 系统变量。
+- 请确保创建 `changefeed` 时配置的 `--sink-uri` 中的用户拥有 SUPER 或 SYSTEM_VARIABLES_ADMIN 权限，因为使用该功能时，TiCDC 需要更新下游集群的 `tidb_external_ts` 系统变量。
 - 如果你需要在下游使用 `tidb_enable_external_ts_read` 提供的功能来读取一致性数据，那么需要确保只有一个 `changefeed` 启用了 Syncpoint 功能。否则，将有可能造成读取到的数据与上游不一致，因为 `tidb_enable_external_ts_read` 系统变量只存在一个，而每个开启了 Syncpoint 功能的 `changefeed` 都会去更新它。
- 
