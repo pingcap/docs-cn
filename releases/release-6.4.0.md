@@ -28,9 +28,10 @@ TiDB 版本：6.4.0-DMR
 
 * 支持通过 FLASHBACK CLUSTER 命令将集群快速回退到过去某一个指定的时间点
 
-    FLASHBACK CLUSTER 支持在 Garbage Collection (GC) life time 时间内，快速回退整个集群到指定的时间点。使用该特性可以轻松快速撤消 DML 误操作，例如，用户误执行了没有 WHERE 子句的 DELETE，FLASHBACK CLUSTER 能够在几分钟内回退原数据库集群到指点时间点。该特性不依赖于数据库备份，支持在时间线上反复回退以确定特定数据更改发生的时间。FLASHBACK CLUSTER 不能替代数据库备份。[#37197](https://github.com/pingcap/tidb/issues/37197) [#13303](https://github.com/tikv/tikv/issues/13303)  @[Defined2014](https://github.com/Defined2014) @[bb7133](https://github.com/bb7133) @[JmPotato](https://github.com/JmPotato) @[Connor1996](https://github.com/Connor1996) @[HuSharp](https://github.com/HuSharp) @[CalvinNeo](https://github.com/CalvinNeo) 
+    FLASHBACK CLUSTER 支持在 Garbage Collection (GC) life time 时间内，快速回退整个集群到指定的时间点。使用该特性可以轻松快速撤消 DML 误操作，例如，用户误执行了没有 WHERE 子句的 DELETE，FLASHBACK CLUSTER 能够在几分钟内回退原数据库集群到指点时间点。该特性不依赖于数据库备份，支持在时间线上反复回退以确定特定数据更改发生的时间。FLASHBACK CLUSTER 不能替代数据库备份。[#37197](https://github.com/pingcap/tidb/issues/37197) [#13303](https://github.com/tikv/tikv/issues/13303)  @[Defined2014](https://github.com/Defined2014) @[bb7133](https://github.com/bb7133) @[JmPotato](https://github.com/JmPotato) @[Connor1996](https://github.com/Connor1996) @[HuSharp](https://github.com/HuSharp) @[CalvinNeo](https://github.com/CalvinNeo)
 
     [用户文档](/sql-statements/sql-statement-flashback-to-timestamp.md)
+
 
 ### 安全
 
@@ -113,6 +114,13 @@ TiDB 版本：6.4.0-DMR
     [用户文档]()
 
 ### MySQL 兼容性
+
+* TiDB 分区表兼容 Linear Hash 分区
+
+    TiDB 现有的分区方式支持 Hash，Range，List 分区，在此基础上增加了对 [MySQL Linear Hash](https://dev.mysql.com/doc/refman/5.7/en/partitioning-linear-hash.html) 分区的兼容行为，方便原 MySQL 用户迁移到 TiDB。
+    用户现有的 MySQL Linear Hash 分区的 DDL 可以不经修改直接在 TiDB 上执行，产生一个 TiDB Hash 分区表（TiDB 内部实际不存在 Linear Hash 分区）。用户已有的查询/访问原 Linear Hash 分区的 SQL（DML）也可以不经修改，直接访问对应的 TiDB Hash 分区，得到正常结果。此功能保证了对 MySQL Linear Hash 分区的语法兼容，方便用户的应用无缝迁移到 TiDB。[#issue](https://github.com/pingcap/tidb/issues/38450) @[贡献者 GitHub ID](mjonss)
+
+    [用户文档](/mysql-compatibility.md)
 
 * 功能简短描述
 
