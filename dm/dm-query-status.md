@@ -115,10 +115,10 @@ DM 的迁移任务状态取决于其分配到 DM-worker 上的[子任务状态](
                                 ]
                             }
                         ],
-                        "synced": false,        # 增量复制是否已追上上游。由于后台 `Sync` 单元并不会实时刷新保存点，当前值为 “false“ 并不一定代表发生了迁移延迟
-                        "totalRows": "12",      # 该子任务中迁移的 row 总数
-                        "totalRps": "1",        # 该子任务中每秒迁移的 row 数量
-                        "recentRps": "1"        # 该子任务中最后一秒迁移的 row 数量
+                        "synced": false,        # 增量复制是否已追上上游。由于后台 `Sync` 单元并不会实时刷新保存点，当前值为 `false` 并不一定代表发生了迁移延迟
+                        "totalRows": "12",      # 该子任务中迁移的行数
+                        "totalRps": "1",        # 该子任务中每秒迁移的行数
+                        "recentRps": "1"        # 该子任务中最后一秒迁移的行数
                     }
                 }
             ]
@@ -140,7 +140,7 @@ DM 的迁移任务状态取决于其分配到 DM-worker 上的[子任务状态](
                     "result": null,
                     "unresolvedDDLLockID": "",
                     "load": {                                  # `Load` 处理单元的迁移信息
-                        "finishedBytes": "115",                # 已全量导入字节数
+                        "finishedBytes": "115",                # 已全量导入的字节数
                         "totalBytes": "452",                   # 总计需要导入的字节数
                         "progress": "25.44 %",                 # 全量导入进度
                         "bps": "2734"                          # 全量导入速度
@@ -201,10 +201,10 @@ DM 的迁移任务状态取决于其分配到 DM-worker 上的[子任务状态](
                         "totalTables": "10",         # 需要 dump 的表数量
                         "completedTables": "3",      # 已 dump 的表数量
                         "finishedBytes": "2542",     # 已 dump 的字节数
-                        "finishedRows": "32",        # 已 dump 的 row 数
-                        "estimateTotalRows": "563",  # 预估需要 dump 的 row 数
+                        "finishedRows": "32",        # 已 dump 的行数
+                        "estimateTotalRows": "563",  # 预估需要 dump 的行数
                         "progress": "30.52 %",       # dump 的进度
-                        "bps": "445"                 # dump 的速度（bps）
+                        "bps": "445"                 # dump 的速度 (bps)
                     }
                 }
             ]
