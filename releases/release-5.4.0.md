@@ -434,7 +434,7 @@ In v5.4, the key new features or improvements are as follows:
 
         - Fix the issue of wrong import result that occurs when TiDB Lightning does not have the privilege to access the `mysql.tidb` table [#31088](https://github.com/pingcap/tidb/issues/31088)
         - Fix the issue that some checks are skipped when TiDB Lightning is restarted [#30772](https://github.com/pingcap/tidb/issues/30772)
-        - Fix the issue that TiDB Lighting fails to report the error when the S3 path does not exist [#30674](https://github.com/pingcap/tidb/pull/30674)
+        - Fix the issue that TiDB Lightning fails to report the error when the S3 path does not exist [#30674](https://github.com/pingcap/tidb/pull/30674)
 
     + TiDB Binlog
 

@@ -15,7 +15,7 @@ This document describes how to migrate data from MySQL SQL files to TiDB using T
 
 ## Step 1. Prepare SQL files
 
-Put all the SQL files in the same directory, like `/data/my_datasource/` or `s3://my-bucket/sql-backup`. TiDB Lighting recursively searches for all `.sql` files in this directory and its subdirectories.
+Put all the SQL files in the same directory, like `/data/my_datasource/` or `s3://my-bucket/sql-backup`. TiDB Lightning recursively searches for all `.sql` files in this directory and its subdirectories.
 
 ## Step 2. Define the target table schema
 

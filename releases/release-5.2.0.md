@@ -317,7 +317,7 @@ Support running the `tiup playground` command on Mac computers with Apple M1 chi
         - Fix a bug that TiDB Lightning reports the "Error 9007: Write conflict" error when restoring table schemas [#1290](https://github.com/pingcap/br/issues/1290)
         - Fix a bug that TiDB Lightning fails to import data due to the overflow of int handle [#1291](https://github.com/pingcap/br/issues/1291)
         - Fix a bug that TiDB Lightning might get a checksum mismatching error due to data loss in the local backend mode [#1403](https://github.com/pingcap/br/issues/1403)
-        - Fix the Lighting incompatibility issue with clustered index when TiDB Lightning is restoring table schemas [#1362](https://github.com/pingcap/br/issues/1362)
+        - Fix the Lightning incompatibility issue with clustered index when TiDB Lightning is restoring table schemas [#1362](https://github.com/pingcap/br/issues/1362)
 
     + Dumpling
 
