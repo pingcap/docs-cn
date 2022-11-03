@@ -8,6 +8,8 @@ title: TiDB 6.1.0 Release Notes
 
 TiDB 版本：6.1.0
 
+试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v6.1/quick-start-with-tidb) | [生产部署](https://docs.pingcap.com/zh/tidb/v6.1/production-deployment-using-tiup) | [下载离线包](https://cn.pingcap.com/product-community/)
+
 在 6.1.0 版本中，你可以获得以下关键特性：
 
 - List 和 List COLUMNS 分区方式 GA，与 MySQL 5.7 兼容
@@ -19,11 +21,6 @@ TiDB 版本：6.1.0
 - TiCDC 支持将 changelogs 以 Avro 协议输出到 Kafka
 - TiCDC 支持在数据复制过程中拆分大事务，能够有效降低大事务带来的复制延迟
 - DM 合库合表迁移场景的乐观 DDL 协调模式 GA
-
-点击以下链接免费试用 v6.1.0：
-
-- [快速在线安装并试用](https://docs.pingcap.com/zh/tidb/v6.1/quick-start-with-tidb)
-- [下载离线安装包并试用](https://cn.pingcap.com/product-community/)（注意需选择对应版本）
 
 ## 新功能
 
