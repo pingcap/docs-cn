@@ -932,7 +932,8 @@ cdc redo apply --tmp-dir="/tmp/cdc/redo/apply" \
     > **注意：**
     >
     > - 由于在读取与上游一致的历史数据时，TiCDC 需要更新下游集群的 `tidb_external_ts` 系统变量，因此请确保创建 `changefeed` 时设置的 `--sink-uri` 中的用户拥有 `SUPER` 或 `SYSTEM_VARIABLES_ADMIN` 权限。
-    > - 如果你需要在下游 TiDB 集群使用 `tidb_enable_external_ts_read` 来读取和上游一致的数据，那么需要确保只有一个 `changefeed` 启用了 Syncpoint 功能。否则，将有可能造成读取到的数据与上游不一致。因为下游 TiDB 集群中只存在一个 `tidb_enable_external_ts_read` 系统变量，而每个开启了 Syncpoint 功能的 `changefeed` 都会去更新它。
+    > - 如果你需要在下游 TiDB 集群使用 `tidb_enable_external_ts_read` 来读取和上游一致的数据，那么需要确保只有一个 `changefeed` 启用了 Syncpoint 功能。否则，将有可能造成读取到的数据与上游不一致。因为下游 TiDB 集群中只存在一个 `tidb_external_ts` 系统变量，而每个开启了 Syncpoint 功能的 `changefeed` 都会去更新它。并且，请确保 `tidb_enable_external_ts_read = ON` 设置为 session 级别，否则 `changefeed` 将无法往下游继续同步数据。
+    > - 最后，需要保证没有别的地方会对 `changefeed` 同步的表进行写操作，否则无法确保数据一致。
 
     ```shell
     cdc cli changefeed create -c="test" --sink-uri="mysql://root@127.0.0.1:52015/?time-zone=" --config="./test.toml"
