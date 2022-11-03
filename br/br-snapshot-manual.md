@@ -222,7 +222,7 @@ br restore full \
 
 ```shell
 br restore full\
-    --pd ${PD_IP}:2379 \
+    --pd "${PD_IP}:2379" \
     --storage "s3://${backup_collection_addr}/snapshot-${date}?access_key=${access_key}&secret_access_key=${secret_access_key}" \
     --crypter.method aes128-ctr \
     --crypter.key 0123456789abcdef0123456789abcdef

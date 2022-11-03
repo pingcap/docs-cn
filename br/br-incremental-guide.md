@@ -22,7 +22,10 @@ LAST_BACKUP_TS=`tiup br validate decode --field="end-version" --storage "s3://ba
 备份 `(LAST_BACKUP_TS, current timestamp]` 之间的增量数据，以及这段时间内的 DDL：
 
 ```shell
-tiup br backup full --pd ${PD_IP}:2379 --storage "s3://backup-101/snapshot-202209081330/incr?access_key=${access_key}&secret_access_key=${secret_access_key}" --lastbackupts ${LAST_BACKUP_TS} --ratelimit 128
+tiup br backup full --pd "${PD_IP}:2379" \
+--storage "s3://backup-101/snapshot-202209081330/incr?access_key=${access_key}&secret_access_key=${secret_access_key}" \
+--lastbackupts ${LAST_BACKUP_TS} \
+--ratelimit 128
 ```
 
 以上命令会中：

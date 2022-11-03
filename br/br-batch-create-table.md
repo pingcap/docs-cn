@@ -28,7 +28,8 @@ BR 默认开启了批量建表功能，在 v6.0.0 或以上版本中默认设置
 
 ```shell
 br restore full \
---storage local:///br_data/ --pd 172.16.5.198:2379 --log-file restore.log --ddl-batch-size=0
+--storage local:///br_data/ --pd "${PD_IP}:2379" --log-file restore.log \
+--ddl-batch-size=0
 ```
 
 关闭批量建表功能后，BR 会采用原来的[串行建表方案](#实现原理)。

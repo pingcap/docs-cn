@@ -79,13 +79,14 @@ aliases: ['/docs-cn/dev/br/backup-and-restore-use-cases/','/docs-cn/dev/referenc
 启动日志备份任务后，日志备份进程会在 TiKV 集群运行，持续不断将数据库变更数据备份到 S3 中。日志备份任务启动命令：
 
 ```shell
-tiup br log start --task-name=pitr --pd=172.16.102.95:2379 --storage='s3://tidb-pitr-bucket/backup-data/log-backup'
+tiup br log start --task-name=pitr --pd="${PD_IP}:2379" \
+--storage='s3://tidb-pitr-bucket/backup-data/log-backup'
 ```
 
 启动日志备份任务后，可以查询日志备份任务状态：
 
 ```shell
-tiup br log status --task-name=pitr --pd=172.16.102.95:2379
+tiup br log status --task-name=pitr --pd="${PD_IP}:2379"
 
 ● Total 1 Tasks.
 > #1 <
@@ -105,13 +106,17 @@ checkpoint[global]: 2022-05-13 11:31:47.2 +0800; gap=4m53s
 - 在 2022/05/14 00:00:00 执行一次快照备份
 
     ```shell
-    tiup br backup full --pd=172.16.102.95:2379 --storage='s3://tidb-pitr-bucket/backup-data/snapshot-20220514000000' --backupts='2022/05/14 00:00:00'
+    tiup br backup full --pd="${PD_IP}:2379" \
+    --storage='s3://tidb-pitr-bucket/backup-data/snapshot-20220514000000' \
+    --backupts='2022/05/14 00:00:00'
     ```
 
 - 在 2022/05/16 00:00:00 执行一次快照备份
 
     ```shell
-    tiup br backup full --pd=172.16.102.95:2379 --storage='s3://tidb-pitr-bucket/backup-data/snapshot-20220516000000' --backupts='2022/05/16 00:00:00'
+    tiup br backup full --pd="${PD_IP}:2379" \
+    --storage='s3://tidb-pitr-bucket/backup-data/snapshot-20220516000000' \
+    --backupts='2022/05/16 00:00:00'
     ```
 
 ## 执行 PITR
@@ -119,9 +124,9 @@ checkpoint[global]: 2022-05-13 11:31:47.2 +0800; gap=4m53s
 假设你接到需求，要准备一个集群查询 2022/05/15 18:00:00 时间点的用户数据。此时，你可以制定 PITR 方案，恢复 2022/05/14 的快照备份和该快照到 2022/05/15 18:00:00 之间的日志备份数据，从而收集到目标数据。执行命令如下：
 
 ```shell
-tiup br restore point --pd=172.16.102.95:2379
---storage='s3://tidb-pitr-bucket/backup-data/log-backup'
---full-backup-storage='s3://tidb-pitr-bucket/backup-data/snapshot-20220514000000'
+tiup br restore point --pd="${PD_IP}:2379" \
+--storage='s3://tidb-pitr-bucket/backup-data/log-backup' \
+--full-backup-storage='s3://tidb-pitr-bucket/backup-data/snapshot-20220514000000' \
 --restored-ts '2022-05-15 18:00:00+0800'
 
 Full Restore <--------------------------------------------------------------------------------------------------------------------------------------------------------> 100.00%

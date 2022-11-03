@@ -46,7 +46,8 @@ checkpoint[global]: 2022-05-13 11:31:47.2 +0800; gap=4m53s
 快照备份功能可作为全量备份的方法，该方式以固定的周期（比如 2 天）进行全量备份：
 
 ```shell
-tiup br backup full --pd "${PD_IP}:2379" --storage 's3://backup-101/snapshot-${date}?access_key=${access_key}&secret_access_key=${secret_access_key}"'
+tiup br backup full --pd "${PD_IP}:2379" \
+--storage 's3://backup-101/snapshot-${date}?access_key=${access_key}&secret_access_key=${secret_access_key}"'
 ```
 
 ## 进行 PITR

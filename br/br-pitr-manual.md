@@ -83,7 +83,7 @@ Global Flags:
 使用示例：
 
 ```shell
-./br log start --task-name=pitr --pd=172.16.102.95:2379 \
+./br log start --task-name=pitr --pd="${PD_IP}:2379" \
 --storage='s3://backup-101/logbackup?access_key=${access_key}&secret_access_key=${secret_access_key}"'
 ```
 
@@ -118,7 +118,7 @@ Global Flags:
 使用示例：
 
 ```shell
-./br log status --task-name=pitr --pd=172.16.102.95:2379
+./br log status --task-name=pitr --pd="${PD_IP}:2379"
 ```
 
 命令输出如下：
@@ -177,7 +177,7 @@ Global Flags:
 使用示例：
 
 ```shell
-./br log pause --task-name=pitr --pd=172.16.102.95:2379
+./br log pause --task-name=pitr --pd="${PD_IP}:2379"
 ```
 
 执行 `br log resume` 命令，你可以恢复被暂停的日志备份任务。
@@ -207,7 +207,7 @@ Global Flags:
 使用示例：
 
 ```shell
-./br log resume --task-name=pitr --pd=172.16.102.95:2379
+./br log resume --task-name=pitr --pd="${PD_IP}:2379"
 ```
 
 ### 停止和重启日志备份任务
@@ -245,7 +245,7 @@ Global Flags:
 使用示例：
 
 ```shell
-./br log stop --task-name=pitr --pd=172.16.102.95:2379
+./br log stop --task-name=pitr --pd="${PD_IP}:2379"
 ```
 
 #### 重新启动备份任务
@@ -379,7 +379,7 @@ Global Flags:
 使用示例：
 
 ```shell
-./br restore point --pd=172.16.102.95:2379
+./br restore point --pd="${PD_IP}:2379"
 --storage='s3://backup-101/logbackup?access_key=${access_key}&secret_access_key=${secret_access_key}"'
 --full-backup-storage='s3://backup-101/snapshot-202205120000?access_key=${access_key}&secret_access_key=${secret_access_key}"'
 
