@@ -907,9 +907,6 @@ cdc redo apply --tmp-dir="/tmp/cdc/redo/apply" \
 - `sink-uri` ：恢复数据到的下游地址。scheme 仅支持 `mysql`。
 
 ## 配置只读的复制集群 <span class="version-mark">从 v6.4.0 版本开始引入</span>
-
-在某些应用场景下，可能需要在数据同步的过程中在下游集群读取与上游某个时刻一致的数据。
-
 在某些应用场景下，可能需要访问 TiCDC 下游的 TiDB 复制集群的数据。在保证 TiDB 复制集群只读的情况下，利用 TiCDC 的 Syncpoint 功能和 TiDB v6.4.0 引入的系统变量 [`tidb_external_ts`](/system-variables.md#tidb_external_ts-从-v640-版本开始引入)，只需通过在下游设置系统变量 [`tidb_enable_external_ts_read`](/system-variables.md#tidb_enable_external_ts_read-从-v640-版本开始引入) 即可方便地读取与上游一致的历史数据。
 
 下面将详细描述如何在下游 TiDB 集群中读取与上游一致的历史数据。
