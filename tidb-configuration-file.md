@@ -24,7 +24,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 ### `tidb_max_reuse_column` <span class="version-mark">从 v6.4.0 版本开始引入</span>
 
-+ 用于控制每个 connection 最多缓存的 column 对象数。配置过大会增加 OOM 的风险。
++ 用于控制每个连接最多缓存的 column 对象数。配置过大会增加 OOM 的风险。
 + 默认值：256
 + 最小值：0
 + 最大值：2147483647
