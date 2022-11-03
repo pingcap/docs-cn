@@ -904,4 +904,4 @@ cdc redo apply --tmp-dir="/tmp/cdc/redo/apply" \
 
 - `tmp-dir`：指定用于下载 TiCDC 增量数据备份文件的临时目录。
 - `storage`：指定存储 TiCDC 增量数据备份文件的地址，为 S3 或者 NFS 目录。
-- `sink-uri`：恢复数据到的下游地址。scheme 仅支持 `mysql`。
+- `sink-uri`：数据恢复的目标地址。scheme 仅支持 `mysql`。
