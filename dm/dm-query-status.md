@@ -143,7 +143,7 @@ DM 的迁移任务状态取决于其分配到 DM-worker 上的[子任务状态](
                         "finishedBytes": "115",                # 已全量导入字节数
                         "totalBytes": "452",                   # 总计需要导入的字节数
                         "progress": "25.44 %",                 # 全量导入进度
-                        "CurrentSpeedBytesPerSecond": "2734"   # 全量导入速度
+                        "bps": "2734"                          # 全量导入速度
                     }
                 }
             ]
@@ -176,7 +176,7 @@ DM 的迁移任务状态取决于其分配到 DM-worker 上的[子任务状态](
                         "finishedBytes": "0",
                         "totalBytes": "156",
                         "progress": "0.00 %",
-                        "CurrentSpeedBytesPerSecond": "0",
+                        "bps": "0"
                     }
                 }
             ]
