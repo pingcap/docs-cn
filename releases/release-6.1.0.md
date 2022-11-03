@@ -20,6 +20,11 @@ TiDB 版本：6.1.0
 - TiCDC 支持在数据复制过程中拆分大事务，能够有效降低大事务带来的复制延迟
 - DM 合库合表迁移场景的乐观 DDL 协调模式 GA
 
+点击以下链接快速试用 v6.1.0:
+
+- [快速在线安装并试用](/quick-start-with-tidb.md)
+- [下载安装包并试用](https://cn.pingcap.com/product-community/)（注意需选择对应版本）
+
 ## 新功能
 
 ### SQL
