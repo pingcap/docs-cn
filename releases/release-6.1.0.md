@@ -23,7 +23,7 @@ TiDB 版本：6.1.0
 点击以下链接快速试用 v6.1.0:
 
 - [快速在线安装并试用](/quick-start-with-tidb.md)
-- [下载安装包并试用](https://cn.pingcap.com/product-community/)（注意需选择对应版本）
+- [下载离线安装包并试用](https://cn.pingcap.com/product-community/)（注意需选择对应版本）
 
 ## 新功能
 
