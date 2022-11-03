@@ -512,7 +512,7 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 ### `tidb_allow_function_for_expression_index` <span class="version-mark">从 v5.2.0 版本开始引入</span>
 
 - 作用域：NONE
-- 默认值：`json_array`、`json_array_append`、`json_array_insert`、`json_contains`、`json_contains_path`、`json_depth`、`json_extract`、`json_insert`、`json_keys`、`json_length`、`json_merge_patch`、`json_merge_preserve`、`json_object`、`json_pretty`、`json_quote`、`json_remove`、`json_replace`、`json_search`、`json_set`、`json_storage_size`、`json_type`、`json_unquote`、`json_valid`、`lower`、`md5`、`reverse`、`tidb_shard`、`upper`、`vitess_hash`
+- 默认值：`lower`、`md5`、`reverse`、`tidb_shard`、`upper`、`vitess_hash`
 - 这个变量用于显示创建表达式索引所允许使用的函数。
 
 ### `tidb_allow_mpp` <span class="version-mark">从 v5.0 版本开始引入</span>
@@ -1159,16 +1159,6 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
     * 使用 `SELECT` 读取 `noop` 的系统变量时会报 `"variable *variable_name* has no effect in TiDB"` 的警告。
 - 你可以通过 `SELECT * FROM INFORMATION_SCHEMA.CLIENT_ERRORS_SUMMARY_GLOBAL;` 语句来检查 TiDB 实例是否曾设置和读取 `noop` 系统变量。
 
-<<<<<<< HEAD
-=======
-### `tidb_enable_null_aware_anti_join` <span class="version-mark">从 v6.3.0 版本开始引入</span>
-
-- 作用域：SESSION | GLOBAL
-- 是否持久化到集群：是
-- 默认值：`OFF`
-- 这个变量用于控制 TiDB 对特殊集合算子 `NOT IN` 和 `!= ALL` 引导的子查询产生的 ANTI JOIN 是否采用 Null Aware Hash Join 的执行方式。
-
->>>>>>> 664a69f8e (sysvar: correct sysvar information (#11858))
 ### `tidb_enable_outer_join_reorder` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
@@ -1211,7 +1201,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 ### `tidb_enable_prepared_plan_cache` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
-- 作用域：SESSION | GLOBAL
+- 作用域：GLOBAL
 - 是否持久化到集群：是
 - 默认值：`ON`
 - 这个变量用来控制是否开启 [Prepared Plan Cache](/sql-prepared-plan-cache.md)。开启后，对 `Prepare`、`Execute` 请求的执行计划会进行缓存，以便在后续执行时跳过查询计划优化这个步骤，获得性能上的提升。
@@ -1499,20 +1489,6 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
     - `txn_mode`：事务模式。可选值：`OPTIMISTIC`（乐观事务模式），或 `PESSIMISTIC`（悲观事务模式）
     - `sql`：当前查询对应的 SQL 语句
 
-<<<<<<< HEAD
-=======
-### `tidb_general_plan_cache_size` <span class="version-mark">从 v6.3.0 版本开始引入</span>
-
-> **警告：**
->
-> 当前版本中该变量控制的功能尚未完全生效，请保留默认值。
-
-- 作用域：SESSION | GLOBAL
-- 是否持久化到集群：是
-- 默认值：`100`
-- 范围：`[1, 100000]`
-- 这个变量用来控制 General Plan Cache 最多能够缓存的计划数量。
-
 ### `tidb_generate_binary_plan` <span class="version-mark">从 v6.2.0 版本开始引入</span>
 
 - 作用域：GLOBAL
@@ -1522,18 +1498,12 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 开启该变量后，即可在 TiDB Dashboard 中查看查询的图形化执行计划。注意，TiDB Dashboard 只显示变量开启时产生的查询的执行计划。
 - 用 `select tidb_decode_binary_plan('xxx...')` SQL 语句可以从编码后的执行计划解析出具体的执行计划。
 
->>>>>>> 664a69f8e (sysvar: correct sysvar information (#11858))
 ### `tidb_guarantee_linearizability` <span class="version-mark">从 v5.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-<<<<<<< HEAD
-- 类型：布尔值
-- 默认值：`OFF`
-=======
 - 类型：布尔型
 - 默认值：`ON`
->>>>>>> 664a69f8e (sysvar: correct sysvar information (#11858))
 - 此变量控制异步提交 (Async Commit) 中提交时间戳的计算方式。默认情况下（使用 `OFF` 值），两阶段提交从 PD 服务器请求一个新的时间戳，并使用该时间戳计算最终提交的时间戳，这样可保证所有并发事务可线性化。
 - 如果将该变量值设为 `ON`，从 PD 获取的时间戳的操作会被省掉，这种情况下只保证因果一致性但不保证线性一致性。详情请参考 PingCAP 博文 [Async Commit 原理介绍](https://pingcap.com/zh/blog/async-commit-principle)。
 - 对于需要只保证因果一致性的场景，可将此变量设为 `ON` 以提升性能。
@@ -1689,15 +1659,6 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
     - 事务从异步提交或一阶段提交到两阶段提交的回退信息
     - 遇到的错误
 
-<<<<<<< HEAD
-=======
-### `tidb_last_plan_replayer_token` <span class="version-mark">从 v6.3.0 版本开始引入</span>
-
-- 作用域：SESSION
-- 类型：字符串
-- 这个变量是一个只读变量，用于获取当前会话中最后一个 `PLAN REPLAYER dump` 的结果。
-
->>>>>>> 664a69f8e (sysvar: correct sysvar information (#11858))
 ### `tidb_log_file_max_days` <span class="version-mark">从 v5.3.0 版本开始引入</span>
 
 - 作用域：GLOBAL
@@ -1736,15 +1697,6 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 默认值：`1024`
 - 范围：`[32, 2147483647]`
 - 这个变量用来设置执行过程中一个 chunk 最大的行数，设置过大可能引起缓存局部性的问题。
-
-### `tidb_max_paging_size` <span class="version-mark">从 v6.3.0 版本开始引入</span>
-
-- 作用域：SESSION | GLOBAL
-- 是否持久化到集群：是
-- 默认值：`50000`
-- 范围：`[1, 9223372036854775807]`
-- 单位：行
-- 这个变量用来设置 coprocessor 协议中 paging size 的最大的行数。请合理设置该值，设置过小，TiDB 与 TiKV 的 RPC 交互会更频繁；设置过大，导数据和全表扫等特定场景会占用更多内存。
 
 ### `tidb_max_delta_schema_count`
 
@@ -2094,14 +2046,6 @@ mysql> desc select count(distinct a) from test.t;
 - 默认值：`ON`
 - 这个变量用来控制优化器是否开启交叉估算。
 
-### `tidb_opt_force_inline_cte` <span class="version-mark">从 v6.3.0 版本开始引入</span>
-
-- 作用域：SESSION | GLOBAL
-- 是否持久化到集群：是
-- 类型：布尔型
-- 默认值：`OFF`
-- 这个变量用来控制是否强制 inline CTE。默认值为 `OFF`，即默认不强制 inline CTE。注意，此时依旧可以通过 `MERGE()` hint 来开启个别 CTE 的 inline。如果设置为 `ON`，则当前 session 中所有查询的 CTE（递归 CTE 除外）都会 inline。
-
 ### `tidb_opt_insubq_to_join_and_agg`
 
 - 作用域：SESSION | GLOBAL
@@ -2230,12 +2174,7 @@ explain select * from t where age=5;
 ### `tidb_opt_projection_push_down` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
 - 作用域：SESSION
-<<<<<<< HEAD
-- 是否持久化到集群：否
-- 类型：布尔值
-=======
 - 类型：布尔型
->>>>>>> 664a69f8e (sysvar: correct sysvar information (#11858))
 - 默认值：`OFF`
 - 指定是否允许优化器将 `Projection` 算子下推到 TiKV 或者 TiFlash。
 
@@ -2304,7 +2243,6 @@ explain select * from t where age=5;
 - 默认值：`2.0`
 - 表示 TiFlash 处理一行数据的 CPU 开销。该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
 
-<<<<<<< HEAD
 ### `tidb_opt_tiflash_scan_factor_v2`
 
 - 作用域：SESSION | GLOBAL
@@ -2319,14 +2257,6 @@ explain select * from t where age=5;
 - 作用域：SESSION
 - 默认值：`OFF`
 - 这个变量用来设置是否允许 `INSERT`、`REPLACE` 和 `UPDATE` 操作 `_tidb_rowid` 列，默认是不允许操作。该选项仅用于 TiDB 工具导数据时使用。
-=======
-### `tidb_optimizer_selectivity_level`
-
-- 作用域：SESSION
-- 默认值：`0`
-- 范围：`[0, 2147483647]`
-- 控制优化器估算逻辑的更迭。更改该变量值后，优化器的估算逻辑会产生较大的改变。目前该变量的有效值只有 `0`，不建议设为其它值。
->>>>>>> 664a69f8e (sysvar: correct sysvar information (#11858))
 
 ### `tidb_partition_prune_mode` <span class="version-mark">从 v5.1 版本开始引入</span>
 
@@ -2370,7 +2300,7 @@ explain select * from t where age=5;
 
 ### `tidb_prepared_plan_cache_size` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
-- 作用域：SESSION | GLOBAL
+- 作用域：GLOBAL
 - 是否持久化到集群：是
 - 默认值：`100`
 - 范围：`[1, 100000]`
@@ -2485,7 +2415,7 @@ explain select * from t where age=5;
 
 ### `tidb_row_format_version`
 
-- 作用域：SESSION | GLOBAL
+- 作用域：GLOBAL
 - 是否持久化到集群：是
 - 默认值：`1`
 - 范围：`[1, 2]`
@@ -2605,7 +2535,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 默认值：`ON`
+- 默认值：`OFF`
 - 这个变量用于控制统计信息同步加载超时后，SQL 是执行失败（`OFF`），还是退回使用 pseudo 的统计信息（`ON`）。
 
 ### `tidb_stmt_summary_history_size` <span class="version-mark">从 v4.0 版本开始引入</span>
