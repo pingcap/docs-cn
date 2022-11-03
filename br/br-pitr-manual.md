@@ -1,6 +1,6 @@
 ---
 title: TiDB 日志备份与 PITR 命令行手册
-summary: 介绍日志备份和 PITR 命令行
+summary: 介绍 TiDB 日志备份和 PITR 的命令行。
 aliases: ['/zh/tidb/dev/br-log-command-line/']
 ---
 
@@ -49,7 +49,7 @@ Available Commands:
 
 执行 `br log start` 命令，你可以在备份集群启动一个日志备份任务。该任务在 TiDB 集群持续地运行，及时地将 KV 变更日志保存到备份存储中。
 
-执行 `br log start --help` 命令 可获取该子命令使用介绍：
+执行 `br log start --help` 命令可获取该子命令使用介绍：
 
 ```shell
 ./br log start --help
@@ -83,14 +83,15 @@ Global Flags:
 使用示例：
 
 ```shell
-./br log start --task-name=pitr --pd=172.16.102.95:2379 --storage='s3://backup-101/logbackup?access_key=${access_key}&secret_access_key=${secret_access_key}"'
+./br log start --task-name=pitr --pd=172.16.102.95:2379 \
+--storage='s3://backup-101/logbackup?access_key=${access_key}&secret_access_key=${secret_access_key}"'
 ```
 
 ### 查询日志备份任务
 
 执行 `br log status` 命令，你可以查询日志备份任务状态。
 
-执行 `br log status –-help` 命令 可获取该子命令使用介绍：
+执行 `br log status –-help` 命令可获取该子命令使用介绍：
 
 ```shell
 ./br log status --help
@@ -181,7 +182,7 @@ Global Flags:
 
 执行 `br log resume` 命令，你可以恢复被暂停的日志备份任务。
 
-执行 `br log resume --help` 命令 可获取该子命令使用介绍：
+执行 `br log resume --help` 命令可获取该子命令使用介绍：
 
 ```shell
 ./br log resume --help
@@ -217,7 +218,7 @@ Global Flags:
 
 执行 `br log stop` 命令，可以停止日志备份任务，该命令会清理备份集群中的任务元信息。
 
-执行 `br log stop --help` 命令 可获取该子命令使用介绍：
+执行 `br log stop --help` 命令可获取该子命令使用介绍：
 
 ```shell
 ./br log stop --help
@@ -259,7 +260,7 @@ Global Flags:
 
 执行 `br log truncate` 命令，你可以从备份存储中删除过期或不再需要的备份日志数据。
 
-执行 `br log truncate --help` 命令 可获取该子命令使用介绍：
+执行 `br log truncate --help` 命令可获取该子命令使用介绍：
 
 ```shell
 ./br log truncate --help
@@ -288,7 +289,8 @@ Global Flags:
 使用示例：
 
 ```shell
-./br log truncate --until='2022-07-26 21:20:00+0800' –-storage='s3://backup-101/logbackup?access_key=${access_key}&secret_access_key=${secret_access_key}"'
+./br log truncate --until='2022-07-26 21:20:00+0800' \
+–-storage='s3://backup-101/logbackup?access_key=${access_key}&secret_access_key=${secret_access_key}"'
 ```
 
 该子命令运行后输出以下信息：
@@ -305,7 +307,7 @@ Removing metadata... DONE; take = 24.038962ms
 
 执行 `br log metadata` 命令，你可以查看备份存储中保存的日志备份的元信息，例如最早和最近的可恢复时间点。
 
-执行 `br log metadata –-help` 命令 可获取该子命令使用介绍：
+执行 `br log metadata –-help` 命令可获取该子命令使用介绍：
 
 ```shell
 ./br log metadata --help
@@ -341,7 +343,7 @@ Global Flags:
 
 执行 `br restore point` 命令，你可以在新集群上进行 PITR，或者只恢复日志备份数据。
 
-执行 `br restore point --help` 命令 可获取该命令使用介绍：
+执行 `br restore point --help` 命令可获取该命令使用介绍：
 
 ```shell
 ./br restore point --help
@@ -390,5 +392,5 @@ Restore KV Files <--------------------------------------------------------------
 
 > **注意：**
 >
-> - 不支持重复恢复某段时间区间的日志，如多次重复恢复 [t1=10, t2=20) 区间的日志数据，可能会造成恢复后的数据不正确。
-> - 多次恢复不同时间区间的日志时，需保证恢复日志的连续性。如先后恢复 [t1, t2)、[t2, t3) 和 [t3, t4) 三个区间的日志可以保证正确性，而在恢复 [t1, t2) 后跳过 [t2, t3) 直接恢复 [t3, t4) 的区间可能导致恢复之后的数据不正确。
+> - 不支持重复恢复某段时间区间的日志，如多次重复恢复 `[t1=10, t2=20)` 区间的日志数据，可能会造成恢复后的数据不正确。
+> - 多次恢复不同时间区间的日志时，需保证恢复日志的连续性。如先后恢复 `[t1, t2)`、`[t2, t3)` 和 `[t3, t4)` 三个区间的日志可以保证正确性，而在恢复 `[t1, t2)` 后跳过 `[t2, t3)` 直接恢复 `[t3, t4)` 的区间可能导致恢复之后的数据不正确。

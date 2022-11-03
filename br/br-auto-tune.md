@@ -72,7 +72,7 @@ tikv-ctl modify-tikv-config -n backup.enable-auto-tune -v <true|false>
 |^^^^**--| 由于集群的工作负载加重，自动调节将备份任务的线程池大小调节至 `2`。调节后，集群中仍有 2 个 CPU 核心数保持空闲。
 ```
 
-在监控面板的 “Backup CPU Utilization” 中，可以看到自动限流目前选择的线程池的大小：
+在监控面板的“Backup CPU Utilization”中，可以看到自动限流目前选择的线程池的大小：
 
 ![Grafana dashboard example of backup auto-tune metrics](/media/br/backup-auto-throttle.png)
 

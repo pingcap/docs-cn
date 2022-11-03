@@ -17,7 +17,8 @@ summary: 了解 TiDB 的日志备份和 PITR 功能使用。
 执行 `br log start` 命令启动日志备份任务，一个集群只能启动一个日志备份任务。日志备份任务启动后，该命令输出以下运行结果：
 
 ```shell
-tiup br log start --task-name=pitr --pd "${PD_IP}:2379" --storage 's3://backup-101/logbackup?access_key=${access_key}&secret_access_key=${secret_access_key}"'
+tiup br log start --task-name=pitr --pd "${PD_IP}:2379" \
+--storage 's3://backup-101/logbackup?access_key=${access_key}&secret_access_key=${secret_access_key}"'
 ```
 
 日志备份任务启动后，会在 TiDB 集群后台持续地运行，直到你手动将其暂停。如果你需要查询日志备份任务当前状态，执行如下命令：

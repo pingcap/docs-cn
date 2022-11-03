@@ -21,8 +21,8 @@ TiDB 支持 Amazon S3、Google Cloud Storage (GCS)、Azure Blob Storage 和 NFS 
 <SimpleTab groupId="storage">
 <div label="Amazon S3" value="amazon">
 
-- `scheme`: `s3`
-- `host`: `bucket name`
+- `scheme`：`s3`
+- `host`：`bucket name`
 - `parameters`：
 
     - `access-key`：访问密钥
@@ -38,8 +38,8 @@ TiDB 支持 Amazon S3、Google Cloud Storage (GCS)、Azure Blob Storage 和 NFS 
 </div>
 <div label="GCS" value="gcs">
 
-- `scheme`: `gcs` 或 `gs`
-- `host`: `bucket name`
+- `scheme`：`gcs` 或 `gs`
+- `host`：`bucket name`
 - `parameters`：
 
     - `credentials-file`：迁移工具节点上凭证 JSON 文件的路径
@@ -49,8 +49,8 @@ TiDB 支持 Amazon S3、Google Cloud Storage (GCS)、Azure Blob Storage 和 NFS 
 </div>
 <div label="Azure Blob Storage" value="azure">
 
-- `scheme`: `azure` 或 `azblob`
-- `host`: `container name`
+- `scheme`：`azure` 或 `azblob`
+- `host`：`container name`
 - `parameters`：
 
     - `account-name`：存储账户名

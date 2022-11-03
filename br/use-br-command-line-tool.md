@@ -13,7 +13,8 @@ summary: 介绍 br 命令行工具
 
 以下是一条完整的 `br` 命令行：
 
-`br backup full --pd "${PD_IP}:2379" --storage "s3://backup-data/snapshot-202209081330/"`
+`br backup full --pd "${PD_IP}:2379" \
+--storage "s3://backup-data/snapshot-202209081330/"`
 
 命令行各部分的解释如下：
 
