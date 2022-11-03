@@ -64,6 +64,10 @@ TiDB 版本：6.4.0-DMR
 
     由于动态规划算法的枚举过程可能消耗更多的时间，目前 Join Reorder 算法由变量 [`tidb_opt_join_reorder_threshold`](/system-variables.md#tidboptjoinreorderthreshold) 控制，当参与 Join Reorder 的节点个数大于该阈值时选择贪心算法，反之选择动态规划算法。 
 
+    [#18969](https://github.com/pingcap/tidb/issues/18969) @[winoros](https://github.com/winoros)
+
+    [用户文档](/join-reorder.md)
+
 * 前缀索引支持对空值的过滤
 
     这是对前缀索引使用上的优化。当表中某列存在前缀索引，那么 SQL 中对该列的 `IS NULL` 或 `IS NOT NULL` 条件可以直接利用前缀进行过滤，避免了这种情况下的回表，提升了 SQL 的执行性能。 [#21145](https://github.com/pingcap/tidb/issues/21145) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes)
@@ -97,7 +101,13 @@ TiDB 版本：6.4.0-DMR
 
     [#37816](https://github.com/pingcap/tidb/issues/37816) @[wshwsh12](https://github.com/wshwsh12)
 
-    [用户文档](configure-memory-usage.md)
+    [用户文档](/configure-memory-usage.md)
+
+* 控制优化器在构造范围时的内存占用
+
+    v6.4.0 引入了系统变量 [`tidb_opt_range_max_size`](/system-variables.md#tidb-opt-range-max-size-从-v640-版本开始引入) 用来限制优化器在构造范围时消耗的内存上限。 当内存使用超出这个限制，则放弃构造精确的范围，转而构建更粗粒度的范围，以此降低内存消耗。 当 SQL 中的 `IN` 条件特别多时， 这个优化可以显著降低编译时的内存使用量，保证系统的稳定性。 [#37176](https://github.com/pingcap/tidb/issues/37176) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes)
+
+    [用户文档](/system-variables.md#tidb-opt-range-max-size-从-v640-版本开始引入)
 
 ### 易用性
 
@@ -189,6 +199,7 @@ TiDB 版本：6.4.0-DMR
 | [`tidb_server_memory_limit`](/system-variables.md#tidb-server-memory-limit-从-v640-版本开始引入)   |  新增  |   该变量指定 TiDB 实例的内存限制。TiDB 会在内存用量达到该限制时，对当前内存用量最高的 SQL 语句进行取消 (Cancel) 操作。   |
 |  [`tidb_server_memory_limit_gc_trigger`](/system-variables.md#tidb-server-memory-limit-gc-trigger-从-v640-版本开始引入) | 新增 |  TiDB 尝试触发 GC 的阈值。当 TiDB 的内存使用达到 `tidb_server_memory_limit` 值 \* `tidb_server_memory_limit_gc_trigger` 值时，则会主动触发一次 Golang GC。在一分钟之内只会主动触发一次 GC。    |
 |  [`tidb_server_memory_limit_sess_min_size`](tidb-server-memory-limit-session-min-size-从-v640-版本开始引入)  |  新增  |   开启内存限制后，TiDB 会终止当前实例上内存用量最高的 SQL 语句。本变量指定此情况下 SQL 语句被终止的最小内存用量。  |
+| [`tidb_opt_range_max_size`](/system-variables.md#tidb-opt-range-max-size-从-v640-版本开始引入) | 新增 | 该变量用于指定优化器构造扫描范围的内存用量上限。当该变量为 `0` 时，表示对扫描范围没有内存限制。如果构造精确的扫描范围会超出内存用量限制，优化器会使用更宽松的扫描范围。|
 
 ### 配置文件参数
 
