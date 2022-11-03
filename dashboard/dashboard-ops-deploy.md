@@ -64,7 +64,7 @@ http://192.168.0.123:2379/dashboard/
 使用 TiUP 部署时，对于已启动的集群，可使用 `tiup ctl pd` 命令切换其他 PD 实例运行 TiDB Dashboard，或在禁用 TiDB Dashboard 的情况下重新指定一个 PD 实例运行 TiDB Dashboard：
 
 ```bash
-tiup ctl pd -u http://127.0.0.1:2379 config set dashboard-address http://9.9.9.9:2379
+tiup ctl:<cluster-version> pd -u http://127.0.0.1:2379 config set dashboard-address http://9.9.9.9:2379
 ```
 
 其中：
