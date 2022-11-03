@@ -712,7 +712,7 @@ ignore-update-new-value-expr = "gender = 'male' and age > 18" # 过滤掉新值 
 * TiCDC v4.0.0 中移除了 `ignore-txn-commit-ts`，添加了 `ignore-txn-start-ts`，使用 start_ts 过滤事务。
 * TiCDC v4.0.2 中移除了 `db-dbs`/`db-tables`/`ignore-dbs`/`ignore-tables`，添加了 `rules`，使用新版的数据库和数据表过滤规则，详细语法参考[表库过滤](/table-filter.md)。
 * TiCDC v6.1.0 及之后移除了 `mounter` 配置项，用户配置该项不会报错，也不会生效。
-* TiCDC 从 v6.4.0 开始，使用 Syncpoint 功能需要同步任务拥有下游集群的 SYSTEM_VARIABLES_ADMIN 或者 SUPER 权限。
+* TiCDC 从 v6.4.0 开始，使用 Syncpoint 功能需要同步任务拥有下游集群的 `SYSTEM_VARIABLES_ADMIN` 或者 `SUPER` 权限。
 
 ## 自定义 Kafka Sink 的 Topic 和 Partition 的分发规则
 
