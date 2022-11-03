@@ -206,5 +206,4 @@ cdc cli changefeed resume -c test-cf --pd=http://10.0.10.25:2379
 ```shell
 cdc cli changefeed remove --pd=http://10.0.10.25:2379 --changefeed-id simple-replication-task
 cdc cli changefeed create --pd=http://10.0.10.25:2379 --sink-uri="mysql://root:123456@127.0.0.1:3306/" --changefeed-id="simple-replication-task" --sort-engine="unified" --start-ts 415241823337054210
-
 ```
