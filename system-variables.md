@@ -2107,9 +2107,10 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 ### `tidb_opt_agg_push_down`
 
-- 作用域：SESSION
+- 作用域：SESSION | GLOBAL
 - 默认值：`OFF`
 - 这个变量用来设置优化器是否执行聚合函数下推到 Join，Projection 和 UnionAll 之前的优化操作。当查询中聚合操作执行很慢时，可以尝试设置该变量为 ON。
+- 从 v6.4.0 版本开始增加 GLOBAL 作用域。
 
 ### `tidb_opt_broadcast_cartesian_join`
 
