@@ -272,7 +272,7 @@ spring:
 spring:
   datasource:
     url: jdbc:mysql://xxx.tidbcloud.com:4000/test?sslMode=VERIFY_IDENTITY&enabledTLSProtocols=TLSv1.2,TLSv1.3
-    username: root
+    username: 2aEp24QWEDLqRFs. root
     password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:

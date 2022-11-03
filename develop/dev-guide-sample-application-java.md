@@ -1687,7 +1687,7 @@ mysql --host 127.0.0.1 --port 4000 -u root<src/main/resources/dbinit.sql
         <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
         <property name="hibernate.dialect">org.hibernate.dialect.TiDBDialect</property>
         <property name="hibernate.connection.url">jdbc:mysql://xxx.tidbcloud.com:4000/test?sslMode=VERIFY_IDENTITY&amp;enabledTLSProtocols=TLSv1.2,TLSv1.3</property>
-        <property name="hibernate.connection.username">root</property>
+        <property name="hibernate.connection.username">2aEp24QWEDLqRFs.root</property>
         <property name="hibernate.connection.password">123456</property>
         <property name="hibernate.connection.autocommit">false</property>
 
