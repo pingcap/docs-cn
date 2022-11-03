@@ -95,9 +95,6 @@ The status of a DM migration task depends on the status of each subtask assigned
                                                                         # lock in the abnormal condition.
                     "sync": {                   # The replication information of the `Sync` processing unit. This information is about the
                                                 # same component with the current processing unit.
-                        "totalEvents": "12",    # The total number of binlog events that are replicated in this subtask.
-                        "totalTps": "1",        # The number of binlog events that are replicated in this subtask per second.
-                        "recentTps": "1",       # The number of binlog events that are replicated in this subtask in the last one second.
                         "masterBinlog": "(bin.000001, 3234)",                               # The binlog position in the upstream database.
                         "masterBinlogGtid": "c0149e17-dff1-11e8-b6a8-0242ac110004:1-14",    # The GTID information in the upstream database.
                         "syncerBinlog": "(bin.000001, 2525)",                               # The position of the binlog that has been replicated
@@ -126,8 +123,11 @@ The status of a DM migration task depends on the status of each subtask assigned
                             }
                         ],
                         "synced": false         # Whether the incremental replication catches up with the upstream and has the same binlog position as that in the
-                                                # upstream. The save point is not refreshed in real time in the `Sync` background, so "false" of "synced"
+                                                # upstream. The save point is not refreshed in real time in the `Sync` background, so `false` of `synced`
                                                 # does not always mean a replication delay exits.
+                        "totalRows": "12",      # The total number of rows that are replicated in this subtask.
+                        "totalRps": "1",        # The number of rows that are replicated in this subtask per second.
+                        "recentRps": "1"        # The number of rows that are replicated in this subtask in the last second.
                     }
                 }
             ]
@@ -149,9 +149,10 @@ The status of a DM migration task depends on the status of each subtask assigned
                     "result": null,
                     "unresolvedDDLLockID": "",
                     "load": {                   # The replication information of the `Load` processing unit.
-                        "finishedBytes": "115", # The number of bytes that have been loaded.
-                        "totalBytes": "452",    # The total number of bytes that need to be loaded.
-                        "progress": "25.44 %"   # The progress of the loading process.
+                        "finishedBytes": "115",          # The number of bytes that have been loaded.
+                        "totalBytes": "452",               # The total number of bytes that need to be loaded.
+                        "progress": "25.44 %",         # The progress of the loading process.
+                        "bps": "2734"                        # The speed of the full loading.
                     }
                 }
             ]
@@ -183,11 +184,40 @@ The status of a DM migration task depends on the status of each subtask assigned
                     "load": {
                         "finishedBytes": "0",
                         "totalBytes": "156",
-                        "progress": "0.00 %"
+                        "progress": "0.00 %",
+                        "bps": "0"
                     }
                 }
             ]
-        }
+        },
+        {
+            "result": true,
+            "msg": "",
+            "sourceStatus": {
+                "source": "mysql-replica-04",
+                "worker": "worker4",
+                "result": null,
+                "relayStatus": null
+            },
+            "subTaskStatus": [
+                {
+                    "name": "test",
+                    "stage": "Running",
+                    "unit": "Dump",
+                    "result": null,
+                    "unresolvedDDLLockID": "",
+                    "dump": {                        # The replication information of the `Dump` processing unit.
+                        "totalTables": "10",         # The number of tables to be dumped.
+                        "completedTables": "3",      # The number of tables that have been dumped.
+                        "finishedBytes": "2542",     # The number of bytes that have been dumped.
+                        "finishedRows": "32",        # The number of rows that have been dumped.
+                        "estimateTotalRows": "563",  # The estimated number of rows to be dumped.
+                        "progress": "30.52 %",       # The progress of the dumping process.
+                        "bps": "445"                 # The dumping speed.
+                    }
+                }
+            ]
+        },
     ]
 }
 
