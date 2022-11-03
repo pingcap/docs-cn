@@ -917,7 +917,7 @@ cdc redo apply --tmp-dir="/tmp/cdc/redo/apply" \
     # 开启 SyncPoint
     enable-sync-point = true
 
-    # 每间隔 5 分钟设置一个全局（所有同步的表）同步的时间点，保证在该时间点时，所有表的数据处于一致性状态。
+    # 每间隔 5 分钟设置一个全局（所有同步的表）同步的时间点，保证在该时间点时，所有表的数据处于一致性状态
     sync-point-interval = "5m"
 
     # 每隔 1 小时清理一次下游 tidb_cdc.syncpoint_v1 表中的 ts-map 数据
