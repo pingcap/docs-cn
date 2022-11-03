@@ -1962,22 +1962,6 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 单位：行
 - 这个变量用来设置 coprocessor 协议中 paging size 的最大的行数。请合理设置该值，设置过小，TiDB 与 TiKV 的 RPC 交互会更频繁；设置过大，导数据和全表扫等特定场景会占用更多内存。
 
-### `tidb_max_reuse_chunk` <span class="version-mark">从 v6.4.0 版本开始引入</span>
-
-- 作用域：SESSION | GLOBAL
-- 是否持久化到集群：是
-- 默认值：`64`
-- 范围：`[0, 2147483647]`
-- 该变量控制 Chunk allocation 最多缓存的 Chunk 对象数。配置过大会增加 OOM 的风险。
-
-### `tidb_max_reuse_column` <span class="version-mark">从 v6.4.0 版本开始引入</span>
-
-- 作用域：SESSION | GLOBAL
-- 是否持久化到集群：是
-- 默认值：`256`
-- 范围：`[0, 2147483647]`
-- 该变量控制 Chunk allocation 最多缓存的 column 对象数。配置过大会增加 OOM 的风险。
-
 ### `tidb_max_tiflash_threads` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
