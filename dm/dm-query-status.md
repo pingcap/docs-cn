@@ -204,7 +204,7 @@ DM 的迁移任务状态取决于其分配到 DM-worker 上的[子任务状态](
                         "finishedRows": "32",        # 已 dump 的行数
                         "estimateTotalRows": "563",  # 预估需要 dump 的行数
                         "progress": "30.52 %",       # dump 的进度
-                        "bps": "445"                 # dump 的速度 (bps)
+                        "bps": "445"                 # dump 的速度
                     }
                 }
             ]
