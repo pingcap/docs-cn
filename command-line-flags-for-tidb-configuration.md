@@ -35,6 +35,11 @@ When you start the TiDB cluster, you can use command-line options or environment
 - Specifies the `Access-Control-Allow-Origin` value for Cross-Origin Request Sharing (CORS) request of the TiDB HTTP status service
 - Default: `""`
 
+## `--enable-binlog`
+
++ Enables or disables TiDB binlog generation
++ Default: `false`
+
 ## `--host`
 
 - The host address that the TiDB server monitors
@@ -42,10 +47,15 @@ When you start the TiDB cluster, you can use command-line options or environment
 - The TiDB server monitors this address.
 - The `"0.0.0.0"` address monitors all network cards by default. If you have multiple network cards, specify the network card that provides service, such as `192.168.100.113`.
 
-## `--enable-binlog`
+## `--initialize-insecure`
 
-+ Enables or disables TiDB binlog generation
-+ Default: `false`
+- Bootstraps tidb-server in insecure mode
+- Default: `true`
+
+## `--initialize-secure`
+
+- Bootstraps tidb-server in secure mode
+- Default: `false`
 
 ## `-L`
 
@@ -161,6 +171,11 @@ When you start the TiDB cluster, you can use command-line options or environment
 - Specifies the storage engine used by TiDB in the bottom layer
 - Default: `"unistore"`
 - You can choose "unistore" or "tikv". ("unistore" is the local storage engine; "tikv" is a distributed storage engine)
+
+## `--temp-dir`
+
+- The temporary directory of TiDB
+- Default: `"/tmp/tidb"`
 
 ## `--token-limit`
 
