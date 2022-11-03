@@ -592,7 +592,7 @@ case-sensitive = true
 enable-old-value = true
 
 # 是否开启 Syncpoint 功能，从 v6.3.0 开始支持
-# 从 v6.4.0 开始，使用 Syncpoint 功能需要同步任务拥有下游集群的 SUPER 权限
+# 从 v6.4.0 开始，使用 Syncpoint 功能需要同步任务拥有下游集群的 SYSTEM_VARIABLES_ADMIN 或者 SUPER 权限
 enable-sync-point = true
 
 # Syncpoint 功能对齐上下游 snapshot 的时间间隔
@@ -712,6 +712,7 @@ ignore-update-new-value-expr = "gender = 'male' and age > 18" # 过滤掉新值 
 * TiCDC v4.0.0 中移除了 `ignore-txn-commit-ts`，添加了 `ignore-txn-start-ts`，使用 start_ts 过滤事务。
 * TiCDC v4.0.2 中移除了 `db-dbs`/`db-tables`/`ignore-dbs`/`ignore-tables`，添加了 `rules`，使用新版的数据库和数据表过滤规则，详细语法参考[表库过滤](/table-filter.md)。
 * TiCDC v6.1.0 及之后移除了 `mounter` 配置项，用户配置该项不会报错，也不会生效。
+* TiCDC 从 v6.4.0 开始，使用 Syncpoint 功能需要同步任务拥有下游集群的 SYSTEM_VARIABLES_ADMIN 或者 SUPER 权限。
 
 ## 自定义 Kafka Sink 的 Topic 和 Partition 的分发规则
 
@@ -905,11 +906,11 @@ cdc redo apply --tmp-dir="/tmp/cdc/redo/apply" \
 - `storage` ：指定存储 TiCDC 增量数据备份文件的地址，为 S3 或者 NFS 目录。
 - `sink-uri` ：恢复数据到的下游地址。scheme 仅支持 `mysql`。
 
-## 在下游 TiDB 集群中读取与上游一致的历史数据 <span class="version-mark">从 v6.4.0 版本开始引入</span>
+## 配置只读的复制集群 <span class="version-mark">从 v6.4.0 版本开始引入</span>
 
 在某些应用场景下，可能需要在数据同步的过程中在下游集群读取与上游某个时刻一致的数据。
 
-TiCDC 提供的 Syncpoint 功能在下游的 TiDB 集群中维护了一个上下游具有一致性快照的 `ts-map`，利用该功能即可够满足这一需求。同时，结合 TiDB v6.4.0 引入的系统变量 [`tidb_external_ts`](/system-variables.md#tidb_external_ts-从-v640-版本开始引入)，你无需手动读取 `ts-map` 的值来使用快照读，而只需通过在下游设置系统变量 [`tidb_enable_external_ts_read`](/system-variables.md#tidb_enable_external_ts_read-从-v640-版本开始引入) 即可方便地读取与上游一致的历史数据。
+在某些应用场景下，可能需要访问 TiCDC 下游的 TiDB 复制集群的数据。在保证 TiDB 复制集群只读的情况下，利用 TiCDC 的 Syncpoint 功能和 TiDB v6.4.0 引入的系统变量 [`tidb_external_ts`](/system-variables.md#tidb_external_ts-从-v640-版本开始引入)，只需通过在下游设置系统变量 [`tidb_enable_external_ts_read`](/system-variables.md#tidb_enable_external_ts_read-从-v640-版本开始引入) 即可方便地读取与上游一致的历史数据。
 
 下面将详细描述如何在下游 TiDB 集群中读取与上游一致的历史数据。
 
@@ -919,8 +920,7 @@ TiCDC 提供的 Syncpoint 功能在下游的 TiDB 集群中维护了一个上下
     # 开启 SyncPoint
     enable-sync-point = true
 
-    # 每隔 5 分钟写一次 ts-map，这样当下游使用 tidb_enable_external_ts_read 变量读取历史数据的时候
-    # 能够保证读取到的数据和上游五分钟前是一致的
+    # 每间隔 5 分钟设置一个全局（所有同步的表）同步的时间点，保证在该时间点时，所有表的数据处于一致性状态。
     sync-point-interval = "5m"
 
     # 每隔 1 小时清理一次下游 tidb_cdc.syncpoint_v1 表中的 ts-map 数据
@@ -932,7 +932,7 @@ TiCDC 提供的 Syncpoint 功能在下游的 TiDB 集群中维护了一个上下
     > **注意：**
     >
     > - 由于在读取与上游一致的历史数据时，TiCDC 需要更新下游集群的 `tidb_external_ts` 系统变量，因此请确保创建 `changefeed` 时设置的 `--sink-uri` 中的用户拥有 `SUPER` 或 `SYSTEM_VARIABLES_ADMIN` 权限。
-    > - 如果你需要在下游 TiDB 集群使用 `tidb_enable_external_ts_read` 来读取和上游一致的数据，那么需要确保只有一个 `changefeed` 启用了 Syncpoint 功能。否则，将有可能造成读取到的数据与上游不一致。因为下游 TiDB 集群中只存在一个  `tidb_enable_external_ts_read` 系统变量，而每个开启了 Syncpoint 功能的 `changefeed` 都会去更新它。
+    > - 如果你需要在下游 TiDB 集群使用 `tidb_enable_external_ts_read` 来读取和上游一致的数据，那么需要确保只有一个 `changefeed` 启用了 Syncpoint 功能。否则，将有可能造成读取到的数据与上游不一致。因为下游 TiDB 集群中只存在一个 `tidb_enable_external_ts_read` 系统变量，而每个开启了 Syncpoint 功能的 `changefeed` 都会去更新它。
 
     ```shell
     cdc cli changefeed create -c="test" --sink-uri="mysql://root@127.0.0.1:52015/?time-zone=" --config="./test.toml"
