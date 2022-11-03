@@ -814,7 +814,7 @@ raftstore 相关的配置项。
 
 ### `apply-yield-write-size` <span class="version-mark">从 v6.4.0 版本开始引入</span>
 
-+ 单个状态机在 Apply 线程持续写入的最大数据量，这是个软限制。
++ Apply 线程在单个状态机上能持续写入的最大数据量，这是个软限制。
 + 默认值：32KiB
 + 最小值：大于 0
 + 单位：KiB|MiB|GiB
