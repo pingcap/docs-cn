@@ -204,11 +204,11 @@ If a DDL statement fails to execute, the replication task (changefeed) automatic
 cdc cli changefeed resume -c test-cf --pd=http://10.0.10.25:2379
 ```
 
-If you want to skip this DDL statement that goes wrong, set the start-ts of the changefeed to the checkpoint-ts (the timestamp at which the DDL statement goes wrong) plus one. For example, if the checkpoint-ts at which the DDL statement goes wrong is `415241823337054209`, execute the following commands to skip this DDL statement:
+If you want to skip this DDL statement that goes wrong, set the start-ts of the changefeed to the checkpoint-ts (the timestamp at which the DDL statement goes wrong) plus one, and then run the `cdc cli changefeed create` command to create a new changefeed task. For example, if the checkpoint-ts at which the DDL statement goes wrong is `415241823337054209`, run the following commands to skip this DDL statement:
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-cdc cli changefeed update -c test-cf --pd=http://10.0.10.25:2379 --start-ts 415241823337054210
-cdc cli changefeed resume -c test-cf --pd=http://10.0.10.25:2379
+cdc cli changefeed remove --pd=http://10.0.10.25:2379 --changefeed-id simple-replication-task
+cdc cli changefeed create --pd=http://10.0.10.25:2379 --sink-uri="mysql://root:123456@127.0.0.1:3306/" --changefeed-id="simple-replication-task" --sort-engine="unified" --start-ts 415241823337054210
 ```
