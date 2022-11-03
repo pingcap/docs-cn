@@ -11,7 +11,6 @@ aliases: ['/docs-cn/dev/experimental-features-4.0/','/zh/tidb/dev/experimental-f
 ## 性能
 
 + [支持收集部分列的统计信息](/statistics.md#收集部分列的统计信息)（v5.4 实验特性）
-+ [支持统计信息的同步加载](/statistics.md#统计信息的加载)（v5.4 实验特性）
 + [限制 ANALYZE 的内存使用量](/statistics.md#统计信息收集的内存限制) (v6.1.0 实验特性)
 + [Cost Model Version 2](/cost-model.md#cost-model-version-2)（v6.2.0 实验特性）
 + [FastScan](/develop/dev-guide-use-fastscan.md)（v6.2.0 实验特性）
