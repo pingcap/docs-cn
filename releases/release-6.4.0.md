@@ -10,6 +10,7 @@ TiDB 版本：6.4.0-DMR
 
 在 6.4.0-DMR 版本中，你可以获得以下关键特性：
 
+- TiDB 全局内存限制
 - TiFlash 静态加密支持国密算法 SM4。
 - 支持通过 FLASHBACK CLUSTER 命令将集群快速回退到过去某一个指定的时间点
 - 关键特性 3
@@ -57,6 +58,13 @@ TiDB 版本：6.4.0-DMR
 
     [用户文档]()
 
+* 前缀索引支持对空值的过滤
+
+    这是对前缀索引使用上的优化。当表中某列存在前缀索引，那么 SQL 中对该列的 `IS NULL` 或 `IS NOT NULL` 条件可以直接利用前缀进行过滤，避免了这种情况下的回表，提升了 SQL 的执行性能。 [#21145](https://github.com/pingcap/tidb/issues/21145) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes)
+
+    [用户文档](/system-variables.md#tidboptpreindexsinglescan-span-classversion-mark从-v640-版本开始引入span)
+
+
 ### 事务
 
 * 功能简短描述
@@ -72,6 +80,18 @@ TiDB 版本：6.4.0-DMR
     功能详细描述（功能是什么，对用户的价值是什么，怎么用） [#issue]() @[贡献者 GitHub ID]()
 
     [用户文档]()
+
+* TiDB 全局内存限制
+
+    在 v6.4.0 中，我们引入了一个实验特性，对 TiDB 实例的全局内存使用进行追踪。 用户可以通过系统变量 [`tidb_server_memory_limit`](/system-variables.md#tidbservermemorylimit-span-classversion-mark从-v640-版本开始引入span) 设置全局内存的使用上限。 当内存使用量逼近预设的上限时， TiDB 会尝试对内存进行回收，释放更多的可用内存； 当内存使用量超出预设的上限时， TiDB 会识别出当前内存使用量最大的 SQL 操作，并取消这个操作，避免因为内存使用过度而产生的系统性问题。
+    
+    同时，TiDB 提供了视图 [`information_schame.MEMORY_USAGE`](/information-schema/information-schema-memory-usage.md) 和 [`information_schame.MEMORY_USAGE_OPS_HISTORY`](/information-schema/information-schema-memory-usage-ops-history.md) 用来展示内存使用情况及历史操作， 可以帮助客户清晰了解内存使用状况。 
+    
+    全局内存限制是 TiDB 内存管理的重要一步， 实例采用全局视角，引入系统性方法对内存的使用进行管理， 这将会极大提升数据库的稳定性，提高服务的可用性，支持 TiDB 在更多重要场景平稳运行。 
+
+    [#37816](https://github.com/pingcap/tidb/issues/37816) @[wshwsh12](https://github.com/wshwsh12)
+
+    [用户文档](configure-memory-usage.md)
 
 ### 易用性
 
@@ -159,10 +179,10 @@ TiDB 版本：6.4.0-DMR
 
 | 变量名  | 修改类型（包括新增/修改/删除）    | 描述 |
 |--------|------------------------------|------|
-|        |                              |      |
-|        |                              |      |
-|        |                              |      |
-|        |                              |      |
+|  [`tidb_opt_prefix_index_single_scan`](/system-variables.md#tidb-opt-prefix-index-single-scan-从-v640-版本开始引入)  |  新增 | 这个变量用于控制 TiDB 优化器是否将某些过滤条件下推到前缀索引，尽量避免不必要的回表，从而提高查询性能  |
+| [`tidb_server_memory_limit`](/system-variables.md#tidb-server-memory-limit-从-v640-版本开始引入)   |  新增  |   该变量指定 TiDB 实例的内存限制。TiDB 会在内存用量达到该限制时，对当前内存用量最高的 SQL 语句进行取消 (Cancel) 操作。   |
+|  [`tidb_server_memory_limit_gc_trigger`](/system-variables.md#tidb-server-memory-limit-gc-trigger-从-v640-版本开始引入) | 新增 |  TiDB 尝试触发 GC 的阈值。当 TiDB 的内存使用达到 `tidb_server_memory_limit` 值 \* `tidb_server_memory_limit_gc_trigger` 值时，则会主动触发一次 Golang GC。在一分钟之内只会主动触发一次 GC。    |
+|  [`tidb_server_memory_limit_sess_min_size`](tidb-server-memory-limit-session-min-size-从-v640-版本开始引入)  |  新增  |   开启内存限制后，TiDB 会终止当前实例上内存用量最高的 SQL 语句。本变量指定此情况下 SQL 语句被终止的最小内存用量。  |
 
 ### 配置文件参数
 
