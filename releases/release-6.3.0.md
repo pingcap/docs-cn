@@ -22,7 +22,7 @@ TiDB 版本：6.3.0-DMR
 
 点击以下链接免费试用 v6.3.0:
 
-- [快速在线安装并试用](/quick-start-with-tidb.md)
+- [快速在线安装并试用](https://docs.pingcap.com/zh/tidb/v6.3/quick-start-with-tidb)
 - [下载离线安装包并试用](https://cn.pingcap.com/product-community/)（注意需选择对应版本）
 
 ## 新功能
