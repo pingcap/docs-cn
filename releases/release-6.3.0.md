@@ -20,6 +20,11 @@ TiDB 版本：6.3.0-DMR
 - Range COLUMNS 分区方式支持定义多列。
 - TiDB 添加索引的速度提升为原来的 3 倍。
 
+点击以下链接快速试用 v6.3.0:
+
+- [快速在线安装并试用](/quick-start-with-tidb.md)
+- [下载安装包并试用](https://cn.pingcap.com/product-community/)（注意需选择对应版本）
+
 ## 新功能
 
 ### SQL

@@ -25,6 +25,11 @@ TiDB 版本：6.2.0-DMR
 - [单 `ALTER TABLE` 语句增删改多个列或索引](/sql-statements/sql-statement-alter-table.md)，方便实现 SQL 功能，提升产品易用性。
 - 支持 [RawKV 跨集群复制](/tikv-configuration-file.md#api-version-从-v610-版本开始引入)。
 
+点击以下链接快速试用 v6.2.0:
+
+- [快速在线安装并试用](/quick-start-with-tidb.md)
+- [下载安装包并试用](https://cn.pingcap.com/product-community/)（注意需选择对应版本）
+
 ## 新功能
 
 ### SQL
