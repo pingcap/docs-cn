@@ -8,6 +8,8 @@ title: TiDB 6.2.0 Release Notes
 
 TiDB 版本：6.2.0-DMR
 
+试用链接：[在线安装](https://docs.pingcap.com/zh/tidb/v6.2/quick-start-with-tidb) ｜[离线下载](https://cn.pingcap.com/product-community/)
+
 在 6.2.0-DMR 版本中，你可以获得以下关键特性：
 
 - TiDB Dashboard 支持[可视化执行计划](/dashboard/dashboard-slow-query.md#图形化执行计划介绍)，查询计划展示更直观。
@@ -24,11 +26,6 @@ TiDB 版本：6.2.0-DMR
 - 事务中支持 [`SAVEPOINT` 机制](/sql-statements/sql-statement-savepoint.md)，可以灵活地控制事务内的回退节点。
 - [单 `ALTER TABLE` 语句增删改多个列或索引](/sql-statements/sql-statement-alter-table.md)，方便实现 SQL 功能，提升产品易用性。
 - 支持 [RawKV 跨集群复制](/tikv-configuration-file.md#api-version-从-v610-版本开始引入)。
-
-点击以下链接免费试用 v6.2.0:
-
-- [快速在线安装并试用](https://docs.pingcap.com/zh/tidb/v6.2/quick-start-with-tidb)
-- [下载离线安装包并试用](https://cn.pingcap.com/product-community/)（注意需选择对应版本）
 
 ## 新功能
 
