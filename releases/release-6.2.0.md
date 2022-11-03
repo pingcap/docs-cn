@@ -8,7 +8,7 @@ title: TiDB 6.2.0 Release Notes
 
 TiDB 版本：6.2.0-DMR
 
-试用链接：[在线安装](https://docs.pingcap.com/zh/tidb/v6.2/quick-start-with-tidb) ｜[离线下载](https://cn.pingcap.com/product-community/)
+试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v6.2/quick-start-with-tidb) ｜[在线部署](https://docs.pingcap.com/zh/tidb/v6.2/production-deployment-using-tiup) ｜[离线下载](https://cn.pingcap.com/product-community/)
 
 在 6.2.0-DMR 版本中，你可以获得以下关键特性：
 
