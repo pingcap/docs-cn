@@ -2387,7 +2387,7 @@ CREATE TABLE t (a INT, b VARCHAR(10), c INT, INDEX idx_a_b(a, b(5)));
 SET tidb_opt_prefix_index_single_scan = 'OFF';
 ```
 
-对于以下查询，执行计划使用了前缀索引 `idx_a_b` 但需要回表（出现了 `TableRowIDScan` 算子）。
+对于以下查询，执行计划使用了前缀索引 `idx_a_b` 但需要回表（出现了 `IndexLookUp` 算子）。
 
 ```sql
 EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
