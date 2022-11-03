@@ -79,12 +79,6 @@ This is because TiFlash is in an abnormal state caused by configuration errors o
 
 6. Check whether the remaining disk space of the machine (where `store` of the TiFlash node is) is sufficient. By default, when the remaining disk space is less than 20% of the `store` capacity (which is controlled by the `low-space-ratio` parameter), PD cannot schedule data to this TiFlash node.
 
-## TiFlash query time is unstable, and the error log prints many `Lock Exception` messages
-
-This is because large amounts of data are written to the cluster, which causes that the TiFlash query encounters a lock and requires query retry.
-
-You can set the query timestamp to one second earlier in TiDB. For example, if the current time is '2020-04-08 20:15:01', you can execute `set @@tidb_snapshot='2020-04-08 20:15:00';` before you execute the query. This makes less TiFlash queries encounter a lock and mitigates the risk of unstable query time.
-
 ## Some queries return the `Region Unavailable` error
 
 If the load pressure on TiFlash is too heavy and it causes that TiFlash data replication falls behind, some queries might return the `Region Unavailable` error.
