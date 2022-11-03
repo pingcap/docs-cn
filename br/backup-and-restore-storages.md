@@ -18,12 +18,47 @@ TiDB 支持 Amazon S3、Google Cloud Storage (GCS)、Azure Blob Storage 和 NFS 
 [scheme]://[host]/[path]?[parameters]
 ```
 
-| 存储类型 | `scheme` | `host` | `parameters` |
-| :--- | :--- | :--- | :--- |
-| Amazon | `s3` | `bucket name` | <li>`access-key`：访问密钥</li><li>`secret-access-key`：秘密访问密钥</li><li>`use-accelerate-endpoint`：是否在 Amazon S3 上使用加速端点，默认为 `false`</li><li>`endpoint`：Amazon S3 兼容服务自定义端点的 URL，例如 `<https://s3.example.com/>`</li><li> `force-path-style`：使用路径类型 (path-style)，而不是虚拟托管类型 (virtual-hosted-style)，默认为 `true`</li><li> `storage-class`：上传对象的存储类别，例如 `STANDARD`、`STANDARD_IA`</li><li> `sse`：加密上传的服务端加密算法，可以设置为空、`AES256` 或 `aws:kms`</li><li> `sse-kms-key-id`：如果 `sse` 设置为 `aws:kms`，则使用该参数指定 KMS ID</li><li> `acl`：上传对象的标准 ACL (Canned ACL)，例如 `private`、`authenticated-read`</li>|
-| GCS | `gcs` 或 `gs` | `bucket name` | <li>`credentials-file`：迁移工具节点上凭证 JSON 文件的路径</li><li>`storage-class`：上传对象的存储类别，例如 `STANDARD` 或 `COLDLINE`</li><li>`predefined-acl`：上传对象的预定义 ACL，例如 `private` 或 `project-private`</li> |
-| Azure | `azure` 或 `azblob` | `container name` | <li>`account-name`：存储账户名</li><li>`account-key`：访问密钥</li><li>`access-tier`：上传对象的存储类别，例如 `Hot`、`Cool`、`Archive`，默认为 `Hot`</li> |
-| NFS/Local | `local` | `""` | N/A |
+<SimpleTab groupId="storage">
+<div label="Amazon S3" value="amazon">
+
+- `scheme`: `s3`
+- `host`: `bucket name`
+- `parameters`：
+
+    - `access-key`：访问密钥
+    - `secret-access-key`：秘密访问密钥
+    - `use-accelerate-endpoint`：是否在 Amazon S3 上使用加速端点，默认为 `false`
+    - `endpoint`：Amazon S3 兼容服务自定义端点的 URL，例如 `<https://s3.example.com/>`
+    - `force-path-style`：使用路径类型 (path-style)，而不是虚拟托管类型 (virtual-hosted-style)，默认为 `true`
+    - `storage-class`：上传对象的存储类别，例如 `STANDARD`、`STANDARD_IA`
+    - `sse`：加密上传的服务端加密算法，可以设置为空、`AES256` 或 `aws:kms`
+    - `sse-kms-key-id`：如果 `sse` 设置为 `aws:kms`，则使用该参数指定 KMS ID
+    - `acl`：上传对象的标准 ACL (Canned ACL)，例如 `private`、`authenticated-read`
+
+</div>
+<div label="GCS" value="gcs">
+
+- `scheme`: `gcs` 或 `gs`
+- `host`: `bucket name`
+- `parameters`：
+
+    - `credentials-file`：迁移工具节点上凭证 JSON 文件的路径
+    - `storage-class`：上传对象的存储类别，例如 `STANDARD` 或 `COLDLINE`
+    - `predefined-acl`：上传对象的预定义 ACL，例如 `private` 或 `project-private`
+
+</div>
+<div label="Azure Blob Storage" value="azure">
+
+- `scheme`: `azure` 或 `azblob`
+- `host`: `container name`
+- `parameters`：
+
+    - `account-name`：存储账户名
+    - `account-key`：访问密钥
+    - `access-tier`：上传对象的存储类别，例如 `Hot`、`Cool`、`Archive`，默认为 `Hot`
+
+</div>
+</SimpleTab>
 
 ### URL 示例
 
