@@ -8,6 +8,8 @@ title: TiDB 6.2.0 Release Notes
 
 TiDB 版本：6.2.0-DMR
 
+试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v6.2/quick-start-with-tidb) | [生产部署](https://docs.pingcap.com/zh/tidb/v6.2/production-deployment-using-tiup) | [下载离线包](https://cn.pingcap.com/product-community/)
+
 在 6.2.0-DMR 版本中，你可以获得以下关键特性：
 
 - TiDB Dashboard 支持[可视化执行计划](/dashboard/dashboard-slow-query.md#图形化执行计划介绍)，查询计划展示更直观。
