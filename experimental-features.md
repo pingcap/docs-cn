@@ -34,7 +34,6 @@ aliases: ['/docs-cn/dev/experimental-features-4.0/','/zh/tidb/dev/experimental-f
 + [生成列](/generated-columns.md#生成列)。（v2.1 实验特性）
 + [自定义变量](/user-defined-variables.md#用户自定义变量)。（v2.1 实验特性）
 + [Cascades Planner](/system-variables.md#tidb_enable_cascades_planner)：基于 Cascades 框架的自顶向下查询优化器。（v3.0 实验特性）
-+ [`ALTER TABLE ... COMPACT`](/sql-statements/sql-statement-alter-table-compact.md)。（v6.1.0 实验特性）
 + [将集群的数据恢复到特定的时间点 `FLASHBACK CLUSTER TO TIMESTAMP`](/sql-statements/sql-statement-flashback-to-timestamp.md)。（v6.4.0 实验特性）
 + [表级锁 (Table Lock)](/tidb-configuration-file.md#enable-table-lock-从-v400-版本开始引入)（v4.0.0 实验特性）
 + [元数据锁](/metadata-lock.md)（v6.3.0 实验特性）
