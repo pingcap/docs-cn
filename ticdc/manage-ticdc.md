@@ -575,6 +575,7 @@ case-sensitive = true
 enable-old-value = true
 
 # Specifies whether to enable the Syncpoint feature, which is supported since v6.3.0.
+# Since v6.4.0, only the changefeed with the SYSTEM_VARIABLES_ADMIN or SUPER privilege can use the TiCDC Syncpoint feature.
 enable-sync-point = true
 
 # Specifies the interval at which Syncpoint aligns the upstream and downstream snapshots.
@@ -692,6 +693,7 @@ Description of configuration parameters :
 * In TiCDC v4.0.0, `ignore-txn-commit-ts` is removed and `ignore-txn-start-ts` is added, which uses start_ts to filter transactions.
 * In TiCDC v4.0.2, `db-dbs`/`db-tables`/`ignore-dbs`/`ignore-tables` are removed and `rules` is added, which uses new filter rules for databases and tables. For detailed filter syntax, see [Table Filter](/table-filter.md).
 * In TiCDC v6.1.0, `mounter` is removed. If you configure `mounter`, TiCDC does not report an error, but the configuration does not take effect.
+* Since v6.4.0, only the changefeed with the `SYSTEM_VARIABLES_ADMIN` or `SUPER` privilege can use the TiCDC Syncpoint feature.
 
 ## Customize the rules for Topic and Partition dispatchers of Kafka Sink
 
