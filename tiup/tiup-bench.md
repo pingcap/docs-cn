@@ -23,10 +23,10 @@ tiup bench rawsql # 以自定义 SQL 文件作为 workload 压测
                               `--conn-params tidb_isolation_read_engines='tiflash'` 设置 TiDB 通过 TiFlash 进行查询
                               `--conn-params sslmode=disable` 设置连接 PostgreSQL 不启用加密
       --count int             总执行次数，0 表示无限次
-  -D, --db string             被压测数据库名称 (默认为 "test")
+  -D, --db string             被压测的数据库名 (默认为 "test")
   -d, --driver string         数据库驱动: mysql, postgres (默认 "mysql")
       --dropdata              在 prepare 之前清除历史数据
-  -h, --help                  bench 命令自身的帮助信息
+  -h, --help                  输出 bench 命令的帮助信息
   -H, --host strings          数据库的主机地址 (默认 ["127.0.0.1"])
       --ignore-error          忽略压测时数据库报出的错误
       --interval duration     两次报告输出时间的间隔 (默认 10s)
@@ -34,7 +34,7 @@ tiup bench rawsql # 以自定义 SQL 文件作为 workload 压测
                               2: ReadCommitted, 3: WriteCommitted, 4: RepeatableRead,
                               5: Snapshot, 6: Serializable, 7: Linerizable
       --max-procs int         runtime.GOMAXPROCS
-      --output string         输出格式 plain, table, json (default "plain")
+      --output string         输出格式 plain，table，json (默认为 "plain")
   -p, --password string       数据库密码
   -P, --port ints             数据库端口 (默认 [4000])
       --pprof string          pprof 地址
@@ -45,11 +45,11 @@ tiup bench rawsql # 以自定义 SQL 文件作为 workload 压测
   -U, --user string           压测时使用的数据库用户 (默认 "root")
 ```
 
-- `--host` 和 `--port` 支持以逗号分隔传入多个值，以启用客户端负载均衡，例如指定 `--host 172.16.4.1,172.16.4.2 --port 4000,4001` 时，负载程序将以 round-robin 方式连接到 172.16.4.1:4000, 172.16.4.1:4001, 172.16.4.2:4000, 172.16.4.2:4001 这 4 个实例上。
+- `--host` 和 `--port` 支持以逗号分隔传入多个值，以启用客户端负载均衡。例如，当指定 `--host 172.16.4.1,172.16.4.2 --port 4000,4001` 时，负载程序将以轮询调度的方式连接到 172.16.4.1:4000, 172.16.4.1:4001, 172.16.4.2:4000, 172.16.4.2:4001 这 4 个实例上。
 - `--conn-params` 需要符合 [query string](https://en.wikipedia.org/wiki/Query_string) 格式，不同数据库支持不同参数，如：
-    - `--conn-params tidb_isolation_read_engines='tiflash'` 设置 TiDB 查询走 TiFlash 。
+    - `--conn-params tidb_isolation_read_engines='tiflash'` 设置 TiDB 通过 TiFlash 进行查询。
     - `--conn-params sslmode=disable` 设置连接 PostgreSQL 不启用加密。
-- 当运行 CH-benCHmark 时，可以通过 `--ap-host`, `--ap-port`, `--ap-conn-params` 来指定独立的 tidb 实例用于 AP 查询。
+- 当运行 CH-benCHmark 时，可以通过 `--ap-host`, `--ap-port`, `--ap-conn-params` 来指定独立的 TiDB 实例用于 OLAP 查询。
 
 下文分别介绍如何使用 TiUP 运行 TPC-C, TPC-H 以及 YCSB 测试。
 
@@ -66,12 +66,13 @@ Available Commands:
 
 Flags:
       --check-all            运行所有的一致性检测
-  -h, --help                 tpcc 的帮助信息
-      --partition-type int   分区类型 (默认 1)
-                             1: HASH, 2: RANGE,
-                             3: LIST (like HASH),
-                             4: LIST (like RANGE)
-      --parts int            分区仓库 的数量 (默认 1)
+  -h, --help                 输出 TPC-C 的帮助信息
+      --partition-type int   分区类型 (默认为 1)
+                             1 代表 HASH 分区类型
+                             2 代表 RANGE 分区类型
+                             3 代表 LIST (like HASH) 分区类型
+                             4 代表 LIST (like RANGE)  分区类型
+      --parts int            分区仓库的数量 (默认为 1)
       --warehouses int       仓库的数量 (默认为 10)
 ```
 
