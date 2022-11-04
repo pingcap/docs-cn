@@ -120,7 +120,7 @@ As an open source distributed NewSQL database, TiDB requires the following netwo
 | Drainer | 8249 | the Drainer communication port |
 | TiCDC | 8300 | the TiCDC communication port |
 | Monitoring | 9090 | the communication port for the Prometheus service|
-| Monitoring | 20120 | the communication port for the NgMonitoring service|
+| Monitoring | 12020 | the communication port for the NgMonitoring service|
 | Node_exporter | 9100 | the communication port to report the system information of every TiDB cluster node |
 | Blackbox_exporter | 9115 | the Blackbox_exporter communication port, used to monitor the ports in the TiDB cluster |
 | Grafana | 3000 | the port for the external Web monitoring service and client (Browser) access|
