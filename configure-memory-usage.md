@@ -40,7 +40,25 @@ SET tidb_mem_quota_query = 8 << 10;
 
 ## 如何配置 tidb-server 实例使用内存的阈值
 
-可以通过系统变量 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 设置 tidb-server 实例的内存使用阈值。
+可以在配置文件中设置 tidb-server 实例的内存使用阈值。相关配置项为 [`server-memory-quota`](/tidb-configuration-file.md#server-memory-quota-从-v409-版本开始引入) 。
+
+例如，配置 tidb-server 实例的内存使用总量，将其设置成为 32 GB：
+
+{{< copyable "" >}}
+
+```toml
+[performance]
+server-memory-quota = 34359738368
+```
+
+在该配置下，当 tidb-server 实例内存使用到达 32 GB 时，正在执行的 SQL 语句会被随机强制终止，直至 tidb-server 实例内存使用下降到 32 GB 以下。被强制终止的 SQL 操作会向客户端返回 `Out Of Global Memory Limit!` 错误信息。
+
+> **警告：**
+>
+> + `server-memory-quota` 目前为实验性特性，不建议在生产环境中使用。
+> + `server-memory-quota` 默认值为 0，表示无内存限制。
+
+自 v6.4.0 版本起，可以通过系统变量 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 设置 tidb-server 实例的内存使用阈值。
 
 例如，配置 tidb-server 实例的内存使用总量，将其设置成为 32 GB：
 
@@ -60,13 +78,18 @@ SET GLOBAL tidb_server_memory_limit = "32GB";
 
 > **警告：**
 >
+> + tidb-server 全局内存控制功能目前为实验性特性，不建议在生产环境中使用。
 > + TiDB 在启动过程中不保证 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 限制生效。如果操作系统的空闲内存不足，TiDB 仍有可能出现 OOM。你需要确保 TiDB 实例有足够的可用内存。
 > + 在内存控制过程中，TiDB 的整体内存使用量可能会略微超过 `tidb_server_memory_limit` 的限制。
-> + `server-memory-quota` 配置项自 v6.4.0 起被废弃。为了保证兼容性，在升级到 v6.4.0 或更高版本的集群后，`tidb_server_memory_limit` 会继承配置项 `server-memory-quota` 的值。如果集群在升级至 v6.4.0 或更高版本前没有配置 `server-memory-quota`，`tidb_server_memory_limit` 会使用默认值。
+> + 为了保证兼容性，当开启 `tidb_server_memory_limit` 功能后，系统会忽略 `server-memory-quota` 的值，使用 `tidb_server_memory_limit` 的全局内存控制机制来进行内存控制。在关闭 `tidb_server_memory_limit` 功能后，系统会使用配置项 `server-memory-quota` 的值以及旧的内存控制机制。
 
 在 tidb-server 实例内存用量到达总内存的一定比例时（比例由系统变量 [`tidb_server_memory_limit_gc_trigger`](/system-variables.md#tidb_server_memory_limit_gc_trigger-从-v640-版本开始引入) 控制）, tidb-server 会尝试主动触发一次 Golang GC 以缓解内存压力。为了避免实例内存在阈值上下范围不断波动导致频繁 GC 进而带来的性能问题，该 GC 方式 1 分钟最多只会触发 1 次。
 
 ## 使用 INFORMATION_SCHEMA 系统表查看当前 tidb-server 的内存用量
+
+> **警告：**
+>
+> 目前以下系统表是在 v6.4.0 引入的实验特性，提供的内存使用信息仅供参考，不建议在生产环境中使用以下系统表获取内存使用信息供决策判断。
 
 要查看当前实例或集群的内存使用情况，你可以查询系统表 [`INFORMATION_SCHEMA.(CLUSTER_)MEMORY_USAGE`](/information-schema/information-schema-memory-usage.md)。
 

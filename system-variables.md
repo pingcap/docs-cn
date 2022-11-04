@@ -2272,9 +2272,13 @@ explain select * from t where age=5;
 
 ### `tidb_server_memory_limit` <span class="version-mark">从 v6.4.0 版本开始引入</span>
 
+> **警告：**
+>
+> `tidb_server_memory_limit` 目前为实验性特性，不建议在生产环境中使用。
+
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 默认值：80%
+- 默认值：`0`
 - 取值范围：
     - 你可以将该变量值设为百分比格式，表示内存用量占总内存的百分比，取值范围为 `[1%, 99%]`。
     - 你还可以将变量值设为内存大小，取值范围为 `[0, 9223372036854775807]`，单位为 Byte。支持带单位的内存格式 "KB|MB|GB|TB"。`0` 值表示不设内存限制。
@@ -2284,6 +2288,10 @@ explain select * from t where age=5;
 
 ### `tidb_server_memory_limit_gc_trigger` <span class="version-mark">从 v6.4.0 版本开始引入</span>
 
+> **警告：**
+>
+> `tidb_server_memory_limit_gc_trigger` 目前为实验性特性，不建议在生产环境中使用。
+
 - 作用域：GLOBAL
 - 是否持久化到集群：是
 - 默认值：`70%`
@@ -2291,6 +2299,10 @@ explain select * from t where age=5;
 - TiDB 尝试触发 GC 的阈值。当 TiDB 的内存使用达到 `tidb_server_memory_limit` 值 \* `tidb_server_memory_limit_gc_trigger` 值时，则会主动触发一次 Golang GC。在一分钟之内只会主动触发一次 GC。
 
 ### `tidb_server_memory_limit_sess_min_size` <span class="version-mark">从 v6.4.0 版本开始引入</span>
+
+> **警告：**
+>
+> `tidb_server_memory_limit_sess_min_size` 目前为实验性特性，不建议在生产环境中使用。
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
