@@ -8,6 +8,8 @@ title: TiDB 6.1.0 Release Notes
 
 TiDB 版本：6.1.0
 
+试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v6.1/quick-start-with-tidb) | [生产部署](https://docs.pingcap.com/zh/tidb/v6.1/production-deployment-using-tiup) | [下载离线包](https://cn.pingcap.com/product-community/)
+
 在 6.1.0 版本中，你可以获得以下关键特性：
 
 - List 和 List COLUMNS 分区方式 GA，与 MySQL 5.7 兼容
