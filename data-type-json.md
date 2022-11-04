@@ -29,13 +29,6 @@ For more information, see [JSON Functions](/functions-and-operators/json-functio
 ## Restrictions
 
 - Currently, TiDB does not support pushing down `JSON` functions to TiFlash.
-- TiDB does not support using the range selection syntax in JSON PATH. For example, executing the following SQL statements in TiDB will return errors.
-
-    ```sql
-    SELECT j->'$[1 to 2]' FROM t;
-    SELECT j->'$[last]' FROM t;
-    ```
-
 - TiDB Backup & Restore (BR) versions earlier than v6.3.0 do not support recovering data containing JSON columns. No version of BR supports recovering data containing JSON columns to TiDB clusters earlier than v6.3.0.
 - Do not use any replication tool to replicate data containing non-standard `JSON` data types, such as `DATE`, `DATETIME`, and `TIME`.
 
