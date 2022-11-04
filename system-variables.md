@@ -2533,8 +2533,8 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 ### `tidb_stats_load_pseudo_timeout` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 
-> **警告：**	
->	
+> **警告：**
+>
 > 统计信息同步加载目前为实验性特性，不建议在生产环境中使用。
 
 - 作用域：GLOBAL
