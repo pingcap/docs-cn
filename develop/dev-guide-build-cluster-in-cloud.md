@@ -24,9 +24,9 @@ summary: 使用 TiDB Cloud (Serverless Tier) 构建 TiDB 集群，并连接 TiDB
 6. 创建完毕后，点击右上角的 **Connect** 按钮。或点击集群名称，打开集群的详情页，再点击右上角的 **Connect** 按钮。这将显示一个连接对话框。
 7. 复制连接对话框 **Step 2: Connect with a SQL client** 中的连接字符串，供后续步骤使用。
 
-    > **Note:**
+    > **注意：**
     >
-    > 需要特别说明的是，在你使用 [Serverless Tier clusters](https://docs.pingcap.com/tidbcloud/select-cluster-tier#serverless-tier) 集群时，你需要给你设置的用户名加上前缀（如 `2aEp24QWEDLqRFs.root` 中的 `2aEp24QWEDLqRFs`），若使用命令行连接，还需使用单引号包裹用户名。你可以在 [TiDB Cloud - 用户名前缀](https://docs.pingcap.com/tidbcloud/select-cluster-tier#user-name-prefix) 中获得更多信息。
+    > 需要特别说明的是，在你使用 [Serverless Tier](https://docs.pingcap.com/tidbcloud/select-cluster-tier#serverless-tier) 集群时，你需要给你设置的用户名加上前缀（如 `2aEp24QWEDLqRFs.root` 中的 `2aEp24QWEDLqRFs`），若使用命令行连接，还需使用单引号包裹用户名。你可以在 [TiDB Cloud 用户名前缀](https://docs.pingcap.com/tidbcloud/select-cluster-tier#user-name-prefix) 中获得更多信息。
 
 ## 第 2 步：连接到集群
 
@@ -122,7 +122,7 @@ summary: 使用 TiDB Cloud (Serverless Tier) 构建 TiDB 集群，并连接 TiDB
 > **注意：**
 >
 > - 此处使用 TLS 连接，是 TiDB Cloud Serverless Tier 的[强制要求](https://docs.pingcap.com/tidbcloud/secure-connections-to-serverless-tier-clusters)。
-> - 如果你在连接时遇到问题，可阅读 TiDB Cloud [Serverless Tier Clusters](https://docs.pingcap.com/tidbcloud/secure-connections-to-serverless-tier-clusters) 来获得更多信息。
+> - 如果你在连接时遇到问题，可阅读 [TiDB Cloud Serverless Tier 集群安全连接](https://docs.pingcap.com/tidbcloud/secure-connections-to-serverless-tier-clusters) 来获得更多信息。
 
 3. 填写密码，完成登录。
 
@@ -144,4 +144,4 @@ SELECT 'Hello TiDB Cloud!';
 +-------------------+
 ```
 
-如果你看到了这样的输出。恭喜，你已经在 TiDB Cloud 上成功地运行了自己的 SQL。
+如果你的实际输出与预期输出一致，表示你已经在 TiDB Cloud 上成功地运行了 SQL 语句。
