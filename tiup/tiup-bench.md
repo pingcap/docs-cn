@@ -205,8 +205,8 @@ Flags:
 
     ```sql
     -- 准备数据
-    create table t (a int);
-    insert into t values (1), (2), (3);
+    CREATE TABLE t (a int);
+    INSERT INTO t VALUES (1), (2), (3);
 
     -- 构造查询，保存为 demo.sql
     select a, sleep(rand()) from t where a < 4*rand();
