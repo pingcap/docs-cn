@@ -73,6 +73,12 @@ TiDB 版本：6.4.0-DMR
 
     [用户文档](/system-variables.md#tidboptpreindexsinglescan-span-classversion-mark从-v640-版本开始引入span)
 
+* 引入新的优化器提示 `NO_DECORRELATE` 来控制解关联优化
+
+    默认情况下，TiDB 总是会尝试对关联子查询解关联，以达到更高的执行效率。但是在部分场景下，解除关联反而会降低执行效率。此时，可使用 `NO_DECORRELATE` 指导优化器不要尝试对指定的查询块解关联，以提升这些场景下的查询性能。 [#37789](https://github.com/pingcap/tidb/issues/37789) @[time-and-fate](https://github.com/time-and-fate)
+
+    [用户文档](/optimizer-hints.md#no_decorrelate)
+
 ### 事务
 
 * 功能简短描述
