@@ -30,9 +30,9 @@ tiup bench rawsql # 以自定义 SQL 文件作为 workload 压测
   -H, --host strings          数据库的主机地址 (默认 ["127.0.0.1"])
       --ignore-error          忽略压测时数据库报出的错误
       --interval duration     两次报告输出时间的间隔 (默认 10s)
-      --isolation int         隔离级别 0: Default, 1: ReadUncommitted,
-                              2: ReadCommitted, 3: WriteCommitted, 4: RepeatableRead,
-                              5: Snapshot, 6: Serializable, 7: Linerizable
+      --isolation int         隔离级别 0：Default，1：ReadUncommitted,
+                              2：ReadCommitted，3：WriteCommitted，4：RepeatableRead，
+                              5：Snapshot，6：Serializable，7：Linerizable
       --max-procs int         runtime.GOMAXPROCS
       --output string         输出格式 plain，table，json (默认为 "plain")
   -p, --password string       数据库密码
