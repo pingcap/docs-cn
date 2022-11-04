@@ -495,16 +495,16 @@ Configuration items related to opentracing.sampler.
 
 ### `type`
 
-+ Specifies the type of the opentracing sampler.
++ Specifies the type of the opentracing sampler. The string value is case-insensitive.
 + Default value: `"const"`
-+ Value options: `"const"`, `"probabilistic"`, `"rateLimiting"`, `"remote"`
++ Value options: `"const"`, `"probabilistic"`, `"ratelimiting"`, `"remote"`
 
 ### `param`
 
 + The parameter of the opentracing sampler.
     - For the `const` type, the value can be `0` or `1`, which indicates whether to enable the `const` sampler.
     - For the `probabilistic` type, the parameter specifies the sampling probability, which can be a float number between `0` and `1`.
-    - For the `rateLimiting` type, the parameter specifies the number of spans sampled per second.
+    - For the `ratelimiting` type, the parameter specifies the number of spans sampled per second.
     - For the `remote` type, the parameter specifies the sampling probability, which can be a float number between `0` and `1`.
 + Default value: `1.0`
 
