@@ -289,7 +289,7 @@ https://github.com/pingcap/docs/pull/11123)
 | TiDB | [`tidb_max_reuse_chunk`](/tidb-configuration-file.md#tidb_max_reuse_chunk-从-v640-版本开始引入) | 新增 | 用于控制每个连接最多缓存的 Chunk 对象数，默认值为 64。配置过大会增加 OOM 的风险。 |
 | TiDB | [`tidb_max_reuse_column`](/tidb-configuration-file.md#tidb_max_reuse_column-从-v640-版本开始引入) | 新增 | 用于控制每个连接最多缓存的 column 对象数，默认值为 256。配置过大会增加 OOM 的风险。 |
 | TiDB | `tidb_memory_usage_alarm_ratio` | 废弃 | 该配置项在 v6.4.0 之前的版本中用于控制系统变量 [`tidb_memory_usage_alarm_ratio`](/system-variables.md#tidb_memory_usage_alarm_ratio) 的初始值，自 v6.4.0 起被废弃。|
-| TiDB | `memory-usage-alarm-ratio` | 废弃 | 该配置项自 v6.4.0 起被系统变量 [`tidb_memory_usage_alarm_ratio`](/system-variables.md#tidb_memory_usage_alarm_ratio) 所取代。如果在升级前设置过该配置项，升级后该配置项将会恢复为默认值。|
+| TiDB | `memory-usage-alarm-ratio` | 废弃 | 该配置项自 v6.4.0 起被系统变量 [`tidb_memory_usage_alarm_ratio`](/system-variables.md#tidb_memory_usage_alarm_ratio) 所取代。如果在升级前设置过该配置项，升级后原配置将不再生效。|
 | TiDB | [`server-memory-quota`](/tidb-configuration-file.md#server-memory-quota-从-v409-版本开始引入) | 废弃 | 自 v6.4.0 版本起该配置项被废弃，被系统变量 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 所取代。|
 | TiKV | [`alloc-ahead-buffer`](/tikv-configuration-file.md#alloc-ahead-buffer-从-v640-版本开始引入) | 新增 | TiKV 预分配给 TSO 的缓存大小（以时长计算），默认值为 3 秒。|
 | TiKV | [`apply-yield-write-size`](#apply-yield-write-size-从-v640-版本开始引入) | 新增 | Apply 线程每一轮处理单个状态机写入的最大数据量，这是个软限制。 |
