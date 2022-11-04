@@ -12,7 +12,7 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-slow-query/']
 
 > **注意：**
 >
-> 若关闭了慢查询日志，则本功能不可用。慢查询日志默认开启，可通过修改 TiDB 配置 [`enable-slow-log`](/tidb-configuration-file.md#enable-slow-log) 开启或禁用。
+> 若关闭了慢查询日志，则本功能不可用。慢查询日志默认开启，可通过修改 TiDB 系统变量 [`tidb_enable_slow_log`](/system-variables.md#tidb_enable_slow_log) 开启或禁用。
 
 ## 访问列表页面
 
