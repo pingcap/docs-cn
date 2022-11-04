@@ -731,14 +731,6 @@ TiDB 服务状态相关配置。
 + 该值作为系统变量 [`max_connections`](/system-variables.md#max_connections) 的初始值。
 + 在 v6.2.0 之前，该功能通过配置项 `max-server-connections` 进行设置。
 
-### `tidb_memory_usage_alarm_ratio`
-
-+ tidb-server 实例内存使用占总内存的比例超过一定阈值时会报警。该配置项的有效范围为 `0` 到 `1`。如果配置该选项为 `0` 或 `1`，则表示关闭内存阈值报警功能。
-+ 默认值：0.8
-+ 默认情况下，当 TiDB 内存使用量超过总内存的 70% 且满足[报警条件](/configure-memory-usage.md#tidb-server-内存占用过高时的报警)时，TiDB 会打印报警日志。
-+ 该值作为系统变量 [`tidb_memory_usage_alarm_ratio`](/system-variables.md#tidb_memory_usage_alarm_ratio) 的初始值。
-+ 在版本 v6.1.0 之前，该功能通过配置项 `memory-usage-alarm-ratio` 进行设置。
-
 ### `tidb_enable_ddl`
 
 + 用于表示该 tidb-server 是否运行 DDL 语句。
