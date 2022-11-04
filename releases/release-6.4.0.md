@@ -73,6 +73,12 @@ TiDB 版本：6.4.0-DMR
 
     [用户文档](/system-variables.md#tidboptpreindexsinglescan-span-classversion-mark从-v640-版本开始引入span)
 
+* 增强了 TiDB Chunk 复用机制
+
+    在之前的版本中， TiDB 只在writechunk函数中复用 chunk 。 在 v6.4.0 版本中，将 chunk 复用机制扩展到执行函数中，通过复用 chunk 减少 TiDB 申请释放内存频率，进而提升部分场景下 SQL 执行效率。目前 Chunk 复用由变量 [`tidb_enable_reuse_chunk`]控制。
+
+    [#38606](https://github.com/pingcap/tidb/issues/38606) @[keeplearning20221](https://github.com/keeplearning20221)
+
 * 引入新的优化器提示 `NO_DECORRELATE` 来控制解关联优化
 
     默认情况下，TiDB 总是会尝试对关联子查询解关联，以达到更高的执行效率。但是在部分场景下，解除关联反而会降低执行效率。此时，可使用 `NO_DECORRELATE` 指导优化器不要尝试对指定的查询块解关联，以提升这些场景下的查询性能。 [#37789](https://github.com/pingcap/tidb/issues/37789) @[time-and-fate](https://github.com/time-and-fate)
@@ -282,7 +288,8 @@ https://github.com/pingcap/docs/pull/11123)
 | -------- | -------- | -------- | -------- |
 | TiDB | [`tidb_max_reuse_chunk`](/tidb-configuration-file.md#tidb_max_reuse_chunk-从-v640-版本开始引入) | 新增 | 用于控制每个连接最多缓存的 Chunk 对象数，默认值为 64。配置过大会增加 OOM 的风险。 |
 | TiDB | [`tidb_max_reuse_column`](/tidb-configuration-file.md#tidb_max_reuse_column-从-v640-版本开始引入) | 新增 | 用于控制每个连接最多缓存的 column 对象数，默认值为 256。配置过大会增加 OOM 的风险。 |
-| TiDB | `memory-usage-alarm-ratio` | 废弃 | 自 v6.4.0 版本起该配置项被废弃，被系统变量 [`tidb_memory_usage_alarm_ratio`](/system-variables.md#tidb_memory_usage_alarm_ratio) 所取代。|
+| TiDB | `tidb_memory_usage_alarm_ratio` | 废弃 | 该配置项在 v6.4.0 之前的版本中用于控制系统变量 [`tidb_memory_usage_alarm_ratio`](/system-variables.md#tidb_memory_usage_alarm_ratio) 的初始值，自 v6.4.0 起被废弃。|
+| TiDB | `memory-usage-alarm-ratio` | 废弃 | 该配置项自 v6.4.0 起被系统变量 [`tidb_memory_usage_alarm_ratio`](/system-variables.md#tidb_memory_usage_alarm_ratio) 所取代。如果在升级前设置过该配置项，升级后该配置项将会恢复为默认值。|
 | TiDB | [`server-memory-quota`](/tidb-configuration-file.md#server-memory-quota-从-v409-版本开始引入) | 废弃 | 自 v6.4.0 版本起该配置项被废弃，被系统变量 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 所取代。|
 | TiKV | [`alloc-ahead-buffer`](/tikv-configuration-file.md#alloc-ahead-buffer-从-v640-版本开始引入) | 新增 | TiKV 预分配给 TSO 的缓存大小（以时长计算），默认值为 3 秒。|
 | TiKV | [`apply-yield-write-size`](#apply-yield-write-size-从-v640-版本开始引入) | 新增 | Apply 线程每一轮处理单个状态机写入的最大数据量，这是个软限制。 |
