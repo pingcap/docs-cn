@@ -22,6 +22,17 @@ DBName ::=
 
 DatabaseOptionListOpt ::=
     DatabaseOptionList?
+
+DatabaseOptionList ::=
+    DatabaseOption ( ','? DatabaseOption )*
+
+DatabaseOption ::=
+    DefaultKwdOpt ( CharsetKw '='? CharsetName | 'COLLATE' '='? CollationName | 'ENCRYPTION' '='? EncryptionOpt )
+|   DefaultKwdOpt PlacementPolicyOption
+
+PlacementPolicyOption ::=
+    "PLACEMENT" "POLICY" EqOpt PolicyName
+|   "PLACEMENT" "POLICY" (EqOpt | "SET") "DEFAULT"
 ```
 
 ## Syntax

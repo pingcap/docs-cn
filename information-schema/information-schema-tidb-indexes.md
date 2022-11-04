@@ -28,8 +28,10 @@ DESC tidb_indexes;
 | INDEX_COMMENT | varchar(2048) | YES  |      | NULL    |       |
 | Expression    | varchar(64)   | YES  |      | NULL    |       |
 | INDEX_ID      | bigint(21)    | YES  |      | NULL    |       |
+| IS_VISIBLE    | varchar(64)   | YES  |      | NULL    |       |
+| CLUSTERED     | varchar(64)   | YES  |      | NULL    |       |
 +---------------+---------------+------+------+---------+-------+
-10 rows in set (0.00 sec)
+12 rows in set (0.00 sec)
 ```
 
 `INDEX_ID` is the unique ID that TiDB allocates for each index. It can be used to do a join operation with `INDEX_ID` obtained from another table or API.
@@ -60,3 +62,5 @@ Fields in the `TIDB_INDEXES` table are described as follows:
 * `SUB_PART`: The prefix length of the index. If the the column is partly indexed, the `SUB_PART` value is the count of the indexed characters; otherwise, the value is `NULL`.
 * `INDEX_COMMENT`: The comment of the index, which is made when the index is created.
 * `INDEX_ID`: The index ID.
+* `IS_VISIBLE`: Whether the index is visible.
+* `CLUSTERED`: Whether it is a [clustered index](/clustered-indexes.md).
