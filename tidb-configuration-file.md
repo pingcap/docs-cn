@@ -107,7 +107,7 @@ The TiDB configuration file supports more options than command-line parameters. 
 
 - Enables or disables the new collation support.
 - Default value: `true`
-- Note: This configuration takes effect only for the TiDB cluster that is first initialized. After the initialization, you cannot use this configuration item to enable or disable the new collation support. When a TiDB cluster is upgraded to v4.0 or later, because the cluster has been initialized before, both `true` and `false` values of this configuration item are taken as `false`.
+- Note: This configuration takes effect only for the TiDB cluster that is first initialized. After the initialization, you cannot use this configuration item to enable or disable the new collation support.
 
 ### `max-server-connections`
 
