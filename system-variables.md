@@ -1028,15 +1028,16 @@ MPP is a distributed computing framework provided by the TiFlash engine, which a
 
 ### `tidb_ddl_flashback_concurrency` <span class="version-mark">New in v6.3.0</span>
 
-> **Warning:**
->
-> The feature controlled by this variable is not fully functional in the current TiDB version. Do not change the default value.
-
 - Scope: GLOBAL
 - Persists to cluster: Yes
 - Default value: `64`
 - Range: `[1, 256]`
-- This variable controls the concurrency of `flashback cluster`.
+
+<CustomContent platform="tidb">
+
+- This variable controls the concurrency of [`FLASHBACK CLUSTER TO TIMESTAMP`](/sql-statements/sql-statement-flashback-to-timestamp.md).
+
+</CustomContent>
 
 ### tidb_ddl_reorg_batch_size
 
