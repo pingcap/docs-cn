@@ -33,7 +33,7 @@ tiup bench rawsql # 以自定义 SQL 文件作为 workload 压测
       --isolation int         隔离级别 0：Default，1：ReadUncommitted,
                               2：ReadCommitted，3：WriteCommitted，4：RepeatableRead，
                               5：Snapshot，6：Serializable，7：Linerizable
-      --max-procs int         runtime.GOMAXPROCS
+      --max-procs int         Go Runtime 能够使用的最大系统线程数
       --output string         输出格式 plain，table，json (默认为 "plain")
   -p, --password string       数据库密码
   -P, --port ints             数据库端口 (默认 [4000])
@@ -70,8 +70,8 @@ Flags:
       --partition-type int   分区类型 (默认为 1)
                              1 代表 HASH 分区类型
                              2 代表 RANGE 分区类型
-                             3 代表 LIST (like HASH) 分区类型
-                             4 代表 LIST (like RANGE)  分区类型
+                             3 代表 LIST 分区类型并按 HASH 方式划分
+                             4 代表 LIST 分区类型并按 RANGE 方式划分
       --parts int            分区仓库的数量 (默认为 1)
       --warehouses int       仓库的数量 (默认为 10)
 ```
@@ -196,3 +196,24 @@ Flags:
     # 默认读写比例为 95:5
     tiup bench ycsb run tikv -p tikv.pd="127.0.0.1:2379" -p operationcount=10000
     ```
+
+## 使用 TiUP 运行 RawSQL 测试
+
+用户可以将 OLAP 查询写到 SQL 文件中，通过 `tiup bench rawsql` 执行测试，步骤如下：
+
+1. 自行准备数据和需要执行的查询：
+
+    ```sql
+    -- 准备数据
+    create table t (a int);
+    insert into t values (1), (2), (3);
+
+    -- 构造查询，保存为 demo.sql
+    select a, sleep(rand()) from t where a < 4*rand();
+    ```
+
+2. 运行 RawSQL 测试：
+
+   ```shell
+   tiup bench rawsql run --count 60 --query-files demo.sql
+   ```
