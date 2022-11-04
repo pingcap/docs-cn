@@ -161,11 +161,15 @@ TiDB 版本：6.4.0-DMR
 
 * 对 JSON 类型中的 Array 做范围选择
 
-    新版本支持 MySQL 兼容的范围选择语法。 用关键字 `to` 指定元素起始和结束的位置，用来选择 Array 中连续范围的元素，起始位置记为 `0` 。 比如 `$[0 to 2]` 选择 Array 中的前三个元素。  `last` 关键字代表 Array 中最后一个元素的位置，能够实现从右到左的位置设定, 比如 `$[last-2 to last]` 用来选择最后三个元素。 这个能力进一步提升的 JSON 操作的兼容能力，简化了 MySQL 应用向 TiDB 迁移的。
+    新版本支持 MySQL 兼容的范围选择语法。 用关键字 `to` 指定元素起始和结束的位置，用来选择 Array 中连续范围的元素，起始位置记为 `0` 。 比如 `$[0 to 2]` 选择 Array 中的前三个元素。  `last` 关键字代表 Array 中最后一个元素的位置，能够实现从右到左的位置设定, 比如 `$[last-2 to last]` 用来选择最后三个元素。 这个能力简化了 SQL 的编写能力，进一步提升的 JSON 类型的兼容能力，降低了 MySQL 应用向 TiDB 迁移的难度。
 
     [用户文档](/data-type-json.md)
 
-    
+* 支持对数据库用户增加额外说明
+
+    新版本扩展了 `Create User` 和 `Alter User` 的语法，能够为数据库用户添加额外的说明。 说明支持两种格式，利用 `COMMENT` 添加一段文本，或者用 `ATTRIBUTE` 添加一组 JSON 格式的结构化属性。 这个特性加强了 TiDB 对 MySQL 的语法的兼容性， 使得 TiDB 更容易融入 MySQL 生态的工具或平台。 [#38172](https://github.com/pingcap/tidb/issues/38172) @[CbcWestwolf](https://github.com/CbcWestwolf)
+
+    [用户文档](/information-schema/information-schema-user-attributes.md)
 
 ### 备份和恢复
 
