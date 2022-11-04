@@ -33,10 +33,9 @@ TiDB 版本：6.4.0-DMR
 
     [用户文档](/sql-statements/sql-statement-flashback-to-timestamp.md)
 
-
 ### 安全
 
-*  TiKFlash 静态加密支持国密算法 SM4
+* TiKFlash 静态加密支持国密算法 SM4
 
     TiFlash 的静态加密新增 SM4 算法，用户可以修改配置文件 tiflash-learner.toml 中的 data-encryption-method 参数，设置为 sm4-ctr，以启用基于国密算法 SM4 的静态加密能力。 [#5953](https://github.com/pingcap/tiflash/issues/5953) @[lidezhu](https://github.com/lidezhu)
 
@@ -60,9 +59,9 @@ TiDB 版本：6.4.0-DMR
 
 * 增加了动态规划算法来决定表的连接顺序
 
-    在之前的版本中， TiDB 采用贪心算法来决定表的连接顺序。 在版本 v6.4.0 中， 优化器引入了[动态规划算法](/join-reorder.md#join-reorder-算法实例)，相比贪心算法， 动态规划算法会枚举更多可能的连接顺序，进而有机会发现更好的执行计划，提升部分场景下 SQL 执行效率。 
+    在之前的版本中， TiDB 采用贪心算法来决定表的连接顺序。 在版本 v6.4.0 中， 优化器引入了[动态规划算法](/join-reorder.md#join-reorder-算法实例)，相比贪心算法， 动态规划算法会枚举更多可能的连接顺序，进而有机会发现更好的执行计划，提升部分场景下 SQL 执行效率。
 
-    由于动态规划算法的枚举过程可能消耗更多的时间，目前 Join Reorder 算法由变量 [`tidb_opt_join_reorder_threshold`](/system-variables.md#tidboptjoinreorderthreshold) 控制，当参与 Join Reorder 的节点个数大于该阈值时选择贪心算法，反之选择动态规划算法。 
+    由于动态规划算法的枚举过程可能消耗更多的时间，目前 Join Reorder 算法由变量 [`tidb_opt_join_reorder_threshold`](/system-variables.md#tidboptjoinreorderthreshold) 控制，当参与 Join Reorder 的节点个数大于该阈值时选择贪心算法，反之选择动态规划算法。
 
     [#18969](https://github.com/pingcap/tidb/issues/18969) @[winoros](https://github.com/winoros)
 
@@ -74,7 +73,6 @@ TiDB 版本：6.4.0-DMR
 
     [用户文档](/system-variables.md#tidboptpreindexsinglescan-span-classversion-mark从-v640-版本开始引入span)
 
-
 ### 事务
 
 * 功能简短描述
@@ -85,19 +83,17 @@ TiDB 版本：6.4.0-DMR
 
 ### 稳定性
 
-* 功能简短描述
+* 磁盘故障，I/O 无响应等极端情况下的故障恢复加速
 
-    功能详细描述（功能是什么，对用户的价值是什么，怎么用） [#issue]() @[贡献者 GitHub ID]()
-
-    [用户文档]()
+    数据库的可用性是企业用户最为关注的指标之一，但是在复杂的硬件环境下，如何快速检测故障，快速恢复一直是数据库面临的挑战之一。TiDB 在 6.4 版本，全面优化了 TiKV 节点的状态检测机制，即使在磁盘故障，I/O 无响应等极端情况，依然可以快速上报节点状态，同时搭配主动唤醒机制，提前发起选主，加速集群自愈。通过这次优化，TiDB 在磁盘故障场景下，集群恢复时间可以缩短 50% 左右。 [#issue]() @[贡献者 GitHub ID]()
 
 * TiDB 全局内存限制
 
     在 v6.4.0 中，我们引入了一个实验特性，对 TiDB 实例的全局内存使用进行追踪。 用户可以通过系统变量 [`tidb_server_memory_limit`](/system-variables.md#tidbservermemorylimit-span-classversion-mark从-v640-版本开始引入span) 设置全局内存的使用上限。 当内存使用量逼近预设的上限时， TiDB 会尝试对内存进行回收，释放更多的可用内存； 当内存使用量超出预设的上限时， TiDB 会识别出当前内存使用量最大的 SQL 操作，并取消这个操作，避免因为内存使用过度而产生的系统性问题。
-    
-    同时，TiDB 提供了视图 [`information_schame.MEMORY_USAGE`](/information-schema/information-schema-memory-usage.md) 和 [`information_schame.MEMORY_USAGE_OPS_HISTORY`](/information-schema/information-schema-memory-usage-ops-history.md) 用来展示内存使用情况及历史操作， 可以帮助客户清晰了解内存使用状况。 
-    
-    全局内存限制是 TiDB 内存管理的重要一步， 实例采用全局视角，引入系统性方法对内存的使用进行管理， 这将会极大提升数据库的稳定性，提高服务的可用性，支持 TiDB 在更多重要场景平稳运行。 
+
+    同时，TiDB 提供了视图 [`information_schame.MEMORY_USAGE`](/information-schema/information-schema-memory-usage.md) 和 [`information_schame.MEMORY_USAGE_OPS_HISTORY`](/information-schema/information-schema-memory-usage-ops-history.md) 用来展示内存使用情况及历史操作， 可以帮助客户清晰了解内存使用状况。
+
+    全局内存限制是 TiDB 内存管理的重要一步， 实例采用全局视角，引入系统性方法对内存的使用进行管理， 这将会极大提升数据库的稳定性，提高服务的可用性，支持 TiDB 在更多重要场景平稳运行。
 
     [#37816](https://github.com/pingcap/tidb/issues/37816) @[wshwsh12](https://github.com/wshwsh12)
 
@@ -135,7 +131,6 @@ TiDB 版本：6.4.0-DMR
 
     [用户文档](/tikv-configuration-file.md#api-version-从-v610-版本开始引入)
 
-
 * 优化 TiFlash 数据同步进度的准确性
 
     TiDB 的 `information_schema.tiflash_replica` 表中的 `PROGRESS` 字段表示 TiFlash 副本与 TiKV 中对应表数据的同步进度。在之前的版本中，`PROCESS` 字段只显示 TiFlash 副本创建过程中的数据同步进度。在 TiFlash 副本创建完后，当在 TiKV 相应的表中导入新的数据时，该值不会更新数据的同步进度。
@@ -164,27 +159,58 @@ TiDB 版本：6.4.0-DMR
 
     [用户文档](/auto-increment.md#mysql-兼容模式)
 
-
 ### 备份和恢复
 
 * 基于 AWS EBS snapshot 的集群备份和恢复
 
     如果你的TiDB 集群部署在 EKS 上，使用了 AWS EBS 卷，并且对数据备份有以下要求，可考虑使用 TiDB Operator 将 TiDB 集群数据以卷快照以及元数据的方式备份至 AWS S3：
-    
-    - 份的影响降到最小，如备份对 QPS 和事务耗时影响小于 5%，不占用集群 CPU 以及内存。
+
+    - 备份的影响降到最小，如备份对 QPS 和事务耗时影响小于 5%，不占用集群 CPU 以及内存。
     - 快速备份和恢复，比如 1 小时内完成备份，2 小时内完成恢复。
-    
+
      [#issue](https://github.com/pingcap/tidb/issues/33849) @[fengou1](https://github.com/fengou1)
 
     [用户文档](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.4/backup-to-aws-s3-by-snapshot)
 
 ### 数据迁移
 
-* 功能简短描述
+* 支持在分库分表迁移场景，下游的表支持增加扩展列并赋值，用于标记下游表中的记录来之上游哪个分库分表。
 
-    功能详细描述（功能是什么，对用户的价值是什么，怎么用） [#issue]() @[贡献者 GitHub ID]()
+    在上游分库分表合并到 TiDB 的场景，用户可以在目标表手动额外增加几个字段（扩展列），并在配置 DM 任务时，对这几个扩展列赋值，如赋予上游分库分表的名称，则通过 DM 写入到下游的记录会带上上游分库分表的名称，在一些数据异常的场景，用户可以通过该功能快速定位目标表的问题数据时来自于上游哪个分库分表。） [#37790](https://github.com/pingcap/tidb/pull/37790) @lichunzhu
 
-    [用户文档]()
+    [用户文档](https://github.com/pingcap/docs-cn/pull/11536/files)
+
+* 优化 DM 的前置检查项,将部分必须通过项改为非必须通过项。
+
+    将“检查字符集是否存在兼容性差异”、“检查上游表中是否存在主键或唯一键约束”，“数据库主从配置，上游数据库必须设置数据库 ID server_id” 这 3 个前置检查从必须通过项，改为非必须通过项，提升用户前置检查的通过率。 [#无](无) @lichunzhu
+
+    用户文档无，对用户无感知
+
+* 解决了上游数据库的建表 sql  TiDB 不兼容，导致 DM 全量迁移报错的问题。[#issue](https://github.com/pingcap/tidb/issues/37984) @lance6716
+
+    DM 会默认使用上游数据库的建表 SQL 去 TiDB 执行，帮用户创建好目标表。当上游的建表 SQL  TiDB 不兼容时，DM 使用该 SQL 帮用户创建目标表会失败，导致 DM 任务中断。这时候用户可以提前在 TiDB 手动创建好目标表，DM 检查到已存在的目标表时会忽略掉这个建表 SQL 报错，让全量迁移任务继续运行。
+
+    [用户文档](https://github.com/pingcap/docs-cn/pull/11718
+    https://github.com/pingcap/docs/pull/10974)
+
+* 配置DM 增量迁移任务，支持 binlog_name 和 GTID 的参数可作为选配项。
+
+    用户只配置 DM 增量迁移任务时，如果不指定 binlog_name 和 GTID 的参数取值，则默认按任务的启动时间去上游获取该时间之后的 binlog file，并将这些增量数据迁移到下游 ，降低了用户的理解成本和配置复杂度。
+    [#7393](https://github.com/pingcap/tiflow/issues/7393) @GMHDBJD
+
+    [用户文档](
+    https://github.com/pingcap/docs-cn/pull/11790
+    https://github.com/pingcap/docs/pull/11096)
+
+* DM 任务增加一些状态信息的展示
+
+    * 增加了  DM 任务当前数据导出、数据导入的性能，单位 bytes / s
+    * 将当前  DM 写入目标库的性能指标命名 从 TPS 改为 RPS （rows / second）
+    * 新增了 DM 全量任务数据导出的进度展示
+         [#7343](https://github.com/pingcap/tiflow/issues/7343) @okJiang
+
+         [用户文档](https://github.com/pingcap/docs-cn/pull/11755,
+https://github.com/pingcap/docs/pull/11123)
 
 ### 数据共享与订阅
 
@@ -199,7 +225,7 @@ TiDB 版本：6.4.0-DMR
 * 集群诊断功能 GA
 
     集群诊断功能是在指定的时间范围内，对集群可能存在的问题进行诊断，并将诊断结果和一些集群相关的负载监控信息汇总成一个诊断报告。诊断报告是网页形式，通过浏览器保存后可离线浏览和传阅。
-    
+
     用户可以通过该报告快速了解集群内的基本诊断信息，包括负载、组件、耗时和配置信息。若用户的集群存在一些常见问题，在[诊断信息](https://docs.pingcap.com/zh/tidb/stable/dashboard-diagnostics-report#%E8%AF%8A%E6%96%AD%E4%BF%A1%E6%81%AF)部分可以了解 TiDB 内置自动诊断的结果。
 
     详细内容见[用户文档](https://docs.pingcap.com/zh/tidb/stable/dashboard-diagnostics-access)
@@ -259,7 +285,7 @@ TiDB 版本：6.4.0-DMR
         - Monitoring 页面展示 TiFlash 相关指标，并且优化指标的展示方式。 [#1386](https://github.com/pingcap/tidb-dashboard/issues/1386) @[baurine](https://github.com/baurine)
         - 在 Slow Query 列表 和 SQL Statement 列表展示结果行数。 [#1407](https://github.com/pingcap/tidb-dashboard/pull/1407) @[baurine](https://github.com/baurine)
         - 优化 Dashboard 的报错信息。  [#1407](https://github.com/pingcap/tidb-dashboard/pull/1407) @[baurine](https://github.com/baurine)
-        
+
     + Backup & Restore (BR)
 
         - note [#issue]() @[贡献者 GitHub ID]()
