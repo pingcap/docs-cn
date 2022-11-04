@@ -71,7 +71,7 @@ SET GLOBAL tidb_server_memory_limit = "32GB";
 
 > **警告：**
 >
-> + 目前两张系统表是实验特性，提供的内存使用信息仅供参考，不建议用于获取生产环境中的内存使用信息。
+> 目前以下系统表是实验特性，提供的内存使用信息仅供参考，不建议在生产环境中使用以下系统表获取内存使用信息供决策判断。
 
 要查看当前实例或集群的内存使用情况，你可以查询系统表 [`INFORMATION_SCHEMA.(CLUSTER_)MEMORY_USAGE`](/information-schema/information-schema-memory-usage.md)。
 
