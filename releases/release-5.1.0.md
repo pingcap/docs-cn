@@ -184,6 +184,7 @@ To learn more about the information and how to disable this behavior, refer to [
 
     - Support the built-in function `VITESS_HASH()` [#23915](https://github.com/pingcap/tidb/pull/23915)
     - Support pushing down data of the enumerated type to TiKV to improve performance when using enumerated types in `WHERE` clauses [#23619](https://github.com/pingcap/tidb/issues/23619)
+    - Support the `RENAME USER` syntax [#23648](https://github.com/pingcap/tidb/issues/23648)
     - Optimize the calculation of Window Function to solve TiDB OOM problems when paging data with ROW_NUMBER() [#23807](https://github.com/pingcap/tidb/issues/23807)
     - Optimize the calculation of `UNION ALL` to solve the TiDB OOM problems when using `UNION ALL` to join a large number of `SELECT` statements [#21441](https://github.com/pingcap/tidb/issues/21441)
     - Optimize the dynamic pruning mode of partitioned tables to improve performance and stability [#24150](https://github.com/pingcap/tidb/issues/24150)

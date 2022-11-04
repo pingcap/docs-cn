@@ -347,9 +347,8 @@ Configuration items related to replicas
 ### `enable-placement-rules`
 
 + Enables `placement-rules`.
-+ Default value: `false`
++ Default value: `true`
 + See [Placement Rules](/configure-placement-rules.md).
-+ An experimental feature of TiDB 4.0.
 
 ### `flow-round-by-digit` <span class="version-mark">New in TiDB 5.1</span>
 

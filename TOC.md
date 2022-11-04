@@ -645,6 +645,7 @@
       - [`MODIFY COLUMN`](/sql-statements/sql-statement-modify-column.md)
       - [`PREPARE`](/sql-statements/sql-statement-prepare.md)
       - [`RECOVER TABLE`](/sql-statements/sql-statement-recover-table.md)
+      - [`RENAME USER`](/sql-statements/sql-statement-rename-user.md)
       - [`RENAME INDEX`](/sql-statements/sql-statement-rename-index.md)
       - [`RENAME TABLE`](/sql-statements/sql-statement-rename-table.md)
       - [`REPLACE`](/sql-statements/sql-statement-replace.md)
