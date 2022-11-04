@@ -25,7 +25,7 @@ tiup bench rawsql # 以自定义 SQL 文件作为 workload 压测
       --count int             总执行次数，0 表示无限次
   -D, --db string             被压测的数据库名 (默认为 "test")
   -d, --driver string         数据库驱动: mysql, postgres (默认 "mysql")
-      --dropdata              在 prepare 之前清除历史数据
+      --dropdata              在 prepare 数据之前清除历史数据
   -h, --help                  输出 bench 命令的帮助信息
   -H, --host strings          数据库的主机地址 (默认 ["127.0.0.1"])
       --ignore-error          忽略压测时数据库报出的错误
