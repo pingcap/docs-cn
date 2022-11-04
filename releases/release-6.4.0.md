@@ -159,6 +159,14 @@ TiDB 版本：6.4.0-DMR
 
     [用户文档](/auto-increment.md#mysql-兼容模式)
 
+* 对 JSON 类型中的 Array 做范围选择
+
+    新版本支持 MySQL 兼容的范围选择语法。 用关键字 `to` 指定元素起始和结束的位置，用来选择 Array 中连续范围的元素，起始位置记为 `0` 。 比如 `$[0 to 2]` 选择 Array 中的前三个元素。  `last` 关键字代表 Array 中最后一个元素的位置，能够实现从右到左的位置设定, 比如 `$[last-2 to last]` 用来选择最后三个元素。 这个能力进一步提升的 JSON 操作的兼容能力，简化了 MySQL 应用向 TiDB 迁移的。
+
+    [用户文档](/data-type-json.md)
+
+    
+
 ### 备份和恢复
 
 * 基于 AWS EBS snapshot 的集群备份和恢复
