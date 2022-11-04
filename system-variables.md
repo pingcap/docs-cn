@@ -2001,8 +2001,8 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 当配置该变量为 `0` 到 `1` 之间的值时，表示开启内存阈值报警功能：
 
     - 如果系统变量 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 等于 0，且配置项 [`server-memory-quota`](/tidb-configuration-file.md#server-memory-quota-从-v409-版本开始引入) 未设置，则内存报警阈值为 `tidb_memory-usage-alarm-ratio * 系统内存大小`。
-    - 如果系统变量 `tidb_server_memory_limit` 被设置且大于 0，则内存报警阈值为 `tidb_memory-usage-alarm-ratio * tidb_server_memory_limit`。
-    - 如果系统变量 `tidb_server_memory_limit` 被设置且等于 0，配置项 `server-memory-quota` 被设置且大于 0，则内存报警阈值为 `tidb_memory-usage-alarm-ratio * server-memory-quota`。
+    - 如果系统变量 `tidb_server_memory_limit` 等于 0，且配置项 `server-memory-quota` 被设置为大于 0，则内存报警阈值为 `tidb_memory-usage-alarm-ratio * server-memory-quota`。
+    - 如果系统变量 `tidb_server_memory_limit` 被设置为大于 0，则内存报警阈值为 `tidb_memory-usage-alarm-ratio * tidb_server_memory_limit`。
 
 ### `tidb_memory_usage_alarm_keep_record_num` <span class="version-mark">从 v6.4.0 版本开始引入</span>
 
