@@ -87,7 +87,7 @@ tiup cluster display CLUSTER_NAME --dashboard
 使用 TiUP 部署时，对于已启动的集群，可使用 `tiup ctl pd` 命令在所有 PD 实例上禁用 TiDB Dashboard（将 `127.0.0.1:2379` 替换为任意 PD 实例的 IP 和端口）：
 
 ```bash
-tiup ctl pd -u http://127.0.0.1:2379 config set dashboard-address none
+tiup ctl:<cluster-version> pd -u http://127.0.0.1:2379 config set dashboard-address none
 ```
 
 禁用 TiDB Dashboard 后，查询哪个 PD 实例提供 TiDB Dashboard 服务将会失败：
@@ -107,7 +107,7 @@ Dashboard is not started.
 使用 TiUP 部署时，对于已启动的集群，可使用 `tiup ctl pd` 命令，要求 PD 重新协商出某一个实例运行 TiDB Dashboard（将 `127.0.0.1:2379` 替换为任意 PD 实例的 IP 和端口）：
 
 ```bash
-tiup ctl pd -u http://127.0.0.1:2379 config set dashboard-address auto
+tiup ctl:<cluster-version> pd -u http://127.0.0.1:2379 config set dashboard-address auto
 ```
 
 修改完毕后，使用 `tiup cluster display` 命令查看 PD 自动协商出的 TiDB Dashboard 实例地址（将 `CLUSTER_NAME` 替换为集群名称）：
