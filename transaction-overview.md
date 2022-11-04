@@ -221,7 +221,7 @@ mysql> INSERT INTO t1 VALUES (2);
 Query OK, 1 row affected (0.00 sec)
 
 mysql> COMMIT; -- It is successfully committed in MySQL; TiDB returns an error and the transaction rolls back.
-ERROR 1062 (23000): Duplicate entry '1' for key 'PRIMARY'
+ERROR 1062 (23000): Duplicate entry '1' for key 't1.PRIMARY'
 mysql> SELECT * FROM t1; -- MySQL returns 1 2; TiDB returns 1.
 +----+
 | id |
@@ -268,7 +268,7 @@ Query OK, 1 row affected (0.02 sec)
 mysql> INSERT INTO tset VALUES (2);  -- Statement does not take effect because "test" is misspelled as "tset".
 ERROR 1146 (42S02): Table 'test.tset' doesn't exist
 mysql> INSERT INTO test VALUES (1),(2);  -- Entire statement does not take effect because it violates a PRIMARY KEY constraint
-ERROR 1062 (23000): Duplicate entry '1' for key 'PRIMARY'
+ERROR 1062 (23000): Duplicate entry '1' for key 'test.PRIMARY'
 mysql> INSERT INTO test VALUES (3);
 Query OK, 1 row affected (0.00 sec)
 

@@ -114,7 +114,7 @@ COMMIT;
 ```
 
 ```
-ERROR 1062 (23000): Duplicate entry 'bill' for key 'username'
+ERROR 1062 (23000): Duplicate entry 'bill' for key 'users.username'
 ```
 
 In the preceding optimistic example, the unique check was deferred until the transaction is committed. This resulted in a duplicate key error, because the value `bill` was already present.
@@ -154,7 +154,7 @@ INSERT INTO users (username) VALUES ('jane'), ('chris'), ('bill');
 ```
 
 ```
-ERROR 1062 (23000): Duplicate entry 'bill' for key 'username'
+ERROR 1062 (23000): Duplicate entry 'bill' for key 'users.username'
 ```
 
 The first  `INSERT` statement caused a duplicate key error. This causes additional network communication overhead and may reduce the throughput of insert operations.
@@ -177,7 +177,7 @@ INSERT INTO users (username) VALUES ('jane'), ('chris'), ('bill');
 ```
 
 ```
-ERROR 1062 (23000): Duplicate entry 'bill' for key 'username'
+ERROR 1062 (23000): Duplicate entry 'bill' for key 'users.username'
 ```
 
 To achieve better performance of pessimistic transactions, you can set the [`tidb_constraint_check_in_place_pessimistic`](/system-variables.md#tidb_constraint_check_in_place_pessimistic-new-in-v630) variable to `OFF`, which allows TiDB to defer the unique constraint check of a unique index (to the next time when this index requires a lock or to the time when the transaction is committed) and skip the corresponding pessimistic lock. When using this variable, pay attention to the following:
@@ -215,7 +215,7 @@ To achieve better performance of pessimistic transactions, you can set the [`tid
     ```
 
     ```
-    ERROR 1062 (23000): Duplicate entry 'bill' for key 'username'
+    ERROR 1062 (23000): Duplicate entry 'bill' for key 'users.username'
     ```
 
 - When this variable is disabled, committing a pessimistic transaction that needs to write data might return a `Write conflict` error. When this error occurs, TiDB rolls back the current transaction.
@@ -267,8 +267,10 @@ To achieve better performance of pessimistic transactions, you can set the [`tid
     ```
 
     ```
-    ERROR 8147 (23000): transaction aborted because lazy uniqueness check is enabled and an error occurred: [kv:1062]Duplicate entry 'bill' for key 'username'
+    ERROR 8147 (23000): transaction aborted because lazy uniqueness check is enabled and an error occurred: [kv:1062]Duplicate entry 'bill' for key 'users.username'
     ```
+
+- When this variable is disabled, the `1062 Duplicate entry` error might be not from the current SQL statement. Therefore, when a transaction operates on multiple tables that have indexes with the same name, you need to check the `1062` error message to find which index the error is actually from.
 
 ## PRIMARY KEY
 

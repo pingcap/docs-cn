@@ -893,7 +893,7 @@ MPP is a distributed computing framework provided by the TiFlash engine, which a
         tidb> insert into t values (1);
         Query OK, 1 row affected
         tidb> commit; -- Check only when a transaction is committed.
-        ERROR 1062 : Duplicate entry '1' for key 'PRIMARY'
+        ERROR 1062 : Duplicate entry '1' for key 't.PRIMARY'
         ```
 
     - When setting `tidb_constraint_check_in_place` to `ON` and using optimistic transactions:
@@ -902,7 +902,7 @@ MPP is a distributed computing framework provided by the TiFlash engine, which a
         tidb> set @@tidb_constraint_check_in_place=ON;
         tidb> begin optimistic;
         tidb> insert into t values (1);
-        ERROR 1062 : Duplicate entry '1' for key 'PRIMARY'
+        ERROR 1062 : Duplicate entry '1' for key 't.PRIMARY'
         ```
 
 ### `tidb_constraint_check_in_place_pessimistic` <span class="version-mark">New in v6.3.0</span>
@@ -943,7 +943,7 @@ MPP is a distributed computing framework provided by the TiFlash engine, which a
         ```
 
         ```
-        ERROR 1062 : Duplicate entry '1' for key 'PRIMARY'
+        ERROR 1062 : Duplicate entry '1' for key 't.PRIMARY'
         ```
 
     - When setting `tidb_constraint_check_in_place_pessimistic` to `ON` and using pessimistic transactions:
@@ -955,7 +955,7 @@ MPP is a distributed computing framework provided by the TiFlash engine, which a
         ```
 
         ```
-        ERROR 1062 : Duplicate entry '1' for key 'PRIMARY'
+        ERROR 1062 : Duplicate entry '1' for key 't.PRIMARY'
         ```
 
 ### tidb_cost_model_version <span class="version-mark">New in v6.2.0</span>
