@@ -60,6 +60,7 @@ TiDB supports most of the JSON functions that shipped with the GA release of MyS
 | Function Name                     | Description |
 | --------------------------------- | ----------- |
 | [JSON_PRETTY(json_doc)][json_pretty] | Pretty formatting of a JSON document |
+| [JSON_STORAGE_FREE(json_doc)][json_storage_free] | Returns how much storage space was freed in the binary representation of the JSON value after it was updated in place. As TiDB has different storage architecture from MySQL, this function always returns 0 for a valid JSON value, and it is implemented for compatibility with MySQL 8.0. |
 | [JSON_STORAGE_SIZE(json_doc)][json_storage_size] | Returns an approximate size of bytes required to store the json value. As the size does not account for TiKV using compression, the output of this function is not strictly compatible with MySQL. |
 
 ## Aggregate Functions
@@ -131,5 +132,7 @@ TiDB supports most of the JSON functions that shipped with the GA release of MyS
 [json_objectagg]: https://dev.mysql.com/doc/refman/5.7/en/aggregate-functions.html#function_json-objectagg
 
 [json_pretty]: https://dev.mysql.com/doc/refman/5.7/en/json-utility-functions.html#function_json-pretty
+
+[json_storage_free]: https://dev.mysql.com/doc/refman/8.0/en/json-utility-functions.html#function_json-storage-free
 
 [json_storage_size]: https://dev.mysql.com/doc/refman/5.7/en/json-utility-functions.html#function_json-storage-size
