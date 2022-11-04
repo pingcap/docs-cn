@@ -321,6 +321,12 @@ This variable is an alias for [`last_insert_id`](#last_insert_id).
 - Default value: `OFF`
 - This variable is used to show whether the execution plan used in the previous `execute` statement is taken directly from the plan cache.
 
+### `last_sql_use_alloc` <span class="version-mark">New in v6.4.0</span>
+
+- Scope: SESSION
+- Default value: `OFF`
+- This variable is read-only. It is used to show whether the previous statement uses a cached chunk object (chunk allocation).
+
 ### license
 
 - Scope: NONE
@@ -1248,7 +1254,7 @@ MPP is a distributed computing framework provided by the TiFlash engine, which a
 ### tidb_enable_ddl
 
 - Scope: GLOBAL
-- Persists to cluster: No, only applicable to the current TiDB instance that you are connecting to. 
+- Persists to cluster: No, only applicable to the current TiDB instance that you are connecting to.
 - Default value: `ON`
 - Possible values: `OFF`, `ON`
 - This variable controls whether the corresponding TiDB server can run DDL statements or not.
@@ -1644,6 +1650,14 @@ MPP is a distributed computing framework provided by the TiFlash engine, which a
 - When the operator that reads data has only one thread left and the memory usage of a single SQL statement continues to exceed [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query), this SQL statement triggers other memory control behaviors, such as spilling data to disk.
 
 </CustomContent>
+
+### tidb_enable_reuse_chunk <span class="version-mark">New in v6.4.0</span>
+
+- Scope: SESSION | GLOBAL
+- Persists to cluster: Yes
+- Default value: `ON`
+- Value options: `OFF`, `ON`
+- This variable controls whether TiDB enables chunk objects cache. If the value is `ON`, TiDB prefers to use the cached chunk object and only requests from the system if the requested object is not in the cache. If the value is `OFF`, TiDB requests chunk objects from the system directly.
 
 ### tidb_enable_slow_log
 
