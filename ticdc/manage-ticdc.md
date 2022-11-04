@@ -31,7 +31,7 @@ tiup cluster upgrade <cluster-name> v6.3.0
 
 This section introduces how to modify the configuration of TiCDC cluster using the  [`tiup cluster edit-config`](/tiup/tiup-component-cluster-edit-config.md) command of TiUP. The following example changes the value of `gc-ttl` from the default `86400` to `3600`, namely, one hour.
 
-First, execute the following command. You need to replace `<cluster-name>` with your actual cluster name.
+First, run the following command. You need to replace `<cluster-name>` with your actual cluster name.
 
 {{< copyable "shell-regular" >}}
 
@@ -54,7 +54,7 @@ Then, enter the vi editor page and modify the `cdc` configuraion under [`server-
     gc-ttl: 3600
 ```
 
-After the modification, execute the `tiup cluster reload -R cdc` command to reload the configuration.
+After the modification, run the `tiup cluster reload -R cdc` command to reload the configuration.
 
 ## Use TLS
 
@@ -118,18 +118,18 @@ The states in the above state transfer diagram are described as follows:
 
 The numbers in the above state transfer diagram are described as follows.
 
-- ① Execute the `changefeed pause` command
-- ② Execute the `changefeed resume` command to resume the replication task
+- ① Run the `changefeed pause` command.
+- ② Run the `changefeed resume` command to resume the replication task.
 - ③ Recoverable errors occur during the `changefeed` operation, and the operation is resumed automatically.
-- ④ Execute the `changefeed resume` command to resume the replication task
-- ⑤ Recoverable errors occur during the `changefeed` operation
+- ④ Run the `changefeed resume` command to resume the replication task.
+- ⑤ Recoverable errors occur during the `changefeed` operation.
 - ⑥ `changefeed` has reached the preset `TargetTs`, and the replication is automatically stopped.
 - ⑦ `changefeed` suspended longer than the duration specified by `gc-ttl`, and cannot be resumed.
 - ⑧ `changefeed` experienced an unrecoverable error when trying to execute automatic recovery.
 
 #### Create a replication task
 
-Execute the following commands to create a replication task:
+Run the following commands to create a replication task:
 
 ```shell
 cdc cli changefeed create --server=http://10.0.10.25:8300 --sink-uri="mysql://root:123456@127.0.0.1:3306/" --changefeed-id="simple-replication-task" --sort-engine="unified"
@@ -324,7 +324,7 @@ In the command above, `changefeed.toml` is the configuration file for the replic
 
 #### Query the replication task list
 
-Execute the following command to query the replication task list:
+Run the following command to query the replication task list:
 
 {{< copyable "shell-regular" >}}
 
@@ -349,12 +349,12 @@ cdc cli changefeed list --server=http://10.0.10.25:8300
     - `normal`: The replication task runs normally.
     - `stopped`: The replication task is stopped (manually paused).
     - `error`: The replication task is stopped (by an error).
-    - `removed`: The replication task is removed. Tasks of this state are displayed only when you have specified the `--all` option. To see these tasks when this option is not specified, execute the `changefeed query` command.
-    - `finished`: The replication task is finished (data is replicated to the `target-ts`). Tasks of this state are displayed only when you have specified the `--all` option. To see these tasks when this option is not specified, execute the `changefeed query` command.
+    - `removed`: The replication task is removed. Tasks of this state are displayed only when you have specified the `--all` option. To see these tasks when this option is not specified, run the `changefeed query` command.
+    - `finished`: The replication task is finished (data is replicated to the `target-ts`). Tasks of this state are displayed only when you have specified the `--all` option. To see these tasks when this option is not specified, run the `changefeed query` command.
 
 #### Query a specific replication task
 
-To query a specific replication task, execute the `changefeed query` command. The query result includes the task information and the task state. You can specify the `--simple` or `-s` argument to simplify the query result that will only include the basic replication state and the checkpoint information. If you do not specify this argument, detailed task configuration, replication states, and replication table information are output.
+To query a specific replication task, run the `changefeed query` command. The query result includes the task information and the task state. You can specify the `--simple` or `-s` argument to simplify the query result that will only include the basic replication state and the checkpoint information. If you do not specify this argument, detailed task configuration, replication states, and replication table information are output.
 
 ```shell
 cdc cli changefeed query -s --server=http://10.0.10.25:8300 --changefeed-id=simple-replication-task
@@ -454,7 +454,7 @@ In the command and result above:
 
 #### Pause a replication task
 
-Execute the following command to pause a replication task:
+Run the following command to pause a replication task:
 
 ```shell
 cdc cli changefeed pause --server=http://10.0.10.25:8300 --changefeed-id simple-replication-task
@@ -466,7 +466,7 @@ In the above command:
 
 #### Resume a replication task
 
-Execute the following command to resume a paused replication task:
+Run the following command to resume a paused replication task:
 
 ```shell
 cdc cli changefeed resume --server=http://10.0.10.25:8300 --changefeed-id simple-replication-task
@@ -483,7 +483,7 @@ cdc cli changefeed resume --server=http://10.0.10.25:8300 --changefeed-id simple
 
 #### Remove a replication task
 
-Execute the following command to remove a replication task:
+Run the following command to remove a replication task:
 
 {{< copyable "shell-regular" >}}
 
@@ -814,7 +814,7 @@ Unified sorter is the sorting engine in TiCDC. It can mitigate OOM problems caus
 
 For the changefeeds created using `cdc cli` after v4.0.13, Unified Sorter is enabled by default; for the changefeeds that have existed before v4.0.13, the previous configuration is used.
 
-To check whether or not the Unified Sorter feature is enabled on a changefeed, you can execute the following example command (assuming the IP address of the PD instance is `http://10.0.10.25:2379`):
+To check whether or not the Unified Sorter feature is enabled on a changefeed, you can run the following example command (assuming the IP address of the PD instance is `http://10.0.10.25:2379`):
 
 ```shell
 cdc cli --server="http://10.0.10.25:8300" changefeed query --changefeed-id=simple-replication-task | grep 'sort-engine'
