@@ -528,7 +528,7 @@ INSERT INTO t VALUES ('a');
 ```
 
 ```sql
-ERROR 1062 (23000): Duplicate entry 'a' for key 'PRIMARY'
+ERROR 1062 (23000): Duplicate entry 'a' for key 't.PRIMARY'
 ```
 
 TiDB 兼容了 MySQL 的 case insensitive collation。
@@ -538,7 +538,7 @@ INSERT INTO t VALUES ('a ');
 ```
 
 ```sql
-ERROR 1062 (23000): Duplicate entry 'a ' for key 'PRIMARY'
+ERROR 1062 (23000): Duplicate entry 'a ' for key 't.PRIMARY'
 ```
 
 TiDB 修正了 `PADDING` 行为，与 MySQL 兼容。
