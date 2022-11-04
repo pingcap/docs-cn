@@ -229,8 +229,9 @@ delta_index_cache_size = 0
     redact-info-log = false
 
 [security.encryption]
+    ## 数据文件的加密方法。
     ## 可选值为 "aes128-ctr"、"aes192-ctr"、"aes256-ctr"、"sm4-ctr" (仅 v6.4.0 及之后版本) 和 "plaintext"。
-    ## 默认值为 "plaintext"，即默认不开启加密功能。
+    ## 默认值为 "plaintext"，即默认不开启加密功能。选择 "plaintext" 以外的值则表示启用加密功能。此时必须指定主密钥。
     data-encryption-method = "aes128-ctr"
     ## 轮换密钥的频率，默认值：`7d`。
     data-key-rotation-period = "168h" # 7 days
