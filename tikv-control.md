@@ -19,7 +19,7 @@ TiKV Control（以下简称 tikv-ctl）是 TiKV 的命令行工具，用于管�
 {{< copyable "shell-regular" >}}
 
 ```bash
-tiup ctl tikv
+tiup ctl:<cluster-version> tikv
 ```
 
 ```
