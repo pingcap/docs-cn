@@ -153,7 +153,7 @@ TiDB 版本：6.4.0-DMR
 
 * TiDB 分区表兼容 Linear Hash 分区
 
-    TiDB 现有的分区方式支持 Hash，Range，List 分区，在此基础上增加了对 [MySQL Linear Hash](https://dev.mysql.com/doc/refman/5.7/en/partitioning-linear-hash.html) 分区的兼容行为，方便原 MySQL 用户迁移到 TiDB。
+    TiDB 现有的分区方式支持 Hash，Range，List 分区。TiDB v6.4.0 增加了对 [MySQL Linear Hash](https://dev.mysql.com/doc/refman/5.7/en/partitioning-linear-hash.html) 分区语法的兼容，方便原 MySQL 用户迁移到 TiDB。
     用户现有的 MySQL Linear Hash 分区的 DDL 可以不经修改直接在 TiDB 上执行，产生一个 TiDB Hash 分区表（TiDB 内部实际不存在 Linear Hash 分区）。用户已有的查询/访问原 Linear Hash 分区的 SQL（DML）也可以不经修改，直接访问对应的 TiDB Hash 分区，得到正常结果。此功能保证了对 MySQL Linear Hash 分区的语法兼容，方便用户的应用无缝迁移到 TiDB。[#issue](https://github.com/pingcap/tidb/issues/38450) @[贡献者 GitHub ID](mjonss)
 
     [用户文档](/mysql-compatibility.md)
@@ -164,6 +164,19 @@ TiDB 版本：6.4.0-DMR
 
     [用户文档](/auto-increment.md#mysql-兼容模式)
 
+
+### 备份和恢复
+
+* 基于 AWS EBS snapshot 的集群备份和恢复
+
+    如果你的TiDB 集群部署在 EKS 上，使用了 AWS EBS 卷，并且对数据备份有以下要求，可考虑使用 TiDB Operator 将 TiDB 集群数据以卷快照以及元数据的方式备份至 AWS S3：
+    
+    - 份的影响降到最小，如备份对 QPS 和事务耗时影响小于 5%，不占用集群 CPU 以及内存。
+    - 快速备份和恢复，比如 1 小时内完成备份，2 小时内完成恢复。
+    
+     [#issue](https://github.com/pingcap/tidb/issues/33849) @[fengou1](https://github.com/fengou1)
+
+    [用户文档](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.4/backup-to-aws-s3-by-snapshot)
 
 ### 数据迁移
 
@@ -183,11 +196,13 @@ TiDB 版本：6.4.0-DMR
 
 ### 部署及运维
 
-* 功能简短描述
+* 集群诊断功能 GA
 
-    功能详细描述（功能是什么，对用户的价值是什么，怎么用） [#issue]() @[贡献者 GitHub ID]()
+    集群诊断功能是在指定的时间范围内，对集群可能存在的问题进行诊断，并将诊断结果和一些集群相关的负载监控信息汇总成一个诊断报告。诊断报告是网页形式，通过浏览器保存后可离线浏览和传阅。
+    
+    用户可以通过该报告快速了解集群内的基本诊断信息，包括负载、组件、耗时和配置信息。若用户的集群存在一些常见问题，在[诊断信息](https://docs.pingcap.com/zh/tidb/stable/dashboard-diagnostics-report#%E8%AF%8A%E6%96%AD%E4%BF%A1%E6%81%AF)部分可以了解 TiDB 内置自动诊断的结果。
 
-    [用户文档]()
+    详细内容见[用户文档](https://docs.pingcap.com/zh/tidb/stable/dashboard-diagnostics-access)
 
 ## 兼容性变更
 
@@ -240,6 +255,11 @@ TiDB 版本：6.4.0-DMR
 
 + Tools
 
+    + TiDB Dashboard
+        - Monitoring 页面展示 TiFlash 相关指标，并且优化指标的展示方式。 [#1386](https://github.com/pingcap/tidb-dashboard/issues/1386) @[baurine](https://github.com/baurine)
+        - 在 Slow Query 列表 和 SQL Statement 列表展示结果行数。 [#1407](https://github.com/pingcap/tidb-dashboard/pull/1407) @[baurine](https://github.com/baurine)
+        - 优化 Dashboard 的报错信息。  [#1407](https://github.com/pingcap/tidb-dashboard/pull/1407) @[baurine](https://github.com/baurine)
+        
     + Backup & Restore (BR)
 
         - note [#issue]() @[贡献者 GitHub ID]()
@@ -288,6 +308,10 @@ TiDB 版本：6.4.0-DMR
     - note [#issue]() @[贡献者 GitHub ID]()
 
 + Tools
+
+    + TiDB Dashboard
+
+        - 避免查询 Statement 执行计划的时候造成 TiDB OOM。 [#1386](https://github.com/pingcap/tidb-dashboard/issues/1386) @[baurine](https://github.com/baurine)
 
     + Backup & Restore (BR)
 
