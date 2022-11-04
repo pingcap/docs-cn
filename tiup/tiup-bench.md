@@ -199,7 +199,7 @@ Flags:
 
 ## 使用 TiUP 运行 RawSQL 测试
 
-用户可以将 OLAP 查询写到 SQL 文件中，通过 `tiup bench rawsql` 执行测试，步骤如下：
+你可以将 OLAP 查询写到 SQL 文件中，通过 `tiup bench rawsql` 执行测试，步骤如下：
 
 1. 自行准备数据和需要执行的查询：
 
