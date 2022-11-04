@@ -17,7 +17,7 @@ This data compaction statement is currently supported only for TiFlash replicas,
 
 ```ebnf+diagram
 AlterTableCompactStmt ::=
-    'ALTER' 'TABLE' TableName 'COMPACT' ( 'TIFLASH' 'REPLICA' )?
+    'ALTER' 'TABLE' TableName 'COMPACT' ( 'PARTITION' PartitionNameList )? ( 'TIFLASH' 'REPLICA' )?
 ```
 
 Since v6.2.0, the `TIFLASH REPLICA` part of the syntax can be omitted. When omitted, the semantic of the statement remains unchanged, and takes effect only for TiFlash.
@@ -49,6 +49,32 @@ You can execute the following statement to immediately initiate the compaction f
 
 ```sql
 ALTER TABLE employees COMPACT TIFLASH REPLICA;
+```
+
+### Compact TiFlash replicas of specified partitions in a table
+
+The following takes an `employees` table as an example, which has 4 partitions with 2 TiFlash replicas:
+
+```sql
+CREATE TABLE employees (
+    id INT NOT NULL,
+    hired DATE NOT NULL DEFAULT '1970-01-01',
+    store_id INT
+)
+PARTITION BY LIST (store_id) (
+    PARTITION pNorth VALUES IN (1, 2, 3, 4, 5),
+    PARTITION pEast VALUES IN (6, 7, 8, 9, 10),
+    PARTITION pWest VALUES IN (11, 12, 13, 14, 15),
+    PARTITION pCentral VALUES IN (16, 17, 18, 19, 20)
+);
+
+ALTER TABLE employees SET TIFLASH REPLICA 2;
+```
+
+You can execute the following statement to immediately initiate the compaction for the 2 TiFlash replicas of the `pNorth` and `pEast` partitions in the `employees` table:
+
+```sql
+ALTER TABLE employees COMPACT PARTITION pNorth, pEast TIFLASH REPLICA;
 ```
 
 ## Concurrency
