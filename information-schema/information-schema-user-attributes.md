@@ -34,7 +34,7 @@ DESC user_attributes;
 ```sql
 CREATE USER testuser1 COMMENT 'This user is created only for test';
 CREATE USER testuser2 ATTRIBUTE '{"email": "user@pingcap.com"}';
-SELECT * FROM user_attributes;
+SELECT * FROM information_schema.user_attributes;
 ```
 
 ```sql
