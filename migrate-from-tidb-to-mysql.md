@@ -158,7 +158,7 @@ After setting up the environment, you can use [Dumpling](/dumpling-overview.md) 
     In the upstream cluster, run the following command to create a changefeed from the upstream to the downstream clusters:
 
     ```shell
-    tiup ctl:v6.3.0 cdc changefeed create --pd=http://127.0.0.1:2379 --sink-uri="mysql://root:@127.0.0.1:3306" --changefeed-id="upstream-to-downstream" --start-ts="434217889191428107"
+    tiup ctl:<cluster-version> cdc changefeed create --pd=http://127.0.0.1:2379 --sink-uri="mysql://root:@127.0.0.1:3306" --changefeed-id="upstream-to-downstream" --start-ts="434217889191428107"
     ```
 
     In this command, the parameters are as follows:

@@ -64,7 +64,7 @@ http://192.168.0.123:2379/dashboard/
 
 ### Switch to another PD instance to serve TiDB Dashboard
 
-For a running cluster deployed using TiUP, you can use the `tiup ctl pd` command to change the PD instance that serves TiDB Dashboard, or re-specify a PD instance to serve TiDB Dashboard when it is disabled:
+For a running cluster deployed using TiUP, you can use the `tiup ctl:<cluster-version> pd` command to change the PD instance that serves TiDB Dashboard, or re-specify a PD instance to serve TiDB Dashboard when it is disabled:
 
 {{< copyable "shell-regular" >}}
 
@@ -91,7 +91,7 @@ tiup cluster display CLUSTER_NAME --dashboard
 
 ## Disable TiDB Dashboard
 
-For a running cluster deployed using TiUP, use the `tiup ctl pd` command to disable TiDB Dashboard on all PD instances (replace `127.0.0.1:2379` with the IP and port of any PD instance):
+For a running cluster deployed using TiUP, use the `tiup ctl:<cluster-version> pd` command to disable TiDB Dashboard on all PD instances (replace `127.0.0.1:2379` with the IP and port of any PD instance):
 
 {{< copyable "shell-regular" >}}
 
@@ -113,7 +113,7 @@ Dashboard is not started.
 
 ## Re-enable TiDB Dashboard
 
-For a running cluster deployed using TiUP, use the `tiup ctl pd` command to request PD to renegotiate an instance to run TiDB Dashboard (replace `127.0.0.1:2379` with the IP and port of any PD instance):
+For a running cluster deployed using TiUP, use the `tiup ctl:<cluster-version> pd` command to request PD to renegotiate an instance to run TiDB Dashboard (replace `127.0.0.1:2379` with the IP and port of any PD instance):
 
 {{< copyable "shell-regular" >}}
 
