@@ -44,11 +44,13 @@ TiDB 版本：6.4.0-DMR
 
 ### 可观测性
 
-* 功能简短描述
+* 集群诊断功能 GA **tw@shichun-0415**
 
-    功能详细描述（功能是什么，对用户的价值是什么，怎么用） [#issue]() @[贡献者 GitHub ID]()
+    集群诊断功能是在指定的时间范围内，对集群可能存在的问题进行诊断，并将诊断结果和一些集群相关的负载监控信息汇总成一个诊断报告。诊断报告是网页形式，通过浏览器保存后可离线浏览和传阅。
 
-    [用户文档]()
+    用户可以通过该报告快速了解集群内的基本诊断信息，包括负载、组件、耗时和配置信息。若用户的集群存在一些常见问题，在[诊断信息](/dashboard/dashboard-diagnostics-report.md#诊断信息)部分可以了解 TiDB 内置自动诊断的结果。
+
+    详细内容见[用户文档](dashboard/dashboard-diagnostics-access.md)
 
 ### 性能
 
@@ -187,12 +189,6 @@ TiDB 版本：6.4.0-DMR
 
     [用户文档](dm/dm-precheck.md)
 
-* 解决了上游数据库的建表 sql TiDB 不兼容，导致 DM 全量迁移报错的问题。[#37984](https://github.com/pingcap/tidb/issues/37984) @[lance6716](https://github.com/lance6716) **tw@shichun-0415**
-
-    DM 会默认使用上游数据库的建表 SQL 去 TiDB 执行，帮用户创建好目标表。当上游的建表 SQL  TiDB 不兼容时，DM 使用该 SQL 帮用户创建目标表会失败，导致 DM 任务中断。这时候用户可以提前在 TiDB 手动创建好目标表，DM 检查到已存在的目标表时会忽略掉这个建表 SQL 报错，让全量迁移任务继续运行。
-
-    [用户文档](https://github.com/pingcap/docs-cn/pull/11718)
-
 * 配置 DM 增量迁移任务，支持 binlog_name 和 GTID 的参数可作为选配项。[#7393](https://github.com/pingcap/tiflow/issues/7393) @[GMHDBJD](https://github.com/GMHDBJD) **tw@shichun-0415**
 
     用户只配置 DM 增量迁移任务时，如果不指定 binlog_name 和 GTID 的参数取值，则默认按任务的启动时间去上游获取该时间之后的 binlog file，并将这些增量数据迁移到下游 ，降低了用户的理解成本和配置复杂度。
@@ -215,13 +211,11 @@ TiDB 版本：6.4.0-DMR
 
 ### 部署及运维
 
-* 集群诊断功能 GA **tw@shichun-0415**
+* 功能简短描述
 
-    集群诊断功能是在指定的时间范围内，对集群可能存在的问题进行诊断，并将诊断结果和一些集群相关的负载监控信息汇总成一个诊断报告。诊断报告是网页形式，通过浏览器保存后可离线浏览和传阅。
+    功能详细描述（功能是什么，对用户的价值是什么，怎么用） [#issue]() @[贡献者 GitHub ID]()
 
-    用户可以通过该报告快速了解集群内的基本诊断信息，包括负载、组件、耗时和配置信息。若用户的集群存在一些常见问题，在[诊断信息](/dashboard/dashboard-diagnostics-report.md#诊断信息)部分可以了解 TiDB 内置自动诊断的结果。
-
-    详细内容见[用户文档](dashboard/dashboard-diagnostics-access.md)
+    [用户文档]()
 
 ## 兼容性变更
 
@@ -314,7 +308,12 @@ TiDB 版本：6.4.0-DMR
 
     + TiDB Data Migration (DM)
 
-        - note [#issue]() @[贡献者 GitHub ID]()
+        - 解决了上游数据库的建表 SQL TiDB 不兼容，导致 DM 全量迁移报错的问题。[#37984](https://github.com/pingcap/tidb/issues/37984) @[lance6716](https://github.com/lance6716) **tw@shichun-0415**
+
+        DM 会默认使用上游数据库的建表 SQL 去 TiDB 执行，帮用户创建好目标表。当上游的建表 SQL  TiDB 不兼容时，DM 使用该 SQL 帮用户创建目标表会失败，导致 DM 任务中断。这时候用户可以提前在 TiDB 手动创建好目标表，DM 检查到已存在的目标表时会忽略掉这个建表 SQL 报错，让全量迁移任务继续运行。
+
+        [用户文档](https://github.com/pingcap/docs-cn/pull/11718)
+
         - note [#issue]() @[贡献者 GitHub ID]()
 
     + TiDB Lightning
