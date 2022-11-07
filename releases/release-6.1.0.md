@@ -8,6 +8,8 @@ Release date: June 13, 2022
 
 TiDB version: 6.1.0
 
+Quick access: [Quick start](https://docs.pingcap.com/tidb/v6.1/quick-start-with-tidb) | [Production deployment](https://docs.pingcap.com/tidb/v6.1/production-deployment-using-tiup) | [Installation packages](https://www.pingcap.com/download/)
+
 In 6.1.0, the key new features or improvements are as follows:
 
 * List partitioning and list COLUMNS partitioning become GA, compatible with MySQL 5.7

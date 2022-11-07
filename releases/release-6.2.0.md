@@ -8,6 +8,8 @@ Release date: August 23, 2022
 
 TiDB version: 6.2.0-DMR
 
+Quick access: [Quick start](https://docs.pingcap.com/tidb/v6.2/quick-start-with-tidb) | [Installation packages](https://www.pingcap.com/download/)
+
 In v6.2.0-DMR, the key new features and improvements are as follows:
 
 * TiDB Dashboard supports [visual execution plans](/dashboard/dashboard-slow-query.md#visual-execution-plans), allowing more intuitive display of execution plans.
