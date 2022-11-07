@@ -33,14 +33,14 @@ FlashbackToNewName ::=
 
 ## 注意事项
 
-- 如果数据库被删除的时间超过了 GC lifetime (`tikv_gc_safe_point`)，就无法使用 `FLASHBACK DATABASE` 语句来恢复被删除的数据了，否则会返回错误。错误类似于 `ERROR 1105 (HY000): Can't find dropped database 'test' in GC safe point 2022-11-06 16:10:10 +0800 CST`。
+- 如果数据库被删除的时间超过了 GC life time (`tikv_gc_safe_point`)，就无法使用 `FLASHBACK DATABASE` 语句来恢复被删除的数据了，否则会返回错误。错误类似于 `ERROR 1105 (HY000): Can't find dropped database 'test' in GC safe point 2022-11-06 16:10:10 +0800 CST`。
 
-- 不能用 `FLASHBACK DATABASE` 多次恢复同一个被删除的数据库，因为 `FLASHBACK DATABASE` 所恢复数据库的 schema ID 还是被删除数据库的 schema ID，多次恢复同一个被删除的数据库会导致重复的 schema ID。在 TiDB 中，所有还存在的数据库 schema ID 必须全局唯一。
+- 不能用 `FLASHBACK DATABASE` 多次恢复同一个被删除的数据库，因为 `FLASHBACK DATABASE` 所恢复数据库的 schema ID 和原被删除数据库的 schema ID 一致，多次恢复同一数据库会导致重复的 schema ID。在 TiDB 中，所有数据库的 schema ID 必须全局唯一。
 
 - 在开启 TiDB Binlog 时，使用 `FLASHBACK DATABASE` 需要注意以下情况：
 
-    * 下游从集群也支持 `FLASHBACK DATABASE`。
-    * 从集群的 GC lifetime 一定要长于主集群的 GC lifetime。否则上下游同步存在的延迟可能也会造成下游恢复数据失败。
+    * 下游从集群也需要支持 `FLASHBACK DATABASE`。
+    * 从集群的 GC lifetime 一定要长于主集群的 GC life time。否则上下游同步存在的延迟可能也会造成下游恢复数据失败。
     * 如果 TiDB Binlog 同步出错，则需要在 TiDB Binlog 中过滤掉该数据库，同时手动全量重新导入该数据库的数据。
 
 ## 示例
@@ -62,7 +62,7 @@ FlashbackToNewName ::=
     ```
 
     ```sql
-    FLASHBACK DATABASE test to test1;
+    FLASHBACK DATABASE test TO test1;
     ```
 
 ## MySQL 兼容性
