@@ -127,6 +127,8 @@ aliases: ['/docs-cn/dev/tidb-troubleshooting-map/','/docs-cn/dev/how-to/troubles
 
     - SQL 中包含 `Union` 连接的多条子查询，见案例 [case-1828](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case1828.md)。
 
+更多 OOM 的排查方法，请参考 [TiDB OOM 故障排查](/troubleshoot-tidb-oom.md)。
+
 ### 3.3 执行计划不对
 
 - 3.3.1 现象
