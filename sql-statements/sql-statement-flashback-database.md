@@ -3,9 +3,9 @@ title: FLASHBACK DATABASE
 summary: TiDB 数据库中 FLASHBACK DATABASE 的使用概况。
 ---
 
-# FLASHBACK TABLE
+# FLASHBACK DATABASE
 
-在 TiDB 6.4 中，引入了 `FLASHBACK TABLE` 语法，其功能是在 Garbage Collection (GC) life time 时间内，可以用 `FLASHBACK DATABASE` 语句来恢复被 `DROP` 删除的数据库以及数据。
+在 TiDB 6.4 中，引入了 `FLASHBACK DATABASE` 语法，其功能是在 Garbage Collection (GC) life time 时间内，可以用 `FLASHBACK DATABASE` 语句来恢复被 `DROP` 删除的数据库以及数据。
 
 可以使用系统变量 [`tidb_gc_life_time`](/system-variables.md#tidb_gc_life_time-从-v50-版本开始引入) 配置数据的历史版本的保留时间（默认值是 `10m0s`）。可以使用以下 SQL 语句查询当前的 `safePoint`，即 GC 已经清理到的时间点：
 
