@@ -88,7 +88,7 @@ PITR 的流程如下：
 - `{min_ts}-{uuid}.log` 文件：存储备份下来的 kv 数据变更记录。其中 `{min_ts}` 是该文件中所有 kv 数据变更记录数对应的最小 ts；`{uuid}` 是生成该文件的时候随机生成的。
 - `{checkpoint_ts}-{uuid}.meta` 文件：每个 TiKV 节点每次上传日志备份数据时会生成一个该文件，保存本次上传的所有日志备份数据文件其中 `{checkpoint_ts}` 是本节点的日志备份的 checkpoint，所有 TiKV 节点的最小的 checkpoint 就是日志备份任务最新的 checkpoint；`{uuid}` 是生成该文件的时候随机生成的。
 - `{store_id}.ts` 文件：每个 TiKV 节点每次上传日志备份数据时会使用 global checkpoint ts 更新该文件。其中 `{store_id}` 是 TiKV 的 store ID。
-- `v1_stream_trancate_safepoint.txt` 文件：保存最近一次通过 `br log truncate` 删除日志备份数据后，存储中最早的日志备份数据对应的 ts。
+- `v1_stream_truncate_safepoint.txt` 文件：保存最近一次通过 `br log truncate` 删除日志备份数据后，存储中最早的日志备份数据对应的 ts。
 
 ### 备份文件布局
 
