@@ -132,9 +132,9 @@ The Artifact ID of TiSpark varies with TiSpark versions.
 
 | TiSpark version               | Artifact ID                                        |
 |-------------------------------| -------------------------------------------------- |
-| 2.4.x-${scala_version}, 2.5.0 | tispark-assembly                                   |
-| 2.5.1                         | tispark-assembly-${spark_version}                  |
-| 3.0.x, 3.1.x                  | tispark-assembly-${spark_version}_${scala_version} |
+| 2.4.x-\${scala_version}, 2.5.0 | tispark-assembly                                   |
+| 2.5.1                         | tispark-assembly-\${spark_version}                  |
+| 3.0.x, 3.1.x                  | tispark-assembly-\${spark_version}-\${scala_version} |
 
 ## Getting started
 
