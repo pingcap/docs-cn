@@ -19,6 +19,8 @@ summary: 了解 TiDB 快照备份与恢复功能的架构设计。
 
 ![snapshot backup process design](/media/br/br-snapshot-backup-ts.png)
 
+完整的备份交互流程描述如下：
+
 1. BR 接收备份命令 (`br backup full`)。
     * 获得备份快照点 (backup ts) 和备份存储地址。
 
@@ -48,6 +50,8 @@ summary: 了解 TiDB 快照备份与恢复功能的架构设计。
 恢复集群快照备份数据的流程如下：
 
 ![snapshot restore process design](/media/br/br-snapshot-restore-ts.png)
+
+完整的恢复交互流程描述如下：
 
 1. BR 接收恢复命令 (`br restore`)。
     * 获得快照备份数据存储地址、要恢复的 database 或 table。

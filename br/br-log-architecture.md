@@ -5,9 +5,7 @@ summary: 了解 TiDB 的日志备份和 PITR 的架构设计。
 
 # 日志备份与 PITR 功能架构
 
-TiDB 的备份与恢复功能以 BR 和 TiDB Operator 为使用入口，创建相应的备份或恢复子任务在各个 TiKV 存储节点运行，进行日志备份或者恢复。本文以使用 BR 工具为例，介绍 TiDB 集群备份和恢复数据的架构与流程。
-
-## 架构设计
+本文同样以使用 BR 工具进行备份与恢复为例，介绍 TiDB 集群日志备份和 PITR 的架构设计与流程。
 
 日志备份和 point in time recovery (PITR) 的架构实现如下：
 
@@ -54,6 +52,8 @@ TiDB 的备份与恢复功能以 BR 和 TiDB Operator 为使用入口，创建�
 PITR 的流程如下：
 
 ![Point in time recovery process design](/media/br/pitr-ts.png)
+
+完整的 PITR 交互流程描述如下：
 
 1. BR 接收备份命令 (`br restore point`)。
    * 解析获取全量备份数据地址、日志备份数据地址、恢复到的时间点。

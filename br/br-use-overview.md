@@ -6,7 +6,7 @@ aliases: ['/zh/tidb/dev/br-deployment/']
 
 # TiDB 备份与恢复功能使用概述
 
-[TiDB 备份与恢复概述](/br/backup-and-restore-overview.md)介绍了备份和恢复数据的功能。在此基础上，本文将介绍如何使用 TiDB 的备份和恢复功能，并提供使用示例。
+[TiDB 备份与恢复概述](/br/backup-and-restore-overview.md)介绍了备份和恢复数据的功能，[TiDB 备份与恢复功能架构](/br/backup-and-restore-design.md) 介绍了备份和恢复数据的架构设计与流程。在此基础上，本文将介绍使用 TiDB 的备份和恢复功能的最佳实践，包括如何选择备份方案，如何管理备份数据，以及如何按照和部署备份恢复工具。
 
 ## 使用概览
 
