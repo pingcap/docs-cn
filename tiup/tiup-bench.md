@@ -104,7 +104,7 @@ Flags:
     tiup bench tpcc --warehouses 4 cleanup
     ```
 
-当需要测试大数据集时，直接写入数据通常较慢，此时可以使用如下命令生成 CSV 数据集，然后通过 [TiDB lightning](/tidb-lightning/tidb-lightning-overview.md) 导入数据。
+当需要测试大数据集时，直接写入数据通常较慢，此时可以使用如下命令生成 CSV 数据集，然后通过 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 导入数据。
 
 - 生成 CSV 文件：
 
