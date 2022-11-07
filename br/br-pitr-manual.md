@@ -10,7 +10,7 @@ aliases: ['/zh/tidb/dev/br-log-command-line/']
 
 如果你想了解如何进行备份与恢复，可以参考以下教程：
 
-- [日志备份和 PITR 使用指南](/br/br-pitr-guide.md)
+- [日志备份与 PITR 使用指南](/br/br-pitr-guide.md)
 - [TiDB 集群备份与恢复实践示例](/br/backup-and-restore-use-cases.md)
 
 ## 日志备份命令行介绍

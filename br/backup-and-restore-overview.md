@@ -131,5 +131,5 @@ BR 内置版本会在执行备份和恢复操作前，对 TiDB 集群版本和�
 ## 探索更多
 
 - [TiDB 快照备份与恢复使用指南](/br/br-snapshot-guide.md)
-- [TiDB 日志备份和 PITR 使用指南](/br/br-pitr-guide.md)
+- [TiDB 日志备份与 PITR 使用指南](/br/br-pitr-guide.md)
 - [备份存储](/br/backup-and-restore-storages.md)

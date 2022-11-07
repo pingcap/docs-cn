@@ -146,7 +146,7 @@
     - br cli 命令手册
       - [命令概述](/br/use-br-command-line-tool.md)
       - [快照备份与恢复命令手册](/br/br-snapshot-manual.md)
-      - [日志备份和 PITR 命令手册](/br/br-pitr-manual.md)
+      - [日志备份与 PITR 命令手册](/br/br-pitr-manual.md)
     - 参考指南
       - BR 特性
         - [自动调节](/br/br-auto-tune.md)
