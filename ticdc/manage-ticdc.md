@@ -64,7 +64,7 @@ tiup cluster edit-config <cluster-name>
 >
 > TiCDC 监听的 IP 和端口对应为 `cdc server` 启动时指定的 `--addr` 参数。从 TiCDC v6.2.0 开始，`cdc cli` 将通过 TiCDC 的 Open API 直接与 TiCDC server 进行交互，你可以使用 `--server` 参数指定 TiCDC 的 server 地址。`--pd` 参数将被废弃，不再推荐使用。
 
-如果你使用的 TiCDC 是用 TiUP 部署的，需要将以下命令中的 `cdc cli` 替换为 `tiup ctl cdc`。
+如果你使用的 TiCDC 是用 TiUP 部署的，需要将以下命令中的 `cdc cli` 替换为 `tiup ctl:<cluster-version> cdc`。
 
 ### 管理 TiCDC 服务进程 (`capture`)
 
