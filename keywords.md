@@ -606,6 +606,7 @@ The following list shows the keywords in TiDB. Reserved keywords are marked with
 - TINYINT (R)
 - TINYTEXT (R)
 - TO (R)
+- TOKEN_ISSUER
 - TOPN (R)
 - TRACE
 - TRADITIONAL
