@@ -115,11 +115,11 @@ SET GLOBAL tidb_server_memory_limit = "32GB";
 
 - TiDB 将输出一条包含关键字 `tidb-server has the risk of OOM` 以及以下内存相关系统变量的日志。
 
-    - [`tidb_mem_oom_action`](#tidb_mem_oom_action-span-classversion-mark-v610-span)
-    - [`tidb_mem_quota_query`](#tidb_mem_quota_query)
-    - [`tidb_server_memory_limit`](#tidb_server_memory_limit)
-    - [`tidb_analyze_version`](#tidb_analyze_version-span-classversion-mark-v510-span)
-    - [`tidb_enable_rate_limit_action`](#tidb_enable_rate_limit_action)
+    - [`tidb_mem_oom_action`](/system-variables.md#tidb_mem_oom_action-span-classversion-mark-v610-span)
+    - [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query)
+    - [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit)
+    - [`tidb_analyze_version`](/system-variables.md#tidb_analyze_version-span-classversion-mark-v510-span)
+    - [`tidb_enable_rate_limit_action`](/system-variables.md#tidb_enable_rate_limit_action)
 
 为避免报警时产生的状态文件累积过多，目前 TiDB 默认只保留最近 5 次报警时所生成的状态文件。你可以通过配置系统变量 [`tidb_memory_usage_alarm_keep_record_num`](/system-variables.md#tidb_memory_usage_alarm_keep_record_num) 调整该次数。
 
