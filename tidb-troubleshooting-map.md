@@ -164,6 +164,10 @@ summary: 了解如何处理 TiDB 集群常见问题。
 
     解决方法：可以通过手动加 `Cast(xx as decimal(a, b))` 来绕过这个问题，a 和 b 就是目标的精度。
 
+### 3.5 慢查询问题
+
+要定位慢查询，参阅[慢查询日志](/identify-slow-queries.md)
+
 ## 4. TiKV 问题
 
 ### 4.1 TiKV panic 启动不了
