@@ -18,7 +18,7 @@
 - 应用开发
   - [概览](/develop/dev-guide-overview.md)
   - 快速开始
-    - [使用 TiDB Cloud (Developer Tier) 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md)
+    - [使用 TiDB Cloud (Serverless Tier) 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md)
     - [使用 TiDB 的增删改查 SQL](/develop/dev-guide-tidb-crud-sql.md)
     - 构建简单的 CRUD 应用程序
       - [Java](/develop/dev-guide-sample-application-java.md)
@@ -110,6 +110,7 @@
     - [从大数据量分库分表 MySQL 合并迁移数据到 TiDB](/migrate-large-mysql-shards-to-tidb.md)
     - [从 CSV 文件迁移数据到 TiDB](/migrate-from-csv-files-to-tidb.md)
     - [从 SQL 文件迁移数据到 TiDB](/migrate-from-sql-files-to-tidb.md)
+    - [从 Parquet 文件迁移数据到 TiDB](/migrate-from-parquet-files-to-tidb.md)
     - [从 TiDB 集群迁移数据至另一 TiDB 集群](/migrate-from-tidb-to-tidb.md)
     - [从 TiDB 集群迁移数据至兼容 MySQL 的数据库](/migrate-from-tidb-to-mysql.md)
   - 复杂迁移场景
@@ -232,6 +233,7 @@
       - [Stale Read 使用场景介绍](/stale-read.md)
       - [使用 `AS OF TIMESTAMP` 语法读取历史数据](/as-of-timestamp.md)
       - [使用系统变量 `tidb_read_staleness` 读取历史数据](/tidb-read-staleness.md)
+      - [使用系统变量 `tidb_external_ts` 读取历史数据](/tidb-external-ts.md)
     - [使用系统变量 `tidb_snapshot` 读取历史数据](/read-historical-data.md)
   - 最佳实践
     - [TiDB 最佳实践](/best-practices/tidb-best-practices.md)
@@ -653,6 +655,7 @@
       - [`EXECUTE`](/sql-statements/sql-statement-execute.md)
       - [`EXPLAIN ANALYZE`](/sql-statements/sql-statement-explain-analyze.md)
       - [`EXPLAIN`](/sql-statements/sql-statement-explain.md)
+      - [`FLASHBACK CLUSTER TO TIMESTAMP`](/sql-statements/sql-statement-flashback-to-timestamp.md)
       - [`FLASHBACK TABLE`](/sql-statements/sql-statement-flashback-table.md)
       - [`FLUSH PRIVILEGES`](/sql-statements/sql-statement-flush-privileges.md)
       - [`FLUSH STATUS`](/sql-statements/sql-statement-flush-status.md)

@@ -155,7 +155,7 @@ validators:              # 增量数据校验的运行配置参数
 mysql-instances:
   -
     source-id: "mysql-replica-01"           # 对应 source.toml 中的 `source-id`
-    meta:                                   # `task-mode` 为 `incremental` 且下游数据库的 `checkpoint` 不存在时 binlog 迁移开始的位置; 如果 checkpoint 存在，则以 `checkpoint` 为准
+    meta:                                   # `task-mode` 为 `incremental` 且下游数据库的 `checkpoint` 不存在时 binlog 迁移开始的位置; 如果 checkpoint 存在，则以 `checkpoint` 为准。如果 `meta` 项和下游数据库的 `checkpoint` 都不存在，则从上游当前最新的 binlog 位置开始迁移
       binlog-name: binlog.000001
       binlog-pos: 4
       binlog-gtid: "03fc0263-28c7-11e7-a653-6c0b84d59f30:1-7041423,05474d3c-28c7-11e7-8352-203db246dd3d:1-170"  # 对于 source 中指定了 `enable-gtid: true` 的增量任务，需要指定该值

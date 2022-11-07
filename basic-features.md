@@ -163,26 +163,27 @@ aliases: ['/docs-cn/dev/basic-features/']
 
 ## 管理，可视化和工具
 
-| 管理，可视化和工具                                                          |   6.3    |   6.2    |   6.1    |   6.0    |   5.4    |   5.3    |   5.2    |   5.1    |   5.0    | 4.0      |
-|----------------------------------------------------------------------------| :------: | :------: | :------: | :------: | :------: | :------: | :------: | :------: | :------: | :------: |
-| [TiDB Dashboard 图形化展示](/dashboard/dashboard-intro.md)                  |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
-| [TiDB Dashboard 持续性能分析功能](/dashboard/continuous-profiling.md)       |    Y    |    Y    |    Y     |    Y     | 实验特性 | 实验特性 |    N     |    N     |    N     | N        |
-| [TiDB Dashboard Top SQL 功能](/dashboard/top-sql.md)                       |    Y    |    Y     |    Y     |    Y     | 实验特性 |    N     |    N     |    N     |    N     | N        |
-| [TiDB Dashboard SQL 诊断功能](/information-schema/information-schema-sql-diagnostics.md)    | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
-| [Information schema](/information-schema/information-schema.md)           |    Y    |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
-| [Metrics schema](/metrics-schema.md)                                      |    Y    |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
-| [Statements summary tables](/statement-summary-tables.md)                 |    Y    |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
-| [慢查询日志](/identify-slow-queries.md)                                    |    Y    |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
-| [TiUP 部署](/tiup/tiup-overview.md)                                      |    Y     |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
-| Ansible 部署                                                              |    N    |    N    |    N     |    N     |    N     |    N     |    N     |    N     |    N     | 已废弃   |
-| [Kubernetes operator](https://docs.pingcap.com/tidb-in-kubernetes/stable) |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
-| [内置物理备份](/br/backup-and-restore-use-cases.md)                        |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
-| [Global Kill](/sql-statements/sql-statement-kill.md)                     | Y  | Y | Y | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
-| [Lock View](/information-schema/information-schema-data-lock-waits.md)    |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     | 实验特性 | 实验特性 | 实验特性 |
-| [`SHOW CONFIG`](/sql-statements/sql-statement-show-config.md)             | Y | Y| Y | Y | Y | Y | Y | Y | Y | Y |
-| [`SET CONFIG`](/dynamic-config.md)                                        | Y | Y | Y | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
-| [DM WebUI](/dm/dm-webui-guide.md)                                         | 实验特性 | 实验特性 | 实验特性 | 实验特性 |    N     |    N     |    N     |    N     |    N     | N        |
-| [前台限流](/tikv-configuration-file.md#前台限流)                            | Y | Y | 实验特性 | 实验特性 |    N     |    N     |    N     |    N     |    N     | N        |
+| 管理，可视化和工具                                                          |   6.4    |   6.3    |   6.2    |   6.1    |   6.0    |   5.4    |   5.3    |   5.2    |   5.1    |   5.0    | 4.0      |
+|----------------------------------------------------------------------------| :------:| :------: | :------: | :------: | :------: | :------: | :------: | :------: | :------: | :------: | :------: |
+| [TiDB Dashboard 图形化展示](/dashboard/dashboard-intro.md)                  |    Y    |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
+| [TiDB Dashboard 持续性能分析功能](/dashboard/continuous-profiling.md)       |    Y    |    Y    |    Y    |    Y     |    Y     | 实验特性 | 实验特性 |    N     |    N     |    N     | N        |
+| [TiDB Dashboard Top SQL 功能](/dashboard/top-sql.md)                       |    Y    |    Y    |    Y     |    Y     |    Y     | 实验特性 |    N     |    N     |    N     |    N     | N        |
+| [TiDB Dashboard SQL 诊断功能](/information-schema/information-schema-sql-diagnostics.md)    |    Y    | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
+| [TiDB Dashboard 集群诊断功能](/dashboard/dashboard-diagnostics-access.md)   |    Y    | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
+| [Information schema](/information-schema/information-schema.md)           |    Y    |    Y    |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
+| [Metrics schema](/metrics-schema.md)                                      |    Y    |    Y    |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
+| [Statements summary tables](/statement-summary-tables.md)                 |    Y    |    Y    |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
+| [慢查询日志](/identify-slow-queries.md)                                    |    Y    |    Y    |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
+| [TiUP 部署](/tiup/tiup-overview.md)                                      |    Y    |    Y     |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
+| Ansible 部署                                                              |    N    |    N    |    N    |    N     |    N     |    N     |    N     |    N     |    N     |    N     | 已废弃   |
+| [Kubernetes operator](https://docs.pingcap.com/tidb-in-kubernetes/stable) |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
+| [内置物理备份](/br/backup-and-restore-use-cases.md)                        |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
+| [Global Kill](/sql-statements/sql-statement-kill.md)                     | Y  | Y  | Y | Y | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
+| [Lock View](/information-schema/information-schema-data-lock-waits.md)    | Y  |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     | 实验特性 | 实验特性 | 实验特性 |
+| [`SHOW CONFIG`](/sql-statements/sql-statement-show-config.md)             | Y  | Y | Y| Y | Y | Y | Y | Y | Y | Y | Y |
+| [`SET CONFIG`](/dynamic-config.md)                                        | Y  | Y | Y | Y | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
+| [DM WebUI](/dm/dm-webui-guide.md)                                         | 实验特  | 实验特性 | 实验特性 | 实验特性 | 实验特性 |    N     |    N     |    N     |    N     |    N     | N        |
+| [前台限流](/tikv-configuration-file.md#前台限流)                            | Y | Y | Y | 实验特性 | 实验特性 |    N     |    N     |    N     |    N     |    N     | N        |
 
 [^1]: TiDB 误将 latin1 处理为 utf8 的子集。见 [TiDB #18955](https://github.com/pingcap/tidb/issues/18955)。
 

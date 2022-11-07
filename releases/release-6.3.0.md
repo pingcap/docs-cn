@@ -8,6 +8,8 @@ title: TiDB 6.3.0 Release Notes
 
 TiDB 版本：6.3.0-DMR
 
+试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v6.3/quick-start-with-tidb) | [生产部署](https://docs.pingcap.com/zh/tidb/v6.3/production-deployment-using-tiup) | [下载离线包](https://cn.pingcap.com/product-community/)
+
 在 6.3.0-DMR 版本中，你可以获得以下关键特性：
 
 - TiKV 静态加密支持国密算法 SM4。
@@ -215,6 +217,7 @@ TiDB 版本：6.3.0-DMR
 | [`tidb_enable_unsafe_substitute`](/system-variables.md#tidb_enable_unsafe_substitute-从-v630-版本开始引入) | 新增 | 用于控制是否对生成列中表达式替换使用不安全的替换方式。 |
 | [`tidb_general_plan_cache_size`](/system-variables.md#tidb_general_plan_cache_size-从-v630-版本开始引入) | 新增 | 用于控制 General Plan Cache 最多能够缓存的计划数量。在 v6.3.0，该变量控制的功能尚未完全生效，请保留默认值。 |
 | [`tidb_last_plan_replayer_token`](/system-variables.md#tidb_last_plan_replayer_token-从-v630-版本开始引入) | 新增 | 只读变量，用于获取当前会话中最后一个 `PLAN REPLAYER DUMP` 的结果。 |
+| [`tidb_max_paging_size`](/system-variables.md#tidb_max_paging_size-从-v630-版本开始引入) | 新增 | 用来设置 coprocessor 协议中 paging size 的最大的行数。 |
 | [`tidb_opt_force_inline_cte`](/system-variables.md#tidb_opt_force_inline_cte-从-v630-版本开始引入) | 新增 | 用于控制是否强制开启 inline CTE。默认值为 `OFF`，即默认不强制开启 inline CTE。 |
 | [`tidb_opt_three_stage_distinct_agg`](/system-variables.md#tidb_opt_three_stage_distinct_agg-从-v630-版本开始引入) | 新增 | 用于控制在 MPP 模式下是否将 `COUNT(DISTINCT)` 聚合改写为三阶段分布式执行的聚合。默认为 `ON`。 |
 | [`tidb_partition_prune_mode`](/system-variables.md#tidb_partition_prune_mode-从-v51-版本开始引入) | 修改 | 用于设置是否开启分区表动态裁剪模式。自 v6.3.0 起，该变量默认值修改为 `dynamic`。 |
@@ -247,6 +250,7 @@ TiDB 版本：6.3.0-DMR
 * 日志备份功能兼容分区交换 (Exchange Partition) DDL。
 * 不再支持通过 `ALTER TABLE ...SET TiFLASH MODE ...` 语法启用或禁用 [FastScan](/develop/dev-guide-use-fastscan.md) 功能。从 v6.2.0 版本升级到 v6.3.0 版本时，在 v6.2.0 版本的 FastScan 设置将失效，但不影响数据的正常读取。你需要重新使用变量方式设置 FastScan。从 v6.2.0 及更早版本升级到 v6.3.0 时，所有会话默认不开启 FastScan 功能，而是保持一致性的数据扫描功能。
 * 在 Linux AMD64 架构的硬件平台下部署 TiFlash 时，CPU 必须支持 AVX2 指令集。确保命令 `cat /proc/cpuinfo | grep avx2` 有输出。通过使用 AVX2 指令集，TiFlash 的向量化引擎能提供更好的性能。
+* TiDB 支持的最小 HAProxy 版本为 v1.5。使用 v1.5 到 v2.1 之间的 HAProxy 时，需要在 `mysql-check` 中配置 `post-41`。建议使用 HAProxy v2.2 或更高版本。
 
 ## 废弃功能
 
