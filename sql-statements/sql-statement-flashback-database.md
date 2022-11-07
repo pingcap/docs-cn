@@ -40,7 +40,7 @@ FlashbackToNewName ::=
 - 在开启 TiDB Binlog 时，使用 `FLASHBACK DATABASE` 需要注意以下情况：
 
     * 下游从集群也需要支持 `FLASHBACK DATABASE`。
-    * 从集群的 GC lifetime 一定要长于主集群的 GC life time。否则上下游同步存在的延迟可能也会造成下游恢复数据失败。
+    * 从集群的 GC life time 一定要长于主集群的 GC life time。否则上下游同步存在的延迟可能也会造成下游恢复数据失败。
     * 如果 TiDB Binlog 同步出错，则需要在 TiDB Binlog 中过滤掉该数据库，同时手动全量重新导入该数据库的数据。
 
 ## 示例
