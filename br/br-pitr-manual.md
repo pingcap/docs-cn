@@ -1,6 +1,6 @@
 ---
 title: TiDB 日志备份与 PITR 命令行手册
-summary: 介绍 TiDB 日志备份和 PITR 的命令行。
+summary: 介绍 TiDB 日志备份与 PITR 的命令行。
 aliases: ['/zh/tidb/dev/br-log-command-line/']
 ---
 
@@ -15,7 +15,7 @@ aliases: ['/zh/tidb/dev/br-log-command-line/']
 
 ## 日志备份命令行介绍
 
-你可以执行 `br log` 命令来打开和管理备份日志：
+你可以执行 `br log` 命令来开启和管理日志备份任务：
 
 ```shell
 ./br log --help
@@ -113,7 +113,7 @@ Global Flags:
 
 ```
 
-以上示例中， `task-name` 为常用参数，它用来指定日志备份任务名。默认值为 `*`，即显示全部任务。
+以上示例中，`task-name` 为常用参数，它用来指定日志备份任务名。默认值为 `*`，即显示全部任务。
 
 使用示例：
 
@@ -146,7 +146,7 @@ checkpoint[global]: 2022-07-25 22:52:15.518 +0800; gap=2m52s
 
 ### 暂停和恢复日志备份任务
 
-执行 `br log pause` 命令，你可以暂停正在运行中的日志备份任务。
+执行 `br log pause` 命令，你可以暂停正在运行的日志备份任务。
 
 执行 `br log pause –help` 可获取该子命令使用介绍：
 

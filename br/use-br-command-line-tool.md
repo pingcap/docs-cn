@@ -5,7 +5,7 @@ summary: 介绍 br 命令行工具
 
 # br 命令行手册
 
-TiDB 的备份与恢复功能以 br 命令行工具为使用入口，本文将介绍该工具提供的各种命令，包括命令的定义、组成、常用选项，以及快照备份与恢复及日志备份与 PITR 过程使用的命令。
+TiDB 的备份与恢复功能以 br 命令行工具为使用入口，本文将介绍 br 命令的定义、组成、常用选项，以及快照备份与恢复及日志备份与 PITR 功能使用的命令。
 
 ## br 命令行描述
 
@@ -27,7 +27,7 @@ br backup full --pd "${PD_IP}:2379" \
 
 ### 命令和子命令
 
-br 由多层命令组成。目前，br 包含的重要命令有：
+br 由多层命令组成。目前，br 包含的主要命令有：
 
 * `br backup`：用于备份 TiDB 集群的全量数据。
 * `br log`：用于启动和管理日志备份任务。
@@ -42,7 +42,7 @@ br 由多层命令组成。目前，br 包含的重要命令有：
 ### 常用选项
 
 * `--pd`：PD 访问地址选项，例如 `"${PD_IP}:2379"`。
-* `-s` 或 `--storage`：备份数据的存储地址选项。BR 支持以 S3/GCS/Azure Blob Storage/NFS 为备份存储。详细参考[备份存储 URL 配置](/br/backup-and-restore-storages.md#url-格式)。
+* `-s` 或 `--storage`：备份数据的存储地址选项。BR 支持以 S3、GCS、Azure Blob Storage 及 NFS 为备份存储。详细参考[备份存储 URL 配置](/br/backup-and-restore-storages.md#url-格式)。
 * `--ca`：指定 PEM 格式的受信任 CA 的证书文件路径。
 * `--cert`：指定 PEM 格式的 SSL 证书文件路径。
 * `--key`：指定 PEM 格式的 SSL 证书密钥文件路径。
@@ -60,11 +60,11 @@ br 由多层命令组成。目前，br 包含的重要命令有：
 
 ## 日志备份命令行介绍
 
-使用 `br log` 命令来打开和管理备份日志。
+使用 `br log` 命令来开启和管理日志备份任务。
 
 - [启动日志备份](/br/br-pitr-manual.md#启动日志备份)
 - [查询备份状态](/br/br-pitr-manual.md#查询日志备份任务)
-- [暂停和恢复备份](/br/br-pitr-manual.md#暂停和恢复日志备份任务)
+- [暂停和恢复备份任务](/br/br-pitr-manual.md#暂停和恢复日志备份任务)
 - [停止和重启备份任务](/br/br-pitr-manual.md#停止和重启日志备份任务)
 - [清理备份数据](/br/br-pitr-manual.md#清理日志备份数据)
 - [查看元信息](/br/br-pitr-manual.md#查看备份数据元信息)
