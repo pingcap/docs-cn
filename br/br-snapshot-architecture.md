@@ -1,9 +1,9 @@
 ---
-title: TiDB 快照备份和恢复功能架构
-summary: 了解 TiDB 快照备份和恢复功能的架构设计。
+title: TiDB 快照备份与恢复功能架构
+summary: 了解 TiDB 快照备份与恢复功能的架构设计。
 ---
 
-# TiDB 快照备份和恢复功能架构
+# TiDB 快照备份与恢复功能架构
 
 本文以使用 BR 工具进行备份为例，介绍 TiDB 集群快照数据备份和恢复的架构设计。
 
@@ -141,4 +141,4 @@ summary: 了解 TiDB 快照备份和恢复功能的架构设计。
 
 ## 探索更多
 
-[TiDB 快照备份和恢复使用指南](/br/br-snapshot-guide.md)
+[TiDB 快照备份与恢复使用指南](/br/br-snapshot-guide.md)

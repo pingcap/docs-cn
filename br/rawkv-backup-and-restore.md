@@ -1,9 +1,9 @@
 ---
-title: RawKV 备份和恢复
+title: 备份与恢复 RawKV 数据
 summary: 了解如何使用 BR 备份和恢复 RawKV 数据。
 ---
 
-# RawKV 备份和恢复
+# 备份与恢复 RawKV 数据
 
 > **警告：**
 >

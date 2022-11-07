@@ -1,17 +1,17 @@
 ---
-title: TiDB 备份和恢复功能
+title: TiDB 备份与恢复概述
 summary: 了解不同场景下如何使用 TiDB 的备份和恢复功能，以及不同功能、版本间的兼容性。
 aliases: ['/docs-cn/dev/br/backup-and-restore-tool/','/docs-cn/dev/reference/tools/br/br/','/docs-cn/dev/how-to/maintain/backup-and-restore/br/','/zh/tidb/dev/backup-and-restore-tool/','/zh/tidb/dev/point-in-time-recovery/']
 ---
 
-# TiDB 备份和恢复功能
+# TiDB 备份与恢复概述
 
 基于 Raft 协议和合理的部署拓扑规划，TiDB 实现了集群的高可用，当集群中少数节点挂掉时，集群依然能对外提供服务。在此基础上，为了更进一步保证用户数据的安全，TiDB 还提供了集群的备份和恢复功能，作为数据安全的最后一道防线，使得集群能够免于严重的自然灾害，提供业务误操作“复原”的能力。
 
 TiDB 备份恢复功能可以用于满足以下业务的需求：
 
 - 备份集群数据到灾备系统，并保证 RPO 低至 10 分钟，减少灾难场景下数据的丢失。
-- 处理业务数据写错的案例。提供业务操作的“复原”的能力。
+- 处理业务数据写错的案例，提供业务操作的“复原”能力。
 - 审计业务的历史数据，满足司法审查的需求。
 - 复制 (Clone) 生产环境，方便问题诊断、性能调优验证、仿真测试等。
 
@@ -130,6 +130,6 @@ BR 内置版本会在执行备份和恢复操作前，对 TiDB 集群版本和�
 
 ## 探索更多
 
-- [TiDB 快照备份和恢复使用指南](/br/br-snapshot-guide.md)
+- [TiDB 快照备份与恢复使用指南](/br/br-snapshot-guide.md)
 - [TiDB 日志备份和 PITR 使用指南](/br/br-pitr-guide.md)
 - [备份存储](/br/backup-and-restore-storages.md)

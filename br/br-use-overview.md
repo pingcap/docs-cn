@@ -1,12 +1,12 @@
 ---
-title: TiDB 备份和恢复功能使用概述
-summary: 了解如何部署和使用 BR 进行 TiDB 集群的备份和恢复。
+title: TiDB 备份与恢复功能使用概述
+summary: 了解如何部署和使用 BR 进行 TiDB 集群的备份与恢复。
 aliases: ['/zh/tidb/dev/br-deployment/']
 ---
 
-# TiDB 备份和恢复功能使用概述
+# TiDB 备份与恢复功能使用概述
 
-[TiDB 备份和恢复功能](/br/backup-and-restore-overview.md) 介绍了备份和恢复功能，在此基础上，本文将介绍备份和恢复功能的使用，并提供使用示例。
+[TiDB 备份与恢复概述](/br/backup-and-restore-overview.md) 介绍了备份和恢复功能。在此基础上，本文将介绍如何使用 TiDB 的备份和恢复功能，并提供使用示例。
 
 ## 使用概览
 
@@ -77,11 +77,11 @@ Amazon S3、Google Cloud Storage (GCS)、Azure Blob Storage 是 BR 推荐的存�
 TiDB 支持使用 br 工具进行备份恢复。
 
 * 安装方法可以使用[使用 TiUP 在线安装](/migration-tools.md#使用-tiup-快速安装)：`tiup install br`。
-* 了解如何使用 `br` 命令含工具进行备份和恢复，请参阅
+* 了解如何使用 `br` 命令含工具进行备份与恢复，请参阅
 
-    * [（全量）快照备份和恢复功能使用](/br/br-snapshot-guide.md)
+    * [（全量）快照备份与恢复功能使用](/br/br-snapshot-guide.md)
     * [日志备份和 PITR 功能使用](/br/br-pitr-guide.md)
-    * [TiDB 集群备份和恢复实践示例](/br/backup-and-restore-use-cases.md)
+    * [TiDB 集群备份与恢复实践示例](/br/backup-and-restore-use-cases.md)
 
 ### 通过 SQL 语句
 

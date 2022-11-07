@@ -1,9 +1,9 @@
 ---
-title: TiDB 日志备份和 PITR 使用指南
-summary: 了解 TiDB 的日志备份和 PITR 功能使用。
+title: TiDB 日志备份与 PITR 使用指南
+summary: 了解 TiDB 的日志备份与 PITR 功能使用。
 ---
 
-# TiDB 日志备份和 PITR 使用指南
+# TiDB 日志备份与 PITR 使用指南
 
 全量备份包含集群某个时间点的全量数据，但是不包含其他时间点的更新数据，而 TiDB 日志备份能够将业务写入 TiDB 的数据记录及时备份到指定存储中。如果你需要灵活的选择恢复的时间点，即实现 Point in time recovery (PITR)，可以按以下说明同时使用两种备份方式：
 
@@ -125,6 +125,6 @@ Restore KV Files <--------------------------------------------------------------
 
 ## 探索更多
 
-* [TiDB 集群备份和恢复实践示例](/br/backup-and-restore-use-cases.md)
+* [TiDB 集群备份与恢复实践示例](/br/backup-and-restore-use-cases.md)
 * [br 命令行手册](/br/use-br-command-line-tool.md)
 * [日志备份和 PITR 架构设计](/br/br-log-architecture.md)

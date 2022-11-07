@@ -1,9 +1,9 @@
 ---
-title: TiDB 备份和恢复实践示例
+title: TiDB 备份与恢复实践示例
 aliases: ['/docs-cn/dev/br/backup-and-restore-use-cases/','/docs-cn/dev/reference/tools/br/use-cases/','/docs-cn/dev/how-to/maintain/backup-and-restore/br-best-practices/','/docs-cn/dev/reference/tools/br/br-best-practices/','/zh/tidb/dev/pitr-usage', '/zh/tidb/dev/backup-and-restore-use-cases-for-maintain/']
 ---
 
-# TiDB 备份和恢复实践示例
+# TiDB 备份与恢复实践示例
 
 本文档介绍如何使用 br 进行备份和 PITR，可以帮助你顺利上手使用该功能。介绍具体操作前，设想有如下使用场景。你在 AWS 部署了一套 TiDB 生产集群，业务团队提出如下需求：
 
@@ -157,5 +157,5 @@ Restore KV Files <--------------------------------------------------------------
 ## 探索更多
 
 - [备份存储](/br/backup-and-restore-storages.md)
-- [快照备份和恢复命令手册](/br/br-snapshot-manual.md)
-- [日志备份和 PITR 命令手册](/br/br-pitr-manual.md)]
+- [快照备份与恢复命令手册](/br/br-snapshot-manual.md)
+- [日志备份与 PITR 命令手册](/br/br-pitr-manual.md)]

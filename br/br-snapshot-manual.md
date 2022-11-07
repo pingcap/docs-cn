@@ -1,10 +1,10 @@
 ---
-title: TiDB 快照备份和恢复命令行手册
-summary: 介绍备份和恢复 TiDB 集群快照的命令行。
+title: TiDB 快照备份与恢复命令行手册
+summary: 介绍备份与恢复 TiDB 集群快照的命令行。
 aliases: ['/zh/tidb/dev/br-usage-backup/','/zh/tidb/dev/br-usage-restore/','/zh/tidb/dev/br-usage-restore-for-maintain/', '/zh/tidb/dev/br-usage-backup-for-maintain/']
 ---
 
-# TiDB 快照备份和恢复命令行手册
+# TiDB 快照备份与恢复命令行手册
 
 本文按备份恢复的场景介绍快照备份和恢复的命令行，包括：
 
@@ -21,8 +21,8 @@ aliases: ['/zh/tidb/dev/br-usage-backup/','/zh/tidb/dev/br-usage-restore/','/zh/
 
 如果你想了解如何进行备份和恢复，可以参考以下教程：
 
-- [全量备份恢复 —— 快照备份和恢复功能使用指南](/br/br-snapshot-guide.md)
-- [TiDB 集群备份和恢复实践示例](/br/backup-and-restore-use-cases.md)
+- [全量备份恢复 —— 快照备份与恢复功能使用指南](/br/br-snapshot-guide.md)
+- [TiDB 集群备份与恢复实践示例](/br/backup-and-restore-use-cases.md)
 
 ## 备份集群快照
 
