@@ -15,6 +15,20 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：true
 + 如果需要创建大量的表（例如 10 万张以上），建议将此参数设置为 false。
 
+### `tidb_max_reuse_chunk` <span class="version-mark">从 v6.4.0 版本开始引入</span>
+
++ 用于控制每个连接最多缓存的 Chunk 对象数。配置过大会增加 OOM 的风险。
++ 默认值：64
++ 最小值：0
++ 最大值：2147483647
+
+### `tidb_max_reuse_column` <span class="version-mark">从 v6.4.0 版本开始引入</span>
+
++ 用于控制每个连接最多缓存的 column 对象数。配置过大会增加 OOM 的风险。
++ 默认值：256
++ 最小值：0
++ 最大值：2147483647
+
 ### `token-limit`
 
 + 可以同时执行请求的 session 个数
@@ -330,6 +344,24 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 设置用于连接 MySQL 协议的最低 TLS 版本。
 + 默认值：""，支持 TLSv1.1 及以上版本。
 + 可选值：`"TLSv1.0"`、`"TLSv1.1"`、`"TLSv1.2"` 和 `"TLSv1.3"`
+
+### `auth-token-jwks` <span class="version-mark">从 v6.4.0 版本开始引入</span>
+
+> **警告：**
+>
+> `tidb_auth_token` 认证方式仅用于 TiDB Cloud 内部实现，**不要修改该配置**。
+
++ 设置 `tidb_auth_token` 认证方式的 JSON Web Key Sets (JWKS) 的本地文件路径。
++ 默认值：""
+
+### `auth-token-refresh-interval` <span class="version-mark">从 v6.4.0 版本开始引入</span>
+
+> **警告：**
+>
+> `tidb_auth_token` 认证方式仅用于 TiDB Cloud 内部实现，**不要修改该配置**。
+
++ 设置 `tidb_auth_token` 认证方式的 JWKS 刷新时间间隔。
++ 默认值：1h
 
 ## performance
 
