@@ -151,9 +151,10 @@
       - BR 特性
         - [自动调节](/br/br-auto-tune.md)
         - [批量建表](/br/br-batch-create-table.md)
-      - [使用 Dumpling 和 TiDB Lightning 备份与恢复数据](/backup-and-restore-using-dumpling-lightning.md)
-      - [备份与恢复 RawKV 数据](/br/rawkv-backup-and-restore.md)
+      - [使用 Dumpling 和 TiDB Lightning 备份与恢复](/backup-and-restore-using-dumpling-lightning.md)
+      - [备份与恢复 RawKV](/br/rawkv-backup-and-restore.md)
       - [增量备份与恢复](/br/br-incremental-guide.md)
+      - [外部存储](/br/external-storage.md)
   - [修改时区](/configure-time-zone.md)
   - [日常巡检](/daily-check.md)
   - [TiFlash 常用运维操作](/tiflash/maintain-tiflash.md)
