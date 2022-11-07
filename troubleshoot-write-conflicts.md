@@ -70,11 +70,7 @@ TiDB 会根据 `tidb_disable_txn_auto_retry` 和 `tidb_retry_limit` 参数设置
 {{< copyable "" >}}
 
 ```shell
-<<<<<<< HEAD
 ./pd-ctl -u https://127.0.0.1:2379 tso {TIMESTAMP}
-=======
-tiup ctl:<cluster-version> pd -u https://127.0.0.1:2379 tso {TIMESTAMP}
->>>>>>> 07fef7ab2 (add version to tiup ctl to make the command work (#11914))
 ```
 
 通过 tableID 查找具体的表名：
