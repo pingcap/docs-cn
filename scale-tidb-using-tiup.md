@@ -379,7 +379,7 @@ In special cases (such as when a node needs to be forcibly taken down), or if th
 
     * Enter the store command in [pd-ctl](/pd-control.md) (the binary file is under `resources/bin` in the tidb-ansible directory).
 
-    * If you use TiUP deployment, replace `pd-ctl` with `tiup ctl pd`:
+    * If you use TiUP deployment, replace `pd-ctl` with `tiup ctl:<cluster-version> pd`:
 
     {{< copyable "shell-regular" >}}
 
@@ -395,7 +395,7 @@ In special cases (such as when a node needs to be forcibly taken down), or if th
 
     * Enter `store delete <store_id>` in pd-ctl (`<store_id>` is the store ID of the TiFlash node found in the previous step.
 
-    * If you use TiUP deployment, replace `pd-ctl` with `tiup ctl pd`:
+    * If you use TiUP deployment, replace `pd-ctl` with `tiup ctl:<cluster-version> pd`:
 
         {{< copyable "shell-regular" >}}
 

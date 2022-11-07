@@ -69,7 +69,7 @@ For a running cluster deployed using TiUP, you can use the `tiup ctl pd` command
 {{< copyable "shell-regular" >}}
 
 ```bash
-tiup ctl pd -u http://127.0.0.1:2379 config set dashboard-address http://9.9.9.9:2379
+tiup ctl:<cluster-version> pd -u http://127.0.0.1:2379 config set dashboard-address http://9.9.9.9:2379
 ```
 
 In the command above:
@@ -96,7 +96,7 @@ For a running cluster deployed using TiUP, use the `tiup ctl pd` command to disa
 {{< copyable "shell-regular" >}}
 
 ```bash
-tiup ctl pd -u http://127.0.0.1:2379 config set dashboard-address none
+tiup ctl:<cluster-version> pd -u http://127.0.0.1:2379 config set dashboard-address none
 ```
 
 After disabling TiDB Dashboard, checking which PD instance provides the TiDB Dashboard service will fail:
@@ -118,7 +118,7 @@ For a running cluster deployed using TiUP, use the `tiup ctl pd` command to requ
 {{< copyable "shell-regular" >}}
 
 ```bash
-tiup ctl pd -u http://127.0.0.1:2379 config set dashboard-address auto
+tiup ctl:<cluster-version> pd -u http://127.0.0.1:2379 config set dashboard-address auto
 ```
 
 After executing the command above, you can use the `tiup cluster display` command to view the TiDB Dashboard instance address automatically negotiated by PD (replace `CLUSTER_NAME` with the cluster name):

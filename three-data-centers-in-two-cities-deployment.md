@@ -174,7 +174,7 @@ In the deployment of three DCs in two cities, to optimize performance, you need 
     raftstore.raft-max-election-timeout-ticks: 1200
     ```
 
-- Configure scheduling. After the cluster is enabled, use the `tiup ctl pd` tool to modify the scheduling policy. Modify the number of TiKV Raft replicas. Configure this number as planned. In this example, the number of replicas is five.
+- Configure scheduling. After the cluster is enabled, use the `tiup ctl:<cluster-version> pd` tool to modify the scheduling policy. Modify the number of TiKV Raft replicas. Configure this number as planned. In this example, the number of replicas is five.
 
     ```yaml
     config set max-replicas 5
@@ -185,7 +185,7 @@ In the deployment of three DCs in two cities, to optimize performance, you need 
     ```yaml
     config set label-property reject-leader dc 3
     ```
-   
+
    > **Note:**
    >
    > Since TiDB 5.2, the `label-property` configuration is not supported by default. To set the replica policy, use the [placement rules](/configure-placement-rules.md).

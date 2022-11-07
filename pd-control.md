@@ -41,26 +41,26 @@ To obtain `pd-ctl` of the latest version, download the TiDB server installation 
 Single-command mode:
 
 ```bash
-tiup ctl pd store -u http://127.0.0.1:2379
+tiup ctl:<cluster-version> pd store -u http://127.0.0.1:2379
 ```
 
 Interactive mode:
 
 ```bash
-tiup ctl pd -i -u http://127.0.0.1:2379
+tiup ctl:<cluster-version> pd -i -u http://127.0.0.1:2379
 ```
 
 Use environment variables:
 
 ```bash
 export PD_ADDR=http://127.0.0.1:2379
-tiup ctl pd
+tiup ctl:<cluster-version> pd
 ```
 
 Use TLS to encrypt:
 
 ```bash
-tiup ctl pd -u https://127.0.0.1:2379 --cacert="path/to/ca" --cert="path/to/cert" --key="path/to/key"
+tiup ctl:<cluster-version> pd -u https://127.0.0.1:2379 --cacert="path/to/ca" --cert="path/to/cert" --key="path/to/key"
 ```
 
 ## Command line flags

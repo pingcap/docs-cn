@@ -71,7 +71,7 @@ This section introduces how to use `cdc cli` to manage a TiCDC cluster and data 
 >
 > The IP address and port that TiCDC listens on correspond to the `advertise-client-urls` parameter specified during the `cdc-server` startup. Starting from TiCDC v6.2.0, the `cdc cli` command can directly interact with TiCDC server via TiCDC Open API. You can specify the address of TiCDC server using the `--server` parameter. `--pd` is deprecated and no longer recommended.
 
-If you deploy TiCDC using TiUP, replace `cdc cli` in the following commands with `tiup ctl cdc`.
+If you deploy TiCDC using TiUP, replace `cdc cli` in the following commands with `tiup ctl:<cluster-version> cdc`.
 
 ### Manage TiCDC service progress (`capture`)
 
