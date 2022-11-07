@@ -811,6 +811,13 @@ raftstore 相关的配置项。
 + 默认值：1024
 + 最小值：大于 0
 
+### `apply-yield-write-size` <span class="version-mark">从 v6.4.0 版本开始引入</span>
+
++ Apply 线程每一轮处理单个状态机写入的最大数据量，这是个软限制。
++ 默认值：32KiB
++ 最小值：大于 0
++ 单位：KiB|MiB|GiB
+
 ### `apply-max-batch-size`
 
 + Raft 状态机由 BatchSystem 批量执行数据写入请求，该配置项指定每批可执行请求的最多 Raft 状态机个数。
