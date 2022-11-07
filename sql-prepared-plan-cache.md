@@ -138,7 +138,7 @@ MySQL [test]> select @@last_plan_from_cache;
 
 > **注意：**
 >
-> 考虑到 Golang 的内存回收机制以及部分未统计的内存结构，Grafana 中显示的内存与实际的堆内存使用量并不相等。经过实验验证存在约 20% 的误差。
+> 考虑到 Golang 的内存回收机制以及部分未统计的内存结构，Grafana 中显示的内存与实际的堆内存使用量并不相等。经过实验验证存在约 ±20% 的误差。
 
 对于每台 TiDB 实例上所缓存的执行计划总数量，可以通过 Grafana 中的 [`Plan Cache Plan Num` 监控](/grafana-tidb-dashboard.md)查看。
 
