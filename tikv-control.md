@@ -89,7 +89,7 @@ SUBCOMMANDS:
     unsafe-recover        Unsafely recover the cluster when the majority replicas are failed
 ```
 
-你可以在 `tiup ctl tikv` 后面再接上相应的参数与子命令。
+你可以在 `tiup ctl:<cluster-version> tikv` 后面再接上相应的参数与子命令。
 
 ## 通用参数
 
