@@ -835,6 +835,7 @@
         - [`TIKV_REGION_PEERS`](/information-schema/information-schema-tikv-region-peers.md)
         - [`TIKV_REGION_STATUS`](/information-schema/information-schema-tikv-region-status.md)
         - [`TIKV_STORE_STATUS`](/information-schema/information-schema-tikv-store-status.md)
+        - [`USER_ATTRIBUTES`](/information-schema/information-schema-user-attributes.md)
         - [`USER_PRIVILEGES`](/information-schema/information-schema-user-privileges.md)
         - [`VARIABLES_INFO`](/information-schema/information-schema-variables-info.md)
         - [`VIEWS`](/information-schema/information-schema-views.md)
