@@ -58,6 +58,43 @@ server-memory-quota = 34359738368
 > + `server-memory-quota` 目前为实验性特性，不建议在生产环境中使用。
 > + `server-memory-quota` 默认值为 0，表示无内存限制。
 
+自 v6.4.0 版本起，可以通过系统变量 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 设置 tidb-server 实例的内存使用阈值。
+
+例如，配置 tidb-server 实例的内存使用总量，将其设置成为 32 GB：
+
+{{< copyable "" >}}
+
+```sql
+SET GLOBAL tidb_server_memory_limit = "32GB";
+```
+
+设置该变量后，当 tidb-server 实例的内存用量达到 32 GB 时，TiDB 会依次终止正在执行的 SQL 操作中内存用量最大的 SQL 操作，直至 tidb-server 实例内存使用下降到 32 GB 以下。被强制终止的 SQL 操作会向客户端返回报错信息 `Out Of Memory Quota!`。
+
+当前 `tidb_server_memory_limit` 所设的内存限制**不终止**以下 SQL 操作：
+
+- DDL 操作
+- INSERT、UPDATE、DELETE 操作
+- 包含窗口函数和公共表表达式的 SQL 操作
+
+> **警告：**
+>
+> + tidb-server 全局内存控制功能目前为实验性特性，不建议在生产环境中使用。
+> + TiDB 在启动过程中不保证 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 限制生效。如果操作系统的空闲内存不足，TiDB 仍有可能出现 OOM。你需要确保 TiDB 实例有足够的可用内存。
+> + 在内存控制过程中，TiDB 的整体内存使用量可能会略微超过 `tidb_server_memory_limit` 的限制。
+> + 为了保证兼容性，当开启 `tidb_server_memory_limit` 功能后，系统会忽略 `server-memory-quota` 的值，使用 `tidb_server_memory_limit` 的全局内存控制机制来进行内存控制。在关闭 `tidb_server_memory_limit` 功能后，系统会使用配置项 `server-memory-quota` 的值以及旧的内存控制机制。
+
+在 tidb-server 实例内存用量到达总内存的一定比例时（比例由系统变量 [`tidb_server_memory_limit_gc_trigger`](/system-variables.md#tidb_server_memory_limit_gc_trigger-从-v640-版本开始引入) 控制）, tidb-server 会尝试主动触发一次 Golang GC 以缓解内存压力。为了避免实例内存在阈值上下范围不断波动导致频繁 GC 进而带来的性能问题，该 GC 方式 1 分钟最多只会触发 1 次。
+
+## 使用 INFORMATION_SCHEMA 系统表查看当前 tidb-server 的内存用量
+
+> **警告：**
+>
+> 目前以下系统表是在 v6.4.0 引入的实验特性，提供的内存使用信息仅供参考，不建议在生产环境中使用以下系统表获取内存使用信息供决策判断。
+
+要查看当前实例或集群的内存使用情况，你可以查询系统表 [`INFORMATION_SCHEMA.(CLUSTER_)MEMORY_USAGE`](/information-schema/information-schema-memory-usage.md)。
+
+要查看本实例或集群中内存相关的操作和执行依据，可以查询系统表 [`INFORMATION_SCHEMA.(CLUSTER_)MEMORY_USAGE_OPS_HISTORY`](/information-schema/information-schema-memory-usage-ops-history.md)。对于每个实例，该表保留最近 50 条记录。
+
 ## tidb-server 内存占用过高时的报警
 
 默认配置下，tidb-server 实例会在机器内存使用达到总内存量的 80% 时打印报警日志，并记录相关状态文件。该内存使用率可以通过系统变量 [`tidb_memory_usage_alarm_ratio`](/system-variables.md#tidb_memory_usage_alarm_ratio) 进行设置。具体报警规则请参考该变量的说明部分。

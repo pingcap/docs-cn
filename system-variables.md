@@ -576,6 +576,16 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
     - `tidb_auto_analyze_start_time='01:00 +0000'`
     - `tidb_auto_analyze_end_time='03:00 +0000'`
 
+### `tidb_auto_analyze_partition_batch_size` <span class="version-mark">从 v6.4.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 默认值：`1`
+- 范围：`[1, 1024]`
+- 用于设置 TiDB [自动 analyze](/statistics.md#自动更新) 分区表（即自动收集分区表上的统计信息）时，每次同时 analyze 分区的个数。
+- 若该变量值小于分区表的分区数，则 TiDB 会分多批自动 analyze 该分区表的所有分区。若该变量值大于等于分区表的分区数，则 TiDB 会同时 analyze 该分区表的所有分区。
+- 若分区表个数远大于该变量值，且自动 analyze 花费时间较长，可调大该参数的值以减少耗时。
+
 ### `tidb_auto_analyze_ratio`
 
 - 作用域：GLOBAL
@@ -1395,6 +1405,13 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 默认值：`ON`
 - 这个变量用来控制是否开启 [Prepared Plan Cache](/sql-prepared-plan-cache.md)。开启后，对 `Prepare`、`Execute` 请求的执行计划会进行缓存，以便在后续执行时跳过查询计划优化这个步骤，获得性能上的提升。
 - 在 v6.1.0 之前这个开关通过 TiDB 配置文件 (`prepared-plan-cache.enabled`) 进行配置，升级到 v6.1.0 时会自动继承原有设置。
+
+### `tidb_enable_prepared_plan_cache_memory_monitor` <span class="version-mark">从 v6.4.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 默认值：`ON`
+- 这个变量用来控制是否统计 Prepared Plan Cache 中所缓存的执行计划占用的内存。具体可见 [Prepared Plan Cache 的内存管理](/sql-prepared-plan-cache.md#prepared-plan-cache-的内存管理)。
 
 ### `tidb_enable_pseudo_for_outdated_stats` <span class="version-mark">从 v5.3.0 版本开始引入</span>
 
@@ -2356,6 +2373,136 @@ explain select * from t where age=5;
 - 默认值：`OFF`
 - 指定是否允许优化器将 `Projection` 算子下推到 TiKV 或者 TiFlash。
 
+### `tidb_opt_range_max_size` <span class="version-mark">从 v6.4.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 默认值：`67108864` (64 MiB)
+- 取值范围：`[0, 9223372036854775807]`
+- 单位：字节
+- 该变量用于指定优化器构造扫描范围的内存用量上限。当该变量为 `0` 时，表示对扫描范围没有内存限制。如果构造精确的扫描范围会超出内存用量限制，优化器会使用更宽松的扫描范围（例如 `[[NULL,+inf]]`）。如果执行计划中未使用精确的扫描范围，可以调大该变量的值让优化器构造精确的扫描范围。
+
+该变量的使用示例如下：
+
+<details>
+<summary><code>tidb_opt_range_max_size</code> 使用示例</summary>
+ 
+查看该变量的默认值，即优化器构造扫描范围最多使用 64 MiB 内存。
+
+```sql
+SELECT @@tidb_opt_range_max_size;
+```
+
+```sql
++----------------------------+
+| @@tidb_opt_range_max_size |
++----------------------------+
+| 67108864                   |
++----------------------------+
+1 row in set (0.01 sec)
+```
+
+```sql
+EXPLAIN SELECT * FROM t use index (idx) WHERE a IN (10,20,30) AND b IN (40,50,60);
+```
+
+在 64 MiB 的内存最大限制约束下，优化器构造出精确的扫描范围 `[10 40,10 40], [10 50,10 50], [10 60,10 60], [20 40,20 40], [20 50,20 50], [20 60,20 60], [30 40,30 40], [30 50,30 50], [30 60,30 60]`，见如下执行计划返回结果。 
+
+```sql
++-------------------------------+---------+-----------+--------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| id                            | estRows | task      | access object            | operator info                                                                                                                                                               |
++-------------------------------+---------+-----------+--------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| IndexLookUp_7                 | 0.90    | root      |                          |                                                                                                                                                                             |
+| ├─IndexRangeScan_5(Build)     | 0.90    | cop[tikv] | table:t, index:idx(a, b) | range:[10 40,10 40], [10 50,10 50], [10 60,10 60], [20 40,20 40], [20 50,20 50], [20 60,20 60], [30 40,30 40], [30 50,30 50], [30 60,30 60], keep order:false, stats:pseudo |
+| └─TableRowIDScan_6(Probe)     | 0.90    | cop[tikv] | table:t                  | keep order:false, stats:pseudo                                                                                                                                              |
++-------------------------------+---------+-----------+--------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+3 rows in set (0.00 sec)
+```
+
+现将优化器构造扫描范围的内存用量上限设为 1500 字节。
+
+```sql
+SET @@tidb_opt_range_max_size = 1500;
+```
+
+```sql
+Query OK, 0 rows affected (0.00 sec)
+```
+
+```sql
+EXPLAIN SELECT * FROM t USE INDEX (idx) WHERE a IN (10,20,30) AND b IN (40,50,60);
+```
+
+在 1500 字节内存的最大限制约束下，优化器构造出了更宽松的扫描范围 `[10,10], [20,20], [30,30]`，并用 warning 提示用户构造精确的扫描范围所需的内存用量超出了 `tidb_opt_range_max_size` 的限制。
+
+```sql
++-------------------------------+---------+-----------+--------------------------+-----------------------------------------------------------------+
+| id                            | estRows | task      | access object            | operator info                                                   |
++-------------------------------+---------+-----------+--------------------------+-----------------------------------------------------------------+
+| IndexLookUp_8                 | 0.09    | root      |                          |                                                                 |
+| ├─Selection_7(Build)          | 0.09    | cop[tikv] |                          | in(test.t.b, 40, 50, 60)                                        |
+| │ └─IndexRangeScan_5          | 30.00   | cop[tikv] | table:t, index:idx(a, b) | range:[10,10], [20,20], [30,30], keep order:false, stats:pseudo |
+| └─TableRowIDScan_6(Probe)     | 0.09    | cop[tikv] | table:t                  | keep order:false, stats:pseudo                                  |
++-------------------------------+---------+-----------+--------------------------+-----------------------------------------------------------------+
+4 rows in set, 1 warning (0.00 sec)
+```
+
+```sql
+SHOW WARNINGS;
+```
+
+```sql
++---------+------+---------------------------------------------------------------------------------------------------------------------------------------------+
+| Level   | Code | Message                                                                                                                                     |
++---------+------+---------------------------------------------------------------------------------------------------------------------------------------------+
+| Warning | 1105 | Memory capacity of 1500 bytes for 'tidb_opt_range_max_size' exceeded when building ranges. Less accurate ranges such as full range are chosen |
++---------+------+---------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+```
+
+再将优化器构造扫描范围的内存用量上限设为 100 字节。
+
+```sql
+set @@tidb_opt_range_max_size = 100;
+```
+
+```sql
+Query OK, 0 rows affected (0.00 sec)
+```
+
+```sql
+EXPLAIN SELECT * FROM t USE INDEX (idx) WHERE a IN (10,20,30) AND b IN (40,50,60);
+```
+
+在 100 字节的内存最大限制约束下，优化器选择了 `IndexFullScan`，并用 warning 提示用户构造精确的扫描范围所需的内存超出了 `tidb_opt_range_max_size` 的限制。
+
+```sql
++-------------------------------+----------+-----------+--------------------------+----------------------------------------------------+
+| id                            | estRows  | task      | access object            | operator info                                      |
++-------------------------------+----------+-----------+--------------------------+----------------------------------------------------+
+| IndexLookUp_8                 | 8000.00  | root      |                          |                                                    |
+| ├─Selection_7(Build)          | 8000.00  | cop[tikv] |                          | in(test.t.a, 10, 20, 30), in(test.t.b, 40, 50, 60) |
+| │ └─IndexFullScan_5           | 10000.00 | cop[tikv] | table:t, index:idx(a, b) | keep order:false, stats:pseudo                     |
+| └─TableRowIDScan_6(Probe)     | 8000.00  | cop[tikv] | table:t                  | keep order:false, stats:pseudo                     |
++-------------------------------+----------+-----------+--------------------------+----------------------------------------------------+
+4 rows in set, 1 warning (0.00 sec)
+```
+
+```sql
+SHOW WARNINGS;
+```
+
+```sql
++---------+------+---------------------------------------------------------------------------------------------------------------------------------------------+
+| Level   | Code | Message                                                                                                                                     |
++---------+------+---------------------------------------------------------------------------------------------------------------------------------------------+
+| Warning | 1105 | Memory capacity of 100 bytes for 'tidb_opt_range_max_size' exceeded when building ranges. Less accurate ranges such as full range are chosen |
++---------+------+---------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+```
+   
+</details>
+
 ### `tidb_opt_scan_factor`
 
 - 作用域：SESSION | GLOBAL
@@ -2437,6 +2584,69 @@ explain select * from t where age=5;
 - 默认值：`0`
 - 范围：`[0, 1]`
 - 这个变量用来控制是否在 profile 输出中标记出对应的 SQL 语句，用于定位和排查性能问题。
+
+### `tidb_opt_prefix_index_single_scan` <span class="version-mark">从 v6.4.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 默认值：`ON`
+- 这个变量用于控制 TiDB 优化器是否将某些过滤条件下推到前缀索引，尽量避免不必要的回表，从而提高查询性能。
+- 将该变量设置为 `ON` 时，会将过滤条件下推到前缀索引。此时，假设一张表中 `col` 列是索引前缀列，查询语句中的 `col is null` 或者 `col is not null` 条件会被归为索引上的过滤条件，而不是回表时的过滤条件，从而避免不必要的回表。
+
+<details>
+<summary>该变量的使用示例</summary>
+
+创建一张带前缀索引的表：
+
+```sql
+CREATE TABLE t (a INT, b VARCHAR(10), c INT, INDEX idx_a_b(a, b(5)));
+```
+
+此时关闭 `tidb_opt_prefix_index_single_scan`：
+
+```sql
+SET tidb_opt_prefix_index_single_scan = 'OFF';
+```
+
+对于以下查询，执行计划使用了前缀索引 `idx_a_b` 但需要回表（出现了 `IndexLookUp` 算子）。
+
+```sql
+EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
++-------------------------------+---------+-----------+------------------------------+-------------------------------------------------------+
+| id                            | estRows | task      | access object                | operator info                                         |
++-------------------------------+---------+-----------+------------------------------+-------------------------------------------------------+
+| HashAgg                       | 1.00    | root      |                              | funcs:count(Column#8)->Column#5                       |
+| └─IndexLookUp                 | 1.00    | root      |                              |                                                       |
+|   ├─IndexRangeScan(Build)     | 99.90   | cop[tikv] | table:t, index:idx_a_b(a, b) | range:[1 -inf,1 +inf], keep order:false, stats:pseudo |
+|   └─HashAgg(Probe)            | 1.00    | cop[tikv] |                              | funcs:count(1)->Column#8                              |
+|     └─Selection               | 99.90   | cop[tikv] |                              | not(isnull(test.t.b))                                 |
+|       └─TableRowIDScan        | 99.90   | cop[tikv] | table:t                      | keep order:false, stats:pseudo                        |
++-------------------------------+---------+-----------+------------------------------+-------------------------------------------------------+
+6 rows in set (0.00 sec)
+```
+
+此时打开 `tidb_opt_prefix_index_single_scan`：
+
+```sql
+SET tidb_opt_prefix_index_single_scan = 'ON';
+```
+
+开启该变量后，对于以下查询，执行计划使用了前缀索引 `idx_a_b` 且不需要回表。
+
+```sql
+EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
++--------------------------+---------+-----------+------------------------------+-------------------------------------------------------+
+| id                       | estRows | task      | access object                | operator info                                         |
++--------------------------+---------+-----------+------------------------------+-------------------------------------------------------+
+| StreamAgg                | 1.00    | root      |                              | funcs:count(Column#7)->Column#5                       |
+| └─IndexReader            | 1.00    | root      |                              | index:StreamAgg                                       |
+|   └─StreamAgg            | 1.00    | cop[tikv] |                              | funcs:count(1)->Column#7                              |
+|     └─IndexRangeScan     | 99.90   | cop[tikv] | table:t, index:idx_a_b(a, b) | range:[1 -inf,1 +inf], keep order:false, stats:pseudo |
++--------------------------+---------+-----------+------------------------------+-------------------------------------------------------+
+4 rows in set (0.00 sec)
+```
+
+</details>
 
 ### `tidb_prepared_plan_cache_memory_guard_ratio` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
@@ -2587,6 +2797,46 @@ explain select * from t where age=5;
 - 默认值：`OFF`
 - TiDB 默认会在建表时为新表分裂 Region。开启该变量后，会在建表语句执行时，同步打散刚分裂出的 Region。适用于批量建表后紧接着批量写入数据，能让刚分裂出的 Region 先在 TiKV 分散而不用等待 PD 进行调度。为了保证后续批量写入数据的稳定性，建表语句会等待打散 Region 完成后再返回建表成功，建表语句执行时间会是该变量关闭时的数倍。
 - 如果建表时设置了 `SHARD_ROW_ID_BITS` 和 `PRE_SPLIT_REGIONS`，建表成功后会均匀切分出指定数量的 Region。
+
+### `tidb_server_memory_limit` <span class="version-mark">从 v6.4.0 版本开始引入</span>
+
+> **警告：**
+>
+> `tidb_server_memory_limit` 目前为实验性特性，不建议在生产环境中使用。
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 默认值：`0`
+- 取值范围：
+    - 你可以将该变量值设为百分比格式，表示内存用量占总内存的百分比，取值范围为 `[1%, 99%]`。
+    - 你还可以将变量值设为内存大小，取值范围为 `[0, 9223372036854775807]`，单位为 Byte。支持带单位的内存格式 "KB|MB|GB|TB"。`0` 值表示不设内存限制。
+- 该变量指定 TiDB 实例的内存限制。TiDB 会在内存用量达到该限制时，对当前内存用量最高的 SQL 语句进行取消 (Cancel) 操作。在该 SQL 语句被成功 Cancel 掉后，TiDB 会尝试调用 Golang GC 立刻回收内存，以最快速度缓解内存压力。
+- 只有内存使用大于 `tidb_server_memory_limit_sess_min_size` 的 SQL 语句会被选定为最优先被 Cancel 的 SQL 语句。
+- 目前 TiDB 一次只能 Cancel 一条 SQL 语句。如果 TiDB 完全 Cancel 掉一条 SQL 语句并回收资源后，内存使用仍然大于该变量所设限制，TiDB 会开始下一次 Cancel 操作。
+
+### `tidb_server_memory_limit_gc_trigger` <span class="version-mark">从 v6.4.0 版本开始引入</span>
+
+> **警告：**
+>
+> `tidb_server_memory_limit_gc_trigger` 目前为实验性特性，不建议在生产环境中使用。
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 默认值：`70%`
+- 取值范围：`[50%, 99%]`
+- TiDB 尝试触发 GC 的阈值。当 TiDB 的内存使用达到 `tidb_server_memory_limit` 值 \* `tidb_server_memory_limit_gc_trigger` 值时，则会主动触发一次 Golang GC。在一分钟之内只会主动触发一次 GC。
+
+### `tidb_server_memory_limit_sess_min_size` <span class="version-mark">从 v6.4.0 版本开始引入</span>
+
+> **警告：**
+>
+> `tidb_server_memory_limit_sess_min_size` 目前为实验性特性，不建议在生产环境中使用。
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 默认值：`134217728`（即 128 MB）
+- 取值范围：`[128, 9223372036854775807]`，单位 Byte。
+- 开启内存限制后，TiDB 会终止当前实例上内存用量最高的 SQL 语句。本变量指定此情况下 SQL 语句被终止的最小内存用量。如果 TiDB 实例的内存超限是由许多内存使用量不明显的会话导致的，可以适当调小该变量值，使得更多会话成为 Cancel 的对象。
 
 ### `tidb_shard_allocate_step` <span class="version-mark">从 v5.0 版本开始引入</span>
 
