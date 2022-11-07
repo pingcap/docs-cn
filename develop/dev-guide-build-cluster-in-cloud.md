@@ -1,12 +1,12 @@
 ---
-title: 使用 TiDB Cloud (DevTier) 构建 TiDB 集群
-summary: 使用 TiDB Cloud (DevTier) 构建 TiDB 集群，并连接 TiDB Cloud 集群。
+title: 使用 TiDB Cloud (Serverless Tier) 构建 TiDB 集群
+summary: 使用 TiDB Cloud (Serverless Tier) 构建 TiDB 集群，并连接 TiDB Cloud 集群。
 aliases: ['/zh/tidb/dev/build-cluster-in-cloud']
 ---
 
 <!-- markdownlint-disable MD029 -->
 
-# 使用 TiDB Cloud (DevTier) 构建 TiDB 集群
+# 使用 TiDB Cloud (Serverless Tier) 构建 TiDB 集群
 
 本章节将介绍以最快的方式开始使用 TiDB。你将使用 [TiDB Cloud](https://en.pingcap.com/tidb-cloud) 创建并启动一个免费的 TiDB 集群，使用 TiDB SQL 客户端，插入数据。随后将从示例程序读取出数据。
 
@@ -16,17 +16,18 @@ aliases: ['/zh/tidb/dev/build-cluster-in-cloud']
 
 1. 如果你还未拥有 TiDB Cloud 帐号，请先在此[注册](https://tidbcloud.com/free-trial)。
 2. 使用你的 TiDB Cloud 帐号[登录](https://tidbcloud.com/)。
-3. 在[方案](https://tidbcloud.com/console/plans)内选择一年内免费的 Developer Tier 方案，或直接点击[创建 Dev Tier 集群](https://tidbcloud.com/console/create-cluster?tier=dev)，进入 **Create a Cluster (Dev Tier)** 页面。
-4. 请在 **Create a Cluster (Dev Tier)** 页面填写集群名称/密码/云服务商（暂时仅可选择 AWS）/ 可用区（建议就近选择）后，点击 **Create** 按钮创建集群。
-5. 稍作等待，在 5~15 分钟后，将创建完毕，可在 [Active Clusters](https://tidbcloud.com/console/clusters) 查看创建进度。
-6. 创建完毕后，在 **Active Clusters** 页面，点击集群名称，进入该集群控制面板。
-    ![active clusters](/media/develop/IMG_20220331-232643794.png)
-7. 点击 **Connect**，创建流量过滤器（允许连接的客户端 IP 列表）。
-    ![connect](/media/develop/IMG_20220331-232726165.png)
-8. 在弹出框内点击 **Add Your Current IP Address**，此项将由 TiDB Cloud 解析你当前的网络 IP 填入。点击 **Create Filter**，进行流量过滤器的创建。
-9. 复制弹出框 **Step 2: Connect with a SQL client** 中的连接字符串，供后续步骤使用。
+3. 在[方案](https://tidbcloud.com/console/plans)内选择免费的 **Serverless Tier** 方案，或在 [Clusters](https://tidbcloud.com/console/clusters) 页面中点击 **Create Cluster** 按钮。
+4. 在 **Create Cluster** 页面设置集群名称、云服务商（Serverless Tier 默认为 AWS）、可用区（建议就近选择）后，点击 **Create** 按钮创建 Serverless Tier 免费集群。
+5. 在 **Security Settings** 对话框中，设置密码，并添加允许连接你的集群的 IP 地址，完成后点击 **Apply**。
 
-![SQL string](/media/develop/IMG_20220331-232800929.png)
+    你的 TiDB Cloud 集群将于 30 秒后创建完毕。
+
+6. 创建完毕后，点击右上角的 **Connect** 按钮。或点击集群名称，打开集群的详情页，再点击右上角的 **Connect** 按钮。这将显示一个连接对话框。
+7. 复制连接对话框 **Step 2: Connect with a SQL client** 中的连接字符串，供后续步骤使用。
+
+    > **Note:**
+    >
+    > 需要特别说明的是，在你使用 [Serverless Tier clusters](https://docs.pingcap.com/tidbcloud/select-cluster-tier#serverless-tier) 集群时，你需要给你设置的用户名加上前缀（如上图中的 `9ATyn6DhCXoo6U1`），若使用命令行连接，还需使用单引号包裹用户名。你可以在 [TiDB Cloud - 用户名前缀](https://docs.pingcap.com/tidbcloud/select-cluster-tier#user-name-prefix) 中获得更多信息。
 
 ## 第 2 步：连接到集群
 
@@ -116,7 +117,7 @@ aliases: ['/zh/tidb/dev/build-cluster-in-cloud']
     {{< copyable "shell-regular" >}}
 
     ```shell
-    mysql --connect-timeout 15 -u root -h <host> -P 4000 -p
+    mysql --connect-timeout 15 -u '<prefix>.root' -h <host> -P 4000 -p
     ```
 
 3. 填写密码，完成登录。
@@ -133,16 +134,6 @@ aliases: ['/zh/tidb/dev/build-cluster-in-cloud']
 
 2. 更改连接参数。
 
-    <SimpleTab>
-
-    <div label="本地默认集群">
-
-    本地默认集群无需更改连接参数。
-
-    </div>
-
-    <div label="非本地默认集群、TiDB Cloud 或其他远程集群">
-
     对于非本地默认集群、TiDB Cloud 或其他远程集群，需要更改 `plain-java-jdbc/src/main/java/com/pingcap/JDBCExample.java` 内关于 Host、Port、User、Password 的参数：
 
     {{< copyable "" >}}
@@ -151,7 +142,7 @@ aliases: ['/zh/tidb/dev/build-cluster-in-cloud']
     mysqlDataSource.setServerName("localhost");
     mysqlDataSource.setPortNumber(4000);
     mysqlDataSource.setDatabaseName("test");
-    mysqlDataSource.setUser("root");
+    mysqlDataSource.setUser("<prefix>.root");
     mysqlDataSource.setPassword("");
     ```
 
@@ -160,7 +151,7 @@ aliases: ['/zh/tidb/dev/build-cluster-in-cloud']
     {{< copyable "shell-regular" >}}
 
     ```shell
-    mysql --connect-timeout 15 -u root -h xxx.tidbcloud.com -P 4000 -p
+    mysql --connect-timeout 15 -u '9ATyn6DhCXoo6U1.root' -h xxx.tidbcloud.com -P 4000 -D test -p
     ```
 
     那么此处应将参数更改为：
@@ -171,13 +162,9 @@ aliases: ['/zh/tidb/dev/build-cluster-in-cloud']
     mysqlDataSource.setServerName("xxx.tidbcloud.com");
     mysqlDataSource.setPortNumber(4000);
     mysqlDataSource.setDatabaseName("test");
-    mysqlDataSource.setUser("root");
+    mysqlDataSource.setUser("9ATyn6DhCXoo6U1.root");
     mysqlDataSource.setPassword("123456");
     ```
-
-    </div>
-
-    </SimpleTab>
 
 3. 运行 `make plain-java-jdbc`。
 

@@ -8,6 +8,8 @@ title: TiDB 6.1.0 Release Notes
 
 TiDB 版本：6.1.0
 
+试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v6.1/quick-start-with-tidb) | [生产部署](https://docs.pingcap.com/zh/tidb/v6.1/production-deployment-using-tiup) | [下载离线包](https://cn.pingcap.com/product-community/)
+
 在 6.1.0 版本中，你可以获得以下关键特性：
 
 - List 和 List COLUMNS 分区方式 GA，与 MySQL 5.7 兼容
@@ -17,6 +19,7 @@ TiDB 版本：6.1.0
 - TiFlash 支持按需触发物理数据整理（Compaction）
 - MPP 实现窗口函数框架
 - TiCDC 支持将 changelogs 以 Avro 协议输出到 Kafka
+- TiCDC 支持在数据复制过程中拆分大事务，能够有效降低大事务带来的复制延迟
 - DM 合库合表迁移场景的乐观 DDL 协调模式 GA
 
 ## 新功能
@@ -351,6 +354,10 @@ TiDB 版本：6.1.0
 
         - 优化 Scatter Region 为批量模式，提升 Scatter Region 过程的稳定性 [#33618](https://github.com/pingcap/tidb/issues/33618)
 
+    + TiCDC
+
+        - TiCDC 支持在数据复制过程中拆分大事务，能够有效降低大事务带来的复制延迟 [#5280](https://github.com/pingcap/tiflow/issues/5280)
+
 ## 错误修复
 
 + TiDB
@@ -397,7 +404,6 @@ TiDB 版本：6.1.0
     + TiCDC
 
         - 优化了 ddl schema 缓存方式，降低了内存消耗 [#1386](https://github.com/pingcap/tiflow/issues/1386)
-        - 避免大事务导致的 OOM 问题 [#5280](https://github.com/pingcap/tiflow/issues/5280)
         - 修复了增量扫描特殊场景下的数据丢失问题 [#5468](https://github.com/pingcap/tiflow/issues/5468)
 
     + TiDB Data Migration (DM)

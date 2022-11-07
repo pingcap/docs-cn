@@ -9,7 +9,7 @@ summary: 了解 PITR 功能设计和使用。
 
 PITR 可用于满足以下业务需求：
 
-- 降低灾备场景下的 RPO，如 RPO 不超过十几分钟。
+- 降低灾备场景下的 RPO 低至 10 分钟。
 - 处理业务数据写错的案例，如回滚业务数据到出错事件前。
 - 审计业务的历史数据，满足司法审查的需求。
 
@@ -56,7 +56,7 @@ PITR 可用于满足以下业务需求：
 - PITR 的日志备份对集群的影响在 5% 左右
 - PITR 的日志备份和全量备份一起运行时，对集群的影响在 20% 以内
 - PITR 恢复速度，平均到单台 TiKV 节点：全量恢复为 280 GB/h ，日志恢复为 30 GB/h
-- PITR 功能提供的灾备 RPO 低至十几分钟，RTO 根据要恢复的数据规模几分钟到几个小时不等
+- PITR 功能提供的灾备 RPO 低至 10 分钟，RTO 根据要恢复的数据规模几分钟到几个小时不等
 - 使用 BR 清理过期的日志备份数据速度为 600 GB/h
 
 > **注意：**
@@ -83,14 +83,22 @@ PITR 可用于满足以下业务需求：
 
 - 单个集群只支持启动一个日志备份任务。
 - 仅支持恢复到空集群。为了避免对集群的业务请求和数据产生影响，不能在原集群（in-place）和其他已有数据集群执行 PITR。
-- 存储支持 AWS S3 和共享的文件系统（如 NFS 等），暂不支持使用 GCS 和 Azure Blob Storage 作为备份存储。
+- 存储支持共享的文件系统（如 NFS 等）、 AWS S3、GCS 和 Azure Blob Storage 作为备份存储，详细介绍请参考 [AWS S3 storage](/br/backup-storage-S3.md)、[GCS storage](/br/backup-storage-gcs.md) 和 [Azure blob storage](/br/backup-storage-azblob.md)。
 - 仅支持集群粒度的 PITR，不支持对单个 database 或 table 执行 PITR。
 - 不支持恢复用户表和权限表的数据。
-- 如果备份集群包含 TiFlash，执行 PITR 后恢复集群的数据不包含 TiFlash 副本，需要手动恢复 TiFlash 副本。具体操作参考[手动设置 schema 或 table 的 TiFlash 副本](/br/pitr-troubleshoot.md#在使用-br-restore-point-命令恢复下游集群后无法从-tiflash-引擎中查询到数据该如何处理)。
+- TiFlash 副本在 PITR 完成恢复之后并不能马上可用，而是需要等待一段时间从 TiKV 节点同步数据。要查看同步进度，可以查询 `INFORMATION_SCHEMA.tiflash_replica` 表中的 `progress` 信息。
 - 上游数据库使用 TiDB Lightning Physical 方式导入的数据，无法作为数据日志备份下来。推荐在数据导入后执行一次全量备份，细节参考[上游数据库使用 TiDB Lightning Physical 方式导入数据的恢复](/br/pitr-known-issues.md#上游数据库使用-tidb-lightning-physical-方式导入数据导致无法使用日志备份功能)。
-- 备份过程中不支持分区交换 (Exchange Partition)，参考[日志备份过程中执行分区交换](/br/pitr-troubleshoot.md#日志备份过程中执行分区交换-exchange-partition-ddl在-pitr-恢复时会报错该如何处理)。
-- 不支持在恢复中重复恢复某段时间区间的日志，如果多次重复恢复 [t1=10, ts2=20) 区间的日志备份数据，可能会造成恢复后的数据不一致。
+- 不支持在恢复中重复恢复某段时间区间的日志，如果多次重复恢复 [t1=10, t2=20) 区间的日志备份数据，可能会造成恢复后的数据不一致。
 - 其他已知问题，请参考 [PITR 已知问题](/br/pitr-known-issues.md)。
+
+### 版本兼容检查
+
+在 v6.3.0 中，PITR 产生的备份文件采用新的压缩方法，同时还会合并小文件（为解决之前小文件过多带来的问题），但是这也导致旧版本 TiDB 集群与新版本产生的备份数据不兼容，详情如下表所示： 
+
+| 恢复版本（横向）\ 备份版本（纵向）   | 用 PITR v6.2.0 恢复 TiDB v6.2.0 | 用 PITR v6.3.0 恢复 TiDB v6.3.0 |
+|  ----  |  ----  | ---- |
+|用 PITR v6.2.0 备份 TiDB v6.2.0 | 兼容 | 兼容 |
+|用 PITR v6.3.0 备份 TiDB v6.3.0 | 不兼容 |兼容 |
 
 ## PITR 架构
 

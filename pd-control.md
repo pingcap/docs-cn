@@ -19,15 +19,16 @@ PD Control 是 PD 的命令行工具，用于获取集群状态信息和调整�
 
 ### 下载安装包
 
-如需下载最新版本的 `pd-ctl`，直接下载 TiDB 安装包即可。`pd-ctl` 位于 TiDB 安装包的 `ctl-{version}-linux-amd64.tar.gz` 包中。
+如需下载最新版本的 `pd-ctl`，直接下载 TiDB 安装包即可。`pd-ctl` 位于 TiDB 安装包的 `ctl-{version}-linux-{arch}.tar.gz` 包中。
 
 | 安装包                                                                    | 操作系统 | 架构  | SHA256 校验和                                                    |
 | :------------------------------------------------------------------------ | :------- | :---- | :--------------------------------------------------------------- |
 | `https://download.pingcap.org/tidb-community-server-{version}-linux-amd64.tar.gz` (pd-ctl) | Linux    | amd64 | `https://download.pingcap.org/tidb-community-server-{version}-linux-amd64.sha256` |
+| `https://download.pingcap.org/tidb-community-server-{version}-linux-arm64.tar.gz` (pd-ctl) | Linux | arm64 | `https://download.pingcap.org/tidb-community-server-{version}-linux-arm64.sha256` |
 
 > **注意：**
 >
-> 下载链接中的 `{version}` 为 TiDB 的版本号。例如 `v6.2.0` 版本的下载链接为 `https://download.pingcap.org/tidb-community-server-v6.2.0-linux-amd64.tar.gz`。
+> 下载链接中的 `{version}` 为 TiDB 的版本号。例如，amd64 架构的 `v6.3.0` 版本的下载链接为 `https://download.pingcap.org/tidb-community-server-v6.3.0-linux-amd64.tar.gz`。
 
 ### 源码编译
 
@@ -1088,7 +1089,7 @@ region check miss-peer
 }
 ```
 
-### `scheduler [show | add | remove | pause | resume | config]`
+### `scheduler [show | add | remove | pause | resume | config | describe]`
 
 用于显示和控制调度策略。
 
@@ -1110,7 +1111,22 @@ region check miss-peer
 >> scheduler resume balance-region-scheduler              // 继续运行 balance-region 调度器
 >> scheduler resume all                                   // 继续运行所有的调度器
 >> scheduler config balance-hot-region-scheduler          // 显示 balance-hot-region 调度器的配置
+>> scheduler describe balance-region-scheduler            // 显示 balance-region 的运行状态和相应的诊断信息
 ```
+
+### `scheduler describe balance-region-scheduler`
+
+用于查看 `balance-region-scheduler` 的运行状态和相应的诊断信息。
+
+从 TiDB v6.3.0 起，PD 为 `balance-region-scheduler` 和 `balance-leader-scheduler` 提供了运行状态和简要诊断信息的功能，其余 scheduler 和 checker 暂未支持。你可以通过 `pd-ctl` 修改 [`enable-diagnostic`](/pd-configuration-file.md#enable-diagnostic-从-v630-版本开始引入) 配置项开启该功能。
+
+调度器运行状态有以下几种类型：
+
+- `disabled`：表示当前调度器不可用或被移除。
+- `paused`：表示当前调度器暂停工作。
+- `scheduling`：表示当前调度器正在生成调度。
+- `pending`：表示当前调度器无法产生调度。`pending` 状态的调度器，会返回一个概览信息，来帮助用户诊断。概览信息包含了 store 的一些状态信息，解释了它们为什么不能被选中进行调度。
+- `normal`：表示当前调度器无需进行调度。
 
 ### `scheduler config balance-leader-scheduler`
 
@@ -1159,7 +1175,8 @@ scheduler config balance-hot-region-scheduler  // 显示 balance-hot-region 调�
     "key"
   ],
   "strict-picking-store": "true",
-  "enable-for-tiflash": "true"
+  "enable-for-tiflash": "true",
+  "rank-formula-version": "v2"
 }
 ```
 
@@ -1218,10 +1235,20 @@ scheduler config balance-hot-region-scheduler  // 显示 balance-hot-region 调�
     scheduler config balance-hot-region-scheduler set read-priorities query,byte
     ```
 
-- `strict-picking-store` 是控制热点调度搜索空间的开关，通常为打开。当打开时，热点调度的目标是保证所配置的两个维度的热点均衡。当关闭后，热点调度只保证处于第一优先级的维度的热点均衡表现更好，但可能会导致其他维度的热点不再那么均衡。通常用户不需要修改这个配置项。
+- `strict-picking-store` 是控制热点调度搜索空间的开关，通常为打开。该配置项仅影响 `rank-formula-version` 为 `v1` 时的行为。当打开时，热点调度的目标是保证所配置的两个维度的热点均衡。当关闭后，热点调度只保证处于第一优先级的维度的热点均衡表现更好，但可能会导致其他维度的热点不再那么均衡。通常用户不需要修改这个配置项。
 
     ```bash
     scheduler config balance-hot-region-scheduler set strict-picking-store true
+    ```
+
+- `rank-formula-version` 适用于热点调度，其用来确定调度策略的算法版本，支持的值有 `["v1", "v2"]`。目前该配置的默认值为 `v2`。
+
+    - `v1` 版本为 v6.3.0 之前的策略，主要关注调度是否降低了不同 Store 之间的负载差值，以及是否在另一维度引入副作用。
+    - `v2` 版本是 v6.3.0 引入的实验特性算法，在 v6.4.0 正式发布，主要关注 Store 之间均衡度的提升率，同时降低了对副作用的关注度。对比 `strict-picking-store` 为 `true` 的 `v1` 算法，`v2` 版本更注重优先均衡第一维度。对比 `strict-picking-store` 为 `false` 的 `v1` 算法，`v2` 版本兼顾了第二维度的均衡。
+    - `strict-picking-store` 为 `true` 的 `v1` 版本算法较为保守，只有当存在两个维度的负载都偏高的 Store 时才能产生调度。在特定场景下有可能因为维度冲突导致无法继续均衡，需要将 `strict-picking-store` 改为 `false` 才能在第一维度取得更好的均衡效果。`v2` 版本算法则可以在两个维度都取得更好的均衡效果，并减少无效调度。
+
+    ```bash
+    scheduler config balance-hot-region-scheduler set rank-formula-version v2
     ```
 
 - `enable-for-tiflash` 是控制热点调度是否对 TiFlash 生效的开关。通常为打开，关闭后将不会产生 TiFlash 实例之间的热点调度。
@@ -1232,11 +1259,11 @@ scheduler config balance-hot-region-scheduler  // 显示 balance-hot-region 调�
 
 ### `store [delete | cancel-delete | label | weight | remove-tombstone | limit ] <store_id> [--jq="<query string>"]`
 
-用于显示 store 信息或者删除指定 store。使用 jq 格式化输出请参考 [jq 格式化 json 输出示例](#jq-格式化-json-输出示例)。示例如下。
+使用 jq 格式化输出请参考 [jq 格式化 json 输出示例](#jq-格式化-json-输出示例)。
+
+#### 查询 store
 
 显示所有 store 信息：
-
-{{< copyable "" >}}
 
 ```bash
 store
@@ -1249,9 +1276,7 @@ store
 }
 ```
 
-获取 store id 为 1 的 store：
-
-{{< copyable "" >}}
+获取 id 为 1 的 store：
 
 ```bash
 store 1
@@ -1261,59 +1286,78 @@ store 1
 ......
 ```
 
-下线 store id 为 1 的 store：
+#### 下线 store
 
-{{< copyable "" >}}
+下线 id 为 1 的 store：
 
 ```bash
 store delete 1
 ```
 
-撤销已使用 store delete 下线并处于 Offline 状态的 store。撤销后，该 store 会从 Offline 状态变为 Up 状态。注意，该命令无法使 Tombstone 状态的 store 变回 Up 状态。以下示例撤销已使用 store delete 下线的 store，其 store id 为 1：
+执行 `store cancel-delete` 命令，你可以撤销已使用 `store delete` 下线并处于 `Offline` 状态的 store。撤销后，该 store 会从 `Offline` 状态变为 `Up` 状态。注意， `store cancel-delete` 命令无法使 `Tombstone` 状态的 store 变回 `Up` 状态。
 
-{{< copyable "" >}}
+撤销通过 `store delete` 下线 id 为 1 的 store：
 
 ```bash
 store cancel-delete 1
 ```
 
+删除所有 Tombstone 状态的 store：
+
+```bash
+store remove-tombstone
+```
+
 > **注意：**
 >
-> 若下线过程中切换了 PD leader，需要手动修改 store limit。
+> 若下线过程中切换了 PD leader，需要使用 `store limit` 命令修改 [store 调度限速](#设置-store-调度限速)。
 
-设置 store id 为 1 的 store 的键为 "zone" 的 label 的值为 "cn"：
+#### 管理 store label
 
-{{< copyable "" >}}
+`store label` 命令用于管理 store label。
 
-```bash
-store label 1 zone cn
-```
+- 为 id 为 1 的 store 设置键为 `"zone"`、值为 `"cn"` 的 label：
 
-清除 store id 为 1 的 label：
+    ```bash
+    store label 1 zone=cn
+    ```
 
-{{< copyable "" >}}
+- 更新 id 为 1 的 store 的 label：
 
-```bash
-store label 1 --force
-```
+    ```bash
+    store label 1 zone=us
+    ```
+
+- 通过 `--rewrite` 选项重写 id 为 1 的 store 的所有 label，之前的 label 会被覆盖：
+
+    ```bash
+    store label 1 region=us-est-1 disk=ssd --rewrite
+    ```
+
+- 删除 id 为 1 的 store 的键为 `"disk"` 的 label ：
+
+    ```bash
+    store label 1 disk --delete
+    ```
 
 > **注意：**
 >
 > - store 的 label 更新方法使用的是合并策略。如果修改了 TiKV 配置文件中的 store label，进程重启之后，PD 会将自身存储的 store label 与其进行合并更新，并持久化合并后的结果。
-> - 如果希望使用 TiUP 统一管理 store label 的话，可以在集群重启前，使用 PD Control 的 `store label <id> --force` 命令将 PD 存储的 store label 清空。
+> - 如果希望使用 TiUP 统一管理 store label，你可以在集群重启前，使用 PD Control 的 `store label <id> --force` 命令将 PD 存储的 store label 清空。
 
-设置 store id 为 1 的 store 的 leader weight 为 5，Region weight 为 10：
+#### 设置 store weight
 
-{{< copyable "" >}}
+将 id 为 1 的 store 的 leader weight 设为 5，Region weight 设为 10：
 
 ```bash
 store weight 1 5 10
 ```
 
-{{< copyable "" >}}
+#### 设置 store 调度限速
+
+通过 `store-limit`，你可以设置 store 的调度速度。关于 `store limit` 的原理和使用方法，请参考 [`store limit`](/configure-store-limit.md)。
 
 ```bash
->> store remove-tombstone              // 删除所有 tombstone 状态的 store
 >> store limit                         // 显示所有 store 添加和删除 peer 的速度上限
 >> store limit add-peer                // 显示所有 store 添加 peer 的速度上限
 >> store limit remove-peer             // 显示所有 store 删除 peer 的速度上限
@@ -1328,7 +1372,7 @@ store weight 1 5 10
 > **注意：**
 >
 > * `store limit` 命令原有的 `region-add` 和 `region-remove` 子命令已废弃，请使用 `add-peer` 和 `remove-peer` 来替代。
-> * 使用 `pd-ctl` 可以查看 TiKV 节点的状态信息，即 Up，Disconnect，Offline，Down，或 Tombstone。如需查看各个状态之间的关系，请参考 [TiKV Store 状态之间的关系](/tidb-scheduling.md#信息收集)。
+> * 使用 `pd-ctl` 可以查看 TiKV 节点的状态信息，即 `Up`，`Disconnect`，`Offline`，`Down`，或 `Tombstone`。如需查看各个状态之间的关系，请参考 [TiKV Store 状态之间的关系](/tidb-scheduling.md#信息收集)。
 
 ### `log [fatal | error | warn | info | debug]`
 

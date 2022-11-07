@@ -32,6 +32,10 @@ DM 会尝试将包含多个 DDL 变更操作的单条语句拆分成只包含一
 >
 > TiDB 目前并不兼容 MySQL 支持的所有 DDL 语句。
 
+## DM 是否会将视图的 DDL 语句和对视图的 DML 语句同步到下游的 TiDB 中？
+
+目前 DM 不会将视图的 DDL 语句同步到下游的 TiDB 集群，也不会将针对视图的 DML 语句同步到下游。
+
 ## 如何重置数据迁移任务？
 
 当数据迁移过程中发生异常且无法恢复时，需要重置数据迁移任务，对数据重新进行迁移：
@@ -363,3 +367,7 @@ flush local meta, Rawcause: open relay-dir/xxx.000001/relay.metayyyy: no such fi
     ```
 
 - 升级 DM 至 v2.0.7 或之后版本。
+
+## Load 单元报错 `Unknown character set`
+
+由于 TiDB 只支持部分 MySQL 字符集，因此，在全量导入中，如果创建表结构时使用了 TiDB 不支持的字符集，DM 会报这个错误。你可以结合数据内容选择 [TiDB 支持的字符集](/character-set-and-collation.md)，预先在下游创建表结构以绕过这个错误。
