@@ -57,7 +57,13 @@ Info: {"sink-uri":"kafka://127.0.0.1:9092/kafka-topic-name?protocol=canal-json",
 
 如果命令长时间没有返回，你需要检查当前执行命令所在服务器到 sink-uri 中指定的 Kafka 机器的网络可达性，保证二者之间的网络连接正常。
 
+<<<<<<< HEAD
 生产环境下 Kafka 集群通常有多个 broker 节点，你可以在 sink-uri 中配置多个 broker 的访问地址，这有助于提升 changefeed 到 Kafka 集群访问的稳定性，当部分被配置的 Kafka 节点故障的时候，changefeed 依旧可以正常工作。假设 Kafka 集群中有 3 个 broker 节点，地址分别为 127.0.0.1:9092 / 127.0.0.2:9092 / 127.0.0.3:9092，可以参考如下 sink-uri 创建 changefeed:
+=======
+    ```shell
+    tiup ctl:<cluster-version> cdc changefeed create --pd="http://127.0.0.1:2379" --sink-uri="kafka://127.0.0.1:9092/kafka-topic-name?protocol=canal-json" --changefeed-id="kafka-changefeed" --config="changefeed.conf"
+    ```
+>>>>>>> 07fef7ab2 (add version to tiup ctl to make the command work (#11914))
 
 {{< copyable "shell-regular" >}}
 
@@ -69,13 +75,27 @@ tiup ctl cdc changefeed create --pd="http://127.0.0.1:2379" --sink-uri="kafka://
 
 {{< copyable "shell-regular" >}}
 
+<<<<<<< HEAD
 ```shell
 tiup ctl cdc changefeed list --pd="http://127.0.0.1:2379"
 ```
+=======
+    ```shell
+    tiup ctl:<cluster-version> cdc changefeed create --pd="http://127.0.0.1:2379" --sink-uri="kafka://127.0.0.1:9092,127.0.0.2:9092,127.0.0.3:9092/kafka-topic-name?protocol=canal-json&partition-num=3&replication-factor=1&max-message-bytes=1048576" --config="changefeed.conf"
+    ```
+>>>>>>> 07fef7ab2 (add version to tiup ctl to make the command work (#11914))
 
 你可以参考 [TiCDC 运维操作及任务管理](/ticdc/manage-ticdc.md#管理同步任务-changefeed)，对 changefeed 状态进行管理。
 
+<<<<<<< HEAD
 ## 第 3 步：TiDB 产生事件变更数据
+=======
+    ```shell
+    tiup ctl:<cluster-version> cdc changefeed list --pd="http://127.0.0.1:2379"
+    ```
+
+    可以参考 [TiCDC 运维操作及任务管理](/ticdc/manage-ticdc.md#管理同步任务-changefeed)，对 changefeed 状态进行管理。
+>>>>>>> 07fef7ab2 (add version to tiup ctl to make the command work (#11914))
 
 完成以上步骤后，只要上游 TiDB 有事件变更操作，比如 `INSERT`、`UPDATE`、`DELETE` 或其他 DDL 操作，即会产生数据到 TiCDC，然后 TiCDC 会将数据发送到 changefeed 指定的 sink，当下游 sink 是 Kafka 时，数据将会被写入指定的 Kafka Topic 中。
 
