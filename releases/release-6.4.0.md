@@ -80,6 +80,8 @@ TiDB 版本：6.4.0-DMR
 
     [用户文档](/optimizer-hints.md#no_decorrelate)
 
+* 优化了 TiDB Analyze 分区表时的所需性能，减少了消耗时间，并提高了自动 Analyze 时的稳定性 [#37977](https://github.com/pingcap/tidb/issues/37977) @[Yisaer](https://github.com/Yisaer)
+
 ### 事务
 
 * 功能简短描述
