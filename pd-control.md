@@ -41,7 +41,11 @@ PD Control 是 PD 的命令行工具，用于获取集群状态信息和调整�
 {{< copyable "shell-regular" >}}
 
 ```bash
+<<<<<<< HEAD
 ./pd-ctl store -u http://127.0.0.1:2379
+=======
+tiup ctl:<cluster-version> pd store -u http://127.0.0.1:2379
+>>>>>>> 07fef7ab2 (add version to tiup ctl to make the command work (#11914))
 ```
 
 交互模式：
@@ -49,7 +53,11 @@ PD Control 是 PD 的命令行工具，用于获取集群状态信息和调整�
 {{< copyable "shell-regular" >}}
 
 ```bash
+<<<<<<< HEAD
 ./pd-ctl -i -u http://127.0.0.1:2379
+=======
+tiup ctl:<cluster-version> pd -i -u http://127.0.0.1:2379
+>>>>>>> 07fef7ab2 (add version to tiup ctl to make the command work (#11914))
 ```
 
 使用环境变量：
@@ -58,7 +66,11 @@ PD Control 是 PD 的命令行工具，用于获取集群状态信息和调整�
 
 ```bash
 export PD_ADDR=http://127.0.0.1:2379 &&
+<<<<<<< HEAD
 ./pd-ctl
+=======
+tiup ctl:<cluster-version> pd
+>>>>>>> 07fef7ab2 (add version to tiup ctl to make the command work (#11914))
 ```
 
 使用 TLS 加密：
@@ -66,7 +78,11 @@ export PD_ADDR=http://127.0.0.1:2379 &&
 {{< copyable "shell-regular" >}}
 
 ```bash
+<<<<<<< HEAD
 ./pd-ctl -u https://127.0.0.1:2379 --cacert="path/to/ca" --cert="path/to/cert" --key="path/to/key"
+=======
+tiup ctl:<cluster-version> pd -u https://127.0.0.1:2379 --cacert="path/to/ca" --cert="path/to/cert" --key="path/to/key"
+>>>>>>> 07fef7ab2 (add version to tiup ctl to make the command work (#11914))
 ```
 
 ## 命令行参数 (flags)

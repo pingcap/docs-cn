@@ -115,7 +115,11 @@ aliases: ['/docs-cn/stable/enable-tls-between-components/','/docs-cn/v4.0/enable
     {{< copyable "shell-regular" >}}
 
     ```bash
+<<<<<<< HEAD
     ./pd-ctl -u https://127.0.0.1:2379 --cacert /path/to/ca.pem --cert /path/to/client.pem --key /path/to/client-key.pem
+=======
+    tiup ctl:<cluster-version> pd -u https://127.0.0.1:2379 --cacert /path/to/ca.pem --cert /path/to/client.pem --key /path/to/client-key.pem
+>>>>>>> 07fef7ab2 (add version to tiup ctl to make the command work (#11914))
     ```
 
     {{< copyable "shell-regular" >}}

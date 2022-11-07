@@ -28,7 +28,11 @@ summary: 了解如何使用 TiCDC 将 TiDB 数据流式传输到 Confluent Platf
     {{< copyable "shell-regular" >}}
 
     ```shell
+<<<<<<< HEAD
     confluent local services connect connector list
+=======
+    tiup ctl:<cluster-version> cdc changefeed create --pd="http://127.0.0.1:2379" --sink-uri="kafka://<broker_endpoint>/ticdc-meta?protocol=avro&replication-factor=3&enable-tls=true&auto-create-topic=true&sasl-mechanism=plain&sasl-user=<broker_api_key>&sasl-password=<broker_api_secret>" --schema-registry="https://<schema_registry_api_key>:<schema_registry_api_secret>@<schema_registry_endpoint>" --changefeed-id="confluent-changefeed" --config changefeed.conf
+>>>>>>> 07fef7ab2 (add version to tiup ctl to make the command work (#11914))
     ```
 
 ## 集成步骤
@@ -37,6 +41,7 @@ summary: 了解如何使用 TiCDC 将 TiDB 数据流式传输到 Confluent Platf
 
     {{< copyable "" >}}
 
+<<<<<<< HEAD
     ```json
     {
       "name": "jdbc-sink-connector",
@@ -51,6 +56,10 @@ summary: 了解如何使用 TiCDC 将 TiDB 数据流式传输到 Confluent Platf
         "auto.evolve": true
       }
     }
+=======
+    ```shell
+    tiup ctl:<cluster-version> cdc changefeed create --pd="http://127.0.0.1:2379" --sink-uri="kafka://xxx-xxxxx.ap-east-1.aws.confluent.cloud:9092/ticdc-meta?protocol=avro&replication-factor=3&enable-tls=true&auto-create-topic=true&sasl-mechanism=plain&sasl-user=L5WWA4GK4NAT2EQV&sasl-password=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" --schema-registry="https://7NBH2CAFM2LMGTH7:xxxxxxxxxxxxxxxxxx@yyy-yyyyy.us-east-2.aws.confluent.cloud" --changefeed-id="confluent-changefeed" --config changefeed.conf
+>>>>>>> 07fef7ab2 (add version to tiup ctl to make the command work (#11914))
     ```
 
 2. 运行下方命令新建一个 JDBC sink connector 实例（假设 Kafka 监听的 IP 地址与端口是 `127.0.0.1:8083`）：
@@ -58,7 +67,11 @@ summary: 了解如何使用 TiCDC 将 TiDB 数据流式传输到 Confluent Platf
     {{< copyable "shell-regular" >}}
 
     ```shell
+<<<<<<< HEAD
     curl -X POST -H "Content-Type: application/json" -d jdbc-sink-connector.json http://127.0.0.1:8083/connectors
+=======
+    tiup ctl:<cluster-version> cdc changefeed list --pd="http://127.0.0.1:2379"
+>>>>>>> 07fef7ab2 (add version to tiup ctl to make the command work (#11914))
     ```
 
 3. 通过以下任一方式部署 TiCDC。如果已经部署了 TiCDC，可以跳过这一步。

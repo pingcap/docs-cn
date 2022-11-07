@@ -21,7 +21,7 @@ TiKV Control（以下简称 tikv-ctl）是 TiKV 的命令行工具，用于管�
 {{< copyable "shell-regular" >}}
 
 ```bash
-tiup ctl tikv
+tiup ctl:<cluster-version> tikv
 ```
 
 ```
@@ -90,7 +90,7 @@ SUBCOMMANDS:
     unsafe-recover        Unsafely recover the cluster when the majority replicas are failed
 ```
 
-你可以在 `tiup ctl tikv` 后面再接上相应的参数与子命令。
+你可以在 `tiup ctl:<cluster-version> tikv` 后面再接上相应的参数与子命令。
 
 ## 通用参数
 

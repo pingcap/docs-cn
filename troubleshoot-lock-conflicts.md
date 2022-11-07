@@ -136,8 +136,13 @@ TxnLockNotFound 错误是由于事务提交的慢了，超过了 TTL 的时间�
     查看提交间隔：
 
     ```shell
+<<<<<<< HEAD
     ./pd-ctl tso [start_ts]
     ./pd-ctl tso [commit_ts]
+=======
+    tiup ctl:<cluster-version> pd tso [start_ts]
+    tiup ctl:<cluster-version> pd tso [commit_ts]
+>>>>>>> 07fef7ab2 (add version to tiup ctl to make the command work (#11914))
     ```
 
 * 建议检查下是否是因为写入性能的缓慢导致事务提交的效率差，进而出现了锁被清除的情况。
