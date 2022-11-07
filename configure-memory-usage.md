@@ -107,7 +107,7 @@ SET GLOBAL tidb_server_memory_limit = "32GB";
 
 当触发 tidb-server 内存占用过高的报警时，TiDB 的报警行为如下：
 
-- TiDB 将以下信息记录到 TiDB 日志文件 [`filename`](tidb-configuration-file.md#filename) 所在目录中。
+- TiDB 将以下信息记录到 TiDB 日志文件 [`filename`](/tidb-configuration-file.md#filename) 所在目录中。
 
     - 当前正在执行的所有 SQL 语句中内存使用最高的 10 条语句和运行时间最长的 10 条语句的相关信息
     - goroutine 栈信息
