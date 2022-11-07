@@ -153,6 +153,7 @@ The following TiKV configuration items can be modified online:
 | `raftstore.merge-check-tick-interval` | The time interval for merge check |
 | `raftstore.cleanup-import-sst-interval` | The time interval to check expired SST files |
 | `raftstore.local-read-batch-size` | The maximum number of read requests processed in one batch |
+| `raftstore.apply-yield-write-size` | The maximum number of bytes that the Apply thread can write for one FSM (Finite-state Machine) in each round |
 | `raftstore.hibernate-timeout` | The shortest wait duration before entering hibernation upon start. Within this duration, TiKV does not hibernate (not released). |
 | `raftstore.apply-pool-size` | The number of threads in the pool that flushes data to the disk, which is the size of the Apply thread pool |
 | `raftstore.store-pool-size` | The number of threads in the pool that processes Raft, which is the size of the Raftstore thread pool |
