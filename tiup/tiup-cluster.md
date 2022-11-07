@@ -582,7 +582,7 @@ tiup cluster exec test-cluster --command='ls /tmp'
 
 ```bash
 Usage:
-  tiup ctl {tidb/pd/tikv/binlog/etcd} [flags]
+  tiup ctl:<cluster-version> {tidb/pd/tikv/binlog/etcd} [flags]
 
 Flags:
   -h, --help   help for tiup
