@@ -97,20 +97,40 @@ SET GLOBAL tidb_server_memory_limit = "32GB";
 
 ## tidb-server 内存占用过高时的报警
 
-默认配置下，tidb-server 实例会在机器内存使用达到总内存量的 80% 时打印报警日志，并记录相关状态文件。该内存使用率可以通过系统变量 [`tidb_memory_usage_alarm_ratio`](/system-variables.md#tidb_memory_usage_alarm_ratio) 进行设置。具体报警规则请参考该变量的说明部分。
+当 tidb-server 实例的内存使用量超过内存阈值（默认为总内存量的 70%）且满足以下任一条件时，TiDB 将记录相关状态文件，并打印报警日志。
 
-注意，当触发一次报警后，只有在内存使用率连续低于阈值超过 10 秒并再次达到阈值时，才会再次触发报警。此外，为避免报警时产生的状态文件积累过多，目前只会保留最近 5 次报警时所生成的状态文件。
+- 第一次内存使用量超过内存阈值。
+- 内存使用量超过内存阈值，且距离上一次报警超过 60 秒。
+- 内存使用量超过内存阈值，且 `(本次内存使用量 - 上次报警时内存使用量) / 总内存量 > 10%`。
+
+你可以通过系统变量 [`tidb_memory_usage_alarm_ratio`](/system-variables.md#tidb_memory_usage_alarm_ratio) 修改触发该报警的内存使用比率，从而控制内存报警的阈值。
+
+当触发 tidb-server 内存占用过高的报警时，TiDB 的报警行为如下：
+
+- TiDB 将以下信息记录到 TiDB 日志文件 [`filename`](/tidb-configuration-file.md#filename) 所在目录中。
+
+    - 当前正在执行的所有 SQL 语句中内存使用最高的 10 条语句和运行时间最长的 10 条语句的相关信息
+    - goroutine 栈信息
+    - 堆内存使用状态
+
+- TiDB 将输出一条包含关键字 `tidb-server has the risk of OOM` 以及以下内存相关系统变量的日志。
+
+    - [`tidb_mem_oom_action`](/system-variables.md#tidb_mem_oom_action-从-v610-版本开始引入)
+    - [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query)
+    - [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入)
+    - [`tidb_analyze_version`](/system-variables.md#tidb_analyze_version-从-v510-版本开始引入)
+    - [`tidb_enable_rate_limit_action`](/system-variables.md#tidb_enable_rate_limit_action)
+
+为避免报警时产生的状态文件累积过多，目前 TiDB 默认只保留最近 5 次报警时所生成的状态文件。你可以通过配置系统变量 [`tidb_memory_usage_alarm_keep_record_num`](/system-variables.md#tidb_memory_usage_alarm_keep_record_num-从-v640-版本开始引入) 调整该次数。
 
 下例通过构造一个占用大量内存的 SQL 语句触发报警，对该报警功能进行演示：
 
-1. 配置报警比例为 `0.8`：
+1. 配置报警比例为 `0.85`：
 
     {{< copyable "" >}}
 
-    ```toml
-    mem-quota-query = 34359738368
-    [instance]
-    tidb_memory_usage_alarm_ratio = 0.8
+    ```sql
+    SET GLOBAL tidb_memory_usage_alarm_ratio = 0.85;
     ```
 
 2. 创建单表 `CREATE TABLE t(a int);` 并插入 1000 行数据。
@@ -120,7 +140,7 @@ SET GLOBAL tidb_server_memory_limit = "32GB";
 4. 检查 `tidb.log` 文件，其中会记录系统总内存、系统当前内存使用量、tidb-server 实例的内存使用量以及状态文件所在目录。
 
     ```
-    [2020/11/30 15:25:17.252 +08:00] [WARN] [memory_usage_alarm.go:141] ["tidb-server has the risk of OOM. Running SQLs and heap profile will be recorded in record path"] ["is server-memory-quota set"=false] ["system memory total"=33682427904] ["system memory usage"=27142864896] ["tidb-server memory usage"=22417922896] [memory-usage-alarm-ratio=0.8] ["record path"="/tmp/1000_tidb/MC4wLjAuMDo0MDAwLzAuMC4wLjA6MTAwODA=/tmp-storage/record"]
+    [2022/10/11 16:39:02.281 +08:00] [WARN] [memoryusagealarm.go:212] ["tidb-server has the risk of OOM because of memory usage exceeds alarm ratio. Running SQLs and heap profile will be recorded in record path"] ["is server-memory-quota set"=false] ["system memory total"=33682427904] ["system memory usage"=22120655360] ["tidb-server memory usage"=21468556992] [memory-usage-alarm-ratio=0.85] ["record path"=/tiup/deploy/tidb-4000/log/oom_record]
     ```
 
     以上 Log 字段的含义如下：
@@ -132,7 +152,7 @@ SET GLOBAL tidb_server_memory_limit = "32GB";
     * `memory-usage-alarm-ratio`：表示系统变量 [`tidb_memory_usage_alarm_ratio`](/system-variables.md#tidb_memory_usage_alarm_ratio) 的值
     * `record path`：表示状态文件存放的目录
 
-5. 通过访问状态文件所在目录（该示例中的目录为 `/tmp/1000_tidb/MC4wLjAuMDo0MDAwLzAuMC4wLjA6MTAwODA=/tmp-storage/record`），可以得到一组文件，其中包括 `goroutinue`、`heap`、`running_sql` 3 个文件，文件以记录状态文件的时间为后缀。这 3 个文件分别用来记录报警时的 goroutine 栈信息，堆内存使用状态，及正在运行的 SQL 信息。其中 `running_sql` 文件内的日志格式请参考 [`expensive-queries`](/identify-expensive-queries.md)。
+5. 通过访问状态文件所在目录（该示例中的目录为 `/tiup/deploy/tidb-4000/log/oom_record`），可以看到标记了记录时间的 record 目录（例：`record2022-10-09T17:18:38+08:00`），其中包括 `goroutinue`、`heap`、`running_sql` 3 个文件，文件以记录状态文件的时间为后缀。这 3 个文件分别用来记录报警时的 goroutine 栈信息，堆内存使用状态，及正在运行的 SQL 信息。其中 `running_sql` 文件内容请参考 [`expensive-queries`](/identify-expensive-queries.md)。
 
 ## tidb-server 其它内存控制策略
 
