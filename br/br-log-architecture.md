@@ -1,11 +1,13 @@
 ---
-title: 日志备份和 PITR 功能架构
+title: 日志备份与 PITR 功能架构
 summary: 了解 TiDB 的日志备份和 PITR 的架构设计。
 ---
 
-TiDB 的备份恢复功能，以 BR 和 TiDB Operator 为使用入口，创建相应的备份或恢复子任务在各个 TiKV 存储节点运行，进行日志备份或者恢复。下面以使用 BR 工具进行备份恢复为例，介绍备份和恢复的流程。
+# 日志备份与 PITR 功能架构
 
-# 日志备份和 PITR 功能架构
+TiDB 的备份与恢复功能以 BR 和 TiDB Operator 为使用入口，创建相应的备份或恢复子任务在各个 TiKV 存储节点运行，进行日志备份或者恢复。本文以使用 BR 工具为例，介绍 TiDB 集群备份和恢复数据的架构与流程。
+
+## 架构设计
 
 日志备份和 point in time recovery (PITR) 的架构实现如下：
 
@@ -27,25 +29,25 @@ TiDB 的备份恢复功能，以 BR 和 TiDB Operator 为使用入口，创建�
 
 完整的备份交互流程描述如下：
 
-1. BR 接收备份命令 (`br log start`)
-   * 解析获取日志备份任务的 checkpoint ts (日志备份起始位置)、备份存储地址
-   * **Register log backup task**：在 PD 注册日志备份任务（log backup task）
+1. BR 接收备份命令 (`br log start`)。
+   * 解析获取日志备份任务的 checkpoint ts (日志备份起始位置)、备份存储地址。
+   * **Register log backup task**：在 PD 注册日志备份任务 (log backup task)。
 
-2. TiKV 监控日志备份任务创建/更新
-   * **Fetch log backup task**：每个 TiKV 节点的 log backup observer 监听 PD 中日志备份任务的创建/更新，然后备份该节点上在备份范围内的数据
+2. TiKV 监控日志备份任务的创建与更新。
+   * **Fetch log backup task**：每个 TiKV 节点的 log backup observer 监听 PD 中日志备份任务的创建与更新，然后备份该节点上在备份范围内的数据。
 
-3. TiKV log backup observer 持续地备份 KV 变更日志
-   * **Read kv change data**：读取 kv 数据变更，然后保存到[自定义格式的备份文件](#日志备份文件)中
-   * **Fetch global checkpoint ts**：定期从 PD 查询 global checkpoint ts
-   * **Generate local metadata**：定期生成 local metadata（包含 local checkpoint ts、global checkpoint ts、备份文件信息）
-   * **Upload log data & metadata**：定期将日志备份数据和 local metadata 上传到备份存储中
-   * **Configure GC**：请求 PD 阻止未备份的数据（大于 local checkpoint ts）被 [TiDB GC 机制](/garbage-collection-overview.md)回收掉
+3. TiKV log backup observer 持续地备份 KV 变更日志。
+   * **Read kv change data**：读取 kv 数据变更，然后保存到[自定义格式的备份文件](#日志备份文件)中。
+   * **Fetch global checkpoint ts**：定期从 PD 查询 global checkpoint ts。
+   * **Generate local metadata**：定期生成 local metadata（包含 local checkpoint ts、global checkpoint ts、备份文件信息）。
+   * **Upload log data & metadata**：定期将日志备份数据和 local metadata 上传到备份存储中。
+   * **Configure GC**：请求 PD 阻止未备份的数据（大于 local checkpoint ts）被 [TiDB GC 机制](/garbage-collection-overview.md)回收掉。
 
-4. TiDB Coordinator 监控日志备份进度
-   * **Watch backup progress**：轮询所有 TiKV 节点，获取各个 Region 的备份进度 (region checkpoint ts）
-   * **Report global checkpoint ts**：根据各个 region checkpoint ts，计算整个日志备份任务的进度（global checkpoint ts），然后上报给 PD
+4. TiDB Coordinator 监控日志备份进度。
+   * **Watch backup progress**：轮询所有 TiKV 节点，获取各个 Region 的备份进度 (region checkpoint ts)。
+   * **Report global checkpoint ts**：根据各个 region checkpoint ts，计算整个日志备份任务的进度 (global checkpoint ts)，然后上报给 PD。
 
-5. PD 持久化日志备份任务状态。可以通过 `br log status` 查询
+5. PD 持久化日志备份任务状态。可以通过 `br log status` 查询。
 
 ## PITR
 
@@ -53,31 +55,31 @@ PITR 的流程如下：
 
 ![Point in time recovery process design](/media/br/pitr-ts.png)
 
-1. BR 接收备份命令 (`br restore point`)
-   * 解析获取全量备份数据地址、日志备份数据地址、恢复到的时间点
-   * 查询备份数据中恢复数据对象（db/table），并检查要恢复的表是否符合要求不存在
+1. BR 接收备份命令 (`br restore point`)。
+   * 解析获取全量备份数据地址、日志备份数据地址、恢复到的时间点。
+   * 查询备份数据中恢复数据对象（db/table），并检查要恢复的表是否符合要求不存在。
 
-2. BR 恢复全量备份
-   * 进行快照备份数据恢复，恢复流程参考 [恢复快照备份数据](/br/br-snapshot-architecture.md#恢复流程)
+2. BR 恢复全量备份。
+   * 进行快照备份数据恢复，恢复流程参考[恢复快照备份数据](/br/br-snapshot-architecture.md#恢复流程)。
 
-3. BR 恢复日志备份
-   * **Read backup data**：读取日志备份数据，计算需要恢复的日志备份数据
-   * **Fetch region info**：访问 PD 获取所有 Region 和 KV range 对应关系
-   * **Request TiKV to restore data**：创建日志恢复请求发送到对应的 TiKV 日志恢复请求包含要恢复的日志备份数据信息
+3. BR 恢复日志备份。
+   * **Read backup data**：读取日志备份数据，计算需要恢复的日志备份数据。
+   * **Fetch region info**：访问 PD 获取所有 Region 和 KV range 对应关系。
+   * **Request TiKV to restore data**：创建日志恢复请求发送到对应的 TiKV 日志恢复请求包含要恢复的日志备份数据信息。
 
-4. TiKV 接受 BR 的恢复请求，初始化 log restore worker
-   * log restore worker 获取需要恢复的日志备份数据
+4. TiKV 接受 BR 的恢复请求，初始化 log restore worker。
+   * log restore worker 获取需要恢复的日志备份数据。
 
-5. TiKV 恢复日志备份数据
-   * **Download KVs**：log restore worker 根据日志回复请求中要恢复的备份数据，从备份存储中下载相应的备份数据到本地
-   * **Rewrite KVs**：log restore worker 根据恢复集群表的 table ID 对备份数据的 kv 进行重写 —— 将原有的 [kv 编码](/tidb-computing.md#表数据与-key-value-的映射关系)中的 tableID 替换为新创建的 tableID。同样的 indexID 也需要相同的处理
-   * **Apply KVs**：log restore worker 将处理好的 kv 通过 raft 接口写入 store (RocksDB) 中
-   * **Report restore result**：log restore worker 返回恢复结果给 BR
+5. TiKV 恢复日志备份数据。
+   * **Download KVs**：log restore worker 根据日志回复请求中要恢复的备份数据，从备份存储中下载相应的备份数据到本地。
+   * **Rewrite KVs**：log restore worker 根据恢复集群表的 table ID 对备份数据的 kv 进行重写 —— 将原有的 [kv 编码](/tidb-computing.md#表数据与-key-value-的映射关系)中的 tableID 替换为新创建的 tableID。同样的 indexID 也需要相同的处理。
+   * **Apply KVs**：log restore worker 将处理好的 kv 通过 raft 接口写入 store (RocksDB) 中。
+   * **Report restore result**：log restore worker 返回恢复结果给 BR。
 
-6. BR 从各个 TiKV 获取恢复结果
-   * 如果局部数据恢复因为 RegionNotFound/EpochNotMatch 等原因失败，比如 TiKV 节点故障，BR 重试恢复这些数据
-   * 如果存在备份数据不可重试的恢复失败，则恢复任务失败
-   * 全部备份数据都恢复成功后，则恢复任务成功
+6. BR 从各个 TiKV 获取恢复结果。
+   * 如果局部数据恢复因为 RegionNotFound/EpochNotMatch 等原因失败，比如 TiKV 节点故障，BR 重试恢复这些数据。
+   * 如果存在备份数据不可重试的恢复失败，则恢复任务失败。
+   * 全部备份数据都恢复成功后，则恢复任务成功。
 
 ## 日志备份文件
 

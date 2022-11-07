@@ -53,13 +53,13 @@ aliases: ['/docs-cn/dev/br/backup-and-restore-use-cases/','/docs-cn/dev/referenc
 
 1. 在 S3 创建用于保存备份数据的目录 `s3://tidb-pitr-bucket/backup-data`。
 
-    1. 创建 bucket。你也可以选择已有的 S3 bucket 来保存备份数据。如果没有可用的 bucket，可以参照 [AWS 官方文档](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/user-guide/create-bucket.html) 创建一个 S3 Bucket。本文使用的 bucket 名为 `tidb-pitr-bucket`。
+    1. 创建 bucket。你也可以选择已有的 S3 bucket 来保存备份数据。如果没有可用的 bucket，可以参照 [AWS 官方文档](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/user-guide/create-bucket.html)创建一个 S3 Bucket。本文使用的 bucket 名为 `tidb-pitr-bucket`。
     2. 创建备份数据总目录。在上一步创建的 bucket（例如 `tidb-pitr-bucket`）下创建目录 `backup-data`，参考 [AWS 官方文档](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/user-guide/create-folder.html)。
 
 2. 配置 BR 和 TiKV 访问 S3 中的备份目录的权限。本文推荐使用最安全的 IAM 访问方式，配置过程可以参考[控制存储桶访问](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/userguide/walkthrough1.html)。权限要求如下：
 
-    - 备份集群的 TiKV 和 BR 需要的 `s3://tidb-pitr-bucket/backup-data` 权限：`s3:ListBucket`、`s3:PutObject` 和 `s3:AbortMultipartUpload`
-    - 恢复集群的 TiKV 和 BR 需要 `s3://tidb-pitr-bucket/backup-data` 的最小权限：`s3:ListBucket` 和 `s3:GetObject`
+    - 备份集群的 TiKV 和 BR 需要的 `s3://tidb-pitr-bucket/backup-data` 权限：`s3:ListBucket`、`s3:PutObject` 和 `s3:AbortMultipartUpload`。
+    - 恢复集群的 TiKV 和 BR 需要 `s3://tidb-pitr-bucket/backup-data` 的最小权限：`s3:ListBucket` 和 `s3:GetObject`。
 
 3. 规划备份数据保存的目录结构，以及快照（全量）备份和日志备份的目录。
 
@@ -158,4 +158,4 @@ Restore KV Files <--------------------------------------------------------------
 
 - [备份存储](/br/backup-and-restore-storages.md)
 - [快照备份与恢复命令手册](/br/br-snapshot-manual.md)
-- [日志备份与 PITR 命令手册](/br/br-pitr-manual.md)]
+- [日志备份与 PITR 命令手册](/br/br-pitr-manual.md)
