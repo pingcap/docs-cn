@@ -3302,3 +3302,25 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 是否持久化到集群：是
 - 默认值：`ON`
 - 这个变量用于控制计算窗口函数时是否采用高精度模式。
+
+### `tidb_analyze_partition_concurrency`
+
+> **警告：**
+>
+> 当前版本中该变量控制的功能尚未完全生效，请保留默认值。
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 默认值：`1`
+- 这个变量用于 TiDB Analyze 分区表时，对分区表统计信息进行读写的并发度。
+
+### `tidb_merge_partition_stats_concurrency`
+
+> **警告：**
+>
+> 当前版本中该变量控制的功能尚未完全生效，请保留默认值。
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 默认值：`1`
+- 这个变量用于 TiDB Analyze 分区表时，对分区表统计信息进行合并时的并发度。
