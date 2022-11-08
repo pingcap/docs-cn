@@ -51,7 +51,7 @@ TiDB 版本：6.4.0-DMR
 
 ### 可观测性
 
-* 集群诊断功能 GA **tw@shichun-0415**
+* 集群诊断功能 GA [#1438](https://github.com/pingcap/tidb-dashboard/issues/1438) @[Hawkson-jee](https://github.com/Hawkson-jee) **tw@shichun-0415**
 
     集群诊断功能是在指定的时间范围内，对集群可能存在的问题进行诊断，并将诊断结果和一些集群相关的负载监控信息汇总成一个诊断报告。诊断报告是网页形式，通过浏览器保存后可离线浏览和传阅。
 
@@ -85,7 +85,9 @@ TiDB 版本：6.4.0-DMR
 
     [用户文档](/optimizer-hints.md#no_decorrelate)
 
-* 优化了 TiDB Analyze 分区表时的所需性能，减少了消耗时间，并提高了自动 Analyze 时的稳定性 [#37977](https://github.com/pingcap/tidb/issues/37977) @[Yisaer](https://github.com/Yisaer)
+* 提升了分区表统计信息收集的性能 [#37977](https://github.com/pingcap/tidb/issues/37977) @[Yisaer](https://github.com/Yisaer) **tw@TomShawn**
+
+    在新版本中，TiDB 优化了分区表统计信息的收集策略。 用户可以通过变量 [`tidb_auto_analyze_partition_batch_size`](/system-variables.md#tidb-auto-analyze-partitoin-batch-size) 定义并发度，用并行的方式同时收集多个分区的统计信息，从而加快统计信息收集的速度，减少 analyze 所需的时间。 
 
 ### 事务
 
@@ -161,7 +163,7 @@ TiDB 版本：6.4.0-DMR
 
     [用户文档](/auto-increment.md#mysql-兼容模式)
 
-* 对 JSON 类型中的 Array 做范围选择 **tw@qiancai**
+* 支持对 JSON 类型中的 Array 数据做范围选择 [#13644](https://github.com/tikv/tikv/issues/13644) @[YangKeao](https://github.com/YangKeao) **tw@qiancai**
 
     新版本支持 MySQL 兼容的范围选择语法。 用关键字 `to` 指定元素起始和结束的位置，用来选择 Array 中连续范围的元素，起始位置记为 `0` 。 比如 `$[0 to 2]` 选择 Array 中的前三个元素。  `last` 关键字代表 Array 中最后一个元素的位置，能够实现从右到左的位置设定, 比如 `$[last-2 to last]` 用来选择最后三个元素。 这个能力简化了 SQL 的编写能力，进一步提升的 JSON 类型的兼容能力，降低了 MySQL 应用向 TiDB 迁移的难度。
 
@@ -251,8 +253,8 @@ TiDB 版本：6.4.0-DMR
 | [`tidb_ddl_flashback_concurrency`](/system-variables.md#tidb_ddl_flashback_concurrency-从-v630-版本开始引入) | 修改 | 这个变量从 v6.4.0 开始生效，用来控制 [`FLASHBACK CLUSTER TO TIMESTAMP`](/sql-statements/sql-statement-flashback-to-timestamp.md) 的并发数。默认值为 `64`。 |
 | [`tidb_memory_usage_alarm_ratio`](/system-variables.md#tidb_memory_usage_alarm_ratio) | 修改 | 该变量用于设置触发 tidb-server 内存告警的内存使用比率，默认值从 `0.8` 修改为 `0.7`。 |
 | [`tidb_prepared_plan_cache_size`](/system-variables.md#tidb_enable_prepared_plan_cache-从-v610-版本开始引入) | 修改 | 这个变量用来控制单个 `SESSION` 的 Prepared Plan Cache 最多能够缓存的计划数量。v6.4.0 新增了 SESSION 作用域。|
-| [`tidb_stats_load_pseudo_timeout`](/system-variables.md#tidb_stats_load_pseudo_timeout-从-v540-版本开始引入) | 修改 | 该变量默认值从 `OFF` 修改为 `ON`，表示统计信息同步加载超时后，TiDB 默认使用 pseudo 的统计信息（`ON`）。 |
 | [`tidb_stats_load_sync_wait`](/system-variables.md#tidb_stats_load_sync_wait-从-v540-版本开始引入) | 修改 | 该变量默认值从 `0` 修改为 `100`，代表 SQL 执行同步加载完整统计信息默认等待 100 毫秒后会超时。 |
+| [`tidb_enable_clustered_index`](/system-variables.md#tidb_enable_clustered_index-从-v50-版本开始引入) | 修改 | 默认值从 `INT_ONLY` 修改为 `ON`。 |
 
 ### 配置文件参数
 
@@ -262,7 +264,6 @@ TiDB 版本：6.4.0-DMR
 | TiDB | [`tidb_max_reuse_column`](/tidb-configuration-file.md#tidb_max_reuse_column-从-v640-版本开始引入) | 新增 | 用于控制每个连接最多缓存的 column 对象数，默认值为 256。配置过大会增加 OOM 的风险。 |
 | TiDB | `tidb_memory_usage_alarm_ratio` | 废弃 | 该配置项在 v6.4.0 之前的版本中用于控制系统变量 [`tidb_memory_usage_alarm_ratio`](/system-variables.md#tidb_memory_usage_alarm_ratio) 的初始值，自 v6.4.0 起被废弃。|
 | TiDB | `memory-usage-alarm-ratio` | 废弃 | 该配置项自 v6.4.0 起被系统变量 [`tidb_memory_usage_alarm_ratio`](/system-variables.md#tidb_memory_usage_alarm_ratio) 所取代。如果在升级前设置过该配置项，升级后原配置将不再生效。|
-| TiDB | [`server-memory-quota`](/tidb-configuration-file.md#server-memory-quota-从-v409-版本开始引入) | 废弃 | 自 v6.4.0 版本起该配置项被废弃，被系统变量 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 所取代。|
 | TiKV | [`alloc-ahead-buffer`](/tikv-configuration-file.md#alloc-ahead-buffer-从-v640-版本开始引入) | 新增 | TiKV 预分配给 TSO 的缓存大小（以时长计算），默认值为 3s。|
 | TiKV | [`apply-yield-write-size`](#apply-yield-write-size-从-v640-版本开始引入) | 新增 | Apply 线程每一轮处理单个状态机写入的最大数据量，这是个软限制。 |
 | TiKV | [`renew-batch-max-size`](/tikv-configuration-file.md#renew-batch-max-size-从-v640-版本开始引入)| 新增 | 单次时间戳请求的最大数量，默认值为 8192。 |
@@ -288,8 +289,10 @@ TiDB 版本：6.4.0-DMR
 
 + TiKV
 
-    - note [#issue]() @[贡献者 GitHub ID]()
-    - note [#issue]() @[贡献者 GitHub ID]()
+    - raftstore 新增 `apply-yield-write-size` 配置项，以限制 raftstore 的最大单轮 Apply 写入的数据大小，减缓 raftstore 线程在 Apply 写入过大时的阻塞现象。[#13594](https://github.com/tikv/tikv/pull/13594) @[glorv](https://github.com/glorv)
+    - 为 Region 的 Leader 迁移前增加缓存预热阶段，减缓 Leader 迁移时造成QPS剧烈抖动现象。[#13556](https://github.com/tikv/tikv/pull/13556) @[cosven](https://github.com/cosven)
+    - 新增支持将 `json_contains` 算子下推至 Coprocessor 。[#13592](https://github.com/tikv/tikv/issues/13592) @[lizhenhuan](https://github.com/lizhenhuan)
+    -  新增对 `CausalTsProvider` 的异步实现。 [#13428](https://github.com/tikv/tikv/issues/13428) @[zeminzhou](https://github.com/zeminzhou)
 
 + PD
 
@@ -310,7 +313,7 @@ TiDB 版本：6.4.0-DMR
 
     + Backup & Restore (BR)
 
-        - note [#issue]() @[贡献者 GitHub ID]()
+        - 改进加载元数据的机制，仅在需要的时候才会将元数据加载到内存中，显著减少了 PITR 过程中的内存压力。 [#38404](https://github.com/pingcap/tidb/issues/38404) @[YuJuncen](https://github.com/YuJuncen)
         - note [#issue]() @[贡献者 GitHub ID]()
 
     + TiCDC
@@ -347,7 +350,7 @@ TiDB 版本：6.4.0-DMR
 
 + TiKV
 
-    - note [#issue]() @[贡献者 GitHub ID]()
+     - 修复了当环境中存在多个 `cgroup`s 和 `mountinfo`s 时的启动异常问题 [#13660](https://github.com/tikv/tikv/issues/13660) @[tabokie](https://github.com/tabokie)
     - note [#issue]() @[贡献者 GitHub ID]()
 
 + PD
@@ -396,3 +399,5 @@ TiDB 版本：6.4.0-DMR
 感谢来自 TiDB 社区的贡献者们：
 
 - [贡献者 GitHub ID]()
+ - [goldwind-ting](https://github.com/goldwind-ting)
+ - [zgcbj](https://github.com/zgcbj)
