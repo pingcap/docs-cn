@@ -31,7 +31,7 @@ summary: 给出一个 TiDB 和 Golang 的简单 CRUD 应用程序示例。
 
 ### 使用云原生开发环境
 
-基于 Git 的预配置的开发环境: [现在就试试](/develop/dev-guide-playground-gitpod.md)
+基于 Git 的预配置的开发环境：[现在就试试](/develop/dev-guide-playground-gitpod.md)
 
 该环境会自动克隆代码，并通过 TiUP 部署测试集群。
 
