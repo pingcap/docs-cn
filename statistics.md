@@ -672,7 +672,7 @@ DROP STATS TableName GLOBAL;
 
 从 v5.4.0 开始，TiDB 引入了统计信息同步加载的特性，支持执行当前 SQL 语句时将直方图、TopN、CMSketch 等占用空间较大的统计信息同步加载到内存，提高该 SQL 语句优化时统计信息的完整性。
 
-要开启该特性，请将系统变量 `tidb_stats_load_sync_wait` 的值设置为 SQL 优化等待加载列的完整统计信息的超时时间（单位为毫秒）。该变量默认值为 0，代表未开启。从 v6.4.0 开始，同步加载默认开启。
+要开启该特性，请将系统变量 [`tidb_stats_load_sync_wait`](/system-variables.md#tidb_stats_load_sync_wait-从-v540-版本开始引入) 的值设置为 SQL 优化等待加载列的完整统计信息的超时时间（单位为毫秒）。该变量默认值为 100，代表开启统计信息同步加载。
 
 开启该特性后，你可以进一步配置该特性：
 
