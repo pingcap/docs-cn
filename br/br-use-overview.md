@@ -21,7 +21,7 @@ aliases: ['/zh/tidb/dev/br-deployment/']
 
 ### 如何管理备份数据？
 
-BR 只提供备份和恢复功能的基础功能，尚不支持备份管理的功能，因此你需要自行规划备份数据的管理事项，可能包含以下的问题：
+BR 只提供备份和恢复的基础功能，尚不支持备份管理的功能，因此你需要自行规划备份数据的管理事项，可能包含以下的问题：
 
 * 选择什么备份存储系统？
 * 数据备份的时候，备份数据应该放在什么目录下？
@@ -37,7 +37,7 @@ Amazon S3、Google Cloud Storage (GCS)、Azure Blob Storage 是 BR 推荐的存�
 如果 TiDB 集群部署在自建机房中，则推荐以下方式：
 
 * 搭建 [MinIO](https://docs.min.io/docs/minio-quickstart-guide.html) 作为备份存储系统，使用 S3 协议将数据备份到 MinIO 中。
-* 挂载 NFS (如 NAS) 盘到 BR 和所有的 TiKV 实例，使用 POSIX file system 接口将备份数据写入对应的 NFS 目录中。
+* 挂载 NFS（如 NAS）盘到 BR 和所有的 TiKV 实例，使用 POSIX file system 接口将备份数据写入对应的 NFS 目录中。
 
 > **注意：**
 >
@@ -47,14 +47,14 @@ Amazon S3、Google Cloud Storage (GCS)、Azure Blob Storage 是 BR 推荐的存�
 
 * 全量备份和日志备份保存在相同的目录下，方便统一管理，例如 `backup-${cluster-id}`。
 * 每个全量备份保存到命名带有备份日期的目录下，例如 `backup-${cluster-id}/fullbackup-202209081330`。
-* 日志备份数据保存在一个固定目录下, 例如 `backup-${cluster-id}/logbackup`。日志备份程序会在 logbackup 目录中每天切分出来一个新的子目录来区分每天的日志备份数据。
+* 日志备份数据保存在一个固定目录下，例如 `backup-${cluster-id}/logbackup`。日志备份程序会在 logbackup 目录中每天切分出来一个新的子目录来区分每天的日志备份数据。
 
 **处理历史备份数据**
 
 假设你设置了**备份保留期**，即保存固定时间的备份数据，比如 7 天。请注意**备份保留期**的概念，后面使用教程中也会多次遇到。
 
 * 进行 PITR 不仅需要恢复时间点之前的全量备份，还需要全量备份和恢复时间点之间的日志备份，因此，对于超过备份保留期的日志备份，应执行 `br log truncate` 命令删除指定时间点之前的备份。**建议只清理全量快照之前的日志备份**。
-* 对于超过备份保留期的全量备份。直接删除或者归档全量备份的目录。
+* 对于超过备份保留期的全量备份，建议直接删除或者归档全量备份的目录。
 
 ### 如何恢复数据？
 
@@ -79,8 +79,8 @@ TiDB 支持使用 br 工具进行备份恢复。
 * 安装方法可以使用[使用 TiUP 在线安装](/migration-tools.md#使用-tiup-快速安装)：`tiup install br`。
 * 了解如何使用 `br` 命令含工具进行备份与恢复，请参阅：
 
-    * [（全量）快照备份与恢复功能使用](/br/br-snapshot-guide.md)
-    * [日志备份与 PITR 功能使用](/br/br-pitr-guide.md)
+    * [TiDB 快照备份与恢复功能使用](/br/br-snapshot-guide.md)
+    * [TiDB 日志备份与 PITR 功能使用](/br/br-pitr-guide.md)
     * [TiDB 集群备份与恢复实践示例](/br/backup-and-restore-use-cases.md)
 
 ### 通过 SQL 语句

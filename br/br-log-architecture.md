@@ -1,9 +1,9 @@
 ---
-title: 日志备份与 PITR 功能架构
+title: TiDB 日志备份与 PITR 功能架构
 summary: 了解 TiDB 的日志备份与 PITR 的架构设计。
 ---
 
-# 日志备份与 PITR 功能架构
+# TiDB 日志备份与 PITR 功能架构
 
 本文以使用 BR 工具进行备份与恢复为例，介绍 TiDB 集群日志备份与 PITR 的架构设计与流程。
 

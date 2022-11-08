@@ -42,7 +42,7 @@ summary: 了解 TiDB 快照备份与恢复功能的架构设计。
     * 全部数据备份成功后，则在最后完成元信息备份。
 
 6. BR 备份元信息。
-    * **Back up schemas**：备份 table schema 并且计算 table data checksum。
+    * **Back up schemas**：备份 table schema，同时计算 table data checksum。
     * **Upload metadata**：生成 backup metadata，并上传到备份存储。backup metadata 包含 backup ts、表和对应的备份文件、data checksum 和 file checksum 等信息。
 
 ## 恢复流程

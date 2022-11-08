@@ -134,16 +134,16 @@ TiDB 支持 Amazon S3、Google Cloud Storage (GCS)、Azure Blob Storage 和 NFS 
 
 配置访问 Amazon S3 的账户可以通过以下两种方式：
 
-1. 方式一：指定访问密钥
+- 方式一：指定访问密钥
 
-    如果指定访问密钥和秘密访问密钥，将按照指定的访问密钥和秘密访问密钥进行鉴权。除了在 URL 中指定密钥外，还支持以下的方式：
+    如果指定访问密钥和秘密访问密钥，将按照指定的访问密钥和秘密访问密钥进行鉴权。除了在 URL 中指定密钥外，还支持以下方式：
 
     - BR 读取 `$AWS_ACCESS_KEY_ID` 和 `$AWS_SECRET_ACCESS_KEY` 环境变量
     - BR 读取 `$AWS_ACCESS_KEY` 和 `$AWS_SECRET_KEY` 环境变量
     - BR 读取共享凭证文件，路径由 `$AWS_SHARED_CREDENTIALS_FILE` 环境变量指定
     - BR 读取共享凭证文件，路径为 `~/.aws/credentials`
 
-2. 方式二：基于 IAM Role 进行访问
+- 方式二：基于 IAM Role 进行访问
 
     为运行 TiKV 和 BR 的 EC2 实例关联一个配置了访问 S3 访问权限的 IAM role。正确设置后，BR 可以直接访问对应的 S3 中的备份目录，而不需要额外的设置。
 
@@ -155,7 +155,7 @@ TiDB 支持 Amazon S3、Google Cloud Storage (GCS)、Azure Blob Storage 和 NFS 
 </div>
 <div label="GCS" value="gcs">
 
-配置访问 GCS 的账户可以通过指定访问密钥的方式。如果指定了 `credentials-file` 参数，将按照指定的 `credentials-file` 进行鉴权。除了在 URL 中指定密钥文件外，还支持以下的方式：
+配置访问 GCS 的账户可以通过指定访问密钥的方式。如果指定了 `credentials-file` 参数，将按照指定的 `credentials-file` 进行鉴权。除了在 URL 中指定密钥文件外，还支持以下方式：
 
 - BR 读取位于 `$GOOGLE_APPLICATION_CREDENTIALS` 环境变量所指定路径的文件内容
 - BR 读取位于 `~/.config/gcloud/application_default_credentials.json` 的文件内容
@@ -164,11 +164,11 @@ TiDB 支持 Amazon S3、Google Cloud Storage (GCS)、Azure Blob Storage 和 NFS 
 </div>
 <div label="Azure Blob Storage" value="azure">
 
-1. 方式一：指定访问密钥
+- 方式一：指定访问密钥
 
     在 URL 配置 `account-name` 和 `account-key`，则使用该参数指定的密钥。除了在 URL 中指定密钥文件外，还支持 BR 读取 `$AZURE_STORAGE_KEY` 的方式。
 
-2. 方式二：使用 Azure AD 备份恢复
+- 方式二：使用 Azure AD 备份恢复
 
     在 BR 运行环境配置环境变量 `$AZURE_CLIENT_ID`、`$AZURE_TENANT_ID` 和 `$AZURE_CLIENT_SECRET`。
 

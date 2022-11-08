@@ -19,9 +19,9 @@ aliases: ['/zh/tidb/dev/br-usage-backup/','/zh/tidb/dev/br-usage-restore/','/zh/
 - [使用表库功能过滤恢复数据](#使用表库功能过滤恢复数据)
 - [恢复加密的快照备份数据](#恢复加密的快照备份数据)
 
-如果你想了解如何进行备份和恢复，可以参考以下教程：
+如果你想了解如何进行快照备份与恢复，可以参考以下教程：
 
-- [全量备份恢复 —— 快照备份与恢复功能使用指南](/br/br-snapshot-guide.md)
+- [TiDB 快照备份与恢复使用指南](/br/br-snapshot-guide.md)
 - [TiDB 集群备份与恢复实践示例](/br/backup-and-restore-use-cases.md)
 
 ## 备份集群快照
