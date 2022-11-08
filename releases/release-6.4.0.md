@@ -146,7 +146,7 @@ TiDB 版本：6.4.0-DMR
 
     TiDB 现有的分区方式支持 Hash，Range，List 分区。TiDB v6.4.0 增加了对 [MySQL Linear Hash](https://dev.mysql.com/doc/refman/5.7/en/partitioning-linear-hash.html) 分区语法的兼容，方便原 MySQL 用户迁移到 TiDB。
 
-    用户现有的 MySQL Linear Hash 分区的 DDL 可以不经修改直接在 TiDB 上执行，产生一个 TiDB Hash 分区表（TiDB 内部实际不存在 Linear Hash 分区）。用户已有的查询/访问原 Linear Hash 分区的 SQL（DML）也可以不经修改，直接访问对应的 TiDB Hash 分区，得到正常结果。此功能保证了对 MySQL Linear Hash 分区的语法兼容，方便用户的应用无缝迁移到 TiDB。
+    在 TiDB 上，你可以直接执行原有的 MySQL Linear Hash 分区的 DDL 语句，TiDB 将创建一个相应的 Hash 分区表（注意 TiDB 内部实际不存在 Linear Hash 分区）。你也可以直接执行原有的 MySQL Linear Hash 分区的 DML 语句，TiDB 将正常返回对应的 TiDB Hash 分区的查询结果。此功能保证了 TiDB 对 MySQL Linear Hash 分区的语法兼容，方便基于 MySQL 的应用无缝迁移到 TiDB。
 
     [用户文档](/mysql-compatibility.md)
 
