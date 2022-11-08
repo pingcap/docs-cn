@@ -1553,7 +1553,7 @@ mysql --host 127.0.0.1 --port 4000 -u root<src/main/resources/dbinit.sql
 
 <div label="使用 Mybatis（推荐）" value="mybatis">
 
-若你使用非本地默认集群、TiDB Cloud 或其他远程集群，更改 `mybatis-config.xml` 内关于 `dataSource.url`、`dataSource.username`、`dataSource.password` 的参数：
+若你使用 TiDB Cloud Serverless Tier 集群，更改 `mybatis-config.xml` 内关于 `dataSource.url`、`dataSource.username`、`dataSource.password` 的参数：
 
 {{< copyable "" >}}
 
@@ -1598,11 +1598,11 @@ mysql --host 127.0.0.1 --port 4000 -u root<src/main/resources/dbinit.sql
 </configuration>
 ```
 
-若你设定的密码为 `123456`，而且从 TiDB Cloud 得到的连接字符串为：
+若你设定的密码为 `123456`，而且从 TiDB Cloud Serverless Tier 集群面板中得到的连接信息为：
 
-```
-mysql --connect-timeout 15 -u root -h xxx.tidbcloud.com -P 4000 -p
-```
+- Endpoint: `xxx.tidbcloud.com`
+- Port: `4000`
+- User: `2aEp24QWEDLqRFs.root`
 
 那么此处应将配置文件中 `dataSource` 节点内更改为：
 
@@ -1619,8 +1619,8 @@ mysql --connect-timeout 15 -u root -h xxx.tidbcloud.com -P 4000 -p
             <!-- Database pool -->
             <dataSource type="POOLED">
                 <property name="driver" value="com.mysql.jdbc.Driver"/>
-                <property name="url" value="jdbc:mysql://xxx.tidbcloud.com:4000/test"/>
-                <property name="username" value="root"/>
+                <property name="url" value="jdbc:mysql://xxx.tidbcloud.com:4000/test?sslMode=VERIFY_IDENTITY&amp;enabledTLSProtocols=TLSv1.2,TLSv1.3"/>
+                <property name="username" value="2aEp24QWEDLqRFs.root"/>
                 <property name="password" value="123456"/>
             </dataSource>
         ...
@@ -1632,7 +1632,7 @@ mysql --connect-timeout 15 -u root -h xxx.tidbcloud.com -P 4000 -p
 
 <div label="使用 Hibernate（推荐）" value="hibernate">
 
-若你使用非本地默认集群、TiDB Cloud 或其他远程集群，更改 `hibernate.cfg.xml` 内关于 hibernate.connection.url、hibernate.connection.username、hibernate.connection.password 的参数：
+若你使用 TiDB Cloud Serverless Tier 集群，更改 `hibernate.cfg.xml` 内关于 `hibernate.connection.url`、`hibernate.connection.username`、`hibernate.connection.password` 的参数：
 
 {{< copyable "" >}}
 
@@ -1662,11 +1662,11 @@ mysql --connect-timeout 15 -u root -h xxx.tidbcloud.com -P 4000 -p
 </hibernate-configuration>
 ```
 
-若你设定的密码为 `123456`，而且从 TiDB Cloud 得到的连接字符串为：
+若你设定的密码为 `123456`，而且从 TiDB Cloud Serverless Tier 集群面板中得到的连接信息为：
 
-```
-mysql --connect-timeout 15 -u root -h xxx.tidbcloud.com -P 4000 -p
-```
+- Endpoint: `xxx.tidbcloud.com`
+- Port: `4000`
+- User: `2aEp24QWEDLqRFs.root`
 
 那么此处应将配置文件更改为：
 
@@ -1683,8 +1683,8 @@ mysql --connect-timeout 15 -u root -h xxx.tidbcloud.com -P 4000 -p
         <!-- Database connection settings -->
         <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
         <property name="hibernate.dialect">org.hibernate.dialect.TiDBDialect</property>
-        <property name="hibernate.connection.url">jdbc:mysql://xxx.tidbcloud.com:4000/test</property>
-        <property name="hibernate.connection.username">root</property>
+        <property name="hibernate.connection.url">jdbc:mysql://xxx.tidbcloud.com:4000/test?sslMode=VERIFY_IDENTITY&amp;enabledTLSProtocols=TLSv1.2,TLSv1.3</property>
+        <property name="hibernate.connection.username">2aEp24QWEDLqRFs.root</property>
         <property name="hibernate.connection.password">123456</property>
         <property name="hibernate.connection.autocommit">false</property>
 
@@ -1702,7 +1702,7 @@ mysql --connect-timeout 15 -u root -h xxx.tidbcloud.com -P 4000 -p
 
 <div label="使用 JDBC" value="jdbc">
 
-若你使用非本地默认集群、TiDB Cloud 或其他远程集群，更改 `JDBCExample.java` 内关于 Host、Port、User、Password 的参数：
+若你使用 TiDB Cloud Serverless Tier 集群，更改 `JDBCExample.java` 内关于 Host、Port、User、Password 的参数：
 
 {{< copyable "" >}}
 
@@ -1714,11 +1714,11 @@ mysqlDataSource.setUser("root");
 mysqlDataSource.setPassword("");
 ```
 
-若你设定的密码为 `123456`，而且从 TiDB Cloud 得到的连接字符串为：
+若你设定的密码为 `123456`，而且从 TiDB Cloud Serverless Tier 集群面板中得到的连接信息为：
 
-```
-mysql --connect-timeout 15 -u root -h xxx.tidbcloud.com -P 4000 -p
-```
+- Endpoint: `xxx.tidbcloud.com`
+- Port: `4000`
+- User: `2aEp24QWEDLqRFs.root`
 
 那么此处应将参数更改为：
 
@@ -1728,8 +1728,10 @@ mysql --connect-timeout 15 -u root -h xxx.tidbcloud.com -P 4000 -p
 mysqlDataSource.setServerName("xxx.tidbcloud.com");
 mysqlDataSource.setPortNumber(4000);
 mysqlDataSource.setDatabaseName("test");
-mysqlDataSource.setUser("root");
+mysqlDataSource.setUser("2aEp24QWEDLqRFs.root");
 mysqlDataSource.setPassword("123456");
+mysqlDataSource.setSslMode(PropertyDefinitions.SslMode.VERIFY_IDENTITY.name());
+mysqlDataSource.setEnabledTLSProtocols("TLSv1.2,TLSv1.3");
 ```
 
 </div>
