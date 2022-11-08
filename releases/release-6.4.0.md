@@ -36,6 +36,11 @@ TiDB 版本：6.4.0-DMR
 
     [用户文档](/sql-statements/sql-statement-flashback-to-timestamp.md)
 
+* 支持通过 FLASHBACK DATABASE 命令将被删除的数据库恢复 [#20463](https://github.com/pingcap/tidb/issues/20463)  @[erwadba](https://github.com/erwadba) **tw@ran-huang**
+
+    FLASHBACK DATABASE 支持在 Garbage Collection (GC) life time 时间内恢复被 `DROP` 删除的数据库以及数据。该特性不依赖任何外部工具，可以轻松快速通过 SQL 语句进行数据和元信息的恢复。
+
+    [用户文档](/sql-statements/sql-statement-flashback-database.md)
 ### 安全
 
 * TiFlash 静态加密支持国密算法 SM4 [#5953](https://github.com/pingcap/tiflash/issues/5953) @[lidezhu](https://github.com/lidezhu) **tw@ran-huang**
@@ -144,7 +149,7 @@ TiDB 版本：6.4.0-DMR
 
 * TiDB 分区表兼容 Linear Hash 分区 [#issue](https://github.com/pingcap/tidb/issues/38450) @[mjonss](https://github.com/mjonss) **tw@qiancai**
 
-    TiDB 现有的分区方式支持 Hash，Range，List 分区。TiDB v6.4.0 增加了对 [MySQL Linear Hash](https://dev.mysql.com/doc/refman/5.7/en/partitioning-linear-hash.html) 分区语法的兼容，方便原 MySQL 用户迁移到 TiDB。
+    TiDB 现有的分区方式支持 Hash、Range、List 分区。TiDB v6.4.0 增加了对 [MySQL Linear Hash](https://dev.mysql.com/doc/refman/5.7/en/partitioning-linear-hash.html) 分区语法的兼容。
 
     在 TiDB 上，你可以直接执行原有的 MySQL Linear Hash 分区的 DDL 语句，TiDB 将创建一个相应的 Hash 分区表（注意 TiDB 内部实际不存在 Linear Hash 分区）。你也可以直接执行原有的 MySQL Linear Hash 分区的 DML 语句，TiDB 将正常返回对应的 TiDB Hash 分区的查询结果。此功能保证了 TiDB 对 MySQL Linear Hash 分区的语法兼容，方便基于 MySQL 的应用无缝迁移到 TiDB。
 
@@ -262,7 +267,7 @@ TiDB 版本：6.4.0-DMR
 | TiKV | [`apply-yield-write-size`](#apply-yield-write-size-从-v640-版本开始引入) | 新增 | Apply 线程每一轮处理单个状态机写入的最大数据量，这是个软限制。 |
 | TiKV | [`renew-batch-max-size`](/tikv-configuration-file.md#renew-batch-max-size-从-v640-版本开始引入)| 新增 | 单次时间戳请求的最大数量，默认值为 8192。 |
 | TiKV | [`raw-min-ts-outlier-threshold`](/tikv-configuration-file.md#raw-min-ts-outlier-threshold-从-v620-版本开始引入) | 废弃 | 废弃对 RawKV 的 Resolved TS 进行异常检测的阈值。|
-| PD | [`tso-update-physical-interval`](/pd-configuration-file.md#tso-update-physical-interval) | 新增 | TSO 物理时钟更新周期，默认值为 50ms。 |
+| PD | [`tso-update-physical-interval`](/pd-configuration-file.md#tso-update-physical-interval) | 新增 | 这个配置项从 v6.4.0 开始生效，用来控制 TSO 物理时钟更新周期，默认值为 50ms。 |
 | TiFlash | [`data-encryption-method`](/tiflash/tiflash-configuration.md#配置文件-tiflash-learnertoml) | 修改 | 扩展可选值范围：增加 sm4-ctr。设置为 sm4-ctr 时，数据将采用国密算法 SM4 加密后进行存储。 |
 
 ### 其他
