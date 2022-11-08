@@ -244,7 +244,7 @@ aliases: ['/zh/tidb/dev/sample-application-spring-boot']
 
 ### 第 5 步第 1 部分：TiDB Cloud 更改参数
 
-若你使用 TiDB Cloud Serverless Tier 集群，更改 `application.yml` (位于 `src/main/resources` 内) 关于 spring.datasource.url、spring.datasource.username、spring.datasource.password 的参数：
+若你使用 TiDB Cloud Serverless Tier 集群，更改 `application.yml`（位于 `src/main/resources` 内）关于 `spring.datasource.url`、`spring.datasource.username`、`spring.datasource.password` 的参数：
 
 ```yaml
 spring:
