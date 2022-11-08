@@ -1633,7 +1633,7 @@ mysql --host 127.0.0.1 --port 4000 -u root<src/main/resources/dbinit.sql
 
 <div label="使用 Hibernate（推荐）" value="hibernate">
 
-若你使用 TiDB Cloud Serverless Tier 集群，更改 `hibernate.cfg.xml` 内关于 hibernate.connection.url、hibernate.connection.username、hibernate.connection.password 的参数：
+若你使用 TiDB Cloud Serverless Tier 集群，更改 `hibernate.cfg.xml` 内关于 `hibernate.connection.url`、`hibernate.connection.username`、`hibernate.connection.password` 的参数：
 
 {{< copyable "" >}}
 
