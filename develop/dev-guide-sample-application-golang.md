@@ -793,7 +793,7 @@ When using go-sql-driver/mysql, you need to connect to your cluster and run the 
 
 <div label="Using GORM (Recommended)" value="gorm">
 
-If you are using a non-local default cluster, such as TiDB Cloud or other remote clusters, modify the value of the `dsn` in `gorm.go`:
+If you are using a TiDB Cloud Serverless Tier cluster, modify the value of the `dsn` in `gorm.go`:
 
 {{< copyable "" >}}
 
@@ -801,44 +801,52 @@ If you are using a non-local default cluster, such as TiDB Cloud or other remote
 dsn := "root:@tcp(127.0.0.1:4000)/test?charset=utf8mb4"
 ```
 
-Suppose that the password you set is `123456` and the connection string you get from TiDB Cloud is the following:
+Suppose that the password you set is `123456`, and the connection parameters you get from the cluster details page are the following:
 
-```
-mysql --connect-timeout 15 -u root -h xxx.tidbcloud.com -P 4000 -p
-```
+- Endpoint: `xxx.tidbcloud.com`
+- Port: `4000`
+- User: `2aEp24QWEDLqRFs.root`
 
-In this case, you can modify the parameters as follows:
+In this case, you can modify the `mysql.RegisterTLSConfig` and `dsn` as follows:
 
 {{< copyable "" >}}
 
 ```go
-dsn := "root:123456@tcp(xxx.tidbcloud.com:4000)/test?charset=utf8mb4"
+mysql.RegisterTLSConfig("register-tidb-tls", &tls.Config {
+    MinVersion: tls.VersionTLS12,
+    ServerName: "xxx.tidbcloud.com",
+})
+
+dsn := "2aEp24QWEDLqRFs.root:123456@tcp(xxx.tidbcloud.com:4000)/test?charset=utf8mb4&tls=register-tidb-tls"
 ```
 
 </div>
 
 <div label="Using go-sql-driver/mysql" value="sqldriver">
 
-If you are using a non-local default cluster, such as TiDB Cloud or other remote clusters, modify the value of the `dsn` in `sqldriver.go`:
-
-{{< copyable "" >}}
+If you are using a TiDB Cloud Serverless Tier cluster, modify the value of the `dsn` in `sqldriver.go`:
 
 ```go
 dsn := "root:@tcp(127.0.0.1:4000)/test?charset=utf8mb4"
 ```
 
-Suppose that the password you set is `123456` and the connection string you get from TiDB Cloud is the following:
+Suppose that the password you set is `123456`, and the connection parameters you get from the cluster details page are the following:
 
-```
-mysql --connect-timeout 15 -u root -h xxx.tidbcloud.com -P 4000 -p
-```
+- Endpoint: `xxx.tidbcloud.com`
+- Port: `4000`
+- User: `2aEp24QWEDLqRFs.root`
 
-In this case, you can modify the parameters as follows:
+In this case, you can modify the `mysql.RegisterTLSConfig` and `dsn` as follows:
 
 {{< copyable "" >}}
 
 ```go
-dsn := "root:123456@tcp(xxx.tidbcloud.com:4000)/test?charset=utf8mb4"
+mysql.RegisterTLSConfig("register-tidb-tls", &tls.Config {
+    MinVersion: tls.VersionTLS12,
+    ServerName: "xxx.tidbcloud.com",
+})
+
+dsn := "2aEp24QWEDLqRFs.root:123456@tcp(xxx.tidbcloud.com:4000)/test?charset=utf8mb4&tls=register-tidb-tls"
 ```
 
 </div>
