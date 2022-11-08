@@ -1663,8 +1663,6 @@ mysql --host 127.0.0.1 --port 4000 -u root<src/main/resources/dbinit.sql
 </hibernate-configuration>
 ```
 
-若你设定的密码为 `123456`，而且从 TiDB Cloud 得到的连接字符串为：
-
 若你设定的密码为 `123456`，而且从 TiDB Cloud Serverless Tier 集群面板中得到的连接信息为：
 
 - Endpoint: `xxx.tidbcloud.com`
