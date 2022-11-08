@@ -243,7 +243,7 @@ summary: 给出一个 Spring Boot 构建 TiDB 应用程序示例。
 
 ### 第 5 步第 1 部分：TiDB Cloud 更改参数
 
-若你使用 TiDB Cloud Serverless Tier 集群，更改 `application.yml` (位于 `src/main/resources` 内) 关于 spring.datasource.url、spring.datasource.username、spring.datasource.password 的参数：
+若你使用 TiDB Cloud Serverless Tier 集群，更改 `application.yml`（位于 `src/main/resources` 内）关于 `spring.datasource.url`、`spring.datasource.username`、`spring.datasource.password` 的参数：
 
 ```yaml
 spring:
