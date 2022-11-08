@@ -16,14 +16,14 @@ aliases: ['/zh/tidb/dev/build-cluster-in-cloud']
 
 1. 如果你还未拥有 TiDB Cloud 帐号，请先在此[注册](https://tidbcloud.com/free-trial)。
 2. 使用你的 TiDB Cloud 帐号[登录](https://tidbcloud.com/)。
-3. 在[方案](https://tidbcloud.com/console/plans)内选择免费的 **Serverless Tier** 方案，或在 [Clusters](https://tidbcloud.com/console/clusters) 页面中点击 **Create Cluster** 按钮。
-4. 在 **Create Cluster** 页面设置集群名称、云服务商（Serverless Tier 默认为 AWS）、可用区（建议就近选择）后，点击 **Create** 按钮创建 Serverless Tier 免费集群。
-5. 在 **Security Settings** 对话框中，设置密码，并添加允许连接你的集群的 IP 地址，完成后点击 **Apply**。
+3. 在 [Clusters](https://tidbcloud.com/console/clusters) 页面中点击 **Create Cluster** 按钮。
+4. 在 **Create Cluster** 页面默认选择的 **Serverless Tier**。你可以根据需要修改集群名称并选择可用区。
+5. 点击 **Create** 创建免费的 Serverless Tier 集群。
 
     你的 TiDB Cloud 集群将于 30 秒后创建完毕。
 
-6. 创建完毕后，点击右上角的 **Connect** 按钮。或点击集群名称，打开集群的详情页，再点击右上角的 **Connect** 按钮。这将显示一个连接对话框。
-7. 复制连接对话框 **Step 2: Connect with a SQL client** 中的连接字符串，供后续步骤使用。
+6. 集群创建完毕后，点击 **Security Settings** 按钮，在对话框中设置连接集群的 root 密码，完成后点击 **Apply**。如果没有设置 root 密码，你将无法连接集群。
+7. 点击 **Connect** 按钮。在连接对话框 **Connect with a SQL Client** 下选择你需要的连接方式并保存对应的连接字符串。下面连接到集群以 MySQL 客户端为例。
 
     > **注意：**
     >
@@ -122,7 +122,7 @@ aliases: ['/zh/tidb/dev/build-cluster-in-cloud']
 
 > **注意：**
 >
-> - 在连接到 TiDB Cloud Serverless Tier 时，[必须使用 TLS 连接](https://docs.pingcap.com/tidbcloud/secure-connections-to-serverless-tier-clusters)。
+> - 在连接 Serverless Tier 集群时，[必须使用 TLS 连接](https://docs.pingcap.com/tidbcloud/secure-connections-to-serverless-tier-clusters)。
 > - 如果你在连接时遇到问题，可阅读 [TiDB Cloud Serverless Tier 集群安全连接](https://docs.pingcap.com/tidbcloud/secure-connections-to-serverless-tier-clusters) 来获得更多信息。
 
 3. 填写密码，完成登录。
