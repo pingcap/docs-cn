@@ -1220,7 +1220,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 默认值：`OFF`
 - 这个变量用来控制是否开启 General Plan Cache。
 
-### `tidb_enable_gogc_tuner`
+### `tidb_enable_gogc_tuner` <span class="version-mark">从 v6.4.0 版本开始引入</span>
 
 - 作用域：GLOBAL
 - 是否持久化到集群：否
