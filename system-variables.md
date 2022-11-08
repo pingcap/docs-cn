@@ -558,6 +558,17 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 默认值：`OFF`
 - 这个变量用来控制是否允许通过 `ALTER TABLE MODIFY` 或 `ALTER TABLE CHANGE` 来移除某个列的 `AUTO_INCREMENT` 属性。默认 (`OFF`) 为不允许。
 
+### `tidb_analyze_partition_concurrency`
+
+> **警告：**
+>
+> 当前版本中该变量控制的功能尚未完全生效，请保留默认值。
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 默认值：`1`
+- 这个变量用于 TiDB analyze 分区表时，对分区表统计信息进行读写的并发度。
+
 ### `tidb_analyze_version` <span class="version-mark">从 v5.1.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
@@ -2087,6 +2098,17 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 设置 `MergeJoin` 算子执行查询时的并发度。
 - **不推荐设置该变量**，修改该变量值可能会造成数据正确性问题。
 
+### `tidb_merge_partition_stats_concurrency`
+
+> **警告：**
+>
+> 当前版本中该变量控制的功能尚未完全生效，请保留默认值。
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 默认值：`1`
+- 这个变量用于 TiDB analyze 分区表时，对分区表统计信息进行合并时的并发度。
+
 ### `tidb_metric_query_range_duration` <span class="version-mark">从 v4.0 版本开始引入</span>
 
 - 作用域：SESSION
@@ -3302,25 +3324,3 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 是否持久化到集群：是
 - 默认值：`ON`
 - 这个变量用于控制计算窗口函数时是否采用高精度模式。
-
-### `tidb_analyze_partition_concurrency`
-
-> **警告：**
->
-> 当前版本中该变量控制的功能尚未完全生效，请保留默认值。
-
-- 作用域：SESSION | GLOBAL
-- 是否持久化到集群：是
-- 默认值：`1`
-- 这个变量用于 TiDB Analyze 分区表时，对分区表统计信息进行读写的并发度。
-
-### `tidb_merge_partition_stats_concurrency`
-
-> **警告：**
->
-> 当前版本中该变量控制的功能尚未完全生效，请保留默认值。
-
-- 作用域：SESSION | GLOBAL
-- 是否持久化到集群：是
-- 默认值：`1`
-- 这个变量用于 TiDB Analyze 分区表时，对分区表统计信息进行合并时的并发度。
