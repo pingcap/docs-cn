@@ -57,7 +57,7 @@ TiDB 版本：6.4.0-DMR
 
     用户可以通过该报告快速了解集群内的基本诊断信息，包括负载、组件、耗时和配置信息。若用户的集群存在一些常见问题，在[诊断信息](/dashboard/dashboard-diagnostics-report.md#诊断信息)部分可以了解 TiDB 内置自动诊断的结果。
 
-    详细内容见[用户文档](dashboard/dashboard-diagnostics-access.md)
+    详细内容见[用户文档](/dashboard/dashboard-diagnostics-access.md)
 
 ### 性能
 
@@ -190,19 +190,19 @@ TiDB 版本：6.4.0-DMR
 
     在上游分库分表合并到 TiDB 的场景，用户可以在目标表手动额外增加几个字段（扩展列），并在配置 DM 任务时，对这几个扩展列赋值，如赋予上游分库分表的名称，则通过 DM 写入到下游的记录会带上上游分库分表的名称，在一些数据异常的场景，用户可以通过该功能快速定位目标表的问题数据时来自于上游哪个分库分表。）
 
-    [用户文档](https://github.com/pingcap/docs-cn/pull/11536/files)
+    [用户文档](/dm/dm-key-features.md#提取分库分表数据源信息写入合表)
 
-* 优化 DM 的前置检查项,将部分必须通过项改为非必须通过项。 [#7333](https://github.com/pingcap/tiflow/issues/7333) @[lichunzhu](https://github.com/lichunzhu) **tw@shichun-0415**
+* 优化 DM 的前置检查项,将部分必须通过项改为非必须通过项。[#7333](https://github.com/pingcap/tiflow/issues/7333) @[lichunzhu](https://github.com/lichunzhu) **tw@shichun-0415**
 
     将“检查字符集是否存在兼容性差异”、“检查上游表中是否存在主键或唯一键约束”，“数据库主从配置，上游数据库必须设置数据库 ID server_id” 这 3 个前置检查从必须通过项，改为非必须通过项，提升用户前置检查的通过率。
 
-    [用户文档](dm/dm-precheck.md)
+    [用户文档](/dm/dm-precheck.md)
 
 * 配置 DM 增量迁移任务，支持 binlog_name 和 GTID 的参数可作为选配项。[#7393](https://github.com/pingcap/tiflow/issues/7393) @[GMHDBJD](https://github.com/GMHDBJD) **tw@shichun-0415**
 
     用户只配置 DM 增量迁移任务时，如果不指定 binlog_name 和 GTID 的参数取值，则默认按任务的启动时间去上游获取该时间之后的 binlog file，并将这些增量数据迁移到下游 ，降低了用户的理解成本和配置复杂度。
 
-    [用户文档](dm/task-configuration-file-full.md)
+    [用户文档](/dm/task-configuration-file-full.md)
 
 * DM 任务增加一些状态信息的展示 [#7343](https://github.com/pingcap/tiflow/issues/7343) @[okJiang](https://github.com/okJiang) **tw@shichun-0415**
 
@@ -210,7 +210,7 @@ TiDB 版本：6.4.0-DMR
     * 将当前 DM 写入目标库的性能指标命名 从 TPS 改为 RPS （rows/second）
     * 新增了 DM 全量任务数据导出的进度展示
 
-    [用户文档](dm/dm-query-status.md)
+    [用户文档](/dm/dm-query-status.md)
 
 ### 数据共享与订阅
 
@@ -269,6 +269,9 @@ TiDB 版本：6.4.0-DMR
 | TiKV | [`raw-min-ts-outlier-threshold`](/tikv-configuration-file.md#raw-min-ts-outlier-threshold-从-v620-版本开始引入) | 废弃 | 废弃对 RawKV 的 Resolved TS 进行异常检测的阈值。|
 | PD | [`tso-update-physical-interval`](/pd-configuration-file.md#tso-update-physical-interval) | 新增 | 这个配置项从 v6.4.0 开始生效，用来控制 TSO 物理时钟更新周期，默认值为 50ms。 |
 | TiFlash | [`data-encryption-method`](/tiflash/tiflash-configuration.md#配置文件-tiflash-learnertoml) | 修改 | 扩展可选值范围：增加 sm4-ctr。设置为 sm4-ctr 时，数据将采用国密算法 SM4 加密后进行存储。 |
+| DM | [`routes.route-rule-1.extract-table`](/dm/task-configuration-file-full.md#完整配置文件示例) | 新增 | 可选配置。用于提取分库分表场景中分表的源信息，提取的信息写入下游合表，用于标识数据来源。如果配置该项，需要提前在下游手动创建合表。 |
+| DM | [`routes.route-rule-1.extract-schema`](/dm/task-configuration-file-full.md#完整配置文件示例) | 新增 | 可选配置。用于提取分库分表场景中分库的源信息，提取的信息写入下游合表，用于标识数据来源。如果配置该项，需要提前在下游手动创建合表。 |
+| DM | [`routes.route-rule-1.extract-source`](/dm/task-configuration-file-full.md#完整配置文件示例) | 新增 | 可选配置。用于提取分库分表场景中的源信息，提取的信息写入下游合表，用于标识数据来源。如果配置该项，需要提前在下游手动创建合表。 |
 
 ### 其他
 
