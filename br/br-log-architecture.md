@@ -5,7 +5,9 @@ summary: 了解 TiDB 的日志备份与 PITR 的架构设计。
 
 # 日志备份与 PITR 功能架构
 
-本文同样以使用 BR 工具进行备份与恢复为例，介绍 TiDB 集群日志备份与 PITR 的架构设计与流程。
+本文以使用 BR 工具进行备份与恢复为例，介绍 TiDB 集群日志备份与 PITR 的架构设计与流程。
+
+## 架构设计
 
 日志备份和 point in time recovery (PITR) 的架构实现如下：
 
@@ -20,7 +22,7 @@ summary: 了解 TiDB 的日志备份与 PITR 的架构设计。
 系统组件和关键概念：
 
 * **local meta**：表示单 TiKV 节点备份下来的数据元信息，主要包括：local checkpoint ts、global checkpoint ts、备份文件信息。
-* **local checkpoint ts**：(in local metadata)：表示这个 TiKV 中所有小于 local checkpoint ts 的日志数据已经备份到目标存储。
+* **local checkpoint ts**：(in local metadata) 表示这个 TiKV 中所有小于 local checkpoint ts 的日志数据已经备份到目标存储。
 * **global checkpoint ts**：表示所有 TiKV 中小于 global checkpoint ts 的日志数据已经备份到目标存储。它由运行在 TiDB 中的 Coordinator 模块收集所有 TiKV 的 local checkpoint ts 计算所得，然后上报给 PD。
 * **TiDB Coordinator 组件**：TiDB 集群的某个节点会被选举为 Coordinator，负责收集和计算整个日志备份任务的进度 (global checkpoint ts)。该组件设计上无状态，在其故障后可以从存活的 TiDB 节点中重新选出一个节点作为 Coordinator。
 * **TiKV log observer 组件**：运行在 TiDB 集群的每个 TiKV 节点，负责从 TiKV 读取和备份日志数据。TiKV 节点故障的话，该节点负责备份数据范围，在 Region 重新选举后，会被其他 TiKV 节点负责，这些节点会从 global checkpoint ts 重新备份故障范围的数据。
@@ -72,12 +74,12 @@ PITR 的流程如下：
 
 5. TiKV 恢复日志备份数据。
    * **Download KVs**：log restore worker 根据日志恢复请求中要恢复的备份数据，从备份存储中下载相应的备份数据到本地。
-   * **Rewrite KVs**：log restore worker 根据恢复集群表的 table ID 对备份数据的 kv 进行重写 —— 将原有的 [kv 编码](/tidb-computing.md#表数据与-key-value-的映射关系)中的 table ID 替换为新创建的 tableID。对 index ID，log restore worker 也进行相同的处理。
+   * **Rewrite KVs**：log restore worker 根据恢复集群表的 table ID 对备份数据的 kv 进行重写 —— 将原有的 [kv 编码](/tidb-computing.md#表数据与-key-value-的映射关系)中的 table ID 替换为新创建的 table ID。对 index ID，log restore worker 也进行相同的处理。
    * **Apply KVs**：log restore worker 将处理好的 kv 通过 raft 接口写入 store (RocksDB) 中。
    * **Report restore result**：log restore worker 返回恢复结果给 BR。
 
 6. BR 从各个 TiKV 获取恢复结果。
-   * 如果局部数据恢复因为 `RegionNotFound/EpochNotMatch` 等原因失败，比如 TiKV 节点故障，BR 重试恢复这些数据。
+   * 如果局部数据恢复因为 `RegionNotFound` 或 `EpochNotMatch` 等原因失败，比如 TiKV 节点故障，BR 重试恢复这些数据。
    * 如果存在备份数据不可重试的恢复失败，则恢复任务失败。
    * 全部备份数据都恢复成功后，则恢复任务成功。
 
@@ -105,8 +107,8 @@ PITR 的流程如下：
 │   │   │   ├── {store_id}
 │   │   │   │   ├── {min_ts}-{uuid}.log
 │   │   │   │   ├── {min_ts}-{uuid}.log
-├── v1_stream_trancate_safepoint.txt 
-```   
+├── v1_stream_truncate_safepoint.txt
+```
 
 具体示例如下：
 
@@ -136,5 +138,5 @@ PITR 的流程如下：
 │   │   │   │   ├── ...
 │   │   │   │   ├── 435214495848857605-7bf65e92-8c43-427e-b81e-f0050bd40be0.log
 │   │   │   │   ├── 435214574492057604-80d3b15e-3d9f-4b0c-b133-87ed3f6b2697.log
-├── v1_stream_trancate_safepoint.txt 
+├── v1_stream_truncate_safepoint.txt
 ```

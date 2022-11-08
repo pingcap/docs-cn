@@ -61,7 +61,7 @@ summary: 了解 TiDB 快照备份与恢复功能的架构设计。
     * **Pause region schedule**：请求 PD 在恢复期间关闭自动 region schedule。
     * **Restore schema**：读取备份数据的 schema、恢复的 database 和 table (注意新建表的 table id 与备份数据可能不一样）。
     * **Split & scatter region**：BR 基于备份数据信息，请求 PD 分配 Region (split region)，并调度 region 均匀分布到存储节点上 (scatter region)。每个 Region 都有明确的数据范围 [start key, end key)。
-    * **Request TiKV to restore data**：根据 PD 分配的 Region 结果，发送恢复请求到送到对应的 TiKV 节点，恢复请求包含要恢复的备份数据及 rewrite 规则。
+    * **Request TiKV to restore data**：根据 PD 分配的 Region 结果，发送恢复请求到对应的 TiKV 节点，恢复请求包含要恢复的备份数据及 rewrite 规则。
 
 3. TiKV 接受恢复请求，初始化 restore worker。
     * restore worker 计算恢复数据需要读取的备份数据。
@@ -73,7 +73,7 @@ summary: 了解 TiDB 快照备份与恢复功能的架构设计。
     * **Report restore result**：restore worker 返回恢复结果给 BR。
 
 5. BR 从各个 TiKV 获取恢复结果。
-    * 如果局部数据恢复因为 `RegionNotFound/EpochNotMatch` 等原因失败，比如 TiKV 节点故障，BR 重试恢复这些数据。
+    * 如果局部数据恢复因为 `RegionNotFound` 或 `EpochNotMatch` 等原因失败，比如 TiKV 节点故障，BR 重试恢复这些数据。
     * 如果存在备份数据不可重试的恢复失败，则恢复任务失败。
     * 全部备份都恢复成功后，则整个恢复任务成功。
 

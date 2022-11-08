@@ -1,11 +1,11 @@
 ---
 title: br 命令行手册
-summary: 介绍 br 命令行工具
+summary: 了解 br 命令行的定义、组成与使用。
 ---
 
 # br 命令行手册
 
-TiDB 的备份与恢复功能以 br 命令行工具为使用入口，本文将介绍 br 命令的定义、组成、常用选项，以及快照备份与恢复及日志备份与 PITR 功能使用的命令。
+本文介绍 br 命令的定义、组成、常用选项，以及快照备份与恢复、日志备份与 PITR 功能使用的命令。
 
 ## br 命令行描述
 
@@ -23,7 +23,7 @@ br backup full --pd "${PD_IP}:2379" \
 * `backup`：`br` 的子命令。
 * `full`：`backup` 的子命令。
 * `-s` 或 `--storage`：备份数据的存储地址选项。`"s3://backup-data/snapshot-202209081330/"` 是 `-s` 的参数值。
-* `--pd`：PD 访问地址选项。`"${PD_IP}:2379"`是`--pd` 的参数值。
+* `--pd`：PD 访问地址选项。`"${PD_IP}:2379"` 是 `--pd` 的参数值。
 
 ### 命令和子命令
 
@@ -63,11 +63,11 @@ br 由多层命令组成。目前，br 包含的主要命令有：
 使用 `br log` 命令来开启和管理日志备份任务。
 
 - [启动日志备份](/br/br-pitr-manual.md#启动日志备份)
-- [查询备份状态](/br/br-pitr-manual.md#查询日志备份任务)
-- [暂停和恢复备份任务](/br/br-pitr-manual.md#暂停和恢复日志备份任务)
-- [停止和重启备份任务](/br/br-pitr-manual.md#停止和重启日志备份任务)
-- [清理备份数据](/br/br-pitr-manual.md#清理日志备份数据)
-- [查看元信息](/br/br-pitr-manual.md#查看备份数据元信息)
+- [查询日志备份状态](/br/br-pitr-manual.md#查询日志备份任务)
+- [暂停和恢复日志备份任务](/br/br-pitr-manual.md#暂停和恢复日志备份任务)
+- [停止和重启日志备份任务](/br/br-pitr-manual.md#停止和重启日志备份任务)
+- [清理日志备份数据](/br/br-pitr-manual.md#清理日志备份数据)
+- [查看备份数据元信息](/br/br-pitr-manual.md#查看备份数据元信息)
 
 ## 恢复备份数据命令行介绍
 
@@ -78,4 +78,4 @@ br 由多层命令组成。目前，br 包含的主要命令有：
 - [恢复单个数据库的快照备份数据](/br/br-snapshot-manual.md#恢复单个数据库的数据)
 - [恢复单张表的快照备份数据](/br/br-snapshot-manual.md#恢复单张表的数据)
 - [使用表库功能过滤恢复快照数据](/br/br-snapshot-manual.md#使用表库功能过滤恢复数据)
-- [恢复加密的快照备份数据](/br/br-snapshot-manual.md#恢复加密的备份数据)
+- [恢复加密的快照备份数据](/br/br-snapshot-manual.md#恢复加密的快照备份数据)
