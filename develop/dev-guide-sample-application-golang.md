@@ -805,15 +805,9 @@ dsn := "root:@tcp(127.0.0.1:4000)/test?charset=utf8mb4"
 
 若你设定的密码为 `123456`，而且从 TiDB Cloud Serverless Tier 集群面板中得到的连接信息为：
 
-<<<<<<< HEAD
-```
-mysql --connect-timeout 15 -u root -h tidb.e049234d.d40d1f8b.us-east-1.prod.aws.tidbcloud.com -P 4000 -p
-```
-=======
 - Endpoint: `xxx.tidbcloud.com`
 - Port: `4000`
 - User: `2aEp24QWEDLqRFs.root`
->>>>>>> ea0df784b (Adapt Serverless Tier in Developer Guide (#11862))
 
 那么此处应将 `mysql.RegisterTLSConfig` 和 `dsn` 更改为：
 
