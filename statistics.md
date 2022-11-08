@@ -676,7 +676,7 @@ DROP STATS TableName GLOBAL;
 
 开启该特性后，你可以进一步配置该特性：
 
-- 通过修改系统变量 [`tidb_stats_load_pseudo_timeout`](/system-variables.md#tidb_stats_load_pseudo_timeout-从-v540-版本开始引入) 的值控制 SQL 优化等待超时后的行为。该变量默认值为 `ON`，代表超时后 SQL 优化过程不会使用任何列上的直方图、TopN 或 CMSketch，当设置该变量为 `OFF` 时，代表超时后 SQL 执行失败。
+- 通过修改系统变量 [`tidb_stats_load_pseudo_timeout`](/system-variables.md#tidb_stats_load_pseudo_timeout-从-v540-版本开始引入) 的值控制 SQL 优化等待超时后的行为。该变量默认值为 `ON`，代表超时后 SQL 优化过程不会使用任何列上的直方图、TopN 或 CMSketch。当设置该变量为 `OFF` 时，代表超时后 SQL 执行失败。
 - 通过修改 TiDB 配置项 [`stats-load-concurrency`](/tidb-configuration-file.md#stats-load-concurrency-从-v540-版本开始引入) 的值控制统计信息同步加载可以并发处理的最大列数。该配置项的默认值为 `5`。
 - 通过修改 TiDB 配置项 [`stats-load-queue-size`](/tidb-configuration-file.md#stats-load-queue-size-从-v540-版本开始引入) 的值设置统计信息同步加载最多可以缓存多少列的请求。该配置项的默认值为 `1000`。
 
