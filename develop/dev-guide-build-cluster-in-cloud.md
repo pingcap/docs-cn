@@ -134,17 +134,7 @@ summary: 使用 TiDB Cloud (Serverless Tier) 构建 TiDB 集群，并连接 TiDB
 SELECT 'Hello TiDB Cloud!';
 ```
 
-<<<<<<< HEAD
-    ```java
-    mysqlDataSource.setServerName("tidb.e049234d.d40d1f8b.us-east-1.prod.aws.tidbcloud.com");
-    mysqlDataSource.setPortNumber(4000);
-    mysqlDataSource.setDatabaseName("test");
-    mysqlDataSource.setUser("9ATyn6DhCXoo6U1.root");
-    mysqlDataSource.setPassword("123456");
-    ```
-=======
 你将看到这样的输出：
->>>>>>> ea0df784b (Adapt Serverless Tier in Developer Guide (#11862))
 
 ```sql
 +-------------------+
