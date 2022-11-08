@@ -58,6 +58,16 @@ routes:
     table-pattern: "t_*"        # The pattern of the upstream table name, wildcard characters (*?) are supported.
     target-schema: "test"       # The name of the downstream schema.
     target-table: "t"           # The name of the downstream table.
+    # Optional. Used for extracting the source information of sharded schemas and tables and writing the information to the user-defined columns in the downstream. If these options are configured, you need to manually create a merged table in the downstream. For details, see description of table routing in <https://docs.pingcap.com/tidb/dev/dm-key-features#table-routing>.
+    # extract-table:                                        # Extracts and writes the table name suffix without the t_ part to the c-table column of the merged table. For example, 01 is extracted and written to the c-table column for the sharded table t_01.
+    #   table-regexp: "t_(.*)"
+    #   target-column: "c_table"
+    # extract-schema:                                       # Extracts and writes the schema name suffix without the test_ part to the c_schema column of the merged table. For example, 02 is extracted and written to the c_schema column for the sharded schema test_02.
+    #   schema-regexp: "test_(.*)"
+    #   target-column: "c_schema"
+    # extract-source:                                       # Extracts and writes the source instance information to the c_source column of the merged table. For example, mysql-replica-01 is extracted and written to the c_source column for the data source mysql-replica-01.
+    #   source-regexp: "(.*)"
+    #   target-column: "c_source"
   route-rule-2:
     schema-pattern: "test_*"
     target-schema: "test"
