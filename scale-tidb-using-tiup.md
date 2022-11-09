@@ -376,7 +376,6 @@ tiup cluster display <cluster-name>
 
 3. 重新执行步骤 1，确保没有数据表的 TiFlash 副本数大于缩容后的 TiFlash 节点数。
 
-
 ### 2. 执行缩容操作
 
 接下来，请任选下列方案其一进行缩容。
