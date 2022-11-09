@@ -12,11 +12,19 @@ TiDB 版本：6.4.0-DMR
 
 在 6.4.0-DMR 版本中，你可以获得以下关键特性：
 
-- TiDB 全局内存限制
-- TiFlash 静态加密支持国密算法 SM4。
 - 支持通过 FLASHBACK CLUSTER 命令将集群快速回退到过去某一个指定的时间点
-- 支持通过 SQL 语句对指定 Partition 的 TiFlash 副本立即触发物理数据整理 (Compaction)
-- ......
+- 支持 TiDB 全局内存限制
+- TiDB 分区表兼容 Linear Hash 分区。
+- 支持高性能、全局单调递增的 AUTO_INCREMENT 列属性。
+- 支持对 JSON 类型中的 Array 数据做范围选择。
+- 磁盘故障、I/O 无响应等极端情况下的故障恢复加速。
+- 增加了动态规划算法来决定表的连接顺序。
+- 引入新的优化器提示 `NO_DECORRELATE` 来控制解关联优化。
+- 集群诊断功能 GA。
+- TiFlash 静态加密支持国密算法 SM4。
+- 支持通过 SQL 语句对指定 Partition 的 TiFlash 副本立即触发物理数据整理 (Compaction)。
+- 支持对数据库用户增加额外说明。
+- 支持基于 AWS EBS snapshot 的集群备份和恢复。
 
 ## 新功能
 
@@ -108,7 +116,7 @@ TiDB 版本：6.4.0-DMR
 
 ### 稳定性
 
-* 磁盘故障，I/O 无响应等极端情况下的故障恢复加速 [#13648](https://github.com/tikv/tikv/issues/13648) @[LykxSassinator](https://github.com/LykxSassinator) **tw@qiancai**
+* 磁盘故障、I/O 无响应等极端情况下的故障恢复加速 [#13648](https://github.com/tikv/tikv/issues/13648) @[LykxSassinator](https://github.com/LykxSassinator) **tw@qiancai**
 
     数据库的可用性是企业用户最为关注的指标之一，但是在复杂的硬件环境下，如何快速检测故障，快速恢复一直是数据库面临的挑战之一。TiDB 在 6.4 版本，全面优化了 TiKV 节点的状态检测机制，即使在磁盘故障，I/O 无响应等极端情况，依然可以快速上报节点状态，同时搭配主动唤醒机制，提前发起选主，加速集群自愈。通过这次优化，TiDB 在磁盘故障场景下，集群恢复时间可以缩短 50% 左右。
 
