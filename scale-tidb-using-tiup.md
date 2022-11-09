@@ -361,7 +361,6 @@ tiup cluster display <cluster-name>
 
 1. 查询是否有数据表的 TiFlash 副本数大于缩容后的 TiFlash 节点数。`tobe_left_nodes` 表示缩容后的 TiFlash 节点数。如果查询结果为空，可以开始执行缩容。如果查询结果不为空，则需要修改相关表的 TiFlash 副本数。
 
-	{{< copyable "sql" >}}
 
     ```sql
     select * from information_schema.tiflash_replica where REPLICA_COUNT >  'tobe_left_nodes'
