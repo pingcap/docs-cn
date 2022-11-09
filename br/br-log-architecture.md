@@ -29,8 +29,8 @@ summary: 了解 TiDB 的日志备份与 PITR 的架构设计。
 
 完整的备份交互流程描述如下：
 
-1. BR 接收备份命令 (`br log start`)。
-   * 解析获取日志备份任务的 checkpoint ts （日志备份起始位置）、备份存储地址。
+1. BR 接收备份命令 `br log start`。
+   * 解析获取日志备份任务的 checkpoint ts（日志备份起始位置）、备份存储地址。
    * **Register log backup task**：在 PD 注册日志备份任务 (log backup task)。
 
 2. TiKV 监控日志备份任务的创建与更新。
@@ -53,11 +53,11 @@ summary: 了解 TiDB 的日志备份与 PITR 的架构设计。
 
 PITR 的流程如下：
 
-![Point in time recovery process design](/media/br/pitr-ts.png)
+![Point-in-time recovery process design](/media/br/pitr-ts.png)
 
 完整的 PITR 交互流程描述如下：
 
-1. BR 接收恢复命令 (`br restore point`)。
+1. BR 接收恢复命令 `br restore point`。
    * 解析获取全量备份数据地址、日志备份数据地址、恢复到的时间点。
    * 查询备份数据中恢复数据对象（database 或 table），并检查要恢复的表是否符合要求不存在。
 

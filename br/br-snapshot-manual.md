@@ -56,7 +56,7 @@ BR 支持只备份集群快照和增量数据中指定库或表的局部数据�
 
 执行 `br backup db` 命令，可备份集群中指定单个数据库的数据。
 
-示例：将数据库 `test` 备份到 S3：
+下面是将数据库 `test` 备份到 Amazon S3 的示例：
 
 ```shell
 br backup db \
@@ -73,7 +73,7 @@ br backup db \
 
 执行 `br backup table` 命令，可备份集群中指定单张表的数据。
 
-示例：将表 `test.usertable` 备份到 S3：
+下面是将表 `test.usertable` 备份到 Amazon S3 的示例：
 
 ```shell
 br backup table \
@@ -91,7 +91,7 @@ br backup table \
 
 如果你需要以更复杂的过滤条件来备份多个库或表，执行 `br backup full` 命令，并使用 `--filter` 或 `-f` 来指定[表库过滤](/table-filter.md)规则。
 
-示例：将所有 `db*.tbl*` 形式的表格数据备份到 S3：
+下面是将所有符合 `db*.tbl*` 条件的表的数据备份到 Amazon S3 的示例：
 
 ```shell
 br backup full \
@@ -177,13 +177,13 @@ br restore db \
 
 > **注意：**
 >
-> 由于备份数据的元文件 `backupmeta` 记录了数据库名 `--db`，因此只能将数据恢复到同名的数据库，否则无法恢复成功。推荐做法是把备份文件恢复到另一个集群的同名数据库中。
+> 由于备份数据的元文件 `backupmeta` 记录了数据库名 `--db`，因此只能将数据恢复到同名的数据库，否则无法恢复成功。推荐把备份文件恢复到另一个集群的同名数据库中。
 
 ### 恢复单张表的数据
 
 执行 `br restore table` 命令，可将单张表的数据恢复到对应的状态。
 
-示例：恢复 S3 中表 `test`.`usertable` 的数据：
+下面是恢复 Amazon S3 中 `test.usertable` 表数据的示例：
 
 ```shell
 br restore table \
@@ -201,7 +201,7 @@ br restore table \
 
 如果你需要用复杂的过滤条件来恢复多个表，执行 `br restore full` 命令，并用 `--filter` 或 `-f` 指定使用[表库过滤](/table-filter.md)。
 
-示例：将 S3 中能匹配上 `db*.tbl*` 的表的相关的数据恢复的集群中：
+下面是恢复 Amazon S3 中符合 `db*.tbl*` 条件的表的数据的示例：
 
 ```shell
 br restore full \

@@ -18,6 +18,6 @@ summary: 了解 TiDB 的备份与恢复功能的架构设计。
 
     - [日志备份 - 备份 kv 数据变更](/br/br-log-architecture.md#日志备份)
 
-- Point in time recovery (PITR)
+- Point-in-time recovery (PITR)
 
     - [恢复到指定时间点](/br/br-log-architecture.md#pitr)

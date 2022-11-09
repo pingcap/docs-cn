@@ -5,7 +5,7 @@ summary: 了解 br 命令行的定义、组成与使用。
 
 # br 命令行手册
 
-本文介绍 br 命令的定义、组成、常用选项，以及快照备份与恢复、日志备份与 PITR 功能使用的命令。
+本文介绍 `br` 命令的定义、组成、常用选项，以及快照备份与恢复、日志备份与 PITR (Point-in-time recovery) 功能使用的命令。
 
 ## br 命令行描述
 
@@ -18,22 +18,22 @@ br backup full --pd "${PD_IP}:2379" \
 --storage "s3://backup-data/snapshot-202209081330/"
 ```
 
-命令行各部分的解释如下：
+上面命令行中各部分的解释如下：
 
 * `backup`：`br` 的子命令。
-* `full`：`backup` 的子命令。
+* `full`：`br backup` 的子命令。
 * `-s` 或 `--storage`：备份数据的存储地址选项。`"s3://backup-data/snapshot-202209081330/"` 是 `-s` 的参数值。
 * `--pd`：PD 访问地址选项。`"${PD_IP}:2379"` 是 `--pd` 的参数值。
 
 ### 命令和子命令
 
-br 由多层命令组成。目前，br 包含的主要命令有：
+`br` 由多层命令组成。目前，`br` 包含的主要命令有：
 
 * `br backup`：用于备份 TiDB 集群的全量数据。
 * `br log`：用于启动和管理日志备份任务。
 * `br restore`：用于恢复备份数据到 TiDB 集群。
 
-`br backup` 和 `br restore`  还包含这些子命令：
+`br backup` 和 `br restore` 还包含这些子命令：
 
 * `full`：用于备份或恢复整个备份数据。
 * `db`：用于备份或恢复集群中的指定数据库。
@@ -42,7 +42,7 @@ br 由多层命令组成。目前，br 包含的主要命令有：
 ### 常用选项
 
 * `--pd`：PD 访问地址选项，例如 `"${PD_IP}:2379"`。
-* `-s` 或 `--storage`：备份数据的存储地址选项。BR 支持以 S3、GCS、Azure Blob Storage 及 NFS 为备份存储。详细参考[备份存储 URL 配置](/br/backup-and-restore-storages.md#url-格式)。
+* `-s` 或 `--storage`：备份数据的存储地址选项。BR 支持以 Amazon S3、Google Cloud Storage (GCS)、Azure Blob Storage 及 NFS 为备份存储。详细参考[备份存储 URL 配置](/br/backup-and-restore-storages.md#url-格式)。
 * `--ca`：指定 PEM 格式的受信任 CA 的证书文件路径。
 * `--cert`：指定 PEM 格式的 SSL 证书文件路径。
 * `--key`：指定 PEM 格式的 SSL 证书密钥文件路径。
@@ -50,7 +50,7 @@ br 由多层命令组成。目前，br 包含的主要命令有：
 
 ## 全量备份命令行
 
-使用 `br backup` 命令来备份集群全量数据。可选择添加 `full` 或 `table` 子命令来指定备份的范围：全部集群数据或单张表的数据。
+使用 `br backup` 命令来备份集群全量数据。可选择添加 `full` 或 `table` 子命令来指定备份的范围：全部集群数据 (`full`) 或单张表的数据 (`table`)。
 
 - [备份集群快照数据](/br/br-snapshot-manual.md#备份集群快照)
 - [备份单个数据库的数据](/br/br-snapshot-manual.md#备份单个数据库的数据)
@@ -71,9 +71,9 @@ br 由多层命令组成。目前，br 包含的主要命令有：
 
 ## 恢复备份数据命令行
 
-使用 `br restore` 命令来恢复备份数据。可选择添加 `full`、`db` 或 `table` 子命令来指定恢复操作的范围：全部集群数据、某个数据库或某张数据表。
+使用 `br restore` 命令来恢复备份数据。可选择添加 `full`、`db` 或 `table` 子命令来指定恢复操作的范围：全部集群数据 (`full`)、某个数据库 (`db`) 或某张数据表 (`table`)。
 
-- [Point in Time Recovery](/br/br-pitr-manual.md#恢复到指定时间点-pitr)
+- [Point-in-time recovery](/br/br-pitr-manual.md#恢复到指定时间点-pitr)
 - [恢复快照备份数据](/br/br-snapshot-manual.md#恢复快照备份数据)
 - [恢复单个数据库的快照备份数据](/br/br-snapshot-manual.md#恢复单个数据库的数据)
 - [恢复单张表的快照备份数据](/br/br-snapshot-manual.md#恢复单张表的数据)
