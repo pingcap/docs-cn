@@ -1256,7 +1256,7 @@ MPP is a distributed computing framework provided by the TiFlash engine, which a
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
 - Type: Enumeration
-- Default value: `INT_ONLY`
+- Default value: `ON`
 - Possible values: `OFF`, `ON`, `INT_ONLY`
 - This variable is used to control whether to create the primary key as a [clustered index](/clustered-indexes.md) by default. "By default" here means that the statement does not explicitly specify the keyword `CLUSTERED`/`NONCLUSTERED`. Supported values are `OFF`, `ON`, and `INT_ONLY`:
     - `OFF` indicates that primary keys are created as non-clustered indexes by default.
