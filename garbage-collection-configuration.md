@@ -54,7 +54,7 @@ Based on the `DISTRIBUTED` GC mode, the mechanism of GC in Compaction Filter use
 enable-compaction-filter = true
 ```
 
-You can also enable this GC mechanism by modifying the configuration online. See the following example:
+You can also enable this GC mechanism by modifying the configuration dynamically. See the following example:
 
 {{< copyable "sql" >}}
 

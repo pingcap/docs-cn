@@ -1,18 +1,18 @@
 ---
-title: Modify Configuration Online
-summary: Learn how to change the cluster configuration online.
+title: Modify Configuration Dynamically
+summary: Learn how to dynamically modify the cluster configuration.
 aliases: ['/docs/dev/dynamic-config/']
 ---
 
-# Modify Configuration Online
+# Modify Configuration Dynamically
 
-This document describes how to modify the cluster configuration online.
+This document describes how to dynamically modify the cluster configuration.
 
-You can update the configuration of components (including TiDB, TiKV, and PD) online using SQL statements, without restarting the cluster components. Currently, the method of changing TiDB instance configuration is different from that of changing configuration of other components (such TiKV and PD).
+You can dynamically update the configuration of components (including TiDB, TiKV, and PD) using SQL statements, without restarting the cluster components. Currently, the method of changing TiDB instance configuration is different from that of changing configuration of other components (such TiKV and PD).
 
 ## Common Operations
 
-This section describes the common operations of modifying configuration online.
+This section describes the common operations of dynamically modifying configuration.
 
 ### View instance configuration
 
@@ -50,11 +50,11 @@ show config where name like '%log%'
 show config where type='tikv' and name='log.level'
 ```
 
-### Modify TiKV configuration online
+### Modify TiKV configuration dynamically
 
 > **Note:**
 >
-> - After changing TiKV configuration items online, the TiKV configuration file is automatically updated. However, you also need to modify the corresponding configuration items by executing `tiup edit-config`; otherwise, operations such as `upgrade` and `reload` will overwrite your changes. For details of modifying configuration items, refer to [Modify configuration using TiUP](/maintain-tidb-using-tiup.md#modify-the-configuration).
+> - After dynamically changing TiKV configuration items, the TiKV configuration file is automatically updated. However, you also need to modify the corresponding configuration items by executing `tiup edit-config`; otherwise, operations such as `upgrade` and `reload` will overwrite your changes. For details of modifying configuration items, refer to [Modify configuration using TiUP](/maintain-tidb-using-tiup.md#modify-the-configuration).
 > - After executing `tiup edit-config`, you do not need to execute `tiup reload`.
 
 When using the `set config` statement, you can modify the configuration of a single instance or of all instances according to the instance address or the component type.
@@ -118,7 +118,7 @@ If some modifications fail, you need to re-execute the corresponding statement o
 
 If a configuration item is successfully modified, the result is persisted in the configuration file, which will prevail in the subsequent operations. The names of some configuration items might conflict with TiDB reserved words, such as `limit` and `key`. For these configuration items, use backtick `` ` `` to enclose them. For example, `` `raftstore.raft-log-gc-size-limit` ``.
 
-The following TiKV configuration items can be modified online:
+The following TiKV configuration items can be modified dynamically:
 
 | Configuration item | Description |
 | :--- | :--- |
@@ -231,7 +231,7 @@ In the table above, parameters with the `{db-name}` or `{db-name}.{cf-name}` pre
 
 For detailed parameter description, refer to [TiKV Configuration File](/tikv-configuration-file.md).
 
-### Modify PD configuration online
+### Modify PD configuration dynamically
 
 Currently, PD does not support the separate configuration for each instance. All PD instances share the same configuration.
 
@@ -251,7 +251,7 @@ Query OK, 0 rows affected (0.01 sec)
 
 If a configuration item is successfully modified, the result is persisted in etcd instead of in the configuration file; the configuration in etcd will prevail in the subsequent operations. The names of some configuration items might conflict with TiDB reserved words. For these configuration items, use backtick `` ` `` to enclose them. For example, `` `schedule.leader-schedule-limit` ``.
 
-The following PD configuration items can be modified online:
+The following PD configuration items can be modified dynamically:
 
 | Configuration item | Description |
 | :--- | :--- |
@@ -294,11 +294,11 @@ The following PD configuration items can be modified online:
 
 For detailed parameter description, refer to [PD Configuration File](/pd-configuration-file.md).
 
-### Modify TiDB configuration online
+### Modify TiDB configuration dynamically
 
 Currently, the method of changing TiDB configuration is different from that of changing TiKV and PD configurations. You can modify TiDB configuration by using [system variables](/system-variables.md).
 
-The following example shows how to modify `slow-threshold` online by using the `tidb_slow_log_threshold` variable.
+The following example shows how to dynamically modify `slow-threshold` by using the `tidb_slow_log_threshold` variable.
 
 The default value of `slow-threshold` is 300 ms. You can set it to 200 ms by using `tidb_slow_log_threshold`.
 
@@ -327,7 +327,7 @@ select @@tidb_slow_log_threshold;
 1 row in set (0.00 sec)
 ```
 
-The following TiDB configuration items can be modified online:
+The following TiDB configuration items can be modified dynamically:
 
 | Configuration item | SQL variable | Description |
 | :--- | :--- |
@@ -335,7 +335,7 @@ The following TiDB configuration items can be modified online:
 | `log.slow-threshold` | `tidb_slow_log_threshold` | The threshold of slow log |
 | `log.expensive-threshold` | `tidb_expensive_query_time_threshold` | The threshold of a expensive query |
 
-### Modify TiFlash configuration online
+### Modify TiFlash configuration dynamically
 
 Currently, you can modify the TiFlash configuration `max_threads` by using the system variable [`tidb_max_tiflash_threads`](/system-variables.md#tidb_max_tiflash_threads-new-in-v610), which specifies the maximum concurrency for TiFlash to execute a request.
 

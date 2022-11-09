@@ -107,7 +107,7 @@ TiDB version: 5.1.1
 
     - Fix the issue that the duration calculation might panic on certain platforms [#10569](https://github.com/tikv/tikv/pull/10569)
     - Fix the issue that Load Base Split mistakenly uses the unencoded keys of `batch_get_command` [#10542](https://github.com/tikv/tikv/issues/10542)
-    - Fix the issue that changing the `resolved-ts.advance-ts-interval` configuration online cannot take effect immediately [#10426](https://github.com/tikv/tikv/issues/10426)
+    - Fix the issue that changing the `resolved-ts.advance-ts-interval` configuration dynamically cannot take effect immediately [#10426](https://github.com/tikv/tikv/issues/10426)
     - Fix the issue of follower metadata corruption in rare cases with more than 4 replicas [#10225](https://github.com/tikv/tikv/issues/10225)
     - Fix the panic issue that occurs when building a snapshot twice if encryption is enabled [#9786](https://github.com/tikv/tikv/issues/9786) [#10407](https://github.com/tikv/tikv/issues/10407)
     - Fix the wrong `tikv_raftstore_hibernated_peer_state` metric [#10330](https://github.com/tikv/tikv/issues/10330)

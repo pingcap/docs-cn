@@ -20,7 +20,7 @@ Titan is compatible with RocksDB, so you can directly enable Titan on the existi
         rocksdb.titan.enabled: true
     ```
 
-    Reload the configuration and TiKV will be rolling restarted online:
+    Reload the configuration and TiKV will be rolling restarted dynamically:
 
     {{< copyable "shell-regular" >}}
 

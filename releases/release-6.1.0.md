@@ -136,20 +136,20 @@ In 6.1.0, the key new features or improvements are as follows:
 
     [User document](/sql-statements/sql-statement-show-analyze-status.md)
 
-* Support modifying TiDB, TiKV, and TiFlash configurations online
+* Support modifying TiDB, TiKV, and TiFlash configurations dynamically
 
-  In earlier TiDB versions, after modifying a configuration item, you must restart the cluster to make the modification effective. This might interrupt online services. To address this issue, TiDB v6.1.0 introduces the online configuration feature, which allows you to validate a parameter change without restarting the cluster. The specific optimizations are as follows:
+  In earlier TiDB versions, after modifying a configuration item, you must restart the cluster to make the modification effective. This might interrupt online services. To address this issue, TiDB v6.1.0 introduces the dynamic configuration feature, which allows you to validate a parameter change without restarting the cluster. The specific optimizations are as follows:
 
-    * Transform some TiDB configuration items to system variables, so that they can be modified online and persisted. Note that the original configuration items are deprecated after transformation. For a detailed list of the transformed configuration items, see [Configuration file parameters](#configuration-file-parameters).
+    * Transform some TiDB configuration items to system variables, so that they can be modified dynamically and persisted. Note that the original configuration items are deprecated after transformation. For a detailed list of the transformed configuration items, see [Configuration file parameters](#configuration-file-parameters).
     * Support configuring some TiKV parameters online. For a detailed list of the parameters, see [Others](#others).
-    * Transform the TiFlash configuration item `max_threads` to a system variable `tidb_max_tiflash_threads`, so that the configuration can be modified online and persisted. Note that the original configuration item remains after transformation.
+    * Transform the TiFlash configuration item `max_threads` to a system variable `tidb_max_tiflash_threads`, so that the configuration can be modified dynamically and persisted. Note that the original configuration item remains after transformation.
 
   For v6.1.0 clusters upgraded (including online and offline upgrades) from earlier versions, note that:
 
     * If the configuration items specified in the configuration file before the upgrade already exist, TiDB will automatically update the values of the configured items to those of the corresponding system variables during the upgrade process. In this way, after the upgrade, the system behavior is not affected by parameter optimization.
     * The automatic update mentioned above occurs only once during the upgrade. After the upgrade, the deprecated configuration items are no longer effective.
 
-  This feature allows you to modify parameters online, and validate and persist them, instead of restarting the system and interrupting services. This makes your daily maintenance easier.
+  This feature allows you to modify parameters dynamically, and validate and persist them, instead of restarting the system and interrupting services. This makes your daily maintenance easier.
 
   [User document](/dynamic-config.md)
 
@@ -292,7 +292,7 @@ In 6.1.0, the key new features or improvements are as follows:
 
 * Damaged SST files in TiKV might cause the TiKV process to panic. Before TiDB v6.1.0, damaged SST files caused TiKV to panic immediately. Since TiDB v6.1.0, the TiKV process will panic 1 hour after SST files are damaged.
 
-* The following TiKV configuration items support [modifying values online](/dynamic-config.md#modify-tikv-configuration-online):
+* The following TiKV configuration items support [modifying values dynamically](/dynamic-config.md#modify-tikv-configuration-dynamically):
 
     * `raftstore.raft-entry-max-size`
     * `quota.foreground-cpu-time`

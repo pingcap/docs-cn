@@ -95,7 +95,7 @@ In this way, PD enables this feature after the cluster is successfully bootstrap
 }
 ```
 
-For a bootstrapped cluster, you can also enable Placement Rules online through pd-ctl:
+For a bootstrapped cluster, you can also enable Placement Rules dynamically through pd-ctl:
 
 {{< copyable "shell-regular" >}}
 
