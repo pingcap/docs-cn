@@ -266,7 +266,7 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
 * 规则描述：
 
-    表示存在异常状态的 Store。如果这种状态持续一段时间，Store 可能会变为 `Offline` 状态并触发 [`PD_cluster_down_store_nums`](#pd_cluster_down_store_nums) 报警。
+    表示存在异常状态的 Store。如果这种状态持续一段时间（取决于配置的 [`max-store-down-time`](/pd-configuration-file.md#max-store-down-time)，默认值为 `30m`），Store 可能会变为 `Offline` 状态并触发 [`PD_cluster_down_store_nums`](#pd_cluster_down_store_nums) 报警。
 
 * 处理方法：
 
