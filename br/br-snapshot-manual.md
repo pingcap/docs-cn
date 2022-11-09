@@ -1,7 +1,6 @@
 ---
 title: TiDB 快照备份与恢复命令行手册
 summary: 介绍备份与恢复 TiDB 集群快照的命令行。
-aliases: ['/zh/tidb/dev/br-usage-backup/','/zh/tidb/dev/br-usage-restore/','/zh/tidb/dev/br-usage-restore-for-maintain/', '/zh/tidb/dev/br-usage-backup-for-maintain/']
 ---
 
 # TiDB 快照备份与恢复命令行手册
