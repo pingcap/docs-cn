@@ -41,8 +41,17 @@ aliases: ['/docs-cn/dev/br/backup-and-restore-use-cases/','/docs-cn/dev/referenc
 
 使用 TiUP 安装或升级 BR：
 
-- 安装：执行命令 `tiup install br:v6.4.0`
-- 升级：执行命令 `tiup update br:v6.4.0`
+- 安装：
+
+    ```shell
+    `tiup install br:v6.4.0`
+    ```
+
+- 升级：
+
+    ```shell
+    `tiup update br:v6.4.0`
+    ```
 
 ## 配置备份存储 (Amazon S3)
 
@@ -106,7 +115,7 @@ checkpoint[global]: 2022-05-13 11:31:47.2 +0800; gap=4m53s
 
 通过自动化运维工具（如 crontab）设置定期的快照备份任务，例如：每隔两天在零点左右进行一次快照（全量）备份。下面是两次备份的示例：
 
-- 在 2022/05/14 00:00:00 执行一次快照备份
+- 在 2022/05/14 00:00:00 执行一次快照备份：
 
     ```shell
     tiup br backup full --pd="${PD_IP}:2379" \
@@ -114,7 +123,7 @@ checkpoint[global]: 2022-05-13 11:31:47.2 +0800; gap=4m53s
     --backupts='2022/05/14 00:00:00'
     ```
 
-- 在 2022/05/16 00:00:00 执行一次快照备份
+- 在 2022/05/16 00:00:00 执行一次快照备份：
 
     ```shell
     tiup br backup full --pd="${PD_IP}:2379" \

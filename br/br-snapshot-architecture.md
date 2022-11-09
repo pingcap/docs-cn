@@ -58,8 +58,8 @@ summary: 了解 TiDB 快照备份与恢复功能的架构设计。
     * 检查要恢复的 table 是否存在及是否符合要求。
 
 2. BR 调度恢复数据。
-    * **Pause region schedule**：请求 PD 在恢复期间关闭自动 region schedule。
-    * **Restore schema**：读取备份数据的 schema、恢复的 database 和 table (注意新建表的 table id 与备份数据可能不一样）。
+    * **Pause region schedule**：请求 PD 在恢复期间关闭自动 Region schedule。
+    * **Restore schema**：读取备份数据的 schema、恢复的 database 和 table （注意新建表的 table id 与备份数据可能不一样）。
     * **Split & scatter region**：BR 基于备份数据信息，请求 PD 分配 Region (split region)，并调度 region 均匀分布到存储节点上 (scatter region)。每个 Region 都有明确的数据范围 [start key, end key)。
     * **Request TiKV to restore data**：根据 PD 分配的 Region 结果，发送恢复请求到对应的 TiKV 节点，恢复请求包含要恢复的备份数据及 rewrite 规则。
 
@@ -85,7 +85,7 @@ summary: 了解 TiDB 快照备份与恢复功能的架构设计。
 
 快照备份会产生如下类型文件：
 
-- `SST` 文件：存储 TiKV 备份下来的数据信息。单个 `SST` 文件大小等于 TiKV region 的大小。
+- `SST` 文件：存储 TiKV 备份下来的数据信息。单个 `SST` 文件大小等于 TiKV Region 的大小。
 - `backupmeta` 文件：存储本次备份的元信息，包括备份文件数、备份文件的 Key 区间、备份文件大小和备份文件 Hash (sha256) 值。
 - `backup.lock` 文件：用于防止多次备份到同一目录。
 
@@ -113,9 +113,9 @@ summary: 了解 TiDB 快照备份与恢复功能的架构设计。
 - 关于 SST 文件存储格式，可以参考 [RocksDB SST table 介绍](https://github.com/facebook/rocksdb/wiki/Rocksdb-BlockBasedTable-Format)。
 - 关于 SST 文件中存储的备份数据编码格式，可以参考 [TiDB 表数据与 Key-Value 的映射关系](/tidb-computing.md#表数据与-key-value-的映射关系)。
 
-### 备份文件布局
+### 备份文件目录结构
 
-将数据备份到 Google Cloud Storage 或 Azure Blob Storage 上时，SST 文件、`backupmeta` 文件和 `backup.lock` 文件在同一目录下。布局如下：
+将数据备份到 Google Cloud Storage 或 Azure Blob Storage 上时，SST 文件、`backupmeta` 文件和 `backup.lock` 文件在同一目录下。目录结构如下：
 
 ```
 .
@@ -127,7 +127,7 @@ summary: 了解 TiDB 快照备份与恢复功能的架构设计。
     └── {storeID}-{regionID}-{regionEpoch}-{keyHash}-{timestamp}-{cf}.sst
 ```
 
-将数据备份到 Amazon S3 或网络盘上时，SST 文件会根据 storeID 划分子目录。布局如下：
+将数据备份到 Amazon S3 或网络盘上时，SST 文件会根据 `storeID` 划分子目录。目录结构如下：
 
 ```
 .

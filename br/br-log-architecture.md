@@ -5,11 +5,11 @@ summary: 了解 TiDB 的日志备份与 PITR 的架构设计。
 
 # TiDB 日志备份与 PITR 功能架构
 
-本文以使用 BR 工具进行备份与恢复为例，介绍 TiDB 集群日志备份与 PITR 的架构设计与流程。
+本文以使用 BR 工具进行备份与恢复为例，介绍 TiDB 集群日志备份与 point in time recovery (PITR) 的架构设计与流程。
 
 ## 架构设计
 
-日志备份和 point in time recovery (PITR) 的架构实现如下：
+日志备份和 PITR 的架构如下：
 
 ![BR log backup and PITR architecture](/media/br/br-log-arch.png)
 
@@ -22,7 +22,7 @@ summary: 了解 TiDB 的日志备份与 PITR 的架构设计。
 系统组件和关键概念：
 
 * **local meta**：表示单 TiKV 节点备份下来的数据元信息，主要包括：local checkpoint ts、global checkpoint ts、备份文件信息。
-* **local checkpoint ts**：(in local metadata) 表示这个 TiKV 中所有小于 local checkpoint ts 的日志数据已经备份到目标存储。
+* **local checkpoint ts** (in local metadata)：表示这个 TiKV 中所有小于 local checkpoint ts 的日志数据已经备份到目标存储。
 * **global checkpoint ts**：表示所有 TiKV 中小于 global checkpoint ts 的日志数据已经备份到目标存储。它由运行在 TiDB 中的 Coordinator 模块收集所有 TiKV 的 local checkpoint ts 计算所得，然后上报给 PD。
 * **TiDB Coordinator 组件**：TiDB 集群的某个节点会被选举为 Coordinator，负责收集和计算整个日志备份任务的进度 (global checkpoint ts)。该组件设计上无状态，在其故障后可以从存活的 TiDB 节点中重新选出一个节点作为 Coordinator。
 * **TiKV log observer 组件**：运行在 TiDB 集群的每个 TiKV 节点，负责从 TiKV 读取和备份日志数据。TiKV 节点故障的话，该节点负责备份数据范围，在 Region 重新选举后，会被其他 TiKV 节点负责，这些节点会从 global checkpoint ts 重新备份故障范围的数据。
@@ -30,7 +30,7 @@ summary: 了解 TiDB 的日志备份与 PITR 的架构设计。
 完整的备份交互流程描述如下：
 
 1. BR 接收备份命令 (`br log start`)。
-   * 解析获取日志备份任务的 checkpoint ts (日志备份起始位置)、备份存储地址。
+   * 解析获取日志备份任务的 checkpoint ts （日志备份起始位置）、备份存储地址。
    * **Register log backup task**：在 PD 注册日志备份任务 (log backup task)。
 
 2. TiKV 监控日志备份任务的创建与更新。
@@ -59,7 +59,7 @@ PITR 的流程如下：
 
 1. BR 接收恢复命令 (`br restore point`)。
    * 解析获取全量备份数据地址、日志备份数据地址、恢复到的时间点。
-   * 查询备份数据中恢复数据对象 （database 或 table），并检查要恢复的表是否符合要求不存在。
+   * 查询备份数据中恢复数据对象（database 或 table），并检查要恢复的表是否符合要求不存在。
 
 2. BR 恢复全量备份。
    * 进行快照备份数据恢复，恢复流程参考[恢复快照备份数据](/br/br-snapshot-architecture.md#恢复流程)。
@@ -92,7 +92,7 @@ PITR 的流程如下：
 - `{store_id}.ts` 文件：每个 TiKV 节点每次上传日志备份数据时会使用 global checkpoint ts 更新该文件。其中 `{store_id}` 是 TiKV 的 store ID。
 - `v1_stream_truncate_safepoint.txt` 文件：保存最近一次通过 `br log truncate` 删除日志备份数据后，存储中最早的日志备份数据对应的 ts。
 
-### 备份文件布局
+### 备份文件目录结构
 
 ```
 .

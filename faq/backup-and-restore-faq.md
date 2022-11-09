@@ -1,16 +1,16 @@
 ---
-title: TiDB Backup & Restore 常见问题
+title: 备份与恢复常见问题
 summary: BR 相关的常见问题以及解决方法。
 aliases: ['/docs-cn/dev/br/backup-and-restore-faq/','/zh/tidb/dev/pitr-troubleshoot/','/zh/tidb/dev/pitr-known-issues/']
 ---
 
-# TiDB Backup & Restore 常见问题
+# 备份与恢复常见问题
 
 本文列出了在使用 Backup & Restore (BR) 时，可能会遇到的问题及相应的解决方法。
 
 如果遇到未包含在此文档且无法解决的问题，可以在 [AskTUG](https://asktug.com/) 社区中提问。
 
-## 备份和恢复性能问题
+## 备份与恢复性能问题
 
 ### 在 TiDB v5.4.0 及后续版本中，当在有负载的集群进行备份时，备份速度为什么会变得很慢？
 
@@ -322,7 +322,7 @@ BR v4.0.9 备份统计信息使 BR 消耗过多内存，为保证备份过程正
 
 如果不对表执行 `ANALYZE`，TiDB 会因统计信息不准确而选不中最优化的执行计划。如果查询性能不是重点关注项，可以忽略 `ANALYZE`。
 
-### 是否可以同时使用多个 BR 进程对单个集群进行恢复？
+### 可以同时使用多个 BR 进程对单个集群进行恢复吗？
 
 **强烈不建议**在单个集群中同时使用多个 BR 进程进行恢复，原因如下：
 
@@ -332,4 +332,4 @@ BR v4.0.9 备份统计信息使 BR 消耗过多内存，为保证备份过程正
 
 ### BR 会备份表的 `SHARD_ROW_ID_BITS` 和 `PRE_SPLIT_REGIONS` 信息吗？恢复出来的表会有多个 Region 吗？
 
-会的，BR 会备份表的 [`SHARD_ROW_ID_BITS` 和 `PRE_SPLIT_REGIONS`](/sql-statements/sql-statement-split-region.md#pre_split_regions) 信息，并恢复成多个 Region。
+会，BR 会备份表的 [`SHARD_ROW_ID_BITS` 和 `PRE_SPLIT_REGIONS`](/sql-statements/sql-statement-split-region.md#pre_split_regions) 信息，并恢复成多个 Region。
