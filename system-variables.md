@@ -1204,7 +1204,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 是否持久化到集群：是
 - 类型：布尔型
 - 默认值：`OFF`
-- 该变量指定 TiDB 是否收集扩展统计信息来指导优化器。详情参见[扩展统计信息简介](/extended-statistics.md)。
+- 该变量指定 TiDB 是否收集扩展统计信息来指导优化器。
 
 ### `tidb_enable_fast_analyze`
 
