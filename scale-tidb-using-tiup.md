@@ -365,12 +365,12 @@ tiup cluster display <cluster-name>
     SELECT * FROM information_schema.tiflash_replica WHERE REPLICA_COUNT >  'tobe_left_nodes';
     ```
 
-2. 对所有 TiFlash 副本数大于缩容后的 TiFlash 节点数的表执行以下语句：
+2. 对所有 TiFlash 副本数大于缩容后的 TiFlash 节点数的表执行以下语句，`new_replica_num` 必须小于等于 `tobe_left_nodes`：
 
     {{< copyable "sql" >}}
 
     ```sql
-    ALTER TABLE <db-name>.<table-name> SET tiflash replica 'tobe_left_nodes';
+    ALTER TABLE <db-name>.<table-name> SET tiflash replica 'new_replica_num';
     ```
 
 3. 重新执行步骤 1，确保没有数据表的 TiFlash 副本数大于缩容后的 TiFlash 节点数。
