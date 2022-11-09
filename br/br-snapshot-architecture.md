@@ -26,13 +26,13 @@ summary: 了解 TiDB 快照备份与恢复功能的架构设计。
 
 2. BR 调度备份数据。
     * **Pause GC**：配置 TiDB GC，防止要备份的数据被 [TiDB GC 机制](/garbage-collection-overview.md)回收。
-    * **Fetch TiKV and region info**：访问 PD，获取所有 TiKV 节点访问地址以及数据的 [region](/tidb-storage.md#region) 分布信息。
+    * **Fetch TiKV and Region info**：访问 PD，获取所有 TiKV 节点访问地址以及数据的 [Region](/tidb-storage.md#region) 分布信息。
     * **Request TiKV to back up data**：创建备份请求，发送给 TiKV 节点，备份请求包含 backup ts、需要备份的 region、备份存储地址。
 
 3. TiKV 接受备份请求，初始化 backup worker。
 
 4. TiKV 备份数据。
-    * **Scan KVs**：backup worker 从 region (only leader) 读取 backup ts 对应的数据。
+    * **Scan KVs**：backup worker 从 Region (only leader) 读取 backup ts 对应的数据。
     * **Generate SST**：backup worker 将读取到的数据保存到 SST 文件，存储在内存中。
     * **Upload SST**：backup worker 上传 SST 文件到备份存储中。
 
@@ -58,9 +58,9 @@ summary: 了解 TiDB 快照备份与恢复功能的架构设计。
     * 检查要恢复的 table 是否存在及是否符合要求。
 
 2. BR 调度恢复数据。
-    * **Pause region schedule**：请求 PD 在恢复期间关闭自动 Region schedule。
+    * **Pause Region schedule**：请求 PD 在恢复期间关闭自动 Region schedule。
     * **Restore schema**：读取备份数据的 schema、恢复的 database 和 table （注意新建表的 table id 与备份数据可能不一样）。
-    * **Split & scatter region**：BR 基于备份数据信息，请求 PD 分配 Region (split region)，并调度 region 均匀分布到存储节点上 (scatter region)。每个 Region 都有明确的数据范围 [start key, end key)。
+    * **Split & scatter Region**：BR 基于备份数据信息，请求 PD 分配 Region (split Region)，并调度 Region 均匀分布到存储节点上 (scatter Region)。每个 Region 都有明确的数据范围 [start key, end key)。
     * **Request TiKV to restore data**：根据 PD 分配的 Region 结果，发送恢复请求到对应的 TiKV 节点，恢复请求包含要恢复的备份数据及 rewrite 规则。
 
 3. TiKV 接受恢复请求，初始化 restore worker。

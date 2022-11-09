@@ -44,8 +44,8 @@ summary: 了解 TiDB 的日志备份与 PITR 的架构设计。
    * **Configure GC**：请求 PD 阻止未备份的数据（大于 local checkpoint ts）被 [TiDB GC 机制](/garbage-collection-overview.md)回收掉。
 
 4. TiDB Coordinator 监控日志备份进度。
-   * **Watch backup progress**：轮询所有 TiKV 节点，获取各个 Region 的备份进度 (region checkpoint ts)。
-   * **Report global checkpoint ts**：根据各个 region checkpoint ts，计算整个日志备份任务的进度 (global checkpoint ts)，然后上报给 PD。
+   * **Watch backup progress**：轮询所有 TiKV 节点，获取各个 Region 的备份进度 (Region checkpoint ts)。
+   * **Report global checkpoint ts**：根据各个 Region checkpoint ts，计算整个日志备份任务的进度 (global checkpoint ts)，然后上报给 PD。
 
 5. PD 持久化日志备份任务状态。可以通过 `br log status` 查询。
 
@@ -66,7 +66,7 @@ PITR 的流程如下：
 
 3. BR 恢复日志备份。
    * **Read backup data**：读取日志备份数据，计算需要恢复的日志备份数据。
-   * **Fetch region info**：访问 PD，获取所有 Region 和 KV range 的对应关系。
+   * **Fetch Region info**：访问 PD，获取所有 Region 和 KV range 的对应关系。
    * **Request TiKV to restore data**：创建日志恢复请求，发送到对应的 TiKV，日志恢复请求包含要恢复的日志备份数据信息。
 
 4. TiKV 接受 BR 的恢复请求，初始化 log restore worker。
