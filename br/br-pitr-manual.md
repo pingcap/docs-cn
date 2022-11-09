@@ -1,21 +1,21 @@
 ---
 title: TiDB 日志备份与 PITR 命令行手册
-summary: 介绍日志备份和 PITR 命令行
+summary: 介绍 TiDB 日志备份与 PITR 的命令行。
 aliases: ['/zh/tidb/dev/br-log-command-line/']
 ---
 
 # TiDB 日志备份与 PITR 命令行手册
 
-本文介绍 TiDB 日志备份和 PITR 命令行。
+本文介绍 TiDB 日志备份和 PITR (Point-in-time recovery) 命令行。
 
-如果你想了解如何进行备份和恢复，可以参考以下教程：
+如果你想了解如何进行日志备份与 PITR，可以参考以下教程：
 
-- [日志备份和 PITR 使用指南](/br/br-pitr-guide.md)
-- [TiDB 集群备份和恢复实践示例](/br/backup-and-restore-use-cases.md)
+- [TiDB 日志备份与 PITR 使用指南](/br/br-pitr-guide.md)
+- [TiDB 集群备份与恢复实践示例](/br/backup-and-restore-use-cases.md)
 
 ## 日志备份命令行介绍
 
-你可以执行 `br log` 命令来打开和管理备份日志：
+你可以执行 `br log` 命令来开启和管理日志备份任务：
 
 ```shell
 ./br log --help
@@ -49,7 +49,7 @@ Available Commands:
 
 执行 `br log start` 命令，你可以在备份集群启动一个日志备份任务。该任务在 TiDB 集群持续地运行，及时地将 KV 变更日志保存到备份存储中。
 
-执行 `br log start --help` 命令 可获取该子命令使用介绍：
+执行 `br log start --help` 命令可获取该子命令使用介绍：
 
 ```shell
 ./br log start --help
@@ -78,19 +78,20 @@ Global Flags:
 - `task-name`：指定日志备份任务名。该名称也用于查询备份状态、暂停、重启和恢复备份任务等操作。
 - `ca`、`cert`、`key`：指定使用 mTLS 加密方式与 TiKV 和 PD 进行通讯。
 - `--pd`：指定备份集群的 PD 访问地址。BR 需要访问 PD，发起日志备份任务。
-- `--storage`：指定备份存储地址。日志备份支持以 S3、GCS、Azure Blob Storage 为备份存储，以上命令以 S3 为示例。详细参考[备份存储 URL 配置](/br/backup-and-restore-storages.md#url-格式)。
+- `--storage`：指定备份存储地址。日志备份支持以 Amazon S3、Google Cloud Storage (GCS)、Azure Blob Storage 为备份存储，以上命令以 S3 为示例。详细参考[备份存储 URL 格式](/br/backup-and-restore-storages.md#url-格式)。
 
 使用示例：
 
 ```shell
-./br log start --task-name=pitr --pd=172.16.102.95:2379 --storage='s3://backup-101/logbackup?access_key=${access_key}&secret_access_key=${secret_access_key}"'
+./br log start --task-name=pitr --pd="${PD_IP}:2379" \
+--storage='s3://backup-101/logbackup?access_key=${access_key}&secret_access_key=${secret_access_key}"'
 ```
 
 ### 查询日志备份任务
 
 执行 `br log status` 命令，你可以查询日志备份任务状态。
 
-执行 `br log status –-help` 命令 可获取该子命令使用介绍：
+执行 `br log status –-help` 命令可获取该子命令使用介绍：
 
 ```shell
 ./br log status --help
@@ -112,12 +113,12 @@ Global Flags:
 
 ```
 
-以上示例中， `task-name` 为常用参数，它用来指定日志备份任务名。默认值为 `*`，即显示全部任务。
+以上示例中，`--task-name` 为常用参数，它用来指定日志备份任务名。默认值为 `*`，即显示全部任务。
 
 使用示例：
 
 ```shell
-./br log status --task-name=pitr --pd=172.16.102.95:2379
+./br log status --task-name=pitr --pd="${PD_IP}:2379"
 ```
 
 命令输出如下：
@@ -143,9 +144,9 @@ checkpoint[global]: 2022-07-25 22:52:15.518 +0800; gap=2m52s
 - `checkpoint [global]`：集群中早于该 `checkpoint` 的数据都已经保存到备份存储，它也是备份数据可恢复的最近时间点。
 - `error [store]`：存储节点上的日志备份组件运行遇到的异常。
 
-### 暂停和重启日志备份任务
+### 暂停和恢复日志备份任务
 
-执行 `br log pause` 命令，你可以暂停正在运行中的日志备份任务。
+执行 `br log pause` 命令，你可以暂停正在运行的日志备份任务。
 
 执行 `br log pause –help` 可获取该子命令使用介绍：
 
@@ -176,12 +177,12 @@ Global Flags:
 使用示例：
 
 ```shell
-./br log pause --task-name=pitr --pd=172.16.102.95:2379
+./br log pause --task-name=pitr --pd="${PD_IP}:2379"
 ```
 
 执行 `br log resume` 命令，你可以恢复被暂停的日志备份任务。
 
-执行 `br log resume --help` 命令 可获取该子命令使用介绍：
+执行 `br log resume --help` 命令可获取该子命令使用介绍：
 
 ```shell
 ./br log resume --help
@@ -206,14 +207,18 @@ Global Flags:
 使用示例：
 
 ```shell
-./br log resume --task-name=pitr --pd=172.16.102.95:2379
+./br log resume --task-name=pitr --pd="${PD_IP}:2379"
 ```
 
-### （永久）停止日志备份任务
+### 停止和重启日志备份任务
 
-执行 `br log stop` 命令，你可以永久地停止日志备份任务，该命令会清理备份集群中的任务元信息。
+通过执行 `br log stop` 命令，你可以停止正在进行的日志备份任务。停止的任务，可以通过 `--storage` 路径重新启动。
 
-执行 `br log stop --help` 命令 可获取该子命令使用介绍：
+#### 停止日志备份任务
+
+执行 `br log stop` 命令，可以停止日志备份任务，该命令会清理备份集群中的任务元信息。
+
+执行 `br log stop --help` 命令可获取该子命令使用介绍：
 
 ```shell
 ./br log stop --help
@@ -233,17 +238,29 @@ Global Flags:
  -u, --pd strings             PD address (default [127.0.0.1:2379])
 ```
 
+> **注意：**
+>
+> 请谨慎使用该命令，如果你只需**暂时停止**日志备份，请使用 `br log pause` 和 `br log resume` 命令。
+
 使用示例：
 
 ```shell
-./br log stop --task-name=pitr --pd=172.16.102.95:2379
+./br log stop --task-name=pitr --pd="${PD_IP}:2379"
 ```
+
+#### 重新启动备份任务
+
+当使用 `br log stop` 命令停止日志备份任务后，可在另一个 `--storage` 路径下重新创建一个新的日志备份任务，也可以在原来的 `--storage` 路径下执行 `br log start` 命令重新启动日志备份任务。如果是在原来的 `--storage` 路径重启任务，需要注意：
+
+- 重启备份任务的 `--storage` 参数需要与停止任务之前的参数相同。
+- 此时不需要填入 `--start-ts` 参数，程序将自动从上次的备份进度点开始备份数据。
+- 如果停止任务后的时间过长，多版本的数据已经被 GC，则在重启备份任务时会报错 `BR:Backup:ErrBackupGCSafepointExceeded`，此时只能配置另外的日志路径来重新创建日志备份任务。
 
 ### 清理日志备份数据
 
 执行 `br log truncate` 命令，你可以从备份存储中删除过期或不再需要的备份日志数据。
 
-执行 `br log truncate --help` 命令 可获取该子命令使用介绍：
+执行 `br log truncate --help` 命令可获取该子命令使用介绍：
 
 ```shell
 ./br log truncate --help
@@ -267,12 +284,13 @@ Global Flags:
 
 - `--dry-run`：运行命令，但是不删除文件。
 - `--until`：早于该参数指定时间点的日志备份数据会被删除。建议使用快照备份的时间点作为该参数值。
-- `--storage`：指定备份存储地址。日志备份支持以 S3、GCS、Azure Blob Storage 为备份存储。详细参考[备份存储 URL 配置](/br/backup-and-restore-storages.md#url-格式)。
+- `--storage`：指定备份存储地址。日志备份支持以 Amazon S3、Google Cloud Storage (GCS)、Azure Blob Storage 为备份存储。详细参考[备份存储 URL 格式](/br/backup-and-restore-storages.md#url-格式)。
 
 使用示例：
 
 ```shell
-./br log truncate --until='2022-07-26 21:20:00+0800' –-storage='s3://backup-101/logbackup?access_key=${access_key}&secret_access_key=${secret_access_key}"'
+./br log truncate --until='2022-07-26 21:20:00+0800' \
+–-storage='s3://backup-101/logbackup?access_key=${access_key}&secret_access_key=${secret_access_key}"'
 ```
 
 该子命令运行后输出以下信息：
@@ -289,7 +307,7 @@ Removing metadata... DONE; take = 24.038962ms
 
 执行 `br log metadata` 命令，你可以查看备份存储中保存的日志备份的元信息，例如最早和最近的可恢复时间点。
 
-执行 `br log metadata –-help` 命令 可获取该子命令使用介绍：
+执行 `br log metadata –-help` 命令可获取该子命令使用介绍：
 
 ```shell
 ./br log metadata --help
@@ -307,7 +325,7 @@ Global Flags:
 
 该命令只需要访问备份存储，不需要访问备份集群。
 
-以上示例中，`--storage` 为常用参数，它用来指定备份存储地址。日志备份支持以 S3、GCS、Azure Blob Storage 为备份存储。详细参考[备份存储 URL 配置](/br/backup-and-restore-storages.md#url-格式)。
+以上示例中，`--storage` 为常用参数，它用来指定备份存储地址。日志备份支持以 Amazon S3、Google Cloud Storage (GCS)、Azure Blob Storage 为备份存储。详细参考[备份存储 URL 格式](/br/backup-and-restore-storages.md#url-格式)。
 
 使用示例：
 
@@ -325,7 +343,7 @@ Global Flags:
 
 执行 `br restore point` 命令，你可以在新集群上进行 PITR，或者只恢复日志备份数据。
 
-执行 `br restore point --help` 命令 可获取该命令使用介绍：
+执行 `br restore point --help` 命令可获取该命令使用介绍：
 
 ```shell
 ./br restore point --help
@@ -351,17 +369,17 @@ Global Flags:
 
 以上示例只展示了常用的参数，这些参数作用如下：
 
-- `--full-backup-storage`：指定快照（全量）备份的存储地址。如果你要使用 PITR，需要指定该参数，并选择恢复时间点之前最近的快照备份；如果只恢复日志备份数据，则不需要指定该参数。快照备份支持以 S3、GCS、Azure Blob Storage 为备份存储。详细参考[备份存储 URL 配置](/br/backup-and-restore-storages.md#url-格式)。
+- `--full-backup-storage`：指定快照（全量）备份的存储地址。如果你要使用 PITR，需要指定该参数，并选择恢复时间点之前最近的快照备份；如果只恢复日志备份数据，则不需要指定该参数。快照备份支持以 Amazon S3、Google Cloud Storage (GCS)、Azure Blob Storage 为备份存储。详细参考[备份存储 URL 格式](/br/backup-and-restore-storages.md#url-格式)。
 - `--restored-ts`：指定恢复到的时间点。如果没有指定该参数，则恢复到日志备份数据最后的可恢复时间点（备份数据的 checkpoint）。
 - `--start-ts`：指定日志备份恢复的起始时间点。如果你只恢复日志备份数据，不恢复快照备份，需要指定这个参数。
 - `ca`、`cert`、`key`：指定使用 mTLS 加密方式与 TiKV 和 PD 进行通讯。
 - `--pd`：指定恢复集群的 PD 访问地址。
-- `--storage`：指定备份存储地址。日志备份支持以 S3、GCS、Azure Blob Storage 为备份存储。详细参考[备份存储 URL 配置](/br/backup-and-restore-storages.md#url-格式)。
+- `--storage`：指定备份存储地址。日志备份支持以 Amazon S3、Google Cloud Storage (GCS)、Azure Blob Storage 为备份存储。详细参考[备份存储 URL 格式](/br/backup-and-restore-storages.md#url-格式)。
 
 使用示例：
 
 ```shell
-./br restore point --pd=172.16.102.95:2379
+./br restore point --pd="${PD_IP}:2379"
 --storage='s3://backup-101/logbackup?access_key=${access_key}&secret_access_key=${secret_access_key}"'
 --full-backup-storage='s3://backup-101/snapshot-202205120000?access_key=${access_key}&secret_access_key=${secret_access_key}"'
 
@@ -374,5 +392,5 @@ Restore KV Files <--------------------------------------------------------------
 
 > **注意：**
 >
-> - 不支持重复恢复某段时间区间的日志，如多次重复恢复 [t1=10, t2=20) 区间的日志数据，可能会造成恢复后的数据不正确。
-> - 多次恢复不同时间区间的日志时，需保证恢复日志的连续性。如先后恢复 [t1, t2)、[t2, t3) 和 [t3, t4) 三个区间的日志可以保证正确性，而在恢复 [t1, t2) 后跳过 [t2, t3) 直接恢复 [t3, t4) 的区间可能导致恢复之后的数据不正确。
+> - 不支持重复恢复某段时间区间的日志，如多次重复恢复 `[t1=10, t2=20)` 区间的日志数据，可能会造成恢复后的数据不正确。
+> - 多次恢复不同时间区间的日志时，需保证恢复日志的连续性。如先后恢复 `[t1, t2)`、`[t2, t3)` 和 `[t3, t4)` 三个区间的日志可以保证正确性，而在恢复 `[t1, t2)` 后跳过 `[t2, t3)` 直接恢复 `[t3, t4)` 的区间可能导致恢复之后的数据不正确。

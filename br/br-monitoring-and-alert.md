@@ -22,7 +22,7 @@ aliases: ['/zh/tidb/dev/pitr-monitoring-and-alert/']
 
 - 通过 TiUP 部署的集群，[Grafana](https://grafana.com/) 中内置了 Backup log 的面板。
 
-- 手动部署的集群，需要参考[导入 Grafana 面板](/deploy-monitoring-services.md#第-2-步导入-grafana-面板)，将 [tikv_details](https://github.com/tikv/tikv/blob/master/metrics/grafana/tikv_details.json) JSON 文件上传到 Grafana 中。之后在 TiKV-Details dashboard 中找到 Backup Log 面板即可。
+- 手动部署的集群，需要参考[导入 Grafana 面板](/deploy-monitoring-services.md#第-2-步导入-grafana-面板)，将 [tikv_details.json](https://github.com/tikv/tikv/blob/master/metrics/grafana/tikv_details.json) 文件上传到 Grafana 中。之后在 TiKV-Details Dashboard 中找到 Backup Log 面板即可。
 
 ### 监控指标
 
@@ -46,7 +46,7 @@ aliases: ['/zh/tidb/dev/pitr-monitoring-and-alert/']
 | **tikv_log_backup_skip_retry_observe**                | Counter   | 在日志备份过程中，遇到的可忽略错误的统计，即放弃 retry 的原因。 <br/>`reason :: {"region-absent", "not-leader", "stale-command"}`                                           |
 | **tikv_log_backup_initial_scan_operations**           | Counter   | 增量扫过程中， RocksDB 相关的操作统计。<br/>`cf :: {"default", "write", "lock"}, op :: RocksDBOP`                                                              |
 | **tikv_log_backup_enabled**                           | Counter   | 日志备份功能是否开启，若值大于 0，表示开启                                                                                                                          |
-| **tikv_log_backup_observed_region**                   | Gauge     | 被监听的 region 数量                                                                                                                                  |
+| **tikv_log_backup_observed_region**                   | Gauge     | 被监听的 Region 数量                                                                                                                                  |
 | **tikv_log_backup_task_status**                       | Gauge     | 日志备份任务状态，0-Running 1-Paused 2-Error <br/>`task :: string`                                                                                       |
 | **tikv_log_backup_pending_initial_scan**              | Gauge     | 尚未执行的增量扫的统计。<br/>`stage :: {"queuing", "executing"}`                                                                                            |
 
@@ -60,7 +60,7 @@ aliases: ['/zh/tidb/dev/pitr-monitoring-and-alert/']
 
 1. 在 Prometheus 所在节点上创建告警规则的配置文件（例如 `pitr.rules.yml`），参考 [Prometheus 文档](https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/) 和下列推荐的告警项及配置样例填写告警规则。
 2. 在 Prometheus 配置文件中的 `rule_files` 字段填入告警规则文件的路径。
-3. 通过向 Prometheus 进程发送 `SIGHUP` 信号（`kill -HUP pid`）或向 `http://prometheus-addr/-/reload` 发送 HTTP POST 请求（使用 HTTP 请求方式前需要在启动 Prometheus 时指定 `--web.enable-lifecycle` 参数）。
+3. 通过向 Prometheus 进程发送 `SIGHUP` 信号（`kill -HUP pid`）或向 `http://prometheus-addr/-/reload` 发送 HTTP `POST` 请求（使用 HTTP 请求方式前需要在启动 Prometheus 时指定 `--web.enable-lifecycle` 参数）。
 
 以下为推荐的告警项配置：
 

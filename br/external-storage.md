@@ -26,16 +26,12 @@ S3、 GCS 和 Azblob 等云存储有时需要额外的连接配置，你可以�
 
 * 用 Dumpling 导出数据到 S3：
 
-    {{< copyable "shell-regular" >}}
-
     ```bash
     ./dumpling -u root -h 127.0.0.1 -P 3306 -B mydb -F 256MiB \
         -o 's3://my-bucket/sql-backup'
     ```
 
 * 用 TiDB Lightning 从 S3 导入数据：
-
-    {{< copyable "shell-regular" >}}
 
     ```bash
     ./tidb-lightning --tidb-port=4000 --pd-urls=127.0.0.1:2379 --backend=local --sorted-kv-dir=/tmp/sorted-kvs \
@@ -44,16 +40,12 @@ S3、 GCS 和 Azblob 等云存储有时需要额外的连接配置，你可以�
 
 * 用 TiDB Lightning 从 S3 导入数据（使用路径类型的请求模式）：
 
-    {{< copyable "shell-regular" >}}
-
     ```bash
     ./tidb-lightning --tidb-port=4000 --pd-urls=127.0.0.1:2379 --backend=local --sorted-kv-dir=/tmp/sorted-kvs \
         -d 's3://my-bucket/sql-backup?force-path-style=true&endpoint=http://10.154.10.132:8088'
     ```
 
 * 用 TiDB Lightning 从 S3 导入数据（使用特定 IAM 角色来访问 S3 数据）：
-
-    {{< copyable "shell-regular" >}}
 
     ```bash
     ./tidb-lightning --tidb-port=4000 --pd-urls=127.0.0.1:2379 --backend=local --sorted-kv-dir=/tmp/sorted-kvs \
@@ -62,20 +54,16 @@ S3、 GCS 和 Azblob 等云存储有时需要额外的连接配置，你可以�
 
 * 用 BR 备份到 GCS：
 
-    {{< copyable "shell-regular" >}}
-
     ```bash
     ./br backup full -u 127.0.0.1:2379 \
-        -s 'gcs://bucket-name/prefix'
+    --storage 'gcs://bucket-name/prefix'
     ```
 
 * 用 BR 备份到 Azblob：
 
-    {{< copyable "shell-regular" >}}
-
     ```bash
     ./br backup full -u 127.0.0.1:2379 \
-        -s 'azure://container-name/prefix'
+    --storage 'azure://container-name/prefix'
     ```
 
 ### S3 的 URL 参数
@@ -138,13 +126,11 @@ S3、 GCS 和 Azblob 等云存储有时需要额外的连接配置，你可以�
 > **注意：**
 >
 > - 将 Azure Blob Storage 作为外部存储时，必须设置 `send-credentials-to-tikv = true`（即默认情况），否则会导致备份失败。
-> - `$AZURE_CLIENT_ID`、`$AZURE_TENANT_ID` 和 `$AZURE_CLIENT_SECRET` 分别代表 Azure 应用程序的应用程序 ID `client_id`、租户 ID `tenant_id` 和客户端密码 `client_secret`。如需了解如何确认运行环境中存在环境变量 `$AZURE_CLIENT_ID`、`$AZURE_TENANT_ID` 和 `$AZURE_CLIENT_SECRET`，或需要将环境变量配置为参数，请参考[配置环境变量](/br/backup-and-restore-storages.md#配置访问-azure-blob-storage-的账户)。
+> - `$AZURE_CLIENT_ID`、`$AZURE_TENANT_ID` 和 `$AZURE_CLIENT_SECRET` 分别代表 Azure 应用程序的应用程序 ID `client_id`、租户 ID `tenant_id` 和客户端密码 `client_secret`。如需了解如何确认运行环境中存在环境变量 `$AZURE_CLIENT_ID`、`$AZURE_TENANT_ID` 和 `$AZURE_CLIENT_SECRET`，或需要将环境变量配置为参数，请参考[鉴权](/br/backup-and-restore-storages.md#鉴权) Azure Blob Storage 部分。
 
 ## 命令行参数
 
 除了使用 URL 参数，BR 和 Dumpling 工具也支持从命令行指定这些配置，例如：
-
-{{< copyable "shell-regular" >}}
 
 ```bash
 ./dumpling -u root -h 127.0.0.1 -P 3306 -B mydb -F 256MiB \
@@ -178,8 +164,6 @@ S3、 GCS 和 Azblob 等云存储有时需要额外的连接配置，你可以�
 
 * 使用 Dumpling 将数据导出至 OSS 存储：
 
-    {{< copyable "shell-regular" >}}
-
     ```bash
     ./dumpling -h 127.0.0.1 -P 3306 -B mydb -F 256MiB \
        -o "s3://my-bucket/dumpling/" \
@@ -189,8 +173,6 @@ S3、 GCS 和 Azblob 等云存储有时需要额外的连接配置，你可以�
     ```
 
 * 使用 BR 将数据备份至 OSS 存储：
-
-    {{< copyable "shell-regular" >}}
 
     ```bash
     ./br backup full --pd "127.0.0.1:2379" \
@@ -203,8 +185,6 @@ S3、 GCS 和 Azblob 等云存储有时需要额外的连接配置，你可以�
     ```
 
 * 在 YAML 文件中指定 TiDB Lightning 将数据导出至 OSS 存储：
-
-    {{< copyable "" >}}
 
     ```
     [mydumper]
@@ -233,15 +213,11 @@ S3、 GCS 和 Azblob 等云存储有时需要额外的连接配置，你可以�
 
 但是，这个操作不适合云端环境，因为每个节点都有自己的角色和权限。在这种情况下，你需要用 `--send-credentials-to-tikv=false`（或简写为 `-c=0`）来禁止发送凭证：
 
-{{< copyable "shell-regular" >}}
-
 ```bash
-./br backup full -c=0 -u pd-service:2379 -s 's3://bucket-name/prefix'
+./br backup full -c=0 -u pd-service:2379 --storage 's3://bucket-name/prefix'
 ```
 
 使用 SQL 进行[备份](/sql-statements/sql-statement-backup.md)[恢复](/sql-statements/sql-statement-restore.md)时，可加上 `SEND_CREDENTIALS_TO_TIKV = FALSE` 选项：
-
-{{< copyable "sql" >}}
 
 ```sql
 BACKUP DATABASE * TO 's3://bucket-name/prefix' SEND_CREDENTIALS_TO_TIKV = FALSE;

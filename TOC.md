@@ -110,6 +110,7 @@
     - [从大数据量分库分表 MySQL 合并迁移数据到 TiDB](/migrate-large-mysql-shards-to-tidb.md)
     - [从 CSV 文件迁移数据到 TiDB](/migrate-from-csv-files-to-tidb.md)
     - [从 SQL 文件迁移数据到 TiDB](/migrate-from-sql-files-to-tidb.md)
+    - [从 Parquet 文件迁移数据到 TiDB](/migrate-from-parquet-files-to-tidb.md)
     - [从 TiDB 集群迁移数据至另一 TiDB 集群](/migrate-from-tidb-to-tidb.md)
     - [从 TiDB 集群迁移数据至兼容 MySQL 的数据库](/migrate-from-tidb-to-mysql.md)
   - 复杂迁移场景
@@ -131,29 +132,29 @@
     - [使用 TiUP（推荐）](/scale-tidb-using-tiup.md)
     - [使用 TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/scale-a-tidb-cluster)
   - 备份与恢复
-    - [功能介绍](/br/backup-and-restore-overview.md)
+    - [备份与恢复概述](/br/backup-and-restore-overview.md)
     - 架构设计
       - [架构概述](/br/backup-and-restore-design.md)
-      - [快照备份和恢复架构](/br/br-snapshot-architecture.md)
-      - [日志备份和 PITR 架构](/br/br-log-architecture.md)
+      - [快照备份与恢复架构](/br/br-snapshot-architecture.md)
+      - [日志备份与 PITR 架构](/br/br-log-architecture.md)
     - 使用 BR 进行备份与恢复
       - [使用概述](/br/br-use-overview.md)
-      - [快照备份和恢复](/br/br-snapshot-guide.md)
-      - [日志备份和 PITR](/br/br-pitr-guide.md)
+      - [快照备份与恢复](/br/br-snapshot-guide.md)
+      - [日志备份与 PITR](/br/br-pitr-guide.md)
       - [实践示例](/br/backup-and-restore-use-cases.md)
       - [备份存储](/br/backup-and-restore-storages.md)
     - br cli 命令手册
       - [命令概述](/br/use-br-command-line-tool.md)
-      - [快照备份和恢复命令手册](/br/br-snapshot-manual.md)
-      - [日志备份和 PITR 命令手册](/br/br-pitr-manual.md)
+      - [快照备份与恢复命令手册](/br/br-snapshot-manual.md)
+      - [日志备份与 PITR 命令手册](/br/br-pitr-manual.md)
     - 参考指南
       - BR 特性
         - [自动调节](/br/br-auto-tune.md)
         - [批量建表](/br/br-batch-create-table.md)
-      - [使用 Dumpling 和 TiDB Lightning 备份和恢复数据](/backup-and-restore-using-dumpling-lightning.md)
-      - [RawKV 备份和恢复](/br/rawkv-backup-and-restore.md)
+      - [使用 Dumpling 和 TiDB Lightning 备份与恢复](/backup-and-restore-using-dumpling-lightning.md)
+      - [备份与恢复 RawKV](/br/rawkv-backup-and-restore.md)
+      - [增量备份与恢复](/br/br-incremental-guide.md)
       - [外部存储](/br/external-storage.md)
-      - [增量备份和恢复使用指南](/br/br-incremental-guide.md)
   - [修改时区](/configure-time-zone.md)
   - [日常巡检](/daily-check.md)
   - [TiFlash 常用运维操作](/tiflash/maintain-tiflash.md)
@@ -253,6 +254,7 @@
       - [Stale Read 使用场景介绍](/stale-read.md)
       - [使用 `AS OF TIMESTAMP` 语法读取历史数据](/as-of-timestamp.md)
       - [使用系统变量 `tidb_read_staleness` 读取历史数据](/tidb-read-staleness.md)
+      - [使用系统变量 `tidb_external_ts` 读取历史数据](/tidb-external-ts.md)
     - [使用系统变量 `tidb_snapshot` 读取历史数据](/read-historical-data.md)
   - 最佳实践
     - [TiDB 最佳实践](/best-practices/tidb-best-practices.md)

@@ -1,16 +1,16 @@
 ---
-title: TiDB Backup & Restore 常见问题
+title: 备份与恢复常见问题
 summary: BR 相关的常见问题以及解决方法。
 aliases: ['/docs-cn/dev/br/backup-and-restore-faq/','/zh/tidb/dev/pitr-troubleshoot/','/zh/tidb/dev/pitr-known-issues/']
 ---
 
-# TiDB Backup & Restore 常见问题
+# 备份与恢复常见问题
 
 本文列出了在使用 Backup & Restore (BR) 时，可能会遇到的问题及相应的解决方法。
 
 如果遇到未包含在此文档且无法解决的问题，可以在 [AskTUG](https://asktug.com/) 社区中提问。
 
-## 备份和恢复性能问题
+## 备份与恢复性能问题
 
 ### 在 TiDB v5.4.0 及后续版本中，当在有负载的集群进行备份时，备份速度为什么会变得很慢？
 
@@ -29,7 +29,7 @@ TiKV 支持[动态配置](/tikv-control.md#动态修改-tikv-的配置)自动调
 
 ## PITR 问题
 
-### BR 进程在执行 PITR 恢复或执行 `br log truncate` 命令时出现 OOM 问题
+### BR 进程在执行 `br log truncate` 命令时为什么会出现 OOM 问题？
 
 Issue 链接：[#36648](https://github.com/pingcap/tidb/issues/36648)
 
@@ -40,13 +40,13 @@ Issue 链接：[#36648](https://github.com/pingcap/tidb/issues/36648)
 - br 进程所在的节点内存配置过低。
     - 建议升级节点内存配置到至少 16 GB，确保 PITR 恢复有足够的内存资源。
 
-### 上游数据库使用 TiDB Lightning Physical 方式导入数据，导致无法使用日志备份功能
+### 上游数据库使用 TiDB Lightning Physical 方式导入数据时，为什么无法使用日志备份功能？
 
 目前日志备份功能还没有完全适配 TiDB Lightning，导致 TiDB Lightning Physical 方式导入的数据无法备份到日志中。
 
 在创建日志备份任务的上游集群中，请尽量避免使用 TiDB Lightning Physical 方式导入数据。可以选择使用 TiDB Lightning Logical 方式导入数据。若确实需要使用 Physical 导入方式，可在导入完成之后做一次快照备份操作，这样，PITR 就可以恢复到快照备份之后的时间点。
 
-### 索引加速功能与 PITR 功能不兼容
+### 索引加速功能为什么与 PITR 功能不兼容？
 
 Issue 链接：[#38045](https://github.com/pingcap/tidb/issues/38045)
 
@@ -56,13 +56,13 @@ Issue 链接：[#38045](https://github.com/pingcap/tidb/issues/38045)
 - 如果先启动添加索引加速任务，再创建 PITR 备份任务，此时 PITR 备份任务会报错，但不影响正在添加索引的任务。
 - 如果同时启动 PITR 备份任务和添加索引加速任务，可能会由于两个任务无法察觉到对方而导致 PITR 不能成功备份增加的索引数据。
 
-### 集群已经恢复了网络分区故障，日志备份任务进度 checkpoint 仍然不推进
+### 集群已经恢复了网络分区故障，为什么日志备份任务进度 checkpoint 仍然不推进？
 
 Issue 链接：[#13126](https://github.com/tikv/tikv/issues/13126)
 
 在集群出现网络分区故障后，备份任务难以继续备份日志，并且在超过一定的重试时间后，任务会被置为 `ERROR` 状态。此时备份任务已经停止，需要手动执行 `br log resume` 命令来恢复日志备份任务。
 
-### 执行 PITR 恢复时遇到 `execute over region id` 报错
+### 执行 PITR 恢复时遇到 `execute over region id` 报错，该如何处理？
 
 Issue 链接：[#37207](https://github.com/pingcap/tidb/issues/37207)
 
@@ -296,7 +296,7 @@ br restore full -f '*.*' -f '!mysql.*' -f 'mysql.usertable' -s $external_storage
 br restore full -f 'mysql.usertable' -s $external_storage_url --with-sys-table
 ```
 
-此外请注意，即使设置了 [table filter](/table-filter.md#表库过滤语法) 后，**BR 也不会恢复以下系统表**：
+此外请注意，即使设置了 [table filter](/table-filter.md#表库过滤语法) ，**BR 也不会恢复以下系统表**：
 
 - 统计信息表（`mysql.stat_*`）
 - 系统变量表（`mysql.tidb`、`mysql.global_variables`）
@@ -310,7 +310,7 @@ br restore full -f 'mysql.usertable' -s $external_storage_url --with-sys-table
 
 但是假如想要从本地恢复数据，因为每个 TiKV 都必须要能访问到所有备份文件，在最终恢复的时候会有等同于恢复时 TiKV 节点数量的副本。
 
-### BR 备份恢复后监控显示磁盘使用空间不一致
+### BR 备份恢复后，为什么监控显示磁盘使用空间不一致？
 
 这个情况多数是因为备份时集群的数据压缩比率和恢复时的默认值不一致导致的，只要恢复的 checksum 阶段顺利通过，可以忽略这个问题，不影响正常使用。
 
@@ -322,7 +322,7 @@ BR v4.0.9 备份统计信息使 BR 消耗过多内存，为保证备份过程正
 
 如果不对表执行 `ANALYZE`，TiDB 会因统计信息不准确而选不中最优化的执行计划。如果查询性能不是重点关注项，可以忽略 `ANALYZE`。
 
-### 是否可以同时使用多个 BR 进程对单个集群进行恢复？
+### 可以同时使用多个 BR 进程对单个集群进行恢复吗？
 
 **强烈不建议**在单个集群中同时使用多个 BR 进程进行恢复，原因如下：
 
@@ -332,4 +332,4 @@ BR v4.0.9 备份统计信息使 BR 消耗过多内存，为保证备份过程正
 
 ### BR 会备份表的 `SHARD_ROW_ID_BITS` 和 `PRE_SPLIT_REGIONS` 信息吗？恢复出来的表会有多个 Region 吗？
 
-会的，BR 会备份表的 [`SHARD_ROW_ID_BITS` 和 `PRE_SPLIT_REGIONS`](/sql-statements/sql-statement-split-region.md#pre_split_regions) 信息，并恢复成多个 Region。
+会，BR 会备份表的 [`SHARD_ROW_ID_BITS` 和 `PRE_SPLIT_REGIONS`](/sql-statements/sql-statement-split-region.md#pre_split_regions) 信息，并恢复成多个 Region。
