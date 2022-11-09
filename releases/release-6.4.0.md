@@ -15,7 +15,7 @@ TiDB 版本：6.4.0-DMR
 - TiDB 全局内存限制
 - TiFlash 静态加密支持国密算法 SM4。
 - 支持通过 FLASHBACK CLUSTER 命令将集群快速回退到过去某一个指定的时间点
-- 关键特性 3
+- 支持通过 SQL 语句对指定 Partition 的 TiFlash 副本立即触发物理数据整理 (Compaction)
 - ......
 
 ## 新功能
@@ -61,6 +61,10 @@ TiDB 版本：6.4.0-DMR
 
 ### 性能
 
+* 引入 cop task 并发度自适应机制 [#37724](https://github.com/pingcap/tidb/issues/37724) @[you06](https://github.com/you06) **tw@ran-huang**
+
+    随 cop task 任务数增加结合 TiKV 处理速度，自动调整增加 [`tidb_distsql_scan_concurrency`](/system-variables.md#tidb_distsql_scan_concurrency) 并发度，减少因 cop task 任务排队，降低延迟。
+    
 * 增加了动态规划算法来决定表的连接顺序 [#18969](https://github.com/pingcap/tidb/issues/18969) @[winoros](https://github.com/winoros) **tw@qiancai**
 
     在之前的版本中， TiDB 采用贪心算法来决定表的连接顺序。 在版本 v6.4.0 中， 优化器引入了[动态规划算法](/join-reorder.md#join-reorder-算法实例)，相比贪心算法， 动态规划算法会枚举更多可能的连接顺序，进而有机会发现更好的执行计划，提升部分场景下 SQL 执行效率。
@@ -81,7 +85,7 @@ TiDB 版本：6.4.0-DMR
 
 * 引入新的优化器提示 `NO_DECORRELATE` 来控制解关联优化 [#37789](https://github.com/pingcap/tidb/issues/37789) @[time-and-fate](https://github.com/time-and-fate) **tw@TomShawn**
 
-    默认情况下，TiDB 总是会尝试对关联子查询解关联，以达到更高的执行效率。但是在部分场景下，解除关联反而会降低执行效率。此时，可使用 `NO_DECORRELATE` 指导优化器不要尝试对指定的查询块解关联，以提升这些场景下的查询性能。
+    默认情况下，TiDB 总是会尝试对关联子查询重写，解除关联，这通常会达到更高的执行效率。但是在一部分场景下，解除关联反而会降低执行效率。TiDB 在新版本中引入了 hint `NO_DECORRELATE`，用来提示优化器不要对指定的查询块解关联，以提升部分场景下的查询性能。
 
     [用户文档](/optimizer-hints.md#no_decorrelate)
 
@@ -157,7 +161,7 @@ TiDB 版本：6.4.0-DMR
 
     [用户文档](/mysql-compatibility.md)
 
-* 支持高性能、全局单调递增的 AUTO_INCREMENT 列属性 [#38442](https://github.com/pingcap/tidb/issues/38442) @[tiancaiamao](https://github.com/tiancaiamao) **tw@Oreoxmt**
+* 支持高性能、全局单调递增的 AUTO_INCREMENT 列属性 (实验特性，见 [#38442](https://github.com/pingcap/tidb/issues/38442) @[tiancaiamao](https://github.com/tiancaiamao)) **tw@Oreoxmt**
 
     TiDB 现有的 AUTO_INCREMENT 列属性的全局单调性和性能不可兼得，提供高性能、全局单调递增的 AUTO_INCREMENT 列属性能够更完美的兼容 MySQL AUTO_INCREMENT 的功能，降低用户从 MySQL 迁移到 TiDB 的改造成本。例如，使用该特性能够轻松解决用户的查询结果需要按照自增 ID 排序的问题。
 
@@ -165,9 +169,7 @@ TiDB 版本：6.4.0-DMR
 
 * 支持对 JSON 类型中的 Array 数据做范围选择 [#13644](https://github.com/tikv/tikv/issues/13644) @[YangKeao](https://github.com/YangKeao) **tw@qiancai**
 
-    新版本支持 MySQL 兼容的范围选择语法。 用关键字 `to` 指定元素起始和结束的位置，用来选择 Array 中连续范围的元素，起始位置记为 `0` 。 比如 `$[0 to 2]` 选择 Array 中的前三个元素。  `last` 关键字代表 Array 中最后一个元素的位置，能够实现从右到左的位置设定, 比如 `$[last-2 to last]` 用来选择最后三个元素。 这个能力简化了 SQL 的编写能力，进一步提升的 JSON 类型的兼容能力，降低了 MySQL 应用向 TiDB 迁移的难度。
-
-    [用户文档](/data-type-json.md)
+    从 v6.4.0 起，TiDB 支持 [MySQL 兼容的范围选择语法](https://dev.mysql.com/doc/refman/8.0/en/json.html#json-paths)。 通过关键字 `to`，你可以指定元素起始和结束的位置，并选择 Array 中连续范围的元素，起始位置记为 `0`。 例如，使用 `$[0 to 2]` 可以选择 Array 中的前三个元素。 通过关键字 `last`，你可以指定 Array 中最后一个元素的位置，实现从右到左的位置设定。例如，使用 `$[last-2 to last]` 可以选择 Array 中的最后三个元素。 该特性简化了 SQL 的编写过程，进一步提升了 JSON 类型的兼容能力，降低了 MySQL 应用向 TiDB 迁移的难度。
 
 * 支持对数据库用户增加额外说明 [#38172](https://github.com/pingcap/tidb/issues/38172) @[CbcWestwolf](https://github.com/CbcWestwolf) **tw@qiancai**
 
@@ -179,7 +181,7 @@ TiDB 版本：6.4.0-DMR
 
 * 基于 AWS EBS snapshot 的集群备份和恢复 [#issue](https://github.com/pingcap/tidb/issues/33849) @[fengou1](https://github.com/fengou1) **tw@shichun-0415**
 
-    如果你的TiDB 集群部署在 EKS 上，使用了 AWS EBS 卷，并且对数据备份有以下要求，可考虑使用 TiDB Operator 将 TiDB 集群数据以卷快照以及元数据的方式备份至 AWS S3：
+    如果你的 TiDB 集群部署在 EKS 上，使用了 AWS EBS 卷，并且对数据备份有以下要求，可考虑使用 TiDB Operator 将 TiDB 集群数据以卷快照以及元数据的方式备份至 AWS S3：
 
     - 备份的影响降到最小，如备份对 QPS 和事务耗时影响小于 5%，不占用集群 CPU 以及内存。
     - 快速备份和恢复，比如 1 小时内完成备份，2 小时内完成恢复。
@@ -188,13 +190,13 @@ TiDB 版本：6.4.0-DMR
 
 ### 数据迁移
 
-* 支持在分库分表迁移场景，下游的表支持增加扩展列并赋值，用于标记下游表中的记录来之上游哪个分库分表。[#37797](https://github.com/pingcap/tidb/issues/37797) @[lichunzhu](https://github.com/lichunzhu) **tw@shichun-0415**
+* 支持在分库分表合并迁移场景，下游合表支持增加扩展列并赋值，用于标记下游表中的记录来自上游哪个分库/分表/数据源。[#37797](https://github.com/pingcap/tidb/issues/37797) @[lichunzhu](https://github.com/lichunzhu) **tw@shichun-0415**
 
-    在上游分库分表合并到 TiDB 的场景，用户可以在目标表手动额外增加几个字段（扩展列），并在配置 DM 任务时，对这几个扩展列赋值，如赋予上游分库分表的名称，则通过 DM 写入到下游的记录会带上上游分库分表的名称，在一些数据异常的场景，用户可以通过该功能快速定位目标表的问题数据时来自于上游哪个分库分表。）
+    在上游分库分表合并到 TiDB 的场景，用户可以在目标表手动额外增加几个字段（扩展列），并在配置 DM 任务时，对这几个扩展列赋值，如赋予上游分库分表的名称，则通过 DM 写入到下游的记录会带上上游分库分表的名称，在一些数据异常的场景，用户可以通过该功能快速定位目标表的问题数据时来自于上游哪个分库分表。
 
     [用户文档](/dm/dm-key-features.md#提取分库分表数据源信息写入合表)
 
-* 优化 DM 的前置检查项,将部分必须通过项改为非必须通过项。[#7333](https://github.com/pingcap/tiflow/issues/7333) @[lichunzhu](https://github.com/lichunzhu) **tw@shichun-0415**
+* 优化 DM 的前置检查项，将部分必须通过项改为非必须通过项。[#7333](https://github.com/pingcap/tiflow/issues/7333) @[lichunzhu](https://github.com/lichunzhu) **tw@shichun-0415**
 
     将“检查字符集是否存在兼容性差异”、“检查上游表中是否存在主键或唯一键约束”，“数据库主从配置，上游数据库必须设置数据库 ID server_id” 这 3 个前置检查从必须通过项，改为非必须通过项，提升用户前置检查的通过率。
 
@@ -284,8 +286,11 @@ TiDB 版本：6.4.0-DMR
 
 + TiDB
 
-    - note [#issue]() @[贡献者 GitHub ID]()
-    - note [#issue]() @[贡献者 GitHub ID]()
+    - `mysql.tables_priv` 表中新增了 `grantor` 字段. [#38293](https://github.com/pingcap/tidb/issues/38293) @[CbcWestwolf](https://github.com/CbcWestwolf)
+    - 允许修改系统变量 `lc_messages`. [#38231](https://github.com/pingcap/tidb/issues/38231) @[djshow832](https://github.com/djshow832)
+    - 允许 `AUTO_RANDOM` 列作为聚簇复合索引中的第一列. [#38572](https://github.com/pingcap/tidb/issues/38572) @[tangenta](https://github.com/tangenta)
+    - `json_path` 支持数组范围选取 [#38583](https://github.com/pingcap/tidb/issues/38583) @[YangKeao](https://github.com/YangKeao)
+    - `CREATE USER` 和 `ALTER USER` 支持 `ATTRIBUTE` 和 `COMMENT`. [#38172](https://github.com/pingcap/tidb/issues/38172) @[CbcWestwolf](https://github.com/CbcWestwolf)
 
 + TiKV
 
@@ -301,13 +306,16 @@ TiDB 版本：6.4.0-DMR
 
 + TiFlash
 
+    - 重构了 MPP 的错误处理逻辑 [#5095](https://github.com/pingcap/tiflash/issues/5095) @[windtalker](https://github.com/windtalker)
+    - 优化了 Block Sort 以及对 Join 和 Aggregation 的 Key 的处理 [#5294](https://github.com/pingcap/tiflash/issues/5294) @[solotzg](https://github.com/solotzg)
+    - 优化了编解码的内存使用和去除冗余传输列以提升 Join 性能 [#6157](https://github.com/pingcap/tiflash/issues/6157) @[yibin87](https://github.com/yibin87)
     - note [#issue]() @[贡献者 GitHub ID]()
     - note [#issue]() @[贡献者 GitHub ID]()
 
 + Tools
 
     + TiDB Dashboard
-        - Monitoring 页面展示 TiFlash 相关指标，并且优化指标的展示方式。 [#1386](https://github.com/pingcap/tidb-dashboard/issues/1386) @[baurine](https://github.com/baurine)
+        - Monitoring 页面展示 TiFlash 相关指标，并且优化指标的展示方式。 [#1440](https://github.com/pingcap/tidb-dashboard/issues/1440) @[YiniXu9506](https://github.com/YiniXu9506)
         - 在 Slow Query 列表 和 SQL Statement 列表展示结果行数。 [#1407](https://github.com/pingcap/tidb-dashboard/pull/1407) @[baurine](https://github.com/baurine)
         - 优化 Dashboard 的报错信息。  [#1407](https://github.com/pingcap/tidb-dashboard/pull/1407) @[baurine](https://github.com/baurine)
 
@@ -345,8 +353,10 @@ TiDB 版本：6.4.0-DMR
 
 + TiDB
 
-    - note [#issue]() @[贡献者 GitHub ID]()
-    - note [#issue]() @[贡献者 GitHub ID]()
+    - 修复新建索引之后有可能导致的数据索引不一致的问题. [#38165](https://github.com/pingcap/tidb/issues/38165) @[tangenta](https://github.com/tangenta)
+    - 修复关于 `information_schema.TIKV_REGION_STATUS` 表的权限问题. [#38407](https://github.com/pingcap/tidb/issues/38407) @[CbcWestwolf](https://github.com/CbcWestwolf)
+    - 修复 CTE 在 join 时可能得到错误结果的问题. [#38170](https://github.com/pingcap/tidb/issues/38170) @[wjhuang2016](https://github.com/wjhuang2016)
+    - 修复 CTE 在 union 时可能得到错误结果的问题. [#37928](https://github.com/pingcap/tidb/issues/37928) @[YangKeao](https://github.com/YangKeao)
 
 + TiKV
 
@@ -360,7 +370,7 @@ TiDB 版本：6.4.0-DMR
 
 + TiFlash
 
-    - note [#issue]() @[贡献者 GitHub ID]()
+    - 修复由于 PageStorage GC 未能正确清楚 Page 删除标记引起的 WAL 文件过大从而导致 OOM 的问题 [#6163](https://github.com/pingcap/tiflash/issues/6163) @[JaySon-Huang](https://github.com/JaySon-Huang)
     - note [#issue]() @[贡献者 GitHub ID]()
 
 + Tools
