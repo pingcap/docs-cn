@@ -359,7 +359,7 @@ tiup cluster display <cluster-name>
 
 ### 1. 根据 TiFlash 剩余节点数调整数据表的副本数
 
-1. 查询 TiFlash 副本数大于缩容后的 TiFlash 节点数的数据表。`tobe_left_nodes` 表示缩容后的 TiFlash 节点数。如果查询结果为空，可以开始执行缩容。如果查询结果不为空，则需要修改相关表的 TiFlash 副本数。
+1. 查询是否有数据表的 TiFlash 副本数大于缩容后的 TiFlash 节点数。`tobe_left_nodes` 表示缩容后的 TiFlash 节点数。如果查询结果为空，可以开始执行缩容。如果查询结果不为空，则需要修改相关表的 TiFlash 副本数。
 
 	{{< copyable "sql" >}}
 
