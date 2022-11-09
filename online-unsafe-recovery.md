@@ -38,7 +38,7 @@ Online Unsafe Recovery 功能适用于以下场景：
 
 ### 第 1 步：指定无法恢复的节点
 
-使用 PD Control 执行 [`unsafe remove-failed-stores <store_id>[,<store_id>,...]`](/pd-control.md#unsafe-remove-failed-stores-store-ids--show) 命令，指定已确定无法恢复的 TiKV 节点，并触发自动恢复。
+使用 PD Control 执行 [`unsafe remove-failed-stores <store_id>[,<store_id>,...]`](/pd-control.md#unsafe-remove-failed-stores-store-ids--show) 命令，指定已确定无法恢复的**所有** TiKV 节点，并用逗号隔开，以触发自动恢复。
 
 {{< copyable "shell-regular" >}}
 
