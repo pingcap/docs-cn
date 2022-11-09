@@ -11,7 +11,6 @@ This document introduces the experimental features of TiDB in different versions
 ## Performance
 
 + [Support collecting statistics for `PREDICATE COLUMNS`](/statistics.md#collect-statistics-on-some-columns) (Introduced in v5.4)
-+ [Support synchronously loading statistics](/statistics.md#load-statistics). (Introduced in v5.4)
 + [Control the memory quota for collecting statistics](/statistics.md#the-memory-quota-for-collecting-statistics). (Introduced in v6.1.0)
 + [Cost Model Version 2](/cost-model.md#cost-model-version-2). (Introduced in v6.2.0)
 + [FastScan](/develop/dev-guide-use-fastscan.md). (Introduced in v6.2.0)

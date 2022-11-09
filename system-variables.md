@@ -3453,17 +3453,13 @@ For details, see [Identify Slow Queries](/identify-slow-queries.md).
 
 ### tidb_stats_load_sync_wait <span class="version-mark">New in v5.4.0</span>
 
-> **Warning:**
->
-> Currently, synchronously loading statistics is an experimental feature. It is not recommended that you use it in production environments.
-
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
 - Type: Integer
-- Default value: `0`
+- Default value: `100`
 - Range: `[0, 2147483647]`
 - Unit: Milliseconds
-- This variable controls whether to enable the synchronously loading statistics feature. The default value `0` means that the feature is disabled. To enable the feature, you can set this variable to a timeout (in milliseconds) that SQL optimization can wait for at most to synchronously load complete column statistics. For details, see [Load statistics](/statistics.md#load-statistics).
+- This variable controls whether to enable the synchronously loading statistics feature. The value `0` means that the feature is disabled. To enable the feature, you can set this variable to a timeout (in milliseconds) that SQL optimization can wait for at most to synchronously load complete column statistics. For details, see [Load statistics](/statistics.md#load-statistics).
 
 ### tidb_stmt_summary_history_size <span class="version-mark">New in v4.0</span>
 
