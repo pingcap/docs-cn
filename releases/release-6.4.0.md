@@ -65,6 +65,10 @@ TiDB 版本：6.4.0-DMR
 
     随 cop task 任务数增加结合 TiKV 处理速度，自动调整增加 [`tidb_distsql_scan_concurrency`](/system-variables.md#tidb_distsql_scan_concurrency) 并发度，减少因 cop task 任务排队，降低延迟。
     
+* 引入 cop task 并发度自适应机制 [#37724](https://github.com/pingcap/tidb/issues/37724) @[you06](https://github.com/you06) **tw@ran-huang**
+
+    随 cop task 任务数增加结合 TiKV 处理速度，自动调整增加 [`tidb_distsql_scan_concurrency`](/system-variables.md#tidb_distsql_scan_concurrency) 并发度，减少因 cop task 任务排队，降低延迟。
+    
 * 增加了动态规划算法来决定表的连接顺序 [#18969](https://github.com/pingcap/tidb/issues/18969) @[winoros](https://github.com/winoros) **tw@qiancai**
 
     在之前的版本中， TiDB 采用贪心算法来决定表的连接顺序。 在版本 v6.4.0 中， 优化器引入了[动态规划算法](/join-reorder.md#join-reorder-算法实例)，相比贪心算法， 动态规划算法会枚举更多可能的连接顺序，进而有机会发现更好的执行计划，提升部分场景下 SQL 执行效率。
@@ -306,6 +310,9 @@ TiDB 版本：6.4.0-DMR
 
 + TiFlash
 
+    - 重构了 MPP 的错误处理逻辑 [#5095](https://github.com/pingcap/tiflash/issues/5095) @[windtalker](https://github.com/windtalker)
+    - 优化了 Block Sort 以及对 Join 和 Aggregation 的 Key 的处理 [#5294](https://github.com/pingcap/tiflash/issues/5294) @[solotzg](https://github.com/solotzg)
+    - 优化了编解码的内存使用和去除冗余传输列以提升 Join 性能 [#6157](https://github.com/pingcap/tiflash/issues/6157) @[yibin87](https://github.com/yibin87)
     - 重构了 MPP 的错误处理逻辑 [#5095](https://github.com/pingcap/tiflash/issues/5095) @[windtalker](https://github.com/windtalker)
     - 优化了 Block Sort 以及对 Join 和 Aggregation 的 Key 的处理 [#5294](https://github.com/pingcap/tiflash/issues/5294) @[solotzg](https://github.com/solotzg)
     - 优化了编解码的内存使用和去除冗余传输列以提升 Join 性能 [#6157](https://github.com/pingcap/tiflash/issues/6157) @[yibin87](https://github.com/yibin87)
