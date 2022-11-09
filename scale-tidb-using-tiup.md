@@ -359,7 +359,7 @@ tiup cluster display <cluster-name>
 
 ### 1. 根据 TiFlash 剩余节点数调整数据表的副本数
 
-在下线节点之前，确保 TiFlash 集群剩余节点数大于等于所有数据表的最大副本数，否则需要修改相关表的 TiFlash 副本数。
+在下线节点之前，执行 `SELECT * FROM information_schema.tiflash_replica WHERE REPLICA_COUNT > 'tobe_left_nodes';` 语句查看 TiFlash 中表的副本数，确保 TiFlash 集群剩余节点数大于等于所有数据表的最大副本数，否则需要修改相关表的 TiFlash 副本数。
 
 1. 在 TiDB 客户端中针对所有副本数大于集群剩余 TiFlash 节点数的表执行：
 
