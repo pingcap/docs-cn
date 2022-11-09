@@ -54,7 +54,7 @@ aliases: ['/zh/tidb/dev/pitr-monitoring-and-alert/']
 
 #### 配置告警
 
-目前 PITR 还未内置告警项，本节介绍如何在 PITR 中配置告警项，以及推荐的告警项规则。
+目前 Point-in-time recovery (PITR) 还未内置告警项，本节介绍如何在 PITR 中配置告警项，以及推荐的告警项规则。
 
 告警规则配置可以参考下面的步骤：
 

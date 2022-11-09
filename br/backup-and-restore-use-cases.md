@@ -6,7 +6,7 @@ aliases: ['/docs-cn/dev/br/backup-and-restore-use-cases/','/docs-cn/dev/referenc
 
 # TiDB 备份与恢复实践示例
 
-[TiDB 快照备份与恢复使用指南](/br/br-snapshot-guide.md)及 [TiDB 日志备份与 PITR 使用指南](/br/br-pitr-guide.md)系统介绍了 TiDB 提供的备份与恢复方案，即快照（全量）备份与恢复、日志备份和恢复到指定时间点 (PITR)。本文档将基于具体的使用场景，介绍如何快速上手使用 TiDB 的备份与恢复方案。
+[TiDB 快照备份与恢复使用指南](/br/br-snapshot-guide.md)及 [TiDB 日志备份与 PITR 使用指南](/br/br-pitr-guide.md)系统介绍了 TiDB 提供的备份与恢复方案，即快照（全量）备份与恢复、日志备份和恢复到指定时间点 (Point-in-time recovery, PITR)。本文档将基于具体的使用场景，介绍如何快速上手使用 TiDB 的备份与恢复方案。
 
 介绍具体操作前，设想有如下使用场景，你在 AWS 部署了一套 TiDB 生产集群，业务团队提出如下需求：
 
