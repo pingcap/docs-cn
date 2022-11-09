@@ -370,7 +370,7 @@ tiup cluster display <cluster-name>
     {{< copyable "sql" >}}
 
     ```sql
-    alter table <db-name>.<table-name> set tiflash replica ‘tobe_left_nodes’;
+    ALTER TABLE <db-name>.<table-name> SET tiflash replica 'tobe_left_nodes';
     ```
 
 3. 重新执行步骤 1，确保没有数据表的 TiFlash 副本数大于缩容后的 TiFlash 节点数。
