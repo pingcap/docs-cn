@@ -363,7 +363,7 @@ tiup cluster display <cluster-name>
 
 
     ```sql
-    select * from information_schema.tiflash_replica where REPLICA_COUNT >  'tobe_left_nodes'
+    SELECT * FROM information_schema.tiflash_replica WHERE REPLICA_COUNT >  'tobe_left_nodes';
     ```
 
 2. 对所有 TiFlash 副本数大于缩容后的 TiFlash 节点数的表执行：
