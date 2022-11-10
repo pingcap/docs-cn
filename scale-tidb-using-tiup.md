@@ -337,17 +337,19 @@ This section exemplifies how to remove a TiFlash node from the `10.0.1.4` host.
 
 ### 1. Adjust the number of replicas of the tables according to the number of remaining TiFlash nodes
 
-Before the node goes down, make sure that the number of remaining nodes in the TiFlash cluster is no smaller than the maximum number of replicas of all tables. Otherwise, modify the number of TiFlash replicas of the related tables.
-
-1. For all tables whose replicas are greater than the number of remaining TiFlash nodes in the cluster, run the following command in the TiDB client:
-
-    {{< copyable "sql" >}}
+1. Query whether any table has TiFlash replicas more than the number of TiFlash nodes after scale-in. `tobe_left_nodes` means the number of TiFlash nodes after scale-in. If the query result is empty, you can start scaling in TiFlash. If the query result is not empty, you need to modify the number of TiFlash replicas of the related table(s).
 
     ```sql
-    ALTER TABLE <db-name>.<table-name> SET tiflash replica 0;
+    SELECT * FROM information_schema.tiflash_replica WHERE REPLICA_COUNT >  'tobe_left_nodes';
     ```
 
-2. Wait for the TiFlash replicas of the related tables to be deleted. [Check the table replication progress](/tiflash/create-tiflash-replicas.md#check-replication-progress) and the replicas are deleted if the replication information of the related tables is not found.
+2. Execute the following statement for all tables with TiFlash replicas more than the number of TiFlash nodes after scale-in. `new_replica_num` must be less than or equal to `tobe_left_nodes`:
+
+    ```sql
+    ALTER TABLE <db-name>.<table-name> SET tiflash replica 'new_replica_num';
+    ```
+
+3. Perform step 1 again and make sure that there is no table with TiFlash replicas more than the number of TiFlash nodes after scale-in.
 
 ### 2. Perform the scale-in operation
 
