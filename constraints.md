@@ -111,7 +111,7 @@ COMMIT;
 ```
 
 ```
-ERROR 1062 (23000): Duplicate entry 'bill' for key 'username'
+ERROR 1062 (23000): Duplicate entry 'bill' for key 'users.username'
 ```
 
 在以上乐观事务的示例中，唯一约束的检查推迟到事务提交时才进行。由于 `bill` 值已经存在，这一行为导致了重复键错误。
@@ -149,7 +149,7 @@ INSERT INTO users (username) VALUES ('jane'), ('chris'), ('bill');
 ```
 
 ```
-ERROR 1062 (23000): Duplicate entry 'bill' for key 'username'
+ERROR 1062 (23000): Duplicate entry 'bill' for key 'users.username'
 ```
 
 第一条 `INSERT` 语句导致了重复键错误。这会造成额外的网络通信开销，并可能降低插入操作的吞吐量。
@@ -172,7 +172,7 @@ INSERT INTO users (username) VALUES ('jane'), ('chris'), ('bill');
 ```
 
 ```
-ERROR 1062 (23000): Duplicate entry 'bill' for key 'username'
+ERROR 1062 (23000): Duplicate entry 'bill' for key 'users.username'
 ```
 
 对于悲观事务，你可以设置变量 [`tidb_constraint_check_in_place_pessimistic`](/system-variables.md#tidb_constraint_check_in_place_pessimistic-从-v630-版本开始引入) 为 `OFF` 来推迟唯一约束检查，到下一次对该唯一索引项加锁时或事务提交时再进行检查，同时也跳过对该悲观锁加锁，以获得更好的性能。此时需要注意：
@@ -210,7 +210,7 @@ ERROR 1062 (23000): Duplicate entry 'bill' for key 'username'
     ```
 
     ```
-    ERROR 1062 (23000): Duplicate entry 'bill' for key 'username'
+    ERROR 1062 (23000): Duplicate entry 'bill' for key 'users.username'
     ```
 
 - 关闭该变量时，如果在事务中写入数据，执行 `COMMIT` 语句可能会返回 `Write conflict` 错误。返回该错误时，TiDB 会回滚当前事务。
@@ -262,8 +262,10 @@ ERROR 1062 (23000): Duplicate entry 'bill' for key 'username'
     ```
 
     ```
-    ERROR 8147 (23000): transaction aborted because lazy uniqueness check is enabled and an error occurred: [kv:1062]Duplicate entry 'bill' for key 'username'
+    ERROR 8147 (23000): transaction aborted because lazy uniqueness check is enabled and an error occurred: [kv:1062]Duplicate entry 'bill' for key 'users.username'
     ```
+
+- 关闭该变量时，`1062 Duplicate entry` 报错不一定是当前执行的 SQL 语句所发生的错误。因此，在一个事务操作多个表，且这些表有同名索引时，请注意 `1062` 报错信息中提示的是哪个表的哪个索引发生了错误。
 
 ## 主键约束
 
