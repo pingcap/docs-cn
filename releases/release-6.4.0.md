@@ -343,11 +343,16 @@ TiDB 版本：6.4.0-DMR
 
     + TiCDC
 
-        - note [#issue]() @[贡献者 GitHub ID]()
-        - note [#issue]() @[贡献者 GitHub ID]()
+        -  TiCDC 支持同步 Exchange Partition DDL.  [#639](https://github.com/pingcap/tiflow/issues/639) @[asddongmen](https://github.com/asddongmen)
+        - 提升 MQ sink 非 batch 协议的性能 [#7353](https://github.com/pingcap/tiflow/issues/7353) @[hi-rustin](https://github.com/hi-rustin)
+        - 提升单表大量 region 场景下 TiCDC puller 的性能 [#7078](https://github.com/pingcap/tiflow/issues/7078) [#7281](https://github.com/pingcap/tiflow/issues/7281) @[sdojjy](https://github.com/sdojjy)
+        - 支持 Kafka 3.x 版 [7191](https://github.com/pingcap/tiflow/issues/7191) @[3AceShowHand](https://github.com/3AceShowHand)
+        - 支持 syncpoint 功能与下游 TiDB 集群的 `tidb_enable_external_ts_read`  一起使用  [#7419](https://github.com/pingcap/tiflow/issues/7419) @[asddongmen](https://github.com/asddongmen)
 
     + TiDB Data Migration (DM)
 
+        - 封装、暴露 Checker 对应的接口，提升各个入口功能组装、调用的灵活性。[#7116](https://github.com/pingcap/tiflow/issues/7116) @[D3Hunter](https://github.com/D3Hunter)
+        - 移除 dmctl 中无用的 operate-source update 指令。[#7246](https://github.com/pingcap/tiflow/issues/7246) @[buchuitoudegou](https://github.com/buchuitoudegou)
         - 解决了 TiDB 不兼容上游数据库的建表 SQL 导致 DM 全量迁移报错的问题。[#37984](https://github.com/pingcap/tidb/issues/37984) @[lance6716](https://github.com/lance6716) **tw@shichun-0415**
 
         DM 会默认使用上游数据库的建表 SQL 去 TiDB 执行，帮用户创建好目标表。当上游的建表 SQL  TiDB 不兼容时，DM 使用该 SQL 帮用户创建目标表会失败，导致 DM 任务中断。这时候用户可以提前在 TiDB 手动创建好目标表，DM 检查到已存在的目标表时会忽略掉这个建表 SQL 报错，让全量迁移任务继续运行。
@@ -358,7 +363,7 @@ TiDB 版本：6.4.0-DMR
 
     + TiDB Lightning
 
-        - note [#issue]() @[贡献者 GitHub ID]()
+        - 优化文件扫描逻辑，提升 Schema 类型文件的扫描速度。[#38598](https://github.com/pingcap/tidb/issues/38598) @[dsdashun](https://github.com/dsdashun)
         - note [#issue]() @[贡献者 GitHub ID]()
 
     + TiUP
@@ -381,6 +386,9 @@ TiDB 版本：6.4.0-DMR
 
     - 修复了当环境中存在多个 `cgroup`s 和 `mountinfo`s 时的启动异常问题 [#13660](https://github.com/tikv/tikv/issues/13660) @[tabokie](https://github.com/tabokie)
     - 修复 tikv 监控 tikv_gc_compaction_filtered 表达式错误问题 [#13537](https://github.com/tikv/tikv/issues/13537)
+        - 修复了 `delete_files_in_range` 中存在的异常而导致的性能问题 [#13534](https://github.com/tikv/tikv/issues/13534) @[tabokie](https://github.com/tabokie)
+        - 修复了获取 Snapshot 时 Lease 过期而引发的异常竞争问题 [#13553](https://github.com/tikv/tikv/issues/13553) @[SpadeA-Tang](https://github.com/SpadeA-Tang)
+        - 修复了第一次 FlashBack 失败时存在异常的问题 [#13695](https://github.com/tikv/tikv/issues/13695) @[HuSharp](https://github.com/HuSharp)
 
 + PD
 
@@ -396,27 +404,45 @@ TiDB 版本：6.4.0-DMR
     + TiDB Dashboard
 
         - 避免查询 Statement 执行计划的时候造成 TiDB OOM。 [#1386](https://github.com/pingcap/tidb-dashboard/issues/1386) @[baurine](https://github.com/baurine)
+        - 修复 ng-monitoring 丢失 PD 连接后有概率造成 TopSQL 开关无效的问题。 [#164](https://github.com/pingcap/ng-monitoring/issues/164) @[zhongzc](https://github.com/zhongzc)
 
     + Backup & Restore (BR)
+        - 修复由于恢复过程中 PD leader 切换，导致恢复失败的问题。[#36910](https://github.com/pingcap/tidb/issues/36910) @[MoCuishle28](https://github.com/MoCuishle28)
+        - 修复了日志备份任务无法 pause 的问题。[#38250](https://github.com/pingcap/tidb/issues/38250)
+@[joccau](https://github.com/joccau)
 
-        - note [#issue]() @[贡献者 GitHub ID]()
-        - note [#issue]() @[贡献者 GitHub ID]()
+        - 修复 BR 删除日志备份数据时，会删除不应被删除的数据的问题。[#38939](https://github.com/pingcap/tidb/issues/38939) @[Leavrth](https://github.com/leavrth)
+        - 修复 BR 第一次执行删除在 `Azure Storage Blob` 或 `Google Cloud Storage` 的日志备份数据时，会执行失败的问题。[#38229](https://github.com/pingcap/tidb/issues/38229) @[Leavrth](https://github.com/leavrth)
 
     + TiCDC
 
-        - note [#issue]() @[贡献者 GitHub ID]()
-        - note [#issue]() @[贡献者 GitHub ID]()
+        -  修复`changefeed query` 的输出中有`sasl-password` 明文的问题 [#7182](https://github.com/pingcap/tiflow/issues/7182) @[dveeden](https://github.com/dveeden)
+        - 修复可能向 ETCD 提交过多操作的问题. [#7131](https://github.com/pingcap/tiflow/issues/7131)  @[asddongmen](https://github.com/asddongmen)
+        - 修复 redo log 文件可能被错误删除的问题. [#7131](https://github.com/pingcap/tiflow/issues/7131)  @[asddongmen](https://github.com/asddongmen)
+        - 修复 sink v2 MQ 协议在同步宽表时性能回退的问题 [#7344](https://github.com/pingcap/tiflow/issues/7344) @[hi-rustin](https://github.com/hi-rustin)
+        - 修复 checkpoint ts 可能被提前推进的问题 [#7274](https://github.com/pingcap/tiflow/issues/7274) @[hi-rustin](https://github.com/hi-rustin)
+        - 修改 mounter 模块的日志级以修复 log 打印太多的问题 [#7235](https://github.com/pingcap/tiflow/issues/7235) @[hi-rustin](https://github.com/hi-rustin)
+        - 修复可能存在两个 owner 的问题. [#4051](https://github.com/pingcap/tiflow/issues/4051)  @[asddongmen](https://github.com/asddongmen)
 
     + TiDB Data Migration (DM)
 
-        - note [#issue]() @[贡献者 GitHub ID]()
-        - note [#issue]() @[贡献者 GitHub ID]()
+        - 修复 DM UI 产生错误 allow-list 参数问题。[#7096](https://github.com/pingcap/tiflow/issues/7096) @[zoubingwu](https://github.com/zoubingwu)
+        - 修复 DM Worker 在启动、停止时有一定概率触发 data race 的问题。[#6401](https://github.com/pingcap/tiflow/issues/6401) @[liumengya94](https://github.com/liumengya94)
+        - 修复当同步 Update、Delete 语句且下游行数据不存在时，DM 静默忽略的问题。[#6383](https://github.com/pingcap/tiflow/issues/6383) @[GMHDBJD](https://github.com/GMHDBJD)
+        - 修复 Query Status 时 secondsBehindMaster 字段未显示的问题。[#7189](https://github.com/pingcap/tiflow/issues/7189) @[GMHDBJD](https://github.com/GMHDBJD)
+        - 修复更新 Checkpoint 时可能触发大事务的问题。[#5010](https://github.com/pingcap/tiflow/issues/5010) @[lance6716](https://github.com/lance6716)
+        - 修复从 full 模式进行入 sync 模式且很快失败时可能丢失上游表结构信息的问题。[#7159](https://github.com/pingcap/tiflow/issues/7159) @[lance6716](https://github.com/lance6716)
+        - 修复开启一致性校验（validator）时可能触发死锁的问题。[#7241](https://github.com/pingcap/tiflow/issues/7241) @[buchuitoudegou](https://github.com/buchuitoudegou)
+        - 修复任务预检查对 INFORMATION_SCHEMA 表需要 SELECT 权限的问题。[#7317](https://github.com/pingcap/tiflow/issues/7317) @[lance6716](https://github.com/lance6716)
+        - 修复空 TLS 配置导致直接报错的问题。[#7384](https://github.com/pingcap/tiflow/issues/7384) @[liumengya94](https://github.com/liumengya94)
 
     + TiDB Lightning
 
-        - note [#issue]() @[贡献者 GitHub ID]()
-        - note [#issue]() @[贡献者 GitHub ID]()
-
+        - 修复 Parquet String Column 且 Table 设置了 binary 属性时导致导入性能下降的问题。[#38351](https://github.com/pingcap/tidb/issues/38351) @[dsdashun](https://github.com/dsdashun)
+    + TiDB Dumpling
+    
+         - 修复导出大量表时可能导致超时的问题。[#36549](https://github.com/pingcap/tidb/issues/36549) @[lance6716](https://github.com/lance6716)
+     - 修复加锁模式但是上游不存在对应表时导致加锁报错的问题 [#38683](https://github.com/pingcap/tidb/issues/38683) @[lance6716](https://github.com/lance6716)
     + TiUP
 
         - note [#issue]() @[贡献者 GitHub ID]()
