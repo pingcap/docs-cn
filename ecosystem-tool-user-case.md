@@ -12,9 +12,9 @@ This document introduces the common use cases of TiDB tools and how to choose th
 
 If you need to deploy and operate TiDB on physical or virtual machines, you can install [TiUP](/tiup/tiup-overview.md), and then use TiUP to manage TiDB components such as TiDB, PD, and TiKV.
 
-## Deploy and operate TiDB in Kubernetes
+## Deploy and operate TiDB on Kubernetes
 
-If you need to deploy and operate TiDB in Kubernetes, you can deploy a Kubernetes cluster, and then deploy [TiDB Operator](https://docs.pingcap.com/tidb-in-kubernetes/stable). After that, you can use TiDB Operator to deploy and operate a TiDB cluster.
+If you need to deploy and operate TiDB on Kubernetes, you can deploy a Kubernetes cluster, and then deploy [TiDB Operator](https://docs.pingcap.com/tidb-in-kubernetes/stable). After that, you can use TiDB Operator to deploy and operate a TiDB cluster.
 
 ## Import data from CSV to TiDB
 

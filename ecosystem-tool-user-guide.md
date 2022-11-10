@@ -25,14 +25,14 @@ The following are the basics of TiUP:
 - [Manage TiUP Components with TiUP Commands](/tiup/tiup-component-management.md)
 - Applicable TiDB versions: v4.0 and later versions
 
-### Deploy and operate TiDB in Kubernetes - TiDB Operator
+### Deploy and operate TiDB on Kubernetes - TiDB Operator
 
-[TiDB Operator](https://github.com/pingcap/tidb-operator) is an automatic operation system for managing TiDB clusters in Kubernetes. It provides full life-cycle management for TiDB including deployment, upgrades, scaling, backup, and configuration changes. With TiDB Operator, TiDB can run seamlessly in the Kubernetes clusters deployed on a public or private cloud.
+[TiDB Operator](https://github.com/pingcap/tidb-operator) is an automatic operation system for managing TiDB clusters on Kubernetes. It provides full life-cycle management for TiDB including deployment, upgrades, scaling, backup, and configuration changes. With TiDB Operator, TiDB can run seamlessly in the Kubernetes clusters deployed on a public or private cloud.
 
 The following are the basics of TiDB Operator:
 
 - [TiDB Operator Architecture](https://docs.pingcap.com/tidb-in-kubernetes/stable/architecture)
-- [Get Started with TiDB Operator in Kubernetes](https://docs.pingcap.com/tidb-in-kubernetes/stable/get-started/)
+- [Get Started with TiDB Operator on Kubernetes](https://docs.pingcap.com/tidb-in-kubernetes/stable/get-started/)
 - Applicable TiDB versions: v2.1 and later versions
 
 ## Data management tools
@@ -48,7 +48,7 @@ The following are the basics of DM:
 - Source: MySQL/MariaDB
 - Target: TiDB clusters
 - Supported TiDB versions: all versions
-- Kubernetes support: use [TiDB Operator](https://github.com/pingcap/tidb-operator) to deploy TiDB DM in Kubernetes.
+- Kubernetes support: use [TiDB Operator](https://github.com/pingcap/tidb-operator) to deploy TiDB DM on Kubernetes.
 
 If the data volume is less than 1 TB, it is recommended to migrate data from MySQL/MariaDB to TiDB directly using DM. The migration process includes full data migration and incremental data replication.
 
@@ -93,7 +93,7 @@ The following are the basics of TiDB Lightning:
     - Other compatible CSV files
     - Parquet files exported from Amazon Aurora or Apache Hive
 - Supported TiDB versions: v2.1 and later versions
-- Kubernetes support: Yes. See [Quickly restore data into a TiDB cluster in Kubernetes using TiDB Lightning](https://docs.pingcap.com/tidb-in-kubernetes/stable/restore-data-using-tidb-lightning) for details.
+- Kubernetes support: Yes. See [Quickly restore data into a TiDB cluster on Kubernetes using TiDB Lightning](https://docs.pingcap.com/tidb-in-kubernetes/stable/restore-data-using-tidb-lightning) for details.
 
 > **Note:**
 >
@@ -128,7 +128,7 @@ The following are the basics of TiDB Binlog:
 - Source: TiDB clusters
 - Target: TiDB clusters, MySQL, Kafka, or incremental backup files
 - Supported TiDB versions: v2.1 and later versions
-- Kubernetes support: Yes. See [TiDB Binlog Cluster Operations](https://docs.pingcap.com/tidb-in-kubernetes/stable/deploy-tidb-binlog) and [TiDB Binlog Drainer Configurations in Kubernetes](https://docs.pingcap.com/tidb-in-kubernetes/stable/configure-tidb-binlog-drainer) for details.
+- Kubernetes support: Yes. See [TiDB Binlog Cluster Operations](https://docs.pingcap.com/tidb-in-kubernetes/stable/deploy-tidb-binlog) and [TiDB Binlog Drainer Configurations on Kubernetes](https://docs.pingcap.com/tidb-in-kubernetes/stable/configure-tidb-binlog-drainer) for details.
 
 ### sync-diff-inspector
 

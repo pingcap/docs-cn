@@ -97,7 +97,7 @@
     - [Hybrid Topology](/hybrid-deployment-topology.md)
   - Install and Start
     - [Use TiUP](/production-deployment-using-tiup.md)
-    - [Deploy in Kubernetes](/tidb-in-kubernetes.md)
+    - [Deploy on Kubernetes](/tidb-in-kubernetes.md)
   - [Verify Cluster Status](/post-installation-check.md)
   - Test Cluster Performance
     - [Test TiDB Using Sysbench](/benchmark/benchmark-tidb-using-sysbench.md)

@@ -87,7 +87,7 @@ Currently no.
 You can scale out your TiDB cluster without interrupting the online services.
 
 - If your cluster is deployed using [TiUP](/production-deployment-using-tiup.md), refer to [Scale a TiDB Cluster Using TiUP](/scale-tidb-using-tiup.md).
-- If your cluster is deployed using [TiDB Operator](/tidb-operator-overview.md) in Kubernetes, refer to [Manually Scale TiDB in Kubernetes](https://docs.pingcap.com/tidb-in-kubernetes/stable/scale-a-tidb-cluster).
+- If your cluster is deployed using [TiDB Operator](/tidb-operator-overview.md) on Kubernetes, refer to [Manually Scale TiDB on Kubernetes](https://docs.pingcap.com/tidb-in-kubernetes/stable/scale-a-tidb-cluster).
 
 ### How to scale TiDB horizontally?
 

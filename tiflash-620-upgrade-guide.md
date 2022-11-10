@@ -10,7 +10,7 @@ This document describes the functional changes in TiFlash modules you need to pa
 To learn the standard upgrade process, see the following documents:
 
 - [Upgrade TiDB Using TiUP](/upgrade-tidb-using-tiup.md)
-- [Upgrade TiDB in Kubernetes](https://docs.pingcap.com/tidb-in-kubernetes/stable/upgrade-a-tidb-cluster)
+- [Upgrade TiDB on Kubernetes](https://docs.pingcap.com/tidb-in-kubernetes/stable/upgrade-a-tidb-cluster)
 
 > **Note:**
 >

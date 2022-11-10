@@ -16,7 +16,7 @@ PingCAP Clinic consists of two components: Diag client (shorten as Diag) and Cli
 
 > **Note:**
 >
-> - The following methods to collect and upload data are **only** applicable to [clusters deployed using TiUP](/production-deployment-using-tiup.md). For clusters deployed using TiDB Operator in Kubernetes, see [PingCAP Clinic for TiDB Operator environments](https://docs.pingcap.com/tidb-in-kubernetes/stable/clinic-user-guide).
+> - The following methods to collect and upload data are **only** applicable to [clusters deployed using TiUP](/production-deployment-using-tiup.md). For clusters deployed using TiDB Operator on Kubernetes, see [PingCAP Clinic for TiDB Operator environments](https://docs.pingcap.com/tidb-in-kubernetes/stable/clinic-user-guide).
 > - The diagnostic data collected by PingCAP Clinic is **only** used for troubleshooting cluster problems.
 
 ## Prerequisites

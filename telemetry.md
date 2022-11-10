@@ -124,11 +124,11 @@ server_configs:
 </details>
 
 <details>
-  <summary>Deployment in Kubernetes via TiDB Operator</summary>
+  <summary>Deployment on Kubernetes via TiDB Operator</summary>
 
 Configure `spec.tidb.config.enable-telemetry: false` in `tidb-cluster.yaml` or TidbCluster Custom Resource.
 
-See [Deploy TiDB Operator in Kubernetes](https://docs.pingcap.com/tidb-in-kubernetes/stable/deploy-tidb-operator) for details.
+See [Deploy TiDB Operator on Kubernetes](https://docs.pingcap.com/tidb-in-kubernetes/stable/deploy-tidb-operator) for details.
 
 > **Note:**
 >
@@ -214,11 +214,11 @@ server_configs:
 </details>
 
 <details>
-  <summary>Deployment in Kubernetes via TiDB Operator</summary>
+  <summary>Deployment on Kubernetes via TiDB Operator</summary>
 
 Configure `spec.pd.config.dashboard.enable-telemetry: false` in `tidb-cluster.yaml` or TidbCluster Custom Resource.
 
-See [Deploy TiDB Operator in Kubernetes](https://docs.pingcap.com/tidb-in-kubernetes/stable/deploy-tidb-operator) for details.
+See [Deploy TiDB Operator on Kubernetes](https://docs.pingcap.com/tidb-in-kubernetes/stable/deploy-tidb-operator) for details.
 
 > **Note:**
 >
