@@ -293,6 +293,8 @@ TiDB 版本：6.4.0-DMR
 
 ### 其他
 
+- mysql.user 表新增 2 个字段：`User_attributes`、`Token_issuer`
+- 针对命名规则符合 Dumpling 表结构和数据格式但后缀名中包含非压缩格式的文件（例如，`test-schema-create.sql.origin` 和 `test.table-schema.sql.xxx`），Lightning 的处理方式发生了变化。在 v6.4.0 之前的版本中，如果待导入的文件中包含这类文件，Lightning 将跳过对这类文件的导入。从 v6.4.0 起，Lightning 将认为这些文件使用了不支持的压缩格式，导致导入失败。
 - 从 v6.4.0 开始，TiCDC 使用 Syncpoint 功能需要同步任务拥有下游集群的 `SYSTEM_VARIABLES_ADMIN` 或者 `SUPER` 权限。
 
 ## 废弃功能
@@ -316,8 +318,11 @@ TiDB 版本：6.4.0-DMR
 
 + PD
 
-    - note [#issue]() @[贡献者 GitHub ID]()
-    - note [#issue]() @[贡献者 GitHub ID]()
+    - 新增热点调度 rank v2 算法，在特定场景下 `v2` 版本算法则可以在两个维度都取得更好的均衡效果，并减少无效调度 [#5021](https://github.com/tikv/pd/issues/5021) @[HundunDM](https://github.com/hundundm)
+    - 改进 Operator 超时机制，防止过早超时 [#5596](https://github.com/tikv/pd/issues/5596) @[bufferflies](https://github.com/bufferflies)
+    - 新增 Placement rule 支持 witness [#5568](https://github.com/tikv/pd/issues/5568) @[ethercflow](https://github.com/ethercflow)
+    - 优化调度器在大集群下的性能 [#5473](https://github.com/tikv/pd/issues/5473)@[bufferflies](https://github.com/bufferflies)
+    - 支持 external timestamp. [#5637](https://github.com/tikv/pd/issues/5637) @[lhy1024](https://github.com/lhy1024)
 
 + TiFlash
 
@@ -332,18 +337,18 @@ TiDB 版本：6.4.0-DMR
 
     + TiDB Dashboard
 
-        - Monitoring 页面展示 TiFlash 相关指标，并且优化指标的展示方式。 [#1440](https://github.com/pingcap/tidb-dashboard/issues/1440) @[YiniXu9506](https://github.com/YiniXu9506)
-        - 在 Slow Query 列表 和 SQL Statement 列表展示结果行数。 [#1407](https://github.com/pingcap/tidb-dashboard/pull/1407) @[baurine](https://github.com/baurine)
+        - Monitoring 页面展示 TiFlash 相关指标，并且优化指标的展示方式 [#1440](https://github.com/pingcap/tidb-dashboard/issues/1440) @[YiniXu9506](https://github.com/YiniXu9506)
+        - 在 Slow Query 列表 和 SQL Statement 列表展示结果行数 [#1407](https://github.com/pingcap/tidb-dashboard/pull/1407) @[baurine](https://github.com/baurine)
         - 优化 Dashboard 的报错信息。  [#1407](https://github.com/pingcap/tidb-dashboard/pull/1407) @[baurine](https://github.com/baurine)
 
     + Backup & Restore (BR)
 
-        - 改进加载元数据的机制，仅在需要的时候才会将元数据加载到内存中，显著减少了 PITR 过程中的内存压力。 [#38404](https://github.com/pingcap/tidb/issues/38404) @[YuJuncen](https://github.com/YuJuncen)
+        - 改进加载元数据的机制，仅在需要的时候才会将元数据加载到内存中，显著减少了 PITR 过程中的内存压力 [#38404](https://github.com/pingcap/tidb/issues/38404) @[YuJuncen](https://github.com/YuJuncen)
         - note [#issue]() @[贡献者 GitHub ID]()
 
     + TiCDC
 
-        -  TiCDC 支持同步 Exchange Partition DDL.  [#639](https://github.com/pingcap/tiflow/issues/639) @[asddongmen](https://github.com/asddongmen)
+        - TiCDC 支持同步 Exchange Partition DDL [#639](https://github.com/pingcap/tiflow/issues/639) @[asddongmen](https://github.com/asddongmen)
         - 提升 MQ sink 非 batch 协议的性能 [#7353](https://github.com/pingcap/tiflow/issues/7353) @[hi-rustin](https://github.com/hi-rustin)
         - 提升单表大量 region 场景下 TiCDC puller 的性能 [#7078](https://github.com/pingcap/tiflow/issues/7078) [#7281](https://github.com/pingcap/tiflow/issues/7281) @[sdojjy](https://github.com/sdojjy)
         - 支持 Kafka 3.x 版 [7191](https://github.com/pingcap/tiflow/issues/7191) @[3AceShowHand](https://github.com/3AceShowHand)
@@ -392,8 +397,7 @@ TiDB 版本：6.4.0-DMR
 
 + PD
 
-    - note [#issue]() @[贡献者 GitHub ID]()
-    - note [#issue]() @[贡献者 GitHub ID]()
+    - 修复 Stream 超时问题，加速 Leader 切换的速度. [#5207](https://github.com/tikv/pd/issues/5207) @[CabinfeverB](https://github.com/CabinfeverB)
 
 + TiFlash
 
@@ -408,15 +412,13 @@ TiDB 版本：6.4.0-DMR
 
     + Backup & Restore (BR)
         - 修复由于恢复过程中 PD leader 切换，导致恢复失败的问题。[#36910](https://github.com/pingcap/tidb/issues/36910) @[MoCuishle28](https://github.com/MoCuishle28)
-        - 修复了日志备份任务无法 pause 的问题。[#38250](https://github.com/pingcap/tidb/issues/38250)
-@[joccau](https://github.com/joccau)
-
+        - 修复了日志备份任务无法 pause 的问题。[#38250](https://github.com/pingcap/tidb/issues/38250)@[joccau](https://github.com/joccau)
         - 修复 BR 删除日志备份数据时，会删除不应被删除的数据的问题。[#38939](https://github.com/pingcap/tidb/issues/38939) @[Leavrth](https://github.com/leavrth)
         - 修复 BR 第一次执行删除在 `Azure Storage Blob` 或 `Google Cloud Storage` 的日志备份数据时，会执行失败的问题。[#38229](https://github.com/pingcap/tidb/issues/38229) @[Leavrth](https://github.com/leavrth)
 
     + TiCDC
 
-        -  修复`changefeed query` 的输出中有`sasl-password` 明文的问题 [#7182](https://github.com/pingcap/tiflow/issues/7182) @[dveeden](https://github.com/dveeden)
+        - 修复`changefeed query` 的输出中有`sasl-password` 明文的问题 [#7182](https://github.com/pingcap/tiflow/issues/7182) @[dveeden](https://github.com/dveeden)
         - 修复可能向 ETCD 提交过多操作的问题. [#7131](https://github.com/pingcap/tiflow/issues/7131)  @[asddongmen](https://github.com/asddongmen)
         - 修复 redo log 文件可能被错误删除的问题. [#7131](https://github.com/pingcap/tiflow/issues/7131)  @[asddongmen](https://github.com/asddongmen)
         - 修复 sink v2 MQ 协议在同步宽表时性能回退的问题 [#7344](https://github.com/pingcap/tiflow/issues/7344) @[hi-rustin](https://github.com/hi-rustin)
@@ -439,10 +441,12 @@ TiDB 版本：6.4.0-DMR
     + TiDB Lightning
 
         - 修复 Parquet String Column 且 Table 设置了 binary 属性时导致导入性能下降的问题。[#38351](https://github.com/pingcap/tidb/issues/38351) @[dsdashun](https://github.com/dsdashun)
+
     + TiDB Dumpling
-    
-         - 修复导出大量表时可能导致超时的问题。[#36549](https://github.com/pingcap/tidb/issues/36549) @[lance6716](https://github.com/lance6716)
-     - 修复加锁模式但是上游不存在对应表时导致加锁报错的问题 [#38683](https://github.com/pingcap/tidb/issues/38683) @[lance6716](https://github.com/lance6716)
+
+        - 修复导出大量表时可能导致超时的问题。[#36549](https://github.com/pingcap/tidb/issues/36549) @[lance6716](https://github.com/lance6716)
+        - 修复加锁模式但是上游不存在对应表时导致加锁报错的问题 [#38683](https://github.com/pingcap/tidb/issues/38683) @[lance6716](https://github.com/lance6716)
+
     + TiUP
 
         - note [#issue]() @[贡献者 GitHub ID]()
@@ -452,5 +456,20 @@ TiDB 版本：6.4.0-DMR
 
 感谢来自 TiDB 社区的贡献者们：
 
-- [goldwind-ting](https://github.com/goldwind-ting)
+- [645775992](https://github.com/645775992)
+- [An-DJ](https://github.com/An-DJ)
+- [AndrewDi](https://github.com/AndrewDi)
+- [erwadba](https://github.com/erwadba)
+- [fuzhe1989](https://github.com/fuzhe1989)
+- [goldwind-ting](https://github.com/goldwind-ting) （首次贡献者）
+- [h3n4l](https://github.com/h3n4l)
+- [igxlin](https://github.com/igxlin) （首次贡献者）
+- [ihcsim](https://github.com/ihcsim)
+- [JigaoLuo](https://github.com/JigaoLuo)
+- [morgo](https://github.com/morgo)
+- [Ranxy](https://github.com/Ranxy)
+- [shenqidebaozi](https://github.com/shenqidebaozi) （首次贡献者）
+- [taofengliu](https://github.com/taofengliu) （首次贡献者）
+- [TszKitLo40](https://github.com/TszKitLo40)
+- [wxbty](https://github.com/wxbty) （首次贡献者）
 - [zgcbj](https://github.com/zgcbj)
