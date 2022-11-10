@@ -43,9 +43,9 @@ TiDB 版本：6.4.0-DMR
 
     [用户文档](/sql-statements/sql-statement-flashback-to-timestamp.md)
 
-* 支持通过 FLASHBACK DATABASE 命令将被删除的数据库恢复 [#20463](https://github.com/pingcap/tidb/issues/20463)  @[erwadba](https://github.com/erwadba) **tw@ran-huang**
+* 支持通过 `FLASHBACK DATABASE` 命令来恢复被删除的数据库 [#20463](https://github.com/pingcap/tidb/issues/20463)  @[erwadba](https://github.com/erwadba) **tw@ran-huang**
 
-    FLASHBACK DATABASE 支持在 Garbage Collection (GC) life time 时间内恢复被 `DROP` 删除的数据库以及数据。该特性不依赖任何外部工具，可以轻松快速通过 SQL 语句进行数据和元信息的恢复。
+    `FLASHBACK DATABASE` 支持在 Garbage Collection (GC) life time 时间内恢复被 `DROP` 删除的数据库以及数据。该特性不依赖任何外部工具，可以轻松快速地通过 SQL 语句进行数据和元信息的恢复。
 
     [用户文档](/sql-statements/sql-statement-flashback-database.md)
 
@@ -53,9 +53,9 @@ TiDB 版本：6.4.0-DMR
 
 * TiFlash 静态加密支持国密算法 SM4 [#5953](https://github.com/pingcap/tiflash/issues/5953) @[lidezhu](https://github.com/lidezhu) **tw@ran-huang**
 
-    TiFlash 的静态加密新增 SM4 算法，用户可以修改配置文件 tiflash-learner.toml 中的 data-encryption-method 参数，设置为 sm4-ctr，以启用基于国密算法 SM4 的静态加密能力。
+    TiFlash 的静态加密新增 SM4 算法，你可以将配置文件 `tiflash-learner.toml` 中的 `data-encryption-method` 参数的值设置为 `sm4-ctr`，以启用基于国密算法 SM4 的静态加密能力。
 
-    [用户文档](/encryption-at-rest.md)
+    [用户文档](/encryption-at-rest.md#tiflash)
 
 ### 可观测性
 
@@ -69,9 +69,9 @@ TiDB 版本：6.4.0-DMR
 
 ### 性能
 
-* 引入 cop task 并发度自适应机制 [#37724](https://github.com/pingcap/tidb/issues/37724) @[you06](https://github.com/you06) **tw@ran-huang**
+* 引入 Coprocessor Task 并发度自适应机制 [#37724](https://github.com/pingcap/tidb/issues/37724) @[you06](https://github.com/you06) **tw@ran-huang**
 
-    随 cop task 任务数增加结合 TiKV 处理速度，自动调整增加 [`tidb_distsql_scan_concurrency`](/system-variables.md#tidb_distsql_scan_concurrency) 并发度，减少因 cop task 任务排队，降低延迟。
+    随着 Coprocessor Task 任务数增加，TiDB 将结合 TiKV 处理速度自动增加任务并发度（调整  [`tidb_distsql_scan_concurrency`](/system-variables.md#tidb_distsql_scan_concurrency) ），减少 Coprocessor Task 任务排队，降低延迟。
 
 * 增加了动态规划算法来决定表的连接顺序 [#18969](https://github.com/pingcap/tidb/issues/18969) @[winoros](https://github.com/winoros) **tw@qiancai**
 
