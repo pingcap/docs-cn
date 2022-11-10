@@ -23,9 +23,8 @@ TiDB 版本：6.4.0-DMR
 - 集群诊断功能 GA。
 - TiFlash 静态加密支持国密算法 SM4。
 - 支持通过 SQL 语句对指定 Partition 的 TiFlash 副本立即触发物理数据整理 (Compaction)。
-- 支持对数据库用户增加额外说明。
 - 支持基于 AWS EBS snapshot 的集群备份和恢复。
-
+- 支持在分库分表合并迁移场景中标记下游表中的记录来自上游哪个分库/分表/数据源。
 ## 新功能
 
 ### SQL
@@ -303,7 +302,6 @@ TiDB 版本：6.4.0-DMR
     - `mysql.tables_priv` 表中新增了 `grantor` 字段. [#38293](https://github.com/pingcap/tidb/issues/38293) @[CbcWestwolf](https://github.com/CbcWestwolf)
     - 允许修改系统变量 `lc_messages`. [#38231](https://github.com/pingcap/tidb/issues/38231) @[djshow832](https://github.com/djshow832)
     - 允许 `AUTO_RANDOM` 列作为聚簇复合索引中的第一列. [#38572](https://github.com/pingcap/tidb/issues/38572) @[tangenta](https://github.com/tangenta)
-    - `json_path` 支持数组范围选取 [#38583](https://github.com/pingcap/tidb/issues/38583) @[YangKeao](https://github.com/YangKeao)
     - `CREATE USER` 和 `ALTER USER` 支持 `ATTRIBUTE` 和 `COMMENT`. [#38172](https://github.com/pingcap/tidb/issues/38172) @[CbcWestwolf](https://github.com/CbcWestwolf)
     - 内部事务重试使用悲观模式避免重试失败，降低耗时 [#38136](https://github.com/pingcap/tidb/issues/38136) @[jackysp](https://github.com/jackysp)
 
@@ -386,9 +384,9 @@ TiDB 版本：6.4.0-DMR
 
     - 修复了当环境中存在多个 `cgroup`s 和 `mountinfo`s 时的启动异常问题 [#13660](https://github.com/tikv/tikv/issues/13660) @[tabokie](https://github.com/tabokie)
     - 修复 tikv 监控 tikv_gc_compaction_filtered 表达式错误问题 [#13537](https://github.com/tikv/tikv/issues/13537)
-        - 修复了 `delete_files_in_range` 中存在的异常而导致的性能问题 [#13534](https://github.com/tikv/tikv/issues/13534) @[tabokie](https://github.com/tabokie)
-        - 修复了获取 Snapshot 时 Lease 过期而引发的异常竞争问题 [#13553](https://github.com/tikv/tikv/issues/13553) @[SpadeA-Tang](https://github.com/SpadeA-Tang)
-        - 修复了第一次 FlashBack 失败时存在异常的问题 [#13695](https://github.com/tikv/tikv/issues/13695) @[HuSharp](https://github.com/HuSharp)
+    - 修复了 `delete_files_in_range` 中存在的异常而导致的性能问题 [#13534](https://github.com/tikv/tikv/issues/13534) @[tabokie](https://github.com/tabokie)
+    - 修复了获取 Snapshot 时 Lease 过期而引发的异常竞争问题 [#13553](https://github.com/tikv/tikv/issues/13553) @[SpadeA-Tang](https://github.com/SpadeA-Tang)
+    - 修复了第一次 FlashBack 失败时存在异常的问题 [#13695](https://github.com/tikv/tikv/issues/13695) @[HuSharp](https://github.com/HuSharp)
 
 + PD
 
