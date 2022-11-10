@@ -1,5 +1,5 @@
 ---
-title:  Import Apache Parquet Files from Amazon S3 or GCS into TiDB Cloud
+title: Import Apache Parquet Files from Amazon S3 or GCS into TiDB Cloud
 summary: Learn how to import Apache Parquet files from Amazon S3 or GCS into TiDB Cloud.
 ---
 

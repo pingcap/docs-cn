@@ -79,7 +79,7 @@ Starting from the inner-most (`└─TableFullScan_19`) operator and working bac
 * TiDB successfully identified that only one partition (`p2017`) needed to be accessed. This is noted under `access object`.
 * The partition itself was scanned in the operator `└─TableFullScan_19` and then `└─Selection_20` was applied to filter for rows that have a start date of `2017-06-01 00:00:00.000000`.
 * The rows that match `└─Selection_20` are then stream aggregated in the coprocessor, which natively understands the `count` function.
-* Each coprocessor request then sends back one row to  `└─TableReader_22` inside TiDB, which is then stream aggregated under `StreamAgg_21` and one row is returned to the client.
+* Each coprocessor request then sends back one row to `└─TableReader_22` inside TiDB, which is then stream aggregated under `StreamAgg_21` and one row is returned to the client.
 
 In the following example, partition pruning does not eliminate any partitions:
 

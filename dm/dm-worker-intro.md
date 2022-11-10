@@ -79,7 +79,7 @@ The downstream database (TiDB) user must have the following privileges:
 Execute the following `GRANT` statement for the databases or tables that you need to migrate:
 
 ```sql
-GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP,ALTER,INDEX  ON db.table TO 'your_user'@'your_wildcard_of_host';
+GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP,ALTER,INDEX ON db.table TO 'your_user'@'your_wildcard_of_host';
 ```
 
 ### Minimal privilege required by each processing unit

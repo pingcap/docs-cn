@@ -153,7 +153,7 @@ In v5.1, the key new features or improvements are as follows:
     - Improve TiCDC memory usage to avoid OOM in the following scenarios
     - If large amounts of data is accumulated during the replication interruption, exceeding 1TB, the re-replication causes OOM problems.
     - Large amounts of data writes cause OOM problems in TiCDC.
-    - Reduce the possibility of  TiCDC replication interruption in the following scenarios:
+    - Reduce the possibility of TiCDC replication interruption in the following scenarios:
         
         [project#11](https://github.com/pingcap/tiflow/projects/11)
 
@@ -174,7 +174,7 @@ In v5.1, the key new features or improvements are as follows:
 
 ### Telemetry
 
-TiDB adds the running status of TiDB cluster requests in telemetry, including execution status, failure status, etc.
+TiDB adds the running status of TiDB cluster requests in telemetry, including execution status and failure status.
 
 To learn more about the information and how to disable this behavior, refer to [Telemetry](/telemetry.md).
 

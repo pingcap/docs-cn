@@ -73,7 +73,7 @@ TiDB Ansible version: 3.1.0-rc
     - Fix the information schema error caused by frequently updating the TiFlash replica [#14884](https://github.com/pingcap/tidb/pull/14884)
     - Fix the issue that `last_insert_id` is incorrectly generated when applying `AUTO_RANDOM` [#15149](https://github.com/pingcap/tidb/pull/15149)
     - Fix the issue that updating the status of TiFlash replica might cause the DDL operation to get stuck [#15161](https://github.com/pingcap/tidb/pull/15161)
-    - Forbid `Aggregation` pushdown and `TopN` pushdown when there are predicates that can not be pushed down [#15141](https://github.com/pingcap/tidb/pull/15141)
+    - Forbid `Aggregation` pushdown and `TopN` pushdown when there are predicates that cannot be pushed down [#15141](https://github.com/pingcap/tidb/pull/15141)
     - Forbid the nested `view` creation [#15440](https://github.com/pingcap/tidb/pull/15440)
     - Fix the error occurred when executing `SELECT CURRENT_ROLE()` after `SET ROLE ALL` [#15570](https://github.com/pingcap/tidb/pull/15570)
     - Fix the failure to identify the `view` name when executing the `select view_name.col_name from view_name` statement [#15573](https://github.com/pingcap/tidb/pull/15573)

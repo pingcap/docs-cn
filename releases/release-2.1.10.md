@@ -31,7 +31,7 @@ TiDB Ansible version: 2.1.10
 - Check the parameter validity of `PERIOD_ADD` [#10430](https://github.com/pingcap/tidb/pull/10430)
 - Fix the issue that the behavior of the invalid `YEAR` string in TiDB is incompatible with that in MySQL [#10493](https://github.com/pingcap/tidb/pull/10493)
 - Support the `ALTER DATABASE` syntax [#10503](https://github.com/pingcap/tidb/pull/10503)
-- Fix the issue that the `SLOW_QUERY` memory engine reports an error when no  `;` exists in the slow query statement [#10536](https://github.com/pingcap/tidb/pull/10536)
+- Fix the issue that the `SLOW_QUERY` memory engine reports an error when no `;` exists in the slow query statement [#10536](https://github.com/pingcap/tidb/pull/10536)
 - Fix the issue that the `Add index` operation in partitioned tables cannot be canceled in some cases [#10533](https://github.com/pingcap/tidb/pull/10533)
 - Fix the issue that the OOM panic cannot be recovered in some cases [#10545](https://github.com/pingcap/tidb/pull/10545)
 - Improve the security of the DDL operation rewriting the table metadata [#10547](https://github.com/pingcap/tidb/pull/10547)

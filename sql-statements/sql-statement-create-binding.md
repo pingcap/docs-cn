@@ -95,7 +95,7 @@ mysql> CREATE SESSION BINDING FOR
     ->  SELECT * FROM t1 IGNORE INDEX (b) WHERE b = 123;
 Query OK, 0 rows affected (0.00 sec)
 
-mysql> EXPLAIN ANALYZE  SELECT * FROM t1 WHERE b = 123;
+mysql> EXPLAIN ANALYZE SELECT * FROM t1 WHERE b = 123;
 +-------------------------+-----------+---------+-----------+---------------+--------------------------------------------------------------------------------+--------------------+---------------+------+
 | id                      | estRows   | actRows | task      | access object | execution info                                                                 | operator info      | memory        | disk |
 +-------------------------+-----------+---------+-----------+---------------+--------------------------------------------------------------------------------+--------------------+---------------+------+
@@ -120,7 +120,7 @@ Original_sql: select * from t1 where b = ?
 mysql> DROP SESSION BINDING FOR SELECT * FROM t1 WHERE b = 123;
 Query OK, 0 rows affected (0.00 sec)
 
-mysql> EXPLAIN ANALYZE  SELECT * FROM t1 WHERE b = 123;
+mysql> EXPLAIN ANALYZE SELECT * FROM t1 WHERE b = 123;
 +-------------------------------+---------+---------+-----------+----------------------+-------------------------------------------------------------------------+-----------------------------------+----------------+------+
 | id                            | estRows | actRows | task      | access object        | execution info                                                          | operator info                     | memory         | disk |
 +-------------------------------+---------+---------+-----------+----------------------+-------------------------------------------------------------------------+-----------------------------------+----------------+------+

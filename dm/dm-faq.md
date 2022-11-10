@@ -109,7 +109,7 @@ Record the position information in the global checkpoint (`is_global=1`) corresp
 
     - The checkpoint rows to be updated match `id=(source-id)` and `is_global=1`.
 
-    - The checkpoint columns to be updated are  `binlog_name` and `binlog_pos`.
+    - The checkpoint columns to be updated are `binlog_name` and `binlog_pos`.
 
 3. Set `safe-mode: true` for the `syncers` in the task to ensure reentrant execution.
 
@@ -351,7 +351,7 @@ For data sources that can be replicated normally (such as `mysql2` in the above 
 
 ## In DM v2.0, how do I handle the error "heartbeat config is different from previous used: serverID not equal" when switching the connection between DM-workers and MySQL instances in a virtual IP environment with the `heartbeat` feature enabled?
 
-The `heartbeat` feature is disabled by default in DM v2.0 and later versions. If you enable the feature in the task configuration file, it interferes with the high availability feature. To solve this issue, you can disable the `heartbeat` feature by setting `enable-heartbeat` to `false` in the task configuration file,  and then reload the task configuration file. DM will forcibly disable the `heartbeat` feature in subsequent releases.
+The `heartbeat` feature is disabled by default in DM v2.0 and later versions. If you enable the feature in the task configuration file, it interferes with the high availability feature. To solve this issue, you can disable the `heartbeat` feature by setting `enable-heartbeat` to `false` in the task configuration file, and then reload the task configuration file. DM will forcibly disable the `heartbeat` feature in subsequent releases.
 
 ## Why does a DM-master fail to join the cluster after it restarts and DM reports the error "fail to start embed etcd, RawCause: member xxx has already been bootstrapped"?
 

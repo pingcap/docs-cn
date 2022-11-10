@@ -52,7 +52,7 @@ The Performance Overview dashboard orchestrates the metrics of TiDB, PD, and TiK
 
 - Database time and SQL execution time overview: Color-coded SQL types, database time by SQL execution phase, and database time of different requests help you quickly identify database workload characteristics and performance bottlenecks.
 - Key metrics and resource utilization: Contains database QPS, connection information, request command types between the applications and the database, database internal TSO and KV request OPS, and TiDB/TiKV resource usage.
-- Top-down latency breakdown: Contains a comparison of query latency and connection idle time, breakdown of query latency, latency of TSO requests and KV requests in SQL execution, and breakdown of TiKV internal write latency, etc.
+- Top-down latency breakdown: Contains a comparison of query latency and connection idle time, breakdown of query latency, latency of TSO requests and KV requests in SQL execution, and breakdown of TiKV internal write latency.
 
 ### Database time and SQL execution time overview
 
@@ -137,7 +137,7 @@ By checking the following three panels in Performance Overview, you can learn th
 
     - No prepared plan cache is hit: The number of plan cache hit per second is 0. The application is using the query interface, or cached plans are cleaned up by calling the StmtClose command after each StmtExecute execution.
     - All prepared plan cache is hit: The number of hits per second is equal to the number of StmtExecute commands per second.
-    - Some prepared plan cache is hit: The number of hits per second is fewer than the number of StmtExecute commands per second. Prepared plan cache has known limitations, for example, it does not support subqueries,  SQL statements with subqueries can not utilize prepared plan cache.
+    - Some prepared plan cache is hit: The number of hits per second is fewer than the number of StmtExecute commands per second. Prepared plan cache has known limitations, for example, it does not support subqueries, SQL statements with subqueries cannot utilize prepared plan cache.
 
 **Example 1: TPC-C workload**
 
@@ -409,7 +409,7 @@ Common scenarios where `Commit Log Duration` is long:
 - `raftstore.store-pool-size` is either excessively small or large (an excessively large value might also cause performance degradation)
 - The I/O latency is high, resulting in high `Append Log Duration` latency
 - The network latency between TiKV nodes is high
-- The number of the gRPC threads are too small,  CPU usage is uneven among the GRPC threads.
+- The number of the gRPC threads are too small, CPU usage is uneven among the GRPC threads.
 
 Common scenarios where `Apply Log Duration` is long:
 

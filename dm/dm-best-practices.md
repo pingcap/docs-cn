@@ -65,7 +65,7 @@ When you create a table, you can declare that the primary key is either a cluste
 
     ```sql
     CREATE TABLE t (a bigint PRIMARY KEY AUTO_RANDOM, b varchar(255));
-    Select  a, a<<5 ,b from t order by a <<5 desc
+    Select a, a<<5 ,b from t order by a <<5 desc
     ```
 
 The following table summarizes the pros and cons of each solution.
@@ -182,7 +182,7 @@ You can configure the filter rules as soon as you start configuring the data sou
 
 > **Note:**
 >
-> When you migrate and merge MySQL shards, if you have configured filter rules in the data source, you must make sure that the rules match between the data source and the migration task. If they do not match, it may cause the issue that the migration task can not receive incremental data for a long time.
+> When you migrate and merge MySQL shards, if you have configured filter rules in the data source, you must make sure that the rules match between the data source and the migration task. If they do not match, it may cause the issue that the migration task cannot receive incremental data for a long time.
 
 #### Use the relay log
 

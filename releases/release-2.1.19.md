@@ -60,7 +60,7 @@ TiDB Ansible version: 2.1.19
 + DDL
     - Use the table’s `COLLATE` instead of the system’s default charset in the column when a table is created and the table contains `COLLATE` [#13190](https://github.com/pingcap/tidb/pull/13190)
     - Limit the length of the index name when creating a table [#13311](https://github.com/pingcap/tidb/pull/13311)
-    - Fix the issue that the length of  the table name is not checked when renaming a table [#13345](https://github.com/pingcap/tidb/pull/13345)
+    - Fix the issue that the length of the table name is not checked when renaming a table [#13345](https://github.com/pingcap/tidb/pull/13345)
     - Check the width range of the `BIT` column [#13511](https://github.com/pingcap/tidb/pull/13511)
     - Make the error information output from `change/modify column` more understandable [#13798](https://github.com/pingcap/tidb/pull/13798)
     - Fix the issue that when executing the `drop column` operation that has not yet been handled by the downstream Drainer, the downstream might receive DML operations without the affected column [#13974](https://github.com/pingcap/tidb/pull/13974)

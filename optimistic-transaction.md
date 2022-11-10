@@ -31,7 +31,7 @@ To support distributed transactions, TiDB adopts two-phase commit (2PC) in optim
 
 3. The client issues a write request.
 
-    TiDB checks whether the written data satisfies constraints (to ensure the data types are correct, the NOT NULL constraint is met, etc.). **Valid data is stored in the private memory of this transaction in TiDB**.
+    TiDB checks whether the written data satisfies constraints (to ensure the data types are correct, the NOT NULL constraint is met). **Valid data is stored in the private memory of this transaction in TiDB**.
 
 4. The client issues a commit request.
 

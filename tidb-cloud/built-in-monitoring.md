@@ -29,7 +29,7 @@ The following sections illustrate the metrics on the Monitoring page.
 | :------------| :------| :-------------------------------------------- |
 | Database Time by SQL types | database time, {SQL type} | database time: total database time per second. <br/> {SQL type}: database time consumed by SQL statements per second, which are collected by SQL types, such as `SELECT`, `INSERT`, and `UPDATE`. |
 | Database Time by SQL Phase | database time, get token, parse, compile, execute | Database time consumed in four SQL processing phases: get token, parse, compile, and execute. The SQL execution phase is in green and other phases are in red on general. If non-green areas take a large proportion, it means most database time is consumed by other phases than the execution phase and further cause analysis is required. |
-| SQL Execute Time Overview | tso_wait, Get, Cop, Commit, etc. | Green metrics stand for common KV write requests (such as prewrite and commit), blue metrics stand for common read requests, and metrics in other colors stand for unexpected situations which you need to pay attention to. For example, pessimistic lock KV requests are marked red and TSO waiting is marked dark brown. If non-blue or non-green areas take a large proportion, it means there is a bottleneck during SQL execution. For example, if serious lock conflicts occur, the red area will take a large proportion. If excessive time is consumed in waiting TSO, the dark brown area will take a large proportion. |
+| SQL Execute Time Overview | tso_wait, Get, Cop, and Commit | Green metrics stand for common KV write requests (such as prewrite and commit), blue metrics stand for common read requests, and metrics in other colors stand for unexpected situations which you need to pay attention to. For example, pessimistic lock KV requests are marked red and TSO waiting is marked dark brown. If non-blue or non-green areas take a large proportion, it means there is a bottleneck during SQL execution. For example, if serious lock conflicts occur, the red area will take a large proportion. If excessive time is consumed in waiting TSO, the dark brown area will take a large proportion. |
 
 ### Application Connection
 
@@ -44,7 +44,7 @@ The following sections illustrate the metrics on the Monitoring page.
 | :------------| :------| :-------------------------------------------- |
 | Query Per Second | {SQL type} | The number of SQL statements executed per second in all TiDB instances, which are collected by SQL types, such as `SELECT`, `INSERT`, and `UPDATE`. |
 | Failed Queries | Error types | The statistics of error types (such as syntax errors and primary key conflicts) according to the SQL statement execution errors per minute on each TiDB instance. It contains the module in which an error occurs and the error code. |
-| Command Per Second | Query, StmtExecute, StmtPrepare, etc. | The number of commands processed by all TiDB instances per second based on command types. |
+| Command Per Second | Query, StmtExecute, and StmtPrepare | The number of commands processed by all TiDB instances per second based on command types. |
 | Queries Using Plan Cache OPS | hit, miss | hit: the number of queries using plan cache per second in all TiDB instances. <br/> miss: the number of queries missing plan cache per second in all TiDB instances. |
 
 ### Latency Break Down
@@ -69,8 +69,8 @@ The following sections illustrate the metrics on the Monitoring page.
 
 | Metric name  | Labels | Description                                   |
 | :------------| :------| :-------------------------------------------- |
-| Avg TiDB KV Request Duration | Get, Prewirite, Commit, PessimisticLock, etc. | The average time consumed in executing KV requests in all TiDB instances based on request types, including `Get`, `Prewrite`, and `Commit`. |
-| Avg TiKV GRPC Duration | kv_get, kv_prewirite, kv_commit, kv_pessimisticLock, etc. | The average time consumed in executing gRPC requests in all TiKV instances based request types, including `kv_get`, `kv_prewrite`, and `kv_commit`. |
+| Avg TiDB KV Request Duration | Get, Prewirite, Commit, and PessimisticLock | The average time consumed in executing KV requests in all TiDB instances based on request types, including `Get`, `Prewrite`, and `Commit`. |
+| Avg TiKV GRPC Duration | kv_get, kv_prewirite, kv_commit, and kv_pessimisticLock | The average time consumed in executing gRPC requests in all TiKV instances based request types, including `kv_get`, `kv_prewrite`, and `kv_commit`. |
 | Average / P99 PD TSO Wait/RPC Duration | wait-avg/99, rpc-avg/99 | Wait: the average time or P99 duration in waiting for PD to return TSO in all TiDB instances. <br/> RPC: the average time or P99 duration from sending TSO requests to PD to receiving TSO in all TiDB instances. |
 | Average / P99 Storage Async Write Duration | avg, 99 | The average time or P99 duration consumed in asynchronous writing. Average storage async write duration = Average store duration + Average apply duration. |
 | Average / P99 Store Duration | avg, 99 | The average time or P99 duration consumed in storing loop during asynchronously writing. |

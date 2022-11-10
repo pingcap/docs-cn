@@ -48,7 +48,7 @@ TiDB version: 3.0.16
 + TiKV
 
     - Fix the potential wrong result read from ingested files [#8039](https://github.com/tikv/tikv/pull/8039)
-    - Fix the issue that a peer can not be removed when its store is isolated during multiple merge processes [#8005](https://github.com/tikv/tikv/pull/8005)
+    - Fix the issue that a peer cannot be removed when its store is isolated during multiple merge processes [#8005](https://github.com/tikv/tikv/pull/8005)
 
 + PD
 

@@ -148,7 +148,7 @@ For more information, see [Creating storage buckets](https://cloud.google.com/st
 
 #### Step 3. Enable audit logging
 
-In the TiDB Cloud console, go back to the **Audit Logging** dialog box where you got the TiDB Cloud account ID，and then take the following steps:
+In the TiDB Cloud console, go back to the **Audit Logging** dialog box where you got the TiDB Cloud account ID, and then take the following steps:
 
 1. In the **Bucket URI** field, enter your full GCS bucket name.
 2. In the **Bucket Region** field, select the GCS region where the bucket locates.

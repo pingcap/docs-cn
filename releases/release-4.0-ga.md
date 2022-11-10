@@ -85,7 +85,7 @@ TiDB version: 4.0.0
 
 * TiFlash
 
-    - Fix the issue that the matching behavior of regular expressions in the  search log feature is inconsistent with other components
+    - Fix the issue that the matching behavior of regular expressions in the search log feature is inconsistent with other components
     - Fix the issue of excessive restart time when nodes write large amounts of data by disabling the delay processing optimization of `Raft Compact Log Command` by default
     - Fix the issue that the system fails to start because TiDB incorrectly processes the `DROP DATABASE` statement in some scenarios
     - Fix the issue that the method of collecting CPU information in `Server_info` is different from that in other components

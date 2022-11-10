@@ -334,7 +334,7 @@ TiKV implements the Column Family (CF) feature of RocksDB. By default, the KV da
 ### Why is the TiKV channel full?
 
 - The Raftstore thread is too slow or blocked by I/O. You can view the CPU usage status of Raftstore.
-- TiKV is too busy (CPU, disk I/O, etc.) and cannot manage to handle it.
+- TiKV is too busy (such as CPU and disk I/O) and cannot manage to handle it.
 
 ### Why does TiKV frequently switch Region leader?
 

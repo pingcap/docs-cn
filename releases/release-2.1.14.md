@@ -43,7 +43,7 @@ TiDB Binlog
 - Reparo
     - Add the `safe-mode` configuration item, and support importing duplicated data after this item is enabled [#662](https://github.com/pingcap/tidb-binlog/pull/662)
 - Pump
-    - Add the  `stop-write-at-available-space` configuration item to limit the available binlog space [#659](https://github.com/pingcap/tidb-binlog/pull/659)
+    - Add the `stop-write-at-available-space` configuration item to limit the available binlog space [#659](https://github.com/pingcap/tidb-binlog/pull/659)
     - Fix the issue that Garbage Collector does not work sometimes when the number of LevelDB L0 files is 0 [#648](https://github.com/pingcap/tidb-binlog/pull/648)
     - Optimize the algorithm of deleting log files to speed up releasing the space [#648](https://github.com/pingcap/tidb-binlog/pull/648)
 - Drainer

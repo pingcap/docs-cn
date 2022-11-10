@@ -322,7 +322,7 @@ Other requirements for the target machine:
 
     > **Note:**
     >
-    > After the installation, TiUP displays the absolute path of the corresponding Shell profile file. You need to modify  `${your_shell_profile}` in the following `source` command according to the path.
+    > After the installation, TiUP displays the absolute path of the corresponding Shell profile file. You need to modify `${your_shell_profile}` in the following `source` command according to the path.
 
     {{< copyable "shell-regular" >}}
 

@@ -131,7 +131,7 @@ TiDB version: 4.0.0-rc.2
     - Fix the wrong information of the `WAIT_TIME` field in the expensive log [#16907](https://github.com/pingcap/tidb/pull/16907)
     - Fix the issue that the `SELECT FOR UPDATE` statement cannot be recorded in the slow log in the pessimistic transaction mode [#16897](https://github.com/pingcap/tidb/pull/16897)
     - Fix the wrong result that occurs when executing `SELECT DISTINCT` on a column of the `Enum` or `Set` type [#16892](https://github.com/pingcap/tidb/pull/16892)
-    - Fix the display error of `auto_random_base` in the `SHOW CREATE  TABLE` statement [#16864](https://github.com/pingcap/tidb/pull/16864)
+    - Fix the display error of `auto_random_base` in the `SHOW CREATE TABLE` statement [#16864](https://github.com/pingcap/tidb/pull/16864)
     - Fix the incorrect value of `string_value` in the `WHERE` clause [#16559](https://github.com/pingcap/tidb/pull/16559)
     - Fix the issue that the error message of the `GROUP BY` window function is inconsistent with that of MySQL [#16165](https://github.com/pingcap/tidb/pull/16165)
     - Fix the issue that the `FLASH TABLE` statement fails to execute when the database name contains the uppercase letter [#17167](https://github.com/pingcap/tidb/pull/17167)

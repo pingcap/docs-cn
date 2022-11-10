@@ -164,4 +164,4 @@ sysbench --test=oltp_insert --tables=4 --num-threads=32 --mysql-host=172.17.4.40
 
 #### Get test results
 
-To observe the migration status of DM, you can run the `query-status` command. To observe the monitoring metrics of DM, you can use Grafana. Here the monitoring metrics refer to `finished sqls jobs` (the number of jobs finished per unit time), etc. For more information, see [Binlog Migration Monitoring Metrics](/dm/monitor-a-dm-cluster.md#binlog-replication).
+To observe the migration status of DM, you can run the `query-status` command. To observe the monitoring metrics of DM, you can use Grafana. Here the monitoring metrics refer to `finished sqls jobs` (the number of jobs finished per unit time), and other related metrics. For more information, see [Binlog Migration Monitoring Metrics](/dm/monitor-a-dm-cluster.md#binlog-replication).

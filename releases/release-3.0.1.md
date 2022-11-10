@@ -76,7 +76,7 @@ TiDB Ansible version: 3.0.1
 
 TiDB Binlog
 
-- Optimize the Pump GC strategy and remove the restriction that the unconsumed binlog cannot be cleaned to make sure that the resources are not occupied for a  long time [#646](https://github.com/pingcap/tidb-binlog/pull/646)
+- Optimize the Pump GC strategy and remove the restriction that the unconsumed binlog cannot be cleaned to make sure that the resources are not occupied for a long time [#646](https://github.com/pingcap/tidb-binlog/pull/646)
 
 TiDB Lightning
 

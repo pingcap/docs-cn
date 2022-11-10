@@ -271,7 +271,7 @@ If your computer has no `dot` program, copy the result to [this website](http://
 ## MySQL compatibility
 
 * Both the format of `EXPLAIN` and the potential execution plans in TiDB differ substaintially from MySQL.
-* TiDB does not support the `FORMAT=JSON`  or `FORMAT=TREE` options.
+* TiDB does not support the `FORMAT=JSON` or `FORMAT=TREE` options.
 
 ### `EXPLAIN FOR CONNECTION`
 

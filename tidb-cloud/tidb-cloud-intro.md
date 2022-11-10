@@ -66,7 +66,7 @@ With TiDB Cloud, you can get the following key features:
 
 - TiDB VPC (Virtual Private Cloud)
 
-    For each TiDB Cloud cluster, all TiDB nodes and auxiliary nodes, including TiDB Operator nodes, logging nodes, and so on, are deployed in an independent VPC.
+    For each TiDB Cloud cluster, all TiDB nodes and auxiliary nodes, including TiDB Operator nodes and logging nodes, are deployed in an independent VPC.
 
 - TiDB Cloud Central Services
 

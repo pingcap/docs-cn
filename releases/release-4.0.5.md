@@ -150,7 +150,7 @@ TiDB version: 4.0.5
 + TiFlash
 
     - Fix the issue that TiFlash cannot start normally after upgrading from an earlier version if the name of the database or table contains special characters
-    - Fix the issue that the TiFlash process can not exit if any exceptions are thrown during initialization
+    - Fix the issue that the TiFlash process cannot exit if any exceptions are thrown during initialization
 
 + Tools
 

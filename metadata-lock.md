@@ -80,10 +80,10 @@ Metadata lock can ensure that the metadata versions used by all transactions in 
     | `INSERT INTO t VALUES(1);` |           |
     | `BEGIN;`                   |           |
     |                            | `ALTER TABLE t ADD COLUMN b INT;` |
-    | `SELECT * FROM t;`<br/>(Uses the current metadata version of table `t`. Returns `(a=1，b=NULL)` and locks table `t`.)         |           |
+    | `SELECT * FROM t;`<br/>(Uses the current metadata version of table `t`. Returns `(a=1, b=NULL)` and locks table `t`.)         |           |
     |                            | `ALTER TABLE t ADD COLUMN c INT;` (blocked by Session 1) |
 
-    At the repeatable read isolation level, from the transaction start to the timepoint of determining the metadata of a table,  if a DDL that requires data changes is performed, such as adding an index, or changing column types, the DDL returns an error as follows:
+    At the repeatable read isolation level, from the transaction start to the timepoint of determining the metadata of a table, if a DDL that requires data changes is performed, such as adding an index, or changing column types, the DDL returns an error as follows:
 
     | Session 1                  | Session 2                                 |
     |:---------------------------|:------------------------------------------|

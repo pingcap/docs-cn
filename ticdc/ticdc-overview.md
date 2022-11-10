@@ -1,12 +1,12 @@
 ---
 title: TiCDC Overview
-summary: Learn what TiCDC is, what features TiCDC provides, etc.
+summary: Learn what TiCDC is, what features TiCDC provides, and how to install and deploy TiCDC.
 aliases: ['/docs/dev/ticdc/ticdc-overview/','/docs/dev/reference/tools/ticdc/overview/']
 ---
 
 # TiCDC Overview
 
-[TiCDC](https://github.com/pingcap/tiflow/tree/master/cdc) is a tool used for replicating incremental data of TiDB. Specifically, TiCDC pulls TiKV change logs, sorts captured data, and exports row-based incremental data to downstream databases. 
+[TiCDC](https://github.com/pingcap/tiflow/tree/master/cdc) is a tool used for replicating incremental data of TiDB. Specifically, TiCDC pulls TiKV change logs, sorts captured data, and exports row-based incremental data to downstream databases.
 
 ## Usage scenarios
 

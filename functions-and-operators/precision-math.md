@@ -51,7 +51,7 @@ DECIMAL columns do not store a leading `+` character or `-` character or leading
 
 DECIMAL columns do not permit values larger than the range implied by the column definition. For example, a `DECIMAL(3,0)` column supports a range of `-999` to `999`. A `DECIMAL(M,D)` column permits at most `M - D` digits to the left of the decimal point.
 
-For more information about the internal format of the DECIMAL values, see [`mydecimal.go`](https://github.com/pingcap/tidb/blob/master/types/mydecimal.go)  in TiDB souce code.
+For more information about the internal format of the DECIMAL values, see [`mydecimal.go`](https://github.com/pingcap/tidb/blob/master/types/mydecimal.go) in TiDB souce code.
 
 ## Expression handling
 
@@ -81,7 +81,7 @@ If a number is inserted into an exact type column (DECIMAL or integer), it is in
 To insert strings into numeric columns, TiDB handles the conversion from string to number as follows if the string has nonnumeric contents:
 
 - In strict mode, a string (including an empty string) that does not begin with a number cannot be used as a number. An error, or a warning occurs.
-- A string that begins with a number can be converted, but the trailing nonnumeric portion is truncated. In strict mode, if the truncated portion contains anything other than spaces,  an error, or a warning occurs.
+- A string that begins with a number can be converted, but the trailing nonnumeric portion is truncated. In strict mode, if the truncated portion contains anything other than spaces, an error, or a warning occurs.
 
 By default, the result of the division by 0 is NULL and no warning. By setting the SQL mode appropriately, division by 0 can be restricted. If you enable the `ERROR_FOR_DIVISION_BY_ZERO` SQL mode, TiDB handles division by 0 differently:
 

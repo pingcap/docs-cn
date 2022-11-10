@@ -6,7 +6,7 @@ aliases: ['/docs/dev/sql-statements/sql-statement-explain-analyze/','/docs/dev/r
 
 # EXPLAIN ANALYZE
 
-The `EXPLAIN ANALYZE` statement works similar to `EXPLAIN`, with the major difference being that it will actually execute the statement. This allows you to compare the estimates used as part of query planning to actual values encountered during execution.  If the estimates differ significantly from the actual values, you should consider running `ANALYZE TABLE` on the affected tables.
+The `EXPLAIN ANALYZE` statement works similar to `EXPLAIN`, with the major difference being that it will actually execute the statement. This allows you to compare the estimates used as part of query planning to actual values encountered during execution. If the estimates differ significantly from the actual values, you should consider running `ANALYZE TABLE` on the affected tables.
 
 > **Note:**
 >
@@ -155,7 +155,7 @@ The `IndexJoin` operator has 1 outer worker and N inner workers for concurrent e
 
 1. The outer worker reads N outer rows, then wraps it into a task, and sends it to the result channel and the inner worker channel.
 2. The inner worker receives the task, build key ranges from the task, and fetches inner rows according to the key ranges. It then builds the inner row hash table.
-3. The main `IndexJoin`  thread receives the task from the result channel and waits for the inner worker to finish handling the task.
+3. The main `IndexJoin` thread receives the task from the result channel and waits for the inner worker to finish handling the task.
 4. The main `IndexJoin` thread joins each outer row by looking up to the inner rows' hash table.
 
 The `IndexJoin` operator contains the following execution information:

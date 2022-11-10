@@ -288,7 +288,7 @@ This section gives the alert rules for the PD component.
 
     * Check whether the space in the cluster is generally insufficient. If so, increase its capacity.
     * Check whether there is any issue with Region balance scheduling. If so, it will lead to uneven data distribution.
-    * Check whether there is any file that occupies a large amount of disk space, such as the log, snapshot, core dump, etc.
+    * Check whether there is any file that occupies a large amount of disk space, such as the log, snapshot, and core dump.
     * Lower the Region weight of the node to reduce the data volume.
     * When it is not possible to release the space, consider proactively making the node offline. This prevents insufficient disk space that leads to downtime.
 
@@ -367,7 +367,7 @@ This section gives the alert rules for the PD component.
 
 * Solution:
 
-    * Exclude the human factors, such as restarting PD, manually transferring leader, adjusting leader priority, etc.
+    * Exclude the human factors, such as restarting PD, manually transferring leader, and adjusting leader priority.
     * Check the network and system load status.
     * If the problematic PD instance cannot be recovered due to environmental factors, make it offline and replace it.
 
@@ -384,7 +384,7 @@ This section gives the alert rules for the PD component.
 * Solution:
 
     * Check whether it is needed to increase capacity.
-    * Check whether there is any file that occupies a large amount of disk space, such as the log, snapshot, core dump, etc.
+    * Check whether there is any file that occupies a large amount of disk space, such as the log, snapshot, and core dump.
 
 #### `PD_system_time_slow`
 

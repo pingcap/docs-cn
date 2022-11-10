@@ -71,7 +71,7 @@ Based on the projects created by the organization, resources such as personnel, 
 
 ### project members
 
-Project members are users who are invited to join one or more projects of the organization. Project members can manage clusters, network access, backups, etc.
+Project members are users who are invited to join one or more projects of the organization. Project members can manage clusters, network access, backups, and other resources.
 
 ## R
 

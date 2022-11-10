@@ -821,7 +821,7 @@ The following code uses two threads to simulate the process that two users buy t
 
 ### Write an optimistic transaction example
 
-<SimpleTab  groupId="language">
+<SimpleTab groupId="language">
 
 <div label="Java" value="java">
 

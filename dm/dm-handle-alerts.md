@@ -162,7 +162,7 @@ This document introduces how to deal with the alert information in DM.
 
 - Description:
 
-    When the binlog replication processing unit encounters an error,  this unit moves to the `Paused` state, and an alert is triggered immediately.
+    When the binlog replication processing unit encounters an error, this unit moves to the `Paused` state, and an alert is triggered immediately.
 
 - Solution:
 

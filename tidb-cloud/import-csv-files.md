@@ -1,5 +1,5 @@
 ---
-title:  Import CSV Files from Amazon S3 or GCS into TiDB Cloud
+title: Import CSV Files from Amazon S3 or GCS into TiDB Cloud
 summary: Learn how to import CSV files from Amazon S3 or GCS into TiDB Cloud.
 ---
 

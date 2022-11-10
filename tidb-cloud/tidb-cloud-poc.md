@@ -195,7 +195,7 @@ Any feedback to our support team is highly appreciated by filling in the [TiDB C
 
 TiDB Cloud provides two types of database backup: automatic backup and manual backup. Both methods back up the full database.
 
-The time it takes to back up and restore data might vary, depending on the number of tables, the number of mirror copies, the CPU-intensive level, and so on. The backup and restoring rate in one single TiKV node is approximately 50 MB/s.
+The time it takes to back up and restore data might vary, depending on the number of tables, the number of mirror copies, and the CPU-intensive level. The backup and restoring rate in one single TiKV node is approximately 50 MB/s.
 
 Database backup and restore operations are typically CPU-intensive, and always require additional CPU resources. They might have an impact (10% to 50%) on QPS and transaction latency, depending on how CPU-intensive this environment is.
 

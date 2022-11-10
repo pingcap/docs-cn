@@ -215,7 +215,7 @@ CREATE TABLE `bookshop`.`ratings` (
 
 If you need to prevent duplicate values in a column, you can use the `UNIQUE` constraint.
 
-For example, to make sure that users' nicknames are unique, you can rewrite the table creation  SQL statement for the `users` table like this:
+For example, to make sure that users' nicknames are unique, you can rewrite the table creation SQL statement for the `users` table like this:
 
 {{< copyable "sql" >}}
 

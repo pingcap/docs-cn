@@ -92,7 +92,7 @@ TiDB Ansible version: 3.0.6
 
 + TiDB Binlog
     - Obtain the initial replication timestamp from PD when `initial-commit-ts` is set to “-1” in Drainer [#788](https://github.com/pingcap/tidb-binlog/pull/788)
-    - Decouple Drainer’s `Checkpoint` storage from the downstream and support saving `Checkpoint` in  MySQL or local files [#790](https://github.com/pingcap/tidb-binlog/pull/790)
+    - Decouple Drainer’s `Checkpoint` storage from the downstream and support saving `Checkpoint` in MySQL or local files [#790](https://github.com/pingcap/tidb-binlog/pull/790)
     - Fix the Drainer panic issue caused by using empty values when configuring replication database/table filtering [#801](https://github.com/pingcap/tidb-binlog/pull/801)
     - Fix the issue that processes get into the deadlock status instead of exiting after a panic occurs because Drainer fails to apply binlog files to the downstream [#807](https://github.com/pingcap/tidb-binlog/pull/807)
     - Fix the issue that Pump blocks when it exits because of gRPC’s `GracefulStop` [#817](https://github.com/pingcap/tidb-binlog/pull/817)

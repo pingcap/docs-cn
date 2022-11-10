@@ -54,7 +54,7 @@ After the above transaction is executed successfully, the table should look like
 
 ### Start a transaction
 
-To explicitly start a new transaction, you can use either  `BEGIN` or `START TRANSACTION`. 
+To explicitly start a new transaction, you can use either `BEGIN` or `START TRANSACTION`.
 
 {{< copyable "sql" >}}
 

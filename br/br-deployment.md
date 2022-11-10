@@ -13,7 +13,7 @@ Recommended practices when deploying BR:
 
 - In production environments, deploy BR on a node with at least 8 cores CPU and 16 GB memory. Select an appropriate OS version by following [Linux OS version requirements](/hardware-and-software-requirements.md#linux-os-version-requirements).
 - Save backup data to Amazon S3, GCS or Azure Blob Storage.
-- Allocate sufficient resources for backup and restoration；
+- Allocate sufficient resources for backup and restoration:
 
     - BR, TiKV nodes, and the backup storage system should provide network bandwidth that is greater than the backup speed. If the target cluster is particularly large, the threshold of backup and restoration speed is limited by the bandwidth of the backup network.
     - The backup storage system should also provide sufficient write/read performance (IOPS). Otherwise, the IOPS might become a performance bottleneck during backup or restoration.

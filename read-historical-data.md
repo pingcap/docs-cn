@@ -136,7 +136,7 @@ Pay special attention to the following:
     3 rows in set (0.00 sec)
     ```
 
-7. Set the  `tidb_snapshot` variable to be "" (empty string) and you can read the data from the latest version:
+7. Set the `tidb_snapshot` variable to be "" (empty string) and you can read the data from the latest version:
 
     ```sql
     mysql> set @@tidb_snapshot="";

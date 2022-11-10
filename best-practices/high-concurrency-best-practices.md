@@ -18,7 +18,7 @@ This document assumes that you have a basic understanding of TiDB. It is recomme
 
 ## Highly-concurrent write-intensive scenario
 
-The highly concurrent write scenario often occurs when you perform batch tasks in applications, such as clearing, settlement and so on. This scenario has the following features:
+The highly concurrent write scenario often occurs when you perform batch tasks in applications, such as clearing and settlement. This scenario has the following features:
 
 + A huge volume of data
 + The need to import historical data into database in a short time

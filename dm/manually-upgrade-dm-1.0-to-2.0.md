@@ -13,7 +13,7 @@ For how to automatically upgrade the TiDB DM tool from v1.0.x to v2.0+, refer to
 >
 > - Currently, upgrading DM from v1.0.x to v2.0+ is not supported when the data migration task is in the process of full export or full import.
 > - As the gRPC protocol used for interaction between the components of the DM cluster is updated greatly, you need to make sure that the DM components (including dmctl) use the same version before and after the upgrade.
-> - Because the metadata storage of the DM cluster (such as checkpoint, shard DDL lock status and online DDL metadata, etc.) is updated greatly, the metadata of v1.0.x cannot be reused automatically in v2.0+. So you need to make sure the following requirements are satisfied before performing the upgrade operation:
+> - Because the metadata storage of the DM cluster (such as checkpoint, shard DDL lock status, and online DDL metadata) is updated greatly, the metadata of v1.0.x cannot be reused automatically in v2.0+. So you need to make sure the following requirements are satisfied before performing the upgrade operation:
 >     - All data migration tasks are not in the process of shard DDL coordination.
 >     - All data migration tasks are not in the process of online DDL coordination.
 

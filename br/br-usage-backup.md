@@ -105,7 +105,7 @@ In the preceding command, `--db` and `--table` specify the database name and tab
 
 To back up multiple tables with more criteria, run the `br backup full` command and specify the [table filters](/table-filter.md) with `--filter` or `-f`.
 
-Example: Back up `db*.tbl*` data of a table to  the `table-filter/2022-01-30/` directory in the `backup-data` bucket of Amazon S3.
+Example: Back up `db*.tbl*` data of a table to the `table-filter/2022-01-30/` directory in the `backup-data` bucket of Amazon S3.
 
 {{< copyable "shell-regular" >}}
 
@@ -172,7 +172,7 @@ BR supports encrypting backup data at the backup end and at the storage end when
 Since TiDB v5.3.0, you can encrypt backup data by configuring the following parameters:
 
 - `--crypter.method`: Encryption algorithm, which can be `aes128-ctr`, `aes192-ctr`, or `aes256-ctr`. The default value is `plaintext`, indicating that data is not encrypted.
-- `--crypter.key`: Encryption key in hexadecimal string format. It is a  128-bit (16 bytes) key for the algorithm `aes128-ctr`, 24-byte key for the algorithm `aes192-ctr`, and 32-byte key for the algorithm `aes256-ctr`.
+- `--crypter.key`: Encryption key in hexadecimal string format. It is a 128-bit (16 bytes) key for the algorithm `aes128-ctr`, 24-byte key for the algorithm `aes192-ctr`, and 32-byte key for the algorithm `aes256-ctr`.
 - `--crypter.key-file`: The key file. You can directly pass in the file path where the key is stored as a parameter without passing in "crypter.key".
 
 Example: Encrypt backup data at the backup end.

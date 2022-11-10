@@ -9,7 +9,7 @@ This document introduces the rules and possible consequences of implicit type co
 
 ## Conversion rules
 
-When the data types on the two sides of the  predicate in a SQL statement do not match, TiDB implicitly convert the data types on one or both sides to a compatible data type for predicate operations.
+When the data types on the two sides of the predicate in a SQL statement do not match, TiDB implicitly convert the data types on one or both sides to a compatible data type for predicate operations.
 
 The rules for implicit type conversion in TiDB are as follows:
 

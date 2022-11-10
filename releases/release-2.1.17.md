@@ -12,7 +12,7 @@ TiDB version: 2.1.17
 TiDB Ansible version: 2.1.17
 
 + New features
-    - Add the  `WHERE` clause in TiDB’s `SHOW TABLE REGIONS` syntax
+    - Add the `WHERE` clause in TiDB’s `SHOW TABLE REGIONS` syntax
     - Add the `config-check` feature in TiKV and PD to check the configuration items
     - Add the `remove-tombstone` command in pd-ctl to clear tombstone store records
     - Add the `worker-count` and `txn-batch` configuration items in Reparo to control the recovery speed
@@ -33,7 +33,7 @@ TiDB Ansible version: 2.1.17
     - Fix the issue that the query result might be incorrect when the number of rows in the outer table is greater than that in a single batch in Index Lookup Join; expand the functional scope of Index Lookup Join; `UnionScan` can be used as a subnode of `IndexJoin` [#11843](https://github.com/pingcap/tidb/pull/11843)
     - Add the display of invalid keys (like `invalid encoded key flag 252` ) in the `SHOW STAT_BUCKETS` syntax, for the situation where invalid keys might occur during the statistics feedback process [#12098](https://github.com/pingcap/tidb/pull/12098)
 + SQL Execution Engine
-    - Fix some incorrect results (like `select cast(13835058000000000000 as double)`) caused by the number value that is first converted to  `UINT` when the `CAST` function is converting the number value type [#11712](https://github.com/pingcap/tidb/pull/11712)
+    - Fix some incorrect results (like `select cast(13835058000000000000 as double)`) caused by the number value that is first converted to `UINT` when the `CAST` function is converting the number value type [#11712](https://github.com/pingcap/tidb/pull/11712)
     - Fix the issue that the calculation result might be incorrect when the dividend of the `DIV` calculation is a decimal and this calculation contains a negative number [#11812](https://github.com/pingcap/tidb/pull/11812)
     - Add the `ConvertStrToIntStrict` function to fix the MySQL incompatibility issue caused by some strings being converted to the `INT` type when executing the `SELECT`/`EXPLAIN` statement [#11892](https://github.com/pingcap/tidb/pull/11892)
     - Fix the issue that the `Explain` result might be incorrect caused by wrong configuration of `stmtCtx` when `EXPLAIN ... FOR CONNECTION` is used [#11978](https://github.com/pingcap/tidb/pull/11978)
@@ -79,7 +79,7 @@ TiDB Ansible version: 2.1.17
 ## Tools
 
 + TiDB Binlog
-    - Add  `worker-count` and `txn-batch` configuration items in Reparo to control the recovery speed [#746](https://github.com/pingcap/tidb-binlog/pull/746)
+    - Add `worker-count` and `txn-batch` configuration items in Reparo to control the recovery speed [#746](https://github.com/pingcap/tidb-binlog/pull/746)
     - Optimize the memory usage of Drainer to improve the parallel execution efficiency [#735](https://github.com/pingcap/tidb-binlog/pull/735)
     - Fix the bug that Pump cannot quit normally in some cases [#739](https://github.com/pingcap/tidb-binlog/pull/739)
     - Optimize the processing logic of `LevelDB` in Pump to improve the execution efficiency of GC [#720](https://github.com/pingcap/tidb-binlog/pull/720)

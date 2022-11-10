@@ -162,8 +162,8 @@ routes:
 # Filters out some DDL events.
 filters:
   sale-filter-rule:           # Filter name.
-    schema-pattern: "store_*" # The binlog events or DDL SQL statements of upstream MySQL  instance schemas that match schema-pattern are filtered by the rules below.
-    table-pattern: "sale_*"   # The binlog events or DDL SQL statements of upstream MySQL  instance tables that match table-pattern are filtered by the rules below.
+    schema-pattern: "store_*" # The binlog events or DDL SQL statements of upstream MySQL instance schemas that match schema-pattern are filtered by the rules below.
+    table-pattern: "sale_*"   # The binlog events or DDL SQL statements of upstream MySQL instance tables that match table-pattern are filtered by the rules below.
     events: ["truncate table", "drop table", "delete"]   # The binlog event array.
     action: Ignore                                       # The string (`Do`/`Ignore`). `Do` is the allow list. `Ignore` is the block list.
   store-filter-rule:

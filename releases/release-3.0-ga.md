@@ -83,11 +83,11 @@ On June 28, 2019, TiDB 3.0 GA is released. The corresponding TiDB Ansible versio
     - Optimize transaction processing logics to adapt to more scenarios:
         - Change the default value `tidb_disable_txn_auto_retry` to `on`, which means non-auto committed transactions will not be retried
         - Add the `tidb_batch_commit` system variable to split a transaction into multiple ones to be executed concurrently
-        - Add the `tidb_low_resolution_tso` system variable to control the number of TSOs to obtain in batches and reduce the number of times that transactions request for TSOs,  to improve performance in scenarios with relatively low requirement of consistency
+        - Add the `tidb_low_resolution_tso` system variable to control the number of TSOs to obtain in batches and reduce the number of times that transactions request for TSOs, to improve performance in scenarios with relatively low requirement of consistency
         - Add the `tidb_skip_isolation_level_check` variable to control whether to report errors when the isolation level is set to SERIALIZABLE
         - Modify the `tidb_disable_txn_auto_retry` system variable to make it work on all retryable errors
 + Permission Management
-    - Perform permission check on the `ANALYZE`, `USE`, `SET GLOBAL`, and  `SHOW PROCESSLIST` statements
+    - Perform permission check on the `ANALYZE`, `USE`, `SET GLOBAL`, and `SHOW PROCESSLIST` statements
     - Support Role Based Access Control (RBAC) (**Experimental**)
 + Server
     - Optimize slow query logs:
@@ -143,7 +143,7 @@ On June 28, 2019, TiDB 3.0 GA is released. The corresponding TiDB Ansible versio
 + Others
     - Upgrade etcd to solve the issues of inconsistent log output formats, Leader selection failure in prevote, and lease deadlocking
     - Develop a unified log format specification with restructured log system to facilitate collection and analysis by tools
-    - Add monitoring metrics including scheduling parameters, cluster label information, time consumed by PD to process TSO requests, Store ID and address information, etc.
+    - Add monitoring metrics including scheduling parameters, cluster label information, and time consumed by PD to process TSO requests, Store ID, and address information.
 
 ## TiKV
 

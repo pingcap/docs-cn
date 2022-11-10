@@ -6,7 +6,7 @@ aliases: ['/docs/dev/sql-statements/sql-statement-show-indexes/','/docs/dev/refe
 
 # SHOW INDEXES [FROM|IN]
 
-The statement `SHOW INDEXES [FROM|IN]` lists the indexes on a specified table.  The statements `SHOW INDEX [FROM|IN]`, `SHOW KEYS [FROM|IN]` are aliases of this statement, and included for compatibility with MySQL.
+The statement `SHOW INDEXES [FROM|IN]` lists the indexes on a specified table. The statements `SHOW INDEX [FROM|IN]`, `SHOW KEYS [FROM|IN]` are aliases of this statement, and included for compatibility with MySQL.
 
 ## Synopsis
 

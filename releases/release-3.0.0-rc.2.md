@@ -50,7 +50,7 @@ On May 28, 2019, TiDB 3.0.0-rc.2 is released. The corresponding TiDB Ansible ver
     - Support `preSplit` of table partition, which pre-allocates table Regions when creating a table to avoid write hotspots after the table is created [#10221](https://github.com/pingcap/tidb/pull/10221)
     - Fix the issue that TiDB incorrectly updates the version information in PD in some cases [#10324](https://github.com/pingcap/tidb/pull/10324)
     - Support modifying the charset and collation using the `ALTER DATABASE` statement [#10393](https://github.com/pingcap/tidb/pull/10393)
-    - Support splitting Regions based on the index and range of the specified table  to relieve hotspot issues [#10203](https://github.com/pingcap/tidb/pull/10203)
+    - Support splitting Regions based on the index and range of the specified table to relieve hotspot issues [#10203](https://github.com/pingcap/tidb/pull/10203)
     - Prohibit modifying the precision of the decimal column using the `alter table` statement [#10433](https://github.com/pingcap/tidb/pull/10433)
     - Fix the restriction for expressions and functions in hash partition [#10273](https://github.com/pingcap/tidb/pull/10273)
     - Fix the issue that adding indexes in a table that contains partitions will in some cases cause TiDB panic [#10475](https://github.com/pingcap/tidb/pull/10475)

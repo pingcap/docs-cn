@@ -14,7 +14,7 @@ DM supports merging and migrating the data of multiple upstream sharded tables i
 
 > **Note:**
 >
-> - To merge and migrate data from sharded tables,  you must set `shard-mode` in the task configuration file. 
+> - To merge and migrate data from sharded tables, you must set `shard-mode` in the task configuration file.
 > - DM uses the pessimistic mode by default for the merge of the sharding support feature. (If there is no special description in the document, use the pessimistic mode by default.)
 > - It is not recommended to use this mode if you do not understand the principles and restrictions of the optimistic mode. Otherwise, it may cause serious consequences such as migration interruption and even data inconsistency.
 

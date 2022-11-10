@@ -263,7 +263,7 @@ The following PD configuration items can be modified dynamically:
 | `schedule.split-merge-interval` | Determines the time interval of performing split and merge operations on the same Region |
 | `schedule.max-snapshot-count` | Determines the maximum number of snapshots that a single store can send or receive at the same time |
 | `schedule.max-pending-peer-count` | Determines the maximum number of pending peers in a single store |
-| `schedule.max-store-down-time` | The downtime after which PD judges that the disconnected store can not be recovered |
+| `schedule.max-store-down-time` | The downtime after which PD judges that the disconnected store cannot be recovered |
 | `schedule.leader-schedule-policy` | Determines the policy of Leader scheduling |
 | `schedule.leader-schedule-limit` | The number of Leader scheduling tasks performed at the same time |
 | `schedule.region-schedule-limit` | The number of Region scheduling tasks performed at the same time |

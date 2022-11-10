@@ -100,7 +100,7 @@ After the preceding configuration is done, when you deploy, scale out, scale in,
 
 2. Add other configuration items in the `grafana_servers` configuration.
 
-    The following is a configuration example of the `[log.file] level`  and `smtp` fields in the topology.yaml file:
+    The following is a configuration example of the `[log.file] level` and `smtp` fields in the topology.yaml file:
 
     ```
     # # Server configs are used to specify the configuration of Grafana Servers.

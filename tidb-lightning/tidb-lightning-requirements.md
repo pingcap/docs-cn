@@ -39,7 +39,7 @@ Based on the import mode and features enabled, the target database users should 
       <td></td>
    </tr>
    <tr>
-      <td  rowspan="3">Physical Import Mode</td>
+      <td rowspan="3">Physical Import Mode</td>
       <td>mysql.tidb</td>
       <td>SELECT</td>
       <td></td>
