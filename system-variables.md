@@ -3767,7 +3767,7 @@ For details, see [Identify Slow Queries](/identify-slow-queries.md).
 - Scope: SESSION | GLOBAL
 - Default value: `8192`
 - Range: `[1, 18446744073709551616]`
-- When Fine Grained Shuffle is enabled, the window function pushed down to TiFlash can be executed in parallel. This variable controls the batch size of the data sent by the sender. The sender will send data once the cumulative number of rows exceeds this value.
+- When Fine Grained Shuffle is enabled, the window function pushed down to TiFlash can be executed in parallel. This variable controls the batch size of the data sent by the sender.
 - Impact on performance: set a reasonable size according to your business requirements. Improper setting affects the performance. If the value is set too small, for example `1`,  it causes one network transfer per Block. If the value is set too large, for example, the total number of rows of the table, it causes the receiving end to spend most of the time waiting for data, and the piplelined computation can not work. To set a proper value, you can observe the distribution of the number of rows received by the TiFlash receiver. If most threads receive only a few rows, for example a few hundred, you can increase this value to reduce the network overhead.
 
 ### `tiflash_fine_grained_shuffle_stream_count` <span class="version-mark">New in v6.2.0</span>
