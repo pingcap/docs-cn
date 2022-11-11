@@ -15,7 +15,7 @@ TiDB 版本：6.4.0-DMR
 - 支持通过 FLASHBACK CLUSTER 命令将集群快速回退到过去某一个指定的时间点
 - 支持 TiDB 全局内存限制
 - TiDB 分区表兼容 Linear Hash 分区。
-- 支持高性能、全局单调递增的 AUTO_INCREMENT 列属性。
+- 支持高性能、全局单调递增的 [`AUTO_INCREMENT`](/auto-increment.md#mysql-兼容模式) 列属性。
 - 支持对 JSON 类型中的 Array 数据做范围选择。
 - 磁盘故障、I/O 无响应等极端情况下的故障恢复加速。
 - 增加了动态规划算法来决定表的连接顺序。
@@ -113,7 +113,7 @@ TiDB 版本：6.4.0-DMR
 
 * 磁盘故障、I/O 无响应等极端情况下的故障恢复加速 [#13648](https://github.com/tikv/tikv/issues/13648) @[LykxSassinator](https://github.com/LykxSassinator) **tw@qiancai**
 
-    数据库的可用性是企业用户最为关注的指标之一，但是在复杂的硬件环境下，如何快速检测故障，快速恢复一直是数据库面临的挑战之一。TiDB 在 6.4 版本，全面优化了 TiKV 节点的状态检测机制，即使在磁盘故障，I/O 无响应等极端情况，依然可以快速上报节点状态，同时搭配主动唤醒机制，提前发起选主，加速集群自愈。通过这次优化，TiDB 在磁盘故障场景下，集群恢复时间可以缩短 50% 左右。
+   数据库的可用性是企业用户最为关注的指标之一，但是在复杂的硬件环境下，如何快速检测故障并恢复一直是数据库面临的挑战之一。TiDB v6.4 全面优化了 TiKV 节点的状态检测机制。即使在磁盘故障或 I/O 无响应等极端情况下，TiDB 依然可以快速上报节点状态，同时搭配主动唤醒机制，提前发起 Leader 选举，加速集群自愈。通过这次优化，TiDB 在磁盘故障场景下，集群恢复时间可以缩短 50% 左右。
 
 * TiDB 全局内存控制 [#37816](https://github.com/pingcap/tidb/issues/37816) @[wshwsh12](https://github.com/wshwsh12) **tw@TomShawn**
 
@@ -190,9 +190,11 @@ TiDB 版本：6.4.0-DMR
 
 * 支持对数据库用户增加额外说明 [#38172](https://github.com/pingcap/tidb/issues/38172) @[CbcWestwolf](https://github.com/CbcWestwolf) **tw@qiancai**
 
-    新版本扩展了 `Create User` 和 `Alter User` 的语法，能够为数据库用户添加额外的说明。 说明支持两种格式，利用 `COMMENT` 添加一段文本，或者用 `ATTRIBUTE` 添加一组 JSON 格式的结构化属性。 这个特性加强了 TiDB 对 MySQL 的语法的兼容性， 使得 TiDB 更容易融入 MySQL 生态的工具或平台。
-
-    [用户文档](/information-schema/information-schema-user-attributes.md)
+    在 TiDB v6.4 中，你可以通过 [`CREATE USER`](/sql-statements/sql-statement-create-user.md) 或 [`ALTER USER`](/sql-statements/sql-statement-alter-user.md) 语句为数据库用户添加额外的说明信息。TiDB 提供了两种说明格式，你可以通过 `COMMENT` 添加一段文本注释，也可以通过 `ATTRIBUTE` 添加一组 JSON 格式的结构化属性。 
+    
+    此外，TiDB v6.4 新增了 [USER_ATTRIBUTES](/information-schema/information-schema-user-attributes.md) 表。你可以在该表中查看用户的注释和属性信息。
+    
+    这个特性提升了 TiDB 对 MySQL 的语法的兼容性， 使得 TiDB 更容易融入 MySQL 生态的工具或平台。
 
 ### 备份和恢复
 
