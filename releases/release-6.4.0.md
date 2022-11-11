@@ -12,8 +12,8 @@ TiDB 版本：6.4.0-DMR
 
 在 6.4.0-DMR 版本中，你可以获得以下关键特性：
 
-- 支持通过 [`FLASHBACK CLUSTER TO TIMESTAMP`](/sql-statements/sql-statement-flashback-to-timestamp.md) 命令将集群快速回退到特定的时间点
-- 支持 TiDB 全局内存限制
+- 支持通过 [`FLASHBACK CLUSTER TO TIMESTAMP`](/sql-statements/sql-statement-flashback-to-timestamp.md) 命令将集群快速回退到特定的时间点。
+- 支持 TiDB 全局内存限制。
 - TiDB 分区表兼容 Linear Hash 分区。
 - 支持高性能、全局单调递增的 [`AUTO_INCREMENT`](/auto-increment.md#mysql-兼容模式) 列属性。
 - 支持对 JSON 类型中的 Array 数据做范围选择。
@@ -23,8 +23,9 @@ TiDB 版本：6.4.0-DMR
 - 集群诊断功能 GA。
 - TiFlash 静态加密支持国密算法 SM4。
 - 支持通过 SQL 语句对指定 Partition 的 TiFlash 副本立即触发物理数据整理 (Compaction)。
-- 支持基于 AWS EBS snapshot 的集群备份和恢复。
-- 支持在分库分表合并迁移场景中标记下游表中的记录来自上游哪个分库/分表/数据源。
+- 支持[基于 AWS EBS snapshot 的集群备份和恢复](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.4/backup-to-aws-s3-by-snapshot)。
+- 支持在分库分表合并迁移场景中[标记下游表中的数据来自上游哪个分库、分表和数据源](/dm/dm-key-features.md#提取分库分表数据源信息写入合表)。
+
 ## 新功能
 
 ### SQL
@@ -179,19 +180,19 @@ TiDB 版本：6.4.0-DMR
 
 * 支持对 JSON 类型中的 Array 数据做范围选择 [#13644](https://github.com/tikv/tikv/issues/13644) @[YangKeao](https://github.com/YangKeao) **tw@qiancai**
 
-    从 v6.4.0 起，TiDB 支持 [MySQL 兼容的范围选择语法](https://dev.mysql.com/doc/refman/8.0/en/json.html#json-paths)。 
+    从 v6.4.0 起，TiDB 支持 [MySQL 兼容的范围选择语法](https://dev.mysql.com/doc/refman/8.0/en/json.html#json-paths)。
 
-        - 通过关键字 `to`，你可以指定元素起始和结束的位置，并选择 Array 中连续范围的元素，起始位置记为 `0`。 例如，使用 `$[0 to 2]` 可以选择 Array 中的前三个元素。 
-        - 通过关键字 `last`，你可以指定 Array 中最后一个元素的位置，实现从右到左的位置设定。例如，使用 `$[last-2 to last]` 可以选择 Array 中的最后三个元素。
-        
+    - 通过关键字 `to`，你可以指定元素起始和结束的位置，并选择 Array 中连续范围的元素，起始位置记为 `0`。 例如，使用 `$[0 to 2]` 可以选择 Array 中的前三个元素。
+    - 通过关键字 `last`，你可以指定 Array 中最后一个元素的位置，实现从右到左的位置设定。例如，使用 `$[last-2 to last]` 可以选择 Array 中的最后三个元素。
+
     该特性简化了 SQL 的编写过程，进一步提升了 JSON 类型的兼容能力，降低了 MySQL 应用向 TiDB 迁移的难度。
 
 * 支持对数据库用户增加额外说明 [#38172](https://github.com/pingcap/tidb/issues/38172) @[CbcWestwolf](https://github.com/CbcWestwolf) **tw@qiancai**
 
-    在 TiDB v6.4 中，你可以通过 [`CREATE USER`](/sql-statements/sql-statement-create-user.md) 或 [`ALTER USER`](/sql-statements/sql-statement-alter-user.md) 语句为数据库用户添加额外的说明信息。TiDB 提供了两种说明格式，你可以通过 `COMMENT` 添加一段文本注释，也可以通过 `ATTRIBUTE` 添加一组 JSON 格式的结构化属性。 
-    
+    在 TiDB v6.4 中，你可以通过 [`CREATE USER`](/sql-statements/sql-statement-create-user.md) 或 [`ALTER USER`](/sql-statements/sql-statement-alter-user.md) 语句为数据库用户添加额外的说明信息。TiDB 提供了两种说明格式，你可以通过 `COMMENT` 添加一段文本注释，也可以通过 `ATTRIBUTE` 添加一组 JSON 格式的结构化属性。
+
     此外，TiDB v6.4 新增了 [USER_ATTRIBUTES](/information-schema/information-schema-user-attributes.md) 表。你可以在该表中查看用户的注释和属性信息。
-    
+
     这个特性提升了 TiDB 对 MySQL 的语法的兼容性， 使得 TiDB 更容易融入 MySQL 生态的工具或平台。
 
 ### 备份和恢复
@@ -216,29 +217,29 @@ TiDB 版本：6.4.0-DMR
 * 优化 DM 的前置检查项，将部分必须通过项改为非必须通过项 [#7333](https://github.com/pingcap/tiflow/issues/7333) @[lichunzhu](https://github.com/lichunzhu) **tw@shichun-0415**
 
     为了使数据迁移任务顺利进行，DM 在启动迁移任务时会自动触发[任务前置检查](/dm/dm-precheck.md)，并返回检查结果。只有当前置检查通过后，DM 才开始执行迁移任务。
-    
+
     在 v6.4.0，DM 将如下三个检查项由必须通过项改为非必须通过项，提升了前置检查通过率：
-    
+
     - 检查字符集是否存在兼容性差异
     - 检查上游表中是否存在主键或唯一键约束
     - 数据库主从配置，上游数据库必须设置数据库 ID `server_id`
 
 * 增量迁移任务支持 binlog position 和 GTID 作为选配参数 [#7393](https://github.com/pingcap/tiflow/issues/7393) @[GMHDBJD](https://github.com/GMHDBJD) **tw@shichun-0415**
 
-    v6.4.0 之前，只配置增量迁移任务时，也需要传入 binlog position 或者 GTID 才能启动任务，配置复杂。自 v6.4.0 起，如果只需要执行增量迁移任务，则可以不指定 binlog position 或者 GTID 的参数取值，DM 将默认按任务的启动时间从上游获取该时间之后的 binlog file，并将这些增量数据迁移到下游 ，降低了使用时的理解成本和配置复杂度。
-    
+    v6.4.0 之前，只配置增量迁移任务时，需要传入 binlog position 或者 GTID 才能启动任务，配置复杂，用户理解成本高。自 v6.4.0 起，如果只需要执行增量迁移任务，则可以不指定 binlog position 或者 GTID 的参数取值，DM 将默认按任务的启动时间从上游获取该时间之后的 binlog file，并将这些增量数据迁移到下游 ，降低了使用时的理解成本和配置复杂度。
+
     更多信息，请参考 [DM 任务完整配置文件介绍](/dm/task-configuration-file-full.md)。
 
 * DM 任务增加一些状态信息的展示 [#7343](https://github.com/pingcap/tiflow/issues/7343) @[okJiang](https://github.com/okJiang) **tw@shichun-0415**
 
     DM 数据迁移任务提供了性能指标和进度指标，方便用户了解和把控当前任务进度，同时为问题排查提供参考信息。
-    
-    在 v6.4.0，DM 新增了几个状态信息，可以方便用户更直观了解迁移性能和进度：
-    
+
+    在 v6.4.0，DM 新增了几个状态信息，方便用户更直观了解迁移性能和进度：
+
     * 增加了 DM 任务当前数据导出、数据导入的性能，单位 bytes/s。
     * 将当前 DM 写入目标库的性能指标命名 从 TPS 改为 RPS （rows/second）。
     * 新增了 DM 全量任务数据导出的进度展示。
-    
+
     关于这些指标的详细介绍，请参考 [TiDB Data Migration 查询状态](/dm/dm-query-status.md)。
 
 ### 数据共享与订阅
