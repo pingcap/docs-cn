@@ -12,7 +12,7 @@ TiDB 版本：6.4.0-DMR
 
 在 6.4.0-DMR 版本中，你可以获得以下关键特性：
 
-- 支持通过 FLASHBACK CLUSTER 命令将集群快速回退到过去某一个指定的时间点
+- 支持通过 [`FLASHBACK CLUSTER TO TIMESTAMP`](/sql-statements/sql-statement-flashback-to-timestamp.md) 命令将集群快速回退到特定的时间点
 - 支持 TiDB 全局内存限制
 - TiDB 分区表兼容 Linear Hash 分区。
 - 支持高性能、全局单调递增的 [`AUTO_INCREMENT`](/auto-increment.md#mysql-兼容模式) 列属性。
@@ -37,9 +37,9 @@ TiDB 版本：6.4.0-DMR
 
     [用户文档](/sql-statements/sql-statement-alter-table-compact.md#对分区表中指定分区的-tiflash-副本进行数据整理)
 
-* 支持通过 FLASHBACK CLUSTER 命令将集群快速回退到过去某一个指定的时间点 [#37197](https://github.com/pingcap/tidb/issues/37197) [#13303](https://github.com/tikv/tikv/issues/13303)  @[Defined2014](https://github.com/Defined2014) @[bb7133](https://github.com/bb7133) @[JmPotato](https://github.com/JmPotato) @[Connor1996](https://github.com/Connor1996) @[HuSharp](https://github.com/HuSharp) @[CalvinNeo](https://github.com/CalvinNeo) **tw@Oreoxmt**
+* 支持通过 `FLASHBACK CLUSTER TO TIMESTAMP` 命令将集群快速回退到特定的时间点（实验特性）[#37197](https://github.com/pingcap/tidb/issues/37197) [#13303](https://github.com/tikv/tikv/issues/13303)  @[Defined2014](https://github.com/Defined2014) @[bb7133](https://github.com/bb7133) @[JmPotato](https://github.com/JmPotato) @[Connor1996](https://github.com/Connor1996) @[HuSharp](https://github.com/HuSharp) @[CalvinNeo](https://github.com/CalvinNeo) **tw@Oreoxmt**
 
-    FLASHBACK CLUSTER 支持在 Garbage Collection (GC) life time 时间内，快速回退整个集群到指定的时间点。使用该特性可以轻松快速撤消 DML 误操作，例如，用户误执行了没有 WHERE 子句的 DELETE，FLASHBACK CLUSTER 能够在几分钟内回退原数据库集群到指点时间点。该特性不依赖于数据库备份，支持在时间线上反复回退以确定特定数据更改发生的时间。FLASHBACK CLUSTER 不能替代数据库备份。
+    `FLASHBACK CLUSTER TO TIMESTAMP` 支持在 Garbage Collection (GC) life time 内快速回退整个集群到指定的时间点。使用该特性可以快速撤消 DML 误操作。例如，在误执行了没有 `WHERE` 子句的 `DELETE` 后，使用 `FLASHBACK CLUSTER TO TIMESTAMP` 能够在几分钟内将集群数据恢复到指定的时间点。该特性不依赖于数据库备份，并支持在时间线上多次回退以确定特定数据更改发生的时间。需要注意的是，`FLASHBACK CLUSTER TO TIMESTAMP` 不能替代数据库备份。
 
     [用户文档](/sql-statements/sql-statement-flashback-to-timestamp.md)
 
@@ -85,9 +85,9 @@ TiDB 版本：6.4.0-DMR
 
     [用户文档](/system-variables.md#tidb-opt-prefix-index-single-scan-从-v640-版本开始引入)
 
-* 增强了 TiDB Chunk 复用机制 [#38606](https://github.com/pingcap/tidb/issues/38606) @[keeplearning20221](https://github.com/keeplearning20221) **tw@Oreoxmt**
+* 增强 TiDB Chunk 复用机制 [#38606](https://github.com/pingcap/tidb/issues/38606) @[keeplearning20221](https://github.com/keeplearning20221) **tw@Oreoxmt**
 
-    在之前的版本中， TiDB 只在 writechunk 函数中复用 chunk。 在 v6.4.0 版本中，将 chunk 复用机制扩展到执行函数中，通过复用 chunk 减少 TiDB 申请释放内存频率，进而提升部分场景下 SQL 执行效率。目前 Chunk 复用由变量 [`tidb_enable_reuse_chunk`]控制。
+    在之前的版本中，TiDB 只在 `writechunk` 函数中复用 Chunk。TiDB v6.4.0 扩展 Chunk 复用机制到执行函数中，通过复用 Chunk 减少 TiDB 申请释放内存频率，进而提升部分场景下的 SQL 查询执行效率。你可以通过系统变量 [`tidb_enable_reuse_chunk`](/system-variable.md#tidb_enable_reuse_chunk-从-v640-版本开始引入) 来控制是否启用 Chunk 对象复用，默认为开启。
 
 * 引入新的优化器提示 `NO_DECORRELATE` 来控制关联优化的解除 [#37789](https://github.com/pingcap/tidb/issues/37789) @[time-and-fate](https://github.com/time-and-fate) **tw@TomShawn**
 
