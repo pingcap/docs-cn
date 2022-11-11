@@ -309,9 +309,9 @@ mysql> SELECT * FROM t1;
 - 作用域：GLOBAL
 - 是否持久化到集群：否
 - 类型：整数
-- 默认值：`0`
+- 默认值：`151`
 - 取值范围：`[0, 100000]`
-- 该变量表示 TiDB 实例允许的最大连接数。
+- 该变量表示 TiDB 实例允许的最大连接数。该变量为 noop 变量，设置该变量值无效。若要设置 TiDB 实例允许的最大连接数，可通过 TiDB 配置文件设置 [`max-server-connections`](/tidb-configuration-file.md#max-server-connections)。
 - 该变量值为 `0` 时表示无限制。
 
 ### `max_execution_time`
