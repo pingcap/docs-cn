@@ -73,9 +73,9 @@ TiDB 版本：6.4.0-DMR
 
     随着 Coprocessor Task 任务数增加，TiDB 将结合 TiKV 处理速度自动增加任务并发度（调整  [`tidb_distsql_scan_concurrency`](/system-variables.md#tidb_distsql_scan_concurrency) ），减少 Coprocessor Task 任务排队，降低延迟。
 
-* 增加了动态规划算法来决定表的连接顺序 [#18969](https://github.com/pingcap/tidb/issues/18969) @[winoros](https://github.com/winoros) **tw@qiancai**
+* 新增动态规划算法来决定表的连接顺序 [#18969](https://github.com/pingcap/tidb/issues/18969) @[winoros](https://github.com/winoros) **tw@qiancai**
 
-    在之前的版本中， TiDB 采用贪心算法来决定表的连接顺序。 在版本 v6.4.0 中， 优化器引入了[动态规划算法](/join-reorder.md#join-reorder-算法实例)，相比贪心算法， 动态规划算法会枚举更多可能的连接顺序，进而有机会发现更好的执行计划，提升部分场景下 SQL 执行效率。
+    在之前的版本中，TiDB 采用贪心算法来决定表的连接顺序。 在 v6.4.0 中， 优化器引入了[动态规划算法](join-reorder#join-reorder-动态规划算法实例)。相比贪心算法，动态规划算法会枚举更多可能的连接顺序，进而有机会发现更好的执行计划，提升部分场景下 SQL 执行效率。
 
     由于动态规划算法的枚举过程可能消耗更多的时间，目前 Join Reorder 算法由变量 [`tidb_opt_join_reorder_threshold`](/system-variables.md#tidboptjoinreorderthreshold) 控制，当参与 Join Reorder 的节点个数大于该阈值时选择贪心算法，反之选择动态规划算法。
 
@@ -160,7 +160,7 @@ TiDB 版本：6.4.0-DMR
 
     TiDB 的 `information_schema.tiflash_replica` 表中的 `PROGRESS` 字段表示 TiFlash 副本与 TiKV 中对应表数据的同步进度。在之前的版本中，`PROCESS` 字段只显示 TiFlash 副本创建过程中的数据同步进度。在 TiFlash 副本创建完后，当在 TiKV 相应的表中导入新的数据时，该值不会更新数据的同步进度。
 
-    v6.3.0 版本改进了 TiFlash 副本数据同步进度更新机制，在创建 TiFlash 副本后，进行数据导入等操作，TiFlash 副本需要和 TiKV 数据进行同步时，[`information_schema.tiflash_replica`](/information-schema/information-schema-tiflash-replica.md) 表中的 `PROGRESS` 值将会更新，显示实际的数据同步进度。通过此优化，你可以方便地查看 TiFlash 数据同步的实际进度。
+    v6.4.0 版本改进了 TiFlash 副本数据同步进度更新机制。在创建 TiFlash 副本后，进行数据导入等操作，TiFlash 副本需要和 TiKV 数据进行同步时，[`information_schema.tiflash_replica`](/information-schema/information-schema-tiflash-replica.md) 表中的 `PROGRESS` 值将会更新，显示实际的数据同步进度。通过此优化，你可以方便地查看 TiFlash 数据同步的实际进度。
 
     [用户文档](/information-schema/information-schema-tiflash-replica.md)
 
@@ -182,7 +182,12 @@ TiDB 版本：6.4.0-DMR
 
 * 支持对 JSON 类型中的 Array 数据做范围选择 [#13644](https://github.com/tikv/tikv/issues/13644) @[YangKeao](https://github.com/YangKeao) **tw@qiancai**
 
-    从 v6.4.0 起，TiDB 支持 [MySQL 兼容的范围选择语法](https://dev.mysql.com/doc/refman/8.0/en/json.html#json-paths)。 通过关键字 `to`，你可以指定元素起始和结束的位置，并选择 Array 中连续范围的元素，起始位置记为 `0`。 例如，使用 `$[0 to 2]` 可以选择 Array 中的前三个元素。 通过关键字 `last`，你可以指定 Array 中最后一个元素的位置，实现从右到左的位置设定。例如，使用 `$[last-2 to last]` 可以选择 Array 中的最后三个元素。 该特性简化了 SQL 的编写过程，进一步提升了 JSON 类型的兼容能力，降低了 MySQL 应用向 TiDB 迁移的难度。
+    从 v6.4.0 起，TiDB 支持 [MySQL 兼容的范围选择语法](https://dev.mysql.com/doc/refman/8.0/en/json.html#json-paths)。 
+
+        - 通过关键字 `to`，你可以指定元素起始和结束的位置，并选择 Array 中连续范围的元素，起始位置记为 `0`。 例如，使用 `$[0 to 2]` 可以选择 Array 中的前三个元素。 
+        - 通过关键字 `last`，你可以指定 Array 中最后一个元素的位置，实现从右到左的位置设定。例如，使用 `$[last-2 to last]` 可以选择 Array 中的最后三个元素。
+        
+    该特性简化了 SQL 的编写过程，进一步提升了 JSON 类型的兼容能力，降低了 MySQL 应用向 TiDB 迁移的难度。
 
 * 支持对数据库用户增加额外说明 [#38172](https://github.com/pingcap/tidb/issues/38172) @[CbcWestwolf](https://github.com/CbcWestwolf) **tw@qiancai**
 
