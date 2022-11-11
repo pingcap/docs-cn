@@ -219,9 +219,9 @@ TiDB 版本：6.4.0-DMR
     
     在 v6.4.0，DM 将如下三个检查项由必须通过项改为非必须通过项，提升了前置检查通过率：
     
-        - 检查字符集是否存在兼容性差异
-        - 检查上游表中是否存在主键或唯一键约束
-        - 数据库主从配置，上游数据库必须设置数据库 ID `server_id`
+    - 检查字符集是否存在兼容性差异
+    - 检查上游表中是否存在主键或唯一键约束
+    - 数据库主从配置，上游数据库必须设置数据库 ID `server_id`
 
 * 增量迁移任务支持 binlog position 和 GTID 作为选配参数 [#7393](https://github.com/pingcap/tiflow/issues/7393) @[GMHDBJD](https://github.com/GMHDBJD) **tw@shichun-0415**
 
