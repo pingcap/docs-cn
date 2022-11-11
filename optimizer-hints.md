@@ -445,6 +445,78 @@ WITH CTE1 AS (SELECT * FROM t1), CTE2 AS (WITH CTE3 AS (SELECT /*+ MERGE() */ * 
 > 
 > 当 CTE 引用次数过多时，查询性能可能低于默认的物化方式。
 
+## 全局生效的 Hint
+
+这类 Hint 和[视图](/views.md)有关，可以实现在查询中定义的 Hint 能够在视图的内部生效。
+
+首先给需要用到 hint 的查询块部分定义一个 [`QB_NAME`](/optimizer-hints.md#qb_name) hint 来对视图内部的查询块进行重命名，其中针对视图的 `QB_Name` hint 的概念和之前相同，只是在语法上进行了相应的拓展。
+从 `QB_NAME(QB)` 拓展为 `QB_NAME(QB, ViewName@QueryBlockName [.ViewName@QueryBlockName .ViewName@QueryBlockName ...])`。例如：
+
+{{< copyable "sql" >}}
+
+```sql
+SELECT /* 注释：当前查询块的名字为默认的 @SEL_1 */ * FROM v2;
+
+-- 对于视图 v2 的第一个查询块可以声明为：qb_name(v2_1, v2@SEL_1 .@SEL_1)
+-- 对于视图 v2 的第二个查询块可以声明为：qb_name(v2_2, v2@SEL_1 .@SEL_2)
+CREATE VIEW v2 AS /* 注释：对于视图 v2 来说，从上面的语句开始的前缀视图列表是 v2@SEL_1 */
+    SELECT /* 注释：对于视图 v2 来说，当前查询块的默认名字为 @SEL_1。
+              因此当前查询块的视图列表是 v2@SEL_1 .@SEL_1 */ * FROM t JOIN (
+        SELECT /* 注释：对于视图 v2 来说，当前查询块的默认名字为 @SEL_2。
+              因此当前查询块的视图列表是 v2@SEL_1 .@SEL_2 */ count(*) 
+        FROM t1 JOIN v1) tt;
+
+-- 对于视图 v1 的第一个查询块可以声明为：qb_name(v2_1, v2@SEL_1 .v1@SEL_2 .@SEL_1)
+-- 对于视图 v1 的第二个查询块可以声明为：qb_name(v2_2, v2@SEL_1 .v1@SEL_2 .@SEL_2)
+CREATE VIEW v1 AS /* 注释：对于视图 v1 来说，从上面的语句开始的前缀视图列表是 v2@SEL_1 .v1@SEL_2 */
+SELECT /* 注释：对于视图 v1 来说，当前查询块的默认名字为 @SEL_1。
+              因此当前查询块的视图列表是 v2@SEL_1 .@SEL_2 .v1@SEL_1 */ * FROM t JOIN (
+    SELECT /* 注释：对于视图 v1 来说，当前查询块的默认名字为 @SEL_2。
+              因此当前查询块的视图列表是 v2@SEL_1 .@SEL_2 .v1@SEL_2 */ count(*) 
+    FROM t1 JOIN v1) tt;
+```
+
+> **注意：**
+>
+> 在定义和视图相关的 `QB_NAME` hint 时需要注意：
+>
+> - @SEL_1 是可以默认省略的，但是其他 query block name 是不能被省略的，即对于上面的例子:
+>   - 视图 v2 的第一个查询块可以声明为: qb_name(v2_1, v2)
+>   - 视图 v2 的第二个查询块可以声明为：qb_name(v2_2, v2.@SEL_2)
+>   - 视图 v1 的第一个查询块可以声明为：qb_name(v2_1, v2.v1@SEL_2)
+>   - 视图 v1 的第二个查询块可以声明为：qb_name(v2_2, v2.v1@SEL_2 .@SEL_2)
+> - 跟在 @QueryBlockName 后面的 `.` 必须要和前面的部分留有空格，否则之后的部分会被当作 QueryBlockName 的一部分。
+
+在针对视图的查询块部分定义好 `QB_NAME` hint 后，我们便可以用定义好地查询块名字来使用[查询块范围生效的 Hint](/optimizer-hints.md#查询块范围生效的-hint)，使其能够在视图内部生效。例如：
+
+{{< copyable "sql" >}}
+
+```sql
+-- 对于视图 v2 的第一个查询块可以声明为：qb_name(v2_1, v2@SEL_1 .@SEL_1)
+-- 对于视图 v2 的第二个查询块可以声明为：qb_name(v2_2, v2@SEL_1 .@SEL_2)
+CREATE VIEW v2 AS
+    SELECT * FROM t JOIN (
+        SELECT  count(*) FROM t1 JOIN v1) tt;
+
+-- 对于视图 v1 的第一个查询块可以声明为：qb_name(v2_1, v2@SEL_1 .v1@SEL_2 .@SEL_1)
+-- 对于视图 v1 的第二个查询块可以声明为：qb_name(v2_2, v2@SEL_1 .v1@SEL_2 .@SEL_2)
+CREATE VIEW v1 AS
+SELECT * FROM t JOIN (
+    SELECT count(*) FROM t1 JOIN v1) tt;
+
+-- 指定视图 v2 中第一个查询块相关的 hint
+SELECT /*+ qb_name(v2_1, v2@SEL_1 .@SEL_1) merge_join(t@qb_v2_1) */ * FROM v2;
+
+-- 指定视图 v2 中第二个查询块相关的 hint
+SELECT /*+ qb_name(v2_2, v2@SEL_1 .@SEL_2) merge_join(t1@qb_v2_2) stream_agg(@qb_v2_2) */ * FROM v2;
+
+-- 指定视图 v1 中第一个查询块相关的 hint
+SELECT /*+ qb_name(v2_1, v2@SEL_1 .v1@SEL_2 .@SEL_1) hash_join(t@qb_v1_1) */ * FROM v2;
+
+-- 指定视图 v1 中第二个查询块相关的 hint
+SELECT /*+ qb_name(v2_2, v2@SEL_1 .v1@SEL_2 .@SEL_2) hash_join(t1@qb_v1_2) hash_agg(@qb_v1_2) */ * FROM v2;
+```
+
 ## 查询范围生效的 Hint
 
 这类 Hint 只能跟在语句中**第一个** `SELECT`、`UPDATE` 或 `DELETE` 关键字的后面，等同于在当前这条查询运行时对指定的系统变量进行修改，其优先级高于现有系统变量的值。
