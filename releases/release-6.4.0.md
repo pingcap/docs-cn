@@ -61,11 +61,9 @@ TiDB 版本：6.4.0-DMR
 
 * 集群诊断功能 GA [#1438](https://github.com/pingcap/tidb-dashboard/issues/1438) @[Hawkson-jee](https://github.com/Hawkson-jee) **tw@shichun-0415**
 
-    集群诊断功能是在指定的时间范围内，对集群可能存在的问题进行诊断，并将诊断结果和一些集群相关的负载监控信息汇总成一个诊断报告。诊断报告是网页形式，通过浏览器保存后可离线浏览和传阅。
+    [集群诊断功能](/dashboard/dashboard-diagnostics-access.md)是在指定的时间范围内，对集群可能存在的问题进行诊断，并将诊断结果和一些集群相关的负载监控信息汇总成一个[诊断报告](/dashboard/dashboard-diagnostics-report.md)。诊断报告是网页形式，通过浏览器保存后可离线浏览和传阅。
 
     用户可以通过该报告快速了解集群内的基本诊断信息，包括负载、组件、耗时和配置信息。若用户的集群存在一些常见问题，在[诊断信息](/dashboard/dashboard-diagnostics-report.md#诊断信息)部分可以了解 TiDB 内置自动诊断的结果。
-
-    详细内容见[用户文档](/dashboard/dashboard-diagnostics-access.md)
 
 ### 性能
 
@@ -205,41 +203,51 @@ TiDB 版本：6.4.0-DMR
     - 备份的影响降到最小，如备份对 QPS 和事务耗时影响小于 5%，不占用集群 CPU 以及内存。
     - 快速备份和恢复，比如 1 小时内完成备份，2 小时内完成恢复。
 
-    [用户文档](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.4/backup-to-aws-s3-by-snapshot)
+    更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.4/backup-to-aws-s3-by-snapshot)。
 
 ### 数据迁移
 
-* 支持在分库分表合并迁移场景，下游合表支持增加扩展列并赋值，用于标记下游表中的记录来自上游哪个分库/分表/数据源。[#37797](https://github.com/pingcap/tidb/issues/37797) @[lichunzhu](https://github.com/lichunzhu) **tw@shichun-0415**
+* 支持迁移过程中对目标表增加扩展列并进行赋值，用于标识上游数据源信息 [#37797](https://github.com/pingcap/tidb/issues/37797) @[lichunzhu](https://github.com/lichunzhu) **tw@shichun-0415**
 
-    在上游分库分表合并到 TiDB 的场景，用户可以在目标表手动额外增加几个字段（扩展列），并在配置 DM 任务时，对这几个扩展列赋值，如赋予上游分库分表的名称，则通过 DM 写入到下游的记录会带上上游分库分表的名称，在一些数据异常的场景，用户可以通过该功能快速定位目标表的问题数据时来自于上游哪个分库分表。
+    在上游分库分表合并到 TiDB 的场景，你可以在目标表手动额外增加几个字段（扩展列），并在配置 DM 任务时，对这几个扩展列赋值，如赋予上游分库分表的名称，则通过 DM 写入到下游的记录会包含上游分库分表的名称。在一些数据异常的场景，你可以通过该功能快速定位目标表的问题数据源信息，如该数据来自上游哪个分库，哪个分表。
 
-    [用户文档](/dm/dm-key-features.md#提取分库分表数据源信息写入合表)
+    更多信息，请参考[用户文档](/dm/dm-key-features.md#提取分库分表数据源信息写入合表)。
 
-* 优化 DM 的前置检查项，将部分必须通过项改为非必须通过项。[#7333](https://github.com/pingcap/tiflow/issues/7333) @[lichunzhu](https://github.com/lichunzhu) **tw@shichun-0415**
+* 优化 DM 的前置检查项，将部分必须通过项改为非必须通过项 [#7333](https://github.com/pingcap/tiflow/issues/7333) @[lichunzhu](https://github.com/lichunzhu) **tw@shichun-0415**
 
-    将“检查字符集是否存在兼容性差异”、“检查上游表中是否存在主键或唯一键约束”，“数据库主从配置，上游数据库必须设置数据库 ID server_id” 这 3 个前置检查从必须通过项，改为非必须通过项，提升用户前置检查的通过率。
+    为了使数据迁移任务顺利进行，DM 在启动迁移任务时会自动触发[任务前置检查](/dm/dm-precheck.md)，并返回检查结果。只有当前置检查通过后，DM 才开始执行迁移任务。
+    
+    在 v6.4.0，DM 将如下三个检查项由必须通过项改为非必须通过项，提升了前置检查通过率：
+    
+        - 检查字符集是否存在兼容性差异
+        - 检查上游表中是否存在主键或唯一键约束
+        - 数据库主从配置，上游数据库必须设置数据库 ID `server_id`
 
-    [用户文档](/dm/dm-precheck.md)
+* 增量迁移任务支持 binlog position 和 GTID 作为选配参数 [#7393](https://github.com/pingcap/tiflow/issues/7393) @[GMHDBJD](https://github.com/GMHDBJD) **tw@shichun-0415**
 
-* 配置 DM 增量迁移任务，支持 binlog_name 和 GTID 的参数可作为选配项。[#7393](https://github.com/pingcap/tiflow/issues/7393) @[GMHDBJD](https://github.com/GMHDBJD) **tw@shichun-0415**
-
-    用户只配置 DM 增量迁移任务时，如果不指定 binlog_name 和 GTID 的参数取值，则默认按任务的启动时间去上游获取该时间之后的 binlog file，并将这些增量数据迁移到下游 ，降低了用户的理解成本和配置复杂度。
-
-    [用户文档](/dm/task-configuration-file-full.md)
+    v6.4.0 之前，增量迁移任务需要传入 binlog position 或者 GTID 才能启动，配置复杂。自 v6.4.0 起，如果只需要执行增量迁移任务，则可以不指定 binlog position 或者 GTID 的参数取值，DM 将默认按任务的启动时间从上游获取该时间之后的 binlog file，并将这些增量数据迁移到下游 ，降低了使用时的理解成本和配置复杂度。
+    
+    更多信息，请参考 [DM 任务完整配置文件介绍](/dm/task-configuration-file-full.md)。
 
 * DM 任务增加一些状态信息的展示 [#7343](https://github.com/pingcap/tiflow/issues/7343) @[okJiang](https://github.com/okJiang) **tw@shichun-0415**
 
-    * 增加了 DM 任务当前数据导出、数据导入的性能，单位 bytes/s
-    * 将当前 DM 写入目标库的性能指标命名 从 TPS 改为 RPS （rows/second）
-    * 新增了 DM 全量任务数据导出的进度展示
+    DM 数据迁移任务提供了性能指标和进度指标，方便用户了解和把控当前任务进度，同时为问题排查提供参考信息。
+    
+    在 v6.4.0，DM 新增了几个状态信息，可以方便用户更直观了解迁移性能和进度：
+    
+    * 增加了 DM 任务当前数据导出、数据导入的性能，单位 bytes/s。
+    * 将当前 DM 写入目标库的性能指标命名 从 TPS 改为 RPS （rows/second）。
+    * 新增了 DM 全量任务数据导出的进度展示。
+    
+    关于这些指标的详细介绍，参阅 [TiDB Data Migration 查询状态](/dm/dm-query-status.md)。
 
     [用户文档](/dm/dm-query-status.md)
 
 ### 数据共享与订阅
 
-- TiCDC 支持同步数据到 `3.2.0` 版本的 Kafka **tw@shichun-0415**
+- TiCDC 支持同步数据到 `3.2.0` 版本的 Kafka [#7191](https://github.com/pingcap/tiflow/issues/7191) @[3AceShowHand](https://github.com/3AceShowHand) **tw@shichun-0415**
 
-    TiCDC 下游可支持的 Kafka 的最高版本从 `3.1.0` 变为 `3.2.0`。你可以将通过 TiCDC 将数据同步到不高于 `3.2.0` 版本的 Kafka。
+    TiCDC 下游可支持的 Kafka 的最高版本从 `3.1.0` 变为 `3.2.0`。你可以通过 TiCDC 将数据同步到不高于 `3.2.0` 版本的 Kafka。
 
 ## 兼容性变更
 
