@@ -207,11 +207,11 @@ TiDB 版本：6.4.0-DMR
 
 ### 数据迁移
 
-* 支持迁移过程中对目标表增加扩展列并进行赋值，用于标识上游数据源信息 [#37797](https://github.com/pingcap/tidb/issues/37797) @[lichunzhu](https://github.com/lichunzhu) **tw@shichun-0415**
+* 支持迁移过程中对目标表增加的扩展列进行赋值，用于标识上游数据源信息 [#37797](https://github.com/pingcap/tidb/issues/37797) @[lichunzhu](https://github.com/lichunzhu) **tw@shichun-0415**
 
     在上游分库分表合并到 TiDB 的场景，你可以在目标表手动额外增加几个字段（扩展列），并在配置 DM 任务时，对这几个扩展列赋值，如赋予上游分库分表的名称，则通过 DM 写入到下游的记录会包含上游分库分表的名称。在一些数据异常的场景，你可以通过该功能快速定位目标表的问题数据源信息，如该数据来自上游哪个分库，哪个分表。
 
-    更多信息，请参考[用户文档](/dm/dm-key-features.md#提取分库分表数据源信息写入合表)。
+    更多信息，请参考[提取分库分表数据源信息写入合表](/dm/dm-key-features.md#提取分库分表数据源信息写入合表)。
 
 * 优化 DM 的前置检查项，将部分必须通过项改为非必须通过项 [#7333](https://github.com/pingcap/tiflow/issues/7333) @[lichunzhu](https://github.com/lichunzhu) **tw@shichun-0415**
 
@@ -225,7 +225,7 @@ TiDB 版本：6.4.0-DMR
 
 * 增量迁移任务支持 binlog position 和 GTID 作为选配参数 [#7393](https://github.com/pingcap/tiflow/issues/7393) @[GMHDBJD](https://github.com/GMHDBJD) **tw@shichun-0415**
 
-    v6.4.0 之前，增量迁移任务需要传入 binlog position 或者 GTID 才能启动，配置复杂。自 v6.4.0 起，如果只需要执行增量迁移任务，则可以不指定 binlog position 或者 GTID 的参数取值，DM 将默认按任务的启动时间从上游获取该时间之后的 binlog file，并将这些增量数据迁移到下游 ，降低了使用时的理解成本和配置复杂度。
+    v6.4.0 之前，只配置增量迁移任务时，也需要传入 binlog position 或者 GTID 才能启动任务，配置复杂。自 v6.4.0 起，如果只需要执行增量迁移任务，则可以不指定 binlog position 或者 GTID 的参数取值，DM 将默认按任务的启动时间从上游获取该时间之后的 binlog file，并将这些增量数据迁移到下游 ，降低了使用时的理解成本和配置复杂度。
     
     更多信息，请参考 [DM 任务完整配置文件介绍](/dm/task-configuration-file-full.md)。
 
