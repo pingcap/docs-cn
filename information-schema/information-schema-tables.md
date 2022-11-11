@@ -118,7 +118,7 @@ The description of columns in the `TABLES` table is as follows:
 Most of the information in the table is the same as MySQL. Only two columns are newly defined by TiDB:
 
 * `TIDB_TABLE_ID`: to indicate the internal ID of a table. This ID is unique in a TiDB cluster.
-* `TIDDB_ROW_ID_SHARDING_INFO`: to indicate the sharding type of a table. The possible values are as follows:
+* `TIDB_ROW_ID_SHARDING_INFO`: to indicate the sharding type of a table. The possible values are as follows:
     - `"NOT_SHARDED"`: the table is not sharded.
     - `"NOT_SHARDED(PK_IS_HANDLE)"`: the table that defines an integer Primary Key as its row id is not sharded.
     - `"PK_AUTO_RANDOM_BITS={bit_number}"`: the table that defines an integer Primary Key as its row id is sharded because the Primary Key is assigned with `AUTO_RANDOM` attribute.
