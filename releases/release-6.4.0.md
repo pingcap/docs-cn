@@ -239,9 +239,7 @@ TiDB 版本：6.4.0-DMR
     * 将当前 DM 写入目标库的性能指标命名 从 TPS 改为 RPS （rows/second）。
     * 新增了 DM 全量任务数据导出的进度展示。
     
-    关于这些指标的详细介绍，参阅 [TiDB Data Migration 查询状态](/dm/dm-query-status.md)。
-
-    [用户文档](/dm/dm-query-status.md)
+    关于这些指标的详细介绍，请参考 [TiDB Data Migration 查询状态](/dm/dm-query-status.md)。
 
 ### 数据共享与订阅
 
@@ -363,11 +361,7 @@ TiDB 版本：6.4.0-DMR
 
         - 封装、暴露 Checker 对应的接口，提升各个入口功能组装、调用的灵活性。[#7116](https://github.com/pingcap/tiflow/issues/7116) @[D3Hunter](https://github.com/D3Hunter)
         - 移除 dmctl 中无用的 operate-source update 指令。[#7246](https://github.com/pingcap/tiflow/issues/7246) @[buchuitoudegou](https://github.com/buchuitoudegou)
-        - 解决了 TiDB 不兼容上游数据库的建表 SQL 导致 DM 全量迁移报错的问题。[#37984](https://github.com/pingcap/tidb/issues/37984) @[lance6716](https://github.com/lance6716) **tw@shichun-0415**
-
-        DM 会默认使用上游数据库的建表 SQL 去 TiDB 执行，帮用户创建好目标表。当上游的建表 SQL  TiDB 不兼容时，DM 使用该 SQL 帮用户创建目标表会失败，导致 DM 任务中断。这时候用户可以提前在 TiDB 手动创建好目标表，DM 检查到已存在的目标表时会忽略掉这个建表 SQL 报错，让全量迁移任务继续运行。
-
-        [用户文档](https://github.com/pingcap/docs-cn/pull/11718)
+        - 解决了 TiDB 不兼容上游数据库的建表 SQL 导致 DM 全量迁移报错的问题 [#37984](https://github.com/pingcap/tidb/issues/37984) @[lance6716](https://github.com/lance6716) **tw@shichun-0415**
 
     + TiDB Lightning
 
