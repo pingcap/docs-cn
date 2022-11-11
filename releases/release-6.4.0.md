@@ -378,10 +378,11 @@ TiDB 版本：6.4.0-DMR
     - 修复 CTE 在 union 时可能得到错误结果的问题 [#37928](https://github.com/pingcap/tidb/issues/37928) @[YangKeao](https://github.com/YangKeao)
     - 修复监控 transaction region num panel 信息不准确问题 [#38139](https://github.com/pingcap/tidb/issues/38139) @[jackysp](github.com/jackysp)
     - 修复 [`tidb_constraint_check_in_place_pessimistic`](/system-variables.md#tidb_constraint_check_in_place_pessimistic-从-v630-版本开始引入) 可能影响内部事务问题，修改该变量作用域为 session [#38766](https://github.com/pingcap/tidb/issues/38766)
-- 修复了条件在某些场景下被错误下推 projection 的问题 [#35623](https://github.com/pingcap/tidb/issues/35623)@[Reminiscent](https://github.com/Reminiscent)
-- 修复了 `AND` `OR` 条件的 `isNullRejected` 的错误导致查询结果错误的问题 [#38304]( https://github.com/pingcap/tidb/issues/38304) @[Yisaer](https://github.com/Yisaer)
-- 修复了外连接消除时没有考虑 `GROUP_CONCAT` 内部的 `order by` 导致查询出错的问题 [#18216](https://github.com/pingcap/tidb/issues/18216) @[winoros](https://github.com/winoros) 
-- 修复了错误下推的条件被 join reorder 丢弃后导致查询结果错误的问题 [#38736](https://github.com/pingcap/tidb/issues/38736) @[winoros](https://github.com/winoros) 
+    - 修复了条件在某些场景下被错误下推 projection 的问题 [#35623](https://github.com/pingcap/tidb/issues/35623)@[Reminiscent](https://github.com/Reminiscent)
+    - 修复了 `AND` `OR` 条件的 `isNullRejected` 的错误导致查询结果错误的问题 [#38304]( https://github.com/pingcap/tidb/issues/38304) @[Yisaer](https://github.com/Yisaer)
+    - 修复了外连接消除时没有考虑 `GROUP_CONCAT` 内部的 `order by` 导致查询出错的问题 [#18216](https://github.com/pingcap/tidb/issues/18216) @[winoros](https://github.com/winoros) 
+    - 修复了错误下推的条件被 join reorder 丢弃后导致查询结果错误的问题 [#38736](https://github.com/pingcap/tidb/issues/38736) @[winoros](https://github.com/winoros) 
+
 + TiKV
 
     - 修复了当环境中存在多个 `cgroup`s 和 `mountinfo`s 时的启动异常问题 [#13660](https://github.com/tikv/tikv/issues/13660) @[tabokie](https://github.com/tabokie)
