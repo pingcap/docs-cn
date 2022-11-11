@@ -35,7 +35,7 @@ TiDB 版本：6.4.0-DMR
 
     通过 SQL 语句 `ALTER TABLE table_name COMPACT [PARTITION PartitionNameList] [engine_type REPLICA]`，你可以立即对指定分区的 TiFlash 副本进行数据整理。
 
-    [用户文档](/sql-statements/sql-statement-alter-table-compact.md#alter-table--compact)
+    [用户文档](/sql-statements/sql-statement-alter-table-compact.md#对分区表中指定分区的-tiflash-副本进行数据整理)
 
 * 支持通过 FLASHBACK CLUSTER 命令将集群快速回退到过去某一个指定的时间点 [#37197](https://github.com/pingcap/tidb/issues/37197) [#13303](https://github.com/tikv/tikv/issues/13303)  @[Defined2014](https://github.com/Defined2014) @[bb7133](https://github.com/bb7133) @[JmPotato](https://github.com/JmPotato) @[Connor1996](https://github.com/Connor1996) @[HuSharp](https://github.com/HuSharp) @[CalvinNeo](https://github.com/CalvinNeo) **tw@Oreoxmt**
 
