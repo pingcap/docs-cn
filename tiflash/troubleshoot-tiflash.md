@@ -12,9 +12,9 @@ This section describes some commonly encountered issues when using TiFlash, the 
 
 The issue might occur due to different reasons. It is recommended that you troubleshoot it following the steps below:
 
-1. Check whether your system is CentOS8.
+1. Check whether your system is RedHat Enterprise Linux 8.
 
-     CentOS8 does not have the `libnsl.so` system library. You can manually install it via the following command:
+     RedHat Enterprise Linux 8 does not have the `libnsl.so` system library. You can manually install it via the following command:
 
      {{< copyable "shell-regular" >}}
 
