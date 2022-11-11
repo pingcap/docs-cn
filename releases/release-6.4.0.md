@@ -29,7 +29,7 @@ TiDB 版本：6.4.0-DMR
 
 ### SQL
 
-* 支持通过 SQL 语句对指定 Partition 的 TiFlash 副本立即触发物理数据整理 (Compaction) [#5315](https://github.com/pingcap/tiflash/issues/5315) @[hehechen](https://github.com/hehechen) **tw@qiancai**
+* 支持通过 SQL 语句立即对指定分区的 TiFlash 副本进行物理数据整理 (Compaction) [#5315](https://github.com/pingcap/tiflash/issues/5315) @[hehechen](https://github.com/hehechen) **tw@qiancai**
 
     v6.2.0 版本发布了针对全表的 TiFlash 副本立即触发 [物理数据整理 (Compaction)](/sql-statements/sql-statement-alter-table-compact.md#alter-table--compact) 功能，支持用户自行选择合适的时机、手动执行 SQL 语句来对 TiFlash 中的物理数据立即进行整理，从而减少存储空间占用，并提升查询性能。v6.4.0 版本细化了 TiFlash 副本物理数据整理的粒度，支持对表中的指定 Partition 的 TiFlash 副本立即触发物理数据整理。
 
