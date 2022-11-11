@@ -137,22 +137,17 @@ TiDB 版本：6.4.0-DMR
 
 ### 易用性
 
-* TiKV API V2 GA [#11745](https://github.com/tikv/tikv/issues/11745) @[pingyu](https://github.com/pingyu) **tw@Oreoxmt**
+* TiKV API V2 成为正式功能 [#11745](https://github.com/tikv/tikv/issues/11745) @[pingyu](https://github.com/pingyu) **tw@Oreoxmt**
 
-    在 v6.1.0 之前，TiKV 的 RawKV 接口仅存储客户端传入的原始数据，因此只提供基本的 Key Value 读写能力。此外，由于编码方式不同、数据范围没有隔离，因此在同一个 TiKV 集群中，TiDB、事务 KV、RawKV 无法同时使用，对于不同使用方式并存的场景，必须部署多套集群，增加了机器和部署成本。
+    在 v6.1.0 之前，TiKV 的 RawKV 接口仅存储客户端传入的原始数据，因此只提供基本的 Key-Value 读写能力。此外，由于编码方式不同、数据范围没有隔离等，同一个 TiKV 集群中，TiDB、事务 KV、RawKV 无法同时使用，因此对于不同使用方式并存的场景，必须部署多个集群，增加了机器和部署成本。
 
     TiKV API V2 提供了新的存储格式，包括：
 
     * RawKV 数据以 MVCC 方式存储，记录数据的变更时间戳，并在此基础上提供 Change Data Capture 能力（实验特性，见 [TiKV-CDC](https://github.com/tikv/migration/blob/main/cdc/README.md)）。
     * 数据根据使用方式划分范围，支持单一集群 TiDB、事务 KV、RawKV 应用共存。
-    * 预留 Key Space 字段，可以为多租户等特性提供支持。
+    * 预留 Key Space 字段，为多租户等特性提供支持。
 
-    使用 TiKV API V2 请在 TiKV 的 `[storage]` 配置中增加或修改 `api-version = 2`。详见[用户文档](/tikv-configuration-file.md#api-version-从-v610-版本开始引入)。
-
-    > **警告：**
-    >
-    > - 由于底层存储格式发生了重大变化，因此仅当 TiKV 只有 TiDB 数据时，可以平滑启用或关闭 API V2。其他情况下，需要新建集群，并使用 [TiKV-BR](https://github.com/tikv/migration/blob/main/br/README-cn.md) 进行数据迁移。
-    > - 启用 API V2 后，不能将 TiKV 集群回退到 v6.1.0 之前的版本，否则可能导致数据损坏。
+    你可以通过在 TiKV 的 `[storage]` 配置中设置 `api-version = 2` 来启用 TiKV API V2。
 
     [用户文档](/tikv-configuration-file.md#api-version-从-v610-版本开始引入)
 
