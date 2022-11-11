@@ -32,9 +32,11 @@ SM4 加密只在 v6.3.0 及之后版本的 TiKV 上支持。v6.3.0 之前的 TiK
 
 ### TiFlash
 
-TiFlash 支持静态加密。数据密钥由 TiFlash 生成。TiFlash（包括 TiFlash Proxy）写入的所有文件，包括数据文件、Schema 文件、临时文件等，均由当前数据密钥加密。TiFlash 目前只支持在 CTR 模式下使用 AES 对数据文件进行透明加密，暂时不支持 SM4 加密算法。相关的加密配置项（在 [`tiflash-learner.toml`](/tiflash/tiflash-configuration.md#配置文件-tiflash-learnertoml) 中）和监控项含义均与 TiKV 一致。
+TiFlash 支持静态加密。数据密钥由 TiFlash 生成。TiFlash（包括 TiFlash Proxy）写入的所有文件，包括数据文件、Schema 文件、临时文件等，均由当前数据密钥加密。TiFlash 支持的加密算法、加密配置方法（配置项在 [`tiflash-learner.toml`](/tiflash/tiflash-configuration.md#配置文件-tiflash-learnertoml) 中）和监控项含义等均与 TiKV 一致。
 
 如果 TiFlash 中部署了 Grafana 组件，可以查看 **TiFlash-Proxy-Details** -> **Encryption**。
+
+SM4 加密只在 v6.4.0 及之后版本的 TiFlash 上支持。v6.4.0 之前的 TiFlash 仅支持 AES 加密。
 
 ### PD
 

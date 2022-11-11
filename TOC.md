@@ -20,11 +20,10 @@
   - 快速开始
     - [使用 TiDB Cloud (Serverless Tier) 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md)
     - [使用 TiDB 的增删改查 SQL](/develop/dev-guide-tidb-crud-sql.md)
-    - 构建简单的 CRUD 应用程序
-      - [Java](/develop/dev-guide-sample-application-java.md)
-      - [Golang](/develop/dev-guide-sample-application-golang.md)
   - 示例程序
-    - [使用 Spring Boot 构建 TiDB 应用程序](/develop/dev-guide-sample-application-spring-boot.md)
+    - [Java](/develop/dev-guide-sample-application-java.md)
+    - [Java (Spring Boot)](/develop/dev-guide-sample-application-spring-boot.md)
+    - [Golang](/develop/dev-guide-sample-application-golang.md)
   - 连接到 TiDB
     - [选择驱动或 ORM 框架](/develop/dev-guide-choose-driver-or-orm.md)
     - [连接到 TiDB](/develop/dev-guide-connect-to-tidb.md)
@@ -110,6 +109,7 @@
     - [从大数据量分库分表 MySQL 合并迁移数据到 TiDB](/migrate-large-mysql-shards-to-tidb.md)
     - [从 CSV 文件迁移数据到 TiDB](/migrate-from-csv-files-to-tidb.md)
     - [从 SQL 文件迁移数据到 TiDB](/migrate-from-sql-files-to-tidb.md)
+    - [从 Parquet 文件迁移数据到 TiDB](/migrate-from-parquet-files-to-tidb.md)
     - [从 TiDB 集群迁移数据至另一 TiDB 集群](/migrate-from-tidb-to-tidb.md)
     - [从 TiDB 集群迁移数据至兼容 MySQL 的数据库](/migrate-from-tidb-to-mysql.md)
   - 复杂迁移场景
@@ -131,9 +131,29 @@
     - [使用 TiUP（推荐）](/scale-tidb-using-tiup.md)
     - [使用 TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/scale-a-tidb-cluster)
   - 备份与恢复
-    - [使用 BR 备份集群](/br-usage-backup-for-maintain.md)
-    - [使用 BR 恢复集群](/br-usage-restore-for-maintain.md)
-    - [BR 备份恢复场景示例](/backup-and-restore-use-cases-for-maintain.md)
+    - [备份与恢复概述](/br/backup-and-restore-overview.md)
+    - 架构设计
+      - [架构概述](/br/backup-and-restore-design.md)
+      - [快照备份与恢复架构](/br/br-snapshot-architecture.md)
+      - [日志备份与 PITR 架构](/br/br-log-architecture.md)
+    - 使用 BR 进行备份与恢复
+      - [使用概述](/br/br-use-overview.md)
+      - [快照备份与恢复](/br/br-snapshot-guide.md)
+      - [日志备份与 PITR](/br/br-pitr-guide.md)
+      - [实践示例](/br/backup-and-restore-use-cases.md)
+      - [备份存储](/br/backup-and-restore-storages.md)
+    - br cli 命令手册
+      - [命令概述](/br/use-br-command-line-tool.md)
+      - [快照备份与恢复命令手册](/br/br-snapshot-manual.md)
+      - [日志备份与 PITR 命令手册](/br/br-pitr-manual.md)
+    - 参考指南
+      - BR 特性
+        - [自动调节](/br/br-auto-tune.md)
+        - [批量建表](/br/br-batch-create-table.md)
+      - [使用 Dumpling 和 TiDB Lightning 备份与恢复](/backup-and-restore-using-dumpling-lightning.md)
+      - [备份与恢复 RawKV](/br/rawkv-backup-and-restore.md)
+      - [增量备份与恢复](/br/br-incremental-guide.md)
+      - [外部存储](/br/external-storage.md)
   - [修改时区](/configure-time-zone.md)
   - [日常巡检](/daily-check.md)
   - [TiFlash 常用运维操作](/tiflash/maintain-tiflash.md)
@@ -149,6 +169,7 @@
   - [TiDB 集群报警规则与处理方法](/alert-rules.md)
   - [TiFlash 报警规则与处理方法](/tiflash/tiflash-alert-rules.md)
   - [自定义监控组件的配置](/tiup/customized-montior-in-tiup-environment.md)
+  - [BR 监控告警](/br/br-monitoring-and-alert.md)
 - 故障诊断
   - [定位慢查询](/identify-slow-queries.md)
   - [分析慢查询](/analyze-slow-queries.md)
@@ -232,6 +253,7 @@
       - [Stale Read 使用场景介绍](/stale-read.md)
       - [使用 `AS OF TIMESTAMP` 语法读取历史数据](/as-of-timestamp.md)
       - [使用系统变量 `tidb_read_staleness` 读取历史数据](/tidb-read-staleness.md)
+      - [使用系统变量 `tidb_external_ts` 读取历史数据](/tidb-external-ts.md)
     - [使用系统变量 `tidb_snapshot` 读取历史数据](/read-historical-data.md)
   - 最佳实践
     - [TiDB 最佳实践](/best-practices/tidb-best-practices.md)
@@ -475,32 +497,6 @@
         - [常见问题](/dm/dm-faq.md)
         - [错误处理及恢复](/dm/dm-error-handling.md)
       - [版本发布历史](/dm/dm-release-notes.md)
-  - Backup & Restore (BR)
-    - [BR 简介](/br/backup-and-restore-overview.md)
-    - [部署和使用 BR](/br/br-deployment.md)
-    - [使用 BR 备份集群](/br/br-usage-backup.md)
-    - [使用 BR 恢复集群](/br/br-usage-restore.md)
-    - [BR 备份与恢复场景示例](/br/backup-and-restore-use-cases.md)
-    - BR 特性
-      - [自动调节](/br/br-auto-tune.md)
-      - [批量建表](/br/br-batch-create-table.md)
-    - 参考指南
-      - [BR 设计原理](/br/backup-and-restore-design.md)
-      - [BR 命令行介绍](/br/use-br-command-line-tool.md)
-      - [外部存储](/br/backup-and-restore-storages.md)
-      - [使用 BR 在 Amazon S3 备份和恢复数据](/br/backup-storage-S3.md)
-      - [使用 BR 在 Azure Blob Storage 备份和恢复数据](/br/backup-storage-azblob.md)
-      - [使用 BR 在 Google Cloud Storage 备份和恢复数据](/br/backup-storage-gcs.md)
-      - [使用 BR 备份和恢复 RawKV 数据](/br/rawkv-backup-and-restore.md)
-      - [使用 Dumpling 和 TiDB Lightning 备份和恢复数据](/backup-and-restore-using-dumpling-lightning.md)
-      - [BR 常见问题](/br/backup-and-restore-faq.md)
-  - Point-in-time Recovery
-    - [PITR 简介](/br/point-in-time-recovery.md)
-    - [通过命令行使用 PITR](/br/br-log-command-line.md)
-    - [使用场景示例](/br/pitr-usage.md)
-    - [监控告警](/br/pitr-monitoring-and-alert.md)
-    - [故障处理](/br/pitr-troubleshoot.md)
-    - [已知问题](/br/pitr-known-issues.md)
   - TiDB Binlog
     - [概述](/tidb-binlog/tidb-binlog-overview.md)
     - [快速上手](/tidb-binlog/get-started-with-tidb-binlog.md)
@@ -653,6 +649,8 @@
       - [`EXECUTE`](/sql-statements/sql-statement-execute.md)
       - [`EXPLAIN ANALYZE`](/sql-statements/sql-statement-explain-analyze.md)
       - [`EXPLAIN`](/sql-statements/sql-statement-explain.md)
+      - [`FLASHBACK CLUSTER TO TIMESTAMP`](/sql-statements/sql-statement-flashback-to-timestamp.md)
+      - [`FLASHBACK DATABASE`](/sql-statements/sql-statement-flashback-database.md)
       - [`FLASHBACK TABLE`](/sql-statements/sql-statement-flashback-table.md)
       - [`FLUSH PRIVILEGES`](/sql-statements/sql-statement-flush-privileges.md)
       - [`FLUSH STATUS`](/sql-statements/sql-statement-flush-status.md)
@@ -807,6 +805,8 @@
         - [`INSPECTION_RULES`](/information-schema/information-schema-inspection-rules.md)
         - [`INSPECTION_SUMMARY`](/information-schema/information-schema-inspection-summary.md)
         - [`KEY_COLUMN_USAGE`](/information-schema/information-schema-key-column-usage.md)
+        - [`MEMORY_USAGE`](/information-schema/information-schema-memory-usage.md)
+        - [`MEMORY_USAGE_OPS_HISTORY`](/information-schema/information-schema-memory-usage-ops-history.md)
         - [`METRICS_SUMMARY`](/information-schema/information-schema-metrics-summary.md)
         - [`METRICS_TABLES`](/information-schema/information-schema-metrics-tables.md)
         - [`PARTITIONS`](/information-schema/information-schema-partitions.md)
@@ -830,6 +830,7 @@
         - [`TIKV_REGION_PEERS`](/information-schema/information-schema-tikv-region-peers.md)
         - [`TIKV_REGION_STATUS`](/information-schema/information-schema-tikv-region-status.md)
         - [`TIKV_STORE_STATUS`](/information-schema/information-schema-tikv-store-status.md)
+        - [`USER_ATTRIBUTES`](/information-schema/information-schema-user-attributes.md)
         - [`USER_PRIVILEGES`](/information-schema/information-schema-user-privileges.md)
         - [`VARIABLES_INFO`](/information-schema/information-schema-variables-info.md)
         - [`VIEWS`](/information-schema/information-schema-views.md)
@@ -912,6 +913,7 @@
   - [集群管理 FAQ](/faq/manage-cluster-faq.md)
   - [高可用 FAQ](/faq/high-availability-faq.md)
   - [高可靠 FAQ](/faq/high-reliability-faq.md)
+  - [备份恢复 FAQ](/faq/backup-and-restore-faq.md)
 - 版本发布历史
   - [发布版本汇总](/releases/release-notes.md)
   - [版本发布时间线](/releases/release-timeline.md)

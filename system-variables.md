@@ -193,7 +193,8 @@ mysql> SELECT * FROM t1;
 - 作用域：GLOBAL
 - 是否持久化到集群：是
 - 默认值：`mysql_native_password`
-- 可选值：`mysql_native_password`，`caching_sha2_password`，`tidb_sm3_password`
+- 可选值：`mysql_native_password`，`caching_sha2_password`，`tidb_sm3_password`，`tidb_auth_token`
+- `tidb_auth_token` 认证方式仅用于 TiDB Cloud 内部实现，**不要设置为该值**。
 - 服务器和客户端建立连接时，这个变量用于设置服务器对外通告的默认身份验证方式。如要了解该变量的其他可选值，参见[可用的身份验证插件](/security-compatibility-with-mysql.md#可用的身份验证插件)。
 - 若要在用户登录时使用 `tidb_sm3_password` 插件，需要使用 [TiDB-JDBC](https://github.com/pingcap/mysql-connector-j/tree/release/8.0-sm3) 进行连接。
 
@@ -208,7 +209,8 @@ mysql> SELECT * FROM t1;
 
 ### `error_count`
 
-- 作用域：NONE
+- 作用域：SESSION
+- 默认值：`0`
 - 类型：整数
 - 表示上一条生成消息的 SQL 语句中的错误数。该变量为只读变量。
 
@@ -293,6 +295,12 @@ mysql> SELECT * FROM t1;
 - 默认值：`OFF`
 - 这个变量用来显示上一个 `execute` 语句所使用的执行计划是不是直接从 plan cache 中取出来的。
 
+### `last_sql_use_alloc` <span class="version-mark">从 v6.4.0 版本开始引入</span>
+
+- 作用域：SESSION
+- 默认值：`OFF`
+- 这个变量是一个只读变量，用来显示上一个语句是否使用了缓存的 Chunk 对象 (Chunk allocation)。
+
 ### `license`
 
 - 作用域：NONE
@@ -309,12 +317,12 @@ mysql> SELECT * FROM t1;
 ### `max_connections`
 
 - 作用域：GLOBAL
-- 是否持久化到集群：否
+- 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
 - 类型：整数
 - 默认值：`0`
 - 取值范围：`[0, 100000]`
-- 该变量表示 TiDB 实例允许的最大连接数。
-- 该变量值为 `0` 时表示无限制。
+- 该变量表示 TiDB 中同时允许的最大客户端连接数，用于资源控制。
+- 默认情况下，该变量值为 `0` 表示不限制客户端连接数。当本变量的值大于 `0` 且客户端连接数到达此值时，TiDB 服务端将会拒绝新的客户端连接。
 
 ### `max_execution_time`
 
@@ -530,7 +538,7 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 ### `tidb_allow_function_for_expression_index` <span class="version-mark">从 v5.2.0 版本开始引入</span>
 
 - 作用域：NONE
-- 默认值：`lower, md5, reverse, tidb_shard, upper, vitess_hash`
+- 默认值：`json_array`、`json_array_append`、`json_array_insert`、`json_contains`、`json_contains_path`、`json_depth`、`json_extract`、`json_insert`、`json_keys`、`json_length`、`json_merge_patch`、`json_merge_preserve`、`json_object`、`json_pretty`、`json_quote`、`json_remove`、`json_replace`、`json_search`、`json_set`、`json_storage_size`、`json_type`、`json_unquote`、`json_valid`、`lower`、`md5`、`reverse`、`tidb_shard`、`upper`、`vitess_hash`
 - 这个变量用于显示创建表达式索引所允许使用的函数。
 
 ### `tidb_allow_mpp` <span class="version-mark">从 v5.0 版本开始引入</span>
@@ -550,6 +558,17 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 默认值：`OFF`
 - 这个变量用来控制是否允许通过 `ALTER TABLE MODIFY` 或 `ALTER TABLE CHANGE` 来移除某个列的 `AUTO_INCREMENT` 属性。默认 (`OFF`) 为不允许。
 
+### `tidb_analyze_partition_concurrency`
+
+> **警告：**
+>
+> 当前版本中该变量控制的功能尚未完全生效，请保留默认值。
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 默认值：`1`
+- 这个变量用于 TiDB analyze 分区表时，对分区表统计信息进行读写的并发度。
+
 ### `tidb_analyze_version` <span class="version-mark">从 v5.1.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
@@ -568,6 +587,16 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
     - `tidb_auto_analyze_start_time='01:00 +0000'`
     - `tidb_auto_analyze_end_time='03:00 +0000'`
+
+### `tidb_auto_analyze_partition_batch_size` <span class="version-mark">从 v6.4.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 默认值：`1`
+- 范围：`[1, 1024]`
+- 用于设置 TiDB [自动 analyze](/statistics.md#自动更新) 分区表（即自动收集分区表上的统计信息）时，每次同时 analyze 分区的个数。
+- 若该变量值小于分区表的分区数，则 TiDB 会分多批自动 analyze 该分区表的所有分区。若该变量值大于等于分区表的分区数，则 TiDB 会同时 analyze 该分区表的所有分区。
+- 若分区表个数远大于该变量值，且自动 analyze 花费时间较长，可调大该参数的值以减少耗时。
 
 ### `tidb_auto_analyze_ratio`
 
@@ -606,15 +635,6 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 默认值：`""`
 - 该变量与一个未发布的特性相关。**请勿**设置该变量。
 
-### `tidb_max_auto_analyze_time` <span class="version-mark">从 v6.1.0 版本开始引入</span>
-
-- 作用域：GLOBAL
-- 是否持久化到集群：是
-- 默认值：`43200`
-- 范围：`[0, 2147483647]`
-- 单位：秒
-- 这个变量用于指定自动 ANALYZE 的最大执行时间。当执行时间超出指定的时间时，自动 ANALYZE 会被终止。当该变量值为 0 时，自动 ANALYZE 没有最大执行时间的限制。
-
 ### `tidb_backoff_lock_fast`
 
 - 作用域：SESSION | GLOBAL
@@ -642,7 +662,6 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 > **不建议**开启此变量。
 
 - 作用域：SESSION
-- 是否持久化到集群：否
 - 类型：布尔型
 - 默认值：`OFF`
 - 该变量控制是否启用已废弃的 batch-commit 特性。当该变量开启时，事务可能会通过分组一些语句被拆分为多个事务，并被非原子地提交。不推荐使用这种方式。
@@ -654,7 +673,6 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 > 该变量与废弃的 batch-dml 特性相关，可能会导致数据损坏。因此，不建议开启该变量来使用 batch-dml。作为替代，请使用[非事务 DML 语句](/non-transactional-dml.md)。
 
 - 作用域：SESSION
-- 是否持久化到集群：否
 - 类型：布尔型
 - 默认值：`OFF`
 - 该变量控制是否启用已废弃的 batch-dml 特性中的 batch-delete 特性。当该变量开启时，`DELETE` 语句可能会被拆分为多个事务，并被非原子地提交。要使该特性生效，还需要开启 `tidb_enable_batch_dml` 并将 `tidb_dml_batch_size` 的值设置为正数。不推荐使用这种方式。
@@ -666,7 +684,6 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 > 该变量与废弃的 batch-dml 特性相关，可能会导致数据损坏。因此，不建议开启该变量来使用 batch-dml。作为替代，请使用[非事务 DML 语句](/non-transactional-dml.md)。
 
 - 作用域：SESSION
-- 是否持久化到集群：否
 - 类型：布尔型
 - 默认值：`OFF`
 - 该变量控制是否启用已废弃的 batch-dml 特性中的 batch-insert 特性。当该变量开启时，`INSERT` 语句可能会被拆分为多个事务，并被非原子地提交。要使该特性生效，还需要开启 `tidb_enable_batch_dml` 并将 `tidb_dml_batch_size` 的值设置为正数。不推荐使用这种方式。
@@ -738,7 +755,8 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 ### `tidb_config`
 
-- 作用域：SESSION
+- 作用域：GLOBAL
+- 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
 - 默认值：""
 - 这个变量是一个只读变量，用来获取当前 TiDB Server 的配置信息。
 
@@ -772,7 +790,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
         ```
 
         ```
-        ERROR 1062 : Duplicate entry '1' for key 'PRIMARY'
+        ERROR 1062 : Duplicate entry '1' for key 't.PRIMARY'
         ```
 
     - 乐观事务模型下将 `tidb_constraint_check_in_place` 设置为 `ON`：
@@ -786,7 +804,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
         ```
 
         ```
-        ERROR 1062 : Duplicate entry '1' for key 'PRIMARY'
+        ERROR 1062 : Duplicate entry '1' for key 't.PRIMARY'
         ```
 
 ### `tidb_constraint_check_in_place_pessimistic` <span class="version-mark">从 v6.3.0 版本开始引入</span>
@@ -821,7 +839,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
         ```
 
         ```
-        ERROR 1062 : Duplicate entry '1' for key 'PRIMARY'
+        ERROR 1062 : Duplicate entry '1' for key 't.PRIMARY'
         ```
 
     - 悲观事务模型下将 `tidb_constraint_check_in_place_pessimistic` 设置为 `ON`：
@@ -833,7 +851,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
         ```
 
         ```
-        ERROR 1062 : Duplicate entry '1' for key 'PRIMARY'
+        ERROR 1062 : Duplicate entry '1' for key 't.PRIMARY'
         ```
 
 ### `tidb_cost_model_version` <span class="version-mark">从 v6.2.0 版本开始引入</span>
@@ -877,9 +895,9 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 >
 > 当前该功能为实验特性，不建议在生产环境中使用。
 >
-> 当前索引加速功能与 [PITR (Point-in-time recovery)](/br/point-in-time-recovery.md) 功能不兼容。在使用索引加速功能时，需要确保后台没有启动 PITR 备份任务，否则可能会出现非预期结果。非预期场景包括：
+> 当前索引加速功能与 [PITR (Point-in-time recovery)](/br/br-pitr-guide.md) 功能不兼容。在使用索引加速功能时，需要确保后台没有启动 PITR 备份任务，否则可能会出现非预期结果。非预期场景包括：
 >
-> - 如果先启动 PITR 备份任务，再添加索引，此时即使索引加速功能打开，也不会使用加速索引功能，但不影响索引兼容性。
+> - 如果先启动 PITR 备份任务，再添加索引，此时即使索引加速功能打开，也不会使用加速索引功能，但不影响索引兼容性。由于 PITR 备份任务会一直运行，相当于索引加速功能被关闭。
 > - 如果先启动添加索引加速任务，再启动 PITR 备份任务，此时 PITR 备份任务会报错，但不影响正在添加索引的任务。
 > - 如果同时启动 PITR 备份任务和添加索引加速任务，可能会由于两个任务无法察觉到对方而导致 PITR 不能成功备份增加的索引数据。
 
@@ -893,15 +911,11 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 ### `tidb_ddl_flashback_concurrency` <span class="version-mark">从 v6.3.0 版本开始引入</span>
 
-> **警告：**
->
-> 当前版本中该变量控制的功能尚未完全生效，请保留默认值。
-
 - 作用域：GLOBAL
 - 是否持久化到集群：是
 - 默认值：`64`
 - 范围：`[1, 256]`
-- 这个变量用来控制 `flashback cluster` 的并发数。
+- 这个变量用来控制 [`FLASHBACK CLUSTER TO TIMESTAMP`](/sql-statements/sql-statement-flashback-to-timestamp.md) 的并发数。
 
 ### `tidb_ddl_reorg_batch_size`
 
@@ -1080,7 +1094,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 默认值：`INT_ONLY`
+- 默认值：`ON`
 - 可选值：`OFF`，`ON`，`INT_ONLY`
 - 这个变量用于控制默认情况下表的主键是否使用[聚簇索引](/clustered-indexes.md)。“默认情况”即不显式指定 `CLUSTERED`/`NONCLUSTERED` 关键字的情况。可设置为 `OFF`/`ON`/`INT_ONLY`。
     - `OFF` 表示所有主键默认使用非聚簇索引。
@@ -1114,7 +1128,15 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 作用域：GLOBAL
 - 是否持久化到集群：是
 - 默认值：`ON`
-- 这个变量用于控制是否让 TiDB 使用并发 DDL 语句。在开启并发 DDL 语句后，DDL 语句的执行流程有所改变，DDL 语句不容易被其他 DDL 语句阻塞，并且能够同时添加多个索引。 
+- 这个变量用于控制是否让 TiDB 使用并发 DDL 语句。在开启并发 DDL 语句后，DDL 语句的执行流程有所改变，DDL 语句不容易被其他 DDL 语句阻塞，并且能够同时添加多个索引。
+
+### `tidb_enable_ddl`
+
+- 作用域：GLOBAL
+- 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
+- 默认值: `ON`
+- 可选值：`OFF`，`ON`
+- 用于设置该 TiDB 服务器是否运行 DDL 语句。
 
 ### `tidb_enable_enhanced_security`
 
@@ -1126,6 +1148,22 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
     - `RESTRICTED_STATUS_ADMIN`：能够在 `SHOW STATUS` 命令中查看敏感内容。
     - `RESTRICTED_VARIABLES_ADMIN`：能够在 `SHOW [GLOBAL] VARIABLES` 和 `SET` 命令中查看和设置包含敏感内容的变量。
     - `RESTRICTED_USER_ADMIN`：能够阻止其他用户更改或删除用户帐户。
+
+### `tidb_enable_external_ts_read` <span class="version-mark">从 v6.4.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 类型：布尔型
+- 默认值：`OFF`
+- 当此变量设置为 `ON` 时，TiDB 会读取 [`tidb_external_ts`](#tidb_external_ts-从-v640-版本开始引入) 指定时间戳前的历史数据。
+
+### `tidb_external_ts` <span class="version-mark">从 v6.4.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 类型：整数
+- 默认值：`0`
+- 当 [`tidb_enable_external_ts_read`](#tidb_enable_external_ts_read-从-v640-版本开始引入) 设置为 `ON` 时，TiDB 会依据该变量指定的时间戳读取历史数据。
 
 ### `tidb_restricted_read_only` <span class="version-mark">从 v5.2.0 版本开始引入</span>
 
@@ -1159,6 +1197,14 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 默认值：`ON`
 - 该变量用于设置是否启用 [`exchange partitions with tables`](/partitioned-table.md#分区管理) 特性。默认值为 `ON`，即默认开启该功能。
 - 该变量自 v6.3.0 开始废弃，其取值将固定为默认值 `ON`，即默认开启 `exchange partitions with tables`。
+
+### `tidb_enable_extended_stats`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 类型：布尔型
+- 默认值：`OFF`
+- 该变量指定 TiDB 是否收集扩展统计信息来指导优化器。
 
 ### `tidb_enable_fast_analyze`
 
@@ -1205,6 +1251,14 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 是否持久化到集群：是
 - 默认值：`OFF`
 - 这个变量用来控制是否开启 General Plan Cache。
+
+### `tidb_enable_gogc_tuner` <span class="version-mark">从 v6.4.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
+- 类型：布尔型
+- 默认值：`ON`
+- 该变量来用控制是否开启 GOGC Tuner。
 
 ### `tidb_enable_historical_stats`
 
@@ -1278,6 +1332,25 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 这个变量用于设置是否开启 mutation checker。mutation checker 是一项在 DML 语句执行过程中进行的数据索引一致性校验，校验报错会回滚当前语句。开启该校验会导致 CPU 使用轻微上升。详见[数据索引一致性报错](/troubleshoot-data-inconsistency-errors.md)。
 - 对于新创建的 v6.0.0 及以上的集群，默认值为 `ON`。对于升级版本的集群，如果升级前是低于 v6.0.0 的版本，升级后默认值为 `OFF`。
 
+### `tidb_enable_new_cost_interface` <span class="version-mark">从 v6.2.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 默认值：`ON`
+- 可选值：`OFF`，`ON`
+- TiDB v6.2.0 对代价模型的实现进行了代码层面的重构，这个变量用来控制是否使用重构后的代价模型 [Cost Model Version 2](/cost-model.md#cost-model-version-2)。
+- 重构后的代价模型使用完全一样的代价公式，因此不会引起计划选择的变动，此开关默认打开。
+- 从 v6.1 升级至 v6.2 的用户，此开关保持升级前的 `OFF` 状态，此时建议直接打开；对于从 v6.1 之前版本升级至 v6.2 的用户，此开关默认为 `ON`。
+
+### `tidb_enable_new_only_full_group_by_check` <span class="version-mark">从 v6.1.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 默认值：`OFF`
+- 可选值：`OFF`，`ON`
+- 该变量用于控制用于控制 TiDB 执行 `ONLY_FULL_GOUP_BY` 检查时的行为。有关 `ONLY_FULL_GROUP_BY` 的信息可以参考 [MySQL 文档](https://dev.mysql.com/doc/refman/8.0/en/sql-mode.html#sqlmode_only_full_group_by)。在 v6.1 中 TiDB 对该项检查做了更严格正确的处理。
+- 由于可能存在版本升级造成的兼容性问题，在 v6.1 中该变量默认值是 `OFF`，即默认关闭。
+
 ### `tidb_enable_noop_functions` <span class="version-mark">从 v4.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
@@ -1308,7 +1381,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 ### `tidb_enable_null_aware_anti_join` <span class="version-mark">从 v6.3.0 版本开始引入</span>
 
-- 作用域：SESSION ｜GLOBAL
+- 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 默认值：`OFF`
 - 这个变量用于控制 TiDB 对特殊集合算子 `NOT IN` 和 `!= ALL` 引导的子查询产生的 ANTI JOIN 是否采用 Null Aware Hash Join 的执行方式。
@@ -1355,11 +1428,18 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 ### `tidb_enable_prepared_plan_cache` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
-- 作用域：GLOBAL
+- 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 默认值：`ON`
 - 这个变量用来控制是否开启 [Prepared Plan Cache](/sql-prepared-plan-cache.md)。开启后，对 `Prepare`、`Execute` 请求的执行计划会进行缓存，以便在后续执行时跳过查询计划优化这个步骤，获得性能上的提升。
 - 在 v6.1.0 之前这个开关通过 TiDB 配置文件 (`prepared-plan-cache.enabled`) 进行配置，升级到 v6.1.0 时会自动继承原有设置。
+
+### `tidb_enable_prepared_plan_cache_memory_monitor` <span class="version-mark">从 v6.4.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 默认值：`ON`
+- 这个变量用来控制是否统计 Prepared Plan Cache 中所缓存的执行计划占用的内存。具体可见 [Prepared Plan Cache 的内存管理](/sql-prepared-plan-cache.md#prepared-plan-cache-的内存管理)。
 
 ### `tidb_enable_pseudo_for_outdated_stats` <span class="version-mark">从 v5.3.0 版本开始引入</span>
 
@@ -1377,8 +1457,16 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 是否持久化到集群：是
 - 默认值：`OFF`
 - 这个变量控制是否为读数据的算子开启动态内存控制功能。读数据的算子默认启用 [`tidb_distsql_scan_concurrency`](/system-variables.md#tidb_distsql_scan_concurrency) 所允许的最大线程数来读取数据。当单条 SQL 语句的内存使用每超过 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 一次，读数据的算子会停止一个线程。
-- 当读数据的算子只剩 1 个线程且当单条 SQL 语句的内存使用继续超过 `tidb_mem_quota_query` 时，该 SQL 语句会触发其它的内存控制行为，例如[落盘](/tidb-configuration-file.md#oom-use-tmp-storage)。
+- 当读数据的算子只剩 1 个线程且当单条 SQL 语句的内存使用继续超过 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 时，该 SQL 语句会触发其它的内存控制行为，例如[落盘](/system-variables.md#tidb_enable_tmp_storage_on_oom)。
 - 该变量在单条查询仅涉及读数据的情况下，对内存控制效果较好。若还存在额外的计算操作（如连接、聚合等），打开该变量可能会导致内存不受 `tidb_mem_quota_query` 控制，加剧 OOM 风险。
+
+### `tidb_enable_reuse_chunk` <span class="version-mark">从 v6.4.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 默认值：`ON`
+- 可选值：`OFF`，`ON`
+- 该变量用于控制 TiDB 是否启用 Chunk 对象缓存。如果为 `ON`，则优先使用缓存中的 Chunk 对象，缓存中找不到申请的对象时才会从系统内存中申请。如果为 `OFF`，则直接从系统内存中申请 Chunk 对象。
 
 ### `tidb_enable_slow_log`
 
@@ -1445,6 +1533,15 @@ Query OK, 0 rows affected (0.09 sec)
 - 是否持久化到集群：是
 - 默认值：`OFF`
 - 这个变量用于控制写 SQL 中的读取是否会下推到 TiFlash。
+
+### `tidb_enable_tmp_storage_on_oom`
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 默认值：`ON`
+- 可选值：`OFF`，`ON`
+- 设置是否在单条 SQL 语句的内存使用超出系统变量 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 限制时为某些算子启用临时磁盘。
+- 在 v6.3.0 之前这个开关可通过 TiDB 配置文件中的 `oom-use-tmp-storage` 项进行配置。在升级到 v6.3.0 及更新的版本后，集群会自动使用原 `oom-use-tmp-storage` 的值来初始化该开关，配置文件中 `oom-use-tmp-storage` 的新设置不再影响该开关。
 
 ### `tidb_enable_top_sql` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 
@@ -1585,15 +1682,6 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 这个变量用于改变 TiDB server 上执行的语句的默认优先级。例如，你可以通过设置该变量来确保正在执行 OLAP 查询的用户优先级低于正在执行 OLTP 查询的用户。
 - 默认值 `NO_PRIORITY` 表示不强制改变执行语句的优先级，其它优先级从低到高可设置为 `LOW_PRIORITY`、`DELAYED` 或 `HIGH_PRIORITY`。
 
-### `tidb_generate_binary_plan` <span class="version-mark">从 v6.2.0 版本开始引入</span>
-
-- 作用域：GLOBAL
-- 是否持久化到集群：是
-- 默认值：`ON`
-- 这个变量用于指定是否在 slow log 和 statement summary 里包含以二进制格式编码的执行计划。
-- 开启该变量后，即可在 TiDB Dashboard 中查看查询的图形化执行计划。注意，TiDB Dashboard 只显示变量开启时产生的查询的执行计划。
-- 用 `select tidb_decode_binary_plan('xxx...')` SQL 语句可以从编码后的执行计划解析出具体的执行计划。
-
 ### `tidb_gc_concurrency` <span class="version-mark">从 v5.0 版本开始引入</span>
 
 - 作用域：GLOBAL
@@ -1684,12 +1772,29 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 范围：`[1, 100000]`
 - 这个变量用来控制 General Plan Cache 最多能够缓存的计划数量。
 
+### `tidb_generate_binary_plan` <span class="version-mark">从 v6.2.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 默认值：`ON`
+- 这个变量用于指定是否在 slow log 和 statement summary 里包含以二进制格式编码的执行计划。
+- 开启该变量后，即可在 TiDB Dashboard 中查看查询的图形化执行计划。注意，TiDB Dashboard 只显示变量开启时产生的查询的执行计划。
+- 用 `select tidb_decode_binary_plan('xxx...')` SQL 语句可以从编码后的执行计划解析出具体的执行计划。
+
+### `tidb_gogc_tuner_threshold` <span class="version-mark">从 v6.4.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
+- 默认值：`0.6`
+- 范围：`[0, 0.9)`
+- 这个变量用来控制 GOGC Tuner 自动调节的最大内存阈值，超过阈值后 GOGC Tuner 会停止工作。
+
 ### `tidb_guarantee_linearizability` <span class="version-mark">从 v5.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 类型：布尔型
-- 默认值：`OFF`
+- 默认值：`ON`
 - 此变量控制异步提交 (Async Commit) 中提交时间戳的计算方式。默认情况下（使用 `OFF` 值），两阶段提交从 PD 服务器请求一个新的时间戳，并使用该时间戳计算最终提交的时间戳，这样可保证所有并发事务可线性化。
 - 如果将该变量值设为 `ON`，从 PD 获取的时间戳的操作会被省掉，这种情况下只保证因果一致性但不保证线性一致性。详情请参考 PingCAP 博文 [Async Commit 原理介绍](https://pingcap.com/zh/blog/async-commit-principle)。
 - 对于需要只保证因果一致性的场景，可将此变量设为 `ON` 以提升性能。
@@ -1817,7 +1922,6 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 ### `tidb_last_ddl_info` <span class="version-mark">从 v6.0.0 版本开始引入</span>
 
 - 作用域：SESSION
-- 是否持久化到集群：否
 - 默认值：""
 - 类型：字符串
 - 该变量为只读变量，TiDB 内部使用该变量获取当前会话中上一个 DDL 操作的信息。
@@ -1837,7 +1941,6 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 ### `tidb_last_txn_info` <span class="version-mark">从 v4.0.9 版本开始引入</span>
 
 - 作用域：SESSION
-- 是否持久化到集群：否
 - 类型：字符串
 - 此变量用于获取当前会话中最后一个事务的信息。这是一个只读变量。事务信息包括：
     - 事务的范围
@@ -1849,13 +1952,13 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 ### `tidb_last_plan_replayer_token` <span class="version-mark">从 v6.3.0 版本开始引入</span>
 
 - 作用域：SESSION
-- 是否持久化到集群：否
 - 类型：字符串
 - 这个变量是一个只读变量，用于获取当前会话中最后一个 `PLAN REPLAYER dump` 的结果。
 
 ### `tidb_log_file_max_days` <span class="version-mark">从 v5.3.0 版本开始引入</span>
 
-- 作用域：SESSION
+- 作用域：GLOBAL
+- 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
 - 默认值：`0`
 - 范围：`[0, 2147483647]`
 - 这个变量可以调整当前 TiDB 实例上日志的最大保留天数。默认值是实例配置文件中指定的值，见配置项 [`max-days`](/tidb-configuration-file.md#max-days)。此变量只影响当前 TiDB 实例上的配置，重启后丢失，且配置文件不受影响。
@@ -1874,6 +1977,15 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 默认值：`OFF`
 - 这个变量用来设置是否在非事务语句中立刻返回错误。当设为 `OFF` 时，在碰到第一个报错的 batch 时，非事务 DML 语句即中止，取消其后的所有 batch，返回错误。当设为 `ON` 时，当某个 batch 执行报错时，其后的 batch 会继续执行，直到所有 batch 执行完毕，返回结果时把这些错误合并后返回。
 
+### `tidb_max_auto_analyze_time` <span class="version-mark">从 v6.1.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 默认值：`43200`
+- 范围：`[0, 2147483647]`
+- 单位：秒
+- 这个变量用于指定自动 ANALYZE 的最大执行时间。当执行时间超出指定的时间时，自动 ANALYZE 会被终止。当该变量值为 0 时，自动 ANALYZE 没有最大执行时间的限制。
+
 ### `tidb_max_chunk_size`
 
 - 作用域：SESSION | GLOBAL
@@ -1882,15 +1994,6 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 范围：`[32, 2147483647]`
 - 这个变量用来设置执行过程中一个 chunk 最大的行数，设置过大可能引起缓存局部性的问题。
 
-### `tidb_max_paging_size` <span class="version-mark">从 v6.2.0 版本开始引入</span>
-
-- 作用域：SESSION | GLOBAL
-- 是否持久化到集群：是
-- 默认值：`50000`
-- 范围：`[1, 2147483647]`
-- 单位：行
-- 这个变量用来设置 coprocessor 协议中 paging size 的最大的行数。请合理设置该值，设置过小，TiDB 与 TiKV 的 RPC 交互会更频繁；设置过大，导数据和全表扫等特定场景会占用更多内存。
-
 ### `tidb_max_delta_schema_count`
 
 - 作用域：GLOBAL
@@ -1898,6 +2001,23 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 默认值：`1024`
 - 范围：`[100, 16384]`
 - 这个变量用来设置缓存 schema 版本信息（对应版本修改的相关 table IDs）的个数限制，可设置的范围 100 - 16384。此变量在 2.1.18 及之后版本支持。
+
+### `tidb_max_paging_size` <span class="version-mark">从 v6.3.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 默认值：`50000`
+- 范围：`[1, 9223372036854775807]`
+- 单位：行
+- 这个变量用来设置 coprocessor 协议中 paging size 的最大的行数。请合理设置该值，设置过小，TiDB 与 TiKV 的 RPC 交互会更频繁；设置过大，导数据和全表扫等特定场景会占用更多内存。
+
+### `tidb_max_tiflash_threads` <span class="version-mark">从 v6.1.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 默认值：`-1`
+- 范围：`[-1, 256]`
+- TiFlash 中 request 执行的最大并发度。默认值为 `-1`，表示该系统变量无效。`0` 表示由 TiFlash 系统自动设置该值。
 
 ### `tidb_mem_oom_action` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
@@ -1917,7 +2037,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 默认值：`0`
+- 默认值：`-1`
 - 单位：字节
 - 这个变量用来控制 TiDB 更新统计信息时的最大总内存占用，包括用户执行的 [`ANALYZE TABLE`](/sql-statements/sql-statement-analyze-table.md) 和 TiDB 后台自动执行的统计信息更新任务。当总的内存占用超过这个阈值时，用户执行的 `ANALYZE` 会被终止退出，并通过错误信息提示用户尝试更小的采样率或稍后重试。如果 TiDB 后台自动执行的统计信息更新任务因内存超限而退出，且使用的采样率高于默认值，则会使用默认采样率重试一次。当该变量值为负数或零时，TiDB 不对更新统计信息的前后台任务进行内存限制。
 
@@ -1947,7 +2067,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 ### `tidb_mem_quota_query`
 
-- 作用域：SESSION ｜ GLOBAL
+- 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 默认值：`1073741824` (1 GiB)
 - 范围：`[-1, 9223372036854775807]`
@@ -1959,7 +2079,6 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 ### `tidb_memory_debug_mode_alarm_ratio`
 
 - 作用域：SESSION
-- 是否持久化到集群：否
 - 类型：浮点型
 - 默认值：`0`
 - 该变量表示在 TiDB memory debug 模式下，允许的内存统计误差值。
@@ -1968,7 +2087,6 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 ### `tidb_memory_debug_mode_min_heap_inuse`
 
 - 作用域：SESSION
-- 是否持久化到集群：否
 - 类型：INT64
 - 默认值：`0`
 - 该变量用于 TiDB 内部测试，**不推荐修改该变量值**，因为开启后会影响 TiDB 的性能。
@@ -1977,10 +2095,24 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 ### `tidb_memory_usage_alarm_ratio`
 
 - 作用域：GLOBAL
-- 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
-- 默认值：`0.8`
-- TiDB 内存使用占总内存的比例超过一定阈值时会报警。该功能的详细介绍和使用方法可以参考 [`memory-usage-alarm-ratio`](/tidb-configuration-file.md#memory-usage-alarm-ratio-从-v409-版本开始引入)。
-- 该变量的初始值可通过 [`memory-usage-alarm-ratio`](/tidb-configuration-file.md#memory-usage-alarm-ratio-从-v409-版本开始引入) 进行配置。
+- 是否持久化到集群：是
+- 默认值：`0.7`
+- 范围：`[0.0, 1.0]`
+- 这个变量用于设置触发 tidb-server 内存告警的内存使用比率。默认情况下，当 TiDB 内存使用量超过总内存的 70% 且满足[报警条件](/configure-memory-usage.md#tidb-server-内存占用过高时的报警)时，TiDB 会打印报警日志。
+- 当配置该变量的值为 `0` 或 `1` 时，表示关闭内存阈值报警功能。
+- 当配置该变量为 `0` 到 `1` 之间的值时，表示开启内存阈值报警功能：
+
+    - 如果系统变量 [`tidb_server_memory_limit`](#tidb_server_memory_limit-从-v640-版本开始引入) 等于 0，且配置项 [`server-memory-quota`](/tidb-configuration-file.md#server-memory-quota-从-v409-版本开始引入) 未设置，则内存报警阈值为 `tidb_memory-usage-alarm-ratio * 系统内存大小`。
+    - 如果系统变量 `tidb_server_memory_limit` 等于 0，且配置项 `server-memory-quota` 被设置为大于 0，则内存报警阈值为 `tidb_memory-usage-alarm-ratio * server-memory-quota`。
+    - 如果系统变量 `tidb_server_memory_limit` 被设置为大于 0，则内存报警阈值为 `tidb_memory-usage-alarm-ratio * tidb_server_memory_limit`。
+
+### `tidb_memory_usage_alarm_keep_record_num` <span class="version-mark">从 v6.4.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 默认值：`5`
+- 范围：`[1, 10000]`
+- 当 tidb-server 内存占用超过内存报警阈值并触发报警时，TiDB 默认只保留最近 5 次报警时所生成的状态文件。你可以通过该变量调整该次数。
 
 ### `tidb_merge_join_concurrency`
 
@@ -1989,6 +2121,17 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 默认值：`1`
 - 设置 `MergeJoin` 算子执行查询时的并发度。
 - **不推荐设置该变量**，修改该变量值可能会造成数据正确性问题。
+
+### `tidb_merge_partition_stats_concurrency`
+
+> **警告：**
+>
+> 当前版本中该变量控制的功能尚未完全生效，请保留默认值。
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 默认值：`1`
+- 这个变量用于 TiDB analyze 分区表时，对分区表统计信息进行合并时的并发度。
 
 ### `tidb_metric_query_range_duration` <span class="version-mark">从 v4.0 版本开始引入</span>
 
@@ -2011,9 +2154,17 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 默认值：`128`
-- 范围：`[1, 2147483647]`
+- 范围：`[1, 9223372036854775807]`
 - 单位：行
 - 这个变量用来设置 coprocessor 协议中 paging size 的最小的行数。请合理设置该值，设置过小，TiDB 与 TiKV 的 RPC 交互会更频繁；设置过大，IndexLookup 带 Limit 场景会出现性能下降。
+
+### `tidb_mpp_store_fail_ttl`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 类型：Duration
+- 默认值：`60s`
+- 刚重启的 TiFlash 可能不能正常提供服务。为了防止查询失败，TiDB 会限制 tidb-server 向刚重启的 TiFlash 节点发送查询。这个变量表示刚重启的 TiFlash 不被发送请求的时间范围。
 
 ### `tidb_multi_statement_mode` <span class="version-mark">从 v4.0.11 版本开始引入</span>
 
@@ -2042,28 +2193,11 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 > * [Connector/J](https://dev.mysql.com/doc/connector-j/8.0/en/connector-j-reference-configuration-properties.html) (`allowMultiQueries`)
 > * PHP [mysqli](https://dev.mysql.com/doc/apis-php/en/apis-php-mysqli.quickstart.multiple-statement.html) (`mysqli_multi_query`)
 
-### `tidb_enable_new_cost_interface` <span class="version-mark">从 v6.2.0 版本开始引入</span>
-
-- 作用域：SESSION | GLOBAL
-- 是否持久化到集群：是
-- 默认值：`ON`
-- 可选值：`OFF`，`ON`
-- TiDB v6.2.0 对代价模型的实现进行了代码层面的重构，这个变量用来控制是否使用重构后的代价模型 [Cost Model Version 2](/cost-model.md#cost-model-version-2)。
-- 重构后的代价模型使用完全一样的代价公式，因此不会引起计划选择的变动，此开关默认打开。
-- 从 v6.1 升级至 v6.2 的用户，此开关保持升级前的 `OFF` 状态，此时建议直接打开；对于从 v6.1 之前版本升级至 v6.2 的用户，此开关默认为 `ON`。
-
-### `tidb_enable_new_only_full_group_by_check` <span class="version-mark">从 v6.1.0 版本开始引入</span>
-
-- 作用域：SESSION | GLOBAL
-- 是否持久化到集群：是
-- 默认值：`OFF`
-- 可选值：`OFF`，`ON`
-- 该变量用于控制用于控制 TiDB 执行 `ONLY_FULL_GOUP_BY` 检查时的行为。有关 `ONLY_FULL_GROUP_BY` 的信息可以参考 [MySQL 文档](https://dev.mysql.com/doc/refman/8.0/en/sql-mode.html#sqlmode_only_full_group_by)。在 v6.1 中 TiDB 对该项检查做了更严格正确的处理。
-- 由于可能存在版本升级造成的兼容性问题，在 v6.1 中该变量默认值是 `OFF`，即默认关闭。
-
 ### `tidb_opt_agg_push_down`
 
-- 作用域：SESSION
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 类型：布尔型
 - 默认值：`OFF`
 - 这个变量用来设置优化器是否执行聚合函数下推到 Join，Projection 和 UnionAll 之前的优化操作。当查询中聚合操作执行很慢时，可以尝试设置该变量为 ON。
 
@@ -2083,7 +2217,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 类型：浮点数
-- 范围：`[0, 2147483647]`
+- 范围：`[0, 18446744073709551615]`
 - 默认值：`3.0`
 - 表示在 TiDB 中开启一个 Golang goroutine 的 CPU 开销。该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
 
@@ -2092,7 +2226,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 类型：浮点数
-- 范围：`[0, 2147483647]`
+- 范围：`[0, 18446744073709551615]`
 - 默认值：`3.0`
 - 表示 TiKV 协处理器处理一行数据的 CPU 开销。该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
 
@@ -2126,7 +2260,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 类型：浮点数
-- 范围：`[0, 2147483647]`
+- 范围：`[0, 18446744073709551615]`
 - 默认值：`3.0`
 - 表示降序扫描时，TiKV 在磁盘上扫描一行数据的开销。该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
 
@@ -2135,7 +2269,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 类型：浮点数
-- 范围：`[0, 2147483647]`
+- 范围：`[0, 18446744073709551615]`
 - 默认值：`1.5`
 - 表示 TiDB 往临时磁盘读写一个字节数据的 I/O 开销。该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
 
@@ -2179,6 +2313,14 @@ mysql> desc select count(distinct a) from test.t;
 - 是否持久化到集群：是
 - 默认值：`ON`
 - 这个变量用来控制优化器是否开启交叉估算。
+
+### `tidb_opt_force_inline_cte` <span class="version-mark">从 v6.3.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 类型：布尔型
+- 默认值：`OFF`
+- 这个变量用来控制是否强制 inline CTE。默认值为 `OFF`，即默认不强制 inline CTE。注意，此时依旧可以通过 `MERGE()` hint 来开启个别 CTE 的 inline。如果设置为 `ON`，则当前 session 中所有查询的 CTE（递归 CTE 除外）都会 inline。
 
 ### `tidb_opt_insubq_to_join_and_agg`
 
@@ -2290,10 +2432,139 @@ explain select * from t where age=5;
 ### `tidb_opt_projection_push_down` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
 - 作用域：SESSION
-- 是否持久化到集群：否
 - 类型：布尔型
 - 默认值：`OFF`
 - 指定是否允许优化器将 `Projection` 算子下推到 TiKV 或者 TiFlash。
+
+### `tidb_opt_range_max_size` <span class="version-mark">从 v6.4.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 默认值：`67108864` (64 MiB)
+- 取值范围：`[0, 9223372036854775807]`
+- 单位：字节
+- 该变量用于指定优化器构造扫描范围的内存用量上限。当该变量为 `0` 时，表示对扫描范围没有内存限制。如果构造精确的扫描范围会超出内存用量限制，优化器会使用更宽松的扫描范围（例如 `[[NULL,+inf]]`）。如果执行计划中未使用精确的扫描范围，可以调大该变量的值让优化器构造精确的扫描范围。
+
+该变量的使用示例如下：
+
+<details>
+<summary><code>tidb_opt_range_max_size</code> 使用示例</summary>
+ 
+查看该变量的默认值，即优化器构造扫描范围最多使用 64 MiB 内存。
+
+```sql
+SELECT @@tidb_opt_range_max_size;
+```
+
+```sql
++----------------------------+
+| @@tidb_opt_range_max_size |
++----------------------------+
+| 67108864                   |
++----------------------------+
+1 row in set (0.01 sec)
+```
+
+```sql
+EXPLAIN SELECT * FROM t use index (idx) WHERE a IN (10,20,30) AND b IN (40,50,60);
+```
+
+在 64 MiB 的内存最大限制约束下，优化器构造出精确的扫描范围 `[10 40,10 40], [10 50,10 50], [10 60,10 60], [20 40,20 40], [20 50,20 50], [20 60,20 60], [30 40,30 40], [30 50,30 50], [30 60,30 60]`，见如下执行计划返回结果。 
+
+```sql
++-------------------------------+---------+-----------+--------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| id                            | estRows | task      | access object            | operator info                                                                                                                                                               |
++-------------------------------+---------+-----------+--------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| IndexLookUp_7                 | 0.90    | root      |                          |                                                                                                                                                                             |
+| ├─IndexRangeScan_5(Build)     | 0.90    | cop[tikv] | table:t, index:idx(a, b) | range:[10 40,10 40], [10 50,10 50], [10 60,10 60], [20 40,20 40], [20 50,20 50], [20 60,20 60], [30 40,30 40], [30 50,30 50], [30 60,30 60], keep order:false, stats:pseudo |
+| └─TableRowIDScan_6(Probe)     | 0.90    | cop[tikv] | table:t                  | keep order:false, stats:pseudo                                                                                                                                              |
++-------------------------------+---------+-----------+--------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+3 rows in set (0.00 sec)
+```
+
+现将优化器构造扫描范围的内存用量上限设为 1500 字节。
+
+```sql
+SET @@tidb_opt_range_max_size = 1500;
+```
+
+```sql
+Query OK, 0 rows affected (0.00 sec)
+```
+
+```sql
+EXPLAIN SELECT * FROM t USE INDEX (idx) WHERE a IN (10,20,30) AND b IN (40,50,60);
+```
+
+在 1500 字节内存的最大限制约束下，优化器构造出了更宽松的扫描范围 `[10,10], [20,20], [30,30]`，并用 warning 提示用户构造精确的扫描范围所需的内存用量超出了 `tidb_opt_range_max_size` 的限制。
+
+```sql
++-------------------------------+---------+-----------+--------------------------+-----------------------------------------------------------------+
+| id                            | estRows | task      | access object            | operator info                                                   |
++-------------------------------+---------+-----------+--------------------------+-----------------------------------------------------------------+
+| IndexLookUp_8                 | 0.09    | root      |                          |                                                                 |
+| ├─Selection_7(Build)          | 0.09    | cop[tikv] |                          | in(test.t.b, 40, 50, 60)                                        |
+| │ └─IndexRangeScan_5          | 30.00   | cop[tikv] | table:t, index:idx(a, b) | range:[10,10], [20,20], [30,30], keep order:false, stats:pseudo |
+| └─TableRowIDScan_6(Probe)     | 0.09    | cop[tikv] | table:t                  | keep order:false, stats:pseudo                                  |
++-------------------------------+---------+-----------+--------------------------+-----------------------------------------------------------------+
+4 rows in set, 1 warning (0.00 sec)
+```
+
+```sql
+SHOW WARNINGS;
+```
+
+```sql
++---------+------+---------------------------------------------------------------------------------------------------------------------------------------------+
+| Level   | Code | Message                                                                                                                                     |
++---------+------+---------------------------------------------------------------------------------------------------------------------------------------------+
+| Warning | 1105 | Memory capacity of 1500 bytes for 'tidb_opt_range_max_size' exceeded when building ranges. Less accurate ranges such as full range are chosen |
++---------+------+---------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+```
+
+再将优化器构造扫描范围的内存用量上限设为 100 字节。
+
+```sql
+set @@tidb_opt_range_max_size = 100;
+```
+
+```sql
+Query OK, 0 rows affected (0.00 sec)
+```
+
+```sql
+EXPLAIN SELECT * FROM t USE INDEX (idx) WHERE a IN (10,20,30) AND b IN (40,50,60);
+```
+
+在 100 字节的内存最大限制约束下，优化器选择了 `IndexFullScan`，并用 warning 提示用户构造精确的扫描范围所需的内存超出了 `tidb_opt_range_max_size` 的限制。
+
+```sql
++-------------------------------+----------+-----------+--------------------------+----------------------------------------------------+
+| id                            | estRows  | task      | access object            | operator info                                      |
++-------------------------------+----------+-----------+--------------------------+----------------------------------------------------+
+| IndexLookUp_8                 | 8000.00  | root      |                          |                                                    |
+| ├─Selection_7(Build)          | 8000.00  | cop[tikv] |                          | in(test.t.a, 10, 20, 30), in(test.t.b, 40, 50, 60) |
+| │ └─IndexFullScan_5           | 10000.00 | cop[tikv] | table:t, index:idx(a, b) | keep order:false, stats:pseudo                     |
+| └─TableRowIDScan_6(Probe)     | 8000.00  | cop[tikv] | table:t                  | keep order:false, stats:pseudo                     |
++-------------------------------+----------+-----------+--------------------------+----------------------------------------------------+
+4 rows in set, 1 warning (0.00 sec)
+```
+
+```sql
+SHOW WARNINGS;
+```
+
+```sql
++---------+------+---------------------------------------------------------------------------------------------------------------------------------------------+
+| Level   | Code | Message                                                                                                                                     |
++---------+------+---------------------------------------------------------------------------------------------------------------------------------------------+
+| Warning | 1105 | Memory capacity of 100 bytes for 'tidb_opt_range_max_size' exceeded when building ranges. Less accurate ranges such as full range are chosen |
++---------+------+---------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+```
+   
+</details>
 
 ### `tidb_opt_scan_factor`
 
@@ -2333,19 +2604,27 @@ explain select * from t where age=5;
 - 该变量用于控制在 MPP 模式下是否将 `COUNT(DISTINCT)` 聚合改写为三阶段分布式执行的聚合。
 - 该变量目前仅对只有一个 `COUNT(DISTINCT)` 的聚合生效。
 
+### `tidb_opt_tiflash_concurrency_factor`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 类型：浮点数
+- 范围：`[0, 2147483647]`
+- 默认值：`24.0`
+- 表示 TiFlash 计算的并发数。该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
+
 ### `tidb_opt_write_row_id`
 
 - 作用域：SESSION
 - 默认值：`OFF`
 - 这个变量用来设置是否允许 `INSERT`、`REPLACE` 和 `UPDATE` 操作 `_tidb_rowid` 列，默认是不允许操作。该选项仅用于 TiDB 工具导数据时使用。
 
-### `tidb_opt_force_inline_cte` <span class="version-mark">从 v6.3.0 版本开始引入</span>
+### `tidb_optimizer_selectivity_level`
 
-- 作用域：SESSION | GLOBAL
-- 是否持久化到集群：是
-- 类型：布尔型
-- 默认值：`OFF`
-- 这个变量用来控制是否强制 inline CTE。默认值为 `OFF`，即默认不强制 inline CTE。注意，此时依旧可以通过 `MERGE()` hint 来开启个别 CTE 的 inline。如果设置为 `ON`，则当前 session 中所有查询的 CTE（递归 CTE 除外）都会 inline。
+- 作用域：SESSION
+- 默认值：`0`
+- 范围：`[0, 2147483647]`
+- 控制优化器估算逻辑的更迭。更改该变量值后，优化器的估算逻辑会产生较大的改变。目前该变量的有效值只有 `0`，不建议设为其它值。
 
 ### `tidb_partition_prune_mode` <span class="version-mark">从 v5.1 版本开始引入</span>
 
@@ -2378,6 +2657,69 @@ explain select * from t where age=5;
 - 范围：`[0, 1]`
 - 这个变量用来控制是否在 profile 输出中标记出对应的 SQL 语句，用于定位和排查性能问题。
 
+### `tidb_opt_prefix_index_single_scan` <span class="version-mark">从 v6.4.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 默认值：`ON`
+- 这个变量用于控制 TiDB 优化器是否将某些过滤条件下推到前缀索引，尽量避免不必要的回表，从而提高查询性能。
+- 将该变量设置为 `ON` 时，会将过滤条件下推到前缀索引。此时，假设一张表中 `col` 列是索引前缀列，查询语句中的 `col is null` 或者 `col is not null` 条件会被归为索引上的过滤条件，而不是回表时的过滤条件，从而避免不必要的回表。
+
+<details>
+<summary>该变量的使用示例</summary>
+
+创建一张带前缀索引的表：
+
+```sql
+CREATE TABLE t (a INT, b VARCHAR(10), c INT, INDEX idx_a_b(a, b(5)));
+```
+
+此时关闭 `tidb_opt_prefix_index_single_scan`：
+
+```sql
+SET tidb_opt_prefix_index_single_scan = 'OFF';
+```
+
+对于以下查询，执行计划使用了前缀索引 `idx_a_b` 但需要回表（出现了 `IndexLookUp` 算子）。
+
+```sql
+EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
++-------------------------------+---------+-----------+------------------------------+-------------------------------------------------------+
+| id                            | estRows | task      | access object                | operator info                                         |
++-------------------------------+---------+-----------+------------------------------+-------------------------------------------------------+
+| HashAgg                       | 1.00    | root      |                              | funcs:count(Column#8)->Column#5                       |
+| └─IndexLookUp                 | 1.00    | root      |                              |                                                       |
+|   ├─IndexRangeScan(Build)     | 99.90   | cop[tikv] | table:t, index:idx_a_b(a, b) | range:[1 -inf,1 +inf], keep order:false, stats:pseudo |
+|   └─HashAgg(Probe)            | 1.00    | cop[tikv] |                              | funcs:count(1)->Column#8                              |
+|     └─Selection               | 99.90   | cop[tikv] |                              | not(isnull(test.t.b))                                 |
+|       └─TableRowIDScan        | 99.90   | cop[tikv] | table:t                      | keep order:false, stats:pseudo                        |
++-------------------------------+---------+-----------+------------------------------+-------------------------------------------------------+
+6 rows in set (0.00 sec)
+```
+
+此时打开 `tidb_opt_prefix_index_single_scan`：
+
+```sql
+SET tidb_opt_prefix_index_single_scan = 'ON';
+```
+
+开启该变量后，对于以下查询，执行计划使用了前缀索引 `idx_a_b` 且不需要回表。
+
+```sql
+EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
++--------------------------+---------+-----------+------------------------------+-------------------------------------------------------+
+| id                       | estRows | task      | access object                | operator info                                         |
++--------------------------+---------+-----------+------------------------------+-------------------------------------------------------+
+| StreamAgg                | 1.00    | root      |                              | funcs:count(Column#7)->Column#5                       |
+| └─IndexReader            | 1.00    | root      |                              | index:StreamAgg                                       |
+|   └─StreamAgg            | 1.00    | cop[tikv] |                              | funcs:count(1)->Column#7                              |
+|     └─IndexRangeScan     | 99.90   | cop[tikv] | table:t, index:idx_a_b(a, b) | range:[1 -inf,1 +inf], keep order:false, stats:pseudo |
++--------------------------+---------+-----------+------------------------------+-------------------------------------------------------+
+4 rows in set (0.00 sec)
+```
+
+</details>
+
 ### `tidb_prepared_plan_cache_memory_guard_ratio` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
 - 作用域：GLOBAL
@@ -2389,7 +2731,7 @@ explain select * from t where age=5;
 
 ### `tidb_prepared_plan_cache_size` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
-- 作用域：GLOBAL
+- 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 默认值：`100`
 - 范围：`[1, 100000]`
@@ -2447,7 +2789,6 @@ explain select * from t where age=5;
 ### `tidb_read_consistency` <span class="version-mark">New in v5.4.0</span>
 
 - 作用域：SESSION
-- 是否持久化到集群：否
 - 类型：字符串
 - 默认值：`strict`
 - 此变量用于控制自动提交的读语句的读一致性。
@@ -2511,9 +2852,9 @@ explain select * from t where age=5;
 
 ### `tidb_row_format_version`
 
-- 作用域：GLOBAL
+- 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 默认值：`2`
+- 默认值：`1`
 - 范围：`[1, 2]`
 - 控制新保存数据的表数据格式版本。TiDB v4.0 中默认使用版本号为 2 的[新表数据格式](https://github.com/pingcap/tidb/blob/master/docs/design/2018-07-19-row-format.md)保存新数据。
 
@@ -2528,6 +2869,46 @@ explain select * from t where age=5;
 - 默认值：`OFF`
 - TiDB 默认会在建表时为新表分裂 Region。开启该变量后，会在建表语句执行时，同步打散刚分裂出的 Region。适用于批量建表后紧接着批量写入数据，能让刚分裂出的 Region 先在 TiKV 分散而不用等待 PD 进行调度。为了保证后续批量写入数据的稳定性，建表语句会等待打散 Region 完成后再返回建表成功，建表语句执行时间会是该变量关闭时的数倍。
 - 如果建表时设置了 `SHARD_ROW_ID_BITS` 和 `PRE_SPLIT_REGIONS`，建表成功后会均匀切分出指定数量的 Region。
+
+### `tidb_server_memory_limit` <span class="version-mark">从 v6.4.0 版本开始引入</span>
+
+> **警告：**
+>
+> `tidb_server_memory_limit` 目前为实验性特性，不建议在生产环境中使用。
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 默认值：`0`
+- 取值范围：
+    - 你可以将该变量值设为百分比格式，表示内存用量占总内存的百分比，取值范围为 `[1%, 99%]`。
+    - 你还可以将变量值设为内存大小，取值范围为 `[0, 9223372036854775807]`，单位为 Byte。支持带单位的内存格式 "KB|MB|GB|TB"。`0` 值表示不设内存限制。
+- 该变量指定 TiDB 实例的内存限制。TiDB 会在内存用量达到该限制时，对当前内存用量最高的 SQL 语句进行取消 (Cancel) 操作。在该 SQL 语句被成功 Cancel 掉后，TiDB 会尝试调用 Golang GC 立刻回收内存，以最快速度缓解内存压力。
+- 只有内存使用大于 `tidb_server_memory_limit_sess_min_size` 的 SQL 语句会被选定为最优先被 Cancel 的 SQL 语句。
+- 目前 TiDB 一次只能 Cancel 一条 SQL 语句。如果 TiDB 完全 Cancel 掉一条 SQL 语句并回收资源后，内存使用仍然大于该变量所设限制，TiDB 会开始下一次 Cancel 操作。
+
+### `tidb_server_memory_limit_gc_trigger` <span class="version-mark">从 v6.4.0 版本开始引入</span>
+
+> **警告：**
+>
+> `tidb_server_memory_limit_gc_trigger` 目前为实验性特性，不建议在生产环境中使用。
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 默认值：`70%`
+- 取值范围：`[50%, 99%]`
+- TiDB 尝试触发 GC 的阈值。当 TiDB 的内存使用达到 `tidb_server_memory_limit` 值 \* `tidb_server_memory_limit_gc_trigger` 值时，则会主动触发一次 Golang GC。在一分钟之内只会主动触发一次 GC。
+
+### `tidb_server_memory_limit_sess_min_size` <span class="version-mark">从 v6.4.0 版本开始引入</span>
+
+> **警告：**
+>
+> `tidb_server_memory_limit_sess_min_size` 目前为实验性特性，不建议在生产环境中使用。
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 默认值：`134217728`（即 128 MB）
+- 取值范围：`[128, 9223372036854775807]`，单位 Byte。
+- 开启内存限制后，TiDB 会终止当前实例上内存用量最高的 SQL 语句。本变量指定此情况下 SQL 语句被终止的最小内存用量。如果 TiDB 实例的内存超限是由许多内存使用量不明显的会话导致的，可以适当调小该变量值，使得更多会话成为 Cancel 的对象。
 
 ### `tidb_shard_allocate_step` <span class="version-mark">从 v5.0 版本开始引入</span>
 
@@ -2591,22 +2972,6 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 单位：毫秒
 - 输出慢日志的耗时阈值。当查询大于这个值，就会当做是一个慢查询，输出到慢查询日志。默认为 300 ms。
 
-### `tidb_max_tiflash_threads` <span class="version-mark">从 v6.1.0 版本开始引入</span>
-
-- 作用域：SESSION | GLOBAL
-- 是否持久化到集群：是
-- 默认值：`-1`
-- 范围：`[-1, 256]`
-- TiFlash 中 request 执行的最大并发度。默认值为 -1，表示该系统变量无效。0 表示由 TiFlash 系统自动设置该值。
-
-### `tidb_mpp_store_fail_ttl`
-
-- 作用域：SESSION | GLOBAL
-- 是否持久化到集群：是
-- 类型：Duration
-- 默认值：`60s`
-- 刚重启的 TiFlash 可能不能正常提供服务。为了防止查询失败，TiDB 会限制 tidb-server 向刚重启的 TiFlash 节点发送查询。这个变量表示刚重启的 TiFlash 不被发送请求的时间范围。
-
 ### `tidb_slow_query_file`
 
 - 作用域：SESSION
@@ -2632,26 +2997,18 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 ### `tidb_stats_load_sync_wait` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 
-> **警告：**
->
-> 统计信息同步加载目前为实验性特性，不建议在生产环境中使用。
-
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 默认值：`0`
+- 默认值：`100`
 - 单位：毫秒
 - 范围：`[0, 2147483647]`
-- 这个变量用于控制是否开启统计信息的同步加载模式（默认为 `0` 代表不开启，即为异步加载模式），以及开启的情况下，SQL 执行同步加载完整统计信息等待多久后会超时。更多信息，请参考[统计信息的加载](/statistics.md#统计信息的加载)。
+- 这个变量用于控制是否开启统计信息的同步加载模式（为 `0` 代表不开启，即为异步加载模式），以及开启的情况下，SQL 执行同步加载完整统计信息等待多久后会超时。更多信息，请参考[统计信息的加载](/statistics.md#统计信息的加载)。
 
 ### `tidb_stats_load_pseudo_timeout` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 
-> **警告：**
->
-> 统计信息同步加载目前为实验性特性，不建议在生产环境中使用。
-
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 默认值：`OFF`
+- 默认值：`ON`
 - 这个变量用于控制统计信息同步加载超时后，SQL 是执行失败（`OFF`），还是退回使用 pseudo 的统计信息（`ON`）。
 
 ### `tidb_stmt_summary_history_size` <span class="version-mark">从 v4.0 版本开始引入</span>
@@ -2775,7 +3132,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 ### `tidb_track_aggregate_memory_usage`
 
-- 作用域：SESSION ｜ GLOBAL
+- 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 类型：布尔型
 - 默认值：`ON`
@@ -2885,7 +3242,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 作用域：SESSION | GLOBAL
 - 默认值：`8192`
 - 范围：`[1, 18446744073709551616]`
-- 细粒度 shuffle 功能开启时，下推到 TiFlash 的窗口函数可以并行执行。该变量控制发送端发送数据的攒批大小，即发送端累计行数超过该值就会进行一次数据发送。
+- 细粒度 shuffle 功能开启时，下推到 TiFlash 的窗口函数可以并行执行。该变量控制发送端发送数据的攒批大小。
 - 对性能影响：如果该值设置过小，例如极端值 1 ，会导致每个 Block 都进行一次网络传输。如果设置过大，例如极端值整个表的行数，会导致接收端大部分时间都在等待数据，无法流水线计算。可以观察 TiFlash 接收端收到的行数分布情况，如果大部分线程接收的行数很少，例如只有几百行，可以增加该值以达到减少网络开销的目的。
 
 ### `tiflash_fine_grained_shuffle_stream_count` <span class="version-mark">从 v6.2.0 版本开始引入</span>
@@ -2939,7 +3296,6 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 ### `tx_read_ts`
 
 - 作用域：SESSION
-- 是否持续化到集群：否
 - 默认值：`0`
 - 在 Stale Read 场景下，该会话变量用于帮助记录 Stable Read TS 值。
 - 该变量仅用于 TiDB 内部实现，**不推荐设置该变量**。
@@ -2947,7 +3303,6 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 ### `txn_scope`
 
 - 作用域：SESSION
-- 是否持续化到集群：否
 - 默认值：`global`
 - 可选值：`global` 和 `local`
 - 该变量用于设置当前会话下事务为全局事务（设为 `global`）还是局部事务（设为 `local`）。

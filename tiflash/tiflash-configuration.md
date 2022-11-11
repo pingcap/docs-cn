@@ -9,7 +9,7 @@ aliases: ['/docs-cn/dev/tiflash/tiflash-configuration/','/docs-cn/dev/reference/
 
 ## PD 调度参数
 
-可通过 [pd-ctl](/pd-control.md) 调整参数。如果你使用 TiUP 部署，可以用 `tiup ctl pd` 代替 `pd-ctl -u <pd_ip:pd_port>` 命令。
+可通过 [pd-ctl](/pd-control.md) 调整参数。如果你使用 TiUP 部署，可以用 `tiup ctl:<cluster-version> pd` 代替 `pd-ctl -u <pd_ip:pd_port>` 命令。
 
 - [`replica-schedule-limit`](/pd-configuration-file.md#replica-schedule-limit)：用来控制 replica 相关 operator 的产生速度（涉及到下线、补副本的操作都与该参数有关）
 
@@ -227,6 +227,20 @@ delta_index_cache_size = 0
     ## 若开启该选项，日志中的用户数据会以 `?` 代替显示
     ## 默认值为 false
     redact-info-log = false
+
+[security.encryption]
+    ## 数据文件的加密方法。
+    ## 可选值为 "aes128-ctr"、"aes192-ctr"、"aes256-ctr"、"sm4-ctr" (仅 v6.4.0 及之后版本) 和 "plaintext"。
+    ## 默认值为 "plaintext"，即默认不开启加密功能。选择 "plaintext" 以外的值则表示启用加密功能。此时必须指定主密钥。
+    data-encryption-method = "aes128-ctr"
+    ## 轮换密钥的频率，默认值：`7d`。
+    data-key-rotation-period = "168h" # 7 days
+
+[security.encryption.master-key]
+    ## 指定启用加密时的主密钥。若要了解如何配置主密钥，可以参考《静态加密 - 配置加密》：https://docs.pingcap.com/zh/tidb/dev/encryption-at-rest#配置加密
+
+[security.encryption.previous-master-key]
+    ## 指定轮换新主密钥时的旧主密钥。旧主密钥的配置格式与主密钥相同。若要了解如何配置主密钥，可以参考《静态加密 - 配置加密》：https://docs.pingcap.com/zh/tidb/dev/encryption-at-rest#配置加密
 ```
 
 除以上几项外，其余功能参数和 TiKV 的配置相同。需要注意的是：`key` 为 `engine` 的 `label` 是保留项，不可手动配置。

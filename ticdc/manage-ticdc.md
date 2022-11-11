@@ -65,7 +65,7 @@ tiup cluster edit-config <cluster-name>
 >
 > TiCDC 监听的 IP 和端口对应为 `cdc server` 启动时指定的 `--addr` 参数。从 TiCDC v6.2.0 开始，`cdc cli` 将通过 TiCDC 的 Open API 直接与 TiCDC server 进行交互，你可以使用 `--server` 参数指定 TiCDC 的 server 地址。`--pd` 参数将被废弃，不再推荐使用。
 
-如果你使用的 TiCDC 是用 TiUP 部署的，需要将以下命令中的 `cdc cli` 替换为 `tiup ctl cdc`。
+如果你使用的 TiCDC 是用 TiUP 部署的，需要将以下命令中的 `cdc cli` 替换为 `tiup ctl:<cluster-version> cdc`。
 
 ### 管理 TiCDC 服务进程 (`capture`)
 
@@ -159,7 +159,7 @@ Info: {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":
     - `file`：完全使用磁盘暂存数据。**已经弃用，不建议在任何情况使用。**
 
 - `--config`：指定 changefeed 配置文件。
-- `--sort-dir`: 用于指定排序器使用的临时文件目录。**自 TiDB v4.0.13, v5.0.3 和 v5.1.0 起已经无效，请不要使用**。
+- `--sort-dir`：用于指定排序器使用的临时文件目录。**自 TiDB v4.0.13, v5.0.3 和 v5.1.0 起已经无效，请不要使用**。
 
 #### Sink URI 配置 `mysql`/`tidb`
 
@@ -204,7 +204,7 @@ URI 中可配置的的参数如下：
 | `127.0.0.1`          | 下游 Kafka 对外提供服务的 IP                                 |
 | `9092`               | 下游 Kafka 的连接端口                                          |
 | `topic-name`           | 变量，使用的 Kafka topic 名字                                      |
-| `kafka-version`      | 下游 Kafka 版本号（可选，默认值 `2.4.0`，目前支持的最低版本为 `0.11.0.2`，最高版本为 `3.1.0`。该值需要与下游 Kafka 的实际版本保持一致） |
+| `kafka-version`      | 下游 Kafka 版本号（可选，默认值 `2.4.0`，目前支持的最低版本为 `0.11.0.2`，最高版本为 `3.2.0`。该值需要与下游 Kafka 的实际版本保持一致） |
 | `kafka-client-id`    | 指定同步任务的 Kafka 客户端的 ID（可选，默认值为 `TiCDC_sarama_producer_同步任务的 ID`） |
 | `partition-num`      | 下游 Kafka partition 数量（可选，不能大于实际 partition 数量，否则创建同步任务会失败，默认值 `3`）|
 | `max-message-bytes`  | 每次向 Kafka broker 发送消息的最大数据量（可选，默认值 `10MB`）。从 v5.0.6 和 v4.0.6 开始，默认值分别从 64MB 和 256MB 调整至 10MB。|
@@ -352,11 +352,11 @@ cdc cli changefeed list --server=http://10.0.10.25:8300
 
 - `checkpoint` 即为 TiCDC 已经将该时间点前的数据同步到了下游。
 - `state` 为该同步任务的状态：
-    - `normal`: 正常同步
-    - `stopped`: 停止同步（手动暂停）
-    - `error`: 停止同步（出错）
-    - `removed`: 已删除任务（只在指定 `--all` 选项时才会显示该状态的任务。未指定时，可通过 `query` 查询该状态的任务）
-    - `finished`: 任务已经同步到指定 `target-ts`，处于已完成状态（只在指定 `--all` 选项时才会显示该状态的任务。未指定时，可通过 `query` 查询该状态的任务）。
+    - `normal`：正常同步
+    - `stopped`：停止同步（手动暂停）
+    - `error`：停止同步（出错）
+    - `removed`：已删除任务（只在指定 `--all` 选项时才会显示该状态的任务。未指定时，可通过 `query` 查询该状态的任务）
+    - `finished`：任务已经同步到指定 `target-ts`，处于已完成状态（只在指定 `--all` 选项时才会显示该状态的任务。未指定时，可通过 `query` 查询该状态的任务）。
 
 #### 查询特定同步任务
 
@@ -456,10 +456,10 @@ cdc cli changefeed query --server=http://10.0.10.25:8300 --changefeed-id=simple-
     - `resolved-ts` 代表当前 changefeed 中已经成功从 TiKV 发送到 TiCDC 的最大事务 TS。
     - `checkpoint-ts` 代表当前 changefeed 中已经成功写入下游的最大事务 TS。
     - `admin-job-type` 代表一个 changefeed 的状态：
-        - `0`: 状态正常。
-        - `1`: 任务暂停，停止任务后所有同步 `processor` 会结束退出，同步任务的配置和同步状态都会保留，可以从 `checkpoint-ts` 恢复任务。
-        - `2`: 任务恢复，同步任务从 `checkpoint-ts` 继续同步。
-        - `3`: 任务已删除，接口请求后会结束所有同步 `processor`，并清理同步任务配置信息。同步状态保留，只提供查询，没有其他实际功能。
+        - `0`：状态正常。
+        - `1`：任务暂停，停止任务后所有同步 `processor` 会结束退出，同步任务的配置和同步状态都会保留，可以从 `checkpoint-ts` 恢复任务。
+        - `2`：任务恢复，同步任务从 `checkpoint-ts` 继续同步。
+        - `3`：任务已删除，接口请求后会结束所有同步 `processor`，并清理同步任务配置信息。同步状态保留，只提供查询，没有其他实际功能。
 - `task-status` 代表查询 changefeed 所分配的各个同步子任务的状态信息。
 
 ### 停止同步任务
@@ -592,6 +592,7 @@ case-sensitive = true
 enable-old-value = true
 
 # 是否开启 Syncpoint 功能，从 v6.3.0 开始支持
+# 从 v6.4.0 开始，使用 Syncpoint 功能需要同步任务拥有下游集群的 SYSTEM_VARIABLES_ADMIN 或者 SUPER 权限
 enable-sync-point = true
 
 # Syncpoint 功能对齐上下游 snapshot 的时间间隔
@@ -671,8 +672,8 @@ ignore-update-new-value-expr = "gender = 'male' and age > 18" # 过滤掉新值 
 
 配置参数说明：
 
-- `matcher`: 该事件过滤器所要匹配的数据库名和表名，其匹配规则和[表库过滤规则](/table-filter.md)相一致。
-- `ignore-event`:要过滤的事件类型，它是一个字符串数组，可以配置多个事件类型。目前支持的类型如下表所示:
+- `matcher`：该事件过滤器所要匹配的数据库名和表名，其匹配规则和[表库过滤规则](/table-filter.md)相一致。
+- `ignore-event`：要过滤的事件类型，它是一个字符串数组，可以配置多个事件类型。目前支持的类型如下表所示：
 
 | Event           | 分类 | 别名 |说明                    |
 | --------------- | ---- | -|--------------------------|
@@ -695,10 +696,10 @@ ignore-update-new-value-expr = "gender = 'male' and age > 18" # 过滤掉新值 
 | drop view     | DDL  | |匹配 drop view event     |
 
 - `ignore-sql`：要过滤的 DDL 语句的正则表达式。该参数接受一个字符串数组，数组中可以配置多条正则表达式。该配置仅对 DDL 事件生效。
-- `ignore-delete-value-expr`: 配置一个 SQL 表达式，对带有指定值的 DELETE 类型的 DML 事件生效。
-- `ignore-insert-value-expr`: 配置一个 SQL 表达式，对带有指定值的 INSERT 类型的 DML 事件生效。
-- `ignore-update-old-value-expr`: 配置一个 SQL 表达式，对带有指定旧值的 UPDATE 类型的 DML 事件生效。
-- `ignore-update-new-value-expr`: 配置一个 SQL 表达式，对带有指定新值的 UPDATE 类型的 DML 事件生效。
+- `ignore-delete-value-expr`：配置一个 SQL 表达式，对带有指定值的 DELETE 类型的 DML 事件生效。
+- `ignore-insert-value-expr`：配置一个 SQL 表达式，对带有指定值的 INSERT 类型的 DML 事件生效。
+- `ignore-update-old-value-expr`：配置一个 SQL 表达式，对带有指定旧值的 UPDATE 类型的 DML 事件生效。
+- `ignore-update-new-value-expr`：配置一个 SQL 表达式，对带有指定新值的 UPDATE 类型的 DML 事件生效。
 
 > **注意：**
 >
@@ -711,6 +712,7 @@ ignore-update-new-value-expr = "gender = 'male' and age > 18" # 过滤掉新值 
 * TiCDC v4.0.0 中移除了 `ignore-txn-commit-ts`，添加了 `ignore-txn-start-ts`，使用 start_ts 过滤事务。
 * TiCDC v4.0.2 中移除了 `db-dbs`/`db-tables`/`ignore-dbs`/`ignore-tables`，添加了 `rules`，使用新版的数据库和数据表过滤规则，详细语法参考[表库过滤](/table-filter.md)。
 * TiCDC v6.1.0 及之后移除了 `mounter` 配置项，用户配置该项不会报错，也不会生效。
+* 从 v6.4.0 开始，TiCDC 使用 Syncpoint 功能需要同步任务拥有下游集群的 `SYSTEM_VARIABLES_ADMIN` 或者 `SUPER` 权限。
 
 ## 自定义 Kafka Sink 的 Topic 和 Partition 的分发规则
 
@@ -900,6 +902,6 @@ cdc redo apply --tmp-dir="/tmp/cdc/redo/apply" \
 
 以上命令中：
 
-- `tmp-dir` ：指定用于下载 TiCDC 增量数据备份文件的临时目录。
-- `storage` ：指定存储 TiCDC 增量数据备份文件的地址，为 S3 或者 NFS 目录。
-- `sink-uri` ：恢复数据到的下游地址。scheme 仅支持 `mysql`。
+- `tmp-dir`：指定用于下载 TiCDC 增量数据备份文件的临时目录。
+- `storage`：指定存储 TiCDC 增量数据备份文件的地址，为 S3 或者 NFS 目录。
+- `sink-uri`：数据恢复的目标地址。scheme 仅支持 `mysql`。
