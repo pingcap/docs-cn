@@ -558,6 +558,17 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 默认值：`OFF`
 - 这个变量用来控制是否允许通过 `ALTER TABLE MODIFY` 或 `ALTER TABLE CHANGE` 来移除某个列的 `AUTO_INCREMENT` 属性。默认 (`OFF`) 为不允许。
 
+### `tidb_analyze_partition_concurrency`
+
+> **警告：**
+>
+> 当前版本中该变量控制的功能尚未完全生效，请保留默认值。
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 默认值：`1`
+- 这个变量用于 TiDB analyze 分区表时，对分区表统计信息进行读写的并发度。
+
 ### `tidb_analyze_version` <span class="version-mark">从 v5.1.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
@@ -884,7 +895,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 >
 > 当前该功能为实验特性，不建议在生产环境中使用。
 >
-> 当前索引加速功能与 [PITR (Point-in-time recovery)](/br/point-in-time-recovery.md) 功能不兼容。在使用索引加速功能时，需要确保后台没有启动 PITR 备份任务，否则可能会出现非预期结果。非预期场景包括：
+> 当前索引加速功能与 [PITR (Point-in-time recovery)](/br/br-pitr-guide.md) 功能不兼容。在使用索引加速功能时，需要确保后台没有启动 PITR 备份任务，否则可能会出现非预期结果。非预期场景包括：
 >
 > - 如果先启动 PITR 备份任务，再添加索引，此时即使索引加速功能打开，也不会使用加速索引功能，但不影响索引兼容性。由于 PITR 备份任务会一直运行，相当于索引加速功能被关闭。
 > - 如果先启动添加索引加速任务，再启动 PITR 备份任务，此时 PITR 备份任务会报错，但不影响正在添加索引的任务。
@@ -1083,7 +1094,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 默认值：`INT_ONLY`
+- 默认值：`ON`
 - 可选值：`OFF`，`ON`，`INT_ONLY`
 - 这个变量用于控制默认情况下表的主键是否使用[聚簇索引](/clustered-indexes.md)。“默认情况”即不显式指定 `CLUSTERED`/`NONCLUSTERED` 关键字的情况。可设置为 `OFF`/`ON`/`INT_ONLY`。
     - `OFF` 表示所有主键默认使用非聚簇索引。
@@ -1187,6 +1198,14 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 该变量用于设置是否启用 [`exchange partitions with tables`](/partitioned-table.md#分区管理) 特性。默认值为 `ON`，即默认开启该功能。
 - 该变量自 v6.3.0 开始废弃，其取值将固定为默认值 `ON`，即默认开启 `exchange partitions with tables`。
 
+### `tidb_enable_extended_stats`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 类型：布尔型
+- 默认值：`OFF`
+- 该变量指定 TiDB 是否收集扩展统计信息来指导优化器。
+
 ### `tidb_enable_fast_analyze`
 
 > **警告：**
@@ -1232,6 +1251,14 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 是否持久化到集群：是
 - 默认值：`OFF`
 - 这个变量用来控制是否开启 General Plan Cache。
+
+### `tidb_enable_gogc_tuner` <span class="version-mark">从 v6.4.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
+- 类型：布尔型
+- 默认值：`ON`
+- 该变量来用控制是否开启 GOGC Tuner。
 
 ### `tidb_enable_historical_stats`
 
@@ -1754,6 +1781,14 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 开启该变量后，即可在 TiDB Dashboard 中查看查询的图形化执行计划。注意，TiDB Dashboard 只显示变量开启时产生的查询的执行计划。
 - 用 `select tidb_decode_binary_plan('xxx...')` SQL 语句可以从编码后的执行计划解析出具体的执行计划。
 
+### `tidb_gogc_tuner_threshold` <span class="version-mark">从 v6.4.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
+- 默认值：`0.6`
+- 范围：`[0, 0.9)`
+- 这个变量用来控制 GOGC Tuner 自动调节的最大内存阈值，超过阈值后 GOGC Tuner 会停止工作。
+
 ### `tidb_guarantee_linearizability` <span class="version-mark">从 v5.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
@@ -2060,10 +2095,24 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 ### `tidb_memory_usage_alarm_ratio`
 
 - 作用域：GLOBAL
-- 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
-- 默认值：`0.8`
-- TiDB 内存使用占总内存的比例超过一定阈值时会报警。该功能的详细介绍和使用方法可以参考 [`tidb_memory_usage_alarm_ratio`](/tidb-configuration-file.md#tidb_memory_usage_alarm_ratio)。
-- 该变量的初始值可通过 [`tidb_memory_usage_alarm_ratio`](/tidb-configuration-file.md#tidb_memory_usage_alarm_ratio) 进行配置。
+- 是否持久化到集群：是
+- 默认值：`0.7`
+- 范围：`[0.0, 1.0]`
+- 这个变量用于设置触发 tidb-server 内存告警的内存使用比率。默认情况下，当 TiDB 内存使用量超过总内存的 70% 且满足[报警条件](/configure-memory-usage.md#tidb-server-内存占用过高时的报警)时，TiDB 会打印报警日志。
+- 当配置该变量的值为 `0` 或 `1` 时，表示关闭内存阈值报警功能。
+- 当配置该变量为 `0` 到 `1` 之间的值时，表示开启内存阈值报警功能：
+
+    - 如果系统变量 [`tidb_server_memory_limit`](#tidb_server_memory_limit-从-v640-版本开始引入) 等于 0，且配置项 [`server-memory-quota`](/tidb-configuration-file.md#server-memory-quota-从-v409-版本开始引入) 未设置，则内存报警阈值为 `tidb_memory-usage-alarm-ratio * 系统内存大小`。
+    - 如果系统变量 `tidb_server_memory_limit` 等于 0，且配置项 `server-memory-quota` 被设置为大于 0，则内存报警阈值为 `tidb_memory-usage-alarm-ratio * server-memory-quota`。
+    - 如果系统变量 `tidb_server_memory_limit` 被设置为大于 0，则内存报警阈值为 `tidb_memory-usage-alarm-ratio * tidb_server_memory_limit`。
+
+### `tidb_memory_usage_alarm_keep_record_num` <span class="version-mark">从 v6.4.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 默认值：`5`
+- 范围：`[1, 10000]`
+- 当 tidb-server 内存占用超过内存报警阈值并触发报警时，TiDB 默认只保留最近 5 次报警时所生成的状态文件。你可以通过该变量调整该次数。
 
 ### `tidb_merge_join_concurrency`
 
@@ -2072,6 +2121,17 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 默认值：`1`
 - 设置 `MergeJoin` 算子执行查询时的并发度。
 - **不推荐设置该变量**，修改该变量值可能会造成数据正确性问题。
+
+### `tidb_merge_partition_stats_concurrency`
+
+> **警告：**
+>
+> 当前版本中该变量控制的功能尚未完全生效，请保留默认值。
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 默认值：`1`
+- 这个变量用于 TiDB analyze 分区表时，对分区表统计信息进行合并时的并发度。
 
 ### `tidb_metric_query_range_duration` <span class="version-mark">从 v4.0 版本开始引入</span>
 
@@ -2544,6 +2604,15 @@ SHOW WARNINGS;
 - 该变量用于控制在 MPP 模式下是否将 `COUNT(DISTINCT)` 聚合改写为三阶段分布式执行的聚合。
 - 该变量目前仅对只有一个 `COUNT(DISTINCT)` 的聚合生效。
 
+### `tidb_opt_tiflash_concurrency_factor`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 类型：浮点数
+- 范围：`[0, 2147483647]`
+- 默认值：`24.0`
+- 表示 TiFlash 计算的并发数。该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
+
 ### `tidb_opt_write_row_id`
 
 - 作用域：SESSION
@@ -2928,16 +2997,12 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 ### `tidb_stats_load_sync_wait` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 
-> **警告：**
->
-> 统计信息同步加载目前为实验性特性，不建议在生产环境中使用。
-
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 默认值：`0`
+- 默认值：`100`
 - 单位：毫秒
 - 范围：`[0, 2147483647]`
-- 这个变量用于控制是否开启统计信息的同步加载模式（默认为 `0` 代表不开启，即为异步加载模式），以及开启的情况下，SQL 执行同步加载完整统计信息等待多久后会超时。更多信息，请参考[统计信息的加载](/statistics.md#统计信息的加载)。
+- 这个变量用于控制是否开启统计信息的同步加载模式（为 `0` 代表不开启，即为异步加载模式），以及开启的情况下，SQL 执行同步加载完整统计信息等待多久后会超时。更多信息，请参考[统计信息的加载](/statistics.md#统计信息的加载)。
 
 ### `tidb_stats_load_pseudo_timeout` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 
@@ -3177,7 +3242,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 作用域：SESSION | GLOBAL
 - 默认值：`8192`
 - 范围：`[1, 18446744073709551616]`
-- 细粒度 shuffle 功能开启时，下推到 TiFlash 的窗口函数可以并行执行。该变量控制发送端发送数据的攒批大小，即发送端累计行数超过该值就会进行一次数据发送。
+- 细粒度 shuffle 功能开启时，下推到 TiFlash 的窗口函数可以并行执行。该变量控制发送端发送数据的攒批大小。
 - 对性能影响：如果该值设置过小，例如极端值 1 ，会导致每个 Block 都进行一次网络传输。如果设置过大，例如极端值整个表的行数，会导致接收端大部分时间都在等待数据，无法流水线计算。可以观察 TiFlash 接收端收到的行数分布情况，如果大部分线程接收的行数很少，例如只有几百行，可以增加该值以达到减少网络开销的目的。
 
 ### `tiflash_fine_grained_shuffle_stream_count` <span class="version-mark">从 v6.2.0 版本开始引入</span>

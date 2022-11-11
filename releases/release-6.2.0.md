@@ -19,9 +19,9 @@ TiDB 版本：6.2.0-DMR
 - 实现[细粒度数据交换 (shuffle)](/system-variables.md#tiflash_fine_grained_shuffle_batch_size-从-v620-版本开始引入) 使窗口函数 (Window function) 可以利用多线程并行计算。
 - 引入[新的 DDL 并行执行框架](/system-variables.md#tidb_enable_concurrent_ddl-从-v620-版本开始引入)，减少 DDL 阻塞，大幅提升执行效率。
 - TiKV 支持[自适应调整 CPU 使用率](/tikv-configuration-file.md#后台限流)，确保数据库稳定高效运行。
-- 支持 [point-in-time recovery (PITR)](/br/point-in-time-recovery.md)，允许恢复备份集群的历史任意时间点的快照。
+- 支持 [point-in-time recovery (PITR)](/br/backup-and-restore-overview.md)，允许恢复备份集群的历史任意时间点的快照。
 - TiDB Lightning 使用 Physical Import Mode [导入时限制调度范围从集群降低到表级别](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#导入时限制调度范围从集群降低到表级别)。
-- Backup & Restore (BR) 支持[恢复用户和权限数据](/br/br-usage-restore.md#恢复-mysql-数据库下的表)，备份恢复体验更平滑。
+- Backup & Restore (BR) 支持[恢复用户和权限数据](/br/br-snapshot-guide.md#恢复-mysql-数据库下的表)，备份恢复体验更平滑。
 - TiCDC 支持[过滤指定类型的 DDL 事件](/ticdc/manage-ticdc.md#event-filter-配置规则-从-v620-版本开始引入)，解锁更多数据同步场景。
 - 事务中支持 [`SAVEPOINT` 机制](/sql-statements/sql-statement-savepoint.md)，可以灵活地控制事务内的回退节点。
 - [单 `ALTER TABLE` 语句增删改多个列或索引](/sql-statements/sql-statement-alter-table.md)，方便实现 SQL 功能，提升产品易用性。
@@ -169,9 +169,9 @@ TiDB 版本：6.2.0-DMR
 
 * BR 支持恢复用户和权限数据
 
-    该功能支持恢复用户和权限数据，用户不再需要额外的方案恢复用户和权限数据，只需要在使用 BR 恢复数据时指定参数 `--with-sys-table`。
+    BR 快照备份和恢复支持恢复用户和权限数据，用户不再需要额外的方案恢复用户和权限数据，只需要在使用 BR 恢复数据时指定参数 `--with-sys-table`。
 
-    [用户文档](/br/br-usage-restore.md#恢复-mysql-数据库下的表) [#35395](https://github.com/pingcap/tidb/issues/35395) @[D3Hunter](https://github.com/D3Hunter)
+    [用户文档](/br/br-snapshot-guide.md#恢复-mysql-数据库下的表) [#35395](https://github.com/pingcap/tidb/issues/35395) @[D3Hunter](https://github.com/D3Hunter)
 
 * 支持基于变更日志的备份和恢复实现 Point-in-time recovery
 
@@ -182,7 +182,7 @@ TiDB 版本：6.2.0-DMR
     - 业务历史数据审计，满足司法审查的需求。
     - 该功能初版存在着一些使用限制，详细情况请参考功能使用文档。
 
-    [用户文档](/br/point-in-time-recovery.md) [#29501](https://github.com/pingcap/tidb/issues/29501) @[joccau](https://github.com/joccau)
+    [用户文档](/br/br-use-overview.md) [#29501](https://github.com/pingcap/tidb/issues/29501) @[joccau](https://github.com/joccau)
 
 * DM 支持增量持续数据校验（实验特性）
 
@@ -287,7 +287,7 @@ TiDB 版本：6.2.0-DMR
 
 - TiFlash 的存储格式 (`format_version`) 不能直接从 4 降级到 3，详情请参考 [TiFlash v6.2.0 升级帮助](/tiflash-620-upgrade-guide.md)。
 - 在 v6.2.0 以及后续版本，**强烈建议**保留 `dt_enable_logical_split` 的默认值 `false`，不要将其修改为 `true`。具体请参考已知问题 [#5576](https://github.com/pingcap/tiflash/issues/5576)。
-- 如果备份集群包含 TiFlash，执行 PITR 后恢复集群的数据不包含 TiFlash 副本，需要手动恢复 TiFlash 副本；执行 exchange partition DDL 会导致 PITR restore 出错；上游数据库使用 TiDB Lightning Physical 方式导入的数据，无法作为数据日志备份下来，数据导入后需要执行一次全量备份。关于 PITR 功能使用的其他事项，请参考 [PITR 使用限制](/br/point-in-time-recovery.md#使用限制)。
+- 如果备份集群包含 TiFlash，执行 PITR 后恢复集群的数据不包含 TiFlash 副本，需要手动恢复 TiFlash 副本；执行 exchange partition DDL 会导致 PITR restore 出错；上游数据库使用 TiDB Lightning Physical 方式导入的数据，无法作为数据日志备份下来，数据导入后需要执行一次全量备份。关于 PITR 功能使用的其他事项，请参考 [PITR 使用限制](/br/backup-and-restore-overview.md#使用须知)。
 - 从 v6.2.0 开始，BR 支持通过手动指定参数 `--with-sys-table=true` 来恢复 mysql schema 下的表。
 - 使用 `ALTER TABLE` 增删改多个列或索引时，TiDB 会根据执行前的 schema 结构来验证一致性，而不管同一 DDL 语句中的更改。同时，语句的执行顺序上 TiDB 和 MySQL 在某些场景不兼容。
 - 在集群中，如果 TiDB 组件的版本为 v6.2.0 及以上，则 TiKV 组件版本不得低于 v6.2.0。

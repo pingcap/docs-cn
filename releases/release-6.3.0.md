@@ -163,7 +163,7 @@ TiDB 版本：6.3.0-DMR
 
 ### 备份恢复
 
-* PITR 支持 [GCS](/br/backup-storage-gcs.md) 和 [Azure Blob Storage](/br/backup-storage-azblob.md) 作为备份存储 @[joccau](https://github.com/joccau)
+* PITR 支持 [GCS 和 Azure Blob Storage](/br/backup-and-restore-storages.md) 作为备份存储 @[joccau](https://github.com/joccau)
 
     部署在 GCP 或者 Azure 上的用户，将 TiDB 集群升级至 v6.3.0 就可以使用 PITR 功能。
 
