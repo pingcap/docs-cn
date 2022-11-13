@@ -545,6 +545,15 @@ MOD(YEAR('2005-09-01'),4)
 =  1
 ```
 
+### TiDB 对 LINEAR HASH 分区的处理
+
+在 v6.4.0 之前，如果在 TiDB 上执行 MySQL LINEAR HASH 分区的 DDL 语句，TiDB 只能创建非分区表。在这种情况下，如果你仍然想要在 TiDB 中创建分区表，你需要修改这些 DDL 语句。
+
+从 v6.4.0 起，TiDB 支持解析 MySQL 的 `PARTITION BY LINEAR HASH` 语法，但会忽略其中的 `LINEAR` 关键字。你可以直接在 TiDB 中执行现有的 MySQL LINEAR HASH 分区的 DDL 和 DML 语句，而无需修改。
+
+- 对于 MySQL LINEAR HASH 分区的 DDL 语句，TiDB 将创建常规的非线形 Hash 分区表（注意 TiDB 内部实际不存在 LINEAR HASH 分区表）。
+- 对于 MySQL LINEAR HASH 分区的 DML 语句，只要未使用[分区选择](#分区选择)，TiDB 将正常返回对应的 Hash 分区的查询结果。
+
 ### 分区对 NULL 值的处理
 
 TiDB 允许计算结果为 NULL 的分区表达式。注意，NULL 不是一个整数类型，NULL 小于所有的整数类型值，正如 `ORDER BY` 的规则一样。
