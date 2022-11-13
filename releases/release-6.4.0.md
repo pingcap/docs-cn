@@ -257,17 +257,17 @@ TiDB 版本：6.4.0-DMR
 | [`last_sql_use_alloc`](/system-variables.md#last_sql_use_alloc-从-v640-版本开始引入) | 新增 | 这个变量是一个只读变量，用来显示上一个语句是否使用了缓存的 Chunk 对象 (Chunk allocation)。 |
 | [`tidb_auto_analyze_partition_batch_size`](/system-variables.md#tidb_auto_analyze_partition_batch_size-从-v640-版本开始引入) | 新增 | 该变量用于设置 TiDB [自动 analyze](/statistics.md#自动更新) 分区表（即自动收集分区表上的统计信息）时，每次同时 analyze 分区的个数。 |
 | [`tidb_enable_external_ts_read`](/system-variables.md#tidb_enable_external_ts_read-从-v640-版本开始引入) | 新增 | 默认值为 `OFF`。当此变量设置为 `ON` 时，TiDB 会读取 [`tidb_external_ts`](/system-variables.md#tidb_external_ts-从-v640-版本开始引入) 指定时间戳前的历史数据。 |
-| [`tidb_enable_gogc_tuner`](/system-variables.md#tidb_enable_gogc_tuner-从-v640-版本开始引入) | 新增 | 这个变量用来控制 GOGC Tuner 自动调节的最大内存阈值，超过阈值后 GOGC Tuner 会停止工作。 |
+| [`tidb_enable_gogc_tuner`](/system-variables.md#tidb_enable_gogc_tuner-从-v640-版本开始引入) | 新增 | 该变量来用控制是否开启 GOGC Tuner，默认为 ON。 |
 | [`tidb_enable_reuse_chunk`](/system-variables.md#last_sql_use_alloc-从-v640-版本开始引入) | 新增 | 该变量用于控制 TiDB 是否启用 Chunk 对象缓存，默认为 `ON`，代表 TiDB 优先使用缓存中的 Chunk 对象，缓存中找不到申请的对象时才会从系统内存中申请。如果为 `OFF`，则直接从系统内存中申请 Chunk 对象。 |
 | [`tidb_enable_prepared_plan_cache`](/system-variables.md#tidb_enable_prepared_plan_cache-从-v610-版本开始引入) | 修改 | 这个变量用来控制是否开启 [Prepared Plan Cache](/sql-prepared-plan-cache.md)。v6.4.0 新增了 SESSION 作用域。 |
 | [`tidb_enable_prepared_plan_cache_memory_monitor`](/system-variables.md#tidb_enable_prepared_plan_cache_memory_monitor-从-v640-版本开始引入) | 新增 | 这个变量用来控制是否统计 Prepared Plan Cache 中所缓存的执行计划占用的内存。|
 | [`tidb_external_ts`](/system-variables.md#tidb_external_ts-从-v640-版本开始引入) | 新增 | 默认值为 `0`。当 [`tidb_enable_external_ts_read`](/system-variables.md#tidb_enable_external_ts_read-从-v640-版本开始引入) 设置为 `ON` 时，TiDB 会依据该变量指定的时间戳读取历史数据。 |
-| [`tidb_gogc_tuner_threshold`](/system-variables.md#tidb_gogc_tuner_threshold-从-v640-版本开始引入) | 新增 | 该变量来用控制是否开启 GOGC Tuner，默认为 ON。 |
+| [`tidb_gogc_tuner_threshold`](/system-variables.md#tidb_gogc_tuner_threshold-从-v640-版本开始引入) | 新增 | 这个变量用来控制 GOGC Tuner 自动调节的最大内存阈值，超过阈值后 GOGC Tuner 会停止工作。 |
 | [`tidb_memory_usage_alarm_keep_record_num`](/system-variables.md#tidb_memory_usage_alarm_keep_record_num-从-v640-版本开始引入) | 新增 | 当 tidb-server 内存占用超过内存报警阈值并触发报警时，TiDB 默认只保留最近 5 次报警时所生成的状态文件。通过该变量可以调整该次数。 |
 | [`tidb_opt_agg_push_down`](/system-variables.md#tidboptaggpushdown) | 修改 | 这个变量用来设置优化器是否执行聚合函数下推到 Join，Projection 和 UnionAll 之前的优化操作。本次增加了 Global 的作用域。 |
 | [`tidb_opt_prefix_index_single_scan`](/system-variables.md#tidb-opt-prefix-index-single-scan-从-v640-版本开始引入) | 新增 | 这个变量默认开启，用于控制 TiDB 优化器是否将某些过滤条件下推到前缀索引，尽量避免不必要的回表，从而提高查询性能。 |
 | [`tidb_opt_range_max_size`](/system-variables.md#tidb-opt-range-max-size-从-v640-版本开始引入) | 新增 | 该变量用于指定优化器构造扫描范围的内存用量上限。当该变量为 `0` 时，表示对扫描范围没有内存限制。如果构造精确的扫描范围会超出内存用量限制，优化器会使用更宽松的扫描范围。 |
-| [`tidb_server_memory_limit`](/system-variables.md#tidb-server-memory-limit-从-v640-版本开始引入) | 新增 | 该变量指定 TiDB 实例的内存限制。TiDB 会在内存用量达到该限制时，对当前内存用量最高的 SQL 语句进行取消 (Cancel) 操作。 |
+| [`tidb_server_memory_limit`](/system-variables.md#tidb-server-memory-limit-从-v640-版本开始引入) | 新增 | 该变量用于指定 TiDB 实例的内存限制。TiDB 会在内存用量达到该限制时，对当前内存用量最高的 SQL 语句进行取消 (Cancel) 操作。 |
 | [`tidb_server_memory_limit_gc_trigger`](/system-variables.md#tidb-server-memory-limit-gc-trigger-从-v640-版本开始引入) | 新增 | 该变量用于控制 TiDB 尝试触发 GC 的阈值。当 TiDB 的内存使用达到 `tidb_server_memory_limit` 值 \* `tidb_server_memory_limit_gc_trigger` 值时，则会主动触发一次 Golang GC。在一分钟之内只会主动触发一次 GC。|
 | [`tidb_server_memory_limit_sess_min_size`](tidb-server-memory-limit-session-min-size-从-v640-版本开始引入) | 新增 | 开启内存限制后，TiDB 会终止当前实例上内存用量最高的 SQL 语句。本变量指定此情况下 SQL 语句被终止的最小内存用量。 |
 | [`tidb_constraint_check_in_place_pessimistic`](/system-variables.md#tidb_constraint_check_in_place_pessimistic-从-v630-版本开始引入) | 修改 | 这个变量用于控制悲观事务中唯一约束检查的时间点。v6.4.0 去掉了它的 GLOBAL 作用域并支持通过配置项 [`pessimistic-txn.constraint-check-in-place-pessimistic`](/tidb-configuration-file.md#constraint-check-in-place-pessimistic) 控制它的默认值。 |
@@ -275,7 +275,9 @@ TiDB 版本：6.4.0-DMR
 | [`tidb_memory_usage_alarm_ratio`](/system-variables.md#tidb_memory_usage_alarm_ratio) | 修改 | 该变量用于设置触发 tidb-server 内存告警的内存使用比率，默认值从 `0.8` 修改为 `0.7`。 |
 | [`tidb_prepared_plan_cache_size`](/system-variables.md#tidb_enable_prepared_plan_cache-从-v610-版本开始引入) | 修改 | 这个变量用来控制单个 `SESSION` 的 Prepared Plan Cache 最多能够缓存的计划数量。v6.4.0 新增了 SESSION 作用域。|
 | [`tidb_stats_load_sync_wait`](/system-variables.md#tidb_stats_load_sync_wait-从-v540-版本开始引入) | 修改 | 该变量默认值从 `0` 修改为 `100`，代表 SQL 执行同步加载完整统计信息默认等待 100 毫秒后会超时。 |
-| [`tidb_enable_clustered_index`](/system-variables.md#tidb_enable_clustered_index-从-v50-版本开始引入) | 修改 | 默认值从 `INT_ONLY` 修改为 `ON`。 |
+| [`tidb_stats_load_pseudo_timeout`](/system-variables.md#tidb_stats_load_pseudo_timeout-从-v540-版本开始引入) | 修改 | 该变量默认值从 `OFF` 修改为  `ON`，代表统计信息同步加载超时后，SQL 会退回使用 pseudo 的统计信息。|
+| [`tidb_enable_clustered_index`](/system-variables.md#tidb_enable_clustered_index-从-v50-版本开始引入) | 修改 | 该变量默认值从 `INT_ONLY` 修改为 `ON`，代表表的主键默认使用聚簇索引。 |
+| [`tidb_enable_paging`](/system-variables.md#tidb_enable_paging-从-v540-版本开始引入) | 修改 | 该变量用于控制是否使用分页 (paging) 方式发送 Coprocessor 请求，默认值从 `OFF` 修改为 `ON`。 |
 
 ### 配置文件参数
 
@@ -287,7 +289,7 @@ TiDB 版本：6.4.0-DMR
 | TiDB | `tidb_memory_usage_alarm_ratio` | 废弃 | 该配置项在 v6.4.0 之前的版本中用于控制系统变量 [`tidb_memory_usage_alarm_ratio`](/system-variables.md#tidb_memory_usage_alarm_ratio) 的初始值，自 v6.4.0 起被废弃。|
 | TiDB | `memory-usage-alarm-ratio` | 废弃 | 该配置项自 v6.4.0 起被系统变量 [`tidb_memory_usage_alarm_ratio`](/system-variables.md#tidb_memory_usage_alarm_ratio) 所取代。如果在升级前设置过该配置项，升级后原配置将不再生效。|
 | TiKV | [`alloc-ahead-buffer`](/tikv-configuration-file.md#alloc-ahead-buffer-从-v640-版本开始引入) | 新增 | TiKV 预分配给 TSO 的缓存大小（以时长计算），默认值为 3s。|
-| TiKV | [`apply-yield-write-size`](#apply-yield-write-size-从-v640-版本开始引入) | 新增 | Apply 线程每一轮处理单个状态机写入的最大数据量，这是个软限制。 |
+| TiKV | [`apply-yield-write-size`](#apply-yield-write-size-从-v640-版本开始引入) | 新增 | Apply 线程每一轮处理单个状态机写入的最大数据量，这是个软限制。默认值为 32KiB。 |
 | TiKV | [`renew-batch-max-size`](/tikv-configuration-file.md#renew-batch-max-size-从-v640-版本开始引入)| 新增 | 单次时间戳请求的最大数量，默认值为 8192。 |
 | TiKV | [`raw-min-ts-outlier-threshold`](/tikv-configuration-file.md#raw-min-ts-outlier-threshold-从-v620-版本开始引入) | 废弃 | 废弃对 RawKV 的 Resolved TS 进行异常检测的阈值。|
 | PD | [`tso-update-physical-interval`](/pd-configuration-file.md#tso-update-physical-interval) | 新增 | 这个配置项从 v6.4.0 开始生效，用来控制 TSO 物理时钟更新周期，默认值为 50ms。 |
