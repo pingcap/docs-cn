@@ -1,10 +1,10 @@
 ---
-title: 性能问题及处理方法
+title: TiDB Data Migration 性能问题及处理方法
 summary: 了解 DM 可能存在的常见性能问题及其处理方法。
 aliases: ['/docs-cn/tidb-data-migration/dev/handle-performance-issues/']
 ---
 
-# 性能问题及处理方法
+# TiDB Data Migration 性能问题及处理方法
 
 本文档介绍 DM 中可能存在的、常见的性能问题及其处理方法。
 

@@ -1,10 +1,10 @@
 ---
-title: 管理上游数据源
+title: 管理 DM 上游数据源
 summary: 了解如何管理上游 MySQL 实例。
 aliases: ['/docs-cn/tidb-data-migration/dev/manage-source/']
 ---
 
-# 管理上游数据源配置
+# 管理 DM 上游数据源
 
 本文介绍了如何使用 [dmctl](/dm/dmctl-introduction.md) 组件来管理数据源配置，包括如何加密数据库密码，数据源操作，查看数据源配置，改变数据源与 DM-worker 的绑定关系。
 

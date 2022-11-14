@@ -1,9 +1,9 @@
 ---
-title: 管理迁移表的表结构
+title: 管理 DM 迁移表的表结构
 summary: 了解如何管理待迁移表在 DM 内部的表结构。
 ---
 
-# 管理迁移表的表结构
+# 管理 DM 迁移表的表结构
 
 本文介绍如何使用 [dmctl](/dm/dmctl-introduction.md) 组件来管理通过 DM 迁移的表在 DM 内部的表结构。
 

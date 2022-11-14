@@ -1,10 +1,10 @@
 ---
-title: 处理出错的 DDL 语句
+title: 使用 DM 处理出错的 DDL 语句
 summary: 了解在使用 TiDB Data Migration 迁移数据时，如何处理出错的 DDL 语句。
 aliases: ['/docs-cn/tidb-data-migration/dev/skip-or-replace-abnormal-sql-statements/']
 ---
 
-# 处理出错的 DDL 语句
+# 使用 DM 处理出错的 DDL 语句
 
 本文介绍了如何使用 DM 来处理出错的 DDL 语句。
 

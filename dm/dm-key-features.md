@@ -1,10 +1,10 @@
 ---
-title: 主要特性
+title: TiDB Data Migration 主要特性
 summary: 了解 DM 的各主要功能特性或相关的配置选项。
 aliases: ['/docs-cn/tidb-data-migration/dev/key-features/','/docs-cn/tidb-data-migration/dev/feature-overview/']
 ---
 
-# 主要特性
+# TiDB Data Migration 主要特性
 
 本文档介绍 DM 提供的数据迁移功能以及相关的配置选项与使用示例。
 
@@ -544,7 +544,7 @@ filters:
 
 <SimpleTab>
 <div label="v2.0.5 及之后的版本">
- 
+
 在 v2.0.5 及之后的版本，请在 `task` 配置文件中使用 `online-ddl` 配置项。
 
 如上游 MySQL/MariaDB （同时）使用 gh-ost 或 pt-osc 工具，则在 task 的配置文件中设置：
