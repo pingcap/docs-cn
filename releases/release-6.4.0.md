@@ -320,18 +320,17 @@ TiDB 版本：6.4.0-DMR
 
 + TiKV
 
-    - raftstore 新增 `apply-yield-write-size` 配置项，以限制 raftstore 的最大单轮 Apply 写入的数据大小，减缓 raftstore 线程在 Apply 写入过大时的阻塞现象。[#13594](https://github.com/tikv/tikv/pull/13594) @[glorv](https://github.com/glorv)
-    - 为 Region 的 Leader 迁移前增加缓存预热阶段，减缓 Leader 迁移时造成QPS剧烈抖动现象。[#13556](https://github.com/tikv/tikv/pull/13556) @[cosven](https://github.com/cosven)
-    - 新增支持将 `json_contains` 算子下推至 Coprocessor 。[#13592](https://github.com/tikv/tikv/issues/13592) @[lizhenhuan](https://github.com/lizhenhuan)
-    - 新增对 `CausalTsProvider` 的异步实现 [#13428](https://github.com/tikv/tikv/issues/13428) @[zeminzhou](https://github.com/zeminzhou)
+    - 新增 `apply-yield-write-size` 配置项，以限制 Apply 线程每一轮处理单个状态机写入的数据大小，减缓 Raftstore 线程在 Apply 写入过大时的阻塞现象 [#13594](https://github.com/tikv/tikv/pull/13594) @[glorv](https://github.com/glorv)
+    - 在 Region 的 Leader 迁移前增加缓存预热阶段，减缓 Leader 迁移时造成 QPS 剧烈抖动现象 [#13556](https://github.com/tikv/tikv/pull/13556) @[cosven](https://github.com/cosven)
+    - 支持将 `json_contains` 算子下推至 Coprocessor [#13592](https://github.com/tikv/tikv/issues/13592) @[lizhenhuan](https://github.com/lizhenhuan)
+    - 新增 `CausalTsProvider` 的异步实现，提升某些场景下刷盘的性能 [#13428](https://github.com/tikv/tikv/issues/13428) @[zeminzhou](https://github.com/zeminzhou)
 
 + PD
 
-    - 新增热点调度 rank v2 算法，在特定场景下 `v2` 版本算法则可以在两个维度都取得更好的均衡效果，并减少无效调度 [#5021](https://github.com/tikv/pd/issues/5021) @[HundunDM](https://github.com/hundundm)
-    - 改进 Operator 超时机制，防止过早超时 [#5596](https://github.com/tikv/pd/issues/5596) @[bufferflies](https://github.com/bufferflies)
-    - 新增 Placement rule 支持 witness [#5568](https://github.com/tikv/pd/issues/5568) @[ethercflow](https://github.com/ethercflow)
+    - 热点均衡调度器 v2 版本算法成为正式功能，在特定场景下 v2 版本算法可以在配置的两个维度均取得更好的均衡效果，并减少无效调度 [#5021](https://github.com/tikv/pd/issues/5021) @[HundunDM](https://github.com/hundundm)
+    - 改进 Operator step 超时机制，防止过早超时 [#5596](https://github.com/tikv/pd/issues/5596) @[bufferflies](https://github.com/bufferflies)
     - 优化调度器在大集群下的性能 [#5473](https://github.com/tikv/pd/issues/5473)@[bufferflies](https://github.com/bufferflies)
-    - 支持 external timestamp [#5637](https://github.com/tikv/pd/issues/5637) @[lhy1024](https://github.com/lhy1024)
+    - 支持使用非 PD 提供的外部时间戳 [#5637](https://github.com/tikv/pd/issues/5637) @[lhy1024](https://github.com/lhy1024)
 
 + TiFlash
 
@@ -389,15 +388,15 @@ TiDB 版本：6.4.0-DMR
 
 + TiKV
 
-    - 修复了当环境中存在多个 `cgroup`s 和 `mountinfo`s 时的启动异常问题 [#13660](https://github.com/tikv/tikv/issues/13660) @[tabokie](https://github.com/tabokie)
-    - 修复 tikv 监控 tikv_gc_compaction_filtered 表达式错误问题 [#13537](https://github.com/tikv/tikv/issues/13537)
-    - 修复了 `delete_files_in_range` 中存在的异常而导致的性能问题 [#13534](https://github.com/tikv/tikv/issues/13534) @[tabokie](https://github.com/tabokie)
-    - 修复了获取 Snapshot 时 Lease 过期而引发的异常竞争问题 [#13553](https://github.com/tikv/tikv/issues/13553) @[SpadeA-Tang](https://github.com/SpadeA-Tang)
-    - 修复了第一次 FlashBack 失败时存在异常的问题 [#13695](https://github.com/tikv/tikv/issues/13695) @[HuSharp](https://github.com/HuSharp)
+    - 修 Gitpod 环境中存在多个 `cgroup` 和 `mountinfo` 时 TiDB 启动异常的问题 [#13660](https://github.com/tikv/tikv/issues/13660) @[tabokie](https://github.com/tabokie)
+    - 修复 TiKV 监控 `tikv_gc_compaction_filtered` 表达式错误的问题 [#13537](https://github.com/tikv/tikv/issues/13537)
+    - 修复 `delete_files_in_range` 存在异常导致的性能问题 [#13534](https://github.com/tikv/tikv/issues/13534) @[tabokie](https://github.com/tabokie)
+    - 修复获取 Snapshot 时 Lease 过期引发的异常竞争问题 [#13553](https://github.com/tikv/tikv/issues/13553) @[SpadeA-Tang](https://github.com/SpadeA-Tang)
+    - 修复第一次 `FLASHBACK` 失败时存在异常的问题 [#13672](https://github.com/tikv/tikv/issues/13672) [#13704](https://github.com/tikv/tikv/issues/13704) [#13723](https://github.com/tikv/tikv/issues/13723) @[HuSharp](https://github.com/HuSharp)
 
 + PD
 
-    - 修复 Stream 超时问题，加速 Leader 切换的速度 [#5207](https://github.com/tikv/pd/issues/5207) @[CabinfeverB](https://github.com/CabinfeverB)
+    - 修复 Stream 超时问题，提高 Leader 切换的速度 [#5207](https://github.com/tikv/pd/issues/5207) @[CabinfeverB](https://github.com/CabinfeverB)
 
 + TiFlash
 
