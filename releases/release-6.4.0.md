@@ -132,7 +132,7 @@ TiDB 版本：6.4.0-DMR
 
     [用户文档](/system-variables.md#tidb-opt-range-max-size-从-v640-版本开始引入)
 
-* 支持统计信息的同步加载（GA特性）[#38841](https://github.com/pingcap/tidb/pull/38841) @[chrysan](https://github.com/chrysan)
+* 支持统计信息的同步加载（GA特性）[#37434](https://github.com/pingcap/tidb/issues/37434) @[chrysan](https://github.com/chrysan) **tw@ran-huang**
 
     v6.4.0 TiDB 正式打开了统计信息同步加载的特性（默认开启），支持执行当前 SQL 语句时将直方图、TopN、CMSketch 等占用空间较大的统计信息同步加载到内存，提高该 SQL 语句优化时统计信息的完整性
 
