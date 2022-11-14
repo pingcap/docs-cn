@@ -6,16 +6,18 @@ aliases: ['/docs-cn/dev/mysql-compatibility/','/docs-cn/dev/reference/mysql-comp
 
 # 与 MySQL 兼容性对比
 
-- TiDB 高度兼容 MySQL 5.7 协议、MySQL 5.7 常用的功能及语法。MySQL 5.7 生态中的系统工具 (PHPMyAdmin、Navicat、MySQL Workbench、mysqldump、Mydumper/Myloader)、客户端等均适用于 TiDB。
+TiDB 高度兼容 MySQL 5.7 协议、MySQL 5.7 常用的功能及语法。MySQL 5.7 生态中的系统工具（PHPMyAdmin、Navicat、MySQL Workbench、mysqldump、Mydumper/Myloader）、客户端等均适用于 TiDB。
 
-- 但 TiDB 尚未支持一些 MySQL 功能，可能的原因如下：
-    - 有更好的解决方案，例如 JSON 取代 XML 函数。
-    - 目前对这些功能的需求度不高，例如存储流程和函数。
-    - 一些功能在分布式系统上的实现难度较大。
+但 TiDB 尚未支持一些 MySQL 功能，可能的原因如下：
 
-- 除此以外，TiDB 不支持 MySQL 复制协议，但提供了专用工具用于与 MySQL 复制数据
-    - 从 MySQL 复制：[TiDB Data Migration (DM)](/dm/dm-overview.md) 是将 MySQL/MariaDB 数据迁移到 TiDB 的工具，可用于增量数据的复制。
-    - 向 MySQL 复制：[TiCDC](/ticdc/ticdc-overview.md) 是一款通过拉取 TiKV 变更日志实现的 TiDB 增量数据同步工具，可通过 [MySQL sink](/ticdc/ticdc-overview.md#sink-支持) 将 TiDB 增量数据复制到 MySQL。
+- 有更好的解决方案，例如 JSON 取代 XML 函数。
+- 目前对这些功能的需求度不高，例如存储流程和函数。
+- 一些功能在分布式系统上的实现难度较大。
+
+除此以外，TiDB 不支持 MySQL 复制协议，但提供了专用工具用于与 MySQL 复制数据：
+
+- 从 MySQL 复制：[TiDB Data Migration (DM)](/dm/dm-overview.md) 是将 MySQL/MariaDB 数据迁移到 TiDB 的工具，可用于增量数据的复制。
+- 向 MySQL 复制：[TiCDC](/ticdc/ticdc-overview.md) 是一款通过拉取 TiKV 变更日志实现的 TiDB 增量数据同步工具，可通过 [MySQL sink](/ticdc/ticdc-overview.md#sink-支持) 将 TiDB 增量数据复制到 MySQL。
 
 > **注意：**
 >
