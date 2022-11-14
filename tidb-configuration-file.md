@@ -721,6 +721,11 @@ For pessimistic transaction usage, refer to [TiDB Pessimistic Transaction Mode](
 + For scenarios with no conflicts, if there are many auto-commit transactions (the specific number is determined by the real scenarios. For example, the number of auto-commit transactions accounts for more than half of the total number of applications), and a single transaction operates a large data volume, enabling this configuration causes performance regression. For example, the auto-commit `INSERT INTO SELECT` statement.
 + Default value: `false`
 
+### constraint-check-in-place-pessimistic <span class="version-mark">New in v6.4.0</span>
+
++ Controls the default value of the system variable [`tidb_constraint_check_in_place_pessimistic`](/system-variables.md#tidb_constraint_check_in_place_pessimistic-new-in-v630).
++ Default value: `true`
+
 ## isolation-read
 
 Configuration items related to read isolation.

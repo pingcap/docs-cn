@@ -948,10 +948,21 @@ MPP is a distributed computing framework provided by the TiFlash engine, which a
 
 ### `tidb_constraint_check_in_place_pessimistic` <span class="version-mark">New in v6.3.0</span>
 
-- Scope: SESSION | GLOBAL
-- Persists to cluster: Yes
+- Scope: SESSION
 - Type: Boolean
+
+<CustomContent platform="tidb">
+
+- Default value: By default, the [`pessimistic-txn.constraint-check-in-place-pessimistic`](/tidb-configuration-file.md#constraint-check-in-place-pessimistic-new-in-v640) configuration item is `true` so the default value of this variable is `ON`. When [`pessimistic-txn.constraint-check-in-place-pessimistic`](/tidb-configuration-file.md#constraint-check-in-place-pessimistic-new-in-v640) is set to `false`, the default value of this variable is `OFF`.
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
 - Default value: `ON`
+
+</CustomContent>
+
 - This variable only applies to pessimistic transactions. For optimistic transactions, use [`tidb_constraint_check_in_place`](#tidb_constraint_check_in_place) instead.
 - When this variable is set to `OFF`, TiDB defers the unique constraint check of a unique index (to the next time when executing a statement that requires a lock to the index or to the time when committing the transaction). This helps improve performance but might be an unexpected behavior for some applications. See [Constraints](/constraints.md#pessimistic-transactions) for details.
 - Disabling this variable might cause TiDB to return a `LazyUniquenessCheckFailure` error in pessimistic transactions. When this error occurs, TiDB rolls back the current transaction.
