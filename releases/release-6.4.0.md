@@ -350,7 +350,7 @@ TiDB 版本：6.4.0-DMR
 
     + Backup & Restore (BR)
 
-        - 改进加载元数据的机制，仅在需要的时候才会将元数据加载到内存中，显著减少了 PITR 过程中的内存压力 [#38404](https://github.com/pingcap/tidb/issues/38404) @[YuJuncen](https://github.com/YuJuncen)
+        - 改进加载元数据的机制，仅在需要时才将元数据加载到内存中，显著减少 PITR 过程中的内存压力 [#38404](https://github.com/pingcap/tidb/issues/38404) @[YuJuncen](https://github.com/YuJuncen)
 
     + TiCDC
 
@@ -363,7 +363,7 @@ TiDB 版本：6.4.0-DMR
     + TiDB Data Migration (DM)
 
         - 封装、暴露 Checker 对应的接口，提升各个入口功能组装、调用的灵活性。[#7116](https://github.com/pingcap/tiflow/issues/7116) @[D3Hunter](https://github.com/D3Hunter)
-        - 移除 dmctl 中无用的 operate-source update 指令。[#7246](https://github.com/pingcap/tiflow/issues/7246) @[buchuitoudegou](https://github.com/buchuitoudegou)
+        - 移除 dmctl 中无用的 `operate-source update` 指令 [#7246](https://github.com/pingcap/tiflow/issues/7246) @[buchuitoudegou](https://github.com/buchuitoudegou)
         - 解决了 TiDB 不兼容上游数据库的建表 SQL 导致 DM 全量迁移报错的问题 [#37984](https://github.com/pingcap/tidb/issues/37984) @[lance6716](https://github.com/lance6716) **tw@shichun-0415**
 
     + TiDB Lightning
@@ -409,10 +409,11 @@ TiDB 版本：6.4.0-DMR
         - 修复 ng-monitoring 丢失 PD 连接后有概率造成 TopSQL 开关无效的问题 [#164](https://github.com/pingcap/ng-monitoring/issues/164) @[zhongzc](https://github.com/zhongzc)
 
     + Backup & Restore (BR)
-        - 修复由于恢复过程中 PD leader 切换，导致恢复失败的问题。[#36910](https://github.com/pingcap/tidb/issues/36910) @[MoCuishle28](https://github.com/MoCuishle28)
-        - 修复了日志备份任务无法 pause 的问题。[#38250](https://github.com/pingcap/tidb/issues/38250)@[joccau](https://github.com/joccau)
-        - 修复 BR 删除日志备份数据时，会删除不应被删除的数据的问题。[#38939](https://github.com/pingcap/tidb/issues/38939) @[Leavrth](https://github.com/leavrth)
-        - 修复 BR 第一次执行删除在 `Azure Storage Blob` 或 `Google Cloud Storage` 的日志备份数据时，会执行失败的问题。[#38229](https://github.com/pingcap/tidb/issues/38229) @[Leavrth](https://github.com/leavrth)
+
+        - 修复恢复过程中由于 PD leader 切换导致恢复失败的问题 [#36910](https://github.com/pingcap/tidb/issues/36910) @[MoCuishle28](https://github.com/MoCuishle28)
+        - 修复了无法暂停日志备份任务的问题 [#38250](https://github.com/pingcap/tidb/issues/38250)@[joccau](https://github.com/joccau)
+        - 修复 BR 删除日志备份数据时，会删除不应被删除的数据的问题 [#38939](https://github.com/pingcap/tidb/issues/38939) @[Leavrth](https://github.com/leavrth)
+        - 修复 BR 首次删除存储在 Azure Storage Blob 或 Google Cloud Storage 的日志备份数据时执行失败的问题 [#38229](https://github.com/pingcap/tidb/issues/38229) @[Leavrth](https://github.com/leavrth)
 
     + TiCDC
 
@@ -426,15 +427,15 @@ TiDB 版本：6.4.0-DMR
 
     + TiDB Data Migration (DM)
 
-        - 修复 DM UI 产生错误 allow-list 参数问题。[#7096](https://github.com/pingcap/tiflow/issues/7096) @[zoubingwu](https://github.com/zoubingwu)
-        - 修复 DM Worker 在启动、停止时有一定概率触发 data race 的问题。[#6401](https://github.com/pingcap/tiflow/issues/6401) @[liumengya94](https://github.com/liumengya94)
-        - 修复当同步 Update、Delete 语句且下游行数据不存在时，DM 静默忽略的问题。[#6383](https://github.com/pingcap/tiflow/issues/6383) @[GMHDBJD](https://github.com/GMHDBJD)
-        - 修复 Query Status 时 secondsBehindMaster 字段未显示的问题。[#7189](https://github.com/pingcap/tiflow/issues/7189) @[GMHDBJD](https://github.com/GMHDBJD)
-        - 修复更新 Checkpoint 时可能触发大事务的问题。[#5010](https://github.com/pingcap/tiflow/issues/5010) @[lance6716](https://github.com/lance6716)
-        - 修复从 full 模式进行入 sync 模式且很快失败时可能丢失上游表结构信息的问题。[#7159](https://github.com/pingcap/tiflow/issues/7159) @[lance6716](https://github.com/lance6716)
-        - 修复开启一致性校验（validator）时可能触发死锁的问题。[#7241](https://github.com/pingcap/tiflow/issues/7241) @[buchuitoudegou](https://github.com/buchuitoudegou)
-        - 修复任务预检查对 INFORMATION_SCHEMA 表需要 SELECT 权限的问题。[#7317](https://github.com/pingcap/tiflow/issues/7317) @[lance6716](https://github.com/lance6716)
-        - 修复空 TLS 配置导致直接报错的问题。[#7384](https://github.com/pingcap/tiflow/issues/7384) @[liumengya94](https://github.com/liumengya94)
+        - 修复 DM WebUI 产生错误 `allow-list` 参数的问题 [#7096](https://github.com/pingcap/tiflow/issues/7096) @[zoubingwu](https://github.com/zoubingwu)
+        - 修复 DM Worker 在启动、停止时有一定概率触发 data race 的问题 [#6401](https://github.com/pingcap/tiflow/issues/6401) @[liumengya94](https://github.com/liumengya94)
+        - 修复当同步 `UPDATE`、`DELETE` 语句且下游行数据不存在时，DM 静默忽略的问题 [#6383](https://github.com/pingcap/tiflow/issues/6383) @[GMHDBJD](https://github.com/GMHDBJD)
+        - 修复 Query Status 时 `secondsBehindMaster` 字段未显示的问题 [#7189](https://github.com/pingcap/tiflow/issues/7189) @[GMHDBJD](https://github.com/GMHDBJD)
+        - 修复更新 Checkpoint 时可能触发大事务的问题 [#5010](https://github.com/pingcap/tiflow/issues/5010) @[lance6716](https://github.com/lance6716)
+        - 修复在全量任务模式下，任务进入 sync 阶段且立刻失败时，DM 可能丢失上游表结构信息的问题 [#7159](https://github.com/pingcap/tiflow/issues/7159) @[lance6716](https://github.com/lance6716)
+        - 修复开启一致性校验时可能触发死锁的问题 [#7241](https://github.com/pingcap/tiflow/issues/7241) @[buchuitoudegou](https://github.com/buchuitoudegou)
+        - 修复任务预检查对 `INFORMATION_SCHEMA` 表需要 `SELECT` 权限的问题 [#7317](https://github.com/pingcap/tiflow/issues/7317) @[lance6716](https://github.com/lance6716)
+        - 修复空的 TLS 配置导致报错的问题 [#7384](https://github.com/pingcap/tiflow/issues/7384) @[liumengya94](https://github.com/liumengya94)
 
     + TiDB Lightning
 
