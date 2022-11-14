@@ -210,7 +210,7 @@ TiDB 版本：6.4.0-DMR
 
 ### 数据迁移
 
-* 支持迁移过程中对目标表增加的扩展列进行赋值，用于标识上游数据源信息 [#37797](https://github.com/pingcap/tidb/issues/37797) @[lichunzhu](https://github.com/lichunzhu) **tw@shichun-0415**
+* 支持将上游数据源信息以扩展列形式写入下游合表 [#37797](https://github.com/pingcap/tidb/issues/37797) @[lichunzhu](https://github.com/lichunzhu) **tw@shichun-0415**
 
     在上游分库分表合并到 TiDB 的场景，你可以在目标表手动额外增加几个字段（扩展列），并在配置 DM 任务时，对这几个扩展列赋值，如赋予上游分库分表的名称，则通过 DM 写入到下游的记录会包含上游分库分表的名称。在一些数据异常的场景，你可以通过该功能快速定位目标表的问题数据源信息，如该数据来自上游哪个分库，哪个分表。
 
@@ -366,7 +366,7 @@ TiDB 版本：6.4.0-DMR
 
         - 封装、暴露 Checker 对应的接口，提升各个入口功能组装、调用的灵活性。[#7116](https://github.com/pingcap/tiflow/issues/7116) @[D3Hunter](https://github.com/D3Hunter)
         - 移除 dmctl 中无用的 `operate-source update` 指令 [#7246](https://github.com/pingcap/tiflow/issues/7246) @[buchuitoudegou](https://github.com/buchuitoudegou)
-        - 解决了 TiDB 不兼容上游数据库的建表 SQL 导致 DM 全量迁移报错的问题 [#37984](https://github.com/pingcap/tidb/issues/37984) @[lance6716](https://github.com/lance6716) **tw@shichun-0415**
+        - 解决了 TiDB 不兼容上游数据库的建表 SQL 导致 DM 全量迁移报错的问题，当上游的建表 SQL TiDB 不兼容时，用户可以提前在 TiDB 手动创建好目标表，让全量迁移任务继续运行 [#37984](https://github.com/pingcap/tidb/issues/37984) @[lance6716](https://github.com/lance6716) **tw@shichun-0415**
 
     + TiDB Lightning
 
