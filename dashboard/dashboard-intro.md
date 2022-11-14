@@ -5,7 +5,7 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-intro/']
 
 # TiDB Dashboard 介绍
 
-TiDB Dashboard 是 TiDB 自 4.0 版本起提供的图形化界面，可用于监控及诊断 TiDB 集群。TiDB Dashboard 内置于 TiDB 的 PD 组件中，无需独立部署。
+TiDB Dashboard 是 TiDB 自 4.0 版本起提供的图形化界面，可用于监控及诊断 TiDB 集群。TiDB Dashboard 内置于 TiDB 的 PD 组件中，无需独立部署。(自 6.5 版本，TiDB Operator 的 TiDB Dashboard 将会作为独立的 Pod 部署)
 
 ![界面](/media/dashboard/dashboard-intro.gif)
 
