@@ -9,7 +9,7 @@ TiDB Dashboard 是 TiDB 自 4.0 版本起提供的图形化界面，可用于监
 
 > **注意：**
 >
-> 自 6.5 版本，TiDB Operator 的 TiDB Dashboard 支持作为独立的 Pod 部署，请参见[Operator 部署 TiDB Dashboard]()。
+> TiDB v6.5.0 且 TiDB Operator vx.x.x 之后，在 Kubernetes 上支持将 TiDB Dashboard 作为独立的 Pod 部署。请参见[Operator 部署 TiDB Dashboard]()。
 
 ![界面](/media/dashboard/dashboard-intro.gif)
 
