@@ -142,7 +142,7 @@ TiDB 版本：6.4.0-DMR
 
     在 v6.1.0 之前，TiKV 的 RawKV 接口仅存储客户端传入的原始数据，因此只提供基本的 Key-Value 读写能力。此外，由于编码方式不同、数据范围没有隔离等，同一个 TiKV 集群中，TiDB、事务 KV、RawKV 无法同时使用，因此对于不同使用方式并存的场景，必须部署多个集群，增加了机器和部署成本。
 
-    TiKV API V2 提供了新的存储格式，包括：
+    TiKV API V2 提供了新的存储格式，功能亮点如下：
 
     * RawKV 数据以 MVCC 方式存储，记录数据的变更时间戳，并在此基础上提供 Change Data Capture 能力（实验特性，见 [TiKV-CDC](https://github.com/tikv/migration/blob/main/cdc/README.md)）。
     * 数据根据使用方式划分范围，支持单一集群 TiDB、事务 KV、RawKV 应用共存。
@@ -170,9 +170,9 @@ TiDB 版本：6.4.0-DMR
 
     [用户文档](/mysql-compatibility.md)
 
-* 支持高性能、全局单调递增的 `AUTO_INCREMENT` 列属性 (实验特性）[#38442](https://github.com/pingcap/tidb/issues/38442) @[tiancaiamao](https://github.com/tiancaiamao) **tw@Oreoxmt**
+* 支持高性能、全局单调递增的 `AUTO_INCREMENT` 列属性（实验特性）[#38442](https://github.com/pingcap/tidb/issues/38442) @[tiancaiamao](https://github.com/tiancaiamao) **tw@Oreoxmt**
 
-    TiDB v6.4.0 引入了 `AUTO_INCREMENT` 的 MySQL 兼容模式，通过中心化分配自增 ID 的服务实现了自增 ID 在所有 TiDB 实例上单调递增。使用该特性能够更容易地实现查询结果按自增 ID 排序。要使用 MySQL 兼容模式，你需要在建表时将 `AUTO_ID_CACHE` 设置为 `1`。
+    TiDB v6.4.0 引入了 `AUTO_INCREMENT` 的 MySQL 兼容模式，通过中心化分配自增 ID，实现了自增 ID 在所有 TiDB 实例上单调递增。使用该特性能够更容易地实现查询结果按自增 ID 排序。要使用 MySQL 兼容模式，你需要在建表时将 `AUTO_ID_CACHE` 设置为 `1`。
 
     ```sql
     CREATE TABLE t(a int AUTO_INCREMENT key) AUTO_ID_CACHE 1;
