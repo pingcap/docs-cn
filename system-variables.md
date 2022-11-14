@@ -2983,6 +2983,136 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 - Default value: `OFF`
 - Specifies whether to allow the optimizer to push `Projection` down to the TiKV or TiFlash coprocessor.
 
+### tidb_opt_range_max_size <span class="version-mark">New in v6.4.0</span>
+
+- Scope: SESSION | GLOBAL
+- Persists to cluster: Yes
+- Default value: `67108864` (64 MiB)
+- Scope: `[0, 9223372036854775807]`
+- Unit: Bytes
+- This variable is used to set the upper limit of memory usage for the optimizer to build scan ranges. When the variable value is `0`, there is no memory limit for building scan ranges. If building exact scan ranges consumes memory that exceeds the limit, the optimizer uses more relaxed scan ranges (such as `[[NULL,+inf]]`). If the execution plan does not use exact scan ranges, you can increase the value of this variable to let the optimizer build exact scan ranges.
+
+The usage example of this variable is as follows:
+
+<details>
+<summary><code>tidb_opt_range_max_size</code> usage examples</summary>
+
+View the default value of this variable. From the result, you can see that the optimizer uses up to 64 MiB of memory to build scan ranges.
+
+```sql
+SELECT @@tidb_opt_range_max_size;
+```
+
+```sql
++----------------------------+
+| @@tidb_opt_range_max_size |
++----------------------------+
+| 67108864                   |
++----------------------------+
+1 row in set (0.01 sec)
+```
+
+```sql
+EXPLAIN SELECT * FROM t use index (idx) WHERE a IN (10,20,30) AND b IN (40,50,60);
+```
+
+In the 64 MiB memory upper limit, the optimizer builds the following exact scan ranges `[10 40,10 40], [10 50,10 50], [10 60,10 60], [20 40,20 40], [20 50,20 50], [20 60,20 60], [30 40,30 40], [30 50,30 50], [30 60,30 60]`, as shown in the following execution plan result.
+
+```sql
++-------------------------------+---------+-----------+--------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| id                            | estRows | task      | access object            | operator info                                                                                                                                                               |
++-------------------------------+---------+-----------+--------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| IndexLookUp_7                 | 0.90    | root      |                          |                                                                                                                                                                             |
+| ├─IndexRangeScan_5(Build)     | 0.90    | cop[tikv] | table:t, index:idx(a, b) | range:[10 40,10 40], [10 50,10 50], [10 60,10 60], [20 40,20 40], [20 50,20 50], [20 60,20 60], [30 40,30 40], [30 50,30 50], [30 60,30 60], keep order:false, stats:pseudo |
+| └─TableRowIDScan_6(Probe)     | 0.90    | cop[tikv] | table:t                  | keep order:false, stats:pseudo                                                                                                                                              |
++-------------------------------+---------+-----------+--------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+3 rows in set (0.00 sec)
+```
+
+Now set the upper limit of memory usage for the optimizer to build scan ranges to 1500 bytes.
+
+```sql
+SET @@tidb_opt_range_max_size = 1500;
+```
+
+```sql
+Query OK, 0 rows affected (0.00 sec)
+```
+
+```sql
+EXPLAIN SELECT * FROM t USE INDEX (idx) WHERE a IN (10,20,30) AND b IN (40,50,60);
+```
+
+In the 1500-byte memory limit, the optimizer builds more relaxed scan ranges `[10,10], [20,20], [30,30]`, and uses a warning to inform the user that the memory usage required to build exact scan ranges exceeds the limit of `tidb_opt_range_max_size`.
+
+```sql
++-------------------------------+---------+-----------+--------------------------+-----------------------------------------------------------------+
+| id                            | estRows | task      | access object            | operator info                                                   |
++-------------------------------+---------+-----------+--------------------------+-----------------------------------------------------------------+
+| IndexLookUp_8                 | 0.09    | root      |                          |                                                                 |
+| ├─Selection_7(Build)          | 0.09    | cop[tikv] |                          | in(test.t.b, 40, 50, 60)                                        |
+| │ └─IndexRangeScan_5          | 30.00   | cop[tikv] | table:t, index:idx(a, b) | range:[10,10], [20,20], [30,30], keep order:false, stats:pseudo |
+| └─TableRowIDScan_6(Probe)     | 0.09    | cop[tikv] | table:t                  | keep order:false, stats:pseudo                                  |
++-------------------------------+---------+-----------+--------------------------+-----------------------------------------------------------------+
+4 rows in set, 1 warning (0.00 sec)
+```
+
+```sql
+SHOW WARNINGS;
+```
+
+```sql
++---------+------+---------------------------------------------------------------------------------------------------------------------------------------------+
+| Level   | Code | Message                                                                                                                                     |
++---------+------+---------------------------------------------------------------------------------------------------------------------------------------------+
+| Warning | 1105 | Memory capacity of 1500 bytes for 'tidb_opt_range_max_size' exceeded when building ranges. Less accurate ranges such as full range are chosen |
++---------+------+---------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+```
+
+Then set the upper limit of memory usage to 100 bytes:
+
+```sql
+set @@tidb_opt_range_max_size = 100;
+```
+
+```sql
+Query OK, 0 rows affected (0.00 sec)
+```
+
+```sql
+EXPLAIN SELECT * FROM t USE INDEX (idx) WHERE a IN (10,20,30) AND b IN (40,50,60);
+```
+
+In the 100-byte memory limit, the optimizer chooses `IndexFullScan`, and uses a warning to inform the user that the memory required to build exact scan ranges exceeds the limit of `tidb_opt_range_max_size`.
+
+```sql
++-------------------------------+----------+-----------+--------------------------+----------------------------------------------------+
+| id                            | estRows  | task      | access object            | operator info                                      |
++-------------------------------+----------+-----------+--------------------------+----------------------------------------------------+
+| IndexLookUp_8                 | 8000.00  | root      |                          |                                                    |
+| ├─Selection_7(Build)          | 8000.00  | cop[tikv] |                          | in(test.t.a, 10, 20, 30), in(test.t.b, 40, 50, 60) |
+| │ └─IndexFullScan_5           | 10000.00 | cop[tikv] | table:t, index:idx(a, b) | keep order:false, stats:pseudo                     |
+| └─TableRowIDScan_6(Probe)     | 8000.00  | cop[tikv] | table:t                  | keep order:false, stats:pseudo                     |
++-------------------------------+----------+-----------+--------------------------+----------------------------------------------------+
+4 rows in set, 1 warning (0.00 sec)
+```
+
+```sql
+SHOW WARNINGS;
+```
+
+```sql
++---------+------+---------------------------------------------------------------------------------------------------------------------------------------------+
+| Level   | Code | Message                                                                                                                                     |
++---------+------+---------------------------------------------------------------------------------------------------------------------------------------------+
+| Warning | 1105 | Memory capacity of 100 bytes for 'tidb_opt_range_max_size' exceeded when building ranges. Less accurate ranges such as full range are chosen |
++---------+------+---------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+```
+
+</details>
+
 ### tidb_opt_scan_factor
 
 - Scope: SESSION | GLOBAL
