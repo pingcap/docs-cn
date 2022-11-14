@@ -375,16 +375,16 @@ TiDB 版本：6.4.0-DMR
 
 + TiDB
 
-    - 修复新建索引之后有可能导致的数据索引不一致的问题 [#38165](https://github.com/pingcap/tidb/issues/38165) @[tangenta](https://github.com/tangenta)
-    - 修复关于 `information_schema.TIKV_REGION_STATUS` 表的权限问题 [#38407](https://github.com/pingcap/tidb/issues/38407) @[CbcWestwolf](https://github.com/CbcWestwolf)
-    - 修复 CTE 在 join 时可能得到错误结果的问题 [#38170](https://github.com/pingcap/tidb/issues/38170) @[wjhuang2016](https://github.com/wjhuang2016)
-    - 修复 CTE 在 union 时可能得到错误结果的问题 [#37928](https://github.com/pingcap/tidb/issues/37928) @[YangKeao](https://github.com/YangKeao)
-    - 修复监控 transaction region num panel 信息不准确问题 [#38139](https://github.com/pingcap/tidb/issues/38139) @[jackysp](github.com/jackysp)
+    - 修复新建索引之后有可能导致数据索引不一致的问题 [#38165](https://github.com/pingcap/tidb/issues/38165) @[tangenta](https://github.com/tangenta)
+    - 修复 `information_schema.TIKV_REGION_STATUS` 表的权限问题 [#38407](https://github.com/pingcap/tidb/issues/38407) @[CbcWestwolf](https://github.com/CbcWestwolf)
+    - 修复公共表表达式在 join 时可能得到错误结果的问题 [#38170](https://github.com/pingcap/tidb/issues/38170) @[wjhuang2016](https://github.com/wjhuang2016)
+    - 修复公共表表达式在 union 时可能得到错误结果的问题 [#37928](https://github.com/pingcap/tidb/issues/37928) @[YangKeao](https://github.com/YangKeao)
+    - 修复监控面板 **transaction region num** 信息不准确的问题 [#38139](https://github.com/pingcap/tidb/issues/38139) @[jackysp](https://github.com/jackysp)
     - 修复 [`tidb_constraint_check_in_place_pessimistic`](/system-variables.md#tidb_constraint_check_in_place_pessimistic-从-v630-版本开始引入) 可能影响内部事务问题，修改该变量作用域为 session [#38766](https://github.com/pingcap/tidb/issues/38766)
-    - 修复了条件在某些场景下被错误下推 projection 的问题 [#35623](https://github.com/pingcap/tidb/issues/35623)@[Reminiscent](https://github.com/Reminiscent)
-    - 修复了 `AND` `OR` 条件的 `isNullRejected` 的错误导致查询结果错误的问题 [#38304]( https://github.com/pingcap/tidb/issues/38304) @[Yisaer](https://github.com/Yisaer)
-    - 修复了外连接消除时没有考虑 `GROUP_CONCAT` 内部的 `order by` 导致查询出错的问题 [#18216](https://github.com/pingcap/tidb/issues/18216) @[winoros](https://github.com/winoros) 
-    - 修复了错误下推的条件被 join reorder 丢弃后导致查询结果错误的问题 [#38736](https://github.com/pingcap/tidb/issues/38736) @[winoros](https://github.com/winoros) 
+    - 修复了条件在某些场景下被错误下推至 projection 的问题 [#35623](https://github.com/pingcap/tidb/issues/35623)@[Reminiscent](https://github.com/Reminiscent)
+    - 修复了 `AND` 和 `OR` 条件的 `isNullRejected` 检查错误导致查询结果错误的问题 [#38304]( https://github.com/pingcap/tidb/issues/38304) @[Yisaer](https://github.com/Yisaer)
+    - 修复了外连接消除时没有考虑 `GROUP_CONCAT` 内部的 `ORDER BY` 导致查询出错的问题 [#18216](https://github.com/pingcap/tidb/issues/18216) @[winoros](https://github.com/winoros) 
+    - 修复了错误下推的条件被 Join Reorder 丢弃后导致查询结果错误的问题 [#38736](https://github.com/pingcap/tidb/issues/38736) @[winoros](https://github.com/winoros) 
 
 + TiKV
 
