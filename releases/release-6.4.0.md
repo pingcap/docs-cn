@@ -415,7 +415,7 @@ TiDB 版本：6.4.0-DMR
         - 修复恢复过程中由于 PD leader 切换导致恢复失败的问题 [#36910](https://github.com/pingcap/tidb/issues/36910) @[MoCuishle28](https://github.com/MoCuishle28)
         - 修复了无法暂停日志备份任务的问题 [#38250](https://github.com/pingcap/tidb/issues/38250)@[joccau](https://github.com/joccau)
         - 修复 BR 删除日志备份数据时，会删除不应被删除的数据的问题 [#38939](https://github.com/pingcap/tidb/issues/38939) @[Leavrth](https://github.com/leavrth)
-        - 修复 BR 首次删除存储在 Azure Storage Blob 或 Google Cloud Storage 的日志备份数据时执行失败的问题 [#38229](https://github.com/pingcap/tidb/issues/38229) @[Leavrth](https://github.com/leavrth)
+        - 修复 BR 首次删除存储在 Azure Blob Storage 或 Google Cloud Storage 的日志备份数据时执行失败的问题 [#38229](https://github.com/pingcap/tidb/issues/38229) @[Leavrth](https://github.com/leavrth)
 
     + TiCDC
 
@@ -430,9 +430,9 @@ TiDB 版本：6.4.0-DMR
     + TiDB Data Migration (DM)
 
         - 修复 DM WebUI 产生错误 `allow-list` 参数的问题 [#7096](https://github.com/pingcap/tiflow/issues/7096) @[zoubingwu](https://github.com/zoubingwu)
-        - 修复 DM Worker 在启动、停止时有一定概率触发 data race 的问题 [#6401](https://github.com/pingcap/tiflow/issues/6401) @[liumengya94](https://github.com/liumengya94)
+        - 修复 DM-worker 在启动、停止时有一定概率触发 data race 的问题 [#6401](https://github.com/pingcap/tiflow/issues/6401) @[liumengya94](https://github.com/liumengya94)
         - 修复当同步 `UPDATE`、`DELETE` 语句且下游行数据不存在时，DM 静默忽略的问题 [#6383](https://github.com/pingcap/tiflow/issues/6383) @[GMHDBJD](https://github.com/GMHDBJD)
-        - 修复 Query Status 时 `secondsBehindMaster` 字段未显示的问题 [#7189](https://github.com/pingcap/tiflow/issues/7189) @[GMHDBJD](https://github.com/GMHDBJD)
+        - 修复运行 `query-status` 命令后未显示 `secondsBehindMaster` 字段的问题 [#7189](https://github.com/pingcap/tiflow/issues/7189) @[GMHDBJD](https://github.com/GMHDBJD)
         - 修复更新 Checkpoint 时可能触发大事务的问题 [#5010](https://github.com/pingcap/tiflow/issues/5010) @[lance6716](https://github.com/lance6716)
         - 修复在全量任务模式下，任务进入 sync 阶段且立刻失败时，DM 可能丢失上游表结构信息的问题 [#7159](https://github.com/pingcap/tiflow/issues/7159) @[lance6716](https://github.com/lance6716)
         - 修复开启一致性校验时可能触发死锁的问题 [#7241](https://github.com/pingcap/tiflow/issues/7241) @[buchuitoudegou](https://github.com/buchuitoudegou)
