@@ -7,6 +7,10 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-ops-deploy/']
 
 TiDB Dashboard 界面内置于 TiDB 4.0 或更高版本的 PD 组件中，无需额外部署。只需部署标准 TiDB 集群，TiDB Dashboard 就会原生集成。
 
+> **注意：**
+>
+> 自 6.5 版本，TiDB Operator 的 TiDB Dashboard 支持作为独立的 Pod 部署，请参见[Operator 部署 TiDB Dashboard]()。
+
 请参阅下列文档了解如何部署标准 TiDB 集群：
 
 - [快速试用 TiDB 集群](/quick-start-with-tidb.md)
