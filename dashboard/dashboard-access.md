@@ -9,7 +9,7 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-access/']
 
 > **注意：**
 >
-> 自 6.5 版本，TiDB Operator 的 TiDB Dashboard 支持作为独立的 Pod 部署。在 Operator 环境，可直接访问该 Pod 的 IP 来打开 TiDB Dashboard。请参见[Operator 部署 TiDB Dashboard]()。
+> 自 TiDB v6.5.0 版本之后，TiDB Operator vx.x.x 支持 TiDB Dashboard 作为独立的 Pod 部署。在 Operator 环境，可直接访问该 Pod 的 IP 来打开 TiDB Dashboard。请参见[Operator 部署 TiDB Dashboard]()。
 
 ## 多 PD 实例访问
 
