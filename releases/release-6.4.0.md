@@ -12,7 +12,7 @@ TiDB 版本：6.4.0-DMR
 
 在 6.4.0-DMR 版本中，你可以获得以下关键特性：
 
-- 支持通过 [`FLASHBACK CLUSTER TO TIMESTAMP`](/sql-statements/sql-statement-flashback-to-timestamp.md) 命令将集群快速回退到特定的时间点。
+- 支持通过 [`FLASHBACK CLUSTER TO TIMESTAMP`](/sql-statements/sql-statement-flashback-to-timestamp.md) 命令将集群快速回退到特定的时间点 (实验特性）。
 - 支持 TiDB 全局内存限制。
 - TiDB 分区表兼容 Linear Hash 分区。
 - 支持高性能、全局单调递增的 [`AUTO_INCREMENT`](/auto-increment.md#mysql-兼容模式) 列属性。
@@ -41,6 +41,8 @@ TiDB 版本：6.4.0-DMR
 * 支持通过 `FLASHBACK CLUSTER TO TIMESTAMP` 命令将集群快速回退到特定的时间点（实验特性）[#37197](https://github.com/pingcap/tidb/issues/37197) [#13303](https://github.com/tikv/tikv/issues/13303)  @[Defined2014](https://github.com/Defined2014) @[bb7133](https://github.com/bb7133) @[JmPotato](https://github.com/JmPotato) @[Connor1996](https://github.com/Connor1996) @[HuSharp](https://github.com/HuSharp) @[CalvinNeo](https://github.com/CalvinNeo) **tw@Oreoxmt**
 
     `FLASHBACK CLUSTER TO TIMESTAMP` 支持在 Garbage Collection (GC) life time 内快速回退整个集群到指定的时间点。使用该特性可以快速撤消 DML 误操作。例如，在误执行了没有 `WHERE` 子句的 `DELETE` 后，使用 `FLASHBACK CLUSTER TO TIMESTAMP` 能够在几分钟内将集群数据恢复到指定的时间点。该特性不依赖于数据库备份，并支持在时间线上多次回退以确定特定数据更改发生的时间。需要注意的是，`FLASHBACK CLUSTER TO TIMESTAMP` 不能替代数据库备份。
+
+    在执行 `FLASHBACK CLUSTER TO TIMESTAMP` 之前，需要暂停 PITR 和 TiCDC 等工具上运行的同步任务，待 `FLASHBACK` 执行完成后再启动，否则会造成同步失败等问题。
 
     [用户文档](/sql-statements/sql-statement-flashback-to-timestamp.md)
 
