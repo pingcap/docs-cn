@@ -342,7 +342,10 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 > **注意：**
 >
-> 当需要调整 `txn-entry-size-limit` 时，仍然需要同时调整下面两个参数为了让 tikv 之间的通信不受到影响：[`raft-entry-max-size`](/tikv-configuration-file.md#raft-entry-max-size)、[`max-grpc-send-msg-len`](/tikv-configuration-file.md#max-grpc-send-msg-len) 。
+> 当表的一行记录较大时，除了修改上述配置外，需要同时修改 TiKV 的两个配置，以此保证 TiKV 之间的通信不受到影响。否则 TiKV 会拒绝过大的请求。
+>
+> - [`raft-entry-max-size`](/tikv-configuration-file.md#raft-entry-max-size)，默认为 `8MB`。
+> - [`max-grpc-send-msg-len`](/tikv-configuration-file.md#max-grpc-send-msg-len)，默认为 `10MB` 。
 
 ### `txn-total-size-limit`
 
