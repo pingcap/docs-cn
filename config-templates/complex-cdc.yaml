@@ -16,9 +16,9 @@ monitored:
 
 # # Server configs are used to specify the runtime configuration of TiDB components.
 # # All configuration items can be found in TiDB docs:
-# # - TiDB: https://pingcap.com/docs/stable/reference/configuration/tidb-server/configuration-file/
-# # - TiKV: https://pingcap.com/docs/stable/reference/configuration/tikv-server/configuration-file/
-# # - PD: https://pingcap.com/docs/stable/reference/configuration/pd-server/configuration-file/
+# # - TiDB: https://docs.pingcap.com/tidb/stable/tidb-configuration-file
+# # - TiKV: https://docs.pingcap.com/tidb/stable/tikv-configuration-file
+# # - PD: https://docs.pingcap.com/tidb/stable/pd-configuration-file
 # # All configuration items use points to represent the hierarchy, e.g:
 # #   readpool.storage.use-unified-pool
 # #
