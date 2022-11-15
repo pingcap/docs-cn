@@ -54,19 +54,17 @@ EXPLAIN SELECT * FROM t1 WHERE id IN (SELECT t1_id FROM t2);
 ```
 
 ```sql
-+----------------------------------+----------+-----------+------------------------------+---------------------------------------------------------------------------------------------------------------------------+
-| id                               | estRows  | task      | access object                | operator info                                                                                                             |
-+----------------------------------+----------+-----------+------------------------------+---------------------------------------------------------------------------------------------------------------------------+
-| IndexJoin_14                     | 5.00     | root      |                              | inner join, inner:IndexLookUp_13, outer key:test.t2.t1_id, inner key:test.t1.id, equal cond:eq(test.t2.t1_id, test.t1.id) |
-| ├─StreamAgg_49(Build)            | 5.00     | root      |                              | group by:test.t2.t1_id, funcs:firstrow(test.t2.t1_id)->test.t2.t1_id                                                      |
-| │ └─IndexReader_50               | 5.00     | root      |                              | index:StreamAgg_39                                                                                                        |
-| │   └─StreamAgg_39               | 5.00     | cop[tikv] |                              | group by:test.t2.t1_id,                                                                                                   |
-| │     └─IndexFullScan_31         | 50000.00 | cop[tikv] | table:t2, index:t1_id(t1_id) | keep order:true                                                                                                           |
-| └─IndexLookUp_13(Probe)          | 1.00     | root      |                              |                                                                                                                           |
-|   ├─IndexRangeScan_11(Build)     | 1.00     | cop[tikv] | table:t1, index:PRIMARY(id)  | range: decided by [eq(test.t1.id, test.t2.t1_id)], keep order:false                                                       |
-|   └─TableRowIDScan_12(Probe)     | 1.00     | cop[tikv] | table:t1                     | keep order:false                                                                                                          |
-+----------------------------------+----------+-----------+------------------------------+---------------------------------------------------------------------------------------------------------------------------+
-8 rows in set (0.00 sec)
++--------------------------------+----------+-----------+------------------------------+---------------------------------------------------------------------------------------------------------------------------+
+| id                             | estRows  | task      | access object                | operator info                                                                                                             |
++--------------------------------+----------+-----------+------------------------------+---------------------------------------------------------------------------------------------------------------------------+
+| IndexJoin_15                   | 21.11    | root      |                              | inner join, inner:TableReader_12, outer key:test.t2.t1_id, inner key:test.t1.id, equal cond:eq(test.t2.t1_id, test.t1.id) |
+| ├─StreamAgg_44(Build)          | 21.11    | root      |                              | group by:test.t2.t1_id, funcs:firstrow(test.t2.t1_id)->test.t2.t1_id                                                      |
+| │ └─IndexReader_45             | 21.11    | root      |                              | index:StreamAgg_34                                                                                                        |
+| │   └─StreamAgg_34             | 21.11    | cop[tikv] |                              | group by:test.t2.t1_id,                                                                                                   |
+| │     └─IndexFullScan_26       | 90000.00 | cop[tikv] | table:t2, index:t1_id(t1_id) | keep order:true                                                                                                           |
+| └─TableReader_12(Probe)        | 21.11    | root      |                              | data:TableRangeScan_11                                                                                                    |
+|   └─TableRangeScan_11          | 21.11    | cop[tikv] | table:t1                     | range: decided by [test.t2.t1_id], keep order:false                                                                       |
++--------------------------------+----------+-----------+------------------------------+---------------------------------------------------------------------------------------------------------------------------+
 ```
 
 From the query results above, you can see that TiDB uses the index join operation `| IndexJoin_14` to join and transform the subquery. In the execution plan, the execution process is as follows:
@@ -85,17 +83,15 @@ EXPLAIN SELECT * FROM t1 WHERE id IN (SELECT t1_id FROM t3);
 ```
 
 ```sql
-+----------------------------------+---------+-----------+-----------------------------+---------------------------------------------------------------------------------------------------------------------------+
-| id                               | estRows | task      | access object               | operator info                                                                                                             |
-+----------------------------------+---------+-----------+-----------------------------+---------------------------------------------------------------------------------------------------------------------------+
-| IndexJoin_17                     | 1978.13 | root      |                             | inner join, inner:IndexLookUp_16, outer key:test.t3.t1_id, inner key:test.t1.id, equal cond:eq(test.t3.t1_id, test.t1.id) |
-| ├─TableReader_44(Build)          | 1978.00 | root      |                             | data:TableFullScan_43                                                                                                     |
-| │ └─TableFullScan_43             | 1978.00 | cop[tikv] | table:t3                    | keep order:false                                                                                                          |
-| └─IndexLookUp_16(Probe)          | 1.00    | root      |                             |                                                                                                                           |
-|   ├─IndexRangeScan_14(Build)     | 1.00    | cop[tikv] | table:t1, index:PRIMARY(id) | range: decided by [eq(test.t1.id, test.t3.t1_id)], keep order:false                                                       |
-|   └─TableRowIDScan_15(Probe)     | 1.00    | cop[tikv] | table:t1                    | keep order:false                                                                                                          |
-+----------------------------------+---------+-----------+-----------------------------+---------------------------------------------------------------------------------------------------------------------------+
-6 rows in set (0.01 sec)
++-----------------------------+---------+-----------+------------------------------+---------------------------------------------------------------------------------------------------------------------------+
+| id                          | estRows | task      | access object                | operator info                                                                                                             |
++-----------------------------+---------+-----------+------------------------------+---------------------------------------------------------------------------------------------------------------------------+
+| IndexJoin_18                | 999.00  | root      |                              | inner join, inner:TableReader_15, outer key:test.t3.t1_id, inner key:test.t1.id, equal cond:eq(test.t3.t1_id, test.t1.id) |
+| ├─IndexReader_41(Build)     | 999.00  | root      |                              | index:IndexFullScan_40                                                                                                    |
+| │ └─IndexFullScan_40        | 999.00  | cop[tikv] | table:t3, index:t1_id(t1_id) | keep order:false                                                                                                          |
+| └─TableReader_15(Probe)     | 999.00  | root      |                              | data:TableRangeScan_14                                                                                                    |
+|   └─TableRangeScan_14       | 999.00  | cop[tikv] | table:t1                     | range: decided by [test.t3.t1_id], keep order:false                                                                       |
++-----------------------------+---------+-----------+------------------------------+---------------------------------------------------------------------------------------------------------------------------+
 ```
 
 Semantically because `t3.t1_id` is guaranteed unique, it can be executed directly as an `INNER JOIN`.
@@ -111,17 +107,16 @@ EXPLAIN SELECT * FROM t1 WHERE id IN (SELECT t1_id FROM t2 WHERE t1_id != t1.int
 ```
 
 ```sql
-+-----------------------------+-----------+-----------+------------------------------+--------------------------------------------------------------------------------------------------------+
-| id                          | estRows   | task      | access object                | operator info                                                                                          |
-+-----------------------------+-----------+-----------+------------------------------+--------------------------------------------------------------------------------------------------------+
-| MergeJoin_9                 | 45446.40  | root      |                              | semi join, left key:test.t1.id, right key:test.t2.t1_id, other cond:ne(test.t2.t1_id, test.t1.int_col) |
-| ├─IndexReader_24(Build)     | 180000.00 | root      |                              | index:IndexFullScan_23                                                                                 |
-| │ └─IndexFullScan_23        | 180000.00 | cop[tikv] | table:t2, index:t1_id(t1_id) | keep order:true                                                                                        |
-| └─TableReader_22(Probe)     | 56808.00  | root      |                              | data:Selection_21                                                                                      |
-|   └─Selection_21            | 56808.00  | cop[tikv] |                              | ne(test.t1.id, test.t1.int_col)                                                                        |
-|     └─TableFullScan_20      | 71010.00  | cop[tikv] | table:t1                     | keep order:true                                                                                        |
-+-----------------------------+-----------+-----------+------------------------------+--------------------------------------------------------------------------------------------------------+
-6 rows in set (0.00 sec)
++-----------------------------+----------+-----------+------------------------------+--------------------------------------------------------------------------------------------------------+
+| id                          | estRows  | task      | access object                | operator info                                                                                          |
++-----------------------------+----------+-----------+------------------------------+--------------------------------------------------------------------------------------------------------+
+| MergeJoin_9                 | 45446.40 | root      |                              | semi join, left key:test.t1.id, right key:test.t2.t1_id, other cond:ne(test.t2.t1_id, test.t1.int_col) |
+| ├─IndexReader_24(Build)     | 90000.00 | root      |                              | index:IndexFullScan_23                                                                                 |
+| │ └─IndexFullScan_23        | 90000.00 | cop[tikv] | table:t2, index:t1_id(t1_id) | keep order:true                                                                                        |
+| └─TableReader_22(Probe)     | 56808.00 | root      |                              | data:Selection_21                                                                                      |
+|   └─Selection_21            | 56808.00 | cop[tikv] |                              | ne(test.t1.id, test.t1.int_col)                                                                        |
+|     └─TableFullScan_20      | 71010.00 | cop[tikv] | table:t1                     | keep order:true                                                                                        |
++-----------------------------+----------+-----------+------------------------------+--------------------------------------------------------------------------------------------------------+
 ```
 
 From the result above, you can see that TiDB uses a `Semi Join` algorithm. Semi-join differs from inner join: semi-join only permits the first value on the right key (`t2.t1_id`), which means that the duplicates are eliminated as a part of the join operator task. The join algorithm is also Merge Join, which is like an efficient zipper-merge as the operator reads data from both the left and the right side in sorted order.
@@ -137,17 +132,16 @@ EXPLAIN SELECT * FROM t3 WHERE t1_id NOT IN (SELECT id FROM t1 WHERE int_col < 1
 ```
 
 ```sql
-+-----------------------------+---------+-----------+---------------+-------------------------------------------------------------------------------------+
-| id                          | estRows | task      | access object | operator info                                                                       |
-+-----------------------------+---------+-----------+---------------+-------------------------------------------------------------------------------------+
-| IndexMergeJoin_20           | 1598.40 | root      |               | anti semi join, inner:TableReader_15, outer key:test.t3.t1_id, inner key:test.t1.id |
-| ├─TableReader_28(Build)     | 1998.00 | root      |               | data:TableFullScan_27                                                               |
-| │ └─TableFullScan_27        | 1998.00 | cop[tikv] | table:t3      | keep order:false                                                                    |
-| └─TableReader_15(Probe)     | 1.00    | root      |               | data:Selection_14                                                                   |
-|   └─Selection_14            | 1.00    | cop[tikv] |               | lt(test.t1.int_col, 100)                                                            |
-|     └─TableRangeScan_13     | 1.00    | cop[tikv] | table:t1      | range: decided by [test.t3.t1_id], keep order:true                                  |
-+-----------------------------+---------+-----------+---------------+-------------------------------------------------------------------------------------+
-6 rows in set (0.00 sec)
++-----------------------------+---------+-----------+---------------+-------------------------------------------------------------------------------------------------------------------------------+
+| id                          | estRows | task      | access object | operator info                                                                                                                 |
++-----------------------------+---------+-----------+---------------+-------------------------------------------------------------------------------------------------------------------------------+
+| IndexJoin_16                | 799.20  | root      |               | anti semi join, inner:TableReader_12, outer key:test.t3.t1_id, inner key:test.t1.id, equal cond:eq(test.t3.t1_id, test.t1.id) |
+| ├─TableReader_28(Build)     | 999.00  | root      |               | data:TableFullScan_27                                                                                                         |
+| │ └─TableFullScan_27        | 999.00  | cop[tikv] | table:t3      | keep order:false                                                                                                              |
+| └─TableReader_12(Probe)     | 999.00  | root      |               | data:Selection_11                                                                                                             |
+|   └─Selection_11            | 999.00  | cop[tikv] |               | lt(test.t1.int_col, 100)                                                                                                      |
+|     └─TableRangeScan_10     | 999.00  | cop[tikv] | table:t1      | range: decided by [test.t3.t1_id], keep order:false                                                                           |
++-----------------------------+---------+-----------+---------------+-------------------------------------------------------------------------------------------------------------------------------+
 ```
 
 This query starts by reading the table `t3` and then probes the table `t1` based on the `PRIMARY KEY`. The join type is an _anti semi join_; anti because this example is for the non-existence of the value (`NOT IN`) and semi-join because only the first row needs to match before the join is rejected.
