@@ -89,12 +89,17 @@ summary: 了解 TiDB 的基本功能。
 | [生成列](/generated-columns.md)                              | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
 | [视图](/views.md)                                            |    Y   |    Y   |    Y   |    Y    |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
 | [序列](/sql-statements/sql-statement-create-sequence.md)     |    Y   |    Y   |    Y    |    Y    |   Y      |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
-| [`AUTO_INCREMENT` 列](/auto-increment.md)                    |    Y   |    Y   |    Y   |    Y    |  Y   |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
+| [`AUTO_INCREMENT` 列](/auto-increment.md)                    |    Y[^4]   |    Y   |    Y   |    Y    |  Y   |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
 | [`AUTO_RANDOM` 列](/auto-random.md)                          |    Y   |    Y   |    Y   |    Y    |    Y   |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
 | [DDL 算法断言](/sql-statements/sql-statement-alter-table.md) |    Y   |    Y   |    Y   |    Y    |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
 | 在单条语句中添加多列                                         |   Y  |   Y  | Y | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
 | [更改列类型](/sql-statements/sql-statement-modify-column.md) |    Y   |    Y   |    Y    |    Y    |    Y    |    Y     |    Y     |    Y     |    Y     |    N     |    N     |
 | [临时表](/temporary-tables.md)                               |    Y   |    Y   |    Y    |    Y    |    Y    |    Y     |    Y     |    N     |    N     |    N     |    N     |
+| [并行 DDL](/system-variables.md#系统变量##变量参考###tidb_enable_concurrent_ddl-从-v620-版本开始引入)  |    Y   |    Y   |    Y    |    N    |    N    |    N     |    N     |    N     |    N     |    N     |    N     |
+| [添加索引加速](/system-variables.md#系统变量##变量参考###tidb_ddl_enable_fast_reorg-从-v630-版本开始引入)  | 实验特性 | 实验特性 |    N    |    N    |    N    |    N     |    N     |    N     |    N     |    N     |    N     |
+| [元数据锁](/metadata-lock.md)                                  | 实验特性 | 实验特性 |    N    |    N    |    N    |    N     |    N     |    N     |    N     |    N     |    N     |
+| [`FLASHBACK CLUSTER`](/sql-statements/sql-statement-flashback-to-timestamp.md)  | 实验特性 |    N    |    N    |    N    |    N    |    N     |    N     |    N     |    N     |    N     |    N     |
+
 
 ## 事务
 
@@ -190,3 +195,5 @@ summary: 了解 TiDB 的基本功能。
 [^2]: TiDB 支持的完整 SQL 列表，见[语句参考](/sql-statements/sql-statement-select.md)。
 
 [^3]: 对于 TiDB v4.0，事务 `LOAD DATA` 不保证原子性。
+
+[^4]: 从 TiDB v6.4 开始，支持[高性能单调递增`AUTO_INCREMENT` 列](/auto-increment.md#MySQL兼容模式)
