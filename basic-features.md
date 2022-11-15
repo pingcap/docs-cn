@@ -90,7 +90,7 @@ aliases: ['/docs-cn/dev/basic-features/']
 | [生成列](/generated-columns.md)                              | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
 | [视图](/views.md)                                            |    Y   |    Y   |    Y   |    Y    |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
 | [序列](/sql-statements/sql-statement-create-sequence.md)     |    Y   |    Y   |    Y    |    Y    |   Y      |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
-| [`AUTO_INCREMENT` 列](/auto-increment.md)                    |    Y[^4]   |    Y   |    Y   |    Y    |  Y   |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
+| [`AUTO_INCREMENT` 列](/auto-increment.md)                    |    Y[^3]   |    Y   |    Y   |    Y    |  Y   |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
 | [`AUTO_RANDOM` 列](/auto-random.md)                          |    Y   |    Y   |    Y   |    Y    |    Y   |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
 | [DDL 算法断言](/sql-statements/sql-statement-alter-table.md) |    Y   |    Y   |    Y   |    Y    |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
 | 在单条语句中添加多列                                         |   Y  |   Y  | Y | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
@@ -162,7 +162,7 @@ aliases: ['/docs-cn/dev/basic-features/']
 | [快速导入 (TiDB Lightning)](/tidb-lightning/tidb-lightning-overview.md) |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |
 | mydumper 逻辑导入                                                       | 已废弃| 已废弃| 已废弃 | 已废弃 | 已废弃 | 已废弃 | 已废弃 | 已废弃 | 已废弃 | 已废弃 | 已废弃 |
 | [Dumpling 逻辑导入](/dumpling-overview.md)                              |   Y   |   Y   |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |
-| [事务 `LOAD DATA`](/sql-statements/sql-statement-load-data.md)          |   Y   |   Y   |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    | N [^3] |
+| [事务 `LOAD DATA`](/sql-statements/sql-statement-load-data.md)          |   Y   |   Y   |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    | N [^4] |
 | [数据迁移工具](/migration-overview.md)                                  |   Y   |   Y   |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |
 | [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md)                     |   Y   |   Y   |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |
 | [Change data capture (CDC)](/ticdc/ticdc-overview.md)                   |   Y   |   Y   |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |
@@ -195,6 +195,6 @@ aliases: ['/docs-cn/dev/basic-features/']
 
 [^2]: TiDB 支持的完整 SQL 列表，见[语句参考](/sql-statements/sql-statement-select.md)。
 
-[^3]: 对于 TiDB v4.0，事务 `LOAD DATA` 不保证原子性。
+[^3]: 从 TiDB v6.4 开始，支持[高性能单调递增`AUTO_INCREMENT` 列](/auto-increment.md#MySQL兼容模式)
 
-[^4]: 从 TiDB v6.4 开始，支持[高性能单调递增`AUTO_INCREMENT` 列](/auto-increment.md#MySQL兼容模式)
+[^4]: 对于 TiDB v4.0，事务 `LOAD DATA` 不保证原子性。
