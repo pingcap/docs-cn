@@ -619,22 +619,6 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
     - `tidb_auto_analyze_start_time='01:00 +0000'`
     - `tidb_auto_analyze_end_time='03:00 +0000'`
 
-### `tidb_auth_signing_cert`
-
-- 作用域：GLOBAL
-- 是否持久化到集群：是
-- 类型：字符串
-- 默认值：`""`
-- 该变量与一个未发布的特性相关。**请勿**设置该变量。
-
-### `tidb_auth_signing_key`
-
-- 作用域：GLOBAL
-- 是否持久化到集群：是
-- 类型：字符串
-- 默认值：`""`
-- 该变量与一个未发布的特性相关。**请勿**设置该变量。
-
 ### `tidb_backoff_lock_fast`
 
 - 作用域：SESSION | GLOBAL
