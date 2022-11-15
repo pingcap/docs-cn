@@ -6,7 +6,7 @@ aliases: ['/docs-cn/tidb-data-migration/dev/handle-alerts/']
 
 # TiDB Data Migration 处理告警
 
-本文档介绍 DM 中各主要告警信息的处理方法。
+本文档介绍如何处理 TiDB Data Migration (DM) 中的告警。
 
 ## 高可用告警
 

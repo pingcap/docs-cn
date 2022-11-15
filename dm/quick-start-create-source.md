@@ -1,9 +1,9 @@
 ---
-title: 创建 DM 数据源
+title: 创建 TiDB Data Migration 数据源
 summary: 了解如何为 DM 创建数据源。
 ---
 
-# 创建 DM 数据源
+# 创建 TiDB Data Migration 数据源
 
 > **注意：**
 >

@@ -6,7 +6,7 @@ aliases: ['/docs-cn/tidb-data-migration/dev/error-handling/','/docs-cn/tidb-data
 
 # TiDB Data Migration 故障及处理方法
 
-本文档介绍 DM 的错误系统及常见故障的处理方法。
+本文档介绍 TiDB Data Migration (DM) 的错误系统及常见故障的处理方法。
 
 ## DM 错误系统
 

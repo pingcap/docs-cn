@@ -6,7 +6,7 @@ aliases: ['/docs-cn/tidb-data-migration/dev/hardware-and-software-requirements/'
 
 # TiDB Data Migration 集群软硬件环境需求
 
-DM 支持主流的 Linux 操作系统，具体版本要求见下表：
+TiDB Data Migration (DM) 支持主流的 Linux 操作系统，具体版本要求见下表：
 
 | Linux 操作系统       | 版本         |
 | :----------------------- | :----------: |

@@ -6,7 +6,7 @@ aliases: ['/docs-cn/tidb-data-migration/dev/create-task/']
 
 # 创建 DM 数据迁移任务
 
-`start-task` 命令用于创建数据迁移任务。当数据迁移任务启动时，DM 将[自动对相应权限和配置进行前置检查](/dm/dm-precheck.md)。
+`start-task` 命令用于创建数据迁移任务。当数据迁移任务启动时，TiDB Data Migration (DM) 将[自动对相应权限和配置进行前置检查](/dm/dm-precheck.md)。
 
 {{< copyable "" >}}
 

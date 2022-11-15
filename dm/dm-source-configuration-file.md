@@ -5,7 +5,7 @@ aliases: ['/docs-cn/tidb-data-migration/dev/source-configuration-file/']
 
 # TiDB Data Migration 上游数据库配置文件介绍
 
-本文介绍 DM 上游数据库的配置文件，包括配置文件示例与配置项说明。
+本文介绍 TiDB Data Migration (DM) 上游数据库的配置文件，包括配置文件示例与配置项说明。
 
 ## 配置文件示例
 

@@ -6,7 +6,7 @@ aliases: ['/docs-cn/tidb-data-migration/dev/key-features/','/docs-cn/tidb-data-m
 
 # TiDB Data Migration 主要特性
 
-本文档介绍 DM 提供的数据迁移功能以及相关的配置选项与使用示例。
+本文档介绍 TiDB Data Migration (DM) 提供的数据迁移功能，以及相关的配置选项与使用示例。
 
 Table Routing、Block & Allow Lists、Binlog Event Filter 在匹配库表名时，有以下版本差异：
 
