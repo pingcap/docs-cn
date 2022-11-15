@@ -2134,7 +2134,7 @@ For a system upgraded to v5.0 from an earlier version, if you have not modified 
 
 - This variable is used to set whether to record all SQL statements in the [log](/tidb-configuration-file.md#logfile). This feature is disabled by default. If maintenance personnel needs to trace all SQL statements when locating issues, they can enable this feature.
 
-- To see all records of this feature in the log, query the `"GENERAL_LOG"` string. The following information is recorded:
+- To see all records of this feature in the log, you need to set the TiDB configuration item [`log.level`](/tidb-configuration-file.md#level) to `"info"` or `"debug"` and then query the `"GENERAL_LOG"` string. The following information is recorded:
     - `conn`: The ID of the current session.
     - `user`: The current session user.
     - `schemaVersion`: The current schema version.
