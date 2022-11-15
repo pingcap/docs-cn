@@ -66,7 +66,7 @@ TiDB 版本：6.4.0-DMR
 
     [集群诊断功能](/dashboard/dashboard-diagnostics-access.md)是在指定的时间范围内，对集群可能存在的问题进行诊断，并将诊断结果和一些集群相关的负载监控信息汇总成一个[诊断报告](/dashboard/dashboard-diagnostics-report.md)。诊断报告是网页形式，通过浏览器保存后可离线浏览和传阅。
 
-    用户可以通过该报告快速了解集群内的基本诊断信息，包括负载、组件、耗时和配置信息。若用户的集群存在一些常见问题，在[诊断信息](/dashboard/dashboard-diagnostics-report.md#诊断信息)部分可以了解 TiDB 内置自动诊断的结果。
+    你可以通过该报告快速了解集群内的基本诊断信息，包括负载、组件、耗时和配置信息。若集群存在一些常见问题，在[诊断信息](/dashboard/dashboard-diagnostics-report.md#诊断信息)部分可以了解 TiDB 内置自动诊断的结果。
 
 ### 性能
 
@@ -212,7 +212,7 @@ TiDB 版本：6.4.0-DMR
 
 * 支持将上游数据源信息以扩展列形式写入下游合表 [#37797](https://github.com/pingcap/tidb/issues/37797) @[lichunzhu](https://github.com/lichunzhu) **tw@shichun-0415**
 
-    在上游分库分表合并到 TiDB 的场景，你可以在目标表手动额外增加几个字段（扩展列），并在配置 DM 任务时，对这几个扩展列赋值，如赋予上游分库分表的名称，则通过 DM 写入到下游的记录会包含上游分库分表的名称。在一些数据异常的场景，你可以通过该功能快速定位目标表的问题数据源信息，如该数据来自上游哪个分库，哪个分表。
+    在上游分库分表合并到 TiDB 的场景，你可以在目标表中手动额外增加几个字段（扩展列），并在配置 DM 任务时，对这几个扩展列赋值。例如，当赋予上游分库分表的名称时，通过 DM 写入到下游的记录会包含上游分库分表的名称。在一些数据异常的场景，你可以通过该功能快速定位目标表的问题数据源信息，如该数据来自上游哪个分库，哪个分表。
 
     更多信息，请参考[提取分库分表数据源信息写入合表](/dm/dm-key-features.md#提取分库分表数据源信息写入合表)。
 
@@ -234,9 +234,7 @@ TiDB 版本：6.4.0-DMR
 
 * DM 任务增加一些状态信息的展示 [#7343](https://github.com/pingcap/tiflow/issues/7343) @[okJiang](https://github.com/okJiang) **tw@shichun-0415**
 
-    DM 数据迁移任务提供了性能指标和进度指标，方便用户了解和把控当前任务进度，同时为问题排查提供参考信息。
-
-    在 v6.4.0，DM 新增了几个状态信息，方便用户更直观了解迁移性能和进度：
+    在 v6.4.0，DM 数据迁移任务新增了一些性能指标和进度指标，方便用户更直观地了解迁移性能和进度，同时为问题排查提供参考信息：
 
     * 增加了 DM 任务当前数据导出、数据导入的性能指标，单位 bytes/s。
     * 将当前 DM 写入目标库的性能指标命名从 TPS 改为 RPS (rows/second)。
@@ -352,7 +350,7 @@ TiDB 版本：6.4.0-DMR
 
     + TiCDC
 
-        - TiCDC 支持同步 Exchange Partition DDL [#639](https://github.com/pingcap/tiflow/issues/639) @[asddongmen](https://github.com/asddongmen)
+        - 支持同步 Exchange Partition 的 DDL 语句 [#639](https://github.com/pingcap/tiflow/issues/639) @[asddongmen](https://github.com/asddongmen)
         - 提升 MQ sink 非 batch 协议的性能 [#7353](https://github.com/pingcap/tiflow/issues/7353) @[hi-rustin](https://github.com/hi-rustin)
         - 提升单表大量 Region 场景下 TiCDC puller 的性能  [#7078](https://github.com/pingcap/tiflow/issues/7078) [#7281](https://github.com/pingcap/tiflow/issues/7281) @[sdojjy](https://github.com/sdojjy)
         - 支持在 Syncpoint 功能开启时在下游 TiDB 集群使用 `tidb_enable_external_ts_read` 来读取历史数据 [#7419](https://github.com/pingcap/tiflow/issues/7419) @[asddongmen](https://github.com/asddongmen)
@@ -414,7 +412,7 @@ TiDB 版本：6.4.0-DMR
 
     + TiCDC
 
-        - 修复`changefeed query` 的输出中有`sasl-password` 明文的问题 [#7182](https://github.com/pingcap/tiflow/issues/7182) @[dveeden](https://github.com/dveeden)
+        - 修复 `changefeed query` 的输出中 `sasl-password` 显示为明文的问题 [#7182](https://github.com/pingcap/tiflow/issues/7182) @[dveeden](https://github.com/dveeden)
         - 修复在一个 etcd 事务中提交太多数据导致 TiCDC 服务不可用问题 [#7131](https://github.com/pingcap/tiflow/issues/7131)  @[asddongmen](https://github.com/asddongmen)
         - 修复 redo log 文件可能被错误删除的问题 [#6413](https://github.com/pingcap/tiflow/issues/6413) @[asddongmen](https://github.com/asddongmen)
         - 修复 sink v2 MQ 协议在同步宽表时性能回退的问题 [#7344](https://github.com/pingcap/tiflow/issues/7344) @[hi-rustin](https://github.com/hi-rustin)
