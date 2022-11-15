@@ -16,10 +16,10 @@ TiDB 版本：6.4.0-DMR
 - 支持对 TiDB 实例的[全局内存使用进行追踪](/configure-memory-usage.md)（实验特性）。
 - TiDB 分区表[兼容 Linear Hash 分区](/partitioned-table.md#tidb-对-linear-hash-分区的处理)。
 - 支持高性能、全局单调递增的 [`AUTO_INCREMENT`](/auto-increment.md#mysql-兼容模式) 列属性。
-- 支持对 [JSON 类型](/data-type-json)中的 Array 数据做范围选择。
-- 磁盘故障、I/O 无响应等极端情况下的故障恢复加速。
+- 支持对 [JSON 类型](/data-type-json.md)中的 Array 数据做范围选择。
+- 实现磁盘故障、I/O 无响应等极端情况下的故障恢复加速。
 - 新增[动态规划算法](/join-reorder.md#join-reorder-动态规划算法实例)来决定表的连接顺序。
-- 引入新的[优化器提示 `NO_DECORRELATE`](/optimizer-hints.md#no_decorrelate) 来控制关联优化的解除。
+- 引入[新的优化器提示 `NO_DECORRELATE`](/optimizer-hints.md#no_decorrelate) 来控制关联优化的解除。
 - [集群诊断功能](/dashboard/dashboard-diagnostics-access.md) GA。
 - [TiFlash 静态加密](/encryption-at-rest.md#tiflash)支持国密算法 SM4。
 - 支持通过 SQL 语句立即对指定分区的 TiFlash 副本进行[物理数据整理 (Compaction)](/sql-statements/sql-statement-alter-table-compact.md)。
