@@ -229,7 +229,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 ### `max-thread-count`
 
 + 统一处理读请求的线程池最多的线程数量，即 UnifyReadPool 线程池的大小。调整该线程池的大小时，请参考 [TiKV 线程池调优](/tune-tikv-thread-performance.md#tikv-线程池调优)。
-+ 可调整范围：[min-thread-count, MAX(CPU * 0.8)]。当 CPU 核心数量小于 4 时，默认值为 4；当 CPU 核心数量高于 4 时，默认值为 CPU * 0.8 的整数部分。
++ 可调整范围：当 CPU 核心数量小于 4 时，可调整范围为 [min-thread-count, 4]；当 CPU 核心数量高于 4 时，可调整范围为 `[min-thread-count, CPU]`。例如，当 CPU 核心数为 8 时，可调整范围为 [min-thread-count, 8]。
 + 默认值：[4, CPU * 0.8]
 
 ### `stack-size`
