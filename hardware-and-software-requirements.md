@@ -9,24 +9,29 @@ TiDB 作为一款开源分布式 NewSQL 数据库，可以很好地部署和运�
 
 ## 操作系统及平台要求
 
-| 操作系统       | 版本         |
-| :----------------------- | :----------: |
-| Red Hat Enterprise Linux | 7.3 及以上的 7.x 版本，8.4 及以上的 8.x 版本   |
-| CentOS                   | 7.3 及以上的 7.x 版本，8.4 及以上的 8.x 版本   |
-| Oracle Enterprise Linux  | 7.3 及以上的 7.x 版本   |
-| Amazon Linux             | 2 |
-| Ubuntu LTS               | 16.04 及以上的版本      |
+|  操作系统   |   支持的 CPU 架构   |
+|   :---   |   :---   |
+| Red Hat Enterprise Linux 8.4 及以上的 8.x 版本  |  <ul><li>x86_64</li><li>ARM 64</li></ul>  |
+| <ul><li>Red Hat Enterprise Linux 7.3 及以上的 7.x 版本</li><li>CentOS 7.3 及以上的 7.x 版本</li></ul>  |  <ul><li>x86_64</li><li>ARM 64</li></ul>   |
+|  Amazon Linux 2         |  <ul><li>x86_64</li><li>ARM 64</li></ul>   |
+| 麒麟欧拉版 V10 SP1/SP2   |   <ul><li>x86_64</li><li>ARM 64</li></ul>   |
+| UOS V20                 |   <ul><li>x86_64</li><li>ARM 64</li></ul>   |
+|   macOS Catalina 及以上的版本  |  <ul><li>x86_64</li><li>ARM 64</li></ul>  |
+|  Oracle Enterprise Linux 7.3 及以上的 7.x 版本  |  x86_64           |
+|   Ubuntu LTS 18.04 及以上的版本  |  x86_64           |
+| CentOS 8 Stream | <ul><li>x86_64</li><li>ARM 64</li></ul> |
+|  Debian 9 (Stretch) 及以上的版本  |  x86_64           |
+|  Fedora 35 及以上的版本   |  x86_64           |
+|  openSUSE Leap 15.3 以上的版本（不包含 Tumbleweed） |  x86_64           |
+|  SUSE Linux Enterprise Server 15  |  x86_64                        |
 
 > **注意：**
 >
 > - TiDB 只支持 Red Hat 兼容内核 (RHCK) 的 Oracle Enterprise Linux，不支持 Oracle Enterprise Linux 提供的 Unbreakable Enterprise Kernel。
-> - TiDB 在 CentOS 7.3 的环境下进行过大量的测试，同时社区也有很多该操作系统部署的最佳实践，因此，建议使用 CentOS 7.3 以上的 7.x Linux 操作系统来部署 TiDB。
-> - 以上 Linux 操作系统可运行在物理服务器以及 VMware、KVM 及 XEN 主流虚拟化环境上。
-> - 目前尚不支持 Red Hat Enterprise Linux 8.0、CentOS 8 Stream 和 Oracle Enterprise Linux 8.0，因为目前对这些平台的测试还在进行中。
 > - 根据 [CentOS Linux EOL](https://www.centos.org/centos-linux-eol/)，CentOS 的上游支持已于 2021 年 12 月 31 日终止。
 > - TiDB 将不再支持 Ubuntu 16.04。强烈建议升级到 Ubuntu 18.04 或更高版本。
-
-其他 Linux 操作系统版本（例如 Debian Linux 和 Fedora Linux）也许可以运行 TiDB，但尚未得到 TiDB 官方支持。
+> - 对于以上表格中所列操作系统的 32 位版本，TiDB 在这些 32 位操作系统以及对应的 CPU 架构上**不保障**可编译、可构建以及可部署，或 TiDB 不主动适配这些 32 位的操作系统。
+> - 以上未提及的操作系统版本**也许可以**运行 TiDB，但尚未得到 TiDB 官方支持。
 
 ### 编译和运行 TiDB 所依赖的库
 
