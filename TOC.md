@@ -131,9 +131,29 @@
     - [使用 TiUP（推荐）](/scale-tidb-using-tiup.md)
     - [使用 TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/scale-a-tidb-cluster)
   - 备份与恢复
-    - [使用 BR 备份集群](/br-usage-backup-for-maintain.md)
-    - [使用 BR 恢复集群](/br-usage-restore-for-maintain.md)
-    - [BR 备份恢复场景示例](/backup-and-restore-use-cases-for-maintain.md)
+    - [备份与恢复概述](/br/backup-and-restore-overview.md)
+    - 架构设计
+      - [架构概述](/br/backup-and-restore-design.md)
+      - [快照备份与恢复架构](/br/br-snapshot-architecture.md)
+      - [日志备份与 PITR 架构](/br/br-log-architecture.md)
+    - 使用 BR 进行备份与恢复
+      - [使用概述](/br/br-use-overview.md)
+      - [快照备份与恢复](/br/br-snapshot-guide.md)
+      - [日志备份与 PITR](/br/br-pitr-guide.md)
+      - [实践示例](/br/backup-and-restore-use-cases.md)
+      - [备份存储](/br/backup-and-restore-storages.md)
+    - br cli 命令手册
+      - [命令概述](/br/use-br-command-line-tool.md)
+      - [快照备份与恢复命令手册](/br/br-snapshot-manual.md)
+      - [日志备份与 PITR 命令手册](/br/br-pitr-manual.md)
+    - 参考指南
+      - BR 特性
+        - [自动调节](/br/br-auto-tune.md)
+        - [批量建表](/br/br-batch-create-table.md)
+      - [使用 Dumpling 和 TiDB Lightning 备份与恢复](/backup-and-restore-using-dumpling-lightning.md)
+      - [备份与恢复 RawKV](/br/rawkv-backup-and-restore.md)
+      - [增量备份与恢复](/br/br-incremental-guide.md)
+      - [外部存储](/br/external-storage.md)
   - [修改时区](/configure-time-zone.md)
   - [日常巡检](/daily-check.md)
   - [TiFlash 常用运维操作](/tiflash/maintain-tiflash.md)
@@ -149,6 +169,7 @@
   - [TiDB 集群报警规则与处理方法](/alert-rules.md)
   - [TiFlash 报警规则与处理方法](/tiflash/tiflash-alert-rules.md)
   - [自定义监控组件的配置](/tiup/customized-montior-in-tiup-environment.md)
+  - [BR 监控告警](/br/br-monitoring-and-alert.md)
 - 故障诊断
   - [定位慢查询](/identify-slow-queries.md)
   - [分析慢查询](/analyze-slow-queries.md)
@@ -476,32 +497,6 @@
         - [常见问题](/dm/dm-faq.md)
         - [错误处理及恢复](/dm/dm-error-handling.md)
       - [版本发布历史](/dm/dm-release-notes.md)
-  - Backup & Restore (BR)
-    - [BR 简介](/br/backup-and-restore-overview.md)
-    - [部署和使用 BR](/br/br-deployment.md)
-    - [使用 BR 备份集群](/br/br-usage-backup.md)
-    - [使用 BR 恢复集群](/br/br-usage-restore.md)
-    - [BR 备份与恢复场景示例](/br/backup-and-restore-use-cases.md)
-    - BR 特性
-      - [自动调节](/br/br-auto-tune.md)
-      - [批量建表](/br/br-batch-create-table.md)
-    - 参考指南
-      - [BR 设计原理](/br/backup-and-restore-design.md)
-      - [BR 命令行介绍](/br/use-br-command-line-tool.md)
-      - [外部存储](/br/backup-and-restore-storages.md)
-      - [使用 BR 在 Amazon S3 备份和恢复数据](/br/backup-storage-S3.md)
-      - [使用 BR 在 Azure Blob Storage 备份和恢复数据](/br/backup-storage-azblob.md)
-      - [使用 BR 在 Google Cloud Storage 备份和恢复数据](/br/backup-storage-gcs.md)
-      - [使用 BR 备份和恢复 RawKV 数据](/br/rawkv-backup-and-restore.md)
-      - [使用 Dumpling 和 TiDB Lightning 备份和恢复数据](/backup-and-restore-using-dumpling-lightning.md)
-      - [BR 常见问题](/br/backup-and-restore-faq.md)
-  - Point-in-time Recovery
-    - [PITR 简介](/br/point-in-time-recovery.md)
-    - [通过命令行使用 PITR](/br/br-log-command-line.md)
-    - [使用场景示例](/br/pitr-usage.md)
-    - [监控告警](/br/pitr-monitoring-and-alert.md)
-    - [故障处理](/br/pitr-troubleshoot.md)
-    - [已知问题](/br/pitr-known-issues.md)
   - TiDB Binlog
     - [概述](/tidb-binlog/tidb-binlog-overview.md)
     - [快速上手](/tidb-binlog/get-started-with-tidb-binlog.md)
@@ -918,6 +913,7 @@
   - [集群管理 FAQ](/faq/manage-cluster-faq.md)
   - [高可用 FAQ](/faq/high-availability-faq.md)
   - [高可靠 FAQ](/faq/high-reliability-faq.md)
+  - [备份恢复 FAQ](/faq/backup-and-restore-faq.md)
 - 版本发布历史
   - [发布版本汇总](/releases/release-notes.md)
   - [版本发布时间线](/releases/release-timeline.md)
