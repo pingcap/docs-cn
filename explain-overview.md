@@ -62,6 +62,7 @@ Records: 2  Duplicates: 0  Warnings: 0
 > **注意：**
 >
 > 在执行计划返回结果中，自 v6.4.0 版本起，特定算子（即 `IndexJoin` 和 `Apply` 算子的 Probe 端所有子节点）的 `estRows` 字段意义与 v6.4.0 版本之前的有所不同。
+>
 > 在 v6.4.0 之前，`estRows` 表示对于 Build 端子节点的每一行，Probe 端预计会处理的行数。自 v6.4.0 起，`estRows` 表示 Probe 端预计会处理的**总行数**。由于 `EXPLAIN ANALYZE` 中展示的实际行数（`actRows` 列）表示的是总行数，v6.4.0 起这些算子 `estRows` 的含义与 `actRows` 列的含义保持一致。
 >
 >
