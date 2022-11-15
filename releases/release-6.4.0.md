@@ -13,16 +13,16 @@ TiDB 版本：6.4.0-DMR
 在 6.4.0-DMR 版本中，你可以获得以下关键特性：
 
 - 支持通过 [`FLASHBACK CLUSTER TO TIMESTAMP`](/sql-statements/sql-statement-flashback-to-timestamp.md) 命令将集群快速回退到特定的时间点 (实验特性）。
-- 支持 TiDB 全局内存限制。
-- TiDB 分区表兼容 Linear Hash 分区。
+- 支持对 TiDB 实例的[全局内存使用进行追踪](/configure-memory-usage.md)（实验特性）。
+- TiDB 分区表[兼容 Linear Hash 分区](/partitioned-table.md#tidb-对-linear-hash-分区的处理)。
 - 支持高性能、全局单调递增的 [`AUTO_INCREMENT`](/auto-increment.md#mysql-兼容模式) 列属性。
-- 支持对 JSON 类型中的 Array 数据做范围选择。
+- 支持对 [JSON 类型](/data-type-json)中的 Array 数据做范围选择。
 - 磁盘故障、I/O 无响应等极端情况下的故障恢复加速。
-- 增加了动态规划算法来决定表的连接顺序。
-- 引入新的优化器提示 `NO_DECORRELATE` 来控制解关联优化。
-- 集群诊断功能 GA。
-- TiFlash 静态加密支持国密算法 SM4。
-- 支持通过 SQL 语句对指定 Partition 的 TiFlash 副本立即触发物理数据整理 (Compaction)。
+- 新增[动态规划算法](/join-reorder.md#join-reorder-动态规划算法实例)来决定表的连接顺序。
+- 引入新的[优化器提示 `NO_DECORRELATE`](/optimizer-hints.md#no_decorrelate) 来控制关联优化的解除。
+- [集群诊断功能](/dashboard/dashboard-diagnostics-access.md) GA。
+- [TiFlash 静态加密](/encryption-at-rest.md#tiflash)支持国密算法 SM4。
+- 支持通过 SQL 语句立即对指定分区的 TiFlash 副本进行[物理数据整理 (Compaction)](/sql-statements/sql-statement-alter-table-compact.md)。
 - 支持[基于 AWS EBS snapshot 的集群备份和恢复](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.4/backup-to-aws-s3-by-snapshot)。
 - 支持在分库分表合并迁移场景中[标记下游表中的数据来自上游哪个分库、分表和数据源](/dm/dm-key-features.md#提取分库分表数据源信息写入合表)。
 
@@ -32,7 +32,7 @@ TiDB 版本：6.4.0-DMR
 
 * 支持通过 SQL 语句立即对指定分区的 TiFlash 副本进行物理数据整理 (Compaction) [#5315](https://github.com/pingcap/tiflash/issues/5315) @[hehechen](https://github.com/hehechen) **tw@qiancai**
 
-    TiDB v6.2.0 发布了针对全表的 TiFlash 副本立即进行[物理数据整理 (Compaction)](/sql-statements/sql-statement-alter-table-compact.md#alter-table--compact#对表中-tiflash-副本进行数据整理) 的功能，支持用户自行选择合适的时机，手动执行 SQL 语句立即对 TiFlash 中的物理数据进行整理，从而减少存储空间占用，并提升查询性能。v6.4.0 细化了 TiFlash 副本数据整理的粒度，支持对表中指定分区的 TiFlash 副本立即进行数据整理。
+    TiDB v6.2.0 发布了针对全表的 TiFlash 副本立即进行[物理数据整理 (Compaction)](/sql-statements/sql-statement-alter-table-compact.md#alter-table--compact) 的功能，支持用户自行选择合适的时机，手动执行 SQL 语句立即对 TiFlash 中的物理数据进行整理，从而减少存储空间占用，并提升查询性能。v6.4.0 细化了 TiFlash 副本数据整理的粒度，支持对表中指定分区的 TiFlash 副本立即进行数据整理。
 
     通过 SQL 语句 `ALTER TABLE table_name COMPACT [PARTITION PartitionNameList] [engine_type REPLICA]`，你可以立即对指定分区的 TiFlash 副本进行数据整理。
 
@@ -76,9 +76,9 @@ TiDB 版本：6.4.0-DMR
 
 * 新增动态规划算法来决定表的连接顺序 [#18969](https://github.com/pingcap/tidb/issues/18969) @[winoros](https://github.com/winoros) **tw@qiancai**
 
-    在之前的版本中，TiDB 采用贪心算法来决定表的连接顺序。 在 v6.4.0 中， 优化器引入了[动态规划算法](join-reorder#join-reorder-动态规划算法实例)。相比贪心算法，动态规划算法会枚举更多可能的连接顺序，进而有机会发现更好的执行计划，提升部分场景下 SQL 执行效率。
+    在之前的版本中，TiDB 采用贪心算法来决定表的连接顺序。在 v6.4.0 中，优化器引入了[动态规划算法](/join-reorder.md#join-reorder-动态规划算法实例)。相比贪心算法，动态规划算法会枚举更多可能的连接顺序，进而有机会发现更好的执行计划，提升部分场景下 SQL 执行效率。
 
-    由于动态规划算法的枚举过程可能消耗更多的时间，目前 Join Reorder 算法由变量 [`tidb_opt_join_reorder_threshold`](/system-variables.md#tidboptjoinreorderthreshold) 控制，当参与 Join Reorder 的节点个数大于该阈值时选择贪心算法，反之选择动态规划算法。
+    由于动态规划算法的枚举过程可能消耗更多的时间，目前 Join Reorder 算法由变量 [`tidb_opt_join_reorder_threshold`](/system-variables.md#tidb_opt_join_reorder_threshold) 控制，当参与 Join Reorder 的节点个数大于该阈值时选择贪心算法，反之选择动态规划算法。
 
     [用户文档](/join-reorder.md)
 
@@ -132,9 +132,11 @@ TiDB 版本：6.4.0-DMR
 
     [用户文档](/system-variables.md#tidb-opt-range-max-size-从-v640-版本开始引入)
 
-* 支持统计信息的同步加载（GA特性）[#37434](https://github.com/pingcap/tidb/issues/37434) @[chrysan](https://github.com/chrysan) **tw@ran-huang**
+* 支持统计信息的同步加载（GA）[#37434](https://github.com/pingcap/tidb/issues/37434) @[chrysan](https://github.com/chrysan) **tw@ran-huang**
 
-    v6.4.0 TiDB 正式打开了统计信息同步加载的特性（默认开启），支持执行当前 SQL 语句时将直方图、TopN、CMSketch 等占用空间较大的统计信息同步加载到内存，提高该 SQL 语句优化时统计信息的完整性
+    TiDB v6.4.0 起，正式开启了统计信息同步加载的特性（默认开启），支持在执行当前 SQL 语句时将直方图、TopN、CMSketch 等占用空间较大的统计信息同步加载到内存，提高优化该 SQL 语句时统计信息的完整性。
+
+    [用户文档](/system-varaibles.md#tidb_stats_load_sync_wait-从-v540-版本开始引入)
 
 ### 易用性
 
@@ -168,7 +170,7 @@ TiDB 版本：6.4.0-DMR
 
     在 TiDB 上，你可以直接执行原有的 MySQL Linear Hash 分区的 DDL 语句，TiDB 将创建一个相应的 Hash 分区表（注意 TiDB 内部实际不存在 Linear Hash 分区）。你也可以直接执行原有的 MySQL Linear Hash 分区的 DML 语句，TiDB 将正常返回对应的 TiDB Hash 分区的查询结果。此功能保证了 TiDB 对 MySQL Linear Hash 分区的语法兼容，方便基于 MySQL 的应用无缝迁移到 TiDB。
 
-    [用户文档](/mysql-compatibility.md)
+    [用户文档](/partitioned-table.md#tidb-对-linear-hash-分区的处理)
 
 * 支持高性能、全局单调递增的 `AUTO_INCREMENT` 列属性（实验特性）[#38442](https://github.com/pingcap/tidb/issues/38442) @[tiancaiamao](https://github.com/tiancaiamao) **tw@Oreoxmt**
 
@@ -195,7 +197,7 @@ TiDB 版本：6.4.0-DMR
 
     此外，TiDB v6.4 新增了 [USER_ATTRIBUTES](/information-schema/information-schema-user-attributes.md) 表。你可以在该表中查看用户的注释和属性信息。
 
-    这个特性提升了 TiDB 对 MySQL 的语法的兼容性， 使得 TiDB 更容易融入 MySQL 生态的工具或平台。
+    这个特性提升了 TiDB 对 MySQL 的语法的兼容性，使得 TiDB 更容易融入 MySQL 生态的工具或平台。
 
 ### 备份和恢复
 
@@ -341,8 +343,8 @@ TiDB 版本：6.4.0-DMR
     + TiDB Dashboard
 
         - 支持在 Monitoring 页面展示 TiFlash 相关指标，并且优化了该页面指标的展示方式 [#1440](https://github.com/pingcap/tidb-dashboard/issues/1440) @[YiniXu9506](https://github.com/YiniXu9506)
-        - 在 Slow Query 列表 和 SQL Statement 列表展示结果行数 [#1407](https://github.com/pingcap/tidb-dashboard/pull/1407) @[baurine](https://github.com/baurine)
-        - 优化 Dashboard 的报错信息。  [#1407](https://github.com/pingcap/tidb-dashboard/pull/1407) @[baurine](https://github.com/baurine)
+        - 支持在 Slow Query 列表 和 SQL Statement 列表展示结果行数 [#1407](https://github.com/pingcap/tidb-dashboard/pull/1407) @[baurine](https://github.com/baurine)
+        - 优化 Dashboard 的报错信息 [#1407](https://github.com/pingcap/tidb-dashboard/pull/1407) @[baurine](https://github.com/baurine)
 
     + Backup & Restore (BR)
 
@@ -434,7 +436,7 @@ TiDB 版本：6.4.0-DMR
 
     + TiDB Lightning
 
-        - 修复 Parquet String Column 且 Table 设置了 binary 属性时导致导入性能下降的问题。[#38351](https://github.com/pingcap/tidb/issues/38351) @[dsdashun](https://github.com/dsdashun)
+        - 修复当导入 Apache Parquet 格式的数据时，如果目标表存在 binary 编码格式的 String 类型列，导入性能下降的问题。[#38351](https://github.com/pingcap/tidb/issues/38351) @[dsdashun](https://github.com/dsdashun)
 
     + TiDB Dumpling
 
