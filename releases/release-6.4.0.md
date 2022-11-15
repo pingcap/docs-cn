@@ -100,7 +100,7 @@ TiDB 版本：6.4.0-DMR
 
 * 提升了分区表统计信息收集的性能 [#37977](https://github.com/pingcap/tidb/issues/37977) @[Yisaer](https://github.com/Yisaer) **tw@TomShawn**
 
-    在 v6.4.0 版本中，TiDB 优化了分区表统计信息的收集策略。用户可以通过系统变量 [`tidb_auto_analyze_partition_batch_size`](/system-variables.md#tidb-auto-analyze-partitoin-batch-size-从 v640-版本开始引入) 定义并发度，用并行的方式同时收集多个分区的统计信息，从而加快统计信息收集的速度，减少 analyze 所需的时间。
+    在 v6.4.0 版本中，TiDB 优化了分区表统计信息的收集策略。你可以通过系统变量 [`tidb_auto_analyze_partition_batch_size`](/system-variables.md#tidb-auto-analyze-partitoin-batch-size-从 v640-版本开始引入) 定义并发度，用并行的方式同时收集多个分区的统计信息，从而加快统计信息收集的速度，减少 analyze 所需的时间。
 
 ### 事务
 
@@ -118,7 +118,7 @@ TiDB 版本：6.4.0-DMR
 
 * TiDB 全局内存控制 [#37816](https://github.com/pingcap/tidb/issues/37816) @[wshwsh12](https://github.com/wshwsh12) **tw@TomShawn**
 
-    v6.4.0 引入了全局内存控制（实验特性），对 TiDB 实例的全局内存使用进行追踪。用户可以通过系统变量 [`tidb_server_memory_limit`](/system-variables.md#tidbservermemorylimit-span-classversion-mark从-v640-版本开始引入) 设置全局内存的使用上限。当内存使用量接近预设的上限时，TiDB 会尝试对内存进行回收，释放更多的可用内存；当内存使用量超出预设的上限时，TiDB 会识别出当前内存使用量最大的 SQL 操作，并取消这个操作，避免因为内存使用过度而产生的系统性问题。
+    v6.4.0 引入了全局内存控制（实验特性），对 TiDB 实例的全局内存使用进行追踪。你可以通过系统变量 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 设置全局内存的使用上限。当内存使用量接近预设的上限时，TiDB 会尝试对内存进行回收，释放更多的可用内存；当内存使用量超出预设的上限时，TiDB 会识别出当前内存使用量最大的 SQL 操作，并取消这个操作，避免因为内存使用过度而产生的系统性问题。
 
     当 TiDB 实例的内存消耗存在潜在风险时，TiDB 会预先收集诊断信息并写入指定目录，方便对问题的诊断。同时，TiDB 提供了系统表视图 [`information_schame.MEMORY_USAGE`](/information-schema/information-schema-memory-usage.md) 和 [`information_schame.MEMORY_USAGE_OPS_HISTORY`](/information-schema/information-schema-memory-usage-ops-history.md) 用来展示内存使用情况及历史操作，帮助用户清晰了解内存使用状况。
 
@@ -375,10 +375,10 @@ TiDB 版本：6.4.0-DMR
     - 修复公共表表达式在 union 时可能得到错误结果的问题 [#37928](https://github.com/pingcap/tidb/issues/37928) @[YangKeao](https://github.com/YangKeao)
     - 修复监控面板 **transaction region num** 信息不准确的问题 [#38139](https://github.com/pingcap/tidb/issues/38139) @[jackysp](https://github.com/jackysp)
     - 修复 [`tidb_constraint_check_in_place_pessimistic`](/system-variables.md#tidb_constraint_check_in_place_pessimistic-从-v630-版本开始引入) 可能影响内部事务问题，修改该变量作用域为 session [#38766](https://github.com/pingcap/tidb/issues/38766)
-    - 修复了条件在某些场景下被错误下推至 projection 的问题 [#35623](https://github.com/pingcap/tidb/issues/35623)@[Reminiscent](https://github.com/Reminiscent)
-    - 修复了 `AND` 和 `OR` 条件的 `isNullRejected` 检查错误导致查询结果错误的问题 [#38304]( https://github.com/pingcap/tidb/issues/38304) @[Yisaer](https://github.com/Yisaer)
-    - 修复了外连接消除时没有考虑 `GROUP_CONCAT` 内部的 `ORDER BY` 导致查询出错的问题 [#18216](https://github.com/pingcap/tidb/issues/18216) @[winoros](https://github.com/winoros) 
-    - 修复了错误下推的条件被 Join Reorder 丢弃后导致查询结果错误的问题 [#38736](https://github.com/pingcap/tidb/issues/38736) @[winoros](https://github.com/winoros) 
+    - 修复条件在某些场景下被错误下推至 projection 的问题 [#35623](https://github.com/pingcap/tidb/issues/35623)@[Reminiscent](https://github.com/Reminiscent)
+    - 修复 `AND` 和 `OR` 条件的 `isNullRejected` 检查错误导致查询结果错误的问题 [#38304]( https://github.com/pingcap/tidb/issues/38304) @[Yisaer](https://github.com/Yisaer)
+    - 修复外连接消除时没有考虑 `GROUP_CONCAT` 内部的 `ORDER BY` 导致查询出错的问题 [#18216](https://github.com/pingcap/tidb/issues/18216) @[winoros](https://github.com/winoros) 
+    - 修复错误下推的条件被 Join Reorder 丢弃后导致查询结果错误的问题 [#38736](https://github.com/pingcap/tidb/issues/38736) @[winoros](https://github.com/winoros) 
 
 + TiKV
 
