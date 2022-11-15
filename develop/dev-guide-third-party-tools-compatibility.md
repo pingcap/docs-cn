@@ -156,3 +156,55 @@ TiDB fixes it in the following ways:
 
 - Client side: This bug has been fixed in **pingcap/mysql-connector-j** and you can use the [pingcap/mysql-connector-j](https://github.com/pingcap/mysql-connector-j) instead of the official MySQL Connector/J.
 - Server side: This compatibility issue has been fixed since TiDB v6.3.0 and you can upgrade the server to v6.3.0 or later versions.
+
+## Compatibility with Sequelize
+
+The compatibility information described in this section is based on [Sequelize v6.21.4](https://www.npmjs.com/package/sequelize/v/6.21.4).
+
+According to the test results, TiDB supports most of the Sequelize features ([using `MySQL` as the dialect](https://sequelize.org/docs/v6/other-topics/dialect-specific-things/#mysql)).
+
+Unsupported features are:
+
+- Foreign key constraints (including many-to-many relationships) are not supported.
+- [`GEOMETRY`](https://github.com/pingcap/tidb/issues/6347) is not supported.
+- Modification of integer primary key is not supported.
+- `PROCEDURE` is not supported.
+- The `READ-UNCOMMITTED` and `SERIALIZABLE` [isolation levels](/system-variables.md#transaction_isolation) are not supported.
+- Modification of a column's `AUTO_INCREMENT` attribute is not allowed by default.
+- `FULLTEXT`, `HASH`, and `SPATIAL` indexes are not supported.
+
+### Modification of integer primary key is not supported
+
+**Description**
+
+Modification of integer primary key is not supported. TiDB uses primary key as an index for data organization if the primary key is integer type. Refer to [Issue #18090](https://github.com/pingcap/tidb/issues/18090) and [Clustered Indexes](/clustered-indexes.md) for more details.
+
+### The `READ-UNCOMMITTED` and `SERIALIZABLE` isolation levels are not supported
+
+**Description**
+
+TiDB does not support the `READ-UNCOMMITTED` and `SERIALIZABLE` isolation levels. If the isolation level is set to `READ-UNCOMMITTED` or `SERIALIZABLE`, TiDB throws an error.
+
+**Way to avoid**
+
+Use only the isolation level that TiDB supports: `REPEATABLE-READ` or `READ-COMMITTED`.
+
+If you want TiDB to be compatible with other applications that set the `SERIALIZABLE` isolation level but not depend on `SERIALIZABLE`, you can set [`tidb_skip_isolation_level_check`](/system-variables.md#tidb_skip_isolation_level_check) to `1`. In such case, TiDB ignores the unsupported isolation level error.
+
+### Modification of a column's `AUTO_INCREMENT` attribute is not allowed by default
+
+**Description**
+
+Adding or removing the `AUTO_INCREMENT` attribute of a column via `ALTER TABLE MODIFY` or `ALTER TABLE CHANGE` command is not allowed by default.
+
+**Way to avoid**
+
+Refer to the [restrictions of `AUTO_INCREMENT`](/auto-increment.md#restrictions).
+
+To allow the removal of the `AUTO_INCREMENT` attribute, set `@@tidb_allow_remove_auto_inc` to `true`.
+
+### `FULLTEXT`, `HASH`, and `SPATIAL` indexes are not supported
+
+**Description**
+
+`FULLTEXT`, `HASH`, and `SPATIAL` indexes are not supported.
