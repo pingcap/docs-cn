@@ -1405,10 +1405,17 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 默认值：`OFF`
-- 这个变量用于控制 `IndexLookUp` 算子是否使用分页 (paging) 方式发送 Coprocessor 请求。
-- 适用场景：对于使用 `IndexLookUp` 和 `Limit` 并且 `Limit` 无法下推到 `IndexScan` 上的读请求，可能会出现读请求的延迟高、TiKV 的 Unified read pool CPU 使用率高的情况。在这种情况下，由于 `Limit` 算子只需要少部分数据，开启 `tidb_enable_paging`，能够减少处理数据的数量，从而降低延迟、减少资源消耗。
-- 开启 `tidb_enable_paging` 后，`Limit` 无法下推且数量小于 `960` 的 `IndexLookUp` 请求会使用 paging 方式发送 Coprocessor 请求。`Limit` 的值越小，优化效果会越明显。
+- 默认值：`ON`
+- 这个变量用于控制是否使用分页 (paging) 方式发送 Coprocessor 请求。对于 [v5.4.0, v6.2.0) 区间的 TiDB 版本，该变量只对 `IndexLookup` 算子生效；对于 v6.2.0 以及之后的版本，该变量对全局生效。从 v6.4.0 版本开始，该变量默认值由 `OFF` 改成 `ON`。
+- 适用场景：
+
+    - 推荐在所有偏 OLTP 的场景下使用 paging。
+    - 对于使用 `IndexLookUp` 和 `Limit` 并且 `Limit` 无法下推到 `IndexScan` 上的读请求，可能会出现读请求的延迟高、TiKV 的 Unified read pool CPU 使用率高的情况。在这种情况下，由于 `Limit` 算子只需要少部分数据，开启 `tidb_enable_paging` 能够减少处理数据的数量，从而降低延迟、减少资源消耗。
+    - 对于 [Dumpling](/dumpling-overview.md) 数据导出或者全表扫描这类的场景，开启 paging 后可以有效降低 TiDB 进程的内存消耗。
+
+> **注意：**
+>
+> 对于偏 OLAP 的场景，并且以 TiKV 而非 TiFlash 作为存储引擎时，开启 paging 可能导致部分场景下性能回退。此时，你可以考虑通过该变量关闭 paging 或者通过系统变量 [`tidb_min_paging_size`](/system-variables.md#tidb_min_paging_size-从-v620-版本开始引入) 和 [`tidb_max_paging_size`](/system-variables.md#tidb_max_paging_size-从-v630-版本开始引入) 调整 paging size 的行数范围。
 
 ### `tidb_enable_parallel_apply` <span class="version-mark">从 v5.0 版本开始引入</span>
 
@@ -2008,7 +2015,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 默认值：`50000`
 - 范围：`[1, 9223372036854775807]`
 - 单位：行
-- 这个变量用来设置 coprocessor 协议中 paging size 的最大的行数。请合理设置该值，设置过小，TiDB 与 TiKV 的 RPC 交互会更频繁；设置过大，导数据和全表扫等特定场景会占用更多内存。
+- 这个变量用来设置 coprocessor 协议中 paging size 的最大的行数。请合理设置该值，设置过小，TiDB 与 TiKV 的 RPC 交互会更频繁；设置过大，导数据和全表扫等特定场景会占用更多内存。该变量的默认值对于 OLTP 场景较友好，如果业务只使用了 TiKV 作为存储引擎，当执行偏 OLAP 的负载时，可以考虑将变量值调大，有可能获得更好的性能。
 
 ### `tidb_max_tiflash_threads` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
@@ -2155,7 +2162,11 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 默认值：`128`
 - 范围：`[1, 9223372036854775807]`
 - 单位：行
-- 这个变量用来设置 coprocessor 协议中 paging size 的最小的行数。请合理设置该值，设置过小，TiDB 与 TiKV 的 RPC 交互会更频繁；设置过大，IndexLookup 带 Limit 场景会出现性能下降。
+- 这个变量用来设置 coprocessor 协议中 paging size 的最小的行数。请合理设置该值，设置过小，TiDB 与 TiKV 的 RPC 交互会更频繁；设置过大，IndexLookup 带 Limit 场景会出现性能下降。该变量的默认值对于 OLTP 场景较友好，如果业务只使用了 TiKV 作为存储引擎，当执行偏 OLAP 的负载时，可以考虑将变量值调大，有可能获得更好的性能。
+
+![Paging size impact on TPCH](/media/paging-size-impact-on-tpch.png)
+
+开启 [`tidb_enable_paging`](/system-variables.md#tidb_max_paging_size-从-v630-版本开始引入) 时，`tidb_min_paging_size` 和 [`tidb_max_paging_size`](/system-variables.md#tidb_max_paging_size-从-v630-版本开始引入) 对 TPCH 的性能影响如上图所示，纵轴是执行时间，越小越好。
 
 ### `tidb_mpp_store_fail_ttl`
 
