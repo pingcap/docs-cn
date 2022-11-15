@@ -7,10 +7,6 @@ summary: Learn about how to audit a cluster in TiDB Cloud.
 
 TiDB Cloud provides you with a database audit logging feature to record a history of user access details (such as any SQL statements executed) in logs.
 
-> **Note:**
->
-> Currently, the **audit logging** feature is experimental. The interface and output are subject to change.
-
 To assess the effectiveness of user access policies and other information security measures of your organization, it is a security best practice to conduct a periodic analysis of the database audit logs.
 
 The audit logging feature is disabled by default. To audit a cluster, you need to enable the audit logging first, and then specify the auditing filter rules.
@@ -21,7 +17,7 @@ The audit logging feature is disabled by default. To audit a cluster, you need t
 
 ## Prerequisites
 
-- You are using a TiDB Cloud Dedicated tier. Audit logging is not available for TiDB Cloud Serverless Tier clusters.
+- You are using a TiDB Cloud Dedicated Tier cluster. Audit logging is not available for TiDB Cloud Serverless Tier clusters.
 - You are the audit administrator of your organization in TiDB Cloud. Otherwise, you cannot see the audit-related options in the TiDB Cloud console. For more information, see [Configure member roles](/tidb-cloud/manage-user-access.md#configure-member-roles).
 
 ## Enable audit logging for AWS or GCP
@@ -47,18 +43,16 @@ For more information, see [Creating a bucket](https://docs.aws.amazon.com/Amazon
 1. Get the TiDB Cloud account ID and the External ID of the TiDB cluster that you want to enable audit logging.
 
     1. In the TiDB Cloud console, choose a project and a cluster deployed on AWS.
-    2. Select **Settings** > **Audit Settings**. The **Audit Logging** dialog box is displayed.
-    3. In the **Audit Logging** dialog box, click **Show AWS IAM policy settings**. The corresponding TiDB Cloud Account ID and TiDB Cloud External ID of the TiDB cluster are displayed.
+    2. Select **Settings** > **Audit Settings**. The **Audit Logging** dialog is displayed.
+    3. In the **Audit Logging** dialog, click **Show AWS IAM policy settings**. The corresponding TiDB Cloud Account ID and TiDB Cloud External ID of the TiDB cluster are displayed.
     4. Record the TiDB Cloud Account ID and the External ID for later use.
 
-2. In the AWS Management console, go to **IAM** > **Access Management** > **Policies**, and then check whether a storage bucket policy with the `s3:PutObject` write-only permission exists.
+2. In the AWS Management console, go to **IAM** > **Access Management** > **Policies**, and then check whether there is a storage bucket policy with the `s3:PutObject` write-only permission.
 
     - If yes, record the matched storage bucket policy for later use.
     - If not, go to **IAM** > **Access Management** > **Policies** > **Create Policy**, and define a bucket policy according to the following policy template.
 
-        {{< copyable "" >}}
-
-        ```
+        ```json
         {
             "Version": "2012-10-17",
             "Statement": [
@@ -71,7 +65,7 @@ For more information, see [Creating a bucket](https://docs.aws.amazon.com/Amazon
         }
         ```
 
-        In the template, `<Your S3 bucket ARN>` is the Amazon Resource Name (ARN) of your S3 bucket where the audit log files are to be written. You can go to the **Properties** tab in your S3 bucket and get the Amazon Resource Name (ARN) value in the **Bucket Overview** area. In the `"Resource"` field, you need to add `/*` after the ARN. For example, if the ARN is `arn:aws:s3:::tidb-cloud-test`, you need to configure the value of the `"Resource"` field as `"arn:aws:s3:::tidb-cloud-test/*"`.
+        In the template, `<Your S3 bucket ARN>` is the Amazon Resource Name (ARN) of your S3 bucket where the audit log files are to be written. You can go to the **Properties** tab in your S3 bucket and get the ARN value in the **Bucket Overview** area. In the `"Resource"` field, you need to add `/*` after the ARN. For example, if the ARN is `arn:aws:s3:::tidb-cloud-test`, you need to configure the value of the `"Resource"` field as `"arn:aws:s3:::tidb-cloud-test/*"`.
 
 3. Go to **IAM** > **Access Management** > **Roles**, and then check whether a role whose trust entity corresponds to the TiDB Cloud Account ID and the External ID that you recorded earlier already exists.
 
@@ -188,6 +182,10 @@ For example, `13796619446086334065/tidb-0/tidb-audit-2022-04-21T18-16-29.529.log
 ## Disable audit logging
 
 If you no longer want to audit a cluster, go to the page of the cluster, click **Settings** > **Audit Settings**, and then toggle the audit setting in the upper-right corner to **Off**.
+
+> **Note:**
+>
+> Each time the size of the log file reaches 10 MiB, the log file will be pushed to the cloud storage bucket. Therefore, after the audit log is disabled, the log file whose size is smaller than 10 MiB will not be automatically pushed to the cloud storage bucket. To get the log file in this situation, contact [PingCAP support](/tidb-cloud/tidb-cloud-support.md).
 
 ## Audit log fields
 
