@@ -58,20 +58,20 @@ explain select * from t1 where t1.a < (select /*+ NO_DECORRELATE() */ sum(t2.a) 
 ```
 
 ```sql
-+----------------------------------------+----------+-----------+------------------------+--------------------------------------------------------------------------------------+
-| id                                     | estRows  | task      | access object          | operator info                                                                        |
-+----------------------------------------+----------+-----------+------------------------+--------------------------------------------------------------------------------------+
-| Projection_10                          | 10000.00 | root      |                        | test.t1.a, test.t1.b                                                                 |
-| └─Apply_12                             | 10000.00 | root      |                        | CARTESIAN inner join, other cond:lt(cast(test.t1.a, decimal(10,0) BINARY), Column#7) |
-|   ├─TableReader_14(Build)              | 10000.00 | root      |                        | data:TableFullScan_13                                                                |
-|   │ └─TableFullScan_13                 | 10000.00 | cop[tikv] | table:t1               | keep order:false, stats:pseudo                                                       |
-|   └─MaxOneRow_15(Probe)                | 1.00     | root      |                        |                                                                                      |
-|     └─HashAgg_27                       | 1.00     | root      |                        | funcs:sum(Column#10)->Column#7                                                       |
-|       └─IndexLookUp_28                 | 1.00     | root      |                        |                                                                                      |
-|         ├─IndexRangeScan_25(Build)     | 10.00    | cop[tikv] | table:t2, index:idx(b) | range: decided by [eq(test.t2.b, test.t1.b)], keep order:false, stats:pseudo         |
-|         └─HashAgg_17(Probe)            | 1.00     | cop[tikv] |                        | funcs:sum(test.t2.a)->Column#10                                                      |
-|           └─TableRowIDScan_26          | 10.00    | cop[tikv] | table:t2               | keep order:false, stats:pseudo                                                       |
-+----------------------------------------+----------+-----------+------------------------+--------------------------------------------------------------------------------------+
++------------------------------------------+-----------+-----------+------------------------+--------------------------------------------------------------------------------------+
+| id                                       | estRows   | task      | access object          | operator info                                                                        |
++------------------------------------------+-----------+-----------+------------------------+--------------------------------------------------------------------------------------+
+| Projection_10                            | 10000.00  | root      |                        | test.t1.a, test.t1.b                                                                 |
+| └─Apply_12                               | 10000.00  | root      |                        | CARTESIAN inner join, other cond:lt(cast(test.t1.a, decimal(10,0) BINARY), Column#7) |
+|   ├─TableReader_14(Build)                | 10000.00  | root      |                        | data:TableFullScan_13                                                                |
+|   │ └─TableFullScan_13                   | 10000.00  | cop[tikv] | table:t1               | keep order:false, stats:pseudo                                                       |
+|   └─MaxOneRow_15(Probe)                  | 10000.00  | root      |                        |                                                                                      |
+|     └─StreamAgg_20                       | 10000.00  | root      |                        | funcs:sum(Column#14)->Column#7                                                       |
+|       └─Projection_45                    | 100000.00 | root      |                        | cast(test.t2.a, decimal(10,0) BINARY)->Column#14                                     |
+|         └─IndexLookUp_44                 | 100000.00 | root      |                        |                                                                                      |
+|           ├─IndexRangeScan_42(Build)     | 100000.00 | cop[tikv] | table:t2, index:idx(b) | range: decided by [eq(test.t2.b, test.t1.b)], keep order:false, stats:pseudo         |
+|           └─TableRowIDScan_43(Probe)     | 100000.00 | cop[tikv] | table:t2               | keep order:false, stats:pseudo                                                       |
++------------------------------------------+-----------+-----------+------------------------+--------------------------------------------------------------------------------------+
 ```
 
 也可以通过全局关闭关联规则达到同样的效果：
@@ -85,20 +85,20 @@ explain select * from t1 where t1.a < (select sum(t2.a) from t2 where t2.b = t1.
 ```
 
 ```
-+----------------------------------------+----------+-----------+------------------------+--------------------------------------------------------------------------------------+
-| id                                     | estRows  | task      | access object          | operator info                                                                        |
-+----------------------------------------+----------+-----------+------------------------+--------------------------------------------------------------------------------------+
-| Projection_10                          | 10000.00 | root      |                        | test.t1.a, test.t1.b                                                                 |
-| └─Apply_12                             | 10000.00 | root      |                        | CARTESIAN inner join, other cond:lt(cast(test.t1.a, decimal(10,0) BINARY), Column#7) |
-|   ├─TableReader_14(Build)              | 10000.00 | root      |                        | data:TableFullScan_13                                                                |
-|   │ └─TableFullScan_13                 | 10000.00 | cop[tikv] | table:t1               | keep order:false, stats:pseudo                                                       |
-|   └─MaxOneRow_15(Probe)                | 1.00     | root      |                        |                                                                                      |
-|     └─HashAgg_27                       | 1.00     | root      |                        | funcs:sum(Column#10)->Column#7                                                       |
-|       └─IndexLookUp_28                 | 1.00     | root      |                        |                                                                                      |
-|         ├─IndexRangeScan_25(Build)     | 10.00    | cop[tikv] | table:t2, index:idx(b) | range: decided by [eq(test.t2.b, test.t1.b)], keep order:false, stats:pseudo         |
-|         └─HashAgg_17(Probe)            | 1.00     | cop[tikv] |                        | funcs:sum(test.t2.a)->Column#10                                                      |
-|           └─TableRowIDScan_26          | 10.00    | cop[tikv] | table:t2               | keep order:false, stats:pseudo                                                       |
-+----------------------------------------+----------+-----------+------------------------+--------------------------------------------------------------------------------------+
++------------------------------------------+-----------+-----------+------------------------+--------------------------------------------------------------------------------------+
+| id                                       | estRows   | task      | access object          | operator info                                                                        |
++------------------------------------------+-----------+-----------+------------------------+--------------------------------------------------------------------------------------+
+| Projection_10                            | 10000.00  | root      |                        | test.t1.a, test.t1.b                                                                 |
+| └─Apply_12                               | 10000.00  | root      |                        | CARTESIAN inner join, other cond:lt(cast(test.t1.a, decimal(10,0) BINARY), Column#7) |
+|   ├─TableReader_14(Build)                | 10000.00  | root      |                        | data:TableFullScan_13                                                                |
+|   │ └─TableFullScan_13                   | 10000.00  | cop[tikv] | table:t1               | keep order:false, stats:pseudo                                                       |
+|   └─MaxOneRow_15(Probe)                  | 10000.00  | root      |                        |                                                                                      |
+|     └─StreamAgg_20                       | 10000.00  | root      |                        | funcs:sum(Column#14)->Column#7                                                       |
+|       └─Projection_45                    | 100000.00 | root      |                        | cast(test.t2.a, decimal(10,0) BINARY)->Column#14                                     |
+|         └─IndexLookUp_44                 | 100000.00 | root      |                        |                                                                                      |
+|           ├─IndexRangeScan_42(Build)     | 100000.00 | cop[tikv] | table:t2, index:idx(b) | range: decided by [eq(test.t2.b, test.t1.b)], keep order:false, stats:pseudo         |
+|           └─TableRowIDScan_43(Probe)     | 100000.00 | cop[tikv] | table:t2               | keep order:false, stats:pseudo                                                       |
++------------------------------------------+-----------+-----------+------------------------+--------------------------------------------------------------------------------------+
 ```
 
 在执行了关闭关联规则的语句后，可以在 `IndexRangeScan_25(Build)` 的 `operator info` 中看到 `range: decided by [eq(test.t2.b, test.t1.b)]`。这部分信息就是关联依赖未被解除时，TiDB 使用关联条件进行索引范围查询的显示结果。
