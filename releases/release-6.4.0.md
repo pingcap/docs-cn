@@ -90,7 +90,7 @@ TiDB 版本：6.4.0-DMR
 
 * 增强 TiDB Chunk 复用机制 [#38606](https://github.com/pingcap/tidb/issues/38606) @[keeplearning20221](https://github.com/keeplearning20221) **tw@Oreoxmt**
 
-    在之前的版本中，TiDB 只在 `writechunk` 函数中复用 Chunk。TiDB v6.4.0 扩展 Chunk 复用机制到执行函数中，通过复用 Chunk 减少 TiDB 申请释放内存频率，进而提升部分场景下的 SQL 查询执行效率。你可以通过系统变量 [`tidb_enable_reuse_chunk`](/system-variable.md#tidb_enable_reuse_chunk-从-v640-版本开始引入) 来控制是否启用 Chunk 对象复用，默认为开启。
+    在之前的版本中，TiDB 只在 `writechunk` 函数中复用 Chunk。TiDB v6.4.0 扩展 Chunk 复用机制到 Executor 的算子中，通过复用 Chunk 减少 TiDB 申请释放内存频率，进而提升部分场景下的 SQL 查询执行效率。你可以通过系统变量 [`tidb_enable_reuse_chunk`](/system-variable.md#tidb_enable_reuse_chunk-从-v640-版本开始引入) 来控制是否启用 Chunk 对象复用，默认为开启。
 
 * 引入新的优化器提示 `NO_DECORRELATE` 来控制关联优化的解除 [#37789](https://github.com/pingcap/tidb/issues/37789) @[time-and-fate](https://github.com/time-and-fate) **tw@TomShawn**
 
@@ -320,8 +320,8 @@ TiDB 版本：6.4.0-DMR
 
 + TiKV
 
-    - 新增 `apply-yield-write-size` 配置项，以限制 Apply 线程每一轮处理单个状态机写入的数据大小，减缓 Raftstore 线程在 Apply 写入过大时的阻塞现象 [#13594](https://github.com/tikv/tikv/pull/13594) @[glorv](https://github.com/glorv)
-    - 在 Region 的 Leader 迁移前增加缓存预热阶段，减缓 Leader 迁移时造成 QPS 剧烈抖动现象 [#13556](https://github.com/tikv/tikv/pull/13556) @[cosven](https://github.com/cosven)
+    - 新增 `apply-yield-write-size` 配置项，以限制 Apply 线程每一轮处理单个状态机写入的数据大小，缓解 Raftstore 线程在 Apply 写入过大时的阻塞现象 [#13313](https://github.com/tikv/tikv/issues/13313) @[glorv](https://github.com/glorv)
+    - 在 Region 的 Leader 迁移前增加缓存预热阶段，缓解 Leader 迁移时造成的 QPS 剧烈抖动 [#13060](https://github.com/tikv/tikv/issues/13060) @[cosven](https://github.com/cosven)
     - 支持将 `json_contains` 算子下推至 Coprocessor [#13592](https://github.com/tikv/tikv/issues/13592) @[lizhenhuan](https://github.com/lizhenhuan)
     - 新增 `CausalTsProvider` 的异步实现，提升某些场景下刷盘的性能 [#13428](https://github.com/tikv/tikv/issues/13428) @[zeminzhou](https://github.com/zeminzhou)
 
@@ -385,7 +385,7 @@ TiDB 版本：6.4.0-DMR
 + TiKV
 
     - 修 Gitpod 环境中存在多个 `cgroup` 和 `mountinfo` 时 TiDB 启动异常的问题 [#13660](https://github.com/tikv/tikv/issues/13660) @[tabokie](https://github.com/tabokie)
-    - 修复 TiKV 监控 `tikv_gc_compaction_filtered` 表达式错误的问题 [#13537](https://github.com/tikv/tikv/issues/13537)
+    - 修复 TiKV 监控 `tikv_gc_compaction_filtered` 表达式错误的问题 [#13537](https://github.com/tikv/tikv/issues/13537) @[Defined2014](https://github.com/Defined2014)
     - 修复 `delete_files_in_range` 存在异常导致的性能问题 [#13534](https://github.com/tikv/tikv/issues/13534) @[tabokie](https://github.com/tabokie)
     - 修复获取 Snapshot 时 Lease 过期引发的异常竞争问题 [#13553](https://github.com/tikv/tikv/issues/13553) @[SpadeA-Tang](https://github.com/SpadeA-Tang)
     - 修复第一次 `FLASHBACK` 失败时存在异常的问题 [#13672](https://github.com/tikv/tikv/issues/13672) [#13704](https://github.com/tikv/tikv/issues/13704) [#13723](https://github.com/tikv/tikv/issues/13723) @[HuSharp](https://github.com/HuSharp)
