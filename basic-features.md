@@ -100,7 +100,6 @@ summary: 了解 TiDB 的基本功能。
 | [元数据锁](/metadata-lock.md)                                  | 实验特性 | 实验特性 |    N    |    N    |    N    |    N     |    N     |    N     |    N     |    N     |    N     |
 | [`FLASHBACK CLUSTER`](/sql-statements/sql-statement-flashback-to-timestamp.md)  | 实验特性 |    N    |    N    |    N    |    N    |    N     |    N     |    N     |    N     |    N     |    N     |
 
-
 ## 事务
 
 | 事务                                                                              | 6.4 | 6.3 | 6.2 | 6.1 | 6.0 | 5.4 | 5.3 | 5.2 | 5.1 | 5.0 | 4.0 |
