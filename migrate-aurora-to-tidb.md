@@ -14,7 +14,7 @@ aliases: ['/zh/tidb/dev/migrate-from-aurora-using-lightning/','/docs-cn/dev/migr
 ## 前提条件
 
 - [安装 Dumpling 和 Lightning](/migration-tools.md)。
-
+- [获取 Dumpling 所需 上游数据库权限](/dumpling-overview.md#需要的权限)。
 - [获取 Lightning 所需下游数据库权限](/tidb-lightning/tidb-lightning-faq.md#tidb-lightning-对下游数据库的账号权限要求是怎样的)。
 
 ## 导入全量数据到 TiDB
