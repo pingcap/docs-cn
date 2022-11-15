@@ -114,7 +114,7 @@ TiDB 版本：6.4.0-DMR
 
 * 磁盘故障、I/O 无响应等极端情况下的故障恢复加速 [#13648](https://github.com/tikv/tikv/issues/13648) @[LykxSassinator](https://github.com/LykxSassinator) **tw@qiancai**
 
-   数据库的可用性是企业用户最为关注的指标之一，但是在复杂的硬件环境下，如何快速检测故障并恢复一直是数据库面临的挑战之一。TiDB v6.4 全面优化了 TiKV 节点的状态检测机制。即使在磁盘故障或 I/O 无响应等极端情况下，TiDB 依然可以快速上报节点状态，同时搭配主动唤醒机制，提前发起 Leader 选举，加速集群自愈。通过这次优化，TiDB 在磁盘故障场景下，集群恢复时间可以缩短 50% 左右。
+   数据库的可用性是企业用户最为关注的指标之一，但是在复杂的硬件环境下，如何快速检测故障并恢复一直是数据库面临的挑战之一。TiDB v6.4.0 全面优化了 TiKV 节点的状态检测机制。即使在磁盘故障或 I/O 无响应等极端情况下，TiDB 依然可以快速上报节点状态，同时搭配主动唤醒机制，提前发起 Leader 选举，加速集群自愈。通过这次优化，TiDB 在磁盘故障场景下，集群恢复时间可以缩短 50% 左右。
 
 * TiDB 全局内存控制 [#37816](https://github.com/pingcap/tidb/issues/37816) @[wshwsh12](https://github.com/wshwsh12) **tw@TomShawn**
 
@@ -164,7 +164,7 @@ TiDB 版本：6.4.0-DMR
 
 ### MySQL 兼容性
 
-* TiDB 分区表兼容 Linear Hash 分区 [#issue](https://github.com/pingcap/tidb/issues/38450) @[mjonss](https://github.com/mjonss) **tw@qiancai**
+* TiDB 分区表兼容 Linear Hash 分区 [#38450](https://github.com/pingcap/tidb/issues/38450) @[mjonss](https://github.com/mjonss) **tw@qiancai**
 
     TiDB 现有的分区方式支持 Hash、Range、List 分区。TiDB v6.4.0 增加了对 [MySQL Linear Hash](https://dev.mysql.com/doc/refman/5.7/en/partitioning-linear-hash.html) 分区语法的兼容。
 
@@ -201,9 +201,9 @@ TiDB 版本：6.4.0-DMR
 
 ### 备份和恢复
 
-* 基于 AWS EBS snapshot 的集群备份和恢复 [#issue](https://github.com/pingcap/tidb/issues/33849) @[fengou1](https://github.com/fengou1) **tw@shichun-0415**
+* 基于 AWS EBS snapshot 的集群备份和恢复 [#33849](https://github.com/pingcap/tidb/issues/33849) @[fengou1](https://github.com/fengou1) **tw@shichun-0415**
 
-    如果你的 TiDB 集群部署在 EKS 上，使用了 AWS EBS 卷，并且对数据备份有以下要求，可考虑使用 TiDB Operator 将 TiDB 集群数据以卷快照以及元数据的方式备份至 AWS S3：
+    如果你的 TiDB 集群部署在 EKS 上，使用了 AWS EBS 卷，并且对数据备份有以下要求，可考虑使用 TiDB Operator 将 TiDB 集群数据以卷快照以及元数据的方式备份至 Amazon S3：
 
     - 备份的影响降到最小，如备份对 QPS 和事务耗时影响小于 5%，不占用集群 CPU 以及内存。
     - 快速备份和恢复，比如 1 小时内完成备份，2 小时内完成恢复。
