@@ -102,14 +102,6 @@ TiDB 版本：6.4.0-DMR
 
     在 v6.4.0 版本中，TiDB 优化了分区表统计信息的收集策略。你可以通过系统变量 [`tidb_auto_analyze_partition_batch_size`](/system-variables.md#tidb-auto-analyze-partitoin-batch-size-从-v640-版本开始引入) 定义并发度，用并行的方式同时收集多个分区的统计信息，从而加快统计信息收集的速度，减少 analyze 所需的时间。
 
-### 事务
-
-* 功能简短描述
-
-    功能详细描述（功能是什么，对用户的价值是什么，怎么用） [#issue]() @[贡献者 GitHub ID]()
-
-    [用户文档]()
-
 ### 稳定性
 
 * 磁盘故障、I/O 无响应等极端情况下的故障恢复加速 [#13648](https://github.com/tikv/tikv/issues/13648) @[LykxSassinator](https://github.com/LykxSassinator) **tw@qiancai**
@@ -195,8 +187,6 @@ TiDB 版本：6.4.0-DMR
 
     在 TiDB v6.4.0 中，你可以通过 [`CREATE USER`](/sql-statements/sql-statement-create-user.md) 或 [`ALTER USER`](/sql-statements/sql-statement-alter-user.md) 语句为数据库用户添加额外的说明信息。TiDB 提供了两种说明格式，你可以通过 `COMMENT` 添加一段文本注释，也可以通过 `ATTRIBUTE` 添加一组 JSON 格式的结构化属性。
 
-    此外，TiDB v6.4.0 新增了 [`USER_ATTRIBUTES`](/information-schema/information-schema-user-attributes.md) 表。你可以在该表中查看用户的注释和属性信息。
-
     ```sql
     CREATE USER 'newuser1'@'%' COMMENT 'This user is created only for test';
     CREATE USER 'newuser2'@'%' ATTRIBUTE '{"email": "user@pingcap.com"}';
@@ -212,6 +202,8 @@ TiDB 版本：6.4.0-DMR
     +-----------+------+---------------------------------------------------+
     2 rows in set (0.00 sec)
     ```
+
+    此外，TiDB v6.4.0 新增了 [`USER_ATTRIBUTES`](/information-schema/information-schema-user-attributes.md) 表。你可以在该表中查看用户的注释和属性信息。
 
     这个特性提升了 TiDB 对 MySQL 的语法的兼容性，使得 TiDB 更容易融入 MySQL 生态的工具或平台。
 
@@ -321,8 +313,6 @@ TiDB 版本：6.4.0-DMR
 - 从 v6.4.0 开始，`mysql.user` 表新增 2 个字段：`User_attributes`、`Token_issuer`。如果从 6.4.0 之前版本的备份数据[恢复 mysql schema 下的系统表](/br/br-snapshot-guide#恢复-mysql-数据库下的表) 到 6.4.0 版本集群，BR 将返回 `mysql.user` 表的 `column count mismatch` 错误。如果你未选择[恢复 mysql schema 下的系统表](/br/br-snapshot-guide.md#恢复-mysql-数据库下的表)，则不会报错。
 - 针对命名规则符合 Dumpling 表结构和数据格式但后缀名中包含非压缩格式的文件（例如，`test-schema-create.sql.origin` 和 `test.table-schema.sql.xxx`），Lightning 的处理方式发生了变化。在 v6.4.0 之前的版本中，如果待导入的文件中包含这类文件，Lightning 将跳过对这类文件的导入。从 v6.4.0 起，Lightning 将认为这些文件使用了不支持的压缩格式，导致导入失败。
 - 从 v6.4.0 开始，TiCDC 使用 Syncpoint 功能需要同步任务拥有下游集群的 `SYSTEM_VARIABLES_ADMIN` 或者 `SUPER` 权限。
-
-## 废弃功能
 
 ## 改进提升
 
