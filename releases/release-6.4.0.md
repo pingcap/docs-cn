@@ -14,7 +14,7 @@ TiDB 版本：6.4.0-DMR
 
 - 支持通过 [`FLASHBACK CLUSTER TO TIMESTAMP`](/sql-statements/sql-statement-flashback-to-timestamp.md) 命令将集群快速回退到特定的时间点 (实验特性）。
 - 支持对 TiDB 实例的[全局内存使用进行追踪](/configure-memory-usage.md)（实验特性）。
-- TiDB 分区表[兼容 Linear Hash 分区](/partitioned-table.md#tidb-对-linear-hash-分区的处理)。
+- TiDB 分区表[兼容 LINEAR HASH 分区语法](/partitioned-table.md#tidb-对-linear-hash-分区的处理)。
 - 支持高性能、全局单调递增的 [`AUTO_INCREMENT`](/auto-increment.md#mysql-兼容模式) 列属性。
 - 支持对 [JSON 类型](/data-type-json.md)中的 Array 数据做范围选择。
 - 实现磁盘故障、I/O 无响应等极端情况下的故障恢复加速。
@@ -36,7 +36,7 @@ TiDB 版本：6.4.0-DMR
 
     通过 SQL 语句 `ALTER TABLE table_name COMPACT [PARTITION PartitionNameList] [engine_type REPLICA]`，你可以立即对指定分区的 TiFlash 副本进行数据整理。
 
-    [用户文档](/sql-statements/sql-statement-alter-table-compact.md#对分区表中指定分区的-tiflash-副本进行数据整理)
+    更多信息，请参考[用户文档](/sql-statements/sql-statement-alter-table-compact.md#对分区表中指定分区的-tiflash-副本进行数据整理)。
 
 * 支持通过 `FLASHBACK CLUSTER TO TIMESTAMP` 命令将集群快速回退到特定的时间点（实验特性）[#37197](https://github.com/pingcap/tidb/issues/37197) [#13303](https://github.com/tikv/tikv/issues/13303) @[Defined2014](https://github.com/Defined2014) @[bb7133](https://github.com/bb7133) @[JmPotato](https://github.com/JmPotato) @[Connor1996](https://github.com/Connor1996) @[HuSharp](https://github.com/HuSharp) @[CalvinNeo](https://github.com/CalvinNeo)
 
@@ -44,13 +44,13 @@ TiDB 版本：6.4.0-DMR
 
     在执行 `FLASHBACK CLUSTER TO TIMESTAMP` 之前，需要暂停 PITR 和 TiCDC 等工具上运行的同步任务，待 `FLASHBACK` 执行完成后再启动，否则会造成同步失败等问题。
 
-    [用户文档](/sql-statements/sql-statement-flashback-to-timestamp.md)
+    更多信息，请参考[用户文档](/sql-statements/sql-statement-flashback-to-timestamp.md)。
 
 * 支持通过 `FLASHBACK DATABASE` 命令来恢复被删除的数据库 [#20463](https://github.com/pingcap/tidb/issues/20463) @[erwadba](https://github.com/erwadba)
 
     `FLASHBACK DATABASE` 支持在 Garbage Collection (GC) life time 时间内恢复被 `DROP` 删除的数据库以及数据。该特性不依赖任何外部工具，可以轻松快速地通过 SQL 语句进行数据和元信息的恢复。
 
-    [用户文档](/sql-statements/sql-statement-flashback-database.md)
+    更多信息，请参考[用户文档](/sql-statements/sql-statement-flashback-database.md)。
 
 ### 安全
 
@@ -58,7 +58,7 @@ TiDB 版本：6.4.0-DMR
 
     TiFlash 的静态加密新增 SM4 算法，你可以将配置文件 `tiflash-learner.toml` 中的 `data-encryption-method` 参数的值设置为 `sm4-ctr`，以启用基于国密算法 SM4 的静态加密能力。
 
-    [用户文档](/encryption-at-rest.md#tiflash)
+    更多信息，请参考[用户文档](/encryption-at-rest.md#tiflash)。
 
 ### 可观测性
 
@@ -80,13 +80,13 @@ TiDB 版本：6.4.0-DMR
 
     由于动态规划算法的枚举过程可能消耗更多的时间，目前 Join Reorder 算法由变量 [`tidb_opt_join_reorder_threshold`](/system-variables.md#tidb_opt_join_reorder_threshold) 控制，当参与 Join Reorder 的节点个数大于该阈值时选择贪心算法，反之选择动态规划算法。
 
-    [用户文档](/join-reorder.md)
+    更多信息，请参考[用户文档](/join-reorder.md)。
 
 * 前缀索引支持对空值进行过滤 [#21145](https://github.com/pingcap/tidb/issues/21145) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes)
 
     该特性是对前缀索引使用上的优化。当表中某列存在前缀索引，那么 SQL 语句中对该列的 `IS NULL` 或 `IS NOT NULL` 条件可以直接利用前缀进行过滤，避免了这种情况下的回表，提升了 SQL 语句的执行性能。
 
-    [用户文档](/system-variables.md#tidb-opt-prefix-index-single-scan-从-v640-版本开始引入)
+    更多信息，请参考[用户文档](/system-variables.md#tidb-opt-prefix-index-single-scan-从-v640-版本开始引入)。
 
 * 增强 TiDB Chunk 复用机制 [#38606](https://github.com/pingcap/tidb/issues/38606) @[keeplearning20221](https://github.com/keeplearning20221)
 
@@ -96,7 +96,7 @@ TiDB 版本：6.4.0-DMR
 
     默认情况下，TiDB 总是会尝试重写关联子查询以解除关联，这通常会提高执行效率。但是在一部分场景下，解除关联反而会降低执行效率。TiDB 在 v6.4.0 版本中引入了 hint `NO_DECORRELATE`，用来提示优化器不要对指定的查询块解除关联，以提升部分场景下的查询性能。
 
-    [用户文档](/optimizer-hints.md#no_decorrelate)
+    更多信息，请参考[用户文档](/optimizer-hints.md#no_decorrelate)。
 
 * 提升了分区表统计信息收集的性能 [#37977](https://github.com/pingcap/tidb/issues/37977) @[Yisaer](https://github.com/Yisaer)
 
@@ -108,27 +108,27 @@ TiDB 版本：6.4.0-DMR
 
    数据库的可用性是企业用户最为关注的指标之一，但是在复杂的硬件环境下，如何快速检测故障并恢复一直是数据库面临的挑战之一。TiDB v6.4.0 全面优化了 TiKV 节点的状态检测机制。即使在磁盘故障或 I/O 无响应等极端情况下，TiDB 依然可以快速上报节点状态，同时搭配主动唤醒机制，提前发起 Leader 选举，加速集群自愈。通过这次优化，TiDB 在磁盘故障场景下，集群恢复时间可以缩短 50% 左右。
 
-* TiDB 全局内存控制 [#37816](https://github.com/pingcap/tidb/issues/37816) @[wshwsh12](https://github.com/wshwsh12)
+* TiDB 全局内存控制（实验特性）[#37816](https://github.com/pingcap/tidb/issues/37816) @[wshwsh12](https://github.com/wshwsh12)
 
-    v6.4.0 引入了全局内存控制（实验特性），对 TiDB 实例的全局内存使用进行追踪。你可以通过系统变量 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 设置全局内存的使用上限。当内存使用量接近预设的上限时，TiDB 会尝试对内存进行回收，释放更多的可用内存；当内存使用量超出预设的上限时，TiDB 会识别出当前内存使用量最大的 SQL 操作，并取消这个操作，避免因为内存使用过度而产生的系统性问题。
+    v6.4.0 引入了全局内存控制，对 TiDB 实例的全局内存使用进行追踪。你可以通过系统变量 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 设置全局内存的使用上限。当内存使用量接近预设的上限时，TiDB 会尝试对内存进行回收，释放更多的可用内存；当内存使用量超出预设的上限时，TiDB 会识别出当前内存使用量最大的 SQL 操作，并取消这个操作，避免因为内存使用过度而产生的系统性问题。
 
     当 TiDB 实例的内存消耗存在潜在风险时，TiDB 会预先收集诊断信息并写入指定目录，方便对问题的诊断。同时，TiDB 提供了系统表视图 [`information_schame.MEMORY_USAGE`](/information-schema/information-schema-memory-usage.md) 和 [`information_schame.MEMORY_USAGE_OPS_HISTORY`](/information-schema/information-schema-memory-usage-ops-history.md) 用来展示内存使用情况及历史操作，帮助用户清晰了解内存使用状况。
 
     全局内存控制是 TiDB 内存管理的重要一步，对实例采用全局视角，引入系统性方法对内存用量进行管理，这可以极大提升数据库的稳定性，提高服务的可用性，支持 TiDB 在更多重要场景平稳运行。
 
-    [用户文档](/configure-memory-usage.md)
+    更多信息，请参考[用户文档](/configure-memory-usage.md)。
 
 * 控制优化器在构造范围时的内存占用 [#37176](https://github.com/pingcap/tidb/issues/37176) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes)
 
     v6.4.0 引入了系统变量 [`tidb_opt_range_max_size`](/system-variables.md#tidb-opt-range-max-size-从-v640-版本开始引入) 来限制优化器在构造范围时消耗的内存上限。当内存使用超出这个限制，则放弃构造精确的范围，转而构建更粗粒度的范围，以此降低内存消耗。当 SQL 语句中的 `IN` 条件较多时，这个优化可以显著降低编译时的内存使用量，保证系统的稳定性。
 
-    [用户文档](/system-variables.md#tidb-opt-range-max-size-从-v640-版本开始引入)
+    更多信息，请参考[用户文档](/system-variables.md#tidb-opt-range-max-size-从-v640-版本开始引入)。
 
 * 支持统计信息的同步加载（GA）[#37434](https://github.com/pingcap/tidb/issues/37434) @[chrysan](https://github.com/chrysan)
 
     TiDB v6.4.0 起，正式开启了统计信息同步加载的特性（默认开启），支持在执行当前 SQL 语句时将直方图、TopN、CMSketch 等占用空间较大的统计信息同步加载到内存，提高优化该 SQL 语句时统计信息的完整性。
 
-    [用户文档](/system-varaibles.md#tidb_stats_load_sync_wait-从-v540-版本开始引入)
+    更多信息，请参考[用户文档](/system-varaibles.md#tidb_stats_load_sync_wait-从-v540-版本开始引入)。
 
 ### 易用性
 
@@ -144,7 +144,7 @@ TiDB 版本：6.4.0-DMR
 
   你可以通过在 TiKV 的 `[storage]` 配置中设置 `api-version = 2` 来启用 TiKV API V2。
 
-  [用户文档](/tikv-configuration-file.md#api-version-从-v610-版本开始引入)
+  更多信息，请参考[用户文档](/tikv-configuration-file.md#api-version-从-v610-版本开始引入)。
 
 * 优化 TiFlash 数据同步进度的准确性 [#4902](https://github.com/pingcap/tiflash/issues/4902) @[hehechen](https://github.com/hehechen)
 
@@ -152,17 +152,19 @@ TiDB 版本：6.4.0-DMR
 
     v6.4.0 版本改进了 TiFlash 副本数据同步进度更新机制。在创建 TiFlash 副本后，进行数据导入等操作，TiFlash 副本需要和 TiKV 数据进行同步时，[`information_schema.tiflash_replica`](/information-schema/information-schema-tiflash-replica.md) 表中的 `PROGRESS` 值将会更新，显示实际的数据同步进度。通过此优化，你可以方便地查看 TiFlash 数据同步的实际进度。
 
-    [用户文档](/information-schema/information-schema-tiflash-replica.md)
+    更多信息，请参考[用户文档](/information-schema/information-schema-tiflash-replica.md)。
 
 ### MySQL 兼容性
 
-* TiDB 分区表兼容 Linear Hash 分区 [#38450](https://github.com/pingcap/tidb/issues/38450) @[mjonss](https://github.com/mjonss)
+* TiDB 分区表兼容 Linear Hash 分区语法 [#38450](https://github.com/pingcap/tidb/issues/38450) @[mjonss](https://github.com/mjonss)
 
-    TiDB 现有的分区方式支持 Hash、Range、List 分区。TiDB v6.4.0 增加了对 [MySQL Linear Hash](https://dev.mysql.com/doc/refman/5.7/en/partitioning-linear-hash.html) 分区语法的兼容。
+    TiDB 现有的分区方式支持 Hash、Range、List 分区。TiDB v6.4.0 增加了对 [MySQL LINEAR HASH](https://dev.mysql.com/doc/refman/5.7/en/partitioning-linear-hash.html) 分区语法的兼容。
 
-    在 TiDB 上，你可以直接执行原有的 MySQL Linear Hash 分区的 DDL 语句，TiDB 将创建一个相应的 Hash 分区表（注意 TiDB 内部实际不存在 Linear Hash 分区）。你也可以直接执行原有的 MySQL Linear Hash 分区的 DML 语句，TiDB 将正常返回对应的 TiDB Hash 分区的查询结果。此功能保证了 TiDB 对 MySQL Linear Hash 分区的语法兼容，方便基于 MySQL 的应用无缝迁移到 TiDB。
+    在 TiDB 上，你可以直接执行原有的 MySQL Linear Hash 分区的 DDL 语句，TiDB 将创建一个常规的非线性 Hash 分区表（注意 TiDB 内部实际不存在 LINEAR HASH 分区）。你也可以直接执行原有的 MySQL LINEAR HASH 分区的 DML 语句，TiDB 将正常返回对应的 TiDB Hash 分区的查询结果。此功能保证了 TiDB 对 MySQL LINEAR HASH 分区的语法兼容，方便基于 MySQL 的应用无缝迁移到 TiDB。
+    
+   需要注意的是，当分区数不是 2 的幂时，TiDB Hash 分区表中的行的分布与 MySQL Linear Hash 分区有所不同。详情请见 [#38450](https://github.com/pingcap/tidb/issues/38450)。
 
-    [用户文档](/partitioned-table.md#tidb-对-linear-hash-分区的处理)
+    更多信息，请参考[用户文档](/partitioned-table.md#tidb-对-linear-hash-分区的处理)。
 
 * 支持高性能、全局单调递增的 `AUTO_INCREMENT` 列属性（实验特性）[#38442](https://github.com/pingcap/tidb/issues/38442) @[tiancaiamao](https://github.com/tiancaiamao)
 
@@ -172,7 +174,7 @@ TiDB 版本：6.4.0-DMR
     CREATE TABLE t(a int AUTO_INCREMENT key) AUTO_ID_CACHE 1;
     ```
 
-    [用户文档](/auto-increment.md#mysql-兼容模式)
+    更多信息，请参考[用户文档](/auto-increment.md#mysql-兼容模式)。
 
 * 支持对 JSON 类型中的 Array 数据做范围选择 [#13644](https://github.com/tikv/tikv/issues/13644) @[YangKeao](https://github.com/YangKeao)
 
@@ -187,10 +189,12 @@ TiDB 版本：6.4.0-DMR
 
     在 TiDB v6.4.0 中，你可以通过 [`CREATE USER`](/sql-statements/sql-statement-create-user.md) 或 [`ALTER USER`](/sql-statements/sql-statement-alter-user.md) 语句为数据库用户添加额外的说明信息。TiDB 提供了两种说明格式，你可以通过 `COMMENT` 添加一段文本注释，也可以通过 `ATTRIBUTE` 添加一组 JSON 格式的结构化属性。
 
+    此外，TiDB v6.4.0 新增了 [`USER_ATTRIBUTES`](/information-schema/information-schema-user-attributes.md) 表。你可以在该表中查看用户的注释和属性信息。
+
     ```sql
     CREATE USER 'newuser1'@'%' COMMENT 'This user is created only for test';
     CREATE USER 'newuser2'@'%' ATTRIBUTE '{"email": "user@pingcap.com"}';
-    SELECT * FROM information_schema.user_attributes;
+    SELECT * FROM INFORMATION_SCHAME.USER_ATTRIBUTES;
     ```
 
     ```sql
@@ -202,8 +206,6 @@ TiDB 版本：6.4.0-DMR
     +-----------+------+---------------------------------------------------+
     2 rows in set (0.00 sec)
     ```
-
-    此外，TiDB v6.4.0 新增了 [`USER_ATTRIBUTES`](/information-schema/information-schema-user-attributes.md) 表。你可以在该表中查看用户的注释和属性信息。
 
     这个特性提升了 TiDB 对 MySQL 的语法的兼容性，使得 TiDB 更容易融入 MySQL 生态的工具或平台。
 
@@ -273,7 +275,7 @@ TiDB 版本：6.4.0-DMR
 | [`tidb_opt_agg_push_down`](/system-variables.md#tidb_opt_agg_push_down) | 修改 | 该变量用来设置优化器是否执行聚合函数下推到 Join，Projection 和 UnionAll 之前的优化操作。v6.4.0 新增了 GLOBAL 的作用域。 |
 | [`tidb_prepared_plan_cache_size`](/system-variables.md#tidb_prepared_plan_cache_size-从-v610-版本开始引入) | 修改 | 该变量用来控制单个 `SESSION` 的 Prepared Plan Cache 最多能够缓存的计划数量。v6.4.0 新增了 SESSION 作用域。|
 | [`tidb_stats_load_sync_wait`](/system-variables.md#tidb_stats_load_sync_wait-从-v540-版本开始引入) | 修改 | 该变量默认值从 `0` 修改为 `100`，代表 SQL 执行同步加载完整统计信息默认等待 100 毫秒后会超时。 |
-| [`tidb_stats_load_pseudo_timeout`](/system-variables.md#tidb_stats_load_pseudo_timeout-从-v540-版本开始引入) | 修改 | 该变量默认值从 `OFF` 修改为  `ON`，代表统计信息同步加载超时后，SQL 会退回使用 pseudo 的统计信息。|
+| [`tidb_stats_load_pseudo_timeout`](/system-variables.md#tidb_stats_load_pseudo_timeout-从-v540-版本开始引入) | 修改 | 该变量默认值从 `OFF` 修改为 `ON`，代表统计信息同步加载超时后，SQL 会退回使用 pseudo 的统计信息。|
 | [`last_sql_use_alloc`](/system-variables.md#last_sql_use_alloc-从-v640-版本开始引入) | 新增 | 该变量是一个只读变量，用来显示上一个语句是否使用了缓存的 Chunk 对象 (Chunk allocation)。默认值为 `OFF`。 |
 | [`tidb_auto_analyze_partition_batch_size`](/system-variables.md#tidb_auto_analyze_partition_batch_size-从-v640-版本开始引入) | 新增 | 该变量用于设置 TiDB [自动 analyze](/statistics.md#自动更新) 分区表（即自动收集分区表上的统计信息）时，每次同时 analyze 分区的个数。默认值为 `1`。 |
 | [`tidb_enable_external_ts_read`](/system-variables.md#tidb_enable_external_ts_read-从-v640-版本开始引入) | 新增 | 该变量用于控制 TiDB 是否会读取 [`tidb_external_ts`](/system-variables.md#tidb_external_ts-从-v640-版本开始引入) 指定的时间戳前的历史数据。默认值为 `OFF`。 |
