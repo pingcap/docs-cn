@@ -1,10 +1,5 @@
 ---
-<<<<<<< HEAD
-title: 上游数据库配置文件介绍
-=======
 title: TiDB Data Migration 上游数据库配置文件介绍
-aliases: ['/docs-cn/tidb-data-migration/dev/source-configuration-file/']
->>>>>>> b28caa4bc (dm: update headings (#11987))
 ---
 
 # TiDB Data Migration 上游数据库配置文件介绍
