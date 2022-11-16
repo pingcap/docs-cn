@@ -6,7 +6,7 @@ aliases: ['/zh/tidb/dev/br-usage-backup/','/zh/tidb/dev/br-usage-restore/','/zh/
 
 # TiDB 快照备份与恢复使用指南
 
-本文介绍如何使用 BR 进行 TiDB 快照备份和恢复。使用前，请先[安装 BR](/br/br-use-overview.md#部署和使用-br) 。
+本文介绍如何使用 BR 进行 TiDB 快照备份和恢复。使用前，请先[安装 br 命令行工具](/br/br-use-overview.md#部署和使用-br) 。
 
 快照备份是集群全量备份的一种实现。它基于 TiDB 的[多版本并发控制 (MVCC)](/tidb-storage.md#mvcc) 实现，将指定快照包含的所有数据备份到目标存储中。备份下来的数据大小约等于集群（压缩后的）单副本数据大小。备份完成之后，你可以在一个空集群上恢复备份的数据，将集群恢复到快照备份时的数据状态，同时恢复功能会依据集群副本设置恢复出多副本。
 
