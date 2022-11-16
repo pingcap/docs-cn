@@ -287,7 +287,7 @@ TiDB 版本：6.4.0-DMR
 | [`tidb_memory_usage_alarm_keep_record_num`](/system-variables.md#tidb_memory_usage_alarm_keep_record_num-从-v640-版本开始引入) | 新增 | 当 tidb-server 内存占用超过内存报警阈值并触发报警时，TiDB 默认只保留最近 5 次报警时所生成的状态文件。通过该变量可以调整该次数。 |
 | [`tidb_opt_prefix_index_single_scan`](/system-variables.md#tidb_opt_prefix_index_single_scan-从-v640-版本开始引入) | 新增 | 该变量用于控制 TiDB 优化器是否将某些过滤条件下推到前缀索引，尽量避免不必要的回表，从而提高查询性能。默认为 `ON`。 |
 | [`tidb_opt_range_max_size`](/system-variables.md#tidb_opt_range_max_size-从-v640-版本开始引入) | 新增 | 该变量用于指定优化器构造扫描范围的内存用量上限。默认值为 `67108864`（即 64 MiB）。 |
-| [`tidb_server_memory_limit`](/system-variables.md##tidb_server_memory_limit-从-v640-版本开始引入) | 新增 | 该变量用于指定 TiDB 实例的内存限制（实验特性）。默认值为 `0`，表示不设内存限制。 |
+| [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) | 新增 | 该变量用于指定 TiDB 实例的内存限制（实验特性）。默认值为 `0`，表示不设内存限制。 |
 | [`tidb_server_memory_limit_gc_trigger`](/system-variables.md#tidb_server_memory_limit_gc_trigger-从-v640-版本开始引入) | 新增 | 该变量用于控制 TiDB 尝试触发 GC 的阈值（实验特性）。默认值为 `70%`。|
 | [`tidb_server_memory_limit_sess_min_size`](/system-variables.md#tidb_server_memory_limit_sess_min_size-从-v640-版本开始引入) | 新增 | 开启内存限制后，TiDB 会终止当前实例上内存用量最高的 SQL 语句。本变量指定此情况下 SQL 语句被终止的最小内存用量（实验特性），默认值为 `134217728`（即 128 MiB）。 |
 
