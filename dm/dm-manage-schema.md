@@ -1,9 +1,9 @@
 ---
-title: Manage Table Schemas of Tables to be Migrated using TiDB Data Migration
+title: Manage Table Schemas of Tables to Be Migrated Using TiDB Data Migration
 summary: Learn how to manage the schema of the table to be migrated in DM.
 ---
 
-# Manage Table Schemas of Tables to be Migrated using TiDB Data Migration
+# Manage Table Schemas of Tables to Be Migrated Using TiDB Data Migration
 
 This document describes how to manage the schema of the table in DM during migration using [dmctl](/dm/dmctl-introduction.md).
 
