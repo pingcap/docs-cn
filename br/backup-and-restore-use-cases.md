@@ -15,9 +15,9 @@ aliases: ['/docs-cn/dev/br/backup-and-restore-use-cases/','/docs-cn/dev/referenc
 
 通过 TiDB 提供的 PITR 功能，你可以满足业务团队的需求。
 
-## 部署 TiDB 集群和 BR
+## 部署 TiDB 集群和 br 命令行工具
 
-使用 PITR 功能，需要部署 v6.2.0 或以上版本的 TiDB 集群，并且更新 BR 到与 TiDB 集群相同的版本，本文假设使用的是 v6.4.0 版本。
+使用 PITR 功能，需要部署 v6.2.0 或以上版本的 TiDB 集群，并且更新 br 命令行工具到与 TiDB 集群相同的版本，本文假设使用的是 v6.4.0 版本。
 
 下表介绍了在 TiDB 集群中使用日志备份功能的推荐配置。
 
@@ -26,20 +26,20 @@ aliases: ['/docs-cn/dev/br/backup-and-restore-use-cases/','/docs-cn/dev/referenc
 | TiDB | 8 核+ | 16 GB+ | SAS | c5.2xlarge | 2 |
 | PD | 8 核+ | 16 GB+ | SSD | c5.2xlarge | 3 |
 | TiKV | 8 核+ | 32 GB+ | SSD | m5.2xlarge | 3 |
-| BR | 8 核+ | 16 GB+ | SAS | c5.2xlarge | 1 |
+| br cli | 8 核+ | 16 GB+ | SAS | c5.2xlarge | 1 |
 | 监控 | 8 核+ | 16 GB+ | SAS | c5.2xlarge | 1 |
 
 > **注意：**
 >
-> - BR 执行备份恢复功能需要访问 PD 和 TiKV，请确保 BR 与所有 PD 和 TiKV 连接正常。
-> - BR 与 PD 所在服务器时区需要相同。
+> - br 命令行工具执行备份恢复功能需要访问 PD 和 TiKV，请确保 br 命令行工具与所有 PD 和 TiKV 连接正常。
+> - br 命令行工具与 PD 所在服务器时区需要相同。
 
 使用 TiUP 部署或升级 TiDB 集群：
 
 - 如果没有部署 TiDB 集群，请[部署 TiDB 集群](/production-deployment-using-tiup.md)。
 - 如果已经部署的 TiDB 集群版本低于 v6.2.0，请[升级 TiDB 集群](/upgrade-tidb-using-tiup.md)。
 
-使用 TiUP 安装或升级 BR：
+使用 TiUP 安装或升级 br 命令行工具：
 
 - 安装：
 

@@ -52,14 +52,14 @@ S3、 GCS 和 Azblob 等云存储有时需要额外的连接配置，你可以�
         -d 's3://my-bucket/test-data?role-arn=arn:aws:iam::888888888888:role/my-role'
     ```
 
-* 用 BR 备份到 GCS：
+* 用 br 命令行工具备份到 GCS：
 
     ```bash
     ./br backup full -u 127.0.0.1:2379 \
     --storage 'gcs://bucket-name/prefix'
     ```
 
-* 用 BR 备份到 Azblob：
+* 用 br 命令行工具备份到 Azblob：
 
     ```bash
     ./br backup full -u 127.0.0.1:2379 \
@@ -130,7 +130,7 @@ S3、 GCS 和 Azblob 等云存储有时需要额外的连接配置，你可以�
 
 ## 命令行参数
 
-除了使用 URL 参数，BR 和 Dumpling 工具也支持从命令行指定这些配置，例如：
+除了使用 URL 参数，br 命令行工具和 Dumpling 工具也支持从命令行指定这些配置，例如：
 
 ```bash
 ./dumpling -u root -h 127.0.0.1 -P 3306 -B mydb -F 256MiB \
@@ -172,7 +172,7 @@ S3、 GCS 和 Azblob 等云存储有时需要额外的连接配置，你可以�
        -r 200000 -F 256MiB
     ```
 
-* 使用 BR 将数据备份至 OSS 存储：
+* 使用 br 命令行工具将数据备份至 OSS 存储：
 
     ```bash
     ./br backup full --pd "127.0.0.1:2379" \

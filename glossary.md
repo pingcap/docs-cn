@@ -25,7 +25,6 @@ ACID 是指数据库管理系统在写入或更新资料的过程中，为保证
 
 * TiDB 备份恢复功能，包含 br cli、tidb operator、tidb cloud 提供的备份和恢复功能集合。
 * 架构中的 BR 功能组件。
-* 使用手册中的 br cli 工具。
 
 名词 `br` 一般用来指代 br cli 工具。
 
