@@ -189,6 +189,8 @@ aliases: ['/docs-cn/dev/basic-features/']
 | [`SET CONFIG`](/dynamic-config.md)                                        | Y  | Y | Y | Y | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
 | [DM WebUI](/dm/dm-webui-guide.md)                                         | 实验特  | 实验特性 | 实验特性 | 实验特性 | 实验特性 |    N     |    N     |    N     |    N     |    N     | N        |
 | [前台限流](/tikv-configuration-file.md#前台限流)                            | Y | Y | Y | 实验特性 | 实验特性 |    N     |    N     |    N     |    N     |    N     | N        |
+| [基于 EBS 的备份和恢复](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.4/volume-snapshot-backup-restore)                        |    Y    |    N     |    N     |    N    |    N     |    N     |    N     |    N     |    N     |    N     |  N        |
+| [PITR](/br//br-pitr-guide)   |    Y    |    Y     |    Y     |    N    |    N     |    N     |    N     |    N     |    N     |    N     |  N        |
 
 [^1]: TiDB 误将 latin1 处理为 utf8 的子集。见 [TiDB #18955](https://github.com/pingcap/tidb/issues/18955)。
 
