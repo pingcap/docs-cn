@@ -90,7 +90,7 @@ TiDB 版本：6.4.0-DMR
 
 * 增强 TiDB Chunk 复用机制 [#38606](https://github.com/pingcap/tidb/issues/38606) @[keeplearning20221](https://github.com/keeplearning20221)
 
-    在之前的版本中，TiDB 只在 `writechunk` 函数中复用 Chunk。TiDB v6.4.0 扩展 Chunk 复用机制到 Executor 的算子中，通过复用 Chunk 减少 TiDB 申请释放内存频率，进而提升部分场景下的 SQL 查询执行效率。你可以通过系统变量 [`tidb_enable_reuse_chunk`](/system-variable.md#tidb_enable_reuse_chunk-从-v640-版本开始引入) 来控制是否启用 Chunk 对象复用，默认为开启。
+    在之前的版本中，TiDB 只在 `writechunk` 函数中复用 Chunk。TiDB v6.4.0 扩展 Chunk 复用机制到 Executor 的算子中，通过复用 Chunk 减少 TiDB 申请释放内存频率，进而提升部分场景下的 SQL 查询执行效率。你可以通过系统变量 [`tidb_enable_reuse_chunk`](/system-variables.md#tidb_enable_reuse_chunk-从-v640-版本开始引入) 来控制是否启用 Chunk 对象复用，默认为开启。
 
 * 引入新的优化器提示 `NO_DECORRELATE` 来控制关联优化的解除 [#37789](https://github.com/pingcap/tidb/issues/37789) @[time-and-fate](https://github.com/time-and-fate)
 
@@ -128,7 +128,7 @@ TiDB 版本：6.4.0-DMR
 
     TiDB v6.4.0 起，正式开启了统计信息同步加载的特性（默认开启），支持在执行当前 SQL 语句时将直方图、TopN、CMSketch 等占用空间较大的统计信息同步加载到内存，提高优化该 SQL 语句时统计信息的完整性。
 
-    更多信息，请参考[用户文档](/system-varaibles.md#tidb_stats_load_sync_wait-从-v540-版本开始引入)。
+    更多信息，请参考[用户文档](/system-variables.md#tidb_stats_load_sync_wait-从-v540-版本开始引入)。
 
 ### 易用性
 
@@ -312,7 +312,7 @@ TiDB 版本：6.4.0-DMR
 
 ### 其他
 
-- 从 v6.4.0 开始，`mysql.user` 表新增 `User_attributes` 和 `Token_issuer` 两个字段。如果从 v6.4.0 之前版本的备份数据[恢复 `mysql` schema 下的系统表](/br/br-snapshot-guide#恢复-mysql-数据库下的表) 到 v6.4.0 集群，BR 将返回 `mysql.user` 表的 `column count mismatch` 错误。如果你未选择恢复 `mysql` schema 下的系统表，则不会报错。
+- 从 v6.4.0 开始，`mysql.user` 表新增 `User_attributes` 和 `Token_issuer` 两个字段。如果从 v6.4.0 之前版本的备份数据[恢复 `mysql` schema 下的系统表](/br/br-snapshot-guide.md#恢复-mysql-数据库下的表) 到 v6.4.0 集群，BR 将返回 `mysql.user` 表的 `column count mismatch` 错误。如果你未选择恢复 `mysql` schema 下的系统表，则不会报错。
 - 针对命名规则符合 Dumpling [输出文件格式](/dumpling-overview.md#输出文件格式)但后缀名并非 gzip 压缩格式的文件（例如 `test-schema-create.sql.origin` 和 `test.table-schema.sql.origin`），Lightning 的处理方式发生了变化。在 v6.4.0 之前的版本中，如果待导入的文件中包含这类文件，Lightning 将跳过对这类文件的导入。从 v6.4.0 起，Lightning 将认为这些文件使用了不支持的压缩格式，导致导入失败。
 - 从 v6.4.0 开始，TiCDC 使用 Syncpoint 功能需要同步任务拥有下游集群的 `SYSTEM_VARIABLES_ADMIN` 或者 `SUPER` 权限。
 
