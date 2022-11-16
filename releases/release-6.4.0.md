@@ -86,7 +86,7 @@ TiDB 版本：6.4.0-DMR
 
     该特性是对前缀索引使用上的优化。当表中某列存在前缀索引，那么 SQL 语句中对该列的 `IS NULL` 或 `IS NOT NULL` 条件可以直接利用前缀进行过滤，避免了这种情况下的回表，提升了 SQL 语句的执行性能。
 
-    更多信息，请参考[用户文档](/system-variables.md#tidb-opt-prefix-index-single-scan-从-v640-版本开始引入)。
+    更多信息，请参考[用户文档](/system-variables.md#tidb_opt_prefix_index_single_scan-从-v640-版本开始引入)。
 
 * 增强 TiDB Chunk 复用机制 [#38606](https://github.com/pingcap/tidb/issues/38606) @[keeplearning20221](https://github.com/keeplearning20221)
 
@@ -100,7 +100,7 @@ TiDB 版本：6.4.0-DMR
 
 * 提升了分区表统计信息收集的性能 [#37977](https://github.com/pingcap/tidb/issues/37977) @[Yisaer](https://github.com/Yisaer)
 
-    在 v6.4.0 版本中，TiDB 优化了分区表统计信息的收集策略。你可以通过系统变量 [`tidb_auto_analyze_partition_batch_size`](/system-variables.md#tidb-auto-analyze-partitoin-batch-size-从-v640-版本开始引入) 定义并发度，用并行的方式同时收集多个分区的统计信息，从而加快统计信息收集的速度，减少 analyze 所需的时间。
+    在 v6.4.0 版本中，TiDB 优化了分区表统计信息的收集策略。你可以通过系统变量 [`tidb_auto_analyze_partition_batch_size`](/system-variables.md#tidb_auto_analyze_partition_batch_size-从-v640-版本开始引入) 定义并发度，用并行的方式同时收集多个分区的统计信息，从而加快统计信息收集的速度，减少 analyze 所需的时间。
 
 ### 稳定性
 
@@ -120,9 +120,9 @@ TiDB 版本：6.4.0-DMR
 
 * 控制优化器在构造范围时的内存占用 [#37176](https://github.com/pingcap/tidb/issues/37176) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes)
 
-    v6.4.0 引入了系统变量 [`tidb_opt_range_max_size`](/system-variables.md#tidb-opt-range-max-size-从-v640-版本开始引入) 来限制优化器在构造范围时消耗的内存上限。当内存使用超出这个限制，则放弃构造精确的范围，转而构建更粗粒度的范围，以此降低内存消耗。当 SQL 语句中的 `IN` 条件较多时，这个优化可以显著降低编译时的内存使用量，保证系统的稳定性。
+    v6.4.0 引入了系统变量 [`tidb_opt_range_max_size`](/system-variables.md#tidb_opt_range_max_size-从-v640-版本开始引入) 来限制优化器在构造范围时消耗的内存上限。当内存使用超出这个限制，则放弃构造精确的范围，转而构建更粗粒度的范围，以此降低内存消耗。当 SQL 语句中的 `IN` 条件较多时，这个优化可以显著降低编译时的内存使用量，保证系统的稳定性。
 
-    更多信息，请参考[用户文档](/system-variables.md#tidb-opt-range-max-size-从-v640-版本开始引入)。
+    更多信息，请参考[用户文档](/system-variables.md#tidb_opt_range_max_size-从-v640-版本开始引入)。
 
 * 支持统计信息的同步加载（GA）[#37434](https://github.com/pingcap/tidb/issues/37434) @[chrysan](https://github.com/chrysan)
 
@@ -266,7 +266,7 @@ TiDB 版本：6.4.0-DMR
 
 | 变量名  | 修改类型                      | 描述 |
 |--------|------------------------------|------|
-| [`tidb_constraint_check_in_place_pessimistic`](/system-variables.md#tidb_constraint_check_in_place_pessimistic-从-v630-版本开始引入) | 修改 | 该变量用于控制悲观事务中唯一约束检查的时间点。v6.4.0 去掉了它的 GLOBAL 作用域并支持通过配置项 [`pessimistic-txn.constraint-check-in-place-pessimistic`](/tidb-configuration-file.md#constraint-check-in-place-pessimistic) 控制它的默认值。 |
+| [`tidb_constraint_check_in_place_pessimistic`](/system-variables.md#tidb_constraint_check_in_place_pessimistic-从-v630-版本开始引入) | 修改 | 该变量用于控制悲观事务中唯一约束检查的时间点。v6.4.0 去掉了它的 GLOBAL 作用域并支持通过配置项 [`pessimistic-txn.constraint-check-in-place-pessimistic`](/tidb-configuration-file.md#constraint-check-in-place-pessimistic-从-v640-版本开始引入) 控制它的默认值。 |
 | [`tidb_ddl_flashback_concurrency`](/system-variables.md#tidb_ddl_flashback_concurrency-从-v630-版本开始引入) | 修改 | 该变量从 v6.4.0 开始生效，用来控制 [`FLASHBACK CLUSTER TO TIMESTAMP`](/sql-statements/sql-statement-flashback-to-timestamp.md) 的并发数。默认值为 `64`。 |
 | [`tidb_enable_clustered_index`](/system-variables.md#tidb_enable_clustered_index-从-v50-版本开始引入) | 修改 | 该变量默认值从 `INT_ONLY` 修改为 `ON`，表示表的主键默认使用聚簇索引。 |
 | [`tidb_enable_paging`](/system-variables.md#tidb_enable_paging-从-v540-版本开始引入) | 修改 | 该变量默认值 `OFF` 修改为 `ON`，表示默认使用分页 (paging) 方式发送 Coprocessor 请求。 |
@@ -285,11 +285,11 @@ TiDB 版本：6.4.0-DMR
 | [`tidb_external_ts`](/system-variables.md#tidb_external_ts-从-v640-版本开始引入) | 新增 | 默认值为 `0`。当 [`tidb_enable_external_ts_read`](/system-variables.md#tidb_enable_external_ts_read-从-v640-版本开始引入) 设置为 `ON` 时，TiDB 会依据该变量指定的时间戳读取历史数据。 |
 | [`tidb_gogc_tuner_threshold`](/system-variables.md#tidb_gogc_tuner_threshold-从-v640-版本开始引入) | 新增 | 该变量用来控制 GOGC Tuner 自动调节的最大内存阈值，超过阈值后 GOGC Tuner 会停止工作。默认值为 `0.6`。 |
 | [`tidb_memory_usage_alarm_keep_record_num`](/system-variables.md#tidb_memory_usage_alarm_keep_record_num-从-v640-版本开始引入) | 新增 | 当 tidb-server 内存占用超过内存报警阈值并触发报警时，TiDB 默认只保留最近 5 次报警时所生成的状态文件。通过该变量可以调整该次数。 |
-| [`tidb_opt_prefix_index_single_scan`](/system-variables.md#tidb-opt-prefix-index-single-scan-从-v640-版本开始引入) | 新增 | 该变量用于控制 TiDB 优化器是否将某些过滤条件下推到前缀索引，尽量避免不必要的回表，从而提高查询性能。默认为 `ON`。 |
-| [`tidb_opt_range_max_size`](/system-variables.md#tidb-opt-range-max-size-从-v640-版本开始引入) | 新增 | 该变量用于指定优化器构造扫描范围的内存用量上限。默认值为 `67108864`（即 64 MiB）。 |
-| [`tidb_server_memory_limit`](/system-variables.md#tidb-server-memory-limit-从-v640-版本开始引入) | 新增 | 该变量用于指定 TiDB 实例的内存限制（实验特性）。默认值为 `0`，表示不设内存限制。 |
-| [`tidb_server_memory_limit_gc_trigger`](/system-variables.md#tidb-server-memory-limit-gc-trigger-从-v640-版本开始引入) | 新增 | 该变量用于控制 TiDB 尝试触发 GC 的阈值（实验特性）。默认值为 `70%`。|
-| [`tidb_server_memory_limit_sess_min_size`](/system-variables.md#tidb-server-memory-limit-session-min-size-从-v640-版本开始引入) | 新增 | 开启内存限制后，TiDB 会终止当前实例上内存用量最高的 SQL 语句。本变量指定此情况下 SQL 语句被终止的最小内存用量（实验特性），默认值为 `134217728`（即 128 MiB）。 |
+| [`tidb_opt_prefix_index_single_scan`](/system-variables.md#tidb_opt_prefix_index_single_scan-从-v640-版本开始引入) | 新增 | 该变量用于控制 TiDB 优化器是否将某些过滤条件下推到前缀索引，尽量避免不必要的回表，从而提高查询性能。默认为 `ON`。 |
+| [`tidb_opt_range_max_size`](/system-variables.md#tidb_opt_range_max_size-从-v640-版本开始引入) | 新增 | 该变量用于指定优化器构造扫描范围的内存用量上限。默认值为 `67108864`（即 64 MiB）。 |
+| [`tidb_server_memory_limit`](/system-variables.md##tidb_server_memory_limit-从-v640-版本开始引入) | 新增 | 该变量用于指定 TiDB 实例的内存限制（实验特性）。默认值为 `0`，表示不设内存限制。 |
+| [`tidb_server_memory_limit_gc_trigger`](/system-variables.md#tidb_server_memory_limit_gc_trigger-从-v640-版本开始引入) | 新增 | 该变量用于控制 TiDB 尝试触发 GC 的阈值（实验特性）。默认值为 `70%`。|
+| [`tidb_server_memory_limit_sess_min_size`](/system-variables.md#tidb_server_memory_limit_sess_min_size-从-v640-版本开始引入) | 新增 | 开启内存限制后，TiDB 会终止当前实例上内存用量最高的 SQL 语句。本变量指定此情况下 SQL 语句被终止的最小内存用量（实验特性），默认值为 `134217728`（即 128 MiB）。 |
 
 ### 配置文件参数
 
@@ -297,7 +297,7 @@ TiDB 版本：6.4.0-DMR
 | -------- | -------- | -------- | -------- |
 | TiDB | `tidb_memory_usage_alarm_ratio` | 废弃 | 该配置不再生效。|
 | TiDB | `memory-usage-alarm-ratio` | 废弃 | 该配置项被系统变量 [`tidb_memory_usage_alarm_ratio`](/system-variables.md#tidb_memory_usage_alarm_ratio) 所取代。如果在升级前设置过该配置项，升级后原配置将不再生效。|
-| TiDB | [`pessimistic-txn.constraint-check-in-place-pessimistic`](/tidb-configuration-file.md#constraint-check-in-place-pessimistic) | 新增 | 用于控制系统变量 [`tidb_constraint_check_in_place_pessimistic`](/system-variables.md#tidb_constraint_check_in_place_pessimistic-从-v630-版本开始引入) 的默认值，默认值为 `true`。|
+| TiDB | [`pessimistic-txn.constraint-check-in-place-pessimistic`](/tidb-configuration-file.md#constraint-check-in-place-pessimistic-从-v640-版本开始引入) | 新增 | 用于控制系统变量 [`tidb_constraint_check_in_place_pessimistic`](/system-variables.md#tidb_constraint_check_in_place_pessimistic-从-v630-版本开始引入) 的默认值，默认值为 `true`。|
 | TiDB | [`tidb_max_reuse_chunk`](/tidb-configuration-file.md#tidb_max_reuse_chunk-从-v640-版本开始引入) | 新增 | 用于控制每个连接最多缓存的 Chunk 对象数，默认值为 `64`。 |
 | TiDB | [`tidb_max_reuse_column`](/tidb-configuration-file.md#tidb_max_reuse_column-从-v640-版本开始引入) | 新增 | 用于控制每个连接最多缓存的 column 对象数，默认值为 `256`。 |
 | TiKV | [`cdc.raw-min-ts-outlier-threshold`](/tikv-configuration-file.md#raw-min-ts-outlier-threshold-从-v620-版本开始引入) | 废弃 | 该配置不再生效。|
