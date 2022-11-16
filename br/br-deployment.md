@@ -11,7 +11,7 @@ This document describes the recommended deployment of Backup & Restore (BR) and 
 
 Recommended practices when deploying BR:
 
-- In production environments, deploy BR on a node with at least 8 cores CPU and 16 GB memory. Select an appropriate OS version by following [Linux OS version requirements](/hardware-and-software-requirements.md#linux-os-version-requirements).
+- In production environments, deploy BR on a node with at least 8 cores CPU and 16 GB memory. Select an appropriate OS version by following [Linux OS version requirements](/hardware-and-software-requirements.md#os-and-platform-requirements).
 - Save backup data to Amazon S3, GCS or Azure Blob Storage.
 - Allocate sufficient resources for backup and restoration:
 

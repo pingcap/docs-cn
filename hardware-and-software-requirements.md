@@ -8,26 +8,31 @@ aliases: ['/docs/dev/hardware-and-software-requirements/','/docs/dev/how-to/depl
 
 As an open source distributed NewSQL database with high performance, TiDB can be deployed in the Intel architecture server, ARM architecture server, and major virtualization environments and runs well. TiDB supports most of the major hardware networks and Linux operating systems.
 
-## Linux OS version requirements
+## OS and platform requirements
 
-| Linux OS        | Version      |
-| :-----------------------:| :----------: |
-| Red Hat Enterprise Linux | 7.3 or later 7.x releases |
-| CentOS                   | 7.3 or later 7.x releases |
-| Oracle Enterprise Linux  | 7.3 or later 7.x releases |
-| Amazon Linux             | 2 |
-| Ubuntu LTS               | 16.04 or later |
+|  Operating systems   |   Supported CPU architectures   |
+|   :---   |   :---   |
+| Red Hat Enterprise Linux 8.4 or a later 8.x version  |  <ul><li>x86_64</li><li>ARM 64</li></ul>  |
+| <ul><li>Red Hat Enterprise Linux 7.3 or a later 7.x version</li><li>CentOS 7.3 or a later 7.x version</li></ul>  |  <ul><li>x86_64</li><li>ARM 64</li></ul>   |
+| Amazon Linux 2 | <ul><li>x86_64</li><li>ARM 64</li></ul> |
+| Kylin Euler V10 SP1/SP2   |   <ul><li>x86_64</li><li>ARM 64</li></ul>   |
+| UOS V20                 |   <ul><li>x86_64</li><li>ARM 64</li></ul>   |
+|   macOS Catalina or later   |  <ul><li>x86_64</li><li>ARM 64</li></ul>  |
+|  Oracle Enterprise Linux 7.3 or a later 7.x version  |  x86_64           |
+|   Ubuntu LTS 18.04 or later   |  x86_64           |
+| CentOS 8 Stream | <ul><li>x86_64</li><li>ARM 64</li></ul> |
+|  Debian 9 (Stretch) or later |  x86_64           |
+|  Fedora 35 or later   |  x86_64           |
+|  openSUSE Leap later than v15.3 (not including Tumbleweed) |  x86_64           |
+|  SUSE Linux Enterprise Server 15  |  x86_64                        |
 
 > **Note:**
 >
 > - For Oracle Enterprise Linux, TiDB supports the Red Hat Compatible Kernel (RHCK) and does not support the Unbreakable Enterprise Kernel provided by Oracle Enterprise Linux.
-> - A large number of TiDB tests have been run on the CentOS 7.3 system, and in our community there are a lot of best practices in which TiDB is deployed on the Linux operating system. Therefore, it is recommended to deploy TiDB on CentOS 7.3 or later.
-> - The support for the Linux operating systems above includes the deployment and operation in physical servers as well as in major virtualized environments like VMware, KVM and XEN.
-> - Red Hat Enterprise Linux 8.0, CentOS 8 Stream, and Oracle Enterprise Linux 8.0 are not supported yet as the testing of these platforms is in progress.
-> - CentOS 8 Linux is not supported because its upstream support ended on December 31, 2021.
+> - According to [CentOS Linux EOL](https://www.centos.org/centos-linux-eol/), the upstream support for CentOS Linux 8 ended on December 31, 2021. CentOS Stream 8 continues to be supported by the CentOS organization.
 > - Support for Ubuntu 16.04 will be removed in future versions of TiDB. Upgrading to Ubuntu 18.04 or later is strongly recommended.
-
-Other Linux OS versions such as Debian Linux and Fedora Linux might work but are not officially supported.
+> - If you are using the 32-bit version of an operating system listed in the preceding table, TiDB **is not guaranteed** to be compilable, buildable or deployable on the 32-bit operating system and the corresponding CPU architecture, or TiDB does not actively adapt to the 32-bit operating system.
+> - Other operating system versions not mentioned above might work but are not officially supported.
 
 ## Software recommendations
 
