@@ -46,15 +46,10 @@ TiDB 还提供了其他工具，你可以根据需要选择使用：
 
 ### 需要的权限
 
-- SELECT
-- RELOAD
-- LOCK TABLES
-- REPLICATION CLIENT
-- PROCESS
-
-> **注意：**
->
-> 如果上游数据库为 RDS，或者为数据库托管服务，上游用户权限请忽略 `RELOAD`。
+- SELECT：导出目标表时需要。
+- RELOAD：使用 consistency flush 时需要。RDS 无法为用户增加该权限，因此，上游为 RDS 或采用托管服务时，可忽略该权限。
+- LOCK TABLES：使用 consistency lock 时需要，需要导出的库表都有该权限。
+- REPLICATION CLIENT：导出 metadata 记录数据快照点时需要，可选。
 
 ### 导出为 SQL 文件
 
