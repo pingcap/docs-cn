@@ -38,7 +38,7 @@ TiDB 版本：6.4.0-DMR
 
     [用户文档](/sql-statements/sql-statement-alter-table-compact.md#对分区表中指定分区的-tiflash-副本进行数据整理)
 
-* 支持通过 `FLASHBACK CLUSTER TO TIMESTAMP` 命令将集群快速回退到特定的时间点（实验特性）[#37197](https://github.com/pingcap/tidb/issues/37197) [#13303](https://github.com/tikv/tikv/issues/13303)  @[Defined2014](https://github.com/Defined2014) @[bb7133](https://github.com/bb7133) @[JmPotato](https://github.com/JmPotato) @[Connor1996](https://github.com/Connor1996) @[HuSharp](https://github.com/HuSharp) @[CalvinNeo](https://github.com/CalvinNeo) **tw@Oreoxmt**
+* 支持通过 `FLASHBACK CLUSTER TO TIMESTAMP` 命令将集群快速回退到特定的时间点（实验特性）[#37197](https://github.com/pingcap/tidb/issues/37197) [#13303](https://github.com/tikv/tikv/issues/13303) @[Defined2014](https://github.com/Defined2014) @[bb7133](https://github.com/bb7133) @[JmPotato](https://github.com/JmPotato) @[Connor1996](https://github.com/Connor1996) @[HuSharp](https://github.com/HuSharp) @[CalvinNeo](https://github.com/CalvinNeo) **tw@Oreoxmt**
 
     `FLASHBACK CLUSTER TO TIMESTAMP` 支持在 Garbage Collection (GC) life time 内快速回退整个集群到指定的时间点。使用该特性可以快速撤消 DML 误操作。例如，在误执行了没有 `WHERE` 子句的 `DELETE` 后，使用 `FLASHBACK CLUSTER TO TIMESTAMP` 能够在几分钟内将集群数据恢复到指定的时间点。该特性不依赖于数据库备份，并支持在时间线上多次回退以确定特定数据更改发生的时间。需要注意的是，`FLASHBACK CLUSTER TO TIMESTAMP` 不能替代数据库备份。
 
@@ -46,7 +46,7 @@ TiDB 版本：6.4.0-DMR
 
     [用户文档](/sql-statements/sql-statement-flashback-to-timestamp.md)
 
-* 支持通过 `FLASHBACK DATABASE` 命令来恢复被删除的数据库 [#20463](https://github.com/pingcap/tidb/issues/20463)  @[erwadba](https://github.com/erwadba) **tw@ran-huang**
+* 支持通过 `FLASHBACK DATABASE` 命令来恢复被删除的数据库 [#20463](https://github.com/pingcap/tidb/issues/20463) @[erwadba](https://github.com/erwadba) **tw@ran-huang**
 
     `FLASHBACK DATABASE` 支持在 Garbage Collection (GC) life time 时间内恢复被 `DROP` 删除的数据库以及数据。该特性不依赖任何外部工具，可以轻松快速地通过 SQL 语句进行数据和元信息的恢复。
 
@@ -72,7 +72,7 @@ TiDB 版本：6.4.0-DMR
 
 * 引入 Coprocessor Task 并发度自适应机制 [#37724](https://github.com/pingcap/tidb/issues/37724) @[you06](https://github.com/you06) **tw@ran-huang**
 
-    随着 Coprocessor Task 任务数增加，TiDB 将结合 TiKV 处理速度自动增加任务并发度（调整  [`tidb_distsql_scan_concurrency`](/system-variables.md#tidb_distsql_scan_concurrency) ），减少 Coprocessor Task 任务排队，降低延迟。
+    随着 Coprocessor Task 任务数增加，TiDB 将结合 TiKV 处理速度自动增加任务并发度（调整 [`tidb_distsql_scan_concurrency`](/system-variables.md#tidb_distsql_scan_concurrency)），减少 Coprocessor Task 任务排队，降低延迟。
 
 * 新增动态规划算法来决定表的连接顺序 [#18969](https://github.com/pingcap/tidb/issues/18969) @[winoros](https://github.com/winoros) **tw@qiancai**
 
@@ -100,7 +100,7 @@ TiDB 版本：6.4.0-DMR
 
 * 提升了分区表统计信息收集的性能 [#37977](https://github.com/pingcap/tidb/issues/37977) @[Yisaer](https://github.com/Yisaer) **tw@TomShawn**
 
-    在 v6.4.0 版本中，TiDB 优化了分区表统计信息的收集策略。你可以通过系统变量 [`tidb_auto_analyze_partition_batch_size`](/system-variables.md#tidb-auto-analyze-partitoin-batch-size-从 v640-版本开始引入) 定义并发度，用并行的方式同时收集多个分区的统计信息，从而加快统计信息收集的速度，减少 analyze 所需的时间。
+    在 v6.4.0 版本中，TiDB 优化了分区表统计信息的收集策略。你可以通过系统变量 [`tidb_auto_analyze_partition_batch_size`](/system-variables.md#tidb-auto-analyze-partitoin-batch-size-从-v640-版本开始引入) 定义并发度，用并行的方式同时收集多个分区的统计信息，从而加快统计信息收集的速度，减少 analyze 所需的时间。
 
 ### 事务
 
@@ -150,9 +150,9 @@ TiDB 版本：6.4.0-DMR
     * 数据根据使用方式划分范围，支持单一集群 TiDB、事务 KV、RawKV 应用共存。
     * 预留 Key Space 字段，为多租户等特性提供支持。
 
-    你可以通过在 TiKV 的 `[storage]` 配置中设置 `api-version = 2` 来启用 TiKV API V2。
+  你可以通过在 TiKV 的 `[storage]` 配置中设置 `api-version = 2` 来启用 TiKV API V2。
 
-    [用户文档](/tikv-configuration-file.md#api-version-从-v610-版本开始引入)
+  [用户文档](/tikv-configuration-file.md#api-version-从-v610-版本开始引入)
 
 * 优化 TiFlash 数据同步进度的准确性 [#4902](https://github.com/pingcap/tiflash/issues/4902) @[hehechen](https://github.com/hehechen) **tw@qiancai**
 
@@ -186,16 +186,32 @@ TiDB 版本：6.4.0-DMR
 
     从 v6.4.0 起，TiDB 支持 [MySQL 兼容的范围选择语法](https://dev.mysql.com/doc/refman/8.0/en/json.html#json-paths)。
 
-    - 通过关键字 `to`，你可以指定元素起始和结束的位置，并选择 Array 中连续范围的元素，起始位置记为 `0`。 例如，使用 `$[0 to 2]` 可以选择 Array 中的前三个元素。
+    - 通过关键字 `to`，你可以指定元素起始和结束的位置，并选择 Array 中连续范围的元素，起始位置记为 `0`。例如，使用 `$[0 to 2]` 可以选择 Array 中的前三个元素。
     - 通过关键字 `last`，你可以指定 Array 中最后一个元素的位置，实现从右到左的位置设定。例如，使用 `$[last-2 to last]` 可以选择 Array 中的最后三个元素。
 
     该特性简化了 SQL 的编写过程，进一步提升了 JSON 类型的兼容能力，降低了 MySQL 应用向 TiDB 迁移的难度。
 
 * 支持对数据库用户增加额外说明 [#38172](https://github.com/pingcap/tidb/issues/38172) @[CbcWestwolf](https://github.com/CbcWestwolf) **tw@qiancai**
 
-    在 TiDB v6.4 中，你可以通过 [`CREATE USER`](/sql-statements/sql-statement-create-user.md) 或 [`ALTER USER`](/sql-statements/sql-statement-alter-user.md) 语句为数据库用户添加额外的说明信息。TiDB 提供了两种说明格式，你可以通过 `COMMENT` 添加一段文本注释，也可以通过 `ATTRIBUTE` 添加一组 JSON 格式的结构化属性。
+    在 TiDB v6.4.0 中，你可以通过 [`CREATE USER`](/sql-statements/sql-statement-create-user.md) 或 [`ALTER USER`](/sql-statements/sql-statement-alter-user.md) 语句为数据库用户添加额外的说明信息。TiDB 提供了两种说明格式，你可以通过 `COMMENT` 添加一段文本注释，也可以通过 `ATTRIBUTE` 添加一组 JSON 格式的结构化属性。
 
-    此外，TiDB v6.4 新增了 [USER_ATTRIBUTES](/information-schema/information-schema-user-attributes.md) 表。你可以在该表中查看用户的注释和属性信息。
+    此外，TiDB v6.4.0 新增了 [`USER_ATTRIBUTES`](/information-schema/information-schema-user-attributes.md) 表。你可以在该表中查看用户的注释和属性信息。
+
+    ```sql
+    CREATE USER 'newuser1'@'%' COMMENT 'This user is created only for test';
+    CREATE USER 'newuser2'@'%' ATTRIBUTE '{"email": "user@pingcap.com"}';
+    SELECT * FROM information_schema.user_attributes;
+    ```
+
+    ```sql
+    +-----------+------+---------------------------------------------------+
+    | USER      | HOST | ATTRIBUTE                                         |
+    +-----------+------+---------------------------------------------------+
+    | newuser1  | %    | {"comment": "This user is created only for test"} |
+    | newuser1  | %    | {"email": "user@pingcap.com"}                     |
+    +-----------+------+---------------------------------------------------+
+    2 rows in set (0.00 sec)
+    ```
 
     这个特性提升了 TiDB 对 MySQL 的语法的兼容性，使得 TiDB 更容易融入 MySQL 生态的工具或平台。
 
@@ -208,7 +224,7 @@ TiDB 版本：6.4.0-DMR
     - 备份的影响降到最小，如备份对 QPS 和事务耗时影响小于 5%，不占用集群 CPU 以及内存。
     - 快速备份和恢复，比如 1 小时内完成备份，2 小时内完成恢复。
 
-    更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.4/backup-to-aws-s3-by-snapshot)。
+  更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.4/backup-to-aws-s3-by-snapshot)。
 
 ### 数据迁移
 
@@ -242,7 +258,7 @@ TiDB 版本：6.4.0-DMR
     * 将当前 DM 写入目标库的性能指标命名从 TPS 改为 RPS (rows/second)。
     * 新增了 DM 全量任务数据导出的进度展示。
 
-    关于这些指标的详细介绍，请参考 [TiDB Data Migration 查询状态](/dm/dm-query-status.md)。
+  关于这些指标的详细介绍，请参考 [TiDB Data Migration 查询状态](/dm/dm-query-status.md)。
 
 ### 数据共享与订阅
 
@@ -262,8 +278,8 @@ TiDB 版本：6.4.0-DMR
 | [`tidb_enable_paging`](/system-variables.md#tidb_enable_paging-从-v540-版本开始引入) | 修改 | 该变量用于控制是否使用分页 (paging) 方式发送 Coprocessor 请求，默认值从 `OFF` 修改为 `ON`。 |
 | [`tidb_enable_prepared_plan_cache`](/system-variables.md#tidb_enable_prepared_plan_cache-从-v610-版本开始引入) | 修改 | 该变量用来控制是否开启 [Prepared Plan Cache](/sql-prepared-plan-cache.md)。v6.4.0 新增了 SESSION 作用域。 |
 | [`tidb_memory_usage_alarm_ratio`](/system-variables.md#tidb_memory_usage_alarm_ratio) | 修改 | 该变量用于设置触发 tidb-server 内存告警的内存使用比率，默认值从 `0.8` 修改为 `0.7`。 |
-| [`tidb_opt_agg_push_down`](/system-variables.md#tidboptaggpushdown) | 修改 | 该变量用来设置优化器是否执行聚合函数下推到 Join，Projection 和 UnionAll 之前的优化操作。v6.4.0 新增了 Global 的作用域。 |
-| [`tidb_prepared_plan_cache_size`](/system-variables.md#tidb_enable_prepared_plan_cache-从-v610-版本开始引入) | 修改 | 该变量用来控制单个 `SESSION` 的 Prepared Plan Cache 最多能够缓存的计划数量。v6.4.0 新增了 SESSION 作用域。|
+| [`tidb_opt_agg_push_down`](/system-variables.md#tidb_opt_agg_push_down) | 修改 | 该变量用来设置优化器是否执行聚合函数下推到 Join，Projection 和 UnionAll 之前的优化操作。v6.4.0 新增了 GLOBAL 的作用域。 |
+| [`tidb_prepared_plan_cache_size`](/system-variables.md#tidb_prepared_plan_cache_size-从-v610-版本开始引入) | 修改 | 该变量用来控制单个 `SESSION` 的 Prepared Plan Cache 最多能够缓存的计划数量。v6.4.0 新增了 SESSION 作用域。|
 | [`tidb_stats_load_sync_wait`](/system-variables.md#tidb_stats_load_sync_wait-从-v540-版本开始引入) | 修改 | 该变量默认值从 `0` 修改为 `100`，代表 SQL 执行同步加载完整统计信息默认等待 100 毫秒后会超时。 |
 | [`tidb_stats_load_pseudo_timeout`](/system-variables.md#tidb_stats_load_pseudo_timeout-从-v540-版本开始引入) | 修改 | 该变量默认值从 `OFF` 修改为  `ON`，代表统计信息同步加载超时后，SQL 会退回使用 pseudo 的统计信息。|
 | [`last_sql_use_alloc`](/system-variables.md#last_sql_use_alloc-从-v640-版本开始引入) | 新增 | 该变量是一个只读变量，用来显示上一个语句是否使用了缓存的 Chunk 对象 (Chunk allocation)。默认值为 `OFF`。 |
@@ -279,7 +295,7 @@ TiDB 版本：6.4.0-DMR
 | [`tidb_opt_range_max_size`](/system-variables.md#tidb-opt-range-max-size-从-v640-版本开始引入) | 新增 | 该变量用于指定优化器构造扫描范围的内存用量上限。默认值为 `67108864`（即 64 MiB）。 |
 | [`tidb_server_memory_limit`](/system-variables.md#tidb-server-memory-limit-从-v640-版本开始引入) | 新增 | 该变量用于指定 TiDB 实例的内存限制（实验特性）。默认值为 `0`，表示不设内存限制。 |
 | [`tidb_server_memory_limit_gc_trigger`](/system-variables.md#tidb-server-memory-limit-gc-trigger-从-v640-版本开始引入) | 新增 | 该变量用于控制 TiDB 尝试触发 GC 的阈值（实验特性）。默认值为 `70%`。|
-| [`tidb_server_memory_limit_sess_min_size`](tidb-server-memory-limit-session-min-size-从-v640-版本开始引入) | 新增 | 开启内存限制后，TiDB 会终止当前实例上内存用量最高的 SQL 语句。本变量指定此情况下 SQL 语句被终止的最小内存用量（实验特性），默认值为 `134217728`（即 128 MB）。 |
+| [`tidb_server_memory_limit_sess_min_size`](/system-variables.md#tidb-server-memory-limit-session-min-size-从-v640-版本开始引入) | 新增 | 开启内存限制后，TiDB 会终止当前实例上内存用量最高的 SQL 语句。本变量指定此情况下 SQL 语句被终止的最小内存用量（实验特性），默认值为 `134217728`（即 128 MiB）。 |
 
 ### 配置文件参数
 
@@ -288,21 +304,21 @@ TiDB 版本：6.4.0-DMR
 | TiDB | `tidb_memory_usage_alarm_ratio` | 废弃 | 该配置不再生效。|
 | TiDB | `memory-usage-alarm-ratio` | 废弃 | 该配置项被系统变量 [`tidb_memory_usage_alarm_ratio`](/system-variables.md#tidb_memory_usage_alarm_ratio) 所取代。如果在升级前设置过该配置项，升级后原配置将不再生效。|
 | TiDB | [`pessimistic-txn.constraint-check-in-place-pessimistic`](/tidb-configuration-file.md#constraint-check-in-place-pessimistic) | 新增 | 用于控制系统变量 [`tidb_constraint_check_in_place_pessimistic`](/system-variables.md#tidb_constraint_check_in_place_pessimistic-从-v630-版本开始引入) 的默认值。 |
-| TiDB | [`tidb_max_reuse_chunk`](/tidb-configuration-file.md#tidb_max_reuse_chunk-从-v640-版本开始引入) | 新增 | 用于控制每个连接最多缓存的 Chunk 对象数，默认值为 64。 |
-| TiDB | [`tidb_max_reuse_column`](/tidb-configuration-file.md#tidb_max_reuse_column-从-v640-版本开始引入) | 新增 | 用于控制每个连接最多缓存的 column 对象数，默认值为 256。 |
+| TiDB | [`tidb_max_reuse_chunk`](/tidb-configuration-file.md#tidb_max_reuse_chunk-从-v640-版本开始引入) | 新增 | 用于控制每个连接最多缓存的 Chunk 对象数，默认值为 `64`。 |
+| TiDB | [`tidb_max_reuse_column`](/tidb-configuration-file.md#tidb_max_reuse_column-从-v640-版本开始引入) | 新增 | 用于控制每个连接最多缓存的 column 对象数，默认值为 `256`。 |
 | TiKV | [`cdc.raw-min-ts-outlier-threshold`](/tikv-configuration-file.md#raw-min-ts-outlier-threshold-从-v620-版本开始引入) | 废弃 | 该配置不再生效。|
-| TiKV | [`causal-ts.alloc-ahead-buffer`](/tikv-configuration-file.md#alloc-ahead-buffer-从-v640-版本开始引入) | 新增 | 预分配给 TSO 的缓存大小（以时长计算），默认值为 3s。|
-| TiKV | [`causal-ts.renew-batch-max-size`](/tikv-configuration-file.md#renew-batch-max-size-从-v640-版本开始引入)| 新增 | 单次时间戳请求的最大数量，默认值为 8192。 |
-| TiKV | [`raftstore.apply-yield-write-size`](/tikv-configuration-file.md#apply-yield-write-size-从-v640-版本开始引入) | 新增 | Apply 线程每一轮处理单个状态机写入的最大数据量，默认值为 32KiB。 这是个软限制。|
-| PD | [`tso-update-physical-interval`](/pd-configuration-file.md#tso-update-physical-interval) | 新增 | 这个配置项从 v6.4.0 开始生效，用来控制 TSO 物理时钟更新周期，默认值为 50ms。 |
-| TiFlash | [`data-encryption-method`](/tiflash/tiflash-configuration.md#配置文件-tiflash-learnertoml) | 修改 | 扩展可选值范围：增加 sm4-ctr。设置为 sm4-ctr 时，数据将采用国密算法 SM4 加密后进行存储。 |
+| TiKV | [`causal-ts.alloc-ahead-buffer`](/tikv-configuration-file.md#alloc-ahead-buffer-从-v640-版本开始引入) | 新增 | 预分配给 TSO 的缓存大小（以时长计算），默认值为 `3s`。|
+| TiKV | [`causal-ts.renew-batch-max-size`](/tikv-configuration-file.md#renew-batch-max-size-从-v640-版本开始引入)| 新增 | 单次时间戳请求的最大数量，默认值为 `8192`。 |
+| TiKV | [`raftstore.apply-yield-write-size`](/tikv-configuration-file.md#apply-yield-write-size-从-v640-版本开始引入) | 新增 | Apply 线程每一轮处理单个状态机写入的最大数据量，默认值为 `32KiB`。这是个软限制。|
+| PD | [`tso-update-physical-interval`](/pd-configuration-file.md#tso-update-physical-interval) | 新增 | 这个配置项从 v6.4.0 开始生效，用来控制 TSO 物理时钟更新周期，默认值为 `50ms`。 |
+| TiFlash | [`data-encryption-method`](/tiflash/tiflash-configuration.md#配置文件-tiflash-learnertoml) | 修改 | 扩展可选值范围：增加 `sm4-ctr`。设置为 `sm4-ctr` 时，数据将采用国密算法 SM4 加密后进行存储。 |
 | DM | [`routes.route-rule-1.extract-table`](/dm/task-configuration-file-full.md#完整配置文件示例) | 新增 | 可选配置。用于提取分库分表场景中分表的源信息，提取的信息写入下游合表，用于标识数据来源。如果配置该项，需要提前在下游手动创建合表。 |
 | DM | [`routes.route-rule-1.extract-schema`](/dm/task-configuration-file-full.md#完整配置文件示例) | 新增 | 可选配置。用于提取分库分表场景中分库的源信息，提取的信息写入下游合表，用于标识数据来源。如果配置该项，需要提前在下游手动创建合表。 |
 | DM | [`routes.route-rule-1.extract-source`](/dm/task-configuration-file-full.md#完整配置文件示例) | 新增 | 可选配置。用于提取分库分表场景中的源信息，提取的信息写入下游合表，用于标识数据来源。如果配置该项，需要提前在下游手动创建合表。 |
 
 ### 其他
 
-- 从 v6.4.0 开始，`mysql.user` 表新增 2 个字段：`User_attributes`、`Token_issuer`。 如果从  6.4.0 之前版本的备份数据[恢复 mysql schema 下的系统表](/br/br-snapshot-guide#恢复-mysql-数据库下的表) 到 6.4.0 版本集群，BR 将返回  `mysql.user` 表的 `column count mismatch` 错误。如果你未选择[恢复 mysql schema 下的系统表](/br/br-snapshot-guide#恢复-mysql-数据库下的表)，则不会报错。
+- 从 v6.4.0 开始，`mysql.user` 表新增 2 个字段：`User_attributes`、`Token_issuer`。如果从 6.4.0 之前版本的备份数据[恢复 mysql schema 下的系统表](/br/br-snapshot-guide#恢复-mysql-数据库下的表) 到 6.4.0 版本集群，BR 将返回 `mysql.user` 表的 `column count mismatch` 错误。如果你未选择[恢复 mysql schema 下的系统表](/br/br-snapshot-guide.md#恢复-mysql-数据库下的表)，则不会报错。
 - 针对命名规则符合 Dumpling 表结构和数据格式但后缀名中包含非压缩格式的文件（例如，`test-schema-create.sql.origin` 和 `test.table-schema.sql.xxx`），Lightning 的处理方式发生了变化。在 v6.4.0 之前的版本中，如果待导入的文件中包含这类文件，Lightning 将跳过对这类文件的导入。从 v6.4.0 起，Lightning 将认为这些文件使用了不支持的压缩格式，导致导入失败。
 - 从 v6.4.0 开始，TiCDC 使用 Syncpoint 功能需要同步任务拥有下游集群的 `SYSTEM_VARIABLES_ADMIN` 或者 `SUPER` 权限。
 
@@ -327,7 +343,7 @@ TiDB 版本：6.4.0-DMR
 
     - 热点均衡调度器 v2 版本算法成为正式功能，在特定场景下 v2 版本算法可以在配置的两个维度均取得更好的均衡效果，并减少无效调度 [#5021](https://github.com/tikv/pd/issues/5021) @[HundunDM](https://github.com/hundundm)
     - 改进 Operator step 超时机制，防止过早超时 [#5596](https://github.com/tikv/pd/issues/5596) @[bufferflies](https://github.com/bufferflies)
-    - 优化调度器在大集群下的性能 [#5473](https://github.com/tikv/pd/issues/5473)@[bufferflies](https://github.com/bufferflies)
+    - 优化调度器在大集群下的性能 [#5473](https://github.com/tikv/pd/issues/5473) @[bufferflies](https://github.com/bufferflies)
     - 支持使用非 PD 提供的外部时间戳 [#5637](https://github.com/tikv/pd/issues/5637) @[lhy1024](https://github.com/lhy1024)
 
 + TiFlash
@@ -341,8 +357,8 @@ TiDB 版本：6.4.0-DMR
     + TiDB Dashboard
 
         - 支持在 Monitoring 页面展示 TiFlash 相关指标，并且优化了该页面指标的展示方式 [#1440](https://github.com/pingcap/tidb-dashboard/issues/1440) @[YiniXu9506](https://github.com/YiniXu9506)
-        - 支持在 Slow Query 列表 和 SQL Statement 列表展示结果行数 [#1407](https://github.com/pingcap/tidb-dashboard/pull/1407) @[baurine](https://github.com/baurine)
-        - 优化 Dashboard 的报错信息 [#1407](https://github.com/pingcap/tidb-dashboard/pull/1407) @[baurine](https://github.com/baurine)
+        - 支持在 Slow Queries 列表和 SQL Statements 列表展示结果行数 [#1443](https://github.com/pingcap/tidb-dashboard/issues/1443) @[baurine](https://github.com/baurine)
+        - 当集群没有 Alertmanager 时不显示报错信息 [#1444](https://github.com/pingcap/tidb-dashboard/issues/1444) @[baurine](https://github.com/baurine)
 
     + Backup & Restore (BR)
 
@@ -352,12 +368,11 @@ TiDB 版本：6.4.0-DMR
 
         - 支持同步 Exchange Partition 的 DDL 语句 [#639](https://github.com/pingcap/tiflow/issues/639) @[asddongmen](https://github.com/asddongmen)
         - 提升 MQ sink 模块非攒批发送的性能 [#7353](https://github.com/pingcap/tiflow/issues/7353) @[hi-rustin](https://github.com/hi-rustin)
-        - 提升单表大量 Region 场景下 TiCDC puller 的性能  [#7078](https://github.com/pingcap/tiflow/issues/7078) [#7281](https://github.com/pingcap/tiflow/issues/7281) @[sdojjy](https://github.com/sdojjy)
+        - 提升单表大量 Region 场景下 TiCDC puller 的性能 [#7078](https://github.com/pingcap/tiflow/issues/7078) [#7281](https://github.com/pingcap/tiflow/issues/7281) @[sdojjy](https://github.com/sdojjy)
         - 支持在 Syncpoint 功能开启时在下游 TiDB 集群使用 `tidb_enable_external_ts_read` 来读取历史数据 [#7419](https://github.com/pingcap/tiflow/issues/7419) @[asddongmen](https://github.com/asddongmen)
 
     + TiDB Data Migration (DM)
 
-        - 封装、暴露 Checker 对应的接口，提升各个入口功能组装、调用的灵活性。[#7116](https://github.com/pingcap/tiflow/issues/7116) @[D3Hunter](https://github.com/D3Hunter)
         - 移除 dmctl 中无用的 `operate-source update` 指令 [#7246](https://github.com/pingcap/tiflow/issues/7246) @[buchuitoudegou](https://github.com/buchuitoudegou)
         - 解决了 TiDB 不兼容上游数据库的建表 SQL 导致 DM 全量迁移报错的问题，当上游的建表 SQL TiDB 不兼容时，用户可以提前在 TiDB 手动创建好目标表，让全量迁移任务继续运行 [#37984](https://github.com/pingcap/tidb/issues/37984) @[lance6716](https://github.com/lance6716) **tw@shichun-0415**
 
@@ -375,8 +390,8 @@ TiDB 版本：6.4.0-DMR
     - 修复公共表表达式在 join 时可能得到错误结果的问题 [#38170](https://github.com/pingcap/tidb/issues/38170) @[wjhuang2016](https://github.com/wjhuang2016)
     - 修复公共表表达式在 union 时可能得到错误结果的问题 [#37928](https://github.com/pingcap/tidb/issues/37928) @[YangKeao](https://github.com/YangKeao)
     - 修复监控面板 **transaction region num** 信息不准确的问题 [#38139](https://github.com/pingcap/tidb/issues/38139) @[jackysp](https://github.com/jackysp)
-    - 修复 [`tidb_constraint_check_in_place_pessimistic`](/system-variables.md#tidb_constraint_check_in_place_pessimistic-从-v630-版本开始引入) 可能影响内部事务问题，修改该变量作用域为 session [#38766](https://github.com/pingcap/tidb/issues/38766)
-    - 修复条件在某些场景下被错误下推至 projection 的问题 [#35623](https://github.com/pingcap/tidb/issues/35623)@[Reminiscent](https://github.com/Reminiscent)
+    - 修复 [`tidb_constraint_check_in_place_pessimistic`](/system-variables.md#tidb_constraint_check_in_place_pessimistic-从-v630-版本开始引入) 可能影响内部事务问题，修改该变量作用域为 SESSION [#38766](https://github.com/pingcap/tidb/issues/38766)
+    - 修复条件在某些场景下被错误下推至 projection 的问题 [#35623](https://github.com/pingcap/tidb/issues/35623) @[Reminiscent](https://github.com/Reminiscent)
     - 修复 `AND` 和 `OR` 条件的 `isNullRejected` 检查错误导致查询结果错误的问题 [#38304]( https://github.com/pingcap/tidb/issues/38304) @[Yisaer](https://github.com/Yisaer)
     - 修复外连接消除时没有考虑 `GROUP_CONCAT` 内部的 `ORDER BY` 导致查询出错的问题 [#18216](https://github.com/pingcap/tidb/issues/18216) @[winoros](https://github.com/winoros) 
     - 修复错误下推的条件被 Join Reorder 丢弃后导致查询结果错误的问题 [#38736](https://github.com/pingcap/tidb/issues/38736) @[winoros](https://github.com/winoros) 
@@ -395,7 +410,7 @@ TiDB 版本：6.4.0-DMR
 
 + TiFlash
 
-    - 修复由于 PageStorage GC 未能正确清除 Page 删除标记导致 WAL 文件过大从而引发的 OOM 的问题 [#6163](https://github.com/pingcap/tiflash/issues/6163) @[JaySon-Huang](https://github.com/JaySon-Huang)
+    - 修复由于 PageStorage GC 未能正确清除 Page 删除标记导致 WAL 文件过大从而导致 TiFlash OOM 的问题 [#6163](https://github.com/pingcap/tiflash/issues/6163) @[JaySon-Huang](https://github.com/JaySon-Huang)
 
 + Tools
 
@@ -407,14 +422,14 @@ TiDB 版本：6.4.0-DMR
     + Backup & Restore (BR)
 
         - 修复恢复过程中由于 PD leader 切换导致恢复失败的问题 [#36910](https://github.com/pingcap/tidb/issues/36910) @[MoCuishle28](https://github.com/MoCuishle28)
-        - 修复了无法暂停日志备份任务的问题 [#38250](https://github.com/pingcap/tidb/issues/38250)@[joccau](https://github.com/joccau)
+        - 修复了无法暂停日志备份任务的问题 [#38250](https://github.com/pingcap/tidb/issues/38250) @[joccau](https://github.com/joccau)
         - 修复 BR 删除日志备份数据时，会删除不应被删除的数据的问题 [#38939](https://github.com/pingcap/tidb/issues/38939) @[Leavrth](https://github.com/leavrth)
         - 修复 BR 首次删除存储在 Azure Blob Storage 或 Google Cloud Storage 的日志备份数据时执行失败的问题 [#38229](https://github.com/pingcap/tidb/issues/38229) @[Leavrth](https://github.com/leavrth)
 
     + TiCDC
 
         - 修复 `changefeed query` 的输出中 `sasl-password` 显示为明文的问题 [#7182](https://github.com/pingcap/tiflow/issues/7182) @[dveeden](https://github.com/dveeden)
-        - 修复在一个 etcd 事务中提交太多数据导致 TiCDC 服务不可用问题 [#7131](https://github.com/pingcap/tiflow/issues/7131)  @[asddongmen](https://github.com/asddongmen)
+        - 修复在一个 etcd 事务中提交太多数据导致 TiCDC 服务不可用问题 [#7131](https://github.com/pingcap/tiflow/issues/7131) @[asddongmen](https://github.com/asddongmen)
         - 修复 redo log 文件可能被错误删除的问题 [#6413](https://github.com/pingcap/tiflow/issues/6413) @[asddongmen](https://github.com/asddongmen)
         - 修复 Kafka Sink V2 协议在同步宽表时性能回退的问题 [#7344](https://github.com/pingcap/tiflow/issues/7344) @[hi-rustin](https://github.com/hi-rustin)
         - 修复 checkpoint ts 可能被提前推进的问题 [#7274](https://github.com/pingcap/tiflow/issues/7274) @[hi-rustin](https://github.com/hi-rustin)
@@ -435,7 +450,7 @@ TiDB 版本：6.4.0-DMR
 
     + TiDB Lightning
 
-        - 修复当导入 Apache Parquet 格式的数据时，如果目标表存在 binary 编码格式的 String 类型列，导入性能下降的问题。[#38351](https://github.com/pingcap/tidb/issues/38351) @[dsdashun](https://github.com/dsdashun)
+        - 修复当导入 Apache Parquet 格式的数据时，如果目标表存在 binary 编码格式的字符串类型列，导入性能下降的问题 [#38351](https://github.com/pingcap/tidb/issues/38351) @[dsdashun](https://github.com/dsdashun)
 
     + TiDB Dumpling
 
@@ -451,15 +466,15 @@ TiDB 版本：6.4.0-DMR
 - [AndrewDi](https://github.com/AndrewDi)
 - [erwadba](https://github.com/erwadba)
 - [fuzhe1989](https://github.com/fuzhe1989)
-- [goldwind-ting](https://github.com/goldwind-ting) （首次贡献者）
+- [goldwind-ting](https://github.com/goldwind-ting)（首次贡献者）
 - [h3n4l](https://github.com/h3n4l)
-- [igxlin](https://github.com/igxlin) （首次贡献者）
+- [igxlin](https://github.com/igxlin)（首次贡献者）
 - [ihcsim](https://github.com/ihcsim)
 - [JigaoLuo](https://github.com/JigaoLuo)
 - [morgo](https://github.com/morgo)
 - [Ranxy](https://github.com/Ranxy)
-- [shenqidebaozi](https://github.com/shenqidebaozi) （首次贡献者）
-- [taofengliu](https://github.com/taofengliu) （首次贡献者）
+- [shenqidebaozi](https://github.com/shenqidebaozi)（首次贡献者）
+- [taofengliu](https://github.com/taofengliu)（首次贡献者）
 - [TszKitLo40](https://github.com/TszKitLo40)
-- [wxbty](https://github.com/wxbty) （首次贡献者）
+- [wxbty](https://github.com/wxbty)（首次贡献者）
 - [zgcbj](https://github.com/zgcbj)
