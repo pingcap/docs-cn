@@ -19,7 +19,7 @@ server_configs:
     log.level: "error"
 ```
 
-同时，推荐启用 [`tidb_enable_prepared_plan_cache`](/system-variables.md#tidb_enable_prepared_plan_cache-从-v610-版本开始引入)，并保证 `--db-ps-mode` 没有设置为 `disabled`，这样 sysbench 就可以使用预处理语句。关于 SQL 执行计划缓存的功能及监控，请参考 [执行计划缓存](/sql-plan-cache.md)。
+同时，推荐启用 [`tidb_enable_prepared_plan_cache`](/system-variables.md#tidb_enable_prepared_plan_cache-从-v610-版本开始引入)，并保证 `--db-ps-mode` 没有设置为 `disabled`，这样 sysbench 就可以使用预处理语句。关于 SQL 执行计划缓存的功能及监控，请参考[执行计划缓存](/sql-plan-cache.md)。
 
 ### TiKV 配置
 
