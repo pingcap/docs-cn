@@ -550,11 +550,9 @@ MOD(YEAR('2005-09-01'),4)
 
 从 v6.4.0 起，TiDB 支持解析 MySQL 的 `PARTITION BY LINEAR HASH` 语法，但会忽略其中的 `LINEAR` 关键字。你可以直接在 TiDB 中执行现有的 MySQL LINEAR HASH 分区的 SQL 语句，而无需修改。
 
-- 对于 MySQL LINEAR HASH 分区的 DDL 语句，TiDB 将创建常规的非线形 Hash 分区表（注意 TiDB 内部实际不存在 LINEAR HASH 分区表）。
-- 对于 MySQL LINEAR HASH 分区的 DML 语句，只要未使用[分区选择](#分区选择)，TiDB 将正常返回对应的 Hash 分区的查询结果。
+- 对于 MySQL LINEAR HASH 分区的 `CREATE` 语句，TiDB 将创建一个常规的非线性 Hash 分区表（注意 TiDB 内部实际不存在 LINEAR HASH 分区表）。如果分区数是 2 的幂，该分区表中行的分布与 MySQL 相同。如果分区数不是 2 的幂，该分区表中行的分布与 MySQL 会有所差异。这是因为 TiDB 中非线性分区表使用简单的“分区模数”，而线性分区表使用“模数的下一个 2 次方并会折叠分区数和下一个 2 次方之间的值”。详情请见 [#38450](https://github.com/pingcap/tidb/issues/38450)。
 
-- 对于 MySQL LINEAR HASH 分区的 CREATE 语句，TiDB 将创建一个常规的非线形 Hash 分区表（注意 TiDB 内部实际不存在 LINEAR HASH 分区表）。如果分区数是 2 的幂，该分区表中行的分布与 MySQL 相同。如果分区数不是 2 的幂，该分区表中行的分布与 MySQL 会有所差异。这是因为非线性分区表使用简单的 "分区模数"，而线性分区表使用 "模数的下一个 2 次方并会折叠分区数和下一个 2 次方之间的值"。详情请见[#38450](https://github.com/pingcap/tidb/issues/38450)。
-- 对于 MySQL LINEAR HASH 分区的其他 SQL 语句，TiDB 将正常返回对应的 Hash 分区的查询结果。但当分区数不是 2 的幂 (意味着分区表中行的分布与 MySQL 不同）时，[分区选择](#分区选择)、`TRUNCATE PARTITION`、`EXCHANGE PARTITION` 返回的结果将和 MySQL 有所差异。
+- 对于 MySQL LINEAR HASH 分区的其他 SQL 语句，TiDB 将正常返回对应的 Hash 分区的查询结果。但当分区数不是 2 的幂（意味着分区表中行的分布与 MySQL 不同）时，[分区选择](#分区选择)、`TRUNCATE PARTITION`、`EXCHANGE PARTITION` 返回的结果将和 MySQL 有所差异。
 
 ### 分区对 NULL 值的处理
 
