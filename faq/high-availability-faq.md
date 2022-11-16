@@ -1,7 +1,6 @@
 ---
 title: 高可用常见问题
 summary: 介绍高可用相关的常见问题。
-aliases: ['/docs-cn/dev/faq/high-availability-faq/']
 ---
 
 # 高可用常见问题

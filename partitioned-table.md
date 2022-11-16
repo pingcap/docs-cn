@@ -1,6 +1,5 @@
 ---
 title: 分区表
-aliases: ['/docs-cn/dev/partitioned-table/','/docs-cn/dev/reference/sql/partitioning/']
 ---
 
 # 分区表

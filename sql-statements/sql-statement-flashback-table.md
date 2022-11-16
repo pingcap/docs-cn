@@ -1,6 +1,5 @@
 ---
 title: FLASHBACK TABLE
-aliases: ['/docs-cn/dev/sql-statements/sql-statement-flashback-table/','/docs-cn/dev/reference/sql/statements/flashback-table/']
 ---
 
 # FLASHBACK TABLE
