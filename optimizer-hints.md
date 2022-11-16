@@ -486,6 +486,7 @@ CREATE VIEW v1 AS SELECT * FROM t JOIN /* 注释：对于视图 v1 来说，当�
 > - 跟在 @QueryBlockName 后面的 `.` 必须要和前面的部分留有空格，否则之后的部分会被当作 QueryBlockName 的一部分。
 > - 和视图相关的 Hint 必须声明在最外层查询的第一个 SELECT 语句处，同时必须先定义了对应的 `QB_NAME` hint 才能使用。
 > - 当在使用一个 Hint 来指定视图内的多个表名时，需要保证在同一个 Hint 中出现的表名处于同一个视图的同一个查询块中。
+> - 不能使用已经定义好 query block name 作为其他 `QB_NAME` hint 的前缀部分。
 
 在针对视图的查询块部分定义好 `QB_NAME` hint 后，我们便可以用定义好地查询块名字来使用[查询块范围生效的 Hint](/optimizer-hints.md#查询块范围生效的-hint)，使其能够在视图内部生效。例如：
 
