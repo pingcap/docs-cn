@@ -5,7 +5,7 @@ aliases: ['/docs/dev/benchmark/benchmark-tidb-using-sysbench/','/docs/dev/benchm
 
 # How to Test TiDB Using Sysbench
 
-It is recommended to use Sysbench 1.0 or later, which can be [downloaded here](https://github.com/akopytov/sysbench/releases/tag/1.0.14).
+It is recommended to use Sysbench 1.0 or later, which can be [downloaded here](https://github.com/akopytov/sysbench/releases/tag/1.0.20).
 
 ## Test plan
 
@@ -18,6 +18,8 @@ server_configs:
   tidb:
     log.level: "error"
 ```
+
+It is also recommended to make sure [`tidb_enable_prepared_plan_cache`](/system-variables.md#tidb_enable_prepared_plan_cache-new-in-v610) is enabled and that you allow sysbench to use prepared statements by _not_ using `--db-ps-mode=disabled`. See the [SQL Prepared Execution Plan Cache](/sql-prepared-plan-cache.md) for documetnation about what the SQL plan cache does and how to monitor it.
 
 ### TiKV configuration
 
@@ -109,10 +111,10 @@ Restart MySQL client and execute the following SQL statement to create a databas
 create database sbtest;
 ```
 
-Adjust the order in which Sysbench scripts create indexes. Sysbench imports data in the order of "Build Table -> Insert Data -> Create Index", which takes more time for TiDB to import data. Users can adjust the order to speed up the import of data. Suppose that you use the Sysbench version [1.0.14](https://github.com/akopytov/sysbench/tree/1.0.14). You can adjust the order in either of the following two ways:
+Adjust the order in which Sysbench scripts create indexes. Sysbench imports data in the order of "Build Table -> Insert Data -> Create Index", which takes more time for TiDB to import data. Users can adjust the order to speed up the import of data. Suppose that you use the Sysbench version [1.0.20](https://github.com/akopytov/sysbench/tree/1.0.20). You can adjust the order in either of the following two ways:
 
 - Download the modified [oltp_common.lua](https://raw.githubusercontent.com/pingcap/tidb-bench/master/sysbench/sysbench-patch/oltp_common.lua) file for TiDB and overwrite the `/usr/share/sysbench/oltp_common.lua` file with it.
-- In `/usr/share/sysbench/oltp_common.lua`, move the lines [235](https://github.com/akopytov/sysbench/blob/1.0.14/src/lua/oltp_common.lua#L235)-[240](https://github.com/akopytov/sysbench/blob/1.0.14/src/lua/oltp_common.lua#L240) to be right behind the line 198.
+- In `/usr/share/sysbench/oltp_common.lua`, move the lines [235-240](https://github.com/akopytov/sysbench/blob/1.0.20/src/lua/oltp_common.lua#L235-L240) to be right behind the line 198.
 
 > **Note:**
 >
@@ -130,22 +132,8 @@ sysbench --config-file=config oltp_point_select --tables=32 --table-size=1000000
 
 To warm data, we load data from disk into the block cache of memory. The warmed data has significantly improved the overall performance of the system. It is recommended to warm data once after restarting the cluster.
 
-Sysbench 1.0.14 does not provide data warming, so it must be done manually. If you are using [Sysbench of the master version](https://github.com/akopytov/sysbench/tree/master), you can use the data warming feature included in the tool itself.
-
-Take a table sbtest7 in Sysbench as an example. Execute the following SQL to warming up data:
-
-{{< copyable "sql" >}}
-
-```sql
-SELECT COUNT(pad) FROM sbtest7 USE INDEX (k_7);
-```
-
-Collecting statistics helps the optimizer choose a more accurate execution plan. The `analyze` command can be used to collect statistics on the table sbtest. Each table needs statistics.
-
-{{< copyable "sql" >}}
-
-```sql
-ANALYZE TABLE sbtest7;
+```bash
+sysbench --config-file=config oltp_point_select --tables=32 --table-size=10000000 warmup
 ```
 
 ### Point select test command
