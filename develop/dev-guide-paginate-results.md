@@ -1,7 +1,6 @@
 ---
 title: 分页查询
 summary: 介绍 TiDB 的分页查询功能。
-aliases: ['/zh/tidb/dev/paginate-results']
 ---
 
 # 分页查询

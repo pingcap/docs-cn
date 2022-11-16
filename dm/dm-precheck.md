@@ -1,7 +1,6 @@
 ---
 title: DM 执行任务时的前置检查
 summary: 了解 DM 执行数据迁移任务时将进行的前置检查。
-aliases: ['/docs-cn/tidb-data-migration/dev/precheck/']
 ---
 
 # 任务前置检查

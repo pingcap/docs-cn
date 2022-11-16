@@ -1,7 +1,6 @@
 ---
 title: BR 监控告警
 summary: BR 监控告警介绍。
-aliases: ['/zh/tidb/dev/pitr-monitoring-and-alert/']
 ---
 
 # BR 监控告警
