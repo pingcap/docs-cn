@@ -196,6 +196,6 @@ aliases: ['/docs-cn/dev/basic-features/']
 
 [^2]: TiDB 支持的完整 SQL 列表，见[语句参考](/sql-statements/sql-statement-select.md)。
 
-[^3]: 从 TiDB v6.4 开始，支持[高性能单调递增`AUTO_INCREMENT` 列](/auto-increment.md#MySQL兼容模式)
+[^3]: 从 TiDB v6.4 开始，支持[高性能单调递增 `AUTO_INCREMENT` 列](/auto-increment.md#mysql-兼容模式)
 
 [^4]: 对于 TiDB v4.0，事务 `LOAD DATA` 不保证原子性。
