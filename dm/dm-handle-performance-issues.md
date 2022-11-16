@@ -1,11 +1,11 @@
 ---
-title: 性能问题及处理方法
+title: TiDB Data Migration 性能问题及处理方法
 summary: 了解 DM 可能存在的常见性能问题及其处理方法。
 ---
 
-# 性能问题及处理方法
+# TiDB Data Migration 性能问题及处理方法
 
-本文档介绍 DM 中可能存在的、常见的性能问题及其处理方法。
+本文档介绍 TiDB Data Migration (DM) 中可能存在的、常见的性能问题及其处理方法。
 
 在诊断与处理性能问题时，请确保已经正确配置并安装 DM 的监控组件，并能在 Grafana 监控面板查看 [DM 的监控指标](/dm/monitor-a-dm-cluster.md#task)。
 

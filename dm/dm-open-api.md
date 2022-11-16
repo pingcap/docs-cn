@@ -1,11 +1,11 @@
 ---
-title: 使用 OpenAPI 运维集群
-summary: 了解如何使用 OpenAPI 接口来管理集群状态和数据同步。
+title: 使用 OpenAPI 运维 TiDB Data Migration 集群
+summary: 了解如何使用 OpenAPI 接口来管理 DM 集群状态和数据同步。
 ---
 
-# 使用 OpenAPI 运维集群
+# 使用 OpenAPI 运维 TiDB Data Migration 集群
 
-DM 提供 OpenAPI 功能，您可以通过 OpenAPI 方便地对 DM 集群进行查询和运维操作。OpenAPI 的功能范围和 [dmctl 工具](/dm/dmctl-introduction.md)相当。
+TiDB Data Migration (DM) 提供 OpenAPI 功能，你可以通过 OpenAPI 方便地对 DM 集群进行查询和运维操作。OpenAPI 的功能范围和 [dmctl 工具](/dm/dmctl-introduction.md)相当。
 
 如需开启 OpenAPI，可通过以下方法：
 
