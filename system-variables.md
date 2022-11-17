@@ -1753,15 +1753,6 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 该变量与自 v6.2.0 起可用的功能相关，但在 v6.1 中不可用。详情参阅 v6.2 文档 [`tidb_enable_new_cost_interface`](https://docs.pingcap.com/zh/tidb/v6.2/system-variables#tidb_enable_new_cost_interface-span-classversion-mark从-v620-版本开始引入span)。
 
-### `tidb_enable_new_only_full_group_by_check` <span class="version-mark">从 v6.1.0 版本开始引入</span>
-
-- 作用域：SESSION | GLOBAL
-- 是否持久化到集群：是
-- 默认值：`OFF`
-- 可选值：`OFF`，`ON`
-- 该变量用于控制用于控制 TiDB 执行 `ONLY_FULL_GOUP_BY` 检查时的行为。有关 `ONLY_FULL_GROUP_BY` 的信息可以参考 [MySQL 文档](https://dev.mysql.com/doc/refman/8.0/en/sql-mode.html#sqlmode_only_full_group_by)。在 v6.1 中 TiDB 对该项检查做了更严格正确的处理。
-- 由于可能存在版本升级造成的兼容性问题，在 v6.1 中该变量默认值是 `OFF`，即默认关闭。
-
 ### `tidb_opt_agg_push_down`
 
 - 作用域：SESSION
