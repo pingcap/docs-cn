@@ -84,6 +84,12 @@ public void batchInsert(Connection connection) throws SQLException {
 ```
 
 </div>
+
+<div label="Python">
+
+在 Python 中使用 `PREPARE` 语句时，并不需要显式指定，在你使用参数化查询时，mysqlclient 等 Driver 将自动转用 Prepared Statement。
+
+</div>
 </SimpleTab>
 
 注意不要重复执行 `PREPARE` 语句，否则并不能提高执行效率。
