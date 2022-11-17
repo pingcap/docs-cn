@@ -15,7 +15,7 @@ TiDB 版本：6.4.0-DMR
 - 支持通过 [`FLASHBACK CLUSTER TO TIMESTAMP`](/sql-statements/sql-statement-flashback-to-timestamp.md) 命令将集群快速回退到特定的时间点 (实验特性）。
 - 支持对 TiDB 实例的[全局内存使用进行追踪](/configure-memory-usage.md)（实验特性）。
 - TiDB 分区表[兼容 LINEAR HASH 分区语法](/partitioned-table.md#tidb-对-linear-hash-分区的处理)。
-- 支持高性能、全局单调递增的 [`AUTO_INCREMENT`](/auto-increment.md#mysql-兼容模式) 列属性。
+- 支持高性能、全局单调递增的 [`AUTO_INCREMENT`](/auto-increment.md#mysql-兼容模式) 列属性（实验特性）。
 - 支持对 [JSON 类型](/data-type-json.md)中的 Array 数据做范围选择。
 - 实现磁盘故障、I/O 无响应等极端情况下的故障恢复加速。
 - 新增[动态规划算法](/join-reorder.md#join-reorder-动态规划算法实例)来决定表的连接顺序。
