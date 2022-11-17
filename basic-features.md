@@ -76,7 +76,7 @@ aliases: ['/docs-cn/dev/basic-features/']
 | [下推计算结果缓存 (Coprocessor Cache)](/coprocessor-cache.md)       |    Y    |    Y    |    Y    |    Y    |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     | 实验特性 |
 | [Stale Read](/stale-read.md)                                        |    Y    |    Y    |    Y   |    Y    |    Y    |    Y     |    Y     |    Y     |    Y     |    N     | N        |
 | [Follower Read](/follower-read.md)                                  |    Y    |    Y    |    Y   |    Y    |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
-| [通过系统变量 tidb_snapshot 读取历史数据](/read-historical-data.md) |    Y    |    Y    |    Y   |    Y    |   Y     |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
+| [通过系统变量 `tidb_snapshot` 读取历史数据](/read-historical-data.md) |    Y    |    Y    |    Y   |    Y    |   Y     |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
 | [Optimizer hints](/optimizer-hints.md)                              |    Y    |    Y    |    Y    |    Y    |   Y     |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
 | [MPP 执行引擎](/explain-mpp.md)                                     |    Y    |    Y    |    Y    |    Y    |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     | N        |
 | [索引合并](/explain-index-merge.md)                                 |    Y    |    Y    |    Y    |    Y    |    Y    |    Y     | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
@@ -99,7 +99,7 @@ aliases: ['/docs-cn/dev/basic-features/']
 | [并行 DDL](/system-variables.md#tidb_enable_concurrent_ddl-从-v620-版本开始引入)  |    Y   |    Y   |    Y    |    N    |    N    |    N     |    N     |    N     |    N     |    N     |    N     |
 | [添加索引加速](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入)  | 实验特性 | 实验特性 |    N    |    N    |    N    |    N     |    N     |    N     |    N     |    N     |    N     |
 | [元数据锁](/metadata-lock.md)                                  | 实验特性 | 实验特性 |    N    |    N    |    N    |    N     |    N     |    N     |    N     |    N     |    N     |
-| [`FLASHBACK CLUSTER`](/sql-statements/sql-statement-flashback-to-timestamp.md)  | 实验特性 |    N    |    N    |    N    |    N    |    N     |    N     |    N     |    N     |    N     |    N     |
+| [`FLASHBACK CLUSTER TO TIMESTAMP`](/sql-statements/sql-statement-flashback-to-timestamp.md)  | 实验特性 |    N    |    N    |    N    |    N    |    N     |    N     |    N     |    N     |    N     |    N     |
 
 ## 事务
 
@@ -196,6 +196,6 @@ aliases: ['/docs-cn/dev/basic-features/']
 
 [^2]: TiDB 支持的完整 SQL 列表，见[语句参考](/sql-statements/sql-statement-select.md)。
 
-[^3]: 从 TiDB v6.4 开始，支持[高性能单调递增 `AUTO_INCREMENT` 列](/auto-increment.md#mysql-兼容模式)
+[^3]: 从 TiDB v6.4.0 开始，支持[高性能、全局单调递增的 `AUTO_INCREMENT` 列](/auto-increment.md#mysql-兼容模式)
 
 [^4]: 对于 TiDB v4.0，事务 `LOAD DATA` 不保证原子性。
