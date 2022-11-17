@@ -556,10 +556,10 @@ Starting component `cluster`: /home/tidb/.tiup/components/cluster/v1.11.0/cluste
 ID      Time                       Command
 --      ----                       -------
 4BLhr0  2022-11-17T13:25:09+08:00  /home/tidb/.tiup/components/cluster/v1.11.0/cluster deploy test v6.4.0 /tmp/topology.yaml
-4BKWjF  2022-11-15T23:36:57+08:00  /home/tidb/.tiup/components/cluster/v1.11.0/cluster deploy test v6.4.0 /tmp/topology.yaml
-4BKVwH  2022-11-15T23:02:08+08:00  /home/tidb/.tiup/components/cluster/v1.11.0/cluster deploy test v6.4.0 /tmp/topology.yaml
-4BKKH1  2022-11-15T16:39:04+08:00  /home/tidb/.tiup/components/cluster/v1.11.0/cluster destroy test
-4BKKDx  2022-11-15T16:36:57+08:00  /home/tidb/.tiup/components/cluster/v1.11.0/cluster deploy test v6.4.0 /tmp/topology.yaml
+4BKWjF  2022-11-17T23:36:57+08:00  /home/tidb/.tiup/components/cluster/v1.11.0/cluster deploy test v6.4.0 /tmp/topology.yaml
+4BKVwH  2022-11-17T23:02:08+08:00  /home/tidb/.tiup/components/cluster/v1.11.0/cluster deploy test v6.4.0 /tmp/topology.yaml
+4BKKH1  2022-11-17T16:39:04+08:00  /home/tidb/.tiup/components/cluster/v1.11.0/cluster destroy test
+4BKKDx  2022-11-17T16:36:57+08:00  /home/tidb/.tiup/components/cluster/v1.11.0/cluster deploy test v6.4.0 /tmp/topology.yaml
 ```
 
 第一列为 audit-id，如果想看某个命令的执行日志，则传入这个 audit-id：
