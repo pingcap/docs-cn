@@ -77,7 +77,7 @@ Amazon S3、Google Cloud Storage (GCS)、Azure Blob Storage 是 BR 推荐的存�
 TiDB 支持使用 br 工具进行备份恢复。
 
 * 安装方法可以使用[使用 TiUP 在线安装](/migration-tools.md#使用-tiup-快速安装)：`tiup install br`。
-* 了解如何使用 `br` 命令含工具进行备份与恢复，请参阅：
+* 了解如何使用 `br` 命令行工具进行备份与恢复，请参阅：
 
     * [TiDB 快照备份与恢复功能使用](/br/br-snapshot-guide.md)
     * [TiDB 日志备份与 PITR 功能使用](/br/br-pitr-guide.md)
