@@ -93,7 +93,7 @@ TiDB 支持使用 SQL 语句进行全量快照备份和恢复：
 
 ### 在 Kubernetes 环境下通过 TiDB Operator
 
-在 Kubernetes 环境下，支持通过 TiDB Operator 支持以 S3、GCS、Azure blob storage 作为备份存储。使用文档请参阅[使用 TiDB Operator 进行备份恢复](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/backup-restore-overview)。
+在 Kubernetes 环境下，支持通过 TiDB Operator 支持以 S3、GCS、Azure blob storage 作为备份存储，并从这些存储系统中恢复备份数据。使用文档请参阅[使用 TiDB Operator 进行备份恢复](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/backup-restore-overview)。
 
 ## 探索更多
 
