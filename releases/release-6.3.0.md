@@ -8,6 +8,8 @@ title: TiDB 6.3.0 Release Notes
 
 TiDB 版本：6.3.0-DMR
 
+试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v6.3/quick-start-with-tidb) | [下载离线包](https://cn.pingcap.com/product-community/)
+
 在 6.3.0-DMR 版本中，你可以获得以下关键特性：
 
 - TiKV 静态加密支持国密算法 SM4。
@@ -161,7 +163,7 @@ TiDB 版本：6.3.0-DMR
 
 ### 备份恢复
 
-* PITR 支持 [GCS](/br/backup-storage-gcs.md) 和 [Azure Blob Storage](/br/backup-storage-azblob.md) 作为备份存储 @[joccau](https://github.com/joccau)
+* PITR 支持 [GCS 和 Azure Blob Storage](/br/backup-and-restore-storages.md) 作为备份存储 @[joccau](https://github.com/joccau)
 
     部署在 GCP 或者 Azure 上的用户，将 TiDB 集群升级至 v6.3.0 就可以使用 PITR 功能。
 

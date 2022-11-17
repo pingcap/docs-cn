@@ -1,10 +1,10 @@
 ---
-title: 暂停数据迁移任务
+title: 暂停 TiDB Data Migration 数据迁移任务
 summary: 了解 TiDB Data Migration 如何暂停数据迁移任务。
 aliases: ['/docs-cn/tidb-data-migration/dev/pause-task/']
 ---
 
-# 暂停数据迁移任务
+# 暂停 TiDB Data Migration 数据迁移任务
 
 `pause-task` 命令用于暂停数据迁移任务。
 

@@ -200,9 +200,9 @@ TiCDC 对大事务（大小超过 5 GB）提供部分支持，根据场景不同
 
 如果实际同步过程中仍然遇到了上述错误，建议将包含大事务部分的增量数据通过 BR 进行增量恢复，具体操作如下：
 
-1. 记录因为大事务而终止的 changefeed 的 `checkpoint-ts`，将这个 TSO 作为 BR 增量备份的 `--lastbackupts`，并执行[增量备份](/br/br-usage-backup.md#备份-tidb-集群增量数据)。
+1. 记录因为大事务而终止的 changefeed 的 `checkpoint-ts`，将这个 TSO 作为 BR 增量备份的 `--lastbackupts`，并执行[增量备份](/br/br-incremental-guide.md#对集群进行增量备份)。
 2. 增量备份结束后，可以在 BR 日志输出中找到类似 `["Full backup Failed summary : total backup ranges: 0, total success: 0, total failed: 0"] [BackupTS=421758868510212097]` 的日志，记录其中的 `BackupTS`。
-3. 执行[增量恢复](/br/br-usage-restore.md#恢复增量备份数据)。
+3. 执行[增量恢复](/br/br-incremental-guide.md#恢复增量备份数据)。
 4. 建立一个新的 changefeed，从 `BackupTS` 开始同步任务。
 5. 删除旧的 changefeed。
 
