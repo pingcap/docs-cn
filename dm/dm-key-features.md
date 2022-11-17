@@ -1,12 +1,12 @@
 ---
-title: 主要特性
+title: TiDB Data Migration 主要特性
 summary: 了解 DM 的各主要功能特性或相关的配置选项。
 aliases: ['/docs-cn/tidb-data-migration/dev/key-features/','/docs-cn/tidb-data-migration/dev/feature-overview/']
 ---
 
-# 主要特性
+# TiDB Data Migration 主要特性
 
-本文档介绍 DM 提供的数据迁移功能以及相关的配置选项与使用示例。
+本文档介绍 TiDB Data Migration (DM) 提供的数据迁移功能，以及相关的配置选项与使用示例。
 
 Table Routing、Block & Allow Lists、Binlog Event Filter 在匹配库表名时，有以下版本差异：
 
@@ -35,6 +35,16 @@ routes:
     table-pattern: "t_*"
     target-schema: "test"
     target-table: "t"
+    # extract-table、extract-schema 和 extract-source 为可选配置，仅在需要提取分表、分库和数据源信息时填写
+    extract-table:
+      table-regexp: "t_(.*)"
+      target-column: "c_table"
+    extract-schema:
+      schema-regexp: "test_(.*)"
+      target-column: "c_schema"
+    extract-source:
+      source-regexp: "(.*)"
+      target-column: "c_source"
   rule-2:
     schema-pattern: "test_*"
     target-schema: "test"
@@ -42,11 +52,12 @@ routes:
 
 ### 参数解释
 
-将根据 [`schema-pattern`/`table-pattern`](/dm/table-selector.md) 匹配上该规则的上游 MySQL/MariaDB 实例的表迁移到下游的 `target-schema`/`target-table`。
+- 对于匹配上 [`schema-pattern`/`table-pattern`](/dm/table-selector.md) 规则的上游 MySQL/MariaDB 实例的表，DM 将它们迁移到下游的 `target-schema`/`target-table`。
+- 对于匹配上 `schema-pattern`/`table-pattern` 规则的分表，DM 通过 `extract-table`.`table-regexp` 提取分表信息，通过 `extract-schema`.`schema-regexp` 提取分库信息，通过 `extract-source`.`source-regexp` 提取数据来源信息，然后写入到下游合表对应的 `target-column` 中。
 
 ### 使用示例
 
-下面展示了三个不同场景下的配置示例。
+下面展示了四个不同场景下的配置示例。
 
 #### 分库分表合并
 
@@ -73,6 +84,137 @@ routes:
   rule-2:
     schema-pattern: "test_*"
     target-schema: "test"
+```
+
+#### 提取分库分表数据源信息写入合表
+
+假设存在分库分表场景，需要将上游两个 MySQL 实例的表 `test_{11,12,13...}`.`t_{1,2,3...}` 迁移到下游 TiDB 的一张表 `test`.`t`，同时需要提取分库分表的源信息写入下游合表中，用于标识合表中各行数据的来源。
+
+为了迁移到下游实例的表 `test`.`t`，需要创建和[分库分表合并场景](#分库分表合并)类似的 table routing 规则，并在其中增加 `extract-table`、`extract-schema`、`extract-source` 配置用于提取分库分表源数据信息：
+
+- `extract-table`：对于匹配上 `schema-pattern` 和 `table-pattern` 的分表，DM 根据 `table-regexp` 提取分表，并将去除 `t_` 后的后缀信息写入合表的 `target-column`，即 `c_table` 列中。
+- `extract-schema`：对于匹配上 `schema-pattern`和 `table-pattern` 的分库，DM 根据 `schema-regexp` 提取分库，并将去除 `test_` 后的后缀信息写入合表的 `target-column`，即 `c_schema` 列中。
+- `extract-source`：对于匹配上 `schema-pattern` 和 `table-pattern` 的分表，DM 将其数据源信息写入合表的 `target-column`，即 `c_source` 列中。
+
+{{< copyable "" >}}
+
+```yaml
+  rule-1:
+    schema-pattern: "test_*"
+    table-pattern: "t_*"
+    target-schema: "test"
+    target-table: "t"
+    extract-table:
+      table-regexp: "t_(.*)"
+      target-column: "c_table"
+    extract-schema:
+      schema-regexp: "test_(.*)"
+      target-column: "c_schema"
+    extract-source:
+      source-regexp: "(.*)"
+      target-column: "c_source"
+  rule-2:
+    schema-pattern: "test_*"
+    target-schema: "test"
+```
+
+为了提取上游分表来源信息数据以写入到下游合表，**必须在启动迁移任务前手动**在下游创建好对应合表，合表需要包含用于存放分表源数据信息的三个扩展列 `target-column` （表名列、库名列、数据源列），扩展列**必须为表末尾列且必须为[字符串类型](/data-type-string.md)**。
+
+```sql
+CREATE TABLE `test`.`t` (
+    a int(11) PRIMARY KEY,
+    c_table varchar(10) DEFAULT NULL,
+    c_schema varchar(10) DEFAULT NULL,
+    c_source varchar(10) DEFAULT NULL
+);
+```
+
+例如，上游源数据为：
+
+数据源 `mysql-01`:
+
+```sql
+mysql> select * from test_11.t_1;
++---+
+| a |
++---+
+| 1 |
++---+
+mysql> select * from test_11.t_2;
++---+
+| a |
++---+
+| 2 |
++---+
+mysql> select * from test_12.t_1;
++---+
+| a |
++---+
+| 3 |
++---+
+```
+
+数据源 `mysql-02`:
+
+```sql
+mysql> select * from test_13.t_3;
++---+
+| a |
++---+
+| 4 |
++---+
+```
+
+则 DM 同步后合表中的数据将为：
+
+```sql
+mysql> select * from test.t;
++---+---------+----------+----------+
+| a | c_table | c_schema | c_source |
++---+---------+----------+----------+
+| 1 | 1       | 11       | mysql-01 |
+| 2 | 2       | 11       | mysql-01 |
+| 3 | 1       | 12       | mysql-01 |
+| 4 | 3       | 13       | mysql-02 |
++---+---------+----------+----------+
+```
+
+##### 错误的合表建表示例
+
+> **注意：**
+>
+> 以下错误都可能导致分库分表数据源信息写入合表失败。
+
+- `c-table` 列不在末尾
+
+```sql
+CREATE TABLE `test`.`t` (
+    c_table varchar(10) DEFAULT NULL,
+    a int(11) PRIMARY KEY,
+    c_schema varchar(10) DEFAULT NULL,
+    c_source varchar(10) DEFAULT NULL
+);
+```
+
+- `c-source` 列缺失
+
+```sql
+CREATE TABLE `test`.`t` (
+    a int(11) PRIMARY KEY,
+    c_table varchar(10) DEFAULT NULL,
+    c_schema varchar(10) DEFAULT NULL,
+);
+```
+
+- `c_schema` 列为非 string 类型
+
+```sql
+CREATE TABLE `test`.`t` (
+    a int(11) PRIMARY KEY,
+    c_table varchar(10) DEFAULT NULL,
+    c_schema int(11) DEFAULT NULL,
+    c_source varchar(10) DEFAULT NULL,
+);
 ```
 
 #### 分库合并
@@ -402,7 +544,7 @@ filters:
 
 <SimpleTab>
 <div label="v2.0.5 及之后的版本">
- 
+
 在 v2.0.5 及之后的版本，请在 `task` 配置文件中使用 `online-ddl` 配置项。
 
 如上游 MySQL/MariaDB （同时）使用 gh-ost 或 pt-osc 工具，则在 task 的配置文件中设置：

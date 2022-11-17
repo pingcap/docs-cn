@@ -7,7 +7,7 @@ summary: 了解如何使用 Dumpling 和 TiDB Lightning 备份与恢复集群数
 
 本文档介绍如何使用 Dumpling 和 TiDB Lightning 进行全量备份与恢复。
 
-在备份与恢复场景中，如果需要全量备份少量数据（例如小于 50 GB），且不要求备份速度，你可以使用 [Dumpling](/dumpling-overview.md) 从 TiDB 数据库导出数据进行备份，再使用 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 将数据导入至 TiDB 数据库实现恢复。更多备份与恢复的相关信息，参见[使用 BR 备份集群](/br/br-usage-backup.md)与[使用 BR 恢复集群](/br/br-usage-restore.md)。
+在备份与恢复场景中，如果需要全量备份少量数据（例如小于 50 GB），且不要求备份速度，你可以使用 [Dumpling](/dumpling-overview.md) 从 TiDB 数据库导出数据进行备份，再使用 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 将数据导入至 TiDB 数据库实现恢复。更多备份与恢复的相关信息，参见 [TiDB 备份与恢复概述](/br/backup-and-restore-overview.md)。
 
 ## 前提条件
 

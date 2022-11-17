@@ -197,7 +197,7 @@ TiClient Region Error 该指标描述的是在 TiDB-server 作为客户端通过
 
 ### TiDB 同时支持的最大并发连接数？
 
-默认情况下，每个 TiDB 服务器的最大连接数没有限制。如有需要，可以在 `config.toml` 文件中设置 `max-server-connections` 来限制最大连接数。如果并发量过大导致响应时间增加，建议通过添加 TiDB 节点进行扩容。
+默认情况下，每个 TiDB 服务器的最大连接数没有限制。如有需要，可以在 `config.toml` 文件中设置 `instance.max_connections`（或者系统变量 `max_connections`）来限制最大连接数。如果并发量过大导致响应时间增加，建议通过添加 TiDB 节点进行扩容。
 
 ### 如何查看某张表创建的时间？
 
@@ -390,4 +390,4 @@ TiDB 设计的目标就是针对 MySQL 单台容量限制而被迫做的分库�
 
 尽管 TiDB 也支持使用 MySQL 官方工具 `mysqldump` 进行数据备份和恢复，但其性能低于 [Dumpling](/dumpling-overview.md)，并且 `mysqldump` 备份和恢复大量数据的耗费更长。
 
-其他 BR 相关问题，可以参考 [BR FAQ](/br/backup-and-restore-faq.md)。
+其他备份恢复相关问题，可以参考 [备份与恢复常见问题](/faq/backup-and-restore-faq.md)。

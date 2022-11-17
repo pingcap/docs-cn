@@ -58,6 +58,16 @@ routes:                           # 上游和下游表之间的路由 table rout
     table-pattern: "t_*"          # 表名匹配规则，支持通配符 "*" 和 "?"
     target-schema: "test"         # 目标库名称
     target-table: "t"             # 目标表名称
+    # 可选配置：提取各分库分表的源信息，并写入下游用户自建的列，用于标识合表中各行数据的来源。如果配置该项，需要提前在下游手动创建合表，具体可参考 “table routing 文档” <https://docs.pingcap.com/zh/tidb/dev/dm-key-features#table-routing>。
+    # extract-table:                                        # 提取分表去除 t_ 的后缀信息，并写入下游合表 c_table 列，例如，t_01 分表的数据会提取 01 写入下游 c_table 列
+    #   table-regexp: "t_(.*)"
+    #   target-column: "c_table"
+    # extract-schema:                                       # 提取分库去除 test_ 的后缀信息，并写入下游合表 c_schema 列，例如，test_02 分库的数据会提取 02 写入下游 c_schema 列
+    #   schema-regexp: "test_(.*)"
+    #   target-column: "c_schema"
+    # extract-source:                                       # 提取数据库源实例信息写入 c_source 列，例如，mysql-replica-01 数据源实例的数据会提取 mysql-replica-01 写入下游 c_source 列
+    #   source-regexp: "(.*)"
+    #   target-column: "c_source"
   route-rule-2:
     schema-pattern: "test_*"
     target-schema: "test"
@@ -155,7 +165,7 @@ validators:              # 增量数据校验的运行配置参数
 mysql-instances:
   -
     source-id: "mysql-replica-01"           # 对应 source.toml 中的 `source-id`
-    meta:                                   # `task-mode` 为 `incremental` 且下游数据库的 `checkpoint` 不存在时 binlog 迁移开始的位置; 如果 checkpoint 存在，则以 `checkpoint` 为准
+    meta:                                   # `task-mode` 为 `incremental` 且下游数据库的 `checkpoint` 不存在时 binlog 迁移开始的位置; 如果 checkpoint 存在，则以 `checkpoint` 为准。如果 `meta` 项和下游数据库的 `checkpoint` 都不存在，则从上游当前最新的 binlog 位置开始迁移
       binlog-name: binlog.000001
       binlog-pos: 4
       binlog-gtid: "03fc0263-28c7-11e7-a653-6c0b84d59f30:1-7041423,05474d3c-28c7-11e7-8352-203db246dd3d:1-170"  # 对于 source 中指定了 `enable-gtid: true` 的增量任务，需要指定该值
