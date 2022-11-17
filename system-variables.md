@@ -818,6 +818,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 > 目前 List 分区和 List COLUMNS 分区类型为实验特性，不建议在生产环境中使用。
 
 - 作用域：SESSION | GLOBAL
+- 类型：布尔型
 - 默认值：`OFF`
 - 这个变量用来设置是否开启 `LIST (COLUMNS) TABLE PARTITION` 特性。
 
