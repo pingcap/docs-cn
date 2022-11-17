@@ -2,7 +2,7 @@
 title: TiDB 6.2.0 Release Notes
 ---
 
-# TiDB v6.2.0 Release Notes
+# TiDB 6.2.0 Release Notes
 
 Release date: August 23, 2022
 
