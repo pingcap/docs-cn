@@ -8,11 +8,12 @@ aliases: ['/docs/dev/upgrade-tidb-using-tiup/','/docs/dev/how-to/upgrade/using-t
 
 This document is targeted for the following upgrade paths:
 
-- Upgrade from TiDB 4.0 versions to TiDB 6.3.
-- Upgrade from TiDB 5.0-5.4 versions to TiDB 6.3.
-- Upgrade from TiDB 6.0 to TiDB 6.3.
-- Upgrade from TiDB 6.1 to TiDB 6.3.
-- Upgrade from TiDB 6.2 to TiDB 6.3.
+- Upgrade from TiDB 4.0 versions to TiDB 6.4.
+- Upgrade from TiDB 5.0-5.4 versions to TiDB 6.4.
+- Upgrade from TiDB 6.0 to TiDB 6.4.
+- Upgrade from TiDB 6.1 to TiDB 6.4.
+- Upgrade from TiDB 6.2 to TiDB 6.4.
+- Upgrade from TiDB 6.3 to TiDB 6.4.
 
 > **Warning:**
 >
@@ -23,17 +24,17 @@ This document is targeted for the following upgrade paths:
 
 > **Note:**
 >
-> If your cluster to be upgraded is v3.1 or an earlier version (v3.0 or v2.1), the direct upgrade to v6.3.0 is not supported. You need to upgrade your cluster first to v4.0 and then to v6.3.0.
+> If your cluster to be upgraded is v3.1 or an earlier version (v3.0 or v2.1), the direct upgrade to v6.4.0 is not supported. You need to upgrade your cluster first to v4.0 and then to v6.4.0.
 
 ## Upgrade caveat
 
 - TiDB currently does not support version downgrade or rolling back to an earlier version after the upgrade.
-- For the v4.0 cluster managed using TiDB Ansible, you need to import the cluster to TiUP (`tiup cluster`) for new management according to [Upgrade TiDB Using TiUP (v4.0)](https://docs.pingcap.com/tidb/v4.0/upgrade-tidb-using-tiup#import-tidb-ansible-and-the-inventoryini-configuration-to-tiup). Then you can upgrade the cluster to v6.3.0 according to this document.
-- To update versions earlier than v3.0 to v6.3.0:
+- For the v4.0 cluster managed using TiDB Ansible, you need to import the cluster to TiUP (`tiup cluster`) for new management according to [Upgrade TiDB Using TiUP (v4.0)](https://docs.pingcap.com/tidb/v4.0/upgrade-tidb-using-tiup#import-tidb-ansible-and-the-inventoryini-configuration-to-tiup). Then you can upgrade the cluster to v6.4.0 according to this document.
+- To update versions earlier than v3.0 to v6.4.0:
     1. Update this version to 3.0 using [TiDB Ansible](https://docs.pingcap.com/tidb/v3.0/upgrade-tidb-using-ansible).
     2. Use TiUP (`tiup cluster`) to import the TiDB Ansible configuration.
     3. Update the 3.0 version to 4.0 according to [Upgrade TiDB Using TiUP (v4.0)](https://docs.pingcap.com/tidb/v4.0/upgrade-tidb-using-tiup#import-tidb-ansible-and-the-inventoryini-configuration-to-tiup).
-    4. Upgrade the cluster to v6.3.0 according to this document.
+    4. Upgrade the cluster to v6.4.0 according to this document.
 - Support upgrading the versions of TiDB Binlog, TiCDC, TiFlash, and other components.
 - For detailed compatibility changes of different versions, see the [Release Notes](/releases/release-notes.md) of each version. Modify your cluster configuration according to the "Compatibility Changes" section of the corresponding release notes.
 - For clusters that upgrade from versions earlier than v5.3 to v5.3 or later versions, the default deployed Prometheus will upgrade from v2.8.1 to v2.27.1. Prometheus v2.27.1 provides more features and fixes a security issue. Compared with v2.8.1, alert time representation in v2.27.1 is changed. For more details, see [Prometheus commit](https://github.com/prometheus/prometheus/commit/7646cbca328278585be15fa615e22f2a50b47d06) for more details.
@@ -115,7 +116,7 @@ Now, the offline mirror has been upgraded successfully. If an error occurs durin
 > Skip this step if one of the following situations applies:
 >
 > + You have not modified the configuration parameters of the original cluster. Or you have modified the configuration parameters using `tiup cluster` but no more modification is needed.
-> + After the upgrade, you want to use v6.3.0's default parameter values for the unmodified configuration items.
+> + After the upgrade, you want to use v6.4.0's default parameter values for the unmodified configuration items.
 
 1. Enter the `vi` editing mode to edit the topology file:
 
@@ -131,7 +132,7 @@ Now, the offline mirror has been upgraded successfully. If an error occurs durin
 
 > **Note:**
 >
-> Before you upgrade the cluster to v6.3.0, make sure that the parameters you have modified in v4.0 are compatible in v6.3.0. For details, see [TiKV Configuration File](/tikv-configuration-file.md).
+> Before you upgrade the cluster to v6.4.0, make sure that the parameters you have modified in v4.0 are compatible in v6.4.0. For details, see [TiKV Configuration File](/tikv-configuration-file.md).
 >
 > The following three TiKV parameters are obsolete in TiDB v5.0. If the following parameters have been configured in your original cluster, you need to delete these parameters through `edit-config`:
 >
@@ -174,12 +175,12 @@ If your application has a maintenance window for the database to be stopped for 
 tiup cluster upgrade <cluster-name> <version>
 ```
 
-For example, if you want to upgrade the cluster to v6.3.0:
+For example, if you want to upgrade the cluster to v6.4.0:
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup cluster upgrade <cluster-name> v6.3.0
+tiup cluster upgrade <cluster-name> v6.4.0
 ```
 
 > **Note:**
@@ -234,7 +235,7 @@ tiup cluster display <cluster-name>
 ```
 Cluster type:       tidb
 Cluster name:       <cluster-name>
-Cluster version:    v6.3.0
+Cluster version:    v6.4.0
 ```
 
 > **Note:**
@@ -284,10 +285,10 @@ You can upgrade the tool version by using TiUP to install the `ctl` component of
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup install ctl:v6.3.0
+tiup install ctl:v6.4.0
 ```
 
-## TiDB 6.3.0 compatibility changes
+## TiDB 6.4.0 compatibility changes
 
-- See TiDB 6.3.0 Release Notes for the compatibility changes.
+- See TiDB 6.4.0 Release Notes for the compatibility changes.
 - Try to avoid creating a new clustered index table when you apply rolling updates to the clusters using TiDB Binlog.
