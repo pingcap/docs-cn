@@ -12,7 +12,7 @@ TiDB 版本：6.4.0-DMR
 
 在 6.4.0-DMR 版本中，你可以获得以下关键特性：
 
-- 支持通过 [`FLASHBACK CLUSTER TO TIMESTAMP`](/sql-statements/sql-statement-flashback-to-timestamp.md) 命令将集群快速回退到特定的时间点 (实验特性）。
+- 支持通过 [`FLASHBACK CLUSTER TO TIMESTAMP`](/sql-statements/sql-statement-flashback-to-timestamp.md) 命令将集群快速回退到特定的时间点（实验特性）。
 - 支持对 TiDB 实例的[全局内存使用进行追踪](/configure-memory-usage.md)（实验特性）。
 - TiDB 分区表[兼容 LINEAR HASH 分区语法](/partitioned-table.md#tidb-对-linear-hash-分区的处理)。
 - 支持高性能、全局单调递增的 [`AUTO_INCREMENT`](/auto-increment.md#mysql-兼容模式) 列属性（实验特性）。
@@ -385,8 +385,8 @@ TiDB 版本：6.4.0-DMR
     - 修复 [`tidb_constraint_check_in_place_pessimistic`](/system-variables.md#tidb_constraint_check_in_place_pessimistic-从-v630-版本开始引入) 可能影响内部事务问题，修改该变量作用域为 SESSION [#38766](https://github.com/pingcap/tidb/issues/38766) @[ekexium](https://github.com/ekexium)
     - 修复条件在某些场景下被错误下推至 projection 的问题 [#35623](https://github.com/pingcap/tidb/issues/35623) @[Reminiscent](https://github.com/Reminiscent)
     - 修复 `AND` 和 `OR` 条件的 `isNullRejected` 检查错误导致查询结果错误的问题 [#38304]( https://github.com/pingcap/tidb/issues/38304) @[Yisaer](https://github.com/Yisaer)
-    - 修复外连接消除时没有考虑 `GROUP_CONCAT` 内部的 `ORDER BY` 导致查询出错的问题 [#18216](https://github.com/pingcap/tidb/issues/18216) @[winoros](https://github.com/winoros) 
-    - 修复错误下推的条件被 Join Reorder 丢弃后导致查询结果错误的问题 [#38736](https://github.com/pingcap/tidb/issues/38736) @[winoros](https://github.com/winoros) 
+    - 修复外连接消除时没有考虑 `GROUP_CONCAT` 内部的 `ORDER BY` 导致查询出错的问题 [#18216](https://github.com/pingcap/tidb/issues/18216) @[winoros](https://github.com/winoros)
+    - 修复错误下推的条件被 Join Reorder 丢弃后导致查询结果错误的问题 [#38736](https://github.com/pingcap/tidb/issues/38736) @[winoros](https://github.com/winoros)
 
 + TiKV
 
@@ -453,20 +453,20 @@ TiDB 版本：6.4.0-DMR
 
 感谢来自 TiDB 社区的贡献者们：
 
-- [645775992](https://github.com/645775992)
-- [An-DJ](https://github.com/An-DJ)
-- [AndrewDi](https://github.com/AndrewDi)
-- [erwadba](https://github.com/erwadba)
-- [fuzhe1989](https://github.com/fuzhe1989)
-- [goldwind-ting](https://github.com/goldwind-ting)（首次贡献者）
-- [h3n4l](https://github.com/h3n4l)
-- [igxlin](https://github.com/igxlin)（首次贡献者）
-- [ihcsim](https://github.com/ihcsim)
-- [JigaoLuo](https://github.com/JigaoLuo)
-- [morgo](https://github.com/morgo)
-- [Ranxy](https://github.com/Ranxy)
-- [shenqidebaozi](https://github.com/shenqidebaozi)（首次贡献者）
-- [taofengliu](https://github.com/taofengliu)（首次贡献者）
-- [TszKitLo40](https://github.com/TszKitLo40)
-- [wxbty](https://github.com/wxbty)（首次贡献者）
-- [zgcbj](https://github.com/zgcbj)
+- @[645775992](https://github.com/645775992)
+- @[An-DJ](https://github.com/An-DJ)
+- @[AndrewDi](https://github.com/AndrewDi)
+- @[erwadba](https://github.com/erwadba)
+- @[fuzhe1989](https://github.com/fuzhe1989)
+- @[goldwind-ting](https://github.com/goldwind-ting)（首次贡献者）
+- @[h3n4l](https://github.com/h3n4l)
+- @[igxlin](https://github.com/igxlin)（首次贡献者）
+- @[ihcsim](https://github.com/ihcsim)
+- @[JigaoLuo](https://github.com/JigaoLuo)
+- @[morgo](https://github.com/morgo)
+- @[Ranxy](https://github.com/Ranxy)
+- @[shenqidebaozi](https://github.com/shenqidebaozi)（首次贡献者）
+- @[taofengliu](https://github.com/taofengliu)（首次贡献者）
+- @[TszKitLo40](https://github.com/TszKitLo40)
+- @[wxbty](https://github.com/wxbty)（首次贡献者）
+- @[zgcbj](https://github.com/zgcbj)

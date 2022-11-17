@@ -147,7 +147,7 @@ v6.0.0 是 DMR 版本，版本名称为 6.0.0-DMR。
 
     [用户文档](/sql-plan-management.md#自动捕获绑定-baseline-capturing)，[#32466](https://github.com/pingcap/tidb/issues/32466)
 
-- TiKV 过载资源保护增强 (实验特性）
+- TiKV 过载资源保护增强（实验特性）
 
     当 TiKV 部署的机型资源受限时，如果前台处理的读写请求量过大，会导致后台处理请求的 CPU 资源被前台占用，最终影响 TiKV 性能的稳定性。TiDB v6.0.0 支持手动限制 TiKV 前台各类请求的资源用量，包括 CPU、读写带宽等，以提升集群在长期高负载压力下的稳定性。
 
