@@ -182,7 +182,7 @@ SELECT TABLE_SCHEMA, TABLE_NAME, TIDB_TABLE_ID FROM INFORMATION_SCHEMA.TABLES WH
 ADMIN CHECK TABLE table_name;
 ```
 
-之后可以通过重命名旧索引，创建新索引，删除旧索引的方式来修复数据索引不一致的问题。
+若结果有不一致的索引，可以通过重命名旧索引，创建新索引，删除旧索引的方式来修复数据索引不一致的问题。
 
 重命名旧索引：
 
