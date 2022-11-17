@@ -38,10 +38,9 @@ aliases: ['/docs-cn/dev/ticdc/ticdc-overview/','/docs-cn/dev/reference/tools/tic
 
 - MySQL sink
 
-    - TiCDC 不拆分单表事务，**保证**单表事务的原子性。
-    - TiCDC **不保证**下游事务的执行顺序和上游完全一致。
-    - TiCDC 以表为单位拆分跨表事务，**不保证**跨表事务的原子性。
+    - TiCDC 开启 redo log 后保证数据复制的最终一致性
     - TiCDC **保证**单行的更新与上游更新顺序一致。
+    - TiCDC **不保证**下游事务的执行顺序和上游完全一致。
 
 > **注意：**
 >
