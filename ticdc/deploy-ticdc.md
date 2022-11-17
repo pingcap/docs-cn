@@ -50,6 +50,9 @@ cdc_servers:
   - host: 10.1.1.2
     gc-ttl: 86400
     data_dir: /data/deploy/install/data/cdc-8300
+  - host: 10.0.1.4:8300
+    gc-ttl: 86400
+    data_dir: /data/deploy/install/data/cdc-8300
 ```
 
 之后，在 TiUP 中控机上执行类似下面的命令进行扩容。
