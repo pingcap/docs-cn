@@ -644,7 +644,7 @@ TiKV 中损坏的 SST 文件会导致 TiKV 进程崩溃。在 TiDB v6.1.0 之前
 > 执行此命令前，请保证关闭当前运行的 TiKV 实例。
 
 ```bash
-$ tikv-ctl bad-ssts --data-dir </path/to/tikv> --pd <endpoint>
+$ tikv-ctl --data-dir </path/to/tikv> bad-ssts --pd <endpoint>
 ```
 
 ```bash
