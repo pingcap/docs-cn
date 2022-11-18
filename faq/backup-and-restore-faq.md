@@ -131,7 +131,7 @@ Error: failed to check gc safePoint, checkpoint ts 433177834291200000: GC safepo
 
 ## 功能兼容性问题
 
-### BR 恢复到 TiCDC / Drainer 的上游集群时，要注意些什么？
+### 为什么 BR 恢复的数据无法同步到 TiCDC / Drainer 的上游集群？
 
 - **BR 恢复的数据无法被同步到下游**，因为 BR 直接导入 SST 文件，而下游集群目前没有办法获得上游的 SST 文件。
 - 在 4.0.3 版本之前，BR 恢复时产生的 DDL jobs 还可能会让 TiCDC / Drainer 执行异常的 DDL。所以，如果一定要在 TiCDC / Drainer 的上游集群执行恢复，请将 BR 恢复的所有表加入 TiCDC / Drainer 的阻止名单。
@@ -272,7 +272,7 @@ BR 在 v6.0.0 之前不支持[放置规则](/placement-rules-in-sql.md)。BR v6.
 
 ### 恢复集群的时候，在 MySQL 下的业务表为什么没有恢复？
 
-自 BR v5.1.0 开始，全量备份会备份**mysql schema 下的表**。BR v6.2.0 以前的版本，在默认设置不会恢复**mysql schema 下的表**。
+自 BR v5.1.0 开始，全量备份会备份 **mysql schema 下的表**。BR v6.2.0 以前的版本，在默认设置不会恢复 **mysql schema 下的表**。
 
 如果需要恢复 `mysql` 下的用户创建的表（非系统表），可以通过 [table filter](/table-filter.md#表库过滤语法) 来显式地包含目标表。以下示例中命令会在执行正常的恢复的同时恢复 `mysql.usertable`。
 
