@@ -1,10 +1,10 @@
 ---
-title: DM 数据迁移任务配置向导
+title: TiDB Data Migration 数据迁移任务配置向导
 ---
 
-# 数据迁移任务配置向导
+# TiDB Data Migration 数据迁移任务配置向导
 
-本文档介绍如何配置 Data Migration (DM) 的数据迁移任务。
+本文档介绍如何配置 TiDB Data Migration (DM) 的数据迁移任务。
 
 ## 配置需要迁移的数据源
 

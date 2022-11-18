@@ -1331,7 +1331,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 是否持久化到集群：是
 - 默认值：`OFF`
 - 可选值：`OFF`，`ON`
-- 该变量用于控制用于控制 TiDB 执行 `ONLY_FULL_GOUP_BY` 检查时的行为。有关 `ONLY_FULL_GROUP_BY` 的信息可以参考 [MySQL 文档](https://dev.mysql.com/doc/refman/8.0/en/sql-mode.html#sqlmode_only_full_group_by)。在 v6.1 中 TiDB 对该项检查做了更严格正确的处理。
+- 该变量用于控制 TiDB 执行 `ONLY_FULL_GOUP_BY` 检查时的行为。有关 `ONLY_FULL_GROUP_BY` 的信息可以参考 [MySQL 文档](https://dev.mysql.com/doc/refman/8.0/en/sql-mode.html#sqlmode_only_full_group_by)。在 v6.1 中 TiDB 对该项检查做了更严格正确的处理。
 - 由于可能存在版本升级造成的兼容性问题，在 v6.1 中该变量默认值是 `OFF`，即默认关闭。
 
 ### `tidb_enable_noop_functions` <span class="version-mark">从 v4.0 版本开始引入</span>
@@ -1739,7 +1739,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
 - 默认值：`OFF`
 - 这个变量用来设置是否在[日志](/tidb-configuration-file.md#logfile)里记录所有的 SQL 语句。该功能默认关闭。如果系统运维人员在定位问题过程中需要追踪所有 SQL 记录，可考虑开启该功能。
-- 通过查询 `"GENERAL_LOG"` 字符串可以定位到该功能在日志中的所有记录。日志会记录以下内容：
+- 在 TiDB 配置项 [`log.level`](/tidb-configuration-file.md#level) 为 `"info"` 或 `"debug"` 时，通过查询 `"GENERAL_LOG"` 字符串可以定位到该功能在日志中的所有记录。日志会记录以下内容：
     - `conn`：当前会话对应的 ID
     - `user`：当前会话用户
     - `schemaVersion`：当前 schema 版本
@@ -1785,9 +1785,9 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 是否持久化到集群：是
 - 类型：布尔型
 - 默认值：`ON`
-- 此变量控制异步提交 (Async Commit) 中提交时间戳的计算方式。默认情况下（使用 `OFF` 值），两阶段提交从 PD 服务器请求一个新的时间戳，并使用该时间戳计算最终提交的时间戳，这样可保证所有并发事务可线性化。
-- 如果将该变量值设为 `ON`，从 PD 获取的时间戳的操作会被省掉，这种情况下只保证因果一致性但不保证线性一致性。详情请参考 PingCAP 博文 [Async Commit 原理介绍](https://pingcap.com/zh/blog/async-commit-principle)。
-- 对于需要只保证因果一致性的场景，可将此变量设为 `ON` 以提升性能。
+- 此变量控制异步提交 (Async Commit) 中提交时间戳的计算方式。默认情况下（使用 `ON` 值），两阶段提交从 PD 服务器请求一个新的时间戳，并使用该时间戳计算最终提交的时间戳，这样可保证所有并发事务可线性化。
+- 如果将该变量值设为 `OFF`，从 PD 获取时间戳的操作会被省掉，这种情况下只保证因果一致性但不保证线性一致性。详情请参考 PingCAP 博文 [Async Commit 原理介绍](https://pingcap.com/zh/blog/async-commit-principle)。
+- 对于需要只保证因果一致性的场景，可将此变量设为 `OFF` 以提升性能。
 
 ### `tidb_hash_exchange_with_new_collation`
 

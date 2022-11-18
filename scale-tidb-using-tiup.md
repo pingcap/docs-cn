@@ -278,11 +278,11 @@ tiup cluster display <cluster-name>
 ```
 
 ```
-Starting /root/.tiup/components/cluster/v1.10.3/cluster display <cluster-name>
+Starting /root/.tiup/components/cluster/v1.11.0/cluster display <cluster-name>
 
 TiDB Cluster: <cluster-name>
 
-TiDB Version: v6.3.0
+TiDB Version: v6.4.0
 
 ID       Role         Host    Ports                            Status  Data Dir        Deploy Dir
 
