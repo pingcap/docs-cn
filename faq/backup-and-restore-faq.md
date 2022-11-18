@@ -119,7 +119,7 @@ checkpoint[global]: 2022-07-25 14:46:50.118 +0000; gap=6m28s
 >
 > 由于此功能会备份集群的多版本数据，当任务发生错误且状态变更为 `ERROR` 时，同时会将当前任务的备份进度点的数据设为一个 `safe point`，`safe point` 的数据将保证 24 小时不被 GC 掉。所以，当任务恢复之后，会从上一个备份点继续备份日志。如果任务失败时间超过 24 小时，前一次备份进度点的数据就已经 GC，此时恢复任务操作会提示失败。这种场景下，只能执行 `br log stop` 命令先停止本次任务，然后重新开启新的备份任务。
 
-## 执行 `br log resume` 命令恢复处于暂停状态的任务时报 `ErrBackupGCSafepointExceeded` 错误，该如何处理？
+### 执行 `br log resume` 命令恢复处于暂停状态的任务时报 `ErrBackupGCSafepointExceeded` 错误，该如何处理？
 
 ```shell
 Error: failed to check gc safePoint, checkpoint ts 433177834291200000: GC safepoint 433193092308795392 exceed TS 433177834291200000: [BR:Backup:ErrBackupGCSafepointExceeded]backup GC safepoint exceeded
@@ -270,7 +270,7 @@ BR 在 v6.0.0 之前不支持[放置规则](/placement-rules-in-sql.md)。BR v6.
 
     由以上命令输出结果可知，`tikv-server` 实例由用户 `tidb_ouo` 启动，但该账号没有 `backup` 目录的写入权限， 所以备份失败。
 
-## 恢复集群的时候，在 MySQL 下的业务表为什么没有恢复？
+### 恢复集群的时候，在 MySQL 下的业务表为什么没有恢复？
 
 自 BR v5.1.0 开始，全量备份会备份**mysql schema 下的表**。BR v6.2.0 以前的版本，在默认设置不会恢复**mysql schema 下的表**。
 
