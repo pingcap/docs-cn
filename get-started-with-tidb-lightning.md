@@ -15,14 +15,19 @@ aliases: ['/docs-cn/dev/get-started-with-tidb-lightning/','/docs-cn/dev/how-to/g
 
 你可以使用 [`dumpling`](/dumpling-overview.md) 从 MySQL 导出数据。
 
-1. 安装 Dumpling：
+1. 运行 `tiup --version` 检查是否已安装 TiUP。如果已经安装 TiUP，跳过这一步。如果没有安装 TiUP，运行以下命令：
+
+    ```
+    curl --proto '=https' --tlsv1.2 -sSf https://tiup-mirrors.pingcap.com/install.sh | sh
+    ```
+
+2. 使用 TiUP 安装 Dumpling：
 
     ```shell
-    curl --proto '=https' --tlsv1.2 -sSf https://tiup-mirrors.pingcap.com/install.sh | sh && \
     tiup install dumpling
     ```
 
-2. 从 MySQL 导出数据：
+3. 从 MySQL 导出数据：
 
     ```sh
     tiup dumpling -h 127.0.0.1 -P 3306 -u root -t 16 -F 256MB -B test -f 'test.t[12]' -o /data/my_database/
