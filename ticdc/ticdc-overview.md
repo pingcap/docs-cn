@@ -23,10 +23,6 @@ aliases: ['/docs-cn/dev/ticdc/ticdc-overview/','/docs-cn/dev/reference/tools/tic
 - 高可用架构，无单点故障；支持用户动态添加、删除 TiCDC 节点
 - 支持通过 [Open API](/ticdc/ticdc-open-api.md) 进行集群管理，包括查询任务状态；动态修改任务配置；动态创建、删除任务等
 
-要快速了解 TiCDC 的基本原理和使用方法，建议先观看下面的培训视频（时长 33 分钟）。注意本视频只为学习参考，具体操作步骤和最新功能，请以文档内容为准。
-
-<video src="https://download.pingcap.com/docs-cn%2FLesson22_ticdc.mp4" width="100%" height="100%" controls="controls" poster="https://tidb-docs.s3.us-east-2.amazonaws.com/thumbnail+-+lesson+22.png"></video>
-
 ### 数据同步顺序性
 
 - TiCDC 对于所有的 DDL/DML 都能对外输出**至少一次**。
