@@ -154,6 +154,7 @@ AAFF
 `raft` 子命令可以查看 Raft 状态机在某一时刻的状态。状态信息包括 **RegionLocalState**、**RaftLocalState** 和 **RegionApplyState** 三个结构体，及某一条 log 对应的 Entries。
 
 可以使用 `region` 和 `log` 两个子命令分别查询以上信息。两条子命令都同时支持远程模式和本地模式。
+
 对于 `region` 命令：
 
 - 要扫描指定的 Region，可加上 -r 参数，可通过 `,` 分隔多个 Region。也可以使用 --all-regions 参数，返回所有 Region（当使用 -r 参数时，就不能再使用 --all-regions 参数）
