@@ -112,14 +112,14 @@ TiCDC 是通过对 global checkpoint TS 和 barrier TS 进行比较来确定数�
 最后，对 TiCDC 软件的常见操作所对应的主要流程进行介绍，帮助用户更好的理解 TiCDC 的工作原理。
 启动 TiCDC 节点：
 
-对于非 owner  节点：
+启动非 owner 的 TiCDC 节点：
 
   1. 启动 Capture 进程
   2. 启动 processor 
   3. 接受 Owner 下发的 Task 调度命令
   4. 根据调度命令启动或停止 tablePipeline 
 
-对于 owner 节点：
+对于 owner 的 TiCDC 节点：
 
   1. 启动 Capture 进程
   2. 当选 Owner 并启动对应的线程

@@ -191,7 +191,7 @@ TiDB 版本：6.3.0-DMR
 
 * TiCDC 支持平滑升级 [#4757](https://github.com/pingcap/tiflow/issues/4757) @[overvenus](https://github.com/overvenus) @[3AceShowHand](https://github.com/3AceShowHand)
 
-    用户使用 [TiUP](/ticdc/deploy-ticdc.md#使用-tiup-滚动升级-ticdc-集群) (>=v1.11.0) 和 [TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.3/configure-a-tidb-cluster#配置-ticdc-平滑升级) (>=v1.3.8) 可以平滑滚动升级 TiCDC 集群。升级期间数据同步延时保持在 30 秒内，提高了稳定性，让 TiCDC 能更好地支持延时敏感型业务。
+    用户使用 [TiUP](/ticdc/deploy-ticdc.md#使用-tiup-升级-ticdc-集群) (>=v1.11.0) 和 [TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.3/configure-a-tidb-cluster#配置-ticdc-平滑升级) (>=v1.3.8) 可以平滑滚动升级 TiCDC 集群。升级期间数据同步延时保持在 30 秒内，提高了稳定性，让 TiCDC 能更好地支持延时敏感型业务。
 
 ## 兼容性变更
 
