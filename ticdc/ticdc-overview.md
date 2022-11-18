@@ -28,7 +28,10 @@ aliases: ['/docs-cn/dev/ticdc/ticdc-overview/','/docs-cn/dev/reference/tools/tic
 - TiCDC 对于所有的 DDL/DML 都能对外输出**至少一次**。
 - TiCDC 在 TiKV/TiCDC 集群故障期间可能会重复发相同的 DDL/DML。对于重复的 DDL/DML：
     - MySQL sink 可以重复执行 DDL，对于在下游可重入的 DDL （譬如 truncate table）直接执行成功；对于在下游不可重入的 DDL（譬如 create table），执行失败，TiCDC 会忽略错误继续同步。
-    - Kafka sink 会发送重复的消息，但重复消息不会破坏 checkpoint 的约束，用户可以在 Kafka 消费端进行过滤。
+    - Kafka sink
+        - Kafka sink 提供不同的数据分发策略，可以按照表、主键或 ts 等策略分发数据到不同 Kafka partition。 使用表、主键分发策略，可以保证某一行的更新数据被顺序的发送到相同 patition。
+        - 对所有的分发策略，我们都会定期发送 Resolved TS 消息到所有的 topic/partition，表示早于该 Resolved TS 的消息都已经发送到 topic/parition，消费程序可以利用 Resolved TS 对多个 topic/partition 的消息进行排序。
+        - Kafka sink 会发送重复的消息，但重复消息不会破坏 Resolved TS 的约束，比如在 changefeed 暂停重启后，可能会按顺序发送 msg1、msg2、msg3、msg2、msg3。用户可以在 Kafka 消费端进行过滤。
 
 ### 数据同步一致性
 
@@ -41,8 +44,6 @@ aliases: ['/docs-cn/dev/ticdc/ticdc-overview/','/docs-cn/dev/reference/tools/tic
 > **注意：**
 >
 > 从 v6.2 版本起，你可以通过配置 sink uri 参数 [`transaction-atomicity`](/ticdc/manage-ticdc.md#sink-uri-配置-mysqltidb) 来控制 TiCDC 是否拆分单表事务。拆分事务可以大幅降低 MySQL sink 同步大事务的延时和内存消耗。
-
-- Kafka sink：TiCDC 提供不同的数据分发策略，可以按照表、主键或 ts 等策略分发数据到不同 Kafka partition。 使用表、主键分发策略，可以保证行更新被顺序的发送到同一 patition。此外针对所有的分发策略，我们还会定期发送 checkpoint 消息到所有的 topic/partition，表示早于该 checkpoint 消息都已经发送到 topic/parition，消费程序可以利用 checkpoint 对多个 topic/partition 的消息进行排序。
 
 
 ## TiCDC 架构
