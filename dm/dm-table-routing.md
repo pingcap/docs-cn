@@ -3,7 +3,6 @@ title: TiDB Data Migration 表路由
 summary: 了解 DM 的关键特性表路由 (Table Routing) 的使用方法和注意事项。
 ---
 
-
 # TiDB Data Migration 表路由
 
 使用 TiDB Data Migration (DM) 迁移数据时，你可以配置表路由 (Table Routing) 规则，指定将上游 MySQL/MariaDB 实例的特定表迁移到下游的特定表。

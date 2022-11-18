@@ -35,7 +35,7 @@ block-allow-list:             # 如果 DM 版本早于 v2.0.0-beta.2 则使用 b
 
 在简单任务场景下，推荐使用通配符匹配库表名，但需注意以下版本差异：
 
-+ 对于 v1.0.5 版及后续版本，黑白名单支持[通配符匹配](https://en.wikipedia.org/wiki/Glob_(programming)#Syntax)。但注意所有版本中通配符匹配中的 `*` 符号 **只能有一个,且必须在末尾**。
++ 对于 v1.0.5 版及后续版本，黑白名单支持[通配符匹配](https://en.wikipedia.org/wiki/Glob_(programming)#Syntax)。但注意所有版本中通配符匹配中的 `*` 符号 **只能有一个，且必须在末尾**。
 + 对于 v1.0.5 以前的版本，黑白名单仅支持正则表达式。
 
 ## 参数解释
@@ -49,7 +49,8 @@ block-allow-list:             # 如果 DM 版本早于 v2.0.0-beta.2 则使用 b
 
 ## 过滤规则
 
-`do-dbs` 与 `ignore-dbs` 对应的过滤规则与 MySQL 中的 [Evaluation of Database-Level Replication and Binary Logging Options](https://dev.mysql.com/doc/refman/5.7/en/replication-rules-db-options.html) 类似，`do-tables` 与 `ignore-tables` 对应的过滤规则与 MySQL 中的 [Evaluation of Table-Level Replication Options](https://dev.mysql.com/doc/refman/5.7/en/replication-rules-table-options.html) 类似。
+- `do-dbs` 与 `ignore-dbs` 对应的过滤规则与 MySQL 中的 [Evaluation of Database-Level Replication and Binary Logging Options](https://dev.mysql.com/doc/refman/5.7/en/replication-rules-db-options.html) 类似。
+- `do-tables` 与 `ignore-tables` 对应的过滤规则与 MySQL 中的 [Evaluation of Table-Level Replication Options](https://dev.mysql.com/doc/refman/5.7/en/replication-rules-table-options.html) 类似。
 
 > **注意：**
 >
