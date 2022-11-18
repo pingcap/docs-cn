@@ -37,6 +37,7 @@ Info: {"sink-uri":"kafka://127.0.0.1:9092/topic-name?protocol=canal-json&kafka-v
 Sink URI 用于指定 TiCDC 目标系统的连接信息，遵循以下格式：
 
 {{< copyable "" >}}
+
 ```
 [scheme]://[userinfo@][host]:[port][/path]?[query_parameters]
 ```

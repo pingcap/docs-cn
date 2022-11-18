@@ -16,6 +16,7 @@ TiCDC 集群由多个 TiCDC 对等节点组成，是一种分布式无状态的�
 ![TiCDC architecture](/media/ticdc/ticdc-architecture-2.jpg)
 
 其中：
+
 - Puller：负责从 TiKV 节点获取 DDL 和行改变信息 
 - Sorter：负责将接收到的改变在 TiCDC 内按照时间戳进行升序排序 
 - Mounter：会将改变按照对应的 Schema 信息转换成 TiCDC 可以处理的格式 
@@ -23,7 +24,7 @@ TiCDC 集群由多个 TiCDC 对等节点组成，是一种分布式无状态的�
 
 从高可用的角度来讲，每个 TiCDC 集群都包含了多个 TiCDC 节点，这些节点定期向 PD 集群中的 etcd 集群汇报自己的状态，并选举出其中的一个节点作为 TiCDC 集群的 owner，owner 采用 etcd 统一存储状态来进行调度，owner 将调度结果直接写入 etcd，processor 按照状态完成对应的任务，processor 所在节点出现异常后集群会将 table 调度到其他节点。如果 owner 节点出现异常，其他节点的 Capture 进程会选举出新的 owner，如下图所示：
 
-![TiCDC architecture](/media/ticdc/ticdc-architecture-3.png)
+![TiCDC architecture](/media/ticdc/ticdc-architecture-3.PNG)
 
 ## Changefeed 和 Task
 
@@ -45,6 +46,7 @@ dispatchers = [
 说明：对于以上命令的详细含义，详见：[TiCDC Changefeed 配置参数](/ticdc/ticdc-changefeed-config.md)
 
 以上命令创建了一个到 Kafka 集群的 Changefeed，在这个 Changefeed 中，需要同步 `test1.tab1`, `test1.tab2`, `test3.tab3`, `test4.tab4` 这四张表。TiCDC 在接收到这个命令之后，会执行下面的步骤：
+
 1. 将这个任务发送给 TiCDC 的 owner Capture 进程。 
 2. Owner Capture 进程将这个任务的相关定义信息保存在 PD 的 etcd 当中 
 3. Owner Capture 将这个任务拆分成若干个 Task，并将各个 Task 需要完成的任务通知其他 Capture 进程。 
@@ -100,6 +102,7 @@ table resolved TS >= local resolved TS >= global Resolved TS >= table checkpoint
 上面的内容只介绍了和 DML 语句相关的数据改变，并没有包含 DDL 相关的内容。下面对 DDL 语句相关的关键概念进行介绍。 
 
 **Barrier TS**：当系统发生 DDL 语句或者使用了 TiCDC 的 sync point 时会产生的一个时间戳。
+
   - 对于 DDL 语句，这个时间戳会用来确保在这个 DDL 语句之前的改变都被应用到下游，之后执行对应的 DDL 语句，在 DDL 语句同步完成之后再同步其他的数据改变。由于 DDL 语句的处理是 owner 角色的 Capture 负责的，DDL 语句对应的 Barrier TS 只会由 owner 节点的 processor 线程产生。
   - sync point Barrier TS 也是一个时间戳，当用户启用 TiCDC 的 sync point 特性后，TiCDC 会根据用户指定的间隔产生一个 Barrier TS，当所有的表都同步到了这个Barrier TS 之后，记录一下对应的时间点，之后继续向下同步数据。 
 
@@ -110,12 +113,14 @@ TiCDC 是通过对 global checkpoint TS 和 barrier TS 进行比较来确定数�
 启动 TiCDC 节点：
 
 对于非 owner  节点：
+
   1. 启动 Capture 进程
   2. 启动 processor 
   3. 接受 Owner 下发的 Task 调度命令
   4. 根据调度命令启动或停止 tablePipeline 
 
 对于 owner 节点：
+
   1. 启动 Capture 进程
   2. 当选 Owner 并启动对应的线程
   3. 读取 Changefeed 信息
@@ -126,6 +131,7 @@ TiCDC 是通过对 global checkpoint TS 和 barrier TS 进行比较来确定数�
 
 
 停止 TiCDC 节点:  通常来说，停止 TiCDC 节点是为了对 TiCDC 进行升级或者对 TiCDC 所在的节点进行一些计划的维护操作。 在停止一个 TiCDC 节点时：
+
   1. 这个节点会收到停止的信号
   2. 将自己的服务状态置为不可用状态
   3. 节点停止接收新的复制表任务
