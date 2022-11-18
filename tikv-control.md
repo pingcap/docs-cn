@@ -153,22 +153,64 @@ AAFF
 
 `raft` 子命令可以查看 Raft 状态机在某一时刻的状态。状态信息包括 **RegionLocalState**、**RaftLocalState** 和 **RegionApplyState** 三个结构体，及某一条 log 对应的 Entries。
 
-你可以使用 `region` 和 `log` 两个子命令分别查询以上信息。两条子命令都同时支持远程模式和本地模式。其用法及输出内容如下所示：
+可以使用 `region` 和 `log` 两个子命令分别查询以上信息。两条子命令都同时支持远程模式和本地模式。
+对于 `region` 命令：
+
+- 要扫描指定的 Region，可加上 -r 参数，可通过 `,` 分隔多个 Region。也可以使用 --all-regions 参数，返回所有 Region（当使用 -r 参数时，就不能再使用 --all-regions 参数）
+- 要限制打印出的 Region 的数量，可在命令中使用 --limit 参数（默认为 16）
+- 要查询某个 key 范围中包含哪些 Region，可在命令中使用 --start 和 --end（默认不限范围，采用 Hex 格式）
+
+需要打印单个 region 时，用法及输出内容如下所示：
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-tikv-ctl --host 127.0.0.1:20160 raft region -r 2
+tikv-ctl --host 127.0.0.1:20160 raft region -r 1239
 ```
 
 ```
-region id: 2
-region state key: \001\003\000\000\000\000\000\000\000\002\001
-region state: Some(region {id: 2 region_epoch {conf_ver: 3 version: 1} peers {id: 3 store_id: 1} peers {id: 5 store_id: 4} peers {id: 7 store_id: 6}})
-raft state key: \001\002\000\000\000\000\000\000\000\002\002
-raft state: Some(hard_state {term: 307 vote: 5 commit: 314617} last_index: 314617)
-apply state key: \001\002\000\000\000\000\000\000\000\002\003
-apply state: Some(applied_index: 314617 truncated_state {index: 313474 term: 151})
+"region id": 1239
+"region state": { 
+    id: 1239, 
+    start_key: 7480000000000000FF4E5F728000000000FF1443770000000000FA, 
+    end_key: 7480000000000000FF4E5F728000000000FF21C4420000000000FA, 
+    region_epoch: {conf_ver: 1 version: 43}, 
+    peers: [ {id: 1240 store_id: 1 role: Voter} ] 
+}
+"raft state": {
+    hard_state {term: 8 vote: 5 commit: 7} 
+    last_index: 8)
+}
+"apply state": {
+    applied_index: 8 commit_index: 8 commit_term: 8
+    truncated_state {index: 5 term: 5} 
+}
+```
+
+需要查询某个 key 范围中包含哪些 Region 时，用法及输出内容如下所示：
+
+- 当 key 范围位于某个 Region 中时，将会输出该 Region 信息
+- 当 key 范围精准到某个 Region 时，以上述 `Region 1239` 为例，给定的 key 范围为 `Region 1239` 的范围时，由于 Region 范围为左闭右开区间，会将以 `Region 1239` 的 `end_key` 用来作为 `start_key` 的 `Region 1009` 一并输出
+
+{{< copyable "shell-regular" >}}
+
+```shell
+tikv-ctl --host 127.0.0.1:20160 raft region --start 7480000000000000FF4E5F728000000000FF1443770000000000FA --end 7480000000000000FF4E5F728000000000FF21C4420000000000FA
+```
+
+```
+"region state": { 
+    id: 1009
+    start_key: 7480000000000000FF4E5F728000000000FF21C4420000000000FA, 
+    end_key: 7480000000000000FF5000000000000000F8, 
+    ...
+}
+"region state": { 
+    id: 1239
+    start_key: 7480000000000000FF4E5F728000000000FF06C6D60000000000FA, 
+    end_key: 7480000000000000FF4E5F728000000000FF1443770000000000FA, 
+    ...
+}
 ```
 
 ### 查看 Region 的大小
