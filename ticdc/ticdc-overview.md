@@ -42,10 +42,7 @@ aliases: ['/docs-cn/dev/ticdc/ticdc-overview/','/docs-cn/dev/reference/tools/tic
 >
 > 从 v6.2 版本起，你可以通过配置 sink uri 参数 [`transaction-atomicity`](/ticdc/manage-ticdc.md#sink-uri-配置-mysqltidb) 来控制 TiCDC 是否拆分单表事务。拆分事务可以大幅降低 MySQL sink 同步大事务的延时和内存消耗。
 
-- Kafka sink
-
-    - TiCDC 提供不同的数据分发策略，可以按照表、主键或 ts 等策略分发数据到不同 Kafka partition。
-    - 不同分发策略下 consumer 的不同实现方式，可以实现不同级别的一致性，包括行级别有序、最终一致性或跨表事务一致性。
+- Kafka sink：TiCDC 提供不同的数据分发策略，可以按照表、主键或 ts 等策略分发数据到不同 Kafka partition。 使用表、主键分发策略，可以保证行更新被顺序的发送到同一 patition。此外针对所有的分发策略，我们还会定期发送 checkpoint 消息到所有的 topic/partition，表示早于该 checkpoint 消息都已经发送到 topic/parition，消费程序可以利用 checkpoint 对多个 topic/partition 的消息进行排序。
 
 
 ## TiCDC 架构
