@@ -7,9 +7,9 @@ summary: 介绍 TiDB 集群安装部署的常见问题、原因及解决方法�
 
 本文介绍 TiDB 集群安装部署的常见问题、原因及解决方法。
 
-## 硬件要求 FAQ
-
 关于 TiDB 在开发测试、生产环境上运行所需的硬件配置，以及 TiDB 支持的操作系统，参见 [TiDB 软件和硬件环境建议配置](/hardware-and-software-requirements.md)。
+
+## 硬件要求 FAQ
 
 ### 两块网卡的目的是？万兆的目的是？
 
