@@ -20,12 +20,12 @@ You can use the `--help` command to get the information of a specific command. T
 
 ## Options
 
-### -B, --binary
+### --binary
 
 - If you enable this option, the specified binary file path is printed.
 
-    - Executing `tiup -B/--binary <component>` will have the path of the latest stable installed `<component>` component printed. If `<component>` is not installed, an error is returned.
-    - Executing `tiup -B/--binary <component>:<version>` will have the path of the installed `<component>` component's `<version>` printed. If this `<version>` is not printed, an error is returned.
+    - Executing `tiup --binary <component>` will have the path of the latest stable installed `<component>` component printed. If `<component>` is not installed, an error is returned.
+    - Executing `tiup --binary <component>:<version>` will have the path of the installed `<component>` component's `<version>` printed. If this `<version>` is not printed, an error is returned.
 
 - Data type: `BOOLEAN`
 - This option is disabled by default and its default value is `false`. To enable this option, you can add this option to the command, and pass the `true` value or do not pass any value.
