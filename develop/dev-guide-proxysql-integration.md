@@ -343,7 +343,8 @@ cd example/tidb-cloud-connect
 如需得到更多关于 Serverless Tier 的信息，可关注以下页面：
 
 - [Secure Connections to Serverless Tier Clusters](https://docs.pingcap.com/tidbcloud/secure-connections-to-serverless-tier-clusters)
-- 
+- [Select Your Cluster Tier](https://docs.pingcap.com/tidbcloud/select-cluster-tier)
+- [使用 TiDB Cloud (Serverless Tier) 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md)
 
 ### 使用 Admin Interface 配置负载均衡
 
