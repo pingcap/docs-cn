@@ -8,7 +8,7 @@ Release date: November 17, 2022
 
 TiDB version: 6.4.0-DMR
 
-Quick access: [Quick start](https://docs.pingcap.com/tidb/v6.4/quick-start-with-tidb) | [Installation packages](https://www.pingcap.com/download/)
+Quick access: [Quick start](https://docs.pingcap.com/tidb/v6.4/quick-start-with-tidb) | [Installation packages](https://www.pingcap.com/download/?version=v6.4.0#version-list)
 
 In v6.4.0-DMR, the key new features and improvements are as follows:
 
