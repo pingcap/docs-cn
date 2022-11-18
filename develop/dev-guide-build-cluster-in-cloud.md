@@ -9,7 +9,7 @@ summary: Learn how to build a TiDB cluster in TiDB Cloud (Serverless Tier) and c
 
 <CustomContent platform="tidb">
 
-This document walks you through the quickest way to get started with TiDB. You will use [TiDB Cloud](https://en.pingcap.com/tidb-cloud) to create a free TiDB cluster, connect to it, and run a sample application on it.
+This document walks you through the quickest way to get started with TiDB. You will use [TiDB Cloud](https://en.pingcap.com/tidb-cloud) to create a Serverless Tier cluster, connect to it, and run a sample application on it.
 
 If you need to run TiDB on your local machine, see [Starting TiDB Locally](/quick-start-with-tidb.md).
 
@@ -17,11 +17,11 @@ If you need to run TiDB on your local machine, see [Starting TiDB Locally](/quic
 
 <CustomContent platform="tidb-cloud">
 
-This document walks you through the quickest way to get started with TiDB Cloud. You will create a free TiDB cluster, connect to it, and run a sample application on it.
+This document walks you through the quickest way to get started with TiDB Cloud. You will create a TiDB cluster, connect to it, and run a sample application on it.
 
 </CustomContent>
 
-## Step 1. Create a free cluster
+## Step 1. Create a Serverless Tier cluster
 
 1. If you do not have a TiDB Cloud account, click [here](https://tidbcloud.com/free-trial) to sign up for an account.
 
@@ -136,7 +136,7 @@ mysql  Ver 15.1 Distrib 5.5.68-MariaDB, for Linux (x86_64) using readline 5.1
 
 </SimpleTab>
 
-2. Run the connection string obtained in [Step 1](#step-1-create-a-free-cluster).
+2. Run the connection string obtained in [Step 1](#step-1-create-a-serverless-tier-cluster).
 
     {{< copyable "shell-regular" >}}
 

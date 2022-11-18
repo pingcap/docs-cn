@@ -23,9 +23,9 @@ This document describes how to use TiDB and Java to build a simple CRUD applicat
 
 The following introduces how to start a TiDB cluster.
 
-**Use a TiDB Cloud free cluster**
+**Use a TiDB Cloud Serverless Tier cluster**
 
-For detailed steps, see [Create a free cluster](/develop/dev-guide-build-cluster-in-cloud.md#step-1-create-a-free-cluster).
+For detailed steps, see [Create a Serverless Tier cluster](/develop/dev-guide-build-cluster-in-cloud.md#step-1-create-a-serverless-tier-cluster).
 
 **Use a local cluster**
 
@@ -35,7 +35,7 @@ For detailed steps, see [Deploy a local test cluster](/quick-start-with-tidb.md#
 
 <CustomContent platform="tidb-cloud">
 
-See [Create a free cluster](/develop/dev-guide-build-cluster-in-cloud.md#step-1-create-a-free-cluster).
+See [Create a Serverless Tier cluster](/develop/dev-guide-build-cluster-in-cloud.md#step-1-create-a-serverless-tier-cluster).
 
 </CustomContent>
 
