@@ -276,7 +276,7 @@ cd example/tidb-cloud-connect
 
 #### 脚本运行
 
-以 **_ProxySQL Admin Interface_** 为配置入口，配置 TiDB Serverless 为例。
+以 **_ProxySQL Admin Interface_** 为配置入口，配置 TiDB Serverless Tier Cluster 为例。
 
 使用以下命令运行脚本：
 
@@ -286,11 +286,15 @@ cd example/tidb-cloud-connect
 
 #### 逐步运行
 
-1. 通过 Docker Compose 启动一个 ProxySQL 实例，容器内部 **_ProxySQL MySQL Interface_** 端口为 `6033`，映射宿主机端口为 `16033`。不暴露 **_ProxySQL Admin Interface_** 端口，因为其仅可在本地（即容器内）登录 **_ProxySQL Admin Interface_**。此流程被写在 [`docker-compose.yaml`](https://github.com/pingcap-inc/tidb-proxysql-integration-test/blob/main/example/tidb-cloud-connect/docker-compose.yaml) 中。
+1. 通过 Docker Compose 启动一个 ProxySQL 实例。
 
     ```shell
     docker-compose up -d
     ```
+    
+    - 容器内部 **_ProxySQL MySQL Interface_** 端口为 `6033`，映射宿主机端口为 `16033`。
+    - 不暴露 **_ProxySQL Admin Interface_** 端口，因为其仅可在本地（即容器内）登录 **_ProxySQL Admin Interface_**。
+    - 此流程被写在 [`docker-compose.yaml`](https://github.com/pingcap-inc/tidb-proxysql-integration-test/blob/main/example/tidb-cloud-connect/docker-compose.yaml) 中。
 
 2. 使用 `docker-compose exec` 命令，在 **_ProxySQL Admin Interface_** 中运行事先准备好的配置 ProxySQL 的 [SQL 文件](https://github.com/pingcap-inc/tidb-proxysql-integration-test/blob/main/example/tidb-cloud-connect/proxysql-prepare.sql)：
 
@@ -304,7 +308,7 @@ cd example/tidb-cloud-connect
     2. 令变量配置配置生效，并落盘保存。
     3. 添加数据库用户，账号与密码为你个人的 `<serverless tier username>` 及 `<serverless tier password>`，`default_hostgroup` 为 `0`。
     4. 生效用户配置，并落盘保存。
-    5. 添加 3 个 TiDB 后端的地址，`hostgroup_id` 为 `0`，对应上方的数据库用户的 `hostgroup_id`。host 为 你更改的 `<serverless tier host>`。 格外需要注意的是，你必须设置 `use_ssl` 的值为 `1`，这代表着 ProxySQL 将使用 SSL 方式连接到 TiDB Cloud Serverless Tier。Serverless Tier 必需 SSL 连接。
+    5. 添加 TiDB Cloud Serverless Tier Cluster 后端的地址，`hostgroup_id` 为 `0`，对应上方的数据库用户的 `hostgroup_id`。host 为 你更改的 `<serverless tier host>`。 格外需要注意的是，你必须设置 `use_ssl` 的值为 `1`，这代表着 ProxySQL 将使用 SSL 方式连接到 TiDB Cloud Serverless Tier。[Serverless Tier 必需 SSL 连接](https://docs.pingcap.com/tidbcloud/secure-connections-to-serverless-tier-clusters#can-tidb-serverless-tier-verify-the-clients-identity)。
     6. 令 TiDB 后端配置生效，并落盘保存。
 
 3. 使用 `<serverless tier username>` 用户登录 **_ProxySQL MySQL Interface_**。可以通过 `SELECT VERSION()` 命令查看是否连接到了 TiDB Cloud Serverless Tier。在 Ubuntu 系统使用 mycli 连接，输出如下：
@@ -364,11 +368,16 @@ cd example/proxy-rule-admin-interface
 
 #### 逐步运行
 
-1. 通过 Docker Compose 启动三个 TiDB 容器实例，容器内部端口均为 `4000`，映射宿主机端口为 `4001`、`4002`、`4003`。TiDB 容器实例启动后，再启动一个 ProxySQL 实例，容器内部 **_ProxySQL MySQL Interface_** 端口为 `6033`，映射宿主机端口为 `6034`。不暴露 **_ProxySQL Admin Interface_** 端口，因为其仅可在本地（即容器内）登录 **_ProxySQL Admin Interface_**。此流程被写在 [`docker-compose.yaml`](https://github.com/pingcap-inc/tidb-proxysql-integration-test/blob/main/example/load-balance-admin-interface/docker-compose.yaml) 中。
+1. 通过 Docker Compose 启动三个 TiDB，一个 ProxySQL 容器实例。
 
     ```shell
     docker-compose up -d
     ```
+
+    - 启动三个 TiDB 容器实例，容器内部端口均为 `4000`，映射宿主机端口为 `4001`、`4002`、`4003`。
+    - TiDB 容器实例启动后，再启动一个 ProxySQL 实例，容器内部 **_ProxySQL MySQL Interface_** 端口为 `6033`，映射宿主机端口为 `6034`。
+    - 不暴露 **_ProxySQL Admin Interface_** 端口，因为其仅可在本地（即容器内）登录 **_ProxySQL Admin Interface_**。
+    - 此流程被写在 [`docker-compose.yaml`](https://github.com/pingcap-inc/tidb-proxysql-integration-test/blob/main/example/load-balance-admin-interface/docker-compose.yaml) 中。
 
 2. 在 3 个 TiDB 实例内，创建相同的表结构，但写入不同的数据：`'tidb-0'`、`'tidb-1'`、`'tidb-2'`，以便分辨不同的数据库实例：
 
@@ -488,11 +497,16 @@ cd example/proxy-rule-admin-interface
 
 #### 逐步运行
 
-1. 通过 Docker Compose 启动两个 TiDB 容器实例，容器内部端口均为 `4000`，映射宿主机端口为 `4001`、`4002`。TiDB 实例启动后，再启动一个 ProxySQL 实例，容器内部 **_ProxySQL MySQL Interface_** 端口为 `6033`，映射宿主机端口为 `6034`。不暴露 **_ProxySQL Admin Interface_** 端口，因为其仅可在本地（即容器内）登录 **_ProxySQL Admin Interface_**。此流程被写在 [`docker-compose.yaml`](https://github.com/pingcap-inc/tidb-proxysql-integration-test/blob/main/example/user-split-admin-interface/docker-compose.yaml) 中。
+1. 通过 Docker Compose 启动两个 TiDB，一个 ProxySQL 容器实例。
 
     ```shell
     docker-compose up -d
     ```
+
+    - 通过 Docker Compose 启动两个 TiDB 容器实例，容器内部端口均为 `4000`，映射宿主机端口为 `4001`、`4002`。
+    - TiDB 实例启动后，再启动一个 ProxySQL 实例，容器内部 **_ProxySQL MySQL Interface_** 端口为 `6033`，映射宿主机端口为 `6034`。
+    - 不暴露 **_ProxySQL Admin Interface_** 端口，因为其仅可在本地（即容器内）登录 **_ProxySQL Admin Interface_**。
+    - 此流程被写在 [`docker-compose.yaml`](https://github.com/pingcap-inc/tidb-proxysql-integration-test/blob/main/example/user-split-admin-interface/docker-compose.yaml) 中。
 
 2. 在 2 个 TiDB 实例内，创建相同的表结构，但写入不同的数据`'tidb-0'`、`'tidb-1'`，以便分辨不同的数据库实例：
 
@@ -592,11 +606,16 @@ cd example/proxy-rule-admin-interface
 
 #### 逐步运行
 
-1. 通过 Docker Compose 启动两个 TiDB 容器实例，容器内部端口均为 `4000`，映射宿主机端口为 `4001`、`4002`。TiDB 实例启动后，再启动一个 ProxySQL 实例，容器内部 **_ProxySQL MySQL Interface_** 端口为 `6033`，映射宿主机端口为 `6034`。不暴露 **_ProxySQL Admin Interface_** 端口，因为其仅可在本地（即容器内）登录 **_ProxySQL Admin Interface_**。此流程被写在 [`docker-compose.yaml`](https://github.com/pingcap-inc/tidb-proxysql-integration-test/blob/main/example/proxy-rule-admin-interface/docker-compose.yaml) 中。
+1. 通过 Docker Compose 启动两个 TiDB，一个 ProxySQL 容器实例。
 
     ```shell
     docker-compose up -d
     ```
+
+    - 通过 Docker Compose 启动两个 TiDB 容器实例，容器内部端口均为 `4000`，映射宿主机端口为 `4001`、`4002`。
+    - TiDB 实例启动后，再启动一个 ProxySQL 实例，容器内部 **_ProxySQL MySQL Interface_** 端口为 `6033`，映射宿主机端口为 `6034`。
+    - 不暴露 **_ProxySQL Admin Interface_** 端口，因为其仅可在本地（即容器内）登录 **_ProxySQL Admin Interface_**。
+    - 此流程被写在 [`docker-compose.yaml`](https://github.com/pingcap-inc/tidb-proxysql-integration-test/blob/main/example/proxy-rule-admin-interface/docker-compose.yaml) 中。
 
 2. 在 2 个 TiDB 实例内，创建相同的表结构，但写入不同的数据 `'tidb-0'`、`'tidb-1'`，以便分辨不同的数据库实例。此处展示向其中一个 TiDB 实例写入数据的命令，另一实例同理：
 
