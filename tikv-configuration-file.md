@@ -423,7 +423,7 @@ Configuration items related to storage.
         + When API V2 is used, you are expected to set `storage.enable-ttl = true` at the same time. Because API V2 supports the TTL feature, you must turn on `enable-ttl` explicitly. Otherwise, it will be in conflict because `storage.enable-ttl` defaults to `false`.
         + When API V2 is enabled, you need to deploy at least one tidb-server instance to reclaim obsolete data. This tidb-server instance can provide read and write services at the same time. To ensure high availability, you can deploy multiple tidb-server instances.
         + Client support is required for API V2. For details, see the corresponding instruction of the client for the API V2.
-        + Since v6.2.0, Change Data Capture (CDC) for RawKV is supported. Please refer to [RawKV CDC](https://tikv.org/docs/dev/concepts/explore-tikv-features/cdc/).
+        + Since v6.2.0, Change Data Capture (CDC) for RawKV is supported. Please refer to [RawKV CDC](https://tikv.org/docs/dev/concepts/explore-tikv-features/cdc/cdc).
 + Default value: `1`
 
 > **Warning:**
