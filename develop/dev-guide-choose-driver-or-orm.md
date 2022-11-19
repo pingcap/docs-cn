@@ -254,7 +254,7 @@ go get -u gorm.io/driver/mysql
 
 按照 [PyMySQL 文档](https://pypi.org/project/PyMySQL/)中的说明下载并配置驱动程序即可使用。建议使用 **1.0.2** 及以上版本。
 
-使用 GORM 进行 TiDB 应用程序构建的例子，可参阅 [TiDB 和 Python 的简单 CRUD 应用程序 - 使用 PyMySQL](/develop/dev-guide-sample-application-python.md#第-2-步获取代码)。
+使用 PyMySQL 进行 TiDB 应用程序构建的例子，可参阅 [TiDB 和 Python 的简单 CRUD 应用程序 - 使用 PyMySQL](/develop/dev-guide-sample-application-python.md#第-2-步获取代码)。
 
 </div>
 <div label="mysqlclient">
@@ -263,7 +263,7 @@ go get -u gorm.io/driver/mysql
 
 按照 [mysqlclient 文档](https://mysqlclient.readthedocs.io/)中的说明下载并配置驱动程序即可使用。建议使用 **2.1.1** 及以上版本。
 
-使用 GORM 进行 TiDB 应用程序构建的例子，可参阅 [TiDB 和 Python 的简单 CRUD 应用程序 - 使用 mysqlclient](/develop/dev-guide-sample-application-python.md#第-2-步获取代码)。
+使用 mysqlclient 进行 TiDB 应用程序构建的例子，可参阅 [TiDB 和 Python 的简单 CRUD 应用程序 - 使用 mysqlclient](/develop/dev-guide-sample-application-python.md#第-2-步获取代码)。
 
 </div>
 <div label="mysql-connector-python">
@@ -272,7 +272,7 @@ go get -u gorm.io/driver/mysql
 
 按照 [mysql-connector-python 文档](https://dev.mysql.com/doc/connector-python/en/)中的说明下载并配置驱动程序即可使用。建议使用 **8.0.31** 及以上版本。
 
-使用 GORM 进行 TiDB 应用程序构建的例子，可参阅 [TiDB 和 Python 的简单 CRUD 应用程序 - 使用 mysql-connector-python](/develop/dev-guide-sample-application-python.md#第-2-步获取代码)。
+使用 mysql-connector-python 进行 TiDB 应用程序构建的例子，可参阅 [TiDB 和 Python 的简单 CRUD 应用程序 - 使用 mysql-connector-python](/develop/dev-guide-sample-application-python.md#第-2-步获取代码)。
 
 </div>
 </SimpleTab>
@@ -289,7 +289,7 @@ go get -u gorm.io/driver/mysql
 使用 SQLAlchemy 进行 TiDB 应用程序构建的例子，可参阅 [TiDB 和 Python 的简单 CRUD 应用程序 - 使用 PyMySQL](/develop/dev-guide-sample-application-python.md#第-2-步获取代码)。
 
 </div>
-<div label="SQLAlchemy">
+<div label="peewee">
 
 支持等级：**Verified**
 
