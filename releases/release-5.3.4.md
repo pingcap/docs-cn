@@ -83,22 +83,18 @@ TiDB 版本： 5.3.4
 
     - (dup) 修复当 `GREATEST` 和 `LEAST`  函数传入无符号整型值时，计算结果出错的问题 [#30101](https://github.com/pingcap/tidb/issues/30101)
     - (dup) 修复 `concat(ifnull(time(3))` 的结果与 MySQL 不一致的问题 [#29498](https://github.com/pingcap/tidb/issues/29498)
-    - avoid sum from avg overflow [#29952](https://github.com/pingcap/tidb/issues/29952)
-    - add an unit test case for unreasonable invoking Close [#30587](https://github.com/pingcap/tidb/issues/27125)
-    - HashJoinExec checks the buildError even if the probeSide is empty [#30289](https://github.com/pingcap/tidb/issues/30289)
-    - expression: resize the result for IfXXSig [#37414](https://github.com/pingcap/tidb/issues/37414)
-    - change date_add and date_sub string_(int/string/real/decimal) function return type to string. [#27573](https://github.com/pingcap/tidb/issues/27573)
-    - fix hashjoin goleak [#39026](https://github.com/pingcap/tidb/issues/39026)
-    - fix: the results of tikv and tiflash are different [#37258](https://github.com/pingcap/tidb/issues/37258)
+    - 修复当从 TiFlash 查询  avg() 函数时，返回错误 `ERROR 1105 (HY000): other error for mpp stream: Could not convert to the target type - -value is out of range.` 的问题 [#29952](https://github.com/pingcap/tidb/issues/29952)
+    - 修复查询时候 HashJoin 时候，返回错误 `ERROR 1105 (HY000): close of nil channel`  的问题[#30289](https://github.com/pingcap/tidb/issues/30289)
+    - 修复 date_add 和 date_sub 函数返回类型与 MySQL 不一致的问题。修改 date_add 和 date_sub 函数在第一个参数类型为 string, 第二个参数类型为 int/string/real/decimal 时的返回类型到 string 类型 [#27573](https://github.com/pingcap/tidb/issues/27573)
+    - 修复 tikv 和 tiflash 在进行逻辑运算时结果不一致的问题 [#37258](https://github.com/pingcap/tidb/issues/37258)
 
     <!--transaction owner: @cfzjywxk-->
 
     <!--planner owner: @qw4990-->
 
-    - (dup) 修复某些情况下，`EXECUTE` 语句可能抛出非预期异常的问题 [#37187](https://github.com/pingcap/tidb/issues/37187)
-    - (dup) 修复当 `ORDER BY` 子句里包含关联子查询时与 `GROUP CONCAT` 一起执行可能会导致出错的问题 [#18216](https://github.com/pingcap/tidb/issues/18216)
-    - Fix the issue that set wrong length and width for Decimal and Real when using plan-cache [#29565](https://github.com/pingcap/tidb/issues/29565)
-    - add an unit test case for unreasonable invoking Close [#27125](https://github.com/pingcap/tidb/issues/27125)
+    - 修复了某些情况下，`EXECUTE` 语句可能抛出非预期异常的问题 [#37187](https://github.com/pingcap/tidb/issues/37187)
+    - 修复了当 `ORDER BY` 子句里包含关联子查询时与 `GROUP CONCAT` 一起执行可能会导致出错的问题 [#18216](https://github.com/pingcap/tidb/issues/18216)
+    - 修复了走 Plan Cache 时，由于 Decimal 和 Real 的 length 和 width 被错误设置导致的结果错误的问题 [#29565](https://github.com/pingcap/tidb/issues/29565)
 
 + TiKV
 
@@ -109,7 +105,7 @@ TiDB 版本： 5.3.4
     <!--owner: @nolouch-->
 
     - (dup) 修复 PD 无法正确处理 dashboard 代理请求的问题 [#5321](https://github.com/tikv/pd/issues/5321)
-    - (dup) 修复 PD 可能没创建 TiFlash Learner 副本的问题 [#5401](https://github.com/tikv/pd/issues/5401)
+    - (dup) 修复 PD 在特定条件下不会创建 TiFlash Learner 副本的问题 [#5401](https://github.com/tikv/pd/issues/5401)
     - (dup) 修复 Stream 超时问题，提高 Leader 切换的速度 [#5207](https://github.com/tikv/pd/issues/5207)
 
 + TiFlash
