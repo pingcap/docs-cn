@@ -1,12 +1,12 @@
 ---
-title: 创建数据迁移任务
+title: 创建 TiDB Data Migration 数据迁移任务
 summary: 了解 TiDB Data Migration 如何创建数据迁移任务。
 aliases: ['/docs-cn/tidb-data-migration/dev/create-task/']
 ---
 
-# 创建数据迁移任务
+# 创建 TiDB Data Migration 数据迁移任务
 
-`start-task` 命令用于创建数据迁移任务。当数据迁移任务启动时，DM 将[自动对相应权限和配置进行前置检查](/dm/dm-precheck.md)。
+`start-task` 命令用于创建数据迁移任务。当数据迁移任务启动时，TiDB Data Migration (DM) 将[自动对相应权限和配置进行前置检查](/dm/dm-precheck.md)。
 
 {{< copyable "" >}}
 
