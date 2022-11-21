@@ -109,6 +109,7 @@ table resolved TS >= local resolved TS >= global Resolved TS >= table checkpoint
 TiCDC 是通过对 global checkpoint TS 和 barrier TS 进行比较来确定数据是否已经同步到 barrier TS 的。如果 global checkpoint TS = barrier TS，则说明所有表都至少推进到 barrier TS 了。如果等式不成立，说明有表还没推进到该 barrier TS ，在这种情况下也不会更新 barrier TS ，因此不会有表的 sink 节点对应 resolved TS 会超过 barrier TS，即不会有表的 check point TS 超过 barrier TS。
 
 ## 主要流程
+
 最后，对 TiCDC 软件的常见操作所对应的主要流程进行介绍，帮助用户更好的理解 TiCDC 的工作原理。
 启动 TiCDC 节点：
 
