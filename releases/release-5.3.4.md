@@ -112,12 +112,11 @@ TiDB 版本： 5.3.4
 
     <!--compute owner: @zanmato1984-->
 
-    - fix: the results of tikv and tiflash are different [#5849](https://github.com/pingcap/tiflash/issues/5849)
-    - fix inconsistent result before deleting some rows [#6127](https://github.com/pingcap/tiflash/issues/6127)
+    - 修复逻辑运算符在 UInt8 类型下查询结果出错的问题 [#6127](https://github.com/pingcap/tiflash/issues/6127)
 
     <!--storage owner: @flowbehappy-->
 
-    - Fix an invalid default value cause bootstrap failed [#3157](https://github.com/pingcap/tiflash/issues/3157)
+    - 修复由于使用 `0.0` 作为整数类型的默认值导致 TiFlash 节点失败的问题。比如 `i` int(11) NOT NULL DEFAULT '0.0' [#3157](https://github.com/pingcap/tiflash/issues/3157)
 
 + Tools
 
@@ -129,11 +128,12 @@ TiDB 版本： 5.3.4
 
     <!--owner: @niubell-->
 
+    - 修复 dumpling 同时指定 `--compress` 配置和 s3 导出目录时无法导出的问题 [#30534](https://github.com/pingcap/tidb/issues/30534)
     + TiCDC
 
     <!--owner: @nongfushanquan-->
 
-        - use white list for retryable error [#6698](https://github.com/pingcap/tiflow/issues/6698)
+        - 修复一个由于没有及时上报 MySQL 相关错误导致同步任务状态不正确的问题 [#6698](https://github.com/pingcap/tiflow/issues/6698)
 
     + TiDB Binlog
 
