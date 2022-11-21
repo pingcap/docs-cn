@@ -130,7 +130,6 @@ TiCDC 是通过对 global checkpoint TS 和 barrier TS 进行比较来确定数�
   6. 读取各 Processor 当前同步的表的列表，分发需要添加的表
   7. 更新进度信息
 
-
 停止 TiCDC 节点:  通常来说，停止 TiCDC 节点是为了对 TiCDC 进行升级或者对 TiCDC 所在的节点进行一些计划的维护操作。 在停止一个 TiCDC 节点时：
 
   1. 这个节点会收到停止的信号
