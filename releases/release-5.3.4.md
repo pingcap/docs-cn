@@ -75,9 +75,9 @@ TiDB 版本： 5.3.4
     - (dup) 修复数据库级别的权限清理不正确的问题 [#38363](https://github.com/pingcap/tidb/issues/38363)
     - (dup) 修复 `mysql.tables_priv` 表中 `grantor` 字段缺失的问题 [#38293](https://github.com/pingcap/tidb/issues/38293)
     - (dup)  修复 `KILL TIDB` 在空闲链接上无法立即生效的问题 [#24031](https://github.com/pingcap/tidb/issues/24031)
-    - change date_add and date_sub string_(int/string/real/decimal) function return type to string [#36394](https://github.com/pingcap/tidb/issues/36394)
-    - fix(parser): restore table option INSERT_METHOD should use WriteKeyWord [#38368](https://github.com/pingcap/tidb/issues/38368)
-    - fix authentication with MySQL 5.1 and older clients [#29725](https://github.com/pingcap/tidb/issues/29725)
+    - 修复 `adddate` 和 `subdate` 函数返回值类型的问题 [#36394](https://github.com/pingcap/tidb/issues/36394)
+    - 修复 Parser 恢复 `table option` 中 `INSERT_METHOD` 字段错误的问题 [#38368](https://github.com/pingcap/tidb/issues/38368)
+    - 修复 MySQL 5.1 及之前客户端连接 TiDB Server 鉴权失败的问题 [#29725](https://github.com/pingcap/tidb/issues/29725)
 
     <!--executor owner: @zanmato1984-->
 
