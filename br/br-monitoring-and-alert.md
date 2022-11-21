@@ -43,7 +43,7 @@ summary: BR 监控告警介绍。
 | **tikv_log_backup_flush_file_size**                   | Histogram | 备份产生的文件的大小统计。                                                                                                                                   |
 | **tikv_log_backup_initial_scan_duration_sec**         | Histogram | 增量扫的整体耗时统计。                                                                                                                                     |
 | **tikv_log_backup_skip_retry_observe**                | Counter   | 在日志备份过程中，遇到的可忽略错误的统计，即放弃 retry 的原因。 <br/>`reason :: {"region-absent", "not-leader", "stale-command"}`                                           |
-| **tikv_log_backup_initial_scan_operations**           | Counter   | 增量扫过程中， RocksDB 相关的操作统计。<br/>`cf :: {"default", "write", "lock"}, op :: RocksDBOP`                                                              |
+| **tikv_log_backup_initial_scan_operations**           | Counter   | 增量扫过程中，RocksDB 相关的操作统计。<br/>`cf :: {"default", "write", "lock"}, op :: RocksDBOP`                                                              |
 | **tikv_log_backup_enabled**                           | Counter   | 日志备份功能是否开启，若值大于 0，表示开启                                                                                                                          |
 | **tikv_log_backup_observed_region**                   | Gauge     | 被监听的 Region 数量                                                                                                                                  |
 | **tikv_log_backup_task_status**                       | Gauge     | 日志备份任务状态，0-Running 1-Paused 2-Error <br/>`task :: string`                                                                                       |
