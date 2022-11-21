@@ -8,61 +8,13 @@ title: TiDB 5.3.4 Release Note
 
 TiDB 版本： 5.3.4
 
-## 兼容性变更
-
 ## 提升改进
-
-+ TiDB
-
-    <!--sql-infra owner: @Defined2014-->
-
-    <!--executor owner: @zanmato1984-->
-
-    <!--transaction owner: @cfzjywxk-->
-
-    <!--planner owner: @qw4990-->
 
 + TiKV
 
     <!--owner: @v01dstar-->
 
     - (dup) 当 TLS 证书更新时自动重新加载，以提升可用性 [#12546](https://github.com/tikv/tikv/issues/12546)
-
-+ PD
-
-    <!--owner: @nolouch-->
-
-+ TiFlash
-
-    <!--compute owner: @zanmato1984-->
-
-    <!--storage owner: @flowbehappy-->
-
-+ Tools
-
-    + Backup & Restore (BR)
-
-    <!--owner: @3pointer-->
-
-    + Dumpling
-
-    <!--owner: @niubell-->
-
-    + TiCDC
-
-    <!--owner: @nongfushanquan-->
-
-    + TiDB Binlog
-
-    <!--owner: @niubell-->
-
-    + TiDB Lightning
-
-    <!--owner: @niubell-->
-
-    + TiDB Data Migration (DM)
-
-    <!--owner: @niubell-->
 
 ## Bug 修复
 
@@ -90,15 +42,14 @@ TiDB 版本： 5.3.4
 
     <!--transaction owner: @cfzjywxk-->
 
+    - 修复带 DML 算子的 `EXPLAIN ANALYZE` 语句可能在事务提交完成前返回结果的问题 [#37373](https://github.com/pingcap/tidb/issues/37373)
+    - 修复合并多个 Region 后 Region 缓存没有正确清理的问题 [#37174](https://github.com/pingcap/tidb/issues/37174)
+
     <!--planner owner: @qw4990-->
 
-    - 修复了某些情况下，`EXECUTE` 语句可能抛出非预期异常的问题 [#37187](https://github.com/pingcap/tidb/issues/37187)
-    - 修复了当 `ORDER BY` 子句里包含关联子查询时与 `GROUP CONCAT` 一起执行可能会导致出错的问题 [#18216](https://github.com/pingcap/tidb/issues/18216)
+    - (dup) 修复了某些情况下，`EXECUTE` 语句可能抛出非预期异常的问题 [#37187](https://github.com/pingcap/tidb/issues/37187)
+    - (dup) 修复了当 `ORDER BY` 子句里包含关联子查询时与 `GROUP CONCAT` 一起执行可能会导致出错的问题 [#18216](https://github.com/pingcap/tidb/issues/18216)
     - 修复了走 Plan Cache 时，由于 Decimal 和 Real 的 length 和 width 被错误设置导致的结果错误的问题 [#29565](https://github.com/pingcap/tidb/issues/29565)
-
-+ TiKV
-
-    <!--owner: @v01dstar-->
 
 + PD
 
@@ -120,29 +71,15 @@ TiDB 版本： 5.3.4
 
 + Tools
 
-    + Backup & Restore (BR)
-
-    <!--owner: @3pointer-->
-
     + Dumpling
 
     <!--owner: @niubell-->
 
-    - 修复 dumpling 同时指定 `--compress` 配置和 s3 导出目录时无法导出的问题 [#30534](https://github.com/pingcap/tidb/issues/30534)
+        - 修复 dumpling 同时指定 `--compress` 配置和 s3 导出目录时无法导出的问题 [#30534](https://github.com/pingcap/tidb/issues/30534)
+
     + TiCDC
 
     <!--owner: @nongfushanquan-->
 
         - 修复一个由于没有及时上报 MySQL 相关错误导致同步任务状态不正确的问题 [#6698](https://github.com/pingcap/tiflow/issues/6698)
 
-    + TiDB Binlog
-
-    <!--owner: @niubell-->
-
-    + TiDB Lightning
-
-    <!--owner: @niubell-->
-
-    + TiDB Data Migration (DM)
-
-    <!--owner: @niubell-->
