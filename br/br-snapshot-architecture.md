@@ -59,7 +59,7 @@ summary: 了解 TiDB 快照备份与恢复功能的架构设计。
 
 2. BR 调度恢复数据。
     * **Pause Region schedule**：请求 PD 在恢复期间关闭自动 Region schedule。
-    * **Restore schema**：读取备份数据的 schema、恢复的 database 和 table（注意新建表的 table id 与备份数据可能不一样）。
+    * **Restore schema**：读取备份数据的 schema、恢复的 database 和 table（注意新建表的 table ID 与备份数据可能不一样）。
     * **Split & scatter Region**：BR 基于备份数据信息，请求 PD 分配 Region (split Region)，并调度 Region 均匀分布到存储节点上 (scatter Region)。每个 Region 都有明确的数据范围 [start key, end key)。
     * **Request TiKV to restore data**：根据 PD 分配的 Region 结果，发送恢复请求到对应的 TiKV 节点，恢复请求包含要恢复的备份数据及 rewrite 规则。
 
