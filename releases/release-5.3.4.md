@@ -42,7 +42,7 @@ TiDB 版本： 5.3.4
 
     <!--transaction owner: @cfzjywxk-->
 
-    - 修复带 DML 算子的 `EXPLAIN ANALYZE` 语句可能在事务提交完成前返回结果的问题 [#37373](https://github.com/pingcap/tidb/issues/37373)
+    - (dup) 修复带 DML 算子的 `EXPLAIN ANALYZE` 语句可能在事务提交完成前返回结果的问题 [#37373](https://github.com/pingcap/tidb/issues/37373)
     - 修复合并多个 Region 后 Region 缓存没有正确清理的问题 [#37174](https://github.com/pingcap/tidb/issues/37174)
 
     <!--planner owner: @qw4990-->
