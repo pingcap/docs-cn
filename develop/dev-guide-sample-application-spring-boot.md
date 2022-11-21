@@ -27,9 +27,9 @@ aliases: ['/zh/tidb/dev/sample-application-spring-boot']
 
 本节将介绍 TiDB 集群的启动方法。
 
-### 使用 TiDB Cloud 免费集群
+### 使用 TiDB Cloud Serverless Tier 集群
 
-[创建免费集群](/develop/dev-guide-build-cluster-in-cloud.md#第-1-步创建免费集群)
+[创建 Serverless Tier 集群](/develop/dev-guide-build-cluster-in-cloud.md#第-1-步创建-serverless-tier-集群)
 
 ### 使用本地集群
 
@@ -244,7 +244,7 @@ aliases: ['/zh/tidb/dev/sample-application-spring-boot']
 
 ### 第 5 步第 1 部分：TiDB Cloud 更改参数
 
-若你使用非本地默认集群、TiDB Cloud 或其他远程集群，更改 `application.yml` (位于 `src/main/resources` 内) 关于 spring.datasource.url、spring.datasource.username、spring.datasource.password 的参数：
+若你使用 TiDB Cloud Serverless Tier 集群，更改 `application.yml`（位于 `src/main/resources` 内）关于 `spring.datasource.url`、`spring.datasource.username`、`spring.datasource.password` 的参数：
 
 ```yaml
 spring:
@@ -260,19 +260,19 @@ spring:
       ddl-auto: create-drop
 ```
 
-若你设定的密码为 `123456`，而且从 TiDB Cloud 得到的连接字符串为：
+若你设定的密码为 `123456`，而且从 TiDB Cloud Serverless Tier 集群面板中得到的连接信息为：
 
-```
-mysql --connect-timeout 15 -u root -h xxx.tidbcloud.com -P 4000 -p
-```
+- Endpoint: `xxx.tidbcloud.com`
+- Port: `4000`
+- User: `2aEp24QWEDLqRFs.root`
 
 那么此处应将参数更改为：
 
 ```yaml
 spring:
   datasource:
-    url: jdbc:mysql://xxx.tidbcloud.com:4000/test
-    username: root
+    url: jdbc:mysql://xxx.tidbcloud.com:4000/test?sslMode=VERIFY_IDENTITY&enabledTLSProtocols=TLSv1.2,TLSv1.3
+    username: 2aEp24QWEDLqRFs.root
     password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:

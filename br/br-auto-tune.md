@@ -7,7 +7,7 @@ summary: 了解 BR 自动调节功能，在集群资源占用率较高的情况�
 
 在 TiDB v5.4.0 之前，默认情况下，使用 BR 工具进行备份任务时使用的线程数量占总逻辑 CPU 数量的 75%。在没有限速的前提下，备份会消耗大量的集群资源，这会对在线集群的性能造成相当大的影响。虽然你可以通过调节线程池的大小的方式来减少备份对集群性能的影响，但观察负载、手动调节线程池大小也是一件繁琐的事情。
 
-为了减少备份任务对在线集群的影响，从 TiDB v5.4.0 起，BR 引入了自动调节功能，此功能会默认开启。在集群资源占用率较高的情况下，BR 可以通过该功能自动限制备份使用的资源，从而减少对集群的影响。
+为了减少备份任务对在线集群的影响，从 TiDB v5.4.0 起，BR 引入了自动调节功能，此功能默认开启。在集群资源占用率较高的情况下，BR 可以通过该功能自动限制备份使用的资源，从而减少对集群的影响。
 
 ## 使用场景
 
@@ -26,8 +26,6 @@ summary: 了解 BR 自动调节功能，在集群资源占用率较高的情况�
 如需开启 BR 自动调节功能，可以通过把 TiKV 配置项 [`backup.enable-auto-tune`](/tikv-configuration-file.md#enable-auto-tune-从-v54-版本开始引入) 设置为 `true` 的方式来完成。
 
 TiKV 支持[动态配置](/tikv-control.md#动态修改-tikv-的配置)自动调节功能，因此，在开启或关闭该功能时，无需重启集群。你可以运行以下命令动态启动或停止 BR 自动调节功能：
-
-{{< copyable "shell-regular" >}}
 
 ```shell
 tikv-ctl modify-tikv-config -n backup.enable-auto-tune -v <true|false>
@@ -74,7 +72,7 @@ tikv-ctl modify-tikv-config -n backup.enable-auto-tune -v <true|false>
 |^^^^**--| 由于集群的工作负载加重，自动调节将备份任务的线程池大小调节至 `2`。调节后，集群中仍有 2 个 CPU 核心数保持空闲。
 ```
 
-在监控面板的 “Backup CPU Utilization” 中，可以看到自动限流目前选择的线程池的大小：
+在监控面板的“Backup CPU Utilization”中，可以看到自动限流目前选择的线程池的大小：
 
 ![Grafana dashboard example of backup auto-tune metrics](/media/br/backup-auto-throttle.png)
 
