@@ -7,6 +7,8 @@ summary: 了解 DM 的分库分表合并功能。
 
 TiDB Data Migration (DM) 支持将上游 MySQL/MariaDB 各分库分表中的 DML、DDL 数据合并后迁移到下游 TiDB 的库表中。
 
+如果你需要从小数据量分库分表 MySQL 合并迁移数据到 TiDB，请参考[这篇文档](/migrate-small-mysql-shards-to-tidb.md)
+
 ## 使用限制
 
 目前分库分表合并功能仅支持有限的场景，使用该功能前，请仔细阅读[悲观模式分库分表合并迁移使用限制](/dm/feature-shard-merge-pessimistic.md#使用限制)和[乐观模式分库分表合并迁移使用限制](/dm/feature-shard-merge-optimistic.md#使用限制)。
