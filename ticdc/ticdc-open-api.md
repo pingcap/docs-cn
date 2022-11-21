@@ -5,7 +5,7 @@ summary: 了解如何使用 OpenAPI 接口来管理集群状态和数据同步�
 
 # TiCDC OpenAPI
 
-TiCDC 提供 OpenAPI 功能，用户可通过 OpenAPI 对 TiCDC 集群进行查询和运维操作。OpenAPI 的总体功能和 [`cdc cli` 工具](/ticdc/manage-ticdc.md#使用-cdc-cli-工具来管理集群状态和数据同步)类似。
+TiCDC 提供 OpenAPI 功能，用户可通过 OpenAPI 对 TiCDC 集群进行查询和运维操作。OpenAPI 的总体功能和 [`cdc cli` 工具](/ticdc/ticdc-manage-changefeed.md)类似。
 
 你可以通过 OpenAPI 完成 TiCDC 集群的如下运维操作：
 
@@ -122,7 +122,7 @@ curl -X GET http://127.0.0.1:8300/api/v1/health
 | `mounter_worker_num`      | `INT` 类型，mounter 线程数。（非必选）                   |
 | `sink_config`             | sink 的配置参数。（非必选）                            |
 
-`changefeed_id`、`start_ts`、`target_ts`、`sink_uri` 的含义和格式与 [使用 cli 创建同步任务](/ticdc/manage-ticdc.md#创建同步任务)中所作的解释相同，具体解释请参见该文档。需要注意，当在 `sink_uri` 中指定证书的路径时，须确保已将对应证书上传到对应的 TiCDC server 上。
+`changefeed_id`、`start_ts`、`target_ts`、`sink_uri` 的含义和格式与 [使用 cli 创建同步任务](/ticdc/ticdc-changefeed-config.md)中所作的解释相同，具体解释请参见该文档。需要注意，当在 `sink_uri` 中指定证书的路径时，须确保已将对应证书上传到对应的 TiCDC server 上。
 
 下面会对一些需要补充说明的参数进行进一步阐述。
 
@@ -296,7 +296,7 @@ curl -X GET http://127.0.0.1:8300/api/v1/changefeeds?state=normal
 此处对以上返回的信息做进一步阐述：
 
 - id：同步任务的 ID
-- state：同步任务当前所处的[状态](/ticdc/manage-ticdc.md#同步任务状态流转)。
+- state：同步任务当前所处的[状态](/ticdc/ticdc-changefeed-overview.md#changefeed-状态流转)。
 - checkpoint_tso：同步任务当前 checkpoint 的 TSO 表示。
 - checkpoint_time：同步任务当前 checkpoint 的格式化时间表示。
 - error：同步任务的错误信息。

@@ -8,7 +8,7 @@ aliases: ['/docs-cn/dev/ticdc/ticdc-overview/','/docs-cn/dev/reference/tools/tic
 [TiCDC](https://github.com/pingcap/tiflow/tree/master/cdc) 是一款 TiDB 增量数据同步工具，通过拉取上游 TiKV 的数据变更日志，TiCDC 可以将数据解析为有序的行级变更数据输出到下游。
 
 ## TiCDC 适用场景
- 
+
 - 提供多 TiDB 集群，跨区域数据高可用和容灾方案，保证在灾难发生时保证主备集群数据的最终一致性。
 - 提供同步实时变更数据到异构系统的服务，为监控、缓存、全文索引、数据分析、异构数据库使用等场景提供数据源。
 
@@ -43,12 +43,11 @@ aliases: ['/docs-cn/dev/ticdc/ticdc-overview/','/docs-cn/dev/reference/tools/tic
 
 > **注意：**
 >
-> 从 v6.2 版本起，你可以通过配置 sink uri 参数 [`transaction-atomicity`](/ticdc/manage-ticdc.md#sink-uri-配置-mysqltidb) 来控制 TiCDC 是否拆分单表事务。拆分事务可以大幅降低 MySQL sink 同步大事务的延时和内存消耗。
-
+> 从 v6.2 版本起，你可以通过配置 sink uri 参数 [`transaction-atomicity`](/ticdc/ticdc-sink-to-mysql.md#sink-uri-配置-mysqltidb) 来控制 TiCDC 是否拆分单表事务。拆分事务可以大幅降低 MySQL sink 同步大事务的延时和内存消耗。
 
 ## TiCDC 架构
 
-TiCDC 作为 TiDB 的增量数据同步工具，通过 PD 内部的 etcd 实现高可用，通过多个 TiCDC 进程获取 TiKV 节点上的数据改变，在内部进行排序、合并等处理之后，通过多个同步任务(Changefeed)，同时向多个下游系统进行数据同步。
+TiCDC 作为 TiDB 的增量数据同步工具，通过 PD 内部的 etcd 实现高可用，通过多个 TiCDC 进程获取 TiKV 节点上的数据改变，在内部进行排序、合并等处理之后，通过多个同步任务 (Changefeed)，同时向多个下游系统进行数据同步。
 
 ![TiCDC architecture](/media/ticdc/cdc-architecture.png)
 
@@ -73,7 +72,7 @@ TiCDC 只能同步至少存在一个**有效索引**的表，**有效索引**的
     - 索引中每一列在表结构中明确定义非空 (`NOT NULL`)。
     - 索引中不存在虚拟生成列 (`VIRTUAL GENERATED COLUMNS`)。
 
-TiCDC 从 4.0.8 版本开始，可通过修改任务配置来同步**没有有效索引**的表，但在数据一致性的保证上有所减弱。具体使用方法和注意事项参考[同步没有有效索引的表](/ticdc/manage-ticdc.md#同步没有有效索引的表)。
+TiCDC 从 4.0.8 版本开始，可通过修改任务配置来同步**没有有效索引**的表，但在数据一致性的保证上有所减弱。具体使用方法和注意事项参考[同步没有有效索引的表](/ticdc/ticdc-manage-changefeed.md#同步没有有效索引的表)。
 
 ### 暂不支持的场景
 

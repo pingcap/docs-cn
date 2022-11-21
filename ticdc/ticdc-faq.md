@@ -64,7 +64,7 @@ cdc cli changefeed list --pd=http://10.0.10.25:2379
 
 在 TiCDC 中启用了这一功能，用来保证 TiCDC 在不可用、或同步任务中断情况下，可以在 TiKV 内保留 TiCDC 需要消费的数据不被 GC 清理掉。
 
-启动 TiCDC server 时可以通过 `gc-ttl` 指定 GC safepoint 的 TTL，也可以[通过 TiUP 修改](/ticdc/manage-ticdc.md#使用-tiup-修改-ticdc-配置) TiCDC 的 `gc-ttl`，默认值为 24 小时。在 TiCDC 中这个值有如下两重含义：
+启动 TiCDC server 时可以通过 `gc-ttl` 指定 GC safepoint 的 TTL，也可以[通过 TiUP 修改](/ticdc/deploy-ticdc.md#使用-tiup-变更-ticdc-集群配置) TiCDC 的 `gc-ttl`，默认值为 24 小时。在 TiCDC 中这个值有如下两重含义：
 
 - 当 TiCDC 服务全部停止后，由 TiCDC 在 PD 所设置的 GC safepoint 保存的最长时间。
 - TiCDC 中某个同步任务中断或者被手动停止时所能停滞的最长时间，若同步任务停滞时间超过 `gc-ttl` 所设置的值，那么该同步任务就会进入 `failed` 状态，无法被恢复，并且不会继续影响 GC safepoint 的推进。
@@ -121,7 +121,7 @@ cdc cli changefeed create --pd=http://10.0.10.25:2379 --sink-uri="kafka://127.0.
 > * 该功能在 TiCDC 4.0.2 版本引入。
 > * 目前 TiCDC 仅支持将 Canal 格式的变更数据输出到 MQ 类的 Sink（例如 Kafka）。
 
-更多信息请参考[创建同步任务](/ticdc/manage-ticdc.md#创建同步任务)。
+更多信息请参考 [TiCDC Changefeed 配置参数](/ticdc/ticdc-changefeed-config.md)。
 
 ## 为什么 TiCDC 到 Kafka 的同步任务延时越来越大？
 
@@ -196,7 +196,7 @@ TiCDC 对大事务（大小超过 5 GB）提供部分支持，根据场景不同
 + 当 TiCDC 内部处理能力不足时，可能出现同步任务报错 `ErrBufferReachLimit`。
 + 当 TiCDC 内部处理能力不足或 TiCDC 下游吞吐能力不足时，可能出现内存溢出 (OOM)。
 
-从 v6.2 版本开始，TiCDC 支持拆分单表事务功能，可大幅降低同步大事务的延时和内存消耗。因此，在业务对事务原子性要求不高的场景下，建议通过设置 sink uri 参数 [`transaction-atomicity`](/ticdc/manage-ticdc.md#sink-uri-配置-mysqltidb) 打开拆分事务功能以解决可能出现的同步延迟和 OOM 问题。
+从 v6.2 版本开始，TiCDC 支持拆分单表事务功能，可大幅降低同步大事务的延时和内存消耗。因此，在业务对事务原子性要求不高的场景下，建议通过设置 sink uri 参数 [`transaction-atomicity`](/ticdc/ticdc-sink-to-mysql.md#sink-uri-配置-mysqltidb) 打开拆分事务功能以解决可能出现的同步延迟和 OOM 问题。
 
 如果实际同步过程中仍然遇到了上述错误，建议将包含大事务部分的增量数据通过 BR 进行增量恢复，具体操作如下：
 

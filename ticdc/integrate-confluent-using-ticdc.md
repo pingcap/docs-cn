@@ -94,7 +94,7 @@ Confluent 是一个兼容 Apache Kafka 的数据流平台，能够访问、存�
     ]
     ```
 
-    关于配置文件中 `dispatchers` 的详细解释，参考[自定义 Kafka Sink 的 Topic 和 Partition 的分发规则](/ticdc/manage-ticdc.md#自定义-kafka-sink-的-topic-和-partition-的分发规则)。
+    关于配置文件中 `dispatchers` 的详细解释，参考[自定义 Kafka Sink 的 Topic 和 Partition 的分发规则](/ticdc/ticdc-sink-to-kafka.md#自定义-kafka-sink-的-topic-和-partition-的分发规则)。
 
 2. 创建一个 changefeed，将增量数据输出到 Confluent Cloud：
 
@@ -133,7 +133,7 @@ Confluent 是一个兼容 Apache Kafka 的数据流平台，能够访问、存�
     tiup ctl:<cluster-version> cdc changefeed list --pd="http://127.0.0.1:2379"
     ```
 
-    可以参考 [TiCDC 运维操作及任务管理](/ticdc/manage-ticdc.md)对 changefeed 状态进行管理。
+    可以参考 [管理 Changefeed](/ticdc/ticdc-manage-changefeed.md)对 changefeed 状态进行管理。
 
 ### 第 4 步：写入数据以产生变更日志
 

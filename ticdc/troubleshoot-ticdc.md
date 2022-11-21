@@ -124,7 +124,7 @@ cdc cli changefeed create --sink-uri="mysql://root@127.0.0.1:3306/?time-zone=CST
 
 ## 如何处理升级 TiCDC 后配置文件不兼容的问题？
 
-请参阅[配置文件兼容注意事项](/ticdc/manage-ticdc.md#配置文件兼容性的注意事项)。
+请参阅[配置文件兼容注意事项](/ticdc/ticdc-compatibility.md#命令行参数和配置文件兼容性)。
 
 ## TiCDC 启动任务的 start-ts 时间戳与当前时间差距较大，任务执行过程中同步中断，出现错误 `[CDC:ErrBufferReachLimit]`，怎么办？
 

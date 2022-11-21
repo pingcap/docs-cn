@@ -335,7 +335,7 @@ GC Compaction Filter 特性将这两个任务合并在同一个任务中完成�
 
 ### TiCDC 稳定性提升，缓解同步过多增量变更数据的 OOM 问题
 
-[用户文档](/ticdc/manage-ticdc.md#unified-sorter-功能)，[#1150](https://github.com/pingcap/tiflow/issues/1150)
+[用户文档](/ticdc/ticdc-manage-changefeed.md#unified-sorter-功能)，[#1150](https://github.com/pingcap/tiflow/issues/1150)
 
 自 v4.0.9 版本起，TiCDC 引入变更数据本地排序功能 Unified Sorter。在 5.0 版本，默认开启此功能以缓解类似场景下的 OOM 问题：
 

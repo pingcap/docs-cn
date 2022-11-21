@@ -1,6 +1,7 @@
 ---
 title: 管理 Changefeed
-summary: 了解 Changefeed 相关的各种管理手段
+summary: 了解 Changefeed 相关的各种管理手段。
+aliases: ['/zh/tidb/dev/manage-ticdc/']
 ---
 
 # 管理 Changefeed
@@ -17,7 +18,7 @@ summary: 了解 Changefeed 相关的各种管理手段
 cdc cli changefeed list --server=http://10.0.10.25:8300
 ```
 
-```
+```shell
 [{
     "id": "simple-replication-task",
     "summary": {
@@ -31,11 +32,12 @@ cdc cli changefeed list --server=http://10.0.10.25:8300
 
 - `checkpoint` 即为 TiCDC 已经将该时间点前的数据同步到了下游。
 - `state` 为该同步任务的状态：
-    - `normal`: 正常同步
-    - `stopped`: 停止同步（手动暂停）
-    - `error`: 停止同步（出错）
-    - `removed`: 已删除任务（只在指定 `--all` 选项时才会显示该状态的任务。未指定时，可通过 `query` 查询该状态的任务）
-    - `finished`: 任务已经同步到指定 `target-ts`，处于已完成状态（只在指定 `--all` 选项时才会显示该状态的任务。未指定时，可通过 `query` 查询该状态的任务）。
+
+  - `normal`: 正常同步
+  - `stopped`: 停止同步（手动暂停）
+  - `error`: 停止同步（出错）
+  - `removed`: 已删除任务（只在指定 `--all` 选项时才会显示该状态的任务。未指定时，可通过 `query` 查询该状态的任务）
+  - `finished`: 任务已经同步到指定 `target-ts`，处于已完成状态（只在指定 `--all` 选项时才会显示该状态的任务。未指定时，可通过 `query` 查询该状态的任务）。
 
 ## 查询特定同步任务
 
@@ -47,7 +49,7 @@ cdc cli changefeed list --server=http://10.0.10.25:8300
 cdc cli changefeed query -s --server=http://10.0.10.25:8300 --changefeed-id=simple-replication-task
 ```
 
-```
+```shell
 {
  "state": "normal",
  "tso": 419035700154597378,
@@ -69,7 +71,7 @@ cdc cli changefeed query -s --server=http://10.0.10.25:8300 --changefeed-id=simp
 cdc cli changefeed query --server=http://10.0.10.25:8300 --changefeed-id=simple-replication-task
 ```
 
-```
+```shell
 {
   "info": {
     "sink-uri": "mysql://127.0.0.1:3306/?max-txn-row=20\u0026worker-number=4",
@@ -132,9 +134,10 @@ cdc cli changefeed query --server=http://10.0.10.25:8300 --changefeed-id=simple-
 
 - `info` 代表查询 changefeed 的同步配置。
 - `status` 代表查询 changefeed 的同步状态信息。
-    - `resolved-ts` 代表当前 changefeed 中已经成功从 TiKV 发送到 TiCDC 的最大事务 TS。
-    - `checkpoint-ts` 代表当前 changefeed 中已经成功写入下游的最大事务 TS。
-    - `admin-job-type` 代表一个 changefeed 的状态：
+
+  - `resolved-ts` 代表当前 changefeed 中已经成功从 TiKV 发送到 TiCDC 的最大事务 TS。
+  - `checkpoint-ts` 代表当前 changefeed 中已经成功写入下游的最大事务 TS。
+  - `admin-job-type` 代表一个 changefeed 的状态：
         - `0`: 状态正常。
         - `1`: 任务暂停，停止任务后所有同步 `processor` 会结束退出，同步任务的配置和同步状态都会保留，可以从 `checkpoint-ts` 恢复任务。
         - `2`: 任务恢复，同步任务从 `checkpoint-ts` 继续同步。
@@ -215,7 +218,7 @@ cdc cli changefeed resume -c test-cf --server=http://10.0.10.25:8300
     cdc cli processor list --server=http://10.0.10.25:8300
     ```
 
-    ```
+    ```shell
     [
             {
                     "id": "9f84ff74-abf9-407f-a6e2-56aa35b33888",
@@ -233,7 +236,7 @@ cdc cli changefeed resume -c test-cf --server=http://10.0.10.25:8300
     cdc cli processor query --server=http://10.0.10.25:8300 --changefeed-id=simple-replication-task --capture-id=b293999a-4168-4988-a4f4-35d9589b226b
     ```
 
-    ```
+    ```shell
     {
       "status": {
         "tables": {
@@ -257,7 +260,6 @@ cdc cli changefeed resume -c test-cf --server=http://10.0.10.25:8300
 - `status.tables` 中每一个作为 key 的数字代表同步表的 id，对应 TiDB 中表的 tidb_table_id。
 - `resolved-ts` 代表当前 processor 中已经排序数据的最大 TSO。
 - `checkpoint-ts` 代表当前 processor 已经成功写入下游的事务的最大 TSO。
-
 
 ## 输出行变更的历史值 <span class="version-mark">从 v4.0.5 版本开始引入</span>
 
@@ -296,8 +298,8 @@ force-replicate = true
 
 Unified Sorter 是 TiCDC 中的排序引擎功能，用于缓解以下场景造成的内存溢出问题：
 
-+ 如果 TiCDC 数据订阅任务的暂停中断时间长，其间积累了大量的增量更新数据需要同步。
-+ 从较早的时间点启动数据订阅任务，业务写入量大，积累了大量的更新数据需要同步。
+- 如果 TiCDC 数据订阅任务的暂停中断时间长，其间积累了大量的增量更新数据需要同步。
+- 从较早的时间点启动数据订阅任务，业务写入量大，积累了大量的更新数据需要同步。
 
 对 v4.0.13 版本之后的 `cdc cli` 创建的 changefeed，默认开启 Unified Sorter。对 v4.0.13 版本前已经存在的 changefeed，则使用之前的配置。
 
@@ -313,5 +315,5 @@ cdc cli --server="http://10.0.10.25:8300" changefeed query --changefeed-id=simpl
 
 > **注意：**
 >
-> + 如果服务器使用机械硬盘或其他有延迟或吞吐有瓶颈的存储设备，Unified Sorter 性能会受到较大影响。
-> + Unified Sorter 默认使用 `data_dir` 储存临时文件。建议保证硬盘的空闲容量大于等于 500 GiB。对于生产环境，建议保证每个节点上的磁盘可用空间大于（业务允许的最大）`checkpoint-ts` 延迟 * 业务高峰上游写入流量。此外，如果在 `changefeed` 创建后预期需要同步大量历史数据，请确保每个节点的空闲容量大于等于要追赶的同步数据。
+> - 如果服务器使用机械硬盘或其他有延迟或吞吐有瓶颈的存储设备，Unified Sorter 性能会受到较大影响。
+> - Unified Sorter 默认使用 `data_dir` 储存临时文件。建议保证硬盘的空闲容量大于等于 500 GiB。对于生产环境，建议保证每个节点上的磁盘可用空间大于（业务允许的最大）`checkpoint-ts` 延迟 * 业务高峰上游写入流量。此外，如果在 `changefeed` 创建后预期需要同步大量历史数据，请确保每个节点的空闲容量大于等于要追赶的同步数据。
