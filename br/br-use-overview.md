@@ -76,7 +76,7 @@ Amazon S3、Google Cloud Storage (GCS)、Azure Blob Storage 是 BR 推荐的存�
 TiDB 支持使用 br 工具进行备份恢复。
 
 * 安装方法可以使用[使用 TiUP 在线安装](/migration-tools.md#使用-tiup-快速安装)：`tiup install br`。
-* 了解如何使用 `br` 命令含工具进行备份与恢复，请参阅：
+* 了解如何使用 `br` 命令行工具进行备份与恢复，请参阅：
 
     * [TiDB 快照备份与恢复功能使用](/br/br-snapshot-guide.md)
     * [TiDB 日志备份与 PITR 功能使用](/br/br-pitr-guide.md)
@@ -92,7 +92,7 @@ TiDB 支持使用 SQL 语句进行全量快照备份和恢复：
 
 ### 在 Kubernetes 环境下通过 TiDB Operator
 
-在 Kubernetes 环境下，支持通过 TiDB Operator 支持以 S3、GCS、Azure blob storage 作为备份存储。使用文档请参阅[使用 TiDB Operator 进行备份恢复](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/backup-restore-overview)。
+在 Kubernetes 环境下，支持通过 TiDB Operator 支持以 S3、GCS、Azure blob storage 作为备份存储，并从这些存储系统中恢复备份数据。使用文档请参阅[使用 TiDB Operator 进行备份恢复](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/backup-restore-overview)。
 
 ## 探索更多
 
