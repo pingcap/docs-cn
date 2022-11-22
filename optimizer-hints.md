@@ -449,10 +449,7 @@ WITH CTE1 AS (SELECT * FROM t1), CTE2 AS (WITH CTE3 AS (SELECT /*+ MERGE() */ * 
 
 这类 Hint 和[视图](/views.md)有关，可以实现在查询中定义的 Hint 能够在视图的内部生效。
 
-首先给需要用到 hint 的查询块部分定义一个 [`QB_NAME`](/optimizer-hints.md#qb_name) hint 来对视图内部的查询块进行重命名，其中针对视图的 `QB_Name` hint 的概念和之前相同，只是在语法上进行了相应的拓展。
-从 `QB_NAME(QB)` 拓展为 `QB_NAME(QB, ViewName@QueryBlockName [.ViewName@QueryBlockName .ViewName@QueryBlockName ...])`。例如：
-
-{{< copyable "sql" >}}
+首先给需要用到 hint 的查询块部分定义一个 [`QB_NAME` Hint](/optimizer-hints.md#qb_name) 来对视图内部的查询块进行重命名，其中针对视图的 `QB_NAME` Hint 的概念和之前相同，只是在语法上进行了相应的拓展。从 `QB_NAME(QB)` 拓展为 `QB_NAME(QB, ViewName@QueryBlockName [.ViewName@QueryBlockName .ViewName@QueryBlockName ...])`。例如：
 
 ```sql
 SELECT /* 注释：当前查询块的名字为默认的 @SEL_1 */ * FROM v2 JOIN (SELECT /* 注释：当前查询块的名字为默认的 @SEL_2 */ * FROM v2) vv;
@@ -476,23 +473,20 @@ CREATE VIEW v1 AS SELECT * FROM t JOIN /* 注释：对于视图 v1 来说，当�
 
 > **注意：**
 >
-> 在定义和视图相关的 `QB_NAME` hint 时需要注意：
+> 在定义和视图相关的 `QB_NAME` Hint 时需要注意：
 >
-> - 对于最外层的查询来说，在定义和视图相关的 `qb_name` hint 时，对于 `qb_name` hint 中表序列的第一项，在不显式声明 @SEL_ 时，默认和定义 `qb_name` hint 的查询块位置保持一致。
->   - 对于上面提供的样例，给前后两个视图 v2 定义视图 v2 的一个查询块，可以声明成 `SELECT /*+ qb_name(qb1, v2) */ * FROM v2 JOIN (SELECT /*+ qb_name(qb2, v2) */ * FROM v2) vv;`
-> - 对于除了最外层的查询部分（即除了表序列的第一项），其他部分如果处于第一个查询块中，@SEL_1 是可以默认省略的，但是当处于其他查询块时，@SEL_ 是不能被省略的，即对于上面的例子:
->   - 视图 v2 的第一个查询块可以声明为: qb_name(v2_1, v2)
->   - 视图 v2 的第二个查询块可以声明为：qb_name(v2_2, v2.@SEL_2)
->   - 视图 v1 的第一个查询块可以声明为：qb_name(v2_1, v2.v1@SEL_2)
->   - 视图 v1 的第二个查询块可以声明为：qb_name(v2_2, v2.v1@SEL_2 .@SEL_2)
-> - 跟在 @QueryBlockName 后面的 `.` 必须要和前面的部分留有空格，否则之后的部分会被当作 QueryBlockName 的一部分。
-> - 和视图相关的 Hint 必须先定义了对应的 `QB_NAME` hint 才能使用。
+> - 对于最外层的查询来说，在定义和视图相关的 `QB_NAME` Hint 时，对于 `QB_NAME` Hint 中视图列表序列的第一项时，在不显式声明 `@SEL_` 时，默认和定义 `qb_name` Hint 的查询块位置保持一致。
+>    - 即对于查询 `SELECT /*+ qb_name(qb1, v2) */ * FROM v2 JOIN (SELECT /*+ qb_name(qb2, v2) */ * FROM v2) vv;` 来说，在不省略 `@SEL_` 时相当于 `SELECT /*+ qb_name(qb1, v2@SEL_1) */ * FROM v2 JOIN (SELECT /*+ qb_name(qb2, v2@SEL_2) */ * FROM v2) vv;`.
+> - 对于 `QB_NAME` Hint 中视图列表序列第一项之外的其他部分，如果声明的部分处于当前部分的第一个查询块中，则 `@SEL_1` 是可以默认省略的。但是当被声明的部分处于其他查询块时，`@SEL_` 是不能被省略的，即对于上面的例子:
+>    - 视图 v2 的第一个查询块可以声明为：`qb_name(v2_1, v2)`
+>    - 视图 v2 的第二个查询块可以声明为：`qb_name(v2_2, v2.@SEL_2)`
+>    - 视图 v1 的第一个查询块可以声明为：`qb_name(v2_1, v2.v1@SEL_2)`
+>    - 视图 v1 的第二个查询块可以声明为：`qb_name(v2_2, v2.v1@SEL_2 .@SEL_2)`
+> - 跟在 `@QueryBlockName` 后面的 `.` 必须要和前面的部分留有空格，否则之后的部分会被当作 QueryBlockName 的一部分。
+> - 和视图相关的 Hint 必须先定义了对应的 `QB_NAME` Hint 才能使用。
 > - 当在使用一个 Hint 来指定视图内的多个表名时，需要保证在同一个 Hint 中出现的表名处于同一个视图的同一个查询块中。
-> - 不能使用已经定义好 query block name 作为其他 `QB_NAME` hint 的前缀部分。
 
-在针对视图的查询块部分定义好 `QB_NAME` hint 后，我们便可以用定义好地查询块名字来使用[查询块范围生效的 Hint](/optimizer-hints.md#查询块范围生效的-hint)，使其能够在视图内部生效。例如：
-
-{{< copyable "sql" >}}
+在针对视图的查询块部分定义好 `QB_NAME` Hint 后，我们便可以用定义好地查询块名字来使用[查询块范围生效的 Hint](/optimizer-hints.md#查询块范围生效的-hint)，使其能够在视图内部生效。例如：
 
 ```sql
 -- 对于视图 v2 的第一个查询块可以声明为：qb_name(v2_1, v2@SEL_1 .@SEL_1) / qb_name(v2_1, v2)
