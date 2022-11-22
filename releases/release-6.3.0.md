@@ -21,6 +21,7 @@ TiDB 版本：6.3.0-DMR
 - 分区表新增简化 Range 分区的语法糖。
 - Range COLUMNS 分区方式支持定义多列。
 - TiDB 添加索引的速度提升为原来的 3 倍。
+- 降低资源消耗型查询对轻量查询响应时间的影响超 50% 。
 
 ## 新功能
 
@@ -126,6 +127,10 @@ TiDB 版本：6.3.0-DMR
     在 Read-Committed 隔离级别中，引入新的系统变量 [`tidb_rc_write_check_ts`](/system-variables.md#tidb_rc_write_check_ts-从-v630-版本开始引入) 控制语句对 TSO 的获取方式。在 Plan Cache 命中的情况下，通过降低对 TSO 的获取频率，提升批量 DML 的执行效率，降低跑批类任务的执行时间。
 
 ### 稳定性
+
+* 降低资源消耗型查询对轻量查询响应时间的影响 [#13313](https://github.com/tikv/tikv/issues/13313) @[glorv](https://github.com/glorv)
+
+  当资源消耗型查询与轻量查询同时运行时， 轻量查询的响应时间会被严重影响。 在这种情况下， 我们通常希望优先快速处理轻量查询，以保证交易类负载的服务质量。 基于这个出发点， TiKV 在 v6.3.0 中优化了读请求的排队机制，根据 I/O 特征识别来自轻量查询的请求，并做动态优先级调整。 这个特性大幅降低资源消耗型查询对轻量查询 P99 响应时间的影响，达到50%以上。 
 
 * 修改优化器统计信息过期时的默认统计信息使用策略 [#27601](https://github.com/pingcap/tidb/issues/27601) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes)
 
