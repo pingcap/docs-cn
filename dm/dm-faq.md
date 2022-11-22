@@ -126,7 +126,7 @@ DM 在最后 `rename ghost_table to origin table` 的步骤会把内存的 DDL �
 
 在 DM 2.0 之后，为 checkpoint 等元信息表引入了更多的字段。如果通过 `start-task` 直接使用 1.0 集群的任务配置文件从增量复制阶段继续运行，则会出现 `Error 1054: Unknown column 'binlog_gtid' in 'field list'` 错误。
 
-对于此错误，可 [手动将 DM 1.0 的数据迁移任务导入到 2.0+ 集群](/dm/manually-upgrade-dm-1.0-to-2.0.md)。
+对于此错误，可[手动将 DM 1.0 的数据迁移任务导入到 2.0+ 集群](/dm/manually-upgrade-dm-1.0-to-2.0.md)。
 
 ## TiUP 无法部署 DM 的某个版本（如 v2.0.0-hotfix）
 

@@ -336,7 +336,7 @@ MySQL 及 DM 操作与处理流程如下：
 
 #### 手动处理示例
 
-仍然假设是 [部分 MySQL source 被移除](#场景一部分-mysql-source-被移除) 示例中的上下游表结构及合表迁移需求。
+仍然假设是[部分 MySQL source 被移除](#场景一部分-mysql-source-被移除) 示例中的上下游表结构及合表迁移需求。
 
 当在 DM-master 自动执行 unlock 操作的过程中，owner（`mysql-replica-01`）成功执行了 DDL 操作且开始继续进行后续迁移，但在请求非 owner（`mysql-replica-02`）跳过 DDL 操作的过程中，由于对应的 DM-worker 发生了重启在跳过 DDL 后未能更新 checkpoint。
 

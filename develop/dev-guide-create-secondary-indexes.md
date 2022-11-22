@@ -54,7 +54,7 @@ KEY `{index_name}` (`{column_names}`)
 
 ## 创建二级索引时应遵守的规则
 
-见 [索引的最佳实践](/develop/dev-guide-index-best-practice.md)。
+见[索引的最佳实践](/develop/dev-guide-index-best-practice.md)。
 
 ## 例子
 
@@ -143,7 +143,7 @@ CREATE INDEX `idx_book_published_at` ON `bookshop`.`books` (`bookshop`.`books`.`
 >
 > 执行计划并非每次返回使用的算子都相同，这是由于 TiDB 使用的优化方式为 **基于代价的优化方式 (CBO)**，执行计划不仅与规则相关，还和数据分布相关。你可以前往 [SQL 性能调优](/sql-tuning-overview.md)文档查看更多 TiDB SQL 性能的描述。
 >
-> TiDB 在查询时，还支持显式地使用索引，你可以使用 [Optimizer Hints](/optimizer-hints.md) 或 [执行计划管理 (SPM)](/sql-plan-management.md) 来人为的控制索引的使用。但如果你不了解它内部发生了什么，请你**_暂时先不要使用它_**。
+> TiDB 在查询时，还支持显式地使用索引，你可以使用 [Optimizer Hints](/optimizer-hints.md) 或[执行计划管理 (SPM)](/sql-plan-management.md) 来人为的控制索引的使用。但如果你不了解它内部发生了什么，请你**_暂时先不要使用它_**。
 
 可以使用 [SHOW INDEXES](/sql-statements/sql-statement-show-indexes.md) 语句查询表中的索引：
 
@@ -167,4 +167,4 @@ SHOW INDEXES FROM `bookshop`.`books`;
 
 ## 更进一步
 
-至此，你已经完成数据库、表及二级索引的创建，接下来，数据库模式已经准备好给你的应用程序提供 [写入](/develop/dev-guide-insert-data.md) 和 [读取](/develop/dev-guide-get-data-from-single-table.md) 读取的能力了。
+至此，你已经完成数据库、表及二级索引的创建，接下来，数据库模式已经准备好给你的应用程序提供[写入](/develop/dev-guide-insert-data.md) 和[读取](/develop/dev-guide-get-data-from-single-table.md) 读取的能力了。

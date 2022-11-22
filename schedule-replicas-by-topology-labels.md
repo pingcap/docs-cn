@@ -73,7 +73,7 @@ host = "<host>"
 
 > **注意：**
 >
-> 目前，TiDB 依赖 `zone` 标签匹配选择同一区域的副本。如果需要使用此功能，需要在 PD [`location-labels` 配置](#设置-pd-的-isolation-level-配置)中包含 `zone`，并在 TiDB、TiKV 和 TiFlash 设置的 `labels` 中包含 `zone`。关于如何设置 TiKV 和 TiFlash 的 `labels`，可参考 [设置 TiKV 和 TiFlash 的 `labels`](#设置-tikv-和-tiflash-的-labels)。
+> 目前，TiDB 依赖 `zone` 标签匹配选择同一区域的副本。如果需要使用此功能，需要在 PD [`location-labels` 配置](#设置-pd-的-isolation-level-配置)中包含 `zone`，并在 TiDB、TiKV 和 TiFlash 设置的 `labels` 中包含 `zone`。关于如何设置 TiKV 和 TiFlash 的 `labels`，可参考[设置 TiKV 和 TiFlash 的 `labels`](#设置-tikv-和-tiflash-的-labels)。
 
 ### 设置 PD 的 `location-labels` 配置
 

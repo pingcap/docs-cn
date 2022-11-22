@@ -68,7 +68,7 @@ aliases: ['/docs-cn/tidb-data-migration/dev/error-handling/','/docs-cn/tidb-data
 
     DM 根据错误的严重程度和必要性来选择是否输出错误堆栈。错误堆栈记录了错误发生时完整的堆栈调用信息。如果用户通过错误基本信息和错误 message 描述不能完全诊断出错误发生的原因，可以通过错误堆栈进一步跟进出错时代码的运行路径。
 
-可在 DM 代码仓库 [已发布的错误码](https://github.com/pingcap/dm/blob/master/_utils/terror_gen/errors_release.txt) 中查询完整的错误码列表。
+可在 DM 代码仓库[已发布的错误码](https://github.com/pingcap/dm/blob/master/_utils/terror_gen/errors_release.txt) 中查询完整的错误码列表。
 
 ## DM 故障诊断
 
@@ -76,7 +76,7 @@ aliases: ['/docs-cn/tidb-data-migration/dev/error-handling/','/docs-cn/tidb-data
 
 1. 执行 `query-status` 命令查看任务运行状态以及相关错误输出。
 
-2. 查看与该错误相关的日志文件。日志文件位于 DM-master、DM-worker 部署节点上，通过 [DM 错误系统](#dm-错误系统) 获取错误的关键信息，然后查看 [常见故障处理方法](#常见故障处理方法)以寻找相应的解决方案。
+2. 查看与该错误相关的日志文件。日志文件位于 DM-master、DM-worker 部署节点上，通过 [DM 错误系统](#dm-错误系统) 获取错误的关键信息，然后查看[常见故障处理方法](#常见故障处理方法)以寻找相应的解决方案。
 
 3. 如果该错误还没有相应的解决方案，并且你无法通过查询日志或监控指标自行解决此问题，你可以联系相关技术支持人员。
 

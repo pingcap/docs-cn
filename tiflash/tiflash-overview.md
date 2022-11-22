@@ -66,8 +66,8 @@ TiFlash 部署完成后并不会自动同步数据，而需要手动指定需要
 
 ## 另请参阅
 
-- 全新部署一个包含 TiFlash 节点的集群，请参考 [使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)
-- 已有集群新增一个 TiFlash 节点，请参考 [扩容 TiFlash 节点](/scale-tidb-using-tiup.md#扩容-tiflash-节点)
+- 全新部署一个包含 TiFlash 节点的集群，请参考[使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)
+- 已有集群新增一个 TiFlash 节点，请参考[扩容 TiFlash 节点](/scale-tidb-using-tiup.md#扩容-tiflash-节点)
 - [TiFlash 常见运维操作](/tiflash/maintain-tiflash.md)
 - [TiFlash 性能调优](/tiflash/tune-tiflash-performance.md)
 - [TiFlash 配置参数介绍](/tiflash/tiflash-configuration.md)

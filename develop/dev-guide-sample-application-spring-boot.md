@@ -1101,7 +1101,7 @@ public class PlayerServiceImpl implements PlayerService {
 
 你可以简单的认为，代理在带有 `@Transactional` 注释的对象内的函数调用时：在函数顶部将使用 `transaction.begin()` 开启事务，函数返回后，调用 `transaction.commit()` 进行事务提交，而出现任何运行时错误时，代理将会调用 `transaction.rollback()` 来回滚。
 
-你可参阅[数据库事务](/develop/dev-guide-transaction-overview.md)来获取更多有关事务的信息，或者阅读 Spring 官网中的文章 [理解 Spring 框架的声明式事务实现](https://docs.spring.io/spring-framework/docs/current/reference/html/data-access.html#tx-decl-explained)。
+你可参阅[数据库事务](/develop/dev-guide-transaction-overview.md)来获取更多有关事务的信息，或者阅读 Spring 官网中的文章[理解 Spring 框架的声明式事务实现](https://docs.spring.io/spring-framework/docs/current/reference/html/data-access.html#tx-decl-explained)。
 
 整个实现类中，`buyGoods` 函数需重点关注，其在不符合逻辑时将抛出异常，引导 Hibernate 进行事务回滚，防止出现错误数据。
 

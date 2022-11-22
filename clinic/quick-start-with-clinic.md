@@ -16,7 +16,7 @@ PingCAP Clinic 由 Diag 诊断客户端（以下简称为 Diag）和 Clinic Serv
 
 > **注意：**
 >
-> - 本文档提供的采集和上传数据的方式**仅**适用于使用 [TiUP 部署](/production-deployment-using-tiup.md)的集群。如需查看适用于使用 Operator 部署的集群，请参阅 [在 TiDB Operator 部署环境使用 PingCAP Clinic](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/clinic-user-guide)。
+> - 本文档提供的采集和上传数据的方式**仅**适用于使用 [TiUP 部署](/production-deployment-using-tiup.md)的集群。如需查看适用于使用 Operator 部署的集群，请参阅[在 TiDB Operator 部署环境使用 PingCAP Clinic](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/clinic-user-guide)。
 > - 通过 PingCAP Clinic 采集和上传的数据**仅**用于定位和诊断集群问题。
 
 ## 准备工作
