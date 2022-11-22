@@ -1,10 +1,6 @@
 ---
 title: 备份存储
 summary: 了解 BR 支持的备份存储服务的 URL 格式、鉴权方案和使用方式。
-<<<<<<< HEAD
-=======
-aliases: ['/docs-cn/dev/br/backup-and-restore-storages/','/zh/tidb/dev/backup-storage-S3/','/zh/tidb/dev/backup-storage-azblob/','/zh/tidb/dev/backup-storage-gcs/']
->>>>>>> e5f5c7935 (br: fix typos and add correct aliases (#12044))
 ---
 
 # 备份存储
