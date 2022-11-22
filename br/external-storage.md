@@ -6,7 +6,7 @@ aliases: ['/docs-cn/dev/br/backup-and-restore-storages/']
 
 # 外部存储
 
-Backup & Restore (BR)、TiDB Lightning 和 Dumpling 都支持在本地文件系统和 Amazon S3 上读写数据；另外 BR 还支持 Google Cloud Storage、Azure Blob Storage (Azblob)。通过传入不同 URL scheme 到 BR 的 `--storage` (`-s`) 参数、TiDB Lightning 的 `-d` 参数及 Dumpling 中的 `--output` (`-o`) 参数，可以区分不同的存储方式。
+br 工具、TiDB Lightning 和 Dumpling 都支持在本地文件系统和 Amazon S3 上读写数据；另外 br 工具还支持 Google Cloud Storage、Azure Blob Storage (Azblob)。通过传入不同 URL scheme 到 br 工具 的 `--storage` (`-s`) 参数、TiDB Lightning 的 `-d` 参数及 Dumpling 中的 `--output` (`-o`) 参数，可以区分不同的存储方式。
 
 ## Scheme
 
@@ -207,9 +207,9 @@ S3、 GCS 和 Azblob 等云存储有时需要额外的连接配置，你可以�
 | `--azblob.account-key` | 访问密钥 |
 | `--azblob.access-tier` | 上传对象的存储类别（例如 `Hot`、`Cool` 或 `Archive`）。如果没有设置 `access-tier` 的值（该值为空），此值会默认设置为 `Hot`。 |
 
-## BR 向 TiKV 发送凭证
+## br 工具向 TiKV 发送凭证
 
-在默认情况下，使用 S3、GCS 或 Azblob 存储时，BR 会将凭证发送到每个 TiKV 节点，以减少设置的复杂性。
+在默认情况下，使用 S3、GCS 或 Azblob 存储时，br 工具会将凭证发送到每个 TiKV 节点，以减少设置的复杂性。
 
 但是，这个操作不适合云端环境，因为每个节点都有自己的角色和权限。在这种情况下，你需要用 `--send-credentials-to-tikv=false`（或简写为 `-c=0`）来禁止发送凭证：
 
