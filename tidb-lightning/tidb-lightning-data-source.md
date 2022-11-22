@@ -289,6 +289,7 @@ type = '$3'
 TiDB Lightning 目前支持由 Dumpling 导出的压缩文件或满足符合上文命名规则的压缩文件，目前支持 `gzip`, `snappy`, `zstd` 压缩算法的压缩文件。在文件名符合命名规则时，TiDB Lightning 会自动识别压缩算法在流式解压后导入，无需额外配置。
 
 注意：
+
 1. 由于 TiDB Lightning 无法对单个大压缩文件进行并发解压，因此压缩文件的大小会直接影响导入速度。建议压缩数据文件解压后的源文件大小不超过 256 MiB。
 2. TiDB Lightning 仅支持导入各自独立压缩的数据文件，不支持导入多个数据文件组成的单个压缩文件集合包。
 3. TiDB Lightning 不支持二次压缩的 `parquet` 文件，例如 `db.table.parquet.snappy`，如需压缩 `parquet` 文件用户可配置 `parquet` 文件数据存储的压缩格式。
