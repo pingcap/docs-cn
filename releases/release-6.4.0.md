@@ -130,6 +130,10 @@ TiDB 版本：6.4.0-DMR
 
     更多信息，请参考[用户文档](/system-variables.md#tidb_stats_load_sync_wait-从-v540-版本开始引入)。
 
+* 降低批量写入请求对轻量交易事务写入的响应时间的影响 [#13313](https://github.com/tikv/tikv/issues/13313) @[glorv](https://github.com/glorv)
+
+  定时批量 DML 任务存在于一部分系统的业务逻辑中。 在这种场景下，批量写入任务会对在线交易的时延造成不小的影响。 在 v6.3.0 中，TiKV 对混合负载场景下读请求的优先级进行了优化。 在 v6.4.0 中， 利用同样的思路， TiKV 对写入请求也做了动态识别和动态优先级调整， 降低批量写入对交易事务写入的响应时间的影响。 
+
 ### 易用性
 
 * TiKV API V2 成为正式功能 [#11745](https://github.com/tikv/tikv/issues/11745) @[pingyu](https://github.com/pingyu)
