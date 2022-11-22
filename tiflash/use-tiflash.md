@@ -76,6 +76,70 @@ SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = '<db_name>
 * AVAILABLE 字段表示该表的 TiFlash 副本是否可用。1 代表可用，0 代表不可用。副本状态为可用之后就不再改变，如果通过 DDL 命令修改副本数则会重新计算同步进度。
 * PROGRESS 字段代表同步进度，在 0.0~1.0 之间，1 代表至少 1 个副本已经完成同步。
 
+### 加快 TiFlash 副本同步速度
+
+新增 TiFlash 副本时，各个 TiKV 实例将进行全表数据扫描，并将扫描得到的数据快照发送给 TiFlash 从而形成副本。默认情况下，为了降低对 TiKV 及 TiFlash 线上业务的影响，TiFlash 新增副本速度较慢、占用资源较少。如果集群中 TiKV 及 TiFlash 的 CPU 和磁盘 IO 资源有富余，你可以按以下步骤操作来提升 TiFlash 副本同步速度：
+
+1. 修改 TiFlash Proxy 及 TiKV 配置，临时调高各个 TiKV 及 TiFlash 实例的数据快照写入速度及快照处理速度。以 TiUP 为例，需要修改的配置项如下：
+
+   ```yaml
+   tikv:
+     server.snap-max-write-bytes-per-sec: 300MiB # 默认 100MiB
+   tiflash-learner:
+     raftstore.snap-handle-pool-size: 10 # 默认 2，可以调整为机器总 CPU 数 × 0.6 或更高
+     raftstore.apply-low-priority-pool-size: 10 # 默认 1，可以调整为机器总 CPU 数 × 0.6 或更高
+     server.snap-max-write-bytes-per-sec: 300MiB # 默认 100MiB
+   ```
+
+   上述配置需要重启 TiFlash 及 TiKV 生效。其中 TiKV 配置也可以通过 [SQL 语句在线修改](/dynamic-config.md)，无需重启 TiKV 即可生效：
+
+   ```sql
+   SET CONFIG tikv `server.snap-max-write-bytes-per-sec` = '300MiB';
+   ```
+
+   由于副本同步速度还受到 PD 副本速度控制，因此以上配置修改完毕后，当前你还无法立即观察到副本同步速度提升。
+
+2. 使用 [PD Control](/pd-control.md) 逐步放开新增副本速度限制：
+
+   TiFlash 默认新增副本速度是 30（每分钟大约 30 个 Region 将会新增 TiFlash 副本）。执行以下命令将调整所有 TiFlash 实例的新增副本速度到 60，即原来的 2 倍速度：
+
+   ```shell
+   tiup ctl:v<CLUSTER_VERSION> pd -u http://<PD_ADDRESS>:2379 store limit all engine tiflash 60 add-peer
+   ```
+
+   > 上述命令中，需要将 `<CLUSTER_VERSION>` 替换为该集群版本，`<PD_ADDRESS>:2379` 替换为任一 PD 节点的地址。替换后样例为：
+   >
+   > ```shell
+   > tiup ctl:v6.1.1 pd -u http://192.168.1.4:2379 store limit all engine tiflash 60 add-peer
+   > ```
+
+   执行完毕后，几分钟内，你将观察到 TiFlash 节点的 CPU 及磁盘 IO 资源占用显著提升，TiFlash 将更快地创建副本。同时，TiKV 节点的 CPU 及磁盘 IO 资源占用也将有所上升。
+
+   如果此时 TiKV 及 TiFlash 节点的资源仍有富余，且线上业务的延迟没有显著上升，则可以考虑进一步放开调度速度，例如将新增副本的速度增加为原来的 3 倍：
+
+   ```shell
+   tiup ctl:v<CLUSTER_VERSION> pd -u http://<PD_ADDRESS>:2379 store limit all engine tiflash 90 add-peer
+   ```
+
+3. 在副本同步完毕后，恢复到默认配置，减少在线业务受到的影响。
+
+   执行以下 PD Control 命令可恢复默认的新增副本速度：
+
+   ```shell
+   tiup ctl:v<CLUSTER_VERSION> pd -u http://<PD_ADDRESS>:2379 store limit all engine tiflash 30 add-peer
+   ```
+
+   在 TiUP 中注释掉新增的配置项，使其恢复到默认值：
+
+   ```yaml
+   # tikv:
+   #   server.snap-max-write-bytes-per-sec: 300MiB
+   # tiflash-learner:
+   #   raftstore.snap-handle-pool-size: 10
+   #   raftstore.apply-low-priority-pool-size: 10
+   #   server.snap-max-write-bytes-per-sec: 300MiB
+   ```
+
 ### 设置可用区
 
 在配置副本时，如果为了考虑容灾，需要将 TiFlash 的不同数据副本分布到多个数据中心，则可以按如下步骤进行配置：
