@@ -29,14 +29,14 @@ TiDB 版本： 5.3.4
     - (dup)  修复 `KILL TIDB` 在空闲链接上无法立即生效的问题 [#24031](https://github.com/pingcap/tidb/issues/24031)
     - 修复 `date_add` 和 `date_sub` 函数返回类型的行为与 MySQL 不一致的问题 [#36394](https://github.com/pingcap/tidb/issues/36394), [#27573](https://github.com/pingcap/tidb/issues/27573)
     - 修复 Parser 恢复 `table option` 中 `INSERT_METHOD` 字段错误的问题 [#38368](https://github.com/pingcap/tidb/issues/38368)
-    - 修复 MySQL 5.1 及之前客户端连接 TiDB Server 鉴权失败的问题 [#29725](https://github.com/pingcap/tidb/issues/29725)
+    - 修复 MySQL 5.1 及之前版本客户端连接 TiDB Server 时鉴权失败的问题 [#29725](https://github.com/pingcap/tidb/issues/29725)
 
     <!--executor owner: @zanmato1984-->
 
     - (dup) 修复当 `GREATEST` 和 `LEAST`  函数传入无符号整型值时，计算结果出错的问题 [#30101](https://github.com/pingcap/tidb/issues/30101)
     - (dup) 修复 `concat(ifnull(time(3))` 的结果与 MySQL 不一致的问题 [#29498](https://github.com/pingcap/tidb/issues/29498)
     - 修复当从 TiFlash 查询 `avg()` 函数时，返回错误 `ERROR 1105 (HY000): other error for mpp stream: Could not convert to the target type - -value is out of range.` 的问题 [#29952](https://github.com/pingcap/tidb/issues/29952)
-    - 修复查询 HashJoin 时，返回错误 `ERROR 1105 (HY000): close of nil channel`  的问题[#30289](https://github.com/pingcap/tidb/issues/30289)
+    - 修复查询 HashJoin 时，返回错误 `ERROR 1105 (HY000): close of nil channel` 的问题 [#30289](https://github.com/pingcap/tidb/issues/30289)
     - 修复 TiKV 和 TiFlash 在进行逻辑运算时结果不一致的问题 [#37258](https://github.com/pingcap/tidb/issues/37258)
 
     <!--transaction owner: @cfzjywxk-->
