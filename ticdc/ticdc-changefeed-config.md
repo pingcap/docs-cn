@@ -37,7 +37,7 @@ Info: {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":
     - `file`：完全使用磁盘暂存数据。**已经弃用，不建议在任何情况使用。**
 
 - `--config`：指定 changefeed 配置文件。
-- `--sort-dir`: 用于指定排序器使用的临时文件目录。**自 TiDB v4.0.13, v5.0.3 和 v5.1.0 起已经无效，请不要使用**。
+- `--sort-dir`：用于指定排序器使用的临时文件目录。**自 TiDB v4.0.13, v5.0.3 和 v5.1.0 起已经无效，请不要使用**。
 
 ## TiCDC Changefeed 配置文件说明
 
@@ -52,6 +52,7 @@ case-sensitive = true
 enable-old-value = true
 
 # 是否开启 Syncpoint 功能，从 v6.3.0 开始支持
+# 从 v6.4.0 开始，使用 Syncpoint 功能需要同步任务拥有下游集群的 SYSTEM_VARIABLES_ADMIN 或者 SUPER 权限
 enable-sync-point = true
 
 # Syncpoint 功能对齐上下游 snapshot 的时间间隔

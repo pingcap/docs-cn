@@ -46,38 +46,38 @@ Sink URI 用于指定 TiCDC 目标系统的连接信息，遵循以下格式：
 
 URI 中可配置的的参数如下：
 
-| 参数               | 解析                                                         |
+| 参数               | 描述                                                         |
 | :------------------ | :------------------------------------------------------------ |
-| `127.0.0.1`          | 下游 Kafka 对外提供服务的 IP                                 |
-| `9092`               | 下游 Kafka 的连接端口                                          |
-| `topic-name`           | 变量，使用的 Kafka topic 名字                                      |
-| `kafka-version`      | 下游 Kafka 版本号（可选，默认值 `2.4.0`，目前支持的最低版本为 `0.11.0.2`，最高版本为 `3.2.0`。该值需要与下游 Kafka 的实际版本保持一致） |
-| `kafka-client-id`    | 指定同步任务的 Kafka 客户端的 ID（可选，默认值为 `TiCDC_sarama_producer_同步任务的 ID`） |
-| `partition-num`      | 下游 Kafka partition 数量（可选，不能大于实际 partition 数量，否则创建同步任务会失败，默认值 `3`）|
-| `max-message-bytes`  | 每次向 Kafka broker 发送消息的最大数据量（可选，默认值 `10MB`）。从 v5.0.6 和 v4.0.6 开始，默认值分别从 64MB 和 256MB 调整至 10MB。|
-| `replication-factor` | Kafka 消息保存副本数（可选，默认值 `1`）                       |
-| `protocol` | 输出到 Kafka 的消息协议，可选值有 `canal-json`、`open-protocol`、`canal`、`avro`、`maxwell` |
-| `auto-create-topic` | 当传入的 `topic-name` 在 Kafka 集群不存在时，TiCDC 是否要自动创建该 topic（可选，默认值 `true`） |
+| `127.0.0.1`          | 下游 Kafka 对外提供服务的 IP。                                 |
+| `9092`               | 下游 Kafka 的连接端口。                                          |
+| `topic-name`           | 变量，使用的 Kafka topic 名字。                                      |
+| `kafka-version`      | 下游 Kafka 版本号（可选，默认值 `2.4.0`，目前支持的最低版本为 `0.11.0.2`，最高版本为 `3.2.0`。该值需要与下游 Kafka 的实际版本保持一致）。 |
+| `kafka-client-id`    | 指定同步任务的 Kafka 客户端的 ID（可选，默认值为 `TiCDC_sarama_producer_同步任务的 ID`）。 |
+| `partition-num`      | 下游 Kafka partition 数量（可选，不能大于实际 partition 数量，否则创建同步任务会失败，默认值 `3`）。|
+| `max-message-bytes`  | 每次向 Kafka broker 发送消息的最大数据量（可选，默认值 `10MB`）。从 v5.0.6 和 v4.0.6 开始，默认值分别从 64MB 和 256MB 调整至 10 MB。|
+| `replication-factor` | Kafka 消息保存副本数（可选，默认值 `1`）。                       |
+| `protocol` | 输出到 Kafka 的消息协议，可选值有 `canal-json`、`open-protocol`、`canal`、`avro`、`maxwell`。 |
+| `auto-create-topic` | 当传入的 `topic-name` 在 Kafka 集群不存在时，TiCDC 是否要自动创建该 topic（可选，默认值 `true`）。 |
 | `enable-tidb-extension` | 可选，默认值是 `false`。当输出协议为 `canal-json` 时，如果该值为 `true`，TiCDC 会发送 [Resolved 事件](/ticdc/ticdc-canal-json.md#watermark-event)，并在 Kafka 消息中添加 TiDB 扩展字段。从 6.1.0 开始，该参数也可以和输出协议 `avro` 一起使用。如果该值为 `true`，TiCDC 会在 Kafka 消息中添加[三个 TiDB 扩展字段](/ticdc/ticdc-avro-protocol.md#tidb-扩展字段)。|
-| `max-batch-size` |  从 v4.0.9 开始引入。当消息协议支持把多条变更记录输出至一条 Kafka 消息时，该参数用于指定这一条 Kafka 消息中变更记录的最多数量。目前，仅当 Kafka 消息的 `protocol` 为 `open-protocol` 时有效（可选，默认值 `16`）|
-| `enable-tls` | 连接下游 Kafka 实例是否使用 TLS（可选，默认值 `false`） |
-| `ca`       | 连接下游 Kafka 实例所需的 CA 证书文件路径（可选） |
-| `cert`     | 连接下游 Kafka 实例所需的证书文件路径（可选） |
-| `key`      | 连接下游 Kafka 实例所需的证书密钥文件路径（可选） |
-| `sasl-user` | 连接下游 Kafka 实例所需的 SASL/PLAIN 或 SASL/SCRAM 认证的用户名（authcid）（可选） |
-| `sasl-password` | 连接下游 Kafka 实例所需的 SASL/PLAIN 或 SASL/SCRAM 认证的密码（可选） |
-| `sasl-mechanism` | 连接下游 Kafka 实例所需的 SASL 认证方式的名称，可选值有 `plain`、`scram-sha-256`、`scram-sha-512` 和 `gssapi` |
-| `sasl-gssapi-auth-type` | gssapi 认证类型，可选值有 `user` 和 `keytab`（可选） |
-| `sasl-gssapi-keytab-path` | gssapi keytab 路径（可选）|
-| `sasl-gssapi-kerberos-config-path` | gssapi kerberos 配置路径（可选） |
-| `sasl-gssapi-service-name` | gssapi 服务名称（可选） |
-| `sasl-gssapi-user` | gssapi 认证使用的用户名（可选） |
-| `sasl-gssapi-password` | gssapi 认证使用的密码（可选） |
-| `sasl-gssapi-realm` | gssapi realm 名称（可选） |
-| `sasl-gssapi-disable-pafxfast` | gssapi 是否禁用 PA-FX-FAST（可选） |
-| `dial-timeout` | 和下游 Kafka 建立连接的超时时长，默认值为 `10s` |
-| `read-timeout` | 读取下游 Kafka 返回的 response 的超时时长，默认值为 `10s` |
-| `write-timeout` | 向下游 Kafka 发送 request 的超时时长，默认值为 `10s` |
+| `max-batch-size` |  从 v4.0.9 开始引入。当消息协议支持把多条变更记录输出至一条 Kafka 消息时，该参数用于指定这一条 Kafka 消息中变更记录的最多数量。目前，仅当 Kafka 消息的 `protocol` 为 `open-protocol` 时有效（可选，默认值 `16`）。|
+| `enable-tls` | 连接下游 Kafka 实例是否使用 TLS（可选，默认值 `false`）。 |
+| `ca`       | 连接下游 Kafka 实例所需的 CA 证书文件路径（可选）。 |
+| `cert`     | 连接下游 Kafka 实例所需的证书文件路径（可选）。 |
+| `key`      | 连接下游 Kafka 实例所需的证书密钥文件路径（可选）。 |
+| `sasl-user` | 连接下游 Kafka 实例所需的 SASL/PLAIN 或 SASL/SCRAM 认证的用户名（authcid）（可选）。 |
+| `sasl-password` | 连接下游 Kafka 实例所需的 SASL/PLAIN 或 SASL/SCRAM 认证的密码（可选）。 |
+| `sasl-mechanism` | 连接下游 Kafka 实例所需的 SASL 认证方式的名称，可选值有 `plain`、`scram-sha-256`、`scram-sha-512` 和 `gssapi`。 |
+| `sasl-gssapi-auth-type` | gssapi 认证类型，可选值有 `user` 和 `keytab`（可选）。 |
+| `sasl-gssapi-keytab-path` | gssapi keytab 路径（可选）。|
+| `sasl-gssapi-kerberos-config-path` | gssapi kerberos 配置路径（可选）。 |
+| `sasl-gssapi-service-name` | gssapi 服务名称（可选）。 |
+| `sasl-gssapi-user` | gssapi 认证使用的用户名（可选）。 |
+| `sasl-gssapi-password` | gssapi 认证使用的密码（可选）。 |
+| `sasl-gssapi-realm` | gssapi realm 名称（可选）。 |
+| `sasl-gssapi-disable-pafxfast` | gssapi 是否禁用 PA-FX-FAST（可选）。 |
+| `dial-timeout` | 和下游 Kafka 建立连接的超时时长，默认值为 `10s`。 |
+| `read-timeout` | 读取下游 Kafka 返回的 response 的超时时长，默认值为 `10s`。 |
+| `write-timeout` | 向下游 Kafka 发送 request 的超时时长，默认值为 `10s`。 |
 | `avro-decimal-handling-mode` | 仅在输出协议是 `avro` 时有效。该参数决定了如何处理 DECIMAL 类型的字段，值可以是 `string` 或 `precise`，表明映射成字符串还是浮点数。 |
 | `avro-bigint-unsigned-handling-mode` | 仅在输出协议是 `avro` 时有效。该参数决定了如何处理 BIGINT UNSIGNED 类型的字段，值可以是 `string` 或 `long`，表明映射成字符串还是 64 位整形。|
 

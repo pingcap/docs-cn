@@ -72,10 +72,10 @@ dispatchers = [
 
 ![TiCDC architecture](/media/ticdc/ticdc-architecture-5.jpg)
 
-1. 推流：发生数据改变时，TiKV 集群将数据主动推送给 puller 模块。
-2. 增扫：Puller 模块在发现收到的数据改变不连续的时候，向 TiKV 节点主动拉取需要的数据。
-3. 排序：Sorter 模块对获取的数据按照时间进行排序，并将排好序的数据发送给 mounter。
-4. 装载：Mounter 模块收到数据变更后，根据表的 schema 信息，数据变更装载成 TiCD sink 可以理解的格式。
+1. 推流：发生数据改变时，TiKV 集群将数据主动推送给 Puller 模块。
+2. 增量扫：Puller 模块在发现收到的数据改变不连续的时候，向 TiKV 节点主动拉取需要的数据。
+3. 排序：Sorter 模块对获取的数据按照时间进行排序，并将排好序的数据发送给 Mounter。
+4. 装载：Mounter 模块收到数据变更后，根据表的 schema 信息，将数据变更装载成 TiCD sink 可以理解的格式。
 5. 同步：Sink 模块根据下游的类型将数据变更同步到下游。
 
 由于 TiCDC 的上游是支持事务的分布式关系型数据库 TiDB，在同步数据的时候，如何保证数据的一致性，以及在同步多张表的时候，如何保证事务的一致性，都是很大的挑战。下面的章节会介绍 TiCDC 在确保事务特性时所使用的关键技术和概念。
@@ -86,10 +86,10 @@ dispatchers = [
 
 ### 架构相关概念
 
-- Capture：TiCDC 节点的运行进程，多个 Capture 进程构成了 TiCDC集群，Capture 进程负责 TiKV 的数据改变的同步--包括了接受和主动拉取两种方式--，并向下游同步数据。
-- Capture Owner：是一种 capture 的角色，每个 CDC 集群同一时刻最多只存在一个 capture 具有 owner 角色，负责集群内部的调度。
-- processor：是 capture 内部的逻辑线程，每个 processor 负责处理同一个同步流中一个或多个 table 的数据。一个 capture 节点可以运行多个 processor。
-- ChangeFeed：一个由用户启动的从上游 TiDB 同步到下游的任务，其中包含多个 task，task 会分布在不同的 capture 节点进行数据同步处理。
+- Capture：TiCDC 节点的运行进程，多个 Capture 进程构成了 TiCDC集群，Capture 进程负责 TiKV 的数据变更的同步，包括接受和主动拉取两种方式，并向下游同步数据。
+- Capture Owner：是一种 Capture 的角色，每个 TiCDC 集群同一时刻最多只存在一个 Capture Owner 角色，负责集群内部的调度。
+- Processor：是 Capture 内部的逻辑线程，每个 Processor 负责处理同一个同步流中一个或多个 table 的数据。一个 Capture 节点可以运行多个 Processor。
+- ChangeFeed：一个由用户启动的从上游 TiDB 同步到下游的任务，其中包含多个 Task，Task 会分布在不同的 Capture 节点进行数据同步处理。
 
 ### 时间戳相关概念
 
@@ -104,7 +104,7 @@ dispatchers = [
 - TiCDC 节点中的 ResolvedTS：
 
     - table ResolvedTS：每张表都会有的表级别 ResolvedTS，表示这张表已经从 TiKV 接收到的数据改变的最低水位，可以简单的认为和 TiKV 节点上这张表的各个 Region 的 ResolvedTS 的最小值是相同的。
-    - global ResolvedTS：各个 TiCDC 节点上的 Processor ResolvedTS 的最小值。由于 TiCDC 每个节点上都会存在一个或多个 Processor，每个 Processor 又对应多个 table pipeline
+    - global ResolvedTS：各个 TiCDC 节点上的 Processor ResolvedTS 的最小值。由于 TiCDC 每个节点上都会存在一个或多个 Processor，每个 Processor 又对应多个 table pipeline。
 
     对于 TiCDC 节点来说，TiKV 节点发送过来的 ResolvedTS 信息是一种特殊的事件，它只包含一个格式为 `<resolvedTS:  时间戳>` 的特殊事件。通常情况下，ResolvedTS 满足以下约束：
 
@@ -132,12 +132,12 @@ table resolved TS >= local resolved TS >= global Resolved TS >= table checkpoint
 
 #### Barrier TS
 
-当系统发生 DDL 语句或者使用了 TiCDC 的 sync point 时会产生的一个时间戳。
+当系统发生 DDL 语句或者使用了 TiCDC 的 Syncpoint 时会产生的一个时间戳。
 
-- 对于 DDL 语句，这个时间戳会用来确保在这个 DDL 语句之前的改变都被应用到下游，之后执行对应的 DDL 语句，在 DDL 语句同步完成之后再同步其他的数据改变。由于 DDL 语句的处理是 owner 角色的 Capture 负责的，DDL 语句对应的 Barrier TS 只会由 owner 节点的 processor 线程产生。
-- sync point Barrier TS 也是一个时间戳，当你启用 TiCDC 的 sync point 特性后，TiCDC 会根据你指定的间隔产生一个 Barrier TS，当所有的表都同步到了这个 Barrier TS 之后，记录一下对应的时间点，之后继续向下同步数据。
+- 对于 DDL 语句，这个时间戳会用来确保在这个 DDL 语句之前的改变都被应用到下游，之后执行对应的 DDL 语句，在 DDL 语句同步完成之后再同步其他的数据改变。由于 DDL 语句的处理是 owner 角色的 Capture 负责的，DDL 语句对应的 Barrier TS 只会由 owner 节点的 Processor 线程产生。
+- sync point Barrier TS 也是一个时间戳，当你启用 TiCDC 的 Syncpoint 特性后，TiCDC 会根据你指定的间隔产生一个 Barrier TS，当所有的表都同步到了这个 Barrier TS 之后，记录一下对应的时间点，之后继续向下同步数据。
 
-TiCDC 是通过对 global checkpoint TS 和 barrier TS 进行比较来确定数据是否已经同步到 barrier TS 的。如果 global checkpoint TS = barrier TS，则说明所有表都至少推进到 barrier TS 了。如果等式不成立，说明有表还没推进到该 barrier TS，在这种情况下也不会更新 barrier TS，因此不会有表的 sink 节点对应 resolved TS 会超过 barrier TS，即不会有表的 check point TS 超过 barrier TS。
+TiCDC 是通过对 global checkpoint TS 和 barrier TS 进行比较来确定数据是否已经同步到 barrier TS 的。如果 global checkpoint TS = barrier TS，则说明所有表都至少推进到 barrier TS。如果等式不成立，说明有表还没推进到该 barrier TS，在这种情况下也不会更新 barrier TS，因此不会有表的 sink 节点对应 resolved TS 会超过 barrier TS，即不会有表的 check point TS 超过 barrier TS。
 
 ## 主要流程
 

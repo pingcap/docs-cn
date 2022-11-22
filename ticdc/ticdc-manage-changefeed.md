@@ -45,11 +45,11 @@ cdc cli changefeed list --server=http://10.0.10.25:8300
 - `checkpoint` 即为 TiCDC 已经将该时间点前的数据同步到了下游。
 - `state` 为该同步任务的状态：
 
-    - `normal`: 正常同步
-    - `stopped`: 停止同步（手动暂停）
-    - `error`: 停止同步（出错）
-    - `removed`: 已删除任务（只在指定 `--all` 选项时才会显示该状态的任务。未指定时，可通过 `query` 查询该状态的任务）
-    - `finished`: 任务已经同步到指定 `target-ts`，处于已完成状态（只在指定 `--all` 选项时才会显示该状态的任务。未指定时，可通过 `query` 查询该状态的任务）。
+    - `normal`：正常同步
+    - `stopped`：停止同步（手动暂停）
+    - `error`：停止同步（出错）
+    - `removed`：已删除任务（只在指定 `--all` 选项时才会显示该状态的任务。未指定时，可通过 `query` 查询该状态的任务）
+    - `finished`：任务已经同步到指定 `target-ts`，处于已完成状态（只在指定 `--all` 选项时才会显示该状态的任务。未指定时，可通过 `query` 查询该状态的任务）。
 
 ## 查询特定同步任务
 
@@ -146,10 +146,10 @@ cdc cli changefeed query --server=http://10.0.10.25:8300 --changefeed-id=simple-
     - `resolved-ts` 代表当前 changefeed 中已经成功从 TiKV 发送到 TiCDC 的最大事务 TS。
     - `checkpoint-ts` 代表当前 changefeed 中已经成功写入下游的最大事务 TS。
     - `admin-job-type` 代表一个 changefeed 的状态：
-        - `0`: 状态正常。
-        - `1`: 任务暂停，停止任务后所有同步 `processor` 会结束退出，同步任务的配置和同步状态都会保留，可以从 `checkpoint-ts` 恢复任务。
-        - `2`: 任务恢复，同步任务从 `checkpoint-ts` 继续同步。
-        - `3`: 任务已删除，接口请求后会结束所有同步 `processor`，并清理同步任务配置信息。同步状态保留，只提供查询，没有其他实际功能。
+        - `0`：状态正常。
+        - `1`：任务暂停，停止任务后所有同步 `processor` 会结束退出，同步任务的配置和同步状态都会保留，可以从 `checkpoint-ts` 恢复任务。
+        - `2`：任务恢复，同步任务从 `checkpoint-ts` 继续同步。
+        - `3`：任务已删除，接口请求后会结束所有同步 `processor`，并清理同步任务配置信息。同步状态保留，只提供查询，没有其他实际功能。
 - `task-status` 代表查询 changefeed 所分配的各个同步子任务的状态信息。
 
 ## 停止同步任务
@@ -254,8 +254,8 @@ cdc cli changefeed resume -c test-cf --server=http://10.0.10.25:8300
 以上命令中：
 
 - `status.tables` 中每一个作为 key 的数字代表同步表的 id，对应 TiDB 中表的 tidb_table_id。
-- `resolved-ts` 代表当前 processor 中已经排序数据的最大 TSO。
-- `checkpoint-ts` 代表当前 processor 已经成功写入下游的事务的最大 TSO。
+- `resolved-ts` 代表当前 Processor 中已经排序数据的最大 TSO。
+- `checkpoint-ts` 代表当前 Processor 已经成功写入下游的事务的最大 TSO。
 
 ## 输出行变更的历史值 <span class="version-mark">从 v4.0.5 版本开始引入</span>
 

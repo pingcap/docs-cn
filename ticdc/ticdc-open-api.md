@@ -115,10 +115,10 @@ curl -X GET http://127.0.0.1:8300/api/v1/health
 | `ignore_ineligible_table` | `BOOLEAN` 类型，是否忽略无法进行同步的表。（非必选）        |
 | `filter_rules`            | `STRING` 类型数组，表库过滤的规则。（非必选）            |
 | `ignore_txn_start_ts`     | `UINT64` 类型数组，忽略指定 start_ts 的事务。 （非必选） |
-| `mounter_worker_num`      | `INT` 类型，mounter 线程数。（非必选）                   |
+| `mounter_worker_num`      | `INT` 类型，Mounter 线程数。（非必选）                   |
 | `sink_config`             | sink 的配置参数。（非必选）                            |
 
-`changefeed_id`、`start_ts`、`target_ts`、`sink_uri` 的含义和格式与 [使用 cli 创建同步任务](/ticdc/ticdc-changefeed-config.md)中所作的解释相同，具体解释请参见该文档。需要注意，当在 `sink_uri` 中指定证书的路径时，须确保已将对应证书上传到对应的 TiCDC server 上。
+`changefeed_id`、`start_ts`、`target_ts`、`sink_uri` 的含义和格式与 [使用 cli 创建同步任务](/ticdc/ticdc-manage-changefeed.md#创建同步任务)中所作的解释相同，具体解释请参见该文档。需要注意，当在 `sink_uri` 中指定证书的路径时，须确保已将对应证书上传到对应的 TiCDC server 上。
 
 下面会对一些需要补充说明的参数进行进一步阐述。
 
@@ -130,7 +130,7 @@ curl -X GET http://127.0.0.1:8300/api/v1/health
 
 `ignore_txn_start_ts`：指定之后会忽略指定 start_ts 的事务，如 `ignore-txn-start-ts = [1, 2]`。
 
-`mounter_worker_num`： mounter 线程数，mounter 用于解码 TiKV 输出的数据，默认值为 16 。
+`mounter_worker_num`： Mounter 线程数，Mounter 用于解码 TiKV 输出的数据，默认值为 16 。
 
 `sink_config`：sink 的配置参数，如下
 
