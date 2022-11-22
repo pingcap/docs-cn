@@ -34,7 +34,7 @@ TiCDC 集群由多个 TiCDC 对等节点组成，是一种分布式无状态的�
 
 ## Changefeed 和 Task
 
-TiCDC 中的 Changefeed 和 Task 是两个逻辑概念，前者是用户分配同步任务的方式，后者是同步任务拆分后的子任务名称，具体描述如下：
+TiCDC 中的 Changefeed 和 Task 是两个逻辑概念，前者是分配同步任务的方式，后者是同步任务拆分后的子任务名称，具体描述如下：
 
 - Changefeed：代表一个同步任务，携带了需要同步的表信息，以及对应的下游信息和一些其他的配置信息。
 
@@ -66,7 +66,7 @@ dispatchers = [
 
 ![TiCDC architecture](/media/ticdc/ticdc-architecture-4.jpg)
 
-上图中，用户创建了一个 Changefeed，需要同步 4 张表，这个 Changefeed 被拆分成了 3 个任务，均匀的分发到了 TiCDC 集群的 3 个 Capture 节点上，在 TiCDC 对这些数据进行了处理之后，数据同步到了下游的系统。
+上图创建了一个 Changefeed，需要同步 4 张表，这个 Changefeed 被拆分成了 3 个任务，均匀的分发到了 TiCDC 集群的 3 个 Capture 节点上，在 TiCDC 对这些数据进行了处理之后，数据同步到了下游的系统。
 
 目前 TiCDC 支持的下游系统包含 MySQL、TiDB 和 Kafka。上面的过程只是讲解了 Changefeed 级别数据流转的基本过程，接下来，本文将以处理表 `table1` 的任务 Task1 为例，从更加详细的层面来描述 TiCDC 处理数据的过程：
 
@@ -93,21 +93,28 @@ dispatchers = [
 
 ### 时间戳相关概念
 
-由于 TiCDC 需要确保数据被至少一次同步到下游，并且确保一定的一致性，因此引入了一系列时间戳来对数据同步的状态进行描述。
+由于 TiCDC 需要确保数据被至少一次同步到下游，并且确保一定的一致性，因此引入了一系列时间戳（Timestamp，简称TS）来对数据同步的状态进行描述。
 
 #### ResolvedTS
 
-这个时间戳在 TiKV 和 TiCDC 中都存在。对于TiKV 节点，这个时间戳代表了某一个 Region leader 上开始时间最早的事务的开始时间，即：ResolvedTS = max(ResolvedTS, min(StartTS))。 因为每个 TiDB 集群包含多个 TiKV 节点，所有 TiKV 节点上的 Region leader 的 ResolvedTS 的最小值，被称为 Global ResolvedTS。 TiDB 集群确保 Global ResolvedTS 之前的事务都被提交了，或者可以认为这个时间戳之前不存在未提交的事务。
+这个时间戳在 TiKV 和 TiCDC 中都存在。
 
-对于 TiCDC 节点，每张表都会有一个表级别的 ResolvedTS，称之为 table ResolvedTS，表示这张表已经从 TiKV 接收到的数据改变的最低水位，可以简单的认为和 TiKV 节点上这张表的各个 Region 的 ResolvedTS 的最小值是相同的。由于 TiCDC 每个节点上都会存在一个或多个 Processor，每个 processor 又对应多个 table pipeline，可以认为 processor ResolvedTS 为某一个 TiCDC 节点上各个 processor 的 ResolvedTS 的最小值，而各个 TiCDC 节点上的 processor ResolvedTS 的最小值就被称为 global ResolvedTS。另外，对于 TiCDC 节点来说，TiKV 节点发送过来的 ResolvedTS 信息是一种特殊的事件，它只包含一个格式为 `<resolvedTS:  时间戳>` 的特殊事件。通常情况下，ResolvedTS 满足以下约束：
+- TiKV 节点中的 ResolvedTS：代表某一个 Region leader 上开始时间最早的事务的开始时间，即：ResolvedTS = max(ResolvedTS, min(StartTS))。因为每个 TiDB 集群包含多个 TiKV 节点，所有 TiKV 节点上的 Region leader 的 ResolvedTS 的最小值，被称为 Global ResolvedTS。TiDB 集群确保 Global ResolvedTS 之前的事务都被提交了，或者可以认为这个时间戳之前不存在未提交的事务。
 
-```
-table resolved TS >= local resolved TS >= global Resolved TS
-```
+- TiCDC 节点中的 ResolvedTS：
+
+  - table ResolvedTS：每张表都会有的表级别 ResolvedTS，表示这张表已经从 TiKV 接收到的数据改变的最低水位，可以简单的认为和 TiKV 节点上这张表的各个 Region 的 ResolvedTS 的最小值是相同的。
+  - global ResolvedTS：各个 TiCDC 节点上的 Processor ResolvedTS 的最小值。由于 TiCDC 每个节点上都会存在一个或多个 Processor，每个 Processor 又对应多个 table pipeline
+
+    对于 TiCDC 节点来说，TiKV 节点发送过来的 ResolvedTS 信息是一种特殊的事件，它只包含一个格式为 `<resolvedTS:  时间戳>` 的特殊事件。通常情况下，ResolvedTS 满足以下约束：
+
+    ```
+    table resolved TS >= local resolved TS >= global Resolved TS
+    ```
 
 #### CheckpointTS
 
-这个时间戳只在 TiCDC 中存在，它表示 TiCDC 已经同步给下游的数据的最低水位线，即 TiCDC 认为在这个时间戳之前的数据已经被同步到下游系统了。由于 TiCDC 同步数据的单位是表，所以 table checkpointTS 表示表级别的同步数据的水位线，processor checkpointTS 表示各个 processor 中最低的 checkpointTS；Global checkpointTS 表示各个 processor checkpointTS 中最低的 checkpointTS。通常情况下，Checkpoint TS 满足以下约束：
+这个时间戳只在 TiCDC 中存在，它表示 TiCDC 已经同步给下游的数据的最低水位线，即 TiCDC 认为在这个时间戳之前的数据已经被同步到下游系统了。由于 TiCDC 同步数据的单位是表，所以 table checkpointTS 表示表级别的同步数据的水位线，Processor checkpointTS 表示各个 Processor 中最低的 checkpointTS；Global checkpointTS 表示各个 Processor checkpointTS 中最低的 checkpointTS。通常情况下，Checkpoint TS 满足以下约束：
 
 ```
 table checkpoint TS >= local checkpoint TS >= global checkpoint TS
@@ -119,7 +126,7 @@ table checkpoint TS >= local checkpoint TS >= global checkpoint TS
 table resolved TS >= local resolved TS >= global Resolved TS >= table checkpoint TS >= local checkpoint TS >= global checkpoint TS
 ```
 
-随着数据的改变和事务的提交，TiKV 节点上的 resolvedTS 会不断的向前推进，TiCDC 节点的 puller 模块也会不断的收到 TiKV 推流过来的数据，并且根据收到的信息决定是否执行增量扫的过程，从而确保数据改变都能够被发送到 TiCDC 节点上。Sorter 模块则负责将 puller 模块收到的信息按照时间戳（Timestamp，简称TS）进行升序排序，从而确保数据在表级别是满足一致性的。接下来，mounter 模块把上游的数据改变装配成 sink 模块可以消费的格式，并发送给 sink，而 sink 则负责把 checkpointTS 到 ResolvedTS 之间的数据改变，按照发生的 TS 顺序同步到下游，并在下游返回后推进 checkpointTS。
+随着数据的改变和事务的提交，TiKV 节点上的 resolvedTS 会不断的向前推进，TiCDC 节点的 Puller 模块也会不断的收到 TiKV 推流过来的数据，并且根据收到的信息决定是否执行增量扫的过程，从而确保数据改变都能够被发送到 TiCDC 节点上。Sorter 模块则负责将 Puller 模块收到的信息按照时间戳进行升序排序，从而确保数据在表级别是满足一致性的。接下来，Mounter 模块把上游的数据改变装配成 Sink 模块可以消费的格式，并发送给 Sink，而 Sink 则负责把 checkpointTS 到 ResolvedTS 之间的数据改变，按照发生的 TS 顺序同步到下游，并在下游返回后推进 checkpointTS。
 
 上面的内容只介绍了和 DML 语句相关的数据改变，并没有包含 DDL 相关的内容。下面对 DDL 语句相关的关键概念进行介绍。
 
@@ -128,7 +135,7 @@ table resolved TS >= local resolved TS >= global Resolved TS >= table checkpoint
 当系统发生 DDL 语句或者使用了 TiCDC 的 sync point 时会产生的一个时间戳。
 
 - 对于 DDL 语句，这个时间戳会用来确保在这个 DDL 语句之前的改变都被应用到下游，之后执行对应的 DDL 语句，在 DDL 语句同步完成之后再同步其他的数据改变。由于 DDL 语句的处理是 owner 角色的 Capture 负责的，DDL 语句对应的 Barrier TS 只会由 owner 节点的 processor 线程产生。
-- sync point Barrier TS 也是一个时间戳，当用户启用 TiCDC 的 sync point 特性后，TiCDC 会根据用户指定的间隔产生一个 Barrier TS，当所有的表都同步到了这个Barrier TS 之后，记录一下对应的时间点，之后继续向下同步数据。
+- sync point Barrier TS 也是一个时间戳，当你启用 TiCDC 的 sync point 特性后，TiCDC 会根据你指定的间隔产生一个 Barrier TS，当所有的表都同步到了这个 Barrier TS 之后，记录一下对应的时间点，之后继续向下同步数据。
 
 TiCDC 是通过对 global checkpoint TS 和 barrier TS 进行比较来确定数据是否已经同步到 barrier TS 的。如果 global checkpoint TS = barrier TS，则说明所有表都至少推进到 barrier TS 了。如果等式不成立，说明有表还没推进到该 barrier TS，在这种情况下也不会更新 barrier TS，因此不会有表的 sink 节点对应 resolved TS 会超过 barrier TS，即不会有表的 check point TS 超过 barrier TS。
 

@@ -1,13 +1,13 @@
 ---
-title: TiCDC Changefeed 配置参数
+title: TiCDC Changefeed 命令行参数和配置参数
 summary: 了解 TiCDC Changefeed 详细的命令行参数和配置文件定义。
 ---
 
-# TiCDC Changefeed 命令行参数说明
+# TiCDC Changefeed 命令行参数和配置参数
 
-使用以下命令来创建同步任务：
+## TiCDC Changefeed 命令行参数
 
-{{< copyable "shell-regular" >}}
+本章节将以创建同步任务为例，介绍 TiCDC Changefeed 的命令行参数：
 
 ```shell
 cdc cli changefeed create --server=http://10.0.10.25:8300 --sink-uri="mysql://root:123456@127.0.0.1:3306/" --changefeed-id="simple-replication-task" --sort-engine="unified"
@@ -21,8 +21,6 @@ Info: {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":
 
 - `--changefeed-id`：同步任务的 ID，格式需要符合正则表达式 `^[a-zA-Z0-9]+(\-[a-zA-Z0-9]+)*$`。如果不指定该 ID，TiCDC 会自动生成一个 UUID（version 4 格式）作为 ID。
 - `--sink-uri`：同步任务下游的地址，需要按照以下格式进行配置，目前 scheme 支持 `mysql`、`tidb` 和 `kafka`。
-
-    {{< copyable "" >}}
 
     ```
     [scheme]://[userinfo@][host]:[port][/path]?[query_parameters]
@@ -43,7 +41,7 @@ Info: {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":
 
 ## TiCDC Changefeed 配置文件说明
 
-本部分详细介绍了同步任务的配置。
+本章节详细介绍了同步任务的配置。
 
 ```toml
 # 指定配置文件中涉及的库名、表名是否为大小写敏感

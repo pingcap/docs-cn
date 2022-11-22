@@ -20,7 +20,7 @@ aliases: ['/docs-cn/dev/ticdc/ticdc-overview/','/docs-cn/dev/reference/tools/tic
 - 提供 TiDB -> MySQL（或其他兼容 MySQL 协议的数据库）的低延迟的增量数据同步能力
 - 提供 TiDB -> Kafka 增量数据同步能力，推荐的数据格式包含 [Canal-JSON](/ticdc/ticdc-canal-json.md)，[Avro](/ticdc/ticdc-avro-protocol.md) 等
 - 提供表级别数据同步能力，支持同步过程中过滤数据库、表、DML、DDL 的能力
-- 高可用架构，无单点故障；支持用户动态添加、删除 TiCDC 节点
+- 高可用架构，无单点故障；支持动态添加、删除 TiCDC 节点
 - 支持通过 [Open API](/ticdc/ticdc-open-api.md) 进行集群管理，包括查询任务状态；动态修改任务配置；动态创建、删除任务等
 
 ### 数据同步顺序性
@@ -31,7 +31,7 @@ aliases: ['/docs-cn/dev/ticdc/ticdc-overview/','/docs-cn/dev/reference/tools/tic
     - Kafka sink
         - Kafka sink 提供不同的数据分发策略，可以按照表、主键或 ts 等策略分发数据到不同 Kafka partition。 使用表、主键分发策略，可以保证某一行的更新数据被顺序的发送到相同 patition。
         - 对所有的分发策略，我们都会定期发送 Resolved TS 消息到所有的 topic/partition，表示早于该 Resolved TS 的消息都已经发送到 topic/parition，消费程序可以利用 Resolved TS 对多个 topic/partition 的消息进行排序。
-        - Kafka sink 会发送重复的消息，但重复消息不会破坏 Resolved TS 的约束，比如在 changefeed 暂停重启后，可能会按顺序发送 msg1、msg2、msg3、msg2、msg3。用户可以在 Kafka 消费端进行过滤。
+        - Kafka sink 会发送重复的消息，但重复消息不会破坏 Resolved TS 的约束，比如在 changefeed 暂停重启后，可能会按顺序发送 msg1、msg2、msg3、msg2、msg3。你可以在 Kafka 消费端进行过滤。
 
 ### 数据同步一致性
 
@@ -51,11 +51,11 @@ TiCDC 作为 TiDB 的增量数据同步工具，通过 PD 内部的 etcd 实现�
 
 ![TiCDC architecture](/media/ticdc/cdc-architecture.png)
 
-在以上的架构图中：
+在以上架构图中：
 
-- TiKV Server： 代表 TiDB 集群中的 TiKV 节点，当数据发生改变时 TiKV 节点会主动将发生的数据改变以变更日志（KV change logs，简称 change logs）的方式发送给 TiCDC 节点。当然，当 TiCDC 节点发现收到的 change logs 并不是连续的，也会主动发起请求，获得需要的 change logs。 
-- TiCDC： 代表运行了运行 TiCDC 进程的各个节点。每个节点都运行一个 TiCDC 进程，每个进程会从 TiKV 节点中拉取一个或者多个表中的数据改变，并通过 Sink 模块同步到下游系统。
-- PD： 代表 TiDB 集群中的调度模块，负责集群数据的事实调度，这个模块通常是由 3 个 PD 节点构成的，内部通过 etcd 集群来实现选举等高可用相关的能力。 TiCDC 集群使用了 PD 集群内置的 etcd 集群来保存自己的元数据信息，例如：节点的状态信息，changefeed 配置信息等。 
+- TiKV Server：代表 TiDB 集群中的 TiKV 节点，当数据发生改变时 TiKV 节点会主动将发生的数据改变以变更日志（KV change logs，简称 change logs）的方式发送给 TiCDC 节点。当然，当 TiCDC 节点发现收到的 change logs 并不是连续的，也会主动发起请求，获得需要的 change logs。
+- TiCDC：代表运行了运行 TiCDC 进程的各个节点。每个节点都运行一个 TiCDC 进程，每个进程会从 TiKV 节点中拉取一个或者多个表中的数据改变，并通过 Sink 模块同步到下游系统。
+- PD：代表 TiDB 集群中的调度模块，负责集群数据的事实调度，这个模块通常是由 3 个 PD 节点构成的，内部通过 etcd 集群来实现选举等高可用相关的能力。 TiCDC 集群使用了 PD 集群内置的 etcd 集群来保存自己的元数据信息，例如：节点的状态信息，changefeed 配置信息等。
 
 另外，从上面的架构图中也可以看到，目前 TiCDC 支持将数据同步到 TiDB，MySQL 数据库，以及 Kafka 等。
 

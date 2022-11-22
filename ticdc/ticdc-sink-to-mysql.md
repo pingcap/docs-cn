@@ -11,13 +11,11 @@ summary: 了解如何使用 TiCDC 将数据同步到 TiDB 或 MySQL
 
 使用以下命令来创建同步任务：
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 cdc cli changefeed create \
     --server=http://10.0.10.25:8300 \
     --sink-uri="mysql://root:123456@127.0.0.1:3306/" \
-    --changefeed-id="simple-replication-task" 
+    --changefeed-id="simple-replication-task"
 ```
 
 ```shell
@@ -36,15 +34,11 @@ Info: {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":
 
 Sink URI 用于指定 TiCDC 目标系统的连接信息，遵循以下格式：
 
-{{< copyable "" >}}
-
 ```
 [scheme]://[userinfo@][host]:[port][/path]?[query_parameters]
 ```
 
 一个通用的配置样例如下所示：
-
-{{< copyable "shell-regular" >}}
 
 ```shell
 --sink-uri="mysql://root:123456@127.0.0.1:3306/?worker-count=16&max-txn-row=5000&transaction-atomicity=table"

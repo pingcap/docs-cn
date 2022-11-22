@@ -11,13 +11,11 @@ summary: 了解如何使用 TiCDC 将数据同步到 Kafka
 
 使用以下命令来创建同步任务：
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 cdc cli changefeed create \
     --server=http://10.0.10.25:8300 \
     --sink-uri="kafka://127.0.0.1:9092/topic-name?protocol=canal-json&kafka-version=2.4.0&partition-num=6&max-message-bytes=67108864&replication-factor=1" \
-    --changefeed-id="simple-replication-task" 
+    --changefeed-id="simple-replication-task"
 ```
 
 ```shell
@@ -36,15 +34,11 @@ Info: {"sink-uri":"kafka://127.0.0.1:9092/topic-name?protocol=canal-json&kafka-v
 
 Sink URI 用于指定 TiCDC 目标系统的连接信息，遵循以下格式：
 
-{{< copyable "" >}}
-
-```
+```shell
 [scheme]://[userinfo@][host]:[port][/path]?[query_parameters]
 ```
 
 一个通用的配置样例如下所示：
-
-{{< copyable "shell-regular" >}}
 
 ```shell
 --sink-uri="kafka://127.0.0.1:9092/topic-name?protocol=canal-json&kafka-version=2.4.0&partition-num=6&max-message-bytes=67108864&replication-factor=1"
@@ -103,8 +97,6 @@ URI 中可配置的的参数如下：
 
 - SASL/PLAIN
 
-  {{< copyable "shell-regular" >}}
-
   ```shell
   --sink-uri="kafka://127.0.0.1:9092/topic-name?kafka-version=2.4.0&sasl-user=alice-user&sasl-password=alice-secret&sasl-mechanism=plain"
   ```
@@ -117,8 +109,6 @@ URI 中可配置的的参数如下：
 
   SASL/GSSAPI `user` 类型认证：
 
-  {{< copyable "shell-regular" >}}
-
   ```shell
   --sink-uri="kafka://127.0.0.1:9092/topic-name?kafka-version=2.4.0&sasl-mechanism=gssapi&sasl-gssapi-auth-type=user&sasl-gssapi-kerberos-config-path=/etc/krb5.conf&sasl-gssapi-service-name=kafka&sasl-gssapi-user=alice/for-kafka&sasl-gssapi-password=alice-secret&sasl-gssapi-realm=example.com"
   ```
@@ -126,8 +116,6 @@ URI 中可配置的的参数如下：
   `sasl-gssapi-user` 和 `sasl-gssapi-realm` 的值与 kerberos 中指定的 [principle](https://web.mit.edu/kerberos/krb5-1.5/krb5-1.5.4/doc/krb5-user/What-is-a-Kerberos-Principal_003f.html) 有关。例如，principle 为 `alice/for-kafka@example.com`，则 `sasl-gssapi-user` 和 `sasl-gssapi-realm` 的值应该分别指定为 `alice/for-kafka` 和 `example.com`。
 
   SASL/GSSAPI `keytab` 类型认证：
-
-  {{< copyable "shell-regular" >}}
 
   ```shell
   --sink-uri="kafka://127.0.0.1:9092/topic-name?kafka-version=2.4.0&sasl-mechanism=gssapi&sasl-gssapi-auth-type=keytab&sasl-gssapi-kerberos-config-path=/etc/krb5.conf&sasl-gssapi-service-name=kafka&sasl-gssapi-user=alice/for-kafka&sasl-gssapi-keytab-path=/var/lib/secret/alice.key&sasl-gssapi-realm=example.com"
@@ -151,8 +139,6 @@ URI 中可配置的的参数如下：
 如要使用 Confluent 提供的 [data connectors](https://docs.confluent.io/current/connect/managing/connectors.html) 向关系型或非关系型数据库传输数据，请选择 `avro` 协议，并在 `schema-registry` 中提供 [Confluent Schema Registry](https://www.confluent.io/product/confluent-platform/data-compatibility/) 的 URL。
 
 配置样例如下所示：
-
-{{< copyable "shell-regular" >}}
 
 ```shell
 --sink-uri="kafka://127.0.0.1:9092/topic-name?&protocol=avro&replication-factor=3" --schema-registry="http://127.0.0.1:8081" --config changefeed_config.toml

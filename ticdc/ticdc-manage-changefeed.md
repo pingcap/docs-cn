@@ -6,13 +6,25 @@ aliases: ['/zh/tidb/dev/manage-ticdc/']
 
 # 管理 Changefeed
 
-本文介绍 Changefeed 相关的各种管理手段，其中大部分功能是通过 TiCDC 的命令行工具来完成的。如果用户需要，也可以通过 TiCDC 暴露的 HTTP 接口实现类似功能，详细信息参考 [TiCDC OpenAPI](/ticdc/ticdc-open-api.md)。
+本文介绍 Changefeed 相关的各种管理方法，其中大部分功能是通过 TiCDC 的命令行工具来完成的。如果你需要，也可以通过 TiCDC 暴露的 HTTP 接口实现类似功能，详细信息参考 [TiCDC OpenAPI](/ticdc/ticdc-open-api.md)。
+
+## 创建同步任务
+
+使用以下命令来创建同步任务：
+
+```shell
+cdc cli changefeed create --server=http://10.0.10.25:8300 --sink-uri="mysql://root:123456@127.0.0.1:3306/" --changefeed-id="simple-replication-task" --sort-engine="unified"
+```
+
+```shell
+Create changefeed successfully!
+ID: simple-replication-task
+Info: {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":"2020-03-12T22:04:08.103600025+08:00","start-ts":415241823337054209,"target-ts":0,"admin-job-type":0,"sort-engine":"unified","sort-dir":".","config":{"case-sensitive":true,"filter":{"rules":["*.*"],"ignore-txn-start-ts":null,"ddl-allow-list":null},"mounter":{"worker-num":16},"sink":{"dispatchers":null},"scheduler":{"type":"table-number","polling-time":-1}},"state":"normal","history":null,"error":null}
+```
 
 ## 查询同步任务列表
 
 使用以下命令来查询同步任务列表：
-
-{{< copyable "shell-regular" >}}
 
 ```shell
 cdc cli changefeed list --server=http://10.0.10.25:8300
@@ -43,8 +55,6 @@ cdc cli changefeed list --server=http://10.0.10.25:8300
 
 使用 `changefeed query` 命令可以查询特定同步任务（对应某个同步任务的信息和状态），指定 `--simple` 或 `-s` 参数会简化输出，提供最基本的同步状态和 checkpoint 信息。不指定该参数会输出详细的任务配置、同步状态和同步表信息。
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 cdc cli changefeed query -s --server=http://10.0.10.25:8300 --changefeed-id=simple-replication-task
 ```
@@ -64,8 +74,6 @@ cdc cli changefeed query -s --server=http://10.0.10.25:8300 --changefeed-id=simp
 - `tso` 代表当前 changefeed 中已经成功写入下游的最大事务 TSO。
 - `checkpoint` 代表当前 changefeed 中已经成功写入下游的最大事务 TSO 对应的时间。
 - `error` 记录当前 changefeed 是否有错误发生。
-
-{{< copyable "shell-regular" >}}
 
 ```shell
 cdc cli changefeed query --server=http://10.0.10.25:8300 --changefeed-id=simple-replication-task
@@ -148,8 +156,6 @@ cdc cli changefeed query --server=http://10.0.10.25:8300 --changefeed-id=simple-
 
 使用以下命令来停止同步任务：
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 cdc cli changefeed pause --server=http://10.0.10.25:8300 --changefeed-id simple-replication-task
 ```
@@ -161,8 +167,6 @@ cdc cli changefeed pause --server=http://10.0.10.25:8300 --changefeed-id simple-
 ## 恢复同步任务
 
 使用以下命令恢复同步任务：
-
-{{< copyable "shell-regular" >}}
 
 ```shell
 cdc cli changefeed resume --server=http://10.0.10.25:8300 --changefeed-id simple-replication-task
@@ -181,8 +185,6 @@ cdc cli changefeed resume --server=http://10.0.10.25:8300 --changefeed-id simple
 
 使用以下命令删除同步任务：
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 cdc cli changefeed remove --server=http://10.0.10.25:8300 --changefeed-id simple-replication-task
 ```
@@ -192,8 +194,6 @@ cdc cli changefeed remove --server=http://10.0.10.25:8300 --changefeed-id simple
 ## 更新同步任务配置
 
 TiCDC 从 4.0.4 开始支持非动态修改同步任务配置，修改 changefeed 配置需要按照 `暂停任务 -> 修改配置 -> 恢复任务` 的流程。
-
-{{< copyable "shell-regular" >}}
 
 ```shell
 cdc cli changefeed pause -c test-cf --server=http://10.0.10.25:8300
@@ -212,8 +212,6 @@ cdc cli changefeed resume -c test-cf --server=http://10.0.10.25:8300
 
 - 查询 `processor` 列表：
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     cdc cli processor list --server=http://10.0.10.25:8300
     ```
@@ -229,8 +227,6 @@ cdc cli changefeed resume -c test-cf --server=http://10.0.10.25:8300
     ```
 
 - 查询特定 `processor`，对应于某个节点处理的同步子任务信息和状态：
-
-    {{< copyable "shell-regular" >}}
 
     ```shell
     cdc cli processor query --server=http://10.0.10.25:8300 --changefeed-id=simple-replication-task --capture-id=b293999a-4168-4988-a4f4-35d9589b226b
@@ -267,8 +263,6 @@ cdc cli changefeed resume -c test-cf --server=http://10.0.10.25:8300
 
 从 v4.0.5 开始，TiCDC 支持输出行变更数据的历史值。若要开启该特性，需要在 changefeed 的配置文件的根级别指定以下配置：
 
-{{< copyable "" >}}
-
 ```toml
 enable-old-value = true
 ```
@@ -282,8 +276,6 @@ enable-old-value = true
 ## 同步没有有效索引的表
 
 从 v4.0.8 开始，TiCDC 支持通过修改任务配置来同步没有有效索引的表。若要开启该特性，需要在 `changefeed` 配置文件的根级别进行如下指定：
-
-{{< copyable "" >}}
 
 ```toml
 enable-old-value = true
@@ -304,8 +296,6 @@ Unified Sorter 是 TiCDC 中的排序引擎功能，用于缓解以下场景造�
 对 v4.0.13 版本之后的 `cdc cli` 创建的 changefeed，默认开启 Unified Sorter。对 v4.0.13 版本前已经存在的 changefeed，则使用之前的配置。
 
 要确定一个 changefeed 上是否开启了 Unified Sorter 功能，可执行以下示例命令查看（假设 PD 实例的 IP 地址为 `http://10.0.10.25:2379`）：
-
-{{< copyable "shell-regular" >}}
 
 ```shell
 cdc cli --server="http://10.0.10.25:8300" changefeed query --changefeed-id=simple-replication-task | grep 'sort-engine'
