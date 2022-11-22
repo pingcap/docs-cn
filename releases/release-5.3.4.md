@@ -27,7 +27,7 @@ TiDB 版本： 5.3.4
     - (dup) 修复数据库级别的权限清理不正确的问题 [#38363](https://github.com/pingcap/tidb/issues/38363)
     - (dup) 修复 `mysql.tables_priv` 表中 `grantor` 字段缺失的问题 [#38293](https://github.com/pingcap/tidb/issues/38293)
     - (dup)  修复 `KILL TIDB` 在空闲链接上无法立即生效的问题 [#24031](https://github.com/pingcap/tidb/issues/24031)
-    - 修复 `adddate` 和 `subdate` 函数返回值类型的问题 [#36394](https://github.com/pingcap/tidb/issues/36394)
+    - 修复 `date_add` 和 `date_sub` 函数返回类型的行为与 MySQL 不一致的问题 [#36394](https://github.com/pingcap/tidb/issues/36394), [#27573](https://github.com/pingcap/tidb/issues/27573)
     - 修复 Parser 恢复 `table option` 中 `INSERT_METHOD` 字段错误的问题 [#38368](https://github.com/pingcap/tidb/issues/38368)
     - 修复 MySQL 5.1 及之前客户端连接 TiDB Server 鉴权失败的问题 [#29725](https://github.com/pingcap/tidb/issues/29725)
 
@@ -37,13 +37,12 @@ TiDB 版本： 5.3.4
     - (dup) 修复 `concat(ifnull(time(3))` 的结果与 MySQL 不一致的问题 [#29498](https://github.com/pingcap/tidb/issues/29498)
     - 修复当从 TiFlash 查询 `avg()` 函数时，返回错误 `ERROR 1105 (HY000): other error for mpp stream: Could not convert to the target type - -value is out of range.` 的问题 [#29952](https://github.com/pingcap/tidb/issues/29952)
     - 修复查询 HashJoin 时，返回错误 `ERROR 1105 (HY000): close of nil channel`  的问题[#30289](https://github.com/pingcap/tidb/issues/30289)
-   - 修复 `date_add` 和 `date_sub` 函数返回类型的行为与 MySQL 不一致的问题，即 `date_add` 和 `date_sub` 函数在第一个参数类型为 string，第二个参数类型为 int/string/real/decimal 时返回 string 类型 [#27573](https://github.com/pingcap/tidb/issues/27573)
     - 修复 TiKV 和 TiFlash 在进行逻辑运算时结果不一致的问题 [#37258](https://github.com/pingcap/tidb/issues/37258)
 
     <!--transaction owner: @cfzjywxk-->
 
     - (dup) 修复带 DML 算子的 `EXPLAIN ANALYZE` 语句可能在事务提交完成前返回结果的问题 [#37373](https://github.com/pingcap/tidb/issues/37373)
-    - 修复合并多个 Region 后 Region 缓存没有正确清理的问题 [#37174](https://github.com/pingcap/tidb/issues/37174)
+    - 修复合并多个 Region 后 Region cache 没有正确清理的问题 [#37174](https://github.com/pingcap/tidb/issues/37174)
 
     <!--planner owner: @qw4990-->
 
