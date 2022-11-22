@@ -14,7 +14,7 @@ aliases: ['/zh/tidb/dev/pitr-usage/']
 
 ### 开启日志备份
 
-执行 `br log start` 命令启动日志备份任务，一个集群只能启动一个日志备份任务。该命令输出结果如下：
+执行 `br log start` 命令启动日志备份任务，一个集群只能启动一个日志备份任务。
 
 ```shell
 tiup br log start --task-name=pitr --pd "${PD_IP}:2379" \
@@ -98,9 +98,7 @@ Restore KV Files <--------------------------------------------------------------
     rm -rf s3://backup-101/snapshot-${date}
     ```
 
-## 性能与影响
-
-### PITR 的性能与影响
+## PITR 的性能与影响
 
 ### 能力指标
 
@@ -131,5 +129,5 @@ Restore KV Files <--------------------------------------------------------------
 ## 探索更多
 
 * [TiDB 集群备份与恢复实践示例](/br/backup-and-restore-use-cases.md)
-* [br 命令行手册](/br/use-br-command-line-tool.md)
+* [`br` 命令行手册](/br/use-br-command-line-tool.md)
 * [日志备份与 PITR 架构设计](/br/br-log-architecture.md)
