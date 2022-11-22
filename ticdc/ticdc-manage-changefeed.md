@@ -13,7 +13,7 @@ aliases: ['/zh/tidb/dev/manage-ticdc/']
 使用以下命令来创建同步任务：
 
 ```shell
-cdc cli changefeed create --server=http://10.0.10.25:8300 --sink-uri="mysql://root:123456@127.0.0.1:3306/" --changefeed-id="simple-replication-task" --sort-engine="unified"
+cdc cli changefeed create --server=http://10.0.10.25:8300 --sink-uri="mysql://root:123456@127.0.0.1:3306/" --changefeed-id="simple-replication-task"
 ```
 
 ```shell
