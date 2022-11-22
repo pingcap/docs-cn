@@ -74,7 +74,7 @@ TiDB 版本：6.4.0-DMR
 
     随着 Coprocessor Task 任务数增加，TiDB 将结合 TiKV 处理速度自动增加任务并发度（调整 [`tidb_distsql_scan_concurrency`](/system-variables.md#tidb_distsql_scan_concurrency)），减少 Coprocessor Task 任务排队，降低延迟。
 
-* 新增动态规划算法来决定表的连接顺序 [#18969](https://github.com/pingcap/tidb/issues/18969) @[winoros](https://github.com/winoros)
+* 新增动态规划算法来决定表的连接顺序 [#37825](https://github.com/pingcap/tidb/issues/37825) @[winoros](https://github.com/winoros)
 
     在之前的版本中，TiDB 采用贪心算法来决定表的连接顺序。在 v6.4.0 中，优化器引入了[动态规划算法](/join-reorder.md#join-reorder-动态规划算法实例)。相比贪心算法，动态规划算法会枚举更多可能的连接顺序，进而有机会发现更好的执行计划，提升部分场景下 SQL 执行效率。
 
