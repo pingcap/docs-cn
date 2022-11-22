@@ -210,3 +210,7 @@ header = false
 ### `Unknown character set`
 
 由于 TiDB 只支持部分 MySQL 字符集，因此，在导入流程中，如果创建表结构时使用了 TiDB 不支持的字符集，TiDB Lightning 会报这个错误。你可以结合数据内容选择 [TiDB 支持的字符集](/character-set-and-collation.md)，预先在下游创建表结构以绕过这个错误。
+
+### `invalid compression type ...`
+
+v6.4 及之后版本的 TiDB Lightning 会识别带有非 `.bak` 后缀的数据文件为 TiDB Lightning 不支持的压缩数据文件并报错，因此需要提前清理通过文件改名或将该类文件移出导入数据目录来避免此类错误。
