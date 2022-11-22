@@ -706,6 +706,11 @@ TiDB 服务状态相关配置。
 
 + 默认值：false
 
+### constraint-check-in-place-pessimistic <span class="version-mark">从 v6.4.0 版本开始引入</span>
+
++ 用来控制系统变量 [`tidb_constraint_check_in_place_pessimistic`](/system-variables.md#tidb_constraint_check_in_place_pessimistic-从-v630-版本开始引入) 的默认值。
++ 默认值：true
+
 ## isolation-read
 
 读取隔离相关的配置项。
