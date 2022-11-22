@@ -20,15 +20,15 @@ rules = ['*.*', '!test.*']
 常见的过滤器规则示例：
 
 - `rules = ['*.*']`
-  - 同步所有的表（不包含系统表）
+    - 同步所有的表（不包含系统表）
 - `rules = ['test1.*']`
-  - 同步库 `test1` 下的所有表
+    - 同步库 `test1` 下的所有表
 - `rules = ['*.*', '!scm1.tbl2']`
-  - 同步所有的表但排除表 `scm1.tbl2`
+    - 同步所有的表但排除表 `scm1.tbl2`
 - `rules = ['scm1.tbl2', 'scm1.tbl3']`
-  - 只同步表 `scm1.tbl2` 和 `scm1.tbl3`
+    - 只同步表 `scm1.tbl2` 和 `scm1.tbl3`
 - `rules = ['scm1.tidb_*']`
-  - 同步库 `scm1` 下所有表名前缀为 `tidb_` 的表
+    - 同步库 `scm1` 下所有表名前缀为 `tidb_` 的表
 
 更多用法说明参见：[库表过滤语法](/table-filter.md#表库过滤语法)
 

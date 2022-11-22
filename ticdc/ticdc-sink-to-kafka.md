@@ -91,7 +91,7 @@ URI 中可配置的的参数如下：
 >
 > 当 `protocol` 为 `open-protocol` 时，TiCDC 会尽量避免产生长度超过 `max-message-bytes` 的消息。但如果单条数据变更记录需要超过 `max-message-bytes` 个字节来表示，为了避免静默失败，TiCDC 会试图输出这条消息并在日志中输出 Warning。
 
-#### TiCDC 使用 Kafka 的认证与授权
+### TiCDC 使用 Kafka 的认证与授权
 
 使用 Kafka 的 SASL 认证时配置样例如下所示：
 
@@ -134,7 +134,7 @@ URI 中可配置的的参数如下：
     - 对 Topic [资源类型](https://docs.confluent.io/platform/current/kafka/authorization.html#resources)的 `Create` 和 `Write` 权限。
     - 对 Cluster 资源类型的 `DescribeConfigs` 权限。
 
-#### TiCDC 集成 Kafka Connect (Confluent Platform)
+### TiCDC 集成 Kafka Connect (Confluent Platform)
 
 如要使用 Confluent 提供的 [data connectors](https://docs.confluent.io/current/connect/managing/connectors.html) 向关系型或非关系型数据库传输数据，请选择 `avro` 协议，并在 `schema-registry` 中提供 [Confluent Schema Registry](https://www.confluent.io/product/confluent-platform/data-compatibility/) 的 URL。
 
