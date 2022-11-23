@@ -1,10 +1,7 @@
 ---
 title: TiDB Data Migration 简介
 summary: 了解 TiDB Data Migration
-<<<<<<< HEAD
-=======
-aliases: ['/docs-cn/tidb-data-migration/dev/overview/','/docs-cn/tools/dm/overview/','/zh/tidb/dev/quick-create-migration-task','/zh/tidb/dev/scenarios','/docs-cn/tidb-data-migration/dev/key-features/','/docs-cn/tidb-data-migration/dev/feature-overview/','/zh/tidb/dev/dm-key-features']
->>>>>>> 89db1f04c (dm: split dm features into several docs (#11878))
+aliases: ['/zh/tidb/v6.4/dm-key-features']
 ---
 
 # TiDB Data Migration 简介
