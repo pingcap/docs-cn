@@ -171,9 +171,7 @@ SELECT TABLE_SCHEMA, TABLE_NAME, TIDB_TABLE_ID FROM INFORMATION_SCHEMA.TABLES WH
 >
 > 数据可以读写并不代表没有数据丢失。
 
-执行完成后，数据和索引可能会不一致。请使用 SQL 的 [`ADMIN CHECK`](/sql-statements/sql-statement-admin-check-table-index.md) 对受影响的表进行数据索引一致性检查。
-
-{{< copyable "sql" >}}
+执行完成后，数据和索引可能会不一致。请使用 [`ADMIN CHECK`](/sql-statements/sql-statement-admin-check-table-index.md) 对受影响的表进行数据索引的一致性检查。
 
 ```sql
 ADMIN CHECK TABLE table_name;
