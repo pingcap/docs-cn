@@ -177,11 +177,9 @@ SELECT TABLE_SCHEMA, TABLE_NAME, TIDB_TABLE_ID FROM INFORMATION_SCHEMA.TABLES WH
 ADMIN CHECK TABLE table_name;
 ```
 
-若结果有不一致的索引，可以通过重命名旧索引，创建新索引，删除旧索引的方式来修复数据索引不一致的问题。
+若结果有不一致的索引，可以通过重命名旧索引、创建新索引、删除旧索引的方式来修复数据索引不一致的问题。
 
 重命名旧索引：
-
-{{< copyable "sql" >}}
 
 ```sql
 ALTER TABLE table_name RENAME INDEX index_name TO index_name_lame_duck;
@@ -189,15 +187,11 @@ ALTER TABLE table_name RENAME INDEX index_name TO index_name_lame_duck;
 
 创建新索引：
 
-{{< copyable "sql" >}}
-
 ```sql
 ALTER TABLE table_name ADD INDEX index_name (column_name);
 ```
 
 删除旧索引：
-
-{{< copyable "sql" >}}
 
 ```sql
 ALTER TABLE table_name DROP INDEX index_name_lame_duck;
