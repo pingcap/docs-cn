@@ -145,12 +145,9 @@ PD 下发恢复计划后，会等待 TiKV 上报执行的结果。如上述输�
 }
 ```
 
-得到受影响的 tables' id 后，可以使用 information schema 来查看受影响的表名。
-
-{{< copyable "sql" >}}
+得到受影响的 table id 后，可以使用 `INFORMATION_SCHEMA` 来查看受影响的表名。
 
 ```sql
-
 SELECT TABLE_SCHEMA, TABLE_NAME, TIDB_TABLE_ID FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_ID IN (64, 27);
 ```
 
