@@ -48,7 +48,7 @@ TiDB 版本： 5.3.4
 
     - (dup) 修复了某些情况下，`EXECUTE` 语句可能抛出非预期异常的问题 [#37187](https://github.com/pingcap/tidb/issues/37187)
     - (dup) 修复了当 `ORDER BY` 子句里包含关联子查询时与 `GROUP CONCAT` 一起执行可能会导致出错的问题 [#18216](https://github.com/pingcap/tidb/issues/18216)
-    - 修复了使用 Plan Cache 时，由于 Decimal 和 Real 的 length 和 width 被错误设置而导致的结果错误的问题 [#29565](https://github.com/pingcap/tidb/issues/29565)
+    - 修复了使用 Plan Cache 时，由于 Decimal 和 Real 的 length 和 width 设置错误而导致的结果出错问题 [#29565](https://github.com/pingcap/tidb/issues/29565)
 
 + PD
 
@@ -66,7 +66,7 @@ TiDB 版本： 5.3.4
 
     <!--storage owner: @flowbehappy-->
 
-    - 修复由于使用 `0.0` 作为整数类型的默认值导致 TiFlash 节点失败的问题。比如`` `i` int(11) NOT NULL DEFAULT '0.0'`` [#3157](https://github.com/pingcap/tiflash/issues/3157)
+    - 修复由于使用 `0.0` 作为整数类型的默认值导致 TiFlash 节点失败的问题，比如`` `i` int(11) NOT NULL DEFAULT '0.0'`` [#3157](https://github.com/pingcap/tiflash/issues/3157)
 
 + Tools
 
@@ -74,7 +74,7 @@ TiDB 版本： 5.3.4
 
     <!--owner: @niubell-->
 
-        - 修复 Dumpling 同时指定 `--compress` 配置和 S3 导出目录时无法导出的问题 [#30534](https://github.com/pingcap/tidb/issues/30534)
+        - 修复 Dumpling 同时指定 `--compress` 配置和 S3 导出目录时无法导出数据的问题 [#30534](https://github.com/pingcap/tidb/issues/30534)
 
     + TiCDC
 
