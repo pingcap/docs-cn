@@ -4,17 +4,11 @@ title: TiDB 6.5.0 Release Notes
 
 # TiDB 6.5.0 Release Notes
 
-发版日期：2022 年 x 月 xx 日
+发版日期：2022 年 xx 月 xx 日
 
 TiDB 版本：6.5.0
 
 试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v6.5/quick-start-with-tidb) | [生产部署](https://docs.pingcap.com/zh/tidb/v6.5/production-deployment-using-tiup) | [下载离线包](https://cn.pingcap.com/product-community/)
-
-TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)，包含了 6.2.0-DMR、6.3.0-DMR、6.4.0-DMR 中已发布的功能、提升改进和错误修复。你可以通过以下链接查看这些 DMR 版本的 Release Notes。
-
-- [6.2.0-DMR](/releases/release-6.2.0.md)
-- [6.3.0-DMR](/releases/release-6.3.0.md)
-- [6.4.0-DMR](/releases/release-6.4.0.md)
 
 在 6.5.0 版本中，你可以获得以下关键特性：
 
@@ -22,6 +16,8 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)，包含了 6
 - 关键特性 2
 - 关键特性 3
 - ......
+
+TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)，除了本次新引入的功能变化，同时也包含 [6.2.0-DMR](/releases/release-6.2.0.md)、[6.3.0-DMR](/releases/release-6.3.0.md)、[6.4.0-DMR](/releases/release-6.4.0.md) 中已发布的功能、提升改进和错误修复。
 
 ## 新功能
 
@@ -239,4 +235,4 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)，包含了 6
 
 感谢来自 TiDB 社区的贡献者们：
 
-- [贡献者 GitHub ID]()
+- [贡献者 GitHub ID](链接)
