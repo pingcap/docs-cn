@@ -358,7 +358,9 @@ SELECT /*+ READ_FROM_STORAGE(TIFLASH[t1], TIKV[t2]) */ t1.a FROM t t1, t t2 WHER
 
 ### USE_INDEX_MERGE(t1_name, idx1_name [, idx2_name ...])
 
-`USE_INDEX_MERGE(t1_name, idx1_name [, idx2_name ...])` 提示优化器通过 index merge 的方式来访问指定的表，其中索引列表为可选参数。若显式地指出索引列表，会尝试在索引列表中选取索引来构建 index merge。若不给出索引列表，会尝试在所有可用的索引中选取索引来构建 index merge。例如：
+`USE_INDEX_MERGE(t1_name, idx1_name [, idx2_name ...])` 提示优化器通过 [index merge](/explain-index-merge.md) 的方式来访问指定的表。
+
+对于并集型 index merge，其中索引列表为可选参数，若显式地指出索引列表，会尝试在索引列表中选取索引来构建 index merge。若不给出索引列表，会尝试在所有可用的索引中选取索引来构建 index merge。对于交集型 index merge，索引列表是必选参数。例如：
 
 {{< copyable "sql" >}}
 
@@ -371,10 +373,6 @@ SELECT /*+ USE_INDEX_MERGE(t1, idx_a, idx_b, idx_c) */ * FROM t1 WHERE t1.a > 10
 > **注意：**
 >
 > `USE_INDEX_MERGE` 的参数是索引名，而不是列名。对于主键索引，索引名为 `primary`。
-
-目前该 Hint 生效的条件较为苛刻，包括：
-
-- 如果查询有除了全表扫以外的单索引扫描方式可以选择，优化器不会选择 index merge；
 
 ### LEADING(t1_name [, tl_name ...])
 
