@@ -12,7 +12,7 @@ TiDB 版本：6.5.0
 
 TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
-相比于前一个 LTS (即 6.1.0 版本)，6.5.0 版本包含 [6.2.0-DMR](/releases/release-6.2.0.md)、[6.3.0-DMR](/releases/release-6.3.0.md)、[6.4.0-DMR](/releases/release-6.4.0.md) 中已发布的功能、提升改进和错误修复，并引入了以下关键特性：
+相比于前一个 LTS (即 6.1.0 版本)，6.5.0 版本包含 [6.2.0-DMR](/releases/release-6.2.0.md)、[6.3.0-DMR](/releases/release-6.3.0.md)、[6.4.0-DMR](/releases/release-6.4.0.md) 中已发布的新功能、提升改进和错误修复，并引入了以下关键特性：
 
 - 关键特性 1
 - 关键特性 2
