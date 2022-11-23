@@ -497,6 +497,32 @@
         - [常见问题](/dm/dm-faq.md)
         - [错误处理及恢复](/dm/dm-error-handling.md)
       - [版本发布历史](/dm/dm-release-notes.md)
+  - TiCDC
+    - [概述](/ticdc/ticdc-overview.md)
+    - [安装部署与集群运维](/ticdc/deploy-ticdc.md)
+    - Changefeed
+      - [Changefeed 概述](/ticdc/ticdc-changefeed-overview.md)
+      - 创建 Changefeed
+        - [同步数据到 MySQL 兼容的数据库](/ticdc/ticdc-sink-to-mysql.md)
+        - [同步数据到 Kafka](/ticdc/ticdc-sink-to-kafka.md)
+      - [管理 Changefeed](/ticdc/ticdc-manage-changefeed.md)
+      - [日志过滤器](/ticdc/ticdc-filter.md)
+    - 监控告警
+      - [监控指标](/ticdc/monitor-ticdc.md)
+      - [报警规则](/ticdc/ticdc-alert-rules.md)
+    - 参考指南
+      - [架构设计与原理](/ticdc/ticdc-architecture.md)
+      - [TiCDC Server 配置参数](/ticdc/ticdc-server-config.md)
+      - [TiCDC Changefeed 配置参数](/ticdc/ticdc-changefeed-config.md)
+      - 输出数据协议
+        - [TiCDC Avro Protocol](/ticdc/ticdc-avro-protocol.md)
+        - [TiCDC Canal-JSON Protocol](/ticdc/ticdc-canal-json.md)
+        - [TiCDC Open Protocol](/ticdc/ticdc-open-protocol.md)
+      - [TiCDC Open API](/ticdc/ticdc-open-api.md)
+      - [兼容性](/ticdc/ticdc-compatibility.md)
+    - [故障处理](/ticdc/troubleshoot-ticdc.md)
+    - [常见问题解答](/ticdc/ticdc-faq.md)
+    - [术语表](/ticdc/ticdc-glossary.md)
   - TiDB Binlog
     - [概述](/tidb-binlog/tidb-binlog-overview.md)
     - [快速上手](/tidb-binlog/get-started-with-tidb-binlog.md)
@@ -517,21 +543,6 @@
       - [故障诊断](/tidb-binlog/troubleshoot-tidb-binlog.md)
       - [常见错误修复](/tidb-binlog/handle-tidb-binlog-errors.md)
     - [FAQ](/tidb-binlog/tidb-binlog-faq.md)
-  - TiCDC
-    - [概述](/ticdc/ticdc-overview.md)
-    - [安装部署](/ticdc/deploy-ticdc.md)
-    - [运维管理](/ticdc/manage-ticdc.md)
-    - 监控告警
-      - [监控指标](/ticdc/monitor-ticdc.md)
-      - [报警规则](/ticdc/ticdc-alert-rules.md)
-    - [故障处理](/ticdc/troubleshoot-ticdc.md)
-    - 参考指南
-      - [TiCDC Open API](/ticdc/ticdc-open-api.md)
-      - [TiCDC Open Protocol](/ticdc/ticdc-open-protocol.md)
-      - [TiCDC Avro Protocol](/ticdc/ticdc-avro-protocol.md)
-      - [TiCDC Canal-JSON Protocol](/ticdc/ticdc-canal-json.md)
-    - [常见问题解答](/ticdc/ticdc-faq.md)
-    - [术语表](/ticdc/ticdc-glossary.md)
   - TiUniManager
     - [概述](/tiunimanager/tiunimanager-overview.md)
     - [安装和运维](/tiunimanager/tiunimanager-install-and-maintain.md)
