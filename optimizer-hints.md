@@ -449,7 +449,8 @@ WITH CTE1 AS (SELECT * FROM t1), CTE2 AS (WITH CTE3 AS (SELECT /*+ MERGE() */ * 
 
 这类 Hint 和[视图](/views.md)有关，可以实现在查询中定义的 Hint 能够在视图的内部生效。
 
-首先给需要用到 hint 的查询块部分定义一个 [`QB_NAME` Hint](/optimizer-hints.md#qb_name) 来对视图内部的查询块进行重命名，其中针对视图的 `QB_NAME` Hint 的概念和之前相同，只是在语法上进行了相应的拓展。从 `QB_NAME(QB)` 拓展为 `QB_NAME(QB, ViewName@QueryBlockName [.ViewName@QueryBlockName .ViewName@QueryBlockName ...])`。例如：
+全局生效的 hint 的定义由两部分组成。先用 `QB_NAME` Hint 为视图内的查询块命名， 再以 "表名@查询块名" 的方式加入实际需要的 Hint。
+具体方式为首先给需要用到 hint 的查询块部分定义一个 [`QB_NAME` Hint](/optimizer-hints.md#qb_name) 来对视图内部的查询块进行重命名，其中针对视图的 `QB_NAME` Hint 的概念和之前相同，只是在语法上进行了相应的拓展。从 `QB_NAME(QB)` 拓展为 `QB_NAME(QB, ViewName@QueryBlockName [.ViewName@QueryBlockName .ViewName@QueryBlockName ...])`（其中跟在 `@QueryBlockName` 后面的部分需要和其留有空格，不然会被视作  `@QueryBlockName` 的一部分）。例如：
 
 ```sql
 SELECT /* 注释：当前查询块的名字为默认的 @SEL_1 */ * FROM v2 JOIN (SELECT /* 注释：当前查询块的名字为默认的 @SEL_2 */ * FROM v2) vv;
