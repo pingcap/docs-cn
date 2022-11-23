@@ -10,14 +10,14 @@ TiDB 版本：6.5.0
 
 试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v6.5/quick-start-with-tidb) | [生产部署](https://docs.pingcap.com/zh/tidb/v6.5/production-deployment-using-tiup) | [下载离线包](https://cn.pingcap.com/product-community/)
 
-在 6.5.0 版本中，你可以获得以下关键特性：
+TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
+
+相比于前一个 LTS (即 6.1.0 版本)，6.5.0 版本包含 [6.2.0-DMR](/releases/release-6.2.0.md)、[6.3.0-DMR](/releases/release-6.3.0.md)、[6.4.0-DMR](/releases/release-6.4.0.md) 中已发布的功能、提升改进和错误修复，并引入了以下关键特性：
 
 - 关键特性 1
 - 关键特性 2
 - 关键特性 3
 - ......
-
-TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)，除了本次新引入的功能变化，同时也包含 [6.2.0-DMR](/releases/release-6.2.0.md)、[6.3.0-DMR](/releases/release-6.3.0.md)、[6.4.0-DMR](/releases/release-6.4.0.md) 中已发布的功能、提升改进和错误修复。
 
 ## 新功能
 
