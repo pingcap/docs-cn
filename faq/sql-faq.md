@@ -120,6 +120,8 @@ In the following statement, the order of column `a` is guaranteed, but the order
 3 rows in set (0.00 sec)
 ```
 
+In TiDB, you can also use the system variable [`tidb_enable_ordered_result_mode`](/system-variables.md#tidb_enable_ordered_result_mode) to sort the final output result automatically.  
+
 ## Does TiDB support `SELECT FOR UPDATE`?
 
 Yes. When using pessimistic locking (the default since TiDB v3.0) the `SELECT FOR UPDATE` execution behaves similar to MySQL.
@@ -347,12 +349,9 @@ To learn the scenarios that cause hotspots, refer to [common hotpots](/troublesh
 - The [`AUTO_RANDOM`](/troubleshoot-hot-spot-issues.md#handle-auto-increment-primary-key-hotspot-tables-using-auto_random) attribute, which helps resolve hotspots brought by auto-increment primary keys.
 - [Coprocessor Cache](/coprocessor-cache.md), for read hotspots on small tables.
 - [Load Base Split](/configure-load-base-split.md), for hotspots caused by unbalanced access between Regions, such as full table scans for small tables.
+- [Cached tables](/cached-tables.md), for frequently accessed but rarely updated small hotspot tables.
 
 If you have a performance issue caused by hotspot, refer to [Troubleshoot Hotspot Issues](/troubleshoot-hot-spot-issues.md) to get it resolved.
-
-### How to scatter the hotspots?
-
-In TiDB, data is divided into Regions for management. Generally, the TiDB hotspot means the Read/Write hotspot in a Region. In TiDB, for the table whose primary key (PK) is not an integer or which has no PK, you can properly break Regions by configuring `SHARD_ROW_ID_BITS` to scatter the Region hotspots. For details, see the introduction of `SHARD_ROW_ID_BITS` in [`SHARD_ROW_ID_BITS`](/shard-row-id-bits.md).
 
 ### Tune TiKV performance
 
