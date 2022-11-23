@@ -10,7 +10,7 @@ summary: 了解 DM 的关键特性表路由 (Table Routing) 的使用方法和�
 > **注意：**
 >
 > - 不支持对同一个表设置多个不同的路由规则。
-> - Schema 的匹配规则需要单独设置，用来迁移 `CREATE/DROP SCHEMA ...`，例如下面[参数配置](#参数配置)中的 rule-2。
+> - Schema 的匹配规则需要单独设置，用来迁移 `CREATE/DROP SCHEMA ...`，例如下面[配置表路由](#配置表路由)中的 rule-2。
 
 ## 配置表路由
 
