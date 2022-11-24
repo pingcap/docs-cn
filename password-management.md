@@ -143,7 +143,7 @@ TiDB 支持通过设置密码过期策略，要求用户定期修改密码，从
 
 ### 手动密码过期
 
-要手动使账户密码过期，请使用 CREATE USER、ALTER USAER 语句。
+要手动使账户密码过期，请使用 CREATE USER、ALTER USER 语句。
 
 ```sql
 ALTER USER 'test'@'localhost' PASSWORD EXPIRE;
