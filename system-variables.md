@@ -198,6 +198,15 @@ mysql> SELECT * FROM t1;
 - 服务器和客户端建立连接时，这个变量用于设置服务器对外通告的默认身份验证方式。如要了解该变量的其他可选值，参见[可用的身份验证插件](/security-compatibility-with-mysql.md#可用的身份验证插件)。
 - 若要在用户登录时使用 `tidb_sm3_password` 插件，需要使用 [TiDB-JDBC](https://github.com/pingcap/mysql-connector-j/tree/release/8.0-sm3) 进行连接。
 
+### `default_password_lifetime`
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 类型：整数
+- 默认值：`0`
+- 取值范围：`[0, 65535]`
+- 该变量用于设置全局自动密码过期策略，默认值为0，即禁用全局自动密码过期。如果 default_password_lifetime 的值为正整数 N，则表示允许的密码生存期为 N，即必须在 N 天之内更改密码。
+
 ### `default_week_format`
 
 - 作用域：SESSION | GLOBAL
@@ -206,6 +215,14 @@ mysql> SELECT * FROM t1;
 - 默认值：`0`
 - 取值范围：`[0, 7]`
 - 设置 `WEEK()` 函数使用的周格式。
+
+### `disconnect-on-expired-password`
+
+- 作用域: GLOBAL
+- 是否持久化到集群：是
+- 类型：布尔型
+- 默认值：`ON`
+- 该变量决定用户密码过期后的处理机制。启用该变量时，密码过期的用户将被 TiDB 服务端断开连接。禁用该变量时，密码过期的用户将被置于"沙盒模式"，此时密码过期的用户将被允许连接到TiDB，但是只允许执行重置密码操作。默认启用 disconnect-on-expired-password，即默认将断开密码过期用户的连接。
 
 ### `error_count`
 
@@ -377,6 +394,22 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 - 取值范围：`[1024, 1073741824]`，且应当为 1024 的整数倍；若取值无法被 1024 整除，则会提示 warning 并向下取整。例如设置为 1025 时，则 TiDB 中的实际取值为 1024。
 - 服务器端和客户端在一次传送数据包的过程中所允许最大的数据包大小，单位为字节。
 - 该变量的行为与 MySQL 兼容。
+
+### `password_history`
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 类型：整数
+- 默认值：`0`
+- 范围：`[0, 4294967295]`
+- 该变量用于建立密码重用策略，基于密码更改次数限制密码的重复使用。当设置一个正整数 N ，表示不允许重复使用最近 N 次使用过的密码。默认值为0，表示禁用基于密码更改次数的密码重用策略。
+
+### `password_reuse_interval`
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 类型：整数
+- 默认值：`0`
+- 范围：`[0, 4294967295]`
+- 该变量用于建立密码重用策略，基于经过时间限制的密码重复使用。当设置一个正整数 M ，表示不允许重复使用最近 M 天内使用过的密码。默认值为0，表示禁用基于密码经过时间的密码重用策略。
 
 ### `plugin_dir`
 
@@ -3301,6 +3334,83 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 可选值：`global` 和 `local`
 - 该变量用于设置当前会话下事务为全局事务（设为 `global`）还是局部事务（设为 `local`）。
 - 该变量仅用于 TiDB 内部实现，**不推荐设置该变量**。
+
+### `validate_password.check_user_name`
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 默认值：`ON`
+- 范围：`ON | OFF`
+- 该变量是密码复杂度策略检查的一部分，变量设置为 ON 后，在设置账户密码时，会将密码与当前会话账户的用户名部分（不使用主机名部分）进行比较，如果匹配则拒绝该密码。除非 validate_password.enable 开启，否则变量不生效。
+- 此变量独立于 validate_password.policy，即不受密码复杂度检测强度的影响。
+
+### `validate_password.dictionary`
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 默认值：""
+- 该变量是密码复杂度策略检查的一部分,进行密码字典字符串匹配检查。除非 validate_password.enable 开启，否则变量不生效。对于密码检查时要使用的字典检查，密码策略必须设置为 2 (STRONG)；
+- 该变量是一个长字符串，长度不超过 1024，字符串内容包含多个待匹配的单词，每个单词之间采用分号分隔。
+- 默认情况下，该变量具有空值不执行字典检查。要进行字典检查，变量值必须为非空。配置了该变量后，在设置账户密码时，会将长度为 4 到 100 的密码的每个子字符串与字典中的单词进行比较。任何匹配都会导致密码被拒绝。比较不区分大小写。
+
+### `validate_password.enable`
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 默认值：`OFF`
+- 范围：`ON | OFF`
+- 该变量是密码复杂度策略检查的开关，变量设置为 ON 后，在设置账户密码时，才会进行密码复杂度的各项检查。
+
+### `validate_password.length`
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 类型：整数
+- 默认值：`8`
+- 范围：`[0, 9223372036854775807]`
+- 该变量是密码复杂度策略检查的一部分,限定密码的最小长度，默认最小长度为 8。除非 validate_password.enable 开启，否则变量不生效。
+- 该变量时密码的总长度最小值要求，这与其他几个相关系统变量相关。该变量的值不能设置为小于此表达式的值：validate_password.number_count + validate_password.special_char_count + (2 * validate_password.mixed_case_count)，当修改 validate_password.number_count 、 validate_password.special_char_count 、 validate_password.mixed_case_count后表达式的值大于validate_password.length时，validate_password.length将同步被修改到满足表达式的最小值。
+
+### `validate_password.mixed_case_count`
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 类型：整数
+- 默认值：`1`
+- 范围：`[0, 9223372036854775807]`
+- 该变量是密码复杂度策略检查的一部分,限定密码中的小写字符数和大写字符数的最小值。除非 validate_password.enable 开启，否则变量不生效。如果需要检查密码中的小写、大写字符数要求，密码策略必须设置为 1 (MEDIUM) 或者更强；
+- 对于给定的 validate_password.mixed_case_count 值，则密码中必须包含那么多的小写字符和那么多的大写字符。例如，值为 1 时，密码中至少需要 1 个小写字母，并且至少需要 1 个大写字母。
+
+### `validate_password.number_count`
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 类型：整数
+- 默认值：`1`
+- 范围：`[0, 9223372036854775807]`
+- 该变量是密码复杂度策略检查的一部分,限定密码中的数字字符数的最小值。除非 validate_password.enable 开启，否则变量不生效。如果需要检查密码中的数字字符数要求，密码策略必须设置为 1 (MEDIUM) 或者更强；
+
+### `validate_password.policy`
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 类型：枚举型
+- 默认值：`1`
+- 可选值：`[0, 1, 2]`
+- 该变量是密码复杂度策略检查的强度策略，该变量影响其他密码复杂度系统变量在密码检查时是否生效，但是 validate_password.check_user_name 除外。除非 validate_password.enable 开启，否则变量不生效。
+- 该变量可以使用树值 0、1、2 或相应的符号值 LOW、MEDIUM、STRONG，密码强度策略对应的检查项如下：
+    - 0 或者 LOW ：检查密码长度
+    - 1 或者 MEDIUM ：检查密码长度，密码中数字、小写/大写字符、特殊字符数量
+    - 2 或者 STRONG ：检查密码长度，密码中数字、小写/大写字符、特殊字符数量，检查密码字典匹配
+
+### `validate_password.special_char_count`
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 类型：整数
+- 默认值：`1`
+- 范围：`[0, 9223372036854775807]`
+- 该变量是密码复杂度策略检查的一部分,限定密码中的特殊字符数的最小值。除非 validate_password.enable 开启，否则变量不生效。如果需要检查密码中的特殊字符数要求，密码策略必须设置为 1 (MEDIUM) 或者更强；
 
 ### `version`
 
