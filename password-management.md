@@ -1,20 +1,20 @@
 ---
-title: 密码管理
+title: TiDB 密码管理
 summary: 了解用户密码管理机制。
-aliases: ['/docs-cn/dev/password-management.md/']
 ---
 
-# 密码管理
+# TiDB 密码管理
+
 为了保护用户密码的安全，TiDB 支持以下密码管理能力：
 
-- 密码复杂度策略：要求为用户设置强密码，以防止出现空密码、弱密码。
+- 密码复杂度策略：要求用户设置强密码，以防止出现空密码、弱密码。
 - 密码有效期策略：要求用户定期修改密码。
 - 密码重用策略：限制用户重复使用旧密码。
 - 密码连续错误限制登陆策略：连续多次密码错误导致登录失败后，临时锁定账户，限制该账户继续尝试登陆。
 
 ## TiDB 身份验证凭据存储
 
-本节中描述的密码管理是针对 TiDB 本身处理的内部凭据存储，以下身份验证插件将账户凭据存储到 TiDB 的 mysql.user 系统表中：
+本节中描述的密码管理是针对 TiDB 本身处理的内部凭据存储，以下身份验证插件将账户凭据存储到 TiDB 的 `mysql.user` 系统表中：
 
 - mysql_native_password
 - caching_sha2_password
@@ -44,6 +44,8 @@ SHOW VARIABLES LIKE 'validate_password.%';
 +--------------------------------------+--------+
 8 rows in set (0.00 sec)
 ```
+
+关于密码复杂度策略相关系统变量的详细信息，请查阅[系统变量](/system-variables.md#validate_password.check_user_name-从-v650-版本开始引入)。
 
 ### 配置密码复杂度策略
 
@@ -81,12 +83,13 @@ SET GLOBAL validate_password.number_count = 2;
 
 密码复杂度策略支持以下功能：
 
-- 对采用明文方式设置用户密码的 SQL 语句，系统会根据密码复杂度策略检查密码，如果密码不符合要求，则拒绝该密码。这适用于 CREATE USER、ALTER USER、SET PASSWORD 语句。
-- 对于 CREATE USER 语句，即使该账户最初被锁定，也必须提供满足密码复杂度策略的密码，否则将账户解锁后，将出现不符合密码复杂度策略的密码也可以访问该账户。
+- 对采用明文方式设置用户密码的 SQL 语句，系统会根据密码复杂度策略检查密码，如果密码不符合要求，则拒绝该密码。这适用于 `CREATE USER`、`ALTER USER`、`SET PASSWORD` 语句。
+- 对于 `CREATE USER` 语句，即使该账户最初被锁定，也必须提供满足密码复杂度策略的密码，否则将账户解锁后，将出现不符合密码复杂度策略的密码也可以访问该账户。
 - 变更密码复杂度策略不影响已存在账户的密码，只会对新设置密码的操作产生影响。
-- 可以使用 SQL 函数 [VALIDATE_PASSWORD_STRENGTH()](/functions-and-operators/encryption-and-compression-functions.md) 评估给定密码的强度，此函数接受一个密码参数并返回一个从 0（弱）到 100（强）的整数，评估结果是基于当前配置的密码复杂度策略，即密码复杂度配置改变后同一个密码评估结果可能不同。
+- 可以使用 SQL 函数 [`VALIDATE_PASSWORD_STRENGTH()`](/functions-and-operators/encryption-and-compression-functions.md) 评估给定密码的强度，此函数接受一个密码参数并返回一个从 0（弱）到 100（强）的整数。评估结果是基于当前配置的密码复杂度策略，密码复杂度配置改变后，同一个密码的评估结果可能不同。
 
-启用 validate_password.enable 后，密码复杂度检查示例如下：
+启用密码复杂度策略检查 (`validate_password.enable = ON`) 后，密码复杂度检查示例如下：
+
 按照默认密码复杂度策略，检测用户明文密码，若采用弱密码，设置失败
 
 ```sql

@@ -3335,7 +3335,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 该变量用于设置当前会话下事务为全局事务（设为 `global`）还是局部事务（设为 `local`）。
 - 该变量仅用于 TiDB 内部实现，**不推荐设置该变量**。
 
-### `validate_password.check_user_name`
+### `validate_password.check_user_name` <span class="version-mark">从 v6.5.0 版本开始引入</span>
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
@@ -3397,11 +3397,11 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 类型：枚举型
 - 默认值：`1`
 - 可选值：`[0, 1, 2]`
-- 该变量是密码复杂度策略检查的强度策略，该变量影响其他密码复杂度系统变量在密码检查时是否生效，但是 validate_password.check_user_name 除外。除非 validate_password.enable 开启，否则变量不生效。
-- 该变量可以使用树值 0、1、2 或相应的符号值 LOW、MEDIUM、STRONG，密码强度策略对应的检查项如下：
-    - 0 或者 LOW ：检查密码长度
-    - 1 或者 MEDIUM ：检查密码长度，密码中数字、小写/大写字符、特殊字符数量
-    - 2 或者 STRONG ：检查密码长度，密码中数字、小写/大写字符、特殊字符数量，检查密码字典匹配
+- 该变量是[密码复杂度策略检查](/password-management.md#密码复杂度策略)的强度策略，该变量影响其他密码复杂度系统变量（前缀为 `validate_password`）在密码检查时是否生效，但是 `validate_password.check_user_name` 除外。只有 `validate_password.enable` 开启时，该变量才生效。
+- 该变量可以使用数值 0、1、2 或相应的符号值 LOW、MEDIUM、STRONG，密码强度策略对应的检查项如下：
+    - 0 或者 LOW：检查密码长度。
+    - 1 或者 MEDIUM：检查密码长度，检查密码中数字、小写字符、大写字符、特殊字符数量。
+    - 2 或者 STRONG：检查密码长度，检查密码中数字、小写字符、大写字符、特殊字符数量，检查密码字典匹配。
 
 ### `validate_password.special_char_count`
 
@@ -3410,7 +3410,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 类型：整数
 - 默认值：`1`
 - 范围：`[0, 2147483647]`
-- 该变量是密码复杂度策略检查的一部分,限定密码中的特殊字符数的最小值。除非 validate_password.enable 开启，否则变量不生效。如果需要检查密码中的特殊字符数要求，密码策略必须设置为 1 (MEDIUM) 或者更强；
+- 该变量是密码[复杂度策略检查](/password-management.md#密码复杂度策略)的一部分,限定密码中的特殊字符数的最小值。只有 `validate_password.enable` 开启时，该变量才生效。如果需要检查密码中的特殊字符数要求，密码策略 (`validate_password.policy`) 必须设置为 1 (MEDIUM) 或者更强。
 
 ### `version`
 
