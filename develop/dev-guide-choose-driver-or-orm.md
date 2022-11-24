@@ -9,8 +9,8 @@ summary: 选择驱动或 ORM 框架连接 TiDB。
 >
 > TiDB 支持等级说明：
 >
-> - **Full**：此 Driver 或 ORM 没有已知的 issues。
-> - **Verified**：可能会因为 TiDB 与 MySQL 的兼容性问题，导致出现错误。
+> - **Full**：表明 PingCAP 已经支持该工具的绝大多数功能兼容性，并且在新版本中对其保持兼容，将定期地对下表中记录的新版本进行兼容性测试。
+> - **Compatible**：表明由于该工具已适配 MySQL，而 TiDB 高度兼容 MySQL 协议，因此可以使用此工具的大部分功能。但 PingCAP 并未对该工具作出完整的兼容性验证，有可能出现一些意外的行为。
 >
 > 关于更多 TiDB 支持的第三方工具，你可以查看 [TiDB 支持的第三方工具](/develop/dev-guide-third-party-support.md)。
 
@@ -261,7 +261,7 @@ go get -u gorm.io/driver/mysql
 
 支持等级：**Verified**
 
-按照 [mysqlclient 文档](https://mysqlclient.readthedocs.io/)中的说明下载并配置驱动程序即可使用。建议使用 **2.1.1** 及以上版本。
+按照 [mysqlclient 文档](https://pypi.org/project/mysqlclient/)中的说明下载并配置驱动程序即可使用。建议使用 **2.1.1** 及以上版本。
 
 使用 mysqlclient 进行 TiDB 应用程序构建的例子，可参阅 [TiDB 和 Python 的简单 CRUD 应用程序 - 使用 mysqlclient](/develop/dev-guide-sample-application-python.md#第-2-步获取代码)。
 
@@ -270,7 +270,7 @@ go get -u gorm.io/driver/mysql
 
 支持等级：**Verified**
 
-按照 [mysql-connector-python 文档](https://dev.mysql.com/doc/connector-python/en/)中的说明下载并配置驱动程序即可使用。建议使用 **8.0.31** 及以上版本。
+按照 [mysql-connector-python 文档](https://dev.mysql.com/doc/connector-python/en/connector-python-installation-binary.html)中的说明下载并配置驱动程序即可使用。建议使用 **8.0.31** 及以上版本。
 
 使用 mysql-connector-python 进行 TiDB 应用程序构建的例子，可参阅 [TiDB 和 Python 的简单 CRUD 应用程序 - 使用 mysql-connector-python](/develop/dev-guide-sample-application-python.md#第-2-步获取代码)。
 
