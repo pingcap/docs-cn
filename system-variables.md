@@ -3367,7 +3367,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 是否持久化到集群：是
 - 类型：整数
 - 默认值：`8`
-- 范围：`[0, 9223372036854775807]`
+- 范围：`[0, 2147483647]`
 - 该变量是密码复杂度策略检查的一部分,限定密码的最小长度，默认最小长度为 8。除非 validate_password.enable 开启，否则变量不生效。
 - 该变量时密码的总长度最小值要求，这与其他几个相关系统变量相关。该变量的值不能设置为小于此表达式的值：validate_password.number_count + validate_password.special_char_count + (2 * validate_password.mixed_case_count)，当修改 validate_password.number_count 、 validate_password.special_char_count 、 validate_password.mixed_case_count后表达式的值大于validate_password.length时，validate_password.length将同步被修改到满足表达式的最小值。
 
