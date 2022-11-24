@@ -155,7 +155,6 @@ CREATE USER 'newuser9'@'%' PASSWORD EXPIRE;
 Query OK, 1 row affected (0.02 sec)
 ```
 
-
 ## MySQL 兼容性
 
 * TiDB 不支持 `WITH MAX_QUERIES_PER_HOUR`、`WITH MAX_UPDATES_PER_HOUR`、`WITH MAX_USER_CONNECTIONS` 等 `CREATE` 选项。
