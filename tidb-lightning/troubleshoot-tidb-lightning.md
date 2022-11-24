@@ -213,4 +213,4 @@ header = false
 
 ### `invalid compression type ...`
 
-TiDB v6.4 及之后版本的 TiDB Lightning 不支持带有非 `.bak` 后缀的数据文件并报错。你需要提前修改文件名，或将该类文件移出导入数据目录来避免此类错误。更多详情请参考[压缩导出的数据文件](/dumpling-overview.md#压缩导出的数据文件)。
+TiDB v6.4 及之后版本的 TiDB Lightning 不支持带有非 `.bak` 后缀的数据文件并报错。你需要提前修改文件名，或将该类文件移出导入数据目录来避免此类错误。更多详情请参考[压缩导出的数据文件](/tidb-lightning/tidb-lightning-data-source.md#压缩文件)。
