@@ -125,6 +125,22 @@ SELECT /*+ HASH_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id = t2.id;
 >
 > `HASH_JOIN` 的别名是 `TIDB_HJ`，在 3.0.x 及之前版本仅支持使用该别名；之后的版本同时支持使用这两种名称，推荐使用 `HASH_JOIN`。
 
+### HASH_JOIN_BUILD(t1_name [, tl_name ...])
+
+`HASH_JOIN_BUILD(t1_name [, tl_name ...])` 提示优化器对指定表使用 Hash Join 算法，同时将指定表作为 Hash Join 算法的 Build 端，即用指定表来构建哈希表。例如：
+
+```sql
+SELECT /*+ HASH_JOIN_BUILD(t1) */ * FROM t1, t2 WHERE t1.id = t2.id;
+```
+
+### HASH_JOIN_PROBE(t1_name [, tl_name ...])
+
+`HASH_JOIN_PROBE(t1_name [, tl_name ...])` 提示优化器对指定表使用 Hash Join 算法，同时将指定表作为 Hash Join 算法的探测（Probe）端，即用指定表作为探测端来执行 Hash Join 算法。例如：
+
+```sql
+SELECT /*+ HASH_JOIN_PROBE(t2) */ * FROM t1, t2 WHERE t1.id = t2.id;
+```
+
 ### SEMI_JOIN_REWRITE()
 
 `SEMI_JOIN_REWRITE()` 提示优化器将查询语句中的半连接 (Semi Join) 改写为普通的内连接。目前该 Hint 只作用于 `EXISTS` 子查询。
@@ -174,6 +190,72 @@ EXPLAIN SELECT * FROM t WHERE EXISTS (SELECT /*+ SEMI_JOIN_REWRITE() */ 1 FROM t
 ```
 
 在上述例子中可以看到，在使用了 Hint 之后，TiDB 可以选择由表 `t1` 作为驱动表的 IndexJoin 的执行方式。
+
+### NO_DECORRELATE()
+
+`NO_DECORRELATE()` 提示优化器不要尝试解除指定查询块中对应子查询的关联。该 Hint 适用于包含关联列的 `EXISTS`、`IN`、`ANY`、`ALL`、`SOME` 和标量子查询，即关联子查询。
+
+将该 Hint 写在一个查询块中后，对于该子查询和其外部查询块之间的关联列，优化器将不再尝试解除关联，而是始终使用 Apply 算子来执行查询。
+
+默认情况下，TiDB 会尝试对关联子查询[解除关联](/correlated-subquery-optimization.md)，以达到更高的执行效率。但是在[一部分场景](/correlated-subquery-optimization.md#限制)下，解除关联反而会降低执行效率。这种情况下，可以使用该 Hint 来人工提示优化器不要进行解除关联操作。例如：
+
+{{< copyable "sql" >}}
+
+```sql
+create table t1(a int, b int);
+create table t2(a int, b int, index idx(b));
+```
+
+{{< copyable "sql" >}}
+
+```sql
+-- 不使用 NO_DECORRELATE()
+explain select * from t1 where t1.a < (select sum(t2.a) from t2 where t2.b = t1.b);
+```
+
+```sql
++----------------------------------+----------+-----------+---------------+--------------------------------------------------------------------------------------------------------------+
+| id                               | estRows  | task      | access object | operator info                                                                                                |
++----------------------------------+----------+-----------+---------------+--------------------------------------------------------------------------------------------------------------+
+| HashJoin_11                      | 9990.00  | root      |               | inner join, equal:[eq(test.t1.b, test.t2.b)], other cond:lt(cast(test.t1.a, decimal(10,0) BINARY), Column#7) |
+| ├─HashAgg_23(Build)              | 7992.00  | root      |               | group by:test.t2.b, funcs:sum(Column#8)->Column#7, funcs:firstrow(test.t2.b)->test.t2.b                      |
+| │ └─TableReader_24               | 7992.00  | root      |               | data:HashAgg_16                                                                                              |
+| │   └─HashAgg_16                 | 7992.00  | cop[tikv] |               | group by:test.t2.b, funcs:sum(test.t2.a)->Column#8                                                           |
+| │     └─Selection_22             | 9990.00  | cop[tikv] |               | not(isnull(test.t2.b))                                                                                       |
+| │       └─TableFullScan_21       | 10000.00 | cop[tikv] | table:t2      | keep order:false, stats:pseudo                                                                               |
+| └─TableReader_15(Probe)          | 9990.00  | root      |               | data:Selection_14                                                                                            |
+|   └─Selection_14                 | 9990.00  | cop[tikv] |               | not(isnull(test.t1.b))                                                                                       |
+|     └─TableFullScan_13           | 10000.00 | cop[tikv] | table:t1      | keep order:false, stats:pseudo                                                                               |
++----------------------------------+----------+-----------+---------------+--------------------------------------------------------------------------------------------------------------+
+```
+
+从以上执行计划中可以发现，优化器自动解除了关联。解除关联之后的执行计划不包含 Apply 算子，取而代之的是子查询和外部查询块之间的 Join 运算，而原本的带有关联列的过滤条件 `t2.b = t1.b` 也变成了一个普通的 join 条件。
+
+{{< copyable "sql" >}}
+
+```sql
+-- 使用 NO_DECORRELATE()
+explain select * from t1 where t1.a < (select /*+ NO_DECORRELATE() */ sum(t2.a) from t2 where t2.b = t1.b);
+```
+
+```sql
++------------------------------------------+-----------+-----------+------------------------+--------------------------------------------------------------------------------------+
+| id                                       | estRows   | task      | access object          | operator info                                                                        |
++------------------------------------------+-----------+-----------+------------------------+--------------------------------------------------------------------------------------+
+| Projection_10                            | 10000.00  | root      |                        | test.t1.a, test.t1.b                                                                 |
+| └─Apply_12                               | 10000.00  | root      |                        | CARTESIAN inner join, other cond:lt(cast(test.t1.a, decimal(10,0) BINARY), Column#7) |
+|   ├─TableReader_14(Build)                | 10000.00  | root      |                        | data:TableFullScan_13                                                                |
+|   │ └─TableFullScan_13                   | 10000.00  | cop[tikv] | table:t1               | keep order:false, stats:pseudo                                                       |
+|   └─MaxOneRow_15(Probe)                  | 10000.00  | root      |                        |                                                                                      |
+|     └─StreamAgg_20                       | 10000.00  | root      |                        | funcs:sum(Column#14)->Column#7                                                       |
+|       └─Projection_45                    | 100000.00 | root      |                        | cast(test.t2.a, decimal(10,0) BINARY)->Column#14                                     |
+|         └─IndexLookUp_44                 | 100000.00 | root      |                        |                                                                                      |
+|           ├─IndexRangeScan_42(Build)     | 100000.00 | cop[tikv] | table:t2, index:idx(b) | range: decided by [eq(test.t2.b, test.t1.b)], keep order:false, stats:pseudo         |
+|           └─TableRowIDScan_43(Probe)     | 100000.00 | cop[tikv] | table:t2               | keep order:false, stats:pseudo                                                       |
++------------------------------------------+-----------+-----------+------------------------+--------------------------------------------------------------------------------------+
+```
+
+从以上执行计划中可以发现，优化器没有解除关联。执行计划中包含 Apply 算子，而带有关联列的条件 `t2.b = t1.b` 仍然是访问 `t2` 表时的过滤条件。
 
 ### HASH_AGG()
 

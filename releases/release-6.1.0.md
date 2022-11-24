@@ -2,11 +2,13 @@
 title: TiDB 6.1.0 Release Notes
 ---
 
-# TiDB v6.1.0 Release Notes
+# TiDB 6.1.0 Release Notes
 
 发版日期：2022 年 6 月 13 日
 
 TiDB 版本：6.1.0
+
+试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v6.1/quick-start-with-tidb) | [生产部署](https://docs.pingcap.com/zh/tidb/v6.1/production-deployment-using-tiup) | [下载离线包](https://cn.pingcap.com/product-community/?version=v6.1.0#version-list)
 
 在 6.1.0 版本中，你可以获得以下关键特性：
 
@@ -204,11 +206,11 @@ TiDB 版本：6.1.0
 
     * TiCDC 支持将 TiDB 数据库的增量数据按表分发到不同的 Kafka Topic 中，结合 Canal-json 格式可以将数据直接与 Flink 共享。
 
-        [用户文档](/ticdc/manage-ticdc.md#自定义-kafka-sink-的-topic-和-partition-的分发规则)，[#4423](https://github.com/pingcap/tiflow/issues/4423)
+        [用户文档](//ticdc/ticdc-sink-to-kafka.md#自定义-kafka-sink-的-topic-和-partition-的分发规则)，[#4423](https://github.com/pingcap/tiflow/issues/4423)
 
     * TiCDC 支持 SASL GSSAPI 认证类型。增加了使用 Kafka 的 SASL 认证示例。
 
-        [用户文档](/ticdc/manage-ticdc.md#ticdc-使用-kafka-的认证与授权)，[#4423](https://github.com/pingcap/tiflow/issues/4423)
+        [用户文档](/ticdc/ticdc-sink-to-kafka.md#ticdc-使用-kafka-的认证与授权)，[#4423](https://github.com/pingcap/tiflow/issues/4423)
 
 * TiCDC 支持同步使用 GBK 编码的上游表。
 
@@ -266,12 +268,12 @@ TiDB 版本：6.1.0
 | TiKV | [`storage.background-error-recovery-window`](/tikv-configuration-file.md#background-error-recovery-window-从-v610-版本开始引入) | 新增 | RocksDB 检测到可恢复的后台错误后，所允许的最长恢复时间。 |
 | TiKV | [`storage.api-version`](/tikv-configuration-file.md#api-version-从-v610-版本开始引入) | 新增 | TiKV 作为 Raw Key Value 存储数据时使用的存储格式与接口版本。 |
 | PD | [`schedule.max-store-preparing-time`](/pd-configuration-file.md#max-store-preparing-time-从-v610-版本开始引入) | 新增 | 控制 store 上线阶段的最长等待时间。 |
-| TiCDC | [`enable-tls`](/ticdc/manage-ticdc.md#sink-uri-配置-kafka) | 新增 | 控制是否使用 TLS 连接 Kafka。 |
-| TiCDC | `sasl-gssapi-user`<br/>`sasl-gssapi-password`<br/>`sasl-gssapi-auth-type`<br/>`sasl-gssapi-service-name`<br/>`sasl-gssapi-realm`<br/>`sasl-gssapi-key-tab-path`<br/>`sasl-gssapi-kerberos-config-path` | 新增 | 支持 Kafka SASL/GSSAPI 认证所需要的参数。详情见 [Sink URI 配置 `kafka`](/ticdc/manage-ticdc.md#sink-uri-配置-kafka)。 |
-| TiCDC | [`avro-decimal-handling-mode`](/ticdc/manage-ticdc.md#sink-uri-配置-kafka)<br/>[`avro-bigint-unsigned-handling-mode`](/ticdc/manage-ticdc.md#sink-uri-配置-kafka) | 新增 | 控制 Avro 格式的输出细节。 |
-| TiCDC | [`dispatchers.topic`](/ticdc/manage-ticdc.md#同步任务配置文件描述) | 新增 | 控制 TiCDC 将增量数据分发到不同 Kafka Topic 的策略 |
-| TiCDC | [`dispatchers.partition`](/ticdc/manage-ticdc.md#同步任务配置文件描述) | 新增 | `dispatchers.partition` 是原 `dispatchers.dispatcher` 配置项的别名，用于控制增量数据的 Kafka Partition 分发策略。 |
-| TiCDC | [`schema-registry`](/ticdc/manage-ticdc.md#ticdc-集成-kafka-connect-confluent-platform) | 新增 | 用于指定存储 Avro Schema 的 Schema Registry Endpoint。 |
+| TiCDC | [`enable-tls`](/ticdc/ticdc-sink-to-kafka.md#sink-uri-配置-kafka) | 新增 | 控制是否使用 TLS 连接 Kafka。 |
+| TiCDC | `sasl-gssapi-user`<br/>`sasl-gssapi-password`<br/>`sasl-gssapi-auth-type`<br/>`sasl-gssapi-service-name`<br/>`sasl-gssapi-realm`<br/>`sasl-gssapi-key-tab-path`<br/>`sasl-gssapi-kerberos-config-path` | 新增 | 支持 Kafka SASL/GSSAPI 认证所需要的参数。详情见 [Sink URI 配置 `kafka`](/ticdc/ticdc-sink-to-kafka.md#sink-uri-配置-kafka)。 |
+| TiCDC | [`avro-decimal-handling-mode`](/ticdc/ticdc-sink-to-kafka.md#sink-uri-配置-kafka)<br/>[`avro-bigint-unsigned-handling-mode`](/ticdc/ticdc-sink-to-kafka.md#sink-uri-配置-kafka) | 新增 | 控制 Avro 格式的输出细节。 |
+| TiCDC | [`dispatchers.topic`](/ticdc/ticdc-changefeed-config.md) | 新增 | 控制 TiCDC 将增量数据分发到不同 Kafka Topic 的策略 |
+| TiCDC | [`dispatchers.partition`](/ticdc/ticdc-changefeed-config.md) | 新增 | `dispatchers.partition` 是原 `dispatchers.dispatcher` 配置项的别名，用于控制增量数据的 Kafka Partition 分发策略。 |
+| TiCDC | [`schema-registry`](/ticdc/ticdc-sink-to-kafka.md#ticdc-集成-kafka-connect-confluent-platform) | 新增 | 用于指定存储 Avro Schema 的 Schema Registry Endpoint。 |
 | DM | `dmctl start-relay` 命令中的 worker 参数 | 删除 | 不推荐使用的方式，将通过更为简单的实现替代。 |
 | DM | source 配置中的 `relay-dir` | 删除 | 由 worker 配置文件中的同名配置项替代。 |
 | DM | task 配置中的 `is-sharding` | 删除 | 由 `shard-mode` 配置项替代。 |

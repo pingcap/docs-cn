@@ -1,10 +1,10 @@
 ---
-title: Data Migration 简介
+title: TiDB Data Migration 简介
 summary: 了解 TiDB Data Migration
-aliases: ['/docs-cn/tidb-data-migration/dev/overview/','/docs-cn/tools/dm/overview/','/zh/tidb/dev/quick-create-migration-task','/zh/tidb/dev/scenarios']
+aliases: ['/docs-cn/tidb-data-migration/dev/overview/','/docs-cn/tools/dm/overview/','/zh/tidb/dev/quick-create-migration-task','/zh/tidb/dev/scenarios','/docs-cn/tidb-data-migration/dev/key-features/','/docs-cn/tidb-data-migration/dev/feature-overview/','/zh/tidb/dev/dm-key-features']
 ---
 
-# 产品简介
+# TiDB Data Migration 简介
 
 <!--
 ![star](https://img.shields.io/github/stars/pingcap/tiflow?style=for-the-badge&logo=github) ![license](https://img.shields.io/github/license/pingcap/tiflow?style=for-the-badge) ![forks](https://img.shields.io/github/forks/pingcap/tiflow?style=for-the-badge)
@@ -19,7 +19,7 @@ aliases: ['/docs-cn/tidb-data-migration/dev/overview/','/docs-cn/tools/dm/overvi
 - **支持合库合表同步模式。**可以方便的将上游各个分片 MySQL 实例的各个分表数据，合并同步到下游 TiDB 的一张表。支持自定义编写同步规则以方便各种可能的同步需求，且具备自动识别和处理上游分片 MySQL 的 DDL 变更，大幅简化运维成本。
 - **内置多种过滤器以灵活适应不同场景。**支持以预定义事件类型、正则表达式、SQL 表达式等多种方式在数据同步过程中对 MySQL binlog 事件进行过滤。
 - **集中管理。**DM 支持上千个节点的集群规模，可同时运行并集中管理大量数据迁移同步任务。
-- **对第三方 Online Schema Change 工具变更过程的同步优化。**在 MySQL 生态中，gh-ost 与 pt-osc 等工具被广泛使用，DM 对其变更过程进行了特殊的优化，以避免对不必要的中间数据进行迁移。详细信息可参考 [online-ddl](/dm/dm-key-features.md#online-ddl-工具支持)。
+- **对第三方 Online Schema Change 工具变更过程的同步优化。**在 MySQL 生态中，gh-ost 与 pt-osc 等工具被广泛使用，DM 对其变更过程进行了特殊的优化，以避免对不必要的中间数据进行迁移。详细信息可参考 [online-ddl](/dm/dm-online-ddl-tool-support.md)。
 - **高可用。**支持迁移任务在不同节点自由调度，少量工作节点宕机并不会影响进行中的任务。
 
 ## 快速安装
@@ -50,6 +50,8 @@ tiup install dm dmctl
     - 目前，TiDB 部分兼容 MySQL 支持的 DDL 语句。因为 DM 使用 TiDB parser 来解析处理 DDL 语句，所以目前仅支持 TiDB parser 支持的 DDL 语法。详见 [TiDB DDL 语法支持](/mysql-compatibility.md#ddl-的限制)。
 
     - DM 遇到不兼容的 DDL 语句时会报错。要解决此报错，需要使用 dmctl 手动处理，要么跳过该 DDL 语句，要么用指定的 DDL 语句来替换它。详见[如何处理不兼容的 DDL 语句](/dm/dm-faq.md#如何处理不兼容的-ddl-语句)。
+
+    - DM 不会将视图的 DDL 语句同步到下游的 TiDB 集群，也不会将针对视图的 DML 语句同步到下游。在该场景下，建议用户在下游 TiDB 集群中自行创建视图。
 
 + GBK 字符集兼容性限制
 
@@ -85,8 +87,8 @@ DM 遵循 Apache 2.0 协议，在 [LICENSE](https://github.com/pingcap/tiflow/bl
 
 要快速了解 DM 的原理架构、适用场景，建议先观看下面的培训视频。注意本视频只作为学习参考，具体操作步骤和最新功能，请以文档内容为准。
 
-<video src="https://download.pingcap.com/docs-cn%2FLesson20_dm_part01.mp4" width="600px" height="450px" controls="controls" poster="https://tidb-docs.s3.us-east-2.amazonaws.com/thumbnail+-+lesson+20+part+1.png"></video>
+<video src="https://download.pingcap.com/docs-cn%2FLesson20_dm_part01.mp4" width="100%" height="100%" controls="controls" poster="https://tidb-docs.s3.us-east-2.amazonaws.com/thumbnail+-+lesson+20+part+1.png"></video>
 
-<video src="https://download.pingcap.com/docs-cn/Lesson20_dm_part02.mp4" width="600px" height="450px" controls="controls" poster="https://tidb-docs.s3.us-east-2.amazonaws.com/thumbnail+-+lesson+20+part+1.png"></video>
+<video src="https://download.pingcap.com/docs-cn/Lesson20_dm_part02.mp4" width="100%" height="100%" controls="controls" poster="https://tidb-docs.s3.us-east-2.amazonaws.com/thumbnail+-+lesson+20+part+1.png"></video>
 
-<video src="https://download.pingcap.com/docs-cn/Lesson20_part03.mp4" width="600px" height="450px" controls="controls" poster="https://tidb-docs.s3.us-east-2.amazonaws.com/thumbnail+-+lesson+20+part+1.png"></video>
+<video src="https://download.pingcap.com/docs-cn/Lesson20_part03.mp4" width="100%" height="100%" controls="controls" poster="https://tidb-docs.s3.us-east-2.amazonaws.com/thumbnail+-+lesson+20+part+1.png"></video>

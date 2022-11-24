@@ -178,7 +178,7 @@ Txn0 完成了 Prewrite，在 Commit 的过程中 Txn1 对该 key 发起了读�
 
     * 通过 TiDB Grafana 监控分析：
 
-        观察 KV Errors 下 Lock Resolve OPS 面板中的 not_expired/resolve 监控项以及 KV Backoff OPS 面板中的 txnLockFast 监控项，如果有较为明显的上升趋势，那么可能是当前的环境中出现了大量的读写冲突。其中，not_expired 是指对应的锁还没有超时，resolve 是指尝试清锁的操作，txnLockFast 代表出现了读写冲突。
+        观察 KV Errors 下 Lock Resolve OPS 面板中的 not_expired/resolve 监控项以及 KV Backoff OPS 面板中的 tikvLockFast 监控项，如果有较为明显的上升趋势，那么可能是当前的环境中出现了大量的读写冲突。其中，not_expired 是指对应的锁还没有超时，resolve 是指尝试清锁的操作，tikvLockFast 代表出现了读写冲突。
 
         ![KV-backoff-txnLockFast-optimistic](/media/troubleshooting-lock-pic-09.png)
         ![KV-Errors-resolve-optimistic](/media/troubleshooting-lock-pic-08.png)
@@ -274,8 +274,8 @@ TxnLockNotFound 错误是由于事务提交的慢了，超过了 TTL 的时间�
     查看提交间隔：
 
     ```shell
-    tiup ctl pd tso [start_ts]
-    tiup ctl pd tso [commit_ts]
+    tiup ctl:<cluster-version> pd tso [start_ts]
+    tiup ctl:<cluster-version> pd tso [commit_ts]
     ```
 
 * 建议检查下是否是因为写入性能的缓慢导致事务提交的效率差，进而出现了锁被清除的情况。
@@ -286,7 +286,7 @@ TxnLockNotFound 错误是由于事务提交的慢了，超过了 TTL 的时间�
 
 以下介绍悲观事务模式下常见的锁冲突问题的处理方式。
 
-> 注意：
+> **注意：**
 >
 > 即使设置了悲观事务模式，autocommit 事务仍然会优先尝试使用乐观事务模式进行提交，并在发生冲突后、自动重试时切换为悲观事务模式。
 

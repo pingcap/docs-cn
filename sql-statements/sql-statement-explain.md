@@ -38,6 +38,10 @@ ExplainableStmt ::=
 >
 > 使用 MySQL 客户端连接到 TiDB 时，为避免输出结果在终端中换行，可先执行 `pager less -S` 命令。执行命令后，新的 `EXPLAIN` 的输出结果不再换行，可按右箭头 <kbd>→</kbd> 键水平滚动阅读输出结果。
 
+> **注意：**
+>
+> 在执行计划返回结果中，自 v6.4.0 版本起，特定算子（即 `IndexJoin` 和 `Apply` 算子的 Probe 端所有子节点）的 `estRows` 字段意义与 v6.4.0 之前的有所不同。细节请参考 [TiDB 执行计划概览](/explain-overview.md#解读-explain-的返回结果)。
+
 目前 TiDB 的 `EXPLAIN` 会输出 5 列，分别是：`id`，`estRows`，`task`，`access object`，`operator info`。执行计划中每个算子都由这 5 列属性来描述，`EXPLAIN` 结果中每一行描述一个算子。每个属性的具体含义如下：
 
 | 属性名          | 含义 |
@@ -185,9 +189,14 @@ EXPLAIN DELETE FROM t1 WHERE c1=3;
 
 在 `EXPLAIN` 中使用 `FORMAT = "xxx"` 语法可以指定输出的内容和格式。
 
-如果 `EXPLAIN` 语句中未指定 `FORMAT`，或指定 `FORMAT = "row"`，那么 `EXPLAIN` 语句将以表格格式输出结果。更多信息，可参阅 [TiDB 执行计划概览](/explain-overview.md)。
+| FORMAT | 作用 |
+| ------ | ------ |
+| 未指定  | 同 row |
+| `row`    | `EXPLAIN` 语句将以表格格式输出结果。更多信息，可参阅 [TiDB 执行计划概览](/explain-overview.md) |
+| `brief`  | `EXPLAIN` 语句输出结果中的算子 ID 将被简化，较之未指定 `FORMAT` 时输出结果的算子 ID 更为简化 |
+| `dot`    | `EXPLAIN` 语句将输出 dot 格式的执行计划，可以通过 `dot` 程序（在 `graphviz` 包中）生成 PNG 文件 |
 
-如果在 `EXPLAIN` 中指定了 `FORMAT = "brief"`，那么 `EXPLAIN` 语句输出结果中的算子 ID，较之未指定 `FORMAT` 时输出结果的算子 ID 更为简化：
+在 `EXPLAIN` 中指定 `FORMAT = "brief"` 时，示例如下:
 
 {{< copyable "sql" >}}
 
@@ -251,7 +260,7 @@ label = "cop"
 1 row in set (0.00 sec)
 ```
 
-如果你的计算机上安装了 `dot` 程序（在 `graphviz` 包中），可使用以下方法生成 PNG 文件：
+如果你的计算机上安装了 `dot` 程序，可使用以下方法生成 PNG 文件：
 
 {{< copyable "shell-regular" >}}
 

@@ -1,12 +1,12 @@
 ---
-title: 性能问题及处理方法
+title: TiDB Data Migration 性能问题及处理方法
 summary: 了解 DM 可能存在的常见性能问题及其处理方法。
 aliases: ['/docs-cn/tidb-data-migration/dev/handle-performance-issues/']
 ---
 
-# 性能问题及处理方法
+# TiDB Data Migration 性能问题及处理方法
 
-本文档介绍 DM 中可能存在的、常见的性能问题及其处理方法。
+本文档介绍 TiDB Data Migration (DM) 中可能存在的、常见的性能问题及其处理方法。
 
 在诊断与处理性能问题时，请确保已经正确配置并安装 DM 的监控组件，并能在 Grafana 监控面板查看 [DM 的监控指标](/dm/monitor-a-dm-cluster.md#task)。
 
@@ -72,7 +72,7 @@ Binlog replication 模块会根据配置选择从上游 MySQL/MariaDB 或 relay 
 
 ### binlog event 转换
 
-Binlog replication 模块从 binlog event 数据中尝试构造 DML、解析 DDL 以及进行 [table router](/dm/dm-key-features.md#table-routing) 转换等，主要的性能指标是 `transform binlog event duration`。
+Binlog replication 模块从 binlog event 数据中尝试构造 DML、解析 DDL 以及进行 [table router](/dm/dm-table-routing.md) 转换等，主要的性能指标是 `transform binlog event duration`。
 
 这部分的耗时受上游写入的业务特点影响较大，如对于 `INSERT INTO` 语句，转换单个 `VALUES` 的时间和转换大量 `VALUES` 的时间差距很多，其波动范围可能从几十微秒至上百微秒，但一般不会成为系统的瓶颈。
 

@@ -150,12 +150,14 @@ show warnings;
 | raftstore.merge-check-tick-interval | 触发 Merge 完成检查的时间间隔 |
 | raftstore.cleanup-import-sst-interval | 触发检查过期 SST 文件的时间间隔 |
 | raftstore.local-read-batch-size | 一轮处理读请求的最大个数 |
+| raftstore.apply-yield-write-size | Apply 线程每一轮处理单个状态机写入的最大数据量 |
 | raftstore.hibernate-timeout | 启动后进入静默状态前需要等待的最短时间，在该时间段内不会进入静默状态（未 release）|
 | raftstore.apply-pool-size | 处理把数据落盘至磁盘的线程池中线程的数量，即 Apply 线程池大小 |
 | raftstore.store-pool-size | 处理 Raft 的线程池中线程的数量，即 Raftstore 线程池的大小 |
 | raftstore.apply-max-batch-size | Raft 状态机由 BatchSystem 批量执行数据写入请求，该配置项指定每批可执行请求的最多 Raft 状态机个数。 |
 | raftstore.store-max-batch-size |  Raft 状态机由 BatchSystem 批量执行把日志落盘至磁盘的请求，该配置项指定每批可执行请求的最多 Raft 状态机个数。 |
 | readpool.unified.max-thread-count | 统一处理读请求的线程池最多的线程数量，即 UnifyReadPool 线程池大小 |
+| readpool.unified.auto-adjust-pool-size | 是否开启自适应调整 UnifyReadPool 的大小 |
 | coprocessor.split-region-on-table | 开启按 table 分裂 Region 的开关 |
 | coprocessor.batch-split-limit | 批量分裂 Region 的阈值 |
 | coprocessor.region-max-size | Region 容量空间的最大值 |

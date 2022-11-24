@@ -9,7 +9,7 @@ aliases: ['/docs-cn/dev/tiflash/tiflash-configuration/','/docs-cn/dev/reference/
 
 ## PD 调度参数
 
-可通过 [pd-ctl](/pd-control.md) 调整参数。如果你使用 TiUP 部署，可以用 `tiup ctl pd` 代替 `pd-ctl -u <pd_ip:pd_port>` 命令。
+可通过 [pd-ctl](/pd-control.md) 调整参数。如果你使用 TiUP 部署，可以用 `tiup ctl:<cluster-version> pd` 代替 `pd-ctl -u <pd_ip:pd_port>` 命令。
 
 - [`replica-schedule-limit`](/pd-configuration-file.md#replica-schedule-limit)：用来控制 replica 相关 operator 的产生速度（涉及到下线、补副本的操作都与该参数有关）
 
@@ -182,15 +182,14 @@ delta_index_cache_size = 0
     ## TiFlash 存储引擎的压缩算法，支持 LZ4、zstd 和 LZ4HC，大小写不敏感。默认使用 LZ4 算法。
     dt_compression_method = "LZ4"
 
-    ## TiFlash 存储引擎的压缩级别，默认为 1。如果 dt_compression_method 设置为 LZ4，推荐将该值设为 1；如果 dt_compression_method 设置为 zstd ，推荐将该值设为 -1 或 1，设置为 -1 的压缩率更小，但是读性能会更好；如果 dt_compression_method 设置为 LZ4HC，推荐将该值设为 9。
+    ## TiFlash 存储引擎的压缩级别，默认为 1。
+    ## 如果 dt_compression_method 设置为 LZ4，推荐将该值设为 1；
+    ## 如果 dt_compression_method 设置为 zstd ，推荐将该值设为 -1 或 1，设置为 -1 的压缩率更小，但是读性能会更好；
+    ## 如果 dt_compression_method 设置为 LZ4HC，推荐将该值设为 9。
     dt_compression_level = 1
 
     ## 从 v6.2.0 引入，表示 PageStorage 单个数据文件中有效数据的最低比例。当某个数据文件的有效数据比例低于该值时，会触发 GC 对该文件的数据进行整理。默认为 0.5。
     dt_page_gc_threshold = 0.5
-
-    ## 从 v6.2.0 引入，使用线程池处理存储引擎的读请求。默认为 false。
-    ## 警告：目前是实验性功能，不建议在生产环境中使用。
-    # dt_enable_read_thread = false
 
 ## 安全相关配置，从 v4.0.5 开始生效
 [security]
@@ -228,6 +227,20 @@ delta_index_cache_size = 0
     ## 若开启该选项，日志中的用户数据会以 `?` 代替显示
     ## 默认值为 false
     redact-info-log = false
+
+[security.encryption]
+    ## 数据文件的加密方法。
+    ## 可选值为 "aes128-ctr"、"aes192-ctr"、"aes256-ctr"、"sm4-ctr" (仅 v6.4.0 及之后版本) 和 "plaintext"。
+    ## 默认值为 "plaintext"，即默认不开启加密功能。选择 "plaintext" 以外的值则表示启用加密功能。此时必须指定主密钥。
+    data-encryption-method = "aes128-ctr"
+    ## 轮换密钥的频率，默认值：`7d`。
+    data-key-rotation-period = "168h" # 7 days
+
+[security.encryption.master-key]
+    ## 指定启用加密时的主密钥。若要了解如何配置主密钥，可以参考《静态加密 - 配置加密》：https://docs.pingcap.com/zh/tidb/dev/encryption-at-rest#配置加密
+
+[security.encryption.previous-master-key]
+    ## 指定轮换新主密钥时的旧主密钥。旧主密钥的配置格式与主密钥相同。若要了解如何配置主密钥，可以参考《静态加密 - 配置加密》：https://docs.pingcap.com/zh/tidb/dev/encryption-at-rest#配置加密
 ```
 
 除以上几项外，其余功能参数和 TiKV 的配置相同。需要注意的是：`key` 为 `engine` 的 `label` 是保留项，不可手动配置。

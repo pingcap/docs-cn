@@ -12,7 +12,7 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-create-user/','/docs-cn/dev
 
 ```ebnf+diagram
 CreateUserStmt ::=
-    'CREATE' 'USER' IfNotExists UserSpecList RequireClauseOpt ConnectionOptions PasswordOrLockOptions
+    'CREATE' 'USER' IfNotExists UserSpecList RequireClauseOpt ConnectionOptions LockOption AttributeOption
 
 IfNotExists ::=
     ('IF' 'NOT' 'EXISTS')?
@@ -29,6 +29,10 @@ AuthOption ::=
 StringName ::=
     stringLit
 |   Identifier
+
+LockOption ::= ( 'ACCOUNT' 'LOCK' | 'ACCOUNT' 'UNLOCK' )?
+
+AttributeOption ::= ( 'COMMENT' CommentString | 'ATTRIBUTE' AttributeString )?
 ```
 
 ## 示例
@@ -81,12 +85,55 @@ CREATE USER 'newuser4'@'%' REQUIRE ISSUER '/C=US/ST=California/L=San Francisco/O
 Query OK, 1 row affected (0.02 sec)
 ```
 
+创建一个初始状态下被锁住的用户。
+
+{{< copyable "sql" >}}
+
+```sql
+CREATE USER 'newuser5'@'%' ACCOUNT LOCK;
+```
+
+```
+Query OK, 1 row affected (0.02 sec)
+```
+
+创建一个带注释的用户。
+
+```sql
+CREATE USER 'newuser6'@'%' COMMENT 'This user is created only for test';
+SELECT * FROM information_schema.user_attributes;
+```
+
+```
++-----------+------+---------------------------------------------------+
+| USER      | HOST | ATTRIBUTE                                         |
++-----------+------+---------------------------------------------------+
+| newuser6  | %    | {"comment": "This user is created only for test"} |
++-----------+------+---------------------------------------------------+
+1 rows in set (0.00 sec)
+```
+
+创建一个具有邮箱 (`email`) 属性的用户。
+
+```sql
+CREATE USER 'newuser7'@'%' ATTRIBUTE '{"email": "user@pingcap.com"}';
+SELECT * FROM information_schema.user_attributes;
+```
+
+```sql
++-----------+------+---------------------------------------------------+
+| USER      | HOST | ATTRIBUTE                                         |
++-----------+------+---------------------------------------------------+
+| newuser7  | %    | {"email": "user@pingcap.com"} |
++-----------+------+---------------------------------------------------+
+1 rows in set (0.00 sec)
+```
+
 ## MySQL 兼容性
 
 * TiDB 不支持 `WITH MAX_QUERIES_PER_HOUR`、`WITH MAX_UPDATES_PER_HOUR`、`WITH MAX_USER_CONNECTIONS` 等 `CREATE` 选项。
 * TiDB 不支持 `DEFAULT ROLE` 选项。
 * TiDB 不支持 `PASSWORD EXPIRE`、`PASSWORD HISTORY` 等有关密码限制的 `CREATE` 选项。
-* TiDB 不支持 `ACCOUNT LOCK` 和 `ACCOUNT UNLOCK` 选项。
 * 对于 TiDB 尚不支持的 `CREATE` 选项。这些选项可被解析，但会被忽略。
 
 ## 另请参阅

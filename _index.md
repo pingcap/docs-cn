@@ -1,6 +1,6 @@
 ---
 title: TiDB 产品文档
-aliases: ["/docs/dev/", "/docs/dev/adopters/", "/tidb/dev/adopters"]
+aliases: ['/docs-cn/dev/','/docs-cn/','/docs-cn/stable/']
 hide_sidebar: true
 hide_commit: true
 ---
@@ -120,6 +120,16 @@ hide_commit: true
 [TiDB Operator](https://docs.pingcap.com/zh/tidb/dev/tidb-operator-overview)
 
 [TiSpark](https://docs.pingcap.com/zh/tidb/dev/tispark-overview)
+
+</LearningPath>
+
+<LearningPath label="参考" icon="cloud-dev">
+
+[系统变量](https://docs.pingcap.com/zh/tidb/dev/system-variables)
+
+[发布历史](https://docs.pingcap.com/zh/tidb/dev/release-notes)
+
+[常见问题](https://docs.pingcap.com/zh/tidb/dev/faq-overview)
 
 </LearningPath>
 

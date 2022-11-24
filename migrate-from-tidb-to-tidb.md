@@ -73,7 +73,7 @@ aliases: ['/zh/tidb/dev/incremental-replication-between-clusters/']
 
 4. 准备外部存储。
 
-    在全量数据备份中，上下游集群均需访问备份文件，因此推荐使用[外部存储](/br/backup-and-restore-storages.md)存储备份文件，本文中通过 Minio 模拟兼容 S3 的存储服务：
+    在全量数据备份中，上下游集群均需访问备份文件，因此推荐使用[备份存储](/br/backup-and-restore-storages.md)存储备份文件，本文中通过 Minio 模拟兼容 S3 的存储服务：
 
     {{< copyable "shell-regular" >}}
 
@@ -107,13 +107,13 @@ aliases: ['/zh/tidb/dev/incremental-replication-between-clusters/']
 
 ## 第 2 步：迁移全量数据
 
-搭建好测试环境后，可以使用 [BR](https://github.com/pingcap/tidb/tree/master/br) 工具的备份和恢复功能迁移全量数据。BR 工具有多种[使用方式](/br/br-deployment.md#使用方式)，本文中使用 SQL 语句 [`BACKUP`](/sql-statements/sql-statement-backup.md) 和 [`RESTORE`](/sql-statements/sql-statement-restore.md) 进行备份恢复。
+搭建好测试环境后，可以使用 [BR](https://github.com/pingcap/tidb/tree/master/br) 工具的备份和恢复功能迁移全量数据。BR 工具有多种[使用方式](/br/br-use-overview.md#部署和使用-br)，本文中使用 SQL 语句 [`BACKUP`](/sql-statements/sql-statement-backup.md) 和 [`RESTORE`](/sql-statements/sql-statement-restore.md) 进行备份恢复。
 
 > **注意：**
 >
 > - 在生产集群中，关闭 GC 机制和备份操作会一定程度上降低集群的读性能，建议在业务低峰期进行备份，并设置合适的 `RATE_LIMIT` 限制备份操作对线上业务的影响。
 >
-> - 上下游集群版本不一致时，应检查 BR 工具的[兼容性](/br/backup-and-restore-overview.md#使用前须知)。本文假设上下游集群版本相同。
+> - 上下游集群版本不一致时，应检查 BR 工具的[兼容性](/br/backup-and-restore-overview.md#使用须知)。本文假设上下游集群版本相同。
 
 1. 关闭 GC。
 
@@ -235,7 +235,7 @@ aliases: ['/zh/tidb/dev/incremental-replication-between-clusters/']
     - `--changefeed-id`：同步任务的 ID，格式需要符合正则表达式 ^[a-zA-Z0-9]+(\-[a-zA-Z0-9]+)*$
     - `--start-ts`：TiCDC 同步的起点，需要设置为实际的备份时间点，也就是[第 2 步：迁移全量数据](/migrate-from-tidb-to-mysql.md#第-2-步迁移全量数据)中 “备份数据” 提到的 BackupTS
 
-    更多关于 changefeed 的配置，请参考[同步任务配置文件描述](/ticdc/manage-ticdc.md#同步任务配置文件描述)。
+    更多关于 changefeed 的配置，请参考 [TiCDC Changefeed 配置参数](/ticdc/ticdc-changefeed-config.md)。
 
 3. 重新开启 GC。
 

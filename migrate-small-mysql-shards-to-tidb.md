@@ -138,10 +138,20 @@ mysql-instances:
 # 分表合并配置
 routes:
   sale-route-rule:
-    schema-pattern: "store_*"
-    table-pattern: "sale_*"
+    schema-pattern: "store_*"                               # 合并 store_01 和 store_02 库到下游 store 库
+    table-pattern: "sale_*"                                 # 合并上述库中的 sale_01 和 sale_02 表到下游 sale 表
     target-schema: "store"
     target-table:  "sale"
+    # 可选配置：提取各分库分表的源信息，并写入下游用户自建的列，用于标识合表中各行数据的来源。如果配置该项，需要提前在下游手动创建合表，具体可参考下面 Table routing 的用法
+    # extract-table:                                        # 提取分表去除 sale_ 的后缀信息，并写入下游合表 c_table 列，例如，sale_01 分表的数据会提取 01 写入下游 c_table 列
+    #   table-regexp: "sale_(.*)"
+    #   target-column: "c_table"
+    # extract-schema:                                       # 提取分库去除 store_ 的后缀信息，并写入下游合表 c_schema 列，例如，store_02 分库的数据会提取 02 写入下游 c_schema 列
+    #   schema-regexp: "store_(.*)"
+    #   target-column: "c_schema"
+    # extract-source:                                       # 提取数据库源实例信息写入 c_source 列，例如，mysql-01 数据源实例的数据会提取 mysql-01 写入下游 c_source 列
+    #   source-regexp: "(.*)"
+    #   target-column: "c_source"
 
 # 过滤部分 DDL 事件
 filters:
@@ -166,8 +176,8 @@ block-allow-list:
 
 若想了解配置文件中 `routes`、`filters` 等更多用法，请参考：
 
-- [Table routing](/dm/dm-key-features.md#table-routing)
-- [Block & Allow Table Lists](/dm/dm-key-features.md#block--allow-table-lists)
+- [Table routing](/dm/dm-table-routing.md)
+- [Block & Allow Table Lists](/dm/dm-block-allow-table-lists.md)
 - [如何过滤 binlog 事件](/filter-binlog-event.md)
 - [如何通过 SQL 表达式过滤 DML](/filter-dml-event.md)
 

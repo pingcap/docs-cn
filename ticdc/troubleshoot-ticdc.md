@@ -10,7 +10,7 @@ aliases: ['/docs-cn/dev/ticdc/troubleshoot-ticdc/','/docs-cn/dev/reference/tools
 
 > **注意：**
 >
-> 本文档 `cdc cli` 命令中指定 PD 地址为 `--pd=http://10.0.10.25:2379`，用户在使用时需根据实际地址进行替换。
+> 本文档 `cdc cli` 命令中指定 PD 地址为 `--pd=http://10.0.10.25:2379`，在使用时需根据实际地址进行替换。
 
 ## TiCDC 同步任务出现中断
 
@@ -24,8 +24,6 @@ aliases: ['/docs-cn/dev/ticdc/troubleshoot-ticdc/','/docs-cn/dev/reference/tools
 ### 如何查看 TiCDC 同步任务是否被人为终止？
 
 可以使用 `cdc cli` 查询同步任务是否被人为终止。例如：
-
-{{< copyable "shell-regular" >}}
 
 ```shell
 cdc cli changefeed query --pd=http://10.0.10.25:2379 --changefeed-id 28c43ffc-2316-4f4f-a70b-d1a7c59ba79f
@@ -45,13 +43,13 @@ cdc cli changefeed query --pd=http://10.0.10.25:2379 --changefeed-id 28c43ffc-23
 - 下游持续异常，TiCDC 多次重试后仍然失败。
 
     - 该场景下 TiCDC 会保存任务信息，由于 TiCDC 已经在 PD 中设置的 service GC safepoint，在 `gc-ttl` 的有效期内，同步任务 checkpoint 之后的数据不会被 TiKV GC 清理掉。
-    - 处理方法：用户可以在下游恢复正常后，通过 HTTP 接口恢复同步任务。
+    - 处理方法：在下游恢复正常后，通过 HTTP 接口恢复同步任务。
 
 - 因下游存在不兼容的 SQL 语句，导致同步不能继续。
 
     - 该场景下 TiCDC 会保存任务信息，由于 TiCDC 已经在 PD 中设置的 service GC safepoint，在 `gc-ttl` 的有效期内，同步任务 checkpoint 之后的数据不会被 TiKV GC 清理掉。
     - 处理方法：
-        1. 用户需先通过 `cdc cli changefeed query` 查询同步任务状态信息，记录 `checkpoint-ts` 值。
+        1. 先通过 `cdc cli changefeed query` 查询同步任务状态信息，记录 `checkpoint-ts` 值。
         2. 使用新的任务配置文件，增加`ignore-txn-start-ts` 参数跳过指定 `start-ts` 对应的事务。
         3. 通过 HTTP API 停止旧的同步任务，使用 `cdc cli changefeed create` ，指定新的任务配置文件，指定 `start-ts` 为刚才记录的 `checkpoint-ts`，启动新的同步任务恢复同步。
 
@@ -70,15 +68,13 @@ cdc cli changefeed query --pd=http://10.0.10.25:2379 --changefeed-id 28c43ffc-23
 
 这是因为下游 MySQL 没有加载时区，可以通过 [mysql_tzinfo_to_sql](https://dev.mysql.com/doc/refman/8.0/en/mysql-tzinfo-to-sql.html) 命令加载时区，加载后就可以正常创建任务或同步任务。
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 mysql_tzinfo_to_sql /usr/share/zoneinfo | mysql -u root mysql -p
 ```
 
 显示类似于下面的输出则表示导入已经成功：
 
-```
+```shell
 Enter password:
 Warning: Unable to load '/usr/share/zoneinfo/iso3166.tab' as time zone. Skipping it.
 Warning: Unable to load '/usr/share/zoneinfo/leap-seconds.list' as time zone. Skipping it.
@@ -88,13 +84,11 @@ Warning: Unable to load '/usr/share/zoneinfo/zone1970.tab' as time zone. Skippin
 
 如果下游是特殊的 MySQL 环境（某种公有云 RDS 或某些 MySQL 衍生版本等），使用上述方式导入时区失败，就需要通过 sink-uri 中的 `time-zone` 参数指定下游的 MySQL 时区。可以首先在 MySQL 中查询其使用的时区：
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 show variables like '%time_zone%';
 ```
 
-```
+```shell
 +------------------+--------+
 | Variable_name    | Value  |
 +------------------+--------+
@@ -105,8 +99,6 @@ show variables like '%time_zone%';
 
 然后在创建同步任务和创建 TiCDC 服务时使用该时区：
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 cdc cli changefeed create --sink-uri="mysql://root@127.0.0.1:3306/?time-zone=CST" --pd=http://10.0.10.25:2379
 ```
@@ -115,16 +107,16 @@ cdc cli changefeed create --sink-uri="mysql://root@127.0.0.1:3306/?time-zone=CST
 >
 > CST 可能是以下四个不同时区的缩写：
 >
-> + 美国中部时间：Central Standard Time (USA) UT-6:00
-> + 澳大利亚中部时间：Central Standard Time (Australia) UT+9:30
-> + 中国标准时间：China Standard Time UT+8:00
-> + 古巴标准时间：Cuba Standard Time UT-4:00
+> - 美国中部时间：Central Standard Time (USA) UT-6:00
+> - 澳大利亚中部时间：Central Standard Time (Australia) UT+9:30
+> - 中国标准时间：China Standard Time UT+8:00
+> - 古巴标准时间：Cuba Standard Time UT-4:00
 >
 > 在中国，CST 通常表示中国标准时间，使用时请注意甄别。
 
 ## 如何处理升级 TiCDC 后配置文件不兼容的问题？
 
-请参阅[配置文件兼容注意事项](/ticdc/manage-ticdc.md#配置文件兼容性的注意事项)。
+请参阅[配置文件兼容注意事项](/ticdc/ticdc-compatibility.md#命令行参数和配置文件兼容性)。
 
 ## TiCDC 启动任务的 start-ts 时间戳与当前时间差距较大，任务执行过程中同步中断，出现错误 `[CDC:ErrBufferReachLimit]`，怎么办？
 
@@ -145,15 +137,11 @@ cdc cli changefeed create --sink-uri="mysql://root@127.0.0.1:3306/?time-zone=CST
 1. 将 changefeed 配置文件中 `enable-old-value` 的值设为 `true`。
 2. 使用 `cdc cli changefeed pause` 暂停同步任务。
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     cdc cli changefeed pause -c test-cf --pd=http://10.0.10.25:2379
     ```
 
 3. 使用 `cdc cli changefeed update` 更新原有 changefeed 的配置。
-
-    {{< copyable "shell-regular" >}}
 
     ```shell
     cdc cli changefeed update -c test-cf --pd=http://10.0.10.25:2379 --sink-uri="mysql://127.0.0.1:3306/?max-txn-row=20&worker-number=8" --config=changefeed.toml
@@ -161,13 +149,11 @@ cdc cli changefeed create --sink-uri="mysql://root@127.0.0.1:3306/?time-zone=CST
 
 4. 使用 `cdc cli changefeed resume` 恢复同步任务。
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     cdc cli changefeed resume -c test-cf --pd=http://10.0.10.25:2379
     ```
 
-## 使用 TiCDC 创建 changefeed 时报错 `[tikv:9006]GC life time is shorter than transaction duration, transaction starts at xx, GC safe point is yy`
+## 使用 TiCDC 创建 changefeed 时报错 `[tikv:9006]GC life time is shorter than transaction duration, transaction starts at xx, GC safe point is yy`，该如何处理？
 
 执行 `pd-ctl service-gc-safepoint --pd <pd-addrs>` 命令查询当前的 GC safepoint 与 service GC safepoint。如果 GC safepoint 小于 TiCDC changefeed 同步任务的开始时间戳 `start-ts`，可以直接在 `cdc cli create changefeed` 命令后加上 `--disable-gc-check` 参数创建 changefeed。
 
@@ -177,7 +163,7 @@ cdc cli changefeed create --sink-uri="mysql://root@127.0.0.1:3306/?time-zone=CST
 - 如果 PD 是由 v4.0.8 或更低版本滚动升级到新版，详见 [PD issue #3366](https://github.com/tikv/pd/issues/3366)。
 - 对于其他情况，请将上述命令执行结果反馈到 [AskTUG 论坛](https://asktug.com/tags/ticdc)。
 
-## 使用 TiCDC 同步消息到 Kafka 时 Kafka 报错 `Message was too large`
+## 使用 TiCDC 同步消息到 Kafka 时 Kafka 报错 `Message was too large`，该如何处理？
 
 v4.0.8 或更低版本的 TiCDC，仅在 Sink URI 中为 Kafka 配置 `max-message-bytes` 参数不能有效控制输出到 Kafka 的消息大小，需要在 Kafka server 配置中加入如下配置以增加 Kafka 接收消息的字节数限制。
 
@@ -194,18 +180,13 @@ fetch.message.max.bytes=2147483648
 
 如果某条 DDL 语句执行失败，同步任务 (changefeed) 会自动停止，checkpoint-ts 断点时间戳为该条出错 DDL 语句的结束时间戳 (finish-ts) 减去一。如果希望让 TiCDC 在下游重试执行这条 DDL 语句，可以使用 `cdc cli changefeed resume` 恢复同步任务。例如：
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 cdc cli changefeed resume -c test-cf --pd=http://10.0.10.25:2379
 ```
 
-如果希望跳过这条出错的 DDL 语句，可以将 changefeed 的 start-ts 设为报错时的 checkpoint-ts 加上一，然后通过 `cdc cli changefeed resume` 恢复同步任务。假设报错时的 checkpoint-ts 为 `415241823337054209`，可以进行如下操作来跳过该 DDL 语句：
-
-{{< copyable "shell-regular" >}}
+如果希望跳过这条出错的 DDL 语句，可以将 changefeed 的 start-ts 设为报错时的 checkpoint-ts 加上一，然后通过 `cdc cli changefeed create` 新建同步任务。假设报错时的 checkpoint-ts 为 `415241823337054209`，可以进行如下操作来跳过该 DDL 语句：
 
 ```shell
-cdc cli changefeed update -c test-cf --pd=http://10.0.10.25:2379 --start-ts 415241823337054210
-
-cdc cli changefeed resume -c test-cf --pd=http://10.0.10.25:2379
+cdc cli changefeed remove --pd=http://10.0.10.25:2379 --changefeed-id simple-replication-task
+cdc cli changefeed create --pd=http://10.0.10.25:2379 --sink-uri="mysql://root:123456@127.0.0.1:3306/" --changefeed-id="simple-replication-task" --sort-engine="unified" --start-ts 415241823337054210
 ```

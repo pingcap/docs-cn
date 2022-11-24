@@ -131,6 +131,57 @@ SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = '<db_name>
 SELECT TABLE_NAME FROM information_schema.tables where TABLE_SCHEMA = "<db_name>" and TABLE_NAME not in (SELECT TABLE_NAME FROM information_schema.tiflash_replica where TABLE_SCHEMA = "<db_name>");
 ```
 
+## 加快 TiFlash 副本同步速度
+
+新增 TiFlash 副本时，各个 TiKV 实例将进行全表数据扫描，并将扫描得到的数据快照发送给 TiFlash 从而形成副本。默认情况下，为了降低对 TiKV 及 TiFlash 线上业务的影响，TiFlash 新增副本速度较慢、占用资源较少。如果集群中 TiKV 及 TiFlash 的 CPU 和磁盘 IO 资源有富余，你可以按以下步骤操作来提升 TiFlash 副本同步速度：
+
+1. 通过 [SQL 语句在线修改配置](/dynamic-config.md)，临时调高各个 TiKV 及 TiFlash 实例的数据快照写入速度：
+
+   ```sql
+   -- 这两个参数默认值都为 100MiB，即用于副本同步的快照最大占用的磁盘带宽不超过 100MiB/s。
+   SET CONFIG tikv `server.snap-max-write-bytes-per-sec` = '300MiB';
+   SET CONFIG tiflash `raftstore-proxy.server.snap-max-write-bytes-per-sec` = '300MiB';
+   ```
+
+   以上 SQL 语句执行后，配置修改立即生效，无需重启集群。但由于副本同步速度还受到 PD 副本速度控制，因此当前你还无法观察到副本同步速度提升。
+
+2. 使用 [PD Control](/pd-control.md) 逐步放开新增副本速度限制：
+
+   TiFlash 默认新增副本速度是 30（每分钟大约 30 个 Region 将会新增 TiFlash 副本）。执行以下命令将调整所有 TiFlash 实例的新增副本速度到 60，即原来的 2 倍速度：
+
+   ```shell
+   tiup ctl:v<CLUSTER_VERSION> pd -u http://<PD_ADDRESS>:2379 store limit all engine tiflash 60 add-peer
+   ```
+
+   > 上述命令中，需要将 `<CLUSTER_VERSION>` 替换为该集群版本，`<PD_ADDRESS>:2379` 替换为任一 PD 节点的地址。替换后样例为：
+   >
+   > ```shell
+   > tiup ctl:v6.1.1 pd -u http://192.168.1.4:2379 store limit all engine tiflash 60 add-peer
+   > ```
+
+   执行完毕后，几分钟内，你将观察到 TiFlash 节点的 CPU 及磁盘 IO 资源占用显著提升，TiFlash 将更快地创建副本。同时，TiKV 节点的 CPU 及磁盘 IO 资源占用也将有所上升。
+
+   如果此时 TiKV 及 TiFlash 节点的资源仍有富余，且线上业务的延迟没有显著上升，则可以考虑进一步放开调度速度，例如将新增副本的速度增加为原来的 3 倍：
+
+   ```shell
+   tiup ctl:v<CLUSTER_VERSION> pd -u http://<PD_ADDRESS>:2379 store limit all engine tiflash 90 add-peer
+   ```
+
+3. 在副本同步完毕后，恢复到默认配置，减少在线业务受到的影响。
+
+   执行以下 PD Control 命令可恢复默认的新增副本速度：
+
+   ```shell
+   tiup ctl:v<CLUSTER_VERSION> pd -u http://<PD_ADDRESS>:2379 store limit all engine tiflash 30 add-peer
+   ```
+
+   执行以下 SQL 语句可恢复默认的数据快照写入速度：
+
+   ```sql
+   SET CONFIG tikv `server.snap-max-write-bytes-per-sec` = '100MiB';
+   SET CONFIG tiflash `raftstore-proxy.server.snap-max-write-bytes-per-sec` = '100MiB';
+   ```
+
 ## 设置可用区
 
 在配置副本时，如果为了考虑容灾，需要将 TiFlash 的不同数据副本分布到多个数据中心，则可以按如下步骤进行配置：
@@ -180,7 +231,7 @@ SELECT TABLE_NAME FROM information_schema.tables where TABLE_SCHEMA = "<db_name>
 3. 此时 PD 会根据设置的 label 进行调度，将表 `t` 的两个副本分别调度到两个可用区中。可以通过监控或 pd-ctl 来验证这一点：
 
     ```shell
-    > tiup ctl:<version> pd -u<pd-host>:<pd-port> store
+    > tiup ctl:v<CLUSTER_VERSION> pd -u http://<PD_ADDRESS>:2379 store
 
         ...
 

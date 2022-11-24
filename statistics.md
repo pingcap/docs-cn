@@ -13,19 +13,16 @@ TiDB 使用统计信息来决定[索引的选择](/choose-index.md)。变量 `ti
 >
 > - 如果 ANALYZE 语句是手动执行的，请手动 analyze 每张需要的表：
 >
->   {{< copyable "sql" >}}
->
->   ```sql
->   select distinct(concat('ANALYZE ',table_schema, '.', table_name,';')) from information_schema.tables, mysql.stats_histograms where stats_ver = 2 and table_id = tidb_table_id ;
->    ```
+>    ```sql
+>    SELECT DISTINCT(CONCAT('ANALYZE TABLE ', table_schema, '.', table_name, ';')) FROM information_schema.tables, mysql.stats_histograms WHERE stats_ver = 2 AND table_id = tidb_table_id;
+>     ```
 >
 > - 如果 ANALYZE 语句是开启了自动 analyze 后 TiDB 自动执行的，请使用以下 SQL 语句生成 DROP STATS 的语句并执行：
 >
->   {{< copyable "sql" >}}
 >
->   ```sql
->   select distinct(concat('DROP STATS ',table_schema, '.', table_name,';')) from information_schema.tables, mysql.stats_histograms where stats_ver = 2 and table_id = tidb_table_id ;
->   ```
+>    ```sql
+>    SELECT DISTINCT(CONCAT('DROP STATS ', table_schema, '.', table_name, ';')) FROM information_schema.tables, mysql.stats_histograms WHERE stats_ver = 2 AND table_id = tidb_table_id;
+>    ```
 
 两种版本中，TiDB 维护的统计信息如下：
 
@@ -140,7 +137,7 @@ ANALYZE TABLE TableNameList [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH
 
     > **注意：**
     >
-    > 该语法为全量收集。例如，在使用该语法收集了 a 列和 b 列的统计信息之后，如果还想要增加收集 c 列的统计信息，需要在语法中同时指定这三列 `ANALYZE table t columns a, b, c`，而不是只指定新增的那一列 `ANALYZE TABLE t COLUMNS c`。
+    > 该语法为全量收集。例如，在使用该语法收集了 a 列和 b 列的统计信息之后，如果还想要增加收集 c 列的统计信息，需要在语法中同时指定这三列 `ANALYZE TABLE t columns a, b, c`，而不是只指定新增的那一列 `ANALYZE TABLE t COLUMNS c`。
 
 - 如果要收集 `PREDICATE COLUMNS` 的统计信息，请进行以下操作：
 
@@ -675,15 +672,11 @@ DROP STATS TableName GLOBAL;
 
 从 v5.4.0 开始，TiDB 引入了统计信息同步加载的特性，支持执行当前 SQL 语句时将直方图、TopN、CMSketch 等占用空间较大的统计信息同步加载到内存，提高该 SQL 语句优化时统计信息的完整性。
 
-> **警告：**
->
-> 统计信息同步加载目前为实验性特性，不建议在生产环境中使用。
-
-统计信息同步加载特性默认关闭。要开启该特性，请将系统变量 `tidb_stats_load_sync_wait` 的值设置为 SQL 优化等待加载列的完整统计信息的超时时间（单位为毫秒）。该变量默认值为 0，代表未开启。
+要开启该特性，请将系统变量 [`tidb_stats_load_sync_wait`](/system-variables.md#tidb_stats_load_sync_wait-从-v540-版本开始引入) 的值设置为 SQL 优化等待加载列的完整统计信息的超时时间（单位为毫秒）。该变量默认值为 100，代表开启统计信息同步加载。
 
 开启该特性后，你可以进一步配置该特性：
 
-- 通过修改系统变量 [`tidb_stats_load_pseudo_timeout`](/system-variables.md#tidb_stats_load_pseudo_timeout-从-v540-版本开始引入) 的值控制 SQL 优化等待超时后的行为。该变量默认值为 `OFF`，代表超时后 SQL 执行失败。当设置该变量为 `ON` 时，整个 SQL 优化过程不会使用任何列上的直方图、TopN 或 CMSketch，而是退回使用 pseudo 的统计信息。
+- 通过修改系统变量 [`tidb_stats_load_pseudo_timeout`](/system-variables.md#tidb_stats_load_pseudo_timeout-从-v540-版本开始引入) 的值控制 SQL 优化等待超时后的行为。该变量默认值为 `ON`，代表超时后 SQL 优化过程不会使用任何列上的直方图、TopN 或 CMSketch。当设置该变量为 `OFF` 时，代表超时后 SQL 执行失败。
 - 通过修改 TiDB 配置项 [`stats-load-concurrency`](/tidb-configuration-file.md#stats-load-concurrency-从-v540-版本开始引入) 的值控制统计信息同步加载可以并发处理的最大列数。该配置项的默认值为 `5`。
 - 通过修改 TiDB 配置项 [`stats-load-queue-size`](/tidb-configuration-file.md#stats-load-queue-size-从-v540-版本开始引入) 的值设置统计信息同步加载最多可以缓存多少列的请求。该配置项的默认值为 `1000`。
 
