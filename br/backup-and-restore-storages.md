@@ -1,7 +1,7 @@
 ---
 title: 备份存储
 summary: 了解 BR 支持的备份存储服务的 URL 格式、鉴权方案和使用方式。
-aliases: ['/zh/tidb/dev/backup-storage-S3/','/zh/tidb/dev/backup-storage-azblob/','/zh/tidb/dev/backup-storage-gcs/']
+aliases: ['/docs-cn/dev/br/backup-and-restore-storages/','/zh/tidb/dev/backup-storage-S3/','/zh/tidb/dev/backup-storage-azblob/','/zh/tidb/dev/backup-storage-gcs/']
 ---
 
 # 备份存储
@@ -226,4 +226,4 @@ BR 支持对备份到 Amazon S3 的数据进行 S3 服务端加密 (SSE)。BR S3
 
 ## 存储服务其他功能支持
 
-BR v6.3.0 支持 AWS S3 Object Lock 功能。你可以在 AWS 中开启 [S3 Object Lock](https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lock.html) 功能来防止备份数据写入后被修改或者删除。
+ 从 v6.3.0 起，BR 支持 AWS S3 Object Lock 功能。你可以在 AWS 中开启 [S3 Object Lock](https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lock.html) 功能来防止备份数据写入后被修改或者删除。
