@@ -38,7 +38,7 @@ The `global` section corresponds to the cluster's global configuration and has t
 
 - `ssh_port`: Specifies the SSH port to connect to the target machine for operations. The default value is `22`.
 
-- `enable_tls`: Specifies whether to enable TLS for the cluster. After TLS is enabled, the generated TLS certificate must be used for connections between components or between the client and the component. **Once it is enabled, it cannot be disabled**. The default value is `false`.
+- `enable_tls`: Specifies whether to enable TLS for the cluster. After TLS is enabled, the generated TLS certificate must be used for connections between components or between the client and the component. The default value is `false`.
 
 - `deploy_dir`: The deployment directory of each component. The default value is `"deployed"`. Its application rules are as follows:
 
