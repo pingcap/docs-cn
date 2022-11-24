@@ -226,7 +226,6 @@ build_hash_table:{total:146.071334ms, fetch:110.338509ms, build:35.732825ms}, pr
     - `probe`: 用 outer table rows 和 hash table 做 join 的总耗时。
     - `fetch`：join worker 等待读取 outer table rows 数据的总耗时。
 
-
 ### TableFullScan(TiFlash)
 
 在 TiFlash 节点上执行的 `TableFullScan` 算子包含以下执行信息：
