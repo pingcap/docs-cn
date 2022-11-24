@@ -23,7 +23,7 @@ TiKV 支持[动态配置](/tikv-control.md#动态修改-tikv-的配置)自动调
 
 如需了解通过 `tikv-ctl` 在线修改自动调节功能的命令行，请参阅[自动调节功能的使用方法](/br/br-auto-tune.md#使用方法)。
 
-另外，自动调节功能减少了进行备份任务时默认使用的工作线程数量（详见 [`backup.num-threads`](/tikv-configuration-file.md#num-threads-1)）。因此，你通过 Grafana 监控面板看到的备份速度、CPU 使用率、I/O 资源利用率都会小于 v5.4 之前的版本。在 v5.4.0 之前的版本中，`backup.num-threads` 的默认值为 CPU * 0.75，即处理备份任务的工作线程数量占了 75% 的逻辑 CPU，最大值为 `32`；在 v5.4.0 及之后的版本中，该配置项的默认值为 CPU * 0.5，最大值为 `8`。
+另外，自动调节功能减少了进行备份任务时默认使用的工作线程数量（详见 [`backup.num-threads`](/tikv-configuration-file.md#num-threads-1)）。因此，你通过 Grafana 监控面板看到的备份速度、CPU 使用率、I/O 资源利用率都会小于 v5.4 之前的版本。在 v5.4.0 之前的版本中，`backup.num-threads` 的默认值为 `CPU * 0.75`，即处理备份任务的工作线程数量占了 75% 的逻辑 CPU，最大值为 `32`；在 v5.4.0 及之后的版本中，该配置项的默认值为 `CPU * 0.5`，最大值为 `8`。
 
 在离线备份场景中，你也可以使用 `tikv-ctl` 把 `backup.num-threads` 修改为更大的数字，从而提升备份任务的速度。
 
