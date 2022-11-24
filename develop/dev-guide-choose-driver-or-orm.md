@@ -250,7 +250,7 @@ go get -u gorm.io/driver/mysql
 <SimpleTab>
 <div label="PyMySQL">
 
-支持等级：**Verified**
+支持等级：**Compatible**
 
 按照 [PyMySQL 文档](https://pypi.org/project/PyMySQL/)中的说明下载并配置驱动程序即可使用。建议使用 **1.0.2** 及以上版本。
 
@@ -259,7 +259,7 @@ go get -u gorm.io/driver/mysql
 </div>
 <div label="mysqlclient">
 
-支持等级：**Verified**
+支持等级：**Compatible**
 
 按照 [mysqlclient 文档](https://pypi.org/project/mysqlclient/)中的说明下载并配置驱动程序即可使用。建议使用 **2.1.1** 及以上版本。
 
@@ -268,7 +268,7 @@ go get -u gorm.io/driver/mysql
 </div>
 <div label="mysql-connector-python">
 
-支持等级：**Verified**
+支持等级：**Compatible**
 
 按照 [mysql-connector-python 文档](https://dev.mysql.com/doc/connector-python/en/connector-python-installation-binary.html)中的说明下载并配置驱动程序即可使用。建议使用 **8.0.31** 及以上版本。
 
@@ -282,7 +282,7 @@ go get -u gorm.io/driver/mysql
 <SimpleTab>
 <div label="SQLAlchemy">
 
-支持等级：**Verified**
+支持等级：**Compatible**
 
 [SQLAlchemy](https://www.sqlalchemy.org/) 是一个流行的 Python 的 ORM 框架，你可以使用 `pip install SQLAlchemy==1.4.44` 获取你的应用程序的所有依赖项。建议使用 **1.4.44** 及以上版本。
 
@@ -291,7 +291,7 @@ go get -u gorm.io/driver/mysql
 </div>
 <div label="peewee">
 
-支持等级：**Verified**
+支持等级：**Compatible**
 
 [peewee](http://docs.peewee-orm.com/en/latest/) 是一个流行的 Python 的 ORM 框架，你可以使用 `pip install peewee==3.15.4` 获取你的应用程序的所有依赖项。建议使用 **3.15.4** 及以上版本。
 
