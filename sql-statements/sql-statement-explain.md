@@ -185,13 +185,13 @@ EXPLAIN DELETE FROM t1 WHERE c1=3;
 
 在 `EXPLAIN` 中使用 `FORMAT = "xxx"` 语法可以指定输出的内容和格式。
 
-| FORMAT  | 作用                                                                 |
-|---------|--------------------------------------------------------------------|
-| 未指定     | 同 row                                                              |
+| FORMAT  | 作用                                                                |
+|---------|-------------------------------------------------------------------|
+| 未指定     | 同 row                                                             |
 | `row`   | `EXPLAIN` 语句将以表格格式输出结果。更多信息，可参阅 [TiDB 执行计划概览](/explain-overview.md) |
-| `brief` | `EXPLAIN` 语句输出结果中的算子 ID 将被简化，较之未指定 `FORMAT` 时输出结果的算子 ID 更为简化       |
+| `brief` | `EXPLAIN` 语句输出结果中的算子 ID 将被简化，较之未指定 `FORMAT` 时输出结果的算子 ID 更为简化      |
 | `dot`   | `EXPLAIN` 语句将输出 dot 格式的执行计划，可以通过 `dot` 程序（在 `graphviz` 包中）生成 PNG 文件 |
-| `json`  | `EXPLAIN` 语句将输出 json 格式的执行计划，算子信息将存放在一个 json 数组中           |
+| `json`  | `EXPLAIN` 语句将输出 json 格式的执行计划，算子信息存放在一个 json 数组中           |
 
 在 `EXPLAIN` 中指定 `FORMAT = "brief"` 时，示例如下:
 
