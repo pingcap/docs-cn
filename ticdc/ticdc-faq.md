@@ -230,9 +230,7 @@ mysql root@127.0.0.1:test> show create table test;
 
 ## 使用 TiCDC 创建同步任务时将 `enable-old-value` 设置为 `true` 后，为什么上游的 `INSERT`/`UPDATE` 语句经 TiCDC 同步到下游后变为了 `REPLACE INTO`？
 
-TiCDC 创建 changefeed 时会默认指定 `safe-mode` 为 `true`，从而为上游的 `INSERT`/`UPDATE` 语句生成 `REPLACE INTO` 的执行语句。
-
-目前用户暂时无法修改 `safe-mode` 设置，因此该问题暂无解决办法。
+TiCDC 提供 at least once 的数据同步保证。在 6.1.3 版本之前，TiCDC changefeed 的 safe-mode 默认为 true，该参数为了确保数据一定被同步到下游，及时有相同主键或唯一索引数据存在的情况下，所以 TiCDC 会将 `INSERT`/`UPDATE` 语句转转成 `REPLACE INTO` 语句。在 6.1.3 版本及之后，TiCDC changefeed 的 safe-mode 默认更改为 false，则会同步 `INSERT`/`UPDATE` 语句。
 
 ## 数据同步下游的 Sink 为 TiDB 或 MySQL 时，下游数据库的用户需要哪些权限？
 
@@ -261,3 +259,27 @@ TiCDC 需要磁盘是为了缓冲上游写入高峰时下游消费不及时堆�
 ## 为什么恢复暂停的 changefeed 后，changefeed 同步延迟越来越高，数分钟后才恢复正常？
 
 当 changefeed 启动时，为了补齐 changefeed 暂停期间产生的增量数据日志，TiCDC 需要扫描 TiKV 中数据的历史版本，待扫描完毕后，才能够继续推进复制过程，扫描过程可能长达数分钟到数十分钟。
+
+## 为什么 TiCDC 不使用 raft leaner 机制从 TiKV 同步 raft log？
+
+当一个数据改变发生的时候，TiKV 节点会主动将 raft log 转换成 TiCDC 可以识别的 changedlog 格式，推送给 TiCDC 的 puller 模块。 如果 TiCDC 需要从一个更早的时间点同步数据，则会请求 TiKV 增量描述所需要的时间区间数据，然后发送给 TiCDC。 从实现效果来看，TiCDC 读取数据方式与 leaner 相似。
+
+## 在两个异地 TiDB 集群之间同步数据，如何部署 TiCDC？
+
+这种场景中，我们推荐将 TiCDC 和下游集群部署在一起。 原因是这样，在上下游网络延迟相对比较大的情况下，TiCDC 向下游 TiDB 执行 SQL 的交互过程收到网络延迟印象更大，导致整体同步性能下降，而 TiKV 和 TiCDC 之间的 changed log 传输只要保证网络小于 100ms 则不会收到太大影响。
+
+## 为什么 DML 会卡住 DDL 的执行？
+
+DMLs -> DDL -> DMLs 产生的数据同步过程中，TiCDC 需要确保 DDL 前后的 DMLs 使用正常版本的 schema 被处理，因为会选择等于所有早于 DDL 的 DMLs 执行完成后才会执行后面的 DMLs。 这是当前 TiCDC 的设计预期的行为，TiCDC 团队也在考虑按照表的粒度保证 DMLs 和 DDL 执行顺序，不同表之间互相不干扰。
+
+## 如何对比上下游数据的一致性？
+
+如果下游是 TiDB 集群或者 MySQL，我们推荐使用 [sync diff insoector](/sync-diff-inspector/sync-diff-inspector-overview.md) 工具进行数据对比。
+
+## 单表数据同步只能在一个 TiCDC 节点上运行，TiCDC 是否考虑使用多个节点同步多表数据？
+
+目前正在开发中，未来 TiCDC 会支持按照 TiKV region 粒度来同步数据变更日志，实现处理能力上的可扩展性。
+
+## 上游有运行时间比较长的未提交事务， TiCDC 同步是否会被卡住？
+
+TiDB 有事务超时的机制，当事务运行超过 `max-txn-ttl` 后，会被 TiDB 强制回滚。 TiCDC 遇到未提交的事务，会等待其提交后再继续同步其数据，因此会出现有同步延迟。

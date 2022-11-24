@@ -74,20 +74,20 @@ TiCDC 的系统架构如下图所示：
     - 不同分发策略下 consumer 的不同实现方式，可以实现不同级别的一致性，包括行级别有序、最终一致性或跨表事务一致性。
     - TiCDC 没有提供 Kafka 消费端实现，只提供了 [TiCDC 开放数据协议](/ticdc/ticdc-open-protocol.md)，用户可以依据该协议实现 Kafka 数据的消费端。
 
-## 同步限制
+## 最佳实践
 
-使用 TiCDC 进行同步的时候，请注意以下相关限制要求以及暂不支持的场景。
-
-### 有效索引的相关要求
-
-TiCDC 只能同步至少存在一个**有效索引**的表，**有效索引**的定义如下：
-
-- 主键 (`PRIMARY KEY`) 为有效索引。
-- 同时满足下列条件的唯一索引 (`UNIQUE INDEX`) 为有效索引：
+- 使用 TiCDC 在两个 TiDB 集群间同步数据时，推荐将 TiCDC 部署在下游 TiDB 集群所在的区域（IDC，region），并且保证上下游区域之间网络延迟在 100ms 以下
+- TiCDC 同步的表需要至少存在一个**有效索引**的表，**有效索引**的定义如下：
+  - 主键 (`PRIMARY KEY`) 为有效索引。
+  - 同时满足下列条件的唯一索引 (`UNIQUE INDEX`) 为有效索引：
     - 索引中每一列在表结构中明确定义非空 (`NOT NULL`)。
     - 索引中不存在虚拟生成列 (`VIRTUAL GENERATED COLUMNS`)。
+- 容灾场景下使用 TiCDC 需要配置 [redo log](/ticdc/manage-ticdc.md#灾难场景的最终一致性复制) 实现最终一致性。
+- 使用 TiCDC 同步单行 size 比较大 (> 1k) 的宽表时候，推荐设置 TiCDC 参数 [per-table-memory-quota](/ticdc/manage-ticdc.md#同步任务配置文件描述)，使得 per-table-memory-quota = ticdcTotalMemory / (tableCount * 2)，ticdcTotalMemory 是一个 TiCDC 节点的内存，tableCount 是希望一个 TiCDC 节点同步的表的数量
 
-TiCDC 从 4.0.8 版本开始，可通过修改任务配置来同步**没有有效索引**的表，但在数据一致性的保证上有所减弱。具体使用方法和注意事项参考[同步没有有效索引的表](/ticdc/manage-ticdc.md#同步没有有效索引的表)。
+> **注意：**
+>
+> TiCDC 从 4.0.8 版本开始，可通过修改任务配置来同步**没有有效索引**的表，但在数据一致性的保证上有所减弱。具体使用方法和注意事项参考[同步没有有效索引的表](/ticdc/manage-ticdc.md#同步没有有效索引的表)。
 
 ### 暂不支持的场景
 
