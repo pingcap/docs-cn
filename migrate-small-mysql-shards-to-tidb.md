@@ -176,8 +176,8 @@ block-allow-list:
 
 若想了解配置文件中 `routes`、`filters` 等更多用法，请参考：
 
-- [Table routing](/dm/dm-key-features.md#table-routing)
-- [Block & Allow Table Lists](/dm/dm-key-features.md#block--allow-table-lists)
+- [Table routing](/dm/dm-table-routing.md)
+- [Block & Allow Table Lists](/dm/dm-block-allow-table-lists.md)
 - [如何过滤 binlog 事件](/filter-binlog-event.md)
 - [如何通过 SQL 表达式过滤 DML](/filter-dml-event.md)
 
