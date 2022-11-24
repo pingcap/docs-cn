@@ -68,7 +68,7 @@ Issue 链接：[#37207](https://github.com/pingcap/tidb/issues/37207)
 
 该场景发生在全量数据导入时开启了日志备份，并使用 PITR 恢复全量导入时间段的日志。经过测试发现，当存在长时间（24 小时）大量热点写入，且平均单台 TiKV 节点写入 OPS > 50k/s（可以通过 Grafana 中 **TiKV-Details** -> **Backup Log** -> **Handle Event Rate** 确认该数值），那么有几率会遇到这个情况。
 
-- 当前版本中建议在集群初始化后，进行一次有效快照备份，并且以此作为基础进行 PITR 恢复。
+当前版本中建议在集群初始化后，进行一次有效快照备份，并且以此作为基础进行 PITR 恢复。
 
 ### 在使用 `br restore point` 命令恢复下游集群后， TiFlash 引擎数据没有恢复？
 
