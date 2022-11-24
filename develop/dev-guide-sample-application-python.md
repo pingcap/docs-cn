@@ -12,7 +12,7 @@ summary: 给出一个 TiDB 和 Python 的简单 CRUD 应用程序示例。
 
 > **注意：**
 >
-> 推荐使用 Python 3.6 以上版本进行 TiDB 的应用程序的编写。
+> 推荐使用 Python 3.10 及以上版本进行 TiDB 的应用程序的编写。
 
 ## 第 1 步：启动你的 TiDB 集群
 
