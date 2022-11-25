@@ -52,7 +52,7 @@ tiup cluster display <cluster-name> [flags]
 
 ### --status-timeout
 
-- 获取节点状态信息的超时时间
+- 获取节点状态信息的超时时间。
 - 数据类型：`INT`
 - 该选项默认值为 `10s`。
 
