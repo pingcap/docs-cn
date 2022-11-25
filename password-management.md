@@ -92,7 +92,7 @@ SET GLOBAL validate_password.number_count = 2;
 
 开启密码复杂度策略检查 (`validate_password.enable = ON`) 后，密码复杂度检查示例如下：
 
-按照默认密码复杂度策略，检测用户明文密码，若采用弱密码，设置失败。
+按照默认密码复杂度策略，检测用户明文密码，若采用弱密码，则设置失败。
 
 ```sql
 ALTER USER 'test'@'localhost' IDENTIFIED BY 'abc';
@@ -245,14 +245,14 @@ SET GLOBAL disconnect-on-expired-password = OFF;
 
 ## 密码重用策略
 
-TiDB 支持限制重复使用以前的密码，可以根据密码更改的次数、经过的时间或者两者同时配置来建立密码重用策略。
+TiDB 支持限制重复使用以前的密码。密码重用策略可以基于密码更改的次数或经过的时间，也可以同时基于两者。
 
-密码重用策略分为全局级别和账户级别。你可以在全局级别建立密码重用策略，也可以将使用账户级别密码重用策略覆盖全局策略。
+密码重用策略分为全局级别和账户级别。你可以在全局级别建立密码重用策略，也可以使用账户级别密码重用策略覆盖全局策略。
 
 TiDB 会记录账户的历史密码，并限制从该历史记录中选择新密码：
 
-- 如果一个账户是基于密码更改次数限制的，则不能从指定数量的最近密码中选择一个新密码。例如，如果密码的最小更改次数设置为 3，则新密码不能与最近的 3 个密码中的任何一个相同。
-- 如果一个账户是基于经过时间限制的，则不能从历史记录中选择指定天数内使用过的密码作为新密码。例如，如果密码重用间隔设置为 60，则新密码不能是最近 60 天内选择的密码。
+- 如果密码重用策略基于密码更改次数，则新密码不得与指定数量的历史密码相同。例如，如果密码的最小更改次数设置为 3，则新密码不能与最近 3 个密码中的任何一个相同。
+- 如果密码重用策略基于经过时间，则新密码不得与历史记录中指定天数内使用过的密码相同。例如，如果密码重用间隔设置为 60，则新密码不能与最近 60 天内使用过的密码相同。
 
 > **注意：**
 >
@@ -269,11 +269,11 @@ SET GLOBAL password_history = 6;
 SET GLOBAL password_reuse_interval = 365;
 ```
 
-全局密码重用策略适用于所有未设置覆盖它的账户。
+全局密码重用策略适用于所有未设置账户级别密码重用策略覆盖的账户。
 
 ### 账户级别密码重用策略
 
-要为个人账户建立密码重用策略，请使用 `CREATE USER` 或 `ALTER USER` 语句的 `PASSWORD HISTORY` 和 `PASSWORD REUSE INTERVAL` 选项。
+要建立账户级别密码重用策略，请使用 `CREATE USER` 或 `ALTER USER` 语句的 `PASSWORD HISTORY` 和 `PASSWORD REUSE INTERVAL` 选项。
 
 示例：
 
@@ -321,12 +321,13 @@ ALTER USER 'test'@'localhost'
 
 ## 密码连续错误限制登陆策略
 
-TiDB 支持限制账户持续尝试登录的能力，防止用户密码被暴力破解。当账户连续登录失败次数过多时将账户临时锁定。
-登录失败：表示客户端在连接尝试期间未能提供正确的密码，它不包括由于未知用户或网络问题等原因而导致的连接失败。
+TiDB 支持限制账户持续尝试登录，防止用户密码被暴力破解。当账户连续登录失败次数过多时，账户将被临时锁定。
+
+登录失败是指客户端在连接尝试期间未能提供正确的密码，不包括由于未知用户或网络问题等原因而导致的连接失败。
 
 ### 配置密码连续错误限制登录策略
 
-每个账户的登录失败次数和锁定时间是可配置的，请使用 `CREATE USER`、`ALTER USER` 的 `FAILED_LOGIN_ATTEMPTS` 和 `PASSWORD_LOCK_TIME` 选项。`FAILED_LOGIN_ATTEMPTS` 和 `PASSWORD_LOCK_TIME` 必须同时为非 0 ，系统才会跟踪账户的失败登录和临时锁定。
+每个账户的登录失败次数和锁定时间是可配置的，你可以使用 `CREATE USER`、`ALTER USER` 语句的 `FAILED_LOGIN_ATTEMPTS` 和 `PASSWORD_LOCK_TIME` 选项。`FAILED_LOGIN_ATTEMPTS` 和 `PASSWORD_LOCK_TIME` 必须同时不为 0 ，系统才会跟踪账户的失败登录次数并执行临时锁定。
 
 `FAILED_LOGIN_ATTEMPTS` 和 `PASSWORD_LOCK_TIME` 选项的可设置值如下：
 
@@ -349,7 +350,7 @@ ALTER USER 'test2'@'localhost' FAILED_LOGIN_ATTEMPTS 4 PASSWORD_LOCK_TIME UNBOUN
 
 ### 锁定账户解锁
 
-当用户因密码连续多次错误触发账户锁定后，以下场景可以解锁账户：
+当用户因密码连续多次错误触发账户锁定后，以下情况下可以解锁账户：
 
 - 锁定时间结束。
 - 执行 `ALTER USER ... ACCOUNT UNLOCK` 解锁用户。
