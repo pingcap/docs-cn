@@ -216,7 +216,7 @@ mysql> SELECT * FROM t1;
 - 取值范围：`[0, 7]`
 - 设置 `WEEK()` 函数使用的周格式。
 
-### `disconnect-on-expired-password`
+### `disconnect_on_expired_password`
 
 - 作用域: GLOBAL
 - 是否持久化到集群：是
