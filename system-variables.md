@@ -826,7 +826,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 > **注意：**
 >
-> 该变量默认开启，但可能导致内存不受 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 控制，从而加剧 OOM 风险，因此建议将该变量值调整为 `OFF`。
+> 该变量默认开启，但可能导致内存不受 [`tidb_mem_quota_query`](#tidb_mem_quota_query) 控制，从而加剧 OOM 风险，因此建议将该变量值调整为 `OFF`。
 
 - 作用域：SESSION | GLOBAL
 - 默认值：`ON`
