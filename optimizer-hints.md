@@ -447,10 +447,9 @@ WITH CTE1 AS (SELECT * FROM t1), CTE2 AS (WITH CTE3 AS (SELECT /*+ MERGE() */ * 
 
 ## 全局生效的 Hint
 
-这类 Hint 和[视图](/views.md)有关，可以实现在查询中定义的 Hint 能够在视图的内部生效。
+全局生效的 Hint 和[视图](/views.md)有关，可以实现在查询中定义的 Hint 能够在视图的内部生效。这类 Hint 的定义由两部分组成：先用 `QB_NAME` Hint 为视图内的查询块命名，再以“表名@查询块名”的方式加入实际需要的 Hint。
 
-全局生效的 hint 的定义由两部分组成。先用 `QB_NAME` Hint 为视图内的查询块命名， 再以 "表名@查询块名" 的方式加入实际需要的 Hint。
-具体方式为首先给需要用到 hint 的查询块部分定义一个 [`QB_NAME` Hint](/optimizer-hints.md#qb_name) 来对视图内部的查询块进行重命名，其中针对视图的 `QB_NAME` Hint 的概念和之前相同，只是在语法上进行了相应的拓展。从 `QB_NAME(QB)` 拓展为 `QB_NAME(QB, ViewName@QueryBlockName [.ViewName@QueryBlockName .ViewName@QueryBlockName ...])`（其中跟在 `@QueryBlockName` 后面的部分需要和其留有空格，不然会被视作  `@QueryBlockName` 的一部分）。例如：
+首先使用 [`QB_NAME` Hint](/optimizer-hints.md#qb_name) 重命名视图内部的查询块。其中针对视图的 `QB_NAME` Hint 的概念与之前相同，只是在语法上进行了相应的拓展。从 `QB_NAME(QB)` 拓展为 `QB_NAME(QB, ViewName@QueryBlockName [.ViewName@QueryBlockName .ViewName@QueryBlockName ...])`。需要注意的是，`@QueryBlockName` 与 `.ViewName@QueryBlockName` 之间需要有一个空格，否则 `.ViewName@QueryBlockName` 会被视作 `@QueryBlockName` 的一部分，例如 `QB_NAME(v2_1, v2@SEL_1 .@SEL_1)` 不能写为 `QB_NAME(v2_1, v2@SEL_1.@SEL_1)`。下面是使用 `QB_NAME` Hint 重命名视图内部查询块的示例：
 
 ```sql
 SELECT /* 注释：当前查询块的名字为默认的 @SEL_1 */ * FROM v2 JOIN (SELECT /* 注释：当前查询块的名字为默认的 @SEL_2 */ * FROM v2) vv;
