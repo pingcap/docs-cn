@@ -487,7 +487,7 @@ CREATE VIEW v1 AS SELECT * FROM t JOIN /* 对于视图 v1 来说，当前查询�
 >     - 视图 v1 的第一个查询块可以声明为 `QB_NAME(v2_1, v2.v1@SEL_2)`
 >     - 视图 v1 的第二个查询块可以声明为 `QB_NAME(v2_2, v2.v1@SEL_2 .@SEL_2)`
 
-在针对视图的查询块部分定义好 `QB_NAME` Hint 后，我们便可以用定义好地查询块名字来使用[查询块范围生效的 Hint](/optimizer-hints.md#查询块范围生效的-hint)，使其能够在视图内部生效。例如：
+在定义好视图的查询块部分的 `QB_NAME` Hint 后，你可以通过查询块的名字使用[查询块范围生效的 Hint](/optimizer-hints.md#查询块范围生效的-hint)，以“表名@查询块名”的方式加入实际需要的 Hint，使其在视图内部生效。例如：
 
 ```sql
 -- 对于视图 v2 的第一个查询块可以声明为：qb_name(v2_1, v2@SEL_1 .@SEL_1) / qb_name(v2_1, v2)
