@@ -224,7 +224,7 @@ mysql root@127.0.0.1:test> show create table test;
 
 ## 使用 TiCDC 创建同步任务时将 `enable-old-value` 设置为 `true` 后，为什么上游的 `INSERT`/`UPDATE` 语句经 TiCDC 同步到下游后变为了 `REPLACE INTO`？
 
-TiCDC 提供 at least once 的数据同步保证。在 6.1.3 版本之前，TiCDC changefeed 的 safe-mode 默认为 true，该参数为了确保数据一定被同步到下游，及时有相同主键或唯一索引数据存在的情况下，所以 TiCDC 会将 `INSERT`/`UPDATE` 语句转转成 `REPLACE INTO` 语句。在 6.1.3 版本及之后，TiCDC changefeed 的 safe-mode 默认更改为 false，则会同步 `INSERT`/`UPDATE` 语句。
+TiCDC 提供 at least once 的数据同步保证，当下游有重复数据时，会引起写冲突问题，为了避免该问题， TiCDC 会将 `INSERT`/`UPDATE` 语句转成 `REPLACE INTO` 语句，该行为由 safe-mode 参数来控制，在 6.1.3 版本之前， safe-mode 默认为 true，即所有的 `INSERT`/`UPDATE` 语句都转成 `REPLACE INTO` 语句。在 6.1.3 版本及之后，系统经过了优化，能自动判断下游是否存在重复数据，  safe-mode 默认更改为 false，当系统判断下游无重复数据时，会直接同步 `INSERT`/`UPDATE` 语句。```
 
 ## 数据同步下游的 Sink 为 TiDB 或 MySQL 时，下游数据库的用户需要哪些权限？
 
@@ -260,9 +260,9 @@ TiCDC 需要磁盘是为了缓冲上游写入高峰时下游消费不及时堆�
 
 ## 在两个异地 TiDB 集群之间同步数据，如何部署 TiCDC？
 
-这种场景中，我们推荐将 TiCDC 和下游集群部署在一起。 原因是这样，在上下游网络延迟相对比较大的情况下，TiCDC 向下游 TiDB 执行 SQL 的交互过程收到网络延迟印象更大，导致整体同步性能下降，而 TiKV 和 TiCDC 之间的 changed log 传输只要保证网络小于 100ms 则不会收到太大影响。
+在上下游网络延迟超过 100ms 时，推荐 TiCDC 部署在下游。 由于 mysql 传输协议的原因，如果网络延迟较大，TiCDC 向下游执行 SQL 的延迟会急剧增加，导致系统的吞吐下降。部署在下游能够极大缓解该影响。
 
-## 为什么 DML 会卡住 DDL 的执行？
+## 如何理解 DML 和 DDL 语句之间的执行顺序
 
 DMLs -> DDL -> DMLs 产生的数据同步过程中，TiCDC 需要确保 DDL 前后的 DMLs 使用正常版本的 schema 被处理，因为会选择等于所有早于 DDL 的 DMLs 执行完成后才会执行后面的 DMLs。 这是当前 TiCDC 的设计预期的行为，TiCDC 团队也在考虑按照表的粒度保证 DMLs 和 DDL 执行顺序，不同表之间互相不干扰。
 
