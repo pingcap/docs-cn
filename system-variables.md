@@ -710,6 +710,14 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 这个变量用于控制是否开启[自动捕获绑定](/sql-plan-management.md#自动捕获绑定-baseline-capturing)功能。该功能依赖 Statement Summary，因此在使用自动绑定之前需打开 Statement Summary 开关。
 - 开启该功能后会定期遍历一次 Statement Summary 中的历史 SQL 语句，并为至少出现两次的 SQL 语句自动创建绑定。
 
+### `tidb_cdc_write_source` <span class="version-mark">从 v6.5.0 版本开始引入</span>
+
+- 作用域：SESSION
+- 是否持久化到集群：否
+- 默认值： `0`
+- 范围：`[0, 15]`
+- 当变量非 `0` 时，该 SESSION 写入的数据将被视为是由 TiCDC 写入的。这个变量仅由 TiCDC 设置，任何时候都不应该手动调整该变量。
+
 ### `tidb_check_mb4_value_in_utf8`
 
 - 作用域：GLOBAL
@@ -2605,6 +2613,14 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 默认值：""
 - 这个变量用来设置当前会话期待读取的历史数据所处时刻。比如当设置为 `"2017-11-11 20:20:20"` 时或者一个 TSO 数字 "400036290571534337"，当前会话将能读取到该时刻的数据。
 
+### `tidb_source_id` <span class="version-mark">从 v6.5.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 默认值： `1`
+- 范围：`[1, 15]`
+- 这个变量用来设置在双向复制系统内不同集群的 id。
+
 ### `tidb_stats_cache_mem_quota` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
 > **警告：**
@@ -2858,14 +2874,6 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 范围：`[1, 256]`
 - 这个变量用于设置 window 算子的并行度。
 - 默认值 `-1` 表示使用 `tidb_executor_concurrency` 的值。
-
-### `tidb_write_by_ticdc` <span class="version-mark">从 v6.4.0 版本开始引入</span>
-
-- 作用域：SESSION
-- 是否持久化到集群：否
-- 类型：布尔型
-- 默认值：`OFF`
-- 当变量为 `ON` 时，该 SESSION 写入的数据将被视为是由 TiCDC 写入的。这个变量仅由 TiCDC 设置，任何时候都不应该手动调整该变量。
 
 ### `tiflash_fastscan` <span class="version-mark">从 v6.3.0 版本开始引入</span>
 
