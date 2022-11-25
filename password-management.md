@@ -64,25 +64,25 @@ SHOW VARIABLES LIKE 'validate_password.%';
 SET GLOBAL validate_password.enable = ON;
 ```
 
-设置密码复杂度策略检查密码不与当前用户名相同
+设置不允许密码与当前用户名相同：
 
 ```sql
 SET GLOBAL validate_password.check_user_name = ON;
 ```
 
-设置密码复杂度检查强度等级为 LOW
+设置密码复杂度的检查等级为 LOW：
 
 ```sql
 SET GLOBAL validate_password.policy = LOW;
 ```
 
-设置密码复杂度策略的密码最小长度为 10
+设置密码最小长度为 10：
 
 ```sql
 SET GLOBAL validate_password.length = 10;
 ```
 
-设置密码复杂度策略的密码数字最小个数为 2
+设置密码中至少有 2 个数字：
 
 ```sql
 SET GLOBAL validate_password.number_count = 2;
