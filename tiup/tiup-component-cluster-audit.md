@@ -43,16 +43,19 @@ tiup cluster audit cleanup [flags]
 
 ## 选项
 
+### --retain-days
+
+- audit-log 保留天数
+- 数据类型：`INT`
+- 默认保留 60 天的 audit-log，即删除 60 天之前的 audit-log
+
 ### -h, --help
 
 - 输出帮助信息。
 - 数据类型：`BOOLEAN`
 - 该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
 
-### --retain-days
-- audit-log 保留天数
-- 数据类型：`INT`
-- 默认保留 60 天的 audit-log，即删除 60 天之前的 audit-log
+
 
 ## 输出
 
