@@ -31,4 +31,33 @@ tiup cluster audit [audit-id] [flags]
     - Time：该条记录对应的命令执行时间
     - Command：该条记录对应的命令
 
+# tiup cluster audit cleanup
+
+命令 `tiup cluster audit cleanup` 可以用于清理`tiup cluster`产生的 audit-log。
+
+## 语法
+
+```shell
+tiup cluster audit cleanup [flags]
+```
+
+## 选项
+
+### -h, --help
+
+- 输出帮助信息。
+- 数据类型：`BOOLEAN`
+- 该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
+
+### --retain-days
+- audit-log 保留天数
+- 数据类型：`INT`
+- 默认保留 60 天的 audit-log，即删除 60 天之前的 audit-log
+
+## 输出
+
+```shell
+clean audit log successfully
+```
+
 [<< 返回上一页 - TiUP Cluster 命令清单](/tiup/tiup-component-cluster.md#命令清单)
