@@ -490,29 +490,29 @@ CREATE VIEW v1 AS SELECT * FROM t JOIN /* 对于视图 v1 来说，当前查询�
 在定义好视图的查询块部分的 `QB_NAME` Hint 后，你可以通过查询块的名字使用[查询块范围生效的 Hint](/optimizer-hints.md#查询块范围生效的-hint)，以“表名@查询块名”的方式加入实际需要的 Hint，使其在视图内部生效。例如：
 
 ```sql
--- 对于视图 v2 的第一个查询块可以声明为：qb_name(v2_1, v2@SEL_1 .@SEL_1) / qb_name(v2_1, v2)
--- 对于视图 v2 的第二个查询块可以声明为：qb_name(v2_2, v2@SEL_1 .@SEL_2) / qb_name(v2_2, v2.@SEL_2)
+-- 对于视图 v2 的第一个查询块可以声明为 QB_NAME(v2_1, v2@SEL_1 .@SEL_1) 或 QB_NAME(v2_1, v2)
+-- 对于视图 v2 的第二个查询块可以声明为 QB_NAME(v2_2, v2@SEL_1 .@SEL_2) 或 QB_NAME(v2_2, v2.@SEL_2)
 CREATE VIEW v2 AS
     SELECT * FROM t JOIN (
-        SELECT  count(*) FROM t1 JOIN v1) tt;
+        SELECT COUNT(*) FROM t1 JOIN v1) tt;
 
--- 对于视图 v1 的第一个查询块可以声明为：qb_name(v1_1, v2@SEL_1 .v1@SEL_2 .@SEL_1) / qb_name(v1_1, v2.v1@SEL_2)
--- 对于视图 v1 的第二个查询块可以声明为：qb_name(v1_2, v2@SEL_1 .v1@SEL_2 .@SEL_2) / qb_name(v1_2, v2.v1@SEL_2 .@SEL_2)
+-- 对于视图 v1 的第一个查询块可以声明为 QB_NAME(v1_1, v2@SEL_1 .v1@SEL_2 .@SEL_1) 或 QB_NAME(v1_1, v2.v1@SEL_2)
+-- 对于视图 v1 的第二个查询块可以声明为 QB_NAME(v1_2, v2@SEL_1 .v1@SEL_2 .@SEL_2) 或 QB_NAME(v1_2, v2.v1@SEL_2 .@SEL_2)
 CREATE VIEW v1 AS
 SELECT * FROM t JOIN (
-    SELECT count(*) FROM t1 JOIN v1) tt;
+    SELECT COUNT(*) FROM t1 JOIN v1) tt;
 
--- 指定视图 v2 中第一个查询块相关的 hint
-SELECT /*+ qb_name(v2_1, v2]) merge_join(t@qb_v2_1) */ * FROM v2;
+-- 指定视图 v2 中第一个查询块相关的 Hint
+SELECT /*+ QB_NAME(v2_1, v2) merge_join(t@qb_v2_1) */ * FROM v2;
 
--- 指定视图 v2 中第二个查询块相关的 hint
-SELECT /*+ qb_name(v2_2, v2.@SEL_2) merge_join(t1@qb_v2_2) stream_agg(@qb_v2_2) */ * FROM v2;
+-- 指定视图 v2 中第二个查询块相关的 Hint
+SELECT /*+ QB_NAME(v2_2, v2.@SEL_2) merge_join(t1@qb_v2_2) stream_agg(@qb_v2_2) */ * FROM v2;
 
--- 指定视图 v1 中第一个查询块相关的 hint
-SELECT /*+ qb_name(v1_1, v2.v1@SEL_2) hash_join(t@qb_v1_1) */ * FROM v2;
+-- 指定视图 v1 中第一个查询块相关的 Hint
+SELECT /*+ QB_NAME(v1_1, v2.v1@SEL_2) hash_join(t@qb_v1_1) */ * FROM v2;
 
--- 指定视图 v1 中第二个查询块相关的 hint
-SELECT /*+ qb_name(v1_2, v2.v1@SEL_2 .@SEL_2) hash_join(t1@qb_v1_2) hash_agg(@qb_v1_2) */ * FROM v2;
+-- 指定视图 v1 中第二个查询块相关的 Hint
+SELECT /*+ QB_NAME(v1_2, v2.v1@SEL_2 .@SEL_2) hash_join(t1@qb_v1_2) hash_agg(@qb_v1_2) */ * FROM v2;
 ```
 
 ## 查询范围生效的 Hint
