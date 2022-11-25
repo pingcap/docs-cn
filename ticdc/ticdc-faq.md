@@ -254,9 +254,6 @@ TiCDC 需要磁盘是为了缓冲上游写入高峰时下游消费不及时堆�
 
 当 changefeed 启动时，为了补齐 changefeed 暂停期间产生的增量数据日志，TiCDC 需要扫描 TiKV 中数据的历史版本，待扫描完毕后，才能够继续推进复制过程，扫描过程可能长达数分钟到数十分钟。
 
-## 为什么 TiCDC 不使用 raft leaner 机制从 TiKV 同步 raft log？
-
-当一个数据改变发生的时候，TiKV 节点会主动将 raft log 转换成 TiCDC 可以识别的 changedlog 格式，推送给 TiCDC 的 puller 模块。 如果 TiCDC 需要从一个更早的时间点同步数据，则会请求 TiKV 增量描述所需要的时间区间数据，然后发送给 TiCDC。 从实现效果来看，TiCDC 读取数据方式与 leaner 相似。
 
 ## 在两个异地 TiDB 集群之间同步数据，如何部署 TiCDC？
 
