@@ -133,8 +133,6 @@ SELECT * FROM information_schema.user_attributes;
 
 创建一个禁止重复使用最近 5 次密码的用户。
 
-{{< copyable "sql" >}}
-
 ```sql
 CREATE USER 'newuser8'@'%' PASSWORD HISTORY 5;
 ```
@@ -144,8 +142,6 @@ Query OK, 1 row affected (0.02 sec)
 ```
 
 创建一个密码已经手动过期的用户。
-
-{{< copyable "sql" >}}
 
 ```sql
 CREATE USER 'newuser9'@'%' PASSWORD EXPIRE;

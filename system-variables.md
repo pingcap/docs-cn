@@ -396,20 +396,22 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 - 该变量的行为与 MySQL 兼容。
 
 ### `password_history`
+
 - 作用域：GLOBAL
 - 是否持久化到集群：是
 - 类型：整数
 - 默认值：`0`
 - 范围：`[0, 4294967295]`
-- 该变量用于建立密码重用策略，基于密码更改次数限制密码的重复使用。当设置一个正整数 N ，表示不允许重复使用最近 N 次使用过的密码。默认值为0，表示禁用基于密码更改次数的密码重用策略。
+- 该变量用于建立密码重用策略，基于密码更改次数限制密码的重复使用。当设置一个正整数 N，表示不允许重复使用最近 N 次使用过的密码。默认值为 0，表示禁用基于密码更改次数的密码重用策略。
 
 ### `password_reuse_interval`
+
 - 作用域：GLOBAL
 - 是否持久化到集群：是
 - 类型：整数
 - 默认值：`0`
 - 范围：`[0, 4294967295]`
-- 该变量用于建立密码重用策略，基于经过时间限制的密码重复使用。当设置一个正整数 M ，表示不允许重复使用最近 M 天内使用过的密码。默认值为0，表示禁用基于密码经过时间的密码重用策略。
+- 该变量用于建立密码重用策略，基于经过时间限制密码重复使用。当设置一个正整数 N ，表示不允许重复使用最近 N 天内使用过的密码。默认值为 0，表示禁用基于密码经过时间的密码重用策略。
 
 ### `plugin_dir`
 
@@ -3341,7 +3343,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 是否持久化到集群：是
 - 默认值：`ON`
 - 范围：`ON | OFF`
-- 该变量是密码复杂度策略检查的一部分，变量设置为 ON 后，在设置账户密码时，会将密码与当前会话账户的用户名部分（不使用主机名部分）进行比较，如果匹配则拒绝该密码。除非 validate_password.enable 开启，否则变量不生效。
+- 该变量是密码复杂度策略检查的一部分，变量设置为 ON 后，在设置账户密码时，会将密码与当前会话账户的用户名部分（不使用主机名部分）进行比较，如果匹配则拒绝该密码。只有 `validate_password.enable` 开启时，该变量才生效。
 - 此变量独立于 validate_password.policy，即不受密码复杂度检测强度的影响。
 
 ### `validate_password.dictionary`
@@ -3349,9 +3351,9 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 作用域：GLOBAL
 - 是否持久化到集群：是
 - 默认值：""
-- 该变量是密码复杂度策略检查的一部分,进行密码字典字符串匹配检查。除非 validate_password.enable 开启，否则变量不生效。对于密码检查时要使用的字典检查，密码策略必须设置为 2 (STRONG)；
+- 该变量是密码复杂度策略检查的一部分，进行密码字典字符串匹配检查。只有 `validate_password.enable` 开启时，该变量才生效。如要开启字典检查，密码策略 (`validate_password.policy`) 必须设置为 2 (STRONG)。
 - 该变量是一个长字符串，长度不超过 1024，字符串内容包含多个待匹配的单词，每个单词之间采用英文分号（`;`）分隔。
-- 默认情况下，该变量具有空值不执行字典检查。要进行字典检查，变量值必须为非空。配置了该变量后，在设置账户密码时，会将长度为 4 到 100 的密码的每个子字符串与字典中的单词进行比较。任何匹配都会导致密码被拒绝。比较不区分大小写。
+- 默认情况下，该变量为空值，不执行字典检查。要进行字典检查，变量值必须为非空。配置了该变量后，在设置账户密码时，会将长度为 4 到 100 的密码的每个子字符串与字典中的单词进行比较。任何匹配都会导致密码被拒绝。比较不区分大小写。
 
 ### `validate_password.enable`
 
@@ -3368,8 +3370,9 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 类型：整数
 - 默认值：`8`
 - 范围：`[0, 2147483647]`
-- 该变量是密码复杂度策略检查的一部分,限定密码的最小长度，默认最小长度为 8。除非 validate_password.enable 开启，否则变量不生效。
-- 该变量时密码的总长度最小值要求，这与其他几个相关系统变量相关。该变量的值不能设置为小于此表达式的值：validate_password.number_count + validate_password.special_char_count + (2 * validate_password.mixed_case_count)，当修改 validate_password.number_count 、 validate_password.special_char_count 、 validate_password.mixed_case_count后表达式的值大于validate_password.length时，validate_password.length将同步被修改到满足表达式的最小值。
+- 该变量是密码复杂度策略检查的一部分，限定密码的最小长度，默认最小长度为 8。只有 `validate_password.enable` 开启时，该变量才生效。
+- 该变量时密码的总长度最小值要求，这与其他几个相关系统变量相关。该变量的值不能设置为小于此表达式的值：`validate_password.number_count + validate_password.special_char_count + (2 * validate_password.mixed_case_count)`。
+- 当用户修改 `validate_password.number_count`、`validate_password.special_char_count`、`validate_password.mixed_case_count` 后表达式的值大于 `validate_password.length `时，`validate_password.length` 将同步被修改到满足表达式的最小值。
 
 ### `validate_password.mixed_case_count`
 
@@ -3378,8 +3381,8 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 类型：整数
 - 默认值：`1`
 - 范围：`[0, 2147483647]`
-- 该变量是密码复杂度策略检查的一部分,限定密码中的小写字符数和大写字符数的最小值。除非 validate_password.enable 开启，否则变量不生效。如果需要检查密码中的小写、大写字符数要求，密码策略必须设置为 1 (MEDIUM) 或者更强；
-- 对于给定的 validate_password.mixed_case_count 值，则密码中必须包含那么多的小写字符和那么多的大写字符。例如，值为 1 时，密码中至少需要 1 个小写字母，并且至少需要 1 个大写字母。
+- 该变量是密码复杂度策略检查的一部分,限定密码中的小写字符数和大写字符数的最小值。只有 `validate_password.enable` 开启时，该变量才生效。如果需要检查密码中的小写、大写字符数要求，密码策略必须设置为 1 (MEDIUM) 或者更强。
+- 对于给定的 `validate_password.mixed_case_count` 值，则密码中必须包含符合该值的小写字符和符合该值的大写字符。例如，值为 1 时，密码中至少需要 1 个小写字母，至少需要 1 个大写字母。
 
 ### `validate_password.number_count`
 
@@ -3388,7 +3391,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 类型：整数
 - 默认值：`1`
 - 范围：`[0, 2147483647]`
-- 该变量是密码复杂度策略检查的一部分,限定密码中的数字字符数的最小值。除非 validate_password.enable 开启，否则变量不生效。如果需要检查密码中的数字字符数要求，密码策略必须设置为 1 (MEDIUM) 或者更强；
+- 该变量是密码复杂度策略检查的一部分，限定密码中的数字字符数的最小值。只有 `validate_password.enable` 开启时，该变量才生效。如果需要检查密码中的数字字符数要求，密码策略必须设置为 1 (MEDIUM) 或者更强。
 
 ### `validate_password.policy`
 
@@ -3397,7 +3400,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 类型：枚举型
 - 默认值：`1`
 - 可选值：`[0, 1, 2]`
-- 该变量是[密码复杂度策略检查](/password-management.md#密码复杂度策略)的强度策略，该变量影响其他密码复杂度系统变量（前缀为 `validate_password`）在密码检查时是否生效，但是 `validate_password.check_user_name` 除外。只有 `validate_password.enable` 开启时，该变量才生效。
+- 该变量是[密码复杂度策略检查](/password-management.md#密码复杂度策略)的强度策略，该变量影响其他密码复杂度系统变量（前缀为 `validate_password`）在密码检查时是否生效，但是 `validate_password.check_user_name` 除外。只有 `validate_password.enable` 开启时，`validate_password.policy` 才生效。
 - 该变量可以使用数值 0、1、2 或相应的符号值 LOW、MEDIUM、STRONG，密码强度策略对应的检查项如下：
     - 0 或者 LOW：检查密码长度。
     - 1 或者 MEDIUM：检查密码长度，检查密码中数字、小写字符、大写字符、特殊字符数量。
