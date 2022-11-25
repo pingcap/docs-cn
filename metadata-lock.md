@@ -19,9 +19,10 @@ summary: 介绍 TiDB 中元数据锁的概念、原理、实现和影响。
 
 ## 适用场景
 
-元数据锁适用于所有的 DDL 语句，包括：
+元数据锁适用于所有的 DDL 语句，包括但不限于：
 
 - [`ADD INDEX`](/sql-statements/sql-statement-add-index.md)
+- [`ADD COLUMN`](/sql-statements/sql-statement-add-column.md)
 - [`DROP COLUMN`](/sql-statements/sql-statement-drop-column.md)
 - [`DROP INDEX`](/sql-statements/sql-statement-drop-index.md)
 - [`DROP PARTITION`](/partitioned-table.md#分区管理)
