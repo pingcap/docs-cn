@@ -452,22 +452,23 @@ WITH CTE1 AS (SELECT * FROM t1), CTE2 AS (WITH CTE3 AS (SELECT /*+ MERGE() */ * 
 首先使用 [`QB_NAME` Hint](/optimizer-hints.md#qb_name) 重命名视图内部的查询块。其中针对视图的 `QB_NAME` Hint 的概念与之前相同，只是在语法上进行了相应的拓展。从 `QB_NAME(QB)` 拓展为 `QB_NAME(QB, ViewName@QueryBlockName [.ViewName@QueryBlockName .ViewName@QueryBlockName ...])`。需要注意的是，`@QueryBlockName` 与 `.ViewName@QueryBlockName` 之间需要有一个空格，否则 `.ViewName@QueryBlockName` 会被视作 `@QueryBlockName` 的一部分，例如 `QB_NAME(v2_1, v2@SEL_1 .@SEL_1)` 不能写为 `QB_NAME(v2_1, v2@SEL_1.@SEL_1)`。下面是使用 `QB_NAME` Hint 重命名视图内部查询块的示例：
 
 ```sql
-SELECT /* 注释：当前查询块的名字为默认的 @SEL_1 */ * FROM v2 JOIN (SELECT /* 注释：当前查询块的名字为默认的 @SEL_2 */ * FROM v2) vv;
-
--- 对于第一个视图 v2 来说，从上面的语句开始的前缀视图列表是 v2@SEL_1；对于第二个视图 v2 来说，前缀列表为 v2@SEL_2。下面的查询部分仅考虑第一个视图 v2.
--- 对于视图 v2 的第一个查询块可以声明为：qb_name(v2_1, v2@SEL_1 .@SEL_1)
--- 对于视图 v2 的第二个查询块可以声明为：qb_name(v2_2, v2@SEL_1 .@SEL_2)
-CREATE VIEW v2 AS SELECT * FROM t JOIN /* 注释：对于视图 v2 来说，当前查询块的默认名字为 @SEL_1。因此当前查询块的视图列表是 v2@SEL_1 .@SEL_1 */
+SELECT /* 当前查询块的名字为默认的 @SEL_1 */ * FROM v2 JOIN (
+    SELECT /* 当前查询块的名字为默认的 @SEL_2 */ * FROM v2) vv;
+-- 对于第一个视图 v2 来说，从上面的语句开始的前缀视图列表是 v2@SEL_1。对于第二个视图 v2 来说，前缀列表为 v2@SEL_2。下面的查询部分仅考虑第一个视图 v2。
+-- 对于视图 v2 的第一个查询块可以声明为 QB_NAME(v2_1, v2@SEL_1 .@SEL_1)
+-- 对于视图 v2 的第二个查询块可以声明为 QB_NAME(v2_2, v2@SEL_1 .@SEL_2)
+CREATE VIEW v2 AS
+    SELECT * FROM t JOIN /* 对于视图 v2 来说，当前查询块的名字为默认的 @SEL_1，因此当前查询块的视图列表是 v2@SEL_1 .@SEL_1 */
     (
-        SELECT count(*)  FROM t1 JOIN v1 /* 注释：对于视图 v2 来说，当前查询块的默认名字为 @SEL_2。因此当前查询块的视图列表是 v2@SEL_1 .@SEL_2 */
+        SELECT COUNT(*) FROM t1 JOIN v1 /* 对于视图 v2 来说，当前查询块的名字为默认的 @SEL_2，因此当前查询块的视图列表是 v2@SEL_1 .@SEL_2 */
     ) tt;
 
 -- 对于视图 v1 来说，从上面的语句开始的前缀视图列表是 v2@SEL_1 .v1@SEL_2
--- 对于视图 v1 的第一个查询块可以声明为：qb_name(v1_1, v2@SEL_1 .v1@SEL_2 .@SEL_1)
--- 对于视图 v1 的第二个查询块可以声明为：qb_name(v1_2, v2@SEL_1 .v1@SEL_2 .@SEL_2)
-CREATE VIEW v1 AS SELECT * FROM t JOIN /* 注释：对于视图 v1 来说，当前查询块的默认名字为 @SEL_1。因此当前查询块的视图列表是 v2@SEL_1 .@SEL_2 .v1@SEL_1 */
+-- 对于视图 v1 的第一个查询块可以声明为 QB_NAME(v1_1, v2@SEL_1 .v1@SEL_2 .@SEL_1)
+-- 对于视图 v1 的第二个查询块可以声明为 QB_NAME(v1_2, v2@SEL_1 .v1@SEL_2 .@SEL_2)
+CREATE VIEW v1 AS SELECT * FROM t JOIN /* 对于视图 v1 来说，当前查询块的名字为默认的 @SEL_1，因此当前查询块的视图列表是 v2@SEL_1 .@SEL_2 .v1@SEL_1 */
     (
-        SELECT count(*) FROM t1 JOIN v1 /* 注释：对于视图 v1 来说，当前查询块的默认名字为 @SEL_2。因此当前查询块的视图列表是 v2@SEL_1 .@SEL_2 .v1@SEL_2 */
+        SELECT COUNT(*) FROM t1 JOIN v1 /* 对于视图 v1 来说，当前查询块的名字为默认的 @SEL_2，因此当前查询块的视图列表是 v2@SEL_1 .@SEL_2 .v1@SEL_2 */
     ) tt;
 ```
 
