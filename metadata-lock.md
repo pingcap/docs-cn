@@ -22,6 +22,7 @@ To solve the problem, TiDB v6.3.0 introduces metadata lock into the online DDL a
 The metadata lock in TiDB applies to all DDL statements, such as:
 
 - [`ADD INDEX`](/sql-statements/sql-statement-add-index.md)
+- [`ADD COLUMN`](/sql-statements/sql-statement-add-column.md)
 - [`DROP COLUMN`](/sql-statements/sql-statement-drop-column.md)
 - [`DROP INDEX`](/sql-statements/sql-statement-drop-index.md)
 - [`DROP PARTITION`](/partitioned-table.md#partition-management)
