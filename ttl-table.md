@@ -37,7 +37,7 @@ CREATE TABLE t1 (
 
 如果 `TTL_ENABLE` 被设置成了 `OFF`，则即使设置了其他 TTL 选项，当前表也不会自动清理过期数据。在缺省条件下，`TTL_ENABLE` 被默认设置为 `ON`。
 
-TTL 支持注释语法，比如对于上述语句也可以写作：
+为了与 Mysql 兼容，TTL 也支持注释语法，比如对于上述语句也可以写作：
 
 ```sql
 CREATE TABLE t1 (
@@ -45,6 +45,8 @@ CREATE TABLE t1 (
     created_at TIMESTAMP
 ) /*T![ttl] TTL = `created_at` + INTERVAL 3 MONTH TTL_ENABLE = 'OFF'*/;
 ```
+
+在 TiDB 环境下，上述两个语句等价。在 Mysql 环境中，会自动忽略注释中的内容，并创建普通的表。
 
 ### 修改表的 TTL 属性
 
