@@ -61,7 +61,7 @@ TiCDC 作为 TiDB 的增量数据同步工具，通过 PD 内部的 etcd 实现�
 
 ## 最佳实践
 
-- 使用 TiCDC 在两个 TiDB 集群间同步数据时，推荐将 TiCDC 部署在下游 TiDB 集群所在的区域（IDC，region），并且保证上下游区域之间网络延迟在 100ms 以下
+- 使用 TiCDC 在两个 TiDB 集群间同步数据时，当上下游的延迟超过 100 ms 时，推荐将 TiCDC 部署在下游 TiDB 集群所在的区域（IDC，region）。
 - TiCDC 同步的表需要至少存在一个**有效索引**的表，**有效索引**的定义如下：
   - 主键 (`PRIMARY KEY`) 为有效索引。
   - 同时满足下列条件的唯一索引 (`UNIQUE INDEX`) 为有效索引：
