@@ -90,7 +90,7 @@ SET GLOBAL validate_password.number_count = 2;
 
 ### 密码复杂度检查示例
 
-开启密码复杂度策略检查 (`validate_password.enable = ON`) 后，密码复杂度检查示例如下：
+配置系统变量 `validate_password.enable = ON` 后，TiDB 将开启密码复杂度检查。以下为一些典型的检查示例：
 
 按照默认密码复杂度策略，检测用户明文密码，若采用弱密码，则设置失败。
 
