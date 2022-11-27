@@ -320,7 +320,7 @@ ALTER USER 'test'@'localhost'
 > **注意：**
 >
 > - 如果多次设置密码重用策略，则最后一次设置的值生效。
-> - 0 表示禁用该项重用策略。
+> - `PASSWORD HISTORY` 和 `PASSWORD REUSE INTERVAL` 选项的默认值为 0，表示禁用该项重用策略。
 > - 在修改用户名时，会迁移 `mysql.password_history` 系统表中的历史密码记录。
 
 ## 密码连续错误限制登陆策略
