@@ -181,7 +181,7 @@ SELECT user,password_expired,Account_locked FROM mysql.user WHERE user = 'testro
 
 - 全局级别自动密码过期
 
-    设置系统变量 [`default_password_lifetime`](/system-variables.md#default_password_lifetime) 来控制密码生存期，默认值为 0，即禁用自动密码过期。如果 `default_password_lifetime` 的值为正整数 N，则表示允许的密码生存期为 N 天，即必须在 N 天之内更改密码。
+    你可以设置系统变量 [`default_password_lifetime`](/system-variables.md#default_password_lifetime-从-v650-版本开始引入) 来控制密码生存期。该变量默认值为 0，表示禁用自动密码过期。如果设置该变量的值为正整数 N，则表示允许的密码生存期为 N 天，即必须在 N 天之内更改密码。
 
     全局自动密码过期策略适用于所有未设置账户级别覆盖的账户。
 
