@@ -273,7 +273,7 @@ SET GLOBAL password_history = 6;
 SET GLOBAL password_reuse_interval = 365;
 ```
 
-全局密码重用策略适用于所有未设置账户级别密码重用策略覆盖的账户。
+全局密码重用策略适用于所有未在账户级别设置过密码重用策略的账户。
 
 ### 账户级别密码重用策略
 
