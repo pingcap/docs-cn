@@ -339,7 +339,7 @@ TiDB 支持限制账户持续尝试登录，防止用户密码被暴力破解。
 CREATE USER 'test1'@'localhost' IDENTIFIED BY 'password' FAILED_LOGIN_ATTEMPTS 3 PASSWORD_LOCK_TIME 3;
 ```
 
-当用户密码连续错误 4 次，无限期锁定，直到账户被手动解锁：
+当用户密码连续错误 4 次时，无限期锁定，直到账户被手动解锁：
 
 ```sql
 ALTER USER 'test2'@'localhost' FAILED_LOGIN_ATTEMPTS 4 PASSWORD_LOCK_TIME UNBOUNDED;
