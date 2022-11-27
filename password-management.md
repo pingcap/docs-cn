@@ -331,7 +331,7 @@ TiDB 支持限制账户持续尝试登录，防止用户密码被暴力破解。
 
 ### 配置密码连续错误限制登录策略
 
-每个账户的登录失败次数和锁定时间是可配置的，你可以使用 `CREATE USER`、`ALTER USER` 语句的 `FAILED_LOGIN_ATTEMPTS` 和 `PASSWORD_LOCK_TIME` 选项。`FAILED_LOGIN_ATTEMPTS` 和 `PASSWORD_LOCK_TIME` 必须同时不为 0 ，系统才会跟踪账户的失败登录次数并执行临时锁定。
+每个账户的登录失败次数和锁定时间是可配置的，你可以使用 `CREATE USER`、`ALTER USER` 语句的 `FAILED_LOGIN_ATTEMPTS` 和 `PASSWORD_LOCK_TIME` 选项。只有当 `FAILED_LOGIN_ATTEMPTS` 和 `PASSWORD_LOCK_TIME` 都不为 0 时，系统才会跟踪账户的失败登录次数并执行临时锁定。
 
 `FAILED_LOGIN_ATTEMPTS` 和 `PASSWORD_LOCK_TIME` 选项的可设置值如下：
 
