@@ -3371,7 +3371,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 默认值：`8`
 - 范围：`[0, 2147483647]`
 - 该变量是密码复杂度策略检查的一部分，限定密码的最小长度，默认最小长度为 8。只有 `validate_password.enable` 开启时，该变量才生效。
-- 该变量时密码的总长度最小值要求，这与其他几个相关系统变量相关。该变量的值不能设置为小于此表达式的值：`validate_password.number_count + validate_password.special_char_count + (2 * validate_password.mixed_case_count)`。
+- 设置该变量时有最小值要求，最小值由其他几个相关的系统变量控制，即该变量的值不能设置为小于此表达式的值：`validate_password.number_count + validate_password.special_char_count + (2 * validate_password.mixed_case_count)`。
 - 当用户修改 `validate_password.number_count`、`validate_password.special_char_count`、`validate_password.mixed_case_count` 后表达式的值大于 `validate_password.length `时，`validate_password.length` 将同步被修改到满足表达式的最小值。
 
 ### `validate_password.mixed_case_count` <span class="version-mark">从 v6.5.0 版本开始引入</span>
