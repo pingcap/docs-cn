@@ -264,7 +264,7 @@ TiDB 会记录账户的历史密码，并限制从该历史记录中选择新密
 
 ### 全局级别密码重用策略
 
-要在全局范围内建立密码重用策略，请使用 `password_history` 和 `password_reuse_interval` 系统变量。
+要在全局范围内建立密码重用策略，请使用 [`password_history`](/system-variables.md#password_history-从-v650-版本开始引入) 和 [`password_reuse_interval`](/system-variables.md#password_reuse_interval-从-v650-版本开始引入) 系统变量。
 
 例如，建立全局密码重用策略，禁止重复使用最近 6 个密码或最近 365 天的密码：
 
