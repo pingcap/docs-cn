@@ -33,7 +33,7 @@ summary: 了解 TiDB 的用户密码管理机制。
 - 变更密码复杂度策略不影响已存在账户的密码，只会对新设置的密码产生影响。
 - 可以使用 SQL 函数 [`VALIDATE_PASSWORD_STRENGTH()`](/functions-and-operators/encryption-and-compression-functions.md) 评估给定密码的强度。该函数接受一个密码参数，并返回一个从 0（弱）到 100（强）的整数。评估结果是基于当前配置的密码复杂度策略，密码复杂度配置改变后，同一个密码的评估结果可能不同。
 
-密码复杂度策略相关的系统变量如下：
+通过以下 SQL 语句，你可以查看所有密码复杂度策略相关的系统变量：
 
 ```sql
 SHOW VARIABLES LIKE 'validate_password.%';
