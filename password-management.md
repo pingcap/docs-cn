@@ -340,7 +340,7 @@ TiDB 支持限制账户持续尝试登录，防止用户密码被暴力破解。
 
 配置用户的密码连续错误限制登录策略示例如下：
 
-当用户密码连续错误 3 次，临时锁定 3 天：
+当用户密码连续错误 3 次时，临时锁定 3 天：
 
 ```sql
 CREATE USER 'test1'@'localhost' IDENTIFIED BY 'password' FAILED_LOGIN_ATTEMPTS 3 PASSWORD_LOCK_TIME 3;
