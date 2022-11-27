@@ -52,7 +52,7 @@ SHOW VARIABLES LIKE 'validate_password.%';
 8 rows in set (0.00 sec)
 ```
 
-关于密码复杂度策略相关系统变量的详细信息，请查阅[系统变量文档](/system-variables.md#validate_password.check_user_name-从-v650-版本开始引入)。
+关于这些变量的详细解释，请查阅[系统变量文档](/system-variables.md#validate_passwordcheck_user_name-从-v650-版本开始引入)。
 
 ### 配置密码复杂度策略
 
