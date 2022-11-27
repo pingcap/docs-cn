@@ -336,7 +336,7 @@ TiDB 支持限制账户持续尝试登录，防止用户密码被暴力破解。
 `FAILED_LOGIN_ATTEMPTS` 和 `PASSWORD_LOCK_TIME` 选项的可设置值如下：
 
 - `FAILED_LOGIN_ATTEMPTS`：N。表示连续登录失败 N 次后，执行账户临时锁定。
-- `PASSWORD_LOCK_TIME` 设置为：N | UNBOUNDED。UNBOUNDED 表明锁定时间无限期，需要等到账户被手动解锁
+- `PASSWORD_LOCK_TIME`：N | UNBOUNDED。N 表示登录失败后，账户将被临时锁定 N 天。UNBOUNDED 表明锁定时间无限期，账户必须被手动解锁。
 
 配置用户的密码连续错误限制登录策略示例如下：
 
