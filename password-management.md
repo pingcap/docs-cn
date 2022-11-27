@@ -288,7 +288,7 @@ CREATE USER 'test'@'localhost' PASSWORD REUSE INTERVAL 365 DAY;
 ALTER USER 'test'@'localhost' PASSWORD REUSE INTERVAL 365 DAY;
 ```
 
-组合两种类型的重用策略，请一起使用 `PASSWORD HISTORY` 和 `PASSWORD REUSE INTERVAL`：
+如需组合两种类型的重用策略，请一起使用 `PASSWORD HISTORY` 和 `PASSWORD REUSE INTERVAL`：
 
 ```sql
 CREATE USER 'test'@'localhost'
