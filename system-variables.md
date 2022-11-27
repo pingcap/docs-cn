@@ -222,7 +222,7 @@ mysql> SELECT * FROM t1;
 - 是否持久化到集群：是
 - 类型：布尔型
 - 默认值：`ON`
-- 该变量决定用户密码过期后的处理机制。启用该变量时，密码过期的用户将被 TiDB 服务端断开连接。禁用该变量时，密码过期的用户将被置于"沙盒模式"，此时密码过期的用户将被允许连接到TiDB，但是只允许执行重置密码操作。默认启用 disconnect-on-expired-password，即默认将断开密码过期用户的连接。
+- 该变量为只读变量，由命令行参数（`--disconnect-on-expired-password`）或配置项（`security.disconnect-on-expired-password`）进行控制，用于表示密码过期的用户是否将被断开连接。
 
 ### `error_count`
 
