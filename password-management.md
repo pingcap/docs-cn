@@ -113,7 +113,7 @@ CREATE USER 'user02'@'localhost' ACCOUNT LOCK;
 ERROR 1819 (HY000): Require Password Length: 8
 ```
 
-使用密码强度函数 `VALIDATE_PASSWORD_STRENGTH()`：
+使用 `VALIDATE_PASSWORD_STRENGTH()` 函数评估给定密码的强度：
 
 ```sql
 SELECT VALIDATE_PASSWORD_STRENGTH('weak');
