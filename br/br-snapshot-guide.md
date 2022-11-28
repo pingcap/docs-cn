@@ -1,11 +1,6 @@
 ---
 title: TiDB 快照备份与恢复使用指南
-<<<<<<< HEAD
-summary: 了解如何使用 BR 进行 TiDB 快照备份与恢复。
-=======
 summary: 了解如何使用 br 命令行工具进行 TiDB 快照备份与恢复。
-aliases: ['/zh/tidb/dev/br-usage-backup/','/zh/tidb/dev/br-usage-restore/','/zh/tidb/dev/br-usage-restore-for-maintain/', '/zh/tidb/dev/br-usage-backup-for-maintain/']
->>>>>>> c7d18fa8a (Refine BR words (#12022))
 ---
 
 # TiDB 快照备份与恢复使用指南

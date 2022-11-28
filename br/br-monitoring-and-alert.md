@@ -1,12 +1,6 @@
 ---
-<<<<<<< HEAD
-title: BR 监控告警
-summary: BR 监控告警介绍。
-=======
 title: 备份恢复监控告警
 summary: 了解备份恢复的监控告警。
-aliases: ['/zh/tidb/dev/pitr-monitoring-and-alert/']
->>>>>>> c7d18fa8a (Refine BR words (#12022))
 ---
 
 # 备份恢复监控告警

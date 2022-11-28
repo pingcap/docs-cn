@@ -1,11 +1,6 @@
 ---
 title: TiDB 备份与恢复功能使用概述
-<<<<<<< HEAD
-summary: 了解如何部署和使用 BR 进行 TiDB 集群的备份与恢复。
-=======
 summary: 了解如何部署和使用 TiDB 集群的备份与恢复。
-aliases: ['/zh/tidb/dev/br-deployment/']
->>>>>>> c7d18fa8a (Refine BR words (#12022))
 ---
 
 # TiDB 备份与恢复功能使用概述
