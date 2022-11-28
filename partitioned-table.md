@@ -709,7 +709,7 @@ Empty set (0.00 sec)
 
 - 使用 `ALTER TABLE <表名> ADD PARTITION (<分区说明>)` 语句添加分区。
 - 使用 `ALTER TABLE <表名> DROP PARTITION <分区列表>` 删除分区。
-- 使用 `ALTER TABLE <表名> TRUNCATE PARTITION <分区列表>` 语句清空分区里的数据。`TRUNCATE PARTITION`的逻辑与 [`TRUNCATE TABLE`](/sql-statements/sql-statement-truncate.md) 相似，但它的操作对象是分区。
+- 使用 `ALTER TABLE <表名> TRUNCATE PARTITION <分区列表>` 语句清空分区里的数据。`TRUNCATE PARTITION`的逻辑与 [`TRUNCATE TABLE`](/sql-statements/sql-statement-truncate.md) 相似，但它的操作对象为分区。
 - 使用`ALTER TABLE <表名> REORGANIZE PARTITION <分区列表> INTO (<新的分区说明>)`语句对分区进行合并、拆分、或者其他修改。
 
 对于 `LIST` 和 `RANGE` 分区表，暂不支持 `REORGANIZE PARTITION` 语句。
@@ -736,7 +736,7 @@ Empty set (0.00 sec)
 
 ### Range 分区和 List 分区管理
 
-本小节将以下列 SQL 语句创建的分区表为例，演示如何进行 Range 分区和 List 分区管理。
+本小节将以如下 SQL 语句创建的分区表为例，介绍如何进行 Range 分区和 List 分区管理。
 
 ```sql
 CREATE TABLE members (
@@ -791,7 +791,7 @@ ALTER TABLE members ADD PARTITION (PARTITION `p1990to2010` VALUES LESS THAN (201
 ALTER TABLE member_level ADD PARTITION (PARTITION l5_6 VALUES IN (5,6));
 ```
 
-对于 Range 分区，`ADD PARTITION` 只能在分区列表的最后添加新的分区。与在分区列表已有的分区相比，新分区的 `VALUES LESS THAN` 中定义的值必须更大。否则，执行改语句时将会出现报错。
+对于 Range 分区，`ADD PARTITION` 只能在分区列表的最后添加新的分区。与分区列表中已有的分区相比，你需要将新分区的 `VALUES LESS THAN` 定义为更大的值。否则，执行该语句时将会报错。
 
 ```sql
 ALTER TABLE members ADD PARTITION (PARTITION p1990 VALUES LESS THAN (2000));
@@ -839,7 +839,7 @@ ALTER TABLE member_level REORGANIZE PARTITION l1_2,l3,l4,l5,l6 INTO
  PARTITION lEven VALUES IN (2,4,6));
 ```
 
-通过重组分区（包括合并或拆分分区）， 你可以重新定义指定的分区，但无法修改分区表类型，例如，你无法将 List 类型修改为 Range 类型，或将 Range COLUMNS 类型修改为 Range 类型。
+重组分区（包括合并或拆分分区）只能修改分区定义，无法修改分区表类型。例如，无法将 List 类型修改为 Range 类型，或将 Range COLUMNS 类型修改为 Range 类型。
 
 在 Range 分区表中，你只能重组相邻的分区：
 
@@ -863,7 +863,7 @@ ALTER TABLE members REORGANIZE PARTITION p2000 INTO (PARTITION p2000 VALUES LESS
 ERROR 1526 (HY000): Table has no partition for value 2022
 ```
 
-对于 List 分区表，当修改分区定义中的数据集合时，新的数据集合必须包含该分区中现有的值，否则 TiDB 将返回报错。
+对于 List 分区表，当修改分区定义中的数据集合时，必须保证新的数据集合能覆盖该分区中现有的所有值，否则 TiDB 将返回报错。
 
 ```sql
 INSERT INTO member_level (id, level) values (313, 6);
