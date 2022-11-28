@@ -24,7 +24,7 @@ TiDB 版本：6.4.0-DMR
 - [TiFlash 静态加密](/encryption-at-rest.md#tiflash)支持国密算法 SM4。
 - 支持通过 SQL 语句立即对指定分区的 TiFlash 副本进行[物理数据整理 (Compaction)](/sql-statements/sql-statement-alter-table-compact.md)。
 - 支持[基于 AWS EBS snapshot 的集群备份和恢复](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.4/backup-to-aws-s3-by-snapshot)。
-- 支持在分库分表合并迁移场景中[标记下游表中的数据来自上游哪个分库、分表和数据源](/dm/dm-key-features.md#提取分库分表数据源信息写入合表)。
+- 支持在分库分表合并迁移场景中[标记下游表中的数据来自上游哪个分库、分表和数据源](/dm/dm-table-routing.md#提取分库分表数据源信息写入合表)。
 
 ## 新功能
 
@@ -74,7 +74,7 @@ TiDB 版本：6.4.0-DMR
 
     随着 Coprocessor Task 任务数增加，TiDB 将结合 TiKV 处理速度自动增加任务并发度（调整 [`tidb_distsql_scan_concurrency`](/system-variables.md#tidb_distsql_scan_concurrency)），减少 Coprocessor Task 任务排队，降低延迟。
 
-* 新增动态规划算法来决定表的连接顺序 [#18969](https://github.com/pingcap/tidb/issues/18969) @[winoros](https://github.com/winoros)
+* 新增动态规划算法来决定表的连接顺序 [#37825](https://github.com/pingcap/tidb/issues/37825) @[winoros](https://github.com/winoros)
 
     在之前的版本中，TiDB 采用贪心算法来决定表的连接顺序。在 v6.4.0 中，优化器引入了[动态规划算法](/join-reorder.md#join-reorder-动态规划算法实例)。相比贪心算法，动态规划算法会枚举更多可能的连接顺序，进而有机会发现更好的执行计划，提升部分场景下 SQL 执行效率。
 
@@ -226,7 +226,7 @@ TiDB 版本：6.4.0-DMR
 
     在上游分库分表合并到 TiDB 的场景，你可以在目标表中手动额外增加几个字段（扩展列），并在配置 DM 任务时，对这几个扩展列赋值。例如，当赋予上游分库分表的名称时，通过 DM 写入到下游的记录会包含上游分库分表的名称。在一些数据异常的场景，你可以通过该功能快速定位目标表的问题数据源信息，如该数据来自上游哪个分库，哪个分表。
 
-    更多信息，请参考[提取分库分表数据源信息写入合表](/dm/dm-key-features.md#提取分库分表数据源信息写入合表)。
+    更多信息，请参考[提取分库分表数据源信息写入合表](/dm/dm-table-routing.md#提取分库分表数据源信息写入合表)。
 
 * 优化 DM 的前置检查项，将部分必须通过项改为非必须通过项 [#7333](https://github.com/pingcap/tiflow/issues/7333) @[lichunzhu](https://github.com/lichunzhu)
 
@@ -385,8 +385,8 @@ TiDB 版本：6.4.0-DMR
     - 修复 [`tidb_constraint_check_in_place_pessimistic`](/system-variables.md#tidb_constraint_check_in_place_pessimistic-从-v630-版本开始引入) 可能影响内部事务问题，修改该变量作用域为 SESSION [#38766](https://github.com/pingcap/tidb/issues/38766) @[ekexium](https://github.com/ekexium)
     - 修复条件在某些场景下被错误下推至 projection 的问题 [#35623](https://github.com/pingcap/tidb/issues/35623) @[Reminiscent](https://github.com/Reminiscent)
     - 修复 `AND` 和 `OR` 条件的 `isNullRejected` 检查错误导致查询结果错误的问题 [#38304]( https://github.com/pingcap/tidb/issues/38304) @[Yisaer](https://github.com/Yisaer)
-    - 修复外连接消除时没有考虑 `GROUP_CONCAT` 内部的 `ORDER BY` 导致查询出错的问题 [#18216](https://github.com/pingcap/tidb/issues/18216) @[winoros](https://github.com/winoros) 
-    - 修复错误下推的条件被 Join Reorder 丢弃后导致查询结果错误的问题 [#38736](https://github.com/pingcap/tidb/issues/38736) @[winoros](https://github.com/winoros) 
+    - 修复外连接消除时没有考虑 `GROUP_CONCAT` 内部的 `ORDER BY` 导致查询出错的问题 [#18216](https://github.com/pingcap/tidb/issues/18216) @[winoros](https://github.com/winoros)
+    - 修复错误下推的条件被 Join Reorder 丢弃后导致查询结果错误的问题 [#38736](https://github.com/pingcap/tidb/issues/38736) @[winoros](https://github.com/winoros)
 
 + TiKV
 

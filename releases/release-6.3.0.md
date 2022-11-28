@@ -191,7 +191,7 @@ TiDB 版本：6.3.0-DMR
 
 * TiCDC 支持平滑升级 [#4757](https://github.com/pingcap/tiflow/issues/4757) @[overvenus](https://github.com/overvenus) @[3AceShowHand](https://github.com/3AceShowHand)
 
-    用户使用 [TiUP](/ticdc/deploy-ticdc.md#使用-tiup-滚动升级-ticdc-集群) (>=v1.11.0) 和 [TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.3/configure-a-tidb-cluster#配置-ticdc-平滑升级) (>=v1.3.8) 可以平滑滚动升级 TiCDC 集群。升级期间数据同步延时保持在 30 秒内，提高了稳定性，让 TiCDC 能更好地支持延时敏感型业务。
+    用户使用 [TiUP](/ticdc/deploy-ticdc.md#使用-tiup-升级-ticdc-集群) (>=v1.11.0) 和 [TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.3/configure-a-tidb-cluster#配置-ticdc-平滑升级) (>=v1.3.8) 可以平滑滚动升级 TiCDC 集群。升级期间数据同步延时保持在 30 秒内，提高了稳定性，让 TiCDC 能更好地支持延时敏感型业务。
 
 ## 兼容性变更
 
@@ -239,10 +239,10 @@ TiDB 版本：6.3.0-DMR
 | PD | [enable-diagnostic](/pd-configuration-file.md#enable-diagnostic-从-v630-版本开始引入) | 新增 | 控制是否开启诊断功能。默认值为 `false`。 |
 | TiFlash | [`dt_enable_read_thread`](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml) | 废弃 | 该参数从 v6.3.0 开始废弃，默认开启此功能且不能关闭。 |
 | DM | [`safe-mode-duration`](/dm/task-configuration-file-full.md#完整配置文件示例) | 新增 | 自动安全模式的持续时间。
-| TiCDC | [`enable-sync-point`](/ticdc/manage-ticdc.md#同步任务配置文件描述) | 新增 | 控制是否开启 sync point 功能。 |
-| TiCDC | [`sync-point-interval`](/ticdc/manage-ticdc.md#同步任务配置文件描述) | 新增 | 控制 sync point 功能对齐上下游 snapshot 的时间间隔。 |
-| TiCDC | [`sync-point-retention`](/ticdc/manage-ticdc.md#同步任务配置文件描述) | 新增 | sync point 功能在下游表中保存的数据的时长，超过这个时间的数据会被清理。 |
-| TiCDC | [`sink-uri.memory`](/ticdc/manage-ticdc.md#创建同步任务) | 废弃 | 废弃 `memory` 排序方式，不建议在任何情况下使用。可以通过 `unified` 排序方式替代。 |
+| TiCDC | [`enable-sync-point`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-配置文件说明) | 新增 | 控制是否开启 sync point 功能。 |
+| TiCDC | [`sync-point-interval`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-配置文件说明) | 新增 | 控制 sync point 功能对齐上下游 snapshot 的时间间隔。 |
+| TiCDC | [`sync-point-retention`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-配置文件说明) | 新增 | sync point 功能在下游表中保存的数据的时长，超过这个时间的数据会被清理。 |
+| TiCDC | [`sink-uri.memory`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-命令行参数) | 废弃 | 废弃 `memory` 排序方式，不建议在任何情况下使用。可以通过 `unified` 排序方式替代。 |
 
 ### 其他
 
