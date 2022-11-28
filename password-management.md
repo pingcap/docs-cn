@@ -85,11 +85,24 @@ SET GLOBAL validate_password.policy = LOW;
 SET GLOBAL validate_password.length = 10;
 ```
 
-设置密码中至少有 2 个数字：
+设置密码中至少含有 2 个数字，至少含有 1 个大写和小写字符，至少含有 1 个特殊字符：
 
 ```sql
 SET GLOBAL validate_password.number_count = 2;
+SET GLOBAL validate_password.mixed_case_count = 1;
+SET GLOBAL validate_password.special_char_count = 1;
 ```
+
+设置密码字典功能，要求密码中不允许包含 `mysql` 、`abcd`：
+
+```sql
+SET GLOBAL validate_password.dictionary = 'mysql;abcd';
+```
+
+> **注意：**
+>
+> - `validate_password.dictionary` 是一个长字符串，长度不超过 1024，字符串内容包含多个待匹配的单词，每个单词之间采用英文分号（`;`）分隔。
+> - 密码字典功能进行单词比较时，不区字符分大小写。
 
 ### 密码复杂度检查示例
 
