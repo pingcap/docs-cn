@@ -329,32 +329,57 @@ TiDB 支持限制账户持续尝试登录，防止用户密码被暴力破解。
 
 登录失败是指客户端在连接尝试期间未能提供正确的密码，不包括由于未知用户或网络问题等原因而导致的连接失败。
 
+> **注意：**
+>
+> - 只支持账户级别的密码连续错误限制登陆策略，不支持全局级别的策略。
+> - 对用户启用密码连续错误限制登陆策略后，将增加该用户登录时的检查步骤，此时会影响该用户登录相关操作的性能，尤其是高并发登录场景。
+
 ### 配置密码连续错误限制登录策略
 
-每个账户的登录失败次数和锁定时间是可配置的，你可以使用 `CREATE USER`、`ALTER USER` 语句的 `FAILED_LOGIN_ATTEMPTS` 和 `PASSWORD_LOCK_TIME` 选项。只有当 `FAILED_LOGIN_ATTEMPTS` 和 `PASSWORD_LOCK_TIME` 都不为 0 时，系统才会跟踪账户的失败登录次数并执行临时锁定。
+每个账户的登录失败次数和锁定时间是可配置的，你可以使用 `CREATE USER`、`ALTER USER` 语句的 `FAILED_LOGIN_ATTEMPTS` 和 `PASSWORD_LOCK_TIME` 选项。`FAILED_LOGIN_ATTEMPTS` 和 `PASSWORD_LOCK_TIME` 选项的可设置值如下：
 
-`FAILED_LOGIN_ATTEMPTS` 和 `PASSWORD_LOCK_TIME` 选项的可设置值如下：
+- `FAILED_LOGIN_ATTEMPTS`：N。表示连续登录失败 N 次后，执行账户临时锁定。N 取值范围为 0 到 32767 。
+- `PASSWORD_LOCK_TIME`：N | UNBOUNDED。N 表示登录失败后，账户将被临时锁定 N 天。UNBOUNDED 表明锁定时间无限期，账户必须被手动解锁。N 取值范围为 0 到 32767 。
 
-- `FAILED_LOGIN_ATTEMPTS`：N。表示连续登录失败 N 次后，执行账户临时锁定。
-- `PASSWORD_LOCK_TIME`：N | UNBOUNDED。N 表示登录失败后，账户将被临时锁定 N 天。UNBOUNDED 表明锁定时间无限期，账户必须被手动解锁。
+> **注意：**
+>
+> - 允许单条 SQL 命令只设置 `FAILED_LOGIN_ATTEMPTS` 或 `PASSWORD_LOCK_TIME` 中的一个选项，这时密码连续错误限制登录策略不会实质生效。
+> - 只有当账户的 `FAILED_LOGIN_ATTEMPTS` 和 `PASSWORD_LOCK_TIME` 都不为 0 时，系统才会跟踪该账户的失败登录次数并执行临时锁定。
 
 配置用户的密码连续错误限制登录策略示例如下：
 
-当用户密码连续错误 3 次时，临时锁定 3 天：
+新建一个用户，并配置密码连续错误限制登录策略，当该用户密码连续错误 3 次时，临时锁定 3 天：
 
 ```sql
 CREATE USER 'test1'@'localhost' IDENTIFIED BY 'password' FAILED_LOGIN_ATTEMPTS 3 PASSWORD_LOCK_TIME 3;
 ```
 
-当用户密码连续错误 4 次时，无限期锁定，直到账户被手动解锁：
+修改用户的密码连续错误限制登录策略，当该用户密码连续错误 4 次时，无限期锁定，直到账户被手动解锁：
 
 ```sql
 ALTER USER 'test2'@'localhost' FAILED_LOGIN_ATTEMPTS 4 PASSWORD_LOCK_TIME UNBOUNDED;
 ```
 
+关闭用户的密码连续错误限制登录策略：
+
+```sql
+ALTER USER 'test3'@'localhost' FAILED_LOGIN_ATTEMPTS 0 PASSWORD_LOCK_TIME 0;
+```
+
 ### 锁定账户解锁
+
+在以下场景将重置用户密码连续错误次数的计数：
+
+- 对该用户执行 `ALTER USER ... ACCOUNT UNLOCK` 解锁命令时。
+- 该用户登录成功时。
 
 当用户因密码连续多次错误触发账户锁定后，以下情况下可以解锁账户：
 
-- 锁定时间结束。
-- 执行 `ALTER USER ... ACCOUNT UNLOCK` 解锁用户。
+- 该用户锁定时间结束，这种情况下，用户的自动锁定标识将在下次登录尝试时重置。
+- 对该用户执行 `ALTER USER ... ACCOUNT UNLOCK` 解锁命令时。
+
+> **注意：**
+>
+> 当用户因密码连续失败次数达到设定值而自动锁定后，修改密码连续错误限制登录策略
+> - 修改该用户的登录失败次数 `FAILED_LOGIN_ATTEMPTS`，用户的锁定状态不会改变。修改后的登录失败次数，将在用户解锁后再次登陆尝试中出现密码连续错误时生效。
+> - 修改该用户的锁定时间 `PASSWORD_LOCK_TIME`，用户的锁定状态不会改变。修改后的用户锁定时间，将在账户再次登陆尝试时检查是否满足此时的锁定时间要求，锁定时间结束才会解锁该用户。
