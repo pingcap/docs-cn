@@ -57,9 +57,9 @@ SELECT app_name, country FROM t1;
 
 ## 限制
 
-* TiDB 对 SELECT 子句返回的结果集（即 INSERT 写入的事务）大小的硬性限制为 1 GiB，推荐的使用场景是 100 MiB 以下。
+* TiDB 对 SELECT 子句返回的结果集（即 INSERT 写入的事务）大小的可以通过设定 TiDB 控制事务大小的变量 `performance.txn-total-size-limit` 来进行，推荐的使用场景是 100 MiB 以下。
 
-    若 SELECT 返回结果大小超过了 1 GiB，那么整条语句将会被强制终止并返回 `The query produced a too large intermediate result and thus failed` 报错信息。
+    若 SELECT 返回结果大小超过了事务大小限制的阈值，那么整条语句将会被强制终止并返回错误信息（参见 `performance.txn-total-size-limit`）。
 
 * TiDB 对 `INSERT INTO SELECT` 语句的并发没有硬性限制，但是推荐考虑以下用法：
 
