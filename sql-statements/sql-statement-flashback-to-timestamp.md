@@ -7,9 +7,9 @@ summary: TiDB 数据库中 FLASHBACK CLUSTER TO TIMESTAMP 的使用概况。
 
 TiDB v6.4.0 引入了 `FLASHBACK CLUSTER TO TIMESTAMP` 语法，其功能是将集群的数据恢复到特定的时间点。
 
-> **警告：**
+> **说明：**
 >
-> - `FLASHBACK CLUSTER TO TIMESTAMP` 的原理是用最新的时间戳重写一份旧的数据，并不会直接删除数据，所以在使用前请确保集群有足够的存储空间。
+> `FLASHBACK CLUSTER TO TIMESTAMP` 的原理是用最新的时间戳重写一份旧的数据，并不会直接删除数据，所以在使用前请确保集群有足够的存储空间。
 
 ## 语法
 
