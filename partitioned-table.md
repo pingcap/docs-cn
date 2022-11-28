@@ -705,7 +705,12 @@ Empty set (0.00 sec)
 
 ## 分区管理
 
-对于 `LIST` 和 `RANGE` 分区表，通过 `ALTER TABLE <表名> ADD PARTITION (<分区说明>)` 或 `ALTER TABLE <表名> DROP PARTITION <分区列表>` 语句，可以执行添加和删除分区的操作。
+对于 `LIST` 和 `RANGE` 分区表，你可以进行以下分区管理操作：
+
+- 使用 `ALTER TABLE <表名> ADD PARTITION (<分区说明>)` 语句添加分区。
+- 使用 `ALTER TABLE <表名> DROP PARTITION <分区列表>` 删除分区。
+- 使用 `ALTER TABLE <表名> TRUNCATE PARTITION <分区列表>` 语句清空分区里的数据。`TRUNCATE PARTITION`的逻辑与 [`TRUNCATE TABLE`](/sql-statements/sql-statement-truncate.md) 相似，但它的操作对象是分区。
+- 使用`ALTER TABLE <表名> REORGANIZE PARTITION <分区列表> INTO (<新的分区说明>)`语句对分区进行合并、拆分、或者其他修改。
 
 对于 `LIST` 和 `RANGE` 分区表，暂不支持 `REORGANIZE PARTITION` 语句。
 
@@ -729,88 +734,154 @@ Empty set (0.00 sec)
 - TiCDC：分区表和非分区表都有主键或者唯一键时，TiCDC 同步 `EXCHANGE PARTITION` 操作；反之 TiCDC 将不会同步。
 - TiDB Lightning 和 BR：使用 TiDB Lightning 导入或使用 BR 恢复的过程中，不要执行 `EXCHANGE PARTITION` 操作。
 
-### Range 分区管理
+### Range 分区和 List 分区管理
 
-创建分区表：
-
-{{< copyable "sql" >}}
+本小节将以下列 SQL 语句创建的分区表为例，演示如何进行 Range 分区和 List 分区管理。
 
 ```sql
 CREATE TABLE members (
-    id INT,
-    fname VARCHAR(25),
-    lname VARCHAR(25),
-    dob DATE
+    id int,
+    fname varchar(255),
+    lname varchar(255),
+    dob date,
+    data json
 )
+PARTITION BY RANGE (YEAR(dob)) (
+ PARTITION pBefore1950 VALUES LESS THAN (1950),
+ PARTITION p1950 VALUES LESS THAN (1960),
+ PARTITION p1960 VALUES LESS THAN (1970),
+ PARTITION p1970 VALUES LESS THAN (1980),
+ PARTITION p1980 VALUES LESS THAN (1990),
+ PARTITION p1990 VALUES LESS THAN (2000));
 
-PARTITION BY RANGE( YEAR(dob) ) (
-    PARTITION p0 VALUES LESS THAN (1980),
-    PARTITION p1 VALUES LESS THAN (1990),
-    PARTITION p2 VALUES LESS THAN (2000)
-);
+CREATE TABLE member_level (
+ id int,
+ level int,
+ achievements json
+)
+PARTITION BY LIST (level) (
+ PARTITION l1 VALUES IN (1),
+ PARTITION l2 VALUES IN (2),
+ PARTITION l3 VALUES IN (3),
+ PARTITION l4 VALUES IN (4),
+ PARTITION l5 VALUES IN (5));
 ```
 
-删除分区：
-
-{{< copyable "sql" >}}
+### 删除分区
 
 ```sql
-ALTER TABLE members DROP PARTITION p2;
+ALTER TABLE members DROP PARTITION p1990;
+
+ALTER TABLE member_level DROP PARTITION l5;
 ```
 
-```
-Query OK, 0 rows affected (0.03 sec)
-```
-
-清空分区：
-
-{{< copyable "sql" >}}
+### 清空分区
 
 ```sql
-ALTER TABLE members TRUNCATE PARTITION p1;
+ALTER TABLE members TRUNCATE PARTITION p1980;
+
+ALTER TABLE member_level TRUNCATE PARTITION l4;
 ```
 
-```
-Query OK, 0 rows affected (0.03 sec)
-```
-
-> **注意：**
->
-> `ALTER TABLE ... REORGANIZE PARTITION` 在 TiDB 中暂不支持。
-
-添加分区：
-
-{{< copyable "sql" >}}
+### 添加分区
 
 ```sql
-ALTER TABLE members ADD PARTITION (PARTITION p3 VALUES LESS THAN (2010));
+ALTER TABLE members ADD PARTITION (PARTITION `p1990to2010` VALUES LESS THAN (2010));
+
+ALTER TABLE member_level ADD PARTITION (PARTITION l5_6 VALUES IN (5,6));
 ```
 
-Range 分区中，`ADD PARTITION` 只能在分区列表的最后面添加，如果是添加到已存在的分区范围则会报错：
-
-{{< copyable "sql" >}}
+对于 Range 分区，`ADD PARTITION` 只能在分区列表的最后添加新的分区。与在分区列表已有的分区相比，新分区的 `VALUES LESS THAN` 中定义的值必须更大。否则，执行改语句时将会出现报错。
 
 ```sql
-ALTER TABLE members
-    ADD PARTITION (
-    PARTITION n VALUES LESS THAN (1970));
+ALTER TABLE members ADD PARTITION (PARTITION p1990 VALUES LESS THAN (2000));
 ```
 
 ```
-ERROR 1463 (HY000): VALUES LESS THAN value must be strictly »
-   increasing for each partition
+ERROR 1493 (HY000): VALUES LESS THAN value must be strictly increasing for each partition
+```
+
+### 重组分区
+
+拆分分区：
+
+```sql
+ALTER TABLE members REORGANIZE PARTITION `p1990to2010` INTO
+(PARTITION p1990 VALUES LESS THAN (2000),
+ PARTITION p2000 VALUES LESS THAN (2010),
+ PARTITION p2010 VALUES LESS THAN (2020),
+ PARTITION p2020 VALUES LESS THAN (2030),
+ PARTITION pMax VALUES LESS THAN (MAXVALUE));
+
+ALTER TABLE member_level REORGANIZE PARTITION l5_6 INTO
+(PARTITION l5 VALUES IN (5),
+ PARTITION l6 VALUES IN (6));
+```
+
+合并分区：
+
+```sql
+ALTER TABLE members REORGANIZE PARTITION pBefore1950,p1950 INTO (PARTITION pBefore1960 VALUES LESS THAN (1960));
+
+ALTER TABLE member_level REORGANIZE PARTITION l1,l2 INTO (PARTITION l1_2 VALUES IN (1,2));
+```
+
+修改分区定义：
+
+```sql
+ALTER TABLE members REORGANIZE PARTITION pBefore1960,p1960,p1970,p1980,p1990,p2000,p2010,p2020,pMax INTO
+(PARTITION p1800 VALUES LESS THAN (1900),
+ PARTITION p1900 VALUES LESS THAN (2000),
+ PARTITION p2000 VALUES LESS THAN (2100));
+
+ALTER TABLE member_level REORGANIZE PARTITION l1_2,l3,l4,l5,l6 INTO
+(PARTITION lOdd VALUES IN (1,3,5),
+ PARTITION lEven VALUES IN (2,4,6));
+```
+
+通过重组分区（包括合并或拆分分区）， 你可以重新定义指定的分区，但无法修改分区表类型，例如，你无法将 List 类型修改为 Range 类型，或将 Range COLUMNS 类型修改为 Range 类型。
+
+在 Range 分区表中，你只能重组相邻的分区：
+
+```sql
+ALTER TABLE members REORGANIZE PARTITION p1800,p2000 INTO (PARTITION p2000 VALUES LESS THAN (2100));
+```
+
+```
+ERROR 8200 (HY000): Unsupported REORGANIZE PARTITION of RANGE; not adjacent partitions
+```
+
+对于 Range 分区表，当修改 Range 定义中的最大值时，必须保证 `VALUES LESS THAN` 中新定义的值大于现有分区中的所有值。否则，TiDB 返回报错，提示现有的行值对应不到分区。
+
+```sql
+INSERT INTO members VALUES (313, "John", "Doe", "2022-11-22", NULL);
+ALTER TABLE members REORGANIZE PARTITION p2000 INTO (PARTITION p2000 VALUES LESS THAN (2050)); -- 执行成功，因为 2050 包含了现有的所有行
+ALTER TABLE members REORGANIZE PARTITION p2000 INTO (PARTITION p2000 VALUES LESS THAN (2020)); -- 执行失败，因为 2022 将对应不到分区
+```
+
+```
+ERROR 1526 (HY000): Table has no partition for value 2022
+```
+
+对于 List 分区表，当修改分区定义中的数据集合时，新的数据集合必须包含该分区中现有的值，否则 TiDB 将返回报错。
+
+```sql
+INSERT INTO member_level (id, level) values (313, 6);
+ALTER TABLE member_level REORGANIZE PARTITION lEven INTO (PARTITION lEven VALUES IN (2,4));
+```
+
+```
+ERROR 1526 (HY000): Table has no partition for value 6
 ```
 
 ### Hash 分区管理
 
-跟 Range 分区不同，Hash 分区不能够 `DROP PARTITION`。
+跟 Range 分区不同，Hash 分区不支持 `DROP PARTITION`。
 
 目前 TiDB 的实现暂时不支持 `ALTER TABLE ... COALESCE PARTITION`。对于暂不支持的分区管理语句，TiDB 会返回错误。
 
-{{< copyable "sql" >}}
-
 ```sql
-alter table members optimize partition p0;
+ALTER TABLE MEMBERS OPTIMIZE PARTITION p0;
 ```
 
 ```sql
