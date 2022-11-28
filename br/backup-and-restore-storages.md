@@ -71,14 +71,14 @@ TiDB 支持 Amazon S3、Google Cloud Storage (GCS)、Azure Blob Storage 和 NFS 
 
 ```shell
 ./br backup full -u "${PD_IP}:2379" \
---storage "s3://external/backup-20220915?access_key=${access_key}&secret_access_key=${secret_access_key}"
+--storage "s3://external/backup-20220915?access-key=${access_key}&secret-access-key=${secret_access_key}"
 ```
 
 **从 Amazon S3 恢复快照备份数据**
 
 ```shell
 ./br restore full -u "${PD_IP}:2379" \
---storage "s3://external/backup-20220915?access_key=${access_key}&secret_access_key=${secret_access_key}"
+--storage "s3://external/backup-20220915?access-key=${access_key}&secret-access-key=${secret_access_key}"
 ```
 
 </div>
