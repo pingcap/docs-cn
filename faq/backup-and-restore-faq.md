@@ -167,13 +167,13 @@ BR 在 v6.0.0 之前不支持[放置规则](/placement-rules-in-sql.md)，在 v6
 
 要解决这类问题，可以尝试扩大集群资源，以及调小恢复时的并发度 (concurrency)，打开限速 (ratelimit) 设置。
 
-### 使用 br 命令行工具恢复备份数据时，工具会报错 `entry too large, the max entry size is 6291456, the size of data is 7690800`
+### 恢复备份数据时，BR 会报错 `entry too large, the max entry size is 6291456, the size of data is 7690800`
 
 你可以尝试降低并发批量建表的大小，将 `--ddl-batch-size` 设置为 `128` 或者更小的值。
 
-在 [`--ddl-batch-size`](/br/br-batch-create-table.md#使用方法) 的值大于 `1` 的情况下，使用 br 命令行工具恢复数据时，TiDB 会把执行创建表任务的 DDL job 队列写到 TiKV 上。由于 TiDB 能够一次性发送的 job message 的最大值默认为 `6 MB`（**不建议**修改此值，具体内容，参考 [txn-entry-size-limit](/tidb-configuration-file.md#txn-entry-size-limit-从-v50-版本开始引入) 和 [raft-entry-max-size](/tikv-configuration-file.md#raft-entry-max-size)），TiDB 单次发送的所有表的 schema 大小总和也不应该超过 6 MB。因此，如果你设置的 `--ddl-batch-size` 的值过大，TiDB 单次发送的批量表的 schema 大小就会超出规定值，从而导致 br 命令行工具报 `entry too large, the max entry size is 6291456, the size of data is 7690800` 错误。
+在 [`--ddl-batch-size`](/br/br-batch-create-table.md#使用方法) 的值大于 `1` 的情况下，使用 BR 恢复数据时，TiDB 会把执行创建表任务的 DDL job 队列写到 TiKV 上。由于 TiDB 能够一次性发送的 job message 的最大值默认为 `6 MB`（**不建议**修改此值，具体内容，参考 [txn-entry-size-limit](/tidb-configuration-file.md#txn-entry-size-limit-从-v50-版本开始引入) 和 [raft-entry-max-size](/tikv-configuration-file.md#raft-entry-max-size)），TiDB 单次发送的所有表的 schema 大小总和也不应该超过 6 MB。因此，如果你设置的 `--ddl-batch-size` 的值过大，TiDB 单次发送的批量表的 schema 大小就会超出规定值，从而导致 br 命令行工具报 `entry too large, the max entry size is 6291456, the size of data is 7690800` 错误。
 
-### 使用 local storage 的时候，br 命令行工具备份的文件会存在哪里？
+### 使用 local storage 的时候，备份的文件会存在哪里？
 
 > **注意：**
 >
