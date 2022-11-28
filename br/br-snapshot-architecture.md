@@ -5,7 +5,7 @@ summary: 了解 TiDB 快照备份与恢复功能的架构设计。
 
 # TiDB 快照备份与恢复功能架构
 
-本文以使用 br 命令行工具进行备份与恢复为例，介绍 TiDB 集群快照数据备份和恢复的架构设计与流程。
+本文以使用 BR 工具进行备份与恢复为例，介绍 TiDB 集群快照数据备份和恢复的架构设计与流程。
 
 ## 架构设计
 
@@ -21,10 +21,10 @@ summary: 了解 TiDB 快照备份与恢复功能的架构设计。
 
 完整的备份交互流程描述如下：
 
-1. br 命令行工具接收备份命令 `br backup full`。
+1. BR 接收备份命令 `br backup full`。
     * 获得备份快照点 (backup ts) 和备份存储地址。
 
-2. br 命令行工具调度备份数据。
+2. BR 调度备份数据。
     * **Pause GC**：配置 TiDB GC，防止要备份的数据被 [TiDB GC 机制](/garbage-collection-overview.md)回收。
     * **Fetch TiKV and Region info**：访问 PD，获取所有 TiKV 节点访问地址以及数据的 [Region](/tidb-storage.md#region) 分布信息。
     * **Request TiKV to back up data**：创建备份请求，发送给 TiKV 节点，备份请求包含 backup ts、需要备份的 region、备份存储地址。
@@ -36,12 +36,12 @@ summary: 了解 TiDB 快照备份与恢复功能的架构设计。
     * **Generate SST**：backup worker 将读取到的数据保存到 SST 文件，存储在内存中。
     * **Upload SST**：backup worker 上传 SST 文件到备份存储中。
 
-5. br 命令行工具从各个 TiKV 获取备份结果。
-    * 如果局部数据因为 Region 变动而备份失败，比如 TiKV 节点故障，br 工具将重试这些数据的备份。
+5. BR 从各个 TiKV 获取备份结果。
+    * 如果局部数据因为 Region 变动而备份失败，比如 TiKV 节点故障，BR 将重试这些数据的备份。
     * 如果任意数据被判断为不可重试的备份失败，则备份任务失败。
     * 全部数据备份成功后，则在最后完成元信息备份。
 
-6. br 命令行工具备份元信息。
+6. BR 备份元信息。
     * **Back up schemas**：备份 table schema，同时计算 table data checksum。
     * **Upload metadata**：生成 backup metadata，并上传到备份存储。backup metadata 包含 backup ts、表和对应的备份文件、data checksum 和 file checksum 等信息。
 
@@ -53,14 +53,14 @@ summary: 了解 TiDB 快照备份与恢复功能的架构设计。
 
 完整的恢复交互流程描述如下：
 
-1. br 命令行工具接收恢复命令 `br restore`。
+1. BR 接收恢复命令 `br restore`。
     * 获得快照备份数据存储地址、要恢复的 database 或 table。
     * 检查要恢复的 table 是否存在及是否符合要求。
 
-2. br 命令行工具调度恢复数据。
+2. BR 调度恢复数据。
     * **Pause Region schedule**：请求 PD 在恢复期间关闭自动 Region schedule。
     * **Restore schema**：读取备份数据的 schema、恢复的 database 和 table（注意新建表的 table ID 与备份数据可能不一样）。
-    * **Split & scatter Region**：br 命令行工具基于备份数据信息，请求 PD 分配 Region (split Region)，并调度 Region 均匀分布到存储节点上 (scatter Region)。每个 Region 都有明确的数据范围 [start key, end key)。
+    * **Split & scatter Region**：BR 基于备份数据信息，请求 PD 分配 Region (split Region)，并调度 Region 均匀分布到存储节点上 (scatter Region)。每个 Region 都有明确的数据范围 [start key, end key)。
     * **Request TiKV to restore data**：根据 PD 分配的 Region 结果，发送恢复请求到对应的 TiKV 节点，恢复请求包含要恢复的备份数据及 rewrite 规则。
 
 3. TiKV 接受恢复请求，初始化 restore worker。
@@ -72,8 +72,8 @@ summary: 了解 TiDB 快照备份与恢复功能的架构设计。
     * **Ingest SST**：restore worker 将处理好的 SST 文件 ingest 到 RocksDB 中。
     * **Report restore result**：restore worker 返回恢复结果给 BR。
 
-5. br 命令行工具从各个 TiKV 获取恢复结果。
-    * 如果局部数据恢复因为 `RegionNotFound` 或 `EpochNotMatch` 等原因失败，比如 TiKV 节点故障，br 工具重试恢复这些数据。
+5. BR 从各个 TiKV 获取恢复结果。
+    * 如果局部数据恢复因为 `RegionNotFound` 或 `EpochNotMatch` 等原因失败，比如 TiKV 节点故障，BR 重试恢复这些数据。
     * 如果存在备份数据不可重试的恢复失败，则恢复任务失败。
     * 全部备份都恢复成功后，则整个恢复任务成功。
 

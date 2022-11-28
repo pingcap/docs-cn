@@ -5,7 +5,7 @@ summary: 了解 TiDB 的日志备份与 PITR 的架构设计。
 
 # TiDB 日志备份与 PITR 功能架构
 
-本文以使用 br 命令行工具进行备份与恢复为例，介绍 TiDB 集群日志备份与 Point-in-time recovery (PITR) 的架构设计与流程。
+本文以使用 BR 工具进行备份与恢复为例，介绍 TiDB 集群日志备份与 Point-in-time recovery (PITR) 的架构设计与流程。
 
 ## 架构设计
 
@@ -29,7 +29,7 @@ summary: 了解 TiDB 的日志备份与 PITR 的架构设计。
 
 完整的备份交互流程描述如下：
 
-1. br 命令行工具接收备份命令 `br log start`。
+1. BR 接收备份命令 `br log start`。
    * 解析获取日志备份任务的 checkpoint ts（日志备份起始位置）、备份存储地址。
    * **Register log backup task**：在 PD 注册日志备份任务 (log backup task)。
 
@@ -57,19 +57,19 @@ PITR 的流程如下：
 
 完整的 PITR 交互流程描述如下：
 
-1. br 命令行工具接收恢复命令 `br restore point`。
+1. BR 接收恢复命令 `br restore point`。
    * 解析获取全量备份数据地址、日志备份数据地址、恢复到的时间点。
    * 查询备份数据中恢复数据对象（database 或 table），并检查要恢复的表是否存在并符合要求。
 
-2. br 命令行工具恢复全量备份。
+2. BR 恢复全量备份。
    * 进行快照备份数据恢复，恢复流程参考[恢复快照备份数据](/br/br-snapshot-architecture.md#恢复流程)。
 
-3. br 命令行工具恢复日志备份。
+3. BR 恢复日志备份。
    * **Read backup data**：读取日志备份数据，计算需要恢复的日志备份数据。
    * **Fetch Region info**：访问 PD，获取所有 Region 和 KV range 的对应关系。
    * **Request TiKV to restore data**：创建日志恢复请求，发送到对应的 TiKV，日志恢复请求包含要恢复的日志备份数据信息。
 
-4. TiKV 接受 br 工具的恢复请求，初始化 log restore worker。
+4. TiKV 接受 BR 的恢复请求，初始化 log restore worker。
    * log restore worker 获取需要恢复的日志备份数据。
 
 5. TiKV 恢复日志备份数据。
@@ -78,8 +78,8 @@ PITR 的流程如下：
    * **Apply KVs**：log restore worker 将处理好的 kv 通过 raft 接口写入 store (RocksDB) 中。
    * **Report restore result**：log restore worker 返回恢复结果给 BR。
 
-6. br 命令行工具从各个 TiKV 获取恢复结果。
-   * 如果局部数据恢复因为 `RegionNotFound` 或 `EpochNotMatch` 等原因失败，比如 TiKV 节点故障，br 命令行工具重试恢复这些数据。
+6. BR 从各个 TiKV 获取恢复结果。
+   * 如果局部数据恢复因为 `RegionNotFound` 或 `EpochNotMatch` 等原因失败，比如 TiKV 节点故障，BR 重试恢复这些数据。
    * 如果存在备份数据不可重试的恢复失败，则恢复任务失败。
    * 全部备份数据都恢复成功后，则恢复任务成功。
 
