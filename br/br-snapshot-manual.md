@@ -31,7 +31,7 @@ summary: 介绍备份与恢复 TiDB 集群快照的命令行。
 br backup full \
     --pd "${PD_IP}:2379" \
     --backupts '2022-09-08 13:30:00' \
-    --storage "s3://${backup_collection_addr}/snapshot-${date}?access_key=${access_key}&secret_access_key=${secret_access_key}" \
+    --storage "s3://${backup_collection_addr}/snapshot-${date}?access-key=${access-key}&secret-access-key=${secret-access-key}" \
     --ratelimit 128 \
     --log-file backupfull.log
 ```
@@ -62,7 +62,7 @@ br 工具支持只备份集群快照和增量数据中指定库或表的局部�
 br backup db \
     --pd "${PD_IP}:2379" \
     --db test \
-    --storage "s3://${backup_collection_addr}/snapshot-${date}?access_key=${access_key}&secret_access_key=${secret_access_key}" \
+    --storage "s3://${backup_collection_addr}/snapshot-${date}?access-key=${access-key}&secret-access-key=${secret-access-key}" \
     --ratelimit 128 \
     --log-file backuptable.log
 ```
@@ -80,7 +80,7 @@ br backup table \
     --pd "${PD_IP}:2379" \
     --db test \
     --table usertable \
-    --storage "s3://${backup_collection_addr}/snapshot-${date}?access_key=${access_key}&secret_access_key=${secret_access_key}" \
+    --storage "s3://${backup_collection_addr}/snapshot-${date}?access-key=${access-key}&secret-access-key=${secret-access-key}" \
     --ratelimit 128 \
     --log-file backuptable.log
 ```
@@ -97,7 +97,7 @@ br backup table \
 br backup full \
     --pd "${PD_IP}:2379" \
     --filter 'db*.tbl*' \
-    --storage "s3://${backup_collection_addr}/snapshot-${date}?access_key=${access_key}&secret_access_key=${secret_access_key}" \
+    --storage "s3://${backup_collection_addr}/snapshot-${date}?access-key=${access-key}&secret-access-key=${secret-access-key}" \
     --ratelimit 128 \
     --log-file backupfull.log
 ```
@@ -121,7 +121,7 @@ br 命令行工具支持在备份端，或备份到 Amazon S3 的时候在[存�
 ```shell
 br backup full\
     --pd ${PD_IP}:2379 \
-    --storage "s3://${backup_collection_addr}/snapshot-${date}?access_key=${access_key}&secret_access_key=${secret_access_key}" \
+    --storage "s3://${backup_collection_addr}/snapshot-${date}?access-key=${access-key}&secret-access-key=${secret-access-key}" \
     --crypter.method aes128-ctr \
     --crypter.key 0123456789abcdef0123456789abcdef
 ```
@@ -138,7 +138,7 @@ br backup full\
 ```shell
 br restore full \
     --pd "${PD_IP}:2379" \
-    --storage "s3://${backup_collection_addr}/snapshot-${date}?access_key=${access_key}&secret_access_key=${secret_access_key}" \
+    --storage "s3://${backup_collection_addr}/snapshot-${date}?access-key=${access-key}&secret-access-key=${secret-access-key}" \
     --ratelimit 128 \
     --log-file restorefull.log
 ```
@@ -169,7 +169,7 @@ br restore db \
     --pd "${PD_IP}:2379" \
     --db "test" \
     --ratelimit 128 \
-    --storage "s3://${backup_collection_addr}/snapshot-${date}?access_key=${access_key}&secret_access_key=${secret_access_key}" \
+    --storage "s3://${backup_collection_addr}/snapshot-${date}?access-key=${access-key}&secret-access-key=${secret-access-key}" \
     --log-file restore_db.log
 ```
 
@@ -191,7 +191,7 @@ br restore table \
     --db "test" \
     --table "usertable" \
     --ratelimit 128 \
-    --storage "s3://${backup_collection_addr}/snapshot-${date}?access_key=${access_key}&secret_access_key=${secret_access_key}" \
+    --storage "s3://${backup_collection_addr}/snapshot-${date}?access-key=${access-key}&secret-access-key=${secret-access-key}" \
     --log-file restore_table.log
 ```
 
@@ -207,7 +207,7 @@ br restore table \
 br restore full \
     --pd "${PD_IP}:2379" \
     --filter 'db*.tbl*' \
-    --storage "s3://${backup_collection_addr}/snapshot-${date}?access_key=${access_key}&secret_access_key=${secret_access_key}" \
+    --storage "s3://${backup_collection_addr}/snapshot-${date}?access-key=${access-key}&secret-access-key=${secret-access-key}" \
     --log-file restorefull.log
 ```
 
@@ -222,7 +222,7 @@ br restore full \
 ```shell
 br restore full\
     --pd "${PD_IP}:2379" \
-    --storage "s3://${backup_collection_addr}/snapshot-${date}?access_key=${access_key}&secret_access_key=${secret_access_key}" \
+    --storage "s3://${backup_collection_addr}/snapshot-${date}?access-key=${access-key}&secret-access-key=${secret-access-key}" \
     --crypter.method aes128-ctr \
     --crypter.key 0123456789abcdef0123456789abcdef
 ```
