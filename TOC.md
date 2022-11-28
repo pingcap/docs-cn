@@ -510,6 +510,7 @@
         - [同步数据到 Kafka](/ticdc/ticdc-sink-to-kafka.md)
       - [管理 Changefeed](/ticdc/ticdc-manage-changefeed.md)
       - [日志过滤器](/ticdc/ticdc-filter.md)
+      - [双向复制](/ticdc/ticdc-bidirectional-replication.md)
     - 监控告警
       - [监控指标](/ticdc/monitor-ticdc.md)
       - [报警规则](/ticdc/ticdc-alert-rules.md)
