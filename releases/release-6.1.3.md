@@ -28,7 +28,7 @@ TiDB 版本：6.1.3
 
     <!--executor owner: zanmato1984-->
 
-    <!--planner owner: chrysan-->
+    <!--planner owner: qw4990-->
 
     <!--transaction owner:cfzjywxk -->
 
@@ -42,7 +42,7 @@ TiDB 版本：6.1.3
 
 + TiKV
 
-    <!--owner: busyjay-->
+    <!--owner: tonyxuqqi-->
 
     - (dup) 修复获取 Snapshot 时 Lease 过期引发的异常竞争问题  [#13553](https://github.com/tikv/tikv/issues/13553) @[SpadeA-Tang](https://github.com/SpadeA-Tang)
 
@@ -56,7 +56,7 @@ TiDB 版本：6.1.3
     <!--storage owner: flowbehappy -->
 
     - Fix too many column files under heavy write pressure. [#6361](https://github.com/pingcap/tiflash/issues/6361) @[lidezhu](https://github.com/lidezhu)
-    - Fix the problem that column files in delta layer cannot be compacted after restart tiflash [#6159] @[lidezhu](https://github.com/lidezhu)
+    - Fix the problem that column files in delta layer cannot be compacted after restart tiflash [#6159](https://github.com/pingcap/tiflash/issues/6159) @[lidezhu](https://github.com/lidezhu)
 
 + Tools
 
