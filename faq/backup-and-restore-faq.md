@@ -185,7 +185,7 @@ BR 在 v6.0.0 之前不支持[放置规则](/placement-rules-in-sql.md)，在 v6
 
 在恢复的时候，每个节点都必须能够访问到**所有**的备份文件 (SST files)。默认情况下，假如使用 local storage，备份文件会分散在各个节点中，此时是无法直接恢复的，必须将每个 TiKV 节点的备份文件拷贝到其它所有 TiKV 节点才能恢复。 所以**建议使用 S3/GCS/Azure Blob Storage/NFS 作为备份存储**。
 
-### br 命令行工具遇到 Permission denied 或者 No such file or directory 错误，即使用 root 运行 br 命令行工具也无法解决，该如何处理？
+### 遇到 Permission denied 或者 No such file or directory 错误，即使用 root 运行 br 命令行工具也无法解决，该如何处理？
 
 需要确认 TiKV 是否有访问备份目录的权限。如果是备份，确认是否有写权限；如果是恢复，确认是否有读权限。
 
@@ -285,7 +285,7 @@ br restore full -f '*.*' -f '!mysql.*' -f 'mysql.usertable' -s $external_storage
 在上面的命令中，
 
 - `-f '*.*'` 用于覆盖掉默认的规则。
-- `-f '!mysql.*'` 指示 br 命令行工具不要恢复 `mysql` 中的表，除非另有指定。
+- `-f '!mysql.*'` 指示 BR 不要恢复 `mysql` 中的表，除非另有指定。
 - `-f 'mysql.usertable'` 则指定需要恢复 `mysql.usertable`。
 
 如果只需要恢复 `mysql.usertable`，而无需恢复其他表，可以使用以下命令：
@@ -296,7 +296,7 @@ br restore full -f '*.*' -f '!mysql.*' -f 'mysql.usertable' -s $external_storage
 br restore full -f 'mysql.usertable' -s $external_storage_url --with-sys-table
 ```
 
-此外请注意，即使设置了 [table filter](/table-filter.md#表库过滤语法) ，**br 命令行工具也不会恢复以下系统表**：
+此外请注意，即使设置了 [table filter](/table-filter.md#表库过滤语法) ，**BR 也不会恢复以下系统表**：
 
 - 统计信息表（`mysql.stat_*`）
 - 系统变量表（`mysql.tidb`、`mysql.global_variables`）
@@ -310,15 +310,15 @@ br restore full -f 'mysql.usertable' -s $external_storage_url --with-sys-table
 
 但是假如想要从本地恢复数据，因为每个 TiKV 都必须要能访问到所有备份文件，在最终恢复的时候会有等同于恢复时 TiKV 节点数量的副本。
 
-### br 命令行工具备份恢复后，为什么监控显示磁盘使用空间不一致？
+### BR 备份恢复后，为什么监控显示磁盘使用空间不一致？
 
 这个情况多数是因为备份时集群的数据压缩比率和恢复时的默认值不一致导致的，只要恢复的 checksum 阶段顺利通过，可以忽略这个问题，不影响正常使用。
 
-### br 命令行工具恢复存档后是否需要对表执行 `ANALYZE` 以更新 TiDB 在表和索引上留下的统计信息？
+### 使用 BR 恢复数据后是否需要对表执行 `ANALYZE` 以更新 TiDB 在表和索引上留下的统计信息？
 
-br 命令行工具不会备份统计信息（v4.0.9 除外）。所以在恢复存档后需要手动执行 `ANALYZE TABLE` 或等待 TiDB 自动进行 `ANALYZE`。
+BR 不会备份统计信息（v4.0.9 除外）。所以在恢复存档后需要手动执行 `ANALYZE TABLE` 或等待 TiDB 自动进行 `ANALYZE`。
 
-`br` v4.0.9 备份统计信息使 br 工具消耗过多内存，为保证备份过程正常，从 v4.0.10 开始默认关闭备份统计信息的功能。
+BR v4.0.9 备份统计信息使 br 工具消耗过多内存，为保证备份过程正常，从 v4.0.10 开始默认关闭备份统计信息的功能。
 
 如果不对表执行 `ANALYZE`，TiDB 会因统计信息不准确而选不中最优化的执行计划。如果查询性能不是重点关注项，可以忽略 `ANALYZE`。
 
@@ -326,10 +326,10 @@ br 命令行工具不会备份统计信息（v4.0.9 除外）。所以在恢复�
 
 **强烈不建议**在单个集群中同时使用多个 br 工具进程进行恢复，原因如下：
 
-- br 命令行工具在恢复数据时，会修改 PD 的一些全局配置。如果同时使用多个 br 工具进程进行恢复，这些配置可能会被错误地覆写，导致集群状态异常。
-- 因为 br 工具在恢复数据的时候会占用大量集群资源，事实上并行恢复能获得的速度提升也非常有限。
+- BR 在恢复数据时，会修改 PD 的一些全局配置。如果同时使用多个 BR 命令进行恢复，这些配置可能会被错误地覆写，导致集群状态异常。
+- 因为 BR 在恢复数据的时候会占用大量集群资源，事实上并行恢复能获得的速度提升也非常有限。
 - 多个 br 工具并行恢复的场景没有经过测试，无法保证成功。
 
-### br 命令行工具会备份表的 `SHARD_ROW_ID_BITS` 和 `PRE_SPLIT_REGIONS` 信息吗？恢复出来的表会有多个 Region 吗？
+### BR 会备份表的 `SHARD_ROW_ID_BITS` 和 `PRE_SPLIT_REGIONS` 信息吗？恢复出来的表会有多个 Region 吗？
 
-会，br 命令行工具会备份表的 [`SHARD_ROW_ID_BITS` 和 `PRE_SPLIT_REGIONS`](/sql-statements/sql-statement-split-region.md#pre_split_regions) 信息，并恢复成多个 Region。
+会，BR 会备份表的 [`SHARD_ROW_ID_BITS` 和 `PRE_SPLIT_REGIONS`](/sql-statements/sql-statement-split-region.md#pre_split_regions) 信息，并恢复成多个 Region。
