@@ -5,12 +5,93 @@ aliases: ['/docs-cn/dev/security-compatibility-with-mysql/','/docs-cn/dev/refere
 
 # 与 MySQL 安全特性差异
 
-除以下功能外，TiDB 支持与 MySQL 5.7 类似的安全特性。
+TiDB 高度兼容 MySQL 5.7 协议、MySQL 5.7 常用的功能及语法。但 TiDB 尚未支持一些 MySQL 安全功能，可能的原因如下：
+
+- 目前对这些功能的需求度不高。
+- 一些功能在分布式系统上的实现难度较大。
+
+## 不支持的安全功能特性
 
 - 不支持列级别权限设置。
-- 不支持密码过期，最后一次密码变更记录以及密码生存期。[#9709](https://github.com/pingcap/tidb/issues/9709)
 - 不支持权限属性 `max_questions`，`max_updated` 以及 `max_user_connections`。
-- 不支持密码验证。[#9741](https://github.com/pingcap/tidb/issues/9741)
+- 密码修改验证策略，修改密码时需要验证当前密码。
+- 双密码策略。
+- 随机密码生成策略。
+- 多因素身份验证。
+
+## 与 MySQL 有差异的安全特性详细说明
+
+### 密码过期策略
+
+针对密码过期策略功能，TiDB 与 MySQL 的比较如下：
+
+- MySQL 5.7 和 8.0 支持密码过期策略管理功能。
+- TiDB 在 v6.4.0 支持密码过期策略管理功能。
+
+TiDB 的密码过期策略功能与 MySQL 保持一致，但是在密码过期处理机制上存在差异，差异点详细说明如下：
+
+- MySQL 5.7 和 8.0 在密码过期后是否将客户端的连接限制为“沙盒模式”，由客户端和服务端设置的组合确定。
+- TiDB 在密码过期后是否将客户端的连接限制为“沙盒模式”，仅由服务端的系统变量 `disconnect_on_expired_password` 确定。
+
+### 密码复杂度策略
+
+针对密码复杂度策略功能，TiDB 与 MySQL 的比较如下：
+
+- MySQL 5.7 以 validate_password 插件的形式实现了密码复杂度策略管理功能。
+- MySQL 8.0 重新以 validate_password 组件的形式实现了密码复杂度策略管理功能。
+- TiDB 在 v6.4.0 内置实现了密码复杂度策略管理功能。
+
+因此功能实现上存在差异，这些差异点详细说明如下：
+
+- 密码复杂度策略功能如何启用：
+
+    + MySQL 5.7 以 validate_password 插件的形式实现，需要进行插件的安装以启用密码复杂度策略管理。
+    + MySQL 8.0 以 validate_password 组件的形式实现，需要进行组件的安装以启用密码复杂度策略管理。
+    + TiDB 内置实现了密码复杂度策略管理，通过系统变量 `validate_password.enable` 启用密码复杂度策略管理。
+
+- 密码字典功能：
+
+    + MySQL 5.7 通过变量 `validate_password_dictionary_file ` 指定一个文件路径，在文件中写入密码中不允许包含的单词。
+    + MySQL 8.0 通过变量 `validate_password.dictionary_file ` 指定一个文件路径，在文件中写入密码中不允许包含的单词。
+    + TiDB 通过变量 `validate_password.dictionary ` 指定一个字符串，再字符串中写入密码中不允许包含的单词。
+
+### 密码连续错误限制登录策略
+
+针对密码过期策略功能，TiDB 与 MySQL 的比较如下：
+
+- MySQL 5.7 不支持密码连续错误限制登录策略管理功能。
+- MySQL 8.0 支持密码连续错误限制登录策略管理功能。
+- TiDB 在 v6.4.0 支持密码连续错误限制登录策略管理功能。
+
+因为账户的失败尝试次数和锁定状态需要做到全局一致，而 TiDB 是分布式数据库，不能像 MySQL 在服务端的内存中记录失败尝试次数和锁定状态，所以实现机制存在差异，差异点详细说明如下：
+
+- 账户未被锁定，失败尝试次数的计数重置场景：
+
+    + MySQL 8.0 ：
+
+        - 服务器重启时，所有账户失败尝试次数的计数都会被重置。
+        - 执行 `FLUSH PRIVILEGES` 时，所有账户失败尝试次数的计数都会被重置。
+        - 对该账户执行 `ALTER USER ... ACCOUNT UNLOCK` 解锁命令时。
+        - 该账户登录成功时。
+
+    + TiDB ：
+
+        - 对该账户执行 `ALTER USER ... ACCOUNT UNLOCK` 解锁命令时。
+        - 该账户登录成功时。
+
+- 账户被自动锁定后的解锁场景：
+
+    + MySQL 8.0 ：
+
+        - 服务器重启时，所有账户的自动锁定标识都会被重置。
+        - 执行 `FLUSH PRIVILEGES` 时，所有账户的自动锁定标识都会被重置。
+        - 该账户锁定时间结束，这种情况下，账户的自动锁定标识将在下次登录尝试时重置。
+        - 对该账户执行 `ALTER USER ... ACCOUNT UNLOCK` 解锁命令时。
+
+    + TiDB ：
+
+        - 该账户锁定时间结束，这种情况下，账户的自动锁定标识将在下次登录尝试时重置。
+        - 对该账户执行 `ALTER USER ... ACCOUNT UNLOCK` 解锁命令时。
 
 ## 可用的身份验证插件
 
