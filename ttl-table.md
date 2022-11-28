@@ -37,7 +37,7 @@ CREATE TABLE t1 (
 
 如果 `TTL_ENABLE` 被设置成了 `OFF`，则即使设置了其他 TTL 选项，当前表也不会自动清理过期数据。在缺省条件下，`TTL_ENABLE` 被默认设置为 `ON`。
 
-为了与 Mysql 兼容，TTL 也支持注释语法，比如对于上述语句也可以写作：
+为了与 MySQL 兼容，TTL 也支持注释语法，比如对于上述语句也可以写作：
 
 ```sql
 CREATE TABLE t1 (
@@ -72,7 +72,7 @@ ALTER TABLE t1 REMOVE TTL;
 
 ## TTL 任务
 
-对于每张设置了 TTL 属性的表，TiDB 内部会定期调度后台任务来清理过期的数据。可以通过设置全局变量 `tidb_ttl_job_run_interval` 来自定义任务的执行周期，比如下面的例子里后台清理任务被设置为每 24 小时执行一次：
+对于每张设置了 TTL 属性的表，TiDB 内部会定期调度后台任务来清理过期的数据。你可以通过设置全局变量 [`tidb_ttl_job_run_interval`](/system-variables.md#tidb_ttl_job_run_interval-从-v650-版本开始引入) 来自定义任务的执行周期，比如下面的例子里后台清理任务被设置为每 24 小时执行一次：
 
 ```
 SET @@global.tidb_ttl_job_run_interval = '24h';
