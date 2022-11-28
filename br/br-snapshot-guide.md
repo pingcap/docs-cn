@@ -22,7 +22,7 @@ aliases: ['/zh/tidb/dev/br-usage-backup/','/zh/tidb/dev/br-usage-restore/','/zh/
 ```shell
 tiup br backup full --pd "${PD_IP}:2379" \
     --backupts '2022-09-08 13:30:00' \
-    --storage "s3://backup-101/snapshot-202209081330?access_key=${access_key}&secret_access_key=${secret_access_key}" \
+    --storage "s3://backup-101/snapshot-202209081330?access-key=${access-key}&secret-access-key=${secret-access-key}" \
     --ratelimit 128 \
 ```
 
@@ -46,7 +46,7 @@ Checksum <----------------------------------------------------------------------
 
 ```shell
 tiup br validate decode --field="end-version" \
---storage "s3://backup-101/snapshot-202209081330?access_key=${access_key}&secret_access_key=${secret_access_key}" | tail -n1
+--storage "s3://backup-101/snapshot-202209081330?access-key=${access-key}&secret-access-key=${secret-access-key}" | tail -n1
 ```
 
 结果输出如下，对应物理时间 `2022-09-08 13:30:00 +0800 CST`：
@@ -63,7 +63,7 @@ tiup br validate decode --field="end-version" \
 
 ```shell
 tiup br restore full --pd "${PD_IP}:2379" \
---storage "s3://backup-101/snapshot-202209081330?access_key=${access_key}&secret_access_key=${secret_access_key}"
+--storage "s3://backup-101/snapshot-202209081330?access-key=${access-key}&secret-access-key=${secret-access-key}"
 ```
 
 在恢复快照备份数据过程中，终端会显示恢复进度条。在完成恢复后，会输出恢复耗时、速度、恢复数据大小等信息。
@@ -84,7 +84,7 @@ br 命令行工具支持只恢复备份数据中指定库、表的部分数据�
 ```shell
 tiup br restore db --pd "${PD_IP}:2379" \
 --db "test" \
---storage "s3://backup-101/snapshot-202209081330?access_key=${access_key}&secret_access_key=${secret_access_key}"
+--storage "s3://backup-101/snapshot-202209081330?access-key=${access-key}&secret-access-key=${secret-access-key}"
 ```
 
 以上命令中 `--db` 选项指定了需要恢复的数据库名。
@@ -97,7 +97,7 @@ tiup br restore db --pd "${PD_IP}:2379" \
 tiup br restore table --pd "${PD_IP}:2379" \
 --db "test" \
 --table "usertable" \
---storage "s3://backup-101/snapshot-202209081330?access_key=${access_key}&secret_access_key=${secret_access_key}"
+--storage "s3://backup-101/snapshot-202209081330?access-key=${access-key}&secret-access-key=${secret-access-key}"
 ```
 
 以上命令中 `--db` 选项指定了需要恢复的数据库名，`--table` 选项指定了需要恢复的表名。
@@ -109,7 +109,7 @@ tiup br restore table --pd "${PD_IP}:2379" \
 ```shell
 tiup br restore full --pd "${PD_IP}:2379" \
 --filter 'db*.tbl*' \
---storage "s3://backup-101/snapshot-202209081330?access_key=${access_key}&secret_access_key=${secret_access_key}"
+--storage "s3://backup-101/snapshot-202209081330?access-key=${access-key}&secret-access-key=${secret-access-key}"
 ```
 
 ### 恢复 `mysql` 数据库下的表
