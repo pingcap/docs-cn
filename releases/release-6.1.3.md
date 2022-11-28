@@ -36,13 +36,13 @@ TiDB 版本：6.1.3
 
 - PD
 
-    <!--executor owner: nolouch -->
+    <!--owner: nolouch -->
 
     - (dup) 修复 Stream 超时问题，提高 Leader 切换的速度 [#5207](https://github.com/tikv/pd/issues/5207) @[CabinfeverB](https://github.com/CabinfeverB)
 
 + TiKV
 
-    <!--tikv owner: busyjay-->
+    <!--owner: busyjay-->
 
     - (dup) 修复获取 Snapshot 时 Lease 过期引发的异常竞争问题  [#13553](https://github.com/tikv/tikv/issues/13553) @[SpadeA-Tang](https://github.com/SpadeA-Tang)
 
