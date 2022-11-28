@@ -839,40 +839,42 @@ ALTER TABLE member_level REORGANIZE PARTITION l1_2,l3,l4,l5,l6 INTO
  PARTITION lEven VALUES IN (2,4,6));
 ```
 
-重组分区（包括合并或拆分分区）只能修改分区定义，无法修改分区表类型。例如，无法将 List 类型修改为 Range 类型，或将 Range COLUMNS 类型修改为 Range 类型。
+在重组分区时，需要注意以下关键点：
 
-在 Range 分区表中，你只能重组相邻的分区：
+- 重组分区（包括合并或拆分分区）只能修改分区定义，无法修改分区表类型。例如，无法将 List 类型修改为 Range 类型，或将 Range COLUMNS 类型修改为 Range 类型。
 
-```sql
-ALTER TABLE members REORGANIZE PARTITION p1800,p2000 INTO (PARTITION p2000 VALUES LESS THAN (2100));
-```
+- 对于 Range 分区表，你只能重组表中相邻的分区：
 
-```
-ERROR 8200 (HY000): Unsupported REORGANIZE PARTITION of RANGE; not adjacent partitions
-```
+    ```sql
+    ALTER TABLE members REORGANIZE PARTITION p1800,p2000 INTO (PARTITION p2000 VALUES LESS THAN (2100));
+    ```
 
-对于 Range 分区表，当修改 Range 定义中的最大值时，必须保证 `VALUES LESS THAN` 中新定义的值大于现有分区中的所有值。否则，TiDB 返回报错，提示现有的行值对应不到分区。
+    ```
+    ERROR 8200 (HY000): Unsupported REORGANIZE PARTITION of RANGE; not adjacent partitions
+    ```
 
-```sql
-INSERT INTO members VALUES (313, "John", "Doe", "2022-11-22", NULL);
-ALTER TABLE members REORGANIZE PARTITION p2000 INTO (PARTITION p2000 VALUES LESS THAN (2050)); -- 执行成功，因为 2050 包含了现有的所有行
-ALTER TABLE members REORGANIZE PARTITION p2000 INTO (PARTITION p2000 VALUES LESS THAN (2020)); -- 执行失败，因为 2022 将对应不到分区
-```
+- 对于 Range 分区表，当修改 Range 定义中的最大值时，必须保证 `VALUES LESS THAN` 中新定义的值大于现有分区中的所有值。否则，TiDB 将返回报错，提示现有的行值对应不到分区。
 
-```
-ERROR 1526 (HY000): Table has no partition for value 2022
-```
+    ```sql
+    INSERT INTO members VALUES (313, "John", "Doe", "2022-11-22", NULL);
+    ALTER TABLE members REORGANIZE PARTITION p2000 INTO (PARTITION p2000 VALUES LESS THAN (2050)); -- 执行成功，因为 2050 包含了现有的所有行
+    ALTER TABLE members REORGANIZE PARTITION p2000 INTO (PARTITION p2000 VALUES LESS THAN (2020)); -- 执行失败，因为 2022 将对应不到分区
+    ```
 
-对于 List 分区表，当修改分区定义中的数据集合时，必须保证新的数据集合能覆盖该分区中现有的所有值，否则 TiDB 将返回报错。
+    ```
+    ERROR 1526 (HY000): Table has no partition for value 2022
+    ```
 
-```sql
-INSERT INTO member_level (id, level) values (313, 6);
-ALTER TABLE member_level REORGANIZE PARTITION lEven INTO (PARTITION lEven VALUES IN (2,4));
-```
+- 对于 List 分区表，当修改分区定义中的数据集合时，必须保证新的数据集合能覆盖到该分区中现有的所有值，否则 TiDB 将返回报错。
 
-```
-ERROR 1526 (HY000): Table has no partition for value 6
-```
+    ```sql
+    INSERT INTO member_level (id, level) values (313, 6);
+    ALTER TABLE member_level REORGANIZE PARTITION lEven INTO (PARTITION lEven VALUES IN (2,4));
+    ```
+
+    ```
+    ERROR 1526 (HY000): Table has no partition for value 6
+    ```
 
 ### Hash 分区管理
 
