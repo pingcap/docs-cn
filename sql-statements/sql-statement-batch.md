@@ -22,7 +22,8 @@ BATCH ON test.t2.id LIMIT 1 INSERT INTO t SELECT t2.id, t2.v, t3.v FROM t2 JOIN 
 上面这条语句的拆分列用 `test.t2.id` 指明，不具有歧义。如果写成如下形式，则会报错：
 
 ```sql
-BATCH ON id LIMIT 1 INSERT INTO t SELECT t2.id, t2.v, t3.v FROM t2 JOIN t3 ON t2.id=t3.id"
+BATCH ON id LIMIT 1 INSERT INTO t SELECT t2.id, t2.v, t3.v FROM t2 JOIN t3 ON t2.id=t3.id;
+
 Non-transactional DML, shard column must be fully specified
 ```
 

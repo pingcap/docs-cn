@@ -41,12 +41,12 @@ summary: 以事务的原子性和隔离性为代价，将 DML 语句拆成多个
     - 拆分列也不应该用于 Join key。例如，下面示例将拆分列 `test.t.id` 作为 Join key，导致一个非事务 `UPDATE` 语句多次更新同一行：
 
     ```sql
-    create table t(id int, v int, key(id))
-    create table t2(id int, v int, key(id))
-    insert into t values (1, 1), (2, 2), (3, 3)
-    insert into t2 values (1, 1), (2, 2), (4, 4)
-    batch on test.t.id limit 1 update t join t2 on t.id=t2.id set t2.id = t2.id+1
-    select * from t2 -- (4, 1) (4, 2) (4, 4)
+    create table t(id int, v int, key(id));
+    create table t2(id int, v int, key(id));
+    insert into t values (1, 1), (2, 2), (3, 3);
+    insert into t2 values (1, 1), (2, 2), (4, 4);
+    batch on test.t.id limit 1 update t join t2 on t.id=t2.id set t2.id = t2.id+1;
+    select * from t2; -- (4, 1) (4, 2) (4, 4)
     ```
 
 - 确认该语句满足[使用限制](#使用限制)。
