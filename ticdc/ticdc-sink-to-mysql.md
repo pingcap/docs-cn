@@ -64,7 +64,7 @@ URI 中可配置的参数如下：
 
 ```shell
 $ echo -n '123456' | base64
-MTIzNDU2
+MTIzNDU2   # 加密后的密码
 ```
 
 > **注意：**
