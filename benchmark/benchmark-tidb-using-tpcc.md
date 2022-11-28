@@ -39,6 +39,8 @@ tiup install bench
 
 For detailed usage of the TiUP Bench component, see [TiUP Bench](/tiup/tiup-bench.md).
 
+Assume that you have deployed a TiDB cluster with two TiDB servers located at 172.16.5.140 and 172.16.5.141, and both servers are listening on port 4000. You can run a TPC-C test with the following steps.
+
 ## Load data
 
 **Loading data is usually the most time-consuming and problematic stage of the entire TPC-C test.** This section provides the following command to load data.
@@ -48,7 +50,7 @@ Execute the following TiUP command in Shell:
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup bench tpcc -H 172.16.5.140 -P 4000 -D tpcc --warehouses 1000 prepare
+tiup bench tpcc -H 172.16.5.140,172.16.5.141 -P 4000 -D tpcc --warehouses 1000 --threads 20 prepare
 ```
 
 Based on different machine configurations, this loading process might take a few hours. If the cluster size is small, you can use a smaller `WAREHOUSE` value for the test.
@@ -62,7 +64,7 @@ Execute the following command to run the test:
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup bench tpcc -H 172.16.5.140 -P 4000 -D tpcc --warehouses 1000 run
+tiup bench tpcc -H 172.16.5.140,172.16.5.141 -P 4000 -D tpcc --warehouses 1000 --threads 100 --time 10m run
 ```
 
 During the test, test results are continuously printed on the console:
