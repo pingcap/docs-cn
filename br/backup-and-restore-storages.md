@@ -88,14 +88,14 @@ TiDB 支持 Amazon S3、Google Cloud Storage (GCS)、Azure Blob Storage 和 NFS 
 
 ```shell
 ./br backup full --pd "${PD_IP}:2379" \
---storage 'gcs://external/backup-20220915?credentials-file=${credentials-file-path}'
+--storage "gcs://external/backup-20220915?credentials-file=${credentials_file_path}"
 ```
 
 **从 GCS 恢复快照备份数据**
 
 ```shell
 ./br restore full --pd "${PD_IP}:2379" \
---storage 'gcs://external/backup-20220915?credentials-file=${credentials-file-path}'
+--storage "gcs://external/backup-20220915?credentials-file=${credentials_file_path}"
 ```
 
 </div>
@@ -105,14 +105,14 @@ TiDB 支持 Amazon S3、Google Cloud Storage (GCS)、Azure Blob Storage 和 NFS 
 
 ```shell
 ./br backup full -u "${PD_IP}:2379" \
---storage "azure://external/backup-20220915?account-name=${account name}&account-key=${account key}"
+--storage "azure://external/backup-20220915?account-name=${account_name}&account-key=${account_key}"
 ```
 
 **从 Azure Blob Storage 恢复快照备份数据中 `test` 数据库**
 
 ```shell
 ./br restore db --db test -u "${PD_IP}:2379" \
---storage "azure://external/backup-20220915account-name=${account name}&account-key=${account key}"
+--storage "azure://external/backup-20220915account-name=${account_name}&account-key=${account_key}"
 ```
 
 </div>
@@ -212,7 +212,7 @@ TiDB 支持 Amazon S3、Google Cloud Storage (GCS)、Azure Blob Storage 和 NFS 
 
         ```shell
         ./br backup full -u "${PD_IP}:2379" \
-        --storage "azure://external/backup-20220915?account-name=${account name}"
+        --storage "azure://external/backup-20220915?account-name=${account_name}"
         ```
 
 </div>
