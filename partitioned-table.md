@@ -710,7 +710,7 @@ Empty set (0.00 sec)
 - 使用 `ALTER TABLE <表名> ADD PARTITION (<分区说明>)` 语句添加分区。
 - 使用 `ALTER TABLE <表名> DROP PARTITION <分区列表>` 删除分区。
 - 使用 `ALTER TABLE <表名> TRUNCATE PARTITION <分区列表>` 语句清空分区里的数据。`TRUNCATE PARTITION`的逻辑与 [`TRUNCATE TABLE`](/sql-statements/sql-statement-truncate.md) 相似，但它的操作对象为分区。
-- 使用`ALTER TABLE <表名> REORGANIZE PARTITION <分区列表> INTO (<新的分区说明>)`语句对分区进行合并、拆分、或者其他修改。
+- 使用 `ALTER TABLE <表名> REORGANIZE PARTITION <分区列表> INTO (<新的分区说明>)`语句对分区进行合并、拆分、或者其他修改。
 
 对于 `LIST` 和 `RANGE` 分区表，暂不支持 `REORGANIZE PARTITION` 语句。
 
@@ -736,7 +736,7 @@ Empty set (0.00 sec)
 
 ### Range 分区和 List 分区管理
 
-本小节将以如下 SQL 语句创建的分区表为例，介绍如何进行 Range 分区和 List 分区管理。
+本小节将以如下 SQL 语句创建的分区表为例，介绍如何管理 Range 分区和 List 分区。
 
 ```sql
 CREATE TABLE members (
@@ -791,7 +791,7 @@ ALTER TABLE members ADD PARTITION (PARTITION `p1990to2010` VALUES LESS THAN (201
 ALTER TABLE member_level ADD PARTITION (PARTITION l5_6 VALUES IN (5,6));
 ```
 
-对于 Range 分区，`ADD PARTITION` 只能在分区列表的最后添加新的分区。与分区列表中已有的分区相比，你需要将新分区的 `VALUES LESS THAN` 定义为更大的值。否则，执行该语句时将会报错。
+对于 Range 分区表，`ADD PARTITION` 只能在分区列表的最后添加新的分区。与分区列表中已有的分区相比，你需要将新分区的 `VALUES LESS THAN` 定义为更大的值。否则，执行该语句时将会报错。
 
 ```sql
 ALTER TABLE members ADD PARTITION (PARTITION p1990 VALUES LESS THAN (2000));
@@ -826,7 +826,7 @@ ALTER TABLE members REORGANIZE PARTITION pBefore1950,p1950 INTO (PARTITION pBefo
 ALTER TABLE member_level REORGANIZE PARTITION l1,l2 INTO (PARTITION l1_2 VALUES IN (1,2));
 ```
 
-修改分区定义：
+修改分区表定义：
 
 ```sql
 ALTER TABLE members REORGANIZE PARTITION pBefore1960,p1960,p1970,p1980,p1990,p2000,p2010,p2020,pMax INTO
@@ -843,7 +843,7 @@ ALTER TABLE member_level REORGANIZE PARTITION l1_2,l3,l4,l5,l6 INTO
 
 - 重组分区（包括合并或拆分分区）只能修改分区定义，无法修改分区表类型。例如，无法将 List 类型修改为 Range 类型，或将 Range COLUMNS 类型修改为 Range 类型。
 
-- 对于 Range 分区表，你只能重组表中相邻的分区：
+- 对于 Range 分区表，你只能对表中相邻的分区进行重组：
 
     ```sql
     ALTER TABLE members REORGANIZE PARTITION p1800,p2000 INTO (PARTITION p2000 VALUES LESS THAN (2100));
@@ -853,7 +853,7 @@ ALTER TABLE member_level REORGANIZE PARTITION l1_2,l3,l4,l5,l6 INTO
     ERROR 8200 (HY000): Unsupported REORGANIZE PARTITION of RANGE; not adjacent partitions
     ```
 
-- 对于 Range 分区表，当修改 Range 定义中的最大值时，必须保证 `VALUES LESS THAN` 中新定义的值大于现有分区中的所有值。否则，TiDB 将返回报错，提示现有的行值对应不到分区。
+- 对于 Range 分区表，如需修改 Range 定义中的最大值，必须保证 `VALUES LESS THAN` 中新定义的值大于现有分区中的所有值。否则，TiDB 将返回报错，提示现有的行值对应不到分区。
 
     ```sql
     INSERT INTO members VALUES (313, "John", "Doe", "2022-11-22", NULL);
@@ -865,7 +865,7 @@ ALTER TABLE member_level REORGANIZE PARTITION l1_2,l3,l4,l5,l6 INTO
     ERROR 1526 (HY000): Table has no partition for value 2022
     ```
 
-- 对于 List 分区表，当修改分区定义中的数据集合时，必须保证新的数据集合能覆盖到该分区中现有的所有值，否则 TiDB 将返回报错。
+- 对于 List 分区表，如需修改分区定义中的数据集合，必须保证新的数据集合能覆盖到该分区中现有的所有值，否则 TiDB 将返回报错。
 
     ```sql
     INSERT INTO member_level (id, level) values (313, 6);
