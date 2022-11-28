@@ -9,7 +9,7 @@ summary: 以事务的原子性和隔离性为代价，将 DML 语句拆成多个
 
 非事务 DML 语句是将一个普通 DML 语句拆成多个 SQL 语句（即多个 batch）执行，以牺牲事务的原子性和隔离性为代价，增强批量数据处理场景下的性能和易用性。
 
-通常对于消耗内存过多的大事务，需要在应用中拆分 SQL 语句以绕过事务大小限制。非事务 DML 语句将这一功能集成到 TiDB 内核中，实现等价的效果。非事务 DML 语句的效果可以通过拆分 SQL 语句的结果来理解，`DRY RUN` 语法提供了预览拆分后语句的功能。
+通常，消耗内存过多的大事务需要在应用中拆分 SQL 语句以绕过事务大小限制。非事务 DML 语句将这一功能集成到 TiDB 内核中，实现等价的效果。非事务 DML 语句的执行效果可以通过拆分 SQL 语句的结果来理解，`DRY RUN` 语法提供了预览拆分后语句的功能。
 
 非事务 DML 语句包括 `INSERT`、`REPLACE`、`UPDATE` 和 `DELETE`，详细的语法介绍见 [`BATCH`](/sql-statements/sql-statement-batch.md)。
 
@@ -40,14 +40,14 @@ summary: 以事务的原子性和隔离性为代价，将 DML 语句拆成多个
     - 拆分列不应该在语句中更新。例如，对于一条非事务 `UPDATE` 语句，拆分后的 SQL 依次执行，前一 batch 的修改提交后被后一 batch 读到，导致同一行数据被多次修改。
     - 拆分列也不应该用于 Join key。例如，下面示例将拆分列 `test.t.id` 作为 Join key，导致一个非事务 `UPDATE` 语句多次更新同一行：
 
-    ```sql
-    create table t(id int, v int, key(id));
-    create table t2(id int, v int, key(id));
-    insert into t values (1, 1), (2, 2), (3, 3);
-    insert into t2 values (1, 1), (2, 2), (4, 4);
-    batch on test.t.id limit 1 update t join t2 on t.id=t2.id set t2.id = t2.id+1;
-    select * from t2; -- (4, 1) (4, 2) (4, 4)
-    ```
+        ```sql
+        CREATE TABLE t(id int, v int, key(id));
+        CREATE TABLE t2(id int, v int, key(id));
+        INSERT INTO t VALUES (1, 1), (2, 2), (3, 3);
+        INSERT INTO t2 VALUES (1, 1), (2, 2), (4, 4);
+        BATCH ON test.t.id LIMIT 1 UPDATE t JOIN t2 ON t.id = t2.id SET t2.id = t2.id+1;
+        SELECT * FROM t2; -- (4, 1) (4, 2) (4, 4)
+        ```
 
 - 确认该语句满足[使用限制](#使用限制)。
 - 不建议在该 DML 语句将要读写的表上同时进行并发的 DDL 操作。
@@ -124,14 +124,16 @@ SELECT * FROM t;
 
 ```sql
 CREATE TABLE t2(id int, v int, key(id));
-INSERT INTO t2 VALUES (1,1),(3,3),(5,5);
+INSERT INTO t2 VALUES (1,1), (3,3), (5,5);
 ```
 
-然后进行涉及多表 join 的更新（表 `t1` 和 `t2`）。需要注意的是，指定拆分列时需要完整的数据库名、表名和列名 （`test.t.id`)。
+然后进行涉及多表 join 的更新（表 `t` 和 `t2`）。需要注意的是，指定拆分列时需要完整的数据库名、表名和列名 （`test.t.id`)。
 
 ```sql
-BATCH ON test.t.id LIMIT 1 UPDATE t JOIN t2 ON t.id=t2.id SET t2.id = t2.id+1
+BATCH ON test.t.id LIMIT 1 UPDATE t JOIN t2 ON t.id = t2.id SET t2.id = t2.id+1;
 ```
+
+查看更新后表的数据：
 
 ```sql
 SELECT * FROM t2;
