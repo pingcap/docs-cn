@@ -15,7 +15,7 @@ summary: 了解 TiCDC 双向复制的使用方法。
 
 1. 使用数据导入工具将两个集群的数据同步为一致的状态。
 
-2. 在这两个 TiDB 集群之间部署两套 TiCDC 集群，图中箭头所指的方向即为该 TiCDC 集群同步数据的流向。集群的拓扑如下图所示。
+2. 在这两个 TiDB 集群之间部署两套 TiCDC 集群，集群的拓扑如下图所示，图中箭头所指的方向即为该 TiCDC 集群同步数据的流向。
 
 ![TiCDC bidirectional replication](/media/ticdc/ticdc-bidirectional-replication.png)
 
