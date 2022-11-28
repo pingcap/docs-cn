@@ -42,7 +42,7 @@ TiDB 版本：6.1.3
 
 + TiKV
 
-    <!--tikv owner: -->
+    <!--tikv owner: busyjay-->
 
     - (dup) 修复获取 Snapshot 时 Lease 过期引发的异常竞争问题  [#13553](https://github.com/tikv/tikv/issues/13553) @[SpadeA-Tang](https://github.com/SpadeA-Tang)
 
