@@ -15,9 +15,9 @@ summary: 以事务的原子性和隔离性为代价，将 DML 语句拆成多个
 
 > **注意：**
 >
-> 非事务 DML 语句不保证该语句的原子性和隔离性，不能认为它和原始 DML 语句等价。
-> 尤其注意不应当对任意的 DML 语句，改写成非事务 DML 后假设其行为与原来一致。
-> 使用非事务 DML 前需要分析其拆分后的语句是否会互相影响。
+> - 非事务 DML 语句不保证该语句的原子性和隔离性，不能认为它和原始 DML 语句等价。
+> - 在任意 DML 语句改写为非事务 DML 语句后，不应假设其行为与原来一致。
+> - 使用非事务 DML 前需要分析其拆分后的语句是否会互相影响。
 
 ## 使用场景
 
@@ -35,23 +35,22 @@ summary: 以事务的原子性和隔离性为代价，将 DML 语句拆成多个
 
 - 确保该语句不需要原子性，即允许执行结果中，一部分行被修改，而一部分行没有被修改。
 - 确保该语句具有幂等性，或是做好准备根据错误信息对部分数据重试。如果系统变量 `tidb_redact_log = 1` 且 `tidb_nontransactional_ignore_error = 1`，则该语句必须是幂等的。否则语句部分失败时，无法准确定位失败的部分。
-- 确保该语句将要操作的数据没有其它并发的写入，即不被其它语句同时更新。否则可能出现漏写、多写、同一行遭到重复修改等非预期的现象。
+- 确保该语句将要操作的数据没有其它并发的写入，即不被其它语句同时更新。否则可能出现漏写、多写、重复修改同一行等非预期的现象。
 - 确保该语句不会修改语句自身会读取的内容，否则后续的 batch 读到之前 batch 写入的内容，容易引起非预期的情况。
-  - 例如在一条非事务 UPDATE 语句中，拆分后的 SQL 依次执行，前一批次的修改提交后被后一批次读到，造成同一行数据被多次修改的现象。
-  - 为防止出现该现象，拆分列不应该在语句中更新，拆分列也不应当用于 join key，详见下方的例子。
+    - 拆分列不应该在语句中更新。例如，对于一条非事务 `UPDATE` 语句，拆分后的 SQL 依次执行，前一 batch 的修改提交后被后一 batch 读到，导致同一行数据被多次修改。
+    - 拆分列也不应该用于 Join key。例如，下面示例将拆分列 `test.t.id` 作为 Join key，导致一个非事务 `UPDATE` 语句多次更新同一行：
+
+    ```sql
+    create table t(id int, v int, key(id))
+    create table t2(id int, v int, key(id))
+    insert into t values (1, 1), (2, 2), (3, 3)
+    insert into t2 values (1, 1), (2, 2), (4, 4)
+    batch on test.t.id limit 1 update t join t2 on t.id=t2.id set t2.id = t2.id+1
+    select * from t2 -- (4, 1) (4, 2) (4, 4)
+    ```
+
 - 确认该语句满足[使用限制](#使用限制)。
 - 不建议在该 DML 语句将要读写的表上同时进行并发的 DDL 操作。
-
-例子：拆分列 `test.t.id` 作为 join key，导致一个非事务 UPDATE 语句对同一行做了多次更新。
-
-```sql
-create table t(id int, v int, key(id))
-create table t2(id int, v int, key(id))
-insert into t values (1, 1), (2, 2), (3, 3)
-insert into t2 values (1, 1), (2, 2), (4, 4)
-batch on test.t.id limit 1 update t join t2 on t.id=t2.id set t2.id = t2.id+1
-select * from t2 -- (4, 1) (4, 2) (4, 4)
-```
 
 > **警告：**
 >
@@ -121,25 +120,14 @@ SELECT * FROM t;
 1 row in set
 ```
 
-多表 join 的情况。首先建立第二张表并插入数据。
+以下示例说明多表 join 的使用方法。首先创建表 `t2` 并插入数据。
 
 ```sql
 CREATE TABLE t2(id int, v int, key(id));
-```
-
-```sql
-Query OK, 0 rows affected
-```
-
-```sql
 INSERT INTO t2 VALUES (1,1),(3,3),(5,5);
 ```
 
-```sql
-Query OK, 3 rows affected
-```
-
-然后进行涉及多表 join 的更新，注意拆分列的指定需要完整的数据库名、表名、列名。
+然后进行涉及多表 join 的更新（表 `t1` 和 `t2`）。需要注意的是，指定拆分列时需要完整的数据库名、表名和列名 （`test.t.id`)。
 
 ```sql
 BATCH ON test.t.id LIMIT 1 UPDATE t JOIN t2 ON t.id=t2.id SET t2.id = t2.id+1

@@ -13,21 +13,16 @@ BATCH 语句在某一列将 DML 语句涉及的范围划分为多个区间，在
 
 详细的说明和使用限制见[非事务语句](/non-transactional-dml.md)。
 
-在涉及多表 join 时，BATCH 语法中的拆分列要求用完整的路径写明以避免歧义。如
+在涉及多表 join 时，`BATCH` 语法中指定拆分列时需要指明完整的路径以避免歧义，如：
 
 ```sql
-BATCH ON test.t2.id LIMIT 1 INSERT INTO t SELECT t2.id, t2.v, t3.v FROM t2 JOIN t3 ON t2.id=t3.id"
+BATCH ON test.t2.id LIMIT 1 INSERT INTO t SELECT t2.id, t2.v, t3.v FROM t2 JOIN t3 ON t2.id=t3.id;
 ```
 
-上面这条语句的拆分列用 `test.t2.id` 指明，不具有歧义。如果写成如下形式
+上面这条语句的拆分列用 `test.t2.id` 指明，不具有歧义。如果写成如下形式，则会报错：
 
 ```sql
-batch on id limit 1 insert into t select t2.id, t2.v, t3.v from t2 join t3 on t2.id=t3.id"
-```
-
-则会报错，要求拆分列的列名路径写完整：
-
-```sql
+BATCH ON id LIMIT 1 INSERT INTO t SELECT t2.id, t2.v, t3.v FROM t2 JOIN t3 ON t2.id=t3.id"
 Non-transactional DML, shard column must be fully specified
 ```
 
