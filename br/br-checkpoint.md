@@ -15,11 +15,11 @@ summary: 了解断点备份功能，包括它的使用场景、使用方法以�
 
 ## 使用限制
 
-在备份过程中，br 命令行工具会定期向 PD 更新备份 snapshot 的 `gc-safe-point`，从而避免在备份过程中数据被 GC。当 br 工具退出后，PD 中备份 snapshot 的 `gc-safe-point` 将无法及时更新。因此，在下一次重试备份前，数据有可能已经被 GC。
+在备份过程中，br 命令行工具会定期向 PD 更新备份 snapshot 的 `gc-safepoint`，从而避免在备份过程中数据被 GC。当 br 工具退出后，PD 中备份 snapshot 的 `gc-safepoint` 将无法及时更新。因此，在下一次重试备份前，数据有可能已经被 GC。
 
-为了避免数据被 GC，当 br 工具没有指定具体的 `gcttl` 时，br 工具在默认情况下会让 `gc-safe-point` 保留大约 1 小时。如果你需要延长这个时间，可以设置参数 `gcttl`。
+为了避免数据被 GC，当 br 工具没有指定具体的 `gcttl` 时，br 工具在默认情况下会让 `gc-safepoint` 保留大约 1 小时。如果你需要延长这个时间，可以设置参数 `gcttl`。
 
-例如，设置 `gcttl` 为 15 小时来延长 `gc-safe-point` 的保留时间：
+例如，设置 `gcttl` 为 15 小时来延长 `gc-safepoint` 的保留时间：
 
 ```shell
 br backup full \
@@ -29,7 +29,7 @@ br backup full \
 
 > **注意：**
 >
-> 快照备份结束后会将备份前创建的 `gc-safe-point` 删除，不需要手动删除。
+> 快照备份结束后会将备份前创建的 `gc-safepoint` 删除，不需要手动删除。
 
 ## 实现原理
 
