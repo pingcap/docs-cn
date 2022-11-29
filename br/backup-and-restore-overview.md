@@ -6,7 +6,7 @@ aliases: ['/docs-cn/dev/br/backup-and-restore-tool/','/docs-cn/dev/reference/too
 
 # TiDB 备份与恢复概述
 
-基于 Raft 协议和合理的部署拓扑规划，TiDB 实现了集群的高可用，当集群中少数节点挂掉时，集群依然能对外提供服务。在此基础上，为了更进一步保证用户数据的安全，TiDB 还提供了集群的备份与恢复功能，作为数据安全的最后一道防线，使得集群能够免于严重的自然灾害，提供业务误操作“复原”的能力。
+基于 Raft 协议和合理的部署拓扑规划，TiDB 实现了集群的高可用，当集群中少数节点挂掉时，集群依然能对外提供服务。在此基础上，为了更进一步保证用户数据的安全，TiDB 还提供了集群的备份与恢复 (Backup & Restore, BR) 功能，作为数据安全的最后一道防线，使得集群能够免于严重的自然灾害，提供业务误操作“复原”的能力。
 
 TiDB 备份恢复功能可以用于满足以下业务的需求：
 
@@ -61,7 +61,7 @@ TiDB 备份恢复功能可以用于满足以下业务的需求：
 
 - 恢复到集群的历史任意时间点 (PITR)
 
-    - 通过 `br restore point` 功能。你可以指定要恢复的时间点，恢复时间点之前最近的快照数据备份，以及日志备份数据。br 会自动判断和读取恢复需要的数据，然后将这些数据依次恢复到指定的集群。
+    - 通过 `br restore point` 功能。你可以指定要恢复的时间点，恢复时间点之前最近的快照数据备份，以及日志备份数据。BR 会自动判断和读取恢复需要的数据，然后将这些数据依次恢复到指定的集群。
 
 #### 恢复的性能
 
@@ -102,17 +102,17 @@ TiDB 支持将数据备份到 Amazon S3、Google Cloud Storage (GCS)、Azure Blo
 
 ### 兼容性
 
-在使用 BR 之前，需要先了解 BR 与其他功能的兼容性以及使用限制。
+在使用备份恢复功能之前，需要先了解 BR 工具与其他功能的兼容性以及使用限制。
 
 #### 与其他功能的兼容性
 
-某些功能在开启或关闭状态下，会导致 BR 功能使用出错。因此需要保证恢复集群的这些配置，与备份集群备份时的配置相同。
+某些功能在开启或关闭状态下，会导致备份恢复功能使用出错。因此需要保证恢复集群的这些配置，与备份集群备份时的配置相同。
 
 | 功能 | 相关 issue | 解决方式 |
 |  ----  | ----  | ----- |
 |GBK charset|| BR 在 v5.4.0 之前不支持恢复 `charset=GBK` 的表。并且，任何版本的 BR 都不支持恢复 `charset=GBK` 的表到 v5.4.0 之前的 TiDB 集群。|
 | 聚簇索引 | [#565](https://github.com/pingcap/br/issues/565)       | 确保恢复时集群的 `tidb_enable_clustered_index` 全局变量和备份时一致，否则会导致数据不一致的问题，例如 `default not found` 和数据索引不一致。 |
-| New collation  | [#352](https://github.com/pingcap/br/issues/352)       | 确保恢复时集群的 `new_collations_enabled_on_first_bootstrap` 变量值和备份时的一致，否则会导致数据索引不一致和 checksum 通不过。更多信息，请参考 [FAQ - BR 为什么会报 `new_collations_enabled_on_first_bootstrap` 不匹配？](/faq/backup-and-restore-faq.md#br-为什么会报-new_collations_enabled_on_first_bootstrap-不匹配)。 |
+| New collation  | [#352](https://github.com/pingcap/br/issues/352)       | 确保恢复时集群的 `new_collations_enabled_on_first_bootstrap` 变量值和备份时的一致，否则会导致数据索引不一致和 checksum 通不过。更多信息，请参考 [FAQ - BR 为什么会报 `new_collations_enabled_on_first_bootstrap` 不匹配？](/faq/backup-and-restore-faq.md#恢复时为什么会报-new_collations_enabled_on_first_bootstrap-不匹配)。 |
 | 全局临时表 | | 确保使用 BR v5.3.0 及以上版本进行备份和恢复，否则会导致全局临时表的表定义错误。 |
 | TiDB Lightning Physical Import| |上游数据库使用 TiDB Lightning Physical 方式导入的数据，无法作为数据日志备份下来。推荐在数据导入后执行一次全量备份，细节参考[上游数据库使用 TiDB Lightning Physical 方式导入数据的恢复](/faq/backup-and-restore-faq.md#上游数据库使用-tidb-lightning-physical-方式导入数据时为什么无法使用日志备份功能)。|
 
