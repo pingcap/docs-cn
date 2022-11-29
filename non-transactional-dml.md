@@ -36,7 +36,7 @@ Before using non-transactional DML statements, make sure that the following cond
 - The statement meets the [restrictions](#restrictions).
 - It is not recommended to perform concurrent DDL operations on the table to be read or written by this DML statement.
 
-> **WARNING:**
+> **Warning:**
 >
 > If `tidb_redact_log` and `tidb_nontransactional_ignore_error` are enabled at the same time, you might not get the complete error information of each batch, and you cannot retry the failed batch only. Therefore, if both of the system variables are turned on, the non-transactional DML statement must be idempotent.
 

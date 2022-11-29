@@ -480,7 +480,7 @@ Configuration items related to performance.
 
 ### `stats-load-concurrency` <span class="version-mark">New in v5.4.0</span>
 
-> **WARNING:**
+> **Warning:**
 >
 > Currently, synchronously loading statistics is an experimental feature. It is not recommended that you use it in production environments.
 
@@ -490,7 +490,7 @@ Configuration items related to performance.
 
 ### `stats-load-queue-size` <span class="version-mark">New in v5.4.0</span>
 
-> **WARNING:**
+> **Warning:**
 >
 > Currently, synchronously loading statistics is an experimental feature. It is not recommended that you use it in production environments.
 
