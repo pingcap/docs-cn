@@ -2620,7 +2620,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 是否持久化到集群：是
 - 默认值： `1`
 - 范围：`[1, 15]`
-- 这个变量用来设置在双向复制系统内不同集群的 id。
+- 这个变量用来设置在双向复制系统内不同集群的 ID。
 
 ### `tidb_stats_cache_mem_quota` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
