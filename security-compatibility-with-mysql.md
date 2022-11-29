@@ -57,7 +57,7 @@ TiDB 的密码过期策略功能与 MySQL 保持一致，但是在密码过期�
 
 ### 密码连续错误限制登录策略
 
-针对密码过期策略功能，TiDB 与 MySQL 的比较如下：
+针对密码连续错误限制登录策略功能，TiDB 与 MySQL 的比较如下：
 
 - MySQL 5.7 不支持密码连续错误限制登录策略管理功能。
 - MySQL 8.0 支持密码连续错误限制登录策略管理功能。
@@ -92,6 +92,22 @@ TiDB 的密码过期策略功能与 MySQL 保持一致，但是在密码过期�
 
         - 该用户锁定时间结束，这种情况下，用户的自动锁定标识将在下次登录尝试时重置。
         - 对该用户执行 `ALTER USER ... ACCOUNT UNLOCK` 解锁命令时。
+
+### 密码重用策略
+
+针对密码重用策略功能，TiDB 与 MySQL 的比较如下：
+
+- MySQL 5.7 不支持密码重用策略管理功能。
+- MySQL 8.0 支持密码重用策略管理功能。
+- TiDB 在 v6.4.0 支持密码重用策略管理功能。
+
+TiDB 的密码重用策略功能与 MySQL 保持一致，在实现密码重用策略时增加了系统表 `mysql.password_history`，TiDB 与 MySQL 在处理删除一个在 `mysql.user` 系统表中不存在的用户时存在差异：
+
+- 场景：没有正确创建用户（例如： `user01` ），而通过 `INSERT INTO mysql.password_history VALUES (...)` 命令直接向 `mysql.password_history` 系统表中添加一条 `user01` 的记录，此时系统表 `mysql.user` 中没有 `user01` 的记录。这时候执行 `DROP USER` 操作时，TiDB 和 MySQL状态不一致。
+- 差异点：
+
+    + MySQL：执行 `DROP USER user01` 时，在 `mysql.user` 和 `mysql.password_history` 系统表中匹配 `user01` ，若在两个系统表或其中一个系统表中匹配成功，则 `DROP USER` 命令可以正常执行，不会报错。
+    + TiDB：执行 `DROP USER user01` 时，只在 `mysql.user` 系统表中匹配 `user01` ，若没有匹配成功，则 `DROP USER` 命令执行失败，返回报错。此时如果需要成功执行 `DROP USER user01` 命令，请使用 `DROP USER IF EXISTS user01`。
 
 ## 可用的身份验证插件
 
