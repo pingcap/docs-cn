@@ -100,7 +100,27 @@ dispatchers = [
     {matcher = ['test6.*'], partition = "ts"}
 ]
 
-# 对于 MQ 类的 Sink，可以指定消息的协议格式
-# 目前支持 canal-json、open-protocol、canal、avro 和 maxwell 五种协议。
+# protocol 用于指定传递到下游的协议格式
+# 当下游类型是 Kafka 时，支持 canal-json、avro 两种协议。
+# 当下游类型是对象存储时，目前仅支持 csv 和 canal-json 协议。
 protocol = "canal-json"
+
+# 以下三个配置项仅在云存储类的 Sink 中使用。
+# 换行符。默认值为空，表示使用 "\r\n" 作为换行符。
+terminator = ''
+# 文件路径的日期分隔类型。可选类型有 `none`、`year`、`month`、`day`。默认值为 `none`，即不使用日期分隔。
+date-separator = 'none'
+# 是否使用 partition 作为分隔字符串。
+enable-partition-separator = false
+
+# 从 v6.5.0 开始，TiCDC 支持以 CSV 格式将数据变更记录保存至云存储中。
+[sink.csv]
+# 字段之间的分隔符。必须为 ASCII 字符，默认值为 `,`
+delimiter = ','
+# 用于包裹字段的引号字符。空值代表不使用引号字符。默认值为 `"`。
+quote = '"'
+# CSV 列为 null 时将以什么字符来表示。默认值为 `\N`
+null = '\N'
+# 是否在 CSV 行中包含 commit-ts。默认值为 false。
+include-commit-ts = false
 ```
