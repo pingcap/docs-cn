@@ -314,9 +314,9 @@ dispatchers = [
 
 集成具体步骤详见 [TiDB 集成 Confluent Platform 快速上手指南](/ticdc/integrate-confluent-using-ticdc.md)。
 
-#### Sink URI 配置 `s3`
+#### Sink URI 配置 `S3`/`Azure Blob Storage`/`NFS`
 
-TiCDC 从 v6.4 开始支持将行变更事件保存至 S3 中。
+TiCDC 从 v6.5.0 开始支持将行变更事件保存至 S3、Azure Blob Storage 和 NFS 中。
 
 S3 配置样例如下:
 
@@ -326,12 +326,34 @@ S3 配置样例如下:
 
 S3 的 URL 参数与 BR 相同，详细参数请参考 [S3 的 URL 参数](/br/backup-and-restore-storages.md#s3-的-url-参数)。
 
+Azure Blob Storage 配置样例如下：
+
+```shell
+--sink-uri="azblob://my-bucket/prefix"
+或者
+--sink-uri="azure://my-bucket/prefix"
+```
+
+Azure Blob Storage 的 URL 参数与 BR 相同，详细参数请参考 [Azblob 的 URL 参数](/br/backup-and-restore-storages.md#azblob-的-url-参数)
+
+NFS 配置样例如下：
+
+```
+shell
+--sink-uri="file:///my-directory/prefix"
+```
+
 URI 中其他可配置的参数如下：
 
 | 参数         | 描述                                             |
 | :------------ | :------------------------------------------------ |
-| `worker-count` | 向下游云存储保存数据变更记录的并发度（可选，默认值为 `16`）|
-| `flush-interval` | 向下游云存储保存数据变更记录的间隔（可选，默认值为 `10s`）|
+| `worker-count` | 向下游云存储保存数据变更记录的并发度（可选，默认值为 `16`，最小可配置值为 `1`，最大可配置值 `512`）|
+| `flush-interval` | 向下游云存储保存数据变更记录的间隔（可选，默认值为 `5s`，最小可配置值为 `2s`, 最大可配置值为 `10s`）|
+| `file-size` | 单个数据变更文件超过 `file-size` 时将其保存至云存储中（可选，默认值为 `67108864`，最小可配置为 `1048576`, 最大可配置值为 `536870912`） |
+
+> **注意：**
+>
+> `flush-interval` 与 `file-size` 二者只要满足其一就会向下游保存数据变更文件。
 
 #### 使用同步任务配置文件
 
@@ -663,7 +685,7 @@ dispatchers = [
 
 # protocol 用于指定传递到下游的协议格式
 # 当下游类型是 Kafka 时，支持 canal-json、avro 两种协议。
-# 当下游类型是对象存储时，目前仅支持 csv 协议。
+# 当下游类型是对象存储时，目前仅支持 csv 和 canal-json 协议。
 protocol = "canal-json"
 
 # 以下三个配置项仅在云存储类的 Sink 中使用。
@@ -674,7 +696,7 @@ date-separator = 'none'
 # 是否使用 partition 作为分隔字符串。
 enable-partition-separator = false
 
-# 从 v6.4 开始，TiCDC 支持以 CSV 格式将数据变更记录保存至云存储中。
+# 从 v6.5.0 开始，TiCDC 支持以 CSV 格式将数据变更记录保存至云存储中。
 [sink.csv]
 # 字段之间的分隔符。必须为 ASCII 字符，默认值为 `,`
 delimiter = ','
@@ -855,7 +877,7 @@ partition 分发器用 partition = "xxx" 来指定，支持 default、ts、index
     - `month`：以事务提交的年份和月份分隔文件路径。例如：`s3://bucket/bbb/ccc/test/table1/9999/2022-01`。
     - `day`：以事务提交的年月日来分隔文件路径。例如：`s3://bucket/bbb/ccc/test/table1/9999/2022-01-02`。
 - `num`：存储数据变更记录的目录下文件的序号。例如：`s3://bucket/bbb/ccc/test/table1/9999/2022-01-02/CDC000005.csv`。
-- `extension`：文件的扩展名，v6.4 只支持 csv 格式。
+- `extension`：文件的扩展名，v6.5.0 只支持 csv 和 canal-json 格式。
 
 ### 元数据
 
