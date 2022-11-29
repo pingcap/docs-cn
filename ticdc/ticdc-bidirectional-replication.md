@@ -27,9 +27,10 @@ summary: 了解 TiCDC 双向复制的使用方法。
     bdr-mode = true
     ```
 
+4. （可选）如果需要追踪数据写入源，可以使用 TiDB 系统变量 [`tidb_source_id`](/system-variables.md#tidb_source_id-从-v650-版本开始引入) 为集群设置不同的数据源 ID。
+
 这样，以上搭建好的集群即可对数据进行双向复制。
 
-如果需要追踪数据写入源，可以使用 tidb 的系统变量 `tidb_source_id` 为集群设置不同的数据源 id。
 
 ### 停止双向同步
 
