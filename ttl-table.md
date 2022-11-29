@@ -13,6 +13,8 @@ TTL 提供了行级别的生命周期控制策略。在 TiDB 中，设置了 TTL
 
 ## 语法
 
+你可以通过 [`CREATE TABLE`](/sql-statements/sql-statement-create-table.md) 或 [`ALTER TABLE`](/sql-statements/sql-statement-alter-table.md) 语句来配置表的 TTL 功能。
+
 ### 创建具有 TTL 属性的表
 
 可以通过以下语句创建一个具有 TTL 属性的表：
