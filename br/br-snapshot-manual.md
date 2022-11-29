@@ -31,16 +31,16 @@ summary: 介绍备份与恢复 TiDB 集群快照的命令行。
 br backup full \
     --pd "${PD_IP}:2379" \
     --backupts '2022-09-08 13:30:00' \
-    --storage "s3://${backup_collection_addr}/snapshot-${date}?access_key=${access_key}&secret_access_key=${secret_access_key}" \
+    --storage "s3://${backup_collection_addr}/snapshot-${date}?access-key=${access-key}&secret-access-key=${secret-access-key}" \
     --ratelimit 128 \
     --log-file backupfull.log
 ```
 
 以上命令中：
 
-- `--backupts`：快照对应的物理时间点。如果该快照的数据已经被 GC，那么 `br backup` 命令会报错退出；如果没有指定该参数，BR 会选取备份开始的时间点所对应的快照。
+- `--backupts`：快照对应的物理时间点。如果该快照的数据已经被 GC，那么 `br backup` 命令会报错退出；如果没有指定该参数，br 命令行工具会选取备份开始的时间点所对应的快照。
 - `--ratelimit`：**每个 TiKV** 执行备份任务的速度上限（单位 MiB/s）。
-- `--log-file`：BR log 写入的目标文件。
+- `--log-file`：备份日志写入的目标文件。
 
 备份期间终端会显示进度条，效果如下。当进度条达到 100% 时，表示备份完成。
 
@@ -50,7 +50,7 @@ Full Backup <---------/................................................> 17.12%.
 
 ## 备份 TiDB 集群指定库表的数据
 
-BR 支持只备份集群快照和增量数据中指定库或表的局部数据。在快照备份和增量数据备份的基础上，该功能可过滤掉不需要的数据，只备份关键业务的数据。
+br 工具支持只备份集群快照和增量数据中指定库或表的局部数据。在快照备份和增量数据备份的基础上，该功能可过滤掉不需要的数据，只备份关键业务的数据。
 
 ### 备份单个数据库的数据
 
@@ -62,7 +62,7 @@ BR 支持只备份集群快照和增量数据中指定库或表的局部数据�
 br backup db \
     --pd "${PD_IP}:2379" \
     --db test \
-    --storage "s3://${backup_collection_addr}/snapshot-${date}?access_key=${access_key}&secret_access_key=${secret_access_key}" \
+    --storage "s3://${backup_collection_addr}/snapshot-${date}?access-key=${access-key}&secret-access-key=${secret-access-key}" \
     --ratelimit 128 \
     --log-file backuptable.log
 ```
@@ -80,7 +80,7 @@ br backup table \
     --pd "${PD_IP}:2379" \
     --db test \
     --table usertable \
-    --storage "s3://${backup_collection_addr}/snapshot-${date}?access_key=${access_key}&secret_access_key=${secret_access_key}" \
+    --storage "s3://${backup_collection_addr}/snapshot-${date}?access-key=${access-key}&secret-access-key=${secret-access-key}" \
     --ratelimit 128 \
     --log-file backuptable.log
 ```
@@ -97,7 +97,7 @@ br backup table \
 br backup full \
     --pd "${PD_IP}:2379" \
     --filter 'db*.tbl*' \
-    --storage "s3://${backup_collection_addr}/snapshot-${date}?access_key=${access_key}&secret_access_key=${secret_access_key}" \
+    --storage "s3://${backup_collection_addr}/snapshot-${date}?access-key=${access-key}&secret-access-key=${secret-access-key}" \
     --ratelimit 128 \
     --log-file backupfull.log
 ```
@@ -108,7 +108,7 @@ br backup full \
 >
 > 当前该功能为实验特性，不建议在生产环境中使用。
 
-BR 支持在备份端，或备份到 Amazon S3 的时候在[存储服务端进行备份数据加密](/br/backup-and-restore-storages.md#amazon-s3-存储服务端加密备份数据)，你可以根据自己情况选择其中一种使用。
+br 命令行工具支持在备份端，或备份到 Amazon S3 的时候在[存储服务端进行备份数据加密](/br/backup-and-restore-storages.md#amazon-s3-存储服务端加密备份数据)，你可以根据自己情况选择其中一种使用。
 
 自 TiDB v5.3.0 起，你可配置下列参数在备份过程中实现数据加密：
 
@@ -121,7 +121,7 @@ BR 支持在备份端，或备份到 Amazon S3 的时候在[存储服务端进�
 ```shell
 br backup full\
     --pd ${PD_IP}:2379 \
-    --storage "s3://${backup_collection_addr}/snapshot-${date}?access_key=${access_key}&secret_access_key=${secret_access_key}" \
+    --storage "s3://${backup_collection_addr}/snapshot-${date}?access-key=${access-key}&secret-access-key=${secret-access-key}" \
     --crypter.method aes128-ctr \
     --crypter.key 0123456789abcdef0123456789abcdef
 ```
@@ -138,7 +138,7 @@ br backup full\
 ```shell
 br restore full \
     --pd "${PD_IP}:2379" \
-    --storage "s3://${backup_collection_addr}/snapshot-${date}?access_key=${access_key}&secret_access_key=${secret_access_key}" \
+    --storage "s3://${backup_collection_addr}/snapshot-${date}?access-key=${access-key}&secret-access-key=${secret-access-key}" \
     --ratelimit 128 \
     --log-file restorefull.log
 ```
@@ -146,9 +146,9 @@ br restore full \
 以上命令中，
 
 - `--ratelimit`：**每个 TiKV** 执行恢复任务的速度上限（单位 MiB/s）
-- `--log-file`：BR log 写入的目标文件
+- `--log-file`：备份日志写入的目标文件
 
-恢复期间终端会显示进度条，效果如下。当进度条达到 100% 时，表示恢复完成。在完成恢复后，BR 为了确保数据安全性，还会校验恢复数据。
+恢复期间终端会显示进度条，效果如下。当进度条达到 100% 时，表示恢复完成。在完成恢复后，br 工具为了确保数据安全性，还会校验恢复数据。
 
 ```shell
 Full Restore <---------/...............................................> 17.12%.
@@ -156,7 +156,7 @@ Full Restore <---------/...............................................> 17.12%.
 
 ## 恢复备份数据中指定库表的数据
 
-BR 支持只恢复备份数据中指定库/表的局部数据。该功能在恢复过程中过滤掉不需要的数据，可以用于往 TiDB 集群上恢复指定库/表的数据。
+br 命令行工具支持只恢复备份数据中指定库/表的局部数据。该功能在恢复过程中过滤掉不需要的数据，可以用于往 TiDB 集群上恢复指定库/表的数据。
 
 ### 恢复单个数据库的数据
 
@@ -169,7 +169,7 @@ br restore db \
     --pd "${PD_IP}:2379" \
     --db "test" \
     --ratelimit 128 \
-    --storage "s3://${backup_collection_addr}/snapshot-${date}?access_key=${access_key}&secret_access_key=${secret_access_key}" \
+    --storage "s3://${backup_collection_addr}/snapshot-${date}?access-key=${access-key}&secret-access-key=${secret-access-key}" \
     --log-file restore_db.log
 ```
 
@@ -191,7 +191,7 @@ br restore table \
     --db "test" \
     --table "usertable" \
     --ratelimit 128 \
-    --storage "s3://${backup_collection_addr}/snapshot-${date}?access_key=${access_key}&secret_access_key=${secret_access_key}" \
+    --storage "s3://${backup_collection_addr}/snapshot-${date}?access-key=${access-key}&secret-access-key=${secret-access-key}" \
     --log-file restore_table.log
 ```
 
@@ -207,7 +207,7 @@ br restore table \
 br restore full \
     --pd "${PD_IP}:2379" \
     --filter 'db*.tbl*' \
-    --storage "s3://${backup_collection_addr}/snapshot-${date}?access_key=${access_key}&secret_access_key=${secret_access_key}" \
+    --storage "s3://${backup_collection_addr}/snapshot-${date}?access-key=${access-key}&secret-access-key=${secret-access-key}" \
     --log-file restorefull.log
 ```
 
@@ -222,7 +222,7 @@ br restore full \
 ```shell
 br restore full\
     --pd "${PD_IP}:2379" \
-    --storage "s3://${backup_collection_addr}/snapshot-${date}?access_key=${access_key}&secret_access_key=${secret_access_key}" \
+    --storage "s3://${backup_collection_addr}/snapshot-${date}?access-key=${access-key}&secret-access-key=${secret-access-key}" \
     --crypter.method aes128-ctr \
     --crypter.key 0123456789abcdef0123456789abcdef
 ```
