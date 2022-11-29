@@ -66,7 +66,7 @@ enable-old-value = true
 # sync-point-retention = "1h"
 
 [mounter]
-# mounter 解码 kv 数据的线程数，默认值为 16
+# mounter 解码 KV 数据的线程数，默认值为 16
 # worker-num = 16
 
 [filter]
