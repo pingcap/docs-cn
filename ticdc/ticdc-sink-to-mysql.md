@@ -60,16 +60,21 @@ URI 中可配置的参数如下：
 | `time-zone`    | 连接下游 MySQL 实例时使用的时区名称，从 v4.0.8 开始生效。（可选。如果不指定该参数，使用 TiCDC 服务进程的时区；如果指定该参数但使用空值，则表示连接 MySQL 时不指定时区，使用下游默认时区）。 |
 | `transaction-atomicity`      | 指定事务的原子性级别（可选，默认值为 `none`）。当该值为 `table` 时 TiCDC 保证单表事务的原子性，当该值为 `none` 时 TiCDC 会拆分单表事务。 |
 
-若需要对 Sink URI 中的数据库密码使用 Base64 进行编码，可以参考如下操作：
+若需要对 Sink URI 中的数据库密码使用 Base64 进行编码，可以参考如下命令：
 
 ```shell
-echo -n '123456' | base64   # 假设加密前的密码为 123456
-MTIzNDU2   # 加密后的密码
+echo -n '123456' | base64   # 假设待编码的密码为 123456
+```
+
+编码后的密码如下：
+
+```shell
+MTIzNDU2
 ```
 
 > **注意：**
 >
-> 当 Sink URI 中包含特殊字符时，如 `! * ' ( ) ; : @ & = + $ , / ? % # [ ]`，需要对 URI 特殊字符进行转义处理。你可以在 [URI Encoder](https://meyerweb.com/eric/tools/dencoder/) 中对 URI 进行转义。
+> 当 Sink URI 中包含特殊字符时，如 `! * ' ( ) ; : @ & = + $ , / ? % # [ ]`，需要对 URI 特殊字符进行转义处理。你可以使用 [URI Encoder](https://meyerweb.com/eric/tools/dencoder/) 工具对 URI 进行转义。
 
 ## 灾难场景的最终一致性复制
 
