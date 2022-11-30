@@ -303,7 +303,7 @@ switch-mode = "5m"
 log-progress = "5m"
 
 # 使用 Physical Import Mode 时，检查本地磁盘配额的时间间隔，默认为 60 秒。
-# check-disk-quota = "30s"
+# check-disk-quota = "60s"
 ```
 
 ## 命令行参数
