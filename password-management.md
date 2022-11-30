@@ -115,7 +115,7 @@ ALTER USER 'test'@'localhost' IDENTIFIED BY 'abc';
 ERROR 1819 (HY000): Require Password Length: 8
 ```
 
-密码复杂度检测时，不检查散列后的密码。
+TiDB 进行密码复杂度检查时，不检查散列后的密码。
 
 ```sql
 ALTER USER 'test'@'localhost' IDENTIFIED WITH mysql_native_password AS '*0D3CED9BEC10A777AEC23CCC353A8C08A633045E';
