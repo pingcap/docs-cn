@@ -53,7 +53,7 @@ TiDB 的密码过期策略功能与 MySQL 保持一致，但是在密码过期�
 
     + MySQL 5.7 通过变量 `validate_password_dictionary_file ` 指定一个文件路径，在文件中写入密码中不允许包含的单词。
     + MySQL 8.0 通过变量 `validate_password.dictionary_file ` 指定一个文件路径，在文件中写入密码中不允许包含的单词。
-    + TiDB 通过变量 `validate_password.dictionary ` 指定一个字符串，再字符串中写入密码中不允许包含的单词。
+    + TiDB 通过变量 [`validate_password.dictionary`](/system-variables.md#validate_passworddictionary-从-v650-版本开始引入) 指定一个字符串，在该字符串中写入密码中不允许包含的单词。
 
 ### 密码连续错误限制登录策略
 
