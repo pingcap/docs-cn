@@ -223,7 +223,17 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 | 变量名  | 修改类型（包括新增/修改/删除）    | 描述 |
 |--------|------------------------------|------|
 | [`tidb_cost_model_version`](/system-variables.md#tidbcostmodelversion-span-classversion-mark从-v620-版本开始引入span) | 修改 | 优化器模型 V2 GA， 变量默认值改为`2`。   |
-|        |                              |      |
+| [`default_password_lifetime`](/system-variables.md#default_password_lifetime-从-v650-版本开始引入) | 新增 | 用于设置全局自动密码过期策略，要求用户定期修改密码。默认值为 `0` ，表示禁用全局自动密码过期策略 |
+| [`password_history`](/system-variables.md#password_history-从-v650-版本开始引入) | 新增 | 基于密码更改次数的密码重用策略，不允许用户重复使用最近设置次数内使用过的密码。默认值为 `0`，表示禁用基于密码更改次数的密码重用策略 |
+| [`password_reuse_interval`](/system-variables.md#password_reuse_interval-从-v650-版本开始引入) | 新增 | 基于经过时间限制的密码重用策略，不允许用户重复使用最近设置天数内使用过的密码。默认值为 `0`，表示禁用基于密码更改次数的密码重用策略 |
+| [`validate_password.check_user_name`](/system-variables.md#validate_passwordcheck_user_name-从-v650-版本开始引入) | 新增 | 密码复杂度策略检查项，设置的用户密码不允许密码与当前会话账户的用户名部分相同。只有 [`validate_password.enable`](/system-variables.md#validate_passwordenable-从-v650-版本开始引入) 开启时，该变量才生效。默认值为 `ON` |
+| [`validate_password.dictionary`](/system-variables.md#validate_passworddictionary-从-v650-版本开始引入) | 新增 | 密码复杂度策略检查项，密码字典功能，设置的用户密码不允许包含字典中的单词。只有 [`validate_password.enable`](/system-variables.md#validate_passwordenable-从-v650-版本开始引入) 开启且 [validate_password.policy](/system-variables.md#validate_passwordpolicy-从-v650-版本开始引入) 设置为 `2` (STRONG) 时，该变量才生效。默认值为空 |
+| [`validate_password.enable`](/system-variables.md#validate_passwordenable-从-v650-版本开始引入) | 新增 | 密码复杂度策略检查的开关，设置为 `ON` 后，TiDB 才进行密码复杂度检查。默认值为 `OFF` |
+| [`validate_password.length`](/system-variables.md#validate_passwordlength-从-v650-版本开始引入) | 新增 | 密码复杂度策略检查项，限定了用户密码最小长度。只有 [`validate_password.enable`](/system-variables.md#validate_passwordenable-从-v650-版本开始引入) 开启时，该变量才生效。默认值为 8 |
+| [`validate_password.mixed_case_count`](/system-variables.md#validate_passwordmixed_case_count-从-v650-版本开始引入) | 新增 | 密码复杂度策略检查项，限定了用户密码中大写字符和小写字符的最小数量。只有 [`validate_password.enable`](/system-variables.md#validate_passwordenable-从-v650-版本开始引入) 开启且 [validate_password.policy](/system-variables.md#validate_passwordpolicy-从-v650-版本开始引入) 大于或等于 `1` (MEDIUM) 时，该变量才生效。默认值为 1 |
+| [`validate_password.number_count`](/system-variables.md#validate_passwordnumber_count-从-v650-版本开始引入) | 新增 | 密码复杂度策略检查项，限定了用户密码中数字字符的最小数量。只有 [`validate_password.enable`](/system-variables.md#validate_passwordenable-从-v650-版本开始引入) 开启且 [validate_password.policy](/system-variables.md#validate_passwordpolicy-从-v650-版本开始引入) 大于或等于 `1` (MEDIUM) 时，该变量才生效。默认值为 1 |
+| [`validate_password.policy`](/system-variables.md#validate_passwordpolicy-从-v650-版本开始引入) | 新增 | 密码复杂度策略检查的强度，强度等级分为 `[0, 1, 2]` 。只有 [`validate_password.enable`](/system-variables.md#validate_passwordenable-从-v650-版本开始引入) 开启时，该变量才生效。默认值为 1 |
+| [`validate_password.special_char_count`](/system-variables.md#validate_passwordspecial_char_count-从-v650-版本开始引入) | 新增 | 密码复杂度策略检查项，限定了用户密码中特殊字符的最小数量。只有 [`validate_password.enable`](/system-variables.md#validate_passwordenable-从-v650-版本开始引入) 开启且 [validate_password.policy](/system-variables.md#validate_passwordpolicy-从-v650-版本开始引入) 大于或等于 `1` (MEDIUM) 时，该变量才生效。默认值为 1 |
 |        |                              |      |
 |        |                              |      |
 
@@ -231,7 +241,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
 | 配置文件 | 配置项 | 修改类型 | 描述 |
 | -------- | -------- | -------- | -------- |
-|          |          |          |          |
+| TiDB | [`disconnect_on_expired_password`](/tidb-configuration-file.md#disconnect_on_expired_password-从-v650-版本开始引入) | 新增 | 该配置用于控制 TiDB 服务端是否直接断开密码已过期用户的连接，默认值为 "true" ，表示 TiDB 服务端将直接断开密码已过期用户的连接 |
 |          |          |          |          |
 |          |          |          |          |
 |          |          |          |          |
