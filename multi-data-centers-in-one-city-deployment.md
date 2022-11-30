@@ -7,9 +7,11 @@ aliases: ['/docs-cn/dev/how-to/deploy/geographic-redundancy/overview/','/docs-cn
 # 单区域多 AZ 部署 TiDB
 
 <!-- Localization note:
-英文：用 distributed SQL，同时开始强调 HTAP
-日文：NewSQL 认可度高，用 NewSQL
-中文：可以保留 NewSQL 字眼，同时要强调一栈式实时 HTAP
+
+- 英文：用 distributed SQL，同时开始强调 HTAP
+- 日文：NewSQL 认可度高，用 NewSQL
+- 中文：可以保留 NewSQL 字眼，同时要强调一栈式实时 HTAP
+
 -->
 
 作为一栈式实时 HTAP 数据库，TiDB 兼顾了传统关系型数据库的优秀特性、NoSQL 数据库可扩展性以及跨可用区 (Availability Zone, AZ) 场景下的高可用。本文档旨在介绍同区域多 AZ 部署 TiDB 的方案。
