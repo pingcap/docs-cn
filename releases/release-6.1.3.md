@@ -84,10 +84,10 @@ TiDB 版本：6.1.3
 
     <!--owner: @niubell-->
 
-        - Fix the issue that when `collation_compatible` is set to `"strict"`, DM might generate SQL with duplicated collations [#6832](https://github.com/pingcap/tiflow/issues/6832) @[lance6716](https://github.com/lance6716)
-        - Fix sometime DM task is stopped with error "Unknown placement policy" [#7493](https://github.com/pingcap/tiflow/issues/7493) @[lance6716](https://github.com/lance6716)
-        - Fix in some cases log contains many "COMMIT" related lines and relay log file may re-pull from upstream [#7719](https://github.com/pingcap/tiflow/pull/7719) @[liumengya94](https://github.com/liumengya94)
-        - Fix when DM worker exits a new worker may be scheduled too quickly and write duplicated data [#7745](https://github.com/pingcap/tiflow/pull/7745) @[GMHDBJD](https://github.com/GMHDBJD)
+        - 修复 `collation_compatible` 设置为 `"strict"` 时 DM 生成 SQL 时可能带有重复的 COLLATE 的问题 [#6832](https://github.com/pingcap/tiflow/issues/6832) @[lance6716](https://github.com/lance6716)
+        - 修复 DM 可能由于 "Unknown placement policy" 错误导致任务暂停的问题 [#7493](https://github.com/pingcap/tiflow/issues/7493) @[lance6716](https://github.com/lance6716)
+        - 修复在某些场景下日志中出现大量包含 "COMMIT" 行，并且 relay log 文件会从上游重新拉取的问题 [#7719](https://github.com/pingcap/tiflow/pull/7719) @[liumengya94](https://github.com/liumengya94)
+        - 修复当 DM worker 即将退出时新 worker 调度过快导致数据被重复同步的问题 [#7745](https://github.com/pingcap/tiflow/pull/7745) @[GMHDBJD](https://github.com/GMHDBJD)
 
     + TiDB Lightning
 
