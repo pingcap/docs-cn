@@ -216,14 +216,6 @@ mysql> SELECT * FROM t1;
 - 取值范围：`[0, 7]`
 - 设置 `WEEK()` 函数使用的周格式。
 
-### `disconnect_on_expired_password` <span class="version-mark">从 v6.5.0 版本开始引入</span>
-
-- 作用域: GLOBAL
-- 是否持久化到集群：是
-- 类型：布尔型
-- 默认值：`ON`
-- 该变量为只读变量，由命令行参数（`--disconnect-on-expired-password`）或配置项（`security.disconnect-on-expired-password`）进行控制，用于表示密码过期的用户是否将被断开连接。
-
 ### `error_count`
 
 - 作用域：SESSION
