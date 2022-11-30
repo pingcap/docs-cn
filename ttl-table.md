@@ -13,6 +13,8 @@ TTL 提供了行级别的生命周期控制策略。在 TiDB 中，设置了 TTL
 
 ## 语法
 
+你可以通过 [`CREATE TABLE`](/sql-statements/sql-statement-create-table.md) 或 [`ALTER TABLE`](/sql-statements/sql-statement-alter-table.md) 语句来配置表的 TTL 功能。
+
 ### 创建具有 TTL 属性的表
 
 可以通过以下语句创建一个具有 TTL 属性的表：
@@ -37,7 +39,7 @@ CREATE TABLE t1 (
 
 如果 `TTL_ENABLE` 被设置成了 `OFF`，则即使设置了其他 TTL 选项，当前表也不会自动清理过期数据。在缺省条件下，`TTL_ENABLE` 被默认设置为 `ON`。
 
-为了与 Mysql 兼容，TTL 也支持注释语法，比如对于上述语句也可以写作：
+为了与 MySQL 兼容，TTL 也支持注释语法，比如对于上述语句也可以写作：
 
 ```sql
 CREATE TABLE t1 (
@@ -46,7 +48,7 @@ CREATE TABLE t1 (
 ) /*T![ttl] TTL = `created_at` + INTERVAL 3 MONTH TTL_ENABLE = 'OFF'*/;
 ```
 
-在 TiDB 环境下，上述两个语句等价。在 Mysql 环境中，会自动忽略注释中的内容，并创建普通的表。
+在 TiDB 环境中，使用 Table Option 和注释来配置 TTL 是等价的。在 MySQL 环境中，会自动忽略注释中的内容，并创建普通的表。
 
 ### 修改表的 TTL 属性
 
@@ -72,7 +74,7 @@ ALTER TABLE t1 REMOVE TTL;
 
 ## TTL 任务
 
-对于每张设置了 TTL 属性的表，TiDB 内部会定期调度后台任务来清理过期的数据。可以通过设置全局变量 `tidb_ttl_job_run_interval` 来自定义任务的执行周期，比如下面的例子里后台清理任务被设置为每 24 小时执行一次：
+对于每张设置了 TTL 属性的表，TiDB 内部会定期调度后台任务来清理过期的数据。你可以通过设置全局变量 [`tidb_ttl_job_run_interval`](/system-variables.md#tidb_ttl_job_run_interval-从-v650-版本开始引入) 来自定义任务的执行周期，比如下面的例子里后台清理任务被设置为每 24 小时执行一次：
 
 ```
 SET @@global.tidb_ttl_job_run_interval = '24h';

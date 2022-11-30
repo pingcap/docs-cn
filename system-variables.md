@@ -3165,7 +3165,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 是否持久化到集群：是
 - 默认值：`0`
 - 范围：`[0, 9223372036854775807]`
-- 这个变量用来对每个节点的 TTL 删除操作进行限流。其值代表了在 TTL 任务中单个节点每秒允许的最大的 DELETE 语句执行次数。当此变量设置为 `0` 时，则表示不做限制。
+- 这个变量用来对每个节点的 TTL 删除操作进行限流。其值代表了在 TTL 任务中单个节点每秒允许 `DELETE` 语句执行的最大次数。当此变量设置为 `0` 时，则表示不做限制。
 
 ### `tidb_ttl_delete_batch_size` <span class="version-mark">从 v6.5.0 版本开始引入</span>
 
@@ -3199,8 +3199,8 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 默认值：ON
-- 可选值：`OFF`, `ON`
+- 默认值：`ON`
+- 类型：布尔型
 - 这个变量用于控制是否启动 TTL 后台清理任务。如果设置为 `OFF`，所有具有 TTL 属性的表会自动停止过期数据的清理。
 
 ### `tidb_ttl_scan_batch_size` <span class="version-mark">从 v6.5.0 版本开始引入</span>
@@ -3213,7 +3213,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 是否持久化到集群：是
 - 默认值：`500`
 - 范围：`[1, 10240]`
-- 这个变量用于设置 TTL 任务中用来扫描过期数据的每个 SELECT 语句的 LIMIT 的值。 
+- 这个变量用于设置 TTL 任务中用来扫描过期数据的每个 `SELECT` 语句的 `LIMIT` 的值。 
 
 ### `tidb_ttl_scan_worker_count` <span class="version-mark">从 v6.5.0 版本开始引入</span>
 
