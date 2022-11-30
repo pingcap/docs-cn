@@ -93,7 +93,7 @@ SET GLOBAL validate_password.mixed_case_count = 1;
 SET GLOBAL validate_password.special_char_count = 1;
 ```
 
-设置密码字典功能，要求密码中不允许包含 `mysql` 、`abcd`：
+设置密码字典功能，要求密码中不允许包含 `mysql` 或 `abcd`：
 
 ```sql
 SET GLOBAL validate_password.dictionary = 'mysql;abcd';
