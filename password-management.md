@@ -73,7 +73,7 @@ SET GLOBAL validate_password.enable = ON;
 SET GLOBAL validate_password.check_user_name = ON;
 ```
 
-设置密码复杂度的检查等级为 LOW：
+设置密码复杂度的检查等级为 `LOW`：
 
 ```sql
 SET GLOBAL validate_password.policy = LOW;
