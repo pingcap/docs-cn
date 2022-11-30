@@ -254,7 +254,7 @@ TiDB 支持密码过期策略控制。当密码过期后，服务器要么断开
 - 默认情况下，`disconnect_on_expired_password` 为 `ON`，表示当密码过期后，服务器将直接断开客户端的连接。
 - 如果禁用 `disconnect_on_expired_password `，则服务端处于沙盒模式，服务端允许用户建立连接，但只能执行密码重置操作，密码重置后将允许用户正常执行各类 SQL 语句。
 
-当启用 `disconnect_on_expired_password` 后，如果账户密码已过期，处理方法如下：
+当 `disconnect_on_expired_password` 为 `ON` 时，如果账户密码已过期，处理方法如下：
 
 - 普通用户密码过期，可以由管理员用户通过 SQL 命令修改该用户的密码。
 - 管理员密码过期，可以由其他管理员用户通过 SQL 命令修改该用户的密码。
