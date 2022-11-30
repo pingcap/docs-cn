@@ -101,7 +101,7 @@ SET GLOBAL validate_password.dictionary = 'mysql;abcd';
 
 > **注意：**
 >
-> - `validate_password.dictionary` 是一个长字符串，长度不超过 1024，字符串内容包含多个待匹配的单词，每个单词之间采用英文分号（`;`）分隔。
+> - `validate_password.dictionary` 是一个长字符串，长度不超过 1024，字符串内容可包含一个或多个在密码中不允许出现的单词，每个单词之间采用英文分号（`;`）分隔。
 > - 密码字典功能进行单词比较时，不区字符分大小写。
 
 ### 密码复杂度检查示例
