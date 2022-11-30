@@ -31,7 +31,7 @@ TiDB 高度兼容 MySQL 5.7 协议、MySQL 5.7 常用的功能及语法。但 Ti
 TiDB 的密码过期策略功能与 MySQL 保持一致，但是在密码过期处理机制上存在以下差异：
 
 - MySQL 5.7 和 8.0 在密码过期后是否将客户端的连接限制为“沙盒模式”，由客户端和服务端设置的组合确定。
-- TiDB 在密码过期后是否将客户端的连接限制为“沙盒模式”，仅由服务端的系统变量 `disconnect_on_expired_password` 确定。
+- TiDB 在密码过期后是否将客户端的连接限制为“沙盒模式”，仅由服务端的系统变量 [`disconnect_on_expired_password`](/system-variables.md#disconnect_on_expired_password-从-v650-版本开始引入) 确定。
 
 ### 密码复杂度策略
 
