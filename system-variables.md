@@ -3354,7 +3354,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 默认值：""
 - 类型：字符串
 - 该变量是密码复杂度策略检查中的一个检查项，用于进行密码与字典字符串匹配检查。只有当 [`validate_password.enable`](/system-variables.md#password_reuse_interval-从-v650-版本开始引入) 开启且 [validate_password.policy](/system-variables.md#validate_passworddictionary-从-v650-版本开始引入) 设置为 `2` (STRONG) 时，该变量才生效。
-- 该变量是一个长字符串，长度不超过 1024，字符串内容包含多个待匹配的单词，每个单词之间采用英文分号（`;`）分隔。
+- 该变量是一个长字符串，长度不超过 1024，字符串内容可包含一个或多个在密码中不允许出现的单词，每个单词之间采用英文分号（`;`）分隔。
 - 默认情况下，该变量为空值，不执行字典检查。要进行字典检查，该变量值必须包含待匹配的单词。配置了该变量后，在设置账户密码时，TiDB 会将长度为 4 到 100 的密码的每个子字符串与该变量中配置的单词进行比较。任何匹配都会导致密码被拒绝。比较不区分大小写。
 
 ### `validate_password.enable` <span class="version-mark">从 v6.5.0 版本开始引入</span>
