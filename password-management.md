@@ -334,7 +334,7 @@ ALTER USER 'test'@'localhost'
 >
 > - 如果多次设置密码重用策略，则最后一次设置的值生效。
 > - `PASSWORD HISTORY` 和 `PASSWORD REUSE INTERVAL` 选项的默认值为 0，表示禁用该项重用策略。
-> - 在修改用户名时，会迁移 `mysql.password_history` 系统表中的历史密码记录。
+> - 在修改用户名时， TiDB 会将 `mysql.password_history` 系统表中原用户名的历史密码记录迁移到新用户名的记录中。
 
 ## 密码连续错误限制登录策略
 
@@ -356,7 +356,7 @@ TiDB 支持限制账户持续尝试登录，防止用户密码被暴力破解。
 
 > **注意：**
 >
-> - 允许单条 SQL 命令只设置 `FAILED_LOGIN_ATTEMPTS` 或 `PASSWORD_LOCK_TIME` 中的一个选项，这时密码连续错误限制登录策略不会实质生效。
+> - 允许单条 SQL 语句只设置 `FAILED_LOGIN_ATTEMPTS` 或 `PASSWORD_LOCK_TIME` 中的一个选项，这时密码连续错误限制登录策略不会实质生效。
 > - 只有当账户的 `FAILED_LOGIN_ATTEMPTS` 和 `PASSWORD_LOCK_TIME` 都不为 0 时，系统才会跟踪该账户的失败登录次数并执行临时锁定。
 
 配置密码连续错误限制登录策略的示例如下：
@@ -394,5 +394,6 @@ ALTER USER 'test3'@'localhost' FAILED_LOGIN_ATTEMPTS 0 PASSWORD_LOCK_TIME 0;
 > **注意：**
 >
 > 当用户因密码连续失败次数达到设定值而被自动锁定时，如果修改该账户的密码连续错误限制登录策略，需要注意：
-> - 修改该用户的登录失败次数 `FAILED_LOGIN_ATTEMPTS`，用户的锁定状态不会改变。修改后的登录失败次数，将在用户解锁后再次登陆尝试中出现密码连续错误时生效。
-> - 修改该用户的锁定时间 `PASSWORD_LOCK_TIME`，用户的锁定状态不会改变。修改后的用户锁定时间，将在账户再次登录尝试时检查是否满足此时的锁定时间要求，锁定时间结束才会解锁该用户。
+>
+> - 修改该用户的登录失败次数 `FAILED_LOGIN_ATTEMPTS`，用户的自动锁定状态不会改变。修改后的连续登录失败次数，将在用户解锁后再次尝试登录时生效。
+> - 修改该用户的锁定时间 `PASSWORD_LOCK_TIME`，用户的自动锁定状态不会改变。修改后的用户锁定时间，将在账户再次登录尝试时检查是否满足此时的锁定时间要求，如果锁定时间结束就会解锁该用户。
