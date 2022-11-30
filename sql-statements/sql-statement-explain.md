@@ -183,7 +183,7 @@ EXPLAIN DELETE FROM t1 WHERE c1=3;
 4 rows in set (0.01 sec)
 ```
 
-在 `EXPLAIN` 中使用 `FORMAT = "xxx"` 语法可以指定输出的内容和格式。
+在 `EXPLAIN` 中使用 `FORMAT = "xxx"` 语法可以指定输出的内容和格式。目前支持的输出格式如下：
 
 | FORMAT      | 作用                                                                |
 |-------------|-------------------------------------------------------------------|
@@ -192,6 +192,10 @@ EXPLAIN DELETE FROM t1 WHERE c1=3;
 | `brief`     | `EXPLAIN` 语句输出结果中的算子 ID 将被简化，较之未指定 `FORMAT` 时输出结果的算子 ID 更为简化      |
 | `dot`       | `EXPLAIN` 语句将输出 DOT 格式的执行计划，可以通过 `dot` 程序（在 `graphviz` 包中）生成 PNG 文件 |
 | `tidb_json` | `EXPLAIN` 语句将输出 JSON 格式的执行计划，算子信息存放在一个 JSON 数组中           |
+
+<SimpleTab>
+
+<div label="brief">
 
 在 `EXPLAIN` 中指定 `FORMAT = "brief"` 时，示例如下:
 
@@ -212,6 +216,9 @@ EXPLAIN FORMAT = "brief" DELETE FROM t1 WHERE c1=3;
 +-------------------------+---------+-----------+---------------+--------------------------------+
 4 rows in set (0.001 sec)
 ```
+
+</div>
+<div label="DotGraph">
 
 除 MySQL 标准结果格式外，TiDB 还支持 DotGraph，需要在 `EXPLAIN` 中指定 `FORMAT = "dot"`，示例如下：
 
@@ -271,6 +278,10 @@ The `xx.dot` is the result returned by the above statement.
 
 ![Explain Dot](/media/explain_dot.png)
 
+</div>
+
+<div label="JSON">
+
 在 `EXPLAIN` 指定 `FORMAT = "tidb_json"` 时，示例如下：
 
 ```sql
@@ -313,6 +324,10 @@ EXPLAIN FORMAT = "tidb_json" SELECT id FROM t WHERE a = 1;
 ```
 
 在输出结果中，`id`、`estRows`、`task`、`access object`、`operator info` 含义与默认格式相同。`subOperators` 是存放子节点的数组，子节点的字段及含义与父节点均相同。若某字段缺失则说明该字段为空。
+
+</div>
+
+</SimpleTab>
 
 ## MySQL 兼容性
 
