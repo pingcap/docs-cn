@@ -451,7 +451,7 @@ WITH CTE1 AS (SELECT * FROM t1), CTE2 AS (WITH CTE3 AS (SELECT /*+ MERGE() */ * 
 
 ### 第一步：使用 `QB_NAME` Hint 重命名视图内的查询块
 
-首先使用 [`QB_NAME` Hint](/optimizer-hints.md#qb_name) 重命名视图内部的查询块。其中针对视图的 `QB_NAME` Hint 的概念与[查询块范围生效的 `QB_NAME` Hint](/optimizer-hints.md#qb_name)相同，只是在语法上进行了相应的拓展。从 `QB_NAME(QB)` 拓展为 `QB_NAME(QB, 表名@查询块名 [.表名@查询块名 .表名@查询块名 ...])`。
+首先使用 [`QB_NAME` Hint](#qb_name) 重命名视图内部的查询块。其中针对视图的 `QB_NAME` Hint 的概念与[查询块范围生效的 `QB_NAME` Hint](#qb_name)相同，只是在语法上进行了相应的拓展。从 `QB_NAME(QB)` 拓展为 `QB_NAME(QB, 表名@查询块名 [.表名@查询块名 .表名@查询块名 ...])`。
 
 > **注意：**
 >
@@ -517,7 +517,7 @@ WITH CTE1 AS (SELECT * FROM t1), CTE2 AS (WITH CTE3 AS (SELECT /*+ MERGE() */ * 
 
 ### 第二步：添加实际需要的 Hint
 
-在定义好视图查询块部分的 `QB_NAME` Hint 后，你可以通过查询块的名字使用[查询块范围生效的 Hint](/optimizer-hints.md#查询块范围生效的-hint)，以“表名@查询块名”的方式加入实际需要的 Hint，使其在视图内部生效。例如：
+在定义好视图查询块部分的 `QB_NAME` Hint 后，你可以通过查询块的名字使用[查询块范围生效的 Hint](#查询块范围生效的-hint)，以“表名@查询块名”的方式加入实际需要的 Hint，使其在视图内部生效。例如：
 
 - 指定视图 `v2` 中第一个查询块的 `MERGE_JOIN()` Hint：
 
