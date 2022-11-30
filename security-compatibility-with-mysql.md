@@ -74,7 +74,7 @@ TiDB 的密码过期策略功能与 MySQL 保持一致，但是在密码过期�
         - 对该用户执行 `ALTER USER ... ACCOUNT UNLOCK` 解锁命令时。
         - 该用户登录成功时。
 
-    + TiDB ：
+    + TiDB：
 
         - 对该用户执行 `ALTER USER ... ACCOUNT UNLOCK` 解锁命令时。
         - 该用户登录成功时。
