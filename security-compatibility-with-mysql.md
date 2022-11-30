@@ -106,7 +106,7 @@ TiDB 的密码重用策略功能与 MySQL 一致，在实现密码重用策略�
 - 场景：没有正确创建用户（例如： `user01` ），而通过 `INSERT INTO mysql.password_history VALUES (...)` 命令直接向 `mysql.password_history` 系统表中添加一条 `user01` 的记录，此时系统表 `mysql.user` 中没有 `user01` 的记录。对该用户执行 `DROP USER` 操作时，TiDB 和 MySQL 状态不一致。
 - 差异点：
 
-    + MySQL：执行 `DROP USER user01` 时，在 `mysql.user` 和 `mysql.password_history` 系统表中匹配 `user01` ，若在两个系统表或其中一个系统表中匹配成功，则 `DROP USER` 命令可以正常执行，不会报错。
+    + MySQL：执行 `DROP USER user01` 时，在 `mysql.user` 和 `mysql.password_history` 系统表中匹配 `user01`，若在两个系统表或其中一个系统表中匹配成功，则 `DROP USER` 命令可以正常执行，不会报错。
     + TiDB：执行 `DROP USER user01` 时，只在 `mysql.user` 系统表中匹配 `user01` ，若没有匹配成功，则 `DROP USER` 命令执行失败，返回报错。此时如果需要成功执行 `DROP USER user01` 命令，请使用 `DROP USER IF EXISTS user01`。
 
 ## 可用的身份验证插件
