@@ -77,14 +77,14 @@ Global Flags:
 - `--start-ts`：指定开始备份日志的起始时间点。如果未指定，备份程序选取当前时间作为 `start-ts`。
 - `task-name`：指定日志备份任务名。该名称也用于查询备份状态、暂停、重启和恢复备份任务等操作。
 - `ca`、`cert`、`key`：指定使用 mTLS 加密方式与 TiKV 和 PD 进行通讯。
-- `--pd`：指定备份集群的 PD 访问地址。BR 需要访问 PD，发起日志备份任务。
+- `--pd`：指定备份集群的 PD 访问地址。br 命令行工具需要访问 PD，发起日志备份任务。
 - `--storage`：指定备份存储地址。日志备份支持以 Amazon S3、Google Cloud Storage (GCS)、Azure Blob Storage 为备份存储，以上命令以 S3 为示例。详细参考[备份存储 URL 格式](/br/backup-and-restore-storages.md#url-格式)。
 
 使用示例：
 
 ```shell
 ./br log start --task-name=pitr --pd="${PD_IP}:2379" \
---storage='s3://backup-101/logbackup?access_key=${access_key}&secret_access_key=${secret_access_key}"'
+--storage='s3://backup-101/logbackup?access-key=${access-key}&secret-access-key=${secret-access-key}"'
 ```
 
 ### 查询日志备份任务
@@ -290,7 +290,7 @@ Global Flags:
 
 ```shell
 ./br log truncate --until='2022-07-26 21:20:00+0800' \
-–-storage='s3://backup-101/logbackup?access_key=${access_key}&secret_access_key=${secret_access_key}"'
+–-storage='s3://backup-101/logbackup?access-key=${access-key}&secret-access-key=${secret-access-key}"'
 ```
 
 该子命令运行后输出以下信息：
@@ -330,7 +330,7 @@ Global Flags:
 使用示例：
 
 ```shell
-./br log metadata –-storage='s3://backup-101/logbackup?access_key=${access_key}&secret_access_key=${secret_access_key}"'
+./br log metadata –-storage='s3://backup-101/logbackup?access-key=${access-key}&secret-access-key=${secret-access-key}"'
 ```
 
 该子命令运行后输出以下信息：
@@ -380,8 +380,8 @@ Global Flags:
 
 ```shell
 ./br restore point --pd="${PD_IP}:2379"
---storage='s3://backup-101/logbackup?access_key=${access_key}&secret_access_key=${secret_access_key}"'
---full-backup-storage='s3://backup-101/snapshot-202205120000?access_key=${access_key}&secret_access_key=${secret_access_key}"'
+--storage='s3://backup-101/logbackup?access-key=${access-key}&secret-access-key=${secret-access-key}"'
+--full-backup-storage='s3://backup-101/snapshot-202205120000?access-key=${access-key}&secret-access-key=${secret-access-key}"'
 
 Full Restore <--------------------------------------------------------------------------------------------------------------------------------------------------------> 100.00%
 *** ***["Full Restore success summary"] ****** [total-take=3.112928252s] [restore-data-size(after-compressed)=5.056kB] [Size=5056] [BackupTS=434693927394607136] [total-kv=4] [total-kv-size=290B] [average-speed=93.16B/s]
