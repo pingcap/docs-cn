@@ -3363,7 +3363,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 是否持久化到集群：是
 - 默认值：`OFF`
 - 类型：布尔型
-- 该变量是密码复杂度策略检查的开关。该变量设置为 ON 后，当设置账户密码时，TiDB 才会进行密码复杂度的各项检查。
+- 该变量是密码复杂度策略检查的开关。该变量设置为 `ON` 后，当设置账户密码时，TiDB 才会进行密码复杂度的各项检查。
 
 ### `validate_password.length` <span class="version-mark">从 v6.5.0 版本开始引入</span>
 
