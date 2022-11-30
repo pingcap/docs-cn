@@ -21,7 +21,7 @@ This document summarizes the FAQs related to TiDB deployment.
 
 ### Why it is recommended to deploy the TiDB cluster on CentOS 7?
 
-As an open source distributed NewSQL database with high performance, TiDB can be deployed in the Intel architecture server and major virtualization environments and runs well. TiDB supports most of the major hardware networks and Linux operating systems. For details, see [Official Deployment Requirements](/hardware-and-software-requirements.md) for deploying TiDB.
+As an open-source distributed SQL database with high performance, TiDB can be deployed in the Intel architecture server and major virtualization environments and runs well. TiDB supports most of the major hardware networks and Linux operating systems. For details, see [Official Deployment Requirements](/hardware-and-software-requirements.md) for deploying TiDB.
 
 A lot of TiDB tests have been carried out in CentOS 7.3, and many deployment best practices have been accumulated in CentOS 7.3. Therefore, it is recommended that you use the CentOS 7.3+ Linux operating system when deploying TiDB.
 
