@@ -312,7 +312,8 @@ EXPLAIN FORMAT = "json" SELECT id FROM t WHERE a = 1;
 1 row in set (0.00 sec)
 ```
 
-在输出结果中，`id`，`estRows`，`task`，`access object`，`operator info` 含义与默认格式相同。`subOperators` 是存放子节点的数组,子节点的字段及含义与父节点均相同。若某字段缺失则说明该字段为空。
+在输出结果中，`id`、`estRows`、
+`task`、`access object`、`operator info` 含义与默认格式相同。`subOperators` 是存放子节点的数组，子节点的字段及含义与父节点均相同。若某字段缺失则说明该字段为空。
 
 ## MySQL 兼容性
 
