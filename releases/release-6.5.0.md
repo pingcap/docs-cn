@@ -14,8 +14,8 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
 相比于前一个 LTS (即 6.1.0 版本)，6.5.0 版本包含 [6.2.0-DMR](/releases/release-6.2.0.md)、[6.3.0-DMR](/releases/release-6.3.0.md)、[6.4.0-DMR](/releases/release-6.4.0.md) 中已发布的新功能、提升改进和错误修复，并引入了以下关键特性：
 
-- 关键特性 1
-- 关键特性 2
+- 优化器代价模型 V2 GA
+- 全局 hint 干预视图内查询的计划生成
 - 关键特性 3
 - ......
 
@@ -78,7 +78,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
     * `regexp_instr`
     * `regexp_substr`
 
-* 新增全局 hint 指定[视图](/develop/dev-guide-use-views.md)内查询的优化器行为 [#37887](https://github.com/pingcap/tidb/issues/37887) @[Reminiscent](https://github.com/Reminiscent)
+* 新增全局 hint 干预[视图](/develop/dev-guide-use-views.md)内查询的计划生成 [#37887](https://github.com/pingcap/tidb/issues/37887) @[Reminiscent](https://github.com/Reminiscent)
 
     [视图](/develop/dev-guide-use-views.md)是数据库常见的建模方式。 当 SQL 语句中包含对视图的访问时，部分情况下需要用 hint 对视图内查询的执行计划进行干预，以获得最佳性能。 在 v6.5.0 中， TiDB 允许针对视图内的查询块添加全局 hint 。 全局 hint 由 “查询块命名” 和 “ hint 引用” 两部分组成，为包含复杂视图嵌套的 SQL 提供 hint 的注入手段， 增强了执行计划控制能力， 进而稳定复杂 SQL 的执行性能。
 
@@ -88,6 +88,13 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
     [分区表](/partitioned-table.md)在 v6.1.0 正式 GA， TiDB 持续提升分区表相关的性能。 在 v6.5.0 中， 排序操作如 `ORDER BY`, `LIMIT` 能够下推至 TiKV 进行计算和过滤，降低网络 I/O 的开销，提升了使用分区表时 SQL 的性能。 
     
+* 优化器代价模型 V2 GA [#35240](https://github.com/pingcap/tidb/issues/35240) @[qw4990](https://github.com/qw4990)
+
+    TiDB v6.2.0 引入了新的代价模型 [Cost Model Version 2](/cost-model.md#cost-model-version-2)，通过更准确的代价估算方式，更加有利于选到最优执行计划，尤其在部署了 TiFlash 的情况下，新的代价模型自动选择合理的存储引擎，避免过多的人工介入。 经过一段时间真实场景在测试，这个模型在 v6.5.0 正式 GA，新创建的集群将默认使用新代价模型。 对于升级到 v6.5.0 的用户，经过充分的性能测试之后，可以通过变量 [`tidb_cost_model_version`](/system-variables.md#tidb_cost_model_version-从-v620-版本开始引入) 切换到新的代价模型。 
+
+    优化器代价模型 V2 的 GA，大幅提升了 TiDB 优化器的整体能力，并切实地向更加强大的 HTAP 数据库演进。 
+
+    更多信息，请参考[用户文档](/cost-model.md#cost-model-version-2)。
 
 ### 事务
 
@@ -194,7 +201,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
 | 变量名  | 修改类型（包括新增/修改/删除）    | 描述 |
 |--------|------------------------------|------|
-|        |                              |      |
+| [`tidb_cost_model_version`](/system-variables.md#tidbcostmodelversion-span-classversion-mark从-v620-版本开始引入span) | 修改 | 优化器模型 V2 GA， 变量默认值改为`2`。   |
 |        |                              |      |
 |        |                              |      |
 |        |                              |      |
