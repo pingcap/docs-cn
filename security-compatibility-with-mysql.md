@@ -101,7 +101,7 @@ TiDB 的密码过期策略功能与 MySQL 保持一致，但是在密码过期�
 - MySQL 8.0 支持密码重用策略管理功能。
 - TiDB 从 v6.4.0 起支持密码重用策略管理功能。
 
-TiDB 的密码重用策略功能与 MySQL 保持一致，在实现密码重用策略时增加了系统表 `mysql.password_history`，TiDB 与 MySQL 在处理删除一个在 `mysql.user` 系统表中不存在的用户时存在差异：
+TiDB 的密码重用策略功能与 MySQL 一致，在实现密码重用策略时都增加了系统表 `mysql.password_history`，但 TiDB 与 MySQL 在删除 `mysql.user` 系统表中不存在的用户时存在以下差异：
 
 - 场景：没有正确创建用户（例如： `user01` ），而通过 `INSERT INTO mysql.password_history VALUES (...)` 命令直接向 `mysql.password_history` 系统表中添加一条 `user01` 的记录，此时系统表 `mysql.user` 中没有 `user01` 的记录。对该用户执行 `DROP USER` 操作时，TiDB 和 MySQL 状态不一致。
 - 差异点：
