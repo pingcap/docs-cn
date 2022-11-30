@@ -59,6 +59,11 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
     * `->>`
     * `JSON_EXTRACT()`
 
+* 新增支持下推[字符串函数](/tiflash/tiflash-supported-pushdown-calculations.md) 至 TiFlash [#6115](https://github.com/pingcap/tiflash/issues/6115) @[xzhangxian1008](https://github.com/xzhangxian1008)
+
+    * `regexp_like`
+    * `regexp_instr`
+
 ### 事务
 
 * 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接)
