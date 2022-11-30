@@ -291,9 +291,9 @@ TiDB Lightning 目前支持由 Dumpling 导出的压缩文件或满足符合上�
 > **注意**
 >
 > - 由于 TiDB Lightning 无法对单个大压缩文件进行并发解压，因此压缩文件的大小会直接影响导入速度。建议压缩数据文件解压后的源文件大小不超过 256 MiB。
-- TiDB Lightning 仅支持导入各自独立压缩的数据文件，不支持导入多个数据文件组成的单个压缩文件集合包。
-- TiDB Lightning 不支持二次压缩的 `parquet` 文件，例如 `db.table.parquet.snappy`。如需压缩 `parquet` 文件，你可以配置 `parquet` 文件数据存储的压缩格式。
-- TiDB v6.4 及之后版本的 TiDB Lightning 不支持带有非 `.bak` 后缀的数据文件并报错。你需要提前修改文件名，或将该类文件移出导入数据目录来避免此类错误。
+> - TiDB Lightning 仅支持导入各自独立压缩的数据文件，不支持导入多个数据文件组成的单个压缩文件集合包。
+> - TiDB Lightning 不支持二次压缩的 `parquet` 文件，例如 `db.table.parquet.snappy`。如需压缩 `parquet` 文件，你可以配置 `parquet` 文件数据存储的压缩格式。
+> - TiDB v6.4 及之后版本的 TiDB Lightning 不支持带有非 `.bak` 后缀的数据文件并报错。你需要提前修改文件名，或将该类文件移出导入数据目录来避免此类错误。
 
 ## 自定义文件匹配
 
