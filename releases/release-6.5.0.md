@@ -111,6 +111,37 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
 ### 数据迁移
 
+* 支持导出和导入压缩后的 CSV、SQL 文件 [#38514](https://github.com/pingcap/tidb/issues/38514) @[lichunzhu](https://github.com/lichunzhu)
+
+功能描述：支持导出和导入压缩后的 CSV 文件
+        功能简介：Dumpling 支持将数据导出为 SQL、CSV 的压缩文件，支持 gzip/snappy/zstd 三种压缩格式。Lightning 支持导入压缩后的 SQL、CSV 文件，支持gzip/snappy/zstd 三种压缩格式。
+        功能价值：之前用户导出数据或者导入数据都需要提供较大的存储空间，用于存储导出或者即将导入的非压缩后的 csv 、sql文件，导致存储成本增加。该功能发布后，通过压缩存储空间，可以大大降低用户的存储成本。
+        如何使用：参考用户文档
+    更多信息，请参考[用户文档](https://github.com/pingcap/tidb/issues/38514)。
+
+
+* 优化了 binlog 解析能力 [#无](无) @[gmhdbjd](https://github.com/GMHDBJD)
+
+功能描述：优化了 binlog 解析能力
+        功能简介： 可将不在迁移任务里的库、表对象的 binlog event 过滤掉不做解析，从而提升解析效率和稳定性。 
+        功能价值： 原先用户仅迁移少数几张表，也需要解析上游整个 binlog 文件，即仍需要解析该 binlog 文件中不需要迁移的表的 binlog event，效率会比较低，同时如果不在迁移任务里的库表的 binlog event 不支持解析，还会导致任务失败。通过只解析在迁移任务里的库表对象的 binlog event 可以大大提升 binlog 解析效率，提升任务稳定性。
+        如何使用：该策略在 6.5 版本默认生效，用户不感知。
+
+* Lightning 支持  disk quota 特性 GA，可避免 Lightning 任务写满本地磁盘 [#无](无) @[buchuitoudegou](https://github.com/buchuitoudegou)
+功能描述：Lightning 支持  disk quota 特性 GA，可避免写 Lightning 任务满本地磁盘
+        功能简介：你可以为 TiDB Lightning 配置磁盘配额 (disk quota)。当磁盘配额不足时，TiDB Lightning 会暂停读取源数据以及写入临时文件的过程，优先将已经完成排序的 key-value 写入到 TiKV，TiDB Lightning 删除本地临时文件后，再继续导入过程。
+        功能价值： 没有这个功能之前，TiDB Lightning 在使用物理模式导入数据时，会在本地磁盘创建大量的临时文件，用来对原始数据进行编码、排序、分割。当用户本地磁盘空间不足时，TiDB Lightning 会由于写入文件失败而报错退出。 
+        如何使用：参考用户文档
+    更多信息，请参考[用户文档]( https://docs.pingcap.com/tidb/v6.4/tidb-lightning-physical-import-mode-usage#configure-disk-quota-new-in-v620)。
+
+
+* GA DM 增量数据校验的功能 [#4426](https://github.com/pingcap/tiflow/issues/4426) @[[D3Hunter](https://github.com/D3Hunter)
+功能描述： GA DM 增量数据校验的功能
+        功能简介： 在将增量数据从上游迁移到下游数据库的过程中，数据的流转有小概率导致错误或者丢失的情况。对于需要依赖于强数据一致的场景，如信贷、证券等业务，你可以在数据迁移完成之后对数据进行全量校验，确保数据的一致性。然而，在某些增量复制的业务场景下，上游和下游的写入是持续的、不会中断的，因为上下游的数据在不断变化，导致用户难以对表里面的全部数据进行一致性校验。
+        功能价值： 过去，需要中断业务，做全量数据校验，会影响用户业务。现在推出该功能后，在一些不可中断的业务场景，无需中断业务，通过该功能就可以实现增量数据校验。
+        如何使用：参考用户文档
+    更多信息，请参考[用户文档]( https://docs.pingcap.com/tidb/v6.4/dm-continuous-data-validation)。
+
 * 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接)
 
     功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
