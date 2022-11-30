@@ -16,7 +16,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
 - 优化器代价模型 V2 GA
 - 全局 hint 干预视图内查询的计划生成
-- 关键特性 3
+- 满足密码合规审计需求 [密码管理](/password-management.md)
 - ......
 
 ## 新功能
@@ -40,11 +40,32 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
 ### 安全
 
-* 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接)
+* 支持密码复杂度策略 [#38928](https://github.com/pingcap/tidb/issues/38928) @[CbcWestwolf](https://github.com/CbcWestwolf)
 
-    功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
+    TiDB 启用密码复杂度策略功能后，在为用户设置密码时，会检查密码长度、大写/小写字符个数、数字字符个数、特殊字符个数、密码字典、是否与用户名相同，以此确保为用户设置一个安全的密码。
+    
+    TiDB 支持密码强度检查函数 `VALIDATE_PASSWORD_STRENGTH()`，用于判定一个给定密码的强度。
+    
+    更多信息，请参考[用户文档](/password-management.md#密码复杂度策略)。
+    
 
-    更多信息，请参考[用户文档](链接)。
+* 支持密码过期策略 [#38936](https://github.com/pingcap/tidb/issues/38936) @[CbcWestwolf](https://github.com/CbcWestwolf)
+
+    TiDB 支持密码过期策略，包括：手动密码过期、全局级别自动密码过期、账户级别自动密码过期。启用密码过期策略功能后，用户必须定期修改密码，防止密码长期使用带来的泄露风险，提高密码安全性。
+    
+    更多信息，请参考[用户文档](/password-management.md#密码过期策略)
+
+* 支持密码重用策略 [#38937](https://github.com/pingcap/tidb/issues/38937) @[keeplearning20221](https://github.com/keeplearning20221)
+
+    TiDB 支持密码重用策略，包括：全局级别密码重用策略、账户级别密码重用策略。启用密码重用策略功能后，用户不允许使用最近一段时间使用过的密码，不允许使用最近几次使用过的密码，以此降低密码的重复使用带来的泄漏风险，提高密码安全性。
+    
+    更多信息，请参考[用户文档](/password-management.md#密码重用策略)
+
+* 支持密码连续错误限制登录策略 [#38938](https://github.com/pingcap/tidb/issues/38938) @[lastincisor](https://github.com/lastincisor)
+
+    TiDB 启用密码连续错误限制登录策略功能后，当用户登录时密码连续多次错误，此时该账户将被临时锁定，达到锁定时间后将自动解锁。
+    
+    更多信息，请参考[用户文档](/password-management.md#密码连续错误限制登录策略)
 
 ### 可观测性
 
