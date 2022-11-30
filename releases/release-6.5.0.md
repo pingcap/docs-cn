@@ -63,6 +63,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
     * `regexp_like`
     * `regexp_instr`
+    * `regexp_substr`
 
 ### 事务
 
