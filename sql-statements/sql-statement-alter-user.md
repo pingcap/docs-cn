@@ -146,14 +146,14 @@ SELECT * FROM information_schema.user_attributes;
 通过 `ALTER USER ... PASSWORD EXPIRE NEVER` 修改用户 `newuser` 的自动密码过期策略为永不过期：
 
 ```sql
-ALTER USER 'newuser' PASSWORD EXPIRE DEFAULT;
+ALTER USER 'newuser' PASSWORD EXPIRE NEVER;
 ```
 
 ```
 Query OK, 0 rows affected (0.02 sec)
 ```
 
-通过 `ALTER USER ... PASSWORD REUSE INTERVAL ... DAY` 修改用户 `newuser` 的密码重用策略为不允许重复使用最近90天内使用过的密码：
+通过 `ALTER USER ... PASSWORD REUSE INTERVAL ... DAY` 修改用户 `newuser` 的密码重用策略为不允许重复使用最近 90 天内使用过的密码：
 
 ```sql
 ALTER USER 'newuser' PASSWORD REUSE INTERVAL 90 DAY;

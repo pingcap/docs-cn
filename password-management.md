@@ -39,7 +39,7 @@ summary: 了解 TiDB 的用户密码管理机制。
 通过以下 SQL 语句，你可以查看所有密码复杂度策略相关的系统变量：
 
 ```sql
-SHOW VARIABLES LIKE 'validate_password.%';
+mysql> SHOW VARIABLES LIKE 'validate_password.%';
 +--------------------------------------+--------+
 | Variable_name                        | Value  |
 +--------------------------------------+--------+
@@ -352,7 +352,7 @@ TiDB 支持限制账户持续尝试登录，防止用户密码被暴力破解。
 每个账户的登录失败次数和锁定时间是可配置的，你可以使用 `CREATE USER`、`ALTER USER` 语句的 `FAILED_LOGIN_ATTEMPTS` 和 `PASSWORD_LOCK_TIME` 选项。`FAILED_LOGIN_ATTEMPTS` 和 `PASSWORD_LOCK_TIME` 选项的可设置值如下：
 
 - `FAILED_LOGIN_ATTEMPTS`：N。表示连续登录失败 N 次后，账户将被临时锁定。N 取值范围为 0 到 32767。
-- `PASSWORD_LOCK_TIME`：N | UNBOUNDED。N 表示登录失败后，账户将被临时锁定 N 天。UNBOUNDED 表明锁定时间无限期，账户必须被手动解锁。N 取值范围为 0 到 32767 。
+- `PASSWORD_LOCK_TIME`：N | UNBOUNDED。N 表示登录失败后，账户将被临时锁定 N 天。UNBOUNDED 表明锁定时间无限期，账户必须被手动解锁。N 取值范围为 0 到 32767。
 
 > **注意：**
 >
