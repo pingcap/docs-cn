@@ -47,7 +47,7 @@ TiDB 的密码过期策略功能与 MySQL 保持一致，但是在密码过期�
 
     + MySQL 5.7 以 validate_password 插件的形式实现，需要进行插件的安装以启用密码复杂度策略管理。
     + MySQL 8.0 以 validate_password 组件的形式实现，需要进行组件的安装以启用密码复杂度策略管理。
-    + TiDB 内置实现了密码复杂度策略管理，通过系统变量 `validate_password.enable` 启用密码复杂度策略管理。
+    + TiDB 内置实现了密码复杂度策略管理，支持通过系统变量 [`validate_password.enable`](/system-variables.md#disconnect_on_expired_password-从-v650-版本开始引入) 启用密码复杂度策略管理。
 
 - 密码字典功能：
 
