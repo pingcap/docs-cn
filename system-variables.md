@@ -1879,13 +1879,13 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 这个变量用来设置 index lookup join 算法的并发度。
 - 默认值 `-1` 表示使用 `tidb_executor_concurrency` 的值。
 
-### `tidb_index_merge_intersection_concurrency`
+### `tidb_index_merge_intersection_concurrency` <span class="version-mark">从 v6.5.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 默认值：`-1`
 - 范围：`[1, 256]`
-- 这个变量用来设置 IndexMerge 进行交集操作时的最大并发度，仅在以动态裁剪模式访问分区表时有效，实际并发度为 min(`tidb_index_merge_intersection_concurrency`, 分区表分区数目)
+- 这个变量用来设置 IndexMerge 进行交集操作时的最大并发度，仅在以动态裁剪模式访问分区表时有效，实际并发度为 `tidb_index_merge_intersection_concurrency` 与分区表分区数目两者中较小的值。
 - 默认值 `-1` 表示使用 `tidb_executor_concurrency` 的值。
 
 ### `tidb_index_lookup_size`

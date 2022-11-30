@@ -358,9 +358,11 @@ SELECT /*+ READ_FROM_STORAGE(TIFLASH[t1], TIKV[t2]) */ t1.a FROM t t1, t t2 WHER
 
 ### USE_INDEX_MERGE(t1_name, idx1_name [, idx2_name ...])
 
-`USE_INDEX_MERGE(t1_name, idx1_name [, idx2_name ...])` 提示优化器通过 [index merge](/explain-index-merge.md) 的方式来访问指定的表。
+`USE_INDEX_MERGE(t1_name, idx1_name [, idx2_name ...])` 提示优化器通过 index merge 的方式来访问指定的表。Index merge 分为并集型和交集型两种类型，详情参见[用 EXPLAIN 查看索引合并的 SQL 执行计划](/explain-index-merge.md)。
 
-对于并集型 index merge，其中索引列表为可选参数，若显式地指出索引列表，会尝试在索引列表中选取索引来构建 index merge。若不给出索引列表，会尝试在所有可用的索引中选取索引来构建 index merge。对于交集型 index merge，索引列表是必选参数。例如：
+对于并集型 index merge，hint 中的索引列表为可选参数，若显式地指定索引列表，优化器会尝试在索引列表中选取索引来构建 index merge。若不指定索引列表，优化器会尝试在所有可用的索引中选取索引来构建 index merge。示例如下。
+
+对于交集型 index merge，索引列表是必选参数。
 
 {{< copyable "sql" >}}
 
