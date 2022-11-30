@@ -3402,7 +3402,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 类型：枚举型
 - 默认值：`1`
 - 可选值：`[0, 1, 2]`
-- 该变量是[密码复杂度策略检查](/password-management.md#密码复杂度策略)的强度策略，该变量影响其他密码复杂度系统变量（前缀为 `validate_password`）在密码检查时是否生效，但是 `validate_password.check_user_name` 除外。只有 `validate_password.enable` 开启时，`validate_password.policy` 才生效。
+- 该变量是[密码复杂度策略检查](/password-management.md#密码复杂度策略)的强度策略，该变量影响其他密码复杂度系统变量（前缀为 `validate_password`）在密码检查时是否生效，但是 `validate_password.check_user_name` 除外。只有 [`validate_password.enable`](/system-variables.md#password_reuse_interval-从-v650-版本开始引入) 开启时，该变量才生效。
 - 该变量可以使用数值 0、1、2 或相应的符号值 LOW、MEDIUM、STRONG，密码强度策略对应的检查项如下：
     - 0 或者 LOW：检查密码长度。
     - 1 或者 MEDIUM：检查密码长度，检查密码中数字、小写字符、大写字符、特殊字符数量。
