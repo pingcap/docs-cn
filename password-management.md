@@ -381,7 +381,7 @@ ALTER USER 'test3'@'localhost' FAILED_LOGIN_ATTEMPTS 0 PASSWORD_LOCK_TIME 0;
 
 ### 锁定账户解锁
 
-在以下场景将重置用户密码连续错误次数的计数：
+在以下场景中，TiDB 将重置用户密码连续错误次数的计数：
 
 - 对该用户执行 `ALTER USER ... ACCOUNT UNLOCK` 解锁命令时。
 - 该用户登录成功时。
