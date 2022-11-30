@@ -3383,7 +3383,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 类型：整数
 - 默认值：`1`
 - 范围：`[0, 2147483647]`
-- 该变量是密码复杂度策略检查的一部分,限定密码中的小写字符数和大写字符数的最小值。只有 `validate_password.enable` 开启时，该变量才生效。如果需要检查密码中的小写、大写字符数要求，密码策略必须设置为 1 (MEDIUM) 或者更强。
+- 该变量是密码复杂度策略检查中的一个检查项，用于限定密码中至少需要包含多少个大写字符和小写字符。只有当 [`validate_password.enable`](/system-variables.md#password_reuse_interval-从-v650-版本开始引入) 开启且 [validate_password.policy](/system-variables.md#validate_passworddictionary-从-v650-版本开始引入) 大于或等于 `1` (MEDIUM) 时，该变量才生效。
 - 对于给定的 `validate_password.mixed_case_count` 值，密码中的小写字符数和大写字符数都不能少于该值。例如，值为 1 时，密码中至少需要 1 个小写字母，至少需要 1 个大写字母。
 
 ### `validate_password.number_count` <span class="version-mark">从 v6.5.0 版本开始引入</span>
