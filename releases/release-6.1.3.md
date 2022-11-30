@@ -55,7 +55,7 @@ TiDB 版本：6.1.3
 
     <!--storage owner: flowbehappy -->
 
-    - Fix too many column files under heavy write pressure. [#6361](https://github.com/pingcap/tiflash/issues/6361) @[lidezhu](https://github.com/lidezhu)
+    - 修复高压力写可能产生太多 delta 层小文件的问题 [#6361](https://github.com/pingcap/tiflash/issues/6361) @[lidezhu](https://github.com/lidezhu)
     - Fix the problem that column files in delta layer cannot be compacted after restart tiflash [#6159](https://github.com/pingcap/tiflash/issues/6159) @[lidezhu](https://github.com/lidezhu)
 
 + Tools
