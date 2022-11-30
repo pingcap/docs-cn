@@ -86,6 +86,8 @@ TiDB 版本：6.1.3
 
         - Fix the issue that when `collation_compatible` is set to `"strict"`, DM might generate SQL with duplicated collations [#6832](https://github.com/pingcap/tiflow/issues/6832) @[lance6716](https://github.com/lance6716)
         - Fix sometime DM task is stopped with error "Unknown placement policy" [#7493](https://github.com/pingcap/tiflow/issues/7493) @[lance6716](https://github.com/lance6716)
+        - Fix in some cases log contains many "COMMIT" related lines and relay log file may re-pull from upstream [#7719](https://github.com/pingcap/tiflow/pull/7719) @[liumengya94](https://github.com/liumengya94)
+        - Fix when DM worker exits a new worker may be scheduled too quickly and write duplicated data [#7745](https://github.com/pingcap/tiflow/pull/7745) @[GMHDBJD](https://github.com/GMHDBJD)
 
     + TiDB Lightning
 
