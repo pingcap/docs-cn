@@ -106,7 +106,7 @@ MySQL 系统变量 `optimizer_switch` 在 TiDB 中是只读的，对查询计划
 
 TiDB 中，所有支持的 DDL 变更操作都是在线执行的。与 MySQL 相比，TiDB 中的 DDL 存在以下限制：
 
-* 使用 `ALTER TABLE` 语句修改一个表的多个模式对象（如列、索引）时，不允许在多个更改中指定同一个模式对象。例如，`ALTER TABLE t1 MODIFY COLUMN c1 INT, DROP COLUMN c1` 在两个更改中都指定了 `c1` 列，执行该语句会输出 `Unsupported operate same column/index` 的错误。
+* 使用 `ALTER TABLE` 语句修改一个表的多个模式对象（如列）时，不允许在多个更改中指定同一个模式对象。例如，`ALTER TABLE t1 MODIFY COLUMN c1 INT, DROP COLUMN c1` 在两个更改中都指定了 `c1` 列，执行该语句会输出 `Unsupported operate same column/index` 的错误。
 * 不支持使用单个 `ALTER TABLE` 语句同时修改多个 TiDB 特有的模式对象，包括 `TIFLASH REPLICA`，`SHARD_ROW_ID_BITS`，`AUTO_ID_CACHE` 等。
 * `ALTER TABLE` 不支持少部分类型的变更。比如，TiDB 不支持从 `DECIMAL` 到 `DATE` 的变更。当遇到不支持的类型变更时，TiDB 将会报 `Unsupported modify column: type %d not match origin %d` 的错误。更多细节，请参考 [`ALTER TABLE`](/sql-statements/sql-statement-modify-column.md)。
 * TiDB 中，`ALGORITHM={INSTANT,INPLACE,COPY}` 语法只作为一种指定，并不更改 `ALTER` 算法，详情参阅 [`ALTER TABLE`](/sql-statements/sql-statement-alter-table.md)。
