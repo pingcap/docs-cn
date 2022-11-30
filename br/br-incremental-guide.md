@@ -13,17 +13,17 @@ TiDB 集群增量数据包含在某个时间段的起始和结束两个快照的
 
 ## 对集群进行增量备份
 
-使用 `br backup` 进行增量备份只需要指定**上一次的备份时间戳** `--lastbackupts`，BR 会判定需要备份 `lastbackupts` 和当前时间之间增量数据。使用 `validate` 指令获取上一次备份的时间戳，示例如下：
+使用 `br backup` 进行增量备份只需要指定**上一次的备份时间戳** `--lastbackupts`，br 命令行工具会判定需要备份 `lastbackupts` 和当前时间之间增量数据。使用 `validate` 指令获取上一次备份的时间戳，示例如下：
 
 ```shell
-LAST_BACKUP_TS=`tiup br validate decode --field="end-version" --storage "s3://backup-101/snapshot-202209081330?access_key=${access_key}&secret_access_key=${secret_access_key}"| tail -n1`
+LAST_BACKUP_TS=`tiup br validate decode --field="end-version" --storage "s3://backup-101/snapshot-202209081330?access-key=${access-key}&secret-access-key=${secret-access-key}"| tail -n1`
 ```
 
 备份 `(LAST_BACKUP_TS, current timestamp]` 之间的增量数据，以及这段时间内的 DDL：
 
 ```shell
 tiup br backup full --pd "${PD_IP}:2379" \
---storage "s3://backup-101/snapshot-202209081330/incr?access_key=${access_key}&secret_access_key=${secret_access_key}" \
+--storage "s3://backup-101/snapshot-202209081330/incr?access-key=${access-key}&secret-access-key=${secret-access-key}" \
 --lastbackupts ${LAST_BACKUP_TS} \
 --ratelimit 128
 ```
@@ -42,12 +42,12 @@ tiup br backup full --pd "${PD_IP}:2379" \
 
 ```shell
 tiup br restore full --pd "${PD_IP}:2379" \
---storage "s3://backup-101/snapshot-202209081330?access_key=${access_key}&secret_access_key=${secret_access_key}"
+--storage "s3://backup-101/snapshot-202209081330?access-key=${access-key}&secret-access-key=${secret-access-key}"
 ```
 
 恢复全量备份后的增量备份数据，备份数据存储在 `backup-101/snapshot-202209081330/incr` 目录下：
 
 ```shell
 tiup br restore full --pd "${PD_IP}:2379" \
---storage "s3://backup-101/snapshot-202209081330/incr?access_key=${access_key}&secret_access_key=${secret_access_key}"
+--storage "s3://backup-101/snapshot-202209081330/incr?access-key=${access-key}&secret-access-key=${secret-access-key}"
 ```
