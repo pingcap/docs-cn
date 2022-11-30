@@ -3335,9 +3335,9 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 是否持久化到集群：是
 - 默认值：`ON`
 - 类型：布尔型
-- 该变量是密码复杂度策略检查中的一个检查项，用于进行密码与用户名匹配检查。只有 [`validate_password.enable`](/system-variables.md#password_reuse_interval-从-v650-版本开始引入) 开启时，该变量才生效。
+- 该变量是密码复杂度策略检查中的一个检查项，用于进行密码与用户名匹配检查。只有 [`validate_password.enable`](/system-variables.md#validate_passwordenable-从-v650-版本开始引入) 开启时，该变量才生效。
 - 当该变量生效且为 `ON` 时，如果设置账户密码，TiDB 会将密码与当前会话账户的用户名部分（不包含主机名部分）进行比较，如果匹配则拒绝该密码。
-- 该变量独立于 [validate_password.policy](/system-variables.md#validate_passworddictionary-从-v650-版本开始引入)，即不受密码复杂度检测强度的控制。
+- 该变量独立于 [validate_password.policy](/system-variables.md#validate_passwordpolicy-从-v650-版本开始引入)，即不受密码复杂度检测强度的控制。
 
 ### `validate_password.dictionary` <span class="version-mark">从 v6.5.0 版本开始引入</span>
 
@@ -3345,7 +3345,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 是否持久化到集群：是
 - 默认值：""
 - 类型：字符串
-- 该变量是密码复杂度策略检查中的一个检查项，用于进行密码与字典字符串匹配检查。只有当 [`validate_password.enable`](/system-variables.md#password_reuse_interval-从-v650-版本开始引入) 开启且 [validate_password.policy](/system-variables.md#validate_passworddictionary-从-v650-版本开始引入) 设置为 `2` (STRONG) 时，该变量才生效。
+- 该变量是密码复杂度策略检查中的一个检查项，用于进行密码与字典字符串匹配检查。只有当 [`validate_password.enable`](/system-variables.md#validate_passwordenable-从-v650-版本开始引入) 开启且 [validate_password.policy](/system-variables.md#validate_passwordpolicy-从-v650-版本开始引入) 设置为 `2` (STRONG) 时，该变量才生效。
 - 该变量是一个长字符串，长度不超过 1024，字符串内容可包含一个或多个在密码中不允许出现的单词，每个单词之间采用英文分号（`;`）分隔。
 - 默认情况下，该变量为空值，不执行字典检查。要进行字典检查，该变量值必须包含待匹配的单词。配置了该变量后，在设置账户密码时，TiDB 会将长度为 4 到 100 的密码的每个子字符串与该变量中配置的单词进行比较。任何匹配都会导致密码被拒绝。比较不区分大小写。
 
@@ -3364,7 +3364,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 类型：整数
 - 默认值：`8`
 - 范围：`[0, 2147483647]`
-- 该变量是密码复杂度策略检查中的一个检查项，用于限定密码的最小长度，默认最小长度为 8。只有 [`validate_password.enable`](/system-variables.md#password_reuse_interval-从-v650-版本开始引入) 开启时，该变量才生效。
+- 该变量是密码复杂度策略检查中的一个检查项，用于限定密码的最小长度，默认最小长度为 8。只有 [`validate_password.enable`](/system-variables.md#validate_passwordenable-从-v650-版本开始引入) 开启时，该变量才生效。
 - 设置该变量时有最小值要求，最小值由其他几个相关的系统变量控制，即该变量的值不能设置为小于此表达式的值：`validate_password.number_count + validate_password.special_char_count + (2 * validate_password.mixed_case_count)`。
 - 当用户修改 `validate_password.number_count`、`validate_password.special_char_count`、`validate_password.mixed_case_count` 后导致表达式的值大于 `validate_password.length `时，`validate_password.length` 将自动被修改为满足表达式的最小值。
 
@@ -3375,7 +3375,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 类型：整数
 - 默认值：`1`
 - 范围：`[0, 2147483647]`
-- 该变量是密码复杂度策略检查中的一个检查项，用于限定密码中至少需要包含多少个大写字符和小写字符。只有当 [`validate_password.enable`](/system-variables.md#password_reuse_interval-从-v650-版本开始引入) 开启且 [validate_password.policy](/system-variables.md#validate_passworddictionary-从-v650-版本开始引入) 大于或等于 `1` (MEDIUM) 时，该变量才生效。
+- 该变量是密码复杂度策略检查中的一个检查项，用于限定密码中至少需要包含多少个大写字符和小写字符。只有当 [`validate_password.enable`](/system-variables.md#validate_passwordenable-从-v650-版本开始引入) 开启且 [validate_password.policy](/system-variables.md#validate_passwordpolicy-从-v650-版本开始引入) 大于或等于 `1` (MEDIUM) 时，该变量才生效。
 - 对于给定的 `validate_password.mixed_case_count` 值，密码中的小写字符数和大写字符数都不能少于该值。例如，值为 1 时，密码中至少需要 1 个小写字母，至少需要 1 个大写字母。
 
 ### `validate_password.number_count` <span class="version-mark">从 v6.5.0 版本开始引入</span>
@@ -3385,7 +3385,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 类型：整数
 - 默认值：`1`
 - 范围：`[0, 2147483647]`
-- 该变量是密码复杂度策略检查中的一个检查项，用于限定密码中至少需要包含多少个数字字符。只有当 [`validate_password.enable`](/system-variables.md#password_reuse_interval-从-v650-版本开始引入) 开启且 [validate_password.policy](/system-variables.md#validate_passworddictionary-从-v650-版本开始引入) 大于或等于 `1` (MEDIUM) 时，该变量才生效。
+- 该变量是密码复杂度策略检查中的一个检查项，用于限定密码中至少需要包含多少个数字字符。只有当 [`validate_password.enable`](/system-variables.md#validate_passwordenable-从-v650-版本开始引入) 开启且 [validate_password.policy](/system-variables.md#validate_passwordpolicy-从-v650-版本开始引入) 大于或等于 `1` (MEDIUM) 时，该变量才生效。
 
 ### `validate_password.policy` <span class="version-mark">从 v6.5.0 版本开始引入</span>
 
@@ -3394,7 +3394,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 类型：枚举型
 - 默认值：`1`
 - 可选值：`[0, 1, 2]`
-- 该变量是[密码复杂度策略检查](/password-management.md#密码复杂度策略)的强度策略，该变量影响其他密码复杂度系统变量（前缀为 `validate_password`）在密码检查时是否生效，但是 `validate_password.check_user_name` 除外。只有 [`validate_password.enable`](/system-variables.md#password_reuse_interval-从-v650-版本开始引入) 开启时，该变量才生效。
+- 该变量是[密码复杂度策略检查](/password-management.md#密码复杂度策略)的强度策略，该变量影响其他密码复杂度系统变量（前缀为 `validate_password`）在密码检查时是否生效，但是 `validate_password.check_user_name` 除外。只有 [`validate_password.enable`](/system-variables.md#validate_passwordenable-从-v650-版本开始引入) 开启时，该变量才生效。
 - 该变量可以使用数值 0、1、2 或相应的符号值 LOW、MEDIUM、STRONG，密码强度策略对应的检查项如下：
     - 0 或者 LOW：检查密码长度。
     - 1 或者 MEDIUM：检查密码长度，检查密码中数字、小写字符、大写字符、特殊字符数量。
@@ -3407,7 +3407,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 类型：整数
 - 默认值：`1`
 - 范围：`[0, 2147483647]`
-- 该变量是密码[复杂度策略检查](/password-management.md#密码复杂度策略)中的一个检查项，用于限定密码中至少需要包含多少个特殊字符。只有当 [`validate_password.enable`](/system-variables.md#password_reuse_interval-从-v650-版本开始引入) 开启且 [validate_password.policy](/system-variables.md#validate_passworddictionary-从-v650-版本开始引入) 大于或等于 `1` (MEDIUM) 时，该变量才生效。
+- 该变量是密码[复杂度策略检查](/password-management.md#密码复杂度策略)中的一个检查项，用于限定密码中至少需要包含多少个特殊字符。只有当 [`validate_password.enable`](/system-variables.md#validate_passwordenable-从-v650-版本开始引入) 开启且 [validate_password.policy](/system-variables.md#validate_passwordpolicy-从-v650-版本开始引入) 大于或等于 `1` (MEDIUM) 时，该变量才生效。
 
 ### `version`
 
