@@ -11,7 +11,16 @@ TiDB 版本：6.1.3
 试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v6.1/quick-start-with-tidb) | [生产部署](https://docs.pingcap.com/zh/tidb/v6.1/production-deployment-using-tiup) | [下载离线包](https://cn.pingcap.com/product-community/?version=v6.1.3#version-list)
 
 ## 提升改进
+- PD
 
+    - 优化锁粒度，提升高并发下心跳的处理能力 [#5586](https://github.com/tikv/pd/issues/5586) @[rleungx](https://github.com/rleungx)
+
+- Tools
+
+    - TiCDC
+
+        - 修改同步任务 safe-mode 和拆分大事务默认值提升性能  [#7505](https://github.com/pingcap/tiflow/issues/7505) @[asddongmen](https://github.com/asddongmen)
+        - 提升 Kafka 相关协议的编码性能. [#7540](https://github.com/pingcap/tiflow/issues/7540), [#7532](https://github.com/pingcap/tiflow/issues/7532), [#7543](https://github.com/pingcap/tiflow/issues/7543) @[sdojjy](https://github.com/sdojjy) @[3AceShowHand](https://github.com/3AceShowHand)
 ## Bug 修复
 
 + TiDB
@@ -28,7 +37,8 @@ TiDB 版本：6.1.3
 
     <!--executor owner: zanmato1984-->
 
-    <!--planner owner: qw4990-->
+    - 修复 Projection 算子错误下推表达式过 Join 算子的问题 [#38736](https://github.com/pingcap/tidb/issues/38736) @[winoros](https://github.com/winoros)
+    - 修复统计信息后台任务搜集分区表统计信息时可能崩溃的问题 [#35421](https://github.com/pingcap/tidb/issues/35421) @[lilinghai](https://github.com/lilinghai)
 
     <!--transaction owner:cfzjywxk -->
 
