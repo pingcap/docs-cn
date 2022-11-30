@@ -3345,7 +3345,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 类型：布尔型
 - 该变量是密码复杂度策略检查中的一个检查项，用于进行密码与用户名匹配检查。只有 [`validate_password.enable`](/system-variables.md#password_reuse_interval-从-v650-版本开始引入) 开启时，该变量才生效。
 - 当该变量生效且为 `ON` 时，如果设置账户密码，TiDB 会将密码与当前会话账户的用户名部分（不包含主机名部分）进行比较，如果匹配则拒绝该密码。
-- 此变量独立于 validate_password.policy，即不受密码复杂度检测强度的影响。
+- 该变量独立于 [validate_password.policy](/system-variables.md#validate_passworddictionary-从-v650-版本开始引入)，即不受密码复杂度检测强度的控制。
 
 ### `validate_password.dictionary` <span class="version-mark">从 v6.5.0 版本开始引入</span>
 
