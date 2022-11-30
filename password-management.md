@@ -108,7 +108,7 @@ SET GLOBAL validate_password.dictionary = 'mysql;abcd';
 
 配置系统变量 `validate_password.enable = ON` 后，TiDB 将开启密码复杂度检查。以下为一些典型的检查示例：
 
-按照默认密码复杂度策略，检测用户明文密码，若采用弱密码，则设置失败。
+按照默认密码复杂度策略，检测用户明文密码，若设置的密码不符合复杂度策略，则设置失败。
 
 ```sql
 ALTER USER 'test'@'localhost' IDENTIFIED BY 'abc';
