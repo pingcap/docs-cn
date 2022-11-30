@@ -67,9 +67,14 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
 * 新增全局 hint 指定[视图](/develop/dev-guide-use-views.md)内查询的优化器行为 [#37887](https://github.com/pingcap/tidb/issues/37887) @[Reminiscent](https://github.com/Reminiscent)
 
-    [视图](/develop/dev-guide-use-views.md)是数据库常见的建模方式。 当 SQL 语句中包含对视图的访问时，部分情况下需要用 hint 对视图内查询的优化行为进行干预，以获得最佳执行计划。 在 v6.5.0 中， TiDB 允许针对视图内的查询块添加全局 hint 。 全局 hint 由 “查询块命名” 和 “ hint 引用” 两部分组成，为包含复杂视图嵌套的 SQL 提供 hint 的注入手段， 增强了执行计划控制能力， 进而稳定复杂 SQL 的执行性能。
+    [视图](/develop/dev-guide-use-views.md)是数据库常见的建模方式。 当 SQL 语句中包含对视图的访问时，部分情况下需要用 hint 对视图内查询的执行计划进行干预，以获得最佳性能。 在 v6.5.0 中， TiDB 允许针对视图内的查询块添加全局 hint 。 全局 hint 由 “查询块命名” 和 “ hint 引用” 两部分组成，为包含复杂视图嵌套的 SQL 提供 hint 的注入手段， 增强了执行计划控制能力， 进而稳定复杂 SQL 的执行性能。
 
     更多信息，请参考[用户文档](/optimizer-hints.md#全局生效的-Hint)。
+
+* [分区表](/partitioned-table.md)的排序操作下推至 TiKV [#26166](https://github.com/pingcap/tidb/issues/26166) @[winoros](https://github.com/winoros)
+
+    [分区表](/partitioned-table.md)在 v6.1.0 正式 GA， TiDB 持续提升分区表相关的性能。 在 v6.5.0 中， 排序操作如 `ORDER BY`, `LIMIT` 能够下推至 TiKV 进行计算和过滤，降低网络 I/O 的开销，提升了使用分区表时 SQL 的性能。 
+    
 
 ### 事务
 
