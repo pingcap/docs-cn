@@ -132,7 +132,7 @@ TiDB 版本：6.4.0-DMR
 
 * 降低批量写入请求对轻量级事务写入的响应时间的影响 [#13313](https://github.com/tikv/tikv/issues/13313) @[glorv](https://github.com/glorv)
 
-  定时批量 DML 任务存在于一部分系统的业务逻辑中。在此场景下，处理这些批量写入任务会对在线交易的时延造成不小的影响。在 v6.3.0 中，TiKV 对混合负载场景下读请求的优先级进行了优化，你可以通过 [`readpool.unified.auto-adjust-pool-size`](/[tikv-configuration-file.md](http://tikv-configuration-file.md/)#auto-adjust-pool-size-从-v630-版本开始引入)配置项开启 TiKV 对处理读请求的线程池大小的自动调整。在 v6.4.0 中，TiKV 对写入请求也进行了动态识别和优先级调整，控制 Apply 线程每一轮处理单个状态机写入的最大数据量，从而降低批量写入对交易事务写入的响应时间的影响。
+    定时批量 DML 任务存在于一部分系统的业务逻辑中。在此场景下，处理这些批量写入任务会增加在线交易的时延。在 v6.3.0 中，TiKV 对混合负载场景下读请求的优先级进行了优化，你可以通过 [`readpool.unified.auto-adjust-pool-size`](/tikv-configuration-file.md#auto-adjust-pool-size-从-v630-版本开始引入) 配置项开启 TiKV 对统一处理读请求的线程池 (UnifyReadPool) 大小的自动调整。在 v6.4.0 中，TiKV 对写入请求也进行了动态识别和优先级调整，控制 Apply 线程每一轮处理单个状态机写入的最大数据量，从而降低批量写入对交易事务写入的响应时间的影响。
 
 ### 易用性
 
