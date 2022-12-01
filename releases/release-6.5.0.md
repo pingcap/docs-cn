@@ -216,6 +216,15 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
     更多信息，请参考[用户文档](链接)。
 
+### 备份和恢复
+
+* TiKV-BR 工具 GA, 支持 RawKV 的备份和恢复 [#67](https://github.com/tikv/migration/issues/67) @[pingyu](https://github.com/pingyu) @[haojinming](https://github.com/haojinming)
+功能描述：TiKV-BR 工具 GA, 支持 RawKV 的备份和恢复
+        功能简介：TiKV-BR 是一个 TiKV 集群的备份和恢复工具。
+        功能价值： TiKV 可以独立于 TiDB，与 PD 构成 KV 数据库，此时的产品形态为 RawKV。TiKV-BR 工具支持对使用 RawKV 的产品进行备份和恢复，也支持将 TiKV 集群中的数据从 `API V1` 备份为 `API V2` 数据， 以实现 TiKV 集群 [`api-version`](https://docs.pingcap.com/zh/tidb/v6.4/tikv-configuration-file#api-version-%E4%BB%8E-v610-%E7%89%88%E6%9C%AC%E5%BC%80%E5%A7%8B%E5%BC%95%E5%85%A5) 的升级。
+        如何使用：参考用户文档
+    更多信息，请参考[用户文档]( https://tikv.org/docs/dev/concepts/explore-tikv-features/backup-restore/ )。
+
 ## 兼容性变更
 
 ### 系统变量
