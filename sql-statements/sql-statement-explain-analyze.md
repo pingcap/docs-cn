@@ -234,7 +234,7 @@ build_hash_table:{total:146.071334ms, fetch:110.338509ms, build:35.732825ms}, pr
 tiflash_scan:{dtfile:{total_scanned_packs:2, total_skipped_packs:1, total_scanned_rows:16000, total_skipped_rows:8192, total_rough_set_index_load_time: 2ms, total_read_time: 20ms}, total_create_snapshot_time: 1ms}
 ```
 
-+ `dtfile`：扫表过程中与 DTFile 相关的信息；这基本对应了 Stable 层数据的读取情况
++ `dtfile`：扫表过程中与 DTFile （即 DeltaTree File）相关的信息；这基本对应了 Stable 层数据的读取情况
     - `total_scanned_packs`：DTFile 内累计读取的 Pack 的数量；Pack 是 TiFlash DTFile 读取的最小粒度，默认情况下每 8192 行构成一个 Pack
     - `total_skipped_packs`：DTFile 内累计跳过的 Pack 的数量；Pack 会由于 WHERE 条件命中粗糙索引或主键范围过滤而被跳过
     - `total_scanned_rows`：DTFile 内累计读取的行数；若存在多版本更新或删除，则每个版本独立计数
