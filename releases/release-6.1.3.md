@@ -47,7 +47,6 @@ TiDB 版本：6.1.3
 
     <!--planner owner: qw4990-->
 
-    - 修复 Projection 算子错误下推表达式过 Join 算子的问题 [#38736](https://github.com/pingcap/tidb/issues/38736) @[winoros](https://github.com/winoros)
     - 修复统计信息后台任务搜集分区表统计信息时可能崩溃的问题 [#35421](https://github.com/pingcap/tidb/issues/35421) @[lilinghai](https://github.com/lilinghai)
 
     <!--transaction owner:cfzjywxk -->
