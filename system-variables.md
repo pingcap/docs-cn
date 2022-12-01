@@ -216,6 +216,13 @@ mysql> SELECT * FROM t1;
 - 取值范围：`[0, 7]`
 - 设置 `WEEK()` 函数使用的周格式。
 
+### `disconnect_on_expired_password`
+
+- 作用域：GLOBAL
+- 类型：布尔型
+- 默认值：`ON`
+- 该变量是一个只读变量，用来显示 TiDB 是否会直接断开密码已过期用户的连接。当其值为 `ON` ，表示 TiDB 会断开密码已过期用户的连接。当其值为 `OFF` ，表示 TiDB 会将密码已过期用户的连接置于“沙盒模式”，允许该用户建立连接并执行密码重置操作。
+
 ### `error_count`
 
 - 作用域：SESSION
