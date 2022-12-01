@@ -508,7 +508,7 @@ WITH CTE1 AS (SELECT * FROM t1), CTE2 AS (WITH CTE3 AS (SELECT /*+ MERGE() */ * 
 >
 > - 对于最外层的查询来说，在定义和视图相关的 `QB_NAME` Hint 时：
 >
->     - 对于 `QB_NAME` Hint 中视图列表序列的第一项，在不显式声明 `@SEL_` 时，默认和定义 `QB_NAME` Hint 的查询块位置保持一致，即省略 `@SEL_`的查询 `SELECT /*+ QB_NAME(qb1, v2) */ * FROM v2 JOIN (SELECT /*+ QB_NAME(qb2, v2) */ * FROM v2) vv;` 相当于 `SELECT /*+ QB_NAME(qb1, v2@SEL_1) */ * FROM v2 JOIN (SELECT /*+ QB_NAME(qb2, v2@SEL_2) */ * FROM v2) vv;`。
+>     - 对于 `QB_NAME` Hint 中视图列表序列的第一项，在不显式声明 `@SEL_` 时，默认和定义 `QB_NAME` Hint 的查询块位置保持一致，即省略 `@SEL_` 的查询 `SELECT /*+ QB_NAME(qb1, v2) */ * FROM v2 JOIN (SELECT /*+ QB_NAME(qb2, v2) */ * FROM v2) vv;` 相当于 `SELECT /*+ QB_NAME(qb1, v2@SEL_1) */ * FROM v2 JOIN (SELECT /*+ QB_NAME(qb2, v2@SEL_2) */ * FROM v2) vv;`。
 >     - 对于 `QB_NAME` Hint 中视图列表序列第一项之外的其他部分，只有 `@SEL_1` 可省略。即，如果声明处于当前部分的第一个查询块中，则 `@SEL_1` 可以省略，否则，不能省略 `@SEL_`。对于上面的例子：
 >         - 视图 `v2` 的第一个查询块可以声明为 `QB_NAME(v2_1, v2)`
 >         - 视图 `v2` 的第二个查询块可以声明为 `QB_NAME(v2_2, v2.@SEL_2)`
