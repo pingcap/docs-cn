@@ -35,11 +35,11 @@ TiDB 版本：6.1.3
 
     - (dup) 修复 `mysql.tables_priv` 表中 `grantor` 字段缺失的问题 [#38293](https://github.com/pingcap/tidb/issues/38293) @[CbcWestwolf](https://github.com/CbcWestwolf)
     - (dup) 修复错误下推的条件被 Join Reorder 丢弃后导致查询结果错误的问题 [#38736](https://github.com/pingcap/tidb/issues/38736) @[winoros](https://github.com/winoros)
-    - 修复了 `get_lock()` 不能持续 10 分钟的问题. [#38706](https://github.com/pingcap/tidb/issues/38706) @[tangenta](https://github.com/tangenta)
-    - 修复了自增列不能和检查约束一起使用的问题 [#38894](https://github.com/pingcap/tidb/issues/38894) @[YangKeao](https://github.com/YangKeao)
-    - 修复了损坏的 grpc log rotation [#38941](https://github.com/pingcap/tidb/issues/38941) @[xhebox](https://github.com/xhebox)
-    - 当表被截断或删除时从 etcd 中删除 TiFlash 同步状态 [#37168](https://github.com/pingcap/tidb/issues/37168) @[CalvinNeo](https://github.com/CalvinNeo)
-    - 修复通过数据源名称注入读取任意文件的问题 (CVE-2022-3023). [#38541](https://github.com/pingcap/tidb/issues/38541) @[lance6716](https://github.com/lance6716)
+    - 修复 `get_lock()` 无法持续 10 分钟以上的问题 [#38706](https://github.com/pingcap/tidb/issues/38706) @[tangenta](https://github.com/tangenta)
+    - 修复自增列不能和检查约束一起使用的问题 [#38894](https://github.com/pingcap/tidb/issues/38894) @[YangKeao](https://github.com/YangKeao)
+    - 修复了 gRPC 日志导出到错误文件的问题 [#38941](https://github.com/pingcap/tidb/issues/38941) @[xhebox](https://github.com/xhebox)
+    - 修复当表被截断或删除时 TiFlash 同步状态未从 etcd 中删除的问题 [#37168](https://github.com/pingcap/tidb/issues/37168) @[CalvinNeo](https://github.com/CalvinNeo)
+    - 修复通过数据源名称注入可读取任意文件的问题 (CVE-2022-3023) [#38541](https://github.com/pingcap/tidb/issues/38541) @[lance6716](https://github.com/lance6716)
 
     <!--executor owner: zanmato1984-->
 
@@ -47,7 +47,7 @@ TiDB 版本：6.1.3
 
     <!--planner owner: qw4990-->
 
-    - 修复统计信息后台任务搜集分区表统计信息时可能崩溃的问题 [#35421](https://github.com/pingcap/tidb/issues/35421) @[lilinghai](https://github.com/lilinghai)
+    - 修复后台统计信息任务可能崩溃的问题 [#35421](https://github.com/pingcap/tidb/issues/35421) @[lilinghai](https://github.com/lilinghai)
 
     <!--transaction owner:cfzjywxk -->
 
