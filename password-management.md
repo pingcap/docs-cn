@@ -261,7 +261,7 @@ TiDB 服务端可以控制是否将密码已过期用户的连接限制为“沙
 
 ```toml
 [security]
-disconnect_on_expired_password = true
+disconnect-on-expired-password = true
 ```
 
 - 默认情况下，`disconnect_on_expired_password` 为 `true`，表示当密码过期后，服务器将直接断开客户端的连接。
