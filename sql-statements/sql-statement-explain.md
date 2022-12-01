@@ -187,7 +187,7 @@ EXPLAIN DELETE FROM t1 WHERE c1=3;
 
 | FORMAT      | 作用                                                                |
 |-------------|-------------------------------------------------------------------|
-| 未指定         | 同 row                                                             |
+| 未指定         | 未指定 `FORMAT` 时，默认输出格式为 `row`                                                             |
 | `row`       | `EXPLAIN` 语句将以表格格式输出结果。更多信息，可参阅 [TiDB 执行计划概览](/explain-overview.md) |
 | `brief`     | `EXPLAIN` 语句输出结果中的算子 ID 将被简化，较之未指定 `FORMAT` 时输出结果的算子 ID 更为简化      |
 | `dot`       | `EXPLAIN` 语句将输出 DOT 格式的执行计划，可以通过 `dot` 程序（在 `graphviz` 包中）生成 PNG 文件 |
