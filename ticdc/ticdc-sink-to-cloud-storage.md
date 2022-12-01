@@ -81,12 +81,12 @@ URI 中其他可配置的参数如下：
 {protocol}://{prefix}/{schema}/{table}/{table-version-separator}/{partition-separator}/{date-separator}/CDC{num}.{extension}
 ```
 
-- `protocol`：`protocol` 为数据传输协议，即存储类型。例如：`s3://xxxxx`
-- `prefix`：`prefix` 为用户指定的父目录。例如：`s3://bucket/bbb/ccc`
-- `schema`：`schema` 为表所属的库名。例如：`s3://bucket/bbb/ccc/test`
-- `table`：`table` 为表名。例如：`s3://bucket/bbb/ccc/test/table1`
-- `table-version-separator`：将文件路径按照表的版本进行分隔。例如：`s3://bucket/bbb/ccc/test/table1/9999`
-- `partition-separator`：将文件路径按照表的分区号进行分隔。例如：`s3://bucket/bbb/ccc/test/table1/9999/20`
+- `protocol`：`protocol` 为数据传输协议，即存储类型。例如：`s3://xxxxx`。
+- `prefix`：`prefix` 为用户指定的父目录。例如：`s3://bucket/bbb/ccc`。
+- `schema`：`schema` 为表所属的库名。例如：`s3://bucket/bbb/ccc/test`。
+- `table`：`table` 为表名。例如：`s3://bucket/bbb/ccc/test/table1`。
+- `table-version-separator`：将文件路径按照表的版本进行分隔。例如：`s3://bucket/bbb/ccc/test/table1/9999`。
+- `partition-separator`：将文件路径按照表的分区号进行分隔。例如：`s3://bucket/bbb/ccc/test/table1/9999/20`。
 - `date-separator`：将文件路径按照事务提交的日期进行分隔。date-separator 可选值如下：
     - `none`：不以 date-separator 分隔文件路径。例如：`test.table1` 版本号为 9999 的所有文件都存到 `s3://bucket/bbb/ccc/test/table1/9999` 路径下。
     - `year`：以事务提交的年份分隔文件路径。例如：`s3://bucket/bbb/ccc/test/table1/9999/2022`。
@@ -161,18 +161,18 @@ URI 中其他可配置的参数如下：
 }
 ```
 
-- Table: 表名。
-- Schema: 表所属的库名。
-- Version: 表的版本号。
-- TableColumns: 该数组表示表中每一列的详细信息。
-    - ColumnName: 列名。
-    - ColumnType: 该列的类型。详见 [数据类型](/ticdc/ticdc-sink-to-cloud-storage.md#数据类型)。
-    - ColumnLength: 该列的长度。详见 [数据类型](/ticdc/ticdc-sink-to-cloud-storage.md#数据类型)。
-    - ColumnPrecision: 该列的精度。详见 [数据类型](/ticdc/ticdc-sink-to-cloud-storage.md#数据类型)。
-    - ColumnScale: 该列小数位的长度。详见 [数据类型](/ticdc/ticdc-sink-to-cloud-storage.md#数据类型)。
-    - ColumnNullable: 值为 true 时表示该列可以含 NULL 值。
-    - ColumnIsPk: 值为 true 时表示该列是主键的一部分。
-- TableColumnsTotal: TableColumns 数组的大小。
+- `Table`：表名。
+- `Schema`：表所属的库名。
+- `Version`：表的版本号。
+- `TableColumns`：该数组表示表中每一列的详细信息。
+    - `ColumnName`：列名。
+    - `ColumnType`：该列的类型。详见 [数据类型](/ticdc/ticdc-sink-to-cloud-storage.md#数据类型)。
+    - `ColumnLength`：该列的长度。详见 [数据类型](/ticdc/ticdc-sink-to-cloud-storage.md#数据类型)。
+    - `ColumnPrecision`：该列的精度。详见 [数据类型](/ticdc/ticdc-sink-to-cloud-storage.md#数据类型)。
+    - `ColumnScale`：该列小数位的长度。详见 [数据类型](/ticdc/ticdc-sink-to-cloud-storage.md#数据类型)。
+    - `ColumnNullable`：值为 true 时表示该列可以含 NULL 值。
+    - `ColumnIsPk`：值为 true 时表示该列是主键的一部分。
+- `TableColumnsTotal`：TableColumns 数组的大小。
 
 ## 数据类型
 
