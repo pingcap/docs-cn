@@ -244,8 +244,8 @@ tiflash_scan:{
 }
 ```
 
-+ `dtfile`：扫表过程中与 DTFile （即 DeltaTree File）相关的信息；这基本反映了 TiFlash 在 Stable 层数据的读取情况
-    - `total_scanned_packs`：DTFile 内累计读取的 Pack 的数量；Pack 是 TiFlash DTFile 读取的最小粒度，默认情况下每 8192 行构成一个 Pack
++ `dtfile`：扫表过程中与 DTFile （即 DeltaTree File）相关的信息；这基本反映了 TiFlash 在 Stable 层数据的读取情况。
+    - `total_scanned_packs`：DTFile 内累计读取的 Pack 的数量；Pack 是 TiFlash DTFile 读取的最小粒度，默认情况下每 8192 行构成一个 Pack。
     - `total_skipped_packs`：DTFile 内累计跳过的 Pack 的数量；Pack 会由于 `WHERE` 条件命中粗糙索引或主键范围过滤而被跳过。
     - `total_scanned_rows`：DTFile 内累计读取的行数；若存在 MVCC 带来的多版本更新或删除，则每个版本独立计数。
     - `total_skipped_rows`：DTFile 内累计跳过的行数。
