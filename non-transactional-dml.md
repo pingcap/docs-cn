@@ -127,7 +127,7 @@ CREATE TABLE t2(id int, v int, key(id));
 INSERT INTO t2 VALUES (1,1), (3,3), (5,5);
 ```
 
-然后进行涉及多表 join 的更新（表 `t` 和 `t2`）。需要注意的是，指定拆分列时需要完整的数据库名、表名和列名 （`test.t.id`)。
+然后进行涉及多表 join 的更新（表 `t` 和 `t2`）。需要注意的是，指定拆分列时需要完整的数据库名、表名和列名（`test.t.id`)。
 
 ```sql
 BATCH ON test.t.id LIMIT 1 UPDATE t JOIN t2 ON t.id = t2.id SET t2.id = t2.id+1;
