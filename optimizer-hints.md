@@ -463,7 +463,7 @@ WITH CTE1 AS (SELECT * FROM t1), CTE2 AS (WITH CTE3 AS (SELECT /*+ MERGE() */ * 
     SELECT /* 当前查询块的名字为默认的 @SEL_1 */ * FROM v;
     ```
 
-    对于视图 `v` 来说，从查询语句开始的前缀视图列表是 `v@SEL_1`。视图 `v` 的第一个查询块可以声明为 `QB_NAME(v_1, v@SEL_1 .@SEL_1)`，也可以简写成 `QB_NAME(v_1, v)`：
+    对于视图 `v` 来说，从查询语句开始的首个视图是 `v@SEL_1`。视图 `v` 的第一个查询块可以声明为 `QB_NAME(v_1, v@SEL_1 .@SEL_1)`，也可以省略 `@SEL_1` 简写成 `QB_NAME(v_1, v)`：
 
     ```sql
     CREATE VIEW v AS SELECT /* 当前查询块的名字为默认的 @SEL_1 */ * FROM t;
