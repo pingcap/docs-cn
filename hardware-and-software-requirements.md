@@ -5,11 +5,11 @@ aliases: ['/docs-cn/dev/hardware-and-software-requirements/','/docs-cn/dev/how-t
 
 # TiDB 软件和硬件环境建议配置
 
-<!-- Localization note:
+<!-- Localization note for TiDB:
 
 - 英文：用 distributed SQL，同时开始强调 HTAP
+- 中文：可以保留 NewSQL 字眼，同时强调一栈式实时 HTAP
 - 日文：NewSQL 认可度高，用 NewSQL
-- 中文：可以保留 NewSQL 字眼，同时要强调一栈式实时 HTAP
 
 -->
 
@@ -119,11 +119,11 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 
 ## 网络要求
 
-<!-- Localization note:
+<!-- Localization note for TiDB:
 
 - 英文：用 distributed SQL，同时开始强调 HTAP
+- 中文：可以保留 NewSQL 字眼，同时强调一栈式实时 HTAP
 - 日文：NewSQL 认可度高，用 NewSQL
-- 中文：可以保留 NewSQL 字眼，同时要强调一栈式实时 HTAP
 
 -->
 

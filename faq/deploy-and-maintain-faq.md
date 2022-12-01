@@ -22,11 +22,11 @@ aliases: ['/docs-cn/dev/faq/deploy-and-maintain-faq/']
 
 ### 为什么要在 CentOS 7 上部署 TiDB 集群？
 
-<!-- Localization note:
+<!-- Localization note for TiDB:
 
 - 英文：用 distributed SQL，同时开始强调 HTAP
+- 中文：可以保留 NewSQL 字眼，同时强调一栈式实时 HTAP
 - 日文：NewSQL 认可度高，用 NewSQL
-- 中文：可以保留 NewSQL 字眼，同时要强调一栈式实时 HTAP
 
 -->
 

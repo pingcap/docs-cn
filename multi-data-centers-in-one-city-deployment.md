@@ -6,11 +6,11 @@ aliases: ['/docs-cn/dev/how-to/deploy/geographic-redundancy/overview/','/docs-cn
 
 # 单区域多 AZ 部署 TiDB
 
-<!-- Localization note:
+<!-- Localization note for TiDB:
 
 - 英文：用 distributed SQL，同时开始强调 HTAP
+- 中文：可以保留 NewSQL 字眼，同时强调一栈式实时 HTAP
 - 日文：NewSQL 认可度高，用 NewSQL
-- 中文：可以保留 NewSQL 字眼，同时要强调一栈式实时 HTAP
 
 -->
 
