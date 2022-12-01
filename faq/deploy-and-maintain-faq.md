@@ -22,6 +22,14 @@ aliases: ['/docs-cn/dev/faq/deploy-and-maintain-faq/']
 
 ### 为什么要在 CentOS 7 上部署 TiDB 集群？
 
+<!-- Localization note for TiDB:
+
+- 英文：用 distributed SQL，同时开始强调 HTAP
+- 中文：可以保留 NewSQL 字眼，同时强调一栈式实时 HTAP
+- 日文：NewSQL 认可度高，用 NewSQL
+
+-->
+
 TiDB 作为一款开源一栈式实时 HTAP 数据库，可以很好的部署和运行在 Intel 架构服务器环境及主流虚拟化环境，并支持绝大多数的主流硬件网络，作为一款高性能数据库系统，TiDB 支持主流的 Linux 操作系统环境，具体可以参考 TiDB 的[官方部署要求](/hardware-and-software-requirements.md)。
 
 其中 TiDB 在 CentOS 7.3 的环境下进行大量的测试，同时也有很多这个操作系统的部署最佳实践，因此，我们推荐客户在部署 TiDB 的时候使用 CentOS 7.3+ 以上的 Linux 操作系统。
