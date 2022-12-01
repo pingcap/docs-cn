@@ -231,12 +231,12 @@ build_hash_table:{total:146.071334ms, fetch:110.338509ms, build:35.732825ms}, pr
 在 TiFlash 节点上执行的 `TableFullScan` 算子包含以下执行信息：
 
 ```sql
-tiflash_scan:{
-  dtfile:{
-    total_scanned_packs:2, 
-    total_skipped_packs:1, 
-    total_scanned_rows:16000, 
-    total_skipped_rows:8192, 
+tiflash_scan: {
+  dtfile: {
+    total_scanned_packs: 2, 
+    total_skipped_packs: 1, 
+    total_scanned_rows: 16000, 
+    total_skipped_rows: 8192, 
     total_rough_set_index_load_time: 2ms, 
     total_read_time: 20ms
   }, 
