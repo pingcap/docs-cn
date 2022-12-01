@@ -81,9 +81,9 @@ TiDB 版本：6.1.3
 
     + Backup & Restore (BR)
 
-    <!--owner: @3pointer-->
+        <!--owner: @3pointer-->
 
-        - 修复数据库中使用旧的 collation 时恢复失败的问题  [#39150](https://github.com/pingcap/tidb/issues/39150) @[MoCuishle28](https://github.com/MoCuishle28)
+        - 修复数据库或数据表中使用旧的排序规则框架时数据恢复失败的问题 [#39150](https://github.com/pingcap/tidb/issues/39150) @[MoCuishle28](https://github.com/MoCuishle28)
 
     + Dumpling
 
@@ -91,9 +91,9 @@ TiDB 版本：6.1.3
 
     + TiCDC
 
-    <!--owner: @nongfushanquan-->
+        <!--owner: @nongfushanquan-->
 
-        - 修复在执行 DDL 时，恢复暂停的 changefeed 会导致数据丢失的问题 [#7682](https://github.com/pingcap/tiflow/issues/7682) @[asddongmen](https://github.com/asddongmen)
+        - 修复在执行 DDL 时，恢复 changefeed 会导致数据丢失的问题 [#7682](https://github.com/pingcap/tiflow/issues/7682) @[asddongmen](https://github.com/asddongmen)
 
     + TiDB Binlog
 
@@ -101,12 +101,12 @@ TiDB 版本：6.1.3
 
     + TiDB Data Migration (DM)
 
-    <!--owner: @niubell-->
+        <!--owner: @niubell-->
 
-        - (dup) 修复当 `collation_compatible` 设置为 `"strict"` 时，DM 可能生成有重复排序规则的 SQL 语句的问题[#6832](https://github.com/pingcap/tiflow/issues/6832) @[lance6716](https://github.com/lance6716)
-        - 修复 DM 可能由于 "Unknown placement policy" 错误导致任务暂停的问题 [#7493](https://github.com/pingcap/tiflow/issues/7493) @[lance6716](https://github.com/lance6716)
-        - 修复在某些场景下 relay log 文件会从上游重新拉取的问题 [#7719](https://github.com/pingcap/tiflow/pull/7719) @[liumengya94](https://github.com/liumengya94)
-        - 修复当 DM worker 即将退出时新 worker 调度过快导致数据被重复同步的问题 [#7745](https://github.com/pingcap/tiflow/pull/7745) @[GMHDBJD](https://github.com/GMHDBJD)
+        - (dup) 修复当 `collation_compatible` 设置为 `"strict"` 时，DM 可能生成有重复排序规则的 SQL 语句的问题 [#6832](https://github.com/pingcap/tiflow/issues/6832) @[lance6716](https://github.com/lance6716)
+        - 修复 DM 可能由于 `Unknown placement policy` 错误导致任务停止的问题 [#7493](https://github.com/pingcap/tiflow/issues/7493) @[lance6716](https://github.com/lance6716)
+        - 修复在某些场景下 relay log 文件会从上游重新拉取的问题 [#7525](https://github.com/pingcap/tiflow/issues/7525) @[liumengya94](https://github.com/liumengya94)
+        - 修复当 DM worker 即将退出时新 worker 调度过快导致数据被重复同步的问题 [#7658](https://github.com/pingcap/tiflow/issues/7658) @[GMHDBJD](https://github.com/GMHDBJD)
 
     + TiDB Lightning
 
