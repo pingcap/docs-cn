@@ -114,11 +114,7 @@ TiKV 是一个 Multi-Raft 系统，其数据按 Region（默认 96M）切分，�
 ```ini
 server_configs:
   pd:
-<<<<<<< HEAD
     replication.location-labels: ["zone","dc","rack","host"]
-=======
-    replication.location-labels: ["zone","az","rack","host"]
->>>>>>> 77e2eaad1 (*: add annotation for localization (#12161))
 
 tikv_servers:
   - host: 10.63.10.30
