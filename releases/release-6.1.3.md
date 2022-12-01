@@ -96,7 +96,7 @@ TiDB 版本：6.1.3
 
         - 修复 `collation_compatible` 设置为 `"strict"` 时 DM 生成 SQL 时可能带有重复的 COLLATE 的问题 [#6832](https://github.com/pingcap/tiflow/issues/6832) @[lance6716](https://github.com/lance6716)
         - 修复 DM 可能由于 "Unknown placement policy" 错误导致任务暂停的问题 [#7493](https://github.com/pingcap/tiflow/issues/7493) @[lance6716](https://github.com/lance6716)
-        - 修复在某些场景下日志中出现大量包含 "COMMIT" 行，并且 relay log 文件会从上游重新拉取的问题 [#7719](https://github.com/pingcap/tiflow/pull/7719) @[liumengya94](https://github.com/liumengya94)
+        - 修复在某些场景下 relay log 文件会从上游重新拉取的问题 [#7719](https://github.com/pingcap/tiflow/pull/7719) @[liumengya94](https://github.com/liumengya94)
         - 修复当 DM worker 即将退出时新 worker 调度过快导致数据被重复同步的问题 [#7745](https://github.com/pingcap/tiflow/pull/7745) @[GMHDBJD](https://github.com/GMHDBJD)
 
     + TiDB Lightning
