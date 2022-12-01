@@ -1886,7 +1886,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 默认值：`-1`
 - 范围：`[1, 256]`
 - 这个变量用来设置索引合并进行交集操作时的最大并发度，仅在以动态裁剪模式访问分区表时有效。实际并发度为 `tidb_index_merge_intersection_concurrency` 与分区表分区数目两者中较小的值。
-- 默认值 `-1` 表示使用 [`tidb_executor_concurrency`](#tidb_executor_concurrency-new-in-v50) 的值。
+- 默认值 `-1` 表示使用 [`tidb_executor_concurrency`](#tidb_executor_concurrency-从-v50-版本开始引入) 的值。
 
 ### `tidb_index_lookup_size`
 
