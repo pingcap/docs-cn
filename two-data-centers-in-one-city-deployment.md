@@ -19,12 +19,8 @@ TiDB 在 on-premises 部署的场景下，通常采用多中心部署方案，�
 
 下图为集群部署架构图，具体如下：
 
-<<<<<<< HEAD
 - 集群采用同城两种中心部署方案，主数据中心 IDC1 在城东，从数据中心 IDC2 在城西。
-- 集群采用推荐的 4 副本模式，其中 IDC1 中放 2 个 Voter 副本，IDC2 中放 1 个 Voter 副本 + 1 个 Learner 副本；TiKV 按机房的实际情况打上合适的 Label。
-=======
-- 集群采用推荐的 6 副本模式，其中 AZ1 中放 3 个 Voter，AZ2 中放 2 个 Follower 副本和 1 个 Learner 副本。TiKV 按机房的实际情况打上合适的 Label。
->>>>>>> 7f0257df0 (Update two-data-centers-in-one-city-deployment.md (#12136))
+- 集群采用推荐的 6 副本模式，其中 IDC1 中放 3 个 Voter 副本，IDC2 中放 2 个 Voter 副本 + 1 个 Learner 副本；TiKV 按机房的实际情况打上合适的 Label。
 - 副本间通过 Raft 协议保证数据的一致性和高可用，对用户完全透明。
 
 ![同城两中心集群架构图](/media/two-dc-replication-1.png)
@@ -72,23 +68,16 @@ tikv_servers:
       server.labels: { zone: "east", rack: "east-2", host: "31" }
   - host: 10.63.10.32
     config:
-<<<<<<< HEAD
-      server.labels: { zone: "west", rack: "west-1", host: "32" }
+      server.labels: { zone: "east", rack: "east-3", host: "32" }
   - host: 10.63.10.33
     config:
-      server.labels: { zone: "west", rack: "west-2", host: "33" }
-=======
-      server.labels: { az: "east", rack: "east-3", host: "32" }
-  - host: 10.63.10.33
-    config:
-      server.labels: { az: "west", rack: "west-1", host: "33" }
+      server.labels: { zone: "west", rack: "west-1", host: "33" }
   - host: 10.63.10.34
     config:
-      server.labels: { az: "west", rack: "west-2", host: "34" }
+      server.labels: { zone: "west", rack: "west-2", host: "34" }
   - host: 10.63.10.35
     config:
-      server.labels: { az: "west", rack: "west-3", host: "35" }
->>>>>>> 7f0257df0 (Update two-data-centers-in-one-city-deployment.md (#12136))
+      server.labels: { zone: "west", rack: "west-3", host: "35" }
 monitoring_servers:
   - host: 10.63.10.60
 grafana_servers:
