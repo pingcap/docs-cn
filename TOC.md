@@ -479,6 +479,7 @@
     - BR Features
       - [Auto Tune](/br/br-auto-tune.md)
       - [Batch Create Table](/br/br-batch-create-table.md)
+      - [Checkpoint Backup](/br/br-checkpoint.md)
     - References
       - [BR Design Principles](/br/backup-and-restore-design.md)
       - [BR Command-line](/br/use-br-command-line-tool.md)
