@@ -70,7 +70,7 @@ Performance Overview 面板提供了以下三个面积堆叠图，帮助你了�
 
 - Database Time By SQL Type：蓝色标识代表 Select 语句，绿色标识代表 Update、Insert、Commit 等 DML 语句。红色标识代表 General 类型，包含 StmtPrepare、StmtReset、StmtFetch、StmtClose 等命令。
 - Database Time By SQL Phase：execute 执行阶段为绿色，其他三个阶段偏红色系，如果非绿色的颜色占比明显，意味着在执行阶段之外数据库消耗了过多时间，需要进一步分析根源。一个常见的场景是因为无法使用执行计划缓存，导致 compile 阶段的橙色占比明显。
-- SQL Execute Time Overview：绿色系标识代表常规的写 KV 请求（例如 Prewrite 和 Commit），蓝色系标识代表常规的读 KV 请求（例如 Cop 和 Get），其他色系标识需要注意的问题。例如，悲观锁加锁请求为红色，TSO 等待为深褐色。如果非蓝色系或者非绿色系占比明显，意味着执行阶段存在异常的瓶颈。例如，当发生严重锁冲突时，红色的悲观锁时间会占比明显；当负载中 TSO 等待的消耗时间过长时，深褐色会占比明显。
+- SQL Execute Time Overview：绿色系标识代表常规的写 KV 请求（例如 Prewrite 和 Commit），蓝色系标识代表常规的读 KV 请求（例如 Cop 和 Get），紫色系标识代表了 TiFlash MPP 请求，其他色系标识需要注意的问题。例如，悲观锁加锁请求为红色，TSO 等待为深褐色。如果非蓝色系或者非绿色系占比明显，意味着执行阶段存在异常的瓶颈。例如，当发生严重锁冲突时，红色的悲观锁时间会占比明显；当负载中 TSO 等待的消耗时间过长时，深褐色会占比明显。
 
 **示例 1：TPC-C 负载**
 
@@ -117,6 +117,14 @@ Performance Overview 面板提供了以下三个面积堆叠图，帮助你了�
 - Database Time by SQL Phase：主要消耗时间的阶段为绿色的 execute 阶段。
 - SQL Execute Time Overview：执行阶段主要消耗时间的 KV 请求为红色的悲观锁 PessimisticLock，execute time 明显大于 KV 请求的总时间，这是因为应用的写语句锁冲突严重，频繁锁重试导致 `Retried execution time` 过长。目前 `Retried execution time` 消耗的时间，TiDB 尚未进行测量。
 
+**示例 5： HTAP CH-Benchmark 负载**
+
+![HTAP](/media/performance/htap_tilfash_mpp.png)
+
+- Database Time by SQL Type：主要为 Select 语句。
+- Database Time by SQL Phase：主要消耗时间的阶段为绿色的 execute 阶段。
+- SQL Execute Time Overview：执行阶段主要消耗时间为紫色的 `tiflash_mpp` 请求， KV 请求主要为蓝色的  `Cop`，和绿色的 `Prewrite`，和 `Commit`。
+
 ### TiDB 关键指标和集群资源利用率
 
 #### Query Per Second、Command Per Second 和 Prepared-Plan-Cache
@@ -125,17 +133,18 @@ Performance Overview 面板提供了以下三个面积堆叠图，帮助你了�
 
 - QPS：表示 Query Per Second，包含应用的 SQL 语句类型执行次数分布。
 - CPS By Type：CPS 表示 Command Per Second，Command 代表 MySQL 协议的命令类型。同样一个查询语句可以通过 query 或者 prepared statement 的命令类型发送到 TiDB。
-- Queries Using Plan Cache OPS：TiDB 集群每秒命中执行计划缓存的次数。执行计划缓存只支持 prepared statement 命令。TiDB 开启执行计划缓存的情况下，存在三种使用情况：
+- Queries Using Plan Cache OPS：TiDB 集群每秒执行计划缓存的命中和未命中次数。
+StmtExecute 每秒执行次数等于 `avg-hit + avg-miss` 执行计划缓存只支持 prepared statement 命令。TiDB 开启执行计划缓存的情况下，存在三种使用情况：
 
-    - 完全无法命中执行计划缓存：每秒命中次数为 0，因为应用使用 query 命令，或者每次 StmtExecute 执行之后调用 StmtClose 命令，导致缓存的执行计划被清理。
-    - 完全命中执行计划缓存：每秒命中次数等于 StmtExecute 命令每秒执行次数。
-    - 部分命中执行计划缓存：每秒命中次数小于 StmtExecute 命令每秒执行次数，执行计划缓存目前存在一些限制，比如不支持子查询，该类型的 SQL 执行计划无法被缓存。
+    - 完全无法命中执行计划缓存：每秒命中次数 `avg-hit` 为 0，因为应用使用 query 命令，或者每次 StmtExecute 执行之后调用 StmtClose 命令，导致缓存的执行计划被清理，或者 StmtExecute 执行的所有语句遇到[已知的产品限制](https://docs.pingcap.com/zh/tidb/dev/sql-prepared-plan-cache)无法命中 plan cache，`avg-miss` 等于 StmtExecute 命令每秒执行次数。
+    - 完全命中执行计划缓存：每秒命中次数 `avg-hit` 等于 StmtExecute 命令每秒执行次数，每秒未命中次数 `avg-miss` 等于 0。
+    - 部分命中执行计划缓存：每秒命中次数 `avg-hit` 小于 StmtExecute 命令每秒执行次数，执行计划缓存目前存在一些限制，比如不支持子查询，该类型的 SQL 执行计划无法被缓存。
 
 **示例 1：TPC-C 负载**
 
-TPC-C 负载类型主要以 Update、Select 和 Insert 语句为主。总的 QPS 等于每秒 StmtExecute 的次数，并且 StmtExecute 每秒的数据基本等于 Queries Using Plan Cache OPS。这是 OLTP 负载理想的情况，客户端执行使用 prepared statement，并且在客户端缓存了 prepared statement 对象，执行每条 SQL 语句时直接调用 statement 执行。执行时都命中执行计划缓存，不需要重新 compile 生成执行计划。
+TPC-C 负载类型主要以 Update、Select 和 Insert 语句为主。总的 QPS 等于每秒 StmtExecute 的次数，并且 StmtExecute 每秒的数据基本等于 Queries Using Plan Cache OPS 面板的 `avg-hits`。这是 OLTP 负载理想的情况，客户端执行使用 prepared statement，并且在客户端缓存了 prepared statement 对象，执行每条 SQL 语句时直接调用 statement 执行。执行时都命中执行计划缓存，不需要重新 compile 生成执行计划。
 
-![TPC-C](/media/performance/tpcc_qps.png)
+![TPC-C](/media/performance/tpcc_qps.jpeg)
 
 **示例 2：只读 OLTP 负载，使用 query 命令无法使用执行计划缓存**
 
@@ -160,11 +169,19 @@ StmtPreare 次数 = StmtExecute 次数 = StmtClose 次数 ~= StmtFetch 次数，
 
 ![OLTP-Prepared](/media/performance/oltp_prepared_statement_no_plan_cache.png)
 
-#### KV/TSO Request OPS 和连接信息
+**示例 4：Prepared Statement 存在资源泄漏的情况**
+
+StmtPrepare 每秒执行次数远大于 StmtClose, 说明应用程序存在 prepared statement 对象泄漏。
+
+![OLTP-Query](/media/performance/prepared_statement_leaking.png)
+
+- QPS 面板中出现的红色加粗线为 Failed Query，坐标的值为右边的 Y 轴。每秒错误语句为 74.6。
+- StmtPrepare 每秒执行次数远大于 StmtClose, 说明应用程序存在 prepared statement 对象泄漏。
+- Queries Using Plan Cache OPS `avg-miss` 几乎等于 StmtExecute，说明几乎所有的 SQL 执行都无法命中执行计划缓存。
+
+#### KV/TSO Request OPS 和 请求来源统计
 
 在 KV/TSO Request OPS 面板中，你可以查看 KV 和 TSO 每秒请求的数据统计。其中，`kv request total` 代表 TiDB 到 TiKV 所有请求的总和。通过观察 TiDB 到 PD 和 TiKV 的请求类型，可以了解集群内部的负载特征。
-
-在 Connection Count （连接信息）面板中，你可以查看总的连接数和每个 TiDB 的连接数，并由此判断连接总数是否正常，每个 TiDB 的连接数是否不均衡。`active connections` 记录着活跃连接数，等于每秒的数据库时间。
 
 **示例 1：繁忙的负载**
 
@@ -217,7 +234,7 @@ StmtPreare 次数 = StmtExecute 次数 = StmtClose 次数 ~= StmtFetch 次数，
 
 延迟面板通常包含平均值和 99 分位数，平均值用来定位总体的瓶颈，99 分位数用来判断是否存在延迟严重抖动的情况。判断性能抖动范围时，可能还需要需要借助 999 分位数。
 
-#### Duration 和 Connection Idle Duration
+#### Duration、Connection Idle Duration 和 连接信息。
 
 Duration 面板包含了所有语句的 99 延迟和每种 SQL 类型的平均延迟。Connection Idle Duration 面板包含连接空闲的平均和 99 延迟，连接空闲时包含两种状态：
 
@@ -237,6 +254,8 @@ Duration 面板包含了所有语句的 99 延迟和每种 SQL 类型的平均�
 - 应用服务器到数据库延迟过高，比如公有云环境应用和 TiDB 集群不在同一个地区，比如数据库的 DNS 均衡器和 TiDB 集群不在同一个地区。
 - 客户端程序存在瓶颈，无法充分利用服务器的多 CPU 核或者多 Numa 资源，比如应用只使用一个 JVM 向 TiDB 建立上千个 JDBC 连接。
 
+在 Connection Count （连接信息）面板中，你可以查看总的连接数和每个 TiDB 的连接数，并由此判断连接总数是否正常，每个 TiDB 的连接数是否不均衡。`active connections` 记录着活跃连接数，等于每秒的数据库时间。
+
 **示例 1：用户响应时间的瓶颈在 TiDB 中**
 
 ![TiDB is the Bottleneck](/media/performance/tpcc_duration_idle.png)
@@ -250,7 +269,7 @@ Duration 面板包含了所有语句的 99 延迟和每种 SQL 类型的平均�
 
 **示例 2：用户响应时间的瓶颈不在 TiDB 中**
 
-![TiDB is the Bottleneck](/media/performance/cloud_query_long_idle.png)
+![TiDB is not the Bottleneck](/media/performance/cloud_query_long_idle.png)
 
 在此负载中，平均 query 延迟为 1.69 ms，事务中连接空闲时间 `avg-in-txn` 为 18 ms。说明事务中，TiDB 平均花了 1.69 ms 处理完一个 SQL 语句之后，需要等待 18 ms 才能收到下一条语句。
 
