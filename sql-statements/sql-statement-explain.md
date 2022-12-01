@@ -282,7 +282,7 @@ The `xx.dot` is the result returned by the above statement.
 
 <div label="JSON">
 
-在 `EXPLAIN` 指定 `FORMAT = "tidb_json"` 时，示例如下：
+在 `EXPLAIN` 中指定 `FORMAT = "tidb_json"` 时，示例如下：
 
 ```sql
 CREATE TABLE t(id int primary key, a int, b int, key(a));
