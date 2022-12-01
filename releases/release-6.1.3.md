@@ -29,16 +29,17 @@ TiDB 版本：6.1.3
 
     - (dup) 修复 `mysql.tables_priv` 表中 `grantor` 字段缺失的问题 [#38293](https://github.com/pingcap/tidb/issues/38293) @[CbcWestwolf](https://github.com/CbcWestwolf)
     - (dup) 修复错误下推的条件被 Join Reorder 丢弃后导致查询结果错误的问题 [#38736](https://github.com/pingcap/tidb/issues/38736) @[winoros](https://github.com/winoros)
-    - Fix an issue that `get_lock()` cannot hold for more than 10 minutes. [#38706](https://github.com/pingcap/tidb/issues/38706) @[tangenta](https://github.com/tangenta)
-    - Fix the issue that the auto increment column cannot be used with check constraint. [#38894](https://github.com/pingcap/tidb/issues/38894) @[YangKeao](https://github.com/YangKeao)
-    - Fix broken log rotation of grpc [#38941](https://github.com/pingcap/tidb/issues/38941) @[xhebox](https://github.com/xhebox)
-    - Delete TiFlash sync status from etcd when table is truncated or dropped [#37168](https://github.com/pingcap/tidb/issues/37168) @[CalvinNeo](https://github.com/CalvinNeo)
-    - Fix the issue of arbitrary file read via data source name injection (CVE-2022-3023). [#38541](https://github.com/pingcap/tidb/issues/38541) @[lance6716](https://github.com/lance6716)
+    - 修复了 `get_lock()` 不能持续 10 分钟的问题. [#38706](https://github.com/pingcap/tidb/issues/38706) @[tangenta](https://github.com/tangenta)
+    - 修复了自增列不能和检查约束一起使用的问题 [#38894](https://github.com/pingcap/tidb/issues/38894) @[YangKeao](https://github.com/YangKeao)
+    - 修复了损坏的 grpc log rotation [#38941](https://github.com/pingcap/tidb/issues/38941) @[xhebox](https://github.com/xhebox)
+    - 当表被截断或删除时从 etcd 中删除 TiFlash 同步状态 [#37168](https://github.com/pingcap/tidb/issues/37168) @[CalvinNeo](https://github.com/CalvinNeo)
+    - 修复通过数据源名称注入读取任意文件的问题 (CVE-2022-3023). [#38541](https://github.com/pingcap/tidb/issues/38541) @[lance6716](https://github.com/lance6716)
 
     <!--executor owner: zanmato1984-->
 
     - 修复 Projection 算子错误下推表达式过 Join 算子的问题 [#38736](https://github.com/pingcap/tidb/issues/38736) @[winoros](https://github.com/winoros)
     - 修复统计信息后台任务搜集分区表统计信息时可能崩溃的问题 [#35421](https://github.com/pingcap/tidb/issues/35421) @[lilinghai](https://github.com/lilinghai)
+    - 修复函数 `str_to_date` 在 `NO_ZERO_DATE` SQL Mode 下返回结果不正确的问题 [#39146](https://github.com/pingcap/tidb/issues/39146) @[mengxin9014](https://github.com/mengxin9014)
 
     <!--transaction owner:cfzjywxk -->
 
@@ -74,7 +75,7 @@ TiDB 版本：6.1.3
 
     <!--owner: @3pointer-->
 
-        - Fix a bug that: "Error Unsupported collation when new collation is enabled: 'utf8mb4_0900_ai_ci'" even if new_collation_enabled is false. [#39150](https://github.com/pingcap/tidb/issues/39150) @[MoCuishle28](https://github.com/MoCuishle28)
+        - 修复数据库中使用旧的 collation 时恢复失败的问题. [#39150](https://github.com/pingcap/tidb/issues/39150) @[MoCuishle28](https://github.com/MoCuishle28)
 
     + Dumpling
 
