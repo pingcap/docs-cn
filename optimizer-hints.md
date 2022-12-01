@@ -449,7 +449,7 @@ WITH CTE1 AS (SELECT * FROM t1), CTE2 AS (WITH CTE3 AS (SELECT /*+ MERGE() */ * 
 
 全局生效的 Hint 和[视图](/views.md)有关，可以实现在查询中定义的 Hint 能够在视图的内部生效。添加这类 Hint 大致需要两步：先用 `QB_NAME` Hint 为视图内的查询块命名，再以“表名@查询块名”的方式加入实际需要的 Hint。
 
-### 第一步：使用 `QB_NAME` Hint 重命名视图内的查询块
+### 第 1 步：使用 `QB_NAME` Hint 重命名视图内的查询块
 
 首先使用 [`QB_NAME` Hint](#qb_name) 重命名视图内部的查询块。其中针对视图的 `QB_NAME` Hint 的概念与[查询块范围生效的 `QB_NAME` Hint](#qb_name)相同，只是在语法上进行了相应的拓展。从 `QB_NAME(QB)` 拓展为 `QB_NAME(QB, 表名@查询块名 [.表名@查询块名 .表名@查询块名 ...])`。
 
