@@ -496,7 +496,7 @@ WITH CTE1 AS (SELECT * FROM t1), CTE2 AS (WITH CTE3 AS (SELECT /*+ MERGE() */ * 
     ```sql
     CREATE VIEW v1 AS SELECT * FROM t JOIN /* 对于视图 v1 来说，当前查询块的名字为默认的 @SEL_1，因此当前查询块的视图列表是 v2@SEL_1 .@SEL_2 .v1@SEL_1 */
         (
-            SELECT COUNT(*) FROM t1 JOIN v1 /* 对于视图 v1 来说，当前查询块的名字为默认的 @SEL_2，因此当前查询块的视图列表是 v2@SEL_1 .@SEL_2 .v1@SEL_2 */
+            SELECT COUNT(*) FROM t1 JOIN v1 /* 对于视图 v1 来说，当前查询块的名字为默认的 @SEL_2，因此当前查询块的视图列表是 v2@SEL_1 .v1@SEL_2 .@SEL_2 */
         ) tt;
     ```
 
