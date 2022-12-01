@@ -229,7 +229,11 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
 ### 部署及运维
 
-* 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接)
+* TiDB 快照备份支持断点续传 [#38647](https://github.com/pingcap/tidb/issues/38647) @[Leavrth](https://github.com/Leavrth)
+
+    TiDB 快照备份功能支持断点续传。当 BR 遇到对可恢复的错误时会进行重试，但是超过固定重试次数之后会备份退出。断点续传功能允许对持续更长时间的可恢复故障进行重试恢复，比如几十分钟的的网络故障。 
+
+    需要注意的是，如果你没有在 BR 退出后一个小时内完成故障恢复，那么还未备份的快照数据可能会被 GC 机制回收，而造成备份失败。更多信息，请参考[用户文档](https://github.com/pingcap/docs-cn/pull/12075)。
 
     功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
 
