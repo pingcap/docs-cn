@@ -17,7 +17,8 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 - 优化器代价模型 V2 GA
 - 全局 hint 干预视图内查询的计划生成
 - 满足密码合规审计需求 [密码管理](/password-management.md)
-- ......
+- TiDB 添加索引的速度提升为原来的 10 倍
+- Flashback Cluster 功能兼容 TiCDC 和 PiTR 
 
 ## 新功能
 
