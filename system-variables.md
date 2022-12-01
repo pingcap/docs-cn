@@ -216,7 +216,7 @@ mysql> SELECT * FROM t1;
 - 取值范围：`[0, 7]`
 - 设置 `WEEK()` 函数使用的周格式。
 
-### `disconnect_on_expired_password`
+### `disconnect_on_expired_password` <span class="version-mark">从 v6.5.0 版本开始引入</span>
 
 - 作用域：GLOBAL
 - 类型：布尔型
