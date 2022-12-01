@@ -182,24 +182,27 @@ StmtPrepare 每秒执行次数远大于 StmtClose, 说明应用程序存在 prep
 #### KV/TSO Request OPS 和 请求来源统计
 
 在 KV/TSO Request OPS 面板中，你可以查看 KV 和 TSO 每秒请求的数据统计。其中，`kv request total` 代表 TiDB 到 TiKV 所有请求的总和。通过观察 TiDB 到 PD 和 TiKV 的请求类型，可以了解集群内部的负载特征。
+在 KV Request Time By Source 面板中，你可以查看每种 KV 请求和请求来源的时间占比。
+  - kv request total time 是每秒所有 KV 请求的总处理时间
+  - 每种 KV 请求和请求来源组成柱状堆叠图，`external` 标识了来源为正常业务请求，`internal` 标识了内部活动，比如 ddl、auto analyze 等活动。
 
 **示例 1：繁忙的负载**
 
-![TPC-C](/media/performance/tpcc_kv_conn.png)
+![TPC-C](/media/performance/tpcc_source_sql.png)
 
 在此 TPC-C 负载中：
 
-- 每秒总的 KV 请求的数量为 104.2k。按请求数量排序，最高的请求类型为 `PessimisticsLock`、`Prewrite`、`Commit` 和 `BatchGet` 等。
-- 总的连接数为 810，三个 TiDB 实例的连接数大体均衡。活跃的连接数为 787.1。对比活跃连接数和总连接数，97% 的连接都是活跃的，通常意味着数据库是这个应用系统的性能瓶颈。
+- 每秒总的 KV 请求的数量为 79.7k。按请求数量排序，最高的请求类型为 `Prewrite`、`Commit`、`PessimisticsLock` 和 `BatchGet` 等。
+- KV 处理时间来源主要为 `Commit-external_Commit`、`Prewrite-external_Commit`，说明消耗时间最高的 KV 请求为 `Commit` 和 `Prewrite`，并且来源于外部的 Commit 语句。
 
-**示例 2：空闲的负载**
+**示例 2：Analyze 负载**
 
-![OLTP](/media/performance/cloud_long_idle_kv_conn.png)
+![OLTP](/media/performance/internal_stats.png)
 
-在此负载中：
+集群中只有 analyze 语句运行：
 
-- 每秒总的 KV 请求数据是 2.6 K，TSO 请求次数是每秒 1.1 K。
-- 总的连接数为 410，连接数在三个 TiDB 中相对均衡。活跃连接数只有 2.5，说明数据库系统非常空闲。
+- 每秒总的 KV 请求数据是 30.5，Cop 请求次数是每秒 9.3。
+- KV 处理时间主要来源为 `Cop-internal_stats`，说明 Cop 请求来源于内部的 analyze 操作。
 
 #### TiDB CPU，以及 TiKV CPU 和 IO 使用情况
 
@@ -254,9 +257,19 @@ Duration 面板包含了所有语句的 99 延迟和每种 SQL 类型的平均�
 - 应用服务器到数据库延迟过高，比如公有云环境应用和 TiDB 集群不在同一个地区，比如数据库的 DNS 均衡器和 TiDB 集群不在同一个地区。
 - 客户端程序存在瓶颈，无法充分利用服务器的多 CPU 核或者多 Numa 资源，比如应用只使用一个 JVM 向 TiDB 建立上千个 JDBC 连接。
 
-在 Connection Count （连接信息）面板中，你可以查看总的连接数和每个 TiDB 的连接数，并由此判断连接总数是否正常，每个 TiDB 的连接数是否不均衡。`active connections` 记录着活跃连接数，等于每秒的数据库时间。
+在 Connection Count （连接信息）面板中，你可以查看总的连接数和每个 TiDB 的连接数，并由此判断连接总数是否正常，每个 TiDB 的连接数是否不均衡。`active connections` 记录着活跃连接数，等于每秒的数据库时间，Y 轴为 ` disconnection/s`, 集群每秒断开连接的数量，用来判断应用是否使用了短连接。
 
-**示例 1：用户响应时间的瓶颈在 TiDB 中**
+**示例 1：disconnection/s 过高**
+
+![high disconnection/s](/media/performance/high_disconnections.png)
+
+在此负载中：
+
+- 所有 SQL 语句的平均延迟 10.8 ms，99 延迟 84.1 ms。
+- 事务中连接空闲时间 `avg-in-txn` 9.4 ms。
+- 数据库总的连接数为 3.7K，每个 TiDB 1.8 K. 平均活跃连接数为 40.3, 大部分连接处于空闲状态。`disonnnection/s` 平均为 55.8，说明应用在频繁的新建和断开连接。短连接的行为会对 TiDB 的资源和响应时间造成一定的影响。
+
+**示例 2：用户响应时间的瓶颈在 TiDB 中**
 
 ![TiDB is the Bottleneck](/media/performance/tpcc_duration_idle.png)
 
@@ -267,7 +280,7 @@ Duration 面板包含了所有语句的 99 延迟和每种 SQL 类型的平均�
 
 由此可以判断，平均的 query 延迟明显大于 `avg-in-txn`，说明事务处理中，主要的瓶颈在数据库内部。
 
-**示例 2：用户响应时间的瓶颈不在 TiDB 中**
+**示例 3：用户响应时间的瓶颈不在 TiDB 中**
 
 ![TiDB is not the Bottleneck](/media/performance/cloud_query_long_idle.png)
 
