@@ -1,11 +1,6 @@
 ---
-<<<<<<< HEAD
-title: 两地三中心部署
-summary: 介绍两地三中心部署方式。
-=======
 title: 双区域多 AZ 部署 TiDB
 summary: 介绍在两个区域多个可用区部署 TiDB 的方式。
->>>>>>> a6d50f83b (update deployment docs (#11762))
 ---
 
 # 双区域多 AZ 部署 TiDB
