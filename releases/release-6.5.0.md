@@ -233,6 +233,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 |--------|------------------------------|------|
 | [`tidb_cost_model_version`](/system-variables.md#tidbcostmodelversion-span-classversion-mark从-v620-版本开始引入span) | 修改 | 优化器模型 V2 GA， 变量默认值改为`2`。   |
 | [`default_password_lifetime`](/system-variables.md#default_password_lifetime-从-v650-版本开始引入) | 新增 | 用于设置全局自动密码过期策略，要求用户定期修改密码。默认值为 `0` ，表示禁用全局自动密码过期策略 |
+| [`disconnect_on_expired_password`](/system-variables.md#disconnect_on_expired_password-从-v650-版本开始引入) | 新增 | 用来显示 TiDB 是否会直接断开密码已过期用户的连接 |
 | [`password_history`](/system-variables.md#password_history-从-v650-版本开始引入) | 新增 | 基于密码更改次数的密码重用策略，不允许用户重复使用最近设置次数内使用过的密码。默认值为 `0`，表示禁用基于密码更改次数的密码重用策略 |
 | [`password_reuse_interval`](/system-variables.md#password_reuse_interval-从-v650-版本开始引入) | 新增 | 基于经过时间限制的密码重用策略，不允许用户重复使用最近设置天数内使用过的密码。默认值为 `0`，表示禁用基于密码更改次数的密码重用策略 |
 | [`validate_password.check_user_name`](/system-variables.md#validate_passwordcheck_user_name-从-v650-版本开始引入) | 新增 | 密码复杂度策略检查项，设置的用户密码不允许密码与当前会话账户的用户名部分相同。只有 [`validate_password.enable`](/system-variables.md#validate_passwordenable-从-v650-版本开始引入) 开启时，该变量才生效。默认值为 `ON` |
@@ -250,7 +251,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
 | 配置文件 | 配置项 | 修改类型 | 描述 |
 | -------- | -------- | -------- | -------- |
-| TiDB | [`disconnect_on_expired_password`](/tidb-configuration-file.md#disconnect_on_expired_password-从-v650-版本开始引入) | 新增 | 该配置用于控制 TiDB 服务端是否直接断开密码已过期用户的连接，默认值为 "true" ，表示 TiDB 服务端将直接断开密码已过期用户的连接 |
+| TiDB | [`disconnect-on-expired-password`](/tidb-configuration-file.md#disconnect-on-expired-password`-从-v650-版本开始引入) | 新增 | 该配置用于控制 TiDB 服务端是否直接断开密码已过期用户的连接，默认值为 "true" ，表示 TiDB 服务端将直接断开密码已过期用户的连接 |
 |          |          |          |          |
 |          |          |          |          |
 |          |          |          |          |
