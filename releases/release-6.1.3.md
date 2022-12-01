@@ -11,7 +11,10 @@ TiDB 版本：6.1.3
 试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v6.1/quick-start-with-tidb) | [生产部署](https://docs.pingcap.com/zh/tidb/v6.1/production-deployment-using-tiup) | [下载离线包](https://cn.pingcap.com/product-community/?version=v6.1.3#version-list)
 
 ## 提升改进
+
 - PD
+
+<!--owner: nolouch -->
 
     - 优化锁粒度，提升高并发下心跳的处理能力 [#5586](https://github.com/tikv/pd/issues/5586) @[rleungx](https://github.com/rleungx)
 
@@ -19,13 +22,16 @@ TiDB 版本：6.1.3
 
     - TiCDC
 
+    <!--owner: @nongfushanquan-->
+
         - 修改同步任务 safe-mode 和拆分大事务默认值提升性能  [#7505](https://github.com/pingcap/tiflow/issues/7505) @[asddongmen](https://github.com/asddongmen)
         - 提升 Kafka 相关协议的编码性能. [#7540](https://github.com/pingcap/tiflow/issues/7540), [#7532](https://github.com/pingcap/tiflow/issues/7532), [#7543](https://github.com/pingcap/tiflow/issues/7543) @[sdojjy](https://github.com/sdojjy) @[3AceShowHand](https://github.com/3AceShowHand)
+
 ## Bug 修复
 
 + TiDB
 
-    <!--sql-infra and tidb owner: bb7133-->
+    <!--sql-infra and tidb owner: hawkingrei-->
 
     - (dup) 修复 `mysql.tables_priv` 表中 `grantor` 字段缺失的问题 [#38293](https://github.com/pingcap/tidb/issues/38293) @[CbcWestwolf](https://github.com/CbcWestwolf)
     - (dup) 修复错误下推的条件被 Join Reorder 丢弃后导致查询结果错误的问题 [#38736](https://github.com/pingcap/tidb/issues/38736) @[winoros](https://github.com/winoros)
@@ -37,9 +43,12 @@ TiDB 版本：6.1.3
 
     <!--executor owner: zanmato1984-->
 
+    - 修复函数 `str_to_date` 在 `NO_ZERO_DATE` SQL Mode 下返回结果不正确的问题 [#39146](https://github.com/pingcap/tidb/issues/39146) @[mengxin9014](https://github.com/mengxin9014)
+
+    <!--planner owner: qw4990-->
+
     - 修复 Projection 算子错误下推表达式过 Join 算子的问题 [#38736](https://github.com/pingcap/tidb/issues/38736) @[winoros](https://github.com/winoros)
     - 修复统计信息后台任务搜集分区表统计信息时可能崩溃的问题 [#35421](https://github.com/pingcap/tidb/issues/35421) @[lilinghai](https://github.com/lilinghai)
-    - 修复函数 `str_to_date` 在 `NO_ZERO_DATE` SQL Mode 下返回结果不正确的问题 [#39146](https://github.com/pingcap/tidb/issues/39146) @[mengxin9014](https://github.com/mengxin9014)
 
     <!--transaction owner:cfzjywxk -->
 
@@ -75,7 +84,7 @@ TiDB 版本：6.1.3
 
     <!--owner: @3pointer-->
 
-        - 修复数据库中使用旧的 collation 时恢复失败的问题. [#39150](https://github.com/pingcap/tidb/issues/39150) @[MoCuishle28](https://github.com/MoCuishle28)
+        - 修复数据库中使用旧的 collation 时恢复失败的问题  [#39150](https://github.com/pingcap/tidb/issues/39150) @[MoCuishle28](https://github.com/MoCuishle28)
 
     + Dumpling
 
@@ -85,7 +94,7 @@ TiDB 版本：6.1.3
 
     <!--owner: @nongfushanquan-->
 
-        - Fix an issue that causes data lost when pause and resume changefeed while executing DDL. [#7682](https://github.com/pingcap/tiflow/issues/7682) @[asddongmen](https://github.com/asddongmen)
+        - 修复在执行 DDL 时，恢复暂停的 changefeed 会导致数据丢失的问题 [#7682](https://github.com/pingcap/tiflow/issues/7682) @[asddongmen](https://github.com/asddongmen)
 
     + TiDB Binlog
 
@@ -95,7 +104,7 @@ TiDB 版本：6.1.3
 
     <!--owner: @niubell-->
 
-        - 修复 `collation_compatible` 设置为 `"strict"` 时 DM 生成 SQL 时可能带有重复的 COLLATE 的问题 [#6832](https://github.com/pingcap/tiflow/issues/6832) @[lance6716](https://github.com/lance6716)
+        - (dup) 修复当 `collation_compatible` 设置为 `"strict"` 时，DM 可能生成有重复排序规则的 SQL 语句的问题[#6832](https://github.com/pingcap/tiflow/issues/6832) @[lance6716](https://github.com/lance6716)
         - 修复 DM 可能由于 "Unknown placement policy" 错误导致任务暂停的问题 [#7493](https://github.com/pingcap/tiflow/issues/7493) @[lance6716](https://github.com/lance6716)
         - 修复在某些场景下 relay log 文件会从上游重新拉取的问题 [#7719](https://github.com/pingcap/tiflow/pull/7719) @[liumengya94](https://github.com/liumengya94)
         - 修复当 DM worker 即将退出时新 worker 调度过快导致数据被重复同步的问题 [#7745](https://github.com/pingcap/tiflow/pull/7745) @[GMHDBJD](https://github.com/GMHDBJD)
