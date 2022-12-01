@@ -460,13 +460,13 @@ WITH CTE1 AS (SELECT * FROM t1), CTE2 AS (WITH CTE3 AS (SELECT /*+ MERGE() */ * 
 - 对于单个视图、不包含子查询的简单语句，下面以重命名视图 `v` 的第一个查询块为例：
 
     ```sql
-    SELECT /* 当前查询块的名字为默认的 @SEL_1 */ * FROM v;
+    SELECT /* 注释：当前查询块的名字为默认的 @SEL_1 */ * FROM v;
     ```
 
     对于视图 `v` 来说，从查询语句开始的首个视图是 `v@SEL_1`。视图 `v` 的第一个查询块可以声明为 `QB_NAME(v_1, v@SEL_1 .@SEL_1)`，也可以省略 `@SEL_1` 简写成 `QB_NAME(v_1, v)`：
 
     ```sql
-    CREATE VIEW v AS SELECT /* 当前查询块的名字为默认的 @SEL_1 */ * FROM t;
+    CREATE VIEW v AS SELECT /* 注释：当前查询块的名字为默认的 @SEL_1 */ * FROM t;
 
     -- 使用全局生效的 Hint
     SELECT /*+ QB_NAME(v_1, v) USE_INDEX(t@v_1, idx) */ * FROM v;
@@ -475,8 +475,8 @@ WITH CTE1 AS (SELECT * FROM t1), CTE2 AS (WITH CTE3 AS (SELECT /*+ MERGE() */ * 
 - 对于嵌套视图和包含子查询的复杂语句，下面以重命名视图 `v1`、`v2` 的两个查询块为例：
 
     ```sql
-    SELECT /* 当前查询块的名字为默认的 @SEL_1 */ * FROM v2 JOIN (
-        SELECT /* 当前查询块的名字为默认的 @SEL_2 */ * FROM v2) vv;
+    SELECT /* 注释：当前查询块的名字为默认的 @SEL_1 */ * FROM v2 JOIN (
+        SELECT /* 注释：当前查询块的名字为默认的 @SEL_2 */ * FROM v2) vv;
     ```
 
     对于第一个视图 `v2` 来说，从上面的语句开始的首个视图是 `v2@SEL_1`。对于第二个视图 `v2` 来说，首个视图表为 `v2@SEL_2`。下面的查询部分仅考虑第一个视图 `v2`。
@@ -485,18 +485,18 @@ WITH CTE1 AS (SELECT * FROM t1), CTE2 AS (WITH CTE3 AS (SELECT /*+ MERGE() */ * 
 
     ```sql
     CREATE VIEW v2 AS
-        SELECT * FROM t JOIN /* 对于视图 v2 来说，当前查询块的名字为默认的 @SEL_1，因此当前查询块的视图列表是 v2@SEL_1 .@SEL_1 */
+        SELECT * FROM t JOIN /* 注释：对于视图 v2 来说，当前查询块的名字为默认的 @SEL_1，因此当前查询块的视图列表是 v2@SEL_1 .@SEL_1 */
         (
-            SELECT COUNT(*) FROM t1 JOIN v1 /* 对于视图 v2 来说，当前查询块的名字为默认的 @SEL_2，因此当前查询块的视图列表是 v2@SEL_1 .@SEL_2 */
+            SELECT COUNT(*) FROM t1 JOIN v1 /* 注释：对于视图 v2 来说，当前查询块的名字为默认的 @SEL_2，因此当前查询块的视图列表是 v2@SEL_1 .@SEL_2 */
         ) tt;
     ```
 
     对于视图 `v1` 来说，从上面的语句开始的首个视图是 `v2@SEL_1 .v1@SEL_2`。视图 `v1` 的第一个查询块可以声明为 `QB_NAME(v1_1, v2@SEL_1 .v1@SEL_2 .@SEL_1)`，视图 `v1` 的第二个查询块可以声明为 `QB_NAME(v1_2, v2@SEL_1 .v1@SEL_2 .@SEL_2)`：
 
     ```sql
-    CREATE VIEW v1 AS SELECT * FROM t JOIN /* 对于视图 v1 来说，当前查询块的名字为默认的 @SEL_1，因此当前查询块的视图列表是 v2@SEL_1 .v1@SEL_2 .@SEL_1 */
+    CREATE VIEW v1 AS SELECT * FROM t JOIN /* 注释：对于视图 v1 来说，当前查询块的名字为默认的 @SEL_1，因此当前查询块的视图列表是 v2@SEL_1 .v1@SEL_2 .@SEL_1 */
         (
-            SELECT COUNT(*) FROM t1 JOIN v1 /* 对于视图 v1 来说，当前查询块的名字为默认的 @SEL_2，因此当前查询块的视图列表是 v2@SEL_1 .v1@SEL_2 .@SEL_2 */
+            SELECT COUNT(*) FROM t1 JOIN t2 /* 注释：对于视图 v1 来说，当前查询块的名字为默认的 @SEL_2，因此当前查询块的视图列表是 v2@SEL_1 .v1@SEL_2 .@SEL_2 */
         ) tt;
     ```
 
