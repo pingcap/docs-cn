@@ -49,7 +49,7 @@ To make it easy to understand, let's assume that all data only has one replica. 
 * Hash: Create Hash by Key and select the corresponding storage node according to the Hash value.
 * Range: Divide ranges by Key, where a segment of serial Key is stored on a node.
 
-TiKV chooses the second solution that divides the whole Key-Value space into a series of consecutive Key segments. Each segment is called a Region. There is a size limit for each Region to store data (the default value is 96 MB and the size can be configured). Each Region can be described by `[StartKey, EndKey)`, a left-closed and right-open interval.
+TiKV chooses the second solution that divides the whole Key-Value space into a series of consecutive Key segments. Each segment is called a Region. Each Region can be described by `[StartKey, EndKey)`, a left-closed and right-open interval. The default size limit for each Region is 96 MiB and the size can be configured.
 
 ![Region in TiDB](/media/tidb-storage-2.png)
 

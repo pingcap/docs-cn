@@ -21,7 +21,7 @@ There is a RocksDB database within each Store and it stores data into the local 
 
 Data consistency between replicas of a Region is guaranteed by the Raft Consensus Algorithm. Only the leader of the Region can provide the writing service, and only when the data is written to the majority of replicas of a Region, the write operation succeeds.
 
-When the size of a Region exceeds a threshold, which is 144 MB by default, TiKV splits it to two or more Regions. This operation guarantees the size of all the Regions in the cluster is nearly the same, which helps the PD component to balance Regions among nodes in a TiKV cluster. When the size of a Region is smaller than the threshold, TiKV merges the two smaller adjacent Regions into one Region.
+TiKV tries to keep an appropriate size for each Region in the cluster. The Region size is currently 96 MiB by default. This mechanism helps the PD component to balance Regions among nodes in a TiKV cluster. When the size of a Region exceeds a threshold (144 MiB by default), TiKV splits it into two or more Regions. When the size of a Region is smaller than the threshold (20 MiB by default), TiKV merges the two smaller adjacent Regions into one Region.
 
 When PD moves a replica from one TiKV node to another, it firstly adds a Learner replica on the target node, after the data in the Learner replica is nearly the same as that in the Leader replica, PD changes it to a Follower replica and removes the Follower replica on the source node.
 
