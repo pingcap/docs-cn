@@ -111,7 +111,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
     
 * 优化器代价模型 V2 GA [#35240](https://github.com/pingcap/tidb/issues/35240) @[qw4990](https://github.com/qw4990)
 
-    TiDB v6.2.0 引入了新的代价模型 [Cost Model Version 2](/cost-model.md#cost-model-version-2)，通过更准确的代价估算方式，更加有利于选到最优执行计划，尤其在部署了 TiFlash 的情况下，新的代价模型自动选择合理的存储引擎，避免过多的人工介入。 经过一段时间真实场景在测试，这个模型在 v6.5.0 正式 GA，新创建的集群将默认使用新代价模型。 对于升级到 v6.5.0 的用户，经过充分的性能测试之后，可以通过变量 [`tidb_cost_model_version`](/system-variables.md#tidb_cost_model_version-从-v620-版本开始引入) 切换到新的代价模型。 
+    TiDB v6.2.0 引入了新的代价模型 [Cost Model Version 2](/cost-model.md#cost-model-version-2)，通过更准确的代价估算方式，更加有利于选到最优执行计划，尤其在部署了 TiFlash 的情况下，新的代价模型自动选择合理的存储引擎，避免过多的人工介入。 经过一段时间真实场景的测试，这个模型在 v6.5.0 正式 GA，新创建的集群将默认使用新代价模型。 对于升级到 v6.5.0 的用户， 由于新的代价模型可能会改变原有的执行计划，在经过充分的性能测试之后，可以通过变量 [`tidb_cost_model_version`](/system-variables.md#tidb_cost_model_version-从-v620-版本开始引入) 切换到新的代价模型。 
 
     优化器代价模型 V2 的 GA，大幅提升了 TiDB 优化器的整体能力，并切实地向更加强大的 HTAP 数据库演进。 
 
@@ -149,7 +149,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
 * 执行计划支持 JSON 格式的打印 [#39261](https://github.com/pingcap/tidb/issues/39261) @[fzzf678](https://github.com/fzzf678)
 
-    在新版本中，TiDB 扩展了执行计划的打印格式。 通过 `explain format = json <SQL语句> ` 能够将 SQL 的执行计划以 JSON 格式输出。 借助这个能力，SQL 调试工具和诊断工具能够更方便准确地解读执行计划，进而提升 SQL 诊断调优的易用性。
+    在新版本中，TiDB 扩展了执行计划的打印格式。 通过 `explain format = tidb_json <SQL语句> ` 能够将 SQL 的执行计划以 JSON 格式输出。 借助这个能力，SQL 调试工具和诊断工具能够更方便准确地解读执行计划，进而提升 SQL 诊断调优的易用性。
 
     更多信息，请参考[用户文档](/sql-statements/sql-statement-explain.md)。
 
