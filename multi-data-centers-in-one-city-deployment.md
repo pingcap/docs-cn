@@ -1,17 +1,10 @@
 ---
-<<<<<<< HEAD
-title: 同城多数据中心部署 TiDB
-summary: 本文档介绍同城多数据中心部署 TiDB 方案。
-=======
 title: 单区域多 AZ 部署 TiDB
 summary: 本文档介绍单个区域多个可用区部署 TiDB 的方案。
-aliases: ['/docs-cn/dev/how-to/deploy/geographic-redundancy/overview/','/docs-cn/dev/geo-redundancy-deployment/']
->>>>>>> a6d50f83b (update deployment docs (#11762))
 ---
 
 # 单区域多 AZ 部署 TiDB
 
-<<<<<<< HEAD
 <!-- Localization note for TiDB:
 
 - 英文：用 distributed SQL，同时开始强调 HTAP
@@ -21,9 +14,6 @@ aliases: ['/docs-cn/dev/how-to/deploy/geographic-redundancy/overview/','/docs-cn
 -->
 
 作为一栈式实时 HTAP 数据库，TiDB 兼顾了传统关系型数据库的优秀特性、NoSQL 数据库可扩展性以及跨可用区 (Availability Zone, AZ) 场景下的高可用。本文档旨在介绍同区域多 AZ 部署 TiDB 的方案。
-=======
-作为 NewSQL 数据库，TiDB 兼顾了传统关系型数据库的优秀特性、NoSQL 数据库可扩展性以及跨可用区 (Availability Zone, AZ) 场景下的高可用。本文档旨在介绍同区域多 AZ 部署 TiDB 的方案。
->>>>>>> a6d50f83b (update deployment docs (#11762))
 
 本文中的区域指的是地理隔离的不同位置，AZ 指的是区域内部划分的相互独立的资源集合。本文描述的方案同样适用于一个城市内多个数据中心（同城多中心）的场景。
 
@@ -128,13 +118,8 @@ TiKV 是一个 Multi-Raft 系统，其数据按 Region（默认 96M）切分，�
 ```ini
 server_configs:
   pd:
-<<<<<<< HEAD
-    replication.location-labels: ["zone","dc","rack","host"]
-
-=======
     replication.location-labels: ["zone","az","rack","host"]
-    
->>>>>>> a6d50f83b (update deployment docs (#11762))
+
 tikv_servers:
   - host: 10.63.10.30
     config:
