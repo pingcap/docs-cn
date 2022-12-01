@@ -7,7 +7,7 @@ summary: 介绍如何在同一个事务中保存 TiFlash 的计算结果。
 
 > **警告：**
 >
-> 该功能目前是实验性功能，不建议在生产环境中使用，其形式和使用方法可能会在未来版本中发生变化。
+> 该功能目前是实验性功能，请注意使用场景限制。该功能会在未事先通知的情况下发生变化或删除。语法和实现可能会在 GA 前发生变化。如果发现 bug，请提 [Issues · pingcap/tidb](https://github.com/pingcap/tidb/issues) 反馈。
 
 本文介绍如何在同一个事务 (`INSERT INTO SELECT`) 中实现 TiFlash 计算结果物化至某一指定的 TiDB 表中。
 
@@ -57,7 +57,7 @@ SELECT app_name, country FROM t1;
 
 ## 限制
 
-* TiDB 对 SELECT 子句返回的结果集（即 INSERT 写入的事务）大小的可以通过设定 TiDB 控制事务大小的变量 `performance.txn-total-size-limit` 来进行，推荐的使用场景是 100 MiB 以下。
+* TiDB 对 SELECT 子句返回的结果集（即 INSERT 写入的事务）大小的限制即为 TiDB  对单个事务大小的限制，可以通过 [performance.txn-total-size-limit](/tidb-configuration-file.md#txn-total-size-limit) 配置项调整该限制，推荐的使用场景是 100 MiB 以下。
 
     若 SELECT 返回结果大小超过了事务大小限制的阈值，那么整条语句将会被强制终止并返回错误信息（参见 `performance.txn-total-size-limit`）。
 
