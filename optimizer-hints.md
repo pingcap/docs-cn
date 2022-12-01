@@ -447,7 +447,7 @@ WITH CTE1 AS (SELECT * FROM t1), CTE2 AS (WITH CTE3 AS (SELECT /*+ MERGE() */ * 
 
 ## 全局生效的 Hint
 
-全局生效的 Hint 和[视图](/views.md)有关，可以实现在查询中定义的 Hint 能够在视图的内部生效。添加这类 Hint 大致需要两步：先用 `QB_NAME` Hint 为视图内的查询块命名，再以“表名@查询块名”的方式加入实际需要的 Hint。
+全局生效的 Hint 和[视图](/views.md)有关，可以使查询中定义的 Hint 能够在视图内部生效。添加这类 Hint 需要两步：先用 `QB_NAME` Hint 为视图内的查询块命名，再以“表名@查询块名”的方式加入实际需要的 Hint。
 
 ### 第 1 步：使用 `QB_NAME` Hint 重命名视图内的查询块
 
