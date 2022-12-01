@@ -111,7 +111,7 @@ analyze table supplier;
 {{< copyable "shell-regular" >}}
 
 ```shell
-go-tpc ch --host 172.16.5.140 -P4000 --warehouses 1000 run -D tpcc -T 50 -t 1 --time 1h
+tiup bench ch --host 172.16.5.140 -P4000 --warehouses 1000 run -D tpcc -T 50 -t 1 --time 1h
 ```
 
 命令运行过程中，控制台上会持续打印测试结果。例如：
