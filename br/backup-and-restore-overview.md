@@ -10,7 +10,7 @@ aliases: ['/docs-cn/dev/br/backup-and-restore-tool/','/docs-cn/dev/reference/too
 
 TiDB 备份恢复功能可以用于满足以下业务的需求：
 
-- 备份集群数据到灾备系统，并保证 RPO 低至 5 分钟，减少灾难场景下数据的丢失。
+- 备份集群数据到灾备系统，并保证 Recovery Point Objective (RPO) 低至 5 分钟，减少灾难场景下数据的丢失。
 - 处理业务数据写错的案例，提供业务操作的“复原”能力。
 - 审计业务的历史数据，满足司法审查的需求。
 - 复制 (Clone) 生产环境，方便问题诊断、性能调优验证、仿真测试等。
