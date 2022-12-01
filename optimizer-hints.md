@@ -517,7 +517,7 @@ WITH CTE1 AS (SELECT * FROM t1), CTE2 AS (WITH CTE3 AS (SELECT /*+ MERGE() */ * 
 
 ### 第 2 步：添加实际需要的 Hint
 
-在定义好视图查询块部分的 `QB_NAME` Hint 后，你可以通过查询块的名字使用[查询块范围生效的 Hint](#查询块范围生效的-hint)，以“表名@查询块名”的方式加入实际需要的 Hint，使其在视图内部生效。例如：
+在定义好视图查询块部分的 `QB_NAME` Hint 后，你可以通过查询块的名字使用[查询块范围生效的 Hint](#查询块范围生效的-hint)，以“视图名@查询块名”的方式加入实际需要的 Hint，使其在视图内部生效。例如：
 
 - 指定视图 `v2` 中第一个查询块的 `MERGE_JOIN()` Hint：
 
