@@ -105,15 +105,15 @@ dispatchers = [
 # 当下游类型是对象存储时，目前仅支持 csv 和 canal-json 协议。
 protocol = "canal-json"
 
-# 以下三个配置项仅在云存储类的 Sink 中使用。
-# 换行符。默认值为空，表示使用 "\r\n" 作为换行符。
+# 以下三个配置项仅在同步到存储服务的 Sink 中使用，在 MQ 和 MySQL 类 sink 中无需设置。
+# 换行符，用来分隔两个数据变更事件。默认值为空，表示使用 "\r\n" 作为换行符。
 terminator = ''
-# 文件路径的日期分隔类型。可选类型有 `none`、`year`、`month`、`day`。默认值为 `none`，即不使用日期分隔。
+# 文件路径的日期分隔类型。可选类型有 `none`、`year`、`month`、`day`。默认值为 `none`，即不使用日期分隔，详见：[同步数据到存储服务](https://docs.pingcap.com/zh/tidb/dev/ticdc-sink-to-cloud-storage#配置-sink-uri)。
 date-separator = 'none'
-# 是否使用 partition 作为分隔字符串。
+# 是否使用 partition 作为分隔字符串，默认值为 false，即一张表中各个 partition 的数据不会分不同的目录来存储，详见：[同步数据到存储服务](https://docs.pingcap.com/zh/tidb/dev/ticdc-sink-to-cloud-storage#配置-sink-uri)。
 enable-partition-separator = false
 
-# 从 v6.5.0 开始，TiCDC 支持以 CSV 格式将数据变更记录保存至云存储中。
+# 从 v6.5.0 开始，TiCDC 支持以 CSV 格式将数据变更记录保存至存储服务中，在 MQ 和 MySQL 类 sink 中无需设置。
 [sink.csv]
 # 字段之间的分隔符。必须为 ASCII 字符，默认值为 `,`
 delimiter = ','
