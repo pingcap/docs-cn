@@ -27,6 +27,10 @@ TiDB 版本：6.1.3
         - 开启大事务拆分，默认关闭同步任务的安全模式以提升性能 [#7505](https://github.com/pingcap/tiflow/issues/7505) @[asddongmen](https://github.com/asddongmen)
         - 提升 Kafka 相关协议的编码性能 [#7540](https://github.com/pingcap/tiflow/issues/7540), [#7532](https://github.com/pingcap/tiflow/issues/7532), [#7543](https://github.com/pingcap/tiflow/issues/7543) @[sdojjy](https://github.com/sdojjy) @[3AceShowHand](https://github.com/3AceShowHand)
 
+- 其他
+
+    为了提升 TiDB 性能，TiDB 的 Go 编译器版本从 go1.x.x 升级到了 go1.19。<!--待提供更多信息>
+
 ## Bug 修复
 
 + TiDB
