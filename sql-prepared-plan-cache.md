@@ -272,3 +272,9 @@ mysql> select @@last_plan_from_cache;       -- 因为开关打开，第二次依
 +------------------------+
 1 row in set (0.00 sec)
 ```
+
+### 监控
+
+在 [Grafana 面板](/grafana-tidb-dashboard.md)的 TiDB 页面，**Executor** 部分包含“Queries Using Plan Cache OPS”和“Plan Cache Miss OPS”两个图表，用以检查 TiDB 和应用是否正确配置，以便 SQL 执行计划缓存能正常工作。TiDB 页面的 **Server** 部分还提供了“Prepared Statement Count”图表，如果应用使用了预处理语句，这个图表会显示非零值。通过数值变化，可以判断 SQL 执行计划缓存是否正常工作。
+
+![`sql_plan_cache`](/media/performance/sql_plan_cache.png)
