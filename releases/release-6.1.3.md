@@ -16,7 +16,7 @@ TiDB 版本：6.1.3
 
 <!--owner: nolouch -->
 
-    - 优化锁粒度，提升高并发下心跳的处理能力 [#5586](https://github.com/tikv/pd/issues/5586) @[rleungx](https://github.com/rleungx)
+    - 优化锁的粒度以减少锁争用，提升高并发下心跳的处理能力 [#5586](https://github.com/tikv/pd/issues/5586) @[rleungx](https://github.com/rleungx)
 
 - Tools
 
@@ -24,8 +24,8 @@ TiDB 版本：6.1.3
 
     <!--owner: @nongfushanquan-->
 
-        - 修改同步任务 safe-mode 和拆分大事务默认值提升性能  [#7505](https://github.com/pingcap/tiflow/issues/7505) @[asddongmen](https://github.com/asddongmen)
-        - 提升 Kafka 相关协议的编码性能. [#7540](https://github.com/pingcap/tiflow/issues/7540), [#7532](https://github.com/pingcap/tiflow/issues/7532), [#7543](https://github.com/pingcap/tiflow/issues/7543) @[sdojjy](https://github.com/sdojjy) @[3AceShowHand](https://github.com/3AceShowHand)
+        - 开启大事务拆分，默认关闭同步任务的安全模式以提升性能 [#7505](https://github.com/pingcap/tiflow/issues/7505) @[asddongmen](https://github.com/asddongmen)
+        - 提升 Kafka 相关协议的编码性能 [#7540](https://github.com/pingcap/tiflow/issues/7540), [#7532](https://github.com/pingcap/tiflow/issues/7532), [#7543](https://github.com/pingcap/tiflow/issues/7543) @[sdojjy](https://github.com/sdojjy) @[3AceShowHand](https://github.com/3AceShowHand)
 
 ## Bug 修复
 
@@ -75,7 +75,7 @@ TiDB 版本：6.1.3
     <!--storage owner: flowbehappy -->
 
     - 修复高压力写可能产生太多 delta 层小文件的问题 [#6361](https://github.com/pingcap/tiflash/issues/6361) @[lidezhu](https://github.com/lidezhu)
-    - 修复 TiFlash 重启后 delta 层小文件无法合并的问题 [#6159](https://github.com/pingcap/tiflash/issues/6159) @[lidezhu](https://github.com/lidezhu)
+    - 修复 TiFlash 重启后 delta 层的小文件无法合并 (compact) 的问题 [#6159](https://github.com/pingcap/tiflash/issues/6159) @[lidezhu](https://github.com/lidezhu)
 
 + Tools
 
