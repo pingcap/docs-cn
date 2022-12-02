@@ -247,6 +247,8 @@ Golang 自 Go 1.19 版本开始引入 GOMEMLIMIT 环境变量，该变量用来�
 
 1. 在 v6.1.2 版本下，模拟负载在持续运行数分钟后，tidb-server 会发生 OOM（系统内存约 48GiB）
 
+![v6.1.2 workload oom](/media/configure-memory-usage-612-oom.png)
+
 2. 在 v6.1.3 版本下，设置 GOMEMLIMIT 到 40000MiB，模拟负载长期稳定运行， tidb-server 未发生 OOM 且进程最高内存用量稳定在 40.8GB 左右
 
 ![v6.1.3 workload no oom with GOMEMLIMIT](/media/configure-memory-usage-613-no-oom.png)
