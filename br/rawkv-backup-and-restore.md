@@ -43,7 +43,7 @@ In this command, the values of `--start` and `--end` are decoded using the forma
 >     - Where each peer is scattered to during restoration is random. You have no idea in advance which node will read which file.
 >
 > - These can be avoided using shared storage, for example, mounting an NFS on the local path, or using S3. With network storage, every node can automatically read every SST file. In this case, the preceding caveats no longer apply.
-> - Also, note that you can only run one restoration operation for a single cluster at the same time. Otherwise, unexpected behaviors might occur. For details, see [FAQs](/br/backup-and-restore-faq.md#can-i-use-multiple-br-processes-at-the-same-time-to-restore-the-data-of-a-single-cluster).
+> - Also, note that you can only run one restoration operation for a single cluster at the same time. Otherwise, unexpected behaviors might occur. For details, see [FAQs](/faq/backup-and-restore-faq.md#can-i-start-multiple-restore-tasks-at-the-same-time-to-restore-the-data-of-a-single-cluster).
 
 ## Restore RawKV
 

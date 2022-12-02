@@ -7,7 +7,7 @@ summary: Learn how to use Dumpling and TiDB Lightning to back up and restore ful
 
 This document introduces how to use Dumpling and TiDB Lightning to back up and restore full data of TiDB.
 
-If you need to back up a small amount of data (for example, less than 50 GB) and do not require high backup speed, you can use [Dumpling](/dumpling-overview.md) to export data from the TiDB database and then use [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) to import the data into another TiDB database. For more information about backup and restore, see [Use BR to Back Up Cluster Data](/br/br-usage-backup.md) and [Use BR to Restore Cluster Data](/br/br-usage-restore.md).
+If you need to back up a small amount of data (for example, less than 50 GB) and do not require high backup speed, you can use [Dumpling](/dumpling-overview.md) to export data from the TiDB database and then use [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) to import the data into another TiDB database. For more information about backup and restore, see [TiDB Backup & Restore Overview](/br/backup-and-restore-overview.md).
 
 ## Requirements
 

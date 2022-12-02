@@ -1,41 +1,21 @@
 ---
-title: Perform Log Backup and Restoration Using BR
-summary: Learn how to perform log backup and restoration from the log backup data using the br log command line tool.
+title: TiDB Log Backup and PITR Command Manual
+summary: Learn about the commands of TiDB log backup and point-in-time recovery.
+aliases: ['/tidb/dev/br-log-command-line/']
 ---
 
-# Perform Log Backup and Restoration Using BR
+# TiDB Log Backup and PITR Command Manual
 
-You can perform log backup and restoration on a TiDB cluster by using the `br log` command. This document describes the usage of the `br log` command.
+This document describes the commands used in TiDB log backup and point-in-time recovery (PITR).
 
-## Prerequisites
+For more information about log backup and PITR, refer to:
 
-### Install BR
-
-Before performing log backup, you need to install Backup & Restore (BR). You can install BR via either of the following methods:
-
-* [Install BR online using TiUP](/migration-tools.md#install-tools-using-tiup) (recommended)
-* [Download the TiDB binary package](/download-ecosystem-tools.md)
-
-### Enable log backup
-
-Before you use log backup, ensure that [`log-backup.enable`](/tikv-configuration-file.md#enable-new-in-v620) in the TiKV configuration file is in its default value `true`. For the method to modify configuration, refer to [Modify the configuration](/maintain-tidb-using-tiup.md#modify-the-configuration).
+- [Log Backup and PITR Guide](/br/br-pitr-guide.md)
+- [Back up and Restore Use Cases](/br/backup-and-restore-use-cases.md)
 
 ## Perform log backup
 
-You can perform log backup using the `br log` command. This command has a set of subcommands that help you with the following operations:
-
-* Start a log backup
-* Query the backup status
-* Pause and resume the backup
-* Stop the backup task and delete the backup data
-* Clean up the backup data
-* View the metadata
-
-This section introduces the subcommands of `br log` and gives examples of the command usage.
-
-### `br log` subcommands
-
-You can view the `br log` command help information by running the following command:
+You can start and manage log backup using the `br log` command.
 
 ```shell
 ./br log --help
@@ -89,20 +69,22 @@ Global Flags:
  --key string                 Private key path for TLS connection
  -u, --pd strings             PD address (default [127.0.0.1:2379])
  -s, --storage string         specify the url where backup storage, eg, "s3://bucket/path/prefix"
+
 ```
 
 The example output only shows the common parameters. These parameters are described as follows:
 
-- `--task-name`: specify the task name for the log backup. This name is also used to query, pause, and resume the backup task.
-- `--start-ts`: specify the start timestamp for the log backup. If this is not specified, the backup program uses the current time as `start-ts`.
-- `--pd`: specify the PD address for the backup cluster. BR needs to access PD to start the log backup task.
-- `--ca`, `--cert`, `--key`: specify the mTLS encryption method to communicate with TiKV and PD.
-- `--storage`: specify the backup storage address. Currently, BR supports shared file systems, Amazon S3, GCS, or Azure Blob Storage as the storage for log backup. For details, see [Amazon S3 storage](/br/backup-storage-S3.md), [GCS storage](/br/backup-storage-gcs.md), and [Azure blob storage](/br/backup-storage-azblob.md).
+- `--start-ts`: specifies the start timestamp for the log backup. If this parameter is not specified, the backup program uses the current time as `start-ts`.
+- `task-name`: specifies the task name for the log backup. This name is also used to query, pause, and resume the backup task.
+- `--ca`, `--cert`, `--key`: specifies the mTLS encryption method to communicate with TiKV and PD.
+- `--pd`: specifies the PD address for the backup cluster. BR needs to access PD to start the log backup task.
+- `--storage`: specifies the backup storage address. Currently, BR supports Amazon S3, Google Cloud Storage (GCS), or Azure Blob Storage as the storage for log backup. The preceding command uses Amazon S3 as an example. For details, see [URL format of backup storages](/br/backup-and-restore-storages.md#url-format).
 
 Usage example:
 
 ```shell
-./br log start --task-name=pitr --pd=172.16.102.95:2379 --storage='s3://tidb-pitr-bucket/backup-data/log-backup'
+./br log start --task-name=pitr --pd="${PD_IP}:2379" \
+--storage='s3://backup-101/logbackup?access-key=${access-key}&secret-access-key=${secret-access-key}"'
 ```
 
 ### Query the backup status
@@ -128,6 +110,7 @@ Global Flags:
  --cert string                Certificate path for TLS connection
  --key string                 Private key path for TLS connection
  -u, --pd strings             PD address (default [127.0.0.1:2379])
+
 ```
 
 In the example output, `task-name` is used to specify the name of the backup task. The default value is `*`, which means querying the status of all tasks.
@@ -135,26 +118,31 @@ In the example output, `task-name` is used to specify the name of the backup tas
 Usage example:
 
 ```shell
-./br log status --task-name=pitr --pd=172.16.102.95:2379
+./br log status --task-name=pitr --pd="${PD_IP}:2379"
+```
+
+Expected output:
+
+```shell
 ● Total 1 Tasks.
 > #1 <
               name: pitr
             status: ● NORMAL
              start: 2022-07-14 20:08:03.268 +0800
                end: 2090-11-18 22:07:45.624 +0800
-           storage: s3://tmp/store-by-storeid/log1
+           storage: s3://backup-101/logbackup
        speed(est.): 0.82 ops/s
 checkpoint[global]: 2022-07-25 22:52:15.518 +0800; gap=2m52s
 ```
 
 The output fields are described as follows:
 
-- `status`: the status of the backup task. The status can be `NORMAL`, `ERROR`, or `PAUSE`.
+- `status`: the status of the backup task, which can be `NORMAL`, `ERROR`, or `PAUSE`.
 - `start`: the start time of the backup task. It is the `start-ts` value specified when the backup task is started.
 - `storage`: the backup storage address.
 - `speed`: the total QPS of the backup task. QPS means the number of logs backed per second.
-- `checkpoint[global]`: all data before this checkpoint is backed up to the backup storage. This is the latest timestamp available for restoring the backup data.
-- `error[store]`: the error the log backup program encounters on the storage node.
+- `checkpoint [global]`: all data before this checkpoint is backed up to the backup storage. This is the latest timestamp available for restoring the backup data.
+- `error [store]`: the error the log backup program encounters on the storage node.
 
 ### Pause and resume a backup task
 
@@ -189,10 +177,10 @@ Global Flags:
 Usage example:
 
 ```shell
-./br log pause --task-name=pitr --pd=172.16.102.95:2379
+./br log pause --task-name=pitr --pd="${PD_IP}:2379"
 ```
 
-You can run the `br log resume` command to resume the paused backup task.
+You can run the `br log resume` command to resume a paused backup task.
 
 Run `br log resume --help` to see the help information:
 
@@ -214,12 +202,12 @@ Global Flags:
  -u, --pd strings             PD address (default [127.0.0.1:2379])
 ```
 
-After the backup task is paused for more than 24 hours, running `br log resume` reports an error, and BR prompts that backup data is lost. To handle this error, refer to [Troubleshoot PITR Log Backup](/br/pitr-troubleshoot.md#what-should-i-do-if-the-error-message-errbackupgcsafepointexceeded-is-returned-when-using-the-br-log-resume-command-to-resume-the-suspended-task).
+After the backup task is paused for more than 24 hours, running `br log resume` reports an error, and BR prompts that backup data is lost. To handle this error, refer to [Backup & Restore FAQs](/faq/backup-and-restore-faq.md#what-should-i-do-if-the-error-message-errbackupgcsafepointexceeded-is-returned-when-using-the-br-log-resume-command-to-resume-a-suspended-task).
 
 Usage example:
 
 ```shell
-./br log resume --task-name=pitr --pd=172.16.102.95:2379
+./br log resume --task-name=pitr --pd="${PD_IP}:2379"
 ```
 
 ### Stop and restart a backup task
@@ -257,7 +245,7 @@ Global Flags:
 Usage example:
 
 ```shell
-./br log stop --task-name=pitr --pd=172.16.102.95:2379
+./br log stop --task-name=pitr --pd="${PD_IP}:2379"
 ```
 
 #### Restart a backup task
@@ -268,7 +256,7 @@ After running the `br log stop` command to stop a log backup task, you can creat
 - The `--start-ts` does not need to be specified. BR automatically starts the backup from the last backup checkpoint.
 - If the task is stopped for a long time and multiple versions of the data have been garbage collected, the error `BR:Backup:ErrBackupGCSafepointExceeded` is reported when you attempt to restart the task. In this case, you have to create a new log backup task in another `--storage` directory.
 
-### Clean up the backup data
+### Clean up backup data
 
 You can run the `br log truncate` command to clean up the outdated or no longer needed log backup data.
 
@@ -287,22 +275,22 @@ Flags:
   --until string   Remove all backup data until this TS.(support TSO or datetime, e.g. '400036290571534337' or '2018-05-11 01:42:23+0800'.)
   -y, --yes        Skip all prompts and always execute the command.
 
+
 Global Flags:
   -s, --storage string         specify the url where backup storage, eg, "s3://bucket/path/prefix"
 ```
 
-This command only accesses the backup storage, but does not access the TiDB cluster.
-
-Some parameters are described as follows:
+This command only accesses the backup storage and does not access the TiDB cluster. Some parameters are described as follows:
 
 - `--dry-run`: run the command but do not really delete the files.
 - `--until`: delete all log backup data before the specified timestamp.
-- `--storage`: the backup storage address. Currently, BR supports shared file systems, Amazon S3, GCS, or Azure Blob Storage as the storage for log backup. For details, see [Amazon S3 storage](/br/backup-storage-S3.md), [GCS storage](/br/backup-storage-gcs.md), and [Azure blob storage](/br/backup-storage-azblob.md).
+- `--storage`: the backup storage address. Currently, BR supports Amazon S3, GCS, or Azure Blob Storage as the storage for log backup. For details, see [URL format of backup storages](/br/backup-and-restore-storages.md#url-format).
 
 Usage example:
 
 ```shell
-./br log truncate --until='2022-07-26 21:20:00+0800' –-storage='s3://tidb-pitr-bucket/backup-data/log-backup'
+./br log truncate --until='2022-07-26 21:20:00+0800' \
+–-storage='s3://backup-101/logbackup?access-key=${access-key}&secret-access-key=${secret-access-key}"'
 ```
 
 Expected output:
@@ -317,7 +305,7 @@ Removing metadata... DONE; take = 24.038962ms
 
 ### View the backup metadata
 
-You can run the `br log metadata` command to view the metadata of the log backup in the backup storage, such as the earliest and latest timestamp that can be restored.
+You can run the `br log metadata` command to view the backup metadata in the storage system, such as the earliest and latest timestamp that can be restored.
 
 Run `br log metadata --help` to see the help information:
 
@@ -335,14 +323,14 @@ Global Flags:
   -s, --storage string         specify the url where backup storage, eg, "s3://bucket/path/prefix"
 ```
 
-This command only accesses the backup storage, but does not access the TiDB cluster.
+This command only accesses the backup storage and does not access the TiDB cluster.
 
-The `--storage` parameter is used to specify the backup storage address. Currently, BR supports shared file systems, Amazon S3, GCS, or Azure Blob Storage as the storage for log backup. For details, see [Amazon S3 storage](/br/backup-storage-S3.md), [GCS storage](/br/backup-storage-gcs.md), and [Azure blob storage](/br/backup-storage-azblob.md).
+The `--storage` parameter is used to specify the backup storage address. Currently, BR supports Amazon S3, GCS, or Azure Blob Storage as the storage for log backup. For details, see [URL format of backup storages](/br/backup-and-restore-storages.md#url-format).
 
 Usage example:
 
 ```shell
-./br log metadata –-storage='s3://tidb-pitr-bucket/backup-data/log-backup'
+./br log metadata –-storage='s3://backup-101/logbackup?access-key=${access-key}&secret-access-key=${secret-access-key}"'
 ```
 
 Expected output:
@@ -351,7 +339,7 @@ Expected output:
 [2022/07/25 23:02:57.236 +08:00] [INFO] [collector.go:69] ["log metadata"] [log-min-ts=434582449885806593] [log-min-date="2022-07-14 20:08:03.268 +0800"] [log-max-ts=434834300106964993] [log-max-date="2022-07-25 23:00:15.618 +0800"]
 ```
 
-## Restore the log backup data
+## Restore to a specified point in time (PITR)
 
 You can run the `br restore point` command to perform a PITR on a new cluster or just restore the log backup data.
 
@@ -370,6 +358,7 @@ Flags:
   --restored-ts string         the point of restore, used for log restore. support TSO or datetime, e.g. '400036290571534337' or '2018-05-11 01:42:23+0800'
   --start-ts string            the start timestamp which log restore from. support TSO or datetime, e.g. '400036290571534337' or '2018-05-11 01:42:23+0800'
 
+
 Global Flags:
  --ca string                  CA certificate path for TLS connection
  --cert string                Certificate path for TLS connection
@@ -380,28 +369,28 @@ Global Flags:
 
 The example output only shows the common parameters. These parameters are described as follows:
 
-- `--full-backup-storage`: the storage address for the snapshot (full) backup. If you need to use PITR, you must specify this parameter and choose the latest snapshot backup before the restoration timestamp. If you only need to restore log backup data, you can omit this parameter. Currently, BR supports shared file systems, Amazon S3, GCS, or Azure Blob Storage as the storage for log backup. For details, see [Amazon S3 storage](/br/backup-storage-S3.md), [GCS storage](/br/backup-storage-gcs.md), and [Azure blob storage](/br/backup-storage-azblob.md).
+- `--full-backup-storage`: the storage address for the snapshot (full) backup. To use PITR, specify this parameter and choose the latest snapshot backup before the restore timestamp. To restore only log backup data, you can omit this parameter. Currently, BR supports Amazon S3, GCS, or Azure Blob Storage as the storage for log backup. For details, see [URL format of backup storages](/br/backup-and-restore-storages.md#url-format).
 - `--restored-ts`: the timestamp that you want to restore data to. If this parameter is not specified, BR restores data to the latest timestamp available in the log backup, that is, the checkpoint of the backup data.
-- `--start-ts`: the start timestamp that you want to restore log backup data from. If you only need to restore log backup data and do not need snapshot backup data, you must specify this parameter.
-- `--pd`: the PD address of the restoration cluster.
+- `--start-ts`: the start timestamp that you want to restore log backup data from. If you only need to restore log backup data, you must specify this parameter.
+- `--pd`: the PD address of the restore cluster.
 - `--ca`, `--cert`, `--key`: specify the mTLS encryption method to communicate with TiKV and PD.
-- `--storage`: the storage address for the log backup. Currently, BR supports shared file systems, Amazon S3, GCS, or Azure Blob Storage as the storage for log backup. For details, see [Amazon S3 storage](/br/backup-storage-S3.md), [GCS storage](/br/backup-storage-gcs.md), and [Azure blob storage](/br/backup-storage-azblob.md).
+- `--storage`: the storage address for the log backup. Currently, BR supports Amazon S3, GCS, or Azure Blob Storage as the storage for log backup. For details, see [URL format of backup storages](/br/backup-and-restore-storages.md#url-format).
 
 Usage example:
 
 ```shell
-./br restore point --pd=172.16.102.95:2379
---storage='s3://tidb-pitr-bucket/backup-data/log-backup'
---full-backup-storage='s3://tidb-pitr-bucket/backup-data/snapshot-20220512000000'
+./br restore point --pd="${PD_IP}:2379"
+--storage='s3://backup-101/logbackup?access-key=${access-key}&secret-access-key=${secret-access-key}"'
+--full-backup-storage='s3://backup-101/snapshot-202205120000?access-key=${access-key}&secret-access-key=${secret-access-key}"'
+
 Full Restore <--------------------------------------------------------------------------------------------------------------------------------------------------------> 100.00%
-[2022/07/19 18:15:39.132 +08:00] [INFO] [collector.go:69] ["Full Restore success summary"] [total-ranges=12] [ranges-succeed=12] [ranges-failed=0] [split-region=546.663µs] [restore-ranges=3] [total-take=3.112928252s] [restore-data-size(after-compressed)=5.056kB] [Size=5056] [BackupTS=434693927394607136] [total-kv=4] [total-kv-size=290B] [average-speed=93.16B/s]
+*** ***["Full Restore success summary"] ****** [total-take=3.112928252s] [restore-data-size(after-compressed)=5.056kB] [Size=5056] [BackupTS=434693927394607136] [total-kv=4] [total-kv-size=290B] [average-speed=93.16B/s]
 Restore Meta Files <--------------------------------------------------------------------------------------------------------------------------------------------------> 100.00%
 Restore KV Files <----------------------------------------------------------------------------------------------------------------------------------------------------> 100.00%
-[2022/07/19 18:15:39.325 +08:00] [INFO] [collector.go:69] ["restore log success summary"] [total-take=192.955533ms] [restore-from=434693681289625602] [restore-to=434693753549881345] [total-kv-count=33] [total-size=21551]
+"restore log success summary"] [total-take=192.955533ms] [restore-from=434693681289625602] [restore-to=434693753549881345] [total-kv-count=33] [total-size=21551]
 ```
 
 > **Note:**
 >
-> - It is recommended to use `br restore point` to perform PITR (refer to [PITR Overview](/br/point-in-time-recovery.md)). It is not recommended to restore log data of a time period directly in a cluster.
 > - You cannot restore the log backup data of a certain time period repeatedly. If you restore the log backup data of a range `[t1=10, t2=20)` repeatedly, the restored data might be inconsistent.
-> - When you restore log data of different time periods in multiple batches, you must ensure the log data is restored in a consecutive order. If you restore the log backup data of [t1, t2), [t2, t3) and [t3, t4) in a consecutive order, the restored data is consistent. However, if you restore [t1, t2) and then skip [t2, t3) to restore [t3, t4), the restored data might be inconsistent.
+> - When you restore log data of different time periods in multiple batches, ensure that the log data is restored in consecutive order. If you restore the log backup data of `[t1, t2)`, `[t2, t3)`, and `[t3, t4)` in consecutive order, the restored data is consistent. However, if you restore `[t1, t2)` and then skip `[t2, t3)` to restore `[t3, t4)`, the restored data might be inconsistent.

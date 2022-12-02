@@ -1,18 +1,27 @@
 ---
-title: PITR Monitoring and Alert
-summary: Learn the monitoring and alert of the PITR feature.
+title: Monitoring and Alert for Backup and Restore
+summary: Learn the monitoring and alert of the backup and restore feature.
 ---
 
-# PITR Monitoring and Alert
+# Monitoring and Alert for Backup and Restore
 
-PITR supports using [Prometheus](https://prometheus.io/) to collect monitoring metrics. Currently all monitoring metrics are built into TiKV.
+This document describes the monitoring and alert of the backup and restore feature, including how to deploy monitoring components, monitoring metrics, and common alerts.
 
-## Monitoring configuration
+## Log backup monitoring
 
-- For clusters deployed using TiUP, [Prometheus](https://prometheus.io/) automatically collects monitoring metrics.
+Log backup supports using [Prometheus](https://prometheus.io/) to collect monitoring metrics. Currently all monitoring metrics are built into TiKV.
+
+### Monitoring configuration
+
+- For clusters deployed using TiUP, Prometheus automatically collects monitoring metrics.
 - For clusters deployed manually, follow the instructions in [TiDB Cluster Monitoring Deployment](/deploy-monitoring-services.md) to add TiKV-related jobs to the `scrape_configs` section of the Prometheus configuration file.
 
-## Monitoring metrics
+### Grafana configuration
+
+- For clusters deployed using TiUP, the [Grafana](https://grafana.com/) dashboard contains the point-in-time recovery (PITR) panel. The **Backup Log** panel in the TiKV-Details dashboard is the PITR panel.
+- For clusters deployed manually, refer to [Import a Grafana dashboard](/deploy-monitoring-services.md#step-2-import-a-grafana-dashboard) and upload the [tikv_details](https://github.com/tikv/tikv/blob/master/metrics/grafana/tikv_details.json) JSON file to Grafana. Then find the **Backup Log** panel in the TiKV-Details dashboard.
+
+### Monitoring metrics
 
 | Metrics                                                | Type    |  Description                                                                                                                                                 |
 |-------------------------------------------------------|-----------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -38,12 +47,9 @@ PITR supports using [Prometheus](https://prometheus.io/) to collect monitoring m
 | **tikv_log_backup_task_status**                       | Gauge     | The status of the log backup task. `0` means running. `1` means paused. `2` means error.  <br/>`task :: string`                                                                                                |
 | **tikv_log_backup_pending_initial_scan**              | Gauge     | Statistics of pending initial scans. <br/>`stage :: {"queuing", "executing"}`                                                                                                     |
 
-## Grafana configuration
+### Log backup alerts
 
-- For clusters deployed using TiUP, the [Grafana](https://grafana.com/) dashboard contains the PITR panel. The **Backup Log** panel in the TiKV-Details dashboard is the PITR panel.
-- For clusters deployed manually, refer to [Import a Grafana dashboard](/deploy-monitoring-services.md#step-2-import-a-grafana-dashboard) and upload the [tikv_details](https://github.com/tikv/tikv/blob/master/metrics/grafana/tikv_details.json) JSON file to Grafana. Then find the **Backup Log** panel in the TiKV-Details dashboard.
-
-## Alert configuration
+#### Alert configuration
 
 Currently, PITR does not have built-in alert items. This section introduces how to configure alert items in PITR and recommends some items.
 
@@ -51,11 +57,11 @@ To configure alert items in PITR, follow these steps:
 
 1. Create a configuration file (for example, `pitr.rules.yml`) for the alert rules on the node where Prometheus is located. In the file, fill in the alert rules according to the [Prometheus documentation](https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/), the following recommended alert items, and the configuration sample.
 2. In the `rule_files` field of the Prometheus configuration file, add the path of the alert rule file.
-3. Send `SIGHUP` signal to the Prometheus process (`kill -HUP pid`) or send an HTTP POST request to `http://prometheus-addr/-/reload` (before you send the HTTP request, add the `--web.enable-lifecycle` parameter when starting Prometheus).
+3. Send `SIGHUP` signal to the Prometheus process (`kill -HUP pid`) or send an HTTP `POST` request to `http://prometheus-addr/-/reload` (before you send the HTTP request, add the `--web.enable-lifecycle` parameter when starting Prometheus).
 
 The recommended alert items are as follows:
 
-### LogBackupRunningRPOMoreThan10m
+#### LogBackupRunningRPOMoreThan10m
 
 - Alert item: `max(time() - tikv_log_backup_store_checkpoint_ts / 262144000) by (task) / 60 > 10 and max(tikv_log_backup_store_checkpoint_ts) by (task) > 0 and max(tikv_log_backup_task_status) by (task) == 0`
 - Alert level: warning
@@ -76,31 +82,31 @@ groups:
       message: RPO of the log backup task {{ $labels.task }} is more than 10m
 ```
 
-### LogBackupRunningRPOMoreThan30m
+#### LogBackupRunningRPOMoreThan30m
 
 - Alert item: `max(time() - tikv_log_backup_store_checkpoint_ts / 262144000) by (task) / 60 > 30 and max(tikv_log_backup_store_checkpoint_ts) by (task) > 0 and max(tikv_log_backup_task_status) by (task) == 0`
 - Alert level: critical
 - Description: The log data is not persisted to the storage for more than 30 minutes. This alert often indicates anomalies. You can check the TiKV logs to find the cause.
 
-### LogBackupPausingMoreThan2h
+#### LogBackupPausingMoreThan2h
 
 - Alert item: `max(time() - tikv_log_backup_store_checkpoint_ts / 262144000) by (task) / 3600 > 2 and max(tikv_log_backup_store_checkpoint_ts) by (task) > 0 and max(tikv_log_backup_task_status) by (task) == 1`
 - Alert level: warning
 - Description: The log backup task is paused for more than 2 hours. This alert item is a reminder and you are expected to run `br log resume` as soon as possible.
 
-### LogBackupPausingMoreThan12h
+#### LogBackupPausingMoreThan12h
 
 - Alert item: `max(time() - tikv_log_backup_store_checkpoint_ts / 262144000) by (task) / 3600 > 12 and max(tikv_log_backup_store_checkpoint_ts) by (task) > 0 and max(tikv_log_backup_task_status) by (task) == 1`
 - Alert level: critical
 - Description: The log backup task is paused for more than 12 hours. You are expected to run `br log resume` as soon as possible to resume the task. Log tasks paused for too long have the risk of data loss.
 
-### LogBackupFailed
+#### LogBackupFailed
 
 - Alert item: `max(tikv_log_backup_task_status) by (task) == 2 and max(tikv_log_backup_store_checkpoint_ts) by (task) > 0`
 - Alert level: critical
 - Description: The log backup task fails. You need to run `br log status` to see the failure reason. If necessary, you need to further check the TiKV logs.
 
-### LogBackupGCSafePointExceedsCheckpoint
+#### LogBackupGCSafePointExceedsCheckpoint
 
 - Alert item: `min(tikv_log_backup_store_checkpoint_ts) by (instance) - max(tikv_gcworker_autogc_safe_point) by (instance) < 0`
 - Alert level: critical

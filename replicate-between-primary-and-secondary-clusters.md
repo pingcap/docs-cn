@@ -68,7 +68,7 @@ To replicate incremental data from a running TiDB cluster to its secondary clust
 
 4. Prepare external storage.
 
-    In full data backup, both the upstream and downstream clusters need to access backup files. It is recommended that you use [External storage](/br/backup-and-restore-storages.md#external-storages) to store backup files. In this example, Minio is used to simulate an S3-compatible storage service.
+    In full data backup, both the upstream and downstream clusters need to access backup files. It is recommended that you use [External storage](/br/backup-and-restore-storages.md) to store backup files. In this example, Minio is used to simulate an S3-compatible storage service.
 
     ```shell
     wget https://dl.min.io/server/minio/release/linux-amd64/minio
@@ -99,13 +99,13 @@ To replicate incremental data from a running TiDB cluster to its secondary clust
 
 ## Step 2. Migrate full data
 
-After setting up the environment, you can use the backup and restore functions of [BR](https://github.com/pingcap/tidb/tree/master/br)) to migrate full data. BR can be started in [three ways](/br/br-deployment.md#use-br). In this document, we use the SQL statements, `BACKUP` and `RESTORE`.
+After setting up the environment, you can use the backup and restore functions of [BR](https://github.com/pingcap/tidb/tree/master/br)) to migrate full data. BR can be started in [three ways](/br/br-use-overview.md#deploy-and-use-br). In this document, we use the SQL statements, `BACKUP` and `RESTORE`.
 
 > **Note:**
 >
 > - In production clusters, performing a backup with GC disabled might affect cluster performance. It is recommended that you back up data in off-peak hours, and set RATE_LIMIT to a proper value to avoid performance degradation.
 >
-> - If the versions of the upstream and downstream clusters are different, you should check [BR compatibility](/br/backup-and-restore-overview.md#before-you-use-br). In this document, we assume that the upstream and downstream clusters are the same version.
+> - If the versions of the upstream and downstream clusters are different, you should check [BR compatibility](/br/backup-and-restore-overview.md#some-tips). In this document, we assume that the upstream and downstream clusters are the same version.
 
 1. Disable GC.
 

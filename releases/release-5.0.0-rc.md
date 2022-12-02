@@ -158,8 +158,8 @@ In the process of Region membership changes, "adding a member" and "deleting a m
 
 ## Backup and restore
 
-+ The Backup & Restore tool (BR) supports backing up data to AWS S3 and Google Cloud GCS. ([User document](/br/backup-storage-S3.md))
-+ The Backup & Restore tool (BR) supports restoring data from AWS S3 and Google Cloud GCS to TiDB. ([User document](/br/backup-storage-S3.md))
++ The Backup & Restore tool (BR) supports backing up data to AWS S3 and Google Cloud GCS. ([User document](/br/backup-and-restore-storages.md))
++ The Backup & Restore tool (BR) supports restoring data from AWS S3 and Google Cloud GCS to TiDB. ([User document](/br/backup-and-restore-storages.md))
 + Related issue: [#89](https://github.com/pingcap/br/issues/89)
 
 ## Data import and export

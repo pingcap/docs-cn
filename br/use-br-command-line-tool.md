@@ -1,86 +1,81 @@
 ---
-title: Use BR Command-line for Backup and Restoration
-summary: Learn how to use the BR command line to back up and restore cluster data.
+title: br Command-line Manual
+summary: Learn about the description, options, and usage of the br command-line tool.
 ---
 
-# Use BR Command-line for Backup and Restoration
+# br Command-line Manual
 
-This document describes how to back up and restore TiDB cluster data using the BR command line.
+This document describes the definition, components, and common options of `br` commands, and how to perform snapshot backup and restore, and log backup and point-in-time recovery (PITR) using `br` commands.
 
-Make sure you have read [BR Tool Overview](/br/backup-and-restore-overview.md), especially [Usage restrictions](/br/backup-and-restore-overview.md#usage-restrictions) and [Some tips](/br/backup-and-restore-overview.md#some-tips).
+## `br` command-line description
 
-## BR command-line description
+A `br` command consists of sub-commands, options, and parameters. A sub-command is the characters without `-` or `--`. An option is the characters that start with `-` or `--`. A parameter is the characters that immediately follow behind and are passed to the sub-command or the option.
 
-A `br` command consists of sub-commands, options, and parameters.
-
-* Sub-command: the characters without `-` or `--`.
-* Option: the characters that start with `-` or `--`.
-* Parameter: the characters that immediately follow behind and are passed to the sub-command or the option.
-
-This is a complete `br` command:
-
-{{< copyable "shell-regular" >}}
+The following is a complete `br` command:
 
 ```shell
-`br backup full --pd "${PDIP}:2379" -s "s3://backup-data/2022-01-30/"`
+br backup full --pd "${PD_IP}:2379" \
+--storage "s3://backup-data/snapshot-202209081330/"
 ```
 
-Explanations for the above command are as follows:
+Explanations for the preceding command are as follows:
 
 * `backup`: the sub-command of `br`.
-* `full`: the sub-command of `backup`.
-* `-s` (or `--storage`): the option that specifies the path where the backup files are stored.
-* `"s3://backup-data/2022-01-30/"`: the parameter of `-s`, indicating that backup data is stored to the `2022-01-30/` directory in the `backup-data` bucket of Amazon S3.
-* `--pd`: the option that specifies the Placement Driver (PD) service address.
-* `"${PDIP}:2379"`: the parameter of `--pd`.
+* `full`: the sub-command of `br backup`.
+* `-s` (or `--storage`): the option that specifies the path where the backup files are stored. `"s3://backup-data/snapshot-202209081330/"` is the parameter of `-s`.
+* `--pd`: the option that specifies the PD service address. `"${PD_IP}:2379"` is the parameter of `--pd`.
 
-### Sub-commands
+### Commands and sub-commands
 
-A `br` command consists of multiple layers of sub-commands. Currently, BR has the following sub-commands:
+A `br` command consists of multiple layers of sub-commands. Currently, br command-line tool has the following sub-commands:
 
 * `br backup`: used to back up the data of the TiDB cluster.
-* `br restore`: used to restore the data of the TiDB cluster.
+* `br log`: used to start and manage log backup tasks.
+* `br restore`: used to restore backup data of the TiDB cluster.
 
-Each of the above sub-commands might still include the following sub-commands to specify the scope of an operation:
+`br backup` and `br restore` include the following sub-commands:
 
 * `full`: used to back up or restore all the cluster data.
-* `db`: used to back up or restore the specified database of the cluster.
+* `db`: used to back up or restore a specified database of the cluster.
 * `table`: used to back up or restore a single table in the specified database of the cluster.
 
 ### Common options
 
-* `--pd`: used for connection, specifying the PD server address. For example, `"${PDIP}:2379"`.
-* `-h` (or `--help`): used to get help on all sub-commands. For example, `br backup --help`.
-* `-V` (or `--version`): used to check the version of BR.
+* `--pd`: specifies the PD service address. For example, `"${PD_IP}:2379"`.
+* `-s` (or `--storage`): specifies the path where the backup files are stored. Amazon S3, Google Cloud Storage (GCS), Azure Blob Storage, and NFS are supported to store backup data. For more details, refer to [URL format of backup storages](/br/backup-and-restore-storages.md#url-format).
 * `--ca`: specifies the path to the trusted CA certificate in the PEM format.
 * `--cert`: specifies the path to the SSL certificate in the PEM format.
 * `--key`: specifies the path to the SSL certificate key in the PEM format.
-* `--status-addr`: specifies the listening address through which BR provides statistics to Prometheus.
+* `--status-addr`: specifies the listening address through which `br` provides statistics to Prometheus.
 
-## Examples of using BR command-line to back up cluster data
+## Commands of full backup
 
-To back up cluster data, run the `br backup` command. You can add the `full` or `table` sub-command to specify the scope of your backup operation: the whole cluster or a single table.
+To back up cluster data, run the `br backup` command. You can add the `full` or `table` sub-command to specify the scope of your backup operation: the whole cluster (`full`) or a single table (`table`).
 
-- [Back up TiDB cluster snapshots](/br/br-usage-backup.md#back-up-tidb-cluster-snapshots)
-- [Back up a database](/br/br-usage-backup.md#back-up-a-database)
-- [Back up a table](/br/br-usage-backup.md#back-up-a-table)
-- [Back up multiple tables with table filter](/br/br-usage-backup.md#back-up-multiple-tables-with-table-filter)
-- [Back Up data on Amazon S3 using BR](/br/backup-storage-S3.md)
-- [Back up data on Google Cloud Storage using BR](/br/backup-storage-gcs.md)
-- [Back up data on Azure Blob Storage using BR](/br/backup-storage-azblob.md)
-- [Back up incremental data](/br/br-usage-backup.md#back-up-incremental-data)
-- [Encrypt data during backup](/br/br-usage-backup.md#encrypt-backup-data-at-the-backup-end)
+- [Back up TiDB cluster snapshots](/br/br-snapshot-manual.md#back-up-cluster-snapshots)
+- [Back up a database](/br/br-snapshot-manual.md#back-up-a-database)
+- [Back up a table](/br/br-snapshot-manual.md#back-up-a-table)
+- [Back up multiple tables with table filter](/br/br-snapshot-manual.md#back-up-multiple-tables-with-table-filter)
+- [Encrypt snapshots](/br/backup-and-restore-storages.md#server-side-encryption)
 
-## Examples of using BR command-line to restore cluster data
+## Commands of log backup
 
-To restore cluster data, run the `br restore` command. You can add the `full`, `db` or `table` sub-command to specify the scope of your restoration: the whole cluster, a database or a single table.
+To start log backup and manage log backup tasks, run the `br log` command.
 
-- [Restore TiDB cluster snapshots](/br/br-usage-restore.md#restore-tidb-cluster-snapshots)
-- [Restore a database](/br/br-usage-restore.md#restore-a-database)
-- [Restore a table](/br/br-usage-restore.md#restore-a-table)
-- [Restore multiple tables with table filter](/br/br-usage-restore.md#restore-multiple-tables-with-table-filter)
-- [Restore data on Amazon S3 using BR](/br/backup-storage-S3.md)
-- [Restore data on Google Cloud Storage using BR](/br/backup-storage-gcs.md)
-- [Restore data on Azure Blob Storage using BR](/br/backup-storage-azblob.md)
-- [Restore incremental data](/br/br-usage-restore.md#restore-incremental-data)
-- [Restore encrypted backup data](/br/br-usage-restore.md#restore-encrypted-backup-data)
+- [Start a log backup task](/br/br-pitr-manual.md#start-a-backup-task)
+- [Query the backup status](/br/br-pitr-manual.md#query-the-backup-status)
+- [Pause and resume a log backup task](/br/br-pitr-manual.md#pause-and-resume-a-backup-task)
+- [Stop and restart a log backup task](/br/br-pitr-manual.md#stop-and-restart-a-backup-task)
+- [Clean up the backup data](/br/br-pitr-manual.md#clean-up-backup-data)
+- [View the backup metadata](/br/br-pitr-manual.md#view-the-backup-metadata)
+
+## Commands of restoring backup data
+
+To restore cluster data, run the `br restore` command. You can add the `full`, `db`, or `table` sub-command to specify the scope of your restore: the whole cluster (`full`), a single database (`db`), or a single table (`table`).
+
+- [Point-in-time recovery](/br/br-pitr-manual.md#restore-to-a-specified-point-in-time-pitr)
+- [Restore cluster snapshots](/br/br-snapshot-manual.md#restore-cluster-snapshots)
+- [Restore a database](/br/br-snapshot-manual.md#restore-a-database)
+- [Restore a table](/br/br-snapshot-manual.md#restore-a-table)
+- [Restore multiple tables with table filter](/br/br-snapshot-manual.md#restore-multiple-tables-with-table-filter)
+- [Restore encrypted snapshots](/br/br-snapshot-manual.md#restore-encrypted-snapshots)

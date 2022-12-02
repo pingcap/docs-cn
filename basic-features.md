@@ -190,7 +190,7 @@ This document lists the features supported in each TiDB version. Note that suppo
 | [DM WebUI](/dm/dm-webui-guide.md) | Experimental| Experimental | Experimental| Experimental | Experimental | N | N | N | N | N | N |
 | [Foreground Quota Limiter](/tikv-configuration-file.md#foreground-quota-limiter)  | Y | Y | Y| Experimental | Experimental | N | N | N | N | N | N |
 | [EBS volume snapshot backup and restore](https://docs.pingcap.com/tidb-in-kubernetes/v1.4/backup-to-aws-s3-by-snapshot)                        |    Y    |    N     |    N     |    N    |    N     |    N     |    N     |    N     |    N     |    N     |  N        |
-| [PITR](/br/point-in-time-recovery.md)   |    Y    |    Y     |    Y     |    N    |    N     |    N     |    N     |    N     |    N     |    N     |  N        |
+| [PITR](/br/backup-and-restore-overview.md)   |    Y    |    Y     |    Y     |    N    |    N     |    N     |    N     |    N     |    N     |    N     |  N        |
 
 [^1]: TiDB incorrectly treats latin1 as a subset of utf8. See [TiDB #18955](https://github.com/pingcap/tidb/issues/18955) for more details.
 

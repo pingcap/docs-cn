@@ -135,9 +135,29 @@
     - [Use TiUP (Recommended)](/scale-tidb-using-tiup.md)
     - [Use TiDB Operator](https://docs.pingcap.com/tidb-in-kubernetes/stable/scale-a-tidb-cluster)
   - Backup and Restore
-    - [Use BR to Back Up Cluster Data](/br-usage-backup-for-maintain.md)
-    - [Use BR to Restore Cluster Data](/br-usage-restore-for-maintain.md)
-    - [BR Use Cases](/backup-and-restore-use-cases-for-maintain.md)
+    - [Overview](/br/backup-and-restore-overview.md)
+    - Architecture
+      - [Architecture Overview](/br/backup-and-restore-design.md)
+      - [Snapshot Backup and Restore Architecture](/br/br-snapshot-architecture.md)
+      - [Log Backup and PITR Architecture](/br/br-log-architecture.md)
+    - Use BR
+      - [Use Overview](/br/br-use-overview.md)
+      - [Snapshot Backup and Restore Guide](/br/br-snapshot-guide.md)
+      - [Log Backup and PITR Guide](/br/br-pitr-guide.md)
+      - [Use Cases](/br/backup-and-restore-use-cases.md)
+      - [Backup Storages](/br/backup-and-restore-storages.md)
+    - BR CLI Manuals
+      - [Overview](/br/use-br-command-line-tool.md)
+      - [Snapshot Backup and Restore Command Manual](/br/br-snapshot-manual.md)
+      - [Log Backup and PITR Command Manual](/br/br-pitr-manual.md)
+    - References
+      - BR Features
+        - [Backup Auto-Tune](/br/br-auto-tune.md)
+        - [Batch Create Table](/br/br-batch-create-table.md)
+      - [Back up and Restore Data Using Dumpling and TiDB Lightning](/backup-and-restore-using-dumpling-lightning.md)
+      - [Back Up and Restore RawKV](/br/rawkv-backup-and-restore.md)
+      - [Incremental Backup and Restore](/br/br-incremental-guide.md)
+      - [External Storages](/br/external-storage.md)
   - [Configure Time Zone](/configure-time-zone.md)
   - [Daily Checklist](/daily-check.md)
   - [Maintain TiFlash](/tiflash/maintain-tiflash.md)
@@ -153,6 +173,7 @@
   - [TiDB Cluster Alert Rules](/alert-rules.md)
   - [TiFlash Alert Rules](/tiflash/tiflash-alert-rules.md)
   - [Customize Configurations of Monitoring Servers](/tiup/customized-montior-in-tiup-environment.md)
+  - [BR Monitoring and Alert](/br/br-monitoring-and-alert.md)
 - Troubleshoot
   - [TiDB Troubleshooting Map](/tidb-troubleshooting-map.md)
   - [Identify Slow Queries](/identify-slow-queries.md)
@@ -470,33 +491,6 @@
       - [FAQ](/dm/dm-faq.md)
       - [Handle Errors](/dm/dm-error-handling.md)
     - [Release Notes](/dm/dm-release-notes.md)
-  - Backup & Restore (BR)
-    - [BR Overview](/br/backup-and-restore-overview.md)
-    - [Deploy and Use BR](/br/br-deployment.md)
-    - [Use BR to Back Up Cluster Data](/br/br-usage-backup.md)
-    - [Use BR to Restore Cluster Data](/br/br-usage-restore.md)
-    - [BR Use Cases](/br/backup-and-restore-use-cases.md)
-    - BR Features
-      - [Auto Tune](/br/br-auto-tune.md)
-      - [Batch Create Table](/br/br-batch-create-table.md)
-      - [Checkpoint Backup](/br/br-checkpoint.md)
-    - References
-      - [BR Design Principles](/br/backup-and-restore-design.md)
-      - [BR Command-line](/br/use-br-command-line-tool.md)
-      - [External Storages](/br/backup-and-restore-storages.md)
-      - [Back Up and Restore Data on Amazon S3 Using BR](/br/backup-storage-S3.md)
-      - [Back Up and Restore Data on Azure Blob Storage Using BR](/br/backup-storage-azblob.md)
-      - [Back Up and Restore Data on Google Cloud Storage Using BR](/br/backup-storage-gcs.md)
-      - [Back Up and Restore RawKV](/br/rawkv-backup-and-restore.md)
-      - [Back up and Restore Data Using Dumpling and TiDB Lightning](/backup-and-restore-using-dumpling-lightning.md)
-      - [BR FAQs](/br/backup-and-restore-faq.md)
-  - Point-in-Time Recovery
-    - [PITR Overview](/br/point-in-time-recovery.md)
-    - [Use PITR via CLI](/br/br-log-command-line.md)
-    - [Usage Scenarios](/br/pitr-usage.md)
-    - [Monitoring and Alert](/br/pitr-monitoring-and-alert.md)
-    - [Troubleshooting](/br/pitr-troubleshoot.md)
-    - [Known Issues](/br/pitr-known-issues.md)
   - TiDB Binlog
     - [Overview](/tidb-binlog/tidb-binlog-overview.md)
     - [Quick Start](/tidb-binlog/get-started-with-tidb-binlog.md)
@@ -896,6 +890,7 @@
   - [Cluster Management FAQs](/faq/manage-cluster-faq.md)
   - [High Availability FAQs](/faq/high-availability-faq.md)
   - [High Reliability FAQs](/faq/high-reliability-faq.md)
+  - [Backup and Restore FAQs](/faq/backup-and-restore-faq.md)
 - Release Notes
   - [All Releases](/releases/release-notes.md)
   - [Release Timeline](/releases/release-timeline.md)
