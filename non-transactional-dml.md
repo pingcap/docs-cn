@@ -37,7 +37,14 @@ summary: 以事务的原子性和隔离性为代价，将 DML 语句拆成多个
 - 确保该语句具有幂等性，或是做好准备根据错误信息对部分数据重试。如果系统变量 `tidb_redact_log = 1` 且 `tidb_nontransactional_ignore_error = 1`，则该语句必须是幂等的。否则语句部分失败时，无法准确定位失败的部分。
 - 确保该语句将要操作的数据没有其它并发的写入，即不被其它语句同时更新。否则可能出现漏写、多写、重复修改同一行等非预期的现象。
 - 确保该语句不会修改语句自身会读取的内容，否则后续的 batch 读到之前 batch 写入的内容，容易引起非预期的情况。
-    - 拆分列不应该在语句中更新。例如，对于一条非事务 `UPDATE` 语句，拆分后的 SQL 依次执行，前一 batch 的修改提交后被后一 batch 读到，导致同一行数据被多次修改。
+    - 在使用非事务 `INSERT INTO ... SELECT` 时，尽量不要在插入时修改拆分列：
+        - 不推荐使用 `BATCH ON test.t.id LIMIT 10000 INSERT INTO t SELECT id+1, value FROM t;`
+        - 推荐使用 `BATCH ON test.t.id LIMIT 10000 INSERT INTO t SELECT id, value FROM t;`
+        - 当 `id` 列具有 `AUTO_INCREMENT` 属性时，推荐使用 `BATCH ON test.t.id LIMIT 10000 INSERT INTO t(value) SELECT value FROM t;`
+    - 在使用非事务 `UPDATE`、`INSERT ... ON DUPLICATE KEY UPDATE`、`REPLACE INTO` 时，拆分列不应该在语句中更新：
+        - 例如，对于一条非事务 `UPDATE` 语句，拆分后的 SQL 依次执行，前一 batch 的修改提交后被后一 batch 读到，导致同一行数据被多次修改。
+        - 这类语句不支持 `BATCH ON test.t.id LIMIT 10000 UPDATE t SET test.t.id = test.t.id-1;`
+        - 不推荐使用 `BATCH ON test.t.id LIMIT 1 INSERT INTO t SELECT id+1, value FROM t ON DUPLICATE KEY UPDATE id = id + 1;`
     - 拆分列也不应该用于 Join key。例如，下面示例将拆分列 `test.t.id` 作为 Join key，导致一个非事务 `UPDATE` 语句多次更新同一行：
 
         ```sql
