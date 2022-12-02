@@ -11,11 +11,12 @@ summary: 介绍如何在同一个事务中保存 TiFlash 的计算结果。
 
 本文介绍如何在同一个事务 (`INSERT INTO SELECT`) 中实现 TiFlash 计算结果物化至某一指定的 TiDB 表中。
 
-从 v6.4.0 起，执行 `INSERT INTO SELECT` 语句时，通过将 SELECT 子句下推到 TiFlash 可以把 TiFlash 计算得到的查询结果保存到指定的 TiDB 表中，即物化了 TiFlash 的查询结果。v6.4.0 之前的 TiDB 版本不允许此类行为，即通过 TiFlash 执行的查询必须是只读的，用户需要从应用程序层面接收 TiFlash 返回的结果，然后另行在其它事务或处理中保存结果。
+从 v6.5.0 起，执行 `INSERT INTO SELECT` 语句时，通过将 SELECT 子句下推到 TiFlash 可以把 TiFlash 计算得到的查询结果保存到指定的 TiDB 表中，即物化了 TiFlash 的查询结果。v6.5.0 之前的 TiDB 版本不允许此类行为，即通过 TiFlash 执行的查询必须是只读的，用户需要从应用程序层面接收 TiFlash 返回的结果，然后另行在其它事务或处理中保存结果。
 
 > **注意：**
 >
-> 默认情况下 ([`tidb_allow_mpp = ON`](/system-variables#tidb_allow_mpp-从-v50-版本开始引入))，TiDB 优化器将依据查询代价智能选择下推查询到 TiKV 或 TiFlash。如需强制使用 TiFlash 查询，你可以设置系统变量 [`tidb_enforce_mpp = ON`](/system-variables#tidb_enforce_mpp-从-v51-版本开始引入)。在实验功能阶段，为了使 `tidb_enforce_mpp = ON` 时不影响 其他既存的读写混合事务，特别增加了一个单独控制此项功能的系统变量 [`tidb_enable_tiflash_read_for_write_stmt`](/system-variables#tidb_enable_tiflash_read_for_write_stmt)，用户须设置此变量为 `TRUE` 方可开启本功能。
+> - 默认情况下 ([`tidb_allow_mpp = ON`](/system-variables#tidb_allow_mpp-从-v50-版本开始引入))，TiDB 优化器将依据查询代价智能选择下推查询到 TiKV 或 TiFlash。如需强制使用 TiFlash 查询，你可以设置系统变量 [`tidb_enforce_mpp = ON`](/system-variables#tidb_enforce_mpp-从-v51-版本开始引入)。
+> - 在实验特性阶段，为了避免影响现有的读写混合事务，该功能默认关闭。要开启此功能，请设置系统变量 [`tidb_enable_tiflash_read_for_write_stmt`](/system-variables#tidb_enable_tiflash_read_for_write_stmt) 为 `ON`。
 
 `INSERT INTO SELECT` 语法如下：
 
