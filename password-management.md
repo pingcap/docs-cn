@@ -257,7 +257,7 @@ TiDB 支持在全局级别和账户级别设置自动密码过期：
 
 TiDB 支持密码过期策略控制。当密码过期后，服务器要么断开客户端的连接，要么将客户端限制为“沙盒模式”。“沙盒模式”下，TiDB 服务端接受密码过期账户的连接，但是连接成功后只允许该用户执行重置密码的操作。
 
-TiDB 服务端可以控制是否将密码已过期用户的连接限制为“沙盒模式”。你可以在 TiDB 配置文件中的 `[security]` 部分，配置 [`disconnect-on-expired-password`](/tidb-configuration-file.md#disconnect-on-expired-password`-从-v650-版本开始引入) 选项：
+TiDB 服务端可以控制是否将密码已过期用户的连接限制为“沙盒模式”。你可以在 TiDB 配置文件中的 `[security]` 部分，配置 [`disconnect-on-expired-password`](/tidb-configuration-file.md#disconnect-on-expired-password-从-v650-版本开始引入) 选项：
 
 ```toml
 [security]

@@ -28,7 +28,7 @@ TiDB 支持与 MySQL 5.7 类似的安全特性，同时 TiDB 还支持 MySQL 8.0
 TiDB 的密码过期策略功能与 MySQL 保持一致，但是在密码过期处理机制上存在以下差异：
 
 - MySQL 5.7 和 8.0 在密码过期后是否将客户端的连接限制为“沙盒模式”，由客户端和服务端设置的组合确定。
-- TiDB 在密码过期后是否将客户端的连接限制为“沙盒模式”，仅由 TiDB 配置文件中的 `[security]` 部分的 [`disconnect-on-expired-password`](/tidb-configuration-file.md#disconnect-on-expired-password`-从-v650-版本开始引入) 选项确定。
+- TiDB 在密码过期后是否将客户端的连接限制为“沙盒模式”，仅由 TiDB 配置文件中的 `[security]` 部分的 [`disconnect-on-expired-password`](/tidb-configuration-file.md#disconnect-on-expired-password-从-v650-版本开始引入) 选项确定。
 
 ### 密码复杂度策略
 
@@ -44,12 +44,12 @@ TiDB 的密码过期策略功能与 MySQL 保持一致，但是在密码过期�
 
     + MySQL 5.7 以 validate_password 插件的形式实现，需要进行插件的安装以启用密码复杂度策略管理。
     + MySQL 8.0 以 validate_password 组件的形式实现，需要进行组件的安装以启用密码复杂度策略管理。
-    + TiDB 内置实现了密码复杂度策略管理，支持通过系统变量 [`validate_password.enable`](#validate_passwordenable-从-v650-版本开始引入) 启用密码复杂度策略管理。
+    + TiDB 内置实现了密码复杂度策略管理，支持通过系统变量 [`validate_password.enable`](/system-variables.md#validate_passwordenable-从-v650-版本开始引入) 启用密码复杂度策略管理。
 
 - 密码字典功能：
 
-    + MySQL 5.7 通过变量 `validate_password_dictionary_file ` 指定一个文件路径，在文件中写入密码中不允许包含的单词。
-    + MySQL 8.0 通过变量 `validate_password.dictionary_file ` 指定一个文件路径，在文件中写入密码中不允许包含的单词。
+    + MySQL 5.7 通过变量 `validate_password_dictionary_file` 指定一个文件路径，在文件中写入密码中不允许包含的单词。
+    + MySQL 8.0 通过变量 `validate_password.dictionary_file` 指定一个文件路径，在文件中写入密码中不允许包含的单词。
     + TiDB 通过变量 [`validate_password.dictionary`](/system-variables.md#validate_passworddictionary-从-v650-版本开始引入) 指定一个字符串，在该字符串中写入密码中不允许包含的单词。
 
 ### 密码连续错误限制登录策略

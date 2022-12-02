@@ -222,7 +222,7 @@ mysql> SELECT * FROM t1;
 - 类型：布尔型
 - 默认值：`ON`
 - 该变量是一个只读变量，用来显示 TiDB 是否会直接断开密码已过期用户的连接。当其值为 `ON` ，表示 TiDB 会断开密码已过期用户的连接。当其值为 `OFF` ，表示 TiDB 会将密码已过期用户的连接置于“沙盒模式”，允许该用户建立连接并执行密码重置操作。
-- 如果需要改变 TiDB 对密码已过期用户连接的处理方式，请在 TiDB 配置文件中的 `[security]` 部分修改 [`disconnect-on-expired-password`](/tidb-configuration-file.md#disconnect-on-expired-password`-从-v650-版本开始引入) 选项。
+- 如果需要改变 TiDB 对密码已过期用户连接的处理方式，请在 TiDB 配置文件中的 `[security]` 部分修改 [`disconnect-on-expired-password`](/tidb-configuration-file.md#disconnect-on-expired-password-从-v650-版本开始引入) 选项。
 
 ### `error_count`
 
@@ -3374,7 +3374,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 范围：`[0, 2147483647]`
 - 该变量是密码复杂度策略检查中的一个检查项，用于限定密码的最小长度，默认最小长度为 8。只有 [`validate_password.enable`](/system-variables.md#validate_passwordenable-从-v650-版本开始引入) 开启时，该变量才生效。
 - 设置该变量时有最小值要求，最小值由其他几个相关的系统变量控制，即该变量的值不能设置为小于此表达式的值：`validate_password.number_count + validate_password.special_char_count + (2 * validate_password.mixed_case_count)`。
-- 当用户修改 `validate_password.number_count`、`validate_password.special_char_count`、`validate_password.mixed_case_count` 后导致表达式的值大于 `validate_password.length `时，`validate_password.length` 将自动被修改为满足表达式的最小值。
+- 当用户修改 `validate_password.number_count`、`validate_password.special_char_count`、`validate_password.mixed_case_count` 后导致表达式的值大于 `validate_password.length` 时，`validate_password.length` 将自动被修改为满足表达式的最小值。
 
 ### `validate_password.mixed_case_count` <span class="version-mark">从 v6.5.0 版本开始引入</span>
 
