@@ -36,7 +36,7 @@ set [session | global] tidb_replica_read = '<目标值>';
 - 当设置为 `follower` 时，TiDB 会选择 Region 的 follower 副本完成所有的数据读取操作。
 - 当设置为 `leader-and-follower` 时，TiDB 可以选择任意副本来执行读取操作，此时读请求会在 leader 和 follower 之间负载均衡。
 - 当设置为 `closest-replicas` 时，TiDB 会优先选择分布在同一区域的副本执行读取操作，对应的副本可以是 leader 或 follower。如果同一区域内没有副本分布，则会从 leader 执行读取。
-- 当设置为 `closest-adaptive` 时，当一个读请求的预估返回结果大于或等于变量 [`tidb_adaptive_closest_read_threshold`](/system-variables.md#tidb_adaptive_closest_read_threshold-从-v630-版本开始引入) 的值时，TiDB 会优先选择分布在同一区域的副本执行读取操作，否则选择 leader 副本进行处理。此时，为了防止读流量在各个区域分布不均衡，TiDB 会动态检测当前在线的所有 TiDB 和 TiKV 的区域分布是否均衡。如果发现在某一个区域内仅包含 TiDB 或 TiKV 的节点，则会强制使用 leader 读取。例如，如果某个区域的 TiDB 全部无法连接，此时其他在线的 TiDB 将会降级至 leader 读取。当此区域有至少 1 个 TiDB 节点重新上线，则会恢复优先从同一区域的副本读取。
+- 当设置为 `closest-adaptive` 时，当一个读请求的预估返回结果大于或等于变量 [`tidb_adaptive_closest_read_threshold`](/system-variables.md#tidb_adaptive_closest_read_threshold-从-v630-版本开始引入) 的值时，TiDB 会优先选择分布在同一区域的副本执行读取操作，否则选择 leader 副本进行处理。此时，为了防止读流量在各个区域分布不均衡，TiDB 会动态检测当前在线的所有 TiDB 和 TiKV 的区域数量分布，在每个区域实际开启此设置的配置总是与包含 TiDB 节点数量最少的区域相同，并将其他多出的节点自动切换为读 leader 副本。例如，如果 TiDB 分布在 3 个区域，其中两个区域包含 3 个 TiDB 节点，剩余的一个区域只有 2 个，那么每个区域实际开启 `closest-adaptive` 的 TiDB 数量为 2，两个区域中各有 1 个 节点自动被调整为 leader 读。
 
 > **注意：**
 >
