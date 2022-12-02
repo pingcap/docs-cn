@@ -5,7 +5,7 @@ summary: 介绍如何通过 SQL 来管理表数据的生命周期
 
 # TTL 支持
 
-TTL 提供了行级别的生命周期控制策略。在 TiDB 中，设置了 TTL 属性的表会根据配置自动删除过期的数据来防止存储空间的无限增长。此功能在一些场景很有用，比如：定期删除验证码记录等。
+TTL 提供了行级别的生命周期控制策略。在 TiDB 中，设置了 TTL 属性的表会根据配置自动删除过期的数据来防止存储空间的无限增长。此功能在一些场景可以有效节省存储空间，比如定期删除验证码记录等。
 
 > **警告：**
 >
@@ -17,83 +17,83 @@ TTL 提供了行级别的生命周期控制策略。在 TiDB 中，设置了 TTL
 
 ### 创建具有 TTL 属性的表
 
-可以通过以下语句创建一个具有 TTL 属性的表：
+- 创建一个具有 TTL 属性的表：
 
-```sql
-CREATE TABLE t1 (
-    id int PRIMARY KEY,
-    created_at TIMESTAMP
-) TTL = `created_at` + INTERVAL 3 MONTH;
-```
+    ```sql
+    CREATE TABLE t1 (
+        id int PRIMARY KEY,
+        created_at TIMESTAMP
+    ) TTL = `created_at` + INTERVAL 3 MONTH;
+    ```
 
-上面的例子创建了一张表 `t1`， 并指定了 `created_at` 为 TTL 的时间列，表示数据的创建时间。同时，它还通过 `INTERVAL 3 MONTH` 设置了表中行的最长存活时间为 3 个月。超过了此时长的过期数据会在之后被删除。
+    上面的例子创建了一张表 `t1`， 并指定了 `created_at` 为 TTL 的时间列，表示数据的创建时间。同时，它还通过 `INTERVAL 3 MONTH` 设置了表中行的最长存活时间为 3 个月。超过了此时长的过期数据会在之后被删除。
 
-在创建表的时候，你也可以额外设置 `TTL_ENABLE` 属性来开启或关闭清理过期数据的功能，比如：
+- 设置 `TTL_ENABLE` 属性来开启或关闭清理过期数据的功能：
 
-```sql
-CREATE TABLE t1 (
-    id int PRIMARY KEY,
-    created_at TIMESTAMP
-) TTL = `created_at` + INTERVAL 3 MONTH TTL_ENABLE = 'OFF';
-```
+    ```sql
+    CREATE TABLE t1 (
+        id int PRIMARY KEY,
+        created_at TIMESTAMP
+    ) TTL = `created_at` + INTERVAL 3 MONTH TTL_ENABLE = 'OFF';
+    ```
 
-如果 `TTL_ENABLE` 被设置成了 `OFF`，则即使设置了其他 TTL 选项，当前表也不会自动清理过期数据。在缺省条件下，`TTL_ENABLE` 被默认设置为 `ON`。
+    如果 `TTL_ENABLE` 被设置成了 `OFF`，则即使设置了其他 TTL 选项，当前表也不会自动清理过期数据。在缺省条件下，`TTL_ENABLE` 被默认设置为 `ON`。
 
-为了与 MySQL 兼容，TTL 也支持注释语法，比如对于上述语句也可以写作：
+- 为了与 MySQL 兼容，你也可以使用注释语法来设置 TTL：
 
-```sql
-CREATE TABLE t1 (
-    id int PRIMARY KEY,
-    created_at TIMESTAMP
-) /*T![ttl] TTL = `created_at` + INTERVAL 3 MONTH TTL_ENABLE = 'OFF'*/;
-```
+    ```sql
+    CREATE TABLE t1 (
+        id int PRIMARY KEY,
+        created_at TIMESTAMP
+    ) /*T![ttl] TTL = `created_at` + INTERVAL 3 MONTH TTL_ENABLE = 'OFF'*/;
+    ```
 
-在 TiDB 环境中，使用 Table Option 和注释来配置 TTL 是等价的。在 MySQL 环境中，会自动忽略注释中的内容，并创建普通的表。
+    在 TiDB 环境中，使用 Table Option 和注释来配置 TTL 是等价的。在 MySQL 环境中，会自动忽略注释中的内容，并创建普通的表。
 
 ### 修改表的 TTL 属性
 
-支持通过 ALTER 语句修改表的 TTL 属性。比如：
+- 通过 `ALTER TABLE` 语句修改表的 TTL 属性：
 
-```sql
-ALTER TABLE t1 TTL = `created_at` + INTERVAL 1 MONTH;
-```
+    ```sql
+    ALTER TABLE t1 TTL = `created_at` + INTERVAL 1 MONTH;
+    ```
 
-上面的语句即支持修改已有的 TTL 属性的表，也支持将一张非 TTL 的表设置为具有 TTL 属性的表。
+    上面的语句既支持修改已配置 TTL 属性的表，也支持将一张非 TTL 的表设置为具有 TTL 属性的表。
 
-对于 TTL 表，也可以单独修改 `TTL_ENABLE` 的值：
+- 单独修改 TTL 表的 `TTL_ENABLE` 值：
 
-```sql
-ALTER TABLE t1 TTL_ENABLE = 'OFF';
-```
+    ```sql
+    ALTER TABLE t1 TTL_ENABLE = 'OFF';
+    ```
 
-如果想清除一张表的所有 TTL 属性，则可以执行：
+- 清除一张表的所有 TTL 属性：
 
-```
-ALTER TABLE t1 REMOVE TTL;
-```
+    ```sql
+    ALTER TABLE t1 REMOVE TTL;
+    ```
 
 ## TTL 任务
 
 对于每张设置了 TTL 属性的表，TiDB 内部会定期调度后台任务来清理过期的数据。你可以通过设置全局变量 [`tidb_ttl_job_run_interval`](/system-variables.md#tidb_ttl_job_run_interval-从-v650-版本开始引入) 来自定义任务的执行周期，比如下面的例子里后台清理任务被设置为每 24 小时执行一次：
 
-```
+```sql
 SET @@global.tidb_ttl_job_run_interval = '24h';
 ```
 
-如果想禁止 TTL 任务的执行，除了可以设置表属性 `TTL_ENABLE='OFF'` 外，也可以通过设置全局变量 `tidb_ttl_job_enable` 关闭整个集群的 TTL 任务的执行。 
+如果想禁止 TTL 任务的执行，除了可以设置表属性 `TTL_ENABLE='OFF'` 外，也可以通过设置全局变量 `tidb_ttl_job_enable` 关闭整个集群的 TTL 任务的执行。
 
-```
+```sql
 SET @@global.tidb_ttl_job_enable = OFF;
 ```
 
-在某些场景下，我们可能希望只允许在某个时间窗口内调度后台的 TTL 任务，此时可以设置全局变量 `tidb_ttl_job_schedule_window_start_time` 和 `tidb_ttl_job_schedule_window_end_time` 来指定时间窗口，比如：
+在某些场景下，你可能希望只允许在某个时间窗口内调度后台的 TTL 任务，此时可以设置全局变量 [`tidb_ttl_job_schedule_window_start_time`](/system-variables.md#tidb_ttl_job_schedule_window_start_time-从-v650-版本开始引入) 和 [`tidb_ttl_job_schedule_window_end_time`](/system-variables.md#tidb_ttl_job_schedule_window_end_time-从-v650-版本开始引入) 来指定时间窗口，比如：
 
-```
+```sql
 SET @@global.tidb_ttl_job_schedule_window_start_time = '01:00 +0000';
 SET @@global.tidb_ttl_job_schedule_window_end_time = '05:00 +0000';
 ```
 
-则只允许 UTC 时间的凌晨 1 点到 5 点调度 TTL 任务。默认情况下的时间窗口设置为 `00:00 +0000` 到 `23:59 +0000`，即允许所有时段的任务调度。
+上述语句只允许在 UTC 时间的凌晨 1 点到 5 点调度 TTL 任务。默认情况下的时间窗口设置为 `00:00 +0000` 到 `23:59 +0000`，即允许所有时段的任务调度。
 
 ## 工具兼容性
 
