@@ -37,7 +37,7 @@ summary: 以事务的原子性和隔离性为代价，将 DML 语句拆成多个
 - 确保该语句具有幂等性，或是做好准备根据错误信息对部分数据重试。如果系统变量 `tidb_redact_log = 1` 且 `tidb_nontransactional_ignore_error = 1`，则该语句必须是幂等的。否则语句部分失败时，无法准确定位失败的部分。
 - 确保该语句将要操作的数据没有其它并发的写入，即不被其它语句同时更新。否则可能出现漏写、多写、重复修改同一行等非预期的现象。
 - 确保该语句不会修改语句自身会读取的内容，否则后续的 batch 读到之前 batch 写入的内容，容易引起非预期的情况。
-    - 在使用非事务 `INSERT INTO ... SELECT` 同一张表时，尽量不要在插入时修改拆分列，否则可能因为多个批次读取到同一行，导致重复插入：
+    - 在使用非事务 `INSERT INTO ... SELECT` 处理同一张表时，尽量不要在插入时修改拆分列，否则可能因为多个批次读取到同一行，导致重复插入：
         - 不推荐使用 `BATCH ON test.t.id LIMIT 10000 INSERT INTO t SELECT id+1, value FROM t;`
         - 推荐使用 `BATCH ON test.t.id LIMIT 10000 INSERT INTO t SELECT id, value FROM t;`
         - 当 `id` 列具有 `AUTO_INCREMENT` 属性时，推荐使用 `BATCH ON test.t.id LIMIT 10000 INSERT INTO t(value) SELECT value FROM t;`
