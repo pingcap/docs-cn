@@ -3189,7 +3189,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 是否持久化到集群：是
 - 默认值：`4`
 - 范围：`[1, 256]`
-- 这个变量用于设置每个 TiDB 节点 TTL 删除任务的最大并发数。
+- 这个变量用于设置每个 TiDB 节点上 TTL 删除任务的最大并发数。
 
 ### `tidb_ttl_job_enable` <span class="version-mark">从 v6.5.0 版本开始引入</span>
 
