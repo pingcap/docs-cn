@@ -1,54 +1,46 @@
 ---
-title: 同步数据到云存储
-summary: 了解如何使用 TiCDC 将数据同步到云存储
+title: 同步数据到存储服务
+summary: 了解如何使用 TiCDC 将数据同步到存储服务
 ---
 
-# 同步数据到 Kafka
+# 同步数据到存储服务
 
-本文介绍如何使用 TiCDC 创建一个将增量数据复制到云存储的 Changefeed。
+从 v6.5.0 开始，TiCDC 支持将行变更事件保存至 S3、Azure Blob Storage 和 NFS 中。本文介绍如何使用 TiCDC 创建同步任务 (Changefeed) 将增量数据同步到云存储。
 
-## 创建同步任务，复制增量数据至云存储
+## 创建同步任务
 
 使用以下命令来创建同步任务：
 
 ```shell
 cdc cli changefeed create \
     --server=http://10.0.10.25:8300 \
-    --sink-uri="s3://logbucket/storage_test?access-key=minioadmin&secret-access-key=minioadmin&endpoint=http://10.2.7.69:9000&force-path-style=true&protocol=canal-json" \
+    --sink-uri="s3://logbucket/storage_test?force-path-style=true&protocol=canal-json" \
     --changefeed-id="simple-replication-task"
 ```
 
 ```shell
-Info: {"upstream_id":7171388873935111376,"namespace":"default","id":"simple-replication-task","sink_uri":"s3://logbucket/storage_test?access-key=minioadmin\u0026secret-access-key=minioadmin\u0026endpoint=http://10.2.7.69:9000\u0026force-path-style=true\u0026protocol=canal-json","create_time":"2022-11-29T18:52:05.566016967+08:00","start_ts":437706850431664129,"engine":"unified","config":{"case_sensitive":true,"enable_old_value":true,"force_replicate":false,"ignore_ineligible_table":false,"check_gc_safe_point":true,"enable_sync_point":false,"sync_point_interval":600000000000,"sync_point_retention":86400000000000,"filter":{"rules":["*.*"],"event_filters":null},"mounter":{"worker_num":16},"sink":{"protocol":"canal-json","schema_registry":"","csv":{"delimiter":",","quote":"\"","null":"\\N","include_commit_ts":false},"column_selectors":null,"transaction_atomicity":"none","encoder_concurrency":16,"terminator":"\r\n","date_separator":"none","enable_partition_separator":false},"consistent":{"level":"none","max_log_size":64,"flush_interval":2000,"storage":""}},"state":"normal","creator_version":"v6.5.0-master-dirty"}
+Info: {"upstream_id":7171388873935111376,"namespace":"default","id":"simple-replication-task","sink_uri":"s3://logbucket/storage_test?force-path-style=true\u0026protocol=canal-json","create_time":"2022-11-29T18:52:05.566016967+08:00","start_ts":437706850431664129,"engine":"unified","config":{"case_sensitive":true,"enable_old_value":true,"force_replicate":false,"ignore_ineligible_table":false,"check_gc_safe_point":true,"enable_sync_point":false,"sync_point_interval":600000000000,"sync_point_retention":86400000000000,"filter":{"rules":["*.*"],"event_filters":null},"mounter":{"worker_num":16},"sink":{"protocol":"canal-json","schema_registry":"","csv":{"delimiter":",","quote":"\"","null":"\\N","include_commit_ts":false},"column_selectors":null,"transaction_atomicity":"none","encoder_concurrency":16,"terminator":"\r\n","date_separator":"none","enable_partition_separator":false},"consistent":{"level":"none","max_log_size":64,"flush_interval":2000,"storage":""}},"state":"normal","creator_version":"v6.5.0-master-dirty"}
 ```
 
 - `--changefeed-id`：同步任务的 ID，格式需要符合正则表达式 `^[a-zA-Z0-9]+(\-[a-zA-Z0-9]+)*$`。如果不指定该 ID，TiCDC 会自动生成一个 UUID（version 4 格式）作为 ID。
-- `--sink-uri`：同步任务下游的地址，详见：[Sink URI 配置云存储](/ticdc/ticdc-sink-to-cloud-storage.md#sink-uri-配置-s3/azure-blob-storage/nfs)。
+- `--sink-uri`：同步任务下游的地址，详见：[Sink URI 配置云存储](/ticdc/ticdc-sink-to-cloud-storage.md#配置-sink-uri)。
 - `--start-ts`：指定 changefeed 的开始 TSO。TiCDC 集群将从这个 TSO 开始拉取数据。默认为当前时间。
 - `--target-ts`：指定 changefeed 的目标 TSO。TiCDC 集群拉取数据直到这个 TSO 停止。默认为空，即 TiCDC 不会自动停止。
 - `--config`：指定 changefeed 配置文件，详见：[TiCDC Changefeed 配置参数](/ticdc/ticdc-changefeed-config.md)。
 
-## Sink URI 配置 `S3`/`Azure Blob Storage`/`NFS`
+## 配置 Sink URI
 
-TiCDC 从 v6.5.0 开始支持将行变更事件保存至 S3、Azure Blob Storage 和 NFS 中。
+本章节介绍如何在 Changefeed URI 中配置 `S3`、`Azure Blob Storage` 和 `NFS`。
 
-S3 配置样例如下:
-
-```shell
---sink-uri="s3://my-bucket/prefix?region=us-west-2&worker-count=4"
-```
+### Sink URI 配置 S3
 
 S3 的 URL 参数与 BR 相同，详细参数请参考 [S3 的 URL 参数](/br/backup-and-restore-storages.md#s3-的-url-参数)。
 
-Azure Blob Storage 配置样例如下：
-
-```shell
---sink-uri="azblob://my-bucket/prefix"
-或者
---sink-uri="azure://my-bucket/prefix"
-```
+### Sink URI 配置 Azure Blob Storage
 
 Azure Blob Storage 的 URL 参数与 BR 相同，详细参数请参考 [Azblob 的 URL 参数](/br/backup-and-restore-storages.md#azblob-的-url-参数)
+
+### Sink URI 配置 NFS
 
 NFS 配置样例如下：
 
@@ -61,9 +53,9 @@ URI 中其他可配置的参数如下：
 
 | 参数         | 描述                                             |
 | :------------ | :------------------------------------------------ |
-| `worker-count` | 向下游云存储保存数据变更记录的并发度（可选，默认值为 `16`，最小可配置值为 `1`，最大可配置值 `512`）|
-| `flush-interval` | 向下游云存储保存数据变更记录的间隔（可选，默认值为 `5s`，最小可配置值为 `2s`, 最大可配置值为 `10s`）|
-| `file-size` | 单个数据变更文件的字节数超过 `file-size` 时将其保存至云存储中（可选，默认值为 `67108864`，最小可配置为 `1048576`, 最大可配置值为 `536870912`） |
+| `worker-count` | 向下游云存储保存数据变更记录的并发度（可选，默认值为 `16`，取值范围：[1, 512]）|
+| `flush-interval` | 向下游云存储保存数据变更记录的间隔（可选，默认值为 `5s`，取值范围：[2s, 10s]) |
+| `file-size` | 单个数据变更文件的字节数超过 `file-size` 时将其保存至云存储中（可选，默认值为 `67108864`，取值范围：[1048576, 536870912]) |
 
 > **注意：**
 >
