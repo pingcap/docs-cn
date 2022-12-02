@@ -3177,7 +3177,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 是否持久化到集群：是
 - 默认值：`100`
 - 范围：`[1, 10240]`
-- 这个变量用于设置 TTL 任务中单个删除事务中的最大行数。
+- 这个变量用于设置 TTL 任务中单个删除事务中允许删除的最大行数。
 
 ### `tidb_ttl_delete_worker_count` <span class="version-mark">从 v6.5.0 版本开始引入</span>
 
