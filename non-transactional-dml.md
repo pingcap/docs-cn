@@ -11,7 +11,14 @@ summary: 以事务的原子性和隔离性为代价，将 DML 语句拆成多个
 
 通常，对于消耗内存过多的大事务，你需要在应用中拆分 SQL 语句以绕过事务大小限制。非事务 DML 语句将这一过程集成到 TiDB 内核中，实现等价的效果。非事务 DML 语句的执行效果可以通过拆分 SQL 语句的结果来理解，`DRY RUN` 语法提供了预览拆分后语句的功能。
 
-非事务 DML 语句包括 `INSERT`、`REPLACE`、`UPDATE` 和 `DELETE`，详细的语法介绍见 [`BATCH`](/sql-statements/sql-statement-batch.md)。
+非事务 DML 语句包括：
+
+- `INSERT INTO ... SELECT`
+- `REPLACE INTO .. SELECT`
+- `UPDATE`
+- `DELETE`
+
+详细的语法介绍见 [`BATCH`](/sql-statements/sql-statement-batch.md)。
 
 > **注意：**
 >
@@ -37,7 +44,7 @@ summary: 以事务的原子性和隔离性为代价，将 DML 语句拆成多个
 - 确保该语句具有幂等性，或是做好准备根据错误信息对部分数据重试。如果系统变量 `tidb_redact_log = 1` 且 `tidb_nontransactional_ignore_error = 1`，则该语句必须是幂等的。否则语句部分失败时，无法准确定位失败的部分。
 - 确保该语句将要操作的数据没有其它并发的写入，即不被其它语句同时更新。否则可能出现漏写、多写、重复修改同一行等非预期的现象。
 - 确保该语句不会修改语句自身会读取的内容，否则后续的 batch 读到之前 batch 写入的内容，容易引起非预期的情况。
-    - 在使用非事务 `INSERT INTO ... SELECT` 处理同一张表时，尽量不要在插入时修改拆分列，否则可能因为多个批次读取到同一行，导致重复插入：
+    - 在使用非事务 `INSERT INTO ... SELECT` 处理同一张表时，尽量不要在插入时修改拆分列，否则可能因为多个 batch 读取到同一行，导致重复插入：
         - 不推荐使用 `BATCH ON test.t.id LIMIT 10000 INSERT INTO t SELECT id+1, value FROM t;`
         - 推荐使用 `BATCH ON test.t.id LIMIT 10000 INSERT INTO t SELECT id, value FROM t;`
         - 当 `id` 列具有 `AUTO_INCREMENT` 属性时，推荐使用 `BATCH ON test.t.id LIMIT 10000 INSERT INTO t(value) SELECT value FROM t;`
@@ -134,7 +141,7 @@ CREATE TABLE t2(id int, v int, key(id));
 INSERT INTO t2 VALUES (1,1), (3,3), (5,5);
 ```
 
-然后进行涉及多表 join 的更新（表 `t` 和 `t2`）。需要注意的是，指定拆分列时需要完整的数据库名、表名和列名（`test.t.id`)。
+然后进行涉及多表 join 的更新（表 `t` 和 `t2`）。需要注意的是，指定拆分列时需要完整的数据库名、表名和列名（`test.t._tidb_rowid`)。
 
 ```sql
 BATCH ON test.t._tidb_rowid LIMIT 1 UPDATE t JOIN t2 ON t.id = t2.id SET t2.id = t2.id+1;
@@ -236,7 +243,12 @@ BATCH ON id LIMIT 2 DELETE /*+ USE_INDEX(t)*/ FROM t where v < 6;
 
 1. 选择合适的[划分列](#参数说明)。建议使用整数或字符串类型。
 2. 在非事务 DML 语句中添加 `DRY RUN QUERY`，手动执行查询，确认 DML 语句影响的数据范围是否大体正确。
-3. 在非事务 DML 语句中添加 `DRY RUN`，手动执行查询，检查拆分后的语句和执行计划。需要关注一条拆分后的语句是否有可能读到之前的语句执行写入的结果，否则容易造成异常现象。需要关注索引选择效率。如果是由 TiDB 自动选择拆分列，可能选择了会被修改的拆分列，需要尤其关注。
+3. 在非事务 DML 语句中添加 `DRY RUN`，手动执行查询，检查拆分后的语句和执行计划。需要关注：
+
+    - 一条拆分后的语句是否有可能读到之前的语句执行写入的结果，否则容易造成异常现象。
+    - 索引选择效率。
+    - 由 TiDB 自动选择的拆分列是否可能会被修改。
+
 4. 执行非事务 DML 语句。
 5. 如果报错，从报错信息或日志中获取具体失败的数据范围，进行重试或手动处理。
 
