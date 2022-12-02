@@ -3155,7 +3155,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 >
 > 如果 PD leader 的 TSO RPC 延迟升高，但其现象并非由 CPU 使用率达到瓶颈而导致（可能存在网络等问题），此时，调高 `tidb_tso_client_batch_max_wait_time` 可能会导致 TiDB 的语句执行延迟上升，影响集群的 QPS 表现。
 
-### `tidb_ttl_delete_rate_limit` <span class="version-mark">从 v6.5.1 版本开始引入</span>
+### `tidb_ttl_delete_rate_limit` <span class="version-mark">从 v6.5.0 版本开始引入</span>
 
 > **警告：**
 >
@@ -3167,7 +3167,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 范围：`[0, 9223372036854775807]`
 - 这个变量用来对每个节点的 TTL 删除操作进行限流。其值代表了在 TTL 任务中单个节点每秒允许 `DELETE` 语句执行的最大次数。当此变量设置为 `0` 时，则表示不做限制。
 
-### `tidb_ttl_delete_batch_size` <span class="version-mark">从 v6.5.1 版本开始引入</span>
+### `tidb_ttl_delete_batch_size` <span class="version-mark">从 v6.5.0 版本开始引入</span>
 
 > **警告：**
 >
@@ -3179,7 +3179,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 范围：`[1, 10240]`
 - 这个变量用于设置 TTL 任务中单个删除事务中的最大行数。
 
-### `tidb_ttl_delete_worker_count` <span class="version-mark">从 v6.5.1 版本开始引入</span>
+### `tidb_ttl_delete_worker_count` <span class="version-mark">从 v6.5.0 版本开始引入</span>
 
 > **警告：**
 >
@@ -3191,7 +3191,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 范围：`[1, 256]`
 - 这个变量用于设置每个 TiDB 节点 TTL 删除任务的最大并发数。
 
-### `tidb_ttl_job_enable` <span class="version-mark">从 v6.5.1 版本开始引入</span>
+### `tidb_ttl_job_enable` <span class="version-mark">从 v6.5.0 版本开始引入</span>
 
 > **警告：**
 >
@@ -3203,7 +3203,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 类型：布尔型
 - 这个变量用于控制是否启动 TTL 后台清理任务。如果设置为 `OFF`，所有具有 TTL 属性的表会自动停止过期数据的清理。
 
-### `tidb_ttl_scan_batch_size` <span class="version-mark">从 v6.5.1 版本开始引入</span>
+### `tidb_ttl_scan_batch_size` <span class="version-mark">从 v6.5.0 版本开始引入</span>
 
 > **警告：**
 >
@@ -3215,7 +3215,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 范围：`[1, 10240]`
 - 这个变量用于设置 TTL 任务中用来扫描过期数据的每个 `SELECT` 语句的 `LIMIT` 的值。 
 
-### `tidb_ttl_scan_worker_count` <span class="version-mark">从 v6.5.1 版本开始引入</span>
+### `tidb_ttl_scan_worker_count` <span class="version-mark">从 v6.5.0 版本开始引入</span>
 
 > **警告：**
 >
@@ -3227,7 +3227,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 范围：`[1, 256]`
 - 这个变量用于设置每个 TiDB 节点 TTL 扫描任务的最大并发数。
 
-### `tidb_ttl_job_run_interval` <span class="version-mark">从 v6.5.1 版本开始引入</span>
+### `tidb_ttl_job_run_interval` <span class="version-mark">从 v6.5.0 版本开始引入</span>
 
 > **警告：**
 >
@@ -3239,7 +3239,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 范围：`[10m0s, 8760h0m0s]`
 - 这个变量用于控制 TTL 后台清理任务的调度周期。比如，如果当前值设置成了 `1h0m0s`，则代表每张设置了 TTL 属性的表或者分区会每小时清理一次过期数据。
 
-### `tidb_ttl_job_schedule_window_start_time` <span class="version-mark">从 v6.5.1 版本开始引入</span>
+### `tidb_ttl_job_schedule_window_start_time` <span class="version-mark">从 v6.5.0 版本开始引入</span>
 
 > **警告：**
 >
@@ -3251,7 +3251,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 默认值：`00:00 +0000`
 - 这个变量用于控制 TTL 后台清理任务的调度窗口的起始时间。
 
-### `tidb_ttl_job_schedule_window_end_time` <span class="version-mark">从 v6.5.1 版本开始引入</span>
+### `tidb_ttl_job_schedule_window_end_time` <span class="version-mark">从 v6.5.0 版本开始引入</span>
 
 > **警告：**
 >
