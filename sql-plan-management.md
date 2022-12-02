@@ -320,7 +320,6 @@ SHOW binding_cache status;
 > 
 > - 从已有执行计划中提取 hint 的算法还不是特别完善，可能出现创建绑定成功但执行计划无法被完全固定的情况，如果遇到这种情况请删除该绑定后使用[创建绑定](/sql-plan-management.md#创建绑定)的方法重新创建绑定。后续我们将会逐步完善从执行计划中提取 hint 的算法。
 
-
 ### 创建绑定
 
 ```sql
@@ -329,7 +328,7 @@ CREATE [GLOBAL | SESSION] BINDING FROM HISTORY USING PLAN DIGEST 'plan_digest';
 
 该语句使用 `plan digest` 为 SQL 绑定执行计划，在不指定作用域时默认作用域为 SESSION。所创建绑定的适用 SQL、优先级、作用域、生效条件等与 [创建绑定](/sql-plan-management.md#创建绑定)相同。 使用时从 statements_summary 中找到需要绑定的执行计划对应的 `plan_digest`， 然后使用 `plan_digest` 创建绑定。
 
-例如
+例如:
 
 ```sql
 CREATE TABLE t(id INT PRIMARY KEY , a INT, KEY(a));
