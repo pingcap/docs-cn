@@ -7,10 +7,6 @@ summary: 介绍 TiDB 中元数据锁的概念、原理、实现和影响。
 
 本文介绍了 TiDB 中的元数据锁。
 
-> **警告：**
->
-> 当前该功能为实验特性，不建议在生产环境中使用。
-
 ## 元数据锁的概念
 
 在 TiDB 中，对元数据对象的更改采用的是在线异步变更算法。事务在执行时会获取开始时对应的元数据快照。如果事务执行过程中相关表上发生了元数据的更改，为了保证数据的一致性，TiDB 会返回 `Information schema is changed` 的错误，导致用户事务提交失败。
@@ -19,9 +15,10 @@ summary: 介绍 TiDB 中元数据锁的概念、原理、实现和影响。
 
 ## 适用场景
 
-元数据锁适用于所有的 DDL 语句，包括：
+元数据锁适用于所有的 DDL 语句，包括但不限于：
 
 - [`ADD INDEX`](/sql-statements/sql-statement-add-index.md)
+- [`ADD COLUMN`](/sql-statements/sql-statement-add-column.md)
 - [`DROP COLUMN`](/sql-statements/sql-statement-drop-column.md)
 - [`DROP INDEX`](/sql-statements/sql-statement-drop-index.md)
 - [`DROP PARTITION`](/partitioned-table.md#分区管理)
@@ -37,7 +34,7 @@ summary: 介绍 TiDB 中元数据锁的概念、原理、实现和影响。
 
 ## 使用元数据锁
 
-使用系统变量 [`tidb_enable_metadata_lock`](/system-variables.md#tidb_enable_metadata_lock-从-v630-版本开始引入) 启用或者关闭元数据锁特性。
+在 v6.5.0 及之后的版本中，TiDB 默认开启元数据锁特性。当集群从 v6.5.0 之前的版本升级到 v6.5.0 及之后的版本时，TiDB 会自动开启元数据锁功能。如果需要关闭元数据锁，你可以将系统变量 [`tidb_enable_metadata_lock`](/system-variables.md#tidb_enable_metadata_lock-从-v630-版本开始引入) 设置为 `OFF`。
 
 ## 元数据锁的原理
 
