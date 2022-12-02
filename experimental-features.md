@@ -49,7 +49,6 @@ aliases: ['/docs-cn/dev/experimental-features-4.0/','/zh/tidb/dev/experimental-f
 ## 数据迁移
 
 + [使用 WebUI](/dm/dm-webui-guide.md) 管理 DM 迁移任务。（v6.0 实验特性）
-+ [DM 增量数据校验](/dm/dm-continuous-data-validation.md)（v6.2.0 实验特性）
 
 ## 数据共享订阅
 
