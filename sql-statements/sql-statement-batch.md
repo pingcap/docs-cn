@@ -37,9 +37,9 @@ DryRunOptions ::=
     'DRY' 'RUN' 'QUERY'?
 
 ShardableStmt ::=
-	DeleteFromStmt
-|	UpdateStmt
-|	InsertIntoStmt
+    DeleteFromStmt
+|   UpdateStmt
+|   InsertIntoStmt
 |   ReplaceIntoStmt
 ```
 
