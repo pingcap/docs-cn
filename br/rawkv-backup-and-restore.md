@@ -5,10 +5,6 @@ summary: 了解如何使用 BR 备份和恢复 RawKV 数据。
 
 # RawKV 备份和恢复
 
-> **警告：**
->
-> 从 TiDB v6.2.0 开始，RawKV 备份和恢复功能废弃。
-
 TiKV 有时可以独立于 TiDB，与 PD 构成 KV 数据库，此时的产品形态为 RawKV。Backup & Restore (BR) 支持对使用 RawKV 的产品进行备份和恢复，本文介绍如何备份和恢复 RawKV。
 
 ## 备份 RawKV
