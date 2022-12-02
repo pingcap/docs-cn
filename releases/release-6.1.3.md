@@ -47,7 +47,7 @@ TiDB 版本：6.1.3
 
     <!--executor owner: zanmato1984-->
 
-    - 修复函数 `str_to_date` 在 `NO_ZERO_DATE` SQL Mode 下返回结果不正确的问题 [#39146](https://github.com/pingcap/tidb/issues/39146) @[mengxin9014](https://github.com/mengxin9014)
+    - 修复函数 `str_to_date` 在 `NO_ZERO_DATE` SQL 模式下返回结果不正确的问题 [#39146](https://github.com/pingcap/tidb/issues/39146) @[mengxin9014](https://github.com/mengxin9014)
 
     <!--planner owner: qw4990-->
 
