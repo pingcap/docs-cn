@@ -5,10 +5,6 @@ summary: Learn how to use continuous data validation and the working principles 
 
 # Continuous Data Validation in DM
 
-> **Warning:**
->
-> This is still an experimental feature. It is **NOT** recommended that you use it in the production environment.
-
 This document describes how to use continuous data validation in DM, its working principles, and its limitations.
 
 ## User scenario
