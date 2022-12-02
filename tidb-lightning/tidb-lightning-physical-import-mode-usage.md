@@ -224,10 +224,6 @@ The [`num-threads`](/tikv-configuration-file.md#num-threads) configuration of Ti
 
 ## Configure disk quota <span class="version-mark">New in v6.2.0</span>
 
-> **Warning:**
->
-> Disk quota is still an experimental feature. It is **NOT** recommended that you use it in the production environment.
-
 When you import data in the physical import mode, TiDB Lightning creates a large number of temporary files on the local disk to encode, sort, and split the original data. When the local disk space is insufficient, TiDB Lightning reports an error and exits because of write failure.
 
 To avoid this situation, you can configure disk quota for TiDB Lightning. When the size of the temporary files exceeds the disk quota, TiDB Lightning pauses the process of reading the source data and writing temporary files. TiDB Lightning prioritizes writing the sorted key-value pairs to TiKV. After deleting the local temporary files, TiDB Lightning continues the import process.

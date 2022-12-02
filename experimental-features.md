@@ -48,7 +48,6 @@ Elastic scheduling feature. It enables the TiDB cluster to dynamically scale out
 ## Data migration
 
 + [Use WebUI](/dm/dm-webui-guide.md) to manage migration tasks in DM. (Introduced in v6.0)
-+ [Configure disk quota](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#configure-disk-quota-new-in-v620) for TiDB Lightning. (Introduced in v6.2.0)
 + [Continuous Data Validation in DM](/dm/dm-continuous-data-validation.md) (Introduced in v6.2.0)
 
 ## Data share subscription
