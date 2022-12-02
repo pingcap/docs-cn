@@ -282,6 +282,7 @@ BATCH ON id LIMIT 2 DELETE /*+ USE_INDEX(t)*/ FROM t where v < 6;
 非事务 DML 语句的硬性限制，不满足这些条件时 TiDB 会报错。
 
 - DML 语句不能包含 `ORDER BY` 或 `LIMIT` 字句。
+- 不支持子查询或集合操作。
 - 用于拆分的列必须被索引。该索引可以是单列的索引，或是一个联合索引的第一列。
 - 必须在 [`autocommit`](/system-variables.md#autocommit) 模式中使用。
 - 不能在开启了 batch-dml 时使用。
