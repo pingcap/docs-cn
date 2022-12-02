@@ -236,7 +236,7 @@ BATCH ON id LIMIT 2 DELETE /*+ USE_INDEX(t)*/ FROM t where v < 6;
 
 1. 选择合适的[划分列](#参数说明)。建议使用整数或字符串类型。
 2. 在非事务 DML 语句中添加 `DRY RUN QUERY`，手动执行查询，确认 DML 语句影响的数据范围是否大体正确。
-3. 在非事务 DML 语句中添加 `DRY RUN`，手动执行查询，检查拆分后的语句和执行计划。需要关注一条拆分后的语句是否有可能读到之前的语句执行写入的结果，否则容易造成异常现象。需要关注索引选择效率。
+3. 在非事务 DML 语句中添加 `DRY RUN`，手动执行查询，检查拆分后的语句和执行计划。需要关注一条拆分后的语句是否有可能读到之前的语句执行写入的结果，否则容易造成异常现象。需要关注索引选择效率。如果是由 TiDB 自动选择拆分列，可能选择了会被修改的拆分列，需要尤其关注。
 4. 执行非事务 DML 语句。
 5. 如果报错，从报错信息或日志中获取具体失败的数据范围，进行重试或手动处理。
 
@@ -244,7 +244,7 @@ BATCH ON id LIMIT 2 DELETE /*+ USE_INDEX(t)*/ FROM t where v < 6;
 
 | 参数 | 说明 | 默认值 | 是否必填 | 建议值 |
 | :-- | :-- | :-- | :-- | :-- |
-| 划分列 | 用于划分 batch 的列，例如以上非事务 DML 语句 `BATCH ON id LIMIT 2 DELETE FROM t WHERE v < 6` 中的 `id` 列  | TiDB 尝试自动选择 | 否 | 选择可以最高效地满足 `WHERE` 条件的列 |
+| 划分列 | 用于划分 batch 的列，例如以上非事务 DML 语句 `BATCH ON id LIMIT 2 DELETE FROM t WHERE v < 6` 中的 `id` 列  | TiDB 尝试自动选择（不建议） | 否 | 选择可以最高效地满足 `WHERE` 条件的列 |
 | Batch size | 用于控制每个 batch 的大小，batch 即 DML 操作拆分成的 SQL 语句个数，例如以上非事务 DML 语句 `BATCH ON id LIMIT 2 DELETE FROM t WHERE v < 6` 中的 `LIMIT 2`。batch 数量越多，batch size 越小 | N/A | 是 | 1000～1000000，过小和过大都会导致性能下降 |
 
 ### 划分列的选择
