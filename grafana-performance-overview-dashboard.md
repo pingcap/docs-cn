@@ -5,6 +5,8 @@ summary: 本文介绍 Performance Overview 面板上监控指标的含义。
 
 # Performance Overview 面板重要监控指标详解
 
+## Performance Overview
+
 使用 TiUP 部署 TiDB 集群时，你可以一键部署监控系统 (Prometheus & Grafana)。监控架构参见 [TiDB 监控框架概述](/tidb-monitoring-framework.md)。
 
 目前 Grafana Dashboard 整体分为 PD、TiDB、TiKV、Node\_exporter、Overview、Performance\_overview 等。
@@ -19,39 +21,40 @@ Performance Overview Dashboard 按总分结构对 TiDB、TiKV、PD 的性能指�
 
 以下为 Performance Overview Dashboard 监控说明：
 
-## Database Time by SQL Type
+### Database Time by SQL Type
 
 - database time: 每秒的总数据库时间
 - sql_type: 每种 SQL 语句每秒消耗的数据库时间
 
-## Database Time by SQL Phase
+### Database Time by SQL Phase
 
 - database time: 每秒的总数据库时间
 - get token/parse/compile/execute: 4 个 SQL 处理阶段每秒消耗的数据库时间
 
 execute 执行阶段为绿色，其他三个阶段偏红色系，如果非绿色的颜色占比明显，意味着在执行阶段之外数据库消耗了过多时间，需要进一步分析根源。
 
-## SQL Execute Time Overview
+### SQL Execute Time Overview
 
 - execute time: execute 阶段每秒消耗的数据库时间
 - tso_wait: execute 阶段每秒同步等待 TSO 的时间
 - kv request type: execute 阶段每秒等待每种 KV 请求类型的时间，总的 KV request 等待时间可能超过 execute time，因为 KV request 是并发的。
+- tiflash_mpp: execute 阶段每秒 TiFlash 请求处理时间。
 
-绿色系标识代表常规的写 KV 请求（例如 Prewrite 和 Commit），蓝色系标识代表常规的读 KV 请求，其他色系标识需要注意的问题。例如，悲观锁加锁请求为红色，TSO 等待为深褐色。如果非蓝色系或者非绿色系占比明显，意味着执行阶段存在异常的瓶颈。例如，当发生严重锁冲突时，红色的悲观锁时间会占比明显；当负载中 TSO 等待的消耗时间过长时，深褐色会占比明显。
+绿色系标识代表常规的写 KV 请求（例如 Prewrite 和 Commit），蓝色系标识代表常规的读 KV 请求，紫色系标识代表 TiFlash MPP 请求，其他色系标识需要注意的问题。例如，悲观锁加锁请求为红色，TSO 等待为深褐色。如果非蓝色系或者非绿色系占比明显，意味着执行阶段存在异常的瓶颈。例如，当发生严重锁冲突时，红色的悲观锁时间会占比明显；当负载中 TSO 等待的消耗时间过长时，深褐色会占比明显。
 
-## QPS
+### QPS
 
 QPS：按 `SELECT`、`INSERT`、`UPDATE` 等类型统计所有 TiDB 实例上每秒执行的 SQL 语句数量
 
-## CPS By Type
+### CPS By Type
 
 CPS By Type：按照类型统计所有 TiDB 实例每秒处理的命令数（Command Per Second）
 
-## Queries Using Plan Cache OPS
+### Queries Using Plan Cache OPS
 
-Queries Using Plan Cache OPS：所有 TiDB 实例每秒使用 Plan Cache 的查询数量
+Queries Using Plan Cache OPS：所有 TiDB 实例每秒执行计划缓存的命中和未命中次数。 `avg-hit + avg-miss` 等于 StmtExecute 每秒执行次数。
 
-## KV/TSO Request OPS
+### KV/TSO Request OPS
 
 - kv request total: 所有 TiDB 实例每秒总的 KV 请求数量
 - kv request by type: 按 `Get`、`Prewrite`、 `Commit` 等类型统计在所有 TiDB 实例每秒的请求数据
@@ -60,19 +63,18 @@ Queries Using Plan Cache OPS：所有 TiDB 实例每秒使用 Plan Cache 的查�
 
 通常 tso - cmd 除以 tso - request 等于平均请求的 batch 大小。
 
-## Connection Count
+### KV Request Time By Source
 
-- total：所有 TiDB 的连接数
-- active connections：所有 TiDB 总的活跃连接数
-- 各个 TiDB 的连接数
+- kv request time total: 所有 TiDB 实例每秒总的 KV 和 TiFlash 请求时间。
+-   - 每种 KV 请求和请求来源组成柱状堆叠图，`external` 标识了来源为正常业务请求，`internal` 标识了内部活动，比如 ddl、auto analyze 等活动。
 
-## TiDB CPU
+### TiDB CPU
 
 - avg：所有 TiDB 实例平均 CPU 利用率
 - delta：所有 TiDB 实例中最大 CPU 利用率减去所有 TiDB 实例中最小 CPU 利用率
 - max：所有 TiDB 实例中最大 CPU 利用率
 
-## TiKV CPU/IO MBps
+### TiKV CPU/IO MBps
 
 - CPU-Avg：所有 TiKV 实例平均 CPU 利用率
 - CPU-Delta：所有 TiKV 实例中最大 CPU 利用率减去所有 TiKV 实例中最小 CPU 利用率
@@ -81,7 +83,7 @@ Queries Using Plan Cache OPS：所有 TiDB 实例每秒使用 Plan Cache 的查�
 - IO-Delta：所有 TiKV 实例中最大 MBps 减去所有 TiKV 实例中最小 MBps
 - IO-MAX：所有 TiKV 实例中最大 MBps
 
-## Duration
+### Duration
 
 - Duration：执行时间解释
 
@@ -92,16 +94,22 @@ Queries Using Plan Cache OPS：所有 TiDB 实例每秒使用 Plan Cache 的查�
 - 99： 所有请求命令的 P99 执行时间
 - avg by type：按 `SELECT`、`INSERT`、`UPDATE` 类型统计所有 TiDB 实例上所有请求命令的平均执行时间
 
-## Connection Idle Duration
+### Connection Idle Duration
 
 Connection Idle Duration 指空闲连接的持续时间。
 
 - avg-in-txn：处于事务中，空闲连接的平均持续时间
 - avg-not-in-txn：没有处于事务中，空闲连接的平均持续时间
 - 99-in-txn：处于事务中，空闲连接的 P99 持续时间
+
+### Connection Count
+
+- total：所有 TiDB 的连接数
+- active connections：所有 TiDB 总的活跃连接数
+- 各个 TiDB 的连接数
 - 99-not-in-txn：没有处于事务中，空闲连接的 P99 持续时间
 
-## Parse Duration、Compile Duration 和 Execute Duration
+### Parse Duration、Compile Duration 和 Execute Duration
 
 - Parse Duration：SQL 语句解析耗时统计
 - Compile Duration：将解析后的 SQL AST 编译成执行计划的耗时
@@ -109,22 +117,22 @@ Connection Idle Duration 指空闲连接的持续时间。
 
 这三个时间指标均包含均所有 TiDB 实例的平均值和 P99 值。
 
-## Avg TiDB KV Request Duration
+### Avg TiDB KV Request Duration
 
 按 `Get`、`Prewrite`、 `Commit` 等类型统计在所有 TiDB 实例 KV 请求的平均执行时间。
 
-## Avg TiKV GRPC Duration
+### Avg TiKV GRPC Duration
 
 按 `get`、`kv_prewrite`、 `kv_commit` 等类型统计所有 TiKV 实例对 gRPC 请求的平均执行时间。
 
-## PD TSO Wait/RPC Duration
+### PD TSO Wait/RPC Duration
 
 - wait - avg：所有 TiDB 实例等待从 PD 返回 TSO 的平均时间
 - rpc - avg：所有 TiDB 实例从向 PD 发送获取 TSO 的请求到接收到 TSO 的平均耗时
 - wait - 99：所有 TiDB 实例等待从 PD 返回 TSO 的 P99 时间
 - rpc - 99：所有 TiDB 实例从向 PD 发送获取 TSO 的请求到接收到 TSO 的 P99 耗时
 
-## Storage Async Write Duration、Store Duration 和 Apply Duration
+### Storage Async Write Duration、Store Duration 和 Apply Duration
 
 - Storage Async Write Duration：异步写所花费的时间
 - Store Duration：异步写 Store 步骤所花费的时间
@@ -134,7 +142,7 @@ Connection Idle Duration 指空闲连接的持续时间。
 
 平均 Storage async write duration = 平均 Store Duration + 平均 Apply Duration
 
-## Append Log Duration、Commit Log Duration 和 Apply Log Duration
+### Append Log Duration、Commit Log Duration 和 Apply Log Duration
 
 - Append Log Duration：Raft append 日志所花费的时间
 - Commit Log Duration：Raft commit 日志所花费的时间
@@ -142,6 +150,11 @@ Connection Idle Duration 指空闲连接的持续时间。
 
 这三个时间指标均包含所有 TiKV 实例的平均值和 P99 值。
 
-## 图例
+### 图例
 
 ![performance overview](/media/performance/grafana_performance_overview.png)
+
+## TiFlash
+
+
+## CDC
