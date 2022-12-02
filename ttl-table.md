@@ -5,7 +5,7 @@ summary: 介绍如何通过 SQL 来管理表数据的生命周期
 
 # TTL 支持
 
-TTL 提供了行级别的生命周期控制策略。在 TiDB 中，设置了 TTL 属性的表会根据配置自动删除过期的数据来防止存储空间的无限增长。此功能在一些场景很有用，比如：定期删除验证码记录等。
+TTL 提供了行级别的生命周期控制策略。在 TiDB 中，设置了 TTL 属性的表会根据配置自动删除过期的数据来防止存储空间的无限增长。此功能在一些场景可以有效节省存储空间，比如定期删除验证码记录等。
 
 > **警告：**
 >
@@ -52,13 +52,13 @@ CREATE TABLE t1 (
 
 ### 修改表的 TTL 属性
 
-支持通过 ALTER 语句修改表的 TTL 属性。比如：
+支持通过 `ALTER TABLE` 语句修改表的 TTL 属性。比如：
 
 ```sql
 ALTER TABLE t1 TTL = `created_at` + INTERVAL 1 MONTH;
 ```
 
-上面的语句即支持修改已有的 TTL 属性的表，也支持将一张非 TTL 的表设置为具有 TTL 属性的表。
+上面的语句既支持修改已配置 TTL 属性的表，也支持将一张非 TTL 的表设置为具有 TTL 属性的表。
 
 对于 TTL 表，也可以单独修改 `TTL_ENABLE` 的值：
 
@@ -68,7 +68,7 @@ ALTER TABLE t1 TTL_ENABLE = 'OFF';
 
 如果想清除一张表的所有 TTL 属性，则可以执行：
 
-```
+```sql
 ALTER TABLE t1 REMOVE TTL;
 ```
 
@@ -86,14 +86,14 @@ SET @@global.tidb_ttl_job_run_interval = '24h';
 SET @@global.tidb_ttl_job_enable = OFF;
 ```
 
-在某些场景下，我们可能希望只允许在某个时间窗口内调度后台的 TTL 任务，此时可以设置全局变量 `tidb_ttl_job_schedule_window_start_time` 和 `tidb_ttl_job_schedule_window_end_time` 来指定时间窗口，比如：
+在某些场景下，你可能希望只允许在某个时间窗口内调度后台的 TTL 任务，此时可以设置全局变量 [`tidb_ttl_job_schedule_window_start_time`](/system-variables.md#tidb_ttl_job_schedule_window_start_time-从-v650-版本开始引入) 和 [`tidb_ttl_job_schedule_window_end_time`](/system-variables.md#tidb_ttl_job_schedule_window_end_time-从-v650-版本开始引入) 来指定时间窗口，比如：
 
 ```
 SET @@global.tidb_ttl_job_schedule_window_start_time = '01:00 +0000';
 SET @@global.tidb_ttl_job_schedule_window_end_time = '05:00 +0000';
 ```
 
-则只允许 UTC 时间的凌晨 1 点到 5 点调度 TTL 任务。默认情况下的时间窗口设置为 `00:00 +0000` 到 `23:59 +0000`，即允许所有时段的任务调度。
+上述语句只允许在 UTC 时间的凌晨 1 点到 5 点调度 TTL 任务。默认情况下的时间窗口设置为 `00:00 +0000` 到 `23:59 +0000`，即允许所有时段的任务调度。
 
 ## 工具兼容性
 
