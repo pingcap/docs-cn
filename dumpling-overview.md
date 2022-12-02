@@ -155,6 +155,14 @@ In the command above:
 >
 > *Strings* and *keywords* are not distinguished by Dumpling. If the imported data is the Boolean type, the value of `true` is converted to `1` and the value of `false` is converted to `0`.
 
+### Compress the exported data files
+
+You can use the `--compress <format>` option to compress the CSV and SQL data and table structure files exported by Dumpling. This parameter supports the following compression algorithms: `gzip`, `snappy`, and `zstd`. The compression is disabled by default.
+
+- This option only compresses individual data and table structure files. It cannot compress the entire folder and generate a single compressed package.
+- This option can save disk space, but it also slows down the export speed and increases CPU consumption. Use this option with caution in scenarios where the export speed is critical.
+- For TiDB Lightning v6.5.0 and later versions, you can use compressed files exported by Dumpling as the data source without additional configuration.
+
 ### Format of exported files
 
 - `metadata`: The start time of the exported files and the position of the master binary log.
@@ -311,7 +319,7 @@ The exported file is stored in the `./export-<current local time>` directory by 
 
 - The `-t` option specifies the number of threads for the export. Increasing the number of threads improves the concurrency of Dumpling and the export speed, and also increases the database's memory consumption. Therefore, it is not recommended to set the number too large.
 - The `-r` option specifies the maximum number of records (or the number of rows in the database) for a single file. When it is enabled, Dumpling enables concurrency in the table to improve the speed of exporting large tables. When the upstream database is TiDB v3.0 or later versions, a value of this parameter greater than 0 indicates that the TiDB region information is used for splitting and the value specified here will no longer take effect.
-- The `--compress gzip` option can be used to compress the dump. This can help to speed up dumping of data if storage is the bottleneck or if storage capacity is a concern. The drawback of this is an increase in CPU usage. Each file is compressed individually.
+- The `--compress <format>` option specifies the compression format of the dump. It supports the following compression algorithms: `gzip`, `snappy`, and `zstd`. This option can speed up dumping of data if storage is the bottleneck or if storage capacity is a concern. The drawback is an increase in CPU usage. Each file is compressed individually.
 
 With the above options specified, Dumpling can have a quicker speed of data export.
 
@@ -445,3 +453,4 @@ Finally, all the exported data can be imported back to TiDB.
 | `--status-addr`              | Dumpling's service address, including the address for Prometheus to pull metrics and pprof debugging                                                                                                                                                                                                                               | ":8281"                                    |
 | `--tidb-mem-quota-query`     | The memory limit of exporting SQL statements by a single line of Dumpling command, and the unit is byte. For v4.0.10 or later versions, if you do not set this parameter, TiDB uses the value of the `mem-quota-query` configuration item as the memory limit value by default. For versions earlier than v4.0.10, the parameter value defaults to 32 GB.  | 34359738368 |
 | `--params`                   | Specifies the session variable for the connection of the database to be exported. The required format is `"character_set_client=latin1,character_set_connection=latin1"`                                                                                                                                                           |
+|  `-c` or `--compress` |  Compresses the CSV and SQL data and table structure files exported by Dumpling. It supports the following compression algorithms: `gzip`, `snappy`, and `zstd`.  | "" | 

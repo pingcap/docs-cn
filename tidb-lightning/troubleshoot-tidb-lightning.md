@@ -205,3 +205,7 @@ header = false
 ### `Unknown character set`
 
 TiDB does not support all MySQL character sets. Therefore, TiDB Lightning reports this error if an unsupported character set is used when creating the table schema during an import. To bypass this error, you can create the table schema in the downstream in advance using the [character sets supported by TiDB](/character-set-and-collation.md) according to the specific data.
+
+### `invalid compression type ...`
+
+- TiDB Lightning v6.4.0 and later versions only support `.bak` files and the following compressed data files: `gzip`, `snappy`, and `zstd`. Other types of files cause errors. For those unsupported files, you need to modify the file names in advance, or move those files out of the import data directory to avoid such errors. For more details, see [Compressed files](/tidb-lightning/tidb-lightning-data-source.md#compressed-files).
