@@ -38,6 +38,18 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
     更多信息，请参考[用户文档](/sql-statements/sql-statement-flashback-to-timestamp.md)。
 
+* 完整支持非事务 DML 语句。其中包括非事务 `INSERT`、`REPLACE`、`UPDATE` 和 `DELETE`。[#33485](https://github.com/pingcap/tidb/issues/33485)  @[ekexium](https://github.com/ekexium)
+
+    在大批量的数据处理场景，单一大事务 SQL 处理有可能对集群稳定性和性能造成影响。非事务 DML 语句将一个 DML 语句拆成多个语句在内部执行。拆分后的语句将牺牲事务原子性和隔离性，但是对于集群的稳定性有很大提升。
+    其中非事务 `DELETE` 在 v6.1.0 已经支持，非事务 `INSERT`、`REPLACE` 和 `UPDATE` 在 v6.5.0 支持。
+
+    更多信息，请参考[非事务 DML 语句](/non-transactional-dml.md) 和 [BATCH](/sql-statements/sql-statemetn-batch.md)。
+    
+* 支持 Time to live (TTL)（实验特性）。
+
+    TTL 提供了行级别的生命周期控制策略。在 TiDB 中，设置了 TTL 属性的表会根据配置自动检查并删除过期的行数据。TTL 设计的目标是在不影响在线读写负载的前提下，帮助用户周期性且及时地清理不需要的数据。
+    
+    更多信息请参考[Time to live(TTL)](/ttl.md)
 * TiFlash 支持 `INSERT SELECT` 语句（实验功能） [#37515](https://github.com/pingcap/tidb/issues/37515) @[gengliqi](https://github.com/gengliqi) **tw@qiancai**
 
     用户可以指定 TiFlash 执行 `INSERT SELECT` 中的 `SELECT` 子句（分析查询），并将结果在此事务中写回到 TIDB 表中:
@@ -207,6 +219,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 * TiCDC 性能提升 **tw@shichun-0415
 
     在 TiDB 场景测试验证中， TiCDC 的性能得到了比较大提升，单台 TiCDC 节点能处理的最大行变更吞吐可以达到 30K rows/s，同步延迟降低到 10s，即使在常规的 TiKV/TiCDC 滚动升级场景同步延迟也小于 30s；在容灾场景测试中，打开 TiCDC Redo log 和 Sync point 后，吞吐 xx rows/s 时，容灾复制延迟可以保持在 x s。
+
 ### 部署及运维
 
 * 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接)
