@@ -58,7 +58,7 @@ SELECT app_name, country FROM t1;
 
 ## 限制
 
-* TiDB 对 SELECT 子句返回的结果集（即 INSERT 写入的事务）大小的限制即为 TiDB  对单个事务大小的限制，可以通过 [`performance.txn-total-size-limit](/tidb-configuration-file.md#txn-total-size-limit`) 配置项调整该限制，推荐的使用场景是 100 MiB 以下。
+* TiDB 对 SELECT 子句返回的结果集（即 INSERT 写入的事务）大小的限制即为 TiDB 对单个事务大小的限制，可以通过 [`performance.txn-total-size-limit](/tidb-configuration-file.md#txn-total-size-limit`) 配置项调整该限制，推荐的使用场景是 100 MiB 以下。
 
     若 SELECT 返回结果大小超过了事务大小限制的阈值，那么整条语句将会被强制终止并返回错误信息（参见 [`performance.txn-total-size-limit`](/tidb-configuration-file.md#txn-total-size-limit)）。
 
