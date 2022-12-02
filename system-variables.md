@@ -1525,14 +1525,10 @@ MPP is a distributed computing framework provided by the TiFlash engine, which a
 
 ### tidb_enable_metadata_lock <span class="version-mark">New in v6.3.0</span>
 
-> **Warning:**
->
-> Currently, metadata lock is an experimental feature. It is **NOT** recommended that you use it in the production environment.
-
 - Scope: GLOBAL
 - Persists to cluster: Yes
 - Type: Boolean
-- Default value: `OFF`
+- Default value: `ON`
 
 <CustomContent platform="tidb">
 
