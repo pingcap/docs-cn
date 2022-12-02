@@ -19,7 +19,7 @@ TiCDC 复制功能只会将指定时间点之后的增量变更复制到下游�
 
 ![TiCDC bidirectional replication](/media/ticdc/ticdc-bidirectional-replication.png)
 
-3. 在创建每一个同步任务时，你需要在 `--config` 参数所指定的配置文件中添加如下配置:
+3. 在创建同步任务之前，你需要先确保两个集群在某个对应的时刻的数据是一致的，例如 TiDB A 在 `ts=1` 时刻与 TiDB B 在 `ts=2` 的时刻数据是一致的。然后，在创建同步任务时，你需要分别把对应集群的同步任务的 `--start-ts` 参数指定为对应的 `tso`，即上游为 TiDB A 的同步任务的 `--start-ts=1` , 上游为 TiDB B 的同步任务的 `--start-ts=2`。最后，你需要在创建同步任务的 `--config` 参数所指定的配置文件中添加如下配置:
 
     ```toml
     # 是否启用 bdr 模式
