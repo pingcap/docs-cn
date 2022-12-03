@@ -423,12 +423,12 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
         + 需要同时设置 `storage.enable-ttl = true`。由于 API V2 支持 TTL 特性，因此强制要求打开 `enable-ttl` 以避免这个参数出现歧义。
         + 启用 API V2 后需要在集群中额外部署至少一个 tidb-server 以回收过期数据。该 tidb-server 可同时提供数据库读写服务。可以部署多个 tidb-server 以保证高可用。
         + 需要客户端的支持。请参考对应客户端的 API V2 使用说明。
-        + 从 v6.2.0 版本开始，你可以通过 [RawKV CDC](https://tikv.org/docs/dev/concepts/explore-tikv-features/cdc/cdc/) 组件实现 RawKV 的 Change Data Capture (CDC)。
+        + 从 v6.2.0 版本开始，你可以通过 [RawKV CDC](https://tikv.org/docs/latest/concepts/explore-tikv-features/cdc/cdc/) 组件实现 RawKV 的 Change Data Capture (CDC)。
 + 默认值：1
 
 > **警告：**
 >
-> - 由于 API V1 和 API V2 底层存储格式不同，因此**仅当** TiKV 中只有 TiDB 数据时，可以平滑启用或关闭 API V2。其他情况下，需要新建集群，并使用 [TiKV Backup & Restore](https://tikv.org/docs/dev/concepts/explore-tikv-features/backup-restore-cn/) 工具进行数据迁移。
+> - 由于 API V1 和 API V2 底层存储格式不同，因此**仅当** TiKV 中只有 TiDB 数据时，可以平滑启用或关闭 API V2。其他情况下，需要新建集群，并使用 [TiKV Backup & Restore](https://tikv.org/docs/latest/concepts/explore-tikv-features/backup-restore-cn/) 工具进行数据迁移。
 > - 启用 API V2 后，**不能**将 TiKV 集群回退到 v6.1.0 之前的版本，否则可能导致数据损坏。
 
 ## storage.block-cache
