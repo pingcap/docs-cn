@@ -107,4 +107,4 @@ DM 会定期检查当前任务状态以及错误信息，判断恢复任务能�
 | 配置项        | 说明                                    |
 | :------------ | :--------------------------------------- |
 | `case-sensitive` | Binlog event filter 标识符是否大小写敏感。默认值：false。|
-| `filters` | 配置 Binlog event filter，含义见 [Binlog event filter 参数解释](/dm/dm-key-features.md#参数解释-2)。 |
+| `filters` | 配置 Binlog event filter，含义见 [Binlog event filter 参数解释](/dm/dm-binlog-event-filter.md#参数解释)。 |

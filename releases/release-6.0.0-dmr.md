@@ -320,9 +320,9 @@ v6.0.0 是 DMR 版本，版本名称为 6.0.0-DMR。
 | TiFlash | [`profiles.default.dt_compression_level`](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml) | 新增 | TiFlash 存储引擎的压缩级别，默认值 `1`。 |
 | DM | [`loaders.<name>.import-mode`](/dm/task-configuration-file-full.md#完整配置文件示例) | 新增 | 该配置项控制全量阶段数据导入的模式。自 v6.0.0 起全量阶段默认使用 TiDB Lightning 的 TiDB-backend 方式导入，替换原来的 Loader 组件。此变动为内部组件替换，对日常使用没有明显影响。<br/>默认值 `sql` 表示启用 tidb-backend 组件，可能在极少数场景下存在未能完全兼容的情况，可以通过配置为 "loader" 回退。 |
 | DM | [`loaders.<name>.on-duplicate`](/dm/task-configuration-file-full.md#完整配置文件示例) | 新增 | 该配置项控制全量导入阶段出现的冲突数据的解决方式。默认值为 `replace`，覆盖重复数据。 |
-| TiCDC | [`dial-timeout`](/ticdc/manage-ticdc.md#sink-uri-配置-kafka) | 新增 | 和下游 Kafka 建立连接的超时时长，默认值为 `10s` |
-| TiCDC | [`read-timeout`](/ticdc/manage-ticdc.md#sink-uri-配置-kafka) | 新增 | 读取下游 Kafka 返回的 response 的超时时长，默认值 `10s` |
-| TiCDC | [`write-timeout`](/ticdc/manage-ticdc.md#sink-uri-配置-kafka) | 新增 | 向下游 Kafka 发送 request 的超时时长，默认值为 `10s` |
+| TiCDC | [`dial-timeout`](/ticdc/ticdc-sink-to-kafka.md#sink-uri-配置-kafka) | 新增 | 和下游 Kafka 建立连接的超时时长，默认值为 `10s` |
+| TiCDC | [`read-timeout`](/ticdc/ticdc-sink-to-kafka.md#sink-uri-配置-kafka) | 新增 | 读取下游 Kafka 返回的 response 的超时时长，默认值 `10s` |
+| TiCDC | [`write-timeout`](/ticdc/ticdc-sink-to-kafka.md#sink-uri-配置-kafka) | 新增 | 向下游 Kafka 发送 request 的超时时长，默认值为 `10s` |
 
 ### 其他
 
