@@ -90,7 +90,7 @@ check-struct-only = false
     host = "127.0.0.1"
     port = 3306
     user = "root"
-    password = "" # 设置连接数据库的密码，可为明文或 Base64 编码。
+    password = "" # 设置连接上游数据库的密码，可为明文或 Base64 编码。
 
     #（可选）使用映射规则来匹配上游多个分表，其中 rule1 和 rule2 在下面 Routes 配置栏中定义
     route-rules = ["rule1", "rule2"]
@@ -99,7 +99,7 @@ check-struct-only = false
     host = "127.0.0.1"
     port = 4000
     user = "root"
-    password = "" # 设置连接数据库的密码，可为明文或 Base64 编码。
+    password = "" # 设置连接下游数据库的密码，可为明文或 Base64 编码。
 
     #（可选）使用 TLS 连接 TiDB
     # security.ca-path = ".../ca.crt"
