@@ -38,7 +38,7 @@
     - [更新数据](/develop/dev-guide-update-data.md)
     - [删除数据](/develop/dev-guide-delete-data.md)
     - [预处理语句](/develop/dev-guide-prepared-statement.md)
-    - [Time to live (TTL)](/ttl-table.md)
+    - [Time to Live](/time-to-live.md)
   - 数据读取
     - [单表读取](/develop/dev-guide-get-data-from-single-table.md)
     - [多表连接查询](/develop/dev-guide-join-tables.md)
