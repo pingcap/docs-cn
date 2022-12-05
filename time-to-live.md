@@ -82,7 +82,7 @@ TTL 设计的目标是在不影响在线读写负载的前提下，帮助用户�
 
 ## TTL 任务
 
-对于每张设置了 TTL 属性的表，TiDB 内部会定期调度后台任务来清理过期的数据。你可以通过设置全局变量 [`tidb_ttl_job_run_interval`](/system-variables.md#tidb_ttl_job_run_interval-从-v650-版本开始引入) 来自定义任务的执行周期，比如下面的例子里后台清理任务被设置为每 24 小时执行一次：
+对于每张设置了 TTL 属性的表，TiDB 内部会定期调度后台任务来清理过期的数据。你可以通过设置全局变量 [`tidb_ttl_job_run_interval`](/system-variables.md#tidb_ttl_job_run_interval-从-v650-版本开始引入) 来自定义任务的执行周期，比如通过下面的语句将后台清理任务设置为每 24 小时执行一次：
 
 ```sql
 SET @@global.tidb_ttl_job_run_interval = '24h';
