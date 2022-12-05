@@ -248,6 +248,14 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
 ## 兼容性变更
 
+* 支持高性能、全局单调递增的 AUTO_INCREMENT 列属性 [#38442](https://github.com/pingcap/tidb/issues/38442) @[tiancaiamao](https://github.com/tiancaiamao) **tw@Oreoxmt**
+
+    TiDB v6.4.0 引入了 AUTO_INCREMENT 的 MySQL 兼容模式，通过中心化分配自增 ID，实现了自增 ID 在所有 TiDB 实例上单调递增，v6.5.0 版本该功能正式 GA，使用该兼容模式的单表写入 TPS 预期超过 2 万，并支持通过弹性扩容提升单表和整个集群的写入吞吐。使用该特性能够更容易地实现查询结果按自增 ID 排序。要使用 MySQL 兼容模式，你需要在建表时将 AUTO_ID_CACHE 设置为 1。
+`
+CREATE TABLE t(a int AUTO_INCREMENT key) AUTO_ID_CACHE 1;
+`
+更多信息，请参考[用户文档](/auto-increment.md#mysql-兼容模式)。
+
 ### 系统变量
 
 | 变量名  | 修改类型（包括新增/修改/删除）    | 描述 |
