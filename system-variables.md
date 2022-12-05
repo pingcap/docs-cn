@@ -911,7 +911,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 ### `tidb_ddl_reorg_batch_size`
 
 - 作用域：GLOBAL
-- 是否持久化到集群：
+- 是否持久化到集群：是
 - 默认值：`256`
 - 范围：`[32, 10240]`
 - 这个变量用来设置 DDL 操作 `re-organize` 阶段的 batch size。比如 `ADD INDEX` 操作，需要回填索引数据，通过并发 `tidb_ddl_reorg_worker_cnt` 个 worker 一起回填数据，每个 worker 以 batch 为单位进行回填。
