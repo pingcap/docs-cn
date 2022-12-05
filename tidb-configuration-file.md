@@ -363,6 +363,12 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 设置 `tidb_auth_token` 认证方式的 JWKS 刷新时间间隔。
 + 默认值：1h
 
+### `disconnect-on-expired-password` <span class="version-mark">从 v6.5.0 版本开始引入</span>
+
++ 对于密码已过期的用户，通过 `disconnect-on-expired-password` 控制 TiDB 服务端是否直接断开该用户的连接。
++ 默认值：`true`
++ 默认值为 "true" 表示 TiDB 服务端将直接断开密码已过期用户的连接。设置为 "false" 时， TiDB 服务端将密码已过期用户的连接置于“沙盒模式”，允许该用户建立连接并执行密码重置操作。
+
 ## performance
 
 性能相关配置。

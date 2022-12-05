@@ -597,6 +597,7 @@
     - [与 MySQL 安全特性差异](/security-compatibility-with-mysql.md)
     - [权限管理](/privilege-management.md)
     - [TiDB 用户账户管理](/user-account-management.md)
+    - [TiDB 密码管理](/password-management.md)
     - [基于角色的访问控制](/role-based-access-control.md)
     - [TiDB 证书鉴权使用指南](/certificate-authentication.md)
   - SQL
