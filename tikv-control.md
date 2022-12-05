@@ -152,10 +152,10 @@ AAFF
 对于 `region` 子命令：
 
 - 要查看指定的 Region，可在命令中使用 `-r` 参数，多个 Region 以 `,` 分隔。也可以使用 `--all-regions` 参数来返回所有 Region（`-r` 与 `--all-regions` 不能同时使用）
-- 要限制打印的 Region 的数量，可在命令中使用 `--limit` 参数（默认为 `16`）
+- 要限制输出的 Region 的数量，可在命令中使用 `--limit` 参数（默认为 `16`）
 - 要查询某个 key 范围中包含哪些 Region，可在命令中使用 `--start` 和 `--end` 参数（默认不限范围，采用 Hex 格式）
 
-需要打印 id 为 `1239` 的 Region 时，用法及输出内容如下所示：
+需要输出 ID 为 `1239` 的 Region 时，用法及输出内容如下所示：
 
 ```shell
 tikv-ctl --host 127.0.0.1:20160 raft region -r 1239
@@ -182,7 +182,7 @@ tikv-ctl --host 127.0.0.1:20160 raft region -r 1239
 
 需要查询某个 key 范围中包含哪些 Region 时，用法及输出内容如下所示：
 
-- 当 key 范围位于某个 Region 中时，将会输出该 Region 信息。
+- 当 key 范围包含在某个 Region 中时，将会输出该 Region 信息。
 - 当 key 范围精准到某个 Region 时，以上述 Region `1239` 为例：当给定的 key 范围为 Region `1239` 的范围时，由于 Region 范围为左闭右开区间，并且 Region `1009` 以 Region `1239` 的 `end_key` 作为 `start_key`，因此会同时输出 Region `1009` 和 Region `1239` 的信息。
 
 ```shell
