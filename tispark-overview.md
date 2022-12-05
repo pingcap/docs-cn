@@ -46,14 +46,14 @@ TiSpark 和 TiDB 可以让用户无需创建和维护 ETL，直接在同一个�
 
 > **警告：**
 >
-> [此文](/tispark-deployment-topology)所描述的使用 TiUP 部署 TiSpark 的方式已被废弃.
+> [此文](tispark-deployment-topology)所描述的使用 TiUP 部署 TiSpark 的方式已被废弃.
 
 TiSpark 作为 Spark 的 TiDB 连接器，需要 Spark 集群的支持。本文仅提供部署 Spark 的参考建议，对于硬件以及部署细节请参考 [Spark 官方文档](https://spark.apache.org/docs/latest/hardware-provisioning.html)。
 
 对于独立部署的 Spark 集群，可以参考如下建议配置：
+
 - 建议为 Spark 分配 32G 以上的内存，并为操作系统和缓存保留至少 25% 的内存。
 - 建议每台机器至少为 Spark 分配 8 到 16 核 CPU。起初，你可以设定将所有 CPU 核分配给 Spark。
-
 
 可以参考如下的 spark-env.sh 配置文件
 
@@ -123,6 +123,7 @@ mvn clean install -Dmaven.test.skip=true
 // or you can add properties to specify spark version
 mvn clean install -Dmaven.test.skip=true -Pspark3.2.1
 ```
+
 ### TiSpark jar 包的 artifact ID
 
 注意不同版本的 TiSpark artifact ID 也不同：
@@ -171,7 +172,7 @@ spark.sql("use tidb_catalog")
 spark.sql("select count(*) from ${database}.${table}").show
 ```
 
-### 使用 TiSpark 写入数据：
+### 使用 TiSpark 写入数据
 
 你能通过 Spark DataSource API 在保证 ACID 下写入 TiKV：
 
@@ -431,7 +432,6 @@ spark.sql.tidb.password $your_tidb_server_password
 - [TiSpark TLS](#tls-configurations)
 - [TiSpark 遥测](https://github.com/pingcap/tispark/blob/master/docs/features/telemetry.md)
 - [TiSpark 执行计划](https://github.com/pingcap/tispark/blob/master/docs/features/query_execution_plan_in_TiSpark.md)
-
 
 ## 统计信息
 
