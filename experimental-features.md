@@ -38,7 +38,7 @@ aliases: ['/docs-cn/dev/experimental-features-4.0/','/zh/tidb/dev/experimental-f
 + [元数据锁](/metadata-lock.md) （v6.3.0 实验特性）
 + [Range INTERVAL 分区](/partitioned-table.md#range-interval-分区)（v6.3.0 实验特性）
 + [添加索引加速](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入)（v6.3.0 实验特性）
-+ [TiFlash 查询结果物化](tiflash/tiflash-results-materialization.md) （v6.5.0 实验特性）
++ [TiFlash 查询结果物化](tiflash/tiflash-results-materialization.md)（v6.5.0 实验特性）
 
 ## 存储
 

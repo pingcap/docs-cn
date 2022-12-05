@@ -11,7 +11,7 @@ summary: 介绍如何在同一个事务中保存 TiFlash 的计算结果。
 
 本文介绍如何在同一个事务 (`INSERT INTO SELECT`) 中实现 TiFlash 计算结果物化至某一指定的 TiDB 表中。
 
-从 v6.5.0 起，执行 `INSERT INTO SELECT` 语句时，通过将 SELECT 子句下推到 TiFlash 可以把 TiFlash 计算得到的查询结果保存到指定的 TiDB 表中，即物化了 TiFlash 的查询结果。v6.5.0 之前的 TiDB 版本不允许此类行为，即通过 TiFlash 执行的查询必须是只读的，用户需要从应用程序层面接收 TiFlash 返回的结果，然后另行在其它事务或处理中保存结果。
+从 v6.5.0 起，执行 `INSERT INTO SELECT` 语句时，通过将 `SELECT` 子句下推到 TiFlash 可以把 TiFlash 计算得到的查询结果保存到指定的 TiDB 表中，即物化了 TiFlash 的查询结果。v6.5.0 之前的 TiDB 版本不允许此类行为，即通过 TiFlash 执行的查询必须是只读的，你需要从应用程序层面接收 TiFlash 返回的结果，然后另行在其它事务或处理中保存结果。
 
 > **注意：**
 >
@@ -34,7 +34,7 @@ assignment:
     assignment [, assignment] ...
 ```
 
-例如，通过以下 `INSERT INTO SELECT` 语句，你可以将 SELECT 子句中表 `t1` 的查询结果保存到表 `t2` 中：
+例如，通过以下 `INSERT INTO SELECT` 语句，你可以将 `SELECT` 子句中表 `t1` 的查询结果保存到表 `t2` 中：
 
 ```sql
 INSERT INTO t2 (name, country)
@@ -53,14 +53,14 @@ SELECT app_name, country FROM t1;
 
 ## 执行过程
 
-* 在 `INSERT INTO SELECT` 语句的执行过程中，TiFlash 首先将 SELECT 子句的查询结果返回到集群中某单一 TiDB server 节点，然后再写入目标表（可以有 TiFlash 副本）。
+* 在 `INSERT INTO SELECT` 语句的执行过程中，TiFlash 首先将 `SELECT` 子句的查询结果返回到集群中某单一 TiDB server 节点，然后再写入目标表（可以有 TiFlash 副本）。
 * `INSERT INTO SELECT` 语句的执行保证 ACID 特性。
 
 ## 限制
 
-* TiDB 对 SELECT 子句返回的结果集（即 INSERT 写入的事务）大小的限制即为 TiDB 对单个事务大小的限制，可以通过 [`performance.txn-total-size-limit](/tidb-configuration-file.md#txn-total-size-limit`) 配置项调整该限制，推荐的使用场景是 100 MiB 以下。
+* TiDB 对 `SELECT` 子句返回的结果集（即 `INSERT` 写入的事务）大小的限制即为 TiDB 对单个事务大小的限制，可以通过 [`performance.txn-total-size-limit](/tidb-configuration-file.md#txn-total-size-limit`) 配置项调整该限制，推荐的使用场景是 100 MiB 以下。
 
-    若 SELECT 返回结果大小超过了事务大小限制的阈值，那么整条语句将会被强制终止并返回错误信息（参见 [`performance.txn-total-size-limit`](/tidb-configuration-file.md#txn-total-size-limit)）。
+    若 `SELECT` 返回结果大小超过了事务大小限制的阈值 [`performance.txn-total-size-limit`](/tidb-configuration-file.md#txn-total-size-limit)，那么整条语句将会被强制终止并返回错误信息。
 
 * TiDB 对 `INSERT INTO SELECT` 语句的并发没有硬性限制，但是推荐考虑以下用法：
 
