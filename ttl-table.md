@@ -1,5 +1,5 @@
 ---
-title: TTL 支持
+title: Time to live (TTL)
 summary: 介绍如何通过 SQL 来管理表数据的生命周期
 ---
 
