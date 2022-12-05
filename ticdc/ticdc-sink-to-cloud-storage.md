@@ -87,6 +87,12 @@ URI 中其他可配置的参数如下：
 - `num`：存储数据变更记录的目录下文件的序号。例如：`s3://bucket/bbb/ccc/test/table1/9999/2022-01-02/CDC000005.csv`。
 - `extension`：文件的扩展名，v6.5.0 只支持 csv 和 canal-json 格式。
 
+> **注意：**
+> 表的版本会在以下两种情况下发生变化：
+> 
+> - 发生过对该表的 DDL 操作，表的版本为该 DDL 在上游 MySQL 执行结束的 tso，但表版本的变化并不意味着表结构的变化，如为表中某一列添加 comment，并不会造成 `schema.json` 文件内容相较于旧版本发生变化。
+> - 进程重启，表的版本为进程重启时 changefeed 的 checkpoint tso。之所以不在旧版本的目录下继续写入数据，是因为在表数量多的情况下重启时需要遍历出所有的目录并找出上一次重启每张表写入的位置，该操作较为耗时进而影响同步进度。
+
 ### 元数据
 
 元数据信息将会存储到以下路径：
@@ -263,3 +269,125 @@ TiDB 中的字符串类型可被定义为 `ST[(M)]`，其中：
     "ColumnType":"{ENUM/SET}",
 }
 ```
+
+## 数据消费
+
+目前 TiCDC 没有提供消费已同步到存储服务的数据的标准实现，但是提供了一个 Golang 版本的消费示例程序，该示例程序会读取存储服务中的数据并写入到下游 MySQL 兼容数据库。你可以参考本文档提供的数据格式和以下例子实现消费端。
+
+- [Golang 例子](https://github.com/pingcap/tiflow/tree/master/cmd/storage-consumer)
+
+> **注意：**
+> 上述的消费示例程序只包含对数据变更事件的处理，不包含对 DDL 事件的处理。
+
+如果你要消费写入到存储服务中的数据并同步到另外一个与 MySQL 兼容数据库，那么消费端的实现需要包含以下两个方面：
+
+- DDL 事件的处理
+- 数据变更事件的处理
+
+以下分别就这两方面展开阐述。
+
+### DDL 事件的处理
+
+举例来说，假设你在消费一个目录下的数据时目录为空，在下一次遍历目录时目录内容如下：
+
+```
+├── metadata
+└── test
+    ├── table1
+    │   └── 437752935075545091
+    │       ├── CDC000001.json
+    │       └── schema.json
+```
+
+此时你需要解析 `schema.json` 文件中的表结构信息，从中获取库名、表名以及表中每一列的详细信息，并构造出一条 `CREATE TABLE` 语句，最后在下游 MySQL 兼容数据库执行该语句。
+假设你又一次遍历目录，发现目录内容发生了如下变化：
+
+```
+├── metadata
+└── test
+    ├── table1
+    │   ├── 437752935075545091
+    │   │   ├── CDC000001.json
+    │   │   └── schema.json
+    │   └── 437752935075546091
+    │   │   └── CDC000001.json
+    │   │   └── schema.json
+```
+
+即对表 `table1` 而言产生了另外一个版本 `437752935075546091` 的数据，如 [数据变更记录](/ticdc/ticdc-sink-to-cloud-storage.md#数据变更记录) 中所述，表版本发生变化并不意味着表结构发生变化，所以你需要对比前后两个版本表结构的真正差异，并根据这些差异来构造不同的 DDL 语句。
+例如 `test/table1/437752935075545091/schema.json` 文件内容如下：
+
+```shell
+{
+    "Table":"employee",
+    "Schema":"hr",
+    "Version":437752935075545091,
+    "TableColumns":[
+        {
+            "ColumnName":"Id",
+            "ColumnType":"INT",
+            "ColumnNullable":"false",
+            "ColumnIsPk":"true"
+        },
+        {
+            "ColumnName":"LastName",
+            "ColumnType":"CHAR",
+            "ColumnLength":"20"
+        },
+        {
+            "ColumnName":"FirstName",
+            "ColumnType":"VARCHAR",
+            "ColumnLength":"30"
+        },
+        {
+            "ColumnName":"HireDate",
+            "ColumnType":"DATETIME"
+        },
+        {
+            "ColumnName":"OfficeLocation",
+            "ColumnType":"BLOB",
+            "ColumnLength":"20"
+        }
+    ],
+    "TableColumnsTotal":"5"
+}
+```
+
+`test/table1/437752935075546091/schema.json` 文件内容如下：
+
+```shell
+{
+    "Table":"employee",
+    "Schema":"hr",
+    "Version":437752935075545091,
+    "TableColumns":[
+        {
+            "ColumnName":"Id",
+            "ColumnType":"INT",
+            "ColumnNullable":"false",
+            "ColumnIsPk":"true"
+        },
+        {
+            "ColumnName":"LastName",
+            "ColumnType":"CHAR",
+            "ColumnLength":"20"
+        },
+        {
+            "ColumnName":"FirstName",
+            "ColumnType":"VARCHAR",
+            "ColumnLength":"30"
+        },
+        {
+            "ColumnName":"HireDate",
+            "ColumnType":"DATETIME"
+        }
+    ],
+    "TableColumnsTotal":"5"
+}
+```
+
+可以看出上面的例子中新版本较旧版本少一列 `OfficeLocation`，所以你可以构造一条 `ALTER TABLE hr.employee DROP COLUMN OfficeLocation` 的 DDL 语句并在下游 MySQL 兼容数据库执行该语句。
+
+### 数据变更事件的处理
+
+根据 `{schema}/{table}/{table-version-separator}/schema.json` 文件处理好 DDL 事件后，就可以在 `{schema}/{table}/{table-version-separator}/` 目录下，根据具体的文件格式并按照文件序号依次处理数据变更事件。因为 TiCDC 提供 At Least Once 语义，可能出现重复发送数据的情况，所以需要在消费段根据 `commit-ts` 做去重处理。
