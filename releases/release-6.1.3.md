@@ -25,7 +25,7 @@ TiDB 版本：6.1.3
 
 - 其他
 
-    - 为了提升 TiDB 稳定性，缓解 OOM 问题，TiDB 的 Go 编译器版本从 go1.18 升级到了 [go1.19](https://go.dev/blog/go1.19)。通过设置环境变量 `GOMEMLIMIT`，可以将 TiDB 的内存使用维持在预定的水位线以下，缓解大部分 OOM 问题。更多信息，详见[设置环境变量 `GOMEMLIMIT` 缓解 OOM 问题](configure-memory-usage.md#设置环境变量-gomemlimit-缓解-oom-问题)。
+    - 为了提升 TiDB 稳定性，缓解 OOM 问题，TiDB 的 Go 编译器版本从 go1.18 升级到了 [go1.19](https://go.dev/doc/go1.19)。通过设置环境变量 `GOMEMLIMIT`，可以将 TiDB 的内存使用维持在预定的水位线以下，缓解大部分 OOM 问题。更多信息，详见[设置环境变量 `GOMEMLIMIT` 缓解 OOM 问题](configure-memory-usage.md#设置环境变量-gomemlimit-缓解-oom-问题)。
 
 ## Bug 修复
 
