@@ -24,12 +24,12 @@ TiDB 版本：6.1.3
 
     <!--owner: @nongfushanquan-->
 
-        - 开启大事务拆分，默认关闭同步任务的安全模式以提升性能 [#7505](https://github.com/pingcap/tiflow/issues/7505) @[asddongmen](https://github.com/asddongmen)
-        - 提升 Kafka 相关协议的编码性能 [#7540](https://github.com/pingcap/tiflow/issues/7540), [#7532](https://github.com/pingcap/tiflow/issues/7532), [#7543](https://github.com/pingcap/tiflow/issues/7543) @[sdojjy](https://github.com/sdojjy) @[3AceShowHand](https://github.com/3AceShowHand)
+        - 默认情况下关闭 safeMode 并开启大事务拆分功能，提升同步的稳定性 [#7505](https://github.com/pingcap/tiflow/issues/7505) @[asddongmen](https://github.com/asddongmen)
+        - 提升 Kafka 相关协议的编码性能 [#7540](https://github.com/pingcap/tiflow/issues/7540) [#7532](https://github.com/pingcap/tiflow/issues/7532) [#7543](https://github.com/pingcap/tiflow/issues/7543) @[sdojjy](https://github.com/sdojjy) @[3AceShowHand](https://github.com/3AceShowHand)
 
 - 其他
 
-    - 为了提升 TiDB 性能，TiDB 的 Go 编译器版本从 go1.x.x 升级到了 go1.19。<!--待提供更多信息>
+    - 为了提升 TiDB 稳定性，缓解 OOM 问题，TiDB 的 Go 编译器版本从 go1.18 升级到了 go1.19。通过设置环境变量 `GOMEMLIMIT`，可以将 TiDB 的内存使用维持在预定的水位线以下，缓解大部分 OOM 问题。更多信息，详见[设置环境变量 `GOMEMLIMIT` 缓解 OOM 问题](configure-memory-usage.md#设置环境变量-gomemlimit-缓解-oom-问题)。
 
 ## Bug 修复
 
@@ -67,7 +67,7 @@ TiDB 版本：6.1.3
 
     <!--owner: tonyxuqqi-->
 
-    - (dup) 修复获取 Snapshot 时 Lease 过期引发的异常竞争问题  [#13553](https://github.com/tikv/tikv/issues/13553) @[SpadeA-Tang](https://github.com/SpadeA-Tang)
+    - (dup) 修复获取 Snapshot 时 Lease 过期引发的异常竞争问题 [#13553](https://github.com/tikv/tikv/issues/13553) @[SpadeA-Tang](https://github.com/SpadeA-Tang)
 
 + TiFlash
 
@@ -78,7 +78,7 @@ TiDB 版本：6.1.3
 
     <!--storage owner: flowbehappy -->
 
-    - 修复高压力写可能产生太多 delta 层小文件的问题 [#6361](https://github.com/pingcap/tiflash/issues/6361) @[lidezhu](https://github.com/lidezhu)
+    - 修复高压力写入可能产生太多 delta 层小文件的问题 [#6361](https://github.com/pingcap/tiflash/issues/6361) @[lidezhu](https://github.com/lidezhu)
     - 修复 TiFlash 重启后 delta 层的小文件无法合并 (compact) 的问题 [#6159](https://github.com/pingcap/tiflash/issues/6159) @[lidezhu](https://github.com/lidezhu)
 
 + Tools
