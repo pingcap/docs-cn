@@ -375,7 +375,8 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
 + TiFlash
 
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
+    - 修复 TiFlash 重启不能正确合并小文件的问题 [#6159](https://github.com/pingcap/tiflash/issues/6159) @[lidezhu](https://github.com/lidezhu)
+    - 修复 TiFlash Open File OPS 过高的问题 [#6345](https://github.com/pingcap/tiflash/issues/6345) @[JaySon-Huang](https://github.com/JaySon-Huang)
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
 + Tools
