@@ -64,7 +64,7 @@ TTL 设计的目标是在不影响在线读写负载的前提下，帮助用户�
     ALTER TABLE t1 TTL = `created_at` + INTERVAL 1 MONTH;
     ```
 
-    上面的语句既支持修改已配置 TTL 属性的表，也支持将一张非 TTL 的表设置为具有 TTL 属性的表。
+    上面的语句既支持修改已配置 TTL 属性的表，也支持为一张非 TTL 的表添加 TTL 属性。
 
 - 单独修改 TTL 表的 `TTL_ENABLE` 值：
 
