@@ -54,7 +54,7 @@ TTL 设计的目标是在不影响在线读写负载的前提下，帮助用户�
     ) /*T![ttl] TTL = `created_at` + INTERVAL 3 MONTH TTL_ENABLE = 'OFF'*/;
     ```
 
-    在 TiDB 环境中，使用 Table Option 和注释来配置 TTL 是等价的。在 MySQL 环境中，会自动忽略注释中的内容，并创建普通的表。
+    在 TiDB 环境中，使用表的 TTL 属性和注释语法来配置 TTL 是等价的。在 MySQL 环境中，会自动忽略注释中的内容，并创建普通的表。
 
 ### 修改表的 TTL 属性
 
