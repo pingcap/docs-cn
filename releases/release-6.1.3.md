@@ -52,7 +52,7 @@ TiDB 版本：6.1.3
 
 + TiFlash
 
-    - 修复逻辑运算符在 UInt8 类型下查询结果出错的问题 [#6127](https://github.com/pingcap/tiflash/issues/6127)
+    - 修复逻辑运算符在 `UInt8` 类型下查询结果出错的问题 [#6127](https://github.com/pingcap/tiflash/issues/6127) @[xzhangxian1008](https://github.com/xzhangxian1008)
     - 修复 `CAST(value AS datetime)` 输入数据无法转成 `DATETIME` 时会导致 TiFlash sys CPU 异常高的问题 [#5097](https://github.com/pingcap/tiflash/issues/5097) @[xzhangxian1008](https://github.com/xzhangxian1008)
     - 修复高压力写入可能产生太多 delta 层小文件的问题 [#6361](https://github.com/pingcap/tiflash/issues/6361) @[lidezhu](https://github.com/lidezhu)
     - 修复 TiFlash 重启后 delta 层的小文件无法合并 (compact) 的问题 [#6159](https://github.com/pingcap/tiflash/issues/6159) @[lidezhu](https://github.com/lidezhu)
