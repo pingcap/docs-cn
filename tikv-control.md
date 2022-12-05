@@ -183,7 +183,7 @@ tikv-ctl --host 127.0.0.1:20160 raft region -r 1239
 需要查询某个 key 范围中包含哪些 Region 时，用法及输出内容如下所示：
 
 - 当 key 范围包含在某个 Region 中时，将会输出该 Region 信息。
-- 当 key 范围精准到某个 Region 时，以上述 Region `1239` 为例：当给定的 key 范围为 Region `1239` 的范围时，由于 Region 范围为左闭右开区间，并且 Region `1009` 以 Region `1239` 的 `end_key` 作为 `start_key`，因此会同时输出 Region `1009` 和 Region `1239` 的信息。
+- 当 key 范围精准到某个 Region 的范围时，以上述 Region `1239` 为例：当给定的 key 范围为 Region `1239` 的范围时，由于 Region 范围为左闭右开区间，并且 Region `1009` 以 Region `1239` 的 `end_key` 作为 `start_key`，因此会同时输出 Region `1009` 和 Region `1239` 的信息。
 
 ```shell
 tikv-ctl --host 127.0.0.1:20160 raft region --start 7480000000000000FF4E5F728000000000FF1443770000000000FA --end 7480000000000000FF4E5F728000000000FF21C4420000000000FA
