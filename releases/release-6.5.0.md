@@ -44,11 +44,11 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
     其中非事务 `DELETE` 在 v6.1.0 已经支持，非事务 `INSERT`、`REPLACE` 和 `UPDATE` 在 v6.5.0 支持。
 
     更多信息，请参考[非事务 DML 语句](/non-transactional-dml.md) 和 [BATCH](/sql-statements/sql-statemetn-batch.md)。
-    
+
 * 支持 Time to live (TTL)（实验特性）。
 
     TTL 提供了行级别的生命周期控制策略。在 TiDB 中，设置了 TTL 属性的表会根据配置自动检查并删除过期的行数据。TTL 设计的目标是在不影响在线读写负载的前提下，帮助用户周期性且及时地清理不需要的数据。
-    
+
     更多信息请参考[Time to live(TTL)](/ttl.md)
 * TiFlash 支持 `INSERT SELECT` 语句（实验功能） [#37515](https://github.com/pingcap/tidb/issues/37515) @[gengliqi](https://github.com/gengliqi) **tw@qiancai**
 
@@ -95,9 +95,9 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 * TiDB Dashboard 在 Kubernetes 环境支持独立 Pod 部署 [#1447](https://github.com/pingcap/tidb-dashboard/issues/1447) @[SabaPing](https://github.com/SabaPing) **tw@shichun-0415
 
     TiDB v6.5.0 且 TiDB Operator v1.4.0 之后，在 Kubernetes 上支持将 TiDB Dashboard 作为独立的 Pod 部署。在 TiDB Operator 环境，可直接访问该 Pod 的 IP 来打开 TiDB Dashboard。
-    
+
     独立部署 TiDB Dashboard 后，用户将获得这些收益：1. 该组件的计算将不会再对 PD 节点有压力，更好的保障集群运行；2. 如果 PD 节点因异常不可访问，也还可以继续使用 Dashboard 进行集群诊断；3. 在开放 TiDB Dashboard 到外网时，不用担心 PD 中的特权端口的权限问题，降低集群的安全风险。
-    
+
     具体信息，参考 [TiDB Operator 部署独立的 TiDB Dashboard](https://docs.pingcap.com/zh/tidb-in-kubernetes/dev/get-started#部署独立的-tidb-dashboard)
 
 ### 性能
@@ -170,11 +170,15 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
 ### MySQL 兼容性
 
-* 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接)
+* 支持高性能、全局单调递增的 AUTO_INCREMENT 列属性 [#38442](https://github.com/pingcap/tidb/issues/38442) @[tiancaiamao](https://github.com/tiancaiamao) **tw@Oreoxmt**
 
-    功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
+    TiDB v6.4.0 引入了 AUTO_INCREMENT 的 MySQL 兼容模式，通过中心化分配自增 ID，实现了自增 ID 在所有 TiDB 实例上单调递增，v6.5.0 版本该功能正式 GA，使用该兼容模式的单表写入 TPS 预期超过 2 万，并支持通过弹性扩容提升单表和整个集群的写入吞吐。使用该特性能够更容易地实现查询结果按自增 ID 排序。要使用 MySQL 兼容模式，你需要在建表时将 AUTO_ID_CACHE 设置为 1。
 
-    更多信息，请参考[用户文档](链接)。
+    ```sql
+    CREATE TABLE t(a int AUTO_INCREMENT key) AUTO_ID_CACHE 1;
+    ```
+
+    更多信息，请参考[用户文档](/auto-increment.md#mysql-兼容模式)。
 
 ### 数据迁移
 
@@ -237,7 +241,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
     需要注意的是，如果你没有在 BR 退出后一个小时内完成故障恢复，那么还未备份的快照数据可能会被 GC 机制回收，而造成备份失败。更多信息，请参考[用户文档](https://github.com/pingcap/docs-cn/pull/12075)。
 
 * PITR 性能大幅提升提升 **tw@shichun-0415
-  
+
   PITR 恢复的日志恢复阶单台 TiKV 的恢复速度可以达到 xx MB/s，提升了 x 倍，恢复速度可扩展，有效地降低容灾场景的 RTO 指标；容灾场景的 RPO 优化到 5 min，在常规的集群运维，如滚动升级，单 TiKV 故障等场景下，可以达到 RPO = 5 min 目标。
 
 * TiKV-BR 工具 GA, 支持 RawKV 的备份和恢复 [#67](https://github.com/tikv/migration/issues/67) @[pingyu](https://github.com/pingyu) @[haojinming](https://github.com/haojinming) **tw@shichun-0415**
@@ -247,14 +251,6 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
     更多信息，请参考[用户文档]( https://tikv.org/docs/dev/concepts/explore-tikv-features/backup-restore/ )。
 
 ## 兼容性变更
-
-* 支持高性能、全局单调递增的 AUTO_INCREMENT 列属性 [#38442](https://github.com/pingcap/tidb/issues/38442) @[tiancaiamao](https://github.com/tiancaiamao) **tw@Oreoxmt**
-
-    TiDB v6.4.0 引入了 AUTO_INCREMENT 的 MySQL 兼容模式，通过中心化分配自增 ID，实现了自增 ID 在所有 TiDB 实例上单调递增，v6.5.0 版本该功能正式 GA，使用该兼容模式的单表写入 TPS 预期超过 2 万，并支持通过弹性扩容提升单表和整个集群的写入吞吐。使用该特性能够更容易地实现查询结果按自增 ID 排序。要使用 MySQL 兼容模式，你需要在建表时将 AUTO_ID_CACHE 设置为 1。
-`
-CREATE TABLE t(a int AUTO_INCREMENT key) AUTO_ID_CACHE 1;
-`
-更多信息，请参考[用户文档](/auto-increment.md#mysql-兼容模式)。
 
 ### 系统变量
 
