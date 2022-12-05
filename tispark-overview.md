@@ -304,7 +304,7 @@ TiSpark TLS 分为两部分: TiKV Client TLS 以及 JDBC connector TLS。 前者
 
 TiSpark 目前仅持 TLSv1.2 and TLSv1.3。
 
-如下是使用 X.509 证书配置 TiKV Client TLS 的例子：
+* 如下是使用 X.509 证书配置 TiKV Client TLS 的例子：
 
 ```
 spark.tispark.tikv.tls_enable                                  true
@@ -324,7 +324,7 @@ spark.tispark.tikv.jks_trust_path                              /home/tispark/con
 spark.tispark.tikv.jks_trust_password                          tikv_clientstore_password
 ```
 
-当你同时配置 JKS 和 X.509 证书，JKS 有更高的优先权。
+当你同时配置 JKS 和 X.509 证书时，JKS 优先级更高。
 
 * 如下配置 JDBC connector TLS 的例子：
 
