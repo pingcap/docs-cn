@@ -40,7 +40,7 @@ aliases: ['/docs-cn/dev/experimental-features-4.0/','/zh/tidb/dev/experimental-f
 + [添加索引加速](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入)（v6.3.0 实验特性）
 + [`AUTO_INCREMENT` MySQL 兼容模式](/auto-increment.md#mysql-兼容模式)（v6.4.0 实验特性）
 + [将集群的数据恢复到特定的时间点 `FLASHBACK CLUSTER TO TIMESTAMP`](/sql-statements/sql-statement-flashback-to-timestamp.md)。（v6.4.0 实验特性）
-+ [TTL 支持](/ttl-table.md)。(v6.5.1 实验特性)
++ [TTL 支持](/time-to-live.md)。(v6.5.0 实验特性)
 
 ## 存储
 
