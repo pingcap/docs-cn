@@ -906,7 +906,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 是否持久化到集群：是
 - 默认值：`64`
 - 范围：`[1, 256]`
-- 这个变量用来控制 [`FLASHBACK CLUSTER TO TIMESTAMP`](/sql-statements/sql-statement-flashback-to-timestamp.md) 的并发数。tƒ
+- 这个变量用来控制 [`FLASHBACK CLUSTER TO TIMESTAMP`](/sql-statements/sql-statement-flashback-to-timestamp.md) 的并发数。
 
 ### `tidb_ddl_reorg_batch_size`
 
@@ -929,14 +929,14 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 默认值：`4`ƒ
+- 默认值：`4`
 - 范围：`[1, 256]`
 - 这个变量用来设置 DDL 操作 `re-organize` 阶段的并发度。
 
 ### `tidb_default_string_match_selectivity` <span class="version-mark">从 v6.2.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
-- 是否持久化到集群：是ƒ
+- 是否持久化到集群：是
 - 默认值：`0.8`
 - 范围：`[0, 1]`
 - 这个变量用来设置过滤条件中的 `like`、`rlike`、`regexp` 函数在行数估算时的默认选择率，以及是否对这些函数启用 TopN 辅助估算。
