@@ -15,10 +15,12 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 相比于前一个 LTS (即 6.1.0 版本)，6.5.0 版本包含 [6.2.0-DMR](/releases/release-6.2.0.md)、[6.3.0-DMR](/releases/release-6.3.0.md)、[6.4.0-DMR](/releases/release-6.4.0.md) 中已发布的新功能、提升改进和错误修复，并引入了以下关键特性：
 
 - 优化器代价模型 V2 GA
+- TiDB 全局内存控制 GA
 - 全局 hint 干预视图内查询的计划生成
 - 满足密码合规审计需求 [密码管理](/password-management.md)
 - TiDB 添加索引的速度提升为原来的 10 倍
 - Flashback Cluster 功能兼容 TiCDC 和 PiTR
+- JSON 抽取函数下推至 TiFlash
 
 ## 新功能
 
