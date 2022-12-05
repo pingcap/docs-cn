@@ -43,7 +43,7 @@ TTL 设计的目标是在不影响在线读写负载的前提下，帮助用户�
     ) TTL = `created_at` + INTERVAL 3 MONTH TTL_ENABLE = 'OFF';
     ```
 
-    如果 `TTL_ENABLE` 被设置成了 `OFF`，则即使设置了其他 TTL 选项，当前表也不会自动清理过期数据。在缺省条件下，`TTL_ENABLE` 被默认设置为 `ON`。
+    如果 `TTL_ENABLE` 被设置成了 `OFF`，则即使设置了其他 TTL 选项，当前表也不会自动清理过期数据。对于一个设置了 TTL 属性的表，`TTL_ENABLE` 在缺省条件下默认为 `ON`。
 
 - 为了与 MySQL 兼容，你也可以使用注释语法来设置 TTL：
 
