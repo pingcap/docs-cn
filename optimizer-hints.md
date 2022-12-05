@@ -364,7 +364,6 @@ SELECT /*+ READ_FROM_STORAGE(TIFLASH[t1], TIKV[t2]) */ t1.a FROM t t1, t t2 WHER
 
 对于并集型索引合并，Hint 中的索引列表为可选参数。若显式地指定索引列表，优化器会尝试在索引列表中选取索引来构建索引合并。若不指定索引列表，优化器会尝试在所有可用的索引中选取索引来构建索引合并。示例如下。
 
-
 {{< copyable "sql" >}}
 
 ```sql
