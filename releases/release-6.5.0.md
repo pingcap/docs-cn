@@ -326,7 +326,8 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
 + TiFlash
 
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
+    - 提升了 TiFlash 在 SQL 端没有攒批的场景的写入性能 [#6404](https://github.com/pingcap/tiflash/issues/6404) @[lidezhu](https://github.com/lidezhu)
+    - 增加了 TableFullScan 的输出信息 [#5926](https://github.com/pingcap/tiflash/issues/5926) @[hongyunyan](https://github.com/hongyunyan)
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
 + Tools
