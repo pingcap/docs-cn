@@ -390,4 +390,4 @@ TiDB 中的字符串类型可被定义为 `ST[(M)]`，其中：
 
 ### 数据变更事件的处理
 
-根据 `{schema}/{table}/{table-version-separator}/schema.json` 文件处理好 DDL 事件后，就可以在 `{schema}/{table}/{table-version-separator}/` 目录下，根据具体的文件格式并按照文件序号依次处理数据变更事件。因为 TiCDC 提供 At Least Once 语义，可能出现重复发送数据的情况，所以需要在消费段根据 `commit-ts` 做去重处理。
+根据 `{schema}/{table}/{table-version-separator}/schema.json` 文件处理好 DDL 事件后，就可以在 `{schema}/{table}/{table-version-separator}/` 目录下，根据具体的文件格式并按照文件序号依次处理数据变更事件。因为 TiCDC 提供 At Least Once 语义，可能出现重复发送数据的情况，所以需要在消费端根据 `commit-ts` 做去重处理。
