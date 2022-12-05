@@ -86,7 +86,7 @@ TiDB 作为一款开源一栈式实时 HTAP 数据库，可以很好地部署和
 
 |  编译和构建 TiDB 所需的依赖库   |  版本   |
 |   :---   |   :---   |
-|   Golang  |  <ul><li>v6.1.3 之前版本 TiDB：1.18.5 及以上版本</li><li>v6.1.3 及以上版本 TiDB：1.19.3 及以上版本</li></ul> |
+|   Golang  |  <ul><li>TiDB v6.1.0、v6.1.1 和 v6.1.2：Golang 1.18.5 及以上版本</li><li>TiDB v6.1.3 及以上的 v6.1 版本：Golang 1.19.3 及以上的 Golang 版本</li></ul> |
 |   Rust    |   nightly-2022-07-31 及以上版本  |
 |  GCC      |   7.x      |
 |  LLVM     |  13.0 及以上版本  |
