@@ -297,9 +297,9 @@ spark.sql("select t1.id,t2.id from spark_catalog.default.t t1 left join tidb_cat
 
 TiSpark TLS 分为两部分: TiKV Client TLS 以及 JDBC connector TLS。 前者创建和 TiKV 与 PD 的 TLS 连接，后者创建与 TiDB 的 TLS 连接。
 
-当开启 TiSpark TLS 时, 你需要以 X.509 格式的证书配置 `tikv.trust_cert_collection`, `tikv.key_cert_chain` 和 `tikv.key_file`；或者以 JKS 格式的证书配置 `tikv.jks_enable`, `tikv.jks_trust_path` 和 `tikv.jks_key_path`。
+当配置 TiKV Client TLS 时， 你需要以 X.509 格式的证书配置 `tikv.trust_cert_collection`, `tikv.key_cert_chain` 和 `tikv.key_file`；或者以 JKS 格式的证书配置 `tikv.jks_enable`, `tikv.jks_trust_path` 和 `tikv.jks_key_path`。
 
-`jdbc.server_cert_store` 和 `jdbc.client_cert_store` 则是可选的。
+当配置 JDBC connector TLS 时，你需要配置 `spark.tispark.jdbc.tls_enable`, 而 `jdbc.server_cert_store` 和 `jdbc.client_cert_store` 则是可选的。
 
 TiSpark 目前仅持 TLSv1.2 and TLSv1.3。
 
