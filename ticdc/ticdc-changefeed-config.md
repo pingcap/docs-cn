@@ -105,7 +105,7 @@ dispatchers = [
 
 # protocol 用于指定传递到下游的协议格式
 # 当下游类型是 Kafka 时，支持 canal-json、avro 两种协议。
-# 当下游类型是存储服务时，目前仅支持 csv 和 canal-json 协议。
+# 当下游类型是存储服务时，目前仅支持 canal-json、csv 两种协议。
 protocol = "canal-json"
 
 # 以下三个配置项仅在同步到存储服务的 Sink 中使用，在 MQ 和 MySQL 类 sink 中无需设置。

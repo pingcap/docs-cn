@@ -15,7 +15,7 @@ summary: 了解 TiCDC CSV Protocol 的概念和使用方法。
 cdc cli changefeed create --pd=http://127.0.0.1:2379 --changefeed-id="csv-test" --sink-uri="s3://bucket/prefix?worker-count=8&flush-interval=5s"  --config changefeed.toml
 ```
 
-changefeed.toml 文件内容如下：
+`changefeed.toml` 文件内容如下：
 
 ```
 [sink]
@@ -40,7 +40,7 @@ include-commit-ts = false
 
 CSV 文件中，单行的每一列定义如下：
 
-- 第一列：DML 操作指示符，取值包括 `I`、`D` 和 `U`。`I` 表示 `INSERT`，`U` 表示 `UPDATE`，`D` 表示 `DELETE`。
+- 第一列：DML 操作指示符，取值包括 `I`、 `U` 和 `D`。`I` 表示 `INSERT`，`U` 表示 `UPDATE`，`D` 表示 `DELETE`。
 - 第二列：表名。
 - 第三列：库名。
 - 第四列：`commit ts`，即原始事务的 commit ts。该列为可选配置。
