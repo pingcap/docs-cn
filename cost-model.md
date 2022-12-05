@@ -46,4 +46,6 @@ Cost Model Version 2 对代价公式进行了更精确的回归校准，调整�
 
 你可以通过设置变量 [`tidb_cost_model_version`](/system-variables.md#tidb_cost_model_version-从-v620-版本开始引入) 来控制代价模型的版本。
 
-需要注意，切换代价模型版本可能引起执行计划的变动。
+> **注意：**
+>
+> 切换代价模型版本可能引起执行计划的变动。
