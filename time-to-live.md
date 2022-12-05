@@ -103,7 +103,7 @@ SET @@global.tidb_ttl_job_schedule_window_end_time = '05:00 +0000';
 
 ## 工具兼容性
 
-作为实验特性，暂时不兼容包括 BR, Lightning, TiCDC 在内的数据导入导出以及同步工具。
+作为实验特性，TTL 特性暂时不兼容包括 BR、TiDB Lightning、TiCDC 在内的数据导入导出以及同步工具。
 
 ## 使用限制
 
