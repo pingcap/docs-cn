@@ -423,12 +423,12 @@ Configuration items related to storage.
         + When API V2 is used, you are expected to set `storage.enable-ttl = true` at the same time. Because API V2 supports the TTL feature, you must turn on `enable-ttl` explicitly. Otherwise, it will be in conflict because `storage.enable-ttl` defaults to `false`.
         + When API V2 is enabled, you need to deploy at least one tidb-server instance to reclaim obsolete data. This tidb-server instance can provide read and write services at the same time. To ensure high availability, you can deploy multiple tidb-server instances.
         + Client support is required for API V2. For details, see the corresponding instruction of the client for the API V2.
-        + Since v6.2.0, Change Data Capture (CDC) for RawKV is supported. Please refer to [RawKV CDC](https://tikv.org/docs/dev/concepts/explore-tikv-features/cdc/cdc).
+        + Since v6.2.0, Change Data Capture (CDC) for RawKV is supported. Refer to [RawKV CDC](https://tikv.org/docs/latest/concepts/explore-tikv-features/cdc/cdc).
 + Default value: `1`
 
 > **Warning:**
 
-> - API V1 and API V2 are different from each other in the storage format. You can enable or disable API V2 directly **only** when TiKV contains only TiDB data. In other scenarios, you need to deploy a new cluster, and migrate data using [RawKV Backup & Restore](https://tikv.org/docs/dev/concepts/explore-tikv-features/backup-restore/).
+> - API V1 and API V2 are different from each other in the storage format. You can enable or disable API V2 directly **only** when TiKV contains only TiDB data. In other scenarios, you need to deploy a new cluster, and migrate data using [RawKV Backup & Restore](https://tikv.org/docs/latest/concepts/explore-tikv-features/backup-restore/).
 > - After API V2 is enabled, you **cannot** downgrade the TiKV cluster to a version earlier than v6.1.0. Otherwise, data corruption might occur.
 
 ## storage.block-cache
@@ -1709,16 +1709,6 @@ Configuration items related to TiCDC.
 + The maximum number of concurrent executions for the tasks of incrementally scanning historical data.
 + Default value: `6`, which means 6 tasks can be concurrent executed at most.
 + Note: The value of `incremental-scan-concurrency` must be greater than or equal to that of `incremental-scan-threads`; otherwise, TiKV will report an error at startup.
-
-### `raw-min-ts-outlier-threshold` <span class="version-mark">New in v6.2.0</span>
-
-> **Warning:**
->
-> This configuration item is deprecated since v6.4.0.
-
-+ The threshold at which TiKV checks whether the Resolved TS of RawKV is abnormal.
-+ If the Resolved TS latency of a Region exceeds this threshold, the anomaly detection process is triggered. At this time, the Region whose Resolved TS latency exceeds 3 x [interquartile range](https://en.wikipedia.org/wiki/Interquartile_range) is considered as slow in lock resolution, and triggers TiKV-CDC to re-subscribe the data changes of the Region, which resets the lock resource status.
-+ Default value: `60s`
 
 ## resolved-ts
 
