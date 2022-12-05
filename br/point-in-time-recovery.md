@@ -44,7 +44,7 @@ PITR 可用于满足以下业务需求：
 
     - 快照备份和日志备份保存在相同的目录下，方便统一管理，例如 `backup-${cluster-id}`。
     - 每个快照备份保存到命名带有备份日期的目录下，例如 `backup-${cluster-id}/snapshot-20220512000130`。
-    - 日志备份数据保存在一个固定目录下, 例如 `backup-${cluster-id}/log-backup`。
+    - 日志备份数据保存在一个固定目录下，例如 `backup-${cluster-id}/log-backup`。
 
 - 清理过期的或不再需要的备份数据：
 

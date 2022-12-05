@@ -40,7 +40,7 @@ TiDB 的备份恢复功能 Backup & Restore (BR) 支持将 Amazon S3 或支持 S
     br backup full --pd "${PDIP}:2379" --storage "s3://${Bucket}/${Folder}"
     ```
 
-- 通过 `br` 命令行参数设置访问 S3 的 `access-key` 和 `secret-access-key`, 同时设置 `--send-credentials-to-tikv=true` 将 access key 从 BR 传递到每个 TiKV 上。
+- 通过 `br` 命令行参数设置访问 S3 的 `access-key` 和 `secret-access-key`，同时设置 `--send-credentials-to-tikv=true` 将 access key 从 BR 传递到每个 TiKV 上。
 
     {{< copyable "shell-regular" >}}
 

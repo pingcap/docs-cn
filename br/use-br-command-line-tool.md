@@ -22,7 +22,7 @@ summary: 了解如何使用 BR 命令行进行集群数据备份和恢复。
 * `backup`：`br` 的子命令
 * `full`：`backup` 的子命令
 * `-s` 或 `--storage`：备份保存的路径
-* `"s3://backup-data/2022-01-30/"`：`-s` 的参数值，保存备份数据到 s3 的名为 backup-data 的 bucket 下面的 `2022-01-30/` 前缀目录下
+* `"s3://backup-data/2022-01-30/"`：`-s` 的参数值，保存备份数据到 S3 的名为 backup-data 的 bucket 下面的 `2022-01-30/` 前缀目录下
 * `--pd`：PD 服务地址
 * `"${PDIP}:2379"`：`--pd` 的参数
 

@@ -30,7 +30,7 @@ cdc cli changefeed create --pd=http://127.0.0.1:2379 --changefeed-id="kafka-cana
 Canal-JSON 协议本是为 MySQL 设计的，其中并不包含 TiDB 专有的 CommitTS 事务唯一标识等重要字段。为了解决这个问题，TiCDC 在 Canal-JSON 协议格式中附加了 TiDB 扩展字段。在 `sink-uri` 中设置 `enable-tidb-extension` 为 `true`（默认为 `false`）后，TiCDC 生成 Canal-JSON 消息时的行为如下：
 
 * TiCDC 发送的 DML Event 和 DDL Event 类型消息中，将会含有一个名为 `_tidb` 的字段。
-* TiCDC 将会发送 WATERMARK Event 消息。·
+* TiCDC 将会发送 WATERMARK Event 消息。
 
 配置样例如下所示：
 
