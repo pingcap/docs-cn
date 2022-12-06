@@ -347,6 +347,7 @@ SELECT * FROM INFORMATION_SCHEMA.STATEMENTS_SUMMARY WHERE QUERY_SAMPLE_TEXT = 'S
 以下为 `statements_summary` 部分查询结果:
 
 ```
+               SUMMARY_BEGIN_TIME: 2022-12-01 19:00:00	
                ...........
                       DIGEST_TEXT: select * from `t` where `a` = ?
                ...........
