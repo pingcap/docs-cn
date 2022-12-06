@@ -566,7 +566,7 @@ To clean up the damaged SST files, you can run the `bad-ssts` command in TiKV Co
 > Before running this command, stop the running TiKV instance.
 
 ```bash
-$ tikv-ctl bad-ssts --data-dir </path/to/tikv> --pd <endpoint>
+tikv-ctl --data-dir </path/to/tikv> bad-ssts --pd <endpoint>
 ```
 
 ```bash
