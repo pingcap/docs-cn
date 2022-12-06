@@ -1,9 +1,9 @@
 ---
-title: RawKV 备份和恢复
-summary: 了解如何使用 BR 备份和恢复 RawKV 数据。
+title: 备份与恢复 RawKV 数据
+summary: 了解如何使用 br 命令行工具备份和恢复 RawKV 数据。
 ---
 
-# RawKV 备份和恢复
+# 备份与恢复 RawKV 数据
 
 > **警告：**
 >
@@ -13,13 +13,11 @@ TiKV 有时可以独立于 TiDB，与 PD 构成 KV 数据库，此时的产品�
 
 ## 备份 RawKV
 
-在某些使用场景下，TiKV 可能会独立于 TiDB 运行。考虑到这点，BR 提供跳过 TiDB 层直接备份 TiKV 数据的功能：
-
-{{< copyable "shell-regular" >}}
+在某些使用场景下，TiKV 可能会独立于 TiDB 运行。考虑到这点，br 命令行工具提供跳过 TiDB 层直接备份 TiKV 数据的功能：
 
 ```shell
 br backup raw --pd $PD_ADDR \
-    -s "local://$BACKUP_DIR" \
+    --storage "local://$BACKUP_DIR" \
     --start 31 \
     --ratelimit 128 \
     --end 3130303030303030 \
@@ -44,17 +42,15 @@ br backup raw --pd $PD_ADDR \
 >
 > - 使用共享存储可以避免这些情况。例如，在本地路径上安装 NFS，或使用 S3。利用这些网络存储，各个节点都可以自动读取每个 SST 文件，此时上述注意事项不再适用。
 >
-> - 同时，请注意同一时间对同一个集群只能运行一个恢复任务，否则可能会出现非预期的行为，详见 [FAQ](/br/backup-and-restore-faq.md#是否可以同时使用多个-br-进程对单个集群进行恢复)。
+> - 同时，请注意同一时间对同一个集群只能运行一个恢复任务，否则可能会出现非预期的行为，详见[可以同时使用多个 br 工具进程对单个集群进行恢复吗](/faq/backup-and-restore-faq.md#可以同时启动多个恢复任务对单个集群进行恢复吗)。
 
 ## 恢复 RawKV
 
 和[备份 RawKV](#备份-rawkv)相似，恢复 RawKV 的命令如下：
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 br restore raw --pd $PD_ADDR \
-    -s "local://$BACKUP_DIR" \
+    --storage "local://$BACKUP_DIR" \
     --start 31 \
     --end 3130303030303030 \
     --ratelimit 128 \

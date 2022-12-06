@@ -6,16 +6,18 @@ aliases: ['/docs-cn/dev/mysql-compatibility/','/docs-cn/dev/reference/mysql-comp
 
 # 与 MySQL 兼容性对比
 
-- TiDB 高度兼容 MySQL 5.7 协议、MySQL 5.7 常用的功能及语法。MySQL 5.7 生态中的系统工具 (PHPMyAdmin、Navicat、MySQL Workbench、mysqldump、Mydumper/Myloader)、客户端等均适用于 TiDB。
+TiDB 高度兼容 MySQL 5.7 协议、MySQL 5.7 常用的功能及语法。MySQL 5.7 生态中的系统工具（PHPMyAdmin、Navicat、MySQL Workbench、mysqldump、Mydumper/Myloader）、客户端等均适用于 TiDB。
 
-- 但 TiDB 尚未支持一些 MySQL 功能，可能的原因如下：
-    - 有更好的解决方案，例如 JSON 取代 XML 函数。
-    - 目前对这些功能的需求度不高，例如存储流程和函数。
-    - 一些功能在分布式系统上的实现难度较大。
+但 TiDB 尚未支持一些 MySQL 功能，可能的原因如下：
 
-- 除此以外，TiDB 不支持 MySQL 复制协议，但提供了专用工具用于与 MySQL 复制数据
-    - 从 MySQL 复制：[TiDB Data Migration (DM)](/dm/dm-overview.md) 是将 MySQL/MariaDB 数据迁移到 TiDB 的工具，可用于增量数据的复制。
-    - 向 MySQL 复制：[TiCDC](/ticdc/ticdc-overview.md) 是一款通过拉取 TiKV 变更日志实现的 TiDB 增量数据同步工具，可通过 [MySQL sink](/ticdc/ticdc-overview.md#sink-支持) 将 TiDB 增量数据复制到 MySQL。
+- 有更好的解决方案，例如 JSON 取代 XML 函数。
+- 目前对这些功能的需求度不高，例如存储流程和函数。
+- 一些功能在分布式系统上的实现难度较大。
+
+除此以外，TiDB 不支持 MySQL 复制协议，但提供了专用工具用于与 MySQL 复制数据：
+
+- 从 MySQL 复制：[TiDB Data Migration (DM)](/dm/dm-overview.md) 是将 MySQL/MariaDB 数据迁移到 TiDB 的工具，可用于增量数据的复制。
+- 向 MySQL 复制：[TiCDC](/ticdc/ticdc-overview.md) 是一款通过拉取 TiKV 变更日志实现的 TiDB 增量数据同步工具，可通过 [MySQL sink](/ticdc/ticdc-sink-to-mysql.md) 将 TiDB 增量数据复制到 MySQL。
 
 > **注意：**
 >
@@ -49,7 +51,7 @@ aliases: ['/docs-cn/dev/mysql-compatibility/','/docs-cn/dev/reference/mysql-comp
 
 ### 自增 ID
 
-- TiDB 的自增列既能保证唯一，也能保证在单个 TiDB server 中自增，但不保证多个 TiDB server 中自增，不保证自动分配的值的连续性。不建议将缺省值和自定义值混用，若混用可能会收到 `Duplicated Error` 的错误信息。
+- TiDB 的自增列既能保证唯一，也能保证在单个 TiDB server 中自增，使用 [`AUTO_INCREMENT` MySQL 兼容模式](/auto-increment.md#mysql-兼容模式)能保证多个 TiDB server 中自增 ID，但不保证自动分配的值的连续性。不建议将缺省值和自定义值混用，若混用可能会收到 `Duplicated Error` 的错误信息。
 
 - TiDB 可通过 `tidb_allow_remove_auto_inc` 系统变量开启或者关闭允许移除列的 `AUTO_INCREMENT` 属性。删除列属性的语法是：`ALTER TABLE MODIFY` 或 `ALTER TABLE CHANGE`。
 
@@ -113,6 +115,7 @@ TiDB 中，所有支持的 DDL 变更操作都是在线执行的。与 MySQL 相
 * 分区表支持 `HASH`、`RANGE` 和 `LIST` 分区类型。对于不支持的分区类型，TiDB 可能会报 `Warning: Unsupported partition type %s, treat as normal table` 错误，其中 `%s` 为不支持的具体分区类型。
 * 分区表还支持 `ADD`、`DROP`、`TRUNCATE` 操作。其他分区操作会被忽略。TiDB 不支持以下分区表语法：
     + `PARTITION BY KEY`
+    + `PARTITION BY LINEAR KEY`
     + `SUBPARTITION`
     + `{CHECK|TRUNCATE|OPTIMIZE|REPAIR|IMPORT|DISCARD|REBUILD|REORGANIZE|COALESCE} PARTITION`
 

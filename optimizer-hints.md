@@ -191,6 +191,72 @@ EXPLAIN SELECT * FROM t WHERE EXISTS (SELECT /*+ SEMI_JOIN_REWRITE() */ 1 FROM t
 
 在上述例子中可以看到，在使用了 Hint 之后，TiDB 可以选择由表 `t1` 作为驱动表的 IndexJoin 的执行方式。
 
+### NO_DECORRELATE()
+
+`NO_DECORRELATE()` 提示优化器不要尝试解除指定查询块中对应子查询的关联。该 Hint 适用于包含关联列的 `EXISTS`、`IN`、`ANY`、`ALL`、`SOME` 和标量子查询，即关联子查询。
+
+将该 Hint 写在一个查询块中后，对于该子查询和其外部查询块之间的关联列，优化器将不再尝试解除关联，而是始终使用 Apply 算子来执行查询。
+
+默认情况下，TiDB 会尝试对关联子查询[解除关联](/correlated-subquery-optimization.md)，以达到更高的执行效率。但是在[一部分场景](/correlated-subquery-optimization.md#限制)下，解除关联反而会降低执行效率。这种情况下，可以使用该 Hint 来人工提示优化器不要进行解除关联操作。例如：
+
+{{< copyable "sql" >}}
+
+```sql
+create table t1(a int, b int);
+create table t2(a int, b int, index idx(b));
+```
+
+{{< copyable "sql" >}}
+
+```sql
+-- 不使用 NO_DECORRELATE()
+explain select * from t1 where t1.a < (select sum(t2.a) from t2 where t2.b = t1.b);
+```
+
+```sql
++----------------------------------+----------+-----------+---------------+--------------------------------------------------------------------------------------------------------------+
+| id                               | estRows  | task      | access object | operator info                                                                                                |
++----------------------------------+----------+-----------+---------------+--------------------------------------------------------------------------------------------------------------+
+| HashJoin_11                      | 9990.00  | root      |               | inner join, equal:[eq(test.t1.b, test.t2.b)], other cond:lt(cast(test.t1.a, decimal(10,0) BINARY), Column#7) |
+| ├─HashAgg_23(Build)              | 7992.00  | root      |               | group by:test.t2.b, funcs:sum(Column#8)->Column#7, funcs:firstrow(test.t2.b)->test.t2.b                      |
+| │ └─TableReader_24               | 7992.00  | root      |               | data:HashAgg_16                                                                                              |
+| │   └─HashAgg_16                 | 7992.00  | cop[tikv] |               | group by:test.t2.b, funcs:sum(test.t2.a)->Column#8                                                           |
+| │     └─Selection_22             | 9990.00  | cop[tikv] |               | not(isnull(test.t2.b))                                                                                       |
+| │       └─TableFullScan_21       | 10000.00 | cop[tikv] | table:t2      | keep order:false, stats:pseudo                                                                               |
+| └─TableReader_15(Probe)          | 9990.00  | root      |               | data:Selection_14                                                                                            |
+|   └─Selection_14                 | 9990.00  | cop[tikv] |               | not(isnull(test.t1.b))                                                                                       |
+|     └─TableFullScan_13           | 10000.00 | cop[tikv] | table:t1      | keep order:false, stats:pseudo                                                                               |
++----------------------------------+----------+-----------+---------------+--------------------------------------------------------------------------------------------------------------+
+```
+
+从以上执行计划中可以发现，优化器自动解除了关联。解除关联之后的执行计划不包含 Apply 算子，取而代之的是子查询和外部查询块之间的 Join 运算，而原本的带有关联列的过滤条件 `t2.b = t1.b` 也变成了一个普通的 join 条件。
+
+{{< copyable "sql" >}}
+
+```sql
+-- 使用 NO_DECORRELATE()
+explain select * from t1 where t1.a < (select /*+ NO_DECORRELATE() */ sum(t2.a) from t2 where t2.b = t1.b);
+```
+
+```sql
++------------------------------------------+-----------+-----------+------------------------+--------------------------------------------------------------------------------------+
+| id                                       | estRows   | task      | access object          | operator info                                                                        |
++------------------------------------------+-----------+-----------+------------------------+--------------------------------------------------------------------------------------+
+| Projection_10                            | 10000.00  | root      |                        | test.t1.a, test.t1.b                                                                 |
+| └─Apply_12                               | 10000.00  | root      |                        | CARTESIAN inner join, other cond:lt(cast(test.t1.a, decimal(10,0) BINARY), Column#7) |
+|   ├─TableReader_14(Build)                | 10000.00  | root      |                        | data:TableFullScan_13                                                                |
+|   │ └─TableFullScan_13                   | 10000.00  | cop[tikv] | table:t1               | keep order:false, stats:pseudo                                                       |
+|   └─MaxOneRow_15(Probe)                  | 10000.00  | root      |                        |                                                                                      |
+|     └─StreamAgg_20                       | 10000.00  | root      |                        | funcs:sum(Column#14)->Column#7                                                       |
+|       └─Projection_45                    | 100000.00 | root      |                        | cast(test.t2.a, decimal(10,0) BINARY)->Column#14                                     |
+|         └─IndexLookUp_44                 | 100000.00 | root      |                        |                                                                                      |
+|           ├─IndexRangeScan_42(Build)     | 100000.00 | cop[tikv] | table:t2, index:idx(b) | range: decided by [eq(test.t2.b, test.t1.b)], keep order:false, stats:pseudo         |
+|           └─TableRowIDScan_43(Probe)     | 100000.00 | cop[tikv] | table:t2               | keep order:false, stats:pseudo                                                       |
++------------------------------------------+-----------+-----------+------------------------+--------------------------------------------------------------------------------------+
+```
+
+从以上执行计划中可以发现，优化器没有解除关联。执行计划中包含 Apply 算子，而带有关联列的条件 `t2.b = t1.b` 仍然是访问 `t2` 表时的过滤条件。
+
 ### HASH_AGG()
 
 `HASH_AGG()` 提示优化器对指定查询块中所有聚合函数使用 Hash Aggregation 算法。这个算法多线程并发执行，执行速度较快，但会消耗较多内存。例如：
@@ -378,6 +444,104 @@ WITH CTE1 AS (SELECT * FROM t1), CTE2 AS (WITH CTE3 AS (SELECT /*+ MERGE() */ * 
 > - 子查询中有无法进行内联展开的部分，例如聚合算子、窗口函数以及 `DINSTINCT` 等
 > 
 > 当 CTE 引用次数过多时，查询性能可能低于默认的物化方式。
+
+## 全局生效的 Hint
+
+全局生效的 Hint 和[视图](/views.md)有关，可以使查询中定义的 Hint 能够在视图内部生效。添加这类 Hint 需要两步：先用 `QB_NAME` Hint 为视图内的查询块命名，再以“视图名@查询块名”的方式加入实际需要的 Hint。
+
+### 第 1 步：使用 `QB_NAME` Hint 重命名视图内的查询块
+
+首先使用 [`QB_NAME` Hint](#qb_name) 重命名视图内部的查询块。其中针对视图的 `QB_NAME` Hint 的概念与[查询块范围生效的 `QB_NAME` Hint](#qb_name)相同，只是在语法上进行了相应的拓展。从 `QB_NAME(QB)` 拓展为 `QB_NAME(QB, 视图名@查询块名 [.视图名@查询块名 .视图名@查询块名 ...])`。
+
+> **注意：**
+>
+> `@查询块名` 与后面紧跟的 `.视图名@查询块名` 部分之间需要有一个空格，否则 `.视图名@查询块名` 会被视作前面 `@查询块名` 的一部分。例如，`QB_NAME(v2_1, v2@SEL_1 .@SEL_1)` 不能写为 `QB_NAME(v2_1, v2@SEL_1.@SEL_1)`。
+
+- 对于单个视图、不包含子查询的简单语句，下面以重命名视图 `v` 的第一个查询块为例：
+
+    ```sql
+    SELECT /* 注释：当前查询块的名字为默认的 @SEL_1 */ * FROM v;
+    ```
+
+    对于视图 `v` 来说，从查询语句开始的首个视图是 `v@SEL_1`。视图 `v` 的第一个查询块可以声明为 `QB_NAME(v_1, v@SEL_1 .@SEL_1)`，也可以省略 `@SEL_1` 简写成 `QB_NAME(v_1, v)`：
+
+    ```sql
+    CREATE VIEW v AS SELECT /* 注释：当前查询块的名字为默认的 @SEL_1 */ * FROM t;
+
+    -- 使用全局生效的 Hint
+    SELECT /*+ QB_NAME(v_1, v) USE_INDEX(t@v_1, idx) */ * FROM v;
+    ```
+
+- 对于嵌套视图和包含子查询的复杂语句，下面以重命名视图 `v1`、`v2` 的两个查询块为例：
+
+    ```sql
+    SELECT /* 注释：当前查询块的名字为默认的 @SEL_1 */ * FROM v2 JOIN (
+        SELECT /* 注释：当前查询块的名字为默认的 @SEL_2 */ * FROM v2) vv;
+    ```
+
+    对于第一个视图 `v2` 来说，从上面的语句开始的首个视图是 `v2@SEL_1`。对于第二个视图 `v2` 来说，首个视图表为 `v2@SEL_2`。下面的查询部分仅考虑第一个视图 `v2`。
+
+    视图 `v2` 的第一个查询块可以声明为 `QB_NAME(v2_1, v2@SEL_1 .@SEL_1)`，视图 `v2` 的第二个查询块可以声明为 `QB_NAME(v2_2, v2@SEL_1 .@SEL_2)`：
+
+    ```sql
+    CREATE VIEW v2 AS
+        SELECT * FROM t JOIN /* 注释：对于视图 v2 来说，当前查询块的名字为默认的 @SEL_1，因此当前查询块的视图列表是 v2@SEL_1 .@SEL_1 */
+        (
+            SELECT COUNT(*) FROM t1 JOIN v1 /* 注释：对于视图 v2 来说，当前查询块的名字为默认的 @SEL_2，因此当前查询块的视图列表是 v2@SEL_1 .@SEL_2 */
+        ) tt;
+    ```
+
+    对于视图 `v1` 来说，从上面的语句开始的首个视图是 `v2@SEL_1 .v1@SEL_2`。视图 `v1` 的第一个查询块可以声明为 `QB_NAME(v1_1, v2@SEL_1 .v1@SEL_2 .@SEL_1)`，视图 `v1` 的第二个查询块可以声明为 `QB_NAME(v1_2, v2@SEL_1 .v1@SEL_2 .@SEL_2)`：
+
+    ```sql
+    CREATE VIEW v1 AS SELECT * FROM t JOIN /* 注释：对于视图 v1 来说，当前查询块的名字为默认的 @SEL_1，因此当前查询块的视图列表是 v2@SEL_1 .v1@SEL_2 .@SEL_1 */
+        (
+            SELECT COUNT(*) FROM t1 JOIN t2 /* 注释：对于视图 v1 来说，当前查询块的名字为默认的 @SEL_2，因此当前查询块的视图列表是 v2@SEL_1 .v1@SEL_2 .@SEL_2 */
+        ) tt;
+    ```
+
+> **注意：**
+>
+> - 与视图相关的全局生效的 Hint 必须先定义了对应的 `QB_NAME` Hint 才能使用。
+>
+> - 使用一个 Hint 来指定视图内的多个表名时，需要保证在同一个 Hint 中出现的表名处于同一个视图的同一个查询块中。
+>
+> - 对于最外层的查询来说，在定义和视图相关的 `QB_NAME` Hint 时：
+>
+>     - 对于 `QB_NAME` Hint 中视图列表序列的第一项，在不显式声明 `@SEL_` 时，默认和定义 `QB_NAME` Hint 的查询块位置保持一致，即省略 `@SEL_` 的查询 `SELECT /*+ QB_NAME(qb1, v2) */ * FROM v2 JOIN (SELECT /*+ QB_NAME(qb2, v2) */ * FROM v2) vv;` 相当于 `SELECT /*+ QB_NAME(qb1, v2@SEL_1) */ * FROM v2 JOIN (SELECT /*+ QB_NAME(qb2, v2@SEL_2) */ * FROM v2) vv;`。
+>     - 对于 `QB_NAME` Hint 中视图列表序列第一项之外的其他部分，只有 `@SEL_1` 可省略。即，如果声明处于当前部分的第一个查询块中，则 `@SEL_1` 可以省略，否则，不能省略 `@SEL_`。对于上面的例子：
+>         - 视图 `v2` 的第一个查询块可以声明为 `QB_NAME(v2_1, v2)`
+>         - 视图 `v2` 的第二个查询块可以声明为 `QB_NAME(v2_2, v2.@SEL_2)`
+>         - 视图 `v1` 的第一个查询块可以声明为 `QB_NAME(v1_1, v2.v1@SEL_2)`
+>         - 视图 `v1` 的第二个查询块可以声明为 `QB_NAME(v1_2, v2.v1@SEL_2 .@SEL_2)`
+
+### 第 2 步：添加实际需要的 Hint
+
+在定义好视图查询块部分的 `QB_NAME` Hint 后，你可以通过查询块的名字使用[查询块范围生效的 Hint](#查询块范围生效的-hint)，以“视图名@查询块名”的方式加入实际需要的 Hint，使其在视图内部生效。例如：
+
+- 指定视图 `v2` 中第一个查询块的 `MERGE_JOIN()` Hint：
+
+    ```sql
+    SELECT /*+ QB_NAME(v2_1, v2) merge_join(t@v2_1) */ * FROM v2;
+    ```
+
+- 指定视图 `v2` 中第二个查询块的 `MERGE_JOIN()` 和 `STREAM_AGG()` Hint：
+
+    ```sql
+    SELECT /*+ QB_NAME(v2_2, v2.@SEL_2) merge_join(t1@v2_2) stream_agg(@v2_2) */ * FROM v2;
+    ```
+
+- 指定视图 `v1` 中第一个查询块的 `HASH_JOIN()` Hint：
+
+    ```sql
+    SELECT /*+ QB_NAME(v1_1, v2.v1@SEL_2) hash_join(t@v1_1) */ * FROM v2;
+    ```
+
+- 指定视图 `v1` 中第二个查询块的 `HASH_JOIN()` 和 `HASH_AGG()` Hint：
+
+    ```sql
+    SELECT /*+ QB_NAME(v1_2, v2.v1@SEL_2 .@SEL_2) hash_join(t1@v1_2) hash_agg(@v1_2) */ * FROM v2;
+    ```
 
 ## 查询范围生效的 Hint
 

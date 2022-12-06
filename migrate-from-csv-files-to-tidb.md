@@ -12,7 +12,7 @@ TiDB Lightning 支持读取 CSV 格式的文件，以及其他定界符格式，
 ## 前提条件
 
 - [安装 TiDB Lightning](/migration-tools.md)。
-- [获取 Lightning 所需下游数据库权限](/tidb-lightning/tidb-lightning-faq.md#tidb-lightning-对下游数据库的账号权限要求是怎样的)。
+- [获取 Lightning 所需下游数据库权限](/tidb-lightning/tidb-lightning-requirements.md#目标数据库权限要求)。
 
 ## 第 1 步：准备 CSV 文件
 
@@ -38,8 +38,6 @@ CSV 文件自身未包含表结构信息。要将 CSV 数据导入 TiDB，就必
 
 新建文件 `tidb-lightning.toml`，包含以下内容：
 
-{{< copyable "shell-regular" >}}
-
 ```toml
 [lightning]
 # 日志
@@ -48,7 +46,7 @@ file = "tidb-lightning.log"
 
 [tikv-importer]
 # "local"：默认使用该模式，适用于 TB 级以上大数据量，但导入期间下游 TiDB 无法对外提供服务。
-# "tidb"：TB 级以下数据量也可以采用`tidb`后端模式，下游 TiDB 可正常提供服务。关于后端模式更多信息请参阅：https://docs.pingcap.com/tidb/stable/tidb-lightning-backends
+# "tidb"：TB 级以下数据量也可以采用 `tidb` 后端模式，下游 TiDB 可正常提供服务。关于导入模式更多信息请参阅：https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-overview#tidb-lightning-整体架构
 backend = "local"
 # 设置排序的键值对的临时存放地址，目标路径必须是一个空目录，目录空间须大于待导入数据集的大小，建议设为与 `data-source-dir` 不同的磁盘目录并使用闪存介质，独占 IO 会获得更好的导入性能
 sorted-kv-dir = "/mnt/ssd/sorted-kv-dir"

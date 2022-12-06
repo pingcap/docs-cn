@@ -19,7 +19,7 @@ AlterTableStmt ::=
     'ALTER' IgnoreOptional 'TABLE' TableName (
         AlterTableSpecListOpt AlterTablePartitionOpt |
         'ANALYZE' 'PARTITION' PartitionNameList ( 'INDEX' IndexNameList )? AnalyzeOptionListOpt |
-        'COMPACT' 'TIFLASH' 'REPLICA'
+        'COMPACT' ( 'PARTITION' PartitionNameList )? 'TIFLASH' 'REPLICA'
     )
 
 TableName ::=

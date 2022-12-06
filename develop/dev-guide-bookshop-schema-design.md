@@ -43,7 +43,7 @@ tiup demo bookshop prepare
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup demo bookshop prepare -U root -H tidb.xxx.yyy.ap-northeast-1.prod.aws.tidbcloud.com -P 4000 -p
+tiup demo bookshop prepare -U <username> -H <endpoint> -P 4000 -p <password>
 ```
 
 #### 设置数据量
@@ -60,8 +60,6 @@ tiup demo bookshop prepare -U root -H tidb.xxx.yyy.ap-northeast-1.prod.aws.tidbc
 
 例如，以下命令通过 `--users` 参数指定生成 20 万行用户信息，通过 `--books` 参数指定生成 50 万行书籍的基本信息，通过 `--authors` 参数指定生成 10 万的作者信息，通过 `--ratings` 参数指定生成 100 万的评分记录，通过 `--orders` 参数指定生成 100 万的订单记录。
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 tiup demo bookshop prepare --users=200000 --books=500000 --authors=100000 --ratings=1000000 --orders=1000000 --drop-tables
 ```
@@ -70,50 +68,36 @@ tiup demo bookshop prepare --users=200000 --books=500000 --authors=100000 --rati
 
 ### 方法二：通过 TiDB Cloud Import 功能
 
-在 TiDB Cloud 的数据库详情页面，你可以通过点击 **Import** 按钮，进入到 **Data Import Task** 页面，在该页面当中，按照以下步骤将 Bookshop 示例数据从 AWS S3 中导入到你的 TiDB Cloud：
+在 TiDB Cloud 的集群详情页面，你可以通过切换到 **Import** 标签页，点击 **Import Data** 按钮进入到 **Data Import** 页面。在该页面当中，按照以下步骤将 Bookshop 示例数据从 AWS S3 中导入到你的 TiDB Cloud 集群：
 
-1. 将以下 **Bucket URL** 和 **Role-ARN** 复制到页面上对应的输入框当中：
+1. 选择 **Data Format** 为 **SQL File**。
+2. 将以下 **Bucket URI** 和 **Role ARN** 复制到页面上对应的输入框当中：
 
-    **Bucket URL**:
-
-    {{< copyable "" >}}
+    **Bucket URI**:
 
     ```
     s3://developer.pingcap.com/bookshop/
     ```
 
-    **Role-ARN**:
-
-    {{< copyable "" >}}
+    **Role ARN**:
 
     ```
     arn:aws:iam::494090988690:role/s3-tidb-cloud-developer-access
     ```
 
+3. 点击 **Next** 按钮切换到 **File and filter** 步骤确认将要导入的文件的信息。
+
+4. 点击 **Next** 按钮切换到 **Preview** 步骤确认将要导入的示例数据是否正确。
+
     在这个示例数据当中，预先生成了 20 万的用户信息、50 万条书籍信息、10 万条作者信息、100 万条评分记录以及 100 万条订单信息。
 
-2. 选择 **Bucket Region** 为 **US West (Oregon)**。
-3. 选择 **Data Format** 为 **TiDB Dumpling**。
+5. 点击 **Start Import** 按钮开始导入数据，等待 TiDB Cloud 完成数据导入。
 
-   ![在 TiDB Cloud 中导入 Bookshop 数据](/media/develop/tidb_cloud_import_bookshop_data.png)
-
-4. 输入你的数据库登录信息。
-5. 点击 **Import** 按钮确认导入。
-6. 等待 TiDB Cloud 完成数据导入。
-
-   ![Bookshop 数据导入中](/media/develop/importing_bookshop_data.png)
-
-   如果导入过程中出现如下错误信息，你需要通过 `DROP DATABASE bookshop;` 命令将原来创建的示例数据库进行清除后再重新导入。
-
-   > table(s) [`bookshop`.`authors`, `bookshop`.`book_authors`, `bookshop`.`books`, `bookshop`.`orders`, `bookshop`.`ratings`, `bookshop`.`users`] are not empty.
-
-7. 你可以通过 [TiDB Cloud 文档](https://docs.pingcap.com/tidbcloud)获取更多有关 TiDB Cloud 的信息。
+你可以通过 [TiDB Cloud Migration Overview](https://docs.pingcap.com/tidbcloud/tidb-cloud-migration-overview) 文档获取更多有关 TiDB Cloud 数据导入和迁移的信息。
 
 ### 查看数据导入情况
 
 导入完成后，你可以通过下面的 SQL 语句查看各个表的数据量信息：
-
-{{< copyable "sql" >}}
 
 ```sql
 SELECT
@@ -217,8 +201,6 @@ WHERE table_schema LIKE 'bookshop';
 ## 数据库初始化 `dbinit.sql` 脚本
 
 如果你希望手动创建 Bookshop 应用的数据库表结构，你可以运行以下 SQL 语句：
-
-{{< copyable "sql" >}}
 
 ```sql
 CREATE DATABASE IF NOT EXISTS `bookshop`;

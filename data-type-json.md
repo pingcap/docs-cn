@@ -28,13 +28,6 @@ SELECT id FROM city WHERE population >= 100;
 ## 使用限制
 
 - 暂不支持将 JSON 函数下推至 TiFlash。
-- TiDB 暂不支持 JSON PATH 中范围选取的语法，以下 SQL 语句会在 TiDB 中报错:
-
-    ```sql
-    SELECT j->'$[1 to 2]' FROM t;
-    SELECT j->'$[last]' FROM t;
-    ```
-
 - TiDB Backup & Restore（BR）在 v6.3.0 之前不支持恢复包含 JSON 列的数据。另外，任何版本的 BR 都不支持恢复包含 JSON 列的数据到 v6.3.0 之前的 TiDB 集群。
 - 请勿使用任何同步工具同步非标准 JSON 类型（例如 DATE、DATETIME、TIME 等）的数据。
 

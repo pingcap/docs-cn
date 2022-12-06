@@ -59,6 +59,7 @@ TiDB 支持 MySQL 5.7 GA 版本发布的大多数 JSON 函数。
 | 函数                     | 功能描述 |
 | --------------------------------- | ----------- |
 | [JSON_PRETTY(json_doc)][json_pretty] |格式化 JSON 文档 |
+| [JSON_STORAGE_FREE(json_doc)][json_storage_free] | 返回该 JSON 对象的存储空间中空闲的字节数。由于 TiDB 采用与 MySQL 完全不同的存储结构，本函数对合法的 JSON 值总是返回 0，主要用于兼容 MySQL 8.0 |
 | [JSON_STORAGE_SIZE(json_doc)][json_storage_size] | 返回存储 JSON 值所需的大致字节大小，由于不考虑 TiKV 压缩的字节大小，因此函数的输出与 MySQL 不严格兼容 |
 
 ## 聚合函数
@@ -130,5 +131,7 @@ TiDB 支持 MySQL 5.7 GA 版本发布的大多数 JSON 函数。
 [json_objectagg]: https://dev.mysql.com/doc/refman/5.7/en/aggregate-functions.html#function_json-objectagg
 
 [json_pretty]: https://dev.mysql.com/doc/refman/5.7/en/json-utility-functions.html#function_json-pretty
+
+[json_storage_free]: https://dev.mysql.com/doc/refman/8.0/en/json-utility-functions.html#function_json-storage-free
 
 [json_storage_size]: https://dev.mysql.com/doc/refman/5.7/en/json-utility-functions.html#function_json-storage-size

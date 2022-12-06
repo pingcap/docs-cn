@@ -28,7 +28,7 @@ PD Control 是 PD 的命令行工具，用于获取集群状态信息和调整�
 
 > **注意：**
 >
-> 下载链接中的 `{version}` 为 TiDB 的版本号。例如，amd64 架构的 `v6.3.0` 版本的下载链接为 `https://download.pingcap.org/tidb-community-server-v6.3.0-linux-amd64.tar.gz`。
+> 下载链接中的 `{version}` 为 TiDB 的版本号。例如，amd64 架构的 `v6.4.0` 版本的下载链接为 `https://download.pingcap.org/tidb-community-server-v6.4.0-linux-amd64.tar.gz`。
 
 ### 源码编译
 
@@ -42,7 +42,7 @@ PD Control 是 PD 的命令行工具，用于获取集群状态信息和调整�
 {{< copyable "shell-regular" >}}
 
 ```bash
-tiup ctl pd store -u http://127.0.0.1:2379
+tiup ctl:<cluster-version> pd store -u http://127.0.0.1:2379
 ```
 
 交互模式：
@@ -50,7 +50,7 @@ tiup ctl pd store -u http://127.0.0.1:2379
 {{< copyable "shell-regular" >}}
 
 ```bash
-tiup ctl pd -i -u http://127.0.0.1:2379
+tiup ctl:<cluster-version> pd -i -u http://127.0.0.1:2379
 ```
 
 使用环境变量：
@@ -59,7 +59,7 @@ tiup ctl pd -i -u http://127.0.0.1:2379
 
 ```bash
 export PD_ADDR=http://127.0.0.1:2379 &&
-tiup ctl pd
+tiup ctl:<cluster-version> pd
 ```
 
 使用 TLS 加密：
@@ -67,7 +67,7 @@ tiup ctl pd
 {{< copyable "shell-regular" >}}
 
 ```bash
-tiup ctl pd -u https://127.0.0.1:2379 --cacert="path/to/ca" --cert="path/to/cert" --key="path/to/key"
+tiup ctl:<cluster-version> pd -u https://127.0.0.1:2379 --cacert="path/to/ca" --cert="path/to/cert" --key="path/to/key"
 ```
 
 ## 命令行参数 (flags)
@@ -1176,7 +1176,7 @@ scheduler config balance-hot-region-scheduler  // 显示 balance-hot-region 调�
   ],
   "strict-picking-store": "true",
   "enable-for-tiflash": "true",
-  "rank-formula-version": "v1"
+  "rank-formula-version": "v2"
 }
 ```
 
@@ -1241,15 +1241,11 @@ scheduler config balance-hot-region-scheduler  // 显示 balance-hot-region 调�
     scheduler config balance-hot-region-scheduler set strict-picking-store true
     ```
 
-- `rank-formula-version` 适用于热点调度，其用来确定调度策略的算法版本，支持的值有 `["v1", "v2"]`。目前该配置的默认值为 `v1`。
+- `rank-formula-version` 适用于热点调度，其用来确定调度策略的算法版本，支持的值有 `["v1", "v2"]`。目前该配置的默认值为 `v2`。
 
     - `v1` 版本为 v6.3.0 之前的策略，主要关注调度是否降低了不同 Store 之间的负载差值，以及是否在另一维度引入副作用。
-    - `v2` 版本是 v6.3.0 引入的实验特性算法，主要关注 Store 之间均衡度的提升率，同时降低了对副作用的关注度。对比 `strict-picking-store` 为 `true` 的 `v1` 算法，`v2` 版本更注重优先均衡第一维度。对比 `strict-picking-store` 为 `false` 的 `v1` 算法，`v2` 版本兼顾了第二维度的均衡。
+    - `v2` 版本是 v6.3.0 引入的实验特性算法，在 v6.4.0 正式发布，主要关注 Store 之间均衡度的提升率，同时降低了对副作用的关注度。对比 `strict-picking-store` 为 `true` 的 `v1` 算法，`v2` 版本更注重优先均衡第一维度。对比 `strict-picking-store` 为 `false` 的 `v1` 算法，`v2` 版本兼顾了第二维度的均衡。
     - `strict-picking-store` 为 `true` 的 `v1` 版本算法较为保守，只有当存在两个维度的负载都偏高的 Store 时才能产生调度。在特定场景下有可能因为维度冲突导致无法继续均衡，需要将 `strict-picking-store` 改为 `false` 才能在第一维度取得更好的均衡效果。`v2` 版本算法则可以在两个维度都取得更好的均衡效果，并减少无效调度。
-
-    > **警告：**
-    >
-    > 将 `rank-formula-version` 设置为 `v2` 目前为实验性特性，不建议在生产环境中使用。
 
     ```bash
     scheduler config balance-hot-region-scheduler set rank-formula-version v2

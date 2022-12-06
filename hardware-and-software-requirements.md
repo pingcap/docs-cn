@@ -5,28 +5,41 @@ aliases: ['/docs-cn/dev/hardware-and-software-requirements/','/docs-cn/dev/how-t
 
 # TiDB 软件和硬件环境建议配置
 
-TiDB 作为一款开源分布式 NewSQL 数据库，可以很好地部署和运行在 Intel 架构服务器环境、ARM 架构的服务器环境及主流虚拟化环境，并支持绝大多数的主流硬件网络。作为一款高性能数据库系统，TiDB 支持主流的 Linux 操作系统环境。
+<!-- Localization note for TiDB:
+
+- 英文：用 distributed SQL，同时开始强调 HTAP
+- 中文：可以保留 NewSQL 字眼，同时强调一栈式实时 HTAP
+- 日文：NewSQL 认可度高，用 NewSQL
+
+-->
+
+TiDB 作为一款开源一栈式实时 HTAP 数据库，可以很好地部署和运行在 Intel 架构服务器环境、ARM 架构的服务器环境及主流虚拟化环境，并支持绝大多数的主流硬件网络。作为一款高性能数据库系统，TiDB 支持主流的 Linux 操作系统环境。
 
 ## 操作系统及平台要求
 
-| 操作系统       | 版本         |
-| :----------------------- | :----------: |
-| Red Hat Enterprise Linux | 7.3 及以上的 7.x 版本，8.4 及以上的 8.x 版本   |
-| CentOS                   | 7.3 及以上的 7.x 版本，8.4 及以上的 8.x 版本   |
-| Oracle Enterprise Linux  | 7.3 及以上的 7.x 版本   |
-| Amazon Linux             | 2 |
-| Ubuntu LTS               | 16.04 及以上的版本      |
+|  操作系统   |   支持的 CPU 架构   |
+|   :---   |   :---   |
+| Red Hat Enterprise Linux 8.4 及以上的 8.x 版本  |  <ul><li>x86_64</li><li>ARM 64</li></ul>  |
+| <ul><li>Red Hat Enterprise Linux 7.3 及以上的 7.x 版本</li><li>CentOS 7.3 及以上的 7.x 版本</li></ul>  |  <ul><li>x86_64</li><li>ARM 64</li></ul>   |
+|  Amazon Linux 2         |  <ul><li>x86_64</li><li>ARM 64</li></ul>   |
+| 麒麟欧拉版 V10 SP1/SP2   |   <ul><li>x86_64</li><li>ARM 64</li></ul>   |
+| UOS V20                 |   <ul><li>x86_64</li><li>ARM 64</li></ul>   |
+|   macOS Catalina 及以上的版本  |  <ul><li>x86_64</li><li>ARM 64</li></ul>  |
+|  Oracle Enterprise Linux 7.3 及以上的 7.x 版本  |  x86_64           |
+|   Ubuntu LTS 18.04 及以上的版本  |  x86_64           |
+| CentOS 8 Stream | <ul><li>x86_64</li><li>ARM 64</li></ul> |
+|  Debian 9 (Stretch) 及以上的版本  |  x86_64           |
+|  Fedora 35 及以上的版本   |  x86_64           |
+|  openSUSE Leap 15.3 以上的版本（不包含 Tumbleweed） |  x86_64           |
+|  SUSE Linux Enterprise Server 15  |  x86_64                        |
 
 > **注意：**
 >
 > - TiDB 只支持 Red Hat 兼容内核 (RHCK) 的 Oracle Enterprise Linux，不支持 Oracle Enterprise Linux 提供的 Unbreakable Enterprise Kernel。
-> - TiDB 在 CentOS 7.3 的环境下进行过大量的测试，同时社区也有很多该操作系统部署的最佳实践，因此，建议使用 CentOS 7.3 以上的 7.x Linux 操作系统来部署 TiDB。
-> - 以上 Linux 操作系统可运行在物理服务器以及 VMware、KVM 及 XEN 主流虚拟化环境上。
-> - 目前尚不支持 Red Hat Enterprise Linux 8.0、CentOS 8 Stream 和 Oracle Enterprise Linux 8.0，因为目前对这些平台的测试还在进行中。
 > - 根据 [CentOS Linux EOL](https://www.centos.org/centos-linux-eol/)，CentOS 的上游支持已于 2021 年 12 月 31 日终止。
 > - TiDB 将不再支持 Ubuntu 16.04。强烈建议升级到 Ubuntu 18.04 或更高版本。
-
-其他 Linux 操作系统版本（例如 Debian Linux 和 Fedora Linux）也许可以运行 TiDB，但尚未得到 TiDB 官方支持。
+> - 对于以上表格中所列操作系统的 32 位版本，TiDB 在这些 32 位操作系统以及对应的 CPU 架构上**不保障**可编译、可构建以及可部署，或 TiDB 不主动适配这些 32 位的操作系统。
+> - 以上未提及的操作系统版本**也许可以**运行 TiDB，但尚未得到 TiDB 官方支持。
 
 ### 编译和运行 TiDB 所依赖的库
 
@@ -106,7 +119,15 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 
 ## 网络要求
 
-TiDB 作为开源分布式 NewSQL 数据库，其正常运行需要网络环境提供如下的网络端口配置要求，管理员可根据实际环境中 TiDB 组件部署的方案，在网络侧和主机侧开放相关端口：
+<!-- Localization note for TiDB:
+
+- 英文：用 distributed SQL，同时开始强调 HTAP
+- 中文：可以保留 NewSQL 字眼，同时强调一栈式实时 HTAP
+- 日文：NewSQL 认可度高，用 NewSQL
+
+-->
+
+TiDB 作为开源一栈式实时 HTAP 数据库，其正常运行需要网络环境提供如下的网络端口配置要求，管理员可根据实际环境中 TiDB 组件部署的方案，在网络侧和主机侧开放相关端口：
 
 | 组件 | 默认端口 | 说明 |
 | :-- | :-- | :-- |
@@ -126,7 +147,7 @@ TiDB 作为开源分布式 NewSQL 数据库，其正常运行需要网络环境�
 | Drainer | 8249 | Drainer 通信端口 |
 | CDC | 8300 | CDC 通信接口 |
 | Monitoring | 9090 | Prometheus 服务通信端口 |
-| Monitoring | 20120 | NgMonitoring 服务通信端口 |
+| Monitoring | 12020 | NgMonitoring 服务通信端口 |
 | Node_exporter | 9100 | TiDB 集群每个节点的系统信息上报通信端口 |
 | Blackbox_exporter | 9115 | Blackbox_exporter 通信端口，用于 TiDB 集群端口监控 |
 | Grafana | 3000 | Web 监控服务对外服务和客户端(浏览器)访问端口 |

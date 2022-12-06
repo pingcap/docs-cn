@@ -221,7 +221,7 @@ mysql> INSERT INTO t1 VALUES (2);
 Query OK, 1 row affected (0.00 sec)
 
 mysql> COMMIT; -- MySQL 提交成功；TiDB 返回错误，事务回滚。
-ERROR 1062 (23000): Duplicate entry '1' for key 'PRIMARY'
+ERROR 1062 (23000): Duplicate entry '1' for key 't1.PRIMARY'
 mysql> SELECT * FROM t1; -- MySQL 返回 1 2；TiDB 返回 1。
 +----+
 | id |
@@ -268,7 +268,7 @@ Query OK, 1 row affected (0.02 sec)
 mysql> INSERT INTO tset VALUES (2);  -- tset 拼写错误，使该语句执行出错。
 ERROR 1146 (42S02): Table 'test.tset' doesn't exist
 mysql> INSERT INTO test VALUES (1),(2);  -- 违反 PRIMARY KEY 约束，语句不生效。
-ERROR 1062 (23000): Duplicate entry '1' for key 'PRIMARY'
+ERROR 1062 (23000): Duplicate entry '1' for key 'test.PRIMARY'
 mysql> INSERT INTO test VALUES (3);
 Query OK, 1 row affected (0.00 sec)
 

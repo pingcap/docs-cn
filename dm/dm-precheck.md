@@ -1,12 +1,12 @@
 ---
-title: DM 执行任务时的前置检查
+title: TiDB Data Migration 任务前置检查
 summary: 了解 DM 执行数据迁移任务时将进行的前置检查。
 aliases: ['/docs-cn/tidb-data-migration/dev/precheck/']
 ---
 
-# 任务前置检查
+# TiDB Data Migration 任务前置检查
 
-本文介绍了 DM 的任务前置检查功能。此功能用于提前检测出上游 MySQL 实例配置中可能存在的一些错误。
+本文介绍了 TiDB Data Migration (DM) 的任务前置检查功能。此功能用于提前检测出上游 MySQL 实例配置中可能存在的一些错误。
 
 ## 使用场景
 
@@ -52,8 +52,13 @@ tiup dmctl check-task ./task.yaml
 - 上游 MySQL 表结构的兼容性
 
     - 检查上游表是否设置了外键。TiDB 不支持外键，如果上游表设置了外键，则返回警告。
-    - （必须）检查字符集是否存在兼容性差异，详见 [TiDB 支持的字符集](/character-set-and-collation.md)。
-    - （必须）检查上游表中是否存在主键或唯一键约束（从 v1.0.7 版本引入）。
+    - 检查上游字符集是否与 TiDB 兼容，详见 [TiDB 支持的字符集](/character-set-and-collation.md)。
+    - 检查上游表中是否存在主键或唯一键约束（从 v1.0.7 版本引入）。
+
+    > **警告：**
+    >
+    > - 上游使用不兼容的字符集时，下游可以使用 utf8mb4 字符集建表兼容同步，但不建议这样做。建议调整上游的字符集，使用下游支持的字符集。
+    > - 上游表不存在主键或唯一键约束时，可能出现单行数据在下游被重复同步多次的情况，同步性能也会降低，不建议在生产环境下使用。
 
 ### 全量数据迁移检查项
 
@@ -93,9 +98,9 @@ tiup dmctl check-task ./task.yaml
     - 检查是否有 REPLICATION CLIENT 权限。
     - 检查是否有 REPLICATION SLAVE 权限。
 
-* （必须）数据库主从配置
+* 数据库主从配置
 
-    - 上游数据库必须设置数据库 ID `server_id`（非 AWS Aurora 环境建议开启 GTID）。
+    - 建议上游数据库设置数据库 ID `server_id`（非 AWS Aurora 环境建议开启 GTID），防止主从复制切换出错。
 
 * （必须）MySQL binlog 配置
 

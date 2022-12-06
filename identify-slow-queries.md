@@ -5,9 +5,9 @@ aliases: ['/docs-cn/dev/identify-slow-queries/','/docs-cn/dev/how-to/maintain/id
 
 # 慢查询日志
 
-TiDB 会将执行时间超过 [slow-threshold](/tidb-configuration-file.md#slow-threshold)（默认值为 300 毫秒）的语句输出到 [slow-query-file](/tidb-configuration-file.md#slow-query-file)（默认值："tidb-slow.log"）日志文件中，用于帮助用户定位慢查询语句，分析和解决 SQL 执行的性能问题。
+TiDB 会将执行时间超过 [`tidb_slow_log_threshold`](/system-variables.md#tidb_slow_log_threshold)（默认值为 300 毫秒）的语句输出到 [slow-query-file](/tidb-configuration-file.md#slow-query-file)（默认值为 "tidb-slow.log"）日志文件中，用于帮助用户定位慢查询语句，分析和解决 SQL 执行的性能问题。
 
-TiDB 默认启用慢查询日志，可以修改配置 [`enable-slow-log`](/tidb-configuration-file.md#enable-slow-log) 来启用或禁用它。
+TiDB 默认启用慢查询日志，可以修改系统变量 [`tidb_enable_slow_log`](/system-variables.md#tidb_enable_slow_log) 来启用或禁用它。
 
 ## 日志示例
 

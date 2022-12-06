@@ -8,7 +8,7 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-backup/']
 
 `BACKUP` 语句用于对 TiDB 集群执行分布式备份操作。
 
-`BACKUP` 语句使用的引擎与 [BR](/br/backup-and-restore-use-cases.md) 相同，但备份过程是由 TiDB 本身驱动，而非单独的 BR 工具。BR 工具的优势和警告也适用于 `BACKUP` 语句。
+`BACKUP` 语句使用的引擎与 [BR](/br/backup-and-restore-overview.md) 相同，但备份过程是由 TiDB 本身驱动，而非单独的 BR 工具。BR 工具的优势和警告也适用于 `BACKUP` 语句。
 
 执行 `BACKUP` 需要 `BACKUP_ADMIN` 或 `SUPER` 权限。此外，执行备份的 TiDB 节点和集群中的所有 TiKV 节点都必须有对目标存储的读或写权限。
 
@@ -106,7 +106,7 @@ BR 支持备份数据到 Amazon S3 或 Google Cloud Storage (GCS)：
 BACKUP DATABASE `test` TO 's3://example-bucket-2020/backup-05/?access-key={YOUR_ACCESS_KEY}&secret-access-key={YOUR_SECRET_KEY}';
 ```
 
-有关详细的 URL 语法，见[外部存储](/br/backup-and-restore-storages.md)。
+有关详细的 URL 语法，见[外部存储](/br/external-storage.md)。
 
 当运行在云环境中时，不能分发凭证，可设置 `SEND_CREDENTIALS_TO_TIKV` 选项为 `FALSE`：
 

@@ -42,7 +42,7 @@ Confluent 是一个兼容 Apache Kafka 的数据流平台，能够访问、存�
 
     创建成功后会得到一个 Key Pair 文件，内容如下：
 
-    ```
+    ```shell
     === Confluent Cloud API key: xxx-xxxxx ===
 
     API key:
@@ -59,7 +59,7 @@ Confluent 是一个兼容 Apache Kafka 的数据流平台，能够访问、存�
 
     在 Confluent 集群控制面板中，选择 **Schema Registry** > **API endpoint**，记录 Schema Registry Endpoints，如下：
 
-    ```
+    ```shell
     https://yyy-yyyyy.us-east-2.aws.confluent.cloud
     ```
 
@@ -69,7 +69,7 @@ Confluent 是一个兼容 Apache Kafka 的数据流平台，能够访问、存�
 
     创建成功后会得到一个 Key Pair 文件，内容如下：
 
-    ```
+    ```shell
     === Confluent Cloud API key: yyy-yyyyy ===
 
     API key:
@@ -87,19 +87,19 @@ Confluent 是一个兼容 Apache Kafka 的数据流平台，能够访问、存�
 
     根据 Avro 协议和 Confluent Connector 的要求和规范，每张表的增量数据需要发送到独立的 Topic 中，并且每个事件需要按照主键值分发 Partition。因此，需要创建一个名为 `changefeed.conf` 的配置文件，填写如下内容：
 
-    ```
+    ```conf
     [sink]
     dispatchers = [
     {matcher = ['*.*'], topic = "tidb_{schema}_{table}", partition="index-value"},
     ]
     ```
 
-    关于配置文件中 `dispatchers` 的详细解释，参考[自定义 Kafka Sink 的 Topic 和 Partition 的分发规则](/ticdc/manage-ticdc.md#自定义-kafka-sink-的-topic-和-partition-的分发规则)。
+    关于配置文件中 `dispatchers` 的详细解释，参考[自定义 Kafka Sink 的 Topic 和 Partition 的分发规则](/ticdc/ticdc-sink-to-kafka.md#自定义-kafka-sink-的-topic-和-partition-的分发规则)。
 
 2. 创建一个 changefeed，将增量数据输出到 Confluent Cloud：
 
     ```shell
-    tiup ctl:v6.3.0 cdc changefeed create --pd="http://127.0.0.1:2379" --sink-uri="kafka://<broker_endpoint>/ticdc-meta?protocol=avro&replication-factor=3&enable-tls=true&auto-create-topic=true&sasl-mechanism=plain&sasl-user=<broker_api_key>&sasl-password=<broker_api_secret>" --schema-registry="https://<schema_registry_api_key>:<schema_registry_api_secret>@<schema_registry_endpoint>" --changefeed-id="confluent-changefeed" --config changefeed.conf
+    tiup ctl:<cluster-version> cdc changefeed create --pd="http://127.0.0.1:2379" --sink-uri="kafka://<broker_endpoint>/ticdc-meta?protocol=avro&replication-factor=3&enable-tls=true&auto-create-topic=true&sasl-mechanism=plain&sasl-user=<broker_api_key>&sasl-password=<broker_api_secret>" --schema-registry="https://<schema_registry_api_key>:<schema_registry_api_secret>@<schema_registry_endpoint>" --changefeed-id="confluent-changefeed" --config changefeed.conf
     ```
 
     将如下字段替换为[第 2 步：创建 Access Key Pair](#第-2-步创建-access-key-pair)中创建和记录的值：
@@ -114,7 +114,7 @@ Confluent 是一个兼容 Apache Kafka 的数据流平台，能够访问、存�
     其中 `<schema_registry_api_secret>` 需要经过 [HTML URL 编码](https://www.w3schools.com/tags/ref_urlencode.asp)后再替换，替换完毕后示例如下：
 
     ```shell
-    tiup ctl:v6.3.0 cdc changefeed create --pd="http://127.0.0.1:2379" --sink-uri="kafka://xxx-xxxxx.ap-east-1.aws.confluent.cloud:9092/ticdc-meta?protocol=avro&replication-factor=3&enable-tls=true&auto-create-topic=true&sasl-mechanism=plain&sasl-user=L5WWA4GK4NAT2EQV&sasl-password=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" --schema-registry="https://7NBH2CAFM2LMGTH7:xxxxxxxxxxxxxxxxxx@yyy-yyyyy.us-east-2.aws.confluent.cloud" --changefeed-id="confluent-changefeed" --config changefeed.conf
+    tiup ctl:<cluster-version> cdc changefeed create --pd="http://127.0.0.1:2379" --sink-uri="kafka://xxx-xxxxx.ap-east-1.aws.confluent.cloud:9092/ticdc-meta?protocol=avro&replication-factor=3&enable-tls=true&auto-create-topic=true&sasl-mechanism=plain&sasl-user=L5WWA4GK4NAT2EQV&sasl-password=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" --schema-registry="https://7NBH2CAFM2LMGTH7:xxxxxxxxxxxxxxxxxx@yyy-yyyyy.us-east-2.aws.confluent.cloud" --changefeed-id="confluent-changefeed" --config changefeed.conf
     ```
 
     - 如果命令执行成功，将会返回被创建的 changefeed 的相关信息，包含被创建的 changefeed 的 ID 以及相关信息，内容如下：
@@ -130,10 +130,10 @@ Confluent 是一个兼容 Apache Kafka 的数据流平台，能够访问、存�
 3. Changefeed 创建成功后，执行如下命令，查看 changefeed 的状态：
 
     ```shell
-    tiup ctl:v6.3.0 cdc changefeed list --pd="http://127.0.0.1:2379"
+    tiup ctl:<cluster-version> cdc changefeed list --pd="http://127.0.0.1:2379"
     ```
 
-    可以参考 [TiCDC 运维操作及任务管理](/ticdc/manage-ticdc.md)对 changefeed 状态进行管理。
+    可以参考 [管理 Changefeed](/ticdc/ticdc-manage-changefeed.md)对 changefeed 状态进行管理。
 
 ### 第 4 步：写入数据以产生变更日志
 

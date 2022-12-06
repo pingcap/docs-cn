@@ -139,6 +139,11 @@ addr = "172.16.31.10:8287"
 # Physical Import Mode 限制 TiDB Lightning 向每个 TiKV 节点写入的带宽大小，默认为 0，表示不限制。
 # store-write-bwlimit = "128MiB"
 
+# 使用 Physical Import Mode 时，配置 TiDB Lightning 本地临时文件使用的磁盘配额 (disk quota)。当磁盘配额不足时，TiDB Lightning 会暂停读取源数据以及写入临时文件的过程，优先将已经完成排序的 key-value 写入到 TiKV，TiDB Lightning 删除本地临时文件后，再继续导入过程。
+# 需要同时配合把 `backend` 设置为 `local` 模式才能生效。
+# 默认值为 MaxInt64 字节，即 9223372036854775807 字节。
+# disk-quota = "10GB" 
+
 [mydumper]
 # 设置文件读取的区块大小，确保该值比数据源的最长字符串长。
 read-block-size = "64KiB" # 默认值
@@ -296,6 +301,9 @@ analyze = "optional"
 switch-mode = "5m"
 # 在日志中打印导入进度的持续时间。
 log-progress = "5m"
+
+# 使用 Physical Import Mode 时，检查本地磁盘配额的时间间隔，默认为 60 秒。
+# check-disk-quota = "60s"
 ```
 
 ## 命令行参数
@@ -308,7 +316,7 @@ log-progress = "5m"
 |:----|:----|:----|
 | --config *file* | 从 *file* 读取全局设置。如果没有指定则使用默认设置。 | |
 | -V | 输出程序的版本 | |
-| -d *directory* | 读取数据的本地目录或[外部存储 URL](/br/backup-and-restore-storages.md) | `mydumper.data-source-dir` |
+| -d *directory* | 读取数据的本地目录或[外部存储 URL](/br/external-storage.md) | `mydumper.data-source-dir` |
 | -L *level* | 日志的等级： debug、info、warn、error 或 fatal (默认为 info) | `lightning.log-level` |
 | -f *rule* | [表库过滤的规则](/table-filter.md) (可多次指定) | `mydumper.filter` |
 | --backend [*backend*](/tidb-lightning/tidb-lightning-overview.md) | 选择导入的模式：`local`为 Physical Import Mode ，`tidb`为 Logical Import Mode  | `local` |

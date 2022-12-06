@@ -82,6 +82,8 @@ aliases: ['/docs-cn/dev/grafana-tidb-dashboard/','/docs-cn/dev/reference/key-mon
     - Expensive Executor OPS：每秒消耗系统资源比较多的算子。包括 Merge Join、Hash Join、Index Look Up Join、Hash Agg、Stream Agg、Sort、TopN 等。
     - Queries Using Plan Cache OPS：每秒使用 Plan Cache 的查询数量。
     - Plan Cache Miss OPS：每秒出现 Plan Cache Miss 的数量。
+    - Plan Cache Memory Usage：每个 TiDB 实例上所有 Plan Cache 缓存的执行计划占用的总内存。
+    - Plan Cache Plan Num：每个 TiDB 实例上所有 Plan Cache 缓存的执行计划总数。
 
 - Distsql
     - Distsql Duration：Distsql 处理的时长

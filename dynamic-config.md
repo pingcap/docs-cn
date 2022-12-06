@@ -150,6 +150,7 @@ show warnings;
 | raftstore.merge-check-tick-interval | 触发 Merge 完成检查的时间间隔 |
 | raftstore.cleanup-import-sst-interval | 触发检查过期 SST 文件的时间间隔 |
 | raftstore.local-read-batch-size | 一轮处理读请求的最大个数 |
+| raftstore.apply-yield-write-size | Apply 线程每一轮处理单个状态机写入的最大数据量 |
 | raftstore.hibernate-timeout | 启动后进入静默状态前需要等待的最短时间，在该时间段内不会进入静默状态（未 release）|
 | raftstore.apply-pool-size | 处理把数据落盘至磁盘的线程池中线程的数量，即 Apply 线程池大小 |
 | raftstore.store-pool-size | 处理 Raft 的线程池中线程的数量，即 Raftstore 线程池的大小 |

@@ -87,8 +87,8 @@ Value: null
 通过设置 `SHARD_ROW_ID_BITS`，可以把 RowID 打散写入多个不同的 Region，缓解写入热点问题。
 
 ```
-SHARD_ROW_ID_BITS = 4 表示 16 个分片\
-SHARD_ROW_ID_BITS = 6 表示 64 个分片\
+SHARD_ROW_ID_BITS = 4 表示 16 个分片
+SHARD_ROW_ID_BITS = 6 表示 64 个分片
 SHARD_ROW_ID_BITS = 0 表示默认值 1 个分片
 ```
 
