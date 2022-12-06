@@ -2131,9 +2131,8 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 当配置该变量的值为 `0` 或 `1` 时，表示关闭内存阈值报警功能。
 - 当配置该变量为 `0` 到 `1` 之间的值时，表示开启内存阈值报警功能：
 
-    - 如果系统变量 [`tidb_server_memory_limit`](#tidb_server_memory_limit-从-v640-版本开始引入) 等于 0，且配置项 [`server-memory-quota`](/tidb-configuration-file.md#server-memory-quota-从-v409-版本开始引入) 未设置，则内存报警阈值为 `tidb_memory-usage-alarm-ratio * 系统内存大小`。
-    - 如果系统变量 `tidb_server_memory_limit` 等于 0，且配置项 `server-memory-quota` 被设置为大于 0，则内存报警阈值为 `tidb_memory-usage-alarm-ratio * server-memory-quota`。
-    - 如果系统变量 `tidb_server_memory_limit` 被设置为大于 0，则内存报警阈值为 `tidb_memory-usage-alarm-ratio * tidb_server_memory_limit`。
+    - 如果系统变量 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 等于 0，则内存报警阈值为 `tidb_memory_usage_alarm_ratio * 系统内存大小`。
+    - 如果系统变量 `tidb_server_memory_limit` 被设置为大于 0，则内存报警阈值为 `tidb_memory_usage_alarm_ratio * tidb_server_memory_limit`。
 
 ### `tidb_memory_usage_alarm_keep_record_num` <span class="version-mark">从 v6.4.0 版本开始引入</span>
 
@@ -2905,13 +2904,9 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 
 ### `tidb_server_memory_limit` <span class="version-mark">从 v6.4.0 版本开始引入</span>
 
-> **警告：**
->
-> `tidb_server_memory_limit` 目前为实验性特性，不建议在生产环境中使用。
-
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 默认值：`0`
+- 默认值：`80%`
 - 取值范围：
     - 你可以将该变量值设为百分比格式，表示内存用量占总内存的百分比，取值范围为 `[1%, 99%]`。
     - 你还可以将变量值设为内存大小，取值范围为 `[0, 9223372036854775807]`，单位为 Byte。支持带单位的内存格式 "KB|MB|GB|TB"。`0` 值表示不设内存限制。
@@ -2921,10 +2916,6 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 
 ### `tidb_server_memory_limit_gc_trigger` <span class="version-mark">从 v6.4.0 版本开始引入</span>
 
-> **警告：**
->
-> `tidb_server_memory_limit_gc_trigger` 目前为实验性特性，不建议在生产环境中使用。
-
 - 作用域：GLOBAL
 - 是否持久化到集群：是
 - 默认值：`70%`
@@ -2933,14 +2924,10 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 
 ### `tidb_server_memory_limit_sess_min_size` <span class="version-mark">从 v6.4.0 版本开始引入</span>
 
-> **警告：**
->
-> `tidb_server_memory_limit_sess_min_size` 目前为实验性特性，不建议在生产环境中使用。
-
 - 作用域：GLOBAL
 - 是否持久化到集群：是
 - 默认值：`134217728`（即 128 MB）
-- 取值范围：`[128, 9223372036854775807]`，单位 Byte。
+- 取值范围：`[128, 9223372036854775807]`，单位为 Byte。支持带单位的内存格式“KB|MB|GB|TB”。
 - 开启内存限制后，TiDB 会终止当前实例上内存用量最高的 SQL 语句。本变量指定此情况下 SQL 语句被终止的最小内存用量。如果 TiDB 实例的内存超限是由许多内存使用量不明显的会话导致的，可以适当调小该变量值，使得更多会话成为 Cancel 的对象。
 
 ### `tidb_shard_allocate_step` <span class="version-mark">从 v5.0 版本开始引入</span>
