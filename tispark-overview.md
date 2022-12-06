@@ -46,7 +46,7 @@ TiSpark 和 TiDB 可以让用户无需创建和维护 ETL，直接在同一个�
 
 > **警告：**
 >
-> [此文](tispark-deployment-topology)所描述的使用 TiUP 部署 TiSpark 的方式已被废弃.
+> [此文](/tispark-deployment-topology.md)所描述的使用 TiUP 部署 TiSpark 的方式已被废弃.
 
 TiSpark 作为 Spark 的 TiDB 连接器，需要 Spark 集群的支持。本文仅提供部署 Spark 的参考建议，对于硬件以及部署细节请参考 [Spark 官方文档](https://spark.apache.org/docs/latest/hardware-provisioning.html)。
 
