@@ -13,9 +13,9 @@ summary: 介绍 TiDB 集群安装部署的常见问题、原因及解决方法�
 
 关于 TiDB 支持的操作系统，参见 [TiDB 软件和硬件环境建议配置](/hardware-and-software-requirements.md)。
 
-### TiDB 对开发、测试、及生产环境的服务器硬件配置有什么要求？
+### TiDB 对开发、测试、生产环境的服务器硬件配置有什么要求？
 
-TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器平台。对于开发、测试、及生产环境的服务器硬件配置，参见 [TiDB 软件和硬件环境建议配置 - 服务器建议配置](/hardware-and-software-requirements.md#服务器建议配置)。
+TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器平台。对于开发、测试、生产环境的服务器硬件配置，参见 [TiDB 软件和硬件环境建议配置 - 服务器建议配置](/hardware-and-software-requirements.md#服务器建议配置)。
 
 ### 两块网卡的目的是？万兆的目的是？
 
