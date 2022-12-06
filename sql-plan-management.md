@@ -312,13 +312,13 @@ SHOW binding_cache status;
 ## 从现有执行计划绑定(Binding from existing plan)
 可用于查询计划跳变时固定历史执行计划，使用 `digest` 实现快速的执行计划管理，同时相比[执行计划绑](/sql-plan-management.md#执行计划绑定 (SQL Binding))的方式更简便。
 
-> **注意：**
->
-> - 从现有执行计划绑定功能是根据已有的执行计划生成 hint 而实现的绑定，已有的执行计划来源是 [Statement Summary](/statement-summary-tables.md)，因此在使用此功能之前需打开 Statement Summary 开关。
-> 
-> - 目前仅支持根据当前实例中的 `statements_summary` 和 `statements_summary_history` 表中的执行计划生成绑定，如果发现有 'can't find any plans' 的情况可以尝试连接集群中其他 TiDB 节点重试。后续将支持从 statement summary 的 cluster 表中创建绑定。
-> 
-> - 从已有执行计划中提取 hint 的算法还不是特别完善，可能出现创建绑定成功但执行计划无法被完全固定的情况，如果遇到这种情况请删除该绑定后使用[创建绑定](/sql-plan-management.md#创建绑定)的方法重新创建绑定。后续我们将会逐步完善从执行计划中提取 hint 的算法。
+目前通过现有执行计划绑定有一些限制：
+
+1. 从现有执行计划绑定功能是根据已有的执行计划生成 hint 而实现的绑定，已有的执行计划来源是 [Statement Summary](/statement-summary-tables.md)，因此在使用此功能之前需打开 Statement Summary 开关。
+2. 目前仅支持根据当前实例中的 `statements_summary` 和 `statements_summary_history` 表中的执行计划生成绑定，如果发现有 'can't find any plans' 的情况可以尝试连接集群中其他 TiDB 节点重试。后续将支持从 statement summary 的 cluster 表中创建绑定。
+3. 对于带有子查询的查询、访问 TiFlash 的查询、3 表及以上进行 Join 的查询目前还不支持通过计划进行绑定。
+
+后续我们会持续完善以解决上述的限制。
 
 ### 创建绑定
 
