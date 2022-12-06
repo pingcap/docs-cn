@@ -18,9 +18,7 @@ TiKV Control (`tikv-ctl`) is a command line tool of TiKV, used to manage the clu
 
 `tikv-ctl` is also integrated in the `tiup` command. Execute the following command to call the `tikv-ctl` tool:
 
-{{< copyable "shell-regular" >}}
-
-```bash
+```shell
 tiup ctl:<cluster-version> tikv
 ```
 
@@ -96,14 +94,17 @@ You can add corresponding parameters and subcommands after `tiup ctl:<cluster-ve
 
     For this mode, if SSL is enabled in TiKV, `tikv-ctl` also needs to specify the related certificate file. For example:
 
-    ```
-    $ tikv-ctl --ca-path ca.pem --cert-path client.pem --key-path client-key.pem --host 127.0.0.1:20160 <subcommands>
+    ```shell
+    tikv-ctl --ca-path ca.pem --cert-path client.pem --key-path client-key.pem --host 127.0.0.1:20160 <subcommands>
     ```
 
     However, sometimes `tikv-ctl` communicates with PD instead of TiKV. In this case, you need to use the `--pd` option instead of `--host`. Here is an example:
 
+    ```shell
+    tikv-ctl --pd 127.0.0.1:2379 compact-cluster
     ```
-    $ tikv-ctl --pd 127.0.0.1:2379 compact-cluster
+
+    ```
     store:"127.0.0.1:20160" compact db:KV cf:default range:([], []) success!
     ```
 
@@ -120,10 +121,10 @@ Additionally, `tikv-ctl` has two simple commands `--to-hex` and `--to-escaped`, 
 
 Generally, use the `escaped` form of the key. For example:
 
-```bash
-$ tikv-ctl --to-escaped 0xaaff
+```shell
+tikv-ctl --to-escaped 0xaaff
 \252\377
-$ tikv-ctl --to-hex "\252\377"
+tikv-ctl --to-hex "\252\377"
 AAFF
 ```
 
@@ -139,25 +140,78 @@ This section describes the subcommands that `tikv-ctl` supports in detail. Some 
 
 Use the `raft` subcommand to view the status of the Raft state machine at a specific moment. The status information includes two parts: three structs (**RegionLocalState**, **RaftLocalState**, and **RegionApplyState**) and the corresponding Entries of a certain piece of log.
 
-Use the `region` and `log` subcommands to obtain the above information respectively. The two subcommands both support the remote mode and the local mode at the same time. Their usage and output are as follows:
+Use the `region` and `log` subcommands to obtain the above information respectively. The two subcommands both support the remote mode and the local mode at the same time.
 
-```bash
-$ tikv-ctl --host 127.0.0.1:20160 raft region -r 2
-region id: 2
-region state key: \001\003\000\000\000\000\000\000\000\002\001
-region state: Some(region {id: 2 region_epoch {conf_ver: 3 version: 1} peers {id: 3 store_id: 1} peers {id: 5 store_id: 4} peers {id: 7 store_id: 6}})
-raft state key: \001\002\000\000\000\000\000\000\000\002\002
-raft state: Some(hard_state {term: 307 vote: 5 commit: 314617} last_index: 314617)
-apply state key: \001\002\000\000\000\000\000\000\000\002\003
-apply state: Some(applied_index: 314617 truncated_state {index: 313474 term: 151})
+For the `region` subcommand:
+
+- To specify the Regions to be viewed, use the `-r` option. Multiple Regions are separated by `,`. You can also use the `--all-regions` option to view all Regions. Note that `-r` and `--all-regions` cannot be used at the same time.
+- To limit the number of Regions to be printed, use the `--limit` option (default: `16`).
+- To query which Regions are included in a certain key range, use the `--start` and `--end` options (default: no range limit, in Hex format).
+
+For example, to print the Region with the ID `1239`, use the following command:
+
+```shell
+tikv-ctl --host 127.0.0.1:20160 raft region -r 1239
+```
+
+The output is as follows:
+
+```
+"region id": 1239
+"region state": {
+    id: 1239,
+    start_key: 7480000000000000FF4E5F728000000000FF1443770000000000FA,
+    end_key: 7480000000000000FF4E5F728000000000FF21C4420000000000FA,
+    region_epoch: {conf_ver: 1 version: 43},
+    peers: [ {id: 1240 store_id: 1 role: Voter} ]
+}
+"raft state": {
+    hard_state {term: 8 vote: 5 commit: 7}
+    last_index: 8)
+}
+"apply state": {
+    applied_index: 8 commit_index: 8 commit_term: 8
+    truncated_state {index: 5 term: 5}
+}
+```
+
+To query which Regions are included in a certain key range, use the following command:
+
+- If the key range is in a Region range, the Region information is output.
+- If the key range is the same as a Region range, for example, when the given key range is the same as the Region `1239`, because the Region range is a left-closed and right-open interval, and Region `1009` takes the `end_key` of Region `1239` as the `start_key`, the Region `1009` information is also output.
+
+```shell
+tikv-ctl --host 127.0.0.1:20160 raft region --start 7480000000000000FF4E5F728000000000FF1443770000000000FA --end 7480000000000000FF4E5F728000000000FF21C4420000000000FA
+```
+
+The output is as follows:
+
+```
+"region state": {
+    id: 1009
+    start_key: 7480000000000000FF4E5F728000000000FF21C4420000000000FA,
+    end_key: 7480000000000000FF5000000000000000F8,
+    ...
+}
+"region state": {
+    id: 1239
+    start_key: 7480000000000000FF4E5F728000000000FF06C6D60000000000FA,
+    end_key: 7480000000000000FF4E5F728000000000FF1443770000000000FA,
+    ...
+}
 ```
 
 ### View the Region size
 
 Use the `size` command to view the Region size:
 
-```bash
-$ tikv-ctl --data-dir /path/to/tikv size -r 2
+```shell
+tikv-ctl --data-dir /path/to/tikv size -r 2
+```
+
+The output is as follows:
+
+```
 region id: 2
 cf default region size: 799.703 MB
 cf write region size: 41.250 MB
@@ -168,8 +222,11 @@ cf lock region size: 27616
 
 The `--from` and `--to` options of the `scan` command accept two escaped forms of raw key, and use the `--show-cf` flag to specify the column families that you need to view.
 
-```bash
-$ tikv-ctl --data-dir /path/to/tikv scan --from 'zm' --limit 2 --show-cf lock,default,write
+```shell
+tikv-ctl --data-dir /path/to/tikv scan --from 'zm' --limit 2 --show-cf lock,default,write
+```
+
+```
 key: zmBootstr\377a\377pKey\000\000\377\000\000\373\000\000\000\000\000\377\000\000s\000\000\000\000\000\372
          write cf value: start_ts: 399650102814441473 commit_ts: 399650102814441475 short_value: "20"
 key: zmDB:29\000\000\377\000\374\000\000\000\000\000\000\377\000H\000\000\000\000\000\000\371
@@ -181,8 +238,11 @@ key: zmDB:29\000\000\377\000\374\000\000\000\000\000\000\377\000H\000\000\000\00
 
 Similar to the `scan` command, the `mvcc` command can be used to view MVCC of a given key.
 
-```bash
-$ tikv-ctl --data-dir /path/to/tikv mvcc -k "zmDB:29\000\000\377\000\374\000\000\000\000\000\000\377\000H\000\000\000\000\000\000\371" --show-cf=lock,write,default
+```shell
+tikv-ctl --data-dir /path/to/tikv mvcc -k "zmDB:29\000\000\377\000\374\000\000\000\000\000\000\377\000H\000\000\000\000\000\000\371" --show-cf=lock,write,default
+```
+
+```
 key: zmDB:29\000\000\377\000\374\000\000\000\000\000\000\377\000H\000\000\000\000\000\000\371
          write cf value: start_ts: 399650105239273474 commit_ts: 399650105239273475 short_value: "\000\000\000\000\000\000\000\002"
          write cf value: start_ts: 399650105199951882 commit_ts: 399650105213059076 short_value: "\000\000\000\000\000\000\000\001"
@@ -196,8 +256,11 @@ The `raw-scan` command scans directly from the RocksDB. Note that to scan data k
 
 Use `--from` and `--to` options to specify the range to scan (unbounded by default). Use `--limit` to limit at most how many keys to print out (30 by default). Use `--cf` to specify which cf to scan (can be `default`, `write` or `lock`).
 
-```bash
-$ ./tikv-ctl --data-dir /var/lib/tikv raw-scan --from 'zt' --limit 2 --cf default
+```shell
+tikv-ctl --data-dir /var/lib/tikv raw-scan --from 'zt' --limit 2 --cf default
+```
+
+```
 key: "zt\200\000\000\000\000\000\000\377\005_r\200\000\000\000\000\377\000\000\001\000\000\000\000\000\372\372b2,^\033\377\364", value: "\010\002\002\002%\010\004\002\010root\010\006\002\000\010\010\t\002\010\n\t\002\010\014\t\002\010\016\t\002\010\020\t\002\010\022\t\002\010\024\t\002\010\026\t\002\010\030\t\002\010\032\t\002\010\034\t\002\010\036\t\002\010 \t\002\010\"\t\002\010s\t\002\010&\t\002\010(\t\002\010*\t\002\010,\t\002\010.\t\002\0100\t\002\0102\t\002\0104\t\002"
 key: "zt\200\000\000\000\000\000\000\377\025_r\200\000\000\000\000\377\000\000\023\000\000\000\000\000\372\372b2,^\033\377\364", value: "\010\002\002&slow_query_log_file\010\004\002P/usr/local/mysql/data/localhost-slow.log"
 
@@ -212,8 +275,11 @@ To print the value of a key, use the `print` command.
 
 In order to record Region state details, TiKV writes some statistics into the SST files of Regions. To view these properties, run `tikv-ctl` with the `region-properties` sub-command:
 
-```bash
-$ tikv-ctl --host localhost:20160 region-properties -r 2
+```shell
+tikv-ctl --host localhost:20160 region-properties -r 2
+```
+
+```
 num_files: 0
 num_entries: 0
 num_deletes: 0
@@ -265,15 +331,11 @@ In a TiKV instance, you can use this command to set the status of some Regions t
 
 In general cases, you can remove the corresponding Peer of this Region using the `remove-peer` command:
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 pd-ctl operator add remove-peer <region_id> <store_id>
 ```
 
 Then use the `tikv-ctl` tool to set a Region to tombstone on the corresponding TiKV instance to skip the health check for this Region at startup:
-
-{{< copyable "shell-regular" >}}
 
 ```shell
 tikv-ctl --data-dir /path/to/tikv tombstone -p 127.0.0.1:2379 -r <region_id>
@@ -284,8 +346,6 @@ success!
 ```
 
 However, in some cases, you cannot easily remove this Peer of this Region from PD, so you can specify the `--force` option in `tikv-ctl` to forcibly set the Peer to tombstone:
-
-{{< copyable "shell-regular" >}}
 
 ```shell
 tikv-ctl --data-dir /path/to/tikv tombstone -p 127.0.0.1:2379 -r <region_id>,<region_id> --force
@@ -304,10 +364,10 @@ success!
 
 Use the `consistency-check` command to execute a consistency check among replicas in the corresponding Raft of a specific Region. If the check fails, TiKV itself panics. If the TiKV instance specified by `--host` is not the Region leader, an error is reported.
 
-```bash
-$ tikv-ctl --host 127.0.0.1:20160 consistency-check -r 2
+```shell
+tikv-ctl --host 127.0.0.1:20160 consistency-check -r 2
 success!
-$ tikv-ctl --host 127.0.0.1:20161 consistency-check -r 2
+tikv-ctl --host 127.0.0.1:20161 consistency-check -r 2
 DebugClient::check_region_consistency: RpcFailure(RpcStatus { status: Unknown, details: Some("StringError(\"Leader is on store 1\")") })
 ```
 
@@ -325,8 +385,11 @@ This sub-command is used to parse a snapshot meta file at given path and print t
 
 To avoid checking the Regions while TiKV is started, you can use the `tombstone` command to set the Regions where the Raft state machine reports an error to Tombstone. Before running this command, use the `bad-regions` command to find out the Regions with errors, so as to combine multiple tools for automated processing.
 
-```bash
-$ tikv-ctl --data-dir /path/to/tikv bad-regions
+```shell
+tikv-ctl --data-dir /path/to/tikv bad-regions
+```
+
+```
 all regions are healthy
 ```
 
@@ -336,14 +399,14 @@ If the command is successfully executed, it prints the above information. If the
 
 - To view in local the properties of Region 2 on the TiKV instance that is deployed in `/path/to/tikv`:
 
-    ```bash
-    $ tikv-ctl --data-dir /path/to/tikv/data region-properties -r 2
+    ```shell
+    tikv-ctl --data-dir /path/to/tikv/data region-properties -r 2
     ```
 
 - To view online the properties of Region 2 on the TiKV instance that is running on `127.0.0.1:20160`:
 
-    ```bash
-    $ tikv-ctl --host 127.0.0.1:20160 region-properties -r 2
+    ```shell
+    tikv-ctl --host 127.0.0.1:20160 region-properties -r 2
     ```
 
 ### Modify the TiKV configuration dynamically
@@ -355,8 +418,6 @@ You can use the `modify-tikv-config` command to dynamically modify the configura
 
 Set the size of `shared block cache`:
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 tikv-ctl --host ip:port modify-tikv-config -n storage.block-cache.capacity -v 10GB
 ```
@@ -367,8 +428,6 @@ success
 
 When `shared block cache` is disabled, set `block cache size` for the `write` CF:
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 tikv-ctl --host ip:port modify-tikv-config -n rocksdb.writecf.block-cache-size -v 256MB
 ```
@@ -377,8 +436,6 @@ tikv-ctl --host ip:port modify-tikv-config -n rocksdb.writecf.block-cache-size -
 success
 ```
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 tikv-ctl --host ip:port modify-tikv-config -n raftdb.defaultcf.disable-auto-compactions -v true
 ```
@@ -386,8 +443,6 @@ tikv-ctl --host ip:port modify-tikv-config -n raftdb.defaultcf.disable-auto-comp
 ```
 success
 ```
-
-{{< copyable "shell-regular" >}}
 
 ```shell
 tikv-ctl --host ip:port modify-tikv-config -n raftstore.sync-log -v false
@@ -399,8 +454,6 @@ success
 
 When the compaction rate limit causes accumulated compaction pending bytes, disable the `rate-limiter-auto-tuned` mode or set a higher limit for the compaction flow:
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 tikv-ctl --host ip:port modify-tikv-config -n rocksdb.rate-limiter-auto-tuned -v false
 ```
@@ -408,8 +461,6 @@ tikv-ctl --host ip:port modify-tikv-config -n rocksdb.rate-limiter-auto-tuned -v
 ```
 success
 ```
-
-{{< copyable "shell-regular" >}}
 
 ```shell
 tikv-ctl --host ip:port modify-tikv-config -n rocksdb.rate-bytes-per-sec -v "1GB"
@@ -435,8 +486,6 @@ The `-s` option accepts multiple `store_id` separated by comma and uses the `-r`
 > - If the `--all-regions` option is used, you are expected to run this command on all the remaining stores connected to the cluster. You need to ensure that these healthy stores stop providing services before recovering the damaged stores. Otherwise, the inconsistent peer lists in Region replicas will cause errors when you run `split-region` or `remove-peer`. This further causes inconsistency between other metadata, and finally, the Regions will become unavailable.
 > - Once you have run `remove-fail-stores`, you cannot restart the removed nodes or add these nodes to the cluster. Otherwise, the metadata will be inconsistent, and finally, the Regions will be unavailable.
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 tikv-ctl --data-dir /path/to/tikv unsafe-recover remove-fail-stores -s 3 -r 1001,1002
 ```
@@ -444,8 +493,6 @@ tikv-ctl --data-dir /path/to/tikv unsafe-recover remove-fail-stores -s 3 -r 1001
 ```
 success!
 ```
-
-{{< copyable "shell-regular" >}}
 
 ```shell
 tikv-ctl --data-dir /path/to/tikv unsafe-recover remove-fail-stores -s 4,5 --all-regions
@@ -465,8 +512,8 @@ Use the `recover-mvcc` command in circumstances where TiKV cannot run normally c
 - Use the `-r` option to specify involved Regions by `region_id`.
 - Use the `-p` option to specify PD endpoints.
 
-```bash
-$ tikv-ctl --data-dir /path/to/tikv recover-mvcc -r 1001,1002 -p 127.0.0.1:2379
+```shell
+tikv-ctl --data-dir /path/to/tikv recover-mvcc -r 1001,1002 -p 127.0.0.1:2379
 success!
 ```
 
@@ -484,14 +531,14 @@ Examples of data access sequence:
 
 To dump an existing RocksDB in HEX:
 
-```bash
-$ tikv-ctl ldb --hex --db=/tmp/db dump
+```shell
+tikv-ctl ldb --hex --db=/tmp/db dump
 ```
 
 To dump the manifest of an existing RocksDB:
 
-```bash
-$ tikv-ctl ldb --hex manifest_dump --path=/tmp/db/MANIFEST-000001
+```shell
+tikv-ctl ldb --hex manifest_dump --path=/tmp/db/MANIFEST-000001
 ```
 
 You can specify the column family that your query is against using the `--column_family=<string>` command line.
@@ -512,8 +559,11 @@ data-dir = "/path/to/tikv/data"
 
 The `--path` option can be used to specify an absolute or relative path to the data file of interest. The command might give empty output if the data file is not encrypted. If `--path` is not provided, encryption info for all data files will be printed.
 
-```bash
-$ tikv-ctl --config=./conf.toml encryption-meta dump-file --path=/path/to/tikv/data/db/CURRENT
+```shell
+tikv-ctl --config=./conf.toml encryption-meta dump-file --path=/path/to/tikv/data/db/CURRENT
+```
+
+```
 /path/to/tikv/data/db/CURRENT: key_id: 9291156302549018620 iv: E3C2FDBF63FC03BFC28F265D7E78283F method: Aes128Ctr
 ```
 
@@ -536,16 +586,22 @@ The `--ids` option can be used to specified a list of comma-separated data encry
 
 When using the command, you will see a prompt warning that the action will expose sensitive information. Type "I consent" to continue.
 
-```bash
-$ ./tikv-ctl --config=./conf.toml encryption-meta dump-key
+```shell
+tikv-ctl --config=./conf.toml encryption-meta dump-key
+```
+
+```
 This action will expose encryption key(s) as plaintext. Do not output the result in file on disk.
 Type "I consent" to continue, anything else to exit: I consent
 current key id: 9291156302549018620
 9291156302549018620: key: 8B6B6B8F83D36BE2467ED55D72AE808B method: Aes128Ctr creation_time: 1592938357
 ```
 
-```bash
-$ ./tikv-ctl --config=./conf.toml encryption-meta dump-key --ids=9291156302549018620
+```shell
+tikv-ctl --config=./conf.toml encryption-meta dump-key --ids=9291156302549018620
+```
+
+```
 This action will expose encryption key(s) as plaintext. Do not output the result in file on disk.
 Type "I consent" to continue, anything else to exit: I consent
 9291156302549018620: key: 8B6B6B8F83D36BE2467ED55D72AE808B method: Aes128Ctr creation_time: 1592938357
@@ -565,11 +621,11 @@ To clean up the damaged SST files, you can run the `bad-ssts` command in TiKV Co
 >
 > Before running this command, stop the running TiKV instance.
 
-```bash
+```shell
 tikv-ctl --data-dir </path/to/tikv> bad-ssts --pd <endpoint>
 ```
 
-```bash
+```
 --------------------------------------------------------
 corruption info:
 data/tikv-21107/db/000014.sst: Corruption: Bad table magic number: expected 9863518390377041911, found 759105309091689679 in data/tikv-21107/db/000014.sst
