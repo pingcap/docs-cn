@@ -318,6 +318,7 @@ SHOW binding_cache status;
 ```
 
 ## 从现有执行计划绑定(Binding from existing plan)
+
 可用于查询计划跳变时固定历史执行计划，使用 `digest` 实现快速的执行计划管理，同时相比使用 Hint 创建绑定的方式更简便。
 
 目前通过现有执行计划绑定有一些限制：
