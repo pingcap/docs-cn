@@ -178,7 +178,7 @@ The following are descriptions of parameters and parameter values that can be co
 | Parameter/Parameter Value    | Description                                             |
 | :------------ | :------------------------------------------------ |
 | `root`        | The username of the downstream database                              |
-| `123456`       | The password of the downstream database                                      |
+| `123456`       | The password of the downstream database (can be encoded using Base64)                                      |
 | `127.0.0.1`    | The IP address of the downstream database                               |
 | `3306`         | The port for the downstream data                                 |
 | `worker-count` | The number of SQL statements that can be concurrently executed to the downstream (optional, `16` by default)       |
@@ -187,7 +187,23 @@ The following are descriptions of parameters and parameter values that can be co
 | `ssl-cert` | The path of the certificate file needed to connect to the downstream MySQL instance (optional) |
 | `ssl-key` | The path of the certificate key file needed to connect to the downstream MySQL instance (optional) |
 | `time-zone` | The time zone used when connecting to the downstream MySQL instance, which is effective since v4.0.8. This is an optional parameter. If this parameter is not specified, the time zone of TiCDC service processes is used. If this parameter is set to an empty value, no time zone is specified when TiCDC connects to the downstream MySQL instance and the default time zone of the downstream is used. |
-| `transaction-atomicity`  |  The atomicity level of a transaction. This is an optional parameter, with the default value of `table`. When the value is `table`, TiCDC ensures the atomicity of a single-table transaction. When the value is `none`, TiCDC splits the single-table transaction.  |
+| `transaction-atomicity`  |  The atomicity level of a transaction. This is an optional parameter, with the default value of `none`. When the value is `table`, TiCDC ensures the atomicity of a single-table transaction. When the value is `none`, TiCDC splits the single-table transaction.  |
+
+To encode the database password in the Sink URI using Base64, use the following command:
+
+```shell
+echo -n '123456' | base64  # '123456' is the password to be encoded.
+```
+
+The encoded password is `MTIzNDU2`:
+
+```shell
+MTIzNDU2
+```
+
+> **Note:**
+>
+> When the sink URI contains special characters such as `! * ' ( ) ; : @ & = + $ , / ? % # [ ]`, you need to escape the special characters, for example, in [URI Encoder](https://meyerweb.com/eric/tools/dencoder/).
 
 #### Configure sink URI with `kafka`
 
@@ -574,23 +590,27 @@ case-sensitive = true
 # Specifies whether to output the old value. New in v4.0.5. Since v5.0, the default value is `true`.
 enable-old-value = true
 
-# Specifies whether to enable the Syncpoint feature, which is supported since v6.3.0.
+# Specifies whether to enable the Syncpoint feature, which is supported since v6.3.0 and is disabled by default.
 # Since v6.4.0, only the changefeed with the SYSTEM_VARIABLES_ADMIN or SUPER privilege can use the TiCDC Syncpoint feature.
-enable-sync-point = true
+enable-sync-point = false
 
 # Specifies the interval at which Syncpoint aligns the upstream and downstream snapshots.
 # The format is in h m s. For example, "1h30m30s".
 # The default value is "10m" and the minimum value is "30s".
-sync-point-interval = "5m"
+# sync-point-interval = "5m"
 
 # Specifies how long the data is retained by Syncpoint in the downstream table. When this duration is exceeded, the data is cleaned up.
 # The format is in h m s. For example, "24h30m30s".
 # The default value is "24h".
-sync-point-retention = "1h"
+# sync-point-retention = "1h"
+
+[mounter]
+# The number of threads with which the mounter decodes KV data. The default value is 16.
+# worker-num = 16
 
 [filter]
 # Ignores the transaction of specified start_ts.
-ignore-txn-start-ts = [1, 2]
+# ignore-txn-start-ts = [1, 2]
 
 # Filter rules.
 # Filter syntax: https://docs.pingcap.com/tidb/stable/table-filter#syntax.

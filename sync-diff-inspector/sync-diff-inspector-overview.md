@@ -82,7 +82,7 @@ check-struct-only = false
     host = "127.0.0.1"
     port = 3306
     user = "root"
-    password = ""
+    password = ""  # The password for connecting to the upstream database. It can be plain text or Base64-encoded.
 
     # (optional) Use mapping rules to match multiple upstream sharded tables. Rule1 and rule2 are configured in the following Routes section.
     route-rules = ["rule1", "rule2"]
@@ -91,7 +91,7 @@ check-struct-only = false
     host = "127.0.0.1"
     port = 4000
     user = "root"
-    password = ""
+    password = ""  # The password for connecting to the downstream database. It can be plain text or Base64-encoded.
 
     # (optional) Use TLS to connect TiDB.
     # security.ca-path = ".../ca.crt"
