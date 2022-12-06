@@ -189,6 +189,14 @@ explain SELECT * FROM t1,t2 WHERE t1.id = t2.id;
 
 在这里 SESSION 作用域内被删除掉的绑定会屏蔽 GLOBAL 作用域内相应的绑定，优化器不会为 `SELECT` 语句添加 `sm_join(t1, t2)` hint，`explain` 给出的执行计划中最上层节点并不被 hint 固定为 MergeJoin，而是由优化器经过代价估算后自主进行选择。
 
+除了上述方式删除绑定外，还可以使用 `sql_digest` 删除对应的绑定。
+
+```sql
+DROP [GLOBAL | SESSION] BINDING FOR SQL DIGEST 'sql_digest';
+```
+
+该语句用于在 GLOBAL 或者 SESSION 作用域内删除 `sql_digest` 对应的的执行计划绑定，在不指定作用域时默认作用域为 SESSION。`sql_digest` 可以使用 [查看绑定](/sql-plan-management.md#查看绑定) 语句获取。
+
 > **注意：**
 >
 > 执行 `DROP GLOBAL BINDING` 会删除当前 tidb-server 实例缓存中的绑定，并将系统表中对应行的状态修改为 'deleted'。该语句不会直接删除系统表中的记录，因为其他 tidb-server 实例需要读取系统表中的 'deleted' 状态来删除其缓存中对应的绑定。对于这些系统表中状态为 'deleted' 的记录，后台线程每隔 100 个 `bind-info-lease`（默认值为 `3s`，合计 `300s`）会触发一次对 `update_time` 在 10 个 `bind-info-lease` 以前的绑定（确保所有 tidb-server 实例已经读取过这个 'deleted' 状态并更新完缓存）的回收清除操作。
@@ -383,34 +391,6 @@ SELECT @@LAST_PLAN_FROM_BINDING;
 |                        1 |
 +--------------------------+
 1 row in set (0.00 sec)
-```
-
-### 删除绑定
-
-```sql
-DROP [GLOBAL | SESSION] BINDING FOR SQL DIGEST 'sql_digest';
-```
-
-该语句用于在 GLOBAL 或者 SESSION 作用域内删除 `sql_digest` 对应的的执行计划绑定，在不指定作用域时默认作用域为 SESSION。`sql_digest` 可以使用 [查看绑定](/sql-plan-management.md#查看绑定) 语句获取。
-
-> **注意：**
->
-> 该语句使用的是 `sql_digest` 而非 `plan_digest`，请勿混淆。
-
-```sql
-DROP BINDING FOR SQL DIGEST '6909a1bbce5f64ade0a532d7058dd77b6ad5d5068aee22a531304280de48349f';
--- 查看语句是否采用绑定
-SELECT * FROM t WHERE a = 1;
-SELECT @@LAST_PLAN_FROM_BINDING;
-```
-
-```
-+--------------------------+
-| @@LAST_PLAN_FROM_BINDING |
-+--------------------------+
-|                        0 |
-+--------------------------+
-1 row in set (0.01 sec)
 ```
 
 ## 自动捕获绑定 (Baseline Capturing)
