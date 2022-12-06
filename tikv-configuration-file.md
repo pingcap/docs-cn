@@ -1686,7 +1686,7 @@ Raft Engine 相关的配置项。
 ### `min-ts-interval`
 
 + 定期推进 Resolved TS 的时间间隔。
-+ 默认值：1s
++ 默认值：200ms
 
 ### `old-value-cache-memory-quota`
 
