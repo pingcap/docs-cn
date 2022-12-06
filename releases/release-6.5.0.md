@@ -148,7 +148,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
 * TiFlash 对获取表行数的操作进行针对优化 [#37165](https://github.com/pingcap/tidb/issues/37165) @[elsa0520](https://github.com/elsa0520)
 
-    在数据分析的场景中，通过无过滤条件的 `count(*)` 获取表的实际行数是一个常见操作。 TiFlash 在新版本中优化了 `count(*)` 的改写，自动选择带有“非空”属性的数据类型最短的列进行计数， 可以有效降低 TiFlash 上发生的 I/O 数量，进而提升获取表行数的执行效率。 
+    在数据分析的场景中，通过无过滤条件的 `count(*)` 获取表的实际行数是一个常见操作。 TiFlash 在新版本中优化了 `count(*)` 的改写，自动选择带有“非空”属性的数据类型最短的列进行计数， 可以有效降低 TiFlash 上发生的 I/O 数量，进而提升获取表行数的执行效率。
 
 
 ### 事务
@@ -169,11 +169,11 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
 * TiDB 全局内存控制 GA [#37816](https://github.com/pingcap/tidb/issues/37816) @[wshwsh12](https://github.com/wshwsh12)
 
-    在 v6.5.0 中，TiDB 中主要的内存消耗都已经能被全局内存控制跟踪到， 当全局内存消耗接近 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 所定义的预设值时，TiDB 会尝试 GC 或取消 SQL 操作等手段限制内存使用，保证 TiDB 的稳定性。 
+    在 v6.5.0 中，TiDB 中主要的内存消耗都已经能被全局内存控制跟踪到， 当全局内存消耗接近 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 所定义的预设值时，TiDB 会尝试 GC 或取消 SQL 操作等手段限制内存使用，保证 TiDB 的稳定性。
 
-    需要注意的是， 会话中事务所消耗的内存 (由配置项 [`txn-total-size-limit`](/tidb-configuration-file.md#txn-total-size-limit) 设置最大值) 如今会被内存管理模块跟踪： 当单个会话的内存消耗达到系统变量 [`tidb_mem_quota_query`](/system-variables.md#tidbmemquotaquery) 所定义的阀值时，将会触发系统变量 [tidb-mem-oom-action](/system-variables.md#tidbmemoomaction-span-classversion-mark从-v610-版本开始引入span) 所定义的行为 (默认为 `CANCEL` ，即取消操作)。  为了保证行为向前兼容，当配置 [`txn-total-size-limit`](/tidb-configuration-file.md#txn-total-size-limit) 为非默认值时， TiDB 仍旧会保证事务使用到这么大的内存而不被取消。 
-    
-    对于运行 v6.5.0 及以上版本的客户，建议移除配置项 [`txn-total-size-limit`](/tidb-configuration-file.md#txn-total-size-limit)，取消对事务内存做单独的限制，转而由系统变量 [`tidb_mem_quota_query`](/system-variables.md#tidbmemquotaquery) 和 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 对全局内存进行管理，从而提高内存的使用效率。 
+    需要注意的是， 会话中事务所消耗的内存 (由配置项 [`txn-total-size-limit`](/tidb-configuration-file.md#txn-total-size-limit) 设置最大值) 如今会被内存管理模块跟踪： 当单个会话的内存消耗达到系统变量 [`tidb_mem_quota_query`](/system-variables.md#tidbmemquotaquery) 所定义的阀值时，将会触发系统变量 [tidb-mem-oom-action](/system-variables.md#tidbmemoomaction-span-classversion-mark从-v610-版本开始引入span) 所定义的行为 (默认为 `CANCEL` ，即取消操作)。  为了保证行为向前兼容，当配置 [`txn-total-size-limit`](/tidb-configuration-file.md#txn-total-size-limit) 为非默认值时， TiDB 仍旧会保证事务使用到这么大的内存而不被取消。
+
+    对于运行 v6.5.0 及以上版本的客户，建议移除配置项 [`txn-total-size-limit`](/tidb-configuration-file.md#txn-total-size-limit)，取消对事务内存做单独的限制，转而由系统变量 [`tidb_mem_quota_query`](/system-variables.md#tidbmemquotaquery) 和 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 对全局内存进行管理，从而提高内存的使用效率。
 
     更多信息，请参考[用户文档](/configure-memory-usage.md)。
 
@@ -283,9 +283,21 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 | [`tidb_enable_metadata_lock`](/system-variables.md#tidb_enable_metadata_lock-从-v630-版本开始引入) | 修改 | 该变量默认值从 `OFF` 修改为 `ON`，表示默认开启元数据锁。 |
 | [`tidb_ddl_enable_fast_reorg`](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) | 修改 | 该变量默认值从 `OFF` 修改为 `ON`，表示默认开启创建索引加速功能。 |
 | [`default_password_lifetime`](/system-variables.md#default_password_lifetime-从-v650-版本开始引入) | 新增 | 用于设置全局自动密码过期策略，要求用户定期修改密码。默认值为 `0` ，表示禁用全局自动密码过期策略 |
-| [`disconnect_on_expired_password`](/system-variables.md#disconnect_on_expired_password-从-v650-版本开始引入) | 新增 | 该变量一个只读变量，用来显示 TiDB 是否会直接断开密码已过期用户的连接 |
+| [`disconnect_on_expired_password`](/system-variables.md#disconnect_on_expired_password-从-v650-版本开始引入) | 新增 | 该变量是一个只读变量，用来显示 TiDB 是否会直接断开密码已过期用户的连接 |
 | [`password_history`](/system-variables.md#password_history-从-v650-版本开始引入) | 新增 | 基于密码更改次数的密码重用策略，不允许用户重复使用最近设置次数内使用过的密码。默认值为 `0`，表示禁用基于密码更改次数的密码重用策略 |
 | [`password_reuse_interval`](/system-variables.md#password_reuse_interval-从-v650-版本开始引入) | 新增 | 基于经过时间限制的密码重用策略，不允许用户重复使用最近设置天数内使用过的密码。默认值为 `0`，表示禁用基于密码更改次数的密码重用策略 |
+| [`tidb_cdc_write_source`](/system-variables.md#tidb_cdc_write_source-从-v650-版本开始引入) | 新增 | 当变量非 `0` 时，该 SESSION 写入的数据将被视为是由 TiCDC 写入的。这个变量仅由 TiCDC 设置，任何时候都不应该手动调整该变量。 |
+| [`tidb_source_id`](/system-variables.md#tidb_source_id-从-v650-版本开始引入) | 新增 | 设置在[双向复制](/ticdc/ticdc-bidirectional-replication.md)系统内不同集群的 ID。|
+| [`tidb_ttl_delete_batch_size`](/system-variables.md#tidb_ttl_delete_batch_size-从-v650-版本开始引入) | 新增 | 这个变量用于设置 TTL 任务中单个删除事务中允许删除的最大行数。|
+| [`tidb_ttl_delete_rate_limit`](/system-variables.md#tidb_ttl_delete_rate_limit-从-v650-版本开始引入) | 新增 | 这个变量用来对每个 TiDB 节点的 TTL 删除操作进行限流。其值代表了在 TTL 任务中单个节点每秒允许 `DELETE` 语句执行的最大次数。当此变量设置为 `0` 时，则表示不做限制。|
+| [`tidb_ttl_delete_worker_count`](/system-variables.md#tidb_ttl_delete_worker_count-从-v650-版本开始引入) | 新增 | 这个变量用于设置每个 TiDB 节点上 TTL 删除任务的最大并发数。|
+| [`tidb_ttl_job_enable`](/system-variables.md#tidb_ttl_job_enable-从-v650-版本开始引入) | 新增 | 这个变量用于控制是否启动 TTL 后台清理任务。如果设置为 `OFF`，所有具有 TTL 属性的表会自动停止清理过期数据。|
+| [`tidb_ttl_job_run_interval`](/system-variables.md#tidb_ttl_job_run_interval-从-v650-版本开始引入) | 新增 | 这个变量用于控制 TTL 后台清理任务的调度周期。比如，如果当前值设置成了 `1h0m0s`，则代表每张设置了 TTL 属性的表会每小时清理一次过期数据。|
+| [`tidb_ttl_job_schedule_window_start_time`](/system-variables.md#tidb_ttl_job_schedule_window_start_time-从-v650-版本开始引入) | 新增 | 这个变量用于控制 TTL 后台清理任务的调度窗口的起始时间。请谨慎调整此参数，过小的窗口有可能会造成过期数据的清理无法完成。|
+| [`tidb_ttl_job_schedule_window_end_time`](/system-variables.md#tidb_ttl_job_schedule_window_end_time-从-v650-版本开始引入) | 新增 | 这个变量用于控制 TTL 后台清理任务的调度窗口的结束时间。请谨慎调整此参数，过小的窗口有可能会造成过期数据的清理无法完成。|
+| [`tidb_ttl_scan_batch_size`](/system-variables.md#tidb_ttl_scan_batch_size-从-v650-版本开始引入) | 新增 | 这个变量用于设置 TTL 任务中用来扫描过期数据的每个 `SELECT` 语句的 `LIMIT` 的值。|
+| [`tidb_ttl_scan_worker_count`](/system-variables.md#tidb_ttl_scan_worker_count-从-v650-版本开始引入) | 新增 | 这个变量用于设置每个 TiDB 节点 TTL 扫描任务的最大并发数。|
+
 | [`validate_password.check_user_name`](/system-variables.md#validate_passwordcheck_user_name-从-v650-版本开始引入) | 新增 | 密码复杂度策略检查项，设置的用户密码不允许密码与当前会话账户的用户名部分相同。只有 [`validate_password.enable`](/system-variables.md#validate_passwordenable-从-v650-版本开始引入) 开启时，该变量才生效。默认值为 `ON` |
 | [`validate_password.dictionary`](/system-variables.md#validate_passworddictionary-从-v650-版本开始引入) | 新增 | 密码复杂度策略检查项，密码字典功能，设置的用户密码不允许包含字典中的单词。只有 [`validate_password.enable`](/system-variables.md#validate_passwordenable-从-v650-版本开始引入) 开启且 [validate_password.policy](/system-variables.md#validate_passwordpolicy-从-v650-版本开始引入) 设置为 `2` (STRONG) 时，该变量才生效。默认值为空 |
 | [`validate_password.enable`](/system-variables.md#validate_passwordenable-从-v650-版本开始引入) | 新增 | 密码复杂度策略检查的开关，设置为 `ON` 后，TiDB 才进行密码复杂度检查。默认值为 `OFF` |
