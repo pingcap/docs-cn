@@ -362,6 +362,22 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 设置 `tidb_auth_token` 认证方式的 JWKS 刷新时间间隔。
 + 默认值：1h
 
+### `session-token-signing-cert` <span class="version-mark">从 v6.4.0 版本开始引入</span>
+
+> **警告：**
+>
+> 该配置与一个未发布的特性相关。**请勿设置该配置**。
+
++ 默认值：""
+
+### `session-token-signing-key` <span class="version-mark">从 v6.4.0 版本开始引入</span>
+
+> **警告：**
+>
+> 该配置与一个未发布的特性相关。**请勿设置该配置**。
+
++ 默认值：""
+
 ## performance
 
 性能相关配置。
