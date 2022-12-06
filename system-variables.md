@@ -2291,6 +2291,15 @@ For a system upgraded to v5.0 from an earlier version, if you have not modified 
 - This variable is used to set the concurrency of the `index lookup join` algorithm.
 - A value of `-1` means that the value of `tidb_executor_concurrency` will be used instead.
 
+### tidb_index_merge_intersection_concurrency <span class="version-mark">New in v6.5.0</span>
+
+- Scope: SESSION | GLOBAL
+- Persists to cluster: Yes
+- Default value: `-1`
+- Range: `[1, 256]`
+- This variable sets the maximum concurrency for the intersection operations that index merge performs. It is effective only when TiDB accesses partitioned tables in the dynamic pruning mode. The actual concurrency is the smaller value of `tidb_index_merge_intersection_concurrency` and the number of partitions of the partitioned table.
+- The default value `-1` means that the value of `tidb_executor_concurrency` is used.
+
 ### tidb_index_lookup_size
 
 - Scope: SESSION | GLOBAL
