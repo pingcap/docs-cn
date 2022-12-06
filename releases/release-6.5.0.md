@@ -26,26 +26,27 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
 ### SQL
 
-* 添加索引的性能提升 10 倍 [#35983](https://github.com/pingcap/tidb/issues/35983) @[benjamin2037](https://github.com/benjamin2037) @[tangenta](https://github.com/tangenta) **tw@Oreoxmt**
+* TiDB 添加索引的性能提升为原来的 10 倍 [#35983](https://github.com/pingcap/tidb/issues/35983) @[benjamin2037](https://github.com/benjamin2037) @[tangenta](https://github.com/tangenta) **tw@Oreoxmt**
 
-    TiDB v6.3.0 引入了[添加索引加速](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入)功能提升创建索引回填过程的速度，v6.5.0 版本该功能正式 GA 并默认打开，预期大表添加索引的性能提升约为原来的 10 倍。适用于单条 SQL 语句串行添加索引的场景，在多条 SQL 并行添加索引时仅对其中一条添加索引的 SQL 语句生效。
+    TiDB v6.3.0 引入了[添加索引加速](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入)作为实验特性，提升了添加索引回填过程的速度。该功能在 v6.5.0 正式 GA 并默认打开，预期大表添加索引的性能提升约为原来的 10 倍。添加索引加速适用于单条 SQL 语句串行添加索引的场景，在多条 SQL 并行添加索引时仅对其中一条添加索引的 SQL 语句生效。
 
 * 提供轻量级元数据锁，提升 DDL 变更过程 DML 的成功率 [#37275](https://github.com/pingcap/tidb/issues/37275) @[wjhuang2016](https://github.com/wjhuang2016) **tw@Oreoxmt**
 
-    TiDB v6.3.0 引入了[元数据锁](/metadata-lock.md)特性通过协调表元数据变更过程中 DML 语句和 DDL 语句的优先级，让执行中的 DDL 语句等待持有旧版本元数据的 DML 语句提交，尽可能避免 DML 语句的 `Information schema is changed` 错误，v6.5.0 版本该功能正式 GA 并默认打开，适用于各类 DDL 变更场景。
+    TiDB v6.3.0 引入了[元数据锁](/metadata-lock.md)作为实验特性，通过协调表元数据变更过程中 DML 语句和 DDL 语句的优先级，让执行中的 DDL 语句等待持有旧版本元数据的 DML 语句提交，尽可能避免 DML 语句的 `Information schema is changed` 错误。该功能在 v6.5.0 正式 GA 并默认打开，适用于各类 DDL 变更场景。
+
+    更多信息，请参考[用户文档](/metadata-lock.md)。
 
 * 支持通过 `FLASHBACK CLUSTER TO TIMESTAMP` 命令将集群快速回退到特定的时间点 [#37197](https://github.com/pingcap/tidb/issues/37197) [#13303](https://github.com/tikv/tikv/issues/13303) @[Defined2014](https://github.com/Defined2014) @[bb7133](https://github.com/bb7133) @[JmPotato](https://github.com/JmPotato) @[Connor1996](https://github.com/Connor1996) @[HuSharp](https://github.com/HuSharp) @[CalvinNeo](https://github.com/CalvinNeo)  **tw@Oreoxmt**
 
-    TiDB v6.4.0 引入 `FLASHBACK CLUSTER TO TIMESTAMP` 语句支持在 Garbage Collection (GC) life time 内快速回退整个集群到指定的时间点，v6.5.0 版本该功能正式 GA，适用于快速撤消 DML 误操作，支持集群分钟级别的快速回退，支持在允许时间段内反复回退，并兼容 PITR 和 TiCDC 等工具。
+    TiDB v6.4.0 引入了 [`FLASHBACK CLUSTER TO TIMESTAMP`](/sql-statements/sql-statement-flashback-to-timestamp.md) 语句作为实验特性，支持在 Garbage Collection (GC) life time 内快速回退整个集群到指定的时间点。该功能在 v6.5.0 正式 GA，适用于快速撤消 DML 误操作、支持集群分钟级别的快速回退、支持在时间线上多次回退以确定特定数据更改发生的时间，并兼容 PITR 和 TiCDC 等工具。
 
     更多信息，请参考[用户文档](/sql-statements/sql-statement-flashback-to-timestamp.md)。
 
-* 完整支持非事务 DML 语句。其中包括非事务 `INSERT`、`REPLACE`、`UPDATE` 和 `DELETE`。[#33485](https://github.com/pingcap/tidb/issues/33485)  @[ekexium](https://github.com/ekexium) **tw@Oreoxmt**
+* 完整支持包含 `INSERT`、`REPLACE`、`UPDATE` 和 `DELETE` 的非事务 DML 语句 [#33485](https://github.com/pingcap/tidb/issues/33485) @[ekexium](https://github.com/ekexium) **tw@Oreoxmt**
 
-    在大批量的数据处理场景，单一大事务 SQL 处理有可能对集群稳定性和性能造成影响。非事务 DML 语句将一个 DML 语句拆成多个语句在内部执行。拆分后的语句将牺牲事务原子性和隔离性，但是对于集群的稳定性有很大提升。
-    其中非事务 `DELETE` 在 v6.1.0 已经支持，非事务 `INSERT`、`REPLACE` 和 `UPDATE` 在 v6.5.0 支持。
+    在大批量的数据处理场景，单一大事务 SQL 处理可能对集群稳定性和性能造成影响。非事务 DML 语句将一个 DML 语句拆成多个 SQL 语句在内部执行。拆分后的语句将牺牲事务原子性和隔离性，但是对于集群的稳定性有很大提升。TiDB 从 v6.1.0 开始支持非事务 `DELETE` 语句，v6.5.0 新增对非事务 `INSERT`、`REPLACE` 和 `UPDATE` 语句的支持。
 
-    更多信息，请参考[非事务 DML 语句](/non-transactional-dml.md) 和 [BATCH](/sql-statements/sql-statemetn-batch.md)。
+    更多信息，请参考[非事务 DML 语句](/non-transactional-dml.md) 和 [BATCH](/sql-statements/sql-statement-batch.md)。
 
 * 支持 Time to live (TTL)（实验特性）**tw@ran-huang**
 
@@ -127,9 +128,9 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
     * `regexp_instr`
     * `regexp_substr`
 
-* 新增全局 hint 干预[视图](/develop/dev-guide-use-views.md)内查询的计划生成 [#37887](https://github.com/pingcap/tidb/issues/37887) @[Reminiscent](https://github.com/Reminiscent) **tw@Oreoxmt**
+* 新增全局 Hint 干预[视图](/views.md)内查询的计划生成 [#37887](https://github.com/pingcap/tidb/issues/37887) @[Reminiscent](https://github.com/Reminiscent) **tw@Oreoxmt**
 
-    [视图](/develop/dev-guide-use-views.md)是数据库常见的建模方式。 当 SQL 语句中包含对视图的访问时，部分情况下需要用 hint 对视图内查询的执行计划进行干预，以获得最佳性能。 在 v6.5.0 中， TiDB 允许针对视图内的查询块添加全局 hint 。 全局 hint 由 “查询块命名” 和 “ hint 引用” 两部分组成，为包含复杂视图嵌套的 SQL 提供 hint 的注入手段， 增强了执行计划控制能力， 进而稳定复杂 SQL 的执行性能。
+    当 SQL 语句中包含对视图的访问时，部分情况下需要用 Hint 对视图内查询的执行计划进行干预，以获得最佳性能。在 v6.5.0 中，TiDB 允许针对视图内的查询块添加全局 Hint，使查询中定义的 Hint 能够在视图内部生效。全局 Hint 由[查询块命名](/optimizer-hints.md#第-1-步使用-qb_name-hint-重命名视图内的查询块)和 [Hint 引用](/optimizer-hints.md#第-2-步添加实际需要的-hint)两部分组成。该特性为包含复杂视图嵌套的 SQL 提供 Hint 的注入手段，增强了执行计划控制能力，进而稳定复杂 SQL 的执行性能。
 
     更多信息，请参考[用户文档](/optimizer-hints.md#全局生效的-Hint)。
 
@@ -137,11 +138,11 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
     [分区表](/partitioned-table.md)在 v6.1.0 正式 GA， TiDB 持续提升分区表相关的性能。 在 v6.5.0 中， 排序操作如 `ORDER BY`, `LIMIT` 能够下推至 TiKV 进行计算和过滤，降低网络 I/O 的开销，提升了使用分区表时 SQL 的性能。
 
-* 优化器代价模型 V2 GA [#35240](https://github.com/pingcap/tidb/issues/35240) @[qw4990](https://github.com/qw4990) **tw@Oreoxmt**
+* 优化器代价模型 Cost Model Version 2 GA [#35240](https://github.com/pingcap/tidb/issues/35240) @[qw4990](https://github.com/qw4990) **tw@Oreoxmt**
 
-    TiDB v6.2.0 引入了新的代价模型 [Cost Model Version 2](/cost-model.md#cost-model-version-2)，通过更准确的代价估算方式，更加有利于选到最优执行计划，尤其在部署了 TiFlash 的情况下，新的代价模型自动选择合理的存储引擎，避免过多的人工介入。 经过一段时间真实场景的测试，这个模型在 v6.5.0 正式 GA，新创建的集群将默认使用新代价模型。 对于升级到 v6.5.0 的用户， 由于新的代价模型可能会改变原有的执行计划，在经过充分的性能测试之后，可以通过变量 [`tidb_cost_model_version`](/system-variables.md#tidb_cost_model_version-从-v620-版本开始引入) 切换到新的代价模型。
+    TiDB v6.2.0 引入了代价模型 [Cost Model Version 2](/cost-model.md#cost-model-version-2) 作为实验特性，通过更准确的代价估算方式，有利于最优执行计划的选择。尤其在部署了 TiFlash 的情况下，Cost Model Version 2 自动选择合理的存储引擎，避免过多的人工介入。经过一段时间真实场景的测试，这个模型在 v6.5.0 正式 GA。新创建的集群将默认使用 Cost Model Version 2。对于升级到 v6.5.0 的集群，由于 Cost Model Version 2 可能会改变原有的执行计划，在经过充分的性能测试之后，你可以通过设置变量 [`tidb_cost_model_version = 2`](/system-variables.md#tidb_cost_model_version-从-v620-版本开始引入) 使用新的代价模型。
 
-    优化器代价模型 V2 的 GA，大幅提升了 TiDB 优化器的整体能力，并切实地向更加强大的 HTAP 数据库演进。
+    Cost Model Version 2 的 GA，大幅提升了 TiDB 优化器的整体能力，并切实地向更加强大的 HTAP 数据库演进。
 
     更多信息，请参考[用户文档](/cost-model.md#cost-model-version-2)。
 
@@ -192,9 +193,9 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
 ### MySQL 兼容性
 
-* 支持高性能、全局单调递增的 AUTO_INCREMENT 列属性 [#38442](https://github.com/pingcap/tidb/issues/38442) @[tiancaiamao](https://github.com/tiancaiamao) **tw@Oreoxmt**
+* 支持高性能、全局单调递增的 `AUTO_INCREMENT` 列属性 [#38442](https://github.com/pingcap/tidb/issues/38442) @[tiancaiamao](https://github.com/tiancaiamao) **tw@Oreoxmt**
 
-    TiDB v6.4.0 引入了 AUTO_INCREMENT 的 MySQL 兼容模式，通过中心化分配自增 ID，实现了自增 ID 在所有 TiDB 实例上单调递增，v6.5.0 版本该功能正式 GA，使用该兼容模式的单表写入 TPS 预期超过 2 万，并支持通过弹性扩容提升单表和整个集群的写入吞吐。使用该特性能够更容易地实现查询结果按自增 ID 排序。要使用 MySQL 兼容模式，你需要在建表时将 AUTO_ID_CACHE 设置为 1。
+    TiDB v6.4.0 引入了 `AUTO_INCREMENT` 的 MySQL 兼容模式作为实验特性，通过中心化分配自增 ID，实现了自增 ID 在所有 TiDB 实例上单调递增。使用该特性能够更容易地实现查询结果按自增 ID 排序。该功能在 v6.5.0 正式 GA。使用该功能的单表写入 TPS 预期超过 2 万，并支持通过弹性扩容提升单表和整个集群的写入吞吐。要使用 MySQL 兼容模式，你需要在建表时将 `AUTO_ID_CACHE` 设置为 `1`。
 
     ```sql
     CREATE TABLE t(a int AUTO_INCREMENT key) AUTO_ID_CACHE 1;
