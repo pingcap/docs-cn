@@ -66,6 +66,7 @@ TiDB 版本：6.1.3
     + TiCDC
 
         - 修复在执行 DDL 后，暂停然后恢复 changefeed 会导致数据丢失的问题 [#7682](https://github.com/pingcap/tiflow/issues/7682) @[asddongmen](https://github.com/asddongmen)
+        - 修复下游网络发生异常时 sink 模块不能正确处理导致卡住的问题 [#7706](https://github.com/pingcap/tiflow/issues/7706) @[hicqu](https://github.com/hicqu)
 
     + TiDB Data Migration (DM)
 
