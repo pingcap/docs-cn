@@ -216,7 +216,7 @@ SHOW [GLOBAL | SESSION] BINDINGS [ShowLikeOrWhere];
 该语句会按照绑定更新时间由新到旧的顺序输出 GLOBAL 或者 SESSION 作用域内的执行计划绑定，在不指定作用域时默认作用域为 SESSION。目前 `SHOW BINDINGS` 会输出 11 列，具体如下：
 
 | 列名 | 说明            |
-| -------- | ------ |
+| -------- | ------------- |
 | original_sql  |  参数化后的原始 SQL |
 | bind_sql | 带 Hint 的绑定 SQL |
 | default_db | 默认数据库名 |
