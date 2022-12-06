@@ -365,7 +365,7 @@ TiSpark 的主要特性如下：
 
 ### Expression index 支持
 
-TiDB v5.0 开始支持 [expression index](/sql-statements/sql-statement-create-index.md#expression-index)。
+TiDB v5.0 开始支持 [expression index](/sql-statements/sql-statement-create-index.md#表达式索引)。
 
 TiSpark 目前支持从 `expression index` 的表中获取数据, 但 `expression index` 不会被 TiSpark 执行计划使用。
 
@@ -428,7 +428,7 @@ spark.sql.tidb.password $your_tidb_server_password
 - [下推](https://github.com/pingcap/tispark/blob/master/docs/features/push_down.md)
 - [TiSpark 删除](https://github.com/pingcap/tispark/blob/master/docs/features/delete_userguide.md)
 - [历史读](https://github.com/pingcap/tispark/blob/master/docs/features/stale_read.md)
-- [TiSpark TLS](#tls-configurations)
+- [TiSpark TLS](#TLS-配置)
 - [TiSpark 遥测](https://github.com/pingcap/tispark/blob/master/docs/features/telemetry.md)
 - [TiSpark 执行计划](https://github.com/pingcap/tispark/blob/master/docs/features/query_execution_plan_in_TiSpark.md)
 
