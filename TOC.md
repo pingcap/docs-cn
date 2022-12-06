@@ -150,6 +150,7 @@
       - BR 特性
         - [自动调节](/br/br-auto-tune.md)
         - [批量建表](/br/br-batch-create-table.md)
+        - [断点备份](/br/br-checkpoint.md)
       - [使用 Dumpling 和 TiDB Lightning 备份与恢复](/backup-and-restore-using-dumpling-lightning.md)
       - [备份与恢复 RawKV](/br/rawkv-backup-and-restore.md)
       - [增量备份与恢复](/br/br-incremental-guide.md)
@@ -307,6 +308,7 @@
       - TiUP Cluster 命令
         - [TiUP Cluster 命令概览](/tiup/tiup-component-cluster.md)
         - [tiup cluster audit](/tiup/tiup-component-cluster-audit.md)
+        - [tiup cluster audit cleanup](/tiup/tiup-component-cluster-audit-cleanup.md)
         - [tiup cluster check](/tiup/tiup-component-cluster-check.md)
         - [tiup cluster clean](/tiup/tiup-component-cluster-clean.md)
         - [tiup cluster deploy](/tiup/tiup-component-cluster-deploy.md)
@@ -421,10 +423,12 @@
       - [创建数据源](/dm/quick-start-create-source.md)
       - [数据源操作](/dm/dm-manage-source.md)
       - [任务配置向导](/dm/dm-task-configuration-guide.md)
-      - [Table routing](/dm/dm-key-features.md#table-routing)
-      - [Block & Allow Lists](/dm/dm-key-features.md#block--allow-table-lists)
-      - [过滤 binlog 事件](/dm/dm-key-features.md#binlog-event-filter)
+      - [分库分表合并](/dm/dm-shard-merge.md)
+      - [表路由](/dm/dm-table-routing.md)
+      - [黑白名单](/dm/dm-block-allow-table-lists.md)
+      - [过滤 binlog 事件](/dm/dm-binlog-event-filter.md)
       - [通过 SQL 表达式过滤 DML](/dm/feature-expression-filter.md)
+      - [Online DDL 工具支持](/dm/dm-online-ddl-tool-support.md)
       - 迁移任务操作
         - [任务前置检查](/dm/dm-precheck.md)
         - [创建任务](/dm/dm-create-task.md)
@@ -497,6 +501,33 @@
         - [常见问题](/dm/dm-faq.md)
         - [错误处理及恢复](/dm/dm-error-handling.md)
       - [版本发布历史](/dm/dm-release-notes.md)
+  - TiCDC
+    - [概述](/ticdc/ticdc-overview.md)
+    - [安装部署与集群运维](/ticdc/deploy-ticdc.md)
+    - Changefeed
+      - [Changefeed 概述](/ticdc/ticdc-changefeed-overview.md)
+      - 创建 Changefeed
+        - [同步数据到 MySQL 兼容的数据库](/ticdc/ticdc-sink-to-mysql.md)
+        - [同步数据到 Kafka](/ticdc/ticdc-sink-to-kafka.md)
+      - [管理 Changefeed](/ticdc/ticdc-manage-changefeed.md)
+      - [日志过滤器](/ticdc/ticdc-filter.md)
+      - [双向复制](/ticdc/ticdc-bidirectional-replication.md)
+    - 监控告警
+      - [监控指标](/ticdc/monitor-ticdc.md)
+      - [报警规则](/ticdc/ticdc-alert-rules.md)
+    - 参考指南
+      - [架构设计与原理](/ticdc/ticdc-architecture.md)
+      - [TiCDC Server 配置参数](/ticdc/ticdc-server-config.md)
+      - [TiCDC Changefeed 配置参数](/ticdc/ticdc-changefeed-config.md)
+      - 输出数据协议
+        - [TiCDC Avro Protocol](/ticdc/ticdc-avro-protocol.md)
+        - [TiCDC Canal-JSON Protocol](/ticdc/ticdc-canal-json.md)
+        - [TiCDC Open Protocol](/ticdc/ticdc-open-protocol.md)
+      - [TiCDC Open API](/ticdc/ticdc-open-api.md)
+      - [兼容性](/ticdc/ticdc-compatibility.md)
+    - [故障处理](/ticdc/troubleshoot-ticdc.md)
+    - [常见问题解答](/ticdc/ticdc-faq.md)
+    - [术语表](/ticdc/ticdc-glossary.md)
   - TiDB Binlog
     - [概述](/tidb-binlog/tidb-binlog-overview.md)
     - [快速上手](/tidb-binlog/get-started-with-tidb-binlog.md)
@@ -517,21 +548,6 @@
       - [故障诊断](/tidb-binlog/troubleshoot-tidb-binlog.md)
       - [常见错误修复](/tidb-binlog/handle-tidb-binlog-errors.md)
     - [FAQ](/tidb-binlog/tidb-binlog-faq.md)
-  - TiCDC
-    - [概述](/ticdc/ticdc-overview.md)
-    - [安装部署](/ticdc/deploy-ticdc.md)
-    - [运维管理](/ticdc/manage-ticdc.md)
-    - 监控告警
-      - [监控指标](/ticdc/monitor-ticdc.md)
-      - [报警规则](/ticdc/ticdc-alert-rules.md)
-    - [故障处理](/ticdc/troubleshoot-ticdc.md)
-    - 参考指南
-      - [TiCDC Open API](/ticdc/ticdc-open-api.md)
-      - [TiCDC Open Protocol](/ticdc/ticdc-open-protocol.md)
-      - [TiCDC Avro Protocol](/ticdc/ticdc-avro-protocol.md)
-      - [TiCDC Canal-JSON Protocol](/ticdc/ticdc-canal-json.md)
-    - [常见问题解答](/ticdc/ticdc-faq.md)
-    - [术语表](/ticdc/ticdc-glossary.md)
   - TiUniManager
     - [概述](/tiunimanager/tiunimanager-overview.md)
     - [安装和运维](/tiunimanager/tiunimanager-install-and-maintain.md)
@@ -582,6 +598,7 @@
     - [与 MySQL 安全特性差异](/security-compatibility-with-mysql.md)
     - [权限管理](/privilege-management.md)
     - [TiDB 用户账户管理](/user-account-management.md)
+    - [TiDB 密码管理](/password-management.md)
     - [基于角色的访问控制](/role-based-access-control.md)
     - [TiDB 证书鉴权使用指南](/certificate-authentication.md)
   - SQL
@@ -926,6 +943,7 @@
   - v6.2
     - [6.2.0-DMR](/releases/release-6.2.0.md)
   - v6.1
+    - [6.1.3](/releases/release-6.1.3.md)
     - [6.1.2](/releases/release-6.1.2.md)
     - [6.1.1](/releases/release-6.1.1.md)
     - [6.1.0](/releases/release-6.1.0.md)
@@ -937,6 +955,7 @@
     - [5.4.1](/releases/release-5.4.1.md)
     - [5.4.0](/releases/release-5.4.0.md)
   - v5.3
+    - [5.3.4](/releases/release-5.3.4.md)
     - [5.3.3](/releases/release-5.3.3.md)
     - [5.3.2](/releases/release-5.3.2.md)
     - [5.3.1](/releases/release-5.3.1.md)
