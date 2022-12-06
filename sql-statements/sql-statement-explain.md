@@ -333,7 +333,7 @@ EXPLAIN FORMAT = "tidb_json" SELECT id FROM t WHERE a = 1;
 
 * `EXPLAIN` 的格式和 TiDB 中潜在的执行计划都与 MySQL 有很大不同。
 * TiDB 不支持 `FORMAT=JSON` 或 `FORMAT=TREE` 选项。
-* TiDB 支持的 `FORMAT=TIDB_JSON` 是对当前默认 `EXPLAIN` 格式的 JSON 编码，与 MySQL 的 `FORMAT=JSON` 结果的格式、字段信息都不同。
+* TiDB 支持的 `FORMAT=tidb_json` 是对当前默认 `EXPLAIN` 格式的 JSON 编码，与 MySQL 的 `FORMAT=JSON` 结果的格式、字段信息都不同。
 
 ## `EXPLAIN FOR CONNECTION`
 
