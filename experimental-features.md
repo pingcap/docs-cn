@@ -45,6 +45,10 @@ summary: 了解 TiDB 各版本的实验特性。
 + 将 Region 划分为更小的区间 bucket，并且[以 bucket 作为并发查询单位](/tune-region-performance.md#使用-bucket-增加并发)，以提高扫描数据的并发度。（v6.1.0 实验特性）
 + TiKV 引入 [API v2](/tikv-configuration-file.md#api-version-从-v610-版本开始引入)。（v6.1.0 实验特性）
 
+## 备份与恢复
+
+- [RawKV 备份和恢复](/br/rawkv-backup-and-restore.md)。（v3.1 实验特性）
+
 ## 数据迁移
 
 + [使用 WebUI](/dm/dm-webui-guide.md) 管理 DM 迁移任务。（v6.0 实验特性）
