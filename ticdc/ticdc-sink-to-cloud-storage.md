@@ -14,12 +14,12 @@ summary: 了解如何使用 TiCDC 将数据同步到存储服务
 ```shell
 cdc cli changefeed create \
     --server=http://10.0.10.25:8300 \
-    --sink-uri="s3://logbucket/storage_test?force-path-style=true&protocol=canal-json" \
+    --sink-uri="s3://logbucket/storage_test?protocol=canal-json" \
     --changefeed-id="simple-replication-task"
 ```
 
 ```shell
-Info: {"upstream_id":7171388873935111376,"namespace":"default","id":"simple-replication-task","sink_uri":"s3://logbucket/storage_test?force-path-style=true\u0026protocol=canal-json","create_time":"2022-11-29T18:52:05.566016967+08:00","start_ts":437706850431664129,"engine":"unified","config":{"case_sensitive":true,"enable_old_value":true,"force_replicate":false,"ignore_ineligible_table":false,"check_gc_safe_point":true,"enable_sync_point":false,"sync_point_interval":600000000000,"sync_point_retention":86400000000000,"filter":{"rules":["*.*"],"event_filters":null},"mounter":{"worker_num":16},"sink":{"protocol":"canal-json","schema_registry":"","csv":{"delimiter":",","quote":"\"","null":"\\N","include_commit_ts":false},"column_selectors":null,"transaction_atomicity":"none","encoder_concurrency":16,"terminator":"\r\n","date_separator":"none","enable_partition_separator":false},"consistent":{"level":"none","max_log_size":64,"flush_interval":2000,"storage":""}},"state":"normal","creator_version":"v6.5.0-master-dirty"}
+Info: {"upstream_id":7171388873935111376,"namespace":"default","id":"simple-replication-task","sink_uri":"s3://logbucket/storage_test?protocol=canal-json","create_time":"2022-11-29T18:52:05.566016967+08:00","start_ts":437706850431664129,"engine":"unified","config":{"case_sensitive":true,"enable_old_value":true,"force_replicate":false,"ignore_ineligible_table":false,"check_gc_safe_point":true,"enable_sync_point":false,"sync_point_interval":600000000000,"sync_point_retention":86400000000000,"filter":{"rules":["*.*"],"event_filters":null},"mounter":{"worker_num":16},"sink":{"protocol":"canal-json","schema_registry":"","csv":{"delimiter":",","quote":"\"","null":"\\N","include_commit_ts":false},"column_selectors":null,"transaction_atomicity":"none","encoder_concurrency":16,"terminator":"\r\n","date_separator":"none","enable_partition_separator":false},"consistent":{"level":"none","max_log_size":64,"flush_interval":2000,"storage":""}},"state":"normal","creator_version":"v6.5.0-master-dirty"}
 ```
 
 - `--changefeed-id`：同步任务的 ID，格式需要符合正则表达式 `^[a-zA-Z0-9]+(\-[a-zA-Z0-9]+)*$`。如果不指定该 ID，TiCDC 会自动生成一个 UUID（version 4 格式）作为 ID。
@@ -70,10 +70,10 @@ URI 中其他可配置的参数如下：
 数据变更记录将会存储到以下路径：
 
 ```shell
-{protocol}://{prefix}/{schema}/{table}/{table-version-separator}/{partition-separator}/{date-separator}/CDC{num}.{extension}
+{scheme}://{prefix}/{schema}/{table}/{table-version-separator}/{partition-separator}/{date-separator}/CDC{num}.{extension}
 ```
 
-- `protocol`：`protocol` 为数据传输协议，即存储类型。例如：`s3://xxxxx`。
+- `scheme`：`scheme` 为数据传输协议，即存储类型。例如：`s3://xxxxx`。
 - `prefix`：`prefix` 为用户指定的父目录。例如：`s3://bucket/bbb/ccc`。
 - `schema`：`schema` 为表所属的库名。例如：`s3://bucket/bbb/ccc/test`。
 - `table`：`table` 为表名。例如：`s3://bucket/bbb/ccc/test/table1`。
@@ -319,8 +319,8 @@ TiDB 中的字符串类型可被定义为 `ST[(M)]`，其中：
 
 ```shell
 {
-    "Table":"employee",
-    "Schema":"hr",
+    "Table":"table1",
+    "Schema":"test",
     "Version":437752935075545091,
     "TableColumns":[
         {
@@ -357,8 +357,8 @@ TiDB 中的字符串类型可被定义为 `ST[(M)]`，其中：
 
 ```shell
 {
-    "Table":"employee",
-    "Schema":"hr",
+    "Table":"table1",
+    "Schema":"test",
     "Version":437752935075545091,
     "TableColumns":[
         {
@@ -386,7 +386,7 @@ TiDB 中的字符串类型可被定义为 `ST[(M)]`，其中：
 }
 ```
 
-可以看出上面的例子中新版本较旧版本少一列 `OfficeLocation`，所以你可以构造一条 `ALTER TABLE hr.employee DROP COLUMN OfficeLocation` 的 DDL 语句并在下游 MySQL 兼容数据库执行该语句。
+可以看出上面的例子中新版本较旧版本少一列 `OfficeLocation`，所以你可以构造一条 `ALTER TABLE test.table1 DROP COLUMN OfficeLocation` 的 DDL 语句并在下游 MySQL 兼容数据库执行该语句。
 
 ### 数据变更事件的处理
 
