@@ -3159,7 +3159,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 > **警告：**
 >
-> TTL 目前为实验性特性，此变量定义可能在之后发生变化或者删除。
+> [TTL](/time-to-live.md) 目前为实验性特性，此变量定义可能在之后发生变化或者删除。
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
@@ -3171,7 +3171,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 > **警告：**
 >
-> TTL 目前为实验性特性，此变量定义可能在之后发生变化或者删除。
+> [TTL](/time-to-live.md) 目前为实验性特性，此变量定义可能在之后发生变化或者删除。
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
@@ -3183,7 +3183,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 > **警告：**
 >
-> TTL 目前为实验性特性，此变量定义可能在之后发生变化或者删除。
+> [TTL](/time-to-live.md) 目前为实验性特性，此变量定义可能在之后发生变化或者删除。
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
@@ -3195,7 +3195,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 > **警告：**
 >
-> TTL 目前为实验性特性，此变量定义可能在之后发生变化或者删除。
+> [TTL](/time-to-live.md) 目前为实验性特性，此变量定义可能在之后发生变化或者删除。
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
@@ -3207,7 +3207,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 > **警告：**
 >
-> TTL 目前为实验性特性，此变量定义可能在之后发生变化或者删除。
+> [TTL](/time-to-live.md) 目前为实验性特性，此变量定义可能在之后发生变化或者删除。
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
@@ -3219,7 +3219,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 > **警告：**
 >
-> TTL 目前为实验性特性，此变量定义可能在之后发生变化或者删除。
+> [TTL](/time-to-live.md) 目前为实验性特性，此变量定义可能在之后发生变化或者删除。
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
@@ -3231,7 +3231,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 > **警告：**
 >
-> TTL 目前为实验性特性，此变量定义可能在之后发生变化或者删除。
+> [TTL](/time-to-live.md) 目前为实验性特性，此变量定义可能在之后发生变化或者删除。
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
@@ -3243,7 +3243,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 > **警告：**
 >
-> TTL 目前为实验性特性，此变量定义可能在之后发生变化或者删除。
+> [TTL](/time-to-live.md) 目前为实验性特性，此变量定义可能在之后发生变化或者删除。
 
 - 作用域：GLOBAL
 - 类型：时间
@@ -3255,7 +3255,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 > **警告：**
 >
-> TTL 目前为实验性特性，此变量定义可能在之后发生变化或者删除。
+> [TTL](/time-to-live.md) 目前为实验性特性，此变量定义可能在之后发生变化或者删除。
 
 - 作用域：GLOBAL
 - 类型：时间
