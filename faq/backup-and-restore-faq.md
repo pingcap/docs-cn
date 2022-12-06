@@ -27,20 +27,6 @@ When you perform backup tasks on an offline cluster, to speed up the backup, you
 
 ## PITR issues
 
-### Why `br` encounters the OOM problem after I run the `br log truncate` command?
-
-Issue: [#36648](https://github.com/pingcap/tidb/issues/36648)
-
-Consider the following possible causes:
-
-- The range of logs to be deleted is too large.
-
-    To resolve this issue, reduce the range of logs to be deleted first and delete the target logs in several batches instead of deleting them once.
-
-- The memory allocation of the node where the `br` process is located is too low.
-
-    It is recommended to scale up the node memory configuration to at least 16 GB to ensure that PITR has sufficient memory for recovery.
-
 ### When the upstream database imports data using TiDB Lightning in the physical import mode, the log backup feature becomes unavailable. Why?
 
 Currently, the log backup feature is not fully adapted to TiDB Lightning. Therefore, data imported in the physical mode of TiDB Lightning cannot be backed up into log data

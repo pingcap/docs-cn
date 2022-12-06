@@ -10,7 +10,7 @@ Based on the Raft protocol and a reasonable deployment topology, TiDB realizes h
 
 BR satisfies the following requirements:
 
-- Back up cluster data to a disaster recovery (DR) system with an RPO of no more than 10 minutes, reducing data loss in disaster scenarios.
+- Back up cluster data to a disaster recovery (DR) system with an RPO as short as 5 minutes, reducing data loss in disaster scenarios.
 - Handle the cases of misoperations from applications by rolling back data to a time point before the error event.
 - Perform history data auditing to meet the requirements of judicial supervision.
 - Clone the production environment, which is convenient for troubleshooting, performance tuning, and simulation testing.
@@ -49,7 +49,7 @@ Full backup occupies much storage space and contains only cluster data at a spec
 #### Backup performance and impact on TiDB clusters
 
 - The impact of backup on a TiDB cluster is kept below 20%, and this value can be reduced to 10% or less with the proper configuration of the TiDB cluster. The backup speed of a TiKV node is scalable and ranges from 50 MB/s to 100 MB/s. For more information, see [Backup performance and impact](/br/br-snapshot-guide.md#performance-and-impact-of-snapshot-backup).
-- When there are only log backup tasks, the impact on the cluster is about 5%. Log backup flushes all the changes generated after the last refresh every 5-10 minutes to the backup storage, which can **achieve a Recovery Point Objective (RPO) of no more than ten minutes**.
+- When there are only log backup tasks, the impact on the cluster is about 5%. Log backup flushes all the changes generated after the last refresh every 3-5 minutes to the backup storage, which can **achieve a Recovery Point Objective (RPO) as short as five minutes**.
 
 ### Restore backup data
 
