@@ -5,7 +5,7 @@ summary: TiDB 数据库中 FOREIGN KEY 的使用概况。
 
 # FOREIGN KEY
 
-外键是 TiDB 从 v6.6.0 开始支持的**实验特性**，允许跨表交叉引用相关数据，以及外键约束，有助于保持相关数据的一致性。
+外键是 TiDB 从 v6.6.0 开始支持的功能，允许跨表交叉引用相关数据，以及外键约束，有助于保持相关数据的一致性。
 
 外键是在子表中定义的，语法如下：
 
@@ -19,13 +19,6 @@ summary: TiDB 数据库中 FOREIGN KEY 的使用概况。
 reference_option:
     RESTRICT | CASCADE | SET NULL | NO ACTION | SET DEFAULT
 ```
-
-> **警告：**
-> 
-> 由于外键还是实验特性，所有并没有默认开启该功能，需要手动设置以下变量后打开该功能：
-> `set @@global.tidb_enable_foreign_key=1;`
-> 另一个和外键相关的变量 `foreign_key_checks` 的默认值目前是 0，如要使用外键的约束检查和级联行为，也需要手动设置该变量的值为 1：
-> `set @@foreign_key_checks=1;`
 
 ## 命名
 
@@ -158,7 +151,7 @@ Create Table: CREATE TABLE `child` (
 
 ## 外键约束检查
 
-TiDB 支持是否开启外键约束检查，由系统变量 [`foreign_key_checks`](/system-variables.md#foreign_key_checks) 控制，其默认值是 `OFF`，即关闭外键约束检查，它有 `GLOBAL` 和 `SESSION` 两种作用域。在一般的操作中保持该变量开启可以保证外键引用关系的完整性。
+TiDB 支持是否开启外键约束检查，由系统变量 [`foreign_key_checks`](/system-variables.md#foreign_key_checks) 控制，其默认值是 `ON`，即开启外键约束检查，它有 `GLOBAL` 和 `SESSION` 两种作用域。在一般的操作中保持该变量开启可以保证外键引用关系的完整性。
 
 关闭 [`foreign_key_checks`](/system-variables.md#foreign_key_checks) 的作用如下：
 

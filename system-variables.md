@@ -217,8 +217,8 @@ mysql> SELECT * FROM t1;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 默认值：`OFF`
-- 为保持兼容，TiDB 对外键检查返回 `OFF`。
+- 默认值：`ON`
+- 表示默认开启外键约束检查。
 
 ### `group_concat_max_len`
 
