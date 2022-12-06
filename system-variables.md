@@ -1372,12 +1372,12 @@ Query OK, 0 rows affected (0.09 sec)
 
 > **警告：**
 >
-> TiFlash 计算结果物化目前是实验性功能，请注意使用场景限制。
+> TiFlash 查询结果物化目前是实验性功能，请注意使用场景限制。
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 默认值：`OFF`
-- 这个变量用于控制是否开启 [TiFlash 计算结果物化特性](/tiflash/tiflash-results-materialization.md)。
+- 这个变量用于控制是否开启 [TiFlash 查询结果物化特性](/tiflash/tiflash-results-materialization.md)。
 
 ### `tidb_enable_top_sql` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 
