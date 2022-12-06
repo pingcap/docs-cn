@@ -1372,12 +1372,12 @@ Query OK, 0 rows affected (0.09 sec)
 
 > **警告：**
 >
-> 当前版本中该变量控制的功能尚未完全生效，请保留默认值。
+> TiFlash 计算结果物化目前是实验性功能，请注意使用场景限制。
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 默认值：`OFF`
-- 这个变量用于控制写 SQL 中的读取是否会下推到 TiFlash。
+- 这个变量用于控制是否开启 [TiFlash 计算结果物化特性](/tiflash/tiflash-results-materialization.md)。
 
 ### `tidb_enable_top_sql` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 
@@ -1388,7 +1388,7 @@ Query OK, 0 rows affected (0.09 sec)
 - 作用域：GLOBAL
 - 是否持久化到集群：是
 - 默认值：`OFF`
-- 这个变量用控制是否开启 [Top SQL 特性](/dashboard/top-sql.md)。
+- 这个变量用于控制是否开启 [Top SQL 特性](/dashboard/top-sql.md)。
 
 ### `tidb_enable_tso_follower_proxy` <span class="version-mark">从 v5.3.0 版本开始引入</span>
 
