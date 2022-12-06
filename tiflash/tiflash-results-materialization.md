@@ -15,8 +15,8 @@ summary: 介绍如何在同一个事务中保存 TiFlash 的查询结果。
 
 > **注意：**
 >
-> - 默认情况下 ([`tidb_allow_mpp = ON`](/system-variables#tidb_allow_mpp-从-v50-版本开始引入))，TiDB 优化器将依据查询代价智能选择下推查询到 TiKV 或 TiFlash。如需强制使用 TiFlash 查询，你可以设置系统变量 [`tidb_enforce_mpp`](/system-variables#tidb_enforce_mpp-从-v51-版本开始引入) 为 `ON`。
-> - 在实验特性阶段，该功能默认关闭。要开启此功能，请设置系统变量 [`tidb_enable_tiflash_read_for_write_stmt`](/system-variables#tidb_enable_tiflash_read_for_write_stmt-从-v630-版本开始引入) 为 `ON`。
+> - 默认情况下 ([`tidb_allow_mpp = ON`](/system-variables#tidb_allow_mpp-从-v50-版本开始引入))，TiDB 优化器将依据查询代价智能选择下推查询到 TiKV 或 TiFlash。如需强制使用 TiFlash 查询，你可以设置系统变量 [`tidb_enforce_mpp`](/system-variables.md#tidb_enforce_mpp-从-v51-版本开始引入) 为 `ON`。
+> - 在实验特性阶段，该功能默认关闭。要开启此功能，请设置系统变量 [`tidb_enable_tiflash_read_for_write_stmt`](/system-variables.md#tidb_enable_tiflash_read_for_write_stmt-从-v630-版本开始引入) 为 `ON`。
 
 `INSERT INTO SELECT` 语法如下：
 
