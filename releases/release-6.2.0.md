@@ -303,10 +303,6 @@ TiDB 版本：6.2.0-DMR
     - `INFORMATION_SCHEMA.VARIABLES_INFO`：用于查看 TiDB 系统变量相关的信息。
     - `PERFORMANCE_SCHEMA.SESSION_VARIABLES`：用于查看 TiDB session 系统变量相关的信息。
 
-## 废弃功能
-
-从 TiDB v6.2.0 起，使用 BR 备份和恢复 RawKV 的功能废弃。
-
 ## 改进提升
 
 + TiDB
