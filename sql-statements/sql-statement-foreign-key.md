@@ -38,7 +38,7 @@ reference_option:
 
 ## 条件和限制
 
-外键有以下条件和限制：
+创建外键有以下条件和限制：
 
 - 父表和子表都不能是临时表。
 - 创建外键时，需要用户对父表有 `REFERENCES` 权限。
@@ -132,7 +132,7 @@ ALTER TABLE table_name
     [ON UPDATE reference_option]
 ```
 
-外键可以是自引用的（引用同一个表）。使用 ALTER TABLE 向表添加外键约束时，请先在外键引用的列上创建索引。
+外键可以是自引用的（引用同一个表）。使用 ALTER TABLE 向表添加外键约束时，请先在外键引用父表的列上创建索引。
 
 ## 删除外键约束
 
@@ -158,7 +158,7 @@ Create Table: CREATE TABLE `child` (
 
 ## 外键约束检查
 
-TiDB 支持是否开启外键约束检查，由系统变量 [`foreign_key_checks`](/system-variables.md#foreign_key_checks) 控制，其默认值是 `ON`，即开启外键约束检查，它有 `GLOBAL` 和 `SESSION` 两种作用域。在一般的操作中保持该变量开启来保证外键引用关系的完整性。
+TiDB 支持是否开启外键约束检查，由系统变量 [`foreign_key_checks`](/system-variables.md#foreign_key_checks) 控制，其默认值是 `OFF`，即关闭外键约束检查，它有 `GLOBAL` 和 `SESSION` 两种作用域。在一般的操作中保持该变量开启可以保证外键引用关系的完整性。
 
 关闭 [`foreign_key_checks`](/system-variables.md#foreign_key_checks) 的作用如下：
 
@@ -179,7 +179,7 @@ TiDB 支持是否开启外键约束检查，由系统变量 [`foreign_key_checks
 
 ## 外键的定义和元信息
 
-可以使用 `SHOW CREATE TABLE` 语句查看外键的定义：
+您可以使用 `SHOW CREATE TABLE` 语句查看外键的定义：
 
 ```sql
 mysql> SHOW CREATE TABLE child\G
@@ -193,9 +193,23 @@ Create Table: CREATE TABLE `child` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin
 ```
 
+您可以从 `INFORMATION_SCHEMA.KEY_COLUMN_USAGE` 系统表中获取有关的外键信息，下面是一个查询示例：
+
+```sql
+mysql> SELECT TABLE_SCHEMA, TABLE_NAME, COLUMN_NAME, CONSTRAINT_NAME FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE WHERE REFERENCED_TABLE_SCHEMA IS NOT NULL;
++--------------+---------------+------------------+-----------------+
+| TABLE_SCHEMA | TABLE_NAME    | COLUMN_NAME      | CONSTRAINT_NAME |
++--------------+---------------+------------------+-----------------+
+| test         | child         | pid              | fk_1            |
+| test         | product_order | product_category | fk_1            |
+| test         | product_order | product_id       | fk_1            |
+| test         | product_order | customer_id      | fk_2            |
++--------------+---------------+------------------+-----------------+
+```
+
 ## 查看带有外键的执行计划
 
-使用 `EXPLAIN` 语句查看执行计划。`Foreign_Key_Check` 算子是执行 DML 语句时，执行外键约束检查的算子。
+您可以使用 `EXPLAIN` 语句查看执行计划。`Foreign_Key_Check` 算子是执行 DML 语句时，执行外键约束检查的算子。
 
 ```sql
 mysql> explain insert into child values (1,1);
@@ -207,7 +221,7 @@ mysql> explain insert into child values (1,1);
 +-----------------------+---------+------+---------------+-------------------------------+
 ```
 
-使用 `EXPLAIN ANALYZE` 语句查看外键引用行为的执行。`Foreign_Key_Cascade` 算子是执行 DML 语句时，执行外键引用行为的算子。
+您可以使用 `EXPLAIN ANALYZE` 语句查看外键引用行为的执行。`Foreign_Key_Cascade` 算子是执行 DML 语句时，执行外键引用行为的算子。
 
 ```sql
 mysql> explain analyze delete from parent where id = 1;
@@ -244,4 +258,5 @@ Create Table | CREATE TABLE `child` (
 
 ### 与 MySQL 的兼容性
 
-创建外键未指定名称时，TiDB 自动生成的外键名称和 MySQL 不一样。例如 TiDB 生成的外键名称为 `fk_1`、`fk_2`、`fk_3` 等，MySQL 生成的外键名称为 `table_name_ibfk_1`、 `table_name_ibfk_2`、`table_name_ibfk_3` 等。
+- 创建外键未指定名称时，TiDB 自动生成的外键名称和 MySQL 不一样。例如 TiDB 生成的外键名称为 `fk_1`、`fk_2`、`fk_3` 等，MySQL 生成的外键名称为 `table_name_ibfk_1`、 `table_name_ibfk_2`、`table_name_ibfk_3` 等。
+- 系统变量 `foreign_key_checks` 的默认值在 TiDB 中是 `OFF`, 在 MySQL 中是 `ON`。
