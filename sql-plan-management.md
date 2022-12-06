@@ -321,6 +321,10 @@ SHOW binding_cache status;
 
 可用于查询计划跳变时固定历史执行计划，使用 `digest` 实现快速的执行计划管理，同时相比使用 Hint 创建绑定的方式更简便。
 
+> **警告：**
+>
+> - 从现有执行计划绑定功能目前为实验特性，存在未知风险，不建议在生产环境中使用。
+
 目前通过现有执行计划绑定有一些限制：
 
 1. 从现有执行计划绑定功能是根据已有的执行计划生成 hint 而实现的绑定，已有的执行计划来源是 [Statement Summary](/statement-summary-tables.md)，因此在使用此功能之前需打开 Statement Summary 开关。
