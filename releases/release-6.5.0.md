@@ -40,7 +40,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
     更多信息，请参考[用户文档](/sql-statements/sql-statement-flashback-to-timestamp.md)。
 
-* 完整支持非事务 DML 语句。其中包括非事务 `INSERT`、`REPLACE`、`UPDATE` 和 `DELETE`。[#33485](https://github.com/pingcap/tidb/issues/33485)  @[ekexium](https://github.com/ekexium) **tw@ran-huang**
+* 完整支持非事务 DML 语句。其中包括非事务 `INSERT`、`REPLACE`、`UPDATE` 和 `DELETE`。[#33485](https://github.com/pingcap/tidb/issues/33485)  @[ekexium](https://github.com/ekexium) **tw@Oreoxmt**
 
     在大批量的数据处理场景，单一大事务 SQL 处理有可能对集群稳定性和性能造成影响。非事务 DML 语句将一个 DML 语句拆成多个语句在内部执行。拆分后的语句将牺牲事务原子性和隔离性，但是对于集群的稳定性有很大提升。
     其中非事务 `DELETE` 在 v6.1.0 已经支持，非事务 `INSERT`、`REPLACE` 和 `UPDATE` 在 v6.5.0 支持。
@@ -330,7 +330,8 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
 + TiFlash
 
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
+    - 提升了 TiFlash 在 SQL 端没有攒批的场景的写入性能 [#6404](https://github.com/pingcap/tiflash/issues/6404) @[lidezhu](https://github.com/lidezhu)
+    - 增加了 TableFullScan 的输出信息 [#5926](https://github.com/pingcap/tiflash/issues/5926) @[hongyunyan](https://github.com/hongyunyan)
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
 + Tools
@@ -379,7 +380,8 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
 + TiFlash
 
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
+    - 修复 TiFlash 重启不能正确合并小文件的问题 [#6159](https://github.com/pingcap/tiflash/issues/6159) @[lidezhu](https://github.com/lidezhu)
+    - 修复 TiFlash Open File OPS 过高的问题 [#6345](https://github.com/pingcap/tiflash/issues/6345) @[JaySon-Huang](https://github.com/JaySon-Huang)
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
 + Tools
