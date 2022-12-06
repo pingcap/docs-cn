@@ -847,6 +847,15 @@ MPP is a distributed computing framework provided by the TiFlash engine, which a
 - This variable is used to control whether to enable the [baseline capturing](/sql-plan-management.md#baseline-capturing) feature. This feature depends on the statement summary, so you need to enable the statement summary before you use baseline capturing.
 - After this feature is enabled, the historical SQL statements in the statement summary are traversed periodically, and bindings are automatically created for SQL statements that appear at least twice.
 
+### tidb_cdc_write_source <span class="version-mark">New in v6.5.0</span>
+
+- Scope: SESSION
+- Persists to cluster: No
+- Type: Integer
+- Default value: `0`
+- Range: `[0, 15]`
+- When this variable is set to a value other than 0, data written in this session is considered to be written by TiCDC. This variable can only be modified by TiCDC. Do not manually modify this variable in any case.
+
 ### tidb_check_mb4_value_in_utf8
 
 <CustomContent platform="tidb-cloud">
@@ -3640,6 +3649,20 @@ For details, see [Identify Slow Queries](/identify-slow-queries.md).
 - Scope: SESSION
 - Default value: ""
 - This variable is used to set the time point at which the data is read by the session. For example, when you set the variable to "2017-11-11 20:20:20" or a TSO number like "400036290571534337", the current session reads the data of this moment.
+
+### tidb_source_id <span class="version-mark">New in v6.5.0</span>
+
+- Scope: GLOBAL
+- Persists to cluster: Yes
+- Type: Integer
+- Default value: `1`
+- Range: `[1, 15]`
+
+<CustomContent platform="tidb">
+
+- This variable is used to configure the different cluster IDs in a [bi-direcional replication](/ticdc/manage-ticdc.md#bi-directional-replication) cluster.
+
+</CustomContent>
 
 ### tidb_stats_cache_mem_quota <span class="version-mark">New in v6.1.0</span>
 
