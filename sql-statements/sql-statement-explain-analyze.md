@@ -226,6 +226,33 @@ build_hash_table:{total:146.071334ms, fetch:110.338509ms, build:35.732825ms}, pr
     - `probe`: The total time consumed for joining with outer table rows and the hash table.
     - `fetch`: The total time that the join worker waits to read the outer table rows data.
 
+### TableFullScan (TiFlash)
+
+The `TableFullScan` operator executed on a TiFlash node contains the following execution information:
+
+```sql
+tiflash_scan: {
+  dtfile: {
+    total_scanned_packs: 2, 
+    total_skipped_packs: 1, 
+    total_scanned_rows: 16000, 
+    total_skipped_rows: 8192, 
+    total_rough_set_index_load_time: 2ms, 
+    total_read_time: 20ms
+  }, 
+  total_create_snapshot_time: 1ms
+}
+```
+
++ `dtfile`: the DTFile (DeltaTree File) related information during the table scan, which reflects the data scan status of the TiFlash Stable layer.
+    - `total_scanned_packs`: the total number of packs that have been scanned in the DTFile. A pack is the minimum unit that can be read in the TiFlash DTFile. By default, every 8192 rows constitute a pack.
+    - `total_skipped_packs`: the total number of packs that have been skipped by the scan in the DTFile. When a `WHERE` clause hits rough set indexes or matches the range filtering of a primary key, the irrelevant packs are skipped.
+    - `total_scanned_rows`: the total number of rows that have been scanned in the DTFile. If there are multiple versions of updates or deletions because of MVCC, each version is counted independently.
+    - `total_skipped_rows`: the total number of rows that are skipped by the scan in the DTFile.
+    - `total_rs_index_load_time`: the total time used to read DTFile rough set indexes.
+    - `total_read_time`:  the total time used to read DTFile data.
++ `total_create_snapshot_time`: the total time used to create snapshots during the table scan.
+
 ### lock_keys execution information
 
 When a DML statement is executed in a pessimistic transaction, the execution information of the operator might also include the execution information of `lock_keys`. For example:
