@@ -381,7 +381,7 @@ Configuration items related to performance.
 
 > **Warning:**
 >
-> `server-memory-quota` is still an experimental feature. It is **NOT** recommended that you use it in a production environment.
+> Since v6.5.0, the `server-memory-quota` configuration item is deprecated and replaced by the system variable [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-new-in-v640).
 
 + The memory usage limit of tidb-server instances.
 + Default value: `0` (in bytes), which means no memory limit.

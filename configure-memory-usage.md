@@ -38,25 +38,7 @@ SET tidb_mem_quota_query = 8 << 10;
 
 ## Configure the memory usage threshold of a tidb-server instance
 
-In the TiDB configuration file, you can set the memory usage threshold of a tidb-server instance by configuring [`server-memory-quota`](/tidb-configuration-file.md#server-memory-quota-new-in-v409).
-
-The following example sets the total memory usage of a tidb-server instance to 32 GB:
-
-{{< copyable "" >}}
-
-```toml
-[performance]
-server-memory-quota = 34359738368
-```
-
-In this configuration, when the memory usage of a tidb-server instance reaches 32 GB, the instance starts to kill running SQL statements randomly until the memory usage drops below 32 GB. SQL operations that are forced to terminate return an `Out Of Global Memory Limit!` error message to the client.
-
-> **Warning:**
->
-> + `server-memory-quota` is still an experimental feature. It is **NOT** recommended that you use it in a production environment.
-> + The default value of `server-memory-quota` is `0`, which means no memory limit.
-
-Since v6.4.0, you can use the system variable [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-new-in-v640) to set the threshold for the memory usage of a tidb-server instance.
+Since v6.5.0, you can use the system variable [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-new-in-v640) to set the threshold for the memory usage of a tidb-server instance.
 
 For example, set the total memory usage of a tidb-server instance to 32 GB:
 
@@ -74,18 +56,13 @@ Currently, the memory limit set by `tidb_server_memory_limit` **DOES NOT** termi
 
 > **Warning:**
 >
-> + The global memory control of tidb-server instances is still an experimental feature. It is not recommended to use it in the production environment.
 > + During the startup process, TiDB does not guarantee that the [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-new-in-v640) limit is enforced. If the free memory of the operating system is insufficient, TiDB might still encounter OOM. You need to ensure that the TiDB instance has enough available memory.
 > + In the process of memory control, the total memory usage of TiDB might slightly exceed the limit set by `tidb_server_memory_limit`.
-> + To ensure compatibility, when `tidb_server_memory_limit` is enabled, the system ignores the `server-memory-quota` value and uses `tidb_server_memory_limit` memory control mechanism. When `tidb_server_memory_limit` is disabled, the system uses the `server-memory-quota` value to control the memory usage of the tidb-server instance.
+> + Since v6.5.0, the configruation item `server-memory-quota` is deprecated. To ensure compatibility, after you upgrade your cluster to v6.5.0 or a later version, `tidb_server_memory_limit` will inherit the value of `server-memory-quota`. If you have not configured `server-memory-quota` before the upgrade, the default value of `tidb_server_memory_limit` is used, which is `80%`.
 
 When the memory usage of a tidb-server instance reaches a certain proportion of the total memory (the proportion is controlled by the system variable [`tidb_server_memory_limit_gc_trigger`](/system-variables.md#tidb_server_memory_limit_gc_trigger-new-in-v640)), tidb-server will try to trigger a Golang GC to relieve memory stress. To avoid frequent GCs that cause performance issues due to the instance memory fluctuating around the threshold, this GC method will trigger GC at most once every minute.
 
 ## View the memory usage of the current tidb-server instance using the INFORMATION_SCHEMA system table
-
-> **Warning:**
->
-> The following system tables are introduced in v6.4.0. Currently, these tables are still experimental. The memory usage information provided is only for reference. It is not recommended to use the following system tables in a production environment to obtain memory usage information for decision-making.
 
 To view the memory usage of the current instance or cluster, you can query the system table [`INFORMATION_SCHEMA.(CLUSTER_)MEMORY_USAGE`](/information-schema/information-schema-memory-usage.md).
 
@@ -136,12 +113,12 @@ The following example constructs a memory-intensive SQL statement that triggers 
 4. Check the `tidb.log` file which records the total system memory, current system memory usage, memory usage of the tidb-server instance, and the directory of status files.
 
     ```
-    [2022/10/11 16:39:02.281 +08:00] [WARN] [memoryusagealarm.go:212] ["tidb-server has the risk of OOM because of memory usage exceeds alarm ratio. Running SQLs and heap profile will be recorded in record path"] ["is server-memory-quota set"=false] ["system memory total"=33682427904] ["system memory usage"=22120655360] ["tidb-server memory usage"=21468556992] [memory-usage-alarm-ratio=0.85] ["record path"=/tiup/deploy/tidb-4000/log/oom_record]
+    [2022/10/11 16:39:02.281 +08:00] [WARN] [memoryusagealarm.go:212] ["tidb-server has the risk of OOM because of memory usage exceeds alarm ratio. Running SQLs and heap profile will be recorded in record path"] ["is tidb_server_memory_limit set"=false] ["system memory total"=33682427904] ["system memory usage"=22120655360] ["tidb-server memory usage"=21468556992] [memory-usage-alarm-ratio=0.85] ["record path"=/tiup/deploy/tidb-4000/log/oom_record]
     ```
 
     The fields of the example log file above are described as follows:
 
-    * `is server-memory-quota set` indicates whether [`server-memory-quota`](/tidb-configuration-file.md#server-memory-quota-new-in-v409) is set.
+    * `is tidb_server_memory_limit set` indicates whether [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-new-in-v640) is set.
     * `system memory total` indicates the total memory of the current system.
     * `system memory usage` indicates the current system memory usage.
     * `tidb-server memory usage` indicates the memory usage of the tidb-server instance.
