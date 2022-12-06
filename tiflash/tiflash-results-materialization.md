@@ -7,7 +7,7 @@ summary: 介绍如何在同一个事务中保存 TiFlash 的计算结果。
 
 > **警告：**
 >
-> 该功能目前是实验性功能，请注意使用场景限制。该功能会在未事先通知的情况下发生变化或删除。语法和实现可能会在 GA 前发生变化。如果发现 bug，请提 [Issues · pingcap/tidb](https://github.com/pingcap/tidb/issues) 反馈。
+> 该功能目前是实验性功能，请注意使用场景限制。该功能会在未事先通知的情况下发生变化或删除。语法和实现可能会在 GA 前发生变化。如果发现 bug，请在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues) 反馈。
 
 本文介绍如何在同一个事务 (`INSERT INTO SELECT`) 中实现 TiFlash 计算结果物化至某一指定的 TiDB 表中。
 
@@ -16,7 +16,7 @@ summary: 介绍如何在同一个事务中保存 TiFlash 的计算结果。
 > **注意：**
 >
 > - 默认情况下 ([`tidb_allow_mpp = ON`](/system-variables#tidb_allow_mpp-从-v50-版本开始引入))，TiDB 优化器将依据查询代价智能选择下推查询到 TiKV 或 TiFlash。如需强制使用 TiFlash 查询，你可以设置系统变量 [`tidb_enforce_mpp = ON`](/system-variables#tidb_enforce_mpp-从-v51-版本开始引入)。
-> - 在实验特性阶段，为了避免影响现有的读写混合事务，该功能默认关闭。要开启此功能，请设置系统变量 [`tidb_enable_tiflash_read_for_write_stmt`](/system-variables#tidb_enable_tiflash_read_for_write_stmt) 为 `ON`。
+> - 在实验特性阶段，该功能默认关闭。要开启此功能，请设置系统变量 [`tidb_enable_tiflash_read_for_write_stmt`](/system-variables#tidb_enable_tiflash_read_for_write_stmt) 为 `ON`。
 
 `INSERT INTO SELECT` 语法如下：
 
@@ -58,9 +58,9 @@ SELECT app_name, country FROM t1;
 
 ## 限制
 
-* TiDB 对 `SELECT` 子句返回的结果集（即 `INSERT` 写入的事务）大小的限制即为 TiDB 对单个事务大小的限制，可以通过 [`performance.txn-total-size-limit](/tidb-configuration-file.md#txn-total-size-limit`) 配置项调整该限制，推荐的使用场景是 100 MiB 以下。
+* TiDB 对该语句的内存限制可以通过系统变量 [`tidb_mem_quota_query`](/system-variables.md#tidbmemquotaquery) 调整。
 
-    若 `SELECT` 返回结果大小超过了事务大小限制的阈值 [`performance.txn-total-size-limit`](/tidb-configuration-file.md#txn-total-size-limit)，那么整条语句将会被强制终止并返回错误信息。
+    更多信息，请参考[用户文档](/configure-memory-usage.md)。
 
 * TiDB 对 `INSERT INTO SELECT` 语句的并发没有硬性限制，但是推荐考虑以下用法：
 
