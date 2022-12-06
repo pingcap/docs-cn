@@ -271,7 +271,7 @@
   - [Store Limit 使用文档](/configure-store-limit.md)
 - TiDB 工具
   - [功能概览](/ecosystem-tool-user-guide.md)
-  - [适用场景](/ecosystem-tool-user-case.md)
+  - [使用场景](/ecosystem-tool-user-case.md)
   - [工具下载](/download-ecosystem-tools.md)
   - TiUP
     - [文档地图](/tiup/tiup-documentation-guide.md)
@@ -308,6 +308,7 @@
       - TiUP Cluster 命令
         - [TiUP Cluster 命令概览](/tiup/tiup-component-cluster.md)
         - [tiup cluster audit](/tiup/tiup-component-cluster-audit.md)
+        - [tiup cluster audit cleanup](/tiup/tiup-component-cluster-audit-cleanup.md)
         - [tiup cluster check](/tiup/tiup-component-cluster-check.md)
         - [tiup cluster clean](/tiup/tiup-component-cluster-clean.md)
         - [tiup cluster deploy](/tiup/tiup-component-cluster-deploy.md)
