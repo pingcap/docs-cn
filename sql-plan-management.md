@@ -215,19 +215,19 @@ SHOW [GLOBAL | SESSION] BINDINGS [ShowLikeOrWhere];
 
 该语句会按照绑定更新时间由新到旧的顺序输出 GLOBAL 或者 SESSION 作用域内的执行计划绑定，在不指定作用域时默认作用域为 SESSION。目前 `SHOW BINDINGS` 会输出 11 列，具体如下：
 
-| 列名           | 说明   |
-|--------------|------|
+| 列名     | 说明   |
+| ------ | ------------- |
 | original_sql | 参数化后的原始 SQL |
-| bind_sql     | 带 Hint 的绑定 SQL |
-| default_db   | 默认数据库名 |
-| status       | 状态，包括 enabled（可用，从 v6.0 开始取代之前版本的 using 状态）、disabled（不可用）、deleted（已删除）、 invalid（无效）、rejected（演进时被拒绝）和 pending verify（等待演进验证） |
-| create_time  | 创建时间 |
-| update_time  | 更新时间 |
-| charset      | 字符集  |
-| collation    | 排序规则 |
-| source       | 创建方式，包括 manual （由 `create [global] binding` 生成）、history（根据历史执行计划创建生成）、capture（由 tidb 自动创建生成）和 evolve （由 tidb 自动演进生成） |
-| sql_digest   | 规一化后的 SQL 的 digest |
-| plan_digest  | 执行计划的 digest |
+| bind_sql | 带 Hint 的绑定 SQL |
+| default_db | 默认数据库名 |
+| status | 状态，包括 enabled（可用，从 v6.0 开始取代之前版本的 using 状态）、disabled（不可用）、deleted（已删除）、 invalid（无效）、rejected（演进时被拒绝）和 pending verify（等待演进验证） |
+| create_time | 创建时间 |
+| update_time | 更新时间 |
+| charset | 字符集  |
+| collation | 排序规则 |
+| source | 创建方式，包括 manual （由 `create [global] binding` 生成）、history（根据历史执行计划创建生成）、capture（由 tidb 自动创建生成）和 evolve （由 tidb 自动演进生成） |
+| sql_digest | 规一化后的 SQL 的 digest |
+| plan_digest | 执行计划的 digest |
 
 ### 排查绑定
 
