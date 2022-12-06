@@ -192,3 +192,56 @@ Create Table: CREATE TABLE `child` (
   CONSTRAINT `fk_1` FOREIGN KEY (`pid`) REFERENCES `test`.`parent` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin
 ```
+
+## 查看带有外键的执行计划
+
+使用 `EXPLAIN` 语句查看执行计划。`Foreign_Key_Check` 算子是执行 DML 语句时，执行外键约束检查的算子。
+
+```sql
+mysql> explain insert into child values (1,1);
++-----------------------+---------+------+---------------+-------------------------------+
+| id                    | estRows | task | access object | operator info                 |
++-----------------------+---------+------+---------------+-------------------------------+
+| Insert_1              | N/A     | root |               | N/A                           |
+| └─Foreign_Key_Check_3 | 0.00    | root | table:parent  | foreign_key:fk_1, check_exist |
++-----------------------+---------+------+---------------+-------------------------------+
+```
+
+使用 `EXPLAIN ANALYZE` 语句查看外键引用行为的执行。`Foreign_Key_Cascade` 算子是执行 DML 语句时，执行外键引用行为的算子。
+
+```sql
+mysql> explain analyze delete from parent where id = 1;
++----------------------------------+---------+---------+-----------+---------------------------------+------------------------------+---------------------------------------------+-----------+------+
+| id                               | estRows | actRows | task      | access object                   | execution info               | operator info                               | memory    | disk |
++----------------------------------+---------+---------+-----------+---------------------------------+------------------------------+---------------------------------------------+-----------+------+
+| Delete_2                         | N/A     | 0       | root      |                                 | time:1.02ms, loops:1         | N/A                                         | 380 Bytes | N/A  |
+| ├─Point_Get_1                    | 1.00    | 1       | root      | table:parent                    | time:937.3µs, loops:2        | handle:1                                    | N/A       | N/A  |
+| └─Foreign_Key_Cascade_3          | 0.00    | 0       | root      | table:child, index:idx_pid      | total:1.57ms, foreign_keys:1 | foreign_key:fk_1, on_delete:CASCADE         | N/A       | N/A  |
+|   └─Delete_7                     | N/A     | 0       | root      |                                 | time:1.03ms, loops:1         | N/A                                         | 0 Bytes   | N/A  |
+|     └─IndexLookUp_11             | 10.00   | 0       | root      |                                 | time:978.8µs, loops:1        |                                             | 270 Bytes | N/A  |
+|       ├─IndexRangeScan_9(Build)  | 10.00   | 0       | cop[tikv] | table:child, index:idx_pid(pid) | time:819.6µs, loops:1        | range:[1,1], keep order:false, stats:pseudo | N/A       | N/A  |
+|       └─TableRowIDScan_10(Probe) | 10.00   | 0       | cop[tikv] | table:child                     |                              | keep order:false, stats:pseudo              | N/A       | N/A  |
++----------------------------------+---------+---------+-----------+---------------------------------+------------------------------+---------------------------------------------+-----------+------+
+```
+
+## 兼容性
+
+### 与旧版本的 TiDB 兼容性
+
+由于 TiDB 在 v6.6.0 版本之前已经支持创建外键的语法，但实际上创建的外键并不生效的。在用户将 TiDB 升级到 v6.6.0 版本及以后，之前在旧版本上创建的外键依然是不生效的，只有在打开 `tidb_enable_foreign_key` 变量后新创建的外键才生效。你可以使用 `SHOW CREATE TABLE` 语句查看外键是否生效，不生效的外键会有一条 `/* FOREIGN KEY INVALID */` 注释。
+
+```sql
+mysql> SHOW CREATE TABLE child\G
+***************************[ 1. row ]***************************
+Table        | child
+Create Table | CREATE TABLE `child` (
+  `id` int(11) DEFAULT NULL,
+  `pid` int(11) DEFAULT NULL,
+  KEY `idx_pid` (`pid`),
+  CONSTRAINT `fk_1` FOREIGN KEY (`pid`) REFERENCES `test`.`parent` (`id`) ON DELETE CASCADE /* FOREIGN KEY INVALID */
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin
+```
+
+### 与 MySQL 的兼容性
+
+创建外键未指定名称时，TiDB 自动生成的外键名称和 MySQL 不一样。例如 TiDB 生成的外键名称为 `fk_1`、`fk_2`、`fk_3` 等，MySQL 生成的外键名称为 `table_name_ibfk_1`、 `table_name_ibfk_2`、`table_name_ibfk_3` 等。

@@ -27,7 +27,6 @@ aliases: ['/docs-cn/dev/mysql-compatibility/','/docs-cn/dev/reference/mysql-comp
 * 触发器
 * 事件
 * 自定义函数
-* 外键约束 [#18209](https://github.com/pingcap/tidb/issues/18209)
 * 全文语法与索引 [#1793](https://github.com/pingcap/tidb/issues/1793)
 * 空间类型的函数（即 `GIS`/`GEOMETRY`）、数据类型和索引 [#6347](https://github.com/pingcap/tidb/issues/6347)
 * 非 `ascii`、`latin1`、`binary`、`utf8`、`utf8mb4`、`gbk` 的字符集

@@ -335,7 +335,7 @@ Query OK, 0 rows affected (0.10 sec)
 
 > **注意：**
 >
-> TiDB 仅部分支持外键约束功能。
+> 在 v6.6.0 之前 TiDB 仅支持创建和删除外键约束功能，外键约束实际并不生效。在 v6.6.0 开始支持实验特效的[外键约束功能](/sql-statements/sql-statement-foreign-key.md)。
 
 TiDB 支持创建外键约束。例如：
 
@@ -377,7 +377,7 @@ ALTER TABLE orders ADD FOREIGN KEY fk_user_id (user_id) REFERENCES users(id);
 
 ### 注意
 
-* TiDB 支持外键是为了在将其他数据库迁移到 TiDB 时，不会因为此语法报错。但是，TiDB 不会在 DML 语句中对外键进行约束检查。例如，即使 `users` 表中不存在 `id=123` 的记录，下列事务也能提交成功：
+* 在 v6.6.0 版本之前，TiDB 支持外键是为了在将其他数据库迁移到 TiDB 时，不会因为此语法报错。但是，TiDB 不会在 DML 语句中对外键进行约束检查。例如，即使 `users` 表中不存在 `id=123` 的记录，下列事务也能提交成功：
 
     ```
     START TRANSACTION;
