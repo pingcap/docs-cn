@@ -58,9 +58,9 @@ SELECT app_name, country FROM t1;
 
 ## 限制
 
-* TiDB 对该语句的内存限制可以通过系统变量 [`tidb_mem_quota_query`](/system-variables.md#tidbmemquotaquery) 调整。
+* TiDB 对 `INSERT INTO SELECT` 语句的内存限制可以通过系统变量 [`tidb_mem_quota_query`](/system-variables#tidb_mem_quota_query) 调整。
 
-    更多信息，请参考[用户文档](/configure-memory-usage.md)。
+    更多信息，请参考[TiDB 内存控制文档](/configure-memory-usage.md)。
 
 * TiDB 对 `INSERT INTO SELECT` 语句的并发没有硬性限制，但是推荐考虑以下用法：
 
