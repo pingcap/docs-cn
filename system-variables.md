@@ -2103,7 +2103,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 单位：字节
 - 在 v6.1.0 之前的版本中，作用域为 `SESSION`。v6.1.0 及之后的版本时，作用域变更为 `SESSION | GLOBAL`。
 - 在 v6.5.0 之前的版本中，该变量用来设置单条查询的内存使用阈值，如果单条查询执行过程中使用的内存量超过该阈值，会触发系统变量 [`tidb_mem_oom_action`](#tidb_mem_oom_action-从-v610-版本开始引入) 中指定的行为。
-- 在 v6.5.0 及之后的版本中，该变量用来设置单个会话的内存使用阈值，如果单个会话执行过程中使用的内存量超过该阈值，会触发系统变量 [`tidb_mem_oom_action`](#tidb_mem_oom_action-从-v610-版本开始引入) 中指定的行为。值得注意的是，自 v6.5.0 版本开始，单个事务的内存使用也会被累计入所在会话的内存使用量，v6.5.0 及之后版本对事务内存的控制行为详见 [txn-total-size-limit](/tidb-configuration-file.md#txn-total-size-limit)。
+- 在 v6.5.0 及之后的版本中，该变量用来设置单个会话的内存使用阈值，如果单个会话执行过程中使用的内存量超过该阈值，会触发系统变量 [`tidb_mem_oom_action`](#tidb_mem_oom_action-从-v610-版本开始引入) 中指定的行为。值得注意的是，自 v6.5.0 版本开始，单个事务的内存使用也会被累计计入所在会话的内存使用量，v6.5.0 及之后版本对事务内存的控制行为详见 [txn-total-size-limit](/tidb-configuration-file.md#txn-total-size-limit)。
 - 当变量值为 0 或 -1 时，表示内存阈值为正无穷。此外，当变量值设置值小于 128 时，将默认被设置为 128。
 
 ### `tidb_memory_debug_mode_alarm_ratio`
