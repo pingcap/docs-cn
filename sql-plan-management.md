@@ -215,19 +215,19 @@ SHOW [GLOBAL | SESSION] BINDINGS [ShowLikeOrWhere];
 
 该语句会按照绑定更新时间由新到旧的顺序输出 GLOBAL 或者 SESSION 作用域内的执行计划绑定，在不指定作用域时默认作用域为 SESSION。目前 `SHOW BINDINGS` 会输出 11 列，具体如下：
 
-| 列名           | 说明                                                                                                                           |
-|--------------|------------------------------------------------------------------------------------------------------------------------------|
-| original_sql | 参数化后的原始 SQL                                                                                                                  |
-| bind_sql     | 带 Hint 的绑定 SQL                                                                                                               |
-| default_db   | 默认数据库名                                                                                                                       |
+| 列名           | 说明   |
+|--------------|------|
+| original_sql | 参数化后的原始 SQL |
+| bind_sql     | 带 Hint 的绑定 SQL |
+| default_db   | 默认数据库名 |
 | status       | 状态，包括 enabled（可用，从 v6.0 开始取代之前版本的 using 状态）、disabled（不可用）、deleted（已删除）、 invalid（无效）、rejected（演进时被拒绝）和 pending verify（等待演进验证） |
-| create_time  | 创建时间                                                                                                                         |
-| update_time  | 更新时间                                                                                                                         |
-| charset      | 字符集                                                                                                                          |
-| collation    | 排序规则                                                                                                                         |
-| source       | 创建方式，包括 manual （由 `create [global] binding` 生成）、history（根据历史执行计划创建生成）、capture（由 tidb 自动创建生成）和 evolve （由 tidb 自动演进生成）         |
-| sql_digest   | 规一化后的 SQL 的 digest                                                                                                           |
-| plan_digest  | 执行计划的 digest                                                                                                                 |
+| create_time  | 创建时间 |
+| update_time  | 更新时间 |
+| charset      | 字符集  |
+| collation    | 排序规则 |
+| source       | 创建方式，包括 manual （由 `create [global] binding` 生成）、history（根据历史执行计划创建生成）、capture（由 tidb 自动创建生成）和 evolve （由 tidb 自动演进生成） |
+| sql_digest   | 规一化后的 SQL 的 digest |
+| plan_digest  | 执行计划的 digest |
 
 ### 排查绑定
 
@@ -339,19 +339,9 @@ SELECT * FROM INFORMATION_SCHEMA.STATEMENTS_SUMMARY WHERE QUERY_SAMPLE_TEXT = 'S
 以下为 `statements_summary` 部分查询结果:
 
 ```
-               SUMMARY_BEGIN_TIME: 2022-12-01 19:00:00
-                 SUMMARY_END_TIME: 2022-12-01 19:30:00
-                        STMT_TYPE: Select
-                      SCHEMA_NAME: test
-                           DIGEST: 077a87a576e42360c95530ccdac7a1771c4efba17619e26be50a4cfd967204a0
-                      DIGEST_TEXT: select * from `t` where `a` = ?
-                      TABLE_NAMES: test.t
                ...........
-                    PLAN_IN_CACHE: 0
-                  PLAN_CACHE_HITS: 0
-                  PLAN_IN_BINDING: 0
-                QUERY_SAMPLE_TEXT: SELECT /*+ IGNORE_INDEX(t, a) */ * FROM t WHERE a = 1
-                 PREV_SAMPLE_TEXT:
+                      DIGEST_TEXT: select * from `t` where `a` = ?
+               ...........
                       PLAN_DIGEST: 4e3159169cc63c14b139a4e7d72eae1759875c9a9581f94bb2079aae961189cb
                              PLAN: 	id                 	task     	estRows	operator info                          	actRowsexecution info                                                                                                                                            	memory   	disk
 	TableReader_7      	root     	10     	data:Selection_6                       	0      	time:4.05ms, loops:1, cop_task: {num: 1, max: 598.6µs, proc_keys: 0, rpc_num: 2, rpc_time: 609.8µs, copr_cache_hit_ratio: 0.00, distsql_concurrency: 15}	176 Bytes	N/A
@@ -371,13 +361,7 @@ SHOW BINDINGS\G;
 *************************** 1. row ***************************
 Original_sql: select * from `test` . `t` where `a` = ?
     Bind_sql: SELECT /*+ use_index(@`sel_1` `test`.`t` ) ignore_index(`t` `a`)*/ * FROM `test`.`t` WHERE `a` = 1
-  Default_db: test
-      Status: enabled
- Create_time: 2022-12-01 19:26:48.115
- Update_time: 2022-12-01 19:26:48.115
-     Charset: utf8mb4
-   Collation: utf8mb4_general_ci
-      Source: history
+       ...........
   Sql_digest: 6909a1bbce5f64ade0a532d7058dd77b6ad5d5068aee22a531304280de48349f
  Plan_digest:
 1 row in set (0.01 sec)
