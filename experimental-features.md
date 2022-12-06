@@ -34,7 +34,6 @@ Elastic scheduling feature. It enables the TiDB cluster to dynamically scale out
 + [Cascades Planner](/system-variables.md#tidb_enable_cascades_planner): a cascades framework-based top-down query optimizer (Introduced in v3.0)
 + [Table Lock](/tidb-configuration-file.md#enable-table-lock-new-in-v400) (Introduced in v4.0.0)
 + [Range INTERVAL partitioning](/partitioned-table.md#range-interval-partitioning) (Introduced in v6.3.0)
-+ [Add index acceleration](/system-variables.md#tidb_ddl_enable_fast_reorg-new-in-v630) (Introduced in v6.3.0)
 + [Restore a cluster to a specific point in time using the `FLASHBACK CLUSTER TO TIMESTAMP` syntax](/sql-statements/sql-statement-flashback-to-timestamp.md) (Introduced in v6.4.0)
 
 ## Storage
