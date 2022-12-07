@@ -94,6 +94,6 @@ mysql> show warnings;
 
 ## 另请参阅
 
-* [统计信息](/statistics.md)
+* [统计信息](/statistics.md#锁定统计信息)
 * [LOCK STATS](/sql-statements/sql-statement-lock-stats.md)
 * [UNLOCK STATS](/sql-statements/sql-statement-unlock-stats.md)
