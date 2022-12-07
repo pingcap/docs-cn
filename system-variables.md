@@ -1561,7 +1561,11 @@ Query OK, 0 rows affected (0.09 sec)
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 默认值：`OFF`
-- 这个变量用于控制是否开启 [TiFlash 查询结果物化特性](/tiflash/tiflash-results-materialization.md)。
+- 这个变量用于控制包含增删改的 SQL 语句中的读取操作能否下推到 TiFlash，比如：
+
+    - `INSERT INTO SELECT` 语句中的 `SELECT` 查询（典型应用场景为 [TiFlash 查询结果物化](/tiflash/[tiflash-results-materialization.md](http://tiflash-results-materialization.md/))）
+    - `UPDATE` 和 `DELETE` 语句中的  `WHERE` 条件过滤
+    - `INSERT`、`UPDATE`、`DELETE` 语句中的子查询
 
 ### `tidb_enable_tmp_storage_on_oom`
 

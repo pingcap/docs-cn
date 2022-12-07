@@ -9,9 +9,9 @@ summary: 介绍如何在同一个事务中保存 TiFlash 的查询结果。
 >
 > 该功能目前是实验性功能，请注意使用场景限制。该功能会在未事先通知的情况下发生变化或删除。语法和实现可能会在 GA 前发生变化。如果发现 bug，请在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues) 反馈。
 
-本文介绍如何在同一个事务 (`INSERT INTO SELECT`) 中实现 TiFlash 查询结果物化至某一指定的 TiDB 表中。
+本文介绍如何在同一个事务 (`INSERT INTO SELECT`) 中实现将 TiFlash 查询结果保存至某一指定的 TiDB 表中。
 
-从 v6.5.0 起，执行 `INSERT INTO SELECT` 语句时，通过将 `SELECT` 子句下推到 TiFlash 可以把 TiFlash 计算得到的查询结果保存到指定的 TiDB 表中，即物化了 TiFlash 的查询结果。v6.5.0 之前的 TiDB 版本不允许此类行为，即通过 TiFlash 执行的查询必须是只读的，你需要从应用程序层面接收 TiFlash 返回的结果，然后另行在其它事务或处理中保存结果。
+从 v6.5.0 起，TiDB 支持将 TiFlash 查询结果保存到数据表中，即物化了 TiFlash 的查询结果。执行 `INSERT INTO SELECT` 语句时，如果 TiDB 将 `SELECT` 子查询下推到了 TiFlash， TiFlash 的查询结果可以保存到 `INSERT INTO` 指定的 TiDB 表中。v6.5.0 之前的 TiDB 版本不允许此类行为，即通过 TiFlash 执行的查询必须是只读的，你需要从应用程序层面接收 TiFlash 返回的结果，然后另行在其它事务或处理中保存结果。
 
 > **注意：**
 >
