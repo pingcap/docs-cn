@@ -150,6 +150,7 @@
       - BR 特性
         - [自动调节](/br/br-auto-tune.md)
         - [批量建表](/br/br-batch-create-table.md)
+        - [断点备份](/br/br-checkpoint.md)
       - [使用 Dumpling 和 TiDB Lightning 备份与恢复](/backup-and-restore-using-dumpling-lightning.md)
       - [备份与恢复 RawKV](/br/rawkv-backup-and-restore.md)
       - [增量备份与恢复](/br/br-incremental-guide.md)
@@ -270,7 +271,7 @@
   - [Store Limit 使用文档](/configure-store-limit.md)
 - TiDB 工具
   - [功能概览](/ecosystem-tool-user-guide.md)
-  - [适用场景](/ecosystem-tool-user-case.md)
+  - [使用场景](/ecosystem-tool-user-case.md)
   - [工具下载](/download-ecosystem-tools.md)
   - TiUP
     - [文档地图](/tiup/tiup-documentation-guide.md)
@@ -307,6 +308,7 @@
       - TiUP Cluster 命令
         - [TiUP Cluster 命令概览](/tiup/tiup-component-cluster.md)
         - [tiup cluster audit](/tiup/tiup-component-cluster-audit.md)
+        - [tiup cluster audit cleanup](/tiup/tiup-component-cluster-audit-cleanup.md)
         - [tiup cluster check](/tiup/tiup-component-cluster-check.md)
         - [tiup cluster clean](/tiup/tiup-component-cluster-clean.md)
         - [tiup cluster deploy](/tiup/tiup-component-cluster-deploy.md)
@@ -509,6 +511,7 @@
         - [同步数据到 Kafka](/ticdc/ticdc-sink-to-kafka.md)
       - [管理 Changefeed](/ticdc/ticdc-manage-changefeed.md)
       - [日志过滤器](/ticdc/ticdc-filter.md)
+      - [双向复制](/ticdc/ticdc-bidirectional-replication.md)
     - 监控告警
       - [监控指标](/ticdc/monitor-ticdc.md)
       - [报警规则](/ticdc/ticdc-alert-rules.md)
@@ -595,6 +598,7 @@
     - [与 MySQL 安全特性差异](/security-compatibility-with-mysql.md)
     - [权限管理](/privilege-management.md)
     - [TiDB 用户账户管理](/user-account-management.md)
+    - [TiDB 密码管理](/password-management.md)
     - [基于角色的访问控制](/role-based-access-control.md)
     - [TiDB 证书鉴权使用指南](/certificate-authentication.md)
   - SQL
@@ -939,6 +943,7 @@
   - v6.2
     - [6.2.0-DMR](/releases/release-6.2.0.md)
   - v6.1
+    - [6.1.3](/releases/release-6.1.3.md)
     - [6.1.2](/releases/release-6.1.2.md)
     - [6.1.1](/releases/release-6.1.1.md)
     - [6.1.0](/releases/release-6.1.0.md)
