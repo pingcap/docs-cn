@@ -809,3 +809,4 @@ mysql> show warnings;
 * [DROP STATS](/sql-statements/sql-statement-drop-stats.md)
 * [LOCK STATS](/sql-statements/sql-statement-lock-stats.md)
 * [UNLOCK STATS](/sql-statements/sql-statement-unlock-stats.md)
+* [SHOW STATS_LOCKED](/sql-statements/sql-statement-show-stats-locked.md)
