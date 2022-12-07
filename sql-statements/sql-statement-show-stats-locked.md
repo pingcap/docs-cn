@@ -1,7 +1,6 @@
 ---
 title: SHOW STATS_LOCKED
 summary: TiDB 数据库中 SHOW STATS_LOCKED 的使用概况。
-aliases: ['/docs-cn/dev/sql-statements/sql-statement-show-stats-locked/']
 ---
 
 # SHOW STATS_LOCKED
