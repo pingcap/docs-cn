@@ -318,12 +318,12 @@ func deleteBatch(db *sql.DB, startTime, endTime time.Time) (int64, error) {
 {{< copyable "sql" >}}
 
 ```sql
-BATCH ON {dividing_column} LIMIT {batch_size} {delete_statement};
+BATCH ON {shard_column} LIMIT {batch_size} {delete_statement};
 ```
 
 |    参数    |      描述      |
 | :--------: | :------------: |
-| `{dividing_column}`  |      非事务批量删除的划分列      |
+| `{shard_column}`  |      非事务批量删除的划分列      |
 | `{batch_size}` | 非事务批量删除的每批大小 |
 | `{delete_statement}` | 删除语句 |
 
