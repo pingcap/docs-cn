@@ -43,7 +43,7 @@ mysql> show warnings;
 1 row in set (0.00 sec)
 ```
 
-锁定表 `t` 的统计信息，执行 `ANALYZE` 语句，warning 提示跳过对表 `t` 的 `ANALYZE`。
+锁定表 `t` 的统计信息，执行 `ANALYZE` 语句，使用 `SHOW STATS_LOCKED` 可查看表 `t` 的统计信息已被锁定。 warning 提示跳过对表 `t` 的 `ANALYZE`。
 
 ```sql
 mysql> lock stats t;
