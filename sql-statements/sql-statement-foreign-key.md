@@ -168,7 +168,7 @@ TiDB 支持是否开启外键约束检查，由系统变量 [`foreign_key_checks
 
 ## 锁
 
-在 `INSERT` 或者 `UPDATE` 子表时，外键约束会检查父表中是否存在对应的外键值，并对父表中的该行数据上锁，避免该外键值被其他操作删除，导致破坏外键约束。这里的上锁行为相当于对父表中外键值所在行做 `SELECT FOR UPDATE` 操作。因为 TiDB 目前暂不支持 `LOCK IN SHARE MODE`，所以如果在并发写入子表且引用的外键值大部分都一样时，可能会有比较严重的锁冲突，建议在大批量写入子表数据时，关闭 [`foreign_key_checks`](/system-variables.md#foreign_key_checks)。
+在 `INSERT` 或者 `UPDATE` 子表时，外键约束会检查父表中是否存在对应的外键值，并对父表中的该行数据上锁，避免该外键值被其他操作删除，导致破坏外键约束。这里的上锁行为等同于对父表中外键值所在行做 `SELECT FOR UPDATE` 操作。因为 TiDB 目前暂不支持 `LOCK IN SHARE MODE`，所以如果在并发写入子表且引用的外键值大部分都一样时，可能会有比较严重的锁冲突，建议在大批量写入子表数据时，关闭 [`foreign_key_checks`](/system-variables.md#foreign_key_checks)。
 
 ## 外键的定义和元信息
 
@@ -235,7 +235,7 @@ mysql> explain analyze delete from parent where id = 1;
 
 ### 与旧版本的 TiDB 兼容性
 
-由于 TiDB 在 v6.6.0 版本之前已经支持创建外键的语法，但实际上创建的外键并不生效的。在用户将 TiDB 升级到 v6.6.0 版本及以后，之前在旧版本上创建的外键依然是不生效的，只有在打开 `tidb_enable_foreign_key` 变量后新创建的外键才生效。你可以使用 `SHOW CREATE TABLE` 语句查看外键是否生效，不生效的外键会有一条 `/* FOREIGN KEY INVALID */` 注释。
+由于 TiDB 在 v6.6.0 版本之前已经支持创建外键的语法，但创建的外键并不生效的。在用户将 TiDB 升级到 v6.6.0 版本及以后，之前在旧版本上创建的外键依然是不生效的，只有在v6.6.0 版本及以后新创建的外键才生效。你可以使用 `SHOW CREATE TABLE` 语句查看外键是否生效，不生效的外键会有一条 `/* FOREIGN KEY INVALID */` 注释。
 
 ```sql
 mysql> SHOW CREATE TABLE child\G
@@ -252,4 +252,3 @@ Create Table | CREATE TABLE `child` (
 ### 与 MySQL 的兼容性
 
 - 创建外键未指定名称时，TiDB 自动生成的外键名称和 MySQL 不一样。例如 TiDB 生成的外键名称为 `fk_1`、`fk_2`、`fk_3` 等，MySQL 生成的外键名称为 `table_name_ibfk_1`、 `table_name_ibfk_2`、`table_name_ibfk_3` 等。
-- 系统变量 `foreign_key_checks` 的默认值在 TiDB 中是 `OFF`, 在 MySQL 中是 `ON`。
