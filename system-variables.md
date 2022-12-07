@@ -3664,7 +3664,7 @@ For details, see [Identify Slow Queries](/identify-slow-queries.md).
 
 <CustomContent platform="tidb">
 
-- This variable is used to configure the different cluster IDs in a [bi-direcional replication](/ticdc/manage-ticdc.md#bi-directional-replication) cluster.
+- This variable is used to configure the different cluster IDs in a [bi-directional replication](/ticdc/manage-ticdc.md#bi-directional-replication) cluster.
 
 </CustomContent>
 

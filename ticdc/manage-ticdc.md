@@ -947,13 +947,13 @@ If you need to execute DDL statements, take the following steps:
 2. After the write operations of the correponding tables in all clusters have been replicated to other clusters, manually execute all DDL statements in each TiDB cluster.
 3. After the DDl statements are executed, resume the write operations.
 
-Note that a DDL statement that adds non-unique index does not break bi-direcional replication, so you do not need to pause the write operations in the corresponding table.
+Note that a DDL statement that adds non-unique index does not break bi-directional replication, so you do not need to pause the write operations in the corresponding table.
 
 ### Stop bi-directional replication
 
 After the application has stopped writing data, you can insert a special record into each cluster. By checking the two special records, you can make sure that data in two clusters are consistent.
 
-After the check is completed, you can stop the changefeed to stop bi-direcional replication.
+After the check is completed, you can stop the changefeed to stop bi-directional replication.
 
 ### Limitations
 
