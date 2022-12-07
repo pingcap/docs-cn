@@ -106,9 +106,9 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
 ### 性能
 
-* 完整支持索引合并[INDEX MERGE](/glossary.md#index-merge)功能 [#39333](https://github.com/pingcap/tidb/issues/39333) @[guo-shaoge](https://github.com/guo-shaoge) @[@time-and-fate](https://github.com/time-and-fate) @[hailanwhu](https://github.com/hailanwhu) **tw@TomShawn**
+* 进一步增强索引合并[INDEX MERGE](/glossary.md#index-merge)功能 [#39333](https://github.com/pingcap/tidb/issues/39333) @[guo-shaoge](https://github.com/guo-shaoge) @[@time-and-fate](https://github.com/time-and-fate) @[hailanwhu](https://github.com/hailanwhu) **tw@TomShawn**
 
-    新增了对在 WHERE 语句中使用 `AND` 联结的过滤条件的索引合并能力（v6.5 之前的版本只支持 `OR` 连接词的情况），TiDB 的索引合并至此可以覆盖更一般的查询过滤条件组合，不再限定于并集（`OR`）关系。用户可以通过使用 [`USE_INDEX_MERGE`](/optimizer-hints.md#use_index_merget1_name-idx1_name--idx2_name-) Hint 来开启对于 AND 联结的索引合并。
+    新增了对在 WHERE 语句中使用 `AND` 联结的过滤条件的索引合并能力（v6.5 之前的版本只支持 `OR` 连接词的情况），TiDB 的索引合并至此可以覆盖更一般的查询过滤条件组合，不再限定于并集（`OR`）关系。当前版本仅支持优化器自动选择 “OR” 条件下的索引合并，用户须使用 [`USE_INDEX_MERGE`](/optimizer-hints.md#use_index_merget1_name-idx1_name--idx2_name-) Hint 来开启对于 AND 联结的索引合并。
 
     关于“索引合并”功能的介绍请参阅 [v5.4 release note](/release-5.4.0#性能), 以及优化器相关的[用户文档](/explain-index-merge.md)
 
