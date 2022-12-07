@@ -118,7 +118,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
     * `->>`
     * `JSON_EXTRACT()`
 
-    TiDB 通过将函数下推至 TiFlash 加速分析计算。JSON 数据类型非常灵活，常用于快速发展的行业，如 WEB3 等。支持下推 JSON 函数至 TiFlash 可以更好的满足此类业务需求。
+    TiDB 通过将函数下推至 TiFlash 加速分析计算。JSON 数据类型非常灵活。支持下推 JSON 函数至 TiFlash 可以使 TiDB 利用 TiFlash 进行包含 JSON 类型数据的实时分析。
 
     TiDB 将继续完善，支持更多的 JSON 函数下推至 TiFlash。
 
