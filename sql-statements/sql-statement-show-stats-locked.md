@@ -5,7 +5,7 @@ summary: TiDB 数据库中 SHOW STATS_LOCKED 的使用概况。
 
 # SHOW STATS_LOCKED
 
-`SHOW STATS_LOCKED` 语句显示统计信息锁定的表。
+`SHOW STATS_LOCKED` 语句显示统计信息被锁定的表。
 
 > **警告：**
 >
