@@ -3,6 +3,8 @@ title: External Storages
 summary: Describes the storage URL format used in BR, TiDB Lightning, and Dumpling.
 ---
 
+<!--This doc is temporarily removed from TOC because it duplicates with backup-and-restore-storages.md but some descriptions about Lightning and Dumpling should be remained for successful references. Will extract Lightning and Dumpling content and add it to Lightning and Dumpling docs when bandwidth is sufficient.-->
+
 # External Storages
 
 br command-line tool, TiDB Lightning, and Dumpling support reading and writing data on the local file system and on Amazon S3. br command-line tool also supports reading and writing data on the Google Cloud Storage (GCS) and Azure Blob Storage (Azblob). These are distinguished by the URL scheme in the `--storage` (`-s`) parameter passed into br command-line tool, in the `-d` parameter passed into TiDB Lightning, and in the `--output` (`-o`) parameter passed into Dumpling.
