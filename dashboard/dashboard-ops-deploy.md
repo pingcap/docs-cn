@@ -8,6 +8,10 @@ aliases: ['/docs/dev/dashboard/dashboard-ops-deploy/']
 
 The TiDB Dashboard UI is built into the PD component for v4.0 or higher versions, and no additional deployment is required. Simply deploy a standard TiDB cluster, and TiDB Dashboard will be there.
 
+> **Note:**
+>
+> TiDB v6.5.0 (and later) and TiDB Operator v1.4.0 (and later) support deploying TiDB Dashboard as an independent Pod on Kubernetes. For details, see [Deploy TiDB Dashboard independently in TiDB Operator](https://docs.pingcap.com/tidb-in-kubernetes/dev/get-started#deploy-tidb-dashboard-independently).
+
 See the following documents to learn how to deploy a standard TiDB cluster:
 
 + [Quick Start Guide for the TiDB Database Platform](/quick-start-with-tidb.md)
