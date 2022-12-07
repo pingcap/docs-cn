@@ -1006,18 +1006,18 @@ MPP is a distributed computing framework provided by the TiFlash engine, which a
 
 ### tidb_cost_model_version <span class="version-mark">New in v6.2.0</span>
 
-> **Warning:**
+> **Note:**
 >
-> - Cost Model Version 2 is currently an experimental feature. It is not recommended that you use it for production environments.
+> - Since TiDB v6.5.0, the newly created cluster uses Cost Model Version 2 by default. If you upgrade from a TiDB version earlier than v6.5.0 to v6.5.0 or later, the `tidb_cost_model_version` value does not change.
 > - Switching the version of the cost model might cause changes to query plans.
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
 - Type: Integer
-- Default value: `1`
-- Range: `[1, 2]`
-- TiDB v6.2.0 introduces the [Cost Model Version 2](/cost-model.md#cost-model-version-2), which is more accurate than the previous version in internal tests.
-- To enable the Cost Model Version 2, you can set the `tidb_cost_model_version` to `2`. If you set this variable to `1`, the Cost Model Version 1 will be used.
+- Default value: `2`
+- Value options:
+    - `1`: enables the Cost Model Version 1, which is used by default in TiDB v6.4.0 and earlier versions.
+    - `2`: enables the [Cost Model Version 2](/cost-model.md#cost-model-version-2), which is generally available in TiDB v6.5.0 and is more accurate than the version 1 in internal tests.
 - The version of cost model affects the plan decision of optimizer. For more details, see [Cost Model](/cost-model.md).
 
 ### tidb_current_ts
