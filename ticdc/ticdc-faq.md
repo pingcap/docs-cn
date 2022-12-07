@@ -224,7 +224,9 @@ mysql root@127.0.0.1:test> show create table test;
 
 ## 使用 TiCDC 创建同步任务时将 `enable-old-value` 设置为 `true` 后，为什么上游的 `INSERT`/`UPDATE` 语句经 TiCDC 同步到下游后变为了 `REPLACE INTO`？
 
-TiCDC 提供 at least once 的数据同步保证，当下游有重复数据时，会引起写冲突问题，为了避免该问题， TiCDC 会将 `INSERT`/`UPDATE` 语句转成 `REPLACE INTO` 语句，该行为由 safe-mode 参数来控制，在 6.1.3 版本之前， safe-mode 默认为 true，即所有的 `INSERT`/`UPDATE` 语句都转成 `REPLACE INTO` 语句。在 6.1.3 版本及之后，系统经过了优化，能自动判断下游是否存在重复数据，  safe-mode 默认更改为 false，当系统判断下游无重复数据时，会直接同步 `INSERT`/`UPDATE` 语句。```
+TiCDC 提供至少一次的数据同步保证，当下游有重复数据时，会引起写冲突。为了避免该问题，TiCDC 会将 `INSERT` 和 `UPDATE` 语句转成 `REPLACE INTO` 语句。该行为由 `safe-mode` 参数来控制。
+
+在 v6.1.3 版本之前，`safe-mode` 默认为 `true`，即所有的 `INSERT` 和 `UPDATE` 语句都转成 `REPLACE INTO` 语句。在 v6.1.3 及之后版本，系统经过了优化，能自动判断下游是否存在重复数据，`safe-mode` 默认更改为 `false`，当系统判断下游无重复数据时，会直接同步 `INSERT` 和 `UPDATE` 语句。
 
 ## 数据同步下游的 Sink 为 TiDB 或 MySQL 时，下游数据库的用户需要哪些权限？
 
@@ -256,20 +258,20 @@ TiCDC 需要磁盘是为了缓冲上游写入高峰时下游消费不及时堆�
 
 ## 在两个异地 TiDB 集群之间同步数据，如何部署 TiCDC？
 
-在上下游网络延迟超过 100ms 时，推荐 TiCDC 部署在下游。 由于 mysql 传输协议的原因，如果网络延迟较大，TiCDC 向下游执行 SQL 的延迟会急剧增加，导致系统的吞吐下降。部署在下游能够极大缓解该影响。
+建议部署在下游 TiDB 集群。这是因为，如果上下游网络延迟较大，例如超过 100 ms 时，由于 MySQL 传输协议的原因，TiCDC 向下游执行 SQL 的延迟会急剧增加，导致系统的吞吐下降。部署在下游能够极大缓解该问题。
 
-## 如何理解 DML 和 DDL 语句之间的执行顺序
+## 如何理解 DML 和 DDL 语句之间的执行顺序？
 
-按照 DMLs -> DDL -> DMLs 的顺序执行。在数据同步过程中，为了确保 DML event 在下游执行时有对应正确的表结构，需要协调 DDL 和 DML 的执行顺序。目前 TiCDC 采用了简洁的方式处理该问题，会将 DDL ts 之前的 DML 都同步到下游之后，再同步 DDL 。
+按照 DML -> DDL -> DML 的顺序执行。在数据同步过程中，为了确保 DML 事件在下游执行时有对应正确的表结构，需要协调 DDL 和 DML 的执行顺序。目前 TiCDC 采用了简洁的方式处理该问题，会将 DDL ts 之前的 DML 都同步到下游之后，再同步 DDL。
 
 ## 如何对比上下游数据的一致性？
 
-如果下游是 TiDB 集群或者 MySQL，我们推荐使用 [sync diff insoector](/sync-diff-inspector/sync-diff-inspector-overview.md) 工具进行数据对比。
+如果下游是 TiDB 集群或者 MySQL，我们推荐使用 [sync diff inspector](/sync-diff-inspector/sync-diff-inspector-overview.md) 工具进行数据对比。
 
 ## 单表数据同步只能在一个 TiCDC 节点上运行，TiCDC 是否考虑使用多个节点同步多表数据？
 
-目前正在开发中，未来 TiCDC 会支持按照 TiKV region 粒度来同步数据变更日志，实现处理能力上的可扩展性。
+目前正在开发中，未来 TiCDC 会支持按照 TiKV Region 粒度来同步数据变更日志，实现处理能力上的可扩展性。
 
-## 上游有运行时间比较长的未提交事务， TiCDC 同步是否会被卡住？
+## 上游有运行时间比较长的未提交事务，TiCDC 同步是否会被卡住？
 
-TiDB 有事务超时的机制，当事务运行超过 `max-txn-ttl` 后，会被 TiDB 强制回滚。 TiCDC 遇到未提交的事务，会等待其提交后再继续同步其数据，因此会出现有同步延迟。
+TiDB 有事务超时的机制，当事务运行超过 [`max-txn-ttl`](/tidb-configuration-file.md#max-txn-ttl) 后，会被 TiDB 强制回滚。TiCDC 遇到未提交的事务，会等待其提交后再继续同步其数据，因此会出现同步延迟。
