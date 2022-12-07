@@ -3,7 +3,7 @@ title: 外部存储
 summary: 了解 BR、TiDB Lightning 和 Dumpling 中所用外部存储服务的 URL 参数。
 ---
 
-<!--This doc is temporarily removed from TOC because it duplicate with backup-and-restore-storages.md but some descriptions about Lightning and Dumpling should be remained for successful references. Will extract Lightning and Dumpling content and add it to Lightning and Dumpling docs when bandwidth is sufficient.-->
+<!--This doc is temporarily removed from TOC because it duplicates with backup-and-restore-storages.md but some descriptions about Lightning and Dumpling should be remained for successful references. Will extract Lightning and Dumpling content and add it to Lightning and Dumpling docs when bandwidth is sufficient.-->
 
 # 外部存储
 
