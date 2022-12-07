@@ -423,7 +423,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
         + 需要同时设置 `storage.enable-ttl = true`。由于 API V2 支持 TTL 特性，因此强制要求打开 `enable-ttl` 以避免这个参数出现歧义。
         + 启用 API V2 后需要在集群中额外部署至少一个 tidb-server 以回收过期数据。该 tidb-server 可同时提供数据库读写服务。可以部署多个 tidb-server 以保证高可用。
         + 需要客户端的支持。请参考对应客户端的 API V2 使用说明。
-        + 从 v6.2.0 版本开始，你可以通过 [RawKV CDC](https://github.com/tikv/migration/tree/main/cdc) 组件实现 RawKV 的 Change Data Capture (CDC)。
+        + 从 v6.2.0 版本开始，你可以通过 [RawKV CDC](https://tikv.org/docs/dev/concepts/explore-tikv-features/cdc/cdc-cn/) 组件实现 RawKV 的 Change Data Capture (CDC)。
 + 默认值：1
 
 > **警告：**
