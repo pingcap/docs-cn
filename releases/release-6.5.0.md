@@ -52,7 +52,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
     TTL 提供了行级别的生命周期控制策略。在 TiDB 中，设置了 TTL 属性的表会根据配置自动检查并删除过期的行数据。TTL 设计的目标是在不影响在线读写负载的前提下，帮助用户周期性且及时地清理不需要的数据。
 
-    更多信息请参考[Time to live(TTL)](/time-to-live.md)
+    更多信息，请参考[用户文档](/time-to-live.md)。
 
 * TiFlash 支持 `INSERT SELECT` 语句（实验功能） [#37515](https://github.com/pingcap/tidb/issues/37515) @[gengliqi](https://github.com/gengliqi) **tw@qiancai**
 
@@ -70,7 +70,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
 * 支持密码复杂度策略 [#38928](https://github.com/pingcap/tidb/issues/38928) @[CbcWestwolf](https://github.com/CbcWestwolf) **tw@ran-huang**
 
-    TiDB 启用密码复杂度策略功能后，在为用户设置密码时，会检查密码长度、大写/小写字符个数、数字字符个数、特殊字符个数、密码字典、是否与用户名相同，以此确保为用户设置一个安全的密码。
+    TiDB 启用密码复杂度策略功能后，在用户设置密码时，TiDB 会检查密码长度、大写和小写字符个数、数字字符个数、特殊字符个数、密码字典匹配、是否与用户名相同等，以此确保用户设置了安全的密码。
 
     TiDB 支持密码强度检查函数 `VALIDATE_PASSWORD_STRENGTH()`，用于判定一个给定密码的强度。
 
@@ -78,21 +78,21 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
 * 支持密码过期策略 [#38936](https://github.com/pingcap/tidb/issues/38936) @[CbcWestwolf](https://github.com/CbcWestwolf) **tw@ran-huang**
 
-    TiDB 支持密码过期策略，包括：手动密码过期、全局级别自动密码过期、账户级别自动密码过期。启用密码过期策略功能后，用户必须定期修改密码，防止密码长期使用带来的泄露风险，提高密码安全性。
+    TiDB 支持密码过期策略，包括手动密码过期、全局级别自动密码过期、账户级别自动密码过期。启用密码过期策略功能后，用户必须定期修改密码，防止密码长期使用带来的泄露风险，提高密码安全性。
 
-    更多信息，请参考[用户文档](/password-management.md#密码过期策略)
+    更多信息，请参考[用户文档](/password-management.md#密码过期策略)。
 
 * 支持密码重用策略 [#38937](https://github.com/pingcap/tidb/issues/38937) @[keeplearning20221](https://github.com/keeplearning20221) **tw@ran-huang**
 
-    TiDB 支持密码重用策略，包括：全局级别密码重用策略、账户级别密码重用策略。启用密码重用策略功能后，用户不允许使用最近一段时间使用过的密码，不允许使用最近几次使用过的密码，以此降低密码的重复使用带来的泄漏风险，提高密码安全性。
+    TiDB 支持密码重用策略，包括全局级别密码重用策略、账户级别密码重用策略。启用密码重用策略功能后，用户不能使用最近一段时间使用过的密码或最近几次使用过的密码，以此降低密码的重复使用带来的泄漏风险，提高密码安全性。
 
-    更多信息，请参考[用户文档](/password-management.md#密码重用策略)
+    更多信息，请参考[用户文档](/password-management.md#密码重用策略)。
 
 * 支持密码连续错误限制登录策略 [#38938](https://github.com/pingcap/tidb/issues/38938) @[lastincisor](https://github.com/lastincisor) **tw@ran-huang**
 
-    TiDB 启用密码连续错误限制登录策略功能后，当用户登录时密码连续多次错误，此时该账户将被临时锁定，达到锁定时间后将自动解锁。
+    TiDB 启用密码连续错误限制登录策略功能后，当用户登录时，如果连续多次密码错误，账户将被临时锁定，达到锁定时间后将自动解锁。
 
-    更多信息，请参考[用户文档](/password-management.md#密码连续错误限制登录策略)
+    更多信息，请参考[用户文档](/password-management.md#密码连续错误限制登录策略)。
 
 ### 可观测性
 
@@ -183,9 +183,9 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
     更多信息，请参考[用户文档](sql-statements/sql-statement-explain-analyze.md)。
 
-* 执行计划支持 JSON 格式的打印 [#39261](https://github.com/pingcap/tidb/issues/39261) @[fzzf678](https://github.com/fzzf678) **tw@ran-huang**
+* 执行计划支持打印 JSON 格式 [#39261](https://github.com/pingcap/tidb/issues/39261) @[fzzf678](https://github.com/fzzf678) **tw@ran-huang**
 
-    在新版本中，TiDB 扩展了执行计划的打印格式。 通过 `explain format = tidb_json <SQL语句> ` 能够将 SQL 的执行计划以 JSON 格式输出。借助这个能力，SQL 调试工具和诊断工具能够更方便准确地解读执行计划，进而提升 SQL 诊断调优的易用性。
+    在新版本中，TiDB 扩展了执行计划的打印格式。 通过 `EXPLAIN FORMAT=tidb_json <SQL语句>` 能够将 SQL 的执行计划以 JSON 格式输出。借助这个能力，SQL 调试工具和诊断工具能够更方便准确地解读执行计划，进而提升 SQL 诊断调优的易用性。
 
     更多信息，请参考[用户文档](/sql-statements/sql-statement-explain.md)。
 
