@@ -156,6 +156,36 @@ Connection Idle Duration 指空闲连接的持续时间。
 ![performance overview](/media/performance/grafana_performance_overview.png)
 
 ## TiFlash
-
+- CPU: 每个 TiFlash 实例 CPU 的使用率。
+- Memory：每个 TiFlash 实例内存的使用情况。
+- IO Utilization：每个 TiFlash 实例 IO 使用率。
+- MPP Query count: 每个 TiFlash 实例每秒 MPP 查询数量。
+- MPP Query count: 每个 TiFlash 实例每秒 MPP 查询数量。
+- Request QPS: 所有 TiFlash 实例收到的 coprocessor 请求数量。其中 batch 是 batch 请求数量，batch_cop 是 batch 请求中的 coprocessor 请求数量，cop 是直接通过 coprocessor 接口发送的 coprocessor 请求数量，cop_dag 是所有 coprocessor 请求中 dag 请求数量，super_batch 是开启 super batch 特性的请求数量。
+- Executor QPS：所有 TiFlash 实例收到的请求中，每种 dag 算子的数量，其中 table_scan 是扫表算子，selection 是过滤算子，aggregation 是聚合算子，top_n 是 TopN 算子，limit 是 limit 算子。
+- Request Duration Overview: 每秒所有 TiFlash 实例所有请求类型的处理总时间堆叠图
+- Request Duration: 所有 TiFlash 实例每种 MPP 和 coprocessor 请求类型的总处理时间，包含平均和 P99 处理延迟。
+- Request Handle Duration：所有 TiFlash 实例处理 MPP 和 coprocessor 请求处理时间，处理时间为该 coprocessor 请求开始执行到执行结束的时间, 包含平均和 P99 延迟。
+- Raft Wait Index Duration：所有 TiFlash 实例在进行 wait_index 消耗的时间，即拿到 read_index 请求后，等待本地的 Region index >= read_index 所花费的时间。
+- Raft Batch Read Index Duration：所有 TiFlash 实例在进行 read_index 消耗的时间，主要消耗在于和 Region leader 的交互和重试时间。
+- Write Throughput By Instance：每个实例写入数据的吞吐量，包括 apply Raft 数据日志以及 Raft 快照的写入吞吐量。
+- Write flow：所有 TiFlash 实例磁盘写操作的流量。
+- Read flow：所有 TiFlash 实例磁盘读操作的流量。
 
 ## CDC
+- CPU usage：TiCDC 节点使用的 CPU
+- Memory usage：TiCDC 节点使用的内存
+- Goroutine count：TiCDC 节点 Goroutine 的个数
+- Changefeed checkpoint lag：同步任务上下游数据的进度差（以时间计算）。
+- Changefeed resolved ts lag：TiCDC 节点内部同步状态与上游的进度差（以时间计算）。
+- The status of changefeeds：changefeed 的状态, 0: Normal, 1: Error, 2: Failed, 3: Stopped, 4: Finished, -1: Unknown
+- Puller output events/s：TiCDC 节点中 Puller 模块每秒输出到 Sorter 模块的数据变更个数
+- Sorter output events/s：TiCDC 节点中 Sorter 模块每秒输出到 Mounter 模块的行数
+- Mounter output events/s：TiCDC 节点中 Mounter 模块每秒输出到 Sink 模块的行数
+- Table sink output events/s: TiCDC 节点中 Table Sorter 模块每秒输出到 Sink 模块的行数
+- SinkV2 - Sink flush rows/s: TiCDC 节点中 Sink 模块每秒到下游的行数
+- Transaction Sink Full Flush Duration: TiCDC 节点中 MySQL Sink 写下游事务的平均和 p999 延迟
+- MQ Worker Send Message Duration Percentile: 下游为 Kafka 时 MQ worker 发送消息的延迟
+- Kafka Outgoing Bytes: MQ Workload 写下游的流量
+
+
