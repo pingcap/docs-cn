@@ -118,7 +118,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
     * `->>`
     * `JSON_EXTRACT()`
 
-    JSON 格式为应用设计提供了更灵活的建模方式，目前越来越多的应用采用 JSON 格式进行数据交换和数据存储。 把 JSON 函数下推至 TiFlash 可以加速对 JSON 类型数据的分析效率，拓展 TiDB 实时分析的应用场景。 TiDB 将持续完善，在未来版本支持更多的 JSON 函数下推至 TiFlash。
+    JSON 格式为应用设计提供了更灵活的建模方式，目前越来越多的应用采用 JSON 格式进行数据交换和数据存储。 把 JSON 函数下推至 TiFlash 可以加速对 JSON 类型数据的分析效率，拓展 TiDB 实时分析的应用场景。TiDB 将持续完善，在未来版本支持更多的 JSON 函数下推至 TiFlash。
 
 * 新增支持下推[字符串函数](/tiflash/tiflash-supported-pushdown-calculations.md) 至 TiFlash [#6115](https://github.com/pingcap/tiflash/issues/6115) @[xzhangxian1008](https://github.com/xzhangxian1008) **tw@qiancai**
 
