@@ -319,13 +319,18 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
 | 配置文件 | 配置项 | 修改类型 | 描述 |
 | -------- | -------- | -------- | -------- |
-| TiDB | [`disconnect-on-expired-password`](/tidb-configuration-file.md#disconnect-on-expired-password`-从-v650-版本开始引入) | 新增 | 该配置用于控制 TiDB 服务端是否直接断开密码已过期用户的连接，默认值为 "true" ，表示 TiDB 服务端将直接断开密码已过期用户的连接 |
 | TiDB | [`server-memory-quota`](/tidb-configuration-file.md#server-memory-quota-从-v409-版本开始引入) | 废弃 | 自 v6.5.0 起，该配置项被废弃。请使用 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 系统变量进行设置。 |
+| TiDB | [`disconnect-on-expired-password`](/tidb-configuration-file.md#disconnect-on-expired-password`-从-v650-版本开始引入) | 新增 | 该配置用于控制 TiDB 服务端是否直接断开密码已过期用户的连接，默认值为 "true" ，表示 TiDB 服务端将直接断开密码已过期用户的连接 |
+| TiKV | [`raw-min-ts-outlier-threshold`] | 删除 | 从 v6.4.0，该配置项被废弃。从 v6.5.0，该配置项被删除。 |
 | TiKV | [`cdc.min-ts-interval`](/tikv-configuration-file.md#min-ts-interval) | 修改 | 默认值从 `1s` 修改为 `200ms` |
 |          |          |          |          |
 |          |          |          |          |
 
 ### 其他
+
+- [索引加速功能](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入)默认开启，与 [PITR (Point-in-time recovery)](/br/br-pitr-guide.md) 功能不兼容。在使用索引加速功能时，需要确保后台没有启动 PITR 备份任务，否则可能会出现非预期结果，详情请参考[tidb_ddl_enable_fast_reorg](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入)。
+
+
 
 ## 废弃功能
 
@@ -363,6 +368,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
     - 通过引入 `hint_min_ts` 加速 flashback [#13842](https://github.com/tikv/tikv/pull/13842)  @[JmPotato](https://github.com/JmPotato)
     - tikv-ctl 支持查询某个 key 范围中包含哪些 Region  [#13768](https://github.com/tikv/tikv/pull/13768) [@HuSharp](https://github.com/HuSharp)
     - 改进持续对特定行只加锁但不更新情况下的读写性能 [#13694](https://github.com/tikv/tikv/issues/13694) [@sticnarf](https://github.com/sticnarf)
+
 + PD
 
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
@@ -370,7 +376,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
     - 优化调度器在大规模集群下的性能问题，提升调度策略生产速度 [#5473](https://github.com/tikv/pd/issues/5473) @[bufferflies](https://github.com/bufferflies)
     - 增加 btree 的泛型性支持 [#5606](https://github.com/tikv/pd/issues/5606) @[rleungx](https://github.com/rleungx)
     - 优化心跳处理过程，减少一些不要的开销 [#5648](https://github.com/tikv/pd/issues/5648)@[rleungx](https://github.com/rleungx)
-    - 增加了自动清理 tombstone store 的功能 [#5348](https://github.com/tikv/pd/issues/5348) @[nolouch](https://github.com/nolouch) 
+    - 增加了自动清理 tombstone store 的功能 [#5348](https://github.com/tikv/pd/issues/5348) @[nolouch](https://github.com/nolouch)
 
 + TiFlash
 
@@ -404,7 +410,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
 + TiDB
 
-    -  修复 chunk reuse 功能部分情况下内存 chunk 被错误使用的问题 [#38917](https://github.com/pingcap/tidb/issues/38917) @[keeplearning20221](https://github.com/keeplearning20221)
+    - 修复 chunk reuse 功能部分情况下内存 chunk 被错误使用的问题 [#38917](https://github.com/pingcap/tidb/issues/38917) @[keeplearning20221](https://github.com/keeplearning20221)
     - 修复 `tidb_constraint_check_in_place_pessimistic` 可能被全局设置影响内部 session 的问题 [#38766](https://github.com/pingcap/tidb/issues/38766) @[ekexium](https://github.com/ekexium)
     - 修复了 AUTO_INCREMENT 列无法和 Check 约束一起使用的问题 [#38894](https://github.com/pingcap/tidb/issues/38894) @[YangKeao](https://github.com/YangKeao)
     - 修复使用 'insert ignore into' 往 smallint 类型 auto increment 的列插入 string 类型数据会报错的问题 [#38483](https://github.com/pingcap/tidb/issues/38483) @[hawkingrei](https://github.com/hawkingrei)
