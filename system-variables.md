@@ -3092,7 +3092,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 单位：秒
 - 这个变量设置了 [statement summary tables](/statement-summary-tables.md) 的刷新时间。
 
-### `tidb_store_batch_size`
+### `tidb_store_batch_size` <span class="version-mark">从 v6.5.0 版本开始引入</span>
 
 > **警告：**
 >
