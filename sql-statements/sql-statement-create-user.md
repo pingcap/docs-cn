@@ -12,7 +12,7 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-create-user/','/docs-cn/dev
 
 ```ebnf+diagram
 CreateUserStmt ::=
-    'CREATE' 'USER' IfNotExists UserSpecList RequireClauseOpt ConnectionOptions LockOption AttributeOption
+    'CREATE' 'USER' IfNotExists UserSpecList RequireClauseOpt ConnectionOptions PasswordOption LockOption AttributeOption
 
 IfNotExists ::=
     ('IF' 'NOT' 'EXISTS')?
@@ -29,6 +29,8 @@ AuthOption ::=
 StringName ::=
     stringLit
 |   Identifier
+
+PasswordOption ::= ( 'PASSWORD' 'EXPIRE' ( 'DEFAULT' | 'NEVER' | 'INTERVAL' 'N' 'DAY' )? | 'PASSWORD' 'HISTORY' ( 'DEFAULT' | 'N' ) ｜ 'PASSWORD' 'REUSE' 'INTERVAL' ( 'DEFAULT' | 'N' 'DAY' ) | 'FAILED_LOGIN_ATTEMPTS' 'N' | 'PASSWORD_LOCK_TIME' ( 'N' | 'UNBOUNDED' ) )?
 
 LockOption ::= ( 'ACCOUNT' 'LOCK' | 'ACCOUNT' 'UNLOCK' )?
 
@@ -127,6 +129,26 @@ SELECT * FROM information_schema.user_attributes;
 | newuser7  | %    | {"email": "user@pingcap.com"} |
 +-----------+------+---------------------------------------------------+
 1 rows in set (0.00 sec)
+```
+
+创建一个禁止重复使用最近 5 次密码的用户。
+
+```sql
+CREATE USER 'newuser8'@'%' PASSWORD HISTORY 5;
+```
+
+```
+Query OK, 1 row affected (0.02 sec)
+```
+
+创建一个密码已经手动过期的用户。
+
+```sql
+CREATE USER 'newuser9'@'%' PASSWORD EXPIRE;
+```
+
+```
+Query OK, 1 row affected (0.02 sec)
 ```
 
 ## MySQL 兼容性

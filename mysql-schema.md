@@ -16,6 +16,7 @@ aliases: ['/docs-cn/dev/system-tables/system-table-overview/','/docs-cn/dev/refe
 * `db` 数据库级别的权限
 * `tables_priv` 表级的权限
 * `columns_priv` 列级的权限
+* `password_history` 记录密码更改历史
 
 ## 服务端帮助信息系统表
 

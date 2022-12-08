@@ -139,6 +139,11 @@ addr = "172.16.31.10:8287"
 # Physical Import Mode 限制 TiDB Lightning 向每个 TiKV 节点写入的带宽大小，默认为 0，表示不限制。
 # store-write-bwlimit = "128MiB"
 
+# 使用 Physical Import Mode 时，配置 TiDB Lightning 本地临时文件使用的磁盘配额 (disk quota)。当磁盘配额不足时，TiDB Lightning 会暂停读取源数据以及写入临时文件的过程，优先将已经完成排序的 key-value 写入到 TiKV，TiDB Lightning 删除本地临时文件后，再继续导入过程。
+# 需要同时配合把 `backend` 设置为 `local` 模式才能生效。
+# 默认值为 MaxInt64 字节，即 9223372036854775807 字节。
+# disk-quota = "10GB" 
+
 [mydumper]
 # 设置文件读取的区块大小，确保该值比数据源的最长字符串长。
 read-block-size = "64KiB" # 默认值
@@ -296,6 +301,9 @@ analyze = "optional"
 switch-mode = "5m"
 # 在日志中打印导入进度的持续时间。
 log-progress = "5m"
+
+# 使用 Physical Import Mode 时，检查本地磁盘配额的时间间隔，默认为 60 秒。
+# check-disk-quota = "60s"
 ```
 
 ## 命令行参数
