@@ -3100,6 +3100,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
+- 类型：整数
 - 默认值：`0`
 - 范围：`[0, 25000]`
 - 设置 `IndexLookUp` 算子回表时 batch 多个 Coprocessor Task 的大小。`0` 代表不使用 batch。当 `IndexLookUp` 算子的回表 Task 数量特别大，出现极长的慢查询时，可以适当调大该参数加速查询。
