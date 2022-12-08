@@ -366,7 +366,11 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 + PD
 
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
+    - 优化锁的粒度以减少锁争用，提升高并发下心跳的处理能力 [#5586](https://github.com/tikv/pd/issues/5586) @[rleungx](https://github.com/rleungx)
+    - 优化调度器在大规模集群下的性能问题，提升调度策略生产速度 [#5473](https://github.com/tikv/pd/issues/5473) @[bufferflies](https://github.com/bufferflies)
+    - 增加 btree 的泛型性支持 [#5606](https://github.com/tikv/pd/issues/5606) @[rleungx](https://github.com/rleungx)
+    - 优化心跳处理过程，减少一些不要的开销 [#5648](https://github.com/tikv/pd/issues/5648)@[rleungx](https://github.com/rleungx)
+    - 增加了自动清理 tombstone store 的功能 [#5348](https://github.com/tikv/pd/issues/5348) @[nolouch](https://github.com/nolouch) 
 
 + TiFlash
 
@@ -426,7 +430,8 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 + PD
 
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
+    - 修复热点调度配置在没有修改的情况下不持久化的问题 [#5701](https://github.com/tikv/pd/issues/5701)  @[HunDunDM](https://github.com/HunDunDM)
+    - 修复 rank-formula-version 在升级过程中没有保持升级前的配置的问题 [#5699](https://github.com/tikv/pd/issues/5698) @[HunDunDM](https://github.com/HunDunDM)
 
 + TiFlash
 
