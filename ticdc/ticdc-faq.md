@@ -22,7 +22,7 @@ summary: 了解 TiCDC 相关的常见问题。
 
 ## 为什么 TiCDC 创建任务时提示部分表不能同步？
 
-在使用 `cdc cli changefeed create` 创建同步任务时会检查上游表是否符合[同步限制](/ticdc/ticdc-overview.md#设计限制)。如果存在表不满足同步限制，会提示 `some tables are not eligible to replicate` 并列出这些不满足的表。如果选择 `Y` 或 `y` 则会继续创建同步任务，并且同步过程中自动忽略这些表的所有更新。如果选择其他输入，则不会创建同步任务。
+在使用 `cdc cli changefeed create` 创建同步任务时会检查上游表是否符合[同步要求](/ticdc/ticdc-overview.md#最佳实践)。如果存在表不满足同步限制，会提示 `some tables are not eligible to replicate` 并列出这些不满足的表。如果选择 `Y` 或 `y` 则会继续创建同步任务，并且同步过程中自动忽略这些表的所有更新。如果选择其他输入，则不会创建同步任务。
 
 ## 如何查看 TiCDC 同步任务的状态？
 
@@ -102,7 +102,7 @@ TiCDC 为 service GC safepoint 设置的存活有效期为 24 小时，即 TiCDC
 
 * 同步所有的非系统表
 * 开启 old value 功能
-* 不同步不包含[有效索引](/ticdc/ticdc-overview.md#设计限制)的表
+* 只同步包含[有效索引](/ticdc/ticdc-overview.md#最佳实践)的表
 
 ## TiCDC 是否支持输出 Canal 格式的变更数据？
 
