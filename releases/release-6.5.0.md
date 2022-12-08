@@ -54,15 +54,19 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
     更多信息，请参考[用户文档](/time-to-live.md)。
 
-* TiFlash 支持 `INSERT SELECT` 语句（实验功能） [#37515](https://github.com/pingcap/tidb/issues/37515) @[gengliqi](https://github.com/gengliqi) **tw@qiancai**
+* 支持通过 `INSERT INTO SELECT` 语句保存 TiFlash 查询结果（实验特性） [#37515](https://github.com/pingcap/tidb/issues/37515) @[gengliqi](https://github.com/gengliqi) **tw@qiancai**
 
-    用户可以指定 TiFlash 执行 `INSERT SELECT` 中的 `SELECT` 子句（分析查询），并将结果在此事务中写回到 TIDB 表中:
+    从 v6.5.0 起， TiDB 支持下推 `INSERT INTO SELECT` 语句中的 `SELECT` 子句（分析查询）到 TiFlash，你可以将 TiFlash 的查询结果方便地保存到 `INSERT INTO` 指定的 TiDB 表中供后续分析使用，起到了结果缓存（即结果物化）的效果。例如：
 
     ```sql
-    insert into t2 select mod(x,y) from t1;
+    INSERT INTO t2 SELECT Mod(x,y) FROM t1;
     ```
 
-    用户可以方便地保存（物化）TiFlash 的计算结果以供下游步骤使用，可以起到结果缓存（物化）的效果。适用于以下场景：使用 TiFlash 做复杂分析，需重复使用计算结果或响应高并发的在线请求，计算性质本身聚合性好（相对输入数据，计算得出的结果集比较小，推荐 100MB 以内）。作为写入对象的 结果表本身没有特别限制，可以任意选择是否添加 TiFlash 副本。
+    在实验特性阶段，该功能默认关闭。要开启此功能，请设置系统变量 [`tidb_enable_tiflash_read_for_write_stmt`](/system-variables.md#tidb_enable_tiflash_read_for_write_stmt-从-v630-版本开始引入) 为 `ON`。使用该特性时，`INSERT INTO` 指定的结果表没有特殊限制，你可以自由选择是否为该表添加 TiFlash 副本。该特性典型的使用场景包括：
+
+    - 使用 TiFlash 做复杂分析
+    - 需重复使用 TiFlash计算结果或响应高并发的在线请求
+    - 相对输入数据，计算需要得出的结果集比较小，推荐 100MiB 以内
 
     更多信息，请参考[用户文档](/tiflash/tiflash-results-materialization.md)。
 
@@ -120,7 +124,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
     JSON 格式为应用设计提供了灵活的建模方式，目前越来越多的应用采用 JSON 格式进行数据交换和数据存储。 通过将 JSON 函数下推至 TiFlash，你可以提高 JSON 类型数据的分析效率，拓展 TiDB 实时分析的应用场景。
 
-* 新增支持下推[字符串函数](/tiflash/tiflash-supported-pushdown-calculations.md) 至 TiFlash [#6115](https://github.com/pingcap/tiflash/issues/6115) @[xzhangxian1008](https://github.com/xzhangxian1008) **tw@qiancai**
+* 新增支持下推以下 [字符串函数](/tiflash/tiflash-supported-pushdown-calculations.md) 至 TiFlash [#6115](https://github.com/pingcap/tiflash/issues/6115) @[xzhangxian1008](https://github.com/xzhangxian1008) **tw@qiancai**
 
     * `regexp_like`
     * `regexp_instr`
@@ -134,7 +138,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
 * 支持将 [分区表](/partitioned-table.md)的排序操作下推至 TiKV [#26166](https://github.com/pingcap/tidb/issues/26166) @[winoros](https://github.com/winoros) **tw@qiancai**
 
-    [分区表](/partitioned-table.md)在 v6.1.0 正式 GA， TiDB 持续提升分区表相关的性能。 在 v6.5.0 中， 排序操作如 `ORDER BY`, `LIMIT` 能够下推至 TiKV 进行计算和过滤，降低网络 I/O 的开销，提升了使用分区表时 SQL 的性能。
+    [分区表](/partitioned-table.md)特性在 v6.1.0 正式 GA 后，TiDB 仍然在持续提升分区表相关的性能。在 v6.5.0 中， TiDB 支持将 `ORDER BY` 和 `LIMIT` 等排序操作下推至 TiKV 进行计算和过滤，降低网络 I/O 的开销，提升了使用分区表时 SQL 的性能。
 
 * 优化器代价模型 Cost Model Version 2 GA [#35240](https://github.com/pingcap/tidb/issues/35240) @[qw4990](https://github.com/qw4990) **tw@Oreoxmt**
 
