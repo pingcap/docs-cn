@@ -3096,7 +3096,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 > **警告：**
 >
-> 目前 `tidb_store_batch_size` 为实验特性，不建议在生产环境中使用。
+> 目前 `tidb_store_batch_size` 为实验特性，未来此变量可能会删除，不建议业务依赖此变量或在生产环境中使用。
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
