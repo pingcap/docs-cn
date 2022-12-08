@@ -3092,6 +3092,17 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 单位：秒
 - 这个变量设置了 [statement summary tables](/statement-summary-tables.md) 的刷新时间。
 
+### `tidb_store_batch_size`
+
+> **警告：**
+>
+> 目前 `tidb_store_batch_size` 为实验特性，不建议在生产环境中使用。
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 默认值：`0`
+- 设置 `IndexLookUp` 算子回表时 batch 多个 coprocessor task 的大小，0 代表不使用 batch。当 `IndexLookUp` 算子的回表 task 数量特别大，出现极长的慢查询时，可以适当调整该参数加速查询。
+
 ### `tidb_streamagg_concurrency`
 
 - 作用域：SESSION | GLOBAL
