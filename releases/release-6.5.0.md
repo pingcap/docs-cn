@@ -112,7 +112,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
     关于“索引合并”功能的介绍请参阅 [v5.4 release note](/release-5.4.0#性能), 以及优化器相关的[用户文档](/explain-index-merge.md)
 
-* 新增支持下推[JSON 函数](/tiflash/tiflash-supported-pushdown-calculations.md) 至 TiFlash [#39458](https://github.com/pingcap/tidb/issues/39458) @[yibin87](https://github.com/yibin87) **tw@qiancai**
+* 新增支持下推以下[JSON 函数](/tiflash/tiflash-supported-pushdown-calculations.md) 至 TiFlash [#39458](https://github.com/pingcap/tidb/issues/39458) @[yibin87](https://github.com/yibin87) **tw@qiancai**
 
     * `->`
     * `->>`
