@@ -336,7 +336,6 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 + TiDB
 
     - 对于 `bit` and `char` 类型的列，使 `INFORMATION_SCHEMA.COLUMNS` 的显示结果与 MySQL 一致 [#25472](https://github.com/pingcap/tidb/issues/25472) @[hawkingrei](https://github.com/hawkingrei)
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
 + TiKV
 
@@ -373,7 +372,6 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
     - 提升了 TiFlash 在 SQL 端没有攒批的场景的写入性能 [#6404](https://github.com/pingcap/tiflash/issues/6404) @[lidezhu](https://github.com/lidezhu)
     - 增加了 TableFullScan 的输出信息 [#5926](https://github.com/pingcap/tiflash/issues/5926) @[hongyunyan](https://github.com/hongyunyan)
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
 + Tools
 
@@ -383,16 +381,13 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
     + Backup & Restore (BR)
 
-        - 优化清理备份日志数据是 BR 的内存使用(https://github.com/pingcap/tidb/issues/38869) @Leavrth （https://github.com/Leavrth）
-        - 提升在恢复时的稳定性，允许 PD leader 切换的情况发生（https://github.com/pingcap/tidb/issues/36910） @MoCuishle28 （https://github.com/MoCuishle28）
-        - 日志备份的 tls 功能使用 openssl 协议，提升 tls 兼容性。(https://github.com/tikv/tikv/issues/13867)
-@YuJuncen (https://github.com/YuJuncen)
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
+        - 优化清理备份日志数据是 BR 的内存使用 [#38869](https://github.com/pingcap/tidb/issues/38869) @[Leavrth](https://github.com/Leavrth)
+        - 提升在恢复时的稳定性，允许 PD leader 切换的情况发生 [#36910](https://github.com/pingcap/tidb/issues/36910) @[MoCuishle28](https://github.com/MoCuishle28)
+        - 日志备份的 tls 功能使用 openssl 协议，提升 tls 兼容性。[#13867](https://github.com/tikv/tikv/issues/13867) @[YuJuncen](https://github.com/YuJuncen)
 
     + TiCDC
 
-        - 采用并发的方式对数据进行编码，极大提升了同步到 kafka 的吞吐能力[#7532](https://github.com/pingcap/tiflow/issues/7532)[#7543](https://github.com/pingcap/tiflow/issues/7543)[#7540](https://github.com/pingcap/tiflow/issues/7540)
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
+        - 采用并发的方式对数据进行编码，极大提升了同步到 kafka 的吞吐能力 [#7532](https://github.com/pingcap/tiflow/issues/7532) [#7543](https://github.com/pingcap/tiflow/issues/7543) [#7540](https://github.com/pingcap/tiflow/issues/7540)
 
     + TiDB Data Migration (DM)
 
@@ -400,17 +395,6 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
         - 通过异步写与批量写的方式提升 dm relay 写数据效率[#7580](https://github.com/pingcap/tiflow/pull/7580) @[GMHDBJD](https://github.com/GMHDBJD)
         - 改进 DM 前置检查的错误提示信息[#7696](https://github.com/pingcap/tiflow/pull/7696) @[buchuitoudegou](https://github.com/buchuitoudegou)
         - 改进 DM 针对老版本 MySQL 使用 `SHOW SLAVE HOSTS` 获取结果时的兼容性[#7373](https://github.com/pingcap/tiflow/pull/7372) @[lyzx2001](https://github.com/lyzx2001)
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
-
-    + TiDB Lightning
-
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
-
-    + TiUP
-
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
 ## 错误修复
 
@@ -438,7 +422,6 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
     - 修复当未使用 new collation 时 `like` 无法处理 `_` 中非 ASCII 字符的问题 [#13769](https://github.com/tikv/tikv/issues/13769) @[YangKeao](https://github.com/YangKeao)
     - 修复 tikv-ctl 执行 reset-to-version 时出现 segfault 的问题 [#13829](https://github.com/tikv/tikv/issues/13829) @[tabokie](https://github.com/tabokie)
     - 修复 flashback 可能覆盖错误的写记录的问题 [#13844](https://github.com/tikv/tikv/issues/13844) @[JmPotato](https://github.com/JmPotato)
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
 + PD
 
@@ -449,43 +432,33 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
     - 修复 TiFlash 重启不能正确合并小文件的问题 [#6159](https://github.com/pingcap/tiflash/issues/6159) @[lidezhu](https://github.com/lidezhu)
     - 修复 TiFlash Open File OPS 过高的问题 [#6345](https://github.com/pingcap/tiflash/issues/6345) @[JaySon-Huang](https://github.com/JaySon-Huang)
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
 + Tools
 
     + Backup & Restore (BR)
 
-        - 修复清理备份日志数据时错误删除数据导致数据丢失的问题（https://github.com/pingcap/tidb/issues/38939） @Leavrth (https://github.com/Leavrth)
-        - 修复在大于 6.1 版本关闭 new_collation 设置，仍然恢复失败的问题（https://github.com/pingcap/tidb/issues/39150） @MoCuishle28  (https://github.com/MoCuishle28)
-        - 修复因非 s3 存储的不兼容请求导致备份 panic 的问题(https://github.com/pingcap/tidb/issues/39545) @3pointer (https://github.com/3pointer)
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
+        - 修复清理备份日志数据时错误删除数据导致数据丢失的问题 [#38939](https://github.com/pingcap/tidb/issues/38939) @[Leavrth](https://github.com/Leavrth)
+        - 修复在大于 6.1 版本关闭 new_collation 设置，仍然恢复失败的问题 [#39150](https://github.com/pingcap/tidb/issues/39150) @[MoCuishle28](https://github.com/MoCuishle28)
+        - 修复因非 s3 存储的不兼容请求导致备份 panic 的问题 [39545](https://github.com/pingcap/tidb/issues/39545) @[3pointer](https://github.com/3pointer)
 
     + TiCDC
 
-        - 修复 PD leader crash时 CDC 卡住的问题[#7470](https://github.com/pingcap/tiflow/issues/7470)
-        - 修复在执行drop table 时用户快速暂停恢复同步任务导致可能的数据丢失问题[#7682](https://github.com/pingcap/tiflow/issues/7682)
+        - 修复 PD leader crash时 CDC 卡住的问题 [#7470](https://github.com/pingcap/tiflow/issues/7470)
+        - 修复在执行drop table 时用户快速暂停恢复同步任务导致可能的数据丢失问题 [#7682](https://github.com/pingcap/tiflow/issues/7682)
         - 兼容上游开启 TiFlash 时版本兼容性问题 [#7744](https://github.com/pingcap/tiflow/issues/7744)
         - 修复下游网络出现故障导致cdc 卡住的问题 [#7706](https://github.com/pingcap/tiflow/issues/7706)
         - 修复用户快速删除、创建同名同步任务可能导致的数据丢失问题 [#7657](https://github.com/pingcap/tiflow/issues/7657)
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
     + TiDB Data Migration (DM)
 
         - 修复无法在上游开启 gtid mode 且无数据时启动 all mode 任务的错误 [#7037](https://github.com/pingcap/tiflow/issues/7037) @[liumengya94](https://github.com/liumengya94)
         - 修复 DM-worker 异常重启可能引起的多 worker 写同一下游同张表的错误 [#7658](https://github.com/pingcap/tiflow/issues/7658) @[GMHDBJD](https://github.com/GMHDBJD)
         - 修复上游数据库使用正则匹配授权时 DM 前置检查不通过的错误[#7645](https://github.com/pingcap/tiflow/issues/7645) @[lance6716](https://github.com/lance6716)
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
     + TiDB Lightning
 
         - 修复 TiDB Lightning 导入巨大数据源文件时的内存泄漏问题 [#39331](https://github.com/pingcap/tidb/issues/39331) @[dsdashun](https://github.com/dsdashun)
         - 修复 TiDB Lightning 在并行导入冲突检测时无法正确检测的问题 [#39476](https://github.com/pingcap/tidb/issues/39476) @[dsdashun](https://github.com/dsdashun)
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
-
-    + TiUP
-
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
 ## 贡献者
 
