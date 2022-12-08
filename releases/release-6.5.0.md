@@ -181,7 +181,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
 ### 易用性
 
-* 完善 EXPLAIN ANALYZE 输出的 TiFlash 的 TableFullScan 算子的统计信息 [#5926](https://github.com/pingcap/tiflash/issues/5926) @[hongyunyan](https://github.com/hongyunyan) **tw@qiancai**
+* 完善 `EXPLAIN ANALYZE` 输出结果中 TiFlash 的 TableFullScan 算子的执行信息 [#5926](https://github.com/pingcap/tiflash/issues/5926) @[hongyunyan](https://github.com/hongyunyan) **tw@qiancai**
 
     [`EXPLAIN ANALYZE`] 语句可以输出执行计划及运行时的统计信息。在 v6.5.0 中，TiFlash 对 TableFullScan 算子的执行信息进行了完善，补充了 DMFile 相关的执行信息。你可以更加直观地查看 TiFlash 的数据扫描状态信息，方便进行性能分析。
 
