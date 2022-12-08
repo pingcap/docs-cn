@@ -3,7 +3,7 @@ title: Time to Live
 summary: 介绍如何通过 SQL 来管理表数据的生命周期
 ---
 
-# Time to Live
+# 使用 TTL (Time to Live) 来周期性地删除过期数据
 
 Time to Live (TTL) 提供了行级别的生命周期控制策略。通过为表设置 TTL 属性，TiDB 可以周期性地自动检查并清理表中的过期数据。此功能在一些场景可以有效节省存储空间、提升性能。
 
