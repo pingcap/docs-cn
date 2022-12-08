@@ -1831,13 +1831,16 @@ Query OK, 0 rows affected (0.09 sec)
 
 > **Warning:**
 >
-> The feature controlled by this variable is not fully functional in the current TiDB version. Do not change the default value.
+> The feature controlled by this variable is experimental in the current TiDB version. It is not recommended that you use it for production environments.
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
 - Type: Boolean
 - Default value: `OFF`
-- This variable controls whether read requests in SQL write statements can be pushed down to TiFlash.
+- This variable controls whether read operations in SQL statements containing `INSERT`, `DELETE`, and `UPDATE` can be pushed down to TiFlash. For example:
+
+    - `SELECT` queries in `INSERT INTO SELECT` statements (typical usage scenario: [TiFlash query result materialization](/tiflash/tiflash-results-materialization.md))
+    - `WHERE` condition filtering in `UPDATE` and `DELETE` statements
 
 ### tidb_enable_top_sql <span class="version-mark">New in v5.4.0</span>
 

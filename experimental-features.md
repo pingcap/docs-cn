@@ -34,6 +34,7 @@ Elastic scheduling feature. It enables the TiDB cluster to dynamically scale out
 + [Table Lock](/tidb-configuration-file.md#enable-table-lock-new-in-v400) (Introduced in v4.0.0)
 + [Range INTERVAL partitioning](/partitioned-table.md#range-interval-partitioning) (Introduced in v6.3.0)
 + [Restore a cluster to a specific point in time using the `FLASHBACK CLUSTER TO TIMESTAMP` syntax](/sql-statements/sql-statement-flashback-to-timestamp.md) (Introduced in v6.4.0)
++ [TiFlash Query Result Materialization](/tiflash/tiflash-results-materialization.md) (Introduced in v6.5.0)
 
 ## Storage
 
