@@ -388,4 +388,8 @@ DDL 的类型码用于标识 DDL Event 中的 DDL 语句的类型。
 > **注意：**
 >
 > + BinaryFlag 仅在列为 BLOB/TEXT（包括 TINYBLOB/TINYTEXT、BINARY/CHAR 等）类型时才有意义。当上游列为 BLOB 类型时，BinaryFlag 置 `1`；当上游列为 TEXT 类型时，BinaryFlag 置 `0`。
+<<<<<<< HEAD
 > + 若要同步上游的一张表，TiCDC 会选择一个[有效索引](/ticdc/ticdc-overview.md#同步限制)作为 Handle Index。Handle Index 包含的列的 HandleKeyFlag 置 `1`。
+=======
+> + 若要同步上游的一张表，TiCDC 会选择一个[有效索引](/ticdc/ticdc-overview.md#最佳实践)作为 Handle Index。Handle Index 包含的列的 HandleKeyFlag 置 `1`。
+>>>>>>> adc9a3f5c (add ticdc best pratice and FAQ (#12120))

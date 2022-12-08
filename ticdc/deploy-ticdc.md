@@ -38,7 +38,11 @@ summary: 了解 TiCDC 软硬件环境要求以及如何安装部署 TiCDC。
 
 假设 PD 集群有一个可以提供服务的 PD 节点（client URL 为 `10.0.10.25:2379`）。若要部署三个 TiCDC 节点，可以按照以下命令启动集群。只需要指定相同的 PD 地址，新启动的节点就可以自动加入 TiCDC 集群。
 
+<<<<<<< HEAD
 {{< copyable "shell-regular" >}}
+=======
+推荐使用 TiUP 完成对 TiCDC 集群节点的缩容。使用类似下面的命令完成缩容:
+>>>>>>> adc9a3f5c (add ticdc best pratice and FAQ (#12120))
 
 ```shell
 cdc server --cluster-id=default --pd=http://10.0.10.25:2379 --log-file=ticdc_1.log --addr=0.0.0.0:8301 --advertise-addr=127.0.0.1:8301

@@ -52,7 +52,14 @@ TiCDC 的系统架构如下图所示：
 - TiCDC 对于所有的 DDL/DML 都能对外输出**至少一次**。
 - TiCDC 在 TiKV/TiCDC 集群故障期间可能会重复发相同的 DDL/DML。对于重复的 DDL/DML：
     - MySQL sink 可以重复执行 DDL，对于在下游可重入的 DDL （譬如 truncate table）直接执行成功；对于在下游不可重入的 DDL（譬如 create table），执行失败，TiCDC 会忽略错误继续同步。
+<<<<<<< HEAD
     - Kafka sink 会发送重复的消息，但重复消息不会破坏 Resolved Ts 的约束，用户可以在 Kafka 消费端进行过滤。
+=======
+    - Kafka sink
+        - Kafka sink 提供不同的数据分发策略，可以按照表、主键或 ts 等策略分发数据到不同 Kafka partition。 使用表、主键分发策略，可以保证某一行的更新数据被顺序的发送到相同 partition。
+        - 对所有的分发策略，我们都会定期发送 Resolved TS 消息到所有的 topic/partition，表示早于该 Resolved TS 的消息都已经发送到 topic/partition，消费程序可以利用 Resolved TS 对多个 topic/partition 的消息进行排序。
+        - Kafka sink 会发送重复的消息，但重复消息不会破坏 Resolved TS 的约束，比如在 changefeed 暂停重启后，可能会按顺序发送 msg1、msg2、msg3、msg2、msg3。你可以在 Kafka 消费端进行过滤。
+>>>>>>> adc9a3f5c (add ticdc best pratice and FAQ (#12120))
 
 #### 数据同步一致性
 
@@ -73,20 +80,33 @@ TiCDC 的系统架构如下图所示：
     - 不同分发策略下 consumer 的不同实现方式，可以实现不同级别的一致性，包括行级别有序、最终一致性或跨表事务一致性。
     - TiCDC 没有提供 Kafka 消费端实现，只提供了 [TiCDC 开放数据协议](/ticdc/ticdc-open-protocol.md)，用户可以依据该协议实现 Kafka 数据的消费端。
 
+<<<<<<< HEAD
 ## 同步限制
+=======
+## 最佳实践
+>>>>>>> adc9a3f5c (add ticdc best pratice and FAQ (#12120))
 
-使用 TiCDC 进行同步的时候，请注意以下相关限制要求以及暂不支持的场景。
+- 使用 TiCDC 在两个 TiDB 集群间同步数据时，当上下游的延迟超过 100 ms 时，推荐将 TiCDC 部署在下游 TiDB 集群所在的区域 (IDC, region)。
+- TiCDC 同步的表需要至少存在一个**有效索引**的表，**有效索引**的定义如下：
 
-### 有效索引的相关要求
+    - 主键 (`PRIMARY KEY`) 为有效索引。
+    - 唯一索引 (`UNIQUE INDEX`) 中每一列在表结构中明确定义非空 (`NOT NULL`) 且不存在虚拟生成列 (`VIRTUAL GENERATED COLUMNS`)。
 
-TiCDC 只能同步至少存在一个**有效索引**的表，**有效索引**的定义如下：
+- 容灾场景下使用 TiCDC 需要配置 [redo log](/ticdc/ticdc-sink-to-mysql.md#灾难场景的最终一致性复制) 实现最终一致性。
+- 使用 TiCDC 同步单行较大 (> 1k) 的宽表时，推荐设置 TiCDC 参数 [per-table-memory-quota](/ticdc/ticdc-server-config.md)，使得 `per-table-memory-quota` = `ticdcTotalMemory` / (`tableCount` * 2)。`ticdcTotalMemory` 是一个 TiCDC 节点的内存，`tableCount` 是一个 TiCDC 节点同步的目标表的数量。
 
+<<<<<<< HEAD
 - 主键 (`PRIMARY KEY`) 为有效索引。
 - 同时满足下列条件的唯一索引 (`UNIQUE INDEX`) 为有效索引：
     - 索引中每一列在表结构中明确定义非空 (`NOT NULL`)。
     - 索引中不存在虚拟生成列 (`VIRTUAL GENERATED COLUMNS`)。
 
 TiCDC 从 4.0.8 版本开始，可通过修改任务配置来同步**没有有效索引**的表，但在数据一致性的保证上有所减弱。具体使用方法和注意事项参考[同步没有有效索引的表](/ticdc/manage-ticdc.md#同步没有有效索引的表)。
+=======
+> **注意：**
+>
+> 从 TiCDC v4.0.8 版本开始，可通过修改任务配置来同步**没有有效索引**的表，但在数据一致性的保证上有所减弱。具体使用方法和注意事项参考[同步没有有效索引的表](/ticdc/ticdc-manage-changefeed.md#同步没有有效索引的表)。
+>>>>>>> adc9a3f5c (add ticdc best pratice and FAQ (#12120))
 
 ### 暂不支持的场景
 
