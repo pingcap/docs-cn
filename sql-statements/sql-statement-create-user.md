@@ -54,14 +54,14 @@ Query OK, 1 row affected (0.02 sec)
 Create a user who is enforced to log in using TLS connection.
 
 ```sql
-CREATE USER 'newuser3'@'%' REQUIRE SSL IDENTIFIED BY 'newuserpassword';
+CREATE USER 'newuser3'@'%' IDENTIFIED BY 'newuserpassword' REQUIRE SSL;
 Query OK, 1 row affected (0.02 sec)
 ```
 
 Create a user who is required to use X.509 certificate at login.
 
 ```sql
-CREATE USER 'newuser4'@'%' REQUIRE ISSUER '/C=US/ST=California/L=San Francisco/O=PingCAP' IDENTIFIED BY 'newuserpassword';
+CREATE USER 'newuser4'@'%' IDENTIFIED BY 'newuserpassword' REQUIRE ISSUER '/C=US/ST=California/L=San Francisco/O=PingCAP';
 Query OK, 1 row affected (0.02 sec)
 ```
 
