@@ -1,5 +1,5 @@
 ---
-title: Time to Live
+title: 使用 TTL (Time to Live) 来周期性地删除过期数据
 summary: 介绍如何通过 SQL 来管理表数据的生命周期
 ---
 
