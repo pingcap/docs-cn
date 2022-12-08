@@ -363,6 +363,28 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 设置 `tidb_auth_token` 认证方式的 JWKS 刷新时间间隔。
 + 默认值：1h
 
+### `disconnect-on-expired-password` <span class="version-mark">从 v6.5.0 版本开始引入</span>
+
++ 对于密码已过期的用户，通过 `disconnect-on-expired-password` 控制 TiDB 服务端是否直接断开该用户的连接。
++ 默认值：`true`
++ 默认值为 "true" 表示 TiDB 服务端将直接断开密码已过期用户的连接。设置为 "false" 时， TiDB 服务端将密码已过期用户的连接置于“沙盒模式”，允许该用户建立连接并执行密码重置操作。
+
+### `session-token-signing-cert` <span class="version-mark">从 v6.4.0 版本开始引入</span>
+
+> **警告：**
+>
+> 该配置与一个未发布的特性相关。**请勿设置该配置**。
+
++ 默认值：""
+
+### `session-token-signing-key` <span class="version-mark">从 v6.4.0 版本开始引入</span>
+
+> **警告：**
+>
+> 该配置与一个未发布的特性相关。**请勿设置该配置**。
+
++ 默认值：""
+
 ## performance
 
 性能相关配置。
@@ -377,7 +399,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 > **警告：**
 >
-> `server-memory-quota` 目前为实验性特性，不建议在生产环境中使用。
+> 自 v6.5.0 起，该配置项被废弃。请使用 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 系统变量进行设置。
 
 + 设置 tidb-server 实例的最大内存用量，单位为字节。
 + 默认值：0
@@ -397,6 +419,9 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：104857600
 + 单位：Byte
 + 单个事务中，所有 key-value 记录的总大小不能超过该限制。该配置项的最大值不超过 `1099511627776`（表示 1TB）。注意，如果使用了以 `Kafka` 为下游消费者的 `binlog`，如：`arbiter` 集群，该配置项的值不能超过 `1073741824`（表示 1GB），因为这是 `Kafka` 的处理单条消息的最大限制，超过该限制 `Kafka` 将会报错。
++ 在 v6.5.0 及之后的版本中，不再推荐使用该配置项，事务的内存大小会被累计计入所在会话的内存使用量中，并由 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 变量在单个会话内存超阈值时采取控制行为。为了向前兼容，由低版本升级至 v6.5.0 及更高版本时，该配置项的行为如下所述:
+    + 若该配置项未设置，或设置为默认值 (`104857600`)，升级后事务内存大小将会计入所在会话的内存使用中，由 `tidb_mem_quota_query` 变量控制。
+    + 若该配置项未设为默认值 (`104857600`)，升级前后该配置项仍生效，对单个事务大小的限制行为不会发生变化，事务内存大小不由 `tidb_mem_quota_query` 控制。
 
 ### `max-txn-ttl`
 
