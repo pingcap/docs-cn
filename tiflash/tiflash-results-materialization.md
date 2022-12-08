@@ -11,7 +11,7 @@ summary: 介绍如何在同一个事务中保存 TiFlash 的查询结果。
 
 本文介绍如何在同一个事务 (`INSERT INTO SELECT`) 中实现将 TiFlash 查询结果保存至某一指定的 TiDB 表中。
 
-从 v6.5.0 起，TiDB 支持将 TiFlash 查询结果保存到数据表中，即物化了 TiFlash 的查询结果。执行 `INSERT INTO SELECT` 语句时，如果 TiDB 将 `SELECT` 子查询下推到了 TiFlash， TiFlash 的查询结果可以保存到 `INSERT INTO` 指定的 TiDB 表中。v6.5.0 之前的 TiDB 版本不允许此类行为，即通过 TiFlash 执行的查询必须是只读的，你需要从应用程序层面接收 TiFlash 返回的结果，然后另行在其它事务或处理中保存结果。
+从 v6.5.0 起，TiDB 支持将 TiFlash 查询结果保存到数据表中，即物化了 TiFlash 的查询结果。执行 `INSERT INTO SELECT` 语句时，如果 TiDB 将 `SELECT` 子查询下推到了 TiFlash，TiFlash 的查询结果可以保存到 `INSERT INTO` 指定的 TiDB 表中。v6.5.0 之前的 TiDB 版本不允许此类行为，即通过 TiFlash 执行的查询必须是只读的，你需要从应用程序层面接收 TiFlash 返回的结果，然后另行在其它事务或处理中保存结果。
 
 > **注意：**
 >
@@ -58,7 +58,7 @@ SELECT app_name, country FROM t1;
 
 ## 限制
 
-* TiDB 对 `INSERT INTO SELECT` 语句的内存限制可以通过系统变量 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 调整。从 v6.5.0 版本开始，不推荐使用 [txn-total-size-limit](/tidb-configuration-file.md#txn-total-size-limit) 来控制事务内存大小，详见该配置项文档。
+* TiDB 对 `INSERT INTO SELECT` 语句的内存限制可以通过系统变量 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 调整。从 v6.5.0 版本开始，不推荐使用 [`txn-total-size-limit`](/tidb-configuration-file.md#txn-total-size-limit) 来控制事务内存大小，详见该配置项文档。
 
     更多信息，请参考 [TiDB 内存控制](/configure-memory-usage.md)。
 
