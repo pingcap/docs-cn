@@ -20,7 +20,9 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 - 满足密码合规审计需求 [密码管理](/password-management.md)
 - TiDB 添加索引的速度提升为原来的 10 倍
 - Flashback Cluster 功能兼容 TiCDC 和 PiTR
-- JSON 抽取函数下推至 TiFlash
+- 支持通过 `INSERT INTO SELECT` 语句[保存 TiFlash 查询结果](/tiflash/tiflash-results-materialization.md)（实验特性）
+- 支持下推 JSON 抽取函数下推至 TiFlash
+- 进一步增强索引合并[INDEX MERGE](/glossary.md#index-merge)功能
 
 ## 新功能
 
@@ -65,7 +67,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
     在实验特性阶段，该功能默认关闭。要开启此功能，请设置系统变量 [`tidb_enable_tiflash_read_for_write_stmt`](/system-variables.md#tidb_enable_tiflash_read_for_write_stmt-从-v630-版本开始引入) 为 `ON`。使用该特性时，`INSERT INTO` 指定的结果表没有特殊限制，你可以自由选择是否为该表添加 TiFlash 副本。该特性典型的使用场景包括：
 
     - 使用 TiFlash 做复杂分析
-    - 需重复使用 TiFlash计算结果或响应高并发的在线请求
+    - 需重复使用 TiFlash 查询结果或响应高并发的在线请求
     - 相对输入数据，计算需要得出的结果集比较小，推荐 100MiB 以内
 
     更多信息，请参考[用户文档](/tiflash/tiflash-results-materialization.md)。
@@ -110,7 +112,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
 ### 性能
 
-* 进一步增强索引合并[INDEX MERGE](/glossary.md#index-merge)功能 [#39333](https://github.com/pingcap/tidb/issues/39333) @[guo-shaoge](https://github.com/guo-shaoge) @[@time-and-fate](https://github.com/time-and-fate) @[hailanwhu](https://github.com/hailanwhu) **tw@TomShawn**
+* 进一步增强索引合并 [INDEX MERGE](/glossary.md#index-merge) 功能 [#39333](https://github.com/pingcap/tidb/issues/39333) @[guo-shaoge](https://github.com/guo-shaoge) @[time-and-fate](https://github.com/time-and-fate) @[hailanwhu](https://github.com/hailanwhu) **tw@TomShawn**
 
     新增了对在 WHERE 语句中使用 `AND` 联结的过滤条件的索引合并能力（v6.5 之前的版本只支持 `OR` 连接词的情况），TiDB 的索引合并至此可以覆盖更一般的查询过滤条件组合，不再限定于并集（`OR`）关系。当前版本仅支持优化器自动选择 “OR” 条件下的索引合并，用户须使用 [`USE_INDEX_MERGE`](/optimizer-hints.md#use_index_merget1_name-idx1_name--idx2_name-) Hint 来开启对于 AND 联结的索引合并。
 
@@ -221,9 +223,9 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
     原先用户仅迁移少数几张表，也需要解析上游整个 binlog 文件，即仍需要解析该 binlog 文件中不需要迁移的表的 binlog event，效率会比较低，同时如果不在迁移任务里的库表的 binlog event 不支持解析，还会导致任务失败。通过只解析在迁移任务里的库表对象的 binlog event 可以大大提升 binlog 解析效率，提升任务稳定性。
 
-* Lightning 支持  disk quota 特性 GA，可避免 Lightning 任务写满本地磁盘 [#无](无) @[buchuitoudegou](https://github.com/buchuitoudegou) **tw@hfxsd**
+* TiDB Lightning 支持 disk quota 特性 GA，可避免 TiDB Lightning 任务写满本地磁盘 [#无](无) @[buchuitoudegou](https://github.com/buchuitoudegou) **tw@hfxsd**
 
-    你可以为 TiDB Lightning 配置磁盘配额 (disk quota)。当磁盘配额不足时，TiDB Lightning 会暂停读取源数据以及写入临时文件的过程，优先将已经完成排序的 key-value 写入到 TiKV，TiDB Lightning 删除本地临时文件后，再继续导入过程。
+    你可以为 TiDB Lightning 配置磁盘配额 (disk quota)。当磁盘配额不足时，TiDB Lightning 会暂停读取源数据以及写入临时文件的过程，优先将已经完成排序的 key-value 写入到 TiKV。TiDB Lightning 删除本地临时文件后，再继续导入过程。
 
     有这个功能之前，TiDB Lightning 在使用物理模式导入数据时，会在本地磁盘创建大量的临时文件，用来对原始数据进行编码、排序、分割。当用户本地磁盘空间不足时，TiDB Lightning 会由于写入文件失败而报错退出。
 
@@ -244,6 +246,10 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
     TiCDC 支持将 changed log 输出到 S3/Azure Blob Storage/NFS，以及兼容 S3 协议的存储服务中。Cloud Storage 价格便宜，使用方便。对于不希望使用 Kafka 的用户，可以选择使用 storage sink。 TiCDC 将 changed log 保存到文件，然后发送到 storage 中；消费程序定时从 storage 读取新产生的 changed log files 进行处理。
 
     Storage sink 支持 changed log 格式位 canal-json/csv，此外 changed log 从 TiCDC 同步到 storage 的延迟可以达到 xx，支持更多信息，请参考[用户文档](https://github.com/pingcap/docs-cn/pull/12151/files)。
+
+* TiCDC 支持两个或者多个 TiDB 集群之间相互复制 @[asddongmen](https://github.com/asddongmen) **tw@shichun-0415**
+
+    TiCDC 支持在多个 TiDB 集群之间进行双向复制。 如果业务上需要 TiDB 多活，尤其是异地多活的场景，可以使用该功能作为 TiDB 多活的解决方案。只要为每个 TiDB 集群到其他 TiDB 集群的 TiCDC changefeed 同步任务配置 `bdr-mode = true` 参数，就可以实现多个 TIDB 集群之间的数据相互复制。更多信息，请参考[用户文档](/ticdc/ticdc/ticdc-bidirectional-replication.md).
 
 * TiCDC 性能提升 **tw@shichun-0415
 
@@ -271,9 +277,9 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
 * TiKV-BR 工具 GA, 支持 RawKV 的备份和恢复 [#67](https://github.com/tikv/migration/issues/67) @[pingyu](https://github.com/pingyu) @[haojinming](https://github.com/haojinming) **tw@shichun-0415**
 
-    TiKV-BR 是一个 TiKV 集群的备份和恢复工具。TiKV 可以独立于 TiDB，与 PD 构成 KV 数据库，此时的产品形态为 RawKV。TiKV-BR 工具支持对使用 RawKV 的产品进行备份和恢复，也支持将 TiKV 集群中的数据从 `API V1` 备份为 `API V2` 数据， 以实现 TiKV 集群 [`api-version`](https://docs.pingcap.com/zh/tidb/v6.4/tikv-configuration-file#api-version-%E4%BB%8E-v610-%E7%89%88%E6%9C%AC%E5%BC%80%E5%A7%8B%E5%BC%95%E5%85%A5) 的升级。
+    TiKV-BR 是一个 TiKV 集群的备份和恢复工具。TiKV 可以独立于 TiDB，与 PD 构成 KV 数据库，此时的产品形态为 RawKV。TiKV-BR 工具支持对使用 RawKV 的产品进行备份和恢复，也支持将 TiKV 集群中的数据从 `API V1` 备份为 `API V2` 数据， 以实现 TiKV 集群 [`api-version`](/tikv-configuration-file.md#api-version-从-v610-版本开始引入) 的升级。
 
-    更多信息，请参考[用户文档]( https://tikv.org/docs/dev/concepts/explore-tikv-features/backup-restore/ )。
+    更多信息，请参考[用户文档](https://tikv.org/docs/latest/concepts/explore-tikv-features/backup-restore/)。
 
 ## 兼容性变更
 
@@ -328,6 +334,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
 ### 其他
 
+从 v6.5.0 起，`mysql.user` 表新增 `Password_reuse_history` 和 `Password_reuse_time` 两个字段。
 - [索引加速功能](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入)默认开启，与 [PITR (Point-in-time recovery)](/br/br-pitr-guide.md) 功能不兼容。在使用索引加速功能时，需要确保后台没有启动 PITR 备份任务，否则可能会出现非预期结果，详情请参考[tidb_ddl_enable_fast_reorg](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入)。
 
 
@@ -351,19 +358,13 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
     - 支持在一个备份请求中同时备份多个范围的数据 [#13701](https://github.com/tikv/tikv/issues/13701) @[Leavrth](https://github.com/Leavrth)
     - 更新 rusoto 库以支持备份到 ap-southeast-3 [#13751](https://github.com/tikv/tikv/issues/13751) @[3pointer](https://github.com/3pointer)
     - 减少悲观事务冲突 [#13298](https://github.com/tikv/tikv/issues/13298) @[MyonKeminta](https://github.com/MyonKeminta)
-    - 减少不必要的检查以提升 flashback 的性能 [#13800](https://github.com/tikv/tikv/issues/13800) @[JmPotato](https://github.com/JmPotato)
     - 缓存外部存储对象以提升恢复性能 [#13798](https://github.com/tikv/tikv/issues/13798) @[YuJuncen](https://github.com/YuJuncen)
-    - PiTR 支持批量写入 kv 文件以提升恢复速度 [#13788](https://github.com/tikv/tikv/issues/13788) @[joccau](https://github.com/joccau)
     - 在专用线程中运行 CheckLeader 以缩短 TiCDC 的复制延迟 [#13774](https://github.com/tikv/tikv/issues/13774) @[overvenus](https://github.com/overvenus)
-    - PiTR 允许复用已下载的 kv 文件以提升恢复性能 [#13788](https://github.com/tikv/tikv/issues/13788) @[joccau](https://github.com/joccau)
     - Checkpoint 支持拉取模式 [#13824](https://github.com/tikv/tikv/issues/13824) @[YuJuncen](https://github.com/YuJuncen)
-    - 优化 flashback 的稳定性 [#13827](https://github.com/tikv/tikv/issues/13827) @[BusyJay](https://github.com/BusyJay)
     - 升级 crossbeam-channel 以优化发送端的自旋问题 [#13815](https://github.com/tikv/tikv/issues/13815) @[sticnarf](https://github.com/sticnarf)
     - Coprocessor 支持批量处理 [#13849](https://github.com/tikv/tikv/issues/13849) @[cfzjywxk](https://github.com/cfzjywxk)
-    - PiTR 在写入 kv 文件时过滤无效的 kv 事件 [#13853](https://github.com/tikv/tikv/issues/13853) @[joccau](https://github.com/joccau)
     - 故障恢复时通知 TiKV 唤醒休眠的 region 以减少等待时间 [#13648](https://github.com/tikv/tikv/issues/13648) @[LykxSassinator](https://github.com/LykxSassinator)
     - 通过代码优化减少内存申请 [#13836](https://github.com/tikv/tikv/pull/13836) @[BusyJay](https://github.com/BusyJay)
-    - 优化 flashback 与 CDC 特性的兼容性 [#13823](https://github.com/tikv/tikv/pull/13823)  @[JmPotato](https://github.com/JmPotato)
     - 引入 raft extension 以提升代码可扩展性 [#13864](https://github.com/tikv/tikv/pull/13864) @[BusyJay](https://github.com/BusyJay)
     - 通过引入 `hint_min_ts` 加速 flashback [#13842](https://github.com/tikv/tikv/pull/13842)  @[JmPotato](https://github.com/JmPotato)
     - tikv-ctl 支持查询某个 key 范围中包含哪些 Region  [#13768](https://github.com/tikv/tikv/pull/13768) [@HuSharp](https://github.com/HuSharp)
@@ -428,10 +429,8 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
     - 修复 tikv-ctl 中 compact raft 命令的错误 [#13515](https://github.com/tikv/tikv/issues/13515) @[guoxiangCN](https://github.com/guoxiangCN)
     - 修复当启用 TLS 时 log backup 无法使用的问题 [#13851](https://github.com/tikv/tikv/issues/13851) @[YuJuncen](https://github.com/YuJuncen)
     - 修复对 Geometry 字段类型的支持 [#13651](https://github.com/tikv/tikv/issues/13651) @[dveeden](https://github.com/dveeden)
-    - 修复由于删除引起的 flashback 死循环问题 [#13743](https://github.com/tikv/tikv/issues/13743) @[JmPotato](https://github.com/JmPotato)
     - 修复当未使用 new collation 时 `like` 无法处理 `_` 中非 ASCII 字符的问题 [#13769](https://github.com/tikv/tikv/issues/13769) @[YangKeao](https://github.com/YangKeao)
     - 修复 tikv-ctl 执行 reset-to-version 时出现 segfault 的问题 [#13829](https://github.com/tikv/tikv/issues/13829) @[tabokie](https://github.com/tabokie)
-    - 修复 flashback 可能覆盖错误的写记录的问题 [#13844](https://github.com/tikv/tikv/issues/13844) @[JmPotato](https://github.com/JmPotato)
 
 + PD
 
