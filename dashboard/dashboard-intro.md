@@ -7,6 +7,10 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-intro/']
 
 TiDB Dashboard 是 TiDB 自 4.0 版本起提供的图形化界面，可用于监控及诊断 TiDB 集群。TiDB Dashboard 内置于 TiDB 的 PD 组件中，无需独立部署。
 
+> **注意：**
+>
+> TiDB v6.5.0 且 TiDB Operator v1.4.0 之后，在 Kubernetes 上支持将 TiDB Dashboard 作为独立的 Pod 部署。具体信息，参考 [TiDB Operator 部署独立的 TiDB Dashboard](https://docs.pingcap.com/zh/tidb-in-kubernetes/dev/get-started#部署独立的-tidb-dashboard)。
+
 ![界面](/media/dashboard/dashboard-intro.gif)
 
 TiDB Dashboard 在 GitHub 上[开源](https://github.com/pingcap-incubator/tidb-dashboard)。

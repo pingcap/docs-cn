@@ -75,7 +75,7 @@ cdc_servers:
 
 ## 使用 TiUP 在原有 TiDB 集群上移除或缩容 TiCDC 组件
 
-推荐使用 TiUP 完成对 TiCDC 集群节点的所容。使用类似下面的命令完成缩容:
+推荐使用 TiUP 完成对 TiCDC 集群节点的缩容。使用类似下面的命令完成缩容:
 
 ```shell
 tiup cluster scale-in <cluster-name> --node 10.0.1.4:8300

@@ -12,10 +12,8 @@ aliases: ['/docs-cn/dev/experimental-features-4.0/','/zh/tidb/dev/experimental-f
 
 + [支持收集部分列的统计信息](/statistics.md#收集部分列的统计信息)（v5.4 实验特性）
 + [限制 ANALYZE 的内存使用量](/statistics.md#统计信息收集的内存限制) (v6.1.0 实验特性)
-+ [Cost Model Version 2](/cost-model.md#cost-model-version-2)（v6.2.0 实验特性）
 + [FastScan](/develop/dev-guide-use-fastscan.md)（v6.2.0 实验特性）
 + [随机采样约 10000 行数据来快速构建统计信息](/system-variables.md#tidb_enable_fast_analyze)（v3.0 实验特性）
-+ [全局控制 tidb-server 实例的内存使用量](/configure-memory-usage.md#如何配置-tidb-server-实例使用内存的阈值)（v6.4 实验特性）
 
 ## 稳定性
 
@@ -36,6 +34,7 @@ aliases: ['/docs-cn/dev/experimental-features-4.0/','/zh/tidb/dev/experimental-f
 + [Cascades Planner](/system-variables.md#tidb_enable_cascades_planner)：基于 Cascades 框架的自顶向下查询优化器。（v3.0 实验特性）
 + [表级锁 (Table Lock)](/tidb-configuration-file.md#enable-table-lock-从-v400-版本开始引入)（v4.0.0 实验特性）
 + [Range INTERVAL 分区](/partitioned-table.md#range-interval-分区)（v6.3.0 实验特性）
++ [TiFlash 查询结果物化](/tiflash/tiflash-results-materialization.md)（v6.5.0 实验特性）
 
 ## 存储
 
