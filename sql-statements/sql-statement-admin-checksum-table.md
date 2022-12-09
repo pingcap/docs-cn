@@ -21,23 +21,15 @@ TableNameList ::=
 
 计算表 `t1` 的校验和：
 
-{{< copyable "sql" >}}
-
 ```sql
 CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY auto_increment);
 INSERT INTO t1 VALUES (1),(2),(3);
 ADMIN CHECKSUM TABLE t1;
 ```
 
-```sql
-CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY auto_increment);
-Query OK, 0 rows affected (0.11 sec)
+输出结果示例如下：
 
-INSERT INTO t1 VALUES (1),(2),(3);
-Query OK, 3 rows affected (0.02 sec)
-Records: 3  Duplicates: 0  Warnings: 0
-
-ADMIN CHECKSUM TABLE t1;
+```
 +---------+------------+----------------------+-----------+-------------+
 | Db_name | Table_name | Checksum_crc64_xor   | Total_kvs | Total_bytes |
 +---------+------------+----------------------+-----------+-------------+
