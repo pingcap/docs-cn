@@ -334,10 +334,8 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
 ### 其他
 
-从 v6.5.0 起，`mysql.user` 表新增 `Password_reuse_history` 和 `Password_reuse_time` 两个字段。
+- 从 v6.5.0 起，`mysql.user` 表新增 `Password_reuse_history` 和 `Password_reuse_time` 两个字段。
 - [索引加速功能](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入)默认开启，与 [PITR (Point-in-time recovery)](/br/br-pitr-guide.md) 功能不兼容。在使用索引加速功能时，需要确保后台没有启动 PITR 备份任务，否则可能会出现非预期结果，详情请参考[tidb_ddl_enable_fast_reorg](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入)。
-
-
 
 ## 废弃功能
 
@@ -372,7 +370,6 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
 + PD
 
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
     - 优化锁的粒度以减少锁争用，提升高并发下心跳的处理能力 [#5586](https://github.com/tikv/pd/issues/5586) @[rleungx](https://github.com/rleungx)
     - 优化调度器在大规模集群下的性能问题，提升调度策略生产速度 [#5473](https://github.com/tikv/pd/issues/5473) @[bufferflies](https://github.com/bufferflies)
     - 增加 btree 的泛型性支持 [#5606](https://github.com/tikv/pd/issues/5606) @[rleungx](https://github.com/rleungx)
@@ -398,14 +395,14 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
     + TiCDC
 
-        - 采用并发的方式对数据进行编码，极大提升了同步到 kafka 的吞吐能力 [#7532](https://github.com/pingcap/tiflow/issues/7532) [#7543](https://github.com/pingcap/tiflow/issues/7543) [#7540](https://github.com/pingcap/tiflow/issues/7540)
+        - 采用并发的方式对数据进行编码，极大提升了同步到 kafka 的吞吐能力 [#7532](https://github.com/pingcap/tiflow/issues/7532) [#7543](https://github.com/pingcap/tiflow/issues/7543) [#7540](https://github.com/pingcap/tiflow/issues/7540) @[3AceShowHand](https://github.com/3AceShowHand) @[sdojjy](https://github.com/sdojjy)
 
     + TiDB Data Migration (DM)
 
-        - 通过不再解析黑名单表的数据提升了 dm 同步数据的性能[#7622](https://github.com/pingcap/tiflow/pull/7622) @[GMHDBJD](https://github.com/GMHDBJD)
-        - 通过异步写与批量写的方式提升 dm relay 写数据效率[#7580](https://github.com/pingcap/tiflow/pull/7580) @[GMHDBJD](https://github.com/GMHDBJD)
-        - 改进 DM 前置检查的错误提示信息[#7696](https://github.com/pingcap/tiflow/pull/7696) @[buchuitoudegou](https://github.com/buchuitoudegou)
-        - 改进 DM 针对老版本 MySQL 使用 `SHOW SLAVE HOSTS` 获取结果时的兼容性[#7373](https://github.com/pingcap/tiflow/pull/7372) @[lyzx2001](https://github.com/lyzx2001)
+        - 通过不再解析黑名单表的数据提升了 dm 同步数据的性能 [#7622](https://github.com/pingcap/tiflow/pull/7622) @[GMHDBJD](https://github.com/GMHDBJD)
+        - 通过异步写与批量写的方式提升 dm relay 写数据效率 [#7580](https://github.com/pingcap/tiflow/pull/7580) @[GMHDBJD](https://github.com/GMHDBJD)
+        - 改进 DM 前置检查的错误提示信息 [#7696](https://github.com/pingcap/tiflow/pull/7696) @[buchuitoudegou](https://github.com/buchuitoudegou)
+        - 改进 DM 针对老版本 MySQL 使用 `SHOW SLAVE HOSTS` 获取结果时的兼容性 [#7373](https://github.com/pingcap/tiflow/pull/7372) @[lyzx2001](https://github.com/lyzx2001)
 
 ## 错误修复
 
@@ -434,7 +431,6 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
 + PD
 
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
     - 修复热点调度配置在没有修改的情况下不持久化的问题 [#5701](https://github.com/tikv/pd/issues/5701)  @[HunDunDM](https://github.com/HunDunDM)
     - 修复 rank-formula-version 在升级过程中没有保持升级前的配置的问题 [#5699](https://github.com/tikv/pd/issues/5698) @[HunDunDM](https://github.com/HunDunDM)
 
@@ -453,11 +449,11 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
     + TiCDC
 
-        - 修复 PD leader crash时 CDC 卡住的问题 [#7470](https://github.com/pingcap/tiflow/issues/7470)
-        - 修复在执行drop table 时用户快速暂停恢复同步任务导致可能的数据丢失问题 [#7682](https://github.com/pingcap/tiflow/issues/7682)
-        - 兼容上游开启 TiFlash 时版本兼容性问题 [#7744](https://github.com/pingcap/tiflow/issues/7744)
-        - 修复下游网络出现故障导致cdc 卡住的问题 [#7706](https://github.com/pingcap/tiflow/issues/7706)
-        - 修复用户快速删除、创建同名同步任务可能导致的数据丢失问题 [#7657](https://github.com/pingcap/tiflow/issues/7657)
+        - 修复 PD leader crash时 CDC 卡住的问题 [#7470](https://github.com/pingcap/tiflow/issues/7470) @[zeminzhou](https://github.com/zeminzhou)
+        - 修复在执行drop table 时用户快速暂停恢复同步任务导致可能的数据丢失问题 [#7682](https://github.com/pingcap/tiflow/issues/7682) @[asddongmen](https://github.com/asddongmen)
+        - 兼容上游开启 TiFlash 时版本兼容性问题 [#7744](https://github.com/pingcap/tiflow/issues/7744) @[overvenus](https://github.com/overvenus)
+        - 修复下游网络出现故障导致cdc 卡住的问题 [#7706](https://github.com/pingcap/tiflow/issues/7706) @[hicqu](https://github.com/hicqu)
+        - 修复用户快速删除、创建同名同步任务可能导致的数据丢失问题 [#7657](https://github.com/pingcap/tiflow/issues/7657) @[overvenus](https://github.com/overvenus)
 
     + TiDB Data Migration (DM)
 
