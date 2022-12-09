@@ -48,7 +48,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
     在大批量的数据处理场景，单一大事务 SQL 处理可能对集群稳定性和性能造成影响。非事务 DML 语句将一个 DML 语句拆成多个 SQL 语句在内部执行。拆分后的语句将牺牲事务原子性和隔离性，但是对于集群的稳定性有很大提升。TiDB 从 v6.1.0 开始支持非事务 `DELETE` 语句，v6.5.0 新增对非事务 `INSERT`、`REPLACE` 和 `UPDATE` 语句的支持。
 
-    更多信息，请参考[非事务 DML 语句](/non-transactional-dml.md) 和 [BATCH](/sql-statements/sql-statement-batch.md)。
+    更多信息，请参考[非事务 DML 语句](/non-transactional-dml.md) 和 [`BATCH` 语句](/sql-statements/sql-statement-batch.md)。
 
 * 支持 Time to live (TTL)（实验特性）[#39262](https://github.com/pingcap/tidb/issues/39262)  @[lcwangchao](https://github.com/lcwangchao) **tw@ran-huang**
 
@@ -132,9 +132,9 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
     * `regexp_instr`
     * `regexp_substr`
 
-* 新增全局 Hint 干预[视图](/views.md)内查询的计划生成 [#37887](https://github.com/pingcap/tidb/issues/37887) @[Reminiscent](https://github.com/Reminiscent) **tw@Oreoxmt**
+* 新增全局 Hint 干预[视图](/views.md)内查询计划的生成 [#37887](https://github.com/pingcap/tidb/issues/37887) @[Reminiscent](https://github.com/Reminiscent) **tw@Oreoxmt**
 
-    当 SQL 语句中包含对视图的访问时，部分情况下需要用 Hint 对视图内查询的执行计划进行干预，以获得最佳性能。在 v6.5.0 中，TiDB 允许针对视图内的查询块添加全局 Hint，使查询中定义的 Hint 能够在视图内部生效。全局 Hint 由[查询块命名](/optimizer-hints.md#第-1-步使用-qb_name-hint-重命名视图内的查询块)和 [Hint 引用](/optimizer-hints.md#第-2-步添加实际需要的-hint)两部分组成。该特性为包含复杂视图嵌套的 SQL 提供 Hint 的注入手段，增强了执行计划控制能力，进而稳定复杂 SQL 的执行性能。
+    部分视图访问的场景需要用 Hint 对视图内查询的执行计划进行干预，以获得最佳性能。在 v6.5.0 中，TiDB 允许针对视图内的查询块添加全局 Hint，使查询中定义的 Hint 能够在视图内部生效。该特性为包含复杂视图嵌套的 SQL 提供 Hint 的注入手段，增强了执行计划控制能力，进而稳定复杂 SQL 的执行性能。全局 Hint 通过[查询块命名](/optimizer-hints.md#第-1-步使用-qb_name-hint-重命名视图内的查询块)和 [Hint 引用](/optimizer-hints.md#第-2-步添加实际需要的-hint)来开启。
 
     更多信息，请参考[用户文档](/optimizer-hints.md#全局生效的-Hint)。
 
@@ -142,11 +142,11 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
     [分区表](/partitioned-table.md)特性在 v6.1.0 正式 GA 后，TiDB 仍然在持续提升分区表相关的性能。在 v6.5.0 中， TiDB 支持将 `ORDER BY` 和 `LIMIT` 等排序操作下推至 TiKV 进行计算和过滤，降低网络 I/O 的开销，提升了使用分区表时 SQL 的性能。
 
-* 优化器代价模型 Cost Model Version 2 GA [#35240](https://github.com/pingcap/tidb/issues/35240) @[qw4990](https://github.com/qw4990) **tw@Oreoxmt**
+* 优化器引入更精准的代价模型 Cost Model Version 2 [#35240](https://github.com/pingcap/tidb/issues/35240) @[qw4990](https://github.com/qw4990) **tw@Oreoxmt**
 
     TiDB v6.2.0 引入了代价模型 [Cost Model Version 2](/cost-model.md#cost-model-version-2) 作为实验特性，通过更准确的代价估算方式，有利于最优执行计划的选择。尤其在部署了 TiFlash 的情况下，Cost Model Version 2 自动选择合理的存储引擎，避免过多的人工介入。经过一段时间真实场景的测试，这个模型在 v6.5.0 正式 GA。新创建的集群将默认使用 Cost Model Version 2。对于升级到 v6.5.0 的集群，由于 Cost Model Version 2 可能会改变原有的执行计划，在经过充分的性能测试之后，你可以通过设置变量 [`tidb_cost_model_version = 2`](/system-variables.md#tidb_cost_model_version-从-v620-版本开始引入) 使用新的代价模型。
 
-    Cost Model Version 2 的 GA，大幅提升了 TiDB 优化器的整体能力，并切实地向更加强大的 HTAP 数据库演进。
+    Cost Model Version 2 成为正式功能大幅提升了 TiDB 优化器的整体能力，并切实地向更加强大的 HTAP 数据库演进。
 
     更多信息，请参考[用户文档](/cost-model.md#cost-model-version-2)。
 
