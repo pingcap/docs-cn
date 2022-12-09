@@ -12,7 +12,7 @@ This statement creates a new user, specified with a password. In the MySQL privi
 
 ```ebnf+diagram
 CreateUserStmt ::=
-    'CREATE' 'USER' IfNotExists UserSpecList RequireClauseOpt ConnectionOptions LockOption AttributeOption
+    'CREATE' 'USER' IfNotExists UserSpecList RequireClauseOpt ConnectionOptions PasswordOption LockOption AttributeOption
 
 IfNotExists ::=
     ('IF' 'NOT' 'EXISTS')?
@@ -29,6 +29,8 @@ AuthOption ::=
 StringName ::=
     stringLit
 |   Identifier
+
+PasswordOption ::= ( 'PASSWORD' 'EXPIRE' ( 'DEFAULT' | 'NEVER' | 'INTERVAL' 'N' 'DAY' )? | 'PASSWORD' 'HISTORY' ( 'DEFAULT' | 'N' ) ｜ 'PASSWORD' 'REUSE' 'INTERVAL' ( 'DEFAULT' | 'N' 'DAY' ) | 'FAILED_LOGIN_ATTEMPTS' 'N' | 'PASSWORD_LOCK_TIME' ( 'N' | 'UNBOUNDED' ) )?
 
 LockOption ::= ( 'ACCOUNT' 'LOCK' | 'ACCOUNT' 'UNLOCK' )?
 
@@ -105,6 +107,26 @@ SELECT * FROM information_schema.user_attributes;
 | newuser7  | %    | {"email": "user@pingcap.com"} |
 +-----------+------+---------------------------------------------------+
 1 rows in set (0.00 sec)
+```
+
+Create a user who is not allowed to reuse the last 5 passwords:
+
+```sql
+CREATE USER 'newuser8'@'%' PASSWORD HISTORY 5;
+```
+
+```
+Query OK, 1 row affected (0.02 sec)
+```
+
+Create a user whose password is manually expired:
+
+```sql
+CREATE USER 'newuser9'@'%' PASSWORD EXPIRE;
+```
+
+```
+Query OK, 1 row affected (0.02 sec)
 ```
 
 ## MySQL compatibility

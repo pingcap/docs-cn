@@ -367,6 +367,13 @@ Configuration items related to security.
 - Set the JWKS refresh interval for the `tidb_auth_token` authentication method.
 - Default value: `1h`
 
+### `disconnect-on-expired-password` <span class="version-mark">New in v6.5.0</span>
+
+- Determines whether TiDB disconnects the client connection when the password is expired.
+- Default value: `true`
+- Optional values: `true`, `false`
+- If you set it to `true`, the client connection is disconnected when the password is expired. If you set it to `false`, the client connection is restricted to the "sandbox mode" and the user can only execute the password reset operation.
+
 ## Performance
 
 Configuration items related to performance.
