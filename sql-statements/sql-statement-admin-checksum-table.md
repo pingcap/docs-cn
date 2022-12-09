@@ -19,11 +19,21 @@ TableNameList ::=
 
 ## 示例
 
+创建表 `t1`：
+
+```sql
+CREATE TABLE t1(id INT PRIMARY KEY);
+```
+
+插入一些数据：
+
+```sql
+INSERT INTO t1 VALUES (1),(2),(3);
+```
+
 计算表 `t1` 的校验和：
 
 ```sql
-CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY auto_increment);
-INSERT INTO t1 VALUES (1),(2),(3);
 ADMIN CHECKSUM TABLE t1;
 ```
 
