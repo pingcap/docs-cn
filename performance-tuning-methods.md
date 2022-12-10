@@ -133,7 +133,7 @@ Performance Overview 面板提供了以下三个面积堆叠图，帮助你了�
 
 - QPS：表示 Query Per Second，包含应用的 SQL 语句类型执行次数分布。
 - CPS By Type：CPS 表示 Command Per Second，Command 代表 MySQL 协议的命令类型。同样一个查询语句可以通过 query 或者 prepared statement 的命令类型发送到 TiDB。
-- Queries Using Plan Cache OPS：TiDB 集群每秒执行计划缓存的命中和未命中次数。
+- Queries Using Plan Cache OPS：TiDB 集群每秒执行计划缓存的命中次数（即 `avg-hit） 和未命中次数（即 `avg-miss） 。
 StmtExecute 每秒执行次数等于 `avg-hit + avg-miss`。执行计划缓存只支持 prepared statement 命令。TiDB 开启执行计划缓存的情况下，存在三种使用情况：
 
     - 完全无法命中执行计划缓存：每秒命中次数 `avg-hit` 为 0，因为应用使用 query 命令，或者每次 StmtExecute 执行之后调用 StmtClose 命令，导致缓存的执行计划被清理，或者 StmtExecute 执行的所有语句遇到[已知的产品限制](https://docs.pingcap.com/zh/tidb/dev/sql-prepared-plan-cache)无法命中 plan cache，`avg-miss` 等于 StmtExecute 命令每秒执行次数。
