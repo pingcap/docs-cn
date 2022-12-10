@@ -66,7 +66,7 @@ Queries Using Plan Cache OPS：所有 TiDB 实例每秒执行计划缓存的命�
 ### KV Request Time By Source
 
 - kv request time total: 所有 TiDB 实例每秒总的 KV 和 TiFlash 请求时间。
--   - 每种 KV 请求和请求来源组成柱状堆叠图，`external` 标识了来源为正常业务请求，`internal` 标识了内部活动，比如 ddl、auto analyze 等活动。
+-   - 每种 KV 请求和请求来源组成柱状堆叠图，`external` 标识正常业务的请求，`internal` 标识内部活动的请求（比如 DDL、auto analyze 等请求）。
 
 ### TiDB CPU
 
