@@ -124,7 +124,7 @@ Performance Overview 面板提供了以下三个面积堆叠图，帮助你了�
 
 - Database Time by SQL Type：主要为 Select 语句。
 - Database Time by SQL Phase：主要消耗时间的阶段为绿色的 execute 阶段。
-- SQL Execute Time Overview：执行阶段主要消耗时间为紫色的 `tiflash_mpp` 请求， KV 请求主要为蓝色的  `Cop`，和绿色的 `Prewrite`，和 `Commit`。
+- SQL Execute Time Overview：执行阶段主要消耗时间为紫色的 `tiflash_mpp` 请求，其次是 KV 请求，包括蓝色的  `Cop`，以及绿色的 `Prewrite` 和 `Commit`。
 
 ### TiDB 关键指标和集群资源利用率
 
