@@ -183,7 +183,7 @@ CREATE BINDING FOR SELECT * FROM t WHERE a > 1 USING SELECT * FROM t use index(i
 2. 目前，该功能仅支持根据当前实例中的 `statements_summary` 和 `statements_summary_history` 表中的执行计划生成绑定。如果发现有 'can't find any plans' 的情况，请尝试连接集群中其他 TiDB 节点重试。
 3. 对于带有子查询的查询、访问 TiFlash 的查询、3 张表或更多表进行 Join 的查询，目前还不支持通过历史执行计划进行绑定。
 
-##### 使用方式
+使用方式:
 
 ```sql
 CREATE [GLOBAL | SESSION] BINDING FROM HISTORY USING PLAN DIGEST 'plan_digest';
