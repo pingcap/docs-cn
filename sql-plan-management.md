@@ -195,7 +195,7 @@ explain SELECT * FROM t1,t2 WHERE t1.id = t2.id;
 DROP [GLOBAL | SESSION] BINDING FOR SQL DIGEST 'sql_digest';
 ```
 
-该语句用于在 GLOBAL 或者 SESSION 作用域内删除 `sql_digest` 对应的的执行计划绑定，在不指定作用域时默认作用域为 SESSION。`sql_digest` 可以使用 [查看绑定](/sql-plan-management.md#查看绑定) 语句获取。
+该语句用于在 GLOBAL 或者 SESSION 作用域内删除 `sql_digest` 对应的的执行计划绑定，在不指定作用域时默认作用域为 SESSION。你可以通过[查看绑定](/sql-plan-management.md#查看绑定)语句获取 `sql_digest`。
 
 > **注意：**
 >
