@@ -1033,6 +1033,9 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 > - 启用该参数仅意味着一阶段提交成为可选的事务提交模式，实际由 TiDB 自行判断选择最合适的提交模式进行事务提交。
 
 ### `tidb_enable_amend_pessimistic_txn` <span class="version-mark">从 v4.0.7 版本开始引入</span>
+> **警告：**
+>
+> 从 v6.6 版本开始，该变量将被废弃，默认使用 [`元数据锁`](/metadata-lock.md) 机制解决 `Information schema is changed` 报错。
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
