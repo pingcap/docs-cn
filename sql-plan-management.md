@@ -327,7 +327,7 @@ SHOW binding_cache status;
 
 目前通过现有执行计划绑定有一些限制：
 
-1. 从现有执行计划绑定功能是根据已有的执行计划生成 hint 而实现的绑定，已有的执行计划来源是 [Statement Summary](/statement-summary-tables.md)，因此在使用此功能之前需开启 [`tidb_enable_stmt_summary`](/statement-summary-tables#参数配置)。
+1. 从现有执行计划绑定功能是根据已有的执行计划生成 hint 而实现的绑定，已有的执行计划来源是 [Statement Summary Tables](/statement-summary-tables.md)，因此在使用此功能之前需开启 [`tidb_enable_stmt_summary`](/statement-summary-tables#参数配置)。
 2. 目前仅支持根据当前实例中的 `statements_summary` 和 `statements_summary_history` 表中的执行计划生成绑定，如果发现有 'can't find any plans' 的情况可以尝试连接集群中其他 TiDB 节点重试。
 3. 对于带有子查询的查询、访问 TiFlash 的查询、3 表及以上进行 Join 的查询目前还不支持通过计划进行绑定。
 
