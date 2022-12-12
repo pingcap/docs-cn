@@ -1188,13 +1188,9 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 ### `tidb_enable_foreign_key` <span class="version-mark">从 v6.3.0 版本开始引入</span>
 
-> **警告：**
->
-> 当前版本中该变量控制的功能尚未完全生效，请保留默认值。
-
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 默认值：`OFF`
+- 默认值：`ON`
 - 这个变量用于控制是否开启 `FOREIGN KEY` 特性。
 
 ### `tidb_enable_gc_aware_memory_track`
