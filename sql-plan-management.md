@@ -171,7 +171,7 @@ CREATE BINDING FOR SELECT * FROM t WHERE a > 1 USING SELECT * FROM t use index(i
 
 #### 根据历史执行计划创建绑定
 
-当一个 SQL 语句的执行计划相比之前发生变化时，可以使用 `plan_digest` 将该 SQL 语句的执行计划绑定为历史执行计划。相比使用 SQL hint 创建绑定的方式，此方式更加简便。
+如需将 SQL 语句的执行计划固定为之前使用过的执行计划，可以使用 `plan_digest` 为该 SQL 语句绑定一个历史的执行计划。相比使用 SQL hint 创建绑定的方式，此方式更加简便。
 
 > **警告：**
 >
