@@ -35,7 +35,7 @@ aliases: ['/docs-cn/dev/experimental-features-4.0/','/zh/tidb/dev/experimental-f
 + [表级锁 (Table Lock)](/tidb-configuration-file.md#enable-table-lock-从-v400-版本开始引入)（v4.0.0 实验特性）
 + [Range INTERVAL 分区](/partitioned-table.md#range-interval-分区)（v6.3.0 实验特性）
 + [TiFlash 查询结果物化](/tiflash/tiflash-results-materialization.md)（v6.5.0 实验特性）
-+ [根据历史执行计划创建绑定](/sql-plan-management.md#根据历史执行计划创建绑定)。（v6.5.0 实验特性）
++ [根据历史执行计划创建绑定](/sql-plan-management.md#根据历史执行计划创建绑定)（v6.5.0 实验特性）
 
 ## 存储
 
