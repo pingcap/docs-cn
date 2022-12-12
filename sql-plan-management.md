@@ -189,7 +189,7 @@ explain SELECT * FROM t1,t2 WHERE t1.id = t2.id;
 
 在这里 SESSION 作用域内被删除掉的绑定会屏蔽 GLOBAL 作用域内相应的绑定，优化器不会为 `SELECT` 语句添加 `sm_join(t1, t2)` hint，`explain` 给出的执行计划中最上层节点并不被 hint 固定为 MergeJoin，而是由优化器经过代价估算后自主进行选择。
 
-除了上述方式删除绑定外，还可以使用 `sql_digest` 删除对应的绑定。
+当使用 `DROP session binding for` 语句时，除了可以指定原始的 SQL 语句用来删除绑定以外，也可以通过指定 `sql_digest` 用来删除绑定：
 
 ```sql
 DROP [GLOBAL | SESSION] BINDING FOR SQL DIGEST 'sql_digest';
