@@ -191,7 +191,7 @@ CREATE [GLOBAL | SESSION] BINDING FROM HISTORY USING PLAN DIGEST 'plan_digest';
 
 该语句使用 `plan digest` 为 SQL 语句绑定执行计划，在不指定作用域时默认作用域为 SESSION。所创建绑定的适用 SQL、优先级、作用域、生效条件等与 [根据 SQL hint 创建绑定](/sql-plan-management.md#根据-sql-hint-创建绑定)相同。 
 
-使用此绑定方式时，你需要先从 `statements_summary` 中找到需要绑定的执行计划对应的 `plan_digest`， 再通过 `plan_digest` 创建绑定。具体步骤如下：
+使用此绑定方式时，你需要先从 `statements_summary` 中找到需要绑定的执行计划对应的 `plan_digest`，再通过 `plan_digest` 创建绑定。具体步骤如下：
 
 1. 从 `Statement Summary Tables` 的记录中查找执行计划对应的 `plan_digest`。
 
