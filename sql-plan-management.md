@@ -233,7 +233,7 @@ SHOW [GLOBAL | SESSION] BINDINGS [ShowLikeOrWhere];
 | update_time | 更新时间 |
 | charset | 字符集 |
 | collation | 排序规则 |
-| source | 创建方式，包括 manual （由 `create [global] binding` 生成）、history（根据历史执行计划创建生成）、capture（由 tidb 自动创建生成）和 evolve （由 tidb 自动演进生成） |
+| source | 创建方式，包括 manual（由 `create [global] binding` 生成）、history（根据历史执行计划创建生成）、capture（由 TiDB 自动创建生成）和 evolve （由 TiDB 自动演进生成） |
 | sql_digest | 规一化后的 SQL 的 digest |
 | plan_digest | 执行计划的 digest |
 
@@ -328,7 +328,7 @@ SHOW binding_cache status;
 目前通过现有执行计划绑定有一些限制：
 
 1. 从现有执行计划绑定功能是根据已有的执行计划生成 hint 而实现的绑定，已有的执行计划来源是 [Statement Summary](/statement-summary-tables.md)，因此在使用此功能之前需打开 Statement Summary 开关。
-2. 目前仅支持根据当前实例中的 `statements_summary` 和 `statements_summary_history` 表中的执行计划生成绑定，如果发现有 'can't find any plans' 的情况可以尝试连接集群中其他 TiDB 节点重试。后续将支持从 statement summary 的 cluster 表中创建绑定。
+2. 目前仅支持根据当前实例中的 `statements_summary` 和 `statements_summary_history` 表中的执行计划生成绑定，如果发现有 'can't find any plans' 的情况可以尝试连接集群中其他 TiDB 节点重试。
 3. 对于带有子查询的查询、访问 TiFlash 的查询、3 表及以上进行 Join 的查询目前还不支持通过计划进行绑定。
 
 后续我们会持续完善以解决上述的限制。
