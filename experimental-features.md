@@ -12,10 +12,8 @@ aliases: ['/docs-cn/dev/experimental-features-4.0/','/zh/tidb/dev/experimental-f
 
 + [支持收集部分列的统计信息](/statistics.md#收集部分列的统计信息)（v5.4 实验特性）
 + [限制 ANALYZE 的内存使用量](/statistics.md#统计信息收集的内存限制) (v6.1.0 实验特性)
-+ [Cost Model Version 2](/cost-model.md#cost-model-version-2)（v6.2.0 实验特性）
 + [FastScan](/develop/dev-guide-use-fastscan.md)（v6.2.0 实验特性）
 + [随机采样约 10000 行数据来快速构建统计信息](/system-variables.md#tidb_enable_fast_analyze)（v3.0 实验特性）
-+ [全局控制 tidb-server 实例的内存使用量](/configure-memory-usage.md#如何配置-tidb-server-实例使用内存的阈值)（v6.4 实验特性）
 
 ## 稳定性
 
@@ -35,11 +33,8 @@ aliases: ['/docs-cn/dev/experimental-features-4.0/','/zh/tidb/dev/experimental-f
 + [自定义变量](/user-defined-variables.md#用户自定义变量)。（v2.1 实验特性）
 + [Cascades Planner](/system-variables.md#tidb_enable_cascades_planner)：基于 Cascades 框架的自顶向下查询优化器。（v3.0 实验特性）
 + [表级锁 (Table Lock)](/tidb-configuration-file.md#enable-table-lock-从-v400-版本开始引入)（v4.0.0 实验特性）
-+ [元数据锁](/metadata-lock.md)（v6.3.0 实验特性）
 + [Range INTERVAL 分区](/partitioned-table.md#range-interval-分区)（v6.3.0 实验特性）
-+ [添加索引加速](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入)（v6.3.0 实验特性）
-+ [`AUTO_INCREMENT` MySQL 兼容模式](/auto-increment.md#mysql-兼容模式)（v6.4.0 实验特性）
-+ [将集群的数据恢复到特定的时间点 `FLASHBACK CLUSTER TO TIMESTAMP`](/sql-statements/sql-statement-flashback-to-timestamp.md)。（v6.4.0 实验特性）
++ [TiFlash 查询结果物化](/tiflash/tiflash-results-materialization.md)（v6.5.0 实验特性）
 + [根据历史执行计划创建绑定](/sql-plan-management.md#根据历史执行计划创建绑定)。（v6.5.0 实验特性）
 
 ## 存储
@@ -50,8 +45,6 @@ aliases: ['/docs-cn/dev/experimental-features-4.0/','/zh/tidb/dev/experimental-f
 ## 数据迁移
 
 + [使用 WebUI](/dm/dm-webui-guide.md) 管理 DM 迁移任务。（v6.0 实验特性）
-+ 为 TiDB Lightning 设置[磁盘资源配额](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#磁盘资源配额-从-v620-版本开始引入)（v6.2.0 实验特性）
-+ [DM 增量数据校验](/dm/dm-continuous-data-validation.md)（v6.2.0 实验特性）
 
 ## 数据共享订阅
 

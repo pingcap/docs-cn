@@ -29,17 +29,6 @@ TiKV 支持[动态配置](/tikv-control.md#动态修改-tikv-的配置)自动调
 
 ## PITR 问题
 
-### `br` 进程在执行 `br log truncate` 命令时为什么会出现 OOM 问题？
-
-Issue 链接：[#36648](https://github.com/pingcap/tidb/issues/36648)
-
-执行 `br log truncate` 时遇到 br OOM 问题，从以下几点考虑：
-
-- 由于删除的日志区间过大。
-    - 遇到此问题，解决方法是先减小删除的日志区间，可通过多次删除小区间日志来替代掉需要删除的大区间日志。
-- br 进程所在的节点内存配置过低。
-    - 建议升级节点内存配置到至少 16 GB，确保 PITR 恢复有足够的内存资源。
-
 ### 上游数据库使用 TiDB Lightning Physical 方式导入数据时，为什么无法使用日志备份功能？
 
 目前日志备份功能还没有完全适配 TiDB Lightning，导致 TiDB Lightning Physical 方式导入的数据无法备份到日志中。

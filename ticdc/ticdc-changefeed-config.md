@@ -51,23 +51,27 @@ case-sensitive = true
 # 是否输出 old value，从 v4.0.5 开始支持，从 v5.0 开始默认为 true
 enable-old-value = true
 
-# 是否开启 Syncpoint 功能，从 v6.3.0 开始支持
+# 是否开启 Syncpoint 功能，从 v6.3.0 开始支持，该功能默认关闭。
 # 从 v6.4.0 开始，使用 Syncpoint 功能需要同步任务拥有下游集群的 SYSTEM_VARIABLES_ADMIN 或者 SUPER 权限
-enable-sync-point = true
+# enable-sync-point = false
 
 # Syncpoint 功能对齐上下游 snapshot 的时间间隔
 # 配置格式为 h m s，例如 "1h30m30s"
 # 默认值为 10m，最小值为 30s
-sync-point-interval = "5m"
+# sync-point-interval = "5m"
 
 # Syncpoint 功能在下游表中保存的数据的时长，超过这个时间的数据会被清理
 # 配置格式为 h m s，例如 "24h30m30s"
 # 默认值为 24h
-sync-point-retention = "1h"
+# sync-point-retention = "1h"
+
+[mounter]
+# mounter 解码 KV 数据的线程数，默认值为 16
+# worker-num = 16
 
 [filter]
 # 忽略指定 start_ts 的事务
-ignore-txn-start-ts = [1, 2]
+# ignore-txn-start-ts = [1, 2]
 
 # 过滤器规则
 # 过滤规则语法：https://docs.pingcap.com/zh/tidb/stable/table-filter#表库过滤语法
