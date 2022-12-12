@@ -193,7 +193,7 @@ CREATE [GLOBAL | SESSION] BINDING FROM HISTORY USING PLAN DIGEST 'plan_digest';
 
 1. 从 `Statement Summary Tables` 的记录中查找执行计划对应的 `plan_digest`。
 
-例如此处从 `STATEMENTS_SUMMARY` 表中查找对应的 `plan_digest`， ：
+例如此处从 `STATEMENTS_SUMMARY` 表中查找对应的 `plan_digest`：
 
 ```sql
 CREATE TABLE t(id INT PRIMARY KEY , a INT, KEY(a));
@@ -201,7 +201,7 @@ SELECT /*+ IGNORE_INDEX(t, a) */ * FROM t WHERE a = 1;
 SELECT * FROM INFORMATION_SCHEMA.STATEMENTS_SUMMARY WHERE QUERY_SAMPLE_TEXT = 'SELECT /*+ IGNORE_INDEX(t, a) */ * FROM t WHERE a = 1'\G;
 ```
 
-以下为 `statements_summary` 部分查询结果, 执行计划对应的 `plan_digest` 为 `4e3159169cc63c14b139a4e7d72eae1759875c9a9581f94bb2079aae961189cb`：
+以下为 `statements_summary` 部分查询结果：
 
 ```
     SUMMARY_BEGIN_TIME: 2022-12-01 19:00:00	
@@ -215,6 +215,8 @@ SELECT * FROM INFORMATION_SCHEMA.STATEMENTS_SUMMARY WHERE QUERY_SAMPLE_TEXT = 'S
                           └─TableFullScan_5	cop[tikv]	10000  	table:t, keep order:false, stats:pseudo	0      	tikv_task:{time:560.8µs, loops:0}                                                                                                                        	N/A      	N/A
           BINARY_PLAN: 6QOYCuQDCg1UYWJsZVJlYWRlcl83Ev8BCgtTZWxlY3Rpb25fNhKOAQoPBSJQRnVsbFNjYW5fNSEBAAAAOA0/QSkAAQHwW4jDQDgCQAJKCwoJCgR0ZXN0EgF0Uh5rZWVwIG9yZGVyOmZhbHNlLCBzdGF0czpwc2V1ZG9qInRpa3ZfdGFzazp7dGltZTo1NjAuOMK1cywgbG9vcHM6MH1w////CQMEAXgJCBD///8BIQFzCDhVQw19BAAkBX0QUg9lcSgBfCAudC5hLCAxKWrmYQAYHOi0gc6hBB1hJAFAAVIQZGF0YTo9GgRaFAW4HDQuMDVtcywgCbYcMWKEAWNvcF8F2agge251bTogMSwgbWF4OiA1OTguNsK1cywgcHJvY19rZXlzOiAwLCBycGNfBSkAMgkMBVcQIDYwOS4pEPBDY29wcl9jYWNoZV9oaXRfcmF0aW86IDAuMDAsIGRpc3RzcWxfY29uY3VycmVuY3k6IDE1fXCwAXj///////////8BGAE=
 ```
+
+执行计划对应的 `plan_digest` 为 `4e3159169cc63c14b139a4e7d72eae1759875c9a9581f94bb2079aae961189cb`：
 
 2. 使用 `plan_digest` 创建绑定。
 
