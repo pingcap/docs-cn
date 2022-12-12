@@ -169,7 +169,7 @@ CREATE BINDING FOR SELECT * FROM t WHERE a > 1 USING SELECT * FROM t use index(i
 
 #### 根据已有执行计划创建绑定
 
-此功能可用于查询计划跳变时固定历史执行计划，使用 `digest` 实现快速的执行计划绑定。同时相比使用 Hint 创建绑定的方式更简便。
+此功能可用于查询计划跳变时固定历史执行计划，使用 `plan_digest` 实现快速的执行计划绑定。同时相比使用 Hint 创建绑定的方式更简便。
 
 > **警告：**
 >
