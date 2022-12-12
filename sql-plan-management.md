@@ -13,6 +13,8 @@ aliases: ['/docs-cn/dev/sql-plan-management/','/docs-cn/dev/reference/performanc
 
 ### 创建绑定
 
+你可以根据 SQL hint 或者历史执行计划为指定的 SQL 语句创建绑定。
+
 #### 根据 SQL hint 创建绑定
 
 {{< copyable "sql" >}}
@@ -169,17 +171,17 @@ CREATE BINDING FOR SELECT * FROM t WHERE a > 1 USING SELECT * FROM t use index(i
 
 #### 根据历史执行计划创建绑定
 
-当一个 SQL 语句的执行计划发生跳变时，可以使用 `plan_digest` 将该 SQL 语句的执行计划绑定为历史的执行计划。相比使用 SQL hint 创建绑定的方式，此方式更加简便。
+当一个 SQL 语句的执行计划相比之前发生变化时，可以使用 `plan_digest` 将该 SQL 语句的执行计划绑定为历史执行计划。相比使用 SQL hint 创建绑定的方式，此方式更加简便。
 
 > **警告：**
 >
-> - 根据已有执行计划创建绑定目前为实验特性，存在未知风险，请勿在生产环境中使用。
+> - 根据历史执行计划创建绑定目前为实验特性，存在未知风险，请勿在生产环境中使用。
 
-目前，根据已有执行计划创建绑定有一些限制：
+目前，根据历史执行计划创建绑定有一些限制：
 
-1. 该功能是根据已有的执行计划生成 hint 而实现的绑定，已有的执行计划来源是 [Statement Summary Tables](/statement-summary-tables.md)，因此在使用此功能之前需开启系统变量 [`tidb_enable_stmt_summary`](#tidb_enable_stmt_summary-从-v304-版本开始引入)。
+1. 该功能是根据历史的执行计划生成 hint 而实现的绑定，历史的执行计划来源是 [Statement Summary Tables](/statement-summary-tables.md)，因此在使用此功能之前需开启系统变量 [`tidb_enable_stmt_summary`](#tidb_enable_stmt_summary-从-v304-版本开始引入)。
 2. 目前，该功能仅支持根据当前实例中的 `statements_summary` 和 `statements_summary_history` 表中的执行计划生成绑定。如果发现有 'can't find any plans' 的情况，请尝试连接集群中其他 TiDB 节点重试。
-3. 对于带有子查询的查询、访问 TiFlash 的查询、3 张表或更多表进行 Join 的查询，目前还不支持通过已有执行计划进行绑定。
+3. 对于带有子查询的查询、访问 TiFlash 的查询、3 张表或更多表进行 Join 的查询，目前还不支持通过历史执行计划进行绑定。
 
 ##### 使用方式
 
@@ -187,7 +189,9 @@ CREATE BINDING FOR SELECT * FROM t WHERE a > 1 USING SELECT * FROM t use index(i
 CREATE [GLOBAL | SESSION] BINDING FROM HISTORY USING PLAN DIGEST 'plan_digest';
 ```
 
-该语句使用 `plan digest` 为 SQL 绑定执行计划，在不指定作用域时默认作用域为 SESSION。所创建绑定的适用 SQL、优先级、作用域、生效条件等与 [根据 SQL hint 创建绑定](/sql-plan-management.md#根据-sql-hint-创建绑定)相同。 使用时从 statements_summary 中找到需要绑定的执行计划对应的 `plan_digest`， 然后使用 `plan_digest` 创建绑定。
+该语句使用 `plan digest` 为 SQL 语句绑定执行计划，在不指定作用域时默认作用域为 SESSION。所创建绑定的适用 SQL、优先级、作用域、生效条件等与 [根据 SQL hint 创建绑定](/sql-plan-management.md#根据-sql-hint-创建绑定)相同。 
+
+使用此绑定方式时，你需要先从 `statements_summary` 中找到需要绑定的执行计划对应的 `plan_digest`， 再通过 `plan_digest` 创建绑定。具体步骤如下：
 
 1. 从 `Statement Summary Tables` 的记录中查找执行计划对应的 `plan_digest`。
 
