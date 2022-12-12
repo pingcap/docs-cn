@@ -549,7 +549,7 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 默认值：`4096`
-- 这个变量用于控制当 [`replica-read`](#tidb_replica_read-从-v40-版本开始引入) 设置为 `closest-adaptive` 时，优先将读请求发送至 TiDB server 所在区域副本的阈值。当读请求预估的返回结果的大小超过此阈值时，TiDB 会将读请求优先发送至同一区域的副本，否则会发送至 leader 副本。
+- 这个变量用于控制当 [`replica-read`](#tidb_replica_read-从-v40-版本开始引入) 设置为 `closest-adaptive` 时，优先将读请求发送至 TiDB server 所在区域副本的阈值。当读请求预估的返回结果的大小超过此阈值时，TiDB 会将读请求优先发送至同一可用区的副本，否则会发送至 leader 副本。
 
 ### `tidb_allow_batch_cop` <span class="version-mark">从 v4.0 版本开始引入</span>
 
@@ -883,17 +883,17 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 ### `tidb_cost_model_version` <span class="version-mark">从 v6.2.0 版本开始引入</span>
 
-> **警告：**
+> **注意：**
 >
-> - 当前 Cost Model Version 2 为实验特性，不建议在生产环境中使用。
+> - 自 v6.5.0 开始，新创建的 TiDB 集群默认使用 Cost Model Version 2。如果从 v6.4.0 及之前版本的集群升级到 v6.5.0 及之后的版本，`tidb_cost_model_version` 的值不发生变化。
 > - 切换代价模型版本可能会引起查询计划的变动。
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 默认值：`1`
-- 可选值：`[1, 2]`
-- TiDB v6.2.0 引入了代价模型 [Cost Model Version 2](/cost-model.md#cost-model-version-2)，在内部测试中比此前版本的代价模型更加准确。
-- 通过将 `tidb_cost_model_version` 设置为 `2` 可以启用 Cost Model Version 2 代价模型，设置为 `1` 则继续使用 Cost Model Version 1 代价模型。
+- 默认值：`2`
+- 可选值：
+    - `1`：使用 Cost Model Version 1 代价模型。TiDB v6.4.0 及之前的版本默认使用 Cost Model Version 1。
+    - `2`：使用 Cost Model Version 2 代价模型。TiDB v6.5.0 正式发布了代价模型 [Cost Model Version 2](/cost-model.md#cost-model-version-2)，在内部测试中比 Version 1 版本的代价模型更加准确。
 - 代价模型会影响优化器对计划的选择，具体可见[代价模型](/cost-model.md)。
 
 ### `tidb_current_ts`
@@ -1556,12 +1556,15 @@ Query OK, 0 rows affected (0.09 sec)
 
 > **警告：**
 >
-> 当前版本中该变量控制的功能尚未完全生效，请保留默认值。
+> 当前版本中该变量控制的功能是实验性功能，暂不建议在生产环境中使用。
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 默认值：`OFF`
-- 这个变量用于控制写 SQL 中的读取是否会下推到 TiFlash。
+- 这个变量用于控制包含增删改的 SQL 语句中的读取操作能否下推到 TiFlash，比如：
+
+    - `INSERT INTO SELECT` 语句中的 `SELECT` 查询（典型应用场景为 [TiFlash 查询结果物化](/tiflash/tiflash-results-materialization.md)）
+    - `UPDATE` 和 `DELETE` 语句中的 `WHERE` 条件过滤
 
 ### `tidb_enable_tmp_storage_on_oom`
 
@@ -1581,7 +1584,7 @@ Query OK, 0 rows affected (0.09 sec)
 - 作用域：GLOBAL
 - 是否持久化到集群：是
 - 默认值：`OFF`
-- 这个变量用控制是否开启 [Top SQL 特性](/dashboard/top-sql.md)。
+- 这个变量用于控制是否开启 [Top SQL 特性](/dashboard/top-sql.md)。
 
 ### `tidb_enable_tso_follower_proxy` <span class="version-mark">从 v5.3.0 版本开始引入</span>
 
@@ -2110,9 +2113,10 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 默认值：`1073741824` (1 GiB)
 - 范围：`[-1, 9223372036854775807]`
 - 单位：字节
-- 这个变量用来设置一条查询语句的内存使用阈值。
-- 如果一条查询语句执行过程中使用的内存空间超过该阈值，会触发系统变量 [`tidb_mem_oom_action`](#tidb_mem_oom_action-从-v610-版本开始引入) 中指定的行为。
-- 在 v6.1.0 之前这个开关通过 TiDB 配置文件 (`mem-quota-query`) 进行配置，且作用域为 `SESSION`。升级到 v6.1.0 时会自动继承原有设置，作用域变更为 `SESSION | GLOBAL`。
+- 在 v6.1.0 之前的版本中，作用域为 `SESSION`。v6.1.0 及之后的版本，作用域变更为 `SESSION | GLOBAL`。
+- 在 v6.5.0 之前的版本中，该变量用来设置单条查询的内存使用限制，如果单条查询执行过程中使用的内存量超过该阈值，会触发系统变量 [`tidb_mem_oom_action`](#tidb_mem_oom_action-从-v610-版本开始引入) 中指定的行为。
+- 在 v6.5.0 及之后的版本中，该变量用来设置单个会话整体的内存使用限制，如果某个会话执行过程中使用的内存量超过该阈值，会触发系统变量 [`tidb_mem_oom_action`](#tidb_mem_oom_action-从-v610-版本开始引入) 中指定的行为。需要注意的是，自 v6.5.0 版本开始，会话的内存使用量包含会话中事务所消耗的内存。v6.5.0 及之后版本对事务内存的控制行为有所变化，详见 [txn-total-size-limit](/tidb-configuration-file.md#txn-total-size-limit)。
+- 当变量值为 `0` 或 `-1` 时，表示内存阈值为正无穷。此外，当变量值小于 128 时，将默认被设置为 `128`。
 
 ### `tidb_memory_debug_mode_alarm_ratio`
 
@@ -3087,6 +3091,19 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 范围：`[1, 2147483647]`
 - 单位：秒
 - 这个变量设置了 [statement summary tables](/statement-summary-tables.md) 的刷新时间。
+
+### `tidb_store_batch_size`
+
+> **警告：**
+>
+> 目前 `tidb_store_batch_size` 尚未稳定，未来此变量可能会删除，不建议业务依赖此变量或在生产环境中使用，请保留默认值。
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 类型：整数
+- 默认值：`0`
+- 范围：`[0, 25000]`
+- 设置 `IndexLookUp` 算子回表时多个 Coprocessor Task 的 batch 大小。`0` 代表不使用 batch。当 `IndexLookUp` 算子的回表 Task 数量特别多，出现极长的慢查询时，可以适当调大该参数以加速查询。
 
 ### `tidb_streamagg_concurrency`
 
