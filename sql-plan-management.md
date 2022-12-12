@@ -13,6 +13,8 @@ aliases: ['/docs-cn/dev/sql-plan-management/','/docs-cn/dev/reference/performanc
 
 ### 创建绑定
 
+#### 根据 SQL hint 创建绑定
+
 {{< copyable "sql" >}}
 
 ```sql
@@ -165,6 +167,96 @@ CREATE BINDING FOR SELECT * FROM t WHERE a > 1 USING SELECT * FROM t use index(i
 >
 > 对于 `PREPARE`/`EXECUTE` 语句组，或者用二进制协议执行的查询，创建执行计划绑定的对象应当是查询语句本身，而不是 `PREPARE`/`EXECUTE` 语句。
 
+#### 根据已有执行计划创建绑定
+
+此功能可用于查询计划跳变时固定历史执行计划，使用 `digest` 实现快速的执行计划绑定。同时相比使用 Hint 创建绑定的方式更简便。
+
+> **警告：**
+>
+> - 从现有执行计划绑定功能目前为实验特性，存在未知风险，请勿在生产环境中使用。
+
+目前通过现有执行计划绑定有一些限制：
+
+1. 从现有执行计划绑定功能是根据已有的执行计划生成 hint 而实现的绑定，已有的执行计划来源是 [Statement Summary Tables](/statement-summary-tables.md)，因此在使用此功能之前需开启 [`tidb_enable_stmt_summary`](/statement-summary-tables#参数配置)。
+2. 目前仅支持根据当前实例中的 `statements_summary` 和 `statements_summary_history` 表中的执行计划生成绑定，如果发现有 'can't find any plans' 的情况可以尝试连接集群中其他 TiDB 节点重试。
+3. 对于带有子查询的查询、访问 TiFlash 的查询、3 表及以上进行 Join 的查询目前还不支持通过计划进行绑定。
+
+后续我们会持续完善以解决上述的限制。
+
+##### 使用方式
+
+```sql
+CREATE [GLOBAL | SESSION] BINDING FROM HISTORY USING PLAN DIGEST 'plan_digest';
+```
+
+该语句使用 `plan digest` 为 SQL 绑定执行计划，在不指定作用域时默认作用域为 SESSION。所创建绑定的适用 SQL、优先级、作用域、生效条件等与 [创建绑定](/sql-plan-management.md#创建绑定)相同。 使用时从 statements_summary 中找到需要绑定的执行计划对应的 `plan_digest`， 然后使用 `plan_digest` 创建绑定。
+
+使用步骤：
+
+1. 从 `Statement Summary Tables` 的记录中查找执行计划对应的 `plan_digest`。
+
+例如此处从 `STATEMENTS_SUMMARY` 表中查找对应的 `plan_digest`， ：
+
+```sql
+CREATE TABLE t(id INT PRIMARY KEY , a INT, KEY(a));
+SELECT /*+ IGNORE_INDEX(t, a) */ * FROM t WHERE a = 1;
+SELECT * FROM INFORMATION_SCHEMA.STATEMENTS_SUMMARY WHERE QUERY_SAMPLE_TEXT = 'SELECT /*+ IGNORE_INDEX(t, a) */ * FROM t WHERE a = 1'\G;
+```
+
+以下为 `statements_summary` 部分查询结果, 执行计划对应的 `plan_digest` 为 `4e3159169cc63c14b139a4e7d72eae1759875c9a9581f94bb2079aae961189cb`：
+
+```
+    SUMMARY_BEGIN_TIME: 2022-12-01 19:00:00	
+    ...........
+          DIGEST_TEXT: select * from `t` where `a` = ?
+    ...........
+          PLAN_DIGEST: 4e3159169cc63c14b139a4e7d72eae1759875c9a9581f94bb2079aae961189cb
+                 PLAN: 	id                 	task     	estRows	operator info                          	actRows execution info                                                                                                                                            	memory   	disk
+                        TableReader_7      	root     	10     	data:Selection_6                       	0      	time:4.05ms, loops:1, cop_task: {num: 1, max: 598.6µs, proc_keys: 0, rpc_num: 2, rpc_time: 609.8µs, copr_cache_hit_ratio: 0.00, distsql_concurrency: 15}	176 Bytes	N/A
+                        └─Selection_6      	cop[tikv]	10     	eq(test.t.a, 1)                        	0      	tikv_task:{time:560.8µs, loops:0}                                                                                                                        	N/A      	N/A
+                          └─TableFullScan_5	cop[tikv]	10000  	table:t, keep order:false, stats:pseudo	0      	tikv_task:{time:560.8µs, loops:0}                                                                                                                        	N/A      	N/A
+          BINARY_PLAN: 6QOYCuQDCg1UYWJsZVJlYWRlcl83Ev8BCgtTZWxlY3Rpb25fNhKOAQoPBSJQRnVsbFNjYW5fNSEBAAAAOA0/QSkAAQHwW4jDQDgCQAJKCwoJCgR0ZXN0EgF0Uh5rZWVwIG9yZGVyOmZhbHNlLCBzdGF0czpwc2V1ZG9qInRpa3ZfdGFzazp7dGltZTo1NjAuOMK1cywgbG9vcHM6MH1w////CQMEAXgJCBD///8BIQFzCDhVQw19BAAkBX0QUg9lcSgBfCAudC5hLCAxKWrmYQAYHOi0gc6hBB1hJAFAAVIQZGF0YTo9GgRaFAW4HDQuMDVtcywgCbYcMWKEAWNvcF8F2agge251bTogMSwgbWF4OiA1OTguNsK1cywgcHJvY19rZXlzOiAwLCBycGNfBSkAMgkMBVcQIDYwOS4pEPBDY29wcl9jYWNoZV9oaXRfcmF0aW86IDAuMDAsIGRpc3RzcWxfY29uY3VycmVuY3k6IDE1fXCwAXj///////////8BGAE=
+```
+
+2. 使用 `plan_digest` 创建绑定。
+
+```sql
+CREATE BINDING FROM HISTORY USING PLAN DIGEST '4e3159169cc63c14b139a4e7d72eae1759875c9a9581f94bb2079aae961189cb';
+```
+
+创建完毕后可以[查看绑定](sql-plan-management#查看绑定)，验证绑定是否生效。
+
+```sql
+    SHOW BINDINGS\G;
+```
+
+```
+*************************** 1. row ***************************
+Original_sql: select * from `test` . `t` where `a` = ?
+    Bind_sql: SELECT /*+ use_index(@`sel_1` `test`.`t` ) ignore_index(`t` `a`)*/ * FROM `test`.`t` WHERE `a` = 1
+       ...........
+  Sql_digest: 6909a1bbce5f64ade0a532d7058dd77b6ad5d5068aee22a531304280de48349f
+ Plan_digest:
+1 row in set (0.01 sec)
+
+ERROR:
+No query specified
+```
+
+```sql
+SELECT * FROM t WHERE a = 1;
+SELECT @@LAST_PLAN_FROM_BINDING;
+```
+
+```
++--------------------------+
+| @@LAST_PLAN_FROM_BINDING |
++--------------------------+
+|                        1 |
++--------------------------+
+1 row in set (0.00 sec)
+```
+
 ### 删除绑定
 
 {{< copyable "sql" >}}
@@ -314,87 +406,6 @@ SHOW binding_cache status;
 +-------------------+-------------------+--------------+--------------+
 |                 1 |                 1 | 159 Bytes    | 64 MB        |
 +-------------------+-------------------+--------------+--------------+
-1 row in set (0.00 sec)
-```
-
-## 从现有执行计划绑定(Binding from existing plan)
-
-可用于查询计划跳变时固定历史执行计划，使用 `digest` 实现快速的执行计划管理，同时相比使用 Hint 创建绑定的方式更简便。
-
-> **警告：**
->
-> - 从现有执行计划绑定功能目前为实验特性，存在未知风险，请勿在生产环境中使用。
-
-目前通过现有执行计划绑定有一些限制：
-
-1. 从现有执行计划绑定功能是根据已有的执行计划生成 hint 而实现的绑定，已有的执行计划来源是 [Statement Summary Tables](/statement-summary-tables.md)，因此在使用此功能之前需开启 [`tidb_enable_stmt_summary`](/statement-summary-tables#参数配置)。
-2. 目前仅支持根据当前实例中的 `statements_summary` 和 `statements_summary_history` 表中的执行计划生成绑定，如果发现有 'can't find any plans' 的情况可以尝试连接集群中其他 TiDB 节点重试。
-3. 对于带有子查询的查询、访问 TiFlash 的查询、3 表及以上进行 Join 的查询目前还不支持通过计划进行绑定。
-
-后续我们会持续完善以解决上述的限制。
-
-### 使用方式
-
-```sql
-CREATE [GLOBAL | SESSION] BINDING FROM HISTORY USING PLAN DIGEST 'plan_digest';
-```
-
-该语句使用 `plan digest` 为 SQL 绑定执行计划，在不指定作用域时默认作用域为 SESSION。所创建绑定的适用 SQL、优先级、作用域、生效条件等与 [创建绑定](/sql-plan-management.md#创建绑定)相同。 使用时从 statements_summary 中找到需要绑定的执行计划对应的 `plan_digest`， 然后使用 `plan_digest` 创建绑定。
-
-例如:
-
-```sql
-CREATE TABLE t(id INT PRIMARY KEY , a INT, KEY(a));
-SELECT /*+ IGNORE_INDEX(t, a) */ * FROM t WHERE a = 1;
-SELECT * FROM INFORMATION_SCHEMA.STATEMENTS_SUMMARY WHERE QUERY_SAMPLE_TEXT = 'SELECT /*+ IGNORE_INDEX(t, a) */ * FROM t WHERE a = 1'\G;
-```
-
-以下为 `statements_summary` 部分查询结果:
-
-```
-    SUMMARY_BEGIN_TIME: 2022-12-01 19:00:00	
-    ...........
-          DIGEST_TEXT: select * from `t` where `a` = ?
-    ...........
-          PLAN_DIGEST: 4e3159169cc63c14b139a4e7d72eae1759875c9a9581f94bb2079aae961189cb
-                 PLAN: 	id                 	task     	estRows	operator info                          	actRows execution info                                                                                                                                            	memory   	disk
-                        TableReader_7      	root     	10     	data:Selection_6                       	0      	time:4.05ms, loops:1, cop_task: {num: 1, max: 598.6µs, proc_keys: 0, rpc_num: 2, rpc_time: 609.8µs, copr_cache_hit_ratio: 0.00, distsql_concurrency: 15}	176 Bytes	N/A
-                        └─Selection_6      	cop[tikv]	10     	eq(test.t.a, 1)                        	0      	tikv_task:{time:560.8µs, loops:0}                                                                                                                        	N/A      	N/A
-                          └─TableFullScan_5	cop[tikv]	10000  	table:t, keep order:false, stats:pseudo	0      	tikv_task:{time:560.8µs, loops:0}                                                                                                                        	N/A      	N/A
-          BINARY_PLAN: 6QOYCuQDCg1UYWJsZVJlYWRlcl83Ev8BCgtTZWxlY3Rpb25fNhKOAQoPBSJQRnVsbFNjYW5fNSEBAAAAOA0/QSkAAQHwW4jDQDgCQAJKCwoJCgR0ZXN0EgF0Uh5rZWVwIG9yZGVyOmZhbHNlLCBzdGF0czpwc2V1ZG9qInRpa3ZfdGFzazp7dGltZTo1NjAuOMK1cywgbG9vcHM6MH1w////CQMEAXgJCBD///8BIQFzCDhVQw19BAAkBX0QUg9lcSgBfCAudC5hLCAxKWrmYQAYHOi0gc6hBB1hJAFAAVIQZGF0YTo9GgRaFAW4HDQuMDVtcywgCbYcMWKEAWNvcF8F2agge251bTogMSwgbWF4OiA1OTguNsK1cywgcHJvY19rZXlzOiAwLCBycGNfBSkAMgkMBVcQIDYwOS4pEPBDY29wcl9jYWNoZV9oaXRfcmF0aW86IDAuMDAsIGRpc3RzcWxfY29uY3VycmVuY3k6IDE1fXCwAXj///////////8BGAE=
-```
-
-```sql
--- 创建并查看绑定
-CREATE BINDING FROM HISTORY USING PLAN DIGEST '4e3159169cc63c14b139a4e7d72eae1759875c9a9581f94bb2079aae961189cb';
-SHOW BINDINGS\G;
-```
-
-```
-*************************** 1. row ***************************
-Original_sql: select * from `test` . `t` where `a` = ?
-    Bind_sql: SELECT /*+ use_index(@`sel_1` `test`.`t` ) ignore_index(`t` `a`)*/ * FROM `test`.`t` WHERE `a` = 1
-       ...........
-  Sql_digest: 6909a1bbce5f64ade0a532d7058dd77b6ad5d5068aee22a531304280de48349f
- Plan_digest:
-1 row in set (0.01 sec)
-
-ERROR:
-No query specified
-```
-
-```sql
--- 验证语句是否采用 binding 的执行计划
-SELECT * FROM t WHERE a = 1;
-SELECT @@LAST_PLAN_FROM_BINDING;
-```
-
-```
-+--------------------------+
-| @@LAST_PLAN_FROM_BINDING |
-+--------------------------+
-|                        1 |
-+--------------------------+
 1 row in set (0.00 sec)
 ```
 
