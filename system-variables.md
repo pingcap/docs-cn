@@ -1034,6 +1034,10 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 ### `tidb_enable_amend_pessimistic_txn` <span class="version-mark">从 v4.0.7 版本开始引入</span>
 
+> **警告：**
+>
+> 从 v6.6.0 开始，该变量将被废弃，TiDB 会默认使用[元数据锁](/metadata-lock.md) 机制解决 `Information schema is changed` 报错的问题。
+
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 默认值：`OFF`
