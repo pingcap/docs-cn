@@ -175,7 +175,7 @@ CREATE BINDING FOR SELECT * FROM t WHERE a > 1 USING SELECT * FROM t use index(i
 
 > **警告：**
 >
-> - 根据历史执行计划创建绑定目前为实验特性，存在未知风险，请勿在生产环境中使用。
+> 根据历史执行计划创建绑定目前为实验特性，存在未知风险，请勿在生产环境中使用。
 
 目前，根据历史执行计划创建绑定有一些限制：
 
