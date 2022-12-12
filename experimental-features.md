@@ -40,6 +40,7 @@ aliases: ['/docs-cn/dev/experimental-features-4.0/','/zh/tidb/dev/experimental-f
 + [添加索引加速](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入)（v6.3.0 实验特性）
 + [`AUTO_INCREMENT` MySQL 兼容模式](/auto-increment.md#mysql-兼容模式)（v6.4.0 实验特性）
 + [将集群的数据恢复到特定的时间点 `FLASHBACK CLUSTER TO TIMESTAMP`](/sql-statements/sql-statement-flashback-to-timestamp.md)。（v6.4.0 实验特性）
++ [根据历史执行计划创建绑定](/sql-plan-management.md#根据历史执行计划创建绑定)。（v6.5.0 实验特性）
 
 ## 存储
 
