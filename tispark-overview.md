@@ -429,7 +429,7 @@ spark.sql.tidb.password $your_tidb_server_password
 - [下推](https://github.com/pingcap/tispark/blob/master/docs/features/push_down.md)
 - [TiSpark 删除](https://github.com/pingcap/tispark/blob/master/docs/features/delete_userguide.md)
 - [历史读](https://github.com/pingcap/tispark/blob/master/docs/features/stale_read.md)
-- [TiSpark TLS](#TLS-配置)
+- [TiSpark TLS](#tls-配置)
 - [TiSpark 遥测](https://github.com/pingcap/tispark/blob/master/docs/features/telemetry.md)
 - [TiSpark 执行计划](https://github.com/pingcap/tispark/blob/master/docs/features/query_execution_plan_in_TiSpark.md)
 
