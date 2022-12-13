@@ -247,7 +247,7 @@ TiDB 版本：6.3.0-DMR
 | TiCDC | [`enable-sync-point`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-配置文件说明) | 新增 | 控制是否开启 sync point 功能。 |
 | TiCDC | [`sync-point-interval`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-配置文件说明) | 新增 | 控制 sync point 功能对齐上下游 snapshot 的时间间隔。 |
 | TiCDC | [`sync-point-retention`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-配置文件说明) | 新增 | sync point 功能在下游表中保存的数据的时长，超过这个时间的数据会被清理。 |
-| TiCDC | [`sink-uri.memory`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-命令行参数) | 废弃 | 废弃 `memory` 排序方式，不建议在任何情况下使用。可以通过 `unified` 排序方式替代。 |
+| TiCDC | [`sink-uri.memory`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-命令行参数) | 废弃 | 废弃 `memory` 排序方式，不建议在任何情况下使用。 |
 
 ### 其他
 
