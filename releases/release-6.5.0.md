@@ -360,12 +360,11 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
     - Checkpoint 支持拉取模式 [#13824](https://github.com/tikv/tikv/issues/13824) @[YuJuncen](https://github.com/YuJuncen)
     - 升级 crossbeam-channel 以优化发送端的自旋问题 [#13815](https://github.com/tikv/tikv/issues/13815) @[sticnarf](https://github.com/sticnarf)
     - Coprocessor 支持批量处理 [#13849](https://github.com/tikv/tikv/issues/13849) @[cfzjywxk](https://github.com/cfzjywxk)
-    - 故障恢复时通知 TiKV 唤醒休眠的 region 以减少等待时间 [#13648](https://github.com/tikv/tikv/issues/13648) @[LykxSassinator](https://github.com/LykxSassinator)
-    - 通过代码优化减少内存申请 [#13836](https://github.com/tikv/tikv/pull/13836) @[BusyJay](https://github.com/BusyJay)
-    - 引入 raft extension 以提升代码可扩展性 [#13864](https://github.com/tikv/tikv/pull/13864) @[BusyJay](https://github.com/BusyJay)
-    - 通过引入 `hint_min_ts` 加速 flashback [#13842](https://github.com/tikv/tikv/pull/13842)  @[JmPotato](https://github.com/JmPotato)
-    - tikv-ctl 支持查询某个 key 范围中包含哪些 Region  [#13768](https://github.com/tikv/tikv/pull/13768) [@HuSharp](https://github.com/HuSharp)
-    - 改进持续对特定行只加锁但不更新情况下的读写性能 [#13694](https://github.com/tikv/tikv/issues/13694) [@sticnarf](https://github.com/sticnarf)
+    - 故障恢复时通知 TiKV 唤醒休眠的 Region 以减少等待时间 [#13648](https://github.com/tikv/tikv/issues/13648) @[LykxSassinator](https://github.com/LykxSassinator)
+    - 通过代码优化减少内存申请的大小 [#13827](https://github.com/tikv/tikv/issues/13827) @[BusyJay](https://github.com/BusyJay)
+    - 引入 raft extension 以提升代码可扩展性 [#13827](https://github.com/tikv/tikv/issues/13827) @[BusyJay](https://github.com/BusyJay)
+    - tikv-ctl 支持查询某个 key 范围中包含哪些 Region [#13760](https://github.com/tikv/tikv/issues/13760) [@HuSharp](https://github.com/HuSharp)
+    - 改进持续对特定行只加锁但不更新的情况下的读写性能 [#13694](https://github.com/tikv/tikv/issues/13694) [@sticnarf](https://github.com/sticnarf)
 
 + PD
 
@@ -421,12 +420,12 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
 + TiKV
 
-    - 修复 raft engine ctl 中的错误 [#13108](https://github.com/tikv/tikv/issues/13108) @[tabokie](https://github.com/tabokie)
-    - 修复 tikv-ctl 中 compact raft 命令的错误 [#13515](https://github.com/tikv/tikv/issues/13515) @[guoxiangCN](https://github.com/guoxiangCN)
-    - 修复当启用 TLS 时 log backup 无法使用的问题 [#13851](https://github.com/tikv/tikv/issues/13851) @[YuJuncen](https://github.com/YuJuncen)
-    - 修复对 Geometry 字段类型的支持 [#13651](https://github.com/tikv/tikv/issues/13651) @[dveeden](https://github.com/dveeden)
-    - 修复当未使用 new collation 时 `like` 无法处理 `_` 中非 ASCII 字符的问题 [#13769](https://github.com/tikv/tikv/issues/13769) @[YangKeao](https://github.com/YangKeao)
-    - 修复 tikv-ctl 执行 reset-to-version 时出现 segfault 的问题 [#13829](https://github.com/tikv/tikv/issues/13829) @[tabokie](https://github.com/tabokie)
+    - 修复 raft engine ctl 中的错误 [#11119](https://github.com/tikv/tikv/issues/11119) @[tabokie](https://github.com/tabokie)
+    - 修复 tikv-ctl 执行 compact raft 命令时报错的问题 [#13515](https://github.com/tikv/tikv/issues/13515) @[guoxiangCN](https://github.com/guoxiangCN)
+    - 修复当启用 TLS 时 log backup 无法使用的问题 [#13867](https://github.com/tikv/tikv/issues/13867) @[YuJuncen](https://github.com/YuJuncen)
+    - 修复对 Geometry 字段类型的支持问题 [#13651](https://github.com/tikv/tikv/issues/13651) @[dveeden](https://github.com/dveeden)
+    - 修复当未启用 new collation 时 `LIKE` 操作符中的 `_` 无法匹配非 ASCII 字符的问题 [#13769](https://github.com/tikv/tikv/issues/13769) @[YangKeao](https://github.com/YangKeao)
+    - 修复 tikv-ctl 执行 `reset-to-version` 命令时被终止的问题 [#13829](https://github.com/tikv/tikv/issues/13829) @[tabokie](https://github.com/tabokie)
 
 + PD
 
