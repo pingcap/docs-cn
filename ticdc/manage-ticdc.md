@@ -184,7 +184,7 @@ URI 中可配置的参数如下：
 | `ssl-cert`     | 连接下游 MySQL 实例所需的证书文件路径（可选） |
 | `ssl-key`      | 连接下游 MySQL 实例所需的证书密钥文件路径（可选） |
 | `time-zone`    | 连接下游 MySQL 实例时使用的时区名称，从 v4.0.8 开始生效。（可选。如果不指定该参数，使用 TiCDC 服务进程的时区；如果指定该参数但使用空值，则表示连接 MySQL 时不指定时区，使用下游默认时区） |
-| `transaction-atomicity`      | 指定事务的原子性级别（可选，默认值为 `table`）。当该值为 `table` 时 TiCDC 保证单表事务的原子性，当该值为 `none` 时 TiCDC 会拆分单表事务 |
+| `transaction-atomicity`      | 指定事务的原子性级别（可选，默认值为 `none`）。当该值为 `table` 时 TiCDC 保证单表事务的原子性，当该值为 `none` 时 TiCDC 会拆分单表事务 |
 
 #### Sink URI 配置 `kafka`
 
