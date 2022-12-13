@@ -209,35 +209,35 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
 ### 数据迁移
 
-* 支持导出和导入压缩后的 CSV、SQL 文件 [#38514](https://github.com/pingcap/tidb/issues/38514) @[lichunzhu](https://github.com/lichunzhu) **tw@hfxsd**
+* 支持导出和导入 gzip、snappy、zstd 三种压缩格式的 SQL、CSV 文件 [#38514](https://github.com/pingcap/tidb/issues/38514) @[lichunzhu](https://github.com/lichunzhu) **tw@hfxsd**
 
-    Dumpling 支持将数据导出为 SQL、CSV 的压缩文件，支持 gzip/snappy/zstd 三种压缩格式。Lightning 支持导入压缩后的 SQL、CSV 文件，支持gzip/snappy/zstd 三种压缩格式。
+    Dumpling 支持将数据导出为 gzip、snappy、zstd 三种压缩格式的 SQL、CSV 的压缩文件。TiDB Lightning 也支持导入这些格式的压缩文件。
 
-    之前用户导出数据或者导入数据都需要提供较大的存储空间，用于存储导出或者即将导入的非压缩后的 csv 、sql文件，导致存储成本增加。该功能发布后，通过压缩存储空间，可以大大降低用户的存储成本。
+    有这个功能之前，导出数据或者导入数据都需要提供较大的存储空间，用于存储导出或者即将导入的 CSV 和 SQL 文件，导致较高的存储成本。该功能发布后，通过压缩存储空间，可以大幅降低存储成本。
 
-    更多信息，请参考[用户文档](https://github.com/pingcap/tidb/issues/38514)。
+    更多信息，请参考[用户文档](/dumpling-overview.md#通过并发提高-dumpling-的导出效率)。
 
-* 优化了 binlog 解析能力 [#无](无) @[gmhdbjd](https://github.com/GMHDBJD) **tw@hfxsd**
+* 优化了 binlog 解析能力 [#924](https://github.com/pingcap/dm/issues/924) @[gmhdbjd](https://github.com/GMHDBJD) **tw@hfxsd**
 
-    可将不在迁移任务里的库、表对象的 binlog event 过滤掉不做解析，从而提升解析效率和稳定性。该策略在 6.5 版本默认生效，用户无需额外操作。
+    可将不在迁移任务里的库、表对象的 binlog event 过滤掉，不做解析，从而提升解析效率和稳定性。该策略在 v6.5.0 版本默认生效，无需额外操作。
 
-    原先用户仅迁移少数几张表，也需要解析上游整个 binlog 文件，即仍需要解析该 binlog 文件中不需要迁移的表的 binlog event，效率会比较低，同时如果不在迁移任务里的库表的 binlog event 不支持解析，还会导致任务失败。通过只解析在迁移任务里的库表对象的 binlog event 可以大大提升 binlog 解析效率，提升任务稳定性。
+    有这个功能之前，即使仅迁移几张表，也需要解析上游整个 binlog 文件，即仍要解析该 binlog 文件中不需要迁移的表的 binlog event，效率较低。同时，如果不在迁移任务里的库表的 binlog event 不支持解析，还会导致任务失败。推出该功能后，通过只解析在迁移任务里的库表对象的 binlog event，可以大大提升 binlog 解析效率，提升任务稳定性。
 
-* TiDB Lightning 支持 disk quota 特性 GA，可避免 TiDB Lightning 任务写满本地磁盘 [#无](无) @[buchuitoudegou](https://github.com/buchuitoudegou) **tw@hfxsd**
+* TiDB Lightning 支持 disk quota 特性 GA，可避免 TiDB Lightning 任务写满本地磁盘 [#446](https://github.com/pingcap/tidb-lightning/issues/446) @[buchuitoudegou](https://github.com/buchuitoudegou) **tw@hfxsd**
 
     你可以为 TiDB Lightning 配置磁盘配额 (disk quota)。当磁盘配额不足时，TiDB Lightning 会暂停读取源数据以及写入临时文件的过程，优先将已经完成排序的 key-value 写入到 TiKV。TiDB Lightning 删除本地临时文件后，再继续导入过程。
 
-    有这个功能之前，TiDB Lightning 在使用物理模式导入数据时，会在本地磁盘创建大量的临时文件，用来对原始数据进行编码、排序、分割。当用户本地磁盘空间不足时，TiDB Lightning 会由于写入文件失败而报错退出。
+    有这个功能之前，TiDB Lightning 在使用物理模式导入数据时，会在本地磁盘创建大量的临时文件，用来对原始数据进行编码、排序、分割。当用户本地磁盘空间不足时，TiDB Lightning 会由于写入文件失败而报错退出。推出该功能后，可避免 TiDB Lightning 任务写满本地磁盘。
 
-    更多信息，请参考[用户文档]( https://docs.pingcap.com/tidb/v6.4/tidb-lightning-physical-import-mode-usage#configure-disk-quota-new-in-v620)。
+    更多信息，请参考[用户文档](/tidb-lightning-physical-import-mode-usage.md#磁盘资源配额-从-v6.2.0-版本开始引入)。
 
-* GA DM 增量数据校验的功能 [#4426](https://github.com/pingcap/tiflow/issues/4426) @[D3Hunter](https://github.com/D3Hunter) **tw@hfxsd**
+* DM 增量数据校验的功能 GA [#4426](https://github.com/pingcap/tiflow/issues/4426) @[D3Hunter](https://github.com/D3Hunter) **tw@hfxsd**
 
-    在将增量数据从上游迁移到下游数据库的过程中，数据的流转有小概率导致错误或者丢失的情况。对于需要依赖于强数据一致的场景，如信贷、证券等业务，你可以在数据迁移完成之后对数据进行全量校验，确保数据的一致性。然而，在某些增量复制的业务场景下，上游和下游的写入是持续的、不会中断的，因为上下游的数据在不断变化，导致用户难以对表里面的全部数据进行一致性校验。
+    在将增量数据从上游迁移到下游数据库的过程中，数据的流转有小概率导致错误或者丢失的情况。对于需要依赖强数据一致的场景，如信贷、证券等业务，你可以在数据迁移完成之后再对数据进行全量校验，确保数据的一致性。然而，在某些增量复制的业务场景下，上游和下游的写入是持续的、不会中断的。由于上下游的数据在不断变化，导致用户难以对表里的全部数据进行一致性校验。
 
-    过去，需要中断业务，做全量数据校验，会影响用户业务。现在推出该功能后，在一些不可中断的业务场景，无需中断业务，通过该功能就可以实现增量数据校验。
+    过去，需要中断业务才能进行全量数据校验，会影响业务。推出该功能后，你无需中断业务即可实现增量数据校验。
 
-    更多信息，请参考[用户文档]( https://docs.pingcap.com/tidb/v6.4/dm-continuous-data-validation)。
+    更多信息，请参考[用户文档](/dm/dm-continuous-data-validation.md)。
 
 ### 数据共享与订阅
 
@@ -371,9 +371,9 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 + PD
 
     - 优化锁的粒度以减少锁争用，提升高并发下心跳的处理能力 [#5586](https://github.com/tikv/pd/issues/5586) @[rleungx](https://github.com/rleungx)
-    - 优化调度器在大规模集群下的性能问题，提升调度策略生产速度 [#5473](https://github.com/tikv/pd/issues/5473) @[bufferflies](https://github.com/bufferflies)
-    - 增加 btree 的泛型性支持 [#5606](https://github.com/tikv/pd/issues/5606) @[rleungx](https://github.com/rleungx)
-    - 优化心跳处理过程，减少一些不要的开销 [#5648](https://github.com/tikv/pd/issues/5648)@[rleungx](https://github.com/rleungx)
+    - 优化调度器在大规模集群下的性能，提升调度策略生产速度 [#5473](https://github.com/tikv/pd/issues/5473) @[bufferflies](https://github.com/bufferflies)
+    - 提高 PD 加载 Region 的速度 [#5606](https://github.com/tikv/pd/issues/5606) @[rleungx](https://github.com/rleungx)
+    - 优化心跳处理过程，减少不必要的开销 [#5648](https://github.com/tikv/pd/issues/5648)@[rleungx](https://github.com/rleungx)
     - 增加了自动清理 tombstone store 的功能 [#5348](https://github.com/tikv/pd/issues/5348) @[nolouch](https://github.com/nolouch)
 
 + TiFlash
@@ -385,7 +385,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
     + TiDB Dashboard
 
-        - 在慢查询页面新增三个字段 `是否由 prepare 语句生成`，`查询计划是否来自缓存`，`查询计划是否来自绑定` 的描述。 [#1445](https://github.com/pingcap/tidb-dashboard/pull/1445/files) @[shhdgit](https://github.com/shhdgit)
+        - 在慢查询页面新增以下三个字段：`是否由 prepare 语句生成`、`查询计划是否来自缓存`、`查询计划是否来自绑定`。[#1451](https://github.com/pingcap/tidb-dashboard/issues/1451) @[shhdgit](https://github.com/shhdgit)
 
     + Backup & Restore (BR)
 
@@ -432,11 +432,11 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 + PD
 
     - 修复热点调度配置在没有修改的情况下不持久化的问题 [#5701](https://github.com/tikv/pd/issues/5701)  @[HunDunDM](https://github.com/HunDunDM)
-    - 修复 rank-formula-version 在升级过程中没有保持升级前的配置的问题 [#5699](https://github.com/tikv/pd/issues/5698) @[HunDunDM](https://github.com/HunDunDM)
+    - 修复 `rank-formula-version` 在升级过程中没有保持升级前的配置的问题 [#5698](https://github.com/tikv/pd/issues/5698) @[HunDunDM](https://github.com/HunDunDM)
 
 + TiFlash
 
-    - 修复 TiFlash 重启不能正确合并小文件的问题 [#6159](https://github.com/pingcap/tiflash/issues/6159) @[lidezhu](https://github.com/lidezhu)
+    - 修复 TiFlash 重启后不能正确合并小文件的问题 [#6159](https://github.com/pingcap/tiflash/issues/6159) @[lidezhu](https://github.com/lidezhu)
     - 修复 TiFlash Open File OPS 过高的问题 [#6345](https://github.com/pingcap/tiflash/issues/6345) @[JaySon-Huang](https://github.com/JaySon-Huang)
 
 + Tools
