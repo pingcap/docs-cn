@@ -1243,6 +1243,10 @@ MPP is a distributed computing framework provided by the TiFlash engine, which a
 
 ### tidb_enable_amend_pessimistic_txn <span class="version-mark">New in v4.0.7</span>
 
+> **Warning:**
+>
+> Starting from v6.6.0, this variable will be deprecated, and TiDB will use the [Metadata Lock](/metadata-lock.md) feature by default to avoid the `Information schema is changed` error.
+
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
 - Type: Boolean

@@ -416,6 +416,7 @@
         - [`TIKV_STORE_STATUS`](/information-schema/information-schema-tikv-store-status.md)
         - [`USER_PRIVILEGES`](/information-schema/information-schema-user-privileges.md)
         - [`VIEWS`](/information-schema/information-schema-views.md)
+    - [Metadata Lock](/metadata-lock.md)
   - [System Variables](/system-variables.md)
   - Storage Engines
     - TiKV
