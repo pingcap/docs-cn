@@ -206,15 +206,15 @@ CREATE [GLOBAL | SESSION] BINDING FROM HISTORY USING PLAN DIGEST 'plan_digest';
     以下为 `statements_summary` 部分查询结果：
     
     ```
-    SUMMARY_BEGIN_TIME: 2022-12-01 19:00:00	
+    SUMMARY_BEGIN_TIME: 2022-12-01 19:00:00
     ...........
           DIGEST_TEXT: select * from `t` where `a` = ?
     ...........
           PLAN_DIGEST: 4e3159169cc63c14b139a4e7d72eae1759875c9a9581f94bb2079aae961189cb
-                 PLAN: 	id                 	task     	estRows	operator info                          	actRows execution info                                                                                                                                            	memory   	disk
-                        TableReader_7      	root     	10     	data:Selection_6                       	0      	time:4.05ms, loops:1, cop_task: {num: 1, max: 598.6µs, proc_keys: 0, rpc_num: 2, rpc_time: 609.8µs, copr_cache_hit_ratio: 0.00, distsql_concurrency: 15}	176 Bytes	N/A
-                        └─Selection_6      	cop[tikv]	10     	eq(test.t.a, 1)                        	0      	tikv_task:{time:560.8µs, loops:0}                                                                                                                        	N/A      	N/A
-                          └─TableFullScan_5	cop[tikv]	10000  	table:t, keep order:false, stats:pseudo	0      	tikv_task:{time:560.8µs, loops:0}                                                                                                                        	N/A      	N/A
+                 PLAN:	id                 	task     	estRows	operator info                          	actRows execution info                                                                                                                                            	memory   	disk
+                        TableReader_7       root     	10     	data:Selection_6                       	0      	time:4.05ms, loops:1, cop_task: {num: 1, max: 598.6µs, proc_keys: 0, rpc_num: 2, rpc_time: 609.8µs, copr_cache_hit_ratio: 0.00, distsql_concurrency: 15}	176 Bytes	N/A
+                        └─Selection_6       cop[tikv]	10     	eq(test.t.a, 1)                        	0      	tikv_task:{time:560.8µs, loops:0}                                                                                                                        	N/A      	N/A
+                          └─TableFullScan_5 cop[tikv]	10000  	table:t, keep order:false, stats:pseudo	0      	tikv_task:{time:560.8µs, loops:0}                                                                                                                        	N/A      	N/A
           BINARY_PLAN: 6QOYCuQDCg1UYWJsZVJlYWRlcl83Ev8BCgtTZWxlY3Rpb25fNhKOAQoPBSJQRnVsbFNjYW5fNSEBAAAAOA0/QSkAAQHwW4jDQDgCQAJKCwoJCgR0ZXN0EgF0Uh5rZWVwIG9yZGVyOmZhbHNlLCBzdGF0czpwc2V1ZG9qInRpa3ZfdGFzazp7dGltZTo1NjAuOMK1cywgbG9vcHM6MH1w////CQMEAXgJCBD///8BIQFzCDhVQw19BAAkBX0QUg9lcSgBfCAudC5hLCAxKWrmYQAYHOi0gc6hBB1hJAFAAVIQZGF0YTo9GgRaFAW4HDQuMDVtcywgCbYcMWKEAWNvcF8F2agge251bTogMSwgbWF4OiA1OTguNsK1cywgcHJvY19rZXlzOiAwLCBycGNfBSkAMgkMBVcQIDYwOS4pEPBDY29wcl9jYWNoZV9oaXRfcmF0aW86IDAuMDAsIGRpc3RzcWxfY29uY3VycmVuY3k6IDE1fXCwAXj///////////8BGAE=
     ```
     
