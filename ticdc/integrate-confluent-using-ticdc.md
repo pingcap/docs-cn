@@ -267,34 +267,34 @@ create or replace TABLE TIDB_TEST_ITEM (
     - 当流和表匹配时，且流中的数据不为空，则更新表中的记录
     - 当流和表不匹配时，则插入流中的数据
 
-下面，我们需要周期性的执行上面的语句，以保证数据的实时性。我们可以使用 Snowflake 的 SCHEDULED TASK 来实现这个功能：
+4. 周期性执行第三步中的语句，以保证数据的实时性。可通过 Snowflake 的 `SCHEDULED TASK` 来实现：
 
-```
--- 创建一个 TASK 周期性的执行 MERGE INTO 语句
-create or replace task STREAM_TO_ITEM
-    warehouse = test
-    -- 每分钟执行一次
-    schedule = '1 minute' 
-when
-    -- 当 TEST_ITEM_STREAM 中无数据时跳过
-    system$stream_has_data('TEST_ITEM_STREAM') 
-as
--- 将数据合并进 TEST_ITEM 表，和上文中的 merge into 语句完全相同
-merge into TEST_ITEM n 
-  using 
-      (select RECORD_METADATA:key as k, RECORD_CONTENT:val as v from TEST_ITEM_STREAM) stm 
-      on k:i_id = n.i_id 
-  when matched and IS_NULL_VALUE(v) = true then 
-      delete 
-  when matched and IS_NULL_VALUE(v) = false then 
-      update set n.i_data = v:i_data, n.i_im_id = v:i_im_id, n.i_name = v:i_name, n.i_price = v:i_price 
-  when not matched then 
-      insert 
-          (i_data, i_id, i_im_id, i_name, i_price) 
-      values 
-          (v:i_data, v:i_id, v:i_im_id, v:i_name, v:i_price)
-;
-```
+    ```
+    -- 创建一个 TASK，周期性执行 MERGE INTO 语句
+    create or replace task STREAM_TO_ITEM
+        warehouse = test
+        -- 每分钟执行一次
+        schedule = '1 minute' 
+    when
+        -- 当 TEST_ITEM_STREAM 中无数据时跳过
+        system$stream_has_data('TEST_ITEM_STREAM') 
+    as
+    -- 将数据合并到 TEST_ITEM 表，和上文中的 merge into 语句相同
+    merge into TEST_ITEM n 
+      using 
+          (select RECORD_METADATA:key as k, RECORD_CONTENT:val as v from TEST_ITEM_STREAM) stm 
+          on k:i_id = n.i_id 
+      when matched and IS_NULL_VALUE(v) = true then 
+          delete 
+      when matched and IS_NULL_VALUE(v) = false then 
+          update set n.i_data = v:i_data, n.i_im_id = v:i_im_id, n.i_name = v:i_name, n.i_price = v:i_price 
+      when not matched then 
+          insert 
+              (i_data, i_id, i_im_id, i_name, i_price) 
+          values 
+              (v:i_data, v:i_id, v:i_im_id, v:i_name, v:i_price)
+    ;
+    ```
 
 至此，你就建立了一条具备一定 ETL 能力的数据通路，使得 TiDB 的增量数据变更日志能够被输出到 Snowflake，并且维护一个 TiDB 表的数据副本，实现在 Snowflake 中使用 TiDB 表的数据。最后一步操作是定期清理 `TIDB_TEST_ITEM` 表中的无用数据：
 
