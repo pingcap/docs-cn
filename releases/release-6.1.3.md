@@ -18,7 +18,6 @@ TiDB 版本：6.1.3
 
         - 将 [`transaction-atomicity`](/ticdc/ticdc-sink-to-mysql.md#sink-uri-配置-mysqltidb) 的默认值从 `table` 修改为 `none`，提升同步的稳定性 [#7505](https://github.com/pingcap/tiflow/issues/7505) @[asddongmen](https://github.com/asddongmen)
 
-
 ## 提升改进
 
 - PD
