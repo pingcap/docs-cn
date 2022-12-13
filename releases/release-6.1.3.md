@@ -10,6 +10,14 @@ TiDB version: 6.1.3
 
 Quick access: [Quick start](https://docs.pingcap.com/tidb/v6.1/quick-start-with-tidb) | [Production deployment](https://docs.pingcap.com/tidb/v6.1/production-deployment-using-tiup) | [Installation packages](https://www.pingcap.com/download/?version=v6.1.3#version-list)
 
+## Compatibility changes
+
+- Tools
+
+    - TiCDC
+
+        - Change the default value of [`transaction-atomicity`](/ticdc/ticdc-sink-to-mysql.md#configure-sink-uri-for-mysql-or-tidb) from `table` to `none` to improve stability [#7505](https://github.com/pingcap/tiflow/issues/7505) @[asddongmen](https://github.com/asddongmen)
+
 ## Improvements
 
 - PD
