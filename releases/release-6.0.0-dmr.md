@@ -322,9 +322,9 @@ TiDB v6.0.0 is a DMR, and its version is 6.0.0-DMR.
 | TiFlash | [`profiles.default.dt_compression_level`](/tiflash/tiflash-configuration.md#configure-the-tiflashtoml-file) | Newly added | Specifies the compression level of TiFlash. The default value is `1`. |
 | DM | [`loaders.<name>.import-mode`](/dm/task-configuration-file-full.md#task-configuration-file-template-advanced) | Newly added | The import mode during the full import phase. Since v6.0, DM uses TiDB Lightning's TiDB-backend mode to import data during the full import phase; the previous Loader component is no longer used. This is an internal replacement and has no obvious impact on daily operations.<br/>The default value is set to `sql`, which means using `tidb-backend` mode. In some rare cases, `tidb-backend` might not be fully compatible. You can fall back to Loader mode by configuring this parameter to `loader`. |
 | DM | [`loaders.<name>.on-duplicate`](/dm/task-configuration-file-full.md#task-configuration-file-template-advanced) | Newly added | Specifies the methods to resolve conflicts during the full import phase. The default value is `replace`, which means using the new data to replace the existing data. |
-| TiCDC | [`dial-timeout`](/ticdc/manage-ticdc.md#configure-sink-uri-with-kafka) | Newly added | The timeout in establishing a connection with the downstream Kafka. The default value is `10s`. |
-| TiCDC | [`read-timeout`](/ticdc/manage-ticdc.md#configure-sink-uri-with-kafka) | Newly added | The timeout in getting a response returned by the downstream Kafka. The default value is `10s`. |
-| TiCDC | [`write-timeout`](/ticdc/manage-ticdc.md#configure-sink-uri-with-kafka) | Newly added | The timeout in sending a request to the downstream Kafka. The default value is `10s`. |
+| TiCDC | [`dial-timeout`](/ticdc/ticdc-sink-to-kafka.md#configure-sink-uri-for-kafka) | Newly added | The timeout in establishing a connection with the downstream Kafka. The default value is `10s`. |
+| TiCDC | [`read-timeout`](/ticdc/ticdc-sink-to-kafka.md#configure-sink-uri-for-kafka) | Newly added | The timeout in getting a response returned by the downstream Kafka. The default value is `10s`. |
+| TiCDC | [`write-timeout`](/ticdc/ticdc-sink-to-kafka.md#configure-sink-uri-for-kafka) | Newly added | The timeout in sending a request to the downstream Kafka. The default value is `10s`. |
 
 ### Others
 

@@ -127,7 +127,7 @@ If the downstream is a special MySQL environment (a public cloud RDS or some MyS
 
 ## How do I handle the incompatibility issue of configuration files caused by TiCDC upgrade?
 
-Refer to [Notes for compatibility](/ticdc/manage-ticdc.md#notes-for-compatibility).
+Refer to [Notes for compatibility](/ticdc/ticdc-compatibility.md).
 
 ## The `start-ts` timestamp of the TiCDC task is quite different from the current time. During the execution of this task, replication is interrupted and an error `[CDC:ErrBufferReachLimit]` occurs. What should I do?
 

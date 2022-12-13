@@ -7,7 +7,7 @@ summary: Learn how to use the OpenAPI interface to manage the cluster status and
 
 <!-- markdownlint-disable MD024 -->
 
-TiCDC provides the OpenAPI feature for querying and operating the TiCDC cluster, which is similar to the feature of [`cdc cli` tool](/ticdc/manage-ticdc.md#use-cdc-cli-to-manage-cluster-status-and-data-replication-task).
+TiCDC provides the OpenAPI feature for querying and operating the TiCDC cluster, which is similar to the feature of [`cdc cli` tool](/ticdc/ticdc-manage-changefeed.md).
 
 You can use the APIs to perform the following maintenance operations on the TiCDC cluster:
 
@@ -124,7 +124,7 @@ Compared to the optional parameters for creating a replication task using the `c
 | `mounter_worker_num` | `INT` type. The mounter thread number. (Optional) |
 | `sink_config` | The configuration parameters of sink. (Optional) |
 
-The meaning and format of `changefeed_id`, `start_ts`, `target_ts`, and `sink_uri` are the same as those described in the [Use `cdc cli` to create a replication task](/ticdc/manage-ticdc.md#create-a-replication-task) document. For the detailed description of these parameters, see this document. Note that when you specify the certificate path in `sink_uri`, make sure you have uploaded the corresponding certificate to the corresponding TiCDC server.
+The meaning and format of `changefeed_id`, `start_ts`, `target_ts`, and `sink_uri` are the same as those described in the [Use `cdc cli` to create a replication task](/ticdc/ticdc-manage-changefeed.md#create-a-replication-task) document. For the detailed description of these parameters, see this document. Note that when you specify the certificate path in `sink_uri`, make sure you have uploaded the corresponding certificate to the corresponding TiCDC server.
 
 Some other parameters in the above table are described further as follows.
 
@@ -298,7 +298,7 @@ curl -X GET http://127.0.0.1:8300/api/v1/changefeeds?state=normal
 The fields in the returned result above are described as follows:
 
 - id: The ID of the replication task.
-- state: The current [state](/ticdc/manage-ticdc.md#state-transfer-of-replication-tasks) of the replication task.
+- state: The current [state](/ticdc/ticdc-changefeed-overview.md#changefeed-state-transfer) of the replication task.
 - checkpoint_tso: The TSO representation of the current checkpoint of the replication task.
 - checkpoint_time: The formatted time representation of the current checkpoint of the replication task.
 - error: The error information of the replication task.

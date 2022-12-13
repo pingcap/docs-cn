@@ -229,7 +229,7 @@ After setting up the environment, you can use the backup and restore functions o
     - `--changefeed-id`: changefeed ID, must be in the format of a regular expression, ^[a-zA-Z0-9]+(\-[a-zA-Z0-9]+)*$
     - `--start-ts`: start timestamp of the changefeed, must be the backup time (or BackupTS in the "Back up data" section in [Step 2. Migrate full data](#step-2-migrate-full-data))
 
-    For more information about the changefeed configurations, see [Task configuration file](/ticdc/manage-ticdc.md#task-configuration-file).
+    For more information about the changefeed configurations, see [Task configuration file](/ticdc/ticdc-changefeed-config.md).
 
 3. Enable GC.
 

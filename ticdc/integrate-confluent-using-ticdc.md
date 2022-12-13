@@ -94,7 +94,7 @@ The preceding steps are performed in a lab environment. You can also deploy a cl
     ]
     ```
 
-    For detailed description of `dispatchers` in the configuration file, see [Customize the rules for Topic and Partition dispatchers of Kafka Sink](/ticdc/manage-ticdc.md#customize-the-rules-for-topic-and-partition-dispatchers-of-kafka-sink).
+    For detailed description of `dispatchers` in the configuration file, see [Customize the rules for Topic and Partition dispatchers of Kafka Sink](/ticdc/ticdc-sink-to-kafka.md#customize-the-rules-for-topic-and-partition-dispatchers-of-kafka-sink).
 
 2. Create a changefeed to replicate incremental data to Confluent Cloud:
 
@@ -135,7 +135,7 @@ The preceding steps are performed in a lab environment. You can also deploy a cl
     tiup ctl:<cluster-version> cdc changefeed list --pd="http://127.0.0.1:2379"
     ```
 
-    You can refer to [Manage TiCDC Cluster and Replication Tasks](/ticdc/manage-ticdc.md) to manage the changefeed.
+    You can refer to [Manage TiCDC Changefeeds](/ticdc/ticdc-manage-changefeed.md) to manage the changefeed.
 
 ### Step 4. Write data to generate change logs
 

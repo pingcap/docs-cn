@@ -227,7 +227,7 @@ In v5.3, the key new features or improvements are as follows:
 
     This feature supports TiCDC to replicate incremental data from a TiDB cluster to the secondary relational database TiDB/Aurora/MySQL/MariaDB. In case the primary cluster crashes, TiCDC can recover the secondary cluster to a certain snapshot in the primary cluster within 5 minutes, given the condition that before disaster the replication status of TiCDC is normal and replication lag is small. It allows data loss of less than 30 minutes, that is, RTO <= 5min, and RPO <= 30min.
 
-    [User document](/ticdc/manage-ticdc.md)
+    [User document](/ticdc/ticdc-sink-to-mysql.md#eventually-consistent-replication-in-disaster-scenarios)
 
 - **TiCDC supports the HTTP protocol OpenAPI for managing TiCDC tasks**
 

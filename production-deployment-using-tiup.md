@@ -420,6 +420,7 @@ If you have deployed [TiFlash](/tiflash/tiflash-overview.md) along with the TiDB
 
 If you have deployed [TiCDC](/ticdc/ticdc-overview.md) along with the TiDB cluster, see the following documents:
 
-- [Manage TiCDC Cluster and Replication Tasks](/ticdc/manage-ticdc.md)
+- [Changefeed Overview](/ticdc/ticdc-changefeed-overview.md)
+- [Manage Changefeed](/ticdc/ticdc-manage-changefeed.md)
 - [Troubleshoot TiCDC](/ticdc/troubleshoot-ticdc.md)
 - [TiCDC FAQs](/ticdc/ticdc-faq.md)

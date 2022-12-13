@@ -64,7 +64,7 @@ Since v4.0.0-rc.1, PD supports external services in setting the service-level GC
 
 When the replication task is unavailable or interrupted, this feature ensures that the data to be consumed by TiCDC is retained in TiKV without being cleaned by GC.
 
-When starting the TiCDC server, you can specify the Time To Live (TTL) duration of GC safepoint by configuring `gc-ttl`. You can also [use TiUP to modify](/ticdc/manage-ticdc.md#modify-ticdc-configuration-using-tiup) `gc-ttl`. The default value is 24 hours. In TiCDC, this value means:
+When starting the TiCDC server, you can specify the Time To Live (TTL) duration of GC safepoint by configuring `gc-ttl`. You can also [use TiUP to modify](/ticdc/deploy-ticdc.md#modify-ticdc-cluster-configurations-using-tiup) `gc-ttl`. The default value is 24 hours. In TiCDC, this value means:
 
 - The maximum time the GC safepoint is retained at the PD after the TiCDC service is stopped.
 - The maximum time a replication task can be suspended after the task is interrupted or manually stopped. If the time for a suspended replication task is longer than the value set by `gc-ttl`, the replication task enters the `failed` status, cannot be resumed, and cannot continue to affect the progress of the GC safepoint.
@@ -121,7 +121,7 @@ cdc cli changefeed create --pd=http://10.0.10.25:2379 --sink-uri="kafka://127.0.
 > * This feature is introduced in TiCDC 4.0.2.
 > * TiCDC currently supports outputting data changes in the Canal format only to MQ sinks such as Kafka.
 
-For more information, refer to [Create a replication task](/ticdc/manage-ticdc.md#create-a-replication-task).
+For more information, refer to [TiCDC changefeed configurations](/ticdc/ticdc-changefeed-config.md).
 
 ## Why does the latency from TiCDC to Kafka become higher and higher?
 
@@ -197,7 +197,7 @@ TiCDC provides partial support for large transactions (more than 5 GB in size). 
 - When TiCDC's internal processing capacity is insufficient, the replication task error `ErrBufferReachLimit` might occur.
 - When TiCDC's internal processing capacity is insufficient or the throughput capacity of TiCDC's downstream is insufficient, out of memory (OOM) might occur.
 
-Since v6.2, TiCDC supports splitting a single-table transaction into multiple transactions. This can greatly reduce the latency and memory consumption of replicating large transactions. Therefore, if your application does not have a high requirement on transaction atomicity, it is recommended to enable the splitting of large transactions to avoid possible replication latency and OOM. To enable the splitting, set the value of the sink uri parameter [`transaction-atomicity`](/ticdc/manage-ticdc.md#configure-sink-uri-with-mysqltidb) to `none`.
+Since v6.2, TiCDC supports splitting a single-table transaction into multiple transactions. This can greatly reduce the latency and memory consumption of replicating large transactions. Therefore, if your application does not have a high requirement on transaction atomicity, it is recommended to enable the splitting of large transactions to avoid possible replication latency and OOM. To enable the splitting, set the value of the sink uri parameter [`transaction-atomicity`](/ticdc/ticdc-sink-to-mysql.md#configure-sink-uri-for-mysql-or-tidb) to `none`.
 
 If you still encounter an error above, it is recommended to use BR to restore the incremental data of large transactions. The detailed operations are as follows:
 
@@ -234,8 +234,6 @@ Since v5.0.1 or v4.0.13, for each replication to MySQL, TiCDC automatically sets
 ## Why do `INSERT`/`UPDATE` statements from the upstream become `REPLACE INTO` after being replicated to the downstream if I set `enable-old-value` to `true` when I create a TiCDC replication task?
 
 When a changefeed is created in TiCDC, the `safe-mode` setting defaults to `true`, which generates the `REPLACE INTO` statement to execute for the upstream `INSERT`/`UPDATE` statements.
-
-Currently, users cannot modify the `safe-mode` setting, so this issue currently has no solution.
 
 ## When the sink of the replication downstream is TiDB or MySQL, what permissions do users of the downstream database need?
 

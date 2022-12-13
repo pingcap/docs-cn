@@ -491,6 +491,31 @@
       - [FAQ](/dm/dm-faq.md)
       - [Handle Errors](/dm/dm-error-handling.md)
     - [Release Notes](/dm/dm-release-notes.md)
+  - TiCDC
+    - [Deploy and Maintain](/ticdc/deploy-ticdc.md)
+    - Changefeed
+      - [Overview](/ticdc/ticdc-changefeed-overview.md)
+      - Create Changefeeds
+        - [Replicate Data to MySQL-compatible Databases](/ticdc/ticdc-sink-to-mysql.md)
+        - [Replicate Data to Kafka](/ticdc/ticdc-sink-to-kafka.md)
+      - [Manage Changefeeds](/ticdc/ticdc-manage-changefeed.md)
+      - [Log Filter](/ticdc/ticdc-filter.md)
+      - [Bidirectional Replication](/ticdc/ticdc-bidirectional-replication.md)
+    - Monitor and Alert
+      - [Monitoring Metrics](/ticdc/monitor-ticdc.md)
+      - [Alert Rules](/ticdc/ticdc-alert-rules.md)
+    - Reference
+      - [TiCDC Server Configurations](/ticdc/ticdc-server-config.md)
+      - [TiCDC Changefeed Configurations](/ticdc/ticdc-changefeed-config.md)
+      - Output Protocols
+        - [TiCDC Avro Protocol](/ticdc/ticdc-avro-protocol.md)
+        - [TiCDC Canal-JSON Protocol](/ticdc/ticdc-canal-json.md)
+        - [TiCDC Open Protocol](/ticdc/ticdc-open-protocol.md)
+      - [TiCDC Open API](/ticdc/ticdc-open-api.md)
+      - [Compatibility](/ticdc/ticdc-compatibility.md)
+    - [Troubleshoot](/ticdc/troubleshoot-ticdc.md)
+    - [FAQs](/ticdc/ticdc-faq.md)
+    - [Glossary](/ticdc/ticdc-glossary.md)
   - TiDB Binlog
     - [Overview](/tidb-binlog/tidb-binlog-overview.md)
     - [Quick Start](/tidb-binlog/get-started-with-tidb-binlog.md)
@@ -511,21 +536,6 @@
       - [Troubleshoot](/tidb-binlog/troubleshoot-tidb-binlog.md)
       - [Handle Errors](/tidb-binlog/handle-tidb-binlog-errors.md)
     - [FAQ](/tidb-binlog/tidb-binlog-faq.md)
-  - TiCDC
-    - [Overview](/ticdc/ticdc-overview.md)
-    - [Deploy](/ticdc/deploy-ticdc.md)
-    - [Maintain](/ticdc/manage-ticdc.md)
-    - Monitor and Alert
-      - [Monitoring Metrics](/ticdc/monitor-ticdc.md)
-      - [Alert Rules](/ticdc/ticdc-alert-rules.md)
-    - [Troubleshoot](/ticdc/troubleshoot-ticdc.md)
-    - Reference
-      - [TiCDC OpenAPI](/ticdc/ticdc-open-api.md)
-      - [TiCDC Open Protocol](/ticdc/ticdc-open-protocol.md)
-      - [TiCDC Avro Protocol](/ticdc/ticdc-avro-protocol.md)
-      - [TiCDC Canal-JSON Protocol](/ticdc/ticdc-canal-json.md)
-    - [FAQs](/ticdc/ticdc-faq.md)
-    - [Glossary](/ticdc/ticdc-glossary.md)
   - sync-diff-inspector
     - [Overview](/sync-diff-inspector/sync-diff-inspector-overview.md)
     - [Data Check for Tables with Different Schema/Table Names](/sync-diff-inspector/route-diff.md)

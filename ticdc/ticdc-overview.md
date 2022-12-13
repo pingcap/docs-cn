@@ -66,7 +66,7 @@ Currently, the TiCDC sink component supports replicating data to the following d
 
     > **Note:**
     >
-    > Since v6.2, you can use the sink uri parameter [`transaction-atomicity`](/ticdc/manage-ticdc.md#configure-sink-uri-with-mysqltidb) to control whether to split single-table transactions. Splitting single-table transactions can greatly reduce the latency and memory consumption of replicating large transactions.
+    > Since v6.2, you can use the sink uri parameter [`transaction-atomicity`](/ticdc/ticdc-sink-to-mysql.md#configure-sink-uri-for-mysql-or-tidb) to control whether to split single-table transactions. Splitting single-table transactions can greatly reduce the latency and memory consumption of replicating large transactions.
 
 - Kafka sink
 
@@ -87,7 +87,7 @@ TiCDC only replicates the table that has at least one **valid index**. A **valid
     - Every column of the index is explicitly defined as non-nullable (`NOT NULL`).
     - The index does not have the virtual generated column (`VIRTUAL GENERATED COLUMNS`).
 
-Since v4.0.8, TiCDC supports replicating tables **without a valid index** by modifying the task configuration. However, this compromises the guarantee of data consistency to some extent. For more details, see [Replicate tables without a valid index](/ticdc/manage-ticdc.md#replicate-tables-without-a-valid-index).
+Since v4.0.8, TiCDC supports replicating tables **without a valid index** by modifying the task configuration. However, this compromises the guarantee of data consistency to some extent. For more details, see [Replicate tables without a valid index](/ticdc/ticdc-manage-changefeed.md#replicate-tables-without-a-valid-index).md#replicate-tables-without-a-valid-index).
 
 ### Unsupported scenarios
 
@@ -110,7 +110,7 @@ You can either deploy TiCDC along with a new TiDB cluster or add the TiCDC compo
 
 Currently, you can use the `cdc cli` tool to manage the status of a TiCDC cluster and data replication tasks. For details, see:
 
-- [Use `cdc cli` to manage cluster status and data replication task](/ticdc/manage-ticdc.md#use-cdc-cli-to-manage-cluster-status-and-data-replication-task)
+- [Use `cdc cli` to manage cluster status and data replication task](/ticdc/ticdc-manage-changefeed.md)
 - [Use OpenAPI to manage cluster status and data replication task](/ticdc/ticdc-open-api.md)
 
 ## TiCDC Open Protocol

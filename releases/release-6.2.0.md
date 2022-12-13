@@ -22,7 +22,7 @@ In v6.2.0-DMR, the key new features and improvements are as follows:
 * [Point-in-time recovery (PITR)](/br/backup-and-restore-overview.md) is introduced to restore a snapshot of a TiDB cluster to a new cluster from any given time point in the past.
 * TiDB Lightning supports [importing data to production clusters in the physical import mode](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#import-data-into-a-cluster-in-production).
 * BR supports [restoring user and privilege data](/br/br-snapshot-guide.md#restore-tables-in-the-mysql-schema), making backup and restore smoother.
-* TiCDC unlocks more data replication scenarios by supporting [filtering specific types of DDL events](/ticdc/manage-ticdc.md).
+* TiCDC unlocks more data replication scenarios by supporting [filtering specific types of DDL events](/ticdc/ticdc-filter.md).
 * The [`SAVEPOINT` mechanism](/sql-statements/sql-statement-savepoint.md) is supported, with which you can flexibly control the rollback points within a transaction.
 * TiDB supports [adding, dropping, and modifying multiple columns or indexes with only one `ALTER TABLE` statement](/sql-statements/sql-statement-alter-table.md).
 * [Cross-cluster RawKV replication](/tikv-configuration-file.md#api-version-new-in-v610) is now supported.
@@ -238,7 +238,7 @@ In v6.2.0-DMR, the key new features and improvements are as follows:
 
     In some special occasions, you might want to set filter rules for incremental data change logs. For example, filtering high risk DDL events such as DROP TABLE. Starting from v6.2.0, TiCDC supports filtering DDL events of specified types and filtering DML events based on SQL expressions. This makes TiCDC applicable to more data replication scenarios.
 
-    [User document](/ticdc/manage-ticdc.md) [#6160](https://github.com/pingcap/tiflow/issues/6160) @[asddongmen](https://github.com/asddongmen)
+    [User document](/ticdc/ticdc-filter.md) [#6160](https://github.com/pingcap/tiflow/issues/6160) @[asddongmen](https://github.com/asddongmen)
 
 ## Compatibility changes
 
@@ -286,8 +286,8 @@ In v6.2.0-DMR, the key new features and improvements are as follows:
 | TiFlash | [`storage.format_version`](/tiflash/tiflash-configuration.md#configure-the-tiflashtoml-file) | Modified | The default value of `format_version` changes to `4`, the default format for v6.2.0 and later versions, which reduces write amplification and background task resource consumption. |
 | TiFlash | [profiles.default.dt_enable_read_thread](/tiflash/tiflash-configuration.md#configure-the-tiflashtoml-file) | Newly added | This configuration controls whether to use the thread pool to handle read requests from the storage engine. The default value is `false`. |
 | TiFlash | [profiles.default.dt_page_gc_threshold](/tiflash/tiflash-configuration.md#configure-the-tiflashtoml-file) | Newly added | This configuration specifies the minimum ratio of valid data in a PageStorage data file. |
-| TiCDC | [--overwrite-checkpoint-ts](/ticdc/manage-ticdc.md#resume-a-replication-task) | Newly added | This configuration is added to the `cdc cli changefeed resume` sub-command. |
-| TiCDC | [--no-confirm](/ticdc/manage-ticdc.md#resume-a-replication-task) | Newly added | This configuration is added to the `cdc cli changefeed resume` sub-command.|
+| TiCDC | [--overwrite-checkpoint-ts](/ticdc/ticdc-manage-changefeed.md#resume-a-replication-task) | Newly added | This configuration is added to the `cdc cli changefeed resume` sub-command. |
+| TiCDC | [--no-confirm](/ticdc/ticdc-manage-changefeed.md#resume-a-replication-task) | Newly added | This configuration is added to the `cdc cli changefeed resume` sub-command.|
 | DM | [mode](/dm/task-configuration-file-full.md#task-configuration-file-template-advanced) | Newly added | This configuration is a validator parameter. Optional values are `full`, `fast`, and `none`. The default value is `none`, which does not validate the data. |
 | DM | [worker-count](/dm/task-configuration-file-full.md#task-configuration-file-template-advanced) | Newly added | This configuration is a validator parameter and specifies the number of validation workers in the background. The default value is `4`. |
 | DM | [row-error-delay](/dm/task-configuration-file-full.md#task-configuration-file-template-advanced) | Newly added | This configuration is a validator parameter. If a row is not validated within the specified time, it will be marked as an error row. The default value is 30m, which means 30 minutes. |

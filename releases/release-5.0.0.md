@@ -341,7 +341,7 @@ Add a system variable [`tidb_allow_fallback_to_tikv`](/system-variables.md#tidb_
 
 ### Improve TiCDC stability and alleviate the OOM issue caused by replicating too much incremental data
 
-[User document](/ticdc/manage-ticdc.md#unified-sorter), [#1150](https://github.com/pingcap/tiflow/issues/1150)
+[User document](/ticdc/ticdc-manage-changefeed.md#unified-sorter), [#1150](https://github.com/pingcap/tiflow/issues/1150)
 
 In TiCDC v4.0.9 or earlier versions, replicating too much data change might cause OOM. In v5.0, the Unified Sorter feature is enabled by default to mitigate OOM issues caused by the following scenarios:
 

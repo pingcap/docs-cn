@@ -208,11 +208,11 @@ In 6.1.0, the key new features or improvements are as follows:
 
     * TiCDC supports dispatching incremental data from TiDB to different Kafka topics by table, which, combined with the Canal-json format, allows sharing data directly with Flink.
 
-        [User document](/ticdc/manage-ticdc.md#customize-the-rules-for-topic-and-partition-dispatchers-of-kafka-sink), [#4423](https://github.com/pingcap/tiflow/issues/4423)
+        [User document](/ticdc/ticdc-sink-to-kafka.md#customize-the-rules-for-topic-and-partition-dispatchers-of-kafka-sink), [#4423](https://github.com/pingcap/tiflow/issues/4423)
 
     * TiCDC supports SASL GSSAPI authentication types and adds SASL authentication examples using Kafka.
 
-        [User document](/ticdc/manage-ticdc.md#ticdc-uses-the-authentication-and-authorization-of-kafka), [#4423](https://github.com/pingcap/tiflow/issues/4423)
+        [User document](/ticdc/ticdc-sink-to-kafka.md#ticdc-uses-the-authentication-and-authorization-of-kafka), [#4423](https://github.com/pingcap/tiflow/issues/4423)
 
 * TiCDC supports replicating `charset=GBK` tables.
 
@@ -270,12 +270,12 @@ In 6.1.0, the key new features or improvements are as follows:
 | TiKV | [`storage.background-error-recovery-window`](/tikv-configuration-file.md#background-error-recovery-window-new-in-v610) | Newly added | The maximum recovery time is allowed after RocksDB detects a recoverable background error. |
 | TiKV | [`storage.api-version`](/tikv-configuration-file.md#api-version-new-in-v610) | Newly added | The storage format and interface version used by TiKV when TiKV serves as the raw key-value store. |
 | PD | [`schedule.max-store-preparing-time`](/pd-configuration-file.md#max-store-preparing-time-new-in-v610) | Newly added | Controls the maximum waiting time for the store to go online. |
-| TiCDC | [`enable-tls`](/ticdc/manage-ticdc.md#configure-sink-uri-with-kafka) | Newly added | Whether to use TLS to connect to the downstream Kafka instance. |
-| TiCDC | `sasl-gssapi-user`<br/>`sasl-gssapi-password`<br/>`sasl-gssapi-auth-type`<br/>`sasl-gssapi-service-name`<br/>`sasl-gssapi-realm`<br/>`sasl-gssapi-key-tab-path`<br/>`sasl-gssapi-kerberos-config-path` | Newly added | Used to support SASL/GSSAPI authentication for Kafka. For details, see [Configure sink URI with `kafka`](/ticdc/manage-ticdc.md#configure-sink-uri-with-kafka). |
-| TiCDC | [`avro-decimal-handling-mode`](/ticdc/manage-ticdc.md#configure-sink-uri-with-kafka)<br/>[`avro-bigint-unsigned-handling-mode`](/ticdc/manage-ticdc.md#configure-sink-uri-with-kafka) | Newly added | Determines the output details of Avro format. |
-| TiCDC | [`dispatchers.topic`](/ticdc/manage-ticdc.md#customize-the-rules-for-topic-and-partition-dispatchers-of-kafka-sink) | Newly added | Controls how TiCDC dispatches incremental data to different Kafka topics. |
-| TiCDC | [`dispatchers.partition`](/ticdc/manage-ticdc.md#customize-the-rules-for-topic-and-partition-dispatchers-of-kafka-sink) | Newly added | `dispatchers.partition` is an alias for `dispatchers.dispatcher`. Controls how TiCDC dispatches incremental data to Kafka partitions. |
-| TiCDC | [`schema-registry`](/ticdc/manage-ticdc.md#integrate-ticdc-with-kafka-connect-confluent-platform) | Newly added | Specifies the schema registry endpoint that stores Avro schema. |
+| TiCDC | [`enable-tls`](/ticdc/ticdc-sink-to-kafka.md#configure-sink-uri-for-kafka) | Newly added | Whether to use TLS to connect to the downstream Kafka instance. |
+| TiCDC | `sasl-gssapi-user`<br/>`sasl-gssapi-password`<br/>`sasl-gssapi-auth-type`<br/>`sasl-gssapi-service-name`<br/>`sasl-gssapi-realm`<br/>`sasl-gssapi-key-tab-path`<br/>`sasl-gssapi-kerberos-config-path` | Newly added | Used to support SASL/GSSAPI authentication for Kafka. For details, see [Configure sink URI with `kafka`](/ticdc/ticdc-sink-to-kafka.md#configure-sink-uri-for-kafka). |
+| TiCDC | [`avro-decimal-handling-mode`](/ticdc/ticdc-sink-to-kafka.md#configure-sink-uri-for-kafka)<br/>[`avro-bigint-unsigned-handling-mode`](/ticdc/ticdc-sink-to-kafka.md#configure-sink-uri-for-kafka) | Newly added | Determines the output details of Avro format. |
+| TiCDC | [`dispatchers.topic`](/ticdc/ticdc-sink-to-kafka.md#customize-the-rules-for-topic-and-partition-dispatchers-of-kafka-sink) | Newly added | Controls how TiCDC dispatches incremental data to different Kafka topics. |
+| TiCDC | [`dispatchers.partition`](/ticdc/ticdc-sink-to-kafka.md#customize-the-rules-for-topic-and-partition-dispatchers-of-kafka-sink) | Newly added | `dispatchers.partition` is an alias for `dispatchers.dispatcher`. Controls how TiCDC dispatches incremental data to Kafka partitions. |
+| TiCDC | [`schema-registry`](/ticdc/ticdc-sink-to-kafka.md#integrate-ticdc-with-kafka-connect-confluent-platform) | Newly added | Specifies the schema registry endpoint that stores Avro schema. |
 | DM | `worker` in the `dmctl start-relay` command | Deleted | This parameter is not recommended for use. Will provide a simpler implementation. |
 | DM | `relay-dir` in the source configuration file | Deleted | Replaced by the same configuration item in the worker configuration file. |
 | DM | `is-sharding` in the task configuration file | Deleted | Replaced by the `shard-mode` configuration item. |
