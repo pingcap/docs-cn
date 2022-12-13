@@ -349,12 +349,11 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
 + TiKV
 
-    - `cdc.min-ts-interval` 默认值从 1s 改为 200ms 以降低 CDC 延迟 [#12840](https://github.com/tikv/tikv/issues/12840) @[hicqu](https://github.com/hicqu)
-    - 引入 witness peer [#12876](https://github.com/tikv/tikv/issues/12876) @[Connor1996](https://github.com/Connor1996)
+    - `cdc.min-ts-interval` 默认值从 `1s` 改为 `200ms` 以降低 CDC 延迟 [#12840](https://github.com/tikv/tikv/issues/12840) @[hicqu](https://github.com/hicqu)
     - 当剩余空间不足时停止 Raft Engine 的写入以避免硬盘空间耗尽 [#13642](https://github.com/tikv/tikv/issues/13642) @[jiayang-zheng](https://github.com/jiayang-zheng)
     - 实现 `json_valid` 函数下推 [#13571](https://github.com/tikv/tikv/issues/13571) @[lizhenhuan](https://github.com/lizhenhuan)
     - 支持在一个备份请求中同时备份多个范围的数据 [#13701](https://github.com/tikv/tikv/issues/13701) @[Leavrth](https://github.com/Leavrth)
-    - 更新 rusoto 库以支持备份到 ap-southeast-3 [#13751](https://github.com/tikv/tikv/issues/13751) @[3pointer](https://github.com/3pointer)
+    - 更新 rusoto 库以支持备份到 AWS 的 Asia Pacific (Jakarta) 区域 (ap-southeast-3) [#13751](https://github.com/tikv/tikv/issues/13751) @[3pointer](https://github.com/3pointer)
     - 减少悲观事务冲突 [#13298](https://github.com/tikv/tikv/issues/13298) @[MyonKeminta](https://github.com/MyonKeminta)
     - 缓存外部存储对象以提升恢复性能 [#13798](https://github.com/tikv/tikv/issues/13798) @[YuJuncen](https://github.com/YuJuncen)
     - 在专用线程中运行 CheckLeader 以缩短 TiCDC 的复制延迟 [#13774](https://github.com/tikv/tikv/issues/13774) @[overvenus](https://github.com/overvenus)
