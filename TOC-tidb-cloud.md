@@ -71,6 +71,9 @@
       - [SQL Development Specifications](/develop/dev-guide-sql-development-specification.md)
   - Cloud Native Development Environment
     - [Gitpod](/develop/dev-guide-playground-gitpod.md)
+  - Third-Party Support
+    - [Third-Party Tools Supported by TiDB](/develop/dev-guide-third-party-support.md)
+    - [Known Incompatibility Issues with Third-Party Tools](/develop/dev-guide-third-party-tools-compatibility.md)
 - Manage Cluster
   - Plan Your Cluster
     - [Select Your Cluster Tier](/tidb-cloud/select-cluster-tier.md)
@@ -274,6 +277,7 @@
       - [`REVOKE <privileges>`](/sql-statements/sql-statement-revoke-privileges.md)
       - [`REVOKE <role>`](/sql-statements/sql-statement-revoke-role.md)
       - [`ROLLBACK`](/sql-statements/sql-statement-rollback.md)
+      - [`SAVEPOINT`](/sql-statements/sql-statement-savepoint.md)
       - [`SELECT`](/sql-statements/sql-statement-select.md)
       - [`SET DEFAULT ROLE`](/sql-statements/sql-statement-set-default-role.md)
       - [`SET [NAMES|CHARACTER SET]`](/sql-statements/sql-statement-set-names.md)

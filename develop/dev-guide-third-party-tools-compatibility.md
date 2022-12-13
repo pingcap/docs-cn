@@ -39,7 +39,17 @@ MySQL maintains a series of [server status variables starting with `Com_`](https
 
 **Way to avoid**
 
+<CustomContent platform="tidb">
+
 Do not use these variables. One common scenario is monitoring. TiDB is well observable and does not require querying from server status variables. For custom monitoring tools, refer to [TiDB Monitoring Framework Overview](/tidb-monitoring-framework.md).
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+Do not use these variables. One common scenario is monitoring. TiDB Cloud is well observable and does not require querying from server status variables. For more information about TiDB Cloud monitoring services, refer to [Monitor a TiDB Cluster](/tidb-cloud/monitor-tidb-cluster.md).
+
+</CustomContent>
 
 ### TiDB distinguishes between `TIMESTAMP` and `DATETIME` in error messages
 
@@ -49,7 +59,17 @@ TiDB error messages distinguish between `TIMESTAMP` and `DATETIME`, while MySQL 
 
 **Way to avoid**
 
+<CustomContent platform="tidb">
+
 Do not use the error messages for string matching. Instead, use [Error Codes](/error-codes.md) for troubleshooting.
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+Do not use the error messages for string matching. Instead, use [Error Codes](https://docs.pingcap.com/tidb/stable/error-codes) for troubleshooting.
+
+</CustomContent>
 
 ### TiDB does not support the `CHECK TABLE` statement
 
