@@ -192,9 +192,9 @@ Snowflake 是一种云原生数据仓库。借助 Confluent 的能力，你只�
 
 ### 在 Snowflake 中创建 TiDB 表对应的数据副本
 
-目前，TiDB 的增量变更日志已经被同步到 Snowflake 中，下一步我们借助 Snowflake 的 TASK 和 STREAM 功能，将实时写入到 Snowflake 的数据变更日志根据 INSERT、UPDATE、DELETE 等事件类型分别处理，写入到一个与上游 TiDB 结构相同的表中，在 Snowflake 中创建一个数据副本，下面以 ITEM 表为例。
+在上一章节，TiDB 的增量变更日志已经被同步到 Snowflake 中，本章节将介绍如何借助 Snowflake 的 TASK 和 STREAM 功能，将实时写入 Snowflake 的数据变更日志根据 `INSERT`、`UPDATE` 和 `DELETE` 等事件类型分别处理，写入一个与上游 TiDB 结构相同的表中，从而在 Snowflake 中创建一个数据副本。下面以 `ITEM` 表为例。
 
-在 TiDB 中的 ITEM 表结构为：
+`ITEM` 表结构为：
 
 ```
 CREATE TABLE `item` (
@@ -207,7 +207,7 @@ CREATE TABLE `item` (
 );
 ```
 
-Snowflake 中应该已经存在一张名为 TIDB_TEST_ITEM 的表，这张表是 Confluent Snowflake Sink Connector 自动创建的，表结构如下：
+Snowflake 中存在一张名为 `TIDB_TEST_ITEM` 的表，这张表是 Confluent Snowflake Sink Connector 自动创建的，表结构如下：
 
 ```
 create or replace TABLE TIDB_TEST_ITEM (
@@ -216,56 +216,56 @@ create or replace TABLE TIDB_TEST_ITEM (
 );
 ```
 
-根据 TiDB 中的表结构，在 Snowflake 中创建结构相同的对应表：
+1. 根据 TiDB 中的表结构，在 Snowflake 中创建结构相同的表：
 
-```
-create or replace table TEST_ITEM (
-    i_id INTEGER primary key,
-    i_data VARCHAR,
-    i_im_id INTEGER,
-    i_name VARCHAR,
-    i_price DECIMAL(36,2)
-);
-```
+    ```
+    create or replace table TEST_ITEM (
+        i_id INTEGER primary key,
+        i_data VARCHAR,
+        i_im_id INTEGER,
+        i_name VARCHAR,
+        i_price DECIMAL(36,2)
+    );
+    ```
 
-下面，为 TIDB_TEST_ITEM 创建 STREAM，将 append_only 设为 true，表示仅接收 INSERT 事件。这个 STREAM 可以实时的捕获 TIDB_TEST_ITEM 的 INSERT 事件，也就是说，当 TiDB 中 ITEM 有新的变更日志时，新的日志将会被插入到 TIDB_TEST_ITEM 表，然后被 STREAM 捕获。
+2. 为 `TIDB_TEST_ITEM` 创建一个 STREAM，将 `append_only` 设为 `true`，表示仅接收 `INSERT` 事件。创建的 STREAM 可以实时捕获 `TIDB_TEST_ITEM` 的 `INSERT` 事件，也就是说，当 TiDB 中 `ITEM` 有新的变更日志时，变更日志将会被插入到 `TIDB_TEST_ITEM` 表，然后被 STREAM 捕获。
 
-```
-create or replace stream TEST_ITEM_STREAM on table TIDB_TEST_ITEM append_only=true;
-```
+    ```
+    create or replace stream TEST_ITEM_STREAM on table TIDB_TEST_ITEM append_only=true;
+    ```
 
-现在，我们试图处理 STREAM 中的数据，根据不同的事件类型，将 STREAM 中的数据在 TEST_ITEM 表中进行插入、更新或删除。
+3. 处理 STREAM 中的数据，根据不同的事件类型，在 `TEST_ITEM` 表中插入、更新或删除 STREAM 数据。
 
-```
---将数据合并进 TEST_ITEM 表
-merge into TEST_ITEM n 
-  using 
-      -- 查询 TEST_ITEM_STREAM
-      (select RECORD_METADATA:key as k, RECORD_CONTENT:val as v from TEST_ITEM_STREAM) stm 
-      -- 以 i_id 相等为条件将流和表做匹配
-      on k:i_id = n.i_id 
-  -- 如果 TEST_ITEM 表中存在匹配 i_id 的记录，并且 v 为空，则删除这条记录
-  when matched and IS_NULL_VALUE(v) = true then 
-      delete 
+    ```
+    --将数据合并到 TEST_ITEM 表
+    merge into TEST_ITEM n 
+      using 
+          -- 查询 TEST_ITEM_STREAM
+          (SELECT RECORD_METADATA:key as k, RECORD_CONTENT:val as v from TEST_ITEM_STREAM) stm 
+          -- 以 i_id 相等为条件将流和表做匹配
+          on k:i_id = n.i_id 
+      -- 如果 TEST_ITEM 表中存在匹配 i_id 的记录，并且 v 为空，则删除这条记录
+      when matched and IS_NULL_VALUE(v) = true then 
+          delete 
       
-  -- 如果 TEST_ITEM 表中存在匹配 i_id 的记录，并且 v 不为空，则更新这条记录
-  when matched and IS_NULL_VALUE(v) = false then 
-      update set n.i_data = v:i_data, n.i_im_id = v:i_im_id, n.i_name = v:i_name, n.i_price = v:i_price 
+      -- 如果 TEST_ITEM 表中存在匹配 i_id 的记录，并且 v 不为空，则更新这条记录
+      when matched and IS_NULL_VALUE(v) = false then 
+          update set n.i_data = v:i_data, n.i_im_id = v:i_im_id, n.i_name = v:i_name, n.i_price = v:i_price 
   
-  -- 如果 TEST_ITEM 表中不存在匹配 i_id 的记录，则插入这条记录
-  when not matched then 
-      insert 
-          (i_data, i_id, i_im_id, i_name, i_price) 
-      values 
-          (v:i_data, v:i_id, v:i_im_id, v:i_name, v:i_price)
-;
-```
+      -- 如果 TEST_ITEM 表中不存在匹配 i_id 的记录，则插入这条记录
+      when not matched then 
+          insert 
+              (i_data, i_id, i_im_id, i_name, i_price) 
+          values 
+              (v:i_data, v:i_id, v:i_im_id, v:i_name, v:i_price)
+    ;
+    ```
 
-在上面的语句中，我们使用了 Snowflake 的 MERGE INTO 语句，这个语句可以根据条件将流和表做匹配，然后根据不同的匹配结果，执行不同的操作，比如删除、更新或插入。在这个例子中，我们使用了三个 WHEN 子句，分别对应了三种情况：
+    在上面的语句中，我们使用了 Snowflake 的 `MERGE INTO` 语句，这个语句可以根据条件将流和表做匹配，然后根据不同的匹配结果，执行不同的操作，比如删除、更新或插入。在这个例子中，我们使用了三个 `WHEN` 子句，分别对应了三种情况：
 
-- 当流和表匹配时，且流中的数据为空，则删除表中的记录
-- 当流和表匹配时，且流中的数据不为空，则更新表中的记录
-- 当流和表不匹配时，则插入流中的数据
+    - 当流和表匹配时，且流中的数据为空，则删除表中的记录
+    - 当流和表匹配时，且流中的数据不为空，则更新表中的记录
+    - 当流和表不匹配时，则插入流中的数据
 
 下面，我们需要周期性的执行上面的语句，以保证数据的实时性。我们可以使用 Snowflake 的 SCHEDULED TASK 来实现这个功能：
 
@@ -296,7 +296,7 @@ merge into TEST_ITEM n
 ;
 ```
 
-至此，我们已经建立了一条具备一定 ETL 能力的数据通路，使得 TiDB 的增量数据变更日志能够被输出到 Snowflake 并且维护一个 TiDB 表的数据副本。这样，我们就可以在 Snowflake 中使用 TiDB 表的数据了。下面只剩下一个小工作，定期清理 TIDB_TEST_ITEM 表中的无用数据：
+至此，你就建立了一条具备一定 ETL 能力的数据通路，使得 TiDB 的增量数据变更日志能够被输出到 Snowflake，并且维护一个 TiDB 表的数据副本，实现在 Snowflake 中使用 TiDB 表的数据。最后一步操作是定期清理 `TIDB_TEST_ITEM` 表中的无用数据：
 
 ```
 -- 每两小时清空表 TIDB_TEST_ITEM
