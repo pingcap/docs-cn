@@ -195,7 +195,7 @@ Connection Idle Duration 指空闲连接的持续时间。
     - 3：Stopped
     - 4：Finished
     - -1：Unknown
-- Puller output events/s：TiCDC 节点中 Puller 模块每秒输出到 Sorter 模块的数据变更个数
+- Puller output events/s：TiCDC 节点中 Puller 模块每秒输出到 Sorter 模块的数据变更行数
 - Sorter output events/s：TiCDC 节点中 Sorter 模块每秒输出到 Mounter 模块的行数
 - Mounter output events/s：TiCDC 节点中 Mounter 模块每秒输出到 Sink 模块的行数
 - Table sink output events/s: TiCDC 节点中 Table Sorter 模块每秒输出到 Sink 模块的行数
