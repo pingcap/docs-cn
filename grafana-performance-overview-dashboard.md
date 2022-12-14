@@ -200,7 +200,7 @@ Connection Idle Duration 指空闲连接的持续时间。
 - Mounter output events/s：TiCDC 节点中 Mounter 模块每秒输出到 Sink 模块的行数
 - Table sink output events/s: TiCDC 节点中 Table Sorter 模块每秒输出到 Sink 模块的行数
 - SinkV2 - Sink flush rows/s: TiCDC 节点中 Sink 模块每秒到下游的行数
-- Transaction Sink Full Flush Duration: TiCDC 节点中 MySQL Sink 写下游事务的平均和 p999 延迟
+- Transaction Sink Full Flush Duration: TiCDC 节点中 MySQL Sink 写下游事务的平均延迟和 p999 延迟
 - MQ Worker Send Message Duration Percentile: 下游为 Kafka 时 MQ worker 发送消息的延迟
 - Kafka Outgoing Bytes: MQ Workload 写下游的流量
 
