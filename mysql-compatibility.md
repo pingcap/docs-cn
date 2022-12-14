@@ -175,10 +175,6 @@ TiDB 支持大部分 [SQL 模式](/sql-mode.md)。不支持的 SQL 模式如下�
     + MySQL 5.7 中 `utf8mb4` 字符集默认：`utf8mb4_general_ci`。
     + MySQL 8.0 中 `utf8mb4` 字符集默认：`utf8mb4_0900_ai_ci`。
 
-- `foreign_key_checks`：
-    + TiDB 默认：`OFF`，且仅支持设置该值为 `OFF`。
-    + MySQL 5.7 默认：`ON`。
-
 - SQL mode：
     + TiDB 默认：`ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION`。
     + MySQL 5.7 默认与 TiDB 相同。
