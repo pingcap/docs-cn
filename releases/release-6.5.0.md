@@ -72,6 +72,14 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
     更多信息，请参考[用户文档](/tiflash/tiflash-results-materialization.md)。
 
+* 新增支持绑定历史执行计划（实验特性）[#39199](https://github.com/pingcap/tidb/issues/39199) @[fzzf678](https://github.com/fzzf678) 
+
+    受 SQL 语句执行时各种因素的影响，之前最优的执行计划偶尔会被新的执行计划替代，进而影响 SQL 性能。在这种场景下，最优的执行计划可能仍旧在 SQL 执行历史中，还没有被清除。
+
+    在 v6.5.0 中，TiDB 扩展了 `CREATE [GLOBAL | SESSION] BINDING FROM` 语句中的绑定对象，支持根据历史执行计划创建绑定。当 SQL 语句的执行计划发生改变时，只要原来的执行计划仍然在 SQL 执行历史内存表（例如，`statements_summary`）中，就可以在 `CREATE [GLOBAL | SESSION] BINDING FROM` 语句中通过指定 `plan_digest` 绑定原来的的执行计划，快速恢复 SQL 性能。此方式可以简化执行计划突变问题的处理，提升运维效率。
+
+    更多信息，请参考[用户文档](/sql-plan-management.md#根据历史执行计划创建绑定)。
+
 ### 安全
 
 * 支持密码复杂度策略 [#38928](https://github.com/pingcap/tidb/issues/38928) @[CbcWestwolf](https://github.com/CbcWestwolf) **tw@ran-huang**
