@@ -186,7 +186,7 @@ Connection Idle Duration 指空闲连接的持续时间。
 - CPU usage：TiCDC 节点的 CPU 使用情况
 - Memory usage：TiCDC 节点的内存使用情况
 - Goroutine count：TiCDC 节点 Goroutine 的个数
-- Changefeed checkpoint lag：同步任务上下游数据的进度差（以时间计算）。
+- Changefeed checkpoint lag：同步任务上下游数据的进度差（以时间单位秒计算）
 - Changefeed resolved ts lag：TiCDC 节点内部同步状态与上游的进度差（以时间计算）。
 - The status of changefeeds：changefeed 的状态, 0: Normal, 1: Error, 2: Failed, 3: Stopped, 4: Finished, -1: Unknown
 - Puller output events/s：TiCDC 节点中 Puller 模块每秒输出到 Sorter 模块的数据变更个数
