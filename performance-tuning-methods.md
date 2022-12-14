@@ -175,7 +175,7 @@ StmtPreare 次数 = StmtExecute 次数 = StmtClose 次数 ~= StmtFetch 次数，
 
 **示例 4：Prepared Statement 存在资源泄漏**
 
-StmtPrepare 每秒执行次数远大于 StmtClose, 说明应用程序存在 prepared statement 对象泄漏。
+StmtPrepare 每秒执行次数远大于 StmtClose，说明应用程序存在 prepared statement 对象泄漏。
 
 ![OLTP-Query](/media/performance/prepared_statement_leaking.png)
 
