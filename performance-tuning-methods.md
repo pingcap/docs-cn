@@ -240,7 +240,7 @@ StmtPrepare 每秒执行次数远大于 StmtClose，说明应用程序存在 pre
 
 延迟面板通常包含平均值和 99 分位数，平均值用来定位总体的瓶颈，99 分位数用来判断是否存在延迟严重抖动的情况。判断性能抖动范围时，可能还需要需要借助 999 分位数。
 
-#### Duration、Connection Idle Duration 和 连接信息。
+#### Duration、Connection Idle Duration 和 Connection Count
 
 Duration 面板包含了所有语句的 99 延迟和每种 SQL 类型的平均延迟。Connection Idle Duration 面板包含连接空闲的平均和 99 延迟，连接空闲时包含两种状态：
 
