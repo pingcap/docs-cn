@@ -188,7 +188,7 @@ title: 为 TiDB 组件间通信开启加密传输
 
 ## 证书重加载
 
-目前支持TiDB、TiKV、PD的TLS证书，部署数据中心和Cloud上时，自动轮换TLS证书，无需重启TiDB集群；暂不支持TiFlash，TiCDC的自动轮换TLS证书。
+目前支持 TiDB、TiKV、PD 的 TLS 证书，部署数据中心和 Cloud 时，支持自动轮换 TLS 证书，无需重启 TiDB 集群。 TiFlash 和 TiCDC 暂不支持自动轮换 TLS 证书。
 
 TiDB、PD 和 TiKV 和各种 Client 都会在每次新建相互通讯的连接时重新读取当前的证书和密钥文件内容，实现证书和密钥的重加载。
 
