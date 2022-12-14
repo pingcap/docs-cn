@@ -160,7 +160,7 @@ cat {{/path/to}}/pd*.log | grep "idAllocator allocates a new id" |  awk -F'=' '{
 ./pd-recover -endpoints http://10.0.1.13:2379 -cluster-id 6747551640615446306 -alloc-id 10000
 ```
 
-### 第5 步：重启整个集群
+### 第 5 步：重启整个集群
 
 当出现 `recovery is successful` 的提示信息时，重启整个集群。
 
