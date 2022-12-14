@@ -194,7 +194,7 @@ TiDB、PD 和 TiKV 和各种 Client 都会在每次新建相互通讯的连接�
 
 ## 证书有效期
 
-所有TiDB集群中组件的TLS证书的有效期，可以由您自定义，例如：使用Openssl 签发生成TLS证书时，通过**days**参数设置有效期，详见[生成自签名证书](/generate-self-signed-certificates.md)。
+你可以自定义 TiDB 集群中各组件 TLS 证书的有效期。例如，使用 Openssl 签发生成 TLS 证书时，可以通过**days**参数设置有效期，详见[生成自签名证书](/generate-self-signed-certificates.md)。
 
 ## 另请参阅
 
