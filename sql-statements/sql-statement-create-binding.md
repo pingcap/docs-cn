@@ -16,7 +16,8 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-create-binding/']
 
 ```ebnf+diagram
 CreateBindingStmt ::=
-    'CREATE' GlobalScope 'BINDING' 'FOR' BindableStmt 'USING' BindableStmt
+    'CREATE' GlobalScope 'BINDING' ( 'FOR' BindableStmt 'USING' BindableStmt ) 
+|   ( 'FROM' 'HISTORY' 'USING' 'PLAN' 'DIGEST' PlanDigest )
 
 GlobalScope ::=
     ( 'GLOBAL' | 'SESSION' )?
