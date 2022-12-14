@@ -132,6 +132,37 @@ EXPLAIN ANALYZE  SELECT * FROM t1 WHERE b = 123;
 3 rows in set (0.01 sec)
 ```
 
+```sql
+mysql> CREATE TABLE t(id INT PRIMARY KEY , a INT, KEY(a));
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> SELECT /*+ IGNORE_INDEX(t, a) */ * FROM t WHERE a = 1;
+Empty set (0.01 sec)
+
+mysql> SELECT plan_digest FROM INFORMATION_SCHEMA.STATEMENTS_SUMMARY WHERE QUERY_SAMPLE_TEXT = 'SELECT /*+ IGNORE_INDEX(t, a) */ * FROM t WHERE a = 1';
++------------------------------------------------------------------+
+| plan_digest                                                      |
++------------------------------------------------------------------+
+| 4e3159169cc63c14b139a4e7d72eae1759875c9a9581f94bb2079aae961189cb |
++------------------------------------------------------------------+
+1 row in set (0.01 sec)
+
+mysql> CREATE BINDING FROM HISTORY USING PLAN DIGEST '4e3159169cc63c14b139a4e7d72eae1759875c9a9581f94bb2079aae961189cb';
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> SELECT * FROM t WHERE a = 1;
+Empty set (0.01 sec)
+
+mysql> SELECT @@LAST_PLAN_FROM_BINDING;
++--------------------------+
+| @@LAST_PLAN_FROM_BINDING |
++--------------------------+
+|                        1 |
++--------------------------+
+1 row in set (0.01 sec)
+
+```
+
 ## MySQL 兼容性
 
 `CREATE [GLOBAL|SESSION] BINDING` 语句是 TiDB 对 MySQL 语法的扩展。
