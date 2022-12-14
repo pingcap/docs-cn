@@ -374,7 +374,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
     - Coprocessor 支持批量处理 [#13849](https://github.com/tikv/tikv/issues/13849) @[cfzjywxk](https://github.com/cfzjywxk)
     - 故障恢复时通知 TiKV 唤醒休眠的 Region 以减少等待时间 [#13648](https://github.com/tikv/tikv/issues/13648) @[LykxSassinator](https://github.com/LykxSassinator)
     - 通过代码优化减少内存申请的大小 [#13827](https://github.com/tikv/tikv/issues/13827) @[BusyJay](https://github.com/BusyJay)
-    - 引入 raft extension 以提升代码可扩展性 [#13827](https://github.com/tikv/tikv/issues/13827) @[BusyJay](https://github.com/BusyJay)
+    - 引入 Raft extension 以提升代码可扩展性 [#13827](https://github.com/tikv/tikv/issues/13827) @[BusyJay](https://github.com/BusyJay)
     - tikv-ctl 支持查询某个 key 范围中包含哪些 Region [#13760](https://github.com/tikv/tikv/issues/13760) [@HuSharp](https://github.com/HuSharp)
     - 改进持续对特定行只加锁但不更新的情况下的读写性能 [#13694](https://github.com/tikv/tikv/issues/13694) [@sticnarf](https://github.com/sticnarf)
 
@@ -410,9 +410,9 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
     + TiDB Data Migration (DM)
 
         - 通过不再解析黑名单表的数据提升了 DM 同步数据的性能 [#7622](https://github.com/pingcap/tiflow/pull/7622) @[GMHDBJD](https://github.com/GMHDBJD)
-        - 通过异步写与批量写的方式提升 dm relay 写数据效率 [#7580](https://github.com/pingcap/tiflow/pull/7580) @[GMHDBJD](https://github.com/GMHDBJD)
-        - 改进 DM 前置检查的错误提示信息 [#7696](https://github.com/pingcap/tiflow/pull/7696) @[buchuitoudegou](https://github.com/buchuitoudegou)
-        - 改进 DM 针对老版本 MySQL 使用 `SHOW SLAVE HOSTS` 获取结果时的兼容性 [#7373](https://github.com/pingcap/tiflow/pull/7372) @[lyzx2001](https://github.com/lyzx2001)
+        - 通过异步写与批量写的方式提升 DM relay 的写数据效率 [#7580](https://github.com/pingcap/tiflow/pull/7580) @[GMHDBJD](https://github.com/GMHDBJD)
+        - 改进 DM 前置检查的错误提示信息 [#7621](https://github.com/pingcap/tiflow/issues/7621) @[buchuitoudegou](https://github.com/buchuitoudegou)
+        - 改进 DM 针对老版本 MySQL 使用 `SHOW SLAVE HOSTS` 获取结果时的兼容性 [#5017](https://github.com/pingcap/tiflow/issues/5017) @[lyzx2001](https://github.com/lyzx2001)
 
 ## 错误修复
 
@@ -432,9 +432,9 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
 + TiKV
 
-    - 修复 raft engine ctl 中的错误 [#11119](https://github.com/tikv/tikv/issues/11119) @[tabokie](https://github.com/tabokie)
+    - 修复 Raft Engine ctl 中的错误 [#11119](https://github.com/tikv/tikv/issues/11119) @[tabokie](https://github.com/tabokie)
     - 修复 tikv-ctl 执行 `compact raft` 命令时报错的问题 [#13515](https://github.com/tikv/tikv/issues/13515) @[guoxiangCN](https://github.com/guoxiangCN)
-    - 修复当启用 TLS 时 log backup 无法使用的问题 [#13867](https://github.com/tikv/tikv/issues/13867) @[YuJuncen](https://github.com/YuJuncen)
+    - 修复当启用 TLS 时日志备份无法使用的问题 [#13867](https://github.com/tikv/tikv/issues/13867) @[YuJuncen](https://github.com/YuJuncen)
     - 修复对 Geometry 字段类型的支持问题 [#13651](https://github.com/tikv/tikv/issues/13651) @[dveeden](https://github.com/dveeden)
     - 修复当未启用 new collation 时 `LIKE` 操作符中的 `_` 无法匹配非 ASCII 字符的问题 [#13769](https://github.com/tikv/tikv/issues/13769) @[YangKeao](https://github.com/YangKeao)
     - 修复 tikv-ctl 执行 `reset-to-version` 命令时被终止的问题 [#13829](https://github.com/tikv/tikv/issues/13829) @[tabokie](https://github.com/tabokie)
@@ -468,8 +468,8 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
     + TiDB Data Migration (DM)
 
         - 修复在上游开启 GTID mode 且无数据时，无法启动 all mode 任务的问题 [#7037](https://github.com/pingcap/tiflow/issues/7037) @[liumengya94](https://github.com/liumengya94)
-        - 修复 DM-worker 异常重启可能引起的多 worker 写同一下游同张表的错误 [#7658](https://github.com/pingcap/tiflow/issues/7658) @[GMHDBJD](https://github.com/GMHDBJD)
-        - 修复上游数据库使用正则匹配授权时 DM 前置检查不通过的错误[#7645](https://github.com/pingcap/tiflow/issues/7645) @[lance6716](https://github.com/lance6716)
+        - (dup) 修复当 DM worker 即将退出时新 worker 调度过快导致数据被重复同步的问题 [#7658](https://github.com/pingcap/tiflow/issues/7658) @[GMHDBJD](https://github.com/GMHDBJD)
+        - 修复上游数据库使用正则匹配授权时 DM 前置检查不通过的错误 [#7645](https://github.com/pingcap/tiflow/issues/7645) @[lance6716](https://github.com/lance6716)
 
     + TiDB Lightning
 
