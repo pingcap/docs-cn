@@ -195,7 +195,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
 * 完善 `EXPLAIN ANALYZE` 输出结果中 TiFlash 的 TableFullScan 算子的执行信息 [#5926](https://github.com/pingcap/tiflash/issues/5926) @[hongyunyan](https://github.com/hongyunyan) **tw@qiancai**
 
-    [`EXPLAIN ANALYZE`] 语句可以输出执行计划及运行时的统计信息。在 v6.5.0 中，TiFlash 对 TableFullScan 算子的执行信息进行了完善，补充了 DMFile 相关的执行信息。你可以更加直观地查看 TiFlash 的数据扫描状态信息，方便进行性能分析。
+    `EXPLAIN ANALYZE` 语句可以输出执行计划及运行时的统计信息。在 v6.5.0 中，TiFlash 对 TableFullScan 算子的执行信息进行了完善，补充了 DMFile 相关的执行信息。你可以更加直观地查看 TiFlash 的数据扫描状态信息，方便进行性能分析。
 
     更多信息，请参考[用户文档](sql-statements/sql-statement-explain-analyze.md)。
 
@@ -407,7 +407,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
     + TiDB Data Migration (DM)
 
-        - 通过不再解析黑名单表的数据提升了 dm 同步数据的性能 [#7622](https://github.com/pingcap/tiflow/pull/7622) @[GMHDBJD](https://github.com/GMHDBJD)
+        - 通过不再解析黑名单表的数据提升了 DM 同步数据的性能 [#7622](https://github.com/pingcap/tiflow/pull/7622) @[GMHDBJD](https://github.com/GMHDBJD)
         - 通过异步写与批量写的方式提升 dm relay 写数据效率 [#7580](https://github.com/pingcap/tiflow/pull/7580) @[GMHDBJD](https://github.com/GMHDBJD)
         - 改进 DM 前置检查的错误提示信息 [#7696](https://github.com/pingcap/tiflow/pull/7696) @[buchuitoudegou](https://github.com/buchuitoudegou)
         - 改进 DM 针对老版本 MySQL 使用 `SHOW SLAVE HOSTS` 获取结果时的兼容性 [#7373](https://github.com/pingcap/tiflow/pull/7372) @[lyzx2001](https://github.com/lyzx2001)
@@ -431,7 +431,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 + TiKV
 
     - 修复 raft engine ctl 中的错误 [#11119](https://github.com/tikv/tikv/issues/11119) @[tabokie](https://github.com/tabokie)
-    - 修复 tikv-ctl 执行 compact raft 命令时报错的问题 [#13515](https://github.com/tikv/tikv/issues/13515) @[guoxiangCN](https://github.com/guoxiangCN)
+    - 修复 tikv-ctl 执行 `compact raft` 命令时报错的问题 [#13515](https://github.com/tikv/tikv/issues/13515) @[guoxiangCN](https://github.com/guoxiangCN)
     - 修复当启用 TLS 时 log backup 无法使用的问题 [#13867](https://github.com/tikv/tikv/issues/13867) @[YuJuncen](https://github.com/YuJuncen)
     - 修复对 Geometry 字段类型的支持问题 [#13651](https://github.com/tikv/tikv/issues/13651) @[dveeden](https://github.com/dveeden)
     - 修复当未启用 new collation 时 `LIKE` 操作符中的 `_` 无法匹配非 ASCII 字符的问题 [#13769](https://github.com/tikv/tikv/issues/13769) @[YangKeao](https://github.com/YangKeao)
