@@ -22,12 +22,12 @@ reference_option:
 
 ## 命名
 
-外键的命名规则如下：
+外键的命名遵循以下规则：
 
-- 如果有定义 `CONSTRAINT identifier`，就用这个定义的名称。
-- 如果没有定义 `CONSTRAINT identifier`，但有定义 `FOREIGN KEY identifier`，就用这个定义的名称。
-- 如果 `CONSTRAINT identifier` 和 `FOREIGN KEY identifier` 都没有指定名称，则自动生成一个名称，例如 `fk_1`、`fk_2`、`fk_3` 等，以此类推。
-- 名称在当前表的所有外键中必须是唯一的，否则创建时会报错：`ERROR 1826: Duplicate foreign key constraint name 'fk'`。
+- 如果在 `CONSTRAINT identifier` 语句中指定了名称，则使用该名称。
+- 如果 `CONSTRAINT identifier` 语句未指定名称，但在 `FOREIGN KEY identifier` 语句中指定了名称，则使用 `FOREIGN KEY` 定义的名称。
+- 如果 `CONSTRAINT identifier` 和 `FOREIGN KEY identifier` 语句都没有指定名称，则会自动生成一个名称，例如 `fk_1`、`fk_2`、`fk_3` 等。
+- 外键名称必须在当前表中唯一，否则创建时会报错 `ERROR 1826: Duplicate foreign key constraint name 'fk'`。
 
 ## 条件和限制
 
