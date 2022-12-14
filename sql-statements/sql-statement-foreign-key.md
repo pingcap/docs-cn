@@ -218,17 +218,17 @@ mysql> explain insert into child values (1,1);
 
 ```sql
 mysql> explain analyze delete from parent where id = 1;
-+----------------------------------+---------+---------+-----------+---------------------------------+------------------------------+---------------------------------------------+-----------+------+
-| id                               | estRows | actRows | task      | access object                   | execution info               | operator info                               | memory    | disk |
-+----------------------------------+---------+---------+-----------+---------------------------------+------------------------------+---------------------------------------------+-----------+------+
-| Delete_2                         | N/A     | 0       | root      |                                 | time:1.02ms, loops:1         | N/A                                         | 380 Bytes | N/A  |
-| ├─Point_Get_1                    | 1.00    | 1       | root      | table:parent                    | time:937.3µs, loops:2        | handle:1                                    | N/A       | N/A  |
-| └─Foreign_Key_Cascade_3          | 0.00    | 0       | root      | table:child, index:idx_pid      | total:1.57ms, foreign_keys:1 | foreign_key:fk_1, on_delete:CASCADE         | N/A       | N/A  |
-|   └─Delete_7                     | N/A     | 0       | root      |                                 | time:1.03ms, loops:1         | N/A                                         | 0 Bytes   | N/A  |
-|     └─IndexLookUp_11             | 10.00   | 0       | root      |                                 | time:978.8µs, loops:1        |                                             | 270 Bytes | N/A  |
-|       ├─IndexRangeScan_9(Build)  | 10.00   | 0       | cop[tikv] | table:child, index:idx_pid(pid) | time:819.6µs, loops:1        | range:[1,1], keep order:false, stats:pseudo | N/A       | N/A  |
-|       └─TableRowIDScan_10(Probe) | 10.00   | 0       | cop[tikv] | table:child                     |                              | keep order:false, stats:pseudo              | N/A       | N/A  |
-+----------------------------------+---------+---------+-----------+---------------------------------+------------------------------+---------------------------------------------+-----------+------+
++----------------------------------+---------+---------+-----------+---------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+---------------------------------------------+-----------+------+
+| id                               | estRows | actRows | task      | access object                   | execution info                                                                                                                                                                               | operator info                               | memory    | disk |
++----------------------------------+---------+---------+-----------+---------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+---------------------------------------------+-----------+------+
+| Delete_2                         | N/A     | 0       | root      |                                 | time:117.3µs, loops:1                                                                                                                                                                        | N/A                                         | 380 Bytes | N/A  |
+| ├─Point_Get_1                    | 1.00    | 1       | root      | table:parent                    | time:63.6µs, loops:2, Get:{num_rpc:1, total_time:29.9µs}                                                                                                                                     | handle:1                                    | N/A       | N/A  |
+| └─Foreign_Key_Cascade_3          | 0.00    | 0       | root      | table:child, index:idx_pid      | total:1.28ms, foreign_keys:1                                                                                                                                                                 | foreign_key:fk_1, on_delete:CASCADE         | N/A       | N/A  |
+|   └─Delete_7                     | N/A     | 0       | root      |                                 | time:904.8µs, loops:1                                                                                                                                                                        | N/A                                         | 1.11 KB   | N/A  |
+|     └─IndexLookUp_11             | 10.00   | 1       | root      |                                 | time:869.5µs, loops:2, index_task: {total_time: 371.1µs, fetch_handle: 357.3µs, build: 1.25µs, wait: 12.5µs}, table_task: {total_time: 382.6µs, num: 1, concurrency: 5}                      |                                             | 9.13 KB   | N/A  |
+|       ├─IndexRangeScan_9(Build)  | 10.00   | 1       | cop[tikv] | table:child, index:idx_pid(pid) | time:351.2µs, loops:3, cop_task: {num: 1, max: 282.3µs, proc_keys: 0, rpc_num: 1, rpc_time: 263µs, copr_cache_hit_ratio: 0.00, distsql_concurrency: 15}, tikv_task:{time:220.2µs, loops:0}   | range:[1,1], keep order:false, stats:pseudo | N/A       | N/A  |
+|       └─TableRowIDScan_10(Probe) | 10.00   | 1       | cop[tikv] | table:child                     | time:223.9µs, loops:2, cop_task: {num: 1, max: 168.8µs, proc_keys: 0, rpc_num: 1, rpc_time: 154.5µs, copr_cache_hit_ratio: 0.00, distsql_concurrency: 15}, tikv_task:{time:145.6µs, loops:0} | keep order:false, stats:pseudo              | N/A       | N/A  |
++----------------------------------+---------+---------+-----------+---------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+---------------------------------------------+-----------+------+
 ```
 
 ## 兼容性
@@ -251,4 +251,5 @@ Create Table | CREATE TABLE `child` (
 
 ### 与 MySQL 的兼容性
 
+- [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md) 不支持外键功能。
 - 创建外键未指定名称时，TiDB 自动生成的外键名称和 MySQL 不一样。例如 TiDB 生成的外键名称为 `fk_1`、`fk_2`、`fk_3` 等，MySQL 生成的外键名称为 `table_name_ibfk_1`、 `table_name_ibfk_2`、`table_name_ibfk_3` 等。
