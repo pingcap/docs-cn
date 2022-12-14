@@ -5,8 +5,6 @@ summary: 本文介绍 Performance Overview 面板上监控指标的含义。
 
 # Performance Overview 面板重要监控指标详解
 
-## Performance Overview
-
 使用 TiUP 部署 TiDB 集群时，你可以一键部署监控系统 (Prometheus & Grafana)。监控架构参见 [TiDB 监控框架概述](/tidb-monitoring-framework.md)。
 
 目前 Grafana Dashboard 整体分为 PD、TiDB、TiKV、Node\_exporter、Overview、Performance\_overview 等。
