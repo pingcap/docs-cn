@@ -180,7 +180,7 @@ StmtPrepare 每秒执行次数远大于 StmtClose，说明应用程序存在 pre
 ![OLTP-Query](/media/performance/prepared_statement_leaking.png)
 
 - QPS 面板中出现的红色加粗线为 Failed Query，坐标的值为右边的 Y 轴。每秒错误语句为 74.6。
-- StmtPrepare 每秒执行次数远大于 StmtClose, 说明应用程序存在 prepared statement 对象泄漏。
+- CPS By Type 面板中的 StmtPrepare 每秒执行次数远大于 StmtClose, 说明应用程序存在 prepared statement 对象泄漏。
 - Queries Using Plan Cache OPS 面板中的 `avg-miss` 几乎等于 CPS By Type 面板中的 StmtExecute，说明几乎所有的 SQL 执行都未命中执行计划缓存。
 
 #### KV/TSO Request OPS 和 KV Request Time By Source
