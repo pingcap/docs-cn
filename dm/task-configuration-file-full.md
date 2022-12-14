@@ -119,14 +119,28 @@ loaders:                             # load 处理单元的运行配置参数
     dir: "./dumped_data"
 
     # 全量阶段数据导入的模式。可以设置为如下几种模式：
-    # - "sql"(默认)。使用 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) TiDB-backend 进行导入。
-    # - "loader"。使用 Loader 导入。此模式仅作为兼容模式保留，目前用于支持 TiDB Lightning 尚未包含的功能，预计会在后续的版本废弃。
-    import-mode: "sql"
-    # 全量导入阶段针对冲突数据的解决方式：
-    # - "replace"（默认值）。仅支持 import-mode 为 "sql"，表示用最新数据替代已有数据。
-    # - "ignore"。仅支持 import-mode 为 "sql"，保留已有数据，忽略新数据。
-    # - "error"。仅支持 import-mode 为 "loader"。插入重复数据时报错并停止同步任务。
-    on-duplicate: "replace"
+    # - "logical"(默认)。使用 TiDB Lightning [logical import](/tidb-lightning/tidb-lightning-logical-import-mode.md) 进行导入。
+    # - "physical"。使用 TiDB Lightning [physical import](/tidb-lightning/tidb-lightning-physical-import-mode.md) 进行导入。
+    import-mode: "logical"
+    # logical import 针对冲突数据的解决方式：
+    # - "replace"（默认值）。表示用最新数据替代已有数据。
+    # - "ignore"。保留已有数据，忽略新数据。
+    # - "error"。插入重复数据时报错并停止同步任务。
+    on-duplicate-logical: "replace"
+    # physical import 针对冲突数据的解决方式：
+    # - "none"。对应 TiDB Lightning physical import 冲突数据检测的 [none](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#冲突数据检测) 选项，表示遇到冲突数据时不进行处理。该模式性能最佳，但下游数据库会遇到数据索引不一致的问题。
+    # - "manual"。对应 TiDB Lightning physical import 冲突数据检测的 [remove](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#冲突数据检测) 选项。在遇到冲突数据时将所有相互冲突的数据删除，并记录在 &{meta-schema}_&{name}.conflict_error_v1 表中。在本配置文件中，会记录在 dm_meta_test.conflict_error_v1 表中。全量导入阶段结束后，任务会暂停并提示用户查询这张表并按照 [remove 配置](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#冲突数据检测)的方式进行手动处理。使用 resume-task 命令让任务恢复运行并进入到增量同步阶段。
+    on-duplicate-physical: "none"
+    # physical import 用作本地排序的目录位置，该选项的默认值与 dir 配置项一致。具体说明可以参见 [TiDB Lightning 必要条件及限制 - 存储空间](/tidb-lightning/tidb-lightning-physical-import-mode.md#必要条件及限制)的说明。
+    sorting-dir-physical: "./dumped_data"
+    # 磁盘空间限制，对应 [TiDB Lightning disk-quota 配置](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#磁盘资源配额-从-v620-版本开始引入)。具体说明可以参见上述连接。
+    disk-quota-physical: "0"
+    # physical import 在导入完成一张表后，对每一个表执行 `ADMIN CHECKSUM TABLE <table>` 进行数据校验的配置：
+    # - "required"（默认值）。表示导入完成后进行数据校验，如果校验失败会让任务暂停，需要用户手动处理。
+    # - "optional"。表示导入完成后进行数据校验，如果校验失败会打印 warn 日志，任务不会暂停。
+    # - "off"。表示导入完成后不进行数据校验。
+    # Checksum 对比失败通常表示导入异常（数据丢失或数据不一致），因此建议总是开启 Checksum。
+    checksum-physical: "required"
 
 syncers:                             # sync 处理单元的运行配置参数
   global:                            # 配置名称
