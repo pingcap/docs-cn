@@ -14,17 +14,21 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
 相比于前一个 LTS (即 6.1.0 版本)，6.5.0 版本包含 [6.2.0-DMR](/releases/release-6.2.0.md)、[6.3.0-DMR](/releases/release-6.3.0.md)、[6.4.0-DMR](/releases/release-6.4.0.md) 中已发布的新功能、提升改进和错误修复，并引入了以下关键特性：
 
-- 优化器代价模型 V2 GA
-- TiDB 全局内存控制 GA
-- 全局 hint 干预视图内查询的计划生成
-- 满足密码合规审计需求 [密码管理](/password-management.md)
-- TiDB 添加索引的速度提升为原来的 10 倍
-- Flashback Cluster 功能兼容 TiCDC 和 PiTR
-- 支持通过 `INSERT INTO SELECT` 语句[保存 TiFlash 查询结果](/tiflash/tiflash-results-materialization.md)（实验特性）
-- 支持下推 JSON 抽取函数下推至 TiFlash
-- 进一步增强索引合并[INDEX MERGE](/glossary.md#index-merge)功能
-- [非事务 DML 语句](/non-transactional-dml.md)
+- [代价模型 V2](/cost-model.md#cost-model-version-2) GA
+- [TiDB 全局内存控制](/configure-memory-usage.md) GA
+- [全局 Hint](/optimizer-hints.md#全局生效的-Hint) 干预视图内查询的计划生成
+- [密码管理](/password-management.md)满足密码合规审计需求
+- [添加索引加速](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 功能 GA，添加索引性能提升为原来的 10 倍
+- [`FLASHBACK CLUSTER TO TIMESTAMP`](/sql-statements/sql-statement-flashback-to-timestamp.md) 功能 GA，并兼容 TiCDC 和 PITR
+- 支持[保存 TiFlash 查询结果](/tiflash/tiflash-results-materialization.md)（实验特性）
+- 支持[下推 `JSON_EXTRACT()` 函数](/tiflash/tiflash-supported-pushdown-calculations.md)至 TiFlash
+- 进一步增强索引合并 [INDEX MERGE](/glossary.md#index-merge) 功能
+- 支持[非事务 DML 语句](/non-transactional-dml.md)
 - 支持 [Time to live (TTL)](/time-to-live.md)（实验特性）
+- 支持通过 TiCDC [将实时变更数据保存到存储服务](ticdc/ticdc-sink-to-cloud-storage.md)(S3/Azure Blob Storage/NFS)
+- 支持在两套或者多套 TiDB 集群之间进行[双向复制](/ticdc/ticdc-bidirectional-replication.md)
+- [PITR](/br-pitr-guide.md#进行-pitr) 的恢复性能提升 x 倍，RPO 降低到 x min
+- TiCDC [同步数据到 Kafka](/replicate-data-to-kafka.md) 吞吐提升 x 倍，复制延迟降低到 x 秒
 
 ## 新功能
 
@@ -330,8 +334,6 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 | [`validate_password.number_count`](/system-variables.md#validate_passwordnumber_count-从-v650-版本开始引入) | 新增 | 密码复杂度策略检查项，限定了用户密码中数字字符的最小数量。只有 [`validate_password.enable`](/system-variables.md#validate_passwordenable-从-v650-版本开始引入) 开启且 [validate_password.policy](/system-variables.md#validate_passwordpolicy-从-v650-版本开始引入) 大于或等于 `1` (MEDIUM) 时，该变量才生效。默认值为 1 |
 | [`validate_password.policy`](/system-variables.md#validate_passwordpolicy-从-v650-版本开始引入) | 新增 | 密码复杂度策略检查的强度，强度等级分为 `[0, 1, 2]` 。只有 [`validate_password.enable`](/system-variables.md#validate_passwordenable-从-v650-版本开始引入) 开启时，该变量才生效。默认值为 1 |
 | [`validate_password.special_char_count`](/system-variables.md#validate_passwordspecial_char_count-从-v650-版本开始引入) | 新增 | 密码复杂度策略检查项，限定了用户密码中特殊字符的最小数量。只有 [`validate_password.enable`](/system-variables.md#validate_passwordenable-从-v650-版本开始引入) 开启且 [validate_password.policy](/system-variables.md#validate_passwordpolicy-从-v650-版本开始引入) 大于或等于 `1` (MEDIUM) 时，该变量才生效。默认值为 1 |
-|        |                              |      |
-|        |                              |      |
 
 ### 配置文件参数
 
@@ -341,8 +343,6 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 | TiDB | [`disconnect-on-expired-password`](/tidb-configuration-file.md#disconnect-on-expired-password`-从-v650-版本开始引入) | 新增 | 该配置用于控制 TiDB 服务端是否直接断开密码已过期用户的连接，默认值为 "true" ，表示 TiDB 服务端将直接断开密码已过期用户的连接 |
 | TiKV | [`raw-min-ts-outlier-threshold`] | 删除 | 从 v6.4.0，该配置项被废弃。从 v6.5.0，该配置项被删除。 |
 | TiKV | [`cdc.min-ts-interval`](/tikv-configuration-file.md#min-ts-interval) | 修改 | 默认值从 `1s` 修改为 `200ms` |
-|          |          |          |          |
-|          |          |          |          |
 
 ### 其他
 
