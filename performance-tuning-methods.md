@@ -148,7 +148,7 @@ StmtExecute 每秒执行次数等于 `avg-hit + avg-miss`。执行计划缓存�
 
 TPC-C 负载类型主要以 Update、Select 和 Insert 语句为主。总的 QPS 等于每秒 StmtExecute 的次数，并且 StmtExecute 每秒的数据基本等于 Queries Using Plan Cache OPS 面板的 `avg-hits`。这是 OLTP 负载理想的情况，客户端执行使用 prepared statement，并且在客户端缓存了 prepared statement 对象，执行每条 SQL 语句时直接调用 statement 执行。执行时都命中执行计划缓存，不需要重新 compile 生成执行计划。
 
-![TPC-C](/media/performance/tpcc_qps.jpeg)
+![TPC-C](/media/performance/tpcc_qps.png)
 
 **示例 2：只读 OLTP 负载，使用 query 命令无法使用执行计划缓存**
 
