@@ -183,7 +183,7 @@ StmtPrepare 每秒执行次数远大于 StmtClose，说明应用程序存在 pre
 - StmtPrepare 每秒执行次数远大于 StmtClose, 说明应用程序存在 prepared statement 对象泄漏。
 - Queries Using Plan Cache OPS 面板中的 `avg-miss` 几乎等于 CPS By Type 面板中的 StmtExecute，说明几乎所有的 SQL 执行都未命中执行计划缓存。
 
-#### KV/TSO Request OPS 和 请求来源统计
+#### KV/TSO Request OPS 和 KV Request Time By Source
 
 - 在 KV/TSO Request OPS 面板中，你可以查看 KV 和 TSO 每秒请求的数据统计。其中，`kv request total` 代表 TiDB 到 TiKV 所有请求的总和。通过观察 TiDB 到 PD 和 TiKV 的请求类型，可以了解集群内部的负载特征。
 - 在 KV Request Time By Source 面板中，你可以查看每种 KV 请求和请求来源的时间占比。
