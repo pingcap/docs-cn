@@ -1,18 +1,18 @@
 ---
 title: DEADLOCKS
-summary: 了解 information_schema 表 `DEADLOCKS`。
+summary: 了解 INFORMATION_SCHEMA 表 `DEADLOCKS`。
 ---
 
 # DEADLOCKS
 
 `DEADLOCKS` 表提供当前 TiDB 节点上最近发生的若干次死锁错误的信息。
 
-{{< copyable "sql" >}}
-
 ```sql
-USE information_schema;
-DESC deadlocks;
+USE INFORMATION_SCHEMA;
+DESC DEADLOCKS;
 ```
+
+输出结果如下：
 
 ```sql
 +-------------------------+---------------------+------+------+---------+-------+
@@ -41,7 +41,7 @@ DESC deadlocks;
 * `CURRENT_SQL_DIGEST`：试图上锁的事务中当前正在执行的 SQL 语句的 Digest。
 * `CURRENT_SQL_DIGEST_TEXT`：试图上锁的事务中当前正在执行的 SQL 语句的归一化形式。
 * `KEY`：该事务试图上锁、但是被阻塞的 key，以十六进制编码的形式显示。
-* `KEY_INFO`：对 `KEY` 进行解读得出的一些详细信息，详见 [KEY_INFO](#key_info)。
+* `KEY_INFO`：对 `KEY` 进行解读得出的一些详细信息，详见 [`KEY_INFO`](#key_info)。
 * `TRX_HOLDING_LOCK`：该 key 上当前持锁并导致阻塞的事务 ID，即事务的 `start_ts`。
 
 要调整 `DEADLOCKS` 表中可以容纳的死锁事件数量，可通过 TiDB 配置文件中的 [`pessimistic-txn.deadlock-history-capacity`](/tidb-configuration-file.md#deadlock-history-capacity) 配置项进行调整，默认容纳最近 10 次死锁错误的信息。
@@ -49,24 +49,24 @@ DESC deadlocks;
 > **注意：**
 >
 > * 仅拥有 [PROCESS](https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_process) 权限的用户可以查询该表。
-> * `CURRENT_SQL_DIGEST` 列中的信息（SQL Digest）为 SQL 语句进行归一化后计算得到的哈希值。`CURRENT_SQL_DIGEST_TEXT` 列中的信息为内部从 Statements Summary 系列表中查询得到，因而存在内部查询不到对应语句的可能性。关于 SQL Digest 和 Statements Summary 相关表的详细说明，请参阅[Statement Summary Tables](/statement-summary-tables.md)。
+> * `CURRENT_SQL_DIGEST` 列中的信息 (SQL Digest) 为 SQL 语句进行归一化后计算得到的哈希值。`CURRENT_SQL_DIGEST_TEXT` 列中的信息为内部从 Statements Summary 系列表中查询得到，因而存在内部查询不到对应语句的可能性。关于 SQL Digest 和 Statements Summary 相关表的详细说明，请参阅[Statement Summary Tables](/statement-summary-tables.md)。
 
 ## `KEY_INFO`
 
 `KEY_INFO` 列中展示了对 `KEY` 列中所给出的 key 的详细信息，以 JSON 格式给出。其包含的信息如下：
 
-* `"db_id"`：该 key 所属的数据库（schema）的 ID。
-* `"db_name"`：该 key 所属的数据库（schema）的名称。
+* `"db_id"`：该 key 所属的数据库 (schema) 的 ID。
+* `"db_name"`：该 key 所属的数据库 (schema) 的名称。
 * `"table_id"`：该 key 所属的表的 ID。
 * `"table_name"`：该 key 所属的表的名称。
-* `"partition_id"`：该 key 所在的分区（partition）的 ID。
-* `"partition_name"`：该 key 所在的分区（partition）的名称。
-* `"handle_type"`：该 row key （即储存一行数据的 key）的 handle 类型，其可能的值有：
+* `"partition_id"`：该 key 所在的分区 (partition) 的 ID。
+* `"partition_name"`：该 key 所在的分区 (partition) 的名称。
+* `"handle_type"`：该 row key（即储存一行数据的 key）的 handle 类型，其可能的值有：
     * `"int"`：handle 为 int 类型，即 handle 为 row ID
     * `"common"`：非 int64 类型的 handle，在启用 clustered index 时非 int 类型的主键会显示为此类型
     * `"unknown"`：当前暂不支持的 handle 类型
 * `"handle_value"`：handle 的值。
-* `"index_id"`：该 index key （即储存索引的 key）所属的 index ID。
+* `"index_id"`：该 index key（即储存索引的 key）所属的 index ID。
 * `"index_name"`：该 index key 所属的 index 名称。
 * `"index_values"`：该 index key 中的 index value。
 
@@ -89,19 +89,15 @@ DESC deadlocks;
 
 对于情况一，TiDB 将会向事务 A 的客户端报告死锁错误，并终止该事务；而对于情况二，事务 A 当前正在执行的语句将在 TiDB 内部被自动重试。例如，假设事务 A 执行了如下语句：
 
-{{< copyable "sql" >}}
-
 ```sql
-update t set v = v + 1 where id = 1 or id = 2;
+UPDATE t SET v = v + 1 WHERE id = 1 OR id = 2;
 ```
 
 事务 B 则先后执行如下两条语句：
 
-{{< copyable "sql" >}}
-
 ```sql
-update t set v = 4 where id = 2;
-update t set v = 2 where id = 1;
+UPDATE t SET v = 4 WHERE id = 2;
+UPDATE t SET v = 2 WHERE id = 1;
 ```
 
 那么如果事务 A 先后对 `id = 1` 和 `id = 2` 的两行分别上锁，且两个事务以如下时序运行：
@@ -119,29 +115,27 @@ update t set v = 2 where id = 1;
 
 假设有如下表定义和初始数据：
 
-{{< copyable "sql" >}}
-
 ```sql
-create table t (id int primary key, v int);
-insert into t values (1, 10), (2, 20);
+CREATE TABLE t (id int primary key, v int);
+INSERT INTO t VALUES (1, 10), (2, 20);
 ```
 
 使两个事务按如下顺序执行：
 
 | 事务 1                               | 事务 2                               | 说明                 |
 |--------------------------------------|--------------------------------------|----------------------|
-| `update t set v = 11 where id = 1;`  |                                      |                      |
-|                                      | `update t set v = 21 where id = 2;`  |                      |
-| `update t set v = 12 where id = 2;`  |                                      | 事务 1 阻塞          |
-|                                      | `update t set v = 22 where id = 1;`  | 事务 2 报出死锁错误  |
+| `UPDATE t SET v = 11 WHERE id = 1;`  |                                      |                      |
+|                                      | `UPDATE t SET v = 21 WHERE id = 2;`  |                      |
+| `UPDATE t SET v = 12 WHERE id = 2;`  |                                      | 事务 1 阻塞          |
+|                                      | `UPDATE t SET v = 22 WHERE id = 1;`  | 事务 2 报出死锁错误  |
 
-接下来，事务 2 将报出死锁错误。此时，查询 `DEADLOCKS` 表，将得到如下结果：
-
-{{< copyable "sql" >}}
+接下来，事务 2 将报出死锁错误。此时，查询 `DEADLOCKS` 表：
 
 ```sql
-select * from information_schema.deadlocks;
+SELECT * FROM INFORMATION_SCHEMA.DEADLOCKS;
 ```
+
+输出结果如下：
 
 ```sql
 +-------------+----------------------------+-----------+--------------------+------------------------------------------------------------------+-----------------------------------------+----------------------------------------+----------------------------------------------------------------------------------------------------+--------------------+
@@ -178,11 +172,9 @@ select * from information_schema.deadlocks;
 
 需要注意的是，由于 `DEADLOCK_ID` 并不保证全局唯一，所以在 `CLUSTER_DEADLOCKS` 表的查询结果中，需要 `INSTANCE` 和 `DEADLOCK_ID` 两个字段共同区分结果集中的不同死锁错误的信息。
 
-{{< copyable "sql" >}}
-
 ```sql
-USE information_schema;
-DESC cluster_deadlocks;
+USE INFORMATION_SCHEMA;
+DESC CLUSTER_DEADLOCKS;
 ```
 
 ```sql
