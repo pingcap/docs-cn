@@ -196,7 +196,7 @@ StmtPrepare 每秒执行次数远大于 StmtClose，说明应用程序存在 pre
 
 在此 TPC-C 负载中：
 
-- 每秒总的 KV 请求的数量为 79.7k。按请求数量排序，最高的请求类型为 `Prewrite`、`Commit`、`PessimisticsLock` 和 `BatchGet` 等。
+- 每秒总的 KV 请求的数量为 79.7 K。按请求数量排序，最高的请求类型为 `Prewrite`、`Commit`、`PessimisticsLock` 和 `BatchGet` 等。
 - KV 处理时间来源主要为 `Commit-external_Commit`、`Prewrite-external_Commit`，说明消耗时间最高的 KV 请求为 `Commit` 和 `Prewrite`，并且来源于外部的 Commit 语句。
 
 **示例 2：Analyze 负载**
