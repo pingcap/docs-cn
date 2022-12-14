@@ -162,8 +162,7 @@ Connection Idle Duration 指空闲连接的持续时间。
 - CPU: 每个 TiFlash 实例 CPU 的使用率。
 - Memory：每个 TiFlash 实例内存的使用情况。
 - IO Utilization：每个 TiFlash 实例 IO 使用率。
-- MPP Query count: 每个 TiFlash 实例每秒 MPP 查询数量。
-- MPP Query count: 每个 TiFlash 实例每秒 MPP 查询数量。
+- MPP Query count: 每个 TiFlash 实例每秒 MPP 查询数量
 - Request QPS: 所有 TiFlash 实例收到的 coprocessor 请求数量。其中 batch 是 batch 请求数量，batch_cop 是 batch 请求中的 coprocessor 请求数量，cop 是直接通过 coprocessor 接口发送的 coprocessor 请求数量，cop_dag 是所有 coprocessor 请求中 dag 请求数量，super_batch 是开启 super batch 特性的请求数量。
 - Executor QPS：所有 TiFlash 实例收到的请求中，每种 dag 算子的数量，其中 table_scan 是扫表算子，selection 是过滤算子，aggregation 是聚合算子，top_n 是 TopN 算子，limit 是 limit 算子。
 - Request Duration Overview: 每秒所有 TiFlash 实例所有请求类型的处理总时间堆叠图
