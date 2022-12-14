@@ -257,9 +257,11 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
     Storage sink 支持 changed log 格式位 canal-json/csv，此外 changed log 从 TiCDC 同步到 storage 的延迟可以达到 xx，支持更多信息，请参考[用户文档](https://github.com/pingcap/docs-cn/pull/12151/files)。
 
-* TiCDC 支持两个或者多个 TiDB 集群之间相互复制 @[asddongmen](https://github.com/asddongmen) **tw@shichun-0415**
+* TiCDC 支持在多个 TiDB 集群之间进行双向复制 @[asddongmen](https://github.com/asddongmen) **tw@ran-huang**
 
-    TiCDC 支持在多个 TiDB 集群之间进行双向复制。 如果业务上需要 TiDB 多活，尤其是异地多活的场景，可以使用该功能作为 TiDB 多活的解决方案。只要为每个 TiDB 集群到其他 TiDB 集群的 TiCDC changefeed 同步任务配置 `bdr-mode = true` 参数，就可以实现多个 TIDB 集群之间的数据相互复制。更多信息，请参考[用户文档](/ticdc/ticdc/ticdc-bidirectional-replication.md).
+    TiCDC 支持在多个 TiDB 集群之间进行双向复制。如果业务上需要 TiDB 多活，尤其是异地多活的场景下，可以使用该功能作为 TiDB 多活的解决方案。只要为每个 TiDB 集群到其他 TiDB 集群的 TiCDC 同步任务配置 `bdr-mode = true` 参数，就可以实现多个 TiDB 集群之间的数据相互复制。
+
+    更多信息，请参考[用户文档](/ticdc/ticdc-bidirectional-replication.md)。
 
 * TiCDC 性能提升 **tw@shichun-0415
 
@@ -465,7 +467,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
     + TiDB Data Migration (DM)
 
-        - 修复无法在上游开启 gtid mode 且无数据时启动 all mode 任务的错误 [#7037](https://github.com/pingcap/tiflow/issues/7037) @[liumengya94](https://github.com/liumengya94)
+        - 修复在上游开启 GTID mode 且无数据时，无法启动 all mode 任务的问题 [#7037](https://github.com/pingcap/tiflow/issues/7037) @[liumengya94](https://github.com/liumengya94)
         - 修复 DM-worker 异常重启可能引起的多 worker 写同一下游同张表的错误 [#7658](https://github.com/pingcap/tiflow/issues/7658) @[GMHDBJD](https://github.com/GMHDBJD)
         - 修复上游数据库使用正则匹配授权时 DM 前置检查不通过的错误[#7645](https://github.com/pingcap/tiflow/issues/7645) @[lance6716](https://github.com/lance6716)
 
