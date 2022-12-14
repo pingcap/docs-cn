@@ -181,6 +181,7 @@ Connection Idle Duration 指空闲连接的持续时间。
 - Read flow：所有 TiFlash 实例磁盘读操作的流量
 
 ## CDC
+
 - CPU usage：TiCDC 节点使用的 CPU
 - Memory usage：TiCDC 节点使用的内存
 - Goroutine count：TiCDC 节点 Goroutine 的个数
