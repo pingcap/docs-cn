@@ -158,6 +158,7 @@ Connection Idle Duration 指空闲连接的持续时间。
 ![performance overview](/media/performance/grafana_performance_overview.png)
 
 ## TiFlash
+
 - CPU: 每个 TiFlash 实例 CPU 的使用率。
 - Memory：每个 TiFlash 实例内存的使用情况。
 - IO Utilization：每个 TiFlash 实例 IO 使用率。
