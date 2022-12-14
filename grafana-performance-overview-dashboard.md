@@ -174,11 +174,11 @@ Connection Idle Duration 指空闲连接的持续时间。
 - Request Duration Overview: 每秒所有 TiFlash 实例所有请求类型总处理时间的堆叠图
 - Request Duration: 所有 TiFlash 实例每种 MPP 和 coprocessor 请求类型的总处理时间，包含平均和 P99 处理延迟。
 - Request Handle Duration：所有 TiFlash 实例 MPP 和 coprocessor 请求的处理时间，此时间为该 coprocessor 请求从开始执行到结束的时间，包含平均和 P99 延迟
-- Raft Wait Index Duration：所有 TiFlash 实例在进行 wait_index 消耗的时间，即拿到 read_index 请求后，等待本地的 Region index >= read_index 所花费的时间。
-- Raft Batch Read Index Duration：所有 TiFlash 实例在进行 read_index 消耗的时间，主要消耗在于和 Region leader 的交互和重试时间。
-- Write Throughput By Instance：每个实例写入数据的吞吐量，包括 apply Raft 数据日志以及 Raft 快照的写入吞吐量。
-- Write flow：所有 TiFlash 实例磁盘写操作的流量。
-- Read flow：所有 TiFlash 实例磁盘读操作的流量。
+- Raft Wait Index Duration：所有 TiFlash 实例在进行 wait_index 消耗的时间，即拿到 read_index 请求后，等待本地的 Region index >= read_index 所花费的时间
+- Raft Batch Read Index Duration：所有 TiFlash 实例在进行 read_index 消耗的时间，主要消耗在于和 Region leader 的交互和重试时间
+- Write Throughput By Instance：每个实例写入数据的吞吐量，包括 apply Raft 数据日志以及 Raft 快照的写入吞吐量
+- Write flow：所有 TiFlash 实例磁盘写操作的流量
+- Read flow：所有 TiFlash 实例磁盘读操作的流量
 
 ## CDC
 - CPU usage：TiCDC 节点使用的 CPU
