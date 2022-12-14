@@ -29,18 +29,22 @@ reference_option:
 - 如果 `CONSTRAINT identifier` 和 `FOREIGN KEY identifier` 语句都没有指定名称，则会自动生成一个名称，例如 `fk_1`、`fk_2`、`fk_3` 等。
 - 外键名称必须在当前表中唯一，否则创建时会报错 `ERROR 1826: Duplicate foreign key constraint name 'fk'`。
 
-## 条件和限制
+## 限制
 
-创建外键有以下条件和限制：
+创建外键时需要满足以下条件：
 
 - 父表和子表都不能是临时表。
-- 创建外键时，需要用户对父表有 `REFERENCES` 权限。
-- 父表和子表中外键引用的 `Column` 必须是相同的数据类型，例如 `INTEGER` 和 `DECIMAL` 的大小和精度也必须相同，`String` 类型的长度，字符集（charset）和排序规则（collation）也必须相同。
-- 外键中的 `Column` 引用不能是它自己。
-- 外键中的 `Column` 和引用的父表中的 `Column` 都必须有对应的索引，索引中的 `Column` 顺序必须和外键的 `Column` 顺序一样，这样在执行外键约束检查时可以用索引而避免用全表扫。创建外键时如果父表中没有对应的外键索引，则会报错：`ERROR 1822: Failed to add the foreign key constraint. Missing index for constraint 'fk' in the referenced table 't'`。创建外键时如果子表中没有对应的索引，则会自动创建一个索引，索引名和外键名一样。
-- 不支持在 `BLOB` 和 `TEXT` 类型的 `Column` 上创建外键。
+- 用户需要对父表有 `REFERENCES` 权限。
+- 父表和子表中外键引用的列必须是相同的数据类型，并具有相同的大小、精度、长度、字符集 (charset) 和排序规则 (collation)。
+- 外键中的列不能引用自身。
+- 外键中的列和引用的父表中的列必须有对应的索引，并且索引中的列顺序必须与外键的列顺序一样，这样才能在执行外键约束检查时使用索引来避免全表扫描。
+
+    - 如果父表中没有对应的外键索引，则会报错 `ERROR 1822: Failed to add the foreign key constraint. Missing index for constraint 'fk' in the referenced table 't'`。
+    - 如果子表中没有对应的外键索引，则会自动创建一个索引，索引名和外键名一样。
+
+- 不支持在 `BLOB` 和 `TEXT` 类型的列上创建外键。
 - 不支持在分区表上创建外键。
-- 不支持在 `VIRTUAL GENERATED COLUMN` 上创建外键。
+- 不支持在虚拟生成列 (`VIRTUAL GENERATED COLUMNS`) 上创建外键。
 
 ## 引用操作
 
