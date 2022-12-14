@@ -199,9 +199,9 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
     更多信息，请参考[用户文档](sql-statements/sql-statement-explain-analyze.md)。
 
-* 执行计划支持打印 JSON 格式 [#39261](https://github.com/pingcap/tidb/issues/39261) @[fzzf678](https://github.com/fzzf678) **tw@ran-huang**
+* 支持将执行计划打印为 JSON 格式 [#39261](https://github.com/pingcap/tidb/issues/39261) @[fzzf678](https://github.com/fzzf678) **tw@ran-huang**
 
-    在新版本中，TiDB 扩展了执行计划的打印格式。 通过 `EXPLAIN FORMAT=tidb_json <SQL语句>` 能够将 SQL 的执行计划以 JSON 格式输出。借助这个能力，SQL 调试工具和诊断工具能够更方便准确地解读执行计划，进而提升 SQL 诊断调优的易用性。
+    在 v6.5.0 中，TiDB 扩展了执行计划的打印格式。通过 `EXPLAIN FORMAT=tidb_json <SQL语句>` 能够将 SQL 的执行计划以 JSON 格式输出。借助这个能力，SQL 调试工具和诊断工具能够更方便准确地解读执行计划，进而提升 SQL 诊断调优的易用性。
 
     更多信息，请参考[用户文档](/sql-statements/sql-statement-explain.md)。
 
