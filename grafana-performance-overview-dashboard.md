@@ -50,7 +50,10 @@ CPS By Type：按照类型统计所有 TiDB 实例每秒处理的命令数（Com
 
 ### Queries Using Plan Cache OPS
 
-Queries Using Plan Cache OPS：所有 TiDB 实例每秒执行计划缓存的命中和未命中次数。 `avg-hit + avg-miss` 等于 StmtExecute 每秒执行次数。
+- avg-hit：所有 TiDB 实例每秒执行计划缓存的命中次数
+- avg-miss：所有 TiDB 实例每秒执行计划缓存的未命中次数
+
+`avg-hit + avg-miss` 等于 StmtExecute 每秒执行次数。
 
 ### KV/TSO Request OPS
 
