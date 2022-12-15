@@ -6,6 +6,14 @@ aliases: ['/docs-cn/dev/how-to/deploy/geographic-redundancy/overview/','/docs-cn
 
 # 单区域多 AZ 部署 TiDB
 
+<!-- Localization note for TiDB:
+
+- 英文：用 distributed SQL，同时开始强调 HTAP
+- 中文：可以保留 NewSQL 字眼，同时强调一栈式实时 HTAP
+- 日文：NewSQL 认可度高，用 NewSQL
+
+-->
+
 作为一栈式实时 HTAP 数据库，TiDB 兼顾了传统关系型数据库的优秀特性、NoSQL 数据库可扩展性以及跨可用区 (Availability Zone, AZ) 场景下的高可用。本文档旨在介绍同区域多 AZ 部署 TiDB 的方案。
 
 本文中的区域指的是地理隔离的不同位置，AZ 指的是区域内部划分的相互独立的资源集合。本文描述的方案同样适用于一个城市内多个数据中心（同城多中心）的场景。
@@ -14,7 +22,7 @@ aliases: ['/docs-cn/dev/how-to/deploy/geographic-redundancy/overview/','/docs-cn
 
 Raft 是一种分布式一致性算法，在 TiDB 集群的多种组件中，PD 和 TiKV 都通过 Raft 实现了数据的容灾。Raft 的灾难恢复能力通过如下机制实现：
 
-- Raft 成员的本质是日志复制和状态机。Raft 成员之间通过复制日志来实现数据同步；Raft 成员在不同条件下切换自己的成员状态，其目标是选出 leader 以提供对外服务。 
+- Raft 成员的本质是日志复制和状态机。Raft 成员之间通过复制日志来实现数据同步；Raft 成员在不同条件下切换自己的成员状态，其目标是选出 leader 以提供对外服务。
 - Raft 是一个表决系统，它遵循多数派协议，在一个 Raft Group 中，某成员获得大多数投票，它的成员状态就会转变为 leader。也就是说，当一个 Raft Group 还保有大多数节点 (majority) 时，它就能够选出 leader 以提供对外服务。
 
 遵循 Raft 可靠性的特点，放到现实场景中：
@@ -112,7 +120,7 @@ TiKV 是一个 Multi-Raft 系统，其数据按 Region（默认 96M）切分，�
 server_configs:
   pd:
     replication.location-labels: ["zone","az","rack","host"]
-    
+
 tikv_servers:
   - host: 10.63.10.30
     config:

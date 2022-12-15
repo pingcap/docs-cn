@@ -86,7 +86,7 @@ dispatchers = [
 
 ### 架构相关概念
 
-- Capture：TiCDC 节点的运行进程，多个 Capture 进程构成了 TiCDC集群，Capture 进程负责 TiKV 的数据变更的同步，包括接受和主动拉取两种方式，并向下游同步数据。
+- Capture：TiCDC 节点的运行进程，多个 Capture 进程构成了 TiCDC集群，Capture 进程负责 TiKV 的数据变更的同步，包括接收和主动拉取两种方式，并向下游同步数据。
 - Capture Owner：是一种 Capture 的角色，每个 TiCDC 集群同一时刻最多只存在一个 Capture Owner 角色，负责集群内部的调度。
 - Processor：是 Capture 内部的逻辑线程，每个 Processor 负责处理同一个同步流中一个或多个 table 的数据。一个 Capture 节点可以运行多个 Processor。
 - ChangeFeed：一个由用户启动的从上游 TiDB 同步到下游的任务，其中包含多个 Task，Task 会分布在不同的 Capture 节点进行数据同步处理。
@@ -149,7 +149,7 @@ TiCDC 是通过对 global checkpoint TS 和 barrier TS 进行比较来确定数�
 
     1. 启动 Capture 进程。
     2. 启动 processor。
-    3. 接受 Owner 下发的 Task 调度命令。
+    3. 接收 Owner 下发的 Task 调度命令。
     4. 根据调度命令启动或停止 tablePipeline。
 
 - 启动 owner 的 TiCDC 节点：

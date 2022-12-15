@@ -10,7 +10,7 @@ summary: 了解 TiCDC Changefeed 详细的命令行参数和配置文件定义�
 本章节将以创建同步任务为例，介绍 TiCDC Changefeed 的命令行参数：
 
 ```shell
-cdc cli changefeed create --server=http://10.0.10.25:8300 --sink-uri="mysql://root:123456@127.0.0.1:3306/" --changefeed-id="simple-replication-task" --sort-engine="unified"
+cdc cli changefeed create --server=http://10.0.10.25:8300 --sink-uri="mysql://root:123456@127.0.0.1:3306/" --changefeed-id="simple-replication-task"
 ```
 
 ```shell
@@ -30,14 +30,7 @@ Info: {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":
 
 - `--start-ts`：指定 changefeed 的开始 TSO。TiCDC 集群将从这个 TSO 开始拉取数据。默认为当前时间。
 - `--target-ts`：指定 changefeed 的目标 TSO。TiCDC 集群拉取数据直到这个 TSO 停止。默认为空，即 TiCDC 不会自动停止。
-- `--sort-engine`：指定 changefeed 使用的排序引擎。因 TiDB 和 TiKV 使用分布式架构，TiCDC 需要对数据变更记录进行排序后才能输出。该项支持 `unified`（默认）/`memory`/`file`：
-
-    - `unified`：优先使用内存排序，内存不足时则自动使用硬盘暂存数据。该选项默认开启。
-    - `memory`：在内存中进行排序。 **已经弃用，不建议在任何情况使用。**
-    - `file`：完全使用磁盘暂存数据。**已经弃用，不建议在任何情况使用。**
-
 - `--config`：指定 changefeed 配置文件。
-- `--sort-dir`：用于指定排序器使用的临时文件目录。**自 TiDB v4.0.13, v5.0.3 和 v5.1.0 起已经无效，请不要使用**。
 
 ## TiCDC Changefeed 配置文件说明
 
@@ -51,23 +44,27 @@ case-sensitive = true
 # 是否输出 old value，从 v4.0.5 开始支持，从 v5.0 开始默认为 true
 enable-old-value = true
 
-# 是否开启 Syncpoint 功能，从 v6.3.0 开始支持
+# 是否开启 Syncpoint 功能，从 v6.3.0 开始支持，该功能默认关闭。
 # 从 v6.4.0 开始，使用 Syncpoint 功能需要同步任务拥有下游集群的 SYSTEM_VARIABLES_ADMIN 或者 SUPER 权限
-enable-sync-point = true
+# enable-sync-point = false
 
 # Syncpoint 功能对齐上下游 snapshot 的时间间隔
 # 配置格式为 h m s，例如 "1h30m30s"
 # 默认值为 10m，最小值为 30s
-sync-point-interval = "5m"
+# sync-point-interval = "5m"
 
 # Syncpoint 功能在下游表中保存的数据的时长，超过这个时间的数据会被清理
 # 配置格式为 h m s，例如 "24h30m30s"
 # 默认值为 24h
-sync-point-retention = "1h"
+# sync-point-retention = "1h"
+
+[mounter]
+# mounter 解码 KV 数据的线程数，默认值为 16
+# worker-num = 16
 
 [filter]
 # 忽略指定 start_ts 的事务
-ignore-txn-start-ts = [1, 2]
+# ignore-txn-start-ts = [1, 2]
 
 # 过滤器规则
 # 过滤规则语法：https://docs.pingcap.com/zh/tidb/stable/table-filter#表库过滤语法

@@ -8,50 +8,15 @@ aliases: ['/docs-cn/dev/faq/deploy-and-maintain-faq/']
 
 本文介绍 TiDB 集群安装部署的常见问题、原因及解决方法。
 
-## 环境准备 FAQ
+## 软硬件要求 FAQ
 
-操作系统版本要求如下表：
+### TiDB 支持哪些操作系统？
 
-| Linux 操作系统 | 版本 |
-| :--- | :--- |
-| Red Hat Enterprise Linux | 7.3 及以上的 7.x 版本 |
-| CentOS | 7.3 及以上的 7.x 版本 |
-| Oracle Enterprise Linux | 7.3 及以上的 7.x 版本 |
-| Amazon Linux | 2 |
-| Ubuntu LTS | 16.04 及以上的版本 |
+关于 TiDB 支持的操作系统，参见 [TiDB 软件和硬件环境建议配置](/hardware-and-software-requirements.md)。
 
-### 为什么要在 CentOS 7 上部署 TiDB 集群？
+### TiDB 对开发、测试、生产环境的服务器硬件配置有什么要求？
 
-TiDB 作为一款开源一栈式实时 HTAP 数据库，可以很好的部署和运行在 Intel 架构服务器环境及主流虚拟化环境，并支持绝大多数的主流硬件网络，作为一款高性能数据库系统，TiDB 支持主流的 Linux 操作系统环境，具体可以参考 TiDB 的[官方部署要求](/hardware-and-software-requirements.md)。
-
-其中 TiDB 在 CentOS 7.3 的环境下进行大量的测试，同时也有很多这个操作系统的部署最佳实践，因此，我们推荐客户在部署 TiDB 的时候使用 CentOS 7.3+ 以上的 Linux 操作系统。
-
-## 硬件要求 FAQ
-
-TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器平台。对于开发、测试、及生产环境的服务器硬件配置有以下要求和建议：
-
-### 开发及测试环境
-
-| **组件** | **CPU** | **内存** | **本地存储** | **网络** | **实例数量(最低要求)** |
-| --- | --- | --- | --- | --- | --- |
-| TiDB | 8 核+ | 16 GB+ | SAS, 200 GB+ | 千兆网卡 | 1（可与 PD 同机器） |
-| PD | 4 核+ | 8 GB+ | SAS, 200 GB+ | 千兆网卡 | 1（可与 TiDB 同机器） |
-| TiKV | 8 核+ | 32 GB+ | SSD, 200 GB+ | 千兆网卡 | 3 |
-| TiFlash | 32 核 + | 64 GB+ | SSD, 200 GB+ | 千兆网卡 | 1 |
-| TiCDC | 8 核 + | 16 GB+ | SSD, 200 GB+ | 千兆网卡 | 1 |
-|   |   |   |   | 服务器总计 | 6 |
-
-### 生产环境
-
-| **组件** | **CPU** | **内存** | **硬盘类型** | **网络** | **实例数量(最低要求)** |
-| --- | --- | --- | --- | --- | --- |
-| TiDB | 16 核+ | 48 GB+ | SAS | 万兆网卡（2块最佳） | 2 |
-| PD | 8 核+ | 16 GB+ | SSD | 万兆网卡（2块最佳） | 3 |
-| TiKV | 16 核+ | 64 GB+ | SSD | 万兆网卡（2块最佳） | 3 |
-| TiFlash | 48 核+ | 128 GB+ | 至少一块 SSD | 万兆网卡（2 块最佳） | 2 |
-| TiCDC | 16 核+ | 64 GB+ | SSD | 万兆网卡（2 块最佳） | 2 |
-| 监控 | 8 核+ | 16 GB+ | SAS | 千兆网卡 | 1 |
-|   |   |   |   | 服务器总计 | 13 |
+TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器平台。对于开发、测试、生产环境的服务器硬件配置，参见 [TiDB 软件和硬件环境建议配置 - 服务器建议配置](/hardware-and-software-requirements.md#服务器建议配置)。
 
 ### 两块网卡的目的是？万兆的目的是？
 
@@ -151,4 +116,4 @@ Direct 模式就是把写入请求直接封装成 I/O 指令发到磁盘，这�
 
 TiDB 支持在 [Google GKE](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.1/deploy-on-gcp-gke)、[AWS EKS](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.1/deploy-on-aws-eks) 和[阿里云 ACK](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.1/deploy-on-alibaba-cloud) 上部署使用。
 
-此外，TiDB 云上部署也已在京东云、UCloud 上线，均为数据库一级入口。
+此外，TiDB 云上部署也已在京东云、UCloud 上线。
