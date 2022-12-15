@@ -18,9 +18,9 @@ summary: 给出一个 TiDB 和 Python 的简单 CRUD 应用程序示例。
 
 本节将介绍 TiDB 集群的启动方法。
 
-### 使用 TiDB Cloud 免费集群
+### 使用 TiDB Cloud Serverless Tier 集群
 
-[创建免费集群](/develop/dev-guide-build-cluster-in-cloud.md#第-1-步创建免费集群)。
+[创建 Serverless Tier 集群](/develop/dev-guide-build-cluster-in-cloud.md#第-1-步创建-serverless-tier-集群)
 
 ### 使用本地集群
 
