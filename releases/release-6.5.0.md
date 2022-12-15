@@ -128,11 +128,11 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
 ### 性能
 
-* 进一步增强索引合并 [INDEX MERGE](/glossary.md#index-merge) 功能 [#39333](https://github.com/pingcap/tidb/issues/39333) @[guo-shaoge](https://github.com/guo-shaoge) @[time-and-fate](https://github.com/time-and-fate) @[hailanwhu](https://github.com/hailanwhu) **tw@TomShawn**
+* 索引合并 [INDEX MERGE](/glossary.md#index-merge) 功能支持合取范式（`AND` 连接的表达式）[#39333](https://github.com/pingcap/tidb/issues/39333) @[guo-shaoge](https://github.com/guo-shaoge) @[time-and-fate](https://github.com/time-and-fate) @[hailanwhu](https://github.com/hailanwhu) **tw@TomShawn**
 
-    在 v6.5.0 前，TiDB 只支持对 `OR` 联结词的过滤条件使用索引合并特性。自 v6.5.0 起，对于在 `WHERE` 子句中使用 `AND` 联结的过滤条件，TiDB 已支持使用索引合并特性，TiDB 的索引合并至此可以覆盖更一般的查询过滤条件组合，不再限定于并集（`OR`）关系。当前 v6.5.0 版本仅支持优化器自动选择 `OR` 条件下的索引合并。要开启对于 `AND` 联结的索引合并，你需要使用 [`USE_INDEX_MERGE`](/optimizer-hints.md#use_index_merget1_name-idx1_name--idx2_name-) Hint。
+    在 v6.5.0 前，TiDB 只支持对 `OR` 连接词的过滤条件使用索引合并特性。自 v6.5.0 起，TiDB 支持对于在 `WHERE` 子句中使用 `AND` 连接的过滤条件使用索引合并特性。TiDB 的索引合并至此可以覆盖更多普遍的查询过滤条件组合，不再限定于并集（`OR`）关系。v6.5.0 仅支持优化器自动选择 `OR` 条件下的索引合并。要开启对于 `AND` 连接的索引合并，你需要使用 [`USE_INDEX_MERGE`](/optimizer-hints.md#use_index_merget1_name-idx1_name--idx2_name-) Hint。
 
-    关于“索引合并”功能的介绍请参阅 [v5.4 release note](/release-5.4.0#性能)，以及优化器相关的[用户文档](/explain-index-merge.md)
+    关于索引合并功能的更多信息，请参阅 [v5.4.0 Release Notes](/release-5.4.0#性能)，以及优化器相关的[用户文档](/explain-index-merge.md)
 
 * 新增支持下推以下[JSON 函数](/tiflash/tiflash-supported-pushdown-calculations.md) 至 TiFlash [#39458](https://github.com/pingcap/tidb/issues/39458) @[yibin87](https://github.com/yibin87) **tw@qiancai**
 
@@ -172,13 +172,13 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
 ### 稳定性
 
-* TiDB 全局内存控制成为正式功能（GA） [#37816](https://github.com/pingcap/tidb/issues/37816) @[wshwsh12](https://github.com/wshwsh12) **tw@TomShawn**
+* TiDB 全局内存控制成为正式功能（GA）[#37816](https://github.com/pingcap/tidb/issues/37816) @[wshwsh12](https://github.com/wshwsh12) **tw@TomShawn**
 
-    自 v6.5.0 起，全局内存控制的特性已能够跟踪到 TiDB 中主要的内存消耗。当全局内存消耗达到 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 所定义的预设值时，TiDB 会尝试 GC 或取消 SQL 操作等方法限制内存使用，保证 TiDB 的稳定性。
+    TiDB v6.4.0 引入了全局内存控制作为实验特性。自 v6.5.0 起，全局内存控制成为正式功能，能够跟踪到 TiDB 中主要的内存消耗。当全局内存消耗达到 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 所定义的阈值时，TiDB 会尝试 GC 或取消 SQL 操作等方法限制内存使用，保证 TiDB 的稳定性。
 
-    需要注意的是， 会话中事务所消耗的内存 (由配置项 [`txn-total-size-limit`](/tidb-configuration-file.md#txn-total-size-limit) 设置最大值) 如今被内存管理模块跟踪：当单个会话的内存消耗达到系统变量 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 所定义的阀值时，将会触发系统变量 [tidb_mem_oom_action](/system-variables.md#tidb_mem_oom_action-从-v610-版本开始引入) 所定义的行为 (默认为 `CANCEL`，即取消操作)。 为了保证向前兼容，当配置 [`txn-total-size-limit`](/tidb-configuration-file.md#txn-total-size-limit) 为非默认值时，TiDB 仍旧会保证事务可以使用到 `txn-total-size-limit` 所设定的内存量而不被取消。
+    需要注意的是，会话中事务所消耗的内存（由配置项 [`txn-total-size-limit`](/tidb-configuration-file.md#txn-total-size-limit) 设置最大值）如今被内存管理模块跟踪：当单个会话的内存消耗达到系统变量 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 所定义的阀值时，将会触发系统变量 [`tidb_mem_oom_action`](/system-variables.md#tidb_mem_oom_action-从-v610-版本开始引入) 所定义的行为（默认为 `CANCEL`，即取消操作）。为了保证向前兼容，当配置 [`txn-total-size-limit`](/tidb-configuration-file.md#txn-total-size-limit) 为非默认值时，TiDB 仍旧会保证事务可以使用到 `txn-total-size-limit` 所设定的内存量而不被取消。
 
-    对于运行 v6.5.0 及以上版本的用户，建议移除配置项 [`txn-total-size-limit`](/tidb-configuration-file.md#txn-total-size-limit)，取消对事务内存做单独的限制，转而使用系统变量 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 和 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 对全局内存进行管理，从而提高内存的使用效率。
+    在使用 v6.5.0 及以上版本时，建议移除配置项 [`txn-total-size-limit`](/tidb-configuration-file.md#txn-total-size-limit)，取消对事务内存做单独的限制，转而使用系统变量 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 和 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 对全局内存进行管理，从而提高内存的使用效率。
 
     更多信息，请参考[用户文档](/configure-memory-usage.md)。
 
