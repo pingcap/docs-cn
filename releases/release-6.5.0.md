@@ -415,7 +415,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
     + TiDB Data Migration (DM)
 
-        - 通过不再解析黑名单表的数据提升了 DM 同步数据的性能 [#7622](https://github.com/pingcap/tiflow/pull/7622) @[GMHDBJD](https://github.com/GMHDBJD)
+        - 通过不再解析黑名单中表的数据提升 DM 同步数据的性能 [#7622](https://github.com/pingcap/tiflow/pull/7622) @[GMHDBJD](https://github.com/GMHDBJD)
         - 通过异步写与批量写的方式提升 DM relay 的写数据效率 [#7580](https://github.com/pingcap/tiflow/pull/7580) @[GMHDBJD](https://github.com/GMHDBJD)
         - 改进 DM 前置检查的错误提示信息 [#7621](https://github.com/pingcap/tiflow/issues/7621) @[buchuitoudegou](https://github.com/buchuitoudegou)
         - 改进 DM 针对老版本 MySQL 使用 `SHOW SLAVE HOSTS` 获取结果时的兼容性 [#5017](https://github.com/pingcap/tiflow/issues/5017) @[lyzx2001](https://github.com/lyzx2001)
