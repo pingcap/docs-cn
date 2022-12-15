@@ -287,7 +287,7 @@ go get -u gorm.io/driver/mysql
 
 [SQLAlchemy](https://www.sqlalchemy.org/) 是一个流行的 Python 的 ORM 框架，你可以使用 `pip install SQLAlchemy==1.4.44` 获取你的应用程序的所有依赖项。建议使用 **1.4.44** 及以上版本。
 
-使用 SQLAlchemy 构建 TiDB 应用程序的例子，可参阅 [TiDB 和 Python 的简单 CRUD 应用程序 - 使用 PyMySQL](/develop/dev-guide-sample-application-python.md#第-2-步获取代码)。
+使用 SQLAlchemy 构建 TiDB 应用程序的例子，可参阅 [TiDB 和 Python 的简单 CRUD 应用程序 - 使用 SQLAlchemy](/develop/dev-guide-sample-application-python.md#第-2-步获取代码)。
 
 </div>
 <div label="peewee">
