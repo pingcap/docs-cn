@@ -407,7 +407,7 @@ true
 
 ### 第 6 步第 3 部分：使用 Shell 脚本请求
 
-这里已经将请求过程编写为 [Shell](https://github.com/pingcap-inc/tidb-example-java/blob/main/spring-jpa-hibernate/request.sh) 脚本，以方便大家的测试，脚本将会做以下操作：
+这里已经将请求过程编写为 [Shell](https://github.com/pingcap-inc/tidb-example-python/blob/main/django_example/request.sh) 脚本，以方便大家的测试，脚本将会做以下操作：
 
 1. 循环创建 10 名玩家
 2. 获取 `id` 为 1 的玩家信息
