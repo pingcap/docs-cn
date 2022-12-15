@@ -997,7 +997,8 @@ def get_connection(autocommit: bool = False) -> Connection:
                            cursorclass=DictCursor,
                            autocommit=autocommit,
                            ssl_ca='<ca_path>',
-                           ssl_verify_cert=True)
+                           ssl_verify_cert=True,
+                           ssl_verify_identity=True)
 ```
 
 </div>
