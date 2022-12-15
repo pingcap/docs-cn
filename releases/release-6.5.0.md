@@ -445,7 +445,7 @@ v6.5.0 的下一个 v6.x 版本（即 v6.6.0） 将废弃 v4.0.7 版本引入的
 
         - (dup) 修复 BR 删除日志备份数据时，会删除不应被删除的数据的问题 [#38939](https://github.com/pingcap/tidb/issues/38939) @[Leavrth](https://github.com/Leavrth)
         - (dup) 修复数据库或数据表中使用旧的排序规则框架时，数据恢复失败的问题[#39150](https://github.com/pingcap/tidb/issues/39150) @[MoCuishle28](https://github.com/MoCuishle28)
-        - 复阿里云和华为云跟 S3 存储不完全兼容导致的备份失败的问题 [39545](https://github.com/pingcap/tidb/issues/39545) @[3pointer](https://github.com/3pointer)
+        - 修复阿里云和华为云与 S3 存储不完全兼容导致的备份失败问题 [39545](https://github.com/pingcap/tidb/issues/39545) @[3pointer](https://github.com/3pointer)
 
     + TiCDC
 
