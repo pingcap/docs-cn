@@ -816,7 +816,7 @@ mycli --host 127.0.0.1 --port 4000 -u root --no-warn < player_init.sql
 <div label="mysql-client" value="mysql-client">
 
 ```shell
-mysql --host 127.0.0.1 --port 4000 -u root<player_init.sql
+mysql --host 127.0.0.1 --port 4000 -u root < player_init.sql
 ```
 
 </div>
