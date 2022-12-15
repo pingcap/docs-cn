@@ -14,18 +14,20 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
 相比于前一个 LTS (即 6.1.0 版本)，6.5.0 版本包含 [6.2.0-DMR](/releases/release-6.2.0.md)、[6.3.0-DMR](/releases/release-6.3.0.md)、[6.4.0-DMR](/releases/release-6.4.0.md) 中已发布的新功能、提升改进和错误修复，并引入了以下关键特性：
 
-- 通过 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 控制全局内存的功能 GA
-- [密码管理](/password-management.md)满足密码合规审计需求
-- [添加索引加速](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 功能 GA，添加索引的性能提升较 v6.1 提升了 10 倍
-- 支持高性能、全局单调递增的 [`AUTO_INCREMENT` 列属性](/auto-increment.md#mysql-兼容模式)，兼容 MySQL
-- [`FLASHBACK CLUSTER TO TIMESTAMP`](/sql-statements/sql-statement-flashback-to-timestamp.md) 功能 GA，并兼容 TiCDC 和 PITR
-- 支持[下推 `JSON_EXTRACT()` 函数](/tiflash/tiflash-supported-pushdown-calculations.md)至 TiFlash
-- 增强[优化器代价模型](/cost-model.md#cost-model-version-2)并进一步增强索引合并 [INDEX MERGE](/glossary.md#index-merge) 功能
-- 支持[非事务 DML 语句](/non-transactional-dml.md)
-- 支持通过行级别 [Time to live (TTL)](/time-to-live.md) 管理数据生命周期（实验特性）
-- 支持通过 TiCDC [将实时变更数据保存到存储服务](ticdc/ticdc-sink-to-cloud-storage.md)(S3/Azure Blob Storage/NFS)
-- 支持在两套或者多套 TiDB 集群之间进行[双向复制](/ticdc/ticdc-bidirectional-replication.md)
-- [PITR](/br-pitr-guide.md#进行-pitr) 的恢复性能提升 x 倍，RPO 降低到 x min
+- 默认开启[索引加速功能](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入)，添加索引的性能提升较 v6.1 提升了 10 倍。
+- 支持通过 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 控制 TiDB 全局内存。
+- 支持 [`FLASHBACK CLUSTER TO TIMESTAMP`](/sql-statements/sql-statement-flashback-to-timestamp.md)，兼容 TiCDC 和 PITR。
+- 支持高性能、全局单调递增的 [`AUTO_INCREMENT` 列属性](/auto-increment.md#mysql-兼容模式)，兼容 MySQL。
+- 增强[优化器代价模型](/cost-model.md#cost-model-version-2)，并进一步增强索引合并 [INDEX MERGE](/glossary.md#index-merge) 功能。
+- 支持[下推 `JSON_EXTRACT()` 函数](/tiflash/tiflash-supported-pushdown-calculations.md)至 TiFlash。
+- TiDB Lightning 和 Dumpling 支持[导入](tidb-lightning/tidb-lightning-data-source.md)和[导出](/dumpling-overview.md#通过并发提高-dumpling-的导出效率)压缩格式文件。
+- TiDB Data Migration (DM) 支持[增量数据校验](/dm/dm-continuous-data-validation.md)。
+- 支持[密码管理](/password-management.md)策略，满足密码合规审计需求。
+- 提供行级别 [Time to live (TTL)](/time-to-live.md) 管理数据生命周期（实验特性）。
+- 支持使用[非事务 DML 语句](/non-transactional-dml.md)，提升集群稳定性。
+- TiCDC 支持[将实时变更数据保存到存储服务](ticdc/ticdc-sink-to-cloud-storage.md)(S3/Azure Blob Storage/NFS)。
+- 支持在两套或者多套 TiDB 集群之间进行[双向复制](/ticdc/ticdc-bidirectional-replication.md)。
+- [PITR](/br-pitr-guide.md#进行-pitr) 的恢复性能提升 x 倍，RPO 降低到 x min。
 - TiCDC [同步数据到 Kafka](/replicate-data-to-kafka.md) 吞吐提升 x 倍，复制延迟降低到 x 秒
 
 ## 新功能
@@ -260,14 +262,6 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
     单台 TiCDC 节点能处理的最大行变更吞吐可以达到 30K rows/s，同步延迟降低到 10s。即使在常规的 TiKV/TiCDC 滚动升级场景，同步延迟也小于 30s；在容灾场景测试中，打开 TiCDC Redo log 和 Syncpoint 后，吞吐为 xx rows/s 时，容灾复制延迟可以保持在 x s。
 
-### 部署及运维
-
-* 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接)
-
-    功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
-
-    更多信息，请参考[用户文档](链接)。
-
 ### 备份和恢复
 
 * TiDB 快照备份支持断点续传 [#38647](https://github.com/pingcap/tidb/issues/38647) @[Leavrth](https://github.com/Leavrth) **tw@shichun-0415
@@ -470,7 +464,6 @@ v6.5.0 版本开始废弃 v4.0.7 版本引入的 [`AMEND TRANSACTION`](/system-v
 
 感谢来自 TiDB 社区的贡献者们：
 
-- [贡献者 GitHub ID](链接)
 - [e1ijah1](https://github.com/e1ijah1)
 - [guoxiangCN](https://github.com/guoxiangCN)（首次贡献者）
 - [jiayang-zheng](https://github.com/jiayang-zheng)
