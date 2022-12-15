@@ -74,7 +74,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
     - 使用 TiFlash 做复杂分析
     - 需重复使用 TiFlash 查询结果或响应高并发的在线请求
-    - 相对输入数据，计算需要得出的结果集比较小，推荐 100MiB 以内
+    - 与查询的输入数据相比，所需的结果集比较小，推荐 100 MiB 以内
 
     更多信息，请参考[用户文档](/tiflash/tiflash-results-materialization.md)。
 
@@ -138,7 +138,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
     * `->>`
     * `JSON_EXTRACT()`
 
-    JSON 格式为应用设计提供了灵活的建模方式，目前越来越多的应用采用 JSON 格式进行数据交换和数据存储。 通过将 JSON 函数下推至 TiFlash，你可以提高 JSON 类型数据的分析效率，拓展 TiDB 实时分析的应用场景。
+    JSON 格式为应用设计提供了灵活的建模方式，目前越来越多的应用采用 JSON 格式进行数据交换和数据存储。通过将 JSON 函数下推至 TiFlash，你可以提高 JSON 类型数据的分析效率，拓展 TiDB 实时分析的应用场景。
 
 * 新增支持下推以下 [字符串函数](/tiflash/tiflash-supported-pushdown-calculations.md) 至 TiFlash [#6115](https://github.com/pingcap/tiflash/issues/6115) @[xzhangxian1008](https://github.com/xzhangxian1008) **tw@qiancai**
 
@@ -152,7 +152,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
     更多信息，请参考[用户文档](/optimizer-hints.md#全局生效的-Hint)。
 
-* 支持将 [分区表](/partitioned-table.md)的排序操作下推至 TiKV [#26166](https://github.com/pingcap/tidb/issues/26166) @[winoros](https://github.com/winoros) **tw@qiancai**
+* 支持将[分区表](/partitioned-table.md)的排序操作下推至 TiKV [#26166](https://github.com/pingcap/tidb/issues/26166) @[winoros](https://github.com/winoros) **tw@qiancai**
 
     [分区表](/partitioned-table.md)特性在 v6.1.0 正式 GA 后，TiDB 仍然在持续提升分区表相关的性能。在 v6.5.0 中， TiDB 支持将 `ORDER BY` 和 `LIMIT` 等排序操作下推至 TiKV 进行计算和过滤，降低网络 I/O 的开销，提升了使用分区表时 SQL 的性能。
 
