@@ -109,7 +109,7 @@ dispatchers = [
     对于 TiCDC 节点来说，TiKV 节点发送过来的 ResolvedTS 信息是一种特殊的事件，它只包含一个格式为 `<resolvedTS:  时间戳>` 的特殊事件。通常情况下，ResolvedTS 满足以下约束：
 
     ```
-    table resolved TS >= local resolved TS >= global Resolved TS
+    table resolved TS >= global Resolved TS
     ```
 
 #### CheckpointTS
@@ -117,13 +117,13 @@ dispatchers = [
 这个时间戳只在 TiCDC 中存在，它表示 TiCDC 已经同步给下游的数据的最低水位线，即 TiCDC 认为在这个时间戳之前的数据已经被同步到下游系统了。由于 TiCDC 同步数据的单位是表，所以 table checkpointTS 表示表级别的同步数据的水位线，Processor checkpointTS 表示各个 Processor 中最低的 checkpointTS；Global checkpointTS 表示各个 Processor checkpointTS 中最低的 checkpointTS。通常情况下，Checkpoint TS 满足以下约束：
 
 ```
-table checkpoint TS >= local checkpoint TS >= global checkpoint TS
+table checkpoint TS >= global checkpoint TS
 ```
 
-如果将 ResolvedTS 和 checkpointTS 结合来看，完整的关系可以表达为：
+因为 TiCDC 只会复制小于 global Resolved TS 的数据到下游，所以存在下面的约束：
 
 ```
-table resolved TS >= local resolved TS >= global Resolved TS >= table checkpoint TS >= local checkpoint TS >= global checkpoint TS
+table resolved TS >= global Resolved TS >= table checkpoint TS >= global checkpoint TS
 ```
 
 随着数据的改变和事务的提交，TiKV 节点上的 resolvedTS 会不断的向前推进，TiCDC 节点的 Puller 模块也会不断的收到 TiKV 推流过来的数据，并且根据收到的信息决定是否执行增量扫的过程，从而确保数据改变都能够被发送到 TiCDC 节点上。Sorter 模块则负责将 Puller 模块收到的信息按照时间戳进行升序排序，从而确保数据在表级别是满足一致性的。接下来，Mounter 模块把上游的数据改变装配成 Sink 模块可以消费的格式，并发送给 Sink，而 Sink 则负责把 checkpointTS 到 ResolvedTS 之间的数据改变，按照发生的 TS 顺序同步到下游，并在下游返回后推进 checkpointTS。
@@ -137,7 +137,7 @@ table resolved TS >= local resolved TS >= global Resolved TS >= table checkpoint
 - 对于 DDL 语句，这个时间戳会用来确保在这个 DDL 语句之前的改变都被应用到下游，之后执行对应的 DDL 语句，在 DDL 语句同步完成之后再同步其他的数据改变。由于 DDL 语句的处理是 owner 角色的 Capture 负责的，DDL 语句对应的 Barrier TS 只会由 owner 节点的 Processor 线程产生。
 - sync point Barrier TS 也是一个时间戳，当你启用 TiCDC 的 Syncpoint 特性后，TiCDC 会根据你指定的间隔产生一个 Barrier TS，当所有的表都同步到了这个 Barrier TS 之后，记录一下对应的时间点，之后继续向下同步数据。
 
-TiCDC 是通过对 global checkpoint TS 和 barrier TS 进行比较来确定数据是否已经同步到 barrier TS 的。如果 global checkpoint TS = barrier TS，则说明所有表都至少推进到 barrier TS。如果等式不成立，说明有表还没推进到该 barrier TS，在这种情况下也不会更新 barrier TS，因此不会有表的 sink 节点对应 resolved TS 会超过 barrier TS，即不会有表的 check point TS 超过 barrier TS。
+TiCDC 产生 barrier TS 后, 会控制只复制小于 barrier TS 的数据下游。然后通过比较 global checkpoint TS 和 barrier TS 定小于 barrier TS 是否已经被同步完成。如果 global checkpoint TS = barrier TS，则说明所有小于 barrier TS 的数据都已经被同步完成，则可以开始继续同步小于 barrier TS 的数据。如果等式不成立，说明还有小于 barrier TS 的数据没有被同步到下游，TiCDC 则需要继续等待所有小于 barrier TS 数据的同步完成。
 
 ## 主要流程
 
