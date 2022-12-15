@@ -120,9 +120,9 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
     独立部署 TiDB Dashboard，可以获得以下收益：
 
-        - TiDB Dashboard 的计算将不会再对 PD 节点有压力，可以更好的保障集群运行。
-        - 如果 PD 节点因异常不可访问，也还可以继续使用 TiDB Dashboard 进行集群诊断。
-        - 在开放 TiDB Dashboard 到外网时，不用担心 PD 中的特权端口的权限问题，降低集群的安全风险。
+    - TiDB Dashboard 的计算将不会再对 PD 节点有压力，可以更好的保障集群运行。
+    - 如果 PD 节点因异常不可访问，也还可以继续使用 TiDB Dashboard 进行集群诊断。
+    - 在开放 TiDB Dashboard 到外网时，不用担心 PD 中的特权端口的权限问题，降低集群的安全风险。
 
     更多信息，参考 [TiDB Operator 部署独立的 TiDB Dashboard](https://docs.pingcap.com/zh/tidb-in-kubernetes/dev/get-started#部署独立的-tidb-dashboard)。
 
@@ -256,7 +256,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
 * TiCDC 性能提升 **tw@shichun-0415
 
-    在 TiDB 场景测试验证中， TiCDC 的性能得到了比较大提升。
+    在 TiDB 场景测试验证中，TiCDC 的性能得到了比较大提升。
 
     单台 TiCDC 节点能处理的最大行变更吞吐可以达到 30K rows/s，同步延迟降低到 10s。即使在常规的 TiKV/TiCDC 滚动升级场景，同步延迟也小于 30s；在容灾场景测试中，打开 TiCDC Redo log 和 Syncpoint 后，吞吐为 xx rows/s 时，容灾复制延迟可以保持在 x s。
 
@@ -272,7 +272,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
 * TiDB 快照备份支持断点续传 [#38647](https://github.com/pingcap/tidb/issues/38647) @[Leavrth](https://github.com/Leavrth) **tw@shichun-0415
 
-    TiDB 快照备份功能支持断点续传。当 BR 遇到对可恢复的错误时会进行重试，但是超过固定重试次数之后会备份退出。断点续传功能允许对持续更长时间的可恢复故障进行重试恢复，比如几十分钟的的网络故障。
+    TiDB 快照备份功能支持断点续传。当 BR 遇到对可恢复的错误时会进行重试，但是超过固定重试次数之后会备份退出。断点续传功能允许对持续更长时间的可恢复故障进行重试恢复，比如几十分钟的网络故障。
 
     需要注意的是，如果你没有在 BR 退出后一个小时内完成故障恢复，那么还未备份的快照数据可能会被 GC 机制回收，而造成备份失败。更多信息，请参考[用户文档](/br/br-checkpoint.md)。
 
@@ -282,7 +282,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
 * TiKV-BR 工具 GA, 支持 RawKV 的备份和恢复 [#67](https://github.com/tikv/migration/issues/67) @[pingyu](https://github.com/pingyu) @[haojinming](https://github.com/haojinming) **tw@shichun-0415**
 
-    TiKV-BR 是一个 TiKV 集群的备份和恢复工具。TiKV 可以独立于 TiDB，与 PD 构成 KV 数据库，此时的产品形态为 RawKV。TiKV-BR 工具支持对使用 RawKV 的产品进行备份和恢复，也支持将 TiKV 集群中的数据从 `API V1` 备份为 `API V2` 数据， 以实现 TiKV 集群 [`api-version`](/tikv-configuration-file.md#api-version-从-v610-版本开始引入) 的升级。
+    TiKV-BR 是一个 TiKV 集群的备份和恢复工具。TiKV 可以独立于 TiDB，与 PD 构成 KV 数据库，此时的产品形态为 RawKV。TiKV-BR 工具支持对使用 RawKV 的产品进行备份和恢复，也支持将 TiKV 集群中的数据从 `API V1` 备份为 `API V2` 数据，以实现 TiKV 集群 [`api-version`](/tikv-configuration-file.md#api-version-从-v610-版本开始引入) 的升级。
 
     更多信息，请参考[用户文档](https://tikv.org/docs/latest/concepts/explore-tikv-features/backup-restore/)。
 
@@ -445,7 +445,7 @@ v6.5.0 的下一个 v6.x 版本（即 v6.6.0） 将废弃 v4.0.7 版本引入的
 
         - (dup) 修复 BR 删除日志备份数据时，会删除不应被删除的数据的问题 [#38939](https://github.com/pingcap/tidb/issues/38939) @[Leavrth](https://github.com/Leavrth)
         - (dup) 修复数据库或数据表中使用旧的排序规则框架时，数据恢复失败的问题[#39150](https://github.com/pingcap/tidb/issues/39150) @[MoCuishle28](https://github.com/MoCuishle28)
-        - 修复因非 s3 存储的不兼容请求导致备份 panic 的问题 [39545](https://github.com/pingcap/tidb/issues/39545) @[3pointer](https://github.com/3pointer)
+        - 复阿里云和华为云跟 S3 存储不完全兼容导致的备份失败的问题 [39545](https://github.com/pingcap/tidb/issues/39545) @[3pointer](https://github.com/3pointer)
 
     + TiCDC
 
