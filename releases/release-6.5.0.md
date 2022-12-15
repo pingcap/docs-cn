@@ -166,9 +166,9 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
     更多信息，请参考[用户文档](/cost-model.md#cost-model-version-2)。
 
-* TiFlash 对获取表行数的操作进行针对优化 [#37165](https://github.com/pingcap/tidb/issues/37165) @[elsa0520](https://github.com/elsa0520)
+* TiFlash 对获取表行数的操作进行优化 [#37165](https://github.com/pingcap/tidb/issues/37165) @[elsa0520](https://github.com/elsa0520)
 
-    在数据分析的场景中，通过无过滤条件的 `count(*)` 获取表的实际行数是一个常见操作。 TiFlash 在新版本中优化了 `count(*)` 的改写，自动选择带有“非空”属性的数据类型最短的列进行计数， 可以有效降低 TiFlash 上发生的 I/O 数量，进而提升获取表行数的执行效率。
+    在数据分析的场景中，通过无过滤条件的 `COUNT(*)` 获取表的实际行数是一个常见操作。TiFlash 在 v6.5.0 中优化了 `COUNT(*)` 的改写，自动选择带有“非空”属性且列定义最短的列进行计数，这样可以有效降低 TiFlash 上发生的 I/O 数量，进而提升获取表行数的执行效率。
 
 ### 稳定性
 
@@ -292,6 +292,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
 | 变量名  | 修改类型                      | 描述 |
 |--------|------------------------------|------|
+|[`tidb_enable_amend_pessimistic_txn`](/system-variables.md#tidb_enable_amend_pessimistic_txn-从-v407-版本开始引入)| 废弃 | 从 v6.5.0 开始，该变量被废弃，TiDB 会默认使用[元数据锁](/metadata-lock.md)机制解决 `Information schema is changed` 报错的问题。|
 | [`tidb_cost_model_version`](/system-variables.md#tidb_cost_model_version-从-v620-版本开始引入) | 修改 | 该变量默认值从 `1` 修改为 `2`，表示默认使用 Cost Model Version 2 进行索引选择和算子选择。 |
 | [`tidb_enable_metadata_lock`](/system-variables.md#tidb_enable_metadata_lock-从-v630-版本开始引入) | 修改 | 该变量默认值从 `OFF` 修改为 `ON`，表示默认开启元数据锁。 |
 | [`tidb_enable_tiflash_read_for_write_stmt`](/system-variables.md#tidb_enable_tiflash_read_for_write_stmt-从-v630-版本开始引入) | 修改 | 该变量从 v6.5.0 开始生效，默认值为 `OFF`，用来控制包含增删改的 SQL 语句中的读取操作能否下推到 TiFlash。|
@@ -330,7 +331,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 | -------- | -------- | -------- | -------- |
 | TiDB | [`server-memory-quota`](/tidb-configuration-file.md#server-memory-quota-从-v409-版本开始引入) | 废弃 | 自 v6.5.0 起，该配置项被废弃。请使用 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 系统变量进行设置。 |
 | TiDB | [`disconnect-on-expired-password`](/tidb-configuration-file.md#disconnect-on-expired-password`-从-v650-版本开始引入) | 新增 | 该配置用于控制 TiDB 服务端是否直接断开密码已过期用户的连接，默认值为 `true`，表示 TiDB 服务端将直接断开密码已过期用户的连接 |
-| TiKV | [`raw-min-ts-outlier-threshold`] | 删除 | 从 v6.4.0，该配置项被废弃。从 v6.5.0，该配置项被删除。 |
+| TiKV | `raw-min-ts-outlier-threshold` | 删除 | 从 v6.4.0，该配置项被废弃。从 v6.5.0，该配置项被删除。 |
 | TiKV | [`cdc.min-ts-interval`](/tikv-configuration-file.md#min-ts-interval) | 修改 | 默认值从 `1s` 修改为 `200ms`。 |
 | TiKV | [`memory-use-ratio`](/tikv-configuration-file.md#memory-use-ratio-从-v650-版本开始引入) | 新增 | 表示 PITR 日志恢复功能中可用内存与系统总内存的占比。 |
 
@@ -341,7 +342,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
 ## 废弃功能
 
-v6.5.0 的下一个 v6.x 版本（即 v6.6.0） 将废弃 v4.0.7 版本引入的 [`AMEND TRANSACTION`](/system-variables.md#tidb_enable_amend_pessimistic_txn-从-v407-版本开始引入) 机制，并使用[元数据锁](/metadata-lock.md) 替代。
+v6.5.0 版本开始废弃 v4.0.7 版本引入的 [`AMEND TRANSACTION`](/system-variables.md#tidb_enable_amend_pessimistic_txn-从-v407-版本开始引入) 机制，并使用[元数据锁](/metadata-lock.md)替代。
 
 ## 改进提升
 
