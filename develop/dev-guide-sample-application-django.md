@@ -788,7 +788,7 @@ def trade(request):
             return HttpResponse("")
         ```
 
-    - 调用 `Player` 数据模型的 `all` 函数，并仅获取 前`limit` 个数据。注意此处 Django 并不会获取所有数据并在内存中切分前 `limit` 个数据。而是在使用时再请求数据库的前 `limit` 个数据。这是由于 Django 重写了切片操作符，并且 QuerySet 对象是**惰性**的。这意味着对一个未执行的 QuerySet 进行切片，将继续返回一个未执行的 QuerySet。直到你第一次真正的请求 QuerySet 内的数据，例如此处使用 `set` 函数对其进行迭代并返回整个 set。
+    - 调用 `Player` 数据模型的 `all` 函数，并仅获取 前`limit` 个数据。注意此处 Django 并不会获取所有数据并在内存中切分前 `limit` 个数据。而是在使用时再请求数据库的前 `limit` 个数据。这是由于 Django 重写了切片操作符，并且 QuerySet 对象是**惰性**的。这意味着对一个未执行的 QuerySet 进行切片，将继续返回一个未执行的 QuerySet。直到你第一次真正的请求 QuerySet 内的数据，例如此处使用 `set` 函数对其进行迭代并返回整个 set。你可以参考 [Django QuerySet API 参考](https://docs.djangoproject.com/zh-hans/3.2/ref/models/querysets/)文档来获取更多信息。
 
         ```python
         players = set(Player.objects.all()[:limit])
