@@ -305,7 +305,7 @@ trade_example()
 
 `Player` 类为数据库表在程序内的映射。`Player` 的每个属性都对应着 `player` 表的一个字段。SQLAlchemy 使用 `Player` 类为了给 SQLAlchemy 提供更多的信息，使用了形如 `id = CharField(max_length=36, primary_key=True)` 的类型，用来指示字段类型和其附加属性。如此处，则表示 `id` 字段为 `CharField` 类型，对应数据库类型为 `VARCHAR`, 长度为 `36`，且为主键。
 
-如需更多 peewee 的使用方法，请访问 [peewee 官网](http://docs.peewee-orm.com/en/latest/)以获取更多信息。
+关于 peewee 的更多使用方法，你可以参考 [peewee 官网](http://docs.peewee-orm.com/en/latest/)。
 
 </div>
 
