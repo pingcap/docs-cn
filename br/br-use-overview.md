@@ -1,6 +1,6 @@
 ---
 title: TiDB 备份与恢复功能使用概述
-summary: 了解如何部署和使用 BR 进行 TiDB 集群的备份与恢复。
+summary: 了解如何部署和使用 TiDB 集群的备份与恢复。
 aliases: ['/zh/tidb/dev/br-deployment/']
 ---
 
@@ -32,16 +32,16 @@ BR 只提供备份和恢复的基础功能，尚不支持备份管理的功能�
 
 **选择备份存储**
 
-Amazon S3、Google Cloud Storage (GCS)、Azure Blob Storage 是 BR 推荐的存储系统选择，使用这些系统，你无需担心备份容量、备份带宽规划等。
+Amazon S3、Google Cloud Storage (GCS)、Azure Blob Storage 是推荐的存储系统选择，使用这些系统，你无需担心备份容量、备份带宽规划等。
 
 如果 TiDB 集群部署在自建机房中，则推荐以下方式：
 
 * 搭建 [MinIO](https://docs.min.io/docs/minio-quickstart-guide.html) 作为备份存储系统，使用 S3 协议将数据备份到 MinIO 中。
-* 挂载 NFS（如 NAS）盘到 BR 和所有的 TiKV 实例，使用 POSIX file system 接口将备份数据写入对应的 NFS 目录中。
+* 挂载 NFS（如 NAS）盘到 br 工具和所有的 TiKV 实例，使用 POSIX file system 接口将备份数据写入对应的 NFS 目录中。
 
 > **注意：**
 >
-> 如果没有挂载 NFS 到 BR 或 TiKV 节点，或者使用了支持 S3、GCS 或 Azure Blob Storage 协议的远端存储，那么 BR 备份的数据会在各个 TiKV 节点生成。**注意这不是推荐的 BR 使用方式**，因为备份数据会分散在各个节点的本地文件系统中，聚集这些备份数据可能会造成数据冗余和运维上的麻烦，而且在不聚集这些数据便直接恢复的时候会遇到 `SST file not found` 报错。
+> 如果没有挂载 NFS 到 br 工具或 TiKV 节点，或者使用了支持 S3、GCS 或 Azure Blob Storage 协议的远端存储，那么 br 工具备份的数据会在各个 TiKV 节点生成。**注意这不是推荐的 br 工具使用方式**，因为备份数据会分散在各个节点的本地文件系统中，聚集这些备份数据可能会造成数据冗余和运维上的麻烦，而且在不聚集这些数据便直接恢复的时候会遇到 `SST file not found` 报错。
 
 **组织备份数据目录**
 
@@ -68,7 +68,7 @@ Amazon S3、Google Cloud Storage (GCS)、Azure Blob Storage 是 BR 推荐的存�
 - BR、TiKV 节点和备份存储系统需要提供大于备份速度的的网络带宽。当集群特别大的时候，备份和恢复速度上限受限于备份网络的带宽。
 - 备份存储系统还需要提供足够的写入/读取性能 (IOPS)，否则它有可能成为备份恢复时的性能瓶颈。
 - TiKV 节点需要为备份准备至少额外的两个 CPU core 和高性能的磁盘，否则备份将对集群上运行的业务产生影响。
-- 推荐 BR 运行在 8 核+/16 GB+ 的节点上。
+- 推荐 br 工具运行在 8 核+/16 GB+ 的节点上。
 
 目前支持以下几种方式来使用 BR。
 
@@ -76,8 +76,8 @@ Amazon S3、Google Cloud Storage (GCS)、Azure Blob Storage 是 BR 推荐的存�
 
 TiDB 支持使用 br 工具进行备份恢复。
 
-* 安装方法可以使用[使用 TiUP 在线安装](/migration-tools.md#使用-tiup-快速安装)：`tiup install br`。
-* 了解如何使用 `br` 命令含工具进行备份与恢复，请参阅：
+* 安装方法可以[使用 TiUP 在线安装](/migration-tools.md#使用-tiup-快速安装)：`tiup install br`。
+* 了解如何使用 `br` 命令行工具进行备份与恢复，请参阅：
 
     * [TiDB 快照备份与恢复功能使用](/br/br-snapshot-guide.md)
     * [TiDB 日志备份与 PITR 功能使用](/br/br-pitr-guide.md)
@@ -93,7 +93,7 @@ TiDB 支持使用 SQL 语句进行全量快照备份和恢复：
 
 ### 在 Kubernetes 环境下通过 TiDB Operator
 
-在 Kubernetes 环境下，支持通过 TiDB Operator 支持以 S3、GCS、Azure blob storage 作为备份存储。使用文档请参阅[使用 TiDB Operator 进行备份恢复](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/backup-restore-overview)。
+在 Kubernetes 环境下，支持通过 TiDB Operator 支持以 S3、GCS、Azure blob storage 作为备份存储，并从这些存储系统中恢复备份数据。使用文档请参阅[使用 TiDB Operator 进行备份恢复](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/backup-restore-overview)。
 
 ## 探索更多
 

@@ -21,7 +21,7 @@ summary: 了解 TiDB 的日志备份与 PITR 的架构设计。
 
 系统组件和关键概念：
 
-* **local meta**：表示单 TiKV 节点备份下来的数据元信息，主要包括：local checkpoint ts、global checkpoint ts、备份文件信息。
+* **local metadata**：表示单 TiKV 节点备份下来的数据元信息，主要包括：local checkpoint ts、global checkpoint ts、备份文件信息。
 * **local checkpoint ts** (in local metadata)：表示这个 TiKV 中所有小于 local checkpoint ts 的日志数据已经备份到目标存储。
 * **global checkpoint ts**：表示所有 TiKV 中小于 global checkpoint ts 的日志数据已经备份到目标存储。它由运行在 TiDB 中的 Coordinator 模块收集所有 TiKV 的 local checkpoint ts 计算所得，然后上报给 PD。
 * **TiDB Coordinator 组件**：TiDB 集群的某个节点会被选举为 Coordinator，负责收集和计算整个日志备份任务的进度 (global checkpoint ts)。该组件设计上无状态，在其故障后可以从存活的 TiDB 节点中重新选出一个节点作为 Coordinator。
@@ -59,7 +59,7 @@ PITR 的流程如下：
 
 1. BR 接收恢复命令 `br restore point`。
    * 解析获取全量备份数据地址、日志备份数据地址、恢复到的时间点。
-   * 查询备份数据中恢复数据对象（database 或 table），并检查要恢复的表是否符合要求不存在。
+   * 查询备份数据中恢复数据对象（database 或 table），并检查要恢复的表是否存在并符合要求。
 
 2. BR 恢复全量备份。
    * 进行快照备份数据恢复，恢复流程参考[恢复快照备份数据](/br/br-snapshot-architecture.md#恢复流程)。
@@ -88,7 +88,7 @@ PITR 的流程如下：
 日志备份会产生如下类型文件：
 
 - `{min_ts}-{uuid}.log` 文件：存储备份下来的 kv 数据变更记录。其中 `{min_ts}` 是该文件中所有 kv 数据变更记录数对应的最小 ts；`{uuid}` 是生成该文件的时候随机生成的。
-- `{checkpoint_ts}-{uuid}.meta` 文件：每个 TiKV 节点每次上传日志备份数据时会生成一个该文件，保存本次上传的所有日志备份数据文件其中 `{checkpoint_ts}` 是本节点的日志备份的 checkpoint，所有 TiKV 节点的最小的 checkpoint 就是日志备份任务最新的 checkpoint；`{uuid}` 是生成该文件的时候随机生成的。
+- `{checkpoint_ts}-{uuid}.meta` 文件：每个 TiKV 节点每次上传日志备份数据时会生成一个该文件，保存本次上传的所有日志备份数据文件。其中 `{checkpoint_ts}` 是本节点的日志备份的 checkpoint，所有 TiKV 节点的最小的 checkpoint 就是日志备份任务最新的 checkpoint；`{uuid}` 是生成该文件的时候随机生成的。
 - `{store_id}.ts` 文件：每个 TiKV 节点每次上传日志备份数据时会使用 global checkpoint ts 更新该文件。其中 `{store_id}` 是 TiKV 的 store ID。
 - `v1_stream_truncate_safepoint.txt` 文件：保存最近一次通过 `br log truncate` 删除日志备份数据后，存储中最早的日志备份数据对应的 ts。
 

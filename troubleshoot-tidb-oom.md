@@ -163,7 +163,7 @@ TiDB 节点启动后需要加载统计信息到内存中。统计信息的收集
     - `mem-quota-query`
     - `oom-action`
     - `tidb_enable_rate_limit_action`
-    - `server-memory-quota`
+    - `tidb_server_memory_limit`
     - `oom-use-tmp-storage`
     - `tmp-storage-path`
     - `tmp-storage-quota`
@@ -189,7 +189,7 @@ TiDB 节点启动后需要加载统计信息到内存中。统计信息的收集
 - 执行 `grep "tidb-server has the risk of OOM" tidb.log` 查看 TiDB Server 收集的告警文件路径，例如：
 
     ```shell
-    ["tidb-server has the risk of OOM. Running SQLs and heap profile will be recorded in record path"] ["is server-memory-quota set"=false] ["system memory total"=14388137984] ["system memory usage"=11897434112] ["tidb-server memory usage"=11223572312] [memory-usage-alarm-ratio=0.8] ["record path"="/tmp/0_tidb/MC4wLjAuMDo0MDAwLzAuMC4wLjA6MTAwODA=/tmp-storage/record"]
+    ["tidb-server has the risk of OOM. Running SQLs and heap profile will be recorded in record path"] ["is tidb_server_memory_limit set"=false] ["system memory total"=14388137984] ["system memory usage"=11897434112] ["tidb-server memory usage"=11223572312] [memory-usage-alarm-ratio=0.8] ["record path"="/tmp/0_tidb/MC4wLjAuMDo0MDAwLzAuMC4wLjA6MTAwODA=/tmp-storage/record"]
     ```
 
 ## 探索更多

@@ -13,8 +13,6 @@ Avro 是由 [Apache Avro™](https://avro.apache.org/) 定义的一种数据交�
 
 使用 Avro 时的配置样例如下所示：
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 cdc cli changefeed create --pd=http://127.0.0.1:2379 --changefeed-id="kafka-avro" --sink-uri="kafka://127.0.0.1:9092/topic-name?protocol=avro" --schema-registry=http://127.0.0.1:8081 --config changefeed_config.toml
 ```
@@ -38,8 +36,6 @@ dispatchers = [
 
 配置样例如下所示：
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 cdc cli changefeed create --pd=http://127.0.0.1:2379 --changefeed-id="kafka-avro-enable-extension" --sink-uri="kafka://127.0.0.1:9092/topic-name?protocol=avro&enable-tidb-extension=true" --schema-registry=http://127.0.0.1:8081 --config changefeed_config.toml
 ```
@@ -57,7 +53,7 @@ TiCDC 会将一个 DML 事件转换为一个 kafka 事件，其中事件的 key 
 
 ### Key 数据格式
 
-```
+```shell
 {
     "name":"{{TableName}}",
     "namespace":"{{Namespace}}",
@@ -77,7 +73,7 @@ Key 中的 `fields` 只包含主键或唯一索引列。
 
 ### Value 数据格式
 
-```
+```shell
 {
     "name":"{{TableName}}",
     "namespace":"{{Namespace}}",
@@ -93,7 +89,7 @@ Value 数据格式默认与 Key 数据格式相同，但是 Value 的 `fields` �
 
 如果开启了 [TiDB 扩展字段](#tidb-扩展字段)，那么 Value 数据格式将会变成：
 
-```
+```shell
 {
     "name":"{{TableName}}",
     "namespace":"{{Namespace}}",
@@ -123,7 +119,7 @@ Value 数据格式默认与 Key 数据格式相同，但是 Value 的 `fields` �
 
 Column 数据格式即 Key/Value 数据格式中的 `{{ColumnValueBlock}}` 部分，TiCDC 会根据 SQL Type 生成对应的 Column 数据格式。基础的 Column 数据格式是：
 
-```
+```shell
 {
     "name":"{{ColumnName}}",
     "type":{
@@ -137,7 +133,7 @@ Column 数据格式即 Key/Value 数据格式中的 `{{ColumnValueBlock}}` 部�
 
 如果一列可以为 NULL，那么 Column 数据格式是：
 
-```
+```shell
 {
     "default":null,
     "name":"{{ColumnName}}",
@@ -204,8 +200,6 @@ Column 数据格式即 Key/Value 数据格式中的 `{{ColumnValueBlock}}` 部�
 
 配置样例如下所示：
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 cdc cli changefeed create --pd=http://127.0.0.1:2379 --changefeed-id="kafka-avro-string-option" --sink-uri="kafka://127.0.0.1:9092/topic-name?protocol=avro&avro-decimal-handling-mode=string&avro-bigint-unsigned-handling-mode=string" --schema-registry=http://127.0.0.1:8081 --config changefeed_config.toml
 ```
@@ -221,7 +215,7 @@ dispatchers = [
 
 BIT(64)
 
-```
+```shell
 {
     "name":"{{ColumnName}}",
     "type":{
@@ -251,7 +245,7 @@ ENUM/SET(a,b,c)
 
 DECIMAL(10, 4)
 
-```
+```shell
 {
     "name":"{{ColumnName}}",
     "type":{

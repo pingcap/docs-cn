@@ -22,7 +22,7 @@ TiDB 版本：6.2.0-DMR
 - 支持 [point-in-time recovery (PITR)](/br/backup-and-restore-overview.md)，允许恢复备份集群的历史任意时间点的快照。
 - TiDB Lightning 使用 Physical Import Mode [导入时限制调度范围从集群降低到表级别](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#导入时限制调度范围从集群降低到表级别)。
 - Backup & Restore (BR) 支持[恢复用户和权限数据](/br/br-snapshot-guide.md#恢复-mysql-数据库下的表)，备份恢复体验更平滑。
-- TiCDC 支持[过滤指定类型的 DDL 事件](/ticdc/manage-ticdc.md#event-filter-配置规则-从-v620-版本开始引入)，解锁更多数据同步场景。
+- TiCDC 支持[过滤指定类型的 DDL 事件](/ticdc/ticdc-filter.md#event-filter-事件过滤器-从-v620-版本开始引入)，解锁更多数据同步场景。
 - 事务中支持 [`SAVEPOINT` 机制](/sql-statements/sql-statement-savepoint.md)，可以灵活地控制事务内的回退节点。
 - [单 `ALTER TABLE` 语句增删改多个列或索引](/sql-statements/sql-statement-alter-table.md)，方便实现 SQL 功能，提升产品易用性。
 - 支持 [RawKV 跨集群复制](/tikv-configuration-file.md#api-version-从-v610-版本开始引入)。
@@ -226,7 +226,7 @@ TiDB 版本：6.2.0-DMR
 
     在一些特殊的场景下，用户可能希望对 TiDB 增量数据变更日志进行一定规则的过滤，例如过滤 Drop Table 等高风险 DDL。自 v6.2.0 起，TiCDC 支持过滤指定类型的 DDL 事件，支持基于 SQL 表达式过滤 DML 事件，从而适应更多的数据同步场景。
 
-    [用户文档](/ticdc/manage-ticdc.md#event-filter-配置规则-从-v620-版本开始引入) [#6160](https://github.com/pingcap/tiflow/issues/6160) @[asddongmen](https://github.com/asddongmen)
+    [用户文档](/ticdc/ticdc-filter.md#event-filter-事件过滤器-从-v620-版本开始引入) [#6160](https://github.com/pingcap/tiflow/issues/6160) @[asddongmen](https://github.com/asddongmen)
 
 ## 兼容性变更
 
@@ -275,8 +275,8 @@ TiDB 版本：6.2.0-DMR
 | TiFlash | [`storage.format_version`](/tiflash/tiflash-configuration.md#tiflash-配置参数) | 修改 | `format_version` 默认值变更为 4，v6.2.0 及以后版本的默认文件格式，优化了写放大问题，同时减少了后台线程消耗。 |
 | TiFlash | [profiles.default.dt_enable_read_thread](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml) | 新增 | 控制存储引擎是否使用线程池读取数据。默认值为 false，不使用线程池读取数据。 |
 | TiFlash | [profiles.default.dt_page_gc_threshold](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml) | 新增 | 表示 PageStorage 单个数据文件中有效数据的最低比例。 |
-| TiCDC | [--overwrite-checkpoint-ts](/ticdc/manage-ticdc.md#恢复同步任务) | 新增 | 在 cdc cli changefeed resume 子命令下新增的参数。 |
-| TiCDC | [--no-confirm](/ticdc/manage-ticdc.md#恢复同步任务) | 新增 | 在 cdc cli changefeed resume 子命令下新增的参数。 |
+| TiCDC | [--overwrite-checkpoint-ts](/ticdc/ticdc-manage-changefeed.md#恢复同步任务) | 新增 | 在 cdc cli changefeed resume 子命令下新增的参数。 |
+| TiCDC | [--no-confirm](/ticdc/ticdc-manage-changefeed.md#恢复同步任务) | 新增 | 在 cdc cli changefeed resume 子命令下新增的参数。 |
 | DM | [mode](/dm/task-configuration-file-full.md#完整配置文件示例) | 新增 | Validator 参数，取值可以是 full、fast，默认是 none，即不开启校验。 |
 | DM | [worker-count](/dm/task-configuration-file-full.md#完整配置文件示例) | 新增 | Validator 参数，后台校验的 validation worker 数量，默认是 4 个。 |
 | DM | [row-error-delay](/dm/task-configuration-file-full.md#完整配置文件示例) | 新增 | Validator 参数，某一行多久没有验证通过会报错，默认是 30 min。 |
