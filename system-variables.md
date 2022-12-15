@@ -3120,7 +3120,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 是否持久化到集群：是
 - 默认值：`1`
 - 范围：`[1, 256]`
-- 这个变量用来设置内部 SQL（比如统计信息自动更新）的 scan 操作的并发度。
+- 这个变量用来设置 TiDB 执行内部 SQL 语句（例如统计信息自动更新） 时 scan 操作的并发度。
 
 ### `tidb_table_cache_lease` <span class="version-mark">从 v6.0.0 版本开始引入</span>
 

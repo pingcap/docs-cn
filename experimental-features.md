@@ -16,6 +16,7 @@ aliases: ['/docs-cn/dev/experimental-features-4.0/','/zh/tidb/dev/experimental-f
 + [FastScan](/develop/dev-guide-use-fastscan.md)（v6.2.0 实验特性）
 + [随机采样约 10000 行数据来快速构建统计信息](/system-variables.md#tidb_enable_fast_analyze)（v3.0 实验特性）
 + [全局控制 tidb-server 实例的内存使用量](/configure-memory-usage.md#如何配置-tidb-server-实例使用内存的阈值)（v6.4 实验特性）
++ [锁定统计信息](/statistics.md#锁定统计信息)（v6.5.0 实验特性）
 
 ## 稳定性
 
