@@ -467,8 +467,8 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
     + TiDB Data Migration (DM)
 
-        - 修复在上游开启 GTID mode 且无数据时，无法启动 all mode 任务的问题 [#7037](https://github.com/pingcap/tiflow/issues/7037) @[liumengya94](https://github.com/liumengya94)
-        - (dup) 修复当 DM worker 即将退出时新 worker 调度过快导致数据被重复同步的问题 [#7658](https://github.com/pingcap/tiflow/issues/7658) @[GMHDBJD](https://github.com/GMHDBJD)
+        - 修复在上游开启 `GTID` mode 且无数据时，无法启动 `all` mode 任务的问题 [#7037](https://github.com/pingcap/tiflow/issues/7037) @[liumengya94](https://github.com/liumengya94)
+        - 修复当 DM worker 即将退出时新 worker 调度过快导致数据被重复同步的问题 [#7658](https://github.com/pingcap/tiflow/issues/7658) @[GMHDBJD](https://github.com/GMHDBJD)
         - 修复上游数据库使用正则匹配授权时 DM 前置检查不通过的错误 [#7645](https://github.com/pingcap/tiflow/issues/7645) @[lance6716](https://github.com/lance6716)
 
     + TiDB Lightning
