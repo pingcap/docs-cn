@@ -120,7 +120,7 @@ In the following statement, the order of column `a` is guaranteed, but the order
 3 rows in set (0.00 sec)
 ```
 
-In TiDB, you can also use the system variable [`tidb_enable_ordered_result_mode`](/system-variables.md#tidb_enable_ordered_result_mode) to sort the final output result automatically.  
+In TiDB, you can also use the system variable [`tidb_enable_ordered_result_mode`](/system-variables.md#tidb_enable_ordered_result_mode) to sort the final output result automatically.
 
 ## Does TiDB support `SELECT FOR UPDATE`?
 
@@ -199,7 +199,7 @@ The display content of TiDB `SHOW PROCESSLIST` is almost the same as that of MyS
 
 ## How to control or change the execution priority of SQL commits?
 
-TiDB supports changing the priority on a [per-session](/system-variables.md#tidb_force_priority), [global](/system-variables.md#tidb_force_priority) or individual statement basis. Priority has the following meaning:
+TiDB supports changing the priority on a [global](/system-variables.md#tidb_force_priority) or individual statement basis. Priority has the following meaning:
 
 - `HIGH_PRIORITY`: this statement has a high priority, that is, TiDB gives priority to this statement and executes it first.
 
