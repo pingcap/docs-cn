@@ -341,7 +341,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
 ## 废弃功能
 
-即将于 v6.6.0 版本废弃 v4.0.7 版本引入的 Amending Transaction 机制，并使用[元数据锁](/metadata-lock.md) 替代。
+v6.5.0 的下一个 v6.x 版本（即 v6.6.0） 将废弃 v4.0.7 版本引入的 [`AMEND TRANSACTION`](/system-variables.md#tidb_enable_amend_pessimistic_txn-从-v407-版本开始引入) 机制，并使用[元数据锁](/metadata-lock.md) 替代。
 
 ## 改进提升
 
@@ -471,3 +471,12 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 感谢来自 TiDB 社区的贡献者们：
 
 - [贡献者 GitHub ID](链接)
+- [e1ijah1](https://github.com/e1ijah1)
+- [guoxiangCN](https://github.com/guoxiangCN)（首次贡献者）
+- [jiayang-zheng](https://github.com/jiayang-zheng)
+- [jiyfhust](https://github.com/jiyfhust)
+- [mikechengwei](https://github.com/mikechengwei)
+- [pingandb](https://github.com/pingandb)
+- [sashashura](https://github.com/sashashura)
+- [sourcelliu](https://github.com/sourcelliu)
+- [wxbty](https://github.com/wxbty)
