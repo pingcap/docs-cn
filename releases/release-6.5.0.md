@@ -162,7 +162,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
     TiDB v6.2.0 引入了代价模型 [Cost Model Version 2](/cost-model.md#cost-model-version-2) 作为实验特性，通过更准确的代价估算方式，有利于最优执行计划的选择。尤其在部署了 TiFlash 的情况下，Cost Model Version 2 自动选择合理的存储引擎，避免过多的人工介入。经过一段时间真实场景的测试，这个模型在 v6.5.0 正式 GA。新创建的集群将默认使用 Cost Model Version 2。对于升级到 v6.5.0 的集群，由于 Cost Model Version 2 可能会改变原有的执行计划，在经过充分的性能测试之后，你可以通过设置变量 [`tidb_cost_model_version = 2`](/system-variables.md#tidb_cost_model_version-从-v620-版本开始引入) 使用新的代价模型。
 
-    Cost Model Version 2 成为正式功能大幅提升了 TiDB 优化器的整体能力，并切实地向更加强大的 HTAP 数据库演进。
+    Cost Model Version 2 成为正式功能大幅提升了 TiDB 优化器的整体能力，并使 TiDB 切实地向更加强大的 HTAP 数据库演进。
 
     更多信息，请参考[用户文档](/cost-model.md#cost-model-version-2)。
 
@@ -351,9 +351,8 @@ v6.5.0 的下一个 v6.x 版本（即 v6.6.0） 将废弃 v4.0.7 版本引入的
 
 + TiKV
 
-    - `cdc.min-ts-interval` 默认值从 `1s` 改为 `200ms` 以降低 CDC 延迟 [#12840](https://github.com/tikv/tikv/issues/12840) @[hicqu](https://github.com/hicqu)
     - 当剩余空间不足时停止 Raft Engine 的写入以避免硬盘空间耗尽 [#13642](https://github.com/tikv/tikv/issues/13642) @[jiayang-zheng](https://github.com/jiayang-zheng)
-    - 实现 `json_valid` 函数下推 [#13571](https://github.com/tikv/tikv/issues/13571) @[lizhenhuan](https://github.com/lizhenhuan)
+    - 支持将 `json_valid` 函数下推至 TiKV [#13571](https://github.com/tikv/tikv/issues/13571) @[lizhenhuan](https://github.com/lizhenhuan)
     - 支持在一个备份请求中同时备份多个范围的数据 [#13701](https://github.com/tikv/tikv/issues/13701) @[Leavrth](https://github.com/Leavrth)
     - 更新 rusoto 库以支持备份到 AWS 的 Asia Pacific (Jakarta) 区域 (ap-southeast-3) [#13751](https://github.com/tikv/tikv/issues/13751) @[3pointer](https://github.com/3pointer)
     - 减少悲观事务冲突 [#13298](https://github.com/tikv/tikv/issues/13298) @[MyonKeminta](https://github.com/MyonKeminta)
@@ -361,7 +360,7 @@ v6.5.0 的下一个 v6.x 版本（即 v6.6.0） 将废弃 v4.0.7 版本引入的
     - 在专用线程中运行 CheckLeader 以缩短 TiCDC 的复制延迟 [#13774](https://github.com/tikv/tikv/issues/13774) @[overvenus](https://github.com/overvenus)
     - Checkpoint 支持拉取模式 [#13824](https://github.com/tikv/tikv/issues/13824) @[YuJuncen](https://github.com/YuJuncen)
     - 升级 crossbeam-channel 以优化发送端的自旋问题 [#13815](https://github.com/tikv/tikv/issues/13815) @[sticnarf](https://github.com/sticnarf)
-    - Coprocessor 支持批量处理 [#13849](https://github.com/tikv/tikv/issues/13849) @[cfzjywxk](https://github.com/cfzjywxk)
+    - TiKV 支持批量处理 Coprocessor 任务 [#13849](https://github.com/tikv/tikv/issues/13849) @[cfzjywxk](https://github.com/cfzjywxk)
     - 故障恢复时通知 TiKV 唤醒休眠的 Region 以减少等待时间 [#13648](https://github.com/tikv/tikv/issues/13648) @[LykxSassinator](https://github.com/LykxSassinator)
     - 通过代码优化减少内存申请的大小 [#13827](https://github.com/tikv/tikv/issues/13827) @[BusyJay](https://github.com/BusyJay)
     - 引入 Raft extension 以提升代码可扩展性 [#13827](https://github.com/tikv/tikv/issues/13827) @[BusyJay](https://github.com/BusyJay)
