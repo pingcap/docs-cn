@@ -169,11 +169,11 @@ simple_example()
 trade_example()
 ```
 
-使用 SQLAlchemy 时，相较于直接使用 Driver，SQLAlchemy 屏蔽了创建数据库连接时，不同数据库差异的细节，其还封装了大量的操作，如会话管理，基本对象的 CRUD 等，极大的简化了代码量。
+相较于直接使用 Driver，SQLAlchemy 屏蔽了创建数据库连接时，不同数据库差异的细节。SQLAlchemy 还封装了大量的操作，如会话管理、基本对象的 CRUD 等，极大地简化了代码量。
 
-`Player` 类为数据库表在程序内的映射。`Player` 的每个属性都对应着 `player` 表的一个字段。SQLAlchemy 使用 `Player` 类为了给 SQLAlchemy 提供更多的信息，使用了形如 `id = Column(String(36), primary_key=True)` 的类型，用来指示字段类型和其附加属性。如此处，则表示 `id` 字段为 `String` 类型，对应数据库类型为 `VARCHAR`, 长度为 `36`，且为主键。
+`Player` 类为数据库表在程序内的映射。`Player` 的每个属性都对应着 `player` 表的一个字段。SQLAlchemy 使用 `Player` 类为了给 SQLAlchemy 提供更多的信息，使用了形如 `id = Column(String(36), primary_key=True)` 的类型，用来指示字段类型和其附加属性。如此处，则表示 `id` 字段为 `String` 类型，对应数据库类型为 `VARCHAR`，长度为 `36`，且为主键。
 
-如需更多 SQLAlchemy 的使用方法，请访问 [SQLAlchemy 官网](https://www.sqlalchemy.org/)以获取更多信息。
+关于 SQLAlchemy 的更多使用方法，你可以参考 [SQLAlchemy 官网](https://www.sqlalchemy.org/)。
 
 </div>
 
@@ -301,7 +301,7 @@ simple_example()
 trade_example()
 ```
 
-使用 peewee 时，相较于直接使用 Driver，peewee 屏蔽了创建数据库连接时，不同数据库差异的细节，其还封装了大量的操作，如会话管理，基本对象的 CRUD 等，极大的简化了代码量。
+相较于直接使用 Driver，peewee 屏蔽了创建数据库连接时，不同数据库差异的细节，其还封装了大量的操作，如会话管理、基本对象的 CRUD 等，极大地简化了代码量。
 
 `Player` 类为数据库表在程序内的映射。`Player` 的每个属性都对应着 `player` 表的一个字段。SQLAlchemy 使用 `Player` 类为了给 SQLAlchemy 提供更多的信息，使用了形如 `id = CharField(max_length=36, primary_key=True)` 的类型，用来指示字段类型和其附加属性。如此处，则表示 `id` 字段为 `CharField` 类型，对应数据库类型为 `VARCHAR`, 长度为 `36`，且为主键。
 
@@ -464,9 +464,9 @@ simple_example()
 trade_example()
 ```
 
-因为 Driver 有着更低的封装程度，因此我们可以在程序内见到大量的 SQL。程序内查询到的 `Player` 对象，与 ORM 不同，因为没有数据对象的存在，因此将以 tuple 进行表示。
+因为 Driver 有着更低的封装程度，因此我们可以在程序内见到大量的 SQL。程序内查询到的 `Player` 对象，与 ORM 不同，因为没有数据对象的存在，因此将以元组 (tuple) 进行表示。
 
-如需更多 mysqlclient 的使用方法，请访问 [mysqlclient 官方文档](https://mysqlclient.readthedocs.io/)以获取更多信息。
+关于 mysqlclient 的更多使用方法，你可以参考 [mysqlclient 官方文档](https://mysqlclient.readthedocs.io/)。
 
 </div>
 
@@ -625,7 +625,7 @@ trade_example()
 
 因为 Driver 有着更低的封装程度，因此我们可以在程序内见到大量的 SQL。程序内查询到的 `Player` 对象，与 ORM 不同，因为没有数据对象的存在，因此将以 dict 进行表示。
 
-如需更多 PyMySQL 的使用方法，请访问 [PyMySQL 官方文档](https://pymysql.readthedocs.io/en/latest/)以获取更多信息。
+关于 PyMySQL 的更多使用方法，你可以参考 [PyMySQL 官方文档](https://pymysql.readthedocs.io/en/latest/)。
 
 </div>
 
@@ -785,7 +785,7 @@ trade_example()
 
 因为 Driver 有着更低的封装程度，因此我们可以在程序内见到大量的 SQL。程序内查询到的 `Player` 对象，与 ORM 不同，因为没有数据对象的存在，因此将以 tuple 进行表示。
 
-如需更多 mysql-connector-python 的使用方法，请访问 [mysql-connector-python 官方文档](https://dev.mysql.com/doc/connector-python/en/)以获取更多信息。
+关于 mysql-connector-python 的更多使用方法，你可以参考 [mysql-connector-python 官方文档](https://dev.mysql.com/doc/connector-python/en/)。
 
 </div>
 
@@ -799,7 +799,7 @@ trade_example()
 
 > **注意：**
 >
-> 在 Gitpod Playground 中尝试 Python 与 TiDB 的连接: [现在就试试](https://gitpod.io/#https://github.com/pingcap-inc/tidb-example-python)
+> 在 Gitpod Playground 中尝试 Python 与 TiDB 的连接：[现在就试试](https://gitpod.io/#https://github.com/pingcap-inc/tidb-example-python)
 
 本示例需手动初始化表，若你使用本地集群，可直接运行：
 
@@ -904,14 +904,14 @@ db = connect('mysql://root:@127.0.0.1:4000/test')
 
 那么此处应将 `connect` 更改为：
 
-1. peewee 将 `PyMySQL` 作为 Driver 时：
+- peewee 将 PyMySQL 作为 Driver 时：
 
     ```python
     db = connect('mysql://2aEp24QWEDLqRFs.root:123456@xxx.tidbcloud.com:4000/test', 
         ssl_verify_cert=True, ssl_ca="<ca_path>")
     ```
 
-2. peewee 将 `mysqlclient` 作为 Driver 时：
+- peewee 将 mysqlclient 作为 Driver 时：
 
     ```python
     db = connect('mysql://2aEp24QWEDLqRFs.root:123456@xxx.tidbcloud.com:4000/test',

@@ -212,7 +212,18 @@ func buildBulkInsertSQL(amount int) string {
 在 Python 中插入多行数据的示例：
 
 ```python
+import MySQLdb
+
+connection = MySQLdb.connect(
+    host="127.0.0.1",
+    port=4000,
+    user="root",
+    password="",
+    database="bookshop",
+    autocommit=True
+)
 with get_connection(autocommit=True) as connection:
+
     with connection.cursor() as cur:
         player_list = random_player(1919)
         for idx in range(0, len(player_list), 114):
