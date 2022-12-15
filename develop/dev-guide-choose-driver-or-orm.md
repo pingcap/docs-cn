@@ -9,7 +9,7 @@ summary: 选择驱动或 ORM 框架连接 TiDB。
 >
 > TiDB 支持等级说明：
 >
-> - **Full**：表明 PingCAP 已经支持该工具的绝大多数功能兼容性，并且在新版本中对其保持兼容，将定期地对下表中记录的新版本进行兼容性测试。
+> - **Full**：表明 PingCAP 已经支持该工具的绝大多数功能兼容性，并且在新版本中对其保持兼容，将定期地对 [TiDB 支持的第三方工具](/develop/dev-guide-third-party-support.md)中的新版本进行兼容性测试。
 > - **Compatible**：表明由于该工具已适配 MySQL，而 TiDB 高度兼容 MySQL 协议，因此可以使用此工具的大部分功能。但 PingCAP 并未对该工具作出完整的兼容性验证，有可能出现一些意外的行为。
 >
 > 关于更多 TiDB 支持的第三方工具，你可以查看 [TiDB 支持的第三方工具](/develop/dev-guide-third-party-support.md)。
