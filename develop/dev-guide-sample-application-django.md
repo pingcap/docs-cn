@@ -40,8 +40,6 @@ summary: 给出一个 Django 构建 TiDB 应用程序示例。
 
 1. 下载并安装 TiUP。
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     curl --proto '=https' --tlsv1.2 -sSf https://tiup-mirrors.pingcap.com/install.sh | sh
     ```
@@ -52,8 +50,6 @@ summary: 给出一个 Django 构建 TiDB 应用程序示例。
     >
     > TiUP 安装完成后会提示对应 profile 文件的绝对路径。在执行以下 source 命令前，需要根据 profile 文件的实际位置修改命令。
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     source .bash_profile
     ```
@@ -62,15 +58,11 @@ summary: 给出一个 Django 构建 TiDB 应用程序示例。
 
     - 直接执行`tiup playground` 命令会运行最新版本的 TiDB 集群，其中 TiDB、TiKV、PD 和 TiFlash 实例各 1 个：
 
-        {{< copyable "shell-regular" >}}
-
         ```shell
         tiup playground
         ```
 
     - 也可以指定 TiDB 版本以及各组件实例个数，命令类似于：
-
-        {{< copyable "shell-regular" >}}
 
         ```shell
         tiup playground v5.4.0 --db 2 --pd 3 --kv 3
@@ -236,8 +228,6 @@ DATABASES = {
 
 打开终端，确保你已经进入 tidb-example-python 目录，若还未在此目录，请使用命令进入：
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 cd <path>/tidb-example-python
 ```
@@ -249,7 +239,13 @@ pip install -r requirement.txt
 cd django_example
 ```
 
-#### 运行数据库迁移
+#### 运行数据模型迁移
+
+> **提示：**
+>
+> - 此步骤假定已经存在 `django` 数据库。
+> - 若未创建此数据库，可通过 `CREATE DATABASE django` 语句进行创建，可在 [CREATE DATABASE](/sql-statements/sql-statement-create-database.md#create-database) 页面获取更多关于创建数据库语句的信息。
+> - 数据库名 `NAME` 可在 `settings.py`（位于 `example_project` 内）的 `DATABASES` 属性中更改。
 
 这将在你连接的数据库内生成 Django 所需的相应数据表。
 
@@ -292,7 +288,7 @@ Quit the server with CONTROL-C.
 
 #### 增加玩家
 
-点击 **Create** 标签，点击 **Send** 按钮，发送 Post 形式的 `http://localhost:8000/player/` 请求。返回值为增加的玩家个数，预期为 1。
+点击 **Create** 标签，点击 **Send** 按钮，发送 Post 形式的 `http://localhost:8000/player/` 请求。返回值为增加的玩家个数信息，预期为 1。
 
 #### 使用 ID 获取玩家信息
 
@@ -302,17 +298,13 @@ Quit the server with CONTROL-C.
 
 点击 **GetByLimit** 标签，点击 **Send** 按钮，发送 Get 形式的 `http://localhost:8000/player/limit/3` 请求。返回值为最多 3 个玩家的信息列表。
 
-#### 分页获取玩家信息
-
-点击 **GetByPage** 标签，点击 **Send** 按钮，发送 Get 形式的 `http://localhost:8000/player/page?index=0&size=2` 请求。返回值为 index 为 0 的页，每页有 2 个玩家信息列表。此外，还包含了分页信息，如偏移量、总页数、是否排序等。
-
 #### 获取玩家个数
 
 点击 **Count** 标签，点击 **Send** 按钮，发送 Get 形式的 `http://localhost:8000/player/count` 请求。返回值为玩家个数。
 
 #### 玩家交易
 
-点击 **Trade** 标签，点击 **Send** 按钮，发送 Put 形式的 `http://localhost:8000/player/trade` 请求，请求参数为售卖玩家 ID `sellID`、购买玩家 ID `buyID`、购买货物数量 `amount`、购买消耗金币数 `price`。返回值为交易是否成功。当出现售卖玩家货物不足、购买玩家金币不足或数据库错误时，交易将不成功，且由于[数据库事务](/develop/dev-guide-transaction-overview.md)保证，不会有玩家的金币或货物丢失的情况。
+点击 **Trade** 标签，点击 **Send** 按钮，发送 Post 形式的 `http://localhost:8000/player/trade` 请求，请求参数为售卖玩家 ID `sellID`、购买玩家 ID `buyID`、购买货物数量 `amount`、购买消耗金币数 `price`。返回值为交易是否成功。当出现售卖玩家货物不足、购买玩家金币不足或数据库错误时，交易将不成功，且由于[数据库事务](/develop/dev-guide-transaction-overview.md)保证，不会有玩家的金币或货物丢失的情况。
 
 ### 第 6 步第 2 部分：使用 curl 请求
 
@@ -322,23 +314,19 @@ Quit the server with CONTROL-C.
 
 使用 **Post** 方法请求 `/player` 端点请求来增加玩家，即：
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 curl --location --request POST 'http://localhost:8000/player/' --header 'Content-Type: application/json' --data-raw '[{"coins":100,"goods":20}]'
 ```
 
-这里使用 JSON 作为信息的载荷。表示需要创建一个金币数 `coins` 为 100，货物数 `goods` 为 20 的玩家。返回值为创建的玩家个数。
+这里使用 JSON 作为信息的载荷。表示需要创建一个金币数 `coins` 为 100，货物数 `goods` 为 20 的玩家。返回值为创建的玩家信息。
 
 ```json
-1
+create 1 players.
 ```
 
 #### 使用 ID 获取玩家信息
 
 使用 **Get** 方法请求 `/player` 端点请求来获取玩家信息，额外的需要在路径上给出玩家的 `id` 参数，即 `/player/{id}` ，例如在请求 `id` 为 1 的玩家时：
-
-{{< copyable "shell-regular" >}}
 
 ```shell
 curl --location --request GET 'http://localhost:8000/player/1'
@@ -357,8 +345,6 @@ curl --location --request GET 'http://localhost:8000/player/1'
 #### 使用 Limit 批量获取玩家信息
 
 使用 **Get** 方法请求 `/player/limit` 端点请求来获取玩家信息，额外的需要在路径上给出限制查询的玩家信息的总数，即 `/player/limit/{limit}` ，例如在请求最多 3 个玩家的信息时：
-
-{{< copyable "shell-regular" >}}
 
 ```shell
 curl --location --request GET 'http://localhost:8000/player/limit/3'
@@ -386,65 +372,9 @@ curl --location --request GET 'http://localhost:8000/player/limit/3'
 ]
 ```
 
-#### 分页获取玩家信息
-
-使用 **Get** 方法请求 `/player/page` 端点请求来分页获取玩家信息，额外的需要使用 URL 参数 ，例如在请求页面序号 `index` 为 0，每页最大请求量 `size` 为 2 时：
-
-{{< copyable "shell-regular" >}}
-
-```shell
-curl --location --request GET 'http://localhost:8000/player/page?index=0&size=2'
-```
-
-返回值为 `index` 为 0 的页，每页有 2 个玩家信息列表。此外，还包含了分页信息，如偏移量、总页数、是否排序等。
-
-```json
-{
-  "content": [
-    {
-      "coins": 200,
-      "goods": 10,
-      "id": 1
-    },
-    {
-      "coins": 0,
-      "goods": 30,
-      "id": 2
-    }
-  ],
-  "empty": false,
-  "first": true,
-  "last": false,
-  "number": 0,
-  "numberOfElements": 2,
-  "pageable": {
-    "offset": 0,
-    "pageNumber": 0,
-    "pageSize": 2,
-    "paged": true,
-    "sort": {
-      "empty": true,
-      "sorted": false,
-      "unsorted": true
-    },
-    "unpaged": false
-  },
-  "size": 2,
-  "sort": {
-    "empty": true,
-    "sorted": false,
-    "unsorted": true
-  },
-  "totalElements": 4,
-  "totalPages": 2
-}
-```
-
 #### 获取玩家个数
 
 使用 **Get** 方法请求 `/player/count` 端点请求来获取玩家个数：
-
-{{< copyable "shell-regular" >}}
 
 ```shell
 curl --location --request GET 'http://localhost:8000/player/count'
@@ -458,12 +388,10 @@ curl --location --request GET 'http://localhost:8000/player/count'
 
 #### 玩家交易
 
-使用 **Put** 方法请求 `/player/trade` 端点请求来发起玩家间的交易，即：
-
-{{< copyable "shell-regular" >}}
+使用 **Post** 方法请求 `/player/trade` 端点请求来发起玩家间的交易，即：
 
 ```shell
-curl --location --request PUT 'http://localhost:8000/player/trade' \
+curl --location --request POST 'http://localhost:8000/player/trade' \
   --header 'Content-Type: application/x-www-form-urlencoded' \
   --data-urlencode 'sellID=1' \
   --data-urlencode 'buyID=2' \
@@ -484,32 +412,27 @@ true
 1. 循环创建 10 名玩家
 2. 获取 `id` 为 1 的玩家信息
 3. 获取至多 3 名玩家信息列表
-4. 获取 `index` 为 0 ，`size` 为 2 的一页玩家信息
-5. 获取玩家总数
-6. `id` 为 1 的玩家作为售出方，id 为 2 的玩家作为购买方，购买 10 个货物，耗费 100 金币
+4. 获取玩家总数
+5. `id` 为 1 的玩家作为售出方，id 为 2 的玩家作为购买方，购买 10 个货物，耗费 100 金币
 
-你可以使用 `make request` 或 `./request.sh` 命令运行此脚本，结果应如下所示：
+你可以使用 `./request.sh` 命令运行此脚本，结果应如下所示：
 
 ```
-> make request
-./request.sh
+> ./request.sh
 loop to create 10 players:
-1111111111
+create 1 players.create 1 players.create 1 players.create 1 players.create 1 players.create 1 players.create 1 players.create 1 players.create 1 players.create 1 players.
 
 get player 1:
-{"id":1,"coins":200,"goods":10}
+{"id": 1, "coins": 100, "goods": 20}
 
 get players by limit 3:
-[{"id":1,"coins":200,"goods":10},{"id":2,"coins":0,"goods":30},{"id":3,"coins":100,"goods":20}]
-
-get first players:
-{"content":[{"id":1,"coins":200,"goods":10},{"id":2,"coins":0,"goods":30}],"pageable":{"sort":{"empty":true,"unsorted":true,"sorted":false},"offset":0,"pageNumber":0,"pageSize":2,"paged":true,"unpaged":false},"last":false,"totalPages":7,"totalElements":14,"first":true,"size":2,"number":0,"sort":{"empty":true,"unsorted":true,"sorted":false},"numberOfElements":2,"empty":false}
+[{"id": 1, "coins": 100, "goods": 20}, {"id": 2, "coins": 100, "goods": 20}, {"id": 3, "coins": 100, "goods": 20}]
 
 get players count:
-14
+10
 
 trade by two players:
-false
+trade successful
 ```
 
 ## 实现细节
@@ -518,566 +441,413 @@ false
 
 ### 总览
 
-本示例项目的大致目录树如下所示（删除了有碍理解的部分）：
+本示例项目的大致目录树如下所示：
 
 ```
 .
-├── pom.xml
-└── src
-    └── main
-        ├── java
-        │   └── com
-        │       └── pingcap
-        │           ├── App.java
-        │           ├── controller
-        │           │   └── PlayerController.java
-        │           ├── dao
-        │           │   ├── PlayerBean.java
-        │           │   └── PlayerRepository.java
-        │           └── service
-        │               ├── PlayerService.java
-        │               └── impl
-        │                   └── PlayerServiceImpl.java
-        └── resources
-            └── application.yml
+├── example_project
+│   ├── __init__.py
+│   ├── asgi.py
+│   ├── settings.py
+│   ├── urls.py
+│   └── wsgi.py
+├── player
+│   ├── __init__.py
+│   ├── admin.py
+│   ├── apps.py
+│   ├── migrations
+│   │   ├── 0001_initial.py
+│   │   └── __init__.py
+│   ├── models.py
+│   ├── tests.py
+│   ├── urls.py
+│   └── views.py
+└── manage.py
 ```
 
 其中：
 
-- `pom.xml` 内声明了项目的 Maven 配置，如依赖，打包等
-- `application.yml` 内声明了项目的用户配置，如数据库地址、密码、使用的数据库方言等
-- `App.java` 是项目的入口
-- `controller` 是项目对外暴露 HTTP 接口的包
-- `service` 是项目实现接口与逻辑的包
-- `dao` 是项目实现与数据库连接并完成数据持久化的包
+- 所有的 `__init__.py` 声明此文件夹是一个 Python 包。
+- `manage.py` 为 Django 自动生成的对项目进行管理的脚本。
+- `example_project` 包含项目级别的代码。
 
-### 配置
+    - `settings.py` 内声明了项目的配置，如数据库地址、密码、使用的数据库方言等。
+    - `urls.py` 配置了项目的根路由。
 
-本节将简要介绍 `pom.xml` 文件中的 Maven 配置，及 `application.yml` 文件中的用户配置。
+- `player` 是项目中提供对 `Player` 数据模型管理、数据查询的包，这在 Django 中被叫做应用。你可以使用 `python manage.py startapp player` 来创建一个空白的 `player` 应用。
 
-#### Maven 配置
+    - `models.py` 是定义 `Player` 数据模型的 Python 脚本。
+    - `migrations` 包内是一组数据模型迁移脚本。可使用 `python manage.py makemigrations player` 命令自动分析 `models.py` 内定义的数据对象，并生成迁移脚本。
+    - `urls.py` 定义了此应用的路由。
+    - `views.py` 内提供了逻辑代码。
 
-`pom.xml` 文件为 Maven 配置，在文件内声明了项目的 Maven 依赖，打包方法，打包信息等，你可以通过[创建相同依赖空白程序](#创建相同依赖空白程序可选) 这一节来复刻此配置文件的生成流程，当然，也可直接复制至你的项目来使用。
+> **提示：**
+>
+> 另外值得一提的是，由于 Django 的任意对象都被设计为可插拔模式。因此，你需要在创建应用后，在项目中进行注册。在此例中，注册的过程即在 `example_project` 包的 `settings.py` 文件中，在 `INSTALLED_APPS` 对象内，添加 `'player.apps.PlayerConfig'` 条目即可。你可以参考[示例代码](https://github.com/pingcap-inc/tidb-example-python/blob/main/django_example/example_project/settings.py#L33-L41)以获得更多信息。
 
-{{< copyable "" >}}
+### 项目配置
 
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-   <modelVersion>4.0.0</modelVersion>
-   <parent>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-parent</artifactId>
-      <version>3.0.0-M1</version>
-      <relativePath/> <!-- lookup parent from repository -->
-   </parent>
+本节将简要介绍 `example_project` 包内 `settings.py` 的重点配置。文件内为 Django 项目配置，声明了项目包含的应用、中间件，连接的数据库等信息，你可以通过[创建相同依赖空白程序](#创建相同依赖空白程序可选) 这一节来复刻此配置文件的生成流程，当然，也可直接复制此文件至你的项目来使用。你可访问 [Django 配置](https://docs.djangoproject.com/zh-hans/3.2/topics/settings/)文档以获取更多信息。
 
-   <groupId>com.pingcap</groupId>
-   <artifactId>spring-jpa-hibernate</artifactId>
-   <version>0.0.1</version>
-   <name>spring-jpa-hibernate</name>
-   <description>an example for spring boot, jpa, hibernate and TiDB</description>
+其中：
 
-   <properties>
-      <java.version>17</java.version>
-      <maven.compiler.source>17</maven.compiler.source>
-      <maven.compiler.target>17</maven.compiler.target>
-   </properties>
+- `INSTALLED_APPS` : 启用的应用全限定名称列表。
+- `MIDDLEWARE` : 启用的中间件列表，由于此处无需 `CsrfViewMiddleware` 中间件，因此其被注释。
+- `DATABASES` : 数据库配置，其中，`ENGINE` 一项被配置为 `django_tidb`。这遵循了 [django-tidb](https://github.com/pingcap/django-tidb) 的配置要求。
 
-   <dependencies>
-      <dependency>
-         <groupId>org.springframework.boot</groupId>
-         <artifactId>spring-boot-starter-data-jpa</artifactId>
-         <exclusions>
-            <exclusion>
-               <groupId>org.hibernate</groupId>
-               <artifactId>hibernate-core-jakarta</artifactId>
-            </exclusion>
-         </exclusions>
-      </dependency>
+```python
+...
 
-      <dependency>
-         <groupId>org.springframework.boot</groupId>
-         <artifactId>spring-boot-starter-web</artifactId>
-      </dependency>
+# Application definition
 
-      <dependency>
-         <groupId>mysql</groupId>
-         <artifactId>mysql-connector-java</artifactId>
-         <scope>runtime</scope>
-      </dependency>
+INSTALLED_APPS = [
+    'player.apps.PlayerConfig',
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+]
 
-      <dependency>
-         <groupId>org.springframework.boot</groupId>
-         <artifactId>spring-boot-starter-test</artifactId>
-         <scope>test</scope>
-      </dependency>
+MIDDLEWARE = [
+    'django.middleware.security.SecurityMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    # 'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
 
-      <dependency>
-         <groupId>org.hibernate.orm</groupId>
-         <artifactId>hibernate-core</artifactId>
-         <version>6.0.0.CR2</version>
-      </dependency>
-   </dependencies>
+...
 
-   <build>
-      <plugins>
-         <plugin>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-maven-plugin</artifactId>
-         </plugin>
-      </plugins>
-   </build>
+# Database
+# https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-   <repositories>
-      <repository>
-         <id>spring-milestones</id>
-         <name>Spring Milestones</name>
-         <url>https://repo.spring.io/milestone</url>
-         <snapshots>
-            <enabled>false</enabled>
-         </snapshots>
-      </repository>
-   </repositories>
-   <pluginRepositories>
-      <pluginRepository>
-         <id>spring-milestones</id>
-         <name>Spring Milestones</name>
-         <url>https://repo.spring.io/milestone</url>
-         <snapshots>
-            <enabled>false</enabled>
-         </snapshots>
-      </pluginRepository>
-   </pluginRepositories>
-</project>
-```
-
-#### 用户配置
-
-`application.yml` 此配置文件声明了用户配置，如数据库地址、密码、使用的数据库方言等。
-
-```yaml
-spring:
-  datasource:
-    url: jdbc:mysql://localhost:4000/test
-    username: root
-    #    password: xxx
-    driver-class-name: com.mysql.cj.jdbc.Driver
-  jpa:
-    show-sql: true
-    database-platform: org.hibernate.dialect.TiDBDialect
-    hibernate:
-      ddl-auto: create-drop
-```
-
-此配置格式为 [YAML](https://yaml.org/) 格式。其中：
-
-- `spring.datasource.url` : 数据库连接的 URL。
-- `spring.datasource.url` : 数据库用户名。
-- `spring.datasource.password` : 数据库密码，此项为空，需注释或删除。
-- `spring.datasource.driver-class-name` : 数据库驱动，因为 TiDB 与 MySQL 兼容，则此处使用与 mysql-connector-java 适配的驱动类 `com.mysql.cj.jdbc.Driver`。
-- `jpa.show-sql` : 为 true 时将打印 JPA 运行的 SQL。
-- `jpa.database-platform` : 选用的数据库方言，此处连接了 TiDB，自然选择 TiDB 方言，注意，此方言在 6.0.0.Beta2 版本后的 Hibernate 中才可选择，请注意依赖版本。
-- `jpa.hibernate.ddl-auto` : 此处选择的 create-drop 将会在程序开始时创建表，退出时删除表。请勿在正式环境使用，但此处为示例程序，希望尽量不影响数据库数据，因此选择了此选项。
-
-### 入口文件
-
-入口文件 `App.java`：
-
-{{< copyable "" >}}
-
-```java
-package com.pingcap;
-
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.context.ApplicationPidFileWriter;
-
-@SpringBootApplication
-public class App {
-   public static void main(String[] args) {
-      SpringApplication springApplication = new SpringApplication(App.class);
-      springApplication.addListeners(new ApplicationPidFileWriter("spring-jpa-hibernate.pid"));
-      springApplication.run(args);
-   }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django_tidb',
+        'NAME': 'django',
+        'USER': 'root',
+        'PASSWORD': '',
+        'HOST': '127.0.0.1',
+        'PORT': 4000,
+    },
 }
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+
+...
 ```
 
-入口类比较简单，首先，有一个 Spring Boot 应用程序的标准配置注解 [@SpringBootApplication](https://docs.spring.io/spring-boot/docs/current/api/org/springframework/boot/autoconfigure/SpringBootApplication.html)。有关详细信息，请参阅 Spring Boot 官方文档中的 [Using the @SpringBootApplication Annotation](https://docs.spring.io/spring-boot/docs/current/reference/html/using-spring-boot.html#using-boot-using-springbootapplication-annotation) 。随后，使用 `ApplicationPidFileWriter` 在程序启动过程中，写下一个名为 `spring-jpa-hibernate.pid` 的 PID (process identification number) 文件，可从外部使用此 PID 文件关闭此应用程序。
+### 根路由
 
-### 数据库持久层
+根路由被编写在 `example_project` 包中的 `urls.py`：
 
-数据库持久层，即 `dao` 包内，实现了数据对象的持久化。
+```python
+from django.contrib import admin
+from django.urls import include, path
 
-#### 实体对象
-
-`PlayerBean.java` 文件为实体对象，这个对象对应了数据库的一张表。
-
-{{< copyable "" >}}
-
-```java
-package com.pingcap.dao;
-
-import jakarta.persistence.*;
-
-/**
- * it's core entity in hibernate
- * @Table appoint to table name
- */
-@Entity
-@Table(name = "player_jpa")
-public class PlayerBean {
-    /**
-     * @ID primary key
-     * @GeneratedValue generated way. this field will use generator named "player_id"
-     * @SequenceGenerator using `sequence` feature to create a generator,
-     *    and it named "player_jpa_id_seq" in database, initial form 1 (by `initialValue`
-     *    parameter default), and every operator will increase 1 (by `allocationSize`)
-     */
-    @Id
-    @GeneratedValue(generator="player_id")
-    @SequenceGenerator(name="player_id", sequenceName="player_jpa_id_seq", allocationSize=1)
-    private Long id;
-
-    /**
-     * @Column field
-     */
-    @Column(name = "coins")
-    private Integer coins;
-    @Column(name = "goods")
-    private Integer goods;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Integer getCoins() {
-        return coins;
-    }
-
-    public void setCoins(Integer coins) {
-        this.coins = coins;
-    }
-
-    public Integer getGoods() {
-        return goods;
-    }
-
-    public void setGoods(Integer goods) {
-        this.goods = goods;
-    }
-}
+urlpatterns = [
+    path('player/', include('player.urls')),
+    path('admin/', admin.site.urls),
+]
 ```
 
-这里可以看到，实体类中有很多注解，这些注解给了 Hibernate 额外的信息，用以绑定实体类和表：
+根路由十分简单，将 `player/` 路径指向了 `player.urls`。即 `player` 包下的 `urls.py` 将接管 `player/*` 的 URL 映射。你可以访问 [Django URL调度器](https://docs.djangoproject.com/zh-hans/3.2/topics/http/urls/)文档来获取更多信息。
 
-- `@Entity` 声明 `PlayerBean` 是一个实体类。
-- `@Table` 使用注解属性 `name` 将此实体类和表 `player_jpa` 关联。
-- `@Id` 声明此属性关联表的主键列。
-- `@GeneratedValue` 表示自动生成该列的值，而不应手动设置，使用属性 `generator` 指定生成器的名称为 `player_id`。
-- `@SequenceGenerator` 声明一个使用[序列](/sql-statements/sql-statement-create-sequence.md)的生成器，使用注解属性 `name` 声明生成器的名称为 `player_id` （与 `@GeneratedValue` 中指定的名称需保持一致）。随后使用注解属性 `sequenceName` 指定数据库中序列的名称。最后，使用注解属性 `allocationSize` 声明序列的步长为 1。
-- `@Column` 将每个私有属性声明为表 `player_jpa` 的一列，使用注解属性 `name` 确定属性对应的列名。
+### player 应用
 
-#### 存储库
+`player` 应用内，实现了对 `Player` 对象的数据模型迁移、对象持久化、接口实现等功能。
 
-为了抽象数据库层，Spring 应用程序使用 [Repository](https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#repositories) 接口，或者 Repository 的子接口。 这个接口映射到一个数据库对象，常见的，比如会映射到一个表上。JPA 会实现一些预制的方法，比如 [INSERT](/sql-statements/sql-statement-insert.md) ，或使用主键的 [SELECT](/sql-statements/sql-statement-select.md) 等。
+#### 数据模型
 
-{{< copyable "" >}}
+`models.py` 文件内包含 `Player` 数据模型，这个模型对应了数据库的一张表。
 
-```java
-package com.pingcap.dao;
+```python
+from django.db import models
 
-import jakarta.persistence.LockModeType;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Lock;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
+# Create your models here.
 
-import java.util.List;
 
-@Repository
-public interface PlayerRepository extends JpaRepository<PlayerBean, Long> {
-    /**
-     * use HQL to query by page
-     * @param pageable a pageable parameter required by hibernate
-     * @return player list package by page message
-     */
-    @Query(value = "SELECT player_jpa FROM PlayerBean player_jpa")
-    Page<PlayerBean> getPlayersByPage(Pageable pageable);
+class Player(models.Model):
+    id = models.AutoField(primary_key=True)
+    coins = models.IntegerField()
+    goods = models.IntegerField()
 
-    /**
-     * use SQL to query by limit, using named parameter
-     * @param limit sql parameter
-     * @return player list (max size by limit)
-     */
-    @Query(value = "SELECT * FROM player_jpa LIMIT :limit", nativeQuery = true)
-    List<PlayerBean> getPlayersByLimit(@Param("limit") Integer limit);
+    objects = models.Manager()
 
-    /**
-     * query player and add a lock for update
-     * @param id player id
-     * @return player
-     */
-    @Lock(value = LockModeType.PESSIMISTIC_WRITE)
-    @Query(value = "SELECT player FROM PlayerBean player WHERE player.id = :id")
-    // @Query(value = "SELECT * FROM player_jpa WHERE id = :id FOR UPDATE", nativeQuery = true)
-    PlayerBean getPlayerAndLock(@Param("id") Long id);
-}
-```
+    class Meta:
+        db_table = "player"
 
-`PlayerRepository` 拓展了 Spring 用于 JPA 数据访问所使用的接口 `JpaRepository`。使用 `@Query` 注解，告诉 Hibernate 此接口如何实现查询。在此处使用了两种查询语句的语法，其中，在接口 `getPlayersByPage` 中的查询语句使用的是一种被 Hibernate 称为 [HQL](https://docs.jboss.org/hibernate/orm/6.0/userguide/html_single/Hibernate_User_Guide.html#hql) (Hibernate Query Language) 的语法。而接口 `getPlayersByLimit` 中使用的是普通的 SQL，在使用 SQL 语法时，需要将 `@Query` 的注解参数 `nativeQuery` 设置为 true。
-
-在 `getPlayersByLimit` 注解的 SQL 中，`:limit` 在 Hibernate 中被称为[命名参数](https://docs.jboss.org/hibernate/orm/6.0/userguide/html_single/Hibernate_User_Guide.html#jpql-query-parameters)，Hibernate 将按名称自动寻找并拼接注解所在接口内的参数。你也可以使用 `@Param` 来指定与参数不同的名称用于注入。
-
-在 `getPlayerAndLock` 中，使用了一个注解 [@Lock](https://docs.spring.io/spring-data/jpa/docs/current/api/org/springframework/data/jpa/repository/Lock.html)，此注解声明此处使用悲观锁进行锁定，如需了解更多其他锁定方式，可查看[实体锁定](https://openjpa.apache.org/builds/2.2.2/apache-openjpa/docs/jpa_overview_em_locking.html)文档。此处的 `@Lock` 仅可与 HQL 搭配使用，否则将会产生错误。当然，如果你希望直接使用 SQL 进行锁定，可直接使用注释部分的注解：
-
-{{< copyable "" >}}
-
-```java
-@Query(value = "SELECT * FROM player_jpa WHERE id = :id FOR UPDATE", nativeQuery = true)
-```
-
-直接使用 SQL 的 `FOR UPDATE` 来增加锁。你也可通过 TiDB [SELECT 文档](/sql-statements/sql-statement-select.md) 进行更深层次的原理学习。
-
-### 逻辑实现
-
-逻辑实现层，即 `service` 包，内含了项目实现的接口与逻辑
-
-#### 接口
-
-`PlayerService.java` 文件内定义了逻辑接口，实现接口，而不是直接编写一个类的原因，是尽量使例子贴近实际使用，体现设计的开闭原则。你也可以省略掉此接口，在依赖类中直接注入实现类，但并不推荐这样做。
-
-{{< copyable "" >}}
-
-```java
-package com.pingcap.service;
-
-import com.pingcap.dao.PlayerBean;
-import org.springframework.data.domain.Page;
-
-import java.util.List;
-
-public interface PlayerService {
-    /**
-     * create players by passing in a List of PlayerBean
-     *
-     * @param players will create players list
-     * @return The number of create accounts
-     */
-    Integer createPlayers(List<PlayerBean> players);
-
-    /**
-     * buy goods and transfer funds between one player and another in one transaction
-     * @param sellId sell player id
-     * @param buyId buy player id
-     * @param amount goods amount, if sell player has not enough goods, the trade will break
-     * @param price price should pay, if buy player has not enough coins, the trade will break
-     */
-    void buyGoods(Long sellId, Long buyId, Integer amount, Integer price) throws RuntimeException;
-
-    /**
-     * get the player info by id.
-     *
-     * @param id player id
-     * @return the player of this id
-     */
-    PlayerBean getPlayerByID(Long id);
-
-    /**
-     * get a subset of players from the data store by limit.
-     *
-     * @param limit return max size
-     * @return player list
-     */
-    List<PlayerBean> getPlayers(Integer limit);
-
-    /**
-     * get a page of players from the data store.
-     *
-     * @param index page index
-     * @param size page size
-     * @return player list
-     */
-    Page<PlayerBean> getPlayersByPage(Integer index, Integer size);
-
-    /**
-     * count players from the data store.
-     *
-     * @return all players count
-     */
-    Long countPlayers();
-}
-```
-
-#### 实现 (重要)
-
-`PlayerService.java` 文件内实现了 `PlayerService` 接口，所有数据操作逻辑都编写在这里。
-
-{{< copyable "" >}}
-
-```java
-package com.pingcap.service.impl;
-
-import com.pingcap.dao.PlayerBean;
-import com.pingcap.dao.PlayerRepository;
-import com.pingcap.service.PlayerService;
-import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
-
-/**
- * PlayerServiceImpl implements PlayerService interface
- * @Transactional it means every method in this class, will package by a pair of
- *     transaction.begin() and transaction.commit(). and it will be call
- *     transaction.rollback() when method throw an exception
- */
-@Service
-@Transactional
-public class PlayerServiceImpl implements PlayerService {
-    @Autowired
-    private PlayerRepository playerRepository;
-
-    @Override
-    public Integer createPlayers(List<PlayerBean> players) {
-        return playerRepository.saveAll(players).size();
-    }
-
-    @Override
-    public void buyGoods(Long sellId, Long buyId, Integer amount, Integer price) throws RuntimeException {
-        PlayerBean buyPlayer = playerRepository.getPlayerAndLock(buyId);
-        PlayerBean sellPlayer = playerRepository.getPlayerAndLock(sellId);
-        if (buyPlayer == null || sellPlayer == null) {
-            throw new RuntimeException("sell or buy player not exist");
+    def as_dict(self):
+        return {
+            "id": self.id,
+            "coins": self.coins,
+            "goods": self.goods,
         }
-
-        if (buyPlayer.getCoins() < price || sellPlayer.getGoods() < amount) {
-            throw new RuntimeException("coins or goods not enough, rollback");
-        }
-
-        buyPlayer.setGoods(buyPlayer.getGoods() + amount);
-        buyPlayer.setCoins(buyPlayer.getCoins() - price);
-        playerRepository.save(buyPlayer);
-
-        sellPlayer.setGoods(sellPlayer.getGoods() - amount);
-        sellPlayer.setCoins(sellPlayer.getCoins() + price);
-        playerRepository.save(sellPlayer);
-    }
-
-    @Override
-    public PlayerBean getPlayerByID(Long id) {
-        return playerRepository.findById(id).orElse(null);
-    }
-
-    @Override
-    public List<PlayerBean> getPlayers(Integer limit) {
-        return playerRepository.getPlayersByLimit(limit);
-    }
-
-    @Override
-    public Page<PlayerBean> getPlayersByPage(Integer index, Integer size) {
-        return playerRepository.getPlayersByPage(PageRequest.of(index, size));
-    }
-
-    @Override
-    public Long countPlayers() {
-        return playerRepository.count();
-    }
-}
 ```
 
-这里使用了 `@Service` 这个注解，声明此对象的生命周期交由 Spring 管理。
+这里可以看到，数据模型中拥有一个子类 `Meta`，这些子类给了 Django 额外的信息，用以指定数据模型的元信息。其中，`db_table` 声明此数据模型对应的表名为 `player`。模型的元信息的全部选项可查看 [Django 模型 Meta 选项](https://docs.djangoproject.com/zh-hans/3.2/ref/models/options/)文档。
 
-注意，除了有 `@Service` 注解之外，PlayerServiceImpl 实现类还有一个 [@Transactional](https://docs.spring.io/spring-framework/docs/current/reference/html/data-access.html#transaction-declarative-annotations) 注解。当在应用程序中启用事务管理时 (可使用 [@EnableTransactionManagement](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/transaction/annotation/EnableTransactionManagement.html) 打开，但 Spring Boot 默认开启，无需再次手动配置)，Spring 会自动将所有带有 `@Transactional` 注释的对象包装在一个代理中，使用该代理对对象的调用进行处理。
+此外，数据模型中定义了 `id`, `coins` 及 `goods` 三个属性。其中：
 
-你可以简单的认为，代理在带有 `@Transactional` 注释的对象内的函数调用时：在函数顶部将使用 `transaction.begin()` 开启事务，函数返回后，调用 `transaction.commit()` 进行事务提交，而出现任何运行时错误时，代理将会调用 `transaction.rollback()` 来回滚。
+- `id`: `models.AutoField(primary_key=True)` 表示其为一个自动递增的主键。
+- `coins`: `models.IntegerField()` 表示其为一个 Integer 类型的字段。
+- `goods`: `models.IntegerField()` 表示其为一个 Integer 类型的字段。
 
-你可参阅[数据库事务](/develop/dev-guide-transaction-overview.md)来获取更多有关事务的信息，或者阅读 Spring 官网中的文章 [理解 Spring 框架的声明式事务实现](https://docs.spring.io/spring-framework/docs/current/reference/html/data-access.html#tx-decl-explained)。
+更多关于数据模型的信息，可查看 [Django 模型](https://docs.djangoproject.com/zh-hans/3.2/topics/db/models/)文档。
 
-整个实现类中，`buyGoods` 函数需重点关注，其在不符合逻辑时将抛出异常，引导 Hibernate 进行事务回滚，防止出现错误数据。
+#### 数据模型迁移
 
-### 外部接口
+Django 的设计思路是以 Python 数据模型定义代码为依赖，对数据库模型进行迁移。因此，其将生成一系列的数据库模型迁移脚本，用以抹平代码与数据库之间的差异。在 `models.py` 中定义完毕 `Player` 数据模型后，你可以运行 `python manage.py makemigrations player` 用以完成迁移脚本的生成。此例中，`migrations` 包内的 `0001_initial.py` 即为自动生成的迁移脚本。
 
-`controller` 包对外暴露 HTTP 接口，可以通过 [REST API](https://www.redhat.com/en/topics/api/what-is-a-rest-api#) 来访问服务。
+```python
+# Generated by Django 3.2.16 on 2022-11-16 11:09
 
-{{< copyable "" >}}
+from django.db import migrations, models
 
-```java
-package com.pingcap.controller;
 
-import com.pingcap.dao.PlayerBean;
-import com.pingcap.service.PlayerService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.lang.NonNull;
-import org.springframework.web.bind.annotation.*;
+class Migration(migrations.Migration):
 
-import java.util.List;
+    initial = True
 
-@RestController
-@RequestMapping("/player")
-public class PlayerController {
-    @Autowired
-    private PlayerService playerService;
+    dependencies = [
+    ]
 
-    @PostMapping
-    public Integer createPlayer(@RequestBody @NonNull List<PlayerBean> playerList) {
-        return playerService.createPlayers(playerList);
-    }
-
-    @GetMapping("/{id}")
-    public PlayerBean getPlayerByID(@PathVariable Long id) {
-        return playerService.getPlayerByID(id);
-    }
-
-    @GetMapping("/limit/{limit_size}")
-    public List<PlayerBean> getPlayerByLimit(@PathVariable("limit_size") Integer limit) {
-        return playerService.getPlayers(limit);
-    }
-
-    @GetMapping("/page")
-    public Page<PlayerBean> getPlayerByPage(@RequestParam Integer index, @RequestParam("size") Integer size) {
-        return playerService.getPlayersByPage(index, size);
-    }
-
-    @GetMapping("/count")
-    public Long getPlayersCount() {
-        return playerService.countPlayers();
-    }
-
-    @PutMapping("/trade")
-    public Boolean trade(@RequestParam Long sellID, @RequestParam Long buyID, @RequestParam Integer amount, @RequestParam Integer price) {
-        try {
-            playerService.buyGoods(sellID, buyID, amount, price);
-        } catch (RuntimeException e) {
-            return false;
-        }
-
-        return true;
-    }
-}
+    operations = [
+        migrations.CreateModel(
+            name='Player',
+            fields=[
+                ('id', models.AutoField(primary_key=True, serialize=False)),
+                ('coins', models.IntegerField()),
+                ('goods', models.IntegerField()),
+            ],
+            options={
+                'db_table': 'player',
+            },
+        ),
+    ]
 ```
 
-`PlayerController` 中使用了尽可能多的注解方式来作为示例展示功能，在实际项目中，请尽量保持风格的统一，同时遵循你公司或团体的规则。`PlayerController` 有许多注解，下方将进行逐一解释：
+你可以使用命令 `python manage.py sqlmigrate ...` 来预览这个迁移脚本最终将运行的 SQL 语句。这将极大地减少迁移脚本运行你意料之外的 SQL 语句的可能性。我们推荐在生成迁移脚本后，请至少使用一次此命令预览并仔细检查生成的 SQL 语句。此例中，你可运行 `python manage.py sqlmigrate player 0001`，其输出为：
 
-- [@RestController](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/bind/annotation/RestController.html) 将 `PlayerController` 声明为一个 [Web Controller](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller)，且将返回值序列化为 JSON 输出。
-- [@RequestMapping](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/bind/annotation/RequestMapping.html) 映射 URL 端点为 `/player` ，即此 `Web Controller` 仅监听 `/player` URL 下的请求。
-- `@Autowired` 用于 Spring 的自动装配，可以看到，此处声明需要一个 `PlayerService` 对象，此对象为接口，并未指定使用哪一个实现类，这是由 Spring 自动装配的，有关此装配规则，可查看 Spirng 官网中的 [The IoC container](https://docs.spring.io/spring-framework/docs/3.2.x/spring-framework-reference/html/beans.html) 一文。
-- [@PostMapping](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/bind/annotation/PostMapping.html) 声明此函数将响应 HTTP 中的 [POST](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/POST) 类型请求。
-    - `@RequestBody` 声明此处将 HTTP 的整个载荷解析到参数 `playerList` 中。
-    - `@NonNull` 声明参数不可为空，否则将校验并返回错误。
-- [@GetMapping](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/bind/annotation/GetMapping.html) 声明此函数将响应 HTTP 中的 [GET](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/GET) 类型请求。
-    - [@PathVariable](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/bind/annotation/PathVariable.html) 可以看到注解中有形如 `{id}` 、`{limit_size}` 这样的占位符，这种占位符将被绑定到 `@PathVariable` 注释的变量中，绑定的依据是注解中的注解属性 `name` （变量名可省略，即 `@PathVariable(name="limit_size")` 可写成 `@PathVariable("limit_size")` ），不特殊指定时，与变量名名称相同。
-- [@PutMapping](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/bind/annotation/PutMapping.html) 声明此函数将响应 HTTP 中的 [PUT](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/PUT) 类型请求。
-- [@RequestParam](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/bind/annotation/RequestParam.html) 此声明将解析请求中的 URL 参数、表单参数等参数，绑定至注解的变量中。
+```sql
+--
+-- Create model Player
+--
+CREATE TABLE `player` (`id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY, `coins` integer NOT NULL, `goods` integer NOT NULL);
+```
+
+其输出被设计为人类可读的模式，这非常便于开发者进行审核。
+
+生成迁移脚本后，你可使用 `python manage.py migrate` 实施数据迁移。此命令拥有幂等性，其运行后将在数据库内保存一条运行记录以完成幂等保证。因此，你可以多次运行此命令，而无需担心重复运行 SQL 语句。
+
+#### 应用路由
+
+在[根路由](#根路由)一节中，我们将 `player/` 路径指向了 `player.urls`。本节将展开叙述 `player` 包下的 `urls.py` 应用路由：
+
+```python
+from django.urls import path
+
+from . import views
+
+urlpatterns = [
+    path('', views.create, name='create'),
+    path('count', views.count, name='count'),
+    path('limit/<int:limit>', views.limit_list, name='limit_list'),
+    path('<int:player_id>', views.get_by_id, name='get_by_id'),
+    path('trade', views.trade, name='trade'),
+]
+```
+
+应用路由注册了 5 个路径：
+
+- `''`: 被指向了 `views.create` 函数。
+- `'count'`: 被指向了 `views.count` 函数。
+- `'limit/<int:limit>'`: 被指向了 `views.limit_list` 函数。此处路径包含一个 `<int:limit>` 路径变量，其中：
+
+    - `int` 是指这个参数其将被验证是否为 `int` 类型
+    - `limit` 是指此参数的值将被映射至名为 `limit` 的函数入参中
+
+- `'<int:player_id>'`: 被指向了 `views.get_by_id` 函数，此处路径包含一个 `<int:player_id>` 路径变量。
+- `'trade'`: 被指向了 `views.trade` 函数。
+
+另外，值得一提的是，此处的应用路由是根路由转发而来的，因此将在 URL 匹配时包含跟路由配置的路径。如此例中所示，根路由配置为 `player/` 转发至此应用路由，那么，应用路由中的：
+
+- `''` 在实际的请求中，为 `http(s)://<host>(:<port>)/player`。
+- `'count'` 在实际的请求中，为 `http(s)://<host>(:<port>)/player/count`。
+- `'limit/<int:limit>'` 以 `limit` 为 `3` 为例，在实际的请求中为 `http(s)://<host>(:<port>)/player/limit/3`。
+
+#### 逻辑实现
+
+逻辑实现代码，在 `player` 包下的 `views.py` 内，其中包含了项目实现逻辑。这在 Django 中被称为视图，可参考 [Django 视图](https://docs.djangoproject.com/zh-hans/3.2/topics/http/views/)文档来获取更多信息。
+
+```python
+from django.db import transaction
+from django.db.models import F
+from django.shortcuts import get_object_or_404
+
+from django.http import HttpResponse, JsonResponse
+from django.views.decorators.http import *
+from .models import Player
+import json
+
+
+@require_POST
+def create(request):
+    dict_players = json.loads(request.body.decode('utf-8'))
+    players = list(map(
+        lambda p: Player(
+            coins=p['coins'],
+            goods=p['goods']
+        ), dict_players))
+    result = Player.objects.bulk_create(objs=players)
+    return HttpResponse(f'create {len(result)} players.')
+
+
+@require_GET
+def count(request):
+    return HttpResponse(Player.objects.count())
+
+
+@require_GET
+def limit_list(request, limit: int = 0):
+    if limit is 0:
+        return HttpResponse("")
+    players = set(Player.objects.all()[:limit])
+    dict_players = list(map(lambda p: p.as_dict(), players))
+    return JsonResponse(dict_players, safe=False)
+
+
+@require_GET
+def get_by_id(request, player_id: int):
+    result = get_object_or_404(Player, pk=player_id).as_dict()
+    return JsonResponse(result)
+
+
+@require_POST
+@transaction.atomic
+def trade(request):
+    sell_id, buy_id, amount, price = int(request.POST['sellID']), int(request.POST['buyID']), \
+                                     int(request.POST['amount']), int(request.POST['price'])
+    sell_player = Player.objects.select_for_update().get(id=sell_id)
+    if sell_player.goods < amount:
+        raise Exception(f'sell player {sell_player.id} goods not enough')
+
+    buy_player = Player.objects.select_for_update().get(id=buy_id)
+    if buy_player.coins < price:
+        raise Exception(f'buy player {buy_player.id} coins not enough')
+
+    Player.objects.filter(id=sell_id).update(goods=F('goods') - amount, coins=F('coins') + price)
+    Player.objects.filter(id=buy_id).update(goods=F('goods') + amount, coins=F('coins') - price)
+
+    return HttpResponse("trade successful")
+```
+
+下方将逐一解释代码中的重点部分：
+
+- 装饰器：
+
+    - `@require_GET`: 代表此函数仅接受 `GET` 类型的 HTTP 请求。
+    - `@require_POST`: 代表此函数仅接受 `POST` 类型的 HTTP 请求。
+    - `@transaction.atomic`: 代表此函数内的所有数据库操作将被包含于同一个事务中运行。可查看 [Django 数据库事务](https://docs.djangoproject.com/zh-hans/3.2/topics/db/transactions/)文档查看关于如何在 Django 中使用事务。同时，也可以查看 [TiDB 事务概览](/develop/dev-guide-transaction-overview.md)文档来查看 TiDB 中的事务行为。
+
+- `create` 函数：
+
+    - 获取 `request` 对象中的 `body` 的 payload，并用 `utf-8` 解码
+
+        ```python
+        dict_players = json.loads(request.body.decode('utf-8'))
+        ```
+
+    - 使用 lambda 中的 `map` 函数，将 dict 类型的 `dict_players` 对象转换为 `Player` 数据模型的 list。
+
+        ```python
+        players = list(map(
+            lambda p: Player(
+                coins=p['coins'],
+                goods=p['goods']
+            ), dict_players))
+        ```
+
+    - 调用 `Player` 数据模型的 `bulk_create` 函数。批量添加整个 `players` list。并且返回添加的数据条目。
+
+        ```python
+        result = Player.objects.bulk_create(objs=players)
+        return HttpResponse(f'create {len(result)} players.')
+        ```
+
+- `count` 函数，调用 `Player` 数据模型的 `count` 函数，并返回。
+- `limit_list` 函数：
+
+    - 短路逻辑，`limit` 为 0 时将不做数据库请求。
+
+        ```python
+        if limit is 0:
+            return HttpResponse("")
+        ```
+
+    - 调用 `Player` 数据模型的 `all` 函数，并仅获取 前`limit` 个数据。注意此处 Django 并不会获取所有数据并在内存中切分前 `limit` 个数据。而是在使用时再请求数据库的前 `limit` 个数据。这是由于 Django 重写了切片操作符，并且 QuerySet 对象是**惰性**的。这意味着对一个未执行的 QuerySet 进行切片，将继续返回一个未执行的 QuerySet。直到你第一次真正的请求 QuerySet 内的数据，例如此处使用 `set` 函数对其进行迭代并返回整个 set。
+
+        ```python
+        players = set(Player.objects.all()[:limit])
+        ```
+
+    - 将返回的 `Player` 数据模型的列表，转为对象为 dict 的 list，并使用 `JsonResponse` 输出。
+
+        ```python
+        dict_players = list(map(lambda p: p.as_dict(), players))
+        return JsonResponse(dict_players, safe=False)
+        ```
+
+- `get_by_id` 函数：
+
+    - 使用 `get_object_or_404` 语法糖，将 `player_id` 传入。如数据不存在，将由此函数返回 404 状态码。随后将 `Player` 对象转为 dict。
+
+        ```python
+        result = get_object_or_404(Player, pk=player_id).as_dict()
+        ```
+
+    - 使用 `JsonResponse` 返回数据。
+
+        ```python
+        return JsonResponse(result)
+        ```
+
+- `trade` 函数：
+
+    - 从 Post Payload 中，接收 Form 形式的数据
+
+        ```python
+        sell_id, buy_id, amount, price = int(request.POST['sellID']), int(request.POST['buyID']), \
+                                        int(request.POST['amount']), int(request.POST['price'])
+        ```
+
+    - 调用 `Player` 数据模型的 `select_for_update` 函数，检查数据，并对此数据进行加锁操作，留待后续更新使用。由于此函数使用了 `@transaction.atomic` 装饰器，任意的异常都会导致事务回滚，可以利用这个机制，在任意检查失败的时候，抛出异常，由 Django 进行事务回滚。此处需检查两项：
+
+        - 卖家的货物数是否足够。
+        - 买家的货币数是否足够。
+
+        ```python
+        sell_player = Player.objects.select_for_update().get(id=sell_id)
+        if sell_player.goods < amount:
+            raise Exception(f'sell player {sell_player.id} goods not enough')
+
+        buy_player = Player.objects.select_for_update().get(id=buy_id)
+        if buy_player.coins < price:
+            raise Exception(f'buy player {buy_player.id} coins not enough')
+        ```
+
+    - 逐一对卖家与买家的数据进行更新。此处更新有任何异常都将由 Django 回滚事务。因此，请不要在此处手动使用 `try-except` 语法进行异常处理。如果一定需要处理，请在 except 块中将异常继续抛向上层，以防 Django 误以为函数运行正常，提交事务后，导致错误的数据出现。
+
+        ```python
+        Player.objects.filter(id=sell_id).update(goods=F('goods') - amount, coins=F('coins') + price)
+        Player.objects.filter(id=buy_id).update(goods=F('goods') + amount, coins=F('coins') - price)
+        ```
+
+    - 返回成功字符串，因为其他情况将导致异常抛出返回。
+
+        ```python
+        return HttpResponse("trade successful")
+        ```
