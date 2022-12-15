@@ -14,17 +14,15 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
 相比于前一个 LTS (即 6.1.0 版本)，6.5.0 版本包含 [6.2.0-DMR](/releases/release-6.2.0.md)、[6.3.0-DMR](/releases/release-6.3.0.md)、[6.4.0-DMR](/releases/release-6.4.0.md) 中已发布的新功能、提升改进和错误修复，并引入了以下关键特性：
 
-- [代价模型 V2](/cost-model.md#cost-model-version-2) GA
-- [TiDB 全局内存控制](/configure-memory-usage.md) GA
-- [全局 Hint](/optimizer-hints.md#全局生效的-Hint) 干预视图内查询的计划生成
+- 通过 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 控制全局内存的功能 GA
 - [密码管理](/password-management.md)满足密码合规审计需求
-- [添加索引加速](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 功能 GA，添加索引性能提升为原来的 10 倍
+- [添加索引加速](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 功能 GA，添加索引的性能提升较 v6.1 提升了 10 倍
+- 支持高性能、全局单调递增的 [`AUTO_INCREMENT` 列属性](/auto-increment.md#mysql-兼容模式)，兼容 MySQL
 - [`FLASHBACK CLUSTER TO TIMESTAMP`](/sql-statements/sql-statement-flashback-to-timestamp.md) 功能 GA，并兼容 TiCDC 和 PITR
-- 支持[保存 TiFlash 查询结果](/tiflash/tiflash-results-materialization.md)（实验特性）
 - 支持[下推 `JSON_EXTRACT()` 函数](/tiflash/tiflash-supported-pushdown-calculations.md)至 TiFlash
-- 进一步增强索引合并 [INDEX MERGE](/glossary.md#index-merge) 功能
+- 增强[优化器代价模型](/cost-model.md#cost-model-version-2)并进一步增强索引合并 [INDEX MERGE](/glossary.md#index-merge) 功能
 - 支持[非事务 DML 语句](/non-transactional-dml.md)
-- 支持 [Time to live (TTL)](/time-to-live.md)（实验特性）
+- 支持通过行级别 [Time to live (TTL)](/time-to-live.md) 管理数据生命周期（实验特性）
 - 支持通过 TiCDC [将实时变更数据保存到存储服务](ticdc/ticdc-sink-to-cloud-storage.md)(S3/Azure Blob Storage/NFS)
 - 支持在两套或者多套 TiDB 集群之间进行[双向复制](/ticdc/ticdc-bidirectional-replication.md)
 - [PITR](/br-pitr-guide.md#进行-pitr) 的恢复性能提升 x 倍，RPO 降低到 x min
