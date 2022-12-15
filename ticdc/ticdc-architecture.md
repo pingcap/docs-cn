@@ -137,7 +137,7 @@ table ResolvedTS >= global ResolvedTS >= table CheckpointTS >= global Checkpoint
 - 对于 DDL 语句，这个时间戳会用来确保在这个 DDL 语句之前的改变都被应用到下游，之后执行对应的 DDL 语句，在 DDL 语句同步完成之后再同步其他的数据改变。由于 DDL 语句的处理是 owner 角色的 Capture 负责的，DDL 语句对应的 Barrier TS 只会由 owner 节点的 Processor 线程产生。
 - sync point 的 Barrier TS 也是一个时间戳，当你启用 TiCDC 的 Syncpoint 特性后，TiCDC 会根据你指定的间隔产生一个 Barrier TS，当所有的表都同步到了这个 Barrier TS 之后，记录一下对应的时间点，之后继续向下同步数据。
 
-一个 barrier TS 被生成后后, TiCDC 会只先复制小于 barrier TS 的数据到下游。然后比较 global CheckpointTS 和 Barrier TS 的大小，确定小于 Barrier TS 的数据是否已经被同步完成。如果 global CheckpointTS = Barrier TS，则可以开始同步大于 Barrier TS 的数据，否则需要继续等待所有小于 Barrier TS 数据的同步完成。
+一个 Barrier TS 被生成后后, TiCDC 会只先复制小于 Barrier TS 的数据到下游。然后比较 global CheckpointTS 和 Barrier TS 的大小，确定小于 Barrier TS 的数据是否已经被同步完成。如果 global CheckpointTS = Barrier TS，则可以开始同步大于 Barrier TS 的数据，否则需要继续等待所有小于 Barrier TS 数据的同步完成。
 
 ## 主要流程
 
