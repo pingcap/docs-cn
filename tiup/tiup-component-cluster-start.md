@@ -23,7 +23,6 @@ tiup cluster start <cluster-name> [flags]
 > **注意：**
 >
 > - 使用安全启动方式后，不能通过无密码的 root 用户登录数据库，你需要记录命令行返回的密码进行后续操作。
->
 > - 该自动生成的密码只会返回一次，如果没有记录或者忘记该密码，请参照[忘记 root 密码](/user-account-management.md#忘记-root-密码)修改密码。
 
 ### -N, --node（strings，默认为 []，表示所有节点）
