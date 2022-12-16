@@ -4,7 +4,7 @@ title: tiup cluster meta restore
 
 # tiup cluster meta restore
 
-当需要恢复 TiUP meta 文件时，可以通过 `tiup cluster meta restore` 命令从备份文件中恢复.
+当需要恢复 TiUP meta 文件时，可以通过 `tiup cluster meta restore` 命令从备份文件中恢复。
 
 ## 语法
 
@@ -13,7 +13,7 @@ tiup cluster meta restore <cluster-name> <backup-file> [flags]
 ```
 
 - `<cluster-name>` 代表需要执行操作的集群名
-- `<backup-file>` 代表 TIUP meta 备份文件所在的文件路径
+- `<backup-file>` 代表 TiUP meta 备份文件所在的文件路径
 
 > **注意：**
 >
