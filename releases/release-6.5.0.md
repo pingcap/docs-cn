@@ -411,7 +411,7 @@ v6.5.0 版本开始废弃 v4.0.7 版本引入的 [`AMEND TRANSACTION`](/system-v
     - 修复了从 v4.0.16 升级到 v6.4.0 后 `ADMIN SHOW JOB` 操作崩溃的问题 [#38980](https://github.com/pingcap/tidb/issues/38980) @[tangenta](https://github.com/tangenta)
     - 修复了 `tidb_decode_key` 函数未正确处理分区表编码的问题 [#39304](https://github.com/pingcap/tidb/issues/39304) @[Defined2014](https://github.com/Defined2014)
     - 修复了日志轮转时，gRPC 的错误日志信息未被重定向到正确的日志文件的问题 [#38941](https://github.com/pingcap/tidb/issues/38941) @[xhebox](https://github.com/xhebox)
-    - 修复了 `BEGIN; SELECT... FOR UPDATE;` 点查在 read engines 未配置 TiKV 时生成非预期执行计划的问题 [#39344](https://github.com/pingcap/tidb/issues/39344) @[Yisaer](https://github.com/Yisaer)
+    - 修复了 `BEGIN; SELECT... FOR UPDATE;` 点查在读数据存储引擎 (`tidb_isolation_read_engines`) 未配置 TiKV 时生成非预期执行计划的问题 [#39344](https://github.com/pingcap/tidb/issues/39344) @[Yisaer](https://github.com/Yisaer)
     - 修复了错误地下推 `StreamAgg` 到 TiFlash 导致结果错误的问题 [#39266](https://github.com/pingcap/tidb/issues/39266) @[fixdb](https://github.com/fixdb)
 
 + TiKV
