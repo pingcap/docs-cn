@@ -12,8 +12,8 @@ title: tiup cluster meta restore
 tiup cluster meta restore <cluster-name> <backup-file> [flags]
 ```
 
-- `<cluster-name>` 代表需要执行操作的集群名
-- `<backup-file>` 代表 TiUP meta 备份文件所在的文件路径
+- `<cluster-name>` 代表需要执行操作的集群名。
+- `<backup-file>` 代表 TiUP meta 备份文件所在的文件路径。
 
 > **注意：**
 >
