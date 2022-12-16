@@ -4,7 +4,7 @@ title: tiup cluster meta backup
 
 # tiup cluster meta backup
 
-如果运维所需的 TiUP meta 文件丢失，会导致无法继续使用 TiUP 管理集群，建议通过 `tiup cluster meta backup` 命令定期备份 TiUP meta 文件.
+如果运维所需的 TiUP meta 文件丢失，会导致无法继续使用 TiUP 管理集群。你可以通过 `tiup cluster meta backup` 命令定期备份 TiUP meta 文件。
 
 ## 语法
 
@@ -12,7 +12,7 @@ title: tiup cluster meta backup
 tiup cluster meta backup <cluster-name> [flags]
 ```
 
-- `<cluster-name>` 代表需要执行操作的集群名
+`<cluster-name>` 为要操作的集群名字，如果忘记集群名字可通过[集群列表](/tiup/tiup-component-cluster-list.md)查看。
 
 ## 选项
 
