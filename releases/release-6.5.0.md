@@ -16,19 +16,17 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
 - 默认开启[索引加速功能](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入)，添加索引的性能提升较 v6.1 提升了 10 倍。
 - 支持通过 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 控制 TiDB 全局内存。
-- 支持 [`FLASHBACK CLUSTER TO TIMESTAMP`](/sql-statements/sql-statement-flashback-to-timestamp.md)，兼容 TiCDC 和 PITR。
 - 支持高性能、全局单调递增的 [`AUTO_INCREMENT` 列属性](/auto-increment.md#mysql-兼容模式)，兼容 MySQL。
+- 支持 [`FLASHBACK CLUSTER TO TIMESTAMP`](/sql-statements/sql-statement-flashback-to-timestamp.md)，兼容 TiCDC 和 PITR。
 - 增强[优化器代价模型](/cost-model.md#cost-model-version-2)，并进一步增强索引合并 [INDEX MERGE](/glossary.md#index-merge) 功能。
-- 支持[下推 `JSON_EXTRACT()` 函数](/tiflash/tiflash-supported-pushdown-calculations.md)至 TiFlash。
+- 支持下推 `JSON_EXTRACT()` 函数至 TiFlash。
+- 支持[密码管理](/password-management.md)策略，满足密码合规审计需求。
 - TiDB Lightning 和 Dumpling 支持[导入](tidb-lightning/tidb-lightning-data-source.md)和[导出](/dumpling-overview.md#通过并发提高-dumpling-的导出效率)压缩格式文件。
 - TiDB Data Migration (DM) 支持[增量数据校验](/dm/dm-continuous-data-validation.md)。
-- 支持[密码管理](/password-management.md)策略，满足密码合规审计需求。
-- 提供行级别 [Time to live (TTL)](/time-to-live.md) 管理数据生命周期（实验特性）。
-- 支持使用[非事务 DML 语句](/non-transactional-dml.md)，提升集群稳定性。
-- TiCDC 支持[将实时变更数据保存到存储服务](ticdc/ticdc-sink-to-cloud-storage.md)(例如，Amazon S3、Azure Blob Storage、NFS)。
-- 支持在两套或者多套 TiDB 集群之间进行[双向复制](/ticdc/ticdc-bidirectional-replication.md)。
-- [PITR](/br-pitr-guide.md#进行-pitr) 的恢复性能提升 x 倍，RPO 降低到 x min。
+- TiDB 快照备份支持断点续传，[PITR](/br-pitr-guide.md#进行-pitr) 的恢复性能提升 x 倍，RPO 降低到 x min。
 - TiCDC [同步数据到 Kafka](/replicate-data-to-kafka.md) 吞吐提升 x 倍，复制延迟降低到 x 秒。
+- 提供行级别 [Time to live (TTL)](/time-to-live.md) 管理数据生命周期（实验特性）。
+- TiCDC 支持 Amazon S3、Azure Blob Storage、NFS 的 [对象存储](ticdc/ticdc-sink-to-cloud-storage.md)
 
 ## 新功能
 
