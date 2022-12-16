@@ -28,7 +28,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 - TiCDC 支持[将实时变更数据保存到存储服务](ticdc/ticdc-sink-to-cloud-storage.md)(S3/Azure Blob Storage/NFS)。
 - 支持在两套或者多套 TiDB 集群之间进行[双向复制](/ticdc/ticdc-bidirectional-replication.md)。
 - [PITR](/br-pitr-guide.md#进行-pitr) 的恢复性能提升 x 倍，RPO 降低到 x min。
-- TiCDC [同步数据到 Kafka](/replicate-data-to-kafka.md) 吞吐提升 x 倍，复制延迟降低到 x 秒
+- TiCDC [同步数据到 Kafka](/replicate-data-to-kafka.md) 吞吐提升 x 倍，复制延迟降低到 x 秒。
 
 ## 新功能
 
