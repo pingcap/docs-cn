@@ -382,12 +382,12 @@ v6.5.0 版本开始废弃 v4.0.7 版本引入的 [`AMEND TRANSACTION`](/system-v
     + Backup & Restore (BR)
 
         - 优化清理备份日志数据时 BR 的内存使用 [#38869](https://github.com/pingcap/tidb/issues/38869) @[Leavrth](https://github.com/Leavrth)
-        - (dup) 修复恢复过程中由于 PD leader 切换导致恢复失败的问题 [#36910](https://github.com/pingcap/tidb/issues/36910) @[MoCuishle28](https://github.com/MoCuishle28)
+        - 修复恢复过程中由于 PD leader 切换导致恢复失败的问题 [#36910](https://github.com/pingcap/tidb/issues/36910) @[MoCuishle28](https://github.com/MoCuishle28)
         - 日志备份的 TLS 功能使用 OpenSSL 协议，提升 TLS 的兼容性 [#13867](https://github.com/tikv/tikv/issues/13867) @[YuJuncen](https://github.com/YuJuncen)
 
     + TiCDC
 
-        - (dup) 提升 Kafka 相关协议的编码性能  [#7540](https://github.com/pingcap/tiflow/issues/7540) [#7532](https://github.com/pingcap/tiflow/issues/7532) [#7543](https://github.com/pingcap/tiflow/issues/7543) @[3AceShowHand](https://github.com/3AceShowHand) @[sdojjy](https://github.com/sdojjy)
+        - 提升 Kafka 相关协议的编码性能  [#7540](https://github.com/pingcap/tiflow/issues/7540) [#7532](https://github.com/pingcap/tiflow/issues/7532) [#7543](https://github.com/pingcap/tiflow/issues/7543) @[3AceShowHand](https://github.com/3AceShowHand) @[sdojjy](https://github.com/sdojjy)
 
     + TiDB Data Migration (DM)
 
@@ -435,16 +435,16 @@ v6.5.0 版本开始废弃 v4.0.7 版本引入的 [`AMEND TRANSACTION`](/system-v
 
     + Backup & Restore (BR)
 
-        - (dup) 修复 BR 删除日志备份数据时，会删除不应被删除的数据的问题 [#38939](https://github.com/pingcap/tidb/issues/38939) @[Leavrth](https://github.com/Leavrth)
-        - (dup) 修复数据库或数据表中使用旧的排序规则框架时，数据恢复失败的问题[#39150](https://github.com/pingcap/tidb/issues/39150) @[MoCuishle28](https://github.com/MoCuishle28)
+        - 修复 BR 删除日志备份数据时，会删除不应被删除的数据的问题 [#38939](https://github.com/pingcap/tidb/issues/38939) @[Leavrth](https://github.com/Leavrth)
+        - 修复数据库或数据表中使用旧的排序规则框架时，数据恢复失败的问题[#39150](https://github.com/pingcap/tidb/issues/39150) @[MoCuishle28](https://github.com/MoCuishle28)
         - 修复阿里云和华为云与 S3 存储不完全兼容导致的备份失败问题 [#39545](https://github.com/pingcap/tidb/issues/39545) @[3pointer](https://github.com/3pointer)
 
     + TiCDC
 
         - 修复 PD leader crash 时 TiCDC 卡住的问题 [#7470](https://github.com/pingcap/tiflow/issues/7470) @[zeminzhou](https://github.com/zeminzhou)
-        - (dup) 修复在执行 DDL 后，暂停然后恢复 changefeed 会导致数据丢失的问题 [#7682](https://github.com/pingcap/tiflow/issues/7682) @[asddongmen](https://github.com/asddongmen)
+        - 修复在执行 DDL 后，暂停然后恢复 changefeed 会导致数据丢失的问题 [#7682](https://github.com/pingcap/tiflow/issues/7682) @[asddongmen](https://github.com/asddongmen)
         - 修复存在高版本 TiFlash 时，TiCDC 会误报错的问题 [#7744](https://github.com/pingcap/tiflow/issues/7744) @[overvenus](https://github.com/overvenus)
-        - (dup) 修复下游网络发生异常时 sink 模块卡住的问题 [#7706](https://github.com/pingcap/tiflow/issues/7706) @[hicqu](https://github.com/hicqu)
+        - 修复下游网络发生异常时 sink 模块卡住的问题 [#7706](https://github.com/pingcap/tiflow/issues/7706) @[hicqu](https://github.com/hicqu)
         - 修复用户快速删除、创建同名同步任务可能导致的数据丢失问题 [#7657](https://github.com/pingcap/tiflow/issues/7657) @[overvenus](https://github.com/overvenus)
 
     + TiDB Data Migration (DM)
