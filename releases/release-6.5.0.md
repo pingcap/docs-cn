@@ -242,7 +242,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
 ### 数据共享与订阅
 
-* TiCDC 支持输出变更数据至 storage sink [tiflow#6797](https://github.com/pingcap/tiflow/issues/6797) @[zhaoxinyu](https://github.com/zhaoxinyu) **tw@shichun-0415**
+* TiCDC 支持输出变更数据至 storage sink（实验特性） [tiflow#6797](https://github.com/pingcap/tiflow/issues/6797) @[zhaoxinyu](https://github.com/zhaoxinyu) **tw@shichun-0415**
 
     TiCDC 支持将 changed log 输出到 S3、Azure Blob Storage、NFS，以及兼容 S3 协议的存储服务中。Cloud storage 价格便宜，使用方便。对于不希望使用 Kafka 的用户，可以选择使用 storage sink。TiCDC 将 changed log 保存到文件，然后发送到存储系统中；消费程序定时从存储系统读取新产生的 changed log files 进行处理。
 
