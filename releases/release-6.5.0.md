@@ -26,7 +26,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 - TiDB 快照备份支持断点续传，[PITR](/br-pitr-guide.md#进行-pitr) 的恢复性能提升 x 倍，RPO 降低到 x min。
 - TiCDC [同步数据到 Kafka](/replicate-data-to-kafka.md) 吞吐提升 x 倍，复制延迟降低到 x 秒。
 - 提供行级别 [Time to live (TTL)](/time-to-live.md) 管理数据生命周期（实验特性）。
-- TiCDC 支持 Amazon S3、Azure Blob Storage、NFS 的 [对象存储](ticdc/ticdc-sink-to-cloud-storage.md)
+- TiCDC 支持 Amazon S3、Azure Blob Storage、NFS 的 [对象存储](ticdc/ticdc-sink-to-cloud-storage.md)。
 
 ## 新功能
 
