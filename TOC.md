@@ -492,6 +492,7 @@
       - [Handle Errors](/dm/dm-error-handling.md)
     - [Release Notes](/dm/dm-release-notes.md)
   - TiCDC
+    - [Overview](/ticdc/ticdc-overview.md)
     - [Deploy and Maintain](/ticdc/deploy-ticdc.md)
     - Changefeed
       - [Overview](/ticdc/ticdc-changefeed-overview.md)
@@ -505,6 +506,7 @@
       - [Monitoring Metrics](/ticdc/monitor-ticdc.md)
       - [Alert Rules](/ticdc/ticdc-alert-rules.md)
     - Reference
+      - [Architecture](/ticdc/ticdc-architecture.md)
       - [TiCDC Server Configurations](/ticdc/ticdc-server-config.md)
       - [TiCDC Changefeed Configurations](/ticdc/ticdc-changefeed-config.md)
       - Output Protocols
