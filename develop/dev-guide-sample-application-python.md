@@ -823,7 +823,7 @@ mysql --host 127.0.0.1 --port 4000 -u root < player_init.sql
 
 </SimpleTab>
 
-若不使用本地集群，或未安装命令行客户端，请用喜欢的方式直接登录集群，并运行 `player_init.sql` 文件内的 SQL 语句。
+若不使用本地集群，或未安装命令行客户端，请用喜欢的方式（如 Navicat、DBeaver 等 GUI 工具）直接登录集群，并运行 `player_init.sql` 文件内的 SQL 语句。
 
 ### 第 3 步第 2 部分：TiDB Cloud 更改参数
 
