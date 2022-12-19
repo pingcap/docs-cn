@@ -19,6 +19,8 @@ Performance Overview Dashboard 按总分结构对 TiDB、TiKV、PD 的性能指�
 
 以下为 Performance Overview Dashboard 监控说明：
 
+<!-- markdownlint-disable MD001 -->
+
 ### Database Time by SQL Type
 
 - database time: 每秒的总数据库时间
