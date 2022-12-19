@@ -1,0 +1,14 @@
+extends: substitution
+message: "Use '%s' instead of '%s'."
+ignorecase: false
+level: suggestion
+nonword: true
+action:
+  name: replace
+swap:
+  'TiDB Cloud Console': TiDB Cloud console
+  'Google Cloud Console': Google Cloud console
+  'AWS Management console': AWS Management Console
+  'Amazon S3 Console': Amazon S3 console
+  'Confluent Cloud console': Confluent Cloud Console
+  '(?i)on(?:\s*)(?:the)?(?:\s*)TiDB Cloud console': in the TiDB Cloud console

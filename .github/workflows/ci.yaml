@@ -59,7 +59,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@master
       - name: Vale Linter
-        uses: errata-ai/vale-action@v1.4.3
+        uses: errata-ai/vale-action@v1.5.0
         with:
           # Optional
           # Specify file path to lint
