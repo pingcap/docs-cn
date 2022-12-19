@@ -173,3 +173,48 @@ mysql> show stats_meta;
 ```
 
 加载并还原所需现场后，即可在该现场诊断和改进执行计划。
+
+## `PLAN REPLAYER CAPTURE` 抓取目标计划
+
+在用户定位 TiDB 执行计划的部分场景中，目标 SQL 与目标计划的可能在查询中偶尔出现，无法使用 `PLAN REPLAYER` 直接抓取，此时我们可以使用 `PLAN REPLAYER CAPTURE` 来帮助我们定向抓取目标 SQL 与计划的优化器信息情况。
+
+`PLAN REPLAYER CAPTURE` 主要功能如下：
+
+- 在 TiDB 集群内部提前注册目标 SQL 与 PLAN 的 Digest，并开始匹配目标查询。
+- 当目标查询匹配成功时，直接抓取其优化器相关信息，导出为 ZIP 格式的文件用于保存。
+
+### 开启 `PLAN REPLAYER CAPTURE` 功能
+
+`PLAN REPLAYER CAPTURE` 功能通过[`tidb_enable_plan_replayer_capture`](/system-variables.md#tidb_enable_plan_replayer_capture) 控制。
+
+### 使用 `PLAN REPLAYER CAPTURE` 功能
+
+我们可以通过以下方式向 TiDB 集群注册目标 SQL 和 PLAN 的 Digest:
+
+```sql
+PLAN REPLAYER CAPTURE 'sql_digest' 'plan_digest';
+```
+
+当我们的目标 SQL 有多种 PLAN 对应且都想抓取时，我们可以通过以下 SQL 一键注册:
+
+```sql
+PLAN REPLAYER CAPTURE 'sql_digest' '*';
+```
+
+### 获取 `PLAN REPLAYER CAPTURE` 结果
+
+当 `PLAN REPLAYER CAPTURE` 成功抓取到结果后，可以通过以下 SQL 查看用于下载的文件标识:
+
+```sql
+mysql> select * from mysql.plan_replayer_status;
++------------------------------------------------------------------+------------------------------------------------------------------+------------+-----------------------------------------------------------+---------------------+-------------+-----------------+
+| sql_digest                                                       | plan_digest                                                      | origin_sql | token                                                     | update_time         | fail_reason | instance        |
++------------------------------------------------------------------+------------------------------------------------------------------+------------+-----------------------------------------------------------+---------------------+-------------+-----------------+
+| 086e3fbd2732f7671c17f299d4320689deeeb87ba031240e1e598a0ca14f808c | 042de2a6652a6d20afc629ff90b8507b7587a1c7e1eb122c3e0b808b1d80cc02 |            | replayer_Utah4nkz2sIEzkks7tIRog==_1668746293523179156.zip | 2022-11-18 12:38:13 | NULL        | 172.16.4.4:4022 |
+| b5b38322b7be560edb04f33f15b15a885e7c6209a22b56b0804622e397199b54 | 1770efeb3f91936e095f0344b629562bf1b204f6e46439b7d8f842319297c3b5 |            | replayer_Z2mUXNHDjU_WBmGdWQqifw==_1668746293560115314.zip | 2022-11-18 12:38:13 | NULL        | 172.16.4.4:4022 |
+| 96d00c0b3f08795fe94e2d712fa1078ab7809faf4e81d198f276c0dede818cf9 | 8892f74ac2a42c2c6b6152352bc491b5c07c73ac3ed66487b2c990909bae83e8 |            | replayer_RZcRHJB7BaCccxFfOIAhWg==_1668746293578282450.zip | 2022-11-18 12:38:13 | NULL        | 172.16.4.4:4022 |
++------------------------------------------------------------------+------------------------------------------------------------------+------------+-----------------------------------------------------------+---------------------+-------------+-----------------+
+3 rows in set (0.00 sec)
+```
+
+下载 `PLAN REPLAYER CAPTURE` 的文件方法与 `PLAN REPLAYER` 相同。
