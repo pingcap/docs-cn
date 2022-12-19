@@ -289,7 +289,7 @@ explain SELECT * FROM t1,t2 WHERE t1.id = t2.id;
 
 #### 根据 `sql_digest` 删除绑定
 
-当使用 `DROP session binding for` 语句时，除了可以指定原始的 SQL 语句用来删除绑定以外，也可以通过指定 `sql_digest` 用来删除绑定：
+除了可以根据 SQL 语句删除对应的绑定以外，也可以根据 `sql_digest` 删除绑定：
 
 ```sql
 DROP [GLOBAL | SESSION] BINDING FOR SQL DIGEST 'sql_digest';
