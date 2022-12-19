@@ -22,7 +22,7 @@ TiDB 版本：5.1.5
 
 + TiFlash
 
-## Bug fixes
+## Bug 修复
 
 + TiDB
     
