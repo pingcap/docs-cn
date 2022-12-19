@@ -28,63 +28,20 @@ summary: 给出一个 Django 构建 TiDB 应用程序示例。
 
 ### 使用 TiDB Cloud Serverless Tier 集群
 
-[创建 Serverless Tier 集群](/develop/dev-guide-build-cluster-in-cloud.md#第-1-步创建-serverless-tier-集群)
+[创建 Serverless Tier 集群](/develop/dev-guide-build-cluster-in-cloud.md#第-1-步创建-serverless-tier-集群)。
 
 ### 使用本地集群
 
-此处将简要叙述启动一个测试集群的过程，若需查看正式环境集群部署，或查看更详细的部署内容，请查阅[本地启动 TiDB](/quick-start-with-tidb.md)。
+你可以部署一个本地测试的 TiDB 集群或正式的 TiDB 集群。详细步骤，请参考：
 
-**部署本地测试集群**
+- [部署本地测试 TiDB 集群](/quick-start-with-tidb.md#部署本地测试集群)
+- [部署正式 TiDB 集群](/production-deployment-using-tiup.md)。
 
-适用场景：利用本地 macOS 或者单机 Linux 环境快速部署 TiDB 测试集群，体验 TiDB 集群的基本架构，以及 TiDB、TiKV、PD、监控等基础组件的运行
+### 使用云原生开发环境
 
-1. 下载并安装 TiUP。
+基于 Git 的预配置的开发环境：[现在就试试](/develop/dev-guide-playground-gitpod.md)
 
-    ```shell
-    curl --proto '=https' --tlsv1.2 -sSf https://tiup-mirrors.pingcap.com/install.sh | sh
-    ```
-
-2. 声明全局环境变量。
-
-    > **注意：**
-    >
-    > TiUP 安装完成后会提示对应 profile 文件的绝对路径。在执行以下 source 命令前，需要根据 profile 文件的实际位置修改命令。
-
-    ```shell
-    source .bash_profile
-    ```
-
-3. 在当前 session 执行以下命令启动集群。
-
-    - 直接执行`tiup playground` 命令会运行最新版本的 TiDB 集群，其中 TiDB、TiKV、PD 和 TiFlash 实例各 1 个：
-
-        ```shell
-        tiup playground
-        ```
-
-    - 也可以指定 TiDB 版本以及各组件实例个数，命令类似于：
-
-        ```shell
-        tiup playground v5.4.0 --db 2 --pd 3 --kv 3
-        ```
-
-    上述命令会在本地下载并启动某个版本的集群（例如 v5.4.0）。最新版本可以通过执行`tiup list tidb` 来查看。运行结果将显示集群的访问方式：
-
-    ```
-    CLUSTER START SUCCESSFULLY, Enjoy it ^-^
-    To connect TiDB: mysql --comments --host 127.0.0.1 --port 4001 -u root -p (no password)
-    To connect TiDB: mysql --comments --host 127.0.0.1 --port 4000 -u root -p (no password)
-    To view the dashboard: http://127.0.0.1:2379/dashboard
-    PD client endpoints: [127.0.0.1:2379 127.0.0.1:2382 127.0.0.1:2384]
-    To view the Prometheus: http://127.0.0.1:9090
-    To view the Grafana: http://127.0.0.1:3000
-    ```
-
-> **注意：**
->
-> - 支持 v5.2.0 及以上版本的 TiDB 在 Apple M1 芯片的机器上运行 `tiup playground`。
-> - 以这种方式执行的 playground，在结束部署测试后 TiUP 会清理掉原集群数据，重新执行该命令后会得到一个全新的集群。
-> - 若希望持久化数据，可以执行 TiUP 的 `--tag` 参数：`tiup --tag <your-tag> playground ...`，详情参考 [TiUP 参考手册](/tiup/tiup-reference.md#-t---tag-string)。
+该环境会自动克隆代码，并通过 TiUP 部署测试集群。
 
 ## 第 2 步：安装 Python
 
