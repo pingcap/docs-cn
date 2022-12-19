@@ -226,7 +226,7 @@ CREATE [GLOBAL | SESSION] BINDING FROM HISTORY USING PLAN DIGEST 'plan_digest';
     CREATE BINDING FROM HISTORY USING PLAN DIGEST '4e3159169cc63c14b139a4e7d72eae1759875c9a9581f94bb2079aae961189cb';
     ```
 
-创建完毕后可以[查看绑定](sql-plan-management#查看绑定)，验证绑定是否生效。
+创建完毕后可以[查看绑定](#查看绑定)，验证绑定是否生效。
 
 ```sql
 SHOW BINDINGS\G;
