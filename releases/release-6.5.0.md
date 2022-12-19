@@ -330,7 +330,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 ### 其他
 
 - 从 v6.5.0 起，`mysql.user` 表新增 `Password_reuse_history` 和 `Password_reuse_time` 两个字段。
-- [索引加速功能](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入)默认开启，与 [PITR (Point-in-time recovery)](/br/br-pitr-guide.md) 功能不兼容。在使用索引加速功能时，需要确保后台没有启动 PITR 备份任务，否则可能会出现非预期结果，详情请参考[tidb_ddl_enable_fast_reorg](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入)。
+- [添加索引加速功能](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入)默认开启，与 [PITR (Point-in-time recovery)](/br/br-pitr-guide.md) 不兼容。在使用索引加速功能时，需要确保后台没有启动 PITR 备份任务，否则可能会出现非预期结果。详情请参考 [`tidb_ddl_enable_fast_reorg`](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入)。
 
 ## 废弃功能
 
