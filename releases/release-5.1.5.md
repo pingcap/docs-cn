@@ -35,7 +35,7 @@ TiDB 版本：5.1.5
     (dup: release-5.4.0.md > Bug fixes> TiDB)- Fix the issue that the result of `concat(ifnull(time(3)))` in TiDB is different from that in MySQL [#29498](https://github.com/pingcap/tidb/issues/29498)
     (dup: release-5.0.6.md > Bug fixes> TiDB)- Fix the issue that the SQL statements that contain `cast(integer as char) union string` return wrong results [#29513](https://github.com/pingcap/tidb/issues/29513)
     (dup: release-6.1.1.md > Bug fixes> TiDB)- Fix the issue that `INL_HASH_JOIN` might hang when used with `LIMIT` [#35638](https://github.com/pingcap/tidb/issues/35638) @[guo-shaoge](https://github.com/guo-shaoge)
-    - Fix wrong `any_value` result when there are regions returning empty result [#30923](https://github.com/pingcap/tidb/issues/30923) @[ti-srebot](https://github.com/ti-srebot)
+    - 修复当有 Region 返回空数据时 `ANY_VALUE` 结果不正确的问题 [#30923](https://github.com/pingcap/tidb/issues/30923)
     (dup: release-5.2.4.md > Bug fixes> TiDB)- Fix wrong results of index join caused by an innerWorker panic [#31494](https://github.com/pingcap/tidb/issues/31494)
 
     <!--planner owner: winoros-->
@@ -49,7 +49,7 @@ TiDB 版本：5.1.5
     (dup: release-5.3.4.md > Bug fixes> TiDB)- Fix the issue that `KILL TIDB` cannot take effect immediately on idle connections [#24031](https://github.com/pingcap/tidb/issues/24031)
     - Fix the bug that setting any session variable will make `tidb_snapshot` unwork. [#35515](https://github.com/pingcap/tidb/issues/35515)
     (dup: release-5.3.4.md > Bug fixes> TiDB)- Fix the issue that the Region cache is not cleaned up in time when the Region is merged [#37141](https://github.com/pingcap/tidb/issues/37141)
-    - Fix the panic issue caused by the connection array race. [#33773](https://github.com/pingcap/tidb/issues/33773)
+    - 修复因为 kv client 中 connection data race 导致的 panic [33773](https://github.com/pingcap/tidb/issues/33773)
     (dup: release-6.1.1.md > Bug fixes> TiDB)- Fix the issue that when TiDB Binlog is enabled, executing the `ALTER SEQUENCE` statement might cause a wrong metadata version and cause Drainer to exit [#36276](https://github.com/pingcap/tidb/issues/36276) @[AilinKid](https://github.com/AilinKid)
     (dup: release-5.3.2.md > Bug Fixes> TiDB)- Fix the bug that TiDB may panic when querying statement summary tables [#35340](https://github.com/pingcap/tidb/issues/35340)
     - None [#30402](https://github.com/pingcap/tidb/issues/30402) @[ti-srebot](https://github.com/ti-srebot)
@@ -101,7 +101,7 @@ TiDB 版本：5.1.5
     (dup: release-6.1.0.md > Bug fixes> PD)- Fix a bug of TSO fallback in some corner cases [#4884](https://github.com/tikv/pd/issues/4884)
     (dup: release-5.3.4.md > Bug fixes> PD)- Fix the issue that the TiFlash learner replica might not be created in specific scenarios [#5401](https://github.com/tikv/pd/issues/5401)
     (dup: release-5.4.1.md > Bug Fixes> PD)- Fix the issue that the label distribution has residual labels in the metrics [#4825](https://github.com/tikv/pd/issues/4825)
-    - None [#4920](https://github.com/tikv/pd/issues/4920) @[ti-chi-bot](https://github.com/ti-chi-bot)
+    - (dup: release-6.1.0.md > Bug fixes> PD)- Fix the issue that region checker always occupy one cpu in some corner cases.[#4920](https://github.com/tikv/pd/issues/4920) 
     (dup: release-5.4.1.md > Bug Fixes> PD)- Fix the issue that when there exists a Store with large capacity (2T for example), fully allocated small Stores cannot be detected, which results in no balance operator being generated [#4805](https://github.com/tikv/pd/issues/4805)
     (dup: release-5.3.2.md > Bug Fixes> PD)- Fix the issue that schedulers do not work when `SchedulerMaxWaitingOperator` is set to `1` [#4946](https://github.com/tikv/pd/issues/4946)
 
