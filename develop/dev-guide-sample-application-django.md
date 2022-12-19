@@ -277,7 +277,7 @@ curl --location --request POST 'http://localhost:8000/player/' --header 'Content
 
 这里使用 JSON 作为信息的载荷。表示需要创建一个金币数 `coins` 为 100，货物数 `goods` 为 20 的玩家。返回值为创建的玩家信息。
 
-```json
+```
 create 1 players.
 ```
 
