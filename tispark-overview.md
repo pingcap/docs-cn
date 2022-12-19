@@ -55,7 +55,7 @@ TiSpark 作为 Spark 的 TiDB 连接器，需要 Spark 集群的支持。本文�
 - 建议为 Spark 分配 32G 以上的内存，并为操作系统和缓存保留至少 25% 的内存。
 - 建议每台机器至少为 Spark 分配 8 到 16 核 CPU。起初，你可以设定将所有 CPU 核分配给 Spark。
 
-可以参考如下的 spark-env.sh 配置文件
+可以参考如下的 spark-env.sh 配置文件：
 
 ```
 SPARK_EXECUTOR_MEMORY = 32g
@@ -399,7 +399,7 @@ TiSpark 会根据分区类型、分区表达式以及具体 SQL 决定是否进�
 
 > **注意：**
 >
-> 目前，TiSpark 只支持在开启 `new_collation_enable` 下写入分区表。
+> 目前，TiSpark 只支持在 utf8mb4_bin 字符集下写入分区表。
 
 有两种方式写入分区表：
 
