@@ -71,8 +71,8 @@ TiSpark 是 Spark 的第三方 jar 包，提供读写 TiKV 的能力。
 由于 GPL 许可证的限制，TiSpark 不再提供 `mysql-connector-java` 的依赖。以下版本将不再包含 `mysql-connector-java`：
 
 - TiSpark > 3.0.1
-- TiSpark > 2.5.1 （TiSpark 2.5.x）
-- TiSpark > 2.4.3 （TiSpark 2.4.x）
+- TiSpark > 2.5.1（TiSpark 2.5.x）
+- TiSpark > 2.4.3（TiSpark 2.4.x）
 
 在使用 TiSpark 写入与鉴权时，仍需要 `mysql-connector-java` 依赖，因此你需要手动下载，并使用以下方式引入：
 
@@ -324,7 +324,7 @@ spark.tispark.tikv.jks_trust_path                              /home/tispark/con
 spark.tispark.tikv.jks_trust_password                          tikv_clientstore_password
 ```
 
-当你同时配置 JKS 和 X.509 证书时，JKS 优先级更高。因此，当你只想使用普通的 pem 证书是，不要同时设置 `spark.tispark.tikv.jks_enable=true`。
+当你同时配置 JKS 和 X.509 证书时，JKS 优先级更高。因此，当你只想使用普通的 pem 证书时，不要同时设置 `spark.tispark.tikv.jks_enable=true`。
 
 * 下面是一个配置 JDBC connector TLS 的例子：
 
