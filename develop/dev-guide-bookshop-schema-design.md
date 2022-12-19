@@ -85,7 +85,7 @@ tiup demo bookshop prepare --users=200000 --books=500000 --authors=100000 --rati
     arn:aws:iam::494090988690:role/s3-tidb-cloud-developer-access
     ```
 
-3. 点击 **Next** 按钮切换到 **File and filter** 步骤确认将要导入的文件的信息。
+3. 点击 **Next** 按钮切换到 **Choose the tables to be imported** 步骤确认将要导入的文件的信息。
 
 4. 点击 **Next** 按钮切换到 **Preview** 步骤确认将要导入的示例数据是否正确。
 
