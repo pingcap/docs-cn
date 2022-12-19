@@ -1036,7 +1036,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 > **警告：**
 >
->  该变量从 v6.5.0 开始废弃，并计划在下一个版本移除该变量。TiDB 默认使用[元数据锁](/metadata-lock.md)机制解决 `Information schema is changed` 报错的问题。
+> 该变量从 v6.5.0 开始废弃，并计划在下一个版本移除该变量。TiDB 默认使用[元数据锁](/metadata-lock.md)机制解决 `Information schema is changed` 报错的问题。
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
