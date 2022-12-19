@@ -47,7 +47,7 @@ git clone https://github.com/pingcap-inc/tidb-example-python.git
 
 <div label="使用 SQLAlchemy（推荐）" value="SQLAlchemy">
 
-当前开源比较流行的 Python ORM 之一为 [SQLAlchemy](https://www.sqlalchemy.org/)，此处将以 **1.4.44** 版本进行说明。
+[SQLAlchemy](https://www.sqlalchemy.org/) 为当前比较流行的开源 Python ORM 之一。此处将以 SQLAlchemy **1.4.44** 版本进行说明。
 
 ```python
 import uuid
@@ -93,7 +93,7 @@ def simple_example() -> None:
 
         # create players with bulk inserts.
         # insert 1919 players totally, with 114 players per batch.
-        # all players have random uuid
+        # each player has a random UUID
         player_list = random_player(1919)
         for idx in range(0, len(player_list), 114):
             session.bulk_save_objects(player_list[idx:idx + 114])
@@ -155,7 +155,7 @@ def trade_example() -> None:
     trade(sell_id="2", buy_id="1", amount=10, price=500)
 
     # then player 1 has to reduce the incoming quantity to 2.
-    # this trade will successful
+    # this trade will be successful
     trade(sell_id="2", buy_id="1", amount=2, price=100)
 
     with Session() as session:
@@ -171,7 +171,7 @@ trade_example()
 
 相较于直接使用 Driver，SQLAlchemy 屏蔽了创建数据库连接时，不同数据库差异的细节。SQLAlchemy 还封装了大量的操作，如会话管理、基本对象的 CRUD 等，极大地简化了代码量。
 
-`Player` 类为数据库表在程序内的映射。`Player` 的每个属性都对应着 `player` 表的一个字段。SQLAlchemy 使用 `Player` 类为了给 SQLAlchemy 提供更多的信息，使用了形如 `id = Column(String(36), primary_key=True)` 的类型，用来指示字段类型和其附加属性。如此处，则表示 `id` 字段为 `String` 类型，对应数据库类型为 `VARCHAR`，长度为 `36`，且为主键。
+`Player` 类为数据库表在程序内的映射。`Player` 的每个属性都对应着 `player` 表的一个字段。SQLAlchemy 使用 `Player` 类为了给 SQLAlchemy 提供更多的信息，使用了形如以上示例中的 `id = Column(String(36), primary_key=True)` 的类型定义，用来指示字段类型和其附加属性。`id = Column(String(36), primary_key=True)` 表示 `id` 字段为 `String` 类型，对应数据库类型为 `VARCHAR`，长度为 `36`，且为主键。
 
 关于 SQLAlchemy 的更多使用方法，你可以参考 [SQLAlchemy 官网](https://www.sqlalchemy.org/)。
 
@@ -179,7 +179,7 @@ trade_example()
 
 <div label="使用 peewee（推荐）" value="peewee">
 
-当前开源比较流行的 Python ORM 之一为 [peewee](http://docs.peewee-orm.com/en/latest/)，此处将以 **3.15.4** 版本进行说明。
+[peewee](http://docs.peewee-orm.com/en/latest/) 为当前比较流行的开源 Python ORM 之一。此处将以 peewee **3.15.4** 版本进行说明。
 
 ```python
 import os
@@ -221,7 +221,7 @@ def simple_example() -> None:
 
     # create players with bulk inserts.
     # insert 1919 players totally, with 114 players per batch.
-    # all players have random uuid
+    # each player has a random UUID
     player_list = random_player(1919)
     Player.bulk_create(player_list, 114)
 
@@ -282,7 +282,7 @@ def trade_example() -> None:
     trade(sell_id="2", buy_id="1", amount=10, price=500)
 
     # then player 1 has to reduce the incoming quantity to 2.
-    # this trade will successful
+    # this trade will be successful
     trade(sell_id="2", buy_id="1", amount=2, price=100)
 
     # let's take a look for player 1 and player 2 currently
@@ -301,9 +301,9 @@ simple_example()
 trade_example()
 ```
 
-相较于直接使用 Driver，peewee 屏蔽了创建数据库连接时，不同数据库差异的细节，其还封装了大量的操作，如会话管理、基本对象的 CRUD 等，极大地简化了代码量。
+相较于直接使用 Driver，peewee 屏蔽了创建数据库连接时，不同数据库差异的细节。peewee 还封装了大量的操作，如会话管理、基本对象的 CRUD 等，极大地简化了代码量。
 
-`Player` 类为数据库表在程序内的映射。`Player` 的每个属性都对应着 `player` 表的一个字段。SQLAlchemy 使用 `Player` 类为了给 SQLAlchemy 提供更多的信息，使用了形如 `id = CharField(max_length=36, primary_key=True)` 的类型，用来指示字段类型和其附加属性。如此处，则表示 `id` 字段为 `CharField` 类型，对应数据库类型为 `VARCHAR`, 长度为 `36`，且为主键。
+`Player` 类为数据库表在程序内的映射。`Player` 的每个属性都对应着 `player` 表的一个字段。SQLAlchemy 使用 `Player` 类为了给 SQLAlchemy 提供更多的信息，使用了形如以上示例中的 `id = CharField(max_length=36, primary_key=True)` 的类型定义，用来指示字段类型和其附加属性。`id = CharField(max_length=36, primary_key=True)` 表示 `id` 字段为 `CharField` 类型，对应数据库类型为 `VARCHAR`, 长度为 `36`，且为主键。
 
 关于 peewee 的更多使用方法，你可以参考 [peewee 官网](http://docs.peewee-orm.com/en/latest/)。
 
@@ -311,7 +311,7 @@ trade_example()
 
 <div label="使用 mysqlclient" value="mysqlclient">
 
-当前开源比较流行的 Python Driver 之一为 [mysqlclient](https://pypi.org/project/mysqlclient/)，此处将以 **2.1.1** 版本进行说明。虽然 Python 的 Driver 相较其他语言，使用也极其方便。但因其不可屏蔽底层实现，需手动管控事务的特性，如果没有大量必须使用 SQL 的场景，仍然推荐使用 ORM 进行程序编写。这可以降低程序的耦合性。
+[mysqlclient](https://pypi.org/project/mysqlclient/) 为当前比较流行的开源 Python Driver 之一。此处将以 mysqlclient **2.1.1** 版本进行说明。虽然 Python 的 Driver 相较其他语言，使用也极其方便。但因其不可屏蔽底层实现，需手动管控事务的特性，如果没有大量必须使用 SQL 的场景，仍然推荐使用 ORM 进行程序编写。这可以降低程序的耦合性。
 
 ```python
 import uuid
@@ -418,7 +418,7 @@ def simple_example() -> None:
 
             # create players with bulk inserts.
             # insert 1919 players totally, with 114 players per batch.
-            # all players have random uuid
+            # each player has a random UUID
             player_list = random_player(1919)
             for idx in range(0, len(player_list), 114):
                 bulk_create_player(cur, player_list[idx:idx + 114])
@@ -449,7 +449,7 @@ def trade_example() -> None:
         trade(conn, sell_id="2", buy_id="1", amount=10, price=500)
 
         # then player 1 has to reduce the incoming quantity to 2.
-        # this trade will successful
+        # this trade will be successful
         trade(conn, sell_id="2", buy_id="1", amount=2, price=100)
 
         # let's take a look for player 1 and player 2 currently
@@ -464,7 +464,7 @@ simple_example()
 trade_example()
 ```
 
-因为 Driver 有着更低的封装程度，因此我们可以在程序内见到大量的 SQL。程序内查询到的 `Player` 对象，与 ORM 不同，因为没有数据对象的存在，因此将以元组 (tuple) 进行表示。
+Driver 有着更低的封装程度，因此我们可以在程序内见到大量的 SQL。程序内查询到的 `Player`，与 ORM 不同，因为没有数据对象的存在，`Player` 将以元组 (tuple) 进行表示。
 
 关于 mysqlclient 的更多使用方法，你可以参考 [mysqlclient 官方文档](https://mysqlclient.readthedocs.io/)。
 
@@ -472,7 +472,7 @@ trade_example()
 
 <div label="使用 PyMySQL" value="PyMySQL">
 
-当前开源比较流行的 Python Driver 之一为 [PyMySQL](https://pypi.org/project/PyMySQL/)，此处将以 **1.0.2** 版本进行说明。虽然 Python 的 Driver 相较其他语言，使用也极其方便。但因其不可屏蔽底层实现，需手动管控事务的特性，如果没有大量必须使用 SQL 的场景，仍然推荐使用 ORM 进行程序编写。这可以降低程序的耦合性。
+[PyMySQL](https://pypi.org/project/PyMySQL/) 为当前比较流行的开源 Python Driver 之一。此处将以 PyMySQL **1.0.2** 版本进行说明。虽然 Python 的 Driver 相较其他语言，使用也极其方便。但因其不可屏蔽底层实现，需手动管控事务的特性，如果没有大量必须使用 SQL 的场景，仍然推荐使用 ORM 进行程序编写。这可以降低程序的耦合性。
 
 ```python
 import uuid
@@ -579,7 +579,7 @@ def simple_example() -> None:
 
             # create players with bulk inserts.
             # insert 1919 players totally, with 114 players per batch.
-            # all players have random uuid
+            # each player has a random UUID
             player_list = random_player(1919)
             for idx in range(0, len(player_list), 114):
                 bulk_create_player(cur, player_list[idx:idx + 114])
@@ -610,7 +610,7 @@ def trade_example() -> None:
         trade(connection, sell_id="2", buy_id="1", amount=10, price=500)
 
         # then player 1 has to reduce the incoming quantity to 2.
-        # this trade will successful
+        # this trade will be successful
         trade(connection, sell_id="2", buy_id="1", amount=2, price=100)
 
         # let's take a look for player 1 and player 2 currently
@@ -623,7 +623,7 @@ simple_example()
 trade_example()
 ```
 
-因为 Driver 有着更低的封装程度，因此我们可以在程序内见到大量的 SQL。程序内查询到的 `Player` 对象，与 ORM 不同，因为没有数据对象的存在，因此将以 dict 进行表示。
+Driver 有着更低的封装程度，因此我们可以在程序内见到大量的 SQL。程序内查询到的 `Player`，与 ORM 不同，因为没有数据对象的存在，`Player` 将以 dict 进行表示。
 
 关于 PyMySQL 的更多使用方法，你可以参考 [PyMySQL 官方文档](https://pymysql.readthedocs.io/en/latest/)。
 
@@ -631,7 +631,7 @@ trade_example()
 
 <div label="使用 mysql-connector-python" value="mysql-connector-python">
 
-当前开源比较流行的 Python Driver 之一为 [mysql-connector-python](https://dev.mysql.com/doc/connector-python/en/)，此处将以 **8.0.31** 版本进行说明。虽然 Python 的 Driver 相较其他语言，使用也极其方便。但因其不可屏蔽底层实现，需手动管控事务的特性，如果没有大量必须使用 SQL 的场景，仍然推荐使用 ORM 进行程序编写。这可以降低程序的耦合性。
+[mysql-connector-python](https://dev.mysql.com/doc/connector-python/en/) 为当前比较流行的开源 Python Driver 之一。此处将以 mysql-connector-python **8.0.31** 版本进行说明。虽然 Python 的 Driver 相较其他语言，使用也极其方便。但因其不可屏蔽底层实现，需手动管控事务的特性，如果没有大量必须使用 SQL 的场景，仍然推荐使用 ORM 进行程序编写。这可以降低程序的耦合性。
 
 ```python
 import uuid
@@ -737,7 +737,7 @@ def simple_example() -> None:
 
             # create players with bulk inserts.
             # insert 1919 players totally, with 114 players per batch.
-            # all players have random uuid
+            # each player has a random UUID
             player_list = random_player(1919)
             for idx in range(0, len(player_list), 114):
                 bulk_create_player(cur, player_list[idx:idx + 114])
@@ -768,7 +768,7 @@ def trade_example() -> None:
         trade(conn, sell_id="2", buy_id="1", amount=10, price=500)
 
         # then player 1 has to reduce the incoming quantity to 2.
-        # this trade will successful
+        # this trade will be successful
         trade(conn, sell_id="2", buy_id="1", amount=2, price=100)
 
         # let's take a look for player 1 and player 2 currently
@@ -783,7 +783,7 @@ simple_example()
 trade_example()
 ```
 
-因为 Driver 有着更低的封装程度，因此我们可以在程序内见到大量的 SQL。程序内查询到的 `Player` 对象，与 ORM 不同，因为没有数据对象的存在，因此将以 tuple 进行表示。
+Driver 有着更低的封装程度，因此我们可以在程序内见到大量的 SQL。程序内查询到的 `Player`，与 ORM 不同，因为没有数据对象的存在，`Player` 将以 tuple 进行表示。
 
 关于 mysql-connector-python 的更多使用方法，你可以参考 [mysql-connector-python 官方文档](https://dev.mysql.com/doc/connector-python/en/)。
 
@@ -797,7 +797,7 @@ trade_example()
 
 ### 第 3 步第 1 部分：表初始化
 
-> **注意：**
+> **建议：**
 >
 > 在 Gitpod Playground 中尝试 Python 与 TiDB 的连接：[现在就试试](https://gitpod.io/#https://github.com/pingcap-inc/tidb-example-python)
 
@@ -827,7 +827,7 @@ mysql --host 127.0.0.1 --port 4000 -u root < player_init.sql
 
 ### 第 3 步第 2 部分：TiDB Cloud 更改参数
 
-此处需使用系统本地的 CA 证书。并将证书路径记为 `<ca_path>` 以供后续指代。请参考以下系统相关的证书路径地址：
+若你使用了 TiDB Cloud Serverless Tier 集群，此处需使用系统本地的 CA 证书，并将证书路径记为 `<ca_path>` 以供后续指代。请参考以下系统相关的证书路径地址：
 
 <SimpleTab groupId="ca">
 
@@ -857,7 +857,7 @@ mysql --host 127.0.0.1 --port 4000 -u root < player_init.sql
 
 </SimpleTab>
 
-若设置后仍有证书错误，请查阅 [TiDB Cloud Serverless Tier 安全连接文档](https://docs.pingcap.com/tidbcloud/secure-connections-to-serverless-tier-clusters#secure-connections-to-serverless-tier-clusters)。
+若设置后仍有证书错误，请查阅 [TiDB Cloud Serverless Tier 安全连接文档](https://docs.pingcap.com/tidbcloud/secure-connections-to-serverless-tier-clusters)。
 
 <SimpleTab groupId="language">
 
@@ -918,7 +918,7 @@ db = connect('mysql://root:@127.0.0.1:4000/test')
         ssl_mode="VERIFY_IDENTITY", ssl={"ca": "<ca_path>"}
     ```
 
-这是由于 peewee 将参数透传至 Driver 中导致的，因此在使用时请注意 Driver 的使用类型。
+由于 peewee 会将参数透传至 Driver 中，使用 peewee 时请注意 Driver 的使用类型。
 
 </div>
 
@@ -1054,7 +1054,7 @@ def get_connection(autocommit: bool = True) -> MySQLConnection:
 pip3 install -r requirement.txt
 ```
 
-当需要反复运行脚本时，请在运行前先依照[表初始化](#第-3-步第-1-部分表初始化)一节再次进行表初始化。
+当以后需要多次运行脚本时，请在每次运行前先依照[表初始化](#第-3-步第-1-部分表初始化)一节再次进行表初始化。
 
 <SimpleTab groupId="language">
 

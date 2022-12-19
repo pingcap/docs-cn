@@ -95,7 +95,7 @@ func (tx *TiDBSqlTx) Rollback() error {
 
 <div label="Python" value="python">
 
-此处将使用 Python 的 mysqlclient Driver 开启多个连接对象进行交互，线程之间不共享连接，以保证其线程安全。
+使用 Python 的 mysqlclient Driver 开启多个连接对象进行交互，线程之间不共享连接，以保证其线程安全。
 
 </div>
 </SimpleTab>
