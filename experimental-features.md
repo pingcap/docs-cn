@@ -15,6 +15,7 @@ This document introduces the experimental features of TiDB in different versions
 + [FastScan](/develop/dev-guide-use-fastscan.md). (Introduced in v6.2.0)
 + [Extended statistics](/extended-statistics.md). (Introduced in v5.0.0)
 + [Randomly sample about 10000 rows of data to quickly build statistics](/system-variables.md#tidb_enable_fast_analyze) (Introduced in v3.0)
++ [Support locking statistics](/statistics.md#lock-statistics) (Introduced in v6.5.0)
 
 ## Stability
 
