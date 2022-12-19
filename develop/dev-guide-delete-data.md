@@ -330,6 +330,7 @@ func deleteBatch(db *sql.DB, startTime, endTime time.Time) (int64, error) {
 <div label="Python" value="python">
 
 在 Python 中，批量删除程序类似于以下内容：
+
 ```python
 import MySQLdb
 import datetime
