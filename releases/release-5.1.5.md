@@ -10,29 +10,48 @@ TiDB 版本：5.1.5
 
 试用链接：[Quick start](https://docs.pingcap.com/tidb/v5.1/quick-start-with-tidb) | [Production deployment](https://docs.pingcap.com/tidb/v5.1/production-deployment-using-tiup) | [Installation packages](https://www.pingcap.com/download/?version=v5.1.5#version-list)
 
+## 兼容性变更
+
 ## 提升改进
 
 + TiDB
 
++ PD
+
+    (dup: release-6.1.0.md > Improvements> PD)- Disable compiling swagger server by default [#4932](https://github.com/tikv/pd/issues/4932)
+
++ TiFlash
+
+## Bug fixes
+
++ TiDB
+    
+    <!--executor owner: zanmato1984-->  
+    
     (dup: release-5.2.4.md > Bug fixes> TiDB)- Fix the issue that the window function causes TiDB to panic instead of reporting an error [#30326](https://github.com/pingcap/tidb/issues/30326)
     (dup: release-5.4.3.md > Bug fixes> TiDB)- Fix the wrong result that occurs when enabling dynamic mode in partitioned tables for TiFlash [#37254](https://github.com/pingcap/tidb/issues/37254)
     (dup: release-5.3.4.md > Bug fixes> TiDB)- Fix wrong results of `GREATEST` and `LEAST` when passing in unsigned `BIGINT` arguments [#30101](https://github.com/pingcap/tidb/issues/30101)
     (dup: release-5.4.1.md > Bug Fixes> TiDB)- Fix wrong results of deleting data of multiple tables using `left join` [#31321](https://github.com/pingcap/tidb/issues/31321)
-    (dup: release-5.4.0.md > Bug fixes> TiDB)- Fix the issue that the result of `concat(ifnull(time(3))` in TiDB is different from that in MySQL [#29498](https://github.com/pingcap/tidb/issues/29498)
+    (dup: release-5.4.0.md > Bug fixes> TiDB)- Fix the issue that the result of `concat(ifnull(time(3)))` in TiDB is different from that in MySQL [#29498](https://github.com/pingcap/tidb/issues/29498)
     (dup: release-5.0.6.md > Bug fixes> TiDB)- Fix the issue that the SQL statements that contain `cast(integer as char) union string` return wrong results [#29513](https://github.com/pingcap/tidb/issues/29513)
     (dup: release-6.1.1.md > Bug fixes> TiDB)- Fix the issue that `INL_HASH_JOIN` might hang when used with `LIMIT` [#35638](https://github.com/pingcap/tidb/issues/35638) @[guo-shaoge](https://github.com/guo-shaoge)
     - Fix wrong `any_value` result when there are regions returning empty result [#30923](https://github.com/pingcap/tidb/issues/30923) @[ti-srebot](https://github.com/ti-srebot)
     (dup: release-5.2.4.md > Bug fixes> TiDB)- Fix wrong results of index join caused by an innerWorker panic [#31494](https://github.com/pingcap/tidb/issues/31494)
-    (dup: release-5.2.4.md > Bug fixes> TiDB)- Fix the issue that a SQL operation is canceled when its JSON type column joins its `CHAR` type column [#29401](https://github.com/pingcap/tidb/issues/29401)
+
+    <!--planner owner: winoros-->
+    
+        (dup: release-5.2.4.md > Bug fixes> TiDB)- Fix the issue that a SQL operation is canceled when its JSON type column joins its `CHAR` type column [#29401](https://github.com/pingcap/tidb/issues/29401)
+
+    <!--sql-infra and tidb owner: bb7133-->
+
     (dup: release-5.2.4.md > Bug fixes> TiDB)- Fix the issue that the background HTTP service of TiDB might not exit successfully and makes the cluster in an abnormal state [#30571](https://github.com/pingcap/tidb/issues/30571)
     (dup: release-5.4.0.md > Bug fixes> TiDB)- Fix the issue that concurrent column type change causes inconsistency between the schema and the data [#31048](https://github.com/pingcap/tidb/issues/31048)
     (dup: release-5.3.4.md > Bug fixes> TiDB)- Fix the issue that `KILL TIDB` cannot take effect immediately on idle connections [#24031](https://github.com/pingcap/tidb/issues/24031)
-    - Fix the bug that setting any session variable will make `tidb_snapshot` unwork. [#35515](https://github.com/pingcap/tidb/issues/35515) @[ti-srebot](https://github.com/ti-srebot)
+    - Fix the bug that setting any session variable will make `tidb_snapshot` unwork. [#35515](https://github.com/pingcap/tidb/issues/35515)
     (dup: release-5.3.4.md > Bug fixes> TiDB)- Fix the issue that the Region cache is not cleaned up in time when the Region is merged [#37141](https://github.com/pingcap/tidb/issues/37141)
-    - Fix the data race issue of the connection array. [#33773](https://github.com/pingcap/tidb/issues/33773) @[ystaticy](https://github.com/ystaticy)
+    - Fix the panic issue caused by the connection array race. [#33773](https://github.com/pingcap/tidb/issues/33773)
     (dup: release-6.1.1.md > Bug fixes> TiDB)- Fix the issue that when TiDB Binlog is enabled, executing the `ALTER SEQUENCE` statement might cause a wrong metadata version and cause Drainer to exit [#36276](https://github.com/pingcap/tidb/issues/36276) @[AilinKid](https://github.com/AilinKid)
-    - None [#1152](https://github.com/pingcap/tidb-binlog/issues/1152) @[ti-chi-bot](https://github.com/ti-chi-bot)
-    (dup: release-5.3.2.md > Bug Fixes> TiDB)- Fix the panic issue caused by the `fatal error: concurrent map read and map write` error [#35340](https://github.com/pingcap/tidb/issues/35340)
+    (dup: release-5.3.2.md > Bug Fixes> TiDB)- Fix the bug that TiDB may panic when querying statement summary tables [#35340](https://github.com/pingcap/tidb/issues/35340)
     - None [#30402](https://github.com/pingcap/tidb/issues/30402) @[ti-srebot](https://github.com/ti-srebot)
     - None [#30587](https://github.com/pingcap/tidb/issues/30587) @[ti-srebot](https://github.com/ti-srebot)
     - None [#37414](https://github.com/pingcap/tidb/issues/37414) @[ti-srebot](https://github.com/ti-srebot)
@@ -48,8 +67,8 @@ TiDB 版本：5.1.5
     - None [#27125](https://github.com/pingcap/tidb/issues/27125) @[ti-srebot](https://github.com/ti-srebot)
     (dup: release-5.4.2.md > Bug Fixes> TiDB)- Fix the planner wrong behaviors that occur when `tidb_opt_agg_push_down` and `tidb_enforce_mpp` are enabled [#34465](https://github.com/pingcap/tidb/issues/34465)
     (dup: release-6.1.1.md > Bug fixes> TiDB)- Fix a bug that TiDB might send coprocessor requests when executing the `SHOW COLUMNS` statement [#36496](https://github.com/pingcap/tidb/issues/36496) @[tangenta](https://github.com/tangenta)
-    - None [#28967](https://github.com/pingcap/tidb/issues/28967) @[ti-srebot](https://github.com/ti-srebot)
-    - None [#36329](https://github.com/pingcap/tidb/issues/36329) @[ti-srebot](https://github.com/ti-srebot)
+    - Add warnings for `lock tables` and `unlock tables` when `enable-table-lock` flag is not enabled [#28967](https://github.com/pingcap/tidb/issues/28967)
+    - Fix the issue that range partitions allow multiple `MAXVALUE` partitions [#36329](https://github.com/pingcap/tidb/issues/36329)
 
 + TiKV
 
@@ -66,9 +85,11 @@ TiDB 版本：5.1.5
     (dup: release-6.1.0.md > Bug fixes> TiKV)- Fix the issue that TiKV reports the `invalid store ID 0` error when using Follower Read [#12478](https://github.com/tikv/tikv/issues/12478)
     (dup: release-5.3.2.md > Bug Fixes> TiKV)- Fix the possible duplicate commit records in pessimistic transactions when async commit is enabled [#12615](https://github.com/tikv/tikv/issues/12615)
     (dup: release-5.4.3.md > Improvements> TiKV)- Support configuring the `unreachable_backoff` item to avoid Raftstore broadcasting too many messages after one peer becomes unreachable [#13054](https://github.com/tikv/tikv/issues/13054)
+
+    <!--transaction owner:cfzjywxk -->
+
     (dup: release-5.4.1.md > Bug Fixes> TiKV)- Fix the issue that successfully committed optimistic transactions may report the `Write Conflict` error when the network is poor [#34066](https://github.com/pingcap/tidb/issues/34066)
     (dup: release-6.1.1.md > Bug fixes> TiKV)- Fix the wrong expression of `Unified Read Pool CPU` in dashboard [#13086](https://github.com/tikv/tikv/issues/13086) @[glorv](https://github.com/glorv)
-    - None [#13147](https://github.com/tikv/tikv/issues/13147) @[ti-srebot](https://github.com/ti-srebot)
 
 + PD
 
@@ -86,10 +107,15 @@ TiDB 版本：5.1.5
 
 + TiFlash
 
+    <!--compute owner: zanmato1984 -->
+  
     (dup: release-5.3.2.md > Bug Fixes> TiFlash)- Fix incorrect `microsecond` when casting string to datetime [#3556](https://github.com/pingcap/tiflash/issues/3556)
     (dup: release-5.4.1.md > Bug Fixes> TiFlash)- Fix the panic issue that occurs when TLS is enabled [#4196](https://github.com/pingcap/tiflash/issues/4196)
     (dup: release-6.1.1.md > Bug fixes> TiFlash)- Fix a bug that TiFlash might crash due to an error in parallel aggregation [#5356](https://github.com/pingcap/tiflash/issues/5356) @[gengliqi](https://github.com/gengliqi)
     (dup: release-5.4.1.md > Bug Fixes> TiFlash)- Fix the issue that a query containing `JOIN` might be hung if an error occurs [#4195](https://github.com/pingcap/tiflash/issues/4195)
+
+    <!--storage owner: flowbehappy -->
+
     (dup: release-5.4.1.md > Bug Fixes> TiFlash)- Fix the bug that invalid storage directory configurations lead to unexpected behaviors [#4093](https://github.com/pingcap/tiflash/issues/4093)
     (dup: release-6.1.0.md > Bug fixes> TiFlash)- Fix potential data inconsistency after a lot of INSERT and DELETE operations [#4956](https://github.com/pingcap/tiflash/issues/4956)
     (dup: release-5.4.1.md > Bug Fixes> TiFlash)- Fix a bug that data not matching any region range remains on a TiFlash node [#4414](https://github.com/pingcap/tiflash/issues/4414)
@@ -120,6 +146,10 @@ TiDB 版本：5.1.5
     (dup: release-5.3.4.md > Bug fixes> TiFlash)- Fix the issue that TiFlash bootstrap fails when `0.0` is used as the default value for integers, for example, `` `i` int(11) NOT NULL DEFAULT '0.0'`` [#3157](https://github.com/pingcap/tiflash/issues/3157)
 
 + Tools
+
+    + TiDB-Binlog
+
+        - Fix the bug that Drainer can't send request correctly to Pump when setting `compressor=gzip` [#1152](https://github.com/pingcap/tidb-binlog/issues/1152)
 
     + Backup & Restore (BR)
 
