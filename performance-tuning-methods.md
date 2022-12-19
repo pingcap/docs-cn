@@ -139,7 +139,7 @@ StmtExecute 每秒执行次数等于 `avg-hit + avg-miss`。执行计划缓存�
     - 完全无法命中执行计划缓存：每秒命中次数 `avg-hit` 为 0，`avg-miss` 等于 StmtExecute 命令每秒执行次数。可能的原因包括：
         - 应用使用了 query 命令。
         - 每次 StmtExecute 执行之后，应用调用了 StmtClose 命令，导致缓存的执行计划被清理。
-        - StmtExecute 执行的所有语句都不符合[缓存的条件](sql-prepared-plan-cache.md)，导致无法命中 plan cache。
+        - StmtExecute 执行的所有语句都不符合[缓存的条件](sql-prepared-plan-cache.md)，导致无法命中执行计划缓存。
     - 完全命中执行计划缓存：每秒命中次数 `avg-hit` 等于 StmtExecute 命令每秒执行次数，每秒未命中次数 `avg-miss` 等于 0。
     - 部分命中执行计划缓存：每秒命中次数 `avg-hit` 小于 StmtExecute 命令每秒执行次数。执行计划缓存目前存在一些限制，比如不支持子查询，该类型的 SQL 执行计划无法被缓存。
 
