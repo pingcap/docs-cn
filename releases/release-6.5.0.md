@@ -14,10 +14,10 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
 相比于前一个 LTS (即 6.1.0 版本)，6.5.0 版本包含 [6.2.0-DMR](/releases/release-6.2.0.md)、[6.3.0-DMR](/releases/release-6.3.0.md)、[6.4.0-DMR](/releases/release-6.4.0.md) 中已发布的新功能、提升改进和错误修复，并引入了以下关键特性：
 
-- 默认开启[添加索引加速功能](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入)，添加索引的性能提升为 v6.1.0 的约 10 倍。
-- 支持通过 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 控制 TiDB 全局内存。
-- 支持高性能、全局单调递增的 [`AUTO_INCREMENT` 列属性](/auto-increment.md#mysql-兼容模式)，兼容 MySQL。
-- 支持通过 [`FLASHBACK CLUSTER TO TIMESTAMP`](/sql-statements/sql-statement-flashback-to-timestamp.md) 命令将集群快速回退到特定的时间点，兼容 TiCDC 和 PITR。
+- [添加索引加速](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入)特性 GA，添加索引的性能提升为 v6.1.0 的约 10 倍。
+- TiDB 全局内存控制特性 GA，通过 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 即可管理全局内存阈值。
+- 支持高性能、全局单调递增的 [`AUTO_INCREMENT` 列属性](/auto-increment.md#mysql-兼容模式) GA，兼容 MySQL。
+- [`FLASHBACK CLUSTER TO TIMESTAMP`](/sql-statements/sql-statement-flashback-to-timestamp.md) 特性 GA，可将集群快速回退到特定的时间点，兼容 TiCDC 和 PITR。
 - 优化器进一步增强更精准的代价模型 [Cost Model Version 2](/cost-model.md#cost-model-version-2)，并进一步增强索引合并 [INDEX MERGE](/glossary.md#index-merge) 功能对合取范式的支持。
 - 支持下推 `JSON_EXTRACT()` 函数至 TiFlash。
 - 支持[密码管理](/password-management.md)策略，满足密码合规审计需求。
