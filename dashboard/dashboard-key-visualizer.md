@@ -46,7 +46,7 @@ title: TiDB Dashboard 流量可视化页面
 
 > **注意：**
 >
-> 热点问题详情请参阅 [TiDB 热点问题详解](https://asktug.com/t/topic/358)。
+> 热点问题详情请参阅 [TiDB 热点问题详解](https://tidb.net/blog/dffb428a)。
 
 ### 热力图
 
