@@ -80,6 +80,56 @@ TTL 设计的目标是在不影响在线读写负载的前提下，帮助用户�
     ALTER TABLE t1 REMOVE TTL;
     ```
 
+### TTL 和数据类型的默认值
+
+TTL 可以和[数据类型的默认值](/data-type-default-values.md)一起使用。以下是两种常见的用法示例：
+
+    * 使用 `DEFAULT CURRENT_TIMESTAMP` 来指定某一列的默认值为当前创建时间，并用这一列作为 TTL 的时间列：
+
+        ```sql
+        CREATE TABLE t1 (
+            id int PRIMARY KEY,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        ) TTL = `created_at` + INTERVAL 3 MONTH;
+        ```
+
+    * 指定某一列的默认值为当前的创建时间和更新时间：
+
+        ```sql
+        CREATE TABLE t1 (
+            id int PRIMARY KEY,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+        ) TTL = `created_at` + INTERVAL 3 MONTH;
+        ```
+
+### TTL 和生成列
+
+TTL 可以和[生成列](/generated-columns.md)（实验特性）一起使用，用来表达更加复杂的过期规则。例如：
+
+    ```sql
+    CREATE TABLE message (
+        id int PRIMARY KEY,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        image bool,
+        expire_at TIMESTAMP AS (IF(image, 
+                created_at + INTERVAL 5 DAY,
+                created_at + INTERVAL 30 DAY
+        ))
+    ) TTL = `expire_at` + INTERVAL 0 DAY;
+    ```
+
+上述语句的消息以 `expire_at` 列来作为过期时间，并按照消息类型来设定。如果是图片，则 5 天后过期，不然就 30 天后过期。
+
+TTL 还可以和 [JSON 类型](/data-type-json.md) 一起使用。例如：
+
+    ```sql
+    CREATE TABLE orders (
+        id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+        order_info JSON,
+        created_at DATE AS (JSON_EXTRACT(order_info, '$.created_at')) VIRTUAL
+    ) TTL = `created_at` + INTERVAL 3 month;
+    ```
+
 ## TTL 任务
 
 对于每张设置了 TTL 属性的表，TiDB 内部会定期调度后台任务来清理过期的数据。你可以通过设置全局变量 [`tidb_ttl_job_run_interval`](/system-variables.md#tidb_ttl_job_run_interval-从-v650-版本开始引入) 来自定义任务的执行周期，比如通过下面的语句将后台清理任务设置为每 24 小时执行一次：
