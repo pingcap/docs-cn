@@ -38,9 +38,9 @@ TiSpark 和 TiDB 可以让用户无需创建和维护 ETL，直接在同一个�
 
 ## 版本要求
 
-- TiSpark 支持 Spark >= 2.3。
-- TiSpark 需要 JDK 1.8 以及 Scala 2.11/2.12。
-- TiSpark 可以运行在任何 Spark 模式上，如 YARN, Mesos 以及 Standalone。
+- TiSpark 支持 Spark v2.3 或以上版本。
+- TiSpark 需要 JDK 1.8 以及 Scala 2.11/2.12 版本。
+- TiSpark 可以运行在任何 Spark 模式上，如 `YARN`、`Mesos` 以及 `Standalone`。
 
 ## 推荐配置
 
