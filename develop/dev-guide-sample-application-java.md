@@ -113,8 +113,6 @@ git clone https://github.com/pingcap-inc/tidb-example-java.git
 
 <div label="使用 Mybatis（推荐）" value="mybatis">
 
-可以看到，JDBC 实现的代码略显冗余，需要自己管控错误处理逻辑，且不能很好的复用代码，并非最佳实践。
-
 [Mybatis](https://mybatis.org/mybatis-3/index.html) 是当前比较流行的开源 Java 应用持久层框架，本文将以 Maven 插件的方式使用 [MyBatis Generator](https://mybatis.org/generator/quickstart.html) 生成部分持久层代码。
 
 进入目录 `plain-java-mybatis`：
@@ -699,8 +697,6 @@ public class MybatisExample {
 </div>
 
 <div label="使用 Hibernate（推荐）" value="hibernate">
-
-可以看到，JDBC 实现的代码略显冗余，需要自己管控错误处理逻辑，且不能很好的复用代码。并非最佳实践。
 
 当前开源比较流行的 Java ORM 为 Hibernate，且 Hibernate 在版本 `6.0.0.Beta2` 及以后支持了 TiDB 方言。完美适配了 TiDB 的特性。因此，此处将以 6.0.0.Beta2 + 版本进行说明。
 
