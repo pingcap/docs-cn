@@ -66,12 +66,14 @@ def check_exst_rn(note_pairs, main_path):
                      for note_pair in note_pairs:
                         if issue_num.group() == note_pair[0] and not line.strip().startswith("(dup"):
                             print('A duplicated note is found in line ' + str(LineNum) + " from " + note_pair[2] + note_pair[1])
-                            line = re.sub(r'-.*$', '(dup: {} '.format(note_pair[2]) + note_pair[3] + ")" + note_pair[1].strip(), line)
-                            print('The duplicated note is replaced with ' + line)
-                            DupNum += 1
+                            match = re.fullmatch(r'(\s*)(?:- .+?)( @.+?)?\s*', line)
+                            if match:
+                                line = '{}(dup: {} {}){}{}\n'.format(match.group(1), note_pair[2], note_pair[3], note_pair[1].strip(), match.group(2) or "")
+                                print('The duplicated note is replaced with ' + line)
+                                DupNum += 1
+                            else:
+                                continue
                             break
-                        else:
-                            pass
                 target_file.write(line)
 
     remove(source_file_path)
