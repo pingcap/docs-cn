@@ -267,7 +267,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
     
    * TiCDC 支持在线更新 TLS 证书 [tiflow#7908](https://github.com/pingcap/tiflow/issues/7908) @[CharlesCheung96](https://github.com/CharlesCheung96) **tw@shichun-0415**
 
-    TiCDC 支持在线更新 TLS 证书。用户为了数据安全，会对系统使用的证书设置相应的过期策略，系统经过固定的时间后需要使用新的证书工作。TiCDC v6.5.0 支持在线更新 TLS 证书，在不影响同步的任务的前提下，TiCDC 会自动检测和更新新证书，无需用户手动操作，满足用户对证书更新的需求。 
+    为确保数据安全，用户会对系统使用的证书设置相应的过期策略。经过固定的时间后需要使用新的证书工作。TiCDC v6.5.0 支持在线更新 TLS 证书，在不影响同步的任务的前提下，TiCDC 会自动检测和更新证书，无需用户手动操作，满足用户对证书更新的需求。 
 
 * TiCDC 性能提升 **tw@shichun-0415
 
