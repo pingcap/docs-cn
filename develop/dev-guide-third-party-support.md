@@ -26,18 +26,6 @@ PingCAP 与开源社区合作，通过三方工具提供以下支持：
 
 ## Driver
 
-<<<<<<< HEAD
-| 编程语言 | 驱动 | 最新已测试版本 | 支持等级 | TiDB 适配器 | 教程 |
-| - | - | - | - | - | - |
-| C | [libmysqlclient](https://dev.mysql.com/doc/c-api/8.0/en/c-api-introduction.html) | 8.0 | Compatible | N/A | N/A |
-| C#(.Net) | [MySQL Connector/NET](https://downloads.mysql.com/archives/c-net/) | 8.0 | Compatible | N/A | N/A |
-| ODBC | [MySQL Connector/ODBC](https://downloads.mysql.com/archives/c-odbc/) | 8.0 | Compatible | N/A | N/A |
-| Go | [go-sql-driver/mysql](https://github.com/go-sql-driver/mysql) | v1.6.0 | Full | N/A | [TiDB 和 Golang 的简单 CRUD 应用程序](/develop/dev-guide-sample-application-golang.md) |
-| Java | [JDBC](https://dev.mysql.com/downloads/connector/j/) | 8.0 | Full | [pingcap/mysql-connector-j](/develop/dev-guide-choose-driver-or-orm.md#java-drivers) | [TiDB 和 Java 的简单 CRUD 应用程序](/develop/dev-guide-sample-application-java.md) |
-| JavaScript | [mysql](https://github.com/mysqljs/mysql) | v2.18.1 | Compatible | N/A | N/A |
-| PHP | [mysqlnd](https://dev.mysql.com/downloads/connector/php-mysqlnd/) | PHP 5.4+ | Compatible | N/A | N/A |
-| Python | [MySQL Connector/Python](https://downloads.mysql.com/archives/c-python/) | 8.0 | Compatible | N/A | N/A |
-=======
 <table>
    <thead>
       <tr>
@@ -135,7 +123,6 @@ PingCAP 与开源社区合作，通过三方工具提供以下支持：
       </tr>
    </tbody>
 </table>
->>>>>>> 65be9a9d5 (Develop Guide Python Examples (#12046))
 
 ## ORM
 
