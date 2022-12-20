@@ -126,7 +126,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
   更多信息，请参考 [TiDB Operator 部署独立的 TiDB Dashboard](https://docs.pingcap.com/zh/tidb-in-kubernetes/dev/get-started#部署独立的-tidb-dashboard)。
 
-+ Performance Overview 面板中新增 TiFlash 和 CDC (Change Data Capture) 面板
++ Performance Overview 面板中新增 TiFlash 和 CDC (Change Data Capture) 面板 [#39230](https://github.com/pingcap/tidb/issues/39230) @[dbsid](https://github.com/dbsid) **tw@qiancai**
 
     TiDB 从 v6.1.0 起在 Grafana 中引入了 Performance Overview 面板，为 TiDB、TiKV、PD 提供了系统级别的总体性能诊断入口。在 v6.5.0 中，Performance Overview 面板中新增了 TiFlash 和 CDC 面板。通过此次新增，从 v6.5.0 起，使用单个 Performance Overview 面板即可分析 TiDB 集群中所有组件的性能。
 
