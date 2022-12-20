@@ -45,9 +45,9 @@ TiSpark 和 TiDB 可以让用户无需创建和维护 ETL，直接在同一个�
 
 > **警告：**
 >
-> [此文](/tispark-deployment-topology.md)所描述的使用 TiUP 部署 TiSpark 的方式已被废弃.
+> [此文](/tispark-deployment-topology.md)所描述的使用 TiUP 部署 TiSpark 的方式已被废弃。
 
-TiSpark 作为 Spark 的 TiDB 连接器，需要 Spark 集群的支持。本文仅提供部署 Spark 的参考建议，对于硬件以及部署细节请参考 [Spark 官方文档](https://spark.apache.org/docs/latest/hardware-provisioning.html)。
+TiSpark 作为 Spark 的 TiDB 连接器，需要 Spark 集群的支持。本文仅提供部署 Spark 的参考建议，对于硬件以及部署细节，请参考 [Spark 官方文档](https://spark.apache.org/docs/latest/hardware-provisioning.html)。
 
 对于独立部署的 Spark 集群，可以参考如下建议配置：
 
@@ -71,8 +71,8 @@ TiSpark 是 Spark 的第三方 jar 包，提供读写 TiKV 的能力。
 由于 GPL 许可证的限制，TiSpark 不再提供 `mysql-connector-java` 的依赖。以下版本将不再包含 `mysql-connector-java`：
 
 - TiSpark > 3.0.1
-- TiSpark > 2.5.1（TiSpark 2.5.x）
-- TiSpark > 2.4.3（TiSpark 2.4.x）
+- TiSpark > 2.5.1 (TiSpark 2.5.x)
+- TiSpark > 2.4.3 (TiSpark 2.4.x)
 
 在使用 TiSpark 写入与鉴权时，仍需要 `mysql-connector-java` 依赖，因此你需要手动下载，并使用以下方式引入：
 
@@ -194,7 +194,7 @@ customerDF.write
 .save()
 ```
 
-详见 [Data Source API User Guide](https://github.com/pingcap/tispark/blob/master/docs/features/datasource_api_userguide.md) 。
+详见 [Data Source API User Guide](https://github.com/pingcap/tispark/blob/master/docs/features/datasource_api_userguide.md)。
 
 在 TiSpark 3.1 之后，你还能通过 Spark SQL 写入 TiSpark 3.1。详见 [Insert SQL](https://github.com/pingcap/tispark/blob/master/docs/features/insert_sql_userguide.md) 。
 
@@ -202,7 +202,7 @@ customerDF.write
 
 你同样可以在不使用 TiSpark 的情况下使用 Spark JDBC 数据源写入 TiDB。
 
-由于这超过了 TiSpark 的范畴，本文仅简单提供示例，详情请参考 [JDBC To Other Databases](https://spark.apache.org/docs/latest/sql-data-sources-jdbc.html) 。
+由于这超过了 TiSpark 的范畴，本文仅简单提供示例，详情请参考 [JDBC To Other Databases](https://spark.apache.org/docs/latest/sql-data-sources-jdbc.html)。
 
 ```scala
 import org.apache.spark.sql.execution.datasources.jdbc.JDBCOptions
@@ -217,10 +217,10 @@ df.write
 // 替换为你的主机名和端口地址，并确保开启了重写批处理
 .option("url", "jdbc:mysql://127.0.0.1:4000/test?rewriteBatchedStatements=true")
 .option("useSSL", "false")
-// 作为测试建议设置为 150
+// 作为测试，建议设置为 150
 .option(JDBCOptions.JDBC_BATCH_INSERT_SIZE, 150)
 .option("dbtable", s"cust_test_select") // 数据库名和表名
-.option("isolationLevel", "NONE") // 如果需要写入较大 Dataframe 那么推荐将 isolationLevel 设置为 NONE
+.option("isolationLevel", "NONE") // 如果需要写入较大 Dataframe，推荐将 isolationLevel 设置为 NONE
 .option("user", "root") // TiDB 用户名
 .save()
 ```
@@ -236,11 +236,11 @@ spark.sql("use tidb_catalog")
 spark.sql("delete from ${database}.${table} where xxx")
 ```
 
-详情请参考 [delete feature](https://github.com/pingcap/tispark/blob/master/docs/features/delete_userguide.md) 。
+详情请参考 [delete feature](https://github.com/pingcap/tispark/blob/master/docs/features/delete_userguide.md)。
 
 ### 与其他数据源一起使用
 
-你可以使用多 catalog 从不同数据源读取数据：
+你可以使用多个 catalog 从不同数据源读取数据：
 
 ```
 // 从 Hive 读取
@@ -268,37 +268,37 @@ spark.sql("select t1.id,t2.id from spark_catalog.default.t t1 left join tidb_cat
 | `spark.tispark.coprocess.codec_format`          | `chblock`        | Coprocessor 的编码格式。可选项为 `default`、`chblock` 和 `chunk`。                                                                                                                                                                                                                                  |
 | `spark.tispark.coprocess.streaming`             | `false`          | 是否在获取响应时使用 streaming（实验性质）。                                                                                                                                                                                                                                                            |
 | `spark.tispark.plan.unsupported_pushdown_exprs` |                  | 表达式清单，多个表达式用逗号分隔。为了防止老版本的 TiKV 不支持某些表达式，你可以禁止下推它们。                                                                                                                                                                                                                                     |
-| `spark.tispark.plan.downgrade.index_threshold`  | `1000000000`     | 如果 index scan 请求的范围超过了此限制, 该 Region 请求会被降级为 table scan。降级默认关闭。                                                                                                                                                                                                                         |
+| `spark.tispark.plan.downgrade.index_threshold`  | `1000000000`     | 如果 index scan 请求的范围超过了此限制，该 Region 请求会被降级为 table scan。降级默认关闭。                                                                                                                                                                                                                         |
 | `spark.tispark.show_rowid`                      | `false`          | 是否在 row_id 存在时显示它。                                                                                                                                                                                                                                                                     |
 | `spark.tispark.db_prefix`                       |                  | TiDB数据库的前缀。该配置可用于在 TiSpark 2.4 中区分同名的 TiDB 和 Hive 数据库。                                                                                                                                                                                                                                 |
-| `spark.tispark.request.isolation.level`         | `SI`             | 是否为底层的 TiKV 解锁。当你使用 "RC" 级别, 你将忽略锁，得到比 `tso` 更小的最新版本数据。当你使用 "SI" 级别, 你将进行解锁并根据该锁对应的事务提交与否获取数据。                                                                                                                                                                                         |
+| `spark.tispark.request.isolation.level`         | `SI`             | 是否为底层的 TiKV 解锁。当你使用 "RC" 级别，你将忽略锁，得到比 `tso` 更小的最新版本数据。当你使用 "SI" 级别，你将进行解锁并根据该锁对应的事务提交与否获取数据。                                                                                                                                                                                         |
 | `spark.tispark.coprocessor.chunk_batch_size`    | `1024`           | 从 coprocessor 获取的一个 batch 的 Row 数量。                                                                                                                                                                                                                                                    |
 | `spark.tispark.isolation_read_engines`          | `tikv,tiflash`   | TiSpark 读引擎，多个引擎使用逗号分隔。未配置的存储引擎不会被读取。                                                                                                                                                                                                                                                  |
-| `spark.tispark.stale_read`                      | optional         | stale read 时间戳。详请请参考 [stale read](https://github.com/pingcap/tispark/blob/master/docs/features/stale_read.md) 。                                                                                                                                                                        |
+| `spark.tispark.stale_read`                      | optional         | stale read 时间戳。详请请参考 [stale read](https://github.com/pingcap/tispark/blob/master/docs/features/stale_read.md)。                                                                                                                                                                        |
 | `spark.tispark.tikv.tls_enable`                 | `false`          | 是否开启 TiSpark TLS。                                                                                                                                                                                                                                                                      |
 | `spark.tispark.tikv.trust_cert_collection`      |                  | TiKV Client 的受信任根证书, 用于验证 PD 证书。如 `/home/tispark/config/root.pem`，该文件需包含 X.509 证书。                                                                                                                                                                                                     |
 | `spark.tispark.tikv.key_cert_chain`             |                  | TiKV Client 的 X.509 格式的客户端证书链。如 `/home/tispark/config/client.pem`。                                                                                                                                                                                                                     |
 | `spark.tispark.tikv.key_file`                   |                  | TiKV Client 的 PKCS#8 私钥文件。如 `/home/tispark/client_pkcs8.key`。                                                                                                                                                                                                                          |
 | `spark.tispark.tikv.jks_enable`                 | `false`          | 是否使用 `JAVA key store` 而不是 X.509 证书。                                                                                                                                                                                                                                                    |
-| `spark.tispark.tikv.jks_trust_path`             |                  | TiKV Client JKS 格式的受信任根证书。由 `keytool` 生成, 如, `/home/tispark/config/tikv-truststore`。                                                                                                                                                                                                   |
+| `spark.tispark.tikv.jks_trust_path`             |                  | TiKV Client JKS 格式的受信任根证书。由 `keytool` 生成，如 `/home/tispark/config/tikv-truststore`。                                                                                                                                                                                                   |
 | `spark.tispark.tikv.jks_trust_password`         |                  | `spark.tispark.tikv.jks_trust_path` 的密码。                                                                                                                                                                                                                                               |
-| `spark.tispark.tikv.jks_key_path`               |                  | TiKV Client JKS 格式的客户端证书。由 `keytool` 生成, 如, `/home/tispark/config/tikv-clientstore`。                                                                                                                                                                                                   |
+| `spark.tispark.tikv.jks_key_path`               |                  | TiKV Client JKS 格式的客户端证书。由 `keytool` 生成，如 `/home/tispark/config/tikv-clientstore`。                                                                                                                                                                                                   |
 | `spark.tispark.tikv.jks_key_password`           |                  | `spark.tispark.tikv.jks_key_path` 的密码。                                                                                                                                                                                                                                                 |
 | `spark.tispark.jdbc.tls_enable`                 | `false`          | 是否开启 JDBC connector TLS。                                                                                                                                                                                                                                                               |
-| `spark.tispark.jdbc.server_cert_store`          |                  | JDBC 的受信任根证书. 由 `keytool` 生产的 Java keystore (JKS) 格式的证书。如， `/home/tispark/config/jdbc-truststore`。 默认值为 "", 表示 TiSpark 不会校验 TiDB 服务端。                                                                                                                                                  |
+| `spark.tispark.jdbc.server_cert_store`          |                  | JDBC 的受信任根证书。由 `keytool` 生产的 Java keystore (JKS) 格式的证书。如 `/home/tispark/config/jdbc-truststore`。 默认值为 ""，表示 TiSpark 不会校验 TiDB 服务端。                                                                                                                                                  |
 | `spark.tispark.jdbc.server_cert_password`       |                  | `spark.tispark.jdbc.server_cert_store` 的密码。                                                                                                                                                                                                                                            |
-| `spark.tispark.jdbc.client_cert_store`          |                  | JDBC 的 PKCS#12 格式的客户端证书。 这是由 `keytool` 生成的 JKS 格式证书。如，`/home/tispark/config/jdbc-clientstore`. 默认值为 "", 表示 TiDB 不会校验 TiSpark。                                                                                                                                                          |
-| `spark.tispark.jdbc.client_cert_password`       |                  | `spark.tispark.jdbc.client_cert_store` 的密码                                                                                                                                                                                                                                             |
+| `spark.tispark.jdbc.client_cert_store`          |                  | JDBC 的 PKCS#12 格式的客户端证书。 这是由 `keytool` 生成的 JKS 格式证书。如 `/home/tispark/config/jdbc-clientstore`。默认值为 ""，表示 TiDB 不会校验 TiSpark。                                                                                                                                                          |
+| `spark.tispark.jdbc.client_cert_password`       |                  | `spark.tispark.jdbc.client_cert_store` 的密码。                                                                                                                                                                                                                                             |
 | `spark.tispark.tikv.tls_reload_interval`        | `10s`            | 重载证书的时间间隔。默认值为 `10s` 。                                                                                                                                                                                                                                                                 |
 | `spark.tispark.tikv.conn_recycle_time`          | `60s`            | 清理 TiKV 失效连接的时间间隔。默认时间为 `60s`。当重载证书开启时此配置才会生效。                                                                                                                                                                                                                                         |
 | `spark.tispark.host_mapping`                    |                  | 路由映射配置。用于配置公有 IP 地址和私有 IP 地址的映射。当 TiDB 在私有网络上运行时，你可以将一系列内部 IP 地址映射到公网 IP 地址以便 Spark 集群访问。其格式为 `{Intranet IP1}:{Public IP1};{Intranet IP2}:{Public IP2}`，例如 `192.168.0.2:8.8.8.8;192.168.0.3:9.9.9.9`。                                                                                  |
-| `spark.tispark.new_collation_enable`            |                  | 当 TiDB 开启 [new collation](https://docs.pingcap.com/tidb/stable/character-set-and-collation#new-framework-for-collations) ，推荐将此配置设为`true`。当 TiDB 关闭 `new collation`，推荐将此配置设置为 `false`。在未配置的情况下，TiSpark 会依据 TiDB 版本自动配置 `new collation`。其规则为：当 TiDB 版本大于等于 v6.0.0 时为 `true`；否则为 `false`。 |
+| `spark.tispark.new_collation_enable`            |                  | 当 TiDB 开启 [new collation](https://docs.pingcap.com/tidb/stable/character-set-and-collation#new-framework-for-collations)，推荐将此配置设为`true`。当 TiDB 关闭 `new collation`，推荐将此配置设置为 `false`。在未配置的情况下，TiSpark 会依据 TiDB 版本自动配置 `new collation`。其规则为：当 TiDB 版本大于等于 v6.0.0 时为 `true`；否则为 `false`。 |
 
 ### TLS 配置
 
 TiSpark TLS 分为两部分：TiKV Client TLS 以及 JDBC connector TLS。 前者用于创建和 TiKV/PD 的 TLS 连接，后者用于创建与 TiDB 的 TLS 连接。
 
-当配置 TiKV Client TLS 时， 你需要以 X.509 格式的证书配置 `tikv.trust_cert_collection`、`tikv.key_cert_chain` 和 `tikv.key_file`；或者以 JKS 格式的证书配置 `tikv.jks_enable`, `tikv.jks_trust_path` 和 `tikv.jks_key_path`。
+当配置 TiKV Client TLS 时，你需要以 X.509 格式的证书配置 `tikv.trust_cert_collection`、`tikv.key_cert_chain` 和 `tikv.key_file`；或者以 JKS 格式的证书配置 `tikv.jks_enable`，`tikv.jks_trust_path` 和 `tikv.jks_key_path`。
 
 当配置 JDBC connector TLS 时，你需要配置 `spark.tispark.jdbc.tls_enable`，而 `jdbc.server_cert_store` 和 `jdbc.client_cert_store` 则是可选的。
 
@@ -337,11 +337,11 @@ spark.tispark.jdbc.client_cert_password                        jdbc_clientstore_
 ```
 
 - 对于如何开启 TiDB TLS，请参考 [Enable TLS between TiDB Clients and Servers](/enable-tls-between-clients-and-servers.md)。
-- 对于如何生成 JAVA key store，请参考 [Connecting Securely Using SSL](https://dev.mysql.com/doc/connector-j/5.1/en/connector-j-reference-using-ssl.html) 。
+- 对于如何生成 JAVA key store，请参考 [Connecting Securely Using SSL](https://dev.mysql.com/doc/connector-j/5.1/en/connector-j-reference-using-ssl.html)。
 
 ### 时区配置
 
-使用 `-Duser.timezone` 系统参数来配置时区（比如, `-Duser.timezone=GMT-7`）。时区会影响 `Timestamp` 数据类型。
+使用 `-Duser.timezone` 系统参数来配置时区（比如 `-Duser.timezone=GMT-7`）。时区会影响 `Timestamp` 数据类型。
 
 请不要使用 `spark.sql.session.timeZone`。
 
@@ -379,7 +379,7 @@ TiSpark 能够通过配置 `spark.tispark.isolation_read_engines` 从 TiFlash �
 
 TiSpark 目前支持读取 range 与 hash 分区表。
 
-TiSpark 目前不支持 `partition table` 语法 `select col_name from table_name partition(partition_name)`。 但是，你仍可以使用 `where` 条件过滤分区。
+TiSpark 目前不支持 `partition table` 语法 `select col_name from table_name partition(partition_name)`。但是，你仍可以使用 `where` 条件过滤分区。
 
 TiSpark 会根据分区类型、分区表达式以及具体 SQL 决定是否进行分区裁剪。目前，TiSpark 仅支持在 range 分区下，且在下列任一条件下进行分区裁剪：
 
@@ -441,10 +441,10 @@ TiSpark 可以使用 TiDB 的统计信息：
 - 选择代价最低的索引访问
 - 估算数据大小以决定是否进行广播优化
 
-如果你希望 TiSpark 使用统计信息支持，需要确保所涉及的表已经被分析。参考 [统计信息简介](/statistics.md)了解如何进行表分析。
+如果你希望 TiSpark 使用统计信息支持，需要确保所涉及的表已经被分析。参考[统计信息简介](/statistics.md)了解如何进行表分析。
 
 从 TiSpark 2.0 开始，统计信息将会默认被读取。
 
 ## FAQ
 
-详情请参考 [TiSpark FAQ](https://github.com/pingcap/tispark/wiki/TiSpark-FAQ) 。
+详情请参考 [TiSpark FAQ](https://github.com/pingcap/tispark/wiki/TiSpark-FAQ)。
