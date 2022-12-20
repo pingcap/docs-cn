@@ -32,11 +32,11 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
 ### SQL
 
-* TiDB 添加索引的性能提升为原来的 10 倍 [#35983](https://github.com/pingcap/tidb/issues/35983) @[benjamin2037](https://github.com/benjamin2037) @[tangenta](https://github.com/tangenta) **tw@Oreoxmt**
+* TiDB 添加索引的性能提升为原来的 10 倍 (GA) [#35983](https://github.com/pingcap/tidb/issues/35983) @[benjamin2037](https://github.com/benjamin2037) @[tangenta](https://github.com/tangenta) **tw@Oreoxmt**
 
     TiDB v6.3.0 引入了[添加索引加速](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入)作为实验特性，提升了添加索引回填过程的速度。该功能在 v6.5.0 正式 GA 并默认打开，预期大表添加索引的性能提升约为原来的 10 倍。添加索引加速适用于单条 SQL 语句串行添加索引的场景，在多条 SQL 并行添加索引时仅对其中一条添加索引的 SQL 语句生效。
 
-* 提供轻量级元数据锁，提升 DDL 变更过程 DML 的成功率 [#37275](https://github.com/pingcap/tidb/issues/37275) @[wjhuang2016](https://github.com/wjhuang2016) **tw@Oreoxmt**
+* 提供轻量级元数据锁，提升 DDL 变更过程 DML 的成功率 (GA) [#37275](https://github.com/pingcap/tidb/issues/37275) @[wjhuang2016](https://github.com/wjhuang2016) **tw@Oreoxmt**
 
     TiDB v6.3.0 引入了[元数据锁](/metadata-lock.md)作为实验特性，通过协调表元数据变更过程中 DML 语句和 DDL 语句的优先级，让执行中的 DDL 语句等待持有旧版本元数据的 DML 语句提交，尽可能避免 DML 语句的 `Information schema is changed` 错误。该功能在 v6.5.0 正式 GA 并默认打开，适用于各类 DDL 变更场景。
 
@@ -126,6 +126,17 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
   更多信息，请参考 [TiDB Operator 部署独立的 TiDB Dashboard](https://docs.pingcap.com/zh/tidb-in-kubernetes/dev/get-started#部署独立的-tidb-dashboard)。
 
++ Performance Overview 面板中新增 TiFlash 和 CDC (Change Data Capture) 面板
+
+    TiDB 从 v6.1.0 起在 Grafana 中引入了 Performance Overview 面板，为 TiDB、TiKV、PD 提供了系统级别的总体性能诊断入口。在 v6.5.0 中，Performance Overview 面板中新增了 TiFlash 和 CDC 面板。通过此次新增，从 v6.5.0 起，使用单个 Performance Overview 面板即可分析 TiDB 集群中所有组件的性能。
+
+    TiFlash 和 CDC 面板重新编排了 TiFlash 和 TiCDC 相关的监控信息，可以帮助你大幅提高 TiFlash 和 TiCDC 的性能分析和故障诊断效率：
+    
+    - 通过 [TiFlash 面板](/grafana-performance-overview-dashboard.md#tiflash)，你可以直观地了解 TiFlash 集群的请求类型、延迟分析和资源使用概览。
+    - 通过 [CDC 面板](/grafana-performance-overview-dashboard.md#cdc)，你可以直观地了解 TiCDC 的集群的健康状况、同步延迟、数据流和下游写入延迟等信息。
+    
+  更多信息，请参考[用户文档](performance-tuning-method.md/)。
+
 ### 性能
 
 * 索引合并 [INDEX MERGE](/glossary.md#index-merge) 功能支持 `AND` 连接的表达式 [#39333](https://github.com/pingcap/tidb/issues/39333) @[guo-shaoge](https://github.com/guo-shaoge) @[time-and-fate](https://github.com/time-and-fate) @[hailanwhu](https://github.com/hailanwhu) **tw@TomShawn**
@@ -140,7 +151,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
     * `->>`
     * `JSON_EXTRACT()`
 
-    JSON 格式为应用设计提供了灵活的建模方式，目前越来越多的应用采用 JSON 格式进行数据交换和数据存储。通过将 JSON 函数下推至 TiFlash，你可以提高 JSON 类型数据的分析效率，拓展 TiDB 实时分析的应用场景。
+  JSON 格式为应用设计提供了灵活的建模方式，目前越来越多的应用采用 JSON 格式进行数据交换和数据存储。通过将 JSON 函数下推至 TiFlash，你可以提高 JSON 类型数据的分析效率，拓展 TiDB 实时分析的应用场景。
 
 * 新增支持下推以下字符串函数至 TiFlash [#6115](https://github.com/pingcap/tiflash/issues/6115) @[xzhangxian1008](https://github.com/xzhangxian1008) **tw@qiancai**
 
@@ -156,7 +167,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
 * 支持将[分区表](/partitioned-table.md)的排序操作下推至 TiKV [#26166](https://github.com/pingcap/tidb/issues/26166) @[winoros](https://github.com/winoros) **tw@qiancai**
 
-    [分区表](/partitioned-table.md)特性在 v6.1.0 正式 GA 后，TiDB 仍然在持续提升分区表相关的性能。在 v6.5.0 中， TiDB 支持将 `ORDER BY` 和 `LIMIT` 等排序操作下推至 TiKV 进行计算和过滤，降低网络 I/O 的开销，提升了使用分区表时 SQL 的性能。
+    [分区表](/partitioned-table.md)特性在 v6.1.0 正式 GA 后，TiDB 仍然在持续提升分区表相关的性能。在 v6.5.0 中，TiDB 支持将 `ORDER BY` 和 `LIMIT` 等排序操作下推至 TiKV 进行计算和过滤，降低网络 I/O 的开销，提升了使用分区表时 SQL 的性能。
 
 * 优化器引入更精准的代价模型 Cost Model Version 2 (GA) [#35240](https://github.com/pingcap/tidb/issues/35240) @[qw4990](https://github.com/qw4990) **tw@Oreoxmt**
 
