@@ -131,10 +131,10 @@ tiup cluster upgrade <cluster-name> <cluster-version> --transfer-timeout 600
       pump: {}
       drainer: {}
       cdc:
-        gc-ttl: 172800 
+        gc-ttl: 86400
     ```
 
-    以上把 TiCDC 的 `gc-ttl` 的值改为了 48 小时。
+    以上把 TiCDC 的 `gc-ttl` 的值设置为 24 小时。
 
 3. 执行 `tiup cluster reload -R cdc` 命令重新加载配置。
 
@@ -178,4 +178,4 @@ tiup ctl:<version> cdc capture list --server=http://10.0.10.25:8300
 - `id`：表示服务进程的 ID。
 - `is-owner`：表示该服务进程是否为 owner 节点。
 - `address`：该服务进程对外提供接口的地址。
-- `cluster-id`：该 TiCDC 的集群 ID，默认值为 default。
+- `cluster-id`：该 TiCDC 的集群 ID，默认值为 `default`。

@@ -29,7 +29,7 @@ summary: 了解 TiCDC 相关的常见问题。
 可以使用 `cdc cli` 查询同步任务的状态。例如：
 
 ```shell
-cdc cli changefeed list --server=http://127.0.0.1:2379
+cdc cli changefeed list --server=http://127.0.0.1:8300
 ```
 
 上述命令输出如下：
