@@ -65,6 +65,7 @@ TiDB 支持使用大部分 MySQL 5.7 中提供的[字符串函数](https://dev.m
 | [`UCASE()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_ucase)       | 与 `UPPER()` 功能相同   |
 | [`UNHEX()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_unhex)  | 返回一个数的十六进制表示，形式为字符串 |
 | [`UPPER()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_upper)   | 参数转换为大写形式  |
+| [`WEIGHT_STRING()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_weight-string)   | 返回字符串的权重  |
 
 ## 不支持的函数
 
@@ -72,4 +73,3 @@ TiDB 支持使用大部分 MySQL 5.7 中提供的[字符串函数](https://dev.m
 * `MATCH`
 * `SOUNDEX()`
 * `SOUNDS LIKE`
-* `WEIGHT_STRING()`
