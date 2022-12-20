@@ -104,14 +104,14 @@ TiSpark 是 Spark 的第三方 jar 包，提供读写 TiKV 的能力。
 - 从 [TiSpark releases](https://github.com/pingcap/tispark/releases) 获取。
 - 通过以下步骤从源码构建：
 
-  下载 TiSpark 源码：
+  1. 下载 TiSpark 源码：
   
   ```
   git clone https://github.com/pingcap/tispark.git
   cd tisapark
   ```
   
-  在 TiSpark 根目录运行如下命令：
+  2. 在 TiSpark 根目录运行如下命令：
   
   ```
   // add -Dmaven.test.skip=true to skip the tests
