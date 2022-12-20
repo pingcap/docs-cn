@@ -253,6 +253,10 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
     TiCDC 支持在多个 TiDB 集群之间进行双向复制。如果业务上需要 TiDB 多活，尤其是异地多活的场景下，可以使用该功能作为 TiDB 多活的解决方案。只要为每个 TiDB 集群到其他 TiDB 集群的 TiCDC 同步任务配置 `bdr-mode = true` 参数，就可以实现多个 TiDB 集群之间的数据相互复制。
 
     更多信息，请参考[用户文档](/ticdc/ticdc-bidirectional-replication.md)。
+    
+   * TiCDC 支持在线更新 TLS 证书 [tiflow#7908](https://github.com/pingcap/tiflow/issues/7908) @[CharlesCheung96](https://github.com/CharlesCheung96) **tw@shichun-0415**
+
+    TiCDC 支持在线更新 TLS 证书。用户为了数据安全，会对系统使用的证书设置相应的过期策略，系统经过固定的时间后需要使用新的证书工作。TiCDC v6.5.0 支持在线更新 TLS 证书，在不影响同步的任务的前提下，TiCDC 会自动检测和更新新证书，无需用户手动操作，满足用户对证书更新的需求。 
 
 * TiCDC 性能提升 **tw@shichun-0415
 
@@ -272,7 +276,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
   PITR 恢复的日志恢复阶段，单台 TiKV 的恢复速度可以达到 xx MB/s，提升了 x 倍。恢复速度可扩展，有效地降低容灾场景的 RTO 指标；容灾场景的 RPO 优化到 5 min，在常规的集群运维，如滚动升级，单 TiKV 故障等场景下，可以达到 RPO = 5 min 目标。
 
-* TiKV-BR 工具 GA, 支持 RawKV 的备份和恢复 [#67](https://github.com/tikv/migration/issues/67) @[pingyu](https://github.com/pingyu) @[haojinming](https://github.com/haojinming) **tw@shichun-0415**
+* TiKV-BR 工具 GA，支持 RawKV 的备份和恢复 [#67](https://github.com/tikv/migration/issues/67) @[pingyu](https://github.com/pingyu) @[haojinming](https://github.com/haojinming) **tw@shichun-0415**
 
     TiKV-BR 是一个 TiKV 集群的备份和恢复工具。TiKV 可以独立于 TiDB，与 PD 构成 KV 数据库，此时的产品形态为 RawKV。TiKV-BR 工具支持对使用 RawKV 的产品进行备份和恢复，也支持将 TiKV 集群中的数据从 `API V1` 备份为 `API V2` 数据，以实现 TiKV 集群 [`api-version`](/tikv-configuration-file.md#api-version-从-v610-版本开始引入) 的升级。
 
