@@ -9,8 +9,8 @@ summary: 选择驱动或 ORM 框架连接 TiDB。
 >
 > TiDB 支持等级说明：
 >
-> - **Full**：此 Driver 或 ORM 没有已知的 issues。
-> - **Verified**：可能会因为 TiDB 与 MySQL 的兼容性问题，导致出现错误。
+> - **Full**：表明 TiDB 已经兼容该工具的绝大多数功能，并且在该工具的新版本中对其保持兼容。PingCAP 将定期地对 [TiDB 支持的第三方工具](/develop/dev-guide-third-party-support.md)中的新版本进行兼容性测试。
+> - **Compatible**：表明由于该工具已适配 MySQL，而 TiDB 高度兼容 MySQL 协议，因此 TiDB 可以兼容该工具的大部分功能。但 PingCAP 并未对该工具作出完整的兼容性验证，有可能出现一些意外的行为。
 >
 > 关于更多 TiDB 支持的第三方工具，你可以查看 [TiDB 支持的第三方工具](/develop/dev-guide-third-party-support.md)。
 
@@ -240,3 +240,62 @@ go get -u gorm.io/driver/mysql
 ```
 
 使用 GORM 进行 TiDB 应用程序构建的例子，可参阅 [TiDB 和 Golang 的简单 CRUD 应用程序 - 使用 GORM](/develop/dev-guide-sample-application-golang.md#第-2-步获取代码)。
+
+## Python
+
+本节介绍 Python 语言的 Driver 及 ORM 的使用方式。
+
+### Python Drivers
+
+<SimpleTab>
+<div label="PyMySQL">
+
+支持等级：**Compatible**
+
+按照 [PyMySQL 文档](https://pypi.org/project/PyMySQL/)中的说明下载并配置驱动程序即可使用。建议使用 **1.0.2** 及以上版本。
+
+使用 PyMySQL 构建 TiDB 应用程序的例子，可参阅 [TiDB 和 Python 的简单 CRUD 应用程序 - 使用 PyMySQL](/develop/dev-guide-sample-application-python.md#第-2-步获取代码)。
+
+</div>
+<div label="mysqlclient">
+
+支持等级：**Compatible**
+
+按照 [mysqlclient 文档](https://pypi.org/project/mysqlclient/)中的说明下载并配置驱动程序即可使用。建议使用 **2.1.1** 及以上版本。
+
+使用 mysqlclient 构建 TiDB 应用程序的例子，可参阅 [TiDB 和 Python 的简单 CRUD 应用程序 - 使用 mysqlclient](/develop/dev-guide-sample-application-python.md#第-2-步获取代码)。
+
+</div>
+<div label="mysql-connector-python">
+
+支持等级：**Compatible**
+
+按照 [mysql-connector-python 文档](https://dev.mysql.com/doc/connector-python/en/connector-python-installation-binary.html)中的说明下载并配置驱动程序即可使用。建议使用 **8.0.31** 及以上版本。
+
+使用 mysql-connector-python 构建 TiDB 应用程序的例子，可参阅 [TiDB 和 Python 的简单 CRUD 应用程序 - 使用 mysql-connector-python](/develop/dev-guide-sample-application-python.md#第-2-步获取代码)。
+
+</div>
+</SimpleTab>
+
+### Python ORM 框架
+
+<SimpleTab>
+<div label="SQLAlchemy">
+
+支持等级：**Compatible**
+
+[SQLAlchemy](https://www.sqlalchemy.org/) 是一个流行的 Python 的 ORM 框架，你可以使用 `pip install SQLAlchemy==1.4.44` 获取你的应用程序的所有依赖项。建议使用 **1.4.44** 及以上版本。
+
+使用 SQLAlchemy 构建 TiDB 应用程序的例子，可参阅 [TiDB 和 Python 的简单 CRUD 应用程序 - 使用 SQLAlchemy](/develop/dev-guide-sample-application-python.md#第-2-步获取代码)。
+
+</div>
+<div label="peewee">
+
+支持等级：**Compatible**
+
+[peewee](http://docs.peewee-orm.com/en/latest/) 是一个流行的 Python 的 ORM 框架，你可以使用 `pip install peewee==3.15.4` 获取你的应用程序的所有依赖项。建议使用 **3.15.4** 及以上版本。
+
+使用 peewee 构建 TiDB 应用程序的例子，可参阅 [TiDB 和 Python 的简单 CRUD 应用程序 - 使用 peewee](/develop/dev-guide-sample-application-python.md#第-2-步获取代码)。
+
+</div>
+</SimpleTab>
