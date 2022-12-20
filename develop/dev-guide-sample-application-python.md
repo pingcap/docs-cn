@@ -805,18 +805,18 @@ Driver 有着更低的封装程度，因此我们可以在程序内见到大量�
 
 <SimpleTab groupId="cli">
 
-<div label="mycli" value="mycli">
+<div label="MySQL CLI" value="mysql-client">
 
 ```shell
-mycli --host 127.0.0.1 --port 4000 -u root --no-warn < player_init.sql
+mysql --host 127.0.0.1 --port 4000 -u root < player_init.sql
 ```
 
 </div>
 
-<div label="mysql-client" value="mysql-client">
+<div label="MyCLI" value="mycli">
 
 ```shell
-mysql --host 127.0.0.1 --port 4000 -u root < player_init.sql
+mycli --host 127.0.0.1 --port 4000 -u root --no-warn < player_init.sql
 ```
 
 </div>
