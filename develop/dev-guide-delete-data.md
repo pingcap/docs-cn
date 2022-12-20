@@ -133,6 +133,35 @@ func main() {
 
 </div>
 
+<div label="Python" value="python">
+
+在 Python 中，删除数据的示例如下：
+
+```python
+import MySQLdb
+import datetime
+import time
+
+connection = MySQLdb.connect(
+    host="127.0.0.1",
+    port=4000,
+    user="root",
+    password="",
+    database="bookshop",
+    autocommit=True
+)
+
+with connection:
+    with connection.cursor() as cursor:
+        start_time = datetime.datetime(2022, 4, 15)
+        end_time = datetime.datetime(2022, 4, 15, 0, 15)
+        delete_sql = "DELETE FROM `bookshop`.`ratings` WHERE `rated_at` >= %s AND `rated_at` <= %s"
+        affect_rows = cursor.execute(delete_sql, (start_time, end_time))
+        print(f'delete {affect_rows} data')
+```
+
+</div>
+
 </SimpleTab>
 
 > **注意：**
@@ -292,6 +321,40 @@ func deleteBatch(db *sql.DB, startTime, endTime time.Time) (int64, error) {
     fmt.Printf("delete %d data\n", affectedRows)
     return affectedRows, nil
 }
+```
+
+每次迭代中，`DELETE` 最多删除 1000 行时间段为 `2022-04-15 00:00:00` 至 `2022-04-15 00:15:00` 的数据。
+
+</div>
+
+<div label="Python" value="python">
+
+在 Python 中，批量删除程序类似于以下内容：
+
+```python
+import MySQLdb
+import datetime
+import time
+
+connection = MySQLdb.connect(
+    host="127.0.0.1",
+    port=4000,
+    user="root",
+    password="",
+    database="bookshop",
+    autocommit=True
+)
+
+with connection:
+    with connection.cursor() as cursor:
+        start_time = datetime.datetime(2022, 4, 15)
+        end_time = datetime.datetime(2022, 4, 15, 0, 15)
+        affect_rows = -1
+        while affect_rows != 0:
+            delete_sql = "DELETE FROM `bookshop`.`ratings` WHERE `rated_at` >= %s AND  `rated_at` <= %s LIMIT 1000"
+            affect_rows = cursor.execute(delete_sql, (start_time, end_time))
+            print(f'delete {affect_rows} data')
+            time.sleep(1)
 ```
 
 每次迭代中，`DELETE` 最多删除 1000 行时间段为 `2022-04-15 00:00:00` 至 `2022-04-15 00:15:00` 的数据。

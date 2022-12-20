@@ -47,8 +47,6 @@ git clone https://github.com/pingcap-inc/tidb-example-golang.git
 
 <div label="使用 GORM（推荐）" value="gorm">
 
-可以看到，go-sql-driver/mysql 实现的代码略显冗余，需要自己管控错误处理逻辑，手动关闭 `*sql.Rows`，且不能很好的复用代码。并非最佳实践。
-
 当前开源比较流行的 Golang ORM 为 GORM，此处将以 v1.23.5 版本进行说明。
 
 封装一个用于适配 TiDB 事务的工具包 [util](https://github.com/pingcap-inc/tidb-example-golang/tree/main/util)，编写以下代码备用：
