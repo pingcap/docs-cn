@@ -8,9 +8,9 @@ aliases: ['/docs-cn/dev/configure-placement-rules/','/docs-cn/dev/how-to/configu
 
 > **注意：**
 >
-> TiDB 在 v5.3.0 中引入了实验特性 [Placement Rules in SQL](/placement-rules-in-sql.md)。使用该功能，你可以更方便地配置表和分区的位置。在未来版本中，Placement Rules in SQL 可能取代本文档介绍的 Placement Rules 功能。
+> 本文介绍如何手动在 Placement Driver (PD) 中设置 Placement Rules。推荐使用 [Placement Rules in SQL](/placement-rules-in-sql.md)，让你更方便地设置表和分区的放置。
 
-Placement Rules 是 PD 在 5.0 版本引入的一套副本规则系统，用于指导 PD 针对不同类型的数据生成对应的调度。通过组合不同的调度规则，用户可以精细地控制任何一段连续数据的副本数量、存放位置、主机类型、是否参与 Raft 投票、是否可以担任 Raft leader 等属性。
+Placement Rules 是 PD 在 4.0 版本引入的一套副本规则系统，用于指导 PD 针对不同类型的数据生成对应的调度。通过组合不同的调度规则，用户可以精细地控制任何一段连续数据的副本数量、存放位置、主机类型、是否参与 Raft 投票、是否可以担任 Raft leader 等属性。
 
 Placement Rules 特性在 TiDB v5.0 及以上的版本中默认开启。如需关闭 Placement Rules 特性，请参考[关闭 Placement Rules](#关闭-placement-rules-特性)。
 
@@ -279,12 +279,12 @@ pd-ctl config placement-rules rule-bundle get pd
 }
 ```
 
-`rule-bundle get` 子命令中可以添加 `-out` 参数来将输出写入文件，方便后续修改保存。
+`rule-bundle get` 子命令中可以添加 `--out` 参数来将输出写入文件，方便后续修改保存。
 
 {{< copyable "shell-regular" >}}
 
 ```bash
-pd-ctl config placement-rules rule-bundle get pd -out="group.json"
+pd-ctl config placement-rules rule-bundle get pd --out="group.json"
 ```
 
 修改完成后，使用 `rule-bundle set` 子命令将文件中的配置保存至 PD 服务器。与前面介绍的 `save` 不同，此命令会替换服务器端该分组内的所有规则。
@@ -292,7 +292,7 @@ pd-ctl config placement-rules rule-bundle get pd -out="group.json"
 {{< copyable "shell-regular" >}}
 
 ```bash
-pd-ctl config placement-rules rule-bundle set pd -in="group.json"
+pd-ctl config placement-rules rule-bundle set pd --in="group.json"
 ```
 
 ### 使用 pd-ctl 查看和修改所有配置
@@ -361,7 +361,7 @@ table ttt ranges: (NOTE: key range might be changed after DDL)
   "start_key": "6d00000000000000f8",
   "end_key": "6e00000000000000f8",
   "role": "voter",
-  "count": "5",
+  "count": 5,
   "location_labels": ["zone", "rack", "host"]
 }
 ```
@@ -436,7 +436,7 @@ table ttt ranges: (NOTE: key range might be changed after DDL)
 
 ### 场景四：为某张表在有高性能磁盘的北京节点添加 2 个 Follower 副本
 
-这个例子展示了比较复杂的 `label_constraints` 配置，下面的例子限定了副本放置在 bj1 或 bj2 机房，且磁盘类型不能为 hdd。
+这个例子展示了比较复杂的 `label_constraints` 配置，下面的例子限定了副本放置在 bj1 或 bj2 机房，且磁盘类型为 `nvme`。
 
 {{< copyable "" >}}
 
@@ -450,13 +450,13 @@ table ttt ranges: (NOTE: key range might be changed after DDL)
   "count": 2,
   "label_constraints": [
     {"key": "zone", "op": "in", "values": ["bj1", "bj2"]},
-    {"key": "disk", "op": "notIn", "values": ["hdd"]}
+    {"key": "disk", "op": "in", "values": ["nvme"]}
   ],
   "location_labels": ["host"]
 }
 ```
 
-### 场景五：将某张表迁移至 TiFlash 集群
+### 场景五：将某张表迁移至 SSD 节点
 
 与场景三不同，这个场景不是要在原有配置的基础上增加新副本，而是要强制覆盖一段数据的其它配置，因此需要通过配置规则分组来指定一个足够大的 index 以及设置 override 来覆盖原有规则。
 
@@ -466,16 +466,16 @@ table ttt ranges: (NOTE: key range might be changed after DDL)
 
 ```json
 {
-  "group_id": "tiflash-override",
-  "id": "learner-replica-table-ttt",
+  "group_id": "ssd-override",
+  "id": "ssd-table-45",
   "start_key": "7480000000000000ff2d5f720000000000fa",
   "end_key": "7480000000000000ff2e00000000000000f8",
   "role": "voter",
   "count": 3,
   "label_constraints": [
-    {"key": "engine", "op": "in", "values": ["tiflash"]}
+    {"key": "disk", "op": "in", "values": ["ssd"]}
   ],
-  "location_labels": ["host"]
+  "location_labels": ["rack", "host"]
 }
 ```
 
@@ -485,7 +485,7 @@ table ttt ranges: (NOTE: key range might be changed after DDL)
 
 ```json
 {
-  "id": "tiflash-override",
+  "id": "ssd-override",
   "index": 1024,
   "override": true,
 }

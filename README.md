@@ -13,6 +13,11 @@
 | 文档仓库 branch | 对应 TiDB 文档版本 |
 |:---------|:----------|
 | [`master`](https://github.com/pingcap/docs-cn/tree/master) | dev 最新开发版 |
+| [`release-6.3`](https://github.com/pingcap/docs-cn/tree/release-6.3) | 6.3 开发里程碑版 (DMR) |
+| [`release-6.2`](https://github.com/pingcap/docs-cn/tree/release-6.2) | 6.2 开发里程碑版 (DMR) |
+| [`release-6.1`](https://github.com/pingcap/docs-cn/tree/release-6.1) | 6.1 长期支持版 (LTS) |
+| [`release-6.0`](https://github.com/pingcap/docs-cn/tree/release-6.0) | 6.0 开发里程碑版 (DMR) |
+| [`release-5.4`](https://github.com/pingcap/docs-cn/tree/release-5.4) | 5.4 稳定版 |
 | [`release-5.3`](https://github.com/pingcap/docs-cn/tree/release-5.3) | 5.3 稳定版 |
 | [`release-5.2`](https://github.com/pingcap/docs-cn/tree/release-5.2) | 5.2 稳定版 |
 | [`release-5.1`](https://github.com/pingcap/docs-cn/tree/release-5.1) | 5.1 稳定版 |
@@ -24,7 +29,7 @@
 
 ## 贡献文档
 
-[<img src="media/contribution-map.png" alt="contribution-map" width="180"></img>](https://github.com/pingcap/community/tree/master/special-interest-groups/sig-docs)
+[<img src="media/contribution-map.png" alt="contribution-map" width="180"></img>](https://github.com/pingcap/docs-cn/blob/master/credits.md)
 
 你提交的第一个 [Pull Request](https://help.github.com/en/github/getting-started-with-github/github-glossary#pull-request) (PR) 合并以后，即可成为 TiDB 文档的 Contributor。查看 [TiDB 中文文档贡献指南](/CONTRIBUTING.md)，开始你的贡献吧！
 

@@ -10,11 +10,11 @@ aliases: ['/docs-cn/dev/faq/migration-tidb-faq/']
 
 如果要查看迁移相关工具的常见问题，请参考以下链接：
 
-- [Backup & Restore 常见问题](/br/backup-and-restore-faq.md)
+- [备份与恢复常见问题](/faq/backup-and-restore-faq.md)
 - [TiDB Binlog 常见问题](/tidb-binlog/tidb-binlog-faq.md)
 - [TiDB Lightning 常见问题](/tidb-lightning/tidb-lightning-faq.md)
 - [Data Migration 常见问题](/dm/dm-faq.md)
-- [TiCDC 常见问题和故障处理](/ticdc/troubleshoot-ticdc.md)
+- [TiCDC 常见问题](/ticdc/ticdc-faq.md)
 
 ## 全量数据导出导入
 
@@ -29,7 +29,7 @@ TiDB 支持绝大多数 MySQL 语法，一般不需要修改代码。
 + 在出现重试、EOF 错误的服务器端节点执行以下命令：
 
     {{< copyable "shell-regular" >}}
-    
+
     ```shell
     iperf3 -s
     ```
@@ -163,7 +163,7 @@ DELETE，TRUNCATE 和 DROP 都不会立即释放空间。对于 TRUNCATE 和 DRO
 
 ### TiDB 是否支持 replace into 语法？
 
-支持，但是 load data 不支持 replace into 语法。
+支持。
 
 ### 数据删除后查询速度为何会变慢？
 

@@ -43,7 +43,7 @@ TiDB 根据 `sql-statement` 整理出以下集群现场信息：
 ```sql
 use test;
 create table t(a int, b int);
-insert into t valuse(1,1), (2, 2), (3, 3);
+insert into t values(1,1), (2, 2), (3, 3); 
 analyze table t;
 
 plan replayer dump explain select * from t;
@@ -57,12 +57,48 @@ plan replayer dump explain select * from t;
 
 ```sql
 MySQL [test]> plan replayer dump explain select * from t;
+```
+
+```sql
 +------------------------------------------------------------------+
 | Dump_link                                                        |
 +------------------------------------------------------------------+
-| replayer_single_JOGvpu4t7dssySqJfTtS4A==_1635750890568691080.zip |
+| replayer_JOGvpu4t7dssySqJfTtS4A==_1635750890568691080.zip |
 +------------------------------------------------------------------+
 1 row in set (0.015 sec)
+```
+
+你同样可以通过 [`tidb_last_plan_replayer_token`](/system-variables.md#tidb_last_plan_replayer_token-从-v630-版本开始引入) 这个会话变量来获取上一次 `PLAN REPLAYER dump` 执行的结果。
+
+```sql
+SELECT @@tidb_last_plan_replayer_token;
+```
+
+```sql
+| @@tidb_last_plan_replayer_token                           |
++-----------------------------------------------------------+
+| replayer_Fdamsm3C7ZiPJ-LQqgVjkA==_1663304195885090000.zip |
++-----------------------------------------------------------+
+1 row in set (0.00 sec)
+```
+
+对于多条 SQL 的情况，你可以通过文件的方式来获取 plan replayer dump 的结果，多条 SQL 语句在文件中以 `;` 进行分隔。
+
+```sql
+plan replayer dump explain 'sqls.txt';
+```
+
+```sql
+SELECT @@tidb_last_plan_replayer_token;
+```
+
+```sql
++-----------------------------------------------------------+
+| @@tidb_last_plan_replayer_token                           |
++-----------------------------------------------------------+
+| replayer_LEDKg8sb-K0u24QesiH8ig==_1663226556509182000.zip |
++-----------------------------------------------------------+
+1 row in set (0.00 sec)
 ```
 
 因为 MySQL Client 无法下载文件，所以需要通过 TiDB HTTP 接口和文件标识下载文件：
@@ -78,7 +114,7 @@ http://${tidb-server-ip}:${tidb-server-status-port}/plan_replayer/dump/${file_to
 {{< copyable "shell-regular" >}}
 
 ```shell
-curl http://127.0.0.1:10080/plan_replayer/dump/replayer_single_JOGvpu4t7dssySqJfTtS4A==_1635750890568691080.zip > plan_replayer.zip
+curl http://127.0.0.1:10080/plan_replayer/dump/replayer_JOGvpu4t7dssySqJfTtS4A==_1635750890568691080.zip > plan_replayer.zip
 ```
 
 ## 使用 `PLAN REPLAYER` 导入集群信息
@@ -104,3 +140,36 @@ PLAN REPLAYER LOAD 'file_name';
 ```sql
 PLAN REPLAYER LOAD 'plan_replayer.zip';
 ```
+
+导入完毕后，该 TiDB 集群就载入了所需要的表结构、统计信息等其他影响构造 Plan 所需要的信息。你可以通过以下方式查看执行计划以及验证统计信息:
+
+```sql
+mysql> desc t;
++-------+---------+------+------+---------+-------+
+| Field | Type    | Null | Key  | Default | Extra |
++-------+---------+------+------+---------+-------+
+| a     | int(11) | YES  |      | NULL    |       |
+| b     | int(11) | YES  |      | NULL    |       |
++-------+---------+------+------+---------+-------+
+2 rows in set (0.01 sec)
+
+mysql> explain select * from t where a = 1 or b =1;
++-------------------------+---------+-----------+---------------+--------------------------------------+
+| id                      | estRows | task      | access object | operator info                        |
++-------------------------+---------+-----------+---------------+--------------------------------------+
+| TableReader_7           | 0.01    | root      |               | data:Selection_6                     |
+| └─Selection_6           | 0.01    | cop[tikv] |               | or(eq(test.t.a, 1), eq(test.t.b, 1)) |
+|   └─TableFullScan_5     | 6.00    | cop[tikv] | table:t       | keep order:false, stats:pseudo       |
++-------------------------+---------+-----------+---------------+--------------------------------------+
+3 rows in set (0.00 sec)
+
+mysql> show stats_meta;
++---------+------------+----------------+---------------------+--------------+-----------+
+| Db_name | Table_name | Partition_name | Update_time         | Modify_count | Row_count |
++---------+------------+----------------+---------------------+--------------+-----------+
+| test    | t          |                | 2022-08-26 15:52:07 |            3 |         6 |
++---------+------------+----------------+---------------------+--------------+-----------+
+1 row in set (0.04 sec)
+```
+
+加载并还原所需现场后，即可在该现场诊断和改进执行计划。

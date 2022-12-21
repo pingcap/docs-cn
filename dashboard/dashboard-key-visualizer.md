@@ -47,7 +47,7 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-key-visualizer/','/docs-cn/dev/how-t
 
 > **注意：**
 >
-> 热点问题详情请参阅 [TiDB 热点问题详解](https://asktug.com/t/topic/358)。
+> 热点问题详情请参阅 [TiDB 热点问题详解](https://tidb.net/blog/dffb428a)。
 
 ### 热力图
 
@@ -114,7 +114,7 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-key-visualizer/','/docs-cn/dev/how-t
 你可以通过「指标选择框」（以上界面中 **Write (bytes)** 处）来查看你关心的指标：
 
 * `Read (bytes)`：读取字节量
-* `Write (bytes)`：读取字节量
+* `Write (bytes)`：写入字节量
 * `Read (keys)`：读取次数
 * `Write (keys)`：写入次数
 * `All`：所有（读写流量的总和）

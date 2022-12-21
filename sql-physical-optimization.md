@@ -13,3 +13,4 @@ aliases: ['/docs-cn/dev/sql-physical-optimization/']
 - 在[统计信息简介](/statistics.md)中会介绍 TiDB 收集了哪些统计信息来获得表的数据分布情况
 - 在[错误索引的解决方案](/wrong-index-solution.md)中会介绍当发现 TiDB 索引选错时，你应该使用那些手段来让它使用正确的索引
 - 在 [Distinct 优化](/agg-distinct-optimization.md)中会介绍在物理优化中会做的一个有关 `DISTINCT` 关键字的优化，在这一小节中会介绍它的优缺点以及如何使用它。
+- 在[代价模型](/cost-model.md)中会介绍在物理优化时，TiDB 怎么通过代价模型来选择一个最优的执行计划。

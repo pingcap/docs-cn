@@ -9,9 +9,11 @@ TiDB 提供了丰富的工具，可以帮助你进行部署运维、数据管理
 
 ## 部署运维工具
 
-TiDB 提供了 TiUP 和 TiDB Operator 两种部署运维工具，满足你在不同系统环境下的部署运维需求。
+TiDB 提供了 TiUP、TiDB Operator 和 TiUniManager 三种部署运维工具，满足你在不同系统环境下的部署运维需求。
 
-### 在物理机或虚拟机上部署运维 TiDB - TiUP
+### 在物理机或虚拟机上部署运维 TiDB
+
+#### TiUP
 
 [TiUP](/tiup/tiup-overview.md) 是在物理机或虚拟机上的 TiDB 包管理器，管理着 TiDB 的众多的组件，如 TiDB、PD、TiKV 等。当你想要运行 TiDB 生态中任何组件时，只需要执行一行 TiUP 命令即可。
 
@@ -23,6 +25,18 @@ TiDB 提供了 TiUP 和 TiDB Operator 两种部署运维工具，满足你在不
 - [使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)
 - [TiUP 组件管理](/tiup/tiup-component-management.md)
 - 适用 TiDB 版本：v4.0 及以上
+
+#### TiUniManager
+
+[TiUniManager](/tiunimanager/tiunimanager-overview.md) 是一款以 TiDB 数据库为核心的数据库管理平台，帮助用户在私有部署 (on-premises) 或公有云环境中管理 TiDB 集群。
+
+TiUniManager 不仅提供对 TiDB 集群的全生命周期的可视化管理，也同时一站式提供 TiDB 数据库参数管理、数据库版本升级、克隆集群、主备集群切换、数据导入导出、数据同步、数据备份恢复服务，能有效提高 TiDB 集群运维效率，降低企业运维成本。
+
+基本信息：
+
+- [TiUniManager 使用场景](/tiunimanager/tiunimanager-overview.md#使用场景)
+- [TiUniManager 安装和运维指南](/tiunimanager/tiunimanager-install-and-maintain.md)
+- [TiUniManager 与 TiUP 的关系](/tiunimanager/tiunimanager-faq.md#tiunimanager-与-tiup-的关系是什么)
 
 ### 在 Kubernetes 上部署运维 TiDB - TiDB Operator
 
@@ -80,31 +94,31 @@ TiDB 提供了 TiUP 和 TiDB Operator 两种部署运维工具，满足你在不
 
 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 是一个用于将全量数据导入到 TiDB 集群的工具。
 
-使用 TiDB Lightning 导入数据到 TiDB 时，有三种模式：
+使用 TiDB Lightning 导入数据到 TiDB 时，有以下模式：
 
-- `local` 模式：TiDB Lightning 将数据解析为有序的键值对，并直接将其导入 TiKV。这种模式一般用于导入大量的数据（TB 级别）到新集群，但在数据导入过程中集群无法提供正常的服务。
-- `importer` 模式：和 `local` 模式类似，但是需要部署额外的组件 `tikv-importer` 协助完成键值对的导入。对于 4.0 以上的目标集群，请优先使用 `local` 模式进行导入。
-- `tidb` 模式：以 TiDB/MySQL 作为后端，这种模式相比 `local` 和 `importer` 模式的导入速度较慢，但是可以在线导入，同时也支持将数据导入到 MySQL。
+- `Physical Import Mode` 模式：TiDB Lightning 将数据解析为有序的键值对，并直接将其导入 TiKV。这种模式一般用于导入大量的数据（TB 级别）到新集群，但在数据导入过程中集群无法提供正常的服务。
+- `Logical Import Mode` 模式：以 TiDB/MySQL 作为后端，这种模式相比 `Physical Import Mode`，导入速度较慢，但是可以在线导入，同时也支持将数据导入到 MySQL。
 
 基本信息：
 
 - TiDB Lightning 的输入：
     - Dumpling 输出文件
     - 其他格式兼容的 CSV 文件
+    - 从 Aurora 或者 Hive 导出的 Parquet 文件
 - 适用 TiDB 版本：v2.1 及以上
 - Kubernetes 支持：[使用 TiDB Lightning 快速恢复 Kubernetes 上的 TiDB 集群数据](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/restore-data-using-tidb-lightning)
 
 > **注意：**
 >
-> 原 Loader 工具已停止维护，不再推荐使用。相关场景请使用 TiDB Lightning 的 `tidb` 模式进行替代，详细信息请参考 [TiDB Lightning TiDB-backend 文档](/tidb-lightning/tidb-lightning-backends.md#从-loader-迁移到-tidb-lightning-tidb-backend)。
+> 原 Loader 工具已停止维护，不再推荐使用。相关场景请使用 TiDB Lightning 的 `tidb` 模式进行替代。
 
 ### 备份和恢复 - Backup & Restore
 
-[Backup & Restore (BR)](/br/backup-and-restore-tool.md) 是一个对 TiDB 进行分布式备份和恢复的工具，可以高效地对大数据量的 TiDB 集群进行数据备份和恢复。
+[Backup & Restore (BR)](/br/backup-and-restore-overview.md) 是一个对 TiDB 进行分布式备份和恢复的工具，可以高效地对大数据量的 TiDB 集群进行数据备份和恢复。
 
 基本信息：
 
-- [备份输出和恢复输入的文件类型](/br/backup-and-restore-tool.md)：SST + `backupmeta` 文件
+- [备份输出和恢复输入的文件类型](/br/backup-and-restore-design.md)
 - 适用 TiDB 版本：v4.0 及以上
 - Kubernetes 支持：[使用 BR 工具备份 TiDB 集群数据到兼容 S3 的存储](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/backup-to-aws-s3-using-br)，[使用 BR 工具恢复 S3 兼容存储上的备份数据](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/restore-from-aws-s3-using-br)
 
@@ -115,7 +129,7 @@ TiDB 提供了 TiUP 和 TiDB Operator 两种部署运维工具，满足你在不
 基本信息：
 
 - TiCDC 的输入：TiDB 集群
-- TiCDC 的输出：TiDB 集群、MySQL、Kafka、Apache Pulsar、Confluent
+- TiCDC 的输出：TiDB 集群、MySQL、Kafka、Confluent
 - 适用 TiDB 版本：v4.0.6 及以上
 
 ### TiDB 增量日志同步 - TiDB Binlog
@@ -139,10 +153,6 @@ TiDB 提供了 TiUP 和 TiDB Operator 两种部署运维工具，满足你在不
 - sync-diff-inspector 的输出：TiDB、MySQL
 - 适用 TiDB 版本：所有版本
 
-## OLAP 分析工具
-
-TiDB 提供了 OLAP 分析工具 TiSpark。通过 TiSpark，你可以像使用原生 Spark 一样查询 TiDB 表。
-
-### 使用 Spark 查询 TiKV 数据源 - TiSpark
+## OLAP 分析工具 - TiSpark
 
 [TiSpark](/tispark-overview.md) 是 PingCAP 为解决用户复杂 OLAP 需求而推出的产品。它借助 Spark 平台，同时融合 TiKV 分布式集群的优势，和 TiDB 一起为用户一站式解决 HTAP (Hybrid Transactional/Analytical Processing) 的需求。

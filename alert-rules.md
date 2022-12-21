@@ -119,7 +119,7 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
 * 规则描述：
 
-    TiDB 处理请求的延时。如果 .99 的延迟大于 1 秒，则报警。
+    TiDB 处理请求的延时。如果延迟大于 1 秒的概率超过 99%，则报警。
 
 * 处理方法：
 
@@ -199,7 +199,7 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
 * 规则描述：
 
-    PD 长时间（默认配置是 30 分钟）没有收到 TiKV/TiFlash 心跳。 
+    PD 长时间（默认配置是 30 分钟）没有收到 TiKV/TiFlash 心跳。
 
 * 处理方法：
 
@@ -232,7 +232,7 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
 * 规则描述：
 
-    Region 的副本数小于 `max-replicas` 配置的值。这通常是由于 TiKV 宕机等问题导致一段时间内一些 Region 缺副本。
+    Region 的副本数小于 `max-replicas` 配置的值。
 
 * 处理方法：
 
@@ -257,6 +257,20 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
     * 检查 TiKV/TiFlash 进程是否正常、网络是否隔离以及负载是否过高，并尽可能地恢复服务。
     * 如果确定 TiKV/TiFlash 无法恢复，可做下线处理。
     * 如果确定 TiKV/TiFlash 可以恢复，但在短时间内还无法恢复，可以考虑延长 `max-down-time` 配置，防止超时后 TiKV/TiFlash 被判定为无法恢复并开始搬移数据。
+
+#### `PD_cluster_unhealthy_tikv_nums`
+
+* 报警规则：
+
+    `(sum(pd_cluster_status{type="store_unhealth_count"}) by (instance) > 0) and (sum(etcd_server_is_leader) by (instance) > 0)`
+
+* 规则描述：
+
+    表示存在异常状态的 Store。如果这种状态持续一段时间（取决于配置的 [`max-store-down-time`](/pd-configuration-file.md#max-store-down-time)，默认值为 `30m`），Store 可能会变为 `Offline` 状态并触发 [`PD_cluster_down_store_nums`](#pd_cluster_down_store_nums) 报警。
+
+* 处理方法：
+
+    检查 TiKV Store 的状态。
 
 #### `PD_cluster_low_space`
 
@@ -399,6 +413,21 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
     * 检查 store 是否空间不足。
     * 根据 label 配置（如果有这个配置的话）来检查是否有可以补副本的 store。
 
+#### `PD_cluster_slow_tikv_nums`
+
+* 报警规则：
+
+    `sum(pd_cluster_status{type="store_slow_count"}) by (instance) > 0) and (sum(etcd_server_is_leader) by (instance) > 0`
+
+* 规则描述：
+
+    某一个 TiKV 被检测为慢节点。慢节点的检测由 TiKV `raftstore.inspect-interval` 参数控制，参见 [TiKV 配置文件描述](/tikv-configuration-file.md#inspect-interval)。
+
+* 处理方法：
+
+    * 检查 store 性能是否异常
+    * 调大 TiKV `raftstore.inspect-interval` 参数，提高延迟检测的超时上限
+
 ## TiKV 报警规则
 
 本节介绍了 TiKV 组件的报警项。
@@ -417,13 +446,13 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
 * 处理方法：
 
-    调整 `rockdb.defaultcf` 和 `rocksdb.writecf` 的 `block-cache-size` 的大小。
+    调整 `rocksdb.defaultcf` 和 `rocksdb.writecf` 的 `block-cache-size` 的大小。
 
 #### `TiKV_GC_can_not_work`
 
 * 报警规则：
 
-    `sum(increase(tikv_gcworker_gc_tasks_vec{task="gc"}[1d])) < 1 and sum(increase(tikv_gc_compaction_filter_perform[1d])) < 1`
+    `sum(increase(tikv_gcworker_gc_tasks_vec{task="gc"}[1d])) < 1 and (sum(increase(tikv_gc_compaction_filter_perform[1d])) < 1 and sum(increase(tikv_engine_event_total{db="kv", cf="write", type="compaction"}[1d])) >= 1)` 
 
 * 规则描述：
 
@@ -772,7 +801,7 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
 * 报警规则：
 
-    `node_filesystem_avail{fstype=~"(ext.|xfs)", mountpoint!~"/boot"} / node_filesystem_size{fstype=~"(ext.|xfs)", mountpoint!~"/boot"} * 100 <= 20`
+    `node_filesystem_avail_bytes{fstype=~"(ext.|xfs)", mountpoint!~"/boot"} / node_filesystem_size_bytes{fstype=~"(ext.|xfs)", mountpoint!~"/boot"} * 100 <= 20`
 
 * 规则描述：
 
@@ -1118,5 +1147,5 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
 * 处理方法：
 
-    * 在 Grafana Blackbox Exporter dashboard 上检查两个节点间的 ping 延迟是否太高。
-    * 在 Grafana Blackbox Exporter dashboard 的 tcp 面板上检查是否有丢包。
+    * 在 Grafana Blackbox Exporter 页面上检查两个节点间的 ping 延迟是否太高。
+    * 在 Grafana Node Exporter 页面的 TCP 面板上检查是否有丢包。

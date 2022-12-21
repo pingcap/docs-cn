@@ -71,3 +71,7 @@ TiDB 支持使用 MySQL 5.7 中提供的所有[日期和时间函数](https://de
 | [`WEEKOFYEAR()`](https://dev.mysql.com/doc/refman/5.7/en/date-and-time-functions.html#function_weekofyear) | 返回参数在日历中对应的一年中的星期数 |
 | [`YEAR()`](https://dev.mysql.com/doc/refman/5.7/en/date-and-time-functions.html#function_year) | 返回参数对应的年数|
 | [`YEARWEEK()`](https://dev.mysql.com/doc/refman/5.7/en/date-and-time-functions.html#function_yearweek) | 返回年数和星期数 |
+
+## 相关系统变量
+
+`default_week_format` 变量影响 `WEEK()` 函数。

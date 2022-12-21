@@ -5,24 +5,52 @@ aliases: ['/docs-cn/dev/hardware-and-software-requirements/','/docs-cn/dev/how-t
 
 # TiDB 软件和硬件环境建议配置
 
-TiDB 作为一款开源分布式 NewSQL 数据库，可以很好的部署和运行在 Intel 架构服务器环境、ARM 架构的服务器环境及主流虚拟化环境，并支持绝大多数的主流硬件网络。作为一款高性能数据库系统，TiDB 支持主流的 Linux 操作系统环境。
+<!-- Localization note for TiDB:
 
-## Linux 操作系统版本要求
+- 英文：用 distributed SQL，同时开始强调 HTAP
+- 中文：可以保留 NewSQL 字眼，同时强调一栈式实时 HTAP
+- 日文：NewSQL 认可度高，用 NewSQL
 
-| Linux 操作系统平台       | 版本         |
-| :----------------------- | :----------: |
-| Red Hat Enterprise Linux | 7.3 及以上的 7.x 版本   |
-| CentOS                   | 7.3 及以上的 7.x 版本   |
-| Oracle Enterprise Linux  | 7.3 及以上的 7.x 版本   |
-| Ubuntu LTS               | 16.04 及以上的版本      |
+-->
+
+TiDB 作为一款开源一栈式实时 HTAP 数据库，可以很好地部署和运行在 Intel 架构服务器环境、ARM 架构的服务器环境及主流虚拟化环境，并支持绝大多数的主流硬件网络。作为一款高性能数据库系统，TiDB 支持主流的 Linux 操作系统环境。
+
+## 操作系统及平台要求
+
+|  操作系统   |   支持的 CPU 架构   |
+|   :---   |   :---   |
+| Red Hat Enterprise Linux 8.4 及以上的 8.x 版本  |  <ul><li>x86_64</li><li>ARM 64</li></ul>  |
+| <ul><li>Red Hat Enterprise Linux 7.3 及以上的 7.x 版本</li><li>CentOS 7.3 及以上的 7.x 版本</li></ul>  |  <ul><li>x86_64</li><li>ARM 64</li></ul>   |
+|  Amazon Linux 2         |  <ul><li>x86_64</li><li>ARM 64</li></ul>   |
+| 麒麟欧拉版 V10 SP1/SP2   |   <ul><li>x86_64</li><li>ARM 64</li></ul>   |
+| UOS V20                 |   <ul><li>x86_64</li><li>ARM 64</li></ul>   |
+|   macOS Catalina 及以上的版本  |  <ul><li>x86_64</li><li>ARM 64</li></ul>  |
+|  Oracle Enterprise Linux 7.3 及以上的 7.x 版本  |  x86_64           |
+|   Ubuntu LTS 18.04 及以上的版本  |  x86_64           |
+| CentOS 8 Stream | <ul><li>x86_64</li><li>ARM 64</li></ul> |
+|  Debian 9 (Stretch) 及以上的版本  |  x86_64           |
+|  Fedora 35 及以上的版本   |  x86_64           |
+|  openSUSE Leap 15.3 以上的版本（不包含 Tumbleweed） |  x86_64           |
+|  SUSE Linux Enterprise Server 15  |  x86_64                        |
 
 > **注意：**
 >
-> - 目前尚不支持 Red Hat Enterprise Linux 8.0、CentOS 8 Stream 和 Oracle Enterprise Linux 8.0，因为目前对这些平台的测试还在进行中。
-> - 不计划支持 CentOS 8 Linux，因为 CentOS 的上游支持将于 2021 年 12 月 31 日终止。
+> - TiDB 只支持 Red Hat 兼容内核 (RHCK) 的 Oracle Enterprise Linux，不支持 Oracle Enterprise Linux 提供的 Unbreakable Enterprise Kernel。
+> - 根据 [CentOS Linux EOL](https://www.centos.org/centos-linux-eol/)，CentOS 的上游支持已于 2021 年 12 月 31 日终止。
 > - TiDB 将不再支持 Ubuntu 16.04。强烈建议升级到 Ubuntu 18.04 或更高版本。
+> - 对于以上表格中所列操作系统的 32 位版本，TiDB 在这些 32 位操作系统以及对应的 CPU 架构上**不保障**可编译、可构建以及可部署，或 TiDB 不主动适配这些 32 位的操作系统。
+> - 以上未提及的操作系统版本**也许可以**运行 TiDB，但尚未得到 TiDB 官方支持。
 
-其他 Linux 操作系统版本（例如 Debian Linux 和 Fedora Linux）也许可以运行 TiDB，但尚未得到 TiDB 官方支持。
+### 编译和运行 TiDB 所依赖的库
+
+|  编译和构建 TiDB 所需的依赖库   |  版本   |
+|   :---   |   :---   |
+|   Golang  |  1.18.5 及以上版本  |
+|   Rust    |   nightly-2022-07-31 及以上版本  |
+|  GCC      |   7.x      |
+|  LLVM     |  13.0 及以上版本  |
+
+运行时所需的依赖库：glibc（2.28-151.el8 版本）
 
 ## 软件配置要求
 
@@ -47,7 +75,7 @@ TiDB 作为一款开源分布式 NewSQL 数据库，可以很好的部署和运�
 
 ## 服务器建议配置
 
-TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器平台或者 ARM 架构的硬件服务器平台。对于开发，测试，及生产环境的服务器硬件配置（不包含操作系统 OS 本身的占用）有以下要求和建议：
+TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器平台或者 ARM 架构的硬件服务器平台。对于开发、测试及生产环境的服务器硬件配置（不包含操作系统 OS 本身的占用）有以下要求和建议：
 
 ### 开发及测试环境
 
@@ -71,16 +99,16 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 
 | **组件** | **CPU** | **内存** | **硬盘类型** | **网络** | **实例数量(最低要求)** |
 | --- | --- | --- | --- | --- | --- |
-| TiDB | 16 核+ | 32 GB+ | SAS | 万兆网卡（2 块最佳） | 2 |
-| PD | 4核+ | 8 GB+ | SSD | 万兆网卡（2 块最佳） | 3 |
-| TiKV | 16 核+ | 32 GB+ | SSD | 万兆网卡（2 块最佳） | 3 |
+| TiDB | 16 核+ | 48 GB+ | SAS | 万兆网卡（2 块最佳） | 2 |
+| PD | 8 核+ | 16 GB+ | SSD | 万兆网卡（2 块最佳） | 3 |
+| TiKV | 16 核+ | 64 GB+ | SSD | 万兆网卡（2 块最佳） | 3 |
 | TiFlash | 48 核+ | 128 GB+ | 1 or more SSDs | 万兆网卡（2 块最佳） | 2 |
 | TiCDC | 16 核+ | 64 GB+ | SSD | 万兆网卡（2 块最佳） | 2 |
 | 监控 | 8 核+ | 16 GB+ | SAS | 千兆网卡 | 1 |
 
 > **注意：**
 >
-> - 生产环境中的 TiDB 和 PD 可以部署和运行在同服务器上，如对性能和可靠性有更高的要求，应尽可能分开部署。
+> - 生产环境中的 TiDB 和 PD 可以部署和运行在同一台服务器上，如对性能和可靠性有更高的要求，应尽可能分开部署。
 > - 生产环境强烈推荐使用更高的配置。
 > - TiKV 硬盘大小配置建议 PCI-E SSD 不超过 2 TB，普通 SSD 不超过 1.5 TB。
 > - TiFlash 支持[多盘部署](/tiflash/tiflash-configuration.md#多盘部署)。
@@ -91,7 +119,15 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 
 ## 网络要求
 
-TiDB 作为开源分布式 NewSQL 数据库，其正常运行需要网络环境提供如下的网络端口配置要求，管理员可根据实际环境中 TiDB 组件部署的方案，在网络侧和主机侧开放相关端口：
+<!-- Localization note for TiDB:
+
+- 英文：用 distributed SQL，同时开始强调 HTAP
+- 中文：可以保留 NewSQL 字眼，同时强调一栈式实时 HTAP
+- 日文：NewSQL 认可度高，用 NewSQL
+
+-->
+
+TiDB 作为开源一栈式实时 HTAP 数据库，其正常运行需要网络环境提供如下的网络端口配置要求，管理员可根据实际环境中 TiDB 组件部署的方案，在网络侧和主机侧开放相关端口：
 
 | 组件 | 默认端口 | 说明 |
 | :-- | :-- | :-- |
@@ -110,12 +146,24 @@ TiDB 作为开源分布式 NewSQL 数据库，其正常运行需要网络环境�
 | Pump | 8250 | Pump 通信端口 |
 | Drainer | 8249 | Drainer 通信端口 |
 | CDC | 8300 | CDC 通信接口 |
-| Prometheus | 9090 | Prometheus 服务通信端口 |
+| Monitoring | 9090 | Prometheus 服务通信端口 |
+| Monitoring | 12020 | NgMonitoring 服务通信端口 |
 | Node_exporter | 9100 | TiDB 集群每个节点的系统信息上报通信端口 |
 | Blackbox_exporter | 9115 | Blackbox_exporter 通信端口，用于 TiDB 集群端口监控 |
 | Grafana | 3000 | Web 监控服务对外服务和客户端(浏览器)访问端口 |
 | Alertmanager | 9093 | 告警 web 服务端口 |
 | Alertmanager | 9094 | 告警通信端口 |
+
+## 磁盘空间要求
+
+| 组件 | 磁盘空间要求 | 健康水位使用率 |
+| :-- | :-- | :-- |
+| TiDB | 日志盘建议最少预留 30 GB | 低于 90% |
+| PD | 数据盘和日志盘建议最少各预留 20 GB | 低于 90% |
+| TiKV | 数据盘和日志盘建议最少各预留 100 GB | 低于 80% |
+| TiFlash | 数据盘建议最少预留 100 GB，日志盘建议最少预留 30 GB | 低于 80% |
+| TiUP | <ul><li>中控机：部署一个版本的 TiDB 集群占用不超过 1 GB 空间，部署多个版本集群所占用的空间会相应增加 </li> <li>部署服务器（实际运行 TiDB 各组件的机器）：TiFlash 占用约 700 MB 空间，其他组件（PD、TiDB、TiKV 等）各占用约 200 MB 空间。同时，部署过程会占用小于 1 MB 临时空间（/tmp）存放临时文件 </li></ul> | 不涉及|
+| Ngmonitoring | <ul><li>Conprof：3 x 1 GB x 组件数量（表示每个组件每天占用约 1 GB，总共 3 天） + 20 GB 预留空间 </li><li> Top SQL：30 x 50 MB x 组件数量（每个组件每天占用约 50 MB，总共 30 天） </li><li> Top SQL 和 Conprof 共享预留空间</li></ul> | 不涉及 |
 
 ## 客户端 Web 浏览器要求
 

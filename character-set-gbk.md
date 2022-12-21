@@ -25,7 +25,11 @@ SHOW COLLATION WHERE CHARSET = 'gbk';
 1 rows in set (0.00 sec)
 ```
 
-## 排序规则
+## 与 MySQL 的兼容性
+
+本节介绍 TiDB 中 GBK 字符集与 MySQL 的兼容情况。
+
+### 排序规则兼容性
 
 MySQL 的字符集默认排序规则是 `gbk_chinese_ci`。与 MySQL 不同，TiDB GBK 字符集的默认排序规则为 `gbk_bin`。另外，TiDB 支持的 `gbk_bin` 与 MySQL 支持的 `gbk_bin` 排序规则也不一致，TiDB 是将 GBK 转换成 UTF8MB4 然后做二进制排序。
 
@@ -51,8 +55,6 @@ SHOW COLLATION WHERE CHARSET = 'gbk';
 +----------------+---------+------+---------+----------+---------+
 2 rows in set (0.00 sec)
 ```
-
-## MySQL 兼容性
 
 ### 非法字符兼容性
 
@@ -88,10 +90,12 @@ SHOW COLLATION WHERE CHARSET = 'gbk';
 
 ## 组件兼容性
 
-* TiCDC 和 TiFlash 目前不支持 GBK 字符集。
+* TiFlash 目前不支持 GBK 字符集。
 
 * TiDB Data Migration (DM) 在 v5.4.0 之前不支持将 `charset=GBK` 的表迁移到 TiDB。
 
 * TiDB Lightning 在 v5.4.0 之前不支持导入 `charset=GBK` 的表。
+
+* TiCDC 在 v6.1.0 之前不支持同步 `charset=GBK` 的表。另外，任何版本的 TiCDC 都不支持同步 `charset=GBK` 的表到 6.1.0 之前的 TiDB 集群。
 
 * TiDB Backup & Restore（BR）在 v5.4.0 之前不支持恢复 `charset=GBK` 的表。另外，任何版本的 BR 都不支持恢复 `charset=GBK` 的表到 5.4.0 之前的 TiDB 集群。

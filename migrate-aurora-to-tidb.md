@@ -1,7 +1,7 @@
 ---
 title: 从 Amazon Aurora 迁移数据到 TiDB
 summary: 介绍如何使用快照从 Amazon Aurora 迁移数据到 TiDB。
-aliases: ['/zh/tidb/dev/migrate-from-aurora-using-lightning/','/docs-cn/dev/migrate-from-aurora-mysql-database/','/docs-cn/dev/how-to/migrate/from-mysql-aurora/','/docs-cn/dev/how-to/migrate/from-aurora/','/zh/tidb/dev/migrate-from-aurora-mysql-database/','/zh/tidb/dev/migrate-from-mysql-aurora']
+aliases: ['/zh/tidb/dev/migrate-from-aurora-using-lightning/','/docs-cn/dev/migrate-from-aurora-mysql-database/','/docs-cn/dev/how-to/migrate/from-mysql-aurora/','/docs-cn/dev/how-to/migrate/from-aurora/','/zh/tidb/dev/migrate-from-aurora-mysql-database/','/zh/tidb/dev/migrate-from-mysql-aurora','/zh/tidb/stable/migrate-from-aurora-using-lightning/']
 ---
 
 # 从 Amazon Aurora 迁移数据到 TiDB
@@ -19,7 +19,7 @@ aliases: ['/zh/tidb/dev/migrate-from-aurora-using-lightning/','/docs-cn/dev/migr
 
 ## 导入全量数据到 TiDB
 
-### 第 1 步： 导出 Aurora 快照文件到 Amazon S3
+### 第 1 步：导出 Aurora 快照文件到 Amazon S3
 
 1. 在 Aurora 上，执行以下命令，查询并记录当前 binlog 位置：
 
@@ -47,7 +47,7 @@ aliases: ['/zh/tidb/dev/migrate-from-aurora-using-lightning/','/docs-cn/dev/migr
 - 创建快照点时，Aurora binlog 的名称及位置。
 - 快照文件的 S3 路径，以及具有访问权限的 SecretKey 和 AccessKey。
 
-### 第 2 步： 导出 schema
+### 第 2 步：导出 schema
 
 因为 Aurora 生成的快照文件并不包含建表语句文件，所以你需要使用 Dumpling 自行导出 schema 并使用 Lightning 在下游创建 schema。你也可以跳过此步骤，并以手动方式在下游自行创建 schema。
 
@@ -56,7 +56,7 @@ aliases: ['/zh/tidb/dev/migrate-from-aurora-using-lightning/','/docs-cn/dev/migr
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup dumpling --host ${host} --port 3306 --user root --password ${password} --filter 'my_db1.table[12]' --no-data --output 's3://my-bucket/schema-backup?region=us-west-2' --filter "mydb.*"
+tiup dumpling --host ${host} --port 3306 --user root --password ${password} --filter 'my_db1.table[12]' --no-data --output 's3://my-bucket/schema-backup' --filter "mydb.*"
 ```
 
 命令中所用参数描述如下。如需更多信息可参考 [Dumpling overview](/dumpling-overview.md)。
@@ -76,9 +76,9 @@ tiup dumpling --host ${host} --port 3306 --user root --password ${password} --fi
 |-d 或 --no-data    |不导出数据，仅导出 schema|
 |-f 或 --filter     |导出能匹配模式的表，不可用 -T 一起使用，语法可参考[table filter](/table-filter.md)|
 
-### 第 3 步： 编写 Lightning 配置文件
+### 第 3 步：编写 Lightning 配置文件
 
-根据以下内容创建`tidb-lightning.toml` 配置文件：
+根据以下内容创建 `tidb-lightning.toml` 配置文件：
 
 {{< copyable "shell-regular" >}}
 
@@ -104,12 +104,12 @@ pd-addr = "${ip}:${port}"     # 集群 PD 的地址，lightning 通过 PD 获取
 # "tidb"：TB 级以下数据量也可以采用`tidb`后端模式，下游 TiDB 可正常提供服务。 关于后端模式更多信息请参阅：https://docs.pingcap.com/tidb/stable/tidb-lightning-backends
 backend = "local"
 
-# 设置排序的键值对的临时存放地址，目标路径需要是一个空目录，至少需要数据源最大单表的空间，建议与 `data-source-dir` 不同磁盘目录并使用闪存介质，独占 IO 会获得更好的导入性能。
+# 设置排序的键值对的临时存放地址，目标路径必须是一个空目录，目录空间须大于待导入数据集的大小，建议设为与 `data-source-dir` 不同的磁盘目录并使用闪存介质，独占 IO 会获得更好的导入性能。
 sorted-kv-dir = "${path}"
 
 [mydumper]
 # 快照文件的地址
-data-source-dir = "${s3_path}"  # eg: s3://my-bucket/sql-backup?region=us-west-2
+data-source-dir = "${s3_path}"  # eg: s3://my-bucket/sql-backup
 
 [[mydumper.files]]
 # 解析 parquet 文件所需的表达式
@@ -121,17 +121,17 @@ type = '$3'
 
 如果需要在 TiDB 开启 TLS ，请参考 [TiDB Lightning Configuration](/tidb-lightning/tidb-lightning-configuration.md)。
 
-### 第 4 步： 导入全量数据到 TiDB
+### 第 4 步：导入全量数据到 TiDB
 
 1. 使用 Lightning 在下游 TiDB 建表:
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    tiup tidb-lightning -config tidb-lightning.toml -d 's3://my-bucket/schema-backup?region=us-west-2' -no-schema=false
+    tiup tidb-lightning -config tidb-lightning.toml -d 's3://my-bucket/schema-backup'
     ```
 
-2. 运行 `tidb-lightning`。如果直接在命令行中启动程序，可能会因为 `SIGHUP` 信号而退出，建议配合`nohup`或`screen`等工具，如：
+2. 运行 `tidb-lightning`。如果直接在命令行中启动程序，可能会因为 `SIGHUP` 信号而退出，建议配合 `nohup` 或 `screen` 等工具，如：
 
     将有权限访问该 Amazon S3 后端存储的账号的 SecretKey 和 AccessKey 作为环境变量传入 Lightning 节点。同时还支持从 `~/.aws/credentials` 读取凭证文件。
 
@@ -140,16 +140,16 @@ type = '$3'
     ```shell
     export AWS_ACCESS_KEY_ID=${access_key}
     export AWS_SECRET_ACCESS_KEY=${secret_key}
-    nohup tiup tidb-lightning -config tidb-lightning.toml -no-schema=true > nohup.out 2>&1 &
+    nohup tiup tidb-lightning -config tidb-lightning.toml > nohup.out 2>&1 &
     ```
 
 3. 导入开始后，可以采用以下任意方式查看进度：
 
-   - 通过 `grep` 日志关键字 `progress` 查看进度，默认 5 分钟更新一次。
-   - 通过监控面板查看进度，请参考 [TiDB Lightning 监控](/tidb-lightning/monitor-tidb-lightning.md)。
-   - 通过 Web 页面查看进度，请参考 [Web 界面](/tidb-lightning/tidb-lightning-web-interface.md)。
+    - 通过 `grep` 日志关键字 `progress` 查看进度，默认 5 分钟更新一次。
+    - 通过监控面板查看进度，请参考 [TiDB Lightning 监控](/tidb-lightning/monitor-tidb-lightning.md)。
+    - 通过 Web 页面查看进度，请参考 [Web 界面](/tidb-lightning/tidb-lightning-web-interface.md)。
 
-4. 导入完毕后，TiDB Lightning 会自动退出。查看日志的最后 5 行中会有 `the whole procedure completed`，则表示导入成功。
+4. 导入完毕后，TiDB Lightning 会自动退出。查看 `tidb-lightning.log` 日志末尾是否有 `the whole procedure completed` 信息，如果有，表示导入成功。如果没有，则表示导入遇到了问题，可根据日志中的 error 提示解决遇到的问题。
 
 > **注意：**
 >
@@ -164,9 +164,9 @@ type = '$3'
 - [安装 DM 集群](/dm/deploy-a-dm-cluster-using-tiup.md)
 - [获取 DM 所需上下游数据库权限](/dm/dm-worker-intro.md)
 
-### 第 1 步： 创建数据源
+### 第 1 步：创建数据源
 
-1. 新建`source1.yaml`文件, 写入以下内容：
+1. 新建 `source1.yaml` 文件, 写入以下内容：
 
     {{< copyable "" >}}
 
@@ -194,12 +194,12 @@ type = '$3'
 
     该命令中的参数描述如下：
 
-    |参数           |描述|
-    |-              |-|
-    |`--master-addr`  |dmctl 要连接的集群的任意 DM-master 节点的 {advertise-addr}，例如：172.16.10.71:8261|
-    |`operate-source create`|向 DM 集群加载数据源|
+    | 参数           | 描述 |
+    | -              | - |
+    | `--master-addr` | dmctl 要连接的集群的任意 DM-master 节点的 `{advertise-addr}`，例如：172.16.10.71:8261 |
+    | `operate-source create` |向 DM 集群加载数据源 |
 
-### 第 2 步： 创建迁移任务
+### 第 2 步：创建迁移任务
 
 新建 `task1.yaml` 文件, 写入以下内容：
 
@@ -231,23 +231,22 @@ block-allow-list:                     # 如果 DM 版本早于 v2.0.0-beta.2 则
 mysql-instances:
   - source-id: "mysql-01"               # 数据源 ID，即 source1.yaml 中的 source-id
     block-allow-list: "listA"           # 引入上面黑白名单配置。
-#       syncer-config-name: "global"    # 引用上面的 syncers 增量数据配置。
-    meta:                               # task-mode 为 incremental 且下游数据库的 checkpoint 不存在时 binlog 迁移开始的位置; 如果 checkpoint 存在，则以 checkpoint 为准。
+#    syncer-config-name: "global"        # syncer 配置的名称
+    meta:                               # `task-mode` 为 `incremental` 且下游数据库的 `checkpoint` 不存在时 binlog 迁移开始的位置; 如果 checkpoint 存在，则以 `checkpoint` 为准。如果 `meta` 项和下游数据库的 `checkpoint` 都不存在，则从上游当前最新的 binlog 位置开始迁移。
       binlog-name: "mysql-bin.000004"   # “Step 1. 导出 Aurora 快照文件到 Amazon S3” 中记录的日志位置，当上游存在主从切换时，必须使用 gtid。
       binlog-pos: 109227
       # binlog-gtid: "09bec856-ba95-11ea-850a-58f2b4af5188:1-9"
 
-   # 【可选配置】 如果增量数据迁移需要重复迁移已经在全量数据迁移中完成迁移的数据，则需要开启 safe mode 避免增量数据迁移报错。
+# 【可选配置】 如果增量数据迁移需要重复迁移已经在全量数据迁移中完成迁移的数据，则需要开启 safe mode 避免增量数据迁移报错。
    ##  该场景多见于以下情况：全量迁移的数据不属于数据源的一个一致性快照，随后从一个早于全量迁移数据之前的位置开始同步增量数据。
    # syncers:            # sync 处理单元的运行配置参数。
    #  global:           # 配置名称。
    #    safe-mode: true # 设置为 true，会将来自数据源的 INSERT 改写为 REPLACE，将 UPDATE 改写为 DELETE 与 REPLACE，从而保证在表结构中存在主键或唯一索引的条件下迁移数据时可以重复导入 DML。在启动或恢复增量复制任务的前 1 分钟内 TiDB DM 会自动启动 safe mode。
-
 ```
 
 以上内容为执行迁移的最小任务配置。关于任务的更多配置项，可以参考 [DM 任务完整配置文件介绍](/dm/task-configuration-file-full.md)
 
-### 第 3 步： 启动任务
+### 第 3 步：启动任务
 
 在你启动数据迁移任务之前，建议使用 `check-task` 命令检查配置是否符合 DM 的配置要求，以降低后期报错的概率：
 
@@ -269,12 +268,12 @@ tiup dmctl --master-addr ${advertise-addr} start-task task.yaml
 
 |参数|描述|
 |-|-|
-|`--master-addr`|dmctl 要连接的集群的任意 DM-master 节点的 {advertise-addr}，例如： 172.16.10.71:8261|
+|`--master-addr`|dmctl 要连接的集群的任意 DM-master 节点的 `{advertise-addr}`，例如：172.16.10.71:8261|
 |`start-task`|命令用于创建数据迁移任务|
 
 如果任务启动失败，可根据返回结果的提示进行配置变更后，再次执行上述命令，重新启动任务。遇到问题请参考[故障及处理方法](/dm/dm-error-handling.md)以及[常见问题](/dm/dm-faq.md)。
 
-### 第 4 步： 查看任务状态
+### 第 4 步：查看任务状态
 
 如需了解 DM 集群中是否存在正在运行的迁移任务及任务状态等信息，可使用 `tiup dmctl` 执行 `query-status` 命令进行查询：
 
@@ -286,13 +285,13 @@ tiup dmctl --master-addr ${advertise-addr} query-status ${task-name}
 
 关于查询结果的详细解读，请参考[查询状态](/dm/dm-query-status.md)。
 
-### 第 5 步： 监控任务与查看日志
+### 第 5 步：监控任务与查看日志
 
 要查看迁移任务的历史状态以及更多的内部运行指标，可参考以下步骤。
 
 如果使用 TiUP 部署 DM 集群时，正确部署了 Prometheus、Alertmanager 与 Grafana，则使用部署时填写的 IP 及端口进入 Grafana，选择 DM 的 dashboard 查看 DM 相关监控项。
 
-DM 在运行过程中，DM-worker, DM-master 及 dmctl 都会通过日志输出相关信息。各组件的日志目录如下：
+DM 在运行过程中，DM-worker、DM-master 及 dmctl 都会通过日志输出相关信息。各组件的日志目录如下：
 
 - DM-master 日志目录：通过 DM-master 进程参数 `--log-file` 设置。如果使用 TiUP 部署 DM，则日志目录默认位于 `/dm-deploy/dm-master-8261/log/`。
 - DM-worker 日志目录：通过 DM-worker 进程参数 `--log-file` 设置。如果使用 TiUP 部署 DM，则日志目录默认位于 `/dm-deploy/dm-worker-8262/log/`。

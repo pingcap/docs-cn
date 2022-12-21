@@ -18,7 +18,7 @@ aliases: ['/docs-cn/dev/sync-diff-inspector/sync-diff-inspector-overview/','/doc
 
 你可通过以下方式下载 sync-diff-inspector：
 
-+ Binary 包。点击 [tidb-enterprise-tools-nightly-linux-amd64](https://download.pingcap.org/tidb-enterprise-tools-nightly-linux-amd64.tar.gz) 进行下载。
++ Binary 包。sync-diff-inspector 的安装包位于 TiDB 离线工具包中。下载方式，请参考 [TiDB 工具下载](/download-ecosystem-tools.md)。
 + Docker 镜像。执行以下命令进行下载：
 
     {{< copyable "shell-regular" >}}
@@ -30,8 +30,6 @@ aliases: ['/docs-cn/dev/sync-diff-inspector/sync-diff-inspector-overview/','/doc
 ## sync-diff-inspector 的使用限制
 
 * 对于 MySQL 和 TiDB 之间的数据同步不支持在线校验，需要保证上下游校验的表中没有数据写入，或者保证某个范围内的数据不再变更，通过配置 `range` 来校验这个范围内的数据。
-
-* 不支持 JSON、BIT、BINARY、BLOB 等类型的数据，在校验时需要设置 `ignore-columns` 忽略检查这些类型的数据。
 
 * FLOAT、DOUBLE 等浮点数类型在 TiDB 和 MySQL 中的实现方式不同，在计算 checksum 时会分别取 6 位和 15 位有效数字。如果不使用该特性，需要设置 `ignore-columns` 忽略这些列的检查。
 
@@ -92,7 +90,7 @@ check-struct-only = false
     host = "127.0.0.1"
     port = 3306
     user = "root"
-    password = ""
+    password = "" # 设置连接上游数据库的密码，可为明文或 Base64 编码。
 
     #（可选）使用映射规则来匹配上游多个分表，其中 rule1 和 rule2 在下面 Routes 配置栏中定义
     route-rules = ["rule1", "rule2"]
@@ -101,9 +99,17 @@ check-struct-only = false
     host = "127.0.0.1"
     port = 4000
     user = "root"
-    password = ""
+    password = "" # 设置连接下游数据库的密码，可为明文或 Base64 编码。
+
+    #（可选）使用 TLS 连接 TiDB
+    # security.ca-path = ".../ca.crt"
+    # security.cert-path = ".../cert.crt"
+    # security.key-path = ".../key.crt"
+
     #（可选）使用 TiDB 的 snapshot 功能，如果开启的话会使用历史数据进行对比
     # snapshot = "386902609362944000"
+    # 当 snapshot 设置为 "auto" 时，使用 TiCDC 在上下游的同步时间点，具体参考 <https://github.com/pingcap/tidb-tools/issues/663>
+    # snapshot = "auto"
 
 ########################### Routes ###########################
 # 如果需要对比大量的不同库名或者表名的表的数据，或者用于校验上游多个分表与下游总表的数据，可以通过 table-rule 来设置映射关系
@@ -170,7 +176,7 @@ collation = ""
 {{< copyable "shell-regular" >}}
 
 ```bash
-./bin/sync_diff_inspector --config=./config.toml
+./sync_diff_inspector --config=./config.toml
 ```
 
 该命令最终会在 `config.toml` 中的 `output-dir` 输出目录输出本次比对的检查报告 `summary.txt` 和日志 `sync_diff.log`。在输出目录下还会生成由 `config.toml` 文件内容哈希值命名的文件夹，该文件夹下包括断点续传 checkpoint 结点信息以及数据存在不一致时生成的 SQL 修复数据。
@@ -245,12 +251,12 @@ sync-diff-inspector 会在运行时定期（间隔 10s）输出校验进度到ch
 当校验结束时，sync-diff-inspector 会输出一份校验报告，位于 `${output}/summary.txt` 中，其中 `${output}` 是 `config.toml` 文件中 `output-dir` 的值。
 
 ```summary
-+---------------------+--------------------+----------------+
-|        TABLE        | STRUCTURE EQUALITY | DATA DIFF ROWS |
-+---------------------+--------------------+----------------+
-| `sbtest`.`sbtest99` | true               | +97/-97        |
-| `sbtest`.`sbtest96` | true               | +0/-101        |
-+---------------------+--------------------+----------------+
++---------------------+--------------------+----------------+---------+-----------+
+|        TABLE        | STRUCTURE EQUALITY | DATA DIFF ROWS | UPCOUNT | DOWNCOUNT |
++---------------------+--------------------+----------------+---------+-----------+
+| `sbtest`.`sbtest99` | true               | +97/-97        |  999999 |    999999 |
+| `sbtest`.`sbtest96` | true               | +0/-101        |  999999 |   1000100 |
++---------------------+--------------------+----------------+---------+-----------+
 Time Cost: 16.75370462s
 Average Speed: 113.277149MB/s
 ```

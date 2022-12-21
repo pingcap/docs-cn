@@ -1,10 +1,10 @@
 ---
-title: DM 数据迁移任务配置向导
+title: TiDB Data Migration 数据迁移任务配置向导
 ---
 
-# 数据迁移任务配置向导
+# TiDB Data Migration 数据迁移任务配置向导
 
-本文档介绍如何配置 Data Migration (DM) 的数据迁移任务。
+本文档介绍如何配置 TiDB Data Migration (DM) 的数据迁移任务。
 
 ## 配置需要迁移的数据源
 
@@ -55,7 +55,7 @@ target-database:       # 目标 TiDB 配置
 
 如果不需要过滤或迁移特定表，可以跳过该项配置。
 
-配置从数据源迁移表的黑白名单，则需要添加两个定义，详细配置规则参考 [Block & Allow Lists](/dm/dm-key-features.md#block--allow-table-lists)：
+配置从数据源迁移表的黑白名单，则需要添加两个定义，详细配置规则参考 [Block & Allow Lists](/dm/dm-block-allow-table-lists.md)：
 
 1. 定义全局的黑白名单规则
 
@@ -89,7 +89,7 @@ target-database:       # 目标 TiDB 配置
 
 如果不需要过滤特定库或者特定表的特定操作，可以跳过该项配置。
 
-配置过滤特定操作，则需要添加两个定义，详细配置规则参考 [Binlog Event Filter](/dm/dm-key-features.md#binlog-event-filter)：
+配置过滤特定操作，则需要添加两个定义，详细配置规则参考 [Binlog Event Filter](/dm/dm-binlog-event-filter.md)：
 
 1. 定义全局的数据源操作过滤规则
 
@@ -122,7 +122,7 @@ target-database:       # 目标 TiDB 配置
 
 如果不需要将数据源表路由到不同名的目标 TiDB 表，可以跳过该项配置。分库分表合并迁移的场景必须配置该规则。
 
-配置数据源表迁移到目标 TiDB 表的路由规则，则需要添加两个定义，详细配置规则参考 [Table Routing](/dm/dm-key-features.md#table-routing)：
+配置数据源表迁移到目标 TiDB 表的路由规则，则需要添加两个定义，详细配置规则参考 [Table Routing](/dm/dm-table-routing.md)：
 
 1. 定义全局的路由规则
 
@@ -167,7 +167,7 @@ shard-mode: "pessimistic"       # 默认值为 "" 即无需协调。如果为分
 
 ## 其他配置
 
-下面是本数据迁移任务配置向导的完整示例。完整的任务配置参见 [DM 任务完整配置文件介绍](/dm/task-configuration-file-full.md)，其他各配置项的功能和配置也可参阅[数据迁移功能](/dm/dm-key-features.md)。
+下面是本数据迁移任务配置向导的完整示例。完整的任务配置参见 [DM 任务完整配置文件介绍](/dm/task-configuration-file-full.md)。
 
 ```yaml
 ---
@@ -176,6 +176,7 @@ shard-mode: "pessimistic"       # 默认值为 "" 即无需协调。如果为分
 name: test                      # 任务名称，需要全局唯一
 shard-mode: "pessimistic"       # 默认值为 "" 即无需协调。如果为分库分表合并任务，请设置为悲观协调模式 "pessimistic"。在深入了解乐观协调模式的原理和使用限制后，也可以设置为乐观协调模式 "optimistic"
 task-mode: all                  # 任务模式，可设为 "full" - "只进行全量数据迁移"、"incremental" - "Binlog 实时同步"、"all" - "全量 + Binlog 迁移"
+# timezone: "UTC"               # 指定数据迁移任务时 SQL Session 使用的时区。DM 默认使用目标库的全局时区配置进行数据迁移，并且自动确保同步数据的正确性。使用自定义时区依然可以确保整个流程的正确性，但一般不需要手动指定。
 
 ## ******** 数据源配置 **********
 mysql-instances:

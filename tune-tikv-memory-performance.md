@@ -5,7 +5,7 @@ aliases: ['/docs-cn/dev/tune-tikv-memory-performance/','/docs-cn/dev/reference/p
 
 # TiKV 内存参数性能调优
 
-本文档用于描述如何根据机器配置情况来调整 TiKV 的参数，使 TiKV 的性能达到最优。
+本文档用于描述如何根据机器配置情况来调整 TiKV 的参数，使 TiKV 的性能达到最优。你可以在 [etc/config-template.toml](https://github.com/tikv/tikv/blob/master/etc/config-template.toml) 找到配置文件模版，参考[使用 TiUP 修改配置参数](/maintain-tidb-using-tiup.md#修改配置参数)进行操作，部分配置项可以通过[在线修改 TiKV 配置](/dynamic-config.md#在线修改-tikv-配置)方式在线更新。具体配置项的含义可参考 [TiKV 配置文件描述](/tikv-configuration-file.md)。
 
 TiKV 最底层使用的是 RocksDB 做为持久化存储，所以 TiKV 的很多性能相关的参数都是与 RocksDB 相关的。TiKV 使用了两个 RocksDB 实例，默认 RocksDB 实例存储 KV 数据，Raft RocksDB 实例（简称 RaftDB）存储 Raft 数据。
 
@@ -101,12 +101,16 @@ job = "tikv"
 # 如果机器上有多块磁盘，可以将 Raft RocksDB 的数据放在不同的盘上，提高 TiKV 的性能。
 # raftdb-path = "/tmp/tikv/store/raft"
 
-region-max-size = "384MB"
-# Region 分裂阈值
-region-split-size = "256MB"
 # 当 Region 写入的数据量超过该阈值的时候，TiKV 会检查该 Region 是否需要分裂。为了减少检查过程
-# 中扫描数据的成本，数据过程中可以将该值设置为32MB，正常运行状态下使用默认值即可。
+# 中扫描数据的成本，导入数据过程中可以将该值设置为 32 MB，正常运行状态下使用默认值即可。
 region-split-check-diff = "32MB"
+
+[coprocessor]
+
+## 当区间为 [a,e) 的 Region 的大小超过 `region_max_size`，TiKV 会尝试分裂该 Region，例如分裂成 [a,b)、[b,c)、[c,d)、[d,e) 等区间的 Region 后
+## 这些 Region [a,b), [b,c), [c,d) 的大小为 `region_split_size` (或者稍大于 `region_split_size`）
+# region-max-size = "144MB"
+# region-split-size = "96MB"
 
 [rocksdb]
 # RocksDB 进行后台任务的最大线程数，后台任务包括 compaction 和 flush。具体 RocksDB 为什么需要进行 compaction，

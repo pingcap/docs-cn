@@ -19,7 +19,7 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 8001
 
-    请求使用的内存超过 TiDB 内存使用的阈值限制。出现这种错误，可以通过调整 `mem-quota-query` 来增大单个 SQL 使用的内存上限。
+    请求使用的内存超过 TiDB 内存使用的阈值限制。出现这种错误，可以通过调整系统变量 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 来增大单个 SQL 使用的内存上限。
 
 * Error Number: 8002
 
@@ -27,7 +27,7 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 8003
 
-    `ADMIN CHECK TABLE` 命令在遇到行数据跟索引不一致的时候返回该错误，在检查表中数据是否有损坏时常出现。出现该错误时，请向 PingCAP 工程师或通过官方论坛寻求帮助。
+    [`ADMIN CHECK TABLE`](/sql-statements/sql-statement-admin-check-table-index.md) 命令在遇到行数据跟索引不一致的时候返回该错误，在检查表中数据是否有损坏时常出现。出现该错误时，请向 PingCAP 工程师或通过官方论坛寻求帮助。
 
 * Error Number: 8004
 
@@ -35,7 +35,9 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 8005
 
-    事务在 TiDB 中遇到了写入冲突，原因及解决方法请参考[这里](/faq/tidb-faq.md#三故障排除)
+    完整的报错信息为 `ERROR 8005 (HY000) : Write Conflict, txnStartTS is stale`。
+
+    事务在 TiDB 中遇到了写入冲突。请检查业务逻辑，重试写入操作。
 
 * Error Number: 8018
 
@@ -79,7 +81,9 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 8028
 
-    TiDB 没有表锁（在 MySQL 中称为元数据锁，在其他数据库中可能称为意向锁）。当事务执行时，TiDB 表结构发生了变化是无法被事务感知到的。因此，TiDB 在事务提交时，会对事务涉及表的结构进行检查。如果事务执行中表结构发生了变化，则事务将提交失败，并返回该错误。遇到该错误，应用程序可以安全地重新执行整个事务。
+    TiDB v6.3.0 引入了[元数据锁](/metadata-lock.md)特性。在关闭元数据锁的情况下，当事务执行时，事务无法感知到 TiDB 的表结构发生了变化。因此，TiDB 在事务提交时，会对事务涉及表的结构进行检查。如果事务执行中表结构发生了变化，则事务将提交失败，并返回该错误。遇到该错误，应用程序可以安全地重新执行整个事务。
+
+    在打开元数据锁的情况下，非 RC 隔离级别中，如果从事务开始到初次访问一个表之间，该表进行了有损的列类型变更操作（例如 `INT` 类型变成 `CHAR` 类型是有损的，`TINYINT` 类型变成 `INT` 类型这种不需要重写数据的则是无损的），则访问该表的语句报错，事务不会自动回滚。用户可以继续执行其他语句，并决定是否回滚或者提交事务。
 
 * Error Number: 8029
 
@@ -257,6 +261,38 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
     TiDB 尚不支持键长度 >= 65536 的 JSON 对象。
 
+* Error Number: 8130
+
+    完整的报错信息为 `ERROR 8130 (HY000): client has multi-statement capability disabled`。
+
+    从早期版本的 TiDB 升级后，可能会出现该问题。为了减少 SQL 注入攻击的影响，TiDB 目前默认不允许在同一 `COM_QUERY` 调用中执行多个查询。
+
+    可通过系统变量 [`tidb_multi_statement_mode`](/system-variables.md#tidb_multi_statement_mode-从-v4011-版本开始引入) 控制是否在同一 `COM_QUERY` 调用中执行多个查询。
+
+* Error Number: 8138
+
+    事务试图写入的行值有误，请参考[数据索引不一致报错](/troubleshoot-data-inconsistency-errors.md#error-8138)。
+
+* Error Number: 8139
+
+    事务试图写入的行和索引的 handle 值不一致，请参考[数据索引不一致报错](/troubleshoot-data-inconsistency-errors.md#error-8139)。
+
+* Error Number: 8140
+
+    事务试图写入的行和索引的值不一致，请参考[数据索引不一致报错](/troubleshoot-data-inconsistency-errors.md#error-8140)。
+
+* Error Number: 8141
+
+    事务写入时，对 key 的存在性断言报错，请参考[数据索引不一致报错](/troubleshoot-data-inconsistency-errors.md#error-8141)。
+
+* Error Number: 8143
+
+    非事务 DML 语句的一个 batch 报错，语句中止，请参考[非事务 DML 语句](/non-transactional-dml.md)
+
+* Error Number: 8147
+
+   当 [`tidb_constraint_check_in_place_pessimistic`](/system-variables.md#tidb_constraint_check_in_place_pessimistic-从-v630-版本开始引入) 设置为 `OFF` 时，为保证事务的正确性，SQL 语句执行时产生的任何错误都可能导致 TiDB 返回 `8147` 报错并中止当前事务。具体的错误原因，请参考对应的报错信息。详见[约束](/constraints.md#悲观事务)。
+
 * Error Number: 8200
 
     尚不支持的 DDL 语法。请参考[与 MySQL DDL 的兼容性](/mysql-compatibility.md#ddl-的限制)。
@@ -307,31 +343,51 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 9001
 
+    完整的报错信息为 `ERROR 9001 (HY000) : PD Server Timeout`。
+
     请求 PD 超时，请检查 PD Server 状态/监控/日志以及 TiDB Server 与 PD Server 之间的网络。
 
 * Error Number: 9002
+
+    完整的报错信息为 `ERROR 9002 (HY000) : TiKV Server Timeout`。
 
     请求 TiKV 超时，请检查 TiKV Server 状态/监控/日志以及 TiDB Server 与 TiKV Server 之间的网络。
 
 * Error Number: 9003
 
+    完整的报错信息为 `ERROR 9003 (HY000) : TiKV Server is Busy`。
+
     TiKV 操作繁忙，一般出现在数据库负载比较高时，请检查 TiKV Server 状态/监控/日志。
 
 * Error Number: 9004
 
-    当数据库上承载的业务存在大量的事务冲突时，会遇到这种错误，请检查业务代码。
+    完整的报错信息为 `ERROR 9004 (HY000) : Resolve Lock Timeout`。
+
+    清理锁超时，当数据库上承载的业务存在大量的事务冲突时，会遇到这种错误，请检查业务代码是否有锁争用。
 
 * Error Number: 9005
 
-    某个 Raft Group 不可用，如副本数目不足，出现在 TiKV 比较繁忙或者是 TiKV 节点停机的时候，请检查 TiKV Server 状态/监控/日志。
+    完整的报错信息为 `ERROR 9005 (HY000) : Region is unavailable`。
+
+    访问的 Region 不可用，某个 Raft Group 不可用，如副本数目不足，出现在 TiKV 比较繁忙或者是 TiKV 节点停机的时候，请检查 TiKV Server 状态/监控/日志。
 
 * Error Number: 9006
 
-    GC Life Time 间隔时间过短，长事务本应读到的数据可能被清理了，应增加 GC Life Time。
+    完整的报错信息为 `ERROR 9006 (HY000) : GC life time is shorter than transaction duration`。
+
+    GC Life Time 间隔时间过短，长事务本应读到的数据可能被清理了。你可以使用如下命令修改 [`tidb_gc_life_time`](/system-variables.md#tidb_gc_life_time-从-v50-版本开始引入) 的值：
+
+    ```sql
+    SET GLOBAL tidb_gc_life_time = '30m';
+    ```
+
+    其中 30m 代表仅清理 30 分钟前的数据，这可能会额外占用一定的存储空间。
 
 * Error Number: 9007
 
-    事务在 TiKV 中遇到了写入冲突，原因及解决方法请参考[这里](/faq/tidb-faq.md#三故障排除)。
+    报错信息以 `ERROR 9007 (HY000) : Write conflict` 开头。
+
+    如果报错信息中含有 "reason=LazyUniquenessCheck"，说明是悲观事务并且设置了 `@@tidb_constraint_check_in_place_pessimistic=OFF`，业务中存在唯一索引上的写冲突，此时悲观事务不能保证执行成功。可以在应用测重试事务，或将该变量设置成 `ON` 绕过。详见[约束](/constraints.md#悲观事务)。
 
 * Error Number: 9008
 
@@ -349,6 +405,40 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
     TiFlash 操作繁忙。该错误一般出现在数据库负载比较高时。请检查 TiFlash Server 的状态/监控/日志。
 
+### MySQL 原生报错汇总
+
+* Error Number: 2013 (HY000)
+
+    完整的报错信息为 `ERROR 2013 (HY000): Lost connection to MySQL server during query`。
+
+    排查方法如下：
+
+    - log 中是否有 panic
+    - dmesg 中是否有 oom，命令：`dmesg -T | grep -i oom`
+    - 长时间没有访问，也会收到这个报错，一般是 tcp 超时导致的，tcp 长时间不用，会被操作系统 kill。
+
+* Error Number: 1105 (HY000)
+
+    完整的报错信息为 `ERROR 1105 (HY000): other error: unknown error Wire Error(InvalidEnumValue(4004))`
+
+    这类问题一般是 TiDB 和 TiKV 版本不匹配，在升级过程尽量一起升级，避免版本 mismatch。
+
+* Error Number: 1148 (42000)
+
+    完整的报错信息为 `ERROR 1148 (42000): the used command is not allowed with this TiDB version`。
+
+    这个问题是因为在执行 `LOAD DATA LOCAL` 语句的时候，MySQL 客户端不允许执行此语句（即 `local_infile` 选项为 0）。解决方法是在启动 MySQL 客户端时，用 `--local-infile=1` 选项。具体启动指令类似：`mysql --local-infile=1 -u root -h 127.0.0.1 -P 4000`。有些 MySQL 客户端需要设置而有些不需要设置，原因是不同版本的 MySQL 客户端对 `local-infile` 的默认值不同。
+
+* Error Number: 9001 (HY000)
+
+    完整的报错信息为 `ERROR 9001 (HY000): PD server timeout start timestamp may fall behind safe point`
+
+    这个报错一般是 TiDB 访问 PD 出了问题，TiDB 后台有个 worker 会不断地从 PD 查询 safepoint，如果超过 100s 查不成功就会报这个错。一般是因为 PD 磁盘操作过忙、反应过慢，或者 TiDB 和 PD 之间的网络有问题。TiDB 常见错误码请参考[错误码与故障诊断](/error-codes.md)。
+
+* TiDB 日志中的报错信息：EOF
+
+    当客户端或者 proxy 断开连接时，TiDB 不会立刻察觉连接已断开，而是等到开始往连接返回数据时，才发现连接已断开，此时日志会打印 EOF 错误。
+
 ## 故障诊断
 
-参见[故障诊断文档](/troubleshoot-tidb-cluster.md)以及 [FAQ](/faq/tidb-faq.md)。
+参见[故障诊断文档](/troubleshoot-tidb-cluster.md)。

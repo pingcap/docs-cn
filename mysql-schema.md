@@ -16,6 +16,7 @@ aliases: ['/docs-cn/dev/system-tables/system-table-overview/','/docs-cn/dev/refe
 * `db` 数据库级别的权限
 * `tables_priv` 表级的权限
 * `columns_priv` 列级的权限
+* `password_history` 记录密码更改历史
 
 ## 服务端帮助信息系统表
 
@@ -26,10 +27,15 @@ aliases: ['/docs-cn/dev/system-tables/system-table-overview/','/docs-cn/dev/refe
 * `stats_buckets` 统计信息的桶
 * `stats_histograms` 统计信息的直方图
 * `stats_meta` 表的元信息，比如总行数和修改数
+* `analyze_jobs` 正在执行的统计信息收集任务以及过去 7 天内的历史任务记录
 
 ## GC Worker 相关系统表
 
 * `gc_delete_range`
+
+## 缓存表使用的系统表
+
+* `table_cache_meta` 存储了缓存表的元信息
 
 ## 其它系统表
 

@@ -10,7 +10,9 @@ aliases: ['/docs-cn/dev/information-schema/information-schema-processlist/']
 
 `PROCESSLIST` 表比 `SHOW PROCESSLIST` 的结果多出下面几列：
 
-* `MEM` 列：`MEM` 显示正在处理的请求已使用的内存，单位是 byte。
+* `DIGEST` 列：显示 SQL 语句的 digest。
+* `MEM` 列：显示正在处理的请求已使用的内存，单位是 byte。
+* `DISK` 列：显示磁盘空间使用情况，单位是 byte。
 * `TxnStart`列：显示事务的开始时间
 
 {{< copyable "sql" >}}
@@ -31,11 +33,13 @@ DESC processlist;
 | COMMAND  | varchar(16)         | NO   |      |         |       |
 | TIME     | int(7)              | NO   |      | 0       |       |
 | STATE    | varchar(7)          | YES  |      | NULL    |       |
-| INFO     | binary(512)         | YES  |      | NULL    |       |
+| INFO     | longtext            | YES  |      | NULL    |       |
+| DIGEST   | varchar(64)         | YES  |      |         |       |
 | MEM      | bigint(21) unsigned | YES  |      | NULL    |       |
+| DISK     | bigint(21) unsigned | YES  |      | NULL    |       |
 | TxnStart | varchar(64)         | NO   |      |         |       |
 +----------+---------------------+------+------+---------+-------+
-10 rows in set (0.00 sec)
+12 rows in set (0.00 sec)
 ```
 
 {{< copyable "sql" >}}
@@ -55,21 +59,23 @@ SELECT * FROM processlist\G
    STATE: autocommit
     INFO: SELECT * FROM processlist
      MEM: 0
-TxnStart: 
+TxnStart:
 1 row in set (0.00 sec)
 ```
 
 `PROCESSLIST` 表各列的含义如下：
 
-* ID：客户连接 ID。
-* USER：执行当前 PROCESS 的用户名。
-* HOST：客户连接的地址。
-* DB：当前连接的默认数据库名。
-* COMMAND：当前 PROCESS 执行的命令类型。
-* TIME：当前 PROCESS 的已经执行的时间，单位是秒。
-* STATE：当前连接的状态。
-* INFO：正在处理的请求语句。
-* MEM：正在处理的请求已使用的内存，单位是 byte。
+* `ID` 列：客户连接 ID。
+* `USER` 列：执行当前 PROCESS 的用户名。
+* `HOST` 列：客户连接的地址。
+* `DB` 列：当前连接的默认数据库名。
+* `COMMAND` 列：当前 PROCESS 执行的命令类型。
+* `TIME` 列：当前 PROCESS 的已经执行的时间，单位是秒。
+* `STATE` 列：当前连接的状态。
+* `INFO` 列：正在处理的请求语句。
+* `DIGEST` 列：SQL 语句的 digest。
+* `MEM` 列：正在处理的请求已使用的内存，单位是 byte。
+* `DISK` 列：磁盘空间使用情况，单位是 byte。
 * `TxnStart`列：显示事务的开始时间
 
 ## CLUSTER_PROCESSLIST

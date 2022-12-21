@@ -65,7 +65,7 @@ CREATE TABLE t (a BIGINT, b VARCHAR(255), PRIMARY KEY(a, b) /*T![clustered_index
 - `ON` 表示所有主键默认使用聚簇索引。
 - `INT_ONLY` 此时的行为受配置项 `alter-primary-key` 控制。如果该配置项取值为 `true`，则所有主键默认使用非聚簇索引；如果该配置项取值为 `false`，则由单个整数类型的列构成的主键默认使用聚簇索引，其他类型的主键默认使用非聚簇索引。
 
-系统变量 `@@global.tidb_enable_clustered_index` 本身的默认值为 `INT_ONLY`。
+系统变量 `@@global.tidb_enable_clustered_index` 本身的默认值为 `ON`。
 
 ### 添加、删除聚簇索引
 
@@ -180,9 +180,9 @@ TiDB v5.0 完成了所有类型主键的支持，但默认行为与 TiDB v3.0 �
 
 TiDB 支持使用可执行注释的语法来包裹 `CLUSTERED` 或 `NONCLUSTERED` 关键字，且 `SHOW CREATE TABLE` 的结果均包含 TiDB 特有的可执行注释，这些注释在 MySQL 或低版本的 TiDB 中会被忽略。
 
-### TiDB 生态工具兼容性
+### TiDB 数据迁移工具兼容性
 
-聚簇索引仅与 v5.0 及以后版本的以下生态工具兼容：
+聚簇索引仅与 v5.0 及以后版本的以下数据迁移工具兼容：
 
 - 备份与恢复工具 BR、Dumpling、TiDB Lightning。
 - 数据迁移和同步工具 DM、TiCDC。

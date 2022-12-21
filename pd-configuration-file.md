@@ -92,6 +92,14 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 + 强制让该 PD 以一个新集群启动，且修改 raft 成员数为 1。
 + 默认值：false
 
+### `tso-update-physical-interval`
+
++ TSO 物理时钟更新周期。
++ 在默认的一个 TSO 物理时钟更新周期内 (50ms)，PD 最多提供 262144 个 TSO。如果需要更多的 TSO，可以将这个参数调小。最小值为 `1ms`。
++ 缩短这个参数会增加 PD 的 CPU 消耗。根据测试，相比 `50ms` 更新周期，更新周期为 `1ms` 时，PD 的 CPU 占用率 ([CPU usage](https://man7.org/linux/man-pages/man1/top.1.html)) 将增加约 10%。
++ 默认值：50ms
++ 最小值：1ms
+
 ## security
 
 安全相关配置项。
@@ -152,11 +160,13 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 ### `max-days`
 
 + 日志保留的最长天数。
++ 如果未设置本参数或把本参数设置为默认值 `0`，PD 不清理日志文件。
 + 默认：0
 
 ### `max-backups`
 
 + 日志文件保留的最大个数。
++ 如果未设置本参数或把本参数设置为默认值 `0`，PD 会保留所有的日志文件。
 + 默认：0
 
 ## metric
@@ -176,6 +186,7 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 
 + 控制 Region Merge 的 size 上限，当 Region Size 大于指定值时 PD 不会将其与相邻的 Region 合并。
 + 默认：20
++ 单位：MiB
 
 ### `max-merge-region-keys`
 
@@ -206,6 +217,11 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 
 + PD 认为失联 store 无法恢复的时间，当超过指定的时间没有收到 store 的心跳后，PD 会在其他节点补充副本。
 + 默认值：30m
+
+### `max-store-preparing-time` <span class="version-mark">从 v6.1.0 版本开始引入</span>
+
++ 控制 store 上线阶段的最长等待时间。在 store 的上线阶段，PD 可以查询该 store 的上线进度。当超过该配置项指定的时间后，PD 会认为该 store 已完成上线，无法再次查询这个 store 的上线进度，但是不影响 Region 向这个新上线 store 的迁移。通常用户无需修改该配置项。
++ 默认值：48h
 
 ### `leader-schedule-limit`
 
@@ -277,12 +293,17 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 + 是否使用 Joint Consensus 进行副本调度。关闭该特性时，PD 将采用一次调度一个副本的方式进行调度。
 + 默认值：true
 
+### `enable-diagnostic` <span class="version-mark">从 v6.3.0 版本开始引入</span>
+
++ 是否开启诊断功能。开启特性时，PD 将会记录调度中的一些状态来帮助诊断。开启时会略微影响调度速度，在 Store 数量较多时会消耗较大内存。
++ 默认值：false
+
 ### `hot-regions-write-interval` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 
 * 设置 PD 存储 Hot Region 信息时间间隔。
 * 默认值：10m
 
-> 注意：
+> **注意：**
 >
 > Hot Region 的信息一般 3 分钟更新一次。如果设置时间间隔小于 3 分钟，中间部分的更新可能没有意义。
 
@@ -320,9 +341,8 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 ### `enable-placement-rules`
 
 + 打开 `placement-rules`
-+ 默认值：false
-+ 参考[Placement Rules 使用文档](/configure-placement-rules.md)
-+ 4.0 实验性特性
++ 默认值：true
++ 参考 [Placement Rules 使用文档](/configure-placement-rules.md)
 
 ### `flow-round-by-digit` <span class="version-mark">从 v5.1 版本开始引入</span>
 

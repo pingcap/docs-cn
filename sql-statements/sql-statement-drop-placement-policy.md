@@ -5,10 +5,6 @@ summary: TiDB 数据库中 ALTER PLACEMENT POLICY 的使用概况。
 
 # DROP PLACEMENT POLICY
 
-> **警告：**
->
-> Placement Rules in SQL 是 TiDB 在 v5.3.0 中引入的实验特性，其语法在 GA 前可能会发生变化，还可能存在 bug。如果你知晓潜在的风险，可通过执行 `SET GLOBAL tidb_enable_alter_placement = 1;` 来开启该实验特性。
-
 `DROP PLACEMENT POLICY` 用于删除已创建的放置策略。
 
 ## 语法图
@@ -23,20 +19,20 @@ PolicyName ::=
 
 ## 示例
 
-删除放置策略时，确保该策略未被任何表或分区引用，否则会删除失败。
+删除放置规则时，确保该策略未被任何表或分区引用，否则会删除失败。
 
 {{< copyable "sql" >}}
 
 ```sql
 CREATE PLACEMENT POLICY p1 FOLLOWERS=4;
 CREATE TABLE t1 (a INT PRIMARY KEY) PLACEMENT POLICY=p1;
-DROP PLACEMENT POLICY p1;  -- 该语句执行失败，因为放置策略 p1 被引用。
+DROP PLACEMENT POLICY p1;  -- 该语句执行失败，因为放置规则 p1 被引用。
 
--- 查看引用放置策略的表和分区。
+-- 查看引用放置规则的表和分区。
 SELECT table_schema, table_name FROM information_schema.tables WHERE tidb_placement_policy_name='p1';
 SELECT table_schema, table_name FROM information_schema.partitions WHERE tidb_placement_policy_name='p1';
 
-ALTER TABLE t1 PLACEMENT POLICY=default;  -- 移除表 t1 上的默认放置策略。
+ALTER TABLE t1 PLACEMENT POLICY=default;  -- 移除表 t1 上的默认放置规则。
 DROP PLACEMENT POLICY p1;  -- 执行成功。
 ```
 

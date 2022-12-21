@@ -48,6 +48,8 @@ Value: null
 
 同时，TiDB 中 RowID 默认也按照自增的方式顺序递增，主键不为整数类型时，同样会遇到写入热点的问题。
 
+此外，当写入或读取数据存在热点时，即出现新建表或分区的写入热点问题和只读场景下周期性读热点问题时，你可以使用表属性控制 Region 合并。具体的热点场景描述和解决方法可以查看[使用表属性控制 Region 合并的使用场景](/table-attributes.md#使用场景)。
+
 ### 索引热点
 
 索引热点与表热点类似，常见的热点场景出现在时间顺序单调递增的字段，或者插入大量重复值的场景。
@@ -56,7 +58,7 @@ Value: null
 
 性能问题不一定是热点造成的，也可能存在多个因素共同影响，在排查前需要先确认是否与热点相关。
 
-- 判断写热点依据：打开监控面板 TiKV-Trouble-Shooting 中 Hot Write 面板（如下图所示），观察 Raftstore CPU 监控是否存在个别 TiKV 节点的指标明显高于其他节点的现象。
+- 判断写热点依据：打开监控面板 TiKV-Trouble-Shooting 中 Hot Write 面板，观察 Raftstore CPU 监控是否存在个别 TiKV 节点的指标明显高于其他节点的现象。
 
 - 判断读热点依据：打开监控面板 TIKV-Details 中 Thread_CPU，查看 coprocessor cpu 有没有明显的某个 TiKV 特别高。
 
@@ -82,11 +84,11 @@ Value: null
 
 对于主键非整数或没有主键的表或者是联合主键，TiDB 会使用一个隐式的自增 RowID，大量 INSERT 时会把数据集中写入单个 Region，造成写入热点。
 
-通过设置 SHARD_ROW_ID_BITS，可以把 RowID 打散写入多个不同的 Region，缓解写入热点问题。但是设置的过大会造成 RPC 请求数放大，增加 CPU 和网络开销。
+通过设置 `SHARD_ROW_ID_BITS`，可以把 RowID 打散写入多个不同的 Region，缓解写入热点问题。
 
 ```
-SHARD_ROW_ID_BITS = 4 表示 16 个分片\
-SHARD_ROW_ID_BITS = 6 表示 64 个分片\
+SHARD_ROW_ID_BITS = 4 表示 16 个分片
+SHARD_ROW_ID_BITS = 6 表示 64 个分片
 SHARD_ROW_ID_BITS = 0 表示默认值 1 个分片
 ```
 

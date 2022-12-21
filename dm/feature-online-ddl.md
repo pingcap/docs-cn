@@ -23,8 +23,8 @@ gh-ost 在实现 online-schema-change 的过程会产生 3 种 table：
 
 DM 在迁移过程中会把上述 table 分成 3 类：
 
-- ghostTable : `\_\*\_gho`
-- trashTable : `\_\*\_ghc`、`\_\*\_del`
+- ghostTable : `_*_gho`
+- trashTable : `_*_ghc`、`_*_del`
 - realTable : 执行 online-ddl 的 origin table
 
 **gh-ost** 涉及的主要 SQL 以及 DM 的处理：
@@ -50,7 +50,7 @@ DM 在迁移过程中会把上述 table 分成 3 类：
     Create /* gh-ost */ table `test`.`_test4_gho` like `test`.`test4` ;
     ```
 
-    DM：不执行 `_test4_gho` 的创建操作，根据 ghost_schema、ghost_table 以及 dm_worker 的 `server_id`，删除下游 `dm_meta.{task_name}\_onlineddl` 的记录，清理内存中的相关信息。
+    DM：不执行 `_test4_gho` 的创建操作，根据 ghost_schema、ghost_table 以及 dm_worker 的 `server_id`，删除下游 `dm_meta.{task_name}_onlineddl` 的记录，清理内存中的相关信息。
 
     ```sql
     DELETE FROM dm_meta.{task_name}_onlineddl WHERE id = {server_id} and ghost_schema = {ghost_schema} and ghost_table = {ghost_table};
@@ -62,7 +62,7 @@ DM 在迁移过程中会把上述 table 分成 3 类：
     Alter /* gh-ost */ table `test`.`_test4_gho` add column cl1 varchar(20) not null ;
     ```
 
-    DM：不执行 `_test4_gho` 的 DDL 操作，而是把该 DDL 记录到 `dm_meta.{task_name}\_onlineddl` 以及内存中。
+    DM：不执行 `_test4_gho` 的 DDL 操作，而是把该 DDL 记录到 `dm_meta.{task_name}_onlineddl` 以及内存中。
 
     ```sql
     REPLACE INTO dm_meta.{task_name}_onlineddl (id, ghost_schema , ghost_table , ddls) VALUES (......);
@@ -71,11 +71,11 @@ DM 在迁移过程中会把上述 table 分成 3 类：
 4. 往 `_ghc` 表写入数据，以及往 `_gho` 表同步 origin table 的数据：
 
     ```sql
-    Insert /* gh-ost */ into `test`.`_test4_ghc` values (......);
+    INSERT /* gh-ost */ INTO `test`.`_test4_ghc` VALUES (......);
 
-    Insert /* gh-ost `test`.`test4` */ ignore into `test`.`_test4_gho` (`id`, `date`, `account_id`, `conversion_price`, `ocpc_matched_conversions`, `ad_cost`, `cl2`)
-      (select `id`, `date`, `account_id`, `conversion_price`, `ocpc_matched_conversions`, `ad_cost`, `cl2` from `test`.`test4` force index (`PRIMARY`)
-        where (((`id` > _binary'1') or ((`id` = _binary'1'))) and ((`id` < _binary'2') or ((`id` = _binary'2')))) lock in share mode
+    INSERT /* gh-ost `test`.`test4` */ ignore INTO `test`.`_test4_gho` (`id`, `date`, `account_id`, `conversion_price`, `ocpc_matched_conversions`, `ad_cost`, `cl2`)
+      (SELECT `id`, `date`, `account_id`, `conversion_price`, `ocpc_matched_conversions`, `ad_cost`, `cl2` FROM `test`.`test4` FORCE INDEX (`PRIMARY`)
+        WHERE (((`id` > _binary'1') OR ((`id` = _binary'1'))) AND ((`id` < _binary'2') OR ((`id` = _binary'2')))) lock IN share mode
       )   ;
     ```
 
@@ -114,12 +114,12 @@ pt-osc 在实现 online-schema-change 的过程会产生 2 种 table：
 
 - `new`：用于应用 DDL，待表中数据同步到与 origin table 一致后，再通过 rename 的方式替换 origin table。
 - `old`：对 origin table 执行 rename 操作后生成。
-- 3 种 **trigger**：`pt_osc\_\*\_ins`、`pt_osc\_\*\_upd`、`pt_osc\_\*\_del`，用于在 pt_osc 过程中，同步 origin table 新产生的数据到 `new`。
+- 3 种 **trigger**：`pt_osc_*_ins`、`pt_osc_*_upd`、`pt_osc_*_del`，用于在 pt_osc 过程中，同步 origin table 新产生的数据到 `new`。
 
 DM 在迁移过程中会把上述 table 分成 3 类：
 
-- ghostTable : `\_\*\_new`
-- trashTable : `\_\*\_old`
+- ghostTable : `_*_new`
+- trashTable : `_*_old`
 - realTable : 执行的 online-ddl 的 origin table
 
 pt-osc 主要涉及的 SQL 以及 DM 的处理：
@@ -131,7 +131,7 @@ pt-osc 主要涉及的 SQL 以及 DM 的处理：
     date date DEFAULT NULL, account_id bigint(20) DEFAULT NULL, conversion_price decimal(20,3) DEFAULT NULL,  ocpc_matched_conversions bigint(20) DEFAULT NULL, ad_cost decimal(20,3) DEFAULT NULL,cl2 varchar(20) COLLATE utf8mb4_bin NOT NULL,cl1 varchar(20) COLLATE utf8mb4_bin NOT NULL,PRIMARY KEY (id) ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin ;
     ```
 
-    DM: 不执行 `_test4_new` 的创建操作。根据 ghost_schema、ghost_table 以及 dm_worker 的 `server_id`，删除下游 `dm_meta.{task_name}\_onlineddl` 的记录，清理内存中的相关信息。
+    DM: 不执行 `_test4_new` 的创建操作。根据 ghost_schema、ghost_table 以及 dm_worker 的 `server_id`，删除下游 `dm_meta.{task_name}_onlineddl` 的记录，清理内存中的相关信息。
 
     ```sql
     DELETE FROM dm_meta.{task_name}_onlineddl WHERE id = {server_id} and ghost_schema = {ghost_schema} and ghost_table = {ghost_table};
@@ -143,7 +143,7 @@ pt-osc 主要涉及的 SQL 以及 DM 的处理：
     ALTER TABLE `test`.`_test4_new` add column c3 int;
     ```
 
-    DM: 不执行 `_test4_new` 的 DDL 操作，而是把该 DDL 记录到 `dm_meta.{task_name}\_onlineddl` 以及内存中。
+    DM: 不执行 `_test4_new` 的 DDL 操作，而是把该 DDL 记录到 `dm_meta.{task_name}_onlineddl` 以及内存中。
 
     ```sql
     REPLACE INTO dm_meta.{task_name}_onlineddl (id, ghost_schema , ghost_table , ddls) VALUES (......);
@@ -204,3 +204,17 @@ pt-osc 主要涉及的 SQL 以及 DM 的处理：
 > **注意：**
 >
 > 具体 pt-osc 的 SQL 会根据工具执行时所带的参数而变化。本文只列出主要的 SQL ，具体可以参考 [pt-osc 官方文档](https://www.percona.com/doc/percona-toolkit/2.2/pt-online-schema-change.html)。
+
+## 其他 Online Schema Change 工具
+
+在某些场景下，你可能需要变更 online schema change 工具的默认行为，自定义 `ghost table` 和 `trash table` 的名称；或者期望使用 `gh-ost` 和 `pt-osc` 之外的工具（原理和变更流程仍然保持一致）。此时则需要自行编写正则表达式以匹配`ghost table` 和 `trash table`。
+
+自 v2.0.7 起，DM 实验性支持修改过的 online schema change 工具。在 DM 任务配置中设置 `online-ddl=true` 后，配合 `shadow-table-rules` 和 `trash-table-rules` 即可支持通过正则表达式来匹配修改过的临时表。
+
+假设自定义 pt-osc 的 `ghost table` 规则为 `_{origin_table}_pcnew`，`trash table` 规则为 `_{origin_table}_pcold`，那么自定义规则需配置如下：
+
+```yaml
+online-ddl: true
+shadow-table-rules: ["^_(.+)_(?:pcnew)$"]
+trash-table-rules: ["^_(.+)_(?:pcold)$"]
+```

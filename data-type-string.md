@@ -11,7 +11,7 @@ TiDB 支持 MySQL 所有的字符串类型，包括 `CHAR`、`VARCHAR`、`BINARY
 
 ### `CHAR` 类型
 
-定长字符串。`CHAR` 列的长度固定为创建表时声明的长度。当保存 CHAR 值时，不足固定长度的字符串在后面填充空格，以达到指定的长度。M 表示列长度（字符的个数，不是字节的个数）。长度可以为从 0 到 255 的任何值。
+定长字符串。`CHAR` 列的长度固定为创建表时声明的长度。M 表示列长度（字符的个数，不是字节的个数）。长度可以为从 0 到 255 的任何值。和 `VARCHAR` 类型不同，`CHAR` 列在写入时会对数据末尾的空格进行截断。
 
 {{< copyable "sql" >}}
 
@@ -71,7 +71,7 @@ MEDIUMTEXT [CHARACTER SET charset_name] [COLLATE collation_name]
 
 ### `LONGTEXT` 类型
 
-类似于 [`TEXT`](#text-类型)，区别在于最大列长度为 4,294,967,295。
+类似于 [`TEXT`](#text-类型)，区别在于最大列长度为 4,294,967,295。但由于 [TiDB 单列的限制](/tidb-limitations.md#单列的限制)，TiDB 中单列存储最大不超过 6 MB。
 
 {{< copyable "sql" >}}
 
@@ -121,7 +121,7 @@ TINYBLOB
 
 ### `MEDIUMBLOB` 类型
 
-类似于 [`BLOB`](#blob-类型)，区别在于最大列长度为 16777215。
+类似于 [`BLOB`](#blob-类型)，区别在于最大列长度为 16,777,215。
 
 {{< copyable "sql" >}}
 
@@ -131,7 +131,7 @@ MEDIUMBLOB
 
 ### `LONGBLOB` 类型
 
-类似于 [`BLOB`](#blob-类型)，区别在于最大列长度为 4,294,967,295。
+类似于 [`BLOB`](#blob-类型)，区别在于最大列长度为 4,294,967,295。但由于 [TiDB 单列的限制](/tidb-limitations.md#单列的限制)，TiDB 中单列存储最大不超过 6 MB。
 
 {{< copyable "sql" >}}
 

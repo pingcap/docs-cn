@@ -92,7 +92,16 @@ aliases: ['/docs-cn/dev/enable-tls-between-components/','/docs-cn/dev/how-to/sec
 
     - TiCDC
 
-        在启动命令行中设置，并设置相应的 URL 为 `https`：
+        在 `config` 文件中设置
+
+        ```toml
+        [security]
+        ca-path = "/path/to/ca.pem"
+        cert-path = "/path/to/cdc-server.pem"
+        key-path = "/path/to/cdc-server-key.pem"
+        ```
+
+        或者在启动命令行中设置，并设置相应的 URL 为 `https`：
 
         {{< copyable "shell-regular" >}}
 
@@ -115,7 +124,7 @@ aliases: ['/docs-cn/dev/enable-tls-between-components/','/docs-cn/dev/how-to/sec
     {{< copyable "shell-regular" >}}
 
     ```bash
-    ./pd-ctl -u https://127.0.0.1:2379 --cacert /path/to/ca.pem --cert /path/to/client.pem --key /path/to/client-key.pem
+    tiup ctl:<cluster-version> pd -u https://127.0.0.1:2379 --cacert /path/to/ca.pem --cert /path/to/client.pem --key /path/to/client-key.pem
     ```
 
     {{< copyable "shell-regular" >}}
@@ -160,16 +169,6 @@ aliases: ['/docs-cn/dev/enable-tls-between-components/','/docs-cn/dev/how-to/sec
     ```toml
     [security]
     cert-allowed-cn = ["TiKV-Server", "TiDB-Server", "PD-Control"]
-    ```
-
-- TiCDC
-
-    在启动命令行中设置：
-
-    {{< copyable "shell-regular" >}}
-
-    ```bash
-    cdc server --pd=https://127.0.0.1:2379 --log-file=ticdc.log --addr=0.0.0.0:8301 --advertise-addr=127.0.0.1:8301 --ca=/path/to/ca.pem --cert=/path/to/ticdc-cert.pem --key=/path/to/ticdc-key.pem --cert-allowed-cn="client1,client2"
     ```
 
 - TiFlash（从 v4.0.5 版本开始引入）
