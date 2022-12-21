@@ -387,4 +387,4 @@ If the value of a column is `46`, the column is a composite index column, a prim
 > **Note:**
 >
 > + `BinaryFlag` is meaningful only when the column type is BLOB/TEXT (including TINYBLOB/TINYTEXT and BINARY/CHAR). When the upstream column is the BLOB type, the `BinaryFlag` value is set to `1`. When the upstream column is the TEXT type, the `BinaryFlag` value is set to `0`.
-> + To replicate a table from the upstream, TiCDC selects a [valid index](/ticdc/ticdc-overview.md#restrictions) as the Handle index. The `HandleKeyFlag` value of the Handle index column is set to `1`.
+> + To replicate a table from the upstream, TiCDC selects a [valid index](/ticdc/ticdc-overview.md#best-practices) as the Handle index. The `HandleKeyFlag` value of the Handle index column is set to `1`.

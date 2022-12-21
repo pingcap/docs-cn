@@ -22,7 +22,7 @@ If you do not specify `start-ts`, or specify `start-ts` as `0`, when a replicati
 
 ## Why can't some tables be replicated when I create a task in TiCDC?
 
-When you execute `cdc cli changefeed create` to create a replication task, TiCDC checks whether the upstream tables meet the [replication restrictions](/ticdc/ticdc-overview.md#restrictions). If some tables do not meet the restrictions, `some tables are not eligible to replicate` is returned with a list of ineligible tables. You can choose `Y` or `y` to continue creating the task, and all updates on these tables are automatically ignored during the replication. If you choose an input other than `Y` or `y`, the replication task is not created.
+When you execute `cdc cli changefeed create` to create a replication task, TiCDC checks whether the upstream tables meet the [replication requirements](/ticdc/ticdc-overview.md#best-practices). If some tables do not meet the requirements, `some tables are not eligible to replicate` is returned with a list of ineligible tables. You can choose `Y` or `y` to continue creating the task, and all updates on these tables are automatically ignored during the replication. If you choose an input other than `Y` or `y`, the replication task is not created.
 
 ## How do I view the state of TiCDC replication tasks?
 
@@ -104,7 +104,7 @@ If you use the `cdc cli changefeed create` command without specifying the `-conf
 
 - Replicates all tables except system tables
 - Enables the Old Value feature
-- Skips replicating tables that do not contain [valid indexes](/ticdc/ticdc-overview.md#restrictions)
+- Only replicates tables that contain [valid indexes](/ticdc/ticdc-overview.md#best-practices)
 
 ## Does TiCDC support outputting data changes in the Canal format?
 
@@ -233,7 +233,9 @@ Since v5.0.1 or v4.0.13, for each replication to MySQL, TiCDC automatically sets
 
 ## Why do `INSERT`/`UPDATE` statements from the upstream become `REPLACE INTO` after being replicated to the downstream if I set `enable-old-value` to `true` when I create a TiCDC replication task?
 
-When a changefeed is created in TiCDC, the `safe-mode` setting defaults to `true`, which generates the `REPLACE INTO` statement to execute for the upstream `INSERT`/`UPDATE` statements.
+TiCDC guarantees that all data is replicated at least once. When there is duplicate data in the downstream, write conflicts occur. To avoid this problem, TiCDC converts `INSERT` and `UPDATE` statements into `REPLACE INTO` statements. This behavior is controlled by the `safe-mode` parameter.
+
+In versions earlier than v6.1.3, `safe-mode` defaults to `true`, which means all `INSERT` and `UPDATE` statements are converted into `REPLACE INTO` statements. In v6.1.3 and later versions, TiCDC can automatically determine whether the downstream has duplicate data, and the default value of `safe-mode` changes to `false`. If no duplicate data is detected, TiCDC replicates `INSERT` and `UPDATE` statements without conversion.
 
 ## When the sink of the replication downstream is TiDB or MySQL, what permissions do users of the downstream database need?
 
@@ -262,3 +264,23 @@ Currently, TiCDC is not yet fully compatible with TiDB Lightning and BR. Therefo
 ## After a changefeed resumes from pause, its replication latency gets higher and higher and returns to normal only after a few minutes. Why?
 
 When a changefeed is resumed, TiCDC needs to scan the historical versions of data in TiKV to catch up with the incremental data logs generated during the pause. The replication process proceeds only after the scan is completed. The scan process might take several to tens of minutes.
+
+## How should I deploy TiCDC to replicate data between two TiDB cluster located in different regions?
+
+It is recommended that you deploy TiCDC in the downstream TiDB cluster. If the network latency between the upstream and downstream is high, for example, more than 100 ms, the latency produced when TiCDC executes SQL statements to the downstream might increase dramatically due to the MySQL transmission protocol issues. This results in a decrease in system throughput. However, deploying TiCDC in the downstream can greatly ease this problem.
+
+## What is the order of executing DML and DDL statements?
+
+The execution order is: DML -> DDL -> DML. To ensure that the table schema is correct when DML events are executed downstream during data replication, it is necessary to coordinate the execution order of DDL and DML statements. Currently, TiCDC adopts a simple approach: it replicates all DML statements before the DDL ts to downstream first, and then replicates DDL statements.
+
+## How should I check whether the upstream and downstream data is consistent?
+
+If the downstream is a TiDB cluster or MySQL instance, it is recommended that you compare the data using [sync-diff-inspector](/sync-diff-inspector/sync-diff-inspector-overview.md).
+
+## Replication of a single table can only be run on a single TiCDC node. Will it be possible to use multiple TiCDC nodes to replicate data of multiple tables?
+
+This feature is currently not supported, which might be supported in a future release. By then, TiCDC might replicate data change logs by TiKV Region, which means scalable processing capability.
+
+## Does TiCDC replication get stuck if the upstream has long-running uncommitted transactions?
+
+TiDB has a transaction timeout mechanism. When a transaction runs for a period longer than [`max-txn-ttl`](/tidb-configuration-file.md#max-txn-ttl), TiDB forcibly rolls it back. TiCDC waits for the transaction to be committed before proceeding with the replication, which causes replication delay.
