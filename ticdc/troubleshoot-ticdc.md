@@ -10,7 +10,7 @@ aliases: ['/docs-cn/dev/ticdc/troubleshoot-ticdc/','/docs-cn/dev/reference/tools
 
 > **注意：**
 >
-> 本文档 `cdc cli` 命令中指定 PD 地址为 `--pd=http://10.0.10.25:2379`，在使用时需根据实际地址进行替换。
+> 本文档 `cdc cli` 命令中指定 PD 地址为 `--server=http://127.0.0.1:8300`，在使用时需根据实际地址进行替换。
 
 ## TiCDC 同步任务出现中断
 
@@ -26,7 +26,7 @@ aliases: ['/docs-cn/dev/ticdc/troubleshoot-ticdc/','/docs-cn/dev/reference/tools
 可以使用 `cdc cli` 查询同步任务是否被人为终止。例如：
 
 ```shell
-cdc cli changefeed query --pd=http://10.0.10.25:2379 --changefeed-id 28c43ffc-2316-4f4f-a70b-d1a7c59ba79f
+cdc cli changefeed query --server=http://127.0.0.1:8300 --changefeed-id 28c43ffc-2316-4f4f-a70b-d1a7c59ba79f
 ```
 
 上述命令的输出中 `admin-job-type` 标志这个同步的任务的状态：
@@ -100,7 +100,7 @@ show variables like '%time_zone%';
 然后在创建同步任务和创建 TiCDC 服务时使用该时区：
 
 ```shell
-cdc cli changefeed create --sink-uri="mysql://root@127.0.0.1:3306/?time-zone=CST" --pd=http://10.0.10.25:2379
+cdc cli changefeed create --sink-uri="mysql://root@127.0.0.1:3306/?time-zone=CST" --server=http://127.0.0.1:8300
 ```
 
 > **注意：**
@@ -138,19 +138,19 @@ cdc cli changefeed create --sink-uri="mysql://root@127.0.0.1:3306/?time-zone=CST
 2. 使用 `cdc cli changefeed pause` 暂停同步任务。
 
     ```shell
-    cdc cli changefeed pause -c test-cf --pd=http://10.0.10.25:2379
+    cdc cli changefeed pause -c test-cf --server=http://127.0.0.1:8300
     ```
 
 3. 使用 `cdc cli changefeed update` 更新原有 changefeed 的配置。
 
     ```shell
-    cdc cli changefeed update -c test-cf --pd=http://10.0.10.25:2379 --sink-uri="mysql://127.0.0.1:3306/?max-txn-row=20&worker-number=8" --config=changefeed.toml
+    cdc cli changefeed update -c test-cf --server=http://127.0.0.1:8300 --sink-uri="mysql://127.0.0.1:3306/?max-txn-row=20&worker-number=8" --config=changefeed.toml
     ```
 
 4. 使用 `cdc cli changefeed resume` 恢复同步任务。
 
     ```shell
-    cdc cli changefeed resume -c test-cf --pd=http://10.0.10.25:2379
+    cdc cli changefeed resume -c test-cf --server=http://127.0.0.1:8300
     ```
 
 ## 使用 TiCDC 创建 changefeed 时报错 `[tikv:9006]GC life time is shorter than transaction duration, transaction starts at xx, GC safe point is yy`，该如何处理？
@@ -181,12 +181,12 @@ fetch.message.max.bytes=2147483648
 如果某条 DDL 语句执行失败，同步任务 (changefeed) 会自动停止，checkpoint-ts 断点时间戳为该条出错 DDL 语句的结束时间戳 (finish-ts) 减去一。如果希望让 TiCDC 在下游重试执行这条 DDL 语句，可以使用 `cdc cli changefeed resume` 恢复同步任务。例如：
 
 ```shell
-cdc cli changefeed resume -c test-cf --pd=http://10.0.10.25:2379
+cdc cli changefeed resume -c test-cf --server=http://127.0.0.1:8300
 ```
 
 如果希望跳过这条出错的 DDL 语句，可以将 changefeed 的 start-ts 设为报错时的 checkpoint-ts 加上一，然后通过 `cdc cli changefeed create` 新建同步任务。假设报错时的 checkpoint-ts 为 `415241823337054209`，可以进行如下操作来跳过该 DDL 语句：
 
 ```shell
-cdc cli changefeed remove --pd=http://10.0.10.25:2379 --changefeed-id simple-replication-task
-cdc cli changefeed create --pd=http://10.0.10.25:2379 --sink-uri="mysql://root:123456@127.0.0.1:3306/" --changefeed-id="simple-replication-task" --sort-engine="unified" --start-ts 415241823337054210
+cdc cli changefeed remove --server=http://127.0.0.1:8300 --changefeed-id simple-replication-task
+cdc cli changefeed create --server=http://127.0.0.1:8300 --sink-uri="mysql://root:123456@127.0.0.1:3306/" --changefeed-id="simple-replication-task" --sort-engine="unified" --start-ts 415241823337054210
 ```
