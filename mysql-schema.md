@@ -15,14 +15,10 @@ summary: 了解 TiDB 系统表。
 * `db` 数据库级别的权限
 * `tables_priv` 表级的权限
 * `columns_priv` 列级的权限
-<<<<<<< HEAD
-=======
-* `password_history` 记录密码更改历史
 * `default_roles` 默认启用的角色
 * `global_grants` 动态权限
 * `global_priv` 基于证书的认证信息
 * `role_edges` 角色之间的关系信息
->>>>>>> 3dcf26503 (mysql-schema.md: update system tables (#8626))
 
 ## 服务端帮助信息系统表
 
