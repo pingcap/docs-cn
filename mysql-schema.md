@@ -33,6 +33,10 @@ aliases: ['/docs-cn/dev/system-tables/system-table-overview/','/docs-cn/dev/refe
 
 * `gc_delete_range`
 
+## 缓存表使用的系统表
+
+* `table_cache_meta` 存储了缓存表的元信息
+
 ## 其它系统表
 
 * `GLOBAL_VARIABLES` 全局系统变量表
