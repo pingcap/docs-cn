@@ -21,6 +21,13 @@ TiDB 使用统计信息来决定[索引的选择](/choose-index.md)。变量 `ti
 >    ```sql
 >    SELECT DISTINCT(CONCAT('DROP STATS ', table_schema, '.', table_name, ';')) FROM information_schema.tables, mysql.stats_histograms WHERE stats_ver = 2 AND table_id = tidb_table_id;
 >    ```
+>
+> - 如果上一条语句返回结果太长，不方便拷贝粘贴，可以将结果导出到临时文件后，再执行:
+>
+>    ```sql
+>    select distinct... into outfile '/tmp/sql.txt';
+>    mysql -h XXX -u user -P 4000 ... < '/tmp/sql.txt';
+>    ```
 
 两种版本中，TiDB 维护的统计信息如下：
 
