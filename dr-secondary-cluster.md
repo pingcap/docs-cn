@@ -15,9 +15,29 @@ summary: 介绍在容灾场景下，如何使用 TiCDC 构建主备容灾集群
 
 ![TiCDC secondary cluster architecture](/media/dr/dr-ticdc-secondary-cluster.png)
 
-在上面的架构中，包含了两个 TiDB 集群：Cluster1 和 Cluster2。Cluster1 位于 Region 1 中，是一个三副本的集群，用于处理读写业务。Cluster2 位于 Region 2 中，是一个灾备集群，并通过 TiCDC 与 Cluster1 进行数据同步。这种架构简洁易用，可以容忍 Region 级别的故障，并且在写入性能上没有下降。同时，灾备集群还可以用于处理一些延迟不敏感的只读业务。RPO 在秒级别，RTO 可以做到分钟级别甚至更低。这是许多数据库厂商推荐的方案，特别是对于重要的生产系统。
+在上述架构中，包含了两个 TiDB 集群：Primary Cluster 和 Secondary Cluster。Primary Cluster 运行在 Region 1 中，是一个三副本的集群，用于处理读写业务。Secondary Cluster 运行在 Region 2 中，是一个备用集群，通过 TiCDC 从 Primary Cluster 同步数据。这种容灾架构简洁易用，可以容忍 Region 级别的故障，并且在保证 Primary Cluster 的写入性能不会下降的同时，备用集群还可以用于处理一些延迟不敏感的只读业务。它的 Recovery Point Objective（RPO）在秒级别，Recovery Time Objective（RTO）可以做到分钟级别甚至更低。这是许多数据库厂商推荐的方案，适用于重要的生产系统。
 
 ### 搭建主备集群
+
+我们将主备集群分别部署在两个不同的区域，TiCDC 与 TiDB 备用集群部署在一起。当主备集群之间的网络存在延迟，这种架构会实现最好的数据同步性能。 本教程示例的部署拓扑如下，其中的服务器配置可以参考
+- [TiDB 软件和硬件环境建议配置](/hardware-and-software-requirements.md)。
+- [TiCDC 软件和硬件环境推荐配置](/ticdc/deploy-ticdc.md#软件和硬件环境推荐配置)
+
+|**区域** | **Host** | **集群** | **组件** |
+| --- | --- | --- | --- |
+| Region 1 | 10.0.1.1/10.0.1.2/10.0.1.3 | Primary | PD |
+| Region 1 | 10.0.1.4/10.0.1.5 | Primary| TiDB |
+| Region 1 | 10.0.1.6/10.0.1.7/10.0.1.8 | Primary | TiKV |
+| Region 2 | 10.1.1.9/10.1.1.10 | Primary | TiCDC |
+| Region 2 | 10.1.1.1/10.1.1.2/10.1.1.3 | Secondary | PD |
+| Region 2 | 10.1.1.4/10.1.1.5 | Secondary | TiDB |
+| Region 2 | 10.1.1.6/10.1.1.7/10.1.1.8 | Secondary | TiKV |
+
+
+使用 TiUP [部署 TiDB 集群](/production-deployment-using-tiup.md)
+
+并且确保 TiCDC 能访问
+
 
 ### 从主集群复制数据到备用数据
 
