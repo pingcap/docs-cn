@@ -29,8 +29,6 @@ TiDB 使用统计信息来决定[索引的选择](/choose-index.md)。变量 `ti
 >
 > - 如果上一条语句返回结果太长，不方便拷贝粘贴，可以将结果导出到临时文件后，再执行:
 >
->   {{< copyable "sql" >}}
->
 >   ```sql
 >   select distinct... into outfile '/tmp/sql.txt';
 >   mysql -h XXX -u user -P 4000 ... < '/tmp/sql.txt';
