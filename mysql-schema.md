@@ -15,14 +15,10 @@ summary: 了解 TiDB 系统表。
 * `db` 数据库级别的权限
 * `tables_priv` 表级的权限
 * `columns_priv` 列级的权限
-<<<<<<< HEAD
-=======
-* `password_history` 记录密码更改历史
 * `default_roles` 默认启用的角色
 * `global_grants` 动态权限
 * `global_priv` 基于证书的认证信息
 * `role_edges` 角色之间的关系信息
->>>>>>> 3dcf26503 (mysql-schema.md: update system tables (#8626))
 
 ## 服务端帮助信息系统表
 
@@ -34,16 +30,12 @@ summary: 了解 TiDB 系统表。
 * `stats_histograms` 统计信息的直方图
 * `stats_top_n` 统计信息的 TopN
 * `stats_meta` 表的元信息，比如总行数和修改数
-<<<<<<< HEAD
-=======
 * `stats_extended` 扩展统计信息，比如列之间的顺序相关性
 * `stats_feedback` 统计信息的查询反馈
 * `stats_fm_sketch` 统计信息列的直方图 FMSketch 分布
 * `analyze_options` 各个表默认的 `analyze` 参数
 * `column_stats_usage` 列统计信息的使用情况
 * `schema_index_usage` 索引的使用情况
-* `analyze_jobs` 正在执行的统计信息收集任务以及过去 7 天内的历史任务记录
->>>>>>> 3dcf26503 (mysql-schema.md: update system tables (#8626))
 
 ## 执行计划相关系统表
 
