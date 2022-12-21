@@ -133,9 +133,9 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
     TiFlash 和 CDC 面板重新编排了 TiFlash 和 TiCDC 相关的监控信息，可以帮助你大幅提高 TiFlash 和 TiCDC 的性能分析和故障诊断效率：
     
     - 通过 [TiFlash 面板](/grafana-performance-overview-dashboard.md#tiflash)，你可以直观地了解 TiFlash 集群的请求类型、延迟分析和资源使用概览。
-    - 通过 [CDC 面板](/grafana-performance-overview-dashboard.md#cdc)，你可以直观地了解 TiCDC 的集群的健康状况、同步延迟、数据流和下游写入延迟等信息。
+    - 通过 [CDC 面板](/grafana-performance-overview-dashboard.md#cdc)，你可以直观地了解 TiCDC 集群的健康状况、同步延迟、数据流和下游写入延迟等信息。
     
-  更多信息，请参考[用户文档](performance-tuning-method.md/)。
+  更多信息，请参考[用户文档](/performance-tuning-method.md/)。
 
 ### 性能
 
