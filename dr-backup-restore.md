@@ -16,7 +16,7 @@ summary: 介绍在容灾场景下，如何使用 TiDB 备份与恢复功能？
 
 ## 备份恢复方案设计
 
-![BR log backup and PITR architecture](/media/br/br-log-arch.png)
+![BR log backup and PITR architecture](/media/dr/dr-backup-and-restore.png)
 
 按照上述架构，用户可以将数据备份到其他 Region 的灾备存储设备中，并在需要时将数据恢复回来。这样，系统就能够容忍单个 Region 的故障，并且 Recovery Point Objective (RPO) 可以达到 5 分钟，Recovery Time Objective (RTO) 通常在几十分钟到数小时之间。但是，如果数据库尺寸较大，RTO 时间可能会更长。此外，TiDB 还提供了基于块存储快照技术的备份和恢复特性，可以将集群的恢复时间缩短到小时级别甚至 1 小时以内。TiDB 也在不断完善和优化基于存储快照技术的备份和恢复能力，以提供更好的服务。
 
