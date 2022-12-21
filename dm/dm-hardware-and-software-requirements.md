@@ -1,14 +1,14 @@
 ---
-title: DM 集群软硬件环境需求
+title: TiDB Data Migration 集群软硬件环境需求
 summary: 了解部署 DM 集群的软件和硬件要求。
 aliases: ['/docs-cn/tidb-data-migration/dev/hardware-and-software-requirements/']
 ---
 
-# DM 集群软硬件环境需求
+# TiDB Data Migration 集群软硬件环境需求
 
-DM 支持主流的 Linux 操作系统，具体版本要求见下表：
+TiDB Data Migration (DM) 支持主流的 Linux 操作系统，具体版本要求见下表：
 
-| Linux 操作系统平台       | 版本         |
+| Linux 操作系统       | 版本         |
 | :----------------------- | :----------: |
 | Red Hat Enterprise Linux | 7.3 及以上   |
 | CentOS                   | 7.3 及以上   |
@@ -50,7 +50,7 @@ DM 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器�
 
 ## 下游数据库所需空间
 
-目标 TiKV 集群必须有足够空间接收新导入的数据。除了[标准硬件配置](/hardware-and-software-requirements.md)以外，目标 TiKV 集群的总存储空间必须大于 **数据源大小 × [副本数量](/faq/deploy-and-maintain-faq.md#每个-region-的-replica-数量可配置吗调整的方法是) × 2**。例如集群默认使用 3 副本，那么总存储空间需为数据源大小的 6 倍以上。公式中的 2 倍可能难以理解，其依据是以下因素的估算空间占用：
+目标 TiKV 集群必须有足够空间接收新导入的数据。除了[标准硬件配置](/hardware-and-software-requirements.md)以外，目标 TiKV 集群的总存储空间必须大于 **数据源大小 × [副本数量](/faq/manage-cluster-faq.md#每个-region-的-replica-数量可配置吗调整的方法是) × 2**。例如集群默认使用 3 副本，那么总存储空间需为数据源大小的 6 倍以上。公式中的 2 倍可能难以理解，其依据是以下因素的估算空间占用：
 
 - 索引会占据额外的空间
 - RocksDB 的空间放大效应

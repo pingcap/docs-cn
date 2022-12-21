@@ -7,7 +7,7 @@ aliases: ['/docs-cn/dev/enable-tls-between-clients-and-servers/','/docs-cn/dev/h
 
 TiDB 服务端与客户端之间默认采用非加密连接，因而具备监视信道流量能力的第三方可以知悉 TiDB 服务端与客户端之间发送和接受的数据，包括但不限于查询语句内容、查询结果等。若信道是不可信的，例如客户端是通过公网连接到 TiDB 服务端的，则非加密连接容易造成信息泄露，建议使用加密连接确保安全性。
 
-TiDB 服务端支持启用基于 TLS（传输层安全）协议的加密连接，协议与 MySQL 加密连接一致，现有 MySQL Client 如 MySQL Shell 和 MySQL 驱动等能直接支持。TLS 的前身是 SSL，因而 TLS 有时也被称为 SSL，但由于 SSL 协议有已知安全漏洞，TiDB 实际上并未支持。TiDB 支持的 TLS/SSL 协议版本为 TLS 1.0、TLS 1.1、TLS 1.2、TLS 1.3。
+TiDB 服务端支持启用基于 TLS（传输层安全）协议的加密连接，协议与 MySQL 加密连接一致，现有 MySQL Client 如 MySQL Shell 和 MySQL 驱动等能直接支持。TLS 的前身是 SSL，因而 TLS 有时也被称为 SSL，但由于 SSL 协议有已知安全漏洞，TiDB 实际上并未支持。TiDB 支持的 TLS/SSL 协议版本为 TLSv1.0、TLSv1.1、TLSv1.2 和 TLSv1.3。
 
 使用加密连接后，连接将具有以下安全性质：
 
@@ -19,7 +19,7 @@ TiDB 服务端支持启用基于 TLS（传输层安全）协议的加密连接�
 
 另外，与 MySQL 相同，TiDB 也支持在同一 TCP 端口上开启 TLS 连接或非 TLS 连接。对于开启了 TLS 连接支持的 TiDB 服务端，客户端既可以选择通过加密连接安全地连接到该 TiDB 服务端，也可以选择使用普通的非加密连接。如需使用加密连接，你可以通过以下方式进行配置：
 
-+ 通过在启动参数中配置 `--require-secure-transport` 要求所有用户必须使用加密连接来连接到 TiDB。
++ 通过配置系统变量 `require_secure_transport` 要求所有用户必须使用加密连接来连接到 TiDB。
 + 通过在创建用户 (`create user`)，或修改已有用户 (`alter user`) 时指定 `REQUIRE SSL` 要求指定用户必须使用加密连接来连接 TiDB。以创建用户为例：
 
     ```sql
@@ -34,10 +34,11 @@ TiDB 服务端支持启用基于 TLS（传输层安全）协议的加密连接�
 
 要启用安全连接，请参考以下相关参数说明：
 
-- [`auto-tls`](/tidb-configuration-file.md#auto-tls): 启用证书自动生成功能（从 v5.2.0 开始）
+- [`auto-tls`](/tidb-configuration-file.md#auto-tls)：启用证书自动生成功能（从 v5.2.0 开始）
 - [`ssl-cert`](/tidb-configuration-file.md#ssl-cert)：指定 SSL 证书文件路径
 - [`ssl-key`](/tidb-configuration-file.md#ssl-key)：指定证书文件对应的私钥
 - [`ssl-ca`](/tidb-configuration-file.md#ssl-ca)：可选，指定受信任的 CA 证书文件路径
+- [`tls-version`](/tidb-configuration-file.md#tls-version)：可选，指定最低 TLS 版本，例如 `TLSv1.2`
 
 `auto tls` 支持安全连接，但不提供客户端证书验证。有关证书验证和控制证书生成方式的说明，请参考下面配置 `ssl-cert`，`ssl-key` 和 `ssl-ca` 变量的建议：
 
@@ -61,8 +62,8 @@ MySQL 5.7 及以上版本自带的客户端默认尝试使用安全连接，若�
 
 除此参数外，MySQL 8.0 客户端有两种 SSL 模式：
 
-- `--ssl-mode=VERIFY_CA`: 根据 `--ssl-ca` 签发的 CA 验证来自服务器的证书。
-- `--ssl-mode=VERIFY_IDENTITY`: 与 `VERIFY_CA` 相同，但也验证所连接的主机名是否与证书匹配。
+- `--ssl-mode=VERIFY_CA`：根据 `--ssl-ca` 签发的 CA 验证来自服务器的证书。
+- `--ssl-mode=VERIFY_IDENTITY`：与 `VERIFY_CA` 相同，但也验证所连接的主机名是否与证书匹配。
 
 详细信息请参阅 MySQL 文档中关于[客户端配置安全连接](https://dev.mysql.com/doc/refman/5.7/en/using-encrypted-connections.html#using-encrypted-connections-client-side-configuration)的部分。
 
@@ -74,7 +75,7 @@ MySQL 5.7 及以上版本自带的客户端默认尝试使用安全连接，若�
 - 若要使 TiDB 服务端验证 MySQL Client 身份，TiDB 服务端需配置 `ssl-cert`、`ssl-key`、`ssl-ca` 参数，客户端需至少指定 `--ssl-cert`、`--ssl-key` 参数。必须确保服务端配置的证书和客户端配置的证书都是由服务端配置指定的 `ssl-ca` 签发的。
 - 若要进行双向身份验证，请同时满足上述要求。
 
-默认情况，服务端对客户端的身份验证是可选的。若客户端在 TLS 握手时未出示自己的身份证书，也能正常建立 TLS 连接。但也可以通过在创建用户 (`create user`)，赋予权限 (`grant`) 或修改已有用户 (`alter user`) 时指定 `require 509` 要求客户端需进行身份验证，以创建用户为例：
+默认情况，服务端对客户端的身份验证是可选的。若客户端在 TLS 握手时未出示自己的身份证书，也能正常建立 TLS 连接。但也可以通过在创建用户 (`create user`)，赋予权限 (`grant`) 或修改已有用户 (`alter user`) 时指定 `require x509` 要求客户端需进行身份验证，以创建用户为例：
 
 ```sql
 create user 'u1'@'%'  require x509;
@@ -126,10 +127,14 @@ TiDB 支持的 TLS 版本及密钥交换协议和加密算法由 Golang 官方�
 
 ### 支持的 TLS 版本
 
-- TLS 1.0
-- TLS 1.1
-- TLS 1.2
-- TLS 1.3
+- TLSv1.0 （默认禁用）
+- TLSv1.1
+- TLSv1.2
+- TLSv1.3
+
+可以使用配置项 `tls-version` 来限制 TLS 版本。
+
+实际可用的 TLS 版本取决于操作系统的加密策略、MySQL 客户端版本和客户端的 SSL/TLS 库。
 
 ### 支持的密钥交换协议及加密算法
 

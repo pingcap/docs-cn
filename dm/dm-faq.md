@@ -32,6 +32,10 @@ DM 会尝试将包含多个 DDL 变更操作的单条语句拆分成只包含一
 >
 > TiDB 目前并不兼容 MySQL 支持的所有 DDL 语句。
 
+## DM 是否会将视图的 DDL 语句和对视图的 DML 语句同步到下游的 TiDB 中？
+
+目前 DM 不会将视图的 DDL 语句同步到下游的 TiDB 集群，也不会将针对视图的 DML 语句同步到下游。
+
 ## 如何重置数据迁移任务？
 
 当数据迁移过程中发生异常且无法恢复时，需要重置数据迁移任务，对数据重新进行迁移：
@@ -176,9 +180,9 @@ curl -X POST -d "tidb_general_log=0" http://{TiDBIP}:10080/settings
 if the DDL is not needed, you can use a filter rule with \"*\" schema-pattern to ignore it.\n\t : parse statement: line 1 column 11 near \"EVENT `event_del_big_table` \r\nDISABLE\" %!!(MISSING)(EXTRA string=ALTER EVENT `event_del_big_table` \r\nDISABLE
 ```
 
-出现报错的原因是 TiDB parser 无法解析上游的 DDL，例如 `ALTER EVENT`，所以 `sql-skip` 不会按预期生效。可以在任务配置文件中添加 [Binlog 过滤规则](/dm/dm-key-features.md#binlog-event-filter)进行过滤，并设置 `schema-pattern: "*"`。从 DM 2.0.1 版本开始，已预设过滤了 `EVENT` 相关语句。
+出现报错的原因是 TiDB parser 无法解析上游的 DDL，例如 `ALTER EVENT`，所以 `sql-skip` 不会按预期生效。可以在任务配置文件中添加 [Binlog 过滤规则](/dm/dm-binlog-event-filter.md)进行过滤，并设置 `schema-pattern: "*"`。从 DM 2.0.1 版本开始，已预设过滤了 `EVENT` 相关语句。
 
-在 DM v2.0 版本之后 `sql-skip` 已经被 `handle-error` 替代，`handle-error` 可以跳过该类错误。
+在 DM v6.0 版本之后 `sql-skip`、`handle-error` 均已经被 `binlog` 替代，使用 `binlog` 命令可以跳过该类错误。
 
 ## DM 同步时下游长时间出现 REPLACE 语句
 
@@ -363,3 +367,7 @@ flush local meta, Rawcause: open relay-dir/xxx.000001/relay.metayyyy: no such fi
     ```
 
 - 升级 DM 至 v2.0.7 或之后版本。
+
+## Load 单元报错 `Unknown character set`
+
+由于 TiDB 只支持部分 MySQL 字符集，因此，在全量导入中，如果创建表结构时使用了 TiDB 不支持的字符集，DM 会报这个错误。你可以结合数据内容选择 [TiDB 支持的字符集](/character-set-and-collation.md)，预先在下游创建表结构以绕过这个错误。

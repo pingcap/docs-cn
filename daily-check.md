@@ -45,7 +45,7 @@ TiDB 作为分布式数据库，对比单机数据库机制更加复杂，其自
 + `miss-peer-region-count`：缺副本的 Region 数量，不会一直大于 0。
 + `extra-peer-region-count`：多副本的 Region 数量，调度过程中会产生。
 + `empty-region-count`：空 Region 的数量，一般是 `TRUNCATE TABLE`/`DROP TABLE` 语句导致。如果数量较多，可以考虑开启跨表 Region merge。
-+ `pending-peer-region-count`：Raft log 落后的 Region 数量。由于调度产生少量的 pending peer 是正常的，但是如果持续很高，可能有问题。
++ `pending-peer-region-count`：Raft log 落后的 Region 数量。由于调度产生少量的 pending peer 是正常的，但是如果 pending peer 的数量持续（超过 30 分钟）很高，可能存在问题。
 + `down-peer-region-count`：Raft leader 上报有不响应 peer 的 Region 数量。
 + `offline-peer-region-count`：peer 下线过程中的 Region 数量。
 

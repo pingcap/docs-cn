@@ -37,7 +37,7 @@ TiDB 版本：5.0.0
 
 + 临时表的语法兼容性受到 [`tidb_enable_noop_functions`](/system-variables.md#tidb_enable_noop_functions-从-v40-版本开始引入) 系统变量的控制：当 `tidb_enable_noop_functions` 为 `OFF` 时，`CREATE TEMPORARY TABLE` 语法将会报错。
 + 新增 [`tidb_gc_concurrency`](/system-variables.md#tidb_gc_concurrency-从-v50-版本开始引入)、[`tidb_gc_enable`](/system-variables.md#tidb_gc_enable-从-v50-版本开始引入)、[`tidb_gc_life_time`](/system-variables.md#tidb_gc_life_time-从-v50-版本开始引入)、[`tidb_gc_run_interval`](/system-variables.md#tidb_gc_run_interval-从-v50-版本开始引入)、[`tidb_gc_scan_lock_mode`](/system-variables.md#tidb_gc_scan_lock_mode-从-v50-版本开始引入) 系统变量，用于直接通过系统变量调整垃圾回收相关参数。
-+ 系统变量 [`enable-joint-consensus`](/pd-configuration-file.md#enable-joint-consensus-从-v50-版本开始引入) 默认值由 `false` 改成 `ture`，默认开启 Joint consensus 功能。
++ 系统变量 [`enable-joint-consensus`](/pd-configuration-file.md#enable-joint-consensus-从-v50-版本开始引入) 默认值由 `false` 改成 `true`，默认开启 Joint consensus 功能。
 + 系统变量 [`tidb_enable_amend_pessimistic_txn`](/system-variables.md#tidb_enable_amend_pessimistic_txn-从-v407-版本开始引入) 的值由数字 0 或者 1 变更成 ON 或者 OFF。
 + 系统变量 [`tidb_enable_clustered_index`](/system-variables.md#tidb_enable_clustered_index-从-v50-版本开始引入) 默认值由 OFF 改成 INT_ONLY 且含义有如下变化：
     + ON：开启聚簇索引，支持添加或者删除非聚簇索引。
@@ -63,7 +63,7 @@ TiDB 版本：5.0.0
 
 ### 其他
 
-+ 升级前，请检查 TiDB 配置项 [`feedback-probability`](/tidb-configuration-file.md#feedback-probability) 的值。如果不为 0，升级后会触发 "panic in the recoverable goroutine" 报错，但不影响升级。
++ 升级前，请检查 TiDB 配置项 [`feedback-probability`](https://docs.pingcap.com/zh/tidb/v5.0/tidb-configuration-file#feedback-probability) 的值。如果不为 0，升级后会触发 "panic in the recoverable goroutine" 报错，但不影响升级。
 + 为了避免造成数据正确性问题，列类型变更不再允许 `VARCHAR` 类型和 `CHAR` 类型的互相转换。
 
 ## 新功能
@@ -146,7 +146,7 @@ TiDB 支持对输出的日志信息进行脱敏处理，你可以通过以下开
 
 ### MPP 架构
 
-[用户文档](/tiflash/use-tiflash.md)
+[用户文档](/tiflash/use-tiflash-mpp-mode.md)
 
 TiDB 通过 TiFlash 节点引入了 MPP 架构。这使得大型表连接类查询可以由不同 TiFlash 节点分担共同完成。
 
@@ -154,7 +154,7 @@ TiDB 通过 TiFlash 节点引入了 MPP 架构。这使得大型表连接类查�
 
 经过 Benchmark 测试，在 TPC-H 100 的规模下，TiFlash MPP 提供了显著超越 Greenplum，Apache Spark 等传统分析数据库或数据湖上分析引擎的速度。借助这套架构，用户可以直接针对最新的交易数据进行大规模分析查询，且性能超越传统离线分析方案。经测试，TiDB 5.0 在同等资源下，MPP 引擎的总体性能是 Greenplum 6.15.0 与 Apache Spark 3.1.1 两到三倍之间，部分查询可达 8 倍性能差异。
 
-当前 MPP 模式不支持的主要功能如下（详细信息请参阅[用户文档](/tiflash/use-tiflash.md)）：
+当前 MPP 模式不支持的主要功能如下（详细信息请参阅[用户文档](/tiflash/use-tiflash-mpp-mode.md)）：
 
 + 分区表
 + Window Function
@@ -335,7 +335,7 @@ GC Compaction Filter 特性将这两个任务合并在同一个任务中完成�
 
 ### TiCDC 稳定性提升，缓解同步过多增量变更数据的 OOM 问题
 
-[用户文档](/ticdc/manage-ticdc.md#unified-sorter-功能)，[#1150](https://github.com/pingcap/tiflow/issues/1150)
+[用户文档](/ticdc/ticdc-manage-changefeed.md#unified-sorter-功能)，[#1150](https://github.com/pingcap/tiflow/issues/1150)
 
 自 v4.0.9 版本起，TiCDC 引入变更数据本地排序功能 Unified Sorter。在 5.0 版本，默认开启此功能以缓解类似场景下的 OOM 问题：
 
@@ -362,7 +362,7 @@ TiDB 引入的 Raft Joint Consensus 算法将成员变更操作中的“添加�
 
 ### 优化内存管理模块，降低系统 OOM 的风险
 
-跟踪统计聚合函数的内存使用情况，系统默认开启该功能，开启后带有聚合函数的 SQL 语句在执行时，如果当前查询内存总的使用量超过 [`mem-quota-query`](/tidb-configuration-file.md#mem-quota-query) 阈值时，系统自动采用 [`oom-action`](/tidb-configuration-file.md#oom-action) 定义的相应操作。
+跟踪统计聚合函数的内存使用情况，系统默认开启该功能，开启后带有聚合函数的 SQL 语句在执行时，如果当前查询内存总的使用量超过 `mem-quota-query` 阈值时，系统自动采用 `oom-action` 定义的相应操作。
 
 ### 提升系统在发生网络分区时的可用性
 

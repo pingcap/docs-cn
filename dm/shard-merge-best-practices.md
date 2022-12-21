@@ -20,7 +20,7 @@ aliases: ['/docs-cn/tidb-data-migration/dev/shard-merge-best-practices/']
 
 从[分库分表合并迁移的实现原理部分](/dm/feature-shard-merge-pessimistic.md#实现原理)我们可以知道，DM 中的 sharding DDL lock 是用于协调不同上游分表向下游执行 DDL 的一种机制，本身并不是异常。
 
-因此，当通过 `show-ddl-locks` 查看到 DM-master 上存在 sharding DDL lock 时，或通过 `query-status` 查看到某些 DM-worker 有 `unresolvedGroups` 或 `blockingDDLs` 时，并不要急于使用 `unlock-ddl-lock` 尝试去手动解除 sharding DDL lock。
+因此，当通过 `shard-ddl-lock` 查看到 DM-master 上存在 sharding DDL lock 时，或通过 `query-status` 查看到某些 DM-worker 有 `unresolvedGroups` 或 `blockingDDLs` 时，并不要急于使用 `shard-ddl-lock unlock` 尝试去手动解除 sharding DDL lock。
 
 只有在确认当前未能自动解除 sharding DDL lock 是文档中所列的[支持场景](/dm/manually-handling-sharding-ddl-locks.md#支持场景)之一时，才能参照对应支持场景中的手动处理示例进行处理。对于其他未被支持的场景，我们建议完整重做整个数据迁移任务，即清空下游数据库中的数据以及该数据迁移任务相关的 `dm_meta` 信息后，重新执行全量数据及增量数据的迁移。
 
@@ -70,11 +70,11 @@ CREATE TABLE `tbl_no_pk` (
     ```
 
 2. 在 `task.yaml` 文件中增加如下配置跳过自增主键冲突检查：
-    
+
     ```yaml
     ignore-checking-items: ["auto_increment_ID"]
     ```
-    
+
 3. 启动数据迁移任务，执行全量与增量数据迁移。
 
 4. 通过 `query-status` 验证数据迁移任务是否正常，在下游数据库中验证合表中是否已经存在了来自上游的数据。
@@ -117,7 +117,7 @@ CREATE TABLE `tbl_multi_pk` (
 
 ## 上游 RDS 封装分库分表的处理
 
-上游数据源为 RDS 且使用了其分库分表功能的情况下，MySQL binlog 中的表名在 SQL client 连接时可能并不可见。例如在 UCloud 分布式数据库 [UDDB](https://www.ucloud.cn/site/product/uddb.html) 中，其 binlog 表名可能会多出 `_0001` 的后缀。这需要根据 binlog 中的表名规律，而不是 SQL client 所见的表名，来配置 [table routing 规则](/dm/dm-key-features.md#table-routing)。
+上游数据源为 RDS 且使用了其分库分表功能的情况下，MySQL binlog 中的表名在 SQL client 连接时可能并不可见。例如在 UCloud 分布式数据库 [UDDB](https://docs.ucloud.cn/uddb/README) 中，其 binlog 表名可能会多出 `_0001` 的后缀。这需要根据 binlog 中的表名规律，而不是 SQL client 所见的表名，来配置 [table routing 规则](/dm/dm-table-routing.md)。
 
 ## 合表迁移过程中在上游增/删表
 

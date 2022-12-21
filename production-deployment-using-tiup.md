@@ -1,5 +1,6 @@
 ---
 title: 使用 TiUP 部署 TiDB 集群
+summary: 了解如何使用 TiUP 部署 TiDB 集群。
 aliases: ['/docs-cn/dev/production-offline-deployment-using-tiup/', '/zh/tidb/dev/production-offline-deployment-using-tiup','/docs-cn/dev/production-deployment-using-tiup/','/docs-cn/dev/how-to/deploy/orchestrated/tiup/','/docs-cn/dev/tiflash/deploy-tiflash/','/docs-cn/dev/reference/tiflash/deploy/','/zh/tidb/dev/deploy-test-cluster-using-docker-compose','/zh/tidb/dev/test-deployment-using-docker']
 ---
 
@@ -8,6 +9,10 @@ aliases: ['/docs-cn/dev/production-offline-deployment-using-tiup/', '/zh/tidb/de
 [TiUP](https://github.com/pingcap/tiup) 是 TiDB 4.0 版本引入的集群运维工具，[TiUP cluster](https://github.com/pingcap/tiup/tree/master/components/cluster) 是 TiUP 提供的使用 Golang 编写的集群管理组件，通过 TiUP cluster 组件就可以进行日常的运维工作，包括部署、启动、关闭、销毁、弹性扩缩容、升级 TiDB 集群，以及管理 TiDB 集群参数。
 
 目前 TiUP 可以支持部署 TiDB、TiFlash、TiDB Binlog、TiCDC 以及监控系统。本文将介绍不同集群拓扑的具体部署步骤。
+
+> **注意：**
+>
+> TiDB、TiUP 及 TiDB Dashboard 默认会收集使用情况信息，并将这些信息分享给 PingCAP 用于改善产品。若要了解所收集的信息详情及如何禁用该行为，请参见[遥测](/telemetry.md)。
 
 ## 第 1 步：软硬件环境需求及前置检查
 
@@ -18,9 +23,6 @@ aliases: ['/docs-cn/dev/production-offline-deployment-using-tiup/', '/zh/tidb/de
 ## 第 2 步：在中控机上部署 TiUP 组件
 
 在中控机上部署 TiUP 组件有两种方式：在线部署和离线部署。
-
-<SimpleTab>
-<div label="在线部署">
 
 ### 在线部署
 
@@ -78,16 +80,13 @@ aliases: ['/docs-cn/dev/production-offline-deployment-using-tiup/', '/zh/tidb/de
     tiup --binary cluster
     ```
 
-</div>
-<div label="离线部署">
-
 ### 离线部署
 
 离线部署 TiUP 组件的操作步骤如下。
 
 #### 准备 TiUP 离线组件包
 
-方式一：在[官方下载页面](https://pingcap.com/zh/product#SelectProduct)选择对应版本的 TiDB server 离线镜像包（包含 TiUP 离线组件包）。
+方式一：在[官方下载页面](https://pingcap.com/zh/product#SelectProduct)选择对应版本的 TiDB server 离线镜像包（包含 TiUP 离线组件包）。需要同时下载 TiDB-community-server 软件包和 TiDB-community-toolkit 软件包。
 
 方式二：使用 `tiup mirror clone` 命令手动打包离线组件包。步骤如下：
 
@@ -143,12 +142,12 @@ aliases: ['/docs-cn/dev/production-offline-deployment-using-tiup/', '/zh/tidb/de
 
     如果从官网下载的离线镜像不满足你的具体需求，或者希望对已有的离线镜像内容进行调整，例如增加某个组件的新版本等，可以采取以下步骤进行操作：
 
-    1. 在制作离线镜像时，可通过参数指定具体的组件和版本等信息，获得不完整的离线镜像。例如，要制作一个只包括 v1.9.0 版本 TiUP 和 TiUP Cluster 的离线镜像，可执行如下命令：
+    1. 在制作离线镜像时，可通过参数指定具体的组件和版本等信息，获得不完整的离线镜像。例如，要制作一个只包括 v1.11.0 版本 TiUP 和 TiUP Cluster 的离线镜像，可执行如下命令：
 
         {{< copyable "shell-regular" >}}
 
         ```bash
-        tiup mirror clone tiup-custom-mirror-v1.9.0 --tiup v1.9.0 --cluster v1.9.0
+        tiup mirror clone tiup-custom-mirror-v1.11.0 --tiup v1.11.0 --cluster v1.11.0
         ```
 
         如果只需要某一特定平台的组件，也可以通过 `--os` 和 `--arch` 参数来指定。
@@ -180,10 +179,10 @@ aliases: ['/docs-cn/dev/production-offline-deployment-using-tiup/', '/zh/tidb/de
         {{< copyable "shell-regular" >}}
 
         ```bash
-        tiup mirror merge tiup-custom-mirror-v1.9.0
+        tiup mirror merge tiup-custom-mirror-v1.11.0
         ```
 
-    5. 上述步骤完成后，通过 `tiup list` 命令检查执行结果。在本文例子中，使用 `tiup list tiup` 和 `tiup list cluster` 均应能看到对应组件的 `v1.9.0` 版本出现在结果中。
+    5. 上述步骤完成后，通过 `tiup list` 命令检查执行结果。在本文例子中，使用 `tiup list tiup` 和 `tiup list cluster` 均应能看到对应组件的 `v1.11.0` 版本出现在结果中。
 
 #### 部署离线环境 TiUP 组件
 
@@ -199,10 +198,23 @@ source /home/tidb/.bash_profile
 
 `local_install.sh` 脚本会自动执行 `tiup mirror set tidb-community-server-${version}-linux-amd64` 命令将当前镜像地址设置为 `tidb-community-server-${version}-linux-amd64`。
 
-若需将镜像切换到其他目录，可以通过手动执行 `tiup mirror set <mirror-dir>` 进行切换。如果需要切换到在线环境，可执行 `tiup mirror set https://tiup-mirrors.pingcap.com`。
+#### 合并离线包
 
-</div>
-</SimpleTab>
+如果是通过[官方下载页面](https://pingcap.com/zh/product#SelectProduct)下载的离线软件包，需要将 TiDB-community-server 软件包和 TiDB-community-toolkit 软件包合并到离线镜像中。如果是通过 `tiup mirror clone` 命令手动打包的离线组件包，不需要执行此步骤。
+
+执行以下命令合并离线组件到 server 目录下。
+
+{{< copyable "shell-regular" >}}
+
+```bash
+tar xf tidb-community-toolkit-${version}-linux-amd64.tar.gz
+ls -ld tidb-community-server-${version}-linux-amd64 tidb-community-toolkit-${version}-linux-amd64
+cd tidb-community-server-${version}-linux-amd64/
+cp -rp keys ~/.tiup/
+tiup mirror merge ../tidb-community-toolkit-${version}-linux-amd64
+```
+
+若需将镜像切换到其他目录，可以通过手动执行 `tiup mirror set <mirror-dir>` 进行切换。如果需要切换到在线环境，可执行 `tiup mirror set https://tiup-mirrors.pingcap.com`。
 
 ## 第 3 步：初始化集群拓扑文件
 
@@ -223,7 +235,7 @@ tiup cluster template > topology.yaml
     ```shell
     tiup cluster template --full > topology.yaml
     ```
-    
+
 - 跨机房部署场景：跨机房部署 TiDB 集群，详情参见[跨机房部署拓扑架构](/geo-distributed-deployment-topology.md)。
 
     {{< copyable "shell-regular" >}}
@@ -285,7 +297,12 @@ alertmanager_servers:
 >
 > - 如果需要指定在目标机创建的用户组名，可以参考[这个例子](https://github.com/pingcap/tiup/blob/master/embed/examples/cluster/topology.example.yaml#L7)。
 
-更多参数说明，请参考 [TiDB `config.toml.example`](https://github.com/pingcap/tidb/blob/master/config/config.toml.example)、[TiKV `config.toml.example`](https://github.com/tikv/tikv/blob/master/etc/config-template.toml)、[PD `config.toml.example`](https://github.com/pingcap/pd/blob/master/conf/config.toml) 和 [TiFlash 配置参数](/tiflash/tiflash-configuration.md)。
+更多参数说明，请参考：
+
+- [TiDB `config.toml.example`](https://github.com/pingcap/tidb/blob/master/config/config.toml.example)
+- [TiKV `config.toml.example`](https://github.com/tikv/tikv/blob/master/etc/config-template.toml)
+- [PD `config.toml.example`](https://github.com/pingcap/pd/blob/master/conf/config.toml)
+- [TiFlash `config.toml.example`](https://github.com/pingcap/tiflash/blob/master/etc/config-template.toml)
 
 ## 第 4 步：执行部署命令
 
@@ -328,13 +345,13 @@ alertmanager_servers:
     {{< copyable "shell-regular" >}}
 
     ```shell
-    tiup cluster deploy tidb-test v5.4.0 ./topology.yaml --user root [-p] [-i /home/root/.ssh/gcp_rsa]
+    tiup cluster deploy tidb-test v6.4.0 ./topology.yaml --user root [-p] [-i /home/root/.ssh/gcp_rsa]
     ```
 
 以上部署示例中：
 
 - `tidb-test` 为部署的集群名称。
-- `v5.4.0` 为部署的集群版本，可以通过执行 `tiup list tidb` 来查看 TiUP 支持的最新可用版本。
+- `v6.4.0` 为部署的集群版本，可以通过执行 `tiup list tidb` 来查看 TiUP 支持的最新可用版本。
 - 初始化配置文件为 `topology.yaml`。
 - `--user root` 表示通过 root 用户登录到目标主机完成集群部署，该用户需要有 ssh 到目标机器的权限，并且在目标机器有 sudo 权限。也可以用其他有 ssh 和 sudo 权限的用户完成部署。
 - [-i] 及 [-p] 为可选项，如果已经配置免密登录目标机，则不需填写。否则选择其一即可，[-i] 为可登录到目标机的 root 用户（或 --user 指定的其他用户）的私钥，也可使用 [-p] 交互式输入该用户的密码。
@@ -419,16 +436,14 @@ tiup cluster display tidb-test
 
 如果你已同时部署了 [TiFlash](/tiflash/tiflash-overview.md)，接下来可参阅以下文档：
 
-- [使用 TiFlash](/tiflash/use-tiflash.md)
+- [使用 TiFlash](/tiflash/tiflash-overview.md#使用-tiflash)
 - [TiFlash 集群运维](/tiflash/maintain-tiflash.md)
 - [TiFlash 报警规则与处理方法](/tiflash/tiflash-alert-rules.md)
 - [TiFlash 常见问题](/tiflash/troubleshoot-tiflash.md)
 
 如果你已同时部署了 [TiCDC](/ticdc/ticdc-overview.md)，接下来可参阅以下文档：
 
-- [TiCDC 任务管理](/ticdc/manage-ticdc.md)
-- [TiCDC 常见问题](/ticdc/troubleshoot-ticdc.md)
-
-> **注意：**
->
-> TiDB、TiUP 及 TiDB Dashboard 默认会收集使用情况信息，并将这些信息分享给 PingCAP 用于改善产品。若要了解所收集的信息详情及如何禁用该行为，请参见[遥测](/telemetry.md)。
+- [Changefeed 概述](/ticdc/ticdc-changefeed-overview.md)
+- [管理 Changefeed](/ticdc/ticdc-manage-changefeed.md)
+- [TiCDC 故障处理](/ticdc/troubleshoot-ticdc.md)
+- [TiCDC 常见问题](/ticdc/ticdc-faq.md)

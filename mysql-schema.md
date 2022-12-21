@@ -16,6 +16,7 @@ aliases: ['/docs-cn/dev/system-tables/system-table-overview/','/docs-cn/dev/refe
 * `db` 数据库级别的权限
 * `tables_priv` 表级的权限
 * `columns_priv` 列级的权限
+* `password_history` 记录密码更改历史
 * `default_roles` 默认启用的角色
 * `global_grants` 动态权限
 * `global_priv` 基于证书的认证信息
@@ -37,6 +38,7 @@ aliases: ['/docs-cn/dev/system-tables/system-table-overview/','/docs-cn/dev/refe
 * `analyze_options` 各个表默认的 `analyze` 参数
 * `column_stats_usage` 列统计信息的使用情况
 * `schema_index_usage` 索引的使用情况
+* `analyze_jobs` 正在执行的统计信息收集任务以及过去 7 天内的历史任务记录
 
 ## 执行计划相关系统表
 

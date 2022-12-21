@@ -9,28 +9,20 @@ PD Recover 是对 PD 进行灾难性恢复的工具，用于恢复无法正常�
 
 ## 安装 PD Recover
 
-要使用 PD Recover，你可以[从源代码编译](#从源代码编译)，也可以直接[下载 TiDB 安装包](#下载-tidb-安装包)。
+要使用 PD Recover，你可以[从源代码编译](#从源代码编译)，也可以直接[下载 TiDB 工具包](#下载-tidb-工具包)。
 
 ### 从源代码编译
 
-* [Go](https://golang.org/)：PD Recover 使用了 Go 模块，请安装 Go v1.13 或更新版本。
+* [Go](https://golang.org/)：PD Recover 使用了 Go 模块，请安装 Go v1.16 或更新版本。
 * 在 [PD](https://github.com/pingcap/pd) 根目录下，运行 `make pd-recover` 命令来编译源代码并生成 `bin/pd-recover`。
 
 > **注意：**
 >
 > 一般来说，用户不需要编译源代码，因为发布的二进制文件或 Docker 中已包含 PD Recover 工具。开发者可以参考以上步骤来编译源代码。
 
-### 下载 TiDB 安装包
+### 下载 TiDB 工具包
 
-PD Recover 包含在 TiDB 安装包中。直接下载 TiDB 安装包即可获取最新版本的 PD Recover。
-
-| 安装包 | 操作系统 | 架构 | SHA256 校验和 |
-|:---|:---|:---|:---|
-| `https://download.pingcap.org/tidb-{version}-linux-amd64.tar.gz` (pd-recover) | Linux | amd64 | `https://download.pingcap.org/tidb-{version}-linux-amd64.sha256` |
-
-> **注意：**
->
-> `{version}` 是 TiDB 的版本号。例如，`v5.4.0` 的安装包下载链接为 `https://download.pingcap.org/tidb-v5.4.0-linux-amd64.tar.gz`。
+PD Recover 的安装包位于 TiDB 离线工具包中。下载方式，请参考 [TiDB 工具下载](/download-ecosystem-tools.md)。
 
 ## 快速开始
 

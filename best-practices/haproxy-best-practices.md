@@ -9,20 +9,24 @@ aliases: ['/docs-cn/dev/best-practices/haproxy-best-practices/','/docs-cn/dev/re
 
 ![HAProxy 在 TiDB 中的最佳实践](/media/haproxy.jpg)
 
+> **注意：**
+>
+> TiDB 支持的最小 HAProxy 版本为 v1.5。使用 v1.5 到 v2.1 之间的 HAProxy 时，需要在 `mysql-check` 中配置 `post-41`。建议使用 HAProxy v2.2 或更高版本。
+
 ## HAProxy 简介
 
 HAProxy 是由 C 语言编写的自由开放源码的软件，为基于 TCP 和 HTTP 协议的应用程序提供高可用性、负载均衡和代理服务。因为 HAProxy 能够快速、高效使用 CPU 和内存，所以目前使用非常广泛，许多知名网站诸如 GitHub、Bitbucket、Stack Overflow、Reddit、Tumblr、Twitter 和 Tuenti 以及亚马逊网络服务系统都在使用 HAProxy。
 
-HAProxy 由 Linux 内核的核心贡献者 Willy Tarreau 于 2000 年编写，他现在仍然负责该项目的维护，并在开源社区免费提供版本迭代。本文示例使用 HAProxy [2.5.0](https://www.haproxy.com/blog/announcing-haproxy-2-5/)。推荐使用最新稳定版的 HAProxy，详情见[已发布的 HAProxy 版本](http://www.haproxy.org/)。
+HAProxy 由 Linux 内核的核心贡献者 Willy Tarreau 于 2000 年编写，他现在仍然负责该项目的维护，并在开源社区免费提供版本迭代。本文示例使用 HAProxy [2.6](https://www.haproxy.com/blog/announcing-haproxy-2-6/)。推荐使用最新稳定版的 HAProxy，详情见[已发布的 HAProxy 版本](http://www.haproxy.org/)。
 
 ## HAProxy 部分核心功能介绍
 
-- [高可用性](http://cbonte.github.io/haproxy-dconv/1.9/intro.html#3.3.4)：HAProxy 提供优雅关闭服务和无缝切换的高可用功能；
-- [负载均衡](http://cbonte.github.io/haproxy-dconv/1.9/configuration.html#4.2-balance)：L4 (TCP) 和 L7 (HTTP) 两种负载均衡模式，至少 9 类均衡算法，比如 roundrobin，leastconn，random 等；
-- [健康检查](http://cbonte.github.io/haproxy-dconv/1.9/configuration.html#5.2-check)：对 HAProxy 配置的 HTTP 或者 TCP 模式状态进行检查；
-- [会话保持](http://cbonte.github.io/haproxy-dconv/1.9/intro.html#3.3.6)：在应用程序没有提供会话保持功能的情况下，HAProxy 可以提供该项功能；
-- [SSL](http://cbonte.github.io/haproxy-dconv/1.9/intro.html#3.3.2)：支持 HTTPS 通信和解析；
-- [监控与统计](http://cbonte.github.io/haproxy-dconv/1.9/intro.html#3.3.3)：通过 web 页面可以实时监控服务状态以及具体的流量信息。
+- [高可用性](http://cbonte.github.io/haproxy-dconv/2.6/intro.html#3.3.4)：HAProxy 提供优雅关闭服务和无缝切换的高可用功能；
+- [负载均衡](http://cbonte.github.io/haproxy-dconv/2.6/configuration.html#4.2-balance)：L4 (TCP) 和 L7 (HTTP) 两种负载均衡模式，至少 9 类均衡算法，比如 roundrobin，leastconn，random 等；
+- [健康检查](http://cbonte.github.io/haproxy-dconv/2.6/configuration.html#5.2-check)：对 HAProxy 配置的 HTTP 或者 TCP 模式状态进行检查；
+- [会话保持](http://cbonte.github.io/haproxy-dconv/2.6/intro.html#3.3.6)：在应用程序没有提供会话保持功能的情况下，HAProxy 可以提供该项功能；
+- [SSL](http://cbonte.github.io/haproxy-dconv/2.6/intro.html#3.3.2)：支持 HTTPS 通信和解析；
+- [监控与统计](http://cbonte.github.io/haproxy-dconv/2.6/intro.html#3.3.3)：通过 web 页面可以实时监控服务状态以及具体的流量信息。
 
 ## 准备环境
 
@@ -41,19 +45,20 @@ HAProxy 由 Linux 内核的核心贡献者 Willy Tarreau 于 2000 年编写，�
 
 ### 依赖软件
 
-根据官方文档，对操作系统和依赖包有以下建议，如果通过 yum 源部署安装 HAProxy 软件，依赖包无需单独安装。
+根据 HAProxy 官方文档，对操作系统和依赖包有以下建议，如果通过 yum 源部署安装 HAProxy 软件，依赖包无需单独安装。
 
 #### 操作系统
 
-| 操作系统版本               | 架构                                       |
-|:-------------------------|:------------------------------------------|
-| Linux 2.4                | x86、x86_64、Alpha、SPARC、MIPS 和 PA-RISC  |
-| Linux 2.6 或 3.x         | x86、x86_64、ARM、SPARC 和 PPC64            |
-| Solaris 8 或 9           | UltraSPARC II 和 UltraSPARC III            |
-| Solaris 10               | Opteron 和 UltraSPARC                      |
-| FreeBSD 4.10 ~ 10        | x86                                        |
-| OpenBSD 3.1 及以上版本     | i386、AMD64、macppc、Alpha 和 SPARC64       |
-| AIX 5.1 ~ 5.3            | Power™                                     |
+| Linux 操作系统       | 版本         |
+| :----------------------- | :----------- |
+| Red Hat Enterprise Linux | 7 或者 8   |
+| CentOS                   | 7 或者 8   |
+| Oracle Enterprise Linux  | 7 或者 8   |
+| Ubuntu LTS               | 18.04 或者以上版本 |
+
+> **注意：**
+>
+> - 其他操作系统支持情况，详见 [HAProxy 文档](https://github.com/haproxy/haproxy/blob/master/INSTALL)。
 
 #### 依赖包
 
@@ -71,16 +76,16 @@ yum -y install epel-release gcc systemd-devel
 
 ## 部署 HAProxy
 
-HAProxy 配置 Database 负载均衡场景操作简单，以下部署操作具有普遍性，不具有特殊性，建议根据实际场景，个性化配置相关的[配置文件](http://cbonte.github.io/haproxy-dconv/2.5/configuration.html)。
+HAProxy 配置 Database 负载均衡场景操作简单，以下部署操作具有普遍性，不具有特殊性，建议根据实际场景，个性化配置相关的[配置文件](http://cbonte.github.io/haproxy-dconv/2.6/configuration.html)。
 
 ### 安装 HAProxy
 
-1. 下载 HAProxy 2.5.0 的源码包：
+1. 下载 HAProxy 2.6.2 的源码包：
 
     {{< copyable "shell-regular" >}}
 
     ```bash
-    wget https://github.com/haproxy/haproxy/archive/refs/tags/v2.5.0.zip
+    wget https://www.haproxy.org/download/2.6/src/haproxy-2.6.2.tar.gz
     ```
 
 2. 解压源码包：
@@ -88,7 +93,7 @@ HAProxy 配置 Database 负载均衡场景操作简单，以下部署操作具�
     {{< copyable "shell-regular" >}}
 
     ```bash
-    unzip v2.5.0.zip
+    tar zxf haproxy-2.6.2.tar.gz
     ```
 
 3. 从源码编译 HAProxy 应用：
@@ -96,7 +101,7 @@ HAProxy 配置 Database 负载均衡场景操作简单，以下部署操作具�
     {{< copyable "shell-regular" >}}
 
     ```bash
-    cd haproxy-2.5.0
+    cd haproxy-2.6.2
     make clean
     make -j 8 TARGET=linux-glibc USE_THREAD=1
     make PREFIX=${/app/haproxy} SBINDIR=${/app/haproxy/bin} install  # 将 `${/app/haproxy}` 和 `${/app/haproxy/bin}` 替换为自定义的实际路径。
@@ -108,6 +113,7 @@ HAProxy 配置 Database 负载均衡场景操作简单，以下部署操作具�
 
     ```bash
     echo 'export PATH=/app/haproxy/bin:$PATH' >> /etc/profile
+    . /etc/profile
     ```
 
 5. 检查 HAProxy 是否安装成功：
@@ -157,7 +163,7 @@ haproxy --help
 | `-x <unix_socket>` | 连接指定的 socket 并从旧进程中获取所有 listening socket，然后，使用这些 socket 而不是绑定新的。 |
 | `-S <bind>[,<bind_options>...]` | 主从模式下，创建绑定到主进程的 socket，此 socket 可访问每个子进程的 socket。 |
 
-更多有关 HAProxy 命令参数的信息，可参阅 [Management Guide of HAProxy](http://cbonte.github.io/haproxy-dconv/1.9/management.html) 和 [General Commands Manual of HAProxy](https://manpages.debian.org/buster-backports/haproxy/haproxy.1.en.html)。
+更多有关 HAProxy 命令参数的信息，可参阅 [Management Guide of HAProxy](http://cbonte.github.io/haproxy-dconv/2.6/management.html) 和 [General Commands Manual of HAProxy](https://manpages.debian.org/buster-backports/haproxy/haproxy.1.en.html)。
 
 ### 配置 HAProxy
 
@@ -202,6 +208,18 @@ listen tidb-cluster                        # 配置 database 负载均衡。
    server tidb-2 10.9.39.208:4000 check inter 2000 rise 2 fall 3
    server tidb-3 10.9.64.166:4000 check inter 2000 rise 2 fall 3
 ```
+
+如要通过 `SHOW PROCESSLIST` 查看连接来源 IP，需要配置使用 [PROXY 协议](https://www.haproxy.org/download/1.8/doc/proxy-protocol.txt)连接 TiDB。
+
+```yaml
+   server tidb-1 10.9.18.229:4000 send-proxy check inter 2000 rise 2 fall 3
+   server tidb-2 10.9.39.208:4000 send-proxy check inter 2000 rise 2 fall 3
+   server tidb-3 10.9.64.166:4000 send-proxy check inter 2000 rise 2 fall 3
+```
+
+> **注意：**
+>
+> 使用 PROXY 协议时，你需要在 tidb-server 的配置文件中设置 [`proxy-protocol.networks`](/tidb-configuration-file.md#networks)。
 
 ### 启动 HAProxy
 

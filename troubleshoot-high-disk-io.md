@@ -31,8 +31,8 @@ TiDB 集群主要的持久化组件是 TiKV 集群，一个 TiKV 包含两个 Ro
 
 在 `TiKV-Details` > `Raft IO` 中，可以看到这两个实例磁盘写入的相关 metric：
 
-- `Append log duration`：该监控表明了存储 Raft 日志的 RocksDB 写入的响应时间，.99 响应应该在 50ms 以内。
-- `Apply log duration`：该监控表明了存储真正数据的 RocksDB 写入的响应时间，.99 响应应该在 100ms 以内。
+- `Append log duration`：该监控表明了存储 Raft 日志的 RocksDB 写入的响应时间，99% 的响应应该在 50ms 以内。
+- `Apply log duration`：该监控表明了存储真正数据的 RocksDB 写入的响应时间，99% 的响应应该在 100ms 以内。
 
 这两个监控还有 `.. per server` 的监控面板来提供辅助查看热点写入的情况。
 

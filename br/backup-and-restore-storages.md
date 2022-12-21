@@ -1,196 +1,229 @@
 ---
-title: 外部存储
-summary: 了解 BR、TiDB Lightning 和 Dumpling 中所用存储服务的 URL 格式。
-aliases: ['/docs-cn/dev/br/backup-and-restore-storages/']
+title: 备份存储
+summary: 了解 BR 支持的备份存储服务的 URL 格式、鉴权方案和使用方式。
+aliases: ['/docs-cn/dev/br/backup-and-restore-storages/','/zh/tidb/dev/backup-storage-S3/','/zh/tidb/dev/backup-storage-azblob/','/zh/tidb/dev/backup-storage-gcs/']
 ---
 
-# 外部存储
+# 备份存储
 
-Backup & Restore (BR)、TiDB Lightning 和 Dumpling 皆支持在本地文件系统和 Amazon S3 上读写数据；另外 BR 亦支持 Google Cloud Storage (GCS) 和 [Azure Blob Storage (Azblob)](/br/backup-and-restore-azblob.md) 。通过传入不同 URL scheme 到 BR 的 `--storage` (`-s`) 参数、TiDB Lightning 的 `-d` 参数及 Dumpling 中的 `--output` (`-o`) 参数，可以区分不同的存储方式。
+TiDB 支持 Amazon S3、Google Cloud Storage (GCS)、Azure Blob Storage 和 NFS 作为备份恢复的存储。具体来说，可以在 `br` 的 `--storage` 或 `-s` 选项中指定备份存储的 URL。本文介绍不同外部存储服务中 [URL 的定义格式](#url-格式)、存储过程中的[鉴权方案](#鉴权)以及[存储服务端加密](#存储服务端加密)。
 
-## Scheme
+## URL 格式
 
-TiDB 迁移工具支持以下存储服务：
+### 格式说明
 
-| 服务 | Scheme | 示例 |
-|---------|---------|-------------|
-| 本地文件系统（分布在各节点上） | local | `local:///path/to/dest/` |
-| Amazon S3 及其他兼容 S3 的服务 | s3 | `s3://bucket-name/prefix/of/dest/` |
-| GCS | gcs, gs | `gcs://bucket-name/prefix/of/dest/` |
-| Azure Blob Storage | azure, azblob | `azure://container-name/prefix/of/dest/` |
-| 不写入任何存储（仅作为基准测试） | noop | `noop://` |
+本部分介绍存储服务的 URL 格式：
 
-## URL 参数
-
-S3、 GCS 和 Azblob 等云存储有时需要额外的连接配置，你可以为这类配置指定参数。例如：
-
-* 用 Dumpling 导出数据到 S3：
-
-    {{< copyable "shell-regular" >}}
-
-    ```bash
-    ./dumpling -u root -h 127.0.0.1 -P 3306 -B mydb -F 256MiB \
-        -o 's3://my-bucket/sql-backup?region=us-west-2'
-    ```
-
-* 用 TiDB Lightning 从 S3 导入数据：
-
-    {{< copyable "shell-regular" >}}
-
-    ```bash
-    ./tidb-lightning --tidb-port=4000 --pd-urls=127.0.0.1:2379 --backend=local --sorted-kv-dir=/tmp/sorted-kvs \
-        -d 's3://my-bucket/sql-backup?region=us-west-2'
-    ```
-
-* 用 TiDB Lightning 从 S3 导入数据（使用路径类型的请求模式）： 
-
-    {{< copyable "shell-regular" >}}
-
-    ```bash
-    ./tidb-lightning --tidb-port=4000 --pd-urls=127.0.0.1:2379 --backend=local --sorted-kv-dir=/tmp/sorted-kvs \
-        -d 's3://my-bucket/sql-backup?force-path-style=true&endpoint=http://10.154.10.132:8088'
-    ```
-
-* 用 BR 备份到 GCS：
-
-    {{< copyable "shell-regular" >}}
-
-    ```bash
-    ./br backup full -u 127.0.0.1:2379 \
-        -s 'gcs://bucket-name/prefix'
-    ```
-
-* 用 BR 备份到 Azblob：
-
-    {{< copyable "shell-regular" >}}
-
-    ```bash
-    ./br backup full -u 127.0.0.1:2379 \
-        -s 'azure://container-name/prefix'
-    ```
-
-### S3 的 URL 参数
-
-| URL 参数 | 描述 |
-|:----------|:---------|
-| `access-key` | 访问密钥 |
-| `secret-access-key` | secret 访问密钥 |
-| `region` | Amazon S3 服务区域（默认为 `us-east-1`） |
-| `use-accelerate-endpoint` | 是否在 Amazon S3 上使用加速端点（默认为 `false`） |
-| `endpoint` | S3 兼容服务自定义端点的 URL（例如 `https://s3.example.com/`）|
-| `force-path-style` | 使用 path-style，而不是 virtual-hosted style（默认为 `false`） |
-| `storage-class` | 上传对象的存储类别（例如 `STANDARD`、`STANDARD_IA`） |
-| `sse` | 用于加密上传的服务器端加密算法（可以设置为空，`AES256` 或 `aws:kms`） |
-| `sse-kms-key-id` | 如果 `sse` 设置为 `aws:kms`，则使用该参数指定 KMS ID |
-| `acl` | 上传对象的 canned ACL（例如，`private`、`authenticated-read`） |
-
-> **注意：**
->
-> 不建议在存储 URL 中直接传递访问密钥和 secret 访问密钥，因为这些密钥是明文记录的。迁移工具尝试按照以下顺序从环境中推断这些密钥：
-
-1. `$AWS_ACCESS_KEY_ID` 和 `$AWS_SECRET_ACCESS_KEY` 环境变量。
-2. `$AWS_ACCESS_KEY` 和 `$AWS_SECRET_KEY` 环境变量。
-3. 工具节点上的共享凭证文件，路径由 `$AWS_SHARED_CREDENTIALS_FILE` 环境变量指定。
-4. 工具节点上的共享凭证文件，路径为 `~/.aws/credentials`。
-5. 当前 Amazon EC2 容器的 IAM 角色。
-6. 当前 Amazon ECS 任务的 IAM 角色。
-
-### GCS 的 URL 参数
-
-| URL 参数 | 描述 |
-|:----------|:---------|
-| `credentials-file` | 迁移工具节点上的凭证 JSON 文件的路径 |
-| `storage-class` | 上传对象的存储类别（例如 `STANDARD`、`COLDLINE`） |
-| `predefined-acl` | 上传对象的预定义 ACL（例如 `private`、`project-private`） |
-
-如果没有指定 `credentials-file`，迁移工具尝试按照以下顺序从环境中推断出凭证：
-
-1. 工具节点上位于 `$GOOGLE_APPLICATION_CREDENTIALS` 环境变量所指定路径的文件内容。
-2. 工具节点上位于 `~/.config/gcloud/application_default_credentials.json` 的文件内容。
-3. 在 GCE 或 GAE 中运行时，从元数据服务器中获取的凭证。
-
-### Azblob 的 URL 参数
-
-| URL 参数 | 描述 |
-|:----------|:-----|
-| `account-name` | 存储账户名 |
-| `account-key` | 访问密钥 |
-| `access-tier` | 上传对象的存储类别（例如 `Hot`、`Cool`、`Archive`）。如果没有设置 `access-tier` 的值（该值为空），此值会默认设置为 `Hot`。 |
-
-为了保证 TiKV 和迁移工具使用了同一个存储账户，`account-name` 会由迁移工具决定（即默认 `send-credentials-to-tikv = true`）。迁移工具按照以下顺序推断密钥：
-
-1. 如果已指定 `account-name` **和** `account-key`，则使用该参数指定的密钥。
-2. 如果没有指定 `account-key`，则尝试从工具节点上的环境变量读取相关凭证。
-    - 迁移工具会优先读取 `$AZURE_CLIENT_ID`、`$AZURE_TENANT_ID` 和 `$AZURE_CLIENT_SECRET`。与此同时，工具会允许 TiKV 从各自节点上读取上述三个环境变量，采用 `Azure AD` (Azure Active Directory) 访问。
-        - `$AZURE_CLIENT_ID`、`$AZURE_TENANT_ID` 和 `$AZURE_CLIENT_SECRET` 分别代表 Azure 应用程序的应用程序 ID `client_id`，租户 ID `tenant_id` 和客户端密码 `client_secret`。
-        - 如需了解如何确认运行环境中存在环境变量 `$AZURE_CLIENT_ID`、`$AZURE_TENANT_ID` 和 `$AZURE_CLIENT_SECRET`，或需要将环境变量配置为参数，请参考[配置环境变量作为参数](/br/backup-and-restore-azblob.md#配置环境变量作为参数)
-3. 如果上述的三个环境变量不存在于工具节点中，则尝试读取 `$AZURE_STORAGE_KEY`，采用密钥访问。
-    - 如需确认 BR 运行环境和 TiKV 运行环境中是否存在这三个环境变量，请参考[配置环境变量作为参数](/br/backup-and-restore-azblob.md#配置环境变量作为参数)。
-
-> **注意：**
-> 
-> 将 Azure Blob Storage 作为外部存储时，必须设置 `send-credentials-to-tikv = true`（即默认情况），否则会导致备份失败。
-
-## 命令行参数
-
-除了使用 URL 参数，BR 和 Dumpling 工具亦支持从命令行指定这些配置，例如：
-
-{{< copyable "shell-regular" >}}
-
-```bash
-./dumpling -u root -h 127.0.0.1 -P 3306 -B mydb -F 256MiB \
-    -o 's3://my-bucket/sql-backup' \
-    --s3.region 'us-west-2'
+```shell
+[scheme]://[host]/[path]?[parameters]
 ```
 
-如果同时指定了 URL 参数和命令行参数，命令行参数会覆盖 URL 参数。
+<SimpleTab groupId="storage">
+<div label="Amazon S3" value="amazon">
 
-### S3 的命令行参数
+- `scheme`：`s3`
+- `host`：`bucket name`
+- `parameters`：
 
-| 命令行参数 | 描述 |
-|:----------|:------|
-| `--s3.region` | Amazon S3 服务区域（默认为 `us-east-1`） |
-| `--s3.endpoint` | S3 兼容服务自定义端点的 URL（例如 `https://s3.example.com/`）|
-| `--s3.storage-class` | 上传对象的存储类别（例如 `STANDARD`、`STANDARD_IA`） |
-| `--s3.sse` | 用于加密上传的服务器端加密算法（可以设置为空，`AES256` 或 `aws:kms`） |
-| `--s3.sse-kms-key-id` | 如果 `--s3.sse` 设置为 `aws:kms`，则使用该参数指定 KMS ID |
-| `--s3.acl` | 上传对象的 canned ACL（例如，`private`、`authenticated-read`） |
-| `--s3.provider` | S3 兼容服务类型（支持 `aws`、`alibaba`、`ceph`、`netease` 或 `other`） |
+    - `access-key`：访问密钥
+    - `secret-access-key`：秘密访问密钥
+    - `use-accelerate-endpoint`：是否在 Amazon S3 上使用加速端点，默认为 `false`
+    - `endpoint`：Amazon S3 兼容服务自定义端点的 URL，例如 `<https://s3.example.com/>`
+    - `force-path-style`：使用路径类型 (path-style)，而不是虚拟托管类型 (virtual-hosted-style)，默认为 `true`
+    - `storage-class`：上传对象的存储类别，例如 `STANDARD`、`STANDARD_IA`
+    - `sse`：加密上传的服务端加密算法，可以设置为空、`AES256` 或 `aws:kms`
+    - `sse-kms-key-id`：如果 `sse` 设置为 `aws:kms`，则使用该参数指定 KMS ID
+    - `acl`：上传对象的标准 ACL (Canned ACL)，例如 `private`、`authenticated-read`
 
-### GCS 的命令行参数
+</div>
+<div label="GCS" value="gcs">
 
-| 命令行参数 | 描述 |
-|:----------|:---------|
-| `--gcs.credentials-file` | 迁移工具节点上的凭证 JSON 文件的路径 |
-| `--gcs.storage-class` | 上传对象的存储类别（例如 `STANDARD`、`COLDLINE`） |
-| `--gcs.predefined-acl` | 上传对象的预定义 ACL（例如 `private`、`project-private`） |
+- `scheme`：`gcs` 或 `gs`
+- `host`：`bucket name`
+- `parameters`：
 
-### Azblob 的命令行参数
+    - `credentials-file`：迁移工具节点上凭证 JSON 文件的路径
+    - `storage-class`：上传对象的存储类别，例如 `STANDARD` 或 `COLDLINE`
+    - `predefined-acl`：上传对象的预定义 ACL，例如 `private` 或 `project-private`
 
-| 命令行参数 | 描述 |
-|:----------|:-------|
-| `--azblob.account-name` | 存储账户名 |
-| `--azblob.account-key` | 访问密钥 |
-| `--azblob.access-tier` | 上传对象的存储类别（例如 `Hot`、`Cool`、`Archive`）。如果没有设置 `access-tier` 的值（该值为空），此值会默认设置为 `Hot`。 |
+</div>
+<div label="Azure Blob Storage" value="azure">
 
-## BR 向 TiKV 发送凭证
+- `scheme`：`azure` 或 `azblob`
+- `host`：`container name`
+- `parameters`：
 
-在默认情况下，使用 S3、GCS 或 Azblob 存储时，BR 会将凭证发送到每个 TiKV 节点，以减少设置的复杂性。
+    - `account-name`：存储账户名
+    - `account-key`：访问密钥
+    - `access-tier`：上传对象的存储类别，例如 `Hot`、`Cool`、`Archive`，默认为 `Hot`
 
-但是，这个操作不适合云端环境，因为每个节点都有自己的角色和权限。在这种情况下，你需要用 `--send-credentials-to-tikv=false`（或简写为 `-c=0`）来禁止发送凭证：
+</div>
+</SimpleTab>
 
-{{< copyable "shell-regular" >}}
+### URL 示例
 
-```bash
-./br backup full -c=0 -u pd-service:2379 -s 's3://bucket-name/prefix'
+本部分示例以 `host`（上表中 `bucket name`、`container name`）为 `external` 为例进行介绍。
+
+<SimpleTab groupId="storage">
+<div label="Amazon S3" value="amazon">
+
+**备份快照数据到 Amazon S3**
+
+```shell
+./br backup full -u "${PD_IP}:2379" \
+--storage "s3://external/backup-20220915?access-key=${access-key}&secret-access-key=${secret-access-key}"
 ```
 
-使用 SQL 进行[备份](/sql-statements/sql-statement-backup.md)[恢复](/sql-statements/sql-statement-restore.md)时，可加上 `SEND_CREDENTIALS_TO_TIKV = FALSE` 选项：
+**从 Amazon S3 恢复快照备份数据**
 
-{{< copyable "sql" >}}
-
-```sql
-BACKUP DATABASE * TO 's3://bucket-name/prefix' SEND_CREDENTIALS_TO_TIKV = FALSE;
+```shell
+./br restore full -u "${PD_IP}:2379" \
+--storage "s3://external/backup-20220915?access-key=${access-key}&secret-access-key=${secret-access-key}"
 ```
 
-此参数不适用于 TiDB Lightning 和 Dumpling，因为目前它们都是单机程序。
+</div>
+<div label="GCS" value="gcs">
+
+**备份快照数据到 GCS**
+
+```shell
+./br backup full --pd "${PD_IP}:2379" \
+--storage "gcs://external/backup-20220915?credentials-file=${credentials-file-path}"
+```
+
+**从 GCS 恢复快照备份数据**
+
+```shell
+./br restore full --pd "${PD_IP}:2379" \
+--storage "gcs://external/backup-20220915?credentials-file=${credentials-file-path}"
+```
+
+</div>
+<div label="Azure Blob Storage" value="azure">
+
+**备份快照数据到 Azure Blob Storage**
+
+```shell
+./br backup full -u "${PD_IP}:2379" \
+--storage "azure://external/backup-20220915?account-name=${account-name}&account-key=${account-key}"
+```
+
+**从 Azure Blob Storage 恢复快照备份数据中 `test` 数据库**
+
+```shell
+./br restore db --db test -u "${PD_IP}:2379" \
+--storage "azure://external/backup-20220915account-name=${account-name}&account-key=${account-key}"
+```
+
+</div>
+</SimpleTab>
+
+## 鉴权
+
+将数据存储到云服务存储系统时，根据云服务供应商的不同，需要设置不同的鉴权参数。本部分介绍使用 Amazon S3、GCS 及 Azure Blob Storage 时所用存储服务的鉴权方式以及如何配置访问相应存储服务的账户。
+
+<SimpleTab groupId="storage">
+<div label="Amazon S3" value="amazon">
+
+在备份之前，需要为 br 命令行工具访问 Amazon S3 中的备份目录设置相应的访问权限：
+
+- 备份时 TiKV 和 br 命令行工具需要的访问备份数据目录的最小权限：`s3:ListBucket`、`s3:PutObject` 和 `s3:AbortMultipartUpload`。
+- 恢复时 TiKV 和 br 命令行工具需要的访问备份数据目录的最小权限：`s3:ListBucket` 和 `s3:GetObject`。
+
+如果你还没有创建备份数据保存目录，可以参考 [创建存储桶](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/user-guide/create-bucket.html)在指定的区域中创建一个 S3 存储桶。如果需要使用文件夹，可以参考 [使用文件夹在 Amazon S3 控制台中组织对象](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/user-guide/create-folder.html)在存储桶中创建一个文件夹。
+
+配置访问 Amazon S3 的账户可以通过以下两种方式：
+
+- 方式一：指定访问密钥
+
+    如果指定访问密钥和秘密访问密钥，将按照指定的访问密钥和秘密访问密钥进行鉴权。除了在 URL 中指定密钥外，还支持以下方式：
+
+    - br 命令行工具读取 `$AWS_ACCESS_KEY_ID` 和 `$AWS_SECRET_ACCESS_KEY` 环境变量
+    - br 命令行工具读取 `$AWS_ACCESS_KEY` 和 `$AWS_SECRET_KEY` 环境变量
+    - br 命令行工具读取共享凭证文件，路径由 `$AWS_SHARED_CREDENTIALS_FILE` 环境变量指定
+    - br 命令行工具读取共享凭证文件，路径为 `~/.aws/credentials`
+
+- 方式二：基于 IAM Role 进行访问
+
+    为运行 TiKV 和 br 命令行工具的 EC2 实例关联一个配置了访问 S3 访问权限的 IAM role。正确设置后，br 命令行工具可以直接访问对应的 S3 中的备份目录，而不需要额外的设置。
+
+    ```shell
+    br backup full --pd "${PD_IP}:2379" \
+    --storage "s3://${host}/${path}"
+    ```
+
+</div>
+<div label="GCS" value="gcs">
+
+配置访问 GCS 的账户可以通过指定访问密钥的方式。如果指定了 `credentials-file` 参数，将按照指定的 `credentials-file` 进行鉴权。除了在 URL 中指定密钥文件外，还支持以下方式：
+
+- br 命令行工具读取位于 `$GOOGLE_APPLICATION_CREDENTIALS` 环境变量所指定路径的文件内容
+- br 命令行工具读取位于 `~/.config/gcloud/application_default_credentials.json` 的文件内容
+- 在 GCE 或 GAE 中运行时，从元数据服务器中获取的凭证
+
+</div>
+<div label="Azure Blob Storage" value="azure">
+
+- 方式一：指定访问密钥
+
+    在 URL 配置 `account-name` 和 `account-key`，则使用该参数指定的密钥。除了在 URL 中指定密钥文件外，还支持 br 命令行工具读取 `$AZURE_STORAGE_KEY` 的方式。
+
+- 方式二：使用 Azure AD 备份恢复
+
+    在 br 命令行工具运行环境配置环境变量 `$AZURE_CLIENT_ID`、`$AZURE_TENANT_ID` 和 `$AZURE_CLIENT_SECRET`。
+
+    - 当集群使用 TiUP 启动时，TiKV 会使用 systemd 服务。以下示例介绍如何为 TiKV 配置上述三个环境变量：
+
+        > **注意：**
+        >
+        > 该流程在第 3 步中需要重启 TiKV。如果你的集群不适合重启，请使用**指定访问密钥的方式**进行备份恢复。
+
+        1. 假设该节点上 TiKV 端口为 `24000`，即 systemd 服务名为 `tikv-24000`：
+
+            ```shell
+            systemctl edit tikv-24000
+            ```
+
+        2. 编辑三个环境变量的信息：
+
+            ```
+            [Service]
+            Environment="AZURE_CLIENT_ID=aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"
+            Environment="AZURE_TENANT_ID=aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"
+            Environment="AZURE_CLIENT_SECRET=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            ```
+
+        3. 重新加载配置并重启 TiKV：
+
+            ```shell
+            systemctl daemon-reload
+            systemctl restart tikv-24000
+            ```
+
+    - 为命令行启动的 TiKV 和 br 命令行工具配置 Azure AD 的信息，只需要确定运行环境中存在 `$AZURE_CLIENT_ID`、`$AZURE_TENANT_ID` 和 `$AZURE_CLIENT_SECRET`。通过运行下列命令行，可以确认 br 命令行工具和 TiKV 运行环境中是否存在这三个环境变量：
+
+        ```shell
+        echo $AZURE_CLIENT_ID
+        echo $AZURE_TENANT_ID
+        echo $AZURE_CLIENT_SECRET
+        ```
+
+    - 使用 br 命令行工具将数据备份至 Azure Blob Storage：
+
+        ```shell
+        ./br backup full -u "${PD_IP}:2379" \
+        --storage "azure://external/backup-20220915?account-name=${account-name}"
+        ```
+
+</div>
+</SimpleTab>
+
+## 存储服务端加密
+
+### Amazon S3 存储服务端加密备份数据
+
+TiDB 备份恢复功能支持对备份到 Amazon S3 的数据进行 S3 服务端加密 (SSE)。S3 服务端加密也支持使用用户自行创建的 AWS KMS 密钥，详细信息请参考 [BR S3 服务端加密](/encryption-at-rest.md#br-s3-服务端加密)。
+
+## 存储服务其他功能支持
+
+TiDB 备份恢复功能从 v6.3.0 支持 AWS S3 Object Lock 功能。你可以在 AWS 中开启 [S3 Object Lock](https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lock.html) 功能来防止备份数据写入后被修改或者删除。

@@ -5,7 +5,7 @@ summary: 本文档介绍了 TiDB Lightning 并行导入的概念、使用场景�
 
 # TiDB Lightning 并行导入
 
-TiDB Lightning 的 [Local 后端模式](/tidb-lightning/tidb-lightning-backends.md#tidb-lightning-local-backend)从 v5.3.0 版本开始支持单表或多表数据的并行导入。通过支持同步启动多个实例，并行导入不同的单表或多表的不同数据，使 TiDB Lightning 具备水平扩展的能力，可大大降低导入大量数据所需的时间。
+TiDB Lightning 的 [Physical Import Mode](/tidb-lightning/tidb-lightning-physical-import-mode.md) 从 v5.3.0 版本开始支持单表或多表数据的并行导入。通过支持同步启动多个实例，并行导入不同的单表或多表的不同数据，使 TiDB Lightning 具备水平扩展的能力，可大大降低导入大量数据所需的时间。
 
 在技术实现上，TiDB Lightning 通过在目标 TiDB 中记录各个实例以及每个导入表导入数据的元信息，协调不同实例的 Row ID 分配范围、全局 Checksum 的记录和 TiKV 及 PD 的配置变更与恢复。
 
@@ -17,18 +17,10 @@ TiDB Lightning 并行导入可以用于以下场景：
 > **注意：**
 >
 > - 并行导入只支持初始化 TiDB 的空表，不支持导入数据到已有业务写入的数据表，否则可能会导致数据不一致的情况。
-> 
+>
 > - 并行导入一般用于 local-backend 模式。
 >
-> - 使用多个 TiDB Lightning 向同一目标导入时，禁止混用不同的 backend，例如，不可同时使用 Local-backend 和 TiDB-backend 导入同一 TiDB 集群。
-
-下图展示了并行导入分库分表的工作流程。在该场景中，你可以使用多个 TiDB Lightning 实例导入 MySQL 的分表到下游的 TiDB 集群。
-
-![并行导入分库分表](/media/parallel-import-shard-tables.png)
-
-下图展示了并行导入单表的工作流程。在该场景中，你可以使用多个 TiDB Lightning 实例，将单个表中的数据拆分后，并行导入到下游的 TiDB 集群。
-
-![并行导入单表](/media/parallel-import-single-tables.png)
+> - 并行导入一般用于 Physical Import Mode；虽然也能用于 Logical Import Mode，但是一般不会带来明显的性能提升。
 
 ## 使用说明
 
@@ -41,7 +33,7 @@ TiDB Lightning 并行导入可以用于以下场景：
 
 ### 解决主键或者唯一索引的冲突
 
-在使用 [Local 后端模式](/tidb-lightning/tidb-lightning-backends.md#tidb-lightning-local-backend)并行导入时，需要确保多个 TiDB Lightning 的数据源之间，以及它们和 TiDB 的目标表中的数据没有主键或者唯一索引的冲突，并且导入的目标表不能有其他应用进行数据写入。否则，TiDB Lightning 将无法保证导入结果的正确性，并且导入完成后相关的数据表将处于数据索引不一致的状态。
+在使用 [Physical Import Mode](/tidb-lightning/tidb-lightning-physical-import-mode.md) 并行导入时，需要确保多个 TiDB Lightning 的数据源之间，以及它们和 TiDB 的目标表中的数据没有主键或者唯一索引的冲突，并且导入的目标表不能有其他应用进行数据写入。否则，TiDB Lightning 将无法保证导入结果的正确性，并且导入完成后相关的数据表将处于数据索引不一致的状态。
 
 ### 导入性能优化
 
@@ -83,7 +75,7 @@ TiDB Lightning 在运行时，需要独占部分资源，因此如果需要在�
 
 在部署 TiDB Lightning 的 5 个节点上面分别导出两个分表的数据：
 
-- 如果两个分表位于同一个 MySQL 实例中，可以直接使用 Dumpling 的 `-f` 参数一次性导出。此时在使用 TiDB Lightning 导入时，指定 `data-source-dir` 为 Dumpling 数据导出的目录即可；
+- 如果两个分表位于同一个 MySQL 实例中，可以直接使用 Dumpling 的 `--filter` 参数一次性导出。此时在使用 TiDB Lightning 导入时，指定 `data-source-dir` 为 Dumpling 数据导出的目录即可；
 - 如果两个分表的数据分布在不同的 MySQL 节点上，则需要使用 Dumpling 分别导出，两次导出数据需要放置在同一父目录下<b>不同子目录里</b>，然后在使用 TiDB Lightning 导入时，`data-source-dir` 指定为此父级目录。
 
 使用 Dumpling 导出数据的步骤，请参考 [Dumpling](/dumpling-overview.md)。
@@ -102,24 +94,17 @@ data-source-dir = "/path/to/source-dir"
 
 [tikv-importer]
 # 是否允许向已存在数据的表导入数据。默认值为 false。
-# 当使用并行导入模式时，由于多个 TiDB Lightning 实例同时导入一张表，因此此开关必须设置为 true。 
+# 当使用并行导入模式时，由于多个 TiDB Lightning 实例同时导入一张表，因此此开关必须设置为 true。
 incremental-import = true
-# "local"：默认使用该模式，适用于 TB 级以上大数据量，但导入期间下游 TiDB 无法对外提供服务。
-# "tidb"：TB 级以下数据量也可以采用 "tidb" 后端模式，下游 TiDB 可正常提供服务。 
+# "local"：Physical Import Mode，默认使用。适用于 TB 级以上大数据量，但导入期间下游 TiDB 无法对外提供服务。
+# "tidb"：Logical Import Mode。TB 级以下数据量也可以采用，下游 TiDB 可正常提供服务。
 backend = "local"
 
 # 设置本地排序数据的路径
 sorted-kv-dir = "/path/to/sorted-dir"
+```
 
-# 设置分库分表合并规则
-[[routes]]
-schema-pattern = "my_db"
-table-pattern = "my_table_*"
-target-schema = "my_db"
-target-table = "my_table"
-``` 
-
-如果数据源存放在 Amazon S3 或 GCS 等分布式存储缓存，请参考[外部存储](/br/backup-and-restore-storages.md)。
+如果数据源存放在 Amazon S3 或 GCS 等外部存储中，请参考[外部存储](/br/external-storage.md)。
 
 ### 第 3 步：开启 TiDB Lightning 进行数据导入
 
@@ -129,12 +114,12 @@ target-table = "my_table"
 
 ```shell
 # !/bin/bash
-nohup ./tidb-lightning -config tidb-lightning.toml > nohup.out &
+nohup tiup tidb-lightning -config tidb-lightning.toml > nohup.out &
 ```
 
 在并行导入的场景下，TiDB Lightning 在启动任务之后，会自动进行下列检查：
 
-- 检查本地盘空间以及 TiKV 集群是否有足够空间导入数据。检查时会对数据源进行采样，通过采样结果预估索引大小占比。由于估算中考虑了索引，因此可能会出现尽管数据源大小低于本地盘可用空间，但依然无法通过检测的情况。
+- 检查本地盘空间（即 `sort-kv-dir` 配置）以及 TiKV 集群是否有足够空间导入数据，空间大小的详细说明参考 [TiDB Lightning 下游数据库所需空间](/tidb-lightning/tidb-lightning-requirements.md#目标数据库所需空间)和 [TiDB Lightning 运行时资源要求](/tidb-lightning/tidb-lightning-physical-import-mode.md#运行环境需求)。检查时会对数据源进行采样，通过采样结果预估索引大小占比。由于估算中考虑了索引，因此可能会出现尽管数据源大小低于本地盘可用空间，但依然无法通过检测的情况。
 - 检查 TiKV 集群的 region 分布是否均匀，以及是否存在大量空 region，如果空 region 的数量大于 max(1000,  表的数量 * 3) ，即大于 “1000” 和 “3 倍表数量”二者中的最大者，则无法执行导入。
 - 检查数据源导入数据是否有序，并且根据检查结果自动调整 `mydumper.batch-size` 的大小。因此 `mydumper.batch-size` 配置不再对用户开放。
 
@@ -151,11 +136,11 @@ nohup ./tidb-lightning -config tidb-lightning.toml > nohup.out &
 
 ## 示例 2：使用 TiDB Lightning 并行导入单表数据
 
-TiDB Lightning 也支持并行导入单表的数据。例如，将存放在 Amazon S3 中的多个单表文件，分别由不同的 TiDB Lightning 实例并行导入到下游 TiDB 数据库中。该方法可以加快整体导入速度。关于更多远端存储信息，请参考 [TiDB Lightning 支持的远端存储](/br/backup-and-restore-storages.md)。
+TiDB Lightning 也支持并行导入单表的数据。例如，将存放在 Amazon S3 中的多个单表文件，分别由不同的 TiDB Lightning 实例并行导入到下游 TiDB 数据库中。该方法可以加快整体导入速度。关于更多远端存储信息，请参考 [TiDB Lightning 支持的远端存储](/br/external-storage.md)。
 
 > **注意：**
 >
-> 在本地环境下，可以使用 Dumpling 的 --where 参数，预先将单表的数据划分成不同的部分导出至多台机器的本地磁盘，此时依然可以使用并行导入功能，其配置与示例 1 相同。
+> 在本地环境下，可以使用 Dumpling 的 `--filesize` 或 `--where` 参数，预先将单表的数据划分成不同的部分导出至多台机器的本地磁盘，此时依然可以使用并行导入功能，其配置与示例 1 相同。
 
 假设通过 Dumpling 导出的源文件存放在 Amazon S3 云存储中，数据文件为 `my_db.my_table.00001.sql` ~ `my_db.my_table.10000.sql` 共计 10000 个 SQL 文件。如果希望使用 2 个 TiDB Lightning 实例加速导入，则需要在配置文件中增加如下设置：
 

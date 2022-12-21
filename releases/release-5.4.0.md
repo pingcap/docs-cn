@@ -79,6 +79,12 @@ TiDB 版本：5.4.0
 - 自 v5.4.0 起，对于通过 Plan Cache 已经缓存的执行计划，如果为其创建绑定 (Binding)，会使得对应查询已经缓存的计划失效。v5.4.0 前已经缓存的计划不受新 Binding 的影响。
 - 在 v5.3 及更早版本中，[TiDB Data Migration (DM)](https://docs.pingcap.com/zh/tidb-data-migration/v5.3/) 文档独立于 TiDB 文档。自 v5.4 起，TiDB Data Migration 的文档已合并入相同版本的 TiDB 文档，无需跳转到 DM 文档站，你可以直接在 TiDB 文档站阅读 [DM 文档](/dm/dm-overview.md)。
 - 移除 cdclog。自 v5.4.0 起，不再支持 cdclog。
+- 改进了给系统变量设置为字符串 "DEFAULT" 的行为，以便与 MySQL 更兼容 [#29680](https://github.com/pingcap/tidb/pull/29680)
+- 将系统变量 `lc_time_names` 改成只读 [#30084](https://github.com/pingcap/tidb/pull/30084)
+- 将系统变量 `tidb_store_limit` 的作用域从 INSTANCE 或 GLOBAL 更改为 GLOBAL [#30756](https://github.com/pingcap/tidb/pull/30756)
+- 当列数据中有零时，禁止列从整型类型转成时间类型 [#25728](https://github.com/pingcap/tidb/pull/25728)
+- 修复插入浮点值时对 `Inf` 和 `NaN` 值不报错问题 [#30148](https://github.com/pingcap/tidb/pull/30148)
+- 修复了当 Auto ID 超出范围时，`REPLACE` 语句更改其他行 ID 值的问题 [#30301](https://github.com/pingcap/tidb/pull/30301)
 
 ## 新功能
 
@@ -116,12 +122,12 @@ TiDB 版本：5.4.0
 
     - 支持将更多函数下推至 MPP 引擎
         - 字符串函数：`LPAD()`、`RPAD()`、`STRCMP()`
-        - 日期时间函数：`ADDDATE()`、`DATE_ADD()`、`DATE_SUB()`、`SUBDATE()`、`QUARTER()`
-    - 引入动态线程池，提升资源利用率（实验特性）
+        - 日期时间函数：`ADDDATE(string, real)`、`DATE_ADD(string, real)`、`DATE_SUB(string, real)`、`SUBDATE(string, real)`、`QUARTER()`
+    - 引入可扩缩容弹性线程池，提升资源利用率（实验特性）
     - 提升从 TiKV 同步数据时，由行存格式到列存格式的数据转换效率，整体的数据同步性能提升 50%
     - 调整一些配置项的默认值，提升 TiFlash 的性能和稳定性。HTAP 混合负载下，单表简单查询的性能最高提升 20%
 
-    用户文档：[TiFlash 支持的计算下推](/tiflash/use-tiflash.md#tiflash-支持的计算下推)，[TiFlash 配置文件](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml)
+    用户文档：[TiFlash 支持的计算下推](/tiflash/tiflash-supported-pushdown-calculations.md)，[TiFlash 配置文件](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml)
 
 - **通过 session 变量实现有界限过期数据读取**
 
@@ -164,7 +170,7 @@ TiDB 版本：5.4.0
 
     支持使用 [Raft Engine](https://github.com/tikv/raft-engine) 作为 TiKV 的日志存储引擎。与使用 RocksDB 相比，Raft Engine 可以减少至多 40% 的 TiKV I/O 写流量和 10% 的 CPU 使用，同时在特定负载下提升 5% 左右前台吞吐，减少 20% 尾延迟。此外，Raft Engine 提升了日志回收效率，修复了极端条件下日志堆积的问题。
 
-    Raft Engine 目前仍属于实验特性，并默认关闭。另外请注意 v5.4.0 版本的 Raft Engine 数据格式与之前版本不兼容，对集群做升级或者降级操作之前，需要确保所有 TiKV 节点上的 Raft Engine 已被关闭。只建议在 v5.4.0 及以后的版本使用 Raft Engine。
+    Raft Engine 目前仍属于实验特性，并默认关闭。另外请注意 v5.4.0 版本的 Raft Engine 数据格式与之前版本不兼容，对集群做升级操作之前，需要确保所有 TiKV 节点上的 Raft Engine 已被关闭。只建议在 v5.4.0 及以后的版本使用 Raft Engine。
 
     [用户文档](/tikv-configuration-file.md#raft-engine)
 
@@ -208,7 +214,7 @@ TiDB 版本：5.4.0
 
     Backup & Restore (BR) 支持 Azure Blob Storage 作为备份的远端目标存储。在 Azure Cloud 环境部署 TiDB 的用户，可以支持使用该功能将集群数据备份到 Azure Blob Storage 服务中。
 
-    [用户文档](/br/backup-and-restore-azblob.md)
+    [用户文档](/br/backup-and-restore-storages.md)
 
 ### 数据迁移
 
@@ -290,7 +296,6 @@ TiDB 版本：5.4.0
 
 + TiDB
 
-    - 新增系统变量 [`tidb_enable_paging`](/system-variables.md#tidb_enable_paging-从-v540-版本开始引入)，开启该功能可显著降低使用 `IndexLookUp` 和 `Limit` 并且 `Limit` 数据较小且无法下推到 `IndexScan` 上的读请求的延迟 [#30578](https://github.com/pingcap/tidb/issues/30578)
     - 支持 `ADMIN {SESSION | INSTANCE | GLOBAL} PLAN_CACHE` 语法，用于清空缓存的查询计划 [#30370](https://github.com/pingcap/tidb/pull/30370)
 
 + TiKV

@@ -5,9 +5,9 @@ aliases: ['/docs-cn/dev/identify-slow-queries/','/docs-cn/dev/how-to/maintain/id
 
 # 慢查询日志
 
-TiDB 会将执行时间超过 [slow-threshold](/tidb-configuration-file.md#slow-threshold)（默认值为 300 毫秒）的语句输出到 [slow-query-file](/tidb-configuration-file.md#slow-query-file)（默认值："tidb-slow.log"）日志文件中，用于帮助用户定位慢查询语句，分析和解决 SQL 执行的性能问题。
+TiDB 会将执行时间超过 [`tidb_slow_log_threshold`](/system-variables.md#tidb_slow_log_threshold)（默认值为 300 毫秒）的语句输出到 [slow-query-file](/tidb-configuration-file.md#slow-query-file)（默认值为 "tidb-slow.log"）日志文件中，用于帮助用户定位慢查询语句，分析和解决 SQL 执行的性能问题。
 
-TiDB 默认启用慢查询日志，可以修改配置 [`enable-slow-log`](/tidb-configuration-file.md#enable-slow-log) 来启用或禁用它。
+TiDB 默认启用慢查询日志，可以修改系统变量 [`tidb_enable_slow_log`](/system-variables.md#tidb_enable_slow_log) 来启用或禁用它。
 
 ## 日志示例
 
@@ -21,6 +21,8 @@ TiDB 默认启用慢查询日志，可以修改配置 [`enable-slow-log`](/tidb-
 # Parse_time: 0.000054933
 # Compile_time: 0.000129729
 # Rewrite_time: 0.000000003 Preproc_subqueries: 2 Preproc_subqueries_time: 0.000000002
+# Optimize_time: 0.00000001
+# Wait_TS: 0.00001078
 # Process_time: 0.07 Request_count: 1 Total_keys: 131073 Process_keys: 131072 Prewrite_time: 0.335415029 Commit_time: 0.032175429 Get_commit_ts_time: 0.000177098 Local_latch_wait_time: 0.106869448 Write_keys: 131072 Write_size: 3538944 Prewrite_region: 1
 # DB: test
 # Is_internal: false
@@ -54,21 +56,33 @@ Slow Query 基础信息：
 * `Query_time`：表示执行这个语句花费的时间。
 * `Parse_time`：表示这个语句在语法解析阶段花费的时间。
 * `Compile_time`：表示这个语句在查询优化阶段花费的时间。
+* `Optimize_time`：表示这个语句在优化查询计划阶段花费的时间。
+* `Wait_TS`：表示这个语句在等待获取事务 TS 阶段花费的时间。
 * `Query`：表示 SQL 语句。慢日志里面不会打印 `Query`，但映射到内存表后，对应的字段叫 `Query`。
 * `Digest`：表示 SQL 语句的指纹。
 * `Txn_start_ts`：表示事务的开始时间戳，也是事务的唯一 ID，可以用这个值在 TiDB 日志中查找事务相关的其他日志。
 * `Is_internal`：表示是否为 TiDB 内部的 SQL 语句。`true` 表示 TiDB 系统内部执行的 SQL 语句，`false` 表示用户执行的 SQL 语句。
-* `Index_ids`：表示语句涉及到的索引的 ID。
+* `Index_names`：表示这个语句执行用到的索引。
+* `Stats`：表示这个语句涉及表的统计信息健康状态，`pseudo` 状态表示统计信息状态不健康。
 * `Succ`：表示语句是否执行成功。
 * `Backoff_time`：表示语句遇到需要重试的错误时在重试前等待的时间。常见的需要重试的错误有以下几种：遇到了 lock、Region 分裂、`tikv server is busy`。
 * `Plan`：表示语句的执行计划，用 `select tidb_decode_plan('xxx...')` SQL 语句可以解析出具体的执行计划。
+* `Binary_plan`：表示以二进制格式编码后的语句的执行计划，用 `select tidb_decode_binary_plan('xxx...')` SQL 语句可以解析出具体的执行计划。传递的信息和 `Plan` 字段基本相同，但是解析出的执行计划的格式会和 `Plan` 字段不同。
 * `Prepared`：表示这个语句是否是 `Prepare` 或 `Execute` 的请求。
 * `Plan_from_cache`：表示这个语句是否命中了执行计划缓存。
+* `Plan_from_binding`：表示这个语句是否用的绑定的执行计划。
+* `Has_more_results`：表示这个语句的查询结果是否还有更多的数据待用户发起 `fetch` 命令获取。
 * `Rewrite_time`：表示这个语句在查询改写阶段花费的时间。
 * `Preproc_subqueries`：表示这个语句中被提前执行的子查询个数，如 `where id in (select if from t)` 这个子查询就可能被提前执行。
 * `Preproc_subqueries_time`：表示这个语句中被提前执行的子查询耗时。
 * `Exec_retry_count`：表示这个语句执行的重试次数。一般出现在悲观事务中，上锁失败时重试执行该语句。
 * `Exec_retry_time`：表示这个语句的重试执行时间。例如某个查询一共执行了三次（前两次失败），则 `Exec_retry_time` 表示前两次的执行时间之和，`Query_time` 减去 `Exec_retry_time` 则为最后一次执行时间。
+* `KV_total`：表示这个语句在 TiKV/TiFlash 上所有 RPC 请求花费的时间。
+* `PD_total`：表示这个语句在 PD 上所有 RPC 请求花费的时间。
+* `Backoff_total`：表示这个语句在执行过程中所有 backoff 花费的时间。
+* `Write_sql_response_total`：表示这个语句把结果发送回客户端花费的时间。
+* `Result_rows`：表示这个语句查询结果的行数。
+* `IsExplicitTxn`：表示这个语句是否在一个明确声明的事务中。如果是 `false`，表示这个语句的事务是 `autocommit=1`，即语句执行完成后就自动提交的事务。
 
 和事务执行相关的字段：
 
@@ -86,11 +100,12 @@ Slow Query 基础信息：
 
 和硬盘使用相关的字段：
 
-* `Disk_max`: 表示执行期间 TiDB 使用的最大硬盘空间，单位为 byte。
+* `Disk_max`：表示执行期间 TiDB 使用的最大硬盘空间，单位为 byte。
 
 和 SQL 执行的用户相关的字段：
 
 * `User`：表示执行语句的用户名。
+* `Host`：表示执行语句的用户地址。
 * `Conn_ID`：表示用户的链接 ID，可以用类似 `con:3` 的关键字在 TiDB 日志中查找该链接相关的其他日志。
 * `DB`：表示执行语句时使用的 database。
 
@@ -101,11 +116,12 @@ Slow Query 基础信息：
 * `Process_time`：执行 SQL 在 TiKV 的处理时间之和，因为数据会并行的发到 TiKV 执行，这个值可能会超过 `Query_time`。
 * `Wait_time`：表示这个语句在 TiKV 的等待时间之和，因为 TiKV 的 Coprocessor 线程数是有限的，当所有的 Coprocessor 线程都在工作的时候，请求会排队；当队列中有某些请求耗时很长的时候，后面的请求的等待时间都会增加。
 * `Process_keys`：表示 Coprocessor 处理的 key 的数量。相比 total_keys，processed_keys 不包含 MVCC 的旧版本。如果 processed_keys 和 total_keys 相差很大，说明旧版本比较多。
-* `Cop_proc_avg`：cop-task 的平均执行时间。
+* `Num_cop_tasks`：表示这个语句发送的 Coprocessor 请求的数量。
+* `Cop_proc_avg`：cop-task 的平均执行时间，包括一些无法统计的等待时间，如 RocksDB 内的 mutex。
 * `Cop_proc_p90`：cop-task 的 P90 分位执行时间。
 * `Cop_proc_max`：cop-task 的最大执行时间。
 * `Cop_proc_addr`：执行时间最长的 cop-task 所在地址。
-* `Cop_wait_avg`：cop-task 的平均等待时间。
+* `Cop_wait_avg`：cop-task 的平均等待时间，包括请求排队和获取 snapshot 时间。
 * `Cop_wait_p90`：cop-task 的 P90 分位等待时间。
 * `Cop_wait_max`：cop-task 的最大等待时间。
 * `Cop_wait_addr`：等待时间最长的 cop-task 所在地址。
@@ -520,20 +536,20 @@ pt-query-digest --report tidb-slow.log
 
 并不是所有 SLOW_QUERY 的语句都是有问题的。会造成集群整体压力增大的，是那些 process_time 很大的语句。wait_time 很大，但 process_time 很小的语句通常不是问题语句，是因为被问题语句阻塞，在执行队列等待造成的响应时间过长。
 
-## `admin show slow` 命令
+## `ADMIN SHOW SLOW` 命令
 
-除了获取 TiDB 日志，还有一种定位慢查询的方式是通过 `admin show slow` SQL 命令：
+除了获取 TiDB 日志，还有一种定位慢查询的方式是通过 `ADMIN SHOW SLOW` SQL 命令：
 
 {{< copyable "sql" >}}
 
 ```sql
-admin show slow recent N;
+ADMIN SHOW SLOW recent N;
 ```
 
 {{< copyable "sql" >}}
 
 ```sql
-admin show slow top [internal | all] N;
+ADMIN SHOW SLOW TOP [internal | all] N;
 ```
 
 `recent N` 会显示最近的 N 条慢查询记录，例如：
@@ -541,7 +557,7 @@ admin show slow top [internal | all] N;
 {{< copyable "sql" >}}
 
 ```sql
-admin show slow recent 10;
+ADMIN SHOW SLOW recent 10;
 ```
 
 `top N` 则显示最近一段时间（大约几天）内，最慢的查询记录。如果指定 `internal` 选项，则返回查询系统内部 SQL 的慢查询记录；如果指定 `all` 选项，返回系统内部和用户 SQL 汇总以后的慢查询记录；默认只返回用户 SQL 中的慢查询记录。
@@ -549,9 +565,9 @@ admin show slow recent 10;
 {{< copyable "sql" >}}
 
 ```sql
-admin show slow top 3;
-admin show slow top internal 3;
-admin show slow top all 5;
+ADMIN SHOW SLOW TOP 3;
+ADMIN SHOW SLOW TOP internal 3;
+ADMIN SHOW SLOW TOP all 5;
 ```
 
 由于内存限制，保留的慢查询记录的条数是有限的。当命令查询的 `N` 大于记录条数时，返回的结果记录条数会小于 `N`。
@@ -563,9 +579,9 @@ admin show slow top all 5;
 | start | SQL 语句执行开始时间 |
 | duration | SQL 语句执行持续时间 |
 | details | 执行语句的详细信息 |
-| succ | SQL 语句执行是否成功，1: 成功，0: 失败 |
+| succ | SQL 语句执行是否成功，1：成功，0：失败 |
 | conn_id | session 连接 ID |
-| transcation_ts | 事务提交的 commit ts |
+| transaction_ts | 事务提交的 commit ts |
 | user | 执行该语句的用户名 |
 | db | 执行该 SQL 涉及到 database |
 | table_ids | 执行该 SQL 涉及到表的 ID |

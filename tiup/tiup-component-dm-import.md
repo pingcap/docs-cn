@@ -2,7 +2,11 @@
 title: tiup dm import
 ---
 
-# tiup dm import
+# tiup dm import <span class="version-mark">仅适用于升级 DM v1.0</span>
+
+<Note>
+该命令仅适用于将 DM 集群从 v1.0 升级到 v2.0 或更高版本。
+</Note>
 
 在 DM 1.0 版本，集群基本是通过 TiDB Ansible 部署的，TiUP DM 提供了 `import` 命令导入 v1.0 的集群并重新部署 v2.0 的集群。
 

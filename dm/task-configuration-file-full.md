@@ -1,6 +1,6 @@
 ---
 title: DM 任务完整配置文件介绍
-aliases: ['/docs-cn/tidb-data-migration/dev/task-configuration-file-full/','/docs-cn/tidb-data-migration/dev/dm-portal/']
+aliases: ['/docs-cn/tidb-data-migration/dev/task-configuration-file-full/','/docs-cn/tidb-data-migration/dev/dm-portal/','/zh/tidb/dev/task-configuration-file']
 ---
 
 # DM 任务完整配置文件介绍
@@ -22,7 +22,6 @@ aliases: ['/docs-cn/tidb-data-migration/dev/task-configuration-file-full/','/doc
 ## ********* 基本信息配置 *********
 name: test                      # 任务名称，需要全局唯一
 task-mode: all                  # 任务模式，可设为 "full" - "只进行全量数据迁移"、"incremental" - "Binlog 实时同步"、"all" - "全量 + Binlog 实时同步"
-is-sharding: true               # 该配置项从 DM v2.0.0 起弃用，其功能被 `shard-mode` 取代，建议使用 `shard-mode` 代替 `is-sharding`
 shard-mode: "pessimistic"       # 任务协调模式，可选的模式有 ""、"pessimistic、"optimistic"。默认值为 "" 即无需协调。如果是分库分表合并任务，请设置为悲观协调模式 "pessimistic"。
                                 # 在 v2.0.6 版本后乐观模式逐渐成熟，深入了解乐观协调模式的原理和使用限制后，也可以设置为乐观协调模式 "optimistic"
 meta-schema: "dm_meta"          # 下游储存 `meta` 信息的数据库
@@ -32,7 +31,8 @@ case-sensitive: false           # schema/table 是否大小写敏感
 online-ddl: true                # 支持上游 "gh-ost" 、"pt" 的自动处理
 online-ddl-scheme: "gh-ost"     # `online-ddl-scheme` 已被弃用，建议使用 `online-ddl`。
 clean-dump-file: true           # 是否清理 dump 阶段产生的文件，包括 metadata 文件、建库建表 SQL 文件以及数据导入 SQL 文件
-collation_compatible: "loose"   # 同步 CREATE 语句中缺省 Collation 的方式，可选 "loose" 和 "strict"，默认为 "loose"。"loose" 模式不会显式补充上游缺省的 Collation，"strict" 会显式补充上游缺省的 Collation。当使用 "strict" 模式，但下游不支持上游缺省的 Collation 时，下游可能会报错。 
+collation_compatible: "loose"   # 同步 CREATE 语句中缺省 Collation 的方式，可选 "loose" 和 "strict"，默认为 "loose"。"loose" 模式不会显式补充上游缺省的 Collation，"strict" 会显式补充上游缺省的 Collation。当使用 "strict" 模式，但下游不支持上游缺省的 Collation 时，下游可能会报错。
+ignore-checking-items: []       # 忽略检查项。可用值请参考 precheck 说明页面。
 
 target-database:                # 下游数据库实例配置
   host: "192.168.0.1"
@@ -58,6 +58,16 @@ routes:                           # 上游和下游表之间的路由 table rout
     table-pattern: "t_*"          # 表名匹配规则，支持通配符 "*" 和 "?"
     target-schema: "test"         # 目标库名称
     target-table: "t"             # 目标表名称
+    # 可选配置：提取各分库分表的源信息，并写入下游用户自建的列，用于标识合表中各行数据的来源。如果配置该项，需要提前在下游手动创建合表，具体可参考 “table routing 文档” <https://docs.pingcap.com/zh/tidb/dev/dm-key-features#table-routing>。
+    # extract-table:                                        # 提取分表去除 t_ 的后缀信息，并写入下游合表 c_table 列，例如，t_01 分表的数据会提取 01 写入下游 c_table 列
+    #   table-regexp: "t_(.*)"
+    #   target-column: "c_table"
+    # extract-schema:                                       # 提取分库去除 test_ 的后缀信息，并写入下游合表 c_schema 列，例如，test_02 分库的数据会提取 02 写入下游 c_schema 列
+    #   schema-regexp: "test_(.*)"
+    #   target-column: "c_schema"
+    # extract-source:                                       # 提取数据库源实例信息写入 c_source 列，例如，mysql-replica-01 数据源实例的数据会提取 mysql-replica-01 写入下游 c_source 列
+    #   source-regexp: "(.*)"
+    #   target-column: "c_source"
   route-rule-2:
     schema-pattern: "test_*"
     target-schema: "test"
@@ -96,15 +106,27 @@ block-allow-list:                    # 定义数据源迁移表的过滤规则�
 
 mydumpers:                           # dump 处理单元的运行配置参数
   global:                            # 配置名称
-    threads: 4                       # dump 处理单元从上游数据库实例导出数据的线程数量，默认值为 4
+    threads: 4                       # dump 处理单元从上游数据库实例导出数据和 check-task 访问上游的线程数量，默认值为 4
     chunk-filesize: 64               # dump 处理单元生成的数据文件大小，默认值为 64，单位为 MB
     extra-args: "--consistency none" # dump 处理单元的其他参数，不需要在 extra-args 中配置 table-list，DM 会自动生成
 
 loaders:                             # load 处理单元的运行配置参数
   global:                            # 配置名称
     pool-size: 16                    # load 处理单元并发执行 dump 处理单元的 SQL 文件的线程数量，默认值为 16，当有多个实例同时向 TiDB 迁移数据时可根据负载情况适当调小该值
-    dir: "./dumped_data"             # dump 处理单元输出 SQL 文件的目录，同时也是 load 处理单元读取文件的目录。该配置项的默认值为 "./dumped_data"。同实例对应的不同任务必须配置不同的目录
 
+    # 保存上游全量导出数据的目录。该配置项的默认值为 "./dumped_data"。
+    # 支持配置为本地文件系统路径，也支持配置为 Amazon S3 路径，如: s3://dm_bucket/dumped_data?endpoint=s3-website.us-east-2.amazonaws.com&access_key=s3accesskey&secret_access_key=s3secretkey&force_path_style=true
+    dir: "./dumped_data"
+
+    # 全量阶段数据导入的模式。可以设置为如下几种模式：
+    # - "sql"(默认)。使用 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) TiDB-backend 进行导入。
+    # - "loader"。使用 Loader 导入。此模式仅作为兼容模式保留，目前用于支持 TiDB Lightning 尚未包含的功能，预计会在后续的版本废弃。
+    import-mode: "sql"
+    # 全量导入阶段针对冲突数据的解决方式：
+    # - "replace"（默认值）。仅支持 import-mode 为 "sql"，表示用最新数据替代已有数据。
+    # - "ignore"。仅支持 import-mode 为 "sql"，保留已有数据，忽略新数据。
+    # - "error"。仅支持 import-mode 为 "loader"。插入重复数据时报错并停止同步任务。
+    on-duplicate: "replace"
 
 syncers:                             # sync 处理单元的运行配置参数
   global:                            # 配置名称
@@ -114,6 +136,11 @@ syncers:                             # sync 处理单元的运行配置参数
 
     # 设置为 true，则将来自上游的 `INSERT` 改写为 `REPLACE`，将 `UPDATE` 改写为 `DELETE` 与 `REPLACE`，保证在表结构中存在主键或唯一索引的条件下迁移数据时可以重复导入 DML。
     safe-mode: false
+    # 自动安全模式的持续时间
+    # 如不设置或者设置为 ""，则默认为 `checkpoint-flush-interval`（默认为 30s）的两倍，即 60s。
+    # 如设置为 "0s"，则在 DM 自动进入安全模式的时候报错。
+    # 如设置为正常值，例如 "1m30s"，则在该任务异常暂停、记录 `safemode_exit_point` 失败、或是 DM 进程异常退出时，把安全模式持续时间调整为 1 分 30 秒。详情可见[自动开启安全模式](https://docs.pingcap.com/zh/tidb/stable/dm-safe-mode#自动开启) 。
+    safe-mode-duration: "60s"
     # 设置为 true，DM 会在不增加延迟的情况下，尽可能地将上游对同一条数据的多次操作压缩成一次操作。
     # 如 INSERT INTO tb(a,b) VALUES(1,1); UPDATE tb SET b=11 WHERE a=1; 会被压缩成 INSERT INTO tb(a,b) VALUES(1,11); 其中 a 为主键
     # 如 UPDATE tb SET b=1 WHERE a=1; UPDATE tb(a,b) SET b=2 WHERE a=1; 会被压缩成 UPDATE tb(a,b) SET b=2 WHERE a=1; 其中 a 为主键
@@ -125,11 +152,20 @@ syncers:                             # sync 处理单元的运行配置参数
     # 如 DELETE FROM tb WHERE a=1; DELETE FROM tb WHERE a=2 会变成 DELETE FROM tb WHERE (a) IN (1),(2)；其中 a 为主键
     multiple-rows: false
 
+validators:              # 增量数据校验的运行配置参数
+  global:                # 配置名称
+    # full：校验每一行中每一列数据是否正确
+    # fast：仅校验这一行是否有成功迁移到下游
+    # none：不校验
+    mode: full           # 可选填 full，fast 和 none，默认是 none，即不开启校验。
+    worker-count: 4      # 后台校验的 validation worker 数量，默认是 4 个
+    row-error-delay: 30m # 某一行多久没有校验通过会被标记为 error row，默认是 30 分钟
+
 # ----------- 实例配置 -----------
 mysql-instances:
   -
     source-id: "mysql-replica-01"           # 对应 source.toml 中的 `source-id`
-    meta:                                   # `task-mode` 为 `incremental` 且下游数据库的 `checkpoint` 不存在时 binlog 迁移开始的位置; 如果 checkpoint 存在，则以 `checkpoint` 为准
+    meta:                                   # `task-mode` 为 `incremental` 且下游数据库的 `checkpoint` 不存在时 binlog 迁移开始的位置; 如果 checkpoint 存在，则以 `checkpoint` 为准。如果 `meta` 项和下游数据库的 `checkpoint` 都不存在，则从上游当前最新的 binlog 位置开始迁移
       binlog-name: binlog.000001
       binlog-pos: 4
       binlog-gtid: "03fc0263-28c7-11e7-a653-6c0b84d59f30:1-7041423,05474d3c-28c7-11e7-8352-203db246dd3d:1-170"  # 对于 source 中指定了 `enable-gtid: true` 的增量任务，需要指定该值
@@ -142,7 +178,7 @@ mysql-instances:
     mydumper-config-name: "global"          # mydumpers 配置的名称
     loader-config-name: "global"            # loaders 配置的名称
     syncer-config-name: "global"            # syncers 配置的名称
-
+    validator-config-name: "global"         # validators 配置的名称
   -
     source-id: "mysql-replica-02"  # 对应 source.toml 中的 `source-id`
     mydumper-thread: 4             # dump 处理单元用于导出数据的线程数量，等同于 mydumpers 配置中的 `threads`，当同时指定它们时 `mydumper-thread` 优先级更高
@@ -177,9 +213,9 @@ mysql-instances:
 
 | 配置项        | 说明                                    |
 | :------------ | :--------------------------------------- |
-| `routes` | 上游和下游表之间的路由 table routing 规则集。如果上游与下游的库名、表名一致，则不需要配置该项。使用场景及示例配置参见 [Table Routing](/dm/dm-key-features.md#table-routing) |
-| `filters` | 上游数据库实例匹配的表的 binlog event filter 规则集。如果不需要对 binlog 进行过滤，则不需要配置该项。使用场景及示例配置参见 [Binlog Event Filter](/dm/dm-key-features.md#binlog-event-filter) |
-| `block-allow-list` | 该上游数据库实例匹配的表的 block & allow lists 过滤规则集。建议通过该项指定需要迁移的库和表，否则会迁移所有的库和表。使用场景及示例配置参见 [Block & Allow Lists](/dm/dm-key-features.md#block--allow-table-lists) |
+| `routes` | 上游和下游表之间的路由 table routing 规则集。如果上游与下游的库名、表名一致，则不需要配置该项。使用场景及示例配置参见 [Table Routing](/dm/dm-table-routing.md) |
+| `filters` | 上游数据库实例匹配的表的 binlog event filter 规则集。如果不需要对 binlog 进行过滤，则不需要配置该项。使用场景及示例配置参见 [Binlog Event Filter](/dm/dm-binlog-event-filter.md) |
+| `block-allow-list` | 该上游数据库实例匹配的表的 block & allow lists 过滤规则集。建议通过该项指定需要迁移的库和表，否则会迁移所有的库和表。使用场景及示例配置参见 [Block & Allow Lists](/dm/dm-block-allow-table-lists.md) |
 | `mydumpers` | dump 处理单元的运行配置参数。如果默认配置可以满足需求，则不需要配置该项，也可以只使用 `mydumper-thread` 对 `thread` 配置项单独进行配置。 |
 | `loaders` | load 处理单元的运行配置参数。如果默认配置可以满足需求，则不需要配置该项，也可以只使用 `loader-thread` 对 `pool-size` 配置项单独进行配置。 |
 | `syncers` | sync 处理单元的运行配置参数。如果默认配置可以满足需求，则不需要配置该项，也可以只使用 `syncer-thread` 对 `worker-count` 配置项单独进行配置。 |

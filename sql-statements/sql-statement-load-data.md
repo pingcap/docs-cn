@@ -51,17 +51,17 @@ LINES TERMINATED BY '\n'
 
 ```sql
 CREATE TABLE trips (
-    ->  trip_id bigint NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    ->  duration integer not null,
-    ->  start_date datetime,
-    ->  end_date datetime,
-    ->  start_station_number integer,
-    ->  start_station varchar(255),
-    ->  end_station_number integer,
-    ->  end_station varchar(255),
-    ->  bike_number varchar(255),
-    ->  member_type varchar(255)
-    -> );
+    trip_id bigint NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    duration integer not null,
+    start_date datetime,
+    end_date datetime,
+    start_station_number integer,
+    start_station varchar(255),
+    end_station_number integer,
+    end_station varchar(255),
+    bike_number varchar(255),
+    member_type varchar(255)
+    );
 ```
 
 ```
@@ -72,7 +72,7 @@ Query OK, 0 rows affected (0.14 sec)
 
 如果此时遇到 `ERROR 1148 (42000): the used command is not allowed with this TiDB version` 报错信息。可以参考以下文档解决：
 
-[ERROR 1148 (42000): the used command is not allowed with this TiDB version 问题的处理方法](/faq/tidb-faq.md#323-error-1148-42000-the-used-command-is-not-allowed-with-this-tidb-version-问题的处理方法)
+[ERROR 1148 (42000): the used command is not allowed with this TiDB version 问题的处理方法](/error-codes.md#mysql-原生报错汇总)
 
 {{< copyable "sql" >}}
 
@@ -97,7 +97,7 @@ LOAD DATA LOCAL INFILE '/mnt/evo970/data-sets/bikeshare-data/2017Q4-capitalbikes
 
 ## MySQL 兼容性
 
-除 `LOAD DATA...REPLACE INTO` 语法 [#24515](https://github.com/pingcap/tidb/issues/24515) 之外，`LOAD DATA` 语句应该完全兼容 MySQL。若发现任何兼容性差异，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues/new/choose)。
+`LOAD DATA` 语句应该完全兼容 MySQL。若发现任何兼容性差异，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues/new/choose)。
 
 > **注意：**
 >

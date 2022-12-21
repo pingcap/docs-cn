@@ -606,6 +606,7 @@ Query OK, 0 rows affected (0.08 sec)
 - TINYINT (R)
 - TINYTEXT (R)
 - TO (R)
+- TOKEN_ISSUER
 - TOPN (R)
 - TRACE
 - TRADITIONAL

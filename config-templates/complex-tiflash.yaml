@@ -16,9 +16,9 @@ monitored:
 
 # # Server configs are used to specify the runtime configuration of TiDB components.
 # # All configuration items can be found in TiDB docs:
-# # - TiDB: https://pingcap.com/docs/stable/reference/configuration/tidb-server/configuration-file/
-# # - TiKV: https://pingcap.com/docs/stable/reference/configuration/tikv-server/configuration-file/
-# # - PD: https://pingcap.com/docs/stable/reference/configuration/pd-server/configuration-file/
+# # - TiDB: https://docs.pingcap.com/zh/tidb/stable/tidb-configuration-file
+# # - TiKV: https://docs.pingcap.com/zh/tidb/stable/tikv-configuration-file
+# # - PD: https://docs.pingcap.com/zh/tidb/stable/pd-configuration-file
 # # All configuration items use points to represent the hierarchy, e.g:
 # #   readpool.storage.use-unified-pool
 # #      
@@ -46,7 +46,11 @@ server_configs:
     profiles.default.max_memory_usage: 0
     # Maximum memory usage for processing all concurrently running queries on the server. Zero means unlimited.
     profiles.default.max_memory_usage_for_all_queries: 0
-
+  tiflash-learner:
+    # The allowable number of threads in the pool that flushes Raft data to storage.
+    raftstore.apply-pool-size: 4
+    # The allowable number of threads that process Raft, which is the size of the Raftstore thread pool.
+    raftstore.store-pool-size: 4
 pd_servers:
   - host: 10.0.1.4
     # ssh_port: 22
@@ -88,7 +92,10 @@ tikv_servers:
     # # The following configs are used to overwrite the `server_configs.tikv` values.
     # config:
     #   server.grpc-concurrency: 4
-    #   server.labels: { zone: "zone1", dc: "dc1", host: "host1" }
+    #   server.labels:
+    #     zone: "zone1"
+    #     dc: "dc1"
+    #     host: "host1"
   - host: 10.0.1.2
   - host: 10.0.1.3
 
@@ -120,6 +127,10 @@ tiflash_servers:
     #   # storage.latest.capacity: [ 161061273600 ]
     # learner_config:
     #   log-level: "info"
+    #   server.labels:
+    #     zone: "zone2"
+    #     dc: "dc2"
+    #     host: "host2"
   # - host: 10.0.1.12
   # - host: 10.0.1.13
 

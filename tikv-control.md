@@ -17,10 +17,8 @@ TiKV Control（以下简称 tikv-ctl）是 TiKV 的命令行工具，用于管�
 
 `tikv-ctl` 也集成在了 `tiup` 命令中。执行以下命令，即可调用 `tikv-ctl` 工具：
 
-{{< copyable "shell-regular" >}}
-
-```bash
-tiup ctl tikv
+```shell
+tiup ctl:<cluster-version> tikv
 ```
 
 ```
@@ -89,7 +87,7 @@ SUBCOMMANDS:
     unsafe-recover        Unsafely recover the cluster when the majority replicas are failed
 ```
 
-你可以在 `tiup ctl tikv` 后面再接上相应的参数与子命令。
+你可以在 `tiup ctl:<cluster-version> tikv` 后面再接上相应的参数与子命令。
 
 ## 通用参数
 
@@ -115,13 +113,11 @@ tikv-ctl 提供以下两种运行模式：
     store:"127.0.0.1:20160" compact db:KV cf:default range:([], []) success!
     ```
 
-- **本地模式**。通过 `--db` 选项来指定本地 TiKV 数据的目录路径。在此模式下，需要停止正在运行的 TiKV 实例。
+- **本地模式**。通过 `--data-dir` 选项来指定本地 TiKV 数据的目录路径。在此模式下，需要停止正在运行的 TiKV 实例。
 
 以下如无特殊说明，所有命令都同时支持这两种模式。
 
 除此之外，tikv-ctl 还有两个简单的命令 `--to-hex` 和 `--to-escaped`，用于对 key 的形式作简单的变换。一般使用 `escaped` 形式，示例如下：
-
-{{< copyable "shell-regular" >}}
 
 ```shell
 tikv-ctl --to-escaped 0xaaff
@@ -130,8 +126,6 @@ tikv-ctl --to-escaped 0xaaff
 ```
 \252\377
 ```
-
-{{< copyable "shell-regular" >}}
 
 ```shell
 tikv-ctl --to-hex "\252\377"
@@ -153,32 +147,69 @@ AAFF
 
 `raft` 子命令可以查看 Raft 状态机在某一时刻的状态。状态信息包括 **RegionLocalState**、**RaftLocalState** 和 **RegionApplyState** 三个结构体，及某一条 log 对应的 Entries。
 
-你可以使用 `region` 和 `log` 两个子命令分别查询以上信息。两条子命令都同时支持远程模式和本地模式。其用法及输出内容如下所示：
+可以使用 `region` 和 `log` 两个子命令分别查询以上信息。两条子命令都同时支持远程模式和本地模式。
 
-{{< copyable "shell-regular" >}}
+对于 `region` 子命令：
+
+- 要查看指定的 Region，可在命令中使用 `-r` 参数，多个 Region 以 `,` 分隔。也可以使用 `--all-regions` 参数来返回所有 Region（`-r` 与 `--all-regions` 不能同时使用）
+- 要限制输出的 Region 的数量，可在命令中使用 `--limit` 参数（默认为 `16`）
+- 要查询某个 key 范围中包含哪些 Region，可在命令中使用 `--start` 和 `--end` 参数（默认不限范围，采用 Hex 格式）
+
+需要输出 ID 为 `1239` 的 Region 时，用法及输出内容如下所示：
 
 ```shell
-tikv-ctl --host 127.0.0.1:20160 raft region -r 2
+tikv-ctl --host 127.0.0.1:20160 raft region -r 1239
 ```
 
 ```
-region id: 2
-region state key: \001\003\000\000\000\000\000\000\000\002\001
-region state: Some(region {id: 2 region_epoch {conf_ver: 3 version: 1} peers {id: 3 store_id: 1} peers {id: 5 store_id: 4} peers {id: 7 store_id: 6}})
-raft state key: \001\002\000\000\000\000\000\000\000\002\002
-raft state: Some(hard_state {term: 307 vote: 5 commit: 314617} last_index: 314617)
-apply state key: \001\002\000\000\000\000\000\000\000\002\003
-apply state: Some(applied_index: 314617 truncated_state {index: 313474 term: 151})
+"region id": 1239
+"region state": { 
+    id: 1239, 
+    start_key: 7480000000000000FF4E5F728000000000FF1443770000000000FA, 
+    end_key: 7480000000000000FF4E5F728000000000FF21C4420000000000FA, 
+    region_epoch: {conf_ver: 1 version: 43}, 
+    peers: [ {id: 1240 store_id: 1 role: Voter} ] 
+}
+"raft state": {
+    hard_state {term: 8 vote: 5 commit: 7} 
+    last_index: 8)
+}
+"apply state": {
+    applied_index: 8 commit_index: 8 commit_term: 8
+    truncated_state {index: 5 term: 5} 
+}
+```
+
+需要查询某个 key 范围中包含哪些 Region 时，用法及输出内容如下所示：
+
+- 当 key 范围包含在某个 Region 中时，将会输出该 Region 信息。
+- 当 key 范围精准到某个 Region 的范围时，以上述 Region `1239` 为例：当给定的 key 范围为 Region `1239` 的范围时，由于 Region 范围为左闭右开区间，并且 Region `1009` 以 Region `1239` 的 `end_key` 作为 `start_key`，因此会同时输出 Region `1009` 和 Region `1239` 的信息。
+
+```shell
+tikv-ctl --host 127.0.0.1:20160 raft region --start 7480000000000000FF4E5F728000000000FF1443770000000000FA --end 7480000000000000FF4E5F728000000000FF21C4420000000000FA
+```
+
+```
+"region state": { 
+    id: 1009
+    start_key: 7480000000000000FF4E5F728000000000FF21C4420000000000FA, 
+    end_key: 7480000000000000FF5000000000000000F8, 
+    ...
+}
+"region state": { 
+    id: 1239
+    start_key: 7480000000000000FF4E5F728000000000FF06C6D60000000000FA, 
+    end_key: 7480000000000000FF4E5F728000000000FF1443770000000000FA, 
+    ...
+}
 ```
 
 ### 查看 Region 的大小
 
 使用 `size` 命令可以查看 Region 的大小：
 
-{{< copyable "shell-regular" >}}
-
 ```shell
-tikv-ctl --db /path/to/tikv/db size -r 2
+tikv-ctl --data-dir /path/to/tikv size -r 2
 ```
 
 ```
@@ -192,10 +223,8 @@ cf lock region size: 27616
 
 `scan` 命令的 `--from` 和 `--to` 参数接受两个 escaped 形式的 raw key，并用 `--show-cf` 参数指定只需要查看哪些列族。
 
-{{< copyable "shell-regular" >}}
-
 ```shell
-tikv-ctl --db /path/to/tikv/db scan --from 'zm' --limit 2 --show-cf lock,default,write
+tikv-ctl --data-dir /path/to/tikv scan --from 'zm' --limit 2 --show-cf lock,default,write
 ```
 
 ```
@@ -210,10 +239,8 @@ key: zmDB:29\000\000\377\000\374\000\000\000\000\000\000\377\000H\000\000\000\00
 
 与 `scan` 命令类似，`mvcc` 命令可以查看给定 key 的 MVCC：
 
-{{< copyable "shell-regular" >}}
-
 ```shell
-tikv-ctl --db /path/to/tikv/db mvcc -k "zmDB:29\000\000\377\000\374\000\000\000\000\000\000\377\000H\000\000\000\000\000\000\371" --show-cf=lock,write,default
+tikv-ctl --data-dir /path/to/tikv mvcc -k "zmDB:29\000\000\377\000\374\000\000\000\000\000\000\377\000H\000\000\000\000\000\000\371" --show-cf=lock,write,default
 ```
 
 ```
@@ -226,6 +253,29 @@ key: zmDB:29\000\000\377\000\374\000\000\000\000\000\000\377\000H\000\000\000\00
 >
 > 该命令中，key 同样需要是 escaped 形式的 raw key。
 
+### 扫描 raw key
+
+使用 `raw-scan` 命令，TiKV 可直接在 RocksDB 中扫描 raw key。
+
+> **注意：**
+>
+> 如果要扫描数据 key，需要在 key 前添加 `'z'` 前缀。
+
+- 要指定扫描范围，可在 `raw-scan` 命令中使用 `--from` 和 `--to` 参数（默认不限范围）
+- 要限制能够打印出的 key 的数量（默认为 `30`），可在命令中使用 `--limit` 参数
+- 要指定扫描的 CF，可在命令中使用 `--cf` 参数（可选值为 `default`，`write`，`lock`）
+
+```shell
+tikv-ctl --data-dir /var/lib/tikv raw-scan --from 'zt' --limit 2 --cf default
+```
+
+```
+key: "zt\200\000\000\000\000\000\000\377\005_r\200\000\000\000\000\377\000\000\001\000\000\000\000\000\372\372b2,^\033\377\364", value: "\010\002\002\002%\010\004\002\010root\010\006\002\000\010\010\t\002\010\n\t\002\010\014\t\002\010\016\t\002\010\020\t\002\010\022\t\002\010\024\t\002\010\026\t\002\010\030\t\002\010\032\t\002\010\034\t\002\010\036\t\002\010 \t\002\010\"\t\002\010s\t\002\010&\t\002\010(\t\002\010*\t\002\010,\t\002\010.\t\002\0100\t\002\0102\t\002\0104\t\002"
+key: "zt\200\000\000\000\000\000\000\377\025_r\200\000\000\000\000\377\000\000\023\000\000\000\000\000\372\372b2,^\033\377\364", value: "\010\002\002&slow_query_log_file\010\004\002P/usr/local/mysql/data/localhost-slow.log"
+
+Total scanned keys: 2
+```
+
 ### 打印某个 key 的值
 
 打印某个 key 的值需要用到 `print` 命令。示例从略。
@@ -233,8 +283,6 @@ key: zmDB:29\000\000\377\000\374\000\000\000\000\000\000\377\000H\000\000\000\00
 ### 打印 Region 的 properties 信息
 
 为了记录 Region 的状态信息，TiKV 将一些数据写入 Region 的 SST 文件中。你可以用子命令 `region-properties` 运行 tikv-ctl 来查看这些 properties 信息。例如：
-
-{{< copyable "shell-regular" >}}
 
 ```shell
 tikv-ctl --host localhost:20160 region-properties -r 2
@@ -261,16 +309,15 @@ middle_key_by_approximate_size:
 
 - `--host` 参数可以指定要 compact 的 TiKV。
 - `-d` 参数可以指定要 compact 的 RocksDB，有 `kv` 和 `raft` 参数值可以选。
+- `--data-dir` 参数指定本地 TiKV 数据的目录路径。
 - `--threads` 参数可以指定 compact 的并发数，默认值是 8。一般来说，并发数越大，compact 的速度越快，但是也会对服务造成影响，所以需要根据情况选择合适的并发数。
 - `--bottommost` 参数可以指定 compact 是否包括最下层的文件。可选值为 `default`、`skip` 和 `force`，默认为 `default`。
     - `default` 表示只有开启了 Compaction Filter 时 compact 才会包括最下层文件。
     - `skip` 表示 compact 不包括最下层文件。
     - `force` 表示 compact 总是包括最下层文件。
 
-{{< copyable "shell-regular" >}}
-
 ```shell
-tikv-ctl --host 127.0.0.1:20160 compact -d kv
+tikv-ctl --data-dir /path/to/tikv compact -d kv
 ```
 
 ```
@@ -295,10 +342,8 @@ pd-ctl>> operator add remove-peer <region_id> <store_id>
 
 然后再用 tikv-ctl 在那个 TiKV 实例上将 Region 的副本标记为 tombstone 以便跳过启动时对他的健康检查：
 
-{{< copyable "shell-regular" >}}
-
 ```shell
-tikv-ctl --db /path/to/tikv/db tombstone -p 127.0.0.1:2379 -r <region_id>
+tikv-ctl --data-dir /path/to/tikv tombstone -p 127.0.0.1:2379 -r <region_id>
 ```
 
 ```
@@ -307,10 +352,8 @@ success!
 
 但是有些情况下，当不能方便地从 PD 上移除这个副本时，可以指定 tikv-ctl 的 `--force` 选项来强制设置它为 tombstone：
 
-{{< copyable "shell-regular" >}}
-
 ```shell
-tikv-ctl --db /path/to/tikv/db tombstone -p 127.0.0.1:2379 -r <region_id>,<region_id> --force
+tikv-ctl --data-dir /path/to/tikv tombstone -p 127.0.0.1:2379 -r <region_id>,<region_id> --force
 ```
 
 ```
@@ -326,8 +369,6 @@ success!
 
 `consistency-check` 命令用于在某个 Region 对应的 Raft 副本之间进行一致性检查。如果检查失败，TiKV 自身会 panic。如果 `--host` 指定的 TiKV 不是这个 Region 的 Leader，则会报告错误。
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 tikv-ctl --host 127.0.0.1:20160 consistency-check -r 2
 ```
@@ -335,8 +376,6 @@ tikv-ctl --host 127.0.0.1:20160 consistency-check -r 2
 ```
 success!
 ```
-
-{{< copyable "shell-regular" >}}
 
 ```shell
 tikv-ctl --host 127.0.0.1:20161 consistency-check -r 2
@@ -348,6 +387,7 @@ DebugClient::check_region_consistency: RpcFailure(RpcStatus { status: Unknown, d
 
 > **注意：**
 >
+> - 目前 consistency-check 与 TiDB GC 操作不兼容，存在误报错误的可能，因此不建议使用该命令。
 > - **该命令只支持远程模式**。
 > - 即使该命令返回了成功信息，也需要检查是否有 TiKV panic 了。因为该命令只是向 Leader 请求进行一致性检查，但整个检查流程是否成功并不能在客户端知道。
 
@@ -359,10 +399,8 @@ DebugClient::check_region_consistency: RpcFailure(RpcStatus { status: Unknown, d
 
 前面 `tombstone` 命令可以将 Raft 状态机出错的 Region 设置为 Tombstone 状态，避免 TiKV 启动时对它们进行检查。在运行 `tombstone` 命令之前，可使用 `bad-regions` 命令找到出错的 Region，以便将多个工具组合起来进行自动化的处理。
 
-{{< copyable "shell-regular" >}}
-
 ```shell
-tikv-ctl --db /path/to/tikv/db bad-regions
+tikv-ctl --data-dir /path/to/tikv bad-regions
 ```
 
 ```
@@ -373,21 +411,17 @@ all regions are healthy
 
 ### 查看 Region 属性
 
-本地查看部署在 `/path/to/tikv` 的 TiKV 上面 Region 2 的 properties 信息：
+- 本地查看部署在 `/path/to/tikv` 的 TiKV 上面 Region 2 的 properties 信息：
 
-{{< copyable "shell-regular" >}}
+    ```shell
+    tikv-ctl --data-dir /path/to/tikv/data region-properties -r 2
+    ```
 
-```shell
-tikv-ctl --db /path/to/tikv/data/db region-properties -r 2
-```
+- 在线查看运行在 `127.0.0.1:20160` 的 TiKV 上面 Region 2 的 properties 信息：
 
-在线查看运行在 `127.0.0.1:20160` 的 TiKV 上面 Region 2 的 properties 信息：
-
-{{< copyable "shell-regular" >}}
-
-```shell
-tikv-ctl --host 127.0.0.1:20160 region-properties -r 2
-```
+    ```shell
+    tikv-ctl --host 127.0.0.1:20160 region-properties -r 2
+    ```
 
 ### 动态修改 TiKV 的配置
 
@@ -397,8 +431,6 @@ tikv-ctl --host 127.0.0.1:20160 region-properties -r 2
 - `-v` 用于指定配置值。
 
 设置 `shared block cache` 的大小：
-
-{{< copyable "shell-regular" >}}
 
 ```shell
 tikv-ctl --host ip:port modify-tikv-config -n storage.block-cache.capacity -v 10GB
@@ -410,8 +442,6 @@ success
 
 当禁用 `shared block cache` 时，为 `write` CF 设置 `block cache size`：
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 tikv-ctl --host ip:port modify-tikv-config -n rocksdb.writecf.block-cache-size -v 256MB
 ```
@@ -420,8 +450,6 @@ tikv-ctl --host ip:port modify-tikv-config -n rocksdb.writecf.block-cache-size -
 success
 ```
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 tikv-ctl --host ip:port modify-tikv-config -n raftdb.defaultcf.disable-auto-compactions -v true
 ```
@@ -429,8 +457,6 @@ tikv-ctl --host ip:port modify-tikv-config -n raftdb.defaultcf.disable-auto-comp
 ```
 success
 ```
-
-{{< copyable "shell-regular" >}}
 
 ```shell
 tikv-ctl --host ip:port modify-tikv-config -n raftstore.sync-log -v false
@@ -442,8 +468,6 @@ success
 
 如果 compaction 的流量控制导致待 compact 数据量 (compaction pending bytes) 堆积，可以禁用 `rate-limiter-auto-tuned` 配置项或调高 compaction 相关的流量阈值。示例如下：
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 tikv-ctl --host ip:port modify-tikv-config -n rocksdb.rate-limiter-auto-tuned -v false
 ```
@@ -451,8 +475,6 @@ tikv-ctl --host ip:port modify-tikv-config -n rocksdb.rate-limiter-auto-tuned -v
 ```
 success
 ```
-
-{{< copyable "shell-regular" >}}
 
 ```shell
 tikv-ctl --host ip:port modify-tikv-config -n rocksdb.rate-bytes-per-sec -v "1GB"
@@ -462,7 +484,11 @@ tikv-ctl --host ip:port modify-tikv-config -n rocksdb.rate-bytes-per-sec -v "1GB
 success
 ```
 
-### 强制 Region 从多副本失败状态恢复服务（慎用）
+### 强制 Region 从多副本失败状态恢复服务（弃用）
+
+> **警告：**
+> 
+> 不推荐使用该功能，恢复需求可通过 `pd-ctl` 的 Online Unsafe Recovery 功能实现。它提供了一键式自动恢复的能力，无需停止服务等额外操作，具体使用方式请参考 [Online Unsafe Recovery 使用文档](/online-unsafe-recovery.md)。
 
 `unsafe-recover remove-fail-stores` 命令可以将故障机器从指定 Region 的 peer 列表中移除。运行命令之前，需要目标 TiKV 先停掉服务以便释放文件锁。
 
@@ -474,20 +500,16 @@ success
 > - 如果使用 `--all-regions`，必须在剩余所有连入集群的 store 上执行此命令。需要保证这些健康的 store 都停掉服务后再进行恢复，否则期间 Region 副本之间的 peer 列表不一致会导致执行 `split-region` 或者 `remove-peer` 时报错进而引起其他元数据的不一致，最终引发 Region 不可用。
 > - 一旦执行了 `remove-fail-stores`，不可再重新启动被移除的节点并将其加入集群，否则会导致元数据的不一致，最终引发 Region 不可用。
 
-{{< copyable "shell-regular" >}}
-
 ```shell
-tikv-ctl --db /path/to/tikv/db unsafe-recover remove-fail-stores -s 3 -r 1001,1002
+tikv-ctl --data-dir /path/to/tikv unsafe-recover remove-fail-stores -s 3 -r 1001,1002
 ```
 
 ```
 success!
 ```
 
-{{< copyable "shell-regular" >}}
-
 ```shell
-tikv-ctl --db /path/to/tikv/db unsafe-recover remove-fail-stores -s 4,5 --all-regions
+tikv-ctl --data-dir /path/to/tikv unsafe-recover remove-fail-stores -s 4,5 --all-regions
 ```
 
 之后启动 TiKV，这些 Region 便可以使用剩下的健康副本继续提供服务了。此命令常用于多个 TiKV store 损坏或被删除的情况。
@@ -504,10 +526,8 @@ tikv-ctl --db /path/to/tikv/db unsafe-recover remove-fail-stores -s 4,5 --all-re
 - `-r` 选项可以通过 `region_id` 指定包含的 Region。
 - `-p` 选项可以指定 PD 的 endpoints。
 
-{{< copyable "shell-regular" >}}
-
 ```shell
-tikv-ctl --db /path/to/tikv/db recover-mvcc -r 1001,1002 -p 127.0.0.1:2379
+tikv-ctl --data-dir /path/to/tikv recover-mvcc -r 1001,1002 -p 127.0.0.1:2379
 ```
 
 ```
@@ -528,15 +548,11 @@ success!
 
 用 HEX 格式 dump 现有 RocksDB 数据：
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 tikv-ctl ldb --hex --db=/tmp/db dump
 ```
 
 Dump 现有 RocksDB 的声明：
-
-{{< copyable "shell-regular" >}}
 
 ```shell
 tikv-ctl ldb --hex manifest_dump --path=/tmp/db/MANIFEST-000001
@@ -560,8 +576,8 @@ data-dir = "/path/to/tikv/data"
 
 `--path` 选项可以指定数据文件的绝对或者相对路径。如果指定的文件是明文存储的，本命令有可能没有输出。如果不指定 `--path` 选项，本命令打印所有数据文件的加密信息。
 
-```bash
-$ tikv-ctl --config=./conf.toml encryption-meta dump-file --path=/path/to/tikv/data/db/CURRENT
+```shell
+tikv-ctl --config=./conf.toml encryption-meta dump-file --path=/path/to/tikv/data/db/CURRENT
 /path/to/tikv/data/db/CURRENT: key_id: 9291156302549018620 iv: E3C2FDBF63FC03BFC28F265D7E78283F method: Aes128Ctr
 ```
 
@@ -584,16 +600,16 @@ region = "us-west-2"
 
 本命令会输出一个警告，提示本命令会泄漏敏感数据。根据提示输入 "I consent" 即可。
 
-```bash
-$ ./tikv-ctl --config=./conf.toml encryption-meta dump-key
+```shell
+tikv-ctl --config=./conf.toml encryption-meta dump-key
 This action will expose encryption key(s) as plaintext. Do not output the result in file on disk.
 Type "I consent" to continue, anything else to exit: I consent
 current key id: 9291156302549018620
 9291156302549018620: key: 8B6B6B8F83D36BE2467ED55D72AE808B method: Aes128Ctr creation_time: 1592938357
 ```
 
-```bash
-$ ./tikv-ctl --config=./conf.toml encryption-meta dump-key --ids=9291156302549018620
+```shell
+tikv-ctl --config=./conf.toml encryption-meta dump-key --ids=9291156302549018620
 This action will expose encryption key(s) as plaintext. Do not output the result in file on disk.
 Type "I consent" to continue, anything else to exit: I consent
 9291156302549018620: key: 8B6B6B8F83D36BE2467ED55D72AE808B method: Aes128Ctr creation_time: 1592938357
@@ -605,17 +621,19 @@ Type "I consent" to continue, anything else to exit: I consent
 
 ### 打印损坏的 SST 文件信息
 
-TiKV 中损坏的 SST 文件会导致 TiKV 进程崩溃。为了清理掉这些文件，你可以使用 `bad-ssts` 命令打印出损坏的 SST 文件信息。
+TiKV 中损坏的 SST 文件会导致 TiKV 进程崩溃。在 TiDB v6.1.0 之前，损坏的 SST 文件会导致 TiKV 进程立即崩溃。从 TiDB v6.1.0 起，TiKV 进程会在 SST 文件损坏 1 小时后崩溃。
+
+为了方便清理掉这些 SST 文件，你可以先使用 `bad-ssts` 命令打印出损坏的 SST 文件信息。
 
 > **注意：**
 >
 > 执行此命令前，请保证关闭当前运行的 TiKV 实例。
 
-```bash
-$ tikv-ctl bad-ssts --db </path/to/tikv/db> --pd <endpoint>
+```shell
+tikv-ctl --data-dir </path/to/tikv> bad-ssts --pd <endpoint>
 ```
 
-```bash
+```shell
 --------------------------------------------------------
 corruption info:
 data/tikv-21107/db/000014.sst: Corruption: Bad table magic number: expected 9863518390377041911, found 759105309091689679 in data/tikv-21107/db/000014.sst

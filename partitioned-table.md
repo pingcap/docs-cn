@@ -9,15 +9,13 @@ aliases: ['/docs-cn/dev/partitioned-table/','/docs-cn/dev/reference/sql/partitio
 
 ## 分区类型
 
-本节介绍 TiDB 中的分区类型。当前支持的类型包括 [Range 分区](#range-分区)、[List 分区](#list-分区)、[List COLUMNS 分区](#list-columns-分区)和 [Hash 分区](#hash-分区)。Range 分区，List 分区和 List COLUMNS 分区可以用于解决业务中大量删除带来的性能问题，支持快速删除分区。Hash 分区则可以用于大量写入场景下的数据打散。
+本节介绍 TiDB 中的分区类型。当前支持的类型包括 [Range 分区](#range-分区)、[Range COLUMNS 分区](#range-columns-分区)、[Range INTERVAL 分区](#range-interval-分区)、[List 分区](#list-分区)、[List COLUMNS 分区](#list-columns-分区)和 [Hash 分区](#hash-分区)。Range 分区、Range COLUMNS 分区、List 分区和 List COLUMNS 分区可以用于解决业务中大量删除带来的性能问题，支持快速删除分区。Hash 分区则可以用于大量写入场景下的数据打散。
 
 ### Range 分区
 
 一个表按 Range 分区是指，对于表的每个分区中包含的所有行，按分区表达式计算的值都落在给定的范围内。Range 必须是连续的，并且不能有重叠，通过使用 `VALUES LESS THAN` 进行定义。
 
 下列场景中，假设你要创建一个人事记录的表：
-
-{{< copyable "sql" >}}
 
 ```sql
 CREATE TABLE employees (
@@ -32,8 +30,6 @@ CREATE TABLE employees (
 ```
 
 你可以根据需求按各种方式进行 Range 分区。其中一种方式是按 `store_id` 列进行分区：
-
-{{< copyable "sql" >}}
 
 ```sql
 CREATE TABLE employees (
@@ -58,8 +54,6 @@ PARTITION BY RANGE (store_id) (
 
 新插入一行数据 `(72, 'Tom', 'John', '2015-06-25', NULL, NULL, 15)` 将会落到分区 `p2` 里面。但如果你插入一条 `store_id` 大于 20 的记录，则会报错，因为 TiDB 无法知晓应该将它插入到哪个分区。这种情况下，可以在建表时使用最大值：
 
-{{< copyable "sql" >}}
-
 ```sql
 CREATE TABLE employees (
     id INT NOT NULL,
@@ -83,8 +77,6 @@ PARTITION BY RANGE (store_id) (
 
 你也可以按员工的职位编号进行分区，也就是使用 `job_code` 列的值进行分区。假设两位数字编号是用于普通员工，三位数字编号是用于办公室以及客户支持，四位数字编号是管理层职位，那么你可以这样建表：
 
-{{< copyable "sql" >}}
-
 ```sql
 CREATE TABLE employees (
     id INT NOT NULL,
@@ -106,8 +98,6 @@ PARTITION BY RANGE (job_code) (
 在这个例子中，所有普通员工存储在 `p0` 分区，办公室以及支持人员在 `p1` 分区，管理者在 `p2` 分区。
 
 除了可以按 `store_id` 切分，你还可以按日期切分。例如，假设按员工离职的年份进行分区：
-
-{{< copyable "sql" >}}
 
 ```sql
 CREATE TABLE employees (
@@ -161,11 +151,147 @@ Range 分区在下列条件之一或者多个都满足时，尤其有效：
 * 使用包含时间或者日期的列，或者是其它按序生成的数据。
 * 频繁查询分区使用的列。例如执行这样的查询 `EXPLAIN SELECT COUNT(*) FROM employees WHERE separated BETWEEN '2000-01-01' AND '2000-12-31' GROUP BY store_id;` 时，TiDB 可以迅速确定，只需要扫描 `p2` 分区的数据，因为其它的分区不满足 `where` 条件。
 
-### List 分区
+### Range COLUMNS 分区
+
+Range COLUMNS 分区是 Range 分区的一种变体。你可以使用一个或者多个列作为分区键，分区列的数据类型可以是整数 (integer)、字符串（`CHAR`/`VARCHAR`），`DATE` 和 `DATETIME`。不支持使用任何表达式。
+
+假设你想要按名字进行分区，并且能够轻松地删除旧的无效数据，那么你可以创建一个表格，如下所示：
+
+```sql
+CREATE TABLE t (
+  valid_until datetime,
+  name varchar(255) CHARACTER SET ascii,
+  notes text
+)
+PARTITION BY RANGE COLUMNS(name,valid_until)
+(PARTITION `p2022-g` VALUES LESS THAN ('G','2023-01-01 00:00:00'),
+ PARTITION `p2023-g` VALUES LESS THAN ('G','2024-01-01 00:00:00'),
+ PARTITION `p2024-g` VALUES LESS THAN ('G','2025-01-01 00:00:00'),
+ PARTITION `p2022-m` VALUES LESS THAN ('M','2023-01-01 00:00:00'),
+ PARTITION `p2023-m` VALUES LESS THAN ('M','2024-01-01 00:00:00'),
+ PARTITION `p2024-m` VALUES LESS THAN ('M','2025-01-01 00:00:00'),
+ PARTITION `p2022-s` VALUES LESS THAN ('S','2023-01-01 00:00:00'),
+ PARTITION `p2023-s` VALUES LESS THAN ('S','2024-01-01 00:00:00'),
+ PARTITION `p2024-s` VALUES LESS THAN ('S','2025-01-01 00:00:00'),
+ PARTITION `p2022-` VALUES LESS THAN (0x7f,'2023-01-01 00:00:00'),
+ PARTITION `p2023-` VALUES LESS THAN (0x7f,'2024-01-01 00:00:00'),
+ PARTITION `p2024-` VALUES LESS THAN (0x7f,'2025-01-01 00:00:00'))
+```
+
+该语句将按年份和名字的范围 ['', 'G')、['G', 'M')、['M', 'S')、['S',) 进行分区，删除无效数据，同时仍然可以在 `name` 和 `valid_until` 列上进行分区裁剪。其中，`[,)` 是一个半开半闭区间，比如 ['G', 'M')，表示包含 `G`、大于 `G` 并小于 `M` 的数据，但不包含 `M`。
+
+### Range INTERVAL 分区
+
+TiDB v6.3.0 新增了 Range INTERVAL 分区特性，作为语法糖（syntactic sugar）引入。Range INTERVAL 分区是对 Range 分区的扩展。你可以使用特定的间隔（interval）轻松创建分区。
 
 > **警告：**
 >
-> 该功能目前为实验特性，不建议在生产环境中使用。
+> 该功能目前是实验性功能，请注意使用场景限制。该功能会在未事先通知的情况下发生变化或删除。语法和实现可能会在 GA 前发生变化。如果发现 bug，请提 [Issues · pingcap/tidb](https://github.com/pingcap/tidb/issues) 反馈。
+
+其语法如下：
+
+```sql
+PARTITION BY RANGE [COLUMNS] (<partitioning expression>)
+INTERVAL (<interval expression>)
+FIRST PARTITION LESS THAN (<expression>)
+LAST PARTITION LESS THAN (<expression>)
+[NULL PARTITION]
+[MAXVALUE PARTITION]
+```
+
+示例：
+
+```sql
+CREATE TABLE employees (
+    id int unsigned NOT NULL,
+    fname varchar(30),
+    lname varchar(30),
+    hired date NOT NULL DEFAULT '1970-01-01',
+    separated date DEFAULT '9999-12-31',
+    job_code int,
+    store_id int NOT NULL
+) PARTITION BY RANGE (id)
+INTERVAL (100) FIRST PARTITION LESS THAN (100) LAST PARTITION LESS THAN (10000) MAXVALUE PARTITION
+```
+
+该示例创建的表与如下 SQL 语句相同：
+
+```sql
+CREATE TABLE `employees` (
+  `id` int unsigned NOT NULL,
+  `fname` varchar(30) DEFAULT NULL,
+  `lname` varchar(30) DEFAULT NULL,
+  `hired` date NOT NULL DEFAULT '1970-01-01',
+  `separated` date DEFAULT '9999-12-31',
+  `job_code` int DEFAULT NULL,
+  `store_id` int NOT NULL
+)
+PARTITION BY RANGE (`id`)
+(PARTITION `P_LT_100` VALUES LESS THAN (100),
+ PARTITION `P_LT_200` VALUES LESS THAN (200),
+...
+ PARTITION `P_LT_9900` VALUES LESS THAN (9900),
+ PARTITION `P_LT_10000` VALUES LESS THAN (10000),
+ PARTITION `P_MAXVALUE` VALUES LESS THAN (MAXVALUE))
+```
+
+Range INTERVAL 还可以配合 [Range COLUMNS](#range-columns-分区) 分区一起使用。如下面的示例：
+
+```sql
+CREATE TABLE monthly_report_status (
+    report_id int NOT NULL,
+    report_status varchar(20) NOT NULL,
+    report_date date NOT NULL
+)
+PARTITION BY RANGE COLUMNS (report_date)
+INTERVAL (1 MONTH) FIRST PARTITION LESS THAN ('2000-01-01') LAST PARTITION LESS THAN ('2025-01-01')
+```
+
+该示例创建的表与如下 SQL 语句相同：
+
+```sql
+CREATE TABLE `monthly_report_status` (
+  `report_id` int(11) NOT NULL,
+  `report_status` varchar(20) NOT NULL,
+  `report_date` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin
+PARTITION BY RANGE COLUMNS(`report_date`)
+(PARTITION `P_LT_2000-01-01` VALUES LESS THAN ('2000-01-01'),
+ PARTITION `P_LT_2000-02-01` VALUES LESS THAN ('2000-02-01'),
+...
+ PARTITION `P_LT_2024-11-01` VALUES LESS THAN ('2024-11-01'),
+ PARTITION `P_LT_2024-12-01` VALUES LESS THAN ('2024-12-01'),
+ PARTITION `P_LT_2025-01-01` VALUES LESS THAN ('2025-01-01'))
+```
+
+可选参数 `NULL PARTITION` 会创建一个分区，其中分区表达式推导出的值为 `NULL` 的数据会放到该分区。在分区表达式中，`NULL` 会被认为是小于任何其他值。参见[分区对 NULL 值的处理](#range-分区对-null-的处理)。
+
+可选参数 `MAXVALUE PARTITION` 会创建一个最后的分区，其值为 `PARTITION P_MAXVALUE VALUES LESS THAN (MAXVALUE)`。 
+
+#### ALTER INTERVAL 分区
+
+INTERVAL 分区还增加了添加和删除分区的更加简单易用的语法。
+
+下面的语句会变更第一个分区，该语句会删除所有小于给定表达式的分区，使匹配的分区成为新的第一个分区。它不会影响 `NULL PARTITION`。
+
+```sql
+ALTER TABLE table_name FIRST PARTITION LESS THAN (<expression>)
+```
+
+下面的语句会变更最后一个分区，该语句会添加新的分区，分区范围扩大到给定的表达式的值。如果存在 `MAXVALUE PARTITION`，则该语句不会生效，因为它需要数据重组。
+
+```sql
+ALTER TABLE table_name LAST PARTITION LESS THAN (<expression>)
+```
+
+#### INTERVAL 分区相关细节和限制
+
+- INTERVAL 分区特性仅涉及 `CREATE/ALTER TABLE` 语法。元数据保持不变，因此使用该新语法创建或变更的表仍然兼容 MySQL。
+- 为保持兼容 MySQL，`SHOW CREATE TABLE` 的输出格式保持不变。
+- 遵循 INTERVAL 的存量表可以使用新的 `ALTER` 语法。不需要使用 `INTERVAL` 语法重新创建这些表。
+- 对于 `RANGE COLUMNS`，仅支持整数 (INTEGER) 类型、日期 (DATE) 和日期时间 (DATETIME) 列类型。
+
+### List 分区
 
 在创建 List 分区表之前，需要先将 session 变量 `tidb_enable_list_partition` 的值设置为 `ON`。
 
@@ -263,10 +389,6 @@ test> select * from t;
 ```
 
 ### List COLUMNS 分区
-
-> **警告：**
->
-> 该功能目前为实验特性，不建议在生产环境中使用。
 
 List COLUMNS 分区是 List 分区的一种变体，可以将多个列用作分区键，并且可以将整数类型以外的数据类型的列用作分区列。你还可以使用字符串类型、`DATE` 和 `DATETIME` 类型的列。
 
@@ -422,6 +544,16 @@ MOD(YEAR('2005-09-01'),4)
 =  MOD(2005,4)
 =  1
 ```
+
+### TiDB 对 Linear Hash 分区的处理
+
+在 v6.4.0 之前，如果在 TiDB 上执行 [MySQL Linear Hash 分区](https://dev.mysql.com/doc/refman/5.7/en/partitioning-linear-hash.html) 的 DDL 语句，TiDB 只能创建非分区表。在这种情况下，如果你仍然想要在 TiDB 中创建分区表，你需要修改这些 DDL 语句。
+
+从 v6.4.0 起，TiDB 支持解析 MySQL 的 `PARTITION BY LINEAR HASH` 语法，但会忽略其中的 `LINEAR` 关键字。你可以直接在 TiDB 中执行现有的 MySQL Linear Hash 分区的 SQL 语句，而无需修改。
+
+- 对于 MySQL Linear Hash 分区的 `CREATE` 语句，TiDB 将创建一个常规的非线性 Hash 分区表（注意 TiDB 内部实际不存在 Linear Hash 分区表）。如果分区数是 2 的幂，该分区表中行的分布情况与 MySQL 相同。如果分区数不是 2 的幂，该分区表中行的分布情况与 MySQL 会有所差异。这是因为 TiDB 中非线性分区表使用简单的“分区模数”，而线性分区表使用“模数的下一个 2 次方并会折叠分区数和下一个 2 次方之间的值”。详情请见 [#38450](https://github.com/pingcap/tidb/issues/38450)。
+
+- 对于 MySQL Linear Hash 分区的其他 SQL 语句，TiDB 将正常返回对应的 Hash 分区的查询结果。但当分区数不是 2 的幂（意味着分区表中行的分布情况与 MySQL 不同）时，[分区选择](#分区选择)、`TRUNCATE PARTITION`、`EXCHANGE PARTITION` 返回的结果将和 MySQL 有所差异。
 
 ### 分区对 NULL 值的处理
 
@@ -581,13 +713,21 @@ Empty set (0.00 sec)
 
 `EXCHANGE PARTITION` 语句用来交换分区和非分区表，类似于重命名表如 `RENAME TABLE t1 TO t1_tmp, t2 TO t1, t1_tmp TO t2` 的操作。
 
-例如，`ALTER TABLE partitioned_table EXCHANGE PARTITION p1 WITH TABLE non_partitioned_table` 交换的是 `p1` 分区的 `non_partitioned_table` 表和 `partitioned_table` 表。
+例如，`ALTER TABLE partitioned_table EXCHANGE PARTITION p1 WITH TABLE non_partitioned_table` 交换的是 `p1` 分区的 `partitioned_table` 表和 `non_partitioned_table` 表。
 
-确保要交换入分区中的所有行与分区定义匹配；否则，你将无法找到这些行，并导致意外情况出现。
+确保要交换入分区中的所有行与分区定义匹配；否则，交换将失败。
 
-> **警告：**
->
-> `EXCHANGE PARTITION` 是实验性功能，不建议在生产环境中使用。要启用 `EXCHANGE PARTITION`，将系统变量 `tidb_enable_exchange_partition` 设置为 `ON`。
+请注意对于以下 TiDB 专有的特性，当表结构中包含这些特性时，在 TiDB 中使用 `EXCHANGE PARTITION` 功能不仅需要满足 [MySQL 的 EXCHANGE PARTITION 条件](https://dev.mysql.com/doc/refman/8.0/en/partitioning-management-exchange.html)，还要保证这些专有特性对于分区表和非分区表的定义相同。
+
+* [Placement Rules in SQL](/placement-rules-in-sql.md)：Placement Policy 定义相同。
+* [TiFlash](/tikv-overview.md)：TiFlash Replica 数量相同。
+* [聚簇索引](/clustered-indexes.md)：分区表和非分区表要么都是聚簇索引 (CLUSTERED)，要么都不是聚簇索引 (NONCLUSTERED)。
+
+此外，`EXCHANGE PARTITION` 和其他组件兼容性上存在一些限制，需要保证分区表和非分区表的一致性：
+
+- TiFlash：TiFlash Replica 定义不同时，无法执行 `EXCHANGE PARTITION` 操作。
+- TiCDC：分区表和非分区表都有主键或者唯一键时，TiCDC 同步 `EXCHANGE PARTITION` 操作；反之 TiCDC 将不会同步。
+- TiDB Lightning 和 BR：使用 TiDB Lightning 导入或使用 BR 恢复的过程中，不要执行 `EXCHANGE PARTITION` 操作。
 
 ### Range 分区管理
 
@@ -718,6 +858,8 @@ SELECT fname, lname, region_code, dob
 * partition_column = constant
 * partition_column IN (constant1, constant2, ..., constantN)
 
+分区裁剪暂不支持 `LIKE` 语句。
+
 ### 分区裁剪生效的场景
 
 1. 分区裁剪需要使用分区表上面的查询条件，所以根据优化器的优化规则，如果查询条件不能下推到分区表，则相应的查询语句无法执行分区裁剪。
@@ -798,7 +940,7 @@ SELECT fname, lname, region_code, dob
     create table t (id int) partition by range (id) (
         partition p0 values less than (5),
         partition p1 values less than (10));
-    select * from t where t > 6;
+    select * from t where id > 6;
     ```
 
     分区表达式是 `fn(col)` 的形式，`fn` 是我们支持的单调函数 `to_days`：
@@ -809,7 +951,7 @@ SELECT fname, lname, region_code, dob
     create table t (dt datetime) partition by range (to_days(id)) (
         partition p0 values less than (to_days('2020-04-01')),
         partition p1 values less than (to_days('2020-05-01')));
-    select * from t where t > '2020-04-18';
+    select * from t where dt > '2020-04-18';
     ```
 
     有一处例外是 `floor(unix_timestamp(ts))` 作为分区表达式，TiDB 针对这个场景做了特殊处理，可以支持分区裁剪。
@@ -821,7 +963,7 @@ SELECT fname, lname, region_code, dob
     partition by range (floor(unix_timestamp(ts))) (
         partition p0 values less than (unix_timestamp('2020-04-01 00:00:00')),
         partition p1 values less than (unix_timestamp('2020-05-01 00:00:00')));
-    select * from t where t > '2020-04-18 02:00:42.123';
+    select * from t where ts > '2020-04-18 02:00:42.123';
     ```
 
 ## 分区选择
@@ -831,6 +973,8 @@ SELECT 语句中支持分区选择。实现通过使用一个 `PARTITION` 选项
 {{< copyable "sql" >}}
 
 ```sql
+SET @@sql_mode = '';
+
 CREATE TABLE employees  (
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     fname VARCHAR(25) NOT NULL,
@@ -1300,16 +1444,73 @@ select * from t;
 
 ### 动态裁剪模式
 
-> **警告：**
->
-> 该功能目前为实验特性，不建议在生产环境中使用。
-
-TiDB 访问分区表有两种模式，`dynamic` 和 `static`，目前默认使用 `static` 模式。如果想开启 `dynamic` 模式，需要手动将 `tidb_partition_prune_mode` 设置为 `dynamic`。
+TiDB 访问分区表有两种模式，`dynamic` 和 `static`。从 v6.3.0 开始，默认使用 `dynamic` 模式。但是注意，`dynamic` 模式仅在表级别汇总统计信息（即 GlobalStats）收集完成的情况下生效。如果选择了 `dynamic` 但 GlobalStats 未收集完成，TiDB 会仍采用 `static` 模式。关于 GlobalStats 更多信息，请参考[动态裁剪模式下的分区表统计信息](/statistics.md#动态裁剪模式下的分区表统计信息)。
 
 {{< copyable "sql" >}}
 
 ```sql
 set @@session.tidb_partition_prune_mode = 'dynamic'
+```
+
+普通查询和手动 analyze 使用的是 session 级别的 `tidb_partition_prune_mode` 设置，后台的 auto-analyze 使用的是 global 级别的 `tidb_partition_prune_mode` 设置。
+
+静态裁剪模式下，分区表使用的是分区级别的统计信息，而动态裁剪模式下，分区表用的是表级别的汇总统计信息。
+
+从 `static` 静态裁剪模式切到 `dynamic` 动态裁剪模式时，需要手动检查和收集统计信息。在刚切换到 `dynamic` 时，分区表上仍然只有分区的统计信息，需要等到全局 `dynamic` 动态裁剪模式开启后的下一次 `auto-analyze` 周期，才会更新生成汇总统计信息。
+
+{{< copyable "sql" >}}
+
+```sql
+set session tidb_partition_prune_mode = 'dynamic';
+show stats_meta where table_name like "t";
+```
+
+```
++---------+------------+----------------+---------------------+--------------+-----------+
+| Db_name | Table_name | Partition_name | Update_time         | Modify_count | Row_count |
++---------+------------+----------------+---------------------+--------------+-----------+
+| test    | t          | p0             | 2022-05-27 20:23:34 |            1 |         2 |
+| test    | t          | p1             | 2022-05-27 20:23:34 |            2 |         4 |
+| test    | t          | p2             | 2022-05-27 20:23:34 |            2 |         4 |
++---------+------------+----------------+---------------------+--------------+-----------+
+3 rows in set (0.01 sec)
+```
+
+为保证开启全局 `dynamic` 动态裁剪模式时，SQL 可以用上正确的统计信息，此时需要手动触发一次 `analyze` 来更新汇总统计信息，可以通过 `analyze` 表或者单个分区来更新。
+
+{{< copyable "sql" >}}
+
+```sql
+analyze table t partition p1;
+show stats_meta where table_name like "t";
+```
+
+```
++---------+------------+----------------+---------------------+--------------+-----------+
+| Db_name | Table_name | Partition_name | Update_time         | Modify_count | Row_count |
++---------+------------+----------------+---------------------+--------------+-----------+
+| test    | t          | global         | 2022-05-27 20:50:53 |            0 |         5 |
+| test    | t          | p0             | 2022-05-27 20:23:34 |            1 |         2 |
+| test    | t          | p1             | 2022-05-27 20:50:52 |            0 |         2 |
+| test    | t          | p2             | 2022-05-27 20:50:08 |            0 |         2 |
++---------+------------+----------------+---------------------+--------------+-----------+
+4 rows in set (0.00 sec)
+```
+
+若 analyze 过程中提示如下 warning，说明分区的统计信息之间存在不一致，需要重新收集分区或整个表统计信息。
+
+```
+| Warning | 8244 | Build table: `t` column: `a` global-level stats failed due to missing partition-level column stats, please run analyze table to refresh columns of all partitions
+```
+
+也可以使用脚本来统一更新所有的分区表统计信息，详见[为动态裁剪模式更新所有分区表的统计信息](/partitioned-table.md#为动态裁剪模式更新所有分区表的统计信息)。
+
+表级别统计信息准备好后，即可开启全局的动态裁剪模式。全局动态裁剪模式，对全局所有的 SQL 和对后台的统计信息自动收集（即 auto analyze）起作用。
+
+{{< copyable "sql" >}}
+
+```sql
+set global tidb_partition_prune_mode = dynamic
 ```
 
 在 `static` 模式下，TiDB 用多个算子单独访问每个分区，然后通过 Union 将结果合并起来。下面例子进行了一个简单的读取操作，可以发现 TiDB 用 Union 合并了对应两个分区的结果：
@@ -1325,6 +1526,9 @@ mysql> create table t1(id int, age int, key(id)) partition by range(id) (
 Query OK, 0 rows affected (0.01 sec)
 
 mysql> explain select * from t1 where id < 150;
+```
+
+```
 +------------------------------+----------+-----------+------------------------+--------------------------------+
 | id                           | estRows  | task      | access object          | operator info                  |
 +------------------------------+----------+-----------+------------------------+--------------------------------+
@@ -1360,78 +1564,21 @@ mysql> explain select * from t1 where id < 150;
 
 从以上查询结果可知，执行计划中的 Union 消失了，分区裁剪依然生效，且执行计划只访问了 `p0` 和 `p1` 两个分区。
 
-`dynamic` 模式让执行计划更简单清晰，省略 Union 操作可提高执行效率，还可避免 Union 并发管理的问题。此外 `dynamic` 模式还解决了两个 `static` 模式无法解决的问题：
+`dynamic` 模式让执行计划更简单清晰，省略 Union 操作可提高执行效率，还可避免 Union 并发管理的问题。此外 `dynamic` 模式下，执行计划可以使用 IndexJoin 的方式，这在 `static` 模式下是无法实现的。请看下面的例子：
 
-+ 不能使用 Plan Cache（见以下示例一和示例二）
-+ 不能使用 IndexJoin 的执行方式（见以下示例三和示例四）
-
-**示例一**：以下示例在配置文件中开启 Plan Cache 功能，并在 `static` 模式下执行同一个查询两次。
+**示例一**：以下示例在 `static` 模式下执行计划带 IndexJoin 的查询。
 
 {{< copyable "sql" >}}
 
 ```sql
-mysql> set @a=150;
-Query OK, 0 rows affected (0.00 sec)
+mysql> create table t1 (id int, age int, key(id)) partition by range(id)
+    -> (partition p0 values less than (100),
+    ->  partition p1 values less than (200),
+    ->  partition p2 values less than (300),
+    ->  partition p3 values less than (400));
+Query OK, 0 rows affected (0,08 sec)
+mysql> create table t2 (id int, code int);
 
-mysql> set @@tidb_partition_prune_mode = 'static';
-Query OK, 0 rows affected (0.00 sec)
-
-mysql> prepare stmt from 'select * from t1 where id < ?';
-Query OK, 0 rows affected (0.00 sec)
-
-mysql> execute stmt using @a;
-Empty set (0.00 sec)
-
-mysql> execute stmt using @a;
-Empty set (0.00 sec)
-
--- static 模式下执行两次相同的查询，第二次无法命中缓存
-mysql> select @@last_plan_from_cache;
-+------------------------+
-| @@last_plan_from_cache |
-+------------------------+
-|                      0 |
-+------------------------+
-1 row in set (0.00 sec)
-```
-
-`last_plan_from_cache` 变量可以显示上一次查询是否命中 Plan Cache。从以上示例一可知，在 `static` 模式下，即使在分区表上执行同一个查询多次，也不会命中 Plan Cache。
-
-**示例二**：以下示例在 `dynamic` 模式下执行与示例一相同的操作。
-
-{{< copyable "sql" >}}
-
-```sql
-mysql> set @@tidb_partition_prune_mode = 'dynamic';
-Query OK, 0 rows affected (0.00 sec)
-
-mysql> prepare stmt from 'select * from t1 where id < ?';
-Query OK, 0 rows affected (0.00 sec)
-
-mysql> execute stmt using @a;
-Empty set (0.00 sec)
-
-mysql> execute stmt using @a;
-Empty set (0.00 sec)
-
--- dynamic 模式下第二次执行命中缓存
-mysql> select @@last_plan_from_cache;
-+------------------------+
-| @@last_plan_from_cache |
-+------------------------+
-|                      1 |
-+------------------------+
-1 row in set (0.00 sec)
-```
-
-由示例二结果可知，开启 `dynamic` 模式后，分区表查询能命中 Plan Cache 。
-
-**示例三**：以下示例在 `static` 模式下尝试执行计划带 IndexJoin 的查询。
-
-{{< copyable "sql" >}}
-
-```sql
-mysql> create table t2(id int, code int);
 Query OK, 0 rows affected (0.01 sec)
 
 mysql> set @@tidb_partition_prune_mode = 'static';
@@ -1460,11 +1607,19 @@ mysql> explain select /*+ TIDB_INLJ(t1, t2) */ t1.* from t1, t2 where t2.code = 
 |       └─TableFullScan_34       | 10000.00 | cop[tikv] | table:t1, partition:p3 | keep order:false, stats:pseudo                 |
 +--------------------------------+----------+-----------+------------------------+------------------------------------------------+
 17 rows in set, 1 warning (0.00 sec)
+
+mysql> show warnings;
++---------+------+------------------------------------------------------------------------------------+
+| Level   | Code | Message                                                                            |
++---------+------+------------------------------------------------------------------------------------+
+| Warning | 1815 | Optimizer Hint /*+ INL_JOIN(t1, t2) */ or /*+ TIDB_INLJ(t1, t2) */ is inapplicable |
++---------+------+------------------------------------------------------------------------------------+
+1 row in set (0,00 sec)
 ```
 
-从以上示例三结果可知，即使使用了 `TIDB_INLJ` 的 hint，也无法使得带分区表的查询选上带 IndexJoin 的执行计划。
+从以上示例一结果可知，即使使用了 `TIDB_INLJ` 的 hint，也无法使得带分区表的查询选上带 IndexJoin 的执行计划。
 
-**示例四**：以下示例在 `dynamic` 模式下尝试执行计划带 IndexJoin 的查询。
+**示例二**：以下示例在 `dynamic` 模式下尝试执行计划带 IndexJoin 的查询。
 
 {{< copyable "sql" >}}
 
@@ -1480,12 +1635,82 @@ mysql> explain select /*+ TIDB_INLJ(t1, t2) */ t1.* from t1, t2 where t2.code = 
 | ├─TableReader_16(Build)         | 9.99     | root      |                        | data:Selection_15                                                                                                   |
 | │ └─Selection_15                | 9.99     | cop[tikv] |                        | eq(test.t2.code, 0), not(isnull(test.t2.id))                                                                        |
 | │   └─TableFullScan_14          | 10000.00 | cop[tikv] | table:t2               | keep order:false, stats:pseudo                                                                                      |
-| └─IndexLookUp_10(Probe)         | 1.25     | root      | partition:all          |                                                                                                                     |
-|   ├─Selection_9(Build)          | 1.25     | cop[tikv] |                        | not(isnull(test.t1.id))                                                                                             |
-|   │ └─IndexRangeScan_7          | 1.25     | cop[tikv] | table:t1, index:id(id) | range: decided by [eq(test.t1.id, test.t2.id)], keep order:false, stats:pseudo                                      |
-|   └─TableRowIDScan_8(Probe)     | 1.25     | cop[tikv] | table:t1               | keep order:false, stats:pseudo                                                                                      |
+| └─IndexLookUp_10(Probe)         | 12.49    | root      | partition:all          |                                                                                                                     |
+|   ├─Selection_9(Build)          | 12.49    | cop[tikv] |                        | not(isnull(test.t1.id))                                                                                             |
+|   │ └─IndexRangeScan_7          | 12.50    | cop[tikv] | table:t1, index:id(id) | range: decided by [eq(test.t1.id, test.t2.id)], keep order:false, stats:pseudo                                      |
+|   └─TableRowIDScan_8(Probe)     | 12.49    | cop[tikv] | table:t1               | keep order:false, stats:pseudo                                                                                      |
 +---------------------------------+----------+-----------+------------------------+---------------------------------------------------------------------------------------------------------------------+
 8 rows in set (0.00 sec)
 ```
 
-从示例四结果可知，开启 `dynamic` 模式后，带 IndexJoin 的计划在执行查询时被选上。
+从示例二结果可知，开启 `dynamic` 模式后，带 IndexJoin 的计划在执行查询时被选上。
+
+目前，静态和动态裁剪模式都不支持执行计划缓存。
+
+#### 为动态裁剪模式更新所有分区表的统计信息
+
+1. 找到所有的分区表：
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    select distinct concat(TABLE_SCHEMA,'.',TABLE_NAME)
+        from information_schema.PARTITIONS
+        where TABLE_SCHEMA not in ('INFORMATION_SCHEMA','mysql','sys','PERFORMANCE_SCHEMA','METRICS_SCHEMA');
+    ```
+
+    ```
+    +-------------------------------------+
+    | concat(TABLE_SCHEMA,'.',TABLE_NAME) |
+    +-------------------------------------+
+    | test.t                              |
+    +-------------------------------------+
+    1 row in set (0.02 sec)
+    ```
+
+2. 生成所有分区表的更新统计信息的语句：
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    select distinct concat('ANALYZE TABLE ',TABLE_SCHEMA,'.',TABLE_NAME,' ALL COLUMNS;')
+        from information_schema.PARTITIONS
+        where TABLE_SCHEMA not in ('INFORMATION_SCHEMA','mysql','sys','PERFORMANCE_SCHEMA','METRICS_SCHEMA');
+    ```
+
+    ```
+    +----------------------------------------------------------------------+
+    | concat('ANALYZE TABLE ',TABLE_SCHEMA,'.',TABLE_NAME,' ALL COLUMNS;') |
+    +----------------------------------------------------------------------+
+    | ANALYZE TABLE test.t ALL COLUMNS;                                    |
+    +----------------------------------------------------------------------+
+    1 row in set (0.01 sec)
+    ```
+
+    可以按需将 `ALL COLUMNS` 改为实际需要的列。
+
+3. 将批量更新语句导出到文件：
+    
+    {{< copyable "sql" >}}
+
+    ```sql
+    mysql --host xxxx --port xxxx -u root -p -e "select distinct concat('ANALYZE TABLE ',TABLE_SCHEMA,'.',TABLE_NAME,' ALL COLUMNS;') \
+        from information_schema.PARTITIONS \
+        where TABLE_SCHEMA not in ('INFORMATION_SCHEMA','mysql','sys','PERFORMANCE_SCHEMA','METRICS_SCHEMA');" | tee gatherGlobalStats.sql
+    ```
+
+4. 执行批量更新：
+
+    在运行 source 命令之前处理 SQL 文件：
+
+    ```
+    sed -i "" '1d' gatherGlobalStats.sql --- mac
+    sed -i '1d' gatherGlobalStats.sql --- linux
+    ```
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    SET session tidb_partition_prune_mode = dynamic;
+    source gatherGlobalStats.sql
+    ```

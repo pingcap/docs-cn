@@ -363,7 +363,7 @@ SELECT * FROM INFORMATION_SCHEMA.USER_PRIVILEGES WHERE grantee = "'root'@'%'";
 
 ### LOAD DATA
 
-`LOAD DATA` 需要对所操作的表拥有 `INSERT` 权限。
+`LOAD DATA` 需要对所操作的表拥有 `INSERT` 权限。执行 `REPLACE INTO` 语句还需要对所操作的表拥有 `DELETE` 权限。
 
 ### TRUNCATE TABLE
 
