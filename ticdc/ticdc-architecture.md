@@ -163,8 +163,6 @@ table ResolvedTS >= global ResolvedTS >= table CheckpointTS >= global Checkpoint
     6. 读取各 Processor 当前同步的表的列表，分发需要添加的表。
     7. 更新进度信息。
 
-以上所描述的启动流程的不同只存在于 TiCDC 进程内部，这些动作对于用户是完全透明的，你在启动 TiCDC 进程时无需关心自己启动的是什么节点。
-
 ### 停止 TiCDC 节点
 
 通常来说，停止 TiCDC 节点是为了对 TiCDC 进行升级，或者对 TiCDC 所在的节点进行一些计划的维护操作。停止 TiCDC 节点的流程如下：
