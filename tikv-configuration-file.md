@@ -1605,6 +1605,16 @@ Raft Engine 相关的配置项。
 + 默认值：8
 + 最小值：1
 
+### `memory-use-ratio` <span class="version-mark">从 v6.5.0 版本开始引入</span>
+
++ 从 v6.5.0 开始，PITR 支持直接将备份日志文件读取到缓存中，然后进行恢复。此配置项用来配置 PITR 恢复中可用内存与系统总内存的占比。
++ 可调整范围：[0.0, 0.5]
++ 默认值：`0.3`，表示系统 30% 的内存可用于 PITR 恢复；当为 `0.0` 时，表示通过下载日志文件到本地进行 PITR 恢复。
+
+> **注意：**
+>
+> 在小于 v6.5.0 的版本中，PITR 仅支持将备份文件下载到本地进行恢复。
+
 ## gc
 
 ### `enable-compaction-filter` <span class="version-mark">从 v5.0 版本开始引入</span>
