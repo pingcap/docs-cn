@@ -179,7 +179,7 @@ CREATE BINDING FOR SELECT * FROM t WHERE a > 1 USING SELECT * FROM t use index(i
 
 目前，根据历史执行计划创建绑定有一些限制：
 
-1. 该功能是根据历史的执行计划生成 hint 而实现的绑定，历史的执行计划来源是 [Statement Summary Tables](/statement-summary-tables.md)，因此在使用此功能之前需开启系统变量 [`tidb_enable_stmt_summary`](#tidb_enable_stmt_summary-从-v304-版本开始引入)。
+1. 该功能是根据历史的执行计划生成 hint 而实现的绑定，历史的执行计划来源是 [Statement Summary Tables](/statement-summary-tables.md)，因此在使用此功能之前需开启系统变量 [`tidb_enable_stmt_summary`](/system-variables.md#tidb_enable_stmt_summary-从-v304-版本开始引入)。
 2. 目前，该功能仅支持根据当前实例中的 `statements_summary` 和 `statements_summary_history` 表中的执行计划生成绑定。如果发现有 `can't find any plans` 的情况，请尝试连接集群中其他 TiDB 节点重试。
 3. 对于带有子查询的查询、访问 TiFlash 的查询、3 张表或更多表进行 Join 的查询，目前还不支持通过历史执行计划进行绑定。
 
@@ -189,7 +189,7 @@ CREATE BINDING FOR SELECT * FROM t WHERE a > 1 USING SELECT * FROM t use index(i
 CREATE [GLOBAL | SESSION] BINDING FROM HISTORY USING PLAN DIGEST 'plan_digest';
 ```
 
-该语句使用 `plan digest` 为 SQL 语句绑定执行计划，在不指定作用域时默认作用域为 SESSION。所创建绑定的适用 SQL、优先级、作用域、生效条件等与[根据 SQL hint 创建绑定](/sql-plan-management.md#根据-sql-hint-创建绑定)相同。 
+该语句使用 `plan_digest` 为 SQL 语句绑定执行计划，在不指定作用域时默认作用域为 SESSION。所创建绑定的适用 SQL、优先级、作用域、生效条件等与[根据 SQL hint 创建绑定](#根据-sql-hint-创建绑定)相同。 
 
 使用此绑定方式时，你需要先从 `statements_summary` 中找到需要绑定的执行计划对应的 `plan_digest`，再通过 `plan_digest` 创建绑定。具体步骤如下：
 
@@ -223,11 +223,10 @@ CREATE [GLOBAL | SESSION] BINDING FROM HISTORY USING PLAN DIGEST 'plan_digest';
 2. 使用 `plan_digest` 创建绑定。
 
     ```sql
-    CREATE BINDING FROM HISTORY USING PLAN DIGEST 
-    '4e3159169cc63c14b139a4e7d72eae1759875c9a9581f94bb2079aae961189cb';
+    CREATE BINDING FROM HISTORY USING PLAN DIGEST '4e3159169cc63c14b139a4e7d72eae1759875c9a9581f94bb2079aae961189cb';
     ```
 
-创建完毕后可以[查看绑定](sql-plan-management#查看绑定)，验证绑定是否生效。
+创建完毕后可以[查看绑定](#查看绑定)，验证绑定是否生效。
 
 ```sql
 SHOW BINDINGS\G;
@@ -290,13 +289,13 @@ explain SELECT * FROM t1,t2 WHERE t1.id = t2.id;
 
 #### 根据 `sql_digest` 删除绑定
 
-当使用 `DROP session binding for` 语句时，除了可以指定原始的 SQL 语句用来删除绑定以外，也可以通过指定 `sql_digest` 用来删除绑定：
+除了可以根据 SQL 语句删除对应的绑定以外，也可以根据 `sql_digest` 删除绑定：
 
 ```sql
 DROP [GLOBAL | SESSION] BINDING FOR SQL DIGEST 'sql_digest';
 ```
 
-该语句用于在 GLOBAL 或者 SESSION 作用域内删除 `sql_digest` 对应的的执行计划绑定，在不指定作用域时默认作用域为 SESSION。你可以通过[查看绑定](/sql-plan-management.md#查看绑定)语句获取 `sql_digest`。
+该语句用于在 GLOBAL 或者 SESSION 作用域内删除 `sql_digest` 对应的的执行计划绑定，在不指定作用域时默认作用域为 SESSION。你可以通过[查看绑定](#查看绑定)语句获取 `sql_digest`。
 
 > **注意：**
 >
