@@ -26,6 +26,10 @@ BindableStmt ::=
 
 ## 示例
 
+您可以根据 SQL 语句或 `plan_digest`删除绑定。
+
+下面的示例演示如何根据 SQL 语句删除绑定。
+
 {{< copyable "sql" >}}
 
 ```sql
@@ -130,6 +134,8 @@ EXPLAIN ANALYZE  SELECT * FROM t1 WHERE b = 123;
 SHOW SESSION BINDINGS\G
 Empty set (0.00 sec)
 ```
+
+下面的示例演示了如何根据 `plan_digest` 删除绑定。
 
 ```sql
 mysql> CREATE TABLE t(id INT PRIMARY KEY , a INT, KEY(a));
