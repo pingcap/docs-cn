@@ -142,7 +142,8 @@ table ResolvedTS >= global ResolvedTS >= table CheckpointTS >= global Checkpoint
 ## 主要流程
 
 本章节将介绍 TiCDC 软件的常见操作所对应的主要流程，以帮助你更好的理解 TiCDC 的工作原理。
-下面所描述的启动流程只存在于 TiCDC 进程内部，这些动作对于用户是完全透明的，你在启动 TiCDC 进程时无需关心自己启动的是什么节点。
+
+注意，下面所描述的启动流程只存在于 TiCDC 进程内部，对于用户是完全透明的。因此，你在启动 TiCDC 进程时无需关心自己启动的是什么节点。
 
 ### 启动 TiCDC 节点
 
