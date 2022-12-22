@@ -84,7 +84,7 @@ TTL 设计的目标是在不影响在线读写负载的前提下，帮助用户�
 
 TTL 可以和[数据类型的默认值](/data-type-default-values.md)一起使用。以下是两种常见的用法示例：
 
-* 使用 `DEFAULT CURRENT_TIMESTAMP` 来指定某一列的默认值为当前创建时间，并用这一列作为 TTL 的时间列：
+* 使用 `DEFAULT CURRENT_TIMESTAMP` 来指定某一列的默认值为该行的创建时间，并用这一列作为 TTL 的时间列，创建时间超过 3 个月的数据将被标记为过期：
 
     ```sql
     CREATE TABLE t1 (
