@@ -130,8 +130,8 @@ URI 中其他可配置的参数如下：
 
 ```shell
 {
-    "Table":"employee",
-    "Schema":"hr",
+    "Table":"table1",
+    "Schema":"test",
     "Version":123123,
     "TableColumns":[
         {
