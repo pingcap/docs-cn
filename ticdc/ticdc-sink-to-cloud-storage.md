@@ -103,7 +103,7 @@ URI 中其他可配置的参数如下：
 元数据信息将会存储到以下路径：
 
 ```shell
-{protocol}://{prefix}/metadata
+{scheme}://{prefix}/metadata
 ```
 
 元数据信息以 JSON 格式存储到如下的文件中：
@@ -123,7 +123,7 @@ URI 中其他可配置的参数如下：
 表结构信息将会存储到以下路径：
 
 ```shell
-{protocol}://{prefix}/{schema}/{table}/{table-version-separator}/schema.json
+{scheme}://{prefix}/{schema}/{table}/{table-version-separator}/schema.json
 ```
 
 一个示例 `schema.json` 文件如下：
