@@ -43,16 +43,6 @@ You can use the `--help` command to get the information of a specific command. T
 - Specifies the path of the component to be executed. When a component is executed, if you do not want to use the binary file in the TiUP mirror, you can add this option to specify using the binary file in a custom path.
 - Data type: `STRING`
 
-### --skip-version-check
-
-> **Note:**
->
-> This option is deprecated since v1.3.0.
-
-- Skips the validity check for version numbers. By default, the specified version number can only be the semantic version.
-- Data type: `BOOLEAN`
-- This option is disabled by default and its default value is `false`. To enable this option, you can add this option to the command, and pass the `true` value or do not pass any value.
-
 ### -T, --tag
 
 - Specifies a tag for the component to be started. Some components need to use disk storage during the execution, and TiUP allocates a temporary storage directory for this execution. If you want TiUP to allocate a fixed directory, you can use `-T/--tag` to specify the name of the directory, so that the same batch of files can be read and written in multiple executions with the same tag.

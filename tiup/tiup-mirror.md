@@ -44,7 +44,6 @@ Available Commands:
 
 Global Flags:
       --help                 Help for this command
-      --skip-version-check   Skip the strict version check, by default a version must be a valid SemVer string
 
 Use "tiup mirror [command] --help" for more information about a command.
 ```

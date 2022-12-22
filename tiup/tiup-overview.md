@@ -75,7 +75,6 @@ Flags:
                                        and the latest version installed will be selected if no version specified
       --binpath string                 Specify the binary path of component instance
   -h, --help                           help for tiup
-      --skip-version-check             Skip the strict version check, by default a version must be a valid SemVer string
   -T, --tag string                     Specify a tag for component instance
   -v, --version                        version for tiup
 
