@@ -186,7 +186,21 @@ ANALYZE INCREMENTAL TABLE TableName PARTITION PartitionNameList INDEX [IndexName
 
 当某个表 `tbl` 的修改行数与总行数的比值大于 `tidb_auto_analyze_ratio`，并且当前时间在 `tidb_auto_analyze_start_time` 和 `tidb_auto_analyze_end_time` 之间时，TiDB 会在后台执行 `ANALYZE TABLE tbl` 语句自动更新这个表的统计信息。
 
+<<<<<<< HEAD
 在 v5.0 版本之前，执行查询语句时，TiDB 会以 [`feedback-probability`](/tidb-configuration-file.md#feedback-probability) 的概率收集反馈信息，并将其用于更新直方图和 Count-Min Sketch。**对于 v5.0 版本，该功能默认关闭，暂不建议开启此功能。**
+=======
+> **注意：**
+>
+> 目前自动更新无法记录手动 ANALYZE 时输入的配置项。因此当通过 `WITH` 语句控制 ANALYZE 的收集行为时，目前需要手动设置定时任务收集统计信息。
+>
+> {{< copyable "sql" >}}
+>
+> ```sql
+> [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH]|[WITH NUM SAMPLES|WITH FLOATNUM SAMPLERATE];
+> ```
+
+在 v5.0 版本之前，执行查询语句时，TiDB 会以 [`feedback-probability`](/tidb-configuration-file.md#feedback-probability) 的概率收集反馈信息，并将其用于更新直方图和 Count-Min Sketch。**该功能在当前版本中为实验特性。对于 v5.0 版本，该功能默认关闭，不建议在生产环境中开启该功能。**
+>>>>>>> 6d1ee92df (v5.3-v5.0: emphasize experimental for stats feedback (#12167))
 
 ### 控制 ANALYZE 并发度
 
