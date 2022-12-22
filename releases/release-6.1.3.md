@@ -10,6 +10,14 @@ TiDB 版本：6.1.3
 
 试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v6.1/quick-start-with-tidb) | [生产部署](https://docs.pingcap.com/zh/tidb/v6.1/production-deployment-using-tiup) | [下载离线包](https://cn.pingcap.com/product-community/?version=v6.1.3#version-list)
 
+## 兼容性变更
+
+- Tools
+
+    - TiCDC
+
+        - 将 [`transaction-atomicity`](/ticdc/ticdc-sink-to-mysql.md#sink-uri-配置-mysqltidb) 的默认值从 `table` 修改为 `none`，提升同步的稳定性 [#7505](https://github.com/pingcap/tiflow/issues/7505) @[asddongmen](https://github.com/asddongmen)
+
 ## 提升改进
 
 - PD
