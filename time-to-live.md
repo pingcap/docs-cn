@@ -93,7 +93,7 @@ TTL 可以和[数据类型的默认值](/data-type-default-values.md)一起使�
     ) TTL = `created_at` + INTERVAL 3 MONTH;
     ```
 
-* 指定某一列的默认值为当前的创建时间和更新时间：
+* 指定某一列的默认值为该行的创建时间或更新时间，并用这一列作为 TTL 的时间列，创建时间或更新时间超过 3 个月的数据将被标记为过期：
 
     ```sql
     CREATE TABLE t1 (
