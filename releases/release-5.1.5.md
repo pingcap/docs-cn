@@ -145,5 +145,5 @@ TiDB 版本：5.1.5
     + TiCDC
 
         (dup: release-6.1.0.md > Bug fixes> Tools> TiCDC)- Fix data loss that occurs in special incremental scanning scenarios [#5468](https://github.com/pingcap/tiflow/issues/5468)
-给 sorter 组件增加部分监控数据 [#5690](https://github.com/pingcap/tiflow/issues/5690)
+        - 给 sorter 组件增加部分监控数据 [#5690](https://github.com/pingcap/tiflow/issues/5690)
         (dup: release-6.1.0.md > Bug fixes> Tools> TiCDC)- Fix excessive memory usage by optimizing the way DDL schemas are buffered [#1386](https://github.com/pingcap/tiflow/issues/1386)
