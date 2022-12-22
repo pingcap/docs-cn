@@ -23,7 +23,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 - 支持[密码管理](/password-management.md)策略，满足密码合规审计需求。
 - TiDB Lightning 和 Dumpling 支持[导入](tidb-lightning/tidb-lightning-data-source.md)和[导出](/dumpling-overview.md#通过并发提高-dumpling-的导出效率)压缩格式文件。
 - TiDB Data Migration (DM) 的[增量数据校验](/dm/dm-continuous-data-validation.md)特性 GA。
-- TiDB 快照备份支持断点续传，[PITR](/br-pitr-guide.md#进行-pitr) 的恢复性能提升 x 倍，RPO 降低到 x min。
+- TiDB 快照备份支持断点续传，[PITR](/br-pitr-guide.md#进行-pitr) 的恢复性能提升 50%，正常场景下 RPO 降低到 5 min。
 - TiCDC [同步数据到 Kafka](/replicate-data-to-kafka.md) 吞吐提升 x 倍，复制延迟降低到 x 秒。
 - 提供行级别 [Time to live (TTL)](/time-to-live.md) 管理数据生命周期（实验特性）。
 - TiCDC 支持 Amazon S3、Azure Blob Storage、NFS 的[对象存储](ticdc/ticdc-sink-to-cloud-storage.md)（实验特性）。
@@ -285,7 +285,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
 * PITR 性能大幅提升 **tw@shichun-0415
 
-  PITR 恢复的日志恢复阶段，单台 TiKV 的恢复速度可以达到 xx MB/s，提升了 x 倍。恢复速度可扩展，有效地降低容灾场景的 RTO 指标；容灾场景的 RPO 优化到 5 min，在常规的集群运维，如滚动升级，单 TiKV 故障等场景下，可以达到 RPO = 5 min 目标。
+  PITR 恢复的日志恢复阶段，单台 TiKV 的恢复速度可以达到 9 MiB/s，提升了 50%。恢复速度可扩展，有效地降低容灾场景的 RTO 指标；容灾场景的 RPO 优化到 5 min，在常规的集群运维，如滚动升级，单 TiKV 故障等场景下，可以达到 RPO = 5 min 的目标。
 
 * TiKV-BR 工具 GA，支持 RawKV 的备份和恢复 [#67](https://github.com/tikv/migration/issues/67) @[pingyu](https://github.com/pingyu) @[haojinming](https://github.com/haojinming) **tw@shichun-0415**
 
