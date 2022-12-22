@@ -113,6 +113,7 @@ TiDB 版本：5.1.5
     (dup: release-5.4.1.md > Bug Fixes> TiFlash)- Fix the panic issue that occurs when TLS is enabled [#4196](https://github.com/pingcap/tiflash/issues/4196)
     (dup: release-6.1.1.md > Bug fixes> TiFlash)- Fix a bug that TiFlash might crash due to an error in parallel aggregation [#5356](https://github.com/pingcap/tiflash/issues/5356) @[gengliqi](https://github.com/gengliqi)
     (dup: release-5.4.1.md > Bug Fixes> TiFlash)- Fix the issue that a query containing `JOIN` might be hung if an error occurs [#4195](https://github.com/pingcap/tiflash/issues/4195)
+    - 修复 `OR` 函数计算结果错误的问题 [#5849](https://github.com/pingcap/tiflash/issues/5849) @[xzhangxian1008](https://github.com/xzhangxian1008)
 
     <!--storage owner: flowbehappy -->
 
