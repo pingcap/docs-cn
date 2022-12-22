@@ -32,7 +32,7 @@ include-commit-ts = false
 
 ## 数据保存的事务性约束
 
-- 单个 CSV 文件中后一行数据的 commit-ts 肯定大于前一行数据的 commit-ts。
+- 单个 CSV 文件中后一行数据的 commit-ts 大于前一行数据的 commit-ts。
 - 单表的同一事务不会跨不同的 CSV 文件来存储。
 - 相同事务涉及的不同表会跨不同的 CSV 文件来存储。
 
@@ -40,7 +40,7 @@ include-commit-ts = false
 
 CSV 文件中，单行的每一列定义如下：
 
-- 第一列：DML 操作指示符，取值包括 `I`、 `U` 和 `D`。`I` 表示 `INSERT`，`U` 表示 `UPDATE`，`D` 表示 `DELETE`。
+- 第一列：DML 操作指示符，取值包括 `I`、`U` 和 `D`。`I` 表示 `INSERT`，`U` 表示 `UPDATE`，`D` 表示 `DELETE`。
 - 第二列：表名。
 - 第三列：库名。
 - 第四列：`commit ts`，即原始事务的 commit ts。该列为可选配置。
