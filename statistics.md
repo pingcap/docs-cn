@@ -229,7 +229,7 @@ ANALYZE INCREMENTAL TABLE TableName PARTITION PartitionNameList INDEX [IndexName
 > [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH]|[WITH NUM SAMPLES|WITH FLOATNUM SAMPLERATE];
 > ```
 
-在 v5.0 版本之前，执行查询语句时，TiDB 会以 [`feedback-probability`](/tidb-configuration-file.md#feedback-probability) 的概率收集反馈信息，并将其用于更新直方图和 Count-Min Sketch。**该功能在当前版本中为实验特性。对于 v5.0 版本，该功能默认关闭，不建议在生产环境中开启该功能。**
+在 v5.0 版本之前，执行查询语句时，TiDB 会以 [`feedback-probability`](/tidb-configuration-file.md#feedback-probability) 的概率收集反馈信息，并将其用于更新直方图和 Count-Min Sketch。**该功能在当前版本中为实验特性。对于当前版本，该功能默认关闭，不建议在生产环境中开启该功能。**
 
 ### 控制 ANALYZE 并发度
 
