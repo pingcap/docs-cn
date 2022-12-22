@@ -34,7 +34,7 @@ aliases: ['/docs-cn/dev/experimental-features-4.0/','/zh/tidb/dev/experimental-f
 + [Cascades Planner](/system-variables.md#tidb_enable_cascades_planner)：基于 Cascades 框架的自顶向下查询优化器。（v3.0 实验特性）
 + [表级锁 (Table Lock)](/tidb-configuration-file.md#enable-table-lock-从-v400-版本开始引入)（v4.0.0 实验特性）
 + [Range INTERVAL 分区](/partitioned-table.md#range-interval-分区)（v6.3.0 实验特性）
-+ [使用 TTL (Time to Live) 来周期性地删除过期数据](/time-to-live.md)。(v6.5.0 实验特性)
++ [使用 TTL (Time to Live) 定期删除过期数据](/time-to-live.md)。(v6.5.0 实验特性)
 + [TiFlash 查询结果物化](/tiflash/tiflash-results-materialization.md)（v6.5.0 实验特性）
 
 ## 存储
