@@ -54,8 +54,8 @@ SET [GLOBAL] tidb_replica_read = 'follower';
 public enum FollowReadMode {
     LEADER("leader"),
     FOLLOWER("follower"),
-    LEADER_AND_FOLLOWER("leader-and-follower");
-    CLOSEST_REPLICA("closest-replica");
+    LEADER_AND_FOLLOWER("leader-and-follower"),
+    CLOSEST_REPLICA("closest-replica"),
     CLOSEST_ADAPTIVE("closest-adaptive");
 
     private final String mode;
