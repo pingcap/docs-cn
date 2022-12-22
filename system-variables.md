@@ -824,6 +824,10 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 ### `tidb_enable_rate_limit_action`
 
+> **注意：**
+>
+> 该变量默认开启，但可能导致内存不受 [`tidb_mem_quota_query`](#tidb_mem_quota_query) 控制，从而加剧 OOM 风险，因此建议将该变量值调整为 `OFF`。
+
 - 作用域：SESSION | GLOBAL
 - 默认值：`ON`
 - 这个变量控制是否为读数据的算子开启动态内存控制功能。读数据的算子默认启用 [`tidb_distsql_scan_concurrency`](/system-variables.md#tidb_distsql_scan_concurrency) 所允许的最大线程数来读取数据。当单条 SQL 语句的内存使用每超过 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 一次，读数据的算子会停止一个线程。
