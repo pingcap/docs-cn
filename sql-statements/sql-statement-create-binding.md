@@ -10,7 +10,7 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-create-binding/']
 
 `BINDING` 语句可以在 `GLOBAL` 或者 `SESSION` 作用域内创建执行计划绑定。在不指定作用域时，默认的作用域为 `SESSION`。
 
-被绑定的 SQL 语句会被参数化后存储到系统表中。在处理 SQL 查询时，只要参数化后的 SQL 语句和系统表中某个被绑定的 SQL 语句一致，并且系统变量 `tidb_use_plan_baselines` 的值为 `ON`（其默认值为 `ON`），即可使用相应的优化器 Hint。如果存在多个可匹配的执行计划，优化器会从中选择代价最小的一个进行绑定。更多信息参考[Create a binding](/sql-plan-management.md#create-a-binding)。
+被绑定的 SQL 语句会被参数化后存储到系统表中。在处理 SQL 查询时，只要参数化后的 SQL 语句和系统表中某个被绑定的 SQL 语句一致，并且系统变量 `tidb_use_plan_baselines` 的值为 `ON`（其默认值为 `ON`），即可使用相应的优化器 Hint。如果存在多个可匹配的执行计划，优化器会从中选择代价最小的一个进行绑定。更多信息，请参考[创建绑定](/sql-plan-management.md#create-a-binding)。
 
 ## 语法图
 
@@ -30,7 +30,7 @@ BindableStmt ::=
 
 ## 示例
 
-您可以根据 SQL hint 或历史执行计划创建绑定。
+你可以根据 SQL hint 或历史执行计划创建绑定。
  
 下面的示例演示如何根据 SQL hint创建绑定。
 
@@ -136,7 +136,7 @@ EXPLAIN ANALYZE  SELECT * FROM t1 WHERE b = 123;
 3 rows in set (0.01 sec)
 ```
 
-以下示例演示了如何根据历史执行计划创建绑定。
+下面的示例演示如何根据历史执行计划创建绑定。
 
 ```sql
 mysql> CREATE TABLE t(id INT PRIMARY KEY , a INT, KEY(a));
