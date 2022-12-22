@@ -330,30 +330,7 @@ ANALYZE INCREMENTAL TABLE TableName PARTITION PartitionNameList INDEX [IndexName
 
 为了避免小表因为少量数据修改而频繁触发自动更新，当表的行数小于 1000 时，TiDB 不会触发对此表的自动更新。你可以通过 `SHOW STATS_META` 来查看表的行数情况。
 
-<<<<<<< HEAD
-在 v5.0 版本之前，执行查询语句时，TiDB 会以 [`feedback-probability`](/tidb-configuration-file.md#feedback-probability) 的概率收集反馈信息，并将其用于更新直方图和 Count-Min Sketch。**从 v5.0 版本起，该功能默认关闭，暂不建议开启此功能。**
-=======
 在 TiDB v5.0 之前，执行查询语句时，TiDB 会以 [`feedback-probability`](/tidb-configuration-file.md#feedback-probability) 的概率收集反馈信息，并将其用于更新直方图和 Count-Min Sketch。**从 v5.0 起，该功能默认关闭。从 v5.4 起，该功能已被废弃。不建议开启此功能。**
-
-从 TiDB v6.0 起，TiDB 支持通过 `KILL` 语句终止正在后台运行的 `ANALYZE` 任务。如果发现正在后台运行的 `ANALYZE` 任务消耗大量资源影响业务，你可以通过以下步骤终止该 `ANALYZE` 任务：
-
-1. 执行以下 SQL 语句：
-
-    {{< copyable "sql" >}}
-
-    ```sql
-    SHOW ANALYZE STATUS
-    ```
-
-    查看 `instance` 列和 `process_id` 列获得正在执行后台 `ANALYZE` 任务的 TiDB 实例地址和任务 `ID`。
-
-2. 终止正在后台运行的 `ANALYZE` 任务。
-
-   - 如果 [`enable-global-kill`](/tidb-configuration-file.md#enable-global-kill-从-v610-版本开始引入) 的值为 `true` (默认为 `true`），你可以直接执行 `KILL TIDB ${id};` 语句。其中，${id} 为上一步中查询得到的后台 `ANALYZE` 任务的 `ID`。
-   - 如果 `enable-global-kill` 的值为 `false`，你需要先使用客户端连接到执行后台 `ANALYZE` 任务的 TiDB 实例，然后再执行 `KILL TIDB ${id};` 语句。如果使用客户端连接到其他 TiDB 实例，或者客户端和 TiDB 中间有代理，`KILL` 语句不能终止后台的 `ANALYZE` 任务。
-
-关于 `KILL` 语句的更多信息，请参考 [`KILL [TIDB]`](/sql-statements/sql-statement-kill.md)。
->>>>>>> 442d845ed (v6.1-v5.4: emphasize deprecation for stats feedback (#12166))
 
 ### 控制 ANALYZE 并发度
 
