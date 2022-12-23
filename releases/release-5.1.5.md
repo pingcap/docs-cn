@@ -18,7 +18,7 @@ TiDB 版本：5.1.5
 
 + PD
 
-    (dup: release-6.1.0.md > Improvements> PD)- Disable compiling swagger server by default [#4932](https://github.com/tikv/pd/issues/4932)
+    (dup: release-6.1.0.md > 改进提升> PD)- 默认关闭编译 swagger server [#4932](https://github.com/tikv/pd/issues/4932)
 
 + TiFlash
 
@@ -28,109 +28,109 @@ TiDB 版本：5.1.5
     
     <!--executor owner: zanmato1984-->  
     
-    (dup: release-5.2.4.md > Bug fixes> TiDB)- Fix the issue that the window function causes TiDB to panic instead of reporting an error [#30326](https://github.com/pingcap/tidb/issues/30326)
-    (dup: release-5.4.3.md > Bug fixes> TiDB)- Fix the wrong result that occurs when enabling dynamic mode in partitioned tables for TiFlash [#37254](https://github.com/pingcap/tidb/issues/37254)
-    (dup: release-5.3.4.md > Bug fixes> TiDB)- Fix wrong results of `GREATEST` and `LEAST` when passing in unsigned `BIGINT` arguments [#30101](https://github.com/pingcap/tidb/issues/30101)
-    (dup: release-5.4.1.md > Bug Fixes> TiDB)- Fix wrong results of deleting data of multiple tables using `left join` [#31321](https://github.com/pingcap/tidb/issues/31321)
-    (dup: release-5.4.0.md > Bug fixes> TiDB)- Fix the issue that the result of `concat(ifnull(time(3)))` in TiDB is different from that in MySQL [#29498](https://github.com/pingcap/tidb/issues/29498)
-    (dup: release-5.0.6.md > Bug fixes> TiDB)- Fix the issue that the SQL statements that contain `cast(integer as char) union string` return wrong results [#29513](https://github.com/pingcap/tidb/issues/29513)
-    (dup: release-6.1.1.md > Bug fixes> TiDB)- Fix the issue that `INL_HASH_JOIN` might hang when used with `LIMIT` [#35638](https://github.com/pingcap/tidb/issues/35638) @[guo-shaoge](https://github.com/guo-shaoge)
+    (dup: release-5.2.4.md > Bug 修复> TiDB)- 修复窗口函数执行时本应报错但是让 TiDB 崩溃的问题 [#30326](https://github.com/pingcap/tidb/issues/30326)
+    (dup: release-5.4.3.md > Bug 修复> TiDB)- 修复在 TiFlash 中为分区表开启动态模式时结果出错的问题 [#37254](https://github.com/pingcap/tidb/issues/37254)
+    (dup: release-5.3.4.md > Bug 修复> TiDB)- 修复当 `GREATEST` 和 `LEAST`  函数传入无符号整型值时，计算结果出错的问题 [#30101](https://github.com/pingcap/tidb/issues/30101)
+    (dup: release-5.4.1.md > Bug 修复> TiDB)- 修复使用 left join 同时删除多张表数据时可能出现错误结果的问题 [#31321](https://github.com/pingcap/tidb/issues/31321)
+    (dup: release-5.4.0.md > Bug 修复> TiDB)- 修复 `concat(ifnull(time(3))` 的结果与 MySQL 不一致的问题 [#29498](https://github.com/pingcap/tidb/issues/29498)
+    (dup: release-5.0.6.md > Bug 修复> TiDB)- 修复 SQL 语句中包含 `cast(integer as char) union string` 时计算结果出错的问题 [#29513](https://github.com/pingcap/tidb/issues/29513)
+    (dup: release-6.1.1.md > Bug 修复> TiDB)- 修复 `INL_HASH_JOIN` 和 `LIMIT` 一起使用时可能会卡住的问题 [#35638](https://github.com/pingcap/tidb/issues/35638) @[guo-shaoge](https://github.com/guo-shaoge)
     - 修复当有 Region 返回空数据时 `ANY_VALUE` 结果不正确的问题 [#30923](https://github.com/pingcap/tidb/issues/30923)
-    (dup: release-5.2.4.md > Bug fixes> TiDB)- Fix wrong results of index join caused by an innerWorker panic [#31494](https://github.com/pingcap/tidb/issues/31494)
+    (dup: release-5.2.4.md > Bug 修复> TiDB)- 修复 innerWorker panic 导致的 index join 结果错误的问题 [#31494](https://github.com/pingcap/tidb/issues/31494)
 
     <!--planner owner: winoros-->
     
-        (dup: release-5.2.4.md > Bug fixes> TiDB)- Fix the issue that a SQL operation is canceled when its JSON type column joins its `CHAR` type column [#29401](https://github.com/pingcap/tidb/issues/29401)
+        (dup: release-5.2.4.md > Bug 修复> TiDB)- 修复当 SQL 语句中存在 JSON 类型列与 `CHAR` 类型列连接时，SQL 出错的问题 [#29401](https://github.com/pingcap/tidb/issues/29401)
 
     <!--sql-infra and tidb owner: bb7133-->
 
-    (dup: release-5.2.4.md > Bug fixes> TiDB)- Fix the issue that the background HTTP service of TiDB might not exit successfully and makes the cluster in an abnormal state [#30571](https://github.com/pingcap/tidb/issues/30571)
-    (dup: release-5.4.0.md > Bug fixes> TiDB)- Fix the issue that concurrent column type change causes inconsistency between the schema and the data [#31048](https://github.com/pingcap/tidb/issues/31048)
-    (dup: release-5.3.4.md > Bug fixes> TiDB)- Fix the issue that `KILL TIDB` cannot take effect immediately on idle connections [#24031](https://github.com/pingcap/tidb/issues/24031)
+    (dup: release-5.2.4.md > Bug 修复> TiDB)- 修复 TiDB 的后台 HTTP 服务可能没有正确关闭导致集群状态异常的问题 [#30571](https://github.com/pingcap/tidb/issues/30571)
+    (dup: release-5.4.0.md > Bug 修复> TiDB)- 修复并发的列类型变更导致 schema 与数据不一致的问题 [#31048](https://github.com/pingcap/tidb/issues/31048)
+    (dup: release-5.3.4.md > Bug 修复> TiDB)- 修复 `KILL TIDB` 在空闲链接上无法立即生效的问题 [#24031](https://github.com/pingcap/tidb/issues/24031)
     - 修复设置 SESSION 变量会导致 `tidb_snapshot` 不工作的问题 [#35515](https://github.com/pingcap/tidb/issues/35515)
-    (dup: release-5.3.4.md > Bug fixes> TiDB)- Fix the issue that the Region cache is not cleaned up in time when the Region is merged [#37141](https://github.com/pingcap/tidb/issues/37141)
+    (dup: release-5.3.4.md > Bug 修复> TiDB)- 修复 Region 合并情况下 Region cache 没有及时被清理的问题 [#37141](https://github.com/pingcap/tidb/issues/37141)
     - 修复因为 KV client 中连接数据争用导致的 panic 问题 [33773](https://github.com/pingcap/tidb/issues/33773)
-    (dup: release-6.1.1.md > Bug fixes> TiDB)- Fix the issue that when TiDB Binlog is enabled, executing the `ALTER SEQUENCE` statement might cause a wrong metadata version and cause Drainer to exit [#36276](https://github.com/pingcap/tidb/issues/36276) @[AilinKid](https://github.com/AilinKid)
-    (dup: release-5.3.2.md > Bug Fixes> TiDB)- Fix the bug that TiDB may panic when querying statement summary tables [#35340](https://github.com/pingcap/tidb/issues/35340)
-    (dup: release-5.4.1.md > Bug Fixes> TiDB)- Fix the issue that TiDB gets the wrong result when using TiFlash to scan tables with empty range although TiFlash does not support reading tables with empty range yet [#33083](https://github.com/pingcap/tidb/issues/33083)
-    (dup: release-5.3.4.md > Bug fixes> TiDB)- Fix the issue that the `avg()` function returns `ERROR 1105 (HY000): other error for mpp stream: Could not convert to the target type - -value is out of range.` when queried from TiFlash [#29952](https://github.com/pingcap/tidb/issues/29952)
-    (dup: release-5.3.4.md > Bug fixes> TiDB)- Fix the issue that `ERROR 1105 (HY000): close of nil channel` is returned when using `HashJoinExec` [#30289](https://github.com/pingcap/tidb/issues/30289)
-    (dup: release-5.3.4.md > Bug fixes> TiDB)- Fix the issue that `ERROR 1105 (HY000): close of nil channel` is returned when using `HashJoinExec` [#30289](https://github.com/pingcap/tidb/issues/30289)
-    (dup: release-5.3.4.md > Bug fixes> TiDB)- Fix the issue that TiKV and TiFlash return different results when querying logical operations [#37258](https://github.com/pingcap/tidb/issues/37258)
-    (dup: release-5.3.4.md > Bug fixes> TiDB)- Fix the issue that the `EXECUTE` statement might throw an unexpected error in specific scenarios [#37187](https://github.com/pingcap/tidb/issues/37187)
-    (dup: release-5.4.2.md > Bug Fixes> TiDB)- Fix the planner wrong behaviors that occur when `tidb_opt_agg_push_down` and `tidb_enforce_mpp` are enabled [#34465](https://github.com/pingcap/tidb/issues/34465)
-    (dup: release-6.1.1.md > Bug fixes> TiDB)- Fix a bug that TiDB might send coprocessor requests when executing the `SHOW COLUMNS` statement [#36496](https://github.com/pingcap/tidb/issues/36496) @[tangenta](https://github.com/tangenta)
+    (dup: release-6.1.1.md > Bug 修复> TiDB)- 修复了在开启 TiDB Binlog 时，TiDB 执行 `ALTER SEQUENCE` 会产生错误的元信息版本号，进而导致 Drainer 报错退出的问题 [#36276](https://github.com/pingcap/tidb/issues/36276) @[AilinKid](https://github.com/AilinKid)
+    (dup: release-5.3.2.md > Bug 修复> TiDB)- 修复 TiDB 由于 `fatal error: concurrent map read and map write` 发生崩溃的问题 [#35340](https://github.com/pingcap/tidb/issues/35340)
+    (dup: release-5.4.1.md > Bug 修复> TiDB)- 修复在 TiFlash 不支持使用空范围读表的情况，依然选择 TiFlash 导致查询结果错误的问题 [#33083](https://github.com/pingcap/tidb/issues/33083)
+    (dup: release-5.3.4.md > Bug 修复> TiDB)- 修复当从 TiFlash 查询 `avg()` 函数时，返回错误 `ERROR 1105 (HY000): other error for mpp stream: Could not convert to the target type - -value is out of range.` 的问题 [#29952](https://github.com/pingcap/tidb/issues/29952)
+    (dup: release-5.3.4.md > Bug 修复> TiDB)- 修复查询 HashJoin 时，返回错误 `ERROR 1105 (HY000): close of nil channel` 的问题 [#30289](https://github.com/pingcap/tidb/issues/30289)
+    (dup: release-5.3.4.md > Bug 修复> TiDB)- 修复查询 HashJoin 时，返回错误 `ERROR 1105 (HY000): close of nil channel` 的问题 [#30289](https://github.com/pingcap/tidb/issues/30289)
+    (dup: release-5.3.4.md > Bug 修复> TiDB)- 修复 TiKV 和 TiFlash 在进行逻辑运算时结果不一致的问题 [#37258](https://github.com/pingcap/tidb/issues/37258)
+    (dup: release-5.3.4.md > Bug 修复> TiDB)- 修复某些情况下，`EXECUTE` 语句可能抛出非预期异常的问题 [#37187](https://github.com/pingcap/tidb/issues/37187)
+    (dup: release-5.4.2.md > Bug 修复> TiDB)- 修复了 `tidb_opt_agg_push_down` 和 `tidb_enforce_mpp` 启用时执行处理器的错误行为 [#34465](https://github.com/pingcap/tidb/issues/34465)
+    (dup: release-6.1.1.md > Bug 修复> TiDB)- 修复 TiDB 在执行 `SHOW COLUMNS` 时会发出协处理器请求的问题 [#36496](https://github.com/pingcap/tidb/issues/36496) @[tangenta](https://github.com/tangenta)
     - 当 `enable-table-lock` 参数未开启时为 `lock tables` 和 `unlock tables` 新增警告 [#28967](https://github.com/pingcap/tidb/issues/28967)
     - 修复 Range 分区允许多个 `MAXVALUE` 分区的问题 [#36329](https://github.com/pingcap/tidb/issues/36329)
 
 + TiKV
 
-    (dup: release-5.3.2.md > Bug Fixes> TiKV)- Fix the issue of time parsing error that occurs when the `DATETIME` values contain a fraction and `Z` [#12739](https://github.com/tikv/tikv/issues/12739)
-    (dup: release-5.4.1.md > Bug Fixes> TiKV)- Fix a bug that replica reads might violate the linearizability [#12109](https://github.com/tikv/tikv/issues/12109)
-    (dup: release-6.1.1.md > Bug fixes> TiKV)- Fix a bug that Regions might be overlapped if Raftstore is busy [#13160](https://github.com/tikv/tikv/issues/13160) @[5kbpers](https://github.com/5kbpers)
-    (dup: release-5.2.4.md > Bug fixes> TiKV)- Fix the TiKV panic issue that occurs when applying snapshot is aborted [#11618](https://github.com/tikv/tikv/issues/11618)
-    (dup: release-5.4.1.md > Bug Fixes> TiKV)- Fix a bug that TiKV might panic if it has been running for 2 years or more [#11940](https://github.com/tikv/tikv/issues/11940)
-    (dup: release-6.1.1.md > Bug fixes> TiKV)- Fix the panic issue that might occur when the source peer catches up logs by snapshot in the Region merge process [#12663](https://github.com/tikv/tikv/issues/12663) @[BusyJay](https://github.com/BusyJay)
-    (dup: release-6.1.1.md > Bug fixes> TiKV)- Fix the issue that TiKV panics when performing type conversion for an empty string [#12673](https://github.com/tikv/tikv/issues/12673) @[wshwsh12](https://github.com/wshwsh12)
-    (dup: release-5.4.1.md > Bug Fixes> TiKV)- Fix a bug that stale messages cause TiKV to panic [#12023](https://github.com/tikv/tikv/issues/12023)
-    (dup: release-6.1.1.md > Bug fixes> TiKV)- Fix the panic issue that might occur when a peer is being split and destroyed at the same time [#12825](https://github.com/tikv/tikv/issues/12825) @[BusyJay](https://github.com/BusyJay)
-    (dup: release-5.4.1.md > Bug Fixes> TiKV)- Fix the TiKV panic issue that occurs when the target peer is replaced with the peer that is destroyed without being initialized when merging a Region [#12048](https://github.com/tikv/tikv/issues/12048)
-    (dup: release-6.1.0.md > Bug fixes> TiKV)- Fix the issue that TiKV reports the `invalid store ID 0` error when using Follower Read [#12478](https://github.com/tikv/tikv/issues/12478)
-    (dup: release-5.3.2.md > Bug Fixes> TiKV)- Fix the possible duplicate commit records in pessimistic transactions when async commit is enabled [#12615](https://github.com/tikv/tikv/issues/12615)
-    (dup: release-5.4.3.md > Improvements> TiKV)- Support configuring the `unreachable_backoff` item to avoid Raftstore broadcasting too many messages after one peer becomes unreachable [#13054](https://github.com/tikv/tikv/issues/13054)
+    (dup: release-5.3.2.md > Bug 修复> TiKV)- 修复了 `DATETIME` 类型的数据包含小数部分和 `Z` 后缀导致检查报错的问题 [#12739](https://github.com/tikv/tikv/issues/12739)
+    (dup: release-5.4.1.md > Bug 修复> TiKV)- 修复 replica read 可能违反线性一致性的问题 [#12109](https://github.com/tikv/tikv/issues/12109)
+    (dup: release-6.1.1.md > Bug 修复> TiKV)- 修复 Raftstore 线程繁忙时，可能会出现 Region 重叠的问题 [#13160](https://github.com/tikv/tikv/issues/13160) @[5kbpers](https://github.com/5kbpers)
+    (dup: release-5.2.4.md > Bug 修复> TiKV)- 修复 apply snapshot 被暂停时会引起 TiKV panic 的问题 [#11618](https://github.com/tikv/tikv/issues/11618)
+    (dup: release-5.4.1.md > Bug 修复> TiKV)- 修复 TiKV 运行 2 年以上可能 panic 的问题 [#11940](https://github.com/tikv/tikv/issues/11940)
+    (dup: release-6.1.1.md > Bug 修复> TiKV)- 修复在 Region merge 时 source peer 通过 snapshot 追日志时可能导致 panic 的问题 [#12663](https://github.com/tikv/tikv/issues/12663) @[BusyJay](https://github.com/BusyJay)
+    (dup: release-6.1.1.md > Bug 修复> TiKV)- 修复了对空字符串进行类型转换导致 TiKV panic 的问题 [#12673](https://github.com/tikv/tikv/issues/12673) @[wshwsh12](https://github.com/wshwsh12)
+    (dup: release-5.4.1.md > Bug 修复> TiKV)- 修复旧信息造成 TiKV panic 的问题 [#12023](https://github.com/tikv/tikv/issues/12023)
+    (dup: release-6.1.1.md > Bug 修复> TiKV)- 修复同时分裂和销毁一个 peer 时可能导致 panic 的问题 [#12825](https://github.com/tikv/tikv/issues/12825) @[BusyJay](https://github.com/BusyJay)
+    (dup: release-5.4.1.md > Bug 修复> TiKV)- 修复合并 Region 时因 target peer 被一个未进行初始化就被销毁的 peer 所替换，从而引起 TiKV panic 的问题 [#12048](https://github.com/tikv/tikv/issues/12048)
+    (dup: release-6.1.0.md > 错误修复> TiKV)- 修复进行 Follower Read 时，可能会报 `invalid store ID 0` 错误的问题 [#12478](https://github.com/tikv/tikv/issues/12478)
+    (dup: release-5.3.2.md > Bug 修复> TiKV)- 修复了在悲观事务中使用 Async Commit 导致重复提交记录的问题 [#12615](https://github.com/tikv/tikv/issues/12615)
+    (dup: release-5.4.3.md > 提升改进> TiKV)- 支持配置 `unreachable_backoff` 避免 Raftstore 发现某个 Peer 无法连接时广播过多消息 [#13054](https://github.com/tikv/tikv/issues/13054)
 
     <!--transaction owner:cfzjywxk -->
 
-    (dup: release-5.4.1.md > Bug Fixes> TiKV)- Fix the issue that successfully committed optimistic transactions may report the `Write Conflict` error when the network is poor [#34066](https://github.com/pingcap/tidb/issues/34066)
-    (dup: release-6.1.1.md > Bug fixes> TiKV)- Fix the wrong expression of `Unified Read Pool CPU` in dashboard [#13086](https://github.com/tikv/tikv/issues/13086) @[glorv](https://github.com/glorv)
+    (dup: release-5.4.1.md > Bug 修复> TiKV)- 修复网络出现问题的情况下，已成功提交的乐观事务可能报 `Write Conflict` 错误的问题 [#34066](https://github.com/pingcap/tidb/issues/34066)
+    (dup: release-6.1.1.md > Bug 修复> TiKV)- 修复 Dashboard 中 Unified Read Pool CPU 表达式错误的问题 [#13086](https://github.com/tikv/tikv/issues/13086) @[glorv](https://github.com/glorv)
 
 + PD
 
-    (dup: release-6.1.0.md > Bug fixes> PD)- Fix the issue that a removed tombstone store appears again after the PD leader transfer ​​[#4941](https://github.com/tikv/pd/issues/4941)
-    (dup: release-6.1.0.md > Bug fixes> PD)- Fix the issue that scheduling cannot start immediately after the PD leader transfer [#4769](https://github.com/tikv/pd/issues/4769)
-    (dup: release-6.1.0.md > Bug fixes> PD)- Fix the wrong status code of `not leader` [#4797](https://github.com/tikv/pd/issues/4797)
-    (dup: release-6.1.0.md > Improvements> PD)- Disable compiling swagger server by default [#4932](https://github.com/tikv/pd/issues/4932)
-    (dup: release-5.3.4.md > Bug fixes> PD)- Fix the issue that PD cannot correctly handle dashboard proxy requests [#5321](https://github.com/tikv/pd/issues/5321)
-    (dup: release-6.1.0.md > Bug fixes> PD)- Fix a bug of TSO fallback in some corner cases [#4884](https://github.com/tikv/pd/issues/4884)
-    (dup: release-5.3.4.md > Bug fixes> PD)- Fix the issue that the TiFlash learner replica might not be created in specific scenarios [#5401](https://github.com/tikv/pd/issues/5401)
-    (dup: release-5.4.1.md > Bug Fixes> PD)- Fix the issue that the label distribution has residual labels in the metrics [#4825](https://github.com/tikv/pd/issues/4825)
-    - (dup: release-6.1.0.md > Bug fixes> PD)- Fix the issue that region checker always occupy one cpu in some corner cases.[#4920](https://github.com/tikv/pd/issues/4920) 
-    (dup: release-5.4.1.md > Bug Fixes> PD)- Fix the issue that when there exists a Store with large capacity (2T for example), fully allocated small Stores cannot be detected, which results in no balance operator being generated [#4805](https://github.com/tikv/pd/issues/4805)
-    (dup: release-5.3.2.md > Bug Fixes> PD)- Fix the issue that schedulers do not work when `SchedulerMaxWaitingOperator` is set to `1` [#4946](https://github.com/tikv/pd/issues/4946)
+    (dup: release-6.1.0.md > 错误修复> PD)- 修复已清除的 `tombstone store` 信息在切换 PD leader 后再次出现的问题 [#4941](https://github.com/tikv/pd/issues/4941)
+    (dup: release-6.1.0.md > 错误修复> PD)- 修复 PD leader 转移后调度不能立即启动的问题 [#4769](https://github.com/tikv/pd/issues/4769)
+    (dup: release-6.1.0.md > 错误修复> PD)- 修复 `not leader` 的 status code 有误的问题 [#4797](https://github.com/tikv/pd/issues/4797)
+    (dup: release-6.1.0.md > 改进提升> PD)- 默认关闭编译 swagger server [#4932](https://github.com/tikv/pd/issues/4932)
+    (dup: release-5.3.4.md > Bug 修复> PD)- 修复 PD 无法正确处理 dashboard 代理请求的问题 [#5321](https://github.com/tikv/pd/issues/5321)
+    (dup: release-6.1.0.md > 错误修复> PD)- 修复在某些特殊情况下 TSO fallback 的问题 [#4884](https://github.com/tikv/pd/issues/4884)
+    (dup: release-5.3.4.md > Bug 修复> PD)- 修复 PD 在特定条件下不会创建 TiFlash Learner 副本的问题 [#5401](https://github.com/tikv/pd/issues/5401)
+    (dup: release-5.4.1.md > Bug 修复> PD)- 修复监控信息中已删除 label 的残留问题 [#4825](https://github.com/tikv/pd/issues/4825)
+    - Fix the issue that region checker always occupy one cpu in some corner cases [#4920](https://github.com/tikv/pd/issues/4920)
+    (dup: release-5.4.1.md > Bug 修复> PD)- 修复存在较大空间 Store 时（例如 2T），无法检测满的小空间 Store，从而无法进行平衡调度的问题 [#4805](https://github.com/tikv/pd/issues/4805)
+    (dup: release-5.3.2.md > Bug 修复> PD)- 修复 `SchedulerMaxWaitingOperator` 设置为 `1` 时不产生调度的问题 [#4946](https://github.com/tikv/pd/issues/4946)
 
 + TiFlash
 
     <!--compute owner: zanmato1984 -->
   
-    (dup: release-5.3.2.md > Bug Fixes> TiFlash)- Fix incorrect `microsecond` when casting string to datetime [#3556](https://github.com/pingcap/tiflash/issues/3556)
-    (dup: release-5.4.1.md > Bug Fixes> TiFlash)- Fix the panic issue that occurs when TLS is enabled [#4196](https://github.com/pingcap/tiflash/issues/4196)
-    (dup: release-6.1.1.md > Bug fixes> TiFlash)- Fix a bug that TiFlash might crash due to an error in parallel aggregation [#5356](https://github.com/pingcap/tiflash/issues/5356) @[gengliqi](https://github.com/gengliqi)
-    (dup: release-5.4.1.md > Bug Fixes> TiFlash)- Fix the issue that a query containing `JOIN` might be hung if an error occurs [#4195](https://github.com/pingcap/tiflash/issues/4195)
+    (dup: release-5.3.2.md > Bug 修复> TiFlash)- 修复转换 string 类型为 datetime 类型时，`microsecond` 结果可能不对的问题 [#3556](https://github.com/pingcap/tiflash/issues/3556)
+    (dup: release-5.4.1.md > Bug 修复> TiFlash)- 修复启用 TLS 时可能导致的崩溃 [#4196](https://github.com/pingcap/tiflash/issues/4196)
+    (dup: release-6.1.1.md > Bug 修复> TiFlash)- 修复并行聚合出错时可能导致 TiFlash crash 的问题 [#5356](https://github.com/pingcap/tiflash/issues/5356) @[gengliqi](https://github.com/gengliqi)
+    (dup: release-5.4.1.md > Bug 修复> TiFlash)- 修复在执行带有 `JOIN` 的查询遇到错误时可能被挂起的问题 [#4195](https://github.com/pingcap/tiflash/issues/4195)
     - 修复 `OR` 函数计算结果错误的问题 [#5849](https://github.com/pingcap/tiflash/issues/5849)
 
     <!--storage owner: flowbehappy -->
 
-    (dup: release-5.4.1.md > Bug Fixes> TiFlash)- Fix the bug that invalid storage directory configurations lead to unexpected behaviors [#4093](https://github.com/pingcap/tiflash/issues/4093)
-    (dup: release-6.1.0.md > Bug fixes> TiFlash)- Fix potential data inconsistency after a lot of INSERT and DELETE operations [#4956](https://github.com/pingcap/tiflash/issues/4956)
-    (dup: release-5.4.1.md > Bug Fixes> TiFlash)- Fix a bug that data not matching any region range remains on a TiFlash node [#4414](https://github.com/pingcap/tiflash/issues/4414)
-    (dup: release-5.4.1.md > Bug Fixes> TiFlash)- Fix the potential query error after adding columns under heavy read workload [#3967](https://github.com/pingcap/tiflash/issues/3967)
-    (dup: release-5.3.2.md > Bug Fixes> TiFlash)- Fix repeated crashes caused by the `commit state jump backward` errors [#2576](https://github.com/pingcap/tiflash/issues/2576)
-    (dup: release-5.4.1.md > Bug Fixes> TiFlash)- Fix potential errors when querying on a table with many delete operations [#4747](https://github.com/pingcap/tiflash/issues/4747)
-    (dup: release-5.4.1.md > Bug Fixes> TiFlash)- Fix the issue that the date format identifies `'
-'` as an invalid separator [#4036](https://github.com/pingcap/tiflash/issues/4036)
-    (dup: release-5.4.1.md > Bug Fixes> TiFlash)- Fix the wrong result that occurs when casting `DATETIME` to `DECIMAL` [#4151](https://github.com/pingcap/tiflash/issues/4151)
-    (dup: release-5.4.1.md > Bug Fixes> TiFlash)- Fix the bug that some exceptions are not handled properly [#4101](https://github.com/pingcap/tiflash/issues/4101)
+    (dup: release-5.4.1.md > Bug 修复> TiFlash)- 修复错误地配置存储目录会导致非预期行为的问题 [#4093](https://github.com/pingcap/tiflash/issues/4093)
+    (dup: release-6.1.0.md > 错误修复> TiFlash)- 修复大量 INSERT 和 DELETE 操作后可能导致 TiFlash 数据不一致的问题 [#4956](https://github.com/pingcap/tiflash/issues/4956)
+    (dup: release-5.4.1.md > Bug 修复> TiFlash)- 修复 TiFlash 节点上遗留了与 Region range 不匹配的数据的问题 [#4414](https://github.com/pingcap/tiflash/issues/4414)
+    (dup: release-5.4.1.md > Bug 修复> TiFlash)- 修复在读取工作量大时添加列后可能出现的查询错误 [#3967](https://github.com/pingcap/tiflash/issues/3967)
+    (dup: release-5.3.2.md > Bug 修复> TiFlash)- 修复由于 `commit state jump backward` 错误导致 TiFlash 反复崩溃的问题 [#2576](https://github.com/pingcap/tiflash/issues/2576)
+    (dup: release-5.4.1.md > Bug 修复> TiFlash)- 修复查询存在大量 delete 操作的表时可能报错的问题 [#4747](https://github.com/pingcap/tiflash/issues/4747)
+    (dup: release-5.4.1.md > Bug 修复> TiFlash)- 修复日期格式将 `'
+'` 处理为非法分隔符的问题 [#4036](https://github.com/pingcap/tiflash/issues/4036)
+    (dup: release-5.4.1.md > Bug 修复> TiFlash)- 修复将 `DATETIME` 转换为 `DECIMAL` 时结果错误的问题 [#4151](https://github.com/pingcap/tiflash/issues/4151)
+    (dup: release-5.4.1.md > Bug 修复> TiFlash)- 修复一些异常没有被正确地处理的问题 [#4101](https://github.com/pingcap/tiflash/issues/4101)
     - 修复 `Prepare Merge` 可能导致 raft 状态机元数据损坏，从而引起 TiFlash 重启的问题 [#3435](https://github.com/pingcap/tiflash/issues/3435)
-    (dup: release-5.3.2.md > Bug Fixes> TiFlash)- Fix a bug that an MPP query might fail due to random gRPC keepalive timeout [#4662](https://github.com/pingcap/tiflash/issues/4662)
-    (dup: release-5.4.1.md > Bug Fixes> TiFlash)- Fix the issue that the result of `IN` is incorrect in multi-value expressions [#4016](https://github.com/pingcap/tiflash/issues/4016)
-    (dup: release-5.4.1.md > Bug Fixes> TiFlash)- Fix a bug that MPP tasks might leak threads forever [#4238](https://github.com/pingcap/tiflash/issues/4238)
-    (dup: release-5.4.1.md > Bug Fixes> TiFlash)- Fix the issue that expired data is recycled slowly [#4146](https://github.com/pingcap/tiflash/issues/4146)
-    (dup: release-5.4.1.md > Bug Fixes> TiFlash)- Fix the overflow that occurs when casting `FLOAT` to `DECIMAL` [#3998](https://github.com/pingcap/tiflash/issues/3998)
-    (dup: release-5.3.4.md > Bug fixes> TiFlash)- Fix the issue that logical operators return wrong results when the argument type is UInt8 [#6127](https://github.com/pingcap/tiflash/issues/6127)
-    (dup: release-5.3.2.md > Bug Fixes> TiFlash)- Fix the potential `index out of bounds` error if calling `json_length` with empty string [#2705](https://github.com/pingcap/tiflash/issues/2705)
-    (dup: release-5.3.2.md > Bug Fixes> TiFlash)- Fix wrong decimal comparison results in corner cases [#4512](https://github.com/pingcap/tiflash/issues/4512)
-    (dup: release-5.3.2.md > Bug Fixes> TiFlash)- Fix `TiFlash_schema_error` reported when `NOT NULL` columns are added [#4596](https://github.com/pingcap/tiflash/issues/4596)
-    (dup: release-5.3.4.md > Bug fixes> TiFlash)- Fix the issue that TiFlash bootstrap fails when `0.0` is used as the default value for integers, for example, `` `i` int(11) NOT NULL DEFAULT '0.0'`` [#3157](https://github.com/pingcap/tiflash/issues/3157)
+    (dup: release-5.3.2.md > Bug 修复> TiFlash)- 修复 MPP query 会随机碰到 gRPC keepalive timeout 导致 query 失败的问题 [#4662](https://github.com/pingcap/tiflash/issues/4662)
+    (dup: release-5.4.1.md > Bug 修复> TiFlash)- 修复 `IN` 函数的结果在多值表达式中不正确的问题 [#4016](https://github.com/pingcap/tiflash/issues/4016)
+    (dup: release-5.4.1.md > Bug 修复> TiFlash)- 修复 MPP 任务可能永远泄漏线程的问题 [#4238](https://github.com/pingcap/tiflash/issues/4238)
+    (dup: release-5.4.1.md > Bug 修复> TiFlash)- 修复过期数据回收缓慢的问题 [#4146](https://github.com/pingcap/tiflash/issues/4146)
+    (dup: release-5.4.1.md > Bug 修复> TiFlash)- 修复将 `FLOAT` 类型转换为 `DECIMAL` 类型可能造成溢出的问题 [#3998](https://github.com/pingcap/tiflash/issues/3998)
+    (dup: release-5.3.4.md > Bug 修复> TiFlash)- 修复逻辑运算符在 UInt8 类型下查询结果出错的问题 [#6127](https://github.com/pingcap/tiflash/issues/6127)
+    (dup: release-5.3.2.md > Bug 修复> TiFlash)- 修复 `json_length` 对空字符串可能会报 `index out of bounds` 错误的问题 [#2705](https://github.com/pingcap/tiflash/issues/2705)
+    (dup: release-5.3.2.md > Bug 修复> TiFlash)- 修复极端情况下 decimal 比较结果可能有误的问题 [#4512](https://github.com/pingcap/tiflash/issues/4512)
+    (dup: release-5.3.2.md > Bug 修复> TiFlash)- 修复在添加一些 `NOT NULL` 的列时报 `TiFlash_schema_error` 的问题 [#4596](https://github.com/pingcap/tiflash/issues/4596)
+    (dup: release-5.3.4.md > Bug 修复> TiFlash)- 修复由于使用 `0.0` 作为整数类型的默认值导致 TiFlash 节点失败的问题，比如`` `i` int(11) NOT NULL DEFAULT '0.0'`` [#3157](https://github.com/pingcap/tiflash/issues/3157)
 
 + Tools
 
@@ -140,10 +140,10 @@ TiDB 版本：5.1.5
 
     + Backup & Restore (BR)
 
-        (dup: release-5.4.0.md > Bug fixes> Tools> Backup & Restore (BR))- Fix the issue that system tables cannot be restored because concurrently backing up system tables makes the table name fail to update [#29710](https://github.com/pingcap/tidb/issues/29710)
+        (dup: release-5.4.0.md > Bug 修复> Tools> Backup & Restore (BR))- 修复因为并发备份系统表，导致表名更新失败，无法恢复系统表的问题 [#29710](https://github.com/pingcap/tidb/issues/29710)
 
     + TiCDC
 
-        (dup: release-6.1.0.md > Bug fixes> Tools> TiCDC)- Fix data loss that occurs in special incremental scanning scenarios [#5468](https://github.com/pingcap/tiflow/issues/5468)
+        (dup: release-6.1.0.md > 错误修复> Tools> TiCDC)- 修复了增量扫描特殊场景下的数据丢失问题 [#5468](https://github.com/pingcap/tiflow/issues/5468)
         - 修复 Sorter 组件缺失监控数据的问题 [#5690](https://github.com/pingcap/tiflow/issues/5690)
-        (dup: release-6.1.0.md > Bug fixes> Tools> TiCDC)- Fix excessive memory usage by optimizing the way DDL schemas are buffered [#1386](https://github.com/pingcap/tiflow/issues/1386)
+        (dup: release-6.1.0.md > 错误修复> Tools> TiCDC)- 优化了 ddl schema 缓存方式，降低了内存消耗 [#1386](https://github.com/pingcap/tiflow/issues/1386)
