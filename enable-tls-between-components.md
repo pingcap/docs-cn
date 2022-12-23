@@ -187,7 +187,7 @@ aliases: ['/docs-cn/dev/enable-tls-between-components/','/docs-cn/dev/how-to/sec
     cert-allowed-cn = ["PD-Server", "TiKV-Server", "TiFlash-Server"]
     ```
 
-## 证书重加载
+## 证书重新加载
 
 - 如果 TiDB 部署在本地的数据中心，支持重加载 TiDB、TiKV、PD 的 TLS 证书，无需重启 TiDB 集群。
 - 如果 TiDB 部署在自己管理的 Cloud，支持配置自动轮换 TLS 证书，无需重启 TiDB 集群。 
