@@ -160,7 +160,7 @@ TiDB 会定时采集 TTL 的运行时信息，并在 Grafana 中提供了相关�
 - `TTL QPS By Type`：TTL 任务产生的不同类型语句的 QPS 信息。
 - `TTL Processed Rows Per Second`：TTL 任务每秒处理的过期数据的行数。
 - `TTL Scan/Delete Query Duration`：TTL 的扫描/删除语句的执行时间。
-- `TTL Scan/Delete Worker Time By Phase`：TTL 内部工作线程的不同阶所占用的时间。
+- `TTL Scan/Delete Worker Time By Phase`：TTL 内部工作线程的不同阶段所占用的时间。
 - `TTL Job Count By Status`：当前正在执行的 TTL 任务的数量。
 
 ## 工具兼容性
