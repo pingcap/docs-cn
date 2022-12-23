@@ -136,7 +136,7 @@ TiDB 版本：5.1.5
 
     + TiDB-Binlog
 
-        - Fix the bug that Drainer can't send request correctly to Pump when setting `compressor=gzip` [#1152](https://github.com/pingcap/tidb-binlog/issues/1152)
+        - 修复 `compressor` 设为 `gzip` 时 Drainer 无法正确发送请求至 Pump 的问题 [#1152](https://github.com/pingcap/tidb-binlog/issues/1152)
 
     + Backup & Restore (BR)
 
@@ -145,5 +145,5 @@ TiDB 版本：5.1.5
     + TiCDC
 
         (dup: release-6.1.0.md > Bug fixes> Tools> TiCDC)- Fix data loss that occurs in special incremental scanning scenarios [#5468](https://github.com/pingcap/tiflow/issues/5468)
-        - 给 sorter 组件增加部分监控数据 [#5690](https://github.com/pingcap/tiflow/issues/5690)
+        - 修复 Sorter 组件缺失监控数据的问题 [#5690](https://github.com/pingcap/tiflow/issues/5690)
         (dup: release-6.1.0.md > Bug fixes> Tools> TiCDC)- Fix excessive memory usage by optimizing the way DDL schemas are buffered [#1386](https://github.com/pingcap/tiflow/issues/1386)
