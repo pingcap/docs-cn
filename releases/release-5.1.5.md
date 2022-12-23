@@ -72,7 +72,6 @@ TiDB 版本：5.1.5
     - 修复已清除的 `tombstone store` 信息在切换 PD leader 后再次出现的问题 [#4941](https://github.com/tikv/pd/issues/4941)
     - 修复 PD leader 转移后调度不能立即启动的问题 [#4769](https://github.com/tikv/pd/issues/4769)
     - 修复 `not leader` 的 status code 有误的问题 [#4797](https://github.com/tikv/pd/issues/4797)
-    - 默认关闭编译 swagger server [#4932](https://github.com/tikv/pd/issues/4932)
     - 修复 PD 无法正确处理 dashboard 代理请求的问题 [#5321](https://github.com/tikv/pd/issues/5321)
     - 修复在某些特殊情况下 TSO fallback 的问题 [#4884](https://github.com/tikv/pd/issues/4884)
     - 修复 PD 在特定条件下不会创建 TiFlash Learner 副本的问题 [#5401](https://github.com/tikv/pd/issues/5401)
