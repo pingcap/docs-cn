@@ -37,6 +37,7 @@ Log backup supports using [Prometheus](https://prometheus.io/) to collect monito
 | **tikv_log_backup_heap_memory**                       | Gauge     |  The memory occupied by events that are unconsumed and found by initial scan during log backup.                                                                                                                         |
 | **tikv_log_backup_on_event_duration_seconds**         | Histogram |  The duration of storing KV events to temporary files. <br/>`stage :: {"write_to_tempfile", "syscall_write"}`                                                                        |
 | **tikv_log_backup_store_checkpoint_ts**               | Gauge     | The store-level checkpoint TS, which is deprecated. It is close to the GC safepoint registered by the current store. <br/>`task :: string`                                                                    |
+| **tidb_log_backup_last_checkpoint** | Gauge | The global checkpoint TS. It is a time point till which log data has been backed up. <br/>`task :: string` |
 | **tikv_log_backup_flush_duration_sec**                | Histogram |  The duration of moving local temporary files to the external storage. <br/>`stage :: {"generate_metadata", "save_files", "clear_temp_files"}`                                                                |
 | **tikv_log_backup_flush_file_size**                   | Histogram |  Statistics of the sizes of files generated during the backup.                                                                                                                                          |
 | **tikv_log_backup_initial_scan_duration_sec**         | Histogram | The statistics of the overall duration of initial scan.                                                                                                                                           |
@@ -63,7 +64,7 @@ The recommended alert items are as follows:
 
 #### LogBackupRunningRPOMoreThan10m
 
-- Alert item: `max(time() - tikv_log_backup_store_checkpoint_ts / 262144000) by (task) / 60 > 10 and max(tikv_log_backup_store_checkpoint_ts) by (task) > 0 and max(tikv_log_backup_task_status) by (task) == 0`
+- Alert item: `max(time() - tidb_log_backup_last_checkpoint / 262144000) by (task) / 60 > 10 and max(tidb_log_backup_last_checkpoint) by (task) > 0 and max(tikv_log_backup_task_status) by (task) == 0`
 - Alert level: warning
 - Description: The log data is not persisted to the storage for more than 10 minutes. This alert item is a reminder. In most cases, it does not affect log backup.
 
@@ -74,7 +75,7 @@ groups:
 - name: PiTR
   rules:
   - alert: LogBackupRunningRPOMoreThan10m
-    expr: max(time() - tikv_log_backup_store_checkpoint_ts / 262144000) by (task) / 60 > 10 and max(tikv_log_backup_store_checkpoint_ts) by (task) > 0 and max(tikv_log_backup_task_status) by (task) == 0
+    expr: max(time() - tidb_log_backup_last_checkpoint / 262144000) by (task) / 60 > 10 and max(tidb_log_backup_last_checkpoint) by (task) > 0 and max(tikv_log_backup_task_status) by (task) == 0
     labels:
       severity: warning
     annotations:
@@ -84,30 +85,30 @@ groups:
 
 #### LogBackupRunningRPOMoreThan30m
 
-- Alert item: `max(time() - tikv_log_backup_store_checkpoint_ts / 262144000) by (task) / 60 > 30 and max(tikv_log_backup_store_checkpoint_ts) by (task) > 0 and max(tikv_log_backup_task_status) by (task) == 0`
+- Alert item: `max(time() - tidb_log_backup_last_checkpoint / 262144000) by (task) / 60 > 30 and max(tidb_log_backup_last_checkpoint) by (task) > 0 and max(tikv_log_backup_task_status) by (task) == 0`
 - Alert level: critical
 - Description: The log data is not persisted to the storage for more than 30 minutes. This alert often indicates anomalies. You can check the TiKV logs to find the cause.
 
 #### LogBackupPausingMoreThan2h
 
-- Alert item: `max(time() - tikv_log_backup_store_checkpoint_ts / 262144000) by (task) / 3600 > 2 and max(tikv_log_backup_store_checkpoint_ts) by (task) > 0 and max(tikv_log_backup_task_status) by (task) == 1`
+- Alert item: `max(time() - tidb_log_backup_last_checkpoint / 262144000) by (task) / 3600 > 2 and max(tidb_log_backup_last_checkpoint) by (task) > 0 and max(tikv_log_backup_task_status) by (task) == 1`
 - Alert level: warning
 - Description: The log backup task is paused for more than 2 hours. This alert item is a reminder and you are expected to run `br log resume` as soon as possible.
 
 #### LogBackupPausingMoreThan12h
 
-- Alert item: `max(time() - tikv_log_backup_store_checkpoint_ts / 262144000) by (task) / 3600 > 12 and max(tikv_log_backup_store_checkpoint_ts) by (task) > 0 and max(tikv_log_backup_task_status) by (task) == 1`
+- Alert item: `max(time() - tidb_log_backup_last_checkpoint / 262144000) by (task) / 3600 > 12 and max(tidb_log_backup_last_checkpoint) by (task) > 0 and max(tikv_log_backup_task_status) by (task) == 1`
 - Alert level: critical
 - Description: The log backup task is paused for more than 12 hours. You are expected to run `br log resume` as soon as possible to resume the task. Log tasks paused for too long have the risk of data loss.
 
 #### LogBackupFailed
 
-- Alert item: `max(tikv_log_backup_task_status) by (task) == 2 and max(tikv_log_backup_store_checkpoint_ts) by (task) > 0`
+- Alert item: `max(tikv_log_backup_task_status) by (task) == 2 and max(tidb_log_backup_last_checkpoint) by (task) > 0`
 - Alert level: critical
 - Description: The log backup task fails. You need to run `br log status` to see the failure reason. If necessary, you need to further check the TiKV logs.
 
 #### LogBackupGCSafePointExceedsCheckpoint
 
-- Alert item: `min(tikv_log_backup_store_checkpoint_ts) by (instance) - max(tikv_gcworker_autogc_safe_point) by (instance) < 0`
+- Alert item: `min(tidb_log_backup_last_checkpoint) by (instance) - max(tikv_gcworker_autogc_safe_point) by (instance) < 0`
 - Alert level: critical
 - Description: Some data has been garbage-collected before the backup. This means that some data has been lost and is very likely to affect your services.
