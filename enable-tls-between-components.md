@@ -189,7 +189,10 @@ aliases: ['/docs-cn/dev/enable-tls-between-components/','/docs-cn/dev/how-to/sec
 
 ## 证书重加载
 
-目前支持 TiDB、TiKV、PD 的 TLS 证书，部署数据中心和 Cloud 时，支持自动轮换 TLS 证书，无需重启 TiDB 集群。 TiFlash 和 TiCDC 暂不支持自动轮换 TLS 证书。
+- 如果 TiDB 部署在本地的数据中心，支持重加载 TiDB、TiKV、PD 的 TLS 证书，无需重启 TiDB 集群。
+- 如果 TiDB 部署在自己管理的 Cloud，支持配置自动轮换 TLS 证书，无需重启 TiDB 集群。 
+
+TiFlash 和 TiCDC 暂不支持重加载或自动轮换 TLS 证书。
 
 TiDB、PD 和 TiKV 和各种 Client 都会在每次新建相互通讯的连接时重新读取当前的证书和密钥文件内容，实现证书和密钥的重加载。
 
