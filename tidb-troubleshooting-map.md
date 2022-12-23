@@ -167,7 +167,7 @@ aliases: ['/docs-cn/dev/tidb-troubleshooting-map/','/docs-cn/dev/how-to/troubles
 
 ### 3.5 慢查询问题
 
-要定位慢查询，参阅[慢查询日志](/identify-slow-queries.md)
+要定位慢查询，参阅[慢查询日志](/identify-slow-queries.md)。要处理慢查询，参阅[分析慢查询](/analyze-slow-queries.md)。
 
 ## 4. TiKV 问题
 
