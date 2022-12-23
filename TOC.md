@@ -177,7 +177,7 @@
     - [TiDB 集群问题导图](/tidb-troubleshooting-map.md)
     - [TiDB 集群常见问题](/troubleshoot-tidb-cluster.md)
     - [TiFlash 常见问题](/tiflash/troubleshoot-tiflash.md)
-  - 部分故障场景
+  - 故障场景
     - 慢查询
       - [定位慢查询](/identify-slow-queries.md)
       - [分析慢查询](/analyze-slow-queries.md)
