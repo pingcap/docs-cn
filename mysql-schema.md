@@ -33,6 +33,10 @@ Currently, the `help_topic` is NULL.
 
 - `gc_delete_range`: to record the data to be deleted
 
+## System tables related to cached tables
+
+* `table_cache_meta` stores the metadata of cached tables.
+
 ## Miscellaneous system tables
 
 - `GLOBAL_VARIABLES`: global system variable table
