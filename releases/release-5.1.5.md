@@ -47,9 +47,9 @@ TiDB 版本：5.1.5
     (dup: release-5.2.4.md > Bug fixes> TiDB)- Fix the issue that the background HTTP service of TiDB might not exit successfully and makes the cluster in an abnormal state [#30571](https://github.com/pingcap/tidb/issues/30571)
     (dup: release-5.4.0.md > Bug fixes> TiDB)- Fix the issue that concurrent column type change causes inconsistency between the schema and the data [#31048](https://github.com/pingcap/tidb/issues/31048)
     (dup: release-5.3.4.md > Bug fixes> TiDB)- Fix the issue that `KILL TIDB` cannot take effect immediately on idle connections [#24031](https://github.com/pingcap/tidb/issues/24031)
-    - Fix the bug that setting any session variable will make `tidb_snapshot` unwork. [#35515](https://github.com/pingcap/tidb/issues/35515)
+    - 修复设置 SESSION 变量会导致 `tidb_snapshot` 不工作的问题 [#35515](https://github.com/pingcap/tidb/issues/35515)
     (dup: release-5.3.4.md > Bug fixes> TiDB)- Fix the issue that the Region cache is not cleaned up in time when the Region is merged [#37141](https://github.com/pingcap/tidb/issues/37141)
-    - 修复因为 kv client 中 connection data race 导致的 panic [33773](https://github.com/pingcap/tidb/issues/33773)
+    - 修复因为 KV client 中连接数据争用导致的 panic 问题 [33773](https://github.com/pingcap/tidb/issues/33773)
     (dup: release-6.1.1.md > Bug fixes> TiDB)- Fix the issue that when TiDB Binlog is enabled, executing the `ALTER SEQUENCE` statement might cause a wrong metadata version and cause Drainer to exit [#36276](https://github.com/pingcap/tidb/issues/36276) @[AilinKid](https://github.com/AilinKid)
     (dup: release-5.3.2.md > Bug Fixes> TiDB)- Fix the bug that TiDB may panic when querying statement summary tables [#35340](https://github.com/pingcap/tidb/issues/35340)
     (dup: release-5.4.1.md > Bug Fixes> TiDB)- Fix the issue that TiDB gets the wrong result when using TiFlash to scan tables with empty range although TiFlash does not support reading tables with empty range yet [#33083](https://github.com/pingcap/tidb/issues/33083)
@@ -60,8 +60,8 @@ TiDB 版本：5.1.5
     (dup: release-5.3.4.md > Bug fixes> TiDB)- Fix the issue that the `EXECUTE` statement might throw an unexpected error in specific scenarios [#37187](https://github.com/pingcap/tidb/issues/37187)
     (dup: release-5.4.2.md > Bug Fixes> TiDB)- Fix the planner wrong behaviors that occur when `tidb_opt_agg_push_down` and `tidb_enforce_mpp` are enabled [#34465](https://github.com/pingcap/tidb/issues/34465)
     (dup: release-6.1.1.md > Bug fixes> TiDB)- Fix a bug that TiDB might send coprocessor requests when executing the `SHOW COLUMNS` statement [#36496](https://github.com/pingcap/tidb/issues/36496) @[tangenta](https://github.com/tangenta)
-    - Add warnings for `lock tables` and `unlock tables` when `enable-table-lock` flag is not enabled [#28967](https://github.com/pingcap/tidb/issues/28967)
-    - Fix the issue that range partitions allow multiple `MAXVALUE` partitions [#36329](https://github.com/pingcap/tidb/issues/36329)
+    - 当 `enable-table-lock` 参数未开启时为 `lock tables` 和 `unlock tables` 新增警告 [#28967](https://github.com/pingcap/tidb/issues/28967)
+    - 修复 Range 分区允许多个 `MAXVALUE` 分区的问题 [#36329](https://github.com/pingcap/tidb/issues/36329)
 
 + TiKV
 
