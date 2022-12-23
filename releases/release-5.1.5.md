@@ -106,7 +106,7 @@ TiDB 版本：5.1.5
     (dup: release-5.4.1.md > Bug Fixes> TiFlash)- Fix the panic issue that occurs when TLS is enabled [#4196](https://github.com/pingcap/tiflash/issues/4196)
     (dup: release-6.1.1.md > Bug fixes> TiFlash)- Fix a bug that TiFlash might crash due to an error in parallel aggregation [#5356](https://github.com/pingcap/tiflash/issues/5356) @[gengliqi](https://github.com/gengliqi)
     (dup: release-5.4.1.md > Bug Fixes> TiFlash)- Fix the issue that a query containing `JOIN` might be hung if an error occurs [#4195](https://github.com/pingcap/tiflash/issues/4195)
-    - 修复 `OR` 函数计算结果错误的问题 [#5849](https://github.com/pingcap/tiflash/issues/5849) @[xzhangxian1008](https://github.com/xzhangxian1008)
+    - 修复 `OR` 函数计算结果错误的问题 [#5849](https://github.com/pingcap/tiflash/issues/5849)
 
     <!--storage owner: flowbehappy -->
 
@@ -120,7 +120,7 @@ TiDB 版本：5.1.5
 '` as an invalid separator [#4036](https://github.com/pingcap/tiflash/issues/4036)
     (dup: release-5.4.1.md > Bug Fixes> TiFlash)- Fix the wrong result that occurs when casting `DATETIME` to `DECIMAL` [#4151](https://github.com/pingcap/tiflash/issues/4151)
     (dup: release-5.4.1.md > Bug Fixes> TiFlash)- Fix the bug that some exceptions are not handled properly [#4101](https://github.com/pingcap/tiflash/issues/4101)
-    - 修复 `Prepare Merge` 可能导致 raft 状态机元数据损坏从而引起 TiFlash 重启的问题 [#3435](https://github.com/pingcap/tiflash/issues/3435) @[solotzg](https://github.com/solotzg)
+    - 修复 `Prepare Merge` 可能导致 raft 状态机元数据损坏从而引起 TiFlash 重启的问题 [#3435](https://github.com/pingcap/tiflash/issues/3435)
     (dup: release-5.3.2.md > Bug Fixes> TiFlash)- Fix a bug that an MPP query might fail due to random gRPC keepalive timeout [#4662](https://github.com/pingcap/tiflash/issues/4662)
     (dup: release-5.4.1.md > Bug Fixes> TiFlash)- Fix the issue that the result of `IN` is incorrect in multi-value expressions [#4016](https://github.com/pingcap/tiflash/issues/4016)
     (dup: release-5.4.1.md > Bug Fixes> TiFlash)- Fix a bug that MPP tasks might leak threads forever [#4238](https://github.com/pingcap/tiflash/issues/4238)
