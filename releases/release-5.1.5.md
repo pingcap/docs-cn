@@ -120,7 +120,7 @@ TiDB 版本：5.1.5
 '` as an invalid separator [#4036](https://github.com/pingcap/tiflash/issues/4036)
     (dup: release-5.4.1.md > Bug Fixes> TiFlash)- Fix the wrong result that occurs when casting `DATETIME` to `DECIMAL` [#4151](https://github.com/pingcap/tiflash/issues/4151)
     (dup: release-5.4.1.md > Bug Fixes> TiFlash)- Fix the bug that some exceptions are not handled properly [#4101](https://github.com/pingcap/tiflash/issues/4101)
-    - 修复 `Prepare Merge` 可能导致 raft 状态机元数据损坏从而引起 TiFlash 重启的问题 [#3435](https://github.com/pingcap/tiflash/issues/3435)
+    - 修复 `Prepare Merge` 可能导致 raft 状态机元数据损坏，从而引起 TiFlash 重启的问题 [#3435](https://github.com/pingcap/tiflash/issues/3435)
     (dup: release-5.3.2.md > Bug Fixes> TiFlash)- Fix a bug that an MPP query might fail due to random gRPC keepalive timeout [#4662](https://github.com/pingcap/tiflash/issues/4662)
     (dup: release-5.4.1.md > Bug Fixes> TiFlash)- Fix the issue that the result of `IN` is incorrect in multi-value expressions [#4016](https://github.com/pingcap/tiflash/issues/4016)
     (dup: release-5.4.1.md > Bug Fixes> TiFlash)- Fix a bug that MPP tasks might leak threads forever [#4238](https://github.com/pingcap/tiflash/issues/4238)
