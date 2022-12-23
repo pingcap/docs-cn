@@ -134,7 +134,7 @@ TiDB 版本：5.1.5
 
 + Tools
 
-    + TiDB-Binlog
+    + TiDB Binlog
 
         - 修复 `compressor` 设为 `gzip` 时 Drainer 无法正确发送请求至 Pump 的问题 [#1152](https://github.com/pingcap/tidb-binlog/issues/1152)
 
