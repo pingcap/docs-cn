@@ -36,7 +36,7 @@ summary: 介绍在容灾场景下，如何使用 TiCDC 构建主备容灾集群
 | Region 2 | 10.1.1.1/10.1.1.2/10.1.1.3 | Secondary | PD |
 | Region 2 | 10.1.1.4/10.1.1.5 | Secondary | TiDB |
 | Region 2 | 10.1.1.6/10.1.1.7/10.1.1.8 | Secondary | TiKV |
-| Region 1 | 10.0.1.11 | Secondary | monitor/grafana/altermanager |
+| Region 2 | 10.0.1.11 | Secondary | monitor/grafana/altermanager |
 
 其中使用服务器配置可以参考，这里不赘述：
 
