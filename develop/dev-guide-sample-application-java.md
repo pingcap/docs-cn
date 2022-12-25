@@ -34,10 +34,10 @@ aliases: ['/zh/tidb/dev/sample-application-java']
 
 ### 使用本地集群
 
-你可以部署一个本地测试的 TiDB 集群或正式的 TiDB 集群。详细步骤，请参考：
+你可以部署一个本地测试的 TiDB 集群或生产环境的 TiDB 集群。详细步骤，请参考：
 
 - [部署本地测试 TiDB 集群](/quick-start-with-tidb.md#部署本地测试集群)
-- [部署正式 TiDB 集群](/production-deployment-using-tiup.md)。
+- [部署生产环境 TiDB 集群](/production-deployment-using-tiup.md)
 
 ### 使用云原生开发环境
 

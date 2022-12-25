@@ -7,20 +7,19 @@ summary: 给出一个 Django 构建 TiDB 应用程序示例。
 
 # 使用 Django 构建 TiDB 应用程序
 
-本教程向你展示如何使用 TiDB 构建 [Django](https://www.djangoproject.com/) Web 应用程序。使用 [django-tidb](https://github.com/pingcap/django-tidb) 模块作为数据访问能力的框架。此示例应用程序的代码仓库可在 [Github](https://github.com/pingcap-inc/tidb-example-python) 下载。
+本文档将展示如何使用 [Django](https://www.djangoproject.com/) 构建一个 TiDB Web 应用程序。使用 [django-tidb](https://github.com/pingcap/django-tidb) 模块作为数据访问能力的框架。此示例应用程序的代码仓库可在 [Github](https://github.com/pingcap-inc/tidb-example-python) 下载。
 
 这是一个较为完整的构建 Restful API 的示例应用程序，展示了一个使用 **TiDB** 作为数据库的通用 **Django** 后端服务。设计了以下过程，用于还原一个现实场景：
 
-这是一个关于游戏的例子，每个玩家有两个属性：金币数 `coins` 和货物数 `goods`。且每个玩家都拥有一个字段 `id`，作为玩家的唯一标识。玩家在金币数和货物数充足的情况下，可以自由的交易。
+这是一个关于游戏的例子，每个玩家有两个属性：金币数 `coins` 和货物数 `goods`。且每个玩家都拥有一个字段 `id`，作为玩家的唯一标识。玩家在金币数和货物数充足的情况下，可以自由地交易。
 
 你可以以此示例为基础，构建自己的应用程序。
 
 > **建议：**
 >
 > 在[云原生开发环境](/develop/dev-guide-playground-gitpod.md)中尝试 Django 构建 TiDB 应用程序。
-> 预配置完成的环境，自动启动 TiDB 集群，获取和运行代码，只需要一个链接。
 >
-> [现在就试试](https://gitpod.io/#/https://github.com/pingcap-inc/tidb-example-python)
+> 预配置完成的环境将自动启动 TiDB 集群、获取和运行代码，只需要一个链接：[现在就试试](https://gitpod.io/#/https://github.com/pingcap-inc/tidb-example-python)。
 
 ## 第 1 步：启动你的 TiDB 集群
 
@@ -32,10 +31,10 @@ summary: 给出一个 Django 构建 TiDB 应用程序示例。
 
 ### 使用本地集群
 
-你可以部署一个本地测试的 TiDB 集群或正式的 TiDB 集群。详细步骤，请参考：
+你可以部署一个本地测试的 TiDB 集群或生产环境的 TiDB 集群。详细步骤，请参考：
 
 - [部署本地测试 TiDB 集群](/quick-start-with-tidb.md#部署本地测试集群)
-- [部署正式 TiDB 集群](/production-deployment-using-tiup.md)。
+- [部署生产环境 TiDB 集群](/production-deployment-using-tiup.md)
 
 ### 使用云原生开发环境
 
@@ -45,17 +44,17 @@ summary: 给出一个 Django 构建 TiDB 应用程序示例。
 
 ## 第 2 步：安装 Python
 
-请在你的计算机上下载并安装 **Python**。我们将使用 **[Django 3.2.16](https://github.com/pingcap-inc/tidb-example-python/blob/main/requirement.txt#L2)** 版本完成此示例，依照 [Django 文档](https://docs.djangoproject.com/en/4.1/faq/install/#what-python-version-can-i-use-with-django)，其在 3.2.16 版本中支持版本为 **3.6, 3.7, 3.8, 3.9, 3.10 (added in 3.2.9)** 的 Python 环境，推荐使用 Python 3.10 版本 。
+请在你的计算机上下载并安装 **Python**。本文的示例使用 [Django 3.2.16](https://docs.djangoproject.com/zh-hans/3.2/) 版本。依照 [Django 文档](https://docs.djangoproject.com/zh-hans/3.2/faq/install/#what-python-version-can-i-use-with-django)，Django 3.2.16 版本支持 3.6、3.7、3.8、3.9 和 3.10 版本的 Python 环境，推荐使用 Python 3.10 版本。
 
 ## 第 3 步：获取应用程序代码
 
-请下载或克隆[示例代码库](https://github.com/pingcap-inc/tidb-example-python)，并进入到目录`django_example`中。
+请下载或克隆示例代码库 [pingcap-inc/tidb-example-python](https://github.com/pingcap-inc/tidb-example-python)，并进入到目录 `django_example` 中。
 
 ### 创建相同依赖空白程序（可选）
 
-本程序使用 **django-admin** 构建。你可以安装并使用这个 CLI 工具来快速完成 Django 项目的初始化。如你需要快速得到一个与 **django_example** 示例程序相同依赖的可运行空白应用程序，你可以跟随如下步骤：
+本程序使用 Django Admin CLI [django-admin](https://django-admin-cli.readthedocs.io/en/stable/index.html) 构建。你可以安装并使用 `django-admin` 来快速完成 Django 项目的初始化。如你需要快速得到一个与 `django_example` 示例程序相同依赖的可运行空白应用程序，你可以按照如下步骤进行操作：
 
-1. 初始化
+1. 初始化 Django 项目 `copy_django_example`：
 
     ```bash
     pip install -r requirement.txt
@@ -63,23 +62,10 @@ summary: 给出一个 Django 构建 TiDB 应用程序示例。
     cd copy_django_example
     ```
 
-2. 更改配置
+2. 更改 `DATABASES` 配置：
 
-    1. 请进入当前文件夹内 `copy_django_example/settings.py`.
-    2. 请更改 `DATABASES` 部分内容：
-
-        从原本指向本地的 SQLite 的配置：
-
-        ```python
-        DATABASES = {
-            'default': {
-                'ENGINE': 'django.db.backends.sqlite3',
-                'NAME': BASE_DIR / 'db.sqlite3',
-            }
-        }
-        ```
-
-        更改为：
+    1. 打开 `copy_django_example/settings.py` 配置文件
+    2. 将 `DATABASES` 部分从指向本地 SQLite 的配置更改为 TiDB 集群的信息：
 
         ```python
         DATABASES = {
@@ -95,23 +81,7 @@ summary: 给出一个 Django 构建 TiDB 应用程序示例。
         DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
         ```
 
-    3. 此外，我们不需要跨域校验，请将 `MIDDLEWARE` 中的 `CsrfViewMiddleware` 进行注释或删除：
-
-        即，将：
-
-        ```python
-        MIDDLEWARE = [
-            'django.middleware.security.SecurityMiddleware',
-            'django.contrib.sessions.middleware.SessionMiddleware',
-            'django.middleware.common.CommonMiddleware',
-            'django.middleware.csrf.CsrfViewMiddleware',
-            'django.contrib.auth.middleware.AuthenticationMiddleware',
-            'django.contrib.messages.middleware.MessageMiddleware',
-            'django.middleware.clickjacking.XFrameOptionsMiddleware',
-        ]
-        ```
-
-        改为：
+    3. 由于本示例不需要跨域校验，因此你需要注释或删除 `MIDDLEWARE` 中的 `CsrfViewMiddleware`。修改后的 `MIDDLEWARE` 为：
 
         ```python
         MIDDLEWARE = [
@@ -127,18 +97,19 @@ summary: 给出一个 Django 构建 TiDB 应用程序示例。
 
 至此，你已经完成了一个空白的应用程序，此应用程序与示例应用程序的依赖完全相同。其他关于 Django 的使用方法，可参考：
 
-- [Django 文档（中文版）](https://docs.djangoproject.com/zh-hans/3.2/)
-- [Django 入门 Tutorial（中文版）](https://docs.djangoproject.com/zh-hans/3.2/intro/tutorial01/)
+- [Django 文档](https://docs.djangoproject.com/zh-hans/3.2/)
+- [Django 入门教程](https://docs.djangoproject.com/zh-hans/3.2/intro/tutorial01/)
 
 ## 第 4 步：运行应用程序
 
 此处对应用程序代码进行运行，将产生一个 Web 应用程序。你可以在使用 `python manage.py migrate` 命令，要求 Django 创建一个在数据库 `django` 内的表 `player`。如果你想应用程序的 Restful API 进行请求，这些请求将会在 TiDB 集群上运行[数据库事务](/develop/dev-guide-transaction-overview.md)。
 
-如果你想了解有关此应用程序的代码的详细信息，可参阅本教程下方的[实现细节](#实现细节)。
+如果你想了解有关此应用程序的代码的详细信息，可参阅[实现细节](#实现细节)部分。
 
 ### 第 4 步第 1 部分：TiDB Cloud 更改参数
 
-若你使用 TiDB Cloud Serverless Tier 集群，更改 `settings.py`（位于 `example_project` 内）关于 `DATABASES` 的参数：
+若你使用 TiDB Cloud Serverless Tier 集群，更改 `example_project/settings.py` 中的 
+ `DATABASES` 参数：
 
 ```python
 DATABASES = {
@@ -161,7 +132,7 @@ DATABASES = {
 
 另外，由于 TiDB Cloud Serverless Tier 需要使用 SSL 连接。因此，CA 证书路径是必要的。你可以在 [Where is the CA root path on my system?](https://docs.pingcap.com/tidbcloud/secure-connections-to-serverless-tier-clusters#where-is-the-ca-root-path-on-my-system) 一节中得到建议。
 
-此处将以 MacOS 为例，应将参数更改为：
+此处将以 macOS 为例，应将参数更改为：
 
 ```python
 DATABASES = {
@@ -183,7 +154,7 @@ DATABASES = {
 
 ### 第 4 步第 2 部分：运行
 
-打开终端，确保你已经进入 tidb-example-python 目录，若还未在此目录，请使用命令进入：
+打开终端，确保你已经进入 `tidb-example-python` 目录，若还未在此目录，请使用命令进入：
 
 ```shell
 cd <path>/tidb-example-python
@@ -231,7 +202,7 @@ Starting development server at http://127.0.0.1:8000/
 Quit the server with CONTROL-C.
 ```
 
-如果你想了解有关此应用程序的代码的详细信息，可参阅本教程下方的[实现细节](#实现细节)。
+如果你想了解有关此应用程序的代码的详细信息，可参阅[实现细节](#实现细节)部分。
 
 ## 第 5 步：HTTP 请求
 
@@ -245,7 +216,7 @@ Quit the server with CONTROL-C.
 
 #### 增加玩家
 
-点击 **Create** 标签，点击 **Send** 按钮，发送 Post 形式的 `http://localhost:8000/player/` 请求。返回值为增加的玩家个数信息，预期为 1。
+点击 **Create** 标签，点击 **Send** 按钮，发送 `POST` 形式的 `http://localhost:8000/player/` 请求。返回值为增加的玩家个数信息，预期为 1。
 
 #### 使用 ID 获取玩家信息
 
@@ -269,7 +240,7 @@ Quit the server with CONTROL-C.
 
 #### 增加玩家
 
-使用 **Post** 方法请求 `/player` 端点请求来增加玩家，即：
+使用 `POST` 方法请求 `/player` 端点请求来增加玩家，即：
 
 ```shell
 curl --location --request POST 'http://localhost:8000/player/' --header 'Content-Type: application/json' --data-raw '[{"coins":100,"goods":20}]'
@@ -301,7 +272,7 @@ curl --location --request GET 'http://localhost:8000/player/1'
 
 #### 使用 Limit 批量获取玩家信息
 
-使用 **Get** 方法请求 `/player/limit` 端点请求来获取玩家信息，额外的需要在路径上给出限制查询的玩家信息的总数，即 `/player/limit/{limit}` ，例如在请求最多 3 个玩家的信息时：
+使用 `GET` 方法请求 `/player/limit` 端点来获取玩家信息。此外，还需要在路径上给出限制查询的玩家信息的总数，即 `/player/limit/{limit}`，例如在请求最多 3 个玩家的信息时：
 
 ```shell
 curl --location --request GET 'http://localhost:8000/player/limit/3'
@@ -364,7 +335,7 @@ true
 
 ### 第 6 步第 3 部分：使用 Shell 脚本请求
 
-这里已经将请求过程编写为 [Shell](https://github.com/pingcap-inc/tidb-example-python/blob/main/django_example/request.sh) 脚本，以方便大家的测试，脚本将会做以下操作：
+这里已经将请求过程编写为 [`request.sh`](https://github.com/pingcap-inc/tidb-example-python/blob/main/django_example/request.sh) 脚本，以方便大家的测试，脚本将会做以下操作：
 
 1. 循环创建 10 名玩家
 2. 获取 `id` 为 1 的玩家信息
@@ -398,7 +369,7 @@ trade successful
 
 ### 总览
 
-本示例项目的大致目录树如下所示：
+本示例项目的目录树大致如下所示：
 
 ```
 .
@@ -426,7 +397,7 @@ trade successful
 
 - 所有的 `__init__.py` 声明此文件夹是一个 Python 包。
 - `manage.py` 为 Django 自动生成的对项目进行管理的脚本。
-- `example_project` 包含项目级别的代码。
+- `example_project` 包含项目级别的代码：
 
     - `settings.py` 内声明了项目的配置，如数据库地址、密码、使用的数据库方言等。
     - `urls.py` 配置了项目的根路由。
@@ -448,9 +419,9 @@ trade successful
 
 其中：
 
-- `INSTALLED_APPS` : 启用的应用全限定名称列表。
-- `MIDDLEWARE` : 启用的中间件列表，由于此处无需 `CsrfViewMiddleware` 中间件，因此其被注释。
-- `DATABASES` : 数据库配置，其中，`ENGINE` 一项被配置为 `django_tidb`。这遵循了 [django-tidb](https://github.com/pingcap/django-tidb) 的配置要求。
+- `INSTALLED_APPS`：启用的应用全限定名称列表。
+- `MIDDLEWARE`：启用的中间件列表，由于此处无需 `CsrfViewMiddleware` 中间件，因此其被注释。
+- `DATABASES`：数据库配置，其中，`ENGINE` 一项被配置为 `django_tidb`。这遵循了 [django-tidb](https://github.com/pingcap/django-tidb) 的配置要求。
 
 ```python
 ...
@@ -620,15 +591,15 @@ urlpatterns = [
 
 应用路由注册了 5 个路径：
 
-- `''`: 被指向了 `views.create` 函数。
-- `'count'`: 被指向了 `views.count` 函数。
-- `'limit/<int:limit>'`: 被指向了 `views.limit_list` 函数。此处路径包含一个 `<int:limit>` 路径变量，其中：
+- `''`：被指向了 `views.create` 函数。
+- `'count'`：被指向了 `views.count` 函数。
+- `'limit/<int:limit>'`：被指向了 `views.limit_list` 函数。此处路径包含一个 `<int:limit>` 路径变量，其中：
 
     - `int` 是指这个参数其将被验证是否为 `int` 类型
     - `limit` 是指此参数的值将被映射至名为 `limit` 的函数入参中
 
-- `'<int:player_id>'`: 被指向了 `views.get_by_id` 函数，此处路径包含一个 `<int:player_id>` 路径变量。
-- `'trade'`: 被指向了 `views.trade` 函数。
+- `'<int:player_id>'`：被指向了 `views.get_by_id` 函数，此处路径包含一个 `<int:player_id>` 路径变量。
+- `'trade'`：被指向了 `views.trade` 函数。
 
 另外，值得一提的是，此处的应用路由是根路由转发而来的，因此将在 URL 匹配时包含跟路由配置的路径。如此例中所示，根路由配置为 `player/` 转发至此应用路由，那么，应用路由中的：
 
