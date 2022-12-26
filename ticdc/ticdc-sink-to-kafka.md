@@ -1,6 +1,6 @@
 ---
 title: 同步数据到 Kafka
-summary: 了解如何使用 TiCDC 将数据同步到 Kafka
+summary: 了解如何使用 TiCDC 将数据同步到 Kafka。
 ---
 
 # 同步数据到 Kafka
@@ -151,7 +151,7 @@ dispatchers = [
 ]
 ```
 
-集成具体步骤详见 [与 Confluent Cloud 进行数据集成](/ticdc/integrate-confluent-using-ticdc.md)。
+集成具体步骤详见[与 Confluent Cloud 进行数据集成](/ticdc/integrate-confluent-using-ticdc.md)。
 
 ## 自定义 Kafka Sink 的 Topic 和 Partition 的分发规则
 
