@@ -62,8 +62,6 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-cluster-info/']
 - CPU 使用率 (CPU Usage)：主机当前 1 秒的用户态和内核态 CPU 使用率
 - 物理内存 (Memory)：主机总计的物理内存大小
 - 内存使用率 (Memory Usage)：主机当前内存使用率
-- 部署磁盘 (Mount Directory)：主机上运行实例所在磁盘的文件系统和磁盘挂载路径
-- 磁盘使用率 (Disk Usage)：主机上运行实例所在磁盘的空间使用率
 
 > **注意：**
 >
