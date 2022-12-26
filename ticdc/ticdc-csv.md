@@ -12,12 +12,12 @@ summary: 了解 TiCDC CSV Protocol 的概念和使用方法。
 使用 CSV 时的配置样例如下所示：
 
 ```shell
-cdc cli changefeed create --pd=http://127.0.0.1:2379 --changefeed-id="csv-test" --sink-uri="s3://bucket/prefix" --config changefeed.toml
+cdc cli changefeed create --server=http://127.0.0.1:8300 --changefeed-id="csv-test" --sink-uri="s3://bucket/prefix" --config changefeed.toml
 ```
 
 `changefeed.toml` 文件内容如下：
 
-```
+```toml
 [sink]
 protocol = "csv"
 terminator = "\n"
