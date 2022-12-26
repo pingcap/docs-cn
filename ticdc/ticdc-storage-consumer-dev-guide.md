@@ -27,17 +27,18 @@ type StorageReader struct {
 
 // Read the files from storage
 // Add newly added files and delete files that not exist in storage
-func (c *Consumer) ReadFiles() {}
+func (c *StorageReader) ReadFiles() {}
 
 // Query newly added files and the latest checkpoint from storage，one file can only be returned once
-func (c *Consumer) ExposeNewFiles() (int64, []string) {}
+func (c *StorageReader) ExposeNewFiles() (int64, []string) {}
 
 
 // ConsumerManager is responsible for assigning tasks to TableConsumer.
 // Different consumers can consume data concurrently,
 // but data of one table must be processed by the same TableConsumer.
 type ConsumerManager struct {
-  // StorageCheckpoint indicates that the data whose transaction commit time is less than this checkpoint has been stored in storage
+  // StorageCheckpoint is recorded in metadata file and it can be fetched by calling `StorageReader.ExposeNewFiles()`.
+  // It indicates that the data whose transaction commit time is less than this checkpoint has been stored in storage
   StorageCheckpoint int64
   // it indicates where the consumer has consumed
   // ConsumerManager periodically collects TableConsumer.Checkpoint, 
