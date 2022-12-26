@@ -65,7 +65,7 @@ The selection of the TiDB Join Reorder algorithms is controlled by the [`tidb_op
 The current Join Reorder algorithms have the following limitations:
 
 - Limited by the calculation methods of the result sets, the algorithm cannot ensure it selects the optimum join order.
-- Currently, the Join Reorder algorithm's support for Outer Join is disabled by default. To enable it, set the value of the system variable [`tidb_enable_outer_join_reorder`](/system-variables.md#tidb_enable_outer_join_reorder-new-in-v610) to `ON`.
+- The Join Reorder algorithm's support for Outer Join is controlled by the [`tidb_enable_outer_join_reorder`](/system-variables.md#tidb_enable_outer_join_reorder-new-in-v610) system variable. 
 - Currently, the dynamic programming algorithm cannot perform Join Reorder for outer join.
 
 Currently, the `STRAIGHT_JOIN` syntax is supported in TiDB to force a join order. For more information, refer to [Description of the syntax elements](/sql-statements/sql-statement-select.md#description-of-the-syntax-elements).
