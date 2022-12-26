@@ -122,5 +122,5 @@ quote = '"'
 # CSV 列为 null 时将以什么字符来表示。默认值为 `\N`
 null = '\N'
 # 是否在 CSV 行中包含 commit-ts。默认值为 false。
-include-commit-ts = false
+include-commit-ts = true
 ```
