@@ -16,18 +16,24 @@ aliases: ['/zh/tidb/dev/use-follower-read']
 
 ## 何时使用
 
+### 优化读热点
+
 你可以在 [TiDB Dashboard 流量可视化页面](/dashboard/dashboard-key-visualizer.md)当中通过可视化的方法分析你的应用程序是否存在热点 Region。你可以通过将「指标选择框」选择到 `Read (bytes)` 或 `Read (keys)` 查看是否存在读取热点 Region。
 
 如果发现确实存在热点问题，你可以通过阅读 [TiDB 热点问题处理](/troubleshoot-hot-spot-issues.md)章节进行逐一排查，以便从应用程序层面上避免热点的产生。
 
 如果读取热点的确无法避免或者改动的成本很大，你可以尝试通过 Follower Read 功能将读取请求更好的负载均衡到 follower region。
 
+### 优化跨数据中心部署的延迟
+
+如果 TiDB 集群是跨地区或跨数据中心部署的，一个 Region 的不同副本分布在不同的地区或数据中心，此时可以通过配置 Follower Read 为 `closest-adaptive` 或 `closest-replicas` 让 TiDB 优先从当前的数据中心执行读操作，这样可以大幅降低读操作的延迟和流量开销。具体原理可参考 [Follower Read](/follower-read.md)。
+
 ## 开启 Follower Read
 
 <SimpleTab>
 <div label="SQL">
 
-在 SQL 中，你可以将变量 `tidb_replica_read` 的值（默认为 `leader`）设置为 `follower` 或 `leader-and-follower` 开启 TiDB 的 Follower Read 功能：
+在 SQL 中，你可以将变量 `tidb_replica_read` 的值（默认为 `leader`）设置为 `follower`、 `leader-and-follower`、 `closest-replicas` 或 `closest-adaptive` 开启 TiDB 的 Follower Read 功能：
 
 {{< copyable "sql" >}}
 
@@ -48,7 +54,9 @@ SET [GLOBAL] tidb_replica_read = 'follower';
 public enum FollowReadMode {
     LEADER("leader"),
     FOLLOWER("follower"),
-    LEADER_AND_FOLLOWER("leader-and-follower");
+    LEADER_AND_FOLLOWER("leader-and-follower"),
+    CLOSEST_REPLICA("closest-replica"),
+    CLOSEST_ADAPTIVE("closest-adaptive");
 
     private final String mode;
 
