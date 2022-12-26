@@ -13,9 +13,9 @@ aliases: ['/docs-cn/dev/sql-plan-management/','/docs-cn/dev/reference/performanc
 
 ### 创建绑定
 
-你可以根据 SQL hint 或者历史执行计划为指定的 SQL 语句创建绑定。
+你可以根据 SQL 或者历史执行计划为指定的 SQL 语句创建绑定。
 
-#### 根据 SQL hint 创建绑定
+#### 根据 SQL 创建绑定
 
 {{< copyable "sql" >}}
 
@@ -171,7 +171,7 @@ CREATE BINDING FOR SELECT * FROM t WHERE a > 1 USING SELECT * FROM t use index(i
 
 #### 根据历史执行计划创建绑定
 
-如需将 SQL 语句的执行计划固定为之前使用过的执行计划，可以使用 `plan_digest` 为该 SQL 语句绑定一个历史的执行计划。相比于使用 SQL hint 创建绑定的方式，此方式更加简便。
+如需将 SQL 语句的执行计划固定为之前使用过的执行计划，可以使用 `plan_digest` 为该 SQL 语句绑定一个历史的执行计划。相比于使用 SQL 创建绑定的方式，此方式更加简便。
 
 > **警告：**
 >
@@ -189,7 +189,7 @@ CREATE BINDING FOR SELECT * FROM t WHERE a > 1 USING SELECT * FROM t use index(i
 CREATE [GLOBAL | SESSION] BINDING FROM HISTORY USING PLAN DIGEST 'plan_digest';
 ```
 
-该语句使用 `plan_digest` 为 SQL 语句绑定执行计划，在不指定作用域时默认作用域为 SESSION。所创建绑定的适用 SQL、优先级、作用域、生效条件等与[根据 SQL hint 创建绑定](#根据-sql-hint-创建绑定)相同。
+该语句使用 `plan_digest` 为 SQL 语句绑定执行计划，在不指定作用域时默认作用域为 SESSION。所创建绑定的适用 SQL、优先级、作用域、生效条件等与[根据 SQL 创建绑定](#根据-sql-创建绑定)相同。
 
 使用此绑定方式时，你需要先从 `statements_summary` 中找到需要绑定的执行计划对应的 `plan_digest`，再通过 `plan_digest` 创建绑定。具体步骤如下：
 
