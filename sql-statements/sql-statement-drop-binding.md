@@ -26,7 +26,7 @@ BindableStmt ::=
 
 ## 示例
 
-你可以根据 SQL 语句或 `plan_digest` 删除绑定。
+你可以根据 SQL 语句或 `sql_digest` 删除绑定。
 
 下面的示例演示如何根据 SQL 语句删除绑定。
 
