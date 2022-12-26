@@ -196,7 +196,7 @@ aliases: ['/docs-cn/dev/basic-features/']
 
 [^1]: TiDB 误将 latin1 处理为 utf8 的子集。见 [TiDB #18955](https://github.com/pingcap/tidb/issues/18955)。
 
-[^2]: 从 v6.5.0 起，查询系统变量 [tidb_allow_function_for_expression_index](/system-variables#tidb_allow_function_for_expression_index-从-v520-版本开始引入) 所列出的函数已通过测试，可以在生产环境中创建包含这些函数的表达式索引，未来版本会持续增加。对于没有列出的函数，则不建议在生产环境中使用。详情请参考[表达式索引](/sql-statements/sql-statement-create-index.md#表达式索引)。
+[^2]: 从 v6.5.0 起，系统变量 [tidb_allow_function_for_expression_index](/system-variables#tidb_allow_function_for_expression_index-从-v520-版本开始引入) 所列出的函数已通过表达式索引的测试，可以在生产环境中创建并使用，未来版本会持续增加。对于没有列出的函数，则不建议在生产环境中使用相应的表达式索引。详情请参考[表达式索引](/sql-statements/sql-statement-create-index.md#表达式索引)。
 
 [^3]: TiDB 支持的完整 SQL 列表，见[语句参考](/sql-statements/sql-statement-select.md)。
 
