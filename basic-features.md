@@ -36,7 +36,7 @@ aliases: ['/docs-cn/dev/basic-features/']
 
 | 索引和约束                                                             | 6.5 | 6.4 | 6.3 | 6.2 | 6.1 |  6.0   |   5.4    |   5.3    |   5.2    |   5.1    |   5.0    |   4.0    |
 | ---------------------------------------------------------------------- | --- | --- | --- | --- | --- | --- | :------: | :------: | :------: | :------: | :------: | :------: |
-| [表达式索引](/sql-statements/sql-statement-create-index.md#表达式索引) [^2] | GA | 实验特性 | 实验特性 | 实验特性  | 实验特性  | 实验特性  | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
+| [表达式索引](/sql-statements/sql-statement-create-index.md#表达式索引) [^2] | Y | 实验特性 | 实验特性 | 实验特性  | 实验特性  | 实验特性  | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
 | [列式存储 (TiFlash)](/tiflash/tiflash-overview.md)                     |  Y   |  Y   |  Y   |  Y   |  Y    |  Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
 | [RocksDB 引擎](/storage-engine/rocksdb-overview.md)                    |  Y   |  Y   |  Y   |  Y    |  Y    |  Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
 | [Titan 插件](/storage-engine/titan-overview.md)                        |  Y   |  Y   |  Y   |  Y    |  Y    |  Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
