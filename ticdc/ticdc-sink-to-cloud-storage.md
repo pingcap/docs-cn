@@ -136,7 +136,9 @@ URI 中其他可配置的参数如下：
 {
     "Table":"table1",
     "Schema":"test",
-    "Version":123123,
+    "Version":1,
+    "TableVersion":10000,
+    "Query": "ALTER TABLE test.table1 ADD OfficeLocation blob(20)",
     "TableColumns":[
         {
             "ColumnName":"Id",
@@ -170,7 +172,9 @@ URI 中其他可配置的参数如下：
 
 - `Table`：表名。
 - `Schema`：表所属的库名。
-- `Version`：表的版本号。
+- `Version`：Storage sink 协议版本号。
+- `TableVersion`：表的版本号。
+- `Query`：DDL 语句。
 - `TableColumns`：该数组表示表中每一列的详细信息。
     - `ColumnName`：列名。
     - `ColumnType`：该列的类型。详见 [数据类型](/ticdc/ticdc-sink-to-cloud-storage.md#数据类型)。
