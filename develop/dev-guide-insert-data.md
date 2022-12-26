@@ -207,6 +207,39 @@ func buildBulkInsertSQL(amount int) string {
 
 </div>
 
+<div label="Python">
+
+在 Python 中插入多行数据的示例：
+
+```python
+import MySQLdb
+
+connection = MySQLdb.connect(
+    host="127.0.0.1",
+    port=4000,
+    user="root",
+    password="",
+    database="bookshop",
+    autocommit=True
+)
+with get_connection(autocommit=True) as connection:
+
+    with connection.cursor() as cur:
+        player_list = random_player(1919)
+        for idx in range(0, len(player_list), 114):
+            cur.executemany("INSERT INTO player (id, coins, goods) VALUES (%s, %s, %s)", player_list[idx:idx + 114])
+```
+
+有关 Python 的完整示例，可参阅：
+
+- [TiDB 和 Python 的简单 CRUD 应用程序 - 使用 PyMySQL](/develop/dev-guide-sample-application-python.md#第-2-步获取代码)
+- [TiDB 和 Python 的简单 CRUD 应用程序 - 使用 mysqlclient](/develop/dev-guide-sample-application-python.md#第-2-步获取代码)
+- [TiDB 和 Python 的简单 CRUD 应用程序 - 使用 mysql-connector-python](/develop/dev-guide-sample-application-python.md#第-2-步获取代码)
+- [TiDB 和 Python 的简单 CRUD 应用程序 - 使用 SQLAlchemy](/develop/dev-guide-sample-application-python.md#第-2-步获取代码)
+- [TiDB 和 Python 的简单 CRUD 应用程序 - 使用 peewee](/develop/dev-guide-sample-application-python.md#第-2-步获取代码)
+
+</div>
+
 </SimpleTab>
 
 ## 批量插入

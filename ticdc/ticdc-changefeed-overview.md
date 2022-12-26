@@ -5,7 +5,7 @@ summary: 了解 Changefeed 的基本概念和 Changefeed 状态的定义与流�
 
 # Changefeed 概述
 
-Changefeed 是 TiCDC 中的单个同步任务。Changefeed 将一个 TiDB 集群中数张表的变更数据输出到一个指定的下游中。TiCDC 集群可以运行和管理多个 Changefeed。
+Changefeed 是 TiCDC 中的单个同步任务。Changefeed 将一个 TiDB 集群中数张表的变更数据输出到一个指定的下游。TiCDC 集群可以运行和管理多个 Changefeed。
 
 ## Changefeed 状态流转
 

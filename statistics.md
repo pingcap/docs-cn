@@ -19,9 +19,15 @@ TiDB 使用统计信息来决定[索引的选择](/choose-index.md)。变量 `ti
 >
 > - 如果 ANALYZE 语句是开启了自动 analyze 后 TiDB 自动执行的，请使用以下 SQL 语句生成 DROP STATS 的语句并执行：
 >
->
 >    ```sql
 >    SELECT DISTINCT(CONCAT('DROP STATS ', table_schema, '.', table_name, ';')) FROM information_schema.tables, mysql.stats_histograms WHERE stats_ver = 2 AND table_id = tidb_table_id;
+>    ```
+>
+> - 如果上一条语句返回结果太长，不方便拷贝粘贴，可以将结果导出到临时文件后，再执行:
+>
+>    ```sql
+>    select distinct... into outfile '/tmp/sql.txt';
+>    mysql -h XXX -u user -P 4000 ... < '/tmp/sql.txt';
 >    ```
 
 两种版本中，TiDB 维护的统计信息如下：
@@ -337,8 +343,6 @@ ANALYZE INCREMENTAL TABLE TableName PARTITION PartitionNameList INDEX [IndexName
 当某个表 `tbl` 的修改行数与总行数的比值大于 `tidb_auto_analyze_ratio`，并且当前时间在 `tidb_auto_analyze_start_time` 和 `tidb_auto_analyze_end_time` 之间时，TiDB 会在后台执行 `ANALYZE TABLE tbl` 语句自动更新这个表的统计信息。
 
 为了避免小表因为少量数据修改而频繁触发自动更新，当表的行数小于 1000 时，TiDB 不会触发对此表的自动更新。你可以通过 `SHOW STATS_META` 来查看表的行数情况。
-
-在 TiDB v5.0 之前，执行查询语句时，TiDB 会以 `feedback-probability`的概率收集反馈信息，并将其用于更新直方图和 Count-Min Sketch。**从 v5.0 起，该功能默认关闭，暂不建议开启此功能。从 v6.2.0 开始，该配置项被移除。**
 
 从 TiDB v6.0 起，TiDB 支持通过 `KILL` 语句终止正在后台运行的 `ANALYZE` 任务。如果发现正在后台运行的 `ANALYZE` 任务消耗大量资源影响业务，你可以通过以下步骤终止该 `ANALYZE` 任务：
 
@@ -728,7 +732,85 @@ LOAD STATS 'file_name';
 
 `file_name` 为要导入的统计信息的文件名。
 
+## 锁定统计信息
+
+> **警告：**
+>
+> 锁定统计信息目前为实验特性，不建议在生产环境中使用。
+
+从 v6.5.0 开始，TiDB 引入了锁定统计信息的特性。当一张表的统计信息被锁定以后，该表的统计信息将无法被修改，也无法对该表进行 `ANALYZE` 操作。用例如下：
+
+创建表 `t`，插入一些数据，在未锁定表 `t` 的统计信息的情况下成功执行 `ANALYZE` 语句。
+
+```sql
+mysql> create table t(a int, b int);
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> insert into t values (1,2), (3,4), (5,6), (7,8);
+Query OK, 4 rows affected (0.00 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> analyze table t;
+Query OK, 0 rows affected, 1 warning (0.02 sec)
+
+mysql> show warnings;
++-------+------+-----------------------------------------------------------------+
+| Level | Code | Message                                                         |
++-------+------+-----------------------------------------------------------------+
+| Note  | 1105 | Analyze use auto adjusted sample rate 1.000000 for table test.t |
++-------+------+-----------------------------------------------------------------+
+1 row in set (0.00 sec)
+```
+
+锁定表 `t` 的统计信息，执行 `ANALYZE` 语句，warning 提示跳过对表 `t` 的 `ANALYZE`。
+
+```sql
+mysql> lock stats t;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> show stats_locked;
++---------+------------+----------------+--------+
+| Db_name | Table_name | Partition_name | Status |
++---------+------------+----------------+--------+
+| test    | t          |                | locked |
++---------+------------+----------------+--------+
+1 row in set (0.01 sec)
+
+mysql> analyze table t;
+Query OK, 0 rows affected, 2 warnings (0.00 sec)
+
+mysql> show warnings;
++---------+------+-----------------------------------------------------------------+
+| Level   | Code | Message                                                         |
++---------+------+-----------------------------------------------------------------+
+| Note    | 1105 | Analyze use auto adjusted sample rate 1.000000 for table test.t |
+| Warning | 1105 | skip analyze locked table: t                                    |
++---------+------+-----------------------------------------------------------------+
+2 rows in set (0.00 sec)
+```
+
+解锁表 `t` 的统计信息，成功执行 `ANALYZE` 语句。
+
+```sql
+mysql> unlock stats t;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> analyze table t;
+Query OK, 0 rows affected, 1 warning (0.03 sec)
+
+mysql> show warnings;
++-------+------+-----------------------------------------------------------------+
+| Level | Code | Message                                                         |
++-------+------+-----------------------------------------------------------------+
+| Note  | 1105 | Analyze use auto adjusted sample rate 1.000000 for table test.t |
++-------+------+-----------------------------------------------------------------+
+1 row in set (0.00 sec)
+```
+
 ## 另请参阅
 
 * [LOAD STATS](/sql-statements/sql-statement-load-stats.md)
 * [DROP STATS](/sql-statements/sql-statement-drop-stats.md)
+* [LOCK STATS](/sql-statements/sql-statement-lock-stats.md)
+* [UNLOCK STATS](/sql-statements/sql-statement-unlock-stats.md)
+* [SHOW STATS_LOCKED](/sql-statements/sql-statement-show-stats-locked.md)
