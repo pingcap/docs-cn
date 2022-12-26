@@ -32,7 +32,7 @@ BindableStmt ::=
 
 你可以根据 SQL hint 或历史执行计划创建绑定。
  
-下面的示例演示如何根据 SQL hint创建绑定。
+下面的示例演示如何根据 SQL hint 创建绑定。
 
 {{< copyable "sql" >}}
 
