@@ -21,7 +21,6 @@ cdc cli changefeed create --pd=http://127.0.0.1:2379 --changefeed-id="csv-test" 
 [sink]
 protocol = "csv"
 terminator = "\n"
-enable-partition-separator = true
 
 [sink.csv]
 delimiter = ','
