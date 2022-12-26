@@ -1,6 +1,6 @@
 ---
 title: 同步数据到存储服务
-summary: 了解如何使用 TiCDC 将数据同步到存储服务，同时理解数据的存储方式
+summary: 了解如何使用 TiCDC 将数据同步到存储服务，同时理解数据的存储方式。
 ---
 
 # 同步数据到存储服务
@@ -30,7 +30,7 @@ Info: {"upstream_id":7171388873935111376,"namespace":"default","id":"simple-repl
 ```
 
 - `--changefeed-id`：同步任务的 ID，格式需要符合正则表达式 `^[a-zA-Z0-9]+(\-[a-zA-Z0-9]+)*$`。如果不指定该 ID，TiCDC 会自动生成一个 UUID（version 4 格式）作为 ID。
-- `--sink-uri`：同步任务下游的地址，需在此参数中配置 S3、Azure Blob Storage 和 NFS 的相关参数，TiCDC 中存储服务的 URI 参数与 BR 中存储 URL 相同，具体可参考[备份存储 URL 格式说明](/br/backup-and-restore-storages.md#格式说明)。
+- `--sink-uri`：同步任务下游的地址。具体可参考[配置 Sink URI](#配置-sink-uri)。
 - `--start-ts`：指定 changefeed 的开始 TSO。TiCDC 集群将从这个 TSO 开始拉取数据。默认为当前时间。
 - `--target-ts`：指定 changefeed 的目标 TSO。TiCDC 集群拉取数据直到这个 TSO 停止。默认为空，即 TiCDC 不会自动停止。
 - `--config`：指定 changefeed 配置文件，详见：[TiCDC Changefeed 配置参数](/ticdc/ticdc-changefeed-config.md)。
@@ -39,13 +39,9 @@ Info: {"upstream_id":7171388873935111376,"namespace":"default","id":"simple-repl
 
 本章节介绍如何在 Changefeed URI 中配置 `S3`、`Azure Blob Storage` 和 `NFS`。
 
-### Sink URI 配置 S3
+### Sink URI 配置 S3 和 Azure Blob Storage
 
-S3 的 URL 参数与 BR 相同，详细参数请参考 [S3 的 URL 参数](/br/backup-and-restore-storages.md#s3-的-url-参数)。
-
-### Sink URI 配置 Azure Blob Storage
-
-Azure Blob Storage 的 URL 参数与 BR 相同，详细参数请参考 [Azblob 的 URL 参数](/br/backup-and-restore-storages.md#azblob-的-url-参数)
+S3 和 Azure Blob Storage 的 URI 参数与 BR 中这两种存储的 URL 参数相同，详细参数请参考 [(/br/backup-and-restore-storages.md#格式说明)。
 
 ### Sink URI 配置 NFS
 
@@ -100,7 +96,7 @@ URI 中其他可配置的参数如下：
 > 表的版本会在以下两种情况下发生变化：
 > 
 > - 发生过对该表的 DDL 操作，表的版本为该 DDL 在上游 TiDB 执行结束的 TSO，但表版本的变化并不意味着表结构的变化，如为表中某一列添加 comment，并不会造成 `schema.json` 文件内容相较于旧版本发生变化。
-> - 进程重启，表的版本为进程重启时 changefeed 的 checkpoint TSO。之所以不在旧版本的目录下继续写入数据而是在一个以 checkpoint TSO 为版本的新目录下写入数据，是因为在表数量多的情况下重启时需要遍历出所有的目录并找出上一次重启每张表写入的位置，该操作较为耗时进而影响同步进度。
+> - 进程重启，表的版本为进程重启时 changefeed 的 checkpoint TSO。因为在有很多表的情况下，重启时需要遍历所有目录并找到上一次重启时每张表写入的位置，这样的操作耗时较长，因此我们选择在一个以 checkpoint TSO 为版本的新目录下写入数据，而不是在旧版本的目录下继续写入数据。
 
 ### 元数据
 
@@ -177,10 +173,10 @@ URI 中其他可配置的参数如下：
 - `Query`：DDL 语句。
 - `TableColumns`：该数组表示表中每一列的详细信息。
     - `ColumnName`：列名。
-    - `ColumnType`：该列的类型。详见 [数据类型](/ticdc/ticdc-sink-to-cloud-storage.md#数据类型)。
-    - `ColumnLength`：该列的长度。详见 [数据类型](/ticdc/ticdc-sink-to-cloud-storage.md#数据类型)。
-    - `ColumnPrecision`：该列的精度。详见 [数据类型](/ticdc/ticdc-sink-to-cloud-storage.md#数据类型)。
-    - `ColumnScale`：该列小数位的长度。详见 [数据类型](/ticdc/ticdc-sink-to-cloud-storage.md#数据类型)。
+    - `ColumnType`：该列的类型。详见[数据类型](#数据类型)。
+    - `ColumnLength`：该列的长度。详见[数据类型](#数据类型)。
+    - `ColumnPrecision`：该列的精度。详见[数据类型](#数据类型)。
+    - `ColumnScale`：该列小数位的长度。详见[数据类型](#数据类型)。
     - `ColumnNullable`：值为 true 时表示该列可以含 NULL 值。
     - `ColumnIsPk`：值为 true 时表示该列是主键的一部分。
 - `TableColumnsTotal`：TableColumns 数组的大小。
