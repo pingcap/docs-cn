@@ -135,7 +135,7 @@ SHOW SESSION BINDINGS\G
 Empty set (0.00 sec)
 ```
 
-下面的示例演示如何根据 `plan_digest` 删除绑定。
+下面的示例演示如何根据 `sql_digest` 删除绑定。
 
 ```sql
 mysql> CREATE TABLE t(id INT PRIMARY KEY , a INT, KEY(a));
