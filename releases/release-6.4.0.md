@@ -313,7 +313,7 @@ TiDB 版本：6.4.0-DMR
 | DM | [`routes.route-rule-1.extract-table`](/dm/task-configuration-file-full.md#完整配置文件示例) | 新增 | 可选配置。用于提取分库分表场景中分表的源信息，提取的信息写入下游合表，用于标识数据来源。如果配置该项，需要提前在下游手动创建合表。 |
 | DM | [`routes.route-rule-1.extract-schema`](/dm/task-configuration-file-full.md#完整配置文件示例) | 新增 | 可选配置。用于提取分库分表场景中分库的源信息，提取的信息写入下游合表，用于标识数据来源。如果配置该项，需要提前在下游手动创建合表。 |
 | DM | [`routes.route-rule-1.extract-source`](/dm/task-configuration-file-full.md#完整配置文件示例) | 新增 | 可选配置。用于提取分库分表场景中的源信息，提取的信息写入下游合表，用于标识数据来源。如果配置该项，需要提前在下游手动创建合表。 |
-| TiCDC | [`transaction-atomicity`](/ticdc/manage-ticdc.md#sink-uri-配置-mysqltidb) | 修改 | 默认值由 `table` 改为 `none`。 |
+| TiCDC | [`transaction-atomicity`](/ticdc/manage-ticdc.md#sink-uri-配置-mysqltidb) | 修改 | 默认值由 `table` 改为 `none`。该修改可降低同步延迟，减少系统出现 OOM 的风险。同时，修改默认值后，系统只拆分少量的事务（即超过 1024 行的事务），而不是拆分所有事务。 |
 
 ### 其他
 
