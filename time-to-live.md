@@ -18,7 +18,7 @@ TTL 设计的目标是在不影响在线读写负载的前提下，帮助用户�
 > **警告：**
 >
 > 当前该功能为实验特性，不建议在生产环境中使用。
-> TTL 无法在 [Serverless Tier clusters](https://docs.pingcap.com/tidbcloud/select-cluster-tier#serverless-tier-beta) 上使用
+> TTL 无法在 [Serverless Tier clusters](https://docs.pingcap.com/tidbcloud/select-cluster-tier#serverless-tier-beta) 上使用。
 
 ## 语法
 
@@ -156,7 +156,7 @@ SET @@global.tidb_ttl_job_schedule_window_end_time = '05:00 +0000';
 
 ## 监控与图表
 
-TiDB 会定时采集 TTL 的运行时信息，并在 Grafana 中提供了相关指标的可视化图表。你可以 TiDB -> TTL 的面板下看到这些信息。指标详情见 [TiDB 重要监控指标详解](/grafana-tidb-dashboard.md) 中的 `TTL` 部分。
+TiDB 会定时采集 TTL 的运行时信息，并在 Grafana 中提供了相关指标的可视化图表。你可以在 TiDB -> TTL 的面板下看到这些信息。指标详情见 [TiDB 重要监控指标详解](/grafana-tidb-dashboard.md) 中的 `TTL` 部分。
 
 ## 工具兼容性
 
