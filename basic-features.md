@@ -36,7 +36,7 @@ aliases: ['/docs-cn/dev/basic-features/']
 
 | 索引和约束                                                             | 6.5 | 6.4 | 6.3 | 6.2 | 6.1 |  6.0   |   5.4    |   5.3    |   5.2    |   5.1    |   5.0    |   4.0    |
 | ---------------------------------------------------------------------- | --- | --- | --- | --- | --- | --- | :------: | :------: | :------: | :------: | :------: | :------: |
-| [表达式索引](/sql-statements/sql-statement-create-index.md#表达式索引) | 实验特性 | 实验特性 | 实验特性 | 实验特性  | 实验特性  | 实验特性  | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
+| [表达式索引](/sql-statements/sql-statement-create-index.md#表达式索引) [^2] | GA | 实验特性 | 实验特性 | 实验特性  | 实验特性  | 实验特性  | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
 | [列式存储 (TiFlash)](/tiflash/tiflash-overview.md)                     |  Y   |  Y   |  Y   |  Y   |  Y    |  Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
 | [RocksDB 引擎](/storage-engine/rocksdb-overview.md)                    |  Y   |  Y   |  Y   |  Y    |  Y    |  Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
 | [Titan 插件](/storage-engine/titan-overview.md)                        |  Y   |  Y   |  Y   |  Y    |  Y    |  Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
@@ -48,7 +48,7 @@ aliases: ['/docs-cn/dev/basic-features/']
 
 ## SQL 语句
 
-| SQL 语句 [^2]                                                               | 6.5 | 6.4 | 6.3 |   6.2  |   6.1  |   6.0  |   5.4    |   5.3    |   5.2    |   5.1    |   5.0    |   4.0    |
+| SQL 语句 [^3]                                                               | 6.5 | 6.4 | 6.3 |   6.2  |   6.1  |   6.0  |   5.4    |   5.3    |   5.2    |   5.1    |   5.0    |   4.0    |
 | --------------------------------------------------------------------------- | :------: | :------: | :------: | :------: | :------: | :------: | :------: | :------: | :------: | :------: | :------: | :------: |
 | `SELECT`，`INSERT`，`UPDATE`，`DELETE`，`REPLACE`                           |   Y     |   Y     |   Y     |   Y     |   Y     |   Y     |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
 | `INSERT ON DUPLICATE KEY UPDATE`                                            |   Y     |   Y     |   Y     |   Y     |   Y     |   Y     |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
@@ -90,7 +90,7 @@ aliases: ['/docs-cn/dev/basic-features/']
 | [生成列](/generated-columns.md)                              | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
 | [视图](/views.md)                                            |    Y   |    Y   |    Y   |    Y   |    Y    |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
 | [序列](/sql-statements/sql-statement-create-sequence.md)     |    Y   |    Y   |    Y   |    Y    |    Y    |   Y      |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
-| [`AUTO_INCREMENT` 列](/auto-increment.md)                    |    Y     |    Y[^3]   |    Y   |    Y   |    Y    |  Y   |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
+| [`AUTO_INCREMENT` 列](/auto-increment.md)                    |    Y     |    Y[^4]   |    Y   |    Y   |    Y    |  Y   |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
 | [`AUTO_RANDOM` 列](/auto-random.md)                          |    Y   |    Y   |    Y   |    Y   |    Y    |    Y   |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
 | [TTL (Time to Live)](/time-to-live.md) |    实验特性   |    N   |    N   |    N   |    N    |    N    |    N     |    N     |    N     |    N     |    N     |    N     |
 | [DDL 算法断言](/sql-statements/sql-statement-alter-table.md) |    Y   |    Y   |    Y   |    Y   |    Y    |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
@@ -163,7 +163,7 @@ aliases: ['/docs-cn/dev/basic-features/']
 | [快速导入 (TiDB Lightning)](/tidb-lightning/tidb-lightning-overview.md) |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |
 | mydumper 逻辑导入                                                       | 已废弃| 已废弃| 已废弃| 已废弃 | 已废弃 | 已废弃 | 已废弃 | 已废弃 | 已废弃 | 已废弃 | 已废弃 | 已废弃 |
 | [Dumpling 逻辑导入](/dumpling-overview.md)                              |   Y   |   Y   |   Y   |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |
-| [事务 `LOAD DATA`](/sql-statements/sql-statement-load-data.md)          |   Y   |   Y   |   Y   |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    | N [^4] |
+| [事务 `LOAD DATA`](/sql-statements/sql-statement-load-data.md)          |   Y   |   Y   |   Y   |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    | N [^5] |
 | [数据迁移工具](/migration-overview.md)                                  |   Y   |   Y   |   Y   |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |
 | [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md)                     |   Y   |   Y   |   Y   |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |
 | [Change data capture (CDC)](/ticdc/ticdc-overview.md)                   |   Y   |   Y   |   Y   |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |
@@ -196,8 +196,10 @@ aliases: ['/docs-cn/dev/basic-features/']
 
 [^1]: TiDB 误将 latin1 处理为 utf8 的子集。见 [TiDB #18955](https://github.com/pingcap/tidb/issues/18955)。
 
-[^2]: TiDB 支持的完整 SQL 列表，见[语句参考](/sql-statements/sql-statement-select.md)。
+[^2]: 从 v6.5.0 起，查询系统变量 [tidb_allow_function_for_expression_index](/system-variables#tidb_allow_function_for_expression_index-从-v520-版本开始引入) 所列出的函数已通过测试，可以在生产环境中创建包含这些函数的表达式索引，未来版本会持续增加。对于没有列出的函数，则不建议在生产环境中使用。详情请参考[表达式索引](/sql-statements/sql-statement-create-index.md#表达式索引)。
 
-[^3]: 从 TiDB v6.4.0 开始，支持[高性能、全局单调递增的 `AUTO_INCREMENT` 列](/auto-increment.md#mysql-兼容模式)
+[^3]: TiDB 支持的完整 SQL 列表，见[语句参考](/sql-statements/sql-statement-select.md)。
 
-[^4]: 对于 TiDB v4.0，事务 `LOAD DATA` 不保证原子性。
+[^4]: 从 TiDB v6.4.0 开始，支持[高性能、全局单调递增的 `AUTO_INCREMENT` 列](/auto-increment.md#mysql-兼容模式)
+
+[^5]: 对于 TiDB v4.0，事务 `LOAD DATA` 不保证原子性。
