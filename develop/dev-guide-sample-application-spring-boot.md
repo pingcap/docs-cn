@@ -329,212 +329,206 @@ Hibernate: create table player_jpa (id bigint not null, coins integer, goods int
 
 服务完成运行后，即可使用 HTTP 接口请求后端程序。`http://localhost:8080` 是服务提供根地址。此处使用一系列的 HTTP 请求来演示如何使用该服务。
 
-### 第 6 步第 1 部分：使用 Postman 请求(推荐)
+<SimpleTab groupId="request">
+
+<div label="使用 Postman 请求（推荐）" value="postman">
 
 你可下载[此配置文件](https://raw.githubusercontent.com/pingcap-inc/tidb-example-java/main/spring-jpa-hibernate/Player.postman_collection.json)到本地，并导入 [Postman](https://www.postman.com/)，导入后如图所示：
 
 ![postman import](/media/develop/IMG_20220402-003303222.png)
 
-#### 增加玩家
+- 增加玩家
 
-点击 **Create** 标签，点击 **Send** 按钮，发送 Post 形式的 `http://localhost:8080/player/` 请求。返回值为增加的玩家个数，预期为 1。
+    点击 **Create** 标签，点击 **Send** 按钮，发送 Post 形式的 `http://localhost:8080/player/` 请求。返回值为增加的玩家个数，预期为 1。
 
-![Postman-Create](/media/develop/IMG_20220402-003350731.png)
+    ![Postman-Create](/media/develop/IMG_20220402-003350731.png)
 
-#### 使用 ID 获取玩家信息
+- 使用 ID 获取玩家信息
 
-点击 **GetByID** 标签，点击 **Send** 按钮，发送 Get 形式的 `http://localhost:8080/player/1` 请求。返回值为 ID 为 1 的玩家信息。
+    点击 **GetByID** 标签，点击 **Send** 按钮，发送 Get 形式的 `http://localhost:8080/player/1` 请求。返回值为 ID 为 1 的玩家信息。
 
-![Postman-GetByID](/media/develop/IMG_20220402-003416079.png)
+    ![Postman-GetByID](/media/develop/IMG_20220402-003416079.png)
 
-#### 使用 Limit 批量获取玩家信息
+- 使用 Limit 批量获取玩家信息
 
-点击 **GetByLimit** 标签，点击 **Send** 按钮，发送 Get 形式的 `http://localhost:8080/player/limit/3` 请求。返回值为最多 3 个玩家的信息列表。
+    点击 **GetByLimit** 标签，点击 **Send** 按钮，发送 Get 形式的 `http://localhost:8080/player/limit/3` 请求。返回值为最多 3 个玩家的信息列表。
 
-![Postman-GetByLimit](/media/develop/IMG_20220402-003505846.png)
+    ![Postman-GetByLimit](/media/develop/IMG_20220402-003505846.png)
 
-#### 分页获取玩家信息
+- 分页获取玩家信息
 
-点击 **GetByPage** 标签，点击 **Send** 按钮，发送 Get 形式的 `http://localhost:8080/player/page?index=0&size=2` 请求。返回值为 index 为 0 的页，每页有 2 个玩家信息列表。此外，还包含了分页信息，如偏移量、总页数、是否排序等。
+    点击 **GetByPage** 标签，点击 **Send** 按钮，发送 Get 形式的 `http://localhost:8080/player/page?index=0&size=2` 请求。返回值为 index 为 0 的页，每页有 2 个玩家信息列表。此外，还包含了分页信息，如偏移量、总页数、是否排序等。
 
-![Postman-GetByPage](/media/develop/IMG_20220402-003528474.png)
+    ![Postman-GetByPage](/media/develop/IMG_20220402-003528474.png)
 
-#### 获取玩家个数
+- 获取玩家个数
 
-点击 **Count** 标签，点击 **Send** 按钮，发送 Get 形式的 `http://localhost:8080/player/count` 请求。返回值为玩家个数。
+    点击 **Count** 标签，点击 **Send** 按钮，发送 Get 形式的 `http://localhost:8080/player/count` 请求。返回值为玩家个数。
 
-![Postman-Count](/media/develop/IMG_20220402-003549966.png)
+    ![Postman-Count](/media/develop/IMG_20220402-003549966.png)
 
-#### 玩家交易
+- 玩家交易
 
-点击 **Trade** 标签，点击 **Send** 按钮，发送 Put 形式的 `http://localhost:8080/player/trade` 请求，请求参数为售卖玩家 ID `sellID`、购买玩家 ID `buyID`、购买货物数量 `amount`、购买消耗金币数 `price`。返回值为交易是否成功。当出现售卖玩家货物不足、购买玩家金币不足或数据库错误时，交易将不成功，且由于[数据库事务](/develop/dev-guide-transaction-overview.md)保证，不会有玩家的金币或货物丢失的情况。
+    点击 **Trade** 标签，点击 **Send** 按钮，发送 Put 形式的 `http://localhost:8080/player/trade` 请求，请求参数为售卖玩家 ID `sellID`、购买玩家 ID `buyID`、购买货物数量 `amount`、购买消耗金币数 `price`。返回值为交易是否成功。当出现售卖玩家货物不足、购买玩家金币不足或数据库错误时，交易将不成功，且由于[数据库事务](/develop/dev-guide-transaction-overview.md)保证，不会有玩家的金币或货物丢失的情况。
 
-![Postman-Trade](/media/develop/IMG_20220402-003659102.png)
+    ![Postman-Trade](/media/develop/IMG_20220402-003659102.png)
 
-### 第 6 步第 2 部分：使用 curl 请求
+</div>
+
+<div label="使用 curl 请求" value="curl">
 
 当然，你也可以直接使用 curl 进行请求。
 
-#### 增加玩家
+- 增加玩家
 
-使用 **Post** 方法请求 `/player` 端点请求来增加玩家，即：
+    使用 **Post** 方法请求 `/player` 端点请求来增加玩家，即：
 
-{{< copyable "shell-regular" >}}
+    ```shell
+    curl --location --request POST 'http://localhost:8080/player/' --header 'Content-Type: application/json' --data-raw '[{"coins":100,"goods":20}]'
+    ```
 
-```shell
-curl --location --request POST 'http://localhost:8080/player/' --header 'Content-Type: application/json' --data-raw '[{"coins":100,"goods":20}]'
-```
+    这里使用 JSON 作为信息的载荷。表示需要创建一个金币数 `coins` 为 100，货物数 `goods` 为 20 的玩家。返回值为创建的玩家个数。
 
-这里使用 JSON 作为信息的载荷。表示需要创建一个金币数 `coins` 为 100，货物数 `goods` 为 20 的玩家。返回值为创建的玩家个数。
+    ```json
+    1
+    ```
 
-```json
-1
-```
+- 使用 ID 获取玩家信息
 
-#### 使用 ID 获取玩家信息
+    使用 **Get** 方法请求 `/player` 端点请求来获取玩家信息，额外的需要在路径上给出玩家的 `id` 参数，即 `/player/{id}` ，例如在请求 `id` 为 1 的玩家时：
 
-使用 **Get** 方法请求 `/player` 端点请求来获取玩家信息，额外的需要在路径上给出玩家的 `id` 参数，即 `/player/{id}` ，例如在请求 `id` 为 1 的玩家时：
+    ```shell
+    curl --location --request GET 'http://localhost:8080/player/1'
+    ```
 
-{{< copyable "shell-regular" >}}
+    返回值为玩家的信息：
 
-```shell
-curl --location --request GET 'http://localhost:8080/player/1'
-```
-
-返回值为玩家的信息：
-
-```json
-{
-  "coins": 200,
-  "goods": 10,
-  "id": 1
-}
-```
-
-#### 使用 Limit 批量获取玩家信息
-
-使用 **Get** 方法请求 `/player/limit` 端点请求来获取玩家信息，额外的需要在路径上给出限制查询的玩家信息的总数，即 `/player/limit/{limit}` ，例如在请求最多 3 个玩家的信息时：
-
-{{< copyable "shell-regular" >}}
-
-```shell
-curl --location --request GET 'http://localhost:8080/player/limit/3'
-```
-
-返回值为玩家信息的列表：
-
-```json
-[
-  {
+    ```json
+    {
     "coins": 200,
     "goods": 10,
     "id": 1
-  },
-  {
-    "coins": 0,
-    "goods": 30,
-    "id": 2
-  },
-  {
-    "coins": 100,
-    "goods": 20,
-    "id": 3
-  }
-]
-```
-
-#### 分页获取玩家信息
-
-使用 **Get** 方法请求 `/player/page` 端点请求来分页获取玩家信息，额外的需要使用 URL 参数 ，例如在请求页面序号 `index` 为 0，每页最大请求量 `size` 为 2 时：
-
-{{< copyable "shell-regular" >}}
-
-```shell
-curl --location --request GET 'http://localhost:8080/player/page?index=0&size=2'
-```
-
-返回值为 `index` 为 0 的页，每页有 2 个玩家信息列表。此外，还包含了分页信息，如偏移量、总页数、是否排序等。
-
-```json
-{
-  "content": [
-    {
-      "coins": 200,
-      "goods": 10,
-      "id": 1
-    },
-    {
-      "coins": 0,
-      "goods": 30,
-      "id": 2
     }
-  ],
-  "empty": false,
-  "first": true,
-  "last": false,
-  "number": 0,
-  "numberOfElements": 2,
-  "pageable": {
-    "offset": 0,
-    "pageNumber": 0,
-    "pageSize": 2,
-    "paged": true,
-    "sort": {
-      "empty": true,
-      "sorted": false,
-      "unsorted": true
+    ```
+
+- 使用 Limit 批量获取玩家信息
+
+    使用 **Get** 方法请求 `/player/limit` 端点请求来获取玩家信息，额外的需要在路径上给出限制查询的玩家信息的总数，即 `/player/limit/{limit}` ，例如在请求最多 3 个玩家的信息时：
+
+    ```shell
+    curl --location --request GET 'http://localhost:8080/player/limit/3'
+    ```
+
+    返回值为玩家信息的列表：
+
+    ```json
+    [
+    {
+        "coins": 200,
+        "goods": 10,
+        "id": 1
     },
-    "unpaged": false
-  },
-  "size": 2,
-  "sort": {
-    "empty": true,
-    "sorted": false,
-    "unsorted": true
-  },
-  "totalElements": 4,
-  "totalPages": 2
-}
-```
+    {
+        "coins": 0,
+        "goods": 30,
+        "id": 2
+    },
+    {
+        "coins": 100,
+        "goods": 20,
+        "id": 3
+    }
+    ]
+    ```
 
-#### 获取玩家个数
+- 分页获取玩家信息
 
-使用 **Get** 方法请求 `/player/count` 端点请求来获取玩家个数：
+    使用 **Get** 方法请求 `/player/page` 端点请求来分页获取玩家信息，额外的需要使用 URL 参数 ，例如在请求页面序号 `index` 为 0，每页最大请求量 `size` 为 2 时：
 
-{{< copyable "shell-regular" >}}
+    ```shell
+    curl --location --request GET 'http://localhost:8080/player/page?index=0&size=2'
+    ```
 
-```shell
-curl --location --request GET 'http://localhost:8080/player/count'
-```
+    返回值为 `index` 为 0 的页，每页有 2 个玩家信息列表。此外，还包含了分页信息，如偏移量、总页数、是否排序等。
 
-返回值为玩家个数
+    ```json
+    {
+    "content": [
+        {
+        "coins": 200,
+        "goods": 10,
+        "id": 1
+        },
+        {
+        "coins": 0,
+        "goods": 30,
+        "id": 2
+        }
+    ],
+    "empty": false,
+    "first": true,
+    "last": false,
+    "number": 0,
+    "numberOfElements": 2,
+    "pageable": {
+        "offset": 0,
+        "pageNumber": 0,
+        "pageSize": 2,
+        "paged": true,
+        "sort": {
+        "empty": true,
+        "sorted": false,
+        "unsorted": true
+        },
+        "unpaged": false
+    },
+    "size": 2,
+    "sort": {
+        "empty": true,
+        "sorted": false,
+        "unsorted": true
+    },
+    "totalElements": 4,
+    "totalPages": 2
+    }
+    ```
 
-```json
-4
-```
+- 获取玩家个数
 
-#### 玩家交易
+    使用 **Get** 方法请求 `/player/count` 端点请求来获取玩家个数：
 
-使用 **Put** 方法请求 `/player/trade` 端点请求来发起玩家间的交易，即：
+    ```shell
+    curl --location --request GET 'http://localhost:8080/player/count'
+    ```
 
-{{< copyable "shell-regular" >}}
+    返回值为玩家个数
 
-```shell
-curl --location --request PUT 'http://localhost:8080/player/trade' \
-  --header 'Content-Type: application/x-www-form-urlencoded' \
-  --data-urlencode 'sellID=1' \
-  --data-urlencode 'buyID=2' \
-  --data-urlencode 'amount=10' \
-  --data-urlencode 'price=100'
-```
+    ```json
+    4
+    ```
 
-这里使用 **Form Data** 作为信息的载荷。表示售卖玩家 ID `sellID` 为 1、购买玩家 ID `buyID` 为 2、购买货物数量 `amount` 为 10、购买消耗金币数 `price` 为 100。返回值为交易是否成功。当出现售卖玩家货物不足、购买玩家金币不足或数据库错误时，交易将不成功，且由于[数据库事务](/develop/dev-guide-transaction-overview.md)保证，不会有玩家的金币或货物丢失的情况。
+- 玩家交易
 
-```json
-true
-```
+    使用 **Put** 方法请求 `/player/trade` 端点请求来发起玩家间的交易，即：
 
-### 第 6 步第 3 部分：使用 Shell 脚本请求
+    ```shell
+    curl --location --request PUT 'http://localhost:8080/player/trade' \
+    --header 'Content-Type: application/x-www-form-urlencoded' \
+    --data-urlencode 'sellID=1' \
+    --data-urlencode 'buyID=2' \
+    --data-urlencode 'amount=10' \
+    --data-urlencode 'price=100'
+    ```
+
+    这里使用 **Form Data** 作为信息的载荷。表示售卖玩家 ID `sellID` 为 1、购买玩家 ID `buyID` 为 2、购买货物数量 `amount` 为 10、购买消耗金币数 `price` 为 100。返回值为交易是否成功。当出现售卖玩家货物不足、购买玩家金币不足或数据库错误时，交易将不成功，且由于[数据库事务](/develop/dev-guide-transaction-overview.md)保证，不会有玩家的金币或货物丢失的情况。
+
+    ```json
+    true
+    ```
+
+</div>
+
+<div label="使用 Shell 脚本请求" value="shell">
 
 这里已经将请求过程编写为 [Shell](https://github.com/pingcap-inc/tidb-example-java/blob/main/spring-jpa-hibernate/request.sh) 脚本，以方便大家的测试，脚本将会做以下操作：
 
@@ -568,6 +562,10 @@ get players count:
 trade by two players:
 false
 ```
+
+</div>
+
+</SimpleTab>
 
 ## 实现细节
 

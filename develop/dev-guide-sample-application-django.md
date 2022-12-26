@@ -218,132 +218,138 @@ Quit the server with CONTROL-C.
 
 服务完成运行后，即可使用 HTTP 接口请求后端程序。`http://localhost:8000` 是服务提供根地址。此处使用一系列的 HTTP 请求来演示如何使用该服务。
 
-### 第 6 步第 1 部分：使用 Postman 请求(推荐)
+<SimpleTab groupId="request">
+
+<div label="使用 Postman 请求（推荐）" value="postman">
 
 你可下载[此配置文件](https://raw.githubusercontent.com/pingcap-inc/tidb-example-python/main/django_example/Player.postman_collection.json)到本地，并导入 [Postman](https://www.postman.com/)，导入后如图所示：
 
 ![postman import](/media/develop/IMG_20220402-003303222.png)
 
-#### 增加玩家
+- 增加玩家
 
-点击 **Create** 标签，点击 **Send** 按钮，发送 `POST` 形式的 `http://localhost:8000/player/` 请求。返回值为增加的玩家个数信息，预期为 1。
+    点击 **Create** 标签，点击 **Send** 按钮，发送 `POST` 形式的 `http://localhost:8000/player/` 请求。返回值为增加的玩家个数信息，预期为 1。
 
-#### 使用 ID 获取玩家信息
+- 使用 ID 获取玩家信息
 
-点击 **GetByID** 标签，点击 **Send** 按钮，发送 Get 形式的 `http://localhost:8000/player/1` 请求。返回值为 ID 为 1 的玩家信息。
+    点击 **GetByID** 标签，点击 **Send** 按钮，发送 Get 形式的 `http://localhost:8000/player/1` 请求。返回值为 ID 为 1 的玩家信息。
 
-#### 使用 Limit 批量获取玩家信息
+- 使用 Limit 批量获取玩家信息
 
-点击 **GetByLimit** 标签，点击 **Send** 按钮，发送 Get 形式的 `http://localhost:8000/player/limit/3` 请求。返回值为最多 3 个玩家的信息列表。
+    点击 **GetByLimit** 标签，点击 **Send** 按钮，发送 Get 形式的 `http://localhost:8000/player/limit/3` 请求。返回值为最多 3 个玩家的信息列表。
 
-#### 获取玩家个数
+- 获取玩家个数
 
-点击 **Count** 标签，点击 **Send** 按钮，发送 Get 形式的 `http://localhost:8000/player/count` 请求。返回值为玩家个数。
+    点击 **Count** 标签，点击 **Send** 按钮，发送 Get 形式的 `http://localhost:8000/player/count` 请求。返回值为玩家个数。
 
-#### 玩家交易
+- 玩家交易
 
-点击 **Trade** 标签，点击 **Send** 按钮，发送 Post 形式的 `http://localhost:8000/player/trade` 请求，请求参数为售卖玩家 ID `sellID`、购买玩家 ID `buyID`、购买货物数量 `amount`、购买消耗金币数 `price`。返回值为交易是否成功。当出现售卖玩家货物不足、购买玩家金币不足或数据库错误时，交易将不成功，且由于[数据库事务](/develop/dev-guide-transaction-overview.md)保证，不会有玩家的金币或货物丢失的情况。
+    点击 **Trade** 标签，点击 **Send** 按钮，发送 Post 形式的 `http://localhost:8000/player/trade` 请求，请求参数为售卖玩家 ID `sellID`、购买玩家 ID `buyID`、购买货物数量 `amount`、购买消耗金币数 `price`。返回值为交易是否成功。当出现售卖玩家货物不足、购买玩家金币不足或数据库错误时，交易将不成功，且由于[数据库事务](/develop/dev-guide-transaction-overview.md)保证，不会有玩家的金币或货物丢失的情况。
 
-### 第 6 步第 2 部分：使用 curl 请求
+</div>
+
+<div label="使用 curl 请求" value="curl">
 
 当然，你也可以直接使用 curl 进行请求。
 
-#### 增加玩家
+- 增加玩家
 
-使用 `POST` 方法请求 `/player` 端点请求来增加玩家，即：
+    使用 `POST` 方法请求 `/player` 端点请求来增加玩家，即：
 
-```shell
-curl --location --request POST 'http://localhost:8000/player/' --header 'Content-Type: application/json' --data-raw '[{"coins":100,"goods":20}]'
-```
+    ```shell
+    curl --location --request POST 'http://localhost:8000/player/' --header 'Content-Type: application/json' --data-raw '[{"coins":100,"goods":20}]'
+    ```
 
-这里使用 JSON 作为信息的载荷。表示需要创建一个金币数 `coins` 为 100，货物数 `goods` 为 20 的玩家。返回值为创建的玩家信息。
+    这里使用 JSON 作为信息的载荷。表示需要创建一个金币数 `coins` 为 100，货物数 `goods` 为 20 的玩家。返回值为创建的玩家信息。
 
-```
-create 1 players.
-```
+    ```
+    create 1 players.
+    ```
 
-#### 使用 ID 获取玩家信息
+- 使用 ID 获取玩家信息
 
-使用 **Get** 方法请求 `/player` 端点请求来获取玩家信息，额外的需要在路径上给出玩家的 `id` 参数，即 `/player/{id}` ，例如在请求 `id` 为 1 的玩家时：
+    使用 **Get** 方法请求 `/player` 端点请求来获取玩家信息，额外的需要在路径上给出玩家的 `id` 参数，即 `/player/{id}` ，例如在请求 `id` 为 1 的玩家时：
 
-```shell
-curl --location --request GET 'http://localhost:8000/player/1'
-```
+    ```shell
+    curl --location --request GET 'http://localhost:8000/player/1'
+    ```
 
-返回值为玩家的信息：
+    返回值为玩家的信息：
 
-```json
-{
-  "coins": 200,
-  "goods": 10,
-  "id": 1
-}
-```
-
-#### 使用 Limit 批量获取玩家信息
-
-使用 `GET` 方法请求 `/player/limit` 端点来获取玩家信息。此外，还需要在路径上给出限制查询的玩家信息的总数，即 `/player/limit/{limit}`，例如在请求最多 3 个玩家的信息时：
-
-```shell
-curl --location --request GET 'http://localhost:8000/player/limit/3'
-```
-
-返回值为玩家信息的列表：
-
-```json
-[
-  {
+    ```json
+    {
     "coins": 200,
     "goods": 10,
     "id": 1
-  },
-  {
-    "coins": 0,
-    "goods": 30,
-    "id": 2
-  },
-  {
-    "coins": 100,
-    "goods": 20,
-    "id": 3
-  }
-]
-```
+    }
+    ```
 
-#### 获取玩家个数
+- 使用 Limit 批量获取玩家信息
 
-使用 **Get** 方法请求 `/player/count` 端点请求来获取玩家个数：
+    使用 `GET` 方法请求 `/player/limit` 端点来获取玩家信息。此外，还需要在路径上给出限制查询的玩家信息的总数，即 `/player/limit/{limit}`，例如在请求最多 3 个玩家的信息时：
 
-```shell
-curl --location --request GET 'http://localhost:8000/player/count'
-```
+    ```shell
+    curl --location --request GET 'http://localhost:8000/player/limit/3'
+    ```
 
-返回值为玩家个数
+    返回值为玩家信息的列表：
 
-```json
-4
-```
+    ```json
+    [
+    {
+        "coins": 200,
+        "goods": 10,
+        "id": 1
+    },
+    {
+        "coins": 0,
+        "goods": 30,
+        "id": 2
+    },
+    {
+        "coins": 100,
+        "goods": 20,
+        "id": 3
+    }
+    ]
+    ```
 
-#### 玩家交易
+- 获取玩家个数
 
-使用 **Post** 方法请求 `/player/trade` 端点请求来发起玩家间的交易，即：
+    使用 **Get** 方法请求 `/player/count` 端点请求来获取玩家个数：
 
-```shell
-curl --location --request POST 'http://localhost:8000/player/trade' \
-  --header 'Content-Type: application/x-www-form-urlencoded' \
-  --data-urlencode 'sellID=1' \
-  --data-urlencode 'buyID=2' \
-  --data-urlencode 'amount=10' \
-  --data-urlencode 'price=100'
-```
+    ```shell
+    curl --location --request GET 'http://localhost:8000/player/count'
+    ```
 
-这里使用 **Form Data** 作为信息的载荷。表示售卖玩家 ID `sellID` 为 1、购买玩家 ID `buyID` 为 2、购买货物数量 `amount` 为 10、购买消耗金币数 `price` 为 100。返回值为交易是否成功。当出现售卖玩家货物不足、购买玩家金币不足或数据库错误时，交易将不成功，且由于[数据库事务](/develop/dev-guide-transaction-overview.md)保证，不会有玩家的金币或货物丢失的情况。
+    返回值为玩家个数
 
-```json
-true
-```
+    ```json
+    4
+    ```
 
-### 第 6 步第 3 部分：使用 Shell 脚本请求
+- 玩家交易
+
+    使用 **Post** 方法请求 `/player/trade` 端点请求来发起玩家间的交易，即：
+
+    ```shell
+    curl --location --request POST 'http://localhost:8000/player/trade' \
+    --header 'Content-Type: application/x-www-form-urlencoded' \
+    --data-urlencode 'sellID=1' \
+    --data-urlencode 'buyID=2' \
+    --data-urlencode 'amount=10' \
+    --data-urlencode 'price=100'
+    ```
+
+    这里使用 **Form Data** 作为信息的载荷。表示售卖玩家 ID `sellID` 为 1、购买玩家 ID `buyID` 为 2、购买货物数量 `amount` 为 10、购买消耗金币数 `price` 为 100。返回值为交易是否成功。当出现售卖玩家货物不足、购买玩家金币不足或数据库错误时，交易将不成功，且由于[数据库事务](/develop/dev-guide-transaction-overview.md)保证，不会有玩家的金币或货物丢失的情况。
+
+    ```json
+    true
+    ```
+
+</div>
+
+<div label="使用 Shell 脚本请求" value="shell">
 
 这里已经将请求过程编写为 [`request.sh`](https://github.com/pingcap-inc/tidb-example-python/blob/main/django_example/request.sh) 脚本，以方便大家的测试，脚本将会做以下操作：
 
@@ -372,6 +378,10 @@ get players count:
 trade by two players:
 trade successful
 ```
+
+</div>
+
+</SimpleTab>
 
 ## 实现细节
 
