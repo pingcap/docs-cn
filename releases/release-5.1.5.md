@@ -24,7 +24,7 @@ TiDB 版本：5.1.5
     - 修复在 TiFlash 中为分区表开启动态模式时结果出错的问题 [#37254](https://github.com/pingcap/tidb/issues/37254)
     - 修复当 `GREATEST` 和 `LEAST`  函数传入无符号整型值时，计算结果出错的问题 [#30101](https://github.com/pingcap/tidb/issues/30101)
     - 修复使用 left join 同时删除多张表数据时可能出现错误结果的问题 [#31321](https://github.com/pingcap/tidb/issues/31321)
-    - 修复 `concat(ifnull(time(3))` 的结果与 MySQL 不一致的问题 [#29498](https://github.com/pingcap/tidb/issues/29498)
+    - 修复 `concat(ifnull(time(3)))` 的结果与 MySQL 不一致的问题 [#29498](https://github.com/pingcap/tidb/issues/29498)
     - 修复 SQL 语句中包含 `cast(integer as char) union string` 时计算结果出错的问题 [#29513](https://github.com/pingcap/tidb/issues/29513)
     - 修复 `INL_HASH_JOIN` 和 `LIMIT` 一起使用时可能会卡住的问题 [#35638](https://github.com/pingcap/tidb/issues/35638)
     - 修复当有 Region 返回空数据时 `ANY_VALUE` 结果不正确的问题 [#30923](https://github.com/pingcap/tidb/issues/30923)
