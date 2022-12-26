@@ -92,6 +92,7 @@ aliases: ['/docs-cn/dev/basic-features/']
 | [序列](/sql-statements/sql-statement-create-sequence.md)     |    Y   |    Y   |    Y   |    Y    |    Y    |   Y      |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
 | [`AUTO_INCREMENT` 列](/auto-increment.md)                    |    Y     |    Y[^3]   |    Y   |    Y   |    Y    |  Y   |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
 | [`AUTO_RANDOM` 列](/auto-random.md)                          |    Y   |    Y   |    Y   |    Y   |    Y    |    Y   |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
+| [TTL (Time to Live)](/time-to-live.md) |    实验特性   |    N   |    N   |    N   |    N    |    N    |    N     |    N     |    N     |    N     |    N     |    N     |
 | [DDL 算法断言](/sql-statements/sql-statement-alter-table.md) |    Y   |    Y   |    Y   |    Y   |    Y    |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
 | 在单条语句中添加多列                                         |   Y  |   Y  |   Y  | Y | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
 | [更改列类型](/sql-statements/sql-statement-modify-column.md) |    Y   |    Y   |    Y   |    Y    |    Y    |    Y    |    Y     |    Y     |    Y     |    Y     |    N     |    N     |
@@ -149,6 +150,7 @@ aliases: ['/docs-cn/dev/basic-features/']
 | [`caching_sha2_password` 认证](/system-variables.md#default_authentication_plugin)    |  Y  |  Y  |  Y  |  Y  |  Y  |  Y  |  Y  |  Y  |  Y  |  N  |  N  |  N  |
 | [`tidb_sm3_password` 认证](/system-variables.md#default_authentication_plugin)        |  Y  |  Y  |  Y  |  N  |  N  |  N  |  N  |  N  |  N  |  N  |  N  |  N  |
 | [`tidb_auth_token` 认证](/system-variables.md#default_authentication_plugin) |  Y  |  Y  |  N  |  N  |  N  |  N  |  N  |  N  |  N  |  N  |  N  |  N  |
+| [密码管理](/password-management.md) |  Y  |  N  |  N  |  N  |  N  |  N  |  N  |  N  |  N  |  N  |  N  |  N  |
 | [与 MySQL 兼容的 `GRANT` 权限管理](/privilege-management.md)      |  Y  |  Y  |  Y  |  Y  |  Y  |  Y  |  Y  |  Y  |  Y  |  Y  |  Y  |  Y  |
 | [动态权限](/privilege-management.md#动态权限)                      |  Y  |  Y  |  Y  |  Y  |  Y  |  Y  |  Y  |  Y  |  Y  |  Y  |  N  |  N  |
 | [安全增强模式](/system-variables.md#tidb_enable_enhanced_security) |  Y  |  Y  |  Y  |  Y  |  Y  |  Y  |  Y  |  Y  |  Y  |  Y  |  N  |  N  |
@@ -165,6 +167,7 @@ aliases: ['/docs-cn/dev/basic-features/']
 | [数据迁移工具](/migration-overview.md)                                  |   Y   |   Y   |   Y   |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |
 | [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md)                     |   Y   |   Y   |   Y   |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |
 | [Change data capture (CDC)](/ticdc/ticdc-overview.md)                   |   Y   |   Y   |   Y   |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |
+| TiCDC 保存数据到存储服务(S3/NFS/Azure Blob Storage)](/ticdc/ticdc-overview.md)  |   实验特性   |   N   |   N   |   N    |   N    |   N    |   N    |   N    |   N    |   N    |   N    |   N    |
 
 ## 管理，可视化和工具
 
