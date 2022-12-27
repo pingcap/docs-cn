@@ -130,7 +130,7 @@ URI 中其他可配置的参数如下：
 
 一个示例 `schema.json` 文件如下：
 
-```shell
+```json
 {
     "Table":"table1",
     "Schema":"test",
@@ -196,7 +196,7 @@ TiDB 中整数类型可被定义为 `IT[(M)] [UNSIGNED]`，其中：
 
 故 `schema.json` 文件中对整数类型定义如下：
 
-```shell
+```json
 {
     "ColumnName":"COL1",
     "ColumnType":"{IT} [UNSIGNED]",
@@ -214,7 +214,7 @@ TiDB 中的小数类型可被定义为 `DT[(M,D)][UNSIGNED]`，其中：
 
 故 `schema.json` 文件中对小数类型的定义如下：
 
-```shell
+```json
 {
     "ColumnName":"COL1",
     "ColumnType":"{DT} [UNSIGNED]",
@@ -231,7 +231,7 @@ TiDB 中的日期类型可被定义为 `DT`，其中：
 
 故 `schema.json` 文件中对日期类型的定义如下：
 
-```shell
+```json
 {
     "ColumnName":"COL1",
     "ColumnType":"{DT}"
@@ -245,7 +245,7 @@ TiDB 中的时间类型可被定义为 `TT[(M)]`，其中：
 
 故 `schema.json` 文件中对时间类型的定义如下：
 
-```shell
+```json
 {
     "ColumnName":"COL1",
     "ColumnType":"{TT}",
@@ -262,7 +262,7 @@ TiDB 中的字符串类型可被定义为 `ST[(M)]`，其中：
 
 故 `schema.json` 文件中对字符串类型的定义如下：
 
-```shell
+```json
 {
     "ColumnName":"COL1",
     "ColumnType":"{ST}",
@@ -272,9 +272,9 @@ TiDB 中的字符串类型可被定义为 `ST[(M)]`，其中：
 
 ### Enum/Set 类型
 
-`schema.json` 文件中对 enum/set 类型的定义如下：
+`schema.json` 文件中对 Enum/Set 类型的定义如下：
 
-```shell
+```json
 {
     "ColumnName":"COL1",
     "ColumnType":"{ENUM/SET}",
