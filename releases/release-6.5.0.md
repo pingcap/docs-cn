@@ -21,9 +21,9 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 - 优化器引入的更精准的代价模型 [Cost Model Version 2](/cost-model.md#cost-model-version-2) GA，同时优化器增强索引合并 [INDEX MERGE](/glossary.md#index-merge) 功能对 `AND` 连接的表达式的支持。
 - 支持下推 `JSON_EXTRACT()` 函数至 TiFlash。
 - 支持[密码管理](/password-management.md)策略，满足密码合规审计需求。
-- TiDB Lightning 和 Dumpling 支持[导入](tidb-lightning/tidb-lightning-data-source.md)和[导出](/dumpling-overview.md#通过并发提高-dumpling-的导出效率)压缩格式文件。
+- TiDB Lightning 和 Dumpling 支持[导入](/tidb-lightning/tidb-lightning-data-source.md)和[导出](/dumpling-overview.md#通过并发提高-dumpling-的导出效率)压缩格式文件。
 - TiDB Data Migration (DM) 的[增量数据校验](/dm/dm-continuous-data-validation.md)特性 GA。
-- TiDB 快照备份支持断点续传，此外 [PITR](/br-pitr-guide.md#进行-pitr) 的恢复性能提升了 50%，一般场景下 RPO 降低到 5 min。
+- TiDB 快照备份支持断点续传，此外 [PITR](/br/br-pitr-guide.md#进行-pitr) 的恢复性能提升了 50%，一般场景下 RPO 降低到 5 min。
 - TiCDC [同步数据到 Kafka](/replicate-data-to-kafka.md) 吞吐提升了 x 倍，复制延迟降低到 x 秒。
 - 提供行级别 [Time to live (TTL)](/time-to-live.md) 管理数据生命周期（实验特性）。
 - TiCDC 支持 Amazon S3、Azure Blob Storage、NFS 的[对象存储](/ticdc/ticdc-sink-to-cloud-storage.md)（实验特性）。
@@ -135,7 +135,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
     - 通过 [TiFlash 面板](/grafana-performance-overview-dashboard.md#tiflash)，你可以直观地了解 TiFlash 集群的请求类型、延迟分析和资源使用概览。
     - 通过 [CDC 面板](/grafana-performance-overview-dashboard.md#cdc)，你可以直观地了解 TiCDC 集群的健康状况、同步延迟、数据流和下游写入延迟等信息。
     
-  更多信息，请参考[用户文档](/performance-tuning-method.md/)。
+  更多信息，请参考[用户文档](/performance-tuning-method.md)。
 
 ### 性能
 
@@ -143,7 +143,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
     在 v6.5.0 前，TiDB 只支持对 `OR` 连接词的过滤条件使用索引合并特性。自 v6.5.0 起，TiDB 支持对于在 `WHERE` 子句中使用 `AND` 连接的过滤条件使用索引合并特性。TiDB 的索引合并至此可以覆盖更多普遍的查询过滤条件组合，不再限定于并集（`OR`）关系。v6.5.0 仅支持优化器自动选择 `OR` 条件下的索引合并。要开启对于 `AND` 连接的索引合并，你需要使用 [`USE_INDEX_MERGE`](/optimizer-hints.md#use_index_merget1_name-idx1_name--idx2_name-) Hint。
 
-    关于索引合并功能的更多信息，请参阅 [v5.4.0 Release Notes](/release-5.4.0#性能)，以及优化器相关的[用户文档](/explain-index-merge.md)
+    关于索引合并功能的更多信息，请参阅 [v5.4.0 Release Notes](/release-5.4.0.md#性能)，以及优化器相关的[用户文档](/explain-index-merge.md)
 
 * 新增支持下推以下 JSON 函数至 TiFlash [#39458](https://github.com/pingcap/tidb/issues/39458) @[yibin87](https://github.com/yibin87) **tw@qiancai**
 
@@ -199,7 +199,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
     `EXPLAIN ANALYZE` 语句可以输出执行计划及运行时的统计信息。在 v6.5.0 中，TiFlash 对 TableFullScan 算子的执行信息进行了完善，补充了 DMFile 相关的执行信息。你可以更加直观地查看 TiFlash 的数据扫描状态信息，方便进行性能分析。
 
-    更多信息，请参考[用户文档](sql-statements/sql-statement-explain-analyze.md)。
+    更多信息，请参考[用户文档](/sql-statements/sql-statement-explain-analyze.md)。
 
 * 支持将执行计划打印为 JSON 格式 [#39261](https://github.com/pingcap/tidb/issues/39261) @[fzzf678](https://github.com/fzzf678) **tw@ran-huang**
 
@@ -241,7 +241,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
     有这个功能之前，TiDB Lightning 在使用物理模式导入数据时，会在本地磁盘创建大量的临时文件，用来对原始数据进行编码、排序、分割。当用户本地磁盘空间不足时，TiDB Lightning 会由于写入文件失败而报错退出。推出该功能后，可避免 TiDB Lightning 任务写满本地磁盘。
 
-    更多信息，请参考[用户文档](/tidb-lightning-physical-import-mode-usage.md#磁盘资源配额-从-v6.2.0-版本开始引入)。
+    更多信息，请参考[用户文档](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#磁盘资源配额-从-v620-版本开始引入)。
 
 * DM 增量数据校验的功能 GA [#4426](https://github.com/pingcap/tiflow/issues/4426) @[D3Hunter](https://github.com/D3Hunter) **tw@hfxsd**
 
