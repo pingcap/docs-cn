@@ -49,7 +49,7 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-diagnostics-access/']
 生成以上两个时间范围的对比报告的步骤如下：
 
 1. 设置区间的开始时间，即异常时间段的开始时间，如 2022-05-21 14:40:00。
-2. 设置区间长度 (Range Duration)。一般只系统异常的持续时间，例如 5 min。
+2. 设置区间长度 (Range Duration)。一般指系统异常的持续时间，例如 5 min。
 3. 开启与基线区间对比开关 (Compare by Baseline)。
 4. 设置基线开始时间 (Baseline Range Start Time)，即想要对比的系统正常时段的开始时间，如 2022-05-21 14:30:00。
 5. 点击开始 (Start)。

@@ -51,7 +51,7 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-cluster-info/']
 
 点击**主机** (Hosts) 可查看主机列表：
 
-![主机](/media/dashboard/dashboard-cluster-info-hosts.png)
+![主机](/media/dashboard/dashboard-cluster-info-hosts-v650.png)
 
 主机列表列出了该集群中 TiDB、TiKV、PD 和 TiFlash 组件所有实例对应主机的运行情况。
 
