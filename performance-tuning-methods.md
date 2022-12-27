@@ -205,7 +205,7 @@ StmtPrepare 每秒执行次数远大于 StmtClose，说明应用程序存在 pre
 
 集群中只有 analyze 语句运行：
 
-- 每秒总的 KV 请求数据是 30.5，Cop 请求次数是每秒 9.3。
+- 每秒总的 KV 请求数据是 35.5，Cop 请求次数是每秒 9.3。
 - KV 处理时间主要来源为 `Cop-internal_stats`，说明 Cop 请求来源于内部的 analyze 操作。
 
 #### TiDB CPU，以及 TiKV CPU 和 IO 使用情况
