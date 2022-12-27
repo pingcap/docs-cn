@@ -60,15 +60,6 @@ tmp_path = "/tidb-data/tiflash-9000/tmp"
 ## 存储路径相关配置，从 v4.0.9 开始生效
 [storage]
 
-<<<<<<< HEAD
-=======
-    ## DTFile 储存文件格式
-    ## * format_version = 2 v6.0.0 以前版本的默认文件格式
-    ## * format_version = 3 v6.0.0 及 v6.1.x 版本的默认文件格式，具有更完善的检验功能
-    ## * format_version = 4 v6.2.0 及以后版本的默认文件格式，优化了写放大问题，同时减少了后台线程消耗
-    # format_version = 4
-
->>>>>>> ca1886c93 (Delete deprecated tiflash configs (#12400))
     [storage.main]
     ## 用于存储主要的数据，该目录列表中的数据占总数据的 90% 以上。
     dir = [ "/tidb-data/tiflash-9000" ]
