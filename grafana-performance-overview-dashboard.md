@@ -111,7 +111,7 @@ Connection Idle Duration 指空闲连接的持续时间。
 
 - total：所有 TiDB 节点的总连接数
 - active connections：所有 TiDB 节点的总活跃连接数
-- tidb-\<node-number\>-peer：各个 TiDB 节点的连接数
+- tidb-{node-number}-peer：各个 TiDB 节点的连接数
 - disconnection/s：集群每秒断开连接的数量
 - 99-not-in-txn：没有处于事务中，空闲连接的 P99 持续时间
 
