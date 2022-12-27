@@ -39,7 +39,7 @@ Flags:
       --repo string   Path to the repository
 
 Global Flags:
-      --skip-version-check   Skip the strict version check, by default a version must be a valid SemVer string
+      --help Help for this command
 
 Use "tiup mirror [command] --help" for more information about a command.
 ```
