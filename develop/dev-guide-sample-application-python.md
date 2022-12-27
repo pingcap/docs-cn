@@ -925,7 +925,7 @@ db = connect('mysql://root:@127.0.0.1:4000/test')
 
     ```python
     db = connect('mysql://2aEp24QWEDLqRFs.root:123456@xxx.tidbcloud.com:4000/test',
-        ssl_mode="VERIFY_IDENTITY", ssl={"ca": "<ca_path>"}
+        ssl_mode="VERIFY_IDENTITY", ssl={"ca": "<ca_path>"})
     ```
 
 由于 peewee 会将参数透传至 Driver 中，使用 peewee 时请注意 Driver 的使用类型。
