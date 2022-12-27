@@ -120,7 +120,7 @@ Performance Overview 面板提供了以下三个面积堆叠图，帮助你了�
 
 **示例 5： HTAP CH-Benchmark 负载**
 
-![HTAP](/media/performance/htap_tilfash_mpp.png)
+![HTAP](/media/performance/htap_tiflash_mpp.png)
 
 - Database Time by SQL Type：主要为 Select 语句。
 - Database Time by SQL Phase：主要消耗时间的阶段为绿色的 execute 阶段。
