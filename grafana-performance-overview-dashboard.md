@@ -175,7 +175,7 @@ Connection Idle Duration 指空闲连接的持续时间。
 - Executor QPS：所有 TiFlash 实例收到的请求中，每种 dag 算子的数量，其中 `table_scan` 是扫表算子，`selection` 是过滤算子，`aggregation` 是聚合算子，`top_n` 是 TopN 算子，`limit` 是 limit 算子
 - Request Duration Overview：每秒所有 TiFlash 实例所有请求类型总处理时间的堆叠图
 - Request Duration：所有 TiFlash 实例每种 MPP 和 coprocessor 请求类型的总处理时间，此时间为接收到该 coprocessor 请求至请求应答完毕的时间，包含平均和 P99 处理延迟
-- Request Handle Duration：所有 TiFlash 实例 MPP 和 coprocessor 请求的处理时间，此时间为该 coprocessor 请求从开始执行到结束的时间，包含平均和 P99 延迟
+- Request Handle Duration：所有 TiFlash 实例每种 MPP 和 coprocessor 请求的处理时间，此时间为该 coprocessor 请求从开始执行到结束的时间，包含平均和 P99 延迟
 - Raft Wait Index Duration：所有 TiFlash 实例在进行 wait_index 消耗的时间，即拿到 read_index 请求后，等待本地的 Region index >= read_index 所花费的时间
 - Raft Batch Read Index Duration：所有 TiFlash 实例在进行 read_index 消耗的时间，主要消耗在于和 Region leader 的交互和重试时间
 - Write Throughput By Instance：每个实例写入数据的吞吐量，包括 apply Raft 数据日志以及 Raft 快照的写入吞吐量
