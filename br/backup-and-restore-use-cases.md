@@ -43,13 +43,13 @@ summary: 介绍 TiDB 备份与恢复的具体使用示例，包括推荐环境�
 - 安装：
 
     ```shell
-    `tiup install br:v6.4.0`
+    `tiup install br:v6.5.0`
     ```
 
 - 升级：
 
     ```shell
-    `tiup update br:v6.4.0`
+    `tiup update br:v6.5.0`
     ```
 
 ## 配置备份存储 (Amazon S3)
