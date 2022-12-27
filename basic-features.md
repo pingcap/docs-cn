@@ -65,6 +65,7 @@ aliases: ['/docs-cn/dev/basic-features/']
 | [`EXPLAIN ANALYZE`](/sql-statements/sql-statement-explain-analyze.md)       |   Y     |   Y     |   Y     |   Y    |   Y     |   Y     |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
 | [用户自定义变量](/user-defined-variables.md)                               | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
 | [`BATCH [ON COLUMN] LIMIT INTEGER DELETE`](/sql-statements/sql-statement-batch.md) | Y | Y | Y | Y | Y | N | N | N | N | N | N | N |
+| [`BATCH [ON COLUMN] LIMIT INTEGER INSERT/UPDATE/REPLACE`](/sql-statements/sql-statement-batch.md) | Y | N | N | N | N | N | N | N | N | N | N | N |
 | [`ALTER TABLE ... COMPACT`](/sql-statements/sql-statement-alter-table-compact.md) | Y | Y | Y | Y | 实验特性 | N | N | N | N | N | N | N |
 
 ## 高级 SQL 功能
