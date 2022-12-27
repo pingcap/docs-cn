@@ -59,11 +59,8 @@ delta_index_cache_size = 0
 
 ## 存储路径相关配置，从 v4.0.9 开始生效
 [storage]
-    ## 该参数从 v5.2.0 开始废弃，请使用 `[storage.io_rate_limit]` 相关配置
-    # bg_task_io_rate_limit = 0
 
     ## DTFile 储存文件格式
-    ## * format_version = 1 老旧文件格式，已废弃
     ## * format_version = 2 v6.0.0 以前版本的默认文件格式
     ## * format_version = 3 v6.0.0 及以后版本的默认文件格式，具有更完善的检验功能
     # format_version = 3
