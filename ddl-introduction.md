@@ -25,7 +25,7 @@ TiDB 采用在线异步变更地方式执行 DDL，DDL 语句的执行不会阻�
 这类 DDL 执行时会影响到业务负载，具体有两个方面。一方面需要从 TiKV 中读取数据并写入新数据，因此会消耗 TiKV 的 CPU 及 IO 资源。另一方面，Owner 节点的 TiDB 需要进行相应的计算，因此会消耗更多的 CPU 资源。由于目前 TiDB 还不支持分布式执行 DDL，因此其他 TiDB 节点不会占用更多的系统资源。
 
 > **注意：**
-> 
+>
 > 通常我们所说的 DDL 对于用户业务的影响都是由于 Reorg DDL 语句任务的执行造成的。因此优化 DDL 语句对于用户业务的影响也主要集中在对于 Reorg DDL 任务执行期间的设计，降低它对于用户业务的影响；
 
 ## TiDB DDL 模块相关概念介绍
@@ -69,9 +69,10 @@ TiDB 是一种分布式数据库系统，同时 TiDB 用户对于 TiDB 提供在
 
 对于用户来说，新建的索引在 absent 到 write Reorg 状态该索引都不可用，直到进入 public 阶段。
 
-### Online DDL 异步变更流程（TiDB v6.2 之前）
+<SimpleTab>
+<div label="Online DDL 异步变更流程（TiDB v6.2 之前）">
 
-本章节介绍 TiDB SQL 层中处理异步 Schema 变更的流程。 下面将介绍每个模块以及基本的变更流程。
+本节介绍 v6.2 前 TiDB SQL 层中处理异步 Schema 变更的流程。以下为每个模块以及基本的变更流程。
 
 1. MySQL Client 发送给 TiDB server 一个 DDL 操作请求。
 2. 某个 TiDB server 收到请求（MySQL Protocol 层收到请求进行解析优化），然后到达 TiDB SQL 层进行执行。这步骤主要是在 TiDB SQL 层接到请求后，会起个 start job 的模块根据请求将其封装成特定的 DDL job，然后将此 job 按语句类型分类，分别存储到 KV 层的对应 DDL job 队列，并通知自身对应 worker 有 job 需要处理。
@@ -84,7 +85,8 @@ TiDB 是一种分布式数据库系统，同时 TiDB 用户对于 TiDB 提供在
 旧框架的限制：
 在旧的框架中，只有 general job queue 和 add index job queue 两个队列，分别处理 general DDL 和 reorg DDL。另一方面，Owner 对这些 DDL job 的处理总是以先入先出的方式。这些限制可能会导致一些“非预期”的 DDL 阻塞行为。具体可以参考常见问题 7.6。
 
-## 并发 DDL 新框架(TiDB 6.2 发布）
+</div>
+<div label="并发 DDL 框架（TiDB v6.2 及以上）">
 
 在 TiDB 6.2 之前，owner 每次只能执行一个同种类型（general 或 reorg）的 DDL 任务，这个约束对于 DDL 任务执行来讲比较严格，同时对于用户的使用体验也不好。标准数据库 DDL 任务之间如果没有相关依赖，其实是可以并行执行的，例如： 用户 A 对 T1 表 增加一个索引，同时用户 B 对于 T2 表 删除一个列。这两条 DDL 语句即可并行执行。
 
@@ -100,154 +102,54 @@ TiDB 是一种分布式数据库系统，同时 TiDB 用户对于 TiDB 提供在
 
 在实现新并发 DDL 框架之后，TiDB 对于数据库 DDL 语句的执行能力得到了加强，更加符合数据库用户使用商用数据库的习惯。
 
-# 最佳实践
+</div>
+</SimpleTab>
 
-# 执行 Reorg DDL （加索引/列类型变更）时，调整合适参数以平衡 DDL 执行速度与对业务负载的影响
+## 最佳实践
 
-- tidb_ddl_reorg_worker_cnt 该参数用来设置 DDL reorg worker 的数量，控制回填的并发度。
-- 作用域: GLOBAL，默认值 4（3.0.3 版本起）。
-- tidb_ddl_reorg_batch_size 控制回填的数据量。这个变量用来设置 DDL 操作 re-organize 阶段的 batch size。比如 ADD INDEX 操作，需要回填索引数据，通过并发 tidb_ddl_reorg_worker_cnt 个 worker 一起回填数据，每个 worker 以 batch 为单位进行回填。如果 ADD INDEX 时有较多 Update 操作或者 Replace 等更新操作，batch size 越大，事务冲突的概率也会越大，此时建议调小 batch size 的值，最小值是 32。在没有事务冲突的情况下，batch size 可设为较大值，最大值是 10240，这样回填数据的速度更快，但是 TiKV 的写入压力也会变大。
-- 作用域: GLOBAL，默认值 256（3.0.3 版本起）。
-  推荐值：
-  通过我们实际测试经验，通常：
-- 在无其他负载情况下，想让 ADD INDEX 尽快完成，可以将 tidb_ddl_reorg_worker_cnt 和 tidb_ddl_reorg_batch_size 适当调大，比如 20，2048。 
-- 在有其他负载情况下，想让 ADD INDEX 尽量不影响其他业务，可以将 tidb_ddl_reorg_worker_cnt 和 tidb_ddl_reorg_batch_size 适当调小，比如 4, 256。
+### 通过系统变量来平衡 Reorg DDL 的执行速度与对业务负载的影响
 
-> **Note:**
+执行 Reorg DDL（包括添加索引或列类型变更）时，适当调整以下系统变量以平衡 DDL 执行速度与对业务负载的影响：
+
+- [`tidb_ddl_reorg_worker_cnt`](/system-variables.md#tidb_ddl_reorg_worker_cnt)：用来设置这个变量用来设置 DDL 操作 reorg worker 的数量，控制回填的并发度。
+
+- [`tidb_ddl_reorg_batch_size`](/system-variables.md#tidb_ddl_reorg_batch_size)：这个变量用来设置 DDL 操作 `re-organize` 阶段的 batch size，以控制回填的数据量。
+
+    推荐值：
+
+    - 在无其他负载情况下，想让 `ADD INDEX` 尽快完成，可以将 `tidb_ddl_reorg_worker_cnt` 和 `tidb_ddl_reorg_batch_size` 的值适当调大，例如将两个变量值分别调为 `20` 和 `2048`。
+    - 在有其他负载情况下，想让 `ADD INDEX` 尽量不影响其他业务，可以将 `tidb_ddl_reorg_worker_cnt` 和 `tidb_ddl_reorg_batch_size` 适当调小，例如将两个变量值分别调为 `4` 和·`256`。
+
+> **建议：**
 >
-> 2 个参数均可以在 DDL 任务执行过程中动态调整，并且在下一个 batch 生效。
-> 注意事项：
-> 
-> - 请根据 DDL 操作的类型，并结合业务负载压力，选择合适的时间点执行，如 ADD INDEX 操作建议在业务负载比较低的情况运行。
-> - 由于添加索引时间跨度较长，发送相关的指令后，会在后台执行，TiDB Server 挂掉不会影响继续执行。
+> - 以上两个变量均可以在 DDL 任务执行过程中动态调整，并且在下一个 batch 生效。
+> - 请根据 DDL 操作的类型，并结合业务负载压力，选择合适的时间点执行，例如建议在业务负载比较低的情况运行 `ADD INDEX` 操作。
+> - 由于添加索引的时间跨度较长，发送相关的指令后，TiDB 会在后台执行任务，TiDB Server 挂掉不会影响继续执行。
 
-## 并发发送 DDL 请求实现快速建大量表
+### 并发发送 DDL 请求实现快速建大量表
 
 一个建表的操作大概耗时 50ms左右。受框架的限制，其耗时可能更长。为了更快地建表，推荐通过并非发送多个 DDL 请求以达到最快速度。如果是串行地发送请求，并且没有发给 Owner 节点，则建表速度会很慢。
 
-## 在一条 ALTER 语句中进行多次变更
+### 在一条 ALTER 语句中进行多次变更
 
 TiDB 在 v6.2.0 版本后支持在一条 ALTER 语句中修改一个表的多个模式对象（如列、索引），同时保证整个语句的原子性。推荐在一条 ALTER 语句中进行多次变更，后续版本中 TiDB 会进行更多优化，例如建多个索引只需要读取一次表数据。
 
-# DDL 相关的命令介绍
+## DDL 相关的命令介绍
 
-## ADMIN SHOW DDL
+- `ADMIN SHOW DDL`：用于查看 TiDB DDL 的状态，包括当前 schema 版本号、owner 的 DDL ID 和地址、正在执行的 DDL 任务和 SQL、当前 TiDB 实例的 DDL ID。详情参阅 [`ADMIN SHOW DDL`](/sql-statements/sql-statement-admin-show-ddl.md#admin-show-ddl)。
 
-用于查看 TiDB DDL 的状态，包括当前 schema 版本号、owner 的 DDL ID 和地址、正在执行的 DDL 任务和 SQL、当前 TiDB 实例的 DDL ID。
+- `ADMIN SHOW DDL JOBS`：查看集群环境中的 DDL 任务运行中详细的状态。详情参阅 [`ADMIN SHOW DDL JOBS`](/sql-statements/sql-statement-admin-show-ddl.md#admin-show-ddl-jobs)。
 
-## ADMIN SHOW DDL JOBS [n]
+- `ADMIN SHOW DDL JOB QUERIES job_id [, job_id]`：用于查看 job_id 对应的 DDL 任务的原始 SQL 语句。详情参阅 [`ADMIN SHOW DDL JOB QUERIES`](/sql-statements/sql-statement-admin-show-ddl.md#admin-show-ddl-job-queries)。
 
-查看集群环境中的 DDL 任务运行中详细的状态。
+- `ADMIN CANCEL DDL JOBS job_id, [, job_id]`：用于取消已经提交，但未执行完成的 DDL 任务。取消完成后，执行 DDL 任务的 SQL 语句会返回 ERROR 8214 (HY000): Cancelled DDL job 的错误。
 
-- JOB_ID：每个 DDL 操作对应一个 DDL 任务，JOB_ID 全局唯一。
-- DB_NAME：执行 DDL 操作的数据库的名称。
-- TABLE_NAME：执行 DDL 操作的表的名称。
-- JOB_TYPE：DDL 操作的类型。
-- SCHEMA_STATE：DDL 操作的 schema 对象的当前状态。如果 JOB_TYPE 是 ADD INDEX，则为索引的状态；如果是 add column，则为列的状态，如果是 create table，则为表的状态。常见的状态有以下几种：
-    - none：表示不存在。一般 drop 操作或者 create 操作失败回滚后，会变为 none 状态。
-    - delete only、write only、delete reorganization、write reorganization：这四种状态是中间状态，具体含义请参考 “TiDB Online DDL 变更详解” 一节，在此不再赘述。由于中间状态转换很快，一般操作中看不到这几种状态，只有执行 ADD INDEX 操作时能看到处于 write reorganization 状态，表示正在添加索引数据。
-    - public：表示存在且对用户可用。一般 create table 和 ADD INDEX/column 等操作完成后，会变为 public 状态，表示新建的 table/column/index 可以正常读写了。
-- SCHEMA_ID：执行 DDL 操作的数据库的 ID。
-- TABLE_ID：执行 DDL 操作的表的 ID。
-- ROW_COUNT：执行 ADD INDEX 操作时，当前已经添加完成的数据行数。
-- START_TIME：DDL 操作的开始时间。
-- STATE：DDL 操作的状态。常见的状态有以下几种：
-    - queueing：表示该操作任务已经进入 DDL 任务队列中，但尚未执行，因为还在排队等待前面的 DDL 任务完成。另一种原因可能是执行 drop 操作后，会变为 none 状态，但是很快会更新为 synced 状态，表示所有 TiDB 实例都已经同步到该状态。
-    - running：表示该操作正在执行。
-    - synced：表示该操作已经执行成功，且所有 TiDB 实例都已经同步该状态。
-    - rollback done：表示该操作执行失败，回滚完成。
-    - rollingback：表示该操作执行失败，正在回滚。
-    - cancelling：表示正在取消该操作。这个状态只有在用 ADMIN CANCEL DDL JOBS 命令取消 DDL 任务时才会出现。
-
-## ADMIN SHOW DDL JOB QUERIES job_id [, job_id]
-
-用于查看 job_id 对应的 DDL 任务的原始 SQL 语句。
-
-## ADMIN CANCEL DDL JOBS job_id, [, job_id]
-
-用于取消已经提交，但未执行完成的 DDL 任务。取消完成后，执行 DDL 任务的 SQL 语句会返回 ERROR 8214 (HY000): Cancelled DDL job 的错误。
-
-取消一个已经执行完成的 DDL 任务会在 RESULT 列看到 DDL Job:90 not found 的错误，表示该任务已从 DDL 等待队列中被移除。
+    取消一个已经执行完成的 DDL 任务会在 RESULT 列看到 DDL Job:90 not found 的错误，表示该任务已从 DDL 等待队列中被移除。
 
 ## 检查读写性能
 
 在添加索引时，回填数据阶段会对集群造成一定的读写压力，ADD INDEX 的命令发送成功后，并且在 write reorg 阶段，建议检查 Grafana 中 TiDB 和 TiKV 读写相关的性能指标，以及业务响应时间，来确定 ADD INDEX 操作对集群是否造成影响。
 
-# 常见问题
+## 常见问题
 
-## 各类 DDL 操作预估耗时
-
-在 DDL 操作没有阻塞，各个 TiDB Server 能够正常更新 Schema 版本的情况下，以及 DDL Owner 节点正常运行的情况下，各类 DDL 操作的预估耗时如下：
-
-| 操作类型                                                                                                                                                                    | 预估耗时                   |
-|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:-----------------------|
-| Reorg DDL、add index/modify column(with reorg data)                                                                                                                      | 取决于数据量、系统负载、 DDL 参数的设置 |
-| General DDL（除了 reorg DDL 的其它 DDL），比如：create database / table、drop database / table、truncate table、alter table add / drop / modify column(without reorg data)、drop index | 1秒左右                   |
-
-> **Note:**
->
-> 以上为各类操作的预估耗时，请以实际操作耗时为准。
-
-## 执行 DDL 会慢的可能原因
-
-- 在一个链接上，DDL 语句之前有非 autocommit 的 DML 语句，且此 DML 语句提交操作比较慢会导致出现 DDL 语句执行慢的现象。原因是执行 DDL 语句前，会将之前没有提交的 DML 先提交。
-- 多个 DDL 语句一起执行的时候，后面的几个 DDL 语句可能会比较慢，因为可能需要排队等待。排队场景包括：
-    - 同一类型 DDL 语句需要排队（比如 create table 和 create database 都是 general DDL，两个操作同时执行时，需要排队）。在 v6.2 后，支持并行 DDL 语句，但也有并发度问题，会有一定的排队情况。
-    - 同一个表的 DDL 存在依赖关系，后面的 DDL 需要等待前面的 DDL 完成。
-- 在正常集群启动后，第一个 DDL 操作的执行时间可能会比较久，可能是 DDL 在做 owner 的选举。
-- 由于停 TiDB 时不能与 PD 正常通信（包括停电情况）或者用 kill -9 指令停 TiDB 导致 TiDB 没有及时从 PD 清理注册数据。
-- 当集群中某个 TiDB 与 PD 或者 TiKV 之间发生通信问题，即 TiDB 不能及时获取最新版本信息。
-
-### 触发 Information schema is changed 错误的原因
-
-TiDB 在执行 SQL 语句时，会使用当时的 schema 来处理该 SQL 语句，而且 TiDB 支持在线异步变更 DDL。那么，在执行 DML 的时候可能有 DDL 语句也在执行，而你需要确保每个 SQL 语句在同一个 schema 上执行。所以当执行 DML 时，遇到正在执行中的 DDL 操作就可能会报 Information schema is changed 的错误。为了避免太多的 DML 语句报错，已做了一些优化。
-现在会报此错的可能原因如下（后两个报错原因与表无关）：
-
-- 执行的 DML 语句中涉及的表和集群中正在执行的 DDL 的表有相同的，那么这个 DML 语句就会报此错。
-- 这个 DML 执行时间很久，而这段时间内执行了很多 DDL 语句，导致中间 schema 版本变更次数超过 1024（v3.0.5 版本之前此值为定值 100。v3.0.5 及之后版本默认值为 1024，可以通过 tidb_max_delta_schema_count 变量修改）。
-- 接受 DML 请求的 TiDB 长时间不能加载到 schema information（TiDB 与 PD 或 TiKV 之间的网络连接故障等会导致此问题），而这段时间内执行了很多 DDL 语句，导致中间 schema 版本变更次数超过 100。
-
-> **Note:**
->
-> - 目前 TiDB 未缓存所有的 schema 版本信息。
-> - - 对于每个 DDL 操作，schema 版本变更的数量与对应 schema state 变更的次数一致。
-> - - 不同的 DDL 操作版本变更次数不一样。例如，create table 操作会有 1 次 schema 版本变更；add column 操作有 4 次 schema 版本变更。
-
-### 触发 Information schema is out of date 错误的原因
-
-当执行 DML 时，TiDB 超过一个 DDL lease 时间（默认 45s）没能加载到最新的 schema 就可能会报 Information schema is out of date 的错误。遇到此错的可能原因如下：
-
-- 执行此 DML 的 TiDB 被 kill 后准备退出，且此 DML 对应的事务执行时间超过一个 DDL lease，在事务提交时会报这个错误。
-- TiDB 在执行此 DML 时，有一段时间内连不上 PD 或者 TiKV，导致 TiDB 超过一个 DDL lease 时间没有 load schema，或者 TiDB 断开了与 PD 之间带 keep alive 设置的连接。
-
-### 高并发情况下执行 DDL 时报错的原因
-
-高并发情况下执行 DDL（比如批量建表）时，极少部分 DDL 可能会由于并发执行时 key 冲突而执行失败。
-并发执行 DDL 时，建议将 DDL 数量保持在 20 以下，否则你需要在应用端重试失败的 DDL 语句。
-
-### DDL 执行被阻塞的原因
-
-在 6.2 版本之前，DDL 按照类型分配到两个先入先出的队列中，即 reorg DDL 进入 reorg 队列中，general DDL 进入 general 队列中。由于先入先出以及同一张表上的 DDL 需要串行执行这一原则，多个DDL 在执行过程中可能会出现阻塞的问题。
-
-例如以下情况：
-
-DDL1: CREATE INDEX idx on t(a int);
-
-DDL2: ALTER TABLE t ADD COLUMN b int;
-
-DDL3:CREATE TABLE t1(a int);
-
-由于队列先入先出的限制，DDL3 需要等待 DDL2 执行。同时又因为同一张表上的 DDL 需要串行执行，DDL2 需要等待 DDL1 执行。因此，DDL3 需要等待 DDL1 先执行完，即使它们操作在不同的表上。
-
-6.2 版本及之后的版本中，TiDB DDL 处理采用了新的框架。在新的框架中，不再有同一个队列先进先出的问题，而是从所有的 DDL 任务中选出可以执行的 DDL 来执行。并且 reorg worker 的数量进行了扩充，大概为节点 CPU / 4，这使得新框架中可以同时为多张表同时进行建索引。
-
-不管是新的集群还是升级来的集群，在 6.2 版本中都会自动使用新框架，用户无需进行调整。
-
-### 定位 DDL 卡住问题
-
-1. 可以先排除正常会慢的可能原因。
-2. 找出 DDL owner 节点，具体方法有如下两种：
-3. 通过 `curl http://{TiDBIP}:10080/info/all` 获取当前集群的 owner；
-4. 通过监控 DDL - DDL META OPM 查看某个时间段的 owner
-5. 如果 owner 不存在，尝试手动触发 owner 选举。`curl -X POST http://{TiDBIP}:10080/ddl/owner/resign`
-6. 如果 owner 存在，导出 goroutine 堆栈并检查可能卡住的地方。
+DDL 语句执行相关的常见问题，参考 [SQL FAQ - DDL 执行](/faq/sql-faq.md#ddl-执行)。å

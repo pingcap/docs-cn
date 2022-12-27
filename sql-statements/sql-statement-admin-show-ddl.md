@@ -24,7 +24,7 @@ WhereClauseOptional ::=
 
 ### `ADMIN SHOW DDL`
 
-可以通过 `ADMIN SHOW DDL` 语句查看当前正在运行的 DDL 作业：
+可以通过 `ADMIN SHOW DDL` 语句查看当前正在运行的 DDL 作业状态，包括当前 schema 版本号、owner 的 DDL ID 和地址、正在执行的 DDL 任务和 SQL、当前 TiDB 实例的 DDL ID。
 
 {{< copyable "sql" >}}
 
@@ -44,16 +44,35 @@ ADMIN SHOW DDL;
 
 ### `ADMIN SHOW DDL JOBS`
 
-`ADMIN SHOW DDL JOBS` 语句用于查看当前 DDL 作业队列中的所有结果（包括正在运行以及等待运行的任务）以及已执行完成的 DDL 作业队列中的最近十条结果。
+`ADMIN SHOW DDL JOBS` 语句用于查看当前 DDL 作业队列中的所有结果（包括正在运行以及等待运行的任务）以及已执行完成的 DDL 作业队列中的最近十条结果。该语句的返回结果字段描述如下：
 
-{{< copyable "sql" >}}
+- JOB_ID：每个 DDL 操作对应一个 DDL 任务，JOB_ID 全局唯一。
+- DB_NAME：执行 DDL 操作的数据库的名称。
+- TABLE_NAME：执行 DDL 操作的表的名称。
+- JOB_TYPE：DDL 操作的类型。
+- SCHEMA_STATE：DDL 操作的 schema 对象的当前状态。如果 JOB_TYPE 是 ADD INDEX，则为索引的状态；如果是 add column，则为列的状态，如果是 create table，则为表的状态。常见的状态有以下几种：
+    - none：表示不存在。一般 drop 操作或者 create 操作失败回滚后，会变为 none 状态。
+    - delete only、write only、delete reorganization、write reorganization：这四种状态是中间状态，具体含义请参考 “TiDB Online DDL 变更详解” 一节，在此不再赘述。由于中间状态转换很快，一般操作中看不到这几种状态，只有执行 ADD INDEX 操作时能看到处于 write reorganization 状态，表示正在添加索引数据。
+    - public：表示存在且对用户可用。一般 create table 和 ADD INDEX/column 等操作完成后，会变为 public 状态，表示新建的 table/column/index 可以正常读写了。
+- SCHEMA_ID：执行 DDL 操作的数据库的 ID。
+- TABLE_ID：执行 DDL 操作的表的 ID。
+- ROW_COUNT：执行 ADD INDEX 操作时，当前已经添加完成的数据行数。
+- START_TIME：DDL 操作的开始时间。
+- STATE：DDL 操作的状态。常见的状态有以下几种：
+    - queueing：表示该操作任务已经进入 DDL 任务队列中，但尚未执行，因为还在排队等待前面的 DDL 任务完成。另一种原因可能是执行 drop 操作后，会变为 none 状态，但是很快会更新为 synced 状态，表示所有 TiDB 实例都已经同步到该状态。
+    - running：表示该操作正在执行。
+    - synced：表示该操作已经执行成功，且所有 TiDB 实例都已经同步该状态。
+    - rollback done：表示该操作执行失败，回滚完成。
+    - rollingback：表示该操作执行失败，正在回滚。
+    - cancelling：表示正在取消该操作。这个状态只有在用 ADMIN CANCEL DDL JOBS 命令取消 DDL 任务时才会出现。
+
+示例如下：
 
 ```sql
 ADMIN SHOW DDL JOBS;
 ```
 
 ```sql
-ADMIN SHOW DDL JOBS;
 +--------+---------+--------------------+--------------+----------------------+-----------+----------+-----------+-----------------------------------------------------------------+---------+
 | JOB_ID | DB_NAME | TABLE_NAME         | JOB_TYPE     | SCHEMA_STATE         | SCHEMA_ID | TABLE_ID | ROW_COUNT | CREATE_TIME         | START_TIME          | END_TIME            | STATE   |
 +--------+---------+--------------------+--------------+----------------------+-----------+----------+-----------+---------------------+-------------------------------------------+---------+

@@ -172,7 +172,32 @@ TiDB 支持改变 [per-session](/system-variables.md#tidb_force_priority)、[全
 
 在 TiDB 中，你可以用多种方法控制查询优化器的默认行为，包括使用 [Optimizer Hints](/optimizer-hints.md) 和 [SQL 执行计划管理 (SPM)](/sql-plan-management.md)。基本用法同 MySQL 中的一致，还包含若干 TiDB 特有的用法，示例如下：`select column_name from table_name use index（index_name）where where_condition;`
 
-## 触发 Information schema is changed 错误的原因？
+## DDL 执行
+
+### 各类 DDL 操作预估耗时
+
+在 DDL 操作没有阻塞，各个 TiDB Server 能够正常更新 Schema 版本的情况下，以及 DDL Owner 节点正常运行的情况下，各类 DDL 操作的预估耗时如下：
+
+| 操作类型                                                                                                                                                                    | 预估耗时                   |
+|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:-----------------------|
+| Reorg DDL、add index/modify column(with reorg data)                                                                                                                      | 取决于数据量、系统负载、 DDL 参数的设置 |
+| General DDL（除了 reorg DDL 的其它 DDL），比如：create database / table、drop database / table、truncate table、alter table add / drop / modify column(without reorg data)、drop index | 1秒左右                   |
+
+> **Note:**
+>
+> 以上为各类操作的预估耗时，请以实际操作耗时为准。
+
+## 执行 DDL 会慢的可能原因
+
+- 在一个链接上，DDL 语句之前有非 autocommit 的 DML 语句，且此 DML 语句提交操作比较慢会导致出现 DDL 语句执行慢的现象。原因是执行 DDL 语句前，会将之前没有提交的 DML 先提交。
+- 多个 DDL 语句一起执行的时候，后面的几个 DDL 语句可能会比较慢，因为可能需要排队等待。排队场景包括：
+    - 同一类型 DDL 语句需要排队（比如 create table 和 create database 都是 general DDL，两个操作同时执行时，需要排队）。在 v6.2 后，支持并行 DDL 语句，但也有并发度问题，会有一定的排队情况。
+    - 同一个表的 DDL 存在依赖关系，后面的 DDL 需要等待前面的 DDL 完成。
+- 在正常集群启动后，第一个 DDL 操作的执行时间可能会比较久，可能是 DDL 在做 owner 的选举。
+- 由于停 TiDB 时不能与 PD 正常通信（包括停电情况）或者用 kill -9 指令停 TiDB 导致 TiDB 没有及时从 PD 清理注册数据。
+- 当集群中某个 TiDB 与 PD 或者 TiKV 之间发生通信问题，即 TiDB 不能及时获取最新版本信息。
+
+### 触发 Information schema is changed 错误的原因？
 
 TiDB 在执行 SQL 语句时，会使用当时的 `schema` 来处理该 SQL 语句，而且 TiDB 支持在线异步变更 DDL。那么，在执行 DML 的时候可能有 DDL 语句也在执行，而你需要确保每个 SQL 语句在同一个 `schema` 上执行。所以当执行 DML 时，遇到正在执行中的 DDL 操作就可能会报 `Information schema is changed` 的错误。为了避免太多的 DML 语句报错，已做了一些优化。
 
@@ -189,18 +214,45 @@ TiDB 在执行 SQL 语句时，会使用当时的 `schema` 来处理该 SQL 语�
 > + 对于每个 DDL 操作，`schema` 版本变更的数量与对应 `schema state` 变更的次数一致。
 > + 不同的 DDL 操作版本变更次数不一样。例如，`create table` 操作会有 1 次 `schema` 版本变更；`add column` 操作有 4 次 `schema` 版本变更。
 
-## 触发 Information schema is out of date 错误的原因？
+### 触发 Information schema is out of date 错误的原因？
 
 当执行 DML 时，TiDB 超过一个 DDL lease 时间（默认 45s）没能加载到最新的 schema 就可能会报 `Information schema is out of date` 的错误。遇到此错的可能原因如下：
 
 - 执行此 DML 的 TiDB 被 kill 后准备退出，且此 DML 对应的事务执行时间超过一个 DDL lease，在事务提交时会报这个错误。
 - TiDB 在执行此 DML 时，有一段时间内连不上 PD 或者 TiKV，导致 TiDB 超过一个 DDL lease 时间没有 load schema，或者导致 TiDB 断开与 PD 之间带 keep alive 设置的连接。
 
-## 高并发情况下执行 DDL 时报错的原因？
+### 高并发情况下执行 DDL 时报错的原因？
 
 高并发情况下执行 DDL（比如批量建表）时，极少部分 DDL 可能会由于并发执行时 key 冲突而执行失败。
 
 并发执行 DDL 时，建议将 DDL 数量保持在 20 以下，否则你需要在应用端重试失败的 DDL 语句。
+
+### DDL 执行被阻塞的原因
+
+在 6.2 版本之前，DDL 按照类型分配到两个先入先出的队列中，即 reorg DDL 进入 reorg 队列中，general DDL 进入 general 队列中。由于先入先出以及同一张表上的 DDL 需要串行执行这一原则，多个DDL 在执行过程中可能会出现阻塞的问题。
+
+例如以下情况：
+
+DDL1: CREATE INDEX idx on t(a int);
+
+DDL2: ALTER TABLE t ADD COLUMN b int;
+
+DDL3:CREATE TABLE t1(a int);
+
+由于队列先入先出的限制，DDL3 需要等待 DDL2 执行。同时又因为同一张表上的 DDL 需要串行执行，DDL2 需要等待 DDL1 执行。因此，DDL3 需要等待 DDL1 先执行完，即使它们操作在不同的表上。
+
+6.2 版本及之后的版本中，TiDB DDL 处理采用了新的框架。在新的框架中，不再有同一个队列先进先出的问题，而是从所有的 DDL 任务中选出可以执行的 DDL 来执行。并且 reorg worker 的数量进行了扩充，大概为节点 CPU / 4，这使得新框架中可以同时为多张表同时进行建索引。
+
+不管是新的集群还是升级来的集群，在 6.2 版本中都会自动使用新框架，用户无需进行调整。
+
+### 定位 DDL 卡住问题
+
+1. 可以先排除正常会慢的可能原因。
+2. 找出 DDL owner 节点，具体方法有如下两种：
+3. 通过 `curl http://{TiDBIP}:10080/info/all` 获取当前集群的 owner；
+4. 通过监控 DDL - DDL META OPM 查看某个时间段的 owner
+5. 如果 owner 不存在，尝试手动触发 owner 选举。`curl -X POST http://{TiDBIP}:10080/ddl/owner/resign`
+6. 如果 owner 存在，导出 goroutine 堆栈并检查可能卡住的地方。
 
 ## SQL 优化
 
