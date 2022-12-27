@@ -31,7 +31,7 @@ include-commit-ts = true
 
 ## 数据保存的事务性约束
 
-- 单个 CSV 文件中后一行数据的 commit-ts 大于前一行数据的 commit-ts。
+- 单个 CSV 文件中后一行数据的 commit-ts 大于等于前一行数据的 commit-ts。
 - 单表的同一事务不会跨不同的 CSV 文件来存储。
 - 相同事务涉及的不同表会跨不同的 CSV 文件来存储。
 
