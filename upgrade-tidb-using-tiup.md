@@ -130,6 +130,7 @@ tiup update cluster
 
 > **注意：**
 >
+<<<<<<< HEAD
 > 升级到 6.3.0 版本前，请确认已在 4.0 修改的参数在 6.3.0 版本中是兼容的，可参考 [TiKV 配置文件描述](/tikv-configuration-file.md)。
 >
 > 以下 TiKV 参数在 TiDB v5.0 已废弃。如果在原集群配置过以下参数，需要通过 `edit-config` 编辑模式删除这些参数：
@@ -137,6 +138,9 @@ tiup update cluster
 > - pessimistic-txn.enabled
 > - server.request-batch-enable-cross-command
 > - server.request-batch-wait-duration
+=======
+> 升级到 6.4.0 版本前，请确认已在 4.0 修改的参数在 6.4.0 版本中是兼容的，可参考 [TiKV 配置文件描述](/tikv-configuration-file.md)。
+>>>>>>> 01ad42581 (Delete 3 tidb configs that have been deleted in code (#12401))
 
 ### 2.3 检查当前集群的健康状况
 
