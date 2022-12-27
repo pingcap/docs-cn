@@ -269,7 +269,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
     为确保数据安全，用户会对系统使用的证书设置相应的过期策略。经过固定的时间后需要使用新的证书工作。TiCDC v6.5.0 支持在线更新 TLS 证书，在不影响同步的任务的前提下，TiCDC 会自动检测和更新证书，无需用户手动操作，满足用户对证书更新的需求。 
 
-* TiCDC 性能提升 **tw@shichun-0415
+* TiCDC 性能提升 [#7540](https://github.com/pingcap/tiflow/issues/7540) [#7478](https://github.com/pingcap/tiflow/issues/7478) [#7532](https://github.com/pingcap/tiflow/issues/7532) @[sdojjy](https://github.com/sdojjy) [@3AceShowHand](https://github.com/3AceShowHand) **tw@shichun-0415
 
     在 TiDB 场景测试验证中，TiCDC 的性能得到了比较大提升。
 
@@ -283,7 +283,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
     需要注意的是，如果你没有在 BR 退出后一个小时内完成故障恢复，那么还未备份的快照数据可能会被 GC 机制回收，而造成备份失败。更多信息，请参考[用户文档](/br/br-checkpoint.md)。
 
-* PITR 性能大幅提升 **tw@shichun-0415
+* PITR 性能大幅提升 [@joccau](https://github.com/joccau) **tw@shichun-0415
 
   PITR 恢复的日志恢复阶段，单台 TiKV 的恢复速度可以达到 9 MiB/s，提升了 50%。恢复速度可扩展，有效地降低容灾场景的 RTO 指标；容灾场景的 RPO 优化到 5 min，在常规的集群运维，如滚动升级，单 TiKV 故障等场景下，可以达到 RPO = 5 min 的目标。
 
@@ -349,7 +349,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 | TiCDC | [`sink.enable-partition-separator`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-配置文件说明) | 新增 | 是否使用 partition 作为分隔字符串，默认值为 false，即一张表中各个 partition 的数据不会分不同的目录来存储。 |
 | TiCDC | [`sink.csv.delimiter`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-配置文件说明) | 新增 | 字段之间的分隔符。必须为 ASCII 字符，默认值为 `,`。 |
 | TiCDC | [`sink.csv.quote`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-配置文件说明) | 新增 | 用于包裹字段的引号字符。空值代表不使用引号字符。默认值为 `"`。 |
-| TiCDC | [`sink.csv.null`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-配置文件说明) | 新增 | 用于确定 CSV 列为 null 时将以什么字符来表示。默认值为 `\N` |
+| TiCDC | [`sink.csv.null`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-配置文件说明) | 新增 | 用于确定 CSV 列为 null 时将以什么字符来表示。默认值为 `\N`。 |
 | TiCDC | [`sink.csv.include-commit-ts`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-配置文件说明) | 新增| 是否在 CSV 行中包含 commit-ts。默认值为 false。 |
 
 ### 其他
