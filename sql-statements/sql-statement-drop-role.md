@@ -28,8 +28,6 @@ mysql -h 127.0.0.1 -P 4000 -u root
 创建新角色 `analyticsteam` 和新用户 `jennifer`：
 
 ```sql
-$ mysql -uroot
-
 CREATE ROLE analyticsteam;
 Query OK, 0 rows affected (0.02 sec)
 
