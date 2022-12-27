@@ -88,7 +88,7 @@ This section introduces parameters related to `Prepare`.
 
 To verify that this setting already takes effect, you can do:
 
-- Go to TiDB monitoring dashboard and view the request command type through **Query Summary** > **QPS By Instance**.
+- Go to TiDB monitoring dashboard and view the request command type through **Query Summary** > **CPS By Instance**.
 - If `COM_QUERY` is replaced by `COM_STMT_EXECUTE` or `COM_STMT_PREPARE` in the request, it means this setting already takes effect.
 
 ##### `cachePrepStmts`
@@ -97,10 +97,8 @@ Although `useServerPrepStmts=true` allows the server to execute Prepared Stateme
 
 To verify that this setting already takes effect, you can do:
 
-- Go to TiDB monitoring dashboard and view the request command type through **Query Summary** > **QPS By Instance**.
+- Go to TiDB monitoring dashboard and view the request command type through **Query Summary** > **CPS By Instance**.
 - If the number of `COM_STMT_EXECUTE` in the request is far more than the number of `COM_STMT_PREPARE`, it means this setting already takes effect.
-
-![QPS By Instance](/media/java-practice-2.png)
 
 In addition, configuring `useConfigs=maxPerformance` will configure multiple parameters at the same time, including `cachePrepStmts=true`.
 
@@ -112,7 +110,7 @@ The Prepared Statements that exceed this maximum length will not be cached, so t
 
 You need to check whether this setting is too small if you:
 
-- Go to TiDB monitoring dashboard and view the request command type through **Query Summary** > **QPS By Instance**.
+- Go to TiDB monitoring dashboard and view the request command type through **Query Summary** > **CPS By Instance**.
 - And find that `cachePrepStmts=true` has been configured, but `COM_STMT_PREPARE` is still mostly equal to `COM_STMT_EXECUTE` and `COM_STMT_CLOSE` exists.
 
 ##### `prepStmtCacheSize`
@@ -121,7 +119,7 @@ You need to check whether this setting is too small if you:
 
 To verify that this setting already takes effect, you can do:
 
-- Go to TiDB monitoring dashboard and view the request command type through **Query Summary** > **QPS By Instance**.
+- Go to TiDB monitoring dashboard and view the request command type through **Query Summary** > **CPS By Instance**.
 - If the number of `COM_STMT_EXECUTE` in the request is far more than the number of `COM_STMT_PREPARE`, it means this setting already takes effect.
 
 #### Batch-related parameters
