@@ -168,7 +168,7 @@ aliases: ['/docs-cn/dev/basic-features/']
 | [数据迁移工具](/migration-overview.md)                                  |   Y   |   Y   |   Y   |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |
 | [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md)                     |   Y   |   Y   |   Y   |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |
 | [Change data capture (CDC)](/ticdc/ticdc-overview.md)                   |   Y   |   Y   |   Y   |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |
-| [TiCDC 保存数据到存储服务 (S3/NFS/Azure Blob Storage)](/ticdc/ticdc-overview.md)  |   实验特性   |   N   |   N   |   N    |   N    |   N    |   N    |   N    |   N    |   N    |   N    |   N    |
+| [TiCDC 支持保存数据到存储服务 (S3/NFS/Azure Blob Storage)](/ticdc/ticdc-sink-to-cloud-storage.md)  |   实验特性   |   N   |   N   |   N    |   N    |   N    |   N    |   N    |   N    |   N    |   N    |   N    |
 
 ## 管理，可视化和工具
 
