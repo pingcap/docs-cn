@@ -69,7 +69,7 @@ CPS By Type：按照类型统计所有 TiDB 实例每秒处理的命令数（Com
 
 ### KV Request Time By Source
 
-- kv request time total: 所有 TiDB 实例每秒总的 KV 和 TiFlash 请求时间。
+- kv request total time: 所有 TiDB 实例每秒总的 KV 和 TiFlash 请求处理时间。
 
 - 每种 KV 请求和请求来源组成柱状堆叠图，`external` 标识正常业务的请求，`internal` 标识内部活动的请求（比如 DDL、auto analyze 等请求）。
 
