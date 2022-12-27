@@ -23,10 +23,10 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 - 支持[密码管理](/password-management.md)策略，满足密码合规审计需求。
 - TiDB Lightning 和 Dumpling 支持[导入](tidb-lightning/tidb-lightning-data-source.md)和[导出](/dumpling-overview.md#通过并发提高-dumpling-的导出效率)压缩格式文件。
 - TiDB Data Migration (DM) 的[增量数据校验](/dm/dm-continuous-data-validation.md)特性 GA。
-- TiDB 快照备份支持断点续传，[PITR](/br-pitr-guide.md#进行-pitr) 的恢复性能提升 50%，正常场景下 RPO 降低到 5 min。
-- TiCDC [同步数据到 Kafka](/replicate-data-to-kafka.md) 吞吐提升 x 倍，复制延迟降低到 x 秒。
+- TiDB 快照备份支持断点续传，[PITR](/br-pitr-guide.md#进行-pitr) 的恢复性能提升了 50%，正常场景下 RPO 降低到 5 min。
+- TiCDC [同步数据到 Kafka](/replicate-data-to-kafka.md) 吞吐提升了 x 倍，复制延迟降低到 x 秒。
 - 提供行级别 [Time to live (TTL)](/time-to-live.md) 管理数据生命周期（实验特性）。
-- TiCDC 支持 Amazon S3、Azure Blob Storage、NFS 的[对象存储](ticdc/ticdc-sink-to-cloud-storage.md)（实验特性）。
+- TiCDC 支持 Amazon S3、Azure Blob Storage、NFS 的[对象存储](/ticdc/ticdc-sink-to-cloud-storage.md)（实验特性）。
 
 ## 新功能
 
@@ -259,7 +259,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
     Storage sink 支持格式为 canal-json 和 csv 的 changed log，此外 changed log 从 TiCDC 同步到存储的延迟可以达到 xx。更多信息，请参考[用户文档](/ticdc/ticdc-sink-to-cloud-storage.md)。
 
-* TiCDC 支持在多个 TiDB 集群之间进行双向复制 @[asddongmen](https://github.com/asddongmen) **tw@ran-huang**
+* TiCDC 支持在多个 TiDB 集群之间进行双向复制 [#38587](https://github.com/pingcap/tidb/issues/38587) @[xiongjiwei](https://github.com/xiongjiwei) @[asddongmen](https://github.com/asddongmen) **tw@ran-huang**
 
     TiCDC 支持在多个 TiDB 集群之间进行双向复制。如果业务上需要 TiDB 多活，尤其是异地多活的场景下，可以使用该功能作为 TiDB 多活的解决方案。只要为每个 TiDB 集群到其他 TiDB 集群的 TiCDC 同步任务配置 `bdr-mode = true` 参数，就可以实现多个 TiDB 集群之间的数据相互复制。
 
