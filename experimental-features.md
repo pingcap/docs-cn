@@ -45,11 +45,11 @@ aliases: ['/docs-cn/dev/experimental-features-4.0/','/zh/tidb/dev/experimental-f
 ## 数据迁移
 
 + [使用 WebUI](/dm/dm-webui-guide.md) 管理 DM 迁移任务。（v6.0 实验特性）
-+ [TiCDC 支持保存数据到存储服务 (S3/NFS/Azure Blob Storage)](/ticdc/ticdc-sink-to-cloud-storage.md)。（v6.5.0 实验特性）
 
 ## 数据共享订阅
 
 + [RawKV 跨集群复制](/tikv-configuration-file.md#api-version-从-v610-版本开始引入)（v6.2.0 实验特性）
++ [TiCDC 支持保存数据到存储服务 (S3/NFS/Azure Blob Storage)](/ticdc/ticdc-sink-to-cloud-storage.md)。（v6.5.0 实验特性）
 
 ## 垃圾回收
 
