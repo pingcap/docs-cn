@@ -118,8 +118,7 @@ summary: 给出一个 Django 构建 TiDB 应用程序示例。
 
 ### 第 4 步第 1 部分：TiDB Cloud 更改参数
 
-若你使用 TiDB Cloud Serverless Tier 集群，更改 `example_project/settings.py` 中的 
- `DATABASES` 参数：
+若你使用 TiDB Cloud Serverless Tier 集群，更改 `example_project/settings.py` 中的 `DATABASES` 参数：
 
 ```python
 DATABASES = {
