@@ -163,7 +163,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
     部分视图访问的场景需要用 Hint 对视图内查询的执行计划进行干预，以获得最佳性能。在 v6.5.0 中，TiDB 允许针对视图内的查询块添加全局 Hint，使查询中定义的 Hint 能够在视图内部生效。该特性为包含复杂视图嵌套的 SQL 提供 Hint 的注入手段，增强了执行计划控制能力，进而稳定复杂 SQL 的执行性能。全局 Hint 通过[查询块命名](/optimizer-hints.md#第-1-步使用-qb_name-hint-重命名视图内的查询块)和 [Hint 引用](/optimizer-hints.md#第-2-步添加实际需要的-hint)来开启。
 
-    更多信息，请参考[用户文档](/optimizer-hints.md#全局生效的-Hint)。
+    更多信息，请参考[用户文档](/optimizer-hints.md#全局生效的-hint)。
 
 * 支持将[分区表](/partitioned-table.md)的排序操作下推至 TiKV [#26166](https://github.com/pingcap/tidb/issues/26166) @[winoros](https://github.com/winoros)
 
