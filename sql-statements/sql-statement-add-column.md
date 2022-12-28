@@ -1,7 +1,6 @@
 ---
 title: ADD COLUMN
 summary: TiDB 数据库中 ADD COLUMN 的使用概况。
-aliases: ['/docs-cn/dev/sql-statements/sql-statement-add-column/','/docs-cn/dev/reference/sql/statements/add-column/']
 ---
 
 # ADD COLUMN

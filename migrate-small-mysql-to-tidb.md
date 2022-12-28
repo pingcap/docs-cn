@@ -1,7 +1,6 @@
 ---
 title: 从小数据量 MySQL 迁移数据到 TiDB
 summary: 介绍如何从小数据量 MySQL 迁移数据到 TiDB。
-aliases: ['/zh/tidb/dev/usage-scenario-incremental-migration/']
 ---
 
 # 从小数据量 MySQL 迁移数据到 TiDB

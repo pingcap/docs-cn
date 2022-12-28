@@ -1,6 +1,5 @@
 ---
 title: Statement Summary Tables
-aliases: ['/docs-cn/dev/statement-summary-tables/','/docs-cn/dev/reference/performance/statement-summary/']
 ---
 
 # Statement Summary Tables
