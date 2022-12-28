@@ -49,8 +49,7 @@ Amazon S3 和 Azure Blob Storage 的 URI 参数与 BR 中这两种存储的 URL 
 
 NFS 配置样例如下：
 
-```
-shell
+```shell
 --sink-uri="file:///my-directory/prefix"
 ```
 
