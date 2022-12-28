@@ -18,6 +18,7 @@ TiCDC 不提供消费存储服务的数据的标准实现，以下介绍一个 G
 ## Consumer 设计
 
 下图是 Consumer 的整体消费流程：
+
 ![TiCDC storage consumer overview](/media/ticdc/ticdc-storage-consumer-overview.png)
 
 以下是 Consumer 消费流程中的组件和功能定义，及其功能注释:
