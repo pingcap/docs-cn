@@ -9,11 +9,11 @@ summary: 了解如何设计与实现一个 storage sink 的消费程序。
 
 > **注意：**
 > 
-> 当前 Storage sink 无法处理 `DROP DATABASE` DDL，请你尽量避免执行该语句。如果你需要执行 `DROP DATABASE` DDL，请你在下游 MySQL 手动执行。
+> 当前 Storage sink 无法处理 `DROP DATABASE` DDL，请你尽量避免执行该语句。如果需要执行 `DROP DATABASE` DDL，请在下游 MySQL 手动执行。
 
-TiCDC 不提供消费存储服务的数据的标准实现，以下介绍一个 Golang 版本的消费示例程序，该示例程序会读取存储服务中的数据并写入到下游 MySQL 兼容数据库。你可以参考本文档提供的数据格式和以下例子实现消费端。
+TiCDC 不提供消费存储服务的数据的标准实现。本文介绍一个基于 Golang 的消费示例程序，该示例程序能够读取存储服务中的数据并写入到兼容 MySQL 的下游数据库。你可以参考本文提供的数据格式和以下示例代码实现消费端。
 
-[Golang 例子](https://github.com/pingcap/tiflow/tree/master/cmd/storage-consumer)
+[Golang 示例代码](https://github.com/pingcap/tiflow/tree/master/cmd/storage-consumer)
 
 ## Consumer 设计
 
@@ -21,7 +21,7 @@ TiCDC 不提供消费存储服务的数据的标准实现，以下介绍一个 G
 
 ![TiCDC storage consumer overview](/media/ticdc/ticdc-storage-consumer-overview.png)
 
-以下是 Consumer 消费流程中的组件和功能定义，及其功能注释:
+以下是 Consumer 消费流程中的组件和功能定义，及其功能注释：
 
 ```
 type StorageReader struct {
@@ -114,16 +114,16 @@ func (tc *TableVersionConsumer) ExecuteDML() {}
     │       └── schema.json
 ```
 
-此时需要先解析 `schema.json` 文件中的表结构信息，从中获取 DDL query 语句，分为两种情况处理:
+此时，首先需要解析 `schema.json` 文件中的表结构信息，从中获取 DDL Query 语句，并将其分为两种情况处理：
 
-- 如果 Query 为空或者 TableVersion 小于 consumer checkpoint 则跳过；
-- 否则，在下游 MySQL 执行获取到的 DDL 语句。
+- 如果 DDL Query 为空或者 TableVersion 小于 consumer checkpoint 则跳过该语句。
+- 否则，在下游 MySQL 数据库中执行获取到的 DDL 语句。
 
 接着再开始同步数据文件 `CDC000001.json`。
 
 例如，以下的 `test/tbl_1/437752935075545091/schema.json` 文件中 DDL Query 不为空：
 
-```
+```json
 {
     "Table":"test",
     "Schema":"tbl_1",
@@ -175,10 +175,10 @@ func (tc *TableVersionConsumer) ExecuteDML() {}
     │   │   └── schema.json
 ```
 
-消费逻辑跟上述一致，先解析 `schema.json` 文件中的表结构信息，从中获取 DDL query 语句并按不同情况处理，然后同步数据文件 `CDC000001.json`。
+消费逻辑跟上述一致，先解析 `schema.json` 文件中的表结构信息，从中获取 DDL Query 语句并按不同情况处理，然后同步数据文件 `CDC000001.json`。
 
 ## DML 事件的处理
 
-处理好 DDL 事件后，就可以在 `{schema}/{table}/{table-version-separator}/` 目录下，根据具体的文件格式（CSV 或 Canal-JSON）并按照文件序号依次处理 DML 事件。
+在处理完 DDL 事件后，可以在 `{schema}/{table}/{table-version-separator}/` 目录下，根据具体的文件格式（CSV 或 Canal-JSON）并按照文件序号依次处理 DML 事件。
 
-因为 TiCDC 提供 At Least Once 语义，可能出现重复发送数据的情况，所以需要在消费程序中对比数据事件的 commit ts 和 consumer checkpoint，如果 commit ts 小于 consumer checkpoint 则需要做去重处理。
+因为 TiCDC 提供 At Least Once 语义，可能出现重复发送数据的情况，所以需要在消费程序中比较数据事件的 commit ts 和 consumer checkpoint，并在 commit ts 小于 consumer checkpoint 的情况下进行去重处理。
