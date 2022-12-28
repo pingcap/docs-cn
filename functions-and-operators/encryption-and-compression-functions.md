@@ -23,15 +23,6 @@ TiDB supports most of the [encryption and compression functions](https://dev.mys
 | [`COMPRESS()`](https://dev.mysql.com/doc/refman/5.7/en/encryption-functions.html#function_compress)                                                   | Return result as a binary string                  |
 | [`UNCOMPRESS()`](https://dev.mysql.com/doc/refman/5.7/en/encryption-functions.html#function_uncompress)                                               | Uncompress a string compressed                    |
 | [`UNCOMPRESSED_LENGTH()`](https://dev.mysql.com/doc/refman/5.7/en/encryption-functions.html#function_uncompressed-length)                             | Return the length of a string before compression  |
-| [`CREATE_ASYMMETRIC_PRIV_KEY()`](https://dev.mysql.com/doc/refman/5.7/en/enterprise-encryption-functions.html#function_create-asymmetric-priv-key)    | Create private key                                |
-| [`CREATE_ASYMMETRIC_PUB_KEY()`](https://dev.mysql.com/doc/refman/5.7/en/enterprise-encryption-functions.html#function_create-asymmetric-pub-key)      | Create public key                                 |
-| [`CREATE_DH_PARAMETERS()`](https://dev.mysql.com/doc/refman/5.7/en/enterprise-encryption-functions.html#function_create-dh-parameters)                | Generate shared DH secret                         |
-| [`CREATE_DIGEST()`](https://dev.mysql.com/doc/refman/5.7/en/enterprise-encryption-functions.html#function_create-digest)                              | Generate digest from string                       |
-| [`ASYMMETRIC_DECRYPT()`](https://dev.mysql.com/doc/refman/5.7/en/enterprise-encryption-functions.html#function_asymmetric-decrypt)                    | Decrypt ciphertext using private or public key    |
-| [`ASYMMETRIC_DERIVE()`](https://dev.mysql.com/doc/refman/5.7/en/enterprise-encryption-functions.html#function_asymmetric-derive)                    | Derive symmetric key from asymmetric keys         |
-| [`ASYMMETRIC_ENCRYPT()`](https://dev.mysql.com/doc/refman/5.7/en/enterprise-encryption-functions.html#function_asymmetric-encrypt)                    | Encrypt cleartext using private or public key     |
-| [`ASYMMETRIC_SIGN()`](https://dev.mysql.com/doc/refman/5.7/en/enterprise-encryption-functions.html#function_asymmetric-sign)                          | Generate signature from digest                    |
-| [`ASYMMETRIC_VERIFY()`](https://dev.mysql.com/doc/refman/5.7/en/enterprise-encryption-functions.html#function_asymmetric-verify)                      | Verify that signature matches digest              |
 | [`VALIDATE_PASSWORD_STRENGTH()`](https://dev.mysql.com/doc/refman/5.7/en/encryption-functions.html#function_validate-password-strength) | Validate the password strength ｜
 
 ## Related system variables
@@ -41,4 +32,4 @@ The `block_encryption_mode` variable sets the encryption mode that is used for `
 ## Unsupported functions
 
 * `DES_DECRYPT()`, `DES_ENCRYPT()`, `OLD_PASSWORD()`, `ENCRYPT()`: these functions were deprecated in MySQL 5.7 and removed in 8.0.
-* Functions only available in MySQL Enterprise [Issue #2632](https://github.com/pingcap/tidb/issues/2632)
+* Functions only available in MySQL Enterprise [Issue #2632](https://github.com/pingcap/tidb/issues/2632).
