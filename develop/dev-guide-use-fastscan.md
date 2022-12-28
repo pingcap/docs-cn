@@ -1,7 +1,6 @@
 ---
 title: FastScan
 summary: 介绍通过使用 FastScan 来加速 OLAP 场景的查询的方法。
-aliases: ['/zh/tidb/dev/sql-statement-set-tiflash-mode']
 ---
 
 # FastScan

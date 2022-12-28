@@ -1,7 +1,6 @@
 ---
 title: 在线修改集群配置
 summary: 介绍在线修改集群配置的功能。
-aliases: ['/docs-cn/dev/dynamic-config/']
 ---
 
 # 在线修改集群配置

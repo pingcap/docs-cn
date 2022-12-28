@@ -1,6 +1,5 @@
 ---
 title: TiDB 数据库的调度
-aliases: ['/docs-cn/dev/tidb-scheduling/']
 ---
 
 # TiDB 数据库的调度
