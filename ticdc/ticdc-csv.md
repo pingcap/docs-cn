@@ -59,7 +59,6 @@ CREATE TABLE `employee` (
 
 该表上的 DML 事件以 CSV 格式存储后如下所示：
 
-```shell
 "I","employee","hr",433305438660591626,101,"Smith","Bob","2014-06-04","New York"
 "U","employee","hr",433305438660591627,101,"Smith","Bob","2015-10-08","Los Angeles"
 "D","employee","hr",433305438660591629,101,"Smith","Bob","2017-03-13","Dallas"
