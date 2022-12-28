@@ -156,6 +156,11 @@
       - [使用 Dumpling 和 TiDB Lightning 备份与恢复](/backup-and-restore-using-dumpling-lightning.md)
       - [备份与恢复 RawKV](/br/rawkv-backup-and-restore.md)
       - [增量备份与恢复](/br/br-incremental-guide.md)
+  - 集群容灾
+    - [TiDB 容灾方案介绍](xxxx)
+    - [同区域三中心（AZ）部署](xxxx)
+    - [使用跨区域主备容灾集群](/dr-secondary-cluster.md)
+    - [进行集群数据备份和恢复](/dr-backup-restore.md)
   - [修改时区](/configure-time-zone.md)
   - [日常巡检](/daily-check.md)
   - [TiFlash 常用运维操作](/tiflash/maintain-tiflash.md)
