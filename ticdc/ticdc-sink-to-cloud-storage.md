@@ -52,6 +52,7 @@ NFS 配置样例如下：
 ```shell
 --sink-uri="file:///my-directory/prefix"
 ```
+
 ### 可选配置
 
 URI 中其他可配置的参数如下：
