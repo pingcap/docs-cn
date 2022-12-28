@@ -27,7 +27,7 @@ summary: 本文介绍性能优化的基本概念，比如用户响应时间、�
 
 - 方式一： 通过 QPS 乘以平均 query 延迟乘以 ΔT，即 `DB Time in ΔT = QPS × avg latency × ΔT`
 - 方式二： 通过平均活跃会话数乘以 ΔT，即 `DB Time in ΔT  = avg active connections × ΔT`
-- 方式三： 通过 TiDB 内部的 Prometheus 指标 TiDB_server_handle_query_duration_seconds_sum 计算，即 `ΔT DB Time = rate(TiDB_server_handle_query_duration_seconds_sum) × ΔT`
+- 方式三： 通过 TiDB 内部的 Prometheus 指标 tidb_server_tokens 计算，即 `ΔT DB Time = rate(tidb_server_tokens) × ΔT`
 
 ## 用户响应时间和系统吞吐的关系
 
