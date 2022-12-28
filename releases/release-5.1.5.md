@@ -80,7 +80,7 @@ TiDB 版本：5.1.5
 
 + TiFlash
 
-    - 修复转换 string 类型为 datetime 类型时，`microsecond` 结果可能不对的问题 [#3556](https://github.com/pingcap/tiflash/issues/3556)
+    - 修复转换 string 类型为 datetime 类型时，`microsecond` 结果可能不正确的问题 [#3556](https://github.com/pingcap/tiflash/issues/3556)
     - 修复启用 TLS 时可能导致的崩溃 [#4196](https://github.com/pingcap/tiflash/issues/4196)
     - 修复并行聚合出错时可能导致 TiFlash crash 的问题 [#5356](https://github.com/pingcap/tiflash/issues/5356)
     - 修复在执行带有 `JOIN` 的查询遇到错误时可能被挂起的问题 [#4195](https://github.com/pingcap/tiflash/issues/4195)
