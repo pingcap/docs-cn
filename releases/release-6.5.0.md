@@ -38,7 +38,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
 * 提供轻量级元数据锁，提升 DDL 变更过程 DML 的成功率 (GA) [#37275](https://github.com/pingcap/tidb/issues/37275) @[wjhuang2016](https://github.com/wjhuang2016)
 
-    TiDB v6.3.0 引入了[元数据锁](/metadata-lock.md)作为实验特性，通过协调表元数据变更过程中 DML 语句和 DDL 语句的优先级，让执行中的 DDL 语句等待持有旧版本元数据的 DML 语句提交，尽可能避免 DML 语句的 `Information schema is changed` 错误。该功能在 v6.5.0 正式 GA 并默认打开，适用于各类 DDL 变更场景。
+    TiDB v6.3.0 引入了[元数据锁](/metadata-lock.md)作为实验特性，通过协调表元数据变更过程中 DML 语句和 DDL 语句的优先级，让执行中的 DDL 语句等待持有旧版本元数据的 DML 语句提交，尽可能避免 DML 语句的 `Information schema is changed` 错误。该功能在 v6.5.0 正式 GA 并默认打开，适用于各类 DDL 变更场景。当集群从 v6.5.0 之前的版本升级到 v6.5.0 及之后的版本时，TiDB 默认自动开启该功能。如果需要关闭该功能，你可以将系统变量 [`tidb_enable_metadata_lock`](system-variables.md#tidb_enable_metadata_lock-从-v630-版本开始引入) 设置为 `OFF`。
 
     更多信息，请参考[用户文档](/metadata-lock.md)。
 
@@ -302,7 +302,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 |[`tidb_enable_amend_pessimistic_txn`](/system-variables.md#tidb_enable_amend_pessimistic_txn-从-v407-版本开始引入)| 废弃 | 从 v6.5.0 开始，该变量被废弃，TiDB 会默认使用[元数据锁](/metadata-lock.md)机制解决 `Information schema is changed` 报错的问题。|
 | [`tidb_enable_outer_join_reorder`](/system-variables.md#tidb_enable_outer_join_reorder-从-v610-版本开始引入) | 修改 | 经进一步的测试后，该变量默认值从 `OFF` 修改为 `ON`，表示默认启用 Outer Join 的 [Join Reorder 算法](/join-reorder.md)。|
 | [`tidb_cost_model_version`](/system-variables.md#tidb_cost_model_version-从-v620-版本开始引入) | 修改 | 经进一步的测试后，该变量默认值从 `1` 修改为 `2`，表示默认使用 Cost Model Version 2 进行索引选择和算子选择。 |
-| [`tidb_enable_gc_aware_memory_track`](/system-variables#tidb_enable_gc_aware_memory_track) |  修改 | 该变量默认值由 `ON` 修改为 `OFF`。由于在测试中发现 GC-Aware memory track 不准确，导致 Analyze 追踪到的内存过大的情况，因此先关闭内存追踪。在 Golang 1.19 下，GC-Aware memory track 追踪的内存对整体内存的影响变小。|
+| [`tidb_enable_gc_aware_memory_track`](/system-variables.md#tidb_enable_gc_aware_memory_track) |  修改 | 该变量默认值由 `ON` 修改为 `OFF`。由于在测试中发现 GC-Aware memory track 不准确，导致 Analyze 追踪到的内存过大的情况，因此先关闭内存追踪。在 Golang 1.19 下，GC-Aware memory track 追踪的内存对整体内存的影响变小。|
 | [`tidb_enable_metadata_lock`](/system-variables.md#tidb_enable_metadata_lock-从-v630-版本开始引入) | 修改 | 经进一步的测试后，该变量默认值从 `OFF` 修改为 `ON`，表示默认开启元数据锁。 |
 | [`tidb_enable_tiflash_read_for_write_stmt`](/system-variables.md#tidb_enable_tiflash_read_for_write_stmt-从-v630-版本开始引入) | 修改 | 该变量从 v6.5.0 开始生效，默认值为 `OFF`，用来控制包含增删改的 SQL 语句中的读取操作能否下推到 TiFlash。|
 | [`tidb_ddl_enable_fast_reorg`](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) | 修改 | 经进一步的测试后，该变量默认值从 `OFF` 修改为 `ON`，表示默认开启创建索引加速功能。 |
@@ -312,7 +312,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 | [`default_password_lifetime`](/system-variables.md#default_password_lifetime-从-v650-版本开始引入) | 新增 | 用于设置全局自动密码过期策略，要求用户定期修改密码。默认值为 `0`，表示禁用全局自动密码过期策略。 |
 | [`disconnect_on_expired_password`](/system-variables.md#disconnect_on_expired_password-从-v650-版本开始引入) | 新增 | 该变量是一个只读变量，用来显示 TiDB 是否会直接断开密码已过期用户的连接。 |
 | [`password_history`](/system-variables.md#password_history-从-v650-版本开始引入) | 新增 | 基于密码更改次数的密码重用策略，不允许用户重复使用最近设置次数内使用过的密码。默认值为 `0`，表示禁用基于密码更改次数的密码重用策略。 |
-| [`password_reuse_interval`](/system-variables.md#password_reuse_interval-从-v650-版本开始引入) | 新增 | 基于经过时间限制的密码重用策略，不允许用户重复使用最近设置天数内使用过的密码。默认值为 `0`，表示禁用基于密码更改次数的密码重用策略。 |
+| [`password_reuse_interval`](/system-variables.md#password_reuse_interval-从-v650-版本开始引入) | 新增 | 基于经过时间限制的密码重用策略，不允许用户重复使用最近设置天数内使用过的密码。默认值为 `0`，表示禁用基于密码更改时间内的密码重用策略。 |
 | [`tidb_auto_build_stats_concurrency`](/system-variables.md#tidb_auto_build_stats_concurrency-从-v650-版本开始引入) | 新增 | 该变量用于设置执行统计信息自动更新的并发度，默认值为 `1`。 |
 | [`tidb_cdc_write_source`](/system-variables.md#tidb_cdc_write_source-从-v650-版本开始引入) | 新增 | 当变量非 `0` 时，该 SESSION 写入的数据将被视为是由 TiCDC 写入的。这个变量仅由 TiCDC 设置，任何时候都不应该手动调整该变量。 |
 | [`tidb_index_merge_intersection_concurrency`](/system-variables.md#tidb_index_merge_intersection_concurrency-从-v650-版本开始引入) | 新增 | 这个变量用来设置索引合并进行交集操作时的最大并发度，仅在以动态裁剪模式访问分区表时有效。 |
@@ -341,7 +341,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 | 配置文件 | 配置项 | 修改类型 | 描述 |
 | -------- | -------- | -------- | -------- |
 | TiDB | [`server-memory-quota`](/tidb-configuration-file.md#server-memory-quota-从-v409-版本开始引入) | 废弃 | 自 v6.5.0 起，该配置项被废弃。请使用 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 系统变量进行设置。 |
-| TiDB | [`disconnect-on-expired-password`](/tidb-configuration-file.md#disconnect-on-expired-password`-从-v650-版本开始引入) | 新增 | 该配置用于控制 TiDB 服务端是否直接断开密码已过期用户的连接，默认值为 `true`，表示 TiDB 服务端将直接断开密码已过期用户的连接。 |
+| TiDB | [`disconnect-on-expired-password`](/tidb-configuration-file.md#disconnect-on-expired-password-从-v650-版本开始引入) | 新增 | 该配置用于控制 TiDB 服务端是否直接断开密码已过期用户的连接，默认值为 `true`，表示 TiDB 服务端将直接断开密码已过期用户的连接。 |
 | TiKV | `raw-min-ts-outlier-threshold` | 删除 | 从 v6.4.0，该配置项被废弃。从 v6.5.0，该配置项被删除。 |
 | TiKV | [`cdc.min-ts-interval`](/tikv-configuration-file.md#min-ts-interval) | 修改 | 为了降低 CDC 延迟，该配置的默认值从 `1s` 修改为 `200ms`。 |
 | TiKV | [`memory-use-ratio`](/tikv-configuration-file.md#memory-use-ratio-从-v650-版本开始引入) | 新增 | 表示 PITR 日志恢复功能中可用内存与系统总内存的占比。 |
