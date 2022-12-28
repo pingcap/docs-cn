@@ -205,4 +205,3 @@ Connection Idle Duration 指空闲连接的持续时间。
 - Transaction Sink Full Flush Duration：TiCDC 节点中 MySQL Sink 写下游事务的平均延迟和 p999 延迟
 - MQ Worker Send Message Duration Percentile：下游为 Kafka 时 MQ worker 发送消息的延迟
 - Kafka Outgoing Bytes：MQ Workload 写下游事务的流量
-
