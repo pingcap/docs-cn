@@ -41,17 +41,18 @@ Info: {"upstream_id":7171388873935111376,"namespace":"default","id":"simple-repl
 
 本章节介绍如何在 Changefeed URI 中配置存储服务 Amazon S3、Azure Blob Storage 和 NFS。
 
-### Sink URI 配置 S3 和 Azure Blob Storage
+### 配置 Amazon S3 和 Azure Blob Storage
 
 Amazon S3 和 Azure Blob Storage 的 URI 参数与 BR 中这两种存储的 URL 参数相同。详细参数说明请参考 [BR 备份存储服务的 URL 格式](/br/backup-and-restore-storages.md#格式说明)。
 
-### Sink URI 配置 NFS
+### 配置 NFS
 
 NFS 配置样例如下：
 
 ```shell
 --sink-uri="file:///my-directory/prefix"
 ```
+### 可选配置
 
 URI 中其他可配置的参数如下：
 
@@ -109,7 +110,7 @@ URI 中其他可配置的参数如下：
 
 元数据信息以 JSON 格式存储到如下的文件中：
 
-```shell
+```json
 {
     "checkpoint-ts":433305438660591626
 }
