@@ -38,7 +38,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
 * 提供轻量级元数据锁，提升 DDL 变更过程 DML 的成功率 (GA) [#37275](https://github.com/pingcap/tidb/issues/37275) @[wjhuang2016](https://github.com/wjhuang2016)
 
-    TiDB v6.3.0 引入了[元数据锁](/metadata-lock.md)作为实验特性，通过协调表元数据变更过程中 DML 语句和 DDL 语句的优先级，让执行中的 DDL 语句等待持有旧版本元数据的 DML 语句提交，尽可能避免 DML 语句的 `Information schema is changed` 错误。该功能在 v6.5.0 正式 GA 并默认打开，适用于各类 DDL 变更场景。当集群从 v6.5.0 之前的版本升级到 v6.5.0 及之后的版本时，TiDB 默认自动开启该功能。如果需要关闭该功能，你可以将系统变量 [`tidb_enable_metadata_lock`](system-variables.md#tidb_enable_metadata_lock-从-v630-版本开始引入) 设置为 `OFF`。
+    TiDB v6.3.0 引入了[元数据锁](/metadata-lock.md)作为实验特性，通过协调表元数据变更过程中 DML 语句和 DDL 语句的优先级，让执行中的 DDL 语句等待持有旧版本元数据的 DML 语句提交，尽可能避免 DML 语句的 `Information schema is changed` 错误。该功能在 v6.5.0 正式 GA 并默认打开，适用于各类 DDL 变更场景。当集群从 v6.5.0 之前的版本升级到 v6.5.0 及之后的版本时，TiDB 默认自动开启该功能。如果需要关闭该功能，你可以将系统变量 [`tidb_enable_metadata_lock`](/system-variables.md#tidb_enable_metadata_lock-从-v630-版本开始引入) 设置为 `OFF`。
 
     更多信息，请参考[用户文档](/metadata-lock.md)。
 
