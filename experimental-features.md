@@ -34,6 +34,7 @@ Elastic scheduling feature. It enables the TiDB cluster to dynamically scale out
 + [Cascades Planner](/system-variables.md#tidb_enable_cascades_planner): a cascades framework-based top-down query optimizer (Introduced in v3.0)
 + [Table Lock](/tidb-configuration-file.md#enable-table-lock-new-in-v400) (Introduced in v4.0.0)
 + [Range INTERVAL partitioning](/partitioned-table.md#range-interval-partitioning) (Introduced in v6.3.0)
++ [Time to live](/time-to-live.md) (Introduced in v6.5.0)
 + [TiFlash Query Result Materialization](/tiflash/tiflash-results-materialization.md) (Introduced in v6.5.0)
 + [Create a binding according to a historical execution plan](/sql-plan-management.md#create-a-binding-according-to-a-historical-execution-plan) (Introduced in v6.5.0)
 

@@ -5,7 +5,7 @@ summary: Learn about the SQL syntax, best practices, and examples for deleting d
 
 # Delete Data
 
-This document describes how to use the [DELETE](/sql-statements/sql-statement-delete.md) SQL statement to delete the data in TiDB.
+This document describes how to use the [DELETE](/sql-statements/sql-statement-delete.md) SQL statement to delete the data in TiDB. If you need to periodically delete expired data, use the [time to live](/time-to-live.md) feature.
 
 ## Before you start
 
