@@ -38,14 +38,14 @@ title: BR 备份与恢复场景示例
 
 ### 集群版本
 
-* TiDB: v5.0.0
-* TiKV: v5.0.0
-* PD: v5.0.0
-* BR: v5.0.0
+* TiDB: v5.1.5
+* TiKV: v5.1.5
+* PD: v5.1.5
+* BR: v5.1.5
 
 > **注意：**
 >
-> v5.0.0 为编写本文档时的最新版本。推荐使用[最新版本 TiDB/TiKV/PD/BR](/releases/release-notes.md)，同时需要确保 BR 版本和 TiDB **相同**。
+> 推荐使用[最新版本 TiDB/TiKV/PD/BR](/releases/release-notes.md)，同时需要确保 BR 版本和 TiDB **相同**。
 
 ### TiKV 集群硬件信息
 
