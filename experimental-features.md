@@ -36,6 +36,7 @@ summary: 了解 TiDB 各版本的实验特性。
 + [Range INTERVAL 分区](/partitioned-table.md#range-interval-分区)（v6.3.0 实验特性）
 + [使用 TTL (Time to Live) 定期删除过期数据](/time-to-live.md)。(v6.5.0 实验特性)
 + [TiFlash 查询结果物化](/tiflash/tiflash-results-materialization.md)（v6.5.0 实验特性）
++ [根据历史执行计划创建绑定](/sql-plan-management.md#根据历史执行计划创建绑定)（v6.5.0 实验特性）
 
 ## 存储
 
