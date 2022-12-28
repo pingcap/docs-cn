@@ -75,7 +75,7 @@ The diagrams of database time breakdown and execution time overview present both
     - Red: General SQL types, including `StmtPrepare`, `StmtReset`, `StmtFetch`, and `StmtClose`
 
 - Database Time By SQL Phase: The SQL execution phase is in green and other phases are in red on general. If non-green areas are large, it means much database time is consumed in other phases than the execution phase and further cause analysis is required. A common scenario is that the compile phase shown in orange takes a large area due to unavailability of prepared plan cache.
-- SQL Execute Time Overview: Green metrics stand for common KV write requests (such as `Prewrite` and `Commit`), blue metrics stand for common KV read requests (such as Cop and Get), and metrics in other colors stand for unexpected situations which you need to pay attention. For example, pessimistic lock KV requests are marked red and TSO waiting is marked dark brown. If non-blue or non-green areas are large, it means there is bottleneck during SQL execution. For example:
+- SQL Execute Time Overview: Green metrics stand for common KV write requests (such as `Prewrite` and `Commit`), blue metrics stand for common KV read requests (such as Cop and Get), purple metrics stand for TiFlash MPP requests, and metrics in other colors stand for unexpected situations which you need to pay attention. For example, pessimistic lock KV requests are marked red and TSO waiting is marked dark brown. If non-blue or non-green areas are large, it means there is bottleneck during SQL execution. For example:
 
     - If serious lock conflicts occur, the red area will take a large proportion.
     - If excessive time is consumed in waiting TSO, the dark brown area will take a large proportion.
@@ -125,6 +125,14 @@ The diagrams of database time breakdown and execution time overview present both
 - Database Time by SQL Phase: Most time is consumed in the execute phase in green.
 - SQL Execute Time Overview: The KV request PessimisticLock shown in red consumes the most time during SQL execution, and the execution time is obviously longer than the total time of KV requests. This is caused by serious lock conflicts in write statements and frequent lock retries prolong `Retried execution time`. Currently, TiDB does not measure `Retried execution time`.
 
+**Example 5: HTAP CH-Benchmark workload**
+
+![HTAP](/media/performance/htap_tiflash_mpp.png)
+
+- Database Time by SQL Type: Mainly are `SELECT` statements.
+- Database Time by SQL Phase: Most time is consumed in the execute phase in green.
+- SQL Execute Time Overview: The `tiflash_mpp` requests shown in purple consume the most time during SQL execution, followed by the KV requests, including the `Cop` requests in blue, and the `Prewrite` and `Commit` requests in green.
+
 ### TiDB key metrics and cluster resource utilization
 
 #### Query Per Second, Command Per Second, and Prepared-Plan-Cache
@@ -133,15 +141,20 @@ By checking the following three panels in Performance Overview, you can learn th
 
 - QPS: Short for Query Per Second. It shows the count of SQL statements executed by the application.
 - CPS By Type: Short for Command Per Second. Command indicates MySQL protocol-specific commands. A query statement can be sent to TiDB either by a query command or a prepared statement.
-- Queries Using Plan Cache OPS: The count that the TiDB cluster hits the prepared plan cache per second. prepared plan cache only supports the `prepared statement` command. When prepared plan cache is enabled in TiDB, the following three scenarios will occur:
+- Queries Using Plan Cache OPS: `avg-hit` is the number of queries using the execution plan cache per second in a TiDB cluster, and `avg-miss` is the number of queries not using the execution plan cache per second in a TiDB cluster.
 
-    - No prepared plan cache is hit: The number of plan cache hit per second is 0. The application is using the query interface, or cached plans are cleaned up by calling the StmtClose command after each StmtExecute execution.
-    - All prepared plan cache is hit: The number of hits per second is equal to the number of StmtExecute commands per second.
-    - Some prepared plan cache is hit: The number of hits per second is fewer than the number of StmtExecute commands per second. Prepared plan cache has known limitations, for example, it does not support subqueries, SQL statements with subqueries cannot utilize prepared plan cache.
+    `avg-hit + avg-miss` is equal to `StmtExecute`, which is the number of all queries executed per second. When prepared plan cache is enabled in TiDB, the following three scenarios will occur:
+
+    - No prepared plan cache is hit: `avg-hit` (the number of hits per second) is 0, and `avg-miss` is equal to the number of `StmtExecute` commands per second. The possible reasons include:
+        - The application is using the query interface.
+        - The cached plans are cleaned up because the application calls the `StmtClose` command after each `StmtExecute` execution.
+        - All statements executed by `StmtExecute` do not meet the [cache conditions](/sql-prepared-plan-cache.md) so the execution plan cache cannot be hit.
+    - All prepared plan cache is hit: `avg-hit` (the number of hits per second) is equal to the number of `StmtExecute` commands per second, and `avg-miss` (the number without hits per second) is 0.
+    - Some prepared plan cache is hit: `avg-hit` (the number of hits per second) is fewer than the number of `StmtExecute` commands per second. Prepared plan cache has known limitations. For example, it does not support subqueries, so SQL statements with subqueries cannot use prepared plan cache.
 
 **Example 1: TPC-C workload**
 
-The TPC-C workload are mainly `UPDATE`, `SELECT`, and `INSERT` statements. The total QPS is equal to the number of StmtExecute per second and the latter is almost equal to Queries Using Plan Cache OPS. Ideally, the client caches the object of the prepared statement. In this way, the cached statement is called directly when a SQL statement is executed. All SQL executions hit the prepared plan cache, and there is no need to recompile to generate execution plans.
+The TPC-C workload are mainly `UPDATE`, `SELECT`, and `INSERT` statements. The total QPS is equal to the number of `StmtExecute` commands per second and the latter is almost equal to `avg-hit` on the Queries Using Plan Cache OPS panel. Ideally, the client caches the object of the prepared statement. In this way, the cached statement is called directly when a SQL statement is executed. All SQL executions hit the prepared plan cache, and there is no need to recompile to generate execution plans.
 
 ![TPC-C](/media/performance/tpcc_qps.png)
 
@@ -168,29 +181,40 @@ In this workload, `Commit QPS` = `Rollback QPS` = `Select QPS`. The application 
 
 ![OLTP-Prepared](/media/performance/oltp_prepared_statement_no_plan_cache.png)
 
-#### KV/TSO Request OPS and connection information
+**Example 4: Prepared statements have a resource leak**
 
-In the KV/TSO Request OPS panel, you can view the statistics of KV and TSO requests per second. Among the statistics, `kv request total` represents the sum of all requests from TiDB to TiKV. By observing the types of requests from TiDB to PD and TiKV, you can get an idea of the workload profile within the cluster.
+The number of `StmtPrepare` commands per second is much greater than that of `StmtClose` per second, which indicates that the application has an object leak for prepared statements.
 
-In the Connection Count panel, you can view the total number of connections and the number of connections per TiDB. The counts help you determine whether the total number of connections is normal and the number of connections per TiDB is even. `active connections` records the number of active connections, which is equal to the database time per second.
+![OLTP-Query](/media/performance/prepared_statement_leaking.png)
+
+- In the QPS panel, the red bold line indicates the number of failed queries, and the Y axis on the right indicates the coordinate value of the number. In this example, the number of failed quries per second is 74.6.
+- In the CPS By Type panel, the number of `StmtPrepare` commands per second is much greater than that of `StmtClose` per second, which indicates that an object leak occurs in the application for prepared statements.
+- In the Queries Using Plan Cache OPS panel, `avg-miss` is almost equal to `StmtExecute` in the CPS By Type panel, which indicates that almost all SQL executions miss the execution plan cache.
+
+#### KV/TSO Request OPS and KV Request Time By Source
+
+- In the KV/TSO Request OPS panel, you can view the statistics of KV and TSO requests per second. Among the statistics, `kv request total` represents the sum of all requests from TiDB to TiKV. By observing the types of requests from TiDB to PD and TiKV, you can get an idea of the workload profile within the cluster.
+- In the KV Request Time By Source panel, you can view the time ratio of each KV request type and all request sources.
+    - kv request total time: The total time of processing KV and TiFlash requests per second.
+    - Each KV request and the corresponding request source form a stacked bar chart, in which `external` identifies normal business requests and `internal` identifies internal activity requests (such as DDL and auto analyze requests).
 
 **Example 1: Busy workload**
 
-![TPC-C](/media/performance/tpcc_kv_conn.png)
+![TPC-C](/media/performance/tpcc_source_sql.png)
 
 In this TPC-C workload:
 
-- The total number of KV requests per second is 104,200. The top request types are `PessimisticsLock`, `Prewrite`, `Commit` and `BatchGet` in order of number of requests.
-- The total number of connections is 810, which are evenly distributed in three TiDB instances. The number of active connections is 787.1. Therefore, 97% of the connections are active, indicating that the database is the bottleneck for this system.
+- The total number of KV requests per second is 79,700. The top request types are `Prewrite`, `Commit`, `PessimisticsLock`, and `BatchGet` in order of number of requests.
+- Most of the KV processing time is spent on `Commit-external_Commit` and `Prewrite-external_Commit`, which indicates that the most time-consuming KV requests are `Commit` and `Prewrite` from external commit statements.
 
-**Example 2: Idle workload**
+**Example 2: Analyze workload**
 
-![OLTP](/media/performance/cloud_long_idle_kv_conn.png)
+![OLTP](/media/performance/internal_stats.png)
 
-In this workload:
+In this workload, only `ANALYZE` statements are running in the cluster:
 
-- The total number of KV requests per second is 2600 and the number of TSO requests per second is 1100.
-- The total number of connections is 410, which are evenly distributed in three TiDB instances. The number of active connections is only 2.5, indicating that the database system is relatively idle.
+- The total number of KV requests per second is 35.5 and the number of Cop requests per second is 9.3.
+- Most of the KV processing time is spent on `Cop-internal_stats`, which indicates that the most time-consuming KV request is `Cop` from internal `ANALYZE` operations.
 
 #### TiDB CPU, TiKV CPU, and IO usage
 
@@ -225,7 +249,7 @@ Obviously, TiKV consumes more CPU, which is expected because TPC-C is a write-he
 
 The latency panel provides average values and 99th percentile. The average values help identify the overall bottleneck, while the 99th or 999th percentile or 999th helps determine whether there is a significant latency jitter.
 
-#### Duration and Connection Idle Duration
+#### Duration, Connection Idle Duration, and Connection Count
 
 The Duration panel contains the average and P99 latency of all statements, and the average latency of each SQL type. The Connection Idle Duration panel contains the average and the P99 connection idle duration. Connection idle duration includes the following two states:
 
@@ -245,7 +269,19 @@ In real customer scenarios, it is not rare that the bottleneck is outside the da
 - The network latency from the application server to the database is high. For example, the network latency is high because in public-cloud deployments the applications and the TiDB cluster are not in the same region, or the dns workload balancer and the TiDB cluster are not in the same region.
 - The bottleneck is in client applications. The application server's CPU cores and Numa resources cannot be fully utilized. For example, only one JVM is used to establish thousands of JDBC connections to TiDB.
 
-**Example 1: TiDB is the bottleneck of user response time**
+In the Connection Count panel, you can check the total number of connections and also the number of connections on each TiDB node, which helps you determine whether the total number of connections is normal and whether the number of connections on each TiDB node is unbalanced. `active connections` indicates the number of active connections, which is equal to the database time per second. The Y axis on the right (`disconnection/s`) indicates the number of disconnections per second in a cluster, which can be used to determine whether the application uses short connections.
+
+**Example 1: The number of disconnection/s is too high**
+
+![high disconnection/s](/media/performance/high_disconnections.png)
+
+In this workload:
+
+- The average latency and P99 latency of all SQL statements are 10.8 ms and 84.1 ms, respectively.
+- The average connection idle time in transactions `avg-in-txn` is 9.4 ms.
+- The total number of connections to the cluster is 3,700, and the number of connections to each TiDB node is 1,800. The average number of active connections is 40.3, which indicates that most of the connections are idle. The average number of `disonnnection/s` is 55.8, which indicates that the application is connecting and disconnecting frequently. The behavior of short connections will have a certain impact on TiDB resources and response time.
+
+**Example 2: TiDB is the bottleneck of user response time**
 
 ![TiDB is the Bottleneck](/media/performance/tpcc_duration_idle.png)
 
@@ -256,9 +292,9 @@ In this TPC-C workload:
 
 The average query latency is significantly greater than `avg-in-txn`, which means the main bottleneck in transactions is inside the database.
 
-**Example 2: The bottleneck of user response time is not in TiDB**
+**Example 3: TiDB is not the bottleneck of user response time**
 
-![TiDB is the Bottleneck](/media/performance/cloud_query_long_idle.png)
+![TiDB is not Bottleneck](/media/performance/cloud_query_long_idle.png)
 
 In this workload, the average query latency is 1.69 ms and `avg-in-txn` is 18 ms, indicating that TiDB spends 1.69 ms on average to process a SQL statement in transactions, and then needs to wait for 18 ms to receive the next statement.
 

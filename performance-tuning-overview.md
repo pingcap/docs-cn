@@ -34,7 +34,7 @@ To get the database time, you can use any of the following methods:
 
 - Method 1: Multiply the average query latency by QPS and by ΔT, that is, `DB Time in ΔT = QPS × avg latency × ΔT`
 - Method 2: Multiply the average number of active sessions by ΔT, that is, `DB Time in ΔT  = avg active connections × ΔT`
-- Method 3: Calculate the time based on the TiDB internal Prometheus metric TiDB_server_handle_query_duration_seconds_sum, that is. `ΔT DB Time = rate(TiDB_server_handle_query_duration_seconds_sum) × ΔT`
+- Method 3: Calculate the time based on the TiDB internal Prometheus metric `tidb_server_tokens`, that is. `ΔT DB Time = rate(tidb_server_tokens) × ΔT`
 
 ## Relationship between user response time and system throughput
 
