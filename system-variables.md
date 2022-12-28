@@ -1509,7 +1509,7 @@ MPP is a distributed computing framework provided by the TiFlash engine, which a
 - Scope: GLOBAL
 - Persists to cluster: Yes
 - Type: Boolean
-- Default value: `ON`
+- Default value: `OFF`
 - This variable controls whether to enable GC-Aware memory track.
 
 ### `tidb_enable_general_plan_cache` <span class="version-mark">New in v6.3.0</span>
