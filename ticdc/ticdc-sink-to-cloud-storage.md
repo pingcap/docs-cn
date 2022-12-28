@@ -9,7 +9,7 @@ summary: 了解如何使用 TiCDC 将数据同步到存储服务，以及数据�
 >
 > 当前该功能为实验特性，不建议在生产环境中使用。
 
-从 v6.5.0 开始，TiCDC 支持将行变更事件保存至 Amazon S3、Azure Blob Storage 和 NFS 中。本文介绍如何使用 TiCDC 创建同步任务 (Changefeed) 将增量数据同步到云存储，并介绍数据的存储方式。具体如下：
+从 v6.5.0 开始，TiCDC 支持将行变更事件保存至存储服务，如 Amazon S3、Azure Blob Storage 和 NFS。本文介绍如何使用 TiCDC 创建同步任务 (Changefeed) 将增量数据同步到这类存储服务，并介绍数据的存储方式。具体如下：
 
 - [如何将变更数据同步至存储服务](#同步变更数据至存储服务)。
 - [变更数据如何在存储服务中保存](#存储路径组织结构)。
@@ -31,7 +31,7 @@ cdc cli changefeed create \
 Info: {"upstream_id":7171388873935111376,"namespace":"default","id":"simple-replication-task","sink_uri":"s3://logbucket/storage_test?protocol=canal-json","create_time":"2022-11-29T18:52:05.566016967+08:00","start_ts":437706850431664129,"engine":"unified","config":{"case_sensitive":true,"enable_old_value":true,"force_replicate":false,"ignore_ineligible_table":false,"check_gc_safe_point":true,"enable_sync_point":false,"sync_point_interval":600000000000,"sync_point_retention":86400000000000,"filter":{"rules":["*.*"],"event_filters":null},"mounter":{"worker_num":16},"sink":{"protocol":"canal-json","schema_registry":"","csv":{"delimiter":",","quote":"\"","null":"\\N","include_commit_ts":false},"column_selectors":null,"transaction_atomicity":"none","encoder_concurrency":16,"terminator":"\r\n","date_separator":"none","enable_partition_separator":false},"consistent":{"level":"none","max_log_size":64,"flush_interval":2000,"storage":""}},"state":"normal","creator_version":"v6.5.0-master-dirty"}
 ```
 
-- `--changefeed-id`：同步任务的 ID，格式需要符合正则表达式 `^[a-zA-Z0-9]+(\-[a-zA-Z0-9]+)*$`。如果不指定该 ID，TiCDC 会自动生成一个 UUID（version 4 格式）作为 ID。
+- `--changefeed-id`：同步任务的 ID。格式需要符合正则表达式 `^[a-zA-Z0-9]+(\-[a-zA-Z0-9]+)*$`。如果不指定该 ID，TiCDC 会自动生成一个 UUID（version 4 格式）作为 ID。
 - `--sink-uri`：同步任务下游的地址。具体可参考[配置 Sink URI](#配置-sink-uri)。
 - `--start-ts`：指定 changefeed 的开始 TSO。TiCDC 集群将从这个 TSO 开始拉取数据。默认为当前时间。
 - `--target-ts`：指定 changefeed 的目标 TSO。TiCDC 集群拉取数据直到这个 TSO 停止。默认为空，即 TiCDC 不会自动停止。
@@ -70,7 +70,7 @@ URI 中其他可配置的参数如下：
 
 ## 存储路径组织结构
 
-本部分详细介绍数据变更记录、元数据与 DDL 事件的存储路径组织结构。
+本章节详细介绍数据变更记录、元数据与 DDL 事件的存储路径组织结构。
 
 ### 数据变更记录
 
@@ -186,7 +186,7 @@ URI 中其他可配置的参数如下：
 
 ## 数据类型
 
-本部分主要介绍 `schema.json` 文件中使用的各种数据类型。数据类型定义为 `T(M[, D])`，详见[数据类型概述](/data-type-overview.md#数据类型概述)。
+本章节主要介绍 `schema.json` 文件中使用的各种数据类型。数据类型定义为 `T(M[, D])`，详见[数据类型概述](/data-type-overview.md#数据类型概述)。
 
 ### 整数类型
 
@@ -195,7 +195,7 @@ TiDB 中整数类型可被定义为 `IT[(M)] [UNSIGNED]`，其中：
 - `IT` 为整数类型，包括 `TINYINT`、`SMALLINT`、`MEDIUMINT`、`INT`、`BIGINT` 和 `BIT`。
 - `M` 为该类型的显示宽度。
 
-故 `schema.json` 文件中对整数类型定义如下：
+`schema.json` 文件中对整数类型定义如下：
 
 ```json
 {
@@ -213,7 +213,7 @@ TiDB 中的小数类型可被定义为 `DT[(M,D)][UNSIGNED]`，其中：
 - `M` 为该类型数据的精度，即整数位加上小数位的总长度。
 - `D` 为小数位的长度。
 
-故 `schema.json` 文件中对小数类型的定义如下：
+`schema.json` 文件中对小数类型的定义如下：
 
 ```json
 {
@@ -230,7 +230,7 @@ TiDB 中的日期类型可被定义为 `DT`，其中：
 
 - `DT` 为日期类型，包括 `DATE` 和 `YEAR`。
 
-故 `schema.json` 文件中对日期类型的定义如下：
+`schema.json` 文件中对日期类型的定义如下：
 
 ```json
 {
@@ -244,7 +244,7 @@ TiDB 中的时间类型可被定义为 `TT[(M)]`，其中：
 - `TT` 为时间类型，包括 `TIME`、`DATETIME` 和 `TIMESTAMP`。
 - `M` 为秒的精度，取值范围为 0~6。
 
-故 `schema.json` 文件中对时间类型的定义如下：
+`schema.json` 文件中对时间类型的定义如下：
 
 ```json
 {
@@ -261,7 +261,7 @@ TiDB 中的字符串类型可被定义为 `ST[(M)]`，其中：
 - `ST` 为字符串类型，包括 `CHAR`、`VARCHAR`、`TEXT`、`BINARY`、`BLOB`、`JSON` 等。
 - `M` 表示字符串的最大长度。
 
-故 `schema.json` 文件中对字符串类型的定义如下：
+`schema.json` 文件中对字符串类型的定义如下：
 
 ```json
 {
