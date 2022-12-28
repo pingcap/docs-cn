@@ -45,9 +45,9 @@ CSV 文件中，单行的每一列定义如下：
 - 第四列：`commit ts`，即原始事务的 commit ts。该列为可选配置。
 - 第五列至最后一列：变更数据的列，可为一列或多列。
 
-假设某张表 `hr`.`employee` 的表定义如下：
+假设某张表 `hr.employee` 的定义如下：
 
-```shell
+```sql
 CREATE TABLE `employee` (
   `Id` int NOT NULL,
   `LastName` varchar(20) DEFAULT NULL,
