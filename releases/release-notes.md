@@ -16,11 +16,20 @@ TiDB 历史版本发布声明如下：
 
 ## 5.1
 
+<<<<<<< HEAD
 - [5.1.4](/releases/release-5.1.4.md)
 - [5.1.3](/releases/release-5.1.3.md)
 - [5.1.2](/releases/release-5.1.2.md)
 - [5.1.1](/releases/release-5.1.1.md)
 - [5.1.0](/releases/release-5.1.0.md)
+=======
+- [5.1.5](/releases/release-5.1.5.md): 2022-12-28
+- [5.1.4](/releases/release-5.1.4.md): 2022-02-22
+- [5.1.3](/releases/release-5.1.3.md): 2021-12-03
+- [5.1.2](/releases/release-5.1.2.md): 2021-09-27
+- [5.1.1](/releases/release-5.1.1.md): 2021-07-30
+- [5.1.0](/releases/release-5.1.0.md): 2021-06-24
+>>>>>>> 33460c6a2 (add v5.1.5 release notes (#12314))
 
 ## 5.0
 
