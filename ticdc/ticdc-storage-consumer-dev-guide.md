@@ -161,7 +161,7 @@ func (tc *TableVersionConsumer) ExecuteDML() {}
 }
 ```
 
-然后当程序又一次遍历目录，发现该表多出了一个新的版本目录。注意要在 `test/tbl_1/437752935075545091` 目录下所有文件消费完成后，然后才能开始消费新的目录下的数据。
+当程序再次遍历目录，发现该表新增了一个版本目录。程序先消费完 `test/tbl_1/437752935075545091` 目录下的所有文件，然后再消费新目录下的数据。
 
 ```
 ├── metadata
@@ -175,10 +175,10 @@ func (tc *TableVersionConsumer) ExecuteDML() {}
     │   │   └── schema.json
 ```
 
-消费逻辑跟上述一致，先解析 `schema.json` 文件中的表结构信息，从中获取 DDL query 语句，分为前文中提到的三种情况处理，接着再开始同步数据文件 `CDC000001.json`。
+消费逻辑跟上述一致，先解析 `schema.json` 文件中的表结构信息，从中获取 DDL query 语句并按不同情况处理，然后同步数据文件 `CDC000001.json`。
 
 ## DML 事件的处理
 
-处理好 DDL 事件后，就可以在 `{schema}/{table}/{table-version-separator}/` 目录下，根据具体的文件格式（CSV/Canal-JSON）并按照文件序号依次处理 DML 事件。
+处理好 DDL 事件后，就可以在 `{schema}/{table}/{table-version-separator}/` 目录下，根据具体的文件格式（CSV 或 Canal-JSON）并按照文件序号依次处理 DML 事件。
 
 因为 TiCDC 提供 At Least Once 语义，可能出现重复发送数据的情况，所以需要在消费程序中对比数据事件的 commit ts 和 consumer checkpoint，如果 commit ts 小于 consumer checkpoint 则需要做去重处理。
