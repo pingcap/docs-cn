@@ -21,7 +21,7 @@ TiDB 支持使用 MySQL 5.7 中提供的大部分[加密和压缩函数](https:/
 | [`COMPRESS()`](https://dev.mysql.com/doc/refman/5.7/en/encryption-functions.html#function_compress)                                                   | 返回经过压缩的二进制字符串                |
 | [`UNCOMPRESS()`](https://dev.mysql.com/doc/refman/5.7/en/encryption-functions.html#function_uncompress)                                               | 解压缩字符串                   |
 | [`UNCOMPRESSED_LENGTH()`](https://dev.mysql.com/doc/refman/5.7/en/encryption-functions.html#function_uncompressed-length)                             | 返回字符串解压后的长度  |
-| [`VALIDATE_PASSWORD_STRENGTH()`](https://dev.mysql.com/doc/refman/5.7/en/encryption-functions.html#function_validate-password-strength)               | 确定密码强度             ｜
+| [`VALIDATE_PASSWORD_STRENGTH()`](https://dev.mysql.com/doc/refman/5.7/en/encryption-functions.html#function_validate-password-strength)               | 确定密码强度            |
 
 ## 相关系统变量
 
