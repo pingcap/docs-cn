@@ -14,6 +14,10 @@ An SQL binding is the basis of SPM. The [Optimizer Hints](/optimizer-hints.md) d
 
 ### Create a binding
 
+You can create a binding for a SQL statement according to a SQL statement or a historical execution plan.
+
+#### Create a binding according to a SQL statement
+
 {{< copyable "sql" >}}
 
 ```sql
@@ -162,7 +166,101 @@ The original SQL statement and the bound statement must have the same text after
 >
 > For `PREPARE` / `EXECUTE` statements and for queries executed with binary protocols, you need to create execution plan bindings for the real query statements, not for the `PREPARE` / `EXECUTE` statements.
 
-### Remove binding
+#### Create a binding according to a historical execution plan
+
+To make the execution plan of a SQL statement fixed to a historical execution plan, you can use `plan_digest` to bind that historical execution plan to the SQL statement, which is more convenient than binding it according to a SQL statement.
+
+> **Warning:**
+>
+> Currently, creating a binding according to a historical execution plan is an experimental feature with unknown risks. Do not use it in production environments.
+
+Currently, this feature has the following limitations:
+
+- The feature generates hints according to historical execution plans and uses the generated hints for binding. Because historical execution plans are stored in [Statement Summary Tables](/statement-summary-tables.md), before using this feature, you need to enable the [`tidb_enable_stmt_summary`](/system-variables.md#tidb_enable_stmt_summary-new-in-v304) system variable first.
+- Currently, this feature only supports binding historical execution plans in the `statements_summary` and `statements_summary_history` tables of the current TiDB node. If you get a `can't find any plans` error, you can connect to another TiDB node in the cluster and retry the binding.
+- Currently, this feature does not work for queries with subqueries, queries that access TiFlash, or queries that join 3 or more tables.
+
+The SQL statement of this binding method is as follows:
+
+```sql
+CREATE [GLOBAL | SESSION] BINDING FROM HISTORY USING PLAN DIGEST 'plan_digest';
+```
+
+This statement binds an execution plan to a SQL statement using `plan_digest`. The default scope is SESSION. The applicable SQL statements, priorities, scopes, and effective conditions of the created bindings are the same as that of [bindings created according to SQL statements](#create-a-binding-according-to-a-sql-statement).
+
+To use this binding method, you need to first get the `plan_digest` corresponding to the target historical execution plan in `statements_summary`, and then create a binding using the `plan_digest`. The detailed steps are as follows:
+
+1. Get the `plan_digest` corresponding to the target execution plan in `statements_summary`.
+
+    For example:
+
+    ```sql
+    CREATE TABLE t(id INT PRIMARY KEY , a INT, KEY(a));
+    SELECT /*+ IGNORE_INDEX(t, a) */ * FROM t WHERE a = 1;
+    SELECT * FROM INFORMATION_SCHEMA.STATEMENTS_SUMMARY WHERE QUERY_SAMPLE_TEXT = 'SELECT /*+ IGNORE_INDEX(t, a) */ * FROM t WHERE a = 1'\G;
+    ```
+
+    The following is a part of the example query result of `statements_summary`:
+
+    ```
+    SUMMARY_BEGIN_TIME: 2022-12-01 19:00:00
+    ...........
+          DIGEST_TEXT: select * from `t` where `a` = ?
+    ...........
+          PLAN_DIGEST: 4e3159169cc63c14b139a4e7d72eae1759875c9a9581f94bb2079aae961189cb
+                 PLAN:  id                  task        estRows operator info                           actRows execution info                                                                                                                                             memory      disk
+                        TableReader_7       root        10      data:Selection_6                        0       time:4.05ms, loops:1, cop_task: {num: 1, max: 598.6µs, proc_keys: 0, rpc_num: 2, rpc_time: 609.8µs, copr_cache_hit_ratio: 0.00, distsql_concurrency: 15}   176 Bytes   N/A
+                        └─Selection_6       cop[tikv]   10      eq(test.t.a, 1)                         0       tikv_task:{time:560.8µs, loops:0}                                                                                                                          N/A         N/A
+                          └─TableFullScan_5 cop[tikv]   10000   table:t, keep order:false, stats:pseudo 0       tikv_task:{time:560.8µs, loops:0}                                                                                                                          N/A         N/A
+          BINARY_PLAN: 6QOYCuQDCg1UYWJsZVJlYWRlcl83Ev8BCgtTZWxlY3Rpb25fNhKOAQoPBSJQRnVsbFNjYW5fNSEBAAAAOA0/QSkAAQHwW4jDQDgCQAJKCwoJCgR0ZXN0EgF0Uh5rZWVwIG9yZGVyOmZhbHNlLCBzdGF0czpwc2V1ZG9qInRpa3ZfdGFzazp7dGltZTo1NjAuOMK1cywgbG9vcHM6MH1w////CQMEAXgJCBD///8BIQFzCDhVQw19BAAkBX0QUg9lcSgBfCAudC5hLCAxKWrmYQAYHOi0gc6hBB1hJAFAAVIQZGF0YTo9GgRaFAW4HDQuMDVtcywgCbYcMWKEAWNvcF8F2agge251bTogMSwgbWF4OiA1OTguNsK1cywgcHJvY19rZXlzOiAwLCBycGNfBSkAMgkMBVcQIDYwOS4pEPBDY29wcl9jYWNoZV9oaXRfcmF0aW86IDAuMDAsIGRpc3RzcWxfY29uY3VycmVuY3k6IDE1fXCwAXj///////////8BGAE=
+    ```
+
+    In this example, you can see that the execution plan corresponding to `plan_digest` is `4e3159169cc63c14b139a4e7d72eae1759875c9a9581f94bb2079aae961189cb`.
+
+2. Use `plan_digest` to create a binding:
+
+    ```sql
+    CREATE BINDING FROM HISTORY USING PLAN DIGEST '4e3159169cc63c14b139a4e7d72eae1759875c9a9581f94bb2079aae961189cb';
+    ```
+
+To verify whether the created binding takes effect, you can [view bindings](#view-bindings):
+
+```sql
+SHOW BINDINGS\G;
+```
+
+```
+*************************** 1. row ***************************
+Original_sql: select * from `test` . `t` where `a` = ?
+    Bind_sql: SELECT /*+ use_index(@`sel_1` `test`.`t` ) ignore_index(`t` `a`)*/ * FROM `test`.`t` WHERE `a` = 1
+       ...........
+  Sql_digest: 6909a1bbce5f64ade0a532d7058dd77b6ad5d5068aee22a531304280de48349f
+ Plan_digest:
+1 row in set (0.01 sec)
+
+ERROR:
+No query specified
+```
+
+```sql
+SELECT * FROM t WHERE a = 1;
+SELECT @@LAST_PLAN_FROM_BINDING;
+```
+
+```
++--------------------------+
+| @@LAST_PLAN_FROM_BINDING |
++--------------------------+
+|                        1 |
++--------------------------+
+1 row in set (0.00 sec)
+```
+
+### Remove a binding
+
+You can remove a binding according to a SQL statement or `sql_digest`.
+
+#### Remove a binding according to a SQL statement
 
 {{< copyable "sql" >}}
 
@@ -186,11 +284,21 @@ explain SELECT * FROM t1,t2 WHERE t1.id = t2.id;
 
 In the example above, the dropped binding in the SESSION scope shields the corresponding binding in the GLOBAL scope. The optimizer does not add the `sm_join(t1, t2)` hint to the statement. The top node of the execution plan in the `explain` result is not fixed to MergeJoin by this hint. Instead, the top node is independently selected by the optimizer according to the cost estimation.
 
+#### Remove a binding according to `sql_digest`
+
+In addition to removing a binding according to a SQL statement, you can also remove a binding according to `sql_digest`.
+
+```sql
+DROP [GLOBAL | SESSION] BINDING FOR SQL DIGEST 'sql_digest';
+```
+
+This statement removes an execution plan binding corresponding to `sql_digest` at the GLOBAL or SESSION level. The default scope is SESSION. You can get the `sql_digest` by [viewing bindings](#view-bindings).
+
 > **Note:**
 >
 > Executing `DROP GLOBAL BINDING` drops the binding in the current tidb-server instance cache and changes the status of the corresponding row in the system table to 'deleted'. This statement does not directly delete the records in the system table, because other tidb-server instances need to read the 'deleted' status to drop the corresponding binding in their cache. For the records in these system tables with the status of 'deleted', at every 100 `bind-info-lease` (the default value is `3s`, and `300s` in total) interval, the background thread triggers an operation of reclaiming and clearing on the bindings of `update_time` before 10 `bind-info-lease` (to ensure that all tidb-server instances have read the 'deleted' status and updated the cache).
 
-## Change binding status
+### Change binding status
 
 {{< copyable "sql" >}}
 
@@ -210,7 +318,7 @@ When executing this statement, you can only change the status of a binding from 
 SHOW [GLOBAL | SESSION] BINDINGS [ShowLikeOrWhere]
 ```
 
-This statement outputs the execution plan bindings at the GLOBAL or SESSION level according to the order of binding update time from the latest to earliest. The default scope is SESSION. Currently `SHOW BINDINGS` outputs eight columns, as shown below:
+This statement outputs the execution plan bindings at the GLOBAL or SESSION level according to the order of binding update time from the latest to earliest. The default scope is SESSION. Currently `SHOW BINDINGS` outputs 11 columns, as shown below:
 
 | Column Name | Note |
 | :-------- | :------------- |
@@ -222,7 +330,9 @@ This statement outputs the execution plan bindings at the GLOBAL or SESSION leve
 | update_time | Updating time |
 | charset | Character set |
 | collation | Ordering rule |
-| source | The way in which a binding is created, including `manual` (created by the `create [global] binding` SQL statement), `capture` (captured automatically by TiDB), and `evolve` (evolved automatically by TiDB) |
+| source | The way in which a binding is created, including `manual` (created according to a SQL statement), `history` (created according to a historical execution plan), `capture` (captured automatically by TiDB), and `evolve` (evolved automatically by TiDB) |
+| sql_digest | Digest of a normalized SQL statement |
+| plan_digest | Digest of an execution plan |
 
 ### Troubleshoot a binding
 

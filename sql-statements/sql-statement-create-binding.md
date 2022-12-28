@@ -10,13 +10,14 @@ This statement creates a new execution plan binding in TiDB. Binding can be used
 
 A `BINDING` can be on either a `GLOBAL` or `SESSION` basis. The default is `SESSION`.
 
-The bound SQL statement is parameterized and stored in the system table. When a SQL query is processed, as long as the parameterized SQL statement and a bound one in the system table are consistent and the system variable `tidb_use_plan_baselines` is set to `ON` (default), the corresponding optimizer hint is available. If multiple execution plans are available, the optimizer chooses to bind the plan with the least cost.
+The bound SQL statement is parameterized and stored in the system table. When a SQL query is processed, as long as the parameterized SQL statement and a bound one in the system table are consistent and the system variable `tidb_use_plan_baselines` is set to `ON` (default), the corresponding optimizer hint is available. If multiple execution plans are available, the optimizer chooses to bind the plan with the least cost. For more information, see [Create a binding](/sql-plan-management.md#create-a-binding).
 
 ## Synopsis
 
 ```ebnf+diagram
 CreateBindingStmt ::=
-    'CREATE' GlobalScope 'BINDING' 'FOR' BindableStmt 'USING' BindableStmt
+    'CREATE' GlobalScope 'BINDING' ( 'FOR' BindableStmt 'USING' BindableStmt ) 
+|   ( 'FROM' 'HISTORY' 'USING' 'PLAN' 'DIGEST' PlanDigest )
 
 GlobalScope ::=
     ( 'GLOBAL' | 'SESSION' )?
@@ -28,6 +29,10 @@ BindableStmt ::=
 ****
 
 ## Examples
+
+You can create a binding according to a SQL statement or a historical execution plan.
+
+The following example shows how to create a binding according to a SQL statement.
 
 {{< copyable "sql" >}}
 
@@ -129,6 +134,39 @@ mysql> EXPLAIN ANALYZE SELECT * FROM t1 WHERE b = 123;
 | └─TableRowIDScan_9(Probe)     | 583.00  | 297     | cop[tikv] | table:t1             | time:0s, loops:4                                                        | keep order:false                  | N/A            | N/A  |
 +-------------------------------+---------+---------+-----------+----------------------+-------------------------------------------------------------------------+-----------------------------------+----------------+------+
 3 rows in set (0.01 sec)
+```
+
+The following example shows how to create a binding according to a historical execution plan.
+
+```sql
+mysql> CREATE TABLE t(id INT PRIMARY KEY , a INT, KEY(a));
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> SELECT /*+ IGNORE_INDEX(t, a) */ * FROM t WHERE a = 1;
+Empty set (0.01 sec)
+
+mysql> SELECT plan_digest FROM INFORMATION_SCHEMA.STATEMENTS_SUMMARY WHERE QUERY_SAMPLE_TEXT = 'SELECT /*+ IGNORE_INDEX(t, a) */ * FROM t WHERE a = 1';
++------------------------------------------------------------------+
+| plan_digest                                                      |
++------------------------------------------------------------------+
+| 4e3159169cc63c14b139a4e7d72eae1759875c9a9581f94bb2079aae961189cb |
++------------------------------------------------------------------+
+1 row in set (0.01 sec)
+
+mysql> CREATE BINDING FROM HISTORY USING PLAN DIGEST '4e3159169cc63c14b139a4e7d72eae1759875c9a9581f94bb2079aae961189cb';
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> SELECT * FROM t WHERE a = 1;
+Empty set (0.01 sec)
+
+mysql> SELECT @@LAST_PLAN_FROM_BINDING;
++--------------------------+
+| @@LAST_PLAN_FROM_BINDING |
++--------------------------+
+|                        1 |
++--------------------------+
+1 row in set (0.01 sec)
+
 ```
 
 ## MySQL compatibility
