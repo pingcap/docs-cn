@@ -12,6 +12,10 @@ title: 执行计划管理 (SPM)
 
 ### 创建绑定
 
+你可以根据 SQL 或者历史执行计划为指定的 SQL 语句创建绑定。
+
+#### 根据 SQL 创建绑定
+
 {{< copyable "sql" >}}
 
 ```sql
@@ -164,7 +168,101 @@ CREATE BINDING FOR SELECT * FROM t WHERE a > 1 USING SELECT * FROM t use index(i
 >
 > 对于 `PREPARE`/`EXECUTE` 语句组，或者用二进制协议执行的查询，创建执行计划绑定的对象应当是查询语句本身，而不是 `PREPARE`/`EXECUTE` 语句。
 
+#### 根据历史执行计划创建绑定
+
+如需将 SQL 语句的执行计划固定为之前使用过的执行计划，可以使用 `plan_digest` 为该 SQL 语句绑定一个历史的执行计划。相比于使用 SQL 创建绑定的方式，此方式更加简便。
+
+> **警告：**
+>
+> 根据历史执行计划创建绑定目前为实验特性，存在未知风险，请勿在生产环境中使用。
+
+目前，根据历史执行计划创建绑定有一些限制：
+
+- 该功能是根据历史的执行计划生成 hint 而实现的绑定，历史的执行计划来源是 [Statement Summary Tables](/statement-summary-tables.md)，因此在使用此功能之前需开启系统变量 [`tidb_enable_stmt_summary`](/system-variables.md#tidb_enable_stmt_summary-从-v304-版本开始引入)。
+- 目前，该功能仅支持根据当前实例中的 `statements_summary` 和 `statements_summary_history` 表中的执行计划生成绑定。如果发现有 `can't find any plans` 的情况，请尝试连接集群中其他 TiDB 节点重试。
+- 对于带有子查询的查询、访问 TiFlash 的查询、3 张表或更多表进行 Join 的查询，目前还不支持通过历史执行计划进行绑定。
+
+使用方式:
+
+```sql
+CREATE [GLOBAL | SESSION] BINDING FROM HISTORY USING PLAN DIGEST 'plan_digest';
+```
+
+该语句使用 `plan_digest` 为 SQL 语句绑定执行计划，在不指定作用域时默认作用域为 SESSION。所创建绑定的适用 SQL、优先级、作用域、生效条件等与[根据 SQL 创建绑定](#根据-sql-创建绑定)相同。
+
+使用此绑定方式时，你需要先从 `statements_summary` 中找到需要绑定的执行计划对应的 `plan_digest`，再通过 `plan_digest` 创建绑定。具体步骤如下：
+
+1. 从 `Statement Summary Tables` 的记录中查找执行计划对应的 `plan_digest`。
+
+    例如:
+
+    ```sql
+    CREATE TABLE t(id INT PRIMARY KEY , a INT, KEY(a));
+    SELECT /*+ IGNORE_INDEX(t, a) */ * FROM t WHERE a = 1;
+    SELECT * FROM INFORMATION_SCHEMA.STATEMENTS_SUMMARY WHERE QUERY_SAMPLE_TEXT = 'SELECT /*+ IGNORE_INDEX(t, a) */ * FROM t WHERE a = 1'\G;
+    ```
+
+    以下为 `statements_summary` 部分查询结果：
+
+    ```
+    SUMMARY_BEGIN_TIME: 2022-12-01 19:00:00
+    ...........
+          DIGEST_TEXT: select * from `t` where `a` = ?
+    ...........
+          PLAN_DIGEST: 4e3159169cc63c14b139a4e7d72eae1759875c9a9581f94bb2079aae961189cb
+                 PLAN:  id                  task        estRows operator info                           actRows execution info                                                                                                                                             memory      disk
+                        TableReader_7       root        10      data:Selection_6                        0       time:4.05ms, loops:1, cop_task: {num: 1, max: 598.6µs, proc_keys: 0, rpc_num: 2, rpc_time: 609.8µs, copr_cache_hit_ratio: 0.00, distsql_concurrency: 15}   176 Bytes   N/A
+                        └─Selection_6       cop[tikv]   10      eq(test.t.a, 1)                         0       tikv_task:{time:560.8µs, loops:0}                                                                                                                          N/A         N/A
+                          └─TableFullScan_5 cop[tikv]   10000   table:t, keep order:false, stats:pseudo 0       tikv_task:{time:560.8µs, loops:0}                                                                                                                          N/A         N/A
+          BINARY_PLAN: 6QOYCuQDCg1UYWJsZVJlYWRlcl83Ev8BCgtTZWxlY3Rpb25fNhKOAQoPBSJQRnVsbFNjYW5fNSEBAAAAOA0/QSkAAQHwW4jDQDgCQAJKCwoJCgR0ZXN0EgF0Uh5rZWVwIG9yZGVyOmZhbHNlLCBzdGF0czpwc2V1ZG9qInRpa3ZfdGFzazp7dGltZTo1NjAuOMK1cywgbG9vcHM6MH1w////CQMEAXgJCBD///8BIQFzCDhVQw19BAAkBX0QUg9lcSgBfCAudC5hLCAxKWrmYQAYHOi0gc6hBB1hJAFAAVIQZGF0YTo9GgRaFAW4HDQuMDVtcywgCbYcMWKEAWNvcF8F2agge251bTogMSwgbWF4OiA1OTguNsK1cywgcHJvY19rZXlzOiAwLCBycGNfBSkAMgkMBVcQIDYwOS4pEPBDY29wcl9jYWNoZV9oaXRfcmF0aW86IDAuMDAsIGRpc3RzcWxfY29uY3VycmVuY3k6IDE1fXCwAXj///////////8BGAE=
+    ```
+
+    可以看到执行计划对应的 `plan_digest` 为 `4e3159169cc63c14b139a4e7d72eae1759875c9a9581f94bb2079aae961189cb`。
+
+2. 使用 `plan_digest` 创建绑定。
+
+    ```sql
+    CREATE BINDING FROM HISTORY USING PLAN DIGEST '4e3159169cc63c14b139a4e7d72eae1759875c9a9581f94bb2079aae961189cb';
+    ```
+
+创建完毕后可以[查看绑定](#查看绑定)，验证绑定是否生效。
+
+```sql
+SHOW BINDINGS\G;
+```
+
+```
+*************************** 1. row ***************************
+Original_sql: select * from `test` . `t` where `a` = ?
+    Bind_sql: SELECT /*+ use_index(@`sel_1` `test`.`t` ) ignore_index(`t` `a`)*/ * FROM `test`.`t` WHERE `a` = 1
+       ...........
+  Sql_digest: 6909a1bbce5f64ade0a532d7058dd77b6ad5d5068aee22a531304280de48349f
+ Plan_digest:
+1 row in set (0.01 sec)
+
+ERROR:
+No query specified
+```
+
+```sql
+SELECT * FROM t WHERE a = 1;
+SELECT @@LAST_PLAN_FROM_BINDING;
+```
+
+```
++--------------------------+
+| @@LAST_PLAN_FROM_BINDING |
++--------------------------+
+|                        1 |
++--------------------------+
+1 row in set (0.00 sec)
+```
+
 ### 删除绑定
+
+你可以根据 SQL 语句或者 `sql_digest` 删除绑定。
+
+#### 根据 SQL 语句删除绑定
 
 {{< copyable "sql" >}}
 
@@ -187,6 +285,16 @@ explain SELECT * FROM t1,t2 WHERE t1.id = t2.id;
 ```
 
 在这里 SESSION 作用域内被删除掉的绑定会屏蔽 GLOBAL 作用域内相应的绑定，优化器不会为 `SELECT` 语句添加 `sm_join(t1, t2)` hint，`explain` 给出的执行计划中最上层节点并不被 hint 固定为 MergeJoin，而是由优化器经过代价估算后自主进行选择。
+
+#### 根据 `sql_digest` 删除绑定
+
+除了可以根据 SQL 语句删除对应的绑定以外，也可以根据 `sql_digest` 删除绑定：
+
+```sql
+DROP [GLOBAL | SESSION] BINDING FOR SQL DIGEST 'sql_digest';
+```
+
+该语句用于在 GLOBAL 或者 SESSION 作用域内删除 `sql_digest` 对应的的执行计划绑定，在不指定作用域时默认作用域为 SESSION。你可以通过[查看绑定](#查看绑定)语句获取 `sql_digest`。
 
 > **注意：**
 >
@@ -212,7 +320,7 @@ SET BINDING [ENABLED | DISABLED] FOR BindableStmt;
 SHOW [GLOBAL | SESSION] BINDINGS [ShowLikeOrWhere];
 ```
 
-该语句会按照绑定更新时间由新到旧的顺序输出 GLOBAL 或者 SESSION 作用域内的执行计划绑定，在不指定作用域时默认作用域为 SESSION。目前 `SHOW BINDINGS` 会输出 8 列，具体如下：
+该语句会按照绑定更新时间由新到旧的顺序输出 GLOBAL 或者 SESSION 作用域内的执行计划绑定，在不指定作用域时默认作用域为 SESSION。目前 `SHOW BINDINGS` 会输出 11 列，具体如下：
 
 | 列名 | 说明            |
 | -------- | ------------- |
@@ -224,7 +332,9 @@ SHOW [GLOBAL | SESSION] BINDINGS [ShowLikeOrWhere];
 | update_time | 更新时间 |
 | charset | 字符集 |
 | collation | 排序规则 |
-| source | 创建方式，包括 manual （由 `create [global] binding` 生成）、capture（由 tidb 自动创建生成）和 evolve （由 tidb 自动演进生成） |
+| source | 创建方式，包括 manual（根据 SQL 创建绑定生成）、history（根据历史执行计划创建绑定生成）、capture（由 TiDB 自动创建生成）和 evolve （由 TiDB 自动演进生成） |
+| sql_digest | 归一化后的 SQL 的 digest |
+| plan_digest | 执行计划的 digest |
 
 ### 排查绑定
 
