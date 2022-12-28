@@ -165,29 +165,29 @@ If one column can be NULL, the Column data format can be:
 | MEDIUMINT  | INT       | int       | When it is unsigned, TIDB_TYPE is INT UNSIGNED.                                                                            |
 | INT        | INT       | int       | When it is unsigned, TIDB_TYPE is INT UNSIGNED and AVRO_TYPE is long.                                                      |
 | BIGINT     | BIGINT    | long      | When it is unsigned, TIDB_TYPE is BIGINT UNSIGNED. If `avro-bigint-unsigned-handling-mode` is string, AVRO_TYPE is string. |
-| TINYBLOB   | BLOB      | bytes     |                                                                                                                           |
-| BLOB       | BLOB      | bytes     |                                                                                                                           |
-| MEDIUMBLOB | BLOB      | bytes     |                                                                                                                           |
-| LONGBLOB   | BLOB      | bytes     |                                                                                                                           |
-| BINARY     | BLOB      | bytes     |                                                                                                                           |
-| VARBINARY  | BLOB      | bytes     |                                                                                                                           |
-| TINYTEXT   | TEXT      | string    |                                                                                                                           |
-| TEXT       | TEXT      | string    |                                                                                                                           |
-| MEDIUMTEXT | TEXT      | string    |                                                                                                                           |
-| LONGTEXT   | TEXT      | string    |                                                                                                                           |
-| CHAR       | TEXT      | string    |                                                                                                                           |
-| VARCHAR    | TEXT      | string    |                                                                                                                           |
-| FLOAT      | FLOAT     | double    |                                                                                                                           |
-| DOUBLE     | DOUBLE    | double    |                                                                                                                           |
-| DATE       | DATE      | string    |                                                                                                                           |
-| DATETIME   | DATETIME  | string    |                                                                                                                           |
-| TIMESTAMP  | TIMESTAMP | string    |                                                                                                                           |
-| TIME       | TIME      | string    |                                                                                                                           |
-| YEAR       | YEAR      | int       |                                                                                                                           |
-| BIT        | BIT       | bytes     |                                                                                                                           |
-| JSON       | JSON      | string    |                                                                                                                           |
-| ENUM       | ENUM      | string    |                                                                                                                           |
-| SET        | SET       | string    |                                                                                                                           |
+| TINYBLOB   | BLOB      | bytes     |  -                                                                                                                         |
+| BLOB       | BLOB      | bytes     |  -                                                                                                                         |
+| MEDIUMBLOB | BLOB      | bytes     |  -                                                                                                                         |
+| LONGBLOB   | BLOB      | bytes     |  -                                                                                                                         |
+| BINARY     | BLOB      | bytes     |  -                                                                                                                        |
+| VARBINARY  | BLOB      | bytes     |  -                                                                                                                        |
+| TINYTEXT   | TEXT      | string    |  -                                                                                                                        |
+| TEXT       | TEXT      | string    |  -                                                                                                                        |
+| MEDIUMTEXT | TEXT      | string    |  -                                                                                                                        |
+| LONGTEXT   | TEXT      | string    |  -                                                                                                                         |
+| CHAR       | TEXT      | string    |  -                                                                                                                         |
+| VARCHAR    | TEXT      | string    |  -                                                                                                                         |
+| FLOAT      | FLOAT     | double    |  -                                                                                                                         |
+| DOUBLE     | DOUBLE    | double    |  -                                                                                                                         |
+| DATE       | DATE      | string    |  -                                                                                                                         |
+| DATETIME   | DATETIME  | string    |  -                                                                                                                         |
+| TIMESTAMP  | TIMESTAMP | string    |  -                                                                                                                         |
+| TIME       | TIME      | string    |  -                                                                                                                         |
+| YEAR       | YEAR      | int       |  -                                                                                                                         |
+| BIT        | BIT       | bytes     |  -                                                                                                                         |
+| JSON       | JSON      | string    |  -                                                                                                                         |
+| ENUM       | ENUM      | string    |  -                                                                                                                         |
+| SET        | SET       | string    |  -                                                                                                                         |
 | DECIMAL    | DECIMAL   | bytes     | When `avro-decimal-handling-mode` is string, AVRO_TYPE is string.                                                         |
 
 In the Avro protocol, two other `sink-uri` parameters might affect the Column data format as well: `avro-decimal-handling-mode` and `avro-bigint-unsigned-handling-mode`.
