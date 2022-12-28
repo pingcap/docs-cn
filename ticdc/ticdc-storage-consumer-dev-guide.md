@@ -8,7 +8,8 @@ summary: 了解如何设计与实现一个 storage sink 的消费程序。
 本文介绍如何设计和实现一个 TiDB 数据变更的消费程序。
 
 > **注意：**
-> 当前 Storage sink 无法处理 drop schema DDL，请你尽量避免执行 Drop schema DDL。如果你需要执行 drop schema DDL，请你也在下游 MySQL 手动执行。
+> 
+> 当前 Storage sink 无法处理 `DROP DATABASE` DDL，请你尽量避免执行该语句。如果你需要执行 `DROP DATABASE` DDL，请你在下游 MySQL 手动执行。
 
 TiCDC 不提供消费存储服务的数据的标准实现，以下介绍一个 Golang 版本的消费示例程序，该示例程序会读取存储服务中的数据并写入到下游 MySQL 兼容数据库。你可以参考本文档提供的数据格式和以下例子实现消费端。
 
@@ -19,7 +20,7 @@ TiCDC 不提供消费存储服务的数据的标准实现，以下介绍一个 G
 下图是 Consumer 的整体消费流程：
 ![TiCDC storage consumer overview](/media/ticdc/ticdc-storage-consumer-overview.png)
 
-以下是 Consumer 消费路程中的组件和功能定义，及其功能注释:
+以下是 Consumer 消费流程中的组件和功能定义，及其功能注释:
 
 ```
 type StorageReader struct {
@@ -112,13 +113,14 @@ func (tc *TableVersionConsumer) ExecuteDML() {}
     │       └── schema.json
 ```
 
-此时需要先解析 `schema.json` 文件中的表结构信息，从中获取 DDL query 语句，分为三种情况处理，接着再开始同步数据文件 `CDC000001.json`:
+此时需要先解析 `schema.json` 文件中的表结构信息，从中获取 DDL query 语句，分为两种情况处理:
 
-- 如果 Query 为空则忽略；
-- 如果 TableVersion 小于 consumer checkpoint 则忽略；
-- 否则，执行到下游 MySQL。
+- 如果 Query 为空或者 TableVersion 小于 consumer checkpoint 则跳过；
+- 否则，在下游 MySQL 执行获取到的 DDL 语句。
 
-例如 `test/tbl_1/437752935075545091/schema.json` 文件内容如下：
+接着再开始同步数据文件 `CDC000001.json`。
+
+例如，以下的 `test/tbl_1/437752935075545091/schema.json` 文件中 DDL Query 不为空：
 
 ```
 {
@@ -174,8 +176,8 @@ func (tc *TableVersionConsumer) ExecuteDML() {}
 
 消费逻辑跟上述一致，先解析 `schema.json` 文件中的表结构信息，从中获取 DDL query 语句，分为前文中提到的三种情况处理，接着再开始同步数据文件 `CDC000001.json`。
 
-## 数据事件的处理
+## DML 事件的处理
 
-根据 `{schema}/{table}/{table-version-separator}/schema.json` 文件处理好 DDL 事件后，就可以在 `{schema}/{table}/{table-version-separator}/` 目录下，根据具体的文件格式并按照文件序号依次处理数据变更事件。
+处理好 DDL 事件后，就可以在 `{schema}/{table}/{table-version-separator}/` 目录下，根据具体的文件格式（CSV/Canal-JSON）并按照文件序号依次处理 DML 事件。
 
-因为 TiCDC 提供 At Least Once 语义，可能出现重复发送数据的情况，所以需要在消费程序中对比数据事件的 commit ts 和 consumer checkpoint，如果 commit ts 小于 consumer checkpoint 则做去重处理。
+因为 TiCDC 提供 At Least Once 语义，可能出现重复发送数据的情况，所以需要在消费程序中对比数据事件的 commit ts 和 consumer checkpoint，如果 commit ts 小于 consumer checkpoint 则需要做去重处理。
