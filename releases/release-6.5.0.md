@@ -261,7 +261,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
 * TiCDC 支持两个 TiDB 集群之间进行双向复制 [#38587](https://github.com/pingcap/tidb/issues/38587) @[xiongjiwei](https://github.com/xiongjiwei) @[asddongmen](https://github.com/asddongmen)
 
-    TiCDC 支持在两个 TiDB 集群之间进行双向复制。如果业务上需要构建异地多活的 TiDB 集群架构，可以使用该功能作为 TiDB 多活的解决方案。只要为一个 TiDB 集群到另一个 TiDB 集群的 TiCDC 同步任务配置 `bdr-mode = true` 参数，就可以实现两个 TiDB 集群之间的数据相互复制。
+    TiCDC 支持在两个 TiDB 集群之间进行双向复制。如果业务上需要构建异地多活的 TiDB 集群架构，可以使用该功能作为 TiDB 多活的解决方案。只要为 TiDB 集群到另一个 TiDB 集群的 TiCDC 同步任务配置 `bdr-mode = true` 参数，就可以实现两个 TiDB 集群之间的数据相互复制。
 
     更多信息，请参考[用户文档](/ticdc/ticdc-bidirectional-replication.md)。
 
