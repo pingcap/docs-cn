@@ -207,9 +207,9 @@ TiDB 中整数类型可被定义为 `IT[(M)] [UNSIGNED]`，其中：
 
 TiDB 中的小数类型可被定义为 `DT[(M,D)][UNSIGNED]`，其中：
 
-- DT 为小数类型，包括 `FLOAT`、`DOUBLE`、`DECIMAL` 和 `NUMERIC`。
-- M 为该类型数据的精度，即整数位加上小数位的总长度。
-- D 为小数位的长度。
+- `DT` 为小数类型，包括 `FLOAT`、`DOUBLE`、`DECIMAL` 和 `NUMERIC`。
+- `M` 为该类型数据的精度，即整数位加上小数位的总长度。
+- `D` 为小数位的长度。
 
 故 `schema.json` 文件中对小数类型的定义如下：
 
@@ -226,7 +226,7 @@ TiDB 中的小数类型可被定义为 `DT[(M,D)][UNSIGNED]`，其中：
 
 TiDB 中的日期类型可被定义为 `DT`，其中：
 
-- DT 为日期类型，包括 `DATE` 和 `YEAR`。
+- `DT` 为日期类型，包括 `DATE` 和 `YEAR`。
 
 故 `schema.json` 文件中对日期类型的定义如下：
 
@@ -239,8 +239,8 @@ TiDB 中的日期类型可被定义为 `DT`，其中：
 
 TiDB 中的时间类型可被定义为 `TT[(M)]`，其中：
 
-- TT 为时间类型，包括 `TIME`、`DATETIME` 和 `TIMESTAMP`。
-- M 为秒的精度，取值范围为 0~6。
+- `TT` 为时间类型，包括 `TIME`、`DATETIME` 和 `TIMESTAMP`。
+- `M` 为秒的精度，取值范围为 0~6。
 
 故 `schema.json` 文件中对时间类型的定义如下：
 
@@ -256,8 +256,8 @@ TiDB 中的时间类型可被定义为 `TT[(M)]`，其中：
 
 TiDB 中的字符串类型可被定义为 `ST[(M)]`，其中：
 
-- ST 为字符串类型，包括 `CHAR`、`VARCHAR`、`TEXT`、`BINARY`、`BLOB`、`JSON` 等。
-- M 表示字符串的最大长度。
+- `ST` 为字符串类型，包括 `CHAR`、`VARCHAR`、`TEXT`、`BINARY`、`BLOB`、`JSON` 等。
+- `M` 表示字符串的最大长度。
 
 故 `schema.json` 文件中对字符串类型的定义如下：
 
