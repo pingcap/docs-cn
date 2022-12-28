@@ -323,6 +323,8 @@
         - [tiup cluster help](/tiup/tiup-component-cluster-help.md)
         - [tiup cluster import](/tiup/tiup-component-cluster-import.md)
         - [tiup cluster list](/tiup/tiup-component-cluster-list.md)
+        - [tiup cluster meta backup](/tiup/tiup-component-cluster-meta-backup.md)
+        - [tiup cluster meta restore](/tiup/tiup-component-cluster-meta-restore.md)
         - [tiup cluster patch](/tiup/tiup-component-cluster-patch.md)
         - [tiup cluster prune](/tiup/tiup-component-cluster-prune.md)
         - [tiup cluster reload](/tiup/tiup-component-cluster-reload.md)

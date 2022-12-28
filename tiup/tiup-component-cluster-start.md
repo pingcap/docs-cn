@@ -16,6 +16,15 @@ tiup cluster start <cluster-name> [flags]
 
 ## Options
 
+### --init
+
+Starts the cluster in a safe way. It is recommended to use this option when the cluster is started for the first time. This method generates the password of the TiDB root user at startup and returns the password in the command line interface.
+
+> **Note:**
+>
+> - After safe start of a TiDB cluster, you cannot log in to the database using the root user without a password. Therefore, you need to record the password returned by the command line for future logins.
+> - The password is generated only once. If you do not record or forget the password, refer to [Forget the `root` password](/user-account-management.md#forget-the-root-password) to change the password.
+
 ### -N, --node
 
 - Specifies the nodes to be started. The value of this option is a comma-separated list of node IDs. You can get the node IDs from the first column of the [cluster status table](/tiup/tiup-component-cluster-display.md) returned by the `tiup cluster display` command.
