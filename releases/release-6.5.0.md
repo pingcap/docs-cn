@@ -32,35 +32,35 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
 ### SQL
 
-* TiDB 添加索引的性能提升为原来的 10 倍 (GA) [#35983](https://github.com/pingcap/tidb/issues/35983) @[benjamin2037](https://github.com/benjamin2037) @[tangenta](https://github.com/tangenta) 
+* TiDB 添加索引的性能提升为原来的 10 倍 (GA) [#35983](https://github.com/pingcap/tidb/issues/35983) @[benjamin2037](https://github.com/benjamin2037) @[tangenta](https://github.com/tangenta)
 
     TiDB v6.3.0 引入了[添加索引加速](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入)作为实验特性，提升了添加索引回填过程的速度。该功能在 v6.5.0 正式 GA 并默认打开，预期大表添加索引的性能提升约为原来的 10 倍。添加索引加速适用于单条 SQL 语句串行添加索引的场景，在多条 SQL 并行添加索引时仅对其中一条添加索引的 SQL 语句生效。
 
-* 提供轻量级元数据锁，提升 DDL 变更过程 DML 的成功率 (GA) [#37275](https://github.com/pingcap/tidb/issues/37275) @[wjhuang2016](https://github.com/wjhuang2016) 
+* 提供轻量级元数据锁，提升 DDL 变更过程 DML 的成功率 (GA) [#37275](https://github.com/pingcap/tidb/issues/37275) @[wjhuang2016](https://github.com/wjhuang2016)
 
     TiDB v6.3.0 引入了[元数据锁](/metadata-lock.md)作为实验特性，通过协调表元数据变更过程中 DML 语句和 DDL 语句的优先级，让执行中的 DDL 语句等待持有旧版本元数据的 DML 语句提交，尽可能避免 DML 语句的 `Information schema is changed` 错误。该功能在 v6.5.0 正式 GA 并默认打开，适用于各类 DDL 变更场景。
 
     更多信息，请参考[用户文档](/metadata-lock.md)。
 
-* 支持通过 `FLASHBACK CLUSTER TO TIMESTAMP` 命令将集群快速回退到特定的时间点 (GA) [#37197](https://github.com/pingcap/tidb/issues/37197) [#13303](https://github.com/tikv/tikv/issues/13303) @[Defined2014](https://github.com/Defined2014) @[bb7133](https://github.com/bb7133) @[JmPotato](https://github.com/JmPotato) @[Connor1996](https://github.com/Connor1996) @[HuSharp](https://github.com/HuSharp) @[CalvinNeo](https://github.com/CalvinNeo) 
+* 支持通过 `FLASHBACK CLUSTER TO TIMESTAMP` 命令将集群快速回退到特定的时间点 (GA) [#37197](https://github.com/pingcap/tidb/issues/37197) [#13303](https://github.com/tikv/tikv/issues/13303) @[Defined2014](https://github.com/Defined2014) @[bb7133](https://github.com/bb7133) @[JmPotato](https://github.com/JmPotato) @[Connor1996](https://github.com/Connor1996) @[HuSharp](https://github.com/HuSharp) @[CalvinNeo](https://github.com/CalvinNeo)
 
     TiDB v6.4.0 引入了 [`FLASHBACK CLUSTER TO TIMESTAMP`](/sql-statements/sql-statement-flashback-to-timestamp.md) 语句作为实验特性，支持在 Garbage Collection (GC) life time 内快速回退整个集群到指定的时间点。该功能在 v6.5.0 正式 GA，适用于快速撤消 DML 误操作、支持集群分钟级别的快速回退、支持在时间线上多次回退以确定特定数据更改发生的时间，并新增对 TiCDC 和 PITR 的兼容性支持。
 
     更多信息，请参考[用户文档](/sql-statements/sql-statement-flashback-to-timestamp.md)。
 
-* 完整支持包含 `INSERT`、`REPLACE`、`UPDATE` 和 `DELETE` 的非事务 DML 语句 [#33485](https://github.com/pingcap/tidb/issues/33485) @[ekexium](https://github.com/ekexium) 
+* 完整支持包含 `INSERT`、`REPLACE`、`UPDATE` 和 `DELETE` 的非事务 DML 语句 [#33485](https://github.com/pingcap/tidb/issues/33485) @[ekexium](https://github.com/ekexium)
 
     在大批量的数据处理场景，单一大事务 SQL 处理可能对集群稳定性和性能造成影响。非事务 DML 语句将一个 DML 语句拆成多个 SQL 语句在内部执行。拆分后的语句将牺牲事务原子性和隔离性，但是对于集群的稳定性有很大提升。TiDB 从 v6.1.0 开始支持非事务 `DELETE` 语句，v6.5.0 新增对非事务 `INSERT`、`REPLACE` 和 `UPDATE` 语句的支持。
 
     更多信息，请参考[非事务 DML 语句](/non-transactional-dml.md) 和 [`BATCH` 语句](/sql-statements/sql-statement-batch.md)。
 
-* 支持 Time to live (TTL)（实验特性）[#39262](https://github.com/pingcap/tidb/issues/39262) @[lcwangchao](https://github.com/lcwangchao) 
+* 支持 Time to live (TTL)（实验特性）[#39262](https://github.com/pingcap/tidb/issues/39262) @[lcwangchao](https://github.com/lcwangchao)
 
     TTL 提供了行级别的生命周期控制策略。在 TiDB 中，设置了 TTL 属性的表会根据配置自动检查并删除过期的行数据。TTL 设计的目标是在不影响在线读写负载的前提下，帮助用户周期性且及时地清理不需要的数据。
 
     更多信息，请参考[用户文档](/time-to-live.md)。
 
-* 支持通过 `INSERT INTO SELECT` 语句保存 TiFlash 查询结果（实验特性）[#37515](https://github.com/pingcap/tidb/issues/37515) @[gengliqi](https://github.com/gengliqi) 
+* 支持通过 `INSERT INTO SELECT` 语句保存 TiFlash 查询结果（实验特性）[#37515](https://github.com/pingcap/tidb/issues/37515) @[gengliqi](https://github.com/gengliqi)
 
     从 v6.5.0 起，TiDB 支持下推 `INSERT INTO SELECT` 语句中的 `SELECT` 子句（分析查询）到 TiFlash，你可以将 TiFlash 的查询结果方便地保存到 `INSERT INTO` 指定的 TiDB 表中供后续分析使用，起到了结果缓存（即结果物化）的效果。例如：
 
@@ -76,7 +76,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
   更多信息，请参考[用户文档](/tiflash/tiflash-results-materialization.md)。
 
-* 支持绑定历史执行计划（实验特性）[#39199](https://github.com/pingcap/tidb/issues/39199) @[fzzf678](https://github.com/fzzf678) 
+* 支持绑定历史执行计划（实验特性）[#39199](https://github.com/pingcap/tidb/issues/39199) @[fzzf678](https://github.com/fzzf678)
 
     受 SQL 语句执行时各种因素的影响，之前最优的执行计划偶尔会被新的执行计划替代，进而影响 SQL 性能。在这种场景下，最优的执行计划可能仍旧在 SQL 执行历史中，还没有被清除。
 
@@ -86,7 +86,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
 ### 安全
 
-* 支持密码复杂度策略 [#38928](https://github.com/pingcap/tidb/issues/38928) @[CbcWestwolf](https://github.com/CbcWestwolf) 
+* 支持密码复杂度策略 [#38928](https://github.com/pingcap/tidb/issues/38928) @[CbcWestwolf](https://github.com/CbcWestwolf)
 
     TiDB 启用密码复杂度策略功能后，在用户设置密码时，TiDB 会检查密码长度、大写和小写字符个数、数字字符个数、特殊字符个数、密码字典匹配、是否与用户名相同等，以此确保用户设置了安全的密码。
 
@@ -94,19 +94,19 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
     更多信息，请参考[用户文档](/password-management.md#密码复杂度策略)。
 
-* 支持密码过期策略 [#38936](https://github.com/pingcap/tidb/issues/38936) @[CbcWestwolf](https://github.com/CbcWestwolf) 
+* 支持密码过期策略 [#38936](https://github.com/pingcap/tidb/issues/38936) @[CbcWestwolf](https://github.com/CbcWestwolf)
 
     TiDB 支持密码过期策略，包括手动密码过期、全局级别自动密码过期、账户级别自动密码过期。启用密码过期策略功能后，用户必须定期修改密码，防止密码长期使用带来的泄露风险，提高密码安全性。
 
     更多信息，请参考[用户文档](/password-management.md#密码过期策略)。
 
-* 支持密码重用策略 [#38937](https://github.com/pingcap/tidb/issues/38937) @[keeplearning20221](https://github.com/keeplearning20221) 
+* 支持密码重用策略 [#38937](https://github.com/pingcap/tidb/issues/38937) @[keeplearning20221](https://github.com/keeplearning20221)
 
     TiDB 支持密码重用策略，包括全局级别密码重用策略、账户级别密码重用策略。启用密码重用策略功能后，用户不能使用最近一段时间使用过的密码或最近几次使用过的密码，以此降低密码的重复使用带来的泄漏风险，提高密码安全性。
 
     更多信息，请参考[用户文档](/password-management.md#密码重用策略)。
 
-* 支持密码连续错误限制登录策略 [#38938](https://github.com/pingcap/tidb/issues/38938) @[lastincisor](https://github.com/lastincisor) 
+* 支持密码连续错误限制登录策略 [#38938](https://github.com/pingcap/tidb/issues/38938) @[lastincisor](https://github.com/lastincisor)
 
     TiDB 启用密码连续错误限制登录策略功能后，当用户登录时，如果连续多次密码错误，账户将被临时锁定，达到锁定时间后将自动解锁。
 
@@ -114,7 +114,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
 ### 可观测性
 
-* TiDB Dashboard 在 Kubernetes 环境支持独立 Pod 部署 [#1447](https://github.com/pingcap/tidb-dashboard/issues/1447) @[SabaPing](https://github.com/SabaPing) shichun-0415
+* TiDB Dashboard 在 Kubernetes 环境支持独立 Pod 部署 [#1447](https://github.com/pingcap/tidb-dashboard/issues/1447) @[SabaPing](https://github.com/SabaPing)
 
     TiDB v6.5.0 且 TiDB Operator v1.4.0 之后，在 Kubernetes 上支持将 TiDB Dashboard 作为独立的 Pod 部署。在 TiDB Operator 环境，可直接访问该 Pod 的 IP 来打开 TiDB Dashboard。
 
@@ -126,26 +126,26 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
   更多信息，请参考 [TiDB Operator 部署独立的 TiDB Dashboard](https://docs.pingcap.com/zh/tidb-in-kubernetes/dev/get-started#部署独立的-tidb-dashboard)。
 
-* Performance Overview 面板中新增 TiFlash 和 CDC (Change Data Capture) 面板 [#39230](https://github.com/pingcap/tidb/issues/39230) @[dbsid](https://github.com/dbsid) 
+* Performance Overview 面板中新增 TiFlash 和 CDC (Change Data Capture) 面板 [#39230](https://github.com/pingcap/tidb/issues/39230) @[dbsid](https://github.com/dbsid)
 
     TiDB 从 v6.1.0 起在 Grafana 中引入了 Performance Overview 面板，为 TiDB、TiKV、PD 提供了系统级别的总体性能诊断入口。在 v6.5.0 中，Performance Overview 面板中新增了 TiFlash 和 CDC 面板。通过此次新增，从 v6.5.0 起，使用单个 Performance Overview 面板即可分析 TiDB 集群中所有组件的性能。
 
     TiFlash 和 CDC 面板重新编排了 TiFlash 和 TiCDC 相关的监控信息，可以帮助你大幅提高 TiFlash 和 TiCDC 的性能分析和故障诊断效率：
-    
+
     - 通过 [TiFlash 面板](/grafana-performance-overview-dashboard.md#tiflash)，你可以直观地了解 TiFlash 集群的请求类型、延迟分析和资源使用概览。
     - 通过 [CDC 面板](/grafana-performance-overview-dashboard.md#cdc)，你可以直观地了解 TiCDC 集群的健康状况、同步延迟、数据流和下游写入延迟等信息。
-    
+
   更多信息，请参考[用户文档](/performance-tuning-methods.md)。
 
 ### 性能
 
-* 索引合并 [INDEX MERGE](/glossary.md#index-merge) 功能支持 `AND` 连接的表达式 [#39333](https://github.com/pingcap/tidb/issues/39333) @[guo-shaoge](https://github.com/guo-shaoge) @[time-and-fate](https://github.com/time-and-fate) @[hailanwhu](https://github.com/hailanwhu) 
+* 索引合并 [INDEX MERGE](/glossary.md#index-merge) 功能支持 `AND` 连接的表达式 [#39333](https://github.com/pingcap/tidb/issues/39333) @[guo-shaoge](https://github.com/guo-shaoge) @[time-and-fate](https://github.com/time-and-fate) @[hailanwhu](https://github.com/hailanwhu)
 
     在 v6.5.0 前，TiDB 只支持对 `OR` 连接词的过滤条件使用索引合并特性。自 v6.5.0 起，TiDB 支持对于在 `WHERE` 子句中使用 `AND` 连接的过滤条件使用索引合并特性。TiDB 的索引合并至此可以覆盖更多普遍的查询过滤条件组合，不再限定于并集（`OR`）关系。v6.5.0 仅支持优化器自动选择 `OR` 条件下的索引合并。要开启对于 `AND` 连接的索引合并，你需要使用 [`USE_INDEX_MERGE`](/optimizer-hints.md#use_index_merget1_name-idx1_name--idx2_name-) Hint。
 
     关于索引合并功能的更多信息，请参阅 [v5.4.0 Release Notes](/releases/release-5.4.0.md#性能)，以及优化器相关的[用户文档](/explain-index-merge.md)
 
-* 新增支持下推以下 JSON 函数至 TiFlash [#39458](https://github.com/pingcap/tidb/issues/39458) @[yibin87](https://github.com/yibin87) 
+* 新增支持下推以下 JSON 函数至 TiFlash [#39458](https://github.com/pingcap/tidb/issues/39458) @[yibin87](https://github.com/yibin87)
 
     * `->`
     * `->>`
@@ -153,23 +153,23 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
   JSON 格式为应用设计提供了灵活的建模方式，目前越来越多的应用采用 JSON 格式进行数据交换和数据存储。通过将 JSON 函数下推至 TiFlash，你可以提高 JSON 类型数据的分析效率，拓展 TiDB 实时分析的应用场景。
 
-* 新增支持下推以下字符串函数至 TiFlash [#6115](https://github.com/pingcap/tiflash/issues/6115) @[xzhangxian1008](https://github.com/xzhangxian1008) 
+* 新增支持下推以下字符串函数至 TiFlash [#6115](https://github.com/pingcap/tiflash/issues/6115) @[xzhangxian1008](https://github.com/xzhangxian1008)
 
     * `regexp_like`
     * `regexp_instr`
     * `regexp_substr`
 
-* 新增全局 Hint 干预[视图](/views.md)内查询计划的生成 [#37887](https://github.com/pingcap/tidb/issues/37887) @[Reminiscent](https://github.com/Reminiscent) 
+* 新增全局 Hint 干预[视图](/views.md)内查询计划的生成 [#37887](https://github.com/pingcap/tidb/issues/37887) @[Reminiscent](https://github.com/Reminiscent)
 
     部分视图访问的场景需要用 Hint 对视图内查询的执行计划进行干预，以获得最佳性能。在 v6.5.0 中，TiDB 允许针对视图内的查询块添加全局 Hint，使查询中定义的 Hint 能够在视图内部生效。该特性为包含复杂视图嵌套的 SQL 提供 Hint 的注入手段，增强了执行计划控制能力，进而稳定复杂 SQL 的执行性能。全局 Hint 通过[查询块命名](/optimizer-hints.md#第-1-步使用-qb_name-hint-重命名视图内的查询块)和 [Hint 引用](/optimizer-hints.md#第-2-步添加实际需要的-hint)来开启。
 
     更多信息，请参考[用户文档](/optimizer-hints.md#全局生效的-Hint)。
 
-* 支持将[分区表](/partitioned-table.md)的排序操作下推至 TiKV [#26166](https://github.com/pingcap/tidb/issues/26166) @[winoros](https://github.com/winoros) 
+* 支持将[分区表](/partitioned-table.md)的排序操作下推至 TiKV [#26166](https://github.com/pingcap/tidb/issues/26166) @[winoros](https://github.com/winoros)
 
     [分区表](/partitioned-table.md)特性在 v6.1.0 正式 GA 后，TiDB 仍然在持续提升分区表相关的性能。在 v6.5.0 中，TiDB 支持将 `ORDER BY` 和 `LIMIT` 等排序操作下推至 TiKV 进行计算和过滤，降低网络 I/O 的开销，提升了使用分区表时 SQL 的性能。
 
-* 优化器引入更精准的代价模型 Cost Model Version 2 (GA) [#35240](https://github.com/pingcap/tidb/issues/35240) @[qw4990](https://github.com/qw4990) 
+* 优化器引入更精准的代价模型 Cost Model Version 2 (GA) [#35240](https://github.com/pingcap/tidb/issues/35240) @[qw4990](https://github.com/qw4990)
 
     TiDB v6.2.0 引入了代价模型 [Cost Model Version 2](/cost-model.md#cost-model-version-2) 作为实验特性，通过更准确的代价估算方式，有利于最优执行计划的选择。尤其在部署了 TiFlash 的情况下，Cost Model Version 2 自动选择合理的存储引擎，避免过多的人工介入。经过一段时间真实场景的测试，这个模型在 v6.5.0 正式 GA。新创建的集群将默认使用 Cost Model Version 2。对于升级到 v6.5.0 的集群，由于 Cost Model Version 2 可能会改变原有的执行计划，在经过充分的性能测试之后，你可以通过设置变量 [`tidb_cost_model_version = 2`](/system-variables.md#tidb_cost_model_version-从-v620-版本开始引入) 使用新的代价模型。
 
@@ -183,7 +183,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
 ### 稳定性
 
-* TiDB 全局内存控制成为正式功能（GA）[#37816](https://github.com/pingcap/tidb/issues/37816) @[wshwsh12](https://github.com/wshwsh12) 
+* TiDB 全局内存控制成为正式功能（GA）[#37816](https://github.com/pingcap/tidb/issues/37816) @[wshwsh12](https://github.com/wshwsh12)
 
     TiDB v6.4.0 引入了全局内存控制作为实验特性。自 v6.5.0 起，全局内存控制成为正式功能，能够跟踪到 TiDB 中主要的内存消耗。当全局内存消耗达到 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 所定义的阈值时，TiDB 会尝试 GC 或取消 SQL 操作等方法限制内存使用，保证 TiDB 的稳定性。
 
@@ -195,13 +195,13 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
 ### 易用性
 
-* 完善 `EXPLAIN ANALYZE` 输出结果中 TiFlash 的 TableFullScan 算子的执行信息 [#5926](https://github.com/pingcap/tiflash/issues/5926) @[hongyunyan](https://github.com/hongyunyan) 
+* 完善 `EXPLAIN ANALYZE` 输出结果中 TiFlash 的 TableFullScan 算子的执行信息 [#5926](https://github.com/pingcap/tiflash/issues/5926) @[hongyunyan](https://github.com/hongyunyan)
 
     `EXPLAIN ANALYZE` 语句可以输出执行计划及运行时的统计信息。在 v6.5.0 中，TiFlash 对 TableFullScan 算子的执行信息进行了完善，补充了 DMFile 相关的执行信息。你可以更加直观地查看 TiFlash 的数据扫描状态信息，方便进行性能分析。
 
     更多信息，请参考[用户文档](/sql-statements/sql-statement-explain-analyze.md)。
 
-* 支持将执行计划打印为 JSON 格式 [#39261](https://github.com/pingcap/tidb/issues/39261) @[fzzf678](https://github.com/fzzf678) 
+* 支持将执行计划打印为 JSON 格式 [#39261](https://github.com/pingcap/tidb/issues/39261) @[fzzf678](https://github.com/fzzf678)
 
     在 v6.5.0 中，TiDB 扩展了执行计划的打印格式。通过 `EXPLAIN FORMAT=tidb_json <SQL语句>` 能够将 SQL 的执行计划以 JSON 格式输出。借助这个能力，SQL 调试工具和诊断工具能够更方便准确地解读执行计划，进而提升 SQL 诊断调优的易用性。
 
@@ -209,7 +209,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
 ### MySQL 兼容性
 
-* 支持高性能、全局单调递增的 `AUTO_INCREMENT` 列属性 (GA) [#38442](https://github.com/pingcap/tidb/issues/38442) @[tiancaiamao](https://github.com/tiancaiamao) 
+* 支持高性能、全局单调递增的 `AUTO_INCREMENT` 列属性 (GA) [#38442](https://github.com/pingcap/tidb/issues/38442) @[tiancaiamao](https://github.com/tiancaiamao)
 
     TiDB v6.4.0 引入了 `AUTO_INCREMENT` 的 MySQL 兼容模式作为实验特性，通过中心化分配自增 ID，实现了自增 ID 在所有 TiDB 实例上单调递增。使用该特性能够更容易地实现查询结果按自增 ID 排序。该功能在 v6.5.0 正式 GA。使用该功能的单表写入 TPS 预期超过 2 万，并支持通过弹性扩容提升单表和整个集群的写入吞吐。要使用 MySQL 兼容模式，你需要在建表时将 `AUTO_ID_CACHE` 设置为 `1`。
 
@@ -221,7 +221,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
 ### 数据迁移
 
-* 支持导出和导入 gzip、snappy、zstd 三种压缩格式的 SQL、CSV 文件 [#38514](https://github.com/pingcap/tidb/issues/38514) @[lichunzhu](https://github.com/lichunzhu) 
+* 支持导出和导入 gzip、snappy、zstd 三种压缩格式的 SQL、CSV 文件 [#38514](https://github.com/pingcap/tidb/issues/38514) @[lichunzhu](https://github.com/lichunzhu)
 
     Dumpling 支持将数据导出为 gzip、snappy、zstd 三种压缩格式的 SQL、CSV 的压缩文件。TiDB Lightning 也支持导入这些格式的压缩文件。
 
@@ -229,13 +229,13 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
     更多信息，请参考[用户文档](/dumpling-overview.md#通过并发提高-dumpling-的导出效率)。
 
-* 优化了 binlog 解析能力 [#924](https://github.com/pingcap/dm/issues/924) @[gmhdbjd](https://github.com/GMHDBJD) 
+* 优化了 binlog 解析能力 [#924](https://github.com/pingcap/dm/issues/924) @[gmhdbjd](https://github.com/GMHDBJD)
 
     该功能允许过滤掉不在迁移任务里的库和表对象的 binlog event，不做解析，从而提升解析效率和稳定性。该策略在 v6.5.0 版本默认生效，无需额外操作。
 
     有这个功能之前，即使仅迁移几张表，也需要解析上游整个 binlog 文件，即仍要解析该 binlog 文件中不需要迁移的表的 binlog event，效率较低。同时，如果不在迁移任务里的库表的 binlog event 不支持解析，还会导致任务失败。推出该功能后，通过只解析在迁移任务里的库表对象的 binlog event，可以大大提升 binlog 解析效率，提升任务稳定性。
 
-* Disk quota 功能 GA [#446](https://github.com/pingcap/tidb-lightning/issues/446) @[buchuitoudegou](https://github.com/buchuitoudegou) 
+* Disk quota 功能 GA [#446](https://github.com/pingcap/tidb-lightning/issues/446) @[buchuitoudegou](https://github.com/buchuitoudegou)
 
     你可以为 TiDB Lightning 配置磁盘配额 (disk quota)。当磁盘配额不足时，TiDB Lightning 会暂停读取源数据以及写入临时文件，而是优先将已经完成排序的 key-value 写入 TiKV。TiDB Lightning 删除本地临时文件后，再继续导入过程。
 
@@ -243,7 +243,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
     更多信息，请参考[用户文档](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#磁盘资源配额-从-v620-版本开始引入)。
 
-* DM 增量数据校验的功能 GA [#4426](https://github.com/pingcap/tiflow/issues/4426) @[D3Hunter](https://github.com/D3Hunter) 
+* DM 增量数据校验的功能 GA [#4426](https://github.com/pingcap/tiflow/issues/4426) @[D3Hunter](https://github.com/D3Hunter)
 
     在将增量数据从上游迁移到下游数据库的过程中，数据的流转有小概率导致错误或者丢失的情况。对于需要依赖强数据一致的场景，如信贷、证券等业务，你可以在数据迁移完成之后再对数据进行全量校验，确保数据的一致性。然而，在某些增量复制的业务场景下，上游和下游的写入是持续的、不会中断的。由于上下游的数据在不断变化，导致用户难以对表里的全部数据进行一致性校验。
 
@@ -253,23 +253,23 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
 ### 数据共享与订阅
 
-* TiCDC 支持输出变更数据至 storage sink（实验特性）[#6797](https://github.com/pingcap/tiflow/issues/6797) @[zhaoxinyu](https://github.com/zhaoxinyu) 
+* TiCDC 支持输出变更数据至 storage sink（实验特性）[#6797](https://github.com/pingcap/tiflow/issues/6797) @[zhaoxinyu](https://github.com/zhaoxinyu)
 
     TiCDC 支持将 changed log 输出到 S3、Azure Blob Storage、NFS，以及兼容 S3 协议的存储服务中。Cloud storage 价格便宜，使用方便。对于不希望使用 Kafka 的用户，可以选择使用 storage sink。使用该功能，TiCDC 会将 changed log 保存到文件，发送到存储系统中。用户自研的消费程序定时从存储系统读取新产生的 changed log 进行数据处理。
 
     Storage sink 支持格式为 canal-json 和 csv 的 changed log。更多信息，请参考[用户文档](/ticdc/ticdc-sink-to-cloud-storage.md)。
 
-* TiCDC 支持在多个 TiDB 集群之间进行双向复制 [#38587](https://github.com/pingcap/tidb/issues/38587) @[xiongjiwei](https://github.com/xiongjiwei) @[asddongmen](https://github.com/asddongmen) 
+* TiCDC 支持在多个 TiDB 集群之间进行双向复制 [#38587](https://github.com/pingcap/tidb/issues/38587) @[xiongjiwei](https://github.com/xiongjiwei) @[asddongmen](https://github.com/asddongmen)
 
     TiCDC 支持在多个 TiDB 集群之间进行双向复制。如果业务上需要 TiDB 多活，尤其是异地多活的场景下，可以使用该功能作为 TiDB 多活的解决方案。只要为每个 TiDB 集群到其他 TiDB 集群的 TiCDC 同步任务配置 `bdr-mode = true` 参数，就可以实现多个 TiDB 集群之间的数据相互复制。
 
     更多信息，请参考[用户文档](/ticdc/ticdc-bidirectional-replication.md)。
-    
-* TiCDC 支持在线更新 TLS 证书 [tiflow#7908](https://github.com/pingcap/tiflow/issues/7908) @[CharlesCheung96](https://github.com/CharlesCheung96) 
+
+* TiCDC 支持在线更新 TLS 证书 [tiflow#7908](https://github.com/pingcap/tiflow/issues/7908) @[CharlesCheung96](https://github.com/CharlesCheung96)
 
     为确保数据安全，用户会对系统使用的证书设置相应的过期策略。经过固定的时间后需要使用新的证书工作。TiCDC v6.5.0 支持在线更新 TLS 证书，在不影响同步的任务的前提下，TiCDC 会自动检测和更新证书，无需用户手动操作，满足用户对证书更新的需求。 
 
-* TiCDC 性能提升 [#7540](https://github.com/pingcap/tiflow/issues/7540) [#7478](https://github.com/pingcap/tiflow/issues/7478) [#7532](https://github.com/pingcap/tiflow/issues/7532) @[sdojjy](https://github.com/sdojjy) [@3AceShowHand](https://github.com/3AceShowHand) shichun-0415
+* TiCDC 性能提升 [#7540](https://github.com/pingcap/tiflow/issues/7540) [#7478](https://github.com/pingcap/tiflow/issues/7478) [#7532](https://github.com/pingcap/tiflow/issues/7532) @[sdojjy](https://github.com/sdojjy) [@3AceShowHand](https://github.com/3AceShowHand)
 
     在 TiDB 场景测试验证中，TiCDC 的性能得到了比较大提升。
 
@@ -277,17 +277,17 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
 ### 备份和恢复
 
-* TiDB 快照备份支持断点续传 [#38647](https://github.com/pingcap/tidb/issues/38647) @[Leavrth](https://github.com/Leavrth) shichun-0415
+* TiDB 快照备份支持断点续传 [#38647](https://github.com/pingcap/tidb/issues/38647) @[Leavrth](https://github.com/Leavrth)
 
     TiDB 快照备份功能支持断点续传。当 BR 遇到对可恢复的错误时会进行重试，但是超过固定重试次数之后会备份退出。断点续传功能允许对持续更长时间的可恢复故障进行重试恢复，比如几十分钟的网络故障。
 
     需要注意的是，如果你没有在 BR 退出后一个小时内完成故障恢复，那么还未备份的快照数据可能会被 GC 机制回收，而造成备份失败。更多信息，请参考[用户文档](/br/br-checkpoint.md)。
 
-* PITR 性能大幅提升 [@joccau](https://github.com/joccau) shichun-0415
+* PITR 性能大幅提升 [@joccau](https://github.com/joccau)
 
   PITR 恢复的日志恢复阶段，单台 TiKV 的恢复速度可以达到 9 MiB/s，提升了 50%。恢复速度可扩展，有效地降低容灾场景的 RTO 指标；容灾场景的 RPO 优化到 5 min，在常规的集群运维，如滚动升级，单 TiKV 故障等场景下，可以达到 RPO = 5 min 的目标。
 
-* TiKV-BR 工具 GA，支持 RawKV 的备份和恢复 [#67](https://github.com/tikv/migration/issues/67) @[pingyu](https://github.com/pingyu) @[haojinming](https://github.com/haojinming) 
+* TiKV-BR 工具 GA，支持 RawKV 的备份和恢复 [#67](https://github.com/tikv/migration/issues/67) @[pingyu](https://github.com/pingyu) @[haojinming](https://github.com/haojinming)
 
     TiKV-BR 是一个 TiKV 集群的备份和恢复工具。TiKV 可以独立于 TiDB，与 PD 构成 KV 数据库，此时的产品形态为 RawKV。TiKV-BR 工具支持对使用 RawKV 的产品进行备份和恢复，也支持将 TiKV 集群中的数据从 `API V1` 备份为 `API V2` 数据，以实现 TiKV 集群 [`api-version`](/tikv-configuration-file.md#api-version-从-v610-版本开始引入) 的升级。
 
