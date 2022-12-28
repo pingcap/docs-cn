@@ -1,6 +1,6 @@
 ---
 title: Storage sink 消费程序开发指引
-summary: 了解如何设计与实现一个 storage sink 的消费程序。
+summary: 了解如何设计与实现一个消费程序来消费 storage sink 中的变更数据。
 ---
 
 # Storage sink 消费程序设计
@@ -23,7 +23,7 @@ TiCDC 不提供消费存储服务的数据的标准实现。本文介绍一个�
 
 以下是 Consumer 消费流程中的组件和功能定义，及其功能注释：
 
-```
+```go
 type StorageReader struct {
 }
 
