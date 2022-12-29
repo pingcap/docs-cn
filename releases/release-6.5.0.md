@@ -345,7 +345,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 | TiKV | `raw-min-ts-outlier-threshold` | 删除 | 从 v6.4.0，该配置项被废弃。从 v6.5.0，该配置项被删除。 |
 | TiKV | [`cdc.min-ts-interval`](/tikv-configuration-file.md#min-ts-interval) | 修改 | 为了降低 CDC 延迟，该配置的默认值从 `1s` 修改为 `200ms`。 |
 | TiKV | [`memory-use-ratio`](/tikv-configuration-file.md#memory-use-ratio-从-v650-版本开始引入) | 新增 | 表示 PITR 日志恢复功能中可用内存与系统总内存的占比。 |
-| TiCDC | [`sink.terminator`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-配置文件说明) | 新增 | 换行符，用来分隔两个数据变更事件。默认值为空，表示使用 "\r\n" 作为换行符。 |
+| TiCDC | [`sink.terminator`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-配置文件说明) | 新增 | 换行符，用来分隔两个数据变更事件。默认值为空，表示使用 `"\r\n"` 作为换行符。 |
 | TiCDC | [`sink.date-separator`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-配置文件说明) | 新增 | 文件路径的日期分隔类型。可选类型有 `none`、`year`、`month`、`day`。默认值为 `none`，即不使用日期分隔。|
 | TiCDC | [`sink.enable-partition-separator`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-配置文件说明) | 新增 | 是否使用 partition 作为分隔字符串，默认值为 false，即一张表中各个 partition 的数据不会分不同的目录来存储。 |
 | TiCDC | [`sink.csv.delimiter`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-配置文件说明) | 新增 | 字段之间的分隔符。必须为 ASCII 字符，默认值为 `,`。 |
