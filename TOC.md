@@ -157,8 +157,8 @@
       - [备份与恢复 RawKV](/br/rawkv-backup-and-restore.md)
       - [增量备份与恢复](/br/br-incremental-guide.md)
   - 集群容灾
-    - [TiDB 容灾方案介绍](xxxx)
-    - [同区域三中心（AZ）部署](xxxx)
+    - [TiDB 容灾方案介绍](/dr-solution-introduction.md)
+    - [同区域三中心（AZ）部署](/dr-multi-replica.md)
     - [使用跨区域主备容灾集群](/dr-secondary-cluster.md)
     - [进行集群数据备份和恢复](/dr-backup-restore.md)
   - [修改时区](/configure-time-zone.md)
@@ -979,6 +979,7 @@
     - [5.2.1](/releases/release-5.2.1.md)
     - [5.2.0](/releases/release-5.2.0.md)
   - v5.1
+    - [5.1.5](/releases/release-5.1.5.md)
     - [5.1.4](/releases/release-5.1.4.md)
     - [5.1.3](/releases/release-5.1.3.md)
     - [5.1.2](/releases/release-5.1.2.md)
