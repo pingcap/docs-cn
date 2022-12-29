@@ -186,7 +186,7 @@
     - [磁盘 I/O 过高](/troubleshoot-high-disk-io.md)
     - [锁冲突与 TTL 超时](/troubleshoot-lock-conflicts.md)
     - [数据索引不一致报错](/troubleshoot-data-inconsistency-errors.md)
-  - 故障诊断工具
+  - 故障诊断方法
     - [通过 SQL 诊断获取集群诊断信息](/information-schema/information-schema-sql-diagnostics.md)
     - [通过 Statement Summary 排查 SQL 性能问题](/statement-summary-tables.md)
     - [使用 Top SQL 定位系统资源消耗过多的查询](/dashboard/top-sql.md)
