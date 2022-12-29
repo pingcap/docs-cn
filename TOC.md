@@ -4,7 +4,7 @@
 - [文档中心](https://docs.pingcap.com/zh)
 - 关于 TiDB
   - [TiDB 简介](/overview.md)
-  - [TiDB 6.4 Release Notes](/releases/release-6.4.0.md)
+  - [TiDB 6.5 Release Notes](/releases/release-6.5.0.md)
   - [基本功能](/basic-features.md)
   - [实验特性](/experimental-features.md)
   - [与 MySQL 的兼容性](/mysql-compatibility.md)
@@ -512,6 +512,7 @@
       - 创建 Changefeed
         - [同步数据到 MySQL 兼容的数据库](/ticdc/ticdc-sink-to-mysql.md)
         - [同步数据到 Kafka](/ticdc/ticdc-sink-to-kafka.md)
+        - [同步数据到存储服务](/ticdc/ticdc-sink-to-cloud-storage.md)
       - [管理 Changefeed](/ticdc/ticdc-manage-changefeed.md)
       - [日志过滤器](/ticdc/ticdc-filter.md)
       - [双向复制](/ticdc/ticdc-bidirectional-replication.md)
@@ -526,7 +527,9 @@
         - [TiCDC Avro Protocol](/ticdc/ticdc-avro-protocol.md)
         - [TiCDC Canal-JSON Protocol](/ticdc/ticdc-canal-json.md)
         - [TiCDC Open Protocol](/ticdc/ticdc-open-protocol.md)
+        - [TiCDC CSV Protocol](/ticdc/ticdc-csv.md)
       - [TiCDC Open API](/ticdc/ticdc-open-api.md)
+      - [Storage sink 消费程序编写指引](/ticdc/ticdc-storage-consumer-dev-guide.md)
       - [兼容性](/ticdc/ticdc-compatibility.md)
     - [故障处理](/ticdc/troubleshoot-ticdc.md)
     - [常见问题解答](/ticdc/ticdc-faq.md)
@@ -943,6 +946,8 @@
   - [版本发布时间线](/releases/release-timeline.md)
   - [TiDB 版本规则](/releases/versioning.md)
   - [TiDB 离线包](/binary-package.md)
+  - v6.5
+    - [6.5.0](/releases/release-6.5.0.md)
   - v6.4
     - [6.4.0-DMR](/releases/release-6.4.0.md)
   - v6.3
@@ -974,6 +979,7 @@
     - [5.2.1](/releases/release-5.2.1.md)
     - [5.2.0](/releases/release-5.2.0.md)
   - v5.1
+    - [5.1.5](/releases/release-5.1.5.md)
     - [5.1.4](/releases/release-5.1.4.md)
     - [5.1.3](/releases/release-5.1.3.md)
     - [5.1.2](/releases/release-5.1.2.md)
