@@ -34,36 +34,7 @@ Enabling metadata lock might have some performance impact on the execution of th
 
 ## Usage
 
-Starting from v6.5.0, TiDB enables metadata lock by default. When you upgrade your existing cluster from v6.4.0 or earlier to v6.5.0 or later, TiDB automatically enables metadata lock. To disable metadata, you can set the system variable [`tidb_enable_metadata_lock`](/system-variables.md#tidb_enable_metadata_lock-new-in-v630) to `OFF`.
-
-## Principles
-
-### Background
-
-DDL operations in TiDB are the online DDL mode. When a DDL statement is being executed, the metadata version of the defined object to be modified might go through multiple minor version changes. The online asynchronous metadata change algorithm only establishes that two adjacent minor versions are compatible, that is, operations between two versions do not break data consistency of the object that DDL changes.
-
-When adding an index to a table, the state of the DDL statement changes as follows: None -> Delete Only, Delete Only -> Write Only, Write Only -> Write Reorg, Write Reorg -> Public.
-
-The following commit process of transactions violates the preceding constraint:
-
-| Transaction  | Version used by transaction  | Latest version in the cluster | Version difference |
-|:-----|:-----------|:-----------|:----|
-| txn1 | None       | None       | 0   |
-| txn2 | DeleteOnly | DeleteOnly | 0   |
-| txn3 | WriteOnly  | WriteOnly  | 0   |
-| txn4 | None       | WriteOnly  | 2   |
-| txn5 | WriteReorg | WriteReorg | 0   |
-| txn6 | WriteOnly  | WriteReorg | 1   |
-| txn7 | Public     | Public     | 0   |
-
-In the preceding table, the metadata version used when `txn4` is committed is two versions different from the latest version in the cluster. This might cause data inconsistency.
-
-### Implementation details
-
-Metadata lock can ensure that the metadata versions used by all transactions in a TiDB cluster differ by one version at most. To achieve this goal, TiDB implements the following two rules:
-
-- When executing a DML, TiDB records metadata objects accessed by the DML in the transaction context, such as tables, views, and corresponding metadata versions. These records are cleaned up when the transaction is committed.
-- When a DDL statement changes state, the latest version of metadata is pushed to all TiDB nodes. If the difference between the metadata version used by all transactions related to this state change on a TiDB node and the current metadata version is less than two, the TiDB node is considered to acquire the metadata lock of the metadata object. The next state change can only be executed after all TiDB nodes in the cluster have obtained the metadata lock of the metadata object.
+Starting from v6.5.0, TiDB enables metadata lock by default. When you upgrade your existing cluster from v6.4.0 or earlier to v6.5.0 or later, TiDB automatically enables metadata lock. To disable metadata lock, you can set the system variable [`tidb_enable_metadata_lock`](/system-variables.md#tidb_enable_metadata_lock-new-in-v630) to `OFF`.
 
 ## Impact
 
@@ -94,7 +65,7 @@ Metadata lock can ensure that the metadata versions used by all transactions in 
     |                            | `ALTER TABLE t MODIFY COLUMN a CHAR(10);` |
     | `SELECT * FROM t;` (returns an error `Information schema is changed`) | |
 
-## Troubleshoot blocked DDLs
+## Observability
 
 TiDB v6.3.0 introduces the `mysql.tidb_mdl_view` view to help you obtain the information of the current blocked DDL.
 
@@ -130,3 +101,32 @@ After killing the transaction, you can select the `mysql.tidb_mdl_view` view aga
 SELECT * FROM mysql.tidb_mdl_view\G
 Empty set (0.01 sec)
 ```
+
+## Principles
+
+### Description of the issue
+
+DDL operations in TiDB are the online DDL mode. When a DDL statement is being executed, the metadata version of the defined object to be modified might go through multiple minor version changes. The online asynchronous metadata change algorithm only establishes that two adjacent minor versions are compatible, that is, operations between two versions do not break data consistency of the object that DDL changes.
+
+When adding an index to a table, the state of the DDL statement changes as follows: None -> Delete Only, Delete Only -> Write Only, Write Only -> Write Reorg, Write Reorg -> Public.
+
+The following commit process of transactions violates the preceding constraint:
+
+| Transaction  | Version used by transaction  | Latest version in the cluster | Version difference |
+|:-----|:-----------|:-----------|:----|
+| txn1 | None       | None       | 0   |
+| txn2 | DeleteOnly | DeleteOnly | 0   |
+| txn3 | WriteOnly  | WriteOnly  | 0   |
+| txn4 | None       | WriteOnly  | 2   |
+| txn5 | WriteReorg | WriteReorg | 0   |
+| txn6 | WriteOnly  | WriteReorg | 1   |
+| txn7 | Public     | Public     | 0   |
+
+In the preceding table, the metadata version used when `txn4` is committed is two versions different from the latest version in the cluster. This might cause data inconsistency.
+
+### Implementation details
+
+Metadata lock can ensure that the metadata versions used by all transactions in a TiDB cluster differ by one version at most. To achieve this goal, TiDB implements the following two rules:
+
+- When executing a DML, TiDB records metadata objects accessed by the DML in the transaction context, such as tables, views, and corresponding metadata versions. These records are cleaned up when the transaction is committed.
+- When a DDL statement changes state, the latest version of metadata is pushed to all TiDB nodes. If the difference between the metadata version used by all transactions related to this state change on a TiDB node and the current metadata version is less than two, the TiDB node is considered to acquire the metadata lock of the metadata object. The next state change can only be executed after all TiDB nodes in the cluster have obtained the metadata lock of the metadata object.
