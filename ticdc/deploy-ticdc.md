@@ -95,7 +95,7 @@ tiup cluster upgrade <cluster-name> <cluster-version> --transfer-timeout 600
 
 > **Note:**
 >
-> In the preceding command, you need to replace `<cluster-name>` and `<cluster-version>` with the actual cluster name and cluster version. For example, the version can be v6.4.0.
+> In the preceding command, you need to replace `<cluster-name>` and `<cluster-version>` with the actual cluster name and cluster version. For example, the version can be v6.5.0.
 
 ### Upgrade cautions
 
