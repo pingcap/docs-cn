@@ -7,12 +7,13 @@ aliases: ['/docs-cn/dev/upgrade-tidb-using-tiup/','/docs-cn/dev/how-to/upgrade/u
 
 本文档适用于以下升级路径：
 
-- 使用 TiUP 从 TiDB 4.0 版本升级至 TiDB 6.4。
-- 使用 TiUP 从 TiDB 5.0-5.4 版本升级至 TiDB 6.4。
-- 使用 TiUP 从 TiDB 6.0 版本升级至 TiDB 6.4。
-- 使用 TiUP 从 TiDB 6.1 版本升级至 TiDB 6.4。
-- 使用 TiUP 从 TiDB 6.2 版本升级至 TiDB 6.4。
-- 使用 TiUP 从 TiDB 6.3 版本升级至 TiDB 6.4。
+- 使用 TiUP 从 TiDB 4.0 版本升级至 TiDB 6.5。
+- 使用 TiUP 从 TiDB 5.0-5.4 版本升级至 TiDB 6.5。
+- 使用 TiUP 从 TiDB 6.0 版本升级至 TiDB 6.5。
+- 使用 TiUP 从 TiDB 6.1 版本升级至 TiDB 6.5。
+- 使用 TiUP 从 TiDB 6.2 版本升级至 TiDB 6.5。
+- 使用 TiUP 从 TiDB 6.3 版本升级至 TiDB 6.5。
+- 使用 TiUP 从 TiDB 6.4 版本升级至 TiDB 6.5。
 
 > **警告：**
 >
@@ -22,17 +23,17 @@ aliases: ['/docs-cn/dev/upgrade-tidb-using-tiup/','/docs-cn/dev/how-to/upgrade/u
 
 > **注意：**
 >
-> 如果原集群是 3.0 或 3.1 或更早的版本，不支持直接升级到 6.4.0 及后续修订版本。你需要先从早期版本升级到 4.0 后，再从 4.0 升级到 6.4.0 及后续修订版本。
+> 如果原集群是 3.0 或 3.1 或更早的版本，不支持直接升级到 6.5.0 及后续修订版本。你需要先从早期版本升级到 4.0 后，再从 4.0 升级到 6.5.0 及后续修订版本。
 
 ## 1. 升级兼容性说明
 
 - TiDB 目前暂不支持版本降级或升级后回退。
-- 使用 TiDB Ansible 管理的 4.0 版本集群，需要先按照 [4.0 版本文档的说明](https://docs.pingcap.com/zh/tidb/v4.0/upgrade-tidb-using-tiup)将集群导入到 TiUP (`tiup cluster`) 管理后，再按本文档说明升级到 6.4.0 版本。
-- 若要将 3.0 之前的版本升级至 6.4.0 版本：
+- 使用 TiDB Ansible 管理的 4.0 版本集群，需要先按照 [4.0 版本文档的说明](https://docs.pingcap.com/zh/tidb/v4.0/upgrade-tidb-using-tiup)将集群导入到 TiUP (`tiup cluster`) 管理后，再按本文档说明升级到 6.5.0 版本。
+- 若要将 3.0 之前的版本升级至 6.5.0 版本：
     1. 首先[通过 TiDB Ansible 升级到 3.0 版本](https://docs.pingcap.com/zh/tidb/v3.0/upgrade-tidb-using-ansible)。
     2. 然后按照 [4.0 版本文档的说明](https://docs.pingcap.com/zh/tidb/v4.0/upgrade-tidb-using-tiup)，使用 TiUP (`tiup cluster`) 将 TiDB Ansible 配置导入。
     3. 将集群升级至 4.0 版本。
-    4. 按本文档说明将集群升级到 6.4.0 版本。
+    4. 按本文档说明将集群升级到 6.5.0 版本。
 - 支持 TiDB Binlog，TiCDC，TiFlash 等组件版本的升级。
 - 具体不同版本的兼容性说明，请查看各个版本的 [Release Note](/releases/release-notes.md)。请根据各个版本的 Release Note 的兼容性更改调整集群的配置。
 - 升级 v5.3 之前版本的集群到 v5.3 及后续版本时，默认部署的 Prometheus 会从 v2.8.1 升级到 v2.27.1，v2.27.1 提供更多的功能并解决了安全风险。Prometheus v2.27.1 相对于 v2.8.1 存在 Alert 时间格式变化，详情见 [Prometheus commit](https://github.com/prometheus/prometheus/commit/7646cbca328278585be15fa615e22f2a50b47d06)。
@@ -116,7 +117,7 @@ tiup update cluster
 > 以下情况可跳过此步骤：
 >
 > - 原集群没有修改过配置参数，或通过 tiup cluster 修改过参数但不需要调整。
-> - 升级后对未修改过的配置项希望使用 `6.4.0` 默认参数。
+> - 升级后对未修改过的配置项希望使用 `6.5.0` 默认参数。
 
 1. 进入拓扑文件的 `vi` 编辑模式：
 
@@ -132,7 +133,7 @@ tiup update cluster
 
 > **注意：**
 >
-> 升级到 6.4.0 版本前，请确认已在 4.0 修改的参数在 6.4.0 版本中是兼容的，可参考 [TiKV 配置文件描述](/tikv-configuration-file.md)。
+> 升级到 6.5.0 版本前，请确认已在 4.0 修改的参数在 6.5.0 版本中是兼容的，可参考 [TiKV 配置文件描述](/tikv-configuration-file.md)。
 
 ### 2.3 检查当前集群的健康状况
 
@@ -162,12 +163,12 @@ tiup cluster check <cluster-name> --cluster
 tiup cluster upgrade <cluster-name> <version>
 ```
 
-以升级到 6.4.0 版本为例：
+以升级到 6.5.0 版本为例：
 
 {{< copyable "shell-regular" >}}
 
 ```
-tiup cluster upgrade <cluster-name> v6.4.0
+tiup cluster upgrade <cluster-name> v6.5.0
 ```
 
 > **注意：**
@@ -219,7 +220,7 @@ tiup cluster display <cluster-name>
 ```
 Cluster type:       tidb
 Cluster name:       <cluster-name>
-Cluster version:    v6.4.0
+Cluster version:    v6.5.0
 ```
 
 > **注意：**
@@ -269,10 +270,10 @@ tiup cluster upgrade <cluster-name> <version> --force
 {{< copyable "" >}}
 
 ```
-tiup install ctl:v6.4.0
+tiup install ctl:v6.5.0
 ```
 
-## 5. TiDB 6.4.0 兼容性变化
+## 5. TiDB 6.5.0 兼容性变化
 
-- 兼容性变化请参考 6.4.0 Release Notes。
+- 兼容性变化请参考 6.5.0 Release Notes。
 - 请避免在对使用 TiDB Binlog 的集群进行滚动升级过程中新创建聚簇索引表。
