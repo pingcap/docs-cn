@@ -5,7 +5,7 @@ summary: Learn how to use bidirectional replication of TiCDC.
 
 # Bidirectional Replication
 
-Starting from v6.5.0, TiCDC supports bi-directional replication among multiple TiDB clusters. Based on this feature, you can create a multi-master TiDB solution using TiCDC.
+Starting from v6.5.0, TiCDC supports bi-directional replication among two TiDB clusters. Based on this feature, you can create a multi-active TiDB solution using TiCDC.
 
 This section describes how to use bi-directional replication taking two TiDB clusters as an example.
 
