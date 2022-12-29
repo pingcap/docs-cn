@@ -36,7 +36,7 @@ The following table shows the meaning of each field in a rule:
 | `Override`        | `true`/`false`                     | Whether to overwrite rules with smaller index (in a group).  |
 | `StartKey`        | `string`, in hexadecimal form                |  Applies to the starting key of a range.                |
 | `EndKey`          | `string`, in hexadecimal form                |  Applies to the ending key of a range.                |
-| `Role`            | `string` | Replica roles, including leader/follower/learner.                           |
+| `Role`            | `string` | Replica roles, including voter/leader/follower/learner.                           |
 | `Count`           | `int`, positive integer                     |  The number of replicas.                            |
 | `LabelConstraint` | `[]Constraint`                    |  Filters nodes based on the label.               |
 | `LocationLabels`  | `[]string`                        |  Used for physical isolation.                       |
