@@ -5,6 +5,10 @@ aliases: ['/docs/dev/releases/release-notes/','/docs/dev/releases/rn/']
 
 # TiDB Release Notes
 
+## 6.5
+
+- [6.5.0](/releases/release-6.5.0.md): 2022-12-29
+
 ## 6.4
 
 - [6.4.0-DMR](/releases/release-6.4.0.md): 2022-11-17
