@@ -74,7 +74,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
     - 需重复使用 TiFlash 查询结果或响应高并发的在线请求
     - 与查询的输入数据相比，所需的结果集比较小，推荐 100 MiB 以内
 
-    更多信息，请参考[用户文档](/tiflash/tiflash-results-materialization.md)。
+  更多信息，请参考[用户文档](/tiflash/tiflash-results-materialization.md)。
 
 * 支持绑定历史执行计划（实验特性）[#39199](https://github.com/pingcap/tidb/issues/39199) @[fzzf678](https://github.com/fzzf678)
 
