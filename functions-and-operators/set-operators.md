@@ -12,7 +12,7 @@ TiDB supports three set operations using the UNION, EXCEPT, and INTERSECT operat
 In mathematics, the union of two sets A and B consists of all elements that are in A or in B. For example:
 
 ```sql
-select 1 union select 2;
+SELECT 1 UNION SELECT 2;
 +---+
 | 1 |
 +---+
@@ -24,19 +24,17 @@ select 1 union select 2;
 
 TiDB supports both `UNION DISTINCT` and `UNION ALL` operators. `UNION DISTINCT` removes duplicate records from the result set, while `UNION ALL` keeps all records including duplicates. `UNION DISTINCT` is used by default in TiDB.
 
-{{< copyable "sql" >}}
-
 ```sql
-create table t1 (a int);
-create table t2 (a int);
-insert into t1 values (1),(2);
-insert into t2 values (1),(3);
+CREATE TABLE t1 (a int);
+CREATE TABLE t2 (a int);
+INSERT INTO t1 VALUES (1),(2);
+INSERT INTO t2 VALUES (1),(3);
 ```
 
 Examples for `UNION DISTINCT` and `UNION ALL` queries are respectively as follows:
 
 ```sql
-select * from t1 union distinct select * from t2;
+SELECT * FROM t1 UNION DISTINCT SELECT * FROM t2;
 +---+
 | a |
 +---+
@@ -45,7 +43,8 @@ select * from t1 union distinct select * from t2;
 | 3 |
 +---+
 3 rows in set (0.00 sec)
-select * from t1 union all select * from t2;
+
+SELECT * FROM t1 UNION ALL SELECT * FROM t2;
 +---+
 | a |
 +---+
@@ -62,7 +61,7 @@ select * from t1 union all select * from t2;
 If A and B are two sets, EXCEPT returns the difference set of A and B which consists of elements that are in A but not in B.
 
 ```sql
-select * from t1 except select * from t2;
+SELECT * FROM t1 EXCEPT SELECT * FROM t2;
 +---+
 | a |
 +---+
@@ -78,7 +77,7 @@ select * from t1 except select * from t2;
 In mathematics, the intersection of two sets A and B consists of all elements that are both in A and B, and no other elements.
 
 ```sql
-select * from t1 intersect select * from t2;
+SELECT * FROM t1 INTERSECT SELECT * FROM t2;
 +---+
 | a |
 +---+
@@ -90,7 +89,7 @@ select * from t1 intersect select * from t2;
 `INTERSECT ALL` operator is not yet supported. INTERSECT operator has higher precedence over EXCEPT and UNION operators.
 
 ```sql
-select * from t1 union all select * from t1 intersect select * from t2;
+SELECT * FROM t1 UNION ALL SELECT * FROM t1 INTERSECT SELECT * FROM t2;
 +---+
 | a |
 +---+
@@ -106,7 +105,7 @@ select * from t1 union all select * from t1 intersect select * from t2;
 TiDB supports using parentheses to specify the precedence of set operations. Expressions in parentheses are processed first.
 
 ```sql
-(select * from t1 union all select * from t1) intersect select * from t2;
+(SELECT * FROM t1 UNION ALL SELECT * FROM t1) INTERSECT SELECT * FROM t2;
 +---+
 | a |
 +---+
@@ -115,12 +114,12 @@ TiDB supports using parentheses to specify the precedence of set operations. Exp
 1 rows in set (0.00 sec)
 ```
 
-## Use `Order By` and `Limit`
+## Use `ORDER BY` and `LIMIT`
 
 TiDB supports using [`ORDER BY`](/media/sqlgram/OrderByOptional.png) or [`LIMIT`](/media/sqlgram/LimitClause.png) clause in set operations. These two clauses must be at the end of the entire statement.
 
 ```sql
-(select * from t1 union all select * from t1 intersect select * from t2) order by a limit 2;
+(SELECT * FROM t1 UNION ALL SELECT * FROM t1 INTERSECT SELECT * FROM t2) ORDER BY a LIMIT 2;
 +---+
 | a |
 +---+

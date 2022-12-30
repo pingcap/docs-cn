@@ -19,52 +19,38 @@ RolenameList ::=
 
 ## Examples
 
-Create a new role for the analytics team, and a new user called `jennifer`:
+Connect to TiDB as the `root` user:
+
+```shell
+mysql -h 127.0.0.1 -P 4000 -u root
+```
+
+Create a new role `analyticsteam` and a new user `jennifer`:
 
 ```sql
-$ mysql -uroot
-Welcome to the MySQL monitor.  Commands end with ; or \g.
-Your MySQL connection id is 37
-Server version: 5.7.25-TiDB-v4.0.0-beta.2-728-ga9177fe84 TiDB Server (Apache License 2.0) Community Edition, MySQL 5.7 compatible
-
-Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
-
-Oracle is a registered trademark of Oracle Corporation and/or its
-affiliates. Other names may be trademarks of their respective
-owners.
-
-Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
-
-mysql> CREATE ROLE analyticsteam;
+CREATE ROLE analyticsteam;
 Query OK, 0 rows affected (0.02 sec)
 
-mysql> GRANT SELECT ON test.* TO analyticsteam;
+GRANT SELECT ON test.* TO analyticsteam;
 Query OK, 0 rows affected (0.02 sec)
 
-mysql> CREATE USER jennifer;
+CREATE USER jennifer;
 Query OK, 0 rows affected (0.01 sec)
 
-mysql> GRANT analyticsteam TO jennifer;
+GRANT analyticsteam TO jennifer;
 Query OK, 0 rows affected (0.01 sec)
 ```
 
-Note that by default `jennifer` needs to `SET ROLE analyticsteam` in order to be able to use the privileges associated with the role:
+Connect to TiDB as the `jennifer` user:
+
+```shell
+mysql -h 127.0.0.1 -P 4000 -u jennifer
+```
+
+Note that by default `jennifer` needs to execute `SET ROLE analyticsteam` in order to be able to use the privileges associated with the `analyticsteam` role:
 
 ```sql
-$ mysql -ujennifer
-Welcome to the MySQL monitor.  Commands end with ; or \g.
-Your MySQL connection id is 32
-Server version: 5.7.25-TiDB-v4.0.0-beta.2-728-ga9177fe84 TiDB Server (Apache License 2.0) Community Edition, MySQL 5.7 compatible
-
-Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
-
-Oracle is a registered trademark of Oracle Corporation and/or its
-affiliates. Other names may be trademarks of their respective
-owners.
-
-Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
-
-mysql> SHOW GRANTS;
+SHOW GRANTS;
 +---------------------------------------------+
 | Grants for User                             |
 +---------------------------------------------+
@@ -73,22 +59,22 @@ mysql> SHOW GRANTS;
 +---------------------------------------------+
 2 rows in set (0.00 sec)
 
-mysql> SHOW TABLES in test;
+SHOW TABLES in test;
 ERROR 1044 (42000): Access denied for user 'jennifer'@'%' to database 'test'
-mysql> SET ROLE analyticsteam;
+SET ROLE analyticsteam;
 Query OK, 0 rows affected (0.00 sec)
 
-mysql> SHOW GRANTS;
+SHOW GRANTS;
 +---------------------------------------------+
 | Grants for User                             |
 +---------------------------------------------+
 | GRANT USAGE ON *.* TO 'jennifer'@'%'        |
-| GRANT Select ON test.* TO 'jennifer'@'%'    |
+| GRANT SELECT ON test.* TO 'jennifer'@'%'    |
 | GRANT 'analyticsteam'@'%' TO 'jennifer'@'%' |
 +---------------------------------------------+
 3 rows in set (0.00 sec)
 
-mysql> SHOW TABLES IN test;
+SHOW TABLES IN test;
 +----------------+
 | Tables_in_test |
 +----------------+
@@ -97,51 +83,39 @@ mysql> SHOW TABLES IN test;
 1 row in set (0.00 sec)
 ```
 
-The statement `SET DEFAULT ROLE` can be used to associated a role to `jennifer` so that she will not have to execute the statement `SET ROLE` in order to assume the privileges associated with the role:
+Connect to TiDB as the `root` user:
+
+```shell
+mysql -h 127.0.0.1 -P 4000 -u root
+```
+
+The statement `SET DEFAULT ROLE` can be used to associate the role `analyticsteam` to `jennifer`:
 
 ```sql
-$ mysql -uroot
-Welcome to the MySQL monitor.  Commands end with ; or \g.
-Your MySQL connection id is 34
-Server version: 5.7.25-TiDB-v4.0.0-beta.2-728-ga9177fe84 TiDB Server (Apache License 2.0) Community Edition, MySQL 5.7 compatible
-
-Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
-
-Oracle is a registered trademark of Oracle Corporation and/or its
-affiliates. Other names may be trademarks of their respective
-owners.
-
-Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
-
-mysql> SET DEFAULT ROLE analyticsteam TO jennifer;
+SET DEFAULT ROLE analyticsteam TO jennifer;
 Query OK, 0 rows affected (0.02 sec)
 ```
 
+Connect to TiDB as the `jennifer` user:
+
+```shell
+mysql -h 127.0.0.1 -P 4000 -u jennifer
+```
+
+After this, the user `jennifer` has the privileges associated with the role `analyticsteam` and `jennifer` does not have to execute the statement `SET ROLE`:
+
 ```sql
-$ mysql -ujennifer
-Welcome to the MySQL monitor.  Commands end with ; or \g.
-Your MySQL connection id is 35
-Server version: 5.7.25-TiDB-v4.0.0-beta.2-728-ga9177fe84 TiDB Server (Apache License 2.0) Community Edition, MySQL 5.7 compatible
-
-Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
-
-Oracle is a registered trademark of Oracle Corporation and/or its
-affiliates. Other names may be trademarks of their respective
-owners.
-
-Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
-
-mysql> SHOW GRANTS;
+SHOW GRANTS;
 +---------------------------------------------+
 | Grants for User                             |
 +---------------------------------------------+
 | GRANT USAGE ON *.* TO 'jennifer'@'%'        |
-| GRANT Select ON test.* TO 'jennifer'@'%'    |
+| GRANT SELECT ON test.* TO 'jennifer'@'%'    |
 | GRANT 'analyticsteam'@'%' TO 'jennifer'@'%' |
 +---------------------------------------------+
 3 rows in set (0.00 sec)
 
-mysql> SHOW TABLES IN test;
+SHOW TABLES IN test;
 +----------------+
 | Tables_in_test |
 +----------------+
@@ -150,43 +124,31 @@ mysql> SHOW TABLES IN test;
 1 row in set (0.00 sec)
 ```
 
-Drop the role for the analyticsteam:
+Connect to TiDB as the `root` user:
+
+```shell
+mysql -h 127.0.0.1 -P 4000 -u root
+```
+
+Drop the role for the `analyticsteam`:
 
 ```sql
-$ mysql -uroot
-Welcome to the MySQL monitor.  Commands end with ; or \g.
-Your MySQL connection id is 41
-Server version: 5.7.25-TiDB-v4.0.0-beta.2-728-ga9177fe84 TiDB Server (Apache License 2.0) Community Edition, MySQL 5.7 compatible
-
-Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
-
-Oracle is a registered trademark of Oracle Corporation and/or its
-affiliates. Other names may be trademarks of their respective
-owners.
-
-Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
-
-mysql> DROP ROLE analyticsteam;
+DROP ROLE analyticsteam;
 Query OK, 0 rows affected (0.02 sec)
 ```
 
-Jennifer no longer has the default role of analyticsteam associated, or can set the role to analyticsteam:
+`jennifer` no longer has the default role of `analyticsteam` associated, nor can set the role to `analyticsteam`.
+
+Connect to TiDB as the `jennifer` user:
+
+```shell
+mysql -h 127.0.0.1 -P 4000 -u jennifer
+```
+
+Show the privileges of `jennifer`:
 
 ```sql
-$ mysql -ujennifer
-Welcome to the MySQL monitor.  Commands end with ; or \g.
-Your MySQL connection id is 42
-Server version: 5.7.25-TiDB-v4.0.0-beta.2-728-ga9177fe84 TiDB Server (Apache License 2.0) Community Edition, MySQL 5.7 compatible
-
-Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
-
-Oracle is a registered trademark of Oracle Corporation and/or its
-affiliates. Other names may be trademarks of their respective
-owners.
-
-Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
-
-mysql> SHOW GRANTS;
+SHOW GRANTS;
 +--------------------------------------+
 | Grants for User                      |
 +--------------------------------------+
@@ -194,7 +156,7 @@ mysql> SHOW GRANTS;
 +--------------------------------------+
 1 row in set (0.00 sec)
 
-mysql> SET ROLE analyticsteam;
+SET ROLE analyticsteam;
 ERROR 3530 (HY000): `analyticsteam`@`%` is is not granted to jennifer@%
 ```
 
@@ -204,11 +166,11 @@ This statement is understood to be fully compatible with roles, which are a feat
 
 ## See also
 
-* [CREATE ROLE](/sql-statements/sql-statement-create-role.md)
+* [`CREATE ROLE`](/sql-statements/sql-statement-create-role.md)
 * [`GRANT <role>`](/sql-statements/sql-statement-grant-role.md)
 * [`REVOKE <role>`](/sql-statements/sql-statement-revoke-role.md)
-* [SET ROLE](/sql-statements/sql-statement-set-role.md)
-* [SET DEFAULT ROLE](/sql-statements/sql-statement-set-default-role.md)
+* [`SET ROLE`](/sql-statements/sql-statement-set-role.md)
+* [`SET DEFAULT ROLE`](/sql-statements/sql-statement-set-default-role.md)
 
 <CustomContent platform="tidb">
 
