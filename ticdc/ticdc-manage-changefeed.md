@@ -1,6 +1,7 @@
 ---
 title: 管理 Changefeed
 summary: 了解 Changefeed 相关的各种管理手段。
+aliases: ['/zh/tidb/stable/manage-ticdc/','/zh/tidb/v6.5/manage-ticdc/']
 ---
 
 # 管理 Changefeed
