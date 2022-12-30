@@ -50,3 +50,18 @@ aliases: ['/docs-cn/dev/tiflash/tune-tiflash-performance/','/docs-cn/dev/referen
     ```sql
     set @@tidb_opt_distinct_agg_push_down = 1;
     ```
+
+5. 尝试使用 `ALTER TABLE ... COMPACT` 进行数据整理：
+
+    [`ALTER TABLE ... COMPACT`](/sql-statement-alter-table-compact.md) 可以触发 TiFlash 节点对某个表或者某个分区的数据进行数据整理。数据整理时，表中的物理数据会被重写，如清理已删除的数据、合并多版本数据等，从而可以获得更高的访问性能，并减少磁盘空间占用。
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    ALTER TABLE employees COMPACT TIFLASH REPLICA;
+    ```
+
+    {{< copyable "sql" >}}
+    ```sql
+    ALTER TABLE employees COMPACT PARTITION pNorth, pEast TIFLASH REPLICA;
+    ```
