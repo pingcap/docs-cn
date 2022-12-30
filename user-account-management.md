@@ -14,14 +14,14 @@ TiDB stores the user accounts in the table of the `mysql.user` system database. 
 
 You can connect to the TiDB server using the MySQL client, and use the specified account and password to login. For each user name, make sure that it contains no more than 32 characters.
 
-```sql
-shell> mysql --port 4000 --user xxx --password
+```shell
+mysql --port 4000 --user xxx --password
 ```
 
 Or use the abbreviation of command line parameters:
 
-```sql
-shell> mysql -P 4000 -u xxx -p
+```shell
+mysql -P 4000 -u xxx -p
 ```
 
 ## Add user accounts
@@ -29,9 +29,9 @@ shell> mysql -P 4000 -u xxx -p
 You can create TiDB accounts in two ways:
 
 - By using the standard account-management SQL statements intended for creating accounts and establishing their privileges, such as `CREATE USER` and `GRANT`.
-- By manipulating the privilege tables directly with statements such as `INSERT`, `UPDATE`, or `DELETE`.
+- By manipulating the privilege tables directly with statements such as `INSERT`, `UPDATE`, or `DELETE`. It is not recommended to use this method to create accounts, because it might lead to incomplete updates.
 
-It is recommended to use the account-management statements, because manipulating the privilege tables directly can lead to incomplete updates. You can also create accounts by using third party GUI tools.
+You can also create accounts by using third party GUI tools.
 
 {{< copyable "sql" >}}
 
