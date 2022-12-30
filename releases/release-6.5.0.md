@@ -356,7 +356,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 ### 其他
 
 - 从 v6.5.0 起，`mysql.user` 表新增 `Password_reuse_history` 和 `Password_reuse_time` 两个字段。
-- 从 v6.5.0 起，[添加索引加速功能](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 默认开启，该功能和 [单 ALTER TABLE 语句增删改多个列或索引](/sql-statements/sql-statement-alter-table.md) 功能未完全兼容，在使用索引加速功能添加唯一索引时，请避免在单条语句添加唯一索引的同时操作其他列或者索引对象。同时该功能与 [PITR (Point-in-time recovery)](/br/br-pitr-guide.md) 不兼容。在使用索引加速功能时，需要确保后台没有启动 PITR 备份任务，否则可能会出现非预期结果。详情请参考 [`tidb_ddl_enable_fast_reorg`](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入)。
+- 从 v6.5.0 起，[添加索引加速功能](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 默认开启。该功能和[单条 `ALTER TABLE` 语句增删改多个列或索引](/sql-statements/sql-statement-alter-table.md) 功能未完全兼容，在使用索引加速功能添加唯一索引时，请避免在单条语句添加唯一索引的同时操作其他列或者索引对象。同时，该功能与 [PITR (Point-in-time recovery)](/br/br-pitr-guide.md) 不兼容。在使用索引加速功能时，需要确保后台没有启动 PITR 备份任务，否则可能会出现非预期结果。详情请参考 [`tidb_ddl_enable_fast_reorg`](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入)。
 
 ## 废弃功能
 
