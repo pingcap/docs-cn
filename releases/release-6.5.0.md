@@ -354,7 +354,7 @@ Compared with the previous LTS 6.1.0, 6.5.0 not only includes new features, impr
 ### Others
 
 - Starting from v6.5.0, the `mysql.user` table adds two new columns: `Password_reuse_history` and `Password_reuse_time`.
-- The [index acceleration](/system-variables.md#tidb_ddl_enable_fast_reorg-new-in-v630) feature is enabled by default and is not compatible with the [PITR (Point-in-time recovery)](/br/br-pitr-guide.md) feature. When using the index acceleration feature, you need to make sure that no PITR backup task is running in the background; otherwise, unexpected results might occur. For more information, see [documentation](/system-variables.md#tidb_ddl_enable_fast_reorg-new-in-v630).
+- Starting from v6.5.0, the [index acceleration](/system-variables.md#tidb_ddl_enable_fast_reorg-new-in-v630) feature is enabled by default. This feature is not fully compatible with [altering multiple columns or indexes in a single `ALTER TABLE` statement](/sql-statements/sql-statement-alter-table.md). When adding a unique index with the index acceleration, you need to avoid altering other columns or indexes in the same statement. This feature is incompatible with [PITR (Point-in-time recovery)](/br/br-pitr-guide.md) either. When using the index acceleration feature, you need to make sure that no PITR backup task is running in the background; otherwise, unexpected results might occur. For more information, see [documentation](/system-variables.md#tidb_ddl_enable_fast_reorg-new-in-v630).
 
 ## Deprecated feature
 

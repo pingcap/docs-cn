@@ -1106,6 +1106,9 @@ MPP is a distributed computing framework provided by the TiFlash engine, which a
 
 > **Warning:**
 >
+>
+> Currently, this feature is not fully compatible with [altering multiple columns or indexes in a single `ALTER TABLE` statement](/sql-statements/sql-statement-alter-table.md). When adding a unique index with the index acceleration, you need to avoid altering other columns or indexes in the same statement.
+>
 > Currently, this feature is not compatible with [PITR (Point-in-time recovery)](/br/backup-and-restore-overview.md). When using index acceleration, you need to ensure that there are no PITR log backup tasks running in the background. Otherwise, unexpected behaviors might occur, including:
 >
 > - If you start a log backup task before adding an index, the adding index process is not accelerated even if index acceleration is enabled. But the index is added in a slow way. Because the log backup task keeps running after being started, it means that the index acceleration feature is disabled in this case. To accelerate the process of adding an index, you can stop the log backup background task first, start and complete the index adding task, and then restart the log backup task and perform a full backup.
