@@ -83,7 +83,7 @@ SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = 'tpcc';
 查询结果中：
 
 * `AVAILABLE` 字段表示该表的 TiFlash 副本是否可用。1 代表可用，0 代表不可用。副本状态变为可用之后就不再改变。
-* `PROGRESS` 字段代表同步进度，在 0.0~1.0 之间，1 代表 TiFlash 副本已经完成同步。
+* `PROGRESS` 字段代表同步进度，进度值在 0 到 1 之间，1 代表 TiFlash 副本已经完成同步。
 
 ## 搜集统计信息
 
