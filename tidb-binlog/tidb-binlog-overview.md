@@ -5,6 +5,10 @@ aliases: ['/docs-cn/dev/tidb-binlog/tidb-binlog-overview/','/docs-cn/dev/referen
 
 # TiDB Binlog 简介
 
+> **警告：**
+>
+> TiDB Binlog 已停止维护，不再推荐使用。建议使用 [TiCDC](/ticdc/ticdc-overview.md) 替代 TiDB Binlog。
+
 TiDB Binlog 是一个用于收集 TiDB 的 binlog，并提供准实时备份和同步功能的商业工具。
 
 TiDB Binlog 支持以下功能场景：

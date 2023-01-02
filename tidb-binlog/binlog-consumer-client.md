@@ -5,6 +5,10 @@ aliases: ['/zh/tidb/dev/binlog-slave-client','/docs-cn/dev/tidb-binlog/binlog-sl
 
 # Binlog Consumer Client 用户文档
 
+> **警告：**
+>
+> TiDB Binlog 已停止维护，不再推荐使用。建议使用 [TiCDC](/ticdc/ticdc-overview.md) 替代 TiDB Binlog。
+
 目前 Drainer 提供了多种输出方式，包括 MySQL、TiDB、file 等。但是用户往往有一些自定义的需求，比如输出到 Elasticsearch、Hive 等，这些需求 Drainer 现在还没有实现，因此 Drainer 增加了输出到 Kafka 的功能，将 binlog 数据解析后按一定的格式再输出到 Kafka 中，用户编写代码从 Kafka 中读出数据再进行处理。
 
 ## 配置 Kafka Drainer

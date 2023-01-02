@@ -5,6 +5,10 @@ aliases: ['/docs-cn/dev/tidb-binlog/handle-tidb-binlog-errors/','/docs-cn/dev/re
 
 # TiDB Binlog 常见错误修复
 
+> **警告：**
+>
+> TiDB Binlog 已停止维护，不再推荐使用。建议使用 [TiCDC](/ticdc/ticdc-overview.md) 替代 TiDB Binlog。
+
 本文档介绍 TiDB Binlog 中常见的错误以及修复方法。
 
 ## Drainer 同步数据到 Kafka 时报错 "kafka server: Message was too large, server rejected it to avoid allocation error"

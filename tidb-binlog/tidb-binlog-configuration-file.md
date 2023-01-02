@@ -5,6 +5,10 @@ aliases: ['/docs-cn/dev/tidb-binlog/tidb-binlog-configuration-file/','/docs-cn/d
 
 # TiDB Binlog 配置说明
 
+> **警告：**
+>
+> TiDB Binlog 已停止维护，不再推荐使用。建议使用 [TiCDC](/ticdc/ticdc-overview.md) 替代 TiDB Binlog。
+
 本文档介绍 TiDB Binlog 的各项配置说明。
 
 ## Pump

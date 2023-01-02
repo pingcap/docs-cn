@@ -132,17 +132,6 @@ TiUniManager 不仅提供对 TiDB 集群的全生命周期的可视化管理，�
 - TiCDC 的输出：TiDB 集群、MySQL、Kafka、Confluent
 - 适用 TiDB 版本：v4.0.6 及以上
 
-### TiDB 增量日志同步 - TiDB Binlog
-
-[TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md) 是收集 TiDB 的增量 binlog 数据，并提供准实时同步和备份的工具。该工具可用于 TiDB 集群间的增量数据同步，如将其中一个 TiDB 集群作为另一个 TiDB 集群的从集群。
-
-基本信息：
-
-- TiDB Binlog 的输入：TiDB 集群
-- TiDB Binlog 的输出：TiDB 集群、MySQL、Kafka 或者增量备份文件
-- 适用 TiDB 版本：v2.1 及以上
-- Kubernetes 支持：[TiDB Binlog 运维文档](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/deploy-tidb-binlog)，[Kubernetes 上的 TiDB Binlog Drainer 配置](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/configure-tidb-binlog-drainer)
-
 ### 数据校验 - sync-diff-inspector
 
 [sync-diff-inspector](/sync-diff-inspector/sync-diff-inspector-overview.md) 是一个用于校验 MySQL/TiDB 中两份数据是否一致的工具。该工具还提供了修复数据的功能，可用于修复少量不一致的数据。

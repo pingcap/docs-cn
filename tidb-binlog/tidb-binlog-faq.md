@@ -5,6 +5,10 @@ aliases: ['/docs-cn/dev/tidb-binlog/tidb-binlog-faq/','/docs-cn/dev/reference/ti
 
 # TiDB Binlog 常见问题
 
+> **警告：**
+>
+> TiDB Binlog 已停止维护，不再推荐使用。建议使用 [TiCDC](/ticdc/ticdc-overview.md) 替代 TiDB Binlog。
+
 本文介绍 TiDB Binlog 使用过程中的常见问题及解决方案。
 
 ## 开启 binog 对 TiDB 的性能有何影响？

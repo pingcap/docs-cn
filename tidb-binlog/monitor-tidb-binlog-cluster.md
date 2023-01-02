@@ -5,6 +5,10 @@ aliases: ['/docs-cn/dev/tidb-binlog/monitor-tidb-binlog-cluster/','/docs-cn/dev/
 
 # TiDB Binlog 集群监控
 
+> **警告：**
+>
+> TiDB Binlog 已停止维护，不再推荐使用。建议使用 [TiCDC](/ticdc/ticdc-overview.md) 替代 TiDB Binlog。
+
 成功部署 TiDB Binlog 集群后，可以进入 Grafana Web 界面（默认地址: <http://grafana_ip:3000>，默认账号：admin，密码：admin）查看 Pump 和 Drainer 的运行状态。
 
 ## 监控指标

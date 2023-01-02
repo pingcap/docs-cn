@@ -6,6 +6,10 @@ aliases: ['/docs-cn/dev/tidb-binlog-deployment-topology/']
 
 # TiDB Binlog 部署拓扑
 
+> **警告：**
+>
+> TiDB Binlog 已停止维护，不再推荐使用。建议使用 [TiCDC](/ticdc/ticdc-overview.md) 替代 TiDB Binlog。
+
 本文介绍在部署最小拓扑集群的基础上，同时部署 [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md)。TiDB Binlog 是目前广泛使用的增量同步组件，可提供准实时备份和同步功能。
 
 ## 拓扑信息

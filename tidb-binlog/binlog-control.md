@@ -6,6 +6,10 @@ aliases: ['/docs-cn/dev/tidb-binlog/binlog-control/']
 
 # binlogctl 工具
 
+> **警告：**
+>
+> TiDB Binlog 已停止维护，不再推荐使用。建议使用 [TiCDC](/ticdc/ticdc-overview.md) 替代 TiDB Binlog。
+
 Binlog Control（以下简称 binlogctl）是 TiDB Binlog 的命令行工具，用于管理 TiDB Binlog 集群。
 
 binlogctl 支持如下这些功能：

@@ -5,6 +5,10 @@ aliases: ['/docs-cn/dev/tidb-binlog/upgrade-tidb-binlog/','/docs-cn/dev/referenc
 
 # TiDB Binlog 版本升级方法
 
+> **警告：**
+>
+> TiDB Binlog 已停止维护，不再推荐使用。建议使用 [TiCDC](/ticdc/ticdc-overview.md) 替代 TiDB Binlog。
+
 如未特别指明，文中出现的 TiDB Binlog 均指最新的 [Cluster](/tidb-binlog/tidb-binlog-overview.md) 版本。
 
 本文介绍通过手动部署的 TiDB Binlog 的版本升级方法，另外有一小节介绍如何从更早的不兼容版本（Kafka/Local 版本）升级到最新版本。
