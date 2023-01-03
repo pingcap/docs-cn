@@ -228,7 +228,7 @@ try (Connection connection = ds.getConnection()) {
 | `prepStmtCacheSqlLimit` |  预处理语句最大大小（默认 256 字符）  |  预处理语句大于 256 字符时   | 按实际预处理语句大小配置 |
 |   `prepStmtCacheSize`   | 预处理语句最大缓存数量 （默认 25 条） |  预处理语句数量大于 25 条时  | 按实际预处理语句数量配置 |
 
-在此处给出一个较为的通用场景的 JDBC 连接字符串配置，以 Host: `127.0.0.1`，Port: `4000`，用户: `root`，密码: 空 ，默认数据库: `test`为例：
+在此处给出一个较为的通用场景的 JDBC 连接字符串配置，以 Host: `127.0.0.1`，Port: `4000`，用户: `root`，密码: 空，默认数据库: `test`为例：
 
 ```
 jdbc:mysql://127.0.0.1:4000/test?user=root&useConfigs=maxPerformance&useServerPrepStmts=true&prepStmtCacheSqlLimit=2048&prepStmtCacheSize=256&rewriteBatchedStatements=true&allowMultiQueries=true
