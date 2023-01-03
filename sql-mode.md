@@ -27,9 +27,9 @@ Modes 是用逗号 (',') 间隔开的一系列不同的模式。使用 `SELECT @
 | ONLY_FULL_GROUP_BY | 如果 GROUP BY 出现的列并没有在 SELECT，HAVING，ORDER BY 中出现，此 SQL 不合法，因为不在 GROUP BY 中的列被查询展示出来不符合正常现象（支持) |
 | NO_UNSIGNED_SUBTRACTION | 在减运算中，如果某个操作数没有符号，不要将结果标记为UNSIGNED（支持）|
 | NO_DIR_IN_CREATE | 创建表时，忽视所有 INDEX DIRECTORY 和 DATA DIRECTORY 指令，该选项仅对从复制服务器有用 （仅语法支持）|
-| NO_KEY_OPTIONS | 使用 SHOW CREATE TABLE 时不会输出 MySQL 特有的语法部分，如 ENGINE，使用 mysqldump 跨DB种类迁移的时需要考虑此选项（仅语法支持）|
-| NO_FIELD_OPTIONS | 使用 SHOW CREATE TABLE 时不会输出 MySQL 特有的语法部分，如 ENGINE，使用 mysqldump 跨DB种类迁移的时需要考虑此选项（仅语法支持）|
-| NO_TABLE_OPTIONS | 使用 SHOW CREATE TABLE 时不会输出 MySQL 特有的语法部分，如 ENGINE，使用 mysqldump 跨DB种类迁移的时需要考虑此选项（仅语法支持）|
+| NO_KEY_OPTIONS | 使用 SHOW CREATE TABLE 时不会输出 MySQL 特有的语法部分，如 ENGINE，使用 mysqldump 跨 DB 种类迁移的时需要考虑此选项（仅语法支持）|
+| NO_FIELD_OPTIONS | 使用 SHOW CREATE TABLE 时不会输出 MySQL 特有的语法部分，如 ENGINE，使用 mysqldump 跨 DB 种类迁移的时需要考虑此选项（仅语法支持）|
+| NO_TABLE_OPTIONS | 使用 SHOW CREATE TABLE 时不会输出 MySQL 特有的语法部分，如 ENGINE，使用 mysqldump 跨 DB 种类迁移的时需要考虑此选项（仅语法支持）|
 | NO_AUTO_VALUE_ON_ZERO | 若启用该模式，在AUTO_INCREMENT列的处理传入的值是 0 或者具体数值时系统直接将该值写入此列，传入 NULL 时系统自动生成下一个序列号（支持）|
 | NO_BACKSLASH_ESCAPES | 若启用该模式，`\` 反斜杠符号仅代表它自己（支持）|
 | STRICT_TRANS_TABLES | 对于事务存储引擎启用严格模式，insert非法值之后，回滚整条语句（支持）|
