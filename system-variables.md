@@ -184,7 +184,9 @@ mysql> SELECT * FROM t1;
 
 - 作用域：GLOBAL
 - 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
+- 类型：整数型
 - 默认值：`300`
+- 取值范围：`[0, 2147483647]`
 - 单位：毫秒
 - 耗时超过该阈值的 DDL 操作会被输出到日志。
 
@@ -202,7 +204,7 @@ mysql> SELECT * FROM t1;
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 类型：整数
+- 类型：整数型
 - 默认值：`0`
 - 取值范围：`[0, 65535]`
 - 该变量用于设置全局自动密码过期策略，默认值为 `0`，即禁用全局自动密码过期。如果设置该变量的值为正整数 N，则表示允许的密码生存期为 N，即必须在 N 天之内更改密码。
@@ -211,7 +213,7 @@ mysql> SELECT * FROM t1;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 类型：整数
+- 类型：整数型
 - 默认值：`0`
 - 取值范围：`[0, 7]`
 - 设置 `WEEK()` 函数使用的周格式。
@@ -228,7 +230,7 @@ mysql> SELECT * FROM t1;
 
 - 作用域：SESSION
 - 默认值：`0`
-- 类型：整数
+- 类型：整数型
 - 表示上一条生成消息的 SQL 语句中的错误数。该变量为只读变量。
 
 ### `foreign_key_checks`
@@ -242,7 +244,7 @@ mysql> SELECT * FROM t1;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 类型：整数
+- 类型：整数型
 - 默认值：`1024`
 - 取值范围：`[4, 18446744073709551615]`
 - 表示 `GROUP_CONCAT()` 函数中，项目的最大缓冲区大小。
@@ -250,12 +252,14 @@ mysql> SELECT * FROM t1;
 ### `have_openssl`
 
 - 作用域：NONE
+- 类型：布尔型
 - 默认值：`DISABLED`
 - 用于 MySQL 兼容性的只读变量。当服务器启用 TLS 时，服务器将其设置为 `YES`。
 
 ### `have_ssl`
 
 - 作用域：NONE
+- 类型：布尔型
 - 默认值：`DISABLED`
 - 用于 MySQL 兼容性的只读变量。当服务器启用 TLS 时，服务器将其设置为 `YES`。
 
@@ -296,9 +300,11 @@ mysql> SELECT * FROM t1;
 
 ### `last_insert_id` <span class="version-mark">从 v5.3.0 版本开始引入</span>
 
-- 返回由 INSERT 语句产生的最新 `AUTO_INSCRENT` 或者 `AUTO_RANDOM` 值，与 `LAST_INSERT_ID()` 的返回的结果相同。与 MySQL 中的 `last_insert_id` 一致。
 - 作用域：SESSION
+- 类型：整数型
 - 默认值：`0`
+- 取值范围：`[0, 9223372036854775807]`
+- 返回由 `INSERT` 语句产生的最新 `AUTO_INSCRENT` 或者 `AUTO_RANDOM` 值，与 `LAST_INSERT_ID()` 的返回的结果相同。与 MySQL 中的 `last_insert_id` 一致。
 
 ### `last_plan_from_binding` <span class="version-mark">从 v4.0 版本开始引入</span>
 
@@ -335,7 +341,7 @@ mysql> SELECT * FROM t1;
 
 - 作用域：GLOBAL
 - 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
-- 类型：整数
+- 类型：整数型
 - 默认值：`0`
 - 取值范围：`[0, 100000]`
 - 该变量表示 TiDB 中同时允许的最大客户端连接数，用于资源控制。
@@ -358,7 +364,7 @@ mysql> SELECT * FROM t1;
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 类型：整数
+- 类型：整数型
 - 默认值：`-1`
 - 范围：`[-1, 1048576]`
 - 指定当前实例中 [`PREPARE`](/sql-statements/sql-statement-prepare.md) 语句的最大数量。
@@ -390,8 +396,9 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 默认值：67108864
-- 取值范围：`[1024, 1073741824]`，且应当为 1024 的整数倍；若取值无法被 1024 整除，则会提示 warning 并向下取整。例如设置为 1025 时，则 TiDB 中的实际取值为 1024。
+- 默认值：`67108864`
+- 取值范围：`[1024, 1073741824]`
+- 该变量取值应为 1024 的整数倍。若取值无法被 1024 整除，则会提示 warning 并向下取整。例如设置为 1025 时，则 TiDB 中的实际取值为 1024。
 - 服务器端和客户端在一次传送数据包的过程中所允许最大的数据包大小，单位为字节。
 - 该变量的行为与 MySQL 兼容。
 
@@ -399,7 +406,7 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 类型：整数
+- 类型：整数型
 - 默认值：`0`
 - 范围：`[0, 4294967295]`
 - 该变量用于建立密码重用策略，使 TiDB 基于密码更改次数限制密码的重复使用。该变量默认值为 `0`，表示禁用基于密码更改次数的密码重用策略。当设置该变量为一个正整数 N 时，表示不允许重复使用最近 N 次使用过的密码。
@@ -408,7 +415,7 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 类型：整数
+- 类型：整数型
 - 默认值：`0`
 - 范围：`[0, 4294967295]`
 - 该变量用于建立密码重用策略，使 TiDB 基于经过时间限制密码重复使用。该变量默认值为 0，表示禁用基于密码经过时间的密码重用策略。当设置该变量为一个正整数 N 时，表示不允许重复使用最近 N 天内使用过的密码。
@@ -549,6 +556,7 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 默认值：`4096`
+- 取值范围：`[0, 9223372036854775807]`
 - 这个变量用于控制当 [`replica-read`](#tidb_replica_read-从-v40-版本开始引入) 设置为 `closest-adaptive` 时，优先将读请求发送至 TiDB server 所在区域副本的阈值。当读请求预估的返回结果的大小超过此阈值时，TiDB 会将读请求优先发送至同一可用区的副本，否则会发送至 leader 副本。
 
 ### `tidb_allow_batch_cop` <span class="version-mark">从 v4.0 版本开始引入</span>
@@ -658,7 +666,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 类型：整数
+- 类型：整数型
 - 默认值：`1`
 - 范围：`[1, 256]`
 - 这个变量用来设置执行统计信息自动更新的并发度。
@@ -720,8 +728,9 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
+- 类型：整数型
 - 默认值：`4000`
-- 范围：`[0, 2147483647]`
+- 范围：`[0, 4294967295]`
 - 使用 `ALTER DATABASE SET TIFLASH REPLICA` 语句为 TiFlash 添加副本时，能容许的不可用表的个数上限。如果超过该上限，则会停止或者以非常慢的速度为库中的剩余表设置 TiFlash 副本。
 
 ### `tidb_broadcast_join_threshold_count` <span class="version-mark">从 v5.0 版本开始引入</span>
@@ -745,7 +754,9 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
+- 类型：整数型
 - 默认值：`4`
+- 取值范围：`[1, 256]`
 - 这个变量用来设置 ANALYZE 语句执行时并发度。
 - 当这个变量被设置得更大时，会对其它的查询语句执行性能产生一定影响。
 
@@ -761,7 +772,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 - 作用域：SESSION
 - 是否持久化到集群：否
-- 类型：整数
+- 类型：整数型
 - 默认值： `0`
 - 范围：`[0, 15]`
 - 当变量非 `0` 时，该 SESSION 写入的数据将被视为是由 TiCDC 写入的。这个变量仅由 TiCDC 设置，任何时候都不应该手动调整该变量。
@@ -787,7 +798,9 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 ### `tidb_checksum_table_concurrency`
 
 - 作用域：SESSION
+- 类型：整数型
 - 默认值：`4`
+- 取值范围：`[1, 256]`
 - 这个变量用来设置 [`ADMIN CHECKSUM TABLE`](/sql-statements/sql-statement-admin-checksum-table.md) 语句执行时扫描索引的并发度。当这个变量被设置得更大时，会对其它的查询语句执行性能产生一定影响。
 
 ### `tidb_config`
@@ -847,6 +860,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 ### `tidb_constraint_check_in_place_pessimistic` <span class="version-mark">从 v6.3.0 版本开始引入</span>
 
 - 作用域：SESSION
+- 类型：布尔型
 - 默认值：当配置项 [`pessimistic-txn.constraint-check-in-place-pessimistic`](/tidb-configuration-file.md#constraint-check-in-place-pessimistic-从-v640-版本开始引入) 为默认值 `true` 时，该变量的默认值为 `ON`。当配置项 [`pessimistic-txn.constraint-check-in-place-pessimistic`](/tidb-configuration-file.md#constraint-check-in-place-pessimistic-从-v640-版本开始引入) 为 `false` 时，该变量的默认值为 `OFF`。
 - 该变量仅适用于悲观事务模型。乐观事务模式中的行为由 [`tidb_constraint_check_in_place`](#tidb_constraint_check_in_place) 控制。
 - 当这个变量设置为 `OFF` 时，唯一约束检查会被推迟到下一次需要对这个索引加锁的语句执行时，或事务提交时才进行。这有助于提高性能，但对于某些应用，可能导致非预期的行为。详情见[约束](/constraints.md#悲观事务)。
@@ -899,7 +913,9 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
+- 类型：整数型
 - 默认值：`2`
+- 取值范围：`[1, 2]`
 - 可选值：
     - `1`：使用 Cost Model Version 1 代价模型。TiDB v6.4.0 及之前的版本默认使用 Cost Model Version 1。
     - `2`：使用 Cost Model Version 2 代价模型。TiDB v6.5.0 正式发布了代价模型 [Cost Model Version 2](/cost-model.md#cost-model-version-2)，在内部测试中比 Version 1 版本的代价模型更加准确。
@@ -908,7 +924,9 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 ### `tidb_current_ts`
 
 - 作用域：SESSION
+- 类型：整数型
 - 默认值：`0`
+- 取值范围：`[0, 9223372036854775807]`
 - 这个变量是一个只读变量，用来获取当前事务的时间戳。
 
 ### `tidb_ddl_disk_quota` <span class="version-mark">从 v6.3.0 版本开始引入</span>
@@ -950,6 +968,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
+- 类型：整数型
 - 默认值：`64`
 - 范围：`[1, 256]`
 - 这个变量用来控制 [`FLASHBACK CLUSTER TO TIMESTAMP`](/sql-statements/sql-statement-flashback-to-timestamp.md) 的并发数。
@@ -968,7 +987,9 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 ### `tidb_ddl_reorg_priority`
 
 - 作用域：SESSION
-- 默认值：PRIORITY_LOW
+- 类型：枚举型
+- 默认值：`PRIORITY_LOW`
+- 可选值：`PRIORITY_LOW`、`PRIORITY_NORMAL`、`PRIORITY_HIGH`
 - 这个变量用来设置 `ADD INDEX` 操作 `re-organize` 阶段的执行优先级，可设置为 `PRIORITY_LOW`/`PRIORITY_NORMAL`/`PRIORITY_HIGH`。
 
 ### `tidb_ddl_reorg_worker_cnt`
@@ -983,6 +1004,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
+- 类型：浮点型
 - 默认值：`0.8`
 - 范围：`[0, 1]`
 - 这个变量用来设置过滤条件中的 `like`、`rlike`、`regexp` 函数在行数估算时的默认选择率，以及是否对这些函数启用 TopN 辅助估算。
@@ -1168,6 +1190,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
+- 类型：布尔型
 - 默认值：`ON`
 - 这个变量用于控制是否让 TiDB 使用并发 DDL 语句。在开启并发 DDL 语句后，DDL 语句的执行流程有所改变，DDL 语句不容易被其他 DDL 语句阻塞，并且能够同时添加多个索引。
 
@@ -1202,7 +1225,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 类型：整数
+- 类型：整数型
 - 默认值：`0`
 - 当 [`tidb_enable_external_ts_read`](#tidb_enable_external_ts_read-从-v640-版本开始引入) 设置为 `ON` 时，TiDB 会依据该变量指定的时间戳读取历史数据。
 
@@ -1267,6 +1290,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
+- 类型：布尔型
 - 默认值：`OFF`
 - 这个变量用于控制是否开启 `FOREIGN KEY` 特性。
 
@@ -1290,6 +1314,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
+- 类型：布尔型
 - 默认值：`OFF`
 - 这个变量用来控制是否开启 General Plan Cache。
 
@@ -1365,6 +1390,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
+- 类型：布尔型
 - 默认值：`ON`
 - 这个变量用于设置是否开启 mutation checker。mutation checker 是一项在 DML 语句执行过程中进行的数据索引一致性校验，校验报错会回滚当前语句。开启该校验会导致 CPU 使用轻微上升。详见[数据索引一致性报错](/troubleshoot-data-inconsistency-errors.md)。
 - 对于新创建的 v6.0.0 及以上的集群，默认值为 `ON`。对于升级版本的集群，如果升级前是低于 v6.0.0 的版本，升级后默认值为 `OFF`。
@@ -1373,8 +1399,8 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
+- 类型：布尔型
 - 默认值：`ON`
-- 可选值：`OFF`，`ON`
 - TiDB v6.2.0 对代价模型的实现进行了代码层面的重构，这个变量用来控制是否使用重构后的代价模型 [Cost Model Version 2](/cost-model.md#cost-model-version-2)。
 - 重构后的代价模型使用完全一样的代价公式，因此不会引起计划选择的变动，此开关默认打开。
 - 从 v6.1 升级至 v6.2 的用户，此开关保持升级前的 `OFF` 状态，此时建议直接打开；对于从 v6.1 之前版本升级至 v6.2 的用户，此开关默认为 `ON`。
@@ -1383,8 +1409,8 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
+- 类型：布尔型
 - 默认值：`OFF`
-- 可选值：`OFF`，`ON`
 - 该变量用于控制 TiDB 执行 `ONLY_FULL_GOUP_BY` 检查时的行为。有关 `ONLY_FULL_GROUP_BY` 的信息可以参考 [MySQL 文档](https://dev.mysql.com/doc/refman/8.0/en/sql-mode.html#sqlmode_only_full_group_by)。在 v6.1 中 TiDB 对该项检查做了更严格正确的处理。
 - 由于可能存在版本升级造成的兼容性问题，在 v6.1 中该变量默认值是 `OFF`，即默认关闭。
 
@@ -1420,6 +1446,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
+- 类型：布尔型
 - 默认值：`OFF`
 - 这个变量用于控制 TiDB 对特殊集合算子 `NOT IN` 和 `!= ALL` 引导的子查询产生的 ANTI JOIN 是否采用 Null Aware Hash Join 的执行方式。
 
@@ -1427,6 +1454,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
+- 类型：布尔型
 - 默认值：`ON`
 - 自 v6.1.0 起，TiDB 的 [Join Reorder 算法](/join-reorder.md)开始支持 Outer Join。该变量用于控制是否启用 Outer Join 的 Join Reorder。
 - 对于从较低版本升级到当前版本的 TiDB：
@@ -1438,6 +1466,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
+- 类型：布尔型
 - 默认值：`OFF`
 - 指定是否对最终的输出结果进行自动排序。
 - 例如，开启该变量后，TiDB 会将 `SELECT a, MAX(b) FROM t GROUP BY a` 处理为 `SELECT a, MAX(b) FROM t GROUP BY a ORDER BY a, MAX(b)`。
@@ -1589,6 +1618,7 @@ Query OK, 0 rows affected (0.09 sec)
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
+- 类型：布尔型
 - 默认值：`OFF`
 - 这个变量用于控制包含增删改的 SQL 语句中的读取操作能否下推到 TiFlash，比如：
 
@@ -1599,8 +1629,8 @@ Query OK, 0 rows affected (0.09 sec)
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
+- 类型：布尔型
 - 默认值：`ON`
-- 可选值：`OFF`，`ON`
 - 设置是否在单条 SQL 语句的内存使用超出系统变量 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 限制时为某些算子启用临时磁盘。
 - 在 v6.3.0 之前这个开关可通过 TiDB 配置文件中的 `oom-use-tmp-storage` 项进行配置。在升级到 v6.3.0 及更新的版本后，集群会自动使用原 `oom-use-tmp-storage` 的值来初始化该开关，配置文件中 `oom-use-tmp-storage` 的新设置不再影响该开关。
 
@@ -1739,9 +1769,11 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 - 作用域：GLOBAL
 - 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
+- 类型：枚举型
 - 默认值：`NO_PRIORITY`
+- 可选值：`NO_PRIORITY`、`LOW_PRIORITY`、`DELAYED`、`HIGH_PRIORITY`
 - 这个变量用于改变 TiDB server 上执行的语句的默认优先级。例如，你可以通过设置该变量来确保正在执行 OLAP 查询的用户优先级低于正在执行 OLTP 查询的用户。
-- 默认值 `NO_PRIORITY` 表示不强制改变执行语句的优先级，其它优先级从低到高可设置为 `LOW_PRIORITY`、`DELAYED` 或 `HIGH_PRIORITY`。
+- 默认值 `NO_PRIORITY` 表示不强制改变执行语句的优先级。
 
 ### `tidb_gc_concurrency` <span class="version-mark">从 v5.0 版本开始引入</span>
 
@@ -1777,6 +1809,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
+- 类型：整数型
 - 默认值：`86400`
 - 范围：`[600, 31536000]`
 - 单位：秒
@@ -1829,6 +1862,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
+- 类型：整数型
 - 默认值：`100`
 - 范围：`[1, 100000]`
 - 这个变量用来控制 General Plan Cache 最多能够缓存的计划数量。
@@ -1837,6 +1871,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
+- 类型：布尔型
 - 默认值：`ON`
 - 这个变量用于指定是否在 slow log 和 statement summary 里包含以二进制格式编码的执行计划。
 - 开启该变量后，即可在 TiDB Dashboard 中查看查询的图形化执行计划。注意，TiDB Dashboard 只显示变量开启时产生的查询的执行计划。
@@ -2044,6 +2079,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
+- 类型：布尔型
 - 默认值：`OFF`
 - 这个变量用来设置是否在非事务语句中立刻返回错误。当设为 `OFF` 时，在碰到第一个报错的 batch 时，非事务 DML 语句即中止，取消其后的所有 batch，返回错误。当设为 `ON` 时，当某个 batch 执行报错时，其后的 batch 会继续执行，直到所有 batch 执行完毕，返回结果时把这些错误合并后返回。
 
@@ -2051,6 +2087,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
+- 类型：整数型
 - 默认值：`43200`
 - 范围：`[0, 2147483647]`
 - 单位：秒
@@ -2085,8 +2122,10 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
+- 类型：整数型
 - 默认值：`-1`
 - 范围：`[-1, 256]`
+- 单位：线程
 - TiFlash 中 request 执行的最大并发度。默认值为 `-1`，表示该系统变量无效。`0` 表示由 TiFlash 系统自动设置该值。
 
 ### `tidb_mem_oom_action` <span class="version-mark">从 v6.1.0 版本开始引入</span>
@@ -2107,8 +2146,10 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
+- 类型：整数型
 - 默认值：`-1`
 - 单位：字节
+- 取值范围：`[-1, 9223372036854775807]`
 - 这个变量用来控制 TiDB 更新统计信息时的最大总内存占用，包括用户执行的 [`ANALYZE TABLE`](/sql-statements/sql-statement-analyze-table.md) 和 TiDB 后台自动执行的统计信息更新任务。当总的内存占用超过这个阈值时，用户执行的 `ANALYZE` 会被终止退出，并通过错误信息提示用户尝试更小的采样率或稍后重试。如果 TiDB 后台自动执行的统计信息更新任务因内存超限而退出，且使用的采样率高于默认值，则会使用默认采样率重试一次。当该变量值为负数或零时，TiDB 不对更新统计信息的前后台任务进行内存限制。
 
 > **注意：**
@@ -2158,7 +2199,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 ### `tidb_memory_debug_mode_min_heap_inuse`
 
 - 作用域：SESSION
-- 类型：INT64
+- 类型：整数型
 - 默认值：`0`
 - 该变量用于 TiDB 内部测试，**不推荐修改该变量值**，因为开启后会影响 TiDB 的性能。
 - 配置此参数后，TiDB 会进入 memory debug 模式进行内存追踪准确度的分析。TiDB 会在后续执行 SQL 语句的过程中频繁触发 GC，并将实际内存使用和内存统计值做对比。若当前内存使用大于 `tidb_memory_debug_mode_min_heap_inuse` 且内存统计误差超过 `tidb_memory_debug_mode_alarm_ratio`，则会输出相关内存信息到日志和文件中。
@@ -2188,7 +2229,9 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
+- 类型：整数型
 - 默认值：`1`
+- 取值范围：`[1, 256]`
 - 设置 `MergeJoin` 算子执行查询时的并发度。
 - **不推荐设置该变量**，修改该变量值可能会造成数据正确性问题。
 
@@ -2279,7 +2322,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 类型：整数
+- 类型：整数型
 - 默认值：`1`
 - 范围：`[0, 2]`
 - 表示是否允许 Broadcast Cartesian Join 算法。
@@ -2431,6 +2474,7 @@ mysql> desc select count(distinct a) from test.t;
 
 - 作用域: SESSION | GLOBAL
 - 是否持久化到集群：是
+- 类型：整数型
 - 默认值：`0`
 - 范围：`[0, 2147483647]`
 - 这个变量用来控制 TiDB Join Reorder 算法的选择。当参与 Join Reorder 的节点个数大于该阈值时，TiDB 选择贪心算法，小于该阈值时 TiDB 选择动态规划 (dynamic programming) 算法。
@@ -2690,12 +2734,14 @@ SHOW WARNINGS;
 ### `tidb_opt_write_row_id`
 
 - 作用域：SESSION
+- 类型：布尔型
 - 默认值：`OFF`
 - 这个变量用来设置是否允许 `INSERT`、`REPLACE` 和 `UPDATE` 操作 `_tidb_rowid` 列，默认是不允许操作。该选项仅用于 TiDB 工具导数据时使用。
 
 ### `tidb_optimizer_selectivity_level`
 
 - 作用域：SESSION
+- 类型：整数型
 - 默认值：`0`
 - 范围：`[0, 2147483647]`
 - 控制优化器估算逻辑的更迭。更改该变量值后，优化器的估算逻辑会产生较大的改变。目前该变量的有效值只有 `0`，不建议设为其它值。
@@ -2704,7 +2750,9 @@ SHOW WARNINGS;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
+- 类型：枚举型
 - 默认值：`dynamic`
+- 可选值：`static`、`dynamic`、`static-only`、`dynamic-only`
 - 这个变量用来设置是否开启分区表动态裁剪模式。默认值为 `dynamic`。但是注意，`dynamic` 模式仅在表级别汇总统计信息（即 GlobalStats）收集完成的情况下生效。如果选择了 `dynamic` 但 GlobalStats 未收集完成，TiDB 会仍采用 `static` 模式。关于 GlobalStats 更多信息，请参考[动态裁剪模式下的分区表统计信息](/statistics.md#动态裁剪模式下的分区表统计信息)。关于动态裁剪模式更多信息，请参考[分区表动态裁剪模式](/partitioned-table.md#动态裁剪模式)。
 
 ### `tidb_persist_analyze_options` <span class="version-mark">从 v5.4.0 版本开始引入</span>
@@ -2842,7 +2890,7 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 > - 该特性与 [`replica-read`](#tidb_replica_read-从-v40-版本开始引入) 尚不兼容，开启 `tidb_rc_read_check_ts` 的读请求无法使用 [`replica-read`](#tidb_replica_read-从-v40-版本开始引入)，请勿同时开启两项特性。
 > - 如果客户端使用游标操作，建议不开启 `tidb_rc_read_check_ts` 这一特性，避免前一批返回数据已经被客户端使用而语句最终会报错的情况。
 
-- 作用域：INSTANCE。自 v6.3.0 起，该变量的作用域由 GLOBAL 或 SESSION 修改为 INSTANCE 级别。
+- 作用域：GLOBAL
 - 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
 - 默认值：`OFF`
 - 该变量用于优化时间戳的获取，适用于悲观事务 `READ-COMMITTED` 隔离级别下读写冲突较少的场景，开启此变量可以避免获取全局 timestamp 带来的延迟和开销，并优化事务内读语句延迟。
@@ -2856,6 +2904,7 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
+- 类型：布尔型
 - 默认值：`OFF`
 - 该变量用于优化时间戳的获取，适用于悲观事务 `READ-COMMITTED` 隔离级别下点写冲突较少的场景。开启此变量可以避免点写语句获取全局时间戳带来的延迟和开销。目前该变量适用的点写语句包括 `UPDATE`、`DELETE`、`SELECT ...... FOR UPDATE` 三种类型。点写语句是指将主键或者唯一键作为过滤条件且最终执行算子包含 `POINT-GET` 的写语句。
 - 如果点写冲突较为严重，开启此变量会增加额外开销和延迟，造成性能回退。更详细的说明，请参考[读已提交隔离级别 (Read Committed) 文档](/transaction-isolation-levels.md#读已提交隔离级别-read-committed)。
@@ -2976,6 +3025,7 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
+- 类型：整数型
 - 默认值：`9223372036854775807`
 - 范围：`[1, 9223372036854775807]`
 - 该变量设置为 [`AUTO_RANDOM`](/auto-random.md) 或 [`SHARD_ROW_ID_BITS`](/shard-row-id-bits.md) 属性列分配的最大连续 ID 数。通常，`AUTO_RANDOM` ID 或带有 `SHARD_ROW_ID_BITS` 属性的行 ID 在一个事务中是增量和连续的。你可以使用该变量来解决大事务场景下的热点问题。
@@ -3129,7 +3179,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 类型：整数
+- 类型：整数型
 - 默认值：`0`
 - 范围：`[0, 25000]`
 - 设置 `IndexLookUp` 算子回表时多个 Coprocessor Task 的 batch 大小。`0` 代表不使用 batch。当 `IndexLookUp` 算子的回表 Task 数量特别多，出现极长的慢查询时，可以适当调大该参数以加速查询。
@@ -3138,6 +3188,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
+- 类型：整数型
 - 默认值：`1`
 - 设置 `StreamAgg` 算子执行查询时的并发度。
 - **不推荐设置该变量**，修改该变量值可能会造成数据正确性问题。
@@ -3199,7 +3250,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 类型：整数
+- 类型：整数型
 - 默认值：`1`
 - 范围：`[1, 256]`
 - 这个变量用来设置 TiDB 执行内部 SQL 语句（例如统计信息自动更新）时 scan 操作的并发度。
@@ -3378,6 +3429,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
+- 类型：整数型
 - 默认值：`16384`
 - 范围：`[1, 1073741824]`
 - 单位：字节
@@ -3433,21 +3485,25 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 ### `tiflash_fastscan` <span class="version-mark">从 v6.3.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
 - 默认值：`OFF`
-- 范围：`ON | OFF`
+- 类型：布尔型
 - 如果开启 [FastScan 功能](/develop/dev-guide-use-fastscan.md)（设置为 `ON` 时），TiFlash 可以提供更高效的查询性能，但不保证查询结果的精度和数据一致性。
 
 ### `tiflash_fine_grained_shuffle_batch_size` <span class="version-mark">从 v6.2.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
 - 默认值：`8192`
-- 范围：`[1, 18446744073709551616]`
+- 范围：`[1, 18446744073709551615]`
 - 细粒度 shuffle 功能开启时，下推到 TiFlash 的窗口函数可以并行执行。该变量控制发送端发送数据的攒批大小。
 - 对性能影响：如果该值设置过小，例如极端值 1 ，会导致每个 Block 都进行一次网络传输。如果设置过大，例如极端值整个表的行数，会导致接收端大部分时间都在等待数据，无法流水线计算。可以观察 TiFlash 接收端收到的行数分布情况，如果大部分线程接收的行数很少，例如只有几百行，可以增加该值以达到减少网络开销的目的。
 
 ### `tiflash_fine_grained_shuffle_stream_count` <span class="version-mark">从 v6.2.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 类型：整数型
 - 默认值：`0`
 - 范围：`[-1, 1024]`
 - 当窗口函数下推到 TiFlash 执行时，可以通过该变量控制窗口函数执行的并行度。不同取值含义：
@@ -3496,7 +3552,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 ### `tx_read_ts`
 
 - 作用域：SESSION
-- 默认值：`0`
+- 默认值：""
 - 在 Stale Read 场景下，该会话变量用于帮助记录 Stable Read TS 值。
 - 该变量仅用于 TiDB 内部实现，**不推荐设置该变量**。
 
@@ -3540,7 +3596,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 类型：整数
+- 类型：整数型
 - 默认值：`8`
 - 范围：`[0, 2147483647]`
 - 该变量是密码复杂度策略检查中的一个检查项，用于限定密码的最小长度，默认最小长度为 8。只有 [`validate_password.enable`](/system-variables.md#validate_passwordenable-从-v650-版本开始引入) 开启时，该变量才生效。
@@ -3551,7 +3607,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 类型：整数
+- 类型：整数型
 - 默认值：`1`
 - 范围：`[0, 2147483647]`
 - 该变量是密码复杂度策略检查中的一个检查项，用于限定密码中至少需要包含多少个大写字符和小写字符。只有当 [`validate_password.enable`](/system-variables.md#validate_passwordenable-从-v650-版本开始引入) 开启且 [validate_password.policy](/system-variables.md#validate_passwordpolicy-从-v650-版本开始引入) 大于或等于 `1` (MEDIUM) 时，该变量才生效。
@@ -3561,7 +3617,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 类型：整数
+- 类型：整数型
 - 默认值：`1`
 - 范围：`[0, 2147483647]`
 - 该变量是密码复杂度策略检查中的一个检查项，用于限定密码中至少需要包含多少个数字字符。只有当 [`validate_password.enable`](/system-variables.md#validate_passwordenable-从-v650-版本开始引入) 开启且 [validate_password.policy](/system-variables.md#validate_passwordpolicy-从-v650-版本开始引入) 大于或等于 `1` (MEDIUM) 时，该变量才生效。
@@ -3583,7 +3639,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 类型：整数
+- 类型：整数型
 - 默认值：`1`
 - 范围：`[0, 2147483647]`
 - 该变量是密码[复杂度策略检查](/password-management.md#密码复杂度策略)中的一个检查项，用于限定密码中至少需要包含多少个特殊字符。只有当 [`validate_password.enable`](/system-variables.md#validate_passwordenable-从-v650-版本开始引入) 开启且 [validate_password.policy](/system-variables.md#validate_passwordpolicy-从-v650-版本开始引入) 大于或等于 `1` (MEDIUM) 时，该变量才生效。
