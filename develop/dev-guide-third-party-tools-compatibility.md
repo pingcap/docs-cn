@@ -87,7 +87,7 @@ MySQL Connector/J 的排序规则保存在客户端内，通过获取的服务�
 
 **描述**
 
-TiDB 中 无法使用 `NO_BACKSLASH_ESCAPES` 参数从而不进行 `\` 字符的转义。已提 [issue](https://github.com/pingcap/tidb/issues/35302)。
+TiDB 中无法使用 `NO_BACKSLASH_ESCAPES` 参数从而不进行 `\` 字符的转义。已提 [issue](https://github.com/pingcap/tidb/issues/35302)。
 
 **规避方法**
 

@@ -67,7 +67,7 @@ aliases: ['/docs-cn/dev/geo-distributed-deployment-topology/']
     replication.location-labels: ["zone","dc","rack","host"]
     ```
 
-- 调整 Raft Group 的副本数据量为 5 ，保证集群的高可用性。
+- 调整 Raft Group 的副本数据量为 5，保证集群的高可用性。
 
     ```yaml
     replication.max-replicas: 5

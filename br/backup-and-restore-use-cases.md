@@ -44,13 +44,13 @@ aliases: ['/docs-cn/dev/br/backup-and-restore-use-cases/','/docs-cn/dev/referenc
 - 安装：
 
     ```shell
-    `tiup install br:v6.5.0`
+    tiup install br:v6.5.0
     ```
 
 - 升级：
 
     ```shell
-    `tiup update br:v6.5.0`
+    tiup update br:v6.5.0
     ```
 
 ## 配置备份存储 (Amazon S3)

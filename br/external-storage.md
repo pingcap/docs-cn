@@ -7,7 +7,7 @@ summary: 了解 BR、TiDB Lightning 和 Dumpling 中所用外部存储服务的 
 
 # 外部存储
 
-Backup & Restore (BR)、TiDB Lightning 和 Dumpling 都支持在本地文件系统和 Amazon S3 上读写数据；另外 BR 还支持 Google Cloud Storage、Azure Blob Storage (Azblob)。通过传入不同 URL scheme 到 br 工具 的 `--storage` (`-s`) 参数、TiDB Lightning 的 `-d` 参数及 Dumpling 中的 `--output` (`-o`) 参数，可以区分不同的存储方式。
+Backup & Restore (BR)、TiDB Lightning 和 Dumpling 都支持在本地文件系统和 Amazon S3 上读写数据；另外 BR 还支持 Google Cloud Storage、Azure Blob Storage (Azblob)。通过传入不同 URL scheme 到 br 工具的 `--storage` (`-s`) 参数、TiDB Lightning 的 `-d` 参数及 Dumpling 中的 `--output` (`-o`) 参数，可以区分不同的存储方式。
 
 ## Scheme
 
