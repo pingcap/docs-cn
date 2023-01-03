@@ -8,7 +8,7 @@ aliases: ['/docs-cn/dev/functions-and-operators/operators/','/docs-cn/dev/refere
 | 操作符名 | 功能描述 |
 | ------- | -------------------------------- |
 | [`AND`, &&](https://dev.mysql.com/doc/refman/5.7/en/logical-operators.html#operator_and) | 逻辑与 |
-| [`=`](https://dev.mysql.com/doc/refman/5.7/en/assignment-operators.html#operator_assign-equal) | 赋值 (可用于 [`SET`](https://dev.mysql.com/doc/refman/5.7/en/set-variable.html) 语句中，或用于 [`UPDATE`](https://dev.mysql.com/doc/refman/5.7/en/update.html) 语句的 `SET` 中 ) |
+| [`=`](https://dev.mysql.com/doc/refman/5.7/en/assignment-operators.html#operator_assign-equal) | 赋值（可用于 [`SET`](https://dev.mysql.com/doc/refman/5.7/en/set-variable.html) 语句中，或用于 [`UPDATE`](https://dev.mysql.com/doc/refman/5.7/en/update.html) 语句的 `SET` 中） |
 | [`:=`](https://dev.mysql.com/doc/refman/5.7/en/assignment-operators.html#operator_assign-value) | 赋值 |
 | [`BETWEEN ... AND ...`](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#operator_between) | 判断值满足范围 |
 | [`BINARY`](https://dev.mysql.com/doc/refman/5.7/en/cast-functions.html#operator_binary) | 将一个字符串转换为一个二进制字符串 |
@@ -118,7 +118,7 @@ OR, ||
 
 | 操作符名 | 功能描述 |
 | ------- | -------------------------------- |
-| [`=`](https://dev.mysql.com/doc/refman/5.7/en/assignment-operators.html#operator_assign-equal) | 赋值 (可用于 [`SET`](https://dev.mysql.com/doc/refman/5.7/en/set-variable.html) 语句中，或用于 [`UPDATE`](https://dev.mysql.com/doc/refman/5.7/en/update.html) 语句的 `SET` 中 ) |
+| [`=`](https://dev.mysql.com/doc/refman/5.7/en/assignment-operators.html#operator_assign-equal) | 赋值（可用于 [`SET`](https://dev.mysql.com/doc/refman/5.7/en/set-variable.html) 语句中，或用于 [`UPDATE`](https://dev.mysql.com/doc/refman/5.7/en/update.html) 语句的 `SET` 中） |
 | [`:=`](https://dev.mysql.com/doc/refman/5.7/en/assignment-operators.html#operator_assign-value) | 赋值 |
 
 详情参见[这里](https://dev.mysql.com/doc/refman/5.7/en/group-by-functional-dependence.html)。

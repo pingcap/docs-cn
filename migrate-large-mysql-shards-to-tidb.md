@@ -272,7 +272,7 @@ target-database:              # 下游数据库实例配置。
 ##  使用黑白名单配置需要同步的表
 block-allow-list:             # 数据源数据库实例匹配的表的 block-allow-list 过滤规则集，如果 DM 版本早于 v2.0.0-beta.2 则使用 black-white-list。
   bw-rule-1:                  # 黑白名单配置项 ID。
-    do-dbs: ["my_db1"]        # 迁移哪些库。这里将实例1的 my_db1 和实例2的 my_db2 分别配置为两条 rule。以示例如何避免实例1的 my_db2 被同步。
+    do-dbs: ["my_db1"]        # 迁移哪些库。这里将实例 1 的 my_db1 和实例 2 的 my_db2 分别配置为两条 rule，以示例如何避免实例 1 的 my_db2 被同步。
   bw-rule-2:
     do-dbs: ["my_db2"]
 
