@@ -990,7 +990,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 作用域：SESSION
 - 类型：枚举型
 - 默认值：`PRIORITY_LOW`
-- 可选值：`PRIORITY_LOW`，`PRIORITY_NORMAL`，`PRIORITY_HIGH`
+- 可选值：`PRIORITY_LOW`、`PRIORITY_NORMAL`、`PRIORITY_HIGH`
 - 这个变量用来设置 `ADD INDEX` 操作 `re-organize` 阶段的执行优先级，可设置为 `PRIORITY_LOW`/`PRIORITY_NORMAL`/`PRIORITY_HIGH`。
 
 ### `tidb_ddl_reorg_worker_cnt`
