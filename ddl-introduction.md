@@ -1,13 +1,17 @@
 ---
-title: DDL 介绍
-summary: 讲解 TiDB DDL 的原理、用法和常见问题。
+title: TiDB 中 DDL 执行原理及最佳实践
+summary: 讲解 TiDB DDL 的实现原理、在线变更过程、最佳实践等。
 ---
 
-# 相关概念及原理解释
+# TiDB 中 DDL 执行原理及最佳实践
 
-TiDB 采用在线异步变更地方式执行 DDL，DDL 语句的执行不会阻塞其他会话中的 DML 语句。简单来说，在线异步变更 DDL 可以实现用户业务执行过程中对于数据库对象定义进行变更。
+本文介绍了 TiDB 中 DDL 语句的执行原理（包括 DDL owner 模块和在线变更 DDL 的流程）和最佳实践。
 
-## DDL 相关背景与术语介绍
+## DDL 执行原理
+
+TiDB 采用在线异步变更的方式执行 DDL 语句，这样 DDL 语句的执行不会阻塞其他会话中的 DML 语句。简单来说，在线异步变更 DDL 可以实现用户业务执行过程中对于数据库对象定义进行变更。
+
+### DDL 语句类型简介
 
 通常数据库中的 DDL 语句按照执行模式来划分可以分为：
 
@@ -21,25 +25,26 @@ TiDB 采用在线异步变更地方式执行 DDL，DDL 语句的执行不会阻�
   在 TiDB 中，逻辑 DDL 又被称为 General DDL。General DDL 的执行时间都很快，只需要几十毫秒或者几秒。执行这类 DDL 几乎不消耗系统的资源，因此不会影响业务负载。
 
 - **物理 DDL**：物理 DDL 语句则是不但需要修改变更对象的元数据，同时也需要修改变更对象所存储的用户数据，例如，为一张表创建一个索引，不仅需要变更表的定义，同时也需要做一次全表扫描构建新增加的索引。
-在 TiDB 中，物理 DDL 被称作 Reorg(Reorganization) DDL。目前只有 ADD INDEX 以及有损的列类型变更（例如从 INT 转成 CHAR 类型）这两种 DDL。Reorg DDL 的特点是执行时间较长，与表的数据量、机器配置以及业务负载有关系。
-这类 DDL 执行时会影响到业务负载，具体有两个方面。一方面需要从 TiKV 中读取数据并写入新数据，因此会消耗 TiKV 的 CPU 及 IO 资源。另一方面，Owner 节点的 TiDB 需要进行相应的计算，因此会消耗更多的 CPU 资源。由于目前 TiDB 还不支持分布式执行 DDL，因此其他 TiDB 节点不会占用更多的系统资源。
+
+    在 TiDB 中，物理 DDL 被称作 Reorg (Reorganization) DDL。目前只有 ADD INDEX 以及有损的列类型变更（例如从 INT 转成 CHAR 类型）这两种 DDL。Reorg DDL 的特点是执行时间较长，与表的数据量、机器配置以及业务负载有关系。
+
+    这类 DDL 执行时会影响到业务负载，具体有两个方面。一方面需要从 TiKV 中读取数据并写入新数据，因此会消耗 TiKV 的 CPU 及 IO 资源。另一方面，Owner 节点的 TiDB 需要进行相应的计算，因此会消耗更多的 CPU 资源。由于目前 TiDB 还不支持分布式执行 DDL，因此其他 TiDB 节点不会占用更多的系统资源。
 
 > **注意：**
 >
-> 通常我们所说的 DDL 对于用户业务的影响都是由于 Reorg DDL 语句任务的执行造成的。因此优化 DDL 语句对于用户业务的影响也主要集中在对于 Reorg DDL 任务执行期间的设计，降低它对于用户业务的影响；
+> 通常 DDL 对于用户业务的影响都是由于 Reorg DDL 语句任务的执行造成的。因此优化 DDL 语句对于用户业务的影响也主要集中在对于 Reorg DDL 任务执行期间的设计，降低它对于用户业务的影响。
 
-## TiDB DDL 模块相关概念介绍
+### TiDB DDL 模块介绍
 
-**DDL Owner**（简称 owner）：TiDB DDL 模块引入 Owner 的角色来代理执行所有进入到 TiDB 集群当中的 DDL 语句。在当前 TiDB DDL 模块的实现中，整个 TiDB 集群中只有一个节点能当选为 Owner，每个 TiDB 节点都可能当选这个角色（可以通过配置 `run-ddl` 控制某个 TiDB 节点是否竞选 owner）。当选 Owner 后的节点中启动的 worker 才能处理集群中 DDL 任务。
+**DDL Owner**（简称 Owner）：TiDB DDL 模块引入 Owner 的角色来代理执行所有进入到 TiDB 集群当中的 DDL 语句。在当前 TiDB DDL 模块的实现中，整个 TiDB 集群中只有一个节点能当选为 Owner，每个 TiDB 节点都可能当选这个角色（可以通过配置 `run-ddl` 控制某个 TiDB 节点是否竞选 owner）。当选 Owner 后的节点中启动的 worker 才能处理集群中 DDL 任务。
 
-Owner 宿主节点的产生是用 Etcd 的选举功能从多个 TiDB 节点选举出一个节点来担任。Owner 是有任期的，owner 会主动维护自己的任期，即续约。当 owner 节点宕机后，其他节点可以通过 Etcd 感知到并重新选举出新的 owner，在集群中继续担任 DDL 任务执行者的角色。
+Owner 宿主节点的产生是用 etcd 的选举功能从多个 TiDB 节点选举出一个节点来担任。Owner 是有任期的，Owner 会主动维护自己的任期，即续约。当 Owner 节点宕机后，其他节点可以通过 etcd 感知到并重新选举出新的 Owner，在集群中继续担任 DDL 任务执行者的角色。
 
-![owner](/media/owner.png)
+![DDL Owner](/media/ddl-owner.png)
 
 上图给出了一个简单的示意图。
 
-用户如何确定 Owner：
-可以通过 ADMIN SHOW DDL 语句查看当前 DDL owner：
+用户可以通过 `ADMIN SHOW DDL` 语句查看当前 DDL owner：
 
 ```sql
 ADMIN SHOW DDL;
@@ -55,9 +60,7 @@ ADMIN SHOW DDL;
 1 row in set (0.00 sec)
 ```
 
-## TiDB Online DDL 变更详解
-
-### Online DDL 异步变更的原理
+### TiDB 中在线 DDL 异步变更的原理
 
 TiDB 是一种分布式数据库系统，同时 TiDB 用户对于 TiDB 提供在线 DDL 变更能力，有着比较高的诉求，因此 TiDB DDL 模块从设计之初就选择了在线异步变更的模式，能够为 TiDB 的用户提供不停机变更业务的服务能力。
 
