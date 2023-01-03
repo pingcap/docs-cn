@@ -252,6 +252,7 @@ mysql> SELECT * FROM t1;
 ### `have_openssl`
 
 - 作用域：NONE
+- 类型：布尔型
 - 默认值：`DISABLED`
 - 用于 MySQL 兼容性的只读变量。当服务器启用 TLS 时，服务器将其设置为 `YES`。
 
@@ -265,7 +266,6 @@ mysql> SELECT * FROM t1;
 ### `hostname`
 
 - 作用域：NONE
-- 类型：布尔型
 - 默认值：（系统主机名）
 - 这个变量一个只读变量，表示 TiDB server 的主机名。
 
