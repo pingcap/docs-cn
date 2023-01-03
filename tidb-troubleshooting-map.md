@@ -33,6 +33,7 @@ Refer to [5 PD issues](#5-pd-issues).
 - 2.1.1 Wrong TiDB execution plan causes latency increase. Refer to [3.3](#33-wrong-execution-plan).
 - 2.1.2 PD Leader election issue or OOM. Refer to [5.2](#52-pd-election) and [5.3](#53-pd-oom).
 - 2.1.3 A significant number of Leader drops in some TiKV instances. Refer to [4.4](#44-some-tikv-nodes-drop-leader-frequently).
+- 2.1.4 For other causes, see [Troubleshoot Increased Read and Write Latency](/troubleshoot-cpu-issues.md).
 
 ### 2.2 Persistent and significant increase
 
@@ -47,6 +48,8 @@ Refer to [5 PD issues](#5-pd-issues).
 - 2.2.3 TiKV slow write. Refer to [4.5](#45-tikv-write-is-slow).
 
 - 2.2.4 TiDB wrong execution plan. Refer to [3.3](#33-wrong-execution-plan).
+
+- 2.2.5 For other causes, see [Troubleshoot Increased Read and Write Latency](/troubleshoot-cpu-issues.md).
 
 ## 3. TiDB issues
 
@@ -181,6 +184,26 @@ For more information about troubleshooting OOM, see [Troubleshoot TiDB OOM Issue
 ### 3.5 Slow query issues
 
 To identify slow queries, see [Identify slow queries](/identify-slow-queries.md). To analyze and handle slow queries, see [Analyze slow queries](/analyze-slow-queries.md).
+
+### 3.6 Hotspot issues
+
+As a distributed database, TiDB has a load balancing mechanism to distribute the application loads as evenly as possible to different computing or storage nodes, to make better use of server resources. However, in certain scenarios, some application loads cannot be well distributed, which can affect the performance and form a single point of high load, also known as a hotspot.
+
+TiDB provides a complete solution to troubleshooting, resolving or avoiding hotspots. By balancing load hotspots, overall performance can be improved, including improving QPS and reducing latency. For detailed solutions, see [Troubleshoot Hotspot Issues](/troubleshoot-hot-spot-issues.md).
+
+### 3.7 High disk I/O usage
+
+If TiDB's response slows down after you have troubleshot the CPU bottleneck and the bottleneck caused by transaction conflicts, you need to check I/O metrics to help determine the current system bottleneck. For how to locate and handle the issue of high I/O usage in TiDB, see [Troubleshoot High Disk I/O Usage](/troubleshoot-high-disk-io.md).
+
+### 3.8 Lock conflicts
+
+TiDB supports complete distributed transactions. Starting from v3.0, TiDB provides optimistic transaction mode and pessimistic transaction mode. To learn how to troubleshoot lock-related issues and how to handle optimistic and pessimistic lock conflicts, see [Troubleshoot Lock Conflicts](/troubleshoot-lock-conflicts.md).
+
+### 3.9 Inconsistency between data and indexes
+
+TiDB checks consistency between data and indexes when it executes transactions or the [`ADMIN CHECK [TABLE|INDEX]`](/sql-statements/sql-statement-admin-check-table-index.md) statement. If the check finds that a record key-value and the corresponding index key-value are inconsistent, that is, a key-value pair storing row data and the corresponding key-value pair storing its index are inconsistent (for example, more indexes or missing indexes), TiDB reports a data inconsistency error and prints the related errors in error logs.
+
+To learn more about the inconsistency error and how to bypass the check, see [Troubleshoot Inconsistency Between Data and Indexes](/troubleshoot-data-inconsistency-errors.md).
 
 ## 4. TiKV issues
 
@@ -597,11 +620,11 @@ Check the specific cause for busy by viewing the monitor **Grafana** -> **TiKV**
 
     This is the write-write conflict in optimistic transactions. If multiple transactions modify the same key, only one transaction succeed and other transactions automatically obtain the timestamp again and retry the operation, with no impact on the business.
 
-    If the conflict is severe, it might cause transaction failure after multiple retries. In this case, it is recommended to use the pessimistic lock.
+    If the conflict is severe, it might cause transaction failure after multiple retries. In this case, it is recommended to use the pessimistic lock. For more details about the error and the solution, see [Troubleshoot Write Conflicts in Optimistic Transactions](/troubleshoot-write-conflicts.md).
 
 - 7.2.3 `TxnLockNotFound`.
 
-    This transaction commit is too slow, causing it to be rolled back by other transactions after Time To Live (TTL). This transaction will automatically retry, so the business is usually not affected. For a transaction with a size of 0.25 MB or smaller, the default TTL is 3 seconds.
+    This transaction commit is too slow, causing it to be rolled back by other transactions after Time To Live (TTL). This transaction will automatically retry, so the business is usually not affected. For a transaction with a size of 0.25 MB or smaller, the default TTL is 3 seconds. For more details, see the [`LockNotFound` error](/troubleshoot-lock-conflicts.md#locknotfound-error).
 
 - 7.2.4 `PessimisticLockNotFound`.
 
