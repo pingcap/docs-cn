@@ -859,7 +859,6 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 ### `tidb_constraint_check_in_place_pessimistic` <span class="version-mark">从 v6.3.0 版本开始引入</span>
 
 - 作用域：SESSION
-- 是否持久化到集群：是
 - 类型：布尔型
 - 默认值：当配置项 [`pessimistic-txn.constraint-check-in-place-pessimistic`](/tidb-configuration-file.md#constraint-check-in-place-pessimistic-从-v640-版本开始引入) 为默认值 `true` 时，该变量的默认值为 `ON`。当配置项 [`pessimistic-txn.constraint-check-in-place-pessimistic`](/tidb-configuration-file.md#constraint-check-in-place-pessimistic-从-v640-版本开始引入) 为 `false` 时，该变量的默认值为 `OFF`。
 - 该变量仅适用于悲观事务模型。乐观事务模式中的行为由 [`tidb_constraint_check_in_place`](#tidb_constraint_check_in_place) 控制。
