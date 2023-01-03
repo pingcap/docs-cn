@@ -98,7 +98,7 @@ TableList ::=
 |`SQL_CACHE`、`SQL_NO_CACHE` | 是否把请求结果缓存到 TiKV (RocksDB) 的 `BlockCache` 中。对于一次性的大数据量的查询，比如 `count(*)` 查询，为了避免冲掉 `BlockCache` 中用户的热点数据，建议填上 `SQL_NO_CACHE` |
 |`STRAIGHT_JOIN`|`STRAIGHT_JOIN` 会强制优化器按照 `FROM` 子句中所使用的表的顺序做联合查询。当优化器选择的 Join 顺序并不优秀时，你可以使用这个语法来加速查询的执行|
 |`select_expr` | 投影操作列表，一般包括列名、表达式，或者是用 '\*' 表示全部列|
-|`FROM table_references` | 表示数据来源，数据来源可以是一个表（`select * from t;`）或者是多个表 (`select * from t1 join t2;`) 或者是0个表 (`select 1+1 from dual;`, 等价于 `select 1+1;`)|
+|`FROM table_references` | 表示数据来源，数据来源可以是一个表（`select * from t;`）或者是多个表 (`select * from t1 join t2;`) 或者是 0 个表 (`select 1+1 from dual;`，等价于 `select 1+1;`)|
 |`WHERE where_condition` | Where 子句用于设置过滤条件，查询结果中只会包含满足条件的数据|
 |`GROUP BY` | GroupBy 子句用于对查询结果集进行分组|
 |`HAVING where_condition` | Having 子句与 Where 子句作用类似，Having 子句可以让过滤 GroupBy 后的各种数据，Where 子句用于在聚合前过滤记录。|

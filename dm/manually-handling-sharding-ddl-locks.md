@@ -18,7 +18,7 @@ DM (Data Migration) 使用 sharding DDL lock 来确保分库分表的 DDL 操作
 
 ### `shard-ddl-lock`
 
-该命令用于查看 DDL lock 和主动请求 DM-master 解除指定的 DDL lock。命令仅在 DM v6.0 及其以后版本支持, 之前版本可使用 `show-ddl-locks` 和 `unlock-ddl-lock` 命令。
+该命令用于查看 DDL lock 和主动请求 DM-master 解除指定的 DDL lock。命令仅在 DM v6.0 及其以后版本支持，之前版本可使用 `show-ddl-locks` 和 `unlock-ddl-lock` 命令。
 
 {{< copyable "shell-regular" >}}
 

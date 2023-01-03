@@ -5,7 +5,7 @@ aliases: ['/docs-cn/dev/security-compatibility-with-mysql/','/docs-cn/dev/refere
 
 # 与 MySQL 安全特性差异
 
-TiDB 支持与 MySQL 5.7 类似的安全特性，同时 TiDB 还支持 MySQL 8.0 的部分安全特性。 TiDB 的安全特性在实现上 与 MySQL 存在差异。
+TiDB 支持与 MySQL 5.7 类似的安全特性，同时 TiDB 还支持 MySQL 8.0 的部分安全特性。TiDB 的安全特性在实现上与 MySQL 存在差异。
 
 ## 不支持的安全功能特性
 

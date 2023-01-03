@@ -13,7 +13,7 @@ aliases: ['/zh/tidb/dev/usage-scenario-shard-merge/','/zh/tidb/dev/usage-scenari
 
 若要迁移分表总和 1 TiB 以上的数据，则 DM 工具耗时较长，可参考[从大数据量分库分表 MySQL 合并迁移数据到 TiDB](/migrate-large-mysql-shards-to-tidb.md)。
 
-在本文档的示例中，数据源 MySQL 实例 1 和 实例 2 均使用以下表结构，计划将 store_01 和 store_02 中 sale 开头的表合并导入下游 store.sale 表。
+在本文档的示例中，数据源 MySQL 实例 1 和实例 2 均使用以下表结构，计划将 store_01 和 store_02 中 sale 开头的表合并导入下游 store.sale 表。
 
 |Schema|Tables|
 |-|-|
@@ -63,7 +63,7 @@ CREATE TABLE `sale` (
 
 ## 第 1 步：创建数据源
 
-新建 `source1.yaml` 文件, 写入以下内容：
+新建 `source1.yaml` 文件，写入以下内容：
 
 {{< copyable "shell-regular" >}}
 
@@ -100,7 +100,7 @@ tiup dmctl --master-addr ${advertise-addr} operate-source create source1.yaml
 
 ## 第 2 步：创建迁移任务
 
-新建`task1.yaml`文件, 写入以下内容：
+新建`task1.yaml`文件，写入以下内容：
 
 {{< copyable "" >}}
 
@@ -226,7 +226,7 @@ tiup dmctl --master-addr ${advertise-addr} query-status ${task-name}
 
 - 通过 Grafana 查看
 
-    如果使用 TiUP 部署 DM 集群时，正确部署了 Prometheus、Alertmanager 与 Grafana，则使用部署时填写的 IP 及 端口进入 Grafana，选择 DM 的 dashboard 查看 DM 相关监控项。
+    如果使用 TiUP 部署 DM 集群时，正确部署了 Prometheus、Alertmanager 与 Grafana，则使用部署时填写的 IP 及端口进入 Grafana，选择 DM 的 dashboard 查看 DM 相关监控项。
 
 - 通过日志查看
 

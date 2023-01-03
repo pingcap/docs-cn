@@ -11,7 +11,7 @@ aliases: ['/docs-cn/tidb-data-migration/dev/feature-online-ddl-scheme/','/zh/tid
 
 ## DM 与 online DDL 工具协作细节
 
-DM 与 online DDL工具 [gh-ost](https://github.com/github/gh-ost) 和 [pt-osc](https://www.percona.com/doc/percona-toolkit/3.0/pt-online-schema-change.html) 在实现 online-schema-change 过程中的协作细节如下。
+DM 与 online DDL 工具 [gh-ost](https://github.com/github/gh-ost) 和 [pt-osc](https://www.percona.com/doc/percona-toolkit/3.0/pt-online-schema-change.html) 在实现 online-schema-change 过程中的协作细节如下。
 
 ### online-schema-change: gh-ost
 

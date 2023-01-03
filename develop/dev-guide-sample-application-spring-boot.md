@@ -99,7 +99,7 @@ aliases: ['/zh/tidb/dev/sample-application-spring-boot']
 
 请在你的计算机上下载并安装 **Java Development Kit** (JDK)，这是 Java 开发的必备工具。**Spring Boot** 支持 Java 版本 8 以上的 JDK，由于 **Hibernate** 版本的缘故，推荐使用 Java 版本 11 以上的 JDK 。
 
-示例应用程序同时支持 **Oracle JDK** 和 **OpenJDK**，请自行选择，本教程将使用 版本 17 的 **OpenJDK** 。
+示例应用程序同时支持 **Oracle JDK** 和 **OpenJDK**，请自行选择，本教程将使用版本 17 的 **OpenJDK** 。
 
 ## 第 3 步：安装 Maven
 
@@ -238,7 +238,7 @@ aliases: ['/zh/tidb/dev/sample-application-spring-boot']
 
 ## 第 5 步：运行应用程序
 
-此处对应用程序代码进行编译和运行，将产生一个 Web 应用程序。Hibernate 将创建一个 在数据库 `test` 内的表 `player_jpa`，如果你想应用程序的 Restful API 进行请求，这些请求将会在 TiDB 集群上运行[数据库事务](/develop/dev-guide-transaction-overview.md)。
+此处对应用程序代码进行编译和运行，将产生一个 Web 应用程序。Hibernate 将创建一个在数据库 `test` 内的表 `player_jpa`，如果你想应用程序的 Restful API 进行请求，这些请求将会在 TiDB 集群上运行[数据库事务](/develop/dev-guide-transaction-overview.md)。
 
 如果你想了解有关此应用程序的代码的详细信息，可参阅本教程下方的[实现细节](#实现细节)。
 

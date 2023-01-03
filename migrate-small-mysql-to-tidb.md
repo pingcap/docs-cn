@@ -19,7 +19,7 @@ aliases: ['/zh/tidb/dev/usage-scenario-incremental-migration/']
 
 ## 第 1 步：创建数据源
 
-首先，新建 `source1.yaml` 文件, 写入以下内容：
+首先，新建 `source1.yaml` 文件，写入以下内容：
 
 {{< copyable "" >}}
 
@@ -54,7 +54,7 @@ tiup dmctl --master-addr ${advertise-addr} operate-source create source1.yaml
 
 ## 第 2 步：创建迁移任务
 
-新建 `task1.yaml` 文件, 写入以下内容：
+新建 `task1.yaml` 文件，写入以下内容：
 
 {{< copyable "" >}}
 

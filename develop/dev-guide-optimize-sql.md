@@ -231,7 +231,7 @@ ALTER TABLE books DROP INDEX title_price_idx;
 
 ### 解决方案：使用主键查询数据
 
-如果查询中使用主键过滤数据，这条查询的执行速度会非常快，例如表 `books` 的主键是列 `id`, 使用列 `id` 来查询数据：
+如果查询中使用主键过滤数据，这条查询的执行速度会非常快，例如表 `books` 的主键是列 `id`，使用列 `id` 来查询数据：
 
 {{< copyable "sql" >}}
 

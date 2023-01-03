@@ -194,9 +194,9 @@ desc select * from metrics_schema.tidb_query_duration where value is not null an
 +------------------+----------+------+---------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 ```
 
-可以发现执行计划中有一个 `PromQL`, 以及查询监控的 `start_time` 和 `end_time`，还有 `step` 值，在实际执行时，TiDB 会调用 Prometheus 的 `query_range` HTTP API 接口来查询监控数据。
+可以发现执行计划中有一个 `PromQL`，以及查询监控的 `start_time` 和 `end_time`，还有 `step` 值，在实际执行时，TiDB 会调用 Prometheus 的 `query_range` HTTP API 接口来查询监控数据。
 
-从以上结果可知，在 [`2020-03-25 23:40:00`, `2020-03-25 23:42:00`] 时间范围内，每个 label 只有三个时间的值，间隔时间是 1 分钟，即执行计划中的 `step` 值。该间隔时间由以下两个 session 变量决定：
+从以上结果可知，在 `[2020-03-25 23:40:00, 2020-03-25 23:42:00]` 时间范围内，每个 label 只有三个时间的值，间隔时间是 1 分钟，即执行计划中的 `step` 值。该间隔时间由以下两个 session 变量决定：
 
 * `tidb_metric_query_step`：查询的分辨率步长。从 Prometheus 的 `query_range` 接口查询数据时需要指定 `start_time`，`end_time` 和 `step`，其中 `step` 会使用该变量的值。
 * `tidb_metric_query_range_duration`：查询监控时，会将 `PROMQL` 中的 `$RANGE_DURATION` 替换成该变量的值，默认值是 60 秒。

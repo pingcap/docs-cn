@@ -228,7 +228,7 @@ SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = 'bookshop'
 
 > **注意：**
 >
-> 1. 如果你的表使用了别名，你应该将 Hints 当中的 table_name 替代为 alias_name, 否则 Hints 会失效。
+> 1. 如果你的表使用了别名，你应该将 Hints 当中的 table_name 替代为 alias_name，否则 Hints 会失效。
 > 2. 另外，对[公共表表达式](/develop/dev-guide-use-common-table-expression.md)设置 read_from_storage Hint 是不起作用的。
 
 {{< copyable "sql" >}}

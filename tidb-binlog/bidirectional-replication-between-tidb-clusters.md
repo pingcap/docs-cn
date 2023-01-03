@@ -33,7 +33,7 @@ aliases: ['/docs-cn/dev/tidb-binlog/bidirectional-replication-between-tidb-clust
 2. 待同步的事务经过 A 的 Drainer 时，Drainer 为事务加入 [`_drainer_repl_mark` 标识表](#标识表)，并在表中写入本次 DML event 更新，将事务同步至集群 B。
 3. 集群 B 向集群 A 返回带有 `_drainer_repl_mark` 标识表的 binlog event。集群 B 的 Drainer 在解析该 binlog event 时发现带有 DML event 的标识表，放弃同步该 binlog event 到集群 A。
 
-将集群 B 中的数据同步到 集群 A 的流程与以上流程相同，两个集群可以互为上下游。
+将集群 B 中的数据同步到集群 A 的流程与以上流程相同，两个集群可以互为上下游。
 
 > **注意：**
 >
