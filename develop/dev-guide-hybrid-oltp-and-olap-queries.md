@@ -228,7 +228,7 @@ SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = 'bookshop'
 
 > **注意：**
 >
-> 1. 如果你的表使用了别名，你应该将 Hints 当中的 table_name 替代为 alias_name, 否则 Hints 会失效。
+> 1. 如果你的表使用了别名，你应该将 Hints 当中的 table_name 替代为 alias_name，否则 Hints 会失效。
 > 2. 另外，对[公共表表达式](/develop/dev-guide-use-common-table-expression.md)设置 read_from_storage Hint 是不起作用的。
 
 {{< copyable "sql" >}}
@@ -255,7 +255,7 @@ WITH orders_group_by_month AS (
 SELECT * FROM acc;
 ```
 
-如果你通过 `EXPLAIN` 语句查看上面 SQL 的执行计划，你会发现 task 列中会同时出现 `cop[tiflash]` 和 `cop[tikv]` ，这意味着 TiDB 在处理这个查询的时候会同时调度行存查询引擎和列存查询引擎来完成查询任务。需要指出的是，因为 tiflash 和 tikv 存储引擎通常属于不同的计算节点，所以两种查询类型互相之间不受影响。
+如果你通过 `EXPLAIN` 语句查看上面 SQL 的执行计划，你会发现 task 列中会同时出现 `cop[tiflash]` 和 `cop[tikv]`，这意味着 TiDB 在处理这个查询的时候会同时调度行存查询引擎和列存查询引擎来完成查询任务。需要指出的是，因为 tiflash 和 tikv 存储引擎通常属于不同的计算节点，所以两种查询类型互相之间不受影响。
 
 你可以通过阅读[使用 TiDB 读取 TiFlash](/tiflash/use-tidb-to-read-tiflash.md) 小节进一步了解 TiDB 如何选择使用 TiFlash 作为查询引擎。
 

@@ -15,6 +15,20 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：true
 + 如果需要创建大量的表（例如 10 万张以上），建议将此参数设置为 false。
 
+### `tidb_max_reuse_chunk` <span class="version-mark">从 v6.4.0 版本开始引入</span>
+
++ 用于控制每个连接最多缓存的 Chunk 对象数。配置过大会增加 OOM 的风险。
++ 默认值：64
++ 最小值：0
++ 最大值：2147483647
+
+### `tidb_max_reuse_column` <span class="version-mark">从 v6.4.0 版本开始引入</span>
+
++ 用于控制每个连接最多缓存的 column 对象数。配置过大会增加 OOM 的风险。
++ 默认值：256
++ 最小值：0
++ 最大值：2147483647
+
 ### `token-limit`
 
 + 可以同时执行请求的 session 个数
@@ -331,6 +345,46 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：""，支持 TLSv1.1 及以上版本。
 + 可选值：`"TLSv1.0"`、`"TLSv1.1"`、`"TLSv1.2"` 和 `"TLSv1.3"`
 
+### `auth-token-jwks` <span class="version-mark">从 v6.4.0 版本开始引入</span>
+
+> **警告：**
+>
+> `tidb_auth_token` 认证方式仅用于 TiDB Cloud 内部实现，**不要修改该配置**。
+
++ 设置 `tidb_auth_token` 认证方式的 JSON Web Key Sets (JWKS) 的本地文件路径。
++ 默认值：""
+
+### `auth-token-refresh-interval` <span class="version-mark">从 v6.4.0 版本开始引入</span>
+
+> **警告：**
+>
+> `tidb_auth_token` 认证方式仅用于 TiDB Cloud 内部实现，**不要修改该配置**。
+
++ 设置 `tidb_auth_token` 认证方式的 JWKS 刷新时间间隔。
++ 默认值：1h
+
+### `disconnect-on-expired-password` <span class="version-mark">从 v6.5.0 版本开始引入</span>
+
++ 对于密码已过期的用户，通过 `disconnect-on-expired-password` 控制 TiDB 服务端是否直接断开该用户的连接。
++ 默认值：`true`
++ 默认值为 "true" 表示 TiDB 服务端将直接断开密码已过期用户的连接。设置为 "false" 时，TiDB 服务端将密码已过期用户的连接置于“沙盒模式”，允许该用户建立连接并执行密码重置操作。
+
+### `session-token-signing-cert` <span class="version-mark">从 v6.4.0 版本开始引入</span>
+
+> **警告：**
+>
+> 该配置与一个未发布的特性相关。**请勿设置该配置**。
+
++ 默认值：""
+
+### `session-token-signing-key` <span class="version-mark">从 v6.4.0 版本开始引入</span>
+
+> **警告：**
+>
+> 该配置与一个未发布的特性相关。**请勿设置该配置**。
+
++ 默认值：""
+
 ## performance
 
 性能相关配置。
@@ -345,20 +399,11 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 > **警告：**
 >
-> `server-memory-quota` 目前为实验性特性，不建议在生产环境中使用。
+> 自 v6.5.0 起，该配置项被废弃。请使用 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 系统变量进行设置。
 
 + 设置 tidb-server 实例的最大内存用量，单位为字节。
 + 默认值：0
 + 默认值为 0 表示无内存限制。
-
-### `memory-usage-alarm-ratio` <span class="version-mark">从 v4.0.9 版本开始引入</span>
-
-+ tidb-server 实例内存使用占总内存的比例超过一定阈值时会报警。该配置项的有效范围为 `0` 到 `1`。如果配置该选项为 `0` 或 `1`，则表示关闭内存阈值报警功能。
-+ 默认值：0.8
-+ 当内存阈值报警功能开启时，如果配置项 [`server-memory-quota`](/tidb-configuration-file.md#server-memory-quota-从-v409-版本开始引入) 未设置，则内存报警阈值为 `memory-usage-alarm-ratio * 系统内存大小`；如果 `server-memory-quota` 被设置且大于 0，则内存报警阈值为 `memory-usage-alarm-ratio * server-memory-quota`。
-+ 当 TiDB 检测到 tidb-server 的内存使用超过了阈值，则会认为存在内存溢出的风险，会将当前正在执行的所有 SQL 语句中内存使用最高的 10 条语句和运行时间最长的 10 条语句以及 heap profile 记录到目录 [`tmp-storage-path/record`](/tidb-configuration-file.md#tmp-storage-path) 中，并输出一条包含关键字 `tidb-server has the risk of OOM` 的日志。
-+ 该值作为系统变量 [`tidb_memory_usage_alarm_ratio`](/system-variables.md#tidb_memory_usage_alarm_ratio) 的初始值。
-+ 自 v6.1.0 起，已改用配置项 [`instance.tidb_memory_usage_alarm_ratio`](/tidb-configuration-file.md#tidb_memory_usage_alarm_ratio) 或系统变量 [`tidb_memory_usage_alarm_ratio`](/system-variables.md#tidb_memory_usage_alarm_ratio) 来设置 tidb-server 实例内存使用占总内存比例的报警阈值。`memory-usage-alarm-ratio` 仍可使用，但如果同时设置了 `memory-usage-alarm-ratio` 与 `instance.tidb_memory_usage_alarm_ratio`，TiDB 将采用 `instance.tidb_memory_usage_alarm_ratio` 的值。
 
 ### `txn-entry-size-limit` <span class="version-mark">从 v5.0 版本开始引入</span>
 
@@ -374,6 +419,9 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：104857600
 + 单位：Byte
 + 单个事务中，所有 key-value 记录的总大小不能超过该限制。该配置项的最大值不超过 `1099511627776`（表示 1TB）。注意，如果使用了以 `Kafka` 为下游消费者的 `binlog`，如：`arbiter` 集群，该配置项的值不能超过 `1073741824`（表示 1GB），因为这是 `Kafka` 的处理单条消息的最大限制，超过该限制 `Kafka` 将会报错。
++ 在 v6.5.0 及之后的版本中，不再推荐使用该配置项，事务的内存大小会被累计计入所在会话的内存使用量中，并由 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 变量在单个会话内存超阈值时采取控制行为。为了向前兼容，由低版本升级至 v6.5.0 及更高版本时，该配置项的行为如下所述:
+    + 若该配置项未设置，或设置为默认值 (`104857600`)，升级后事务内存大小将会计入所在会话的内存使用中，由 `tidb_mem_quota_query` 变量控制。
+    + 若该配置项未设为默认值 (`104857600`)，升级前后该配置项仍生效，对单个事务大小的限制行为不会发生变化，事务内存大小不由 `tidb_mem_quota_query` 控制。
 
 ### `max-txn-ttl`
 
@@ -683,6 +731,11 @@ TiDB 服务状态相关配置。
 
 + 默认值：false
 
+### constraint-check-in-place-pessimistic <span class="version-mark">从 v6.4.0 版本开始引入</span>
+
++ 用来控制系统变量 [`tidb_constraint_check_in_place_pessimistic`](/system-variables.md#tidb_constraint_check_in_place_pessimistic-从-v630-版本开始引入) 的默认值。
++ 默认值：true
+
 ## isolation-read
 
 读取隔离相关的配置项。
@@ -739,15 +792,6 @@ TiDB 服务状态相关配置。
 + 默认情况下，TiDB 不限制客户端连接数。当本配置项的值大于 `0` 且客户端连接数到达此值时，TiDB 服务端将会拒绝新的客户端连接。
 + 该值作为系统变量 [`max_connections`](/system-variables.md#max_connections) 的初始值。
 + 在 v6.2.0 之前，该功能通过配置项 `max-server-connections` 进行设置。
-
-### `tidb_memory_usage_alarm_ratio`
-
-+ tidb-server 实例内存使用占总内存的比例超过一定阈值时会报警。该配置项的有效范围为 `0` 到 `1`。如果配置该选项为 `0` 或 `1`，则表示关闭内存阈值报警功能。
-+ 默认值：0.8
-+ 当内存阈值报警功能开启时，如果配置项 [`server-memory-quota`](/tidb-configuration-file.md#server-memory-quota-从-v409-版本开始引入) 未设置，则内存报警阈值为 `tidb_memory_usage_alarm_ratio * 系统内存大小`；如果 `server-memory-quota` 被设置且大于 0，则内存报警阈值为 `tidb_memory_usage_alarm_ratio * server-memory-quota`。
-+ 当 TiDB 检测到 tidb-server 的内存使用超过了阈值，则会认为存在内存溢出的风险，会将当前正在执行的所有 SQL 语句中内存使用最高的 10 条语句和运行时间最长的 10 条语句以及 heap profile 记录到目录 [`tmp-storage-path/record`](/tidb-configuration-file.md#tmp-storage-path) 中，并输出一条包含关键字 `tidb-server has the risk of OOM` 的日志。
-+ 该值作为系统变量 [`tidb_memory_usage_alarm_ratio`](/system-variables.md#tidb_memory_usage_alarm_ratio) 的初始值。
-+ 在版本 v6.1.0 之前，该功能通过配置项 `memory-usage-alarm-ratio` 进行设置。
 
 ### `tidb_enable_ddl`
 

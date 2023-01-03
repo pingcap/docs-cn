@@ -10,7 +10,7 @@ aliases: ['/docs-cn/dev/faq/migration-tidb-faq/']
 
 如果要查看迁移相关工具的常见问题，请参考以下链接：
 
-- [Backup & Restore 常见问题](/br/backup-and-restore-faq.md)
+- [备份与恢复常见问题](/faq/backup-and-restore-faq.md)
 - [TiDB Binlog 常见问题](/tidb-binlog/tidb-binlog-faq.md)
 - [TiDB Lightning 常见问题](/tidb-lightning/tidb-lightning-faq.md)
 - [Data Migration 常见问题](/dm/dm-faq.md)

@@ -18,9 +18,9 @@ summary: 给出一个 TiDB 和 Golang 的简单 CRUD 应用程序示例。
 
 本节将介绍 TiDB 集群的启动方法。
 
-### 使用 TiDB Cloud 免费集群
+### 使用 TiDB Cloud Serverless Tier 集群
 
-[创建免费集群](/develop/dev-guide-build-cluster-in-cloud.md#第-1-步创建免费集群)。
+[创建 Serverless Tier 集群](/develop/dev-guide-build-cluster-in-cloud.md#第-1-步创建-serverless-tier-集群)。
 
 ### 使用本地集群
 
@@ -31,7 +31,7 @@ summary: 给出一个 TiDB 和 Golang 的简单 CRUD 应用程序示例。
 
 ### 使用云原生开发环境
 
-基于 Git 的预配置的开发环境: [现在就试试](/develop/dev-guide-playground-gitpod.md)
+基于 Git 的预配置的开发环境：[现在就试试](/develop/dev-guide-playground-gitpod.md)
 
 该环境会自动克隆代码，并通过 TiUP 部署测试集群。
 
@@ -46,8 +46,6 @@ git clone https://github.com/pingcap-inc/tidb-example-golang.git
 <SimpleTab groupId="language">
 
 <div label="使用 GORM（推荐）" value="gorm">
-
-可以看到，go-sql-driver/mysql 实现的代码略显冗余，需要自己管控错误处理逻辑，手动关闭 `*sql.Rows`，且不能很好的复用代码。并非最佳实践。
 
 当前开源比较流行的 Golang ORM 为 GORM，此处将以 v1.23.5 版本进行说明。
 
@@ -766,7 +764,7 @@ mysql --host 127.0.0.1 --port 4000 -u root<sql/dbinit.sql
 
 <div label="使用 GORM（推荐）" value="gorm">
 
-若你使用非本地默认集群、TiDB Cloud 或其他远程集群，更改 `gorm.go` 内 `dsn` 参数值：
+若你使用 TiDB Cloud Serverless Tier 集群，更改 `gorm.go` 内 `dsn` 参数值：
 
 {{< copyable "" >}}
 
@@ -774,25 +772,28 @@ mysql --host 127.0.0.1 --port 4000 -u root<sql/dbinit.sql
 dsn := "root:@tcp(127.0.0.1:4000)/test?charset=utf8mb4"
 ```
 
-若你设定的密码为 `123456`，而且从 TiDB Cloud 得到的连接字符串为：
+若你设定的密码为 `123456`，而且从 TiDB Cloud Serverless Tier 集群面板中得到的连接信息为：
 
-```
-mysql --connect-timeout 15 -u root -h xxx.tidbcloud.com -P 4000 -p
-```
+- Endpoint: `xxx.tidbcloud.com`
+- Port: `4000`
+- User: `2aEp24QWEDLqRFs.root`
 
-那么此处应将参数更改为：
-
-{{< copyable "" >}}
+那么此处应将 `mysql.RegisterTLSConfig` 和 `dsn` 更改为：
 
 ```go
-dsn := "root:123456@tcp(xxx.tidbcloud.com:4000)/test?charset=utf8mb4"
+mysql.RegisterTLSConfig("register-tidb-tls", &tls.Config {
+    MinVersion: tls.VersionTLS12,
+    ServerName: "xxx.tidbcloud.com",
+})
+
+dsn := "2aEp24QWEDLqRFs.root:123456@tcp(xxx.tidbcloud.com:4000)/test?charset=utf8mb4&tls=register-tidb-tls"
 ```
 
 </div>
 
 <div label="使用 go-sql-driver/mysql" value="sqldriver">
 
-若你使用非本地默认集群、TiDB Cloud 或其他远程集群，更改 `sqldriver.go` 内 `dsn` 参数的值：
+若你使用 TiDB Cloud Serverless Tier 集群，更改 `sqldriver.go` 内 `dsn` 参数的值：
 
 {{< copyable "" >}}
 
@@ -800,18 +801,23 @@ dsn := "root:123456@tcp(xxx.tidbcloud.com:4000)/test?charset=utf8mb4"
 dsn := "root:@tcp(127.0.0.1:4000)/test?charset=utf8mb4"
 ```
 
-若你设定的密码为 `123456`，而且从 TiDB Cloud 得到的连接字符串为：
+若你设定的密码为 `123456`，而且从 TiDB Cloud Serverless Tier 集群面板中得到的连接信息为：
 
-```
-mysql --connect-timeout 15 -u root -h xxx.tidbcloud.com -P 4000 -p
-```
+- Endpoint: `xxx.tidbcloud.com`
+- Port: `4000`
+- User: `2aEp24QWEDLqRFs.root`
 
-那么此处应将参数更改为：
+那么此处应将 `mysql.RegisterTLSConfig` 和 `dsn` 更改为：
 
 {{< copyable "" >}}
 
 ```go
-dsn := "root:123456@tcp(xxx.tidbcloud.com:4000)/test?charset=utf8mb4"
+mysql.RegisterTLSConfig("register-tidb-tls", &tls.Config {
+    MinVersion: tls.VersionTLS12,
+    ServerName: "xxx.tidbcloud.com",
+})
+
+dsn := "2aEp24QWEDLqRFs.root:123456@tcp(xxx.tidbcloud.com:4000)/test?charset=utf8mb4&tls=register-tidb-tls"
 ```
 
 </div>

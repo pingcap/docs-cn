@@ -1,12 +1,12 @@
 ---
-title: DM 执行任务时的前置检查
+title: TiDB Data Migration 任务前置检查
 summary: 了解 DM 执行数据迁移任务时将进行的前置检查。
 aliases: ['/docs-cn/tidb-data-migration/dev/precheck/']
 ---
 
-# 任务前置检查
+# TiDB Data Migration 任务前置检查
 
-本文介绍了 DM 的任务前置检查功能。此功能用于提前检测出上游 MySQL 实例配置中可能存在的一些错误。
+本文介绍了 TiDB Data Migration (DM) 的任务前置检查功能。此功能用于提前检测出上游 MySQL 实例配置中可能存在的一些错误。
 
 ## 使用场景
 

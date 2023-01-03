@@ -86,7 +86,7 @@ MySQL Connector/J 的排序规则保存在客户端内，通过获取的服务�
 
 **描述**
 
-TiDB 中 无法使用 `NO_BACKSLASH_ESCAPES` 参数从而不进行 `\` 字符的转义。已提 [issue](https://github.com/pingcap/tidb/issues/35302)。
+TiDB 中无法使用 `NO_BACKSLASH_ESCAPES` 参数从而不进行 `\` 字符的转义。已提 [issue](https://github.com/pingcap/tidb/issues/35302)。
 
 **规避方法**
 
@@ -155,3 +155,53 @@ TiDB 对其进行了两个维度的修复：
 
 - 客户端方面：**pingcap/mysql-connector-j** 中修复了该 Bug，你可以使用 [pingcap/mysql-connector-j](https://github.com/pingcap/mysql-connector-j) 替换官方的 MySQL Connector/J。
 - 服务端方面：TiDB v6.3.0 修复了此兼容性问题，你可以升级服务端至 v6.3.0 或以上版本。
+
+## 与 Sequelize 的兼容性
+
+本小节描述的兼容性信息基于 [Sequelize v6.21.4](https://www.npmjs.com/package/sequelize/v/6.21.4) 测试。
+
+根据测试结果，TiDB 支持绝大部分 Sequelize 功能（[使用 `MySQL` 作为方言](https://sequelize.org/docs/v6/other-topics/dialect-specific-things/#mysql)），不支持的功能有：
+
+- 不支持与外键约束相关的功能（包括多对多关联）。
+- [不支持 `GEOMETRY`](https://github.com/pingcap/tidb/issues/6347) 相关。
+- 不支持修改整数主键。
+- 不支持 `PROCEDURE` 相关。
+- 不支持 `READ-UNCOMMITTED` 和 `SERIALIZABLE` [隔离级别](/system-variables.md#transaction_isolation)。
+- 默认不允许修改列的 `AUTO_INCREMENT` 属性。
+- 不支持 `FULLTEXT`、`HASH` 和 `SPATIAL` 索引。
+
+### 不支持修改整数主键
+
+**描述**
+
+不支持修改整数类型的主键，这是由于当主键为整数类型时，TiDB 使用其作为数据组织的索引。你可以在此 [Issue](https://github.com/pingcap/tidb/issues/18090) 或[聚簇索引](/clustered-indexes.md)一节中获取更多信息。
+
+### 不支持 `READ-UNCOMMITTED` 和 `SERIALIZABLE` 隔离级别
+
+**描述**
+
+TiDB 不支持 `READ-UNCOMMITTED` 和 `SERIALIZABLE` 隔离级别。设置事务隔离级别为 `READ-UNCOMMITTED` 或 `SERIALIZABLE` 时将报错。
+
+**规避方法**
+
+仅使用 TiDB 支持的 `REPEATABLE-READ` 或 `READ-COMMITTED` 隔离级别。
+
+如果你的目的是兼容其他设置 `SERIALIZABLE` 隔离级别的应用，但不依赖于 `SERIALIZABLE`，你可以设置 [`tidb_skip_isolation_level_check`](/system-variables.md#tidb_skip_isolation_level_check) 为 `1`，此后如果对 `tx_isolation`（[`transaction_isolation`](/system-variables.md#transaction_isolation) 别名）赋值一个 TiDB 不支持的隔离级别（`READ-UNCOMMITTED` 和 `SERIALIZABLE`），不会报错。
+
+### 默认不允许修改列的 `AUTO_INCREMENT` 属性
+
+**描述**
+
+默认不允许通过 `ALTER TABLE MODIFY` 或 `ALTER TABLE CHANGE` 来增加或移除某个列的 `AUTO_INCREMENT` 属性。
+
+**规避方法**
+
+参考 [`AUTO_INCREMENT` 的使用限制](/auto-increment.md#使用限制)。
+
+设置 `@@tidb_allow_remove_auto_inc` 为 `true`，即可允许移除 `AUTO_INCREMENT` 属性。
+
+### 不支持 `FULLTEXT`、`HASH` 和 `SPATIAL` 索引
+
+**描述**
+
+TiDB 不支持 `FULLTEXT`、`HASH` 和 `SPATIAL` 索引。

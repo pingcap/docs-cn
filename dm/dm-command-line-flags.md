@@ -1,12 +1,12 @@
 ---
-title: DM 命令行参数
+title: TiDB Data Migration 命令行参数
 summary: 介绍 DM 各组件的主要命令行参数。
 aliases: ['/docs-cn/tidb-data-migration/dev/command-line-flags/']
 ---
 
-# DM 命令行参数
+# TiDB Data Migration 命令行参数
 
-本文档介绍 DM 中各组件的主要命令行参数。
+本文档介绍 TiDB Data Migration (DM) 中各组件的主要命令行参数。
 
 ## DM-master
 

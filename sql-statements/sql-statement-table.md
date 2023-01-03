@@ -16,28 +16,19 @@ TableStmt ::=
 
 ## 示例
 
-{{< copyable "sql" >}}
+创建表 `t1`：
 
 ```sql
 CREATE TABLE t1(id INT PRIMARY KEY);
 ```
 
-```sql
-Query OK, 0 rows affected (0.31 sec)
-```
-
-{{< copyable "sql" >}}
+插入一些数据：
 
 ```sql
 INSERT INTO t1 VALUES (1),(2),(3);
 ```
 
-```sql
-Query OK, 3 rows affected (0.06 sec)
-Records: 3  Duplicates: 0  Warnings: 0
-```
-
-{{< copyable "sql" >}}
+查看表 `t1` 的数据：
 
 ```sql
 TABLE t1;
@@ -54,7 +45,7 @@ TABLE t1;
 3 rows in set (0.01 sec)
 ```
 
-{{< copyable "sql" >}}
+查询 `t1` 表，并按 `id` 字段倒序排列结果：
 
 ```sql
 TABLE t1 ORDER BY id DESC;
@@ -71,7 +62,7 @@ TABLE t1 ORDER BY id DESC;
 3 rows in set (0.01 sec)
 ```
 
-{{< copyable "sql" >}}
+查询表 `t1` 中的前 1 条记录：
 
 ```sql
 TABLE t1 LIMIT 1;

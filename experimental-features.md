@@ -11,11 +11,10 @@ aliases: ['/docs-cn/dev/experimental-features-4.0/','/zh/tidb/dev/experimental-f
 ## 性能
 
 + [支持收集部分列的统计信息](/statistics.md#收集部分列的统计信息)（v5.4 实验特性）
-+ [支持统计信息的同步加载](/statistics.md#统计信息的加载)（v5.4 实验特性）
 + [限制 ANALYZE 的内存使用量](/statistics.md#统计信息收集的内存限制) (v6.1.0 实验特性)
-+ [Cost Model Version 2](/cost-model.md#cost-model-version-2)（v6.2.0 实验特性）
 + [FastScan](/develop/dev-guide-use-fastscan.md)（v6.2.0 实验特性）
 + [随机采样约 10000 行数据来快速构建统计信息](/system-variables.md#tidb_enable_fast_analyze)（v3.0 实验特性）
++ [锁定统计信息](/statistics.md#锁定统计信息)（v6.5.0 实验特性）
 
 ## 稳定性
 
@@ -30,14 +29,14 @@ aliases: ['/docs-cn/dev/experimental-features-4.0/','/zh/tidb/dev/experimental-f
 
 ## SQL 功能
 
-+ 表达式索引 (Expression Index) 功能。表达式索引也叫函数索引，在创建索引时索引的字段不一定是一个具体的列，也可以是由一个或者多个列计算出来的表达式。对于快速访问那些基于计算结果的表非常有用。详情参阅：[表达式索引](/sql-statements/sql-statement-create-index.md)。（v4.0 实验特性）
 + [生成列](/generated-columns.md#生成列)。（v2.1 实验特性）
 + [自定义变量](/user-defined-variables.md#用户自定义变量)。（v2.1 实验特性）
 + [Cascades Planner](/system-variables.md#tidb_enable_cascades_planner)：基于 Cascades 框架的自顶向下查询优化器。（v3.0 实验特性）
 + [表级锁 (Table Lock)](/tidb-configuration-file.md#enable-table-lock-从-v400-版本开始引入)（v4.0.0 实验特性）
-+ [元数据锁](/metadata-lock.md)（v6.3.0 实验特性）
 + [Range INTERVAL 分区](/partitioned-table.md#range-interval-分区)（v6.3.0 实验特性）
-+ [添加索引加速](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入)（v6.3.0 实验特性）
++ [使用 TTL (Time to Live) 定期删除过期数据](/time-to-live.md)。(v6.5.0 实验特性)
++ [TiFlash 查询结果物化](/tiflash/tiflash-results-materialization.md)（v6.5.0 实验特性）
++ [根据历史执行计划创建绑定](/sql-plan-management.md#根据历史执行计划创建绑定)（v6.5.0 实验特性）
 
 ## 存储
 
@@ -47,12 +46,11 @@ aliases: ['/docs-cn/dev/experimental-features-4.0/','/zh/tidb/dev/experimental-f
 ## 数据迁移
 
 + [使用 WebUI](/dm/dm-webui-guide.md) 管理 DM 迁移任务。（v6.0 实验特性）
-+ 为 TiDB Lightning 设置[磁盘资源配额](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#磁盘资源配额-从-v620-版本开始引入)（v6.2.0 实验特性）
-+ [DM 增量数据校验](/dm/dm-continuous-data-validation.md)（v6.2.0 实验特性）
 
 ## 数据共享订阅
 
 + [RawKV 跨集群复制](/tikv-configuration-file.md#api-version-从-v610-版本开始引入)（v6.2.0 实验特性）
++ [TiCDC 支持保存数据到存储服务 (S3/NFS/Azure Blob Storage)](/ticdc/ticdc-sink-to-cloud-storage.md)。（v6.5.0 实验特性）
 
 ## 垃圾回收
 

@@ -1,10 +1,10 @@
 ---
-title: Data Migration 简介
+title: TiDB Data Migration 简介
 summary: 了解 TiDB Data Migration
-aliases: ['/docs-cn/tidb-data-migration/dev/overview/','/docs-cn/tools/dm/overview/','/zh/tidb/dev/quick-create-migration-task','/zh/tidb/dev/scenarios']
+aliases: ['/docs-cn/tidb-data-migration/dev/overview/','/docs-cn/tools/dm/overview/','/zh/tidb/dev/quick-create-migration-task','/zh/tidb/dev/scenarios','/docs-cn/tidb-data-migration/dev/key-features/','/docs-cn/tidb-data-migration/dev/feature-overview/','/zh/tidb/dev/dm-key-features']
 ---
 
-# 产品简介
+# TiDB Data Migration 简介
 
 <!--
 ![star](https://img.shields.io/github/stars/pingcap/tiflow?style=for-the-badge&logo=github) ![license](https://img.shields.io/github/license/pingcap/tiflow?style=for-the-badge) ![forks](https://img.shields.io/github/forks/pingcap/tiflow?style=for-the-badge)
@@ -19,7 +19,7 @@ aliases: ['/docs-cn/tidb-data-migration/dev/overview/','/docs-cn/tools/dm/overvi
 - **支持合库合表同步模式。**可以方便的将上游各个分片 MySQL 实例的各个分表数据，合并同步到下游 TiDB 的一张表。支持自定义编写同步规则以方便各种可能的同步需求，且具备自动识别和处理上游分片 MySQL 的 DDL 变更，大幅简化运维成本。
 - **内置多种过滤器以灵活适应不同场景。**支持以预定义事件类型、正则表达式、SQL 表达式等多种方式在数据同步过程中对 MySQL binlog 事件进行过滤。
 - **集中管理。**DM 支持上千个节点的集群规模，可同时运行并集中管理大量数据迁移同步任务。
-- **对第三方 Online Schema Change 工具变更过程的同步优化。**在 MySQL 生态中，gh-ost 与 pt-osc 等工具被广泛使用，DM 对其变更过程进行了特殊的优化，以避免对不必要的中间数据进行迁移。详细信息可参考 [online-ddl](/dm/dm-key-features.md#online-ddl-工具支持)。
+- **对第三方 Online Schema Change 工具变更过程的同步优化。**在 MySQL 生态中，gh-ost 与 pt-osc 等工具被广泛使用，DM 对其变更过程进行了特殊的优化，以避免对不必要的中间数据进行迁移。详细信息可参考 [online-ddl](/dm/dm-online-ddl-tool-support.md)。
 - **高可用。**支持迁移任务在不同节点自由调度，少量工作节点宕机并不会影响进行中的任务。
 
 ## 快速安装
@@ -63,7 +63,7 @@ tiup install dm dmctl
 
 ## 社区技术支持
 
-您可以通过在线文档了解和使用 DM ，如果您遇到无法解决的问题，可以选择以下途径之一联系我们。
+您可以通过在线文档了解和使用 DM，如果您遇到无法解决的问题，可以选择以下途径之一联系我们。
 
 - [GitHub](https://github.com/pingcap/tiflow/tree/master/dm)
 - [AskTUG](https://asktug.com/tags/dm)

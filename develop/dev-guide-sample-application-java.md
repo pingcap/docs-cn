@@ -28,9 +28,9 @@ aliases: ['/zh/tidb/dev/sample-application-java']
 
 本节将介绍 TiDB 集群的启动方法。
 
-### 使用 TiDB Cloud 免费集群
+### 使用 TiDB Cloud Serverless Tier 集群
 
-[创建免费集群](/develop/dev-guide-build-cluster-in-cloud.md#第-1-步创建免费集群)。
+[创建 Serverless Tier 集群](/develop/dev-guide-build-cluster-in-cloud.md#第-1-步创建-serverless-tier-集群)。
 
 ### 使用本地集群
 
@@ -113,8 +113,6 @@ git clone https://github.com/pingcap-inc/tidb-example-java.git
 <SimpleTab groupId="language">
 
 <div label="使用 Mybatis（推荐）" value="mybatis">
-
-可以看到，JDBC 实现的代码略显冗余，需要自己管控错误处理逻辑，且不能很好的复用代码，并非最佳实践。
 
 [Mybatis](https://mybatis.org/mybatis-3/index.html) 是当前比较流行的开源 Java 应用持久层框架，本文将以 Maven 插件的方式使用 [MyBatis Generator](https://mybatis.org/generator/quickstart.html) 生成部分持久层代码。
 
@@ -701,8 +699,6 @@ public class MybatisExample {
 
 <div label="使用 Hibernate（推荐）" value="hibernate">
 
-可以看到，JDBC 实现的代码略显冗余，需要自己管控错误处理逻辑，且不能很好的复用代码。并非最佳实践。
-
 当前开源比较流行的 Java ORM 为 Hibernate，且 Hibernate 在版本 `6.0.0.Beta2` 及以后支持了 TiDB 方言。完美适配了 TiDB 的特性。因此，此处将以 6.0.0.Beta2 + 版本进行说明。
 
 进入目录 `plain-java-hibernate` ：
@@ -762,7 +758,7 @@ cd plain-java-hibernate
 
 `HibernateExample.java` 是 `plain-java-hibernate` 这个示例程序的主体。使用 Hibernate 时，相较于 JDBC，这里仅需写入配置文件地址，Hibernate 屏蔽了创建数据库连接时，不同数据库差异的细节。
 
-`PlayerDAO` 是程序用来管理数据对象的类。其中 `DAO` 是 [Data Access Object](https://en.wikipedia.org/wiki/Data_access_object) 的缩写。其中定义了一系列数据的操作方法，用来提供数据的写入能力。相较于 JDBC， Hibernate 封装了大量的操作，如对象映射、基本对象的 CRUD 等，极大的简化了代码量。
+`PlayerDAO` 是程序用来管理数据对象的类。其中 `DAO` 是 [Data Access Object](https://en.wikipedia.org/wiki/Data_access_object) 的缩写。其中定义了一系列数据的操作方法，用来提供数据的写入能力。相较于 JDBC，Hibernate 封装了大量的操作，如对象映射、基本对象的 CRUD 等，极大的简化了代码量。
 
 `PlayerBean` 是数据实体类，为数据库表在程序内的映射。`PlayerBean` 的每个属性都对应着 `player` 表的一个字段。相较于 JDBC，Hibernate 的 `PlayerBean` 实体类为了给 Hibernate 提供更多的信息，加入了注解，用来指示映射关系。
 
@@ -1554,7 +1550,7 @@ mysql --host 127.0.0.1 --port 4000 -u root<src/main/resources/dbinit.sql
 
 <div label="使用 Mybatis（推荐）" value="mybatis">
 
-若你使用非本地默认集群、TiDB Cloud 或其他远程集群，更改 `mybatis-config.xml` 内关于 `dataSource.url`、`dataSource.username`、`dataSource.password` 的参数：
+若你使用 TiDB Cloud Serverless Tier 集群，更改 `mybatis-config.xml` 内关于 `dataSource.url`、`dataSource.username`、`dataSource.password` 的参数：
 
 {{< copyable "" >}}
 
@@ -1599,11 +1595,11 @@ mysql --host 127.0.0.1 --port 4000 -u root<src/main/resources/dbinit.sql
 </configuration>
 ```
 
-若你设定的密码为 `123456`，而且从 TiDB Cloud 得到的连接字符串为：
+若你设定的密码为 `123456`，而且从 TiDB Cloud Serverless Tier 集群面板中得到的连接信息为：
 
-```
-mysql --connect-timeout 15 -u root -h xxx.tidbcloud.com -P 4000 -p
-```
+- Endpoint: `xxx.tidbcloud.com`
+- Port: `4000`
+- User: `2aEp24QWEDLqRFs.root`
 
 那么此处应将配置文件中 `dataSource` 节点内更改为：
 
@@ -1620,8 +1616,8 @@ mysql --connect-timeout 15 -u root -h xxx.tidbcloud.com -P 4000 -p
             <!-- Database pool -->
             <dataSource type="POOLED">
                 <property name="driver" value="com.mysql.jdbc.Driver"/>
-                <property name="url" value="jdbc:mysql://xxx.tidbcloud.com:4000/test"/>
-                <property name="username" value="root"/>
+                <property name="url" value="jdbc:mysql://xxx.tidbcloud.com:4000/test?sslMode=VERIFY_IDENTITY&amp;enabledTLSProtocols=TLSv1.2,TLSv1.3"/>
+                <property name="username" value="2aEp24QWEDLqRFs.root"/>
                 <property name="password" value="123456"/>
             </dataSource>
         ...
@@ -1633,7 +1629,7 @@ mysql --connect-timeout 15 -u root -h xxx.tidbcloud.com -P 4000 -p
 
 <div label="使用 Hibernate（推荐）" value="hibernate">
 
-若你使用非本地默认集群、TiDB Cloud 或其他远程集群，更改 `hibernate.cfg.xml` 内关于 hibernate.connection.url、hibernate.connection.username、hibernate.connection.password 的参数：
+若你使用 TiDB Cloud Serverless Tier 集群，更改 `hibernate.cfg.xml` 内关于 `hibernate.connection.url`、`hibernate.connection.username`、`hibernate.connection.password` 的参数：
 
 {{< copyable "" >}}
 
@@ -1663,11 +1659,11 @@ mysql --connect-timeout 15 -u root -h xxx.tidbcloud.com -P 4000 -p
 </hibernate-configuration>
 ```
 
-若你设定的密码为 `123456`，而且从 TiDB Cloud 得到的连接字符串为：
+若你设定的密码为 `123456`，而且从 TiDB Cloud Serverless Tier 集群面板中得到的连接信息为：
 
-```
-mysql --connect-timeout 15 -u root -h xxx.tidbcloud.com -P 4000 -p
-```
+- Endpoint: `xxx.tidbcloud.com`
+- Port: `4000`
+- User: `2aEp24QWEDLqRFs.root`
 
 那么此处应将配置文件更改为：
 
@@ -1684,8 +1680,8 @@ mysql --connect-timeout 15 -u root -h xxx.tidbcloud.com -P 4000 -p
         <!-- Database connection settings -->
         <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
         <property name="hibernate.dialect">org.hibernate.dialect.TiDBDialect</property>
-        <property name="hibernate.connection.url">jdbc:mysql://xxx.tidbcloud.com:4000/test</property>
-        <property name="hibernate.connection.username">root</property>
+        <property name="hibernate.connection.url">jdbc:mysql://xxx.tidbcloud.com:4000/test?sslMode=VERIFY_IDENTITY&amp;enabledTLSProtocols=TLSv1.2,TLSv1.3</property>
+        <property name="hibernate.connection.username">2aEp24QWEDLqRFs.root</property>
         <property name="hibernate.connection.password">123456</property>
         <property name="hibernate.connection.autocommit">false</property>
 
@@ -1703,7 +1699,7 @@ mysql --connect-timeout 15 -u root -h xxx.tidbcloud.com -P 4000 -p
 
 <div label="使用 JDBC" value="jdbc">
 
-若你使用非本地默认集群、TiDB Cloud 或其他远程集群，更改 `JDBCExample.java` 内关于 Host、Port、User、Password 的参数：
+若你使用 TiDB Cloud Serverless Tier 集群，更改 `JDBCExample.java` 内关于 Host、Port、User、Password 的参数：
 
 {{< copyable "" >}}
 
@@ -1715,11 +1711,11 @@ mysqlDataSource.setUser("root");
 mysqlDataSource.setPassword("");
 ```
 
-若你设定的密码为 `123456`，而且从 TiDB Cloud 得到的连接字符串为：
+若你设定的密码为 `123456`，而且从 TiDB Cloud Serverless Tier 集群面板中得到的连接信息为：
 
-```
-mysql --connect-timeout 15 -u root -h xxx.tidbcloud.com -P 4000 -p
-```
+- Endpoint: `xxx.tidbcloud.com`
+- Port: `4000`
+- User: `2aEp24QWEDLqRFs.root`
 
 那么此处应将参数更改为：
 
@@ -1729,8 +1725,10 @@ mysql --connect-timeout 15 -u root -h xxx.tidbcloud.com -P 4000 -p
 mysqlDataSource.setServerName("xxx.tidbcloud.com");
 mysqlDataSource.setPortNumber(4000);
 mysqlDataSource.setDatabaseName("test");
-mysqlDataSource.setUser("root");
+mysqlDataSource.setUser("2aEp24QWEDLqRFs.root");
 mysqlDataSource.setPassword("123456");
+mysqlDataSource.setSslMode(PropertyDefinitions.SslMode.VERIFY_IDENTITY.name());
+mysqlDataSource.setEnabledTLSProtocols("TLSv1.2,TLSv1.3");
 ```
 
 </div>

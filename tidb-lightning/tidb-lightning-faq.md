@@ -9,7 +9,7 @@ aliases: ['/docs-cn/dev/tidb-lightning/tidb-lightning-faq/','/docs-cn/dev/faq/ti
 
 ## TiDB Lightning 对 TiDB/TiKV/PD 的最低版本要求是多少？
 
-TiDB Lightning 的版本应与集群相同。如果使用 Local-backend 模式，最低版本要求为 4.0.0。如果使用 Importer-backend 或 TiDB-backend 模式 最低版本要求是 2.0.9，但建议使用最新的稳定版本 3.0。
+TiDB Lightning 的版本应与集群相同。如果使用 Local-backend 模式，最低版本要求为 4.0.0。如果使用 Importer-backend 或 TiDB-backend 模式最低版本要求是 2.0.9，但建议使用最新的稳定版本 3.0。
 
 ## TiDB Lightning 支持导入多个库吗？
 
@@ -73,7 +73,7 @@ ADMIN CHECKSUM TABLE `schema`.`table`;
 目前，TiDB Lightning 支持：
 
 - 导入 [Dumpling](/dumpling-overview.md)、CSV 或 [Amazon Aurora Parquet](/migrate-aurora-to-tidb.md) 输出格式的数据源。
-- 从本地盘或 [Amazon S3 云盘](/br/backup-and-restore-storages.md)读取数据。
+- 从本地盘或 [Amazon S3 云盘](/br/external-storage.md)读取数据。
 
 ## 我已经在下游创建好库和表了，TiDB Lightning 可以忽略建库建表操作吗？
 

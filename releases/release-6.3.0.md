@@ -8,7 +8,7 @@ title: TiDB 6.3.0 Release Notes
 
 TiDB 版本：6.3.0-DMR
 
-试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v6.3/quick-start-with-tidb) | [生产部署](https://docs.pingcap.com/zh/tidb/v6.3/production-deployment-using-tiup) | [下载离线包](https://cn.pingcap.com/product-community/)
+试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v6.3/quick-start-with-tidb) | [下载离线包](https://cn.pingcap.com/product-community/?version=v6.3.0-DMR#version-list)
 
 在 6.3.0-DMR 版本中，你可以获得以下关键特性：
 
@@ -21,6 +21,7 @@ TiDB 版本：6.3.0-DMR
 - 分区表新增简化 Range 分区的语法糖。
 - Range COLUMNS 分区方式支持定义多列。
 - TiDB 添加索引的速度提升为原来的 3 倍。
+- 降低资源消耗型查询对轻量查询响应时间的影响超 50%。
 
 ## 新功能
 
@@ -127,6 +128,10 @@ TiDB 版本：6.3.0-DMR
 
 ### 稳定性
 
+* 降低资源消耗型查询对轻量查询响应时间的影响 [#13313](https://github.com/tikv/tikv/issues/13313) @[glorv](https://github.com/glorv)
+
+  当资源消耗型查询与轻量查询同时运行时，轻量查询的响应时间会被严重影响。在这种情况下，通常希望优先快速处理轻量查询，以保证交易类负载的服务质量。因此 TiKV 在 v6.3.0 中优化了读请求的调度机制，使资源消耗型的查询在每一轮执行的时间更符合预期。这个特性大幅降低了资源消耗型查询对轻量查询的影响，使混合工作负载的 P99 延迟降低了 50% 以上。
+
 * 修改优化器统计信息过期时的默认统计信息使用策略 [#27601](https://github.com/pingcap/tidb/issues/27601) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes)
 
     在 v5.3.0 版本，TiDB 引入系统变量 [`tidb_enable_pseudo_for_outdated_stats`](/system-variables.md#tidb_enable_pseudo_for_outdated_stats-从-v530-版本开始引入) 控制优化器在统计信息过期时的行为，默认为 `ON`，即保持旧版本行为不变：当 SQL 涉及的对象的统计信息过期时，优化器认为该表上除总行数以外的统计信息不再可靠，转而使用 pseudo 统计信息。经过一系列测试和用户实际场景分析，TiDB 在新版本中将 `tidb_enable_pseudo_for_outdated_stats` 的默认值改为 `OFF`，即使统计信息过期，优化器也仍会使用该表上的统计信息，这有利于执行计划的稳定性。
@@ -163,7 +168,7 @@ TiDB 版本：6.3.0-DMR
 
 ### 备份恢复
 
-* PITR 支持 [GCS](/br/backup-storage-gcs.md) 和 [Azure Blob Storage](/br/backup-storage-azblob.md) 作为备份存储 @[joccau](https://github.com/joccau)
+* PITR 支持 [GCS 和 Azure Blob Storage](/br/backup-and-restore-storages.md) 作为备份存储 @[joccau](https://github.com/joccau)
 
     部署在 GCP 或者 Azure 上的用户，将 TiDB 集群升级至 v6.3.0 就可以使用 PITR 功能。
 
@@ -191,7 +196,7 @@ TiDB 版本：6.3.0-DMR
 
 * TiCDC 支持平滑升级 [#4757](https://github.com/pingcap/tiflow/issues/4757) @[overvenus](https://github.com/overvenus) @[3AceShowHand](https://github.com/3AceShowHand)
 
-    用户使用 [TiUP](/ticdc/deploy-ticdc.md#使用-tiup-滚动升级-ticdc-集群) (>=v1.11.0) 和 [TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.3/configure-a-tidb-cluster#配置-ticdc-平滑升级) (>=v1.3.8) 可以平滑滚动升级 TiCDC 集群。升级期间数据同步延时保持在 30 秒内，提高了稳定性，让 TiCDC 能更好地支持延时敏感型业务。
+    用户使用 [TiUP](/ticdc/deploy-ticdc.md#使用-tiup-升级-ticdc-集群) (>=v1.11.0) 和 [TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.3/configure-a-tidb-cluster#配置-ticdc-平滑升级) (>=v1.3.8) 可以平滑滚动升级 TiCDC 集群。升级期间数据同步延时保持在 30 秒内，提高了稳定性，让 TiCDC 能更好地支持延时敏感型业务。
 
 ## 兼容性变更
 
@@ -239,10 +244,10 @@ TiDB 版本：6.3.0-DMR
 | PD | [enable-diagnostic](/pd-configuration-file.md#enable-diagnostic-从-v630-版本开始引入) | 新增 | 控制是否开启诊断功能。默认值为 `false`。 |
 | TiFlash | [`dt_enable_read_thread`](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml) | 废弃 | 该参数从 v6.3.0 开始废弃，默认开启此功能且不能关闭。 |
 | DM | [`safe-mode-duration`](/dm/task-configuration-file-full.md#完整配置文件示例) | 新增 | 自动安全模式的持续时间。
-| TiCDC | [`enable-sync-point`](/ticdc/manage-ticdc.md#同步任务配置文件描述) | 新增 | 控制是否开启 sync point 功能。 |
-| TiCDC | [`sync-point-interval`](/ticdc/manage-ticdc.md#同步任务配置文件描述) | 新增 | 控制 sync point 功能对齐上下游 snapshot 的时间间隔。 |
-| TiCDC | [`sync-point-retention`](/ticdc/manage-ticdc.md#同步任务配置文件描述) | 新增 | sync point 功能在下游表中保存的数据的时长，超过这个时间的数据会被清理。 |
-| TiCDC | [`sink-uri.memory`](/ticdc/manage-ticdc.md#创建同步任务) | 废弃 | 废弃 `memory` 排序方式，不建议在任何情况下使用。可以通过 `unified` 排序方式替代。 |
+| TiCDC | [`enable-sync-point`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-配置文件说明) | 新增 | 控制是否开启 sync point 功能。 |
+| TiCDC | [`sync-point-interval`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-配置文件说明) | 新增 | 控制 sync point 功能对齐上下游 snapshot 的时间间隔。 |
+| TiCDC | [`sync-point-retention`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-配置文件说明) | 新增 | sync point 功能在下游表中保存的数据的时长，超过这个时间的数据会被清理。 |
+| TiCDC | [`sink-uri.memory`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-命令行参数) | 废弃 | 废弃 `memory` 排序方式，不建议在任何情况下使用。 |
 
 ### 其他
 
@@ -302,7 +307,7 @@ TiDB 版本：6.3.0-DMR
 
     + TiCDC
 
-        - 提升上游为 MySQL 8.0 时的兼容性 [#6506](https://github.com/pingcap/tiflow/issues/6506) @[lance6716](https://github.com/lance6716)
+        - 提升上游 TiDB 引入并行 DDL 框架后 TiCDC 的兼容性 [#6506](https://github.com/pingcap/tiflow/issues/6506) @[lance6716](https://github.com/lance6716)
         - 支持在 MySL sink 出错时将 DML 语句的 `start ts` 输出到日志文件 [#6460](https://github.com/pingcap/tiflow/issues/6460) @[overvenus](https://github.com/overvenus)
         - 优化 API `api/v1/health`，使其返回的 TiCDC 集群健康状态更准确 [#4757](https://github.com/pingcap/tiflow/issues/4757) @[overvenus](https://github.com/overvenus)
         - 采用异步的模式实现 MQ sink 和 MySQL sink，提升 sink 的吞吐能力 [#5928](https://github.com/pingcap/tiflow/issues/5928) @[hicqu](https://github.com/hicqu) @[hi-rustin](https://github.com/hi-rustin)

@@ -1,10 +1,10 @@
 ---
-title: TiDB Data Migration 查询状态
+title: TiDB Data Migration 查询任务状态
 summary: 深入了解 TiDB Data Migration 如何查询数据迁移任务状态
 aliases: ['/docs-cn/tidb-data-migration/dev/query-status/','/docs-cn/tidb-data-migration/dev/query-error/','/tidb-data-migration/dev/query-error/']
 ---
 
-# TiDB Data Migration 查询状态
+# TiDB Data Migration 查询任务状态
 
 本文介绍 TiDB Data Migration (DM) `query-status` 命令的查询结果、任务状态与子任务状态。
 

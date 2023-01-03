@@ -47,7 +47,7 @@ aliases: ['/docs-cn/dev/grafana-tidb-dashboard/','/docs-cn/dev/reference/key-mon
     - Keep Alive OPM：每个 TiDB 实例每分钟刷新监控的次数，通常不需要关注。
     - Panic And Critical Error：TiDB 中出现的 Panic、Critical Error 数量。
     - Time Jump Back OPS：每个 TiDB 实例上每秒操作系统时间回跳的次数。
-    - Get Token Duration：每个连接获取 Token 的耗时  。
+    - Get Token Duration：每个连接获取 Token 的耗时。
     - Skip Binlog Count：TiDB 写入 Binlog 失败的数量。
     - Client Data Traffic：TiDB 和客户端的数据流量。
 
@@ -82,6 +82,8 @@ aliases: ['/docs-cn/dev/grafana-tidb-dashboard/','/docs-cn/dev/reference/key-mon
     - Expensive Executor OPS：每秒消耗系统资源比较多的算子。包括 Merge Join、Hash Join、Index Look Up Join、Hash Agg、Stream Agg、Sort、TopN 等。
     - Queries Using Plan Cache OPS：每秒使用 Plan Cache 的查询数量。
     - Plan Cache Miss OPS：每秒出现 Plan Cache Miss 的数量。
+    - Plan Cache Memory Usage：每个 TiDB 实例上所有 Plan Cache 缓存的执行计划占用的总内存。
+    - Plan Cache Plan Num：每个 TiDB 实例上所有 Plan Cache 缓存的执行计划总数。
 
 - Distsql
     - Distsql Duration：Distsql 处理的时长
@@ -167,3 +169,10 @@ aliases: ['/docs-cn/dev/grafana-tidb-dashboard/','/docs-cn/dev/reference/key-mon
     - Wait Duration 95: 批量消息处理的等待时间。
     - Batch Client Unavailable Duration 95：批处理客户端的不可用时长。
     - No Available Connection Counter：批处理客户端不可用的连接数。
+
+- TTL
+    - TTL QPS By Type：TTL 任务产生的不同类型语句的 QPS 信息。
+    - TTL Processed Rows Per Second：TTL 任务每秒处理的过期数据的行数。
+    - TTL Scan/Delete Query Duration：TTL 的扫描/删除语句的执行时间。
+    - TTL Scan/Delete Worker Time By Phase：TTL 内部工作线程的不同阶段所占用的时间。
+    - TTL Job Count By Status：当前正在执行的 TTL 任务的数量。

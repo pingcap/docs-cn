@@ -58,6 +58,16 @@ routes:                           # 上游和下游表之间的路由 table rout
     table-pattern: "t_*"          # 表名匹配规则，支持通配符 "*" 和 "?"
     target-schema: "test"         # 目标库名称
     target-table: "t"             # 目标表名称
+    # 可选配置：提取各分库分表的源信息，并写入下游用户自建的列，用于标识合表中各行数据的来源。如果配置该项，需要提前在下游手动创建合表，具体可参考 “table routing 文档” <https://docs.pingcap.com/zh/tidb/dev/dm-key-features#table-routing>。
+    # extract-table:                                        # 提取分表去除 t_ 的后缀信息，并写入下游合表 c_table 列，例如，t_01 分表的数据会提取 01 写入下游 c_table 列
+    #   table-regexp: "t_(.*)"
+    #   target-column: "c_table"
+    # extract-schema:                                       # 提取分库去除 test_ 的后缀信息，并写入下游合表 c_schema 列，例如，test_02 分库的数据会提取 02 写入下游 c_schema 列
+    #   schema-regexp: "test_(.*)"
+    #   target-column: "c_schema"
+    # extract-source:                                       # 提取数据库源实例信息写入 c_source 列，例如，mysql-replica-01 数据源实例的数据会提取 mysql-replica-01 写入下游 c_source 列
+    #   source-regexp: "(.*)"
+    #   target-column: "c_source"
   route-rule-2:
     schema-pattern: "test_*"
     target-schema: "test"
@@ -129,7 +139,7 @@ syncers:                             # sync 处理单元的运行配置参数
     # 自动安全模式的持续时间
     # 如不设置或者设置为 ""，则默认为 `checkpoint-flush-interval`（默认为 30s）的两倍，即 60s。
     # 如设置为 "0s"，则在 DM 自动进入安全模式的时候报错。
-    # 如设置为正常值，例如 "1m30s"，则在该任务异常暂停、记录 `safemode_exit_point` 失败、或是 DM 进程异常退出时，把安全模式持续时间调整为 1 分 30 秒。详情可见[自动开启安全模式](https://docs.pingcap.com/zh/tidb/stable/dm-safe-mode#自动开启) 。
+    # 如设置为正常值，例如 "1m30s"，则在该任务异常暂停、记录 `safemode_exit_point` 失败、或是 DM 进程异常退出时，把安全模式持续时间调整为 1 分 30 秒。详情可见[自动开启安全模式](https://docs.pingcap.com/zh/tidb/stable/dm-safe-mode#自动开启)。
     safe-mode-duration: "60s"
     # 设置为 true，DM 会在不增加延迟的情况下，尽可能地将上游对同一条数据的多次操作压缩成一次操作。
     # 如 INSERT INTO tb(a,b) VALUES(1,1); UPDATE tb SET b=11 WHERE a=1; 会被压缩成 INSERT INTO tb(a,b) VALUES(1,11); 其中 a 为主键
@@ -194,7 +204,7 @@ mysql-instances:
 - 描述：任务模式，可以通过任务模式来指定需要执行的数据迁移工作。
 - 值为字符串（`full`，`incremental` 或 `all`）。
     - `full`：只全量备份上游数据库，然后将数据全量导入到下游数据库。
-    - `incremental`：只通过 binlog 把上游数据库的增量修改复制到下游数据库, 可以设置实例配置的 `meta` 配置项来指定增量复制开始的位置。
+    - `incremental`：只通过 binlog 把上游数据库的增量修改复制到下游数据库，可以设置实例配置的 `meta` 配置项来指定增量复制开始的位置。
     - `all`：`full` + `incremental`。先全量备份上游数据库，将数据全量导入到下游数据库，然后从全量数据备份时导出的位置信息 (binlog position) 开始通过 binlog 增量复制数据到下游数据库。
 
 ### 功能配置集
@@ -203,9 +213,9 @@ mysql-instances:
 
 | 配置项        | 说明                                    |
 | :------------ | :--------------------------------------- |
-| `routes` | 上游和下游表之间的路由 table routing 规则集。如果上游与下游的库名、表名一致，则不需要配置该项。使用场景及示例配置参见 [Table Routing](/dm/dm-key-features.md#table-routing) |
-| `filters` | 上游数据库实例匹配的表的 binlog event filter 规则集。如果不需要对 binlog 进行过滤，则不需要配置该项。使用场景及示例配置参见 [Binlog Event Filter](/dm/dm-key-features.md#binlog-event-filter) |
-| `block-allow-list` | 该上游数据库实例匹配的表的 block & allow lists 过滤规则集。建议通过该项指定需要迁移的库和表，否则会迁移所有的库和表。使用场景及示例配置参见 [Block & Allow Lists](/dm/dm-key-features.md#block--allow-table-lists) |
+| `routes` | 上游和下游表之间的路由 table routing 规则集。如果上游与下游的库名、表名一致，则不需要配置该项。使用场景及示例配置参见 [Table Routing](/dm/dm-table-routing.md) |
+| `filters` | 上游数据库实例匹配的表的 binlog event filter 规则集。如果不需要对 binlog 进行过滤，则不需要配置该项。使用场景及示例配置参见 [Binlog Event Filter](/dm/dm-binlog-event-filter.md) |
+| `block-allow-list` | 该上游数据库实例匹配的表的 block & allow lists 过滤规则集。建议通过该项指定需要迁移的库和表，否则会迁移所有的库和表。使用场景及示例配置参见 [Block & Allow Lists](/dm/dm-block-allow-table-lists.md) |
 | `mydumpers` | dump 处理单元的运行配置参数。如果默认配置可以满足需求，则不需要配置该项，也可以只使用 `mydumper-thread` 对 `thread` 配置项单独进行配置。 |
 | `loaders` | load 处理单元的运行配置参数。如果默认配置可以满足需求，则不需要配置该项，也可以只使用 `loader-thread` 对 `pool-size` 配置项单独进行配置。 |
 | `syncers` | sync 处理单元的运行配置参数。如果默认配置可以满足需求，则不需要配置该项，也可以只使用 `syncer-thread` 对 `worker-count` 配置项单独进行配置。 |

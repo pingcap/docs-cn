@@ -134,11 +134,19 @@ MySQL [test]> select @@last_plan_from_cache;
 
 ## Prepared Plan Cache 的内存管理
 
-使用 Prepared Plan Cache 会有一定的内存开销，在内部测试中，平均每个缓存计划会消耗 100 KiB 内存，且目前 Plan Cache 是 `SESSION` 级别的，因此总内存消耗大致为 `SESSION 个数 * SESSION 平均缓存计划个数 * 100KiB`。
+使用 Prepared Plan Cache 会有一定的内存开销，可以通过 Grafana 中的 [`Plan Cache Memory Usage` 监控](/grafana-tidb-dashboard.md)查看每台 TiDB 实例上所有 `SESSION` 所缓存的计划占用的总内存。
 
-比如目前 TiDB 实例的 `SESSION` 并发数是 50，平均每个 `SESSION` 大致缓存 100 个计划，则总内存开销为 `50 * 100 * 100KiB` 约等于 `512MB`。
+> **注意：**
+>
+> 考虑到 Golang 的内存回收机制以及部分未统计的内存结构，Grafana 中显示的内存与实际的堆内存使用量并不相等。经过实验验证存在约 ±20% 的误差。
 
-目前可以通过变量 `tidb_prepared_plan_cache_size` 来设置每个 `SESSION` 最多缓存的计划数量，针对不同的环境，推荐的设置如下：
+对于每台 TiDB 实例上所缓存的执行计划总数量，可以通过 Grafana 中的 [`Plan Cache Plan Num` 监控](/grafana-tidb-dashboard.md)查看。
+
+Grafana 中 `Plan Cache Memory Usage` 和 `Plan Cache Plan Num` 监控如下图所示：
+
+![grafana_panels](/media/planCache-memoryUsage-planNum-panels.png)
+
+目前可以通过变量 `tidb_prepared_plan_cache_size` 来设置每个 `SESSION` 最多缓存的计划数量，针对不同的环境，推荐的设置如下，你可以结合监控进行调整：
 
 - TiDB Server 实例内存阈值 <= 64 GiB 时，`tidb_prepared_plan_cache_size = 50`
 - TiDB Server 实例内存阈值 > 64 GiB 时，`tidb_prepared_plan_cache_size = 100`
@@ -264,3 +272,9 @@ mysql> select @@last_plan_from_cache;       -- 因为开关打开，第二次依
 +------------------------+
 1 row in set (0.00 sec)
 ```
+
+### 监控
+
+在 [Grafana 面板](/grafana-tidb-dashboard.md)的 TiDB 页面，**Executor** 部分包含“Queries Using Plan Cache OPS”和“Plan Cache Miss OPS”两个图表，用以检查 TiDB 和应用是否正确配置，以便 SQL 执行计划缓存能正常工作。TiDB 页面的 **Server** 部分还提供了“Prepared Statement Count”图表，如果应用使用了预处理语句，这个图表会显示非零值。通过数值变化，可以判断 SQL 执行计划缓存是否正常工作。
+
+![`sql_plan_cache`](/media/performance/sql_plan_cache.png)
