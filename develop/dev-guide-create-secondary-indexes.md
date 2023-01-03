@@ -83,7 +83,7 @@ CREATE TABLE `bookshop`.`books` (
 ) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 ```
 
-因此，就需要对 **查询某个年份出版的所有书籍** 的 SQL 进行编写， 以 2022 年为例，如下所示：
+因此，就需要对 **查询某个年份出版的所有书籍** 的 SQL 进行编写，以 2022 年为例，如下所示：
 
 {{< copyable "sql" >}}
 

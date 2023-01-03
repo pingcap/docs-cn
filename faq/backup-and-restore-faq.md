@@ -59,9 +59,9 @@ Issue 链接：[#37207](https://github.com/pingcap/tidb/issues/37207)
 
 当前版本中建议在集群初始化后，进行一次有效快照备份，并且以此作为基础进行 PITR 恢复。
 
-### 在使用 `br restore point` 命令恢复下游集群后， TiFlash 引擎数据没有恢复？
+### 在使用 `br restore point` 命令恢复下游集群后，TiFlash 引擎数据没有恢复？
 
-PITR 目前不支持在恢复阶段直接将数据写入 TiFlash，在数据恢复完成后，br 会执行 `ALTER TABLE table_name SET TIFLASH REPLICA ***`， 因此 TiFlash 副本在 PITR 完成恢复之后并不能马上可用，而是需要等待一段时间从 TiKV 节点同步数据。要查看同步进度，可以查询 `INFORMATION_SCHEMA.tiflash_replica` 表中的 `progress` 信息。
+PITR 目前不支持在恢复阶段直接将数据写入 TiFlash，在数据恢复完成后，br 会执行 `ALTER TABLE table_name SET TIFLASH REPLICA ***`，因此 TiFlash 副本在 PITR 完成恢复之后并不能马上可用，而是需要等待一段时间从 TiKV 节点同步数据。要查看同步进度，可以查询 `INFORMATION_SCHEMA.tiflash_replica` 表中的 `progress` 信息。
 
 ### 日志备份任务的 `status` 变为 `ERROR`，该如何处理？
 
@@ -257,7 +257,7 @@ BR 在 v6.0.0 之前不支持[放置规则](/placement-rules-in-sql.md)，在 v6
     drwxr-xr-x 11 root root 310 Jul  4 10:35 ..
     ```
 
-    由以上命令输出结果可知，`tikv-server` 实例由用户 `tidb_ouo` 启动，但该账号没有 `backup` 目录的写入权限， 所以备份失败。
+    由以上命令输出结果可知，`tikv-server` 实例由用户 `tidb_ouo` 启动，但该账号没有 `backup` 目录的写入权限，所以备份失败。
 
 ### 恢复集群的时候，在 MySQL 下的业务表为什么没有恢复？
 

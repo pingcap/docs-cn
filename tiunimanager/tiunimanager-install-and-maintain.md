@@ -508,7 +508,7 @@ TiUniManager 可以通过 `config.yaml` 文件中全局的 `external_elasticsear
 
 Kibana 是一个针对 Elasticsearch 的开源分析及可视化平台，用来搜索、查看交互存储在 Elasticsearch 索引中的数据。使用 Kibana，可以通过各种图表进行高级数据分析及展示。
 
-目前 TiUniManager 默认安装 Kibana， 集成 Kibana 主要是做日志的展示，在控制台页面系统管理下的系统日志进行查看。
+目前 TiUniManager 默认安装 Kibana，集成 Kibana 主要是做日志的展示，在控制台页面系统管理下的系统日志进行查看。
 
 如果不想安装 kibana 组件，则直接在 `config.yaml` 文件中将 `kibana_servers` 组件相关的配置注释掉即可。
 
