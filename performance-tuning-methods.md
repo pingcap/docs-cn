@@ -134,7 +134,7 @@ Performance Overview 面板提供了以下三个面积堆叠图，帮助你了�
 
 - QPS：表示 Query Per Second，包含应用的 SQL 语句类型执行次数分布。
 - CPS By Type：CPS 表示 Command Per Second，Command 代表 MySQL 协议的命令类型。同样一个查询语句可以通过 query 或者 prepared statement 的命令类型发送到 TiDB。
-- Queries Using Plan Cache OPS：TiDB 集群每秒执行计划缓存的命中次数（即 `avg-hit`） 和未命中次数（即 `avg-miss`） 。
+- Queries Using Plan Cache OPS：TiDB 集群每秒执行计划缓存的命中次数（即 `avg-hit`） 和未命中次数（即 `avg-miss`）。
 
     StmtExecute 每秒执行次数等于 `avg-hit + avg-miss`。执行计划缓存只支持 prepared statement 命令。当 TiDB 开启执行计划缓存时，存在三种使用情况：
 
@@ -476,7 +476,7 @@ v5.4.0：
 
 Store 线程的 Commit Log Duration 明显比 Apply Log Duration 高，并且 Append Log Duration 比 Apply Log Duration 明显的高，说明 Store 线程在 CPU 和 IO 都可能都存在瓶颈。可能降低 Commit Log Duration 和 Append Log Duration 的方式如下：
 
-- 如果 TiKV CPU 资源充足，考虑增加 Store 线程，即 `raftstore.store-pool-size` 。
+- 如果 TiKV CPU 资源充足，考虑增加 Store 线程，即 `raftstore.store-pool-size`。
 - 如果 TiDB 为 v5.4.0 及之后的版本，考虑启用 [`Raft Engine`](/tikv-configuration-file.md#raft-engine)，Raft Engine 具有更轻量的执行路径，在一些场景下显著减少 IO 写入量和写入请求的长尾延迟，启用方式为设置：`raft-engine.enable: true`
 - 如果 TiKV CPU 资源充足，且 TiDB 为 v5.3.0 及之后的版本，考虑启用 [`StoreWriter`](/tune-tikv-thread-performance.md#tikv-线程池调优)。启用方式：`raftstore.store-io-pool-size: 1`。
 

@@ -139,7 +139,7 @@ syncers:                             # sync 处理单元的运行配置参数
     # 自动安全模式的持续时间
     # 如不设置或者设置为 ""，则默认为 `checkpoint-flush-interval`（默认为 30s）的两倍，即 60s。
     # 如设置为 "0s"，则在 DM 自动进入安全模式的时候报错。
-    # 如设置为正常值，例如 "1m30s"，则在该任务异常暂停、记录 `safemode_exit_point` 失败、或是 DM 进程异常退出时，把安全模式持续时间调整为 1 分 30 秒。详情可见[自动开启安全模式](https://docs.pingcap.com/zh/tidb/stable/dm-safe-mode#自动开启) 。
+    # 如设置为正常值，例如 "1m30s"，则在该任务异常暂停、记录 `safemode_exit_point` 失败、或是 DM 进程异常退出时，把安全模式持续时间调整为 1 分 30 秒。详情可见[自动开启安全模式](https://docs.pingcap.com/zh/tidb/stable/dm-safe-mode#自动开启)。
     safe-mode-duration: "60s"
     # 设置为 true，DM 会在不增加延迟的情况下，尽可能地将上游对同一条数据的多次操作压缩成一次操作。
     # 如 INSERT INTO tb(a,b) VALUES(1,1); UPDATE tb SET b=11 WHERE a=1; 会被压缩成 INSERT INTO tb(a,b) VALUES(1,11); 其中 a 为主键

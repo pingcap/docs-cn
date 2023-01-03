@@ -61,7 +61,7 @@ Issue 链接：[#37207](https://github.com/pingcap/tidb/issues/37207)
 
 ### 在使用 `br restore point` 命令恢复下游集群后， TiFlash 引擎数据没有恢复？
 
-PITR 目前不支持在恢复阶段直接将数据写入 TiFlash ，在数据恢复完成后，br 会执行 `ALTER TABLE table_name SET TIFLASH REPLICA ***`， 因此 TiFlash 副本在 PITR 完成恢复之后并不能马上可用，而是需要等待一段时间从 TiKV 节点同步数据。要查看同步进度，可以查询 `INFORMATION_SCHEMA.tiflash_replica` 表中的 `progress` 信息。
+PITR 目前不支持在恢复阶段直接将数据写入 TiFlash，在数据恢复完成后，br 会执行 `ALTER TABLE table_name SET TIFLASH REPLICA ***`， 因此 TiFlash 副本在 PITR 完成恢复之后并不能马上可用，而是需要等待一段时间从 TiKV 节点同步数据。要查看同步进度，可以查询 `INFORMATION_SCHEMA.tiflash_replica` 表中的 `progress` 信息。
 
 ### 日志备份任务的 `status` 变为 `ERROR`，该如何处理？
 
@@ -166,7 +166,7 @@ BR 在 v6.0.0 之前不支持[放置规则](/placement-rules-in-sql.md)，在 v6
 
 > **注意：**
 >
-> 如果没有挂载 NFS 到 br 工具或 TiKV 节点，或者使用了支持 S3、GCS 或 Azure Blob Storage 协议的远端存储，那么 br 工具备份的数据会在各个 TiKV 节点生成。**注意这不是推荐的备份和恢复使用方式** ，因为备份数据会分散在各个节点的本地文件系统中，聚集这些备份数据可能会造成数据冗余和运维上的麻烦，而且在不聚集这些数据便直接恢复的时候会遇到 `SST file not found` 报错。
+> 如果没有挂载 NFS 到 br 工具或 TiKV 节点，或者使用了支持 S3、GCS 或 Azure Blob Storage 协议的远端存储，那么 br 工具备份的数据会在各个 TiKV 节点生成。**注意这不是推荐的备份和恢复使用方式**，因为备份数据会分散在各个节点的本地文件系统中，聚集这些备份数据可能会造成数据冗余和运维上的麻烦，而且在不聚集这些数据便直接恢复的时候会遇到 `SST file not found` 报错。
 
 在使用 local storage 的时候，会在运行 br 命令行工具的节点生成 `backupmeta`，在各个 Region 的 Leader 所在 TiKV 节点生成备份文件。
 
@@ -285,7 +285,7 @@ br restore full -f '*.*' -f '!mysql.*' -f 'mysql.usertable' -s $external_storage
 br restore full -f 'mysql.usertable' -s $external_storage_url --with-sys-table
 ```
 
-此外请注意，即使设置了 [table filter](/table-filter.md#表库过滤语法) ，**BR 也不会恢复以下系统表**：
+此外请注意，即使设置了 [table filter](/table-filter.md#表库过滤语法)，**BR 也不会恢复以下系统表**：
 
 - 统计信息表（`mysql.stat_*`）
 - 系统变量表（`mysql.tidb`、`mysql.global_variables`）

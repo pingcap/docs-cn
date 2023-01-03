@@ -73,7 +73,7 @@ connections = ((core_count * 2) + effective_spindle_count)
 
 这个说明指出：
 
-1. **core_count** 就是 _物理核心数_ ，与你是否开启[超线程](https://en.wikipedia.org/wiki/Hyper-threading)无关。
+1. **core_count** 就是 _物理核心数_，与你是否开启[超线程](https://en.wikipedia.org/wiki/Hyper-threading)无关。
 2. 数据被全量缓存时，**effective_spindle_count** 应被设置为 0，随着命中率的下降，会更加接近实际的 HDD 个数。
 3. **这里没有任何基于 _SSD_ 的经验公式。**
 

@@ -20,7 +20,7 @@ aliases: ['/zh/tidb/dev/replicate-incremental-data-to-kafka/']
 
 1. 部署包含 TiCDC 的 TiDB 集群。
 
-    在实验或测试环境中，可以使用 TiUP Playground 功能，快速部署 TiCDC ，命令如下：
+    在实验或测试环境中，可以使用 TiUP Playground 功能，快速部署 TiCDC，命令如下：
 
     ```shell
     tiup playground --host 0.0.0.0 --db 1 --pd 1 --kv 1 --tiflash 0 --ticdc 1

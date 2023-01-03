@@ -130,7 +130,7 @@ curl -X GET http://127.0.0.1:8300/api/v1/health
 
 `ignore_txn_start_ts`：指定之后会忽略指定 start_ts 的事务，如 `ignore-txn-start-ts = [1, 2]`。
 
-`mounter_worker_num`： Mounter 线程数，Mounter 用于解码 TiKV 输出的数据，默认值为 16 。
+`mounter_worker_num`： Mounter 线程数，Mounter 用于解码 TiKV 输出的数据，默认值为 16。
 
 `sink_config`：sink 的配置参数，如下
 

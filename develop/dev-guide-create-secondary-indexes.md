@@ -167,4 +167,4 @@ SHOW INDEXES FROM `bookshop`.`books`;
 
 ## 更进一步
 
-至此，你已经完成数据库、表及二级索引的创建，接下来，数据库模式已经准备好给你的应用程序提供[写入](/develop/dev-guide-insert-data.md) 和[读取](/develop/dev-guide-get-data-from-single-table.md) 读取的能力了。
+至此，你已经完成数据库、表及二级索引的创建，接下来，数据库模式已经准备好给你的应用程序提供[写入](/develop/dev-guide-insert-data.md)和[读取](/develop/dev-guide-get-data-from-single-table.md)的能力了。

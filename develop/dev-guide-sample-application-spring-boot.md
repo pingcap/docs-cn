@@ -97,9 +97,9 @@ aliases: ['/zh/tidb/dev/sample-application-spring-boot']
 
 ## 第 2 步：安装 JDK
 
-请在你的计算机上下载并安装 **Java Development Kit** (JDK)，这是 Java 开发的必备工具。**Spring Boot** 支持 Java 版本 8 以上的 JDK，由于 **Hibernate** 版本的缘故，推荐使用 Java 版本 11 以上的 JDK 。
+请在你的计算机上下载并安装 **Java Development Kit** (JDK)，这是 Java 开发的必备工具。**Spring Boot** 支持 Java 版本 8 以上的 JDK，由于 **Hibernate** 版本的缘故，推荐使用 Java 版本 11 以上的 JDK。
 
-示例应用程序同时支持 **Oracle JDK** 和 **OpenJDK**，请自行选择，本教程将使用版本 17 的 **OpenJDK** 。
+示例应用程序同时支持 **Oracle JDK** 和 **OpenJDK**，请自行选择，本教程将使用版本 17 的 **OpenJDK**。
 
 ## 第 3 步：安装 Maven
 
@@ -362,7 +362,7 @@ Hibernate: create table player_jpa (id bigint not null, coins integer, goods int
 2022-03-28 18:46:03.311  INFO 14923 --- [           main] com.pingcap.App                          : Started App in 2.072 seconds (JVM running for 2.272)
 ```
 
-输出日志中，提示应用程序在启动过程中做了什么，这里显示应用程序使用 [Tomcat](https://tomcat.apache.org/) 启动了一个 **Servlet**，使用 Hibernate 作为 ORM ，[HikariCP](https://github.com/brettwooldridge/HikariCP) 作为数据库连接池的实现，使用了 `org.hibernate.dialect.TiDBDialect` 作为数据库方言。启动后，Hibernate 删除并重新创建了表 `player_jpa`，及序列 `player_jpa_id_seq`。在启动的最后，监听了 8080 端口，对外提供 HTTP 服务。
+输出日志中，提示应用程序在启动过程中做了什么，这里显示应用程序使用 [Tomcat](https://tomcat.apache.org/) 启动了一个 **Servlet**，使用 Hibernate 作为 ORM，[HikariCP](https://github.com/brettwooldridge/HikariCP) 作为数据库连接池的实现，使用了 `org.hibernate.dialect.TiDBDialect` 作为数据库方言。启动后，Hibernate 删除并重新创建了表 `player_jpa`，及序列 `player_jpa_id_seq`。在启动的最后，监听了 8080 端口，对外提供 HTTP 服务。
 
 如果你想了解有关此应用程序的代码的详细信息，可参阅本教程下方的[实现细节](#实现细节)。
 
@@ -434,7 +434,7 @@ curl --location --request POST 'http://localhost:8080/player/' --header 'Content
 
 #### 使用 ID 获取玩家信息
 
-使用 **Get** 方法请求 `/player` 端点请求来获取玩家信息，额外的需要在路径上给出玩家的 `id` 参数，即 `/player/{id}` ，例如在请求 `id` 为 1 的玩家时：
+使用 **Get** 方法请求 `/player` 端点请求来获取玩家信息，额外的需要在路径上给出玩家的 `id` 参数，即 `/player/{id}`，例如在请求 `id` 为 1 的玩家时：
 
 {{< copyable "shell-regular" >}}
 
@@ -454,7 +454,7 @@ curl --location --request GET 'http://localhost:8080/player/1'
 
 #### 使用 Limit 批量获取玩家信息
 
-使用 **Get** 方法请求 `/player/limit` 端点请求来获取玩家信息，额外的需要在路径上给出限制查询的玩家信息的总数，即 `/player/limit/{limit}` ，例如在请求最多 3 个玩家的信息时：
+使用 **Get** 方法请求 `/player/limit` 端点请求来获取玩家信息，额外的需要在路径上给出限制查询的玩家信息的总数，即 `/player/limit/{limit}`，例如在请求最多 3 个玩家的信息时：
 
 {{< copyable "shell-regular" >}}
 
@@ -486,7 +486,7 @@ curl --location --request GET 'http://localhost:8080/player/limit/3'
 
 #### 分页获取玩家信息
 
-使用 **Get** 方法请求 `/player/page` 端点请求来分页获取玩家信息，额外的需要使用 URL 参数 ，例如在请求页面序号 `index` 为 0，每页最大请求量 `size` 为 2 时：
+使用 **Get** 方法请求 `/player/page` 端点请求来分页获取玩家信息，额外的需要使用 URL 参数，例如在请求页面序号 `index` 为 0，每页最大请求量 `size` 为 2 时：
 
 {{< copyable "shell-regular" >}}
 
@@ -582,7 +582,7 @@ true
 1. 循环创建 10 名玩家
 2. 获取 `id` 为 1 的玩家信息
 3. 获取至多 3 名玩家信息列表
-4. 获取 `index` 为 0 ，`size` 为 2 的一页玩家信息
+4. 获取 `index` 为 0，`size` 为 2 的一页玩家信息
 5. 获取玩家总数
 6. `id` 为 1 的玩家作为售出方，id 为 2 的玩家作为购买方，购买 10 个货物，耗费 100 金币
 
@@ -802,7 +802,7 @@ public class App {
 }
 ```
 
-入口类比较简单，首先，有一个 Spring Boot 应用程序的标准配置注解 [@SpringBootApplication](https://docs.spring.io/spring-boot/docs/current/api/org/springframework/boot/autoconfigure/SpringBootApplication.html)。有关详细信息，请参阅 Spring Boot 官方文档中的 [Using the @SpringBootApplication Annotation](https://docs.spring.io/spring-boot/docs/current/reference/html/using-spring-boot.html#using-boot-using-springbootapplication-annotation) 。随后，使用 `ApplicationPidFileWriter` 在程序启动过程中，写下一个名为 `spring-jpa-hibernate.pid` 的 PID (process identification number) 文件，可从外部使用此 PID 文件关闭此应用程序。
+入口类比较简单，首先，有一个 Spring Boot 应用程序的标准配置注解 [@SpringBootApplication](https://docs.spring.io/spring-boot/docs/current/api/org/springframework/boot/autoconfigure/SpringBootApplication.html)。有关详细信息，请参阅 Spring Boot 官方文档中的 [Using the @SpringBootApplication Annotation](https://docs.spring.io/spring-boot/docs/current/reference/html/using-spring-boot.html#using-boot-using-springbootapplication-annotation)。随后，使用 `ApplicationPidFileWriter` 在程序启动过程中，写下一个名为 `spring-jpa-hibernate.pid` 的 PID (process identification number) 文件，可从外部使用此 PID 文件关闭此应用程序。
 
 ### 数据库持久层
 
@@ -883,7 +883,7 @@ public class PlayerBean {
 
 #### 存储库
 
-为了抽象数据库层，Spring 应用程序使用 [Repository](https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#repositories) 接口，或者 Repository 的子接口。 这个接口映射到一个数据库对象，常见的，比如会映射到一个表上。JPA 会实现一些预制的方法，比如 [INSERT](/sql-statements/sql-statement-insert.md) ，或使用主键的 [SELECT](/sql-statements/sql-statement-select.md) 等。
+为了抽象数据库层，Spring 应用程序使用 [Repository](https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#repositories) 接口，或者 Repository 的子接口。 这个接口映射到一个数据库对象，常见的，比如会映射到一个表上。JPA 会实现一些预制的方法，比如 [INSERT](/sql-statements/sql-statement-insert.md)，或使用主键的 [SELECT](/sql-statements/sql-statement-select.md) 等。
 
 {{< copyable "" >}}
 
@@ -1170,7 +1170,7 @@ public class PlayerController {
 `PlayerController` 中使用了尽可能多的注解方式来作为示例展示功能，在实际项目中，请尽量保持风格的统一，同时遵循你公司或团体的规则。`PlayerController` 有许多注解，下方将进行逐一解释：
 
 - [@RestController](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/bind/annotation/RestController.html) 将 `PlayerController` 声明为一个 [Web Controller](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller)，且将返回值序列化为 JSON 输出。
-- [@RequestMapping](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/bind/annotation/RequestMapping.html) 映射 URL 端点为 `/player` ，即此 `Web Controller` 仅监听 `/player` URL 下的请求。
+- [@RequestMapping](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/bind/annotation/RequestMapping.html) 映射 URL 端点为 `/player`，即此 `Web Controller` 仅监听 `/player` URL 下的请求。
 - `@Autowired` 用于 Spring 的自动装配，可以看到，此处声明需要一个 `PlayerService` 对象，此对象为接口，并未指定使用哪一个实现类，这是由 Spring 自动装配的，有关此装配规则，可查看 Spirng 官网中的 [The IoC container](https://docs.spring.io/spring-framework/docs/3.2.x/spring-framework-reference/html/beans.html) 一文。
 - [@PostMapping](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/bind/annotation/PostMapping.html) 声明此函数将响应 HTTP 中的 [POST](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/POST) 类型请求。
     - `@RequestBody` 声明此处将 HTTP 的整个载荷解析到参数 `playerList` 中。

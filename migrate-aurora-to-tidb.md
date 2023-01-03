@@ -119,7 +119,7 @@ table = '$2'
 type = '$3'
 ```
 
-如果需要在 TiDB 开启 TLS ，请参考 [TiDB Lightning Configuration](/tidb-lightning/tidb-lightning-configuration.md)。
+如果需要在 TiDB 开启 TLS，请参考 [TiDB Lightning Configuration](/tidb-lightning/tidb-lightning-configuration.md)。
 
 ### 第 4 步：导入全量数据到 TiDB
 

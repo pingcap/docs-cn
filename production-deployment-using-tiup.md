@@ -228,7 +228,7 @@ tiup cluster template > topology.yaml
 
 针对两种常用的部署场景，也可以通过以下命令生成建议的拓扑模板：
 
-- 混合部署场景：单台机器部署多个实例，详情参见[混合部署拓扑架构](/hybrid-deployment-topology.md) 。
+- 混合部署场景：单台机器部署多个实例，详情参见[混合部署拓扑架构](/hybrid-deployment-topology.md)。
 
     {{< copyable "shell-regular" >}}
 
