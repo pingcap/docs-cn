@@ -85,6 +85,7 @@
     - [Third-Party Tools Supported by TiDB](/develop/dev-guide-third-party-support.md)
     - [Known Incompatibility Issues with Third-Party Tools](/develop/dev-guide-third-party-tools-compatibility.md)
     - [ProxySQL Integration Guide](/develop/dev-guide-proxysql-integration.md)
+    - [Amazon AppFlow Integration Guide](/develop/dev-guide-aws-appflow-integration.md)
 - Deploy
   - [Software and Hardware Requirements](/hardware-and-software-requirements.md)
   - [Environment Configuration Checklist](/check-before-deployment.md)
