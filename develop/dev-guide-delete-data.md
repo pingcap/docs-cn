@@ -6,7 +6,7 @@ aliases: ['/zh/tidb/dev/delete-data']
 
 # 删除数据
 
-此页面将使用 [DELETE](/sql-statements/sql-statement-delete.md) SQL 语句，对 TiDB 中的数据进行删除。
+此页面将使用 [DELETE](/sql-statements/sql-statement-delete.md) SQL 语句，对 TiDB 中的数据进行删除。如果需要周期性地删除过期数据，可以考虑使用 TiDB 的 [TTL 功能](/time-to-live.md)。
 
 ## 在开始之前
 
@@ -129,6 +129,35 @@ func main() {
         panic(err)
     }
 }
+```
+
+</div>
+
+<div label="Python" value="python">
+
+在 Python 中，删除数据的示例如下：
+
+```python
+import MySQLdb
+import datetime
+import time
+
+connection = MySQLdb.connect(
+    host="127.0.0.1",
+    port=4000,
+    user="root",
+    password="",
+    database="bookshop",
+    autocommit=True
+)
+
+with connection:
+    with connection.cursor() as cursor:
+        start_time = datetime.datetime(2022, 4, 15)
+        end_time = datetime.datetime(2022, 4, 15, 0, 15)
+        delete_sql = "DELETE FROM `bookshop`.`ratings` WHERE `rated_at` >= %s AND `rated_at` <= %s"
+        affect_rows = cursor.execute(delete_sql, (start_time, end_time))
+        print(f'delete {affect_rows} data')
 ```
 
 </div>
@@ -298,6 +327,40 @@ func deleteBatch(db *sql.DB, startTime, endTime time.Time) (int64, error) {
 
 </div>
 
+<div label="Python" value="python">
+
+在 Python 中，批量删除程序类似于以下内容：
+
+```python
+import MySQLdb
+import datetime
+import time
+
+connection = MySQLdb.connect(
+    host="127.0.0.1",
+    port=4000,
+    user="root",
+    password="",
+    database="bookshop",
+    autocommit=True
+)
+
+with connection:
+    with connection.cursor() as cursor:
+        start_time = datetime.datetime(2022, 4, 15)
+        end_time = datetime.datetime(2022, 4, 15, 0, 15)
+        affect_rows = -1
+        while affect_rows != 0:
+            delete_sql = "DELETE FROM `bookshop`.`ratings` WHERE `rated_at` >= %s AND  `rated_at` <= %s LIMIT 1000"
+            affect_rows = cursor.execute(delete_sql, (start_time, end_time))
+            print(f'delete {affect_rows} data')
+            time.sleep(1)
+```
+
+每次迭代中，`DELETE` 最多删除 1000 行时间段为 `2022-04-15 00:00:00` 至 `2022-04-15 00:15:00` 的数据。
+
+</div>
+
 </SimpleTab>
 
 ## 非事务批量删除
@@ -319,12 +382,12 @@ func deleteBatch(db *sql.DB, startTime, endTime time.Time) (int64, error) {
 {{< copyable "sql" >}}
 
 ```sql
-BATCH ON {dividing_column} LIMIT {batch_size} {delete_statement};
+BATCH ON {shard_column} LIMIT {batch_size} {delete_statement};
 ```
 
 |    参数    |      描述      |
 | :--------: | :------------: |
-| `{dividing_column}`  |      非事务批量删除的划分列      |
+| `{shard_column}`  |      非事务批量删除的划分列      |
 | `{batch_size}` | 非事务批量删除的每批大小 |
 | `{delete_statement}` | 删除语句 |
 

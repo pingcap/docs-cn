@@ -9,11 +9,11 @@ TiDB Dashboard 监控关系图是 TiDB v4.0.7 起提供的新功能，可以将�
 
 ## 访问关系图
 
-登录 TiDB Dashboard 后点击左侧导航的**集群诊断**可以进入此功能页面：
+登录 TiDB Dashboard 后点击左侧导航的**集群诊断** (Cluster Diagnostics) 可以进入此功能页面：
 
-![生成监控关系图首页](/media/dashboard/dashboard-metrics-relation-home.png)
+![生成监控关系图首页](/media/dashboard/dashboard-metrics-relation-home-v650.png)
 
-设置**区间起始时间**和**区间长度**参数后，点击**生成监控关系图**按钮后，会进入监控关系图页面。
+设置**区间起始时间** (Range Start Time) 和**区间长度** (Range Duration) 参数后，点击**生成监控关系图** (Generate Metrics Relation) 按钮后，会进入监控关系图页面。
 
 ## 关系图解读
 

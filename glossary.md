@@ -19,6 +19,15 @@ ACID 是指数据库管理系统在写入或更新资料的过程中，为保证
 
 ## B
 
+### BR
+
+[TiDB 备份恢复功能](/br/backup-and-restore-overview.md)用户文档中的名词 **BR** 根据上下文不同有不同的解释，比较常见的指代用法：
+
+* TiDB 备份恢复功能，包含 br CLI、TiDB Operator、TiDB Cloud 提供的备份和恢复功能集合。
+* 架构中的 BR 功能组件。
+
+名词 **br** 一般用来指代 br CLI 工具。
+
 ### Batch Create Table
 
 批量建表 (Batch Create Table) 是在 TiDB v6.0.0 中引入的新功能，此功能默认开启。当需要恢复的数据中带有大量的表（约 50000 张）时，批量建表功能显著提升数据恢复的速度。详情参见[批量建表](/br/br-batch-create-table.md)。
@@ -152,3 +161,7 @@ Top SQL 用于找到一段时间内对某个 TiDB 或 TiKV 节点消耗负载较
 ### TSO
 
 因为 TiKV 是一个分布式的储存系统，它需要一个全球性的授时服务 TSO（Timestamp Oracle），来分配一个单调递增的时间戳。 这样的功能在 TiKV 中是由 PD 提供的，在 Google 的 [Spanner](http://static.googleusercontent.com/media/research.google.com/en//archive/spanner-osdi2012.pdf) 中是由多个原子钟和 GPS 来提供的。
+
+### TTL
+
+[Time to Live (TTL)](/time-to-live.md) 提供了行级别的生命周期控制策略。通过为表设置 TTL 属性，TiDB 可以周期性地自动检查并清理表中的过期数据。
