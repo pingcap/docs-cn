@@ -189,7 +189,7 @@ TiDB 支持完整的分布式事务，自 v3.0 版本起，提供乐观事务与
 
 当执行事务或执行 `ADMIN CHECK [TABLE|INDEX]` 命令时，TiDB 会对数据索引的一致性进行检查。如果检查发现 record key-value 和 index key-value 不一致，即存储行数据的键值对和存储其对应索引的键值对之间不一致（例如多索引或缺索引），TiDB 会报数据索引一致性错误，并在日志文件中打印相关错误日志。
 
-要了解更多数据索引一致性报错信息以及如何绕过检查，请参考 [数据索引一致性报错](/troubleshoot-data-inconsistency-errors.md)。
+要了解更多数据索引一致性报错信息以及如何绕过检查，请参考[数据索引一致性报错](/troubleshoot-data-inconsistency-errors.md)。
 
 ## 4. TiKV 问题
 
