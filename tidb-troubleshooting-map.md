@@ -558,7 +558,7 @@ TiDB 支持完整的分布式事务，自 v3.0 版本起，提供乐观事务与
 
 - 7.2.2 `write conflict` 乐观事务中的写写冲突，同时多个事务对相同的 key 进行修改，只有一个事务会成功，其他事务会自动重取 timestamp 然后进行重试，不影响业务。如果业务冲突很严重可能会导致重试多次之后事务失败，这种情况下建议使用悲观锁。报错以及解决方法详情，参考[乐观事务模型下写写冲突问题排查](/troubleshoot-write-conflicts.md)。
 
-- 7.2.3 `TxnLockNotFound` 事务提交太慢，过了 TTL (Time To Live) 时间之后被其他事务回滚了，该事务会自动重试，通常情况下对业务无感知。对于 0.25 MB 以内的小事务，TTL 默认时间为 3 秒。详情参见 [锁被清除 (LockNotFound) 错误](/troubleshoot-lock-conflicts.md#锁被清除-locknotfound-错误)。
+- 7.2.3 `TxnLockNotFound` 事务提交太慢，过了 TTL (Time To Live) 时间之后被其他事务回滚了，该事务会自动重试，通常情况下对业务无感知。对于 0.25 MB 以内的小事务，TTL 默认时间为 3 秒。详情参见[锁被清除 (LockNotFound) 错误](/troubleshoot-lock-conflicts.md#锁被清除-locknotfound-错误)。
 
 - 7.2.4 `PessimisticLockNotFound` 类似 `TxnLockNotFound`，悲观事务提交太慢被其他事务回滚了。
 
