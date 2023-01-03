@@ -65,7 +65,7 @@ http://192.168.0.123:2379/dashboard/
 
 2. 重启 HAProxy，以使配置生效。
 
-3. 测试反向代理是否生效：访问 HAProxy 所在机器的 8033 端口下 `/dashboard/` 地址，如 <http://example.com:8033/dashboard/> ，即可访问 TiDB Dashboard。
+3. 测试反向代理是否生效：访问 HAProxy 所在机器的 8033 端口下 `/dashboard/` 地址，如 <http://example.com:8033/dashboard/>，即可访问 TiDB Dashboard。
 
 </details>
 
@@ -97,7 +97,7 @@ http://192.168.0.123:2379/dashboard/
    sudo nginx -s reload
    ```
 
-3. 测试反向代理是否生效：访问 NGINX 所在机器的 8033 端口下 `/dashboard/` 地址，如 `http://example.com:8033/dashboard/` ，即可访问 TiDB Dashboard。
+3. 测试反向代理是否生效：访问 NGINX 所在机器的 8033 端口下 `/dashboard/` 地址，如 `http://example.com:8033/dashboard/`，即可访问 TiDB Dashboard。
 
 </details>
 

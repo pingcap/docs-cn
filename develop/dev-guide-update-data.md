@@ -162,7 +162,7 @@ VALUES (?, ?, ?, NOW()) ON DUPLICATE KEY UPDATE `score` = ?, `rated_at` = NOW()"
 
 ## 批量更新
 
-需要更新表中多行的数据，可选择 [使用 `UPDATE`](#使用-update)，并使用 `WHERE` 子句过滤需要更新的数据。
+需要更新表中多行的数据，可选择[使用 `UPDATE`](#使用-update)，并使用 `WHERE` 子句过滤需要更新的数据。
 
 但如果你需要更新大量行(数万或更多)的时候，建议使用一个迭代，每次都只更新一部分数据，直到更新全部完成。这是因为 TiDB 单个事务大小限制为 [txn-total-size-limit](/tidb-configuration-file.md#txn-total-size-limit)（默认为 100MB），且一次性过多的数据更新，将导致持有锁时间过长（[悲观事务](/pessimistic-transaction.md)），或产生大量冲突（[乐观事务](/optimistic-transaction.md)）。你可以在程序或脚本中使用循环来完成操作。
 

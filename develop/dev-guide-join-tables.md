@@ -205,7 +205,7 @@ public List<Book> getLatestBooksWithAverageScore() throws SQLException {
 
 ### 交叉连接 CROSS JOIN
 
-当连接条件恒成立时，两表之间的内连接称为[交叉连接](https://zh.wikipedia.org/wiki/%E8%BF%9E%E6%8E%A5#%E4%BA%A4%E5%8F%89%E8%BF%9E%E6%8E%A5)（又被称为“笛卡尔连接”）。交叉连接会把左表的每一条记录和右表的所有记录相连接，如果左表的记录数为 m, 右表的记录数为 n，则结果集中会产生 m \* n 条记录。
+当连接条件恒成立时，两表之间的内连接称为[交叉连接](https://zh.wikipedia.org/wiki/%E8%BF%9E%E6%8E%A5#%E4%BA%A4%E5%8F%89%E8%BF%9E%E6%8E%A5)（又被称为“笛卡尔连接”）。交叉连接会把左表的每一条记录和右表的所有记录相连接，如果左表的记录数为 m，右表的记录数为 n，则结果集中会产生 m \* n 条记录。
 
 ### 左半连接 LEFT SEMI JOIN
 

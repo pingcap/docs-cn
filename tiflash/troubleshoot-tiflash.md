@@ -181,7 +181,7 @@ show warnings;
 
 6. 检查 PD 是否为表设置 `placement-rule`。
 
-    可以通过 `curl http://<pd-ip>:<pd-port>/pd/api/v1/config/rules/group/tiflash` 查询比较当前 PD 上的所有 TiFlash Placement Rule。如果观察到有 id 为 `table-<table_id>-r` 的 Rule ，则表示 PD Rule 设置成功。
+    可以通过 `curl http://<pd-ip>:<pd-port>/pd/api/v1/config/rules/group/tiflash` 查询比较当前 PD 上的所有 TiFlash Placement Rule。如果观察到有 id 为 `table-<table_id>-r` 的 Rule，则表示 PD Rule 设置成功。
 
 7. 检查 PD 是否正常发起调度。
 
@@ -199,7 +199,7 @@ show warnings;
     检查磁盘使用空间比例是否高于 `low-space-ratio` 的值（默认值 0.8，即当节点的空间占用比例超过 80% 时，为避免磁盘空间被耗尽，PD 会尽可能避免往该节点迁移数据）。
 
     - 如果磁盘使用率大于等于 `low-space-ratio`，说明磁盘空间不足。此时，请删除不必要的文件，如 `${data}/flash/` 目录下的 `space_placeholder_file` 文件（必要时可在删除文件后将 `reserve-space` 设置为 0MB）。
-    - 如果磁盘使用率小于 `low-space-ratio` ，说明磁盘空间正常，进入下一步。
+    - 如果磁盘使用率小于 `low-space-ratio`，说明磁盘空间正常，进入下一步。
 
 2. 检查是否有 `down peer` （`down peer` 没有清理干净可能会导致同步卡住）。
 

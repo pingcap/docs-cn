@@ -5,7 +5,7 @@ summary: TiDB 数据库中 SHOW PLACEMENT FOR 的使用概况。
 
 # SHOW PLACEMENT FOR
 
-`SHOW PLACEMENT FOR` 用于汇总所有放置策略 (placement policy) ，并用统一的形式呈现特定表、数据库或分区的信息。
+`SHOW PLACEMENT FOR` 用于汇总所有放置策略 (placement policy)，并用统一的形式呈现特定表、数据库或分区的信息。
 
 本语句返回结果中的 `Scheduling_State` 列标识了 Placement Driver (PD) 在当前对象上的调度进度，有以下可能的结果：
 

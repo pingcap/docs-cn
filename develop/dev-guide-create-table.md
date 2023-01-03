@@ -83,11 +83,11 @@ CREATE TABLE `bookshop`.`users` (
 
 而在其后，又定义了一个字段名为 `nickname`，类型为 [varchar](/data-type-string.md#varchar-类型)，且长度不得超过 100 字符的字段。用以表示用户的昵称。这意味着，所用用户的昵称都是 `varchar` 类型，且不超过 100 字符的。
 
-最后，又加入了一个字段名为 `balance` 用以表示用户的余额，类型为 [decimal](/data-type-numeric.md#decimal-类型)，且其精度为 15，比例为 2。简单的说明一下精度和比例代表的含义，精度代表字段数值的总位数，而比例代表小数点后有多少位。例如: `decimal(5,2)`，即精度为 5，比例为 2 时，其取值范围为 `-999.99` 到 `999.99`。`decimal(6,1)` ，即精度为 6，比例为 1 时，其取值范围为 `-99999.9` 到 `99999.9`。`decimal` 类型为定点数，可精确保存数字，在需要精确数字的场景（如用户财产相关）中，请确保使用[定点数](/data-type-numeric.md#定点类型)类型。
+最后，又加入了一个字段名为 `balance` 用以表示用户的余额，类型为 [decimal](/data-type-numeric.md#decimal-类型)，且其精度为 15，比例为 2。简单的说明一下精度和比例代表的含义，精度代表字段数值的总位数，而比例代表小数点后有多少位。例如: `decimal(5,2)`，即精度为 5，比例为 2 时，其取值范围为 `-999.99` 到 `999.99`。`decimal(6,1)`，即精度为 6，比例为 1 时，其取值范围为 `-99999.9` 到 `99999.9`。`decimal` 类型为定点数，可精确保存数字，在需要精确数字的场景（如用户财产相关）中，请确保使用[定点数](/data-type-numeric.md#定点类型)类型。
 
-TiDB 支持许多其他的列数据类型，包含 [整数](/data-type-numeric.md#整数类型)、[浮点数](/data-type-numeric.md#浮点类型)、[定点数](/data-type-numeric.md#定点类型)、[时间](/data-type-date-and-time.md#datetime-类型)、[枚举](/data-type-string.md#enum-类型) 等，可参考支持的列的[数据类型](/basic-features.md#数据类型函数和操作符)，并使用与你准备保存在数据库内的数据匹配的**数据类型**。
+TiDB 支持许多其他的列数据类型，包含[整数](/data-type-numeric.md#整数类型)、[浮点数](/data-type-numeric.md#浮点类型)、[定点数](/data-type-numeric.md#定点类型)、[时间](/data-type-date-and-time.md#datetime-类型)、[枚举](/data-type-string.md#enum-类型) 等，可参考支持的列的[数据类型](/basic-features.md#数据类型函数和操作符)，并使用与你准备保存在数据库内的数据匹配的**数据类型**。
 
-稍微提升一下复杂度，例如选择定义一张 `books` 表，这张表将是 `bookshop` 数据的核心。它包含书的 唯一标识、名称、书籍类型（如：杂志、动漫、教辅 等）、库存、价格、出版时间 字段。
+稍微提升一下复杂度，例如选择定义一张 `books` 表，这张表将是 `bookshop` 数据的核心。它包含书的唯一标识、名称、书籍类型（如：杂志、动漫、教辅等）、库存、价格、出版时间等字段。
 
 {{< copyable "sql" >}}
 
@@ -122,7 +122,7 @@ CREATE TABLE `bookshop`.`books` (
 
 一个表可以没有主键，主键也可以是非整数类型。但此时 TiDB 就会创建一个 `_tidb_rowid` 作为隐式主键。隐式主键 `_tidb_rowid` 因为其单调递增的特性，可能在大批量写入场景下会导致写入热点，如果你写入量密集，可考虑通过 [SHARD_ROW_ID_BITS](/shard-row-id-bits.md) 和 [PRE_SPLIT_REGIONS](/sql-statements/sql-statement-split-region.md#pre_split_regions) 两参数控制打散。但这可能导致读放大，请自行取舍。
 
-表的主键为 [整数类型](/data-type-numeric.md#整数类型) 且使用了 `AUTO_INCREMENT` 时，无法使用 `SHARD_ROW_ID_BITS` 消除热点。需解决此热点问题，且无需使用主键的连续和递增时，可使用 [AUTO_RANDOM](/auto-random.md) 替换 `AUTO_INCREMENT` 属性来消除行 ID 的连续性。
+表的主键为[整数类型](/data-type-numeric.md#整数类型)且使用了 `AUTO_INCREMENT` 时，无法使用 `SHARD_ROW_ID_BITS` 消除热点。需解决此热点问题，且无需使用主键的连续和递增时，可使用 [AUTO_RANDOM](/auto-random.md) 替换 `AUTO_INCREMENT` 属性来消除行 ID 的连续性。
 
 更多有关热点问题的处理办法，请参考[TiDB 热点问题处理](/troubleshoot-hot-spot-issues.md)。
 
@@ -255,7 +255,7 @@ CREATE TABLE `bookshop`.`users` (
 
 ### 同步列存数据
 
-当前，TiDB 支持两种数据分析引擎：**TiFlash** 和 **TiSpark**。大数据场景 (100 T) 下，推荐使用 TiFlash MPP 作为 HTAP 的主要方案，TiSpark 作为补充方案。希望了解更多关于 TiDB 的 HTAP 能力，可参考以下文章：[快速上手 HTAP](/quick-start-with-htap.md) 和 [深入探索 HTAP](/explore-htap.md)。
+当前，TiDB 支持两种数据分析引擎：**TiFlash** 和 **TiSpark**。大数据场景 (100 T) 下，推荐使用 TiFlash MPP 作为 HTAP 的主要方案，TiSpark 作为补充方案。希望了解更多关于 TiDB 的 HTAP 能力，可参考以下文章：[快速上手 HTAP](/quick-start-with-htap.md) 和[深入探索 HTAP](/explore-htap.md)。
 
 此处选用 [TiFlash](/tiflash/tiflash-overview.md) 为 `bookshop` 数据库的数据分析引擎。
 

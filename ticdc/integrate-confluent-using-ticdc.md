@@ -133,7 +133,7 @@ Confluent 是一个兼容 Apache Kafka 的数据流平台，能够访问、存�
     tiup ctl:<cluster-version> cdc changefeed list --pd="http://127.0.0.1:2379"
     ```
 
-    可以参考 [管理 Changefeed](/ticdc/ticdc-manage-changefeed.md)对 changefeed 状态进行管理。
+    可以参考[管理 Changefeed](/ticdc/ticdc-manage-changefeed.md)，对 changefeed 状态进行管理。
 
 ### 第 4 步：写入数据以产生变更日志
 

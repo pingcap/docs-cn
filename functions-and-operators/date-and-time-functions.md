@@ -56,7 +56,7 @@ TiDB 支持使用 MySQL 5.7 中提供的所有[日期和时间函数](https://de
 | [`TIME_FORMAT()`](https://dev.mysql.com/doc/refman/5.7/en/date-and-time-functions.html#function_time-format) | 格式化时间|
 | [`TIME_TO_SEC()`](https://dev.mysql.com/doc/refman/5.7/en/date-and-time-functions.html#function_time-to-sec) | 返回参数对应的秒数|
 | [`TIMEDIFF()`](https://dev.mysql.com/doc/refman/5.7/en/date-and-time-functions.html#function_timediff) | 返回时间间隔 |
-| [`TIMESTAMP()`](https://dev.mysql.com/doc/refman/5.7/en/date-and-time-functions.html#function_timestamp) | 传入一个参数时候,该方法返回日期或日期/时间表达式, 传入两个参数时候, 返回参数的和 |
+| [`TIMESTAMP()`](https://dev.mysql.com/doc/refman/5.7/en/date-and-time-functions.html#function_timestamp) | 传入一个参数时候,该方法返回日期或日期/时间表达式，传入两个参数时候，返回参数的和 |
 | [`TIMESTAMPADD()`](https://dev.mysql.com/doc/refman/5.7/en/date-and-time-functions.html#function_timestampadd) | 在日期/时间表达式上增加一段时间间隔 |
 | [`TIMESTAMPDIFF()`](https://dev.mysql.com/doc/refman/5.7/en/date-and-time-functions.html#function_timestampdiff) | 从日期/时间表达式中减去一段时间间隔 |
 | [`TO_DAYS()`](https://dev.mysql.com/doc/refman/5.7/en/date-and-time-functions.html#function_to-days) | 将参数转化对应的天数(从第 0 年开始) |

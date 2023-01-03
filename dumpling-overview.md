@@ -95,7 +95,7 @@ dumpling -u root -P 4000 -h 127.0.0.1 --filetype sql -t 8 -o /tmp/test -r 200000
 
 > **注意：**
 >
-> Dumpling 导出不区分*字符串*与*关键字*。如果导入的数据是 Boolean 类型的 `true` 和 `false`，导出时会被转换为 `1` 和 `0` 。
+> Dumpling 导出不区分*字符串*与*关键字*。如果导入的数据是 Boolean 类型的 `true` 和 `false`，导出时会被转换为 `1` 和 `0`。
 
 ### 压缩导出的数据文件
 

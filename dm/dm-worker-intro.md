@@ -59,7 +59,7 @@ GRANT RELOAD,REPLICATION SLAVE, REPLICATION CLIENT ON *.* TO 'your_user'@'your_w
 GRANT SELECT ON db1.* TO 'your_user'@'your_wildcard_of_host';
 ```
 
-如果还要迁移其他数据库的数据到 TiDB, 请确保已赋予这些库跟 `db1` 一样的权限。
+如果还要迁移其他数据库的数据到 TiDB，请确保已赋予这些库跟 `db1` 一样的权限。
 
 ### 下游数据库用户权限
 

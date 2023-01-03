@@ -19,7 +19,7 @@ summary: 了解如何使用 TiCDC 从 TiDB 同步数据至 Apache Kafka 和 Apac
 
 1. 部署包含 TiCDC 的 TiDB 集群。
 
-    在实验或测试环境中，可以使用 TiUP Playground 功能，快速部署 TiCDC ，命令如下：
+    在实验或测试环境中，可以使用 TiUP Playground 功能，快速部署 TiCDC，命令如下：
 
     ```shell
     tiup playground --host 0.0.0.0 --db 1 --pd 1 --kv 1 --tiflash 0 --ticdc 1
@@ -82,7 +82,7 @@ summary: 了解如何使用 TiCDC 从 TiDB 同步数据至 Apache Kafka 和 Apac
     tiup ctl:<cluster-version> cdc changefeed list --pd="http://127.0.0.1:2379"
     ```
 
-    可以参考 [管理 Changefeed](/ticdc/ticdc-manage-changefeed.md)，对 changefeed 状态进行管理。
+    可以参考[管理 Changefeed](/ticdc/ticdc-manage-changefeed.md)，对 changefeed 状态进行管理。
 
 ## 第 3 步：写入数据以产生变更日志
 
@@ -101,7 +101,7 @@ summary: 了解如何使用 TiCDC 从 TiDB 同步数据至 Apache Kafka 和 Apac
 
 2. 消费 Kafka Topic 中的数据。
 
-    changefeed 正常运行时，会向 Kafka Topic 写入数据，你可以通过由 Kafka 提供的 kafka-console-consumer.sh, 观测到数据成功被写入到 Kafka Topic 中：
+    changefeed 正常运行时，会向 Kafka Topic 写入数据，你可以通过由 Kafka 提供的 kafka-console-consumer.sh，观测到数据成功被写入到 Kafka Topic 中：
 
     ```shell
     ./bin/kafka-console-consumer.sh --bootstrap-server 127.0.0.1:9092 --from-beginning --topic `${topic-name}`
