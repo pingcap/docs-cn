@@ -65,7 +65,7 @@ EXPLAIN SELECT * FROM books WHERE title = 'Marian Yost';
 
 从执行计划中的 **TableFullScan_5** 可以看出，TiDB 将会对表 `books` 进行全表扫描，然后对每一行都判断 `title` 是否满足条件。**TableFullScan_5** 的 `estRows` 值为 `1000000.00`，说明优化器估计这个全表扫描会扫描 `1000000.00` 行数据。
 
-更多关于 `EXPLAIN` 的使用介绍，可以阅读 [使用 EXPLAIN 解读执行计划](/explain-walkthrough.md)。
+更多关于 `EXPLAIN` 的使用介绍，可以阅读[使用 EXPLAIN 解读执行计划](/explain-walkthrough.md)。
 
 ### 解决方案：使用索引过滤数据
 
@@ -230,7 +230,7 @@ ALTER TABLE books DROP INDEX title_price_idx;
 
 ### 解决方案：使用主键查询数据
 
-如果查询中使用主键过滤数据，这条查询的执行速度会非常快，例如表 `books` 的主键是列 `id`, 使用列 `id` 来查询数据：
+如果查询中使用主键过滤数据，这条查询的执行速度会非常快，例如表 `books` 的主键是列 `id`，使用列 `id` 来查询数据：
 
 {{< copyable "sql" >}}
 

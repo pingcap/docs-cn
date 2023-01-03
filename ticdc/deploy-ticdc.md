@@ -44,7 +44,7 @@ cdc_servers:
 
 > **注意：**
 >
-> 在安装之前，请确认TiUP 中控机与 TiCDC 目标主机的 [SSH 互信及 sudo 免密](/check-before-deployment.md#手动配置-ssh-互信及-sudo-免密码)已经完成配置。
+> 在安装之前，请确认 TiUP 中控机与 TiCDC 目标主机的 [SSH 互信及 sudo 免密](/check-before-deployment.md#手动配置-ssh-互信及-sudo-免密码)已经完成配置。
 
 ## 使用 TiUP 在原有 TiDB 集群上新增或扩容 TiCDC 组件
 

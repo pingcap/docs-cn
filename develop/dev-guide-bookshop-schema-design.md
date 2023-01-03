@@ -138,7 +138,7 @@ WHERE table_schema LIKE 'bookshop';
 |--------------|---------------|---------------------------------------|
 | id           | bigint(20)    | 书籍的唯一标识                        |
 | title        | varchar(100)  | 书籍名称                              |
-| type         | enum          | 书籍类型（如：杂志 / 动漫 / 教辅 等）    |
+| type         | enum          | 书籍类型（如：杂志、动漫、教辅等）    |
 | stock        | bigint(20)    | 库存                                  |
 | price        | decimal(15,2) | 价格                                  |
 | published_at | datetime      | 出版时间                              |

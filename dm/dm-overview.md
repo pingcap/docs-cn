@@ -62,7 +62,7 @@ tiup install dm dmctl
 
 ## 社区技术支持
 
-您可以通过在线文档了解和使用 DM ，如果您遇到无法解决的问题，可以选择以下途径之一联系我们。
+您可以通过在线文档了解和使用 DM，如果您遇到无法解决的问题，可以选择以下途径之一联系我们。
 
 - [GitHub](https://github.com/pingcap/tiflow/tree/master/dm)
 - [AskTUG](https://asktug.com/tags/dm)

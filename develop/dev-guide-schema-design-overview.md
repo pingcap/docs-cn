@@ -68,7 +68,7 @@ TiDB 支持一些和**表**同级的对象：
 
 ## 访问控制
 
-TiDB 支持基于用户或角色的访问控制。你可以通过[角色](/role-based-access-control.md)或直接指向[用户](/user-account-management.md)，从而授予**用户**查看、修改或删除 数据对象和数据模式的[权限](/privilege-management.md)。
+TiDB 支持基于用户或角色的访问控制。你可以通过[角色](/role-based-access-control.md)或直接指向[用户](/user-account-management.md)，从而授予**用户**查看、修改或删除数据对象和数据模式的[权限](/privilege-management.md)。
 
 ## 执行数据库模式更改
 

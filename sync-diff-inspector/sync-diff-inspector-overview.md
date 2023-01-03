@@ -186,7 +186,7 @@ sync-diff-inspector 在执行过程中会往 `stdout` 发送进度信息。进�
 
 > **注意：**
 >
-> 为了达成显示效果，请保持显示窗口宽度在80字符以上。
+> 为了达成显示效果，请保持显示窗口宽度在 80 字符以上。
 
 ```progress
 A total of 2 tables need to be compared
@@ -243,7 +243,7 @@ sync-diff-inspector 的日志存放在 `${output}/sync_diff.log` 中，其中 `$
 
 #### 校验进度
 
-sync-diff-inspector 会在运行时定期（间隔 10s）输出校验进度到checkpoint中(位于 `${output}/checkpoint/sync_diff_checkpoints.pb` 中，其中 `${output}` 是 `config.toml` 文件中 `output-dir` 的值。
+sync-diff-inspector 会在运行时定期（间隔 10s）输出校验进度到 checkpoint 中(位于 `${output}/checkpoint/sync_diff_checkpoints.pb` 中，其中 `${output}` 是 `config.toml` 文件中 `output-dir` 的值。
 
 #### 校验结果
 
@@ -264,11 +264,11 @@ Average Speed: 113.277149MB/s
 
 - STRUCTURE EQUALITY: 表结构是否相同
 
-- DATA DIFF ROWS: 即 `rowAdd` / `rowDelete` ，表示该表修复需要增加/删除的行数
+- DATA DIFF ROWS: 即 `rowAdd` / `rowDelete`，表示该表修复需要增加/删除的行数
 
 #### SQL 修复
 
-校验过程中遇到不同的行，会生成修复数据的 SQL 语句。一个chunk如果出现数据不一致，就会生成一个以 `chunk.Index` 命名的 SQL 文件。文件位于 `${output}/fix-on-${instance}` 文件夹下。其中 `${instance}` 为 `config.toml` 中 `task.target-instance` 的值。
+校验过程中遇到不同的行，会生成修复数据的 SQL 语句。一个 chunk 如果出现数据不一致，就会生成一个以 `chunk.Index` 命名的 SQL 文件。文件位于 `${output}/fix-on-${instance}` 文件夹下。其中 `${instance}` 为 `config.toml` 中 `task.target-instance` 的值。
 
 一个 SQL 文件会包含该 chunk 的所属表以及表示的范围信息。对每个修复 SQL 语句，有三种情况：
 

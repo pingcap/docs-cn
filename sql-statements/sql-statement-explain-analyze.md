@@ -203,7 +203,7 @@ inner:{total:4.429220003s, concurrency:5, task:17, construct:96.207725ms, fetch:
 `HashJoin` 算子有一个 inner worker，一个 outer worker 和 N 个 join worker，其具体执行逻辑如下：
 
 1. inner worker 读取 inner table rows 并构造 hash table。
-2. outer worker 读取 outer table rows, 然后包装成 task 发送给 join worker。
+2. outer worker 读取 outer table rows，然后包装成 task 发送给 join worker。
 3. 等待第 1 步的 hash table 构造完成。
 4. join worker 用 task 里面的 outer table rows 和 hash table 做 join，然后把 join 结果发送给 result channel。
 5. `HashJoin` 的主线程从 result channel 中接收 join 结果。

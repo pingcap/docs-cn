@@ -29,7 +29,7 @@ ACID 是指数据库管理系统在写入或更新资料的过程中，为保证
 
 ### Batch Create Table
 
-批量建表 (Batch Create Table) 是在 TiDB v6.0.0 中引入的新功能，此功能默认开启。当需要恢复的数据中带有大量的表（约 50000 张）时，批量建表功能显著提升数据恢复的速度。详情参见 [批量建表](/br/br-batch-create-table.md)。
+批量建表 (Batch Create Table) 是在 TiDB v6.0.0 中引入的新功能，此功能默认开启。当需要恢复的数据中带有大量的表（约 50000 张）时，批量建表功能显著提升数据恢复的速度。详情参见[批量建表](/br/br-batch-create-table.md)。
 
 ### Baseline Capturing
 
@@ -108,7 +108,7 @@ Pending 和 Down 是 Peer 可能出现的两种特殊状态。其中 Pending 表
 
 ### Predicate columns
 
-执行 SQL 语句时，优化器在大多数情况下只会用到部分列（例如， `WHERE`、`JOIN`、`ORDER BY`、`GROUP BY` 子句中出现的列）的统计信息，这些用到的列称为 `PREDICATE COLUMNS`。详情参见[收集部分列的统计信息](/statistics.md#收集部分列的统计信息)。
+执行 SQL 语句时，优化器在大多数情况下只会用到部分列（例如，`WHERE`、`JOIN`、`ORDER BY`、`GROUP BY` 子句中出现的列）的统计信息，这些用到的列称为 `PREDICATE COLUMNS`。详情参见[收集部分列的统计信息](/statistics.md#收集部分列的统计信息)。
 
 ## Q
 
@@ -159,7 +159,7 @@ Top SQL 用于找到一段时间内对某个 TiDB 或 TiKV 节点消耗负载较
 
 ### TSO
 
-因为 TiKV 是一个分布式的储存系统，它需要一个全球性的授时服务 TSO（Timestamp Oracle），来分配一个单调递增的时间戳。 这样的功能在 TiKV 中是由 PD 提供的，在 Google 的 [Spanner](http://static.googleusercontent.com/media/research.google.com/en//archive/spanner-osdi2012.pdf) 中是由多个原子钟和 GPS 来提供的。
+因为 TiKV 是一个分布式的储存系统，它需要一个全球性的授时服务 TSO (Timestamp Oracle)，来分配一个单调递增的时间戳。这样的功能在 TiKV 中是由 PD 提供的，在 Google 的 [Spanner](http://static.googleusercontent.com/media/research.google.com/en//archive/spanner-osdi2012.pdf) 中是由多个原子钟和 GPS 来提供的。
 
 ### TTL
 

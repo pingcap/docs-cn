@@ -70,7 +70,7 @@ tidb> desc mysql.expr_pushdown_blacklist;
 
 ### 黑名单使用示例
 
-以下示例首先将函数 `DATE_FORMAT()`、运算符 `>` 及 数据类型 `BIT` 加入黑名单，然后再将运算符 `>` 从黑名单中移出。
+以下示例首先将函数 `DATE_FORMAT()`、运算符 `>` 及数据类型 `BIT` 加入黑名单，然后再将运算符 `>` 从黑名单中移出。
 
 黑名单是否生效可以从 `explain` 结果中进行观察（参见[如何理解 `explain` 结果](/explain-overview.md)）。
 

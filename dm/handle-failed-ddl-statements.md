@@ -33,7 +33,7 @@ summary: 了解在使用 TiDB Data Migration 迁移数据时，如何处理出�
 
 ### binlog
 
-`binlog` 命令管理和查看binlog操作。命令仅在 DM v6.0 及其以后版本支持, 之前版本可使用 `handle-error` 命令。
+`binlog` 命令管理和查看 binlog 操作。命令仅在 DM v6.0 及其以后版本支持，之前版本可使用 `handle-error` 命令。
 
 `binlog` 命令用法如下：
 

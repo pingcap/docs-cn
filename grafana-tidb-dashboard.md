@@ -46,7 +46,7 @@ summary: 了解 Grafana Dashboard 中展示的关键指标。
     - Keep Alive OPM：每个 TiDB 实例每分钟刷新监控的次数，通常不需要关注。
     - Panic And Critical Error：TiDB 中出现的 Panic、Critical Error 数量。
     - Time Jump Back OPS：每个 TiDB 实例上每秒操作系统时间回跳的次数。
-    - Get Token Duration：每个连接获取 Token 的耗时  。
+    - Get Token Duration：每个连接获取 Token 的耗时。
     - Skip Binlog Count：TiDB 写入 Binlog 失败的数量。
     - Client Data Traffic：TiDB 和客户端的数据流量。
 

@@ -99,7 +99,7 @@ TiSpark 是 Spark 的第三方 jar 包，提供读写 TiKV 的能力。
 
 你能用以下方式获取 jar 包：
 
-- 从 [maven 中央仓库](https://search.maven.org/)获取，你可以搜索 [![Maven Search](https://img.shields.io/badge/com.pingcap/tispark-green.svg)](http://search.maven.org/#search%7Cga%7C1%7Cpingcap) 。
+- 从 [maven 中央仓库](https://search.maven.org/)获取，你可以搜索 [![Maven Search](https://img.shields.io/badge/com.pingcap/tispark-green.svg)](http://search.maven.org/#search%7Cga%7C1%7Cpingcap)。
 - 从 [TiSpark releases](https://github.com/pingcap/tispark/releases) 获取。
 - 通过以下步骤从源码构建：
 
