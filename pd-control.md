@@ -28,7 +28,7 @@ PD Control 是 PD 的命令行工具，用于获取集群状态信息和调整�
 
 > **注意：**
 >
-> 下载链接中的 `{version}` 为 TiDB 的版本号。例如，amd64 架构的 `v6.4.0` 版本的下载链接为 `https://download.pingcap.org/tidb-community-server-v6.4.0-linux-amd64.tar.gz`。
+> 下载链接中的 `{version}` 为 TiDB 的版本号。例如，amd64 架构的 `v6.5.0` 版本的下载链接为 `https://download.pingcap.org/tidb-community-server-v6.5.0-linux-amd64.tar.gz`。
 
 ### 源码编译
 
@@ -1294,7 +1294,7 @@ store 1
 store delete 1
 ```
 
-执行 `store cancel-delete` 命令，你可以撤销已使用 `store delete` 下线并处于 `Offline` 状态的 store。撤销后，该 store 会从 `Offline` 状态变为 `Up` 状态。注意， `store cancel-delete` 命令无法使 `Tombstone` 状态的 store 变回 `Up` 状态。
+执行 `store cancel-delete` 命令，你可以撤销已使用 `store delete` 下线并处于 `Offline` 状态的 store。撤销后，该 store 会从 `Offline` 状态变为 `Up` 状态。注意，`store cancel-delete` 命令无法使 `Tombstone` 状态的 store 变回 `Up` 状态。
 
 撤销通过 `store delete` 下线 id 为 1 的 store：
 

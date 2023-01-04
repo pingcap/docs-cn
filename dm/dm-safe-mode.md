@@ -24,7 +24,7 @@ DM 从 checkpoint 恢复数据同步任务后，可能重复执行某些 binlog 
 * `INSERT` 语句会被改写成 `REPLACE` 语句。
 * `UPDATE` 语句会被分析，得到该语句涉及的行的主键或唯一索引的值，然后改写成 `DELETE` + `REPLACE` 语句 ：先根据主键或唯一索引的定位删除对应的行，然后使用 `REPLACE` 语句插入一条最新值的行记录。
 
-`REPLACE` 操作是 MySQL 特有的数据插入语法。使用 `REPLACE` 语法插入数据时，如果新插入的数据和现有数据存在主键或唯一约束冲突，MySQL 会删除所有冲突的记录，然后再执行插入记录操作，相当于“强制插入”的操作。具体请参考 [MySQL 官方文档的 `REPLACE` 语句相关介绍](https://dev.mysql.com/doc/refman/8.0/en/replace.html) 。
+`REPLACE` 操作是 MySQL 特有的数据插入语法。使用 `REPLACE` 语法插入数据时，如果新插入的数据和现有数据存在主键或唯一约束冲突，MySQL 会删除所有冲突的记录，然后再执行插入记录操作，相当于“强制插入”的操作。具体请参考 [MySQL 官方文档的 `REPLACE` 语句相关介绍](https://dev.mysql.com/doc/refman/8.0/en/replace.html)。
 
 比如，假设一张表 `dummydb.dummytbl` 的主键是 `id`，在这张表中重复执行下面的 SQL 语句：
 

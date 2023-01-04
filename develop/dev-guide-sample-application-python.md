@@ -313,7 +313,7 @@ trade_example()
 
 相较于直接使用 Driver，peewee 屏蔽了创建数据库连接时，不同数据库差异的细节。peewee 还封装了大量的操作，如会话管理、基本对象的 CRUD 等，极大地简化了代码量。
 
-`Player` 类为数据库表在程序内的映射。`Player` 的每个属性都对应着 `player` 表的一个字段。屏蔽了创建数据库连接时，不同数据库差异的细节。peewee 使用 `Player` 类为了给 peewee 提供更多的信息，使用了形如以上示例中的 `id = CharField(max_length=36, primary_key=True)` 的类型定义，用来指示字段类型和其附加属性。`id = CharField(max_length=36, primary_key=True)` 表示 `id` 字段为 `CharField` 类型，对应数据库类型为 `VARCHAR`, 长度为 `36`，且为主键。
+`Player` 类为数据库表在程序内的映射。`Player` 的每个属性都对应着 `player` 表的一个字段。peewee 使用 `Player` 类为了给 peewee 提供更多的信息，使用了形如以上示例中的 `id = CharField(max_length=36, primary_key=True)` 的类型定义，用来指示字段类型和其附加属性。`id = CharField(max_length=36, primary_key=True)` 表示 `id` 字段为 `CharField` 类型，对应数据库类型为 `VARCHAR`, 长度为 `36`，且为主键。
 
 关于 peewee 的更多使用方法，你可以参考 [peewee 官网](http://docs.peewee-orm.com/en/latest/)。
 

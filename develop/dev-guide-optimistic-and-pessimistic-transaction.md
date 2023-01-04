@@ -30,7 +30,7 @@ aliases: ['/zh/tidb/dev/optimistic-and-pessimistic-transaction']
 
 <div label="Java" value="java">
 
-当使用多个线程模拟多用户同时插入的情况时，需要使用一个线程安全的连接对象，这里使用 Java 当前较流行的连接池 [HikariCP](https://github.com/brettwooldridge/HikariCP) 。
+当使用多个线程模拟多用户同时插入的情况时，需要使用一个线程安全的连接对象，这里使用 Java 当前较流行的连接池 [HikariCP](https://github.com/brettwooldridge/HikariCP)。
 
 </div>
 
@@ -936,7 +936,7 @@ mysql> SELECT * FROM users;
 
 ### 3. 运行防止超卖的例子
 
-可以再把难度加大，如果图书的库存剩余 10 本，Bob 购买 7 本， Alice 购买 4 本，两人几乎同时下单，结果会是怎样？继续复用上个例子里的代码来解决这个需求，只不过把 Bob 购买数量从 6 改成 7：
+可以再把难度加大，如果图书的库存剩余 10 本，Bob 购买 7 本，Alice 购买 4 本，两人几乎同时下单，结果会是怎样？继续复用上个例子里的代码来解决这个需求，只不过把 Bob 购买数量从 6 改成 7：
 
 运行示例程序：
 
@@ -1329,7 +1329,7 @@ mysql> SELECT * FROM users;
 
 ### 3. 运行防止超卖的例子
 
-再来看一下用乐观事务防止超卖的例子，如果图书的库存剩余 10 本，Bob 购买 7 本， Alice 购买 4 本，两人几乎同时下单，结果会是怎样？继续复用乐观事务例子里的代码来解决这个需求，只不过把 Bob 购买数量从 6 改成 7：
+再来看一下用乐观事务防止超卖的例子，如果图书的库存剩余 10 本，Bob 购买 7 本，Alice 购买 4 本，两人几乎同时下单，结果会是怎样？继续复用乐观事务例子里的代码来解决这个需求，只不过把 Bob 购买数量从 6 改成 7：
 
 运行示例程序：
 

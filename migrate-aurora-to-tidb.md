@@ -14,7 +14,7 @@ aliases: ['/zh/tidb/dev/migrate-from-aurora-using-lightning/','/docs-cn/dev/migr
 ## 前提条件
 
 - [安装 Dumpling 和 Lightning](/migration-tools.md)。
-- [获取 Dumpling 所需 上游数据库权限](/dumpling-overview.md#需要的权限)。
+- [获取 Dumpling 所需上游数据库权限](/dumpling-overview.md#需要的权限)。
 - [获取 Lightning 所需下游数据库权限](/tidb-lightning/tidb-lightning-faq.md#tidb-lightning-对下游数据库的账号权限要求是怎样的)。
 
 ## 导入全量数据到 TiDB
@@ -70,7 +70,7 @@ tiup dumpling --host ${host} --port 3306 --user root --password ${password} --fi
 |-t 或 --thread     |导出的线程数|
 |-o 或 --output     |存储导出文件的目录，支持本地文件路径或[外部存储 URL 格式](/br/backup-and-restore-storages.md)|
 |-r 或 --row        |单个文件的最大行数|
-|-F                 |指定单个文件的最大大小，单位为 MiB, 建议值 256 MiB|
+|-F                 |指定单个文件的最大大小，单位为 MiB，建议值 256 MiB|
 |-B 或 --database   |导出指定数据库|
 |-T 或 --tables-list |导出指定数据表|
 |-d 或 --no-data    |不导出数据，仅导出 schema|
@@ -101,7 +101,7 @@ pd-addr = "${ip}:${port}"     # 集群 PD 的地址，lightning 通过 PD 获取
 
 [tikv-importer]
 # "local"：默认使用该模式，适用于 TB 级以上大数据量，但导入期间下游 TiDB 无法对外提供服务。
-# "tidb"：TB 级以下数据量也可以采用`tidb`后端模式，下游 TiDB 可正常提供服务。 关于后端模式更多信息请参阅：https://docs.pingcap.com/tidb/stable/tidb-lightning-backends
+# "tidb"：TB 级以下数据量也可以采用`tidb`后端模式，下游 TiDB 可正常提供服务。关于后端模式更多信息请参阅：https://docs.pingcap.com/tidb/stable/tidb-lightning-backends
 backend = "local"
 
 # 设置排序的键值对的临时存放地址，目标路径必须是一个空目录，目录空间须大于待导入数据集的大小，建议设为与 `data-source-dir` 不同的磁盘目录并使用闪存介质，独占 IO 会获得更好的导入性能。
@@ -119,7 +119,7 @@ table = '$2'
 type = '$3'
 ```
 
-如果需要在 TiDB 开启 TLS ，请参考 [TiDB Lightning Configuration](/tidb-lightning/tidb-lightning-configuration.md)。
+如果需要在 TiDB 开启 TLS，请参考 [TiDB Lightning Configuration](/tidb-lightning/tidb-lightning-configuration.md)。
 
 ### 第 4 步：导入全量数据到 TiDB
 
@@ -153,7 +153,7 @@ type = '$3'
 
 > **注意：**
 >
-> 无论导入成功与否，最后一行都会显示 `tidb lightning exit`。它只是表示 TiDB Lightning  正常退出，不代表任务完成。
+> 无论导入成功与否，最后一行都会显示 `tidb lightning exit`。它只是表示 TiDB Lightning 正常退出，不代表任务完成。
 
 如果导入过程中遇到问题，请参见 [TiDB Lightning 常见问题](/tidb-lightning/tidb-lightning-faq.md)。
 
@@ -166,7 +166,7 @@ type = '$3'
 
 ### 第 1 步：创建数据源
 
-1. 新建 `source1.yaml` 文件, 写入以下内容：
+1. 新建 `source1.yaml` 文件，写入以下内容：
 
     {{< copyable "" >}}
 
@@ -201,7 +201,7 @@ type = '$3'
 
 ### 第 2 步：创建迁移任务
 
-新建 `task1.yaml` 文件, 写入以下内容：
+新建 `task1.yaml` 文件，写入以下内容：
 
 {{< copyable "" >}}
 

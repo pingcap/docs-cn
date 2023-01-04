@@ -169,7 +169,7 @@ SPLIT TABLE t INDEX idx1 BETWEEN ("a") AND ("z") REGIONS 25;
 
 该语句会把表 t 中 idx1 索引数据的 Region 从 a~z 切成 25 个 Region，region1 的范围是 [minIndexValue, b)，region2 的范围是 [b, c)，……，region25 的范围是 [y, maxIndexValue)。对于 idx1 索引以 a 为前缀的数据都会写到 region1，以 b 为前缀的索引数据都会写到 region2，以此类推。
 
-上面的切分方法，以 y 和 z 前缀的索引数据都会写到 region 25, 因为 `z` 并不是一个上界，真正的上界是 `z` 在 ASCII 码中的下一位 `{`，所以更准确的切分方法如下：
+上面的切分方法，以 y 和 z 前缀的索引数据都会写到 region 25，因为 `z` 并不是一个上界，真正的上界是 `z` 在 ASCII 码中的下一位 `{`，所以更准确的切分方法如下：
 
 {{< copyable "sql" >}}
 
