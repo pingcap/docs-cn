@@ -10,7 +10,7 @@ aliases: ['/docs-cn/dev/faq/sql-faq/']
 
 ## TiDB 是否支持二级键？
 
-支持。你可以在具有唯一[二级索引](/develop/dev-guide-create-secondary-indexes.md)的非主键列上设置 [`NOT NULL` 约束](/constraints.md#not-null)。在这种情况下，该列用作二级键。
+支持。你可以在具有唯一[二级索引](/develop/dev-guide-create-secondary-indexes.md)的非主键列上设置 [`NOT NULL` 约束](/constraints.md#非空约束)。在这种情况下，该列用作二级键。
 
 ## TiDB 在对大表执行 DDL 操作时，性能表现如何？
 
@@ -29,7 +29,7 @@ TiDB 在对大表执行 DDL 操作时，一般不会有什么问题。TiDB 支�
 
 TiDB 包含一个基于成本的优化器。在大多数情况下，优化器会为你选择最优的查询计划。如果优化器工作欠佳，你可以使用[优化器提示](/optimizer-hints.md)来干预优化器。
 
-另外，你还可以使用[执行计划绑定](/sql-plan-management.md#执行计划绑定)来为特定的 SQL 语句固定查询计划。
+另外，你还可以使用[执行计划绑定](/sql-plan-management.md#执行计划绑定-sql-binding)来为特定的 SQL 语句固定查询计划。
 
 ## TiDB 对哪些 MySQL variables 兼容？
 
