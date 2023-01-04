@@ -273,7 +273,7 @@ GROUP BY db_name , table_name;
 
 ### 如何为合规性或多租户应用程序指定数据位置？
 
-可以使用 [放置规则 (Placement Rules)](/placement-rules-in-sql.md) 为合规性或多租户应用程序指定数据位置。
+可以使用[放置规则 (Placement Rules)](/placement-rules-in-sql.md) 为合规性或多租户应用程序指定数据位置。
 
 Placement Rules in SQL 用于控制任何连续数据范围的属性，例如副本数量、Raft 角色、放置位置以及规则生效的键范围。
 
