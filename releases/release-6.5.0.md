@@ -24,7 +24,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 - 支持[密码管理](/password-management.md)策略，满足密码合规审计需求。
 - TiDB Lightning 和 Dumpling 支持[导入](/tidb-lightning/tidb-lightning-data-source.md)和[导出](/dumpling-overview.md#通过并发提高-dumpling-的导出效率)压缩格式文件。
 - TiDB Data Migration (DM) 的[增量数据校验](/dm/dm-continuous-data-validation.md)特性 GA。
-- TiDB 快照备份支持断点续传，此外 [PITR](/br/br-pitr-guide.md#进行-pitr) 的恢复性能提升了 50%，一般场景下 RPO 降低到 5 分钟。
+- TiDB 快照备份支持断点续传，此外 [PITR](/br/br-pitr-guide.md#进行-pitr) 的恢复性能提升了 50%，通用场景下 RPO 降低到 5 分钟。
 - TiCDC [同步数据到 Kafka](/replicate-data-to-kafka.md)，吞吐从 4000 行每秒提升到 35000 行每秒，复制延迟降低到 2 秒。
 - 提供行级别 [Time to live (TTL)](/time-to-live.md) 管理数据生命周期（实验特性）。
 - TiCDC 支持 Amazon S3、Azure Blob Storage、NFS 的[对象存储](/ticdc/ticdc-sink-to-cloud-storage.md)（实验特性）。
