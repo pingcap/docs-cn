@@ -64,8 +64,6 @@ SELECT id, name FROM authors;
 - 使用 `String` 类型变量存放 `varchar` 类型的数据。
 - ...
 
-{{< copyable "" >}}
-
 ```java
 public class Author {
     private Long id;
@@ -79,8 +77,6 @@ public class Author {
      // Skip the getters and setters.
 }
 ```
-
-{{< copyable "" >}}
 
 ```java
 public class AuthorDAO {
