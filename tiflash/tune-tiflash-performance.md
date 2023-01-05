@@ -55,13 +55,10 @@ aliases: ['/docs-cn/dev/tiflash/tune-tiflash-performance/','/docs-cn/dev/referen
 
     [`ALTER TABLE ... COMPACT`](/sql-statements/sql-statement-alter-table-compact.md) 可以触发 TiFlash 节点对某个表或者某个分区进行数据整理。数据整理时，表中的物理数据会被重写，如清理已删除的数据、合并多版本数据等，从而可以获得更高的访问性能，并减少磁盘空间占用。
 
-    {{< copyable "sql" >}}
-
     ```sql
     ALTER TABLE employees COMPACT TIFLASH REPLICA;
     ```
 
-    {{< copyable "sql" >}}
     ```sql
     ALTER TABLE employees COMPACT PARTITION pNorth, pEast TIFLASH REPLICA;
     ```
