@@ -37,6 +37,12 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 最大值（64 位平台）：`18446744073709551615`
 + 最大值（32 位平台）：`4294967295`
 
+### `temp-dir` <span class="version-mark">从 v6.3.0 版本开始引入</span>
+
++ TiDB 用于存放临时数据的路径。如果一个功能需要使用 TiDB 节点的本地存储，TiDB 将把对应数据临时存放在这个目录下。
++ 在创建索引的过程中，如果开启了[创建索引加速](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入)，那么新创建索引需要回填的数据会被先存放在 TiDB 本地临时存储路径，然后批量导入到 TiKV，从而提升索引创建速度。
++ 默认值："/tmp/tidb"
+
 ### `oom-use-tmp-storage`
 
 > **警告：**
@@ -804,12 +810,6 @@ PROXY 协议相关的配置项。
 > **警告：**
 >
 > 需谨慎使用 `*` 符号，因为 `*` 允许来自任何 IP 的客户端自行汇报其 IP 地址，从而可能引入安全风险。另外，`*` 可能导致部分直接连接 TiDB 的内部组件无法使用，例如 TiDB Dashboard。
-
-### `temp-dir` <span class="version-mark">从 v6.3.0 版本开始引入</span>
-
-+ TiDB 用于存放临时数据的路径。如果一个功能需要使用 TiDB 节点的本地存储，TiDB 将把对应数据临时存放在这个目录下。
-+ 在创建索引的过程中，如果开启了[创建索引加速](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入)，那么新创建索引需要回填的数据会被先存放在 TiDB 本地临时存储路径，然后批量导入到 TiKV，从而提升索引创建速度。
-+ 默认值："/tmp/tidb"
 
 ## experimental
 
