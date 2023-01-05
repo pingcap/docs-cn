@@ -18,7 +18,7 @@ TiDB 在对大表执行 DDL 操作时，一般不会有什么问题。TiDB 支�
 
 对于添加列、删除列或删除索引等 DDL 操作，TiDB 可以快速完成这些操作。
 
-对于添加索引等重量级 DDL 操作，TiDB 需要进行回填 (backfill) 操作，这个过程需要较长的时间（取决于表的大小）和额外的资源消耗。对在线业务的影响可调节。TiDB 可以通过多线程进行 backfill，资源消耗可通过以下系统变量进行设置：
+对于添加索引等 DDL 操作，TiDB 需要进行回填 (backfill) 操作，这个过程需要较长的时间（取决于表的大小）和额外的资源消耗。对在线业务的影响可调节。TiDB 可以通过多线程进行 backfill，资源消耗可通过以下系统变量进行设置：
 
 - [`tidb_ddl_reorg_worker_cnt`](/system-variables.md#tidb_ddl_reorg_worker_cnt)
 - [`tidb_ddl_reorg_priority`](/system-variables.md#tidb_ddl_reorg_priority)

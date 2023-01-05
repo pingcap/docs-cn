@@ -74,7 +74,7 @@ TiDB 目前支持 [`wait_timeout`](/system-variables.md#wait_timeout) 和 [`inte
 TiDB 提供了一些特性和[工具](/ecosystem-tool-user-guide.md)，可以帮助你以低成本管理集群：
 
 - 在运维方面，[TiUP](/tiup/tiup-documentation-guide.md) 作为包管理器，简化了部署、扩缩容、升级和其他运维任务。
-- 在监控方面，[TiDB 监控框架](/tidb-monitoring-framework.md) 使用 [Prometheus](https://prometheus.io/) 存储监控和性能指标，使用 [Grafana](https://grafana.com/grafana/) 可视化这些指标。Grafana 内置了数十个面板，覆盖了数百个指标。
+- 在监控方面，[TiDB 监控框架](/tidb-monitoring-framework.md)使用 [Prometheus](https://prometheus.io/) 存储监控和性能指标，使用 [Grafana](https://grafana.com/grafana/) 可视化这些指标。Grafana 内置了数十个面板，覆盖了数百个指标。
 - 在故障诊断方面，[TiDB 集群问题导图](/tidb-troubleshooting-map.md)汇总了 TiDB 服务器和其他组件的常见问题。你可以使用这个导图来诊断和解决遇到的相关问题。
 
 ### 分不清 TiDB master 版本之间的区别，应该怎么办？

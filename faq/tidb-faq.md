@@ -96,7 +96,7 @@ Atomikos 配好两个数据源后，JDBC 驱动都要设置成 XA 模式，然�
 
 MySQL 是单机数据库，只能通过 XA 来满足跨数据库事务，而 TiDB 本身就通过 Google 的 Percolator 事务模型支持分布式事务，性能稳定性比 XA 要高出很多，所以不会也不需要支持 XA。
 
-### 1.1.14 TiDB 如何在不影响性能的情况下支持对列存储引擎（TiFlash）的高并发 `INSERT` 或 `UPDATE` 操作？
+### 1.1.14 TiDB 如何在不影响性能的情况下支持对列存储引擎 (TiFlash) 的高并发 `INSERT` 或 `UPDATE` 操作？
 
 - [TiFlash](/tiflash/tiflash-overview.md) 引入了 DeltaTree 这种特殊结构来处理列存引擎的修改。
 - TiFlash 作为 Raft Group 中的 Learner 角色，不参与 log commit 选举，也不会写入数据。这意味着 DML 操作不需要等待 TiFlash 的确认，所以 TiFlash 不会影响 OLTP 的性能。另外，TiFlash 和 TiKV 分开部署在不同的实例上，不会相互影响。
