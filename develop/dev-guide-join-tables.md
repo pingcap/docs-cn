@@ -24,8 +24,6 @@ For example, if you want to know the most prolific author, you need to join the 
 
 In the following SQL statement, use the keyword `JOIN` to declare that you want to join the rows of the left table `authors` and the right table `book_authors` as an inner join with the join condition `a.id = ba.author_id`. The result set will only contain rows that satisfy the join condition. If an author has not written any books, then his record in `authors` table will not satisfy the join condition and will therefore not appear in the result set.
 
-{{< copyable "sql" >}}
-
 ```sql
 SELECT ANY_VALUE(a.id) AS author_id, ANY_VALUE(a.name) AS author_name, COUNT(ba.book_id) AS books
 FROM authors a
@@ -57,8 +55,6 @@ The query results are as follows:
 
 </div>
 <div label="Java" value="java">
-
-{{< copyable "java" >}}
 
 ```java
 public List<Author> getTop10AuthorsOrderByBooks() throws SQLException {
@@ -103,8 +99,6 @@ For example, on the homepage of the Bookshop app, you want to display a list of 
 
 In the following SQL statement, use the `LEFT JOIN` keyword to declare that the left table `books` will be joined to the right table `ratings` in a left outer join, thus ensuring that all rows in the `books` table are returned.
 
-{{< copyable "sql" >}}
-
 ```sql
 SELECT b.id AS book_id, ANY_VALUE(b.title) AS book_title, AVG(r.score) AS average_score
 FROM books b
@@ -136,8 +130,6 @@ The query results are as follows:
 
 It seems that the latest published book already has a lot of ratings. To verify the above method, let's delete all the ratings of the book _The Documentary of lion_ through the SQL statement:
 
-{{< copyable "sql" >}}
-
 ```sql
 DELETE FROM ratings WHERE book_id = 3438991610;
 ```
@@ -166,8 +158,6 @@ What happens if you use `INNER JOIN`? It's up to you to have a try.
 
 </div>
 <div label="Java" value="java">
-
-{{< copyable "java" >}}
 
 ```java
 public List<Book> getLatestBooksWithAverageScore() throws SQLException {
@@ -229,8 +219,6 @@ If the optimizer of TiDB does not execute according to the optimal join algorith
 
 For example, assuming the example for the left join query above executes faster using the Hash Join algorithm, which is not chosen by the optimizer, you can append the hint `/*+ HASH_JOIN(b, r) */` after the `SELECT` keyword. Note that If the table has an alias, use the alias in the hint.
 
-{{< copyable "sql" >}}
-
 ```sql
 EXPLAIN SELECT /*+ HASH_JOIN(b, r) */ b.id AS book_id, ANY_VALUE(b.title) AS book_title, AVG(r.score) AS average_score
 FROM books b
@@ -252,8 +240,6 @@ Hints related to join algorithms:
 In real business scenarios, join statements of multiple tables are very common. The execution efficiency of join is related to the order of each table in join. TiDB uses the Join Reorder algorithm to determine the order in which multiple tables are joined.
 
 If the join order selected by the optimizer is not optimal as expected, you can use `STRAIGHT_JOIN` to enforce TiDB to join queries in the order of the tables used in the `FROM` clause.
-
-{{< copyable "sql" >}}
 
 ```sql
 EXPLAIN SELECT *

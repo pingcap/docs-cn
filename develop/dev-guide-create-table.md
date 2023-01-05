@@ -25,8 +25,6 @@ The first step for creating a table is to give your table a name. Do not use mea
 
 The `CREATE TABLE` statement usually takes the following form:
 
-{{< copyable "sql" >}}
-
 ```sql
 CREATE TABLE {table_name} ( {elements} );
 ```
@@ -39,8 +37,6 @@ CREATE TABLE {table_name} ( {elements} );
 Suppose you need to create a table to store the user information in the `bookshop` database.
 
 Note that you cannot execute the following SQL statement yet because not a single column has been added.
-
-{{< copyable "sql" >}}
 
 ```sql
 CREATE TABLE `bookshop`.`users` (
@@ -65,8 +61,6 @@ Column definitions typically take the following form.
 
 You can add some columns to the `users` table, such as the unique identifier `id`, `balance` and `nickname`.
 
-{{< copyable "sql" >}}
-
 ```sql
 CREATE TABLE `bookshop`.`users` (
   `id` bigint,
@@ -84,8 +78,6 @@ Finally, a field named `balance` is added, which is the [decimal](/data-type-num
 TiDB supports many other column data types, including the [integer types](/data-type-numeric.md#integer-types), [floating-point types](/data-type-numeric.md#floating-point-types), [fixed-point types](/data-type-numeric.md#fixed-point-types), [date and time types](/data-type-date-and-time.md), and the [enum type](/data-type-string.md#enum-type). You can refer to the supported column [data types](/data-type-overview.md) and use the **data types** that match the data you want to save in the database.
 
 To make it a bit more complex, you can define a `books` table which will be the core of the `bookshop` data. The `books` table contains fields for the book's ids, titles, types (for example, magazine, novel, life, arts), stock, prices, and publication dates.
-
-{{< copyable "sql" >}}
 
 ```sql
 CREATE TABLE `bookshop`.`books` (
@@ -130,8 +122,6 @@ For more information on how to handle hotspot issues, refer to [Troubleshoot Hot
 
 Following the [guidelines for selecting primary key](#guidelines-to-follow-when-selecting-primary-key), the following example shows how an `AUTO_RANDOM` primary key is defined in the `users` table.
 
-{{< copyable "sql" >}}
-
 ```sql
 CREATE TABLE `bookshop`.`users` (
   `id` bigint AUTO_RANDOM,
@@ -163,8 +153,6 @@ As described in [select primary key](#select-primary-key), **clustered indexes**
 
 Following the [guidelines for selecting clustered index](#guidelines-to-follow-when-selecting-clustered-index), the following example creates a table with an association between `books` and `users`, which represents the `ratings` of a `book` by `users`. The example creates the table and constructs a composite primary key using `book_id` and `user_id`, and creates a **clustered index** on that **primary key**.
 
-{{< copyable "sql" >}}
-
 ```sql
 CREATE TABLE `bookshop`.`ratings` (
   `book_id` bigint,
@@ -185,8 +173,6 @@ To set a default value on a column, use the `DEFAULT` constraint. The default va
 
 You can use `DEFAULT` together with [supported SQL functions](/functions-and-operators/functions-and-operators-overview.md) to move the calculation of defaults out of the application layer, thus saving resources of the application layer. The resources consumed by the calculation do not disappear and are moved to the TiDB cluster. Commonly, you can insert data with the default time. The following exemplifies setting the default value in the `ratings` table:
 
-{{< copyable "sql" >}}
-
 ```sql
 CREATE TABLE `bookshop`.`ratings` (
   `book_id` bigint,
@@ -198,8 +184,6 @@ CREATE TABLE `bookshop`.`ratings` (
 ```
 
 In addition, if the current time is also filled in by default when the data is being updated, the following statements can be used (but only the [current time related statements](https://pingcap.github.io/sqlgram/#NowSymOptionFraction) can be filled in after `ON UPDATE`, and [more options](https://pingcap.github.io/sqlgram/#DefaultValueExpr) are supported after `DEFAULT`):
-
-{{< copyable "sql" >}}
 
 ```sql
 CREATE TABLE `bookshop`.`ratings` (
@@ -217,8 +201,6 @@ If you need to prevent duplicate values in a column, you can use the `UNIQUE` co
 
 For example, to make sure that users' nicknames are unique, you can rewrite the table creation SQL statement for the `users` table like this:
 
-{{< copyable "sql" >}}
-
 ```sql
 CREATE TABLE `bookshop`.`users` (
   `id` bigint AUTO_RANDOM,
@@ -235,8 +217,6 @@ If you try to insert the same `nickname` in the `users` table, an error is retur
 If you need to prevent null values in a column, you can use the `NOT NULL` constraint.
 
 Take user nicknames as an example. To ensure that a nickname is not only unique but is also not null, you can rewrite the SQL statement for creating the `users` table as follows:
-
-{{< copyable "sql" >}}
 
 ```sql
 CREATE TABLE `bookshop`.`users` (
@@ -289,8 +269,6 @@ In this example, [TiFlash](https://docs.pingcap.com/tidb/stable/tiflash-overview
 
 TiFlash does not automatically replicate data after deployment. Therefore, you need to manually specify the tables to be replicated:
 
-{{< copyable "sql" >}}
-
 ```sql
 ALTER TABLE {table_name} SET TIFLASH REPLICA {count};
 ```
@@ -306,8 +284,6 @@ ALTER TABLE {table_name} SET TIFLASH REPLICA {count};
 
 The `ratings` table opens `1` replica of TiFlash:
 
-{{< copyable "sql" >}}
-
 ```sql
 ALTER TABLE `bookshop`.`ratings` SET TIFLASH REPLICA 1;
 ```
@@ -318,15 +294,11 @@ ALTER TABLE `bookshop`.`ratings` SET TIFLASH REPLICA 1;
 
 Then you can go on to perform the following query:
 
-{{< copyable "sql" >}}
-
 ```sql
 SELECT HOUR(`rated_at`), AVG(`score`) FROM `bookshop`.`ratings` GROUP BY HOUR(`rated_at`);
 ```
 
 You can also execute the [`EXPLAIN ANALYZE`](/sql-statements/sql-statement-explain-analyze.md) statement to see whether this statement is using the **TiFlash**:
-
-{{< copyable "sql" >}}
 
 ```sql
 EXPLAIN ANALYZE SELECT HOUR(`rated_at`), AVG(`score`) FROM `bookshop`.`ratings` GROUP BY HOUR(`rated_at`);
@@ -354,8 +326,6 @@ After creating all the tables as above rules, our [database initialization](/dev
 
 To name the database initialization script `init.sql` and save it, you can execute the following statement to initialize the database.
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 mysql
     -u root \
@@ -366,8 +336,6 @@ mysql
 ```
 
 To view all tables under the `bookshop` database, use the [`SHOW TABLES`](/sql-statements/sql-statement-show-tables.md#show-full-tables) statement.
-
-{{< copyable "sql" >}}
 
 ```sql
 SHOW TABLES IN `bookshop`;

@@ -24,8 +24,6 @@ To create a database, you can use the `CREATE DATABASE` statement.
 
 For example, to create a database named `bookshop` if it does not exist, use the following statement:
 
-{{< copyable "sql" >}}
-
 ```sql
 CREATE DATABASE IF NOT EXISTS `bookshop`;
 ```
@@ -33,8 +31,6 @@ CREATE DATABASE IF NOT EXISTS `bookshop`;
 For more information and examples of the `CREATE DATABASE` statement, see the [`CREATE DATABASE`](/sql-statements/sql-statement-create-database.md) document.
 
 To execute the library build statement as the `root` user, run the following command:
-
-{{< copyable "shell-regular" >}}
 
 ```shell
 mysql
@@ -50,8 +46,6 @@ mysql
 To view the databases in a cluster, use the [`SHOW DATABASES`](/sql-statements/sql-statement-show-databases.md) statement.
 
 For example:
-
-{{< copyable "shell-regular" >}}
 
 ```shell
 mysql

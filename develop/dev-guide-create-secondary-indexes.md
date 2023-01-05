@@ -38,8 +38,6 @@ In TiDB, you can either [add a secondary index to an existing table](#add-a-seco
 
 To add a secondary index to an existing table, you can use the [CREATE INDEX](/sql-statements/sql-statement-create-index.md) statement as follows:
 
-{{< copyable "sql" >}}
-
 ```sql
 CREATE INDEX {index_name} ON {table_name} ({column_names});
 ```
@@ -53,8 +51,6 @@ Parameter description:
 ## Create a secondary index when creating a new table
 
 To create a secondary index at the same time as table creation, you can add a clause containing the `KEY` keyword to the end of the [CREATE TABLE](/sql-statements/sql-statement-create-table.md) statement:
-
-{{< copyable "sql" >}}
 
 ```sql
 KEY `{index_name}` (`{column_names}`)
@@ -86,8 +82,6 @@ The fields in the `books` table are as follows:
 
 The `books` table is created using the following SQL statement:
 
-{{< copyable "sql" >}}
-
 ```sql
 CREATE TABLE `bookshop`.`books` (
   `id` bigint(20) AUTO_RANDOM NOT NULL,
@@ -102,15 +96,11 @@ CREATE TABLE `bookshop`.`books` (
 
 To support the searching by year feature, you need to write a SQL statement to **search for all books published in a given year**. Taking 2022 as an example, write a SQL statement as follows:
 
-{{< copyable "sql" >}}
-
 ```sql
 SELECT * FROM `bookshop`.`books` WHERE `published_at` >= '2022-01-01 00:00:00' AND `published_at` < '2023-01-01 00:00:00';
 ```
 
 To check the execution plan of the SQL statement, you can use the [`EXPLAIN`](/sql-statements/sql-statement-explain.md) statement.
-
-{{< copyable "sql" >}}
 
 ```sql
 EXPLAIN SELECT * FROM `bookshop`.`books` WHERE `published_at` >= '2022-01-01 00:00:00' AND `published_at` < '2023-01-01 00:00:00';
@@ -132,8 +122,6 @@ The following is an example output of the execution plan:
 In the example output, **TableFullScan** is displayed in the `id` column, which means that TiDB is ready to do a full table scan on the `books` table in this query. In the case of a large amount of data, however, a full table scan might be quite slow and cause a fatal impact.
 
 To avoid such impact, you can add an index for the `published_at` column to the `books` table as follows:
-
-{{< copyable "sql" >}}
 
 ```sql
 CREATE INDEX `idx_book_published_at` ON `bookshop`.`books` (`bookshop`.`books`.`published_at`);
@@ -175,8 +163,6 @@ The execution plan does not return the same operator every time. This is because
 > TiDB also supports explicit use of indexes when querying, and you can use [Optimizer Hints](/optimizer-hints.md) or [SQL Plan Management (SPM)](/sql-plan-management.md) to artificially control the use of indexes. But if you do not know well about indexes, optimizer hints, or SPM, **DO NOT** use this feature to avoid any unexpected results.
 
 To query the indexes on a table, you can use the [SHOW INDEXES](/sql-statements/sql-statement-show-indexes.md) statement:
-
-{{< copyable "sql" >}}
 
 ```sql
 SHOW INDEXES FROM `bookshop`.`books`;

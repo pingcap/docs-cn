@@ -28,8 +28,6 @@ For example, the [multi-table join query](/develop/dev-guide-join-tables.md) get
 
 For the convenience of subsequent queries, you can define the query as a view using the following statement:
 
-{{< copyable "sql" >}}
-
 ```sql
 CREATE VIEW book_with_ratings AS
 SELECT b.id AS book_id, ANY_VALUE(b.title) AS book_title, AVG(r.score) AS average_score
@@ -41,8 +39,6 @@ GROUP BY b.id;
 ## Query views
 
 Once a view is created, you can use the `SELECT` statement to query the view just like a normal table.
-
-{{< copyable "sql" >}}
 
 ```sql
 SELECT * FROM book_with_ratings LIMIT 10;
@@ -57,8 +53,6 @@ Currently, the view in TiDB does not support the `ALTER VIEW view_name AS query;
 - Delete the old view with the `DROP VIEW view_name;` statement, and then update the view by creating a new view with the `CREATE VIEW view_name AS query;` statement.
 - Use the `CREATE OR REPLACE VIEW view_name AS query;` statement to overwrite an existing view with the same name.
 
-{{< copyable "sql" >}}
-
 ```sql
 CREATE OR REPLACE VIEW book_with_ratings AS
 SELECT b.id AS book_id, ANY_VALUE(b.title), ANY_VALUE(b.published_at) AS book_title, AVG(r.score) AS average_score
@@ -70,8 +64,6 @@ GROUP BY b.id;
 ## Get view related information
 
 ### Using the `SHOW CREATE TABLE|VIEW view_name` statement
-
-{{< copyable "sql" >}}
 
 ```sql
 SHOW CREATE VIEW book_with_ratings\G
@@ -89,8 +81,6 @@ collation_connection: utf8mb4_general_ci
 ```
 
 ### Query the `INFORMATION_SCHEMA.VIEWS` table
-
-{{< copyable "sql" >}}
 
 ```sql
 SELECT * FROM information_schema.views WHERE TABLE_NAME = 'book_with_ratings'\G
@@ -116,8 +106,6 @@ COLLATION_CONNECTION: utf8mb4_general_ci
 ## Drop views
 
 Use the `DROP VIEW view_name;` statement to drop a view.
-
-{{< copyable "sql" >}}
 
 ```sql
 DROP VIEW book_with_ratings;

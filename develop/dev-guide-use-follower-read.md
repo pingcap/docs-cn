@@ -46,8 +46,6 @@ If your TiDB cluster is deployed across districts or data centers, different rep
 
 To enable Follower Read, set the variable `tidb_replica_read` (default value is `leader`) to `follower`, `leader-and-follower`, `closest-replicas`, or `closest-adaptive`:
 
-{{< copyable "sql" >}}
-
 ```sql
 SET [GLOBAL] tidb_replica_read = 'follower';
 ```
@@ -58,8 +56,6 @@ For more details about this variable, see [Follower Read Usage](/follower-read.m
 <div label="Java" value="java">
 
 In Java, to enable Follower Read, define a `FollowerReadHelper` class.
-
-{{< copyable "" >}}
 
 ```java
 public enum FollowReadMode {
@@ -104,8 +100,6 @@ public class FollowerReadHelper {
 ```
 
 When reading data from the Follower node, use the `setSessionReplicaRead(conn, FollowReadMode.LEADER_AND_FOLLOWER)` method to enable the Follower Read feature, which can balance the load between the Leader node and the Follower node in the current session. When the connection is disconnected, it will be restored to the original mode.
-
-{{< copyable "" >}}
 
 ```java
 public static class AuthorDAO {

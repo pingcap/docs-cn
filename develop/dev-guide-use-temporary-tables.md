@@ -11,8 +11,6 @@ If you want to know something about the eldest authors in the [Bookshop](/develo
 
 For example, you can use the following statement to get the top 50 eldest authors from the `authors` table:
 
-{{< copyable "sql" >}}
-
 ```sql
 SELECT a.id, a.name, (IFNULL(a.death_year, YEAR(NOW())) - a.birth_year) AS age
 FROM authors a
@@ -61,8 +59,6 @@ Before creating a local temporary table, you need to add `CREATE TEMPORARY TABLE
 
 You can create a temporary table using the `CREATE TEMPORARY TABLE <table_name>` statement. The default type is a local temporary table, which is visible only to the current session.
 
-{{< copyable "sql" >}}
-
 ```sql
 CREATE TEMPORARY TABLE top_50_eldest_authors (
     id BIGINT,
@@ -73,8 +69,6 @@ CREATE TEMPORARY TABLE top_50_eldest_authors (
 ```
 
 After creating the temporary table, you can use the `INSERT INTO table_name SELECT ...` statement to insert the results of the above query into the temporary table you just created.
-
-{{< copyable "sql" >}}
 
 ```sql
 INSERT INTO top_50_eldest_authors
@@ -93,8 +87,6 @@ Records: 50  Duplicates: 0  Warnings: 0
 
 </div>
 <div label="Java" value="java">
-
-{{< copyable "java" >}}
 
 ```java
 public List<Author> getTop50EldestAuthorInfo() throws SQLException {
@@ -143,8 +135,6 @@ public List<Author> getTop50EldestAuthorInfo() throws SQLException {
 
 To create a global temporary table, you can add the `GLOBAL` keyword and end with `ON COMMIT DELETE ROWS`, which means the table will be deleted after the current transaction ends.
 
-{{< copyable "sql" >}}
-
 ```sql
 CREATE GLOBAL TEMPORARY TABLE IF NOT EXISTS top_50_eldest_authors_global (
     id BIGINT,
@@ -160,8 +150,6 @@ When inserting data to global temporary tables, you must explicitly declare the 
 <div label="Java" value="java">
 
 When using global temporary tables, you need to turn off Auto Commit mode first. In Java, you can do this with the `conn.setAutoCommit(false);` statement, and you can commit the transaction explicitly with `conn.commit();`. The data added to the global temporary table during the transaction will be cleared after the transaction is committed or canceled.
-
-{{< copyable "java" >}}
 
 ```java
 public List<Author> getTop50EldestAuthorInfo() throws SQLException {
@@ -231,15 +219,11 @@ For example, you can see the global temporary table `top_50_eldest_authors_globa
 
 Once the temporary table is ready, you can query it as a normal data table:
 
-{{< copyable "sql" >}}
-
 ```sql
 SELECT * FROM top_50_eldest_authors;
 ```
 
 You can reference data from temporary tables to your query via [Multi-table join queries](/develop/dev-guide-join-tables.md):
-
-{{< copyable "sql" >}}
 
 ```sql
 EXPLAIN SELECT ANY_VALUE(ta.id) AS author_id, ANY_VALUE(ta.age), ANY_VALUE(ta.name), COUNT(*) AS books
@@ -256,15 +240,11 @@ A local temporary table in a session is automatically dropped after the **sessio
 
 To manually drop local temporary tables, use the `DROP TABLE` or `DROP TEMPORARY TABLE` syntax. For example:
 
-{{< copyable "sql" >}}
-
 ```sql
 DROP TEMPORARY TABLE top_50_eldest_authors;
 ```
 
 To manually drop global temporary tables, use the `DROP TABLE` or `DROP GLOBAL TEMPORARY TABLE` syntax. For example:
-
-{{< copyable "sql" >}}
 
 ```sql
 DROP GLOBAL TEMPORARY TABLE top_50_eldest_authors_global;

@@ -39,8 +39,6 @@ Because you use multiple threads to simulate the situation that multiple users i
 
 To adapt TiDB transactions, write a toolkit [util](https://github.com/pingcap-inc/tidb-example-golang/tree/main/util) according to the following code:
 
-{{< copyable "" >}}
-
 ```go
 package util
 
@@ -104,8 +102,6 @@ func (tx *TiDBSqlTx) Rollback() error {
 **Configuration file**
 
 If you use Maven to manage the package, in the `<dependencies>` node in `pom.xml`, add the following dependencies to import `HikariCP`, and set the packaging target, and the main class of the JAR package startup. The following is an example of `pom.xml`.
-
-{{< copyable "" >}}
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -184,8 +180,6 @@ If you use Maven to manage the package, in the `<dependencies>` node in `pom.xml
 **Coding**
 
 Then write the code:
-
-{{< copyable "" >}}
 
 ```java
 package com.pingcap.txn;
@@ -335,8 +329,6 @@ public class TxnExample {
 <div label="Golang" value="golang">
 
 Write a `helper.go` file that contains the required database operations:
-
-{{< copyable "" >}}
 
 ```go
 package main
@@ -586,8 +578,6 @@ func createUser(txn *util.TiDBSqlTx, id int, nickname string, balance decimal.De
 
 Then write a `txn.go` with a `main` function to call `helper.go` and handle the incoming command line arguments:
 
-{{< copyable "" >}}
-
 ```go
 package main
 
@@ -666,8 +656,6 @@ Run the sample program:
 
 <div label="Java" value="java">
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 mvn clean package
 java -jar target/plain-java-txn-0.0.1-jar-with-dependencies.jar ALICE_NUM=4 BOB_NUM=6
@@ -676,8 +664,6 @@ java -jar target/plain-java-txn-0.0.1-jar-with-dependencies.jar ALICE_NUM=4 BOB_
 </div>
 
 <div label="Golang" value="golang">
-
-{{< copyable "shell-regular" >}}
 
 ```shell
 go build -o bin/txn
@@ -689,8 +675,6 @@ go build -o bin/txn
 </SimpleTab>
 
 SQL logs:
-
-{{< copyable "sql" >}}
 
 ```sql
 /* txn 1 */ BEGIN PESSIMISTIC
@@ -747,8 +731,6 @@ Run the sample program:
 
 <div label="Java" value="java">
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 mvn clean package
 java -jar target/plain-java-txn-0.0.1-jar-with-dependencies.jar ALICE_NUM=4 BOB_NUM=7
@@ -758,8 +740,6 @@ java -jar target/plain-java-txn-0.0.1-jar-with-dependencies.jar ALICE_NUM=4 BOB_
 
 <div label="Golang" value="golang">
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 go build -o bin/txn
 ./bin/txn -a 4 -b 7
@@ -768,8 +748,6 @@ go build -o bin/txn
 </div>
 
 </SimpleTab>
-
-{{< copyable "sql" >}}
 
 ```sql
 /* txn 1 */ BEGIN PESSIMISTIC
@@ -826,8 +804,6 @@ The following code uses two threads to simulate the process that two users buy t
 <div label="Java" value="java">
 
 **Coding**
-
-{{< copyable "" >}}
 
 ```java
 package com.pingcap.txn.optimistic;
@@ -989,15 +965,11 @@ public class TxnExample {
 
 Change the startup class in `pom.xml`:
 
-{{< copyable "" >}}
-
 ```xml
 <mainClass>com.pingcap.txn.TxnExample</mainClass>
 ```
 
 Change it to the following to point to the optimistic transaction example.
-
-{{< copyable "" >}}
 
 ```xml
 <mainClass>com.pingcap.txn.optimistic.TxnExample</mainClass>
@@ -1021,8 +993,6 @@ Run the sample program:
 
 <div label="Java" value="java">
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 mvn clean package
 java -jar target/plain-java-txn-0.0.1-jar-with-dependencies.jar ALICE_NUM=4 BOB_NUM=6
@@ -1031,8 +1001,6 @@ java -jar target/plain-java-txn-0.0.1-jar-with-dependencies.jar ALICE_NUM=4 BOB_
 </div>
 
 <div label="Golang" value="golang">
-
-{{< copyable "shell-regular" >}}
 
 ```shell
 go build -o bin/txn
@@ -1044,8 +1012,6 @@ go build -o bin/txn
 </SimpleTab>
 
 SQL statement execution process:
-
-{{< copyable "sql" >}}
 
 ```sql
     /* txn 2 */ BEGIN OPTIMISTIC
@@ -1110,8 +1076,6 @@ Run the sample program:
 
 <div label="Java" value="java">
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 mvn clean package
 java -jar target/plain-java-txn-0.0.1-jar-with-dependencies.jar ALICE_NUM=4 BOB_NUM=7
@@ -1121,8 +1085,6 @@ java -jar target/plain-java-txn-0.0.1-jar-with-dependencies.jar ALICE_NUM=4 BOB_
 
 <div label="Golang" value="golang">
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 go build -o bin/txn
 ./bin/txn -a 4 -b 7 -o true
@@ -1131,8 +1093,6 @@ go build -o bin/txn
 </div>
 
 </SimpleTab>
-
-{{< copyable "sql" >}}
 
 ```sql
 /* txn 1 */ BEGIN OPTIMISTIC

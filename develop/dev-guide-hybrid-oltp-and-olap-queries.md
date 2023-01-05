@@ -15,8 +15,6 @@ The [Create a table](/develop/dev-guide-create-table.md#use-htap-capabilities) s
 
 Before starting, you can import more sample data [via the `tiup demo` command](/develop/dev-guide-bookshop-schema-design.md#method-1-via-tiup-demo). For example:
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 tiup demo bookshop prepare --users=200000 --books=500000 --authors=100000 --ratings=1000000 --orders=1000000 --host 127.0.0.1 --port 4000 --drop-tables
 ```
@@ -43,8 +41,6 @@ FROM
 ### `ORDER BY` clause
 
 With the aggregate window function `sum()`, you can analyze the historical trend of the order amount of a particular book. For example:
-
-{{< copyable "sql" >}}
 
 ```sql
 WITH orders_group_by_month AS (
@@ -90,8 +86,6 @@ Visualize the above data through a line chart with time as the horizontal axis a
 Suppose that you want to analyze the historical ordering trend of different types of books, and visualize it in the same line chart with multiple series.
 
 You can use the `PARTITION BY` clause to group books by types and count history orders for each type separately.
-
-{{< copyable "sql" >}}
 
 ```sql
 WITH orders_group_by_month AS (
@@ -154,16 +148,12 @@ When using TiDB for real-time online analytical processing in hybrid load scenar
 
 TiDB uses the row-based storage engine, TiKV, by default. To use the columnar storage engine, TiFlash, see [Enable HTAP capability](/develop/dev-guide-create-table.md#use-htap-capabilities). Before querying data through TiFlash, you need to create TiFlash replicas for `books` and `orders` tables using the following statement:
 
-{{< copyable "sql" >}}
-
 ```sql
 ALTER TABLE books SET TIFLASH REPLICA 1;
 ALTER TABLE orders SET TIFLASH REPLICA 1;
 ```
 
 You can check the progress of the TiFlash replicas using the following statement:
-
-{{< copyable "sql" >}}
 
 ```sql
 SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = 'bookshop' and TABLE_NAME = 'books';
@@ -227,8 +217,6 @@ To specify which engine to be used in a query, you can use the `/*+ read_from_st
 >
 > - If a table has an alias, use the alias instead of the table name in the hint, otherwise, the hint does not work.
 > - The `read_from_storage` hint does not work for [common table expression](/develop/dev-guide-use-common-table-expression.md).
-
-{{< copyable "sql" >}}
 
 ```sql
 WITH orders_group_by_month AS (

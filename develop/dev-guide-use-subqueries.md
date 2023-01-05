@@ -35,8 +35,6 @@ For a self-contained subquery that uses subquery as operand of comparison operat
 
 For example, to query authors in the `authors` table whose age is greater than the average age, you can use a subquery as a comparison operator operand.
 
-{{< copyable "sql" >}}
-
 ```sql
 SELECT * FROM authors a1 WHERE (IFNULL(a1.death_year, YEAR(NOW())) - a1.birth_year) > (
     SELECT
@@ -48,15 +46,11 @@ SELECT * FROM authors a1 WHERE (IFNULL(a1.death_year, YEAR(NOW())) - a1.birth_ye
 
 The inner subquery is executed before TiDB executes the above query:
 
-{{< copyable "sql" >}}
-
 ```sql
 SELECT AVG(IFNULL(a2.death_year, YEAR(NOW())) - a2.birth_year) AS average_age FROM authors a2;
 ```
 
 Suppose the result of the query is 34, that is, the average age is 34, and 34 will be used as a constant to replace the original subquery.
-
-{{< copyable "sql" >}}
 
 ```sql
 SELECT * FROM authors a1
@@ -95,8 +89,6 @@ Therefore, in the process of processing, TiDB will try to [Decorrelate of Correl
 
 The following statement is to query authors who are older than the average age of other authors of the same gender.
 
-{{< copyable "sql" >}}
-
 ```sql
 SELECT * FROM authors a1 WHERE (IFNULL(a1.death_year, YEAR(NOW())) - a1.birth_year) > (
     SELECT
@@ -110,8 +102,6 @@ SELECT * FROM authors a1 WHERE (IFNULL(a1.death_year, YEAR(NOW())) - a1.birth_ye
 ```
 
 TiDB rewrites it to an equivalent `join` query:
-
-{{< copyable "sql" >}}
 
 ```sql
 SELECT *

@@ -19,8 +19,6 @@ Before reading this document, you need to prepare the following:
 
 The `DELETE` statement is generally in the following form:
 
-{{< copyable "sql" >}}
-
 ```sql
 DELETE FROM {table} WHERE {filter}
 ```
@@ -57,8 +55,6 @@ The following are some best practices to follow when you delete data:
 ## Example
 
 Suppose you find an application error within a specific time period and you need to delete all the data for the [ratings](/develop/dev-guide-bookshop-schema-design.md#ratings-table) within this period, for example, from `2022-04-15 00:00:00` to `2022-04-15 00:15:00`. In this case, you can use the `SELECT` statement to check the number of records to be deleted.
-
-{{< copyable "sql" >}}
 
 ```sql
 SELECT COUNT(*) FROM `ratings` WHERE `rated_at` >= "2022-04-15 00:00:00" AND `rated_at` <= "2022-04-15 00:15:00";
@@ -208,8 +204,6 @@ Suppose you find an application error within a specific time period. You need to
 
 In Java, the bulk-delete example is as follows:
 
-{{< copyable "" >}}
-
 ```java
 package com.pingcap.bulkDelete;
 
@@ -269,8 +263,6 @@ In each iteration, `DELETE` deletes up to 1000 rows from `2022-04-15 00:00:00` t
 <div label="Golang" value="golang">
 
 In Golang, the bulk-delete example is as follows:
-
-{{< copyable "" >}}
 
 ```go
 package main

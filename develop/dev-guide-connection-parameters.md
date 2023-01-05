@@ -201,8 +201,6 @@ This section introduces parameters related to `Prepare`.
 
 While processing batch writes, it is recommended to configure `rewriteBatchedStatements=true`. After using `addBatch()` or `executeBatch()`, JDBC still sends SQL one by one by default, for example:
 
-{{< copyable "" >}}
-
 ```java
 pstmt = prepare("INSERT INTO `t` (a) values(?)");
 pstmt.setInt(1, 10);
@@ -215,8 +213,6 @@ pstmt.executeBatch();
 
 Although `Batch` methods are used, the SQL statements sent to TiDB are still individual `INSERT` statements:
 
-{{< copyable "sql" >}}
-
 ```sql
 INSERT INTO `t` (`a`) VALUES(10);
 INSERT INTO `t` (`a`) VALUES(11);
@@ -225,15 +221,11 @@ INSERT INTO `t` (`a`) VALUES(12);
 
 But if you set `rewriteBatchedStatements=true`, the SQL statements sent to TiDB will be a single `INSERT` statement:
 
-{{< copyable "sql" >}}
-
 ```sql
 INSERT INTO `t` (`a`) values(10),(11),(12);
 ```
 
 Note that the rewrite of the `INSERT` statements is to concatenate the values after multiple "values" keywords into a whole SQL statement. If the `INSERT` statements have other differences, they cannot be rewritten, for example:
-
-{{< copyable "sql" >}}
 
 ```sql
 INSERT INTO `t` (`a`) VALUES (10) ON DUPLICATE KEY UPDATE `a` = 10;
@@ -243,8 +235,6 @@ INSERT INTO `t` (`a`) VALUES (12) ON DUPLICATE KEY UPDATE `a` = 12;
 
 The above `INSERT` statements cannot be rewritten into one statement. But if you change the three statements into the following ones:
 
-{{< copyable "sql" >}}
-
 ```sql
 INSERT INTO `t` (`a`) VALUES (10) ON DUPLICATE KEY UPDATE `a` = VALUES(`a`);
 INSERT INTO `t` (`a`) VALUES (11) ON DUPLICATE KEY UPDATE `a` = VALUES(`a`);
@@ -253,15 +243,11 @@ INSERT INTO `t` (`a`) VALUES (12) ON DUPLICATE KEY UPDATE `a` = VALUES(`a`);
 
 Then they meet the rewrite requirement. The above `INSERT` statements will be rewritten into the following one statement:
 
-{{< copyable "sql" >}}
-
 ```sql
 INSERT INTO `t` (`a`) VALUES (10), (11), (12) ON DUPLICATE KEY UPDATE a = VALUES(`a`);
 ```
 
 If there are three or more updates during the batch update, the SQL statements will be rewritten and sent as multiple queries. This effectively reduces the client-to-server request overhead, but the side effect is that a larger SQL statement is generated. For example:
-
-{{< copyable "sql" >}}
 
 ```sql
 UPDATE `t` SET `a` = 10 WHERE `id` = 1; UPDATE `t` SET `a` = 11 WHERE `id` = 2; UPDATE `t` SET `a` = 12 WHERE `id` = 3;

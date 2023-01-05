@@ -18,8 +18,6 @@ For example, you have two tables:
 
 Then you can write a SQL query statement like this:
 
-{{< copyable "sql" >}}
-
 ```sql
 SELECT
     `a`.`class`,
@@ -52,8 +50,6 @@ Result:
 The `a`.`class` and `a`.`stuname` fields are specified in the `GROUP BY` statement, and the selected columns are `a`.`class`, `a`.`stuname` and `b`.`courscore`. The only column that is not in the `GROUP BY` condition, `b`.`courscore`, is also specified with a unique value using the `max()` function. There is **_ONLY ONE_** result that satisfies this SQL statement without any ambiguity, which is called the `FULL GROUP BY` syntax.
 
 A counterexample is the `NON-FULL GROUP BY` syntax. For example, in these two tables, write the following SQL query (delete `a`.`stuname` in `GROUP BY`).
-
-{{< copyable "sql" >}}
 
 ```sql
 SELECT
@@ -98,8 +94,6 @@ There are two results because you did **_NOT_** specify how to get the value of 
 
 MySQL provides a `sql_mode` switch `ONLY_FULL_GROUP_BY` to control whether to check the `FULL GROUP BY` syntax or not. TiDB is also compatible with this `sql_mode` switch.
 
-{{< copyable "sql" >}}
-
 ```sql
 mysql> select a.class, a.stuname, max(b.courscore) from stu_info a join stu_score b on a.stuno=b.stuno group by a.class order by a.class, a.stuname;
 +------------+--------------+------------------+
@@ -126,8 +120,6 @@ In SQL semantics, the result set is output in order only if the `ORDER BY` synta
 As a distributed database, TiDB stores data on multiple servers. In addition, the TiDB layer does not cache data pages, so the result set order of SQL statements without `ORDER BY` is easily perceived as unstable. To output a sequential result set, you need to explicitly add the order field into the `ORDER BY` clause, which conforms to SQL semantics.
 
 In the following example, only one field is added to the `ORDER BY` clause, and TiDB only sorts the results by that one field.
-
-{{< copyable "sql" >}}
 
 ```sql
 mysql> select a.class, a.stuname, b.course, b.courscore from stu_info a join stu_score b on a.stuno=b.stuno order by a.class;

@@ -20,8 +20,6 @@ Transactions can ensure that both of the above operations are executed successfu
 
 Insert some sample data into the table using the `users` table in the [bookshop](/develop/dev-guide-bookshop-schema-design.md) database:
 
-{{< copyable "sql" >}}
-
 ```sql
 INSERT INTO users (id, nickname, balance)
   VALUES (2, 'Bob', 200);
@@ -30,8 +28,6 @@ INSERT INTO users (id, nickname, balance)
 ```
 
 Run the following transactions and explain what each statement means:
-
-{{< copyable "sql" >}}
 
 ```sql
 BEGIN;
@@ -56,13 +52,9 @@ After the above transaction is executed successfully, the table should look like
 
 To explicitly start a new transaction, you can use either `BEGIN` or `START TRANSACTION`.
 
-{{< copyable "sql" >}}
-
 ```sql
 BEGIN;
 ```
-
-{{< copyable "sql" >}}
 
 ```sql
 START TRANSACTION;
@@ -70,15 +62,11 @@ START TRANSACTION;
 
 The default transaction mode of TiDB is pessimistic. You can also explicitly specify the [optimistic transaction model](/develop/dev-guide-optimistic-and-pessimistic-transaction.md):
 
-{{< copyable "sql" >}}
-
 ```sql
 BEGIN OPTIMISTIC;
 ```
 
 Enable the [pessimistic transaction mode](/develop/dev-guide-optimistic-and-pessimistic-transaction.md):
-
-{{< copyable "sql" >}}
 
 ```sql
 BEGIN PESSIMISTIC;
@@ -90,8 +78,6 @@ If the current session is in the middle of a transaction when the above statemen
 
 You can use the `COMMIT` statement to commit all modifications made by TiDB in the current transaction.
 
-{{< copyable "sql" >}}
-
 ```sql
 COMMIT;
 ```
@@ -102,15 +88,11 @@ Before enabling optimistic transactions, make sure that your application can pro
 
 You can use the `ROLLBACK` statement to roll back modifications of the current transaction.
 
-{{< copyable "sql" >}}
-
 ```sql
 ROLLBACK;
 ```
 
 In the previous transfer example, if you roll back the entire transaction, Alice's and Bob's balances will remain unchanged, and all modifications of the current transaction are canceled.
-
-{{< copyable "sql" >}}
 
 ```sql
 TRUNCATE TABLE `users`;
@@ -162,8 +144,6 @@ See the table below for details:
 | SERIALIZABLE     | Not Possible | Not possible | Not possible | Not possible |
 
 TiDB supports the following isolation levels: `READ COMMITTED` and `REPEATABLE READ`:
-
-{{< copyable "sql" >}}
 
 ```sql
 mysql> SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;

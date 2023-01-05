@@ -116,8 +116,6 @@ To avoid manually managing complex relationships between different dependencies 
 
 If you are using **Maven**, add the following to your `<dependencies></dependencies>`:
 
-{{< copyable "" >}}
-
 ```xml
 <dependency>
     <groupId>org.hibernate.orm</groupId>

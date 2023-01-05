@@ -37,8 +37,6 @@ Now there is a situation where doctors `Alice` and `Bob` are on call. Both are f
 
 <div label="Java" value="java">
 
-{{< copyable "" >}}
-
 ```java
 package com.pingcap.txn.write.skew;
 
@@ -164,8 +162,6 @@ public class EffectWriteSkew {
 
 To adapt TiDB transactions, write a [util](https://github.com/pingcap-inc/tidb-example-golang/tree/main/util) according to the following code:
 
-{{< copyable "" >}}
-
 ```go
 package main
 
@@ -334,8 +330,6 @@ func createDoctor(db *sql.DB, id int, name string, onCall bool, shiftID int) err
 
 SQL log:
 
-{{< copyable "sql" >}}
-
 ```sql
 /* txn 1 */ BEGIN
     /* txn 2 */ BEGIN
@@ -348,8 +342,6 @@ SQL log:
 ```
 
 Running result:
-
-{{< copyable "sql" >}}
 
 ```sql
 mysql> SELECT * FROM doctors;
@@ -371,8 +363,6 @@ Now let's change the sample program to use `SELECT FOR UPDATE` to avoid the writ
 <SimpleTab groupId="language">
 
 <div label="Java" value="java">
-
-{{< copyable "" >}}
 
 ```java
 package com.pingcap.txn.write.skew;
@@ -497,8 +487,6 @@ public class EffectWriteSkew {
 
 <div label="Golang" value="golang">
 
-{{< copyable "" >}}
-
 ```go
 package main
 
@@ -667,8 +655,6 @@ func createDoctor(db *sql.DB, id int, name string, onCall bool, shiftID int) err
 
 SQL log:
 
-{{< copyable "sql" >}}
-
 ```sql
 /* txn 1 */ BEGIN
     /* txn 2 */ BEGIN
@@ -681,8 +667,6 @@ At least one doctor is on call
 ```
 
 Running result:
-
-{{< copyable "sql" >}}
 
 ```sql
 mysql> SELECT * FROM doctors;
@@ -700,8 +684,6 @@ mysql> SELECT * FROM doctors;
 The `PROPAGATION_NESTED` propagation behavior supported by **Spring** triggers a nested transaction, which is a child transaction that is started independently of the current transaction. A `savepoint` is recorded when the nested transaction starts. If the nested transaction fails, the transaction will roll back to the `savepoint` state. The nested transaction is part of the outer transaction and will be committed together with the outer transaction.
 
 The following example demonstrates the `savepoint` mechanism:
-
-{{< copyable "sql" >}}
 
 ```sql
 mysql> BEGIN;

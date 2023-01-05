@@ -13,8 +13,6 @@ This document introduces some best practices for creating and using indexes in T
 
 This section takes the `books` table in the [bookshop](/develop/dev-guide-bookshop-schema-design.md) database as an example.
 
-{{< copyable "sql" >}}
-
 ```sql
 CREATE TABLE `books` (
   `id` bigint(20) AUTO_RANDOM NOT NULL,

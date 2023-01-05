@@ -31,8 +31,6 @@ To update an existing row in a table, you need to use an [`UPDATE` statement](/s
 
 In SQL, the `UPDATE` statement is generally in the following form:
 
-{{< copyable "sql" >}}
-
 ```sql
 UPDATE {table} SET {update_column} = {update_value} WHERE {filter_column} = {filter_value}
 ```
@@ -72,8 +70,6 @@ Suppose an author changes her name to **Helen Haruki**. You need to change the [
 <SimpleTab groupId="language">
 <div label="SQL" value="sql">
 
-{{< copyable "sql" >}}
-
 ```sql
 UPDATE `authors` SET `name` = "Helen Haruki" WHERE `id` = 1;
 ```
@@ -81,8 +77,6 @@ UPDATE `authors` SET `name` = "Helen Haruki" WHERE `id` = 1;
 </div>
 
 <div label="Java" value="java">
-
-{{< copyable "" >}}
 
 ```java
 // ds is an entity of com.mysql.cj.jdbc.MysqlDataSource
@@ -106,8 +100,6 @@ If you need to insert new data into a table, but if there are unique key (a prim
 ### `INSERT ON DUPLICATE KEY UPDATE` SQL Syntax
 
 In SQL, the `INSERT ... ON DUPLICATE KEY UPDATE ...` statement is generally in the following form:
-
-{{< copyable "sql" >}}
 
 ```sql
 INSERT INTO {table} ({columns}) VALUES ({values})
@@ -136,8 +128,6 @@ In the following example, the primary key is the joint primary keys of `book_id`
 <SimpleTab groupId="language">
 <div label="SQL" value="sql">
 
-{{< copyable "sql" >}}
-
 ```sql
 INSERT INTO `ratings`
     (`book_id`, `user_id`, `score`, `rated_at`)
@@ -149,8 +139,6 @@ ON DUPLICATE KEY UPDATE `score` = 5, `rated_at` = NOW();
 </div>
 
 <div label="Java" value="java">
-
-{{< copyable "" >}}
 
 ```java
 // ds is an entity of com.mysql.cj.jdbc.MysqlDataSource
@@ -200,8 +188,6 @@ Suppose that you have had a lot of book ratings from users on your `bookshop` we
 You need to multiply by `2` the data in the `ratings` table from the previous 5-point scale, and add a new column to the ratings table to indicate whether the rows have been updated. Using this column, you can filter out rows that have been updated in `SELECT`, which will prevent the script from crashing and updating the rows multiple times, resulting in unreasonable data.
 
 For example, you create a column named `ten_point` with the data type [BOOL](/data-type-numeric.md#boolean-type) as an identifier of whether it is a 10-point scale:
-
-{{< copyable "sql" >}}
 
 ```sql
 ALTER TABLE `bookshop`.`ratings` ADD COLUMN `ten_point` BOOL NOT NULL DEFAULT FALSE;
@@ -299,8 +285,6 @@ In each iteration, `SELECT` queries in order of the primary key. It selects prim
 In Java (JDBC), a bulk-update application might be similar to the following:
 
 **Code:**
-
-{{< copyable "" >}}
 
 ```java
 package com.pingcap.bulkUpdate;
@@ -433,8 +417,6 @@ public class BatchUpdateExample {
 ```
 
 - `hibernate.cfg.xml` configuration:
-
-{{< copyable "" >}}
 
 ```xml
 <?xml version='1.0' encoding='utf-8'?>

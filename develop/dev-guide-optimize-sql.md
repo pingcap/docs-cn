@@ -11,8 +11,6 @@ This document introduces some common reasons for slow SQL statements and techniq
 
 You can use [`tiup demo` import](/develop/dev-guide-bookshop-schema-design.md#method-1-via-tiup-demo) to prepare data:
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 tiup demo bookshop prepare --host 127.0.0.1 --port 4000 --books 1000000
 ```
@@ -24,8 +22,6 @@ Or [using the Import feature of TiDB Cloud](/develop/dev-guide-bookshop-schema-d
 The most common reason for slow SQL queries is that the `SELECT` statements perform full table scan or use incorrect indexes.
 
 When TiDB retrieves a small number of rows from a large table based on a column that is not the primary key or in the secondary index, the performance is usually poor:
-
-{{< copyable "sql" >}}
 
 ```sql
 SELECT * FROM books WHERE title = 'Marian Yost';
@@ -46,8 +42,6 @@ Time: 0.582s
 ```
 
 To understand why this query is slow, you can use `EXPLAIN` to see the execution plan:
-
-{{< copyable "sql" >}}
 
 ```sql
 EXPLAIN SELECT * FROM books WHERE title = 'Marian Yost';
@@ -71,15 +65,11 @@ For more information about the usage of `EXPLAIN`, see [`EXPLAIN` Walkthrough](/
 
 To speed up this query above, add a secondary index on the `books.title` column:
 
-{{< copyable "sql" >}}
-
 ```sql
 CREATE INDEX title_idx ON books (title);
 ```
 
 The query execution is much faster:
-
-{{< copyable "sql" >}}
 
 ```sql
 SELECT * FROM books WHERE title = 'Marian Yost';
@@ -100,8 +90,6 @@ Time: 0.007s
 ```
 
 To understand why the performance is improved, use `EXPLAIN` to see the new execution plan:
-
-{{< copyable "sql" >}}
 
 ```sql
 EXPLAIN SELECT * FROM books WHERE title = 'Marian Yost';
@@ -129,8 +117,6 @@ If the index is a covering index, which contains all the columns queried by the 
 
 For example, in the following query, you only need to query the corresponding `price` based on `title`:
 
-{{< copyable "sql" >}}
-
 ```sql
 SELECT title, price FROM books WHERE title = 'Marian Yost';
 ```
@@ -151,8 +137,6 @@ Time: 0.007s
 
 Because the `title_idx` index only contains data in the `title` column, TiDB still needs to first scan the index data and then query the `price` column from the table.
 
-{{< copyable "sql" >}}
-
 ```sql
 EXPLAIN SELECT title, price FROM books WHERE title = 'Marian Yost';
 ```
@@ -169,21 +153,15 @@ EXPLAIN SELECT title, price FROM books WHERE title = 'Marian Yost';
 
 To optimize the performance, drop the `title_idx` index and create a new covering index `title_price_idx`:
 
-{{< copyable "sql" >}}
-
 ```sql
 ALTER TABLE books DROP INDEX title_idx;
 ```
-
-{{< copyable "sql" >}}
 
 ```sql
 CREATE INDEX title_price_idx ON books (title, price);
 ```
 
 Because the `price` data is stored in the `title_price_idx` index, the following query only needs to scan the index data:
-
-{{< copyable "sql" >}}
 
 ```sql
 EXPLAIN SELECT title, price FROM books WHERE title = 'Marian Yost';
@@ -199,8 +177,6 @@ EXPLAIN SELECT title, price FROM books WHERE title = 'Marian Yost';
 ```
 
 Now this query runs faster:
-
-{{< copyable "sql" >}}
 
 ```sql
 SELECT title, price FROM books WHERE title = 'Marian Yost';
@@ -222,8 +198,6 @@ Time: 0.004s
 
 Since the `books` table will be used in later examples, drop the `title_price_idx` index:
 
-{{< copyable "sql" >}}
-
 ```sql
 ALTER TABLE books DROP INDEX title_price_idx;
 ```
@@ -231,8 +205,6 @@ ALTER TABLE books DROP INDEX title_price_idx;
 ### Solution: Use primary index
 
 If a query uses the primary key to filter data, the query runs fast. For example, the primary key of the `books` table is the `id` column, so you can use the `id` column to query data:
-
-{{< copyable "sql" >}}
 
 ```sql
 SELECT * FROM books WHERE id = 896;
@@ -249,8 +221,6 @@ Time: 0.004s
 ```
 
 Use `EXPLAIN` to see the execution plan:
-
-{{< copyable "sql" >}}
 
 ```sql
 EXPLAIN SELECT * FROM books WHERE id = 896;
