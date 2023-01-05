@@ -26,15 +26,11 @@ summary: 创建数据库的方法、规范及例子。
 
 可使用 `CREATE DATABASE` 语句来创建数据库。
 
-{{< copyable "sql" >}}
-
 ```sql
 CREATE DATABASE IF NOT EXISTS `bookshop`;
 ```
 
 此语句会创建一个名为 `bookshop` 的数据库（如果尚不存在）。请以 `root` 用户身份执行文件中的建库语句，运行以下命令：
-
-{{< copyable "shell-regular" >}}
 
 ```shell
 mysql
@@ -46,8 +42,6 @@ mysql
 ```
 
 要查看集群中的数据库，可在命令行执行一条 `SHOW DATABASES` 语句：
-
-{{< copyable "shell-regular" >}}
 
 ```shell
 mysql
