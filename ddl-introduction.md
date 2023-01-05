@@ -5,7 +5,7 @@ summary: 讲解 TiDB DDL 的实现原理、在线变更过程、最佳实践等�
 
 # TiDB 中 DDL 执行原理及最佳实践
 
-本文介绍了 TiDB 中 DDL 语句的执行原理（包括 DDL owner 模块和在线变更 DDL 的流程）和最佳实践。
+本文介绍了 TiDB 中 DDL 语句的执行原理（包括 DDL Owner 模块和在线变更 DDL 的流程）和最佳实践。
 
 ## DDL 执行原理
 
@@ -79,35 +79,57 @@ absent -> delete only -> write only -> write reorg -> public
 <SimpleTab>
 <div label="Online DDL 异步变更流程（TiDB v6.2 之前）">
 
-本节介绍 v6.2 前 TiDB SQL 层中处理异步 Schema 变更的流程。以下为每个模块以及基本的变更流程。
+本节介绍 v6.2 前 TiDB SQL 层中处理异步 Schema 变更的流程。基本流程如下：
 
 1. MySQL Client 发送给 TiDB server 一个 DDL 操作请求。
-2. 某个 TiDB server 收到请求（MySQL Protocol 层收到请求进行解析优化），然后到达 TiDB SQL 层进行执行。这步骤主要是在 TiDB SQL 层接到请求后，会起个 start job 的模块根据请求将其封装成特定的 DDL job，然后将此 job 按语句类型分类，分别存储到 KV 层的对应 DDL job 队列，并通知自身对应 worker 有 job 需要处理。
-3. 接收到处理 job 通知的 worker，会判断自身是否处于 owner 的角色，如果是 owner 角色则直接处理此 job，如果没有处于此角色则退出不做任何处理。假设此 TiDB Server 不是此角色，那么其他的某个节点中肯定有一个是 owner。那个处于 owner 角色节点的 worker 通过定期检测机制来检查是否有 job 可以被执行。如果发现有 job ，那么 worker 就会处理。
-4. 当 worker 处理完 job 后， 它会将此 job 从 KV 层对应的 job queue 中移除，并放入 job history queue。之前封装 job 的 start job 模块会定期去 job history queue 查看是否有之前放进去的 job 对应 ID 的 job，如果有则整个 DDL 操作结束。
-5. TiDB Server 将 response 返回 MySQL Client。
+
+2. 某个 TiDB server 收到请求（即 TiDB server 的 MySQL Protocol 层对请求进行解析优化），然后到达 TiDB SQL 层进行执行。
+
+    TiDB SQL 层接到 DDL 请求后，会启动 `start job` 模块根据请求将请求封装成特定的 DDL Job（即 DDL 任务），然后将此 Job 按语句类型分类，分别存储到 KV 层的对应 DDL Job 队列，并通知自身对应的 worker 有 Job 需要处理。
+
+3. 接收到处理 Job 通知的 worker，会判断自身是否处于 DDL Owner 的角色。如果是 Owner 角色则直接处理此 Job。如果没有处于 Owner 角色则退出不做任何处理。
+
+    假设某台 TiDB server 不是 Owner 角色，那么其他某个节点一定有一个是 Owner。处于 Owner 角色的节点的 worker 通过定期检测机制来检查是否有 Job 可以被执行。如果发现有 Job ，那么 worker 就会处理该 Job。
+
+4. Worker 处理完 Job 后，会将此 Job 从 KV 层对应的 Job queue 中移除，并放入 `job history queue`。之前封装 Job 的 `start job` 模块会定期去 `job history queue` 查看是否有之前放进去的 Job 对应 ID 的 Job。如果有，则整个 DDL 操作结束执行。
+
+5. TiDB server 将回复返回至 MySQL Client。
 
 ![ddl-framework](/media/ddl-framework.png)
 
-旧框架的限制：
-在旧的框架中，只有 general job queue 和 add index job queue 两个队列，分别处理 general DDL 和 reorg DDL。另一方面，Owner 对这些 DDL job 的处理总是以先入先出的方式。这些限制可能会导致一些“非预期”的 DDL 阻塞行为。具体可以参考常见问题 7.6。
+在 TiDB v6.2 前，该 DDL 执行框架存在以下限制：
+
+- TiKV 集群中只有 `general job queue` 和 `add index job queue` 两个队列，分别处理 General DDL 和 Reorg DDL。
+- DDL Owner 总是以先入先出的方式处理 DDL Job。
+- DDL Owner 每次只能执行一个同种类型（General 或 Reorg）的 DDL 任务，这个约束较为严格。
+
+这些限制可能会导致一些“非预期”的 DDL 阻塞行为。具体可以参考 [SQL FAQ - DDL 执行](/faq/sql-faq.md#ddl-执行)
 
 </div>
 <div label="并发 DDL 框架（TiDB v6.2 及以上）">
 
-在 TiDB 6.2 之前，owner 每次只能执行一个同种类型（general 或 reorg）的 DDL 任务，这个约束对于 DDL 任务执行来讲比较严格，同时对于用户的使用体验也不好。标准数据库 DDL 任务之间如果没有相关依赖，其实是可以并行执行的，例如： 用户 A 对 T1 表 增加一个索引，同时用户 B 对于 T2 表 删除一个列。这两条 DDL 语句即可并行执行。
+在 TiDB v6.2 之前，由于 Owner 每次只能执行一个同种类型（General 或 Reorg）的 DDL 任务，这个约束较为严格，同时用户体验也欠佳。
 
-为了提升用户体验，为用户提供更为强大的 DDL 执行能力，我们在 TiDB v6.2 版本对原有的 owner 进行升级，使得 owner 能够对于 DDL 任务进行相关性判断，原则如下：
+标准数据库 DDL 任务之间如果没有相关依赖，其实可以并行执行。例如：用户 A 在 `T1` 表上增加一个索引，同时用户 B 从 `T2` 表删除一列。这两条 DDL 语句可以并行执行。
 
-1. 数据库的对象是按照下图形成一个分层结构，一个 Schema（DB）包含多张 table，view， function 和 stored procedure。一个 table 又包含多个 index，列。
-2. 同一层不同对象之间可以并行进行 DDL 变更。
-3. 不同层的对象之间执行 DDL 任务需要阻塞，例如：A 用户正在删除数据库 DB1， B 用户则不能对于数据库 DB1 创建一张新表 T1；
+为了提升用户体验，为用户提供更为强大的 DDL 执行能力，TiDB v6.2 版本对原有的 DDL Owner 进行升级，使得 Owner 能对 DDL 任务做相关性判断，判断逻辑如下：
 
-**特别的，我们改善了 DDL Job 队列先入先出的问题，不再是选择当前队列最前面的 DDL Job，而是选择当前可以执行的 DDL Job。并且我们还扩充了处理 Reorg DDL 的 worker 数量，使得能够并行地添加多个索引。**
++ 数据库的对象按照下图形成分层结构，一个 DB (schema) 包含多张表、视图、函数和 stored procedure。一张表又包含多个索引和列。
++ 在同一层 (Level) 的不同对象之间，可以并行进行 DDL 变更。
++ 在不同层对象之间执行 DDL 任务需要阻塞，例如：A 用户正在删除数据库 `DB1`，此时 B 用户不能在数据库 `DB1` 中创建一张新表 `T1`。
 
-同时我们避免使用传统的 MDL 锁机制来进行调度，因为 TiDB 中所有支持的 DDL 任务都是以 Online 方式来实现的，我们只需要通过 owner 对于进来的 DDL job 进行相关性判断，并根据相关性结果进行 DDL 任务的调度。最后实现和 传统数据库 DDL 并发相同的效果，同时，也是一种对于 分布式数据库友好的调度算法。
+![DDL DB structure](/media/ddl-db-structure.png)
 
-在实现新并发 DDL 框架之后，TiDB 对于数据库 DDL 语句的执行能力得到了加强，更加符合数据库用户使用商用数据库的习惯。
+具体来说，TiDB 在 v6.2 中对 DDL 执行框架进行了如下升级：
+
++ DDL Owner 能够根据以上判断逻辑并行执行 DDL 任务。
++ 改善了 DDL Job 队列先入先出的问题。DDL Owner 不再选择当前队列最前面的 DDL Job，而是选择当前可以执行的 DDL Job。
++ 扩充了处理 Reorg DDL 的 worker 数量，使得能够并行地添加多个索引。
++ 同时避免使用传统的 MDL 锁机制来进行调度。
+
+    因为 TiDB 中所有支持的 DDL 任务都是以 Online 方式来实现的，TiDB 只需要通过 Owner 对于新的 DDL Job 进行相关性判断，并根据相关性结果进行 DDL 任务的调度。最后实现和传统数据库中 DDL 并发相同的效果，同时，这也是一种对于分布式数据库友好的调度算法。
+
+实现并发 DDL 框架之后，TiDB 中数据库 DDL 语句的执行能力得到加强，更符合商用数据库的使用习惯。
 
 </div>
 </SimpleTab>
@@ -130,20 +152,26 @@ absent -> delete only -> write only -> write reorg -> public
 > **建议：**
 >
 > - 以上两个变量均可以在 DDL 任务执行过程中动态调整，并且在下一个 batch 生效。
-> - 请根据 DDL 操作的类型，并结合业务负载压力，选择合适的时间点执行，例如建议在业务负载比较低的情况运行 `ADD INDEX` 操作。
-> - 由于添加索引的时间跨度较长，发送相关的指令后，TiDB 会在后台执行任务，TiDB Server 挂掉不会影响继续执行。
+> - 根据 DDL 操作的类型，并结合业务负载压力，选择合适的时间点执行，例如建议在业务负载比较低的情况运行 `ADD INDEX` 操作。
+> - 由于添加索引的时间跨度较长，发送相关的指令后，TiDB 会在后台执行任务，TiDB server 挂掉不会影响继续执行。
 
 ### 并发发送 DDL 请求实现快速建大量表
 
-一个建表的操作大概耗时 50ms左右。受框架的限制，其耗时可能更长。为了更快地建表，推荐通过并非发送多个 DDL 请求以达到最快速度。如果是串行地发送请求，并且没有发给 Owner 节点，则建表速度会很慢。
+一个建表的操作耗时大约 50 毫秒。受框架的限制，建表耗时可能更长。
 
-### 在一条 ALTER 语句中进行多次变更
+为了更快地建表，推荐通过并发发送多个 DDL 请求以达到最快建表速度。如果串行地发送 DDL 请求，并且没有发给 Owner 节点，则建表速度会很慢。
 
-TiDB 在 v6.2.0 版本后支持在一条 ALTER 语句中修改一个表的多个模式对象（如列、索引），同时保证整个语句的原子性。推荐在一条 ALTER 语句中进行多次变更，后续版本中 TiDB 会进行更多优化，例如建多个索引只需要读取一次表数据。
+### 在一条 `ALTER` 语句中进行多次变更
+
+自 v6.2.0 起，TiDB 支持在一条 `ALTER` 语句中修改一张表的多个模式对象（如列、索引），同时保证整个语句的原子性。因此推荐在一条 `ALTER` 语句中进行多次变更。
+
+### 检查读写性能
+
+在添加索引时，回填数据阶段会对集群造成一定的读写压力。在 `ADD INDEX` 的命令发送成功后，并且在 `write reorg` 阶段，建议检查 Grafana 面板上 TiDB 和 TiKV 读写相关的性能指标，以及业务响应时间，来确定 `ADD INDEX` 操作对集群是否造成影响。
 
 ## DDL 相关的命令介绍
 
-- `ADMIN SHOW DDL`：用于查看 TiDB DDL 的状态，包括当前 schema 版本号、owner 的 DDL ID 和地址、正在执行的 DDL 任务和 SQL、当前 TiDB 实例的 DDL ID。详情参阅 [`ADMIN SHOW DDL`](/sql-statements/sql-statement-admin-show-ddl.md#admin-show-ddl)。
+- `ADMIN SHOW DDL`：用于查看 TiDB DDL 的状态，包括当前 schema 版本号、DDL Owner 的 DDL ID 和地址、正在执行的 DDL 任务和 SQL、当前 TiDB 实例的 DDL ID。详情参阅 [`ADMIN SHOW DDL`](/sql-statements/sql-statement-admin-show-ddl.md#admin-show-ddl)。
 
 - `ADMIN SHOW DDL JOBS`：查看集群环境中的 DDL 任务运行中详细的状态。详情参阅 [`ADMIN SHOW DDL JOBS`](/sql-statements/sql-statement-admin-show-ddl.md#admin-show-ddl-jobs)。
 
@@ -153,10 +181,6 @@ TiDB 在 v6.2.0 版本后支持在一条 ALTER 语句中修改一个表的多个
 
     取消一个已经执行完成的 DDL 任务会在 RESULT 列看到 DDL Job:90 not found 的错误，表示该任务已从 DDL 等待队列中被移除。
 
-## 检查读写性能
-
-在添加索引时，回填数据阶段会对集群造成一定的读写压力，ADD INDEX 的命令发送成功后，并且在 write reorg 阶段，建议检查 Grafana 中 TiDB 和 TiKV 读写相关的性能指标，以及业务响应时间，来确定 ADD INDEX 操作对集群是否造成影响。
-
 ## 常见问题
 
-DDL 语句执行相关的常见问题，参考 [SQL FAQ - DDL 执行](/faq/sql-faq.md#ddl-执行)。å
+DDL 语句执行相关的常见问题，参考 [SQL FAQ - DDL 执行](/faq/sql-faq.md#ddl-执行)。
