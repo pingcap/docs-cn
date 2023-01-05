@@ -24,8 +24,6 @@ summary: 创建二级索引的方法、规范及例子。
 
 如果需要对已有表中添加二级索引，可使用 [CREATE INDEX](/sql-statements/sql-statement-create-index.md) 语句。在 TiDB 中，`CREATE INDEX` 为在线操作，不会阻塞表中的数据读写。二级索引创建一般如以下形式：
 
-{{< copyable "sql" >}}
-
 ```sql
 CREATE INDEX {index_name} ON {table_name} ({column_names});
 ```
@@ -39,8 +37,6 @@ CREATE INDEX {index_name} ON {table_name} ({column_names});
 ## 新建表的同时创建二级索引
 
 如果你希望在创建表的同时，同时创建二级索引，可在 [CREATE TABLE](/sql-statements/sql-statement-create-table.md) 的末尾使用包含 `KEY` 关键字的子句来创建二级索引：
-
-{{< copyable "sql" >}}
 
 ```sql
 KEY `{index_name}` (`{column_names}`)
@@ -68,8 +64,6 @@ KEY `{index_name}` (`{column_names}`)
 |    price     | decimal(15,2) |                 价格                  |
 | published_at |   datetime    |               出版时间                |
 
-{{< copyable "sql" >}}
-
 ```sql
 CREATE TABLE `bookshop`.`books` (
   `id` bigint(20) AUTO_RANDOM NOT NULL,
@@ -84,15 +78,11 @@ CREATE TABLE `bookshop`.`books` (
 
 因此，就需要对 **查询某个年份出版的所有书籍** 的 SQL 进行编写，以 2022 年为例，如下所示：
 
-{{< copyable "sql" >}}
-
 ```sql
 SELECT * FROM `bookshop`.`books` WHERE `published_at` >= '2022-01-01 00:00:00' AND `published_at` < '2023-01-01 00:00:00';
 ```
 
 可以使用 [EXPLAIN](/sql-statements/sql-statement-explain.md) 进行 SQL 语句的执行计划检查：
-
-{{< copyable "sql" >}}
 
 ```sql
 EXPLAIN SELECT * FROM `bookshop`.`books` WHERE `published_at` >= '2022-01-01 00:00:00' AND `published_at` < '2023-01-01 00:00:00';
@@ -114,8 +104,6 @@ EXPLAIN SELECT * FROM `bookshop`.`books` WHERE `published_at` >= '2022-01-01 00:
 可以看到返回的计划中，出现了类似 **TableFullScan** 的字样，这代表 TiDB 准备在这个查询中对 `books` 表进行全表扫描，这在数据量较大的情况下，几乎是致命的。
 
 在 `books` 表增加一个 `published_at` 列的索引：
-
-{{< copyable "sql" >}}
 
 ```sql
 CREATE INDEX `idx_book_published_at` ON `bookshop`.`books` (`bookshop`.`books`.`published_at`);
@@ -145,8 +133,6 @@ CREATE INDEX `idx_book_published_at` ON `bookshop`.`books` (`bookshop`.`books`.`
 > TiDB 在查询时，还支持显式地使用索引，你可以使用 [Optimizer Hints](/optimizer-hints.md) 或[执行计划管理 (SPM)](/sql-plan-management.md) 来人为的控制索引的使用。但如果你不了解它内部发生了什么，请你**_暂时先不要使用它_**。
 
 可以使用 [SHOW INDEXES](/sql-statements/sql-statement-show-indexes.md) 语句查询表中的索引：
-
-{{< copyable "sql" >}}
 
 ```sql
 SHOW INDEXES FROM `bookshop`.`books`;
