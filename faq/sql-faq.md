@@ -74,7 +74,7 @@ MySQL 中，返回结果的顺序可能较为固定，因为查询是通过单�
 3 rows in set (0.00 sec)
 ```
 
-在 TiDB 中，你还可以使用系统变量 [`tidb_enable_ordered_result_mode`](/system-variables.md#tidb_enable_ordered_result_mode) 来指定对最终的输出结果进行自动排序。
+在 TiDB 中，你还可以使用系统变量 [`tidb_enable_ordered_result_mode`](/system-variables.md#tidb_enable_ordered_result_mode) 来指定是否对最终的输出结果进行自动排序。
 
 ## TiDB 是否支持 `SELECT FOR UPDATE`？
 
