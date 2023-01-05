@@ -129,7 +129,7 @@ loaders:                             # load 处理单元的运行配置参数
     on-duplicate-logical: "replace"
     # physical import 针对冲突数据的解决方式：
     # - "none"。对应 TiDB Lightning physical import 冲突数据检测的 [none](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#冲突数据检测) 选项，表示遇到冲突数据时不进行处理。该模式性能最佳，但下游数据库会遇到数据索引不一致的问题。
-    # - "manual"。对应 TiDB Lightning physical import 冲突数据检测的 [remove](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#冲突数据检测) 选项。在遇到冲突数据时将所有相互冲突的数据删除，并记录在 &{meta-schema}_&{name}.conflict_error_v1 表中。在本配置文件中，会记录在 dm_meta_test.conflict_error_v1 表中。全量导入阶段结束后，任务会暂停并提示用户查询这张表并按照 [remove 配置](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#冲突数据检测)的方式进行手动处理。使用 resume-task 命令让任务恢复运行并进入到增量同步阶段。
+    # - "manual"。对应 TiDB Lightning physical import 冲突数据检测的 [remove](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#冲突数据检测) 选项。在遇到冲突数据时将所有相互冲突的数据删除，并记录在 ${meta-schema}_${name}.conflict_error_v1 表中。在本配置文件中，会记录在 dm_meta_test.conflict_error_v1 表中。全量导入阶段结束后，任务会暂停并提示用户查询这张表并按照[文档](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#冲突数据检测)进行手动处理。使用 resume-task 命令让任务恢复运行并进入到增量同步阶段。
     on-duplicate-physical: "none"
     # physical import 用作本地排序的目录位置，该选项的默认值与 dir 配置项一致。具体说明可以参见 [TiDB Lightning 必要条件及限制 - 存储空间](/tidb-lightning/tidb-lightning-physical-import-mode.md#必要条件及限制)的说明。
     sorting-dir-physical: "./dumped_data"
