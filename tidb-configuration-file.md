@@ -40,6 +40,12 @@ The TiDB configuration file supports more options than command-line parameters. 
 + Maximum Value (64-bit platforms): `18446744073709551615`
 + Maximum Value (32-bit platforms): `4294967295`
 
+### `temp-dir` <span class="version-mark">New in v6.3.0</span>
+
++ File system location used by TiDB to store temporary data. If a feature requires local storage in TiDB nodes, TiDB stores the corresponding temporary data in this location.
++ When creating an index, if [`tidb_ddl_enable_fast_reorg`](/system-variables.md#tidb_ddl_enable_fast_reorg-new-in-v630) is enabled, data that needs to be backfilled for a newly created index will be at first stored in the TiDB local temporary directory, and then imported into TiKV in batches, thus accelerating the index creation.
++ Default value: `"/tmp/tidb"`
+
 ### `oom-use-tmp-storage`
 
 > **Warning:**
@@ -815,12 +821,6 @@ Configuration items related to the PROXY protocol.
 > **Warning:**
 >
 > Use `*` with caution because it might introduce security risks by allowing a client of any IP address to report its IP address. In addition, using `*` might also cause the internal component that directly connects to TiDB (such as TiDB Dashboard) to be unavailable.
-
-### `temp-dir` <span class="version-mark">New in v6.3.0</span>
-
-+ File system location used by TiDB to store temporary data. If a feature requires local storage in TiDB nodes, TiDB stores the corresponding temporary data in this location.
-+ When creating an index, if [`tidb_ddl_enable_fast_reorg`](/system-variables.md#tidb_ddl_enable_fast_reorg-new-in-v630) is enabled, data that needs to be backfilled for a newly created index will be at first stored in the TiDB local temporary directory, and then imported into TiKV in batches, thus accelerating the index creation.
-+ Default value: `"/tmp/tidb"`
 
 ## experimental
 
