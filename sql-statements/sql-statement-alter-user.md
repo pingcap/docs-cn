@@ -25,7 +25,7 @@ Username ::=
 AuthOption ::=
     ( 'IDENTIFIED' ( 'BY' ( AuthString | 'PASSWORD' HashString ) | 'WITH' StringName ( 'BY' AuthString | 'AS' HashString )? ) )?
 
-PasswordOption ::= ( 'PASSWORD' 'EXPIRE' ( 'DEFAULT' | 'NEVER' | 'INTERVAL' 'N' 'DAY' )? | 'PASSWORD' 'HISTORY' ( 'DEFAULT' | 'N' ) ｜ 'PASSWORD' 'REUSE' 'INTERVAL' ( 'DEFAULT' | 'N' 'DAY' ) | 'FAILED_LOGIN_ATTEMPTS' 'N' | 'PASSWORD_LOCK_TIME' ( 'N' | 'UNBOUNDED' ) )?
+PasswordOption ::= ( 'PASSWORD' 'EXPIRE' ( 'DEFAULT' | 'NEVER' | 'INTERVAL' N 'DAY' )? | 'PASSWORD' 'HISTORY' ( 'DEFAULT' | N ) | 'PASSWORD' 'REUSE' 'INTERVAL' ( 'DEFAULT' | N 'DAY' ) | 'FAILED_LOGIN_ATTEMPTS' N | 'PASSWORD_LOCK_TIME' ( N | 'UNBOUNDED' ) )*
 
 LockOption ::= ( 'ACCOUNT' 'LOCK' | 'ACCOUNT' 'UNLOCK' )?
 
