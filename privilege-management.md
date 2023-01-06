@@ -260,9 +260,11 @@ SHOW GRANTS FOR `rw_user`@`192.168.%`;
 
 动态权限包括：
 
+* `SYSTEM_USER`
 * `BACKUP_ADMIN`
 * `RESTORE_ADMIN`
 * `ROLE_ADMIN`
+* `PLACEMENT_ADMIN` 允许创建、删除和修改放置策略（placement policy）。
 * `CONNECTION_ADMIN`
 * `SYSTEM_VARIABLES_ADMIN`
 * `RESTRICTED_REPLICA_WRITER_ADMIN` 允许权限拥有者在 TiDB 集群开启了只读模式的情况下不受影响地执行写入或更新操作，详见 [`tidb_restricted_read_only` 配置项](/system-variables.md#tidb_restricted_read_only-从-v520-版本开始引入)。
