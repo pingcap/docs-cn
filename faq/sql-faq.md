@@ -97,6 +97,8 @@ MySQL 中，返回结果的顺序可能较为固定，因为查询是通过单�
 3 rows in set (0.00 sec)
 ```
 
+在 TiDB 中，你还可以使用系统变量 [`tidb_enable_ordered_result_mode`](/system-variables.md#tidb_enable_ordered_result_mode) 来指定是否对最终的输出结果进行自动排序。
+
 ## TiDB 是否支持 `SELECT FOR UPDATE`？
 
 支持。当 TiDB 使用悲观锁（自 TiDB v3.0 起默认使用）时，TiDB 中 `SELECT FOR UPDATE` 的行为与 MySQL 中的基本一致。
