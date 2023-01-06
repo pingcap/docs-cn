@@ -30,13 +30,13 @@ aliases: ['/zh/tidb/dev/sample-application-java']
 
 <SimpleTab groupId="cluster">
 
-<div label="使用 TiDB Cloud Serverless Tier 集群" value="serverless-cluster">
+<div label="TiDB Cloud" value="serverless-cluster">
 
 [创建 Serverless Tier 集群](/develop/dev-guide-build-cluster-in-cloud.md#第-1-步创建-serverless-tier-集群)。
 
 </div>
 
-<div label="使用本地集群" value="local-cluster">
+<div label="本地集群" value="local-cluster">
 
 你可以部署一个本地测试的 TiDB 集群或正式的 TiDB 集群。详细步骤，请参考：
 
@@ -45,7 +45,7 @@ aliases: ['/zh/tidb/dev/sample-application-java']
 
 </div>
 
-<div label="使用云原生开发环境" value="cloud-cluster">
+<div label="Gitpod" value="gitpod-cluster">
 
 基于 Git 的预配置的开发环境：[现在就试试](/develop/dev-guide-playground-gitpod.md)
 

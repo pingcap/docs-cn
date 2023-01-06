@@ -29,13 +29,13 @@ aliases: ['/zh/tidb/dev/sample-application-spring-boot']
 
 <SimpleTab groupId="cluster">
 
-<div label="使用 TiDB Cloud Serverless Tier 集群" value="serverless-cluster">
+<div label="TiDB Cloud" value="serverless-cluster">
 
 [创建 Serverless Tier 集群](/develop/dev-guide-build-cluster-in-cloud.md#第-1-步创建-serverless-tier-集群)。
 
 </div>
 
-<div label="使用本地集群" value="local-cluster">
+<div label="本地集群" value="local-cluster">
 
 你可以部署一个本地测试的 TiDB 集群或正式的 TiDB 集群。详细步骤，请参考：
 
@@ -44,7 +44,7 @@ aliases: ['/zh/tidb/dev/sample-application-spring-boot']
 
 </div>
 
-<div label="使用云原生开发环境" value="cloud-cluster">
+<div label="Gitpod" value="gitpod-cluster">
 
 基于 Git 的预配置的开发环境：[现在就试试](/develop/dev-guide-playground-gitpod.md)
 
@@ -331,7 +331,7 @@ Hibernate: create table player_jpa (id bigint not null, coins integer, goods int
 
 <SimpleTab groupId="request">
 
-<div label="使用 Postman 请求（推荐）" value="postman">
+<div label="Postman（推荐）" value="postman">
 
 你可下载[此配置文件](https://raw.githubusercontent.com/pingcap-inc/tidb-example-java/main/spring-jpa-hibernate/Player.postman_collection.json)到本地，并导入 [Postman](https://www.postman.com/)，导入后如图所示：
 
@@ -375,7 +375,7 @@ Hibernate: create table player_jpa (id bigint not null, coins integer, goods int
 
 </div>
 
-<div label="使用 curl 请求" value="curl">
+<div label="curl" value="curl">
 
 当然，你也可以直接使用 curl 进行请求。
 
@@ -528,7 +528,7 @@ Hibernate: create table player_jpa (id bigint not null, coins integer, goods int
 
 </div>
 
-<div label="使用 Shell 脚本请求" value="shell">
+<div label="Shell 脚本" value="shell">
 
 这里已经将请求过程编写为 [Shell](https://github.com/pingcap-inc/tidb-example-java/blob/main/spring-jpa-hibernate/request.sh) 脚本，以方便大家的测试，脚本将会做以下操作：
 
