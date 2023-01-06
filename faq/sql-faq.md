@@ -31,6 +31,30 @@ TiDB 包含一个基于成本的优化器。在大多数情况下，优化器会
 
 另外，你还可以使用[执行计划绑定](/sql-plan-management.md#执行计划绑定-sql-binding)来为特定的 SQL 语句固定查询计划。
 
+## 如何阻止特定的 SQL 语句执行（或者将某个 SQL 语句加入黑名单）？
+
+你可以使用 [`MAX_EXECUTION_TIME`](/optimizer-hints.md#max_execution_timen) 提示来创建 [SQL 绑定](/sql-plan-management.md#执行计划绑定-sql-binding)，将特定语句的执行时间限制为一个较小的值（例如 1ms）。这样，语句就会在超过限制时自动终止。
+
+例如，要阻止执行 `SELECT * FROM t1, t2 WHERE t1.id = t2.id`，可以使用以下 SQL 绑定将语句的执行时间限制为 1ms：
+
+```sql
+CREATE GLOBAL BINDING for
+    SELECT * FROM t1, t2 WHERE t1.id = t2.id
+USING
+    SELECT /*+ MAX_EXECUTION_TIME(1) */ * FROM t1, t2 WHERE t1.id = t2.id;
+```
+
+> **注意：**
+>
+> `MAX_EXECUTION_TIME` 的精度大约为 100ms。在 TiDB 终止 SQL 语句之前，TiKV 中的任务可能已经开始执行。为了减少这种情况下 TiKV 的资源消耗，建议将系统变量 [`tidb_enable_paging`](/system-variables.md#tidb_enable_paging-new-in-v540) 的值设置为 `ON`。
+
+删除该 SQL 绑定可以移除限制。
+
+```sql
+DROP GLOBAL BINDING for
+    SELECT * FROM t1, t2 WHERE t1.id = t2.id;
+```
+
 ## TiDB 对哪些 MySQL variables 兼容？
 
 详细可参考[系统变量](/system-variables.md)。
