@@ -39,16 +39,26 @@ title: TiDB 配置参数
 + 用于设置 TiDB HTTP 状态服务的 Access-Control-Allow-Origin
 + 默认：""
 
+## `--enable-binlog`
+
++ 开启或关闭 TiDB 中 binlog 的生成
++ 默认：false
+
 ## `--host`
 
 + TiDB 服务监听的 host
 + 默认："0.0.0.0"
 + 0.0.0.0 默认会监听所有的网卡地址。如果有多块网卡，可以指定对外提供服务的网卡，如 192.168.100.113
 
-## `--enable-binlog`
+## `--initialize-insecure`
 
-+ 是否产生 TiDB Binlog
-+ 默认：false
+- 在不安全模式下启动 tidb-server
+- 默认：true
+
+## `--initialize-secure`
+
+- 在安全模式下启动 tidb-server
+- 默认：false
 
 ## `-L`
 
@@ -164,6 +174,11 @@ title: TiDB 配置参数
 + 用来指定 TiDB 底层使用的存储引擎
 + 默认："unistore"
 + 可以选择 "unistore"（本地存储引擎）或者 "tikv"（分布式存储引擎）
+
+## `--temp-dir`
+
+- TiDB 用于存放临时文件的目录
+- 默认："/tmp/tidb"
 
 ## `--token-limit`
 
