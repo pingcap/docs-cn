@@ -46,7 +46,7 @@ USING
 
 > **注意：**
 >
-> `MAX_EXECUTION_TIME` 的精度大约为 100ms。在 TiDB 终止 SQL 语句之前，TiKV 中的任务可能已经开始执行。为了减少这种情况下 TiKV 的资源消耗，建议将系统变量 [`tidb_enable_paging`](/system-variables.md#tidb_enable_paging-new-in-v540) 的值设置为 `ON`。
+> `MAX_EXECUTION_TIME` 的精度大约为 100ms。在 TiDB 终止 SQL 语句之前，TiKV 中的任务可能已经开始执行。为了减少这种情况下 TiKV 的资源消耗，建议将系统变量 [`tidb_enable_paging`](/system-variables.md#tidb_enable_paging-从-v540-版本开始引入) 的值设置为 `ON`。
 
 删除该 SQL 绑定可以移除限制。
 
