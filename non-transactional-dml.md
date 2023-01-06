@@ -125,7 +125,9 @@ show processlist;
 
 ### 终止一个非事务 DML 语句
 
-通过 `KILL TIDB` 终止一个非事务语句时，TiDB 会取消当前正在执行的 batch 之后的所有 batch。执行结果信息需要从日志里获得。
+通过 `KILL TIDB <processlist_id>` 终止一个非事务语句时，TiDB 会取消当前正在执行的 batch 之后的所有 batch。执行结果信息需要从日志里获得。
+
+关于 `KILL TiDB` 的更多信息，参见 [`KILL`](/sql-statements/sql-statement-kill.md)。
 
 ### 查询非事务 DML 语句中划分 batch 的语句
 
