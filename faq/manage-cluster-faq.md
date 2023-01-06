@@ -411,7 +411,7 @@ TiDB 设计的目标就是针对 MySQL 单台容量限制而被迫做的分库�
 
 尽管 TiDB 也支持使用 MySQL 官方工具 `mysqldump` 进行数据备份和恢复，但其性能低于 [Dumpling](/dumpling-overview.md)，并且 `mysqldump` 备份和恢复大量数据的耗费更长。
 
-其他备份恢复相关问题，可以参考[备份与恢复常见问题](/faq/backup-and-restore-faq.md)。
+其他备份恢复相关问题，可以参考[备份与恢复常见问题](/br/backup-and-restore-faq.md)。
 
 ### 备份和恢复的速度如何？
 
