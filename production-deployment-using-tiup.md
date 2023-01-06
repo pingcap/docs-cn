@@ -87,7 +87,9 @@ Perform the following steps in this section to deploy a TiDB cluster offline usi
 
 #### Prepare the TiUP offline component package
 
-To prepare the TiUP offline component package, you can manually pack an offline component package using `tiup mirror clone`.
+Method 1: On the [official download page](https://www.pingcap.com/download/), select the offline mirror package (TiUP offline package included) of the target TiDB version. Note that you need to download the server package and toolkit package at the same time.
+
+Method 2: Manually pack an offline component package using `tiup mirror clone`. The detailed steps are as follows:
 
 1. Install the TiUP package manager online.
 
@@ -196,6 +198,20 @@ source /home/tidb/.bash_profile
 ```
 
 The `local_install.sh` script automatically runs the `tiup mirror set tidb-community-server-${version}-linux-amd64` command to set the current mirror address to `tidb-community-server-${version}-linux-amd64`.
+
+#### Merge offline packages
+
+If you download the offline packages from the [official download page](https://www.pingcap.com/download/), you need to merge the server package and the toolkit package into an offline mirror. If you manually package the offline component packages using the `tiup mirror clone` command, you can skip this step.
+
+Run the following commands to merge the offline toolkit package into the server package directory:
+
+```bash
+tar xf tidb-community-toolkit-${version}-linux-amd64.tar.gz
+ls -ld tidb-community-server-${version}-linux-amd64 tidb-community-toolkit-${version}-linux-amd64
+cd tidb-community-server-${version}-linux-amd64/
+cp -rp keys ~/.tiup/
+tiup mirror merge ../tidb-community-toolkit-${version}-linux-amd64
+```
 
 To switch the mirror to another directory, run the `tiup mirror set <mirror-dir>` command. To switch the mirror to the online environment, run the `tiup mirror set https://tiup-mirrors.pingcap.com` command.
 
