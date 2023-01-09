@@ -236,6 +236,7 @@ TiDB 版本：6.2.0-DMR
 | ------ | ------ | ------ |
 | [tidb_enable_new_cost_interface](/system-variables.md#tidb_enable_new_cost_interface-从-v620-版本开始引入) | 新增 | 控制是否使用重构后的代价模型 [Cost Model Version 2](/cost-model.md#cost-model-version-2)。 |
 | [tidb_cost_model_version](/system-variables.md#tidb_cost_model_version-从-v620-版本开始引入) | 新增 | TiDB 在进行物理优化时会使用代价模型来进行索引选择和算子选择，该变量用于选择代价模型的版本。TiDB v6.2.0 引入了代价模型 Cost Model Version 2，在内部测试中比此前版本的代价模型更加准确。 |
+| [tidb_enable_concurrent_ddl](/system-variables.md#tidb_enable_concurrent_ddl-从-v620-版本开始引入) | 新增 | 用于控制是否让 TiDB 使用并发 DDL 语句。不可修改该变量值关闭该功能，因为关闭后风险不确定，有可能导致集群元数据出错。 |
 | [tiflash_fine_grained_shuffle_stream_count](/system-variables.md#tiflash_fine_grained_shuffle_stream_count-从-v620-版本开始引入) | 新增 | 当窗口函数下推到 TiFlash 执行时，可以通过该变量控制窗口函数执行的并行度。 |
 | [tiflash_fine_grained_shuffle_batch_size](/system-variables.md#tiflash_fine_grained_shuffle_batch_size-从-v620-版本开始引入) | 新增 | 细粒度 shuffle 功能开启时，该变量控制发送端发送数据的攒批大小，即发送端累计行数超过该值就会进行一次数据发送。 |
 | [tidb_default_string_match_selectivity](/system-variables.md#tidb_default_string_match_selectivity-从-v620-版本开始引入) | 新增 | 设置过滤条件中的 `like`、`rlike`、`regexp` 函数在行数估算时的默认选择率，以及是否对这些函数启用 TopN 辅助估算。 |
