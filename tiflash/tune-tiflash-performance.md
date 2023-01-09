@@ -16,8 +16,6 @@ If you want to save machine resources and have no requirement on isolation, you 
 
 1. For the TiDB node dedicated to OLAP/TiFlash, it is recommended that you increase the value of the [`tidb_distsql_scan_concurrency`](/system-variables.md#tidb_distsql_scan_concurrency) configuration item for this node to `80`:
 
-    {{< copyable "sql" >}}
-
     ```sql
     set @@tidb_distsql_scan_concurrency = 80;
     ```
@@ -28,8 +26,6 @@ If you want to save machine resources and have no requirement on isolation, you 
 
     When the number of Regions involved in the query is relatively large, try to set this variable to `1` (effective for coprocessor requests with `aggregation` operators that are pushed down to TiFlash), or set this variable to `2` (effective for all coprocessor requests that are pushed down to TiFlash).
 
-    {{< copyable "sql" >}}
-
     ```sql
     set @@tidb_allow_batch_cop = 1;
     ```
@@ -37,8 +33,6 @@ If you want to save machine resources and have no requirement on isolation, you 
 3. Enable the optimization of pushing down aggregate functions before TiDB operators such as `JOIN` or `UNION`:
 
     You can use the [`tidb_opt_agg_push_down`](/system-variables.md#tidb_opt_agg_push_down) variable to control the optimizer to execute this optimization. When the aggregate operations are quite slow in the query, try to set this variable to `1`.
-
-    {{< copyable "sql" >}}
 
     ```sql
     set @@tidb_opt_agg_push_down = 1;
@@ -48,8 +42,18 @@ If you want to save machine resources and have no requirement on isolation, you 
 
     You can use the [`tidb_opt_distinct_agg_push_down`](/system-variables.md#tidb_opt_distinct_agg_push_down) variable to control the optimizer to execute this optimization. When the aggregate operations with `Distinct` are quite slow in the query, try to set this variable to `1`.
 
-    {{< copyable "sql" >}}
-
     ```sql
     set @@tidb_opt_distinct_agg_push_down = 1;
+    ```
+
+5. Compact data using the `ALTER TABLE ... COMPACT` statement if necessary:
+
+    Executing the [`ALTER TABLE ... COMPACT`](/sql-statements/sql-statement-alter-table-compact.md) statement can initiate compaction for a specific table or partition on a TiFlash node. During the compaction, storage nodes rewrite physical data, including cleaning up deleted rows and merging multiple versions of data caused by updates. This helps enhance read performance and reduce disk usage. The following are examples:
+
+    ```sql
+    ALTER TABLE employees COMPACT TIFLASH REPLICA;
+    ```
+
+    ```sql
+    ALTER TABLE employees COMPACT PARTITION pNorth, pEast TIFLASH REPLICA;
     ```
