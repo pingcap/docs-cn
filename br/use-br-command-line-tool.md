@@ -193,6 +193,10 @@ br backup full \
 
 ### 增量备份
 
+<Warning>
+当前该功能为实验特性，不建议在生产环境中使用。
+</Warning>
+
 如果想要备份增量，只需要在备份的时候指定**上一次的备份时间戳** `--lastbackupts` 即可。
 
 注意增量备份有以下限制：
@@ -220,7 +224,7 @@ br backup full\
 LAST_BACKUP_TS=`br validate decode --field="end-version" -s local:///home/tidb/backupdata | tail -n1`
 ```
 
-示例备份的增量数据记录 `(LAST_BACKUP_TS, current PD timestamp]` 之间的数据变更，以及这段时间内的 DDL。在恢复的时候，BR 会先把所有 DDL 恢复，而后才会恢复数据。 
+示例备份的增量数据记录 `(LAST_BACKUP_TS, current PD timestamp]` 之间的数据变更，以及这段时间内的 DDL。在恢复的时候，BR 会先把所有 DDL 恢复，而后才会恢复数据。
 
 ### Raw KV 备份（实验性功能）
 
@@ -385,6 +389,10 @@ br restore full \
 以上命令中 `--table` 选项指定了需要恢复的表名。其余选项的含义与[恢复单个数据库](#恢复单个数据库的数据)相同。
 
 ### 增量恢复
+
+<Warning>
+当前该功能为实验特性，不建议在生产环境中使用。
+</Warning>
 
 增量恢复的方法和使用 BR 进行全量恢复的方法并无差别。需要注意，恢复增量数据的时候，需要保证备份时指定的 `last backup ts` 之前备份的数据已经全部恢复到目标集群。
 
