@@ -85,23 +85,23 @@ aliases: ['/docs-cn/dev/basic-features/']
 
 ## 数据定义语言 (DDL)
 
-| 数据定义语言 (DDL)                                           |   6.5   |   6.4   |   6.3   |   6.2   |   6.1   |   6.0   |   5.4    |   5.3    |   5.2    |   5.1    |   5.0    |   4.0    |
-| ------------------------------------------------------------ | :------: | :------: | :------: | :------: | :------: | :------: | :------: | :------: | :------: | :------: | :------: | :------: |
-| `CREATE`，`DROP`，`ALTER`，`RENAME`，`TRUNCATE`              |    Y   |    Y   |    Y   |    Y   |    Y    |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
-| [生成列](/generated-columns.md)                              | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
-| [视图](/views.md)                                            |    Y   |    Y   |    Y   |    Y   |    Y    |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
-| [序列](/sql-statements/sql-statement-create-sequence.md)     |    Y   |    Y   |    Y   |    Y    |    Y    |   Y      |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
-| [`AUTO_INCREMENT` 列](/auto-increment.md)                    |    Y     |    Y[^4]   |    Y   |    Y   |    Y    |  Y   |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
-| [`AUTO_RANDOM` 列](/auto-random.md)                          |    Y   |    Y   |    Y   |    Y   |    Y    |    Y   |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
+| 数据定义语言 (DDL)                                         |   6.5   |   6.4   |   6.3   |   6.2   |   6.1   |   6.0   |   5.4    |   5.3    |   5.2    |   5.1    |   5.0    |   4.0    |
+| ---------------------------------------------------------- | :------: | :------: | :------: | :------: | :------: | :------: | :------: | :------: | :------: | :------: | :------: | :------: |
+| `CREATE`，`DROP`，`ALTER`，`RENAME`，`TRUNCATE`            |    Y   |    Y   |    Y   |    Y   |    Y    |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
+| [生成列](/generated-columns.md)                            | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
+| [视图](/views.md)                                          |    Y   |    Y   |    Y   |    Y   |    Y    |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
+| [序列](/sql-statements/sql-statement-create-sequence.md)   |    Y   |    Y   |    Y   |    Y    |    Y    |   Y      |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
+| [`AUTO_INCREMENT` 列](/auto-increment.md)                  |    Y     |    Y[^4]   |    Y   |    Y   |    Y    |  Y   |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
+| [`AUTO_RANDOM` 列](/auto-random.md)                        |    Y   |    Y   |    Y   |    Y   |    Y    |    Y   |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
 | [TTL (Time to Live)](/time-to-live.md) |    实验特性   |    N   |    N   |    N   |    N    |    N    |    N     |    N     |    N     |    N     |    N     |    N     |
 | [DDL 算法断言](/sql-statements/sql-statement-alter-table.md) |    Y   |    Y   |    Y   |    Y   |    Y    |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
-| 在单条语句中添加多列                                         |   Y  |   Y  |   Y  | Y | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
+| 在单条语句中添加多列                                       |   Y  |   Y  |   Y  | Y | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
 | [更改列类型](/sql-statements/sql-statement-modify-column.md) |    Y   |    Y   |    Y   |    Y    |    Y    |    Y    |    Y     |    Y     |    Y     |    Y     |    N     |    N     |
-| [临时表](/temporary-tables.md)                               |    Y   |    Y   |    Y   |    Y    |    Y    |    Y    |    Y     |    Y     |    N     |    N     |    N     |    N     |
-| [并行 DDL](/system-variables.md#tidb_enable_concurrent_ddl-从-v620-版本开始引入)  |    Y   |    Y   |    Y   |    Y    |    N    |    N    |    N     |    N     |    N     |    N     |    N     |    N     |
-| [添加索引加速](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入)  | Y | 实验特性 | 实验特性 |    N    |    N    |    N    |    N     |    N     |    N     |    N     |    N     |    N     |
-| [元数据锁](/metadata-lock.md)                                  | Y | 实验特性 | 实验特性 |    N    |    N    |    N    |    N     |    N     |    N     |    N     |    N     |    N     |
-| [`FLASHBACK CLUSTER TO TIMESTAMP`](/sql-statements/sql-statement-flashback-to-timestamp.md)  | Y | 实验特性 |    N    |    N    |    N    |    N    |    N     |    N     |    N     |    N     |    N     |    N     |
+| [临时表](/temporary-tables.md)                             |    Y   |    Y   |    Y   |    Y    |    Y    |    Y    |    Y     |    Y     |    N     |    N     |    N     |    N     |
+| [并行 DDL]  |    Y   |    Y   |    Y   |    Y    |    N    |    N    |    N     |    N     |    N     |    N     |    N     |    N     |
+| [添加索引加速](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) | Y | 实验特性 | 实验特性 |    N    |    N    |    N    |    N     |    N     |    N     |    N     |    N     |    N     |
+| [元数据锁](/metadata-lock.md)                                | Y | 实验特性 | 实验特性 |    N    |    N    |    N    |    N     |    N     |    N     |    N     |    N     |    N     |
+| [`FLASHBACK CLUSTER TO TIMESTAMP`](/sql-statements/sql-statement-flashback-to-timestamp.md) | Y | 实验特性 |    N    |    N    |    N    |    N    |    N     |    N     |    N     |    N     |    N     |    N     |
 
 ## 事务
 
