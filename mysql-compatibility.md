@@ -192,9 +192,9 @@ TiDB 支持大部分 [SQL 模式](/sql-mode.md)。不支持的 SQL 模式如下�
 - `lower_case_table_names`：
     + TiDB 默认：`2`，且仅支持设置该值为 `2`。
     + MySQL 默认如下：
-        - Linux 系统中该值为 `0`
-        - Windows 系统中该值为 `1`
-        - macOS 系统中该值为 `2`
+        - Linux 系统中该值为 `0`，表示表名存储为给定的大小写，且比较的时候区分大小写。
+        - Windows 系统中该值为 `1`，表示表名存储在磁盘是小写的，但是比较的时候不区分大小写。
+        - macOS 系统中该值为 `2`，表示表名存储为给定的大小写，但是比较的时候是小写的。
 
 - `explicit_defaults_for_timestamp`：
     + TiDB 默认：`ON`，且仅支持设置该值为 `ON`。
