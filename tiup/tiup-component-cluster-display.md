@@ -60,9 +60,6 @@ tiup cluster display <cluster-name> [flags]
     - Data Dir：服务的数据目录，`-` 表示没有数据目录
     - Deploy Dir：服务的部署目录
 
-<<<<<<< HEAD
-[<< 返回上一页 - TiUP Cluster 命令清单](/tiup/tiup-component-cluster.md#命令清单)
-=======
 ### 节点服务的状态 (Status)
 
 节点服务可能处于如下任一状态：
@@ -80,4 +77,3 @@ tiup cluster display <cluster-name> [flags]
 节点服务状态来自于 PD 的调度信息。更详细的描述请参考 [TiDB 数据库的调度 -- 信息收集](/tidb-scheduling.md#信息收集)。
 
 [<< 返回上一页 - TiUP Cluster 命令清单](/tiup/tiup-component-cluster.md#命令清单)
->>>>>>> 326857dc9 (More verbose status docs (#12612))
