@@ -46,7 +46,7 @@ summary: 查看整个集群中 TiDB、TiKV、PD、TiFlash 组件的运行状态�
 
 > **注意：**
 >
-> - TiDB Dashboard 显示的 `Leaving`，PD API 返回的 `Offline`，TiUP 显示的 `Pending Offline`，三者含义相同。
+> - TiDB Dashboard 显示的 `Leaving`、PD API 返回的 `Offline` 以及 TiUP 显示的 `Pending Offline` 这三个状态的含义相同。
 > - 表格中部分列仅在实例处于在线状态 (Up) 时能显示。
 
 实例运行状态来自于 PD 的调度信息。更详细的描述请参考 [TiDB 数据库的调度 -- 信息收集](/tidb-scheduling.md#信息收集)。
