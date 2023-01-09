@@ -35,17 +35,22 @@ The list includes the following information:
 - Deployment directory: The directory in which the instance binary file is located.
 - Git Hash: The Git Hash value corresponding to the instance binary file.
 
-An instance has the following running status:
+### Instance status
 
-- Up: The instance is running properly.
-- Down or Unreachable: The instance is not started or a network problem exists on the corresponding host.
+An instance can run in one of the following statuses:
+
+- Up: The instance is running normaly.
+- Down or Unreachable: The instance is not running or a network problem exists on the corresponding host.
 - Tombstone: The data on the instance has been completely migrated out and the scaling-in is complete. This status exists only on TiKV or TiFlash instances.
 - Leaving: The data on the instance is being migrated out and the scaling-in is in process. This status exists only on TiKV or TiFlash instances.
 - Unknown: The running state of the instance is unknown.
 
 > **Note:**
 >
-> Some columns in the table can be displayed only when the instance is up.
+> - `Leaving` in TiDB Dashboard, `Offline` returned by PD API, and `Pending Offline` in TiUP indicate the same status.
+> - Some columns in the table can be displayed only when the instance is up.
+
+Instance status derives from the PD scheduling information. For more details, see [Information collection](/tidb-scheduling.md#information-collection).
 
 ## Host list
 
