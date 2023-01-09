@@ -1065,25 +1065,6 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 > - 启用 TiDB Binlog 后，开启该选项无法获得性能提升。要获得性能提升，建议使用 [TiCDC](/ticdc/ticdc-overview.md) 替代 TiDB Binlog。
 > - 启用该参数仅意味着一阶段提交成为可选的事务提交模式，实际由 TiDB 自行判断选择最合适的提交模式进行事务提交。
 
-### `tidb_enable_amend_pessimistic_txn` <span class="version-mark">从 v4.0.7 版本开始引入</span>
-
-> **警告：**
->
-> 该变量从 v6.5.0 开始废弃，并计划将从 v6.6.0 移除。TiDB 默认使用[元数据锁](/metadata-lock.md)机制解决 `Information schema is changed` 报错的问题。
-
-- 作用域：SESSION | GLOBAL
-- 是否持久化到集群：是
-- 默认值：`OFF`
-- 这个变量用于控制是否开启 `AMEND TRANSACTION` 特性。在[悲观事务模式](/pessimistic-transaction.md)下开启该特性后，如果该事务相关的表存在并发 DDL 操作和 SCHEMA VERSION 变更，TiDB 会尝试对该事务进行 amend 操作，修正该事务的提交内容，使其和最新的有效 SCHEMA VERSION 保持一致，从而成功提交该事务而不返回 `Information schema is changed` 报错。该特性对以下并发 DDL 变更生效：
-
-    - `ADD COLUMN` 或 `DROP COLUMN` 类型的 DDL 操作。
-    - `MODIFY COLUMN` 或 `CHANGE COLUMN` 类型的 DDL 操作，且只对增大字段长度的操作生效。
-    - `ADD INDEX` 或 `DROP INDEX` 类型的 DDL 操作，且操作的索引列须在事务开启之前创建。
-
-> **注意：**
->
-> 目前该特性可能造成事务语义的变化，且与 TiDB Binlog 存在部分不兼容的场景，可以参考[事务语义行为区别](https://github.com/pingcap/tidb/issues/21069)和[与 TiDB Binlog 兼容问题汇总](https://github.com/pingcap/tidb/issues/20996)了解更多关于该特性的使用注意事项。
-
 ### `tidb_enable_analyze_snapshot` <span class="version-mark">从 v6.2.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
@@ -1181,18 +1162,6 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 是否持久化到集群：是
 - 默认值：`OFF`
 - 这个变量用于控制是否开启 TiDB 对 `PREDICATE COLUMNS` 的收集。关闭该变量后，之前收集的 `PREDICATE COLUMNS` 会被清除。详情见[收集部分列的统计信息](/statistics.md#收集部分列的统计信息)。
-
-### `tidb_enable_concurrent_ddl` <span class="version-mark">从 v6.2.0 版本开始引入</span>
-
-> **警告：**
->
-> **请勿修改该变量值**，因为关闭后风险不确定，有可能导致集群元数据出错。
-
-- 作用域：GLOBAL
-- 是否持久化到集群：是
-- 类型：布尔型
-- 默认值：`ON`
-- 这个变量用于控制是否让 TiDB 使用并发 DDL 语句。在开启并发 DDL 语句后，DDL 语句的执行流程有所改变，DDL 语句不容易被其他 DDL 语句阻塞，并且能够同时添加多个索引。
 
 ### `tidb_enable_ddl`
 
