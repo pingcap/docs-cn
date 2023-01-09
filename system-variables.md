@@ -434,8 +434,8 @@ This variable is an alias for [`last_insert_id`](#last_insert_id).
 - Type: Integer
 - Default value: `-1`
 - Range: `[-1, 1048576]`
-- Specifies the maximum number of [`PREPARE`](/sql-statements/sql-statement-prepare.md) statements in a session.
-- The value of `-1` means no limit on the maximum number of `PREPARE` statements in a session.
+- Specifies the maximum number of [`PREPARE`](/sql-statements/sql-statement-prepare.md) statements in the current TiDB instance.
+- The value of `-1` means no limit on the maximum number of `PREPARE` statements in the current TiDB instance.
 - If you set the variable to a value that exceeds the upper limit `1048576`, `1048576` is used instead:
 
 ```sql
