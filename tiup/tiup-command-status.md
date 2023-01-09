@@ -40,11 +40,11 @@ tiup status [flags]
 
 组件可能处于如下任一运行状态：
 
-- 在线 (Up)：实例正常运行。
-- 离线 (Down) 或无法访问 (Unreachable)：实例未启动或对应主机存在网络问题。
-- 已缩容下线 (Tombstone)：实例上的数据已被完整迁出并缩容完毕。仅 TiKV 或 TiFlash 实例存在该状态。
-- 下线中 (Pending Offline)：实例上的数据正在被迁出并缩容。仅 TiKV 或 TiFlash 实例存在该状态。
-- 未知 (Unknown)：未知的实例运行状态。
+- 在线 (Up)：组件正常运行。
+- 离线 (Down) 或无法访问 (Unreachable)：组件未启动或对应主机存在网络问题。
+- 已缩容下线 (Tombstone)：组件上的数据已被完整迁出并缩容完毕。仅 TiKV 或 TiFlash 组件存在该状态。
+- 下线中 (Pending Offline)：组件上的数据正在被迁出并缩容。仅 TiKV 或 TiFlash 组件存在该状态。
+- 未知 (Unknown)：未知的组件运行状态。
 
 > **注意：**
 >
