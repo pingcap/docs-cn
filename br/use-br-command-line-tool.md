@@ -268,11 +268,6 @@ br backup raw --pd $PD_ADDR \
 > * 在数据恢复的时候，每个 Peer 分布的位置是随机的，事先并不知道哪个节点将读取哪个文件。
 >
 > 使用共享存储可以避免这些情况。例如，在本地路径上安装 NFS，或使用 S3。利用这些网络存储，各个节点都可以自动读取每个 SST 文件，此时上述注意事项不再适用。
-<<<<<<< HEAD
-=======
->
-> 同时，请注意同一时间对同一个集群只能运行一个恢复任务，否则可能会出现非预期的行为，详见 [FAQ](/br/backup-and-restore-faq.md#是否可以同时使用多个-br-进程对单个集群进行恢复)。
->>>>>>> 928a50c26 (add experimental warning for br incremental backup (#10312))
 
 ### 恢复全部备份数据
 
@@ -427,23 +422,10 @@ br restore full -f 'mysql.usertable' -s $external_storage_url --ratelimit 128
 >
 > 虽然系统表（例如 `mysql.tidb` 等）可以通过 BR 进行备份和恢复，但是部分系统表在恢复之后可能会出现非预期的状况，已知的异常如下：
 >
-<<<<<<< HEAD
 > - 统计信息表（`mysql.stat_*`）无法被恢复。
 > - 系统变量表（`mysql.tidb`，`mysql.global_variables`）无法被恢复。
 > - 用户信息表（`mysql.user`，`mysql.columns_priv`，等等）无法被恢复。
 > - GC 数据无法被恢复。
-=======
-> - 统计信息表（`mysql.stat_*`）
-> - 系统变量表（`mysql.tidb`，`mysql.global_variables`）
-> - 用户信息表（`mysql.user`，`mysql.columns_priv`，等等）
-> - [其他系统表](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/restore/systable_restore.go#L31)
->
-> 恢复系统表可能还存在更多兼容性问题。为了防止意外发生，请避免在生产环境中恢复系统表。
-
-### 解密恢复数据（实验性功能）
-
-> **警告：**
->>>>>>> 928a50c26 (add experimental warning for br incremental backup (#10312))
 >
 > 恢复系统表可能还存在更多兼容性问题。为了防止意外发生，请避免在生产环境中恢复系统表。
 
