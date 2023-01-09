@@ -34,17 +34,22 @@ summary: 查看整个集群中 TiDB、TiKV、PD、TiFlash 组件的运行状态�
 - 部署路径：实例二进制文件所在目录路径
 - Git 哈希值：实例二进制对应的 Git 哈希值
 
-实例的运行状态有：
+### 实例运行状态 (Status)
+
+实例可能处于如下任一运行状态：
 
 - 在线 (Up)：实例正常运行。
 - 离线 (Down) 或无法访问 (Unreachable)：实例未启动或对应主机存在网络问题。
 - 已缩容下线 (Tombstone)：实例上的数据已被完整迁出并缩容完毕。仅 TiKV 或 TiFlash 实例存在该状态。
-- 下线中 (Offline)：实例上的数据正在被迁出并缩容。仅 TiKV 或 TiFlash 实例存在该状态。
+- 下线中 (Leaving)：实例上的数据正在被迁出并缩容。仅 TiKV 或 TiFlash 实例存在该状态。
 - 未知 (Unknown)：未知的实例运行状态。
 
 > **注意：**
 >
-> 表格中部分列仅在实例处于在线状态时能显示。
+> - TiDB Dashboard 显示的 `Leaving`、PD API 返回的 `Offline` 以及 TiUP 显示的 `Pending Offline` 这三个状态的含义相同。
+> - 表格中部分列仅在实例处于在线状态 (Up) 时能显示。
+
+实例运行状态来自于 PD 的调度信息。更详细的描述请参考 [TiDB 数据库的调度 -- 信息收集](/tidb-scheduling.md#信息收集)。
 
 ## 主机列表
 
