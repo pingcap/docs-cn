@@ -193,7 +193,7 @@ TiDB 支持大部分 [SQL 模式](/sql-mode.md)。不支持的 SQL 模式如下�
     + TiDB 默认：`2`，且仅支持设置该值为 `2`。
     + MySQL 默认如下：
         - Linux 系统中该值为 `0`，表示表名和数据库名使用在 CREATE TABLE 或 CREATE DATABASE 语句中指定的字母大小写存储在磁盘上，且名称比较区分大小写。
-        - Windows 系统中该值为 `1`，表示表名以小写存储在磁盘上，名称比较不区分大小写。MySQL 在存储和查询时将所有表名转换为小写。
+        - Windows 系统中该值为 `1`，表示表名以小写存储在磁盘上，名称比较不区分大小写。MySQL 在存储和查询时将所有表名转换为小写。该行为也适用于数据库名和表别名。
         - macOS 系统中该值为 `2`，表示表名和数据库名使用在 CREATE TABLE 或 CREATE DATABASE 语句中指定的字母大小写存储在磁盘上，但 MySQL 在查询时将它们转换为小写。名称比较不区分大小写。
 
 - `explicit_defaults_for_timestamp`：
