@@ -10,7 +10,7 @@ summary: 了解 TiCDC 重要的监控指标。
 本文档的对指标的介绍基于以下同步任务，即使用默认配置同步数据到 MySQL。
 
 ```shell
-cdc cli changefeed create --pd=http://10.0.10.25:2379 --sink-uri="mysql://root:123456@127.0.0.1:3306/" --changefeed-id="simple-replication-task"
+cdc cli changefeed create --server=http://10.0.10.25:8300 --sink-uri="mysql://root:123456@127.0.0.1:3306/" --changefeed-id="simple-replication-task"
 ```
 
 下图显示了 TiCDC Dashboard 各监控面板：
