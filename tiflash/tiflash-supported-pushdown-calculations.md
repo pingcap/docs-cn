@@ -142,7 +142,6 @@ SHOW WARNINGS;
 | Warning | 1105 | Scalar function 'cast'(signature: CastDurationAsString, return type: var_string(10)) is not supported to push down to tiflash now. |
 +---------+------+------------------------------------------------------------------------------------------------------------------------------------+
 3 rows in set (0.18 sec)
-
 ```
 
 可以看出，该查询的表达式无法完全下推至 TiFlash，因为 `Time` 函数和 `Cast` 函数无法下推至 TiFlash。
