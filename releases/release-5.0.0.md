@@ -110,7 +110,7 @@ DBA 通过 `ALTER INDEX` 语句可以修改某个索引的可见性。修改后�
 
 悲观事务模式下，如果事务所涉及到的表存在并发的 DDL 操作或者 SCHEMA VERSION 变更，系统自动将该事务的 SCHEMA VERSION 更新到最新版本，以此确保事务会提交成功，避免事务因并发的 DDL 操作或者 SCHEMA VERSION 变更而中断时客户端收到 `Information schema is changed` 的错误信息。
 
-系统默认关闭此功能，你可以通过修改 [`tidb_enable_amend_pessimistic_txn`] 系统变量开启此功能，此功能从 4.0.7 版本开始提供，5.0 版本主要修复了以下问题：
+系统默认关闭此功能，你可以通过修改 `tidb_enable_amend_pessimistic_txn` 系统变量开启此功能，此功能从 4.0.7 版本开始提供，5.0 版本主要修复了以下问题：
 
 + TiDB Binlog 在执行 Add column 操作的兼容性问题
 + 与唯一索引一起使用时存在的数据不一致性的问题
