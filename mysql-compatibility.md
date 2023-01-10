@@ -231,9 +231,9 @@ TiDB supports most [SQL modes](/sql-mode.md):
 - Default value of `lower_case_table_names`:
     - The default value in TiDB is `2` and currently TiDB only supports `2`.
     - The default value in MySQL:
-        - On Linux: `0`
-        - On Windows: `1`
-        - On macOS: `2`
+        - On Linux: `0`. It means that table and database names are stored on disk using the lettercase specified in the `CREATE TABLE` or `CREATE DATABASE` statement. Name comparisons are case-sensitive.
+        - On Windows: `1`. It means that table names are stored in lowercase on disk and name comparisons are not case-sensitive. MySQL converts all table names to lowercase on storage and lookup. This behavior also applies to database names and table aliases.
+        - On macOS: `2`. It means that table and database names are stored on disk using the lettercase specified in the `CREATE TABLE` or `CREATE DATABASE` statement, but MySQL converts them to lowercase on lookup. Name comparisons are not case-sensitive.
 - Default value of `explicit_defaults_for_timestamp`:
     - The default value in TiDB is `ON` and currently TiDB only supports `ON`.
     - The default value in MySQL:
