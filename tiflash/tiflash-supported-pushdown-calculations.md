@@ -125,7 +125,6 @@ EXPLAIN SELECT id FROM t WHERE TIME(now()+ a) < '12:00:00';
 |       └─TableFullScan_9     | 6.00    | mpp[tiflash] | table:t       | keep order:false, stats:pseudo                                                                   |
 +-----------------------------+---------+--------------+---------------+--------------------------------------------------------------------------------------------------+
 5 rows in set, 3 warnings (0.20 sec)
-
 ```
 
 通过分析执行计划，可以发现该查询在执行时，只在 TiFlash 中进行了 TableFullScan，其他的函数计算、过滤均在 root 进行，并未下推至 TiFlash。
