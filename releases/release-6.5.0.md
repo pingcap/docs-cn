@@ -361,7 +361,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 ## 废弃功能
 
-从 v6.5.0 起，废弃 v4.0.7 版本引入的 [`AMEND TRANSACTION`] 机制，并使用[元数据锁](/metadata-lock.md)替代。
+从 v6.5.0 起，废弃 v4.0.7 版本引入的 `AMEND TRANSACTION` 机制，并使用[元数据锁](/metadata-lock.md)替代。
 
 ## 改进提升
 
