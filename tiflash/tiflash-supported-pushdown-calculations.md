@@ -77,7 +77,7 @@ EXPLAIN SELECT * FROM t LIMIT 3;
 
 ```
 
-在该查询中，将算子 Limit 下推到 TiFlash 对数据进行过滤，可以减少网络传输数据量，进而减少网络传输开销。
+在该查询中，算子 Limit 被下推到 TiFlash 对数据进行过滤，减少了网络传输数据量，进而减少网络传输开销。
 
 ### 示例 2：下推表达式到 TiFlash 存储
 
