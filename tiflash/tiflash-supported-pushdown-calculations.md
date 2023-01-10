@@ -129,7 +129,7 @@ EXPLAIN SELECT id FROM t WHERE TIME(now()+ a) < '12:00:00';
 
 分析执行计划可以发现，该查询在执行时只在 TiFlash 中进行了 TableFullScan，其他的函数计算和过滤均在 `root` 进行，并未下推至 TiFlash。
 
-通过以下命令查找不能下推的算子、表达式。
+执行以下命令，可以查找不能下推的算子和表达式。
 
 ```sql
 SHOW WARNINGS;
