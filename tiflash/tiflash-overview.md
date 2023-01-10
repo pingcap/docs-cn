@@ -8,7 +8,7 @@ title: TiFlash 简介
 
 ## 整体架构
 
-![TiFlash 架构](/media/tidb-storage-architecture.png)
+![TiFlash 架构](/media/tidb-storage-architecture-1.png)
 
 上图为 TiDB HTAP 形态架构，其中包含 TiFlash 节点。
 
