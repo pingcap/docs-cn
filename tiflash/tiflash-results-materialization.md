@@ -74,12 +74,12 @@ SELECT app_name, country FROM t1;
 
 ```sql
 CREATE TABLE detail_data (
-    ts DATETIME,                -- 详单的时间
+    ts DATETIME,                -- 单条详细数据的时间
     customer_id VARCHAR(20),    -- 客户 ID
-    detail_fee DECIMAL(20,2));  -- 详单的费用
+    detail_fee DECIMAL(20,2));  -- 单条详细数据的费用
 
 CREATE TABLE daily_data (
-    rec_date DATE,              -- 汇总日期
+    rec_date DATE,              -- 汇总数据的日期
     customer_id VARCHAR(20),    -- 客户 ID
     daily_fee DECIMAL(20,2));   -- 单日汇总费用
 
@@ -90,12 +90,14 @@ ALTER TABLE daily_data SET TIFLASH REPLICA 1;
 ```
 
 每日分析数据保存：
+
 ```sql
 INSERT INTO daily_data (rec_date, customer_id, daily_fee)
 SELECT DATE(ts), customer_id, sum(detail_fee) FROM detail_data WHERE DATE(ts) = CURRENT_DATE() GROUP BY DATE(ts), customer_id;
 ```
 
 基于日分析数据的月数据分析：
+
 ```sql
 SELECT MONTH(rec_date), customer_id, sum(analytic_result) FROM daily_data GROUP BY MONTH(rec_date), customer_id;
 ```
