@@ -42,6 +42,26 @@ tiup cluster display <cluster-name> [flags]
 >
 > If the `-N, --node` option is specified at the same time, only the service nodes that match both the specifications of `-N, --node` and `-R, --role` are displayed.
 
+### --process
+
+- Displays the CPU and memory usage information of the node when this option is enabled. This option is disabled by default.
+- Data type: `BOOLEAN`
+- Default value: `false`
+- To enable this option, you can add this option to the command, and pass the `true` value or do not pass any value.
+
+### --uptime
+
+- Displays the `uptime` information of the node when this option is enabled. This option is disabled by default.
+- Data type: `BOOLEAN`
+- Default value: `false`
+- To enable this option, you can add this option to the command, and pass the `true` value or do not pass any value.
+
+### --status-timeout
+
+- Specifies the timeout period for obtaining the node status information.
+- Data type: `INT`
+- Default value: `10`, in the unit of second.
+
 ### -h, --help
 
 - Prints the help information.
@@ -68,7 +88,7 @@ tiup cluster display <cluster-name> [flags]
 
 A node service can run in one of the following statuses:
 
-- Up: The node service is running normaly.
+- Up: The node service is running normally.
 - Down or Unreachable: The node service is not running or a network problem exists on the corresponding host.
 - Tombstone: The data on the node service has been completely migrated out and the scaling-in is complete. This status exists only on TiKV or TiFlash.
 - Pending Offline: The data on the node service is being migrated out and the scaling-in is in process. This status exists only on TiKV or TiFlash.
