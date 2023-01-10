@@ -71,6 +71,7 @@ SELECT app_name, country FROM t1;
 ## 示例
 
 数据定义：
+
 ```sql
 CREATE TABLE detail_data (
     ts DATETIME,                -- 详单的时间
