@@ -113,7 +113,7 @@ CREATE TABLE t(id INT PRIMARY KEY, a INT);
 ALTER TABLE t SET TIFLASH REPLICA 1;
 INSERT INTO t(id,a) VALUES (1,2),(2,4),(11,2),(12,4),(13,4),(14,7);
 
-EXPLAIN SELECT id FROM t where TIME(now()+ a) < '12:00:00';
+EXPLAIN SELECT id FROM t WHERE TIME(now()+ a) < '12:00:00';
 
 +-----------------------------+---------+--------------+---------------+--------------------------------------------------------------------------------------------------+
 | id                          | estRows | task         | access object | operator info                                                                                    |
