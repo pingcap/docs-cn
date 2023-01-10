@@ -51,3 +51,56 @@ TiFlash 支持部分算子的下推，支持的算子如下：
     * SECOND
 
 如查询遇到不支持的下推计算，则需要依赖 TiDB 完成剩余计算，可能会很大程度影响 TiFlash 加速效果。对于暂不支持的算子/表达式，将会在后续版本中陆续支持。
+
+## 示例
+
+以下通过一些例子对下推算子和表达式到 TiFlash 进行说明。
+
+### 示例 1：下推算子到 TiFlash 存储
+
+```sql
+create table t(id int primary key, a int);
+alter table t set tiflash replica 1;
+explain select * from t limit 3;
+
++------------------------------+---------+--------------+---------------+--------------------------------+
+| id                           | estRows | task         | access object | operator info                  |
++------------------------------+---------+--------------+---------------+--------------------------------+
+| Limit_9                      | 3.00    | root         |               | offset:0, count:3              |
+| └─TableReader_17             | 3.00    | root         |               | data:ExchangeSender_16         |
+|   └─ExchangeSender_16        | 3.00    | mpp[tiflash] |               | ExchangeType: PassThrough      |
+|     └─Limit_15               | 3.00    | mpp[tiflash] |               | offset:0, count:3              |
+|       └─TableFullScan_14     | 3.00    | mpp[tiflash] | table:t       | keep order:false, stats:pseudo |
++------------------------------+---------+--------------+---------------+--------------------------------+
+5 rows in set (0.18 sec)
+
+```
+
+在该查询中，将算子 Limit 下推到 TiFlash 对数据进行过滤，可以减少网络传输数据量，进而减少网络传输开销。
+
+### 示例 2：下推表达式到 TiFlash 存储
+
+```sql
+create table t(id int primary key, a int);
+alter table t set tiflash replica 1;
+insert into t(id,a) values (1,2),(2,4),(11,2),(12,4),(13,4),(14,7);
+
+explain select max(id + a) from t group by a;
+
++------------------------------------+---------+--------------+---------------+---------------------------------------------------------------------------+
+| id                                 | estRows | task         | access object | operator info                                                             |
++------------------------------------+---------+--------------+---------------+---------------------------------------------------------------------------+
+| TableReader_45                     | 4.80    | root         |               | data:ExchangeSender_44                                                    |
+| └─ExchangeSender_44                | 4.80    | mpp[tiflash] |               | ExchangeType: PassThrough                                                 |
+|   └─Projection_39                  | 4.80    | mpp[tiflash] |               | Column#3                                                                  |
+|     └─HashAgg_37                   | 4.80    | mpp[tiflash] |               | group by:Column#9, funcs:max(Column#8)->Column#3                          |
+|       └─Projection_46              | 6.00    | mpp[tiflash] |               | plus(test.t.id, test.t.a)->Column#8, test.t.a                             |
+|         └─ExchangeReceiver_23      | 6.00    | mpp[tiflash] |               |                                                                           |
+|           └─ExchangeSender_22      | 6.00    | mpp[tiflash] |               | ExchangeType: HashPartition, Hash Cols: [name: test.t.a, collate: binary] |
+|             └─TableFullScan_21     | 6.00    | mpp[tiflash] | table:t       | keep order:false, stats:pseudo                                            |
++------------------------------------+---------+--------------+---------------+---------------------------------------------------------------------------+
+8 rows in set (0.18 sec)
+
+```
+
+在该查询中，将表达式 id + a 下推到 TiFlash 对数据进行计算，可以提前进行计算，减少网络传输数据量，进而减少网络传输开销，加速整体计算性能。

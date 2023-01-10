@@ -67,3 +67,18 @@ SELECT app_name, country FROM t1;
     * 当“写事务”较大时，例如接近 1 GiB，建议控制并发不超过 10。
     * 当“写事务”较小时，例如小于 100 MiB，建议控制并发不超过 30。
     * 请基于测试和具体情况做出合理选择。
+
+## 示例
+
+每日分析数据保存：
+```sql
+INSERT INTO daily_data (rec_date, customer_id, analytic_result)
+SELECT DATE(ts), customer_id, sum(value) FROM t1 WHERE DATE(ts) = CURRENT_DATE GROUP BY DATE(ts), customer_id;
+```
+
+基于日分析数据的月数据分析：
+```sql
+SELECT MONTH(rec_date), customer_id, sum(analytic_result) FROM daily_data GROUP BY MONTH(rec_date), customer_id;
+```
+
+将每日分析结果数据物化，保存到日数据结果表中。使用日数据结果表加速月数据分析，从而提升月数据分析效率。
