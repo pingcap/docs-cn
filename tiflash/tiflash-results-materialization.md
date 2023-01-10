@@ -88,11 +88,20 @@ ALTER TABLE detail_data SET TIFLASH REPLICA 1;
 ALTER TABLE daily_data SET TIFLASH REPLICA 1;
 
 -- ... (detail_data 表不断增加数据)
+INSERT INTO detail_data(ts,customer_id,detail_fee) VALUES 
+('2023-1-1 12:2:3', 'cus001', 200.86),
+('2023-1-2 12:2:3', 'cus002', 100.86),
+('2023-1-3 12:2:3', 'cus002', 2200.86),
+('2023-1-4 12:2:3', 'cus003', 2020.86),
+('2023-1-5 12:2:3', 'cus003', 1200.86),
+('2023-1-6 12:2:3', 'cus002', 20.86);
 ```
 
 每日分析数据保存：
 
 ```sql
+SET @@tidb_enable_tiflash_read_for_write_stmt=ON;
+
 INSERT INTO daily_data (rec_date, customer_id, daily_fee)
 SELECT DATE(ts), customer_id, sum(detail_fee) FROM detail_data WHERE DATE(ts) = CURRENT_DATE() GROUP BY DATE(ts), customer_id;
 ```
@@ -100,7 +109,7 @@ SELECT DATE(ts), customer_id, sum(detail_fee) FROM detail_data WHERE DATE(ts) = 
 基于日分析数据的月数据分析：
 
 ```sql
-SELECT MONTH(rec_date), customer_id, sum(analytic_result) FROM daily_data GROUP BY MONTH(rec_date), customer_id;
+SELECT MONTH(rec_date), customer_id, sum(daily_fee) FROM daily_data GROUP BY MONTH(rec_date), customer_id;
 ```
 
 将每日分析结果数据物化，保存到日数据结果表中。使用日数据结果表加速月数据分析，从而提升月数据分析效率。
