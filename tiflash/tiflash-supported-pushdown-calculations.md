@@ -145,4 +145,4 @@ SHOW WARNINGS;
 
 ```
 
-可以看出，该查询的表达式无法完全下推至 TiFlash，是因为 Time 函数和 Cast 函数无法下推至 TiFlash。
+可以看出，该查询的表达式无法完全下推至 TiFlash，因为 `Time` 函数和 `Cast` 函数无法下推至 TiFlash。
