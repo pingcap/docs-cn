@@ -74,9 +74,10 @@ SELECT app_name, country FROM t1;
 
 ```sql
 CREATE TABLE detail_data (
-    ts DATETIME,                -- 单条详细数据的时间
+    ts DATETIME,                -- 费用产生时间
     customer_id VARCHAR(20),    -- 客户 ID
-    detail_fee DECIMAL(20,2));  -- 单条详细数据的费用
+    detail_fee DECIMAL(20,2));  -- 费用数额
+
 
 CREATE TABLE daily_data (
     rec_date DATE,              -- 汇总数据的日期
