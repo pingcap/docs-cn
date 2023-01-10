@@ -59,9 +59,10 @@ TiFlash 支持部分算子的下推，支持的算子如下：
 ### 示例 1：下推算子到 TiFlash 存储
 
 ```sql
-create table t(id int primary key, a int);
-alter table t set tiflash replica 1;
-explain select * from t limit 3;
+CREATE TABLE t(id INT PRIMARY KEY, a INT);
+ALTER TABLE t SET TIFLASH REPLICA 1;
+
+EXPLAIN SELECT * FROM t LIMIT 3;
 
 +------------------------------+---------+--------------+---------------+--------------------------------+
 | id                           | estRows | task         | access object | operator info                  |
@@ -81,11 +82,11 @@ explain select * from t limit 3;
 ### 示例 2：下推表达式到 TiFlash 存储
 
 ```sql
-create table t(id int primary key, a int);
-alter table t set tiflash replica 1;
-insert into t(id,a) values (1,2),(2,4),(11,2),(12,4),(13,4),(14,7);
+CREATE TABLE t(id INT PRIMARY KEY, a INT);
+ALTER TABLE t SET TIFLASH REPLICA 1;
+INSERT INTO t(id,a) VALUES (1,2),(2,4),(11,2),(12,4),(13,4),(14,7);
 
-explain select max(id + a) from t group by a;
+EXPLAIN SELECT MAX(id + a) FROM t GROUP BY a;
 
 +------------------------------------+---------+--------------+---------------+---------------------------------------------------------------------------+
 | id                                 | estRows | task         | access object | operator info                                                             |
