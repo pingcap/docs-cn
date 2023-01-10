@@ -322,6 +322,62 @@ SELECT * FROM t force index(idx1);
 SELECT /*+ IGNORE_INDEX(t1, idx1, idx2) */ * FROM t t1;
 ```
 
+### KEEP_ORDER(t1_name, idx1_name [, idx2_name ...])
+
+`KEEP_ORDER(t1_name, idx1_name [, idx2_name ...])` 提示优化器对指定表仅使用给出的索引，并且要求索引按照顺序读出。通常应用在下面这种场景中:
+
+{{< copyable "sql" >}}
+
+```sql
+CREATE TABLE t(a INT, b INT, key(a), key(b));
+EXPLAIN SELECT /*+ KEEP_ORDER(t, a) */ a FROM t ORDER BY a LIMIT 10;
+```
+
+```sql
++----------------------------+---------+-----------+---------------------+-------------------------------+
+| id                         | estRows | task      | access object       | operator info                 |
++----------------------------+---------+-----------+---------------------+-------------------------------+
+| Limit_10                   | 10.00   | root      |                     | offset:0, count:10            |
+| └─IndexReader_14           | 10.00   | root      |                     | index:Limit_13                |
+|   └─Limit_13               | 10.00   | cop[tikv] |                     | offset:0, count:10            |
+|     └─IndexFullScan_12     | 10.00   | cop[tikv] | table:t, index:a(a) | keep order:true, stats:pseudo |
++----------------------------+---------+-----------+---------------------+-------------------------------+
+```
+
+优化器对该查询会生成两类计划：`Limit + IndexScan(keep order: true)` 和 `TopN + IndexScan(keep order: false)`，当使用了 `KEEP_ORDER` Hint，优化器会选择前一种索引按照顺序读出的计划。
+
+> **注意：**
+>
+> - 如果查询本身并不需要索引按照顺序读出，即在不使用 Hint 的前提下，优化器在任何情况下都不会生成索引按照顺序读出的计划。此时，如果我们指定了 `KEEP_ORDER` Hint，会出现报错 `Can't find a proper physical plan for this query`，此时应考虑移除对应的 `KEEP_ORDER` Hint。 
+>
+> - 分区表上的索引无法支持索引按照顺序读出，所以不应该对分区表及其相关的索引使用 `KEEP_ORDER` Hint。
+
+### NO_KEEP_ORDER(t1_name, idx1_name [, idx2_name ...])
+
+`NO_KEEP_ORDER(t1_name, idx1_name [, idx2_name ...])` 提示优化器对指定表仅使用给出的索引，并且要求索引不按照顺序读出。通常应用在下面这种场景中:
+
+下面例子的效果等价于 `SELECT * FROM t t1 use index(idx1, idx2);`：
+
+{{< copyable "sql" >}}
+
+```sql
+CREATE TABLE t(a INT, b INT, key(a), key(b));
+EXPLAIN SELECT /*+ NO_KEEP_ORDER(t, a) */ a FROM t ORDER BY a LIMIT 10;
+```
+
+```sql
++----------------------------+----------+-----------+---------------------+--------------------------------+
+| id                         | estRows  | task      | access object       | operator info                  |
++----------------------------+----------+-----------+---------------------+--------------------------------+
+| TopN_7                     | 10.00    | root      |                     | test.t.a, offset:0, count:10   |
+| └─IndexReader_14           | 10.00    | root      |                     | index:TopN_13                  |
+|   └─TopN_13                | 10.00    | cop[tikv] |                     | test.t.a, offset:0, count:10   |
+|     └─IndexFullScan_12     | 10000.00 | cop[tikv] | table:t, index:a(a) | keep order:false, stats:pseudo |
++----------------------------+----------+-----------+---------------------+--------------------------------+
+```
+
+和 `KEEP_ORDER` Hint 的举例相同，优化器对该查询会生成两类计划：`Limit + IndexScan(keep order: true)` 和 `TopN + IndexScan(keep order: false)`，当使用了 `NO_KEEP_ORDER` Hint，优化器会选择后一种索引不按照顺序读出的计划。
+
 ### AGG_TO_COP()
 
 `AGG_TO_COP()` 提示优化器将指定查询块中的聚合函数下推到 coprocessor。如果优化器没有下推某些适合下推的聚合函数，建议尝试使用。例如：
