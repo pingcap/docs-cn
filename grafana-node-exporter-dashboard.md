@@ -13,17 +13,17 @@ aliases: ['/docs-cn/dev/grafana-node-exporter-dashboard/','/docs-cn/dev/referenc
 
 ## Overview
 
-- Virtual CPUs: CPU 核心数量
-- Total RAM: 内存总大小
-- Total Swap: 可使用的交换内存大小
-- System Uptime: 系统启动时长
-- Node_exporter version: Node Exporter 使用版本
-- CPU Used: CPU 的使用率
-- Memory Used: 内存的使用率
-- Swap Used: 交换内存的使用率
-- Load1: 1 分钟的负载情况
-- Load5: 5 分钟的负载情况
-- Load15: 15 分钟的负载情况
+- Virtual CPUs: CPU 核心数量。
+- Total RAM: 内存总大小。
+- Total Swap: 可使用的交换内存大小。
+- System Uptime: 系统启动时长。
+- Node_exporter version: Node Exporter 使用版本。
+- CPU Used: CPU 的使用率。
+- Memory Used: 内存的使用率。
+- Swap Used: 交换内存的使用率。
+- Load1: 1 分钟的负载情况。
+- Load5: 5 分钟的负载情况。
+- Load15: 15 分钟的负载情况。
 
 ## Kernel
 
@@ -32,7 +32,7 @@ aliases: ['/docs-cn/dev/grafana-node-exporter-dashboard/','/docs-cn/dev/referenc
 - Kernel version: 内核版本
 - Interrupts: 内核中断情况
 - Forks: Linux 下创建进程的系统调用情况
-- Context Switches: 内核任务切换情况
+- Context Switches: CPU（中央处理单元）从一个进程或线程切换到另一个进程或线程的过程。
 
 ## CPU
 
@@ -44,7 +44,7 @@ aliases: ['/docs-cn/dev/grafana-node-exporter-dashboard/','/docs-cn/dev/referenc
 - Distribution: 内存分布情况
 - Available Buddy Pages - Zone Normal: linuxbuddy 系统管理物理内存的 debug 信息，低值表示内存碎片严重
 - Active/Inactive: 活跃或非活跃内存情况，非活跃的内存将会优先回收，活跃的内存，除非绝对必要否则不会回收
-- Writeback and Dirty: 回写和脏页。回写：准备主动回写硬盘的缓存页；临时回写：用于临时写回缓冲区的内存；脏页：需要写回磁盘的数据大小
+- Writeback and Dirty: 回写和脏页。回写：准备主动回写硬盘的缓存页；临时回写：用于临时写回缓冲区的内存；脏页：等待写回磁盘的内存。
 - Shared and Mapped: 共享内存和被映射占用的内存情况
 - Mlocked/Slab: 内存的 Mlock 和 Slab 情况
 - KernelStack: 内存堆栈大小（常驻内存，不可回收）
