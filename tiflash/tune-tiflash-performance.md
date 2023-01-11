@@ -13,7 +13,7 @@ aliases: ['/docs-cn/dev/tiflash/tune-tiflash-performance/','/docs-cn/dev/referen
 
 ## TiDB 相关参数调优
 
-1. 当下推未生效时，可以尝试开启强制下推功能：
+1. 当没有生成 MPP 执行计划的时候，可以尝试强制开启 MPP：
 
     [`tidb_enforce_mpp`](/system-variables.md#tidb_enforce_mpp-new-in-v51) 变量用于控制是否忽略优化器代价估算，强制使用 TiFlash 的 MPP 模式执行查询。
 
