@@ -7,8 +7,6 @@ summary: 了解 information_schema 表 `TIFLASH_TABLES`。
 
 `TIFLASH_TABLES` 表提供了 TiFlash 内部数据表的统计信息。
 
-{{< copyable "sql" >}}
-
 ```sql
 USE information_schema;
 DESC tiflash_tables;
