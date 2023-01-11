@@ -1,12 +1,12 @@
 ---
 title: TiFlash 性能调优
-summary: 介绍 TiFlash 性能调优的方法，包括机器资源规划和TiDB 参数调优。
+summary: 介绍 TiFlash 性能调优的方法，包括机器资源规划和 TiDB 参数调优。
 aliases: ['/docs-cn/dev/tiflash/tune-tiflash-performance/','/docs-cn/dev/reference/tiflash/tune-performance/']
 ---
 
 # TiFlash 性能调优
 
-本文介绍了 TiFlash 性能调优的几种方式，包括机器资源规划和TiDB 参数调优，通过这些方式，TiFlash 性能可以达到最优状态。
+本文介绍了 TiFlash 性能调优的几种方式，包括机器资源规划和 TiDB 参数调优，通过这些方式，TiFlash 性能可以达到最优状态。
 
 ## 资源规划
 
