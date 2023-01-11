@@ -26,9 +26,9 @@ aliases: ['/docs-cn/dev/tiflash/tune-tiflash-performance/','/docs-cn/dev/referen
 
 ### 强制开启 MPP 模式
 
-MPP 执行计划可以充分利用分布式计算资源，从而显著提高批量数据查询的效率。当查询没有生成 MPP 执行计划的时候，用户可以尝试强制开启 MPP：
+MPP 执行计划可以充分利用分布式计算资源，从而显著提高批量数据查询的效率。当查询没有生成 MPP 执行计划的时候，你可以强制开启 MPP：
 
-[`tidb_enforce_mpp`](/system-variables.md#tidb_enforce_mpp-从-v51-版本开始引入) 变量用于控制是否忽略优化器代价估算，强制使用 TiFlash 的 MPP 模式执行查询。
+[`tidb_enforce_mpp`](/system-variables.md#tidb_enforce_mpp-从-v51-版本开始引入) 变量用于控制是否忽略优化器代价估算，强制使用 TiFlash 的 MPP 模式执行查询。要开启 MPP 模式查询，执行如下命令：
 
 ```sql
 set @@tidb_enforce_mpp = 1;
@@ -36,12 +36,12 @@ set @@tidb_enforce_mpp = 1;
 
 ### 聚合下推 `Join` 或 `Union`
 
-将聚合操作下推到 `Join` 或 `Union` 之前执行，有可能能显著减少 `Join` 或 `Union` 需要处理的数据量，从而提升性能。尝试开启聚合推过 `Join` / `Union` 等 TiDB 算子的优化：
+将聚合操作下推到 `Join` 或 `Union` 之前执行，有可能能显著减少 `Join` 或 `Union` 需要处理的数据量，从而提升性能。
 
-[`tidb_opt_agg_push_down`](/system-variables.md#tidb_opt_agg_push_down) 变量用来设置优化器是否执行聚合函数下推到 Join 之前的优化操作。当查询中聚合操作执行很慢时，可以尝试设置该变量为 1。
+[`tidb_opt_agg_push_down`](/system-variables.md#tidb_opt_agg_push_down) 变量用来设置优化器是否执行聚合函数下推到 Join 之前的优化操作。当查询中聚合操作执行很慢时，可以尝试设置该变量为 `ON`。
 
 ```sql
-set @@tidb_opt_agg_push_down = 1;
+set @@tidb_opt_agg_push_down = ON;
 ```
 
 ### 开启 `Distinct` 优化
@@ -94,7 +94,7 @@ set @@tidb_max_tiflash_threads = 20;
 
 ### 设置细粒度 Shuffle 参数
 
-细粒度 Shuffle 可以通过参数增加执行窗口函数执行的并法度，让函数执行占用更多系统资源，从而提升查询性能。
+细粒度 Shuffle 可以通过参数增加窗口函数执行的并法度，让函数执行占用更多系统资源，从而提升查询性能。
 
 [`tiflash_fine_grained_shuffle_stream_count`](/system-variables.md#tiflash_fine_grained_shuffle_stream_count-从-v620-版本开始引入)，单位为线程数。当窗口函数下推到 TiFlash 执行时，可以通过该变量控制窗口函数执行的并行度。
 
