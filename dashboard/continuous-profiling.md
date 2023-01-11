@@ -55,7 +55,7 @@ summary: 了解如何持续地收集 TiDB、TiKV、PD 各个实例的性能数�
 你可以通过以下步骤启用该功能：
 
 1. 访问[持续性能分析页面](#访问页面)。
-2. 点击**打开设置** (Open Settings)。在右侧**设置** (Settings) 页面，将**启用特性** (Enable Feature) 下方的开关打开。设置**保留时间** (Retention Period)， 默认值为 3 天。
+2. 点击**打开设置** (Open Settings)。在右侧**设置** (Settings) 页面，将**启用特性** (Enable Feature) 下方的开关打开。设置**保留时间** (Retention Period)，默认值为 3 天。
 3. 点击**保存** (Save)。
 
 ![启用功能](/media/dashboard/dashboard-conprof-start.png)

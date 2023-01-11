@@ -6,7 +6,7 @@ aliases: ['/zh/tidb/dev/delete-data']
 
 # 删除数据
 
-此页面将使用 [DELETE](/sql-statements/sql-statement-delete.md) SQL 语句，对 TiDB 中的数据进行删除。
+此页面将使用 [DELETE](/sql-statements/sql-statement-delete.md) SQL 语句，对 TiDB 中的数据进行删除。如果需要周期性地删除过期数据，可以考虑使用 TiDB 的 [TTL 功能](/time-to-live.md)。
 
 ## 在开始之前
 
@@ -40,7 +40,7 @@ DELETE FROM {table} WHERE {filter}
 - 始终在删除语句中指定 `WHERE` 子句。如果 `DELETE` 没有 `WHERE` 子句，TiDB 将删除这个表内的**_所有行_**。
 - 需要删除大量行(数万或更多)的时候，使用[批量删除](#批量删除)，这是因为 TiDB 单个事务大小限制为 [txn-total-size-limit](/tidb-configuration-file.md#txn-total-size-limit)（默认为 100MB）。
 - 如果你需要删除表内的所有数据，请勿使用 `DELETE` 语句，而应该使用 [TRUNCATE](/sql-statements/sql-statement-truncate.md) 语句。
-- 查看 [性能注意事项](#性能注意事项)。
+- 查看[性能注意事项](#性能注意事项)。
 - 在需要大批量删除数据的场景下，[非事务批量删除](#非事务批量删除)对性能的提升十分明显。但与之相对的，这将丢失删除的事务性，因此**无法**进行回滚，请务必正确进行操作选择。
 
 ## 例子

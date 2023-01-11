@@ -382,7 +382,7 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 * 处理方法：
 
     * 确认是否需要扩容。
-    * 排查是否有文件占用了大量磁盘空间，比如日志、快照或 core dump等文件。
+    * 排查是否有文件占用了大量磁盘空间，比如日志、快照或 core dump 等文件。
 
 #### `PD_system_time_slow`
 
@@ -789,7 +789,7 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
 ## TiCDC 报警规则
 
-关于TiCDC 报警规则的详细描述，参见 [TiCDC 集群监控报警](/ticdc/ticdc-alert-rules.md)。
+关于 TiCDC 报警规则的详细描述，参见 [TiCDC 集群监控报警](/ticdc/ticdc-alert-rules.md)。
 
 ## Node_exporter 主机报警规则
 

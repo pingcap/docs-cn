@@ -22,7 +22,7 @@ aliases: ['/zh/tidb/dev/use-subqueries']
 - 派生表（Derived Tables），如 `SELECT t1.s1 FROM (SELECT s1 FROM t2) t1`。
 - 存在性测试（Existential Test），如 `WHERE NOT EXISTS(SELECT ... FROM t2)`，`WHERE t1.a IN (SELECT ... FROM t2)`。
 - 集合比较（Quantified Comparison），如 `WHERE t1.a = ANY(SELECT ... FROM t2)`。
-- 作为比较运算符操作数的子查询, 如 `WHERE t1.a > (SELECT ... FROM t2)`。
+- 作为比较运算符操作数的子查询，如 `WHERE t1.a > (SELECT ... FROM t2)`。
 
 ## 子查询的分类
 

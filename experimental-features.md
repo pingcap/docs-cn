@@ -29,13 +29,14 @@ aliases: ['/docs-cn/dev/experimental-features-4.0/','/zh/tidb/dev/experimental-f
 
 ## SQL 功能
 
-+ 表达式索引 (Expression Index) 功能。表达式索引也叫函数索引，在创建索引时索引的字段不一定是一个具体的列，也可以是由一个或者多个列计算出来的表达式。对于快速访问那些基于计算结果的表非常有用。详情参阅：[表达式索引](/sql-statements/sql-statement-create-index.md)。（v4.0 实验特性）
 + [生成列](/generated-columns.md#生成列)。（v2.1 实验特性）
 + [自定义变量](/user-defined-variables.md#用户自定义变量)。（v2.1 实验特性）
 + [Cascades Planner](/system-variables.md#tidb_enable_cascades_planner)：基于 Cascades 框架的自顶向下查询优化器。（v3.0 实验特性）
 + [表级锁 (Table Lock)](/tidb-configuration-file.md#enable-table-lock-从-v400-版本开始引入)（v4.0.0 实验特性）
 + [Range INTERVAL 分区](/partitioned-table.md#range-interval-分区)（v6.3.0 实验特性）
++ [使用 TTL (Time to Live) 定期删除过期数据](/time-to-live.md)。(v6.5.0 实验特性)
 + [TiFlash 查询结果物化](/tiflash/tiflash-results-materialization.md)（v6.5.0 实验特性）
++ [根据历史执行计划创建绑定](/sql-plan-management.md#根据历史执行计划创建绑定)（v6.5.0 实验特性）
 
 ## 存储
 
@@ -49,6 +50,7 @@ aliases: ['/docs-cn/dev/experimental-features-4.0/','/zh/tidb/dev/experimental-f
 ## 数据共享订阅
 
 + [RawKV 跨集群复制](/tikv-configuration-file.md#api-version-从-v610-版本开始引入)（v6.2.0 实验特性）
++ [TiCDC 支持保存数据到存储服务 (S3/NFS/Azure Blob Storage)](/ticdc/ticdc-sink-to-cloud-storage.md)。（v6.5.0 实验特性）
 
 ## 垃圾回收
 

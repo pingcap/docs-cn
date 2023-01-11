@@ -4,7 +4,7 @@
 - [文档中心](https://docs.pingcap.com/zh)
 - 关于 TiDB
   - [TiDB 简介](/overview.md)
-  - [TiDB 6.4 Release Notes](/releases/release-6.4.0.md)
+  - [TiDB 6.5 Release Notes](/releases/release-6.5.0.md)
   - [基本功能](/basic-features.md)
   - [实验特性](/experimental-features.md)
   - [与 MySQL 的兼容性](/mysql-compatibility.md)
@@ -38,6 +38,7 @@
     - [插入数据](/develop/dev-guide-insert-data.md)
     - [更新数据](/develop/dev-guide-update-data.md)
     - [删除数据](/develop/dev-guide-delete-data.md)
+    - [使用 TTL (Time to Live) 定期删除过期数据](/time-to-live.md)
     - [预处理语句](/develop/dev-guide-prepared-statement.md)
   - 数据读取
     - [单表读取](/develop/dev-guide-get-data-from-single-table.md)
@@ -172,23 +173,27 @@
   - [自定义监控组件的配置](/tiup/customized-montior-in-tiup-environment.md)
   - [BR 监控告警](/br/br-monitoring-and-alert.md)
 - 故障诊断
-  - [定位慢查询](/identify-slow-queries.md)
-  - [分析慢查询](/analyze-slow-queries.md)
-  - [SQL 诊断](/information-schema/information-schema-sql-diagnostics.md)
-  - [使用 Top SQL 定位系统资源消耗过多的查询](/dashboard/top-sql.md)
-  - [通过日志定位消耗系统资源多的查询](/identify-expensive-queries.md)
-  - [SQL 语句统计](/statement-summary-tables.md)
-  - [保存和恢复集群现场信息](/sql-plan-replayer.md)
-  - [TiDB OOM 故障排查](/troubleshoot-tidb-oom.md)
-  - [TiDB 集群常见问题](/troubleshoot-tidb-cluster.md)
-  - [TiDB 集群问题导图](/tidb-troubleshooting-map.md)
-  - [热点问题处理](/troubleshoot-hot-spot-issues.md)
-  - [CPU 占用过多导致读写延迟增加](/troubleshoot-cpu-issues.md)
-  - [写冲突与写性能下降](/troubleshoot-write-conflicts.md)
-  - [磁盘 I/O 过高](/troubleshoot-high-disk-io.md)
-  - [锁冲突与 TTL 超时](/troubleshoot-lock-conflicts.md)
-  - [TiFlash 常见问题](/tiflash/troubleshoot-tiflash.md)
-  - [数据索引不一致报错](/troubleshoot-data-inconsistency-errors.md)
+  - 故障诊断问题汇总
+    - [TiDB 集群问题导图](/tidb-troubleshooting-map.md)
+    - [TiDB 集群常见问题](/troubleshoot-tidb-cluster.md)
+    - [TiFlash 常见问题](/tiflash/troubleshoot-tiflash.md)
+  - 故障场景
+    - 慢查询
+      - [定位慢查询](/identify-slow-queries.md)
+      - [分析慢查询](/analyze-slow-queries.md)
+    - [TiDB OOM 故障排查](/troubleshoot-tidb-oom.md)
+    - [热点问题处理](/troubleshoot-hot-spot-issues.md)
+    - [CPU 占用过多导致读写延迟增加](/troubleshoot-cpu-issues.md)
+    - [写冲突与写性能下降](/troubleshoot-write-conflicts.md)
+    - [磁盘 I/O 过高](/troubleshoot-high-disk-io.md)
+    - [锁冲突与 TTL 超时](/troubleshoot-lock-conflicts.md)
+    - [数据索引不一致报错](/troubleshoot-data-inconsistency-errors.md)
+  - 故障诊断方法
+    - [通过 SQL 诊断获取集群诊断信息](/information-schema/information-schema-sql-diagnostics.md)
+    - [通过 Statement Summary 排查 SQL 性能问题](/statement-summary-tables.md)
+    - [使用 Top SQL 定位系统资源消耗过多的查询](/dashboard/top-sql.md)
+    - [通过日志定位消耗系统资源多的查询](/identify-expensive-queries.md)
+    - [保存和恢复集群现场信息](/sql-plan-replayer.md)
 - 性能调优
   - 优化手册
     - [优化概述](/performance-tuning-overview.md)
@@ -511,6 +516,7 @@
       - 创建 Changefeed
         - [同步数据到 MySQL 兼容的数据库](/ticdc/ticdc-sink-to-mysql.md)
         - [同步数据到 Kafka](/ticdc/ticdc-sink-to-kafka.md)
+        - [同步数据到存储服务](/ticdc/ticdc-sink-to-cloud-storage.md)
       - [管理 Changefeed](/ticdc/ticdc-manage-changefeed.md)
       - [日志过滤器](/ticdc/ticdc-filter.md)
       - [双向复制](/ticdc/ticdc-bidirectional-replication.md)
@@ -525,7 +531,9 @@
         - [TiCDC Avro Protocol](/ticdc/ticdc-avro-protocol.md)
         - [TiCDC Canal-JSON Protocol](/ticdc/ticdc-canal-json.md)
         - [TiCDC Open Protocol](/ticdc/ticdc-open-protocol.md)
+        - [TiCDC CSV Protocol](/ticdc/ticdc-csv.md)
       - [TiCDC Open API](/ticdc/ticdc-open-api.md)
+      - [Storage sink 消费程序编写指引](/ticdc/ticdc-storage-consumer-dev-guide.md)
       - [兼容性](/ticdc/ticdc-compatibility.md)
     - [故障处理](/ticdc/troubleshoot-ticdc.md)
     - [常见问题解答](/ticdc/ticdc-faq.md)
@@ -942,6 +950,8 @@
   - [版本发布时间线](/releases/release-timeline.md)
   - [TiDB 版本规则](/releases/versioning.md)
   - [TiDB 离线包](/binary-package.md)
+  - v6.5
+    - [6.5.0](/releases/release-6.5.0.md)
   - v6.4
     - [6.4.0-DMR](/releases/release-6.4.0.md)
   - v6.3
@@ -973,6 +983,7 @@
     - [5.2.1](/releases/release-5.2.1.md)
     - [5.2.0](/releases/release-5.2.0.md)
   - v5.1
+    - [5.1.5](/releases/release-5.1.5.md)
     - [5.1.4](/releases/release-5.1.4.md)
     - [5.1.3](/releases/release-5.1.3.md)
     - [5.1.2](/releases/release-5.1.2.md)

@@ -16,7 +16,7 @@ cdc cli changefeed create --server=http://10.0.10.25:8300 --sink-uri="mysql://ro
 ```shell
 Create changefeed successfully!
 ID: simple-replication-task
-Info: {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":"2020-03-12T22:04:08.103600025+08:00","start-ts":415241823337054209,"target-ts":0,"admin-job-type":0,"sort-engine":"unified","sort-dir":".","config":{"case-sensitive":true,"filter":{"rules":["*.*"],"ignore-txn-start-ts":null,"ddl-allow-list":null},"mounter":{"worker-num":16},"sink":{"dispatchers":null},"scheduler":{"type":"table-number","polling-time":-1}},"state":"normal","history":null,"error":null}
+Info: {"upstream_id":7178706266519722477,"namespace":"default","id":"simple-replication-task","sink_uri":"mysql://root:xxxxx@127.0.0.1:4000/?time-zone=","create_time":"2022-12-19T15:05:46.679218+08:00","start_ts":438156275634929669,"engine":"unified","config":{"case_sensitive":true,"enable_old_value":true,"force_replicate":false,"ignore_ineligible_table":false,"check_gc_safe_point":true,"enable_sync_point":true,"bdr_mode":false,"sync_point_interval":30000000000,"sync_point_retention":3600000000000,"filter":{"rules":["test.*"],"event_filters":null},"mounter":{"worker_num":16},"sink":{"protocol":"","schema_registry":"","csv":{"delimiter":",","quote":"\"","null":"\\N","include_commit_ts":false},"column_selectors":null,"transaction_atomicity":"none","encoder_concurrency":16,"terminator":"\r\n","date_separator":"none","enable_partition_separator":false},"consistent":{"level":"none","max_log_size":64,"flush_interval":2000,"storage":""}},"state":"normal","creator_version":"v6.5.0"}
 ```
 
 - `--changefeed-id`：同步任务的 ID，格式需要符合正则表达式 `^[a-zA-Z0-9]+(\-[a-zA-Z0-9]+)*$`。如果不指定该 ID，TiCDC 会自动生成一个 UUID（version 4 格式）作为 ID。
@@ -100,7 +100,27 @@ dispatchers = [
     {matcher = ['test6.*'], partition = "ts"}
 ]
 
-# 对于 MQ 类的 Sink，可以指定消息的协议格式
-# 目前支持 canal-json、open-protocol、canal、avro 和 maxwell 五种协议。
+# protocol 用于指定传递到下游的协议格式
+# 当下游类型是 Kafka 时，支持 canal-json、avro 两种协议。
+# 当下游类型是存储服务时，目前仅支持 canal-json、csv 两种协议。
 protocol = "canal-json"
+
+# 以下三个配置项仅在同步到存储服务的 sink 中使用，在 MQ 和 MySQL 类 sink 中无需设置。
+# 换行符，用来分隔两个数据变更事件。默认值为空，表示使用 "\r\n" 作为换行符。
+terminator = ''
+# 文件路径的日期分隔类型。可选类型有 `none`、`year`、`month` 和 `day`。默认值为 `none`，即不使用日期分隔。详见 <https://docs.pingcap.com/zh/tidb/dev/ticdc-sink-to-cloud-storage#数据变更记录>。
+date-separator = 'none'
+# 是否使用 partition 作为分隔字符串。默认值为 false，即一张表中各个 partition 的数据不会分不同的目录来存储。详见 <https://docs.pingcap.com/zh/tidb/dev/ticdc-sink-to-cloud-storage#数据变更记录>。
+enable-partition-separator = false
+
+# 从 v6.5.0 开始，TiCDC 支持以 CSV 格式将数据变更记录保存至存储服务中，在 MQ 和 MySQL 类 sink 中无需设置。
+[sink.csv]
+# 字段之间的分隔符。必须为 ASCII 字符，默认值为 `,`。
+delimiter = ','
+# 用于包裹字段的引号字符。空值代表不使用引号字符。默认值为 `"`。
+quote = '"'
+# CSV 中列为 NULL 时将以什么字符来表示。默认值为 `\N`。
+null = '\N'
+# 是否在 CSV 行中包含 commit-ts。默认值为 false。
+include-commit-ts = false
 ```

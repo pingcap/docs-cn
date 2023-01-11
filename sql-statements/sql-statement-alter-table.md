@@ -49,6 +49,11 @@ AlterTableSpec ::=
 |   'SECONDARY_UNLOAD'
 |   ( 'AUTO_INCREMENT' | 'AUTO_ID_CACHE' | 'AUTO_RANDOM_BASE' | 'SHARD_ROW_ID_BITS' ) EqOpt LengthNum
 |   ( 'CACHE' | 'NOCACHE' )
+|   (
+        'TTL' EqOpt TimeColumnName '+' 'INTERVAL' Expression TimeUnit (TTLEnable EqOpt ( 'ON' | 'OFF' ))?
+        | 'REMOVE' 'TTL'
+        | TTLEnable EqOpt ( 'ON' | 'OFF' )
+    )
 |   PlacementPolicyOption
 
 PlacementPolicyOption ::=

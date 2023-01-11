@@ -485,7 +485,7 @@ TiDB 提供两个[离线包下载](https://pingcap.com/zh/product-community/)：
         - 支持放置规则 (placement rules) [#4846)](https://github.com/pingcap/tiflow/issues/4846)
         - 同步处理 HTTP API [#1710](https://github.com/pingcap/tiflow/issues/1710)
         - 为 changefeed 重启操作添加指数退避机制 [#3329](https://github.com/pingcap/tiflow/issues/3329)
-        - 设置 MySQL sink 的默认隔离级别为 Read Committed，以减少MySQL 中的死锁 [#3589](https://github.com/pingcap/tiflow/issues/3589)
+        - 设置 MySQL sink 的默认隔离级别为 Read Committed，以减少 MySQL 中的死锁 [#3589](https://github.com/pingcap/tiflow/issues/3589)
         - 在创建 changefeed 时验证参数合法，优化报错信息 [#1716](https://github.com/pingcap/tiflow/issues/1716) [#1718](https://github.com/pingcap/tiflow/issues/1718) [#1719](https://github.com/pingcap/tiflow/issues/1719) [#4472](https://github.com/pingcap/tiflow/issues/4472)
         - 暴露 Kafka producer 配置参数，使之在 TiCDC 中可配置 [#4385](https://github.com/pingcap/tiflow/issues/4385)
 

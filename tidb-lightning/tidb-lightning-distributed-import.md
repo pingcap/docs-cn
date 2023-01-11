@@ -61,9 +61,9 @@ TiDB Lightning 在运行时，需要独占部分资源，因此如果需要在�
 - 每个 TiDB Lightning 实例的 tikv-importer.sorted-kv-dir 必须设置为不同的路径。多个实例共享相同的路径会导致非预期的行为，可能导致导入失败或数据出错。
 - 每个 TiDB Lightning 的 checkpoint 需要分开存储。checkpoint 的详细配置见 [TiDB Lightning 断点续传](/tidb-lightning/tidb-lightning-checkpoints.md)。
     - 如果设置 checkpoint.driver = "file"（默认值），需要确保每个实例设置的 checkpoint 的路径不同。
-    - 如果设置 checkpoint.driver = "mysql", 需要为每个实例设置不同的 schema。
+    - 如果设置 checkpoint.driver = "mysql"，需要为每个实例设置不同的 schema。
 - 每个 TiDB Lightning 的 log 文件应该设置为不同的路径。共享同一个 log 文件将不利于日志的查询和排查问题。
-- 如果开启 [Web 界面](/tidb-lightning/tidb-lightning-web-interface.md) 或 Debug API, 需要为每个实例的 `lightning.status-addr` 设置不同地址，否则，TiDB Lightning 进程会由于端口冲突无法启动。
+- 如果开启 [Web 界面](/tidb-lightning/tidb-lightning-web-interface.md) 或 Debug API，需要为每个实例的 `lightning.status-addr` 设置不同地址，否则，TiDB Lightning 进程会由于端口冲突无法启动。
 
 ## 示例 1：使用 Dumpling + TiDB Lightning 并行导入分库分表数据至 TiDB
 
@@ -120,7 +120,7 @@ nohup tiup tidb-lightning -config tidb-lightning.toml > nohup.out &
 在并行导入的场景下，TiDB Lightning 在启动任务之后，会自动进行下列检查：
 
 - 检查本地盘空间（即 `sort-kv-dir` 配置）以及 TiKV 集群是否有足够空间导入数据，空间大小的详细说明参考 [TiDB Lightning 下游数据库所需空间](/tidb-lightning/tidb-lightning-requirements.md#目标数据库所需空间)和 [TiDB Lightning 运行时资源要求](/tidb-lightning/tidb-lightning-physical-import-mode.md#运行环境需求)。检查时会对数据源进行采样，通过采样结果预估索引大小占比。由于估算中考虑了索引，因此可能会出现尽管数据源大小低于本地盘可用空间，但依然无法通过检测的情况。
-- 检查 TiKV 集群的 region 分布是否均匀，以及是否存在大量空 region，如果空 region 的数量大于 max(1000,  表的数量 * 3) ，即大于 “1000” 和 “3 倍表数量”二者中的最大者，则无法执行导入。
+- 检查 TiKV 集群的 region 分布是否均匀，以及是否存在大量空 region，如果空 region 的数量大于 max(1000,  表的数量 * 3)，即大于 “1000” 和 “3 倍表数量”二者中的最大者，则无法执行导入。
 - 检查数据源导入数据是否有序，并且根据检查结果自动调整 `mydumper.batch-size` 的大小。因此 `mydumper.batch-size` 配置不再对用户开放。
 
 你也可以通过 `lightning.check-requirements` 配置来关闭检查，执行强制导入。更多详细检查内容，可以查看 [Lightning 执行前检查项](/tidb-lightning/tidb-lightning-prechecks.md)。

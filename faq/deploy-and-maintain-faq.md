@@ -64,7 +64,7 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 | tidb_version | TiDB 版本 |
 | deployment_method | 部署方式，默认为 binary，可选 docker |
 | process_supervision | 进程监管方式，默认为 systemd，可选 supervise |
-| timezone | 修改部署目标机器时区，默认为 Asia/Shanghai, 可调整，与set_timezone 变量结合使用 |
+| timezone | 修改部署目标机器时区，默认为 Asia/Shanghai，可调整，与 set_timezone 变量结合使用 |
 | set_timezone | 默认为 True，即修改部署目标机器时区，关闭可修改为 False |
 | enable_elk | 目前不支持，请忽略 |
 | enable_firewalld | 开启防火墙，默认不开启 |

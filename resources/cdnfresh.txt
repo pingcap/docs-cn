@@ -8,6 +8,8 @@ https://download.pingcap.org/tidb-v6.3-zh-manual.pdf
 https://download.pingcap.org/tidb-v6.3-en-manual.pdf
 https://download.pingcap.org/tidb-v6.2-zh-manual.pdf
 https://download.pingcap.org/tidb-v6.2-en-manual.pdf
+https://download.pingcap.org/tidb-v6.1-zh-manual.pdf
+https://download.pingcap.org/tidb-v6.1-en-manual.pdf
 https://download.pingcap.org/tidb-v6.0-zh-manual.pdf
 https://download.pingcap.org/tidb-v6.0-en-manual.pdf
 https://download.pingcap.org/tidb-v5.4-zh-manual.pdf
