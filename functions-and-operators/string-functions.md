@@ -75,6 +75,7 @@ For comparisons between functions and syntax of Oracle and TiDB, see [Comparison
 | [`UCASE()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_ucase)                                                     | Synonym for `UPPER()`                                                                                                                     |
 | [`UNHEX()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_unhex)                                                     | Return a string containing hex representation of a number                                                                                 |
 | [`UPPER()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_upper)                                                     | Convert to uppercase                                                                                                                      |
+| [`WEIGHT_STRING()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_weight-string) | Return the weight string for the input string |
 
 ## Unsupported functions
 
@@ -82,7 +83,6 @@ For comparisons between functions and syntax of Oracle and TiDB, see [Comparison
 * `MATCH`
 * `SOUNDEX()`
 * `SOUNDS LIKE`
-* `WEIGHT_STRING()`
 
 ## Regular expression compatibility with MySQL
 
