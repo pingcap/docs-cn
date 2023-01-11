@@ -10,7 +10,7 @@ If you use TiUP to deploy the TiDB cluster, you can see a sub-dashboard for TiCD
 The metric description in this document is based on the following replication task example, which replicates data to MySQL using the default configuration.
 
 ```shell
-cdc cli changefeed create --pd=http://10.0.10.25:2379 --sink-uri="mysql://root:123456@127.0.0.1:3306/" --changefeed-id="simple-replication-task"
+cdc cli changefeed create --server=http://10.0.10.25:8300 --sink-uri="mysql://root:123456@127.0.0.1:3306/" --changefeed-id="simple-replication-task"
 ```
 
 The TiCDC dashboard contains four monitoring panels. See the following screenshot:

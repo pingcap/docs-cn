@@ -219,12 +219,12 @@ After setting up the environment, you can use the backup and restore functions o
     {{< copyable "shell-regular" >}}
 
     ```shell
-    tiup cdc cli changefeed create --pd=http://172.16.6.122:2379 --sink-uri="mysql://root:@172.16.6.125:4000" --changefeed-id="upstream-to-downstream" --start-ts="431434047157698561"
+    tiup cdc cli changefeed create --server=http://172.16.6.122:8300 --sink-uri="mysql://root:@172.16.6.125:4000" --changefeed-id="upstream-to-downstream" --start-ts="431434047157698561"
     ```
 
     In this command, the parameters are as follows:
 
-    - `--pd`: PD address of the upstream cluster
+    - `--server`: IP address of any node in the TiCDC cluster
     - `--sink-uri`: URI of the downstream cluster
     - `--changefeed-id`: changefeed ID, must be in the format of a regular expression, ^[a-zA-Z0-9]+(\-[a-zA-Z0-9]+)*$
     - `--start-ts`: start timestamp of the changefeed, must be the backup time (or BackupTS in the "Back up data" section in [Step 2. Migrate full data](#step-2-migrate-full-data))
@@ -268,7 +268,7 @@ After creating a changefeed, data written to the upstream cluster is replicated 
 
     ```shell
     # Stop the changefeed from the upstream cluster to the downstream cluster
-    tiup cdc cli changefeed pause -c "upstream-to-downstream" --pd=http://172.16.6.122:2379
+    tiup cdc cli changefeed pause -c "upstream-to-downstream" --server=http://172.16.6.122:8300
 
     # View the changefeed status
     tiup cdc cli changefeed list
@@ -291,7 +291,7 @@ After creating a changefeed, data written to the upstream cluster is replicated 
 2. Create a changefeed from downstream to upstream. You can leave `start-ts` unspecified so as to use the default setting, because the upstream and downstream data are consistent and there is no new data written to the cluster.
 
     ```shell
-    tiup cdc cli changefeed create --pd=http://172.16.6.125:2379 --sink-uri="mysql://root:@172.16.6.122:4000" --changefeed-id="downstream -to-upstream"
+    tiup cdc cli changefeed create --server=http://172.16.6.125:8300 --sink-uri="mysql://root:@172.16.6.122:4000" --changefeed-id="downstream -to-upstream"
     ```
 
 3. After migrating writing services to the downstream cluster, observe for a period. If the downstream cluster is stable, you can discard the upstream cluster.

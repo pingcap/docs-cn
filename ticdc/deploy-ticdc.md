@@ -111,7 +111,7 @@ When you upgrade a TiCDC cluster, you need to pay attention to the following:
 
 ## Modify TiCDC cluster configurations using TiUP
 
-This section describes how to use the [`tiup cluster edit-config`](/tiup/tiup-component-cluster-edit-config.md) command to modify the configurations of TiCDC. In the following example, it is assumed that you need to change the default value of `gc-ttl` from `86400` to `3600` (1 hour).
+This section describes how to use the [`tiup cluster edit-config`](/tiup/tiup-component-cluster-edit-config.md) command to modify the configurations of TiCDC. In the following example, it is assumed that you need to change the default value of `gc-ttl` from `86400` to `172800` (48 hours).
 
 1. Run the `tiup cluster edit-config` command. Replace `<cluster-name>` with the actual cluster name:
 
@@ -131,8 +131,10 @@ This section describes how to use the [`tiup cluster edit-config`](/tiup/tiup-co
       pump: {}
       drainer: {}
       cdc:
-        gc-ttl: 3600
+        gc-ttl: 172800
     ```
+
+    In the preceding command, `gc-ttl` is set to 48 hours.
 
 3. Run the `tiup cluster reload -R cdc` command to reload the configuration.
 
@@ -161,12 +163,14 @@ tiup ctl:<version> cdc capture list --server=http://10.0.10.25:8300
   {
     "id": "806e3a1b-0e31-477f-9dd6-f3f2c570abdd",
     "is-owner": true,
-    "address": "127.0.0.1:8300"
+    "address": "127.0.0.1:8300",
+    "cluster-id": "default"
   },
   {
     "id": "ea2a4203-56fe-43a6-b442-7b295f458ebc",
     "is-owner": false,
-    "address": "127.0.0.1:8301"
+    "address": "127.0.0.1:8301",
+    "cluster-id": "default"
   }
 ]
 ```
@@ -174,3 +178,4 @@ tiup ctl:<version> cdc capture list --server=http://10.0.10.25:8300
 - `id`: Indicates the ID of the service process.
 - `is-owner`: Indicates whether the service process is the owner node.
 - `address`: Indicates the address via which the service process provides interface to the outside.
+- `cluster-id`: Indicates the ID of the TiCDC cluster. The default value is `default`.

@@ -41,7 +41,7 @@ Sink URI is used to specify the connection information of the TiCDC target syste
 Sample configuration for MySQL:
 
 ```shell
---sink-uri="mysql://root:123456@127.0.0.1:3306/?worker-count=16&max-txn-row=5000&transaction-atomicity=table"
+--sink-uri="mysql://root:123456@127.0.0.1:3306"
 ```
 
 The following are descriptions of sink URI parameters and parameter values that can be configured for MySQL or TiDB:

@@ -10,7 +10,7 @@ This document introduces the common errors you might encounter when using TiCDC,
 
 > **Note:**
 >
-> In this document, the PD address specified in `cdc cli` commands is `--pd=http://10.0.10.25:2379`. When you use the command, replace the address with your actual PD address.
+> In this document, the server address specified in `cdc cli` commands is `server=http://127.0.0.1:8300`. When you use the command, replace the address with your actual PD address.
 
 ## TiCDC replication interruptions
 
@@ -28,7 +28,7 @@ You can know whether the replication task is stopped manually by executing `cdc 
 {{< copyable "shell-regular" >}}
 
 ```shell
-cdc cli changefeed query --pd=http://10.0.10.25:2379 --changefeed-id 28c43ffc-2316-4f4f-a70b-d1a7c59ba79f
+cdc cli changefeed query --server=http://127.0.0.1:8300 --changefeed-id 28c43ffc-2316-4f4f-a70b-d1a7c59ba79f
 ```
 
 In the output of the above command, `admin-job-type` shows the state of this replication task:
@@ -111,7 +111,7 @@ If the downstream is a special MySQL environment (a public cloud RDS or some MyS
     {{< copyable "shell-regular" >}}
 
     ```shell
-    cdc cli changefeed create --sink-uri="mysql://root@127.0.0.1:3306/?time-zone=CST" --pd=http://10.0.10.25:2379
+    cdc cli changefeed create --sink-uri="mysql://root@127.0.0.1:3306/?time-zone=CST" --server=http://127.0.0.1:8300
     ```
 
     > **Note:**
@@ -153,7 +153,7 @@ To fix the error, take the following steps:
     {{< copyable "shell-regular" >}}
 
     ```shell
-    cdc cli changefeed pause -c test-cf --pd=http://10.0.10.25:2379
+    cdc cli changefeed pause -c test-cf --server=http://127.0.0.1:8300
     ```
 
 3. Execute `cdc cli changefeed update` to update the original changefeed configuration.
@@ -161,7 +161,7 @@ To fix the error, take the following steps:
     {{< copyable "shell-regular" >}}
 
     ```shell
-    cdc cli changefeed update -c test-cf --pd=http://10.0.10.25:2379 --sink-uri="mysql://127.0.0.1:3306/?max-txn-row=20&worker-number=8" --config=changefeed.toml
+    cdc cli changefeed update -c test-cf --server=http://127.0.0.1:8300 --sink-uri="mysql://127.0.0.1:3306/?max-txn-row=20&worker-number=8" --config=changefeed.toml
     ```
 
 4. Execute `cdc cli changfeed resume` to resume the replication task.
@@ -169,7 +169,7 @@ To fix the error, take the following steps:
     {{< copyable "shell-regular" >}}
 
     ```shell
-    cdc cli changefeed resume -c test-cf --pd=http://10.0.10.25:2379
+    cdc cli changefeed resume -c test-cf --server=http://127.0.0.1:8300
     ```
 
 ## The `[tikv:9006]GC life time is shorter than transaction duration, transaction starts at xx, GC safe point is yy` error is reported when I use TiCDC to create a changefeed. What should I do?
@@ -201,7 +201,7 @@ If a DDL statement fails to execute, the replication task (changefeed) automatic
 {{< copyable "shell-regular" >}}
 
 ```shell
-cdc cli changefeed resume -c test-cf --pd=http://10.0.10.25:2379
+cdc cli changefeed resume -c test-cf --server=http://127.0.0.1:8300
 ```
 
 If you want to skip this DDL statement that goes wrong, set the start-ts of the changefeed to the checkpoint-ts (the timestamp at which the DDL statement goes wrong) plus one, and then run the `cdc cli changefeed create` command to create a new changefeed task. For example, if the checkpoint-ts at which the DDL statement goes wrong is `415241823337054209`, run the following commands to skip this DDL statement:
@@ -209,6 +209,6 @@ If you want to skip this DDL statement that goes wrong, set the start-ts of the 
 {{< copyable "shell-regular" >}}
 
 ```shell
-cdc cli changefeed remove --pd=http://10.0.10.25:2379 --changefeed-id simple-replication-task
-cdc cli changefeed create --pd=http://10.0.10.25:2379 --sink-uri="mysql://root:123456@127.0.0.1:3306/" --changefeed-id="simple-replication-task" --sort-engine="unified" --start-ts 415241823337054210
+cdc cli changefeed remove --server=http://127.0.0.1:8300 --changefeed-id simple-replication-task
+cdc cli changefeed create --server=http://127.0.0.1:8300 --sink-uri="mysql://root:123456@127.0.0.1:3306/" --changefeed-id="simple-replication-task" --sort-engine="unified" --start-ts 415241823337054210
 ```
