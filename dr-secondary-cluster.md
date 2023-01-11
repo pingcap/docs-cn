@@ -301,7 +301,7 @@ s3://backup?access-key=minio&secret-access-key=miniostorage&endpoint=http://10.0
     tiup cdc cli changefeed remove --server=http://10.1.1.9:8300 --changefeed-id="dr-primary-to-secondary"
     ```
 
-5. 启动 Changefeed(dr-secondary-to-primary)。 不需要指定 changefeed `start-ts` 参数，changefeed 从当前时间开始同步即可；
+5. 创建 Changefeed(dr-secondary-to-primary)。 不需要指定 changefeed `start-ts` 参数，changefeed 从当前时间开始同步即可；
 6. 修改业务应用的数据库访问配置并重启业务应用，使得业务访问备用集群；
 7. 检查业务状态是否正常；
 
