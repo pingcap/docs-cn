@@ -231,7 +231,7 @@ mysql> EXPLAIN SELECT * FROM t2 use index(idx) WHERE a=1 AND JSON_OVERLAPS((j->'
 6 rows in set, 1 warning (0.00 sec)
 ```
 
-对于由多个 `json_member_of` 和 `json_overlaps` 组成的 `OR` 条件，也可以使用 IndexMerge 进行访问：
+对于由多个 `json_member_of` 组成的 `OR` 条件，也可以使用 IndexMerge 进行访问：
 
 ```sql
 mysql> CREATE TABLE t3 (a INT, j JSON, INDEX idx(a, (CAST(j AS SIGNED ARRAY))));
@@ -247,4 +247,34 @@ mysql> EXPLAIN SELECT /*+ use_index_merge(t3, idx) */ * FROM t3 WHERE ((a=1 AND 
 |   ├─IndexRangeScan_7(Build)     | 0.10    | cop[tikv] | table:t3, index:idx(a, cast(`j` as signed array)) | range:[2 2,2 2], keep order:false, stats:pseudo                                                                                                  |
 |   └─TableRowIDScan_8(Probe)     | 0.10    | cop[tikv] | table:t3                                          | keep order:false, stats:pseudo                                                                                                                   |
 +---------------------------------+---------+-----------+---------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------+
+```
+
+下面是一些暂时无法支持的场景：
+
+```sql
+mysql> CREATE TABLE t4 (j JSON, INDEX idx((CAST(j AS SIGNED ARRAY))));
+Query OK, 0 rows affected (0.04 sec)
+
+-- 多个 json_contains 通过 OR 组成的条件
+mysql> EXPLAIN SELECT /*+ use_index_merge(t3, idx) */ * FROM t3 WHERE (json_contains(j, '[1, 2]')) OR (json_contains(j, '[3, 4]'));
++-------------------------+----------+-----------+---------------+------------------------------------------------------------------------------------------------------------------+
+| id                      | estRows  | task      | access object | operator info                                                                                                    |
++-------------------------+----------+-----------+---------------+------------------------------------------------------------------------------------------------------------------+
+| TableReader_7           | 9600.00  | root      |               | data:Selection_6                                                                                                 |
+| └─Selection_6           | 9600.00  | cop[tikv] |               | or(json_contains(test.t3.j, cast("[1, 2]", json BINARY)), json_contains(test.t3.j, cast("[3, 4]", json BINARY))) |
+|   └─TableFullScan_5     | 10000.00 | cop[tikv] | table:t3      | keep order:false, stats:pseudo                                                                                   |
++-------------------------+----------+-----------+---------------+------------------------------------------------------------------------------------------------------------------+
+3 rows in set, 1 warning (0.00 sec)
+
+-- 较为复杂的多层 OR / AND 嵌套形成的表达式
+mysql> EXPLAIN SELECT /*+ use_index_merge(t3, idx) */ * FROM t3 WHERE ((1 member of (j)) AND (2 member of (j))) OR ((3 member of (j)) AND (4 member of (j)));
++-------------------------+----------+-----------+---------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| id                      | estRows  | task      | access object | operator info                                                                                                                                                                                                |
++-------------------------+----------+-----------+---------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Selection_5             | 8000.00  | root      |               | or(and(json_memberof(cast(1, json BINARY), test.t3.j), json_memberof(cast(2, json BINARY), test.t3.j)), and(json_memberof(cast(3, json BINARY), test.t3.j), json_memberof(cast(4, json BINARY), test.t3.j))) |
+| └─TableReader_7         | 10000.00 | root      |               | data:TableFullScan_6                                                                                                                                                                                         |
+|   └─TableFullScan_6     | 10000.00 | cop[tikv] | table:t3      | keep order:false, stats:pseudo                                                                                                                                                                               |
++-------------------------+----------+-----------+---------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+3 rows in set, 2 warnings (0.00 sec)
+
 ```
