@@ -81,8 +81,8 @@ DESC tiflash_segments;
 - `DELTA_CACHE_SIZE`：Delta 层缓存大小（单位：字节）。
 - `DELTA_INDEX_SIZE`：Delta 层索引大小（单位：字节）。
 - `STABLE_PAGE_ID`：Stable 层数据在磁盘上存储的标识。
-- `STABLE_ROWS`：Stable 层缓存中的数据总行数。
-- `STABLE_SIZE`：Stable 层缓存中的数据总大小（单位：字节）。
+- `STABLE_ROWS`：Stable 层的数据总行数。
+- `STABLE_SIZE`：Stable 层的数据总大小（单位：字节）。
 - `STABLE_DMFILES`：Stable 层 DMFile 数量。
 - `STABLE_DMFILES_ID_0`：Stable 层第一个 DMFile 在磁盘上存储的 ID。
 - `STABLE_DMFILES_ROWS`：Stable 层 DMFile 中的数据总行数。
