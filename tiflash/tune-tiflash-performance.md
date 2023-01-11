@@ -17,8 +17,8 @@ aliases: ['/docs-cn/dev/tiflash/tune-tiflash-performance/','/docs-cn/dev/referen
 本部分介绍如何通过调整 TiDB 相关参数来提升 TiFlash 性能，具体包括如下几个方面：
 
 - [强制开启 MPP 模式](#强制开启-mpp-模式)
-- [聚合下推 `Join` 或 `Union`](#聚合下推-join--union)
-- [开启 `Distinct`](#开启-distinct)
+- [聚合下推 `Join` 或 `Union`](#聚合下推-join-或-union)
+- [开启 `Distinct` 优化](#开启-distinct-优化)
 - [使用 `ALTER TABLE...COMPACT` 整理数据](#使用-alter-tablecompact-整理数据)
 - [使用 Broadcast Hash Join 代替 Shuffled Hash Join](#使用-broadcast-hash-join-代替-shuffled-hash-join)
 - [设置更大的执行并发度](#设置更大的执行并发度)
@@ -26,7 +26,7 @@ aliases: ['/docs-cn/dev/tiflash/tune-tiflash-performance/','/docs-cn/dev/referen
 
 ### 强制开启 MPP 模式
 
-当没有生成 MPP 执行计划的时候，可以尝试强制开启 MPP：
+MPP 执行计划可以充分利用分布式计算资源，从而显著提高批量数据查询的效率。当查询没有生成 MPP 执行计划的时候，用户可以尝试强制开启 MPP：
 
 [`tidb_enforce_mpp`](/system-variables.md#tidb_enforce_mpp-从-v51-版本开始引入) 变量用于控制是否忽略优化器代价估算，强制使用 TiFlash 的 MPP 模式执行查询。
 
@@ -36,7 +36,7 @@ set @@tidb_enforce_mpp = 1;
 
 ### 聚合下推 `Join` 或 `Union`
 
-尝试开启聚合推过 `Join` / `Union` 等 TiDB 算子的优化：
+将聚合操作下推到 `Join` 或 `Union` 之前执行，有可能能显著减少 `Join` 或 `Union` 需要处理的数据量，从而提升性能。尝试开启聚合推过 `Join` / `Union` 等 TiDB 算子的优化：
 
 [`tidb_opt_agg_push_down`](/system-variables.md#tidb_opt_agg_push_down) 变量用来设置优化器是否执行聚合函数下推到 Join 之前的优化操作。当查询中聚合操作执行很慢时，可以尝试设置该变量为 1。
 
@@ -44,11 +44,11 @@ set @@tidb_enforce_mpp = 1;
 set @@tidb_opt_agg_push_down = 1;
 ```
 
-### 开启 `Distinct`
+### 开启 `Distinct` 优化
 
-可以开启 `Distinct` 推过 `Join` / `Union` 等 TiDB 算子的优化：
+TiFlash 暂时还不支持部分可接受 `Distinct` 列的聚合函数，比如 `Sum` 。默认情况下，整个聚合函数运算都会在 TiDB 端执行。通过开启 `Distinct` 优化，部分操作可以下推到 TiFlash，从而提升查询性能：
 
-[`tidb_opt_distinct_agg_push_down`](/system-variables.md#tidb_opt_distinct_agg_push_down) 变量用来设置优化器是否执行带有 `Distinct` 的聚合函数（比如 `select count(distinct a) from t`）下推到 Coprocessor 的优化操作。当查询中带有 `Distinct` 的聚合操作执行很慢时，可以尝试设置该变量为 `1`。
+[`tidb_opt_distinct_agg_push_down`](/system-variables.md#tidb_opt_distinct_agg_push_down) 变量用来设置优化器是否执行带有 `Distinct` 的聚合函数（比如 `select sum(distinct a) from t`）下推到 Coprocessor 的优化操作。当查询中带有 `Distinct` 的聚合操作执行很慢时，可以尝试设置该变量为 `1`。
 
 ```sql
 set @@tidb_opt_distinct_agg_push_down = 1;
@@ -68,7 +68,14 @@ ALTER TABLE employees COMPACT PARTITION pNorth, pEast TIFLASH REPLICA;
 
 ### 使用 Broadcast Hash Join 代替 Shuffled Hash Join
 
+对于有小表的 `Join` 算子，Broadcast Hash Join 可以避免大表的网络传输，从而提升计算性能。
+
 - [`tidb_broadcast_join_threshold_size`](/system-variables.md#tidb_broadcast_join_threshold_count-从-v50-版本开始引入)，单位为 bytes。如果表大小（字节数）小于该值，则选择 Broadcast Hash Join 算法。否则选择 Shuffled Hash Join 算法。
+
+    ```sql
+    set @@tidb_broadcast_join_threshold_size = 2000000;
+    ```
+
 - [`tidb_broadcast_join_threshold_count`](/system-variables.md#tidb_broadcast_join_threshold_count-从-v50-版本开始引入)，单位为行数。如果 join 的对象为子查询，优化器无法估计子查询结果集大小，在这种情况下通过结果集行数判断。如果子查询的行数估计值小于该变量，则选择 Broadcast Hash Join 算法。否则选择 Shuffled Hash Join 算法。
 
     ```sql
@@ -76,6 +83,8 @@ ALTER TABLE employees COMPACT PARTITION pNorth, pEast TIFLASH REPLICA;
     ```
 
 ### 设置更大的执行并发度
+
+设置更大的执行并法度，可以让 TiFlash 占用更多系统 CPU 资源，从而提升查询性能。
 
 [`tidb_max_tiflash_threads`](/system-variables.md#tidb_max_tiflash_threads-从-v610-版本开始引入)，单位为 bytes。用来设置 TiFlash 中 request 执行的最大并发度。
 
@@ -85,10 +94,10 @@ set @@tidb_max_tiflash_threads = 20;
 
 ### 设置细粒度 Shuffle 参数
 
-- [`tiflash_fine_grained_shuffle_stream_count`](/system-variables.md#tiflash_fine_grained_shuffle_stream_count-从-v620-版本开始引入)，单位为线程数。当窗口函数下推到 TiFlash 执行时，可以通过该变量控制窗口函数执行的并行度。
-- [`tiflash_fine_grained_shuffle_batch_size`](/system-variables.md#tiflash_fine_grained_shuffle_batch_size-从-v620-版本开始引入)，单位为 bytes。细粒度 shuffle 功能开启时，下推到 TiFlash 的窗口函数可以并行执行。该变量控制发送端发送数据的攒批大小。
+细粒度 Shuffle 可以通过参数增加执行窗口函数执行的并法度，让函数执行占用更多系统资源，从而提升查询性能。
+
+[`tiflash_fine_grained_shuffle_stream_count`](/system-variables.md#tiflash_fine_grained_shuffle_stream_count-从-v620-版本开始引入)，单位为线程数。当窗口函数下推到 TiFlash 执行时，可以通过该变量控制窗口函数执行的并行度。
 
 ```sql
 set @@tiflash_fine_grained_shuffle_stream_count = 20;
-set @@tiflash_fine_grained_shuffle_batch_size = 20000;
 ```
