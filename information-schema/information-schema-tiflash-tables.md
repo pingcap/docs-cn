@@ -127,7 +127,7 @@ DESC tiflash_tables;
 - `STORAGE_DELTA_NUM_SNAPSHOTS`：Delta 层 Snapshot 数量。
 - `STORAGE_DELTA_OLDEST_SNAPSHOT_LIFETIME`：Delta 层最早 Snapshot 的持续时间（单位：秒）。
 - `STORAGE_DELTA_OLDEST_SNAPSHOT_THREAD_ID`：Delta 层最早 Snapshot 对应的线程 ID。
-- `STORAGE_DELTA_OLDEST_SNAPSHOT_TRACING_ID`：Delta 层最老 Snapshot 对应的跟踪 ID。
+- `STORAGE_DELTA_OLDEST_SNAPSHOT_TRACING_ID`：Delta 层最早 Snapshot 对应的跟踪 ID。
 - `STORAGE_META_NUM_SNAPSHOTS`：Meta 元信息 Snapshot 数量。
 - `STORAGE_META_OLDEST_SNAPSHOT_LIFETIME`：Meta 元信息最早 Snapshot 的持续时间。（单位：秒）
 - `STORAGE_META_OLDEST_SNAPSHOT_THREAD_ID`：Meta 元信息最早 Snapshot 对应的线程 ID。
