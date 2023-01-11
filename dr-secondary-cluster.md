@@ -368,7 +368,7 @@ level = "eventual"
 # 单个 redo log 文件大小，单位 MiB，默认值 64，建议该值不超过 128。
 max-log-size = 64
 # 刷新或上传 redo log 至 S3 的间隔，单位毫秒，默认 1000，建议范围 500-2000。
-flush-interval = 1000
+flush-interval = 2000
 # 存储 redo log
 storage = "s3://redo?access-key=minio&secret-access-key=miniostorage&endpoint=http://10.0.1.10:6060&force-path-style=true"
 ```
