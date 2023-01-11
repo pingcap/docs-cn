@@ -68,8 +68,6 @@ aliases: ['/docs-cn/dev/tiflash/tune-tiflash-performance/','/docs-cn/dev/referen
 
     [`tidb_max_tiflash_threads`](/system-variables.md#tidb_max_tiflash_threads-从-v610-版本开始引入)，单位为 bytes。用来设置 TiFlash 中 request 执行的最大并发度。
 
-    {{< copyable "sql" >}}
-
     ```sql
     set @@tidb_max_tiflash_threads = 20;
     ```
