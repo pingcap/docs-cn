@@ -143,9 +143,9 @@ mysql> SHOW WARNINGS;
 
 ## 使用多值索引
 
-多值索引和普通索引有所不同，TiDB 只会使用 [IndexMerge](/explain-index-merge.md) 来进行多列索引的访问，因此要想使用多值索引进行数据访问，请确保 [IndexMerge](/explain-index-merge.md) 功能被打开。
+多值索引和普通索引有所不同，TiDB 目前只会使用 [IndexMerge](/explain-index-merge.md) 来进行多列索引的访问，因此要想使用多值索引进行数据访问，请确保 [IndexMerge](/explain-index-merge.md) 功能被打开。
 
-目前 TiDB 支持将 `json_member_of`, `json_contains` 和 `json_overlaps` 条件转换成 IndexMerge 来进行多值索引的访问；使用时可以通过 `use_index`、`use_index_merge` hint 来指定，或者交给优化器通过代价估算自己选择，见下面例子：
+目前 TiDB 支持将 `json_member_of`, `json_contains` 和 `json_overlaps` 条件转换成 IndexMerge 来进行多值索引的访问；同时可通过 `use_index`、`use_index_merge` hint 来指定，或者交给优化器通过代价估算自己选择，见下面例子：
 
 ```sql
 mysql> CREATE TABLE t1 (j JSON, INDEX idx((CAST(j->'$.path' AS SIGNED ARRAY))));
@@ -188,7 +188,7 @@ mysql> EXPLAIN SELECT * FROM t1 use index(idx) WHERE JSON_OVERLAPS((j->'$.path')
 6 rows in set, 1 warning (0.00 sec)
 ```
 
-复合的多值索引，也一样使用 IndexMerge 进行访问：
+复合的多值索引，也一样可以使用 IndexMerge 进行访问：
 
 ```sql
 mysql> CREATE TABLE t2 (a INT, j JSON, b INT, INDEX idx(a, (CAST(j->'$.path' AS SIGNED ARRAY)), b));
@@ -276,5 +276,4 @@ mysql> EXPLAIN SELECT /*+ use_index_merge(t3, idx) */ * FROM t3 WHERE ((1 member
 |   └─TableFullScan_6     | 10000.00 | cop[tikv] | table:t3      | keep order:false, stats:pseudo                                                                                                                                                                               |
 +-------------------------+----------+-----------+---------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 3 rows in set, 2 warnings (0.00 sec)
-
 ```
