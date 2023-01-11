@@ -77,8 +77,6 @@ aliases: ['/docs-cn/dev/tiflash/tune-tiflash-performance/','/docs-cn/dev/referen
     - [`tiflash_fine_grained_shuffle_stream_count`](/system-variables.md#tiflash_fine_grained_shuffle_stream_count-从-v620-版本开始引入)，单位为线程数。当窗口函数下推到 TiFlash 执行时，可以通过该变量控制窗口函数执行的并行度。
     - [`tiflash_fine_grained_shuffle_batch_size`](/system-variables.md#tiflash_fine_grained_shuffle_batch_size-从-v620-版本开始引入)，单位为 bytes。细粒度 shuffle 功能开启时，下推到 TiFlash 的窗口函数可以并行执行。该变量控制发送端发送数据的攒批大小。
 
-    {{< copyable "sql" >}}
-
     ```sql
     set @@tiflash_fine_grained_shuffle_stream_count = 20;
     set @@tiflash_fine_grained_shuffle_batch_size = 20000;
