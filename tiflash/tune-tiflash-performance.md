@@ -31,7 +31,7 @@ MPP 执行计划可以充分利用分布式计算资源，从而显著提高批�
 [`tidb_enforce_mpp`](/system-variables.md#tidb_enforce_mpp-从-v51-版本开始引入) 变量用于控制是否忽略优化器代价估算，强制使用 TiFlash 的 MPP 模式执行查询。要开启 MPP 模式查询，执行如下命令：
 
 ```sql
-set @@tidb_enforce_mpp = 1;
+set @@tidb_enforce_mpp = ON;
 ```
 
 ### 聚合下推 `Join` 或 `Union`
@@ -48,10 +48,10 @@ set @@tidb_opt_agg_push_down = ON;
 
 TiFlash 暂时还不支持部分可接受 `Distinct` 列的聚合函数，比如 `Sum` 。默认情况下，整个聚合函数运算都会在 TiDB 端执行。通过开启 `Distinct` 优化，部分操作可以下推到 TiFlash，从而提升查询性能：
 
-[`tidb_opt_distinct_agg_push_down`](/system-variables.md#tidb_opt_distinct_agg_push_down) 变量用来设置优化器是否执行带有 `Distinct` 的聚合函数（比如 `select sum(distinct a) from t`）下推到 Coprocessor 的优化操作。当查询中带有 `Distinct` 的聚合操作执行很慢时，可以尝试设置该变量为 `1`。
+[`tidb_opt_distinct_agg_push_down`](/system-variables.md#tidb_opt_distinct_agg_push_down) 变量用来设置优化器是否执行带有 `Distinct` 的聚合函数（比如 `select sum(distinct a) from t`）下推到 Coprocessor 的优化操作。当查询中带有 `Distinct` 的聚合操作执行很慢时，可以尝试设置该变量为 `ON`。
 
 ```sql
-set @@tidb_opt_distinct_agg_push_down = 1;
+set @@tidb_opt_distinct_agg_push_down = ON;
 ```
 
 ### 使用 `ALTER TABLE...COMPACT` 整理数据
