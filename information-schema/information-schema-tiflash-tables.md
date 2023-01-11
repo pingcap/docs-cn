@@ -5,6 +5,10 @@ summary: 了解 information_schema 表 `TIFLASH_TABLES`。
 
 # TIFLASH_TABLES
 
+> **警告：**
+>
+> 请不要在生产环境中使用该系统表，因为该表字段信息尚未固定下来，可能会在 TiDB 未来版本中发生变化。
+
 `TIFLASH_TABLES` 表提供了 TiFlash 内部数据表的统计信息。
 
 ```sql
