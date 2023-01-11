@@ -15,9 +15,7 @@ aliases: ['/docs-cn/dev/tiflash/tune-tiflash-performance/','/docs-cn/dev/referen
 
 1. 当下推未生效时，可以尝试开启强制下推功能：
 
-    [`tidb_enforce_mpp`](/system-variables.md#tidb_enforce_mpp-new-in-v51) 变量用于控制是否忽略优化器代价估算，强制使用 TiFlash 的 MPP 模式执行查询，可以设置的值包括：
-    - 0 或 OFF，代表不强制使用 MPP 模式（默认）。
-    - 1 或 ON，代表将忽略代价估算，强制使用 MPP 模式。
+    [`tidb_enforce_mpp`](/system-variables.md#tidb_enforce_mpp-new-in-v51) 变量用于控制是否忽略优化器代价估算，强制使用 TiFlash 的 MPP 模式执行查询。
 
     {{< copyable "sql" >}}
 
