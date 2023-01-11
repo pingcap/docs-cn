@@ -122,7 +122,7 @@ DESC tiflash_tables;
 - `AVG_PACK_SIZE_IN_STABLE`：Stable 层所有 Pack 的平均数据大小（单位：字节）。
 - `STORAGE_STABLE_NUM_SNAPSHOTS`：Stable 层 Snapshot 数量。
 - `STORAGE_STABLE_OLDEST_SNAPSHOT_LIFETIME`：Stable 层最早 Snapshot 的持续时间（单位：秒）。
-- `STORAGE_STABLE_OLDEST_SNAPSHOT_THREAD_ID`：Stable 层最老 Snapshot 对应的线程 ID。
+- `STORAGE_STABLE_OLDEST_SNAPSHOT_THREAD_ID`：Stable 层最早 Snapshot 对应的线程 ID。
 - `STORAGE_STABLE_OLDEST_SNAPSHOT_TRACING_ID`：Stable 层最老 Snapshot 对应的跟踪 ID。
 - `STORAGE_DELTA_NUM_SNAPSHOTS`：Delta 层 Snapshot 数量。
 - `STORAGE_DELTA_OLDEST_SNAPSHOT_LIFETIME`：Delta 层最老 Snapshot 的持续时间（单位：秒）。
