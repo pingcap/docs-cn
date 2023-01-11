@@ -66,8 +66,8 @@ aliases: ['/docs-cn/dev/tidb-limitations/']
 | BINARY     | 256 字节      |
 | VARBINARY  | 65535 字节    |
 | VARCHAR    | 16383 字符    |
-| TEXT       | 默认为 6 MiB，可调至 120 MiB      |
-| BLOB       | 默认为 6 MiB，可调至 120 MiB      |
+| TEXT       | 默认为 6291456 字节（即 6 MiB），可调至 125829120 字节（即 120 MiB）      |
+| BLOB       | 默认为 6291456 字节（即 6 MiB），可调至 125829120 字节（即 120 MiB）      |
 
 ## SQL Statements 的限制
 
