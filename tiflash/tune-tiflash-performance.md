@@ -6,7 +6,7 @@ aliases: ['/docs-cn/dev/tiflash/tune-tiflash-performance/','/docs-cn/dev/referen
 
 # TiFlash 性能调优
 
-本文介绍了使 TiFlash 性能达到最优的几种方式，包括规划机器资源、TiDB 参数调优、配置 TiKV Region 大小等。
+本文介绍了使 TiFlash 性能达到最优的几种方式，包括规划机器资源、TiDB 参数调优等。
 
 ## 资源规划
 
