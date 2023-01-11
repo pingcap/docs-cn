@@ -84,7 +84,7 @@ ALTER TABLE employees COMPACT PARTITION pNorth, pEast TIFLASH REPLICA;
 
 ### 设置更大的执行并发度
 
-设置更大的执行并法度，可以让 TiFlash 占用更多系统 CPU 资源，从而提升查询性能。
+设置更大的执行并发度，可以让 TiFlash 占用更多系统 CPU 资源，从而提升查询性能。
 
 [`tidb_max_tiflash_threads`](/system-variables.md#tidb_max_tiflash_threads-从-v610-版本开始引入)，单位为 bytes。用来设置 TiFlash 中 request 执行的最大并发度。
 
@@ -94,7 +94,7 @@ set @@tidb_max_tiflash_threads = 20;
 
 ### 设置细粒度 Shuffle 参数
 
-细粒度 Shuffle 可以通过参数增加窗口函数执行的并法度，让函数执行占用更多系统资源，从而提升查询性能。
+细粒度 Shuffle 可以通过参数增加窗口函数执行的并发度，让函数执行占用更多系统资源，从而提升查询性能。
 
 [`tiflash_fine_grained_shuffle_stream_count`](/system-variables.md#tiflash_fine_grained_shuffle_stream_count-从-v620-版本开始引入)，单位为线程数。当窗口函数下推到 TiFlash 执行时，可以通过该变量控制窗口函数执行的并行度。
 
