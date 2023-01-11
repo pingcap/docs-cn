@@ -84,7 +84,7 @@ DESC tiflash_segments;
 - `STABLE_ROWS`：Stable 层缓存中的数据总行数。
 - `STABLE_SIZE`：Stable 层缓存中的数据总大小（单位：字节）。
 - `STABLE_DMFILES`：Stable 层 DMFile 数量。
-- `STABLE_DMFILES_ID_0`：Stable 层第一个 DMFile 在磁盘上存储的标识。
+- `STABLE_DMFILES_ID_0`：Stable 层第一个 DMFile 在磁盘上存储的 ID。
 - `STABLE_DMFILES_ROWS`：Stable 层 DMFile 中的数据总行数。
 - `STABLE_DMFILES_SIZE`：Stable 层 DMFile 中的数据总大小（单位：字节）。
 - `STABLE_DMFILES_SIZE_ON_DISK`：Stable 层 DMFile 中的数据在磁盘占据的空间大小（单位：字节）。
