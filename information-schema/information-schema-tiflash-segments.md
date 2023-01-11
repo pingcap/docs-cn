@@ -73,7 +73,7 @@ DESC tiflash_segments;
 - `DELTA_MEMTABLE_SIZE`：Delta 层缓存中的数据总大小（单位：字节）。
 - `DELTA_MEMTABLE_COLUMN_FILES`：Delta 层缓存中 Column File 数量。
 - `DELTA_MEMTABLE_DELETE_RANGES`：Delta 层缓存中 Delete Range 数量。
-- `DELTA_PERSISTED_PAGE_ID`：Delta 层数据在磁盘上存储的标识。
+- `DELTA_PERSISTED_PAGE_ID`：Delta 层数据在磁盘上存储的 ID。
 - `DELTA_PERSISTED_ROWS`：Delta 层已落盘的数据总行数。
 - `DELTA_PERSISTED_SIZE`：Delta 层已落盘的数据总大小（单位：字节）。
 - `DELTA_PERSISTED_COLUMN_FILES`：Delta 层已落盘 Column File 数量。
