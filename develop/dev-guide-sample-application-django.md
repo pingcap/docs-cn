@@ -58,57 +58,11 @@ summary: 给出一个 Django 构建 TiDB 应用程序示例。
 
 ## 第 3 步：获取应用程序代码
 
+> **建议：**
+>
+> 如果你希望得到一个与本示例相同依赖的空白程序，而无需示例代码，可参考[创建相同依赖空白程序（可选）](#创建相同依赖空白程序可选)一节。
+
 请下载或克隆示例代码库 [pingcap-inc/tidb-example-python](https://github.com/pingcap-inc/tidb-example-python)，并进入到目录 `django_example` 中。
-
-### 创建相同依赖空白程序（可选）
-
-本程序使用 Django Admin CLI [django-admin](https://django-admin-cli.readthedocs.io/en/stable/index.html) 构建。你可以安装并使用 `django-admin` 来快速完成 Django 项目的初始化。如你需要快速得到一个与 `django_example` 示例程序相同依赖的可运行空白应用程序，你可以按照如下步骤进行操作：
-
-1. 初始化 Django 项目 `copy_django_example`：
-
-    ```bash
-    pip install -r requirement.txt
-    django-admin startproject copy_django_example
-    cd copy_django_example
-    ```
-
-2. 更改 `DATABASES` 配置：
-
-    1. 打开 `copy_django_example/settings.py` 配置文件
-    2. 将 `DATABASES` 部分从指向本地 SQLite 的配置更改为 TiDB 集群的信息：
-
-        ```python
-        DATABASES = {
-            'default': {
-                'ENGINE': 'django_tidb',
-                'NAME': 'django',
-                'USER': 'root',
-                'PASSWORD': '',
-                'HOST': '127.0.0.1',
-                'PORT': 4000,
-            },
-        }
-        DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
-        ```
-
-    3. 由于本示例不需要跨域校验，因此你需要注释或删除 `MIDDLEWARE` 中的 `CsrfViewMiddleware`。修改后的 `MIDDLEWARE` 为：
-
-        ```python
-        MIDDLEWARE = [
-            'django.middleware.security.SecurityMiddleware',
-            'django.contrib.sessions.middleware.SessionMiddleware',
-            'django.middleware.common.CommonMiddleware',
-            # 'django.middleware.csrf.CsrfViewMiddleware',
-            'django.contrib.auth.middleware.AuthenticationMiddleware',
-            'django.contrib.messages.middleware.MessageMiddleware',
-            'django.middleware.clickjacking.XFrameOptionsMiddleware',
-        ]
-        ```
-
-至此，你已经完成了一个空白的应用程序，此应用程序与示例应用程序的依赖完全相同。其他关于 Django 的使用方法，可参考：
-
-- [Django 文档](https://docs.djangoproject.com/zh-hans/3.2/)
-- [Django 入门教程](https://docs.djangoproject.com/zh-hans/3.2/intro/tutorial01/)
 
 ## 第 4 步：运行应用程序
 
@@ -798,3 +752,53 @@ def trade(request):
         ```python
         return HttpResponse("trade successful")
         ```
+
+## 创建相同依赖空白程序（可选）
+
+本程序使用 Django Admin CLI [django-admin](https://django-admin-cli.readthedocs.io/en/stable/index.html) 构建。你可以安装并使用 `django-admin` 来快速完成 Django 项目的初始化。如你需要快速得到一个与 `django_example` 示例程序相同依赖的可运行空白应用程序，你可以按照如下步骤进行操作：
+
+1. 初始化 Django 项目 `copy_django_example`：
+
+    ```bash
+    pip install -r requirement.txt
+    django-admin startproject copy_django_example
+    cd copy_django_example
+    ```
+
+2. 更改 `DATABASES` 配置：
+
+    1. 打开 `copy_django_example/settings.py` 配置文件
+    2. 将 `DATABASES` 部分从指向本地 SQLite 的配置更改为 TiDB 集群的信息：
+
+        ```python
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django_tidb',
+                'NAME': 'django',
+                'USER': 'root',
+                'PASSWORD': '',
+                'HOST': '127.0.0.1',
+                'PORT': 4000,
+            },
+        }
+        DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+        ```
+
+    3. 由于本示例不需要跨域校验，因此你需要注释或删除 `MIDDLEWARE` 中的 `CsrfViewMiddleware`。修改后的 `MIDDLEWARE` 为：
+
+        ```python
+        MIDDLEWARE = [
+            'django.middleware.security.SecurityMiddleware',
+            'django.contrib.sessions.middleware.SessionMiddleware',
+            'django.middleware.common.CommonMiddleware',
+            # 'django.middleware.csrf.CsrfViewMiddleware',
+            'django.contrib.auth.middleware.AuthenticationMiddleware',
+            'django.contrib.messages.middleware.MessageMiddleware',
+            'django.middleware.clickjacking.XFrameOptionsMiddleware',
+        ]
+        ```
+
+至此，你已经完成了一个空白的应用程序，此应用程序与示例应用程序的依赖完全相同。其他关于 Django 的使用方法，可参考：
+
+- [Django 文档](https://docs.djangoproject.com/zh-hans/3.2/)
+- [Django 入门教程](https://docs.djangoproject.com/zh-hans/3.2/intro/tutorial01/)
