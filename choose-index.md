@@ -22,6 +22,7 @@ aliases: ['/docs-cn/dev/choose-index/']
 | TableReader | 表在 TiFlash 节点上存在副本 | 需要读取的列比较少，但是需要计算的行很多 | TiFlash 是列式存储，如果需要对少量的列和大量的行进行计算，一般会选择这个算子 |
 | IndexReader | 表有一个或多个索引，且计算所需的列被包含在索引里 | 存在较小的索引上的范围查询，或者对索引列有顺序需求的时候 | 当存在多个索引的时候，会根据估算代价选择合理的索引 |
 | IndexLookupReader | 表有一个或多个索引，且计算所需的列**不完全**被包含在索引里 | 同 IndexReader | 因为计算列不完全被包含在索引里，所以读完索引后需要回表，这里会比 IndexReader 多一些开销 |
+| IndexMerge | 表有多个索引或多值索引 | 使用多值索引或同时使用多个索引的时候 | 可以使用 hint 或让优化器根据代价估算自动选择，可见 [explain-index-merge](/explain-index-merge.md) |
 
 > **注意：**
 > 
@@ -142,4 +143,108 @@ mysql> SHOW WARNINGS;
 
 ## 使用多值索引
 
-TBD
+多值索引和普通索引有所不同，TiDB 只会使用 [IndexMerge](/explain-index-merge.md) 来进行多列索引的访问，因此要想使用多值索引进行数据访问，请确保 [IndexMerge](/explain-index-merge.md) 功能被打开。
+
+目前 TiDB 支持将 `json_member_of`, `json_contains` 和 `json_overlaps` 条件转换成 IndexMerge 来进行多值索引的访问；使用时可以通过 `use_index`、`use_index_merge` hint 来指定，或者交给优化器通过代价估算自己选择，见下面例子：
+
+```sql
+mysql> CREATE TABLE t1 (j JSON, INDEX idx((CAST(j->'$.path' AS SIGNED ARRAY))));
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> EXPLAIN SELECT /*+ use_index(t1, idx) */ * FROM t1 WHERE (1 MEMBER OF (j->'$.path'));
++---------------------------------+---------+-----------+-----------------------------------------------------------------------------+------------------------------------------------------------------------+
+| id                              | estRows | task      | access object                                                               | operator info                                                          |
++---------------------------------+---------+-----------+-----------------------------------------------------------------------------+------------------------------------------------------------------------+
+| Selection_5                     | 8000.00 | root      |                                                                             | json_memberof(cast(1, json BINARY), json_extract(test.t1.j, "$.path")) |
+| └─IndexMerge_8                  | 10.00   | root      |                                                                             | type: union                                                            |
+|   ├─IndexRangeScan_6(Build)     | 10.00   | cop[tikv] | table:t1, index:idx(cast(json_extract(`j`, _utf8'$.path') as signed array)) | range:[1,1], keep order:false, stats:pseudo                            |
+|   └─TableRowIDScan_7(Probe)     | 10.00   | cop[tikv] | table:t1                                                                    | keep order:false, stats:pseudo                                         |
++---------------------------------+---------+-----------+-----------------------------------------------------------------------------+------------------------------------------------------------------------+
+4 rows in set, 1 warning (0.00 sec)
+
+mysql> EXPLAIN SELECT /*+ use_index_merge(t1, idx) */ * FROM t1 WHERE JSON_CONTAINS((j->'$.path'), '[1, 2, 3]');
++-------------------------------+---------+-----------+-----------------------------------------------------------------------------+---------------------------------------------+
+| id                            | estRows | task      | access object                                                               | operator info                               |
++-------------------------------+---------+-----------+-----------------------------------------------------------------------------+---------------------------------------------+
+| IndexMerge_9                  | 10.00   | root      |                                                                             | type: intersection                          |
+| ├─IndexRangeScan_5(Build)     | 10.00   | cop[tikv] | table:t1, index:idx(cast(json_extract(`j`, _utf8'$.path') as signed array)) | range:[1,1], keep order:false, stats:pseudo |
+| ├─IndexRangeScan_6(Build)     | 10.00   | cop[tikv] | table:t1, index:idx(cast(json_extract(`j`, _utf8'$.path') as signed array)) | range:[2,2], keep order:false, stats:pseudo |
+| ├─IndexRangeScan_7(Build)     | 10.00   | cop[tikv] | table:t1, index:idx(cast(json_extract(`j`, _utf8'$.path') as signed array)) | range:[3,3], keep order:false, stats:pseudo |
+| └─TableRowIDScan_8(Probe)     | 10.00   | cop[tikv] | table:t1                                                                    | keep order:false, stats:pseudo              |
++-------------------------------+---------+-----------+-----------------------------------------------------------------------------+---------------------------------------------+
+5 rows in set (0.00 sec)
+
+mysql> EXPLAIN SELECT * FROM t1 use index(idx) WHERE JSON_OVERLAPS((j->'$.path'), '[1, 2, 3]');
++---------------------------------+---------+-----------+-----------------------------------------------------------------------------+----------------------------------------------------------------------------------+
+| id                              | estRows | task      | access object                                                               | operator info                                                                    |
++---------------------------------+---------+-----------+-----------------------------------------------------------------------------+----------------------------------------------------------------------------------+
+| Selection_5                     | 8000.00 | root      |                                                                             | json_overlaps(json_extract(test.t1.j, "$.path"), cast("[1, 2, 3]", json BINARY)) |
+| └─IndexMerge_10                 | 10.00   | root      |                                                                             | type: union                                                                      |
+|   ├─IndexRangeScan_6(Build)     | 10.00   | cop[tikv] | table:t1, index:idx(cast(json_extract(`j`, _utf8'$.path') as signed array)) | range:[1,1], keep order:false, stats:pseudo                                      |
+|   ├─IndexRangeScan_7(Build)     | 10.00   | cop[tikv] | table:t1, index:idx(cast(json_extract(`j`, _utf8'$.path') as signed array)) | range:[2,2], keep order:false, stats:pseudo                                      |
+|   ├─IndexRangeScan_8(Build)     | 10.00   | cop[tikv] | table:t1, index:idx(cast(json_extract(`j`, _utf8'$.path') as signed array)) | range:[3,3], keep order:false, stats:pseudo                                      |
+|   └─TableRowIDScan_9(Probe)     | 10.00   | cop[tikv] | table:t1                                                                    | keep order:false, stats:pseudo                                                   |
++---------------------------------+---------+-----------+-----------------------------------------------------------------------------+----------------------------------------------------------------------------------+
+6 rows in set, 1 warning (0.00 sec)
+```
+
+复合的多值索引，也一样使用 IndexMerge 进行访问：
+
+```sql
+mysql> CREATE TABLE t2 (a INT, j JSON, b INT, INDEX idx(a, (CAST(j->'$.path' AS SIGNED ARRAY)), b));
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> EXPLAIN SELECT /*+ use_index(t2, idx) */ * FROM t2 WHERE a=1 AND (1 MEMBER OF (j->'$.path')) AND b=2;
++---------------------------------+---------+-----------+-----------------------------------------------------------------------------------+------------------------------------------------------------------------+
+| id                              | estRows | task      | access object                                                                     | operator info                                                          |
++---------------------------------+---------+-----------+-----------------------------------------------------------------------------------+------------------------------------------------------------------------+
+| Selection_5                     | 0.01    | root      |                                                                                   | json_memberof(cast(1, json BINARY), json_extract(test.t2.j, "$.path")) |
+| └─IndexMerge_8                  | 0.00    | root      |                                                                                   | type: union                                                            |
+|   ├─IndexRangeScan_6(Build)     | 0.00    | cop[tikv] | table:t2, index:idx(a, cast(json_extract(`j`, _utf8'$.path') as signed array), b) | range:[1 1 2,1 1 2], keep order:false, stats:pseudo                    |
+|   └─TableRowIDScan_7(Probe)     | 0.00    | cop[tikv] | table:t2                                                                          | keep order:false, stats:pseudo                                         |
++---------------------------------+---------+-----------+-----------------------------------------------------------------------------------+------------------------------------------------------------------------+
+4 rows in set, 1 warning (0.00 sec)
+
+mysql> EXPLAIN SELECT /*+ use_index_merge(t2, idx) */ * FROM t2 WHERE a=1 AND JSON_CONTAINS((j->'$.path'), '[1, 2, 3]');
++-------------------------------+---------+-----------+-----------------------------------------------------------------------------------+-------------------------------------------------+
+| id                            | estRows | task      | access object                                                                     | operator info                                   |
++-------------------------------+---------+-----------+-----------------------------------------------------------------------------------+-------------------------------------------------+
+| IndexMerge_9                  | 0.10    | root      |                                                                                   | type: intersection                              |
+| ├─IndexRangeScan_5(Build)     | 0.10    | cop[tikv] | table:t2, index:idx(a, cast(json_extract(`j`, _utf8'$.path') as signed array), b) | range:[1 1,1 1], keep order:false, stats:pseudo |
+| ├─IndexRangeScan_6(Build)     | 0.10    | cop[tikv] | table:t2, index:idx(a, cast(json_extract(`j`, _utf8'$.path') as signed array), b) | range:[1 2,1 2], keep order:false, stats:pseudo |
+| ├─IndexRangeScan_7(Build)     | 0.10    | cop[tikv] | table:t2, index:idx(a, cast(json_extract(`j`, _utf8'$.path') as signed array), b) | range:[1 3,1 3], keep order:false, stats:pseudo |
+| └─TableRowIDScan_8(Probe)     | 0.10    | cop[tikv] | table:t2                                                                          | keep order:false, stats:pseudo                  |
++-------------------------------+---------+-----------+-----------------------------------------------------------------------------------+-------------------------------------------------+
+5 rows in set (0.00 sec)
+
+mysql> EXPLAIN SELECT * FROM t2 use index(idx) WHERE a=1 AND JSON_OVERLAPS((j->'$.path'), '[1, 2, 3]');
++---------------------------------+---------+-----------+-----------------------------------------------------------------------------------+----------------------------------------------------------------------------------+
+| id                              | estRows | task      | access object                                                                     | operator info                                                                    |
++---------------------------------+---------+-----------+-----------------------------------------------------------------------------------+----------------------------------------------------------------------------------+
+| Selection_5                     | 8.00    | root      |                                                                                   | json_overlaps(json_extract(test.t2.j, "$.path"), cast("[1, 2, 3]", json BINARY)) |
+| └─IndexMerge_10                 | 0.10    | root      |                                                                                   | type: union                                                                      |
+|   ├─IndexRangeScan_6(Build)     | 0.10    | cop[tikv] | table:t2, index:idx(a, cast(json_extract(`j`, _utf8'$.path') as signed array), b) | range:[1 1,1 1], keep order:false, stats:pseudo                                  |
+|   ├─IndexRangeScan_7(Build)     | 0.10    | cop[tikv] | table:t2, index:idx(a, cast(json_extract(`j`, _utf8'$.path') as signed array), b) | range:[1 2,1 2], keep order:false, stats:pseudo                                  |
+|   ├─IndexRangeScan_8(Build)     | 0.10    | cop[tikv] | table:t2, index:idx(a, cast(json_extract(`j`, _utf8'$.path') as signed array), b) | range:[1 3,1 3], keep order:false, stats:pseudo                                  |
+|   └─TableRowIDScan_9(Probe)     | 0.10    | cop[tikv] | table:t2                                                                          | keep order:false, stats:pseudo                                                   |
++---------------------------------+---------+-----------+-----------------------------------------------------------------------------------+----------------------------------------------------------------------------------+
+6 rows in set, 1 warning (0.00 sec)
+```
+
+对于由多个 `json_member_of` 和 `json_overlaps` 组成的 `OR` 条件，也可以使用 IndexMerge 进行访问：
+
+```sql
+mysql> CREATE TABLE t3 (a INT, j JSON, INDEX idx(a, (CAST(j AS SIGNED ARRAY))));
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> EXPLAIN SELECT /*+ use_index_merge(t3, idx) */ * FROM t3 WHERE ((a=1 AND (1 member of (j)))) OR ((a=2 AND (2 member of (j))));
++---------------------------------+---------+-----------+---------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------+
+| id                              | estRows | task      | access object                                     | operator info                                                                                                                                    |
++---------------------------------+---------+-----------+---------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------+
+| Selection_5                     | 0.08    | root      |                                                   | or(and(eq(test.t3.a, 1), json_memberof(cast(1, json BINARY), test.t3.j)), and(eq(test.t3.a, 2), json_memberof(cast(2, json BINARY), test.t3.j))) |
+| └─IndexMerge_9                  | 0.10    | root      |                                                   | type: union                                                                                                                                      |
+|   ├─IndexRangeScan_6(Build)     | 0.10    | cop[tikv] | table:t3, index:idx(a, cast(`j` as signed array)) | range:[1 1,1 1], keep order:false, stats:pseudo                                                                                                  |
+|   ├─IndexRangeScan_7(Build)     | 0.10    | cop[tikv] | table:t3, index:idx(a, cast(`j` as signed array)) | range:[2 2,2 2], keep order:false, stats:pseudo                                                                                                  |
+|   └─TableRowIDScan_8(Probe)     | 0.10    | cop[tikv] | table:t3                                          | keep order:false, stats:pseudo                                                                                                                   |
++---------------------------------+---------+-----------+---------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------+
+```
