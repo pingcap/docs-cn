@@ -134,7 +134,7 @@ tiup cluster upgrade <cluster-name> <cluster-version> --transfer-timeout 600
         gc-ttl: 172800
     ```
 
-    以上把 TiCDC 的 `gc-ttl` 的值设置为 24 小时。
+    以上把 TiCDC 的 `gc-ttl` 的值设置为 48 小时。
 
 3. 执行 `tiup cluster reload -R cdc` 命令重新加载配置。
 
