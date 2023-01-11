@@ -1,16 +1,16 @@
 ---
 title: TiFlash 性能调优
-summary: 介绍 TiFlash 性能调优的方法，包括规划机器资源、TiDB 参数调优、配置 TiKV Region 大小等。
+summary: 介绍 TiFlash 性能调优的方法，包括机器资源规划和TiDB 参数调优。
 aliases: ['/docs-cn/dev/tiflash/tune-tiflash-performance/','/docs-cn/dev/reference/tiflash/tune-performance/']
 ---
 
 # TiFlash 性能调优
 
-本文介绍了使 TiFlash 性能达到最优的几种方式，包括规划机器资源、TiDB 参数调优等。
+本文介绍了 TiFlash 性能调优的几种方式，包括机器资源规划和TiDB 参数调优，通过这些方式，TiFlash 性能可以达到最优状态。
 
 ## 资源规划
 
-对于希望节省机器资源，并且完全没有隔离要求的场景，可以使用 TiKV 和 TiFlash 联合部署。建议为 TiKV 与 TiFlash 分别留够资源，并且不要共享磁盘。
+对于希望节省机器资源，并且完全没有隔离要求的场景，可以使用 TiKV 和 TiFlash 联合部署。建议为 TiKV 与 TiFlash 分别留够资源，同时避免共享磁盘。
 
 ## TiDB 相关参数调优
 
