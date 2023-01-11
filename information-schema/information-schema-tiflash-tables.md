@@ -86,7 +86,7 @@ DESC tiflash_tables;
 - `TOTAL_ROWS`：表的总行数。
 - `TOTAL_SIZE`：表的总大小（单位：字节）。
 - `TOTAL_DELETE_RANGES`：表当前 Delete Range 的数量。
-- `DELTA_RATE_ROWS`：表 Delta 层总行数 / 该表的总行数。
+- `DELTA_RATE_ROWS`：表 Delta 层数据总行数占该表总行数的比例。
 - `DELTA_RATE_SEGMENTS`：表所有 Segment 中包含非空 Delta 层的 Segment 的比例。
 - `DELTA_PLACED_RATE`：表 Delta 层数据行中已经完成 Index 构建的比例。
 - `DELTA_CACHE_SIZE`：表 Delta 层缓存大小（单位：字节）。
