@@ -15,7 +15,7 @@ aliases: ['/docs-cn/dev/tiflash/tune-tiflash-performance/','/docs-cn/dev/referen
 
 1. 当没有生成 MPP 执行计划的时候，可以尝试强制开启 MPP：
 
-    [`tidb_enforce_mpp`](/system-variables.md#tidb_enforce_mpp-new-in-v51) 变量用于控制是否忽略优化器代价估算，强制使用 TiFlash 的 MPP 模式执行查询。
+    [`tidb_enforce_mpp`](/system-variables.md#tidb_enforce_mpp-从-v5.1-版本开始引入) 变量用于控制是否忽略优化器代价估算，强制使用 TiFlash 的 MPP 模式执行查询。
 
     {{< copyable "sql" >}}
 
@@ -68,7 +68,7 @@ aliases: ['/docs-cn/dev/tiflash/tune-tiflash-performance/','/docs-cn/dev/referen
 
 6. 尝试设置更大的执行并发度：
 
-    [`tidb_max_tiflash_threads`](/system-variables.md#tidb_max_tiflash_threads-new-in-v610)，单位为 bytes。用来设置 TiFlash 中 request 执行的最大并发度果表大小。
+    [`tidb_max_tiflash_threads`](/system-variables.md#tidb_max_tiflash_threads-从-v6.1.0-版本开始引入)，单位为 bytes。用来设置 TiFlash 中 request 执行的最大并发度果表大小。
 
     {{< copyable "sql" >}}
 
@@ -78,8 +78,8 @@ aliases: ['/docs-cn/dev/tiflash/tune-tiflash-performance/','/docs-cn/dev/referen
 
 7. 尝试设置细粒度 Shuffle 的相关参数：
 
-    - [`tiflash_fine_grained_shuffle_stream_count`](/system-variables.md#tiflash_fine_grained_shuffle_stream_count-new-in-v620)，单位为线程数。当窗口函数下推到 TiFlash 执行时，可以通过该变量控制窗口函数执行的并行度。
-    - [`tiflash_fine_grained_shuffle_batch_size`](/system-variables.md#tiflash_fine_grained_shuffle_batch_size-new-in-v620)，单位为 bytes。细粒度 shuffle 功能开启时，下推到 TiFlash 的窗口函数可以并行执行。该变量控制发送端发送数据的攒批大小。
+    - [`tiflash_fine_grained_shuffle_stream_count`](/system-variables.md#tiflash_fine_grained_shuffle_stream_count-从-v6.2.0-版本开始引入)，单位为线程数。当窗口函数下推到 TiFlash 执行时，可以通过该变量控制窗口函数执行的并行度。
+    - [`tiflash_fine_grained_shuffle_batch_size`](/system-variables.md#tiflash_fine_grained_shuffle_batch_size-从-v6.2.0-版本开始引入)，单位为 bytes。细粒度 shuffle 功能开启时，下推到 TiFlash 的窗口函数可以并行执行。该变量控制发送端发送数据的攒批大小。
 
     {{< copyable "sql" >}}
 
