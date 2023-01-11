@@ -356,7 +356,7 @@ enable-sync-point = true
 
 # 记录主集群和备用集群一致快照点的时间间隔，它也代表能读到完整事务的最大延迟时间，比如在备用集群读取到主集群 2 分钟之前的事务数据
 # 配置格式为 h m s，例如 "1h30m30s"。默认值为 10m，最小值为 30s
-sync-point-interval = "1m"
+sync-point-interval = "10m"
 
 # Syncpoint 功能在下游表中保存的数据的时长，超过这个时间的数据会被清理
 # 配置格式为 h m s，例如 "24h30m30s"。默认值为 24h
