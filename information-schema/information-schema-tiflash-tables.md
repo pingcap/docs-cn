@@ -94,7 +94,7 @@ DESC tiflash_tables;
 - `DELTA_CACHE_SIZE`：表 Delta 层缓存大小（单位：字节）。
 - `DELTA_CACHE_RATE`：表 Delta 层数据的缓存比例。
 - `DELTA_CACHE_WASTED_RATE`：表 Delta 层缓存中无效数据的比例。
-- `DELTA_INDEX_SIZE`：Delta Index 的大小（单位：字节）。
+- `DELTA_INDEX_SIZE`：Delta Index 占用的内存大小（单位：字节）。
 - `AVG_SEGMENT_ROWS`：表所有 Segment 的平均行数。
 - `AVG_SEGMENT_SIZE`：表所有 Segment 的平均大小（单位：字节）。
 - `DELTA_COUNT`：表中包含 Delta 层的 Segment 的个数。
