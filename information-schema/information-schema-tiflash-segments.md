@@ -66,7 +66,7 @@ DESC tiflash_segments;
 - `EPOCH`：Segment 的更新版本号，每个 Segment 的版本号单调递增。
 - `ROWS`：Segment 的数据总行数。
 - `SIZE`：Segment 的数据总大小（单位：字节）。
-- `DELTA_RATE`：Delta 层的数据总行数 / Segment 的数据总行数。
+- `DELTA_RATE`：Delta 层的数据总行数占 Segment 数据总行数的比例。
 - `DELTA_MEMTABLE_ROWS`：Delta 层缓存中的数据总行数。
 - `DELTA_MEMTABLE_SIZE`：Delta 层缓存中的数据总大小（单位：字节）。
 - `DELTA_MEMTABLE_COLUMN_FILES`：Delta 层缓存中 Column File 数量。
