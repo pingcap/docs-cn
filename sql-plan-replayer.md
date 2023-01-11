@@ -145,3 +145,36 @@ For example:
 ```sql
 PLAN REPLAYER LOAD 'plan_replayer.zip';
 ```
+
+After the cluster information is imported, the TiDB cluster is loaded with the required table schema, statistics and other information that affects the construction of the execution plan. You can view the execution plan and verify statistics in the following way:
+
+```sql
+mysql> desc t;
++-------+---------+------+------+---------+-------+
+| Field | Type    | Null | Key  | Default | Extra |
++-------+---------+------+------+---------+-------+
+| a     | int(11) | YES  |      | NULL    |       |
+| b     | int(11) | YES  |      | NULL    |       |
++-------+---------+------+------+---------+-------+
+2 rows in set (0.01 sec)
+
+mysql> explain select * from t where a = 1 or b =1;
++-------------------------+---------+-----------+---------------+--------------------------------------+
+| id                      | estRows | task      | access object | operator info                        |
++-------------------------+---------+-----------+---------------+--------------------------------------+
+| TableReader_7           | 0.01    | root      |               | data:Selection_6                     |
+| └─Selection_6           | 0.01    | cop[tikv] |               | or(eq(test.t.a, 1), eq(test.t.b, 1)) |
+|   └─TableFullScan_5     | 6.00    | cop[tikv] | table:t       | keep order:false, stats:pseudo       |
++-------------------------+---------+-----------+---------------+--------------------------------------+
+3 rows in set (0.00 sec)
+
+mysql> show stats_meta;
++---------+------------+----------------+---------------------+--------------+-----------+
+| Db_name | Table_name | Partition_name | Update_time         | Modify_count | Row_count |
++---------+------------+----------------+---------------------+--------------+-----------+
+| test    | t          |                | 2022-08-26 15:52:07 |            3 |         6 |
++---------+------------+----------------+---------------------+--------------+-----------+
+1 row in set (0.04 sec)
+```
+
+After the scene is loaded and restored, you can diagnose and improve the execution plan for the cluster.
