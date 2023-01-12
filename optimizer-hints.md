@@ -400,7 +400,7 @@ EXPLAIN SELECT /*+ KEEP_ORDER(t, a) */ a FROM t ORDER BY a LIMIT 10;
 
 > **注意：**
 >
-> - 如果查询本身并不需要索引按照顺序读出，即在不使用 Hint 的前提下，优化器在任何情况下都不会生成索引按照顺序读出的计划。此时，如果我们指定了 `KEEP_ORDER` Hint，会出现报错 `Can't find a proper physical plan for this query`，此时应考虑移除对应的 `KEEP_ORDER` Hint。 
+> - 如果查询本身并不需要索引按照顺序读出，即在不使用 Hint 的前提下，优化器在任何情况下都不会生成索引按照顺序读出的计划。此时，如果指定了 `KEEP_ORDER` Hint，会出现报错 `Can't find a proper physical plan for this query`，此时应考虑移除对应的 `KEEP_ORDER` Hint。 
 >
 > - 分区表上的索引无法支持索引按照顺序读出，所以不应该对分区表及其相关的索引使用 `KEEP_ORDER` Hint。
 
