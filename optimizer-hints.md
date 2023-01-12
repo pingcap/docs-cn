@@ -319,8 +319,6 @@ SELECT /*+ MPP_1PHASE_AGG() */ count(*) FROM t1, t2 WHERE t1.a > 10 GROUP BY t1.
 
 `MPP_2PHASE_AGG()` 提示优化器对指定查询块中所有聚合函数使用二阶段聚合算法。例如：
 
-{{< copyable "sql" >}}
-
 ```sql
 SELECT /*+ MPP_2PHASE_AGG() */ count(*) FROM t1, t2 WHERE t1.a > 10 GROUP BY t1.id;
 ```
