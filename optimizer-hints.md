@@ -374,8 +374,6 @@ SELECT /*+ IGNORE_INDEX(t1, idx1, idx2) */ * FROM t t1;
 
 `KEEP_ORDER(t1_name, idx1_name [, idx2_name ...])` 提示优化器对指定表仅使用给出的索引，并且要求索引按照顺序读出。通常应用在下面这种场景中：
 
-{{< copyable "sql" >}}
-
 ```sql
 CREATE TABLE t(a INT, b INT, key(a), key(b));
 EXPLAIN SELECT /*+ KEEP_ORDER(t, a) */ a FROM t ORDER BY a LIMIT 10;
