@@ -354,7 +354,7 @@ Query OK, 1 row affected (0.00 sec)
 ### 特性与限制
 
 - 如果是空数组，则不会有对应的索引记录。
-- `CAST(... AS ... ARRAY)` 中的目标类型不能是 `BINARY`， `JSON`，`YEAR`，其中源类型必须是 JSON。
+- `CAST(... AS ... ARRAY)` 中的目标类型不能是 `BINARY`，`JSON`，`YEAR`，`FLOAT`，`DOUBLE`，`DECIMAL`。其中源类型必须是 JSON。
 - 无法使用多值索引进行排序。
 - 只允许在 JSON 数组上建立多值索引。
 - 多值索引不可以为主键、外键。
