@@ -406,7 +406,7 @@ EXPLAIN SELECT /*+ KEEP_ORDER(t, a) */ a FROM t ORDER BY a LIMIT 10;
 
 `NO_KEEP_ORDER(t1_name, idx1_name [, idx2_name ...])` 提示优化器对指定表仅使用给出的索引，并且要求索引不按照顺序读出。通常应用在下面这种场景中:
 
-下面例子的效果等价于 `SELECT * FROM t t1 use index(idx1, idx2);`：
+以下示例中查询语句的效果等价于 `SELECT * FROM t t1 use index(idx1, idx2);`：
 
 ```sql
 CREATE TABLE t(a INT, b INT, key(a), key(b));
