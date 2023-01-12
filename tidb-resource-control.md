@@ -10,8 +10,8 @@ Resource control 特别适用于在大集群内部实现多用户应用的资源
 
 > **警告:**
 >
-> 当前该功能为实验特性，不建议在生产环境中使用。
-> 此功能默认是关闭的，设置全局变量 [`tidb_enable_resource_control`](/system-variables.md#tidb_enable_resource_control-从-v660-版本开始引入)
+> Resource Control 是 TiDB 在 v6.6.0 中引入的实验特性，其语法在 GA 前可能会发生变化，还可能存在 bug。如果你知晓潜在的风险，可通过执行 `SET GLOBAL tidb_enable_alter_placement = 'ON'` 来开启该实验特性。
+
 ## 语法
 
 你可以通过[`CREATE RESOURCE GROUP`](/sql-statements/sql-statement-create-resource-group.md)在集群中创建资源组，再通过[`CREATE USER`](/sql-statements/sql-statement-create-user.md) 语句，或者 [`ALTER USER`](/sql-statements/sql-statement-alter-user.md) 将用户绑定到特定的资源组。
@@ -76,4 +76,11 @@ Resource control 特别适用于在大集群内部实现多用户应用的资源
 目前，Resource Control 特性具有以下限制:
 
 * 暂时只支持前台客户发起的读写请求做限流和调度，不支持后台任务。
-* 因为额外调度的开销，开启这个特性后，性能可能会观察到有轻微的回退
+* 因为额外调度的开销，开启这个特性后，性能可能会观察到有轻微的回退。
+
+## 另请参阅
+
+* [CREATE RESOURCE GROUP](/sql-statements/sql-statement-create-resource-group.md)
+* [ALTER RESOURCE GROUP](/sql-statements/sql-statement-alter-resource-group.md)
+* [DROP RESOURCE GROUP](/sql-statements/sql-statement-drop-resource-group.md)
+* [RESOURCE GROUP RFC](https://docs.google.com/document/d/1sV5EVv8Cdpc6aBCDihc2akpE0iuantPf/)
