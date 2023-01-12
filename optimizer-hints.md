@@ -313,7 +313,7 @@ SELECT /*+ MPP_1PHASE_AGG() */ count(*) FROM t1, t2 WHERE t1.a > 10 GROUP BY t1.
 
 > **注意：**
 >
-> 想要使用该 Hint 需要保证当前 TiDB 集群能够支持查询使用 MPP 模式，具体细节见文档[使用 MPP 模式](./tiflash/use-tiflash-mpp-mode.md)。
+> 使用该 Hint 前，需要保证当前 TiDB 集群能够支持查询使用 TiFlash MPP 模式，具体细节见文档[使用 TiFlash MPP 模式](/tiflash/use-tiflash-mpp-mode.md)。
 
 ### MPP_2PHASE_AGG()
 
