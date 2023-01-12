@@ -372,7 +372,7 @@ SELECT /*+ IGNORE_INDEX(t1, idx1, idx2) */ * FROM t t1;
 
 ### KEEP_ORDER(t1_name, idx1_name [, idx2_name ...])
 
-`KEEP_ORDER(t1_name, idx1_name [, idx2_name ...])` 提示优化器对指定表仅使用给出的索引，并且要求索引按照顺序读出。通常应用在下面这种场景中：
+`KEEP_ORDER(t1_name, idx1_name [, idx2_name ...])` 提示优化器对指定表仅使用给出的索引，并且按顺序读取指定的索引。通常应用在下面这种场景中：
 
 ```sql
 CREATE TABLE t(a INT, b INT, key(a), key(b));
@@ -394,13 +394,13 @@ EXPLAIN SELECT /*+ KEEP_ORDER(t, a) */ a FROM t ORDER BY a LIMIT 10;
 
 > **注意：**
 >
-> - 如果查询本身并不需要索引按照顺序读出，即在不使用 Hint 的前提下，优化器在任何情况下都不会生成索引按照顺序读出的计划。此时，如果指定了 `KEEP_ORDER` Hint，会出现报错 `Can't find a proper physical plan for this query`，此时应考虑移除对应的 `KEEP_ORDER` Hint。 
+> - 如果查询本身并不需要按顺序读取索引，即在不使用 Hint 的前提下，优化器在任何情况下都不会生成按顺序读取索引的计划。此时，如果指定了 `KEEP_ORDER` Hint，会出现报错 `Can't find a proper physical plan for this query`，此时应考虑移除对应的 `KEEP_ORDER` Hint。 
 >
-> - 分区表上的索引无法支持索引按照顺序读出，所以不应该对分区表及其相关的索引使用 `KEEP_ORDER` Hint。
+> - 分区表上的索引无法支持按顺序读取，所以不应该对分区表及其相关的索引使用 `KEEP_ORDER` Hint。
 
 ### NO_KEEP_ORDER(t1_name, idx1_name [, idx2_name ...])
 
-`NO_KEEP_ORDER(t1_name, idx1_name [, idx2_name ...])` 提示优化器对指定表仅使用给出的索引，并且要求索引不按照顺序读出。通常应用在下面这种场景中:
+`NO_KEEP_ORDER(t1_name, idx1_name [, idx2_name ...])` 提示优化器对指定表仅使用给出的索引，并且不按顺序读取指定的索引。通常应用在下面这种场景中:
 
 以下示例中查询语句的效果等价于 `SELECT * FROM t t1 use index(idx1, idx2);`：
 
@@ -420,7 +420,7 @@ EXPLAIN SELECT /*+ NO_KEEP_ORDER(t, a) */ a FROM t ORDER BY a LIMIT 10;
 +----------------------------+----------+-----------+---------------------+--------------------------------+
 ```
 
-和 `KEEP_ORDER` Hint 的示例相同，优化器对该查询会生成两类计划：`Limit + IndexScan(keep order: true)` 和 `TopN + IndexScan(keep order: false)`，当使用了 `NO_KEEP_ORDER` Hint，优化器会选择后一种索引不按照顺序读出的计划。
+和 `KEEP_ORDER` Hint 的示例相同，优化器对该查询会生成两类计划：`Limit + IndexScan(keep order: true)` 和 `TopN + IndexScan(keep order: false)`，当使用了 `NO_KEEP_ORDER` Hint，优化器会选择后一种不按照顺序读取索引的计划。
 
 ### AGG_TO_COP()
 
