@@ -1,10 +1,7 @@
 ---
 title: TiFlash 性能调优
-<<<<<<< HEAD
-=======
 summary: 介绍 TiFlash 性能调优的方法，包括机器资源规划和 TiDB 参数调优。
 aliases: ['/docs-cn/dev/tiflash/tune-tiflash-performance/','/docs-cn/dev/reference/tiflash/tune-performance/']
->>>>>>> de15241e5 (Add tiflash execution tuning materials (#12637))
 ---
 
 # TiFlash 性能调优
