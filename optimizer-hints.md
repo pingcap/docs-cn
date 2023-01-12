@@ -410,8 +410,6 @@ EXPLAIN SELECT /*+ KEEP_ORDER(t, a) */ a FROM t ORDER BY a LIMIT 10;
 
 下面例子的效果等价于 `SELECT * FROM t t1 use index(idx1, idx2);`：
 
-{{< copyable "sql" >}}
-
 ```sql
 CREATE TABLE t(a INT, b INT, key(a), key(b));
 EXPLAIN SELECT /*+ NO_KEEP_ORDER(t, a) */ a FROM t ORDER BY a LIMIT 10;
