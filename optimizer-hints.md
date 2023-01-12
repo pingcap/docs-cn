@@ -426,7 +426,7 @@ EXPLAIN SELECT /*+ NO_KEEP_ORDER(t, a) */ a FROM t ORDER BY a LIMIT 10;
 +----------------------------+----------+-----------+---------------------+--------------------------------+
 ```
 
-和 `KEEP_ORDER` Hint 的举例相同，优化器对该查询会生成两类计划：`Limit + IndexScan(keep order: true)` 和 `TopN + IndexScan(keep order: false)`，当使用了 `NO_KEEP_ORDER` Hint，优化器会选择后一种索引不按照顺序读出的计划。
+和 `KEEP_ORDER` Hint 的示例相同，优化器对该查询会生成两类计划：`Limit + IndexScan(keep order: true)` 和 `TopN + IndexScan(keep order: false)`，当使用了 `NO_KEEP_ORDER` Hint，优化器会选择后一种索引不按照顺序读出的计划。
 
 ### AGG_TO_COP()
 
