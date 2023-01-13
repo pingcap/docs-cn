@@ -339,7 +339,6 @@ get players count:
 trade by two players:
 trade successful
 ```
-```
 
 </div>
 
@@ -541,7 +540,6 @@ class Migration(migrations.Migration):
 ```
 
 你可以使用 `python manage.py sqlmigrate ...` 来预览迁移脚本最终将运行的 SQL 语句。这将极大地减少迁移脚本运行你意料之外的 SQL 语句的可能性。在生成迁移脚本后，推荐至少使用一次此命令预览并仔细检查生成的 SQL 语句。在本示例中，你可以运行 `python manage.py sqlmigrate player 0001`，其输出为可读的 SQL 语句，有助于开发者对语句进行审核：
-
 
 ```sql
 --
