@@ -312,17 +312,17 @@ Quit the server with CONTROL-C.
 
 <div label="使用 Shell 脚本请求" value="shell">
 
-这里已经将请求过程编写为 [`request.sh`](https://github.com/pingcap-inc/tidb-example-python/blob/main/django_example/request.sh) 脚本，以方便大家的测试，脚本将会做以下操作：
+为方便测试，你可以使用 [`request.sh`](https://github.com/pingcap-inc/tidb-example-python/blob/main/django_example/request.sh) 脚本依次发送以下请求：
 
 1. 循环创建 10 名玩家
-2. 获取 `id` 为 1 的玩家信息
+2. 获取 ID 为 1 的玩家信息
 3. 获取至多 3 名玩家信息列表
 4. 获取玩家总数
-5. `id` 为 1 的玩家作为售出方，id 为 2 的玩家作为购买方，购买 10 个货物，耗费 100 金币
+5. ID 为 1 的玩家作为售出方，ID 为 2 的玩家作为购买方，购买 10 个货物，耗费 100 金币
 
-你可以使用 `./request.sh` 命令运行此脚本，结果应如下所示：
+使用 `./request.sh` 命令运行此脚本，运行结果如下所示：
 
-```
+```shell
 > ./request.sh
 loop to create 10 players:
 create 1 players.create 1 players.create 1 players.create 1 players.create 1 players.create 1 players.create 1 players.create 1 players.create 1 players.create 1 players.
@@ -338,6 +338,7 @@ get players count:
 
 trade by two players:
 trade successful
+```
 ```
 
 </div>

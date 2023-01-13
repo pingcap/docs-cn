@@ -41,7 +41,7 @@ aliases: ['/zh/tidb/dev/sample-application-java']
 你可以部署一个本地测试的 TiDB 集群或正式的 TiDB 集群。详细步骤，请参考：
 
 - [部署本地测试 TiDB 集群](/quick-start-with-tidb.md#部署本地测试集群)
-- [部署正式 TiDB 集群](/production-deployment-using-tiup.md)。
+- [部署正式 TiDB 集群](/production-deployment-using-tiup.md)
 
 </div>
 
