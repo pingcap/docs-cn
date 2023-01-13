@@ -60,9 +60,10 @@ mysql> SELECT * FROM information_schema.resource_groups WHERE NAME ='rg1';
 
 ## MySQL 兼容性
 
-MySQL 也支持创建 [Resource Group](https://dev.mysql.com/doc/refman/8.0/en/create-resource-group.html) ，但是接受的参数和 TiDB 不同。
+* MySQL 也支持[Drop Resource Group](https://dev.mysql.com/doc/refman/8.0/en/drop-resource-group.html), 但 TiDB 不支持 `FORCE` 参数。
 
 ## 另请参阅
 
 * [ALTER RESOURCE GROUP](/sql-statements/sql-statement-alter-resource-group.md)
 * [CREATE RESOURCE GROUP](/sql-statements/sql-statement-create-resource-group.md)
+* [RU](/tidb-RU.md)

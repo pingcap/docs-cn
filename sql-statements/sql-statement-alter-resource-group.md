@@ -34,7 +34,7 @@ BurstableOption ::=
 
 ```
 
-TiDB 支持以下 `DirectResourceGroupOption`, 其中 `RU` (Resource Unit) 是 TiDB 对 CPU, IO 等系统资源的统一抽象的单位。
+TiDB 支持以下 `DirectResourceGroupOption`, 其中 [`RU` (Resource Unit)](/tidb-RU.md) 是 TiDB 对 CPU, IO 等系统资源的统一抽象的单位。
 
 | 参数           |含义                                  |举例                      |
 |----------------|--------------------------------------|----------------------------|
@@ -43,7 +43,7 @@ TiDB 支持以下 `DirectResourceGroupOption`, 其中 `RU` (Resource Unit) 是 T
 
 |`WRU_PER_SEC`|每秒钟写 RU 的配额                        |`RRU_PER_SEC` = 300|
 
-如果设置了`BURSTABLE`属性，对应的资源组就允许在系统资源充足的情况下，可以超出配额占用使用系统资源。
+如果设置了`BURSTABLE`属性，对应的资源组就允许在系统资源充足的情况下，允许超出配额使用系统资源。
 
 > **注意：**
 > `ALTER RESOURCE GROUP` 语句只能在全局变量 `tidb_resource_group_enable` 参数设置为 `ON` 的时候才被允许执行
@@ -85,9 +85,10 @@ mysql> SELECT * FROM information_schema.resource_groups WHERE NAME ='rg1';
 
 ## MySQL 兼容性
 
-* MySQL 也支持创建 [Resource Group](https://dev.mysql.com/doc/refman/8.0/en/create-resource-group.html) ，但是接受的参数和 TiDB 不同。
+* MySQL 也支持[Alter Resource Group](https://dev.mysql.com/doc/refman/8.0/en/alter-resource-group.html) ，但是接受的参数和 TiDB 不同，两者并不兼容。
 
 ## 另请参阅
 
 * [DROP RESOURCE GROUP](/sql-statements/sql-statement-drop-resource-group.md)
 * [CREATE RESOURCE GROUP](/sql-statements/sql-statement-alter-resource-group.md)
+* [RU](/tidb-RU.md)

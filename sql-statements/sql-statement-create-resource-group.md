@@ -36,7 +36,7 @@ BurstableOption ::=
 
 资源组的 `ResourceGroupName` 是全局唯一的， 不允许重复。
 
-TiDB 支持以下 `DirectResourceGroupOption`, 其中 `RU` (Resource Unit) 是 TiDB 对 CPU, IO 等系统资源的统一抽象的单位。
+TiDB 支持以下 `DirectResourceGroupOption`, 其中 [`RU` (Resource Unit)](/tidb-RU.md) 是 TiDB 对 CPU, IO 等系统资源的统一抽象的单位。
 
 | 参数           |含义                                  |举例                      |
 |----------------|--------------------------------------|----------------------------|
@@ -75,9 +75,10 @@ mysql> SELECT * FROM information_schema.resource_groups WHERE NAME ='rg1';
 
 ## MySQL 兼容性
 
-* MySQL 也支持创建 [Resource Group](https://dev.mysql.com/doc/refman/8.0/en/create-resource-group.html) ，但是接受的参数和 TiDB 不同。
+* MySQL 也支持[Create Resource Group](https://dev.mysql.com/doc/refman/8.0/en/create-resource-group.html) ，但是接受的参数和 TiDB 不同，两者并不兼容。
 
 ## 另请参阅
 
 * [DROP RESOURCE GROUP](/sql-statements/sql-statement-drop-resource-group.md)
 * [ALTER RESOURCE GROUP](/sql-statements/sql-statement-alter-resource-group.md)
+* [RU](/tidb-RU.md)
