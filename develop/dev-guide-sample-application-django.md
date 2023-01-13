@@ -614,7 +614,7 @@ def count(request):
 
 @require_GET
 def limit_list(request, limit: int = 0):
-    if limit is 0:
+    if limit == 0:
         return HttpResponse("")
     players = set(Player.objects.all()[:limit])
     dict_players = list(map(lambda p: p.as_dict(), players))
@@ -685,7 +685,7 @@ def trade(request):
     - 短路逻辑，`limit` 为 0 时将不做数据库请求。
 
         ```python
-        if limit is 0:
+        if limit == 0:
             return HttpResponse("")
         ```
 
