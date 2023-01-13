@@ -204,7 +204,7 @@ inner:{total:4.429220003s, concurrency:5, task:17, construct:96.207725ms, fetch:
 `HashJoin` 算子有一个 inner worker，一个 outer worker 和 N 个 join worker，其具体执行逻辑如下：
 
 1. inner worker 读取 inner table rows 并构造 hash table。
-2. outer worker 读取 outer table rows, 然后包装成 task 发送给 join worker。
+2. outer worker 读取 outer table rows，然后包装成 task 发送给 join worker。
 3. 等待第 1 步的 hash table 构造完成。
 4. join worker 用 task 里面的 outer table rows 和 hash table 做 join，然后把 join 结果发送给 result channel。
 5. `HashJoin` 的主线程从 result channel 中接收 join 结果。
@@ -225,6 +225,33 @@ build_hash_table:{total:146.071334ms, fetch:110.338509ms, build:35.732825ms}, pr
     - `max`：单个 join worker 执行的最大耗时。
     - `probe`: 用 outer table rows 和 hash table 做 join 的总耗时。
     - `fetch`：join worker 等待读取 outer table rows 数据的总耗时。
+
+### TableFullScan (TiFlash)
+
+在 TiFlash 节点上执行的 `TableFullScan` 算子包含以下执行信息：
+
+```sql
+tiflash_scan: {
+  dtfile: {
+    total_scanned_packs: 2, 
+    total_skipped_packs: 1, 
+    total_scanned_rows: 16000, 
+    total_skipped_rows: 8192, 
+    total_rough_set_index_load_time: 2ms, 
+    total_read_time: 20ms
+  }, 
+  total_create_snapshot_time: 1ms
+}
+```
+
++ `dtfile`：扫表过程中与 DTFile （即 DeltaTree File）相关的信息；这基本反映了 TiFlash 在 Stable 层数据的读取情况。
+    - `total_scanned_packs`：DTFile 内累计读取的 Pack 的数量；Pack 是 TiFlash DTFile 读取的最小粒度，默认情况下每 8192 行构成一个 Pack。
+    - `total_skipped_packs`：DTFile 内累计跳过的 Pack 的数量；Pack 会由于 `WHERE` 条件命中粗糙索引或主键范围过滤而被跳过。
+    - `total_scanned_rows`：DTFile 内累计读取的行数；若存在 MVCC 带来的多版本更新或删除，则每个版本独立计数。
+    - `total_skipped_rows`：DTFile 内累计跳过的行数。
+    - `total_rs_index_load_time`：读取 DTFile 粗糙索引的累计耗时。
+    - `total_read_time`：读取 DTFile 数据的累计耗时。
++ `total_create_snapshot_time`：扫表过程中创建快照的总耗时。
 
 ### lock_keys 执行信息
 

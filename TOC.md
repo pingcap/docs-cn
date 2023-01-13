@@ -4,7 +4,7 @@
 - [文档中心](https://docs.pingcap.com/zh)
 - 关于 TiDB
   - [TiDB 简介](/overview.md)
-  - [TiDB 6.4 Release Notes](/releases/release-6.4.0.md)
+  - [TiDB 6.5 Release Notes](/releases/release-6.5.0.md)
   - [基本功能](/basic-features.md)
   - [实验特性](/experimental-features.md)
   - [与 MySQL 的兼容性](/mysql-compatibility.md)
@@ -24,6 +24,7 @@
     - [Java](/develop/dev-guide-sample-application-java.md)
     - [Java (Spring Boot)](/develop/dev-guide-sample-application-spring-boot.md)
     - [Golang](/develop/dev-guide-sample-application-golang.md)
+    - [Python](/develop/dev-guide-sample-application-python.md)
   - 连接到 TiDB
     - [选择驱动或 ORM 框架](/develop/dev-guide-choose-driver-or-orm.md)
     - [连接到 TiDB](/develop/dev-guide-connect-to-tidb.md)
@@ -37,6 +38,7 @@
     - [插入数据](/develop/dev-guide-insert-data.md)
     - [更新数据](/develop/dev-guide-update-data.md)
     - [删除数据](/develop/dev-guide-delete-data.md)
+    - [使用 TTL (Time to Live) 定期删除过期数据](/time-to-live.md)
     - [预处理语句](/develop/dev-guide-prepared-statement.md)
   - 数据读取
     - [单表读取](/develop/dev-guide-get-data-from-single-table.md)
@@ -150,10 +152,10 @@
       - BR 特性
         - [自动调节](/br/br-auto-tune.md)
         - [批量建表](/br/br-batch-create-table.md)
+        - [断点备份](/br/br-checkpoint.md)
       - [使用 Dumpling 和 TiDB Lightning 备份与恢复](/backup-and-restore-using-dumpling-lightning.md)
       - [备份与恢复 RawKV](/br/rawkv-backup-and-restore.md)
       - [增量备份与恢复](/br/br-incremental-guide.md)
-      - [外部存储](/br/external-storage.md)
   - [修改时区](/configure-time-zone.md)
   - [日常巡检](/daily-check.md)
   - [TiFlash 常用运维操作](/tiflash/maintain-tiflash.md)
@@ -171,23 +173,27 @@
   - [自定义监控组件的配置](/tiup/customized-montior-in-tiup-environment.md)
   - [BR 监控告警](/br/br-monitoring-and-alert.md)
 - 故障诊断
-  - [定位慢查询](/identify-slow-queries.md)
-  - [分析慢查询](/analyze-slow-queries.md)
-  - [SQL 诊断](/information-schema/information-schema-sql-diagnostics.md)
-  - [使用 Top SQL 定位系统资源消耗过多的查询](/dashboard/top-sql.md)
-  - [通过日志定位消耗系统资源多的查询](/identify-expensive-queries.md)
-  - [SQL 语句统计](/statement-summary-tables.md)
-  - [保存和恢复集群现场信息](/sql-plan-replayer.md)
-  - [TiDB OOM 故障排查](/troubleshoot-tidb-oom.md)
-  - [TiDB 集群常见问题](/troubleshoot-tidb-cluster.md)
-  - [TiDB 集群问题导图](/tidb-troubleshooting-map.md)
-  - [热点问题处理](/troubleshoot-hot-spot-issues.md)
-  - [CPU 占用过多导致读写延迟增加](/troubleshoot-cpu-issues.md)
-  - [写冲突与写性能下降](/troubleshoot-write-conflicts.md)
-  - [磁盘 I/O 过高](/troubleshoot-high-disk-io.md)
-  - [锁冲突与 TTL 超时](/troubleshoot-lock-conflicts.md)
-  - [TiFlash 常见问题](/tiflash/troubleshoot-tiflash.md)
-  - [数据索引不一致报错](/troubleshoot-data-inconsistency-errors.md)
+  - 故障诊断问题汇总
+    - [TiDB 集群问题导图](/tidb-troubleshooting-map.md)
+    - [TiDB 集群常见问题](/troubleshoot-tidb-cluster.md)
+    - [TiFlash 常见问题](/tiflash/troubleshoot-tiflash.md)
+  - 故障场景
+    - 慢查询
+      - [定位慢查询](/identify-slow-queries.md)
+      - [分析慢查询](/analyze-slow-queries.md)
+    - [TiDB OOM 故障排查](/troubleshoot-tidb-oom.md)
+    - [热点问题处理](/troubleshoot-hot-spot-issues.md)
+    - [CPU 占用过多导致读写延迟增加](/troubleshoot-cpu-issues.md)
+    - [写冲突与写性能下降](/troubleshoot-write-conflicts.md)
+    - [磁盘 I/O 过高](/troubleshoot-high-disk-io.md)
+    - [锁冲突与 TTL 超时](/troubleshoot-lock-conflicts.md)
+    - [数据索引不一致报错](/troubleshoot-data-inconsistency-errors.md)
+  - 故障诊断方法
+    - [通过 SQL 诊断获取集群诊断信息](/information-schema/information-schema-sql-diagnostics.md)
+    - [通过 Statement Summary 排查 SQL 性能问题](/statement-summary-tables.md)
+    - [使用 Top SQL 定位系统资源消耗过多的查询](/dashboard/top-sql.md)
+    - [通过日志定位消耗系统资源多的查询](/identify-expensive-queries.md)
+    - [保存和恢复集群现场信息](/sql-plan-replayer.md)
 - 性能调优
   - 优化手册
     - [优化概述](/performance-tuning-overview.md)
@@ -270,7 +276,7 @@
   - [Store Limit 使用文档](/configure-store-limit.md)
 - TiDB 工具
   - [功能概览](/ecosystem-tool-user-guide.md)
-  - [适用场景](/ecosystem-tool-user-case.md)
+  - [使用场景](/ecosystem-tool-user-case.md)
   - [工具下载](/download-ecosystem-tools.md)
   - TiUP
     - [文档地图](/tiup/tiup-documentation-guide.md)
@@ -307,6 +313,7 @@
       - TiUP Cluster 命令
         - [TiUP Cluster 命令概览](/tiup/tiup-component-cluster.md)
         - [tiup cluster audit](/tiup/tiup-component-cluster-audit.md)
+        - [tiup cluster audit cleanup](/tiup/tiup-component-cluster-audit-cleanup.md)
         - [tiup cluster check](/tiup/tiup-component-cluster-check.md)
         - [tiup cluster clean](/tiup/tiup-component-cluster-clean.md)
         - [tiup cluster deploy](/tiup/tiup-component-cluster-deploy.md)
@@ -318,6 +325,8 @@
         - [tiup cluster help](/tiup/tiup-component-cluster-help.md)
         - [tiup cluster import](/tiup/tiup-component-cluster-import.md)
         - [tiup cluster list](/tiup/tiup-component-cluster-list.md)
+        - [tiup cluster meta backup](/tiup/tiup-component-cluster-meta-backup.md)
+        - [tiup cluster meta restore](/tiup/tiup-component-cluster-meta-restore.md)
         - [tiup cluster patch](/tiup/tiup-component-cluster-patch.md)
         - [tiup cluster prune](/tiup/tiup-component-cluster-prune.md)
         - [tiup cluster reload](/tiup/tiup-component-cluster-reload.md)
@@ -421,10 +430,12 @@
       - [创建数据源](/dm/quick-start-create-source.md)
       - [数据源操作](/dm/dm-manage-source.md)
       - [任务配置向导](/dm/dm-task-configuration-guide.md)
-      - [Table routing](/dm/dm-key-features.md#table-routing)
-      - [Block & Allow Lists](/dm/dm-key-features.md#block--allow-table-lists)
-      - [过滤 binlog 事件](/dm/dm-key-features.md#binlog-event-filter)
+      - [分库分表合并](/dm/dm-shard-merge.md)
+      - [表路由](/dm/dm-table-routing.md)
+      - [黑白名单](/dm/dm-block-allow-table-lists.md)
+      - [过滤 binlog 事件](/dm/dm-binlog-event-filter.md)
       - [通过 SQL 表达式过滤 DML](/dm/feature-expression-filter.md)
+      - [Online DDL 工具支持](/dm/dm-online-ddl-tool-support.md)
       - 迁移任务操作
         - [任务前置检查](/dm/dm-precheck.md)
         - [创建任务](/dm/dm-create-task.md)
@@ -505,8 +516,10 @@
       - 创建 Changefeed
         - [同步数据到 MySQL 兼容的数据库](/ticdc/ticdc-sink-to-mysql.md)
         - [同步数据到 Kafka](/ticdc/ticdc-sink-to-kafka.md)
+        - [同步数据到存储服务](/ticdc/ticdc-sink-to-cloud-storage.md)
       - [管理 Changefeed](/ticdc/ticdc-manage-changefeed.md)
       - [日志过滤器](/ticdc/ticdc-filter.md)
+      - [双向复制](/ticdc/ticdc-bidirectional-replication.md)
     - 监控告警
       - [监控指标](/ticdc/monitor-ticdc.md)
       - [报警规则](/ticdc/ticdc-alert-rules.md)
@@ -518,7 +531,9 @@
         - [TiCDC Avro Protocol](/ticdc/ticdc-avro-protocol.md)
         - [TiCDC Canal-JSON Protocol](/ticdc/ticdc-canal-json.md)
         - [TiCDC Open Protocol](/ticdc/ticdc-open-protocol.md)
+        - [TiCDC CSV Protocol](/ticdc/ticdc-csv.md)
       - [TiCDC Open API](/ticdc/ticdc-open-api.md)
+      - [Storage sink 消费程序编写指引](/ticdc/ticdc-storage-consumer-dev-guide.md)
       - [兼容性](/ticdc/ticdc-compatibility.md)
     - [故障处理](/ticdc/troubleshoot-ticdc.md)
     - [常见问题解答](/ticdc/ticdc-faq.md)
@@ -593,6 +608,7 @@
     - [与 MySQL 安全特性差异](/security-compatibility-with-mysql.md)
     - [权限管理](/privilege-management.md)
     - [TiDB 用户账户管理](/user-account-management.md)
+    - [TiDB 密码管理](/password-management.md)
     - [基于角色的访问控制](/role-based-access-control.md)
     - [TiDB 证书鉴权使用指南](/certificate-authentication.md)
   - SQL
@@ -672,6 +688,7 @@
       - [`KILL [TIDB]`](/sql-statements/sql-statement-kill.md)
       - [`LOAD DATA`](/sql-statements/sql-statement-load-data.md)
       - [`LOAD STATS`](/sql-statements/sql-statement-load-stats.md)
+      - [`LOCK STATS`](/sql-statements/sql-statement-lock-stats.md)
       - [`MODIFY COLUMN`](/sql-statements/sql-statement-modify-column.md)
       - [`PREPARE`](/sql-statements/sql-statement-prepare.md)
       - [`RECOVER TABLE`](/sql-statements/sql-statement-recover-table.md)
@@ -725,6 +742,7 @@
       - [`SHOW SCHEMAS`](/sql-statements/sql-statement-show-schemas.md)
       - [`SHOW STATS_HEALTHY`](/sql-statements/sql-statement-show-stats-healthy.md)
       - [`SHOW STATS_HISTOGRAMS`](/sql-statements/sql-statement-show-histograms.md)
+      - [`SHOW STATS_LOCKED`](/sql-statements/sql-statement-show-stats-locked.md)
       - [`SHOW STATS_META`](/sql-statements/sql-statement-show-stats-meta.md)
       - [`SHOW STATUS`](/sql-statements/sql-statement-show-status.md)
       - [`SHOW TABLE NEXT_ROW_ID`](/sql-statements/sql-statement-show-table-next-rowid.md)
@@ -739,6 +757,7 @@
       - [`TABLE`](/sql-statements/sql-statement-table.md)
       - [`TRACE`](/sql-statements/sql-statement-trace.md)
       - [`TRUNCATE`](/sql-statements/sql-statement-truncate.md)
+      - [`UNLOCK STATS`](/sql-statements/sql-statement-unlock-stats.md)
       - [`UPDATE`](/sql-statements/sql-statement-update.md)
       - [`USE`](/sql-statements/sql-statement-use.md)
       - [`WITH`](/sql-statements/sql-statement-with.md)
@@ -838,6 +857,8 @@
         - [`TIDB_SERVERS_INFO`](/information-schema/information-schema-tidb-servers-info.md)
         - [`TIDB_TRX`](/information-schema/information-schema-tidb-trx.md)
         - [`TIFLASH_REPLICA`](/information-schema/information-schema-tiflash-replica.md)
+        - [`TIFLASH_SEGMENTS`](/information-schema/information-schema-tiflash-segments.md)
+        - [`TIFLASH_TABLES`](/information-schema/information-schema-tiflash-tables.md)
         - [`TIKV_REGION_PEERS`](/information-schema/information-schema-tikv-region-peers.md)
         - [`TIKV_REGION_STATUS`](/information-schema/information-schema-tikv-region-status.md)
         - [`TIKV_STORE_STATUS`](/information-schema/information-schema-tikv-store-status.md)
@@ -908,6 +929,7 @@
       - [使用 TiSpark 读取 TiFlash](/tiflash/use-tispark-to-read-tiflash.md)
       - [使用 MPP 模式](/tiflash/use-tiflash-mpp-mode.md)
       - [TiFlash 支持的计算下推](/tiflash/tiflash-supported-pushdown-calculations.md)
+      - [TiFlash 查询结果物化](/tiflash/tiflash-results-materialization.md)
       - [TiFlash 数据校验](/tiflash/tiflash-data-validation.md)
       - [TiFlash 兼容性说明](/tiflash/tiflash-compatibility.md)
   - [遥测](/telemetry.md)
@@ -930,6 +952,8 @@
   - [版本发布时间线](/releases/release-timeline.md)
   - [TiDB 版本规则](/releases/versioning.md)
   - [TiDB 离线包](/binary-package.md)
+  - v6.5
+    - [6.5.0](/releases/release-6.5.0.md)
   - v6.4
     - [6.4.0-DMR](/releases/release-6.4.0.md)
   - v6.3
@@ -937,6 +961,7 @@
   - v6.2
     - [6.2.0-DMR](/releases/release-6.2.0.md)
   - v6.1
+    - [6.1.3](/releases/release-6.1.3.md)
     - [6.1.2](/releases/release-6.1.2.md)
     - [6.1.1](/releases/release-6.1.1.md)
     - [6.1.0](/releases/release-6.1.0.md)
@@ -948,6 +973,7 @@
     - [5.4.1](/releases/release-5.4.1.md)
     - [5.4.0](/releases/release-5.4.0.md)
   - v5.3
+    - [5.3.4](/releases/release-5.3.4.md)
     - [5.3.3](/releases/release-5.3.3.md)
     - [5.3.2](/releases/release-5.3.2.md)
     - [5.3.1](/releases/release-5.3.1.md)
@@ -959,6 +985,7 @@
     - [5.2.1](/releases/release-5.2.1.md)
     - [5.2.0](/releases/release-5.2.0.md)
   - v5.1
+    - [5.1.5](/releases/release-5.1.5.md)
     - [5.1.4](/releases/release-5.1.4.md)
     - [5.1.3](/releases/release-5.1.3.md)
     - [5.1.2](/releases/release-5.1.2.md)

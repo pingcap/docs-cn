@@ -18,8 +18,6 @@ Bookshop 是一个虚拟的在线书店应用，你可以在 Bookshop 当中便�
 
 如果你使用 [TiUP](/tiup/tiup-reference.md#tiup-命令概览) 部署 TiDB 集群或者你可以直接连接到你的 TiDB 服务器，你可以通过如下命令快速生成并导入 Bookshop 应用的示例数据：
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 tiup demo bookshop prepare
 ```
@@ -39,8 +37,6 @@ tiup demo bookshop prepare
 | `--db`       | `-D` | `bookshop`  | 数据库名称     |
 
 例如，你想要连接到 TiDB Cloud 上的数据库，你可以如下命令指定连接信息进行连接：
-
-{{< copyable "shell-regular" >}}
 
 ```shell
 tiup demo bookshop prepare -U <username> -H <endpoint> -P 4000 -p <password>
@@ -85,7 +81,7 @@ tiup demo bookshop prepare --users=200000 --books=500000 --authors=100000 --rati
     arn:aws:iam::494090988690:role/s3-tidb-cloud-developer-access
     ```
 
-3. 点击 **Next** 按钮切换到 **File and filter** 步骤确认将要导入的文件的信息。
+3. 点击 **Next** 按钮切换到 **Choose the tables to be imported** 步骤确认将要导入的文件的信息。
 
 4. 点击 **Next** 按钮切换到 **Preview** 步骤确认将要导入的示例数据是否正确。
 
@@ -139,7 +135,7 @@ WHERE table_schema LIKE 'bookshop';
 |--------------|---------------|---------------------------------------|
 | id           | bigint(20)    | 书籍的唯一标识                        |
 | title        | varchar(100)  | 书籍名称                              |
-| type         | enum          | 书籍类型（如：杂志 / 动漫 / 教辅 等）    |
+| type         | enum          | 书籍类型（如：杂志、动漫、教辅等）    |
 | stock        | bigint(20)    | 库存                                  |
 | price        | decimal(15,2) | 价格                                  |
 | published_at | datetime      | 出版时间                              |

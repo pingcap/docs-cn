@@ -8,6 +8,53 @@ aliases: ['/docs-cn/dev/faq/sql-faq/']
 
 本文档介绍 TiDB 中常见的 SQL 操作问题。
 
+## TiDB 是否支持二级键？
+
+支持。你可以在具有唯一[二级索引](/develop/dev-guide-create-secondary-indexes.md)的非主键列上设置 [`NOT NULL` 约束](/constraints.md#非空约束)。在这种情况下，该列用作二级键。
+
+## TiDB 在对大表执行 DDL 操作时，性能表现如何？
+
+TiDB 在对大表执行 DDL 操作时，一般不会有什么问题。TiDB 支持在线 DDL 操作，且这些 DDL 操作不会阻塞 DML 操作。
+
+对于添加列、删除列或删除索引等 DDL 操作，TiDB 可以快速完成这些操作。
+
+对于添加索引等 DDL 操作，TiDB 需要进行回填 (backfill) 操作，这个过程需要较长的时间（取决于表的大小）和额外的资源消耗。对在线业务的影响可调节。TiDB 可以通过多线程进行 backfill，资源消耗可通过以下系统变量进行设置：
+
+- [`tidb_ddl_reorg_worker_cnt`](/system-variables.md#tidb_ddl_reorg_worker_cnt)
+- [`tidb_ddl_reorg_priority`](/system-variables.md#tidb_ddl_reorg_priority)
+- [`tidb_ddl_error_count_limit`](/system-variables.md#tidb_ddl_error_count_limit)
+- [`tidb_ddl_reorg_batch_size`](/system-variables.md#tidb_ddl_reorg_batch_size)
+
+## 如何选择正确的查询计划？是否需要使用优化器提示？还是可以使用提示？
+
+TiDB 包含一个基于成本的优化器。在大多数情况下，优化器会为你选择最优的查询计划。如果优化器工作欠佳，你可以使用[优化器提示](/optimizer-hints.md)来干预优化器。
+
+另外，你还可以使用[执行计划绑定](/sql-plan-management.md#执行计划绑定-sql-binding)来为特定的 SQL 语句固定查询计划。
+
+## 如何阻止特定的 SQL 语句执行（或者将某个 SQL 语句加入黑名单）？
+
+你可以使用 [`MAX_EXECUTION_TIME`](/optimizer-hints.md#max_execution_timen) Hint 来创建 [SQL 绑定](/sql-plan-management.md#执行计划绑定-sql-binding)，将特定语句的执行时间限制为一个较小的值（例如 1ms）。这样，语句就会在超过限制时自动终止。
+
+例如，要阻止执行 `SELECT * FROM t1, t2 WHERE t1.id = t2.id`，可以使用以下 SQL 绑定将语句的执行时间限制为 1ms：
+
+```sql
+CREATE GLOBAL BINDING for
+    SELECT * FROM t1, t2 WHERE t1.id = t2.id
+USING
+    SELECT /*+ MAX_EXECUTION_TIME(1) */ * FROM t1, t2 WHERE t1.id = t2.id;
+```
+
+> **注意：**
+>
+> `MAX_EXECUTION_TIME` 的精度大约为 100ms。在 TiDB 终止 SQL 语句之前，TiKV 中的任务可能已经开始执行。为了减少这种情况下 TiKV 的资源消耗，建议将系统变量 [`tidb_enable_paging`](/system-variables.md#tidb_enable_paging-从-v540-版本开始引入) 的值设置为 `ON`。
+
+删除该 SQL 绑定可以移除限制。
+
+```sql
+DROP GLOBAL BINDING for
+    SELECT * FROM t1, t2 WHERE t1.id = t2.id;
+```
+
 ## TiDB 对哪些 MySQL variables 兼容？
 
 详细可参考[系统变量](/system-variables.md)。
@@ -73,6 +120,8 @@ MySQL 中，返回结果的顺序可能较为固定，因为查询是通过单�
 +------+------+
 3 rows in set (0.00 sec)
 ```
+
+在 TiDB 中，你还可以使用系统变量 [`tidb_enable_ordered_result_mode`](/system-variables.md#tidb_enable_ordered_result_mode) 来指定是否对最终的输出结果进行自动排序。
 
 ## TiDB 是否支持 `SELECT FOR UPDATE`？
 
@@ -150,7 +199,7 @@ TiDB 中的 `SHOW PROCESSLIST` 与 MySQL 中的 `SHOW PROCESSLIST` 显示内容�
 
 ## 在 TiDB 中如何控制或改变 SQL 提交的执行优先级？
 
-TiDB 支持改变 [per-session](/system-variables.md#tidb_force_priority)、[全局](/system-variables.md#tidb_force_priority)或单个语句的优先级。优先级包括：
+TiDB 支持改变[全局](/system-variables.md#tidb_force_priority)或单个语句的优先级。优先级包括：
 
 - HIGH_PRIORITY：该语句为高优先级语句，TiDB 在执行阶段会优先处理这条语句
 - LOW_PRIORITY：该语句为低优先级语句，TiDB 在执行阶段会降低这条语句的优先级
@@ -288,9 +337,17 @@ ID 没什么规律，只要是唯一就行。不过在生成执行计划时，�
 
 详情参考 [TiDB 配置参数](/command-line-flags-for-tidb-configuration.md)。
 
-### 如何打散热点
+### 如何避免热点问题并实现负载均衡？TiDB 中是否有热分区或热范围问题？
 
-TiDB 中以 Region 分片来管理数据库，通常来讲，TiDB 的热点指的是 Region 的读写访问热点。而 TiDB 中对于非整数主键或没有主键的表，可以通过设置 `SHARD_ROW_ID_BITS` 属性来适度分解 Region 分片，以达到打散 Region 热点的效果。详情可参考 [`SHARD_ROW_ID_BITS`](/shard-row-id-bits.md) 中的介绍。
+要了解热点问题的场景，请参考[常见热点问题](/troubleshoot-hot-spot-issues.md#常见热点场景)。TiDB 的以下特性旨在帮助解决热点问题：
+
+- [`SHARD_ROW_ID_BITS`](/troubleshoot-hot-spot-issues.md#使用-shard_row_id_bits-处理热点表) 属性。设置该属性后，行 ID 会被打散并写入多个 Region，以缓解写入热点问题。
+- [`AUTO_RANDOM`](/troubleshoot-hot-spot-issues.md#使用-auto_random-处理自增主键热点表) 属性，用于解决自增主键带来的热点问题。
+- [Coprocessor Cache](/coprocessor-cache.md)，针对小表的读热点问题。
+- [Load Base Split](/configure-load-base-split.md)，针对因 Region 访问不均衡（例如小表全表扫）而导致的热点问题。
+- [缓存表](/cached-tables.md)，针对被频繁访问但更新较少的小热点表。
+
+如果你遇到因热点引起的性能问题，可参考[处理热点问题](/troubleshoot-hot-spot-issues.md)。
 
 ### TiKV 性能参数调优
 

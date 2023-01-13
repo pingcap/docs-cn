@@ -35,7 +35,7 @@ title: 通过 TiUP 部署 TiDB 集群的拓扑文件配置
 - `user`：以什么用户来启动部署的集群，默认值："tidb"，如果 `<user>` 字段指定的用户在目标机器上不存在，会自动尝试创建
 - `group`：自动创建用户时指定用户所属的用户组，默认和 `<user>` 字段值相同，若指定的组不存在，则自动创建
 - `ssh_port`：指定连接目标机器进行操作的时候使用的 SSH 端口，默认值：22
-- `enable_tls`：是否对集群启用 TLS，启用之后组件之间、客户端与组件之间都必须使用生成的 TLS 证书链接，**启用后无法关闭**，默认值：false
+- `enable_tls`：是否对集群启用 TLS。启用之后，组件之间、客户端与组件之间都必须使用生成的 TLS 证书进行连接，默认值：false
 - `deploy_dir`：每个组件的部署目录，默认值："deploy"。其应用规则如下：
     - 如果在实例级别配置了绝对路径的 `deploy_dir`，那么实际部署目录为该实例设定的 `deploy_dir`
     - 对于每个实例，如果用户未配置 `deploy_dir`，其默认值为相对路径 `<component-name>-<component-port>`
@@ -595,7 +595,7 @@ grafana_servers:
 - `host`：指定部署到哪台机器，字段值填 IP 地址，不可省略
 - `ssh_port`：指定连接目标机器进行操作的时候使用的 SSH 端口，若不指定，则使用 `global` 区块中的 `ssh_port`
 - `web_port`：指定 Alertmanager 提供网页服务的端口，默认值：9093
-- `cluster_port`：指定 Alertmanger 和 其他 Alertmanager 通讯的端口，默认值：9094
+- `cluster_port`：指定 Alertmanger 和其他 Alertmanager 通讯的端口，默认值：9094
 - `deploy_dir`：指定部署目录，若不指定，或指定为相对目录，则按照 `global` 中配置的 `deploy_dir` 生成
 - `data_dir`：指定数据目录，若不指定，或指定为相对目录，则按照 `global` 中配置的 `data_dir` 生成
 - `log_dir`：指定日志目录，若不指定，或指定为相对目录，则按照 `global` 中配置的 `log_dir` 生成

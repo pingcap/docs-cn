@@ -8,7 +8,7 @@ title: TiDB 6.4.0 Release Notes
 
 TiDB 版本：6.4.0-DMR
 
-试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v6.4/quick-start-with-tidb) | [下载离线包](https://cn.pingcap.com/product-community/)
+试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v6.4/quick-start-with-tidb) | [下载离线包](https://cn.pingcap.com/product-community/?version=v6.4.0-DMR#version-list)
 
 在 6.4.0-DMR 版本中，你可以获得以下关键特性：
 
@@ -24,7 +24,7 @@ TiDB 版本：6.4.0-DMR
 - [TiFlash 静态加密](/encryption-at-rest.md#tiflash)支持国密算法 SM4。
 - 支持通过 SQL 语句立即对指定分区的 TiFlash 副本进行[物理数据整理 (Compaction)](/sql-statements/sql-statement-alter-table-compact.md)。
 - 支持[基于 AWS EBS snapshot 的集群备份和恢复](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.4/backup-to-aws-s3-by-snapshot)。
-- 支持在分库分表合并迁移场景中[标记下游表中的数据来自上游哪个分库、分表和数据源](/dm/dm-key-features.md#提取分库分表数据源信息写入合表)。
+- 支持在分库分表合并迁移场景中[标记下游表中的数据来自上游哪个分库、分表和数据源](/dm/dm-table-routing.md#提取分库分表数据源信息写入合表)。
 
 ## 新功能
 
@@ -130,6 +130,10 @@ TiDB 版本：6.4.0-DMR
 
     更多信息，请参考[用户文档](/system-variables.md#tidb_stats_load_sync_wait-从-v540-版本开始引入)。
 
+* 降低批量写入请求对轻量级事务写入的响应时间的影响 [#13313](https://github.com/tikv/tikv/issues/13313) @[glorv](https://github.com/glorv)
+
+    定时批量 DML 任务存在于一部分系统的业务逻辑中。在此场景下，处理这些批量写入任务会增加在线交易的时延。在 v6.3.0 中，TiKV 对混合负载场景下读请求的优先级进行了优化，你可以通过 [`readpool.unified.auto-adjust-pool-size`](/tikv-configuration-file.md#auto-adjust-pool-size-从-v630-版本开始引入) 配置项开启 TiKV 对统一处理读请求的线程池 (UnifyReadPool) 大小的自动调整。在 v6.4.0 中，TiKV 对写入请求也进行了动态识别和优先级调整，控制 Apply 线程每一轮处理单个状态机写入的最大数据量，从而降低批量写入对交易事务写入的响应时间的影响。
+
 ### 易用性
 
 * TiKV API V2 成为正式功能 [#11745](https://github.com/tikv/tikv/issues/11745) @[pingyu](https://github.com/pingyu)
@@ -226,7 +230,7 @@ TiDB 版本：6.4.0-DMR
 
     在上游分库分表合并到 TiDB 的场景，你可以在目标表中手动额外增加几个字段（扩展列），并在配置 DM 任务时，对这几个扩展列赋值。例如，当赋予上游分库分表的名称时，通过 DM 写入到下游的记录会包含上游分库分表的名称。在一些数据异常的场景，你可以通过该功能快速定位目标表的问题数据源信息，如该数据来自上游哪个分库，哪个分表。
 
-    更多信息，请参考[提取分库分表数据源信息写入合表](/dm/dm-key-features.md#提取分库分表数据源信息写入合表)。
+    更多信息，请参考[提取分库分表数据源信息写入合表](/dm/dm-table-routing.md#提取分库分表数据源信息写入合表)。
 
 * 优化 DM 的前置检查项，将部分必须通过项改为非必须通过项 [#7333](https://github.com/pingcap/tiflow/issues/7333) @[lichunzhu](https://github.com/lichunzhu)
 
@@ -300,7 +304,7 @@ TiDB 版本：6.4.0-DMR
 | TiDB | [`pessimistic-txn.constraint-check-in-place-pessimistic`](/tidb-configuration-file.md#constraint-check-in-place-pessimistic-从-v640-版本开始引入) | 新增 | 用于控制系统变量 [`tidb_constraint_check_in_place_pessimistic`](/system-variables.md#tidb_constraint_check_in_place_pessimistic-从-v630-版本开始引入) 的默认值，默认值为 `true`。|
 | TiDB | [`tidb_max_reuse_chunk`](/tidb-configuration-file.md#tidb_max_reuse_chunk-从-v640-版本开始引入) | 新增 | 用于控制每个连接最多缓存的 Chunk 对象数，默认值为 `64`。 |
 | TiDB | [`tidb_max_reuse_column`](/tidb-configuration-file.md#tidb_max_reuse_column-从-v640-版本开始引入) | 新增 | 用于控制每个连接最多缓存的 column 对象数，默认值为 `256`。 |
-| TiKV | [`cdc.raw-min-ts-outlier-threshold`](/tikv-configuration-file.md#raw-min-ts-outlier-threshold-从-v620-版本开始引入) | 废弃 | 该配置不再生效。|
+| TiKV | [`cdc.raw-min-ts-outlier-threshold`](https://docs.pingcap.com/zh/tidb/v6.2/tikv-configuration-file#raw-min-ts-outlier-threshold-从-v620-版本开始引入) | 废弃 | 该配置不再生效。|
 | TiKV | [`causal-ts.alloc-ahead-buffer`](/tikv-configuration-file.md#alloc-ahead-buffer-从-v640-版本开始引入) | 新增 | 预分配给 TSO 的缓存大小（以时长计算），默认值为 `3s`。|
 | TiKV | [`causal-ts.renew-batch-max-size`](/tikv-configuration-file.md#renew-batch-max-size-从-v640-版本开始引入)| 新增 | 单次时间戳请求的最大数量，默认值为 `8192`。 |
 | TiKV | [`raftstore.apply-yield-write-size`](/tikv-configuration-file.md#apply-yield-write-size-从-v640-版本开始引入) | 新增 | Apply 线程每一轮处理单个状态机写入的最大数据量，默认值为 `32KiB`。这是个软限制。|
@@ -309,6 +313,7 @@ TiDB 版本：6.4.0-DMR
 | DM | [`routes.route-rule-1.extract-table`](/dm/task-configuration-file-full.md#完整配置文件示例) | 新增 | 可选配置。用于提取分库分表场景中分表的源信息，提取的信息写入下游合表，用于标识数据来源。如果配置该项，需要提前在下游手动创建合表。 |
 | DM | [`routes.route-rule-1.extract-schema`](/dm/task-configuration-file-full.md#完整配置文件示例) | 新增 | 可选配置。用于提取分库分表场景中分库的源信息，提取的信息写入下游合表，用于标识数据来源。如果配置该项，需要提前在下游手动创建合表。 |
 | DM | [`routes.route-rule-1.extract-source`](/dm/task-configuration-file-full.md#完整配置文件示例) | 新增 | 可选配置。用于提取分库分表场景中的源信息，提取的信息写入下游合表，用于标识数据来源。如果配置该项，需要提前在下游手动创建合表。 |
+| TiCDC | [`transaction-atomicity`](/ticdc/ticdc-sink-to-mysql.md#sink-uri-配置-mysqltidb) | 修改 | 默认值由 `table` 改为 `none`。该修改可降低同步延迟，减少系统出现 OOM 的风险。同时，修改默认值后，系统只拆分少量的事务（即超过 1024 行的事务），而不是拆分所有事务。 |
 
 ### 其他
 
@@ -362,6 +367,7 @@ TiDB 版本：6.4.0-DMR
         - 提升 MQ sink 模块非攒批发送的性能 [#7353](https://github.com/pingcap/tiflow/issues/7353) @[hi-rustin](https://github.com/hi-rustin)
         - 提升单表大量 Region 场景下 TiCDC puller 的性能 [#7078](https://github.com/pingcap/tiflow/issues/7078) [#7281](https://github.com/pingcap/tiflow/issues/7281) @[sdojjy](https://github.com/sdojjy)
         - 支持在 Syncpoint 功能开启时在下游 TiDB 集群使用 `tidb_enable_external_ts_read` 来读取历史数据 [#7419](https://github.com/pingcap/tiflow/issues/7419) @[asddongmen](https://github.com/asddongmen)
+        - 默认情况下关闭 safeMode 并开启大事务拆分功能，提升同步的稳定性 [#7505](https://github.com/pingcap/tiflow/issues/7505) @[asddongmen](https://github.com/asddongmen)
 
     + TiDB Data Migration (DM)
 
@@ -385,8 +391,8 @@ TiDB 版本：6.4.0-DMR
     - 修复 [`tidb_constraint_check_in_place_pessimistic`](/system-variables.md#tidb_constraint_check_in_place_pessimistic-从-v630-版本开始引入) 可能影响内部事务问题，修改该变量作用域为 SESSION [#38766](https://github.com/pingcap/tidb/issues/38766) @[ekexium](https://github.com/ekexium)
     - 修复条件在某些场景下被错误下推至 projection 的问题 [#35623](https://github.com/pingcap/tidb/issues/35623) @[Reminiscent](https://github.com/Reminiscent)
     - 修复 `AND` 和 `OR` 条件的 `isNullRejected` 检查错误导致查询结果错误的问题 [#38304]( https://github.com/pingcap/tidb/issues/38304) @[Yisaer](https://github.com/Yisaer)
-    - 修复外连接消除时没有考虑 `GROUP_CONCAT` 内部的 `ORDER BY` 导致查询出错的问题 [#18216](https://github.com/pingcap/tidb/issues/18216) @[winoros](https://github.com/winoros) 
-    - 修复错误下推的条件被 Join Reorder 丢弃后导致查询结果错误的问题 [#38736](https://github.com/pingcap/tidb/issues/38736) @[winoros](https://github.com/winoros) 
+    - 修复外连接消除时没有考虑 `GROUP_CONCAT` 内部的 `ORDER BY` 导致查询出错的问题 [#18216](https://github.com/pingcap/tidb/issues/18216) @[winoros](https://github.com/winoros)
+    - 修复错误下推的条件被 Join Reorder 丢弃后导致查询结果错误的问题 [#38736](https://github.com/pingcap/tidb/issues/38736) @[winoros](https://github.com/winoros)
 
 + TiKV
 

@@ -18,7 +18,7 @@ DM (Data Migration) 使用 sharding DDL lock 来确保分库分表的 DDL 操作
 
 ### `shard-ddl-lock`
 
-该命令用于查看 DDL lock 和主动请求 DM-master 解除指定的 DDL lock。命令仅在 DM v6.0 及其以后版本支持, 之前版本可使用 `show-ddl-locks` 和 `unlock-ddl-lock` 命令。
+该命令用于查看 DDL lock 和主动请求 DM-master 解除指定的 DDL lock。命令仅在 DM v6.0 及其以后版本支持，之前版本可使用 `show-ddl-locks` 和 `unlock-ddl-lock` 命令。
 
 {{< copyable "shell-regular" >}}
 
@@ -336,9 +336,9 @@ MySQL 及 DM 操作与处理流程如下：
 
 #### 手动处理示例
 
-仍然假设是 [部分 MySQL source 被移除](#场景一部分-mysql-source-被移除) 示例中的上下游表结构及合表迁移需求。
+仍然假设是[部分 MySQL source 被移除](#场景一部分-mysql-source-被移除)示例中的上下游表结构及合表迁移需求。
 
-当在 DM-master 自动执行 unlock 操作的过程中，owner（`mysql-replica-01`）成功执行了 DDL 操作且开始继续进行后续迁移，但在请求非 owner（`mysql-replica-02`）跳过 DDL 操作的过程中，由于对应的 DM-worker 发生了重启在跳过 DDL 后未能更新 checkpoint。
+当在 DM-master 自动执行 unlock 操作的过程中，owner (`mysql-replica-01`) 成功执行了 DDL 操作且开始继续进行后续迁移，但在请求非 owner (`mysql-replica-02`) 跳过 DDL 操作的过程中，由于对应的 DM-worker 发生了重启在跳过 DDL 后未能更新 checkpoint。
 
 `mysql-replica-02` 对应的数据迁移子任务恢复后，将在 DM-master 上创建一个新的 lock，但其他 MySQL source 此时已经执行或跳过 DDL 操作并在进行后续迁移。
 

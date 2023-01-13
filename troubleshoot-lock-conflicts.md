@@ -193,7 +193,7 @@ Txn0 完成了 Prewrite，在 Commit 的过程中 Txn1 对该 key 发起了读�
 
         * txnStartTS：发起读请求的事务的 start_ts，如上面示例中的 416643508703592451
         * backoff_types：读写发生了冲突，并且读请求进行了 backoff 重试，重试的类型为 txnLockFast
-        * backoff_ms：读请求 backoff 重试的耗时，单位为 ms ，如上面示例中的 255
+        * backoff_ms：读请求 backoff 重试的耗时，单位为 ms，如上面示例中的 255
         * region_id：读请求访问的目标 region 的 id
 
 2. 通过 TiKV 日志分析：

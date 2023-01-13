@@ -20,7 +20,7 @@ aliases: ['/docs-cn/dev/auto-increment/']
 
 > **注意：**
 >
-> 如果要求自增编号在所有 TiDB 实例上具有单调性，并且你的 TiDB 版本在 v6.4.0 及以上，你可以使用 v6.4.0 引入的实验特性 [MySQL 兼容模式](#mysql-兼容模式)。
+> 如果要求自增编号在所有 TiDB 实例上具有单调性，并且你的 TiDB 版本在 v6.5.0 及以上，推荐使用 [MySQL 兼容模式](#mysql-兼容模式)。
 
 {{< copyable "sql" >}}
 
@@ -330,10 +330,6 @@ SELECT * FROM t;
 
 从 v6.4.0 开始，TiDB 实现了中心化分配自增 ID 的服务，可以支持 TiDB 实例不缓存数据，而是每次请求都访问中心化服务获取 ID。
 
-> **警告：**
->
-> 当前该功能为实验特性，不建议在生产环境中使用。
-
 当前中心化分配服务内置在 TiDB 进程，类似于 DDL Owner 的工作模式。有一个 TiDB 实例将充当“主”的角色提供 ID 分配服务，而其它的 TiDB 实例将充当“备”角色。当“主”节点发生故障时，会自动进行“主备切换”，从而保证中心化服务的高可用。
 
 MySQL 兼容模式的使用方式是，建表时将 `AUTO_ID_CACHE` 设置为 `1`：
@@ -360,3 +356,5 @@ CREATE TABLE t(a int AUTO_INCREMENT key) AUTO_ID_CACHE 1;
 - 不支持与列的默认值 `DEFAULT` 同时指定在同一列上。
 - 不支持使用 `ALTER TABLE` 来添加 `AUTO_INCREMENT` 属性。
 - 支持使用 `ALTER TABLE` 来移除 `AUTO_INCREMENT` 属性。但从 TiDB 2.1.18 和 3.0.4 版本开始，TiDB 通过 session 变量 `@@tidb_allow_remove_auto_inc` 控制是否允许通过 `ALTER TABLE MODIFY` 或 `ALTER TABLE CHANGE` 来移除列的 `AUTO_INCREMENT` 属性，默认是不允许移除。
+- `ALTER TABLE` 需要 `FORCE` 选项来将 `AUTO_INCREMENT` 设置为较小的值。
+- 将 `AUTO_INCREMENT` 设置为小于 `MAX(<auto_increment_column>)` 的值会导致重复键，因为预先存在的值不会被跳过。

@@ -8,7 +8,7 @@ aliases: ['/zh/tidb/dev/pitr-usage/']
 
 全量备份包含集群某个时间点的全量数据，但是不包含其他时间点的更新数据，而 TiDB 日志备份能够将业务写入 TiDB 的数据记录及时备份到指定存储中。如果你需要灵活的选择恢复的时间点，即实现 Point-in-time recovery (PITR)，可以开启[日志备份](#开启日志备份)，并[定期执行快照（全量）备份](#定期执行全量备份)。
 
-使用 BR 备份与恢复数据前，请先[安装 BR](/br/br-use-overview.md#部署和使用-br) 。
+使用 br 命令行工具备份与恢复数据前，请先[安装 br 命令行工具](/br/br-use-overview.md#部署和使用-br)。
 
 ## 对集群进行备份
 
@@ -18,7 +18,7 @@ aliases: ['/zh/tidb/dev/pitr-usage/']
 
 ```shell
 tiup br log start --task-name=pitr --pd "${PD_IP}:2379" \
---storage 's3://backup-101/logbackup?access_key=${access_key}&secret_access_key=${secret_access_key}"'
+--storage 's3://backup-101/logbackup?access-key=${access-key}&secret-access-key=${secret-access-key}"'
 ```
 
 日志备份任务启动后，会在 TiDB 集群后台持续地运行，直到你手动将其暂停。在这过程中，TiDB 变更数据将以小批量的形式定期备份到指定存储中。如果你需要查询日志备份任务当前状态，执行如下命令：
@@ -47,21 +47,21 @@ checkpoint[global]: 2022-05-13 11:31:47.2 +0800; gap=4m53s
 
 ```shell
 tiup br backup full --pd "${PD_IP}:2379" \
---storage 's3://backup-101/snapshot-${date}?access_key=${access_key}&secret_access_key=${secret_access_key}"'
+--storage 's3://backup-101/snapshot-${date}?access-key=${access-key}&secret-access-key=${secret-access-key}"'
 ```
 
 ## 进行 PITR
 
-如果你想恢复到备份保留期内的任意时间点，可以使用 `br restore point` 命令。执行该命令时，你需要指定**要恢复的时间点**、**恢复时间点之前最近的快照备份**以及**日志备份数据**。BR 会自动判断和读取恢复需要的数据，然后将这些数据依次恢复到指定的集群。
+如果你想恢复到备份保留期内的任意时间点，可以使用 `br restore point` 命令。执行该命令时，你需要指定**要恢复的时间点**、**恢复时间点之前最近的快照备份**以及**日志备份数据**。br 命令行工具会自动判断和读取恢复需要的数据，然后将这些数据依次恢复到指定的集群。
 
 ```shell
 br restore point --pd "${PD_IP}:2379" \
---storage='s3://backup-101/logbackup?access_key=${access_key}&secret_access_key=${secret_access_key}"' \
---full-backup-storage='s3://backup-101/snapshot-${date}?access_key=${access_key}&secret_access_key=${secret_access_key}"' \
+--storage='s3://backup-101/logbackup?access-key=${access-key}&secret-access-key=${secret-access-key}"' \
+--full-backup-storage='s3://backup-101/snapshot-${date}?access-key=${access-key}&secret-access-key=${secret-access-key}"' \
 --restored-ts '2022-05-15 18:00:00+0800'
 ```
 
-恢复期间，可通过终端中的进度条查看进度，如下。恢复分为两个阶段：全量恢复 (Full Restore) 和日志恢复（Restore Meta Files 和 Restore KV Files）。每个阶段完成恢复后，BR 都会输出恢复耗时和恢复数据大小等信息。
+恢复期间，可通过终端中的进度条查看进度，如下。恢复分为两个阶段：全量恢复 (Full Restore) 和日志恢复（Restore Meta Files 和 Restore KV Files）。每个阶段完成恢复后，br 命令行工具都会输出恢复耗时和恢复数据大小等信息。
 
 ```shell
 Full Restore <--------------------------------------------------------------------------------------------------------------------------------------------------------> 100.00%
@@ -83,13 +83,13 @@ Restore KV Files <--------------------------------------------------------------
 2. 使用 `validate` 指令获取该备份对应的时间点。假如需要清理 2022/09/01 之前的备份数据，则应查找该日期之前的最近一次全量备份，且保证它不会被清理。
 
     ```shell
-    FULL_BACKUP_TS=`tiup br validate decode --field="end-version" --storage "s3://backup-101/snapshot-${date}?access_key=${access_key}&secret_access_key=${secret_access_key}"| tail -n1`
+    FULL_BACKUP_TS=`tiup br validate decode --field="end-version" --storage "s3://backup-101/snapshot-${date}?access-key=${access-key}&secret-access-key=${secret-access-key}"| tail -n1`
     ```
 
 3. 清理该快照备份 `FULL_BACKUP_TS` 之前的日志备份数据。
 
     ```shell
-    tiup br log truncate --until=${FULL_BACKUP_TS} --storage='s3://backup-101/logbackup?access_key=${access_key}&secret_access_key=${secret_access_key}"'
+    tiup br log truncate --until=${FULL_BACKUP_TS} --storage='s3://backup-101/logbackup?access-key=${access-key}&secret-access-key=${secret-access-key}"'
     ```
 
 4. 清理该快照备份 `FULL_BACKUP_TS` 之前的快照备份数据。
@@ -102,8 +102,8 @@ Restore KV Files <--------------------------------------------------------------
 
 ### 能力指标
 
-- PITR 恢复速度，平均到单台 TiKV 节点：全量恢复为 280 GB/h ，日志恢复为 30 GB/h
-- 使用 BR 清理过期的日志备份数据速度为 600 GB/h
+- PITR 恢复速度，平均到单台 TiKV 节点：全量恢复为 280 GB/h，日志恢复为 30 GB/h
+- 使用 `br log truncate` 清理过期的日志备份数据速度为 600 GB/h
 
 > **注意：**
 >

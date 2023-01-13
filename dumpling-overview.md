@@ -96,7 +96,15 @@ dumpling -u root -P 4000 -h 127.0.0.1 --filetype sql -t 8 -o /tmp/test -r 200000
 
 > **注意：**
 >
-> Dumpling 导出不区分*字符串*与*关键字*。如果导入的数据是 Boolean 类型的 `true` 和 `false`，导出时会被转换为 `1` 和 `0` 。
+> Dumpling 导出不区分*字符串*与*关键字*。如果导入的数据是 Boolean 类型的 `true` 和 `false`，导出时会被转换为 `1` 和 `0`。
+
+### 压缩导出的数据文件
+
+你可以使用 `--compress <format>` 压缩导出的 CSV、SQL 数据与表结构文件。该参数支持 `gzip`、`snappy`、`zstd` 压缩算法。默认不压缩。
+
+- 该选项只能压缩单个数据与表结构文件，无法直接压缩整个文件夹生成单个压缩集合包。
+- 该选项可以节省磁盘空间，但也会导致导出速度变慢，并增加 CPU 消耗。对导出速度要求较高的场景需慎用。
+- TiDB Lightning v6.5.0 及以上版本支持直接使用 Dumpling 压缩文件作为数据源导入，无需额外配置。
 
 ### 输出文件格式
 
@@ -228,7 +236,7 @@ Dumpling 也可以通过 `-B` 或 `-T` 选项导出特定的数据库/数据表�
 
 - `-t` 用于指定导出的线程数。增加线程数会增加 Dumpling 并发度提高导出速度，但也会加大数据库内存消耗，因此不宜设置过大。
 - `-r` 选项用于指定单个文件的最大记录数，或者说，数据库中的行数。开启后 Dumpling 会开启表内并发，提高导出大表的速度。当上游为 TiDB 且版本为 v3.0 或更新版本时，设置 `-r` 参数大于 0 表示使用 TiDB region 信息划分表内并发，具体取值不影响划分算法。对上游为 MySQL 且表的主键是 int 的场景，该参数也有表内并发效果。
-- `--compress gzip` 选项可以用于压缩导出的数据。压缩可以显著降低导出数据的大小，同时如果存储的写入 I/O 带宽不足，可以使用该选项来加速导出。但该选项也有副作用，由于该选项会对每个文件单独压缩，因此会增加 CPU 消耗。
+- `--compress <format>` 选项可以用于压缩导出的数据，支持 `gzip`、`snappy`、`zstd` 压缩算法。压缩可以显著降低导出数据的大小，同时如果存储的写入 I/O 带宽不足，可以使用该选项来加速导出。但该选项也有副作用，由于该选项会对每个文件单独压缩，因此会增加 CPU 消耗。
 
 利用以上选项可以提高 Dumpling 的导出速度。
 
@@ -346,3 +354,4 @@ SET GLOBAL tidb_gc_life_time = '10m';
 | --status-addr | Dumpling 的服务地址，包含了 Prometheus 拉取 metrics 信息及 pprof 调试的地址 | ":8281" |
 | --tidb-mem-quota-query | 单条 dumpling 命令导出 SQL 语句的内存限制，单位为 byte。对于 v4.0.10 或以上版本，若不设置该参数，默认使用 TiDB 中的 `mem-quota-query` 配置项值作为内存限制值。对于 v4.0.10 以下版本，该参数值默认为 32 GB | 34359738368 |
 | --params | 为需导出的数据库连接指定 session 变量，可接受的格式: "character_set_client=latin1,character_set_connection=latin1" |
+| -c 或 --compress | 压缩 Dumpling 导出的 CSV、SQL 数据与表结构文件为指定格式，支持 "gzip"、"snappy" 和 "zstd" 压缩算法 | "" |
