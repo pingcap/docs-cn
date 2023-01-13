@@ -47,8 +47,6 @@ summary: 给出一个 TiDB 和 Python 的简单 CRUD 应用程序示例。
 
 ## 第 2 步：获取代码
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 git clone https://github.com/pingcap-inc/tidb-example-python.git
 ```
