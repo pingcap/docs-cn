@@ -79,3 +79,48 @@ SELECT app_name, country FROM t1;
     * When a "write transaction" is large, such as close to 1 GiB, it is recommended to control concurrency to no more than 10.
     * When a "write transaction" is small, such as less than 100 MiB, it is recommended to control concurrency to no more than 30.
     * Determine the concurrency based on testing results and specific circumstances.
+
+## Example
+
+Data definition:
+
+```sql
+CREATE TABLE detail_data (
+    ts DATETIME,                -- Fee generation time
+    customer_id VARCHAR(20),    -- Customer ID
+    detail_fee DECIMAL(20,2));  -- Amount of fee
+
+CREATE TABLE daily_data (
+    rec_date DATE,              -- Date when data is collected
+    customer_id VARCHAR(20),    -- Customer ID
+    daily_fee DECIMAL(20,2));   -- Amount of fee for per day
+
+ALTER TABLE detail_data SET TIFLASH REPLICA 1;
+ALTER TABLE daily_data SET TIFLASH REPLICA 1;
+
+-- ... (detail_data table continues updating)
+INSERT INTO detail_data(ts,customer_id,detail_fee) VALUES
+('2023-1-1 12:2:3', 'cus001', 200.86),
+('2023-1-2 12:2:3', 'cus002', 100.86),
+('2023-1-3 12:2:3', 'cus002', 2200.86),
+('2023-1-4 12:2:3', 'cus003', 2020.86),
+('2023-1-5 12:2:3', 'cus003', 1200.86),
+('2023-1-6 12:2:3', 'cus002', 20.86);
+```
+
+Save daily analysis results:
+
+```sql
+SET @@tidb_enable_tiflash_read_for_write_stmt=ON;
+
+INSERT INTO daily_data (rec_date, customer_id, daily_fee)
+SELECT DATE(ts), customer_id, sum(detail_fee) FROM detail_data WHERE DATE(ts) = CURRENT_DATE() GROUP BY DATE(ts), customer_id;
+```
+
+Analyze monthly data based on daily analysis data:
+
+```sql
+SELECT MONTH(rec_date), customer_id, sum(daily_fee) FROM daily_data GROUP BY MONTH(rec_date), customer_id;
+```
+
+The preceding example materializes the daily analysis results and saves them to the daily result table, based on which the monthly data analysis is accelerated, thus improving data analysis efficiency.
