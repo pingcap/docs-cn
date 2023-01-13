@@ -33,6 +33,7 @@ Resource control 特别适用于在大集群内部实现多用户应用的资源
     ```sql
     SET GLOBAL tidb_enable_resource_control = 'ON';
     ```
+
 ### 创建资源组，并绑定用户到资源组
 
 - 创建 `rg1` 资源组
