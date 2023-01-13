@@ -30,7 +30,8 @@ Resource control 特别适用于在大集群内部实现多用户应用的资源
 ### 开启特性
 
 - 开启 Resource Control 特性
-    ```sql
+
+        ```sql
     SET GLOBAL tidb_enable_resource_control = 'ON';
     ```
 
