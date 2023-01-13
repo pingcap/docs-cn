@@ -11,7 +11,7 @@ Resource control 特别适用于在大集群内部实现多用户应用的资源
 
 > **警告:**
 >
-> Resource Control 是 TiDB 在 v6.6.0 中引入的实验特性，其语法或者行为表现在 GA 前可能会发生变化。如果你知晓潜在的风险，可通过执行 TiDB SQL 语句`SET GLOBAL tidb_enable_resource_control = 'ON'`， 同时设置 TiKV 配置参数 `tidb_enable_resource_control` 为 'true' 来开启该实验特性。
+> Resource Control 是 TiDB 在 v6.6.0 中引入的实验特性，其语法或者行为表现在 GA 前可能会发生变化。如果你知晓潜在的风险，可通过执行 TiDB SQL 语句`SET GLOBAL tidb_enable_resource_control = 'ON'`， 同时设置 TiKV 配置参数 `resource_control.enabled` 为 'true' 来开启该实验特性。
 
 ## 新参数
 
