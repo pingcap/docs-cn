@@ -13,8 +13,6 @@ summary: 介绍 TiDB 中索引的最佳实践。
 
 本章内容将会用 [bookshop](/develop/dev-guide-bookshop-schema-design.md) 数据库中的 `books` 表作为示例。
 
-{{< copyable "sql" >}}
-
 ```sql
 CREATE TABLE `books` (
   `id` bigint(20) AUTO_RANDOM NOT NULL,

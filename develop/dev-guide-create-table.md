@@ -29,8 +29,6 @@ summary: 创建表的方法、规范及例子。
 
 `CREATE TABLE` 语句通常采用以下形式：
 
-{{< copyable "sql" >}}
-
 ```sql
 CREATE TABLE {table_name} ( {elements} );
 ```
@@ -43,8 +41,6 @@ CREATE TABLE {table_name} ( {elements} );
 假设你需要创建一个表来存储 `bookshop` 库中的用户信息。
 
 注意，此时因为一个列都没被添加，所以下方这条 SQL 暂时还不能被运行：
-
-{{< copyable "sql" >}}
 
 ```sql
 CREATE TABLE `bookshop`.`users` (
@@ -69,8 +65,6 @@ CREATE TABLE `bookshop`.`users` (
 
 可以为 `users` 表添加一些列，如他们的唯一标识 `id`，余额 `balance` 及昵称 `nickname`。
 
-{{< copyable "sql" >}}
-
 ```sql
 CREATE TABLE `bookshop`.`users` (
   `id` bigint,
@@ -88,8 +82,6 @@ CREATE TABLE `bookshop`.`users` (
 TiDB 支持许多其他的列数据类型，包含[整数](/data-type-numeric.md#整数类型)、[浮点数](/data-type-numeric.md#浮点类型)、[定点数](/data-type-numeric.md#定点类型)、[时间](/data-type-date-and-time.md#datetime-类型)、[枚举](/data-type-string.md#enum-类型) 等，可参考支持的列的[数据类型](/basic-features.md#数据类型函数和操作符)，并使用与你准备保存在数据库内的数据匹配的**数据类型**。
 
 稍微提升一下复杂度，例如选择定义一张 `books` 表，这张表将是 `bookshop` 数据的核心。它包含书的唯一标识、名称、书籍类型（如：杂志、动漫、教辅等）、库存、价格、出版时间等字段。
-
-{{< copyable "sql" >}}
 
 ```sql
 CREATE TABLE `bookshop`.`books` (
@@ -128,8 +120,6 @@ CREATE TABLE `bookshop`.`books` (
 
 需遵循[选择主键时应遵守的规则](#选择主键时应遵守的规则)，举一个 `users` 表中定义 `AUTO_RANDOM` 主键的例子：
 
-{{< copyable "sql" >}}
-
 ```sql
 CREATE TABLE `bookshop`.`users` (
   `id` bigint AUTO_RANDOM,
@@ -159,8 +149,6 @@ CREATE TABLE `bookshop`.`users` (
 
 需遵循[选择聚簇索引时应遵守的规则](#选择聚簇索引时应遵守的规则)，假设需要建立一张 `books` 和 `users` 之间关联的表，代表用户对某书籍的评分。使用表名 `ratings` 来创建该表，并使用 `book_id` 和 `user_id` 构建[复合主键](/constraints.md#主键约束)，并在该主键上建立聚簇索引：
 
-{{< copyable "sql" >}}
-
 ```sql
 CREATE TABLE `bookshop`.`ratings` (
   `book_id` bigint,
@@ -181,8 +169,6 @@ CREATE TABLE `bookshop`.`ratings` (
 
 你可以将 `DEFAULT` 与[支持的 SQL 函数](/basic-features.md#数据类型函数和操作符)结合使用，将默认值的计算移出应用层，从而节省应用层的资源（当然，计算所消耗的资源并不会凭空消失，只是被转移到了 TiDB 集群中）。常见的，希望实现数据插入时，可默认填充默认的时间。还是使用 `ratings` 作为示例，可使用以下语句：
 
-{{< copyable "sql" >}}
-
 ```sql
 CREATE TABLE `bookshop`.`ratings` (
   `book_id` bigint,
@@ -194,8 +180,6 @@ CREATE TABLE `bookshop`.`ratings` (
 ```
 
 额外的，如果需更新时也默认填入当前时间，可使用以下语句（但 `ON UPDATE` 后仅可填入[当前时间相关语句](https://pingcap.github.io/sqlgram/#NowSymOptionFraction)，`DEFAULT` 后支持[更多选择](https://pingcap.github.io/sqlgram/#DefaultValueExpr)）：
-
-{{< copyable "sql" >}}
 
 ```sql
 CREATE TABLE `bookshop`.`ratings` (
@@ -213,8 +197,6 @@ CREATE TABLE `bookshop`.`ratings` (
 
 例如，你需要确保用户的昵称唯一，可以这样改写 `users` 表的创建 SQL：
 
-{{< copyable "sql" >}}
-
 ```sql
 CREATE TABLE `bookshop`.`users` (
   `id` bigint AUTO_RANDOM,
@@ -231,8 +213,6 @@ CREATE TABLE `bookshop`.`users` (
 如果你需要防止列中出现空值，那就可以使用 `NOT NULL` 约束。
 
 还是使用用户昵称来举例子，除了昵称唯一，还希望昵称不可为空，于是此处可以这样改写 `users` 表的创建 SQL：
-
-{{< copyable "sql" >}}
 
 ```sql
 CREATE TABLE `bookshop`.`users` (
@@ -261,8 +241,6 @@ CREATE TABLE `bookshop`.`users` (
 
 TiFlash 部署完成后并不会自动同步数据，而需要手动指定需要同步的表，开启同步副本仅需一行 SQL，如下所示：
 
-{{< copyable "sql" >}}
-
 ```sql
 ALTER TABLE {table_name} SET TIFLASH REPLICA {count};
 ```
@@ -278,8 +256,6 @@ ALTER TABLE {table_name} SET TIFLASH REPLICA {count};
 
 `ratings` 表开启 1 个 TiFlash 副本：
 
-{{< copyable "sql" >}}
-
 ```sql
 ALTER TABLE `bookshop`.`ratings` SET TIFLASH REPLICA 1;
 ```
@@ -290,15 +266,11 @@ ALTER TABLE `bookshop`.`ratings` SET TIFLASH REPLICA 1;
 
 随后正常进行查询即可：
 
-{{< copyable "sql" >}}
-
 ```sql
 SELECT HOUR(`rated_at`), AVG(`score`) FROM `bookshop`.`ratings` GROUP BY HOUR(`rated_at`);
 ```
 
 也可使用 [EXPLAIN ANALYZE](/sql-statements/sql-statement-explain-analyze.md) 语句查看此语句是否使用了 TiFlash 引擎：
-
-{{< copyable "sql" >}}
 
 ```sql
 EXPLAIN ANALYZE SELECT HOUR(`rated_at`), AVG(`score`) FROM `bookshop`.`ratings` GROUP BY HOUR(`rated_at`);
@@ -326,8 +298,6 @@ EXPLAIN ANALYZE SELECT HOUR(`rated_at`), AVG(`score`) FROM `bookshop`.`ratings` 
 
 如果将数据库初始化脚本命名为 `init.sql` 并保存，可使用以下语句来执行数据库初始化：
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 mysql
     -u root \
@@ -338,8 +308,6 @@ mysql
 ```
 
 需查看 `bookshop` 数据库下的所有表，可使用 [SHOW TABLES](/sql-statements/sql-statement-show-tables.md#show-full-tables) 语句：
-
-{{< copyable "sql" >}}
 
 ```sql
 SHOW TABLES IN `bookshop`;

@@ -162,8 +162,6 @@ public class EffectWriteSkew {
 
 在 Golang 中，首先，封装一个用于适配 TiDB 事务的工具包 [util](https://github.com/pingcap-inc/tidb-example-golang/tree/main/util)，随后编写以下代码：
 
-{{< copyable "" >}}
-
 ```go
 package main
 
@@ -332,8 +330,6 @@ func createDoctor(db *sql.DB, id int, name string, onCall bool, shiftID int) err
 
 SQL 日志：
 
-{{< copyable "sql" >}}
-
 ```sql
 /* txn 1 */ BEGIN
     /* txn 2 */ BEGIN
@@ -346,8 +342,6 @@ SQL 日志：
 ```
 
 执行结果：
-
-{{< copyable "sql" >}}
 
 ```sql
 mysql> SELECT * FROM doctors;
@@ -665,8 +659,6 @@ func createDoctor(db *sql.DB, id int, name string, onCall bool, shiftID int) err
 
 SQL 日志：
 
-{{< copyable "sql" >}}
-
 ```sql
 /* txn 1 */ BEGIN
     /* txn 2 */ BEGIN
@@ -679,8 +671,6 @@ At least one doctor is on call
 ```
 
 执行结果：
-
-{{< copyable "sql" >}}
 
 ```sql
 mysql> SELECT * FROM doctors;
@@ -696,8 +686,6 @@ mysql> SELECT * FROM doctors;
 ## 对 savepoint 和嵌套事务的支持
 
 Spring 支持的 PROPAGATION_NESTED 传播行为会启动一个嵌套的事务，它是当前事务之上独立启动的一个子事务。嵌套事务开始时会记录一个 savepoint，如果嵌套事务执行失败，事务将会回滚到 savepoint 的状态。嵌套事务是外层事务的一部分，它将会在外层事务提交时一起被提交。下面案例展示了 savepoint 机制：
-
-{{< copyable "sql" >}}
 
 ```sql
 mysql> BEGIN;

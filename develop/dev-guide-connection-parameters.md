@@ -170,8 +170,6 @@ JDBC 实现通常通过 JDBC URL 参数的形式来提供实现相关的配置�
 
 在进行 batch 写入处理时推荐配置 `rewriteBatchedStatements = true`，在已经使用 `addBatch` 或 `executeBatch` 后默认 JDBC 还是会一条条 SQL 发送，例如：
 
-{{< copyable "" >}}
-
 ```java
 pstmt = prepare("INSERT INTO `t` (`a`) VALUES(?)");
 pstmt.setInt(1, 10);
@@ -184,8 +182,6 @@ pstmt.executeBatch();
 
 虽然使用了 batch 但发送到 TiDB 语句还是单独的多条 insert：
 
-{{< copyable "sql" >}}
-
 ```sql
 INSERT INTO `t` (`a`) VALUES(10);
 INSERT INTO `t` (`a`) VALUES(11);
@@ -194,15 +190,11 @@ INSERT INTO `t` (`a`) VALUES(12);
 
 如果设置 `rewriteBatchedStatements = true`，发送到 TiDB 的 SQL 将是：
 
-{{< copyable "sql" >}}
-
 ```sql
 INSERT INTO `t` (`a`) VALUES(10),(11),(12);
 ```
 
 需要注意的是，insert 语句的改写，只能将多个 values 后的值拼接成一整条 SQL, insert 语句如果有其他差异将无法被改写。例如：
-
-{{< copyable "sql" >}}
 
 ```sql
 INSERT INTO `t` (`a`) VALUES (10) ON DUPLICATE KEY UPDATE `a` = 10;
@@ -212,8 +204,6 @@ INSERT INTO `t` (`a`) VALUES (12) ON DUPLICATE KEY UPDATE `a` = 12;
 
 上述 insert 语句将无法被改写成一条语句。该例子中，如果将 SQL 改写成如下形式：
 
-{{< copyable "sql" >}}
-
 ```sql
 INSERT INTO `t` (`a`) VALUES (10) ON DUPLICATE KEY UPDATE `a` = values(`a`);
 INSERT INTO `t` (`a`) VALUES (11) ON DUPLICATE KEY UPDATE `a` = values(`a`);
@@ -222,15 +212,11 @@ INSERT INTO `t` (`a`) VALUES (12) ON DUPLICATE KEY UPDATE `a` = values(`a`);
 
 即可满足改写条件，最终被改写成：
 
-{{< copyable "sql" >}}
-
 ```sql
 INSERT INTO `t` (`a`) VALUES (10), (11), (12) ON DUPLICATE KEY UPDATE `a` = values(`a`);
 ```
 
 批量更新时如果有 3 处或 3 处以上更新，则 SQL 语句会改写为 multiple-queries 的形式并发送，这样可以有效减少客户端到服务器的请求开销，但副作用是会产生较大的 SQL 语句，例如这样：
-
-{{< copyable "sql" >}}
 
 ```sql
 UPDATE `t` SET `a` = 10 WHERE `id` = 1;
