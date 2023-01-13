@@ -309,7 +309,7 @@ err="pessimistic lock retry limit reached"
 处理建议：
 
 * 如果上述报错出现的比较频繁，建议从业务的角度进行调整。
-* 如果业务中包含对同一行（同一个 key）的高并发上锁而频繁冲突，可以尝试启用系统变量 [`tidb_txn_enhanced_pessimistic_lock_queueing`](/system-variables.md#tidb_txn_enhanced_pessimistic_lock_queueing-从-v650-版本开始引入)。需要注意启用该选项可能对存在锁冲突的事务带来一定程度的吞吐下降（平均延迟上升）的代价。
+* 如果业务中包含对同一行（同一个 key）的高并发上锁而频繁冲突，可以尝试启用系统变量 [`tidb_pessimistic_txn_aggressive_locking`](/system-variables.md#tidb_pessimistic_txn_aggressive_locking-从-v660-版本开始引入)。需要注意启用该选项可能对存在锁冲突的事务带来一定程度的吞吐下降（平均延迟上升）的代价。
 
 ### Lock wait timeout exceeded
 
