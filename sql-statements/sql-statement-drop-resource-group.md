@@ -12,17 +12,17 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-drop-resource-group/','/doc
 
 ```ebnf+diagram
 DropResourceGroupStmt:
-	"DROP" "RESOURCE" "GROUP" IfNotExists ResourceGroupName
+    "DROP" "RESOURCE" "GROUP" IfNotExists ResourceGroupName
 
 IfNotExists ::=
     ('IF' 'NOT' 'EXISTS')?
 
 ResourceGroupName:
-	Identifier
+    Identifier
 ```
 
 > **注意：**
-> 
+>
 > `DROP RESOURCE GROUP` 语句只能在全局变量 `tidb_resource_group_enable` 参数设置为 `ON` 的时候才被允许执行
 
 ## 示例
@@ -60,7 +60,7 @@ mysql> SELECT * FROM information_schema.resource_groups WHERE NAME ='rg1';
 
 ## MySQL 兼容性
 
-* MySQL 也支持创建 [Resource Group](https://dev.mysql.com/doc/refman/8.0/en/create-resource-group.html) ，但是接受的参数和 TiDB 不同。
+MySQL 也支持创建 [Resource Group](https://dev.mysql.com/doc/refman/8.0/en/create-resource-group.html) ，但是接受的参数和 TiDB 不同。
 
 ## 另请参阅
 

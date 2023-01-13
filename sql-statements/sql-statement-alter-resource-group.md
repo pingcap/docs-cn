@@ -12,22 +12,22 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-alter-resource-group/','/do
 
 ```ebnf+diagram
 AlterResourceGroupStmt:
-	"ALTER" "RESOURCE" "GROUP" IfNotExists ResourceGroupName ResourceGroupOptionList BurstableOption
+   "ALTER" "RESOURCE" "GROUP" IfNotExists ResourceGroupName ResourceGroupOptionList BurstableOption
 
 IfNotExists ::=
     ('IF' 'NOT' 'EXISTS')?
 
 ResourceGroupName:
-	Identifier
-	
+   Identifier
+
 ResourceGroupOptionList:
-	DirectResourceGroupOption
-|	ResourceGroupOptionList DirectResourceGroupOption
-|	ResourceGroupOptionList ',' DirectResourceGroupOption
+    DirectResourceGroupOption
+|   ResourceGroupOptionList DirectResourceGroupOption
+|   ResourceGroupOptionList ',' DirectResourceGroupOption
 
 DirectResourceGroupOption:
-	"RRU_PER_SEC" EqOpt stringLit
-|	"WRU_PER_SEC" EqOpt stringLit
+    "RRU_PER_SEC" EqOpt stringLit
+|   "WRU_PER_SEC" EqOpt stringLit
 
 BurstableOption ::=
     ("BURSTABLE")?

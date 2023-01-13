@@ -31,7 +31,7 @@ Resource control 特别适用于在大集群内部实现多用户应用的资源
 
 - 开启 Resource Control 特性
 
-        ```sql
+    ```sql
     SET GLOBAL tidb_enable_resource_control = 'ON';
     ```
 
@@ -49,16 +49,16 @@ Resource control 特别适用于在大集群内部实现多用户应用的资源
 
 上面的例子创建了 `rg1` 资源组，读RU的配额是500，写RU的配额是300，在系统资源充足的时候，允许这个资源组的应用超额占用资源；
 
-    ```sql
-    CREATE RESOURCE GROUP IF NOT EXISTS rg2 (
-    RRU_PER_SEC = 600
-    RRU_PER_SEC = 400
-    BURSTABLE
-    );
-    ```
+```sql
+CREATE RESOURCE GROUP IF NOT EXISTS rg2 (
+RRU_PER_SEC = 600
+RRU_PER_SEC = 400
+BURSTABLE
+);
+```
 
 上面的例子创建了 `rg2` 资源组，读RU的配额是600，写RU的配额是400，在系统资源充足的时候，允许这个资源组的应用超额占用资源；
-   
+
 - 绑定用户到资源组
 
     ```sql
