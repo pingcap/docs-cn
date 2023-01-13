@@ -20,7 +20,9 @@ IfNotExists ::=
 ResourceGroupName:
 	Identifier
 ```
+
 > **注意：**
+> 
 > `DROP RESOURCE GROUP` 语句只能在全局变量 `tidb_resource_group_enable` 参数设置为 `ON` 的时候才被允许执行
 
 ## 示例

@@ -33,6 +33,7 @@ BurstableOption ::=
     ("BURSTABLE")?
 
 ```
+
 TiDB 支持以下 `DirectResourceGroupOption`, 其中 `RU` (Resource Unit) 是 TiDB 对 CPU, IO 等系统资源的统一抽象的单位。
 
 | 参数           |含义                                  |举例                      |
@@ -51,7 +52,6 @@ TiDB 支持以下 `DirectResourceGroupOption`, 其中 `RU` (Resource Unit) 是 T
 
 创建一个名字是 rg1 的资源组， 并修改它的属性
 
-{{< copyable "sql" >}}
 ```sql
 mysql> DROP RESOURCE GROUP IF EXISTS rg1;
 Query OK, 0 rows affected (0.22 sec)

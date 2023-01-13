@@ -6,6 +6,7 @@ summary: 介绍如何通过 Resource Control 来实现应用资源消耗的控�
 # 使用 Resource Control 实现资源隔离
 
 Resource control 特性允许集群管理员通过定义资源组(Resource Group)，并将用户绑定到资源组。资源组可以限定读写的配额，绑定用户的应用会基于配额做流控；同时，TiKV 层会使用配额作为优先级来做请求调度。通过流控加上调度两层控制，你可以实现应用的资源隔离,满足服务质量要求（QoS）。
+
 Resource control 特别适用于在大集群内部实现多用户应用的资源隔离。
 
 > **警告:**
@@ -15,22 +16,27 @@ Resource control 特别适用于在大集群内部实现多用户应用的资源
 ## 语法
 
 你可以通过[`CREATE RESOURCE GROUP`](/sql-statements/sql-statement-create-resource-group.md)在集群中创建资源组，再通过[`CREATE USER`](/sql-statements/sql-statement-create-user.md) 语句，或者 [`ALTER USER`](/sql-statements/sql-statement-alter-user.md) 将用户绑定到特定的资源组。
+
 > **注意:**
 > 
 > `CREATE USER` 或者 `ALTER USER` 对用户资源组绑定后，不会对该用户的已有会话生效，而是只对该用户新建的会话生效。
 
 对于已有的资源组，你可以通过[`ALTER RESOURCE GROUP`](/sql-statements/sql-statement-alter-resource-group.md)修改资源组的读写配额，对资源组的配额修改会立即生效；你可以通过[`DROP RESOURCE GROUP`](/sql-statements/sql-statement-drop-resource-group.md)删除资源组，绑定到被删除资源组的用户会使用`default`资源组做资源隔离。
+
 > **推荐做法：**
 > 
 > `default`资源组默认是不会对绑定的用户应用做配额限制，我们建议你通过[`CREATE RESOURCE GROUP`](/sql-statements/sql-statement-create-resource-group.md)创建`default`资源组，从而实现对`default`资源组的配额控制。
 
 ### 开启特性
+
 - 开启 Resource Control 特性
     ```sql
     SET GLOBAL tidb_enable_resource_control = 'ON';
     ```
 ### 创建资源组，并绑定用户到资源组
+
 - 创建 `rg1` 资源组
+
     ```sql
     CREATE RESOURCE GROUP IF NOT EXISTS rg1 (
     RRU_PER_SEC = 500
@@ -38,7 +44,9 @@ Resource control 特别适用于在大集群内部实现多用户应用的资源
     BURSTABLE
     );
     ```
-  上面的例子创建了 `rg1` 资源组，读RU的配额是500，写RU的配额是300，在系统资源充足的时候，允许这个资源组的应用超额占用资源；
+
+上面的例子创建了 `rg1` 资源组，读RU的配额是500，写RU的配额是300，在系统资源充足的时候，允许这个资源组的应用超额占用资源；
+
     ```sql
     CREATE RESOURCE GROUP IF NOT EXISTS rg2 (
     RRU_PER_SEC = 600
@@ -46,7 +54,9 @@ Resource control 特别适用于在大集群内部实现多用户应用的资源
     BURSTABLE
     );
     ```
-  上面的例子创建了 `rg2` 资源组，读RU的配额是600，写RU的配额是400，在系统资源充足的时候，允许这个资源组的应用超额占用资源；   
+
+上面的例子创建了 `rg2` 资源组，读RU的配额是600，写RU的配额是400，在系统资源充足的时候，允许这个资源组的应用超额占用资源；
+   
 - 绑定用户到资源组
 
     ```sql
@@ -56,7 +66,8 @@ Resource control 特别适用于在大集群内部实现多用户应用的资源
     ```sql
     ALTER USER usr2 RESOURCE GROUP rg2;
     ```
-  上面的例子将用户 `usr1` 和 `usr2` 分别绑定到资源组 `rg1` 和 `rg2`。
+
+    上面的例子将用户 `usr1` 和 `usr2` 分别绑定到资源组 `rg1` 和 `rg2`。
 
 - 效果
 

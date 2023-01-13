@@ -33,6 +33,7 @@ BurstableOption ::=
     ("BURSTABLE")?
 
 ```
+
 资源组的 `ResourceGroupName` 是全局唯一的， 不允许重复。
 
 TiDB 支持以下 `DirectResourceGroupOption`, 其中 `RU` (Resource Unit) 是 TiDB 对 CPU, IO 等系统资源的统一抽象的单位。
@@ -47,13 +48,12 @@ TiDB 支持以下 `DirectResourceGroupOption`, 其中 `RU` (Resource Unit) 是 T
 如果设置了`BURSTABLE`属性，对应的资源组就允许在系统资源充足的情况下，可以超出配额占用使用系统资源。
 
 > **注意：**
+>
 > `CREATE RESOURCE GROUP` 语句只能在全局变量 `tidb_resource_group_enable` 参数设置为 `ON` 的时候才被允许执行
 
 ## 示例
 
 创建一个名字是 rg1 的资源组
-
-{{< copyable "sql" >}}
 
 ```sql
 mysql> DROP RESOURCE GROUP IF EXISTS rg1;
