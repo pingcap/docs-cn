@@ -15,8 +15,11 @@ Resource control 特别适用于在大集群内部实现多用户应用的资源
 
 ## 新参数
 
-Resource control 特性引入了2个控制参数。 在 TiDB 层有全局变量 `tidb_enable_resource_control` 控制是否打开资源组流控, TiKV 层有配置参数 `resource_control.enabled` 控制是否使用基于资源组配额的请求调度。`resource_control.enabled` 参数暂时不支持动态修改，修改后需要重启 TiKV 实例生效。
-这2个参数的组合效果见下表：
+Resource Control 分别向 TiDB 和 TiKV 引入新的参数或变量进行全局控制：
+* TiDB: 通过全局变量 `tidb_enable_resource_control` 控制是否打开资源组流控。
+* TiKV: 通过参数配置 `resource_control.enabled` 控制是否使用基于资源组配额的请求调度。此参数暂时不支持动态修改，修改后需要重启 TiKV 实例生效。
+
+* 这2个参数的组合效果见下表：
 
 +-----------------------------------+--------------------------------------+--------------------------------------+
 |                                   | `tidb_enable_resource_control`= ON   | `tidb_enable_resource_control`= OFF  |
@@ -38,7 +41,7 @@ Resource control 特性引入了2个控制参数。 在 TiDB 层有全局变量 
 
 > **推荐做法：**
 > 
-> `default`资源组默认是不会对绑定的用户应用做配额限制，我们建议你通过[`CREATE RESOURCE GROUP`](/sql-statements/sql-statement-create-resource-group.md)创建`default`资源组，从而实现对`default`资源组的配额控制。
+> `default`资源组默认是不会对绑定的用户应用做配额限制，我们建议你通过[`CREATE RESOURCE GROUP`](/sql-statements/sql-statement-create-resource-group.md)创建`default`资源组，或者通过[`ALTER RESOURCE GROUP`](/sql-statements/sql-statement-alter-resource-group.md)修改`default`资源组的配额，从而实现对`default`资源组的配额控制。
 
 ### 开启特性
 

@@ -34,7 +34,7 @@ BurstableOption ::=
 
 ```
 
-资源组的 `ResourceGroupName` 是全局唯一的， 不允许重复。
+资源组的 `ResourceGroupName` 是全局唯一的，不允许重复。
 
 TiDB 支持以下 `DirectResourceGroupOption`, 其中 [`RU` (Resource Unit)](/tidb-RU.md) 是 TiDB 对 CPU, IO 等系统资源的统一抽象的单位。
 
@@ -49,7 +49,7 @@ TiDB 支持以下 `DirectResourceGroupOption`, 其中 [`RU` (Resource Unit)](/ti
 
 > **注意：**
 >
-> `CREATE RESOURCE GROUP` 语句只能在全局变量 `tidb_resource_group_enable` 参数设置为 `ON` 的时候才被允许执行
+> `CREATE RESOURCE GROUP` 语句只能在全局变量 `tidb_enable_resource_group` 参数设置为 `ON` 的时候才被允许执行
 
 ## 示例
 
