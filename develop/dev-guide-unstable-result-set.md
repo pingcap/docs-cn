@@ -12,7 +12,7 @@ aliases: ['/zh/tidb/dev/unstable-result-set']
 
 出于便捷的考量，MySQL “扩展” 了 group by 语法，使 select 子句可以引用未在 group by 子句中声明的非聚集字段，也就是 non-full group by 语法。在其他数据库中，这被认为是一种语法错误，因为这会导致结果集不稳定。
 
-在下例的 3 条 SQL 语句中，第一条 SQL 使用了 full group by 语法 ，所有在 select 子句中引用的字段，都在 group by 子句中有所声明，所以它的结果集是稳定的，可以看到 class 与 stuname 的全部组合共有三种；第二条与第三条是同一个 SQL，但它在两次执行时得到了不同的结果，这条 SQL 的 group by 子句中仅声明了一个 class 字段，因此结果集只会针对 class 进行聚集，class 的唯一值有两个，也就是说结果集中只会包含两行数据，而 class 与 stuname 的全部组合共有三种，班级 2018_CS_03 有两位同学，每次执行时返回哪位同学是没有语义上的限制的，都是符合语义的结果。
+在下例的 3 条 SQL 语句中，第一条 SQL 使用了 full group by 语法，所有在 select 子句中引用的字段，都在 group by 子句中有所声明，所以它的结果集是稳定的，可以看到 class 与 stuname 的全部组合共有三种；第二条与第三条是同一个 SQL，但它在两次执行时得到了不同的结果，这条 SQL 的 group by 子句中仅声明了一个 class 字段，因此结果集只会针对 class 进行聚集，class 的唯一值有两个，也就是说结果集中只会包含两行数据，而 class 与 stuname 的全部组合共有三种，班级 2018_CS_03 有两位同学，每次执行时返回哪位同学是没有语义上的限制的，都是符合语义的结果。
 
 {{< copyable "sql" >}}
 
@@ -132,7 +132,7 @@ mysql> select a.class, a.stuname, b.course, b.courscore from stu_info a join stu
 
 结果集不稳定是因为 TiDB 是并行地从存储层读取数据，所以 `group_concat()` 在不加 order by 的情况下得到的结果集展现顺序容易被感知到不稳定。
 
-`group_concat()` 要获取到按顺序输出的结果集，需要把用于排序的字段添加到 order by 子句中，这样才符合 SQL 的语义。在下面的案例中，使用 `group_concat()` 不加 order by 的情况下拼接 customer_id ，造成结果集不稳定：
+`group_concat()` 要获取到按顺序输出的结果集，需要把用于排序的字段添加到 order by 子句中，这样才符合 SQL 的语义。在下面的案例中，使用 `group_concat()` 不加 order by 的情况下拼接 customer_id，造成结果集不稳定：
 
 1. 不加 order by
 

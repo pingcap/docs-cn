@@ -94,7 +94,7 @@ Performance Overview 面板提供了以下三个面积堆叠图，帮助你了�
 
 ![OLTP](/media/performance/oltp_normal_db_time.png)
 
-- Database Time by SQL Type：主要消耗时间的语句为 select、commit、update和 insert 语句。其中，select 占据绝大部分的数据库时间。
+- Database Time by SQL Type：主要消耗时间的语句为 select、commit、update 和 insert 语句。其中，select 占据绝大部分的数据库时间。
 - Database Time by SQL Phase：主要消耗时间的阶段为绿色的 execute 阶段。
 - SQL Execute Time Overview：执行阶段主要消耗时间为深褐色的 pd tso_wait、蓝色的 KV Get 和绿色的 Prewrite 和 Commit。
 
@@ -134,7 +134,7 @@ Performance Overview 面板提供了以下三个面积堆叠图，帮助你了�
 
 - QPS：表示 Query Per Second，包含应用的 SQL 语句类型执行次数分布。
 - CPS By Type：CPS 表示 Command Per Second，Command 代表 MySQL 协议的命令类型。同样一个查询语句可以通过 query 或者 prepared statement 的命令类型发送到 TiDB。
-- Queries Using Plan Cache OPS：TiDB 集群每秒执行计划缓存的命中次数（即 `avg-hit`） 和未命中次数（即 `avg-miss`） 。
+- Queries Using Plan Cache OPS：TiDB 集群每秒执行计划缓存的命中次数（即 `avg-hit`） 和未命中次数（即 `avg-miss`）。
 
     StmtExecute 每秒执行次数等于 `avg-hit + avg-miss`。执行计划缓存只支持 prepared statement 命令。当 TiDB 开启执行计划缓存时，存在三种使用情况：
 
@@ -153,20 +153,20 @@ TPC-C 负载类型主要以 Update、Select 和 Insert 语句为主。总的 QPS
 
 **示例 2：只读 OLTP 负载，使用 query 命令无法使用执行计划缓存**
 
-这个负载中， Commit QPS = Rollback QPS = Select QPS。应用开启了 auto-commit 并发，每次从连接池获取连接都会执行 rollback，因此这三种语句的执行次数是相同的。
+这个负载中，Commit QPS = Rollback QPS = Select QPS。应用开启了 auto-commit 并发，每次从连接池获取连接都会执行 rollback，因此这三种语句的执行次数是相同的。
 
 ![OLTP-Query](/media/performance/oltp_long_compile_qps.png)
 
 - QPS 面板中出现的红色加粗线为 Failed Query，坐标的值为右边的 Y 轴。非 0 代表此负载中存在错误语句。
 - 总的 QPS 等于 CPS By Type 面板中的 Query，说明应用中使用了 query 命令。
-- Queries Using Plan Cache OPS 面板没有数据，因为不使用 prepared statement 接口，无法使用 TiDB 的执行计划缓存， 意味着应用的每一条 query，TiDB 都需要重新解析，重新生成执行计划。通常会导致 compile 时间变长以及 TiDB CPU 消耗的增加。
+- Queries Using Plan Cache OPS 面板没有数据，因为不使用 prepared statement 接口，无法使用 TiDB 的执行计划缓存，意味着应用的每一条 query，TiDB 都需要重新解析，重新生成执行计划。通常会导致 compile 时间变长以及 TiDB CPU 消耗的增加。
 
 **示例 3：OLTP 负载，使用 prepared statement 接口无法使用执行计划缓存**
 
 StmtPreare 次数 = StmtExecute 次数 = StmtClose 次数 ~= StmtFetch 次数，应用使用了 prepare > execute > fetch > close 的 loop，很多框架都会在 execute 之后调用 close，确保资源不会泄露。这会带来两个问题：
 
 - 执行每条 SQL 语句需要 4 个命令，以及 4 次网络往返。
-- Queries Using Plan Cache OPS 为 0， 无法命中执行计划缓存。StmtClose 命令默认会清理缓存的执行计划，导致下一次 StmtPreare 命令需要重新生成执行计划。
+- Queries Using Plan Cache OPS 为 0，无法命中执行计划缓存。StmtClose 命令默认会清理缓存的执行计划，导致下一次 StmtPreare 命令需要重新生成执行计划。
 
 > **注意：**
 >
@@ -223,7 +223,7 @@ StmtPrepare 每秒执行次数远大于 StmtClose，说明应用程序存在 pre
 ![TPC-C](/media/performance/tidb_high_cpu.png)
 
 - TiDB 平均 CPU 为 575%。最大 CPU 为 643%，delta CPU 为 136%。
-- TiKV 平均 CPU 为 146%，最大 CPU 215%。delta CPU 为 118%。TiKV 的平均 IO 吞吐为 9.06 MB/s，最大 IO 吞吐为 19.7 MB/s，delta IO 吞吐 为 17.1 MB/s。
+- TiKV 平均 CPU 为 146%，最大 CPU 215%。delta CPU 为 118%。TiKV 的平均 IO 吞吐为 9.06 MB/s，最大 IO 吞吐为 19.7 MB/s，delta IO 吞吐为 17.1 MB/s。
 
 由此可以判断，TiDB 的 CPU 消耗明显更高，并接近于 8 CPU 的瓶颈，可以考虑扩容 TiDB。
 
@@ -234,7 +234,7 @@ StmtPrepare 每秒执行次数远大于 StmtClose，说明应用程序存在 pre
 ![TPC-C](/media/performance/tpcc_cpu_io.png)
 
 - TiDB 平均 CPU 为 883%。最大 CPU 为 962%，delta CPU 为 153%。
-- TiKV 平均 CPU 为 1288%，最大 CPU 1360%。delta CPU 为 126%。TiKV 的平均 IO 吞吐为130 MB/s，最大 IO 吞吐为 153 MB/s，delta IO 吞吐为 53.7 MB/s。
+- TiKV 平均 CPU 为 1288%，最大 CPU 1360%。delta CPU 为 126%。TiKV 的平均 IO 吞吐为 130 MB/s，最大 IO 吞吐为 153 MB/s，delta IO 吞吐为 53.7 MB/s。
 
 由此可以判断，TiKV 的 CPU 消耗更高，因为 TPC-C 是一个写密集场景，这是正常现象，可以考虑扩容 TiKV 节点提升性能。
 
@@ -329,7 +329,7 @@ avg Query Duration = avg Get Token + avg Parse Duration + avg Compile Duration +
 
 #### KV 和 TSO Request Duration
 
-在 execute 阶段，TiDB 会跟 PD 和 TiKV 进行交互。如下图所示，当 TiDB 处理 SQL 语句请求时，在进行 parse 和 compile 之前，如果需要获取 TSO，会先请求生成 TSO。PD Client 不会阻塞调用者，而是直接返回一个 `TSFuture`，并在后台异步处理 TSO 请求的收发，一旦完成立即返回给 TSFuture，TSFuture 的持有者则需要调用 Wait 方法来获得最终的 TSO 结果。当 TiDB 完成 parse 和 compile 之后， 进入 execute 阶段，此时存在两个情况：
+在 execute 阶段，TiDB 会跟 PD 和 TiKV 进行交互。如下图所示，当 TiDB 处理 SQL 语句请求时，在进行 parse 和 compile 之前，如果需要获取 TSO，会先请求生成 TSO。PD Client 不会阻塞调用者，而是直接返回一个 `TSFuture`，并在后台异步处理 TSO 请求的收发，一旦完成立即返回给 TSFuture，TSFuture 的持有者则需要调用 Wait 方法来获得最终的 TSO 结果。当 TiDB 完成 parse 和 compile 之后，进入 execute 阶段，此时存在两个情况：
 
 - 如果 TSO 请求已经完成，Wait 方法会立刻返回一个可用的 TSO 或 error
 - 如果 TSO 请求还未完成，Wait 方法会 block 住等待一个可用的 TSO 或 error（说明 gRPC 请求已发送但尚未收到返回结果，网络延迟较高）
@@ -385,14 +385,14 @@ TiKV 对于写请求的处理流程如下图
 
     Raftstore 分为 store 线程和 apply 线程。：
 
-    - store 线程负载处理 Raft 消息和新的 `proposals`。 当收到新的 `proposals` 时，leader 节点的 store 线程会写入本地 Raft DB，并将消息复制到多个 follower 节点。当这个 `proposals` 在多数实例持久化成功之后，`proposals` 成功被提交。
+    - store 线程负载处理 Raft 消息和新的 `proposals`。当收到新的 `proposals` 时，leader 节点的 store 线程会写入本地 Raft DB，并将消息复制到多个 follower 节点。当这个 `proposals` 在多数实例持久化成功之后，`proposals` 成功被提交。
     - apply 线程会负载将提交的内容写入到 KV DB 中。当写操作的内容被成功的写入 KV 数据库中，apply 线程会通知外层请求写请求已经完成。
 
 ![TiKV Write](/media/performance/store_apply.png)
 
 Storage Async Write Duration 指标记录写请求进入 raftstore 之后的延迟，采集的粒度具体到每个请求的级别。
 
-Storage Async Write Duration 分为 Store Duration 和 Apply Duration。你可以通过以下公式定位写请求的瓶颈主要是 在 Store 还是 Apply 步骤。
+Storage Async Write Duration 分为 Store Duration 和 Apply Duration。你可以通过以下公式定位写请求的瓶颈主要是在 Store 还是 Apply 步骤。
 
 ```
 avg Storage Async Write Duration  = avg Store Duration + avg Apply Duration
@@ -409,7 +409,7 @@ v5.4.0 版本，一个写密集的 OLTP 负载 QPS 比 v5.3.0 提升了 14%。�
 - v5.3.0：24.4 ms ~= 17.7 ms + 6.59 ms
 - v5.4.0：21.4 ms ~= 14.0 ms + 7.33 ms
 
-因为 v5.4.0 版本中，TiKV 对 gRPC 模块进行了优化，优化了 Raft 日志复制速度， 相比 v5.3.0 降低了 Store Duration。
+因为 v5.4.0 版本中，TiKV 对 gRPC 模块进行了优化，优化了 Raft 日志复制速度，相比 v5.3.0 降低了 Store Duration。
 
 v5.3.0：
 
@@ -430,7 +430,7 @@ v5.4.0：
 Commit Log Duration、Append Log Duration 和 Apply Log Duration 这三个延迟是 raftstore 内部关键操作的延迟记录。这些记录采集的粒度是 batch 操作级别的，每个操作会把多个写请求合并在一起，因此不能直接对应上文的 Store Duration 和 Apply Duration。
 
 - Commit Log Duration 和 Append Log Duration 均为 store 线程的操作。Commit Log Duration 包含复制 Raft 日志到其他 TiKV 节点，保证 raft-log 的持久化。一般包含两次 Append Log Duration，一次 leader，一次 follower 的。Commit Log Duration 延迟通常会明显高于 Append Log Duration，因为包含了通过网络复制 Raft 日志到其他 TiKV 的时间。
-- Apply Log Duration  记录了 apply 线程 apply Raft 日志的延迟。
+- Apply Log Duration 记录了 apply 线程 apply Raft 日志的延迟。
 
 Commit Log Duration 慢的常见场景：
 
@@ -448,7 +448,7 @@ Apply Log Duration 慢的常见场景：
 
 **示例 1：同一个 OLTP 负载在 v5.3.0 和 v5.4.0 版本的对比**
 
-v5.4.0 版本，一个写密集的 OLTP 负载 QPS 比 v5.3.0 提升了 14%。 对比这三个关键延迟：
+v5.4.0 版本，一个写密集的 OLTP 负载 QPS 比 v5.3.0 提升了 14%。对比这三个关键延迟：
 
 | Avg Duration   | v5.3.0(ms)   |    v5.4.0(ms)  |
 |:----------|:----------|:----------|
@@ -456,7 +456,7 @@ v5.4.0 版本，一个写密集的 OLTP 负载 QPS 比 v5.3.0 提升了 14%。 �
 | Commit Log Duration  | 13   | 8.68 |
 | Apply Log Duration   | 0.457|0.514  |
 
-因为 v5.4.0 版本中，TiKV 对 gRPC 模块进行了优化，优化了 Raft 日志复制速度， 相比 v5.3.0 降低了 Commit Log Duration 和 Store Duration。
+因为 v5.4.0 版本中，TiKV 对 gRPC 模块进行了优化，优化了 Raft 日志复制速度，相比 v5.3.0 降低了 Commit Log Duration 和 Store Duration。
 
 v5.3.0：
 
@@ -476,7 +476,7 @@ v5.4.0：
 
 Store 线程的 Commit Log Duration 明显比 Apply Log Duration 高，并且 Append Log Duration 比 Apply Log Duration 明显的高，说明 Store 线程在 CPU 和 IO 都可能都存在瓶颈。可能降低 Commit Log Duration 和 Append Log Duration 的方式如下：
 
-- 如果 TiKV CPU 资源充足，考虑增加 Store 线程，即 `raftstore.store-pool-size` 。
+- 如果 TiKV CPU 资源充足，考虑增加 Store 线程，即 `raftstore.store-pool-size`。
 - 如果 TiDB 为 v5.4.0 及之后的版本，考虑启用 [`Raft Engine`](/tikv-configuration-file.md#raft-engine)，Raft Engine 具有更轻量的执行路径，在一些场景下显著减少 IO 写入量和写入请求的长尾延迟，启用方式为设置：`raft-engine.enable: true`
 - 如果 TiKV CPU 资源充足，且 TiDB 为 v5.3.0 及之后的版本，考虑启用 [`StoreWriter`](/tune-tikv-thread-performance.md#tikv-线程池调优)。启用方式：`raftstore.store-io-pool-size: 1`。
 

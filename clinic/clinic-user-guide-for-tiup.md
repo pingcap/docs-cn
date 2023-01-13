@@ -9,7 +9,7 @@ summary: 详细介绍在使用 TiUP 部署的 TiDB 集群或 DM 集群上如何�
 
 > **注意：**
 >
-> - 本文档**仅**适用于使用 TiUP 部署的集群。如需查看适用于使用 Operator 部署的集群，请参阅 [在 TiDB Operator 部署环境使用 PingCAP Clinic](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/clinic-user-guide)。
+> - 本文档**仅**适用于使用 TiUP 部署的集群。如需查看适用于使用 Operator 部署的集群，请参阅[在 TiDB Operator 部署环境使用 PingCAP Clinic](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/clinic-user-guide)。
 >
 > - PingCAP Clinic 暂时**不支持**对使用 TiDB Ansible 部署的集群进行数据采集。
 

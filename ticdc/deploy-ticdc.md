@@ -44,7 +44,7 @@ cdc_servers:
 
 > **注意：**
 >
-> 在安装之前，请确认TiUP 中控机与 TiCDC 目标主机的 [SSH 互信及 sudo 免密](/check-before-deployment.md#手动配置-ssh-互信及-sudo-免密码)已经完成配置。
+> 在安装之前，请确认 TiUP 中控机与 TiCDC 目标主机的 [SSH 互信及 sudo 免密](/check-before-deployment.md#手动配置-ssh-互信及-sudo-免密码)已经完成配置。
 
 ## 使用 TiUP 在原有 TiDB 集群上新增或扩容 TiCDC 组件
 
@@ -111,7 +111,7 @@ tiup cluster upgrade <cluster-name> <cluster-version> --transfer-timeout 600
 
 ## 使用 TiUP 变更 TiCDC 集群配置
 
-本节介绍如何使用 TiUP 的 [`tiup cluster edit-config`](/tiup/tiup-component-cluster-edit-config.md) 命令来修改 TiCDC 的配置。在以下例子中，假设需要把 TiCDC 的 `gc-ttl` 从默认值 `86400` 修改为 `3600`，即 1 小时。
+本节介绍如何使用 TiUP 的 [`tiup cluster edit-config`](/tiup/tiup-component-cluster-edit-config.md) 命令来修改 TiCDC 的配置。在以下例子中，假设需要把 TiCDC 的 `gc-ttl` 从默认值 `86400` 修改为 `172800`，即 48 小时。
 
 1. 执行 `tiup cluster edit-config` 命令，注意将 `<cluster-name>` 替换成实际的集群名：
 
@@ -131,10 +131,10 @@ tiup cluster upgrade <cluster-name> <cluster-version> --transfer-timeout 600
       pump: {}
       drainer: {}
       cdc:
-        gc-ttl: 86400
+        gc-ttl: 172800
     ```
 
-    以上把 TiCDC 的 `gc-ttl` 的值设置为 24 小时。
+    以上把 TiCDC 的 `gc-ttl` 的值设置为 48 小时。
 
 3. 执行 `tiup cluster reload -R cdc` 命令重新加载配置。
 
