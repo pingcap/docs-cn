@@ -85,7 +85,7 @@ ALTER TABLE employees COMPACT PARTITION pNorth, pEast TIFLASH REPLICA;
 
 设置更大的执行并发度，可以让 TiFlash 占用更多系统 CPU 资源，从而提升查询性能。
 
-[`tidb_max_tiflash_threads`](/system-variables.md#tidb_max_tiflash_threads-从-v610-版本开始引入)，单位为 bytes。用来设置 TiFlash 中 request 执行的最大并发度。
+[`tidb_max_tiflash_threads`](/system-variables.md#tidb_max_tiflash_threads-从-v610-版本开始引入)，单位为线程。用来设置 TiFlash 中 request 执行的最大并发度。
 
 ```sql
 set @@tidb_max_tiflash_threads = 20;
