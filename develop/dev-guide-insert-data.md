@@ -98,8 +98,6 @@ try (Connection connection = ds.getConnection()) {
 
 MySQL JDBC Driver 还提供了一个集成配置项：`useConfigs`。当它配置为 `maxPerformance` 时，相当于配置了一组配置，以 `mysql:mysql-connector-java:8.0.28` 为例，`useConfigs=maxPerformance` 包含：
 
-{{< copyable "" >}}
-
 ```properties
 cachePrepStmts=true
 cacheCallableStmts=true
@@ -115,8 +113,6 @@ useInformationSchema=true
 你可以自行查看 `mysql-connector-java-{version}.jar!/com/mysql/cj/configurations/maxPerformance.properties` 来获得对应版本 MySQL JDBC Driver 的 `useConfigs=maxPerformance` 包含配置。
 
 在此处给出一个较为的通用场景的 JDBC 连接字符串配置，以 Host: `127.0.0.1`，Port: `4000`，用户名: `root`，密码: 空，默认数据库: `test`为例：
-
-{{< copyable "" >}}
 
 ```
 jdbc:mysql://127.0.0.1:4000/test?user=root&useConfigs=maxPerformance&useServerPrepStmts=true&prepStmtCacheSqlLimit=2048&prepStmtCacheSize=256&rewriteBatchedStatements=true&allowMultiQueries=true
@@ -262,8 +258,6 @@ with get_connection(autocommit=True) as connection:
 在插入的表主键为 `AUTO_RANDOM` 时，这时默认情况下，不能指定主键。例如 [bookshop](/develop/dev-guide-bookshop-schema-design.md) 数据库中，可以看到 [users 表](/develop/dev-guide-bookshop-schema-design.md#users-表) 的 `id` 字段含有 `AUTO_RANDOM` 属性。
 
 此时，不可使用类似以下 SQL 进行插入：
-
-{{< copyable "sql" >}}
 
 ```sql
 INSERT INTO `bookshop`.`users` (`id`, `balance`, `nickname`) VALUES (1, 0.00, 'nicky');
