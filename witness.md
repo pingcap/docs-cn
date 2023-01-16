@@ -6,6 +6,7 @@ summary: 如何使用 Witness。
 # Witness 使用文档
 
 > **警告：**
+>
 > - 此功能开启且通过 PD placement rule 设置 witness 后，witness 副本只存储 Raft 日志但不应用，请在存储可靠性高的环境下使用；当此功能开启，但没有通过 PD placement rule 设置 witness 副本时，不受存储可靠性约束，可提高 TiKV Down 场景下的可用性。
 > - 由于 witness 副本没有应用 Raft 日志，因此无法对外提供读写服务，当其为 leader 且无法及时 transfer leader 出去时，客户端 Backoff 超时后，应用可能收到 IsWitness 错误。
 > - 该功能自 v6.6.0 版本开始引入，与低版本不兼容，因此不支持降级。
@@ -65,33 +66,40 @@ pd-ctl config placement-rules save --in=rule.json
 
 使能更新后的配置。
 
-
 ## 功能兼容性说明
 
-1. TiFlash
+### TiFlash
+
 在 PD 侧会禁止 TiFlash 成为 witness。
 
-2. Resolve TS
+### Resolve TS
+
 当 witness 是 leader 时，会跳过更新 safe ts。
 
-3. CDC
+### CDC
+
 当 witness 成为 leader 时，CDC 会不断重试，直到 witness 将 leader 身份 transfer 出去。
 
-4. Stale Read
+### Stale Read
+
 Witnes 禁止读，TiKV 客户端选择副本时会过滤掉 witness。
 
-5. Online unsafe recovery
+### Online unsafe recovery
+
 Choose witness as force leader if witness has latest log。
 
-6. BR
+### BR
+
 当 witness 成为 leader 时，会拒绝 br。
 
-7. PITR
+### PITR
 
 当 witness 成为 leader 时，会拒绝 PITR。
 
-8. Lightning
+### Lightning
+
 无影响
 
-9. Flashback
+### Flashback
+
 无影响
