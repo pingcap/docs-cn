@@ -98,10 +98,10 @@ aliases: ['/docs-cn/dev/basic-features/']
 | 在单条语句中添加多列                                         |   Y  |   Y  |   Y  | Y | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
 | [更改列类型](/sql-statements/sql-statement-modify-column.md) |    Y   |    Y   |    Y   |    Y    |    Y    |    Y    |    Y     |    Y     |    Y     |    Y     |    N     |    N     |
 | [临时表](/temporary-tables.md)                               |    Y   |    Y   |    Y   |    Y    |    Y    |    Y    |    Y     |    Y     |    N     |    N     |    N     |    N     |
-| [并行 DDL](/system-variables.md#tidb_enable_concurrent_ddl-从-v620-版本开始引入)  |    Y   |    Y   |    Y   |    Y    |    N    |    N    |    N     |    N     |    N     |    N     |    N     |    N     |
-| [添加索引加速](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入)  | Y | 实验特性 | 实验特性 |    N    |    N    |    N    |    N     |    N     |    N     |    N     |    N     |    N     |
+| 并行 DDL  |    Y   |    Y   |    Y   |    Y    |    N    |    N    |    N     |    N     |    N     |    N     |    N     |    N     |
+| [添加索引加速](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) | Y | 实验特性 | 实验特性 |    N    |    N    |    N    |    N     |    N     |    N     |    N     |    N     |    N     |
 | [元数据锁](/metadata-lock.md)                                  | Y | 实验特性 | 实验特性 |    N    |    N    |    N    |    N     |    N     |    N     |    N     |    N     |    N     |
-| [`FLASHBACK CLUSTER TO TIMESTAMP`](/sql-statements/sql-statement-flashback-to-timestamp.md)  | Y | 实验特性 |    N    |    N    |    N    |    N    |    N     |    N     |    N     |    N     |    N     |    N     |
+| [`FLASHBACK CLUSTER TO TIMESTAMP`](/sql-statements/sql-statement-flashback-to-timestamp.md) | Y | 实验特性 |    N    |    N    |    N    |    N    |    N     |    N     |    N     |    N     |    N     |    N     |
 
 ## 事务
 
