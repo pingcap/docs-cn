@@ -12,7 +12,10 @@ The `DROP STATS` statement is used to delete the statistics of the selected tabl
 
 ```ebnf+diagram
 DropStatsStmt ::=
-    'DROP' 'STATS' TableName
+    'DROP' 'STATS' TableNameList 
+
+TableNameList ::=
+    TableName ( ',' TableName )*
 
 TableName ::=
     Identifier ('.' Identifier)?
