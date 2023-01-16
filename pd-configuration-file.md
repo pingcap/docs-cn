@@ -203,6 +203,11 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 + 控制对同一个 Region 做 split 和 merge 操作的间隔，即对于新 split 的 Region 一段时间内不会被 merge。
 + 默认：1h
 
+### `switch-witness-interval`
+
++ 控制同一个 Region 做 switch to witness 和 switch to non-witness 操作的间隔，即对于一个新 non-witness 的 Region 在一段时间内不会被 switch to witness。
++ 默认：1h
+
 ### `max-snapshot-count`
 
 + 控制单个 store 最多同时接收或发送的 snapshot 数量，调度受制于这个配置来防止抢占正常业务的资源。
@@ -252,6 +257,16 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 
 + 同时进行的 Region Merge 调度的任务，设置为 0 则关闭 Region Merge。
 + 默认值：8
+
+### `witness-schedule-limit`
+
++ 同时进行的 witness 调度的任务个数。
+
+### `enable-witness`
+
++ 打开 `witness`
++ 默认值：false
++ 参考 [Witness 使用文档](/witness.md)
 
 ### `high-space-ratio`
 

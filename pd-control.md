@@ -1433,6 +1433,12 @@ unsafe remove-failed-stores show
 ]
 ```
 
+### `config set enable-witness true`
+
+> **警告：**
+>
+> - 通过 placement rule 配置 witness 节点后，witness 节点不应用 Raft 日志，请确保存储具有高可用性（99.9%+）
+
 ## jq 格式化 JSON 输出示例
 
 ### 简化 `store` 的输出
