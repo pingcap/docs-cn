@@ -182,6 +182,10 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 
 调度相关的配置项。
 
+> **注意：**
+> 
+> 通过配置文件修改这部分参数仅针对新集群有效，后续需要使用 pd-ctl 对参数的进行修改。
+
 ### `max-merge-region-size`
 
 + 控制 Region Merge 的 size 上限，当 Region Size 大于指定值时 PD 不会将其与相邻的 Region 合并。
