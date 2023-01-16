@@ -65,9 +65,6 @@ reference_option:
 ## 外键使用示例
 
 下面的示例通过单列外键关联父表和子表：
-
-{{< copyable "sql" >}}
-
 ```sql
 CREATE TABLE parent (
     id INT KEY
