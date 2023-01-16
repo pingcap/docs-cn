@@ -175,17 +175,23 @@ The following example only lists key policy configurations. Replace the Amazon S
 
 After configuring the Amazon S3 access, you can perform the data import task in the TiDB Cloud console as follows:
 
-1. Log in to the [TiDB Cloud console](https://tidbcloud.com/console/clusters). Navigate to the **Clusters** page for your project.
+1. Open the **Import** page for your target cluster.
 
-2. Locate your target cluster, click **...** in the upper-right corner of the cluster area, and select **Import Data**. The **Data Import** page is displayed.
+    1. Log in to the [TiDB Cloud console](https://tidbcloud.com/) and navigate to the [**Clusters**](https://tidbcloud.com/console/clusters) page of your project.
 
-3. On the **Data Import** page, fill in the following information:
+        > **Tip:**
+        >
+        > If you have multiple projects, you can switch to the target project in the left navigation pane of the **Clusters** page.
 
-    - **Data Format**: select **CSV**.
-    - **Location**: `AWS`
+    2. Click the name of your target cluster to go to its overview page, and then click **Import** in the left navigation pane.
+
+2. On the **Import** page, click **Import Data** in the upper-right corner, and then select **From S3**.
+
+3. On the **Import from S3** page, fill in the following information:
+
+    - **Data format**: select **CSV**.
     - **Bucket URI**: fill in the bucket URI of your source data. You can use the second-level directory corresponding to tables, `s3://dumpling-s3/store/sales` in this example, so that TiDB Cloud can import and merge the data in all MySQL instances into `store.sales` in one go.
     - **Role ARN**: enter the Role-ARN you obtained.
-    - **Target Cluster**: shows the cluster name and the region name.
 
     If the location of the bucket is different from your cluster, confirm the compliance of cross region. Click **Next**.
 

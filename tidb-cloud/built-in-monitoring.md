@@ -9,15 +9,24 @@ TiDB Cloud collects and displays a full set of standard metrics of your cluster 
 
 > **Note:**
 >
-> Currently, the Monitoring page is unavailable for [Serverless Tier clusters](/tidb-cloud/select-cluster-tier.md#serverless-tier).
+> Currently, the Monitoring page is unavailable for [Serverless Tier clusters](/tidb-cloud/select-cluster-tier.md#serverless-tier-beta).
 
 ## View the Monitoring page
 
 To view the metrics on the Monitoring page, take the following steps:
 
-1. Navigate to the **Diagnosis** tab of a cluster.
+1. In the [TiDB Cloud console](https://tidbcloud.com/), navigate to the [**Clusters**](https://tidbcloud.com/console/clusters) page of your project.
 
-2. Click the **Monitoring** tab.
+    > **Tip:**
+    >
+    > If you have multiple projects, you can switch to the target project in the left navigation pane of the **Clusters** page.
+
+2. Click the name of the target cluster. The cluster overview page is displayed.
+3. Click **Monitoring** in the left navigation pane.
+
+## Metrics retention policy
+
+All monitoring data is kept for 2 days.
 
 ## Monitoring metrics
 

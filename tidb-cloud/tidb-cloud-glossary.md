@@ -93,6 +93,10 @@ The place where the data of deleted clusters with valid backups is stored. Once 
 
 A separate database that can be located in the same or different region and contains the same data. A replica is often used for disaster recovery purposes or to improve performance.
 
+### Replication Capacity Unit
+
+The replication of changefeed is charged according to the computing resources, which is the TiCDC replication capacity unit.
+
 ## T
 
 ### TiDB cluster

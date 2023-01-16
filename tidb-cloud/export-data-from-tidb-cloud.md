@@ -9,7 +9,7 @@ This page describes how to export data from your cluster in TiDB Cloud.
 
 TiDB does not lock in your data. Sometimes you still want to be able to migrate data from TiDB to other data platforms. Because TiDB is highly compatible with MySQL, any export tool suitable for MySQL can also be used for TiDB.
 
-You can use the tool [Dumpling](https://github.com/pingcap/dumpling) for data export.
+You can use the tool [Dumpling](/dumpling-overview.md) for data export.
 
 1. Download and install TiUP:
 
@@ -36,18 +36,43 @@ You can use the tool [Dumpling](https://github.com/pingcap/dumpling) for data ex
     {{< copyable "shell-regular" >}}
 
     ```shell
-    tiup install dumpling
+    tiup install dumpling:v6.5.0
     ```
 
 4. Export your data using Dumpling from TiDB.
 
-    {{< copyable "shell-regular" >}}
+    You can get the following connection parameters `${tidb_endpoint}`, `${port}`, and `${user}` from the connection string in the [**Connect**](/tidb-cloud/connect-via-standard-connection.md) dialog.
+
+    <SimpleTab>
+
+    <div label="Serverless Tier">
 
     ```shell
-    tiup dumpling -h ${tidb-endpoint} -P 3306 -u ${user} -F 67108864 -t 4 -o /path/to/export/dir
+    tiup dumpling:v6.5.0 -h ${tidb_endpoint} -P 4000 -u ${user} -p ${password} --ca=${ca_path} -F 67108864MiB -t 4 -o ${export_dir} --filetype sql
     ```
 
-    If you want to export only the specified databases, use `-B` to specify a comma separated list of database names.
+    </div>
+    <div label="Dedicated Tier">
+
+    ```shell
+    tiup dumpling:v6.5.0 -h ${tidb_endpoint} -P ${port} -u ${user} -p ${password} -F 67108864MiB -t 4 -o ${export_dir} --filetype sql
+    ```
+
+    </div>
+    </SimpleTab>
+
+    Options are described as follows:
+
+    - `-h`: The TiDB cluster endpoint.
+    - `-P`: The TiDB cluster port.
+    - `-u`: The TiDB cluster user.
+    - `-p`: The TiDB cluster password.
+    - `-F`: The maximum size of a single file.
+    - `--ca`: The CA root path. Refer to [Secure Connections to Serverless Tier Clusters](/tidb-cloud/secure-connections-to-serverless-tier-clusters.md#where-is-the-ca-root-path-on-my-system).
+    - `-o`: The export directory.
+    - `--filetype`: The exported file type. The default value is `sql`. You can choose from `sql` and `csv`.
+
+    For more information about Dumpling options, see [Dumpling option list](/dumpling-overview.md#option-list-of-dumpling).
 
     The minimum permissions required are as follows:
 
@@ -56,4 +81,4 @@ You can use the tool [Dumpling](https://github.com/pingcap/dumpling) for data ex
     - `LOCK TABLES`
     - `REPLICATION CLIENT`
 
-    Currently, Dumpling only supports the Mydumper format output, which can be easily restored into MySQL compatible databases by using [TiDB Lightning](https://github.com/pingcap/tidb-lightning).
+After exporting data using Dumpling, you can import the data to MySQL compatible databases by using [TiDB Lightning](https://docs.pingcap.com/tidb/stable/tidb-lightning-overview).

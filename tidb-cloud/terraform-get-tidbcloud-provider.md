@@ -48,7 +48,7 @@ For detailed steps, see [TiDB Cloud API documentation](https://docs.pingcap.com/
      required_providers {
        tidbcloud = {
          source = "tidbcloud/tidbcloud"
-         version = "~> 0.0.1"
+         version = "~> 0.1.0"
        }
      }
      required_version = ">= 1.0.0"
@@ -68,7 +68,7 @@ For detailed steps, see [TiDB Cloud API documentation](https://docs.pingcap.com/
 
    Initializing provider plugins...
    - Reusing previous version of tidbcloud/tidbcloud from the dependency lock file
-   - Using previously-installed tidbcloud/tidbcloud v0.0.1
+   - Using previously-installed tidbcloud/tidbcloud v0.1.0
 
    Terraform has been successfully initialized!
 
@@ -90,7 +90,7 @@ terraform {
   required_providers {
     tidbcloud = {
       source = "tidbcloud/tidbcloud"
-      version = "~> 0.0.1"
+      version = "~> 0.1.0"
     }
   }
   required_version = ">= 1.0.0"

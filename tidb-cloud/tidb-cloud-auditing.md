@@ -18,7 +18,7 @@ The audit logging feature is disabled by default. To audit a cluster, you need t
 ## Prerequisites
 
 - You are using a TiDB Cloud Dedicated Tier cluster. Audit logging is not available for TiDB Cloud Serverless Tier clusters.
-- You are the audit administrator of your organization in TiDB Cloud. Otherwise, you cannot see the audit-related options in the TiDB Cloud console. For more information, see [Configure member roles](/tidb-cloud/manage-user-access.md#configure-member-roles).
+- You are the audit administrator of your organization in TiDB Cloud. Otherwise, you cannot see the audit-related options in the TiDB Cloud console. For more information, see [Manage role access](/tidb-cloud/manage-user-access.md#manage-role-access).
 
 ## Enable audit logging for AWS or GCP
 
@@ -47,7 +47,7 @@ For more information, see [Creating a bucket](https://docs.aws.amazon.com/Amazon
     3. In the **Audit Logging** dialog, click **Show AWS IAM policy settings**. The corresponding TiDB Cloud Account ID and TiDB Cloud External ID of the TiDB cluster are displayed.
     4. Record the TiDB Cloud Account ID and the External ID for later use.
 
-2. In the AWS Management console, go to **IAM** > **Access Management** > **Policies**, and then check whether there is a storage bucket policy with the `s3:PutObject` write-only permission.
+2. In the AWS Management Console, go to **IAM** > **Access Management** > **Policies**, and then check whether there is a storage bucket policy with the `s3:PutObject` write-only permission.
 
     - If yes, record the matched storage bucket policy for later use.
     - If not, go to **IAM** > **Access Management** > **Policies** > **Create Policy**, and define a bucket policy according to the following policy template.

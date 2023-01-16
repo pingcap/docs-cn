@@ -1,9 +1,13 @@
 ---
-title: Set Up Private Endpoint Connections
-summary: Learn how to set up private endpoint connections in TiDB Cloud.
+title: Connect via Private Endpoint
+summary: Learn how to connect to your TiDB Cloud cluster via private endpoint.
 ---
 
-# Set Up Private Endpoint Connections
+# Connect via Private Endpoint
+
+> **Note:**
+>
+> Private endpoint connection is only available for Dedicated Tier clusters. You cannot connect to [Serverless Tier clusters](/tidb-cloud/select-cluster-tier.md#serverless-tier-beta) using the private endpoint.
 
 TiDB Cloud supports highly secure and one-way access to the TiDB Cloud service hosted in an AWS VPC via the [AWS PrivateLink](https://aws.amazon.com/privatelink/?privatelink-blogs.sort-by=item.additionalFields.createdDate&privatelink-blogs.sort-order=desc), as if the service were in your own VPC. A private endpoint is exposed in your VPC and you can create a connection to the TiDB Cloud service via the endpoint with permission.
 
@@ -41,6 +45,7 @@ In addition to the [prerequisites](#prerequisites), there are 5 steps to set up 
 3. [Create an AWS interface endpoint](#step-3-create-an-aws-interface-endpoint)
 4. [Accept the endpoint connection](#step-4-accept-the-endpoint-connection)
 5. [Enable private DNS](#step-5-enable-private-dns)
+6. [Connect to your TiDB cluster](#step-6-connect-to-your-tidb-cluster)
 
 If you have multiple clusters, you need to repeat these steps for each cluster that you want to connect to using AWS PrivateLink.
 
@@ -50,9 +55,14 @@ TiDB Cloud supports private endpoints only for Dedicated Tier clusters. You are 
 
 To start setting up a private endpoint, open the private endpoint creation page:
 
-1. Click the **Project Settings** tab in the TiDB Cloud console.
-2. Click **Private Endpoint** on the left menu.
-3. Click **Add** on the **Private Endpoint** page.
+1. Log in to the [TiDB Cloud console](https://tidbcloud.com).
+2. In the left navigation pane of the [**Clusters**](https://tidbcloud.com/console/clusters) page, do one of the following:
+
+    - If you have multiple projects, switch to the target project, and then click **Admin** > **Network Access**.
+    - If you only have one project, click **Admin** > **Network Access**.
+
+3. Click the **Private Endpoint** tab.
+4. Click **Add** in the upper-right corner.
 
 ### Step 1. Choose a TiDB cluster
 
@@ -102,11 +112,11 @@ To use the AWS Management Console to create a VPC interface endpoint, perform th
     > If your service is spanning across more than three availability zones (AZs), you might not be able to select AZs in the **Subnets** area. This issue occurs when there is an extra AZ in your selected region in addition to the AZs where your TiDB cluster is located. In this case, contact [PingCAP Technical Support](https://docs.pingcap.com/tidbcloud/tidb-cloud-support).
 
 8. Select your security group properly in the **Security groups** area.
-   
+
     > **Note:**
     >
     >  Make sure the selected security group allows inbound access from your EC2 instances on Port 4000 or a customer-defined port.
- 
+
 9. Click **Create endpoint**.
 
 </div>
@@ -164,7 +174,20 @@ aws ec2 modify-vpc-endpoint --vpc-endpoint-id <your_vpc_endpoint_id> --private-d
 
 Click **Create** in the TiDB Cloud console to finalize the creation of the private endpoint.
 
-Then you can connect to the endpoint service. See [Connect to TiDB cluster via private endpoint](/tidb-cloud/connect-to-tidb-cluster.md#connect-via-private-endpoint-recommended) for details.
+Then you can connect to the endpoint service.
+
+### Step 6: Connect to your TiDB cluster
+
+After you have enabled the private DNS, go back to the TiDB Cloud console and take the following steps:
+
+1. On the [**Clusters**](https://tidbcloud.com/console/clusters) page, click the name of your target cluster to go to its overview page.
+2. Click **Connect** in the upper-right corner. A connection dialog is displayed.
+3. Select the **Private Endpoint** tab. The private endpoint you just created is displayed under **Step 1: Create Private Endpoint**.
+4. Under **Step 2: Connect your application**, click the tab of your preferred connection method, and then connect to your cluster with the connection string. The placeholders `<cluster_endpoint_name>:<port>` in the connection string are automatically replaced with the real values.
+
+> **Tip:**
+>
+> If you cannot connect to the cluster, the reason might be that the security group of your VPC endpoint in AWS is not properly set. See [this FAQ](#troubleshooting) for solutions.
 
 ## Private endpoint status reference
 

@@ -9,7 +9,9 @@ This document describes how to create a changefeed to stream data from TiDB Clou
 
 > **Note:**
 >
-> For [Serverless Tier clusters](/tidb-cloud/select-cluster-tier.md#serverless-tier), the changefeed feature is unavailable.
+> Currently, Kafka sink is in **beta**. To use the Changefeed feature, make sure that your TiDB cluster version is v6.4.0 or later and the TiKV node size is at least 8 vCPU and 16 GiB.
+>
+> For [Serverless Tier clusters](/tidb-cloud/select-cluster-tier.md#serverless-tier-beta), the changefeed feature is unavailable.
 
 ## Prerequisites
 
@@ -47,10 +49,8 @@ For example, if your Kafka cluster is in Confluent Cloud, you can see [Resources
 
 ## Step 1. Open the changefeed page for Apache Kafka
 
-1. In the TiDB Cloud console, navigate to the **Clusters** page for your project.
-2. Click the name of the cluster that you want to create a changefeed for.
-3. Click the **Changefeed** tab.
-4. Click **Sink to Apache Kafka**.
+1. In the [TiDB Cloud console](https://tidbcloud.com), navigate to the cluster overview page of the target TiDB cluster, and then click **Changefeed** in the left navigation pane.
+2. Click **Create Changefeed**, and select **Kafka** as **Target Type**.
 
 ## Step 2. Configure the changefeed target
 
@@ -67,21 +67,27 @@ For example, if your Kafka cluster is in Confluent Cloud, you can see [Resources
 
 ## Step 3. Set the changefeed
 
-1. In the **Data Format** area, select your desired format of Kafka messages.
+1. Customize **Table Filter** to filter the tables that you want to replicate. For the rule syntax, refer to [table filter rules](/table-filter.md).
+
+    - **Add filter rules**: you can set filter rules in this column. By default, there is a rule `*.*`, which stands for replicating all tables. When you add a new rule, TiDB Cloud queries all the tables in TiDB and displays only the tables that match the rules in the **Tables to be replicated** column.
+    - **Tables to be replicated**: this column shows the tables to be replicated. But it does not show the new tables to be replicated in the future or the schemas to be fully replicated.
+    - **Tables without valid keys**: this column shows tables without unique and primary keys. For these tables, because no unique identifier can be used by the downstream system to handle duplicate events, their data might be inconsistent during replication. To avoid such issues, it is recommended that you add unique keys or primary keys to these tables before the replication, or set filter rules to filter out these tables. For example, you can filter out the table `test.tbl1` using "!test.tbl1".
+
+2. In the **Data Format** area, select your desired format of Kafka messages.
 
    - Avro is a compact, fast, and binary data format with rich data structures, which is widely used in various flow systems. For more information, see [Avro data format](https://docs.pingcap.com/tidb/stable/ticdc-avro-protocol).
    - Canal-JSON is a plain JSON text format, which is easy to parse. For more information, see [Canal-JSON data format](https://docs.pingcap.com/tidb/stable/ticdc-canal-json).
 
-2. Enable the **TiDB Extension** option if you want to add TiDB-extension fields to the Kafka message body.
+3. Enable the **TiDB Extension** option if you want to add TiDB-extension fields to the Kafka message body.
 
     For more information about TiDB-extension fields, see [TiDB extension fields in Avro data format](https://docs.pingcap.com/tidb/stable/ticdc-avro-protocol#tidb-extension-fields) and [TiDB extension fields in Canal-JSON data format](https://docs.pingcap.com/tidb/stable/ticdc-canal-json#tidb-extension-field).
 
-3. If you select **Avro** as your data format, you will see some Avro-specific configurations on the page. You can fill in these configurations as follows:
+4. If you select **Avro** as your data format, you will see some Avro-specific configurations on the page. You can fill in these configurations as follows:
 
     - In the **Decimal** and **Unsigned BigInt** configurations, specify how TiDB Cloud handles the decimal and unsigned bigint data types in Kafka messages.
     - In the **Schema Registry** area, fill in your schema registry endpoint. If you enable **HTTP Authentication**, the fields for user name and password are displayed and automatically filled in with your TiDB cluster endpoint and password.
 
-4. In the **Topic Distribution** area, select a distribution mode, and then fill in the topic name configurations according to the mode.
+5. In the **Topic Distribution** area, select a distribution mode, and then fill in the topic name configurations according to the mode.
 
     If you select **Avro** as your data format, you can only choose the **Distribute changelogs by table to Kafka Topics** mode in the **Distribution Mode** drop-down list.
 
@@ -103,7 +109,7 @@ For example, if your Kafka cluster is in Confluent Cloud, you can see [Resources
 
         If you want the changefeed to create one Kafka topic for all changelogs, choose this mode. Then, all Kafka messages in the changefeed will be sent to one Kafka topic. You can define the topic name in the **Topic Name** field.
 
-5. In the **Partition Distribution** area, you can decide which partition a Kafka message will be sent to:
+6. In the **Partition Distribution** area, you can decide which partition a Kafka message will be sent to:
 
    - **Distribute changelogs by index value to Kafka partition**
 
@@ -113,12 +119,12 @@ For example, if your Kafka cluster is in Confluent Cloud, you can see [Resources
 
         If you want the changefeed to send Kafka messages of a table to one Kafka partition, choose this distribution method. The table name of a row changelog will determine which partition the changelog is sent to. This distribution method ensures table orderliness but might cause unbalanced partitions.
 
-6. In the **Topic Configuration** area, configure the following numbers. The changefeed will automatically create the Kafka topics according to the numbers.
+7. In the **Topic Configuration** area, configure the following numbers. The changefeed will automatically create the Kafka topics according to the numbers.
 
    - **Replication Factor**: controls how many Kafka servers each Kafka message is replicated to.
    - **Partition Number**: controls how many partitions exist in a topic.
 
-7. Click **Next** to check the configurations you set and go to the next page.
+8. Click **Next** to check the configurations you set and go to the next page.
 
 ## Step 4. Review the configurations
 
@@ -126,18 +132,8 @@ On this page, you can review all the changefeed configurations that you set.
 
 If you find any error, you can go back to fix the error. If there is no error, you can click the check box at the bottom, and then click **Create** to create the changefeed.
 
-## Manage the changefeed
-
-After a changefeed is created, you can navigate to the **Changefeed** tab of your TiDB cluster and click **Sink to Apache Kafka** to open the **Changefeed Detail** dialog.
-
-In the **Changefeed Detail** dialog, you can manage the changefeed as follows:
-
-- Check the running state of the changefeed.
-- Delete the changefeed by clicking **Delete**.
-- Pause or resume the changefeed by clicking **Pause** or **Resume**.
-
 ## Restrictions
 
-- For each TiDB Cloud cluster, you can create only one Kafka changefeed.
+- For each TiDB Cloud cluster, you can create up to 10 changefeeds.
 - Currently, TiDB Cloud does not support uploading self-signed TLS certificates to connect to Kafka brokers.
 - Because TiDB Cloud uses TiCDC to establish changefeeds, it has the same [restrictions as TiCDC](https://docs.pingcap.com/tidb/stable/ticdc-overview#restrictions).

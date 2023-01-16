@@ -33,9 +33,9 @@ Before migrating data from Amazon S3 to TiDB Cloud, ensure you have administrato
 
     For more information, see [Migrate Data from MySQL-Compatible Databases](/tidb-cloud/migrate-data-into-tidb.md).
 
-3. If your source data is in local files, you can upload the files to the Amazon S3 bucket using either the Amazon S3 Console or the AWS CLI.
+3. If your source data is in local files, you can upload the files to the Amazon S3 bucket using either the Amazon S3 console or the AWS CLI.
 
-    - To upload files using the Amazon S3 Console, see [Uploading objects](https://docs.aws.amazon.com/AmazonS3/latest/userguide/upload-objects.html) in the AWS User Guide.
+    - To upload files using the Amazon S3 console, see [Uploading objects](https://docs.aws.amazon.com/AmazonS3/latest/userguide/upload-objects.html) in the AWS User Guide.
     - To upload files using the AWS CLI, use the following command:
 
         ```shell
@@ -61,27 +61,31 @@ For detailed steps, see [Configure Amazon S3 access](/tidb-cloud/config-s3-and-g
 
 ### Step 3. Import data into TiDB Cloud
 
-1. Log in to the [TiDB Cloud console](https://tidbcloud.com/), and navigate to the **Clusters** page.
+1. Open the **Import** page for your target cluster.
 
-2. Locate your target cluster, click **...** in the upper-right corner of the cluster area, and select **Import Data**. The **Data Import** page is displayed.
+    1. Log in to the [TiDB Cloud console](https://tidbcloud.com/) and navigate to the [**Clusters**](https://tidbcloud.com/console/clusters) page of your project.
 
-3. On the **Data Import** page, fill in the following information:
+        > **Tip:**
+        >
+        > If you have multiple projects, you can switch to the target project in the left navigation pane of the **Clusters** page.
 
-    - **Data Format**: choose the format of your data.
-    - **Location**: `AWS`
+    2. Click the name of your target cluster to go to its overview page, and then click **Import** in the left navigation pane.
+
+2. On the **Import** page, click **Import Data** in the upper-right corner, select **From S3**, and then fill in the following parameters:
+
+    - **Data format**: choose the format of your data.
     - **Bucket URI**: fill in the bucket URI of your source data.
     - **Role ARN**: enter the Role-ARN you obtained in [Step 2](#step-2-configure-amazon-s3-access).
-    - **Target Cluster**: shows the cluster name and the region name.
 
     If the region of the bucket is different from your cluster, confirm the compliance of cross region. Click **Next**.
 
     TiDB Cloud starts validating whether it can access your data in the specified bucket URI. After validation, TiDB Cloud tries to scan all the files in the data source using the default file naming pattern, and returns a scan summary result on the left side of the next page. If you get the `AccessDenied` error, see [Troubleshoot Access Denied Errors during Data Import from S3](/tidb-cloud/troubleshoot-import-access-denied-error.md).
 
-4. Modify the file patterns and add the table filter rules if needed.
+3. Modify the file patterns and add the table filter rules if needed.
 
-5. Click **Next**.
+4. Click **Next**.
 
-6. On the **Preview** page, confirm the data to be imported and then click **Start Import**.
+5. On the **Preview** page, confirm the data to be imported and then click **Start Import**.
 
 After the data is imported, if you want to remove the Amazon S3 access of TiDB Cloud, simply delete the policy that you added in [Step 2. Configure Amazon S3 access](#step-2-configure-amazon-s3-access).
 
@@ -119,9 +123,9 @@ For detailed steps, see [Configure GCS access](/tidb-cloud/config-s3-and-gcs-acc
 
 ### Step 3. Copy source data files to GCS and import data into TiDB Cloud
 
-1. To copy your source data files to your GCS bucket, you can upload the data to the GCS bucket using either Google Cloud Console or gsutil.
+1. To copy your source data files to your GCS bucket, you can upload the data to the GCS bucket using either Google Cloud console or gsutil.
 
-    - To upload data using Google Cloud Console, see [Creating storage buckets](https://cloud.google.com/storage/docs/creating-buckets) in Google Cloud Storage documentation.
+    - To upload data using Google Cloud console, see [Creating storage buckets](https://cloud.google.com/storage/docs/creating-buckets) in Google Cloud Storage documentation.
     - To upload data using gsutil, use the following command:
 
         ```shell
@@ -134,7 +138,14 @@ For detailed steps, see [Configure GCS access](/tidb-cloud/config-s3-and-gcs-acc
         gsutil rsync -r ./tidbcloud-samples-us-west-2/ gs://target-url-in-gcs
         ```
 
-2. From the TiDB Cloud console, navigate to the **Clusters** page, and then click the name of your target cluster to go to its own overview page. In the **Import** area, click **Import Data**, and then fill in the importing related information on the **Data Import** page.
+2. Log in to the [TiDB Cloud console](https://tidbcloud.com/) and navigate to the [**Clusters**](https://tidbcloud.com/console/clusters) page of your project.
+
+    > **Tip:**
+    >
+    > If you have multiple projects, you can switch to the target project in the left navigation pane of the **Clusters** page.
+
+3. Click the name of your target cluster to go to its overview page, and then click **Import** in the left navigation pane.
+4. On the **Import** page, click **Import Data** in the upper-right corner, and then fill in the importing related information.
 
 > **Note:**
 >

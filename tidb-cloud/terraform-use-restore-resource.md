@@ -31,7 +31,7 @@ After creating a backup of a cluster, you can restore the cluster by creating a 
      required_providers {
        tidbcloud = {
          source = "tidbcloud/tidbcloud"
-         version = "~> 0.0.1"
+         version = "~> 0.1.0"
        }
      }
      required_version = ">= 1.0.0"

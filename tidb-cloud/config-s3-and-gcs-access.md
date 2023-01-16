@@ -11,17 +11,19 @@ If your source data is stored in Amazon S3 or Google Cloud Storage (GCS) buckets
 
 To allow TiDB Cloud to access the source data in your Amazon S3 bucket, take the following steps to configure the bucket access for TiDB Cloud and get the Role-ARN.
 
-1. In the TiDB Cloud console, get the TiDB Cloud account ID and external ID of the target TiDB cluster.
+1. In the [TiDB Cloud console](https://tidbcloud.com/), get the TiDB Cloud account ID and external ID of the target TiDB cluster.
 
-    1. In the TiDB Cloud console, choose your target project, and navigate to the **Clusters** page.
-
-    2. Locate your target cluster, click **...** in the upper-right corner of the cluster area, and select **Import Data**. The **Data Import** page is displayed.
+    1. Navigate to the [**Clusters**](https://tidbcloud.com/console/clusters) page of your project.
 
         > **Tip:**
         >
-        > Alternatively, you can also click the name of your cluster on the **Clusters** page and click **Import Data** in the **Import** area.
+        > If you have multiple projects, you can switch to the target project in the left navigation pane of the **Clusters** page.
 
-    3. On the **Data Import** page, click **Guide for getting the required Role-ARN** to get the TiDB Cloud Account ID and TiDB Cloud External ID. Take a note of these IDs for later use.
+    2. Click the name of your target cluster to go to its overview page, and then click **Import** in the left navigation pane.
+
+    3. On the **Import** page, click **Import Data** in the upper-right corner and select **From S3**.
+
+    4. On the **Import from S3** page, click **Guide for getting the required Role ARN** to get the TiDB Cloud Account ID and TiDB Cloud External ID. Take a note of these IDs for later use.
 
 2. In the AWS Management Console, create a managed policy for your Amazon S3 bucket.
 
@@ -103,15 +105,15 @@ To allow TiDB Cloud to access the source data in your GCS bucket, you need to co
 
 1. In the TiDB Cloud console, get the Google Cloud Service Account ID of the target TiDB cluster.
 
-    1. In the TiDB Cloud console, choose your target project, and navigate to the **Clusters** page.
-
-    2. Locate your target cluster, click **...** in the upper-right corner of the cluster area, and select **Import Data**. The **Data Import** page is displayed.
+    1. Navigate to the [**Clusters**](https://tidbcloud.com/console/clusters) page of your project.
 
         > **Tip:**
         >
-        > Alternatively, you can also click the name of your cluster on the **Clusters** page and click **Import Data** in the **Import** area.
+        > If you have multiple projects, you can switch to the target project in the left navigation pane of the **Clusters** page.
 
-    3. On the **Data Import** page, click **Show Google Cloud Service Account ID**, and then copy the Service Account ID for later use.
+    2. Click the name of your target cluster to go to its overview page, and then click **Import** in the left navigation pane.
+
+    3. Click **Import Data** in the upper-right corner, click **Show Google Cloud Service Account ID**, and then copy the Service Account ID for later use.
 
 2. In the Google Cloud Platform (GCP) Management Console, create an IAM role for your GCS bucket.
 
@@ -147,12 +149,16 @@ To allow TiDB Cloud to access the source data in your GCS bucket, you need to co
     >
     > To remove the access to TiDB Cloud, you can simply remove the access that you have granted.
 
-6. On the **Bucket details** page, click the **CONFIGURATION** tab, and then copy your GCS bucket URI from the **gsutil URI** field.
+6. On the **Bucket details** page, click the **OBJECTS** tab.
 
-    ![Get bucket URI](/media/tidb-cloud/gcp-bucket-url.png)
+    If you want to copy a file's gsutil URI, select the file, click **Open object overflow menu**, and then click **Copy gsutil URI**.
 
-7. In the TiDB Cloud console, go to the **Data Import** page where you get the Google Cloud Service Account ID, and then paste the GCS bucket URI to the **Bucket URI** field. Note that you must add `/` to the end of the URI.
+    ![Get bucket URI](/media/tidb-cloud/gcp-bucket-uri01.png)
 
-    For example, if your bucket URI is `gs://tidb-cloud-source-data`, you need to fill in `gs://tidb-cloud-source-data/`.
+    If you want to use a folder's gsutil URI, open the folder, and then click the copy button following the folder name to copy the folder name. After that, you need to add `gs://` to the beginning and `/` to the end of the name to get a correct URI of the folder.
 
-    ![Fill in bucket URI in the TiDB Cloud console](/media/tidb-cloud/gcp-bucket-url-field.png)
+    For example, if the folder name is `tidb-cloud-source-data`, you need to use `gs://tidb-cloud-source-data/` as the URI.
+
+    ![Get bucket URI](/media/tidb-cloud/gcp-bucket-uri02.png)
+
+7. In the TiDB Cloud console, go to the **Data Import** page where you get the Google Cloud Service Account ID, and then paste the GCS bucket gsutil URI to the **Bucket gsutil URI** field. For example, paste `gs://tidb-cloud-source-data/`.

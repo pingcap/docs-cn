@@ -17,7 +17,7 @@ This document describes how to configure your Prometheus service to read key met
 
 ## Limitation
 
-You cannot use the Prometheus and Grafana integration in [Serverless Tier](/tidb-cloud/select-cluster-tier.md#serverless-tier).
+You cannot use the Prometheus and Grafana integration in [Serverless Tier](/tidb-cloud/select-cluster-tier.md#serverless-tier-beta).
 
 ## Steps
 
@@ -27,8 +27,12 @@ Before configuring your Prometheus service to read metrics of TiDB Cloud, you ne
 
 To get the scrape_config file for Prometheus, do the following:
 
-1. On the TiDB Cloud console, choose a target project for Prometheus integration, and then click the **Project Settings** tab.
-2. In the left pane, click **Integrations**.
+1. Log in to the [TiDB Cloud console](https://tidbcloud.com).
+2. In the left navigation pane of the [**Clusters**](https://tidbcloud.com/console/clusters) page, do one of the following:
+
+    - If you have multiple projects, switch to the target project, and then click **Admin** > **Integrations**.
+    - If you only have one project, click **Admin** > **Integrations**.
+
 3. Click **Integration to Prometheus**.
 4. Click **Add File** to generate and show the scrape_config file for the current project.
 
@@ -50,7 +54,11 @@ To get the scrape_config file for Prometheus, do the following:
 
 ### Step 3. Use Grafana GUI dashboards to visualize the metrics
 
-After your Prometheus service is reading metrics from TiDB Cloud, you can use Grafana GUI dashboards to visualize the metrics.
+After your Prometheus service is reading metrics from TiDB Cloud, you can use Grafana GUI dashboards to visualize the metrics as follows:
+
+1. Download the Grafana dashboard JSON of TiDB Cloud [here](https://github.com/pingcap/docs/blob/release-6.1/tidb-cloud/monitor-prometheus-and-grafana-integration-grafana-dashboard-UI.json).
+2. [Import this JSON to your own Grafana GUI](https://grafana.com/docs/grafana/v8.5/dashboards/export-import/#import-dashboard) to visualize the metrics.
+3. (Optional) Customize the dashboard as needed by adding or removing panels, changing data sources, and modifying display options.
 
 For more information about how to use Grafana, see [Grafana documentation](https://grafana.com/docs/grafana/latest/getting-started/getting-started-prometheus/).
 

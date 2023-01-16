@@ -91,7 +91,7 @@ The data replication topology between primary and secondary clusters does not ex
 
 To configure TiDB Cloud Replication, do the following:
 
-1. Navigate to the **Changefeed** tab of your TiDB cluster.
+1. In the [TiDB Cloud console](https://tidbcloud.com), navigate to the cluster overview page of your TiDB cluster, and then click **Changefeed** in the left navigation pane.
 2. Click **Create a replica of your TiDB Cluster**.
 3. Fill in the username and password of your database.
 4. Choose the region of the secondary cluster.
@@ -99,7 +99,7 @@ To configure TiDB Cloud Replication, do the following:
 
 To trigger a **Planned Detach** or **Force Detach**, do the following:
 
-1. Navigate to the **Changefeed** tab of your TiDB cluster.
+1. In the [TiDB Cloud console](https://tidbcloud.com), navigate to the cluster overview page of your TiDB cluster, and then click **Changefeed** in the left navigation pane.
 2. Click **Create a replica of your TiDB Cluster**.
 3. Click **Planned Detach** or **Force Detach**.
 
@@ -111,6 +111,6 @@ You can scale out or scale in the primary cluster without disconnecting the seco
 
 To monitor lag concerning the RPO, do the following:
 
-1. Navigate to the **Changefeed** tab of your TiDB cluster.
+1. In the [TiDB Cloud console](https://tidbcloud.com), navigate to the cluster overview page of your TiDB cluster, and then click **Changefeed** in the left navigation pane.
 2. Click **Create a replica of your TiDB Cluster**.
 3. You can see the lag of the primary-secondary cluster.

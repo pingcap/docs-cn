@@ -1,6 +1,6 @@
 ---
 title: Console Audit Logging
-summary: Learn about the log auditing feature for the TiDB Cloud Console.
+summary: Learn about the log auditing feature for the TiDB Cloud console.
 ---
 
 # Console Audit Logging
@@ -16,12 +16,12 @@ TiDB Cloud provides the audit logging feature for TiDB Cloud console operations,
 Currently, the console audit logging feature has the following limitations:
 
 - Console audit logging is enabled by default and cannot be disabled by users.
-- You cannot specify the audit filtering rules for the feature. 
+- You cannot specify the audit filtering rules for the feature.
 - You can access the audit logs only with the help of PingCAP support.
 
 ## Audit event types
 
-All user operations on the TiDB Cloud Console are recorded in the audit logs as events. Audit logs cover the following event types:
+All user operations in the TiDB Cloud console are recorded in the audit logs as events. Audit logs cover the following event types:
 
 | Audit event type | Description |
 |---|---|

@@ -40,16 +40,16 @@ Bug fixes:
 
 ## November 8, 2021
 
-* Launch [Developer Tier](/tidb-cloud/select-cluster-tier.md#serverless-tier), which offers you a one-year free trial of TiDB Cloud
+* Launch [Developer Tier](/tidb-cloud/select-cluster-tier.md#serverless-tier-beta), which offers you a one-year free trial of TiDB Cloud
 
     Each Developer Tier cluster is a full-featured TiDB cluster and comes with the following:
-    
+
     * One TiDB shared node
     * One TiKV shared node (with 500 MiB of OLTP storage)
     * One TiFlash shared node (with 500 MiB of OLAP storage)
-  
+
   Get started [here](/tidb-cloud/tidb-cloud-quickstart.md).
-  
+
 ## October 21, 2021
 
 * Open user registration to personal email accounts
@@ -108,9 +108,9 @@ Bug fixes:
 
 ## May 10, 2021
 
-General 
+General
 
-* TiDB Cloud is now in Public Preview. You can [sign up](https://tidbcloud.com/signup) and select one of the trial options: 
+* TiDB Cloud is now in Public Preview. You can [sign up](https://tidbcloud.com/signup) and select one of the trial options:
 
     * 48-Hour Free Trial
     * 2-Week PoC Free Trial
@@ -122,7 +122,7 @@ Management Console
 * [TiDB Cloud Service Agreement](https://pingcap.com/legal/tidb-cloud-services-agreement) and [PingCAP Privacy Policy](https://pingcap.com/legal/privacy-policy/) have been updated
 * You can apply for a [PoC](/tidb-cloud/tidb-cloud-poc.md) by filling out an application form in the console
 * You can import sample data into TiDB Cloud cluster through UI
-* Clusters with the same name are not allowed to avoid confusion 
-* You can give feedback by clicking **Give Feedback** in the **Support** menu  
-* Data backup and restore features are available for PoC and on-demand trial options 
+* Clusters with the same name are not allowed to avoid confusion
+* You can give feedback by clicking **Give Feedback** in the **Support** menu
+* Data backup and restore features are available for PoC and on-demand trial options
 * Points calculator and points usage dashboard have been added for Free Trial and PoC. Data storage and transfer costs are waived for all trial options

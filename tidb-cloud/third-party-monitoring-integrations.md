@@ -9,7 +9,7 @@ You can integrate TiDB Cloud with third-party monitoring services to receive TiD
 
 > **Note:**
 >
-> For [Serverless Tier clusters](/tidb-cloud/select-cluster-tier.md#serverless-tier), third-party monitoring integrations are not supported.
+> For [Serverless Tier clusters](/tidb-cloud/select-cluster-tier.md#serverless-tier-beta), third-party monitoring integrations are not supported.
 
 ## Required access
 
@@ -17,8 +17,13 @@ To edit third-party integration settings, you must have the `Owner` access to yo
 
 ## View or modify third-party integrations
 
-1. On the TiDB Cloud console, choose a target project that you want to view or modify, and then click the **Project Settings** tab.
-2. In the left pane, click **Integrations**. The available third-party integrations are displayed.
+1. Log in to the [TiDB Cloud console](https://tidbcloud.com).
+2. In the left navigation pane of the [**Clusters**](https://tidbcloud.com/console/clusters) page, do one of the following:
+
+    - If you have multiple projects, switch to the target project, and then click **Admin** > **Integrations**.
+    - If you only have one project, click **Admin** > **Integrations**.
+
+The available third-party integrations are displayed.
 
 ## Available integrations
 

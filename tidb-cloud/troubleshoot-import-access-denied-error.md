@@ -7,7 +7,7 @@ summary: Learn how to troubleshoot access denied errors when importing data from
 
 This document describes how to troubleshoot access denied errors that might occur when you import data from Amazon S3 into TiDB Cloud.
 
-After you click **Import** on the **Data Import** page of the TiDB Cloud console and confirm the import process, TiDB Cloud starts validating whether it can access your data in your specified bucket URI. If you see an error message with the keyword `AccessDenied`, an access denied error has occurred.
+After you click **Next** on the **Data Import** page of the TiDB Cloud console and confirm the import process, TiDB Cloud starts validating whether it can access your data in your specified bucket URI. If you see an error message with the keyword `AccessDenied`, an access denied error has occurred.
 
 To troubleshoot the access denied errors, perform the following checks in the AWS Management Console.
 

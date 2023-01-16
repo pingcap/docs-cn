@@ -5,25 +5,29 @@ summary: Learn how to migrate data from Amazon Aurora MySQL to TiDB Cloud in bul
 
 # Migrate from Amazon Aurora MySQL to TiDB Cloud in Bulk
 
-This document describes how to migrate data from Amazon Aurora MySQL to TiDB Cloud in bulk using the import tools on TiDB Cloud console.
+This document describes how to migrate data from Amazon Aurora MySQL to TiDB Cloud in bulk using the import tools in the TiDB Cloud console.
 
-## Learn how to create an import task on the TiDB Cloud console
+## Learn how to create an import task in the TiDB Cloud console
 
 To import data, perform the following steps:
 
-1. Log in to the [TiDB Cloud console](https://tidbcloud.com/), and navigate to the **Clusters** page.
+1. Open the **Import** page for your target cluster.
 
-2. Locate your target cluster, click **...** in the upper-right corner of the cluster area, and select **Import Data**. The **Data Import** page is displayed.
+    1. Log in to the [TiDB Cloud console](https://tidbcloud.com/) and navigate to the [**Clusters**](https://tidbcloud.com/console/clusters) page of your project.
 
-    > **Tip:**
-    >
-    > Alternatively, you can also click the name of your target cluster on the **Clusters** page and click **Import Data** in the **Import** area.
+        > **Tip:**
+        >
+        > If you have multiple projects, you can switch to the target project in the left navigation pane of the **Clusters** page.
 
-3. Prepare source data according to [Learn how to create an Amazon S3 Bucket and prepare source data files](#learn-how-to-create-an-amazon-s3-bucket-and-prepare-source-data-files). You can see the advantages and disadvantages of different **Data Format** in the preparing data part.
+    2. Click the name of your target cluster to go to its overview page, and then click **Import** in the left navigation pane.
 
-4. Select or fill in the **Data Format**, **Location**, **Bucket URI**, and **Role ARN** fields according to the specification of your source data. For more information about how to create the bucket policy and role for cross-account access, see [configure Amazon S3 access](/tidb-cloud/config-s3-and-gcs-access.md#configure-amazon-s3-access).
+2. On the **Import** page, click **Import Data** in the upper-right corner, and then select **From S3**.
 
-5. Check the cluster name and the region name in the **Target Cluster**. Click **Next**.
+3. Prepare source data according to [Learn how to create an Amazon S3 Bucket and prepare source data files](#learn-how-to-create-an-amazon-s3-bucket-and-prepare-source-data-files). You can see the advantages and disadvantages of different data formats in the preparing source data files part.
+
+4. Select or fill in the **Data format**, **Bucket URI**, and **Role ARN** fields according to the specification of your source data. For more information about how to create the bucket policy and role for cross-account access, see [configure Amazon S3 access](/tidb-cloud/config-s3-and-gcs-access.md#configure-amazon-s3-access).
+
+5. Check the cluster name and the region name in the **Target database**. Click **Next**.
 
     TiDB Cloud starts validating whether it can access your data in the specified bucket URI. After validation, TiDB Cloud tries to scan all the files in the data source using the default file naming pattern, and returns a scan summary result on the left side of the next page. If you get the `AccessDenied` error, see [Troubleshoot Access Denied Errors during Data Import from S3](/tidb-cloud/troubleshoot-import-access-denied-error.md).
 
@@ -37,7 +41,7 @@ To import data, perform the following steps:
         - `!db02.*`: except the tables in the `db02` database, all other tables will be imported. `!` is used to exclude tables that do not need to be imported.
         - `*.*` : all tables will be imported.
 
-        For more information, see [table filter syntax](/table-filter.md#syntax).
+      For more information, see [table filter syntax](/table-filter.md#syntax).
 
 7. On the **Preview** page, confirm the data to be imported and then click **Start Import**.
 
@@ -45,7 +49,7 @@ To import data, perform the following steps:
 >
 > If your task fails, refer to [Learn how to clean up incomplete data](#learn-how-to-clean-up-incomplete-data).
 
-## Learn how to create an Amazon S3 Bucket and prepare source data files
+## Learn how to create an Amazon S3 bucket and prepare source data files
 
 To prepare data, you can select one from the following two options:
 
@@ -147,7 +151,7 @@ You need to prepare an EC2 to run the following data export task. It's better to
     -F 256MiB
     ```
 
-4. On the data import task panel of TiDB Cloud, choose **SQL File** as the **Data Format**.
+4. On the **Import** page of your cluster, click **Import Data** in the upper-right corner, select **From S3**, and then choose **SQL File** as the data format.
 
 ### Option 2: Prepare source data files using Amazon Aurora snapshots
 
@@ -187,7 +191,7 @@ To migrate data from Aurora, you need to back up the schema of the database.
     mysql -u ${dest_username} -h ${dest_endpoint} -P ${dest_port_number} -p -D${dest_database}<db.sql
     ```
 
-4. On the **Import Data** page of TiDB Cloud, choose **Aurora Snapshot** as the **Data Format**.
+4. On the **Import** page of your cluster, click **Import Data** in the upper-right corner, select **From S3**, and then choose **Aurora Snapshot** as the data format.
 
 #### Take a snapshot and export it to S3
 
@@ -216,6 +220,10 @@ To migrate data from Aurora, you need to back up the schema of the database.
 The TiDB Cloud cluster and the S3 bucket are in different AWS accounts. To allow the TiDB Cloud cluster to access the source data files in the S3 bucket, you need to configure the cross-account access to Amazon S3. For more information, see [Configure Amazon S3 access](/tidb-cloud/config-s3-and-gcs-access.md#configure-amazon-s3-access).
 
 Once finished, you will have created a policy and role for cross-account. You can then continue with the configuration on the data import task panel of TiDB Cloud.
+
+> **Note:**
+>
+> To ensure data consistency, TiDB Cloud allows to import CSV files into empty tables only. To import data into an existing table that already contains data, you can use TiDB Cloud to import the data into a temporary empty table by following this document, and then use the `INSERT SELECT` statement to copy the data to the target existing table.
 
 ## Learn how to set up filter rules
 

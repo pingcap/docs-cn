@@ -1,17 +1,18 @@
 ---
 title: Changefeed Billing
 summary: Learn about billing for changefeeds in TiDB Cloud.
+aliases: ['/tidbcloud/tidb-cloud-billing-tcu']
 ---
 
 # Changefeed Billing
 
-TiDB Cloud measures the capacity of changefeeds in TiCDC Capacity Units (TCUs). When you create the first changefeed for a cluster, TiDB Cloud automatically sets up TiCDC Capacity Units (TCUs) for you, and you will be charged for these TiCDC Capacity Units. All changefeeds that are created in a single cluster share the same TiCDC Capacity Units. 
+TiDB Cloud measures the capacity of changefeeds in TiCDC Replication Capacity Units (RCUs). When you create the first changefeed for a cluster, TiDB Cloud automatically sets up TiCDC RCUs for you, and you will be charged for these TiCDC RCUs. All changefeeds that are created in a single cluster share the same TiCDC RCUs.
 
-## Number of TiCDC Capacity Units
+## Number of TiCDC RCUs
 
-For each TiDB cluster, the number of TiCDC Capacity Units is set up by TiDB Cloud according to the total vCPU count of all TiKV nodes in your cluster as follows:
+For each TiDB cluster, the number of TiCDC RCUs is set up by TiDB Cloud according to the total vCPU count of all TiKV nodes in your cluster as follows:
 
-| Total vCPUs of all TiKV nodes | Number of TCUs |
+| Total vCPUs of all TiKV nodes | Number of RCUs |
 |------------------------------|----------------|
 | < 48                         | 16             |
 | >= 48, and < 120             | 24             |
@@ -20,9 +21,9 @@ For each TiDB cluster, the number of TiCDC Capacity Units is set up by TiDB Clou
 
 ## Price
 
-The following table lists the price of TiDB Cloud for each TiCDC Capacity Unit (TCU):
+The following table lists the price of TiDB Cloud for each TiCDC RCUs:
 
-| Cloud provider | Region                      | TCU Price ($/hr) |
+| Cloud provider | Region                      | RCU price ($/hr) |
 |----------------|-----------------------------|------------------|
 | AWS            | Oregon (us-west-2)          |          $0.1307 |
 | AWS            | N. Virginia (us-east-1)     |          $0.1307 |

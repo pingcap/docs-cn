@@ -9,7 +9,7 @@ This document describes how to determine the size of a Dedicated Tier cluster.
 
 > **Note:**
 >
-> You cannot change the size of a [Serverless Tier](/tidb-cloud/select-cluster-tier.md#serverless-tier) cluster.
+> You cannot change the size of a [Serverless Tier](/tidb-cloud/select-cluster-tier.md#serverless-tier-beta) cluster.
 
 ## Size TiDB
 

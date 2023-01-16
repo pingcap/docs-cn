@@ -17,14 +17,18 @@ You can configure TiDB Cloud to send metric data about your TiDB clusters to [Da
 
 ## Limitation
 
-You cannot use the Datadog integration in [Serverless Tier clusters](/tidb-cloud/select-cluster-tier.md#serverless-tier).
+You cannot use the Datadog integration in [Serverless Tier clusters](/tidb-cloud/select-cluster-tier.md#serverless-tier-beta).
 
 ## Steps
 
 ### Step 1. Integrate with your Datadog API Key
 
-1. On the TiDB Cloud console, choose a target project for Datadog integration, and then click the **Project Settings** tab.
-2. In the left pane, click **Integrations**.
+1. Log in to the [TiDB Cloud console](https://tidbcloud.com).
+2. In the left navigation pane of the [**Clusters**](https://tidbcloud.com/console/clusters) page, do one of the following:
+
+    - If you have multiple projects, switch to the target project, and then click **Admin** > **Integrations**.
+    - If you only have one project, click **Admin** > **Integrations**.
+
 3. Click **Integration to Datadog**.
 4. Enter your API key of Datadog and choose the site of Datadog.
 5. Click **Test Integration**.

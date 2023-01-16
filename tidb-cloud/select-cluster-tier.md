@@ -10,14 +10,14 @@ The cluster tier determines the throughput and performance of your cluster.
 
 TiDB Cloud provides the following two options of cluster tiers. Before creating a cluster, you need to consider which option suits your need better.
 
-- [Serverless Tier](#serverless-tier)
+- [Serverless Tier](#serverless-tier-beta)
 - [Dedicated Tier](#dedicated-tier)
 
-## Serverless Tier
+## Serverless Tier (Beta)
 
 The TiDB Cloud Serverless Tier (previously called Developer Tier) is a fully managed service of TiDB. It's still in beta and should not be used in production. However, you can use Serverless Tier clusters for non-production workloads such as prototype applications, hackathons, academic courses, or to provide a temporary data service for your datasets.
 
-For each TiDB Cloud account, you can create a complimentary Serverless Tier cluster to use during the beta phase. Although you can only run one Serverless Tier cluster at a time, you can delete and recreate the cluster as many times as you wish.
+For each TiDB Cloud account, you can create a maximum of five complimentary Serverless Tier clusters to use during the beta phase.
 
 ### User name prefix
 
@@ -30,8 +30,12 @@ Whenever you use or set a database user name, you must include the prefix in the
 - To connect to your cluster:
 
     ```shell
-    mysql --connect-timeout 15 -u '3pTAoNNegb47Uc8.root' -h <host> -P 4000 -D test -p
+    mysql -u '3pTAoNNegb47Uc8.root' -h <host> -P 4000 -D test --ssl-mode=VERIFY_IDENTITY --ssl-ca=<CA_root_path> -p
     ```
+
+    > **Note:**
+    >
+    > Serverless Tier requires TLS connection. To find the CA root path on your system, see [CA root path lists](/tidb-cloud/secure-connections-to-serverless-tier-clusters.md#where-is-the-ca-root-path-on-my-system).
 
 - To create a database user:
 
@@ -41,22 +45,14 @@ Whenever you use or set a database user name, you must include the prefix in the
 
 To get the prefix for your cluster, take the following steps:
 
-1. Navigate to the **Clusters** page.
-2. Click **Connect** in the upper-right corner of the cluster area. A connection dialog box is displayed.
-3. In the dialog, locate **Step 2: Connect with a SQL client** and get the prefix in the connection string.
+1. Navigate to the [**Clusters**](https://tidbcloud.com/console/clusters) page.
+2. Click the name of your target cluster to go to its overview page, and then click **Connect** in the upper-right corner. A connection dialog is displayed.
+3. In the dialog, get the prefix from the connection string.
 
 ### Serverless Tier special terms and conditions
 
-- Serverless Tier does not have uptime SLA guarantee during beta phase. If you use Serverless Tier beta to store a commercial or production dataset, any potential risk associated with the use should be taken on your own, and PingCAP shall not be liable for any damage.
-- The backup and restore feature is unavailable. You can use [Dumpling](https://docs.pingcap.com/tidb/stable/dumpling-overview) to export your data as a backup.
-- You cannot create any changefeeds (Apache Kafka Sink and MySQL Sink) or use [TiCDC](https://docs.pingcap.com/tidb/stable/ticdc-overview) to replicate incremental data.
-- You cannot use VPC Peering or private endpoint to connect to Serverless Tier clusters.
-- You cannot scale clusters to larger storage, standard nodes, or increase the number of nodes.
-- You cannot [pause or resume](/tidb-cloud/pause-or-resume-tidb-cluster.md) a Serverless Tier cluster.
-- You cannot view the [Monitoring page](/tidb-cloud/built-in-monitoring.md).
-- You cannot use the third-party monitoring service.
-- You cannot customize the port number of a TiDB cluster.
-- The data transfer is limited to a total of 20 GiB in and out per week. If the 20 GiB limit is reached, the network traffic will be throttled to 10 KB/s.
+- Serverless Tier is currently in beta and does not have uptime SLA guarantee during beta phase. If you use Serverless Tier beta to store a commercial or production dataset, any potential risk associated with the use should be taken on your own, and PingCAP shall not be liable for any damage.
+- Some of TiDB Cloud features are partially supported or not supported on Serverless Tier. See [Serverless Tier Limitations](/tidb-cloud/serverless-tier-limitations.md) for details.
 
 ## Dedicated Tier
 

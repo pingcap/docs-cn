@@ -60,7 +60,13 @@ Since TiDB is compatible with the MySQL protocol and MySQL syntax, most of the O
 
 - [Quick Start](/develop/dev-guide-build-cluster-in-cloud.md)
 - [Choose Driver or ORM](/develop/dev-guide-choose-driver-or-orm.md)
+
+<CustomContent platform="tidb">
+
 - [Connect to TiDB](/develop/dev-guide-connect-to-tidb.md)
+
+</CustomContent>
+
 - [Database Schema Design](/develop/dev-guide-schema-design-overview.md)
 - [Write Data](/develop/dev-guide-insert-data.md)
 - [Read Data](/develop/dev-guide-get-data-from-single-table.md)

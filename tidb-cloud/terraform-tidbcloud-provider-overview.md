@@ -37,10 +37,11 @@ TiDB Cloud supports the following resources and data sources:
 
 - Data sources
 
-    - `tidbcloud_project`
-    - `tidbcloud_cluster_spec`
-    - `tidbcloud_restore`
-    - `tidbcloud_backup`
+    - `tidbcloud_projects`
+    - `tidbcloud_cluster_specs`
+    - `tidbcloud_clusters`
+    - `tidbcloud_restores`
+    - `tidbcloud_backups`
 
 To get all the available configurations for the resources and data sources, see this [configuration documentation](https://registry.terraform.io/providers/tidbcloud/tidbcloud/latest/docs).
 

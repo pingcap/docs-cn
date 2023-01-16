@@ -62,8 +62,8 @@ To create a dedicated cluster for the PoC, take the following steps:
 
 1. Fill in the PoC application form by doing one of the following:
 
-    - On the PingCAP website, go to the [Apply for PoC](https://pingcap.com/apply-for-poc/) page to fill in the PoC application form.
-    - In the [TiDB Cloud console](https://tidbcloud.com/), click **Apply for PoC** in the upper-right corner to fill in the PoC application form.
+    - On the PingCAP website, go to the [Apply for PoC](https://pingcap.com/apply-for-poc/) page to fill in the application form.
+    - In the [TiDB Cloud console](https://tidbcloud.com/), click <MDSvgIcon name="icon-top-contact-us" /> **Contact Us** in the upper-right corner, and select **Apply for PoC** to fill in the application form.
 
     Once you submit the form, the TiDB Cloud support team will review your application, contact you, and transfer credits to your account once the application is approved. You can also contact a PingCAP support engineer to assist with your PoC procedures to ensure the PoC runs as smoothly as possible.
 
@@ -80,14 +80,14 @@ Once a dedicated PoC cluster is created, you are ready to load data and perform 
 
 For a newly created cluster, note the following configurations:
 
-- The default time zone (the **Create Time** column on the Dashboard) is UTC. You can change it to your local time zone by following [Set the Local Time Zone](/tidb-cloud/manage-user-access.md#set-the-local-time-zone).
+- The default time zone (the **Create Time** column on the Dashboard) is UTC. You can change it to your local time zone by following [Set the Local Time Zone](/tidb-cloud/manage-user-access.md#set-the-time-zone-for-your-organization).
 - The default backup setting on a new cluster is full database backup on a daily basis. You can specify a preferred backup time or back up data manually. For the default backup time and more details, see [Back up and Restore TiDB Cluster Data](/tidb-cloud/backup-and-restore.md#backup).
 
 ## Step 4. Adapt your schemas and SQL
 
 Next, you can load your database schemas to the TiDB cluster, including tables and indexes.
 
-Because the amount of PoC credits is limited, to maximize the value of credits, it is recommended that you create a [Serverless Tier cluster](/tidb-cloud/select-cluster-tier.md#serverless-tier) (one-year free trial) for compatibility tests and preliminary analysis on TiDB Cloud.
+Because the amount of PoC credits is limited, to maximize the value of credits, it is recommended that you create a [Serverless Tier cluster](/tidb-cloud/select-cluster-tier.md#serverless-tier-beta) (one-year free trial) for compatibility tests and preliminary analysis on TiDB Cloud.
 
 TiDB Cloud is highly compatible with MySQL 5.7. You can directly import your data into TiDB if it is MySQL-compatible or can be adapted to be compatible with MySQL.
 
@@ -212,11 +212,11 @@ You can scale out clusters on the console by yourself. If you need to scale in a
 
 Once your application for the PoC is approved, you will receive credits in your account. Generally, the credits are sufficient for a 14-day PoC. The credits are charged by the type of nodes and the number of nodes, on an hourly basis. For more information, see [TiDB Cloud Billing](/tidb-cloud/tidb-cloud-billing.md#credits).
 
-To check the credits left for your PoC, go to the **Clusters** page, as shown in the following screenshot.
+To check the credits left for your PoC, go to the [**Clusters**](https://tidbcloud.com/console/clusters) page of your target project, as shown in the following screenshot.
 
 ![TiDB Cloud PoC Credits](/media/tidb-cloud/poc-points.png)
 
-Alternatively, you can also click the account name in the upper-right corner of the TiDB Cloud console, click **Billing**, and click **Credits** to see the credit details page.
+Alternatively, you can also click <MDSvgIcon name="icon-top-account-settings" /> **Account** in the upper-right corner of the TiDB Cloud console, click **Billing**, and click **Credits** to see the credit details page.
 
 To save credits, remove the cluster that you are not using. Currently, you cannot stop a cluster. You need to ensure that your backups are up to date before removing a cluster, so you can restore the cluster later when you want to resume your PoC.
 

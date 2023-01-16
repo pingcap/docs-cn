@@ -5,6 +5,10 @@ summary: Learn how to migrate data from MySQL-compatible databases to TiDB Cloud
 
 # Migrate Data from MySQL-Compatible Databases
 
+> **Note:**
+>
+> It is recommended that you use the Data Migration feature to migrate MySQL-compatible databases. See [Migrate MySQL-Compatible Databases to TiDB Cloud Using Data Migration](/tidb-cloud/migrate-from-mysql-using-data-migration.md).
+
 TiDB is highly compatible with MySQL. You can migrate data from any MySQL-compatible databases to TiDB smoothly, whether the data is from a self-hosted MySQL instance or RDS service provided by the public cloud.
 
 This document describes how to use [Dumpling](/dumpling-overview.md) to export data from MySQL-compatible databases and use [TiDB Lightning](https://docs.pingcap.com/tidb/stable/tidb-lightning-overview) logical import mode to import the data to TiDB Cloud.
@@ -92,7 +96,14 @@ Depending on the location and size of your source data, the importing methods ar
 - If your source data is located in Amazon S3 cloud storage, take the following steps:
 
     1. Configure Amazon S3 access to allow TiDB cloud to access the source data in your Amazon S3 bucket. For more information, see [configure Amazon S3 access](/tidb-cloud/config-s3-and-gcs-access.md#configure-amazon-s3-access).
-    2. From the [TiDB Cloud console](https://tidbcloud.com/), navigate to the **Clusters** page, and then click the name of your target cluster to go to its own overview page. Click **Import Data**, and then fill in the importing related information on the **Data Import** page.
+    2. Log in to the [TiDB Cloud console](https://tidbcloud.com/) and navigate to the [**Clusters**](https://tidbcloud.com/console/clusters) page of project.
+
+        > **Tip:**
+        >
+        > If you have multiple projects, you can switch to the target project in the left navigation pane of the **Clusters** page.
+
+    3. Click the name of your target cluster to go to its overview page, and then click **Import** in the left navigation pane.
+    4. On the **Import** page, click **Import Data** in the upper-right corner, select **From S3**, and then fill in the importing related information.
 
 - If your source data is in local files, do one of the following:
 

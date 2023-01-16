@@ -9,12 +9,12 @@ This document describes how to delete a TiDB cluster on TiDB Cloud.
 
 You can delete a cluster at any time by performing the following steps:
 
-1. Navigate to the **Clusters** page.
-2. Locate the cluster that you want to delete, and click **...** in the upper-right corner of the cluster area.
+1. Navigate to the [**Clusters**](https://tidbcloud.com/console/clusters) page of your project.
+2. In the row of your target cluster to be deleted, click **...**.
 
     > **Tip:**
     >
-    > Alternatively, you can also click the name of the cluster that you want to delete on the **Clusters** page and click **...** in the upper-right corner.
+    > Alternatively, you can also click the name of the target cluster to go to its overview page, and then click **...** in the upper-right corner.
 
 3. Click **Delete** in the drop-down menu.
 4. In the cluster deleting window, enter the cluster name.
@@ -23,9 +23,9 @@ You can delete a cluster at any time by performing the following steps:
 
     > **Note:**
     >
-    > For [Serverless Tier clusters](/tidb-cloud/select-cluster-tier.md#serverless-tier), the backup and restore feature is unavailable. You can use [Dumpling](https://docs.pingcap.com/tidb/stable/dumpling-overview) to export your data as a backup.
+    > For [Serverless Tier clusters](/tidb-cloud/select-cluster-tier.md#serverless-tier-beta), the backup and restore feature is unavailable. You can use [Dumpling](https://docs.pingcap.com/tidb/stable/dumpling-overview) to export your data as a backup.
 
-5. Click **I understand the consequences, delete this cluster**.
+5. Click **I understand the consequences. Delete this cluster**.
 
  Once a backed up Dedicated Tier cluster is deleted, the existing backup files of the cluster are moved to the recycle bin.
 

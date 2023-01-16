@@ -7,7 +7,7 @@ summary: Learn about TiDB Cloud billing.
 
 > **Note:**
 >
-> [Serverless Tier clusters](/tidb-cloud/select-cluster-tier.md#serverless-tier) are free to use in beta. You will not be charged for the use of your Serverless Tier cluster, and your TiDB Cloud bill will not display any Serverless Tier charges.
+> [Serverless Tier clusters](/tidb-cloud/select-cluster-tier.md#serverless-tier-beta) are free to use in beta. You will not be charged for the use of your Serverless Tier cluster, and your TiDB Cloud bill will not display any Serverless Tier charges.
 
 TiDB Cloud charges according to the resources that you consume. You can visit [TiDB Cloud Pricing Details](https://en.pingcap.com/tidb-cloud-pricing-details/) to get more information.
 
@@ -19,7 +19,7 @@ After you set up the payment method, TiDB Cloud will generate an invoice once yo
 
 > **Note:**
 >
-> If you sign up for TiDB Cloud through [AWS Marketplace](https://aws.amazon.com/marketplace) or [Google Cloud Marketplace](https://cloud.google.com/marketplace), you can pay through your AWS account or Google Cloud account directly but cannot add payment methods or download invoices in the TiDB Cloud portal.
+> If you sign up for TiDB Cloud through [AWS Marketplace](https://aws.amazon.com/marketplace) or [Google Cloud Marketplace](https://console.cloud.google.com/marketplace), you can pay through your AWS account or Google Cloud account directly but cannot add payment methods or download invoices in the TiDB Cloud console.
 
 After you contact our sales for receiving an invoice on a monthly basis, TiDB Cloud will generate the invoice for the previous month at the beginning of each month.
 
@@ -37,7 +37,7 @@ For each monthly invoice:
 
 To view the list of invoices, perform the following steps:
 
-1. Click the account name in the upper-right corner of the TiDB Cloud console.
+1. Click <MDSvgIcon name="icon-top-account-settings" /> **Account** in the upper-right corner of the TiDB Cloud console.
 
     > **Note:**
     >
@@ -57,7 +57,7 @@ After setting the payment method, TiDB Cloud will generate the invoice and billi
 
 To view the billing details, perform the following steps:
 
-1. Click the account name in the upper-right corner of the TiDB Cloud console.
+1. Click <MDSvgIcon name="icon-top-account-settings" /> **Account** in the upper-right corner of the TiDB Cloud console.
 
     > **Note:**
     >
@@ -87,7 +87,7 @@ The detailed information of your credits is available on the **Credits** page, i
 
 To view this page, perform the following steps:
 
-1. Click the account name in the upper-right corner of the TiDB Cloud console.
+1. Click <MDSvgIcon name="icon-top-account-settings" /> **Account** in the upper-right corner of the TiDB Cloud console.
 
     > **Note:**
     >
@@ -114,7 +114,7 @@ If you are the owner or billing administrator of your organization, you can mana
 
 > **Note:**
 >
-> If you sign up for TiDB Cloud through [AWS Marketplace](https://aws.amazon.com/marketplace), you can pay through your AWS account directly but cannot add payment methods or download invoices in the TiDB Cloud portal.
+> If you sign up for TiDB Cloud through [AWS Marketplace](https://aws.amazon.com/marketplace) or [Google Cloud Marketplace](https://console.cloud.google.com/marketplace), you can pay through your AWS account or Google Cloud account directly but cannot add payment methods or download invoices in the TiDB Cloud console.
 
 ### Add a credit card
 
@@ -128,7 +128,7 @@ The fee is deducted from a bound credit card according to your cluster usage. To
 
 - Anytime in the billing console:
 
-    1. Click the account name in the upper-right corner of the TiDB Cloud console.
+    1. Click <MDSvgIcon name="icon-top-account-settings" /> **Account** in the upper-right corner of the TiDB Cloud console.
 
         > **Note:**
         >
@@ -146,7 +146,7 @@ You can bind multiple credit cards, and set one of them as the default credit ca
 
 To set the default credit card, perform the following steps:
 
-1. Click the account name in the upper-right corner of the TiDB Cloud console.
+1. Click <MDSvgIcon name="icon-top-account-settings" /> **Account** in the upper-right corner of the TiDB Cloud console.
 
     > **Note:**
     >
@@ -162,7 +162,7 @@ The billing profile information includes the business legal address and tax regi
 
 To edit the billing profile information, perform the following steps:
 
-1. Click the account name in the upper-right corner of the TiDB Cloud console.
+1. Click <MDSvgIcon name="icon-top-account-settings" /> **Account** in the upper-right corner of the TiDB Cloud console.
 
     > **Note:**
     >
@@ -178,7 +178,7 @@ If you are the owner or billing administrator of your organization, you can mana
 
 If you have agreed with our sales on a contract and received an email to review and accept the contract online, you can do the following:
 
-1. Click the account name in the upper-right corner of the TiDB Cloud console.
+1. Click <MDSvgIcon name="icon-top-account-settings" /> **Account** in the upper-right corner of the TiDB Cloud console.
 
     > **Note:**
     >
@@ -189,3 +189,57 @@ If you have agreed with our sales on a contract and received an email to review 
 4. Click **Download**, **Accept**, or **Reject** according to your need.
 
 To learn more about contracts, feel free to [contact our sales](https://www.pingcap.com/contact-us/).
+
+## Billing from AWS Marketplace or Google Cloud Marketplace
+
+If you are the owner or billing administrator of your organization, you can link your TiDB Cloud account to an AWS billing account or Google Cloud billing account. Otherwise, skip this section.
+
+If you are new to TiDB Cloud and do not have a TiDB Cloud account, you can sign up for a TiDB Cloud account through [AWS Marketplace](https://aws.amazon.com/marketplace) or [Google Cloud Marketplace](https://console.cloud.google.com/marketplace), and pay for the usage via the AWS or GCP billing account. For more details, refer to [Create a TiDB Cloud account](/tidb-cloud/create-tidb-cluster.md#step-1-create-a-tidb-cloud-account).
+
+If you already have a TiDB Cloud account and you want to pay for the usage via your AWS or GCP billing account, you can link your TiDB Cloud account to your AWS or GCP billing account.
+
+<SimpleTab>
+<div label="AWS Marketplace">
+
+To link your TiDB Cloud account to an AWS billing account, take the following steps:
+
+1. Open the [AWS Marketplace page](https://aws.amazon.com/marketplace), search for `TiDB Cloud` and select **TiDB Cloud** in the search results. The TiDB Cloud product page is displayed.
+
+2. On the TiDB Cloud product page, click **Continue to Subscribe**. An order page is displayed.
+
+3. On the order page, click **Subscribe**, and then click **Set Up your Account**. You are directed to the TiDB Cloud sign-up page.
+
+4. Check the notification in the upper part of the sign-up page and click **Sign in**.
+
+5. Sign in with your TiDB Cloud account. The **Link to Your AWS Billing Account** page is displayed.
+
+6. On the **Link to Your AWS Billing Account** page, select your target organization and click **Link** to link to your AWS billing account.
+
+    > **Note:**
+    >
+    > If your organization already has a payment method in TiDB Cloud, the existing payment method for this organization will be replaced by the newly added AWS billing account.
+
+</div>
+
+<div label="Google Cloud Marketplace">
+
+To link your TiDB Cloud account to a Google Cloud billing account, take the following steps:
+
+1. Open the [Google Cloud Marketplace page](https://console.cloud.google.com/marketplace), search for `TiDB Cloud` and select **TiDB Cloud** in the search results. The TiDB Cloud product page is displayed.
+
+2. On the TiDB Cloud product page, click **Subscribe**. A subscription page is displayed.
+
+3. On the subscription page, click **Subscribe**, and then click **Go to product page**. You are directed to the TiDB Cloud sign-up page.
+
+4. Check the notification in the upper part of the sign-up page and click **Sign in**.
+
+5. Sign in with your TiDB Cloud account. The **Link to Your GCP Billing Account** page is displayed.
+
+6. On the **Link to Your GCP Billing Account** page, select the target organization and click **Link** to link to your Google Cloud billing account.
+
+    > **Note:**
+    >
+    > If your organization already has a payment method in TiDB Cloud, the existing payment method for this organization will be replaced by the newly added Google Cloud billing account.
+
+</div>
+</SimpleTab>
