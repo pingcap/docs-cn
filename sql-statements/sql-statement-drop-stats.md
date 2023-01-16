@@ -11,7 +11,10 @@ summary: TiDB 数据库中 DROP STATS 的使用概况。
 
 ```ebnf+diagram
 DropStatsStmt ::=
-    'DROP' 'STATS' TableName
+    'DROP' 'STATS' TableNameList 
+
+TableNameList ::=
+    TableName ( ',' TableName )*
 
 TableName ::=
     Identifier ('.' Identifier)?
