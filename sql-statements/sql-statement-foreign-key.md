@@ -60,7 +60,7 @@ reference_option:
 
 如果外键定义中没有指定 `ON DELETE` 或者 `ON UPDATE`，则默认的行为是 `NO ACTION`。
 
-如果外键是定义在 `STORED GENERATED COLUMN` 上的，则不支持使用 `CASCADE`，`SET NULL` 和 `SET DEFAULT` 引用操作。
+如果外键是定义在 `STORED GENERATED COLUMN` 上的，则不支持使用 `CASCADE`、`SET NULL` 和 `SET DEFAULT` 引用操作。
 
 ## 外键使用示例
 
