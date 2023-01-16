@@ -21,6 +21,7 @@ In v6.3.0-DMR, the key new features and improvements are as follows:
 - A new syntactic sugar is added to simplify Range partition definitions.
 - Range COLUMNS partitioning supports defining multiple columns.
 - The performance of adding indexes is tripled.
+- Reduce the impact of resource-consuming queries on the response time of lightweight queries by more than 50%.
 
 ## New features
 
@@ -126,6 +127,10 @@ In v6.3.0-DMR, the key new features and improvements are as follows:
     In the Read-Committed isolation level, the system variable [`tidb_rc_write_check_ts`](/system-variables.md#tidb_rc_write_check_ts-new-in-v630) is introduced to control how TSO is fetched. In the case of Plan Cache hit, TiDB improves the execution efficiency of batch DML statements by reducing the frequency of fetching TSO, and reduces the execution time of running tasks in batch.
 
 ### Stability
+
+* Reduce the impact of resource-consuming queries on the response time of lightweight queries [#13313](https://github.com/tikv/tikv/issues/13313) @[glorv](https://github.com/glorv)
+
+    When resource-consuming queries and lightweight queries are executed at the same time, the response time of lightweight queries is affected. In this case, to ensure the quality of transactional services, lightweight queries are expected to be processed by TiDB first. In v6.3.0, TiKV optimizes the scheduling mechanism of read requests, so that the execution time of resource-consuming queries in each round can meet expectations. This drastically reduces the impact of resource-consuming queries on the response time of lightweight queries and reduces P99 latency by more than 50% for mixed workload scenarios.
 
 * Modify the default policy of loading statistics when statistics become outdated [#27601](https://github.com/pingcap/tidb/issues/27601) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes)
 
