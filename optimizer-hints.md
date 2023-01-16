@@ -390,7 +390,7 @@ EXPLAIN SELECT /*+ KEEP_ORDER(t, a) */ a FROM t ORDER BY a LIMIT 10;
 +----------------------------+---------+-----------+---------------------+-------------------------------+
 ```
 
-优化器对该查询会生成两类计划：`Limit + IndexScan(keep order: true)` 和 `TopN + IndexScan(keep order: false)`，当使用了 `KEEP_ORDER` Hint，优化器会选择前一种索引按照顺序读出的计划。
+优化器对该查询会生成两类计划：`Limit + IndexScan(keep order: true)` 和 `TopN + IndexScan(keep order: false)`，当使用了 `KEEP_ORDER` Hint，优化器会选择前一种按照顺序读取索引的计划。
 
 > **注意：**
 >
