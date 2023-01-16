@@ -816,7 +816,7 @@ TiDB 服务状态相关配置。
 
 + 用于控制是否开启 statements summary 持久化。
 + 默认值：false
-+ 
++ 详情参考 [持久化 Statements Summary](/statement-summary-tables.md#持久化-statements-summary)
 
 ### `tidb_statements_summary_filename` <span class="version-mark">从 v6.6.0 版本开始引入</span>
 
@@ -853,7 +853,7 @@ TiDB 服务状态相关配置。
 >
 > Statements summary 持久化目前为实验性特性，不建议在生产环境中使用。
 
-+ 当开启了 statements summary 持久化时，该配置用于限制持久化数据文件最大数量。`0` 表示不限制
++ 当开启了 statements summary 持久化时，该配置用于限制持久化数据文件最大数量，`0` 表示不限制。
 + 默认值：0
 + 可结合数据保留时长需求与磁盘空间占用适当调整。
 
