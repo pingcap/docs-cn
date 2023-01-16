@@ -158,7 +158,7 @@
       - [增量备份与恢复](/br/br-incremental-guide.md)
   - 集群容灾
     - [TiDB 容灾方案介绍](/dr-solution-introduction.md)
-    - [同区域三中心（AZ）部署](/dr-multi-replica.md)
+    - [同区域三中心 (AZ) 部署](/dr-multi-replica.md)
     - [使用跨区域主备容灾集群](/dr-secondary-cluster.md)
     - [进行集群数据备份和恢复](/dr-backup-restore.md)
   - [修改时区](/configure-time-zone.md)
