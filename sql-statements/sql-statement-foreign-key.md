@@ -200,7 +200,7 @@ mysql> SELECT TABLE_SCHEMA, TABLE_NAME, COLUMN_NAME, CONSTRAINT_NAME FROM INFORM
 
 ## 查看带有外键的执行计划
 
-您可以使用 `EXPLAIN` 语句查看执行计划。`Foreign_Key_Check` 算子是执行 DML 语句时，执行外键约束检查的算子。
+你可以使用 `EXPLAIN` 语句查看执行计划。`Foreign_Key_Check` 算子是执行 DML 语句时，执行外键约束检查的算子。
 
 ```sql
 mysql> explain insert into child values (1,1);
