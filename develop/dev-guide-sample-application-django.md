@@ -27,13 +27,13 @@ summary: 给出一个 Django 构建 TiDB 应用程序示例。
 
 <SimpleTab groupId="cluster">
 
-<div label="使用 TiDB Cloud Serverless Tier 集群" value="serverless-cluster">
+<div label="TiDB Cloud" value="serverless-cluster">
 
 [创建 Serverless Tier 集群](/develop/dev-guide-build-cluster-in-cloud.md#第-1-步创建-serverless-tier-集群)。
 
 </div>
 
-<div label="使用本地集群" value="local-cluster">
+<div label="本地集群" value="local-cluster">
 
 你可以部署一个本地测试的 TiDB 集群或正式的 TiDB 集群。详细步骤，请参考：
 
@@ -42,7 +42,7 @@ summary: 给出一个 Django 构建 TiDB 应用程序示例。
 
 </div>
 
-<div label="使用云原生开发环境" value="cloud-cluster">
+<div label="Gitpod" value="gitpod-cluster">
 
 基于 Git 的预配置的开发环境：[现在就试试](/develop/dev-guide-playground-gitpod.md)
 
@@ -119,36 +119,36 @@ DATABASES = {
 
 1. 打开终端，进入 `tidb-example-python` 代码示例目录：
 
-```shell
-cd <path>/tidb-example-python
-```
+    ```bash
+    cd <path>/tidb-example-python
+    ```
 
 2. 安装项目依赖并进入 `django_example` 目录：
 
-```bash
-pip install -r requirement.txt
-cd django_example
-```
+    ```bash
+    pip install -r requirement.txt
+    cd django_example
+    ```
 
 3. 运行数据模型迁移：
 
-> **注意：**
->
-> - 此步骤假定已经存在 `django` 数据库。
-> - 若未创建`django` 数据库，可通过 `CREATE DATABASE django` 语句进行创建。关于创建数据库语句的详细信息，参考 [`CREATE DATABASE`](/sql-statements/sql-statement-create-database.md#create-database)。
-> - 数据库名称 `NAME` 可在 `example_project/settings.py` 的 `DATABASES` 属性中更改。
-
-这将在你连接的数据库内生成 Django 所需的相应数据表。
-
-```bash
-python manage.py migrate
-```
+    > **注意：**
+    >
+    > - 此步骤假定已经存在 `django` 数据库。
+    > - 若未创建 `django` 数据库，可通过 `CREATE DATABASE django` 语句进行创建。关于创建数据库语句的详细信息，参考 [`CREATE DATABASE`](/sql-statements/sql-statement-create-database.md#create-database)。
+    > - 数据库名称 `NAME` 可在 `example_project/settings.py` 的 `DATABASES` 属性中更改。
+    
+    这将在你连接的数据库内生成 Django 所需的相应数据表。
+    
+    ```bash
+    python manage.py migrate
+    ```
 
 4. 运行应用程序：
 
-```bash
-python manage.py runserver
-```
+    ```bash
+    python manage.py runserver
+    ```
 
 ### 第 4 步第 3 部分：输出
 
