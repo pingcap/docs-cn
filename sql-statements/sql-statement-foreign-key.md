@@ -123,7 +123,7 @@ ALTER TABLE table_name
     [ON UPDATE reference_option]
 ```
 
-外键可以是自引用的（引用同一个表）。使用 ALTER TABLE 向表添加外键约束时，请先在外键引用父表的列上创建索引。
+外键可以是自引用的，即引用同一个表。使用 `ALTER TABLE` 向表添加外键约束时，请先在外键引用父表的列上创建索引。
 
 ## 删除外键约束
 
