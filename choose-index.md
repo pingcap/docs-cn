@@ -231,7 +231,7 @@ mysql> EXPLAIN SELECT * FROM t2 use index(idx) WHERE a=1 AND JSON_OVERLAPS((j->'
 6 rows in set, 1 warning (0.00 sec)
 ```
 
-对于由多个 `json_member_of` 组成的 `OR` 条件，也可以使用 IndexMerge 进行访问：
+对于由多个 `member of` 组成的 `OR` 条件，也可以使用 IndexMerge 进行访问：
 
 ```sql
 mysql> CREATE TABLE t3 (a INT, j JSON, INDEX idx(a, (CAST(j AS SIGNED ARRAY))));
