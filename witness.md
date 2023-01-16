@@ -19,16 +19,16 @@ summary: 如何使用 Witness。
 
 ## 适用场景
 
-Witness 功能适用于一下场景：
+Witness 功能适用于以下场景：
 
-* 高可靠的存储环境（99.9%+），比如 AWS EBS 存储，使能并配置 Witness 节点来节约成本。
-* 快速恢复 Failover 提高可用性的场景，使能但不配置 Witness 节点。
+* 高可靠的存储环境（99.9%+），比如 AWS EBS 存储，开启并配置 Witness 节点来节约成本。
+* 快速恢复 Failover 提高可用性的场景，开启但不配置 Witness 节点。
 
 ## 使用步骤
 
-### 第 1 步：使能 Witness
+### 第 1 步：开启 Witness
 
-使用 PD Control 执行 [`config set enable-witness true`](/pd-control.md#config-set-enable-witness-true) 命令使能 Witness。
+使用 PD Control 执行 [`config set enable-witness true`](/pd-control.md#config-set-enable-witness-true) 命令开启 Witness。
 
 {{< copyable "shell-regular" >}}
 
@@ -36,9 +36,9 @@ Witness 功能适用于一下场景：
 pd-ctl config set enable-witness true 
 ```
 
-命令输出 `Success` 表示使能成功。如果 Placement rule 没有配置 witness 副本，则默认不会有 Witness 产生，只有当出现 TiKV down 后，会立刻添加一个 witness 节点，后续会根据 PD placement rule 规则将其转换为普通的 Voter。
+命令输出 `Success` 表示开启成功。如果 Placement rule 没有配置 witness 副本，则默认不会有 Witness 产生，只有当出现 TiKV down 后，会立刻添加一个 witness 节点，后续会根据 PD placement rule 规则将其转换为普通的 Voter。
 
-### 第 2 步：使能 transfer witness leader scheduler
+### 第 2 步：开启 transfer witness leader scheduler
 
 使用 PD Control 执行 
 
@@ -48,7 +48,7 @@ pd-ctl config set enable-witness true
 pd-ctl scheduler add transfer-witness-leader-scheduler
 ```
 
-命令输出 `Success` 表示使能成功。通常情况下 witness 的选举优先级比普通 Voter 低，且在 Leader 发起 transfer leader 时会拒绝掉，但当 Leader down，另一个 Voter 的 Raft 日志数量小于 witness 时，Raft 会选举 witness 成为 leader，由于 witness 没有应用 Raft 日志，无法对外提供读写服务，因此我们需要让 PD 在 witness leader 上报 region 信息时迅速 transfer 出去，也就是 `transfer-witness-leader-scheduler` 的职责。若在 witness transfer leader 的过程中 TiKV 内部出现了问题，Back off 重试失败后，客户端将返回 IsWitness 错误。
+命令输出 `Success` 表示开启成功。通常情况下 witness 的选举优先级比普通 Voter 低，且在 Leader 发起 transfer leader 时会拒绝掉，但当 Leader down，另一个 Voter 的 Raft 日志数量小于 witness 时，Raft 会选举 witness 成为 leader，由于 witness 没有应用 Raft 日志，无法对外提供读写服务，因此我们需要让 PD 在 witness leader 上报 region 信息时迅速 transfer 出去，也就是 `transfer-witness-leader-scheduler` 的职责。若在 witness transfer leader 的过程中 TiKV 内部出现了问题，Back off 重试失败后，客户端将返回 IsWitness 错误。
 
 如果仅将 Witness 用于快速恢复 Failover 提高可用性的场景，执行到这一步就结束了。若确定使用的存储环境为高可靠（99.9%+），且有节约成本的需求，则可继续执行后续操作。
 
@@ -56,50 +56,10 @@ pd-ctl scheduler add transfer-witness-leader-scheduler
 
 以三副本为例，修改 rule.json 为 [场景六在高可靠的存储环境下配置-witness-副本](/configure-placement-rules.md#场景六在高可靠的存储环境下配置-witness-副本)。
 
-使用 PD Control 执行
+编辑完文件后，使用下面的命令将配置保存至 PD 服务器：
 
 {{< copyable "shell-regular" >}}
 
 ```bash
 pd-ctl config placement-rules save --in=rule.json
 ```
-
-使能更新后的配置。
-
-## 功能兼容性说明
-
-### TiFlash
-
-在 PD 侧会禁止 TiFlash 成为 witness。
-
-### Resolve TS
-
-当 witness 是 leader 时，会跳过更新 safe ts。
-
-### CDC
-
-当 witness 成为 leader 时，CDC 会不断重试，直到 witness 将 leader 身份 transfer 出去。
-
-### Stale Read
-
-Witnes 禁止读，TiKV 客户端选择副本时会过滤掉 witness。
-
-### Online unsafe recovery
-
-Choose witness as force leader if witness has latest log。
-
-### BR
-
-当 witness 成为 leader 时，会拒绝 br。
-
-### PITR
-
-当 witness 成为 leader 时，会拒绝 PITR。
-
-### Lightning
-
-无影响
-
-### Flashback
-
-无影响
