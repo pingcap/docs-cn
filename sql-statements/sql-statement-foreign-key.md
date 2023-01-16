@@ -212,7 +212,7 @@ mysql> explain insert into child values (1,1);
 +-----------------------+---------+------+---------------+-------------------------------+
 ```
 
-您可以使用 `EXPLAIN ANALYZE` 语句查看外键引用行为的执行。`Foreign_Key_Cascade` 算子是执行 DML 语句时，执行外键引用行为的算子。
+你可以使用 `EXPLAIN ANALYZE` 语句查看外键引用行为的执行。`Foreign_Key_Cascade` 算子是执行 DML 语句时，执行外键引用行为的算子。
 
 ```sql
 mysql> explain analyze delete from parent where id = 1;
