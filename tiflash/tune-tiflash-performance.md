@@ -93,7 +93,7 @@ mysql> explain analyze select o_orderpriority, count(*) as order_count from orde
 set @@tidb_opt_agg_push_down = ON;
 ```
 
-在以下示例中，`tidb_enforce_mpp` 开启前，TiDB 需要从 TiKV 读取数据，并在 TiDB 侧执行 `Join` 和 `Aggregation`。`tidb_enforce_mpp` 开启后，`Join` 和 `Aggregation` 被下推到了 TiFlash。需要注意的是，有时候优化器生成的执行计划并不稳定，可能生成 `MPP`，也可能不生成，这时候可以开启 `tidb_enforce_mpp`，强制优化器生成 `MPP` 计划。
+在以下示例中，`tidb_opt_agg_push_down` 开启前，`HashAgg_58` 在 `HashJoin_41` 之后执行。`tidb_opt_agg_push_down` 开启后，新生成的 `HashAgg_21` 和 `HashAgg_32` 在 `HashJoin_76` 之前执行，显著减少了 `Join` 需要处理的数据量。
 
 ```sql
 mysql> explain analyze select count(*) from t1 join t2 where t1.a = t2.b group by t1.a;
