@@ -81,7 +81,7 @@ CREATE TABLE child (
 );
 ```
 
-下面是一个更复杂的示例，其中 `product_order` 表有 2 个外键分别引用其他两个表。一个外键引用 `product` 表中的两列索引。另一个引用 `customer` 表中的单列索引：
+下面是一个更复杂的示例，其中 `product_order` 表有两个外键分别引用其他两个表。一个外键引用 `product` 表中的两列索引。另一个引用 `customer` 表中的单列索引：
 
 {{< copyable "sql" >}}
 
