@@ -162,7 +162,6 @@ TiDB 对其进行了两个维度的修复：
 
 根据测试结果，TiDB 支持绝大部分 Sequelize 功能（[使用 `MySQL` 作为方言](https://sequelize.org/docs/v6/other-topics/dialect-specific-things/#mysql)），不支持的功能有：
 
-- 不支持与外键约束相关的功能（包括多对多关联）。
 - [不支持 `GEOMETRY`](https://github.com/pingcap/tidb/issues/6347) 相关。
 - 不支持修改整数主键。
 - 不支持 `PROCEDURE` 相关。

@@ -31,7 +31,7 @@ TiDB 使用起来很简单，可以将 TiDB 集群当成 MySQL 来用。你可�
 
 ### 1.1.6 TiDB 和 MySQL 兼容性如何？
 
-TiDB 支持绝大部分 MySQL 5.7 的语法，但目前还不支持触发器、存储过程、自定义函数、外键约束等。详情参见[与 MySQL 兼容性对比](/mysql-compatibility.md)。
+TiDB 支持绝大部分 MySQL 5.7 的语法，但目前还不支持触发器、存储过程、自定义函数等。详情参见[与 MySQL 兼容性对比](/mysql-compatibility.md)。
 
 ### 1.1.7 TiDB 支持分布式事务吗？
 
