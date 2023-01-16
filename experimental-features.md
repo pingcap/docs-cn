@@ -59,3 +59,4 @@ aliases: ['/docs-cn/dev/experimental-features-4.0/','/zh/tidb/dev/experimental-f
 ## 问题诊断
 
 + [TiKV-FastTune 监控面板](/grafana-tikv-dashboard.md#tikv-fasttune-面板)。（v4.0 实验特性）
++ [Statement Summary 持久化](/statement-summary-tables.md#持久化-statements-summary)。（v6.6 实验特性）
