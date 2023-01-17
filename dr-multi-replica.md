@@ -5,17 +5,17 @@ summary: 介绍在容灾场景下，如何使用 TiDB 备份与恢复功能实�
 
 # 基于单集群多副本的容灾解决方案
 
-本文对基于单集群多副本的容灾方案进行介绍，包含了集群的安装与部署、副本配置及计划内与计划外切换的方法。
+本文介绍了基于单集群多副本的容灾方案，包含了集群的安装与部署、副本配置及计划内与计划外切换的方法。
 
 ## 简介
 
-对于重要的生产系统，很多用户需要能够实现区域级别的容灾，并且做到 RPO = 0 和分钟级别的 RTO。TiDB 作为基于 Raft 协议的分布式数据库，其自带的多副本特性可以用于支持区域级别的容灾目标，并同时确保数据的一致性和高可用性。而同区域 AZ 之间的网络延迟相对较小，可以把业务流量同时派发到同区域两个 AZ，并通过控制 Region Leader 和 PD Leader 分布实现同区域 AZ 共同负载业务流量。
+对于重要的生产系统，很多用户需要能够实现区域级别的容灾，并且做到 RPO = 0 和分钟级别的 RTO。TiDB 作为基于 Raft 协议的分布式数据库，其自带的多副本特性可以用于支持区域级别的容灾目标，并同时确保数据的一致性和高可用性。而同区域可用区 (Available Zone, AZ) 之间的网络延迟相对较小，可以把业务流量同时派发到同区域两个 AZ，并通过控制 Region Leader 和 PD Leader 分布实现同区域 AZ 共同负载业务流量。
 
 ## 安装与部署
 
 在这一部分当中，会以一个 5 副本的集群为例，演示如何使用 TiUP 创建一个跨 3 个区域的集群，以及如何控制数据和 PD 的分布位置，从而达到容灾的目的。
 
-在下面的示例中，TiDB 集群的区域 1 作为 primary region，区域2 作为 secondary region, 而区域 3 则作为投票使用的第三个区域，一共包含5个副本。同理，PD 集群也包含了5个副本，其功能和 TiDB 集群的功能基本一致。
+在下面的示例中，TiDB 集群的区域 1 作为 primary region，区域2 作为 secondary region, 而区域 3 则作为投票使用的第三个区域，一共包含 5 个副本。同理，PD 集群也包含了 5 个副本，其功能和 TiDB 集群的功能基本一致。
 
 1. 创建类似于以下的集群拓扑文件：
 
@@ -49,7 +49,7 @@ summary: 介绍在容灾场景下，如何使用 TiDB 备份与恢复功能实�
       - host: tidb-dr-test3
 
 
-    tikv_servers:  # 在 TiKV 节点中通过 labels 选项来对每个 TiKV 节点所在的Region 和 AZ 进行标记
+    tikv_servers:  # 在 TiKV 节点中通过 labels 选项来对每个 TiKV 节点所在的 Region 和 AZ 进行标记
       - host: tidb-dr-test1
         config:
           server.labels: { Region: "Region1", AZ: "AZ1" }
@@ -116,21 +116,21 @@ summary: 介绍在容灾场景下，如何使用 TiDB 备份与恢复功能实�
     >
     > 优先级数值越大的节点成为 leader 的可能性越高。
 
-3. 创建placement rule，并将测试用的表的主副本固定在 Region 1：
+3. 创建 placement rule，并将测试表的主副本固定在 Region 1：
 
     ```sql
-    --创建两个 placement rules, 第一个是Region1 作为主region，在系统正常时使用，第二个是Region2
-    -- 作为主region，当Region1  出现问题时 Region2 作为主Region
+    --创建两个 placement rules, 第一个是 Region1 作为主region，在系统正常时使用，第二个是 Region2。
+    -- 作为主 Region，当 Region1 出现问题时，Region2 会作为主 Region。
     MySQL [(none)]> CREATE PLACEMENT POLICY primary_rule_for_region1 PRIMARY_REGION="Region1" REGIONS="Region1, Region2,Region3";
     MySQL [(none)]> CREATE PLACEMENT POLICY secondary_rule_for_region2 PRIMARY_REGION="Region2" REGIONS="Region1,Region2,Region3";
 
-    -- 将刚刚创建的规则primary_rule_for_region1 应用到对应的用户表上.
+    -- 将刚刚创建的规则 primary_rule_for_region1 应用到对应的用户表上。
     ALTER TABLE tpcc.warehouse PLACEMENT POLICY=primary_rule_for_region1;
     ALTER TABLE tpcc.district PLACEMENT POLICY=primary_rule_for_region1;
 
-    --说明：请根据需要修改上面的数据库名称、表名和placement rule 的名称。
+    --说明：请根据需要修改上面的数据库名称、表名和 placement rule 的名称。
 
-    --用户可以使用类似下面的查询查看每个区域包含的leader 数量，以确认leader 迁移是否完成
+    --使用类似下面的查询，用户可以查看每个区域包含的 leader 数量，以确认 leader 迁移是否完成
     select STORE_ID, address, leader_count, label from TIKV_STORE_STATUS order by store_id;
     ```
 
@@ -145,11 +145,16 @@ summary: 介绍在容灾场景下，如何使用 TiDB 备份与恢复功能实�
 
 ### 监控
 
-在上面的部署中，用户可以通过访问集群中的 Grafana 地址或者 TiDB Dashboard 组件来对集群中的各个TiKV、TiDB 和 PD 组件的各种性能指标进行监控，详细信息，请参考 []()。
+在上面的部署中，用户可以通过访问集群中的 Grafana 地址或者 TiDB Dashboard 组件来对集群中的各个 TiKV、TiDB 和 PD 组件的各种性能指标进行监控。详细信息，请参考如下文档：
+
+- [TiDB 重要监控指标详解](/grafana-tidb-dashboard.md)
+- [TiKV 监控指标详解](/grafana-tikv-dashboard.md)
+- [PD 重要监控指标详解](/grafana-pd-dashboard.md)
+- [TiDB Dashboard 监控页面](/dashboard/dashboard-monitoring.md)
 
 ### 计划内切换
 
-你可以根据自己的维护需要来进行主备区域的切换，从而来验证容灾系统是否可以正常工作。本部分介绍如何在计划内切换主备区域。
+你可以根据维护需要切换主备区域，从而来验证容灾系统是否可以正常工作。本部分介绍如何在计划内切换主备区域。
 
 1. 执行下面的命令将所有用户表和 PD leader 都切换到区域 2:
 
@@ -173,9 +178,9 @@ summary: 介绍在容灾场景下，如何使用 TiDB 备份与恢复功能实�
 
 ### 计划外切换
 
-是指当灾难真正发生时发生的主备区域切换，或者为了验证容灾系统的有效性，而模拟灾难发生时的主备区域切换。
+计划外切换，指灾难发生时的主备区域切换，或者为了验证容灾系统的有效性，而模拟灾难发生时的主备区域切换。
 
-1. 执行类似下面的命令终止区域1上所有的 TiKV，TiDB 和 PD 节点:
+1. 执行类似下面的命令终止区域 1 上所有的 TiKV、TiDB 和 PD 节点:
 
     ``` shell
     # tiup cluster stop drtest -N tidb-dr-test1:20160,tidb-dr-test2:20160,tidb-dr-test1:2379,tidb-dr-test2:2379
@@ -184,11 +189,11 @@ summary: 介绍在容灾场景下，如何使用 TiDB 备份与恢复功能实�
 2. 运行类似于下面的命令切换用户表的 leader 到区域 2:
 
     ```sql
-    -- 将之前创建的规则secondary_rule_for_region2 应用到对应的用户表上.
+    -- 将之前创建的规则 secondary_rule_for_region2 应用到对应的用户表上.
     ALTER TABLE tpcc.warehouse PLACEMENT POLICY=secondary_rule_for_region2;
     ALTER TABLE tpcc.district PLACEMENT POLICY=secondary_rule_for_region2;
 
-    ---用户可以使用类似下面的查询查看每个区域包含的leader 数量，以确认leader 迁移是否完成
+    ---可以使用类似下面的查询查看每个区域包含的 leader 数量，以确认 leader 迁移是否完成
     select STORE_ID, address, leader_count, label from TIKV_STORE_STATUS order by store_id;
     ```
 
