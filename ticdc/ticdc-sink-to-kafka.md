@@ -234,7 +234,7 @@ partition 分发器用 partition = "xxx" 来指定，支持 default、ts、index
 > {matcher = ['*.*'], dispatcher = "ts", partition = "table"},
 > ```
 
-### 将大单表的同步负载水平扩张到多个 TiCDC 节点上
+## 将大单表的同步负载水平扩张到多个 TiCDC 节点上
 
 该功能可以解决单个 TiCDC 节点不能及时同步大单表的问题和 TiCDC 节点之间资源（CPU，内存等）消耗出现倾斜的问题。
 
