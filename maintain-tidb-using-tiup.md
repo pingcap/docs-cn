@@ -91,9 +91,9 @@ tiup cluster display ${cluster-name}
         ```
         tidb_servers:
         - host: 10.0.1.11
-          port: 4000
-          config:
-              log.slow-threshold: 300
+            port: 4000
+            config:
+                log.slow-threshold: 300
         ```
 
     参数的格式参考 [TiUP 配置参数模版](https://github.com/pingcap/tiup/blob/master/embed/examples/cluster/topology.example.yaml)。
