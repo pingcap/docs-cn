@@ -68,7 +68,7 @@ If there are shards across multiple instances, you can create one first-level di
 
 ### Step 2. Use Dumpling to export data to Amazon S3
 
-For information about how to install Dumpling, see [Dumpling Introduction](/dumpling-overview.md#dumpling-introduction).
+For information about how to install Dumpling, see [Dumpling Introduction](/dumpling-overview.md).
 
 When you use Dumpling to export data to Amazon S3, note the following:
 

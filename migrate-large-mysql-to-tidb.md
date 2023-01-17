@@ -18,7 +18,7 @@ This document describes how to migrate large datasets from MySQL to TiDB. The wh
 - [Install Dumpling and TiDB Lightning](/migration-tools.md).
 - [Grant the source database and target database privileges required for DM](/dm/dm-worker-intro.md).
 - [Grant the target database privileges required for TiDB Lightning](/tidb-lightning/tidb-lightning-faq.md#what-are-the-privilege-requirements-for-the-target-database).
-- [Grant the source database privileges required for Dumpling](/dumpling-overview.md#export-data-from-tidbmysql).
+- [Grant the source database privileges required for Dumpling](/dumpling-overview.md#export-data-from-tidb-or-mysql).
 
 ## Resource requirements
 

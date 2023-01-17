@@ -23,7 +23,7 @@ If you need to back up a small amount of data (for example, less than 50 GB) and
     tiup install tidb lightning && tiup tidb lightning
     ```
 
-- [Grant the source database privileges required for Dumpling](/dumpling-overview.md#export-data-from-tidbmysql)
+- [Grant the source database privileges required for Dumpling](/dumpling-overview.md#export-data-from-tidb-or-mysql)
 - [Grant the target database privileges required for TiDB Lightning](/tidb-lightning/tidb-lightning-requirements.md#privileges-of-the-target-database)
 
 ## Resource requirements
