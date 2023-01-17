@@ -24,3 +24,24 @@ TiDB 提供语句级别、会话级别以及全局级别的 Stale Read 使用方
     - 指定时间范围：在会话级别中，如需 TiDB 在后续的查询中读取一个时间范围内尽可能新的数据并且不破坏隔离级别，你可以通过设置一个 session 变量 `tidb_read_staleness` 来指定一个时间范围。要使用该方式，请参阅[通过系统变量 `tidb_read_staleness` 读取历史数据](/tidb-read-staleness.md)。
 
 除此以外，你也可以通过设置系统变量 [`tidb_external_ts`](/system-variables.md#tidb_external_ts-从-v640-版本开始引入) 来在某一会话或全局范围读取某一时间点前的历史数据。要使用该方式，请参阅[通过系统变量 `tidb_external_ts` 读取历史数据](/tidb-external-ts.md)。
+
+## 限制
+当 Stale Read 查询下发到 TiFlash，且在设置的读取时间戳之后对该表做过 DDL 操作，此查询会报错。
+举个例子：
+```sql
+create table t1(id int);
+alter table t1 set tiflash replica 1;
+```
+一分钟后进行 DDL 操作
+```sql
+alter table t1 add column c1 int not null;
+```
+然后 Stale Read 读取一分钟前的数据
+```sql
+set @@session.tidb_enforce_mpp=1;
+select * from t1 as of timestamp NOW() - INTERVAL 1 minute;
+```
+此时 TiFlash 会报错
+```
+ERROR 1105 (HY000): other error for mpp stream: From MPP<query:<query_ts:1673950975508472943, local_query_id:18, server_id:111947, start_ts:438816196526080000>,task_id:1>: Code: 0, e.displayText() = DB::TiFlashException: Table 323 schema version 104 newer than query schema version 100, e.what() = DB::TiFlashException,
+```
