@@ -22,6 +22,8 @@ TiDB enables the slow query log by default. You can enable or disable the featur
 # Parse_time: 0.000054933
 # Compile_time: 0.000129729
 # Rewrite_time: 0.000000003 Preproc_subqueries: 2 Preproc_subqueries_time: 0.000000002
+# Optimize_time: 0.00000001
+# Wait_TS: 0.00001078
 # Process_time: 0.07 Request_count: 1 Total_keys: 131073 Process_keys: 131072 Prewrite_time: 0.335415029 Commit_time: 0.032175429 Get_commit_ts_time: 0.000177098 Local_latch_wait_time: 0.106869448 Write_keys: 131072 Write_size: 3538944 Prewrite_region: 1
 # DB: test
 # Is_internal: false
@@ -55,22 +57,33 @@ Slow query basics:
 * `Query_time`: The execution time of a statement.
 * `Parse_time`: The parsing time for the statement.
 * `Compile_time`: The duration of the query optimization.
+* `Optimize_time`: The time consumed for optimizing the execution plan.
+* `Wait_TS`: The waiting time of the statement to get transaction timestamps.
 * `Query`: A SQL statement. `Query` is not printed in the slow log, but the corresponding field is called `Query` after the slow log is mapped to the memory table.
 * `Digest`: The fingerprint of the SQL statement.
 * `Txn_start_ts`: The start timestamp and the unique ID of a transaction. You can use this value to search for the transaction-related logs.
 * `Is_internal`: Whether a SQL statement is TiDB internal. `true` indicates that a SQL statement is executed internally in TiDB and `false` indicates that a SQL statement is executed by the user.
-* `Index_ids`: The IDs of the indexes involved in a statement.
+* `Index_names`: The index names used by the statement.
+* `Stats`: The health state of the involved tables. `pseudo` indicates that the state is unhealthy.
 * `Succ`: Whether a statement is executed successfully.
 * `Backoff_time`: The waiting time before retry when a statement encounters errors that require a retry. The common errors as such include: `lock occurs`, `Region split`, and `tikv server is busy`.
 * `Plan`: The execution plan of a statement. Execute the `SELECT tidb_decode_plan('xxx...')` statement to parse the specific execution plan.
 * `Binary_plan`: The execution plan of a binary-encoded statement. Execute the `SELECT tidb_decode_binary_plan('xxx...')` statement to parse the specific execution plan. The `Plan` and `Binary_plan` fields carry the same information. However, the format of execution plans parsed from the two fields are different.
 * `Prepared`: Whether this statement is a `Prepare` or `Execute` request or not.
 * `Plan_from_cache`: Whether this statement hits the execution plan cache.
+* `Plan_from_binding`: Whether this statement uses the bound execution plans.
+* `Has_more_results`: Whether this statement has more results to be fetched by users.
 * `Rewrite_time`: The time consumed for rewriting the query of this statement.
 * `Preproc_subqueries`: The number of subqueries (in the statement) that are executed in advance. For example, the `where id in (select if from t)` subquery might be executed in advance.
 * `Preproc_subqueries_time`: The time consumed for executing the subquery of this statement in advance.
 * `Exec_retry_count`: The retry times of this statement. This field is usually for pessimistic transactions in which the statement is retried when the lock is failed.
 * `Exec_retry_time`: The execution retry duration of this statement. For example, if a statement has been executed three times in total (failed for the first two times), `Exec_retry_time` means the total duration of the first two executions. The duration of the last execution is `Query_time` minus `Exec_retry_time`.
+* `KV_total`: The time spent on all the RPC requests on TiKV or TiFlash by this statement.
+* `PD_total`: The time spent on all the RPC requests on PD by this statement.
+* `Backoff_total`: The time spent on all the backoff during the execution of this statement.
+* `Write_sql_response_total`: The time consumed for sending the results back to the client by this statement.
+* `Result_rows`: The row count of the query results.
+* `IsExplicitTxn`: Whether this statement is in an explicit transaction. If the value is `false`, the transaction is `autocommit=1` and the statement is automatically committed after execution.
 
 The following fields are related to transaction execution:
 
@@ -93,6 +106,7 @@ Hard disk fields:
 User fields:
 
 * `User`: The name of the user who executes this statement.
+* `Host`: The host name of this statement.
 * `Conn_ID`: The Connection ID (session ID). For example, you can use the keyword `con:3` to search for the log whose session ID is `3`.
 * `DB`: The current database.
 
@@ -103,6 +117,7 @@ TiKV Coprocessor Task fields:
 * `Process_time`: The total processing time of a SQL statement in TiKV. Because data is sent to TiKV concurrently, this value might exceed `Query_time`.
 * `Wait_time`: The total waiting time of a statement in TiKV. Because the Coprocessor of TiKV runs a limited number of threads, requests might queue up when all threads of Coprocessor are working. When a request in the queue takes a long time to process, the waiting time of the subsequent requests increases.
 * `Process_keys`: The number of keys that Coprocessor has processed. Compared with `total_keys`, `processed_keys` does not include the old versions of MVCC. A great difference between `processed_keys` and `total_keys` indicates that many old versions exist.
+* `Num_cop_tasks`: The number of Coprocessor tasks sent by this statement.
 * `Cop_proc_avg`: The average execution time of cop-tasks, including some waiting time that cannot be counted, such as the mutex in RocksDB.
 * `Cop_proc_p90`: The P90 execution time of cop-tasks.
 * `Cop_proc_max`: The maximum execution time of cop-tasks.
@@ -564,7 +579,7 @@ The following table shows output details:
 | details | The details of the SQL execution |
 | succ | Whether the SQL statement is executed successfully. `1` means success and `0` means failure. |
 | conn_id | The connection ID for the session |
-| transcation_ts | The `commit ts` for a transaction commit |
+| transaction_ts | The `commit ts` for a transaction commit |
 | user | The user name for the execution of the statement |
 | db | The database involved when the statement is executed |
 | table_ids | The ID of the table involved when the SQL statement is executed |
