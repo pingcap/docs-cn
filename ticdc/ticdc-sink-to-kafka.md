@@ -233,3 +233,19 @@ partition 分发器用 partition = "xxx" 来指定，支持 default、ts、index
 > ```
 > {matcher = ['*.*'], dispatcher = "ts", partition = "table"},
 > ```
+
+### 将大单表的同步负载水平扩张到多个 TiCDC 节点上
+
+该功能可以解决单个 TiCDC 节点不能及时同步大单表的问题和 TiCDC 节点之间资源（CPU，内存等）消耗出现倾斜的问题。
+该功能通过将大单表按 Region 个数切分成多个数据范围，将这些数据范围分布到多个 TiCDC 节点上，使得多个 TiCDC 节点可以同时同步大单表。
+
+配置样例如下所示：
+
+```shell
+[scheduler]
+region-per-span = 50000
+```
+
+> **注意：**
+>
+> v6.6 的 TiCDC 仅支持在 Kafka 同步任务上开启大单表的水平扩展功能。
