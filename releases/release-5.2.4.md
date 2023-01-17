@@ -8,7 +8,7 @@ category: Releases
 发版日期：2022 年 4 月 26 日
 
 TiDB 版本：5.2.4
-P
+
 ## 兼容性更改
 
 + TiDB
