@@ -336,6 +336,16 @@ CREATE TABLE customers (
 
 当被定义为复合索引时，多值部分可以出现在任意位置，但是只能出现一次。
 
+```sql
+CREATE TABLE customers (
+    id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    name char(10),
+    custinfo JSON,
+    INDEX zips(name, (CAST(custinfo->'$.zipcode' AS UNSIGNED ARRAY)), (CAST(custinfo->'$.zipcode' AS UNSIGNED ARRAY)))
+);
+ERROR 1235 (42000): This version of TiDB doesn't yet support 'more than one multi-valued key part per index'.
+```
+
 写入的数据必须与多值索引的定义类型完全匹配，否则数据写入失败：
 ```sql
 -- zipcode 字段中的所有元素必须为 UNSIGNED
