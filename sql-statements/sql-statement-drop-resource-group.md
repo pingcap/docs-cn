@@ -1,6 +1,6 @@
 ---
-title: Drop Resource Group
-summary: TiDB 数据库中 DROP Resource Group 的使用概况
+title: DROP RESOURCE GROUP
+summary: TiDB 数据库中 DROP RESOURCE GROUP 的使用概况
 aliases: ['/docs-cn/dev/sql-statements/sql-statement-drop-resource-group/','/docs-cn/dev/reference/sql/statements/drop-resource-group/']
 ---
 
@@ -23,13 +23,11 @@ ResourceGroupName:
 
 > **注意：**
 >
-> `DROP RESOURCE GROUP` 语句只能在全局变量 `tidb_enable_resource_group` 参数设置为 `ON` 的时候才被允许执行
+> `DROP RESOURCE GROUP` 语句只能在全局变量 [`tidb_enable_resource_group`](/system-variables.md#tidb_enable_resource_control-从-v660-版本开始引入) 参数设置为 `ON` 的时候才被允许执行。
 
 ## 示例
 
-删除名字是 rg1 的资源组
-
-{{< copyable "sql" >}}
+删除名字是 `rg1` 的资源组。
 
 ```sql
 mysql> DROP RESOURCE GROUP IF EXISTS rg1;
@@ -60,7 +58,7 @@ mysql> SELECT * FROM information_schema.resource_groups WHERE NAME ='rg1';
 
 ## MySQL 兼容性
 
-* MySQL 也支持[Drop Resource Group](https://dev.mysql.com/doc/refman/8.0/en/drop-resource-group.html), 但 TiDB 不支持 `FORCE` 参数。
+MySQL 也支持 [Drop Resource Group](https://dev.mysql.com/doc/refman/8.0/en/drop-resource-group.html), 但 TiDB 不支持 `FORCE` 参数。
 
 ## 另请参阅
 

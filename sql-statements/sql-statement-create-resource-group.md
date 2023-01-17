@@ -1,6 +1,6 @@
 ---
-title: Create Resource Group
-summary: TiDB 数据库中 CREATE Resource Group 的使用概况
+title: CREATE RESOURCE GROUP
+summary: TiDB 数据库中 CREATE RESOURCE GROUP 的使用概况
 aliases: ['/docs-cn/dev/sql-statements/sql-statement-create-resource-group/','/docs-cn/dev/reference/sql/statements/create-resource-group/']
 ---
 
@@ -36,20 +36,20 @@ BurstableOption ::=
 
 资源组的 `ResourceGroupName` 是全局唯一的，不允许重复。
 
-TiDB 支持以下 `DirectResourceGroupOption`, 其中 [`RU` (Resource Unit)](/tidb-RU.md) 是 TiDB 对 CPU, IO 等系统资源的统一抽象的单位。
+TiDB 支持以下 `DirectResourceGroupOption`, 其中 [`RU` (Resource Unit)](/tidb-RU.md) 是 TiDB 对 CPU、IO 等系统资源统一抽象的单位。
 
 | 参数           |含义                                  |举例                      |
 |----------------|--------------------------------------|----------------------------|
 
 |`RRU_PER_SEC`|每秒钟读 RU 的配额                        |`RRU_PER_SEC` = 500|
 
-|`WRU_PER_SEC`|每秒钟写 RU 的配额                        |`RRU_PER_SEC` = 300|
+|`WRU_PER_SEC`|每秒钟写 RU 的配额                        |`WRU_PER_SEC` = 300|
 
-如果设置了`BURSTABLE`属性，对应的资源组就允许在系统资源充足的情况下，可以超出配额占用使用系统资源。
+如果设置了 `BURSTABLE` 属性，对应的资源组就允许在系统资源充足的情况下，可以超出配额占用使用系统资源。
 
 > **注意：**
 >
-> `CREATE RESOURCE GROUP` 语句只能在全局变量 `tidb_enable_resource_group` 参数设置为 `ON` 的时候才被允许执行
+> `CREATE RESOURCE GROUP` 语句只能在全局变量 [`tidb_enable_resource_group`](/system-variables.md#tidb_enable_resource_control-从-v660-版本开始引入) 参数设置为 `ON` 的时候才被允许执行。
 
 ## 示例
 
@@ -75,7 +75,7 @@ mysql> SELECT * FROM information_schema.resource_groups WHERE NAME ='rg1';
 
 ## MySQL 兼容性
 
-* MySQL 也支持[Create Resource Group](https://dev.mysql.com/doc/refman/8.0/en/create-resource-group.html) ，但是接受的参数和 TiDB 不同，两者并不兼容。
+MySQL 也支持[CREATE RESOURCE GROUP](https://dev.mysql.com/doc/refman/8.0/en/create-resource-group.html) ，但是接受的参数和 TiDB 不同，两者并不兼容。
 
 ## 另请参阅
 
