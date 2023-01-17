@@ -86,4 +86,4 @@ summary: 查看整个集群中 TiDB、TiKV、PD、TiFlash 组件的运行状态�
 - 文件系统 (File System)：主机上运行实例所在磁盘的文件系统类型
 - 磁盘容量 (Disk Capacity)：主机上运行实例所在磁盘的总空间大小
 - 磁盘使用率 (Disk Usage)：主机上运行实例所在磁盘的空间使用率
-- 实例 (Instance)：主机上运行的示例
+- 实例 (Instance)：主机上运行的实例
