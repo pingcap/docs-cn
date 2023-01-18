@@ -117,7 +117,9 @@ mysql> explain analyze select count(*) from t1 join t2 where t1.a = t2.b group b
 |               └─TableFullScan_23         | 600000000.00 | 600000000 | mpp[tiflash] | table:t2      | tiflash_task:{proc max:63.8ms, min:0s, avg: 21.3ms, p80:63.8ms, p95:63.8ms, iters:9388, tasks:3, threads:60}, tiflash_scan:{dtfile:{total_scanned_packs:73834, total_skipped_packs:439, total_scanned_rows:600007458, total_skipped_rows:3553131, total_rs_index_load_time: 12ms, total_read_time: 270ms}, total_create_snapshot_time: 0ms}   | keep order:false                                                                                   | N/A    | N/A  |
 +------------------------------------------+--------------+-----------+--------------+---------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------+--------+------+
 13 rows in set (2.15 sec)
+```
 
+```sql
 mysql> set @@tidb_opt_agg_push_down = ON;
 Query OK, 0 rows affected (0.00 sec)
 
@@ -170,7 +172,9 @@ mysql> explain analyze select count(distinct a) from test.t;
 |     └─TableFullScan_10     | 600000000.00 | 600000000 | cop[tiflash] | table:t       | tiflash_task:{proc max:9ms, min:531µs, avg: 4.49ms, p80:5.55ms, p95:6.74ms, iters:9390, tasks:1173, threads:1173}, tiflash_scan:{dtfile:{total_scanned_packs:73834, total_skipped_packs:1231, total_scanned_rows:600010914, total_skipped_rows:9988978, total_rs_index_load_time: 0ms, total_read_time: 16ms}, total_create_snapshot_time: 0ms}  | keep order:false                                       | N/A      | N/A     |
 +----------------------------+--------------+-----------+--------------+---------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------------------------------------------------------+----------+---------+
 4 rows in set, 2 warnings (2 min 23.21 sec)
+```
 
+```sql
 mysql> set @@tidb_opt_distinct_agg_push_down = ON;
 Query OK, 0 rows affected (0.00 sec)
 
@@ -235,7 +239,9 @@ mysql> explain analyze select max(l_shipdate), max(l_commitdate), max(l_receiptd
 |             └─TableFullScan_31           | 600037902.00 | 600037902 | mpp[tiflash] | table:lineitem | tiflash_task:{proc max:62.8ms, min:0s, avg: 20.9ms, p80:62.8ms, p95:62.8ms, iters:9298, tasks:3, threads:60}, tiflash_scan:{dtfile:{total_scanned_packs:73465, total_skipped_packs:13060, total_scanned_rows:600168663, total_skipped_rows:106699256, total_rs_index_load_time: 16ms, total_read_time: 27979ms}, total_create_snapshot_time: 0ms}            | keep order:false                                                                                                                                                | N/A     | N/A  |
 +------------------------------------------+--------------+-----------+--------------+----------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------+---------+------+
 11 rows in set (3.83 sec)
+```
 
+```sql
 mysql> set @@tidb_broadcast_join_threshold_size = 10000000;
 Query OK, 0 rows affected (0.00 sec)
 
@@ -284,7 +290,9 @@ mysql> explain analyze select a, count(*) from t group by a;
 |               └─TableFullScan_26     | 600000000.00 | 600000000 | mpp[tiflash] | table:t       | tiflash_task:{proc max:40ms, min:0s, avg: 13.3ms, p80:40ms, p95:40ms, iters:9386, tasks:3, threads:24}, tiflash_scan:{dtfile:{total_scanned_packs:73833, total_skipped_packs:174, total_scanned_rows:600000000, total_skipped_rows:1402537, total_rs_index_load_time: 0ms, total_read_time: 4ms}, total_create_snapshot_time: 0ms} | keep order:false                                                                                                             | N/A    | N/A  |
 +--------------------------------------+--------------+-----------+--------------+---------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------+--------+------+
 9 rows in set (0.67 sec)
+```
 
+```sql
 mysql> set @@tidb_max_tiflash_threads = 20;
 Query OK, 0 rows affected (0.00 sec)
 
@@ -331,7 +339,9 @@ mysql> explain analyze select *, row_number() over (partition by a) from t;
 |           └─TableFullScan_10     | 600000000.00 | 600000000 | mpp[tiflash] | table:t       | tiflash_task:{proc max:113.9ms, min:0s, avg: 38ms, p80:113.9ms, p95:113.9ms, iters:9386, tasks:3, threads:60}, tiflash_scan:{dtfile:{total_scanned_packs:73834, total_skipped_packs:190, total_scanned_rows:600000000, total_skipped_rows:1536382, total_rs_index_load_time: 16ms, total_read_time: 166324ms}, total_create_snapshot_time: 0ms} | keep order:false                                                                                                     | N/A    | N/A  |
 +----------------------------------+--------------+-----------+--------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------------+--------+------+
 7 rows in set (4 min 30.59 sec)
+```
 
+```sql
 mysql> set @@tiflash_fine_grained_shuffle_stream_count = 20;
 Query OK, 0 rows affected (0.00 sec)
 
