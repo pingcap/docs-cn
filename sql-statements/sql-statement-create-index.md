@@ -271,6 +271,10 @@ SELECT min(col1) FROM t GROUP BY lower(col1);
 
 ## 多值索引
 
+> **警告：**
+>
+> 当前该功能为实验特性，不建议在生产环境中使用。
+
 多值索引是一种定义在数组列上的二级索引。在普通索引中，一条索引记录对应一条数据记录 (1:1)。而在多值索引中，存在多条索引记录对应一条数据记录 (N:1)。多值索引用于索引 JSON 数组。例如，一个定义在 `zipcode` 字段上的多值索引会对每一个 `zipcode` 中的记录产生一条索引记录。
 
 ```json
@@ -288,7 +292,7 @@ SELECT min(col1) FROM t GROUP BY lower(col1);
 ```sql
 CREATE TABLE customers (
     id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    name char(10),
+    name CHAR(10),
     custinfo JSON,
     INDEX zips((CAST(custinfo->'$.zipcode' AS UNSIGNED ARRAY)))
 );
@@ -299,7 +303,7 @@ CREATE TABLE customers (
 ```sql
 CREATE TABLE customers (
     id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    name char(10),
+    name CHAR(10),
     custinfo JSON,
     UNIQUE INDEX zips( (CAST(custinfo->'$.zipcode' AS UNSIGNED ARRAY)))
 );
@@ -332,7 +336,7 @@ INSERT INTO t1 VALUES('[2,3]');
 ```sql
 CREATE TABLE customers (
     id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    name char(10),
+    name CHAR(10),
     custinfo JSON,
     INDEX zips(name, (CAST(custinfo->'$.zipcode' AS UNSIGNED ARRAY)))
 );
@@ -343,7 +347,7 @@ CREATE TABLE customers (
 ```sql
 CREATE TABLE customers (
     id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    name char(10),
+    name CHAR(10),
     custinfo JSON,
     INDEX zips(name, (CAST(custinfo->'$.zipcode' AS UNSIGNED ARRAY)), (CAST(custinfo->'$.zipcode' AS UNSIGNED ARRAY)))
 );
@@ -354,11 +358,11 @@ ERROR 1235 (42000): This version of TiDB doesn't yet support 'more than one mult
 
 ```sql
 -- zipcode 字段中的所有元素必须为 UNSIGNED 类型
-mysql> insert into customers values (1, 'pingcap', '{"zipcode": [-1]}');
+mysql> INSERT INTO customers VALUES (1, 'pingcap', '{"zipcode": [-1]}');
 ERROR 3752 (HY000): Value is out of range for expression index 'zips' at row 1
-mysql> insert into customers values (1, 'pingcap', '{"zipcode": ["1"]}'); -- 与 MySQL 不兼容
+mysql> INSERT INTO customers VALUES (1, 'pingcap', '{"zipcode": ["1"]}'); -- 与 MySQL 不兼容
 ERROR 3903 (HY000): Invalid JSON value for CAST for expression index 'zips'
-mysql> insert into customers values (1, 'pingcap', '{"zipcode": [1]}');
+mysql> INSERT INTO customers VALUES (1, 'pingcap', '{"zipcode": [1]}');
 Query OK, 1 row affected (0.00 sec)
 ```
 
