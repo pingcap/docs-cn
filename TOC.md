@@ -96,7 +96,7 @@
     - [跨机房部署拓扑结构](/geo-distributed-deployment-topology.md)
     - [混合部署拓扑结构](/hybrid-deployment-topology.md)
   - 安装与启动
-    - [使用 TiUP 部署（推荐）](/production-deployment-using-tiup.md)
+    - [使用 TiUP 部署](/production-deployment-using-tiup.md)
     - [在 Kubernetes 上部署](/tidb-in-kubernetes.md)
   - [验证集群状态](/post-installation-check.md)
   - 测试集群性能
@@ -128,7 +128,7 @@
     - [与 Apache Kafka 和 Apache Flink 进行数据集成](/replicate-data-to-kafka.md)
 - 运维操作
   - 升级 TiDB 版本
-    - [使用 TiUP 升级（推荐）](/upgrade-tidb-using-tiup.md)
+    - [使用 TiUP 升级](/upgrade-tidb-using-tiup.md)
     - [使用 TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/upgrade-a-tidb-cluster)
   - 扩缩容
     - [使用 TiUP（推荐）](/scale-tidb-using-tiup.md)
