@@ -316,6 +316,7 @@ ERROR 1062 (23000): Duplicate entry '2' for key 'customers.zips'
 ```
 
 允许同一条记录存在重复的值，不同记录出现重复值时将报错：
+
 ```sql
 -- 插入成功
 INSERT INTO t1 VALUES('[1,1,2]');
