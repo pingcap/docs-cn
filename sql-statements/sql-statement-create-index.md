@@ -306,6 +306,7 @@ CREATE TABLE customers (
 ```
 
 当被定义为唯一索引时，试图插入重复数据将会报错：
+
 ```sql
 mysql> insert into customers values (1, 'pingcap', '{"zipcode": [1,2]}');
 Query OK, 1 row affected (0.01 sec)
