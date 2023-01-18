@@ -19,7 +19,7 @@ This page shows the overview of the entire TiDB cluster, including the following
 
 After logging into TiDB Dashboard, the overview page is entered by default, or you can click **Overview** on the left navigation menu to enter this page:
 
-![Enter overview page](/media/dashboard/dashboard-overview-access.png)
+![Enter overview page](/media/dashboard/dashboard-overview-access-v650.png)
 
 ## QPS
 
@@ -73,7 +73,7 @@ This area summarizes the total number of instances and abnormal instances of TiD
 
 ![Instances](/media/dashboard/dashboard-overview-instances.png)
 
-The statuses in the image above are described as follows:
+The statuses in the preceding image are described as follows:
 
 - Up: The instance is running properly (including the offline storage instance).
 - Down: The instance is running abnormally, such as network disconnection and process crash.
