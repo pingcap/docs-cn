@@ -74,7 +74,7 @@ aliases: ['/zh/tidb/dev/sample-application-spring-boot']
     brew install maven
     ```
 
-- 基于 Debian 的 Linux 发行版上安装(如 Ubuntu 等)：
+- 基于 Debian 的 Linux 发行版上安装（如 Ubuntu 等）：
 
     {{< copyable "shell-regular" >}}
 
@@ -82,7 +82,7 @@ aliases: ['/zh/tidb/dev/sample-application-spring-boot']
     apt-get install maven
     ```
 
-- 基于 Red Hat 的 Linux 发行版上安装(如 Fedora、CentOS 等)：
+- 基于 Red Hat 的 Linux 发行版上安装（如 Fedora、CentOS 等）：
 
 - dnf 包管理器
 
@@ -108,13 +108,13 @@ aliases: ['/zh/tidb/dev/sample-application-spring-boot']
 >
 > 如果你希望得到一个与本示例相同依赖的空白程序，而无需示例代码，可参考[创建相同依赖空白程序（可选）](#创建相同依赖空白程序可选)一节。
 
-请下载或克隆[示例代码库](https://github.com/pingcap-inc/tidb-example-java)，并进入到目录`spring-jpa-hibernate`中。
+请下载或克隆示例代码库 [pingcap-inc/tidb-example-java](https://github.com/pingcap-inc/tidb-example-java)，并进入到目录 `spring-jpa-hibernate` 中。
 
 ## 第 5 步：运行应用程序
 
-此处对应用程序代码进行编译和运行，将产生一个 Web 应用程序。Hibernate 将创建一个在数据库 `test` 内的表 `player_jpa`，如果你想应用程序的 Restful API 进行请求，这些请求将会在 TiDB 集群上运行[数据库事务](/develop/dev-guide-transaction-overview.md)。
+接下来运行应用程序代码，将会生成一个 Web 应用程序。Hibernate 将在数据库 `test` 中创建一个表 `player_jpa`。如果你向应用程序的 Restful API 发送请求，这些请求将会在 TiDB 集群上运行[数据库事务](/develop/dev-guide-transaction-overview.md)。
 
-如果你想了解有关此应用程序的代码的详细信息，可参阅本教程下方的[实现细节](#实现细节)。
+如果你想了解有关此应用程序的代码的详细信息，可参阅[实现细节](#实现细节)部分。
 
 ### 第 5 步第 1 部分：TiDB Cloud 更改参数
 
@@ -158,13 +158,13 @@ spring:
 
 ### 第 5 步第 2 部分：运行
 
-打开终端，确保你已经进入 spring-jpa-hibernate 目录，若还未在此目录，请使用命令进入：
+打开终端，进入 `tidb-example-java/spring-jpa-hibernate` 代码示例目录：
 
 ```shell
 cd <path>/tidb-example-java/spring-jpa-hibernate
 ```
 
-#### 使用 Make 构建并运行(推荐)
+#### 使用 Make 构建并运行（推荐）
 
 ```shell
 make
@@ -232,67 +232,71 @@ Hibernate: create table player_jpa (id bigint not null, coins integer, goods int
 
 ## 第 6 步：HTTP 请求
 
-服务完成运行后，即可使用 HTTP 接口请求后端程序。`http://localhost:8080` 是服务提供根地址。此处使用一系列的 HTTP 请求来演示如何使用该服务。
+在运行应用程序后，你可以通过访问根地址 `http://localhost:8000` 向后端程序发送 HTTP 请求。下面将给出一些示例请求来演示如何使用该服务。
 
 <SimpleTab groupId="request">
 
 <div label="Postman（推荐）" value="postman">
 
-你可下载[此配置文件](https://raw.githubusercontent.com/pingcap-inc/tidb-example-java/main/spring-jpa-hibernate/Player.postman_collection.json)到本地，并导入 [Postman](https://www.postman.com/)，导入后如图所示：
+1. 将配置文件 [`Player.postman_collection.json`](https://raw.githubusercontent.com/pingcap-inc/tidb-example-python/main/django_example/Player.postman_collection.json) 导入 [Postman](https://www.postman.com/)。
 
-![postman import](/media/develop/IMG_20220402-003303222.png)
+2. 导入后 **Collections** > **Player** 如图所示：
 
-- 增加玩家
+    ![postman import](/media/develop/podman_player_import.png)
 
-    点击 **Create** 标签，点击 **Send** 按钮，发送 Post 形式的 `http://localhost:8080/player/` 请求。返回值为增加的玩家个数，预期为 1。
+3. 发送请求：
 
-    ![Postman-Create](/media/develop/IMG_20220402-003350731.png)
+    - 增加玩家
 
-- 使用 ID 获取玩家信息
+        点击 **Create** 标签，点击 **Send** 按钮，发送 `POST` 形式的 `http://localhost:8000/player/` 请求。返回值为增加的玩家个数，预期为 1。
 
-    点击 **GetByID** 标签，点击 **Send** 按钮，发送 Get 形式的 `http://localhost:8080/player/1` 请求。返回值为 ID 为 1 的玩家信息。
+        ![Postman-Create](/media/develop/podman_player_create.png)
 
-    ![Postman-GetByID](/media/develop/IMG_20220402-003416079.png)
+    - 使用 ID 获取玩家信息
 
-- 使用 Limit 批量获取玩家信息
+        点击 **GetByID** 标签，点击 **Send** 按钮，发送 `GET` 形式的 `http://localhost:8000/player/1` 请求。返回值为 ID 为 1 的玩家信息。
 
-    点击 **GetByLimit** 标签，点击 **Send** 按钮，发送 Get 形式的 `http://localhost:8080/player/limit/3` 请求。返回值为最多 3 个玩家的信息列表。
+        ![Postman-GetByID](/media/develop/podman_player_getbyid.png)
 
-    ![Postman-GetByLimit](/media/develop/IMG_20220402-003505846.png)
+    - 使用 Limit 批量获取玩家信息
 
-- 分页获取玩家信息
+        点击 **GetByLimit** 标签，点击 **Send** 按钮，发送 `GET` 形式的 `http://localhost:8000/player/limit/3` 请求。返回值为最多 3 个玩家的信息列表。
 
-    点击 **GetByPage** 标签，点击 **Send** 按钮，发送 Get 形式的 `http://localhost:8080/player/page?index=0&size=2` 请求。返回值为 index 为 0 的页，每页有 2 个玩家信息列表。此外，还包含了分页信息，如偏移量、总页数、是否排序等。
+        ![Postman-GetByLimit](/media/develop/podman_player_getbylimit.png)
 
-    ![Postman-GetByPage](/media/develop/IMG_20220402-003528474.png)
+    - 分页获取玩家信息
 
-- 获取玩家个数
+        点击 **GetByPage** 标签，点击 **Send** 按钮，发送 `GET` 形式的 `http://localhost:8080/player/page?index=0&size=2` 请求。返回值为 index 为 0 的页，每页有 2 个玩家信息列表。此外，还包含了分页信息，如偏移量、总页数、是否排序等。
 
-    点击 **Count** 标签，点击 **Send** 按钮，发送 Get 形式的 `http://localhost:8080/player/count` 请求。返回值为玩家个数。
+        ![Postman-GetByPage](/media/develop//podman_player_getbypage.png)
 
-    ![Postman-Count](/media/develop/IMG_20220402-003549966.png)
+    - 获取玩家个数
 
-- 玩家交易
+        点击 **Count** 标签，点击 **Send** 按钮，发送 `GET` 形式的 `http://localhost:8000/player/count` 请求。返回值为玩家个数。
 
-    点击 **Trade** 标签，点击 **Send** 按钮，发送 Put 形式的 `http://localhost:8080/player/trade` 请求，请求参数为售卖玩家 ID `sellID`、购买玩家 ID `buyID`、购买货物数量 `amount`、购买消耗金币数 `price`。返回值为交易是否成功。当出现售卖玩家货物不足、购买玩家金币不足或数据库错误时，交易将不成功，且由于[数据库事务](/develop/dev-guide-transaction-overview.md)保证，不会有玩家的金币或货物丢失的情况。
+        ![Postman-Count](/media/develop/podman_player_count.png)
 
-    ![Postman-Trade](/media/develop/IMG_20220402-003659102.png)
+    - 玩家交易
+
+        点击 **Trade** 标签，点击 **Send** 按钮，发送 `PUT` 形式的 `http://localhost:8000/player/trade` 请求。请求参数为售卖玩家 ID `sellID`、购买玩家 ID `buyID`、购买货物数量 `amount` 以及购买消耗金币数 `price`。返回值为交易是否成功。当出现售卖玩家货物不足、购买玩家金币不足或数据库错误时，交易将不成功。并且由于[数据库事务](/develop/dev-guide-transaction-overview.md)保证，不会有玩家的金币或货物丢失的情况。
+
+        ![Postman-Trade](/media/develop/podman_player_trade.png)
 
 </div>
 
 <div label="curl" value="curl">
 
-当然，你也可以直接使用 curl 进行请求。
+下面使用 curl 请求服务端。
 
 - 增加玩家
 
-    使用 **Post** 方法请求 `/player` 端点请求来增加玩家，即：
+    使用 `POST` 方法向 `/player` 端点发送请求来增加玩家，例如：
 
     ```shell
     curl --location --request POST 'http://localhost:8080/player/' --header 'Content-Type: application/json' --data-raw '[{"coins":100,"goods":20}]'
     ```
 
-    这里使用 JSON 作为信息的载荷。表示需要创建一个金币数 `coins` 为 100，货物数 `goods` 为 20 的玩家。返回值为创建的玩家个数。
+    这里使用 JSON 作为信息的载荷。表示需要创建一个金币数 `coins` 为 100，货物数 `goods` 为 20 的玩家。返回值为创建的玩家信息：
 
     ```json
     1
@@ -300,13 +304,13 @@ Hibernate: create table player_jpa (id bigint not null, coins integer, goods int
 
 - 使用 ID 获取玩家信息
 
-    使用 **Get** 方法请求 `/player` 端点请求来获取玩家信息，额外的需要在路径上给出玩家的 `id` 参数，即 `/player/{id}` ，例如在请求 `id` 为 1 的玩家时：
+    使用 `GET` 方法向 `/player` 端点发送请求来获取玩家信息。此外，还需要在路径上给出玩家的 ID 参数，即 `/player/{id}`。例如，在请求 ID 为 1 的玩家时：
 
     ```shell
     curl --location --request GET 'http://localhost:8080/player/1'
     ```
 
-    返回值为玩家的信息：
+    返回值为 ID 为 1 的玩家的信息：
 
     ```json
     {
@@ -318,7 +322,7 @@ Hibernate: create table player_jpa (id bigint not null, coins integer, goods int
 
 - 使用 Limit 批量获取玩家信息
 
-    使用 **Get** 方法请求 `/player/limit` 端点请求来获取玩家信息，额外的需要在路径上给出限制查询的玩家信息的总数，即 `/player/limit/{limit}` ，例如在请求最多 3 个玩家的信息时：
+    使用 `GET` 方法向 `/player/limit` 端点发送请求来获取玩家信息。此外，还需要在路径上给出限制查询的玩家信息的总数，即 `/player/limit/{limit}`。例如，在请求最多 3 个玩家的信息时：
 
     ```shell
     curl --location --request GET 'http://localhost:8080/player/limit/3'
@@ -348,7 +352,7 @@ Hibernate: create table player_jpa (id bigint not null, coins integer, goods int
 
 - 分页获取玩家信息
 
-    使用 **Get** 方法请求 `/player/page` 端点请求来分页获取玩家信息，额外的需要使用 URL 参数 ，例如在请求页面序号 `index` 为 0，每页最大请求量 `size` 为 2 时：
+    使用 `GET` 方法向 `/player/page` 端点发送请求来分页获取玩家信息。额外地需要使用 URL 参数，例如在请求页面序号 `index` 为 0，每页最大请求量 `size` 为 2 时：
 
     ```shell
     curl --location --request GET 'http://localhost:8080/player/page?index=0&size=2'
@@ -400,13 +404,13 @@ Hibernate: create table player_jpa (id bigint not null, coins integer, goods int
 
 - 获取玩家个数
 
-    使用 **Get** 方法请求 `/player/count` 端点请求来获取玩家个数：
+    使用 `GET` 方法向 `/player/count` 端点发送请求来获取玩家个数：
 
     ```shell
     curl --location --request GET 'http://localhost:8080/player/count'
     ```
 
-    返回值为玩家个数
+    返回值为玩家个数：
 
     ```json
     4
@@ -414,7 +418,7 @@ Hibernate: create table player_jpa (id bigint not null, coins integer, goods int
 
 - 玩家交易
 
-    使用 **Put** 方法请求 `/player/trade` 端点请求来发起玩家间的交易，即：
+    使用 `PUT` 方法向 `/player/trade` 端点发送请求来发起玩家间的交易，例如：
 
     ```shell
     curl --location --request PUT 'http://localhost:8080/player/trade' \
@@ -425,28 +429,32 @@ Hibernate: create table player_jpa (id bigint not null, coins integer, goods int
     --data-urlencode 'price=100'
     ```
 
-    这里使用 **Form Data** 作为信息的载荷。表示售卖玩家 ID `sellID` 为 1、购买玩家 ID `buyID` 为 2、购买货物数量 `amount` 为 10、购买消耗金币数 `price` 为 100。返回值为交易是否成功。当出现售卖玩家货物不足、购买玩家金币不足或数据库错误时，交易将不成功，且由于[数据库事务](/develop/dev-guide-transaction-overview.md)保证，不会有玩家的金币或货物丢失的情况。
+    这里使用 Form Data 作为信息的载荷。表示售卖玩家 ID `sellID` 为 1、购买玩家 ID `buyID` 为 2、购买货物数量 `amount` 为 10、购买消耗金币数 `price` 为 100。
 
-    ```json
+    返回值为交易是否成功：
+
+    ```
     true
     ```
+
+    当出现售卖玩家货物不足、购买玩家金币不足或数据库错误时，交易将不成功。并且由于[数据库事务](/develop/dev-guide-transaction-overview.md)保证，不会有玩家的金币或货物丢失的情况。
 
 </div>
 
 <div label="Shell 脚本" value="shell">
 
-这里已经将请求过程编写为 [Shell](https://github.com/pingcap-inc/tidb-example-java/blob/main/spring-jpa-hibernate/request.sh) 脚本，以方便大家的测试，脚本将会做以下操作：
+为方便测试，你可以使用 [`request.sh`](https://github.com/pingcap-inc/tidb-example-java/blob/main/spring-jpa-hibernate/request.sh) 脚本依次发送以下请求：
 
 1. 循环创建 10 名玩家
-2. 获取 `id` 为 1 的玩家信息
+2. 获取 ID 为 1 的玩家信息
 3. 获取至多 3 名玩家信息列表
 4. 获取 `index` 为 0，`size` 为 2 的一页玩家信息
 5. 获取玩家总数
-6. `id` 为 1 的玩家作为售出方，id 为 2 的玩家作为购买方，购买 10 个货物，耗费 100 金币
+6. ID 为 1 的玩家作为售出方，ID 为 2 的玩家作为购买方，购买 10 个货物，耗费 100 金币
 
-你可以使用 `make request` 或 `./request.sh` 命令运行此脚本，结果应如下所示：
+使用 `make request` 或 `./request.sh` 命令运行此脚本，运行结果如下所示：
 
-```
+```shell
 > make request
 ./request.sh
 loop to create 10 players:
@@ -598,13 +606,13 @@ spring:
 
 此配置格式为 [YAML](https://yaml.org/) 格式。其中：
 
-- `spring.datasource.url` : 数据库连接的 URL。
-- `spring.datasource.url` : 数据库用户名。
-- `spring.datasource.password` : 数据库密码，此项为空，需注释或删除。
-- `spring.datasource.driver-class-name` : 数据库驱动，因为 TiDB 与 MySQL 兼容，则此处使用与 mysql-connector-java 适配的驱动类 `com.mysql.cj.jdbc.Driver`。
-- `jpa.show-sql` : 为 true 时将打印 JPA 运行的 SQL。
-- `jpa.database-platform` : 选用的数据库方言，此处连接了 TiDB，自然选择 TiDB 方言，注意，此方言在 6.0.0.Beta2 版本后的 Hibernate 中才可选择，请注意依赖版本。
-- `jpa.hibernate.ddl-auto` : 此处选择的 create-drop 将会在程序开始时创建表，退出时删除表。请勿在正式环境使用，但此处为示例程序，希望尽量不影响数据库数据，因此选择了此选项。
+- `spring.datasource.url`：数据库连接的 URL。
+- `spring.datasource.url`：数据库用户名。
+- `spring.datasource.password`：数据库密码，此项为空，需注释或删除。
+- `spring.datasource.driver-class-name`：数据库驱动，因为 TiDB 与 MySQL 兼容，则此处使用与 mysql-connector-java 适配的驱动类 `com.mysql.cj.jdbc.Driver`。
+- `jpa.show-sql`：为 true 时将打印 JPA 运行的 SQL。
+- `jpa.database-platform`：选用的数据库方言，此处连接了 TiDB，自然选择 TiDB 方言，注意，此方言在 6.0.0.Beta2 版本后的 Hibernate 中才可选择，请注意依赖版本。
+- `jpa.hibernate.ddl-auto`：此处选择的 create-drop 将会在程序开始时创建表，退出时删除表。请勿在正式环境使用，但此处为示例程序，希望尽量不影响数据库数据，因此选择了此选项。
 
 ### 入口文件
 
@@ -832,7 +840,7 @@ public interface PlayerService {
 }
 ```
 
-#### 实现 (重要)
+#### 实现（重要）
 
 `PlayerService.java` 文件内实现了 `PlayerService` 接口，所有数据操作逻辑都编写在这里。
 
@@ -989,7 +997,7 @@ public class PlayerController {
     - `@RequestBody` 声明此处将 HTTP 的整个载荷解析到参数 `playerList` 中。
     - `@NonNull` 声明参数不可为空，否则将校验并返回错误。
 - [@GetMapping](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/bind/annotation/GetMapping.html) 声明此函数将响应 HTTP 中的 [GET](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/GET) 类型请求。
-    - [@PathVariable](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/bind/annotation/PathVariable.html) 可以看到注解中有形如 `{id}` 、`{limit_size}` 这样的占位符，这种占位符将被绑定到 `@PathVariable` 注释的变量中，绑定的依据是注解中的注解属性 `name` （变量名可省略，即 `@PathVariable(name="limit_size")` 可写成 `@PathVariable("limit_size")` ），不特殊指定时，与变量名名称相同。
+    - [@PathVariable](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/bind/annotation/PathVariable.html) 可以看到注解中有形如 `{id}` 、`{limit_size}` 这样的占位符，这种占位符将被绑定到 `@PathVariable` 注释的变量中，绑定的依据是注解中的注解属性 `name`（变量名可省略，即 `@PathVariable(name="limit_size")` 可写成 `@PathVariable("limit_size")` ），不特殊指定时，与变量名名称相同。
 - [@PutMapping](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/bind/annotation/PutMapping.html) 声明此函数将响应 HTTP 中的 [PUT](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/PUT) 类型请求。
 - [@RequestParam](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/bind/annotation/RequestParam.html) 此声明将解析请求中的 URL 参数、表单参数等参数，绑定至注解的变量中。
 

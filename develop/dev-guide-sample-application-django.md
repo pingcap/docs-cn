@@ -87,13 +87,13 @@ DATABASES = {
 }
 ```
 
+另外，由于 TiDB Cloud Serverless Tier 需要使用 SSL 连接。因此，需要提供 CA 证书路径。你可以在 [TiDB Cloud Serverless Tier 安全连接文档](https://docs.pingcap.com/tidbcloud/secure-connections-to-serverless-tier-clusters#where-is-the-ca-root-path-on-my-system) 中查看不同操作系统的 CA 证书路径。
+
 若你设定的密码为 `123456`，而且从 TiDB Cloud Serverless Tier 集群面板中得到的连接信息为：
 
 - Endpoint: `xxx.tidbcloud.com`
 - Port: `4000`
 - User: `2aEp24QWEDLqRFs.root`
-
-另外，由于 TiDB Cloud Serverless Tier 需要使用 SSL 连接。因此，需要提供 CA 证书路径。你可以在 [Where is the CA root path on my system?](https://docs.pingcap.com/tidbcloud/secure-connections-to-serverless-tier-clusters#where-is-the-ca-root-path-on-my-system) 一节中查看不同操作系统的 CA 证书路径。
 
 下面以 macOS 为例，应将参数更改为：
 
@@ -137,9 +137,9 @@ DATABASES = {
     > - 此步骤假定已经存在 `django` 数据库。
     > - 若未创建 `django` 数据库，可通过 `CREATE DATABASE django` 语句进行创建。关于创建数据库语句的详细信息，参考 [`CREATE DATABASE`](/sql-statements/sql-statement-create-database.md#create-database)。
     > - 数据库名称 `NAME` 可在 `example_project/settings.py` 的 `DATABASES` 属性中更改。
-    
+
     这将在你连接的数据库内生成 Django 所需的相应数据表。
-    
+
     ```bash
     python manage.py migrate
     ```
@@ -179,7 +179,7 @@ Quit the server with CONTROL-C.
 
 2. 导入后 **Collections** > **Player** 如图所示：
 
-    ![postman import](/media/develop/IMG_20220402-003303222.png)
+    ![postman import](/media/develop/podman_import_player.png)
 
 3. 发送请求：
 
@@ -310,7 +310,7 @@ Quit the server with CONTROL-C.
 
 </div>
 
-<div label="使用 Shell 脚本请求" value="shell">
+<div label="Shell 脚本" value="shell">
 
 为方便测试，你可以使用 [`request.sh`](https://github.com/pingcap-inc/tidb-example-python/blob/main/django_example/request.sh) 脚本依次发送以下请求：
 
