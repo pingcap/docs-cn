@@ -186,9 +186,14 @@ title: 为 TiDB 组件间通信开启加密传输
     cert-allowed-cn = ["PD-Server", "TiKV-Server", "TiFlash-Server"]
     ```
 
-## 证书重加载
+## 证书重新加载
 
-TiDB、PD 和 TiKV 和各种 Client 都会在每次新建相互通讯的连接时重新读取当前的证书和密钥文件内容，实现证书和密钥的重加载。目前暂不支持 CA 的重加载。
+- 如果 TiDB 集群部署在本地的数据中心，TiDB、PD、TiKV 和各种 client 在每次新建相互通讯的连接时都会重新读取当前的证书和密钥文件内容，实现证书和密钥的重新加载，无需重启 TiDB 集群。
+- 如果 TiDB 集群部署在自己管理的 Cloud，TLS 证书的签发需要与云服务商的证书管理服务集成，TiDB、PD、TiKV、TiCDC 组件的 TLS 证书支持自动轮换，无需重启 TiDB 集群。 
+
+## 证书有效期
+
+你可以自定义 TiDB 集群中各组件 TLS 证书的有效期。例如，使用 OpenSSL 签发生成 TLS 证书时，可以通过 **days** 参数设置有效期，详见[生成自签名证书](/generate-self-signed-certificates.md)。
 
 ## 另请参阅
 
