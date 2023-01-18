@@ -247,3 +247,9 @@ go get -u gorm.io/driver/mysql
 ```
 
 For an example of using GORM to build a TiDB application, see [Build a Simple CRUD App with TiDB and Golang](/develop/dev-guide-sample-application-golang.md).
+
+<CustomContent platform="tidb-cloud">
+
+After you have determined the driver or ORM, you can [connect to your TiDB cluster](https://docs.pingcap.com/tidbcloud/connect-to-tidb-cluster).
+
+</CustomContent>

@@ -45,12 +45,7 @@ Empty set (0.01 sec)
 
 ## See also
 
-<CustomContent platform="tidb">
-
 * [SAVEPOINT](/sql-statements/sql-statement-savepoint.md)
-
-</CustomContent>
-
 * [COMMIT](/sql-statements/sql-statement-commit.md)
 * [BEGIN](/sql-statements/sql-statement-begin.md)
 * [START TRANSACTION](/sql-statements/sql-statement-start-transaction.md)

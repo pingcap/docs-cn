@@ -35,8 +35,4 @@ TiDB provides the methods of performing Stale Read at the statement level, the s
 - Session level
     - Specifying a time range: In a session, if you need TiDB to read the data as new as possible within a time range in subsequent queries without violating the isolation level, you can specify the time range by setting the `tidb_read_staleness` system variable. For detailed usage, refer to [`tidb_read_staleness`](/tidb-read-staleness.md).
 
-<CustomContent platform="tidb">
-
 Besides, TiDB provides a way to specify an exact point in time by setting the [`tidb_external_ts`](/system-variables.md#tidb_external_ts-new-in-v640) system variable on session or global level. For detailed usage, refer to [Perform Stale Read Using `tidb_external_ts`](/tidb-external-ts.md).
-
-</CustomContent>

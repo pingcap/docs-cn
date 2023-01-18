@@ -267,9 +267,4 @@ Currently, TiDB can only be null-aware of anti semi join and anti left outer sem
 + [Explain Statements That Use Aggregation](/explain-aggregation.md)
 + [Explain Statements Using Views](/explain-views.md)
 + [Explain Statements Using Partitions](/explain-partitions.md)
-
-<CustomContent platform="tidb">
-
 + [Explain Statements Using Index Merge](/explain-index-merge.md)
-
-</CustomContent>
