@@ -242,7 +242,7 @@ Hibernate: create table player_jpa (id bigint not null, coins integer, goods int
 
 2. 导入后 **Collections** > **Player** 如图所示：
 
-    ![postman import](/media/develop/podman_player_import.png)
+    ![postman import](/media/develop/postman_player_import.png)
 
 3. 发送请求：
 
@@ -250,37 +250,37 @@ Hibernate: create table player_jpa (id bigint not null, coins integer, goods int
 
         点击 **Create** 标签，点击 **Send** 按钮，发送 `POST` 形式的 `http://localhost:8000/player/` 请求。返回值为增加的玩家个数，预期为 1。
 
-        ![Postman-Create](/media/develop/podman_player_create.png)
+        ![Postman-Create](/media/develop/postman_player_create.png)
 
     - 使用 ID 获取玩家信息
 
         点击 **GetByID** 标签，点击 **Send** 按钮，发送 `GET` 形式的 `http://localhost:8000/player/1` 请求。返回值为 ID 为 1 的玩家信息。
 
-        ![Postman-GetByID](/media/develop/podman_player_getbyid.png)
+        ![Postman-GetByID](/media/develop/postman_player_getbyid.png)
 
     - 使用 Limit 批量获取玩家信息
 
         点击 **GetByLimit** 标签，点击 **Send** 按钮，发送 `GET` 形式的 `http://localhost:8000/player/limit/3` 请求。返回值为最多 3 个玩家的信息列表。
 
-        ![Postman-GetByLimit](/media/develop/podman_player_getbylimit.png)
+        ![Postman-GetByLimit](/media/develop/postman_player_getbylimit.png)
 
     - 分页获取玩家信息
 
         点击 **GetByPage** 标签，点击 **Send** 按钮，发送 `GET` 形式的 `http://localhost:8080/player/page?index=0&size=2` 请求。返回值为 index 为 0 的页，每页有 2 个玩家信息列表。此外，还包含了分页信息，如偏移量、总页数、是否排序等。
 
-        ![Postman-GetByPage](/media/develop//podman_player_getbypage.png)
+        ![Postman-GetByPage](/media/develop//postman_player_getbypage.png)
 
     - 获取玩家个数
 
         点击 **Count** 标签，点击 **Send** 按钮，发送 `GET` 形式的 `http://localhost:8000/player/count` 请求。返回值为玩家个数。
 
-        ![Postman-Count](/media/develop/podman_player_count.png)
+        ![Postman-Count](/media/develop/postman_player_count.png)
 
     - 玩家交易
 
         点击 **Trade** 标签，点击 **Send** 按钮，发送 `PUT` 形式的 `http://localhost:8000/player/trade` 请求。请求参数为售卖玩家 ID `sellID`、购买玩家 ID `buyID`、购买货物数量 `amount` 以及购买消耗金币数 `price`。返回值为交易是否成功。当出现售卖玩家货物不足、购买玩家金币不足或数据库错误时，交易将不成功。并且由于[数据库事务](/develop/dev-guide-transaction-overview.md)保证，不会有玩家的金币或货物丢失的情况。
 
-        ![Postman-Trade](/media/develop/podman_player_trade.png)
+        ![Postman-Trade](/media/develop/postman_player_trade.png)
 
 </div>
 
