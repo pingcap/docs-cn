@@ -159,7 +159,7 @@ TiFlash 暂时还不支持部分可接受 `Distinct` 列的聚合函数，比如
 set @@tidb_opt_distinct_agg_push_down = ON;
 ```
 
-在以下示例中，`tidb_opt_distinct_agg_push_down` 开启前，TiDB 需要从 TiFlash 读取所有数据，并在 TiDB 侧执行 `distinct`。`tidb_opt_distinct_agg_push_down` 开启后，`distinct a` 被下推到了 TiFlash，在 `HashAgg_6` 里新增里一个 `group by` 列 `test.t.a`。这边的两个 warnings 是警告聚合函数不能完全下推。
+在以下示例中，`tidb_opt_distinct_agg_push_down` 开启前，TiDB 需要从 TiFlash 读取所有数据，并在 TiDB 侧执行 `distinct`。`tidb_opt_distinct_agg_push_down` 开启后，`distinct a` 被下推到了 TiFlash，在 `HashAgg_6` 里新增里一个 `group by` 列 `test.t.a`。这边查询结果里面的两个 warnings 是警告聚合函数不能完全下推。
 
 ```sql
 mysql> explain analyze select count(distinct a) from test.t;
