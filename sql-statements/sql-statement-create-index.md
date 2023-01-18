@@ -348,7 +348,7 @@ ERROR 1235 (42000): This version of TiDB doesn't yet support 'more than one mult
 
 写入的数据必须与多值索引的定义类型完全匹配，否则数据写入失败：
 ```sql
--- zipcode 字段中的所有元素必须为 UNSIGNED
+-- zipcode 字段中的所有元素必须为 UNSIGNED 类型
 mysql> insert into customers values (1, 'pingcap', '{"zipcode": [-1]}');
 ERROR 3752 (HY000): Value is out of range for expression index 'zips' at row 1
 mysql> insert into customers values (1, 'pingcap', '{"zipcode": ["1"]}'); -- 与 MySQL 不兼容
