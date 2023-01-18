@@ -132,6 +132,40 @@ MySQL [test]> select @@last_plan_from_cache;
 1 row in set (0.00 sec)
 ```
 
+## Prepared Plan Cache 诊断
+
+对于无法进行缓存的查询或计划，TiDB 会通过 warning 的方式输出其无法被缓存的原因。
+
+```
+mysql> prepare st from 'select * from t where a > (select max(a) from t)';
+Query OK, 0 rows affected, 1 warning (0.01 sec)
+
+mysql> show warnings; -- 查询包含子查询无法被缓存
++---------+------+-----------------------------------------------+
+| Level   | Code | Message                                       |
++---------+------+-----------------------------------------------+
+| Warning | 1105 | skip plan-cache: sub-queries are un-cacheable |
++---------+------+-----------------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> prepare st from 'select * from t where a<?';
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> set @a='1';  -- 优化中进行了非 INT 类型到 INT 类型的转换，产生的计划可能随着参数变化有风险，因此不缓存
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> execute st using @a;
+Empty set, 1 warning (0.01 sec)
+
+mysql> show warnings;
++---------+------+----------------------------------------------+
+| Level   | Code | Message                                      |
++---------+------+----------------------------------------------+
+| Warning | 1105 | skip plan-cache: '1' may be converted to INT |
++---------+------+----------------------------------------------+
+1 row in set (0.00 sec)
+```
+
 ## Prepared Plan Cache 的内存管理
 
 使用 Prepared Plan Cache 会有一定的内存开销，可以通过 Grafana 中的 [`Plan Cache Memory Usage` 监控](/grafana-tidb-dashboard.md)查看每台 TiDB 实例上所有 `SESSION` 所缓存的计划占用的总内存。
