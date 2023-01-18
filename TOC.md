@@ -242,6 +242,38 @@
     - [存储](/tidb-storage.md)
     - [计算](/tidb-computing.md)
     - [调度](/tidb-scheduling.md)
+  - 存储引擎 TiKV
+    - [TiKV 简介](/tikv-overview.md)
+    - [RocksDB 简介](/storage-engine/rocksdb-overview.md)
+    - [Titan 简介](/storage-engine/titan-overview.md)
+    - [Titan 配置说明](/storage-engine/titan-configuration.md)
+  - 存储引擎 TiFlash
+    - [TiFlash 简介](/tiflash/tiflash-overview.md)
+    - [构建 TiFlash 副本](/tiflash/create-tiflash-replicas.md)
+    - [使用 TiDB 读取 TiFlash](/tiflash/use-tidb-to-read-tiflash.md)
+    - [使用 TiSpark 读取 TiFlash](/tiflash/use-tispark-to-read-tiflash.md)
+    - [使用 MPP 模式](/tiflash/use-tiflash-mpp-mode.md)
+    - [TiFlash 支持的计算下推](/tiflash/tiflash-supported-pushdown-calculations.md)
+    - [TiFlash 查询结果物化](/tiflash/tiflash-results-materialization.md)
+    - [TiFlash 数据校验](/tiflash/tiflash-data-validation.md)
+    - [TiFlash 兼容性说明](/tiflash/tiflash-compatibility.md)
+  - [系统变量](/system-variables.md)
+  - 配置文件参数
+    - [tidb-server](/tidb-configuration-file.md)
+    - [tikv-server](/tikv-configuration-file.md)
+    - [tiflash-server](/tiflash/tiflash-configuration.md)
+    - [pd-server](/pd-configuration-file.md)
+  - CLI
+    - [tikv-ctl](/tikv-control.md)
+    - [pd-ctl](/pd-control.md)
+    - [tidb-ctl](/tidb-control.md)
+    - [pd-recover](/pd-recover.md)
+    - [binlog-ctl](/tidb-binlog/binlog-control.md)
+  - 命令行参数
+    - [tidb-server](/command-line-flags-for-tidb-configuration.md)
+    - [tikv-server](/command-line-flags-for-tikv-configuration.md)
+    - [tiflash-server](/tiflash/tiflash-command-line-flags.md)
+    - [pd-server](/command-line-flags-for-pd-configuration.md)
   - 监控指标
     - [Overview 面板](/grafana-overview-dashboard.md)
     - [TiDB 面板](/grafana-tidb-dashboard.md)
@@ -512,6 +544,7 @@
         - [分享会话](/dashboard/dashboard-session-share.md)
         - [配置 SSO 登录](/dashboard/dashboard-session-sso.md)
       - [常见问题](/dashboard/dashboard-faq.md)
+<<<<<<< HEAD
   - CLI
     - [tikv-ctl](/tikv-control.md)
     - [pd-ctl](/pd-control.md)
@@ -538,6 +571,8 @@
     - TiFlash
       - [TiFlash 简介](/tiflash/tiflash-overview.md)
       - [使用 TiFlash](/tiflash/use-tiflash.md)
+=======
+>>>>>>> 0b0e08dd1 (adjust the order of titles under Reference in TOC (#12691))
   - [遥测](/telemetry.md)
   - [错误码](/error-codes.md)
   - [通过拓扑 label 进行副本调度](/schedule-replicas-by-topology-labels.md)
