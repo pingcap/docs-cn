@@ -16,6 +16,8 @@ TiFlash 提供列式存储，且拥有借助 ClickHouse 高效实现的协处理
 
 TiFlash 以低消耗不阻塞 TiKV 写入的方式，实时复制 TiKV 集群中的数据，并同时提供与 TiKV 一样的一致性读取，且可以保证读取到最新的数据。TiFlash 中的 Region 副本与 TiKV 中完全对应，且会跟随 TiKV 中的 Leader 副本同时进行分裂与合并。
 
+在 Linux AMD64 架构的硬件平台上部署 TiFlash 时，CPU 必须支持 AVX2 指令集。确保命令 `cat /proc/cpuinfo | grep avx2` 有输出。通过使用 AVX2 指令集，TiFlash 的向量化引擎能提供更好的性能。
+
 TiFlash 可以兼容 TiDB 与 TiSpark，用户可以选择使用不同的计算引擎。
 
 TiFlash 推荐使用和 TiKV 不同的节点以做到 Workload 隔离，但在无业务隔离的前提下，也可以选择与 TiKV 同节点部署。
