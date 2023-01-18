@@ -38,10 +38,11 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 | ---------------------------------------------------------------------- | --- | --- | --- | --- | --- | --- | :------: | :------: | :------: | :------: | :------: | :------: |
 | [表达式索引](/sql-statements/sql-statement-create-index.md#表达式索引) [^2] | Y | 实验特性 | 实验特性 | 实验特性  | 实验特性  | 实验特性  | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
 | [列式存储 (TiFlash)](/tiflash/tiflash-overview.md)                     |  Y   |  Y   |  Y   |  Y   |  Y    |  Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
-| [物化列式存储的查询结果](/tiflash/tiflash-results-materialization.md) | 实验特性 | N | N | N | N | N | N | N | N | N | N | N |
+| [使用 FastScan 加速 OLAP 场景下的查询](/develop/dev-guide-use-fastscan.md) | 实验特性 | 实验特性 | 实验特性 | 实验特性 | N | N | N | N | N | N | N | N |
 | [RocksDB 引擎](/storage-engine/rocksdb-overview.md)                    |  Y   |  Y   |  Y   |  Y    |  Y    |  Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
 | [Titan 插件](/storage-engine/titan-overview.md)                        |  Y   |  Y   |  Y   |  Y    |  Y    |  Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
 | [Titan Level Merge](/storage-engine/titan-configuration.md#level-merge实验功能)   |  实验特性   |  实验特性   |  实验特性   |  实验特性    |  实验特性    |  实验特性    |    实验特性     |    实验特性     |    实验特性     |    实验特性     |    实验特性     |    实验特性     |
+| [使用 bucket 提高数据扫描并发度](/tune-region-performance.md#使用-bucket-增加并发) | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | N | N | N | N | N | N | N |
 | [不可见索引](/sql-statements/sql-statement-add-index.md)               |  Y   |  Y   |  Y   |  Y    |  Y    |  Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    N     |
 | [复合主键](/constraints.md#主键约束)                                   |  Y   |  Y   |  Y   |  Y    |  Y    |  Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
 | [唯一约束](/constraints.md#唯一约束)                                   |  Y   |  Y   |  Y   |  Y   |  Y    |  Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
@@ -70,6 +71,7 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 | [`BATCH [ON COLUMN] LIMIT INTEGER INSERT/UPDATE/REPLACE`](/sql-statements/sql-statement-batch.md) | Y | N | N | N | N | N | N | N | N | N | N | N |
 | [`ALTER TABLE ... COMPACT`](/sql-statements/sql-statement-alter-table-compact.md) | Y | Y | Y | Y | 实验特性 | N | N | N | N | N | N | N |
 | [表级锁 (Table Lock)](/tidb-configuration-file.md#enable-table-lock-从-v400-版本开始引入) | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
+| [物化列式存储的查询结果](/tiflash/tiflash-results-materialization.md) | 实验特性 | N | N | N | N | N | N | N | N | N | N | N |
 
 ## 高级 SQL 功能
 
@@ -86,9 +88,7 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 | [MPP 执行引擎](/explain-mpp.md)                                     |    Y    |    Y    |    Y    |    Y    |    Y    |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     | N        |
 | [索引合并](/explain-index-merge.md)                                 |    Y    |    Y    |    Y    |    Y    |    Y    |    Y    |    Y     | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
 | [基于 SQL 的数据放置规则](/placement-rules-in-sql.md)                |    Y    |    Y    |    Y    |    Y   |    Y    |    Y    | 实验特性 | 实验特性 |    N     |    N     |    N     | N        |
-| [使用 FastScan 加速 OLAP 场景下的查询](/develop/dev-guide-use-fastscan.md) | 实验特性 | 实验特性 | 实验特性 | 实验特性 | N | N | N | N | N | N | N | N |
 | [Cascades Planner](/system-variables.md#tidb_enable_cascades_planner) | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
-| [使用 bucket 提高数据扫描并发度](/tune-region-performance.md#使用-bucket-增加并发) | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | N | N | N | N | N | N | N |
 
 ## 数据定义语言 (DDL)
 
