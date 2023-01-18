@@ -283,6 +283,10 @@ GROUP BY page_num
 ORDER BY page_num;
 ```
 
+> **注意：**
+>
+> 该 SQL 会以全表扫描 (TableFullScan) 方式执行，当数据量较大时，查询速度会变慢，此时可以[使用 TiFlash](/tiflash/tiflash-overview.md#使用-tiflash) 进行加速。
+
 查询结果如下：
 
 ```
@@ -306,7 +310,12 @@ ORDER BY page_num;
 ```sql
 SELECT * FROM ratings
 WHERE
-    (book_id, user_id) >= (268996, 92104804)
-    AND (book_id, user_id) <= (140982742, 374645100)
+    (book_id > 268996 AND book_id < 140982742)
+    OR (
+        book_id = 268996 AND user_id >= 92104804
+    )
+    OR (
+        book_id = 140982742 AND user_id <= 374645100
+    )
 ORDER BY book_id, user_id;
 ```
