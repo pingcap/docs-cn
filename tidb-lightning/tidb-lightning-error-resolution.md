@@ -136,7 +136,7 @@ CREATE TABLE conflict_error_v1 (
 | Column       | Syntax | Type | Conflict | Description                                                                                                                         |
 | ------------ | ------ | ---- | -------- | ----------------------------------------------------------------------------------------------------------------------------------- |
 | task_id      | ✓      | ✓    | ✓        | The TiDB Lightning task ID that generates this error                                                                                    |
-| create_table | ✓      | ✓    | ✓        | The time at which the error is recorded                                                                                                         |
+| create_time | ✓      | ✓    | ✓        | The time at which the error is recorded                                                                                                         |
 | table_name   | ✓      | ✓    | ✓        | The name of the table that contains the error, in the form of ``'`db`.`tbl`'``                                                                |
 | path         | ✓      | ✓    |          | The path of the file that contains the error                                                                                               |
 | offset       | ✓      | ✓    |          | The byte position in the file where the error is found                                                                                  |
