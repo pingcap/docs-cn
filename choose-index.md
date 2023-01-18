@@ -22,7 +22,7 @@ aliases: ['/docs-cn/dev/choose-index/']
 | TableReader | 表在 TiFlash 节点上存在副本 | 需要读取的列比较少，但是需要计算的行很多 | TiFlash 是列式存储，如果需要对少量的列和大量的行进行计算，一般会选择这个算子 |
 | IndexReader | 表有一个或多个索引，且计算所需的列被包含在索引里 | 存在较小的索引上的范围查询，或者对索引列有顺序需求的时候 | 当存在多个索引的时候，会根据估算代价选择合理的索引 |
 | IndexLookupReader | 表有一个或多个索引，且计算所需的列**不完全**被包含在索引里 | 同 IndexReader | 因为计算列不完全被包含在索引里，所以读完索引后需要回表，这里会比 IndexReader 多一些开销 |
-| IndexMerge | 表有多个索引或多值索引 | 使用多值索引或同时使用多个索引的时候 | 可以使用 hint 或让优化器根据代价估算自动选择，可见 [explain-index-merge](/explain-index-merge.md) |
+| IndexMerge | 表有多个索引或多值索引 | 使用多值索引或同时使用多个索引的时候 | 可以通过 [optimizer hints](/optimizer-hints.md) 指定使用该算子，或让优化器根据代价估算自动选择该算子，参见[用 EXPLAIN 查看索引合并的 SQL 执行计划](/explain-index-merge.md) |
 
 > **注意：**
 > 
