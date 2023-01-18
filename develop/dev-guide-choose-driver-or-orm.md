@@ -45,7 +45,7 @@ You can follow the [MySQL documentation](https://dev.mysql.com/doc/connector-j/8
 
 > **Tip:**
 >
-> Since there is an [unresolved bug](https://bugs.mysql.com/bug.php?id=106252) in the current version 8.0.30, which might cause threads to hang when using TiDB versions earlier than v6.3.0. It is recommended that, if you are not yet using TiDB v6.3.0 or later versions, you do not upgrade to version 8.0 until MySQL Connector/J 8.0 fixes this bug, or use the TiDB version of MySQL Connector/J as that addresses this bug (see the *TiDB-JDBC* tab).
+> There is a [bug](https://bugs.mysql.com/bug.php?id=106252) in the Connector/J 8.0 versions before 8.0.32, which might cause threads to hang when using TiDB versions earlier than v6.3.0. To avoid this issue, it is recommended that you use either MySQL Connector/J 8.0.32 or a later version, or the TiDB JDBC (see the *TiDB-JDBC* tab).
 
 For an example of how to build a complete application, see [Build a Simple CRUD App with TiDB and JDBC](/develop/dev-guide-sample-application-java.md).
 
