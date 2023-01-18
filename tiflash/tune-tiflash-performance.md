@@ -264,7 +264,7 @@ mysql> explain analyze select max(l_shipdate), max(l_commitdate), max(l_receiptd
 set @@tidb_max_tiflash_threads = 20;
 ```
 
-在以下示例中，`tidb_max_tiflash_threads` 设置前，所有 TiFlash 的算子的执行线程数为24。`tidb_max_tiflash_threads` 设置后，所有 TiFlash 的算子的执行线程数为60。
+在以下示例中，`tidb_max_tiflash_threads` 设置前，所有 TiFlash 的算子的执行线程数为 24。`tidb_max_tiflash_threads` 设置后，所有 TiFlash 的算子的执行线程数为 60。
 
 ```sql
 mysql> explain analyze select a, count(*) from t group by a;
@@ -313,7 +313,7 @@ mysql> explain analyze select a, count(*) from t group by a;
 set @@tiflash_fine_grained_shuffle_stream_count = 20;
 ```
 
-在以下示例中，`tiflash_fine_grained_shuffle_stream_count` 设置前，`[ExchangeSender_11, ExchangeReceiver_12, Sort_13, Window_22]` 的 `stream_count` 是8。`tiflash_fine_grained_shuffle_stream_count` 设置后，`[ExchangeSender_11, ExchangeReceiver_12, Sort_13, Window_22]` 的 `stream_count` 是20。
+在以下示例中，`tiflash_fine_grained_shuffle_stream_count` 设置前，`[ExchangeSender_11, ExchangeReceiver_12, Sort_13, Window_22]` 的 `stream_count` 是 8。`tiflash_fine_grained_shuffle_stream_count` 设置后，`[ExchangeSender_11, ExchangeReceiver_12, Sort_13, Window_22]` 的 `stream_count` 是 20。
 
 ```sql
 mysql> explain analyze select *, row_number() over (partition by a) from t;
