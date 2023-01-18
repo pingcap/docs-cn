@@ -327,7 +327,8 @@ INSERT INTO t1 VALUES('[1,2]');
 INSERT INTO t1 VALUES('[2,3]');
 ```
 
-也可以被定义为复合索引：
+多值索引也可以被定义为复合索引：
+
 ```sql
 CREATE TABLE customers (
     id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
