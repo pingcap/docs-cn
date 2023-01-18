@@ -121,6 +121,17 @@ tiup playground --db.binpath /xx/tidb-server
 tiup playground --db 3 --pd 3 --kv 3
 ```
 
+### 启动集群时指定 tag
+
+Playground 集群在命令行退出时，会默认清空所有的集群数据。如果想要启动一个数据不被自动删除的 playground 集群，需要在启动时指定集群 tag，指定后可以在 ~/.tiup/data 路径下找到该集群的数据。在集群启动时指定 tag 的方法如下：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+tiup playground --tag <tagname>
+```
+
+以这种方式启动的集群，在集群关闭以后数据文件会保留，可以在下一次继续使用该 tag 启动集群，从而使用从上一次关闭时的集群数据。
 ## 快速连接到由 playground 启动的 TiDB 集群
 
 TiUP 提供了 `client` 组件，用于自动寻找并连接 playground 在本地启动的 TiDB 集群，使用方式为：
