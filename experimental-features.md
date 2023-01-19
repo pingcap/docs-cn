@@ -37,6 +37,7 @@ aliases: ['/docs-cn/dev/experimental-features-4.0/','/zh/tidb/dev/experimental-f
 + [使用 TTL (Time to Live) 定期删除过期数据](/time-to-live.md)。(v6.5.0 实验特性)
 + [TiFlash 查询结果物化](/tiflash/tiflash-results-materialization.md)（v6.5.0 实验特性）
 + [根据历史执行计划创建绑定](/sql-plan-management.md#根据历史执行计划创建绑定)（v6.5.0 实验特性）
++ [多值索引](/sql-statements/sql-statement-create-index.md#多值索引)（v6.6.0 实验特性）
 
 ## 存储
 
