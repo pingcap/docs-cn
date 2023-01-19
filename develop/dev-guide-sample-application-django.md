@@ -179,7 +179,7 @@ Quit the server with CONTROL-C.
 
 2. 导入后 **Collections** > **Player** 如图所示：
 
-    ![postman import](/media/develop/postman_import_player.png)
+    ![postman import](/media/develop/postman_player_import.png)
 
 3. 发送请求：
 
