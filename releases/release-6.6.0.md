@@ -57,7 +57,7 @@ TiDB 版本：6.6.0
 
     更多信息，请参考[用户文档](链接)。
 
-* 为执行计划缓存增加 Warning [#issue号](链接) @[qw4990](https://github.com/qw4990)
+* 为执行计划缓存增加告警 [#issue号](链接) @[qw4990](https://github.com/qw4990)
 
     当执行计划无法进入执行计划缓存时， TiDB 会通过 warning 的方式说明其无法被缓存的原因， 降低诊断的难度。例如：
 
@@ -82,6 +82,12 @@ TiDB 版本：6.6.0
     上述例子中， 优化器进行了非 INT 类型到 INT 类型的转换，产生的计划可能随着参数变化有风险，因此不缓存。 
 
     更多信息，请参考[用户文档](/sql-prepared-plan-cache.md#prepared-plan-cache-诊断)。
+
+* 在慢查询中增加告警字段 [#39893](https://github.com/pingcap/tidb/issues/39893) @[time-and-fate](https://github.com/time-and-fate)
+
+    向慢查询日志中增加一个新的字段 `Warning` ，以 JSON 格式记录该慢查询语句在执行过程中产生的警告，用来协助查询性能问题的诊断。 
+
+    更多信息，请参考[用户文档](/identify-slow-queries.md)。
 
 ### 性能
 
