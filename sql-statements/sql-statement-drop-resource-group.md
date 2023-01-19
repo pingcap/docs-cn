@@ -34,7 +34,7 @@ mysql> DROP RESOURCE GROUP IF EXISTS rg1;
 Query OK, 0 rows affected (0.22 sec)
 mysql> CREATE RESOURCE GROUP IF NOT EXISTS rg1 (
     ->  RRU_PER_SEC = 500
-    ->  RRU_PER_SEC = 300
+    ->  WRU_PER_SEC = 300
     ->  BURSTABLE
     -> );
 Query OK, 0 rows affected (0.08 sec)
