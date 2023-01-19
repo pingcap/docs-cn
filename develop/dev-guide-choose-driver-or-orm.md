@@ -14,21 +14,7 @@ summary: Learn how to choose a driver or ORM framework to connect to TiDB.
 >
 > For more information, refer to [Third-Party Tools Supported by TiDB](/develop/dev-guide-third-party-support.md).
 
-TiDB is highly compatible with the MySQL protocol but some features are incompatible with MySQL.
-
-For example:
-
-- Features that are not supported by TiDB:
-
-    - Stored procedures and functions
-    - Triggers
-    - `FOREIGN KEY` constraints
-
-- Features that are different from MySQL:
-
-    - Auto-increment ID: auto-incremental columns are globally unique in TiDB. They are incremental on a single TiDB server, but ***not*** necessarily incremental among multiple TiDB servers or allocated sequentially.
-
-For a full list of compatibility differences, see [MySQL Compatibility](/mysql-compatibility.md).
+TiDB is highly compatible with the MySQL protocol but some features are incompatible with MySQL. For a full list of compatibility differences, see [MySQL Compatibility](/mysql-compatibility.md).
 
 ## Java
 
