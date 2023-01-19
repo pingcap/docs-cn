@@ -21,7 +21,7 @@ summary: 了解 TiDB 提供的基于多副本的单集群容灾方案。
 
 在这一部分当中，会以一个 5 副本的集群为例，演示如何使用 TiUP 创建一个跨 3 个区域的集群，以及如何控制数据和 PD 的分布位置，从而达到容灾的目的。
 
-在下面的示例中，TiDB 集群的区域 1 作为 primary region，区域 2 作为 secondary region, 而区域 3 则作为投票使用的第三个区域，一共包含 5 个副本。同理，PD 集群也包含了 5 个副本，其功能和 TiDB 集群的功能基本一致。
+在下面的示例中，TiDB 集群的区域 1 作为 primary region，区域 2 作为 secondary region，而区域 3 则作为投票使用的第三个区域，一共包含 5 个副本。同理，PD 集群也包含了 5 个副本，其功能和 TiDB 集群的功能基本一致。
 
 1. 创建类似于以下的集群拓扑文件：
 
@@ -98,7 +98,7 @@ summary: 了解 TiDB 提供的基于多副本的单集群容灾方案。
     # tiup cluster display drtest
     ```
 
-    对集群的副本数和 Leader 限制进行配置:
+    对集群的副本数和 Leader 限制进行配置：
 
     ```toml
     # tiup ctl:v6.4.0 pd config set max-replicas 5
@@ -125,7 +125,7 @@ summary: 了解 TiDB 提供的基于多副本的单集群容灾方案。
 3. 创建 placement rule，并将测试表的主副本固定在 Region 1：
 
     ```sql
-    --创建两个 placement rules, 第一个是 Region1 作为主region，在系统正常时使用，第二个是 Region2。
+    --创建两个 placement rules，第一个是 Region1 作为主region，在系统正常时使用，第二个是 Region2。
     -- 作为主 Region，当 Region1 出现问题时，Region2 会作为主 Region。
     MySQL [(none)]> CREATE PLACEMENT POLICY primary_rule_for_region1 PRIMARY_REGION="Region1" REGIONS="Region1, Region2,Region3";
     MySQL [(none)]> CREATE PLACEMENT POLICY secondary_rule_for_region2 PRIMARY_REGION="Region2" REGIONS="Region1,Region2,Region3";
@@ -140,7 +140,7 @@ summary: 了解 TiDB 提供的基于多副本的单集群容灾方案。
     select STORE_ID, address, leader_count, label from TIKV_STORE_STATUS order by store_id;
     ```
 
-    下面的语句可以产生一个 sql 脚本，把所有非系统 schema 中的表的 leader 都设置到特定的 region 上:
+    下面的语句可以产生一个 sql 脚本，把所有非系统 schema 中的表的 leader 都设置到特定的 region 上：
 
     ```sql
     set @region_name=primary_rule_for_region1;
@@ -158,14 +158,16 @@ summary: 了解 TiDB 提供的基于多副本的单集群容灾方案。
 
 ## 容灾切换
 
+本部分介绍容灾切换，包括计划内切换和计划外切换。
+
 ### 计划内切换
 
-你可以根据维护需要切换主备区域，从而来验证容灾系统是否可以正常工作。本部分介绍如何在计划内切换主备区域。
+指根据维护需要进行的主备区域切换，可用于验证容灾系统是否可以正常工作。本部分介绍如何在计划内切换主备区域。
 
-1. 执行下面的命令将所有用户表和 PD leader 都切换到区域 2：
+1. 执行如下命令，将所有用户表和 PD leader 都切换到区域 2：
 
     ``` sql
-    --将之前创建的规则secondary_rule_for_region2 应用到对应的用户表上。
+    --将之前创建的规则 secondary_rule_for_region2 应用到对应的用户表上。
     ALTER TABLE tpcc.warehouse PLACEMENT POLICY=secondary_rule_for_region2;
     ALTER TABLE tpcc.district PLACEMENT POLICY=secondary_rule_for_region2;
     ```
@@ -173,14 +175,14 @@ summary: 了解 TiDB 提供的基于多副本的单集群容灾方案。
     说明：请根据需要修改上面的数据库名称、表名和 placement rule 的名称。
 
     ``` shell
-    运行下面的命令调低区域1的 PD 节点的优先级，并调高区域2的 PD 节点的优先级。
+    执行如下命令，调低区域 1 的 PD 节点的优先级，并调高区域 2的 PD 节点的优先级。
     # tiup ctl:v6.4.0 pd member leader_priority  pd-1 2
     # tiup ctl:v6.4.0 pd member leader_priority  pd-2 1
     # tiup ctl:v6.4.0 pd member leader_priority  pd-3 4
     # tiup ctl:v6.4.0 pd member leader_priority  pd-4 3
     ```
 
-2. 观察 Grafana 中 PD 和 TiKV 部分中的内容，确保 PD 的Leader 和用户表的 Leader 已经迁移到对应的区域。另外，对于切换回原有区域的步骤与上面的步骤基本相同，本文不做过多的描述。
+2. 观察 Grafana 中 PD 和 TiKV 部分中的内容，确保 PD 的Leader 和用户表的 Leader 已经迁移到对应的区域。另外，切换回原有区域的步骤与上面的步骤基本相同，本文不做过多的描述。
 
 ### 计划外切换
 

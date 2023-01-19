@@ -136,7 +136,7 @@ nohup ./minio server ./data --address :6060 &
 * `secret-access-key`：`miniostorage`
 * `bucket`：`redo`/`backup`
 
-其访问链接为如下:
+其访问链接为如下：
 
 ```
 s3://backup?access-key=minio&secret-access-key=miniostorage&endpoint=http://10.0.1.10:6060&force-path-style=true
@@ -328,7 +328,7 @@ s3://backup?access-key=minio&secret-access-key=miniostorage&endpoint=http://10.0
 
 #### 真正灾难中主备切换
 
-当真正的灾难发生，比如主集群所在区域停电，主备集群的同步链路可能会突然中断，从而导致备用集群数据处于事务不一致的状态。
+当发生真正的灾难，比如主集群所在区域停电，主备集群的同步链路可能会突然中断，从而导致备用集群数据处于事务不一致的状态。
 
 1. 恢复备用集群到事务一致的状态。在 Region 2 的任意 TiCDC 节点执行以下命令，以向备用集群重放 redo log，使下游达到最终一致性状态：
 
