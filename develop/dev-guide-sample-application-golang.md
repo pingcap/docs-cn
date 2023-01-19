@@ -18,22 +18,32 @@ summary: 给出一个 TiDB 和 Golang 的简单 CRUD 应用程序示例。
 
 本节将介绍 TiDB 集群的启动方法。
 
-### 使用 TiDB Cloud Serverless Tier 集群
+<SimpleTab groupId="cluster">
+
+<div label="TiDB Cloud" value="serverless-cluster">
 
 [创建 Serverless Tier 集群](/develop/dev-guide-build-cluster-in-cloud.md#第-1-步创建-serverless-tier-集群)。
 
-### 使用本地集群
+</div>
+
+<div label="本地集群" value="local-cluster">
 
 你可以部署一个本地测试的 TiDB 集群或正式的 TiDB 集群。详细步骤，请参考：
 
 - [部署本地测试 TiDB 集群](/quick-start-with-tidb.md#部署本地测试集群)
-- [部署正式 TiDB 集群](/production-deployment-using-tiup.md)。
+- [部署正式 TiDB 集群](/production-deployment-using-tiup.md)
 
-### 使用云原生开发环境
+</div>
+
+<div label="Gitpod" value="gitpod-cluster">
 
 基于 Git 的预配置的开发环境：[现在就试试](/develop/dev-guide-playground-gitpod.md)
 
 该环境会自动克隆代码，并通过 TiUP 部署测试集群。
+
+</div>
+
+</SimpleTab>
 
 ## 第 2 步：获取代码
 
