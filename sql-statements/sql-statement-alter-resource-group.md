@@ -71,7 +71,7 @@ mysql> SELECT * FROM information_schema.resource_groups WHERE NAME ='rg1';
 
 mysql> ALTER RESOURCE GROUP IF NOT EXISTS rg1
     ->  RRU_PER_SEC = 600
-    ->  RRU_PER_SEC = 400
+    ->  WRU_PER_SEC = 400
     -> ;
 Query OK, 0 rows affected (0.09 sec)
 mysql> SELECT * FROM information_schema.resource_groups WHERE NAME ='rg1';
