@@ -15,19 +15,7 @@ aliases: ['/zh/tidb/dev/choose-driver-or-orm']
 >
 > 关于更多 TiDB 支持的第三方工具，你可以查看 [TiDB 支持的第三方工具](/develop/dev-guide-third-party-support.md)。
 
-TiDB 兼容 MySQL 的协议，但存在部分与 MySQL 不兼容的特性，例如：
-
-TiDB 不支持：
-
-- 存储过程与函数
-- 触发器
-- 外键约束
-
-TiDB 与 MySQL 有差异：
-
-- 自增 ID：可保证全局唯一，或单 TiDB 节点的自增，但无法保证全局自增。
-
-全部兼容性差异可查看[与 MySQL 兼容性对比](/mysql-compatibility.md)
+TiDB 兼容 MySQL 的协议，但存在部分与 MySQL 不兼容或有差异的特性，具体信息可查看[与 MySQL 兼容性对比](/mysql-compatibility.md)。
 
 ## Java
 
