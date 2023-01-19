@@ -81,6 +81,18 @@ TiDB 版本：6.6.0
 
     此特性默认关闭， 通过系统变量 [`tidb_store_batch_size`](/system-variables.md#tidb_store_batch_size) 设置批量请求的大小即可开启。
 
+* 新增一系列优化器 Hint [#39964](https://github.com/pingcap/tidb/issues/39964) @[Reminiscent](https://github.com/Reminiscent)
+
+    TiDB 在新版本中增加了一系列优化器 Hint， 用来控制 `LIMIT` 操作的执行计划选择，以及 MPP 执行过程中的部分行为。 其中包括：
+
+    - [`KEEP_ORDER()`](/optimizer-hints.md#keep_ordert1_name-idx1_name--idx2_name-): 提示优化器使用指定的索引，读取时保持索引的顺序。 生成类似 `Limit + IndexScan(keep order: true)` 的计划。
+    - [`NO_KEEP_ORDER()`](/optimizer-hints.md#no_keep_ordert1_name-idx1_name--idx2_name-): 提示优化器使用指定的索引，读取时不保持顺序。 生成类似 `TopN + IndexScan(keep order: false)` 的计划。
+    - [`SHUFFLE_JOIN()`](/optimizer-hints.md#shuffle_joint1_name--tl_name-): 针对 MPP 生效。 提示优化器对指定表使用 Shuffle Join 算法。 
+    - [`BROADCAST_JOIN()`](/optimizer-hints.md#broadcast_joint1_name--tl_name-): 针对 MPP 生效。提示优化器对指定表使用 Broadcast Join 算法。
+    - [`MPP_1PHASE_AGG()`](/optimizer-hints.md#mpp_1phase_agg): 针对 MPP 生效。提示优化器对指定查询块中所有聚合函数使用一阶段聚合算法。
+    - [`MPP_2PHASE_AGG()`](/optimizer-hints.md#mpp_2phase_agg): 针对 MPP 生效。 提示优化器对指定查询块中所有聚合函数使用二阶段聚合算法。
+
+    优化器 Hint 的持续引入，为用户提供了更多的干预手段，有助于 SQL 性能问题的解决，并提升了整体性能的稳定性。
 
 ### 事务
 
