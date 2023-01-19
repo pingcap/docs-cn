@@ -235,12 +235,12 @@ summary: 了解如何配置一个 TiDB 集群以及该集群的 TiDB 或 MySQL �
     在上游集群中，执行以下命令创建从上游到下游集群的同步链路：
 
     ```shell
-    tiup cdc cli changefeed create --pd=http://172.16.6.122:2379 --sink-uri="mysql://root:@172.16.6.125:4000" --changefeed-id="primary-to-secondary" --start-ts="431434047157698561"
+    tiup cdc cli changefeed create --server=http://172.16.6.122:8300 --sink-uri="mysql://root:@172.16.6.125:4000" --changefeed-id="primary-to-secondary" --start-ts="431434047157698561"
     ```
 
     以上命令中：
 
-    - `--pd`：实际的上游集群的地址
+    - `--server`：TiCDC 集群任意一节点的地址
     - `--sink-uri`：同步任务下游的地址
     - `--start-ts`：TiCDC 同步的起点，需要设置为实际的备份时间点（也就是[第 2 步：迁移全量数据](#第-2-步迁移全量数据)提到的 BackupTS）
 
@@ -314,5 +314,5 @@ tiup cdc redo apply --storage "s3://redo?access-key=minio&secret-access-key=mini
 
     ```shell
     # 创建 changefeed
-    tiup cdc cli changefeed create --pd=http://172.16.6.122:2379 --sink-uri="mysql://root:@172.16.6.125:4000" --changefeed-id="primary-to-secondary"
+    tiup cdc cli changefeed create --server=http://172.16.6.122:8300 --sink-uri="mysql://root:@172.16.6.125:4000" --changefeed-id="primary-to-secondary"
     ```
