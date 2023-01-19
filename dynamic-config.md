@@ -156,6 +156,7 @@ show warnings;
 | raftstore.store-pool-size | 处理 Raft 的线程池中线程的数量，即 Raftstore 线程池的大小 |
 | raftstore.apply-max-batch-size | Raft 状态机由 BatchSystem 批量执行数据写入请求，该配置项指定每批可执行请求的最多 Raft 状态机个数。 |
 | raftstore.store-max-batch-size |  Raft 状态机由 BatchSystem 批量执行把日志落盘至磁盘的请求，该配置项指定每批可执行请求的最多 Raft 状态机个数。 |
+| raftstore.store-io-pool-size | 处理 Raft I/O 任务的线程池中线程的数量，即 StoreWriter 线程池的大小（不支持将该配置项由非 0 值调整为 0，或者从 0 调整为非 0 值）|
 | readpool.unified.max-thread-count | 统一处理读请求的线程池最多的线程数量，即 UnifyReadPool 线程池大小 |
 | readpool.unified.auto-adjust-pool-size | 是否开启自适应调整 UnifyReadPool 的大小 |
 | coprocessor.split-region-on-table | 开启按 table 分裂 Region 的开关 |
