@@ -78,7 +78,7 @@ SET GLOBAL tidb_enable_resource_control = 'ON';
     ;
     ```
 
-3. 绑定用户到资源组
+3. 将用户 `usr1` 和 `usr2` 分别绑定到资源组 `rg1` 和 `rg2`。
 
     ```sql
     ALTER USER usr1 RESOURCE GROUP rg1;
@@ -88,7 +88,6 @@ SET GLOBAL tidb_enable_resource_control = 'ON';
     ALTER USER usr2 RESOURCE GROUP rg2;
     ```
 
-    上面的例子将用户 `usr1` 和 `usr2` 分别绑定到资源组 `rg1` 和 `rg2`。
 
 完成上述创建资源组和绑定用户的操作后，用户新建立的会话对资源的占用会受到指定配额的限制。读请求会受读 RU 的配额限制，写请求会受写 RU 的配额限制。如果系统负载比较高，没有富余的容量，两个用户的资源消耗速度会严格控制不超过配额，并且，两个用户读写请求 RU 指标的消耗比例也是与指定的配额基本成正比。在系统资源充沛时，`usr1` 的资源消耗速度允许超过配额。
 
