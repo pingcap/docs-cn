@@ -24,8 +24,8 @@ summary: 介绍如何通过资源管控来实现应用资源消耗的控制和�
 
 | `resource_control.enabled`  | `tidb_enable_resource_control`= ON   | `tidb_enable_resource_control`= OFF  |
 |:----------------------------|:-------------------------------------|:------------------------------------|
-| `resource_control.enabled`= true  |  流控和调度（推荐组合）            | 无效配置                           
-| `resource_control.enabled`= false |  仅流控                         |  特性被关闭   
+| `resource_control.enabled`= true  |  流控和调度（推荐组合）            | 无效配置                         |  
+| `resource_control.enabled`= false |  仅流控                         |  特性被关闭                   |
 
 ## 语法
 
