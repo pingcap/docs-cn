@@ -1,11 +1,11 @@
 ---
-title: 基于单集群多副本的容灾解决方案
+title: 基于多副本的单集群容灾方案
 summary: 介绍在容灾场景下，如何使用 TiDB 备份与恢复功能实现单集群多副本容灾。
 ---
 
-# 基于单集群多副本的容灾解决方案
+# 基于多副本的单集群容灾方案
 
-本文介绍了基于单集群多副本的容灾方案，包含了集群的安装与部署、副本配置及计划内与计划外切换的方法。
+本文介绍了基于多副本的单集群容灾方案，包含了集群的安装与部署、副本配置及计划内与计划外切换的方法。
 
 ## 简介
 
@@ -15,7 +15,7 @@ summary: 介绍在容灾场景下，如何使用 TiDB 备份与恢复功能实�
 
 在这一部分当中，会以一个 5 副本的集群为例，演示如何使用 TiUP 创建一个跨 3 个区域的集群，以及如何控制数据和 PD 的分布位置，从而达到容灾的目的。
 
-在下面的示例中，TiDB 集群的区域 1 作为 primary region，区域2 作为 secondary region, 而区域 3 则作为投票使用的第三个区域，一共包含 5 个副本。同理，PD 集群也包含了 5 个副本，其功能和 TiDB 集群的功能基本一致。
+在下面的示例中，TiDB 集群的区域 1 作为 primary region，区域 2 作为 secondary region, 而区域 3 则作为投票使用的第三个区域，一共包含 5 个副本。同理，PD 集群也包含了 5 个副本，其功能和 TiDB 集群的功能基本一致。
 
 1. 创建类似于以下的集群拓扑文件：
 
@@ -30,7 +30,7 @@ summary: 介绍在容灾场景下，如何使用 TiDB 备份与恢复功能实�
       tikv:
         server.grpc-compression-type: gzip
       pd:
-        replication.location-labels:  ["Region","AZ"] # pd 会根据 TiKV 节点的 Region 和 AZ 配置来进行副本的调度。
+        replication.location-labels:  ["Region","AZ"] # PD 会根据 TiKV 节点的 Region 和 AZ 配置来进行副本的调度。
 
     pd_servers:
       - host: tidb-dr-test1
@@ -98,7 +98,7 @@ summary: 介绍在容灾场景下，如何使用 TiDB 备份与恢复功能实�
     # tiup ctl:v6.4.0 pd config set max-replicas 5
     # tiup ctl:v6.4.0 pd config set label-property reject-leader Region Region3
 
-    #下面的步骤用于向集群中添加一些测试数据，可选
+    # 下面的步骤用于向集群中添加一些测试数据，可选
     # tiup bench tpcc  prepare -H 127.0.0.1 -P 4000 -D tpcc --warehouses 1
     ``````
 
@@ -130,7 +130,7 @@ summary: 介绍在容灾场景下，如何使用 TiDB 备份与恢复功能实�
 
     --说明：请根据需要修改上面的数据库名称、表名和 placement rule 的名称。
 
-    --使用类似下面的查询，用户可以查看每个区域包含的 leader 数量，以确认 leader 迁移是否完成
+    --使用类似下面的查询，用户可以查看每个区域包含的 leader 数量，以确认 leader 迁移是否完成。
     select STORE_ID, address, leader_count, label from TIKV_STORE_STATUS order by store_id;
     ```
 
@@ -141,25 +141,25 @@ summary: 介绍在容灾场景下，如何使用 TiDB 备份与恢复功能实�
     select concat('ALTER TABLE ', table_schema, '.', table_name, ' PLACEMENT POLICY=', @region_name, ';') from information_schema.tables where table_schema not in ('METRICS_SCHEMA', 'PERFORMANCE_SCHEMA', 'INFORMATION_SCHEMA','mysql');
     ```
 
-## 运维与管理
+## 监控集群
 
-### 监控
-
-在上面的部署中，用户可以通过访问集群中的 Grafana 地址或者 TiDB Dashboard 组件来对集群中的各个 TiKV、TiDB 和 PD 组件的各种性能指标进行监控。详细信息，请参考如下文档：
+对于部署的集群，你可以通过访问集群中的 Grafana 地址或者 TiDB Dashboard 组件来对集群中的各个 TiKV、TiDB 和 PD 组件的各种性能指标进行监控。根据组件的状态，确定是否进行容灾切换。详细信息，请参考如下文档：
 
 - [TiDB 重要监控指标详解](/grafana-tidb-dashboard.md)
 - [TiKV 监控指标详解](/grafana-tikv-dashboard.md)
 - [PD 重要监控指标详解](/grafana-pd-dashboard.md)
 - [TiDB Dashboard 监控页面](/dashboard/dashboard-monitoring.md)
 
+## 容灾切换
+
 ### 计划内切换
 
 你可以根据维护需要切换主备区域，从而来验证容灾系统是否可以正常工作。本部分介绍如何在计划内切换主备区域。
 
-1. 执行下面的命令将所有用户表和 PD leader 都切换到区域 2:
+1. 执行下面的命令将所有用户表和 PD leader 都切换到区域 2：
 
     ``` sql
-    --将之前创建的规则secondary_rule_for_region2 应用到对应的用户表上
+    --将之前创建的规则secondary_rule_for_region2 应用到对应的用户表上。
     ALTER TABLE tpcc.warehouse PLACEMENT POLICY=secondary_rule_for_region2;
     ALTER TABLE tpcc.district PLACEMENT POLICY=secondary_rule_for_region2;
     ```
@@ -167,7 +167,7 @@ summary: 介绍在容灾场景下，如何使用 TiDB 备份与恢复功能实�
     说明：请根据需要修改上面的数据库名称、表名和 placement rule 的名称。
 
     ``` shell
-    运行下面的命令调低区域1的 PD 节点的优先级，并调高区域2的 PD 节点的优先级
+    运行下面的命令调低区域1的 PD 节点的优先级，并调高区域2的 PD 节点的优先级。
     # tiup ctl:v6.4.0 pd member leader_priority  pd-1 2
     # tiup ctl:v6.4.0 pd member leader_priority  pd-2 1
     # tiup ctl:v6.4.0 pd member leader_priority  pd-3 4
@@ -189,11 +189,11 @@ summary: 介绍在容灾场景下，如何使用 TiDB 备份与恢复功能实�
 2. 运行类似于下面的命令切换用户表的 leader 到区域 2:
 
     ```sql
-    -- 将之前创建的规则 secondary_rule_for_region2 应用到对应的用户表上.
+    -- 将之前创建的规则 secondary_rule_for_region2 应用到对应的用户表上。
     ALTER TABLE tpcc.warehouse PLACEMENT POLICY=secondary_rule_for_region2;
     ALTER TABLE tpcc.district PLACEMENT POLICY=secondary_rule_for_region2;
 
-    ---可以使用类似下面的查询查看每个区域包含的 leader 数量，以确认 leader 迁移是否完成
+    ---可以使用类似下面的查询查看每个区域包含的 leader 数量，以确认 leader 迁移是否完成。
     select STORE_ID, address, leader_count, label from TIKV_STORE_STATUS order by store_id;
     ```
 

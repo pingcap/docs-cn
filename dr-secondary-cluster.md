@@ -13,13 +13,14 @@ summary: 了解如何使用 TiCDC 构建主备集群进行容灾。
 - 快速切换：在主集群发生故障的情况下，系统可以快速切换到备用集群，继续提供服务。
 - 数据一致性：备用集群会近实时备份主集群的数据，因此，在故障发生后切换到备集群时，数据基本是最新的。
 
-本文包含了以下主要内容：
-1. 构建主备集群
-2.从主集群复制数据至备集群
-3.监控集群
-4.容灾切换
+本文包含以下主要内容：
 
-以及在备用集群上进行业务查询和在主备集群间进行双向同步。
+- 构建主备集群
+- 从主集群复制数据至备集群
+- 监控集群
+- 容灾切换
+
+同时，本文还介绍了如何在备用集群上进行业务查询，以及如何在主备集群间进行双向同步。
 
 ## 基于 TiCDC 构建 TiDB 主备集群
 
@@ -40,7 +41,7 @@ summary: 了解如何使用 TiCDC 构建主备集群进行容灾。
 
 ### 搭建主备集群
 
-本文将 TiDB 主集群和备用集群分别部署在两个不同的区域（Region 1 和 Region 2)。TiCDC 与 TiDB 备用集群部署在一起，因为主备集群之间存在一定网络延迟，这种架构会实现最好的数据同步性能。本教程示例的部署拓扑如下（每台服务器部署一个组件节点）：
+本文将 TiDB 主集群和备用集群分别部署在两个不同的区域（Region 1 和 Region 2）。TiCDC 与 TiDB 备用集群部署在一起，因为主备集群之间存在一定网络延迟，这种架构会实现最好的数据同步性能。本教程示例的部署拓扑如下（每台服务器部署一个组件节点）：
 
 |**区域** | **主机** | **集群** | **组件** |
 | --- | --- | --- | --- |
@@ -56,8 +57,8 @@ summary: 了解如何使用 TiCDC 构建主备集群进行容灾。
 
 关于服务器配置信息，可以参考如下文档：
 
-- [TiDB 软件和硬件环境建议配置](/hardware-and-software-requirements.md)。
-- [TiCDC 软件和硬件环境推荐配置](/ticdc/deploy-ticdc.md#软件和硬件环境推荐配置)。
+- [TiDB 软件和硬件环境建议配置](/hardware-and-software-requirements.md)
+- [TiCDC 软件和硬件环境推荐配置](/ticdc/deploy-ticdc.md#软件和硬件环境推荐配置)
 
 部署 TiDB 主集群和备用集群的详细过程，可以参考[部署 TiDB 集群](/production-deployment-using-tiup.md)。
 
@@ -281,7 +282,7 @@ s3://backup?access-key=minio&secret-access-key=miniostorage&endpoint=http://10.0
 
 ### 容灾切换
 
-本部分介绍容灾演练，以及遇到真正灾难时的主备切换和重建灾备集群操作步骤。
+本部分介绍容灾演练，遇到真正灾难时的主备切换，以及重建灾备集群的步骤。
 
 #### 计划中的主备切换
 
@@ -397,7 +398,7 @@ storage = "s3://redo?access-key=minio&secret-access-key=miniostorage&endpoint=ht
 
 在主备集群容灾场景中，部分用户希望让两个区域的 TiDB 集群互为灾备集群：用户的业务流量按其区域属性写入对应的 TiDB 集群，同时两套 TiDB 集群备份对方集群的数据。
 
-![TiCDC bidirectional replication](/media/dr/bdr-ticdc.png)
+![TiCDC bidirectional replication](/media/dr/dr-ticdc.png)
 
 在双向复制容灾集群方案中，两个区域的 TiDB 集群互相备份对方的数据，使得它们可以在故障发生时互为灾备集群。这种方案既能满足安全性和可靠性的需求，同时也能保证数据库的写入性能。在计划中的主备切换场景中，不需要停止正在运行的 changefeed 和启动新的 changefeed 等操作，在运维上也更加简单。
 
