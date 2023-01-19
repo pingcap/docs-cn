@@ -75,7 +75,7 @@ mysql> SELECT * FROM information_schema.resource_groups WHERE NAME ='rg1';
 
 ## MySQL 兼容性
 
-MySQL 也支持[CREATE RESOURCE GROUP](https://dev.mysql.com/doc/refman/8.0/en/create-resource-group.html) ，但是接受的参数和 TiDB 不同，两者并不兼容。
+MySQL 也支持[CREATE RESOURCE GROUP](https://dev.mysql.com/doc/refman/8.0/en/create-resource-group.html)，但是接受的参数和 TiDB 不同，两者并不兼容。
 
 ## 另请参阅
 
