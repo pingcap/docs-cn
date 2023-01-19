@@ -35,8 +35,6 @@ aliases: ['/zh/tidb/dev/use-follower-read']
 
 在 SQL 中，你可以将变量 `tidb_replica_read` 的值（默认为 `leader`）设置为 `follower`、 `leader-and-follower`、 `closest-replicas` 或 `closest-adaptive` 开启 TiDB 的 Follower Read 功能：
 
-{{< copyable "sql" >}}
-
 ```sql
 SET [GLOBAL] tidb_replica_read = 'follower';
 ```
@@ -47,8 +45,6 @@ SET [GLOBAL] tidb_replica_read = 'follower';
 <div label="Java">
 
 在 Java 语言当中，可以定义一个 `FollowerReadHelper` 类用于开启 Follower Read 功能：
-
-{{< copyable "" >}}
 
 ```java
 public enum FollowReadMode {
@@ -93,8 +89,6 @@ public class FollowerReadHelper {
 ```
 
 在需要使用从 Follower 节点读取数据时，通过 `setSessionReplicaRead(conn, FollowReadMode.LEADER_AND_FOLLOWER)` 方法在当前 Session 开启能够在 Leader 节点和 Follower 节点进行负载均衡的 Follower Read 功能，当连接断开时，会恢复到原来的模式。
-
-{{< copyable "" >}}
 
 ```java
 public static class AuthorDAO {

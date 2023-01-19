@@ -51,3 +51,97 @@ TiFlash 支持部分算子的下推，支持的算子如下：
     * SECOND
 
 如查询遇到不支持的下推计算，则需要依赖 TiDB 完成剩余计算，可能会很大程度影响 TiFlash 加速效果。对于暂不支持的算子/表达式，将会在后续版本中陆续支持。
+
+## 示例
+
+以下通过一些例子对下推算子和表达式到 TiFlash 进行说明。
+
+### 示例 1：下推算子到 TiFlash 存储
+
+```sql
+CREATE TABLE t(id INT PRIMARY KEY, a INT);
+ALTER TABLE t SET TIFLASH REPLICA 1;
+
+EXPLAIN SELECT * FROM t LIMIT 3;
+
++------------------------------+---------+--------------+---------------+--------------------------------+
+| id                           | estRows | task         | access object | operator info                  |
++------------------------------+---------+--------------+---------------+--------------------------------+
+| Limit_9                      | 3.00    | root         |               | offset:0, count:3              |
+| └─TableReader_17             | 3.00    | root         |               | data:ExchangeSender_16         |
+|   └─ExchangeSender_16        | 3.00    | mpp[tiflash] |               | ExchangeType: PassThrough      |
+|     └─Limit_15               | 3.00    | mpp[tiflash] |               | offset:0, count:3              |
+|       └─TableFullScan_14     | 3.00    | mpp[tiflash] | table:t       | keep order:false, stats:pseudo |
++------------------------------+---------+--------------+---------------+--------------------------------+
+5 rows in set (0.18 sec)
+
+```
+
+在该查询中，算子 Limit 被下推到 TiFlash 对数据进行过滤，减少了网络传输数据量，进而减少网络传输开销。
+
+### 示例 2：下推表达式到 TiFlash 存储
+
+```sql
+CREATE TABLE t(id INT PRIMARY KEY, a INT);
+ALTER TABLE t SET TIFLASH REPLICA 1;
+INSERT INTO t(id,a) VALUES (1,2),(2,4),(11,2),(12,4),(13,4),(14,7);
+
+EXPLAIN SELECT MAX(id + a) FROM t GROUP BY a;
+
++------------------------------------+---------+--------------+---------------+---------------------------------------------------------------------------+
+| id                                 | estRows | task         | access object | operator info                                                             |
++------------------------------------+---------+--------------+---------------+---------------------------------------------------------------------------+
+| TableReader_45                     | 4.80    | root         |               | data:ExchangeSender_44                                                    |
+| └─ExchangeSender_44                | 4.80    | mpp[tiflash] |               | ExchangeType: PassThrough                                                 |
+|   └─Projection_39                  | 4.80    | mpp[tiflash] |               | Column#3                                                                  |
+|     └─HashAgg_37                   | 4.80    | mpp[tiflash] |               | group by:Column#9, funcs:max(Column#8)->Column#3                          |
+|       └─Projection_46              | 6.00    | mpp[tiflash] |               | plus(test.t.id, test.t.a)->Column#8, test.t.a                             |
+|         └─ExchangeReceiver_23      | 6.00    | mpp[tiflash] |               |                                                                           |
+|           └─ExchangeSender_22      | 6.00    | mpp[tiflash] |               | ExchangeType: HashPartition, Hash Cols: [name: test.t.a, collate: binary] |
+|             └─TableFullScan_21     | 6.00    | mpp[tiflash] | table:t       | keep order:false, stats:pseudo                                            |
++------------------------------------+---------+--------------+---------------+---------------------------------------------------------------------------+
+8 rows in set (0.18 sec)
+
+```
+
+在该查询中，表达式 `id + a` 被下推到 TiFlash，从而能提前进行计算，减少网络传输数据量，进而减少网络传输开销，提升整体计算性能。
+
+### 示例 3：下推限制
+
+```sql
+CREATE TABLE t(id INT PRIMARY KEY, a INT);
+ALTER TABLE t SET TIFLASH REPLICA 1;
+INSERT INTO t(id,a) VALUES (1,2),(2,4),(11,2),(12,4),(13,4),(14,7);
+
+EXPLAIN SELECT id FROM t WHERE TIME(now()+ a) < '12:00:00';
+
++-----------------------------+---------+--------------+---------------+--------------------------------------------------------------------------------------------------+
+| id                          | estRows | task         | access object | operator info                                                                                    |
++-----------------------------+---------+--------------+---------------+--------------------------------------------------------------------------------------------------+
+| Projection_4                | 4.80    | root         |               | test.t.id                                                                                        |
+| └─Selection_6               | 4.80    | root         |               | lt(cast(time(cast(plus(20230110083056, test.t.a), var_string(20))), var_string(10)), "12:00:00") |
+|   └─TableReader_11          | 6.00    | root         |               | data:ExchangeSender_10                                                                           |
+|     └─ExchangeSender_10     | 6.00    | mpp[tiflash] |               | ExchangeType: PassThrough                                                                        |
+|       └─TableFullScan_9     | 6.00    | mpp[tiflash] | table:t       | keep order:false, stats:pseudo                                                                   |
++-----------------------------+---------+--------------+---------------+--------------------------------------------------------------------------------------------------+
+5 rows in set, 3 warnings (0.20 sec)
+```
+
+分析执行计划可以发现，该查询在执行时只在 TiFlash 中进行了 TableFullScan，其他的函数计算和过滤均在 `root` 进行，并未下推至 TiFlash。
+
+执行以下命令，可以查找不能下推的算子和表达式。
+
+```sql
+SHOW WARNINGS;
+
++---------+------+------------------------------------------------------------------------------------------------------------------------------------+
+| Level   | Code | Message                                                                                                                            |
++---------+------+------------------------------------------------------------------------------------------------------------------------------------+
+| Warning | 1105 | Scalar function 'time'(signature: Time, return type: time) is not supported to push down to storage layer now.                     |
+| Warning | 1105 | Scalar function 'cast'(signature: CastDurationAsString, return type: var_string(10)) is not supported to push down to tiflash now. |
+| Warning | 1105 | Scalar function 'cast'(signature: CastDurationAsString, return type: var_string(10)) is not supported to push down to tiflash now. |
++---------+------+------------------------------------------------------------------------------------------------------------------------------------+
+3 rows in set (0.18 sec)
+```
+
+可以看出，该查询的表达式无法完全下推至 TiFlash，因为 `Time` 函数和 `Cast` 函数无法下推至 TiFlash。
