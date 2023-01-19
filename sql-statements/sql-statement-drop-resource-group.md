@@ -58,7 +58,7 @@ mysql> SELECT * FROM information_schema.resource_groups WHERE NAME ='rg1';
 
 ## MySQL 兼容性
 
-MySQL 也支持 [Drop Resource Group](https://dev.mysql.com/doc/refman/8.0/en/drop-resource-group.html), 但 TiDB 不支持 `FORCE` 参数。
+MySQL 也支持 [DROP RESOURCE GROUP](https://dev.mysql.com/doc/refman/8.0/en/drop-resource-group.html), 但 TiDB 不支持 `FORCE` 参数。
 
 ## 另请参阅
 
