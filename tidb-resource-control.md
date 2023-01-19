@@ -62,20 +62,20 @@ SET GLOBAL tidb_enable_resource_control = 'ON';
 1. 创建 `rg1` 资源组，读请求的配额是每秒 500 `RU`，写请求的配额是每秒 300 `RU`，在系统资源充足的时候，允许这个资源组的应用超额占用资源。
 
     ```sql
-    CREATE RESOURCE GROUP IF NOT EXISTS rg1 (
+    CREATE RESOURCE GROUP IF NOT EXISTS rg1
     RRU_PER_SEC = 500
     WRU_PER_SEC = 300
     BURSTABLE
-    );
+    ;
     ```
 
 2. 创建 `rg2` 资源组，读请求的配额是每秒 600 `RU`，写请求的配额是每秒400 `RU`，在系统资源充足的时候，不允许这个资源组的应用超额占用资源。
 
     ```sql
-    CREATE RESOURCE GROUP IF NOT EXISTS rg2 (
+    CREATE RESOURCE GROUP IF NOT EXISTS rg2
     RRU_PER_SEC = 600
     WRU_PER_SEC = 400
-    );
+    ;
     ```
 
 3. 绑定用户到资源组

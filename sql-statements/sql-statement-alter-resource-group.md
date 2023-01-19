@@ -55,11 +55,11 @@ TiDB 支持以下 `DirectResourceGroupOption`, 其中 [`RU` (Resource Unit)](/ti
 ```sql
 mysql> DROP RESOURCE GROUP IF EXISTS rg1;
 Query OK, 0 rows affected (0.22 sec)
-mysql> CREATE RESOURCE GROUP IF NOT EXISTS rg1 (
+mysql> CREATE RESOURCE GROUP IF NOT EXISTS rg1
     ->  RRU_PER_SEC = 500
     ->  RRU_PER_SEC = 300
     ->  BURSTABLE
-    -> );
+    -> ;
 Query OK, 0 rows affected (0.08 sec)
 mysql> SELECT * FROM information_schema.resource_groups WHERE NAME ='rg1';
 +------+--------------+---------------------------------------------------------------+
@@ -69,10 +69,10 @@ mysql> SELECT * FROM information_schema.resource_groups WHERE NAME ='rg1';
 +------+--------------+---------------------------------------------------------------+
 1 row in set (0.00 sec)
 
-mysql> ALTER RESOURCE GROUP IF NOT EXISTS rg1 (
+mysql> ALTER RESOURCE GROUP IF NOT EXISTS rg1
     ->  RRU_PER_SEC = 600
     ->  RRU_PER_SEC = 400
-    -> );
+    -> ;
 Query OK, 0 rows affected (0.09 sec)
 mysql> SELECT * FROM information_schema.resource_groups WHERE NAME ='rg1';
 +------+--------------+---------------------------------------------------------------+

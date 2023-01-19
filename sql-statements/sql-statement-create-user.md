@@ -157,7 +157,7 @@ Query OK, 1 row affected (0.02 sec)
 
 ```sql
 CREATE USER 'newuser7'@'%' RESOURCE GROUP rg1;
-SELECT * FROM information_schema.user_attributes;
+SELECT USER, HOST, USER_ATTRIBUTES FROM MYSQ.USER WHERE USER='newuser7';
 ```
 
 ```sql
