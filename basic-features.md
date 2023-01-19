@@ -11,7 +11,7 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 > **注意：**
 >
 > - Y：已 GA 的功能，可以在生产环境中使用。
-> - N：不支持该功能
+> - N：不支持该功能。
 > - 实验特性：未 GA 的功能，请注意使用场景限制。实验特性会在未事先通知的情况下发生变化或删除。语法和实现可能会在 GA 前发生变化。如果遇到问题，请在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues) 反馈。
 
 ## 数据类型，函数和操作符
