@@ -274,7 +274,7 @@ s3://backup?access-key=minio&secret-access-key=miniostorage&endpoint=http://10.0
 
 ### 主备集群状态监控
 
-目前还没有发布 TiDB DR Dashboard，你可以通过以下 dashboard 了解 TiDB 主备集群的状态：
+目前还没有发布 TiDB DR Dashboard，通常来说用户可以通过以下 dashboard 了解 TiDB 主备集群的状态，从而决定是否需要进行容灾切换：
 
 - [TiDB 集群运行状态 Dashboard](/grafana-overview-dashboard.md)
 - [Changefeed 运行状态](/ticdc/monitor-ticdc.md#changefeed-面板)
