@@ -5,8 +5,7 @@
 - 关于 TiDB
   - [TiDB 简介](/overview.md)
   - [TiDB 6.5 Release Notes](/releases/release-6.5.0.md)
-  - [基本功能](/basic-features.md)
-  - [实验特性](/experimental-features.md)
+  - [功能概览](/basic-features.md)
   - [与 MySQL 的兼容性](/mysql-compatibility.md)
   - [使用限制](/tidb-limitations.md)
   - [荣誉列表](/credits.md)

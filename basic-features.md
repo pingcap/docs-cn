@@ -1,11 +1,17 @@
 ---
-title: TiDB 基本功能
-summary: 了解 TiDB 的基本功能。
+
+title: TiDB 功能概览
+summary: 了解 TiDB 的功能概览。
+aliases: ['/zh/tidb/v6.5/experimental-features','/zh/tidb/stable/experimental-features']
 ---
 
-# TiDB 基本功能
+# TiDB 功能概览
 
-本文列出了 TiDB 功能在各版本的支持变化情况。请注意，实验特性的支持可能会在最终版本发布前发生变化。
+本文列出了 TiDB 功能在各版本的支持变化情况。
+
+> **警告：**
+>
+> 针对本文中列出的实验特性，请注意使用场景限制。实验特性会在未事先通知的情况下发生变化或删除。语法和实现可能会在 GA 前发生变化。如果遇到问题，请在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues) 反馈。
 
 ## 数据类型，函数和操作符
 
@@ -37,8 +43,11 @@ summary: 了解 TiDB 的基本功能。
 | ---------------------------------------------------------------------- | --- | --- | --- | --- | --- | --- | :------: | :------: | :------: | :------: | :------: | :------: |
 | [表达式索引](/sql-statements/sql-statement-create-index.md#表达式索引) [^2] | Y | 实验特性 | 实验特性 | 实验特性  | 实验特性  | 实验特性  | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
 | [列式存储 (TiFlash)](/tiflash/tiflash-overview.md)                     |  Y   |  Y   |  Y   |  Y   |  Y    |  Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
+| [使用 FastScan 加速 OLAP 场景下的查询](/develop/dev-guide-use-fastscan.md) | 实验特性 | 实验特性 | 实验特性 | 实验特性 | N | N | N | N | N | N | N | N |
 | [RocksDB 引擎](/storage-engine/rocksdb-overview.md)                    |  Y   |  Y   |  Y   |  Y    |  Y    |  Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
 | [Titan 插件](/storage-engine/titan-overview.md)                        |  Y   |  Y   |  Y   |  Y    |  Y    |  Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
+| [Titan Level Merge](/storage-engine/titan-configuration.md#level-merge实验功能)   |  实验特性   |  实验特性   |  实验特性   |  实验特性    |  实验特性    |  实验特性    |    实验特性     |    实验特性     |    实验特性     |    实验特性     |    实验特性     |    实验特性     |
+| [使用 bucket 提高数据扫描并发度](/tune-region-performance.md#使用-bucket-增加并发) | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | N | N | N | N | N | N | N |
 | [不可见索引](/sql-statements/sql-statement-add-index.md)               |  Y   |  Y   |  Y   |  Y    |  Y    |  Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    N     |
 | [复合主键](/constraints.md#主键约束)                                   |  Y   |  Y   |  Y   |  Y    |  Y    |  Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
 | [唯一约束](/constraints.md#唯一约束)                                   |  Y   |  Y   |  Y   |  Y   |  Y    |  Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
@@ -66,6 +75,8 @@ summary: 了解 TiDB 的基本功能。
 | [`BATCH [ON COLUMN] LIMIT INTEGER DELETE`](/sql-statements/sql-statement-batch.md) | Y | Y | Y | Y | Y | N | N | N | N | N | N | N |
 | [`BATCH [ON COLUMN] LIMIT INTEGER INSERT/UPDATE/REPLACE`](/sql-statements/sql-statement-batch.md) | Y | N | N | N | N | N | N | N | N | N | N | N |
 | [`ALTER TABLE ... COMPACT`](/sql-statements/sql-statement-alter-table-compact.md) | Y | Y | Y | Y | 实验特性 | N | N | N | N | N | N | N |
+| [表级锁 (Table Lock)](/tidb-configuration-file.md#enable-table-lock-从-v400-版本开始引入) | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
+| [物化列式存储的查询结果](/tiflash/tiflash-results-materialization.md) | 实验特性 | N | N | N | N | N | N | N | N | N | N | N |
 
 ## 高级 SQL 功能
 
@@ -73,6 +84,7 @@ summary: 了解 TiDB 的基本功能。
 | ------------------------------------------------------------------- | :------: | :------: | :------: | :------: | :------: | :------: | :------: | :------: | :------: | :------: | :------: | -------- |
 | [执行计划缓存](/sql-prepared-plan-cache.md)                          |    Y    |    Y    |    Y    |    Y    |    Y    |    Y    |    Y     |    Y     | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
 | [执行计划管理 (SPM)](/sql-plan-management.md)                       |    Y    |    Y    |    Y    |    Y    |    Y    |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
+| [根据历史执行计划创建绑定](/sql-plan-management.md#根据历史执行计划创建绑定) | 实验特性 | N | N | N | N | N | N | N | N | N | N | N |
 | [下推计算结果缓存 (Coprocessor Cache)](/coprocessor-cache.md)       |    Y    |    Y    |    Y    |    Y    |    Y    |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     | 实验特性 |
 | [Stale Read](/stale-read.md)                                        |    Y    |    Y    |    Y    |    Y   |    Y    |    Y    |    Y     |    Y     |    Y     |    Y     |    N     | N        |
 | [Follower Read](/follower-read.md)                                  |    Y    |    Y    |    Y    |    Y   |    Y    |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
@@ -81,6 +93,7 @@ summary: 了解 TiDB 的基本功能。
 | [MPP 执行引擎](/explain-mpp.md)                                     |    Y    |    Y    |    Y    |    Y    |    Y    |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     | N        |
 | [索引合并](/explain-index-merge.md)                                 |    Y    |    Y    |    Y    |    Y    |    Y    |    Y    |    Y     | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
 | [基于 SQL 的数据放置规则](/placement-rules-in-sql.md)                |    Y    |    Y    |    Y    |    Y   |    Y    |    Y    | 实验特性 | 实验特性 |    N     |    N     |    N     | N        |
+| [Cascades Planner](/system-variables.md#tidb_enable_cascades_planner) | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
 
 ## 数据定义语言 (DDL)
 
@@ -138,6 +151,10 @@ summary: 了解 TiDB 的基本功能。
 | [统计信息自动更新](/statistics.md#自动更新) |   Y |   Y |   Y |   Y  |   Y   |   Y   |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
 | [快速分析](/system-variables.md#tidb_enable_fast_analyze) | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
 | [动态裁剪](/partitioned-table.md#动态裁剪模式) | Y | Y | Y | Y | Y | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | N | N |
+| [收集部分列的统计信息](/statistics.md#收集部分列的统计信息) | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | N | N | N | N | N |
+| [限制统计信息的内存使用量](/statistics.md#统计信息收集的内存限制) | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | N | N | N | N | N | N | N |
+| [随机采样约 10000 行数据来快速构建统计信息](/system-variables.md#tidb_enable_fast_analyze) | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
+| [锁定统计信息](/statistics.md#锁定统计信息) | 实验特性 | N | N | N | N | N | N | N | N | N | N | N |
 
 ## 安全
 
@@ -179,6 +196,7 @@ summary: 了解 TiDB 的基本功能。
 | [TiDB Dashboard Top SQL 功能](/dashboard/top-sql.md)                       |    Y    |    Y    |    Y    |    Y     |    Y     |    Y     | 实验特性 |    N     |    N     |    N     |    N     | N        |
 | [TiDB Dashboard SQL 诊断功能](/information-schema/information-schema-sql-diagnostics.md)    |    Y    |    Y    | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
 | [TiDB Dashboard 集群诊断功能](/dashboard/dashboard-diagnostics-access.md)   |    Y    |    Y    | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
+| [Grafana 中的 TiKV-FastTune 面板](/grafana-tikv-dashboard.md#tikv-fasttune-面板) |    实验特性    |    实验特性    |    实验特性    |    实验特性     |    实验特性     |    实验特性     |    实验特性     |    实验特性     |    实验特性     |    实验特性     |    实验特性     | 实验特性        |
 | [Information schema](/information-schema/information-schema.md)           |    Y    |    Y    |    Y    |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
 | [Metrics schema](/metrics-schema.md)                                      |    Y    |    Y    |    Y    |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
 | [Statements summary tables](/statement-summary-tables.md)                 |    Y    |    Y    |    Y    |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
@@ -192,9 +210,12 @@ summary: 了解 TiDB 的基本功能。
 | [`SET CONFIG`](/dynamic-config.md)                                        | Y  | Y  | Y | Y | Y | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
 | [DM WebUI](/dm/dm-webui-guide.md)                                         | 实验特  | 实验特  | 实验特性 | 实验特性 | 实验特性 | 实验特性 |    N     |    N     |    N     |    N     |    N     | N        |
 | [前台限流](/tikv-configuration-file.md#前台限流)                            | Y | Y | Y | Y | 实验特性 | 实验特性 |    N     |    N     |    N     |    N     |    N     | N        |
+| [后台限流](/tikv-configuration-file.md#后台限流)                             | 实验特性 | 实验特性 | 实验特性 | 实验特性 | N | N | N | N | N | N | N | N |
 | [基于 EBS 的备份和恢复](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.4/volume-snapshot-backup-restore)                        |    Y    |    Y    |    N     |    N     |    N    |    N     |    N     |    N     |    N     |    N     |    N     |  N        |
 | [PITR](/br/br-pitr-guide.md)   |    Y    |    Y    |    Y     |    Y     |    N    |    N     |    N     |    N     |    N     |    N     |    N     |  N        |
 | [全局内存控制](/configure-memory-usage.md#如何配置-tidb-server-实例使用内存的阈值)   |    Y    |    实验特性    |    N     |    N     |    N    |    N     |    N     |    N     |    N     |    N     |    N     |  N        |
+| [RawKV 跨集群复制](/tikv-configuration-file.md#api-version-从-v610-版本开始引入) | 实验特性 | 实验特性 | 实验特性 | 实验特性 | N | N | N | N | N | N | N | N |
+| [Green GC](/system-variables.md#tidb_gc_scan_lock_mode-从-v50-版本开始引入) | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | N |
 
 [^1]: TiDB 误将 latin1 处理为 utf8 的子集。见 [TiDB #18955](https://github.com/pingcap/tidb/issues/18955)。
 
