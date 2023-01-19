@@ -1,12 +1,8 @@
 ---
-<<<<<<< HEAD
-title: TiDB 基本功能
-summary: 了解 TiDB 的基本功能。
-=======
+
 title: TiDB 功能概览
 summary: 了解 TiDB 的功能概览。
-aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0/','/zh/tidb/dev/experimental-features-4.0/','/zh/tidb/dev/experimental-features']
->>>>>>> 1167f5620 (*: merge experimental-feature.md to basic-features.md (#12687))
+aliases: ['/zh/tidb/v6.5/experimental-features','/zh/tidb/stable/experimental-features']
 ---
 
 # TiDB 功能概览

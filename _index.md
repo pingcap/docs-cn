@@ -10,11 +10,7 @@ hide_commit: true
 
 [TiDB 简介](https://docs.pingcap.com/zh/tidb/v6.5/overview)
 
-<<<<<<< HEAD
-[基本功能](https://docs.pingcap.com/zh/tidb/v6.5/basic-features)
-=======
-[功能概览](https://docs.pingcap.com/zh/tidb/dev/basic-features)
->>>>>>> 1167f5620 (*: merge experimental-feature.md to basic-features.md (#12687))
+[功能概览](https://docs.pingcap.com/zh/tidb/v6.5/basic-features)
 
 [TiFlash](https://docs.pingcap.com/zh/tidb/v6.5/tiflash-overview)
 
