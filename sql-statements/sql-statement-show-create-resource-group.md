@@ -23,14 +23,10 @@ ResourceGroupName ::=
 
 ```sql
 CREATE RESOURCE GROUP rg1 RRU_PER_SEC=100 WRU_PER_SEC=200;
-SHOW CREATE RESOURCE GROUP rg1\G;
-```
-
-```
-Query OK, 0 rows affected (0.08 sec)
-
 Query OK, 0 rows affected (0.10 sec)
-
+```
+```sql
+SHOW CREATE RESOURCE GROUP rg1;
 ***************************[ 1. row ]***************************
 Resource_Group        | rg1
 Create Resource Group | CREATE RESOURCE GROUP `rg1` RRU_PER_SEC=100 WRU_PER_SEC=200
