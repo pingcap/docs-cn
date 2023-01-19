@@ -17,8 +17,8 @@ summary: 介绍如何通过资源管控来实现应用资源消耗的控制和�
 
 资源管控特性引入了两个新的全局开关变量：
 
-* TiDB: 通过全局变量 `tidb_enable_resource_control` 控制是否打开资源组流控。
-* TiKV: 通过参数配置 `resource_control.enabled` 控制是否使用基于资源组配额的请求调度。此参数暂时不支持动态修改，修改后需要重启 TiKV 实例生效。
+* TiDB: 通过全局变量 [`tidb_enable_resource_control`](/system-variables.md#tidb-tidb_enable_resource_control) 控制是否打开资源组流控。
+* TiKV: 通过参数配置 [`resource_control.enabled`](/tikv-configuration-file.md#resource_control) 控制是否使用基于资源组配额的请求调度。此参数暂时不支持动态修改，修改后需要重启 TiKV 实例生效。
 
 这两个参数的组合效果见下表：
 
