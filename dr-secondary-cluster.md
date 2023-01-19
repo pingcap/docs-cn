@@ -23,6 +23,8 @@ summary: 了解如何使用 TiCDC 构建主备集群进行容灾。
 
 ## 基于 TiCDC 构建 TiDB 主备集群
 
+### 架构概览
+
 ![TiCDC secondary cluster architecture](/media/dr/dr-ticdc-secondary-cluster.png)
 
 在上述架构中，包含了两个 TiDB 集群：Primary Cluster 和 Secondary Cluster。
