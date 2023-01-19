@@ -75,6 +75,13 @@ TiDB 版本：6.6.0
 
     TiFlash 引擎的数据扫描流程包含 MVCC 过滤和扫描列数据等操作。由于 MVCC 过滤和其他数据扫描操作具有较高的耦合性，导致无法对数据扫描流程进行优化改进。在 v6.6.0 中，TiFlash 将整体数据扫描流程中的 MVCC 过滤操作进行解耦，提供独立的 MVCC 位图过滤器，为后续优化数据扫描流程提供基础。
 
+* 批量聚合数据请求 [#39361](https://github.com/pingcap/tidb/issues/39361) @[cfzjywxk](https://github.com/cfzjywxk) @[you06](https://github.com/you06)
+
+    当 TiDB 向 TiKV 发送数据请求时， 会根据数据所在的 Region 将请求编入不同的子任务，每个子任务只处理单个 Region 的请求。 当访问的数据离散度很高时， 即使数据量不大，也会生成众多的子任务，进而产生大量 RPC 请求，消耗额外的时间。 在 v6.6.0 中，TiDB 支持将发送到相同 TiKV 实例的数据请求部分合并，减少子任务的数量和 RPC 请求的开销。 在数据离散度高的情况下，批量化请求能够将性能提升 50% 以上。 
+
+    此特性默认关闭， 通过系统变量 [`tidb_store_batch_size`](/system-variables.md#tidb_store_batch_size) 设置批量请求的大小即可开启。
+
+
 ### 事务
 
 * 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接)
@@ -154,7 +161,7 @@ TiDB 版本：6.6.0
 | 变量名  | 修改类型（包括新增/修改/删除）    | 描述 |
 |--------|------------------------------|------|
 | [`tidb_enable_resource_control`](/system-variables.md#tidb_enable_resource_control-%E4%BB%8E-v660-%E7%89%88%E6%9C%AC%E5%BC%80%E5%A7%8B%E5%BC%95%E5%85%A5) | 新增  | 该变量是资源管控特性的开关。该变量设置为 `ON` 后，集群支持应用按照资源组做资源隔离。 |
-|        |   |      |
+| [`tidb_store_batch_size`](/system-variables.md#tidb_store_batch_size) | 修改 | 此变量可用于生产环境。 设置 `IndexLookUp` 算子回表时多个 Coprocessor Task 的 batch 大小。`0` 代表不使用 batch。当 `IndexLookUp` 算子的回表 Task 数量特别多，出现极长的慢查询时，可以适当调大该参数以加速查询。 |
 |        |                              |      |
 |        |                              |      |
 
