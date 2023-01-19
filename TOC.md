@@ -5,8 +5,7 @@
 - About TiDB
   - [TiDB Introduction](/overview.md)
   - [TiDB 6.5 Release Notes](/releases/release-6.5.0.md)
-  - [Basic Features](/basic-features.md)
-  - [Experimental Features](/experimental-features.md)
+  - [Features](/basic-features.md)
   - [MySQL Compatibility](/mysql-compatibility.md)
   - [TiDB Limitations](/tidb-limitations.md)
   - [Credits](/credits.md)

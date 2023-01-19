@@ -1,12 +1,18 @@
 ---
 title: TiDB Features
-summary: Learn about the basic features of TiDB.
-aliases: ['/docs/dev/basic-features/']
+summary: Learn about the feature overview of TiDB.
+aliases: ['/docs/dev/basic-features/','/tidb/dev/experimental-features-4.0/']
 ---
 
 # TiDB Features
 
-This document lists the features supported in each TiDB version. Note that supports for experimental features might change before the final release.
+This document lists the features supported in each TiDB version.
+
+> **Note:**
+>
+> - Y: the feature is generally available (GA) and can be used in production environments.
+> - N: the feature is not supported.
+> - Experimental: the feature is not GA yet and you need to be aware of the usage limitations. Experimental features are subject to change or removal without prior notice. The syntax and implementation might be modified before the general availability. If you encounter any problems, you can report an [issue](https://github.com/pingcap/tidb/issues) on GitHub.
 
 ## Data types, functions, and operators
 
@@ -38,8 +44,11 @@ This document lists the features supported in each TiDB version. Note that suppo
 | ------------------------------------------------------------ | :--: | :--: | :--: | :--: | :--: | :--: | ------------ | :----------: | :----------: | :----------: | :----------: | :----------: |
 | [Expression indexes](/sql-statements/sql-statement-create-index.md#expression-index) [^2] | Y | Experimental | Experimental | Experimental | Experimental | Experimental | Experimental | Experimental | Experimental | Experimental | Experimental |
 | [Columnar storage (TiFlash)](/tiflash/tiflash-overview.md)   | Y | Y | Y | Y | Y | Y | Y            |      Y       |      Y       |      Y       |      Y       |      Y       |
+| [Use FastScan to accelerate queries in OLAP scenarios](/develop/dev-guide-use-fastscan.md) | Experimental | Experimental | Experimental | Experimental | N | N | N | N | N | N | N | N |
 | [RocksDB engine](/storage-engine/rocksdb-overview.md)        | Y | Y | Y | Y | Y | Y | Y            |      Y       |      Y       |      Y       |      Y       |      Y       |
 | [Titan plugin](/storage-engine/titan-overview.md)            | Y | Y | Y | Y | Y | Y | Y            |      Y       |      Y       |      Y       |      Y       |      Y       |
+| [Titan Level Merge](/storage-engine/titan-configuration.md#level-merge-experimental)   |  Experimental   |  Experimental   |  Experimental   |  Experimental    |  Experimental    |  Experimental    |    Experimental     |    Experimental     |    Experimental     |    Experimental     |    Experimental     |    Experimental     |
+| [Use buckets to improve scan concurrency](/tune-region-performance.md#use-bucket-to-increase-concurrency) | Experimental | Experimental | Experimental | Experimental | Experimental | N | N | N | N | N | N | N |
 | [Invisible indexes](/sql-statements/sql-statement-add-index.md) | Y | Y | Y | Y | Y | Y | Y            |      Y       |      Y       |      Y       |      Y       |      N       |
 | [Composite `PRIMARY KEY`](/constraints.md)                   | Y | Y | Y | Y | Y | Y | Y            |      Y       |      Y       |      Y       |      Y       |      Y       |
 | [Unique indexes](/constraints.md)                            | Y | Y | Y | Y | Y | Y | Y            |      Y       |      Y       |      Y       |      Y       |      Y       |
@@ -67,6 +76,8 @@ This document lists the features supported in each TiDB version. Note that suppo
 | [`BATCH [ON COLUMN] LIMIT INTEGER DELETE`](/sql-statements/sql-statement-batch.md) | Y | Y | Y | Y | Y | N | N | N | N | N | N | N |
 | [`BATCH [ON COLUMN] LIMIT INTEGER INSERT/UPDATE/REPLACE`](/sql-statements/sql-statement-batch.md) | Y | N | N | N | N | N | N | N | N | N | N | N |
 | [`ALTER TABLE ... COMPACT`](/sql-statements/sql-statement-alter-table-compact.md) | Y | Y | Y | Y | Experimental | N | N | N | N | N | N | N |
+| [Table Lock](/tidb-configuration-file.md#enable-table-lock-new-in-v400) | Experimental | Experimental | Experimental | Experimental | Experimental | Experimental | Experimental | Experimental | Experimental | Experimental | Experimental | Experimental |
+| [TiFlash Query Result Materialization](/tiflash/tiflash-results-materialization.md) | Experimental | N | N | N | N | N | N | N | N | N | N | N |
 
 ## Advanced SQL features
 
@@ -74,6 +85,7 @@ This document lists the features supported in each TiDB version. Note that suppo
 | ------------------------------------------------------------ | :--: | :--: | :--: | :--: | :--: | :--: | ------------ | :----------: | :----------: | :----------: | :----------: | :----------: |
 | [Prepared statement cache](/sql-prepared-plan-cache.md)       | Y | Y | Y | Y | Y | Y | Y            |      Y       | Experimental | Experimental | Experimental | Experimental |
 | [SQL plan management (SPM)](/sql-plan-management.md)         | Y | Y | Y | Y | Y | Y | Y            |      Y       |      Y       |      Y       |      Y       |      Y       |
+| [Create bindings according to historical execution plans](/sql-plan-management.md#create-a-binding-according-to-a-historical-execution-plan) | Experimental | N | N | N | N | N | N | N | N | N | N | N |
 | [Coprocessor cache](/coprocessor-cache.md)                   | Y | Y | Y | Y | Y | Y | Y            |      Y       |      Y       |      Y       |      Y       | Experimental |
 | [Stale Read](/stale-read.md)                                 | Y | Y | Y | Y | Y | Y | Y            |      Y       |      Y       |      Y       |      N       |      N       |
 | [Follower reads](/follower-read.md)                          | Y | Y | Y | Y | Y | Y | Y            |      Y       |      Y       |      Y       |      Y       |      Y       |
@@ -82,6 +94,7 @@ This document lists the features supported in each TiDB version. Note that suppo
 | [MPP Execution Engine](/explain-mpp.md)                      | Y | Y | Y | Y | Y | Y | Y            |      Y       |      Y       |      Y       |      Y       |      N       |
 | [Index Merge](/explain-index-merge.md)                  | Y | Y | Y | Y | Y | Y | Y            | Experimental | Experimental | Experimental | Experimental | Experimental |
 | [Placement Rules in SQL](/placement-rules-in-sql.md)        | Y  | Y  | Y  | Y | Y | Y | Experimental | Experimental |      N       |      N       |      N       |      N       |
+| [Cascades Planner](/system-variables.md#tidb_enable_cascades_planner) | Experimental | Experimental | Experimental | Experimental | Experimental | Experimental | Experimental | Experimental | Experimental | Experimental | Experimental | Experimental |
 
 ## Data definition language (DDL)
 
@@ -139,6 +152,10 @@ This document lists the features supported in each TiDB version. Note that suppo
 | [Automatically update statistics](/statistics.md#automatic-update) | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y |
 | [Fast Analyze](/system-variables.md#tidb_enable_fast_analyze) | Experimental | Experimental | Experimental | Experimental| Experimental | Experimental | Experimental | Experimental | Experimental | Experimental | Experimental | Experimental |
 | [Dynamic pruning](/partitioned-table.md#dynamic-pruning-mode) | Y | Y | Y | Y | Y | Experimental | Experimental | Experimental | Experimental | Experimental | N | N |
+| [Collect statistics for `PREDICATE COLUMNS`](/statistics.md#collect-statistics-on-some-columns) | Experimental | Experimental | Experimental | Experimental | Experimental | Experimental | Experimental | N | N | N | N | N |
+| [Control the memory quota for collecting statistics](/statistics.md#the-memory-quota-for-collecting-statistics) | Experimental | Experimental | Experimental | Experimental | Experimental | N | N | N | N | N | N | N |
+| [Randomly sample about 10000 rows of data to quickly build statistics](/system-variables.md#tidb_enable_fast_analyze) | Experimental | Experimental | Experimental | Experimental | Experimental | Experimental | Experimental | Experimental | Experimental | Experimental | Experimental | Experimental |
+| [Lock statistics](/statistics.md#lock-statistics) | Experimental | N | N | N | N | N | N | N | N | N | N | N |
 
 ## Security
 
@@ -180,6 +197,7 @@ This document lists the features supported in each TiDB version. Note that suppo
 | [TiDB Dashboard Top SQL](/dashboard/top-sql.md)                             | Y | Y | Y | Y | Y | Y | Experimental |      N       |      N       |      N       |      N       |      N       |
 | [TiDB Dashboard SQL Diagnostics](/information-schema/information-schema-sql-diagnostics.md) | Y | Y | Experimental | Experimental | Experimental | Experimental | Experimental | Experimental | Experimental | Experimental | Experimental | Experimental |
 | [TiDB Dashboard Cluster Diagnostics](/dashboard/dashboard-diagnostics-access.md) | Y | Y | Experimental | Experimental | Experimental | Experimental | Experimental | Experimental | Experimental | Experimental | Experimental | Experimental |
+| [TiKV-FastTune dashboard](/grafana-tikv-dashboard.md#tikv-fasttune-dashboard) | Experimental | Experimental | Experimental | Experimental | Experimental | Experimental | Experimental | Experimental | Experimental | Experimental | Experimental | Experimental |
 | [Information schema](/information-schema/information-schema.md) | Y | Y | Y | Y | Y | Y | Y            |      Y       |      Y       |      Y       |      Y       |      Y       |
 | [Metrics schema](/metrics-schema.md)                       | Y | Y | Y | Y | Y | Y  | Y            |      Y       |      Y       |      Y       |      Y       |      Y       |
 | [Statements summary tables](/statement-summary-tables.md)    | Y | Y | Y | Y | Y | Y | Y            |      Y       |      Y       |      Y       |      Y       |      Y       |
@@ -193,9 +211,12 @@ This document lists the features supported in each TiDB version. Note that suppo
 | [`SET CONFIG`](/dynamic-config.md)                           | Y | Y | Y | Y | Y | Experimental| Experimental | Experimental | Experimental | Experimental | Experimental | Experimental |
 | [DM WebUI](/dm/dm-webui-guide.md) | Experimental| Experimental| Experimental | Experimental| Experimental | Experimental | N | N | N | N | N | N |
 | [Foreground Quota Limiter](/tikv-configuration-file.md#foreground-quota-limiter)  | Y | Y | Y | Y| Experimental | Experimental | N | N | N | N | N | N |
+| [Background Quota Limiter](/tikv-configuration-file.md#background-quota-limiter) | Experimental | Experimental | Experimental | Experimental | N | N | N | N | N | N | N | N |
 | [EBS volume snapshot backup and restore](https://docs.pingcap.com/tidb-in-kubernetes/v1.4/backup-to-aws-s3-by-snapshot)                        |    Y    |    Y    |    N     |    N     |    N    |    N     |    N     |    N     |    N     |    N     |    N     |  N        |
 | [PITR](/br/backup-and-restore-overview.md)   |    Y    |    Y    |    Y     |    Y     |    N    |    N     |    N     |    N     |    N     |    N     |    N     |  N        |
 | [Global memory control](/configure-memory-usage.md#configure-the-memory-usage-threshold-of-a-tidb-server-instance)   |    Y    |    Experimental    |    N     |    N     |    N    |    N     |    N     |    N     |    N     |    N     |    N     |  N        |
+| [Cross-cluster RawKV replication](/tikv-configuration-file.md#api-version-new-in-v610) | Experimental | Experimental | Experimental | Experimental | N | N | N | N | N | N | N | N |
+| [Green GC](/system-variables.md#tidb_gc_scan_lock_mode-new-in-v50) | Experimental | Experimental | Experimental | Experimental | Experimental | Experimental | Experimental | Experimental | Experimental | Experimental | Experimental | N |
 
 [^1]: TiDB incorrectly treats latin1 as a subset of utf8. See [TiDB #18955](https://github.com/pingcap/tidb/issues/18955) for more details.
 
