@@ -181,8 +181,8 @@ The above example is the minimum configuration to perform the migration task. Fo
 
 For more information on `routes`, `filters` and other configurations in the task file, see the following documents:
 
-- [Table routing](/dm/dm-key-features.md#table-routing)
-- [Block & Allow Table Lists](/dm/dm-key-features.md#block-and-allow-table-lists)
+- [Table routing](/dm/dm-table-routing.md)
+- [Block & Allow Table Lists](/dm/dm-block-allow-table-lists.md)
 - [Binlog event filter](/filter-binlog-event.md)
 - [Filter Certain Row Changes Using SQL Expressions](/filter-dml-event.md)
 

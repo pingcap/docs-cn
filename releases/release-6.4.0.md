@@ -24,7 +24,7 @@ In v6.4.0-DMR, the key new features and improvements are as follows:
 - TiFlash supports the SM4 algorithm for [encryption at rest](/encryption-at-rest.md#tiflash).
 - Support using a SQL statement to [compact TiFlash replicas of specified partitions in a table immediately](/sql-statements/sql-statement-alter-table-compact.md#compact-tiflash-replicas-of-specified-partitions-in-a-table).
 - Support [backing up a TiDB cluster using EBS volume snapshots](https://docs.pingcap.com/tidb-in-kubernetes/v1.4/backup-to-aws-s3-by-snapshot).
-- DM supports [writing upstream data source information to the extended columns of the downstream merged table](/dm/dm-key-features.md#extract-table-schema-and-source-information-and-write-into-the-merged-table).
+- DM supports [writing upstream data source information to the extended columns of the downstream merged table](/dm/dm-table-routing.md#extract-table-schema-and-source-information-and-write-into-the-merged-table).
 
 ## New features
 
@@ -229,7 +229,7 @@ In v6.4.0-DMR, the key new features and improvements are as follows:
 
     When merging sharded schemas and tables from upstream to TiDB, you can manually add several fields (extended columns) in the target table and specify their values when configuring the DM task. For example, if you specify the names of the upstream sharded schema and table for the extended columns, the data written to the downstream by DM will include the schema name and table name. When the downstream data looks unusual, you can use this feature to quickly locate the data source information in the target table, such as the schema name and table name.
 
-    For more information, see [Extract table, schema, and source information and write into the merged table](/dm/dm-key-features.md#extract-table-schema-and-source-information-and-write-into-the-merged-table).
+    For more information, see [Extract table, schema, and source information and write into the merged table](/dm/dm-table-routing.md#extract-table-schema-and-source-information-and-write-into-the-merged-table).
 
 * DM optimizes the pre-check mechanism by changing some mandatory check items to optional ones [#7333](https://github.com/pingcap/tiflow/issues/7333) @[lichunzhu](https://github.com/lichunzhu)
 
@@ -371,7 +371,7 @@ In v6.4.0-DMR, the key new features and improvements are as follows:
     + TiDB Data Migration (DM)
 
         - Remove the useless `operate-source update` command from dmctl [#7246](https://github.com/pingcap/tiflow/issues/7246) @[buchuitoudegou](https://github.com/buchuitoudegou)
-        - Fix the issue that DM full import fails if the upstream database uses DDL statements that are incompatible with TiDB. You can create the schema of target tables in TiDB manually in advance using DDL statements supported by TiDB to ensure successful import  [#37984](https://github.com/pingcap/tidb/issues/37984) @[lance6716](https://github.com/lance6716) 
+        - Fix the issue that DM full import fails if the upstream database uses DDL statements that are incompatible with TiDB. You can create the schema of target tables in TiDB manually in advance using DDL statements supported by TiDB to ensure successful import  [#37984](https://github.com/pingcap/tidb/issues/37984) @[lance6716](https://github.com/lance6716)
 
     + TiDB Lightning
 

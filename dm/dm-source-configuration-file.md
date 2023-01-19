@@ -111,4 +111,4 @@ Starting from DM v2.0.2, you can configure binlog event filters in the source co
 | Parameter        | Description                                    |
 | :------------ | :--------------------------------------- |
 | `case-sensitive` | Determines whether the filtering rules are case-sensitive. The default value is `false`. |
-| `filters` | Sets binlog event filtering rules. For details, see [Binlog event filter parameter explanation](/dm/dm-key-features.md#parameter-explanation-2). |
+| `filters` | Sets binlog event filtering rules. For details, see [Binlog event filter parameter explanation](/dm/dm-binlog-event-filter.md#parameter-descriptions). |

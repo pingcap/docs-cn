@@ -1,12 +1,12 @@
 ---
-title: Data Migration Overview
+title: TiDB Data Migration Overview
 summary: Learn about the Data Migration tool, the architecture, the key components, and features.
-aliases: ['/docs/tidb-data-migration/dev/overview/']
+aliases: ['/docs/tidb-data-migration/dev/overview/','/docs/tidb-data-migration/dev/feature-overview/','/tidb/dev/dm-key-features']
 ---
 
 <!-- markdownlint-disable MD007 -->
 
-# Data Migration Overview
+# TiDB Data Migration Overview
 
 <!--
 ![star](https://img.shields.io/github/stars/pingcap/tiflow?style=for-the-badge&logo=github) ![license](https://img.shields.io/github/license/pingcap/tiflow?style=for-the-badge) ![forks](https://img.shields.io/github/forks/pingcap/tiflow?style=for-the-badge)
@@ -21,7 +21,7 @@ aliases: ['/docs/tidb-data-migration/dev/overview/']
 - **Migrating and merging MySQL shards.** DM supports migrating and merging multiple MySQL database instances upstream to one TiDB database downstream. It supports customizing replication rules for different migration scenarios. It can automatically detect and handle DDL changes of upstream MySQL shards, which greatly reduces the operational cost.
 - **Various types of filters.** You can predefine event types, regular expressions, and SQL expressions to filter out MySQL binlog events during the data migration process.
 - **Centralized management.** DM supports thousands of nodes in a cluster. It can run and manage a large number of data migration tasks concurrently.
-- **Optimization of the third-party Online Schema Change process.** In the MySQL ecosystem, tools such as gh-ost and pt-osc are widely used. DM optimizes its change process to avoid unnecessary migration of intermediate data. For details, see [online-ddl](/dm/dm-key-features.md#online-ddl-tools).
+- **Optimization of the third-party Online Schema Change process.** In the MySQL ecosystem, tools such as gh-ost and pt-osc are widely used. DM optimizes its change process to avoid unnecessary migration of intermediate data. For details, see [online-ddl](/dm/dm-online-ddl-tool-support.md).
 - **High availability.** DM supports data migration tasks to be scheduled freely on different nodes. The running tasks are not affected when a small number of nodes crash.
 
 ## Quick installation

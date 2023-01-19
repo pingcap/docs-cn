@@ -120,7 +120,7 @@ Then you can perform the following steps to fix the `ERROR 1062 (23000): Duplica
 
 ## Special processing when the upstream RDS contains sharded tables
 
-If the upstream data source is an RDS and it contains sharded tables, the table names in MySQL binlog might be invisible when connecting to a SQL client. For example, if the upstream is a UCloud distributed database, the table name in the binlog might have an extra prefix `_0001`. Therefore, you need to configure [table routing](/dm/dm-key-features.md#table-routing) based on the table names in binlog, instead of those in the SQL client.
+If the upstream data source is an RDS and it contains sharded tables, the table names in MySQL binlog might be invisible when connecting to a SQL client. For example, if the upstream is a UCloud distributed database, the table name in the binlog might have an extra prefix `_0001`. Therefore, you need to configure [table routing](/dm/dm-table-routing.md) based on the table names in binlog, instead of those in the SQL client.
 
 ## Create/drop tables in the upstream
 

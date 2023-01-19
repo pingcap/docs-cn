@@ -78,7 +78,7 @@ To configure the block and allow list of data source tables for the data migrati
           tbl-name: "log"
     ```
 
-    For detailed configuration rules, see [Block and allow table lists](/dm/dm-key-features.md#block-and-allow-table-lists).
+    For detailed configuration rules, see [Block and allow table lists](/dm/dm-block-allow-table-lists.md).
 
 2. Reference the block and allow list rules in the data source configuration to filter tables to be migrated.
 
@@ -113,7 +113,7 @@ To configure the filters of binlog events for the data migration task, perform t
         action: Do
     ```
 
-    For detailed configuration rules, see [Binlog event filter](/dm/dm-key-features.md#binlog-event-filter).
+    For detailed configuration rules, see [Binlog event filter](/dm/dm-binlog-event-filter.md).
 
 2. Reference the binlog event filtering rules in the data source configuration to filter specified binlog events of specified tables or schemas in the data source.
 
@@ -151,7 +151,7 @@ To configure the routing mapping rules for migrating data source tables to speci
         target-schema: "test"
     ```
 
-    For detailed configuration rules, see [Table Routing](/dm/dm-key-features.md#table-routing).
+    For detailed configuration rules, see [Table Routing](/dm/dm-table-routing.md).
 
 2. Reference the routing mapping rules in the data source configuration to filter tables to be migrated.
 
@@ -186,7 +186,7 @@ shard-mode: "pessimistic"       # The shard merge mode. Optional modes are ""/"p
 
 ## Other configurations
 
-The following is an overall task configuration example of this document. The complete task configuration template can be found in [DM task configuration file full introduction](/dm/task-configuration-file-full.md). For the usage and configuration of other configuration items, refer to [Features of Data Migration](/dm/dm-key-features.md).
+The following is an overall task configuration example of this document. The complete task configuration template can be found in [DM task configuration file full introduction](/dm/task-configuration-file-full.md).
 
 ```yaml
 ---
