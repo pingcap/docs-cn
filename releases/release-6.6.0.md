@@ -55,6 +55,32 @@ TiDB 版本：6.6.0
 
     更多信息，请参考[用户文档](链接)。
 
+* 为执行计划缓存增加 Warning [#issue号](链接) @[qw4990](https://github.com/qw4990)
+
+    当执行计划无法进入执行计划缓存时， TiDB 会通过 warning 的方式说明其无法被缓存的原因， 降低诊断的难度。例如：
+
+    ```sql
+    mysql> prepare st from 'select * from t where a<?';
+    Query OK, 0 rows affected (0.00 sec)
+
+    mysql> set @a='1'; 
+    Query OK, 0 rows affected (0.00 sec)
+
+    mysql> execute st using @a;  
+    Empty set, 1 warning (0.01 sec)
+
+    mysql> show warnings;
+    +---------+------+----------------------------------------------+
+    | Level   | Code | Message                                      |
+    +---------+------+----------------------------------------------+
+    | Warning | 1105 | skip plan-cache: '1' may be converted to INT |
+    +---------+------+----------------------------------------------+
+    ```
+    
+    上述例子中， 优化器进行了非 INT 类型到 INT 类型的转换，产生的计划可能随着参数变化有风险，因此不缓存。 
+
+    更多信息，请参考[用户文档](/sql-prepared-plan-cache.md#prepared-plan-cache-诊断)。
+
 ### 性能
 
 * 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接)
