@@ -42,6 +42,7 @@ Create Resource Group | CREATE RESOURCE GROUP `rg1` RRU_PER_SEC=100 WRU_PER_SEC=
 该语句是 TiDB 对 MySQL 语法的扩展。
 
 ## 另请参阅
+
 * [TiDB RESOURCE CONTROL](/tidb-resource-control.md)
 * [CREATE RESOURCE GROUP](/sql-statements/sql-statement-alter-resource-group.md)
 * [ALTER RESOURCE GROUP](/sql-statements/sql-statement-alter-resource-group.md)
