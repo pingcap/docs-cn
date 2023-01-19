@@ -107,61 +107,11 @@ summary: 给出一个 Spring Boot 构建 TiDB 应用程序示例。
 >
 > 如果你希望得到一个与本示例相同依赖的空白程序，而无需示例代码，可参考[创建相同依赖空白程序（可选）](#创建相同依赖空白程序可选)一节。
 
-<<<<<<< HEAD
-随后，此项目即可正常使用，但仅可使用 TiDB 与 MySQL 相同的能力部分，即使用 MySQL 方言。这是由于 Hibernate 支持 TiDB 方言的版本为 6.0.0.Beta2 以上，而 Spring Data JPA 对 Hibernate 的默认依赖版本为 5.6.4.Final。所以，推荐对 pom.xml 作出以下修改：
-
-1. 如此[依赖文件](https://github.com/pingcap-inc/tidb-example-java/blob/main/spring-jpa-hibernate/pom.xml#L26)中所示，将 **Spring Data JPA** 内引入的 `jakarta` 包进行排除，即将：
-
-    {{< copyable "" >}}
-
-    ```xml
-    <dependency>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-data-jpa</artifactId>
-    </dependency>
-    ```
-
-    更改为：
-
-    {{< copyable "" >}}
-
-    ```xml
-    <dependency>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-data-jpa</artifactId>
-    <exclusions>
-        <exclusion>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-core-jakarta</artifactId>
-        </exclusion>
-    </exclusions>
-    </dependency>
-    ```
-
-2. 随后如此[依赖文件](https://github.com/pingcap-inc/tidb-example-java/blob/main/spring-jpa-hibernate/pom.xml#L53)中所示，引入 `6.0.0.Beta2` 版本以上的 **Hibernate** 依赖，此处以 `6.0.0.CR2` 版本为例：
-
-    {{< copyable "" >}}
-
-    ```xml
-    <dependency>
-    <groupId>org.hibernate.orm</groupId>
-    <artifactId>hibernate-core</artifactId>
-    <version>6.0.0.CR2</version>
-    </dependency>
-    ```
-
-    更改完毕后即可获取一个空白的，拥有与示例程序相同依赖的 **Spring Boot** 应用程序。
-
-## 第 5 步：运行应用程序
-
-此处对应用程序代码进行编译和运行，将产生一个 Web 应用程序。Hibernate 将创建一个 在数据库 `test` 内的表 `player_jpa`，如果你想应用程序的 Restful API 进行请求，这些请求将会在 TiDB 集群上运行[数据库事务](/develop/dev-guide-transaction-overview.md)。
-=======
 请下载或克隆示例代码库 [pingcap-inc/tidb-example-java](https://github.com/pingcap-inc/tidb-example-java)，并进入到目录 `spring-jpa-hibernate` 中。
 
 ## 第 5 步：运行应用程序
 
 接下来运行应用程序代码，将会生成一个 Web 应用程序。Hibernate 将在数据库 `test` 中创建一个表 `player_jpa`。如果你向应用程序的 Restful API 发送请求，这些请求将会在 TiDB 集群上运行[数据库事务](/develop/dev-guide-transaction-overview.md)。
->>>>>>> a8e92683b (Develop Guide Django Examples (#12302))
 
 如果你想了解有关此应用程序的代码的详细信息，可参阅[实现细节](#实现细节)部分。
 
@@ -341,13 +291,9 @@ Hibernate: create table player_jpa (id bigint not null, coins integer, goods int
 
     使用 `POST` 方法向 `/player` 端点发送请求来增加玩家，例如：
 
-<<<<<<< HEAD
-使用 **Get** 方法请求 `/player` 端点请求来获取玩家信息，额外的需要在路径上给出玩家的 `id` 参数，即 `/player/{id}` ，例如在请求 `id` 为 1 的玩家时：
-=======
     ```shell
     curl --location --request POST 'http://localhost:8080/player/' --header 'Content-Type: application/json' --data-raw '[{"coins":100,"goods":20}]'
     ```
->>>>>>> a8e92683b (Develop Guide Django Examples (#12302))
 
     这里使用 JSON 作为信息的载荷。表示需要创建一个金币数 `coins` 为 100，货物数 `goods` 为 20 的玩家。返回值为创建的玩家信息：
 
@@ -359,13 +305,9 @@ Hibernate: create table player_jpa (id bigint not null, coins integer, goods int
 
     使用 `GET` 方法向 `/player` 端点发送请求来获取玩家信息。此外，还需要在路径上给出玩家的 ID 参数，即 `/player/{id}`。例如，在请求 ID 为 1 的玩家时：
 
-<<<<<<< HEAD
-使用 **Get** 方法请求 `/player/limit` 端点请求来获取玩家信息，额外的需要在路径上给出限制查询的玩家信息的总数，即 `/player/limit/{limit}` ，例如在请求最多 3 个玩家的信息时：
-=======
     ```shell
     curl --location --request GET 'http://localhost:8080/player/1'
     ```
->>>>>>> a8e92683b (Develop Guide Django Examples (#12302))
 
     返回值为 ID 为 1 的玩家的信息：
 
@@ -374,45 +316,6 @@ Hibernate: create table player_jpa (id bigint not null, coins integer, goods int
     "coins": 200,
     "goods": 10,
     "id": 1
-<<<<<<< HEAD
-  },
-  {
-    "coins": 0,
-    "goods": 30,
-    "id": 2
-  },
-  {
-    "coins": 100,
-    "goods": 20,
-    "id": 3
-  }
-]
-```
-
-#### 分页获取玩家信息
-
-使用 **Get** 方法请求 `/player/page` 端点请求来分页获取玩家信息，额外的需要使用 URL 参数 ，例如在请求页面序号 `index` 为 0，每页最大请求量 `size` 为 2 时：
-
-```shell
-curl --location --request GET 'http://localhost:8080/player/page?index=0&size=2'
-```
-
-返回值为 `index` 为 0 的页，每页有 2 个玩家信息列表。此外，还包含了分页信息，如偏移量、总页数、是否排序等。
-
-```json
-{
-  "content": [
-    {
-      "coins": 200,
-      "goods": 10,
-      "id": 1
-    },
-    {
-      "coins": 0,
-      "goods": 30,
-      "id": 2
-=======
->>>>>>> a8e92683b (Develop Guide Django Examples (#12302))
     }
     ```
 
