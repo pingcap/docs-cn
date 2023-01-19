@@ -1,5 +1,5 @@
 ---
-title: TiDB 主备集群容灾
+title: 基于主备集群的容灾方案
 summary: 了解如何使用 TiCDC 构建主备集群进行容灾。
 ---
 
