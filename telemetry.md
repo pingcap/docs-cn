@@ -36,7 +36,7 @@ ADMIN SHOW TELEMETRY;
 
 ### TiDB Dashboard
 
-When the telemetry collection feature is enabled for TiDB Dashboard, usage information on the TiDB Dashboard web UI will be shared, including (but not limited to):
+When the telemetry collection feature is enabled for TiDB Dashboard, usage details of the TiDB Dashboard web UI will be shared, including (but not limited to):
 
 - A randomly generated telemetry ID.
 - User operation information, such as the name of the TiDB Dashboard web page accessed by the user.
@@ -46,7 +46,7 @@ To view the full content of the usage information shared to PingCAP, use the [Ne
 
 ### TiUP
 
-When the telemetry collection feature is enabled in TiUP, user operations with TiUP will be shared, including (but not limited to):
+When the telemetry collection feature is enabled in TiUP, usage details of TiUP will be shared, including (but not limited to):
 
 - A randomly generated telemetry ID.
 - Execution status of TiUP commands, such as whether the execution is successful and the execution duration.
@@ -58,6 +58,20 @@ To view the full content of the usage information shared to PingCAP, set the `TI
 
 ```shell
 TIUP_CLUSTER_DEBUG=enable tiup cluster list
+```
+
+### TiSpark
+
+When the telemetry collection feature is enabled for TiSpark, the Spark module will share the usage details of TiSpark, including (but not limited to):
+
+- A randomly generated telemetry ID.
+- Some configuration information of TiSpark, such as the read engine and whether streaming read is enabled.
+- Cluster deployment information, such as the machine hardware information, OS information, and component version number of the node where TiSpark is located.
+
+You can view TiSpark usage information that is collected in Spark logs. You can set the Spark log level to INFO or lower, for example:
+
+```shell
+cat {spark.log} | grep Telemetry report | tail -n 1
 ```
 
 ## Disable telemetry
