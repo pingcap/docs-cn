@@ -254,7 +254,7 @@ PingCAP 与开源社区合作，通过三方工具提供以下支持：
          <td>v4.0.5</td>
          <td>Compatible</td>
          <td><a href="https://github.com/pingcap/django-tidb" target="_blank" referrerpolicy="no-referrer-when-downgrade">django-tidb</a></td>
-         <td>N/A</td>
+         <td><a href="/zh/tidb/dev/dev-guide-sample-application-django">TiDB 和 Django 的简单 CRUD 应用程序</a></td>
       </tr>
       <tr>
          <td><a href="https://github.com/coleifer/peewee/" target="_blank" referrerpolicy="no-referrer-when-downgrade">peewee</a></td>
