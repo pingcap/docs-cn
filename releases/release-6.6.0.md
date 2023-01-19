@@ -14,6 +14,8 @@ TiDB 版本：6.6.0
 
 - MySQL 8.0 兼容的多值索引(Multi-Valued Index) (实验特性)
 - 基于资源组的资源管控 (实验特性)
+- 悲观锁队列的稳定唤醒模型
+- 数据请求的批量聚合
 
 ## 新功能
 
@@ -131,6 +133,12 @@ TiDB 版本：6.6.0
 
     更多信息，请参考[用户文档](/sql-prepared-plan-cache.md)。
 
+* 悲观锁队列的稳定唤醒模型 [#13298](https://github.com/tikv/tikv/issues/13298) @[MyonKeminta](https://github.com/MyonKeminta)
+
+    如果业务场景存在单点悲观锁冲突频繁的情况，原有的随机唤醒机制会造成事务响应时间的不确定性，长尾延迟高，甚至获取超时。 在 v6.6.0 中，通过设置系统变量 [`tidb_pessimistic_txn_aggressive_locking`](/system-variables.md#tidb_pessimistic_txn_aggressive_locking-从-v660-版本开始引入) 为 `ON` 可以开启悲观锁的稳定唤醒模型。 在新的唤醒模型下， 队列的唤醒顺序可被严格控制，避免无效的唤醒造成的资源浪费，在锁冲突严重的场景中，能够减少长尾延时，降低 P99 响应时间。
+
+    更多信息，请参考[用户文档](/system-variables.md#tidb_pessimistic_txn_aggressive_locking-从-v660-版本开始引入)。
+
 ### 事务
 
 * 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接)
@@ -211,7 +219,7 @@ TiDB 版本：6.6.0
 |--------|------------------------------|------|
 | [`tidb_enable_resource_control`](/system-variables.md#tidb_enable_resource_control-%E4%BB%8E-v660-%E7%89%88%E6%9C%AC%E5%BC%80%E5%A7%8B%E5%BC%95%E5%85%A5) | 新增  | 该变量是资源管控特性的开关。该变量设置为 `ON` 后，集群支持应用按照资源组做资源隔离。 |
 | [`tidb_store_batch_size`](/system-variables.md#tidb_store_batch_size) | 修改 | 此变量可用于生产环境。 设置 `IndexLookUp` 算子回表时多个 Coprocessor Task 的 batch 大小。`0` 代表不使用 batch。当 `IndexLookUp` 算子的回表 Task 数量特别多，出现极长的慢查询时，可以适当调大该参数以加速查询。 |
-|        |                              |      |
+| [`tidb_pessimistic_txn_aggressive_locking`](/system-variables.md#tidb_pessimistic_txn_aggressive_locking-从-v660-版本开始引入) | 新增 | 是否对悲观锁启用加强的悲观锁唤醒模型。 |
 |        |                              |      |
 
 ### 配置文件参数
