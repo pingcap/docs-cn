@@ -173,7 +173,7 @@ Quit the server with CONTROL-C.
 
 <SimpleTab groupId="request">
 
-<div label="使用 Postman 请求（推荐）" value="postman">
+<div label="使用 Postman（推荐）" value="postman">
 
 1. 将配置文件 [`Player.postman_collection.json`](https://raw.githubusercontent.com/pingcap-inc/tidb-example-python/main/django_example/Player.postman_collection.json) 导入 [Postman](https://www.postman.com/)。
 
@@ -205,7 +205,7 @@ Quit the server with CONTROL-C.
 
 </div>
 
-<div label="使用 curl 请求" value="curl">
+<div label="使用 curl" value="curl">
 
 下面使用 curl 请求服务端。
 
@@ -310,7 +310,7 @@ Quit the server with CONTROL-C.
 
 </div>
 
-<div label="Shell 脚本" value="shell">
+<div label="使用 Shell 脚本" value="shell">
 
 为方便测试，你可以使用 [`request.sh`](https://github.com/pingcap-inc/tidb-example-python/blob/main/django_example/request.sh) 脚本依次发送以下请求：
 
