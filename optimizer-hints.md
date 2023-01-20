@@ -372,7 +372,12 @@ SELECT /*+ IGNORE_INDEX(t1, idx1, idx2) */ * FROM t t1;
 
 ### KEEP_ORDER(t1_name, idx1_name [, idx2_name ...])
 
-`KEEP_ORDER(t1_name, idx1_name [, idx2_name ...])` 提示优化器对指定表仅使用给出的索引，并且按顺序读取指定的索引。需要特别注意的是，这个 hint 有可能会导致 SQL 报错，如果测试时发生这种情况，请移除该 Hint。如果测试时运行正常，则可以放心使用。 
+`KEEP_ORDER(t1_name, idx1_name [, idx2_name ...])` 提示优化器对指定表仅使用给出的索引，并且按顺序读取指定的索引。
+
+> **警告：**
+>
+> 这个 hint 有可能会导致 SQL 语句报错，建议先进行测试。如果测试时发生报错，请移除该 Hint。如果测试时运行正常，则可以继续使用。 
+
 
 此 hint 通常应用在下面这种场景中：
 
