@@ -143,6 +143,10 @@ mysql> SHOW WARNINGS;
 
 ## 使用多值索引
 
+> **警告：**
+>
+> 当前该功能为实验特性，不建议在生产环境中使用。
+
 [多值索引](/sql-statements/sql-statement-create-index.md#多值索引)和普通索引有所不同，TiDB 目前只会使用 [IndexMerge](/explain-index-merge.md) 来访问多值索引。因此要想使用多值索引进行数据访问，请确保 IndexMerge 功能已打开。
 
 目前 TiDB 支持将 `json_member_of`、`json_contains` 和 `json_overlaps` 条件转换成 IndexMerge 来访问多值索引；同时可通过 optimizer hint [`use_index`](/optimizer-hints.md#use_indext1_name-idx1_name--idx2_name-) 和 [`use_index_merge`](/optimizer-hints.md#use_index_merget1_name-idx1_name--idx2_name-) 来指定使用 IndexMerge，或者由优化器通过代价估算自动选择，见下面例子：
