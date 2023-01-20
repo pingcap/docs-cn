@@ -40,8 +40,6 @@ Golang 的 `sql.DB` 是并发安全的，无需引入外部包。
 
 封装一个用于适配 TiDB 事务的工具包 [util](https://github.com/pingcap-inc/tidb-example-golang/tree/main/util)，编写以下代码备用：
 
-{{< copyable "" >}}
-
 ```go
 package util
 
@@ -110,8 +108,6 @@ func (tx *TiDBSqlTx) Rollback() error {
 **配置文件**
 
 在 Java 中，如果你使用 Maven 作为包管理，在 `pom.xml` 中的 `<dependencies>` 节点中，加入以下依赖来引入 `HikariCP`，同时设定打包目标，及 JAR 包启动的主类，完整的 `pom.xml` 如下所示:
-
-{{< copyable "" >}}
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -190,8 +186,6 @@ func (tx *TiDBSqlTx) Rollback() error {
 **代码**
 
 随后编写代码：
-
-{{< copyable "" >}}
 
 ```java
 package com.pingcap.txn;
@@ -341,8 +335,6 @@ public class TxnExample {
 <div label="Golang" value="golang">
 
 首先编写一个封装了所需的数据库操作的 `helper.go` 文件：
-
-{{< copyable "" >}}
 
 ```go
 package main
@@ -591,8 +583,6 @@ func createUser(txn *util.TiDBSqlTx, id int, nickname string, balance decimal.De
 ```
 
 再编写一个包含 `main` 函数的 `txn.go` 来调用 `helper.go`，同时处理传入的命令行参数：
-
-{{< copyable "" >}}
 
 ```go
 package main
@@ -887,8 +877,6 @@ OPTIMISTIC=False ALICE=4 BOB=6 python3 txn_example.py
 
 SQL 日志：
 
-{{< copyable "sql" >}}
-
 ```sql
 /* txn 1 */ BEGIN PESSIMISTIC
     /* txn 2 */ BEGIN PESSIMISTIC
@@ -976,8 +964,6 @@ OPTIMISTIC=False ALICE=4 BOB=7 python3 txn_example.py
 
 </SimpleTab>
 
-{{< copyable "sql" >}}
-
 ```sql
 /* txn 1 */ BEGIN PESSIMISTIC
     /* txn 2 */ BEGIN PESSIMISTIC
@@ -1035,8 +1021,6 @@ mysql> SELECT * FROM users;
 使用 Java 编写乐观事务示例：
 
 **代码编写**
-
-{{< copyable "" >}}
 
 ```java
 package com.pingcap.txn.optimistic;
@@ -1198,15 +1182,11 @@ public class TxnExample {
 
 此处，需将 `pom.xml` 中启动类：
 
-{{< copyable "" >}}
-
 ```xml
 <mainClass>com.pingcap.txn.TxnExample</mainClass>
 ```
 
 更改为：
-
-{{< copyable "" >}}
 
 ```xml
 <mainClass>com.pingcap.txn.optimistic.TxnExample</mainClass>
@@ -1271,8 +1251,6 @@ OPTIMISTIC=True ALICE=4 BOB=6 python3 txn_example.py
 </SimpleTab>
 
 SQL 语句执行过程：
-
-{{< copyable "sql" >}}
 
 ```sql
     /* txn 2 */ BEGIN OPTIMISTIC
@@ -1368,8 +1346,6 @@ OPTIMISTIC=True ALICE=4 BOB=7 python3 txn_example.py
 </div>
 
 </SimpleTab>
-
-{{< copyable "sql" >}}
 
 ```sql
 /* txn 1 */ BEGIN OPTIMISTIC

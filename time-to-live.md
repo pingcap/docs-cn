@@ -1,6 +1,6 @@
 ---
 title: 使用 TTL (Time to Live) 定期删除过期数据
-summary: 介绍如何通过 SQL 来管理表数据的生命周期
+summary: Time to Live (TTL) 提供了行级别的生命周期控制策略。本篇文档介绍如何通过 TTL (Time to Live) 来管理表数据的生命周期。
 ---
 
 # 使用 TTL (Time to Live) 定期删除过期数据

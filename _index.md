@@ -11,7 +11,7 @@ hide_commit: true
 
 [TiDB 简介](https://docs.pingcap.com/zh/tidb/dev/overview)
 
-[基本功能](https://docs.pingcap.com/zh/tidb/dev/basic-features)
+[功能概览](https://docs.pingcap.com/zh/tidb/dev/basic-features)
 
 [TiFlash](https://docs.pingcap.com/zh/tidb/dev/tiflash-overview)
 
