@@ -9,7 +9,7 @@ summary: 学习使用 TiDB 特有的函数。
 
 | 函数名 | 函数说明 |
 | :-------------- | :------------------------------------- |
-| [`TIDB_BOUNDED_STALENESS()`](#tidb_bounded_staleness) |  `TIDB_BOUNDED_STALENESS` 函数指示 TiDB 在时间范围内读取尽可能新的数据。参见[使用 AS OF TIMESTAMP 语法读取历史数据](/as-of-timestamp.md)。 |
+| [`TIDB_BOUNDED_STALENESS()`](#tidb_bounded_staleness) |  `TIDB_BOUNDED_STALENESS` 函数指示 TiDB 在指定时间范围内读取尽可能新的数据。参见[使用 AS OF TIMESTAMP 语法读取历史数据](/as-of-timestamp.md)。 |
 | [`TIDB_DECODE_KEY(str)`](#tidb_decode_key) | `TIDB_DECODE_KEY` 函数用于将 TiDB 编码的键输入解码为包含 `_tidb_rowid` 和 `table_id` 的 JSON 结构。你可以在一些系统表和日志输出中找到 TiDB 的编码键。 |
 | [`TIDB_DECODE_PLAN(str)`](#tidb_decode_plan) | `TIDB_DECODE_PLAN` 函数用于解码 TiDB 执行计划。 |
 | `TIDB_IS_DDL_OWNER()` | `TIDB_IS_DDL_OWNER` 函数用于检查你连接的 TiDB 实例是否是 DDL Owner。DDL Owner 代表集群中所有其他节点执行 DDL 语句的 TiDB 实例。 |
@@ -179,7 +179,7 @@ Check Table Before Drop: false
 
 ## TIDB_DECODE_SQL_DIGESTS
 
-`TIDB_DECODE_SQL_DIGESTS（）` 函数用于在集群中查询一组 SQL Digest 所对应的 SQL 语句的归一化形式（即去除格式和参数后的形式）。函数接受 1 个或 2 个参数：
+`TIDB_DECODE_SQL_DIGESTS()` 函数用于在集群中查询一组 SQL Digest 所对应的 SQL 语句的归一化形式（即去除格式和参数后的形式）。函数接受 1 个或 2 个参数：
 
 * `digests`：字符串类型，该参数应符合 JSON 字符串数组的格式，数组中的每个字符串应为一个 SQL Digest。
 * `stmtTruncateLength`：可选参数，整数类型，用来限制返回结果中每条 SQL 语句的长度，超过指定的长度会被截断。0 表示不限制长度。
