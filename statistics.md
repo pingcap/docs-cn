@@ -35,6 +35,13 @@ For TiDB Cloud, the default value of this variable is `1`.
 >    ```sql
 >    SELECT DISTINCT(CONCAT('DROP STATS ', table_schema, '.', table_name, ';')) FROM information_schema.tables, mysql.stats_histograms WHERE stats_ver = 2 AND table_id = tidb_table_id;
 >    ```
+>
+> - If the result of the preceding statement is too long to copy and paste, you can export the result to a temporary text file and then perform execution from the file like this:
+>
+>    ```sql
+>    SELECT DISTINCT ... INTO OUTFILE '/tmp/sql.txt';
+>    mysql -h XXX -u user -P 4000 ... < '/tmp/sql.txt';
+>    ```
 
 These two versions include different information in TiDB:
 
