@@ -17,6 +17,12 @@ aliases: ['/zh/tidb/dev/br-usage-backup/','/zh/tidb/dev/br-usage-restore/','/zh/
 
 ## 对集群进行快照备份
 
+> **注意：**
+>
+> 以下场景采用 S3 AK/SK 授权方式来进行模拟，如果使用 IAM Role 授权，需要设置 --send-credentials-to-tikv 为 false
+> 如果使用不同存储或者其他授权方式，请参考[外部存储](/br/external-storage.md)，来进行参数调整。
+>
+
 使用 `br backup full` 可以进行一次快照备份。该命令的详细使用帮助可以通过执行 `br backup full --help` 查看。
 
 ```shell
