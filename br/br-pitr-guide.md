@@ -16,7 +16,7 @@ aliases: ['/zh/tidb/dev/pitr-usage/']
 
 > **注意：**
 >
-> 以下场景采用 S3 AK/SK 授权方式来进行模拟，如果使用 IAM Role 授权，需要设置 --send-credentials-to-tikv 为 false
+> 以下场景采用 S3 AK/SK 授权方式来进行模拟，如果使用 IAM Role 授权，需要设置 --send-credentials-to-tikv 为 false。
 > 如果使用不同存储或者其他授权方式，请参考[外部存储](/br/external-storage.md)，来进行参数调整。
 >
 
