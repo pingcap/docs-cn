@@ -40,10 +40,8 @@ TiDB 支持以下 `DirectResourceGroupOption`, 其中 [`RU` (Resource Unit)](/ti
 
 | 参数           |含义                                  |举例                      |
 |----------------|--------------------------------------|----------------------------|
-
-|`RRU_PER_SEC`|每秒钟读 RU 的配额                        |`RRU_PER_SEC` = 500|
-
-|`WRU_PER_SEC`|每秒钟写 RU 的配额                        |`WRU_PER_SEC` = 300|
+|`RRU_PER_SEC`  | 每秒钟读 RU 的配额                       |`RRU_PER_SEC` = 500  |
+|`WRU_PER_SEC` | 每秒钟写 RU 的配额                       |`WRU_PER_SEC` = 300 |
 
 如果设置了 `BURSTABLE` 属性，对应的资源组就允许在系统资源充足的情况下，可以超出配额占用使用系统资源。
 
