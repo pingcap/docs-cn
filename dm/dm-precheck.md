@@ -93,21 +93,21 @@ tiup dmctl check-task ./task.yaml
 
 在任务配置中使用 `import-mode: "physical"` 后，会增加如下的前置检查项以保证 [Physical Import](/tidb-lightning/tidb-lightning-physical-import-mode.md) 正常运行。如果参照提示后仍然难以完成这些前置检查，你可以尝试使用 [Logical Import](/tidb-lightning/tidb-lightning-logical-import-mode.md) 进行导入。
 
-* 下游数据库空 Region 的检查
+* 下游数据库中的空 Region
 
     - 如果空 Region 的数量大于 `max(1000, 表的数量 * 3)`，即大于“1000”和“3 倍表数量”二者中的较大者，会对用户返回警告。可以调整 PD 相关参数加快空 Region 的合并速度，并等待数目下降以解除警告。参见 [PD 调度策略最佳实践 - Region Merge 速度慢](/best-practices/pd-scheduling-best-practices.md#region-merge-速度慢)
     
-* 下游数据库 Region 分布的检查
+* 下游数据库中的 Region 分布
 
-    - 统计不同的 TiKV 上的 Region 数目，如果最少的 Region 数目与最多的 Region 数目比例小于 0.75 会对用户返回警告。可以调整 PD 相关参数加快 Region 调度速度，并等待数目变化以解除警告。参见 [PD 调度策略最佳实践 - Leader/Region 分布不均衡](/best-practices/pd-scheduling-best-practices.md#leaderregion-分布不均衡)
+    - 统计不同的 TiKV 上的 Region 数目。如果最少的 Region 数目与最多的 Region 数目比例小于 0.75，前置检查会向用户返回警告。可以调整 PD 相关参数加快 Region 调度速度，并等待 Region 数目变化以解除警告。参见 [PD 调度策略最佳实践 - Leader/Region 分布不均衡](/best-practices/pd-scheduling-best-practices.md#leaderregion-分布不均衡)
     
-* 下游数据库 TiDB、PD、TiKV 组件版本检查
+* 下游数据库 TiDB、PD、TiKV 组件的版本
 
     - Physical Import 需要调用 TiDB、PD、TiKV 接口，如果版本不符合要求，会返回错误。
     
-* 下游数据库剩余空间检查
+* 下游数据库的剩余空间
 
-    - 计算上游数据库所有白名单表的估算大小之和 (`source_size`)，如果下游数据库剩余空间小于 `source_size`，前置检查会返回错误；如果下游数据库剩余空间小于 TiKV 副本数 \* `source_size` \* 2，前置检查会返回警告。
+    - 估算上游数据库所有白名单表的大小之和 (`source_size`)，如果下游数据库剩余空间小于 `source_size`，前置检查会返回错误；如果下游数据库剩余空间小于 TiKV 副本数 \* `source_size` \* 2，前置检查会返回警告。
     
 * 下游数据库是否在运行与 Physical Import 不兼容的任务
 
@@ -154,11 +154,11 @@ tiup dmctl check-task ./task.yaml
 |schema_of_shard_tables|检查上游 MySQL 多实例分库分表的表结构一致性|
 |auto_increment_ID|检查上游 MySQL 多实例分库分表的自增主键冲突|
 |online_ddl|检查上游是否处于 [Online-DDL](/dm/feature-online-ddl.md) 过程中|
-|empty_region|Physical Import 空 Region 数目检查|
-|region_distribution|Physical Import Region 分布检查|
-|downstream_version|下游数据库 TiDB、PD、TiKV 版本检查|
-|free_space|下游数据库剩余空间检查|
-|downstream_mutex_features|下游数据库与 Physical Import 不兼容任务的检查|
+|empty_region|Physical Import 检查空 Region 的数目|
+|region_distribution|Physical Import 检查 Region 的分布|
+|downstream_version|检查下游数据库 TiDB、PD、TiKV 的版本|
+|free_space|检查下游数据库的剩余空间|
+|downstream_mutex_features|检查下游数据库是否存在与 Physical Import 不兼容的任务|
 
 > **注意：**
 >
