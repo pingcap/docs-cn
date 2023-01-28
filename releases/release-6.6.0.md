@@ -141,7 +141,7 @@ TiDB 版本：6.6.0
 
 * 悲观锁队列的稳定唤醒模型 [#13298](https://github.com/tikv/tikv/issues/13298) @[MyonKeminta](https://github.com/MyonKeminta)
 
-    如果业务场景存在单点悲观锁冲突频繁的情况，原有的随机唤醒机制会造成事务响应时间的不确定性，长尾延迟高，甚至获取超时。 在 v6.6.0 中，通过设置系统变量 [`tidb_pessimistic_txn_aggressive_locking`](/system-variables.md#tidb_pessimistic_txn_aggressive_locking-从-v660-版本开始引入) 为 `ON` 可以开启悲观锁的稳定唤醒模型。 在新的唤醒模型下， 队列的唤醒顺序可被严格控制，避免无效的唤醒造成的资源浪费，在锁冲突严重的场景中，能够减少长尾延时，降低 P99 响应时间。
+    如果业务场景存在单点悲观锁冲突频繁的情况，原有的唤醒机制无法保证事务获取锁的时间，造成长尾延迟高，甚至获取超时。 在 v6.6.0 中，通过设置系统变量 [`tidb_pessimistic_txn_aggressive_locking`](/system-variables.md#tidb_pessimistic_txn_aggressive_locking-从-v660-版本开始引入) 为 `ON` 可以开启悲观锁的稳定唤醒模型。 在新的唤醒模型下， 队列的唤醒顺序可被严格控制，避免无效的唤醒造成的资源浪费，在锁冲突严重的场景中，能够减少长尾延时，降低 P99 响应时间。
 
     更多信息，请参考[用户文档](/system-variables.md#tidb_pessimistic_txn_aggressive_locking-从-v660-版本开始引入)。
 
