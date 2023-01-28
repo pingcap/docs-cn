@@ -41,25 +41,6 @@ The following errors are always fatal, and cannot be skipped by changing `max-er
 
 Unique/Primary key conflict in the Local-backend is handled separately and explained in the next section.
 
-## Duplicate resolution in Local-backend mode
-
-In the Local-backend mode, TiDB Lightning imports data by first converting them to KV pairs and ingesting the pairs into TiKV in batches. Unlike the TiDB-backend mode, duplicate rows are not detected until the end of a task. Therefore, duplicate errors in the Local-backend mode are not controlled by `max-error`, but rather by a separate configuration `duplicate-resolution`.
-
-{{< copyable "" >}}
-
-```toml
-[tikv-importer]
-duplicate-resolution = 'none'
-```
-
-The value options of `duplicate-resolution` are as follows:
-
-* **'none'**: Does not detect duplicate data. If a unique/primary key conflict does exist, the imported table will have inconsistent data and index, and will fail checksum check.
-* **'record'**: Detects duplicate data, but does not attempt to fix it. If a unique/primary key conflict does exist, the imported table will have inconsistent data and index, and will skip checksum and report the count of the conflict errors.
-* **'remove'**: Detects duplicate data, and removes *all* duplicated rows. The imported table will be consistent, but the involved rows are ignored and have to be added back manually.
-
-TiDB Lightning duplicate resolution can detect duplicate data only within the data source. This feature cannot handle conflict with existing data before running TiDB Lightning.
-
 ## Error report
 
 If TiDB Lightning encounters errors during the import, it outputs a statistics summary about these errors in both your terminal and the log file when it exits.
@@ -131,7 +112,7 @@ CREATE TABLE conflict_error_v1 (
 
 **type_error_v1** records all [type errors](#type-error) managed by the `max-error` configuration. There is one row per error.
 
-**conflict_error_v1** records all [unique/primary key conflict in the Local-backend](#duplicate-resolution-in-local-backend-mode). There are 2 rows per pair of conflicts.
+**conflict_error_v1** records all unique/primary key conflict in the Local-backend. There are 2 rows per pair of conflicts.
 
 | Column       | Syntax | Type | Conflict | Description                                                                                                                         |
 | ------------ | ------ | ---- | -------- | ----------------------------------------------------------------------------------------------------------------------------------- |
