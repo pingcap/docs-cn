@@ -60,11 +60,8 @@ delta_index_cache_size = 0
 
 ## 存储路径相关配置，从 v4.0.9 开始生效
 [storage]
-    ## 该参数从 v5.2.0 开始废弃，请使用 `[storage.io_rate_limit]` 相关配置
-    # bg_task_io_rate_limit = 0
 
     ## DTFile 储存文件格式
-    ## * format_version = 1 老旧文件格式，已废弃
     ## * format_version = 2 v6.0.0 以前版本的默认文件格式
     ## * format_version = 3 v6.0.0 及 v6.1.x 版本的默认文件格式，具有更完善的检验功能
     ## * format_version = 4 v6.2.0 及以后版本的默认文件格式，优化了写放大问题，同时减少了后台线程消耗
@@ -160,11 +157,19 @@ delta_index_cache_size = 0
     ## 在 v6.2.0 以及后续版本，强烈建议保留默认值 `false`，不要将其修改为 `true`。具体请参考已知问题 [#5576](https://github.com/pingcap/tiflash/issues/5576)。
     # dt_enable_logical_split = false
 
-    ## 单次 coprocessor 查询过程中，对中间数据的内存限制，单位为 byte，默认为 0，表示不限制
+    ## 单次查询过程中，节点对中间数据的内存限制
+    ## 设置为整数时，单位为 byte，比如 34359738368 表示 32 GiB 的内存限制，0 表示无限制
+    ## 设置为 [0.0, 1.0) 之间的浮点数时，指节点总内存的比值，比如 0.8 表示总内存的 80%，0.0 表示无限制
+    ## 默认值为 0，表示不限制
+    ## 当查询试图申请超过限制的内存时，查询终止执行并且报错
     max_memory_usage = 0
 
-    ## 所有查询过程中，对中间数据的内存限制，单位为 byte，默认为 0，表示不限制
-    max_memory_usage_for_all_queries = 0
+    ## 所有查询过程中，节点对中间数据的内存限制 
+    ## 设置为整数时，单位为 byte，比如 34359738368 表示 32 GiB 的内存限制，0 表示无限制
+    ## 设置为 [0.0, 1.0) 之间的浮点数时，指节点总内存的比值，比如 0.8 表示总内存的 80%，0.0 表示无限制
+    ## 默认值为 0.8，表示总内存的 80%
+    ## 当查询试图申请超过限制的内存时，查询终止执行并且报错
+    max_memory_usage_for_all_queries = 0.8
 
     ## 从 v5.0 引入，表示 TiFlash Coprocessor 最多同时执行的 cop 请求数量。如果请求数量超过了该配置指定的值，多出的请求会排队等待。如果设为 0 或不设置，则使用默认值，即物理核数的两倍。
     cop_pool_size = 0
@@ -184,7 +189,7 @@ delta_index_cache_size = 0
 
     ## TiFlash 存储引擎的压缩级别，默认为 1。
     ## 如果 dt_compression_method 设置为 LZ4，推荐将该值设为 1；
-    ## 如果 dt_compression_method 设置为 zstd ，推荐将该值设为 -1 或 1，设置为 -1 的压缩率更小，但是读性能会更好；
+    ## 如果 dt_compression_method 设置为 zstd，推荐将该值设为 -1 或 1，设置为 -1 的压缩率更小，但是读性能会更好；
     ## 如果 dt_compression_method 设置为 LZ4HC，推荐将该值设为 9。
     dt_compression_level = 1
 

@@ -47,7 +47,7 @@ aliases: ['/docs-cn/dev/grafana-tidb-dashboard/','/docs-cn/dev/reference/key-mon
     - Keep Alive OPM：每个 TiDB 实例每分钟刷新监控的次数，通常不需要关注。
     - Panic And Critical Error：TiDB 中出现的 Panic、Critical Error 数量。
     - Time Jump Back OPS：每个 TiDB 实例上每秒操作系统时间回跳的次数。
-    - Get Token Duration：每个连接获取 Token 的耗时  。
+    - Get Token Duration：每个连接获取 Token 的耗时。
     - Skip Binlog Count：TiDB 写入 Binlog 失败的数量。
     - Client Data Traffic：TiDB 和客户端的数据流量。
 
@@ -169,3 +169,10 @@ aliases: ['/docs-cn/dev/grafana-tidb-dashboard/','/docs-cn/dev/reference/key-mon
     - Wait Duration 95: 批量消息处理的等待时间。
     - Batch Client Unavailable Duration 95：批处理客户端的不可用时长。
     - No Available Connection Counter：批处理客户端不可用的连接数。
+
+- TTL
+    - TTL QPS By Type：TTL 任务产生的不同类型语句的 QPS 信息。
+    - TTL Processed Rows Per Second：TTL 任务每秒处理的过期数据的行数。
+    - TTL Scan/Delete Query Duration：TTL 的扫描/删除语句的执行时间。
+    - TTL Scan/Delete Worker Time By Phase：TTL 内部工作线程的不同阶段所占用的时间。
+    - TTL Job Count By Status：当前正在执行的 TTL 任务的数量。

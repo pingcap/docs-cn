@@ -41,7 +41,7 @@ Sink URI 用于指定 TiCDC 目标系统的连接信息，遵循以下格式：
 一个通用的配置样例如下所示：
 
 ```shell
---sink-uri="mysql://root:123456@127.0.0.1:3306/?worker-count=16&max-txn-row=5000&transaction-atomicity=table"
+--sink-uri="mysql://root:123456@127.0.0.1:3306"
 ```
 
 URI 中可配置的参数如下：
@@ -105,8 +105,8 @@ level = "eventual"
 # 单个 redo log 文件大小，单位 MiB，默认值 64，建议该值不超过 128。
 max-log-size = 64
 
-# 刷新或上传 redo log 至 S3 的间隔，单位毫秒，默认 1000，建议范围 500-2000。
-flush-interval = 1000
+# 刷新或上传 redo log 至 S3 的间隔，单位毫秒，建议该参数 >= 2000。
+flush-interval = 2000
 
 # 存储 redo log 的形式，包括 nfs（NFS 目录），S3（上传至S3）
 storage = "s3://logbucket/test-changefeed?endpoint=http://$S3_ENDPOINT/"

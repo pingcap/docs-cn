@@ -16,7 +16,7 @@ TiDB 版本：6.1.3
 
     - TiCDC
 
-        - 将 [`transaction-atomicity`](/ticdc/ticdc-sink-to-mysql.md#sink-uri-配置-mysqltidb) 的默认值从 `table` 修改为 `none`，提升同步的稳定性 [#7505](https://github.com/pingcap/tiflow/issues/7505) @[asddongmen](https://github.com/asddongmen)
+        - 将 [`transaction-atomicity`](/ticdc/ticdc-sink-to-mysql.md#sink-uri-配置-mysqltidb) 的默认值从 `table` 修改为 `none`，降低同步延迟，减少系统出现 OOM 的风险。同时，系统只拆分少量的事务（即超过 1024 行的事务），而不再拆分所有事务 [#7505](https://github.com/pingcap/tiflow/issues/7505) [#5231](https://github.com/pingcap/tiflow/issues/5231) @[asddongmen](https://github.com/asddongmen)
 
 ## 提升改进
 

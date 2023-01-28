@@ -9,7 +9,7 @@ summary: 了解 TiCDC 相关的常见问题。
 
 > **注意：**
 >
-> 本文档 `cdc cli` 命令中指定 PD 地址为 `--pd=http://10.0.10.25:2379`，在使用时你需要根据实际地址进行替换。
+> 本文档 `cdc cli` 命令中指定 server 地址为 `--server=http://127.0.0.1:8300`，在使用时你需要根据实际地址进行替换。
 
 ## TiCDC 创建任务时如何选择 start-ts？
 
@@ -29,7 +29,7 @@ summary: 了解 TiCDC 相关的常见问题。
 可以使用 `cdc cli` 查询同步任务的状态。例如：
 
 ```shell
-cdc cli changefeed list --pd=http://10.0.10.25:2379
+cdc cli changefeed list --server=http://127.0.0.1:8300
 ```
 
 上述命令输出如下：
@@ -109,7 +109,7 @@ TiCDC 为 service GC safepoint 设置的存活有效期为 24 小时，即 TiCDC
 支持。要开启 Canal 格式输出，只需在 `--sink-uri` 中指定 protocol 为 `canal` 即可，例如：
 
 ```shell
-cdc cli changefeed create --pd=http://10.0.10.25:2379 --sink-uri="kafka://127.0.0.1:9092/cdc-test?kafka-version=2.4.0&protocol=canal" --config changefeed.toml
+cdc cli changefeed create --server=http://127.0.0.1:8300 --sink-uri="kafka://127.0.0.1:9092/cdc-test?kafka-version=2.4.0&protocol=canal" --config changefeed.toml
 ```
 
 > **注意：**
@@ -258,7 +258,7 @@ TiCDC 需要磁盘是为了缓冲上游写入高峰时下游消费不及时堆�
 
 ## 在两个异地 TiDB 集群之间同步数据，如何部署 TiCDC？
 
-建议部署在下游 TiDB 集群。这是因为，如果上下游网络延迟较大，例如超过 100 ms 时，由于 MySQL 传输协议的原因，TiCDC 向下游执行 SQL 的延迟会急剧增加，导致系统的吞吐下降。部署在下游能够极大缓解该问题。
+建议将 TiCDC 部署在下游 TiDB 集群。这是因为，如果上下游网络延迟较大，例如超过 100 ms 时，由于 MySQL 传输协议的原因，TiCDC 向下游执行 SQL 的延迟会急剧增加，导致系统的吞吐下降。部署在下游能够极大缓解该问题。
 
 ## 如何理解 DML 和 DDL 语句之间的执行顺序？
 

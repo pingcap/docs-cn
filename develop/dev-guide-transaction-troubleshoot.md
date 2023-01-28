@@ -12,8 +12,6 @@ aliases: ['/zh/tidb/dev/transaction-troubleshoot']
 
 如果应用程序遇到下面错误时，说明遇到了死锁问题：
 
-{{< copyable "sql" >}}
-
 ```sql
 ERROR 1213: Deadlock found when trying to get lock; try restarting transaction
 ```
@@ -21,8 +19,6 @@ ERROR 1213: Deadlock found when trying to get lock; try restarting transaction
 当两个及以上的事务，双方都在等待对方释放已经持有的锁或因为加锁顺序不一致，造成循环等待锁资源，就会出现“死锁”。这里以 [bookshop](/develop/dev-guide-bookshop-schema-design.md) 数据库中的 `books` 表为示例演示死锁：
 
 先给 `books` 表中写入 2 条数据：
-
-{{< copyable "sql" >}}
 
 ```sql
 INSERT INTO books (id, title, stock, published_at) VALUES (1, 'book-1', 10, now()), (2, 'book-2', 10, now());
@@ -58,8 +54,6 @@ INSERT INTO books (id, title, stock, published_at) VALUES (1, 'book-1', 10, now(
 
 或者直接用 1 条 SQL 购买 2 本书，也能避免死锁，而且执行效率更高：
 
-{{< copyable "sql" >}}
-
 ```sql
 UPDATE books SET stock=stock-1 WHERE id IN (1, 2);
 ```
@@ -70,11 +64,11 @@ UPDATE books SET stock=stock-1 WHERE id IN (1, 2);
 
 ### 解决方案 3：使用乐观事务
 
-乐观事务模型下，并不会有死锁问题，但应用端需要加上乐观事务在失败后的重试逻辑，具体重试逻辑见 [应用端重试和错误处理](#应用端重试和错误处理)。
+乐观事务模型下，并不会有死锁问题，但应用端需要加上乐观事务在失败后的重试逻辑，具体重试逻辑见[应用端重试和错误处理](#应用端重试和错误处理)。
 
 ### 解决方案 4：重试
 
-正如错误信息中提示的那样，在应用代码中加入重试逻辑即可。具体重试逻辑见 [应用端重试和错误处理](#应用端重试和错误处理)。
+正如错误信息中提示的那样，在应用代码中加入重试逻辑即可。具体重试逻辑见[应用端重试和错误处理](#应用端重试和错误处理)。
 
 ## 应用端重试和错误处理
 

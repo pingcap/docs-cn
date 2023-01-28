@@ -17,8 +17,8 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 + 设置 TiKV panic 时是否调用 `abort()` 退出进程。此选项影响 TiKV 是否允许系统生成 core dump 文件。
 
-    + 如果此配置项值为 false ，当 TiKV panic 时，TiKV 调用 `exit()` 退出进程。
-    + 如果此配置项值为 true ，当 TiKV panic 时，TiKV 调用 `abort()` 退出进程。此时 TiKV 允许系统在退出时生成 core dump 文件。要生成 core dump 文件，你还需要进行 core dump 相关的系统配置（比如打开 `ulimit -c` 和配置 core dump 路径，不同操作系统配置方式不同）。建议将 core dump 生成路径设置在 TiKV 数据的不同磁盘分区，避免 core dump 文件占用磁盘空间过大，造成 TiKV 磁盘空间不足。
+    + 如果此配置项值为 false，当 TiKV panic 时，TiKV 调用 `exit()` 退出进程。
+    + 如果此配置项值为 true，当 TiKV panic 时，TiKV 调用 `abort()` 退出进程。此时 TiKV 允许系统在退出时生成 core dump 文件。要生成 core dump 文件，你还需要进行 core dump 相关的系统配置（比如打开 `ulimit -c` 和配置 core dump 路径，不同操作系统配置方式不同）。建议将 core dump 生成路径设置在 TiKV 数据的不同磁盘分区，避免 core dump 文件占用磁盘空间过大，造成 TiKV 磁盘空间不足。
 
 + 默认值：false
 
@@ -1572,7 +1572,7 @@ Raft Engine 相关的配置项。
 ### `data-encryption-method`
 
 + 数据文件的加密方法。
-+ 可选值：`"plaintext"`，`"aes128-ctr"`，`"aes192-ctr"`，`"aes256-ctr"`， `"sm4-ctr"`（从 v6.3.0 开始支持）
++ 可选值：`"plaintext"`，`"aes128-ctr"`，`"aes192-ctr"`，`"aes256-ctr"`，`"sm4-ctr"`（从 v6.3.0 开始支持）
 + 选择 `"plaintext"` 以外的值则表示启用加密功能。此时必须指定主密钥。
 + 默认值：`"plaintext"`
 
@@ -1604,6 +1604,16 @@ Raft Engine 相关的配置项。
 + 处理 RPC 请求的线程数量。
 + 默认值：8
 + 最小值：1
+
+### `memory-use-ratio` <span class="version-mark">从 v6.5.0 版本开始引入</span>
+
++ 从 v6.5.0 开始，PITR 支持直接将备份日志文件读取到缓存中，然后进行恢复。此配置项用来配置 PITR 恢复中可用内存与系统总内存的占比。
++ 可调整范围：[0.0, 0.5]
++ 默认值：`0.3`，表示系统 30% 的内存可用于 PITR 恢复；当为 `0.0` 时，表示通过下载日志文件到本地进行 PITR 恢复。
+
+> **注意：**
+>
+> 在小于 v6.5.0 的版本中，PITR 仅支持将备份文件下载到本地进行恢复。
 
 ## gc
 

@@ -44,7 +44,7 @@ cdc_servers:
 
 > **注意：**
 >
-> 在安装之前，请确认TiUP 中控机与 TiCDC 目标主机的 [SSH 互信及 sudo 免密](/check-before-deployment.md#手动配置-ssh-互信及-sudo-免密码)已经完成配置。
+> 在安装之前，请确认 TiUP 中控机与 TiCDC 目标主机的 [SSH 互信及 sudo 免密](/check-before-deployment.md#手动配置-ssh-互信及-sudo-免密码)已经完成配置。
 
 ## 使用 TiUP 在原有 TiDB 集群上新增或扩容 TiCDC 组件
 
@@ -95,7 +95,7 @@ tiup cluster upgrade <cluster-name> <cluster-version> --transfer-timeout 600
 
 > **注意：**
 >
-> 命令中的 `<cluster-name>` 需要替换为集群名字，`<cluster-version>` 需要替换为目标版本号，例如 v6.4.0。
+> 命令中的 `<cluster-name>` 需要替换为集群名字，`<cluster-version>` 需要替换为目标版本号，例如 v6.5.0。
 
 ### 升级的注意事项
 
@@ -111,7 +111,7 @@ tiup cluster upgrade <cluster-name> <cluster-version> --transfer-timeout 600
 
 ## 使用 TiUP 变更 TiCDC 集群配置
 
-本节介绍如何使用 TiUP 的 [`tiup cluster edit-config`](/tiup/tiup-component-cluster-edit-config.md) 命令来修改 TiCDC 的配置。在以下例子中，假设需要把 TiCDC 的 `gc-ttl` 从默认值 `86400` 修改为 `3600`，即 1 小时。
+本节介绍如何使用 TiUP 的 [`tiup cluster edit-config`](/tiup/tiup-component-cluster-edit-config.md) 命令来修改 TiCDC 的配置。在以下例子中，假设需要把 TiCDC 的 `gc-ttl` 从默认值 `86400` 修改为 `172800`，即 48 小时。
 
 1. 执行 `tiup cluster edit-config` 命令，注意将 `<cluster-name>` 替换成实际的集群名：
 
@@ -131,8 +131,10 @@ tiup cluster upgrade <cluster-name> <cluster-version> --transfer-timeout 600
       pump: {}
       drainer: {}
       cdc:
-        gc-ttl: 3600
+        gc-ttl: 172800
     ```
+
+    以上把 TiCDC 的 `gc-ttl` 的值设置为 48 小时。
 
 3. 执行 `tiup cluster reload -R cdc` 命令重新加载配置。
 
@@ -161,12 +163,14 @@ tiup ctl:<version> cdc capture list --server=http://10.0.10.25:8300
   {
     "id": "806e3a1b-0e31-477f-9dd6-f3f2c570abdd",
     "is-owner": true,
-    "address": "127.0.0.1:8300"
+    "address": "127.0.0.1:8300",
+    "cluster-id": "default"
   },
   {
     "id": "ea2a4203-56fe-43a6-b442-7b295f458ebc",
     "is-owner": false,
-    "address": "127.0.0.1:8301"
+    "address": "127.0.0.1:8301",
+    "cluster-id": "default"
   }
 ]
 ```
@@ -174,3 +178,4 @@ tiup ctl:<version> cdc capture list --server=http://10.0.10.25:8300
 - `id`：表示服务进程的 ID。
 - `is-owner`：表示该服务进程是否为 owner 节点。
 - `address`：该服务进程对外提供接口的地址。
+- `cluster-id`：该 TiCDC 的集群 ID，默认值为 `default`。
