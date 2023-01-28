@@ -201,7 +201,24 @@ PLAN REPLAYER CAPTURE 'sql_digest' 'plan_digest';
 PLAN REPLAYER CAPTURE 'sql_digest' '*';
 ```
 
-### 获取 `PLAN REPLAYER CAPTURE` 结果
+### 查看 `PLAN REPLAYER CAPTURE` 抓取任务
+
+我们可以通过以下方式查看集群中目前正在工作的 `PLAN REPLAYER CAPTURE` 的抓取任务:
+
+```sql
+mysql> plan replayer capture 'example_sql' 'example_plan';
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from mysql.plan_replayer_task;
++-------------+--------------+---------------------+
+| sql_digest  | plan_digest  | update_time         |
++-------------+--------------+---------------------+
+| example_sql | example_plan | 2023-01-28 11:58:22 |
++-------------+--------------+---------------------+
+1 row in set (0.01 sec)
+```
+
+### 查看 `PLAN REPLAYER CAPTURE` 抓取结果
 
 当 `PLAN REPLAYER CAPTURE` 成功抓取到结果后，可以通过以下 SQL 查看用于下载的文件标识:
 
@@ -218,3 +235,7 @@ mysql> select * from mysql.plan_replayer_status;
 ```
 
 下载 `PLAN REPLAYER CAPTURE` 的文件方法与 `PLAN REPLAYER` 相同，请参考 [`PLAN REPLAYER` 导出示例](#plan-replayer-导出示例)。
+
+> **注意：**
+> 
+> `PLAN REPLAYER CAPTURE` 的结果文件最多会在 TiDB 集群中保存一个小时，超时后 TiDB 会将其删除。
