@@ -38,7 +38,6 @@ TiDB 支持以下 `DirectResourceGroupOption`, 其中 [`RU` (Resource Unit)](/ti
 
 | 参数           |含义                                 | 举例                    |
 |---------------|-------------------------------------|------------------------|
-
 |`RRU_PER_SEC`|每秒钟读 RU 的配额                       |`RRU_PER_SEC` = 500     |
 |`WRU_PER_SEC`|每秒钟写 RU 的配额                       |`WRU_PER_SEC` = 300     |
 
