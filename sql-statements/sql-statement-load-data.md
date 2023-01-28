@@ -42,8 +42,6 @@ LINES TERMINATED BY '\n'
 
 用户可以通过 `IGNORE number LINES` 参数来忽略文件开始的 `number` 行，例如可以使用 `IGNORE 1 LINES` 来忽略文件的首行。
 
-另外，TiDB 目前对参数 `DuplicateOpt`、`CharsetOpt`、`LoadDataSetSpecOpt` 仅支持语法解析。
-
 ## 示例
 
 {{< copyable "sql" >}}
@@ -96,7 +94,7 @@ LOAD DATA LOCAL INFILE '/mnt/evo970/data-sets/bikeshare-data/2017Q4-capitalbikes
 
 ## MySQL 兼容性
 
-`LOAD DATA` 语句应该完全兼容 MySQL。若发现任何兼容性差异，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues/new/choose)。
+TiDB 中的 `LOAD DATA` 语句应该完全兼容 MySQL（除字符集选项被解析但会被忽略以外）。若发现任何兼容性差异，请在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues/new/choose)。
 
 > **注意：**
 >
