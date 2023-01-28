@@ -92,7 +92,6 @@ SET GLOBAL tidb_enable_resource_control = 'ON';
 
 ## 监控与图表
 
-新增加内存表 `information_schema.resource_groups` 可以查看集群中定义的资源组
 
 TiDB 会定时采集资源管控的运行时信息，并在 Grafana 中提供了相关指标的可视化图表。你可以在 **TiDB** > **Resource Control** 的面板下看到这些信息。指标详情见 [TiDB 重要监控指标详解](/grafana-tidb-dashboard.md) 中的 `Resource Control` 部分。
 
