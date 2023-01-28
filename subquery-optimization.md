@@ -75,7 +75,7 @@ At present, for a subquery in such scenarios, if the subquery is not a correlate
 create table t1(a int);
 create table t2(a int);
 insert into t2 values(1);
-explain select * from t where exists (select * from t2);
+explain select * from t1 where exists (select * from t2);
 ```
 
 ```sql
