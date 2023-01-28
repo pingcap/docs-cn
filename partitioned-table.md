@@ -853,7 +853,7 @@ ALTER TABLE member_level REORGANIZE PARTITION l1_2,l3,l4,l5,l6 INTO
     ERROR 8200 (HY000): Unsupported REORGANIZE PARTITION of RANGE; not adjacent partitions
     ```
 
-- 对于 Range 分区表，如需修改 Range 定义中的最大值，必须保证 `VALUES LESS THAN` 中新定义的值大于现有分区中的所有值。否则，TiDB 将返回报错，提示现有的行值对应不到分区。
+- 对于 Range 分区表，如需修改 Range 定义中的最大值，必须保证 `VALUES LESS THAN` 中新定义的值大于现有分区中的所有值。否则，TiDB 将报错，提示现有的行值对应不到分区。
 
     ```sql
     INSERT INTO members VALUES (313, "John", "Doe", "2022-11-22", NULL);
@@ -865,7 +865,7 @@ ALTER TABLE member_level REORGANIZE PARTITION l1_2,l3,l4,l5,l6 INTO
     ERROR 1526 (HY000): Table has no partition for value 2022
     ```
 
-- 对于 List 分区表，如需修改分区定义中的数据集合，必须保证新的数据集合能覆盖到该分区中现有的所有值，否则 TiDB 将返回报错。
+- 对于 List 分区表，如需修改分区定义中的数据集合，必须保证新的数据集合能覆盖到该分区中现有的所有值，否则 TiDB 将报错。
 
     ```sql
     INSERT INTO member_level (id, level) values (313, 6);
