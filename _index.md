@@ -125,11 +125,11 @@ hide_commit: true
 
 <LearningPath label="参考" icon="cloud-dev">
 
-[TiDB 配置文件](https://docs.pingcap.com/zh/tidb/dev/tidb-configuration-file)
+[TiDB 配置文件参数](https://docs.pingcap.com/zh/tidb/dev/tidb-configuration-file)
 
-[TiDB 配置参数](https://docs.pingcap.com/zh/tidb/dev/command-line-flags-for-tidb-configuration)
+[TiDB 命令行参数](https://docs.pingcap.com/zh/tidb/dev/command-line-flags-for-tidb-configuration)
 
-[TiDB Control](https://docs.pingcap.com/zh/tidb/dev/tidb-control) 
+[命令行工具 TiDB Control](https://docs.pingcap.com/zh/tidb/dev/tidb-control) 
 
 [系统变量](https://docs.pingcap.com/zh/tidb/dev/system-variables)
 
