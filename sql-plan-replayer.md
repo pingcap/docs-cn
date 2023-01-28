@@ -176,7 +176,7 @@ mysql> show stats_meta;
 
 ## `PLAN REPLAYER CAPTURE` 抓取目标计划
 
-在用户定位 TiDB 执行计划的部分场景中，目标 SQL 与目标计划的可能在查询中偶尔出现，无法使用 `PLAN REPLAYER` 直接抓取，此时我们可以使用 `PLAN REPLAYER CAPTURE` 来帮助我们定向抓取目标 SQL 与计划的优化器信息情况。
+在用户定位 TiDB 执行计划的部分场景中，目标 SQL 与目标计划可能仅在查询中偶尔出现，无法使用 `PLAN REPLAYER` 直接抓取。此时你可以使用 `PLAN REPLAYER CAPTURE` 来帮助你定向抓取目标 SQL 与目标计划的优化器信息情况。
 
 `PLAN REPLAYER CAPTURE` 主要功能如下：
 
@@ -185,17 +185,17 @@ mysql> show stats_meta;
 
 ### 开启 `PLAN REPLAYER CAPTURE` 功能
 
-`PLAN REPLAYER CAPTURE` 功能通过[`tidb_enable_plan_replayer_capture`](/system-variables.md#tidb_enable_plan_replayer_capture) 控制。
+`PLAN REPLAYER CAPTURE` 功能通过 [`tidb_enable_plan_replayer_capture`](/system-variables.md#tidb_enable_plan_replayer_capture) 控制。
 
 ### 使用 `PLAN REPLAYER CAPTURE` 功能
 
-我们可以通过以下方式向 TiDB 集群注册目标 SQL 和 PLAN 的 Digest:
+你可以通过以下方式向 TiDB 集群注册目标 SQL 和计划的 Digest:
 
 ```sql
 PLAN REPLAYER CAPTURE 'sql_digest' 'plan_digest';
 ```
 
-当我们的目标 SQL 有多种 PLAN 对应且都想抓取时，我们可以通过以下 SQL 一键注册:
+当你的目标 SQL 有多种执行计划对应，且你想抓取所有执行计划时，你可以通过以下 SQL 一键注册:
 
 ```sql
 PLAN REPLAYER CAPTURE 'sql_digest' '*';
@@ -217,4 +217,4 @@ mysql> select * from mysql.plan_replayer_status;
 3 rows in set (0.00 sec)
 ```
 
-下载 `PLAN REPLAYER CAPTURE` 的文件方法与 `PLAN REPLAYER` 相同。
+下载 `PLAN REPLAYER CAPTURE` 的文件方法与 `PLAN REPLAYER` 相同，请参考 [`PLAN REPLAYER` 导出示例](#plan-replayer-导出示例)。

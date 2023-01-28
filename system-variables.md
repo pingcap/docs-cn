@@ -1641,7 +1641,7 @@ Query OK, 0 rows affected (0.09 sec)
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 默认值：`FALSE`
-- 这个变量用来控制是否开启 plan replayer capture 功能的开启。默认值 0 代表关闭 plan replayer capture 的功能。
+- 这个变量用来控制是否开启 [`PLAN REPLAYER CAPTURE` 功能](/sql-plan-replayer.md)。默认值 `FALSE` 代表关闭 `PLAN REPLAYER CAPTURE` 功能。
 
 ### `tidb_enforce_mpp` <span class="version-mark">从 v5.1 版本开始引入</span>
 
