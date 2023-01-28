@@ -135,7 +135,7 @@ ALTER TABLE table_name
 ALTER TABLE table_name DROP FOREIGN KEY fk_identifier;
 ```
 
-如果外键约束在创建时定义了名称，则可以引用该名称来删除外键约束。否则约束名称是自动生成的，您可以使用 `SHOW CREATE TABLE` 查看外键名称：
+如果外键约束在创建时定义了名称，则可以引用该名称来删除外键约束。否则，约束名称是自动生成的。你可以使用 `SHOW CREATE TABLE` 查看外键名称：
 
 ```sql
 mysql> SHOW CREATE TABLE child\G
