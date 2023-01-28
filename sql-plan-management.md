@@ -318,7 +318,7 @@ SET BINDING [ENABLED | DISABLED] FOR BindableStmt;
 SET BINDING [ENABLED | DISABLED] FOR SQL DIGEST 'sql_digest';
 ```
 
-使用 `sql_digest` 所能变更的绑定状态和生效情况与[根据 SQL 语句变更绑定状态](#根据-sql-语句变更绑定状态)均相同，如果没有可以改变状态的绑定，则会输出一条内容为 `can't find any binding for 'sql_digest'` 的警告。
+使用 `sql_digest` 所能变更的绑定状态和生效情况与[根据 SQL 语句变更绑定状态](#根据-sql-语句变更绑定状态)相同。如果没有可以改变状态的绑定，则会输出一条内容为 `can't find any binding for 'sql_digest'` 的警告。
 
 ### 查看绑定
 
