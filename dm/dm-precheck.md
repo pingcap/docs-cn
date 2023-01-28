@@ -95,11 +95,11 @@ tiup dmctl check-task ./task.yaml
 
 * 下游数据库空 Region 的检查
 
-    - 如果空 Region 的数量大于 `max(1000, 表的数量 * 3)`，即大于“1000”和“3 倍表数量”二者中的较大者，会对用户返回警告。可以调整 PD 相关参数加快空 Region 的合并速度，并等待数目下降以解除警告。
+    - 如果空 Region 的数量大于 `max(1000, 表的数量 * 3)`，即大于“1000”和“3 倍表数量”二者中的较大者，会对用户返回警告。可以调整 PD 相关参数加快空 Region 的合并速度，并等待数目下降以解除警告。参见 [PD 调度策略最佳实践 - Region Merge 速度慢](/best-practices/pd-scheduling-best-practices.md#region-merge-速度慢)
     
 * 下游数据库 Region 分布的检查
 
-    - 统计不同的 TiKV 上的 Region 数目，如果最少的 Region 数目与最多的 Region 数目比例小于 0.75 会对用户返回警告。可以调整 PD 相关参数加快 Region 调度速度，并等待数目变化以解除警告
+    - 统计不同的 TiKV 上的 Region 数目，如果最少的 Region 数目与最多的 Region 数目比例小于 0.75 会对用户返回警告。可以调整 PD 相关参数加快 Region 调度速度，并等待数目变化以解除警告。参见 [PD 调度策略最佳实践 - Leader/Region 分布不均衡](/best-practices/pd-scheduling-best-practices.md#leaderregion-分布不均衡)
     
 * 下游数据库 TiDB、PD、TiKV 组件版本检查
 
