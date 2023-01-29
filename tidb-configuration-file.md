@@ -808,7 +808,7 @@ TiDB 服务状态相关配置。
 + 该值作为系统变量 [`tidb_enable_ddl`](/system-variables.md#tidb_enable_ddl) 的初始值。
 + 在 v6.3.0 之前，该功能由配置项 `run-ddl` 进行设置。
 
-### `tidb_statements_summary_enable_persistent` <span class="version-mark">从 v6.6.0 版本开始引入</span>
+### `tidb_stmt_summary_enable_persistent` <span class="version-mark">从 v6.6.0 版本开始引入</span>
 
 > **警告：**
 >
@@ -818,7 +818,7 @@ TiDB 服务状态相关配置。
 + 默认值：false
 + 详情参考 [持久化 Statements Summary](/statement-summary-tables.md#持久化-statements-summary)
 
-### `tidb_statements_summary_filename` <span class="version-mark">从 v6.6.0 版本开始引入</span>
+### `tidb_stmt_summary_filename` <span class="version-mark">从 v6.6.0 版本开始引入</span>
 
 > **警告：**
 >
@@ -827,7 +827,7 @@ TiDB 服务状态相关配置。
 + 当开启了 statements summary 持久化时，该配置用于指定持久化数据所写入的文件。
 + 默认值：tidb-statements.log
 
-### `tidb_statements_summary_file_max_days` <span class="version-mark">从 v6.6.0 版本开始引入</span>
+### `tidb_stmt_summary_file_max_days` <span class="version-mark">从 v6.6.0 版本开始引入</span>
 
 > **警告：**
 >
@@ -837,7 +837,7 @@ TiDB 服务状态相关配置。
 + 默认值：3
 + 可结合数据保留时长需求与磁盘空间占用适当调整。
 
-### `tidb_statements_summary_file_max_size` <span class="version-mark">从 v6.6.0 版本开始引入</span>
+### `tidb_stmt_summary_file_max_size` <span class="version-mark">从 v6.6.0 版本开始引入</span>
 
 > **警告：**
 >
@@ -847,7 +847,7 @@ TiDB 服务状态相关配置。
 + 默认值：64
 + 可结合数据保留时长需求与磁盘空间占用适当调整。
 
-### `tidb_statements_summary_file_max_backups` <span class="version-mark">从 v6.6.0 版本开始引入</span>
+### `tidb_stmt_summary_file_max_backups` <span class="version-mark">从 v6.6.0 版本开始引入</span>
 
 > **警告：**
 >
