@@ -140,7 +140,7 @@ MySQL [test]> select @@last_plan_from_cache;
 mysql> prepare st from 'select * from t where a > (select max(a) from t)';  -- 该查询包含子查询，因此无法被缓存
 Query OK, 0 rows affected, 1 warning (0.01 sec)
 
-mysql> show warnings; -- 查询包含子查询无法被缓存
+mysql> show warnings;  -- 查看查询计划无法被缓存的原因
 +---------+------+-----------------------------------------------+
 | Level   | Code | Message                                       |
 +---------+------+-----------------------------------------------+
