@@ -78,10 +78,10 @@ Empty set (0.00 sec)
 如果 `FLASHBACK CLUSTER` 指定的时间点有未完成的 DDL 记录，那么 `FLASHBACK CLUSTER` 将执行失败：
 
 ```sql
-mysql> alter table t add index k(a);
+mysql> ALTER TABLE t ADD INDEX k(a);
 Query OK, 0 rows affected (0.56 sec)
 
-mysql> admin show ddl jobs 1;
+mysql> ADMIN SHOW DDL JOBS 1;
 +--------+---------+-----------------------+------------------------+--------------+-----------+----------+-----------+---------------------+---------------------+---------------------+--------+
 | JOB_ID | DB_NAME | TABLE_NAME            | JOB_TYPE               | SCHEMA_STATE | SCHEMA_ID | TABLE_ID | ROW_COUNT | CREATE_TIME         | START_TIME          | END_TIME            | STATE  |
 +--------+---------+-----------------------+------------------------+--------------+-----------+----------+-----------+---------------------+---------------------+---------------------+--------+
@@ -89,7 +89,7 @@ mysql> admin show ddl jobs 1;
 +--------+---------+-----------------------+------------------------+--------------+-----------+----------+-----------+---------------------+---------------------+---------------------+--------+
 1 rows in set (0.01 sec)
 
-mysql> flashback cluster to timestamp '2023-01-29 14:33:12';
+mysql> FLASHBACK CLUSTER TO TIMESTAMP '2023-01-29 14:33:12';
 ERROR 1105 (HY000): Detected another DDL job at 2023-01-29 14:33:12 +0800 CST, can't do flashback
 ```
 
