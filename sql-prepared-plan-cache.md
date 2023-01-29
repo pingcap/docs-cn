@@ -136,7 +136,7 @@ MySQL [test]> select @@last_plan_from_cache;
 
 对于无法进行缓存的查询或计划，TiDB 会通过 warning 的方式输出其无法被缓存的原因。
 
-```
+```sql
 mysql> prepare st from 'select * from t where a > (select max(a) from t)';
 Query OK, 0 rows affected, 1 warning (0.01 sec)
 
