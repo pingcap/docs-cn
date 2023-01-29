@@ -7,7 +7,7 @@ summary: 了解 TiDB 的整体架构。
 
 推荐先观看以下视频（时长约 14 分钟），快速了解 TiDB 的整体架构。
 
-<video src="https://tidb-docs.s3.us-east-2.amazonaws.com/compressed+-+302+Lesson+01+architecture.mp4" width="100%" height="100%" controls="controls" poster="https://tidb-docs.s3.us-east-2.amazonaws.com/tumbnail+-+TiDB+architecture.png"></video>
+<video src="https://tidb-docs.s3.us-east-2.amazonaws.com/compressed+-+302+Lesson+01+architecture.mp4" width="100%" height="100%" controls="controls" poster="https://download.pingcap.com/docs-cn/poster_tidb_architecture.png"></video>
 
 与传统的单机数据库相比，TiDB 具有以下优势：
 
