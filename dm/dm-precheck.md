@@ -111,7 +111,7 @@ tiup dmctl check-task ./task.yaml
     
 * 下游数据库是否在运行与 Physical Import 不兼容的任务
 
-    - 目前 Physical Import 不兼容 TiCDC、PITR 任务，如果发现下游数据库正在运行这些任务，前置检查会返回错误。
+    - 目前 Physical Import 不兼容 [TiCDC](/ticdc/ticdc-overview.md)、[PITR](/br/br-pitr-guide.md) 任务，如果发现下游数据库正在运行这些任务，前置检查会返回错误。
 
 ### 增量数据迁移检查项
 
