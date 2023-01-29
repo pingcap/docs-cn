@@ -152,7 +152,7 @@ mysql> SHOW WARNINGS;
 目前 TiDB 支持将 `json_member_of`、`json_contains` 和 `json_overlaps` 条件转换成 IndexMerge 来访问多值索引；同时可通过 optimizer hint [`use_index`](/optimizer-hints.md#use_indext1_name-idx1_name--idx2_name-) 和 [`use_index_merge`](/optimizer-hints.md#use_index_merget1_name-idx1_name--idx2_name-) 来指定使用 IndexMerge，或者由优化器通过代价估算自动选择，见下面例子：
 
 ```sql
-mysql> CREATE TABLE t1 (j JSON, INDEX idx((CAST(j->'$.path' AS SIGNED ARRAY))));
+mysql> CREATE TABLE t1 (j JSON, INDEX idx((CAST(j->'$.path' AS SIGNED ARRAY)))); -- 使用 '$.path' 作为路径创建多值索引
 Query OK, 0 rows affected (0.04 sec)
 
 mysql> EXPLAIN SELECT /*+ use_index(t1, idx) */ * FROM t1 WHERE (1 MEMBER OF (j->'$.path'));
