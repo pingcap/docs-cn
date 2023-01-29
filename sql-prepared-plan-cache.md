@@ -132,7 +132,7 @@ MySQL [test]> select @@last_plan_from_cache;
 1 row in set (0.00 sec)
 ```
 
-## Prepared Plan Cache 诊断
+## 诊断 Prepared Plan Cache
 
 对于无法进行缓存的查询或计划，TiDB 会通过 warning 的方式输出其无法被缓存的原因。
 
