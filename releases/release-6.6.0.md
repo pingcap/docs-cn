@@ -109,6 +109,14 @@ TiDB 版本：6.6.0
 
     更多信息，请参考[用户文档](/identify-slow-queries.md)。
 
+* 自动捕获执行计划的生成 @[Yisaer](https://github.com/Yisaer) 
+
+    在执行计划问题的排查过程中， `PLAN REPLAYER` 能够协助保存现场，提升诊断的效率。 但在个别场景中，一些执行计划的生成无法任意重现，给诊断工作增加了难度。 针对这类问题， `PLAN REPLAYER` 扩展了自动捕获的能力。 通过 `PLAN REPLAYER CAPTURE` 命令字，用户可提前注册目标 SQL，也可以同时指定目标执行计划， 当 TiDB 检测到执行的 SQL 和执行计划与注册目标匹配时， 会自动生成并打包 `PLAN REPLAYER` 的信息，提升执行计划不稳定问题的诊断效率。 
+
+    启用这个功能需要设置系统变量 [`tidb_enable_plan_replayer_capture`](/system-variables.md#tidb_enable_plan_replayer_capture) 为 `ON`。
+
+    更多信息，请参考[用户文档](/sql-plan-replayer.md#使用-plan-replayer-capture-抓取目标计划)。
+
 ### 性能
 
 * 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接)
