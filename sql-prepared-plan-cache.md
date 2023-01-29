@@ -154,7 +154,7 @@ Query OK, 0 rows affected (0.00 sec)
 mysql> set @a='1'; 
 Query OK, 0 rows affected (0.00 sec)
 
-mysql> execute st using @a;  -- 优化中进行了非 INT 类型到 INT 类型的转换，产生的计划可能随着参数变化有风险，因此不缓存
+mysql> execute st using @a;  -- 该优化中进行了非 INT 类型到 INT 类型的转换，产生的执行计划可能随着参数变化而存在风险，因此 TiDB 不缓存该计划
 Empty set, 1 warning (0.01 sec)
 
 mysql> show warnings;
