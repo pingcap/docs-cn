@@ -27,6 +27,12 @@ TiDB 版本：6.6.0
 
     更多信息，请参考[用户文档](链接)。
 
+* 支持 MySQL 语法兼容的外键约束 （实验特性）[#18209](https://github.com/pingcap/tidb/issues/18209) @[crazycs520](https://github.com/crazycs520)
+
+    TiDB 在 v6.6.0 引入了 MySQL 语法兼容的外键约束特性，支持表内，表间的数据关联和约束校验能力，支持集联操作。该特性有助于保持数据一致性，提升数据质量，也方便客户进行数据建模。
+
+    更多信息，请参考[用户文档](/sql-statements/sql-statement-foreign-key.md)。
+
 * MySQL 兼容的多值索引(Multi-Valued Index) (实验特性) [#39592](https://github.com/pingcap/tidb/issues/39592) @[xiongjiwei](https://github.com/xiongjiwei)  @[qw4990](https://github.com/qw4990)
 
     TiDB 在 v6.6.0 引入了 MySQL 兼容的多值索引 (Multi-Valued Index)。 过滤 JSON 类型中某个数组的值是一个常见操作， 但普通索引对这类操作起不到加速作用，而在数组上创建多值索引能够大幅提升过滤的性能。 如果 JSON 类型中的某个数组上存在多值索引，  带有`MEMBER OF()`，`JSON_CONTAINS()`，`JSON_OVERLAPS()` 这几个函数的检索条件可以利用多值索引进行过滤，减少大量的 I/O 消耗，提升运行速度。
@@ -185,6 +191,12 @@ TiDB 版本：6.6.0
 
     更多信息，请参考[用户文档](/dynamic-config.md)。
 
+* 可通过命令行参数或者配置项在 TiDB 集群初次启动时指定执行的初始化 SQL 脚本 [#35625](https://github.com/pingcap/tidb/pull/35625) @[morgo](https://github.com/morgo)
+
+    命令行参数 `--initialize-sql-file` 用于指定 TiDB 集群初次启动时执行的 SQL 脚本，可用于修改系统变量的值，或者创建用户、分配权限等。
+
+    更多信息，请参考[配置项 `initialize-sql-file`](/tidb-configuration-file.md#initialize-sql-file-从-v660-版本开始引入)。
+
 ### MySQL 兼容性
 
 * 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接)
@@ -201,6 +213,12 @@ TiDB 版本：6.6.0
 
     更多信息，请参考[用户文档](链接)。
 
+* Data Migration(DM) 集成了 Lightning 的 Physical Import Mode ，全量迁移性能最高提升  10 倍  @[lance6716](https://github.com/lance6716)
+
+    功能描述 ：Data Migration (DM)的全量迁移能力，集成了 Lightning 的 Physical Import Mode ，使得 DM 做全量数据迁移时的性能最高可提升 10 倍，大大缩短了大数据量场景下的迁移时间。原先客户数据量较多时，客户得单独配置 Lightning 的 Physical Import Mode 的任务来做快速的全量数据迁移，之后再用 DM 来做增量数据迁移，配置复杂。现在集成该能力后，用户迁移大数据量的场景，无需再配置 Lightning 的任务，在一个 DM 任务里就可以搞定了。
+
+    更多信息，请参考[用户文档](https://github.com/pingcap/docs-cn/pull/12296)。
+
 ### 数据共享与订阅
 
 * TiKV-CDC 工具 GA，支持 RawKV 的 Change Data Capture [#48](https://github.com/tikv/migration/issues/48) @[zeminzhou](https://github.com/zeminzhou) @[haojinming](https://github.com/haojinming) @[pingyu](https://github.com/pingyu)
@@ -208,6 +226,12 @@ TiDB 版本：6.6.0
     TiKV-CDC 是一个 TiKV 集群的 CDC (Change Data Capture) 工具。TiKV 可以独立于 TiDB，与 PD 构成 KV 数据库，此时的产品形态为 RawKV。TiKV-CDC 支持订阅 RawKV 的数据变更，并实时同步到下游 TiKV 集群，从而实现 RawKV 的跨集群复制能力。
 
     更多信息，请参考[用户文档](https://tikv.org/docs/latest/concepts/explore-tikv-features/cdc/cdc-cn/)。
+
+* 同步到下游 Kafka 的 Changefeed 可将上游单表的同步任务下发到多个 TiCDC Nodes 执行，实现单表同步性能的水平扩展 [#7720](https://github.com/pingcap/tiflow/issues/7720) @[overvenus](https://github.com/overvenus)
+
+    功能描述：下游为 Kafka 的 Changefeed 可将上游单表的复制任务调度到多个  TiCDC Nodes 执行，实现单张表同步性能的水平扩展。在这个功能发布之前，上游单表写入数据量较大时，无法水平扩展单表的复制能力，导致同步延迟增加。该功能发布后，就可以通过水平扩展，解决单表同步性能的问题。
+
+    更多信息，请参考[用户文档](https://github.com/pingcap/docs-cn/pull/12693)。
 
 ### 部署及运维
 
@@ -288,6 +312,11 @@ TiDB 版本：6.6.0
     + TiUP
 
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
+        - note [#issue](链接) @[贡献者 GitHub ID](链接)
+
+    + Sync-diff-inspector
+
+        - 新增一个参数，当下游数据库的表在上游不存在时，可配置该参数跳过对上下游数据库表数量不一致场景的校验，而不是任务中断退出。 @[lichunzhu](https://github.com/lichunzhu) @[liumengya94](https://github.com/liumengya9)
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
 ## 错误修复
