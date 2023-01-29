@@ -59,7 +59,7 @@ sync-diff-inspector 需要获取表结构信息、查询数据，需要的数据
 
 sync-diff-inspector 的配置总共分为五个部分：
 
-- Global config: 通用配置，包括校验的线程数量、是否输出修复 SQL 、是否比对数据、是否跳过校验上游或下游不存在的表等。
+- Global config: 通用配置，包括校验的线程数量、是否输出修复 SQL、是否比对数据、是否跳过校验上游或下游不存在的表等。
 - Datasource config: 配置上下游数据库实例。
 - Routes: 上游多表名通过正则匹配下游单表名的规则。**（可选）**
 - Task config: 配置校验哪些表，如果有的表在上下游有一定的映射关系或者有一些特殊要求，则需要对指定的表进行配置。
@@ -268,7 +268,7 @@ Average Speed: 113.277149MB/s
 
 - TABLE: 该列表示对应的数据库及表名
 
-- RESULT: 校验是否完成。若用户设置 `skip-non-existing-table = true`，对于上游或下游不存在的表，该列为`skipped`
+- RESULT: 校验是否完成。若用户设置 `skip-non-existing-table = true`，对于上游或下游不存在的表，该列为 `skipped`
 
 - STRUCTURE EQUALITY: 表结构是否相同
 
