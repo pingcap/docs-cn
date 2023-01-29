@@ -33,13 +33,10 @@ TiDB 版本：6.1.4
     - TiCDC
 
         - 
+    
     - Lightning
 
         - Change severity of clusterResourceCheckItem,emptyRegionCheckItem from Critical to Warn [#37654](https://github.com/pingcap/tidb/issues/37654) @[lance6716](https://github.com/lance6716) 
-
-- 其他
-
-    - 
 
 ## Bug 修复
 
@@ -61,17 +58,15 @@ TiDB 版本：6.1.4
 
     planner
 
-    - make the both side operand of NAAJ & refuse partial column substitute in projection elimination [#37032](https://github.com/pingcap/tidb/issues/37032) @[lance6716](https://github.com/lance6716)
-    - 
+    - Make the both side operand of NAAJ & refuse partial column substitute in projection elimination [#37032](https://github.com/pingcap/tidb/issues/37032) @[lance6716](https://github.com/lance6716)    - 
 
 - PD
 
-    - Fix an issue that PD may repeatedly add Learner to a Region. [#5786](https://github.com/tikv/pd/issues/5786) @[ti-chi-bot](https://github.com/ti-chi-bot)
-    - 
+    - Fix an issue that PD may repeatedly add Learner to a Region. [#5786](https://github.com/tikv/pd/issues/5786) @[ti-chi-bot](https://github.com/ti-chi-bot)    - 
 
 + TiKV
 
-    - fix panic when there are multiple cgroup2 mountinfos [#13660](https://github.com/tikv/tikv/issues/13660) @[ti-srebot](https://github.com/ti-srebot)
+    - Fix panic when there are multiple cgroup2 mountinfos [#13660](https://github.com/tikv/tikv/issues/13660) @[ti-srebot](https://github.com/ti-srebot)
     - Fix a segfault when executing reset-to-version with tikv-ctl [#13829](https://github.com/tikv/tikv/issues/13829) @[ti-chi-bot](https://github.com/ti-chi-bot)
     - Fixed a problem that when a transaction in TiDB fails to execute a pessimistic DML and then executes another DML, if there are random network failures between TiDB and TiKV, it has risk to cause data inconsistency. [#40114](https://github.com/pingcap/tidb/issues/40114) @[ti-chi-bot](https://github.com/ti-chi-bot)
     - Fix panic when the size of one single write exceeds 2GiB. [#13848](https://github.com/tikv/tikv/issues/13848) @[YuJuncen](https://github.com/YuJuncen)
@@ -81,7 +76,7 @@ TiDB 版本：6.1.4
 
 + TiFlash
 
-    - Avoiding tiflash global locks with small probability of long term blocking. [#6418](https://github.com/pingcap/tiflash/issues/6418) @[SeaRise](https://github.com/SeaRise)
+    - Avoid tiflash global locks with small probability of long term blocking. [#6418](https://github.com/pingcap/tiflash/issues/6418) @[SeaRise](https://github.com/SeaRise)
     - Fix an issue that causes OOM with high throughput write [#6407](https://github.com/pingcap/tiflash/issues/6407) @[hehechen](https://github.com/hehechen)
     - Reduce memory usage under heavy write pressure. [#6431](https://github.com/pingcap/tiflash/issues/6431) @[SeaRise](https://github.com/SeaRise)
 
@@ -89,8 +84,7 @@ TiDB 版本：6.1.4
 
     + Backup & Restore (BR)
 
-        - Fixed a bug that may cause BR reject to restore unexpectedly. [#36053](https://github.com/pingcap/tidb/issues/36053) @[lance6716](https://github.com/lance6716)
-        - 
+        - Fixed a bug that may cause BR reject to restore unexpectedly. [#36053](https://github.com/pingcap/tidb/issues/36053) @[lance6716](https://github.com/lance6716)        - 
 
     + TiCDC
 
