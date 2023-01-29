@@ -49,7 +49,7 @@ Global Flags:
 Use "tiup mirror [command] --help" for more information about a command.
 ```
 
-## Clone a mirror
+## 克隆镜像
 
 执行 `tiup mirror clone` 命令，可构建本地地镜像：
 
@@ -117,7 +117,7 @@ tiup list
 
 设置 `TIUP_MIRRORS` 会永久改变镜像配置，例如 `tiup mirror set`。详情请参考 [tiup issue #651](https://github.com/pingcap/tiup/issues/651)。
 
-### Update the private repository
+### 更新私有仓库
 
 如果使用同样的 `target-dir` 目录再次运行 `tiup mirror clone` 命令，机器会创建新的清单，并下载可用的最新版本的组件。
 
