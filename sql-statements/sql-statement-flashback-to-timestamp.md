@@ -75,7 +75,7 @@ mysql> SELECT * FROM t;
 Empty set (0.00 sec)
 ```
 
-如果 `FLASHBACK CLUSTER` 指定的时间点有未完成的 DDL 记录，那么将执行失败：
+如果 `FLASHBACK CLUSTER` 指定的时间点有未完成的 DDL 记录，那么 `FLASHBACK CLUSTER` 将执行失败：
 
 ```sql
 mysql> alter table t add index k(a);
