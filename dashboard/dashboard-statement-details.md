@@ -50,7 +50,7 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-statement-details/','/docs-cn/dev/da
 
 ### 使用限制
 
-1. 对于带有子查询的查询、访问 TiFlash 的查询、3 张表或更多表进行 Join 的查询，目前还不支持通过 TiDB Dashboard 绑定执行计划。
+1. 对于带有子查询的查询、访问 TiFlash 的查询、三张表或更多表进行 Join 的查询，目前还不支持通过 TiDB Dashboard 绑定执行计划。
 
 ## 执行计划详情
 
