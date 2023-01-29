@@ -26,7 +26,7 @@ TiDB 提供语句级别、会话级别以及全局级别的 Stale Read 使用方
 除此以外，你也可以通过设置系统变量 [`tidb_external_ts`](/system-variables.md#tidb_external_ts-从-v640-版本开始引入) 来在某一会话或全局范围读取某一时间点前的历史数据。要使用该方式，请参阅[通过系统变量 `tidb_external_ts` 读取历史数据](/tidb-external-ts.md)。
 
 ## 限制
-当 Stale Read 查询下发到 TiFlash，且在设置的读取时间戳之后对该表做过 DDL 操作，此查询会报错。
+当 Stale Read 查询下发到 TiFlash，且在设置的读取时间戳之后对该表做过 DDL 操作，此查询会报错。原因是 TiFlash 只支持使用最新的表结构读取数据。
 举个例子：
 ```sql
 create table t1(id int);
