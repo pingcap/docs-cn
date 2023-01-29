@@ -134,7 +134,7 @@ MySQL [test]> select @@last_plan_from_cache;
 
 ## 诊断 Prepared Plan Cache
 
-对于无法进行缓存的查询或计划，TiDB 会通过 warning 的方式输出其无法被缓存的原因。
+对于无法进行缓存的查询或计划，可通过 `SHOW WARNINGS` 语句查看查询或计划是否被缓存。如果未被缓存，则可在结果中查看无法被缓存的原因。示例如下：
 
 ```sql
 mysql> prepare st from 'select * from t where a > (select max(a) from t)';  -- 该查询包含子查询，因此无法被缓存
