@@ -174,28 +174,28 @@ mysql> show stats_meta;
 
 加载并还原所需现场后，即可在该现场诊断和改进执行计划。
 
-## `PLAN REPLAYER CAPTURE` 抓取目标计划
+## 使用 `PLAN REPLAYER CAPTURE` 抓取目标计划
 
-在用户定位 TiDB 执行计划的部分场景中，目标 SQL 与目标计划可能仅在查询中偶尔出现，无法使用 `PLAN REPLAYER` 直接抓取。此时你可以使用 `PLAN REPLAYER CAPTURE` 来帮助你定向抓取目标 SQL 与目标计划的优化器信息情况。
+在用户定位 TiDB 执行计划的部分场景中，目标 SQL 语句与目标计划可能仅在查询中偶尔出现，无法使用 `PLAN REPLAYER` 直接抓取。此时你可以使用 `PLAN REPLAYER CAPTURE` 来帮助定向抓取目标 SQL 语句与目标计划的优化器信息。
 
 `PLAN REPLAYER CAPTURE` 主要功能如下：
 
-- 在 TiDB 集群内部提前注册目标 SQL 与 PLAN 的 Digest，并开始匹配目标查询。
+- 在 TiDB 集群内部提前注册目标 SQL 语句与执行计划的 Digest，并开始匹配目标查询。
 - 当目标查询匹配成功时，直接抓取其优化器相关信息，导出为 ZIP 格式的文件用于保存。
 
-### 开启 `PLAN REPLAYER CAPTURE` 功能
+### 开启 `PLAN REPLAYER CAPTURE`
 
-`PLAN REPLAYER CAPTURE` 功能通过 [`tidb_enable_plan_replayer_capture`](/system-variables.md#tidb_enable_plan_replayer_capture) 控制。
+`PLAN REPLAYER CAPTURE` 功能通过系统变量 [`tidb_enable_plan_replayer_capture`](/system-variables.md#tidb_enable_plan_replayer_capture) 控制。要开启 `PLAN REPLAYER CAPTURE`，将变量值设为 `ON`。
 
 ### 使用 `PLAN REPLAYER CAPTURE` 功能
 
-你可以通过以下方式向 TiDB 集群注册目标 SQL 和计划的 Digest:
+你可以通过以下方式向 TiDB 集群注册目标 SQL 语句和计划的 Digest:
 
 ```sql
 PLAN REPLAYER CAPTURE 'sql_digest' 'plan_digest';
 ```
 
-当你的目标 SQL 有多种执行计划对应，且你想抓取所有执行计划时，你可以通过以下 SQL 一键注册:
+当你的目标 SQL 语句对应多种执行计划，且你想抓取所有执行计划时，你可以通过以下 SQL 语句一键注册:
 
 ```sql
 PLAN REPLAYER CAPTURE 'sql_digest' '*';
@@ -203,13 +203,13 @@ PLAN REPLAYER CAPTURE 'sql_digest' '*';
 
 ### 查看 `PLAN REPLAYER CAPTURE` 抓取任务
 
-我们可以通过以下方式查看集群中目前正在工作的 `PLAN REPLAYER CAPTURE` 的抓取任务:
+你可以通过以下方式查看集群中目前正在工作的 `PLAN REPLAYER CAPTURE` 的抓取任务:
 
 ```sql
-mysql> plan replayer capture 'example_sql' 'example_plan';
+mysql> PLAN PLAYER CAPTURE 'example_sql' 'example_plan';
 Query OK, 1 row affected (0.01 sec)
 
-mysql> select * from mysql.plan_replayer_task;
+mysql> SELECT * FROM mysql.plan_replayer_task;
 +-------------+--------------+---------------------+
 | sql_digest  | plan_digest  | update_time         |
 +-------------+--------------+---------------------+
@@ -220,10 +220,10 @@ mysql> select * from mysql.plan_replayer_task;
 
 ### 查看 `PLAN REPLAYER CAPTURE` 抓取结果
 
-当 `PLAN REPLAYER CAPTURE` 成功抓取到结果后，可以通过以下 SQL 查看用于下载的文件标识:
+当 `PLAN REPLAYER CAPTURE` 成功抓取到结果后，可以通过以下 SQL 语句查看用于下载的文件标识:
 
 ```sql
-mysql> select * from mysql.plan_replayer_status;
+mysql> SELECT * FROM mysql.plan_replayer_status;
 +------------------------------------------------------------------+------------------------------------------------------------------+------------+-----------------------------------------------------------+---------------------+-------------+-----------------+
 | sql_digest                                                       | plan_digest                                                      | origin_sql | token                                                     | update_time         | fail_reason | instance        |
 +------------------------------------------------------------------+------------------------------------------------------------------+------------+-----------------------------------------------------------+---------------------+-------------+-----------------+
