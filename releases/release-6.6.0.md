@@ -67,6 +67,14 @@ TiDB 版本：6.6.0
 
     更多信息，请参考[用户文档](链接)。
 
+* 快速绑定执行计划 [#781](https://github.com/pingcap/tidb-dashboard/issues/781) @[YiniXu9506](https://github.com/YiniXu9506)
+
+    TiDB 的执行计划快速绑定功能：允许用户在 TiDB Dashboard 中一分钟内完成 SQL 与特定计划的绑定。
+
+    通过提供友好的界面简化在 TiDB 上绑定计划的过程，减少计划绑定过程的复杂性提高用户体验，提高计划绑定过程的效率。
+    
+    更多信息，请参考[用户文档](/dashboard/dashboard-statement-details.md)。
+   
 * 为执行计划缓存增加告警 [#issue号](链接) @[qw4990](https://github.com/qw4990)
 
     当执行计划无法进入执行计划缓存时， TiDB 会通过 warning 的方式说明其无法被缓存的原因， 降低诊断的难度。例如：
