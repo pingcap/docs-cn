@@ -33,9 +33,10 @@ FlashbackToTimestampStmt ::=
     ```
 
 * 执行 `FLASHBACK CLUSTER` SQL 语句的用户需要有 `SUPER` 权限。
-* 在 `FLASHBACK` 指定的时间点到开始执行的时间段内不能存在相关表结构变更的 DDL 记录。若存在，TiDB 会拒绝该 DDL 操作。
+* `FLASHBACK CLUSTER` 指定的时间点不能存在未执行完成的 DDL 记录。若存在，TiDB 会拒绝该 DDL 操作。
 * 在执行 `FLASHBACK CLUSTER TO TIMESTAMP` 前，TiDB 会主动断开所有相关表上的连接，并禁止对这些表进行读写操作，直到 `FLASHBACK` 完成。
 * `FLASHBACK CLUSTER TO TIMESTAMP` 命令不能取消，一旦开始执行 TiDB 会一直重试，直到成功。
+* 若执行 `FLASHBACK CLUSTER` 的集群创建了 TiCDC 同步任务，需要用户手动将下游的schema 定义进行恢复，并在 `FLASHBACK` 完成后重新创建 changefeed。
 
 ## 示例
 
@@ -74,22 +75,31 @@ mysql> SELECT * FROM t;
 Empty set (0.00 sec)
 ```
 
-如果从 `FLASHBACK` 指定的时间点到开始执行的时间段内有改变表结构的 DDL 记录，那么将执行失败：
+如果 `FLASHBACK CLUSTER` 指定的时间点有未完成的 DDL 记录，那么将执行失败：
 
 ```sql
-mysql> SELECT now();
-+---------------------+
-| now()               |
-+---------------------+
-| 2022-10-09 16:40:51 |
-+---------------------+
-1 row in set (0.01 sec)
+mysql> alter table t add index k(a);
+Query OK, 0 rows affected (0.56 sec)
 
-mysql> CREATE TABLE t(a int);
-Query OK, 0 rows affected (0.12 sec)
+mysql> admin show ddl jobs;
++--------+---------+-----------------------+------------------------+--------------+-----------+----------+-----------+---------------------+---------------------+---------------------+--------+
+| JOB_ID | DB_NAME | TABLE_NAME            | JOB_TYPE               | SCHEMA_STATE | SCHEMA_ID | TABLE_ID | ROW_COUNT | CREATE_TIME         | START_TIME          | END_TIME            | STATE  |
++--------+---------+-----------------------+------------------------+--------------+-----------+----------+-----------+---------------------+---------------------+---------------------+--------+
+|     84 | test    | t                     | add index /* ingest */ | public       |         2 |       82 |         0 | 2023-01-29 14:33:11 | 2023-01-29 14:33:11 | 2023-01-29 14:33:12 | synced |
+|     83 | test    | t                     | create table           | public       |         2 |       82 |         0 | 2023-01-29 14:32:55 | 2023-01-29 14:32:55 | 2023-01-29 14:32:55 | synced |
+|     81 | mysql   | tidb_ttl_task         | create table           | public       |         1 |       80 |         0 | 2023-01-29 14:28:11 | 2023-01-29 14:28:11 | 2023-01-29 14:28:11 | synced |
+|     79 | mysql   | tidb_ttl_table_status | create table           | public       |         1 |       78 |         0 | 2023-01-29 14:28:11 | 2023-01-29 14:28:11 | 2023-01-29 14:28:11 | synced |
+|     77 | mysql   | stats_table_locked    | create table           | public       |         1 |       76 |         0 | 2023-01-29 14:28:11 | 2023-01-29 14:28:11 | 2023-01-29 14:28:11 | synced |
+|     75 | mysql   | plan_replayer_task    | create table           | public       |         1 |       74 |         0 | 2023-01-29 14:28:11 | 2023-01-29 14:28:11 | 2023-01-29 14:28:11 | synced |
+|     73 | mysql   | plan_replayer_status  | create table           | public       |         1 |       72 |         0 | 2023-01-29 14:28:10 | 2023-01-29 14:28:10 | 2023-01-29 14:28:11 | synced |
+|     71 | mysql   | tidb_mdl_view         | create view            | public       |         1 |       70 |         0 | 2023-01-29 14:28:10 | 2023-01-29 14:28:10 | 2023-01-29 14:28:10 | synced |
+|     69 | mysql   | advisory_locks        | create table           | public       |         1 |       68 |         0 | 2023-01-29 14:28:10 | 2023-01-29 14:28:10 | 2023-01-29 14:28:10 | synced |
+|     67 | mysql   | analyze_jobs          | create table           | public       |         1 |       66 |         0 | 2023-01-29 14:28:10 | 2023-01-29 14:28:10 | 2023-01-29 14:28:10 | synced |
++--------+---------+-----------------------+------------------------+--------------+-----------+----------+-----------+---------------------+---------------------+---------------------+--------+
+10 rows in set (0.01 sec)
 
-mysql> FLASHBACK CLUSTER TO TIMESTAMP '2022-10-09 16:40:51';
-ERROR 1105 (HY000): Detected schema change due to another DDL job during [2022-10-09 16:40:51 +0800 CST, now), can't do flashback
+mysql> flashback cluster to timestamp '2023-01-29 14:33:12';
+ERROR 1105 (HY000): Detected another DDL job at 2023-01-29 14:33:12 +0800 CST, can't do flashback
 ```
 
 可以通过日志查看 `FLASHBACK` 执行进度，具体的日志如下所示：
