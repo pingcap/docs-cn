@@ -54,7 +54,7 @@ TiDB 版本：6.6.0
     功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
 
     更多信息，请参考[用户文档](链接)。
- *TiFlash 支持 TLS certificate hot reload（https://internal.pingcap.net/jira/browse/FD-906）
+ *TiFlash 支持 TLS certificate hot reload
     Tiflash TLS 证书自动轮换是指客户创建了TiDB Cluster，当TiFlash的TLS证书过期后，重新签发一个新TLS证书给Tiflash时，可以不用重启TiDB Cluster，自动加载新Tiflash TLS证书。这样可以保证TiDB Cluster内部组件之间TLS过期轮换不影响TiDB Cluster的正常使用，既保障了TiDB集群高可用性，也保证TLS证书更新使用的安全性。
     更多信息，请参考：https://docs.pingcap.com/tidb/stable/enable-tls-between-components
     
