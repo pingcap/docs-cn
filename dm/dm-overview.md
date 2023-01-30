@@ -105,8 +105,6 @@ DM 支持对源数据的分库分表进行合并迁移，但有一些使用限�
 + GBK 字符集兼容性限制
 
     - DM 在 v5.4.0 之前不支持将 `charset=GBK` 的表迁移到 TiDB。
-<<<<<<< HEAD
-=======
 
 ## Contributing
 
@@ -143,4 +141,3 @@ DM 遵循 Apache 2.0 协议，在 [LICENSE](https://github.com/pingcap/tiflow/bl
 <video src="https://download.pingcap.com/docs-cn/Lesson20_dm_part02.mp4" width="100%" height="100%" controls="controls" poster="https://download.pingcap.com/docs-cn/poster_lesson20.png"></video>
 
 <video src="https://download.pingcap.com/docs-cn/Lesson20_part03.mp4" width="100%" height="100%" controls="controls" poster="https://download.pingcap.com/docs-cn/poster_lesson20.png"></video>
->>>>>>> cfa9ee1ca (*: updated video poster links (#12815))
