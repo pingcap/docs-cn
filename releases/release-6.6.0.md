@@ -251,7 +251,7 @@ TiDB 版本：6.6.0
 
 * 同步到下游 Kafka 的 Changefeed 可将上游单表的同步任务下发到多个 TiCDC Nodes 执行，实现单表同步性能的水平扩展 [#7720](https://github.com/pingcap/tiflow/issues/7720) @[overvenus](https://github.com/overvenus)
 
-    功能描述：下游为 Kafka 的 Changefeed 可将上游单表的复制任务调度到多个  TiCDC Nodes 执行，实现单张表同步性能的水平扩展。在这个功能发布之前，上游单表写入数据量较大时，无法水平扩展单表的复制能力，导致同步延迟增加。该功能发布后，就可以通过水平扩展，解决单表同步性能的问题。
+    功能描述：下游为 Kafka 的 Changefeed 可将上游单表的复制任务调度到多个 TiCDC Nodes 执行，实现单张表同步性能的水平扩展。在这个功能发布之前，上游单表写入数据量较大时，无法水平扩展单表的复制能力，导致同步延迟增加。该功能发布后，就可以通过水平扩展，解决单表同步性能的问题。
 
     更多信息，请参考[用户文档](https://github.com/pingcap/docs-cn/pull/12693)。
 
