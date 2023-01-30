@@ -475,6 +475,7 @@
       - Architecture
         - [DM-worker](/dm/dm-worker-intro.md)
         - [Relay Log](/dm/relay-log.md)
+        - [DDL Handling](/dm/dm-ddl-compatible.md)
       - Command Line
         - [DM-master & DM-worker](/dm/dm-command-line-flags.md)
       - Configuration Files
