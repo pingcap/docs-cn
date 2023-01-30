@@ -33,7 +33,7 @@ FlashbackToTimestampStmt ::=
     ```
 
 * 执行 `FLASHBACK CLUSTER` SQL 语句的用户需要有 `SUPER` 权限。
-* `FLASHBACK CLUSTER` 不支持回退修改 PD 相关信息的 DDL, 如 `ALTER TABLE ATTRIBUTE`, `ALTER TABLE REPLICA`, `CREATE PLACEMENT POLICY` 等。
+* `FLASHBACK CLUSTER` 不支持回退修改 PD 相关信息的 DDL，如 `ALTER TABLE ATTRIBUTE`、`ALTER TABLE REPLICA`、`CREATE PLACEMENT POLICY` 等。
 * `FLASHBACK CLUSTER` 指定的时间点不能存在未执行完成的 DDL 记录。若存在，TiDB 会拒绝该 DDL 操作。
 * 在执行 `FLASHBACK CLUSTER TO TIMESTAMP` 前，TiDB 会主动断开所有相关表上的连接，并禁止对这些表进行读写操作，直到 `FLASHBACK CLUSTER` 完成。
 * `FLASHBACK CLUSTER TO TIMESTAMP` 命令不能取消，一旦开始执行 TiDB 会一直重试，直到成功。
