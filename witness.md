@@ -21,8 +21,8 @@ summary: 如何使用 Witness。
 
 Witness 功能适用于以下场景：
 
-* 高可靠的存储环境（99.9%+），比如 AWS EBS 存储，开启并配置 Witness 节点来节约成本。
-* 快速恢复 Failover 提高可用性的场景，开启但不配置 Witness 节点。
+* 高可靠的存储环境 (99.9%+)，比如 Amazon EBS 存储，可以开启并配置 witness 副本来节约成本。
+* 快速恢复 failover 提高可用性的场景，可以开启 Witness 功能但不配置 witness 副本。
 
 ## 使用步骤
 
