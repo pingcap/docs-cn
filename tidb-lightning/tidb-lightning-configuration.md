@@ -125,7 +125,7 @@ driver = "file"
 
 # The listening address of tikv-importer when backend is "importer". Change it to the actual address.
 addr = "172.16.31.10:8287"
-# Action to do when trying to insert a duplicated entry in the logical import mode.
+# Action to do when trying to insert a conflicting record in the logical import mode. For more information on the conflict detection, see the document: https://docs.pingcap.com/tidb/dev/tidb-lightning-logical-import-mode-usage#conflict-detection
 #  - replace: use new entry to replace the existing entry
 #  - ignore: keep the existing entry, and ignore the new entry
 #  - error: report error and quit the program
