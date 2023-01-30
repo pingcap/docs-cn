@@ -158,12 +158,9 @@ TiDB 版本：6.6.0
 
     优化器 Hint 的持续引入，为用户提供了更多的干预手段，有助于 SQL 性能问题的解决，并提升了整体性能的稳定性。
 
-* 带有子查询和 `LIMIT` 子句的 SQL 可进入计划缓存 [#40219](https://github.com/pingcap/tidb/issues/40219) @[fzzf678](https://github.com/fzzf678)
+* 解除执行计划缓存对 `LIMIT` 子句的限制 [#40219](https://github.com/pingcap/tidb/issues/40219) @[fzzf678](https://github.com/fzzf678)
 
-    TiDB 移除了执行计划缓存的一部分限制， 从而使更多的 SQL 从计划缓存中获益，提升执行效率。
-
-    * 带有子查询的 SQL 可进入执行计划缓存，如 `select * from t where a > (select ...)`。
-    * `LIMIT` 后带有变量的子句可进入执行计划缓存， 如 `Limit ?` 或者 `Limit 10, ?`。
+    TiDB 移除了执行计划缓存的限制，`LIMIT` 后带有变量的子句可进入执行计划缓存， 如 `Limit ?` 或者 `Limit 10, ?`。 这使得更多的 SQL 能够从计划缓存中获益，提升执行效率。
 
     更多信息，请参考[用户文档](/sql-prepared-plan-cache.md)。
 
