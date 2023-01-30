@@ -15,7 +15,7 @@ summary: 如何使用 Witness。
 
 在云环境中，当 TiKV 使用 Amazon EBS 作为单节点存储时，Amazon EBS 能提供 99.9% 的持久性。此时，TiKV 使用 3 个 Raft 副本虽然可行，但并不必要。为了降低成本，TiDB 引入了 Witness 功能，即 2 Replicas With 1 Log Only 机制。其中 1 Log Only 副本仅存储 Raft 日志但不进行数据 apply，依然可以通过 Raft 协议保证数据一致性。与标准的 3 副本架构相比，Witness 可以节省 30% 的存储资源，并在云端减少大约 100%（1 核）的 CPU 使用率。
 
-除上述描述的存储可靠性高的场景外，witness 可用于快速恢复 Failover 来提高可用性。例如对于 3 缺 1 的情况，虽然也满足多数派，但是这个时候的系统是很脆弱的，而要完整恢复一个新的成员的时间通常是比较长的（先拷贝 Snapshot 然后 Apply 最新的日志），尤其是 Region Snapshot 比较大的情况，且拷贝副本的过程可能会对本就不健康的 Group member 造成更多的压力，因此通过先添加一个 witness，快速下掉不健康的节点，保证恢复数据的过程中日志的安全性，后续再由 PD 的 rule checker 将 witness 变为普通的 Voter。
+除了存储可靠性高的场景外，Witness 功能还可用于快速恢复 failover，以提高系统可用性。例如在 3 缺 1 的情况下，虽然满足多数派要求，但是系统很脆弱，而完整恢复一个新成员的时间通常很长（需要先拷贝 snapshot 然后 apply 最新的日志），特别是 Region snapshot 比较大的情况。而且拷贝副本的过程可能会对不健康的副本造成更多的压力。因此，先添加一个 witness 可以快速下掉不健康的节点，保证恢复数据的过程中日志的安全性，后续再由 PD 的 rule checker 将 witness 副本变为普通的 Voter。
 
 ## 适用场景
 
