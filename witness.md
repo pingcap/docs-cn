@@ -50,7 +50,7 @@ pd-ctl scheduler add transfer-witness-leader-scheduler
 
 命令输出 `Success` 表示开启成功。通常情况下 witness 的选举优先级比普通 Voter 低，且在 Leader 发起 transfer leader 时会拒绝掉，但当 Leader down，另一个 Voter 的 Raft 日志数量小于 witness 时，Raft 会选举 witness 成为 leader，由于 witness 没有应用 Raft 日志，无法对外提供读写服务，因此我们需要让 PD 在 witness leader 上报 region 信息时迅速 transfer 出去，也就是 `transfer-witness-leader-scheduler` 的职责。若在 witness transfer leader 的过程中 TiKV 内部出现了问题，Back off 重试失败后，客户端将返回 IsWitness 错误。
 
-如果仅将 Witness 用于快速恢复 Failover 提高可用性的场景，执行到这一步就结束了。若确定使用的存储环境为高可靠（99.9%+），且有节约成本的需求，则可继续执行后续操作。
+如果仅将 Witness 用于快速恢复 failover 提高可用性的场景，执行到这一步就结束了。若确定使用的存储环境为高可靠（99.9%+），且有节约成本的需求，则可安装下面的步骤配置 witness 副本。
 
 ### 第 3 步：配置 Witness 副本 (注意：仅适用于高可靠存储)
 
