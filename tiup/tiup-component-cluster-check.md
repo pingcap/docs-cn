@@ -147,7 +147,7 @@ tiup cluster check <topology.yml | cluster-name> [flags]
 
 > **注意：**
 >
-> tiup-cluster 也支持修复已部署集群的扩容拓扑文件，命令格式：
+> `tiup cluster check` 也支持修复已部署集群的扩容拓扑文件，命令格式：
 >
 >```shell
 > tiup cluster check <cluster-name> scale-out.yaml --cluster --apply --user root [-p] [-i /home/root/.ssh/gcp_rsa]
@@ -168,7 +168,7 @@ tiup cluster check <topology.yml | cluster-name> [flags]
 > **注意：**
 >
 > - 若选择的格式为 `tiup cluster check <cluster-name>`，则必须加上该选项：`tiup cluster check <cluster-name> --cluster`。
-> - tiup-cluster 也支持检查已部署集群的扩容拓扑文件，命令格式：
+> - `tiup cluster check` 也支持检查已部署集群的扩容拓扑文件，命令格式：
 >
 >    ```shell
 >     tiup cluster check <cluster-name> scale-out.yaml --cluster --user root [-p] [-i /home/root/.ssh/gcp_rsa]
