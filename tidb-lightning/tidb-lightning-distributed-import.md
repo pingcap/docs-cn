@@ -24,7 +24,7 @@ TiDB Lightning 并行导入可以用于以下场景：
 
 ## 使用说明
 
-使用 TiDB Lightning 并行导入无须额外配置。TiDB Lightning 在启动时，会在下游 TiDB 中注册元信息，并自动检测是否有其他实例向目标集群导入数据。如果有，则自动进入并行导入模式。
+使用 TiDB Lightning 并行导入需要设置 `incremental-import = true`。TiDB Lightning 在启动时，会在下游 TiDB 中注册元信息，并自动检测是否有其他实例向目标集群导入数据。如果有，则自动进入并行导入模式。
 
 但是在并行导入时，需要注意以下情况：
 
