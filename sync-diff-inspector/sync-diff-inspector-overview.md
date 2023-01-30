@@ -59,11 +59,11 @@ sync-diff-inspector 需要获取表结构信息、查询数据，需要的数据
 
 sync-diff-inspector 的配置总共分为五个部分：
 
-- Global config: 通用配置，包括校验的线程数量、是否输出修复 SQL、是否比对数据、是否跳过校验上游或下游不存在的表等。
-- Datasource config: 配置上下游数据库实例。
-- Routes: 上游多表名通过正则匹配下游单表名的规则。**（可选）**
-- Task config: 配置校验哪些表，如果有的表在上下游有一定的映射关系或者有一些特殊要求，则需要对指定的表进行配置。
-- Table config: 对具体表的特殊配置，例如指定范围、忽略的列等等。**（可选）**
+- Global config：通用配置，包括校验的线程数量、是否输出修复 SQL、是否比对数据、是否跳过校验上游或下游不存在的表等。
+- Datasource config：配置上下游数据库实例。
+- Routes：上游多表名通过正则匹配下游单表名的规则。**（可选）**
+- Task config：配置校验哪些表，如果有的表在上下游有一定的映射关系或者有一些特殊要求，则需要对指定的表进行配置。
+- Table config：对具体表的特殊配置，例如指定范围、忽略的列等等。**（可选）**
 
 下面是一个完整配置文件的说明：
 
@@ -133,10 +133,10 @@ target-table = "t2" # 目标表名
 # 配置需要对比的*目标数据库*中的表
 [task]
     # output-dir 会保存如下信息
-    # 1 sql: 检查出错误后生成的修复 SQL 文件，并且一个 chunk 对应一个文件
-    # 2 log: sync-diff.log 保存日志信息
-    # 3 summary: summary.txt 保存总结
-    # 4 checkpoint: a dir 保存断点续传信息
+    # 1 sql：检查出错误后生成的修复 SQL 文件，并且一个 chunk 对应一个文件
+    # 2 log：sync-diff.log 保存日志信息
+    # 3 summary：summary.txt 保存总结
+    # 4 checkpoint：a dir 保存断点续传信息
     output-dir = "./output"
 
     # 上游数据库，内容是 data-sources 声明的唯一标识 id
@@ -146,7 +146,7 @@ target-table = "t2" # 目标表名
     target-instance = "tidb0"
 
     # 需要比对的下游数据库的表，每个表需要包含数据库名和表名，两者由 `.` 隔开
-    # 使用 ? 来匹配任意一个字符；使用 * 来匹配任意；详细匹配规则参考 golang regexp pkg: https://github.com/google/re2/wiki/Syntax
+    # 使用 ? 来匹配任意一个字符；使用 * 来匹配任意；详细匹配规则参考 golang regexp pkg：https://github.com/google/re2/wiki/Syntax
     target-check-tables = ["schema*.table*", "!c.*", "test2.t2"]
 
     #（可选）对部分表的额外配置，其中 config1 在下面 Table config 配置栏中定义
@@ -217,7 +217,7 @@ The data of `sbtest`.`sbtest96` is not equal
 The rest of tables are all equal.
 
 A total of 2 tables have been compared, 0 tables finished, 2 tables failed, 0 tables skipped.
-The patch file has been generated in 
+The patch file has been generated in
         'output/fix-on-tidb2/'
 You can view the comparision details through 'output/sync_diff.log'
 ```
@@ -266,13 +266,10 @@ Time Cost: 16.75370462s
 Average Speed: 113.277149MB/s
 ```
 
-- TABLE: 该列表示对应的数据库及表名
-
-- RESULT: 校验是否完成。如果你设置了 `skip-non-existing-table = true`，对于上游或下游不存在的表，该列为 `skipped`
-
-- STRUCTURE EQUALITY: 表结构是否相同
-
-- DATA DIFF ROWS: 即 `rowAdd` / `rowDelete`，表示该表修复需要增加/删除的行数
+- `TABLE`：该列表示对应的数据库及表名
+- `RESULT`：校验是否完成。如果设置了 `skip-non-existing-table = true`，对于上游或下游不存在的表，该列的值将为 `skipped`
+- `STRUCTURE EQUALITY`：表结构是否相同
+- `DATA DIFF ROWS`：即 `rowAdd` / `rowDelete`，表示该表修复需要增加/删除的行数
 
 #### SQL 修复
 
@@ -288,11 +285,11 @@ Average Speed: 113.277149MB/s
 -- table: sbtest.sbtest99
 -- range in sequence: (3690708) < (id) <= (3720581)
 /*
-  DIFF COLUMNS ╏   `K`   ╏                `C`                 ╏               `PAD`       
+  DIFF COLUMNS ╏   `K`   ╏                `C`                 ╏               `PAD`
 ╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╋╍╍╍╍╍╍╍╍╍╋╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╋╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍
-  source data  ╏ 2501808 ╏ 'hello'                            ╏ 'world'                
+  source data  ╏ 2501808 ╏ 'hello'                            ╏ 'world'
 ╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╋╍╍╍╍╍╍╍╍╍╋╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╋╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍
-  target data  ╏ 5003616 ╏ '0709824117-9809973320-4456050422' ╏ '1714066100-7057807621-1425865505'  
+  target data  ╏ 5003616 ╏ '0709824117-9809973320-4456050422' ╏ '1714066100-7057807621-1425865505'
 ╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╋╍╍╍╍╍╍╍╍╍╋╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╋╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍
 */
 REPLACE INTO `sbtest`.`sbtest99`(`id`,`k`,`c`,`pad`) VALUES (3700000,2501808,'hello','world');
