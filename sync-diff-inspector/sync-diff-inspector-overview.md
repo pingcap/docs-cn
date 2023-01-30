@@ -146,7 +146,7 @@ target-table = "t2" # 目标表名
     target-instance = "tidb0"
 
     # 需要比对的下游数据库的表，每个表需要包含数据库名和表名，两者由 `.` 隔开
-    # 使用 ? 来匹配任意一个字符；使用 * 来匹配任意；详细匹配规则参考 golang regexp pkg：https://github.com/google/re2/wiki/Syntax
+    # 使用 ? 来匹配任意一个字符；使用 * 来匹配任意；详细匹配规则参考 golang regexp pkg: https://github.com/google/re2/wiki/Syntax
     target-check-tables = ["schema*.table*", "!c.*", "test2.t2"]
 
     #（可选）对部分表的额外配置，其中 config1 在下面 Table config 配置栏中定义
