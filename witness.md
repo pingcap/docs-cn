@@ -52,7 +52,7 @@ pd-ctl scheduler add transfer-witness-leader-scheduler
 
 如果仅将 Witness 用于快速恢复 failover 提高可用性的场景，执行到这一步就结束了。若确定使用的存储环境为高可靠（99.9%+），且有节约成本的需求，则可安装下面的步骤配置 witness 副本。
 
-### 第 3 步：配置 Witness 副本 (注意：仅适用于高可靠存储)
+### 第 3 步：配置 witness 副本（仅适用于高可靠存储）
 
 以三副本为例，修改 rule.json 为 [场景六在高可靠的存储环境下配置-witness-副本](/configure-placement-rules.md#场景六在高可靠的存储环境下配置-witness-副本)。
 
