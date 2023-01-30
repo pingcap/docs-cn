@@ -41,7 +41,11 @@ mysql -h 127.0.0.1 -uroot -P4000
 
 如需快速了解 TiDB 节点、TiKV 节点、PD 节点的配置文件、数据文件及日志文件的相关介绍与其存放位置，建议观看下面的培训视频（时长 9 分钟）。
 
+<<<<<<< HEAD
 <video src="https://tidb-docs.s3.us-east-2.amazonaws.com/compressed+-+Lesson+12.mp4" width="600px" height="450px" controls="controls" poster="https://tidb-docs.s3.us-east-2.amazonaws.com/thumbnail+-+lesson+12.png"></video>
+=======
+<video src="https://tidb-docs.s3.us-east-2.amazonaws.com/compressed+-+Lesson+12.mp4" width="100%" height="100%" controls="controls" poster="https://download.pingcap.com/docs-cn/poster_lesson12.png"></video>
+>>>>>>> cfa9ee1ca (*: updated video poster links (#12815))
 
 ### 如何规范停止 TiDB？
 
