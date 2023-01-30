@@ -497,9 +497,6 @@ table ttt ranges: (NOTE: key range might be changed after DDL)
 这个例子展示了 `IsWitness` 配置，下面的例子是在 AWS EBS 环境下配置 witness 副本节约成本。
 
 规则：
-
-{{< copyable "" >}}
-
 ```json
 [
     {
