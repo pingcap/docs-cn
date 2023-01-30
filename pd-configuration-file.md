@@ -266,7 +266,6 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 
 + 控制是否开启 Witness 功能，具体可参考 [Witness 使用文档](/witness.md)
 + 默认值：false
-+ 参考 [Witness 使用文档](/witness.md)
 
 ### `high-space-ratio`
 
