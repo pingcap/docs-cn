@@ -24,6 +24,7 @@ DM 工具的文档目前独立于 TiDB 文档。要访问 DM 工具的文档，�
 
 ## 基本功能
 
+<<<<<<< HEAD
 本节介绍 DM 工具的核心功能模块。
 
 ![DM Core Features](/media/dm/dm-core-features.png)
@@ -85,3 +86,10 @@ DM 支持对源数据的分库分表进行合并迁移，但有一些使用限�
 + 数据源 MySQL 实例切换
 
     - 当 DM-worker 通过虚拟 IP（VIP）连接到 MySQL 且要切换 VIP 指向的 MySQL 实例时，DM 内部不同的 connection 可能会同时连接到切换前后不同的 MySQL 实例，造成 DM 拉取的 binlog 与从上游获取到的其他状态不一致，从而导致难以预期的异常行为甚至数据损坏。如需切换 VIP 指向的 MySQL 实例，请参考[虚拟 IP 环境下的上游主从切换](https://docs.pingcap.com/zh/tidb-data-migration/stable/usage-scenario-master-slave-switch#虚拟-ip-环境下切换-dm-worker-与-mysql-实例的连接)对 DM 手动执行变更。
+=======
+<video src="https://download.pingcap.com/docs-cn%2FLesson20_dm_part01.mp4" width="100%" height="100%" controls="controls" poster="https://download.pingcap.com/docs-cn/poster_lesson20.png"></video>
+
+<video src="https://download.pingcap.com/docs-cn/Lesson20_dm_part02.mp4" width="100%" height="100%" controls="controls" poster="https://download.pingcap.com/docs-cn/poster_lesson20.png"></video>
+
+<video src="https://download.pingcap.com/docs-cn/Lesson20_part03.mp4" width="100%" height="100%" controls="controls" poster="https://download.pingcap.com/docs-cn/poster_lesson20.png"></video>
+>>>>>>> cfa9ee1ca (*: updated video poster links (#12815))
