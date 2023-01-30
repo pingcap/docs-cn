@@ -7,7 +7,7 @@ summary: 如何使用 Witness。
 
 > **警告：**
 >
-> - 此功能开启且通过 PD placement rule 设置 witness 后，witness 副本只存储 Raft 日志但不应用，请在存储可靠性高的环境下使用；当此功能开启，但没有通过 PD placement rule 设置 witness 副本时，不受存储可靠性约束，可提高 TiKV Down 场景下的可用性。
+> - 此功能开启且通过 PD placement rule 设置 witness 后，witness 副本只会存储最近的 Raft 日志来进行多数派确认，但不会存储数据。所以，如果你的数据本身设置了 3 副本冗余，当开启 witness 副本时，仅只有两个副本存储着完整的数据；这种情况下，只有当你的磁盘可靠性达到一定程度（如使用 AWS 的 gp3 磁盘，可靠性有 99.8%~99.9%）时，才考虑开启 witness；当此功能开启，但没有通过 PD placement rule 设置 witness 副本时，不受存储可靠性约束，可提高 TiKV Down 场景下的可用性。
 > - 由于 witness 副本没有应用 Raft 日志，因此无法对外提供读写服务，当其为 leader 且无法及时 transfer leader 出去时，客户端 Backoff 超时后，应用可能收到 IsWitness 错误。
 > - 该功能自 v6.6.0 版本开始引入，与低版本不兼容，因此不支持降级。
 
