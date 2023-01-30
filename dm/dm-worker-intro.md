@@ -82,6 +82,7 @@ GRANT SELECT ON db1.* TO 'your_user'@'your_wildcard_of_host';
 
 ```sql
 GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP,ALTER,INDEX  ON db.table TO 'your_user'@'your_wildcard_of_host';
+GRANT ALL ON dm_meta.* TO 'your_user'@'your_wildcard_of_host';
 ```
 
 ### 处理单元所需的最小权限
