@@ -1,6 +1,6 @@
 ---
 title: 使用资源管控 (Resource Control) 实现资源隔离
-summary: 介绍如何通过资源管控来实现应用资源消耗的控制和有效调度
+summary: 介绍如何通过资源管控能力来实现对应用资源消耗的控制和有效调度
 ---
 
 # 使用资源管控 (Resource Control) 实现资源隔离
