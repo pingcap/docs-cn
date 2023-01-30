@@ -197,7 +197,10 @@ delta_index_cache_size = 0
     enable_elastic_threadpool = true
     ## Compression algorithm of the TiFlash storage engine. The value can be LZ4, zstd, or LZ4HC, and is case-insensitive. By default, LZ4 is used.
     dt_compression_method = "LZ4"
-    ## Compression level of the TiFlash storage engine. The default value is 1. It is recommended that you set this value to 1 if dt_compression_method is LZ4, -1 (smaller compression rate, but better read performance) or 1 if dt_compression_method is zstd, and 9 if dt_compression_method is LZ4HC.
+    ## Compression level of the TiFlash storage engine. The default value is 1.
+    ## It is recommended that you set this value to 1 if dt_compression_method is LZ4.
+    ## It is recommended that you set this value to -1 (smaller compression rate, but better read performance) or 1 if dt_compression_method is zstd.
+    ## It is recommended that you set this value to 9 if dt_compression_method is LZ4HC.
     dt_compression_level = 1
 
     ## New in v6.2.0. This item specifies the minimum ratio of valid data in a PageStorage data file. When the ratio of valid data in a PageStorage data file is less than the value of this configuration, GC is triggered to compact data in the file. The default value is 0.5.
