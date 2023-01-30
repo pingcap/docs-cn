@@ -205,7 +205,7 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 
 ### `switch-witness-interval`
 
-+ 控制对同一个 Region 做切换为 witness 和切换为 non-witness 操作的间隔，即对于一个新切换为 non-witness 的 Region 在一段时间内不会被切换为 witness。
++ 控制对同一个 Region 做切换为 Witness 和切换为 Non-Witness 操作的间隔，即对于一个新切换为 Non-Witness 的 Region 在一段时间内不会被切换为 Witness。
 + 默认值：1h
 
 ### `max-snapshot-count`
@@ -260,7 +260,10 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 
 ### `witness-schedule-limit`
 
-+ 控制同时进行的 witness 调度的任务个数。
++ 控制同时进行的 Witness 调度的任务个数。
++ 默认值：4
++ 最小值：大于 0
++ 最大值：小于 10
 
 ### `enable-witness`
 

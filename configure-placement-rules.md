@@ -39,7 +39,7 @@ Placement Rules 示意图如下所示：
 | `StartKey`        | `string`，十六进制编码                | 适用 Range 起始 key                 |
 | `EndKey`          | `string`，十六进制编码                | 适用 Range 终止 key                 |
 | `Role`            | `string` | 副本角色，包括 voter/leader/follower/learner                           |
-| `IsWitness`       | `true`/`false` | 副本是否为 witness                          |
+| `IsWitness`       | `true`/`false` | 副本是否为 Witness                          |
 | `Count`           | `int`，正整数                     | 副本数量                            |
 | `LabelConstraint` | `[]Constraint`                    | 用于按 label 筛选节点               |
 | `LocationLabels`  | `[]string`                        | 用于物理隔离                        |
@@ -492,11 +492,12 @@ table ttt ranges: (NOTE: key range might be changed after DDL)
 }
 ```
 
-### 场景六：在高可靠的存储环境下，配置 witness 副本
+### 场景六：在高可靠的存储环境下，配置 Witness 副本
 
-这个例子展示了 `IsWitness` 配置，下面的例子是在 Amazon EBS 环境下配置 witness 副本节约成本。
+这个例子展示了 `IsWitness` 配置，下面的例子是在 Amazon EBS 环境下配置 Witness 副本节约成本。
 
 添加规则示例如下：
+
 ```json
 [
     {
