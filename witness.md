@@ -28,7 +28,7 @@ Witness 功能适用于以下场景：
 
 ### 第 1 步：开启 Witness
 
-使用 PD Control 执行 [`config set enable-witness true`](/pd-control.md#config-set-enable-witness-true) 命令开启 Witness。
+使用 PD Control 执行 [`config set enable-witness true`](/pd-control.md#config-set-enable-witness-true) 命令开启 Witness：
 
 {{< copyable "shell-regular" >}}
 
