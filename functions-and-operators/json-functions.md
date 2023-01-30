@@ -27,7 +27,7 @@ TiDB 支持 MySQL 5.7 GA 版本发布的大多数 JSON 函数。
 | [JSON_KEYS(json_doc[, path])][json_keys]                     | 返回从 JSON 对象的顶级值作为 JSON array 的键，如果给定了路径参数，则从选定路径中获取顶级键 |
 | [JSON_SEARCH(json_doc, one_or_all, search_str[, escape_char[, path] ...])][json_search] | 返回指定字符在 JSON 文档中的路径                             |
 | [value MEMBER OF(json_array)][MEMBER_OF] | 如果传入值是 JSON array 中的一个元素，返回 1，否则返回 0 |
-| [JSON_OVERLAPS(json_doc1, json_doc2)][json_overlaps] | 通过返回 1 或 0 来表示两个 JSON 文档中是否包含公共部分 |
+| [JSON_OVERLAPS(json_doc1, json_doc2)][json_overlaps] | 表示两个 JSON 文档中是否包含公共部分。返回 1 表示两个 JSON 文档中包含公共部分，否则返回 0 |
 
 ## 修改 JSON 值的函数
 
