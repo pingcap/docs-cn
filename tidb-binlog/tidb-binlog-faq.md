@@ -31,6 +31,7 @@ To replicate data to the downstream MySQL or TiDB cluster, Drainer must have the
 * Execute
 * Index
 * Select
+* Create View
 
 ## What can I do if the Pump disk is almost full?
 
