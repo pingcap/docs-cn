@@ -54,7 +54,7 @@ pd-ctl scheduler add transfer-witness-leader-scheduler
 
 ### 第 3 步：配置 witness 副本（仅适用于高可靠存储）
 
-以三副本为例，修改 rule.json 为 [场景六在高可靠的存储环境下配置-witness-副本](/configure-placement-rules.md#场景六在高可靠的存储环境下配置-witness-副本)。
+以三副本为例，修改 `rule.json` 为[场景六：在高可靠的存储环境下配置 witness 副本](/configure-placement-rules.md#场景六在高可靠的存储环境下配置-witness-副本)中的配置。
 
 编辑完文件后，使用下面的命令将配置保存至 PD 服务器：
 ```bash
