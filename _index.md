@@ -129,7 +129,7 @@ hide_commit: true
 
 [TiDB 命令行参数](https://docs.pingcap.com/zh/tidb/dev/command-line-flags-for-tidb-configuration)
 
-[TiDB Control](https://docs.pingcap.com/zh/tidb/dev/tidb-control) 
+[TiDB Control](https://docs.pingcap.com/zh/tidb/dev/tidb-control)  
 
 [系统变量](https://docs.pingcap.com/zh/tidb/dev/system-variables)
 
