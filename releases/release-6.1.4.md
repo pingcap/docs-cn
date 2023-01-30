@@ -58,11 +58,11 @@ TiDB 版本：6.1.4
 
     planner
 
-    - Make the both side operand of NAAJ & refuse partial column substitute in projection elimination [#37032](https://github.com/pingcap/tidb/issues/37032) @[lance6716](https://github.com/lance6716)    - 
+    - Make the both side operand of NAAJ & refuse partial column substitute in projection elimination [#37032](https://github.com/pingcap/tidb/issues/37032) @[lance6716](https://github.com/lance6716)   
 
 - PD
 
-    - Fix an issue that PD may repeatedly add Learner to a Region. [#5786](https://github.com/tikv/pd/issues/5786) @[ti-chi-bot](https://github.com/ti-chi-bot)    - 
+    - Fix an issue that PD may repeatedly add Learner to a Region. [#5786](https://github.com/tikv/pd/issues/5786) @[ti-chi-bot](https://github.com/ti-chi-bot) 
 
 + TiKV
 
