@@ -137,3 +137,7 @@ TiDB 支持 MySQL 5.7 GA 版本发布的大多数 JSON 函数。
 [json_storage_free]: https://dev.mysql.com/doc/refman/8.0/en/json-utility-functions.html#function_json-storage-free
 
 [json_storage_size]: https://dev.mysql.com/doc/refman/5.7/en/json-utility-functions.html#function_json-storage-size
+
+[MEMBER_OF]: https://dev.mysql.com/doc/refman/8.0/en/json-search-functions.html#operator_member-of
+
+[json_overlaps]: https://dev.mysql.com/doc/refman/8.0/en/json-search-functions.html#function_json-overlaps
