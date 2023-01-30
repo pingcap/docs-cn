@@ -268,7 +268,7 @@ Average Speed: 113.277149MB/s
 
 - TABLE: 该列表示对应的数据库及表名
 
-- RESULT: 校验是否完成。若用户设置 `skip-non-existing-table = true`，对于上游或下游不存在的表，该列为 `skipped`
+- RESULT: 校验是否完成。如果你设置了 `skip-non-existing-table = true`，对于上游或下游不存在的表，该列为 `skipped`
 
 - STRUCTURE EQUALITY: 表结构是否相同
 
