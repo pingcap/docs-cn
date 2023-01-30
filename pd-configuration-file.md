@@ -260,7 +260,7 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 
 ### `witness-schedule-limit`
 
-+ 同时进行的 witness 调度的任务个数。
++ 控制同时进行的 witness 调度的任务个数。
 
 ### `enable-witness`
 
