@@ -38,9 +38,6 @@ pd-ctl config set enable-witness true
 ### 第 2 步：开启 transfer witness leader scheduler
 
 使用 PD Control 执行如下命令：
-
-{{< copyable "shell-regular" >}}
-
 ```bash
 pd-ctl scheduler add transfer-witness-leader-scheduler
 ```
