@@ -35,7 +35,9 @@ TiDB 提供语句级别、会话级别以及全局级别的 Stale Read 使用方
 create table t1(id int);
 alter table t1 set tiflash replica 1;
 ```
-一分钟后进行 DDL 操作
+
+一分钟后进行 DDL 操作：
+
 ```sql
 alter table t1 add column c1 int not null;
 ```
