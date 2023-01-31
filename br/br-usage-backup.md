@@ -196,49 +196,6 @@ br backup full\
 
 BR 支持对备份到 S3 的数据进行 S3 服务端加密 (SSE)。BR S3 服务端加密也支持使用用户自行创建的 AWS KMS 密钥进行加密，详细信息请参考 [BR S3 服务端加密](/encryption-at-rest.md#br-s3-服务端加密)。
 
-## 校验备份数据
-
-使用 BR 完成数据备份后，你可以对备份数据进行校验，包括检查备份数据是否完整，以及通过解码 backupmeta 来查看 TSO 等元信息。
-
-### 检查备份数据的完整性
-
-要检查数据完整性，可以执行 `tiup br debug checksum` 命令对备份数据计算校验和。
-
-用例：在 Amazon S3 上名为 `backup-data` 的 bucket 下，计算 `${prefix}` 前缀目录下备份的校验和。
-
-```shell
-br debug checksum \
-    --storage 's3://backup-data/${prefix}' \
-    --s3.endpoint '${S3-endpoint-URL}' \
-    --log-file checksum.log
-```
-
-### 将备份的 backupmeta 解码为 json 格式的可读文件
-
-在备份完成后，可通过 `tiup br debug decode` 命令将备份的 `backupmeta` 解码为 json 格式的可读文件，从而查看快照对应的 TSO 等元信息。
-
-用例：在 Amazon S3 上名为 `backup-data` 的 bucket 下，将 `${prefix}` 前缀目录下备份的 `backupmeta` 解码为 json 格式的文件 `backupmeta.json`，解码后的文件存储路径为 `s3://backup-data/${prefix}/backupmeta.json`。
-
-```shell
-br debug decode \
-    --storage 's3://backup-data/${prefix}' \
-    --s3.endpoint '${S3-endpoint-URL}' \
-    --log-file decode-backupmeta.log
-```
-
-然后打开 `backupmeta.json` 文件，搜索 `end_version` 可以查看到快照对应的 TSO。
-
-如有需要，你也可以将 json 格式的 `backupmeta` 文件编码回解码前的状态。执行 `tiup br debug encode` 命令，生成的文件名为 `backupmeta_from_json`。
-
-用例：在 Amazon S3 上名为 `backup-data` 的 bucket 下，将 `${prefix}` 前缀目录下备份的 `backupmeta.json` 文件编码为 `backupmeta` 文件，编码后的文件名为 `backupmeta_from_json`，存储路径为 `s3://backup-data/${prefix}/backupmeta_from_json`。
-
-```shell
-br debug encode \
-    --storage 's3://backup-data/${prefix}' \
-    --s3.endpoint '${S3-endpoint-URL}' \
-    --log-file encode-backupmeta.log
-```
-
 ## 备份性能和影响
 
 TiDB 备份功能对集群性能（事务延迟和 QPS）有一定的影响，但是可以通过调整备份的线程数 [`backup.num-threads`](/tikv-configuration-file.md#num-threads-1) ，以及增加集群配置，来降低备份对集群性能的影响。
