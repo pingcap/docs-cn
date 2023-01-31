@@ -53,6 +53,7 @@ AlterTableSpec ::=
         'TTL' EqOpt TimeColumnName '+' 'INTERVAL' Expression TimeUnit (TTLEnable EqOpt ( 'ON' | 'OFF' ))?
         | 'REMOVE' 'TTL'
         | TTLEnable EqOpt ( 'ON' | 'OFF' )
+        | TTLJobInterval EqOpt stringLit
     )
 |   PlacementPolicyOption
 

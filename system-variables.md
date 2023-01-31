@@ -3393,18 +3393,6 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 范围：`[1, 256]`
 - 这个变量用于设置每个 TiDB 节点 TTL 扫描任务的最大并发数。
 
-### `tidb_ttl_job_run_interval` <span class="version-mark">从 v6.5.0 版本开始引入</span>
-
-> **警告：**
->
-> [TTL](/time-to-live.md) 目前为实验性特性，此变量定义可能在之后发生变化或者删除。
-
-- 作用域：GLOBAL
-- 是否持久化到集群：是
-- 默认值：`1h0m0s`
-- 范围：`[10m0s, 8760h0m0s]`
-- 这个变量用于控制 TTL 后台清理任务的调度周期。比如，如果当前值设置成了 `1h0m0s`，则代表每张设置了 TTL 属性的表会每小时清理一次过期数据。
-
 ### `tidb_ttl_job_schedule_window_start_time` <span class="version-mark">从 v6.5.0 版本开始引入</span>
 
 > **警告：**
