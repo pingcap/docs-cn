@@ -50,7 +50,7 @@ TiDB 支持以下 `DirectResourceGroupOption`, 其中 [`RU` (Resource Unit)](/ti
 
 ## 示例
 
-创建一个名字是 rg1 的资源组
+创建一个名为 `rg1` 的资源组：
 
 ```sql
 mysql> DROP RESOURCE GROUP IF EXISTS rg1;

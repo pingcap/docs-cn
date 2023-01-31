@@ -26,7 +26,7 @@ ResourceGroupName:
 
 ## 示例
 
-删除名字是 `rg1` 的资源组。
+删除名为 `rg1` 的资源组：
 
 ```sql
 mysql> DROP RESOURCE GROUP IF EXISTS rg1;
