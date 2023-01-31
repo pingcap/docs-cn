@@ -159,10 +159,10 @@ tiup cluster check <topology.yml | cluster-name> [flags]
 - 数据类型：`BOOLEAN`
 - 默认值：`false`
 - 在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
-- 命令格式（已部署和未部署的集群都适用）：
+- 命令格式（已部署和需要扩容的集群都适用）：
 
     ```shell
-    tiup cluster check <topology.yml | cluster-name> [flags]
+    tiup cluster check <topology.yml | cluster-name> --cluster [flags]
     ```
 
 > **注意：**
