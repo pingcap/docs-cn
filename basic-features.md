@@ -213,7 +213,7 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 | [Lock View](/information-schema/information-schema-data-lock-waits.md)    | Y  |    Y     |    Y     |    Y     |    Y     | E | E | E |
 | [`SHOW CONFIG`](/sql-statements/sql-statement-show-config.md)             | Y  | Y | Y | Y | Y | Y | Y | Y |
 | [`SET CONFIG`](/dynamic-config.md)                                        | Y  | Y | E | E | E | E | E | E |
-| [DM WebUI](/dm/dm-webui-guide.md)                                         | 实验特  | E |    N     |    N     |    N     |    N     |    N     | N        |
+| [DM WebUI](/dm/dm-webui-guide.md)                                         | E  | E |    N     |    N     |    N     |    N     |    N     | N        |
 | [前台限流](/tikv-configuration-file.md#前台限流)                            | Y | E |    N     |    N     |    N     |    N     |    N     | N        |
 | [后台限流](/tikv-configuration-file.md#后台限流)                             | E | N | N | N | N | N | N | N |
 | [基于 EBS 的备份和恢复](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.4/volume-snapshot-backup-restore)                        |    Y    |    N    |    N     |    N     |    N     |    N     |    N     |  N        |
