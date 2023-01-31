@@ -11,9 +11,13 @@ aliases: ['/zh/tidb/v6.5/experimental-features','/zh/tidb/stable/experimental-fe
 
 > **注意：**
 >
-> - Y：已 GA 的功能，可以在生产环境中使用。
+> PingCAP 不为[开发者里程碑版本 (DMR)](/versioning.md#开发里程碑版本) 提供 bug 修复。出现的 Bug 将在后续版本中修复。对于生产环境，请使用 TiDB 最新的[长期支持版本 (LTS)](/versioning.md#长期支持版本)。
+>
+> 下表中出现的缩写字母含义解释如下：
+>
+> - Y：已 GA 的功能，可以在生产环境中使用。但如果某个功能已在某一[开发者里程碑版本 (DMR)](/versioning.md#开发里程碑版本) 中 GA，不推荐在生产环境中使用该 DMR 版本。
 > - N：不支持该功能。
-> - 实验特性：未 GA 的功能，请注意使用场景限制。实验特性会在未事先通知的情况下发生变化或删除。语法和实现可能会在 GA 前发生变化。如果遇到问题，请在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+> - E：未 GA 的功能，即实验特性 (experimental)，请注意使用场景限制。实验特性会在未事先通知的情况下发生变化或删除。语法和实现可能会在 GA 前发生变化。如果遇到问题，请在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues) 反馈。
 
 ## 数据类型，函数和操作符
 
@@ -22,7 +26,7 @@ aliases: ['/zh/tidb/v6.5/experimental-features','/zh/tidb/stable/experimental-fe
 | [数值类型](/data-type-numeric.md)                                                 |   Y  |   Y  |   Y  |   Y  |   Y  |  Y  |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
 | [日期和时间类型](/data-type-date-and-time.md)                                      |   Y  |   Y  |   Y  |   Y  |  Y  |  Y   |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
 | [字符串类型](/data-type-string.md)                                               |   Y  |   Y  |   Y  |   Y  |   Y  |  Y  |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
-| [JSON 类型](/data-type-json.md)                                                  |   Y  |   Y  |   Y  |   实验特性  | 实验特性 |实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
+| [JSON 类型](/data-type-json.md)                                                  |   Y  |   Y  |   Y  |   E  | E |E | E | E | E | E | E | E |
 | [控制流程函数](/functions-and-operators/control-flow-functions.md)                 |   Y  |   Y  |   Y  |   Y  |   Y  |  Y   |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
 | [字符串函数](/functions-and-operators/string-functions.md)                         |   Y  |   Y  |   Y  |   Y  |   Y  | Y   |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
 | [数值函数与操作符](/functions-and-operators/numeric-functions-and-operators.md)    |   Y  |   Y  |   Y  |   Y  |   Y  |  Y  |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
@@ -31,7 +35,7 @@ aliases: ['/zh/tidb/v6.5/experimental-features','/zh/tidb/stable/experimental-fe
 | [Cast 函数和操作符](/functions-and-operators/cast-functions-and-operators.md)      |   Y  |   Y  |   Y  |   Y  |   Y  | Y   |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
 | [加密和压缩函数](/functions-and-operators/encryption-and-compression-functions.md) |   Y  |   Y  |   Y  |   Y  |   Y  |  Y  |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
 | [信息函数](/functions-and-operators/information-functions.md)                      |   Y  |   Y  |   Y  |   Y  |   Y  |  Y  |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
-| [JSON 函数](/functions-and-operators/json-functions.md)                            |   Y  |   Y  |   Y  | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
+| [JSON 函数](/functions-and-operators/json-functions.md)                            |   Y  |   Y  |   Y  | E | E | E | E | E | E | E | E | E |
 | [聚合函数](/functions-and-operators/aggregate-group-by-functions.md)              |   Y  |   Y  |   Y  | Y  | Y  |   Y  |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
 | [窗口函数](/functions-and-operators/window-functions.md)                           |   Y  |   Y  |   Y  | Y  | Y  |  Y   |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
 | [其他函数](/functions-and-operators/miscellaneous-functions.md)                    |   Y  |   Y  |   Y  | Y  |  Y  |  Y  |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
@@ -43,13 +47,13 @@ aliases: ['/zh/tidb/v6.5/experimental-features','/zh/tidb/stable/experimental-fe
 
 | 索引和约束                                                             | 6.5 | 6.4 | 6.3 | 6.2 | 6.1 |  6.0   |   5.4    |   5.3    |   5.2    |   5.1    |   5.0    |   4.0    |
 | ---------------------------------------------------------------------- | --- | --- | --- | --- | --- | --- | :------: | :------: | :------: | :------: | :------: | :------: |
-| [表达式索引](/sql-statements/sql-statement-create-index.md#表达式索引) [^2] | Y | 实验特性 | 实验特性 | 实验特性  | 实验特性  | 实验特性  | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
+| [表达式索引](/sql-statements/sql-statement-create-index.md#表达式索引) [^2] | Y | E | E | E  | E  | E  | E | E | E | E | E | E |
 | [列式存储 (TiFlash)](/tiflash/tiflash-overview.md)                     |  Y   |  Y   |  Y   |  Y   |  Y    |  Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
-| [使用 FastScan 加速 OLAP 场景下的查询](/develop/dev-guide-use-fastscan.md) | 实验特性 | 实验特性 | 实验特性 | 实验特性 | N | N | N | N | N | N | N | N |
+| [使用 FastScan 加速 OLAP 场景下的查询](/develop/dev-guide-use-fastscan.md) | E | E | E | E | N | N | N | N | N | N | N | N |
 | [RocksDB 引擎](/storage-engine/rocksdb-overview.md)                    |  Y   |  Y   |  Y   |  Y    |  Y    |  Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
 | [Titan 插件](/storage-engine/titan-overview.md)                        |  Y   |  Y   |  Y   |  Y    |  Y    |  Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
-| [Titan Level Merge](/storage-engine/titan-configuration.md#level-merge实验功能)   |  实验特性   |  实验特性   |  实验特性   |  实验特性    |  实验特性    |  实验特性    |    实验特性     |    实验特性     |    实验特性     |    实验特性     |    实验特性     |    实验特性     |
-| [使用 bucket 提高数据扫描并发度](/tune-region-performance.md#使用-bucket-增加并发) | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | N | N | N | N | N | N | N |
+| [Titan Level Merge](/storage-engine/titan-configuration.md#level-merge实验功能)   |  E   |  E   |  E   |  E    |  E    |  E    |    E     |    E     |    E     |    E     |    E     |    E     |
+| [使用 bucket 提高数据扫描并发度](/tune-region-performance.md#使用-bucket-增加并发) | E | E | E | E | E | N | N | N | N | N | N | N |
 | [不可见索引](/sql-statements/sql-statement-add-index.md)               |  Y   |  Y   |  Y   |  Y    |  Y    |  Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    N     |
 | [复合主键](/constraints.md#主键约束)                                   |  Y   |  Y   |  Y   |  Y    |  Y    |  Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
 | [唯一约束](/constraints.md#唯一约束)                                   |  Y   |  Y   |  Y   |  Y   |  Y    |  Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
@@ -73,49 +77,49 @@ aliases: ['/zh/tidb/v6.5/experimental-features','/zh/tidb/stable/experimental-fe
 | `START TRANSACTION`，`COMMIT`，`ROLLBACK`                                   |   Y     |   Y     |   Y     |   Y     |   Y     |   Y     |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
 | [`EXPLAIN`](/sql-statements/sql-statement-explain.md)                       |   Y     |   Y     |   Y     |   Y    |   Y     |   Y     |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
 | [`EXPLAIN ANALYZE`](/sql-statements/sql-statement-explain-analyze.md)       |   Y     |   Y     |   Y     |   Y    |   Y     |   Y     |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
-| [用户自定义变量](/user-defined-variables.md)                               | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
+| [用户自定义变量](/user-defined-variables.md)                               | E | E | E | E | E | E | E | E | E | E | E | E |
 | [`BATCH [ON COLUMN] LIMIT INTEGER DELETE`](/sql-statements/sql-statement-batch.md) | Y | Y | Y | Y | Y | N | N | N | N | N | N | N |
 | [`BATCH [ON COLUMN] LIMIT INTEGER INSERT/UPDATE/REPLACE`](/sql-statements/sql-statement-batch.md) | Y | N | N | N | N | N | N | N | N | N | N | N |
-| [`ALTER TABLE ... COMPACT`](/sql-statements/sql-statement-alter-table-compact.md) | Y | Y | Y | Y | 实验特性 | N | N | N | N | N | N | N |
-| [表级锁 (Table Lock)](/tidb-configuration-file.md#enable-table-lock-从-v400-版本开始引入) | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
-| [物化列式存储的查询结果](/tiflash/tiflash-results-materialization.md) | 实验特性 | N | N | N | N | N | N | N | N | N | N | N |
+| [`ALTER TABLE ... COMPACT`](/sql-statements/sql-statement-alter-table-compact.md) | Y | Y | Y | Y | E | N | N | N | N | N | N | N |
+| [表级锁 (Table Lock)](/tidb-configuration-file.md#enable-table-lock-从-v400-版本开始引入) | E | E | E | E | E | E | E | E | E | E | E | E |
+| [物化列式存储的查询结果](/tiflash/tiflash-results-materialization.md) | E | N | N | N | N | N | N | N | N | N | N | N |
 
 ## 高级 SQL 功能
 
 | 高级 SQL 功能                                                       |   6.5   |   6.4   |   6.3   |   6.2   |   6.1   |   6.0   |   5.4    |   5.3    |   5.2    |   5.1    |   5.0    | 4.0      |
 | ------------------------------------------------------------------- | :------: | :------: | :------: | :------: | :------: | :------: | :------: | :------: | :------: | :------: | :------: | -------- |
-| [执行计划缓存](/sql-prepared-plan-cache.md)                          |    Y    |    Y    |    Y    |    Y    |    Y    |    Y    |    Y     |    Y     | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
+| [执行计划缓存](/sql-prepared-plan-cache.md)                          |    Y    |    Y    |    Y    |    Y    |    Y    |    Y    |    Y     |    Y     | E | E | E | E |
 | [执行计划管理 (SPM)](/sql-plan-management.md)                       |    Y    |    Y    |    Y    |    Y    |    Y    |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
-| [根据历史执行计划创建绑定](/sql-plan-management.md#根据历史执行计划创建绑定) | 实验特性 | N | N | N | N | N | N | N | N | N | N | N |
-| [下推计算结果缓存 (Coprocessor Cache)](/coprocessor-cache.md)       |    Y    |    Y    |    Y    |    Y    |    Y    |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     | 实验特性 |
+| [根据历史执行计划创建绑定](/sql-plan-management.md#根据历史执行计划创建绑定) | E | N | N | N | N | N | N | N | N | N | N | N |
+| [下推计算结果缓存 (Coprocessor Cache)](/coprocessor-cache.md)       |    Y    |    Y    |    Y    |    Y    |    Y    |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     | E |
 | [Stale Read](/stale-read.md)                                        |    Y    |    Y    |    Y    |    Y   |    Y    |    Y    |    Y     |    Y     |    Y     |    Y     |    N     | N        |
 | [Follower Read](/follower-read.md)                                  |    Y    |    Y    |    Y    |    Y   |    Y    |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
 | [通过系统变量 `tidb_snapshot` 读取历史数据](/read-historical-data.md) |    Y    |    Y    |    Y    |    Y   |    Y    |   Y     |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
 | [Optimizer hints](/optimizer-hints.md)                              |    Y    |    Y    |    Y    |    Y    |    Y    |   Y     |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
 | [MPP 执行引擎](/explain-mpp.md)                                     |    Y    |    Y    |    Y    |    Y    |    Y    |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     | N        |
-| [索引合并](/explain-index-merge.md)                                 |    Y    |    Y    |    Y    |    Y    |    Y    |    Y    |    Y     | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
-| [基于 SQL 的数据放置规则](/placement-rules-in-sql.md)                |    Y    |    Y    |    Y    |    Y   |    Y    |    Y    | 实验特性 | 实验特性 |    N     |    N     |    N     | N        |
-| [Cascades Planner](/system-variables.md#tidb_enable_cascades_planner) | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
+| [索引合并](/explain-index-merge.md)                                 |    Y    |    Y    |    Y    |    Y    |    Y    |    Y    |    Y     | E | E | E | E | E |
+| [基于 SQL 的数据放置规则](/placement-rules-in-sql.md)                |    Y    |    Y    |    Y    |    Y   |    Y    |    Y    | E | E |    N     |    N     |    N     | N        |
+| [Cascades Planner](/system-variables.md#tidb_enable_cascades_planner) | E | E | E | E | E | E | E | E | E | E | E | E |
 
 ## 数据定义语言 (DDL)
 
 | 数据定义语言 (DDL)                                           |   6.5   |   6.4   |   6.3   |   6.2   |   6.1   |   6.0   |   5.4    |   5.3    |   5.2    |   5.1    |   5.0    |   4.0    |
 | ------------------------------------------------------------ | :------: | :------: | :------: | :------: | :------: | :------: | :------: | :------: | :------: | :------: | :------: | :------: |
 | `CREATE`，`DROP`，`ALTER`，`RENAME`，`TRUNCATE`              |    Y   |    Y   |    Y   |    Y   |    Y    |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
-| [生成列](/generated-columns.md)                              | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
+| [生成列](/generated-columns.md)                              | E | E | E | E | E | E | E | E | E | E | E | E |
 | [视图](/views.md)                                            |    Y   |    Y   |    Y   |    Y   |    Y    |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
 | [序列](/sql-statements/sql-statement-create-sequence.md)     |    Y   |    Y   |    Y   |    Y    |    Y    |   Y      |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
 | [`AUTO_INCREMENT` 列](/auto-increment.md)                    |    Y     |    Y[^4]   |    Y   |    Y   |    Y    |  Y   |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
 | [`AUTO_RANDOM` 列](/auto-random.md)                          |    Y   |    Y   |    Y   |    Y   |    Y    |    Y   |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
-| [TTL (Time to Live)](/time-to-live.md) |    实验特性   |    N   |    N   |    N   |    N    |    N    |    N     |    N     |    N     |    N     |    N     |    N     |
+| [TTL (Time to Live)](/time-to-live.md) |    E   |    N   |    N   |    N   |    N    |    N    |    N     |    N     |    N     |    N     |    N     |    N     |
 | [DDL 算法断言](/sql-statements/sql-statement-alter-table.md) |    Y   |    Y   |    Y   |    Y   |    Y    |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
-| 在单条语句中添加多列                                         |   Y  |   Y  |   Y  | Y | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
+| 在单条语句中添加多列                                         |   Y  |   Y  |   Y  | Y | E | E | E | E | E | E | E | E |
 | [更改列类型](/sql-statements/sql-statement-modify-column.md) |    Y   |    Y   |    Y   |    Y    |    Y    |    Y    |    Y     |    Y     |    Y     |    Y     |    N     |    N     |
 | [临时表](/temporary-tables.md)                               |    Y   |    Y   |    Y   |    Y    |    Y    |    Y    |    Y     |    Y     |    N     |    N     |    N     |    N     |
 | [并行 DDL](/system-variables.md#tidb_enable_concurrent_ddl-从-v620-版本开始引入)  |    Y   |    Y   |    Y   |    Y    |    N    |    N    |    N     |    N     |    N     |    N     |    N     |    N     |
-| [添加索引加速](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入)  | Y | 实验特性 | 实验特性 |    N    |    N    |    N    |    N     |    N     |    N     |    N     |    N     |    N     |
-| [元数据锁](/metadata-lock.md)                                  | Y | 实验特性 | 实验特性 |    N    |    N    |    N    |    N     |    N     |    N     |    N     |    N     |    N     |
-| [`FLASHBACK CLUSTER TO TIMESTAMP`](/sql-statements/sql-statement-flashback-to-timestamp.md)  | Y | 实验特性 |    N    |    N    |    N    |    N    |    N     |    N     |    N     |    N     |    N     |    N     |
+| [添加索引加速](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入)  | Y | E | E |    N    |    N    |    N    |    N     |    N     |    N     |    N     |    N     |    N     |
+| [元数据锁](/metadata-lock.md)                                  | Y | E | E |    N    |    N    |    N    |    N     |    N     |    N     |    N     |    N     |    N     |
+| [`FLASHBACK CLUSTER TO TIMESTAMP`](/sql-statements/sql-statement-flashback-to-timestamp.md)  | Y | E |    N    |    N    |    N    |    N    |    N     |    N     |    N     |    N     |    N     |    N     |
 
 ## 事务
 
@@ -135,12 +139,12 @@ aliases: ['/zh/tidb/v6.5/experimental-features','/zh/tidb/stable/experimental-fe
 | ------------------------------------------------------------ | :--: | :--: | :--: | :--: | :--: | :--: | ------------ | :----------: | :----------: | :----------: | :----------: | :-----: |
 | [Range 分区](/partitioned-table.md)                  | Y | Y | Y | Y | Y | Y | Y            |      Y       |      Y       |      Y       |      Y       |    Y    |
 | [Hash 分区](/partitioned-table.md)                   | Y  | Y  | Y  | Y  | Y | Y | Y            |      Y       |      Y       |      Y       |      Y       |    Y    |
-| [List 分区](/partitioned-table.md)                   | Y | Y | Y | Y | Y | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |    N    |
-| [List COLUMNS 分区](/partitioned-table.md)           | Y | Y | Y | Y | Y | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |    N    |
-| [`EXCHANGE PARTITION`](/partitioned-table.md)               | Y  | Y  | Y  | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |    N    |
-| [动态裁剪](/partitioned-table.md#动态裁剪模式) | Y | Y | Y | Y | Y | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |      N       |    N    |
+| [List 分区](/partitioned-table.md)                   | Y | Y | Y | Y | Y | E | E | E | E | E | E |    N    |
+| [List COLUMNS 分区](/partitioned-table.md)           | Y | Y | Y | Y | Y | E | E | E | E | E | E |    N    |
+| [`EXCHANGE PARTITION`](/partitioned-table.md)               | Y  | Y  | Y  | E | E | E | E | E | E | E | E |    N    |
+| [动态裁剪](/partitioned-table.md#动态裁剪模式) | Y | Y | Y | Y | Y | E | E | E | E | E |      N       |    N    |
 | [Range COLUMNS 分区](/partitioned-table.md#range-columns-分区) | Y | Y | Y | N | N | N | N | N |N | N | N |      N       |    N    |
-| [Range INTERVAL 分区](/partitioned-table.md#range-interval-分区) | 实验特性 | 实验特性 | 实验特性 | N | N | N | N | N |N | N | N |      N       |    N    |
+| [Range INTERVAL 分区](/partitioned-table.md#range-interval-分区) | E | E | E | N | N | N | N | N |N | N | N |      N       |    N    |
 
 ## 统计信息
 
@@ -148,15 +152,15 @@ aliases: ['/zh/tidb/v6.5/experimental-features','/zh/tidb/stable/experimental-fe
 | --------------------------------------------------------- | :------: | :------: | :------: | :------: | :------: | :------: | :------: | :------: | :------: | :------: | :------: | -------- |
 | [CM-Sketch](/statistics.md)                               | 默认关闭 | 默认关闭 | 默认关闭 | 默认关闭 | 默认关闭 | 默认关闭 |  默认关闭  |  默认关闭  |  Y  |  Y  |  Y  | Y        |
 | [直方图](/statistics.md)                                  |   Y  |   Y  |   Y  |   Y   |   Y   |   Y   |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
-| 扩展统计信息（多列）                    | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | N        |
-| 统计反馈                       | N | N | N | N | 已废弃 | 已废弃 |  已废弃  | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
+| 扩展统计信息（多列）                    | E | E | E | E | E | E | E | E | E | E | E | N        |
+| 统计反馈                       | N | N | N | N | 已废弃 | 已废弃 |  已废弃  | E | E | E | E | E |
 | [统计信息自动更新](/statistics.md#自动更新) |   Y |   Y |   Y |   Y  |   Y   |   Y   |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
-| [快速分析](/system-variables.md#tidb_enable_fast_analyze) | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
-| [动态裁剪](/partitioned-table.md#动态裁剪模式) | Y | Y | Y | Y | Y | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | N | N |
-| [收集部分列的统计信息](/statistics.md#收集部分列的统计信息) | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | N | N | N | N | N |
-| [限制统计信息的内存使用量](/statistics.md#统计信息收集的内存限制) | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | N | N | N | N | N | N | N |
-| [随机采样约 10000 行数据来快速构建统计信息](/system-variables.md#tidb_enable_fast_analyze) | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
-| [锁定统计信息](/statistics.md#锁定统计信息) | 实验特性 | N | N | N | N | N | N | N | N | N | N | N |
+| [快速分析](/system-variables.md#tidb_enable_fast_analyze) | E | E | E | E | E | E | E | E | E | E | E | E |
+| [动态裁剪](/partitioned-table.md#动态裁剪模式) | Y | Y | Y | Y | Y | E | E | E | E | E | N | N |
+| [收集部分列的统计信息](/statistics.md#收集部分列的统计信息) | E | E | E | E | E | E | E | N | N | N | N | N |
+| [限制统计信息的内存使用量](/statistics.md#统计信息收集的内存限制) | E | E | E | E | E | N | N | N | N | N | N | N |
+| [随机采样约 10000 行数据来快速构建统计信息](/system-variables.md#tidb_enable_fast_analyze) | E | E | E | E | E | E | E | E | E | E | E | E |
+| [锁定统计信息](/statistics.md#锁定统计信息) | E | N | N | N | N | N | N | N | N | N | N | N |
 
 ## 安全
 
@@ -186,7 +190,7 @@ aliases: ['/zh/tidb/v6.5/experimental-features','/zh/tidb/stable/experimental-fe
 | [数据迁移工具](/migration-overview.md)                                  |   Y   |   Y   |   Y   |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |
 | [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md)                     |   Y   |   Y   |   Y   |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |
 | [Change data capture (CDC)](/ticdc/ticdc-overview.md)                   |   Y   |   Y   |   Y   |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |
-| [TiCDC 支持保存数据到存储服务 (S3/NFS/Azure Blob Storage)](/ticdc/ticdc-sink-to-cloud-storage.md)  |   实验特性   |   N   |   N   |   N    |   N    |   N    |   N    |   N    |   N    |   N    |   N    |   N    |
+| [TiCDC 支持保存数据到存储服务 (S3/NFS/Azure Blob Storage)](/ticdc/ticdc-sink-to-cloud-storage.md)  |   E   |   N   |   N   |   N    |   N    |   N    |   N    |   N    |   N    |   N    |   N    |   N    |
 | [TiCDC 支持在两个 TiDB 集群之间进行双向复制](/ticdc/ticdc-bidirectional-replication.md) | Y | N | N | N | N | N | N | N | N | N | N | N |
 
 ## 管理，可视化和工具
@@ -194,11 +198,11 @@ aliases: ['/zh/tidb/v6.5/experimental-features','/zh/tidb/stable/experimental-fe
 | 管理，可视化和工具                                                          |   6.5    |   6.4    |   6.3    |   6.2    |   6.1    |   6.0    |   5.4    |   5.3    |   5.2    |   5.1    |   5.0    | 4.0      |
 |----------------------------------------------------------------------------| :------:| :------:| :------: | :------: | :------: | :------: | :------: | :------: | :------: | :------: | :------: | :------: |
 | [TiDB Dashboard 图形化展示](/dashboard/dashboard-intro.md)                  |    Y    |    Y    |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
-| [TiDB Dashboard 持续性能分析功能](/dashboard/continuous-profiling.md)       |    Y    |    Y    |    Y    |    Y    |    Y     |    Y     | 实验特性 | 实验特性 |    N     |    N     |    N     | N        |
-| [TiDB Dashboard Top SQL 功能](/dashboard/top-sql.md)                       |    Y    |    Y    |    Y    |    Y     |    Y     |    Y     | 实验特性 |    N     |    N     |    N     |    N     | N        |
-| [TiDB Dashboard SQL 诊断功能](/information-schema/information-schema-sql-diagnostics.md)    |    Y    |    Y    | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
-| [TiDB Dashboard 集群诊断功能](/dashboard/dashboard-diagnostics-access.md)   |    Y    |    Y    | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
-| [Grafana 中的 TiKV-FastTune 面板](/grafana-tikv-dashboard.md#tikv-fasttune-面板) |    实验特性    |    实验特性    |    实验特性    |    实验特性     |    实验特性     |    实验特性     |    实验特性     |    实验特性     |    实验特性     |    实验特性     |    实验特性     | 实验特性        |
+| [TiDB Dashboard 持续性能分析功能](/dashboard/continuous-profiling.md)       |    Y    |    Y    |    Y    |    Y    |    Y     |    Y     | E | E |    N     |    N     |    N     | N        |
+| [TiDB Dashboard Top SQL 功能](/dashboard/top-sql.md)                       |    Y    |    Y    |    Y    |    Y     |    Y     |    Y     | E |    N     |    N     |    N     |    N     | N        |
+| [TiDB Dashboard SQL 诊断功能](/information-schema/information-schema-sql-diagnostics.md)    |    Y    |    Y    | E | E | E | E | E | E | E | E | E | E |
+| [TiDB Dashboard 集群诊断功能](/dashboard/dashboard-diagnostics-access.md)   |    Y    |    Y    | E | E | E | E | E | E | E | E | E | E |
+| [Grafana 中的 TiKV-FastTune 面板](/grafana-tikv-dashboard.md#tikv-fasttune-面板) |    E    |    E    |    E    |    E     |    E     |    E     |    E     |    E     |    E     |    E     |    E     | E        |
 | [Information schema](/information-schema/information-schema.md)           |    Y    |    Y    |    Y    |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
 | [Metrics schema](/metrics-schema.md)                                      |    Y    |    Y    |    Y    |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
 | [Statements summary tables](/statement-summary-tables.md)                 |    Y    |    Y    |    Y    |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
@@ -206,18 +210,18 @@ aliases: ['/zh/tidb/v6.5/experimental-features','/zh/tidb/stable/experimental-fe
 | [TiUP 部署](/tiup/tiup-overview.md)                                      |    Y    |    Y    |    Y     |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
 | [Kubernetes operator](https://docs.pingcap.com/tidb-in-kubernetes/stable) |    Y    |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
 | [内置物理备份](/br/backup-and-restore-use-cases.md)                        |    Y    |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
-| [Global Kill](/sql-statements/sql-statement-kill.md)                     | Y  | Y  | Y  | Y | Y | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
-| [Lock View](/information-schema/information-schema-data-lock-waits.md)    | Y  | Y  |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     | 实验特性 | 实验特性 | 实验特性 |
+| [Global Kill](/sql-statements/sql-statement-kill.md)                     | Y  | Y  | Y  | Y | Y | E | E | E | E | E | E | E |
+| [Lock View](/information-schema/information-schema-data-lock-waits.md)    | Y  | Y  |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     | E | E | E |
 | [`SHOW CONFIG`](/sql-statements/sql-statement-show-config.md)             | Y  | Y  | Y | Y| Y | Y | Y | Y | Y | Y | Y | Y |
-| [`SET CONFIG`](/dynamic-config.md)                                        | Y  | Y  | Y | Y | Y | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
-| [DM WebUI](/dm/dm-webui-guide.md)                                         | 实验特  | 实验特  | 实验特性 | 实验特性 | 实验特性 | 实验特性 |    N     |    N     |    N     |    N     |    N     | N        |
-| [前台限流](/tikv-configuration-file.md#前台限流)                            | Y | Y | Y | Y | 实验特性 | 实验特性 |    N     |    N     |    N     |    N     |    N     | N        |
-| [后台限流](/tikv-configuration-file.md#后台限流)                             | 实验特性 | 实验特性 | 实验特性 | 实验特性 | N | N | N | N | N | N | N | N |
+| [`SET CONFIG`](/dynamic-config.md)                                        | Y  | Y  | Y | Y | Y | E | E | E | E | E | E | E | E |
+| [DM WebUI](/dm/dm-webui-guide.md)                                         | 实验特  | 实验特  | E | E | E | E |    N     |    N     |    N     |    N     |    N     | N        |
+| [前台限流](/tikv-configuration-file.md#前台限流)                            | Y | Y | Y | Y | E | E |    N     |    N     |    N     |    N     |    N     | N        |
+| [后台限流](/tikv-configuration-file.md#后台限流)                             | E | E | E | E | N | N | N | N | N | N | N | N |
 | [基于 EBS 的备份和恢复](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.4/volume-snapshot-backup-restore)                        |    Y    |    Y    |    N     |    N     |    N    |    N     |    N     |    N     |    N     |    N     |    N     |  N        |
 | [PITR](/br/br-pitr-guide.md)   |    Y    |    Y    |    Y     |    Y     |    N    |    N     |    N     |    N     |    N     |    N     |    N     |  N        |
-| [全局内存控制](/configure-memory-usage.md#如何配置-tidb-server-实例使用内存的阈值)   |    Y    |    实验特性    |    N     |    N     |    N    |    N     |    N     |    N     |    N     |    N     |    N     |  N        |
-| [RawKV 跨集群复制](/tikv-configuration-file.md#api-version-从-v610-版本开始引入) | 实验特性 | 实验特性 | 实验特性 | 实验特性 | N | N | N | N | N | N | N | N |
-| [Green GC](/system-variables.md#tidb_gc_scan_lock_mode-从-v50-版本开始引入) | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | N |
+| [全局内存控制](/configure-memory-usage.md#如何配置-tidb-server-实例使用内存的阈值)   |    Y    |    E    |    N     |    N     |    N    |    N     |    N     |    N     |    N     |    N     |    N     |  N        |
+| [RawKV 跨集群复制](/tikv-configuration-file.md#api-version-从-v610-版本开始引入) | E | E | E | E | N | N | N | N | N | N | N | N |
+| [Green GC](/system-variables.md#tidb_gc_scan_lock_mode-从-v50-版本开始引入) | E | E | E | E | E | E | E | E | E | E | E | N |
 
 [^1]: TiDB 误将 latin1 处理为 utf8 的子集。见 [TiDB #18955](https://github.com/pingcap/tidb/issues/18955)。
 
