@@ -26,7 +26,11 @@ TiDB 版本：6.6.0
     功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
 
     更多信息，请参考[用户文档](链接)。
+* 支持 DDL 动态资源管控（实验性特性） [#issue](链接)  @[hawkingrei](https://github.com/hawkingrei)
 
+    TiDB v6.6.0 版本引入了 DDL 动态资源管控， 通过自动控制 DDL 的 CPU 和内存使用量，尽量降低 DDL 变更任务对线上业务的影响。
+    
+    更多信息，请参考[用户文档](链接)。
 * 支持 MySQL 语法兼容的外键约束 （实验特性）[#18209](https://github.com/pingcap/tidb/issues/18209) @[crazycs520](https://github.com/crazycs520)
 
     TiDB 在 v6.6.0 引入了 MySQL 语法兼容的外键约束特性，支持表内，表间的数据关联和约束校验能力，支持集联操作。该特性有助于保持数据一致性，提升数据质量，也方便客户进行数据建模。
@@ -47,6 +51,19 @@ TiDB 版本：6.6.0
 
     更多信息，请参考[用户文档](/sql-plan-management.md#根据历史执行计划创建绑定)。 
 
+* 支持 `ALTER TABLE…REORGANIZE PARTITION` [#15000](https://github.com/pingcap/tidb/issues/15000) @[mjonss](https://github.com/mjonss)
+
+    TiDB 支持 `ALTER TABLE…REORGANIZE PARTITION` 语法。此语法用于对表的部分分区、全部分区重新组织分区结构，并且不丢失数据。
+    
+    更多信息，请参考[用户文档](/partitioned-table.md#重组分区)
+    
+* [Placement Rules in SQL](https://docs.pingcap.com/zh/tidb/dev/placement-rules-in-sql) 支持指定 `SURVIVAL_PREFERENCE` [#38605](https://github.com/pingcap/tidb/issues/38605) @nolouch[https://github.com/nolouch]
+
+    通过指定 `SURVIVAL_PREFERENCE`，用户可以：
+        1. 跨区域部署的 TiDB 集群，用户可以控制指定数据库或表在某个区域故障时，也能在另一个区域提供服务。
+        2. 单区域部署的 TiDB 集群，用户可以控制指定数据库或表在某个可用区故障时，也能在另一个可用区提供服务。
+    
+     更多信息，请参考[用户文档](/placement-rules-in-sql.md#生存偏好)
 ### 安全
 
 * 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接)
@@ -124,6 +141,13 @@ TiDB 版本：6.6.0
     功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
 
     更多信息，请参考[用户文档](链接)。
+
+* 使用 Witness 节约成本  [#12876](https://github.com/tikv/tikv/issues/12876) [@Connor1996](https://github.com/Connor1996) [@ethercflow](https://github.com/ethercflow)
+
+    在云环境中，当 TiKV 使用如 AWS EBS 或 GCP 的 Persistent Disk 作为单节点存储时，它们提供的持久性相比物理磁盘更高。此时，TiKV 使用 3 个 Raft 副本虽然可行，但并不必要。为了降低成本，TiKV 引入了 Witness 功能，即 2 Replicas With 1 Log Only 机制。其中 1 Log Only 副本仅存储 Raft 日志但不进行数据 apply，依然可以通过 Raft 协议保证数据一致性。与标准的 3 副本架构相比，Witness 可以节省存储资源及 CPU 使用率。
+    
+    更多信息，请参考[用户文档](/use-witness-to-save-costs.md)。
+
 
 * TiFlash 引擎支持 Stale Read 功能 [#4483](https://github.com/pingcap/tiflash/issues/4483) @[hehechen](https://github.com/hehechen)
 
