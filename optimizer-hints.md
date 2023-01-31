@@ -25,6 +25,7 @@ TiDB 支持 Optimizer Hints 语法，它基于 MySQL 5.7 中介绍的类似 comm
 > Empty set (0.00 sec)
 > 
 > ```
+> 
 > 请确保 hint 中使用的标识符和 from 子句中表名类似，具有唯一辨识性；后续示列演示的皆是同一个 database scope 范围内的表。
 
 > **注意：**
