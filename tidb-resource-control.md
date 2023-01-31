@@ -27,7 +27,7 @@ summary: 介绍如何通过资源管控能力来实现对应用资源消耗的�
 | `resource_control.enabled`= true  |  流控和调度（推荐组合）            | 无效配置                         |  
 | `resource_control.enabled`= false |  仅流控                         |  特性被关闭                   |
 
-## 语法
+## 使用方法
 
 你可以通过 [`CREATE RESOURCE GROUP`](/sql-statements/sql-statement-create-resource-group.md) 在集群中创建资源组，再通过 [`CREATE USER`](/sql-statements/sql-statement-create-user.md) 语句，或者 [`ALTER USER`](/sql-statements/sql-statement-alter-user.md) 将用户绑定到特定的资源组。
 
