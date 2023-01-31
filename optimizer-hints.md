@@ -37,7 +37,7 @@ TiDB 支持 Optimizer Hints 语法，它基于 MySQL 5.7 中介绍的类似 comm
 > 
 > ```
 >
-> 后续示列演示部分，皆是同一个 database scope 范围内的表。
+> 本文档中后续示例演示部分，皆是同一个数据库范围内的表。如果你使用的表不在同一个数据库内，请参照指示显式指定数据库名。
 
 Optimizer Hints 不区分大小写，通过 `/*+ ... */` 注释的形式跟在 `SELECT`、`UPDATE` 或 `DELETE` 关键字的后面。`INSERT` 关键字后不支持 Optimizer Hints。
 
