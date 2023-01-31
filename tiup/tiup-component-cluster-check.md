@@ -155,7 +155,7 @@ tiup cluster check <topology.yml | cluster-name> [flags]
 
 ### --cluster
 
-- 对部署的集群进行检查。
+- 对已部署的集群进行检查。
 - 数据类型：`BOOLEAN`
 - 默认值：`false`
 - 在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
