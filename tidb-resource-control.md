@@ -13,7 +13,7 @@ summary: 介绍如何通过资源管控能力来实现对应用资源消耗的�
 >
 >资源管控是 TiDB 在 v6.6.0 中引入的实验特性，其语法或者行为表现在 GA 前可能会发生变化。如果你知晓潜在的风险，可通过执行 TiDB SQL 语句 `SET GLOBAL tidb_enable_resource_control = 'ON'`，同时设置 TiKV 配置参数 `resource_control.enabled` 为 `true` 来开启该实验特性。
 
-## 新参数
+## 相关参数
 
 资源管控特性引入了两个新的全局开关变量：
 
