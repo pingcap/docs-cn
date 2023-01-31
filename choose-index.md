@@ -149,13 +149,13 @@ mysql> SHOW WARNINGS;
 
 [多值索引](/sql-statements/sql-statement-create-index.md#多值索引)和普通索引有所不同，TiDB 目前只会使用 [IndexMerge](/explain-index-merge.md) 来访问多值索引。因此要想使用多值索引进行数据访问，请确保`tidb_enable_index_merge` 被设置为 `ON`。
 
-目前 TiDB 支持将 `json_member_of`、`json_contains` 和 `json_overlaps` 条件自动转换成 IndexMerge 来访问多值索引。既可以依赖优化器根据代价自动选择，也可通过 optimizer hint [`use_index`](/optimizer-hints.md#use_indext1_name-idx1_name--idx2_name-) 或者 [`use_index_merge`](/optimizer-hints.md#use_index_merget1_name-idx1_name--idx2_name-) 指定选择多值索引，见下面例子：
+目前 TiDB 支持将 `json_member_of`、`json_contains` 和 `json_overlaps` 条件自动转换成 IndexMerge 来访问多值索引。既可以依赖优化器根据代价自动选择，也可通过 [`use_index_merge`](/optimizer-hints.md#use_index_merget1_name-idx1_name--idx2_name-) optimizer hint 或 [`use_index`](/optimizer-hints.md#use_indext1_name-idx1_name--idx2_name-) 指定选择多值索引，见下面例子：
 
 ```sql
 mysql> CREATE TABLE t1 (j JSON, INDEX idx((CAST(j->'$.path' AS SIGNED ARRAY)))); -- 使用 '$.path' 作为路径创建多值索引
 Query OK, 0 rows affected (0.04 sec)
 
-mysql> EXPLAIN SELECT /*+ use_index(t1, idx) */ * FROM t1 WHERE (1 MEMBER OF (j->'$.path'));
+mysql> EXPLAIN SELECT /*+ use_index_merge(t1, idx) */ * FROM t1 WHERE (1 MEMBER OF (j->'$.path'));
 +---------------------------------+---------+-----------+-----------------------------------------------------------------------------+------------------------------------------------------------------------+
 | id                              | estRows | task      | access object                                                               | operator info                                                          |
 +---------------------------------+---------+-----------+-----------------------------------------------------------------------------+------------------------------------------------------------------------+
@@ -166,7 +166,7 @@ mysql> EXPLAIN SELECT /*+ use_index(t1, idx) */ * FROM t1 WHERE (1 MEMBER OF (j-
 +---------------------------------+---------+-----------+-----------------------------------------------------------------------------+------------------------------------------------------------------------+
 4 rows in set, 1 warning (0.00 sec)
 
-mysql> EXPLAIN SELECT /*+ use_index(t1, idx) */ * FROM t1 WHERE JSON_CONTAINS((j->'$.path'), '[1, 2, 3]');
+mysql> EXPLAIN SELECT /*+ use_index_merge(t1, idx) */ * FROM t1 WHERE JSON_CONTAINS((j->'$.path'), '[1, 2, 3]');
 +-------------------------------+---------+-----------+-----------------------------------------------------------------------------+---------------------------------------------+
 | id                            | estRows | task      | access object                                                               | operator info                               |
 +-------------------------------+---------+-----------+-----------------------------------------------------------------------------+---------------------------------------------+
@@ -178,7 +178,7 @@ mysql> EXPLAIN SELECT /*+ use_index(t1, idx) */ * FROM t1 WHERE JSON_CONTAINS((j
 +-------------------------------+---------+-----------+-----------------------------------------------------------------------------+---------------------------------------------+
 5 rows in set (0.00 sec)
 
-mysql> EXPLAIN SELECT * FROM t1 use index(idx) WHERE JSON_OVERLAPS((j->'$.path'), '[1, 2, 3]');
+mysql> EXPLAIN SELECT /*+ use_index_merge(t1, idx) */ * FROM t1 WHERE JSON_OVERLAPS((j->'$.path'), '[1, 2, 3]');
 +---------------------------------+---------+-----------+-----------------------------------------------------------------------------+----------------------------------------------------------------------------------+
 | id                              | estRows | task      | access object                                                               | operator info                                                                    |
 +---------------------------------+---------+-----------+-----------------------------------------------------------------------------+----------------------------------------------------------------------------------+
@@ -198,7 +198,7 @@ mysql> EXPLAIN SELECT * FROM t1 use index(idx) WHERE JSON_OVERLAPS((j->'$.path')
 mysql> CREATE TABLE t2 (a INT, j JSON, b INT, INDEX idx(a, (CAST(j->'$.path' AS SIGNED ARRAY)), b));
 Query OK, 0 rows affected (0.04 sec)
 
-mysql> EXPLAIN SELECT /*+ use_index(t2, idx) */ * FROM t2 WHERE a=1 AND (1 MEMBER OF (j->'$.path')) AND b=2;
+mysql> EXPLAIN SELECT /*+ use_index_merge(t2, idx) */ * FROM t2 WHERE a=1 AND (1 MEMBER OF (j->'$.path')) AND b=2;
 +---------------------------------+---------+-----------+-----------------------------------------------------------------------------------+------------------------------------------------------------------------+
 | id                              | estRows | task      | access object                                                                     | operator info                                                          |
 +---------------------------------+---------+-----------+-----------------------------------------------------------------------------------+------------------------------------------------------------------------+
@@ -209,7 +209,7 @@ mysql> EXPLAIN SELECT /*+ use_index(t2, idx) */ * FROM t2 WHERE a=1 AND (1 MEMBE
 +---------------------------------+---------+-----------+-----------------------------------------------------------------------------------+------------------------------------------------------------------------+
 4 rows in set, 1 warning (0.00 sec)
 
-mysql> EXPLAIN SELECT /*+ use_index(t2, idx) */ * FROM t2 WHERE a=1 AND JSON_CONTAINS((j->'$.path'), '[1, 2, 3]');
+mysql> EXPLAIN SELECT /*+ use_index_merge(t2, idx) */ * FROM t2 WHERE a=1 AND JSON_CONTAINS((j->'$.path'), '[1, 2, 3]');
 +-------------------------------+---------+-----------+-----------------------------------------------------------------------------------+-------------------------------------------------+
 | id                            | estRows | task      | access object                                                                     | operator info                                   |
 +-------------------------------+---------+-----------+-----------------------------------------------------------------------------------+-------------------------------------------------+
@@ -221,7 +221,7 @@ mysql> EXPLAIN SELECT /*+ use_index(t2, idx) */ * FROM t2 WHERE a=1 AND JSON_CON
 +-------------------------------+---------+-----------+-----------------------------------------------------------------------------------+-------------------------------------------------+
 5 rows in set (0.00 sec)
 
-mysql> EXPLAIN SELECT * FROM t2 use index(idx) WHERE a=1 AND JSON_OVERLAPS((j->'$.path'), '[1, 2, 3]');
+mysql> EXPLAIN SELECT /*+ use_index_merge(t2, idx) */ * FROM t2 WHERE a=1 AND JSON_OVERLAPS((j->'$.path'), '[1, 2, 3]');
 +---------------------------------+---------+-----------+-----------------------------------------------------------------------------------+----------------------------------------------------------------------------------+
 | id                              | estRows | task      | access object                                                                     | operator info                                                                    |
 +---------------------------------+---------+-----------+-----------------------------------------------------------------------------------+----------------------------------------------------------------------------------+
@@ -241,7 +241,7 @@ mysql> EXPLAIN SELECT * FROM t2 use index(idx) WHERE a=1 AND JSON_OVERLAPS((j->'
 mysql> CREATE TABLE t3 (a INT, j JSON, INDEX idx(a, (CAST(j AS SIGNED ARRAY))));
 Query OK, 0 rows affected (0.04 sec)
 
-mysql> EXPLAIN SELECT /*+ use_index(t3, idx) */ * FROM t3 WHERE ((a=1 AND (1 member of (j)))) OR ((a=2 AND (2 member of (j))));
+mysql> EXPLAIN SELECT /*+ use_index_merge(t3, idx) */ * FROM t3 WHERE ((a=1 AND (1 member of (j)))) OR ((a=2 AND (2 member of (j))));
 +---------------------------------+---------+-----------+---------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------+
 | id                              | estRows | task      | access object                                     | operator info                                                                                                                                    |
 +---------------------------------+---------+-----------+---------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------+
@@ -253,7 +253,7 @@ mysql> EXPLAIN SELECT /*+ use_index(t3, idx) */ * FROM t3 WHERE ((a=1 AND (1 mem
 +---------------------------------+---------+-----------+---------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------+
 ```
 
-下面是一些暂时无法支持的场景，在这些场景下，使用 `use_index_merge` 会无法生效并返回对应的 warning 信息，使用 `use_index` 能强制使用索引，但是会产生 `FullScan`，过滤条件并不能直接用于索引访问，不建议在下面场景中使用：
+下面是一些暂时无法支持的场景，在这些场景下：
 
 ```sql
 mysql> CREATE TABLE t4 (j JSON, INDEX idx((CAST(j AS SIGNED ARRAY))));
@@ -278,18 +278,34 @@ mysql> show warnings;
 +---------+------+----------------------------+
 1 row in set (0.00 sec)
 
-mysql> EXPLAIN SELECT /*+ use_index(t3, idx) */ * FROM t3 WHERE (json_contains(j, '[1, 2]')) OR (json_contains(j, '[3, 4]'));
-+------------------------------+----------+-----------+---------------------------------------------------+------------------------------------------------------------------------------------------------------------------+
-| id                           | estRows  | task      | access object                                     | operator info                                                                                                    |
-+------------------------------+----------+-----------+---------------------------------------------------+------------------------------------------------------------------------------------------------------------------+
-| IndexMerge_8                 | 9600.00  | root      |                                                   | type: union                                                                                                      |
-| ├─IndexFullScan_5(Build)     | 10000.00 | cop[tikv] | table:t3, index:idx(a, cast(`j` as signed array)) | keep order:false, stats:pseudo                                                                                   |
-| └─Selection_7(Probe)         | 9600.00  | cop[tikv] |                                                   | or(json_contains(test.t3.j, cast("[1, 2]", json BINARY)), json_contains(test.t3.j, cast("[3, 4]", json BINARY))) |
-|   └─TableRowIDScan_6         | 10000.00 | cop[tikv] | table:t3                                          | keep order:false, stats:pseudo                                                                                   |
-+------------------------------+----------+-----------+---------------------------------------------------+------------------------------------------------------------------------------------------------------------------+
-4 rows in set (0.00 sec)
+mysql> EXPLAIN SELECT /*+ use_index_merge(t3, idx) */ * FROM t3 WHERE (json_contains(j, '[1, 2]')) OR (json_contains(j, '[3, 4]'));
++-------------------------+----------+-----------+---------------+------------------------------------------------------------------------------------------------------------------+
+| id                      | estRows  | task      | access object | operator info                                                                                                    |
++-------------------------+----------+-----------+---------------+------------------------------------------------------------------------------------------------------------------+
+| TableReader_7           | 9600.00  | root      |               | data:Selection_6                                                                                                 |
+| └─Selection_6           | 9600.00  | cop[tikv] |               | or(json_contains(test.t3.j, cast("[1, 2]", json BINARY)), json_contains(test.t3.j, cast("[3, 4]", json BINARY))) |
+|   └─TableFullScan_5     | 10000.00 | cop[tikv] | table:t3      | keep order:false, stats:pseudo                                                                                   |
++-------------------------+----------+-----------+---------------+------------------------------------------------------------------------------------------------------------------+
+3 rows in set, 1 warning (0.01 sec)
 
 -- 较为复杂的多层 OR / AND 嵌套形成的表达式
+mysql> EXPLAIN SELECT /*+ use_index_merge(t3, idx) */ * FROM t3 WHERE ((1 member of (j)) AND (2 member of (j))) OR ((3 member of (j)) AND (4 member of (j)));
++-------------------------+----------+-----------+---------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| id                      | estRows  | task      | access object | operator info                                                                                                                                                                                                |
++-------------------------+----------+-----------+---------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Selection_5             | 8000.00  | root      |               | or(and(json_memberof(cast(1, json BINARY), test.t3.j), json_memberof(cast(2, json BINARY), test.t3.j)), and(json_memberof(cast(3, json BINARY), test.t3.j), json_memberof(cast(4, json BINARY), test.t3.j))) |
+| └─TableReader_7         | 10000.00 | root      |               | data:TableFullScan_6                                                                                                                                                                                         |
+|   └─TableFullScan_6     | 10000.00 | cop[tikv] | table:t3      | keep order:false, stats:pseudo                                                                                                                                                                               |
++-------------------------+----------+-----------+---------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+3 rows in set, 2 warnings (0.00 sec)
+```
+
+受限于目前的实现，当多值索引无法生效时，[`use_index`](/optimizer-hints.md#use_indext1_name-idx1_name--idx2_name-) 可能会返回 `Can't find a proper physical plan for this query` 的错误，而 [`use_index_merge`](/optimizer-hints.md#use_index_merget1_name-idx1_name--idx2_name-) 不会，因此建议使用后者：
+
+```sql
+mysql> EXPLAIN SELECT /*+ use_index(t3, idx) */ * FROM t3 WHERE ((1 member of (j)) AND (2 member of (j))) OR ((3 member of (j)) AND (4 member of (j)));
+ERROR 1815 (HY000): Internal : Cant find a proper physical plan for this query
+
 mysql> EXPLAIN SELECT /*+ use_index_merge(t3, idx) */ * FROM t3 WHERE ((1 member of (j)) AND (2 member of (j))) OR ((3 member of (j)) AND (4 member of (j)));
 +-------------------------+----------+-----------+---------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | id                      | estRows  | task      | access object | operator info                                                                                                                                                                                                |
