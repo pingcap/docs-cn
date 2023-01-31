@@ -1,7 +1,6 @@
 ---
 title: ALTER RESOURCE GROUP
 summary: TiDB 数据库中 ALTER RESOURCE GROUP 的使用概况
-aliases: ['/docs-cn/dev/sql-statements/sql-statement-alter-resource-group/','/docs-cn/dev/reference/sql/statements/alter-resource-group/']
 ---
 
 # ALTER RESOURCE GROUP
