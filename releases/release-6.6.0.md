@@ -138,6 +138,7 @@ TiDB 版本：6.6.0
     Statements Summary 过去只在内存中维护，一旦 TiDB 发生重启数据便会全部丢失。开启持久化配置后历史数据将会定期被写入磁盘，相关系统表的查询数据源也将由内存变为磁盘，TiDB 发生重启后历史数据将依然保持存在。
 
     更多信息，请参考[用户文档](/statement-summary-tables.md#持久化-statements-summary)。
+
 ### 性能
 
 * 使用 Witness 节约成本  [#12876](https://github.com/tikv/tikv/issues/12876) [@Connor1996](https://github.com/Connor1996) [@ethercflow](https://github.com/ethercflow) **tw@Oreoxmt**
