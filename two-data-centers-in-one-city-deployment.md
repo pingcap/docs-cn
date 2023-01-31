@@ -284,7 +284,11 @@ curl http://pd_ip:pd_port/pd/api/v1/replication_mode/status
 
 当处于同步复制状态的集群发生了灾难，可进行 `RPO = 0` 的数据恢复：
 
+<<<<<<< HEAD
 - 如果主数据中心发生故障，丢失了大多数 Voter 副本，但是从数据中心有完整的数据，可在从数据中心恢复数据。此时需要人工介入，通过专业工具恢复（恢复方式请联系 TiDB 团队）。
+=======
+- 如果主 AZ 发生故障，丢失了大多数 Voter 副本，但是从 AZ 有完整的数据，可在从 AZ 恢复数据。此时需要人工介入，通过专业工具恢复。如需获取支持，请联系 [PingCAP 服务与支持](https://cn.pingcap.com/support/)。
+>>>>>>> a53e18955 (dr: update support contact (#12854))
 
 - 如果从数据中心发生故障，丢失了少数 Voter 副本，能自动切换成 async 异步复制模式。
 
