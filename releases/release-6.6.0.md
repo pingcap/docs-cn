@@ -232,6 +232,11 @@ TiDB 版本：6.6.0
 
     更多信息，请参考[用户文档](/tidb-resource-control.md)。
 
+* 使用临时 Witness 副本来加速副本恢复 [#12876](https://github.com/tikv/tikv/issues/12876) [@Connor1996](https://github.com/Connor1996) [@ethercflow](https://github.com/ethercflow)
+
+    Witness 功能可用于快速恢复 failover，以提高系统可用性。例如在 3 缺 1 的情况下，虽然满足多数派要求，但是系统很脆弱，而完整恢复一个新成员的时间通常很长（需要先拷贝 snapshot 然后 apply 最新的日志），特别是 Region snapshot 比较大的情况。而且拷贝副本的过程可能会对不健康的副本造成更多的压力。因此，先添加一个 Witness 可以快速下掉不健康的节点，保证恢复数据的过程中日志的安全性，后续再由 PD 的 rule checker 将 Witness 副本变为普通的 Voter。
+
+    更多信息，请参考[用户文档](/use-witness-to-speed-up-failover.md)。
 ### 易用性
 
 * 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接)
