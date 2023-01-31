@@ -63,7 +63,7 @@ The preceding `cdc cli changefeed create` command creates a changefeed task that
 
 The following is the TiCDC architecture diagram with Changefeed and Task included:
 
-![TiCDC architecture](/media/ticdc/ticdc-architecture-4.jpg)
+![TiCDC architecture](/media/ticdc/ticdc-architecture-6.jpg)
 
 In the preceding diagram, a changefeed is created to replicate four tables to downstream. This changefeed is split into three Tasks, which are sent to the three Capture processes respectively in the TiCDC cluster. After TiCDC processes the data, the data is replicated to the downstream system.
 
