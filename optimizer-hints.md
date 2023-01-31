@@ -6,13 +6,14 @@ title: Optimizer Hints
 
 TiDB 支持 Optimizer Hints 语法，它基于 MySQL 5.7 中介绍的类似 comment 的语法，例如 `/*+ HINT_NAME(t1, t2) */`。当 TiDB 优化器选择的不是最优查询计划时，建议使用 Optimizer Hints。
 
-> **注意：Hint 中的标识符**
+> **注意：**
+> 如果需要提示优化器使用的表不在 USE DATABASE 所指定的数据库内，需要显式指定数据库名。例如：
 > 
 > ```sql
-> tidb> select /*+ HASH_JOIN(t2, t) */ * from t, test2.t2;
+> tidb> SELECT /*+ HASH_JOIN(t2, t) */ * FROM t, test2.t2;
 > Empty set, 1 warning (0.00 sec)
 > 
-> tidb> show warnings;
+> tidb> SHOW WARNINGS;
 > +---------+------+-------------------------------------------------------------------------------------------------------------------------------------------------------+
 > | Level   | Code | Message                                                                                                                                               |
 > +---------+------+-------------------------------------------------------------------------------------------------------------------------------------------------------+
@@ -20,12 +21,15 @@ TiDB 支持 Optimizer Hints 语法，它基于 MySQL 5.7 中介绍的类似 comm
 > +---------+------+-------------------------------------------------------------------------------------------------------------------------------------------------------+
 > 1 row in set (0.00 sec)
 >
-> tidb> select /*+ HASH_JOIN(test2.t2, t) */ * from t, test2.t2;
+> tidb> SELECT /*+ HASH_JOIN(test2.t2, t) */ * FROM t, test2.t2;
+> Empty set (0.00 sec)
+> 
+> tidb> SELECT /*+ READ_FROM_STORAGE(TIFLASH[test1.t1,test2.t2]) */ t1.a FROM test1.t t1, test2.t t2 WHERE t1.a = t2.a;
 > Empty set (0.00 sec)
 > 
 > ```
 > 
-> 请确保 hint 中使用的标识符和 from 子句中表名类似，具有唯一辨识性；后续示列演示的皆是同一个 database scope 范围内的表。
+> 后续示列演示部分，皆是同一个 database scope 范围内的表。
 
 > **注意：**
 >
@@ -239,10 +243,6 @@ SELECT /*+ LIMIT_TO_COP() */ * FROM t WHERE a = 1 AND b > 10 ORDER BY c LIMIT 1;
 ```sql
 SELECT /*+ READ_FROM_STORAGE(TIFLASH[t1], TIKV[t2]) */ t1.a FROM t t1, t t2 WHERE t1.a = t2.a;
 ```
-
-> **注意：**
->
-> 如果需要提示优化器使用的表不在同一个数据库内，需要显式指定数据库名。例如 `SELECT /*+ READ_FROM_STORAGE(TIFLASH[test1.t1,test2.t2]) */ t1.a FROM test1.t t1, test2.t t2 WHERE t1.a = t2.a;`。
 
 ### USE_INDEX_MERGE(t1_name, idx1_name [, idx2_name ...])
 
