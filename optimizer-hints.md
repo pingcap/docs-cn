@@ -14,7 +14,7 @@ TiDB 支持 Optimizer Hints 语法，它基于 MySQL 5.7 中介绍的类似 comm
 
 > **注意：**
 >
-> 如果需要提示优化器使用的表不在 USE DATABASE 所指定的数据库内，需要显式指定数据库名。例如：
+> 如果需要提示优化器使用的表不在 `USE DATABASE` 所指定的数据库内，需要显式指定数据库名。例如：
 >
 > ```sql
 > tidb> SELECT /*+ HASH_JOIN(t2, t) */ * FROM t, test2.t2;
