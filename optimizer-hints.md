@@ -7,6 +7,25 @@ aliases: ['/docs-cn/dev/optimizer-hints/','/docs-cn/dev/reference/performance/op
 
 TiDB 支持 Optimizer Hints 语法，它基于 MySQL 5.7 中介绍的类似 comment 的语法，例如 `/*+ HINT_NAME(t1, t2) */`。当 TiDB 优化器选择的不是最优查询计划时，建议使用 Optimizer Hints。
 
+> **注意：Hint 中的标识符**
+> 
+> ```sql
+> tidb> select /*+ HASH_JOIN(t2, t) */ * from t, test2.t2;
+> Empty set, 1 warning (0.00 sec)
+> 
+> tidb> show warnings;
+> +---------+------+-------------------------------------------------------------------------------------------------------------------------------------------------------+
+> | Level   | Code | Message                                                                                                                                               |
+> +---------+------+-------------------------------------------------------------------------------------------------------------------------------------------------------+
+> | Warning | 1815 | There are no matching table names for (t2) in optimizer hint /*+ HASH_JOIN(t2, t) */ or /*+ TIDB_HJ(t2, t) */. Maybe you can use the table alias name |
+> +---------+------+-------------------------------------------------------------------------------------------------------------------------------------------------------+
+> 1 row in set (0.00 sec)
+>
+> tidb> select /*+ HASH_JOIN(test2.t2, t) */ * from t, test2.t2;
+> Empty set (0.00 sec)
+> ```
+> 请确保 hint 中使用的标识符和 from 子句中表名类似，具有唯一辨识性；后续示列演示的皆是同一个 database scope 范围内的表。
+
 > **注意：**
 >
 > MySQL 命令行客户端在 5.7.7 版本之前默认清除了 Optimizer Hints。如果需要在这些早期版本的客户端中使用 `Hint` 语法，需要在启动客户端时加上 `--comments` 选项，例如 `mysql -h 127.0.0.1 -P 4000 -uroot --comments`。
