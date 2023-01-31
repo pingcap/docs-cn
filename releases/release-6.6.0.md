@@ -55,7 +55,7 @@ TiDB 版本：6.6.0
 
     多值索引的引入， 是对 JSON 类型的进一步增强， 同时也提升了 TiDB 对 MySQL 8.0 的兼容性。
 
-    更多信息，请参考[用户文档](/choose-index.md#使用多值索引)。
+    更多信息，请参考[用户文档](/sql-statements/sql-statement-create-index.md#多值索引)。
 
 * 绑定历史执行计划 GA [#39199](https://github.com/pingcap/tidb/issues/39199) @[fzzf678](https://github.com/fzzf678)
 
