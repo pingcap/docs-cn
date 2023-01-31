@@ -218,6 +218,12 @@ TiDB 版本：6.6.0
 
     更多信息，请参考[用户文档](/use-witness-to-speed-up-failover.md)。
 
+* 支持配置专属的只读存储节点来承载高资源消耗的任务  [@v01dstar](https://github.com/v01dstar)
+
+    在实际生产中，可能有部分只读操作定期消耗大量资源，进而影响整个集群的性能，比如备份，大规模数据读取分析等。 受传统 Acitve-Passive 模式的启发， 结合 Placement Rule 和 Follower Reader 技术，TiDB 同样能构建出专属的只读存储节点， 来承载重度资源消耗的只读任务，避免对线上业务的影响。 在 v6.6.0 中，有条件的用户可以按照[推荐步骤](/readonly-nodes.md#操作步骤)配置只读存储节点， 然后通过设置系统变量指定 TiDB 读取只读节点的数据，或者通过客户端参数引导 BR 或 TiSpark 将负载发送至只读存储节点，进而保证整个集群的性能稳定。
+
+     更多信息，请参考[用户文档](/best-practices/readonly-nodes.md)。
+
 ### 易用性
 
 * 支持动态修改参数 store-io-pool-size [#13964](https://github.com/tikv/tikv/issues/13964) @[LykxSassinator](https://github.com/LykxSassinator) **tw@shichun-0415**
@@ -280,6 +286,7 @@ TiDB 版本：6.6.0
 | [`tidb_store_batch_size`](/system-variables.md#tidb_store_batch_size) | 修改 | 此变量可用于生产环境。 设置 `IndexLookUp` 算子回表时多个 Coprocessor Task 的 batch 大小。`0` 代表不使用 batch。当 `IndexLookUp` 算子的回表 Task 数量特别多，出现极长的慢查询时，可以适当调大该参数以加速查询。 |
 | [`tidb_pessimistic_txn_aggressive_locking`](/system-variables.md#tidb_pessimistic_txn_aggressive_locking-从-v660-版本开始引入) | 新增 | 是否对悲观锁启用加强的悲观锁唤醒模型。 |
 | [`tidb_enable_plan_replayer_capture`](/system-variables.md#tidb_enable_plan_replayer_capture) | 新增 | 这个变量用来控制是否开启 [`PLAN REPLAYER CAPTURE`](/sql-plan-replayer.md#使用-plan-replayer-capture-抓取目标计划)。默认值 `OFF`， 代表关闭 `PLAN REPLAYER CAPTURE`。 |
+| [`tidb_replica_read`](/system-variables.md#tidb_replica_read-从-v40-版本开始引入) | 修改 | 新增选项 learner ， 指定 TiDB 从只读节点中读取数据的 learner 副本。  |
 
 ### 配置文件参数
 
