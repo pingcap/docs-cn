@@ -1,7 +1,6 @@
 ---
 title: CREATE RESOURCE GROUP
 summary: TiDB 数据库中 CREATE RESOURCE GROUP 的使用概况
-aliases: ['/docs-cn/dev/sql-statements/sql-statement-create-resource-group/','/docs-cn/dev/reference/sql/statements/create-resource-group/']
 ---
 
 # CREATE RESOURCE GROUP
