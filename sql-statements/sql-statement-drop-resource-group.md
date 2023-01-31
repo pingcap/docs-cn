@@ -1,7 +1,6 @@
 ---
 title: DROP RESOURCE GROUP
 summary: TiDB 数据库中 DROP RESOURCE GROUP 的使用概况
-aliases: ['/docs-cn/dev/sql-statements/sql-statement-drop-resource-group/','/docs-cn/dev/reference/sql/statements/drop-resource-group/']
 ---
 
 # DROP RESOURCE GROUP
