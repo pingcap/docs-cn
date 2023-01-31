@@ -41,7 +41,9 @@ alter table t1 set tiflash replica 1;
 ```sql
 alter table t1 add column c1 int not null;
 ```
-然后 Stale Read 读取一分钟前的数据
+
+然后使用 Stale Read 读取一分钟前的数据：
+
 ```sql
 set @@session.tidb_enforce_mpp=1;
 select * from t1 as of timestamp NOW() - INTERVAL 1 minute;
