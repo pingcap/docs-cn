@@ -133,6 +133,11 @@ TiDB 版本：6.6.0
 
     更多信息，请参考[用户文档](/sql-plan-replayer.md#使用-plan-replayer-capture-抓取目标计划)。
 
+* Statements Summary 持久化（实验特性） [#40812](https://github.com/pingcap/tidb/issues/40812) @[mornyx](https://github.com/mornyx) **tw@shichun-0415**
+
+    Statements Summary 过去只在内存中维护，一旦 TiDB 发生重启数据便会全部丢失。开启持久化配置后历史数据将会定期被写入磁盘，相关系统表的查询数据源也将由内存变为磁盘，TiDB 发生重启后历史数据将依然保持存在。
+
+    更多信息，请参考[用户文档](/statement-summary-tables.md#持久化-statements-summary)。
 ### 性能
 
 * 使用 Witness 节约成本  [#12876](https://github.com/tikv/tikv/issues/12876) [@Connor1996](https://github.com/Connor1996) [@ethercflow](https://github.com/ethercflow) **tw@Oreoxmt**
@@ -324,11 +329,17 @@ TiDB 版本：6.6.0
 
     + TiDB Data Migration (DM)
 
+        - 优化了 DM 的告警规则和内容。
+  之前 DM_XXX_process_exits_with_error 类告警是遇到错误就报警，有些告警实际是由于 db conn 长时间 idle 导致，重连后即可恢复，为了降低这类 false alerm，现在细分为可自动恢复错误和不可恢复错误
+          对不可自动恢复错误，维持旧的行为，立即 alert
+          对可自动回复错误，只有在 2m 内发生超过 3 次时才报警
+   [7376](https://github.com/pingcap/tiflow/issues/7376) @[D3Hunter](https://github.com/D3Hunter) **tw@hfxsd**
+
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
     + TiDB Lightning
-
+- 修复了一个在部分场景下 TiDB 重启导致 Lightning timeout 卡主的 bug。[33714](https://github.com/pingcap/tidb/issues/33714) @[lichunzhu](https://github.com/lichunzhu) **tw@shichun-0415**
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
@@ -339,7 +350,7 @@ TiDB 版本：6.6.0
 
     + Sync-diff-inspector
 
-        - 新增一个参数，当下游数据库的表在上游不存在时，可配置该参数跳过对上下游数据库表数量不一致场景的校验，而不是任务中断退出。 @[lichunzhu](https://github.com/lichunzhu) @[liumengya94](https://github.com/liumengya9)
+        - 新增一个参数，当下游数据库的表在上游不存在时，可配置该参数跳过对上下游数据库表数量不一致场景的校验，而不是任务中断退出。 @[lichunzhu](https://github.com/lichunzhu) @[liumengya94](https://github.com/liumengya9) **tw@shichun-0415**
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
 ## 错误修复
