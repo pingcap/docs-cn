@@ -43,7 +43,6 @@ TiDB 版本：6.6.0
 
     在过去的版本中，整个 TiDB 集群中仅允许一个 TiDB 实例作为 DDL Owner 有权处理 Schema 变更任务，为了进一步提升 DDL 的并发性，TiDB v6.6.0 版本引入了 DDL 分布式并行执行框架，支持集群中所有的 TiDB 实例可以并发执行同一个任务的 `StateWriteReorganization` 阶段，加速 DDL 的执行。目前只支持 `Add Index` 操作。
 
-    更多信息，请参考[用户文档](链接)。
 
 * MySQL 兼容的多值索引(Multi-Valued Index) (实验特性) [#39592](https://github.com/pingcap/tidb/issues/39592) @[xiongjiwei](https://github.com/xiongjiwei) @[qw4990](https://github.com/qw4990) **tw@TomShawn**
 
