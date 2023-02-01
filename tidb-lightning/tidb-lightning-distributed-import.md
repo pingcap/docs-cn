@@ -111,7 +111,7 @@ sorted-kv-dir = "/path/to/sorted-dir"
     -d 's3://my-bucket/sql-backup'
 ```
 
-更多参数设置，请参考[外部存储 - URL 格式](/br//backup-and-restore-storages#url-格式)。
+更多参数设置，请参考[外部存储 - URL 格式](/br/backup-and-restore-storages.md#url-格式)。
 
 ### 第 3 步：开启 TiDB Lightning 进行数据导入
 
