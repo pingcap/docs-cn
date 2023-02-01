@@ -14,7 +14,7 @@ from botocore.exceptions import ClientError
 QINIU_ACCESS_KEY = os.getenv('QINIU_ACCESS_KEY')
 QINIU_SECRET_KEY = os.getenv('QINIU_SECRET_KEY')
 QINIU_BUCKET_NAME = os.getenv('QINIU_BUCKET_NAME')
-AWS_BUCKET_NAME = os.getenv('AWS_BUCKET_NAME')
+#AWS_BUCKET_NAME = os.getenv('AWS_BUCKET_NAME')
 
 assert(QINIU_ACCESS_KEY and QINIU_SECRET_KEY and QINIU_BUCKET_NAME)
 
@@ -68,7 +68,7 @@ if __name__ == "__main__":
     local_file = sys.argv[1]
     remote_name = sys.argv[2]
     print(local_file, remote_name)
-    upload_to_aws(local_file, remote_name)
+    #upload_to_aws(local_file, remote_name)
     upload_to_qiniu(local_file, remote_name)
 
     print("https://download.pingcap.org/{}".format(remote_name))
