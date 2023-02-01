@@ -447,7 +447,6 @@ SELECT * FROM INFORMATION_SCHEMA.USER_PRIVILEGES WHERE grantee = "'root'@'%'";
 
 需要拥有 `SUPER` 或者 `RESOURCE_GROUP_ADMIN` 权限。
 
-
 ## 权限系统的实现
 
 ### 授权表
