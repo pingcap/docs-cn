@@ -35,6 +35,7 @@ set [session | global] tidb_replica_read = '<目标值>';
 - 当设置为默认值 `leader` 或者空字符串时，TiDB 会维持原有行为方式，将所有的读取操作都发送给 leader 副本处理。
 - 当设置为 `follower` 时，TiDB 会选择 Region 的 follower 副本完成所有的数据读取操作。
 - 当设置为 `leader-and-follower` 时，TiDB 可以选择任意副本来执行读取操作，此时读请求会在 leader 和 follower 之间负载均衡。
+- 当设置为 `prefer-leader` 时，TiDB 会优先选择 leader 副本执行读取操作。当且仅当 leader 副本不可用时，TiDB 才会自动选择其他可用 follower 副本来处理读取操作。
 - 当设置为 `closest-replicas` 时，TiDB 会优先选择分布在同一可用区的副本执行读取操作，对应的副本可以是 leader 或 follower。如果同一可用区内没有副本分布，则会从 leader 执行读取。
 - 当设置为 `closest-adaptive` 时：
 
