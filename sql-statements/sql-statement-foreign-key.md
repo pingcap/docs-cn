@@ -1,23 +1,28 @@
 ---
-title: FOREIGN KEY
+title: FOREIGN KEY Constraints
 summary: TiDB 数据库中 FOREIGN KEY 的使用概况。
 ---
 
-# FOREIGN KEY
+# FOREIGN KEY Constraints
 
 外键是 TiDB 从 v6.6.0 开始支持的功能，允许跨表交叉引用相关数据，以及外键约束，有助于保持相关数据的一致性。
 
 外键是在子表中定义的，语法如下：
 
-```sql
-[CONSTRAINT identifier] FOREIGN KEY
-    [identifier] (col_name, ...)
-    REFERENCES tbl_name (col_name,...)
-    [ON DELETE reference_option]
-    [ON UPDATE reference_option]
+```ebnf+diagram
+ForeignKeySpec
+         ::= ( 'CONSTRAINT' Identifier )? 'FOREIGN' 'KEY'
+             Identifier? '(' ColumnName ( ',' ColumnName )* ')'
+             'REFERENCES' TableName '(' ColumnName ( ',' ColumnName )* ')'
+             ( 'ON' 'DELETE' ReferenceOption )?
+             ( 'ON' 'UPDATE' ReferenceOption )?
 
-reference_option:
-    RESTRICT | CASCADE | SET NULL | NO ACTION | SET DEFAULT
+ReferenceOption
+         ::= 'RESTRICT'
+           | 'CASCADE'
+           | 'SET' 'NULL'
+           | 'SET' 'DEFAULT'
+           | 'NO' 'ACTION'
 ```
 
 ## 命名
@@ -200,6 +205,37 @@ mysql> SELECT TABLE_SCHEMA, TABLE_NAME, COLUMN_NAME, CONSTRAINT_NAME FROM INFORM
 +--------------+---------------+------------------+-----------------+
 ```
 
+你可以从 `INFORMATION_SCHEMA.TABLE_CONSTRAINTS` 系统表中获取有关的外键信息，下面是一个查询示例：
+
+```sql
+mysql> SELECT * FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS WHERE CONSTRAINT_TYPE='FOREIGN KEY'\G
+***************************[ 1. row ]***************************
+CONSTRAINT_CATALOG | def
+CONSTRAINT_SCHEMA  | test
+CONSTRAINT_NAME    | fk_1
+TABLE_SCHEMA       | test
+TABLE_NAME         | child
+CONSTRAINT_TYPE    | FOREIGN KEY
+```
+
+你可以从 `INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS` 系统表中获取有关的外键信息，下面是一个查询示例：
+
+```sql
+mysql> SELECT * FROM INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS\G
+***************************[ 1. row ]***************************
+CONSTRAINT_CATALOG        | def
+CONSTRAINT_SCHEMA         | test
+CONSTRAINT_NAME           | fk_1
+UNIQUE_CONSTRAINT_CATALOG | def
+UNIQUE_CONSTRAINT_SCHEMA  | test
+UNIQUE_CONSTRAINT_NAME    | PRIMARY
+MATCH_OPTION              | NONE
+UPDATE_RULE               | NO ACTION
+DELETE_RULE               | CASCADE
+TABLE_NAME                | child
+REFERENCED_TABLE_NAME     | parent
+```
+
 ## 查看带有外键的执行计划
 
 你可以使用 `EXPLAIN` 语句查看执行计划。`Foreign_Key_Check` 算子是执行 DML 语句时，执行外键约束检查的算子。
@@ -249,7 +285,16 @@ Create Table | CREATE TABLE `child` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin
 ```
 
-### 与 MySQL 的兼容性
+### 与 TiDB 工具的兼容性
 
 - [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md) 不支持外键功能。
+- [DM](/dm/dm-overview.md) 在同步数据到下游 TiDB 时，会始终关闭下游 TiDB 的 `foreign_key_checks`，所以由外键产生级联操作不会从上游同步到下游，进而导致上下游数据不一致。这与旧版本 DM 的行为一致，因为在旧版本中 TiDB 不支持外键。
+- v6.6.0 版本的 [TiCDC](/ticdc/ticdc-overview.md) 同步兼容了外键功能。旧版本的 [TiCDC](/ticdc/ticdc-overview.md) 在同步外键的表时，可能会报错，建议在下游 TiDB 关闭 `foreign_key_checks`。
+- v6.6.0 版本的 [BR](/br/backup-and-restore-overview.md) 同步兼容了外键功能。旧版本的 [BR](/br/backup-and-restore-overview.md) 在 restore 外键的表时，可能会报错，建议在下游 TiDB 关闭 `foreign_key_checks` 后再 restore。
+- [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 在导入数据到 TiDB 前，建议先关闭 TiDB 的 `foreign_key_checks`。
+- [Dumpling](/dumpling-overview.md) 与外键没有兼容性问题。
+- [sync-diff-inspector](/sync-diff-inspector/sync-diff-inspector-overview.md) 在对比上下游数据时，如果上下游数据库的版本不一样，且下游 TiDB 中存在[不生效的外键](#TiDB-版本间兼容性)，则 [sync-diff-inspector](/sync-diff-inspector/sync-diff-inspector-overview.md) 可能会报上下游表结构不一致，因为在 v6.6.0 版本之后的 TiDB 会给不生效的外键加一条 `/* FOREIGN KEY INVALID */` 注释。
+
+### 与 MySQL 的兼容性
+
 - 创建外键未指定名称时，TiDB 自动生成的外键名称和 MySQL 不一样。例如 TiDB 生成的外键名称为 `fk_1`、`fk_2`、`fk_3` 等，MySQL 生成的外键名称为 `table_name_ibfk_1`、 `table_name_ibfk_2`、`table_name_ibfk_3` 等。
