@@ -168,4 +168,7 @@ Top SQL 用于找到一段时间内对某个 TiDB 或 TiKV 节点消耗负载较
 
 ### Witness
 
-Witness 副本只会存储最近的 Raft 日志来进行多数派确认，但不会存储数据。详情参见[使用 Witness 节约成本](/use-witness-to-save-costs.md)和[使用临时 Witness 副本加速副本恢复](/use-witness-to-speed-up-failover.md)。
+Witness 副本只会存储最近的 Raft 日志来进行多数派确认，但不会存储数据。Witness 的使用场景如下：
+
+- 在高可靠的存储环境下节约成本。具体使用方法，可参考[使用 Witness 节约成本](/use-witness-to-save-costs.md)。
+- 快速恢复 failover 提高系统可用性。具体使用方法，可参考[使用临时 Witness 副本加速副本恢复](/use-witness-to-speed-up-failover.md)。
