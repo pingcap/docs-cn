@@ -7,7 +7,7 @@ summary: 如何使用临时 Witness 副本来加速副本恢复。
 
 > **警告：**
 >
-> - 这片文档描述如何使用 Witness 副本提高 TiKV Down 场景下的可用性。若有使用 Witness 节约成本的需求，请参考 [使用 Witness 节约成本](/use-witness-to-save-costs.md)；
+> - 这篇文档描述如何使用 Witness 副本提高 TiKV Down 场景下的可用性。如果需要在高可靠存储环境中使用 Witness 节约成本，请参考[使用 Witness 节约成本](/use-witness-to-save-costs.md)。
 > - 由于 Witness 副本没有应用 Raft 日志，因此无法对外提供读写服务。当 Witness 副本为 Leader 且无法及时 transfer leader 时，客户端 Backoff 超时后，应用可能收到 IsWitness 错误。
 > - Witness 功能自 v6.6.0 版本开始引入，与低版本不兼容，因此不支持降级。
 
