@@ -60,7 +60,7 @@ SELECT * FROM processlist\G
                TIME: 0
               STATE: autocommit
                INFO: SELECT * FROM processlist
-           DIGEST: dbfaa16980ec628011029f0aaf0d160f4b040885240dfc567bf760d96d374f7e
+             DIGEST: dbfaa16980ec628011029f0aaf0d160f4b040885240dfc567bf760d96d374f7e
                 MEM: 0
                DISK: 0
            TxnStart:
