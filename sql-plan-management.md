@@ -325,7 +325,7 @@ This statement outputs the execution plan bindings at the GLOBAL or SESSION leve
 | original_sql  |  Original SQL statement after parameterization |
 | bind_sql | Bound SQL statement with hints |
 | default_db | Default database |
-| status | Status including Enabled (replacing the Using status from v6.0), Disabled, Deleted, Invalid, Rejected, and Pending verification|
+| status | Status including `enabled` (replacing the `using` status from v6.0), `disabled`, `deleted`, `invalid`, `rejected`, and `pending verify`|
 | create_time | Creating time |
 | update_time | Updating time |
 | charset | Character set |
