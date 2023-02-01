@@ -170,8 +170,8 @@ TiDB 版本：6.6.0
 
     TiDB 在新版本中增加了一系列优化器 Hint， 用来控制 `LIMIT` 操作的执行计划选择，以及 MPP 执行过程中的部分行为。 其中包括：
 
-    - [`KEEP_ORDER()`](/optimizer-hints.md#keep_ordert1_name-idx1_name--idx2_name-): 提示优化器使用指定的索引，读取时保持索引的顺序。 生成类似 `Limit + IndexScan(keep order: true)` 的计划。
-    - [`NO_KEEP_ORDER()`](/optimizer-hints.md#no_keep_ordert1_name-idx1_name--idx2_name-): 提示优化器使用指定的索引，读取时不保持顺序。 生成类似 `TopN + IndexScan(keep order: false)` 的计划。
+    - [`ORDER_INDEX()`](/optimizer-hints.md#keep_ordert1_name-idx1_name--idx2_name-): 提示优化器使用指定的索引，读取时保持索引的顺序。 生成类似 `Limit + IndexScan(keep order: true)` 的计划。
+    - [`NO_ORDER_INDEX()`](/optimizer-hints.md#no_keep_ordert1_name-idx1_name--idx2_name-): 提示优化器使用指定的索引，读取时不保持顺序。 生成类似 `TopN + IndexScan(keep order: false)` 的计划。
     - [`SHUFFLE_JOIN()`](/optimizer-hints.md#shuffle_joint1_name--tl_name-): 针对 MPP 生效。 提示优化器对指定表使用 Shuffle Join 算法。
     - [`BROADCAST_JOIN()`](/optimizer-hints.md#broadcast_joint1_name--tl_name-): 针对 MPP 生效。提示优化器对指定表使用 Broadcast Join 算法。
     - [`MPP_1PHASE_AGG()`](/optimizer-hints.md#mpp_1phase_agg): 针对 MPP 生效。提示优化器对指定查询块中所有聚合函数使用一阶段聚合算法。
