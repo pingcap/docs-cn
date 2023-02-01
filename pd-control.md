@@ -1434,7 +1434,11 @@ unsafe remove-failed-stores show
 ]
 ```
 
-### `config set enable-witness true`
+开启 [Witness](/glossary.md#witness) 功能：
+
+```bash
+config set enable-witness true
+```
 
 > **警告：**
 >
