@@ -163,7 +163,7 @@
   - [在线修改集群配置](/dynamic-config.md)
   - [在线有损恢复](/online-unsafe-recovery.md)
   - [使用 Witness 节约成本](/use-witness-to-save-costs.md)
-  - [使用临时 Witness 副本来加速副本恢复](/use-witness-to-speed-up-failover.md)
+  - [使用临时 Witness 副本加速副本恢复](/use-witness-to-speed-up-failover.md)
   - [搭建双集群主从复制](/replicate-between-primary-and-secondary-clusters.md)
 - 监控与告警
   - [监控框架概述](/tidb-monitoring-framework.md)
