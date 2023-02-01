@@ -293,7 +293,7 @@ Create Table | CREATE TABLE `child` (
 - v6.6.0 版本的 [BR](/br/backup-and-restore-overview.md) 同步兼容了外键功能。旧版本的 [BR](/br/backup-and-restore-overview.md) 在 restore 外键的表时，可能会报错，建议在下游 TiDB 关闭 `foreign_key_checks` 后再 restore。
 - [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 在导入数据到 TiDB 前，建议先关闭 TiDB 的 `foreign_key_checks`。
 - [Dumpling](/dumpling-overview.md) 与外键没有兼容性问题。
-- [sync-diff-inspector](/sync-diff-inspector/sync-diff-inspector-overview.md) 在对比上下游数据时，如果上下游数据库的版本不一样，且下游 TiDB 中存在[不生效的外键](#TiDB-版本间兼容性)，则 [sync-diff-inspector](/sync-diff-inspector/sync-diff-inspector-overview.md) 可能会报上下游表结构不一致，因为在 v6.6.0 版本之后的 TiDB 会给不生效的外键加一条 `/* FOREIGN KEY INVALID */` 注释。
+- [sync-diff-inspector](/sync-diff-inspector/sync-diff-inspector-overview.md) 在对比上下游数据时，如果上下游数据库的版本不一样，且下游 TiDB 中存在[不生效的外键](#tidb-版本间兼容性)，则 [sync-diff-inspector](/sync-diff-inspector/sync-diff-inspector-overview.md) 可能会报上下游表结构不一致，因为在 v6.6.0 版本之后的 TiDB 会给不生效的外键加一条 `/* FOREIGN KEY INVALID */` 注释。
 
 ### 与 MySQL 的兼容性
 
