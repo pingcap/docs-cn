@@ -14,7 +14,7 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 >
 > 下表中出现的缩写字母含义如下：
 >
-> - Y：已 GA 的功能，可以在生产环境中使用。但即使某个功能在[开发者里程碑版本 (DMR)](/versioning.md#开发里程碑版本) 中 GA，也不推荐在生产环境中使用该 DMR 版本。
+> - Y：已 GA 的功能，可以在生产环境中使用。但即使某个功能在[开发者里程碑版本 (DMR)](/releases/versioning.md#开发里程碑版本) 中 GA，也不推荐在生产环境中使用该 DMR 版本。
 > - N：不支持该功能。
 > - E：未 GA 的功能，即实验特性 (experimental)，请注意使用场景限制。实验特性会在未事先通知的情况下发生变化或删除。语法和实现可能会在 GA 前发生变化。如果遇到问题，请在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues) 反馈。
 
