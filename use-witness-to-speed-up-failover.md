@@ -23,7 +23,7 @@ summary: 如何使用临时 Witness 副本来加速副本恢复。
 
 ### 第 1 步：开启 Witness
 
-使用 PD Control 执行 [`config set enable-witness true`](/pd-control.md#config-set-enable-witness-true) 命令开启 Witness：
+使用 PD Control 执行 `config set enable-witness true` 命令开启 Witness：
 
 ```bash
 pd-ctl config set enable-witness true
