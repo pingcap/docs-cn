@@ -11,11 +11,11 @@ aliases: ['/zh/tidb/v6.5/experimental-features','/zh/tidb/stable/experimental-fe
 
 > **注意：**
 >
-> PingCAP 不为[开发者里程碑版本 (DMR)](/versioning.md#开发里程碑版本) 提供 bug 修复。出现的 Bug 将在后续版本中修复。对于生产环境，请使用 TiDB 最新的[长期支持版本 (LTS)](/versioning.md#长期支持版本)。
+> PingCAP 不为[开发者里程碑版本 (DMR)](/releases/versioning.md#开发里程碑版本) 提供 bug 修复。出现的 Bug 将在后续版本中修复。对于生产环境，请使用 TiDB 最新的[长期支持版本 (LTS)](/releases/versioning.md#长期支持版本)。
 >
-> 下表中出现的缩写字母含义解释如下：
+> 下表中出现的缩写字母含义如下：
 >
-> - Y：已 GA 的功能，可以在生产环境中使用。但如果某个功能已在某一[开发者里程碑版本 (DMR)](/versioning.md#开发里程碑版本) 中 GA，不推荐在生产环境中使用该 DMR 版本。
+> - Y：已 GA 的功能，可以在生产环境中使用。但即使某个功能在[开发者里程碑版本 (DMR)](/versioning.md#开发里程碑版本) 中 GA，也不推荐在生产环境中使用该 DMR 版本。
 > - N：不支持该功能。
 > - E：未 GA 的功能，即实验特性 (experimental)，请注意使用场景限制。实验特性会在未事先通知的情况下发生变化或删除。语法和实现可能会在 GA 前发生变化。如果遇到问题，请在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues) 反馈。
 
