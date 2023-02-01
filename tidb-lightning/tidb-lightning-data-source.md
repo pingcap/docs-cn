@@ -331,7 +331,7 @@ type = '$3'
 
 ## 从 Amazon S3 导入数据
 
-如下为从 Amazon S3 导入数据的示例，更多配置参数描述，可参考[备份存储 -URL 格式](/br/backup-and-restore-storages.md#url-格式)。
+如下为从 Amazon S3 导入数据的示例，更多配置参数描述，可参考[外部存储 -URL 格式](/br/backup-and-restore-storages.md#url-格式)。
 
 * 用 TiDB Lightning 从 S3 导入数据：
 
