@@ -2962,7 +2962,7 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 默认值：`leader`
-- 可选值：`leader`，`follower`，`leader-and-follower`，`closest-replicas`，`closest-adaptive`, `learner` <span class="version-mark">从 v6.6 版本开始引入</span>
+- 可选值：`leader`，`follower`，`leader-and-follower`，`closest-replicas`，`closest-adaptive`, `learner`, 其中 learner 从 v6.6 版本开始引入
 - 这个变量用于控制 TiDB 的 Follower Read 功能的行为。
 - 关于使用方式与实现原理，见 [Follower Read](/follower-read.md)。
 
