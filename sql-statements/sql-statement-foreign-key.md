@@ -83,7 +83,7 @@ CREATE TABLE child (
 
 ```sql
 CREATE TABLE product (
-    category INT NOT NULL, 
+    category INT NOT NULL,
     id INT NOT NULL,
     price DECIMAL(20,10),
     PRIMARY KEY(category, id)
