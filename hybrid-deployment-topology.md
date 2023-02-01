@@ -48,15 +48,9 @@ This section introduces the key parameters when you deploy multiple instances on
             ```
             readpool.unified.max-thread-count = cores * 0.8 / the number of TiKV instances
             ```
-        
+
     - To configure the storage CF (all RocksDB column families) to be self-adaptive to memory. By configuring the `storage.block-cache.capacity` parameter, you can make CF automatically balance the memory usage.
 
-        - `storage.block-cache` enables the CF self-adaptation by default. You do not need to modify it.
-
-            ```yaml
-            storage.block-cache.shared: true
-            ```
-        
         - The calculation method:
 
             ```
