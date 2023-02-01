@@ -290,7 +290,7 @@ SELECT min(col1) FROM t GROUP BY lower(col1);
 创建多值索引与创建表达式索引的方法一致。在索引定义中使用 `CAST(... AS ... ARRAY)` 表达式来创建一个多值索引。
 
 ```sql
-CREATE TABLE customers (
+mysql> CREATE TABLE customers (
     id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     name CHAR(10),
     custinfo JSON,
@@ -301,7 +301,7 @@ CREATE TABLE customers (
 多值索引可以被定义为唯一索引：
 
 ```sql
-CREATE TABLE customers (
+mysql> CREATE TABLE customers (
     id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     name CHAR(10),
     custinfo JSON,
@@ -323,18 +323,18 @@ ERROR 1062 (23000): Duplicate entry '2' for key 'customers.zips'
 
 ```sql
 -- 插入成功
-INSERT INTO t1 VALUES('[1,1,2]');
-INSERT INTO t1 VALUES('[3,3,3,4,4,4]');
+mysql> INSERT INTO t1 VALUES('[1,1,2]');
+mysql> INSERT INTO t1 VALUES('[3,3,3,4,4,4]');
 
 -- 插入失败
-INSERT INTO t1 VALUES('[1,2]');
-INSERT INTO t1 VALUES('[2,3]');
+mysql> INSERT INTO t1 VALUES('[1,2]');
+mysql> INSERT INTO t1 VALUES('[2,3]');
 ```
 
 多值索引也可以被定义为复合索引：
 
 ```sql
-CREATE TABLE customers (
+mysql> CREATE TABLE customers (
     id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     name CHAR(10),
     custinfo JSON,
@@ -345,7 +345,7 @@ CREATE TABLE customers (
 当被定义为复合索引时，多值部分可以出现在任意位置，但是只能出现一次。
 
 ```sql
-CREATE TABLE customers (
+mysql> CREATE TABLE customers (
     id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     name CHAR(10),
     custinfo JSON,
@@ -360,8 +360,10 @@ ERROR 1235 (42000): This version of TiDB doesn't yet support 'more than one mult
 -- zipcode 字段中的所有元素必须为 UNSIGNED 类型
 mysql> INSERT INTO customers VALUES (1, 'pingcap', '{"zipcode": [-1]}');
 ERROR 3752 (HY000): Value is out of range for expression index 'zips' at row 1
+
 mysql> INSERT INTO customers VALUES (1, 'pingcap', '{"zipcode": ["1"]}'); -- 与 MySQL 不兼容
 ERROR 3903 (HY000): Invalid JSON value for CAST for expression index 'zips'
+
 mysql> INSERT INTO customers VALUES (1, 'pingcap', '{"zipcode": [1]}');
 Query OK, 1 row affected (0.00 sec)
 ```
