@@ -7,17 +7,17 @@ summary: 如何使用 Witness 节约成本。
 
 > **警告：**
 >
-> - 仅当你的磁盘可靠性达到一定程度（如使用 Amazon EBS 的 gp3 磁盘，可靠性有 99.8%~99.9%）时，才考虑设置 Witness 副本；
+> - 仅当你的磁盘可靠性达到一定程度（如使用 Amazon Elastic Block Store 或 Google Cloud Platform 的 Persistent Disk，可靠性有 99.8%~99.9%）时，才考虑设置 Witness 副本；
 > - 由于 Witness 副本没有应用 Raft 日志，因此无法对外提供读写服务，当 Witness 副本为 Leader 且无法及时 transfer leader 时，客户端 Backoff 超时后，应用可能收到 IsWitness 错误。
 > - Witness 功能自 v6.6.0 版本开始引入，与低版本不兼容，因此不支持降级。
 
 ## 功能说明
 
-在云环境中，当 TiKV 使用如 Amazon EBS 作为单节点存储时，Amazon EBS 能提供 99.9% 的持久性。此时，TiKV 使用 3 个 Raft 副本虽然可行，但并不必要。为了降低成本，TiKV 引入了 Witness 功能，即 2 Replicas With 1 Log Only 机制。其中 1 Log Only 副本仅存储 Raft 日志但不进行数据 apply，依然可以通过 Raft 协议保证数据一致性。与标准的 3 副本架构相比，Witness 可以节省存储资源及 CPU 使用率。
+在云环境中，当 TiKV 使用如 Amazon Elastic Block Store 或 Google Cloud Platform 的 Persistent Disk 作为单节点存储时，Amazon Elastic Block Store 能提供 99.8%~99.9% 的持久性。此时，TiKV 使用 3 个 Raft 副本虽然可行，但并不必要。为了降低成本，TiKV 引入了 Witness 功能，即 2 Replicas With 1 Log Only 机制。其中 1 Log Only 副本仅存储 Raft 日志但不进行数据 apply，依然可以通过 Raft 协议保证数据一致性。与标准的 3 副本架构相比，Witness 可以节省存储资源及 CPU 使用率。
 
 ## 适用场景
 
-高可靠的存储环境 (99.8%~99.9%)，例如使用 Amazon EBS 存储时可以开启并配置 Witness 副本来节约成本。
+高可靠的存储环境 (99.8%~99.9%)，例如使用 Amazon Elastic Block Store 或 Google Cloud Platform 的 Persistent Disk 时可以开启并配置 Witness 副本来节约成本。
 
 ## 使用步骤
 

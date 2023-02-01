@@ -157,6 +157,7 @@ config show
   },
   "schedule": {
     "enable-cross-table-merge": "true",
+    "enable-witness": "true",
     "high-space-ratio": 0.7,
     "hot-region-cache-hits-threshold": 3,
     "hot-region-schedule-limit": 4,
