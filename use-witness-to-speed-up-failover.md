@@ -13,7 +13,7 @@ summary: 如何使用临时 Witness 副本来加速副本恢复。
 
 ## 功能说明
 
-除了[使用 Witness 节约成本](/use-witness-to-save-costs.md)，Witness 功能还可用于快速恢复 failover，以提高系统可用性。例如在 3 缺 1 的情况下，虽然满足多数派要求，但是系统很脆弱，而完整恢复一个新成员的时间通常很长（需要先拷贝 snapshot 然后 apply 最新的日志），特别是 Region snapshot 比较大的情况。而且拷贝副本的过程可能会对不健康的 Group member 造成更多的压力。因此，先添加一个 Witness 可以快速下掉不健康的节点，降低了在恢复一个新成员的过程中 （Learner 无法参与选举和提交），又 down 了一个节点导致 raft group 变为不可用的风险，从而保证了恢复数据的过程中日志的安全性，后续再由 PD 的 rule checker 将 Witness 副本变为普通的 Voter。
+Witness 功能可用于快速恢复 failover，以提高系统可用性。例如在 3 缺 1 的情况下，虽然满足多数派要求，但是系统很脆弱，而完整恢复一个新成员的时间通常很长（需要先拷贝 snapshot 然后 apply 最新的日志），特别是 Region snapshot 比较大的情况。而且拷贝副本的过程可能会对不健康的 Group member 造成更多的压力。因此，先添加一个 Witness 可以快速下掉不健康的节点，降低了在恢复一个新成员的过程中 （Learner 无法参与选举和提交），又 down 了一个节点导致 raft group 变为不可用的风险，从而保证了恢复数据的过程中日志的安全性，后续再由 PD 的 rule checker 将 Witness 副本变为普通的 Voter。
 
 ## 适用场景
 
