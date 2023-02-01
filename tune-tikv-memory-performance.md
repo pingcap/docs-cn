@@ -21,7 +21,7 @@ TiKV 使用了 RocksDB 的 `Column Families` (CF) 特性。
 
     - `default` CF 主要存储的是 Raft log，与其对应的参数位于 `[raftdb.defaultcf]` 项中。
 
-所有的 CF 默认共同使用一个 block cache 实例。通过在 `[storage.block-cache]` 下设置 `capacity` 参数，你可以配置该 block cache 的大小。block cache 越大，能够缓存的热点数据越多，读取数据越容易，同时占用的系统内存也越多。如果要为每个 CF 使用单独的 block cache 实例，需要在 `[storage.block-cache]` 下设置 `shared=false`，并为每个 CF 配置单独的 block cache 大小。例如，可以在 `[rocksdb.writecf]` 下设置 `block-cache-size` 参数来配置 `write` CF 的大小。
+所有的 CF 默认共同使用一个 block cache 实例。通过在 `[storage.block-cache]` 下设置 `capacity` 参数，你可以配置该 block cache 的大小。block cache 越大，能够缓存的热点数据越多，读取数据越容易，同时占用的系统内存也越多。
 
 > **注意：**
 >
@@ -72,6 +72,7 @@ log-level = "info"
 ## 在大多数情况下，可以通过 LRU 算法在各 CF 间自动平衡缓存用量。
 ##
 ## `storage.block-cache` 会话中的其余配置仅在开启 `shared block cache` 时起作用。
+## 从 v6.6.0 开始，该选项永远开启且无法关闭。
 # shared = true
 ## `shared block cache` 的大小。正常情况下应设置为系统全部内存的 30%-50%。
 ## 如果未设置该参数，则由以下字段或其默认值的总和决定。
