@@ -1,6 +1,6 @@
 ---
 title: 只读存储节点最佳实践
-summary: 介绍如何通过使用只读存储节点,达到物理隔离部分流量的目的。
+summary: 介绍如何通过使用只读存储节点，达到物理隔离部分流量的目的。
 aliases: ['/docs-cn/dev/best-practices/read-only-nodes-best-practices/','/docs-cn/dev/reference/best-practices/read-only-nodes/']/
 ---
 
