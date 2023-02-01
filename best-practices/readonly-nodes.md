@@ -120,7 +120,7 @@ pd-ctl config placement-rules rule-bundle save --in="rules.json"
 >
 > 当对已存在大量数据的集群进行如上操作时，整个集群可能需要一段时间才能将数据完全复制到只读节点上。在这期间，只读节点可能无法进行服务。
 
-### 3. 使用 follower read 功能
+### 3. 使用 Follower Read 功能
 
 #### 3.1 在 TiDB 中使用 follower read
 
