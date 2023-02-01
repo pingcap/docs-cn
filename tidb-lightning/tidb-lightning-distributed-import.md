@@ -17,14 +17,13 @@ TiDB Lightning 并行导入可以用于以下场景：
 > **注意：**
 >
 > - 并行导入只支持初始化 TiDB 的空表，不支持导入数据到已有业务写入的数据表，否则可能会导致数据不一致的情况。
-> 
-> - 并行导入一般用于 local-backend 模式。
->
-> - 使用多个 TiDB Lightning 向同一目标导入时，禁止混用不同的 backend，例如，不可同时使用 Local-backend 和 TiDB-backend 导入同一 TiDB 集群。
+> - 并行导入一般用于 local backend 模式，需要设置 `incremental-import = true`。
+> - 并行导入一般用于 local backend 模式；虽然也能用于 tidb backend 模式，但是一般不会带来明显的性能提升。
+> - 使用多个 TiDB Lightning 向同一目标导入时，禁止混用不同的 backend，例如，不可同时使用 local backend 和 tidb backend 导入同一 TiDB 集群。
 
 ## 使用说明
 
-使用 TiDB Lightning 并行导入无须额外配置。TiDB Lightning 在启动时，会在下游 TiDB 中注册元信息，并自动检测是否有其他实例向目标集群导入数据。如果有，则自动进入并行导入模式。
+使用 TiDB Lightning 并行导入需要设置 `incremental-import = true`。TiDB Lightning 在启动时，会在下游 TiDB 中注册元信息，并自动检测是否有其他实例向目标集群导入数据。如果有，则自动进入并行导入模式。
 
 但是在并行导入时，需要注意以下情况：
 
@@ -171,6 +170,11 @@ pattern = '(?i)^(?:[^/]*/)*my_db\.my_table\.(0[0-4][0-9][0-9][0-9]|05000)\.sql'
 schema = "my_db"
 table = "my_table"
 type = "sql"
+
+[tikv-importer]
+# 是否允许向已存在数据的表导入数据。默认值为 false。
+# 当使用并行导入模式时，由于多个 TiDB Lightning 实例同时导入一张表，因此此开关必须设置为 true。
+incremental-import = true
 ```
 
 另外一个实例的配置修改为只导入 `05001 ~ 10000` 数据文件即可。
