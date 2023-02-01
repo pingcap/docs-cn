@@ -1,6 +1,6 @@
 ---
 title: 使用 Witness 节约成本
-summary: 如何使用 Witness 节约成本。
+summary: 如何使用 Witness 在高可靠的存储环境中节约成本。
 ---
 
 # 使用 Witness 节约成本
