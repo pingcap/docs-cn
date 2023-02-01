@@ -25,6 +25,7 @@ ResourceGroupName ::=
 CREATE RESOURCE GROUP rg1 RRU_PER_SEC=100 WRU_PER_SEC=200;
 Query OK, 0 rows affected (0.10 sec)
 ```
+
 ```sql
 SHOW CREATE RESOURCE GROUP rg1;
 ***************************[ 1. row ]***************************
