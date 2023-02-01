@@ -24,6 +24,7 @@ The metadata lock in TiDB applies to all DDL statements, such as:
 - [`DROP PARTITION`](/partitioned-table.md#partition-management)
 - [`TRUNCATE TABLE`](/sql-statements/sql-statement-truncate.md)
 - [`EXCHANGE PARTITION`](/partitioned-table.md#partition-management)
+- [`CHANGE COLUMN`](/sql-statements/sql-statement-change-column.md)
 - [`MODIFY COLUMN`](/sql-statements/sql-statement-modify-column.md)
 
 Enabling metadata lock might have some performance impact on the execution of the DDL task in TiDB. To reduce the impact, the following lists some scenarios that do not require metadata lock:
