@@ -28,7 +28,11 @@ TiFlash conducts real-time replication of data in the TiKV nodes at a low cost t
 
 To deploy TiFlash under the Linux AMD64 architecture, the CPU must support AVX2 instruction sets. Use `cat /proc/cpuinfo | grep avx2` to confirm that there is output. By using such CPU instruction sets, TiFlash's vectorization engine can deliver better performance.
 
+<CustomContent platform="tidb">
+
 TiFlash is compatible with both TiDB and TiSpark, which enables you to freely choose between these two computing engines.
+
+</CustomContent>
 
 It is recommended that you deploy TiFlash in different nodes from TiKV to ensure workload isolation. It is also acceptable to deploy TiFlash and TiKV in the same node if no business isolation is required.
 
@@ -81,7 +85,17 @@ TiFlash shares the computing workload in the same way as the TiKV Coprocessor do
 
 After TiFlash is deployed, data replication does not automatically begin. You need to manually specify the tables to be replicated.
 
+<CustomContent platform="tidb">
+
 You can either use TiDB to read TiFlash replicas for medium-scale analytical processing, or use TiSpark to read TiFlash replicas for large-scale analytical processing, which is based on your own needs. See the following sections for details:
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+You can use TiDB to read TiFlash replicas for analytical processing. See the following sections for details:
+
+</CustomContent>
 
 - [Create TiFlash Replicas](/tiflash/create-tiflash-replicas.md)
 - [Use TiDB to Read TiFlash Replicas](/tiflash/use-tidb-to-read-tiflash.md)

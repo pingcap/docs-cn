@@ -251,9 +251,9 @@ In this scenario, TiDB, an **HTAP (Hybrid Transactional and Analytical Processin
 
 ### Replicate column-based data
 
-Currently, TiDB supports two data analysis engines, **TiFlash** and **TiSpark**. For the large data scenarios (100 T), **TiFlash MPP** is recommended as the primary solution for HTAP, and **TiSpark** as a complementary solution.
-
 <CustomContent platform="tidb">
+
+Currently, TiDB supports two data analysis engines, **TiFlash** and **TiSpark**. For the large data scenarios (100 T), **TiFlash MPP** is recommended as the primary solution for HTAP, and **TiSpark** as a complementary solution.
 
 To learn more about TiDB HTAP capabilities, refer to the following documents: [Quick Start Guide for TiDB HTAP](/quick-start-with-htap.md) and [Explore HTAP](/explore-htap.md).
 
