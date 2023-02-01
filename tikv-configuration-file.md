@@ -433,12 +433,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 ## storage.block-cache
 
-RocksDB 多个 CF 之间共享 block cache 的配置选项。当开启时，为每个 CF 单独配置的 block cache 将无效。
-
-### `shared`
-
-+ 是否开启共享 block cache。
-+ 默认值：true
+RocksDB 多个 CF 之间共享 block cache 的配置选项。
 
 ### `capacity`
 
@@ -1145,7 +1140,7 @@ rocksdb defaultcf、rocksdb writecf 和 rocksdb lockcf 相关的配置项。
 
 ### `block-cache-size`
 
-+ 一个 RocksDB block 的默认缓存大小。
++ 一个 RocksDB block 的默认缓存大小。从 v6.6.0 起，该配置仅用于计算 `storage.block-cache.capacity` 的默认值。
 + `defaultcf` 默认值：机器总内存 * 25%
 + `writecf` 默认值：机器总内存 * 15%
 + `lockcf` 默认值：机器总内存 * 2%
