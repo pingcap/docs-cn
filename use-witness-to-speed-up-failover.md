@@ -31,4 +31,4 @@ Witness 功能适用于以下场景：
 pd-ctl config set enable-witness true
 ```
 
-命令输出 `Success` 表示开启成功。如果 Placement Rules 没有配置 Witness 副本，则默认不会有 Witness 产生。只有出现 TiKV down 后，才会立刻添加一个 Witness 节点，后续会根据 PD Placement Rules 规则将其转换为普通的 Voter。
+命令输出 `Success` 表示开启成功。如果没有按照[使用 Witness 节约成本](use-witness-to-save-costs.md)配置 Witness 副本，则集群正常状态下不会有 Witness 副本产生。只有出现 TiKV down 后，才会立刻添加一个 Witness 节点，后续会根据 PD Placement Rules 规则将其转换为普通的 Voter。
