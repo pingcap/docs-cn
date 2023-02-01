@@ -259,7 +259,7 @@ mysql> EXPLAIN SELECT /*+ use_index_merge(t3, idx) */ * FROM t3 WHERE ((a=1 AND 
 mysql> CREATE TABLE t4 (j JSON, INDEX idx((CAST(j AS SIGNED ARRAY))));
 Query OK, 0 rows affected (0.04 sec)
 
--- 多个 json_contains 通过 OR 组成的条件
+-- 如果查询包含多个 json_contains 通过 OR 组成的条件，则无法通过 IndexMerge 访问索引
 mysql> EXPLAIN SELECT /*+ use_index_merge(t3, idx) */ * FROM t3 WHERE (json_contains(j, '[1, 2]')) OR (json_contains(j, '[3, 4]'));
 +-------------------------+----------+-----------+---------------+------------------------------------------------------------------------------------------------------------------+
 | id                      | estRows  | task      | access object | operator info                                                                                                    |
