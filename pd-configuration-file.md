@@ -91,16 +91,6 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 + 强制让该 PD 以一个新集群启动，且修改 raft 成员数为 1。
 + 默认值：false
 
-<<<<<<< HEAD
-=======
-### `tso-update-physical-interval`
-
-+ TSO 物理时钟更新周期。
-+ 在默认的一个 TSO 物理时钟更新周期内 (50ms)，PD 最多提供 262144 个 TSO。如果需要更多的 TSO，可以将这个参数调小。最小值为 `1ms`。
-+ 缩短这个参数会增加 PD 的 CPU 消耗。根据测试，相比 `50ms` 更新周期，更新周期为 `1ms` 时，PD 的 CPU 占用率 ([CPU usage](https://man7.org/linux/man-pages/man1/top.1.html)) 将增加约 10%。
-+ 默认值：50ms
-+ 最小值：1ms
-
 ## pd-server
 
 pd-server 相关配置项。
@@ -114,7 +104,6 @@ pd-server 相关配置项。
 >
 > 如果是从 v4.0 升级至当前版本，升级后的 `flow-round-by-digit` 行为和升级前的 `trace-region-flow` 行为默认保持一致：如果升级前 `trace-region-flow` 为 false，则升级后 `flow-round-by-digit` 为 127；如果升级前 `trace-region-flow` 为 true，则升级后 `flow-round-by-digit` 为 3。
 
->>>>>>> 046499b8d (fix flow-round-by-digit in pd cfg docs (#12644))
 ## security
 
 安全相关配置项。
