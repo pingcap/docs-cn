@@ -288,7 +288,7 @@ Create Table | CREATE TABLE `child` (
 ### 与 TiDB 工具的兼容性
 
 - [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md) 不支持外键功能。
-- [DM](/dm/dm-overview.md) 在同步数据到下游 TiDB 时，会始终关闭下游 TiDB 的 `foreign_key_checks`，所以由外键产生级联操作不会从上游同步到下游，进而导致上下游数据不一致。这与旧版本 DM 的行为一致，因为在旧版本中 TiDB 不支持外键。
+- v6.6.0 版本的 [DM](/dm/dm-overview.md) 在同步数据到下游 TiDB 时，会显式关闭下游 TiDB 的 `foreign_key_checks`，所以由外键产生级联操作不会从上游同步到下游，进而导致上下游数据不一致。这与旧版本 DM 的行为一致，因为在旧版本中 TiDB 不支持外键。
 - v6.6.0 版本的 [TiCDC](/ticdc/ticdc-overview.md) 同步兼容了外键功能。旧版本的 [TiCDC](/ticdc/ticdc-overview.md) 在同步外键的表时，可能会报错，建议在下游 TiDB 关闭 `foreign_key_checks`。
 - v6.6.0 版本的 [BR](/br/backup-and-restore-overview.md) 同步兼容了外键功能。旧版本的 [BR](/br/backup-and-restore-overview.md) 在 restore 外键的表时，可能会报错，建议在下游 TiDB 关闭 `foreign_key_checks` 后再 restore。
 - [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 在导入数据到 TiDB 前，建议先关闭 TiDB 的 `foreign_key_checks`。
