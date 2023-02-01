@@ -23,7 +23,7 @@ summary: 如何使用 Witness 在高可靠的存储环境中节约成本。
 
 ### 第 1 步：开启 Witness
 
-使用 PD Control 执行 [`config set enable-witness true`](/pd-control.md#config-set-enable-witness-true) 命令开启 Witness：
+使用 PD Control 执行 `config set enable-witness true` 命令开启 Witness：
 
 ```bash
 pd-ctl config set enable-witness true
