@@ -17,17 +17,9 @@ TiDB Lightning 并行导入可以用于以下场景：
 > **注意：**
 >
 > - 并行导入只支持初始化 TiDB 的空表，不支持导入数据到已有业务写入的数据表，否则可能会导致数据不一致的情况。
-<<<<<<< HEAD
-> 
-> - 并行导入一般用于 local-backend 模式。
->
-> - 使用多个 TiDB Lightning 向同一目标导入时，禁止混用不同的 backend，例如，不可同时使用 Local-backend 和 TiDB-backend 导入同一 TiDB 集群。
-=======
->
-> - 并行导入一般用于 Physical Import 模式，需要设置 `incremental-import = true`
->
-> - 并行导入一般用于 Physical Import 模式；虽然也能用于 Logical Import 模式，但是一般不会带来明显的性能提升。
->>>>>>> 708a42f32 (Update tidb-lightning-distributed-import.md (#12828))
+> - 并行导入一般用于 local backend 模式，需要设置 `incremental-import = true`。
+> - 并行导入一般用于 local backend 模式；虽然也能用于 tidb backend 模式，但是一般不会带来明显的性能提升。
+> - 使用多个 TiDB Lightning 向同一目标导入时，禁止混用不同的 backend，例如，不可同时使用 local backend 和 tidb backend 导入同一 TiDB 集群。
 
 ## 使用说明
 
