@@ -8,6 +8,10 @@ Release date: April 7, 2022
 
 TiDB version: 6.0.0-DMR
 
+> **Note:**
+>
+> The TiDB 6.0.0-DMR documentation has been [archived](https://docs-archive.pingcap.com/tidb/v6.0/). PingCAP encourages you to use [the latest LTS version](https://docs.pingcap.com/tidb/stable) of the TiDB database.
+
 In 6.0.0-DMR, the key new features or improvements are as follows:
 
 - Support placement rules in SQL to provide more flexible management for data placement.
