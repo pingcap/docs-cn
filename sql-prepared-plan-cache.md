@@ -137,10 +137,10 @@ MySQL [test]> select @@last_plan_from_cache;
 对于无法进行缓存的查询或计划，可通过 `SHOW WARNINGS` 语句查看查询或计划是否被缓存。如果未被缓存，则可在结果中查看无法被缓存的原因。示例如下：
 
 ```sql
-mysql> prepare st from 'select * from t where a > (select max(a) from t)';  -- 该查询包含子查询，因此无法被缓存
+mysql> PREPARE st FROM 'SELECT * FROM t WHERE a > (SELECT MAX(a) FROM t)';  -- 该查询包含子查询，因此无法被缓存
 Query OK, 0 rows affected, 1 warning (0.01 sec)
 
-mysql> show warnings;  -- 查看查询计划无法被缓存的原因
+mysql> SHOW WARNINGS;  -- 查看查询计划无法被缓存的原因
 +---------+------+-----------------------------------------------+
 | Level   | Code | Message                                       |
 +---------+------+-----------------------------------------------+
@@ -148,13 +148,13 @@ mysql> show warnings;  -- 查看查询计划无法被缓存的原因
 +---------+------+-----------------------------------------------+
 1 row in set (0.00 sec)
 
-mysql> prepare st from 'select * from t where a<?';
+mysql> PREPARE st FROM 'SELECT * FROM t WHERE a<?';
 Query OK, 0 rows affected (0.00 sec)
 
 mysql> set @a='1'; 
 Query OK, 0 rows affected (0.00 sec)
 
-mysql> execute st using @a;  -- 该优化中进行了非 INT 类型到 INT 类型的转换，产生的执行计划可能随着参数变化而存在风险，因此 TiDB 不缓存该计划
+mysql> EXECUTE st USING @a;  -- 该优化中进行了非 INT 类型到 INT 类型的转换，产生的执行计划可能随着参数变化而存在风险，因此 TiDB 不缓存该计划
 Empty set, 1 warning (0.01 sec)
 
 mysql> show warnings;
