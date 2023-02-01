@@ -29,7 +29,7 @@ summary: 如何使用 Witness 在高可靠的存储环境中节约成本。
 pd-ctl config set enable-witness true
 ```
 
-命令输出 `Success` 表示开启成功。如果 Placement Rules 没有配置 Witness 副本，则默认不会有 Witness 产生。只有出现 TiKV down 后，才会立刻添加一个 Witness 节点，后续会根据 PD Placement Rules 规则将其转换为普通的 Voter。
+命令输出 `Success` 表示开启成功。如果 Placement Rules 没有配置 Witness 副本，则默认不会有 Witness 产生。只有出现 TiKV Down 后，才会立刻添加一个 Witness 节点，后续会根据 PD Placement Rules 规则将其转换为普通的 Voter。
 
 ### 第 2 步：配置 Witness 副本
 
