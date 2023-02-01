@@ -1503,7 +1503,8 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 默认值：`ON`
 - 该变量指定是否对窗口函数采用流水线的执行算法。
 
-### `tidb_enable_plan_cache_for_param_limit`
+### `tidb_enable_plan_cache_for_param_limit` <span class="version-mark">从 v6.6.0 版本开始引入</span>
+
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 默认值：`ON`
