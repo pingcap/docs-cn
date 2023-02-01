@@ -17,9 +17,7 @@ summary: 如何使用临时 Witness 副本来加速副本恢复。
 
 ## 适用场景
 
-Witness 功能适用于以下场景：
-
-* 快速恢复 failover 提高可用性的场景，可以开启 Witness 功能但不配置 Witness 副本。
+快速恢复 failover 提高可用性的场景，可以开启 Witness 功能但不配置 Witness 副本。
 
 ## 使用步骤
 
