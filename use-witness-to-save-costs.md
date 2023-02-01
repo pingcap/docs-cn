@@ -7,7 +7,7 @@ summary: 如何使用 Witness 节约成本。
 
 > **警告：**
 >
-> - 在开启 Witness 功能并通过 PD Placement Rules 设置 Witness 副本后，Witness 副本只会存储最近的 Raft 日志来进行多数派确认，但不会存储数据。所以，如果你的数据本身设置了 3 副本冗余，当设置 Witness 副本后，仅只有两个副本存储着完整的数据；这种情况下，只有当你的磁盘可靠性达到一定程度（如使用 Amazon EBS 的 gp3 磁盘，可靠性有 99.8%~99.9%）时，才考虑设置 Witness 副本；
+> - 仅当你的磁盘可靠性达到一定程度（如使用 Amazon EBS 的 gp3 磁盘，可靠性有 99.8%~99.9%）时，才考虑设置 Witness 副本；
 > - 由于 Witness 副本没有应用 Raft 日志，因此无法对外提供读写服务，当 Witness 副本为 Leader 且无法及时 transfer leader 时，客户端 Backoff 超时后，应用可能收到 IsWitness 错误。
 > - Witness 功能自 v6.6.0 版本开始引入，与低版本不兼容，因此不支持降级。
 
