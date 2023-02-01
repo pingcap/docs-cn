@@ -5,9 +5,14 @@ summary: 介绍如何通过资源管控能力来实现对应用资源消耗的�
 
 # 使用资源管控 (Resource Control) 实现资源隔离
 
-使用资源管控特性，集群管理员可以定义资源组 (Resource Group)，通过资源组限定读写的配额。将用户绑定到某个资源组后，TiDB 层会根据用户所绑定资源组设定的读写配额对用户的读写请求做流控。同时，TiKV 层会使用读写配额映射的优先级来对请求做调度。通过流控和调度这两层控制，你可以实现应用的资源隔离，满足服务质量（QoS）要求。
+使用资源管控特性，集群管理员可以定义资源组 (Resource Group)，通过资源组限定读写的配额。将用户绑定到某个资源组后，TiDB 层会根据用户所绑定资源组设定的读写配额对用户的读写请求做流控，TiKV 层会根据读写配额映射的优先级来对请求做调度。通过流控和调度这两层控制，你可以实现应用的资源隔离，满足服务质量（QoS）要求。
 
-资源管控技术的引入对 TiDB 具有里程碑的意义。它能够将一个分布式数据库集群划分成多个逻辑单元，即使个别单元对资源过度使用，也不会挤占其他单元所需的资源。利用该特性，你可以将数个来自不同系统的中小型应用合入一个 TiDB 集群中，个别应用的负载提升，不会影响其他业务的正常运行。而在系统负载较低的时候，繁忙的应用即使超过限额，也仍旧可以被分配到所需的系统资源，达到资源的最大化利用。同样的，你可以选择将所有测试环境合入一个集群，或者将消耗较大的批量任务编入一个单独的资源组，在保证重要应用获得必要资源的同时，提升硬件利用率，降低运行成本。另外，合理利用资源管控技术可以减少集群数量，降低运维难度及管理成本。
+资源管控特性的引入对 TiDB 具有里程碑的意义。它能够将一个分布式数据库集群划分成多个逻辑单元，即使个别单元对资源过度使用，也不会挤占其他单元所需的资源。利用该特性：
+
+- 你可以将多个来自不同系统的中小型应用合入一个 TiDB 集群中，个别应用的负载提升，不会影响其他业务的正常运行。而在系统负载较低的时候，繁忙的应用即使超过设定的读写配额，也仍旧可以被分配到所需的系统资源，达到资源的最大化利用。
+- 你可以选择将所有测试环境合入一个集群，或者将消耗较大的批量任务编入一个单独的资源组，在保证重要应用获得必要资源的同时，提升硬件利用率，降低运行成本。
+
+此外，合理利用资源管控特性可以减少集群数量，降低运维难度及管理成本。
 
 > **警告:**
 >
@@ -28,8 +33,10 @@ summary: 介绍如何通过资源管控能力来实现对应用资源消耗的�
 | `resource_control.enabled`= false |  仅流控                         |  特性被关闭                   |
 
 ## 使用方法
-
-你可以通过 [`CREATE RESOURCE GROUP`](/sql-statements/sql-statement-create-resource-group.md) 在集群中创建资源组，再通过 [`CREATE USER`](/sql-statements/sql-statement-create-user.md) 语句，或者 [`ALTER USER`](/sql-statements/sql-statement-alter-user.md) 将用户绑定到特定的资源组。
+> **注意:**
+>
+> 创建、修改、删除资源组，需要拥有 `SUPER` 或者 `RESOURCE_GROUP_ADMIN` 权限。
+你可以通过 [`CREATE RESOURCE GROUP`](/sql-statements/sql-statement-create-resource-group.md) 在集群中创建资源组，再通过 [`CREATE USER`](/sql-statements/sql-statement-create-user.md) 或 [`ALTER USER`](/sql-statements/sql-statement-alter-user.md) 语句将用户绑定到特定的资源组。
 
 > **注意:**
 > 
@@ -39,13 +46,13 @@ summary: 介绍如何通过资源管控能力来实现对应用资源消耗的�
 
 你可以通过 [`DROP RESOURCE GROUP`](/sql-statements/sql-statement-drop-resource-group.md) 删除资源组，被删除资源组所绑定的用户会使用 `default` 资源组做资源隔离。
 
-> **推荐做法：**
+> **注意：**
 > 
 > `default` 资源组默认不会对绑定的用户应用做配额限制，建议通过 [`CREATE RESOURCE GROUP`](/sql-statements/sql-statement-create-resource-group.md) 创建 `default` 资源组，或者通过 [`ALTER RESOURCE GROUP`](/sql-statements/sql-statement-alter-resource-group.md) 修改 `default` 资源组的配额，从而实现对 `default` 资源组的配额控制。
 
-### 开启特性
+### 第 1 步：开启资源管控特性
 
-启资源管控特性：
+开启资源组流控：
 
 ```sql
 SET GLOBAL tidb_enable_resource_control = 'ON';
@@ -53,9 +60,9 @@ SET GLOBAL tidb_enable_resource_control = 'ON';
 
 将 TiKV 配置参数 `resource_control.enabled` 设为 `true`。
 
-### 创建资源组，并绑定用户到资源组
+### 第 2 步：创建资源组，并绑定用户到资源组
 
->**说明：**
+> **注意：**
 >
 > `Resource Group` 配额采用 [`RU` (Resource Unit)](/tidb-RU.md) 表达。`RU` 是 TiDB 对 CPU、IO 等系统资源的统一抽象的单位。
 
@@ -94,7 +101,7 @@ SET GLOBAL tidb_enable_resource_control = 'ON';
 
 ## 监控与图表
 
-TiDB 会定时采集资源管控的运行时信息，并在 Grafana 中提供了相关指标的可视化图表。你可以在 **TiDB** > **Resource Control** 的面板下看到这些信息。指标详情见 [TiDB 重要监控指标详解](/grafana-tidb-dashboard.md) 中的 `Resource Control` 部分。
+TiDB 会定时采集资源管控的运行时信息，并在 Grafana 的 **TiDB** > **Resource Control** 面板中提供了相关指标的可视化图表。指标详情见 [TiDB 重要监控指标详解](/grafana-tidb-dashboard.md) 中的 `Resource Control` 部分。
 
 ## 工具兼容性
 
@@ -104,8 +111,8 @@ TiDB 会定时采集资源管控的运行时信息，并在 Grafana 中提供了
 
 目前，资源管控特性具有以下限制:
 
-* 暂时只支持对前台客户发起的前台读写请求做限流和调度，不支持 `DDL` 以及 `Auto Analyze` 等后台任务。
-* 因为额外调度的开销，开启该特性后，性能可能会观察到有轻微的下降。
+* 暂时只支持对前台客户发起的读写请求做限流和调度，不支持对 `DDL` 以及 `Auto Analyze` 等后台任务的限流和调度。
+* 资源管控将带来额外的调度开销。因此，开启该特性后，性能可能会有轻微的下降。
 
 ## 另请参阅
 

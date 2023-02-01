@@ -1,6 +1,6 @@
 ---
 title: ALTER RESOURCE GROUP
-summary: TiDB 数据库中 ALTER RESOURCE GROUP 的使用概况
+summary: TiDB 数据库中 ALTER RESOURCE GROUP 的使用概况。
 ---
 
 # ALTER RESOURCE GROUP

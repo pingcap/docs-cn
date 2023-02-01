@@ -1,10 +1,9 @@
 ---
 title: RESOURCE_GROUPS
 summary: 了解 information_schema 表 `RESOURCE_GROUPS`。
-aliases: ['/docs-cn/dev/information-schema/information-schema-resource-groups/']
 ---
 
-`RESOURCE_GROUPS` 表展示所有资源组 (resource group) 的信息，见 [Resource Conctrol in TiDB](/tidb-resource-control.md)。
+`RESOURCE_GROUPS` 表展示所有资源组 (resource group) 的信息，见[使用资源管控 (Resource Control) 实现资源隔离](/tidb-resource-control.md)。
 
 {{< copyable "sql" >}}
 
@@ -54,7 +53,7 @@ mysql> SELECT * FROM information_schema.placement_policies WHERE NAME = 'my_rg1'
 ```
 
 ```sql
-mysql> CREATE RESOURCE GROUP my_rg2 CPU="8" IO_READ_BANDWIDTH="1000Mi" IO_WRITE_BANDWIDTH="1000Mi"; -- 使用 RAW_MODE 创建资源组 my_rg1
+mysql> CREATE RESOURCE GROUP my_rg2 CPU="8" IO_READ_BANDWIDTH="1000Mi" IO_WRITE_BANDWIDTH="1000Mi"; -- 使用 RAW_MODE 创建资源组 my_rg2
 Query OK, 0 rows affected (0.20 sec)
 mysql> show create resource group my_rg2; -- 显示 my_rg2 资源组的定义。
 +----------------+-----------------------------------------------------------------------------------------------+

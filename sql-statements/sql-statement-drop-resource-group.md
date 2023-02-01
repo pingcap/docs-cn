@@ -1,6 +1,6 @@
 ---
 title: DROP RESOURCE GROUP
-summary: TiDB 数据库中 DROP RESOURCE GROUP 的使用概况
+summary: TiDB 数据库中 DROP RESOURCE GROUP 的使用概况。
 ---
 
 # DROP RESOURCE GROUP

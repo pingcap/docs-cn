@@ -1,6 +1,6 @@
 ---
 title: CREATE RESOURCE GROUP
-summary: TiDB 数据库中 CREATE RESOURCE GROUP 的使用概况
+summary: TiDB 数据库中 CREATE RESOURCE GROUP 的使用概况。
 ---
 
 # CREATE RESOURCE GROUP
