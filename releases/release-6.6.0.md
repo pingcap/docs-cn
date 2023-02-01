@@ -41,7 +41,7 @@ TiDB 版本：6.6.0
 
 * 支持 DDL 分布式并行执行框架（实验性特性） [#issue](链接)  @[zimulala](https://github.com/zimulala) **tw@ran-huang**
 
-    在过去的版本中，整个 TiDB 集群中仅允许一个 TiDB 实例作为 DDL Owner 有权处理 Schema 变更任务，为了进一步提升 DDL 的并发性，TiDB v6.6.0 版本引入了 DDL 分布式并行执行框架，支持集群中所有的 TiDB 实例都作为 Owner 并发执行同一个 Schema 变更子任务，加速 DDL 的执行。
+    在过去的版本中，整个 TiDB 集群中仅允许一个 TiDB 实例作为 DDL Owner 有权处理 Schema 变更任务，为了进一步提升 DDL 的并发性，TiDB v6.6.0 版本引入了 DDL 分布式并行执行框架，支持集群中所有的 TiDB 实例可以并发执行同一个任务的 `StateWriteReorganization` 阶段，加速 DDL 的执行。目前只支持 `Add Index` 操作。
 
     更多信息，请参考[用户文档](链接)。
 
@@ -293,7 +293,8 @@ TiDB 版本：6.6.0
 | 配置文件 | 配置项 | 修改类型 | 描述 |
 | -------- | -------- | -------- | -------- |
 | TiKV | [`resource_control.enabled`](/tikv-configuration-file.md#tidb_enable_resource_control-%E4%BB%8E-v660-%E7%89%88%E6%9C%AC%E5%BC%80%E5%A7%8B%E5%BC%95%E5%85%A5) | 新增 | 是否支持按照资源组配额调度。 默认 `false` ，即关闭按照资源组配额调度。 |
-|          |          |          |          |
+| TiKV | `storage.block-cache.shared` | 修改 | 从 v6.6.0 起，该配置项永远开启且无法关闭。 |
+| TiKV | `storage.block-cache.block-cache-size` | 修改 | 从 v6.6.0 起，该配置项仅用于计算 `storage.block-cache.capacity` 的默认值。 |
 |          |          |          |          |
 |          |          |          |          |
 
@@ -347,7 +348,7 @@ TiDB 版本：6.6.0
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
     + TiDB Lightning
-- 修复了一个在部分场景下 TiDB 重启导致 Lightning timeout 卡主的 bug。[33714](https://github.com/pingcap/tidb/issues/33714) @[lichunzhu](https://github.com/lichunzhu) **tw@shichun-0415**
+        - 修复在部分场景下 TiDB/TiKV 重启导致 Lightning 重试耗费更长时间的问题。[33714](https://github.com/pingcap/tidb/issues/33714) @[lichunzhu](https://github.com/lichunzhu) **tw@shichun-0415**
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
@@ -358,7 +359,7 @@ TiDB 版本：6.6.0
 
     + Sync-diff-inspector
 
-        - 新增一个参数，当下游数据库的表在上游不存在时，可配置该参数跳过对上下游数据库表数量不一致场景的校验，而不是任务中断退出。 @[lichunzhu](https://github.com/lichunzhu) @[liumengya94](https://github.com/liumengya9) **tw@shichun-0415**
+        - 新增 `skip-non-existing-table` 参数，当对比的上下游存在上游或下游表全部缺失的情况时，可配置该参数跳过对上下游表数据不一致的校验并输出到结果集与日志中，而不是任务中断退出。 @[lichunzhu](https://github.com/lichunzhu) @[liumengya94](https://github.com/liumengya9) **tw@shichun-0415**
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
 ## 错误修复
