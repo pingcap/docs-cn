@@ -37,7 +37,7 @@ FlashbackToTimestampStmt ::=
 * `FLASHBACK CLUSTER` 指定的时间点不能存在未执行完成的 DDL 记录。若存在，TiDB 会拒绝该 DDL 操作。
 * 在执行 `FLASHBACK CLUSTER TO TIMESTAMP` 前，TiDB 会主动断开所有相关表上的连接，并禁止对这些表进行读写操作，直到 `FLASHBACK CLUSTER` 完成。
 * `FLASHBACK CLUSTER TO TIMESTAMP` 命令不能取消，一旦开始执行 TiDB 会一直重试，直到成功。
-* 若 `FLASHBACK CLUSTER` 导致了元信息（表结构、库结构）的回滚，则相关的修改 **不会** 被 TiCDC 同步。因此，用户需主动暂停任务，待 `FLASHBACK CLUSTER` 完成后将上下游的 schema 定义手动同步一致，然后重新创建 TiCDC changefeed。
+* 若 `FLASHBACK CLUSTER` 导致了元信息（表结构、库结构）的回滚，则相关的修改**不会**被 TiCDC 同步。因此，用户需主动暂停任务，待 `FLASHBACK CLUSTER` 完成后将上下游的 schema 定义手动同步一致，然后重新创建 TiCDC changefeed。
 
 ## 示例
 
