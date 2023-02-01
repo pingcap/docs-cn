@@ -36,12 +36,12 @@ summary: 介绍如何通过资源管控能力来实现对应用资源消耗的�
 
 对于已有的资源组，你可以通过 [`ALTER RESOURCE GROUP`](/sql-statements/sql-statement-alter-resource-group.md) 修改资源组的读写配额，对资源组的配额修改会立即生效。
 
-你可以通过 [`DROP RESOURCE GROUP`](/sql-statements/sql-statement-drop-resource-group.md) 删除资源组，被删除资源组所绑定的用户会使用 `default` 资源组做资源隔离。
+你可以通过 [`DROP RESOURCE GROUP`](/sql-statements/sql-statement-drop-resource-group.md) 删除资源组。
 
-> **注意：**
+> **注意：z**
 > 
 > - `CREATE USER` 或者 `ALTER USER` 对用户资源组绑定后，不会对该用户的已有会话生效，而是只对该用户新建的会话生效。
-> - `default` 资源组默认不会对绑定的用户应用做配额限制，建议通过 [`CREATE RESOURCE GROUP`](/sql-statements/sql-statement-create-resource-group.md) 创建 `default` 资源组，或者通过 [`ALTER RESOURCE GROUP`](/sql-statements/sql-statement-alter-resource-group.md) 修改 `default` 资源组的配额，从而实现对 `default` 资源组的配额控制。
+> - 如果用户没有绑定到某个资源组或者是绑定到 `default` 资源组，该用户的请求不会受 TiDB 的流控限制。  `default` 资源组目前对用户不可见也不可以创建或者修改属性。
 
 ### 前提条件
 
@@ -61,27 +61,20 @@ SET GLOBAL tidb_enable_resource_control = 'ON';
 
 ### 第 2 步：创建资源组，并绑定用户到资源组
 
-Resource Group 配额采用 [RU (Resource Unit)](/tidb-RU.md) 表达。RU 是 TiDB 对 CPU、IO 等系统资源的统一抽象的单位。
+Resource Group 配额采用 [RU (Request Unit)](/tidb-RU.md) 表达。RU 是 TiDB 对 CPU、IO 等系统资源的统一抽象的单位。
 
 下面举例说明如何创建资源组，并绑定用户到资源组。
 
-1. 创建 `rg1` 资源组，读请求的配额是每秒 500 RU，写请求的配额是每秒 300 RU。在系统资源充足的时候，允许这个资源组的应用超额占用资源。
+1. 创建 `rg1` 资源组，RU 的回填速度是每秒 500 RU，并且允许这个资源组的应用超额占用资源。
 
     ```sql
-    CREATE RESOURCE GROUP IF NOT EXISTS rg1
-    RRU_PER_SEC = 500
-    WRU_PER_SEC = 300
-    BURSTABLE
-    ;
+    CREATE RESOURCE GROUP IF NOT EXISTS rg1 RU_PER_SEC = 500 BURSTABLE;
     ```
 
-2. 创建 `rg2` 资源组，读请求的配额是每秒 600 RU，写请求的配额是每秒 400 RU。在系统资源充足的时候，不允许这个资源组的应用超额占用资源。
+2. 创建 `rg2` 资源组，RU 的回填速度是每秒 600 RU，。在系统资源充足的时候，不允许这个资源组的应用超额占用资源。
 
     ```sql
-    CREATE RESOURCE GROUP IF NOT EXISTS rg2
-    RRU_PER_SEC = 600
-    WRU_PER_SEC = 400
-    ;
+    CREATE RESOURCE GROUP IF NOT EXISTS rg2 RU_PER_SEC = 600;
     ```
 
 3. 将用户 `usr1` 和 `usr2` 分别绑定到资源组 `rg1` 和 `rg2`。
@@ -94,7 +87,7 @@ Resource Group 配额采用 [RU (Resource Unit)](/tidb-RU.md) 表达。RU 是 Ti
     ALTER USER usr2 RESOURCE GROUP rg2;
     ```
 
-完成上述创建资源组和绑定用户的操作后，用户新建立的会话对资源的占用会受到指定配额的限制。读请求会受读 RU 的配额限制，写请求会受写 RU 的配额限制。如果系统负载比较高，没有多余的容量，两个用户的资源消耗速度会严格控制不超过配额，并且，两个用户读写请求 RU 指标的消耗比例也是与指定的配额基本成正比。在系统资源充沛时，由于 `usr1` 绑定的 `rg1` 配置了 `BURSTABLE`，所以 `usr1` 消耗速度允许超过配额，而 `usr2` 则不可以。
+完成上述创建资源组和绑定用户的操作后，用户新建立的会话对资源的占用会受到指定配额的限制。如果系统负载比较高，没有多余的容量，`usr2` 用户的资源消耗速度会严格控制不超过配额，由于 `usr1` 绑定的 `rg1` 配置了 `BURSTABLE`，所以 `usr1` 消耗速度允许超过配额。如果资源组对应的请求配额不够，客户端的请求处理会发生等待，如果等待时间过长，请求会报错。
 
 ## 监控与图表
 

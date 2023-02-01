@@ -11,10 +11,10 @@ summary: TiDB 数据库中 DROP RESOURCE GROUP 的使用概况。
 
 ```ebnf+diagram
 DropResourceGroupStmt:
-    "DROP" "RESOURCE" "GROUP" IfNotExists ResourceGroupName
+    "DROP" "RESOURCE" "GROUP" IfExists ResourceGroupName
 
-IfNotExists ::=
-    ('IF' 'NOT' 'EXISTS')?
+IfExists ::=
+    ('IF' 'EXISTS')?
 
 ResourceGroupName:
     Identifier
@@ -31,28 +31,21 @@ ResourceGroupName:
 ```sql
 mysql> DROP RESOURCE GROUP IF EXISTS rg1;
 Query OK, 0 rows affected (0.22 sec)
-mysql> CREATE RESOURCE GROUP IF NOT EXISTS rg1 (
-    ->  RRU_PER_SEC = 500
-    ->  WRU_PER_SEC = 300
-    ->  BURSTABLE
-    -> );
+mysql> CREATE RESOURCE GROUP IF NOT EXISTS rg1 RU_PER_SEC = 500 BURSTABLE;
 Query OK, 0 rows affected (0.08 sec)
 mysql> SELECT * FROM information_schema.resource_groups WHERE NAME ='rg1';
-+------+--------------+---------------------------------------------------------------+
-| Name | Plan_type    | Directive | 
-+------+--------------+---------------------------------------------------------------+
-| rg1  |   tenancy    | {"RRU_PER_SEC": 500, "WRU_PER_SEC": 300, "BURSTABLE": true} |
-+------+--------------+---------------------------------------------------------------+
-1 row in set (0.00 sec)
++------+------------+-----------+-----------+
+| NAME | RU_PER_SEC | RU_TOKENS | BURSTABLE |
++------+------------+-----------+-----------+
+| rg1  |        500 |         0 | YES       |
++------+------------+-----------+-----------+
+1 row in set (0.01 sec)
 
-mysql> DROP RESOURCE GROUP IF NOT EXISTS rg1 ;
+mysql> DROP RESOURCE GROUP IF EXISTS rg1 ;
 Query OK, 1 rows affected (0.09 sec)
-mysql> SELECT * FROM information_schema.resource_groups WHERE NAME ='rg1';
-+------+--------------+---------------------------------------------------------------+
-| Name | Plan_type    | Directive | 
-+------+--------------+---------------------------------------------------------------+
-+------+--------------+---------------------------------------------------------------+
-0 row in set (0.00 sec)
+
+mysql>  SELECT * FROM information_schema.resource_groups WHERE NAME ='rg1';
+Empty set (0.00 sec)
 ```
 
 ## MySQL 兼容性

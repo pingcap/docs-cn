@@ -1,4 +1,21 @@
----
+mysql> DROP RESOURCE GROUP IF EXISTS rg1;
+Query OK, 0 rows affected (0.22 sec)
+mysql> CREATE RESOURCE GROUP IF NOT EXISTS rg1
+->  RU_PER_SEC = 100
+->  BURSTABLE;
+Query OK, 0 rows affected (0.08 sec)
+mysql> CREATE RESOURCE GROUP IF NOT EXISTS rg2
+->  RU_PER_SEC = 200
+->  BURSTABLE;
+Query OK, 0 rows affected (0.08 sec)
+mysql> SELECT * FROM information_schema.resource_groups WHERE NAME ='rg1' or NAME = 'rg2';
++------+-------------+-----------+-----------+
+| NAME | RU_PER_SEC  | RU_TOKENS | BURSTABLE |
++------+-------------+-----------+-----------+
+| rg1  |         100 |    165135 | YES       |
+| rg2  |         200 |    157158 | NO        |
++------+-------------+-----------+-----------+
+1 rows in set (1.30 sec)---
 title: ALTER RESOURCE GROUP
 summary: TiDB 数据库中 ALTER RESOURCE GROUP 的使用概况。
 ---
@@ -33,14 +50,13 @@ BurstableOption ::=
 
 ```
 
-TiDB 支持以下 `DirectResourceGroupOption`, 其中 [`RU` (Resource Unit)](/tidb-RU.md) 是 TiDB 对 CPU、IO 等系统资源统一抽象的单位。
+TiDB 支持以下 `DirectResourceGroupOption`, 其中 [`RU` (Request Unit)](/tidb-RU.md) 是 TiDB 对 CPU、IO 等系统资源统一抽象的单位。
 
-| 参数           |含义                                 | 举例                    |
-|---------------|-------------------------------------|------------------------|
-|`RRU_PER_SEC`|每秒钟读 RU 的配额                       |`RRU_PER_SEC = 500`     |
-|`WRU_PER_SEC`|每秒钟写 RU 的配额                       |`WRU_PER_SEC = 300`     |
+| 参数            | 含义           | 举例                                   |
+|---------------|--------------|--------------------------------------|
+| `RU_PER_SEC`  | 每秒钟 RU 填充的速度 | `RU_PER_SEC = 500` 表示此资源组每秒回填500个 RU |
 
-如果设置了 `BURSTABLE` 属性，对应的资源组就允许在系统资源充足的情况下，允许超出配额使用系统资源。
+如果设置了 `BURSTABLE` 属性，对应的资源组允许超出配额使用系统资源。
 
 > **注意：**
 > 
@@ -54,31 +70,26 @@ TiDB 支持以下 `DirectResourceGroupOption`, 其中 [`RU` (Resource Unit)](/ti
 mysql> DROP RESOURCE GROUP IF EXISTS rg1;
 Query OK, 0 rows affected (0.22 sec)
 mysql> CREATE RESOURCE GROUP IF NOT EXISTS rg1
-    ->  RRU_PER_SEC = 500
-    ->  WRU_PER_SEC = 300
-    ->  BURSTABLE
-    -> ;
+    ->  RU_PER_SEC = 100
+    ->  BURSTABLE;
 Query OK, 0 rows affected (0.08 sec)
 mysql> SELECT * FROM information_schema.resource_groups WHERE NAME ='rg1';
-+------+--------------+---------------------------------------------------------------+
-| Name | Plan_type    | Directive | 
-+------+--------------+---------------------------------------------------------------+
-| rg1  |   tenancy    | {"RRU_PER_SEC": 500, "WRU_PER_SEC": 300, "BURSTABLE": true} |
-+------+--------------+---------------------------------------------------------------+
-1 row in set (0.00 sec)
-
-mysql> ALTER RESOURCE GROUP IF NOT EXISTS rg1
-    ->  RRU_PER_SEC = 600
-    ->  WRU_PER_SEC = 400
-    -> ;
-Query OK, 0 rows affected (0.09 sec)
++------+-------------+-----------+-----------+
+| NAME | RU_PER_SEC  | RU_TOKENS | BURSTABLE |
++------+-------------+-----------+-----------+
+| rg1  |         100 |    165135 | YES       |
++------+-------------+-----------+-----------+
+1 rows in set (1.30 sec)
+mysql> ALTER RESOURCE GROUP rg1
+    ->  RU_PER_SEC = 200;
+Query OK, 0 rows affected (0.08 sec)
 mysql> SELECT * FROM information_schema.resource_groups WHERE NAME ='rg1';
-+------+--------------+---------------------------------------------------------------+
-| Name | Plan_type    | Directive | 
-+------+--------------+---------------------------------------------------------------+
-| rg1  |   tenancy    | {"RRU_PER_SEC": 600, "WRU_PER_SEC": 400, "BURSTABLE": false} |
-+------+--------------+---------------------------------------------------------------+
-1 row in set (0.00 sec)
++------+-------------+-----------+-----------+
+| NAME | RU_PER_SEC  | RU_TOKENS | BURSTABLE |
++------+-------------+-----------+-----------+
+| rg1  |         200 |    257158 | NO        |
++------+-------------+-----------+-----------+
+1 rows in set (1.30 sec)
 ```
 
 ## MySQL 兼容性

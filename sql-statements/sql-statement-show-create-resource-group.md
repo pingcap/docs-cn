@@ -22,7 +22,7 @@ ResourceGroupName ::=
 查看资源组 `rg1` 当前的定义：
 
 ```sql
-CREATE RESOURCE GROUP rg1 RRU_PER_SEC=100 WRU_PER_SEC=200;
+CREATE RESOURCE GROUP rg1 RU_PER_SEC=100;
 Query OK, 0 rows affected (0.10 sec)
 ```
 
@@ -30,7 +30,7 @@ Query OK, 0 rows affected (0.10 sec)
 SHOW CREATE RESOURCE GROUP rg1;
 ***************************[ 1. row ]***************************
 Resource_Group        | rg1
-Create Resource Group | CREATE RESOURCE GROUP `rg1` RRU_PER_SEC=100 WRU_PER_SEC=200
+Create Resource Group | CREATE RESOURCE GROUP `rg1` RU_PER_SEC=100
 1 row in set (0.00 sec)
 ```
 

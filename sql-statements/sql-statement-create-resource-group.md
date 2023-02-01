@@ -25,8 +25,7 @@ ResourceGroupOptionList:
 |   ResourceGroupOptionList ',' DirectResourceGroupOption
 
 DirectResourceGroupOption:
-    "RRU_PER_SEC" EqOpt stringLit
-|   "WRU_PER_SEC" EqOpt stringLit
+    "RU_PER_SEC" EqOpt stringLit
 
 BurstableOption ::=
     ("BURSTABLE")?
@@ -35,14 +34,14 @@ BurstableOption ::=
 
 资源组的 `ResourceGroupName` 是全局唯一的，不允许重复。
 
-TiDB 支持以下 `DirectResourceGroupOption`, 其中 [`RU` (Resource Unit)](/tidb-RU.md) 是 TiDB 对 CPU、IO 等系统资源统一抽象的单位。
+TiDB 支持以下 `DirectResourceGroupOption`, 其中 [`RU` (Request Unit)](/tidb-RU.md) 是 TiDB 对 CPU、IO 等系统资源统一抽象的单位。
 
-| 参数           |含义                                  |举例                      |
-|----------------|--------------------------------------|----------------------------|
-|`RRU_PER_SEC`  | 每秒钟读 RU 的配额                       |`RRU_PER_SEC = 500`  |
-|`WRU_PER_SEC` | 每秒钟写 RU 的配额                       |`WRU_PER_SEC = 300` |
+| 参数            | 含义           | 举例                                   |
+|---------------|--------------|--------------------------------------|
+| `RU_PER_SEC`  | 每秒钟 RU 填充的速度 | `RU_PER_SEC = 500` 表示此资源组每秒回填500个 RU |
 
-如果设置了 `BURSTABLE` 属性，对应的资源组就允许在系统资源充足的情况下，可以超出配额占用使用系统资源。
+如果设置了 `BURSTABLE` 属性，对应的资源组允许超出配额使用系统资源。
+
 
 > **注意：**
 >
@@ -50,24 +49,27 @@ TiDB 支持以下 `DirectResourceGroupOption`, 其中 [`RU` (Resource Unit)](/ti
 
 ## 示例
 
-创建一个名为 `rg1` 的资源组：
+创建一个名为 `rg1` 的资源组，和一个名为 `rg2` 的资源组
 
 ```sql
 mysql> DROP RESOURCE GROUP IF EXISTS rg1;
 Query OK, 0 rows affected (0.22 sec)
 mysql> CREATE RESOURCE GROUP IF NOT EXISTS rg1
-    ->  RRU_PER_SEC = 500
-    ->  WRU_PER_SEC = 300
-    ->  BURSTABLE
-    -> ;
+    ->  RU_PER_SEC = 100
+    ->  BURSTABLE;
 Query OK, 0 rows affected (0.08 sec)
-mysql> SELECT * FROM information_schema.resource_groups WHERE NAME ='rg1';
-+------+--------------+---------------------------------------------------------------+
-| Name | Plan_type    | Directive | 
-+------+--------------+---------------------------------------------------------------+
-| rg1  |   tenancy    | {"RRU_PER_SEC": 500, "WRU_PER_SEC": 300, "BURSTABLE": true} |
-+------+--------------+---------------------------------------------------------------+
-1 row in set (0.00 sec)
+mysql> CREATE RESOURCE GROUP IF NOT EXISTS rg2
+    ->  RU_PER_SEC = 200
+    ->  BURSTABLE;
+Query OK, 0 rows affected (0.08 sec)
+mysql> SELECT * FROM information_schema.resource_groups WHERE NAME ='rg1' or NAME = 'rg2';
++------+-------------+-----------+-----------+
+| NAME | RU_PER_SEC  | RU_TOKENS | BURSTABLE |
++------+-------------+-----------+-----------+
+| rg1  |         100 |    165135 | YES       |
+| rg2  |         200 |    157158 | NO        |
++------+-------------+-----------+-----------+
+2 rows in set (1.30 sec)
 ```
 
 ## MySQL 兼容性
