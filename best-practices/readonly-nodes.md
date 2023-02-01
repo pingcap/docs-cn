@@ -131,7 +131,7 @@ set tidb_replica_read=learner;
 
 #### 3.2 在 TiSpark 中使用 follower read
 
-我们可以通过添加 `spark.tispark.replica_read` 配置的方式，来读取只读节点上的数据。
+你可以在 Spark 配置文件设置中 `spark.tispark.replica_read = learner` 来读取只读节点上的数据：
 
 ```
 spark.tispark.replica_read learner 
