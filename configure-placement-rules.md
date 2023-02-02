@@ -494,7 +494,7 @@ table ttt ranges: (NOTE: key range might be changed after DDL)
 
 ### 场景六：在高可靠的存储环境下，配置 Witness 副本
 
-这个例子展示了 `IsWitness` 配置，下面的例子是在 Amazon EBS 环境下配置 Witness 副本节约成本。
+这个例子展示了 `IsWitness` 配置，下面的例子是在 Amazon EBS 环境下配置 [Witness](/glossary.md#witness) 副本节约成本。
 
 添加规则示例如下：
 
