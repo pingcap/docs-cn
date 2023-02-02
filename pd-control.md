@@ -1440,9 +1440,9 @@ unsafe remove-failed-stores show
 config set enable-witness true
 ```
 
-> **警告：**
->
-> 通过 Placement Rules 配置 Witness 副本后，Witness 副本不应用 Raft 日志，请确保存储具有高可用性 (99.8%~99.9%)。
++ Witness 的使用场景如下：
+    - 在高可靠的存储环境下节约成本。具体使用方法，可参考[使用 Witness 节约成本](/use-witness-to-save-costs.md)。
+    - 快速恢复 failover 提高系统可用性。具体使用方法，可参考[使用临时 Witness 副本加速副本恢复](/use-witness-to-speed-up-failover.md)。
 
 ## jq 格式化 JSON 输出示例
 
