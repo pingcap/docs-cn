@@ -110,7 +110,7 @@ pd-ctl config placement-rules rule-bundle load --out="rules.json"
 ]
 ```
 
-接着，使用 placement rules pd-ctl 接口，将配置写入 PD：
+接着，使用 `pd-ctl config placement-rules` 命令，将配置写入 PD：
 
 ```
 pd-ctl config placement-rules rule-bundle save --in="rules.json"
