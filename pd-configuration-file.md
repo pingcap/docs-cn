@@ -258,7 +258,7 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 + 同时进行的 Region Merge 调度的任务，设置为 0 则关闭 Region Merge。
 + 默认值：8
 
-### `witness-schedule-limit`
+### `witness-schedule-limit` <span class="version-mark">从 v6.6.0 版本开始引入</span>
 
 + 控制同时进行的 Witness 调度的任务个数。
 + 默认值：4
