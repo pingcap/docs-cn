@@ -60,17 +60,17 @@ TiDB 版本：6.6.0
 
 * 支持 `ALTER TABLE…REORGANIZE PARTITION` [#15000](https://github.com/pingcap/tidb/issues/15000) @[mjonss](https://github.com/mjonss) **tw@qiancai**
 
-    TiDB 支持 `ALTER TABLE…REORGANIZE PARTITION` 语法。此语法用于对表的部分分区、全部分区重新组织分区结构，并且不丢失数据。
+    TiDB 支持 `ALTER TABLE…REORGANIZE PARTITION` 语法。通过该语法，你可以对表的部分或所有分区进行重新组织，包括合并、拆分、或者其他修改，并且不丢失数据。
 
-    更多信息，请参考[用户文档](/partitioned-table.md#重组分区)
+    更多信息，请参考[用户文档](/partitioned-table.md#重组分区)。
 
 * [Placement Rules in SQL](https://docs.pingcap.com/zh/tidb/dev/placement-rules-in-sql) 支持指定 `SURVIVAL_PREFERENCE` [#38605](https://github.com/pingcap/tidb/issues/38605) @nolouch[https://github.com/nolouch] **tw@qiancai**
 
-    通过指定 `SURVIVAL_PREFERENCE`，用户可以：
-        1. 跨区域部署的 TiDB 集群，用户可以控制指定数据库或表在某个区域故障时，也能在另一个区域提供服务。
-        2. 单区域部署的 TiDB 集群，用户可以控制指定数据库或表在某个可用区故障时，也能在另一个可用区提供服务。
+    `SURVIVAL_PREFERENCES` 为数据提供了生存偏好设置，从而提高数据的容灾生存能力。通过指定 `SURVIVAL_PREFERENCE`，你可以：
+        - 对于跨区域部署的 TiDB 集群，你可以控制当指定数据库或表在某个区域产生故障时，也能在另一个区域提供服务。
+        - 对于单区域部署的 TiDB 集群，你可以控制当指定数据库或表在某个可用区产生故障时，也能在另一个可用区提供服务。
 
-     更多信息，请参考[用户文档](/placement-rules-in-sql.md#生存偏好)
+     更多信息，请参考[用户文档](/placement-rules-in-sql.md#生存偏好)。
 
 ### 安全
 
