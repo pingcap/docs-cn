@@ -154,7 +154,7 @@ TiDB 版本：6.6.0
 
 * 支持下推字符串函数 `regexp_replace` 至 TiFlash [#6115](https://github.com/pingcap/tiflash/issues/6115) @[xzhangxian1008](https://github.com/xzhangxian1008) **tw@qiancai**
 
-* TiFlash 引擎支持独立的 MVCC 位图过滤器 [#6296](https://github.com/pingcap/tiflash/issues/6296) @[JinheLin](https://github.com/JinheLin) **tw@qiancai**
+* TiFlash 支持独立的 MVCC 位图过滤器 [#6296](https://github.com/pingcap/tiflash/issues/6296) @[JinheLin](https://github.com/JinheLin) **tw@qiancai**
 
     TiFlash 引擎的数据扫描流程包含 MVCC 过滤和扫描列数据等操作。由于 MVCC 过滤和其他数据扫描操作具有较高的耦合性，导致无法对数据扫描流程进行优化改进。在 v6.6.0 中，TiFlash 将整体数据扫描流程中的 MVCC 过滤操作进行解耦，提供独立的 MVCC 位图过滤器，为后续优化数据扫描流程提供基础。
 
