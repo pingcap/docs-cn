@@ -65,7 +65,7 @@ mysql> SELECT * FROM information_schema.resource_groups WHERE NAME ='rg1';
 +------+--------------+---------------------------------------------------------------+
 | Name | Plan_type    | Directive | 
 +------+--------------+---------------------------------------------------------------+
-| rg1  |   tenancy    | {"RRU_PER_SEC": 5000, "WRU_PER_SEC": 1000, "BURSTABLE": true} |
+| rg1  |   tenancy    | {"RRU_PER_SEC": 500, "WRU_PER_SEC": 300, "BURSTABLE": true} |
 +------+--------------+---------------------------------------------------------------+
 1 row in set (0.00 sec)
 ```

@@ -1552,7 +1552,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 > **警告：**
 >
-> [Resource Control](/tidb-resource-control.md) 目前为实验性特性，此变量定义可能在之后发生变化或者删除。
+> [资源管控](/tidb-resource-control.md) 目前为实验性特性，此变量定义可能在之后发生变化或者删除。
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是

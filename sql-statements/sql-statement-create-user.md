@@ -153,7 +153,7 @@ CREATE USER 'newuser9'@'%' PASSWORD EXPIRE;
 Query OK, 1 row affected (0.02 sec)
 ```
 
-创建一个使用资源组 (`rg1`) 的用户：
+创建一个使用资源组 `rg1` 的用户：
 
 ```sql
 CREATE USER 'newuser7'@'%' RESOURCE GROUP rg1;
