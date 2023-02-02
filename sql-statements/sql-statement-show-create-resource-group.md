@@ -19,7 +19,7 @@ ResourceGroupName ::=
 
 ## 示例
 
-查看资源组 `rg1` 当前的定义，并在另一个 TiDB 集群中重新创建该资源组：
+查看资源组 `rg1` 当前的定义：
 
 ```sql
 CREATE RESOURCE GROUP rg1 RRU_PER_SEC=100 WRU_PER_SEC=200;
