@@ -265,7 +265,7 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 + 最小值：1
 + 最大值：9
 
-### `enable-witness`
+### `enable-witness` <span class="version-mark">从 v6.6.0 版本开始引入</span>
 
 + 控制是否开启 Witness 功能。
 + Witness 的使用场景如下：
