@@ -17,7 +17,6 @@ summary: 介绍如何通过资源管控能力来实现对应用资源消耗的�
 
 此外，合理利用资源管控特性可以减少集群数量，降低运维难度及管理成本。
 
-
 ## 相关参数
 
 资源管控特性引入了两个新的全局开关变量：
@@ -34,22 +33,20 @@ summary: 介绍如何通过资源管控能力来实现对应用资源消耗的�
 
 ## 使用方法
 
-> **注意:**
->
-> 创建、修改、删除资源组，需要拥有 `SUPER` 或者 `RESOURCE_GROUP_ADMIN` 权限。
-你可以通过 [`CREATE RESOURCE GROUP`](/sql-statements/sql-statement-create-resource-group.md) 在集群中创建资源组，再通过 [`CREATE USER`](/sql-statements/sql-statement-create-user.md) 或 [`ALTER USER`](/sql-statements/sql-statement-alter-user.md) 语句将用户绑定到特定的资源组。
-
-> **注意:**
-> 
-> `CREATE USER` 或者 `ALTER USER` 对用户资源组绑定后，不会对该用户的已有会话生效，而是只对该用户新建的会话生效。
-
 对于已有的资源组，你可以通过 [`ALTER RESOURCE GROUP`](/sql-statements/sql-statement-alter-resource-group.md) 修改资源组的读写配额，对资源组的配额修改会立即生效。
 
 你可以通过 [`DROP RESOURCE GROUP`](/sql-statements/sql-statement-drop-resource-group.md) 删除资源组，被删除资源组所绑定的用户会使用 `default` 资源组做资源隔离。
 
 > **注意：**
 > 
-> `default` 资源组默认不会对绑定的用户应用做配额限制，建议通过 [`CREATE RESOURCE GROUP`](/sql-statements/sql-statement-create-resource-group.md) 创建 `default` 资源组，或者通过 [`ALTER RESOURCE GROUP`](/sql-statements/sql-statement-alter-resource-group.md) 修改 `default` 资源组的配额，从而实现对 `default` 资源组的配额控制。
+> - `CREATE USER` 或者 `ALTER USER` 对用户资源组绑定后，不会对该用户的已有会话生效，而是只对该用户新建的会话生效。
+> - `default` 资源组默认不会对绑定的用户应用做配额限制，建议通过 [`CREATE RESOURCE GROUP`](/sql-statements/sql-statement-create-resource-group.md) 创建 `default` 资源组，或者通过 [`ALTER RESOURCE GROUP`](/sql-statements/sql-statement-alter-resource-group.md) 修改 `default` 资源组的配额，从而实现对 `default` 资源组的配额控制。
+
+### 前提条件
+
+创建、修改、删除资源组，需要拥有 `SUPER` 或者 `RESOURCE_GROUP_ADMIN` 权限。
+
+你可以通过 [`CREATE RESOURCE GROUP`](/sql-statements/sql-statement-create-resource-group.md) 在集群中创建资源组，再通过 [`CREATE USER`](/sql-statements/sql-statement-create-user.md) 或 [`ALTER USER`](/sql-statements/sql-statement-alter-user.md) 语句将用户绑定到特定的资源组。
 
 ### 第 1 步：开启资源管控特性
 
@@ -63,9 +60,7 @@ SET GLOBAL tidb_enable_resource_control = 'ON';
 
 ### 第 2 步：创建资源组，并绑定用户到资源组
 
-> **注意：**
->
-> `Resource Group` 配额采用 [`RU` (Resource Unit)](/tidb-RU.md) 表达。`RU` 是 TiDB 对 CPU、IO 等系统资源的统一抽象的单位。
+Resource Group 配额采用 [RU (Resource Unit)](/tidb-RU.md) 表达。RU 是 TiDB 对 CPU、IO 等系统资源的统一抽象的单位。
 
 下面举例说明如何创建资源组，并绑定用户到资源组。
 
@@ -79,7 +74,7 @@ SET GLOBAL tidb_enable_resource_control = 'ON';
     ;
     ```
 
-2. 创建 `rg2` 资源组，读请求的配额是每秒 600 `RU`，写请求的配额是每秒 400 `RU`。在系统资源充足的时候，不允许这个资源组的应用超额占用资源。
+2. 创建 `rg2` 资源组，读请求的配额是每秒 600 RU，写请求的配额是每秒 400 RU。在系统资源充足的时候，不允许这个资源组的应用超额占用资源。
 
     ```sql
     CREATE RESOURCE GROUP IF NOT EXISTS rg2
