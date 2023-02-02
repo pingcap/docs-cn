@@ -38,7 +38,7 @@ tikv_servers:
       $mode: readonly
 ```
 
-### 2. 使用 placement rules 将数据以 learner 形式存储在只读节点上
+### 2. 使用 Placement Rules 将数据以 learner 形式存储在只读节点上
 
 由于当前我们无法通过 placement rules SQL 接口对 meta 数据的分布进行配置，所以我们使用 placement rules pd-ctl 接口来配置 placement rules。
 
