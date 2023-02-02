@@ -40,9 +40,7 @@ tikv_servers:
 
 ### 2. 使用 Placement Rules 将数据以 learner 形式存储在只读节点上
 
-由于当前我们无法通过 placement rules SQL 接口对 meta 数据的分布进行配置，所以我们使用 placement rules pd-ctl 接口来配置 placement rules。
-
-首先，我们可以使用如下命令，将默认 placement rules 导出，作为修改基础：
+首先，使用如下 `pd-ctl config placement-rules` 命令，将默认 Placement Rules 导出，作为修改基础：
 
 ```
 pd-ctl config placement-rules rule-bundle load --out="rules.json"
