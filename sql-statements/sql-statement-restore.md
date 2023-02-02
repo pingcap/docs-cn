@@ -99,7 +99,7 @@ BR supports restoring data from S3 or GCS:
 RESTORE DATABASE * FROM 's3://example-bucket-2020/backup-05/';
 ```
 
-The URL syntax is further explained in [External Storages](/br/backup-and-restore-storages.md).
+The URL syntax is further explained in [external storage URL](/br/backup-and-restore-storages.md#url-format).
 
 When running on cloud environment where credentials should not be distributed, set the `SEND_CREDENTIALS_TO_TIKV` option to `FALSE`:
 

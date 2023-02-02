@@ -17,8 +17,8 @@ TiDB Lightning supports the following file formats:
 TiDB Lightning can read data from the following sources:
 
 - Local
-- [Amazon S3](/br/backup-and-restore-storages.md#url-format-description)
-- [Google Cloud Storage](/br/backup-and-restore-storages.md#url-format-description)
+- [Amazon S3](/br/backup-and-restore-storages.md#url-format)
+- [Google Cloud Storage](/br/backup-and-restore-storages.md#url-format)
 
 ## TiDB Lightning architecture
 

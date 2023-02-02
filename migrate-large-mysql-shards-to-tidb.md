@@ -94,7 +94,7 @@ The following table describes parameters in the command above. For more informat
 | `-p` or `--port`       |   Specifies the port to be used.|
 | `-h` or `--host`       |   Specifies the IP address of the data source.  |
 | `-t` or `--thread`     |   Specifies the number of threads for the export. Increasing the number of threads improves the concurrency of Dumpling and the export speed, and increases the database's memory consumption. Therefore, it is not recommended to set the number too large. Usually, it's less than 64.|
-| `-o` or `--output`     |  Specifies the export directory of the storage, which supports a local file path or a [URL of an external storage](/br/backup-and-restore-storages.md).|
+| `-o` or `--output`     |  Specifies the export directory of the storage, which supports a local file path or an [external storage URL](/br/backup-and-restore-storages.md#url-format).|
 | `-r` or `--row`        | Specifies the maximum number of rows in a single file. If you use this parameter, Dumpling enables the in-table concurrency to speed up the export and reduce the memory usage.|
 | `-F` |  Specifies the maximum size of a single file. The unit is `MiB`. It is recommended to keep the value to 256 MiB. |
 | `-B` or `--database`   | Specifies databases to be exported. |

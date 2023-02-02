@@ -1,7 +1,7 @@
 ---
 title: Backup Storages
 summary: Describes the storage URL format used in TiDB backup and restore.
-aliases: ['/docs/dev/br/backup-and-restore-storages/','/tidb/dev/backup-storage-S3/','/tidb/dev/backup-storage-azblob/','/tidb/dev/backup-storage-gcs/']
+aliases: ['/docs/dev/br/backup-and-restore-storages/','/tidb/dev/backup-storage-S3/','/tidb/dev/backup-storage-azblob/','/tidb/dev/backup-storage-gcs/','/tidb/dev/external-storage/']
 ---
 
 # Backup Storages

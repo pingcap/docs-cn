@@ -332,6 +332,31 @@ type = '$3'
 - **key**: The file number, such as `001` in `${db_name}.${table_name}.001.csv`.
     - The group index obtained by using a regular expression, such as `$4`.
 
+## Import data from Amazon S3
+
+The following examples show how to import data from Amazon S3 using TiDB Lightning. For more parameter configurations, see [external storage URL](/br/backup-and-restore-storages.md#url-format).
+
++ Use TiDB Lightning to import data from S3:
+
+    ```bash
+    ./tidb-lightning --tidb-port=4000 --pd-urls=127.0.0.1:2379 --backend=local --sorted-kv-dir=/tmp/sorted-kvs \
+        -d 's3://my-bucket/sql-backup'
+    ```
+
++ Use TiDB Lightning to import data from S3 (using the path-style request):
+
+    ```bash
+    ./tidb-lightning --tidb-port=4000 --pd-urls=127.0.0.1:2379 --backend=local --sorted-kv-dir=/tmp/sorted-kvs \
+        -d 's3://my-bucket/sql-backup?force-path-style=true&endpoint=http://10.154.10.132:8088'
+    ```
+
++ Use TiDB Lightning to import data from S3 (access S3 data by using a specific IAM role):
+
+    ```bash
+    ./tidb-lightning --tidb-port=4000 --pd-urls=127.0.0.1:2379 --backend=local --sorted-kv-dir=/tmp/sorted-kvs \
+        -d 's3://my-bucket/test-data?role-arn=arn:aws:iam::888888888888:role/my-role'
+    ```
+
 ## More resources
 
 - [Export to CSV files Using Dumpling](/dumpling-overview.md#export-to-csv-files)
