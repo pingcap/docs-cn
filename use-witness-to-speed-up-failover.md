@@ -19,7 +19,7 @@ Witness 功能可用于快速恢复 failover，以提高系统可用性和数据
 
 在快速恢复 failover 以提高可用性的场景下，可以开启 Witness 功能但不配置 Witness 副本。
 
-## 使用步骤
+## 使用方法
 
 ### 第 1 步：开启 Witness
 
