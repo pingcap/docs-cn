@@ -39,7 +39,7 @@ Placement Rules 示意图如下所示：
 | `StartKey`        | `string`，十六进制编码                | 适用 Range 起始 key                 |
 | `EndKey`          | `string`，十六进制编码                | 适用 Range 终止 key                 |
 | `Role`            | `string` | 副本角色，包括 voter/leader/follower/learner                           |
-| `IsWitness`       | `true`/`false` | 副本是否为 Witness                          |
+| `IsWitness`       | `true`/`false` | 副本是否为 [Witness](/glossary.md#witness)                          |
 | `Count`           | `int`，正整数                     | 副本数量                            |
 | `LabelConstraint` | `[]Constraint`                    | 用于按 label 筛选节点               |
 | `LocationLabels`  | `[]string`                        | 用于物理隔离                        |
