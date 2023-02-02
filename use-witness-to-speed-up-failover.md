@@ -21,8 +21,6 @@ Witness 功能可用于快速恢复 failover，以提高系统可用性和数据
 
 ## 使用方法
 
-### 第 1 步：开启 Witness
-
 使用 PD Control 执行 `config set enable-witness true` 命令开启 Witness：
 
 ```bash
