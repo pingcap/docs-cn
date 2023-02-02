@@ -205,7 +205,7 @@ mysql> SELECT TABLE_SCHEMA, TABLE_NAME, COLUMN_NAME, CONSTRAINT_NAME FROM INFORM
 +--------------+---------------+------------------+-----------------+
 ```
 
-你可以从 `INFORMATION_SCHEMA.TABLE_CONSTRAINTS` 系统表中获取有关的外键信息，下面是一个查询示例：
+你可以从 [`INFORMATION_SCHEMA.TABLE_CONSTRAINTS`](/information-schema/information-schema-table-constraints.md) 系统表中获取有关的外键信息，下面是一个查询示例：
 
 ```sql
 mysql> SELECT * FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS WHERE CONSTRAINT_TYPE='FOREIGN KEY'\G
