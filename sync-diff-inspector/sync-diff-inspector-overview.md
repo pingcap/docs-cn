@@ -269,7 +269,7 @@ Average Speed: 113.277149MB/s
 - `TABLE`：该列表示对应的数据库及表名
 - `RESULT`：校验是否完成。如果设置了 `skip-non-existing-table = true`，对于上游或下游不存在的表，该列的值将为 `skipped`
 - `STRUCTURE EQUALITY`：表结构是否相同
-- `DATA DIFF ROWS`：即 `rowAdd` / `rowDelete`，表示该表修复需要增加/删除的行数
+- `DATA DIFF ROWS`：即 `rowAdd`/`rowDelete`，表示该表修复需要增加/删除的行数
 
 #### SQL 修复
 
