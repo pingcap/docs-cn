@@ -218,7 +218,7 @@ TABLE_NAME         | child
 CONSTRAINT_TYPE    | FOREIGN KEY
 ```
 
-你可以从 `INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS` 系统表中获取有关的外键信息，下面是一个查询示例：
+你可以从 [`INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS`](/information-schema/information-schema-referential-constraints.md) 系统表中获取有关的外键信息，下面是一个查询示例：
 
 ```sql
 mysql> SELECT * FROM INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS\G
