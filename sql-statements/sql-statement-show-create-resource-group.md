@@ -5,7 +5,7 @@ summary: TiDB 数据库中 SHOW CREATE RESOURCE GROUP 的使用概况。
 
 # SHOW CREATE RESOURCE GROUP
 
-`SHOW CREATE RESOURCE GROUP` 语句可用于查看资源组当前的定义，并在另一个 TiDB 集群中重新创建该资源组。
+`SHOW CREATE RESOURCE GROUP` 语句可用于查看资源组当前的定义。
 
 ## 语法图
 
