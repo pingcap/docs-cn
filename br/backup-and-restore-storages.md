@@ -1,7 +1,11 @@
 ---
 title: 备份存储
 summary: 了解 BR 支持的备份存储服务的 URL 格式、鉴权方案和使用方式。
+<<<<<<< HEAD
 aliases: ['/zh/tidb/stable/backup-storage-S3/','/zh/tidb/stable/backup-storage-azblob/','/zh/tidb/stable/backup-storage-gcs/']
+=======
+aliases: ['/docs-cn/dev/br/backup-and-restore-storages/','/zh/tidb/dev/backup-storage-S3/','/zh/tidb/dev/backup-storage-azblob/','/zh/tidb/dev/backup-storage-gcs/','/zh/tidb/dev/external-storage/']
+>>>>>>> f7b9cac21 (*: move external storage to dumpling and lightning docs (#12888))
 ---
 
 # 备份存储

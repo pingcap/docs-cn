@@ -328,6 +328,31 @@ type = '$3'
 - **key**：文件的序号，即前文所述`${db_name}.${table_name}.001.csv`中的`001`。
     - 正则表达式匹配到的 group 序号，例如 “$4”。
 
+## 从 Amazon S3 导入数据
+
+如下为从 Amazon S3 导入数据的示例，更多配置参数描述，可参考[外部存储 URL 格式](/br/backup-and-restore-storages.md#url-格式)。
+
+* 用 TiDB Lightning 从 S3 导入数据：
+
+    ```bash
+    ./tidb-lightning --tidb-port=4000 --pd-urls=127.0.0.1:2379 --backend=local --sorted-kv-dir=/tmp/sorted-kvs \
+        -d 's3://my-bucket/sql-backup'
+    ```
+
+* 用 TiDB Lightning 从 S3 导入数据（使用路径类型的请求模式）：
+
+    ```bash
+    ./tidb-lightning --tidb-port=4000 --pd-urls=127.0.0.1:2379 --backend=local --sorted-kv-dir=/tmp/sorted-kvs \
+        -d 's3://my-bucket/sql-backup?force-path-style=true&endpoint=http://10.154.10.132:8088'
+    ```
+
+* 用 TiDB Lightning 从 S3 导入数据（使用特定 IAM 角色来访问 S3 数据）：
+
+    ```bash
+    ./tidb-lightning --tidb-port=4000 --pd-urls=127.0.0.1:2379 --backend=local --sorted-kv-dir=/tmp/sorted-kvs \
+        -d 's3://my-bucket/test-data?role-arn=arn:aws:iam::888888888888:role/my-role'
+    ```
+
 ## 更多
 
 - [使用 Dumpling 导出到 CSV 文件](/dumpling-overview.md#导出为-csv-文件)
