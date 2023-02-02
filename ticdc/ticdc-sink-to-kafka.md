@@ -243,7 +243,8 @@ partition 分发器用 partition = "xxx" 来指定，支持 default、ts、index
 
 > **注意：**
 >
-> TiCDC v6.6.0 仅支持在 Kafka 同步任务上开启大单表的水平扩展功能。
+> TiCDC v6.6.0 仅支持在 Kafka 同步任务上开启大单表的横向扩展功能。
+
 配置样例如下所示：
 
 ```toml
