@@ -140,7 +140,7 @@ set tidb_replica_read=learner;
 spark.tispark.replica_read learner 
 ```
 
-#### 3.3 在 Backup 时中使用 follower read
+#### 3.3 在备份集群数据时使用 Follower Read
 
 我们可以在 br 命令行中添加 `--backup-replica-read-label` 参数，来读取只读节点上的数据。注意，在 shell 中运行如下命令时需使用单引号包围 label ，以防止 `$` 被 shell 解析。
 
