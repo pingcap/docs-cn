@@ -64,7 +64,7 @@ Resource Group 配额采用 [RU (Resource Unit)](/tidb-RU.md) 表达。RU 是 Ti
 
 下面举例说明如何创建资源组，并绑定用户到资源组。
 
-1. 创建 `rg1` 资源组，读请求的配额是每秒 500 `RU`，写请求的配额是每秒 300 `RU`。在系统资源充足的时候，允许这个资源组的应用超额占用资源。
+1. 创建 `rg1` 资源组，读请求的配额是每秒 500 RU，写请求的配额是每秒 300 RU。在系统资源充足的时候，允许这个资源组的应用超额占用资源。
 
     ```sql
     CREATE RESOURCE GROUP IF NOT EXISTS rg1
