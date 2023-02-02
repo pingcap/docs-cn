@@ -205,7 +205,7 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 
 ### `switch-witness-interval` <span class="version-mark">从 v6.6.0 版本开始引入</span>
 
-+ 控制对同一个 Region 做切换为 Witness 和切换为 Non-Witness 操作的间隔，即对于一个新切换为 Non-Witness 的 Region 在一段时间内不会被切换为 Witness。
++ 控制对同一个 Region 做切换为 [Witness](/glossary.md#witness) 和切换为 Non-Witness 操作的间隔，即对于一个新切换为 Non-Witness 的 Region 在一段时间内不会被切换为 Witness。
 + 默认值：1h
 
 ### `max-snapshot-count`
