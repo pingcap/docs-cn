@@ -2668,7 +2668,7 @@ explain select * from t where age=5;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 默认值：`1`
+- 默认值：`2`
 - 范围：`[1, 2]`
 - 控制新保存数据的表数据格式版本。TiDB v4.0 中默认使用版本号为 2 的[新表数据格式](https://github.com/pingcap/tidb/blob/master/docs/design/2018-07-19-row-format.md)保存新数据。
 
