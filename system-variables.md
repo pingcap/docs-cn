@@ -1289,7 +1289,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 作用域：GLOBAL
 - 是否持久化到集群：是
 - 类型：布尔型
-- 默认值：`ON`
+- 默认值：在 v6.6.0 之前版本中为 `OFF`。在 v6.6.0 及之后的版本中为 `ON`，即默认开启。
 - 这个变量用于控制是否开启 `FOREIGN KEY` 特性。
 
 ### `tidb_enable_gc_aware_memory_track`
