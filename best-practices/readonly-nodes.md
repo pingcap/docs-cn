@@ -126,7 +126,7 @@ pd-ctl config placement-rules rule-bundle save --in="rules.json"
 
 #### 3.1 在 TiDB 中使用 Follower Read
 
-我们可以通过设置 tidb_replica_read 的值为 learner (在6.6后新加入的 option )，来读取只读节点上的数据。
+你可以将系统变量 `tidb_replica_read` 设置为 `learner` 来读取只读节点上的数据：
 
 ```
 set tidb_replica_read=learner;
