@@ -10,7 +10,7 @@ summary: 如何使用 Witness 在高可靠的存储环境中节约成本。
 > - 这篇文档描述如何在高可靠存储环境中使用 Witness 节约成本。如果需要使用 Witness 副本提高 TiKV Down 场景下的持久性，请参考[使用临时 Witness 副本来加速副本恢复](/use-witness-to-speed-up-failover.md)。
 > - 只有在高可靠的存储环境中才考虑设置 Witness 副本。例如，使用持久性为 99.8%~99.9% 的 Amazon Elastic Block Store 或持久性为 99.99%~99.999% 的 Google Cloud Persistent Disk 作为单节点存储。
 > - 由于 Witness 副本没有应用 Raft 日志，因此无法对外提供读写服务。当 Witness 副本为 Leader 且无法及时 transfer leader 时，客户端 Backoff 超时后，应用可能收到 IsWitness 错误。
-> - 当系统存在 Pending Voter 时，为防止 Witness 积攒过多的 raft log，导致占满整个磁盘空间，rule checker 会将 Witness 晋升为普通 Voter。
+> - 当系统存在 Pending Voter 时，为防止 Witness 积攒过多的 Raft 日志，导致占满整个磁盘空间，rule checker 会将 Witness 晋升为普通 Voter。
 > - Witness 功能自 v6.6.0 开始引入，与低版本不兼容，因此不支持降级。
 
 ## 功能说明
