@@ -13,8 +13,8 @@ aliases: ['/docs-cn/dev/information-schema/information-schema-processlist/']
 * `DIGEST` 列：显示 SQL 语句的 digest。
 * `MEM` 列：显示正在处理的请求已使用的内存，单位是 byte。
 * `DISK` 列：显示磁盘空间使用情况，单位是 byte。
-* `TxnStart`列：显示事务的开始时间
-* `RESOURCE_GROUP_NAME`列：显示对应的资源组名称
+* `TxnStart`列：显示事务的开始时间。
+* `RESOURCE_GROUP_NAME`列：显示对应的资源组名称。
 
 {{< copyable "sql" >}}
 
