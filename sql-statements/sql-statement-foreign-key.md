@@ -177,7 +177,7 @@ TiDB 支持是否开启外键约束检查，由系统变量 [`foreign_key_checks
 
 ## 外键的定义和元信息
 
-你可以使用 `SHOW CREATE TABLE` 语句查看外键的定义：
+你可以使用 [`SHOW CREATE TABLE`](/sql-statements/sql-statement-show-create-table.md) 语句查看外键的定义：
 
 ```sql
 mysql> SHOW CREATE TABLE child\G
