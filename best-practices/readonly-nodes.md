@@ -68,7 +68,7 @@ pd-ctl config placement-rules rule-bundle load --out="rules.json"
 ]
 ```
 
-我们可以基于默认配置，将所有数据在只读节点上以 learner 方式存储一份。
+下面示例基于默认配置，将所有数据在只读节点上以 learner 方式存储一份：
 
 ```
 [
