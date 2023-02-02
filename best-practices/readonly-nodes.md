@@ -46,7 +46,7 @@ tikv_servers:
 pd-ctl config placement-rules rule-bundle load --out="rules.json"
 ```
 
-如果之前没有配置过 placement rules，那么会导出如下内容：
+如果之前没有配置过 Placement Rules，那么会导出如下内容：
 
 ```
 [
