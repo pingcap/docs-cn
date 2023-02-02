@@ -42,13 +42,13 @@ tikv_servers:
 
 首先，使用如下 `pd-ctl config placement-rules` 命令，将默认 Placement Rules 导出，作为修改基础：
 
-```
+```shell
 pd-ctl config placement-rules rule-bundle load --out="rules.json"
 ```
 
 如果之前没有配置过 Placement Rules，那么会导出如下内容：
 
-```
+```json
 [
   {
     "group_id": "pd",
@@ -70,7 +70,7 @@ pd-ctl config placement-rules rule-bundle load --out="rules.json"
 
 下面示例基于默认配置，将所有数据在只读节点上以 learner 方式存储一份：
 
-```
+```json
 [
   {
     "group_id": "pd",
@@ -110,17 +110,15 @@ pd-ctl config placement-rules rule-bundle load --out="rules.json"
 
 接着，使用 `pd-ctl config placement-rules` 命令，将配置写入 PD：
 
-```
+```shell
 pd-ctl config placement-rules rule-bundle save --in="rules.json"
 ```
 
 > **注意：**
 >
-> 当对已存在大量数据的集群进行如上操作时，整个集群可能需要一段时间才能将数据完全复制到只读节点上。在这期间，只读节点可能无法进行服务。
-
-> **注意：**
+> - 当对已存在大量数据的集群进行如上操作时，整个集群可能需要一段时间才能将数据完全复制到只读节点上。在这期间，只读节点可能无法进行服务。
 >
-> 因为备份的特殊"下推"实现机制，每个 label 所对应的 learner 数量不能超过 1，否则会导致在备份时产生重复数据。
+> - 因为备份的特殊下推实现机制，每个 label 所对应的 learner 数量不能超过 1，否则会导致在备份时产生重复数据。
 
 ### 3. 使用 Follower Read 功能
 
@@ -128,7 +126,7 @@ pd-ctl config placement-rules rule-bundle save --in="rules.json"
 
 你可以将系统变量 `tidb_replica_read` 设置为 `learner` 来读取只读节点上的数据：
 
-```
+```sql
 set tidb_replica_read=learner;
 ```
 
@@ -142,8 +140,8 @@ spark.tispark.replica_read learner
 
 #### 3.3 在备份集群数据时使用 Follower Read
 
-我们可以在 br 命令行中添加 `--backup-replica-read-label` 参数，来读取只读节点上的数据。注意，在 shell 中运行如下命令时需使用单引号包围 label ，以防止 `$` 被 shell 解析。
+你可以在 br 命令行中添加 `--backup-replica-read-label` 参数，来读取只读节点上的数据。注意，在 shell 中运行如下命令时需使用单引号包裹 label，以防止 `$` 被 shell 解析。
 
-```
+```shell
 br backup full ... --backup-replica-read-label '$mode:readonly'
 ``` 
