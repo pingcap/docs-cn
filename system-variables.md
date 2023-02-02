@@ -238,7 +238,7 @@ mysql> SELECT * FROM t1;
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 类型：布尔型
-- 默认值：`ON`
+- 默认值：在 v6.6.0 之前版本中为 `OFF`。在 v6.6.0 及之后的版本中为 `ON`，即默认开启。
 - 表示是否开启外键约束检查。
 
 ### `group_concat_max_len`
