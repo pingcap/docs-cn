@@ -95,7 +95,7 @@ tiup dmctl check-task ./task.yaml
 
 * 下游数据库中的空 Region
 
-    - 如果空 Region 的数量大于 `max(1000, 表的数量 * 3)`，即大于“1000”和“3 倍表数量”二者中的较大者，会对用户返回警告。可以调整 PD 相关参数加快空 Region 的合并速度，并等待数目下降以解除警告。参见 [PD 调度策略最佳实践 - Region Merge 速度慢](/best-practices/pd-scheduling-best-practices.md#region-merge-速度慢)
+    - 如果空 Region 的数量大于 `max(1000, 表的数量 * 3)`，即大于“1000”和“3 倍表数量”二者中的较大者，前置检查会向用户返回警告。可以调整 PD 相关参数加快空 Region 的合并速度，并等待空 Region 数量下降以解除警告。参见 [PD 调度策略最佳实践 - Region Merge 速度慢](/best-practices/pd-scheduling-best-practices.md#region-merge-速度慢)
     
 * 下游数据库中的 Region 分布
 
