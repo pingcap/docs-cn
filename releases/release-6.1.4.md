@@ -10,19 +10,7 @@ TiDB 版本：6.1.4
 
 试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v6.1/quick-start-with-tidb) | [生产部署](https://docs.pingcap.com/zh/tidb/v6.1/production-deployment-using-tiup) | [下载离线包](https://cn.pingcap.com/product-community/?version=v6.1.4#version-list)
 
-## 兼容性变更
-
-- Tools
-
-    - TiCDC
-
-        - 
-
 ## 提升改进
-
-- PD
-
-    - 
 
 - TiFlash
 
@@ -33,34 +21,23 @@ TiDB 版本：6.1.4
     - TiCDC
 
         - 增加了dml batch 操作功能，提升了跑批场景下的吞吐 [#7653](https://github.com/pingcap/tiflow/issues/7653) @[asddongmen](https://github.com/asddongmen)
-    
+
     - Lightning
 
-        - Change severity of clusterResourceCheckItem,emptyRegionCheckItem from Critical to Warn [#37654](https://github.com/pingcap/tidb/issues/37654) @[lance6716](https://github.com/lance6716) 
+        - 将前置检查项 `clusterResourceCheckItem` 和 `emptyRegionCheckItem` 的严重等级（severity）从 Critical 改为 Warning [#37654](https://github.com/pingcap/tidb/issues/37654) @[lance6716](https://github.com/lance6716)
 
 ## Bug 修复
 
 + TiDB
 
-    tidb
-
-    (dup: release-6.2.0.md > Bug fixes> TiDB)- Fix the issue that when you create a table, the default value and the type of a column are not consistent and are not automatically corrected [#34881](https://github.com/pingcap/tidb/issues/34881) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger) @[mjonss](https://github.com/mjonss)
-
-    transaction
-
+    - 修复了创建表时列的默认值和列类型不一致没有自动修正的问题 [#34881](https://github.com/pingcap/tidb/issues/34881) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger) @[mjonss](https://github.com/mjonss)
     - Fix data race in the LazyTxn.LockKeys [#40355](https://github.com/pingcap/tidb/issues/40355) @[HuSharp](https://github.com/HuSharp)
     - Fix the case that INSERT/REPLACE might panic in a long session connection [#40351](https://github.com/pingcap/tidb/issues/40351) @[fanrenhoo](https://github.com/fanrenhoo)
     - Fix the issue that hcursor read being canceled by GC [#39447](https://github.com/pingcap/tidb/issues/39447)@[zyguan](https://github.com/zyguan)
     - Fix the issue that the pessimistic autocommit configuration does not work for point get plans [#39928](https://github.com/pingcap/tidb/issues/39928)@[zyguan](https://github.com/zyguan)
-
-    sql-infra
-    
     - Block modify column of partitioned table, even if it was not changing data when put into the DDL queue. [#40620](https://github.com/pingcap/tidb/issues/40620) @[mjonss](https://github.com/mjonss)
-    - 
-
-    planner
-
-    (dup: release-6.3.0.md > Bug fixes> TiDB> Fix the issue that querying `INFORMATION_SCHEMA.TIKV_REGION_STATUS` returns an incorrect result @[zimulala](https://github.com/zimulala))- Fix the issue that the `IN` and `NOT IN` subqueries in some patterns report the `Can't find column` error [#37032](https://github.com/pingcap/tidb/issues/37032) @[AilinKid](https://github.com/AilinKid) @[lance6716](https://github.com/lance6716)
+    - 修复查询 INFORMATION_SCHEMA.TIKV_REGION_STATUS 返回不正确结果的问题 @[zimulala](https://github.com/zimulala))
+    - Fix the issue that the `IN` and `NOT IN` subqueries in some patterns report the `Can't find column` error [#37032](https://github.com/pingcap/tidb/issues/37032) @[AilinKid](https://github.com/AilinKid) @[lance6716](https://github.com/lance6716)
 
 - PD
 
@@ -91,16 +68,16 @@ TiDB 版本：6.1.4
 
         - Fix an issue that checkpoint can not advance when replicating many tables. [#8004](https://github.com/pingcap/tiflow/issues/8004) @[asddongmen](https://github.com/asddongmen)
         - Fix the issue of transaction-atomicity and protocol can't be updated via config file. [#7935](https://github.com/pingcap/tiflow/issues/7935) @[CharlesCheung96](https://github.com/CharlesCheung96)        ```
-        (dup: release-6.5.0.md > Bug fixes> Tools> TiCDC)- Fix the issue that TiCDC mistakenly reports an error when there is a later version of TiFlash [#7744](https://github.com/pingcap/tiflow/issues/7744) @[overvenus](https://github.com/overvenus)
+        - 修复存在高版本 TiFlash 时，TiCDC 会误报错的问题 [#7744](https://github.com/pingcap/tiflow/issues/7744) @[overvenus](https://github.com/overvenus)
         - Fix an OOM issue when TiCDC replicates big transactions [#7913](https://github.com/pingcap/tiflow/issues/7913)
         - Fix the bug that context deadline was exceeded when replicating data without split big txn [#7982](https://github.com/pingcap/tiflow/issues/7982) @[asddongmen](https://github.com/asddongmen)
-        (dup: release-6.4.0.md > Bug fixes> Tools> TiCDC)- Fix the issue that `sasl-password` in the `changefeed query` result is not masked [#7182](https://github.com/pingcap/tiflow/issues/7182) @[dveeden](https://github.com/dveeden)
-        (dup: release-6.5.0.md > Bug fixes> Tools> TiCDC)- Fix the issue that data is lost when a user quickly deletes a replication task and then creates another one with the same task name [#7657](https://github.com/pingcap/tiflow/issues/7657) @[overvenus](https://github.com/overvenus) 
+        - 修复 `changefeed query` 的输出中 `sasl-password` 显示为明文的问题 [#7182](https://github.com/pingcap/tiflow/issues/7182) @[dveeden](https://github.com/dveeden)
+        - 修复用户快速删除、创建同名同步任务可能导致的数据丢失问题 [#7657](https://github.com/pingcap/tiflow/issues/7657) @[overvenus](https://github.com/overvenus)
 
     + TiDB Data Migration (DM)
 
-        - 修复当 SHOW GRANTS 结果的数据库名包含"*"时导致 precheck 报错的问题 [#7645](https://github.com/pingcap/tiflow/issues/7645) @[lance6716]
+        - 修复当 `SHOW GRANTS` 结果的数据库名包含 "*" 时导致 precheck 报错的问题 [#7645](https://github.com/pingcap/tiflow/issues/7645) @[lance6716]
         - 修复 DM 因 binlog 中 query event 为 COMMIT 时打印过多日志的问题 [#7525](https://github.com/pingcap/tiflow/issues/7525) @[liumengya94]
-        - 修复当 SSL 参数仅指定 "ssl-ca" 时 DM 任务无法启动的问题 [#7941](https://github.com/pingcap/tiflow/issues/7941) @[liumengya94]
-        - 修复当在某个表上同时指定 "update" 和 "non-update" 类型的 expression filters 时, 导致所有 UPDATE 被跳过的问题 [#7831](https://github.com/pingcap/tiflow/issues/7831) @[lance6716]
+        - 修复当 SSL 参数仅指定 `ssl-ca` 时 DM 任务无法启动的问题 [#7941](https://github.com/pingcap/tiflow/issues/7941) @[liumengya94]
+        - 修复当在某个表上同时指定 `update` 和 `non-update` 类型的 expression filters 时, 导致所有 UPDATE 被跳过的问题 [#7831](https://github.com/pingcap/tiflow/issues/7831) @[lance6716]
         - 修复当某个表上仅指定 `update-old-value-expr` 或 `update-new-value-expr` 时不生效或导致 panic 的问题 [#7774](https://github.com/pingcap/tiflow/issues/7774) @[lance6716]
