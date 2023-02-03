@@ -831,7 +831,7 @@ TiDB 服务状态相关配置。
 
 > **警告：**
 >
-> Statements summary 持久化目前为实验性特性，不建议在生产环境中使用。
+> statements summary 持久化目前为实验性特性，不建议在生产环境中使用。
 
 + 当开启了 statements summary 持久化时，该配置用于指定持久化数据文件所保留的最大天数。
 + 默认值：3
