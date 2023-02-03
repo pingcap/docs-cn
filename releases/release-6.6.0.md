@@ -58,12 +58,6 @@ TiDB 版本：6.6.0
 
     更多信息，请参考[用户文档](/sql-plan-management.md#根据历史执行计划创建绑定)。
 
-* 支持 `ALTER TABLE…REORGANIZE PARTITION` [#15000](https://github.com/pingcap/tidb/issues/15000) @[mjonss](https://github.com/mjonss) **tw@qiancai**
-
-    TiDB 支持 `ALTER TABLE…REORGANIZE PARTITION` 语法。通过该语法，你可以对表的部分或所有分区进行重新组织，包括合并、拆分、或者其他修改，并且不丢失数据。
-
-    更多信息，请参考[用户文档](/partitioned-table.md#重组分区)。
-
 * [Placement Rules in SQL](https://docs.pingcap.com/zh/tidb/dev/placement-rules-in-sql) 支持指定 `SURVIVAL_PREFERENCE` [#38605](https://github.com/pingcap/tidb/issues/38605) @nolouch[https://github.com/nolouch] **tw@qiancai**
 
     `SURVIVAL_PREFERENCES` 为数据提供了生存偏好设置，从而提高数据的容灾生存能力。通过指定 `SURVIVAL_PREFERENCE`，你可以：
