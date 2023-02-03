@@ -31,7 +31,7 @@ TiDB 版本：6.1.4
 
     - Lightning
 
-        - 将 precheck 检查项 clusterResourceCheckItem 和 emptyRegionCheckItem 的严重级别从 Critical 改为 Warn[#37654](https://github.com/pingcap/tidb/issues/37654) @[niubell]
+        - 将 precheck 检查项 clusterResourceCheckItem 和 emptyRegionCheckItem 的严重级别从 Critical 改为 Warn[#37654](https://github.com/pingcap/tidb/issues/37654) @[niubell](https://github.com/niubell)
 
 ## Bug 修复
 
