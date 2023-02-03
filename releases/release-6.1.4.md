@@ -1,5 +1,6 @@
 ---
 title: TiDB 6.1.4 Release Notes
+summary: 了解 TiDB 6.1.4 版本的新功能、兼容性变更、改进提升，以及错误修复。
 ---
 
 # TiDB 6.1.4 Release Notes
@@ -36,12 +37,12 @@ TiDB 版本：6.1.4
     - Fix the issue that hcursor read being canceled by GC [#39447](https://github.com/pingcap/tidb/issues/39447)@[zyguan](https://github.com/zyguan)
     - Fix the issue that the pessimistic autocommit configuration does not work for point get plans [#39928](https://github.com/pingcap/tidb/issues/39928)@[zyguan](https://github.com/zyguan)
     - Block modify column of partitioned table, even if it was not changing data when put into the DDL queue. [#40620](https://github.com/pingcap/tidb/issues/40620) @[mjonss](https://github.com/mjonss)
-    - 修复查询 INFORMATION_SCHEMA.TIKV_REGION_STATUS 返回不正确结果的问题 @[zimulala](https://github.com/zimulala))
+    - 修复查询 INFORMATION_SCHEMA.TIKV_REGION_STATUS 返回不正确结果的问题 @[zimulala](https://github.com/zimulala)
     - Fix the issue that the `IN` and `NOT IN` subqueries in some patterns report the `Can't find column` error [#37032](https://github.com/pingcap/tidb/issues/37032) @[AilinKid](https://github.com/AilinKid) @[lance6716](https://github.com/lance6716)
 
 - PD
 
-    - 修复 PD 在特殊情况下非预期添加多个 Learner 的问题 [#5786](https://github.com/tikv/pd/issues/5786) @[HunDunDM](https://github.com/HunDunDM) 
+    - 修复 PD 在特殊情况下非预期添加多个 Learner 的问题 [#5786](https://github.com/tikv/pd/issues/5786) @[HunDunDM](https://github.com/HunDunDM)
 
 + TiKV
 
@@ -67,7 +68,7 @@ TiDB 版本：6.1.4
     + TiCDC
 
         - Fix an issue that checkpoint can not advance when replicating many tables. [#8004](https://github.com/pingcap/tiflow/issues/8004) @[asddongmen](https://github.com/asddongmen)
-        - Fix the issue of transaction-atomicity and protocol can't be updated via config file. [#7935](https://github.com/pingcap/tiflow/issues/7935) @[CharlesCheung96](https://github.com/CharlesCheung96)        ```
+        - Fix the issue of transaction-atomicity and protocol can't be updated via config file. [#7935](https://github.com/pingcap/tiflow/issues/7935) @[CharlesCheung96](https://github.com/CharlesCheung96)
         - 修复存在高版本 TiFlash 时，TiCDC 会误报错的问题 [#7744](https://github.com/pingcap/tiflow/issues/7744) @[overvenus](https://github.com/overvenus)
         - Fix an OOM issue when TiCDC replicates big transactions [#7913](https://github.com/pingcap/tiflow/issues/7913)
         - Fix the bug that context deadline was exceeded when replicating data without split big txn [#7982](https://github.com/pingcap/tiflow/issues/7982) @[asddongmen](https://github.com/asddongmen)
