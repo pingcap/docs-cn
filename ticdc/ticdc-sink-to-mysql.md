@@ -78,7 +78,7 @@ MTIzNDU2
 
 ## 灾难场景的最终一致性复制
 
-从 v6.1.1 版本开始容灾场景下的最终一致性复制功能 GA。TiCDC 支持将上游 TiDB 的增量数据备份到下游集群的对象存储或 NFS 文件系统。当上游集群出现了灾难，完全无法使用时，TiCDC 可以将下游集群恢复到最近的一致状态，即提供灾备场景的最终一致性复制能力，确保应用可以快速切换到下游集群，避免数据库长时间不可用，提高业务连续性。
+从 v6.1.1 版本开始，容灾场景下的最终一致性复制功能 GA。TiCDC 支持将上游 TiDB 的增量数据备份到下游集群的对象存储或 NFS 文件系统。当上游集群出现了灾难，完全无法使用时，TiCDC 可以将下游集群恢复到最近的一致状态，即提供灾备场景的最终一致性复制能力，确保应用可以快速切换到下游集群，避免数据库长时间不可用，提高业务连续性。
 
 目前，TiCDC 支持将 TiDB 集群的增量数据复制到 TiDB 或兼容 MySQL 的数据库系统（包括 Aurora、MySQL 和 MariaDB）。当上游发生灾难时，如果出现故障前 TiCDC 正常运行且上游 TiDB 集群没有出现数据复制延迟大幅度增加的情况，下游集群可以在 5 分钟之内恢复集群，并且最多丢失出现问题前 10 秒钟的数据，即 RTO <= 5 mins, P95 RPO <= 10s。
 
@@ -96,7 +96,7 @@ MTIzNDU2
 
 ### 使用前提
 
-- 准备好具有高可用的对象存储或 NFS 系统，用于存储 TiCDC 的实时增量数据备份文件，在上游发生灾难情况下该文件存储可以访问。
+- 准备高可用的对象存储或 NFS 系统，用于存储 TiCDC 的实时增量数据备份文件，在上游发生灾难情况下，该文件存储可以访问。
 - TiCDC 对需要具备灾难场景最终一致性的 changefeed 开启该功能，开启方式是在 changefeed 配置文件中增加以下配置：
 
 ```toml
@@ -112,7 +112,7 @@ max-log-size = 64
 # 刷新或上传 redo log 至 S3 的间隔，单位毫秒，建议该参数 >= 2000。
 flush-interval = 2000
 
-# redo log 备份文件的地址，支持的 scheme 包括 nfs（NFS 目录）和 S3/GCS/Azure（上传至对象存储）
+# redo log 备份文件的地址，支持的 scheme 包括 nfs（NFS 目录）和 Amazon S3、GCS 和 Azure（上传至对象存储）。
 storage = "$SCHEME://logbucket/test-changefeed?endpoint=http://$ENDPOINT/"
 ```
 
@@ -132,5 +132,5 @@ cdc redo apply --tmp-dir="/tmp/cdc/redo/apply" \
 以上命令中：
 
 - `tmp-dir`：指定用于下载 TiCDC 增量数据备份文件的临时目录。
-- `storage`：指定存储 TiCDC 增量数据备份文件的地址，为对象存储 uri 或者 NFS 目录。
+- `storage`：指定存储 TiCDC 增量数据备份文件的地址，为对象存储 URI 或者 NFS 目录。
 - `sink-uri`：数据恢复的目标地址。scheme 仅支持 `mysql`。
