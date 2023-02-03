@@ -12,10 +12,15 @@ TiDB 版本：6.6.0
 
 在 6.6.0 版本中，你可以获得以下关键特性：
 
-- MySQL 8.0 兼容的多值索引 (Multi-Valued Index) (实验特性)
-- 基于资源组的资源管控 (实验特性)
-- 悲观锁队列的稳定唤醒模型
-- 数据请求的批量聚合
+- 绑定历史执行计划 GA，支持根据任意节点产生的历史执行计划创建 SQL Binding，进一步产品易用性。
+- TiDB Data Migration (DM) 集成 TiDB Lightning 的 Physical Import 模式，使得 DM 全量数据迁移时的性能最高提升 10 倍，大幅缩短大数据量场景下的迁移时间。
+- 允许用户在 TiDB Dashboard 界面上快速完成 SQL 语句与特定执行计划的绑定，提升计划绑定过程的效率和体验。
+- 提供独立的 MVCC 位图过滤器，解耦 TiFlash 整体数据扫描流程中的 MVCC 过滤操作，为后续优化数据扫描流程提供基础。
+- 支持 MySQL 语法兼容的外键约束，帮助保持数据一致性和提升数据质量。
+- TiFlash 支持 Stale Read 功能，进一步提高查询性能。
+- 扩展 `PLAN REPLAYER` 命令，自动捕获执行计划的生成，提升执行计划不稳定问题的诊断效率。
+- 支持基于资源组的资源管控，将不用的数据库用户映射到对应的资源组中，根据实际需要设置每个资源组的配额（实验特性）。
+- 引入 MySQL 兼容的多值索引，增强 JSON 类型，提升 TiDB 对 MySQL 8.0 的兼容性（实验特性）。
 
 ## 新功能
 
@@ -42,7 +47,6 @@ TiDB 版本：6.6.0
 * 支持 DDL 分布式并行执行框架（实验性特性） [#issue](链接)  @[zimulala](https://github.com/zimulala) **tw@ran-huang**
 
     在过去的版本中，整个 TiDB 集群中仅允许一个 TiDB 实例作为 DDL Owner 有权处理 Schema 变更任务，为了进一步提升 DDL 的并发性，TiDB v6.6.0 版本引入了 DDL 分布式并行执行框架，支持集群中所有的 TiDB 实例可以并发执行同一个任务的 `StateWriteReorganization` 阶段，加速 DDL 的执行。目前只支持 `Add Index` 操作。
-
 
 * MySQL 兼容的多值索引(Multi-Valued Index) (实验特性) [#39592](https://github.com/pingcap/tidb/issues/39592) @[xiongjiwei](https://github.com/xiongjiwei) @[qw4990](https://github.com/qw4990) **tw@TomShawn**
 
@@ -120,7 +124,7 @@ TiDB 版本：6.6.0
 
 * 自动捕获执行计划的生成 [#38779](https://github.com/pingcap/tidb/issues/38779) @[Yisaer](https://github.com/Yisaer) **tw@ran-huang**
 
-    在执行计划问题的排查过程中，`PLAN REPLAYER` 能够协助保存现场，提升诊断的效率。 但在个别场景中，一些执行计划的生成无法任意重现，给诊断工作增加了难度。 针对这类问题， `PLAN REPLAYER` 扩展了自动捕获的能力。 通过 `PLAN REPLAYER CAPTURE` 命令字，用户可提前注册目标 SQL，也可以同时指定目标执行计划， 当 TiDB 检测到执行的 SQL 和执行计划与注册目标匹配时， 会自动生成并打包 `PLAN REPLAYER` 的信息，提升执行计划不稳定问题的诊断效率。
+    在执行计划问题的排查过程中，`PLAN REPLAYER` 能够协助保存现场，提升诊断的效率。 但在个别场景中，一些执行计划的生成无法任意重现，给诊断工作增加了难度。针对这类问题，`PLAN REPLAYER` 扩展了自动捕获的能力。 通过 `PLAN REPLAYER CAPTURE` 命令字，用户可提前注册目标 SQL，也可以同时指定目标执行计划， 当 TiDB 检测到执行的 SQL 和执行计划与注册目标匹配时， 会自动生成并打包 `PLAN REPLAYER` 的信息，提升执行计划不稳定问题的诊断效率。
 
     启用这个功能需要设置系统变量 [`tidb_enable_plan_replayer_capture`](/system-variables.md#tidb_enable_plan_replayer_capture) 为 `ON`。
 
@@ -235,9 +239,9 @@ TiDB 版本：6.6.0
 
 ### 数据迁移
 
-* Data Migration(DM) 集成了 Lightning 的 Physical Import Mode ，全量迁移性能最高提升  10 倍  @[lance6716](https://github.com/lance6716) **tw@ran-huang**
+* TiDB Data Migration (DM) 集成了 TiDB Lightning 的 Physical Import Mode，全量迁移性能最高提升 10 倍  @[lance6716](https://github.com/lance6716) **tw@ran-huang**
 
-    功能描述 ：Data Migration (DM)的全量迁移能力，集成了 Lightning 的 Physical Import Mode ，使得 DM 做全量数据迁移时的性能最高可提升 10 倍，大大缩短了大数据量场景下的迁移时间。原先客户数据量较多时，客户得单独配置 Lightning 的 Physical Import Mode 的任务来做快速的全量数据迁移，之后再用 DM 来做增量数据迁移，配置复杂。现在集成该能力后，用户迁移大数据量的场景，无需再配置 Lightning 的任务，在一个 DM 任务里就可以搞定了。
+    功能描述：TiDB Data Migration (DM) 的全量迁移能力，集成了 TiDB Lightning 的 Physical Import Mode，使得 DM 做全量数据迁移时的性能最高可提升 10 倍，大大缩短了大数据量场景下的迁移时间。原先客户数据量较多时，客户得单独配置 Lightning 的 Physical Import Mode 的任务来做快速的全量数据迁移，之后再用 DM 来做增量数据迁移，配置复杂。现在集成该能力后，用户迁移大数据量的场景，无需再配置 Lightning 的任务，在一个 DM 任务里就可以搞定了。
 
     更多信息，请参考[用户文档](https://github.com/pingcap/docs-cn/pull/12296)。
 
