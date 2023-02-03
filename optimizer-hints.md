@@ -191,30 +191,6 @@ EXPLAIN SELECT * FROM t WHERE EXISTS (SELECT /*+ SEMI_JOIN_REWRITE() */ 1 FROM t
 
 在上述例子中可以看到，在使用了 Hint 之后，TiDB 可以选择由表 `t1` 作为驱动表的 IndexJoin 的执行方式。
 
-### SHUFFLE_JOIN(t1_name [, tl_name ...])
-
-`SHUFFLE_JOIN(t1_name [, tl_name ...])` 提示优化器对指定表使用 Shuffle Join 算法，该 Hint 只在 MPP 模式下生效。例如：
-
-```sql
-SELECT /*+ SHUFFLE_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id = t2.id;
-```
-
-> **注意：**
->
-> 使用该 Hint 前，需要保证当前 TiDB 集群能够支持在查询中使用 TiFlash MPP 模式，具体细节见文档[使用 TiFlash MPP 模式](/tiflash/use-tiflash-mpp-mode.md)。
-
-### BROADCAST_JOIN(t1_name [, tl_name ...])
-
-`BROADCAST_JOIN(t1_name [, tl_name ...])` 提示优化器对指定表使用 Broadcast Join 算法，该 Hint 只在 MPP 模式下生效。例如：
-
-```sql
-SELECT /*+ BROADCAST_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id = t2.id;
-```
-
-> **注意：**
->
-> 使用该 Hint 前，需要保证当前 TiDB 集群能够支持在查询中使用 TiFlash MPP 模式，具体细节见文档[使用 TiFlash MPP 模式](/tiflash/use-tiflash-mpp-mode.md)。
-
 ### NO_DECORRELATE()
 
 `NO_DECORRELATE()` 提示优化器不要尝试解除指定查询块中对应子查询的关联。该 Hint 适用于包含关联列的 `EXISTS`、`IN`、`ANY`、`ALL`、`SOME` 和标量子查询，即关联子查询。
@@ -300,30 +276,6 @@ SELECT /*+ HASH_AGG() */ count(*) FROM t1, t2 WHERE t1.a > 10 GROUP BY t1.id;
 ```sql
 SELECT /*+ STREAM_AGG() */ count(*) FROM t1, t2 WHERE t1.a > 10 GROUP BY t1.id;
 ```
-
-### MPP_1PHASE_AGG()
-
-`MPP_1PHASE_AGG()` 提示优化器对指定查询块中所有聚合函数使用一阶段聚合算法，该 Hint 只在 MPP 模式下生效。例如：
-
-```sql
-SELECT /*+ MPP_1PHASE_AGG() */ count(*) FROM t1, t2 WHERE t1.a > 10 GROUP BY t1.id;
-```
-
-> **注意：**
->
-> 使用该 Hint 前，需要保证当前 TiDB 集群能够支持在查询中使用 TiFlash MPP 模式，具体细节见文档[使用 TiFlash MPP 模式](/tiflash/use-tiflash-mpp-mode.md)。
-
-### MPP_2PHASE_AGG()
-
-`MPP_2PHASE_AGG()` 提示优化器对指定查询块中所有聚合函数使用二阶段聚合算法，该 Hint 只在 MPP 模式下生效。例如：
-
-```sql
-SELECT /*+ MPP_2PHASE_AGG() */ count(*) FROM t1, t2 WHERE t1.a > 10 GROUP BY t1.id;
-```
-
-> **注意：**
->
-> 使用该 Hint 前，需要保证当前 TiDB 集群能够支持在查询中使用 TiFlash MPP 模式，具体细节见文档[使用 TiFlash MPP 模式](/tiflash/use-tiflash-mpp-mode.md)。
 
 ### USE_INDEX(t1_name, idx1_name [, idx2_name ...])
 
