@@ -630,6 +630,7 @@
     - [TiKV 面板](/grafana-tikv-dashboard.md)
     - [TiFlash 监控指标](/tiflash/monitor-tiflash.md)
     - [TiCDC 监控指标](/ticdc/monitor-ticdc.md)
+    - [Resource Control 监控指标](/grafana-resource-control-dashboard.md)
   - 安全加固
     - [为 TiDB 客户端服务端间通信开启加密传输](/enable-tls-between-clients-and-servers.md)
     - [为 TiDB 组件间通信开启加密传输](/enable-tls-between-components.md)
