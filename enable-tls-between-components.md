@@ -5,11 +5,9 @@ aliases: ['/docs-cn/dev/enable-tls-between-components/','/docs-cn/dev/how-to/sec
 
 # 为 TiDB 组件间通信开启加密传输
 
-本部分介绍如何为 TiDB 集群内各部组件间开启加密传输，一旦开启以下组件间均将使用加密传输：
+本部分介绍如何为 TiDB 集群内各组件间开启加密传输，一旦开启以下组件间均将使用加密传输：
 
-- TiDB 与 TiKV、PD、TiFlash
-- TiKV 与 PD，TiFlash 与 PD
-- TiFlash 与 TiKV
+- TiDB、TiKV、PD、TiFlash 之间的通讯
 - TiDB Control 与 TiDB，TiKV Control 与 TiKV，PD Control 与 PD
 - TiKV、PD、TiDB、TiFlash 各自集群内内部通讯
 
