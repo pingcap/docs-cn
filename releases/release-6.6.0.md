@@ -130,9 +130,9 @@ TiDB 版本：6.6.0
 
     更多信息，请参考[用户文档](/sql-plan-replayer.md#使用-plan-replayer-capture-抓取目标计划)。
 
-* Statements Summary 持久化（实验特性） [#40812](https://github.com/pingcap/tidb/issues/40812) @[mornyx](https://github.com/mornyx) **tw@shichun-0415**
+* 持久化 statements summary（实验特性） [#40812](https://github.com/pingcap/tidb/issues/40812) @[mornyx](https://github.com/mornyx) **tw@shichun-0415**
 
-    Statements Summary 过去只在内存中维护，一旦 TiDB 发生重启数据便会全部丢失。开启持久化配置后历史数据将会定期被写入磁盘，相关系统表的查询数据源也将由内存变为磁盘，TiDB 发生重启后历史数据将依然保持存在。
+    v6.6.0 之前版本，statements summary 数据在内存中维护，一旦 TiDB 发生重启，数据便会全部丢失。开启 statements summary 持久化特性后，历史数据将会定期被写入磁盘，相关系统表的查询数据源也将由内存变为磁盘。TiDB 重启后，历史数据将依然保持存在。
 
     更多信息，请参考[用户文档](/statement-summary-tables.md#持久化-statements-summary)。
 
@@ -219,15 +219,15 @@ TiDB 版本：6.6.0
 
 ### 易用性
 
-* 支持动态修改参数 store-io-pool-size [#13964](https://github.com/tikv/tikv/issues/13964) @[LykxSassinator](https://github.com/LykxSassinator) **tw@shichun-0415**
+* 支持动态修改参数 `store-io-pool-size` [#13964](https://github.com/tikv/tikv/issues/13964) @[LykxSassinator](https://github.com/LykxSassinator) **tw@shichun-0415**
 
-    TiKV 中的 raftstore.store-io-pool-size 参数用于设定处理 Raft I/O 任务的线程池中线程的数量，需要在 TiKV 性能调优时进行修改调整。在 v6.6.0 版本之前，这个参数无法动态修改。v6.6.0 支持对该参数的动态修改功能，提高了 TiKV 性能调优的灵活性。
+    TiKV 中的 [`raftstore.store-io-pool-size`](/tikv-configuration-file.md#store-io-pool-size-从-v530-版本开始引入)用于设定处理 Raft I/O 任务的线程池中线程的数量，需要在 TiKV 性能调优时进行修改调整。在 v6.6.0 版本之前，这个参数无法动态修改。v6.6.0 支持动态修改该参数，提高了 TiKV 性能调优的灵活性。
 
     更多信息，请参考[用户文档](/dynamic-config.md)。
 
-* 可通过命令行参数或者配置项在 TiDB 集群初次启动时指定执行的初始化 SQL 脚本 [#35625](https://github.com/pingcap/tidb/pull/35625) @[morgo](https://github.com/morgo) **tw@TomShawn**
+* 支持指定集群初次启动时的初始化 SQL 脚本 [#35624](https://github.com/pingcap/tidb/issues/35624) @[morgo](https://github.com/morgo) **tw@shichun-0415**
 
-    命令行参数 `--initialize-sql-file` 用于指定 TiDB 集群初次启动时执行的 SQL 脚本，可用于修改系统变量的值，或者创建用户、分配权限等。
+    TiDB 集群初次启动时，可通过命令行参数 `--initialize-sql-file` 指定执行的 SQL 脚本。该功能可用于修改系统变量的值，或者创建用户、分配权限等。
 
     更多信息，请参考[配置项 `initialize-sql-file`](/tidb-configuration-file.md#initialize-sql-file-从-v660-版本开始引入)。
 
@@ -362,7 +362,6 @@ TiDB 版本：6.6.0
 
     + TiDB Lightning
 
-        - 修复在部分场景下 TiDB/TiKV 重启导致 Lightning 重试耗费更长时间的问题。[33714](https://github.com/pingcap/tidb/issues/33714) @[lichunzhu](https://github.com/lichunzhu) **tw@shichun-0415**
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
@@ -373,7 +372,7 @@ TiDB 版本：6.6.0
 
     + Sync-diff-inspector
 
-        - 新增 `skip-non-existing-table` 参数，当对比的上下游存在上游或下游表全部缺失的情况时，可配置该参数跳过对上下游表数据不一致的校验并输出到结果集与日志中，而不是任务中断退出。 @[lichunzhu](https://github.com/lichunzhu) @[liumengya94](https://github.com/liumengya9) **tw@shichun-0415**
+        - 新增一个参数 `skip-non-existing-table`，当下游数据库的表在上游不存在时，可配置该参数跳过对上下游数据库表数量不一致场景的校验，而不是任务中断退出 [#692](https://github.com/pingcap/tidb-tools/issues/692) @[lichunzhu](https://github.com/lichunzhu) @[liumengya94](https://github.com/liumengya9) **tw@shichun-0415**
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
 ## 错误修复
@@ -417,6 +416,7 @@ TiDB 版本：6.6.0
 
     + TiDB Lightning
 
+        - 修复了部分场景下 TiDB 重启导致 TiDB Lightning timeout 卡住的问题 [#33714](https://github.com/pingcap/tidb/issues/33714) @[lichunzhu](https://github.com/lichunzhu) **tw@shichun-0415**
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
