@@ -10,7 +10,7 @@ summary: TiDB 数据库中 FOREIGN KEY 的使用概况。
 外键是在子表中定义的，语法如下：
 
 ```ebnf+diagram
-ForeignKeySpec
+ForeignKeyDef
          ::= ( 'CONSTRAINT' Identifier )? 'FOREIGN' 'KEY'
              Identifier? '(' ColumnName ( ',' ColumnName )* ')'
              'REFERENCES' TableName '(' ColumnName ( ',' ColumnName )* ')'

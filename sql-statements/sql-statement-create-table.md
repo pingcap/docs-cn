@@ -59,6 +59,38 @@ ColumnOption ::=
 |   'STORAGE' StorageMedia
 |   'AUTO_RANDOM' OptFieldLen
 
+Constraint ::=
+    IndexDef
+|   ForeignKeyDef
+
+IndexDef ::=
+    ( 'INDEX' | 'KEY' ) IndexName? '(' KeyPartList ')' IndexOption?
+
+KeyPartList ::=
+    KeyPart ( ',' KeyPart )*
+
+KeyPart ::=
+    ColumnName ( '(' Length ')')? ( 'ASC' | 'DESC' )?
+|   '(' Expression ')' ( 'ASC' | 'DESC' )?
+
+IndexOption ::=
+    'COMMENT' String
+|   ( 'VISIBLE' | 'INVISIBLE' )
+
+ForeignKeyDef
+         ::= ( 'CONSTRAINT' Identifier )? 'FOREIGN' 'KEY'
+             Identifier? '(' ColumnName ( ',' ColumnName )* ')'
+             'REFERENCES' TableName '(' ColumnName ( ',' ColumnName )* ')'
+             ( 'ON' 'DELETE' ReferenceOption )?
+             ( 'ON' 'UPDATE' ReferenceOption )?
+
+ReferenceOption
+         ::= 'RESTRICT'
+           | 'CASCADE'
+           | 'SET' 'NULL'
+           | 'SET' 'DEFAULT'
+           | 'NO' 'ACTION'
+
 CreateTableOptionListOpt ::=
     TableOptionList?
 
