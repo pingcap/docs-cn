@@ -32,7 +32,7 @@ TiDB 版本：6.1.4
 
     - TiCDC
 
-        - 
+        - 增加了dml batch 操作功能，提升了跑批场景下的吞吐 [#7653](https://github.com/pingcap/tiflow/issues/7653) @[asddongmen](https://github.com/asddongmen)
     
     - Lightning
 
