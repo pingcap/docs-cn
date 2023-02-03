@@ -41,7 +41,7 @@ TiDB 版本：6.1.4
 
 - PD
 
-    - Fix an issue that PD may repeatedly add Learner to a Region. [#5786](https://github.com/tikv/pd/issues/5786) @[HunDunDM](https://github.com/HunDunDM) 
+    - 修复 PD 在特殊情况下非预期添加多个 Learner 的问题 [#5786](https://github.com/tikv/pd/issues/5786) @[HunDunDM](https://github.com/HunDunDM) 
 
 + TiKV
 
