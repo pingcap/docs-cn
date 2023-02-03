@@ -11,6 +11,12 @@ TiDB 版本：6.1.4
 
 试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v6.1/quick-start-with-tidb) | [生产部署](https://docs.pingcap.com/zh/tidb/v6.1/production-deployment-using-tiup) | [下载离线包](https://cn.pingcap.com/product-community/?version=v6.1.4#version-list)
 
+## 兼容性变更
+
+- TiDB
+
+    - 由于可能存在正确性问题，分区表目前不再支持修改列类型 [#40620](https://github.com/pingcap/tidb/issues/40620) @[mjonss](https://github.com/mjonss)
+
 ## 提升改进
 
 - TiFlash
@@ -36,7 +42,6 @@ TiDB 版本：6.1.4
     - 修复 INSERT/REPLACE 语句在长连接中执行可能造成 Panic 的问题 [#40351](https://github.com/pingcap/tidb/issues/40351) @[fanrenhoo](https://github.com/fanrenhoo)
     - 修复使用 "Cursor Read" 方式读取数据时可能因为 GC 而报错的问题 [#39447](https://github.com/pingcap/tidb/issues/39447)@[zyguan](https://github.com/zyguan)
     - 修复 "[pessimistic-auto-commit](/tidb-configuration-file.md#pessimistic-auto-commit)" 配置项对 "Point Get" 查询不生效的问题 [#39928](https://github.com/pingcap/tidb/issues/39928)@[zyguan](https://github.com/zyguan)
-    - 由于可能存在正确性问题，分区表目前不再支持修改列类型 [#40620](https://github.com/pingcap/tidb/issues/40620) @[mjonss](https://github.com/mjonss)
     - 修复查询 INFORMATION_SCHEMA.TIKV_REGION_STATUS 返回不正确结果的问题 @[zimulala](https://github.com/zimulala)
     - 修复使用 `IN` 或 `NOT IN` 的子查询在某些情况下会报错 `Can't find column` 的问题 [#37032](https://github.com/pingcap/tidb/issues/37032) @[AilinKid](https://github.com/AilinKid) @[lance6716](https://github.com/lance6716)
 
@@ -84,6 +89,6 @@ TiDB 版本：6.1.4
         - 修复当某个表上仅指定 `update-old-value-expr` 或 `update-new-value-expr` 时不生效或导致 panic 的问题 [#7774](https://github.com/pingcap/tiflow/issues/7774) @[lance6716]
 
         + TiDB Lightning
-     
+
         - 修复源文件过大时可能导致内存泄漏的问题 [#39331](https://github.com/pingcap/tidb/issues/39331) @[dsdashun](https://github.com/dsdashun)
         - 修复 precheck 检查项有时无法监测到之前的导入失败遗留的脏数据的问题 [#39477](https://github.com/pingcap/tidb/issues/39477) @[dsdashun](https://github.com/dsdashun)
