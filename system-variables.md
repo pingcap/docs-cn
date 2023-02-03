@@ -419,7 +419,7 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 默认值：`UNSPECIFIED`
-- 取值范围：`UNSPECIFIED, 0, 1`
+- 可选值：`UNSPECIFIED`，`0`，`1`
 - 该变量用于选择不同版本的 MPP 执行计划
     - `UNSPECIFIED`：自动选择最新版本，当前为 `1`
     - `0`：兼容所有 TiDB 集群版本
