@@ -15,7 +15,6 @@ TiDB 版本：6.6.0
 - 绑定历史执行计划 GA，支持根据任意节点产生的历史执行计划创建 SQL Binding，进一步产品易用性。
 - TiDB Data Migration (DM) 集成 TiDB Lightning 的 Physical Import 模式，使得 DM 全量数据迁移时的性能最高提升 10 倍，大幅缩短大数据量场景下的迁移时间。
 - 允许用户在 TiDB Dashboard 界面上快速完成 SQL 语句与特定执行计划的绑定，提升计划绑定过程的效率和体验。
-- 提供独立的 MVCC 位图过滤器，解耦 TiFlash 整体数据扫描流程中的 MVCC 过滤操作，为后续优化数据扫描流程提供基础。
 - 支持 MySQL 语法兼容的外键约束，帮助保持数据一致性和提升数据质量。
 - TiFlash 支持 Stale Read 功能，进一步提高查询性能。
 - 扩展 `PLAN REPLAYER` 命令，自动捕获执行计划的生成，提升执行计划不稳定问题的诊断效率。
