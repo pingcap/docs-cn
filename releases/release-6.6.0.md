@@ -321,7 +321,7 @@ TiDB 版本：6.6.0
 
 + TiFlash
 
-    - 提供独立的 MVCC 位图过滤器，解耦 TiFlash 整体数据扫描流程中的 MVCC 过滤操作，为后续优化数据扫描流程提供基础 [#6296](https://github.com/pingcap/tiflash/issues/6296) @[JinheLin]
+    - 提供独立的 MVCC 位图过滤器，解耦 TiFlash 整体数据扫描流程中的 MVCC 过滤操作，为后续优化数据扫描流程提供基础 [#6296](https://github.com/pingcap/tiflash/issues/6296) @[JinheLin] **tw@qiancai**
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
 + Tools
