@@ -38,17 +38,17 @@ TiDB 版本：6.1.4
 
 + TiDB
 
-    - 修复了创建表时列的默认值和列类型不一致没有自动修正的问题 [#34881](https://github.com/pingcap/tidb/issues/34881) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger) @[mjonss](https://github.com/mjonss)
-    - 修复 LockKeys 函数中的 Data Race 问题 [#40355](https://github.com/pingcap/tidb/issues/40355) @[HuSharp](https://github.com/HuSharp)
-    - 修复 INSERT/REPLACE 语句在长连接中执行可能造成 Panic 的问题 [#40351](https://github.com/pingcap/tidb/issues/40351) @[fanrenhoo](https://github.com/fanrenhoo)
+    - 修复了创建表时列的默认值和列类型不一致且没有自动修正的问题 [#34881](https://github.com/pingcap/tidb/issues/34881) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger) @[mjonss](https://github.com/mjonss)
+    - 修复 `LazyTxn.LockKeys` 函数中的数据争用问题 [#40355](https://github.com/pingcap/tidb/issues/40355) @[HuSharp](https://github.com/HuSharp)
+    - 修复 `INSERT` 或 `REPLACE` 语句在长会话连接中执行可能造成 Panic 的问题 [#40351](https://github.com/pingcap/tidb/issues/40351) @[fanrenhoo](https://github.com/fanrenhoo)
     - 修复使用 "Cursor Read" 方式读取数据时可能因为 GC 而报错的问题 [#39447](https://github.com/pingcap/tidb/issues/39447)@[zyguan](https://github.com/zyguan)
-    - 修复 "[pessimistic-auto-commit](/tidb-configuration-file.md#pessimistic-auto-commit)" 配置项对 "Point Get" 查询不生效的问题 [#39928](https://github.com/pingcap/tidb/issues/39928)@[zyguan](https://github.com/zyguan)
-    - 修复查询 INFORMATION_SCHEMA.TIKV_REGION_STATUS 返回不正确结果的问题 @[zimulala](https://github.com/zimulala)
+    - 修复 [`pessimistic-auto-commit`](/tidb-configuration-file.md#pessimistic-auto-commit) 配置项对 "Point Get" 查询不生效的问题 [#39928](https://github.com/pingcap/tidb/issues/39928)@[zyguan](https://github.com/zyguan)
+    - 修复查询 `INFORMATION_SCHEMA.TIKV_REGION_STATUS` 返回不正确结果的问题 @[zimulala](https://github.com/zimulala)
     - 修复使用 `IN` 或 `NOT IN` 的子查询在某些情况下会报错 `Can't find column` 的问题 [#37032](https://github.com/pingcap/tidb/issues/37032) @[AilinKid](https://github.com/AilinKid) @[lance6716](https://github.com/lance6716)
 
 - PD
 
-    - 修复 PD 在特殊情况下非预期添加多个 Learner 的问题 [#5786](https://github.com/tikv/pd/issues/5786) @[HunDunDM](https://github.com/HunDunDM)
+    - 修复 PD 可能会非预期地向 Region 添加多个 Learner 的问题 [#5786](https://github.com/tikv/pd/issues/5786) @[HunDunDM](https://github.com/HunDunDM)
 
 + TiKV
 
