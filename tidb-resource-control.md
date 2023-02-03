@@ -98,7 +98,7 @@ Resource Group 配额采用 [RU (Resource Unit)](/tidb-RU.md) 表达。RU 是 Ti
 
 ## 监控与图表
 
-TiDB 会定时采集资源管控的运行时信息，并在 Grafana 的 **TiDB** > **Resource Control** 面板中提供了相关指标的可视化图表。指标详情见 [TiDB 重要监控指标详解](/grafana-tidb-dashboard.md) 中的 `Resource Control` 部分。
+TiDB 会定时采集资源管控的运行时信息，并在 Grafana 的 **Resource Control** Dashboard 中提供了相关指标的可视化图表。指标详情见 [Resource Control 监控指标详解](/grafana-resource-control-dashboard.md) 中的介绍。
 
 ## 工具兼容性
 
