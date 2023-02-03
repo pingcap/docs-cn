@@ -15,7 +15,7 @@ summary: 了解资源管控 (Resource Control) 的 Grafana Dashboard 中所展�
 
 ## Request Unit
 
-- RU：以 Resource Group 为单位进行实时统计的 [Resource Unit](/tidb-RU.md) 消耗信息。`total` 为当前所有 Resource Group 消耗的 Request Unit 之和。每个 Resource Group 的 Request Unit 消耗应当等于其读消耗（Read Request Unit）和写消耗 (Write Request Unit) 之和。
+- RU：以 Resource Group 为单位进行实时统计的 RU (Request Unit )消耗信息。`total` 为当前所有 Resource Group 消耗的 Request Unit 之和。每个 Resource Group 的 Request Unit 消耗应当等于其读消耗（Read Request Unit）和写消耗 (Write Request Unit) 之和。
 - RU Per Query：将前述 Request Unit 监控除以当前每秒执行的 SQL 语句数量所得到的平均每个 SQL 语句消耗的 Request Unit 数量。
 - RRU：以 Resource Group 为单位进行实时统计的读请求 Read Request Unit 消耗信息。`total` 为当前所有 Resource Group 消耗的 Read Request Unit 之和。
 - RRU Per Query：将前述 Read Request Unit 监控除以当前每秒执行的 SQL 语句数量所得到的平均每个 SQL 语句消耗的 Read Request Unit 数量。
