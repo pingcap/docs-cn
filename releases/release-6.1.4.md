@@ -48,8 +48,10 @@ TiDB 版本：6.1.4
 
     transaction
 
-    - session: fix data race in the LazyTxn.LockKeys [#40355](https://github.com/pingcap/tidb/issues/40355) @[HuSharp](https://github.com/HuSharp)
+    - Fix data race in the LazyTxn.LockKeys [#40355](https://github.com/pingcap/tidb/issues/40355) @[HuSharp](https://github.com/HuSharp)
     - Fix the case that INSERT/REPLACE might panic in a long session connection [#40351](https://github.com/pingcap/tidb/issues/40351) @[fanrenhoo](https://github.com/fanrenhoo)
+    - Fix the issue that hcursor read being canceled by GC [#39447](https://github.com/pingcap/tidb/issues/39447)@[zyguan](https://github.com/zyguan)
+    - Fix the issue that the pessimistic autocommit configuration does not work for point get plans [#39928](https://github.com/pingcap/tidb/issues/39928)@[zyguan](https://github.com/zyguan)
 
     sql-infra
     
@@ -66,24 +68,24 @@ TiDB 版本：6.1.4
 
 + TiKV
 
-    (dup: release-6.4.0.md > Bug fixes> TiKV)- Fix the issue that TiDB fails to start on Gitpod when there are multiple `cgroup` and `mountinfo` records [#13660](https://github.com/tikv/tikv/issues/13660) @[tabokie](https://github.com/tabokie) @[ti-srebot](https://github.com/ti-srebot)
-    (dup: release-6.5.0.md > Bug fixes> TiKV)- Fix the issue that tikv-ctl is terminated unexpectedly when executing the `reset-to-version` command [#13829](https://github.com/tikv/tikv/issues/13829) @[tabokie](https://github.com/tabokie) @[ti-chi-bot](https://github.com/ti-chi-bot)
-    - Fixed a problem that when a transaction in TiDB fails to execute a pessimistic DML and then executes another DML, if there are random network failures between TiDB and TiKV, it has risk to cause data inconsistency. [#40114](https://github.com/pingcap/tidb/issues/40114) @[MyonKeminta](https://github.com/MyonKeminta)
-    - Fix panic when the size of one single write exceeds 2GiB. [#13848](https://github.com/tikv/tikv/issues/13848) @[YuJuncen](https://github.com/YuJuncen)
-    (dup: release-6.3.0.md > Bug fixes> TiKV)- Fix the issue that TiKV mistakenly reports a `PessimisticLockNotFound` error [#13425](https://github.com/tikv/tikv/issues/13425) @[sticnarf](https://github.com/sticnarf) @[ti-srebot](https://github.com/ti-srebot)
-    - Fixed a problem that when a transaction in TiDB fails to execute a pessimistic DML and then executes another DML, if there are random network failures between TiDB and TiKV, it has risk to cause data inconsistency. [#14038](https://github.com/tikv/tikv/issues/14038) @[MyonKeminta](https://github.com/MyonKeminta)
-    (dup: release-6.5.0.md > Bug fixes> TiKV)- Fix the issue that `_` in the `LIKE` operator cannot match non-ASCII characters when new collation is not enabled [#13769](https://github.com/tikv/tikv/issues/13769) @[YangKeao](https://github.com/YangKeao) @[tonyxuqqi](https://github.com/tonyxuqqi)
+    - 修复 Gitpod 环境中存在多个 `cgroup` 和 `mountinfo` 时 TiDB 启动异常的问题 [#13660](https://github.com/tikv/tikv/issues/13660) @[tabokie](https://github.com/tabokie)
+    - 修复 tikv-ctl 执行 `reset-to-version` 命令时异常终止的问题 [#13829](https://github.com/tikv/tikv/issues/13829) @[tabokie](https://github.com/tabokie)
+    - 修复误报 `PessimisticLockNotFound` 的问题 [#13425](https://github.com/tikv/tikv/issues/13425) @[sticnarf](https://github.com/sticnarf)
+    - 修复单次写入超过 2GiB 时会发生 panic 的问题。[#13848](https://github.com/tikv/tikv/issues/13848) @[YuJuncen](https://github.com/YuJuncen)
+    - 修复了悲观事务内，当 TiDB 和 TiKV 间存在网络问题时，执行语句出错后可能出现的数据一致性问题。 [#14038](https://github.com/tikv/tikv/issues/14038) @[MyonKeminta](https://github.com/MyonKeminta)
+    - 修复当未启用 new collation 时 `LIKE` 操作符中的 `_` 无法匹配非 ASCII 字符的问题 [#13769](https://github.com/tikv/tikv/issues/13769) @[YangKeao](https://github.com/YangKeao)
 
 + TiFlash
 
-    - Avoid tiflash global locks with small probability of long term blocking. [#6418](https://github.com/pingcap/tiflash/issues/6418) @[SeaRise](https://github.com/SeaRise)
+    - 修复小概率情况下出现的 tiflash 全局锁长时间阻塞的问题 [#6418](https://github.com/pingcap/tiflash/issues/6418) @[SeaRise](https://github.com/SeaRise)
     - 修复一个在高更新负载下会可能导致 OOM 的问题 [#6407](https://github.com/pingcap/tiflash/issues/6407) @[JaySon-Huang](https://github.com/JaySon-Huang)
 
 + Tools
 
     + Backup & Restore (BR)
 
-        - Fixed a bug that may cause BR reject to restore unexpectedly. [#36053](https://github.com/pingcap/tidb/issues/36053) @[lance6716](https://github.com/lance6716)        - 
+        - 修复在某些情况下因无法获取 region size 导致恢复失败的问题. [#36053](https://github.com/pingcap/tidb/issues/36053) @[YuJuncen](https://github.com/YuJuncen)
+        - 修复使用 br debug 命令解析 backupmeta 文件 panic 的问题.[#40878](https://github.com/pingcap/tidb/issues/40878) @[MoCuishle28](https://github.com/MoCuishle28)
 
     + TiCDC
 
@@ -97,6 +99,8 @@ TiDB 版本：6.1.4
 
     + TiDB Data Migration (DM)
 
-        (dup: release-6.5.0.md > Bug fixes> Tools> TiDB Data Migration (DM))- Fix the issue that DM precheck is not passed when the upstream database uses regular expressions to grant privileges [#7645](https://github.com/pingcap/tiflow/issues/7645) @[lance6716](https://github.com/lance6716) @[ti-chi-bot](https://github.com/ti-chi-bot)
-        - Fix a bug that when both "update" and "non-update" type expression filters are used in one table, all UPDATE row changes are skipped [#7831](https://github.com/pingcap/tiflow/issues/7831) @[lance6716](https://github.com/lance6716)
-        - Fix a bug when only one of `update-old-value-expr` or `update-new-value-expr` is set for a table, it does not take effect or panic [#7774](https://github.com/pingcap/tiflow/issues/7774) @[amyangfei](https://github.com/amyangfei)
+        - 修复当 SHOW GRANTS 结果的数据库名包含"*"时导致 precheck 报错的问题 [#7645](https://github.com/pingcap/tiflow/issues/7645) @[lance6716]
+        - 修复 DM 因 binlog 中 query event 为 COMMIT 时打印过多日志的问题 [#7525](https://github.com/pingcap/tiflow/issues/7525) @[liumengya94]
+        - 修复当 SSL 参数仅指定 "ssl-ca" 时 DM 任务无法启动的问题 [#7941](https://github.com/pingcap/tiflow/issues/7941) @[liumengya94]
+        - 修复当在某个表上同时指定 "update" 和 "non-update" 类型的 expression filters 时, 导致所有 UPDATE 被跳过的问题 [#7831](https://github.com/pingcap/tiflow/issues/7831) @[lance6716]
+        - 修复当某个表上仅指定 `update-old-value-expr` 或 `update-new-value-expr` 时不生效或导致 panic 的问题 [#7774](https://github.com/pingcap/tiflow/issues/7774) @[lance6716]
