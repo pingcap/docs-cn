@@ -32,3 +32,7 @@ pd-ctl config set enable-witness true
 ```
 
 命令输出 `Success` 表示开启成功。如果没有按照[使用 Witness 节约成本](/use-witness-to-save-costs.md)配置 Witness 副本，则集群正常状态下不会有 Witness 副本产生。只有出现 TiKV Down 后，才会立刻添加一个 Witness 节点，后续会由 rule checker 将其转换为普通的 Voter。
+
+## 注意事项
+
+由于 Witness 副本没有应用 Raft 日志，因此无法对外提供读写服务。当 Witness 副本为 Leader 且无法及时 transfer leader 时，客户端 Backoff 超时后，应用可能收到 IsWitness 错误。
