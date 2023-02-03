@@ -409,10 +409,10 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 - 默认值：`UNSPECIFIED`
 - 取值范围：`NONE, FAST, HIGH_COMPRESSION, UNSPECIFIED`
 - 该变量用于选择 MPP Exchange 算子的数据压缩模式
-  - `UNSPECIFIED`：自动选择，当前为 `FAST`
-  - `NONE`：无数据压缩
-  - `FAST`：快速模式，整体性能较好，压缩比小于 `HIGH_COMPRESSION`
-  - `HIGH_COMPRESSION`：高压缩比模式
+    - `UNSPECIFIED`：自动选择，当前为 `FAST`
+    - `NONE`：无数据压缩
+    - `FAST`：快速模式，整体性能较好，压缩比小于 `HIGH_COMPRESSION`
+    - `HIGH_COMPRESSION`：高压缩比模式
 
 ### `mpp_version` <span class="version-mark">从 v6.6.0 版本开始引入</span>
 
@@ -421,9 +421,9 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 - 默认值：`UNSPECIFIED`
 - 取值范围：`UNSPECIFIED, 0, 1`
 - 该变量用于选择不同版本的 MPP 执行计划
-  - `UNSPECIFIED`：自动选择最新版本，当前为 `1`
-  - `0`：兼容所有 TiDB 集群版本
-  - `1`：从 v6.6.0 版本开始引入，新特性 [TiFlash 引擎支持带压缩的数据交换](TODO-add-link)。
+    - `UNSPECIFIED`：自动选择最新版本，当前为 `1`
+    - `0`：兼容所有 TiDB 集群版本
+    - `1`：从 v6.6.0 版本开始引入，新特性 [TiFlash 引擎支持带压缩的数据交换](TODO-add-link)。
 
 ### `password_history` <span class="version-mark">从 v6.5.0 版本开始引入</span>
 
