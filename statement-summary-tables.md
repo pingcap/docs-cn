@@ -201,8 +201,8 @@ tidb_stmt_summary_enable_persistent = true
 
 > **注意：**
 >
-> - 当开启持久化后，由于不再于内存中维护历史数据，因此[参数配置](#参数配置) 一节所描述的 `tidb_stmt_summary_history_size` 将不再生效，而是由 [`tidb_stmt_summary_file_max_days`](/tidb-configuration-file.md#tidb_stmt_summary_file_max_days-从-v660-版本开始引入), [`tidb_stmt_summary_file_max_size`](/tidb-configuration-file.md#tidb_stmt_summary_file_max_size-从-v660-版本开始引入), [`tidb_stmt_summary_file_max_backups`](/tidb-configuration-file.md#tidb_stmt_summary_file_max_backups-从-v660-版本开始引入) 这三项配置来决定历史数据在磁盘上的保留数量和时间。
-> - `tidb_stmt_summary_refresh_interval` 设置的越小，数据写入到磁盘就越实时，但写入磁盘的冗余数据也会随之增多。
+> - 当开启持久化后，由于不再于内存中维护历史数据，因此[参数配置](#参数配置) 一节所描述的 `tidb_stmt_summary_history_size` 将不再生效，而是由 [`tidb_stmt_summary_file_max_days`](/tidb-configuration-file.md#tidb_stmt_summary_file_max_days-从-v660-版本开始引入)、 [`tidb_stmt_summary_file_max_size`](/tidb-configuration-file.md#tidb_stmt_summary_file_max_size-从-v660-版本开始引入) 和 [`tidb_stmt_summary_file_max_backups`](/tidb-configuration-file.md#tidb_stmt_summary_file_max_backups-从-v660-版本开始引入) 这三项配置来决定历史数据在磁盘上的保留数量和时间。
+> - `tidb_stmt_summary_refresh_interval` 取值越小，数据写入到磁盘就越实时，但写入磁盘的冗余数据也会随之增多。
 
 ## 排查示例
 
