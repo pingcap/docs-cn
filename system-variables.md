@@ -408,7 +408,7 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 - 是否持久化到集群：是
 - 默认值：`UNSPECIFIED`
 - 可选值：`NONE, FAST, HIGH_COMPRESSION, UNSPECIFIED`
-- 该变量用于选择 MPP Exchange 算子的数据压缩模式
+- 该变量用于选择 MPP Exchange 算子的数据压缩模式，当 TiDB 选择版本号为 `1` 的 MPP 执行计划时生效。
     - `UNSPECIFIED`：自动选择，当前为 `FAST`
     - `NONE`：无数据压缩
     - `FAST`：快速模式，整体性能较好，压缩比小于 `HIGH_COMPRESSION`
