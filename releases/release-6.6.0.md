@@ -68,11 +68,11 @@ TiDB 版本：6.6.0
 
 ### 安全
 
-* TiFlash 支持 TLS certificate hot reload @[ywqzzy](https://github.com/ywqzzy) **tw@qiancai**
+* TiFlash 支持 TLS 证书自动轮换 [#5503](https://github.com/pingcap/tiflash/issues/5503) @[ywqzzy](https://github.com/ywqzzy) **tw@qiancai**
 
-    TiFlash TLS 证书自动轮换指在开启组件间加密传输的 TiDB Cluster 上，当 TiFlash 的 TLS 证书过期，重新签发一个新 TLS 证书给 TiFlash 时，可以不用重启 TiDB Cluster，自动加载新 TiFlash TLS 证书。TiDB Cluster 内部组件之间 TLS 过期轮换不影响 TiDB Cluster 的正常使用，保障了 TiDB 集群高可用性。
+    TiFlash TLS 证书自动轮换指在开启组件间加密传输的 TiDB 集群上，当 TiFlash 的 TLS 证书过期需要重新签发一个新 TLS 证书给 TiFlash 时，支持自动加载新的 TiFlash TLS 证书，无需重启 TiDB 集群。TiDB 集群内部组件之间 TLS 过期轮换不影响 TiDB 集群的正常使用，保障了 TiDB 集群的高可用。
 
-    更多信息，请参考：https://docs.pingcap.com/tidb/stable/enable-tls-between-components
+    更多信息，请[用户文档](/enable-tls-between-components.md)。
 
 ### 可观测性
 
@@ -147,10 +147,6 @@ TiDB 版本：6.6.0
     更多信息，请参考[用户文档](/stale-read.md)。
 
 * 支持下推字符串函数 `regexp_replace` 至 TiFlash [#6115](https://github.com/pingcap/tiflash/issues/6115) @[xzhangxian1008](https://github.com/xzhangxian1008) **tw@qiancai**
-
-* TiFlash 支持独立的 MVCC 位图过滤器 [#6296](https://github.com/pingcap/tiflash/issues/6296) @[JinheLin](https://github.com/JinheLin) **tw@qiancai**
-
-    TiFlash 引擎的数据扫描流程包含 MVCC 过滤和扫描列数据等操作。由于 MVCC 过滤和其他数据扫描操作具有较高的耦合性，导致无法对数据扫描流程进行优化改进。在 v6.6.0 中，TiFlash 将整体数据扫描流程中的 MVCC 过滤操作进行解耦，提供独立的 MVCC 位图过滤器，为后续优化数据扫描流程提供基础。
 
 * 批量聚合数据请求 [#39361](https://github.com/pingcap/tidb/issues/39361) @[cfzjywxk](https://github.com/cfzjywxk) @[you06](https://github.com/you06) **tw@TomShawn**
 
@@ -325,7 +321,7 @@ TiDB 版本：6.6.0
 
 + TiFlash
 
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
+    - 提供独立的 MVCC 位图过滤器，解耦 TiFlash 整体数据扫描流程中的 MVCC 过滤操作，为后续优化数据扫描流程提供基础 [#6296](https://github.com/pingcap/tiflash/issues/6296) @[JinheLin]
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
 + Tools
