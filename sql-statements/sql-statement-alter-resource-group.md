@@ -1,21 +1,4 @@
-mysql> DROP RESOURCE GROUP IF EXISTS rg1;
-Query OK, 0 rows affected (0.22 sec)
-mysql> CREATE RESOURCE GROUP IF NOT EXISTS rg1
-->  RU_PER_SEC = 100
-->  BURSTABLE;
-Query OK, 0 rows affected (0.08 sec)
-mysql> CREATE RESOURCE GROUP IF NOT EXISTS rg2
-->  RU_PER_SEC = 200
-->  BURSTABLE;
-Query OK, 0 rows affected (0.08 sec)
-mysql> SELECT * FROM information_schema.resource_groups WHERE NAME ='rg1' or NAME = 'rg2';
-+------+-------------+-----------+-----------+
-| NAME | RU_PER_SEC  | RU_TOKENS | BURSTABLE |
-+------+-------------+-----------+-----------+
-| rg1  |         100 |    165135 | YES       |
-| rg2  |         200 |    157158 | NO        |
-+------+-------------+-----------+-----------+
-1 rows in set (1.30 sec)---
+---
 title: ALTER RESOURCE GROUP
 summary: TiDB 数据库中 ALTER RESOURCE GROUP 的使用概况。
 ---
@@ -54,7 +37,7 @@ TiDB 支持以下 `DirectResourceGroupOption`, 其中 [`RU` (Request Unit)](/tid
 
 | 参数            | 含义           | 举例                                   |
 |---------------|--------------|--------------------------------------|
-| `RU_PER_SEC`  | 每秒钟 RU 填充的速度 | `RU_PER_SEC = 500` 表示此资源组每秒回填500个 RU |
+| `RU_PER_SEC`  | 每秒钟 RU 填充的速度 | `RU_PER_SEC = 500` 表示此资源组每秒回填 500 个 RU |
 
 如果设置了 `BURSTABLE` 属性，对应的资源组允许超出配额使用系统资源。
 

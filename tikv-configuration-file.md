@@ -1885,5 +1885,5 @@ Raft Engine 相关的配置项。
 ### `enabled` <span class="version-mark">从 v6.6.0 版本开始引入</span>
 
 + 是否支持对用户前台的读写请求按照对应的资源组配额做优先级调度。有关 TiDB 资源组和资源管控的信息，请参考 [TiDB 资源管控](/tidb-resource-control.md)
-+ 在 TiDB 侧开启 `tidb_enable_resource_control` 全局变量的情况下，开启这个配置项才有意义。此配置参数开启后，TiKV 对用户前台读写请求的调度会使用优先级队列对排队的请求做调度，调度的优先级和请求所在资源组已经消费的资源量反相关，和对应资源组的配额正相关。
++ 在 TiDB 侧开启 [`tidb_enable_resource_control`](/system-variables.md#tidb_enable_resource_control-从-v660-版本开始引入) 全局变量的情况下，开启这个配置项才有意义。此配置参数开启后，TiKV 对用户前台读写请求的调度会使用优先级队列对排队的请求做调度，调度的优先级和请求所在资源组已经消费的资源量反相关，和对应资源组的配额正相关。
 + 默认值：false（即关闭按照资源组配额调度）
