@@ -402,6 +402,29 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 - 服务器端和客户端在一次传送数据包的过程中所允许最大的数据包大小，单位为字节。
 - 该变量的行为与 MySQL 兼容。
 
+### `mpp_exchange_compression_mode` <span class="version-mark">从 v6.6.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 默认值：`UNSPECIFIED`
+- 取值范围：`NONE, FAST, HIGH_COMPRESSION, UNSPECIFIED`
+- 该变量用于选择 MPP Exchange 算子的数据压缩模式
+  - `UNSPECIFIED`：自动选择 `FAST` 模式
+  - `NONE`：无数据压缩
+  - `FAST`：快速模式，压缩比小于 `HIGH_COMPRESSION`
+  - `HIGH_COMPRESSION`：高压缩比模式
+
+### `mpp_version` <span class="version-mark">从 v6.6.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 默认值：`UNSPECIFIED`
+- 取值范围：`UNSPECIFIED, 0, 1`
+- 该变量用于选择不同版本的 MPP 执行计划
+  - `UNSPECIFIED`：自动选择最新版本，当前为 `1`
+  - `0`：兼容所有 TiDB 集群版本
+  - `1`：从 v6.6.0 版本开始引入，支持新特性[TiFlash 引擎支持带压缩的数据交换](TODO-add-link)。
+
 ### `password_history` <span class="version-mark">从 v6.5.0 版本开始引入</span>
 
 - 作用域：GLOBAL
