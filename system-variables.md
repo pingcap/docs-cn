@@ -1507,8 +1507,9 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
+- 类型：布尔型
 - 默认值：`OFF`
-- 这个变量用来控制是否开启 [`PLAN REPLAYER CAPTURE` 功能](/sql-plan-replayer.md)。默认值 `FALSE` 代表关闭 `PLAN REPLAYER CAPTURE` 功能。
+- 这个变量用来控制是否开启 [`PLAN REPLAYER CAPTURE` 功能](/sql-plan-replayer.md#使用-plan-replayer-capture-抓取目标计划)。默认值 `OFF` 代表关闭 `PLAN REPLAYER CAPTURE` 功能。
 
 ### `tidb_enable_prepared_plan_cache` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
