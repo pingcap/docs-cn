@@ -27,11 +27,11 @@ TiDB 版本：6.1.4
 
     - TiCDC
 
-        - 增加了dml batch 操作功能，提升了跑批场景下的吞吐 [#7653](https://github.com/pingcap/tiflow/issues/7653) @[asddongmen](https://github.com/asddongmen)
+        - 增加了 DML batch 操作功能，提升了跑批场景下的吞吐 [#7653](https://github.com/pingcap/tiflow/issues/7653) @[asddongmen](https://github.com/asddongmen)
 
     - Lightning
 
-        - 将 precheck 检查项 clusterResourceCheckItem 和 emptyRegionCheckItem 的严重级别从 Critical 改为 Warn[#37654](https://github.com/pingcap/tidb/issues/37654) @[niubell](https://github.com/niubell)
+        - 将 precheck 检查项 `clusterResourceCheckItem` 和 `emptyRegionCheckItem` 的严重级别从 `Critical` 改为 `Warning` [#37654](https://github.com/pingcap/tidb/issues/37654) @[niubell](https://github.com/niubell)
 
 ## Bug 修复
 
@@ -54,21 +54,21 @@ TiDB 版本：6.1.4
     - 修复 Gitpod 环境中存在多个 `cgroup` 和 `mountinfo` 时 TiDB 启动异常的问题 [#13660](https://github.com/tikv/tikv/issues/13660) @[tabokie](https://github.com/tabokie)
     - 修复 tikv-ctl 执行 `reset-to-version` 命令时异常终止的问题 [#13829](https://github.com/tikv/tikv/issues/13829) @[tabokie](https://github.com/tabokie)
     - 修复误报 `PessimisticLockNotFound` 的问题 [#13425](https://github.com/tikv/tikv/issues/13425) @[sticnarf](https://github.com/sticnarf)
-    - 修复单次写入超过 2GiB 时会发生 panic 的问题。[#13848](https://github.com/tikv/tikv/issues/13848) @[YuJuncen](https://github.com/YuJuncen)
-    - 修复了悲观事务内，当 TiDB 和 TiKV 间存在网络问题时，执行语句出错后可能出现的数据一致性问题。 [#14038](https://github.com/tikv/tikv/issues/14038) @[MyonKeminta](https://github.com/MyonKeminta)
+    - 修复单次写入超过 2 GiB 时会发生 panic 的问题。[#13848](https://github.com/tikv/tikv/issues/13848) @[YuJuncen](https://github.com/YuJuncen)
+    - 修复了悲观事务内，当 TiDB 和 TiKV 间存在网络问题时，执行语句出错后可能出现的数据一致性问题 [#14038](https://github.com/tikv/tikv/issues/14038) @[MyonKeminta](https://github.com/MyonKeminta)
     - 修复当未启用 new collation 时 `LIKE` 操作符中的 `_` 无法匹配非 ASCII 字符的问题 [#13769](https://github.com/tikv/tikv/issues/13769) @[YangKeao](https://github.com/YangKeao)
 
 + TiFlash
 
-    - 修复小概率情况下出现的 tiflash 全局锁长时间阻塞的问题 [#6418](https://github.com/pingcap/tiflash/issues/6418) @[SeaRise](https://github.com/SeaRise)
-    - 修复一个在高更新负载下会可能导致 OOM 的问题 [#6407](https://github.com/pingcap/tiflash/issues/6407) @[JaySon-Huang](https://github.com/JaySon-Huang)
+    - 修复小概率情况下出现的 TiFlash 全局锁长时间阻塞的问题 [#6418](https://github.com/pingcap/tiflash/issues/6418) @[SeaRise](https://github.com/SeaRise)
+    - 修复在高更新负载下会可能导致 OOM 的问题 [#6407](https://github.com/pingcap/tiflash/issues/6407) @[JaySon-Huang](https://github.com/JaySon-Huang)
 
 + Tools
 
     + Backup & Restore (BR)
 
-        - 修复在某些情况下因无法获取 region size 导致恢复失败的问题. [#36053](https://github.com/pingcap/tidb/issues/36053) @[YuJuncen](https://github.com/YuJuncen)
-        - 修复使用 br debug 命令解析 backupmeta 文件 panic 的问题.[#40878](https://github.com/pingcap/tidb/issues/40878) @[MoCuishle28](https://github.com/MoCuishle28)
+        - 修复在某些情况下因无法获取 region size 导致恢复失败的问题 [#36053](https://github.com/pingcap/tidb/issues/36053) @[YuJuncen](https://github.com/YuJuncen)
+        - 修复使用 `br debug` 命令解析 backupmeta 文件 panic 的问题.[#40878](https://github.com/pingcap/tidb/issues/40878) @[MoCuishle28](https://github.com/MoCuishle28)
 
     + TiCDC
 
