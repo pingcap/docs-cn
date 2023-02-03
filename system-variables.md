@@ -422,7 +422,7 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 - 可选值：`UNSPECIFIED`，`0`，`1`
 - 该变量用于选择不同版本的 MPP 执行计划
     - `UNSPECIFIED`：自动选择最新版本，当前为 `1`
-    - `0`：兼容所有 TiDB 集群版本
+    - `0`：兼容所有 TiDB 集群版本，MPP 版本大于 `0` 的新特性均不会生效。
     - `1`：从 v6.6.0 版本开始引入，新特性 `TiFlash 引擎支持带压缩的数据交换`
 
 ### `password_history` <span class="version-mark">从 v6.5.0 版本开始引入</span>
