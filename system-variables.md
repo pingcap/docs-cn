@@ -409,7 +409,7 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 - 默认值：`UNSPECIFIED`
 - 取值范围：`NONE, FAST, HIGH_COMPRESSION, UNSPECIFIED`
 - 该变量用于选择 MPP Exchange 算子的数据压缩模式
-  - `UNSPECIFIED`：自动选择 `FAST` 模式
+  - `UNSPECIFIED`：自动选择，当前为 `FAST`
   - `NONE`：无数据压缩
   - `FAST`：快速模式，整体性能较好，压缩比小于 `HIGH_COMPRESSION`
   - `HIGH_COMPRESSION`：高压缩比模式
