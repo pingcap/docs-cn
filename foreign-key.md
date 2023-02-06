@@ -1,9 +1,9 @@
 ---
-title: FOREIGN KEY Constraints
+title: 外键约束
 summary: TiDB 数据库中 FOREIGN KEY 的使用概况。
 ---
 
-# FOREIGN KEY Constraints
+# 外键约束
 
 外键是 TiDB 从 v6.6.0 开始支持的功能，允许跨表交叉引用相关数据，以及外键约束，有助于保持相关数据的一致性。
 

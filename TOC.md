@@ -714,7 +714,6 @@
       - [`FLUSH PRIVILEGES`](/sql-statements/sql-statement-flush-privileges.md)
       - [`FLUSH STATUS`](/sql-statements/sql-statement-flush-status.md)
       - [`FLUSH TABLES`](/sql-statements/sql-statement-flush-tables.md)
-      - [`FOREIGN KEY Constraints`](/sql-statements/sql-statement-foreign-key.md)
       - [`GRANT <privileges>`](/sql-statements/sql-statement-grant-privileges.md)
       - [`GRANT <role>`](/sql-statements/sql-statement-grant-role.md)
       - [`INSERT`](/sql-statements/sql-statement-insert.md)
@@ -838,6 +837,7 @@
     - [分区表](/partitioned-table.md)
     - [临时表](/temporary-tables.md)
     - [缓存表](/cached-tables.md)
+    - [外键约束](/foreign-key.md)
     - 字符集和排序
       - [概述](/character-set-and-collation.md)
       - [GBK](/character-set-gbk.md)
