@@ -63,7 +63,7 @@ c + (r1 + r2) + (3 * w1 + 5 * w2)
 > **注意：**
 >
 > - `CREATE USER` 或者 `ALTER USER` 对用户资源组绑定后，不会对该用户的已有会话生效，而是只对该用户新建的会话生效。
-> - 如果用户没有绑定到某个资源组或者是绑定到 `default` 资源组，该用户的请求不会受 TiDB 的流控限制。 `default` 资源组目前对用户不可见也不可以创建或者修改属性。
+> - 如果用户没有绑定到某个资源组或者是绑定到 `default` 资源组，该用户的请求不会受 TiDB 的流控限制。`default` 资源组目前对用户不可见也不可以创建或者修改属性。
 
 ### 第 1 步：开启资源管控特性
 
@@ -76,8 +76,6 @@ SET GLOBAL tidb_enable_resource_control = 'ON';
 将 TiKV 配置参数 `resource_control.enabled` 设为 `true`。
 
 ### 第 2 步：创建资源组，并绑定用户到资源组
-
-Resource Group 配额采用 [RU (Request Unit)](/tidb-resource-control.md#什么是-request-unit-ru) 表达。RU 是 TiDB 对 CPU、IO 等系统资源的统一抽象的单位。
 
 下面举例说明如何创建资源组，并绑定用户到资源组。
 
