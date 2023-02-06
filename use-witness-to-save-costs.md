@@ -6,6 +6,7 @@ summary: 如何使用 Witness 在高可靠的存储环境中节约成本。
 # 使用 Witness 节约成本
 
 这篇文档描述如何在高可靠存储环境中使用 Witness 节约成本。如果需要使用 Witness 副本提高 TiKV Down 场景下的持久性，请参考[使用临时 Witness 副本来加速副本恢复](/use-witness-to-speed-up-failover.md)。
+
 ## 功能说明
 
 在云环境中，推荐使用持久性为 99.8%~99.9% 的 Amazon Elastic Block Store 或持久性为 99.99%~99.999% 的 Google Cloud Persistent Disk 作为 TiKV 单节点存储。此时，TiKV 使用 3 个 Raft 副本虽然可行，但并不必要。为了降低成本，TiKV 引入了 Witness 功能，即 2 Replicas With 1 Log Only 机制。其中 1 Log Only 副本仅存储 Raft 日志但不进行数据 apply，依然可以通过 Raft 协议保证数据一致性。与标准的 3 副本架构相比，Witness 可以节省存储资源及 CPU 使用率。
