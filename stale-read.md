@@ -27,7 +27,7 @@ TiDB 提供语句级别、会话级别以及全局级别的 Stale Read 使用方
 
 ## 限制
 
-当对表的 Stale Read 查询下推到 TiFlash 时，如果该表在 Stale Read 所指定的读取时间戳之后执行过 DDL 操作，此查询将会报错。原因是 TiFlash 只支持从使用最新的表结构读取数据。
+当对表的 Stale Read 查询下推到 TiFlash 时，如果该表在 Stale Read 所指定的读取时间戳之后执行过 DDL 操作，此查询将会报错。原因是 TiFlash 只支持从最新的表结构读取数据。
 
 例如：
 
