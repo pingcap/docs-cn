@@ -126,4 +126,3 @@ TiDB 会定时采集资源管控的运行时信息，并在 Grafana 的 **Resour
 * [ALTER RESOURCE GROUP](/sql-statements/sql-statement-alter-resource-group.md)
 * [DROP RESOURCE GROUP](/sql-statements/sql-statement-drop-resource-group.md)
 * [RESOURCE GROUP RFC](https://docs.google.com/document/d/1sV5EVv8Cdpc6aBCDihc2akpE0iuantPf/)
-* [RU](/tidb-resource-control.md#什么是-request-unit-ru)
