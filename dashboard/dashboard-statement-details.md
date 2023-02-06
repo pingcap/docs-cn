@@ -16,7 +16,7 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-statement-details/','/docs-cn/dev/da
 
 ## 快速绑定执行计划
 
-在 v6.6 及以上版本中，引入了快速绑定执行计划功能：用户可以在 TiDB Dashboard 中，一分钟内完成 SQL 与特定计划的绑定。
+在 v6.6 及以上版本中，引入了快速绑定执行计划功能：用户可以在 TiDB Dashboard 中，快速完成 SQL 与特定计划的绑定。
 
 ### 使用方式
 
