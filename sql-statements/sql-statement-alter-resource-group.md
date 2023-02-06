@@ -11,10 +11,10 @@ summary: TiDB 数据库中 ALTER RESOURCE GROUP 的使用概况。
 
 ```ebnf+diagram
 AlterResourceGroupStmt:
-   "ALTER" "RESOURCE" "GROUP" IfNotExists ResourceGroupName ResourceGroupOptionList BurstableOption
+   "ALTER" "RESOURCE" "GROUP" IfNotExists ResourceGroupName ResourceGroupOptionList
 
 IfNotExists ::=
-    ('IF' 'NOT' 'EXISTS')?
+    ('IF' 'EXISTS')?
 
 ResourceGroupName:
    Identifier
@@ -25,11 +25,8 @@ ResourceGroupOptionList:
 |   ResourceGroupOptionList ',' DirectResourceGroupOption
 
 DirectResourceGroupOption:
-    "RRU_PER_SEC" EqOpt stringLit
-|   "WRU_PER_SEC" EqOpt stringLit
-
-BurstableOption ::=
-    ("BURSTABLE")?
+    "RU_PER_SEC" EqOpt stringLit
+|   "BURSTABLE"
 
 ```
 
@@ -39,7 +36,7 @@ TiDB 支持以下 `DirectResourceGroupOption`, 其中 [Request Unit (RU)](/tidb-
 |---------------|--------------|--------------------------------------|
 | `RU_PER_SEC`  | 每秒钟 RU 填充的速度 | `RU_PER_SEC = 500` 表示此资源组每秒回填 500 个 RU |
 
-如果设置了 `BURSTABLE` 属性，对应的资源组允许超出配额使用系统资源。
+如果设置了 `BURSTABLE` 属性，对应的资源组允许超出配额使用空余的系统资源。
 
 > **注意：**
 > 
