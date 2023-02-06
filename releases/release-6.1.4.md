@@ -61,7 +61,7 @@ TiDB 版本：6.1.4
 
 + TiFlash
 
-    - 修复小概率情况下出现的 TiFlash 全局锁长时间阻塞的问题 [#6418](https://github.com/pingcap/tiflash/issues/6418) @[SeaRise](https://github.com/SeaRise)
+    - 修复小概率情况下出现的 TiFlash 全局锁被长时间阻塞的问题 [#6418](https://github.com/pingcap/tiflash/issues/6418) @[SeaRise](https://github.com/SeaRise)
     - 修复高更新负载可能导致 OOM 的问题 [#6407](https://github.com/pingcap/tiflash/issues/6407) @[JaySon-Huang](https://github.com/JaySon-Huang)
 
 + Tools
