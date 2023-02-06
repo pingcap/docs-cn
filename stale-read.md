@@ -55,4 +55,4 @@ select * from t1 as of timestamp NOW() - INTERVAL 1 minute;
 ERROR 1105 (HY000): other error for mpp stream: From MPP<query:<query_ts:1673950975508472943, local_query_id:18, server_id:111947, start_ts:438816196526080000>,task_id:1>: Code: 0, e.displayText() = DB::TiFlashException: Table 323 schema version 104 newer than query schema version 100, e.what() = DB::TiFlashException,
 ```
 
-把 Stale Read 指定的读取时间戳改成 DDL 操作时间之后，就可以避免这个错误。
+把 Stale Read 指定的读取时间戳改成 DDL 操作完成之后的时间，即可避免该错误。
