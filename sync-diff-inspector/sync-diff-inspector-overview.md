@@ -219,7 +219,7 @@ The rest of tables are all equal.
 A total of 2 tables have been compared, 0 tables finished, 2 tables failed, 0 tables skipped.
 The patch file has been generated in
         'output/fix-on-tidb2/'
-You can view the comparision details through 'output/sync_diff.log'
+You can view the comparison details through 'output/sync_diff.log'
 ```
 
 ### 输出文件
