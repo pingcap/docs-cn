@@ -34,14 +34,13 @@ BurstableOption ::=
 
 资源组的 `ResourceGroupName` 是全局唯一的，不允许重复。
 
-TiDB 支持以下 `DirectResourceGroupOption`, 其中 [`RU` (Request Unit)](/tidb-resource-control.md#什么是-request-unit-ru) 是 TiDB 对 CPU、IO 等系统资源统一抽象的单位。
+TiDB 支持以下 `DirectResourceGroupOption`, 其中 [Request Unit (RU)](/tidb-resource-control.md#什么是-request-unit-ru) 是 TiDB 对 CPU、IO 等系统资源统一抽象的单位。
 
 | 参数            | 含义           | 举例                                   |
 |---------------|--------------|--------------------------------------|
 | `RU_PER_SEC`  | 每秒钟 RU 填充的速度 | `RU_PER_SEC = 500` 表示此资源组每秒回填 500 个 RU |
 
 如果设置了 `BURSTABLE` 属性，对应的资源组允许超出配额使用系统资源。
-
 
 > **注意：**
 >

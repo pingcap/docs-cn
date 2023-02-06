@@ -9,7 +9,7 @@ summary: 介绍如何通过资源管控能力来实现对应用资源消耗的�
 >
 > 资源管控是 TiDB 在 v6.6.0 中引入的实验特性，其语法或者行为表现在 GA 前可能会发生变化。
 
-使用资源管控特性，集群管理员可以定义资源组 (Resource Group)，通过资源组限定读写的配额。将用户绑定到某个资源组后，TiDB 层会根据用户所绑定资源组设定的读写配额对用户的读写请求做流控，TiKV 层会根据读写配额映射的优先级来对请求做调度。通过流控和调度这两层控制，你可以实现应用的资源隔离，满足服务质量（QoS）要求。
+使用资源管控特性，集群管理员可以定义资源组 (Resource Group)，通过资源组限定读写的配额。将用户绑定到某个资源组后，TiDB 层会根据用户所绑定资源组设定的读写配额对用户的读写请求做流控，TiKV 层会根据读写配额映射的优先级来对请求做调度。通过流控和调度这两层控制，你可以实现应用的资源隔离，满足服务质量 (QoS) 要求。
 
 资源管控特性的引入对 TiDB 具有里程碑的意义。它能够将一个分布式数据库集群划分成多个逻辑单元，即使个别单元对资源过度使用，也不会挤占其他单元所需的资源。利用该特性：
 
@@ -41,7 +41,7 @@ c + (r1 + r2) + (3 * w1 + 5 * w2)
 资源管控特性引入了两个新的全局开关变量：
 
 * TiDB: 通过全局变量 [`tidb_enable_resource_control`](/system-variables.md#tidb_enable_resource_control-从-v660-版本开始引入) 控制是否打开资源组流控。
-* TiKV: 通过配置参数 [`resource_control.enabled`](/tikv-configuration-file.md#resource_control) 控制是否使用基于资源组配额的请求调度。此参数暂时不支持动态修改，修改后需要重启 TiKV 实例生效。
+* TiKV: 通过配置参数 [`resource_control.enabled`](/tikv-configuration-file.md#resource_control) 控制是否使用基于资源组配额的请求调度。此参数暂时不支持修改。
 
 这两个参数的组合效果见下表：
 
@@ -85,7 +85,7 @@ SET GLOBAL tidb_enable_resource_control = 'ON';
     CREATE RESOURCE GROUP IF NOT EXISTS rg1 RU_PER_SEC = 500 BURSTABLE;
     ```
 
-2. 创建 `rg2` 资源组，RU 的回填速度是每秒 600 RU，。在系统资源充足的时候，不允许这个资源组的应用超额占用资源。
+2. 创建 `rg2` 资源组，RU 的回填速度是每秒 600 RU。在系统资源充足的时候，不允许这个资源组的应用超额占用资源。
 
     ```sql
     CREATE RESOURCE GROUP IF NOT EXISTS rg2 RU_PER_SEC = 600;
@@ -101,13 +101,13 @@ SET GLOBAL tidb_enable_resource_control = 'ON';
     ALTER USER usr2 RESOURCE GROUP rg2;
     ```
 
-完成上述创建资源组和绑定用户的操作后，用户新建立的会话对资源的占用会受到指定配额的限制。如果系统负载比较高，没有多余的容量，`usr2` 用户的资源消耗速度会严格控制不超过配额，由于 `usr1` 绑定的 `rg1` 配置了 `BURSTABLE`，所以 `usr1` 消耗速度允许超过配额。
+完成上述创建资源组和绑定用户的操作后，用户新建立的会话对资源的占用会受到指定用量 (RU) 的限制。如果系统负载比较高，没有多余的容量，`usr2` 用户的资源消耗速度会严格控制不超过指定用量，由于 `usr1` 绑定的 `rg1` 配置了 `BURSTABLE`，所以 `usr1` 消耗速度允许超过指定用量。
 
-如果资源组对应的请求配额不够，客户端的请求处理会发生等待，如果等待时间过长，请求会报错。
+如果资源组对应的请求用量不够，客户端的请求处理会发生等待，如果等待时间过长，请求会报错。
 
 ## 监控与图表
 
-TiDB 会定时采集资源管控的运行时信息，并在 Grafana 的 **Resource Control** Dashboard 中提供了相关指标的可视化图表。指标详情见 [Resource Control 监控指标详解](/grafana-resource-control-dashboard.md) 中的介绍。
+TiDB 会定时采集资源管控的运行时信息，并在 Grafana 的 **Resource Control Dashboard** 中提供了相关指标的可视化图表。指标详情参见 [Resource Control 监控指标详解](/grafana-resource-control-dashboard.md) 。
 
 ## 工具兼容性
 

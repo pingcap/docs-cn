@@ -29,7 +29,7 @@ DESC resource_groups;
 {{< copyable "sql" >}}
 
 ```sql
-mysql> CREATE RESOURCE GROUP rg1 RU_PER_SEC=1000; -- 使用 RU_MODE 创建资源组 rg1
+mysql> CREATE RESOURCE GROUP rg1 RU_PER_SEC=1000; -- 创建资源组 rg1
 Query OK, 0 rows affected (0.34 sec)
 mysql> SHOW CREATE RESOURCE GROUP rg1; -- 显示 rg1 资源组的定义。
 +----------------+---------------------------------------------+
