@@ -361,17 +361,12 @@ TiDB 版本：6.6.0
 
     + TiDB Data Migration (DM)
 
-        - 优化了 DM 的告警规则和内容。
+        优化了 DM 的告警规则和内容。[7376](https://github.com/pingcap/tiflow/issues/7376) @[D3Hunter](https://github.com/D3Hunter) **tw@hfxsd**
 
-        之前 DM_XXX_process_exits_with_error 类告警是遇到错误就报警，有些告警实际是由于 db conn 长时间 idle 导致，重连后即可恢复，为了降低这类 false alerm，现在细分为可自动恢复错误和不可恢复错误
+        之前 "DM_XXX_process_exits_with_error" 类告警是遇到错误就报警，有些告警实际是由于数据库链接 长时间 idle 导致，重连后即可恢复。为了减少这类报警，将告警分为可自动恢复错误和不可恢复错误。
 
-        对不可自动恢复错误，维持旧的行为，立即 alert
-
-        对可自动回复错误，只有在 2m 内发生超过 3 次时才报警
-        [7376](https://github.com/pingcap/tiflow/issues/7376) @[D3Hunter](https://github.com/D3Hunter) **tw@hfxsd**
-
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
+        - 对于可自动恢复的错误，只有在 2 分钟内发生超过 3 次时才报警。
+        - 对于不可自动恢复的错误，维持原有行为，立即报警。
 
     + TiDB Lightning
 
