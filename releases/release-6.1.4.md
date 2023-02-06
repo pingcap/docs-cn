@@ -21,7 +21,7 @@ TiDB 版本：6.1.4
 
 - TiFlash
 
-    - 减少了高强度更新负载下的 IOPS 和写放大 [#6460](https://github.com/pingcap/tiflash/issues/6460) @[flowbehappy](https://github.com/flowbehappy)
+    - 减少了高强度更新负载下的 TiFlash 实例的 IOPS 和写放大倍数，IOPS 最高减少 95%，写放大最高减少 65% [#6460](https://github.com/pingcap/tiflash/issues/6460) @[flowbehappy](https://github.com/flowbehappy)
 
 - Tools
 
