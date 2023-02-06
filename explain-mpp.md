@@ -167,10 +167,10 @@ EXPLAIN ANALYZE SELECT COUNT(*) FROM t1 GROUP BY id;
 
 ## MPP Version 和 Exchange 数据压缩
 
-从 `v6.6.0` 开始，MPP 执行计划新增字段 `MppVersion` 和 `Compression`。
+从 v6.6.0 开始，MPP 执行计划新增字段 `MppVersion` 和 `Compression`。
 
-- `MppVersion`：MPP 执行计划的版本号，可通过系统变量 `mpp_version` 设置。
-- `Compression`：Exchange 算子的数据压缩模式，可通过系统变量 `mpp_exchange_compression_mode` 设置。如果未启用数据压缩，则不显示该字段。
+- `MppVersion`：MPP 执行计划的版本号，可通过系统变量 [`mpp_version`](/system-variables.md#mpp_version-从-v660-版本开始引入) 设置。
+- `Compression`：`Exchange` 算子的数据压缩模式，可通过系统变量 [`mpp_exchange_compression_mode`](/system-variables.md#mpp_exchange_compression_mode-从-v660-版本开始引入) 设置。如果未启用数据压缩，则不显示该字段。
 
 ```sql
 MySQL > explain select count(*) as count_order from lineitem group by l_returnflag, l_linestatus order by l_returnflag, l_linestatus;
@@ -191,7 +191,7 @@ MySQL > explain select count(*) as count_order from lineitem group by l_returnfl
 +----------------------------------------+--------------+--------------+----------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 ```
 
-例如上面的 `EXPLAIN` 结果中，TiDB 使用了版本为 `1` 的 MPP 执行计划来构建 `TableReader`。其中类型为 `HashPartition` 的 ExchangeSender 使用 `FAST` 数据压缩模式；类型为 `PassThrough` 的 ExchangeSender 未启用数据压缩。
+例如上面的执行计划结果中，TiDB 使用了版本为 `1` 的 MPP 执行计划来构建 `TableReader`。其中类型为 `HashPartition` 的 ExchangeSender 算子使用 `FAST` 数据压缩模式，类型为 `PassThrough` 的 ExchangeSender 算子未启用数据压缩。
 
 ## 其他类型查询的执行计划
 
