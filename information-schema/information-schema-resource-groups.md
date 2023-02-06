@@ -54,7 +54,8 @@ mysql> SELECT * FROM information_schema.resource_groups WHERE NAME = 'rg1';
 ```
 
 `RESOURCE_GROUPS` 表中列的含义如下：
-* `NAME`：资源组名称
-* `RU_PER_SEC`：资源组 RU 回填速度
-* `RU_TOKENS`：资源组令牌桶中剩余的令牌数（1个令牌就是一个 RU）
-* `BURSTABLE`：是否允许此资源组超额使用剩余的系统资源
+
+* `NAME`：资源组名称。
+* `RU_PER_SEC`：资源组的回填速度，单位为每秒的 [Request Unit (RU)](/tidb-resource-control.md#什么是-request-unit-ru) 数量。
+* `RU_TOKENS`：资源组令牌桶中剩余的令牌数，1 个令牌就是一个 RU。
+* `BURSTABLE`：是否允许此资源组超额使用剩余的系统资源。
