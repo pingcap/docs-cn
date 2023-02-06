@@ -291,8 +291,8 @@ Create Table | CREATE TABLE `child` (
 
 - [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md) 不支持外键功能。
 - [DM](/dm/dm-overview.md) v6.6.0 在同步数据到下游 TiDB 时，会显式关闭下游 TiDB 的 [`foreign_key_checks`](/system-variables.md#foreign_key_checks)，所以由外键产生的级联操作不会从上游同步到下游，进而导致上下游数据不一致。这与 v6.6.0 之前版本 DM 的行为一致，因为在 v6.6.0 之前 TiDB 不支持外键。
-- [TiCDC](/ticdc/ticdc-overview.md) v6.6.0 兼容外键功能。旧版本的 [TiCDC](/ticdc/ticdc-overview.md) 在同步带外键的表时，可能会报错，建议先关闭下游 TiDB 集群的 `foreign_key_checks`。
-- [BR](/br/backup-and-restore-overview.md) v6.6.0 兼容外键功能。之前版本的 BR 在恢复带外键的表到 v6.6.0 以及之后的集群时，可能会报错，建议先关闭下游 TiDB 集群的 `foreign_key_checks` 后再恢复集群。
+- [TiCDC](/ticdc/ticdc-overview.md) v6.6.0 兼容外键功能。旧版本的 TiCDC 在同步带外键的表时，可能会报错，建议使用 v6.6.0 之前版本 TiCDC 时先关闭下游 TiDB 集群的 `foreign_key_checks`。
+- [br](/br/backup-and-restore-overview.md) v6.6.0 兼容外键功能。之前版本的 br 在恢复带外键的表到 v6.6.0 及之后版本的集群时，可能会报错，建议先关闭下游 TiDB 集群的 `foreign_key_checks` 后再恢复集群。
 - [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 导入数据到 TiDB 前，建议先关闭 TiDB 集群的 `foreign_key_checks`。
 - [Dumpling](/dumpling-overview.md) 兼容外键功能。
 - [sync-diff-inspector](/sync-diff-inspector/sync-diff-inspector-overview.md) 在对比上下游数据时，如果上下游数据库的版本不一样，且下游 TiDB 中存在[不生效的外键](#tidb-版本间兼容性)，则 sync-diff-inspector 可能会报上下游表结构不一致的错误。因为 TiDB v6.6.0 会对表结构中不生效的外键添加一条 `/* FOREIGN KEY INVALID */` 注释。
