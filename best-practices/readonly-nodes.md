@@ -122,6 +122,8 @@ pd-ctl config placement-rules rule-bundle save --in="rules.json"
 
 ### 3. 使用 Follower Read 功能
 
+Follower Read 功能可以让 TiDB 从非 leader 副本中读数据。 Learner 是一种特殊的副本，它无法参与 Raft 算法投票，也无法被选举为 leader。 因此， learner 一定是 follower， 而要读取 learner 副本上的数据，则一定要使用 Follower Read 功能。
+
 #### 3.1 在 TiDB 中使用 Follower Read
 
 你可以将系统变量 `tidb_replica_read` 设置为 `learner` 来读取只读节点上的数据：
