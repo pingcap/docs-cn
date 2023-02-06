@@ -173,7 +173,7 @@ EXPLAIN ANALYZE SELECT COUNT(*) FROM t1 GROUP BY id;
 - `Compression`：`Exchange` 算子的数据压缩模式，可通过系统变量 [`mpp_exchange_compression_mode`](/system-variables.md#mpp_exchange_compression_mode-从-v660-版本开始引入) 设置。如果未启用数据压缩，则不显示该字段。
 
 ```sql
-MySQL > explain select count(*) as count_order from lineitem group by l_returnflag, l_linestatus order by l_returnflag, l_linestatus;
+mysql > EXPLAIN SELECT COUNT(*) AS count_order FROM lineitem GROUP BY l_returnflag, l_linestatus ORDER BY l_returnflag, l_linestatus;
 
 +----------------------------------------+--------------+--------------+----------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | id                                     | estRows      | task         | access object  | operator info                                                                                                                                                                                                                                                                        |
