@@ -29,7 +29,6 @@ TiDB 版本：6.6.0
 
     TiDB v6.6.0 版本引入了 DDL 动态资源管控， 通过自动控制 DDL 的 CPU 和内存使用量，尽量降低 DDL 变更任务对线上业务的影响。
 
-
 * 支持兼容 MySQL 语法的外键约束 [#18209](https://github.com/pingcap/tidb/issues/18209) @[crazycs520](https://github.com/crazycs520) **tw@Oreoxmt**
 
     TiDB v6.6.0 引入了兼容 MySQL 语法的外键约束功能，支持在表内、表间关联数据并进行约束校验，并且支持集联操作。该特性有助于保持数据一致性，提升数据质量，也方便数据建模。
@@ -210,13 +209,13 @@ TiDB 版本：6.6.0
 
     更多信息，请参考[用户文档](/tidb-resource-control.md)。
 
-* 使用临时 Witness 副本来加速副本恢复 [#12876](https://github.com/tikv/tikv/issues/12876) @[Connor1996](https://github.com/Connor1996) @[ethercflow](https://github.com/ethercflow) **tw@Orexmt**
+* 使用临时 Witness 副本来加速副本恢复 [#12876](https://github.com/tikv/tikv/issues/12876) @[Connor1996](https://github.com/Connor1996) @[ethercflow](https://github.com/ethercflow) **tw@Oreoxmt**
 
     Witness 功能可用于快速恢复 failover，以提高系统可用性和数据持久性。例如在 3 缺 1 的情况下，虽然满足多数派要求，但是系统很脆弱，而完整恢复一个新成员的时间通常很长（需要先拷贝 snapshot 然后 apply 最新的日志），特别是 Region snapshot 比较大的情况。而且拷贝副本的过程可能会对不健康的副本造成更多的压力。因此，先添加一个 Witness 可以快速下掉不健康的节点，保证恢复数据过程中日志的安全性。
 
     更多信息，请参考[用户文档](/use-witness-to-speed-up-failover.md)。
 
-* 支持配置只读存储节点来执行资源消耗型任务 [#issue号](链接) @[v01dstar](https://github.com/v01dstar) **tw@Orexmt**
+* 支持配置只读存储节点来执行资源消耗型任务 [#issue号](链接) @[v01dstar](https://github.com/v01dstar) **tw@Oreoxmt**
 
     在生产环境中，可能有部分只读操作定期消耗大量资源，对整个集群的性能产生影响，比如备份和大规模数据读取分析等。TiDB v6.6.0 支持配置只读存储节点，用来执行重度资源消耗的只读任务，避免对线上业务的影响。目前支持 TiDB、TiSpark 和 BR 读取只读节点上的数据。你可以按照[操作步骤](/readonly-nodes.md#操作步骤)配置只读存储节点，并通过 TiDB 系统变量 `tidb_replica_read`、TiSpark 配置项 `spark.tispark.replica_read` 或 br 命令行参数 `--backup-replica-read-label` 指定数据读取位置，以保证集群性能稳定。
 
