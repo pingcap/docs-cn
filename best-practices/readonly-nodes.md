@@ -120,9 +120,9 @@ pd-ctl config placement-rules rule-bundle save --in="rules.json"
 >
 > - 因为备份的特殊下推实现机制，每个 label 所对应的 learner 数量不能超过 1，否则会导致在备份时产生重复数据。
 
-### 3. 使用 Follower Read 功能
+### 3. 使用 Follower Read 功能读取只读节点
 
-Follower Read 功能可以让 TiDB 从非 leader 副本中读数据。 Learner 是一种特殊的副本，它无法参与 Raft 算法投票，也无法被选举为 leader。 因此， learner 一定是 follower， 而要读取 learner 副本上的数据，则一定要使用 Follower Read 功能。
+Follower Read 功能可以让 TiDB 从非 leader 副本中读数据。Learner 是一种特殊的副本，它无法参与 Raft 算法投票，也无法被选举为 leader。因此，Learner 一定是 follower。而要读取 Learner 副本上的数据，则一定要使用 Follower Read 功能。
 
 #### 3.1 在 TiDB 中使用 Follower Read
 
@@ -140,7 +140,7 @@ set tidb_replica_read=learner;
 spark.tispark.replica_read learner 
 ```
 
-#### 3.3 在备份集群数据时使用 Follower Read
+#### 3.3 在备份集群数据时只备份 Follower 节点
 
 你可以在 br 命令行中添加 `--backup-replica-read-label` 参数，来读取只读节点上的数据。注意，在 shell 中运行如下命令时需使用单引号包裹 label，以防止 `$` 被 shell 解析。
 
