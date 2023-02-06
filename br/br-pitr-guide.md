@@ -13,6 +13,11 @@ summary: 了解 TiDB 的日志备份与 PITR 功能使用。
 
 ### 开启日志备份
 
+> **注意：**
+>
+> - 以下场景采用 Amazon S3 Access key 和 Secret key 授权方式来进行模拟。如果使用 IAM Role 授权，需要设置 `--send-credentials-to-tikv` 为 `false`。
+> - 如果使用不同存储或者其他授权方式，请参考[备份存储](/br/backup-and-restore-storages.md)来进行参数调整。
+
 执行 `br log start` 命令启动日志备份任务，一个集群只能启动一个日志备份任务。
 
 ```shell
