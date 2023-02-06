@@ -40,7 +40,7 @@ c + (r1 + r2) + (3 * w1 + 5 * w2)
 
 资源管控特性引入了两个新的全局开关变量：
 
-* TiDB: 通过全局变量 [`tidb_enable_resource_control`](/system-variables.md#tidb-tidb_enable_resource_control) 控制是否打开资源组流控。
+* TiDB: 通过全局变量 [`tidb_enable_resource_control`](/system-variables.md#tidb_enable_resource_control-从-v660-版本开始引入) 控制是否打开资源组流控。
 * TiKV: 通过配置参数 [`resource_control.enabled`](/tikv-configuration-file.md#resource_control) 控制是否使用基于资源组配额的请求调度。此参数暂时不支持动态修改，修改后需要重启 TiKV 实例生效。
 
 这两个参数的组合效果见下表：
