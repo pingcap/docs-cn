@@ -30,7 +30,7 @@ ReferenceOption
 外键的命名遵循以下规则：
 
 - 如果在 `CONSTRAINT identifier` 语句中指定了名称，则使用该名称。
-- 如果 `CONSTRAINT identifier` 语句未指定名称，但在 `FOREIGN KEY identifier` 语句中指定了名称，则使用 `FOREIGN KEY` 定义的名称。
+- 如果 `CONSTRAINT identifier` 语句未指定名称，但在 `FOREIGN KEY identifier` 语句中指定了名称，则使用 `FOREIGN KEY identifier` 定义的名称。
 - 如果 `CONSTRAINT identifier` 和 `FOREIGN KEY identifier` 语句都没有指定名称，则会自动生成一个名称，例如 `fk_1`、`fk_2`、`fk_3` 等。
 - 外键名称必须在当前表中唯一，否则创建时会报错 `ERROR 1826: Duplicate foreign key constraint name 'fk'`。
 
