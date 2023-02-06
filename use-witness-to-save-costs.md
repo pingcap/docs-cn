@@ -44,5 +44,5 @@ pd-ctl config placement-rules save --in=rule.json
 ## 注意事项
 
 - 只有在高可靠的存储环境中才考虑设置 Witness 副本。例如，使用持久性为 99.8%~99.9% 的 Amazon Elastic Block Store 或持久性为 99.99%~99.999% 的 Google Cloud Persistent Disk 作为单节点存储。
-- 由于 Witness 副本没有应用 Raft 日志，因此无法对外提供读写服务。当 Leader Down 后且剩余的 Voter 没有最新的 Raft 日志时，Raft 会选举 Witness 副本成为 Leader。Witness 副本当选后，会向 Voter 补发 Raft 日志后 transfer leader 给 Voter。若无法及时 transfer leader，当客户端 Backoff 超时后，应用可能收到 IsWitness 错误。
+- 由于 Witness 副本没有应用 Raft 日志，因此无法对外提供读写服务。当 Leader Down 后且剩余的 Voter 没有最新的 Raft 日志时，Raft 会选举 Witness 副本临时成为 Leader。Witness 副本当选后，会向 Voter 补发 Raft 日志后 transfer leader 给 Voter。若无法及时 transfer leader，当客户端 Backoff 超时后，应用可能收到 IsWitness 错误。
 - 当系统存在 Pending Voter 时，为防止 Witness 积攒过多的 Raft 日志，导致占满整个磁盘空间，系统会将 Witness 晋升为普通 Voter。
