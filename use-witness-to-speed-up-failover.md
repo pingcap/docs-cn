@@ -31,4 +31,4 @@ pd-ctl config set enable-witness true
 
 ## 注意事项
 
-由于 Witness 副本没有应用 Raft 日志，因此无法对外提供读写服务。仅当连续 Down 两个副本且第二个 Down 的副本为leader，Witness 副本被选为 Leader 且无法及时 transfer leader ，客户端 Backoff 超时后，应用可能收到 IsWitness 错误。
+由于 Witness 副本没有应用 Raft 日志，因此无法对外提供读写服务。只有当连续 Down 两个副本且第二个 Down 的副本为 Leader，Witness 副本被选为 Leader 且无法及时 transfer leader 时，当客户端 Backoff 超时后，应用可能收到 IsWitness 错误。
