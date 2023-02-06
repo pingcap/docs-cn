@@ -181,7 +181,7 @@ Statement summary tables 现在还存在以下限制：
 
 > **警告：**
 >
-> statements summary 持久化目前为实验性特性，不建议在生产环境中使用。
+> statements summary 持久化目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除，语法和实现可能会在 GA 前发生变化。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
 
 如[目前的限制](#目前的限制)一节所描述，默认情况下 statements summary 只在内存中维护，一旦 TiDB server 发生重启，所有 statements summary 数据都会丢失。自 v6.6.0 版本起，TiDB 实验性地提供了配置项 [`tidb_stmt_summary_enable_persistent`](/tidb-configuration-file.md#tidb_stmt_summary_enable_persistent-从-v660-版本开始引入) 来允许用户控制是否开启 statements summary 持久化。
 
@@ -197,11 +197,11 @@ tidb_stmt_summary_enable_persistent = true
 # tidb_stmt_summary_file_max_backups = 0
 ```
 
-开启 statements summary 持久化后，内存中只维护当前的实时数据，不再维护历史数据，历史数据生成后直接被写入磁盘文件（写入周期参考 [参数配置](#参数配置) 一节所描述的 `tidb_stmt_summary_refresh_interval`）。后续针对 `statements_summary_history` 或 `cluster_statements_summary_history` 表的查询将结合内存和磁盘两处数据返回结果。
+开启 statements summary 持久化后，内存中只维护当前的实时数据，不再维护历史数据。历史数据生成后直接被写入磁盘文件，写入周期参考[参数配置](#参数配置)一节所描述的 `tidb_stmt_summary_refresh_interval`。后续针对 `statements_summary_history` 或 `cluster_statements_summary_history` 表的查询将结合内存和磁盘两处数据返回结果。
 
 > **注意：**
 >
-> - 当开启持久化后，由于不再于内存中维护历史数据，因此[参数配置](#参数配置) 一节所描述的 `tidb_stmt_summary_history_size` 将不再生效，而是由 [`tidb_stmt_summary_file_max_days`](/tidb-configuration-file.md#tidb_stmt_summary_file_max_days-从-v660-版本开始引入)、 [`tidb_stmt_summary_file_max_size`](/tidb-configuration-file.md#tidb_stmt_summary_file_max_size-从-v660-版本开始引入) 和 [`tidb_stmt_summary_file_max_backups`](/tidb-configuration-file.md#tidb_stmt_summary_file_max_backups-从-v660-版本开始引入) 这三项配置来决定历史数据在磁盘上的保留数量和时间。
+> - 当开启持久化后，由于不再于内存中维护历史数据，因此[参数配置](#参数配置)一节所描述的 `tidb_stmt_summary_history_size` 将不再生效，而是由 [`tidb_stmt_summary_file_max_days`](/tidb-configuration-file.md#tidb_stmt_summary_file_max_days-从-v660-版本开始引入)、[`tidb_stmt_summary_file_max_size`](/tidb-configuration-file.md#tidb_stmt_summary_file_max_size-从-v660-版本开始引入) 和 [`tidb_stmt_summary_file_max_backups`](/tidb-configuration-file.md#tidb_stmt_summary_file_max_backups-从-v660-版本开始引入) 这三项配置来决定历史数据在磁盘上的保留数量和时间。
 > - `tidb_stmt_summary_refresh_interval` 取值越小，数据写入到磁盘就越实时，但写入磁盘的冗余数据也会随之增多。
 
 ## 排查示例
