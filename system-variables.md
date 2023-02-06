@@ -1509,7 +1509,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 是否持久化到集群：是
 - 类型：布尔型
 - 默认值：`ON`
-- 这个变量用来控制 Prepared Plan Cache 是否缓存 `limit` 后带有参数的执行计划， `Limit` 后面的 `Count` 具体参数值大于 10000 的执行计划目前不支持缓存。
+- 这个变量用来控制 Prepared Plan Cache 是否缓存 `Limit` 后带有参数的执行计划。目前不支持缓存 `Limit` 后面的 `Count` 具体参数值大于 10000 的执行计划。
 
 ### `tidb_enable_plan_replayer_capture`
 
