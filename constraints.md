@@ -335,7 +335,7 @@ Query OK, 0 rows affected (0.10 sec)
 
 > **注意：**
 >
-> 在 v6.6.0 之前，TiDB 仅支持创建和删除外键约束功能，外键约束实际并不生效。TiDB 从 v6.6.0 开始支持[外键约束](/foreign-key.md)。
+> 在 v6.6.0 之前，TiDB 支持创建和删除外键约束，但外键约束并不生效。TiDB 从 v6.6.0 开始支持[外键约束](/foreign-key.md)。
 
 TiDB 支持创建外键约束。例如：
 
