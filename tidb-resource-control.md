@@ -77,7 +77,7 @@ SET GLOBAL tidb_enable_resource_control = 'ON';
 
 ### 第 2 步：创建资源组，并绑定用户到资源组
 
-Resource Group 配额采用 [RU (Request Unit)](/tidb-RU.md) 表达。RU 是 TiDB 对 CPU、IO 等系统资源的统一抽象的单位。
+Resource Group 配额采用 [RU (Request Unit)](/tidb-resource-control.md#什么是-request-unit-ru) 表达。RU 是 TiDB 对 CPU、IO 等系统资源的统一抽象的单位。
 
 下面举例说明如何创建资源组，并绑定用户到资源组。
 
@@ -128,4 +128,4 @@ TiDB 会定时采集资源管控的运行时信息，并在 Grafana 的 **Resour
 * [ALTER RESOURCE GROUP](/sql-statements/sql-statement-alter-resource-group.md)
 * [DROP RESOURCE GROUP](/sql-statements/sql-statement-drop-resource-group.md)
 * [RESOURCE GROUP RFC](https://docs.google.com/document/d/1sV5EVv8Cdpc6aBCDihc2akpE0iuantPf/)
-* [RU](/tidb-RU.md)
+* [RU](/tidb-resource-control.md#什么是-request-unit-ru)
