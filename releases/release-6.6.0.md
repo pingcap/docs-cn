@@ -30,7 +30,7 @@ TiDB 版本：6.6.0
     TiDB v6.6.0 版本引入了 DDL 动态资源管控， 通过自动控制 DDL 的 CPU 和内存使用量，尽量降低 DDL 变更任务对线上业务的影响。
 
 
-* 支持兼容 MySQL 语法的外键约束（实验特性）[#18209](https://github.com/pingcap/tidb/issues/18209) @[crazycs520](https://github.com/crazycs520) **tw@Oreoxmt**
+* 支持兼容 MySQL 语法的外键约束 [#18209](https://github.com/pingcap/tidb/issues/18209) @[crazycs520](https://github.com/crazycs520) **tw@Oreoxmt**
 
     TiDB v6.6.0 引入了兼容 MySQL 语法的外键约束功能，支持在表内、表间关联数据并进行约束校验，并且支持集联操作。该特性有助于保持数据一致性，提升数据质量，也方便数据建模。
 
@@ -216,9 +216,9 @@ TiDB 版本：6.6.0
 
     更多信息，请参考[用户文档](/use-witness-to-speed-up-failover.md)。
 
-* 支持配置专属的只读存储节点来承载高资源消耗的任务  [@v01dstar](https://github.com/v01dstar)
+* 支持配置只读存储节点来执行资源消耗型任务 [#issue号](链接) @[v01dstar](https://github.com/v01dstar) **tw@Orexmt**
 
-    在实际生产中，可能有部分只读操作定期消耗大量资源，进而影响整个集群的性能，比如备份，大规模数据读取分析等。 受传统 Acitve-Passive 模式的启发， 结合 Placement Rule 和 Follower Reader 技术，TiDB 同样能构建出专属的只读存储节点， 来承载重度资源消耗的只读任务，避免对线上业务的影响。 在 v6.6.0 中，有条件的用户可以按照[推荐步骤](/readonly-nodes.md#操作步骤)配置只读存储节点， 然后通过设置系统变量指定 TiDB 读取只读节点的数据，或者通过客户端参数引导 BR 或 TiSpark 将负载发送至只读存储节点，进而保证整个集群的性能稳定。
+    在生产环境中，可能有部分只读操作定期消耗大量资源，对整个集群的性能产生影响，比如备份和大规模数据读取分析等。TiDB v6.6.0 支持配置只读存储节点，用来执行重度资源消耗的只读任务，避免对线上业务的影响。目前支持 TiDB、TiSpark 和 BR 读取只读节点上的数据。你可以按照[操作步骤](/readonly-nodes.md#操作步骤)配置只读存储节点，并通过 TiDB 系统变量 `tidb_replica_read`、TiSpark 配置项 `spark.tispark.replica_read` 或 br 命令行参数 `--backup-replica-read-label` 指定数据读取位置，以保证集群性能稳定。
 
      更多信息，请参考[用户文档](/best-practices/readonly-nodes.md)。
 
@@ -238,7 +238,7 @@ TiDB 版本：6.6.0
 
 ### MySQL 兼容性
 
-* 支持兼容 MySQL 语法的外键约束（实验特性）[#18209](https://github.com/pingcap/tidb/issues/18209) @[crazycs520](https://github.com/crazycs520) **tw@Oreoxmt**
+* 支持兼容 MySQL 语法的外键约束 [#18209](https://github.com/pingcap/tidb/issues/18209) @[crazycs520](https://github.com/crazycs520) **tw@Oreoxmt**
 
     更多信息，请参考 v6.6.0 Release Notes 中 [SQL 部分](#sql)以及[用户文档](/sql-statements/sql-statement-foreign-key.md)。
 
@@ -258,9 +258,9 @@ TiDB 版本：6.6.0
 
     更多信息，请参考[用户文档](https://tikv.org/docs/latest/concepts/explore-tikv-features/cdc/cdc-cn/)。
 
-* 同步到下游 Kafka 的 Changefeed 可将上游单表的同步任务下发到多个 TiCDC Nodes 执行，实现单表同步性能的水平扩展 [#7720](https://github.com/pingcap/tiflow/issues/7720) @[overvenus](https://github.com/overvenus) **tw@Oreoxmt**
+* TiCDC 支持在 Kafka 同步任务上开启单表的横向扩展功能，将单表的同步任务下发到多个 TiCDC 节点上执行 [#7720](https://github.com/pingcap/tiflow/issues/7720) @[overvenus](https://github.com/overvenus) **tw@Oreoxmt**
 
-    功能描述：下游为 Kafka 的 Changefeed 可将上游单表的复制任务调度到多个 TiCDC Nodes 执行，实现单张表同步性能的水平扩展。在这个功能发布之前，上游单表写入数据量较大时，无法水平扩展单表的复制能力，导致同步延迟增加。该功能发布后，就可以通过水平扩展，解决单表同步性能的问题。
+    在 v6.6.0 之前，当上游单表写入量较大时，单表的复制能力无法横向扩展导致同步延迟增加。自 TiCDC v6.6.0 起，下游为 Kafka 的同步任务可以将上游单表的同步任务下发到多个 TiCDC 节点上执行，实现单表同步性能的横向扩展。
 
     更多信息，请参考[用户文档](/ticdc/ticdc-sink-to-kafka.md#横向扩展大单表的负载到多个-ticdc-节点)。
 
