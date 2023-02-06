@@ -181,7 +181,7 @@ Statement summary tables 现在还存在以下限制：
 
 > **警告：**
 >
-> statements summary 持久化目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除，语法和实现可能会在 GA 前发生变化。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+> statements summary 持久化目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
 
 如[目前的限制](#目前的限制)一节所描述，默认情况下 statements summary 只在内存中维护，一旦 TiDB server 发生重启，所有 statements summary 数据都会丢失。自 v6.6.0 版本起，TiDB 实验性地提供了配置项 [`tidb_stmt_summary_enable_persistent`](/tidb-configuration-file.md#tidb_stmt_summary_enable_persistent-从-v660-版本开始引入) 来允许用户控制是否开启 statements summary 持久化。
 
