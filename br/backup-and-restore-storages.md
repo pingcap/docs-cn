@@ -10,13 +10,13 @@ TiDB 支持 Amazon S3、Google Cloud Storage (GCS)、Azure Blob Storage 和 NFS 
 
 ## BR 向 TiKV 发送凭证
 
-| 命令行参数 | 描述 |
-|:----------|:-------|
-| `--send-credentials-to-tikv` | 是否将 BR 获取到的权限凭证发送给 TiKV，默认是 true。|
+| 命令行参数 | 描述 | 默认值 |
+|:----------|:-------|:-------|
+| `--send-credentials-to-tikv` | 是否将 BR 获取到的权限凭证发送给 TiKV。 | `true` |
 
-在默认情况下，使用 Amazon S3、Google Cloud Storage (GCS)、Azure Blob Storage 存储时，BR 会将凭证发送到每个 TiKV 节点，以减少设置的复杂性。
+在默认情况下，使用 Amazon S3、Google Cloud Storage (GCS)、Azure Blob Storage 存储时，BR 会将凭证发送到每个 TiKV 节点，以减少设置的复杂性。该操作由参数 `--send-credentials-to-tikv`（或简写为 `-c`）控制。
 
-但是，这个操作不适合云端环境，如果采用了 IAM Role 方式授权，那么每个节点都有自己的角色和权限。在这种情况下，你需要用 `--send-credentials-to-tikv=false`（或简写为 `-c=0`）来禁止发送凭证：
+但是，这个操作不适合云端环境，如果采用了 IAM Role 方式授权，那么每个节点都有自己的角色和权限。在这种情况下，你需要设置 `--send-credentials-to-tikv=false`（或简写为 `-c=0`）来禁止发送凭证：
 
 ```bash
 ./br backup full -c=0 -u pd-service:2379 --storage 's3://bucket-name/prefix'
