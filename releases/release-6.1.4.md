@@ -83,13 +83,13 @@ TiDB 版本：6.1.4
 
     + TiDB Data Migration (DM)
 
-        - 修复当 `SHOW GRANTS` 结果的数据库名包含 "*" 时导致 precheck 报错的问题 [#7645](https://github.com/pingcap/tiflow/issues/7645) @[lance6716]
+        - 修复当 `SHOW GRANTS` 结果中的下游数据库名包含通配符 `*` 时 precheck 报错的问题 [#7645](https://github.com/pingcap/tiflow/issues/7645) @[lance6716](https://github.com/lance6716)
         - 修复 DM 因 binlog 中 query event 为 COMMIT 时打印过多日志的问题 [#7525](https://github.com/pingcap/tiflow/issues/7525) @[liumengya94]
-        - 修复当 SSL 参数仅指定 `ssl-ca` 时 DM 任务无法启动的问题 [#7941](https://github.com/pingcap/tiflow/issues/7941) @[liumengya94]
-        - 修复当在某个表上同时指定 `update` 和 `non-update` 类型的 expression filters 时, 导致所有 UPDATE 被跳过的问题 [#7831](https://github.com/pingcap/tiflow/issues/7831) @[lance6716]
-        - 修复当某个表上仅指定 `update-old-value-expr` 或 `update-new-value-expr` 时不生效或导致 panic 的问题 [#7774](https://github.com/pingcap/tiflow/issues/7774) @[lance6716]
+        - 修复当 SSL 参数仅指定 `ssl-ca` 时 DM 任务无法启动的问题 [#7941](https://github.com/pingcap/tiflow/issues/7941) @[liumengya94](https://github.com/liumengya94)
+        - 修复当在某个表上同时指定 `UPDATE` 和非 `UPDATE` 类型的表达式过滤规则 `expression-filter` 时，所有 `UPDATE` 操作被跳过的问题 [#7831](https://github.com/pingcap/tiflow/issues/7831) @[lance6716](https://github.com/lance6716)
+        - 修复当某个表上仅指定 `update-old-value-expr` 或 `update-new-value-expr` 时，过滤规则不生效或 DM 发生 panic 的问题 [#7774](https://github.com/pingcap/tiflow/issues/7774) @[lance6716](https://github.com/lance6716)
 
-        + TiDB Lightning
+    + TiDB Lightning
 
-        - 修复源文件过大时可能导致内存泄漏的问题 [#39331](https://github.com/pingcap/tidb/issues/39331) @[dsdashun](https://github.com/dsdashun)
+        - 修复 TiDB Lightning 导入巨大数据源文件时的内存泄漏问题 [#39331](https://github.com/pingcap/tidb/issues/39331) @[dsdashun](https://github.com/dsdashun)
         - 修复 precheck 检查项有时无法监测到之前的导入失败遗留的脏数据的问题 [#39477](https://github.com/pingcap/tidb/issues/39477) @[dsdashun](https://github.com/dsdashun)
