@@ -47,17 +47,17 @@ TiDB 版本：6.6.0
     在过去的版本中，整个 TiDB 集群中仅允许一个 TiDB 实例作为 DDL Owner 有权处理 Schema 变更任务。为了进一步提升 DDL 的并发性，TiDB v6.6.0 版本引入了 DDL 分布式并行执行框架，支持集群中所有的 TiDB 实例可以并发执行同一个任务的 `StateWriteReorganization` 阶段，加速 DDL 的执行。该功能由系统变量 [`tidb_ddl_distribute_reorg`](/system-variables.md#tidb_ddl_distribute_reorg-从-v660-版本开始引入) 控制是否开启，目前只支持 `Add Index` 操作。
 
     更多信息，请参考[用户文档](/system-variables.md#tidb_ddl_distribute_reorg-从-v660-版本开始引入)。
-* MySQL 兼容的多值索引(Multi-Valued Index) (实验特性) [#39592](https://github.com/pingcap/tidb/issues/39592) @[xiongjiwei](https://github.com/xiongjiwei) @[qw4990](https://github.com/qw4990) **tw@TomShawn**
+* 支持 MySQL 兼容的多值索引 (Multi-Valued Index)（实验特性）[#39592](https://github.com/pingcap/tidb/issues/39592) @[xiongjiwei](https://github.com/xiongjiwei) @[qw4990](https://github.com/qw4990) **tw@TomShawn**
 
-    TiDB 在 v6.6.0 引入了 MySQL 兼容的多值索引 (Multi-Valued Index)。 过滤 JSON 类型中某个数组的值是一个常见操作， 但普通索引对这类操作起不到加速作用，而在数组上创建多值索引能够大幅提升过滤的性能。 如果 JSON 类型中的某个数组上存在多值索引，  带有`MEMBER OF()`，`JSON_CONTAINS()`，`JSON_OVERLAPS()` 这几个函数的检索条件可以利用多值索引进行过滤，减少大量的 I/O 消耗，提升运行速度。
+    TiDB 在 v6.6.0 引入了 MySQL 兼容的多值索引 (Multi-Valued Index)。过滤 JSON 列类型中某个数组的值是常见的操作，但普通索引对这类操作起不到加速作用。在数组上创建多值索引能够大幅提升过滤的性能。如果 JSON 类型中的某个数组上存在多值索引，那么可以利用多值索引过滤带有 `MEMBER OF()`、`JSON_CONTAINS()`、`JSON_OVERLAPS()` 函数的检索条件，从而减少大量的 I/O 消耗，提升运行速度。
 
-    多值索引的引入， 是对 JSON 类型的进一步增强， 同时也提升了 TiDB 对 MySQL 8.0 的兼容性。
+    多值索引的引入， 进一步增强了 JSON 类型， 同时也提升了 TiDB 对 MySQL 8.0 的兼容性。
 
     更多信息，请参考[用户文档](/sql-statements/sql-statement-create-index.md#多值索引)。
 
 * 绑定历史执行计划 GA [#39199](https://github.com/pingcap/tidb/issues/39199) @[fzzf678](https://github.com/fzzf678) **tw@TomShawn**
 
-    在 v6.5 中，TiDB 扩展了 [`CREATE [GLOBAL | SESSION] BINDING`](/sql-statements/sql-statement-create-binding.md) 语句中的绑定对象，支持根据历史执行计划创建绑定。在 v6.6 中这个功能 GA， 执行计划的选择不仅限在当前 TiDB 节点，任意 TiDB 节点产生的历史执行计划都可以被选为 [SQL Binding]((/sql-statements/sql-statement-create-binding.md)) 的目标，进一步提升了功能的易用性。
+    在 v6.5.0 中，TiDB 扩展了 [`CREATE [GLOBAL | SESSION] BINDING`](/sql-statements/sql-statement-create-binding.md) 语句中的绑定对象，支持根据历史执行计划创建绑定。在 v6.6.0 中该功能 GA，执行计划的选择不仅限于当前 TiDB 节点，任意 TiDB 节点产生的历史执行计划都可以被选为 [SQL Binding](/sql-statements/sql-statement-create-binding.md) 的目标，进一步提升了功能的易用性。
 
     更多信息，请参考[用户文档](/sql-plan-management.md#根据历史执行计划创建绑定)。
 
@@ -68,7 +68,7 @@ TiDB 版本：6.6.0
     - 对于跨区域部署的 TiDB 集群，你可以控制当指定数据库或表在某个区域产生故障时，也能在另一个区域提供服务。
     - 对于单区域部署的 TiDB 集群，你可以控制当指定数据库或表在某个可用区产生故障时，也能在另一个可用区提供服务。
 
-     更多信息，请参考[用户文档](/placement-rules-in-sql.md#生存偏好)。
+    更多信息，请参考[用户文档](/placement-rules-in-sql.md#生存偏好)。
 
 ### 安全
 
@@ -88,21 +88,21 @@ TiDB 版本：6.6.0
 
     更多信息，请参考[用户文档](/dashboard/dashboard-statement-details.md#快速绑定执行计划)。
 
-* 为执行计划缓存增加告警 [#issue号](链接) @[qw4990](https://github.com/qw4990) **tw@TomShawn**
+* 为执行计划缓存增加告警 @[qw4990](https://github.com/qw4990) **tw@TomShawn**
 
-    当执行计划无法进入执行计划缓存时， TiDB 会通过 warning 的方式说明其无法被缓存的原因， 降低诊断的难度。例如：
+    当执行计划无法被缓存时，TiDB 会通过告警的方式提示该计划无法被缓存的原因，降低诊断的难度。例如：
 
     ```sql
-    mysql> prepare st from 'select * from t where a<?';
+    mysql> PREPARE st FROM 'SELECT * FROM t WHERE a<?';
     Query OK, 0 rows affected (0.00 sec)
 
-    mysql> set @a='1';
+    mysql> SET @a='1';
     Query OK, 0 rows affected (0.00 sec)
 
-    mysql> execute st using @a;
+    mysql> EXECUTE st USING @a;
     Empty set, 1 warning (0.01 sec)
 
-    mysql> show warnings;
+    mysql> SHOW WARNINGS;
     +---------+------+----------------------------------------------+
     | Level   | Code | Message                                      |
     +---------+------+----------------------------------------------+
@@ -110,7 +110,7 @@ TiDB 版本：6.6.0
     +---------+------+----------------------------------------------+
     ```
 
-    上述例子中， 优化器进行了非 INT 类型到 INT 类型的转换，产生的计划可能随着参数变化有风险，因此不缓存。
+    在以上例子中，优化器进行了非 INT 类型到 INT 类型的转换，产生的执行计划可能随着参数变化而存在风险，因此 TiDB 不缓存该计划。
 
     更多信息，请参考[用户文档](/sql-prepared-plan-cache.md#prepared-plan-cache-诊断)。
 
@@ -154,18 +154,18 @@ TiDB 版本：6.6.0
 
 * 批量聚合数据请求 [#39361](https://github.com/pingcap/tidb/issues/39361) @[cfzjywxk](https://github.com/cfzjywxk) @[you06](https://github.com/you06) **tw@TomShawn**
 
-    当 TiDB 向 TiKV 发送数据请求时， 会根据数据所在的 Region 将请求编入不同的子任务，每个子任务只处理单个 Region 的请求。 当访问的数据离散度很高时， 即使数据量不大，也会生成众多的子任务，进而产生大量 RPC 请求，消耗额外的时间。 在 v6.6.0 中，TiDB 支持将发送到相同 TiKV 实例的数据请求部分合并，减少子任务的数量和 RPC 请求的开销。 在数据离散度高且 gRPC 线程池资源紧张的情况下，批量化请求能够将性能提升 50% 以上。
+    TiDB 向 TiKV 发送数据请求时，会根据数据所在的 Region 将请求编入不同的子任务，每个子任务只处理单个 Region 的请求。当访问的数据离散度很高时，即使数据量不大，也会生成众多的子任务，进而产生大量 RPC 请求，消耗额外的时间。自 v6.6.0 起，TiDB 支持将发送到相同 TiKV 实例的数据请求部分合并，减少子任务的数量和 RPC 请求的开销。在数据离散度高且 gRPC 线程池资源紧张的情况下，批量化请求能够将性能提升 50% 以上。
 
-    此特性默认打开， 通过系统变量 [`tidb_store_batch_size`](/system-variables.md#tidb_store_batch_size) 设置批量请求的大小。
+    此特性默认打开，可通过系统变量 [`tidb_store_batch_size`](/system-variables.md#tidb_store_batch_size) 设置批量请求的大小。
 
-* 新增一系列优化器 Hint [#39964](https://github.com/pingcap/tidb/issues/39964) @[Reminiscent](https://github.com/Reminiscent) **tw@TomShawn**
+* 新增若干优化器 Hint [#39964](https://github.com/pingcap/tidb/issues/39964) @[Reminiscent](https://github.com/Reminiscent) **tw@TomShawn**
 
-    TiDB 在新版本中增加了优化器 Hint， 用来控制 `LIMIT` 操作的执行计划选择。 其中包括：
+    TiDB 在 v6.6.0 中增加了若干优化器 Hint，用来控制 `LIMIT` 操作的执行计划选择：
 
-    - [`ORDER_INDEX()`](/optimizer-hints.md#keep_ordert1_name-idx1_name--idx2_name-): 提示优化器使用指定的索引，读取数据时保持索引的顺序。 生成类似 `Limit + IndexScan(keep order: true)` 的计划。
-    - [`NO_ORDER_INDEX()`](/optimizer-hints.md#no_keep_ordert1_name-idx1_name--idx2_name-): 提示优化器使用指定的索引，读取数据时不保持顺序。 生成类似 `TopN + IndexScan(keep order: false)` 的计划。
+    - [`ORDER_INDEX()`](/optimizer-hints.md#keep_ordert1_name-idx1_name--idx2_name-)：提示优化器使用指定的索引，读取数据时保持索引的顺序，生成类似 `Limit + IndexScan(keep order: true)` 的计划。
+    - [`NO_ORDER_INDEX()`](/optimizer-hints.md#no_keep_ordert1_name-idx1_name--idx2_name-)：提示优化器使用指定的索引，读取数据时不保持顺序，生成类似 `TopN + IndexScan(keep order: false)` 的计划。
 
-    优化器 Hint 的持续引入，为用户提供了更多的干预手段，有助于 SQL 性能问题的解决，并提升了整体性能的稳定性。
+    持续引入优化器 Hint 为用户提供了更多的干预手段，有助于解决 SQL 性能问题，并提升了整体性能的稳定性。
 
 * 解除执行计划缓存对 `LIMIT` 子句的限制 [#40219](https://github.com/pingcap/tidb/issues/40219) @[fzzf678](https://github.com/fzzf678) **tw@shichun-0415**
 
@@ -173,15 +173,17 @@ TiDB 版本：6.6.0
 
     更多信息，请参考[用户文档](/sql-prepared-plan-cache.md)。
 
-* 悲观锁队列的稳定唤醒模型 [#13298](https://github.com/tikv/tikv/issues/13298) @[MyonKeminta](https://github.com/MyonKeminta) **tw@TomShawn**
+* 支持悲观锁队列的稳定唤醒模型 [#13298](https://github.com/tikv/tikv/issues/13298) @[MyonKeminta](https://github.com/MyonKeminta) **tw@TomShawn**
 
-    如果业务场景存在单点悲观锁冲突频繁的情况，原有的唤醒机制无法保证事务获取锁的时间，造成长尾延迟高，甚至获取超时。 在 v6.6.0 中，通过设置系统变量 [`tidb_pessimistic_txn_aggressive_locking`](/system-variables.md#tidb_pessimistic_txn_aggressive_locking-从-v660-版本开始引入) 为 `ON` 可以开启悲观锁的稳定唤醒模型。 在新的唤醒模型下， 队列的唤醒顺序可被严格控制，避免无效的唤醒造成的资源浪费，在锁冲突严重的场景中，能够减少长尾延时，降低 P99 响应时间。
+    如果业务场景存在单点悲观锁冲突频繁的情况，原有的唤醒机制无法保证事务获取锁的时间，造成长尾延迟高，甚至获取锁超时。自 v6.6.0 起，用户可通过设置系统变量 [`tidb_pessimistic_txn_aggressive_locking`](/system-variables.md#tidb_pessimistic_txn_aggressive_locking-从-v660-版本开始引入) 为 `ON` 开启悲观锁的稳定唤醒模型。在该唤醒模型下，队列的唤醒顺序可被严格控制，避免无效唤醒造成的资源浪费。在锁冲突严重的场景中，能够减少长尾延时，降低 P99 响应时间。
 
     更多信息，请参考[用户文档](/system-variables.md#tidb_pessimistic_txn_aggressive_locking-从-v660-版本开始引入)。
 
 * TiFlash 引擎支持带压缩的数据交换 [#6620](https://github.com/pingcap/tiflash/issues/6620) @[solotzg](https://github.com/solotzg) **tw@TomShawn**
 
-    为了协同多节点进行计算，TiFlash 引擎需要在不同节点中进行数据交换。当需要交换的数据量非常大时，数据交换性能可能影响整体计算效率。在 v6.6 版本中，TiFlash 引擎引入压缩机制，在必要时对需要交换的数据进行压缩，然后进行交换，从而提升数据交换效率。
+    为了协同多节点进行计算，TiFlash 引擎需要在不同节点中进行数据交换。当需要交换的数据量非常大时，数据交换的性能可能影响整体计算效率。在 v6.6.0 版本中，TiFlash 引擎引入压缩机制，在必要时对需要交换的数据进行压缩，然后进行交换，从而提升数据交换效率。
+    
+    更多信息，参见[用户文档](/explain-mpp.md#启用-mpp-数据压缩的执行计划)。
 
 ### 事务
 
