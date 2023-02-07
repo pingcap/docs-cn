@@ -383,9 +383,9 @@ TiDB 版本：6.6.0
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
-    + Sync-diff-inspector
+    + sync-diff-inspector
 
-        - 新增一个参数 `skip-non-existing-table`，当下游数据库的表在上游不存在时，可配置该参数跳过对上下游数据库表数量不一致场景的校验 [#692](https://github.com/pingcap/tidb-tools/issues/692) @[lichunzhu](https://github.com/lichunzhu) @[liumengya94](https://github.com/liumengya9) **tw@shichun-0415**
+        - 新增 `skip-non-existing-table` 参数，当下游数据库的表在上游不存在时，可配置该参数为 `true` 跳过对上下游数据库表数量不一致场景的校验 [#692](https://github.com/pingcap/tidb-tools/issues/692) @[lichunzhu](https://github.com/lichunzhu) @[liumengya94](https://github.com/liumengya94) **tw@shichun-0415**
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
 ## 错误修复
@@ -429,7 +429,7 @@ TiDB 版本：6.6.0
 
     + TiDB Lightning
 
-        - 修复了部分场景下 TiDB 重启导致 TiDB Lightning timeout 卡住的问题 [#33714](https://github.com/pingcap/tidb/issues/33714) @[lichunzhu](https://github.com/lichunzhu) **tw@shichun-0415**
+        - 修复了部分场景下 TiDB 重启导致 TiDB Lightning 卡住的问题 [#33714](https://github.com/pingcap/tidb/issues/33714) @[lichunzhu](https://github.com/lichunzhu) **tw@shichun-0415**
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
