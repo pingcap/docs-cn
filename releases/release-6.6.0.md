@@ -12,14 +12,13 @@ TiDB 版本：6.6.0
 
 在 6.6.0 版本中，你可以获得以下关键特性：
 
-- 绑定历史执行计划 GA，支持根据任意节点产生的历史执行计划创建 SQL Binding，进一步产品易用性。
-- TiDB Data Migration (DM) 集成 TiDB Lightning 的 Physical Import 模式，使得 DM 全量数据迁移时的性能最高提升 10 倍，大幅缩短大数据量场景下的迁移时间。
-- 允许用户在 TiDB Dashboard 界面上快速完成 SQL 语句与特定执行计划的绑定，提升计划绑定过程的效率和体验。
-- 支持 MySQL 语法兼容的外键约束，帮助保持数据一致性和提升数据质量。
-- TiFlash 支持 Stale Read 功能，进一步提高查询性能。
-- 扩展 `PLAN REPLAYER` 命令，自动捕获执行计划的生成，提升执行计划不稳定问题的诊断效率。
-- 支持基于资源组的资源管控，将不用的数据库用户映射到对应的资源组中，根据实际需要设置每个资源组的配额（实验特性）。
 - 引入 MySQL 兼容的多值索引，增强 JSON 类型，提升 TiDB 对 MySQL 8.0 的兼容性（实验特性）。
+- 支持 MySQL 语法兼容的外键约束，帮助保持数据一致性和提升数据质量。
+- 支持基于资源组的资源管控，将不用的数据库用户映射到对应的资源组中，根据实际需要设置每个资源组的配额（实验特性）。
+- 绑定历史执行计划 GA，支持通过 TiDB Dashboard 快速绑定执行计划
+- TiFlash compression exchange GA，提升 TiFlash 数据压缩率，降低存储成本。
+- TiFlash 支持 Stale Read 功能，进一步提高查询性能。
+- TiDB Data Migration (DM) 集成 TiDB Lightning 的 Physical Import 模式，提升 DM 全量数据迁移时的性能，大幅缩短大数据量场景下的迁移时间。
 
 ## 新功能
 
@@ -263,14 +262,6 @@ TiDB 版本：6.6.0
 
     更多信息，请参考[用户文档](/ticdc/ticdc-sink-to-kafka.md#横向扩展大单表的负载到多个-ticdc-节点)。
 
-### 部署及运维
-
-* 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接)
-
-    功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
-
-    更多信息，请参考[用户文档](链接)。
-
 ## 兼容性变更
 
 ### 系统变量
@@ -285,11 +276,11 @@ TiDB 版本：6.6.0
 | [`tidb_replica_read`](/system-variables.md#tidb_replica_read-从-v40-版本开始引入) | 修改 | 新增选项 `prefer-leader`，以提高 TiDB 集群整体的读可用性。该选项被启用时，TiDB 会优先选择 Leader 副本进行读取操作；当 Leader 副本的处理性能显著下降时，TiDB 会自动将读操作转发给 Follower 副本。|
 | [`tidb_replica_read`](/system-variables.md#tidb_replica_read-从-v40-版本开始引入) | 修改 | 新增选项 `learner`，指定 TiDB 从只读节点中读取数据的 learner 副本。  |
 | [`tidb_store_batch_size`](/[system-variables.md](http://system-variables.md/)#tidb_store_batch_size) | 修改 | 该变量设置 `IndexLookUp` 算子回表时多个 Coprocessor Task 的 batch 大小。`0` 代表不使用 batch。自 v6.6.0 起，默认值由 `0` 调整为 `4`，即每批请求会有 4 个 Coprocessor Task 被 batch 到一个 task 中。 |
-| [`mpp_exchange_compression_mode`](/system-variables.md#mpp_exchange_compression_mode-从-v660-版本开始引入)  |  新增  |  https://github.com/pingcap/docs-cn/pull/12922/files **tw@TomShawn**  |
-| [`mpp_version`](/system-variables.md#mpp_version-从-v660-版本开始引入)  |  新增  |  https://github.com/pingcap/docs-cn/pull/12922/files **tw@TomShawn**   |
+| [`mpp_exchange_compression_mode`](/system-variables.md#mpp_exchange_compression_mode-从-v660-版本开始引入)  |  新增  |  该变量用于选择 MPP Exchange 算子的数据压缩模式，当 TiDB 选择版本号为 `1` 的 MPP 执行计划时生效。默认值为 `UNSPECIFIED`，表示 TiDB 自动选择 `FAST` 压缩模式。|
+| [`mpp_version`](/system-variables.md#mpp_version-从-v660-版本开始引入)  |  新增  |  该变量用于指定不同版本的 MPP 执行计划。指定后，TiDB 会选择指定版本的 MPP 执行计划。默认值为 `UNSPECIFIED`，表示 TiDB 自动选择最新版本 `1`。 |
 | [`tidb_ddl_distribute_reorg`](/system-variables.md#tidb_ddl_distribute_reorg-从-v660-版本开始引入) | 新增 | 这个变量用来控制是否开启分布式执行 DDL reorg 阶段，来提升此阶段的速度。默认值为 `OFF`，表示默认不开启分布式执行 DDL reorg 阶段。目前此开关只对 `ADD INDEX` 语句有效。|
-| [`tidb_enable_plan_cache_for_param_limit`](/system-variables.md#tidb_enable_plan_cache_for_param_limit-从-v660-版本开始引入) | 新增 | 用来控制 Prepared Plan Cache 是否缓存 `limit` 后带有参数的执行计划。默认值为 `ON`，表示 Prepared Plan Cache 默认缓存 `limit` 后带有参数的执行计划。目前不支持缓存 `Limit` 后面的 `Count` 具体参数值大于 10000 的执行计划。 |
-| [`tidb_enable_plan_replayer_capture`](/system-variables.md#tidb_enable_plan_replayer_capture) | 新增 | 这个变量用来控制是否开启 [`PLAN REPLAYER CAPTURE`](/sql-plan-replayer.md#使用-plan-replayer-capture-抓取目标计划)。默认值 `OFF`，代表关闭 `PLAN REPLAYER CAPTURE`。 |
+| [`tidb_enable_plan_cache_for_param_limit`](/system-variables.md#tidb_enable_plan_cache_for_param_limit-从-v660-版本开始引入) | 新增 | 这个变量用来控制 Prepared Plan Cache 是否缓存 `Limit` 后带有参数的执行计划。目前不支持缓存 `Limit` 后面的 `Count` 具体参数值大于 10000 的执行计划。 |
+| [`tidb_enable_plan_replayer_capture`](/system-variables.md#tidb_enable_plan_replayer_capture) | 新增 | 这个变量用来控制是否开启 [`PLAN REPLAYER CAPTURE`](/sql-plan-replayer.md#使用-plan-replayer-capture-抓取目标计划)。默认值 `OFF`，代表默认关闭 `PLAN REPLAYER CAPTURE`。 |
 | [`tidb_enable_resource_control`](/system-variables.md#tidb_enable_resource_control-从-v660-版本开始引入) | 新增  | 该变量是资源管控特性的开关。该变量设置为 `ON` 后，集群支持应用按照资源组做资源隔离。 |
 | [`tidb_pessimistic_txn_aggressive_locking`](/system-variables.md#tidb_pessimistic_txn_aggressive_locking-从-v660-版本开始引入) | 新增 | 是否对悲观锁启用加强的悲观锁唤醒模型。默认值为 `OFF`，表示默认不对悲观锁启用加强的悲观锁唤醒模型。 |
 
@@ -308,10 +299,15 @@ TiDB 版本：6.6.0
 | TiDB | [`tidb_stmt_summary_file_max_days`](/tidb-configuration-file.md#tidb_stmt_summary_file_max_days-从-v660-版本开始引入) | 新增 | 当开启了 statements summary 持久化时，该配置用于指定持久化数据文件所保留的最大天数，默认为 3 天。 |
 | TiDB | [`tidb_stmt_summary_file_max_size`](/tidb-configuration-file.md#tidb_stmt_summary_file_max_size-从-v660-版本开始引入) | 新增 | 当开启了 statements summary 持久化时，该配置用于限制持久化数据单个文件的大小 (MiB)，默认值为 `64`。 |
 | TiDB | [`tidb_stmt_summary_file_max_backups`](/tidb-configuration-file.md#tidb_stmt_summary_file_max_backups-从-v660-版本开始引入) | 新增 | 当开启了 statements summary 持久化时，该配置用于限制持久化数据文件最大数量，`0` 表示不限制，默认值为 `0`。 |
-| TiKV | [`resource_control.enabled`](/tikv-configuration-file.md#tidb_enable_resource_control-从-v660-版本开始引入) | 新增 | 是否支持按照资源组配额调度。默认为 `false`，即关闭按照资源组配额调度。 |
-| PD   | [`switch-witness-interval`](/pd-configuration-file.md#switch-witness-interval-从-v660-版本开始引入)    |   新增       | 控制对同一个 Region 做切换为 Witness 和切换为 Non-Witness 操作的间隔，即对于一个新切换为 Non-Witness 的 Region 在一段时间内不会被切换为 Witness。默认值为 1 小时。         |
-| PD   | [`witness-schedule-limit`](/pd-configuration-file.md#witness-schedule-limit-从-v660-版本开始引入)    |   新增       | 控制同时进行的 Witness 调度的任务个数。默认为 4 个。         |
-| TiCDC | [`scheduler.region-per-span`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-配置文件说明) | 新增 | 将表按 Region 个数划分成多个同步范围，这些范围可由多个 TiCDC 节点同步。 |
+| TiKV | [`resource-control.enabled`](/tikv-configuration-file.md#resource-control-从-v660-版本开始引入) | 新增 | 控制是否支持对用户前台的读写请求按照对应的资源组配额做优先级调度。默认为 `false`，即关闭按照资源组配额调度。 |
+| PD  | [`pd-server.server-memory-limit`](/pd-configuration-file.md#server-memory-limit-从-v660-版本开始引入) | 新增 | PD 实例的内存限制。默认值为 `0.8`，即限制 PD 实例的内存占总内存的 80%。 |
+| PD  |  [`pd-server.server-memory-limit-gc-trigger`](/pd-configuration-file.md#server-memory-limit-gc-trigger-从-v660-版本开始引入) | 新增 | PD 实例的内存限制触发 GC 的阈值。默认值为 `0.7`。 |
+| PD  | [`pd-server.enable-gogc-tuner`](/pd-configuration-file.md#enable-gogc-tuner-从-v660-版本开始引入) | 新增 | 控制是否开启 GOGC Tuner。默认开启。 |
+| PD  | [`pd-server.gc-tuner-threshold`](/pd-configuration-file.md#gc-tuner-threshold-从-v660-版本开始引入) | 新增 | GOGC Tuner 自动调节的最大内存阈值。默认值为 `0.6`。 |
+| PD  |  [`schedule.enable-witness`](/pd-configuration-file.md#enable-witness-从-v660-版本开始引入) | 新增 | 控制是否开启 Witness 副本功能。默认关闭。 |
+| PD   | [`schedule.switch-witness-interval`](/pd-configuration-file.md#switch-witness-interval-从-v660-版本开始引入)    |   新增       | 控制对同一个 Region 做切换为 Witness 和切换为 Non-Witness 操作的间隔，即对于一个新切换为 Non-Witness 的 Region 在一段时间内不会被切换为 Witness。默认值为 1 小时。         |
+| PD   | [`schedule.witness-schedule-limit`](/pd-configuration-file.md#witness-schedule-limit-从-v660-版本开始引入)    |   新增       | 控制同时进行的 Witness 调度的任务个数。默认为 4 个。         |
+| TiCDC | [`scheduler.region-per-span`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-配置文件说明) | 新增 | 该配置项用于将表按 Region 个数划分成多个同步范围，这些范围可由多个 TiCDC 节点同步，默认值为 `50000`。 |
 | DM | 修改 | [`import-mode`](/dm/task-configuration-file-full.md)  | 该配置项的可选值由 `"sql"` 和 `"loader"` 变更为 `"logical"` 和 `"physical"`。默认值为 `"logical"`，即使用 TiDB Lightning 的 logical import mode 进行导入。 |
 | DM | 删除 | `on-duplicate` | 该配置项控制全量导入阶段针对冲突数据的解决方式。自 v6.6.0 起，引入新的配置项 `on-duplicate-logical` 和 `on-duplicate-physical`，取代 `on-duplicate`。 |
 | DM | 新增 | [`on-duplicate-logical`](/dm/task-configuration-file-full.md) | 该配置项控制 logical import 针对冲突数据的解决方式。默认值为 `"replace"`，表示用最新数据替代已有数据。 |
