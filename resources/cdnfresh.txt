@@ -34,3 +34,4 @@ https://download.pingcap.org/tidb-in-kubernetes-v1.2-zh-manual.pdf
 https://download.pingcap.org/tidb-in-kubernetes-v1.2-en-manual.pdf
 https://download.pingcap.org/tidb-in-kubernetes-v1.1-zh-manual.pdf
 https://download.pingcap.org/tidb-in-kubernetes-v1.1-en-manual.pdf
+https://download.pingcap.org/tidbcloud-en-manual.pdf
