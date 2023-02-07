@@ -25,9 +25,9 @@ TiDB 版本：6.6.0
 
 ### SQL
 
-* 支持 DDL 动态资源管控（实验性特性） [#issue](链接)  @[hawkingrei](https://github.com/hawkingrei) **tw@ran-huang**
+* 支持 DDL 动态资源管控（实验特性） [#38025](https://github.com/pingcap/tidb/issues/38025)  @[hawkingrei](https://github.com/hawkingrei) **tw@ran-huang**
 
-    TiDB v6.6.0 版本引入了 DDL 动态资源管控， 通过自动控制 DDL 的 CPU 和内存使用量，尽量降低 DDL 变更任务对线上业务的影响。
+    TiDB v6.6.0 版本引入了 DDL 动态资源管控， 通过自动控制 DDL 的 CPU 使用量，尽量降低 DDL 变更任务对线上业务的影响。该功能仅在开启 [DDL 分布式并行执行框架](/system-variables.md#tidb_ddl_distribute_reorg-从-v660-版本开始引入)后生效。
 
 * 支持兼容 MySQL 语法的外键约束 [#18209](https://github.com/pingcap/tidb/issues/18209) @[crazycs520](https://github.com/crazycs520) **tw@Oreoxmt**
 
@@ -37,15 +37,14 @@ TiDB 版本：6.6.0
 
 * 支持通过 `FLASHBACK CLUSTER TO TIMESTAMP` 命令闪回 DDL 操作 [#14088](https://github.com/tikv/tikv/issues/14045) @[Defined2014](https://github.com/Defined2014) @[JmPotato](https://github.com/JmPotato) **tw@ran-huang**
 
-    [`FLASHBACK CLUSTER TO TIMESTAMP`](/sql-statements/sql-statement-flashback-to-timestamp.md) 语句支持在 Garbage Collection (GC) life time 内快速回退整个集群到指定的时间点。在 TiDB v6.6.0 版本中，该功能新增了支持撤销 DDL 操作，适用于快速撤消集群的 DML 或 DDL 误操作、支持分钟级别的快速回退集群、支持在时间线上多次回退以确定特定数据更改发生的时间。
+    [`FLASHBACK CLUSTER TO TIMESTAMP`](/sql-statements/sql-statement-flashback-to-timestamp.md) 语句支持在 Garbage Collection (GC) life time 内快速回退整个集群到指定的时间点。在 TiDB v6.6.0 版本中，该功能新支持撤销 DDL 操作，适用于快速撤消集群的 DML 或 DDL 误操作、支持分钟级别的快速回退集群、支持在时间线上多次回退以确定特定数据更改发生的时间。
 
     更多信息，请参考[用户文档](/sql-statements/sql-statement-flashback-to-timestamp.md)。
 
 * 支持 DDL 分布式并行执行框架（实验特性） [#issue](https://github.com/pingcap/tidb/issues/37125)  @[zimulala](https://github.com/zimulala) **tw@ran-huang**
 
-    在过去的版本中，整个 TiDB 集群中仅允许一个 TiDB 实例作为 DDL Owner 有权处理 Schema 变更任务。为了进一步提升 DDL 的并发性，TiDB v6.6.0 版本引入了 DDL 分布式并行执行框架，支持集群中所有的 TiDB 实例可以并发执行同一个任务的 `StateWriteReorganization` 阶段，加速 DDL 的执行。该功能由系统变量 [`tidb_ddl_distribute_reorg`](/system-variables.md#tidb_ddl_distribute_reorg-从-v660-版本开始引入) 控制是否开启，目前只支持 `Add Index` 操作。
+    在过去的版本中，整个 TiDB 集群中仅允许一个 TiDB 实例作为 DDL Owner 处理 Schema 变更任务。为了进一步提升 DDL 的并发性，TiDB v6.6.0 版本引入了 DDL 分布式并行执行框架，支持集群中所有的 TiDB 实例并发执行同一个任务的 `StateWriteReorganization` 阶段，加速 DDL 的执行。该功能由系统变量 [`tidb_ddl_distribute_reorg`](/system-variables.md#tidb_ddl_distribute_reorg-从-v660-版本开始引入) 控制是否开启，目前只支持 `Add Index` 操作。
 
-    更多信息，请参考[用户文档](/system-variables.md#tidb_ddl_distribute_reorg-从-v660-版本开始引入)。
 
 * 支持 MySQL 兼容的多值索引 (Multi-Valued Index)（实验特性）[#39592](https://github.com/pingcap/tidb/issues/39592) @[xiongjiwei](https://github.com/xiongjiwei) @[qw4990](https://github.com/qw4990) **tw@TomShawn**
 
@@ -82,9 +81,9 @@ TiDB 版本：6.6.0
 
 * 支持在 TiDB Dashboard 中快速绑定执行计划 [#781](https://github.com/pingcap/tidb-dashboard/issues/781) @[YiniXu9506](https://github.com/YiniXu9506) **tw@ran-huang**
 
-    TiDB v6.6.0 中引入了执行计划快速绑定功能，允许用户在 TiDB Dashboard 中一分钟内完成 SQL 与特定计划的绑定。
+    TiDB v6.6.0 中引入了执行计划快速绑定功能，允许用户在 TiDB Dashboard 中快速完成 SQL 语句与特定计划的绑定。
 
-    通过提供友好的界面，简化了在 TiDB 上绑定计划的过程，减少计划绑定过程的复杂性，提高计划绑定过程的效率和用户体验。
+    通过提供友好的界面，简化了在 TiDB Dashboard 上绑定 SQL 执行计划的过程，提高绑定过程的效率和用户体验。
 
     更多信息，请参考[用户文档](/dashboard/dashboard-statement-details.md#快速绑定执行计划)。
 
@@ -122,9 +121,9 @@ TiDB 版本：6.6.0
 
 * 自动捕获执行计划的生成 [#38779](https://github.com/pingcap/tidb/issues/38779) @[Yisaer](https://github.com/Yisaer) **tw@ran-huang**
 
-    在执行计划问题的排查过程中，`PLAN REPLAYER` 能够协助保存现场，提升诊断的效率。 但在个别场景中，一些执行计划的生成无法任意重现，给诊断工作增加了难度。针对这类问题，在 TiDB v6.6.0 中，`PLAN REPLAYER` 扩展了自动捕获的能力。 通过 `PLAN REPLAYER CAPTURE` 命令字，用户可提前注册目标 SQL，也可以同时指定目标执行计划。当 TiDB 检测到执行的 SQL 和执行计划与注册目标匹配时，会自动生成并打包 `PLAN REPLAYER` 的信息，提升执行计划不稳定时的诊断效率。
+    在执行计划问题的排查过程中，`PLAN REPLAYER` 能够协助保存现场，提升诊断的效率。但在个别场景中，一些执行计划的生成无法任意重现，给诊断工作增加了难度。针对这类场景，在 TiDB v6.6.0 中，`PLAN REPLAYER` 扩展了自动捕获的能力。通过 `PLAN REPLAYER CAPTURE` 命令，用户可提前注册目标 SQL 语句，也可以同时指定目标执行计划。当 TiDB 检测到执行的 SQL 语句或执行计划与注册目标匹配时，会自动生成并打包 `PLAN REPLAYER` 的信息，提升执行计划不稳定时的诊断效率。
 
-    启用这个功能需要设置系统变量 [`tidb_enable_plan_replayer_capture`](/system-variables.md#tidb_enable_plan_replayer_capture) 为 `ON`。
+    要启用该功能，需要将系统变量 [`tidb_enable_plan_replayer_capture`](/system-variables.md#tidb_enable_plan_replayer_capture) 的值设为 `ON`。
 
     更多信息，请参考[用户文档](/sql-plan-replayer.md#使用-plan-replayer-capture-抓取目标计划)。
 
@@ -244,7 +243,7 @@ TiDB 版本：6.6.0
 
 ### 数据迁移
 
-* TiDB Data Migration(DM) 集成了 TiDB Lightning 的 Physical Import Mode，全量迁移性能提升最高达到 10 倍  @[lance6716](https://github.com/lance6716) **tw@ran-huang**
+* TiDB Data Migration(DM) 集成了 TiDB Lightning 的 Physical Import Mode，全量迁移性能提升最高达到 10 倍 @[lance6716](https://github.com/lance6716) **tw@ran-huang**
 
     在 v6.6.0 版本中，DM 的全量迁移能力集成了 TiDB Lightning 的 Physical Import Mode，使得 DM 全量数据迁移的性能最高可提升 10 倍，大大缩短了大数据量场景下的迁移时间。在 v6.6.0 以前，数据量较多的场景下，需要单独配置 TiDB Lightning 的 Physical Import Mode 任务来进行快速的全量数据迁移，再用 DM 来进行增量数据迁移，配置较为复杂。从 v6.6.0 起，用户迁移大数据量的场景，无需再配置 TiDB Lightning 的任务，使用一个 DM 任务即可完成。
 
