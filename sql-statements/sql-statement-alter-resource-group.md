@@ -40,7 +40,7 @@ TiDB 支持以下 `DirectResourceGroupOption`, 其中 [Request Unit (RU)](/tidb-
 
 > **注意：**
 > 
-> `ALTER RESOURCE GROUP` 语句只能在全局变量 [`tidb_enable_resource_group`](/system-variables.md#tidb_enable_resource_control-从-v660-版本开始引入) 参数设置为 `ON` 时才能执行。
+> `ALTER RESOURCE GROUP` 语句只能在全局变量 [`tidb_enable_resource_control`](/system-variables.md#tidb_enable_resource_control-从-v660-版本开始引入) 参数设置为 `ON` 时才能执行。
 
 ## 示例
 
