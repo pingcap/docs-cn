@@ -26,7 +26,7 @@ ResourceGroupOptionList:
 
 DirectResourceGroupOption:
     "RU_PER_SEC" EqOpt stringLit
-｜   "BURSTABLE"
+|   "BURSTABLE"
 
 ```
 
@@ -36,13 +36,13 @@ TiDB 支持以下 `DirectResourceGroupOption`, 其中 [Request Unit (RU)](/tidb-
 
 | 参数            | 含义           | 举例                                   |
 |---------------|--------------|--------------------------------------|
-| `RU_PER_SEC`  | 每秒钟 RU 填充的速度 | `RU_PER_SEC = 500` 表示此资源组每秒回填 500 个 RU |
+| `RU_PER_SEC`  | 每秒 RU 填充的速度 | `RU_PER_SEC = 500` 表示此资源组每秒回填 500 个 RU |
 
 如果设置了 `BURSTABLE` 属性，对应的资源组允许超出配额使用系统资源。
 
 > **注意：**
 >
-> `CREATE RESOURCE GROUP` 语句只能在全局变量 [`tidb_enable_resource_group`](/system-variables.md#tidb_enable_resource_control-从-v660-版本开始引入) 参数设置为 `ON` 的时候才被允许执行。
+> `CREATE RESOURCE GROUP` 语句只能在全局变量 [`tidb_enable_resource_group`](/system-variables.md#tidb_enable_resource_control-从-v660-版本开始引入) 参数设置为 `ON` 时才能执行。
 
 ## 示例
 

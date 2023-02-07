@@ -13,7 +13,7 @@ summary: 介绍如何通过资源管控能力来实现对应用资源消耗的�
 
 TiDB 资源管控特性提供了两层资源管理能力，包括在 TiDB 层的流控能力和 TiKV 层的优先级调度的能力。两个能力是正交的关系，可以单独或者同时开启，详情请参见[参数组合效果表](#相关参数)。
 
-- TiDB 流控：TiDB 流控使用令牌桶算法，让读写请求消耗的令牌数不能超过对应资源组桶内累计的令牌数；如果桶内令牌数不够，而且资源组没有指定 `BURSTABLE` 特性，属于该资源组的请求会等待令牌桶回填令牌并重试，重试可能会超时失败。
+- TiDB 流控：TiDB 流控使用令牌桶算法 (`RU_TOKENS`)，让读写请求消耗的令牌数不能超过对应资源组桶内累计的令牌数；如果桶内令牌数不够，而且资源组没有指定 `BURSTABLE` 特性，属于该资源组的请求会等待令牌桶回填令牌并重试，重试可能会超时失败。
 - TiKV 调度：如果开启该特性，TiKV 使用基于资源组 `RU_PER_SEC` 的取值映射成各自资源组读写请求的优先级，基于各自的优先级在存储层使用优先级队列调度处理请求。
 
 ## 使用场景
@@ -31,8 +31,8 @@ Request Unit (RU) 是 TiDB 对 CPU、IO 等系统资源的统一抽象的单位,
 
 下表是用户请求对 TiKV 存储层 CPU 和 IO 资源的消耗以及对应的 RU 权重：
 
-| 资源        | RU 权重     |
-|:----------|:-------------|
+| 资源       | RU 权重      |
+|:-----------|:-------------|
 | CPU        | 1 RU / 毫秒  |
 | 读 IO      | 1/64 RU / KB |
 | 写 IO      | 1 RU / KB    |
@@ -41,14 +41,14 @@ Request Unit (RU) 是 TiDB 对 CPU、IO 等系统资源的统一抽象的单位,
 
 基于上表，假设某个资源组消耗的 TiKV 时间是 `c` 毫秒，`r1` 次请求读取了 `r2` KB 数据，`w1` 次写请求，写入 `w2` KB 数据，则该资源组消耗的总 RU 的公式如下：
 
-`c` + (`r1` \* 0.25 + `r2`/64) + (1.5 * w1 + w2)
+`c` + (`r1` \* 0.25 + `r2`/64) + (1.5 * `w1` + `w2`)
 
 ## 相关参数
 
 资源管控特性引入了两个新的全局开关变量：
 
-* TiDB: 通过全局变量 [`tidb_enable_resource_control`](/system-variables.md#tidb_enable_resource_control-从-v660-版本开始引入) 控制是否打开资源组流控。
-* TiKV: 通过配置参数 [`resource_control.enabled`](/tikv-configuration-file.md#resource_control) 控制是否使用基于资源组配额的请求调度。此参数暂时不支持修改。
+* TiDB: 通过配置全局变量 [`tidb_enable_resource_control`](/system-variables.md#tidb_enable_resource_control-从-v660-版本开始引入) 控制是否打开资源组流控。
+* TiKV: 通过配置参数 [`resource_control.enabled`](/tikv-configuration-file.md#resource_control) 控制是否使用基于资源组配额的请求调度。
 
 这两个参数的组合效果见下表：
 
@@ -74,13 +74,13 @@ Request Unit (RU) 是 TiDB 对 CPU、IO 等系统资源的统一抽象的单位,
 
 ### 第 1 步：开启资源管控特性
 
-开启资源组流控：
+1. 执行以下命令开启资源管控特性：
 
-```sql
-SET GLOBAL tidb_enable_resource_control = 'ON';
-```
+    ```sql
+    SET GLOBAL tidb_enable_resource_control = 'ON';
+    ```
 
-将 TiKV 配置参数 `resource_control.enabled` 设为 `true`。
+2. 将 TiKV 参数 [`resource_control.enabled`](/tikv-configuration-file.md#resource_control) 设为 `true`。
 
 ### 第 2 步：创建资源组，并绑定用户到资源组
 
@@ -110,7 +110,7 @@ SET GLOBAL tidb_enable_resource_control = 'ON';
 
 完成上述创建资源组和绑定用户的操作后，用户新建立的会话对资源的占用会受到指定用量 (RU) 的限制。如果系统负载比较高，没有多余的容量，`usr2` 用户的资源消耗速度会严格控制不超过指定用量，由于 `usr1` 绑定的 `rg1` 配置了 `BURSTABLE`，所以 `usr1` 消耗速度允许超过指定用量。
 
-如果资源组对应的请求用量不够，客户端的请求处理会发生等待，如果等待时间过长，请求会报错。
+如果资源组对应的请求用量不够，客户端的请求处理会发生等待。如果等待时间过长，请求会报错。
 
 ## 监控与图表
 
@@ -118,14 +118,14 @@ TiDB 会定时采集资源管控的运行时信息，并在 Grafana 的 **Resour
 
 ## 工具兼容性
 
-作为实验特性，资源管控暂时不兼容包括 BR、TiDB Lightning、TiCDC 在内的数据导入导出以及同步工具。
+作为实验特性，资源管控暂时不兼容数据导入导出以及同步工具，包括 BR、TiDB Lightning、TiCDC。
 
 ## 使用限制
 
 目前，资源管控特性具有以下限制:
 
 * 暂时只支持对前台客户发起的读写请求做限流和调度，不支持对 DDL 以及 Auto Analyze 等后台任务的限流和调度。
-* 资源管控将带来额外的调度开销。因此，开启该特性后，性能可能会有轻微的下降。
+* 资源管控将带来额外的调度开销。因此，开启该特性后，性能可能会有轻微下降。
 
 ## 另请参阅
 
