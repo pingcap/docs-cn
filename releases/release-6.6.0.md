@@ -115,7 +115,7 @@ TiDB 版本：6.6.0
 
 * 在慢查询中增加告警字段 [#39893](https://github.com/pingcap/tidb/issues/39893) @[time-and-fate](https://github.com/time-and-fate) **tw@Oreoxmt**
 
-    TiDB v6.6.0 慢查询日志中新增了 `Warnings` 字段，以帮助诊断查询性能问题。该字段以 JSON 格式记录该慢查询语句在执行过程中产生的警告信息。你也可以在 TiDB Dashboard 的慢查询页面中查看。
+    TiDB v6.6.0 慢查询日志中新增了 `Warnings` 字段，以帮助诊断查询性能问题。该字段以 JSON 格式记录慢查询语句在执行过程中产生的警告信息。你也可以在 TiDB Dashboard 的慢查询页面中查看 Warnings 信息。
 
     更多信息，请参考[用户文档](/identify-slow-queries.md)。
 
