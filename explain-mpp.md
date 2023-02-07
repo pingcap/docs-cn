@@ -170,7 +170,7 @@ EXPLAIN ANALYZE SELECT COUNT(*) FROM t1 GROUP BY id;
 从 v6.6.0 开始，MPP 执行计划新增字段 `MppVersion` 和 `Compression`。
 
 - `MppVersion`：MPP 执行计划的版本号，可通过系统变量 [`mpp_version`](/system-variables.md#mpp_version-从-v660-版本开始引入) 设置。
-- `Compression`：`Exchange` 算子的数据压缩模式，可通过系统变量 [`mpp_exchange_compression_mode`](/system-variables.md#mpp_exchange_compression_mode-从-v660-版本开始引入) 设置。如果未启用数据压缩，则不显示该字段。
+- `Compression`：`Exchange` 算子的数据压缩模式，可通过系统变量 [`mpp_exchange_compression_mode`](/system-variables.md#mpp_exchange_compression_mode-从-v660-版本开始引入) 设置。如果未启用数据压缩，则执行计划中不显示该字段。
 
 ```sql
 mysql > EXPLAIN SELECT COUNT(*) AS count_order FROM lineitem GROUP BY l_returnflag, l_linestatus ORDER BY l_returnflag, l_linestatus;
