@@ -22,7 +22,7 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-show-privileges/','/docs-cn
 show privileges;
 ```
 
-```
+```sql
 mysql> show privileges;
 +---------------------------------+---------------------------------------+-------------------------------------------------------+
 | Privilege                       | Context                               | Comment                                               |
