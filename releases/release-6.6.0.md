@@ -342,6 +342,8 @@ TiDB 版本：6.6.0
 
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
+    - 增加全局内存阈值管理功能以缓解 OOM 问题 [#5827](https://github.com/tikv/pd/issues/5827) @[hnes](https://github.com/hnes)
+    - 增加 GC Tuner 功能以缓解 GC 压力 [#5827](https://github.com/tikv/pd/issues/5827) @[hnes](https://github.com/hnes)
 
 + TiFlash
 
