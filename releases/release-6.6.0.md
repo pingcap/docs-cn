@@ -31,9 +31,9 @@ TiDB 版本：6.6.0
 
 * 支持兼容 MySQL 语法的外键约束 [#18209](https://github.com/pingcap/tidb/issues/18209) @[crazycs520](https://github.com/crazycs520) **tw@Oreoxmt**
 
-    TiDB v6.6.0 引入了兼容 MySQL 语法的外键约束功能，支持在表内、表间关联数据并进行约束校验，并且支持集联操作。该特性有助于保持数据一致性，提升数据质量，也方便数据建模。
+    TiDB v6.6.0 引入了兼容 MySQL 语法的外键约束功能，支持在表内、表间关联数据并进行约束校验，并且支持集联操作。该特性有助于保持数据一致性，提升数据质量，并且方便数据建模。
 
-    更多信息，请参考[用户文档](/sql-statements/sql-statement-foreign-key.md)。
+    更多信息，请参考[用户文档](/foreign-key.md)。
 
 * 支持通过 `FLASHBACK CLUSTER TO TIMESTAMP` 命令闪回 DDL 操作 [#14088](https://github.com/tikv/tikv/issues/14045) @[Defined2014](https://github.com/Defined2014) @[JmPotato](https://github.com/JmPotato) **tw@ran-huang**
 
@@ -116,7 +116,7 @@ TiDB 版本：6.6.0
 
 * 在慢查询中增加告警字段 [#39893](https://github.com/pingcap/tidb/issues/39893) @[time-and-fate](https://github.com/time-and-fate) **tw@Oreoxmt**
 
-    慢查询日志新增 `Warnings` 字段，以 JSON 格式记录该慢查询语句在执行过程中产生的警告，以帮助诊断查询性能问题。你也可以在 TiDB Dashboard 中的慢查询页面中查看。
+    TiDB v6.6.0 慢查询日志中新增了 `Warnings` 字段，以帮助诊断查询性能问题。该字段以 JSON 格式记录该慢查询语句在执行过程中产生的警告信息。你也可以在 TiDB Dashboard 的慢查询页面中查看。
 
     更多信息，请参考[用户文档](/identify-slow-queries.md)。
 
@@ -136,7 +136,7 @@ TiDB 版本：6.6.0
 
 ### 性能
 
-* 在高可靠存储环境中使用 Witness 节约成本 [#12876](https://github.com/tikv/tikv/issues/12876) @[Connor1996](https://github.com/Connor1996) @[ethercflow](https://github.com/ethercflow) **tw@Oreoxmt**
+* 在高可靠存储环境中使用 Witness 副本节约成本 [#12876](https://github.com/tikv/tikv/issues/12876) @[Connor1996](https://github.com/Connor1996) @[ethercflow](https://github.com/ethercflow) **tw@Oreoxmt**
 
     在云环境中，当 TiKV 使用如 Amazon Elastic Block Store 或 Google Cloud Platform 的 Persistent Disk 作为单节点存储时，它们提供的持久性相比物理磁盘更高。此时，TiKV 使用 3 个 Raft 副本虽然可行，但并不必要。为了降低成本，TiKV 引入了 Witness 功能，即 2 Replicas With 1 Log Only 机制。其中 1 Log Only 副本仅存储 Raft 日志但不进行数据 apply，依然可以通过 Raft 协议保证数据一致性。与标准的 3 副本架构相比，Witness 可以节省存储资源及 CPU 使用率。
 
@@ -212,7 +212,7 @@ TiDB 版本：6.6.0
 
 * 使用临时 Witness 副本来加速副本恢复 [#12876](https://github.com/tikv/tikv/issues/12876) @[Connor1996](https://github.com/Connor1996) @[ethercflow](https://github.com/ethercflow) **tw@Oreoxmt**
 
-    Witness 功能可用于快速恢复 failover，以提高系统可用性和数据持久性。例如在 3 缺 1 的情况下，虽然满足多数派要求，但是系统很脆弱，而完整恢复一个新成员的时间通常很长（需要先拷贝 snapshot 然后 apply 最新的日志），特别是 Region snapshot 比较大的情况。而且拷贝副本的过程可能会对不健康的副本造成更多的压力。因此，先添加一个 Witness 可以快速下掉不健康的节点，保证恢复数据过程中日志的安全性。
+    Witness 功能可用于快速恢复 (failover)，以提高系统的可用性和数据持久性。例如在 3 缺 1 的情况下，虽然满足多数派要求，但是系统很脆弱，而完整恢复一个新成员的时间通常很长（需要先拷贝 snapshot 然后 apply 最新的日志），特别是 Region snapshot 比较大时，恢复的时间会更长。而且，拷贝副本的过程可能会对不健康的 Group member 造成更多的压力。因此，先添加一个 Witness 可以快速移除不健康的节点，降低在恢复一个新成员的过程中（Learner 无法参与选举和提交），又一个节点挂掉导致 Raft Group 不可用的风险，从而保证恢复数据过程中日志的安全性。
 
     更多信息，请参考[用户文档](/use-witness-to-speed-up-failover.md)。
 
