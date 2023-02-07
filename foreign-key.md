@@ -1,6 +1,6 @@
 ---
 title: 外键约束
-summary: TiDB 数据库中 FOREIGN KEY 的使用概况。
+summary: TiDB 数据库中外键约束的使用概况。
 ---
 
 # 外键约束
@@ -193,7 +193,15 @@ Create Table: CREATE TABLE `child` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin
 ```
 
-你可以从 [`INFORMATION_SCHEMA.KEY_COLUMN_USAGE`](/information-schema/information-schema-key-column-usage.md) 系统表中获取有关的外键信息，下面是一个查询示例：
+你可以使用以下任一系统表获取有关外键的信息：
+
+- [`INFORMATION_SCHEMA.KEY_COLUMN_USAGE`](/information-schema/information-schema-key-column-usage.md)
+- [`INFORMATION_SCHEMA.TABLE_CONSTRAINTS`](/information-schema/information-schema-table-constraints.md)
+- [`INFORMATION_SCHEMA.TABLE_CONSTRAINTS`](/information-schema/information-schema-table-constraints.md)
+
+下面提供了查询示例：
+
+从 `INFORMATION_SCHEMA.KEY_COLUMN_USAGE` 系统表中获取有关的外键信息：
 
 ```sql
 mysql> SELECT TABLE_SCHEMA, TABLE_NAME, COLUMN_NAME, CONSTRAINT_NAME FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE WHERE REFERENCED_TABLE_SCHEMA IS NOT NULL;
@@ -207,7 +215,7 @@ mysql> SELECT TABLE_SCHEMA, TABLE_NAME, COLUMN_NAME, CONSTRAINT_NAME FROM INFORM
 +--------------+---------------+------------------+-----------------+
 ```
 
-你可以从 [`INFORMATION_SCHEMA.TABLE_CONSTRAINTS`](/information-schema/information-schema-table-constraints.md) 系统表中获取有关的外键信息，下面是一个查询示例：
+从 `INFORMATION_SCHEMA.TABLE_CONSTRAINTS` 系统表中获取有关的外键信息：
 
 ```sql
 mysql> SELECT * FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS WHERE CONSTRAINT_TYPE='FOREIGN KEY'\G
@@ -220,7 +228,7 @@ TABLE_NAME         | child
 CONSTRAINT_TYPE    | FOREIGN KEY
 ```
 
-你可以从 [`INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS`](/information-schema/information-schema-referential-constraints.md) 系统表中获取有关的外键信息，下面是一个查询示例：
+从 `INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS` 系统表中获取有关的外键信息：
 
 ```sql
 mysql> SELECT * FROM INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS\G
