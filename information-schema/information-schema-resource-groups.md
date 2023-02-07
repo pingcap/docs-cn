@@ -24,7 +24,6 @@ DESC resource_groups;
 +------------+-------------+------+------+---------+-------+
 | NAME       | varchar(32) | NO   |      | NULL    |       |
 | RU_PER_SEC | bigint(21)  | YES  |      | NULL    |       |
-| RU_TOKENS  | bigint(21)  | YES  |      | NULL    |       |
 | BURSTABLE  | varchar(3)  | YES  |      | NULL    |       |
 +------------+-------------+------+------+---------+-------+
 4 rows in set (0.00 sec)
@@ -45,11 +44,11 @@ mysql> SHOW CREATE RESOURCE GROUP rg1; -- 显示 rg1 资源组的定义。
 +----------------+---------------------------------------------+
 1 row in set (0.00 sec)
 mysql> SELECT * FROM information_schema.resource_groups WHERE NAME = 'rg1';
-+------+------------+-----------+-----------+
-| NAME | RU_PER_SEC | RU_TOKENS | BURSTABLE |
-+------+------------+-----------+-----------+
-| rg1  |       1000 |    100000 | NO        |
-+------+------------+-----------+-----------+
++------+------------+-----------+
+| NAME | RU_PER_SEC | BURSTABLE |
++------+------------+-----------+
+| rg1  |       1000 | NO        |
++------+------------+-----------+
 1 row in set (0.00 sec)
 ```
 
@@ -57,5 +56,4 @@ mysql> SELECT * FROM information_schema.resource_groups WHERE NAME = 'rg1';
 
 * `NAME`：资源组名称。
 * `RU_PER_SEC`：资源组的回填速度，单位为每秒回填的 [Request Unit (RU)](/tidb-resource-control.md#什么是-request-unit-ru) 数量。
-* `RU_TOKENS`：资源组令牌桶中剩余的令牌数，1 个令牌就是 1 个 RU。
 * `BURSTABLE`：是否允许此资源组超额使用剩余的系统资源。
