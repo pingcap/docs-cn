@@ -48,14 +48,14 @@ Request Unit (RU) 是 TiDB 对 CPU、IO 等系统资源的统一抽象的单位,
 资源管控特性引入了两个新的全局开关变量：
 
 * TiDB: 通过配置全局变量 [`tidb_enable_resource_control`](/system-variables.md#tidb_enable_resource_control-从-v660-版本开始引入) 控制是否打开资源组流控。
-* TiKV: 通过配置参数 [`resource_control.enabled`](/tikv-configuration-file.md#resource_control) 控制是否使用基于资源组配额的请求调度。
+* TiKV: 通过配置参数 [`resource-control.enabled`](/tikv-configuration-file.md#resource_control) 控制是否使用基于资源组配额的请求调度。
 
 这两个参数的组合效果见下表：
 
-| `resource_control.enabled`  | `tidb_enable_resource_control`= ON   | `tidb_enable_resource_control`= OFF  |
+| `resource-control.enabled`  | `tidb_enable_resource_control`= ON   | `tidb_enable_resource_control`= OFF  |
 |:----------------------------|:-------------------------------------|:------------------------------------|
-| `resource_control.enabled`= true  |  流控和调度（推荐组合）            | 无效配置                         |  
-| `resource_control.enabled`= false |  仅流控                         |  特性被关闭                   |
+| `resource-control.enabled`= true  |  流控和调度（推荐组合）            | 无效配置                         |  
+| `resource-control.enabled`= false |  仅流控                         |  特性被关闭                   |
 
 ## 使用方法
 
@@ -80,7 +80,7 @@ Request Unit (RU) 是 TiDB 对 CPU、IO 等系统资源的统一抽象的单位,
     SET GLOBAL tidb_enable_resource_control = 'ON';
     ```
 
-2. 将 TiKV 参数 [`resource_control.enabled`](/tikv-configuration-file.md#resource_control) 设为 `true`。
+2. 将 TiKV 参数 [`resource-control.enabled`](/tikv-configuration-file.md#resource_control) 设为 `true`。
 
 ### 第 2 步：创建资源组，并绑定用户到资源组
 
