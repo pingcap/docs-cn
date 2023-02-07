@@ -12,7 +12,7 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-statement-details/','/docs-cn/dev/da
 - 执行计划列表：如果一个 SQL 语句有多个执行计划，则显示执行计划列表。除了文本信息显示，TiDB 自 v6.2.0 开始引入图形化执行计划，通过图形化的执行计划，你可以更清晰地了解一个语句的具体算子和对应的内容。可以选择不同的执行计划，在列表和图形下方会显示该执行计划详情（下图区域 2）
 - 执行计划详情：显示选中的执行计划的详细信息，具体见下一小节（下图区域 3）
 
-![详情](/media/dashboard/dashboard-statement-detail-v620.png)
+![详情](/media/dashboard/dashboard-statement-detail-v660.png)
 
 ## 快速绑定执行计划
 
