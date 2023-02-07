@@ -1434,15 +1434,16 @@ unsafe remove-failed-stores show
 ]
 ```
 
-开启 [Witness 副本](/glossary.md#witness) 功能：
+开启 [Witness 副本](/glossary.md#witness)功能：
 
 ```bash
 config set enable-witness true
 ```
 
 Witness 副本的使用场景如下：
-  - 在高可靠的存储环境下帮助节约成本。具体使用方法，可参考[使用 Witness 副本节约成本](/use-witness-to-save-costs.md)。
-  - 快速恢复 (failover)，提高系统可用性。具体使用方法，可参考[使用 Witness 副本加速恢复](/use-witness-to-speed-up-failover.md)。
+
+- 在高可靠的存储环境下帮助节约成本。具体使用方法，可参考[使用 Witness 副本节约成本](/use-witness-to-save-costs.md)。
+- 快速恢复 (failover)，提高系统可用性。具体使用方法，可参考[使用 Witness 副本加速恢复](/use-witness-to-speed-up-failover.md)。
 
 ## jq 格式化 JSON 输出示例
 
