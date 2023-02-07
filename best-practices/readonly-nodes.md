@@ -5,7 +5,7 @@ summary: 介绍如何通过使用只读存储节点，达到物理隔离部分�
 
 # 只读存储节点最佳实践
 
-本文档介绍如何配置只读存储节点，以及如何将备份、分析、测试等流量导向这些节点，以实现与线上流量物理隔离的目的。
+本文档介绍如何配置只读存储节点，以及如何将备份、分析、测试等流量导向这些节点，使这些对延迟要求较低的负载与线上重要服务在物理上达到隔离的效果。
 
 ## 原理
 
@@ -121,8 +121,6 @@ pd-ctl config placement-rules rule-bundle save --in="rules.json"
 > - 因为备份的特殊下推实现机制，每个 label 所对应的 learner 数量不能超过 1，否则会导致在备份时产生重复数据。
 
 ### 3. 使用 Follower Read 功能读取只读节点
-
-Follower Read 功能可以让 TiDB 从非 leader 副本中读数据。Learner 是一种特殊的副本，它无法参与 Raft 算法投票，也无法被选举为 leader。因此，Learner 一定是 follower。而要读取 Learner 副本上的数据，则一定要使用 Follower Read 功能。
 
 #### 3.1 在 TiDB 中使用 Follower Read
 
