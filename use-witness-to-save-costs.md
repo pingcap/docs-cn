@@ -1,11 +1,11 @@
 ---
-title: 使用 Witness 节约成本
-summary: 如何使用 Witness 在高可靠的存储环境中节约成本。
+title: 使用 Witness 副本节约成本
+summary: 了解如何使用 Witness 副本在高可靠的存储环境中节约成本。
 ---
 
-# 使用 Witness 节约成本
+# 使用 Witness 副本节约成本
 
-这篇文档描述如何在高可靠存储环境中使用 Witness 节约成本。如果需要使用 Witness 副本提高 TiKV Down 场景下的持久性，请参考[使用临时 Witness 副本来加速副本恢复](/use-witness-to-speed-up-failover.md)。
+本文介绍如何在高可靠存储环境中使用 Witness 副本节约成本。如果需要使用 Witness 副本提高 TiKV Down 场景下的持久性，请参考[使用 Witness 副本来加速恢复](/use-witness-to-speed-up-failover.md)。
 
 ## 功能说明
 
