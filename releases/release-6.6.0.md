@@ -62,10 +62,10 @@ TiDB 版本：6.6.0
 
 * [Placement Rules in SQL](/placement-rules-in-sql.md) 支持指定 `SURVIVAL_PREFERENCE` [#38605](https://github.com/pingcap/tidb/issues/38605) @nolouch[https://github.com/nolouch] **tw@qiancai**
 
-    `SURVIVAL_PREFERENCES` 为数据提供了生存偏好设置，从而提高数据的容灾生存能力。通过指定 `SURVIVAL_PREFERENCE`，你可以：
+    `SURVIVAL_PREFERENCES` 为数据提供了生存偏好设置，从而提高数据的容灾生存能力。通过指定 `SURVIVAL_PREFERENCE`，你可以控制：
 
-    - 对于跨区域部署的 TiDB 集群，你可以控制当指定数据库或表在某个区域产生故障时，也能在另一个区域提供服务。
-    - 对于单区域部署的 TiDB 集群，你可以控制当指定数据库或表在某个可用区产生故障时，也能在另一个可用区提供服务。
+    - 对于跨云区域部署的 TiDB 集群，当某个云区域产生故障时，指定数据库或表能在另一个云区域继续提供服务。
+    - 对于单个云区域内部署的 TiDB 集群，当某个可用区产生故障时，指定数据库或表能在另一个可用区继续提供服务。
 
     更多信息，请参考[用户文档](/placement-rules-in-sql.md#生存偏好)。
 
@@ -143,9 +143,9 @@ TiDB 版本：6.6.0
 
 * TiFlash 支持 Stale Read 功能 [#4483](https://github.com/pingcap/tiflash/issues/4483) @[hehechen](https://github.com/hehechen) **tw@qiancai**
 
-    Stale Read 功能是从 TiDB v5.1.1 开始正式引入的，支持读取指定时间点或时间范围内的历史数据。Stale Read 允许直接读取 TiKV 本地副本数据，可以降低读取延迟，提升查询性能。在 v6.6.0 之前的版本中， TiFlash 并不支持 Stale Read 功能，即使 Stale Read 查询的表包含 TiFlash 副本，TiDB 也只能使用 TiKV 副本进行查询。
+    Stale Read 功能是从 TiDB v5.1.1 开始正式引入的，支持读取指定时间点或时间范围内的历史数据。Stale Read 允许直接读取 TiKV 本地副本数据，可以降低读取延迟，提升查询性能。在 v6.6.0 之前的版本中，TiFlash 并不支持 Stale Read 功能，即使 Stale Read 查询的表包含 TiFlash 副本，TiDB 也只能使用 TiKV 副本进行查询。
 
-    在 v6.6.0 中，TiFlash 实现了对 Stale Read 功能的支持。当使用 `AS OF TIMESTAMP` 语法或 `tidb_read_staleness` 系统变量等方式查询历史数据时，如果查询的表包含 TiFlash 副本，优化器可以选择 TiFlash 副本读取对应的数据，从而进一步提高查询性能。
+    在 v6.6.0 中，TiFlash 开始支持 Stale Read 功能。当使用 `AS OF TIMESTAMP` 语法或 `tidb_read_staleness` 系统变量等方式查询历史数据时，如果查询的表包含 TiFlash 副本，优化器可以选择 TiFlash 副本读取对应的数据，从而进一步提高查询性能。
 
     更多信息，请参考[用户文档](/stale-read.md)。
 
