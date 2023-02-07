@@ -969,12 +969,6 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 这个变量用于控制是否开启分布式执行 DDL reorg 阶段，来提升此阶段的速度。目前此开关只对 `ADD INDEX` 语句有效。开启该变量对于数据量较大的表有一定的性能提升。
 - 要验证已经完成的 `ADD INDEX` 操作是否使用了此功能，可以查看 `mysql.tidb_ddl_backfill_history` 表是否有对应任务。
 
-> **警告：**
->
-> 当前该功能为实验特性
-> 当前启用此功能后，在 DDL reorg 阶段遇到某些异常只会做简单重试，还没有兼容 DDL 的重试方式（即依据  `tidb_ddl_error_count_limit` 的大小控制重试次数）。
-
-
 ### `tidb_ddl_error_count_limit`
 
 - 作用域：GLOBAL
