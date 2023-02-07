@@ -127,9 +127,9 @@ TiDB 版本：6.6.0
 
     更多信息，请参考[用户文档](/sql-plan-replayer.md#使用-plan-replayer-capture-抓取目标计划)。
 
-* 持久化 statements summary（实验特性） [#40812](https://github.com/pingcap/tidb/issues/40812) @[mornyx](https://github.com/mornyx) **tw@shichun-0415**
+* 持久化 statements summary（实验特性）[#40812](https://github.com/pingcap/tidb/issues/40812) @[mornyx](https://github.com/mornyx) **tw@shichun-0415**
 
-    v6.6.0 之前版本，statements summary 数据在内存中维护，一旦 TiDB 发生重启，数据便会全部丢失。开启 statements summary 持久化特性后，历史数据将会定期被写入磁盘，相关系统表的查询数据源也将由内存变为磁盘。TiDB 重启后，历史数据将依然保持存在。
+    在 TiDB v6.6.0 之前的版本中，statements summary 数据维护在内存中，一旦 TiDB 发生重启，数据便会全部丢失。开启 statements summary 持久化特性后，历史数据将定期被写入磁盘，相关系统表的查询数据源也将由内存变为磁盘。此时，TiDB 重启后，历史数据仍然会保留。
 
     更多信息，请参考[用户文档](/statement-summary-tables.md#持久化-statements-summary)。
 
@@ -168,7 +168,7 @@ TiDB 版本：6.6.0
 
 * 解除执行计划缓存对 `LIMIT` 子句的限制 [#40219](https://github.com/pingcap/tidb/issues/40219) @[fzzf678](https://github.com/fzzf678) **tw@shichun-0415**
 
-    TiDB 移除了执行计划缓存的限制，`LIMIT` 后带有变量的子句可进入执行计划缓存， 如 `Limit ?` 或者 `Limit 10, ?`。这使得更多的 SQL 能够从计划缓存中获益，提升执行效率。
+    TiDB v6.6.0 移除了执行计划缓存的限制，带有变量的 `LIMIT` 子句可以进入执行计划缓存，如 `Limit ?` 或者 `Limit 10, ?`。这使得更多的 SQL 能够从计划缓存中获益，提升执行效率。
 
     更多信息，请参考[用户文档](/sql-prepared-plan-cache.md)。
 
@@ -225,15 +225,15 @@ TiDB 版本：6.6.0
 
 * 支持动态修改参数 `store-io-pool-size` [#13964](https://github.com/tikv/tikv/issues/13964) @[LykxSassinator](https://github.com/LykxSassinator) **tw@shichun-0415**
 
-    TiKV 中的 [`raftstore.store-io-pool-size`](/tikv-configuration-file.md#store-io-pool-size-从-v530-版本开始引入)用于设定处理 Raft I/O 任务的线程池中线程的数量，需要在 TiKV 性能调优时进行修改调整。在 v6.6.0 版本之前，这个参数无法动态修改。v6.6.0 支持动态修改该参数，提高了 TiKV 性能调优的灵活性。
+    TiKV 中的 [`raftstore.store-io-pool-size`](/tikv-configuration-file.md#store-io-pool-size-从-v530-版本开始引入) 用于设定处理 Raft I/O 任务的线程池中线程的数量，需要在 TiKV 性能调优时进行调整。在 v6.6.0 之前，这个参数无法动态修改。v6.6.0 支持动态修改该参数，提高了 TiKV 性能调优的灵活性。
 
     更多信息，请参考[用户文档](/dynamic-config.md)。
 
 * 支持指定集群初次启动时的初始化 SQL 脚本 [#35624](https://github.com/pingcap/tidb/issues/35624) @[morgo](https://github.com/morgo) **tw@shichun-0415**
 
-    TiDB 集群初次启动时，可通过命令行参数 `--initialize-sql-file` 指定执行的 SQL 脚本。该功能可用于修改系统变量的值，或者创建用户、分配权限等。
+    TiDB 集群初次启动时，可通过命令行参数 `--initialize-sql-file` 指定执行的 SQL 脚本。该功能可用于修改系统变量的值、创建用户或分配权限等。
 
-    更多信息，请参考[配置项 `initialize-sql-file`](/tidb-configuration-file.md#initialize-sql-file-从-v660-版本开始引入)。
+    更多信息，请参考[用户文档](/tidb-configuration-file.md#initialize-sql-file-从-v660-版本开始引入)。
 
 ### MySQL 兼容性
 
