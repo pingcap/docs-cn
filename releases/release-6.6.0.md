@@ -269,7 +269,7 @@ TiDB 版本：6.6.0
 | 变量名  | 修改类型（包括新增/修改/删除）    | 描述 |
 |--------|------------------------------|------|
 | [`tidb_enable_amend_pessimistic_txn`](/system-variables.md#tidb_enable_amend_pessimistic_txn-从-v407-版本开始引入) | 删除  | 在 v6.5.0 中该变量被废弃。自 v6.6.0 起，该变量以及 `AMEND TRANSACTION` 特性被删除。TiDB 会使用[元数据锁机制](/metadata-lock.md)解决 `Information schema is changed` 报错的问题。  |
-| [`tidb_enable_concurrent_ddl`](/system-variables.md#tidb_enable_concurrent_ddl-从-v620-版本开始引入) | 删除 | 这个变量用于控制是否让 TiDB 使用并发 DDL 语句。自 v6.6.0 起，该变量被删除。 |
+| [`tidb_enable_concurrent_ddl`](/system-variables.md#tidb_enable_concurrent_ddl-从-v620-版本开始引入) | 删除 | 这个变量用于控制是否让 TiDB 使用并发 DDL 语句。关闭该变量时 TiDB 采用旧的 DDL 执行框架，对 DDL 的并发支持有限。自 v6.6.0 起，该变量被删除，即不再支持旧的 DDL 执行框架。 |
 | [`tidb_ttl_job_run_interval`](/system-variables.md#tidb_ttl_job_run_interval-从-v650-版本开始引入) | 删除 | 这个变量用于控制 TTL 后台清理任务的调度周期。自 v6.6.0 起删除该变量，因为自 v6.6.0 起 TiDB 为每张表提供了属性 `TTL_JOB_INTERVAL` 用于配置 TTL 运行的间隔，允许用户为每张表设置不同的运行间隔，比系统变量更加灵活。 |
 | [`foreign_key_checks`](/system-variables.md#foreign_key_checks) | 修改 | 用于控制是否开启外键约束检查。默认值由 `OFF` 修改为 `ON`，表示默认开启外键检查。|
 | [`tidb_enable_foreign_key`](/system-variables.md#tidb_enable_foreign_key-从-v630-版本开始引入) | 修改 | 用于控制是否开启外键功能。默认值由 `OFF` 修改为 `ON`，表示默认开启外键功能。|
