@@ -312,7 +312,13 @@ TiDB 版本：6.6.0
 | PD   | [`switch-witness-interval`](/pd-configuration-file.md#switch-witness-interval-从-v660-版本开始引入)    |   新增       | 控制对同一个 Region 做切换为 Witness 和切换为 Non-Witness 操作的间隔，即对于一个新切换为 Non-Witness 的 Region 在一段时间内不会被切换为 Witness。默认值为 1 小时。         |
 | PD   | [`witness-schedule-limit`](/pd-configuration-file.md#witness-schedule-limit-从-v660-版本开始引入)    |   新增       | 控制同时进行的 Witness 调度的任务个数。默认为 4 个。         |
 | TiCDC | [`scheduler.region-per-span`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-配置文件说明) | 新增 | 将表按 Region 个数划分成多个同步范围，这些范围可由多个 TiCDC 节点同步。 |
-| DM   | 新增    |    https://github.com/pingcap/docs-cn/pull/12296       |    **tw@ran-huang**      |
+| DM | 修改 | [`import-mode`](/dm/task-configuration-file-full.md)  | 该配置项的可选值由 `"sql"` 和 `"loader"` 变更为 `"logical"` 和 `"physical"`。默认值为 `"logical"`，即使用 TiDB Lightning 的 logical import mode 进行导入。 |
+| DM | 删除 | `on-duplicate` | 该配置项控制全量导入阶段针对冲突数据的解决方式。自 v6.6.0 起，引入新的配置项 `on-duplicate-logical` 和 `on-duplicate-physical`，取代 `on-duplicate`。 |
+| DM | 新增 | [`on-duplicate-logical`](/dm/task-configuration-file-full.md) | 该配置项控制 logical import 针对冲突数据的解决方式。默认值为 `"replace"`，表示用最新数据替代已有数据。 |
+| DM | 新增 | [`on-duplicate-physical`](/dm/task-configuration-file-full.md) | 该配置项控制 physical import 针对冲突数据的解决方式。默认值为 `"none"`，表示遇到冲突数据时不进行处理。该模式性能最佳，但下游数据库会遇到数据索引不一致的问题。  |
+| DM | 新增 | [`sorting-dir-physical`](/dm/task-configuration-file-full.md) | 该配置项控制 physical import 用作本地排序的目录位置，该选项的默认值与 `dir` 配置项一致。 |
+| DM | 新增 | [`disk-quota-physical`](/dm/task-configuration-file-full.md) | 该配置项设置了磁盘的空间限制，对应 TiDB Lightning 的 [`disk-quota` 配置](/tidb-lightning/tidb-lightning-physical-import-mode-usage#磁盘资源配额-从-v620-版本开始引入)。|
+| DM | 新增 | [`checksum-physical`](/dm/task-configuration-file-full.md) | 该配置项控制 physical import 在导入完成一张表后，对每一个表执行 `ADMIN CHECKSUM TABLE <table>` 进行数据校验。默认值为 `"required"`。表示导入完成后进行数据校验，如果校验失败会让任务暂停，需要用户手动处理。|
 | sync-diff-inspector   | [`skip-non-existing-table`](/sync-diff-inspector/sync-diff-inspector-overview.md#配置文件说明)   |  新增 | 当下游数据库的表在上游不存在时，该配置项决定是否跳过对上下游数据库表数量不一致场景的校验。  |
 | TiSpark | [`spark.tispark.replica_read`](/tispark-overview.md#tispark-配置) | 新增 | 控制读取副本的类型，可选值为 `leader`、`follower`、`learner`。 |
 | TiSpark | [`spark.tispark.replica_read.label`](/tispark-overview.md#tispark-配置) | 新增 | 设置目标 TiKV 节点的标签。 |
