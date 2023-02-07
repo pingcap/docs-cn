@@ -1,4 +1,4 @@
-name: Upload media files to Qiniu and Aws when they change
+name: Upload media files to Qiniu when they change
 on:
   push:
     branches:
@@ -27,10 +27,10 @@ jobs:
           unzip qshell.zip
           sudo mv qshell-linux-x64-v2.4.1 /usr/local/bin/qshell
           qshell account ${{ secrets.QINIU_ACCESS_KEY }} ${{ secrets.QINIU_SECRET_KEY }} test
-      - name: Configure awscli
-        run: |
-          pip3 install --upgrade setuptools
-          pip3 install awscli
-          printf "%s\n" ${{ secrets.AWS_ACCESS_KEY }} ${{ secrets.AWS_SECRET_KEY }} ${{ secrets.AWS_REGION }} "json" | aws configure
+      #- name: Configure awscli
+      #  run: |
+      #    pip3 install --upgrade setuptools
+      #    pip3 install awscli
+      #    printf "%s\n" ${{ secrets.AWS_ACCESS_KEY }} ${{ secrets.AWS_SECRET_KEY }} ${{ secrets.AWS_REGION }} "json" | aws configure
       - name: Upload
-        run: cloud-assets-utils verify-and-sync -qiniu true -qiniu-bucket ${{ secrets.QINIU_BUCKET_NAME }} -aws true -aws-bucket ${{ secrets.AWS_BUCKET_NAME }} media -replace-first-path-to images/docs -cdn-refresh https://download.pingcap.com/
+        run: cloud-assets-utils verify-and-sync -qiniu true -qiniu-bucket ${{ secrets.QINIU_BUCKET_NAME }} media -replace-first-path-to images/docs -cdn-refresh https://download.pingcap.com/
