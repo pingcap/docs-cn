@@ -958,6 +958,11 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 ### `tidb_ddl_distribute_reorg` <span class="version-mark">从 v6.6.0 版本开始引入</span>
 
+> **Warning:**
+>
+> 该功能目前为实验特性。
+> 当前启用此功能后，在 DDL reorg 阶段遇到某些异常只会做简单重试，还没有兼容 DDL 的重试方式，即目前无法依据  [`tidb_ddl_error_count_limit`](#tidb_ddl_error_count_limit) 的大小控制重试次数。
+
 - 作用域：GLOBAL
 - 是否持久化到集群：是
 - 默认值：`OFF`
