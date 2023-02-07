@@ -52,6 +52,7 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-statement-details/','/docs-cn/dev/da
 
 目前还不支持通过 TiDB Dashboard 绑定下列语句的执行计划：
 
+- 非 `SELECT`、`DELETE`、`UPDATE`、`INSERT`、`REPLACE` 类型语句
 - 带有子查询的查询
 - 访问 TiFlash 的查询
 - 对三张表或更多表进行 Join 的查询
