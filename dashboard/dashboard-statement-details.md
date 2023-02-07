@@ -16,41 +16,45 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-statement-details/','/docs-cn/dev/da
 
 ## 快速绑定执行计划
 
-在 v6.6 及以上版本中，引入了快速绑定执行计划功能：用户可以在 TiDB Dashboard 中，快速完成 SQL 与特定计划的绑定。
+自 v6.6.0 起，TiDB 引入了快速绑定执行计划的功能。你可以在 TiDB Dashboard 中，快速完成 SQL 语句与特定计划的绑定。
 
 ### 使用方式
 
 #### 绑定一个执行计划
 
-1. 点击**执行计划绑定**，弹出弹窗。
+1. 点击**执行计划绑定** (Plan Binding)，弹出弹窗。
 
 ![快速绑定执行计划-未绑定-入口](/media/dashboard/dashboard-quick-binding-entry-notbound.png)
 
-2. 选择一个需要绑定的执行计划，点击**绑定**。
+2. 选择一个需要绑定的执行计划，点击**绑定** (Bind)。
 
 ![快速绑定执行计划-弹窗](/media/dashboard/dashboard-quick-binding-popup-notbound.png)
 
-3. 绑定成功，可以看到**已绑定**提示。
+3. 绑定成功后，可以看到**已绑定** (Bound) 提示。
 
 ![快速绑定执行计划-弹窗-绑定成功](/media/dashboard/dashboard-quick-binding-popup-bound.png)
 
 #### 取消已有的执行计划绑定
 
-1. 当 SQL 已经绑定了执行计划后，点击**执行计划绑定**，弹出弹窗。
+1. 在已经绑定了执行计划的 SQL 语句页面上，点击**执行计划绑定** (Plan Binding)，弹出弹窗。
 
 ![快速绑定执行计划-已绑定-入口](/media/dashboard/dashboard-quick-binding-entry-bound.png)
 
-2. 点击**取消绑定**。
+2. 点击**取消绑定** (Drop)。
 
 ![快速绑定执行计划-弹窗-绑定成功](/media/dashboard/dashboard-quick-binding-popup-bound.png)
 
-3. 取消成功，可以看到**未绑定**提示。
+3. 取消成功后，可以看到**未绑定** (Not Bound) 提示。
 
 ![快速绑定执行计划-弹窗](/media/dashboard/dashboard-quick-binding-popup-notbound.png)
 
 ### 使用限制
 
-1. 对于带有子查询的查询、访问 TiFlash 的查询、三张表或更多表进行 Join 的查询，目前还不支持通过 TiDB Dashboard 绑定执行计划。
+目前还不支持通过 TiDB Dashboard 绑定下列语句的执行计划：
+
+- 带有子查询的查询
+- 访问 TiFlash 的查询
+- 对三张表或更多表进行 Join 的查询
 
 ## 执行计划详情
 
