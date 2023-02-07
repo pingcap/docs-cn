@@ -72,7 +72,7 @@ TiDB 版本：6.6.0
 
 * TiFlash 支持 TLS 证书自动轮换 [#5503](https://github.com/pingcap/tiflash/issues/5503) @[ywqzzy](https://github.com/ywqzzy) **tw@qiancai**
 
-    TiFlash TLS 证书自动轮换指在开启组件间加密传输的 TiDB 集群上，当 TiFlash 的 TLS 证书过期需要重新签发一个新 TLS 证书给 TiFlash 时，支持自动加载新的 TiFlash TLS 证书，无需重启 TiDB 集群。TiDB 集群内部组件之间 TLS 过期轮换不影响 TiDB 集群的正常使用，保障了 TiDB 集群的高可用。
+    TiDB v6.6.0 引入了 TiFlash TLS 证书自动轮换功能。在开启组件间加密传输的 TiDB 集群上，当 TiFlash 的 TLS 证书过期需要重新签发时，支持自动加载新的 TiFlash TLS 证书，无需重启 TiDB 集群。而且，TiDB 集群内部组件之间 TLS 过期轮换不影响 TiDB 集群的正常使用，保障了 TiDB 集群的高可用。
 
     更多信息，请[用户文档](/enable-tls-between-components.md)。
 
@@ -144,7 +144,7 @@ TiDB 版本：6.6.0
 
     Stale Read 功能是从 TiDB v5.1.1 开始正式引入的，支持读取指定时间点或时间范围内的历史数据。Stale Read 允许直接读取 TiKV 本地副本数据，可以降低读取延迟，提升查询性能。在 v6.6.0 之前的版本中，TiFlash 并不支持 Stale Read 功能，即使 Stale Read 查询的表包含 TiFlash 副本，TiDB 也只能使用 TiKV 副本进行查询。
 
-    在 v6.6.0 中，TiFlash 开始支持 Stale Read 功能。当使用 `AS OF TIMESTAMP` 语法或 `tidb_read_staleness` 系统变量等方式查询历史数据时，如果查询的表包含 TiFlash 副本，优化器可以选择 TiFlash 副本读取对应的数据，从而进一步提高查询性能。
+    在 v6.6.0 中，TiFlash 开始支持 Stale Read 功能。当使用 [`AS OF TIMESTAMP`](/as-of-timestamp.md) 语法或 [`tidb_read_staleness`](/tidb-read-staleness.md) 系统变量等方式查询历史数据时，如果查询的表包含 TiFlash 副本，优化器可以选择 TiFlash 副本读取对应的数据，从而进一步提高查询性能。
 
     更多信息，请参考[用户文档](/stale-read.md)。
 
