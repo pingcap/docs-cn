@@ -267,10 +267,10 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 
 ### `enable-witness` <span class="version-mark">从 v6.6.0 版本开始引入</span>
 
-+ 控制是否开启 Witness 功能。
-+ Witness 的使用场景如下：
-    - 在高可靠的存储环境下节约成本。具体使用方法，可参考[使用 Witness 节约成本](/use-witness-to-save-costs.md)。
-    - 快速恢复 failover 提高系统可用性。具体使用方法，可参考[使用临时 Witness 副本加速副本恢复](/use-witness-to-speed-up-failover.md)。
++ 控制是否开启 Witness 副本功能。
++ Witness 副本的使用场景如下：
+    - 在高可靠的存储环境下帮助节约成本。具体使用方法，可参考[使用 Witness 副本节约成本](/use-witness-to-save-costs.md)。
+    - 快速恢复 (failover)，提高系统可用性。具体使用方法，可参考[使用 Witness 副本加速恢复](/use-witness-to-speed-up-failover.md)。
 + 默认值：false
 
 ### `high-space-ratio`
