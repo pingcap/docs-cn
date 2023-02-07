@@ -99,7 +99,7 @@ tiup dmctl check-task ./task.yaml
     
 * 下游数据库中的 Region 分布
 
-    - 统计不同的 TiKV 上的 Region 数目。如果最少的 Region 数目与最多的 Region 数目比例小于 0.75，前置检查会向用户返回警告。可以调整 PD 相关参数加快 Region 调度速度，并等待 Region 数目变化以解除警告。参见 [PD 调度策略最佳实践 - Leader/Region 分布不均衡](/best-practices/pd-scheduling-best-practices.md#leaderregion-分布不均衡)
+    - 统计不同的 TiKV 上的 Region 数目。假设 Region 数最少的 TiKV 节点上拥有 `a` 个 Region，Region 数最多的 TiKV 节点上拥有 `b` 个 Region，如果 a/b 小于 0.75，则前置检查会向用户返回警告。可以调整 PD 相关参数加快 Region 调度速度，并等待 Region 数目变化以解除警告。参见 [PD 调度策略最佳实践 - Leader/Region 分布不均衡](/best-practices/pd-scheduling-best-practices.md#leaderregion-分布不均衡)
     
 * 下游数据库 TiDB、PD、TiKV 组件的版本
 
