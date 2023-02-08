@@ -173,11 +173,9 @@ select * from information_schema.statements_summary_evicted;
 
 ## 目前的限制
 
-Statement summary tables 现在还存在以下限制：
+由于 statement summary tables 默认都存储在内存中，TiDB server 重启后，statement summary 会全部丢失。
 
-- TiDB server 重启后以上 4 张表的 statement summary 会全部丢失。因为 statement summary tables 全部都是内存表，不会持久化数据，所以一旦 server 被重启，statement summary 随之丢失。
-
-自 v6.6.0 起，TiDB 为 statements summary 实验性地引入了持久化能力，该功能默认未开启，详情请参考[持久化 statements summary](#持久化-statements-summary)。
+为解决该问题，TiDB v6.6.0 实验性地引入了 [statement summary 持久化](#持久化-statements-summary)功能，该功能默认未关闭。开启该功能后，历史数据不再存储在内存内，而是直接写入磁盘，TiDB server 重启后，历史数据也依然可用。
 
 ## 持久化 statements summary
 
