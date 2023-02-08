@@ -204,7 +204,7 @@ TiDB 版本：6.6.0
 
     此外，合理利用资源管控特性可以减少集群数量，降低运维难度及管理成本。
 
-    在 v6.6.0 中，启用资源管控特性需要同时打开 TiDB 的全局变量 [`tidb_enable_resource_control`](/system-variables.md#tidb_enable_resource_control-从-v660-版本开始引入) 及 TiKV 的配置项 [`resource_control.enabled`](/tikv-configuration-file.md#tidb_enable_resource_control)。当前支持的限额方式基于 "[用量](/tidb-resource-control.md#什么是-request-unit-ru)"（Request Unit，即 RU），RU 是 TiDB 对 CPU、IO 等系统资源的统一抽象单位。
+    在 v6.6.0 中，启用资源管控特性需要同时打开 TiDB 的全局变量 [`tidb_enable_resource_control`](/system-variables.md#tidb_enable_resource_control-从-v660-版本开始引入) 及 TiKV 的配置项 [`resource_control.enabled`](/tikv-configuration-file.md#resource-control)。当前支持的限额方式基于 "[用量](/tidb-resource-control.md#什么是-request-unit-ru)"（Request Unit，即 RU），RU 是 TiDB 对 CPU、IO 等系统资源的统一抽象单位。
 
     更多信息，请参考[用户文档](/tidb-resource-control.md)。
 
