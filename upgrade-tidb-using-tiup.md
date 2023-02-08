@@ -45,7 +45,11 @@ This document is targeted for the following upgrade paths:
 
 This section introduces the preparation works needed before upgrading your TiDB cluster, including upgrading TiUP and the TiUP Cluster component.
 
-### Step 1: Upgrade TiUP or TiUP offline mirror
+### Step 1: Review compatibility changes
+
+Review [the compatibility changes](/releases/release-6.5.0.md#compatibility-changes) and [deprecated features](/releases/release-6.5.0.md#deprecated-feature) in TiDB v6.5.0 release notes. If any changes affect your upgrade, take actions accordingly.
+
+### Step 2: Upgrade TiUP or TiUP offline mirror
 
 Before upgrading your TiDB cluster, you first need to upgrade TiUP or TiUP mirror.
 
@@ -111,7 +115,7 @@ tiup update cluster
 
 Now, the offline mirror has been upgraded successfully. If an error occurs during TiUP operation after the overwriting, it might be that the `manifest` is not updated. You can try `rm -rf ~/.tiup/manifests/*` before running TiUP again.
 
-### Step 2: Edit TiUP topology configuration file
+### Step 3: Edit TiUP topology configuration file
 
 > **Note:**
 >
@@ -136,7 +140,7 @@ Now, the offline mirror has been upgraded successfully. If an error occurs durin
 >
 > Before you upgrade the cluster to v6.5.0, make sure that the parameters you have modified in v4.0 are compatible in v6.5.0. For details, see [TiKV Configuration File](/tikv-configuration-file.md).
 
-### Step 3: Check the health status of the current cluster
+### Step 4: Check the health status of the current cluster
 
 To avoid the undefined behaviors or other issues during the upgrade, it is recommended to check the health status of Regions of the current cluster before the upgrade. To do that, you can use the `check` sub-command.
 
@@ -151,7 +155,7 @@ After the command is executed, the "Region status" check result will be output.
 + If the result is "All Regions are healthy", all Regions in the current cluster are healthy and you can continue the upgrade.
 + If the result is "Regions are not fully healthy: m miss-peer, n pending-peer" with the "Please fix unhealthy regions before other operations." prompt, some Regions in the current cluster are abnormal. You need to troubleshoot the anomalies until the check result becomes "All Regions are healthy". Then you can continue the upgrade.
 
-### Step 4: Check the DDL and backup status of the cluster
+### Step 5: Check the DDL and backup status of the cluster
 
 To avoid undefined behaviors or other unexpected problems during the upgrade, it is recommended to check the following items before the upgrade.
 
@@ -194,10 +198,12 @@ tiup cluster upgrade <cluster-name> v6.5.0
 >
 > + To keep a stable performance, make sure that all leaders in a TiKV instance are evicted before stopping the instance. You can set `--transfer-timeout` to a larger value, for example, `--transfer-timeout 3600` (unit: second).
 >
-> - To upgrade TiFlash from versions earlier than 5.3 to 5.3 or later, you should stop TiFlash and then upgrade it. The following steps help you upgrade TiFlash without interrupting other components:
+> + To upgrade TiFlash from versions earlier than 5.3 to 5.3 or later, you should stop TiFlash and then upgrade it. The following steps help you upgrade TiFlash without interrupting other components:
 >    1. Stop the TiFlash instance: `tiup cluster stop <cluster-name> -R tiflash`
 >    2. Upgrade the TiDB cluster without restarting it (only updating the files): `tiup cluster upgrade <cluster-name> <version> --offline`
 >    3. Reload the TiDB cluster: `tiup cluster reload <cluster-name>`. After the reload, the TiFlash instance is started and you do not need to manually start it.
+>
+> + Try to avoid creating a new clustered index table when you apply rolling updates to the clusters using TiDB Binlog.
 
 #### Offline upgrade
 
@@ -290,8 +296,3 @@ You can upgrade the tool version by using TiUP to install the `ctl` component of
 ```shell
 tiup install ctl:v6.5.0
 ```
-
-## TiDB 6.5.0 compatibility changes
-
-- See TiDB 6.5.0 Release Notes for the compatibility changes.
-- Try to avoid creating a new clustered index table when you apply rolling updates to the clusters using TiDB Binlog.
