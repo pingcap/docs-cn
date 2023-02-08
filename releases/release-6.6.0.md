@@ -250,13 +250,13 @@ TiDB 版本：6.6.0
 
 * TiDB Lightning 支持通过 AWS IAM 角色的密钥以及会话令牌来访问 S3 数据 @[okJiang](https://github.com/okJiang)
 
-    在 v6.6.0 版本之前 TiDB Lightning 仅支持通过 AWS IAM 角色的密钥访问 S3 的数据，无法结合会话令牌访问 S3 的数据。自 v6.6.0 起，TiDB Lightning 支持通过 AWS IAM 角色的密钥以及会话令牌来访问 S3 数据，以提高安全性。
+    在 v6.6.0 版本之前 TiDB Lightning 仅支持通过 AWS IAM 用户的密钥访问 S3 的数据，无法使用临时会话令牌访问 S3 的数据。自 v6.6.0 起，TiDB Lightning 支持通过 AWS IAM 角色的密钥以及会话令牌来访问 S3 数据，以提高安全性。
 
     更多信息，请参考[用户文档](https://github.com/pingcap/docs-cn/pull/12947)。
 
-* TiDB Lightning 支持将键值对压缩后再发送到 TiKV，降低网络带宽开销 @[gozssky](https://github.com/gozssky)
+* TiDB Lightning 向 TiKV 传输键值对时支持启用压缩传输，减少数据在网络传输中的体积，降低网络带宽开销 @[gozssky](https://github.com/gozssky)
 
-    自 v6.6.0 版本起，TiDB Lightning 支持将 TiDB Lightning 节点本地编码排序后的 KV Paris 压缩后再发送到 TiKV，降低网络带宽要求，减少传输的流量。而原先的版本不支持，在数据量较大的情况下，对网络带宽要求相对较高，且会产生较高的流量费，通过该 Feature ，用户可以设置将这些 Kv Pairs 压缩为 Gzip 后再发送到 TiKV，降低传输的流量。
+    自 v6.6.0 版本起，TiDB Lightning 节点将在本地编码排序后的键值对传输到 TiKV 时，支持开启压缩传输，降低网络带宽要求，减少传输的流量开销。而此前的版本不支持压缩传输，在数据量较大的情况下，对网络带宽要求相对较高，且会产生较高的流量费。自 v6.6.0 起，TiDB Lightning 在传输键值对到 TiKV 时，用户可以设置基于 Gzip 算法进行压缩传输，降低传输的流量费用。
 
     更多信息，请参考[用户文档](https://github.com/pingcap/docs-cn/pull/12948)。
 
