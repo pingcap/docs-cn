@@ -223,4 +223,5 @@ TiDB 不支持 MySQL 中标记为弃用的功能，包括：
 * `ZEROFILL` 属性。MySQL 8.0 [弃用](https://dev.mysql.com/doc/refman/8.0/en/numeric-type-attributes.html)了此功能，建议在业务应用中填充数字值。
 
 ### `CREATE RESOURCE GROUP` / `DROP RESOURCE GROUP` 语句
-TiDB 资源组创建与修改语句的语法与 MySQL 官方不同， 详情参见 [`CREATE RESOURCE GROUP`](/sql-statements/sql-statement-create-resource-group.md) 与 [`ALTER RESOURCE GROUP`](/sql-statements/sql-statement-alter-resource-group.md)。
+
+TiDB 资源组创建与修改语句的语法与 MySQL 官方不同，详情参见 [`CREATE RESOURCE GROUP`](/sql-statements/sql-statement-create-resource-group.md) 与 [`ALTER RESOURCE GROUP`](/sql-statements/sql-statement-alter-resource-group.md)。
