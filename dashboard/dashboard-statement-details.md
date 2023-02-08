@@ -24,29 +24,29 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-statement-details/','/docs-cn/dev/da
 
 1. 点击**执行计划绑定** (Plan Binding)，弹出弹窗。
 
-![快速绑定执行计划-未绑定-入口](/media/dashboard/dashboard-quick-binding-entry-notbound.png)
+    ![快速绑定执行计划-未绑定-入口](/media/dashboard/dashboard-quick-binding-entry-notbound.png)
 
 2. 选择一个需要绑定的执行计划，点击**绑定** (Bind)。
 
-![快速绑定执行计划-弹窗](/media/dashboard/dashboard-quick-binding-popup-notbound.png)
+    ![快速绑定执行计划-弹窗](/media/dashboard/dashboard-quick-binding-popup-notbound.png)
 
 3. 绑定成功后，可以看到**已绑定** (Bound) 提示。
 
-![快速绑定执行计划-弹窗-绑定成功](/media/dashboard/dashboard-quick-binding-popup-bound.png)
+    ![快速绑定执行计划-弹窗-绑定成功](/media/dashboard/dashboard-quick-binding-popup-bound.png)
 
 #### 取消已有的执行计划绑定
 
 1. 在已经绑定了执行计划的 SQL 语句页面上，点击**执行计划绑定** (Plan Binding)，弹出弹窗。
 
-![快速绑定执行计划-已绑定-入口](/media/dashboard/dashboard-quick-binding-entry-bound.png)
+    ![快速绑定执行计划-已绑定-入口](/media/dashboard/dashboard-quick-binding-entry-bound.png)
 
 2. 点击**取消绑定** (Drop)。
 
-![快速绑定执行计划-弹窗-绑定成功](/media/dashboard/dashboard-quick-binding-popup-bound.png)
+    ![快速绑定执行计划-弹窗-绑定成功](/media/dashboard/dashboard-quick-binding-popup-bound.png)
 
 3. 取消成功后，可以看到**未绑定** (Not Bound) 提示。
 
-![快速绑定执行计划-弹窗](/media/dashboard/dashboard-quick-binding-popup-notbound.png)
+    ![快速绑定执行计划-弹窗](/media/dashboard/dashboard-quick-binding-popup-notbound.png)
 
 ### 使用限制
 
