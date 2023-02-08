@@ -5,6 +5,10 @@ aliases: ['/docs-cn/dev/tidb-binlog/deploy-tidb-binlog/','/docs-cn/dev/reference
 
 # TiDB Binlog 集群部署
 
+> **警告：**
+>
+> TiDB Binlog 已停止维护，不再推荐使用。建议使用 [TiCDC](/ticdc/ticdc-overview.md) 替代 TiDB Binlog。
+
 ## 服务器要求
 
 Pump 和 Drainer 均可部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器平台上。在开发、测试和生产环境下，对服务器硬件配置的要求和建议如下：

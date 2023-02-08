@@ -5,6 +5,10 @@ aliases: ['/docs-cn/dev/tidb-binlog/troubleshoot-tidb-binlog/','/docs-cn/dev/ref
 
 # TiDB Binlog 故障诊断
 
+> **警告：**
+>
+> TiDB Binlog 已停止维护，不再推荐使用。建议使用 [TiCDC](/ticdc/ticdc-overview.md) 替代 TiDB Binlog。
+
 本文总结了在 TiDB Binlog 的使用过程中遇到问题的诊断流程，并指引用户通过监控、状态、日志等信息查找相应的解决方案。
 
 如果你在使用 TiDB Binlog 时出现了异常，请尝试以下方式排查问题：

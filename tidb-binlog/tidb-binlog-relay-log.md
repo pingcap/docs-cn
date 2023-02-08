@@ -5,6 +5,10 @@ aliases: ['/docs-cn/dev/tidb-binlog/tidb-binlog-relay-log/','/docs-cn/dev/refere
 
 # TiDB Binlog Relay Log
 
+> **警告：**
+>
+> TiDB Binlog 已停止维护，不再推荐使用。建议使用 [TiCDC](/ticdc/ticdc-overview.md) 替代 TiDB Binlog。
+
 Drainer 同步 binlog 时会拆分上游的事务，并将拆分的事务并发同步到下游。在极端情况下，上游集群不可用并且 Drainer 异常退出后，下游集群（MySQL 或 TiDB）可能处于数据不一致的中间状态。在此场景下，Drainer 借助 relay log 可以确保将下游集群同步到一个一致的状态。
 
 ## Drainer 同步时的一致性状态

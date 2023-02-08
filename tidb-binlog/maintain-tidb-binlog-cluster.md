@@ -5,6 +5,10 @@ aliases: ['/docs-cn/dev/tidb-binlog/maintain-tidb-binlog-cluster/','/docs-cn/dev
 
 # TiDB Binlog 集群运维
 
+> **警告：**
+>
+> TiDB Binlog 已停止维护，不再推荐使用。建议使用 [TiCDC](/ticdc/ticdc-overview.md) 替代 TiDB Binlog。
+
 本文首先介绍 Pump 和 Drainer 的状态及启动、退出的内部处理流程，然后说明如何通过 binlogctl 工具或者直接在 TiDB 执行 SQL 操作来管理 binlog 集群，最后的 FAQ 部分会介绍一些常见问题以及处理方法。
 
 ## Pump/Drainer 的状态
