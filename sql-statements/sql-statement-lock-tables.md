@@ -5,7 +5,7 @@ summary: TiDB 数据库中 LOCK TABLES 的使用概况。
 
 # LOCK TABLES
 
-`LOCK TABLES` 语句用于校验表中数据和对应索引的一致性。
+`LOCK TABLES` 语句用于XX。
 
 ## 语法图
 
