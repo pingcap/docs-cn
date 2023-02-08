@@ -53,7 +53,7 @@ sync-diff-inspector needs to obtain the information of table schema and to query
 
 The configuration of sync-diff-inspector consists of the following parts:
 
-- `Global config`: General configurations, such as number of threads to check, whether to export SQL statement to fix inconsistent tables, and whether to campare the data.
+- `Global config`: General configurations, such as number of threads to check, whether to export SQL statement to fix inconsistent tables, whether to compare the data, and whether to skip checking tables that do not exist in the upstream or downstream.
 - `Databases config`: Configures the instances of the upstream and downstream databases.
 - `Routes`: Rules for upstream multiple schema names to match downstream single schema names **(optional)**.
 - `Task config`: Configures the tables for checking. If some tables have a certain mapping relationship between the upstream and downstream databases or have some special requirements, you must configure these tables.
@@ -75,6 +75,9 @@ export-fix-sql = true
 
 # Only compares the table structure instead of the data.
 check-struct-only = false
+
+# If enabled, sync-diff-inspector skips checking tables that do not exist in the upstream or downstream.
+skip-non-existing-table = false
 
 ######################### Datasource config #########################
 [data-sources]
@@ -203,9 +206,11 @@ The data of `sbtest`.`sbtest99` is not equal
 The data of `sbtest`.`sbtest96` is not equal
 
 The rest of tables are all equal.
+
+A total of 2 tables have been compared, 0 tables finished, 2 tables failed, 0 tables skipped.
 The patch file has been generated in
         'output/fix-on-tidb2/'
-You can view the comparision details through 'output/sync_diff.log'
+You can view the comparison details through 'output/sync_diff.log'
 ```
 
 ### Output file
@@ -225,7 +230,7 @@ output/
 | └-- xxx.sql
 |
 |-- summary.txt # Saves the summary of the check results
-└-- sync_diff.log # Saves the output log informatiion when sync-diff-inspector is running
+└-- sync_diff.log # Saves the output log information when sync-diff-inspector is running
 ```
 
 ### Log
@@ -241,21 +246,21 @@ The running sync-diff-inspector periodically (every 10 seconds) prints the progr
 After the check is finished, sync-diff-inspector outputs a report. It is located at `${output}/summary.txt`, and `${output}` is the value of `output-dir` in the `config.toml` file.
 
 ```summary
-+---------------------+--------------------+----------------+
-|        TABLE        | STRUCTURE EQUALITY | DATA DIFF ROWS |
-+---------------------+--------------------+----------------+
-| `sbtest`.`sbtest99` | true               | +97/-97        |
-| `sbtest`.`sbtest96` | true               | +0/-101        |
-+---------------------+--------------------+----------------+
++---------------------+---------+--------------------+----------------+---------+-----------+
+|        TABLE        | RESULT  | STRUCTURE EQUALITY | DATA DIFF ROWS | UPCOUNT | DOWNCOUNT |
++---------------------+---------+--------------------+----------------+---------+-----------+
+| `sbtest`.`sbtest99` | succeed | true               | +97/-97        |  999999 |    999999 |
+| `sbtest`.`sbtest96` | succeed | true               | +0/-101        |  999999 |   1000100 |
+| `sbtest`.`sbtest97` | skipped | false              | +999999/-0     |  999999 |         0 |
++---------------------+---------+--------------------+----------------+---------+-----------+
 Time Cost: 16.75370462s
 Average Speed: 113.277149MB/s
 ```
 
-- TABLE: The corresponding database and table names
-
-- STRUCTURE EQUALITY: Checks whether the table structure is the same
-
-- DATA DIFF ROWS: `rowAdd` / `rowDelete`. Indicates the number of rows that need to be added/deleted to fix the table
+- `TABLE`: The corresponding database and table names
+- `RESULT`: Whether the check is completed. If you have configured `skip-non-existing-table = true`, the value of this column is `skipped` for tables that do not exist in the upstream or downstream
+- `STRUCTURE EQUALITY`: Checks whether the table structure is the same
+- `DATA DIFF ROWS`: `rowAdd`/`rowDelete`. Indicates the number of rows that need to be added/deleted to fix the table
 
 ### SQL statements to fix inconsistent data
 
@@ -267,7 +272,7 @@ A SQL file contains the tale to which the chunk belong and the range information
 - If the rows in the downstream database are redundant, DELETE statements will be applied
 - If some data of the rows in the downstream database is inconsistent, REPLACE statements will be applied and inconsistent columns will be marked with annotation in the SQL file
 
-```SQL
+```sql
 -- table: sbtest.sbtest99
 -- range in sequence: (3690708) < (id) <= (3720581)
 /*
