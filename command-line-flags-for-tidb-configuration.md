@@ -57,6 +57,11 @@ When you start the TiDB cluster, you can use command-line options or environment
 - Bootstraps tidb-server in secure mode
 - Default: `false`
 
+## `--initialize-sql-file`
+
+- The SQL script to be executed when the TiDB cluster is started for the first time. For details, see [configuration item `initialize-sql-file`](/tidb-configuration-file.md#initialize-sql-file-new-in-v660)
+- Default: `""`
+
 ## `-L`
 
 - The log level
