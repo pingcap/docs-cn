@@ -11,6 +11,8 @@ title: ADMIN
 - [`ADMIN ... BINDINGS`](#admin--bindings-语句)
 - [`ADMIN REPAIR TABLE`](#admin-repair-table-语句)
 - [`ADMIN SHOW SLOW`](#admin-show-slow-语句)
+- [`ADMIN CLEANUP`](#admin-cleanup-语句)
+- [`ADMIN RECOVER INDEX`](#admin-recover-index-语句)
 
 ## ADMIN 与 DDL 相关的扩展语句
 
@@ -117,6 +119,10 @@ ADMIN SHOW SLOW TOP [INTERNAL | ALL] N;
 ```
 
 这两种语句的具体操作详情可参考：[admin show slow 语句](/identify-slow-queries.md#admin-show-slow-命令)。
+
+## `ADMIN CLEANUP` 语句
+
+## `ADMIN RECOVER INDEX` 语句
 
 ## 语句概览
 
