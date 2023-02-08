@@ -28,7 +28,7 @@ Before you start working with TiDB, you need to understand some important mechan
 
 - Read the [TiDB Transaction Overview](/transaction-overview.md) to understand how transactions work in TiDB, or check out the [Transaction Notes for Application Developers](/develop/dev-guide-transaction-overview.md) to learn about transaction knowledge required for application development.
 - Understand [the way applications interact with TiDB](#the-way-applications-interact-with-tidb).
-- To learn core components and concepts of building up the distributed database TiDB and TiDB Cloud, refer to the free online course [TiDB Architecture Basics](https://freeclasses.edu.pingcap.com/catalog/info/id:203/?utm_source=docs-dev-guide).
+- To learn core components and concepts of building up the distributed database TiDB and TiDB Cloud, refer to the free online course [Introduction to TiDB](https://eng.edu.pingcap.com/catalog/info/id:203/?utm_source=docs-dev-guide).
 
 ## TiDB transaction mechanisms
 
