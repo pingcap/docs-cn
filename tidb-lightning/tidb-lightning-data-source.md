@@ -347,7 +347,7 @@ type = '$3'
         -d 's3://my-bucket/sql-backup?force-path-style=true&endpoint=http://10.154.10.132:8088'
     ```
 
-* 使用 AWS IAM role arn 来访问 S3 数据：
+* 使用 AWS IAM 角色的 ARN 来访问 S3 数据：
 
     ```bash
     ./tidb-lightning --tidb-port=4000 --pd-urls=127.0.0.1:2379 --backend=local --sorted-kv-dir=/tmp/sorted-kvs \

@@ -6,7 +6,7 @@ aliases: ['/docs-cn/dev/br/backup-and-restore-storages/','/zh/tidb/dev/backup-st
 
 # 备份存储
 
-TiDB 支持 Amazon S3、Google Cloud Storage (GCS)、Azure Blob Storage 和 NFS 作为备份恢复的存储。具体来说，可以在 `br` 的 `--storage` 或 `-s` 选项中指定备份存储的 URL。本文介绍不同外部存储服务中 [URL 的定义格式](#uri-格式)、存储过程中的[鉴权方案](#鉴权)以及[存储服务端加密](#存储服务端加密)。
+TiDB 支持 Amazon S3、Google Cloud Storage (GCS)、Azure Blob Storage 和 NFS 作为备份恢复的存储。具体来说，可以在 `br` 的 `--storage` 或 `-s` 选项中指定备份存储的 URI。本文介绍不同外部存储服务中 [URI 的定义格式](#uri-格式)、存储过程中的[鉴权方案](#鉴权)以及[存储服务端加密](#存储服务端加密)。
 
 ## BR 向 TiKV 发送凭证
 
