@@ -154,9 +154,15 @@ SET @@global.tidb_ttl_job_schedule_window_end_time = '05:00 +0000';
 
 上述语句只允许在 UTC 时间的凌晨 1 点到 5 点调度 TTL 任务。默认情况下的时间窗口设置为 `00:00 +0000` 到 `23:59 +0000`，即允许所有时段的任务调度。
 
-## 监控与图表
+## TTL 的可观测性
 
 TiDB 会定时采集 TTL 的运行时信息，并在 Grafana 中提供了相关指标的可视化图表。你可以在 TiDB -> TTL 的面板下看到这些信息。指标详情见 [TiDB 重要监控指标详解](/grafana-tidb-dashboard.md) 中的 `TTL` 部分。
+
+同时，可以通过以下三个系统表获得 TTL 任务执行的更多信息：
+
++ `mysql.tidb_ttl_table_status` 表中包含了所有 TTL 表的上一次执行与正在执行的 TTL 任务的信息。
++ `mysql.tidb_ttl_task` 表中包含了正在执行的 TTL 子任务。单个 TTL 任务会被拆分为多个子任务，该表中记录了正在执行的这些子任务的信息。
++ `mysql.tidb_ttl_job_history` 表中记录了 TTL 任务的执行历史。TTL 任务的历史记录将被保存 90 天。
 
 ## 工具兼容性
 

@@ -113,6 +113,7 @@ aliases: ['/docs-cn/dev/grafana-tidb-dashboard/','/docs-cn/dev/reference/key-mon
 - KV Request Duration 99 by store：根据 TiKV 显示 KV Request 执行时间
 - KV Request Duration 99 by type：根据类型显示 KV Request 的执行时间
 
+<<<<<<< HEAD
 ### PD Client
 
 - PD Client CMD OPS：PD Client 每秒执行命令的数量
@@ -188,8 +189,14 @@ aliases: ['/docs-cn/dev/grafana-tidb-dashboard/','/docs-cn/dev/reference/key-mon
 
 ### TTL
 
+- TiDB CPU Usage: 每个 TiDB 实例的 CPU 使用。
+- TiKV IO MBps: 每个 TiKV 实例的 I/O 吞吐量。
+- TiKV CPU: 每个 TiKV 实例的 CPU 使用。
 - TTL QPS By Type：TTL 任务产生的不同类型语句的 QPS 信息。
+- TTL Insert Rows Per Second: 每秒钟向 TTL 表插入的数据行数。
 - TTL Processed Rows Per Second：TTL 任务每秒处理的过期数据的行数。
+- TTL Insert Rows Per Hour: 每小时总共向 TTL 表插入的行数。
+- TTL Delete Rows Per Hour: 每小时总共删除的过期行数。
 - TTL Scan/Delete Query Duration：TTL 的扫描/删除语句的执行时间。
 - TTL Scan/Delete Worker Time By Phase：TTL 内部工作线程的不同阶段所占用的时间。
 - TTL Job Count By Status：当前正在执行的 TTL 任务的数量。
