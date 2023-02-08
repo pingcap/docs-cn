@@ -10,7 +10,7 @@ TiDB Lightning 支持从多种类型的文件导入数据到 TiDB 集群。通�
 
 ```toml
 [mydumper]
-# 本地源数据目录或 S3 等[外部存储 URL](/br/backup-and-restore-storages.md#url-格式)
+# 本地源数据目录或 S3 等[外部存储 URI](/br/backup-and-restore-storages.md#uri-格式)
 data-source-dir = "/data/my_database"
 ```
 
@@ -331,7 +331,7 @@ type = '$3'
 
 ## 从 Amazon S3 导入数据
 
-如下为从 Amazon S3 导入数据的示例，更多配置参数描述，可参考[外部存储 URL 格式](/br/backup-and-restore-storages.md#url-格式)。
+如下为从 Amazon S3 导入数据的示例，更多配置参数描述，可参考[外部存储 URI 格式](/br/backup-and-restore-storages.md#uri-格式)。
 
 * 使用本地已设置的权限访问 S3：
 

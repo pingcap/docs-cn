@@ -24,7 +24,7 @@ max-backups = 14
 check-requirements = true
 
 [mydumper]
-# 本地源数据目录或[外部存储 URL](/br/backup-and-restore-storages.md#url-格式)
+# 本地源数据目录或[外部存储 URI](/br/backup-and-restore-storages.md#uri-格式)
 data-source-dir = "/data/my_database"
 
 [tikv-importer]

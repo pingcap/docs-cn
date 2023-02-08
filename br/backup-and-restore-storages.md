@@ -1,12 +1,12 @@
 ---
 title: 备份存储
-summary: 了解 BR 支持的备份存储服务的 URL 格式、鉴权方案和使用方式。
+summary: 了解 BR 支持的备份存储服务的 URI 格式、鉴权方案和使用方式。
 aliases: ['/docs-cn/dev/br/backup-and-restore-storages/','/zh/tidb/dev/backup-storage-S3/','/zh/tidb/dev/backup-storage-azblob/','/zh/tidb/dev/backup-storage-gcs/','/zh/tidb/dev/external-storage/']
 ---
 
 # 备份存储
 
-TiDB 支持 Amazon S3、Google Cloud Storage (GCS)、Azure Blob Storage 和 NFS 作为备份恢复的存储。具体来说，可以在 `br` 的 `--storage` 或 `-s` 选项中指定备份存储的 URL。本文介绍不同外部存储服务中 [URL 的定义格式](#url-格式)、存储过程中的[鉴权方案](#鉴权)以及[存储服务端加密](#存储服务端加密)。
+TiDB 支持 Amazon S3、Google Cloud Storage (GCS)、Azure Blob Storage 和 NFS 作为备份恢复的存储。具体来说，可以在 `br` 的 `--storage` 或 `-s` 选项中指定备份存储的 URL。本文介绍不同外部存储服务中 [URL 的定义格式](#uri-格式)、存储过程中的[鉴权方案](#鉴权)以及[存储服务端加密](#存储服务端加密)。
 
 ## BR 向 TiKV 发送凭证
 
@@ -28,11 +28,11 @@ TiDB 支持 Amazon S3、Google Cloud Storage (GCS)、Azure Blob Storage 和 NFS 
 BACKUP DATABASE * TO 's3://bucket-name/prefix' SEND_CREDENTIALS_TO_TIKV = FALSE;
 ```
 
-## URL 格式
+## URI 格式
 
 ### 格式说明
 
-本部分介绍存储服务的 URL 格式：
+本部分介绍存储服务的 URI 格式：
 
 ```shell
 [scheme]://[host]/[path]?[parameters]
@@ -81,7 +81,7 @@ BACKUP DATABASE * TO 's3://bucket-name/prefix' SEND_CREDENTIALS_TO_TIKV = FALSE;
 </div>
 </SimpleTab>
 
-### URL 示例
+### URI 示例
 
 本部分示例以 `host`（上表中 `bucket name`、`container name`）为 `external` 为例进行介绍。
 
