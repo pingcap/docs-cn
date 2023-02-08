@@ -159,15 +159,21 @@ SELECT TABLE_NAME FROM information_schema.tables where TABLE_SCHEMA = "<db_name>
    TiFlash 默认新增副本速度是 30（每分钟大约 30 个 Region 将会新增 TiFlash 副本）。执行以下命令将调整所有 TiFlash 实例的新增副本速度到 60，即原来的 2 倍速度：
 
    ```shell
-   tiup ctl:<cluster-version> pd -u http://<PD_ADDRESS>:2379 store limit all engine tiflash 60 add-peer
+   tiup ctl:v<CLUSTER_VERSION> pd -u http://<PD_ADDRESS>:2379 store limit all engine tiflash 60 add-peer
    ```
+
+    > 上述命令中，需要将 `<CLUSTER_VERSION>` 替换为该集群版本，`<PD_ADDRESS>:2379` 替换为任一 PD 节点的地址。替换后样例为：
+    >
+    > ```shell
+    > tiup ctl:v6.1.4 pd -u http://192.168.1.4:2379 store limit all engine tiflash 60 add-peer
+    > ```
 
    执行完毕后，几分钟内，你将观察到 TiFlash 节点的 CPU 及磁盘 IO 资源占用显著提升，TiFlash 将更快地创建副本。同时，TiKV 节点的 CPU 及磁盘 IO 资源占用也将有所上升。
 
    如果此时 TiKV 及 TiFlash 节点的资源仍有富余，且线上业务的延迟没有显著上升，则可以考虑进一步放开调度速度，例如将新增副本的速度增加为原来的 3 倍：
 
    ```shell
-   tiup ctl:<cluster-version> pd -u http://<PD_ADDRESS>:2379 store limit all engine tiflash 90 add-peer
+   tiup ctl:v<CLUSTER_VERSION> pd -u http://<PD_ADDRESS>:2379 store limit all engine tiflash 90 add-peer
    ```
 
 3. 在副本同步完毕后，恢复到默认配置，减少在线业务受到的影响。
@@ -175,7 +181,7 @@ SELECT TABLE_NAME FROM information_schema.tables where TABLE_SCHEMA = "<db_name>
    执行以下 PD Control 命令可恢复默认的新增副本速度：
 
    ```shell
-   tiup ctl:<cluster-version> pd -u http://<PD_ADDRESS>:2379 store limit all engine tiflash 30 add-peer
+   tiup ctl:v<CLUSTER_VERSION> pd -u http://<PD_ADDRESS>:2379 store limit all engine tiflash 30 add-peer
    ```
 
    在 TiUP 中注释掉新增的配置项，使其恢复到默认值：
