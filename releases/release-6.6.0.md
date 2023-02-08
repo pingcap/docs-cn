@@ -18,7 +18,7 @@ TiDB 版本：6.6.0
 - 绑定历史执行计划 GA，支持通过 TiDB Dashboard 快速绑定执行计划。
 - TiFlash 引擎支持带压缩的数据交换，提升数据交换效率。
 - TiFlash 支持 Stale Read 功能，进一步提高查询性能。
-- TiDB Data Migration (DM) 集成 TiDB Lightning 的 Physical Import 模式，提升 DM 全量数据迁移时的性能，大幅缩短大数据量场景下的迁移时间。
+- TiDB Data Migration (DM) 集成 TiDB Lightning 的 Physical Import 模式，提升 DM 全量数据迁移时的性能，大幅缩短大数据量场景下的迁移时间（实验特性）。
 
 ## 新功能
 
@@ -242,7 +242,7 @@ TiDB 版本：6.6.0
 
 ### 数据迁移
 
-* TiDB Data Migration(DM) 集成了 TiDB Lightning 的 Physical Import Mode，全量迁移性能提升最高达到 10 倍 @[lance6716](https://github.com/lance6716) **tw@ran-huang**
+* TiDB Data Migration(DM) 集成了 TiDB Lightning 的 Physical Import Mode，全量迁移性能提升最高达到 10 倍（实验特性）@[lance6716](https://github.com/lance6716) **tw@ran-huang**
 
     在 v6.6.0 版本中，DM 的全量迁移能力集成了 TiDB Lightning 的 Physical Import Mode，使得 DM 全量数据迁移的性能最高可提升 10 倍，大大缩短了大数据量场景下的迁移时间。在 v6.6.0 以前，数据量较多的场景下，需要单独配置 TiDB Lightning 的 Physical Import Mode 任务来进行快速的全量数据迁移，再用 DM 来进行增量数据迁移，配置较为复杂。从 v6.6.0 起，用户迁移大数据量的场景，无需再配置 TiDB Lightning 的任务，使用一个 DM 任务即可完成。
 
