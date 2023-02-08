@@ -210,7 +210,14 @@ TiDB 版本：6.6.0
 
 * 使用临时 Witness 副本来加速副本恢复 [#12876](https://github.com/tikv/tikv/issues/12876) @[Connor1996](https://github.com/Connor1996) @[ethercflow](https://github.com/ethercflow) **tw@Oreoxmt**
 
-    Witness 功能可用于快速恢复 (failover)，以提高系统的可用性和数据持久性。例如在 3 缺 1 的情况下，虽然满足多数派要求，但是系统很脆弱，而完整恢复一个新成员的时间通常很长（需要先拷贝 snapshot 然后 apply 最新的日志），特别是 Region snapshot 比较大时，恢复的时间会更长。而且，拷贝副本的过程可能会对不健康的 Group member 造成更多的压力。因此，先添加一个 Witness 可以快速移除不健康的节点，降低在恢复一个新成员的过程中（Learner 无法参与选举和提交），又一个节点挂掉导致 Raft Group 不可用的风险，从而保证恢复数据过程中日志的安全性。
+    Witness 功能可用于快速恢复 (failover)，以提高系统的可用性和数据持久性。例如在 3 缺 1 的情况下，存在以下问题：
+    
+    - 虽然满足多数派要求，但是系统很脆弱。
+    - 完整恢复一个新成员耗时长，需要先拷贝 snapshot 然后 apply 最新的日志。
+    - 在 Region snapshot 比较大时，恢复时间会更长。
+    - 拷贝副本的过程可能会对不健康的 Group member 造成更多的压力。
+    
+    为解决这些问题，可以先添加一个 Witness 快速移除不健康的节点，降低在恢复新成员过程中（此时 Learner 无法参与选举和提交），又有其他节点出故障导致 Raft Group 不可用的风险，从而保证恢复数据过程中日志的安全性。
 
     更多信息，请参考[用户文档](/use-witness-to-speed-up-failover.md)。
 
