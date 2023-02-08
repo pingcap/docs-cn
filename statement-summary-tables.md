@@ -175,7 +175,7 @@ select * from information_schema.statements_summary_evicted;
 
 由于 statement summary tables 默认都存储在内存中，TiDB server 重启后，statement summary 会全部丢失。
 
-为解决该问题，TiDB v6.6.0 实验性地引入了 [statement summary 持久化](#持久化-statements-summary)功能，该功能默认未关闭。开启该功能后，历史数据不再存储在内存内，而是直接写入磁盘，TiDB server 重启后，历史数据也依然可用。
+为解决该问题，TiDB v6.6.0 实验性地引入了 [statement summary 持久化](#持久化-statements-summary)功能，该功能默认为关闭。开启该功能后，历史数据不再存储在内存内，而是直接写入磁盘。TiDB server 重启后，历史数据也依然可用。
 
 ## 持久化 statements summary
 
