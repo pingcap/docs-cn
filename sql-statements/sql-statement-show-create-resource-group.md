@@ -29,9 +29,12 @@ Query OK, 0 rows affected (0.10 sec)
 ```sql
 SHOW CREATE RESOURCE GROUP rg1;
 ***************************[ 1. row ]***************************
-Resource_Group        | rg1
-Create Resource Group | CREATE RESOURCE GROUP `rg1` RU_PER_SEC=100
-1 row in set (0.00 sec)
++----------------+--------------------------------------------+
+| Resource_Group | Create Resource Group                      |
++----------------+--------------------------------------------+
+| rg1            | CREATE RESOURCE GROUP `rg1` RU_PER_SEC=100 |
++----------------+--------------------------------------------+
+1 row in set (0.01 sec)
 ```
 
 ## MySQL 兼容性
