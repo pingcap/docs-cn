@@ -253,7 +253,7 @@ PARTITION BY RANGE( YEAR(purchased) ) (
 
 一些重要的数据可能需要具备跨可用区存储多个副本，从而具备高的容灾生存能力，比如具有 Region 级别的生存能力，`SURVIVAL_PREFERENCES` 可以提供生存能力的偏好设置。
 
-以下示例设置了一个约束，要求数据尽量满足生存偏好设置：
+例如，在创建放置策略时，你可以按照以下方式设置 `SURVIVAL_PREFERENCES`，要求数据尽量满足所设置的生存偏好：
 
 ``` sql
 CREATE PLACEMENT POLICY multiregion
