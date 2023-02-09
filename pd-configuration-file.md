@@ -107,7 +107,7 @@ pd-server 相关配置项。
 ### `server-memory-limit`
 
 + PD 实例的内存限制。`0` 值表示不设内存限制。
-+ 默认值：`0.8`
++ 默认值：`0`
 + 最小值：`0`
 + 最大值：`0.99`
 
@@ -121,7 +121,7 @@ pd-server 相关配置项。
 ### `enable-gogc-tuner`
 
 + 是否开启 GOGC Tuner。
-+ 默认值：`true`
++ 默认值：`false`
 
 ### `gc-tuner-threshold`
 
