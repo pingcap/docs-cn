@@ -7,7 +7,7 @@ aliases: ['/zh/tidb/v6.5/experimental-features','/zh/tidb/stable/experimental-fe
 
 # TiDB 功能概览
 
-本文列出了 TiDB 功能在不同版本中的支持变化情况，包括[长期支持版本 (LTS)](/releases/versioning.md#长期支持版本)和最新的长期支持版本之后的[开发里程碑版本 (DMR)](/releases/versioning.md#开发里程碑版本)。
+本文列出了 TiDB 功能在不同版本中的支持变化情况，包括[长期支持版本 (LTS)](/releases/versioning.md#长期支持版本) 和最新的长期支持版本之后的[开发里程碑版本 (DMR)](/releases/versioning.md#开发里程碑版本)。
 
 > **注意：**
 >
