@@ -121,6 +121,7 @@ loaders:                             # load 处理单元的运行配置参数
     # 全量阶段数据导入的模式。可以设置为如下几种模式：
     # - "logical"(默认)。使用 TiDB Lightning logical import 进行导入。文档：https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-logical-import-mode
     # - "physical"。使用 TiDB Lightning physical import 进行导入。文档：https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-physical-import-mode
+    #   当前 "physical" 为实验特性，不建议在生产环境中使用。
     import-mode: "logical"
     # logical import 针对冲突数据的解决方式：
     # - "replace"（默认值）。表示用最新数据替代已有数据。
@@ -128,7 +129,7 @@ loaders:                             # load 处理单元的运行配置参数
     # - "error"。插入重复数据时报错并停止同步任务。
     on-duplicate-logical: "replace"
     # physical import 针对冲突数据的解决方式：
-    # - "none"。对应 TiDB Lightning physical import 冲突数据检测的 "none" 选项 
+    # - "none"（默认）。对应 TiDB Lightning physical import 冲突数据检测的 "none" 选项 
     # (https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-physical-import-mode-usage#冲突数据检测)，
     # 表示遇到冲突数据时不进行处理。该模式性能最佳，但下游数据库会遇到数据索引不一致的问题。
     # - "manual"。对应 TiDB Lightning physical import 冲突数据检测的 "remove" 选项 
