@@ -7,15 +7,15 @@ aliases: ['/zh/tidb/v6.5/experimental-features','/zh/tidb/stable/experimental-fe
 
 # TiDB 功能概览
 
-本文列出了 TiDB 功能在各版本的支持变化情况。
+本文列出了 TiDB 功能在不同版本中的支持变化情况，包括[长期支持版本 (LTS)](/releases/versioning.md#长期支持版本)和最新的长期支持版本之后的[开发里程碑版本 (DMR)](/releases/versioning.md#开发里程碑版本)。
 
 > **注意：**
 >
-> PingCAP 不为[开发者里程碑版本 (DMR)](/releases/versioning.md#开发里程碑版本) 提供 bug 修复。出现的 Bug 将在后续版本中修复。对于生产环境，请使用 TiDB 最新的[长期支持版本 (LTS)](/releases/versioning.md#长期支持版本)。
+> PingCAP 不提供基于 DMR 版本的 bug 修复版本，如有 bug，会在后续版本中修复。如无特殊需求，建议使用最新 LTS 版本。
 >
 > 下表中出现的缩写字母含义如下：
 >
-> - Y：已 GA 的功能，可以在生产环境中使用。但即使某个功能在[开发者里程碑版本 (DMR)](/releases/versioning.md#开发里程碑版本) 中 GA，也不推荐在生产环境中使用该 DMR 版本。
+> - Y：已 GA 的功能，可以在生产环境中使用。注意即使某个功能在 DMR 版本中 GA，也建议在后续 LTS 版本中将该功能用于生产环境。
 > - N：不支持该功能。
 > - E：未 GA 的功能，即实验特性 (experimental)，请注意使用场景限制。实验特性会在未事先通知的情况下发生变化或删除。语法和实现可能会在 GA 前发生变化。如果遇到问题，请在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues) 反馈。
 
