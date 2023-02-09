@@ -259,7 +259,9 @@ TiDB 版本：6.6.0
 
 * TiDB Lightning 向 TiKV 传输键值对时支持启用压缩传输 [#41163](https://github.com/pingcap/tidb/issues/41163) @[gozssky](https://github.com/gozssky) **tw@qiancai**
 
-    自 v6.6.0 起，TiDB Lightning 支持将 TiDB Lightning 节点本地编码排序后的键值对压缩后再发送到 TiKV，降低网络带宽要求，减少传输的流量。之前版本不支持该功能，在数据量较大的情况下，对网络带宽要求相对较高，且会产生较高的流量费。通过使用该功能，用户可以设置将这些键值对压缩为 Gzip 后再发送到 TiKV，降低传输的流量。
+    自 v6.6.0 起，TiDB Lightning 支持将本地编码排序后的键值对在网络传输时进行压缩再发送到 TiKV，从而减少网络传输的数据量，降低网络带宽开销 。之前版本不支持该功能，在数据量较大的情况下，TiDB Lightning 对网络带宽要求相对较高，且会产生较高的流量费。
+
+    该功能默认关闭，你可以通过将 TiDB Lightning 配置项 `compress-kv-pairs` 设置为 "gzip" 或者 "gz" 开启此功能。
 
     更多信息，请参考[用户文档](https://github.com/pingcap/docs-cn/pull/12948)。
 
