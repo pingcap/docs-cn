@@ -407,7 +407,8 @@ TiDB 版本：6.6.0
 
 + TiDB
 
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
+    - 修复了收集统计信息任务因为错误的 datetime 值而失败的问题 [#39336](https://github.com/pingcap/tidb/issues/39336) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes)
+    - 修复了 stats meta 没有创建的问题 [#38189](https://github.com/pingcap/tidb/issues/38189) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes)
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
 + TiKV
