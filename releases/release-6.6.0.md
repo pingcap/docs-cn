@@ -204,7 +204,7 @@ TiDB 版本：6.6.0
 
     此外，合理利用资源管控特性可以减少集群数量，降低运维难度及管理成本。
 
-    在 v6.6.0 中，启用资源管控特性需要同时打开 TiDB 的全局变量 [`tidb_enable_resource_control`](/system-variables.md#tidb_enable_resource_control-从-v660-版本开始引入) 及 TiKV 的配置项 [`resource_control.enabled`](/tikv-configuration-file.md#resource-control)。当前支持的限额方式基于 "[用量](/tidb-resource-control.md#什么是-request-unit-ru)"（Request Unit，即 RU），RU 是 TiDB 对 CPU、IO 等系统资源的统一抽象单位。
+    在 v6.6.0 中，启用资源管控特性需要同时打开 TiDB 的全局变量 [`tidb_enable_resource_control`](/system-variables.md#tidb_enable_resource_control-从-v660-版本开始引入) 及 TiKV 的配置项 [`resource-control.enabled`](/tikv-configuration-file.md#resource-control)。当前支持的限额方式基于 "[用量](/tidb-resource-control.md#什么是-request-unit-ru)"（Request Unit，即 RU），RU 是 TiDB 对 CPU、IO 等系统资源的统一抽象单位。
 
     更多信息，请参考[用户文档](/tidb-resource-control.md)。
 
@@ -249,7 +249,7 @@ TiDB 版本：6.6.0
 
 ### 数据迁移
 
-* TiDB Data Migration(DM) 集成了 TiDB Lightning 的 Physical Import Mode，全量迁移性能提升最高达到 10 倍（实验特性）@[lance6716](https://github.com/lance6716) **tw@ran-huang**
+* TiDB Data Migration (DM) 集成了 TiDB Lightning 的 Physical Import Mode，全量迁移性能提升最高达到 10 倍（实验特性）@[lance6716](https://github.com/lance6716) **tw@ran-huang**
 
     在 v6.6.0 版本中，DM 的全量迁移能力集成了 TiDB Lightning 的 Physical Import Mode，使得 DM 全量数据迁移的性能最高可提升 10 倍，大大缩短了大数据量场景下的迁移时间。在 v6.6.0 以前，数据量较多的场景下，需要单独配置 TiDB Lightning 的 Physical Import Mode 任务来进行快速的全量数据迁移，再用 DM 来进行增量数据迁移，配置较为复杂。从 v6.6.0 起，用户迁移大数据量的场景，无需再配置 TiDB Lightning 的任务，使用一个 DM 任务即可完成。
 
