@@ -262,7 +262,7 @@ CREATE PLACEMENT POLICY multiregion
     SURVIVAL_PREFERENCES="[region, zone]";
 ```
 
-设置了该策略的表，数据会先优先满足跨 Region 级别数据隔离的生存目标，再保证跨 zone 级别的数据隔离的生存目标。
+对于绑定了该放置策略的表，数据会先优先满足跨 `region`（即云区域）级别数据隔离的生存目标，再满足跨 `zone`（即可用区）级别的数据隔离的生存目标。
 
 > **注意：**
 >
