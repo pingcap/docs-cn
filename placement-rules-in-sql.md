@@ -248,7 +248,6 @@ PARTITION BY RANGE( YEAR(purchased) ) (
 >
 > 字典和列表格式都基于 YAML 解析，但 YAML 语法有些时候不能被正常解析。例如 YAML 会把 `"{+disk=ssd:1,+disk=nvme:2}"`（`:` 后无空格）错误地解析成 `'{"+disk=ssd:1": null, "+disk=nvme:2": null}'`，不符合预期。但 `"{+disk=ssd: 1,+disk=nvme: 2}"`（`:` 后有空格）能被正确解析成 `'{"+disk=ssd": 1, "+disk=nvme": 2}'`。
 
-
 ### 生存偏好
 
 一些重要的数据可能需要跨可用区存储多个副本，从而具备高的容灾生存能力，比如具备云区域级别的生存能力。在创建或修改放置策略时，你可以使用 `SURVIVAL_PREFERENCES` 选项设置数据的生存能力偏好。
