@@ -106,14 +106,14 @@ pd-server 相关配置项。
 
 ### `server-memory-limit`
 
-+ PD 实例的内存限制。`0` 值表示不设内存限制。
++ PD 实例的内存限制比例。`0` 值表示不设内存限制。
 + 默认值：`0`
 + 最小值：`0`
 + 最大值：`0.99`
 
 ### `server-memory-limit-gc-trigger`
 
-+ PD 尝试触发 GC 的阈值。当 PD 的内存使用达到 `server-memory-limit` 值 * `server-memory-limit-gc-trigger` 值时，则会主动触发一次 Golang GC。在一分钟之内只会主动触发一次 GC。
++ PD 尝试触发 GC 的阈值比例。当 PD 的内存使用达到 `server-memory-limit` 值 * `server-memory-limit-gc-trigger` 值时，则会主动触发一次 Golang GC。在一分钟之内只会主动触发一次 GC。
 + 默认值：`0.7`
 + 最小值：`0.5`
 + 最大值：`0.99`
@@ -125,7 +125,7 @@ pd-server 相关配置项。
 
 ### `gc-tuner-threshold`
 
-+ GOGC Tuner 自动调节的最大内存阈值，即 `server-memory-limit` 值 * `server-memory-limit-gc-trigger` 值，超过阈值后 GOGC Tuner 会停止工作。
++ GOGC Tuner 自动调节的最大内存阈值比例，即 `server-memory-limit` 值 * `server-memory-limit-gc-trigger` 值，超过阈值后 GOGC Tuner 会停止工作。
 + 默认值：`0.6`
 + 最小值：`0`
 + 最大值：`0.9`
