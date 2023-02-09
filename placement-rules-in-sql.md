@@ -258,7 +258,7 @@ PARTITION BY RANGE( YEAR(purchased) ) (
 ``` sql
 CREATE PLACEMENT POLICY multiregion
     follower=4
-    PRIMARY_REGION="region1"
+    PRIMARY_REGION="us-east-1"
     SURVIVAL_PREFERENCES="[region, zone]";
 ```
 
