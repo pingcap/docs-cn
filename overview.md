@@ -18,7 +18,7 @@ aliases: ['/docs/dev/key-features/','/tidb/dev/key-features','/docs/dev/overview
 
 The following video introduces key features of TiDB.
 
-<iframe width="600" height="450" src="https://www.youtube.com/embed/aWBNNPm21zg" title="Why TiDB?" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe width="600" height="450" src="https://www.youtube.com/embed/aWBNNPm21zg" title="Why TiDB?" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" enablejsapi="true" allowfullscreen></iframe>
 
 ## Key features
 
