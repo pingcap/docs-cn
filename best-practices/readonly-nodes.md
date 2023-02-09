@@ -42,77 +42,77 @@ tikv_servers:
 
 1. 使用如下 `pd-ctl config placement-rules` 命令导出默认 Placement Rules：
 
-```shell
-pd-ctl config placement-rules rule-bundle load --out="rules.json"
-```
+    ```shell
+    pd-ctl config placement-rules rule-bundle load --out="rules.json"
+    ```
 
-如果之前没有配置过 Placement Rules，那么会导出如下内容：
+    如果之前没有配置过 Placement Rules，那么会导出如下内容：
 
-```json
-[
-  {
-    "group_id": "pd",
-    "group_index": 0,
-    "group_override": false,
-    "rules": [
+    ```json
+    [
       {
         "group_id": "pd",
-        "id": "default",
-        "start_key": "",
-        "end_key": "",
-        "role": "voter",
-        "count": 3
+        "group_index": 0,
+        "group_override": false,
+        "rules": [
+          {
+            "group_id": "pd",
+            "id": "default",
+            "start_key": "",
+            "end_key": "",
+            "role": "voter",
+            "count": 3
+          }
+        ]
       }
     ]
-  }
-]
-```
+    ```
 
 2. 将所有数据在只读节点以 learner 方式存储一份。如下示例基于默认配置：
 
-```json
-[
-  {
-    "group_id": "pd",
-    "group_index": 0,
-    "group_override": false,
-    "rules": [
+    ```json
+    [
       {
         "group_id": "pd",
-        "id": "default",
-        "start_key": "",
-        "end_key": "",
-        "role": "voter",
-        "count": 3
-      },
-      {
-        "group_id": "pd",
-        "id": "readonly",
-        "start_key": "",
-        "end_key": "",
-        "role": "learner",
-        "count": 1,
-        "label_constraints": [
+        "group_index": 0,
+        "group_override": false,
+        "rules": [
           {
-            "key": "$mode",
-            "op": "in",
-            "values": [
-              "readonly"
-            ]
+            "group_id": "pd",
+            "id": "default",
+            "start_key": "",
+            "end_key": "",
+            "role": "voter",
+            "count": 3
+          },
+          {
+            "group_id": "pd",
+            "id": "readonly",
+            "start_key": "",
+            "end_key": "",
+            "role": "learner",
+            "count": 1,
+            "label_constraints": [
+              {
+                "key": "$mode",
+                "op": "in",
+                "values": [
+                  "readonly"
+                ]
+              }
+            ],
+            "version": 1
           }
-        ],
-        "version": 1
+        ]
       }
     ]
-  }
-]
-```
+    ```
 
 3. 执行 `pd-ctl config placement-rules` 命令将上面的配置写入 PD：
 
-```shell
-pd-ctl config placement-rules rule-bundle save --in="rules.json"
-```
+    ```shell
+    pd-ctl config placement-rules rule-bundle save --in="rules.json"
+    ```
 
 > **注意：**
 >
@@ -135,7 +135,7 @@ set tidb_replica_read=learner;
 你可以在 Spark 配置文件中设置 `spark.tispark.replica_read = learner` 来读取只读节点上的数据：
 
 ```
-spark.tispark.replica_read learner 
+spark.tispark.replica_read learner
 ```
 
 #### 3.3 在备份集群数据时只备份 Follower 节点
@@ -144,4 +144,4 @@ spark.tispark.replica_read learner
 
 ```shell
 br backup full ... --backup-replica-read-label '$mode:readonly'
-``` 
+```
