@@ -134,7 +134,7 @@ SELECT * FROM information_schema.partitions WHERE tidb_placement_policy_name IS 
 | `FOLLOWER_CONSTRAINTS`     | 仅适用于 follower 的约束列表。                                           |
 | `LEARNER_CONSTRAINTS`     | 仅适用于 learner 的约束列表。                                           |
 | `LEARNERS`                 | 指定 learner 的数量。     |
-| `SURVIVAL_PREFERENCE`      | 指定按 label 容灾等级的优先级放置副本。例如 `SURVIVAL_PREFERENCE="[region, zone, host]"`    |
+| `SURVIVAL_PREFERENCE`      | 指定按 label 容灾等级的优先级放置副本。例如 `SURVIVAL_PREFERENCE="[region, zone, host]"`。    |
 
 ## 示例
 
