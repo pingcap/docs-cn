@@ -39,9 +39,9 @@ Request Unit (RU) 是 TiDB 对 CPU、IO 等系统资源的统一抽象的单位,
 | 一次读请求的基本开销 | 0.25 RU      |
 | 一次写请求的基本开销 | 1.5 RU       |
 
-基于上表，假设某个资源组消耗的 TiKV 时间是 `c` 毫秒，`r1` 次请求读取了 `r2` KB 数据，`w1` 次写请求，写入 `w2` KB 数据，则该资源组消耗的总 RU 的公式如下：
+基于上表，假设某个资源组消耗的 TiKV 时间是 `c` 毫秒，`r1` 次请求读取了 `r2` KB 数据，`w1` 次写请求，写入 `w2` KB 数据，集群中非 witness TiKV 节点数是 `n` , 则该资源组消耗的总 RU 的公式如下：
 
-`c`/3 + (`r1` \* 0.25 + `r2`/64) + (1.5 * `w1` + `w2`)
+`c`\* 1/3 + (`r1` \* 0.25 + `r2` \* 1/64) + (1.5 \* `w1` + `w2` \* 1 \* `n`)
 
 ## 相关参数
 
@@ -52,10 +52,10 @@ Request Unit (RU) 是 TiDB 对 CPU、IO 等系统资源的统一抽象的单位,
 
 这两个参数的组合效果见下表：
 
-| `resource-control.enabled`  | `tidb_enable_resource_control`= ON   | `tidb_enable_resource_control`= OFF  |
-|:----------------------------|:-------------------------------------|:------------------------------------|
-| `resource-control.enabled`= true  |  流控和调度（推荐组合）            | 无效配置                         |  
-| `resource-control.enabled`= false |  仅流控                         |  特性被关闭                   |
+| `resource-control.enabled`  | `tidb_enable_resource_control`= ON | `tidb_enable_resource_control`= OFF  |
+|:----------------------------|:-----------------------------------|:------------------------------------|
+| `resource-control.enabled`= true  | 流控和调度（推荐组合）                        | 无效配置                         |
+| `resource-control.enabled`= false | 仅流控（不推荐）                           |  特性被关闭                   |
 
 ## 使用方法
 
