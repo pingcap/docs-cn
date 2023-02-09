@@ -247,6 +247,10 @@ TiDB 版本：6.6.0
 
     更多信息，请参考 v6.6.0 Release Notes 中 [SQL 部分](#sql)以及[用户文档](/sql-statements/sql-statement-foreign-key.md)。
 
+* 支持兼容 MySQL 语法的多值索引 [#39592](https://github.com/pingcap/tidb/issues/39592) @[xiongjiwei](https://github.com/xiongjiwei) @[qw4990](https://github.com/qw4990) **tw@TomShawn**
+
+    更多信息，请参考 v6.6.0 Release Notes 中 [SQL 部分](#sql)以及用户文档](/sql-statements/sql-statement-create-index.md#多值索引)。
+
 ### 数据迁移
 
 * TiDB Data Migration (DM) 集成了 TiDB Lightning 的 Physical Import Mode，全量迁移性能提升最高达到 10 倍（实验特性）@[lance6716](https://github.com/lance6716) **tw@ran-huang**
