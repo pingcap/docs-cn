@@ -157,7 +157,7 @@ read-block-size = "64KiB" # 默认值
 # 取值范围为（0 <= batch-import-ratio < 1）。
 batch-import-ratio = 0.75
 
-# 本地源数据目录或[外部存储 URI](/br/backup-and-restore-storages.md#uri-格式)
+# 本地源数据目录或[外部存储 URI](https://docs.pingcap.com/zh/tidb/stable/backup-and-restore-storages#uri-%E6%A0%BC%E5%BC%8F)
 data-source-dir = "/data/my_database"
 
 # 指定包含 `CREATE TABLE` 语句的表结构文件的字符集。只支持下列选项：

@@ -24,7 +24,7 @@ max-backups = 14
 check-requirements = true
 
 [mydumper]
-# 本地源数据目录或[外部存储 URI](/br/backup-and-restore-storages.md#uri-格式)
+# 本地源数据目录或[外部存储 URI](https://docs.pingcap.com/zh/tidb/stable/backup-and-restore-storages#uri-%E6%A0%BC%E5%BC%8F)
 data-source-dir = "/data/my_database"
 
 [tikv-importer]
