@@ -319,7 +319,7 @@ TiDB 版本：6.6.0
 | TiDB | [`tidb_stmt_summary_file_max_size`](/tidb-configuration-file.md#tidb_stmt_summary_file_max_size-从-v660-版本开始引入) | 新增 | 当开启了 statements summary 持久化时，该配置用于限制持久化数据单个文件的大小 (MiB)，默认值为 `64`。 |
 | TiDB | [`tidb_stmt_summary_file_max_backups`](/tidb-configuration-file.md#tidb_stmt_summary_file_max_backups-从-v660-版本开始引入) | 新增 | 当开启了 statements summary 持久化时，该配置用于限制持久化数据文件最大数量，`0` 表示不限制，默认值为 `0`。 |
 | TiKV | [`resource-control.enabled`](/tikv-configuration-file.md#resource-control) | 新增 | 控制是否支持对用户前台的读写请求按照对应的资源组配额做优先级调度。默认为 `false`，即关闭按照资源组配额调度。 |
-| PD  | [`pd-server.server-memory-limit`](/pd-configuration-file.md#server-memory-limit-从-v660-版本开始引入) | 新增 | PD 实例的内存限制。默认值为 `0.8`，即限制 PD 实例的内存占总内存的 80%。 |
+| PD  | [`pd-server.server-memory-limit`](/pd-configuration-file.md#server-memory-limit-从-v660-版本开始引入) | 新增 | PD 实例的内存限制。默认关闭。 |
 | PD  |  [`pd-server.server-memory-limit-gc-trigger`](/pd-configuration-file.md#server-memory-limit-gc-trigger-从-v660-版本开始引入) | 新增 | PD 实例的内存限制触发 GC 的阈值。默认值为 `0.7`。 |
 | PD  | [`pd-server.enable-gogc-tuner`](/pd-configuration-file.md#enable-gogc-tuner-从-v660-版本开始引入) | 新增 | 控制是否开启 GOGC Tuner。默认开启。 |
 | PD  | [`pd-server.gc-tuner-threshold`](/pd-configuration-file.md#gc-tuner-threshold-从-v660-版本开始引入) | 新增 | GOGC Tuner 自动调节的最大内存阈值。默认值为 `0.6`。 |
