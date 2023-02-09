@@ -253,7 +253,7 @@ TiDB 版本：6.6.0
 
 * TiDB Lightning 支持通过 AWS IAM 角色的密钥以及会话令牌来访问 S3 数据 [#4075](https://github.com/pingcap/tidb/issues/40750) @[okJiang](https://github.com/okJiang) **tw@qiancai**
 
-    在 v6.6.0 之前，TiDB Lightning 仅支持通过 AWS IAM **用户的密钥**访问 S3 的数据，无法使用临时会话令牌访问 S3 的数据。自 v6.6.0 起，TiDB Lightning 支持通过 AWS IAM **角色的密钥 + 会话令牌**来访问 S3 数据，以提高安全性。
+    在 v6.6.0 之前，TiDB Lightning 仅支持通过 AWS IAM **用户密钥**访问 S3 的数据，无法使用临时会话令牌。自 v6.6.0 起，TiDB Lightning 支持通过 AWS IAM **角色密钥 + 会话令牌**的方式来访问 S3 数据，以提高安全性。
 
     更多信息，请参考[用户文档](https://github.com/pingcap/docs-cn/pull/12947)。
 
