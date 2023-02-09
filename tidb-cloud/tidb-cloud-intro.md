@@ -20,7 +20,7 @@ TiDB Cloud allows you with little or no training to handle complex tasks such as
 
 Watch the following video to learn more about TiDB Cloud:
 
-<iframe width="600" height="450" src="https://www.youtube.com/embed/skCV9BEmjbo" title="Why TiDB Cloud?" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" enablejsapi="true" allowfullscreen></iframe>
+<iframe width="600" height="450" src="https://www.youtube.com/embed/skCV9BEmjbo?enablejsapi=1" title="Why TiDB Cloud?" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 With TiDB Cloud, you can get the following key features:
 
