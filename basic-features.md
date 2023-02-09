@@ -6,11 +6,11 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 
 # TiDB 功能概览
 
-本文列出了 TiDB 功能在不同版本中的支持变化情况，包括[长期支持版本 (LTS)](/releases/versioning.md#长期支持版本) 和最新的长期支持版本之后的[开发里程碑版本 (DMR)](/releases/versioning.md#开发里程碑版本)。
+本文列出了 TiDB 功能在不同版本中的支持变化情况，包括[长期支持版本 (LTS)](/releases/versioning.md#长期支持版本) 和最新的 LTS 版本之后的[开发里程碑版本 (DMR)](/releases/versioning.md#开发里程碑版本)。
 
 > **注意：**
 >
-> PingCAP 不提供基于 DMR 版本的 bug 修复版本，如有 bug，会在后续版本中修复。如无特殊需求，建议使用最新 LTS 版本。
+> PingCAP 不提供基于 DMR 版本的 bug 修复版本，如有 bug，会在后续版本中修复。如无特殊需求，建议使用[最新 LTS 版本](https://docs.pingcap.com/zh/tidb/stable)。
 >
 > 下表中出现的缩写字母含义如下：
 >
