@@ -459,7 +459,7 @@ public class BookDAO {
 SET @@tidb_read_staleness="-5";
 ```
 
-比如，如果该变量的值设置为 -5，TiDB 会在 5 秒时间范围内，保证 TiKV 拥有对应历史版本数据的情况下，选择尽可能新的一个时间戳。
+比如，如果该变量的值设置为 -5，TiDB 会在 5 秒时间范围内，保证 TiKV 或者 TiFlash 拥有对应历史版本数据的情况下，选择尽可能新的一个时间戳。
 
 关闭会话当中的 Stale Read：
 
