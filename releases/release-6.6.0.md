@@ -406,7 +406,7 @@ TiDB 版本：6.6.0
 
 + TiFlash
 
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
+    - 修复查询 TiFlash 相关的系统表可能会卡住的 [#6745](https://github.com/pingcap/tiflash/pull/6745) @[lidezhu](https://github.com/lidezhu)
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
 + Tools
