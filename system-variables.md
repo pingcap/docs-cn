@@ -3181,7 +3181,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 是否持久化到集群：是
 - 默认值：`3000`
 - 范围：`[1, 32767]`
-- 这个变量设置了 [statement summary tables](/statement-summary-tables.md) 在内存中保存的语句的最大数量。
+- 这个变量设置了 [statement summary tables](/statement-summary-tables.md) 在内存中保存的语句的最大数量。统计当前内存中保存的语句数量是根据 statements_summary_history 记录的全量数据，即 statements_summary_history 表同时包含历史数据和 statements_summary 表内的最新数据。
 
 ### `tidb_stmt_summary_refresh_interval` <span class="version-mark">从 v4.0 版本开始引入</span>
 
