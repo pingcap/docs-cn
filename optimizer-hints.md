@@ -328,6 +328,63 @@ The `IGNORE_INDEX(t1_name, idx1_name [, idx2_name ...])` hint tells the optimize
 select /*+ IGNORE_INDEX(t1, idx1, idx2) */ * from t t1;
 ```
 
+### ORDER_INDEX(t1_name, idx1_name [, idx2_name ...])
+
+The `ORDER_INDEX(t1_name, idx1_name [, idx2_name ...])` hint tells the optimizer to use only the given index for a specified table and read the specified index in order.
+
+> **Warning:**
+>
+> This hint might cause SQL statements to fail. It is recommended to test it first. If an error occurs during the test, remove the hint. If the test runs normally, you can continue using it.
+
+This hint is usually applied in the following scenario:
+
+```sql
+CREATE TABLE t(a INT, b INT, key(a), key(b));
+EXPLAIN SELECT /*+ ORDER_INDEX(t, a) */ a FROM t ORDER BY a LIMIT 10;
+```
+
+```sql
++----------------------------+---------+-----------+---------------------+-------------------------------+
+| id                         | estRows | task      | access object       | operator info                 |
++----------------------------+---------+-----------+---------------------+-------------------------------+
+| Limit_10                   | 10.00   | root      |                     | offset:0, count:10            |
+| └─IndexReader_14           | 10.00   | root      |                     | index:Limit_13                |
+|   └─Limit_13               | 10.00   | cop[tikv] |                     | offset:0, count:10            |
+|     └─IndexFullScan_12     | 10.00   | cop[tikv] | table:t, index:a(a) | keep order:true, stats:pseudo |
++----------------------------+---------+-----------+---------------------+-------------------------------+
+```
+
+The optimizer generates two types of plan for this query: `Limit + IndexScan(keep order: true)` and `TopN + IndexScan(keep order: false)`. When the `ORDER_INDEX` hint is used, the optimizer chooses the first plan that reads the index in order.
+
+> **Note:**
+>
+> - If the query itself does not need to read the index in order (that is, without a hint, the optimizer does not generate a plan that reads the index in order in any situation), when the `ORDER_INDEX` hint is used, the error `Can't find a proper physical plan for this query` occurs. In this case, you need to remove the corresponding `ORDER_INDEX` hint.
+> - The index on a partitioned table cannot be read in order, so do not use the `ORDER_INDEX` hint on the partitioned table and its related indexes.
+
+### NO_ORDER_INDEX(t1_name, idx1_name [, idx2_name ...])
+
+The `NO_ORDER_INDEX(t1_name, idx1_name [, idx2_name ...])` hint tells the optimizer to use only the given index for a specified table and not to read the specified index in order. This hint is usually applied in the following scenario.
+
+The following example shows that the effect of the query statement is equivalent to `SELECT * FROM t t1 use index(idx1, idx2);`:
+
+```sql
+CREATE TABLE t(a INT, b INT, key(a), key(b));
+EXPLAIN SELECT /*+ NO_ORDER_INDEX(t, a) */ a FROM t ORDER BY a LIMIT 10;
+```
+
+```sql
++----------------------------+----------+-----------+---------------------+--------------------------------+
+| id                         | estRows  | task      | access object       | operator info                  |
++----------------------------+----------+-----------+---------------------+--------------------------------+
+| TopN_7                     | 10.00    | root      |                     | test.t.a, offset:0, count:10   |
+| └─IndexReader_14           | 10.00    | root      |                     | index:TopN_13                  |
+|   └─TopN_13                | 10.00    | cop[tikv] |                     | test.t.a, offset:0, count:10   |
+|     └─IndexFullScan_12     | 10000.00 | cop[tikv] | table:t, index:a(a) | keep order:false, stats:pseudo |
++----------------------------+----------+-----------+---------------------+--------------------------------+
+```
+
+The same as the example of `ORDER_INDEX` hint, the optimizer generates two types of plans for this query: `Limit + IndexScan(keep order: true)` and `TopN + IndexScan(keep order: false)`. When the `NO_ORDER_INDEX` hint is used, the optimizer will choose the latter plan to read the index out of order.
+
 ### AGG_TO_COP()
 
 The `AGG_TO_COP()` hint tells the optimizer to push down the aggregate operation in the specified query block to the coprocessor. If the optimizer does not push down some aggregate function that is suitable for pushdown, then it is recommended to use this hint. For example:
