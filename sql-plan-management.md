@@ -170,15 +170,10 @@ The original SQL statement and the bound statement must have the same text after
 
 To make the execution plan of a SQL statement fixed to a historical execution plan, you can use `plan_digest` to bind that historical execution plan to the SQL statement, which is more convenient than binding it according to a SQL statement.
 
-> **Warning:**
->
-> Currently, creating a binding according to a historical execution plan is an experimental feature with unknown risks. Do not use it in production environments.
-
 Currently, this feature has the following limitations:
 
 - The feature generates hints according to historical execution plans and uses the generated hints for binding. Because historical execution plans are stored in [Statement Summary Tables](/statement-summary-tables.md), before using this feature, you need to enable the [`tidb_enable_stmt_summary`](/system-variables.md#tidb_enable_stmt_summary-new-in-v304) system variable first.
 - Currently, this feature only supports binding historical execution plans in the `statements_summary` and `statements_summary_history` tables of the current TiDB node. If you get a `can't find any plans` error, you can connect to another TiDB node in the cluster and retry the binding.
-- Currently, this feature does not work for queries with subqueries, queries that access TiFlash, or queries that join 3 or more tables.
 
 The SQL statement of this binding method is as follows:
 
@@ -300,6 +295,8 @@ This statement removes an execution plan binding corresponding to `sql_digest` a
 
 ### Change binding status
 
+#### Change binding status according to a SQL statement
+
 {{< copyable "sql" >}}
 
 ```sql
@@ -309,6 +306,16 @@ SET BINDING [ENABLED | DISABLED] FOR BindableStmt;
 You can execute this statement to change the status of a binding. The default status is ENABLED. The effective scope is GLOBAL by default and cannot be modified.
 
 When executing this statement, you can only change the status of a binding from `Disabled` to `Enabled` or from `Enabled` to `Disabled`. If no binding is available for status changes, a warning message is returned, saying `There are no bindings can be set the status. Please check the SQL text`. Note that a binding in `Disabled` status is not used by any query.
+
+#### Change binding status according to `sql_digest`
+
+In addition to changing the binding status according to a SQL statement, you can also change the binding status according to `sql_digest`:
+
+```sql
+SET BINDING [ENABLED | DISABLED] FOR SQL DIGEST 'sql_digest';
+```
+
+The binding status that can be changed by `sql_digest` and the effect is the same as those changed [according to a SQL statement](#change-binding-status-according-to-a-sql-statement). If no binding is available for status changes, a warning message `can't find any binding for 'sql_digest'` is returned.
 
 ### View bindings
 

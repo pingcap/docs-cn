@@ -16,8 +16,8 @@ The bound SQL statement is parameterized and stored in the system table. When a 
 
 ```ebnf+diagram
 CreateBindingStmt ::=
-    'CREATE' GlobalScope 'BINDING' ( 'FOR' BindableStmt 'USING' BindableStmt ) 
-|   ( 'FROM' 'HISTORY' 'USING' 'PLAN' 'DIGEST' PlanDigest )
+    'CREATE' GlobalScope 'BINDING' ( 'FOR' BindableStmt 'USING' BindableStmt
+|   'FROM' 'HISTORY' 'USING' 'PLAN' 'DIGEST' PlanDigest )
 
 GlobalScope ::=
     ( 'GLOBAL' | 'SESSION' )?
