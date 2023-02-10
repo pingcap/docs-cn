@@ -111,7 +111,7 @@ This document lists the features supported in each TiDB version.
 | Multi-schema change: add columns                           | Y | Y | Y | Y | Experimental | Experimental | Experimental | Experimental | Experimental | Experimental | Experimental | Experimental |
 | [Change column type](/sql-statements/sql-statement-modify-column.md) | Y | Y | Y | Y | Y | Y  | Y            |      Y       |      Y       |      Y       |      N       |      N       |
 | [Temporary tables](/temporary-tables.md)                    | Y | Y | Y | Y | Y | Y   | Y            |      Y       |      N       |      N       |      N       |      N       |
-| [Concurrent DDL statements](/system-variables.md#tidb_enable_concurrent_ddl-new-in-v620) | Y | Y | Y | Y | N | N | N | N | N | N | N | N |
+| Concurrent DDL statements | Y | Y | Y | Y | N | N | N | N | N | N | N | N |
 | [Acceleration of `ADD INDEX` and `CREATE INDEX`](/system-variables.md#tidb_ddl_enable_fast_reorg-new-in-v630) | Y | Experimental | Experimental | N | N | N | N | N | N | N | N | N |
 | [Metadata lock](/metadata-lock.md) | Y | Experimental | Experimental | N | N | N | N | N | N | N | N | N |
 | [`FLASHBACK CLUSTER TO TIMESTAMP`](/sql-statements/sql-statement-flashback-to-timestamp.md) | Y | Experimental | N | N | N | N | N | N | N | N | N | N |

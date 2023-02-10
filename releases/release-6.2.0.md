@@ -19,7 +19,7 @@ In v6.2.0-DMR, the key new features and improvements are as follows:
 * The [Lock View](/information-schema/information-schema-data-lock-waits.md) of TiDB feature supports showing the waiting information of optimistic transactions, facilitating quick locating of lock conflicts.
 * TiFlash supports [a newer version of storage format](/tiflash/tiflash-configuration.md#configure-the-tiflashtoml-file), enhancing stability and performance.
 * The [Fine Grained Shuffle feature](/system-variables.md#tiflash_fine_grained_shuffle_batch_size-new-in-v620) allows parallel execution of window functions in multiple threads.
-* A [new concurrent DDL framework](/system-variables.md#tidb_enable_concurrent_ddl-new-in-v620): Less DDL statements blocked and higher execution efficiency.
+* A new concurrent DDL framework: Less DDL statements blocked and higher execution efficiency.
 * TiKV supports [automatically tuning the CPU usage](/tikv-configuration-file.md#background-quota-limiter), thus ensuring stable and efficient database operations.
 * [Point-in-time recovery (PITR)](/br/backup-and-restore-overview.md) is introduced to restore a snapshot of a TiDB cluster to a new cluster from any given time point in the past.
 * TiDB Lightning supports [importing data to production clusters in the physical import mode](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#import-data-into-a-cluster-in-production).
@@ -101,7 +101,7 @@ In v6.2.0-DMR, the key new features and improvements are as follows:
 
     TiDB v6.2.0 introduces a new concurrent DDL framework, which enables DDL statements to be concurrently executed on different table objects and fixes the issue that DDL operations are blocked by DDL operations on other tables. In addition, TiDB supports concurrent DDL execution when adding an index on multiple tables or changing a column type. This improves the efficiency of DDL execution.
 
-    [User document](/system-variables.md#tidb_enable_concurrent_ddl-new-in-v620) [#32031](https://github.com/pingcap/tidb/issues/32031) @[wjhuang2016](https://github.com/wjhuang2016)
+    [#32031](https://github.com/pingcap/tidb/issues/32031) @[wjhuang2016](https://github.com/wjhuang2016)
 
 * Optimizer enhances the estimation of string matching
 
@@ -250,7 +250,7 @@ In v6.2.0-DMR, the key new features and improvements are as follows:
 | --- | --- | --- |
 | [tidb_enable_new_cost_interface](/system-variables.md#tidb_enable_new_cost_interface-new-in-v620) | Newly added | This variable controls whether to enable the [refactored Cost Model implementation](/cost-model.md#cost-model-version-2). |
 | [tidb_cost_model_version](/system-variables.md#tidb_cost_model_version-new-in-v620) | Newly added | TiDB uses a cost model to choose an index and operator during physical optimization. This variable is used to select the cost model version. TiDB v6.2.0 introduces the Cost Model Version 2, which is more accurate than the previous version in internal tests. |
-| [tidb_enable_concurrent_ddl](/system-variables.md#tidb_enable_concurrent_ddl-new-in-v620) | Newly added | This variable controls whether to allow TiDB to use concurrent DDL statements. DO NOT modify this variable. The risk of disabling this variable is unknown and might corrupt the metadata of the cluster. |
+| tidb_enable_concurrent_ddl | Newly added | This variable controls whether to allow TiDB to use concurrent DDL statements. DO NOT modify this variable. The risk of disabling this variable is unknown and might corrupt the metadata of the cluster. |
 | [tiflash_fine_grained_shuffle_stream_count](/system-variables.md#tiflash_fine_grained_shuffle_stream_count-new-in-v620) | Newly added | This variable controls the concurrency level of the window function execution When the window function is pushed down to TiFlash for execution. |
 | [tiflash_fine_grained_shuffle_batch_size](/system-variables.md#tiflash_fine_grained_shuffle_batch_size-new-in-v620) | Newly added | When Fine Grained Shuffle is enabled, the window function pushed down to TiFlash can be executed in parallel. This variable controls the batch size of the data sent by the sender. The sender will send data once the cumulative number of rows exceeds this value. |
 | [tidb_default_string_match_selectivity](/system-variables.md#tidb_default_string_match_selectivity-new-in-v620) | Newly added | This variable is used to set the default selectivity of `like`, `rlike`, and `regexp` functions in the filter condition when estimating the number of rows. This variable also controls whether to enable TopN to help estimate these functions. |
