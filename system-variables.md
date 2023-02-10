@@ -1312,7 +1312,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 默认值：`OFF`
 - 这个变量用于控制是否开启可感知到垃圾回收的内存追踪 (GC-Aware memory track)。
 
-### `tidb_enable_general_plan_cache` <span class="version-mark">从 v6.3.0 版本开始引入</span>
+### `tidb_enable_non_prepared_plan_cache`
 
 > **警告：**
 >
@@ -1859,7 +1859,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
     - `txn_mode`：事务模式。可选值：`OPTIMISTIC`（乐观事务模式），或 `PESSIMISTIC`（悲观事务模式）
     - `sql`：当前查询对应的 SQL 语句
 
-### `tidb_general_plan_cache_size` <span class="version-mark">从 v6.3.0 版本开始引入</span>
+### `tidb_non_prepared_plan_cache_size`
 
 > **警告：**
 >
