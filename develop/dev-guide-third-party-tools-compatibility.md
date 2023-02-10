@@ -13,7 +13,6 @@ summary: Describes TiDB compatibility issues with third-party tools found during
 > - Triggers
 > - Events
 > - User-defined functions
-> - `FOREIGN KEY` constraints
 > - `SPATIAL` functions, data types and indexes
 > - `XA` syntax
 >
@@ -185,7 +184,6 @@ According to the test results, TiDB supports most of the Sequelize features ([us
 
 Unsupported features are:
 
-- Foreign key constraints (including many-to-many relationships) are not supported.
 - [`GEOMETRY`](https://github.com/pingcap/tidb/issues/6347) is not supported.
 - Modification of integer primary key is not supported.
 - `PROCEDURE` is not supported.

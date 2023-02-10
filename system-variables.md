@@ -270,8 +270,8 @@ For more possible values of this variable, see [Authentication plugin status](/s
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
 - Type: Boolean
-- Default value: `OFF`
-- For compatibility, TiDB returns foreign key checks as `OFF`.
+- Default value: Before v6.6.0, the default value is `OFF`. Starting from v6.6.0, the default value is `ON`.
+- This variable controls whether to enable foreign key constraint checking.
 
 ### group_concat_max_len
 
@@ -1500,14 +1500,10 @@ MPP is a distributed computing framework provided by the TiFlash engine, which a
 
 ### `tidb_enable_foreign_key` <span class="version-mark">New in v6.3.0</span>
 
-> **Warning:**
->
-> The feature controlled by this variable is not fully functional in the current TiDB version. Do not change the default value.
-
 - Scope: GLOBAL
 - Persists to cluster: Yes
 - Type: Boolean
-- Default value: `OFF`
+- Default value: Before v6.6.0, the default value is `OFF`. Starting from v6.6.0, the default value is `ON`.
 - This variable controls whether to enable the `FOREIGN KEY` feature.
 
 ### tidb_enable_gc_aware_memory_track

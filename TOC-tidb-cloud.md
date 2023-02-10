@@ -410,6 +410,7 @@
     - [Partitioning](/partitioned-table.md)
     - [Temporary Tables](/temporary-tables.md)
     - [Cached Tables](/cached-tables.md)
+    - [FOREIGN KEY Constraints](/foreign-key.md)
     - Character Set and Collation
       - [Overview](/character-set-and-collation.md)
       - [GBK](/character-set-gbk.md)

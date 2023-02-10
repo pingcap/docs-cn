@@ -59,6 +59,38 @@ ColumnOption ::=
 |   'STORAGE' StorageMedia
 |   'AUTO_RANDOM' OptFieldLen
 
+Constraint ::=
+    IndexDef
+|   ForeignKeyDef
+
+IndexDef ::=
+    ( 'INDEX' | 'KEY' ) IndexName? '(' KeyPartList ')' IndexOption?
+
+KeyPartList ::=
+    KeyPart ( ',' KeyPart )*
+
+KeyPart ::=
+    ColumnName ( '(' Length ')')? ( 'ASC' | 'DESC' )?
+|   '(' Expression ')' ( 'ASC' | 'DESC' )?
+
+IndexOption ::=
+    'COMMENT' String
+|   ( 'VISIBLE' | 'INVISIBLE' )
+
+ForeignKeyDef
+         ::= ( 'CONSTRAINT' Identifier )? 'FOREIGN' 'KEY'
+             Identifier? '(' ColumnName ( ',' ColumnName )* ')'
+             'REFERENCES' TableName '(' ColumnName ( ',' ColumnName )* ')'
+             ( 'ON' 'DELETE' ReferenceOption )?
+             ( 'ON' 'UPDATE' ReferenceOption )?
+
+ReferenceOption
+         ::= 'RESTRICT'
+           | 'CASCADE'
+           | 'SET' 'NULL'
+           | 'SET' 'DEFAULT'
+           | 'NO' 'ACTION'
+
 CreateTableOptionListOpt ::=
     TableOptionList?
 
@@ -83,7 +115,7 @@ TableOption ::=
 |   'SECONDARY_ENGINE' EqOpt ( 'NULL' | StringName )
 |   'UNION' EqOpt '(' TableNameListOpt ')'
 |   'ENCRYPTION' EqOpt EncryptionOpt
-| 'TTL' EqOpt TimeColumnName '+' 'INTERVAL' Expression TimeUnit (TTLEnable EqOpt ( 'ON' | 'OFF' ))?
+|    'TTL' EqOpt TimeColumnName '+' 'INTERVAL' Expression TimeUnit (TTLEnable EqOpt ( 'ON' | 'OFF' ))?
 |   PlacementPolicyOption
 
 OnCommitOpt ::=
@@ -226,7 +258,6 @@ mysql> DESC t1;
 * TiDB supports at most 512 columns in a single table. The corresponding number limit in InnoDB is 1017, and the hard limit in MySQL is 4096. For details, see [TiDB Limitations](/tidb-limitations.md).
 * For partitioned tables, only Range, Hash and Range Columns (single column) are supported. For details, see [partitioned table](/partitioned-table.md).
 * `CHECK` constraints are parsed but ignored (MySQL 5.7 compatible behavior). For details, see [Constraints](/constraints.md).
-* `FOREIGN KEY` constraints are parsed and stored, but not enforced by DML statements. For details, see [Constraints](/constraints.md).
 
 ## See also
 

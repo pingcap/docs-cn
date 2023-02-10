@@ -41,7 +41,6 @@ In addition, TiDB does not support the MySQL replication protocol, but provides 
 + Triggers
 + Events
 + User-defined functions
-+ `FOREIGN KEY` constraints [#18209](https://github.com/pingcap/tidb/issues/18209)
 + `FULLTEXT` syntax and indexes [#1793](https://github.com/pingcap/tidb/issues/1793)
 + `SPATIAL` (also known as `GIS`/`GEOMETRY`) functions, data types and indexes [#6347](https://github.com/pingcap/tidb/issues/6347)
 + Character sets other than `ascii`, `latin1`, `binary`, `utf8`, `utf8mb4`, and `gbk`.
@@ -220,9 +219,6 @@ TiDB supports most [SQL modes](/sql-mode.md):
     - The default collation of `utf8mb4` in TiDB is `utf8mb4_bin`.
     - The default collation of `utf8mb4` in MySQL 5.7 is `utf8mb4_general_ci`.
     - The default collation of `utf8mb4` in MySQL 8.0 is `utf8mb4_0900_ai_ci`.
-- Default value of `foreign_key_checks`:
-    - The default value in TiDB is `OFF` and currently TiDB only supports `OFF`.
-    - The default value in MySQL 5.7 is `ON`.
 - Default SQL mode:
     - The default SQL mode in TiDB includes these modes: `ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION`.
     - The default SQL mode in MySQL:

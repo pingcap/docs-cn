@@ -340,7 +340,7 @@ For more details about the primary key of the `CLUSTERED` type, refer to [cluste
 
 > **Note:**
 >
-> TiDB has limited support for foreign key constraints.
+> Before v6.6.0, TiDB supports creating and deleting foreign key constraints, but the constraints are not actually effective. Starting from v6.6.0, TiDB supports the [FOREIGN KEY constraints](/foreign-key.md) feature.
 
 TiDB supports creating `FOREIGN KEY` constraints in DDL commands.
 
@@ -381,15 +381,3 @@ TiDB also supports the syntax to `DROP FOREIGN KEY` and `ADD FOREIGN KEY` via th
 ALTER TABLE orders DROP FOREIGN KEY fk_user_id;
 ALTER TABLE orders ADD FOREIGN KEY fk_user_id (user_id) REFERENCES users(id);
 ```
-
-### Notes
-
-* TiDB supports foreign keys to avoid errors caused by this syntax when you migrate data from other databases to TiDB.
-
-    However, TiDB does not perform constraint checking on foreign keys in DML statements. For example, even if there is no record with id=123 in the users table, the following transactions can be submitted successfully.
-
-    ```sql
-    START TRANSACTION;
-    INSERT INTO orders (user_id, doc) VALUES (123, NULL);
-    COMMIT;
-    ```

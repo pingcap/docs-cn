@@ -44,7 +44,7 @@ Yes, it is. When all the required services are started, you can use TiDB as easi
 
 ### How is TiDB compatible with MySQL?
 
-Currently, TiDB supports the majority of MySQL 5.7 syntax, but does not support triggers, stored procedures, user-defined functions, and foreign keys. For more details, see [Compatibility with MySQL](/mysql-compatibility.md).
+Currently, TiDB supports the majority of MySQL 5.7 syntax, but does not support triggers, stored procedures, and user-defined functions. For more details, see [Compatibility with MySQL](/mysql-compatibility.md).
 
 ### Does TiDB support distributed transactions?
 
