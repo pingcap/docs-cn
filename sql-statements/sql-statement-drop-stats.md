@@ -12,7 +12,10 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-drop-stats/']
 
 ```ebnf+diagram
 DropStatsStmt ::=
-    'DROP' 'STATS' TableName
+    'DROP' 'STATS' TableNameList 
+
+TableNameList ::=
+    TableName ( ',' TableName )*
 
 TableName ::=
     Identifier ('.' Identifier)?

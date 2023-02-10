@@ -64,7 +64,7 @@ dispatchers = [
 
 如果将 Changefeed 和 Task 也包含到上文中提及的架构图，完整的 TiCDC 架构图如下：
 
-![TiCDC architecture](/media/ticdc/ticdc-architecture-4.jpg)
+![TiCDC architecture](/media/ticdc/ticdc-architecture-6.jpg)
 
 上图创建了一个 Changefeed，需要同步 4 张表，这个 Changefeed 被拆分成了 3 个任务，均匀的分发到了 TiCDC 集群的 3 个 Capture 节点上，在 TiCDC 对这些数据进行了处理之后，数据同步到了下游的系统。
 
@@ -75,7 +75,7 @@ dispatchers = [
 1. 推流：发生数据改变时，TiKV 集群将数据主动推送给 Puller 模块。
 2. 增量扫：Puller 模块在发现收到的数据改变不连续的时候，向 TiKV 节点主动拉取需要的数据。
 3. 排序：Sorter 模块对获取的数据按照时间进行排序，并将排好序的数据发送给 Mounter。
-4. 装载：Mounter 模块收到数据变更后，根据表的 schema 信息，将数据变更装载成 TiCD sink 可以理解的格式。
+4. 装载：Mounter 模块收到数据变更后，根据表的 schema 信息，将数据变更装载成 TiCDC sink 可以理解的格式。
 5. 同步：Sink 模块根据下游的类型将数据变更同步到下游。
 
 由于 TiCDC 的上游是支持事务的分布式关系型数据库 TiDB，在同步数据的时候，如何保证数据的一致性，以及在同步多张表的时候，如何保证事务的一致性，都是很大的挑战。下面的章节会介绍 TiCDC 在确保事务特性时所使用的关键技术和概念。

@@ -59,6 +59,38 @@ ColumnOption ::=
 |   'STORAGE' StorageMedia
 |   'AUTO_RANDOM' OptFieldLen
 
+Constraint ::=
+    IndexDef
+|   ForeignKeyDef
+
+IndexDef ::=
+    ( 'INDEX' | 'KEY' ) IndexName? '(' KeyPartList ')' IndexOption?
+
+KeyPartList ::=
+    KeyPart ( ',' KeyPart )*
+
+KeyPart ::=
+    ColumnName ( '(' Length ')')? ( 'ASC' | 'DESC' )?
+|   '(' Expression ')' ( 'ASC' | 'DESC' )?
+
+IndexOption ::=
+    'COMMENT' String
+|   ( 'VISIBLE' | 'INVISIBLE' )
+
+ForeignKeyDef
+         ::= ( 'CONSTRAINT' Identifier )? 'FOREIGN' 'KEY'
+             Identifier? '(' ColumnName ( ',' ColumnName )* ')'
+             'REFERENCES' TableName '(' ColumnName ( ',' ColumnName )* ')'
+             ( 'ON' 'DELETE' ReferenceOption )?
+             ( 'ON' 'UPDATE' ReferenceOption )?
+
+ReferenceOption
+         ::= 'RESTRICT'
+           | 'CASCADE'
+           | 'SET' 'NULL'
+           | 'SET' 'DEFAULT'
+           | 'NO' 'ACTION'
+
 CreateTableOptionListOpt ::=
     TableOptionList?
 
@@ -201,7 +233,6 @@ mysql> DESC t1;
 * TiDB 在单个表中最多支持 512 列。InnoDB 中相应的数量限制为 1017，MySQL 中的硬限制为 4096。详情参阅 [TiDB 使用限制](/tidb-limitations.md)。
 * 当前仅支持 Range、Hash 和 Range Columns（单列）类型的分区表，详情参阅[分区表](/partitioned-table.md)。
 * TiDB 会解析并忽略 `CHECK` 约束，与 MySQL 5.7 相兼容。详情参阅 [`CHECK` 约束](/constraints.md#check-约束)。
-* TiDB 会解析并存储外键约束，但不会在 DML 语句中强制对外键进行约束检查。详情[外键约束](/constraints.md#外键约束)。
 
 ## 另请参阅
 
