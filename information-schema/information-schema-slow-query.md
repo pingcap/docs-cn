@@ -20,7 +20,7 @@ USE information_schema;
 DESC slow_query;
 ```
 
-```
+```sql
 +-------------------------------+---------------------+------+------+---------+-------+
 | Field                         | Type                | Null | Key  | Default | Extra |
 +-------------------------------+---------------------+------+------+---------+-------+
@@ -84,6 +84,7 @@ DESC slow_query;
 | Backoff_total                 | double              | YES  |      | NULL    |       |
 | Write_sql_response_total      | double              | YES  |      | NULL    |       |
 | Result_rows                   | bigint(22)          | YES  |      | NULL    |       |
+| Warnings                      | longtext            | YES  |      | NULL    |       |
 | Backoff_Detail                | varchar(4096)       | YES  |      | NULL    |       |
 | Prepared                      | tinyint(1)          | YES  |      | NULL    |       |
 | Succ                          | tinyint(1)          | YES  |      | NULL    |       |
@@ -98,7 +99,7 @@ DESC slow_query;
 | Prev_stmt                     | longtext            | YES  |      | NULL    |       |
 | Query                         | longtext            | YES  |      | NULL    |       |
 +-------------------------------+---------------------+------+------+---------+-------+
-73 rows in set (0.000 sec)
+74 rows in set (0.001 sec)
 ```
 
 ## CLUSTER_SLOW_QUERY table
@@ -182,6 +183,7 @@ desc cluster_slow_query;
 | Backoff_total                 | double              | YES  |      | NULL    |       |
 | Write_sql_response_total      | double              | YES  |      | NULL    |       |
 | Result_rows                   | bigint(22)          | YES  |      | NULL    |       |
+| Warnings                      | longtext            | YES  |      | NULL    |       |
 | Backoff_Detail                | varchar(4096)       | YES  |      | NULL    |       |
 | Prepared                      | tinyint(1)          | YES  |      | NULL    |       |
 | Succ                          | tinyint(1)          | YES  |      | NULL    |       |
@@ -196,7 +198,7 @@ desc cluster_slow_query;
 | Prev_stmt                     | longtext            | YES  |      | NULL    |       |
 | Query                         | longtext            | YES  |      | NULL    |       |
 +-------------------------------+---------------------+------+------+---------+-------+
-74 rows in set (0.000 sec)
+75 rows in set (0.001 sec)
 ```
 
 When the cluster system table is queried, TiDB does not obtain data from all nodes, but pushes down the related calculation to other nodes. The execution plan is as follows:

@@ -84,6 +84,7 @@ Slow query basics:
 * `Write_sql_response_total`: The time consumed for sending the results back to the client by this statement.
 * `Result_rows`: The row count of the query results.
 * `IsExplicitTxn`: Whether this statement is in an explicit transaction. If the value is `false`, the transaction is `autocommit=1` and the statement is automatically committed after execution.
+* `Warnings`: The JSON-formatted warnings that are generated during the execution of this statement. These warnings are generally consistent with the output of the [`SHOW WARNINGS`](/sql-statements/sql-statement-show-warnings.md) statement, but might include extra warnings that provide more diagnostic information. These extra warnings are marked as `IsExtra: true`.
 
 The following fields are related to transaction execution:
 
