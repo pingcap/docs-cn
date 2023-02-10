@@ -233,7 +233,7 @@ TiDB 版本：6.6.0
 
 * TiDB Lightning 新增配置文件参数 "header-schema-match" 用于解决源文件里的列名和目标表的列名不匹配的问题 @[dsdashun](https://github.com/dsdashun)
 
-    在 v6.6.0 版本中，TiDB Lightning 新增配置文件参数 "header-schema-match"，默认取值为 `true`，表示源 CSV 文件第一行有表的列名信息，且和目标表列名保持一致；取值为 `false` 则表示不一致，在历史版本里这个场景会导致导入报错，在 v6.6.0 版本中，将该参数设置为 `false` 后，在源文件的列顺序和目标表列顺序一致的前提下，可以忽略该报错，继续导入数据。
+    在 v6.6.0 版本中，TiDB Lightning 新增配置文件参数 "header-schema-match"，默认取值为 `true`，表示源 CSV 文件第一行有表的列名信息，且和目标表列名保持一致。如果 CSV 表头中的字段名和目标表的列名不匹配，此时可以将该配置设置为 false，TiDB Lightning 将忽略不匹配的问题，继续按目标表中的列顺序导入数据。
 
     更多信息，请参考 [TiDB Lightning 任务配置](tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置)。
 
