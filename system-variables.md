@@ -3531,7 +3531,7 @@ SHOW WARNINGS;
 - Persists to cluster: Yes
 - Type: Enumeration
 - Default value: `leader`
-- Possible values: `leader`, `follower`, `leader-and-follower`, `closest-replicas`, `closest-adaptive`
+- Possible values: `leader`, `follower`, `leader-and-follower`, `prefer-leader`, `closest-replicas`, `closest-adaptive`
 - This variable is used to control where TiDB reads data.
 - For more details about usage and implementation, see [Follower read](/follower-read.md).
 

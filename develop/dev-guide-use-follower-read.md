@@ -44,7 +44,7 @@ If your TiDB cluster is deployed across districts or data centers, different rep
 <SimpleTab groupId="language">
 <div label="SQL" value="sql">
 
-To enable Follower Read, set the variable `tidb_replica_read` (default value is `leader`) to `follower`, `leader-and-follower`, `closest-replicas`, or `closest-adaptive`:
+To enable Follower Read, set the variable `tidb_replica_read` (default value is `leader`) to `follower`, `leader-and-follower`, `prefer-leader`, `closest-replicas`, or `closest-adaptive`:
 
 ```sql
 SET [GLOBAL] tidb_replica_read = 'follower';
@@ -63,7 +63,8 @@ public enum FollowReadMode {
     FOLLOWER("follower"),
     LEADER_AND_FOLLOWER("leader-and-follower"),
     CLOSEST_REPLICA("closest-replica"),
-    CLOSEST_ADAPTIVE("closest-adaptive");
+    CLOSEST_ADAPTIVE("closest-adaptive"),
+    PREFER_LEADER("prefer-leader");
 
     private final String mode;
 
