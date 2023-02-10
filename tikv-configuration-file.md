@@ -1124,11 +1124,6 @@ Configuration items related to RocksDB
 + The maximum RocksDB WAL size in total, which is the size of `*.log` files in the `data-dir`.
 + Default value: `"4GB"`
 
-### `enable-statistics`
-
-+ Determines whether to enable the statistics of RocksDB
-+ Default value: `true`
-
 ### `stats-dump-period`
 
 + The interval at which statistics are output to the log.
