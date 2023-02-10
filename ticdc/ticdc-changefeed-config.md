@@ -89,6 +89,13 @@ ignore-event = ["drop table"] # Ignore drop table events.
 ignore-sql = ["delete"] # Ignore delete DMLs.
 ignore-insert-value-expr = "price > 1000 and origin = 'no where'" # Ignore insert DMLs that contain the conditions "price > 1000" and "origin = 'no where'".
 
+[scheduler]
+# Splits a table into multiple replication ranges based on the number of Regions, and these ranges can be replicated by multiple TiCDC nodes.
+# Note:
+# 1. This parameter only takes effect on Kafka changefeeds and is not supported on MySQL changefeeds.
+# 2. TiCDC does not split tables with fewer Regions than this parameter value into multiple replication ranges.
+# region-per-span = 50000
+
 [sink]
 # For the sink of MQ type, you can use dispatchers to configure the event dispatcher.
 # Since v6.1.0, TiDB supports two types of event dispatchers: partition and topic. For more information, see <partition and topic link>.
