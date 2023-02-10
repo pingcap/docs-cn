@@ -123,6 +123,46 @@ MySQL [test]> select @@last_plan_from_cache;
 1 row in set (0.00 sec)
 ```
 
+## Diagnostics of Prepared Plan Cache
+
+Some queries or plans cannot be cached. You can use the `SHOW WARNINGS` statement to check whether the query or plan is cached. If it is not cached, you can check the reason for the failure in the result. For example:
+
+```sql
+mysql> PREPARE st FROM 'SELECT * FROM t WHERE a > (SELECT MAX(a) FROM t)';  -- The query contains a subquery and cannot be cached.
+
+Query OK, 0 rows affected, 1 warning (0.01 sec)
+
+mysql> show warnings;  -- Checks the reason why the query plan cannot be cached.
+
++---------+------+-----------------------------------------------+
+| Level   | Code | Message                                       |
++---------+------+-----------------------------------------------+
+| Warning | 1105 | skip plan-cache: sub-queries are un-cacheable |
++---------+------+-----------------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> prepare st from 'select * from t where a<?';
+
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> set @a='1';
+
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> execute st using @a;  -- The optimization converts a non-INT type to an INT type, and the execution plan might change with the change of the parameter, so TiDB does not cache the plan.
+
+Empty set, 1 warning (0.01 sec)
+
+mysql> show warnings;
+
++---------+------+----------------------------------------------+
+| Level   | Code | Message                                      |
++---------+------+----------------------------------------------+
+| Warning | 1105 | skip plan-cache: '1' may be converted to INT |
++---------+------+----------------------------------------------+
+1 row in set (0.00 sec)
+```
+
 ## Memory management of Prepared Plan Cache
 
 <CustomContent platform="tidb">
