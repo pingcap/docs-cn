@@ -36,3 +36,35 @@ TiDB provides the methods of performing Stale Read at the statement level, the s
     - Specifying a time range: In a session, if you need TiDB to read the data as new as possible within a time range in subsequent queries without violating the isolation level, you can specify the time range by setting the `tidb_read_staleness` system variable. For detailed usage, refer to [`tidb_read_staleness`](/tidb-read-staleness.md).
 
 Besides, TiDB provides a way to specify an exact point in time by setting the [`tidb_external_ts`](/system-variables.md#tidb_external_ts-new-in-v640) system variable on session or global level. For detailed usage, refer to [Perform Stale Read Using `tidb_external_ts`](/tidb-external-ts.md).
+
+## Restrictions
+
+When a Stale Read query for a table is pushed down to TiFlash, the query will return an error if this table has newer DDL operations executed after the read timestamp specified by the query. This is because TiFlash only supports reading data from the tables with the latest schemas.
+
+Take the following table as an example:
+
+```sql
+create table t1(id int);
+alter table t1 set tiflash replica 1;
+```
+
+Execute the following DDL operation after one minute:
+
+```sql
+alter table t1 add column c1 int not null;
+```
+
+Then, use Stale Read to query the data from one minute ago:
+
+```sql
+set @@session.tidb_enforce_mpp=1;
+select * from t1 as of timestamp NOW() - INTERVAL 1 minute;
+```
+
+TiFlash will report an error as follows:
+
+```
+ERROR 1105 (HY000): other error for mpp stream: From MPP<query:<query_ts:1673950975508472943, local_query_id:18, server_id:111947, start_ts:438816196526080000>,task_id:1>: Code: 0, e.displayText() = DB::TiFlashException: Table 323 schema version 104 newer than query schema version 100, e.what() = DB::TiFlashException,
+```
+
+To avoid this error, you can change the read timestamp specified by Stale Read to the time after the DDL operation.

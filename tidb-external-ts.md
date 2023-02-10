@@ -7,15 +7,6 @@ summary: Learn how to read historical data using the `tidb_external_ts` variable
 
 To support reading the historical data, TiDB v6.4.0 introduces a system variable [`tidb_external_ts`](/system-variables.md#tidb_external_ts-new-in-v640). This document describes how to read historical data through this system variable, including detailed usage examples.
 
-> **Warning:**
->
-> Currently, you cannot use Stale Read together with TiFlash. If you enable [`tidb_enable_external_ts_read`](/system-variables.md#tidb_enable_external_ts_read-new-in-v640) in a query and TiDB might read data from TiFlash replicas, you might encounter the error message `ERROR 1105 (HY000): stale requests require tikv backend`.
->
-> To fix this problem, disable TiFlash replicas for your Stale Read query by performing one of the following operations:
->
-> - Use the `tidb_isolation_read_engines` variable to disable TiFlash replicas: `SET SESSION tidb_isolation_read_engines='tidb,tikv'`.
-> - Use the [READ_FROM_STORAGE](/optimizer-hints.md#read_from_storagetiflasht1_name--tl_name--tikvt2_name--tl_name-) hint to enforce TiDB to read data from TiKV.
-
 ## Scenarios
 
 Read historical data from a specified point in time is very useful for data replication tools such as TiCDC. After the data replication tool completes the data replication before a certain point in time, you can set the `tidb_external_ts` system variable of the downstream TiDB to read the data before that point in time. This prevents the data inconsistency caused by data replication.

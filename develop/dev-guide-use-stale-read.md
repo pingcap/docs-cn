@@ -457,7 +457,7 @@ Enable Stale Read in a session:
 SET @@tidb_read_staleness="-5";
 ```
 
-For example, if the value is set to `-5` and TiKV has the corresponding historical data, TiDB selects a timestamp as new as possible within a 5-second time range.
+For example, if the value is set to `-5` and TiKV or TiFlash has the corresponding historical data, TiDB selects a timestamp as new as possible within a 5-second time range.
 
 Disable Stale Read in the session:
 
