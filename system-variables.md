@@ -237,8 +237,9 @@ mysql> SELECT * FROM t1;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 默认值：`OFF`
-- 为保持兼容，TiDB 对外键检查返回 `OFF`。
+- 类型：布尔型
+- 默认值：在 v6.6.0 之前版本中为 `OFF`，在 v6.6.0 及之后的版本中为 `ON`。
+- 表示是否开启外键约束检查。
 
 ### `group_concat_max_len`
 
@@ -1293,14 +1294,10 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 ### `tidb_enable_foreign_key` <span class="version-mark">从 v6.3.0 版本开始引入</span>
 
-> **警告：**
->
-> 当前版本中该变量控制的功能尚未完全生效，请保留默认值。
-
 - 作用域：GLOBAL
 - 是否持久化到集群：是
 - 类型：布尔型
-- 默认值：`OFF`
+- 默认值：在 v6.6.0 之前版本中为 `OFF`，在 v6.6.0 及之后的版本中为 `ON`。
 - 这个变量用于控制是否开启 `FOREIGN KEY` 特性。
 
 ### `tidb_enable_gc_aware_memory_track`
