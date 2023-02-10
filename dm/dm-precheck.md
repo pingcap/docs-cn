@@ -90,6 +90,30 @@ For the full data migration mode (`task-mode: full`), in addition to the [common
 
     - If sharded tables have auto-increment primary keys, the precheck returns a warning. If there are conflicts in auto-increment primary keys, see [Handle conflicts of auto-increment primary key](/dm/shard-merge-best-practices.md#handle-conflicts-of-auto-increment-primary-key) for solutions.
 
+#### Check items for physical import
+
+If you set `import-mode: "physical"` in the task configuration, the following check items are added to ensure that [Physical Import](/tidb-lightning/tidb-lightning-physical-import-mode.md) runs normally. After following the prompts, if you find it difficult to meet the requirements of these check items, you can try to use the [logical import mode](/tidb-lightning/tidb-lightning-logical-import-mode.md) to import data.
+
+* Empty Regions in the downstream database
+
+    - If the number of empty Regions is greater than `max(1000, 3 * the number of tables)` (the larger of "1000" and "3 times the number of tables"), the precheck returns a warning. You can adjust related PD parameters to speed up the merging of empty Regions and wait for the number of empty Regions to decrease. See [PD Scheduling Best Practices - Slow Region Merge](/best-practices/pd-scheduling-best-practices.md#region-merge-is-slow).
+
+* Region distribution in the downstream database
+
+    - Checks the number of Regions on different TiKV nodes. Assuming that the TiKV node with the lowest Region count has `a` Regions and the TiKV node with the highest Region count has `b` Regions, if `a / b` is less than 0.75, the precheck returns a warning. You can adjust related PD parameters to speed up the scheduling of Regions and wait for the number of Regions to change. See [PD Scheduling Best Practices - Leader/Region distribution is not balanced](/best-practices/pd-scheduling-best-practices.md#leadersregions-are-not-evenly-distributed).
+
+* The versions of TiDB, PD, and TiKV in the downstream database
+
+    - Physical import must call the interfaces of TiDB, PD, and TiKV. If the versions are not compatible, the precheck returns an error.
+
+* The free space of the downstream database
+
+    - Estimates the total sizes of all tables in the allow list in the upstream database (`source_size`). If the free space of the downstream database is less than `source_size`, the precheck returns an error. If the free space of the downstream database is less than the number of TiKV replicas \* `source_size` \* 2, the precheck returns a warning.
+
+* Whether the downstream database is running tasks that are incompatible with physical import
+
+    - Currently, physical import is incompatible with [TiCDC](/ticdc/ticdc-overview.md) and [PITR](/br/br-pitr-guide.md) tasks. If these tasks are running in the downstream database, the precheck returns an error.
+
 ### Check items for incremental data migration
 
 For the incremental data migration mode (`task-mode: incremental`), in addition to the [common check items](#common-check-items), the precheck also includes the following check items:
@@ -130,6 +154,11 @@ Prechecks can find potential risks in your environments. It is not recommended t
 | `table_schema`          | Checks the compatibility of the table schemas in the upstream MySQL tables. |
 | `schema_of_shard_tables`| Checks the consistency of the table schemas in the upstream MySQL multi-instance shards. |
 | `auto_increment_ID`     | Checks whether the auto-increment primary key conflicts in the upstream MySQL multi-instance shards. |
+| `empty_region` | Checks the number of empty Regions in the downstream database for physical import. |
+| `region_distribution` | Checks the distribution of Regions in the downstream database for physical import. |
+| `downstream_version` | Checks the versions of TiDB, PD, and TiKV in the downstream database. |
+| `free_space` | Checks the free space of the downstream database. |
+| `downstream_mutex_features` | Checks whether the downstream database is running tasks that are incompatible with physical import. |
 
 > **Note:**
 >

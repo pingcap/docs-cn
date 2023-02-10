@@ -120,15 +120,46 @@ loaders:
     # The directory that stores full data exported from the upstream ("./dumped_data" by default).
     # Supoprts a local filesystem path or an Amazon S3 path. For example, "s3://dm_bucket/dumped_data?endpoint=s3-website.us-east-2.amazonaws.com&access_key=s3accesskey&secret_access_key=s3secretkey&force_path_style=true"
     dir: "./dumped_data"
-    # The import mode during the full import phase. In most cases you don't need to care about this configuration.
-    # - "sql" (default). Use [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) TiDB-backend mode to import data.
-    # - "loader". Use Loader mode to import data. This mode is only for compatibility with features that TiDB Lightning does not support yet. It will be deprecated in the future.
-    import-mode: "sql"
-    #  Methods to resolve conflicts during the full import phase. You can set it to the following:
-    # - "replace" (default). Only supports the import mode "sql". In this method, it uses the new data to replace the existing data.
-    # - "ignore". Only supports the import mode "sql". It keeps the existing data, and ignores the new data.
-    # - "error". Only supports the import mode "loader". It reports errors when inserting duplicated data, and then stops the replication task.
-    on-duplicate: "replace"
+
+    # The import mode during the full import phase. The following modes are supported:
+    # - "logical" (default). Uses TiDB Lightning's logical import mode to import data. Document: https://docs.pingcap.com/tidb/stable/tidb-lightning-logical-import-mode
+    # - "physical". Uses TiDB Lightning's physical import mode to import data. Document: https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-physical-import-mode
+    #   The "physical" mode is still an experimental feature and is not recommended in production.
+    import-mode: "logical"
+    #  Methods to resolve conflicts in logical import.
+    # - "replace" (default). Uses the new data to replace the existing data.
+    # - "ignore". Keeps the existing data, and ignores the new data.
+    # - "error". Reports errors when inserting duplicated data, and then stops the replication task.
+    on-duplicate-logical: "replace"
+
+    #  Methods to resolve conflicts in physical import.
+    # - "none". Corresponds to the "none" strategy of conflict detection in TiDB Lightning's physical import.
+    #   (https://docs.pingcap.com/tidb/stable/tidb-lightning-physical-import-mode-usage#conflict-detection).
+    #   Conflicting data is not resolved in this method. "none" has the best performance, but
+    #   might lead to inconsistent data in the downstream database.
+    # - "manual". Corresponds to the "remove" strategy of conflict detection in TiDB Lightning's physical import.
+    #   (https://docs.pingcap.com/tidb/stable/tidb-lightning-physical-import-mode-usage#conflict-detection).
+    #   When the import encounter conflicting data, DM removes all conflicting records from
+    #   the target table and records the data in the `${meta-schema}_${name}.conflict_error_v1`
+    #   table. In this configuration file, the conflicting data is recorded in the
+    #   `dm_meta_test.conflict_error_v1` table. When the full import phase is completed, the
+    #   tasks is paused and you are prompted to query this table and manually resolve the
+    #   conflicts. You need to resume the task and enter the incremental phase using the `resume-task` command.
+    on-duplicate-physical: "none"
+    # The directory used for local KV sorting in the physical import mode. The default value of this
+    # configuration is the same as the `dir` configuration. For details, refer to TiDB Lightning document: https://docs.pingcap.com/tidb/stable/tidb-lightning-physical-import-mode#environment-requirements
+    sorting-dir-physical: "./dumped_data"
+    # Disk quota. Corresponds to the disk-quota configuration of TiDB Lightning. For details, refer to TiDB Lightning document: https://docs.pingcap.com/tidb/stable/tidb-lightning-physical-import-mode-usage#configure-disk-quota-new-in-v620
+    disk-quota-physical: "0"
+    # DM performs `ADMIN CHECKSUM TABLE <table>` for each table to verify data integrity after the import.
+    # - "required" (default): performs admin checksum after the import. If checksum fails,
+    #   DM pauses the task and you need to manually handle the failure.
+    # - "optional": performs admin checksum after the import. If checksum fails, DM logs a
+    #   warning and continues to migrate data. The task is not paused.
+    # - "off": does not perform admin checksum after the import.
+    # If checksum fails, the import is abnormal, which means the data is inconsistent or lost.
+    # Therefore, it is recommended to always enable checksum.
+    checksum-physical: "required"
 
 # Configuration arguments of the sync processing unit.
 syncers:

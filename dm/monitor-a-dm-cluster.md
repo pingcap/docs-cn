@@ -62,15 +62,14 @@ The following metrics show only when `task-mode` is in the `full` or `all` mode.
 
 | Metric name | Description | Alert | Severity level |
 |:----|:------------|:----|:----|
+| dump progress | The percentage of the completed dumping process of the dump unit. The value range is 0%~100% | N/A | N/A |
 | load progress | The percentage of the completed loading process of the load unit. The value range is 0%~100% | N/A | N/A |
+| checksum progress | The percentage of the completed checksum process after the load unit finishes dumping. The value range is 0%~100% | N/A | N/A |
+| total bytes for load unit | The bytes processed in the parsing, in generating data KV, and in generating index KV stages of the import process by the load unit | N/A | N/A |
+| chunk process duration | The duration of the load unit processing the data source file chunk (in seconds) | N/A | N/A |
 | data file size | The total size of the data files (includes the `INSERT INTO` statement) in the full data imported by the load unit | N/A | N/A |
 | dump process exits with error | The dump unit encounters an error within the DM-worker and exits | Immediate alerts | critical |
 | load process exits with error | The load unit encounters an error within the DM-worker and exits | Immediate alerts | critical |
-| table count | The total number of tables in the full data imported by the load unit | N/A | N/A |
-| data file count | The total number of data files (includes the `INSERT INTO` statement) in the full data imported by the load unit | N/A | N/A |
-| transaction execution latency | The latency of executing a transaction by the load unit (in seconds) | N/A | N/A |
-| statement execution latency | The duration of executing a statement by the load unit (in seconds) | N/A | N/A |
-| remaining time | The remaining time of replicating data by the load unit (in seconds) | N/A | N/A |
 
 ### Binlog replication
 
