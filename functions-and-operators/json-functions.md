@@ -27,6 +27,8 @@ TiDB supports most of the JSON functions that shipped with the GA release of MyS
 | [->>][json_short_extract_unquote]  | Returns the value from a JSON column after the evaluating path and unquoting the result; an alias for `JSON_UNQUOTE(JSON_EXTRACT(doc, path_literal))` |
 | [JSON_KEYS(json_doc[, path])][json_keys] | Returns the keys from the top-level value of a JSON object as a JSON array, or, if a path argument is given, the top-level keys from the selected path |
 | [JSON_SEARCH(json_doc, one_or_all, search_string)][json_search] | Search a JSON document for one or all matches of a string |
+| [value MEMBER OF(json_array)][MEMBER_OF] | If the passed value is an element of the JSON array, returns 1. Otherwise, returns 0. |
+| [JSON_OVERLAPS(json_doc1, json_doc2)][json_overlaps] | Indicates whether two JSON documents have overlapping part. If yes, returns 1. If not, returns 0. |
 
 ## Functions that modify JSON values
 
@@ -136,3 +138,7 @@ TiDB supports most of the JSON functions that shipped with the GA release of MyS
 [json_storage_free]: https://dev.mysql.com/doc/refman/8.0/en/json-utility-functions.html#function_json-storage-free
 
 [json_storage_size]: https://dev.mysql.com/doc/refman/5.7/en/json-utility-functions.html#function_json-storage-size
+
+[MEMBER_OF]: https://dev.mysql.com/doc/refman/8.0/en/json-search-functions.html#operator_member-of
+
+[json_overlaps]: https://dev.mysql.com/doc/refman/8.0/en/json-search-functions.html#function_json-overlaps
