@@ -3842,14 +3842,10 @@ For details, see [Identify Slow Queries](/identify-slow-queries.md).
 
 ### `tidb_store_batch_size`
 
-> **Warning:**
->
-> Currently, `tidb_store_batch_size` is not stable yet. This variable might be removed in a future release. It is not recommended that you use it in production environments. It is not recommended to change the default value.
-
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
 - Type: Integer
-- Default value: `0`
+- Default value: `4`
 - Range: `[0, 25000]`
 - This variable is used to control the batch size of the Coprocessor Tasks of the `IndexLookUp` operator. `0` means to disable batch. When the number of tasks is relatively large and slow queries occur, you can increase this variable to optimize the query.
 
