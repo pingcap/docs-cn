@@ -33,7 +33,7 @@ summary: 了解如何使用 TiCDC 构建主备集群进行容灾。
 - Primary Cluster：主用集群，运行在 Region 1，三副本，用于处理读写业务。
 - Secondary Cluster：备用集群，运行在 Region 2，通过 TiCDC 从 Primary Cluster 同步数据。
 
-这种容灾架构简洁易用，可以容忍 Region 级别的故障，既可以保证 主用集群的写入性能不会下降，还可以在备用集群处理一些延迟不敏感的只读业务。该方案的 Recovery Point Objective（RPO）在秒级别，Recovery Time Objective (RTO) 可以达到分钟级别甚至更低。这是许多数据库厂商推荐的方案，适用于重要的生产系统。
+这种容灾架构简洁易用，可以容忍 Region 级别的故障，既可以保证主用集群的写入性能不会下降，还可以在备用集群处理一些延迟不敏感的只读业务。该方案的 Recovery Point Objective（RPO）在秒级别，Recovery Time Objective (RTO) 可以达到分钟级别甚至更低。这是许多数据库厂商推荐的方案，适用于重要的生产系统。
 
 > **注意：**
 >
@@ -349,7 +349,7 @@ s3://backup?access-key=minio&secret-access-key=miniostorage&endpoint=http://10.0
 
 当 TiDB 主集群所遭遇的灾难解决后，或者主集群暂时不能恢复，此时 TiDB 集群是脆弱的，只有一个备用集群临时作为新的主集群提供服务。为了维持系统的可靠性，需要重建灾备集群保护系统的可靠性。
 
-目前，重建 TiDB 主备集群，通用的方案是重新部署一个新的集群，组成新的容灾主备机群。操作请参考：
+目前，重建 TiDB 主备集群，通用的方案是重新部署一个新的集群，组成新的容灾主备集群。操作请参考：
 
 - [搭建主备集群](#搭建主备集群)。
 - [从主集群复制数据到备用集群](#从主集群复制数据到备用集群)。

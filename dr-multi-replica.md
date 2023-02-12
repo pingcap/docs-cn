@@ -125,7 +125,7 @@ summary: 了解 TiDB 提供的基于多副本的单集群容灾方案。
 3. 创建 placement rule，并将测试表的主副本固定在 Region 1：
 
     ```sql
-    --创建两个 placement rules，第一个是 Region1 作为主region，在系统正常时使用，第二个是 Region2。
+    -- 创建两个 placement rules，第一个是 Region1 作为主 Region，在系统正常时使用，第二个是 Region2 作为备 Region。
     -- 作为主 Region，当 Region1 出现问题时，Region2 会作为主 Region。
     MySQL [(none)]> CREATE PLACEMENT POLICY primary_rule_for_region1 PRIMARY_REGION="Region1" REGIONS="Region1, Region2,Region3";
     MySQL [(none)]> CREATE PLACEMENT POLICY secondary_rule_for_region2 PRIMARY_REGION="Region2" REGIONS="Region1,Region2,Region3";
@@ -134,9 +134,9 @@ summary: 了解 TiDB 提供的基于多副本的单集群容灾方案。
     ALTER TABLE tpcc.warehouse PLACEMENT POLICY=primary_rule_for_region1;
     ALTER TABLE tpcc.district PLACEMENT POLICY=primary_rule_for_region1;
 
-    --说明：请根据需要修改上面的数据库名称、表名和 placement rule 的名称。
+    -- 说明：请根据需要修改上面的数据库名称、表名和 placement rule 的名称。
 
-    --使用类似下面的查询，用户可以查看每个区域包含的 leader 数量，以确认 leader 迁移是否完成。
+    -- 使用类似下面的查询，用户可以查看每个区域包含的 leader 数量，以确认 leader 迁移是否完成。
     select STORE_ID, address, leader_count, label from TIKV_STORE_STATUS order by store_id;
     ```
 
@@ -164,10 +164,10 @@ summary: 了解 TiDB 提供的基于多副本的单集群容灾方案。
 
 指根据维护需要进行的主备区域切换，可用于验证容灾系统是否可以正常工作。本部分介绍如何在计划内切换主备区域。
 
-1. 执行如下命令，将所有用户表和 PD leader 都切换到区域 2：
+1. 执行如下命令，将所有用户表和 PD Leader 都切换到区域 2：
 
     ``` sql
-    --将之前创建的规则 secondary_rule_for_region2 应用到对应的用户表上。
+    -- 将之前创建的规则 secondary_rule_for_region2 应用到对应的用户表上。
     ALTER TABLE tpcc.warehouse PLACEMENT POLICY=secondary_rule_for_region2;
     ALTER TABLE tpcc.district PLACEMENT POLICY=secondary_rule_for_region2;
     ```
@@ -175,14 +175,14 @@ summary: 了解 TiDB 提供的基于多副本的单集群容灾方案。
     说明：请根据需要修改上面的数据库名称、表名和 placement rule 的名称。
 
     ``` shell
-    执行如下命令，调低区域 1 的 PD 节点的优先级，并调高区域 2的 PD 节点的优先级。
+    执行如下命令，调低 Region 1 的 PD 节点的优先级，并调高 Region 2 的 PD 节点的优先级。
     # tiup ctl:v6.4.0 pd member leader_priority  pd-1 2
     # tiup ctl:v6.4.0 pd member leader_priority  pd-2 1
     # tiup ctl:v6.4.0 pd member leader_priority  pd-3 4
     # tiup ctl:v6.4.0 pd member leader_priority  pd-4 3
     ```
 
-2. 观察 Grafana 中 PD 和 TiKV 部分中的内容，确保 PD 的Leader 和用户表的 Leader 已经迁移到对应的区域。另外，切换回原有区域的步骤与上面的步骤基本相同，本文不做过多的描述。
+2. 观察 Grafana 中 PD 和 TiKV 部分中的内容，确保 PD 的 Leader 和用户表的 Leader 已经迁移到对应的区域。另外，切换回原有区域的步骤与上面的步骤基本相同，本文不做过多的描述。
 
 ### 计划外切换
 
