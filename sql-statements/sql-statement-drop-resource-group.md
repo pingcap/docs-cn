@@ -38,13 +38,13 @@ mysql> SELECT * FROM information_schema.resource_groups WHERE NAME ='rg1';
 | NAME | RU_PER_SEC | BURSTABLE |
 +------+------------+-----------+
 | rg1  |        500 | YES       |
-+------+------------+-----------+-----------+
++------+------------+-----------+
 1 row in set (0.01 sec)
 
-mysql> DROP RESOURCE GROUP IF EXISTS rg1 ;
+mysql> DROP RESOURCE GROUP IF EXISTS rg1;
 Query OK, 1 rows affected (0.09 sec)
 
-mysql>  SELECT * FROM information_schema.resource_groups WHERE NAME ='rg1';
+mysql> SELECT * FROM information_schema.resource_groups WHERE NAME ='rg1';
 Empty set (0.00 sec)
 ```
 
