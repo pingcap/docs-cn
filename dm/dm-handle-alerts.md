@@ -74,7 +74,7 @@ This document introduces how to deal with the alert information in DM.
 
 - Description:
 
-    When the relay log processing unit encounters an error, this unit moves to `Paused` state, and an alert is triggered immediately.
+    When the relay log processing unit encounters a non-autorecoverable error (for example, binlog files not found), or when it encounters multiple recoverable errors (for example, network problems) in a short period of time (for example, more than 3 times in 2 minutes), this alert is triggered.
 
 - Solution:
 
@@ -98,7 +98,7 @@ This document introduces how to deal with the alert information in DM.
 
 - Description:
 
-    When the relay log processing unit validates the binlog event read from the upstream and detects abnormal checksum information, this unit moves to the `Paused` state, and an alert is triggered immediately.
+    When the relay log processing unit validates the binlog event read from the upstream and detects abnormal checksum information, this unit moves to the `Paused` state, and an alert is triggered.
 
 - Solution:
 
@@ -108,7 +108,7 @@ This document introduces how to deal with the alert information in DM.
 
 - Description:
 
-    If an error occurs when the relay log processing unit tries to read the binlog event from the upstream, this unit moves to the `Paused` state, and an alert is triggered immediately.
+    If an error occurs when the relay log processing unit tries to read the binlog event from the upstream, this unit moves to the `Paused` state, and an alert is triggered.
 
 - Solution:
 
@@ -118,7 +118,7 @@ This document introduces how to deal with the alert information in DM.
 
 - Description:
 
-    If an error occurs when the relay log processing unit tries to write the binlog event into the relay log file, this unit moves to the `Paused` state, and an alert is triggered immediately.
+    If an error occurs when the relay log processing unit tries to write the binlog event into the relay log file, this unit moves to the `Paused` state, and an alert is triggered.
 
 - Solution:
 
@@ -140,7 +140,7 @@ This document introduces how to deal with the alert information in DM.
 
 - Description:
 
-    When the Dump processing unit encounters an error, this unit moves to the `Paused` state, and an alert is triggered immediately.
+    When the Dump processing unit encounters a non-autorecoverable error (for example, binlog files not found), or when it encounters multiple recoverable errors (for example, network problems) in a short period of time (for example, more than 3 times in 2 minutes), this alert is triggered.
 
 - Solution:
 
@@ -150,7 +150,7 @@ This document introduces how to deal with the alert information in DM.
 
 - Description:
 
-    When the Load processing unit encounters an error, this unit moves to the `Paused` state, and an alert is triggered immediately.
+    When the Load processing unit encounters a non-autorecoverable error (for example, binlog files not found), or when it encounters multiple recoverable errors (for example, network problems) in a short period of time (for example, more than 3 times in 2 minutes), this alert is triggered.
 
 - Solution:
 
@@ -162,7 +162,7 @@ This document introduces how to deal with the alert information in DM.
 
 - Description:
 
-    When the binlog replication processing unit encounters an error, this unit moves to the `Paused` state, and an alert is triggered immediately.
+    When the binlog replication processing unit encounters a non-autorecoverable error (for example, binlog files not found), or when it encounters multiple recoverable errors (for example, network problems) in a short period of time (for example, more than 3 times in 2 minutes), this alert is triggered.
 
 - Solution:
 
