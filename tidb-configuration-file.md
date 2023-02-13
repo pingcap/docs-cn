@@ -802,7 +802,7 @@ TiDB 服务状态相关配置。
 
 ### `tidb_enable_ddl`
 
-+ 用于表示该 tidb-server 是否运行 DDL 语句。
++ 用于表示该 tidb-server 是否可以成为 DDL owner。
 + 默认值：true
 + 该值作为系统变量 [`tidb_enable_ddl`](/system-variables.md#tidb_enable_ddl) 的初始值。
 + 在 v6.3.0 之前，该功能由配置项 `run-ddl` 进行设置。
