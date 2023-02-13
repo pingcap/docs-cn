@@ -4,7 +4,7 @@ summary: 本文介绍了 Performance Overview 仪表盘中 TiFlash 部分，帮�
 ---
 
 # TiFlash 性能分析和优化方法
-本文介绍 TiFlash MPP 资源使用率和关键的性能指标，用户通过 TiFlash 仪表盘，可以用来监控和评估TiFlash集群性能。
+本文介绍 TiFlash MPP 资源使用率和关键的性能指标，用户通过 TiFlash 仪表盘，可以用来监控和评估 TiFlash 集群性能。
 
 ## TiFlash 集群资源利用率
 
