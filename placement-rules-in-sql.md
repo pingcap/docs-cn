@@ -256,11 +256,10 @@ PARTITION BY RANGE( YEAR(purchased) ) (
 
 ``` sql
 	CREATE PLACEMENT POLICY multiaz SURVIVAL_PREFERENCES="[zone, host]";
-	CREATE PLACEMENT POLICY singleaz CONSTRAINTS="[+zone=zone1]" SURVIVAL_PREFERENCES="[rack]";
+	CREATE PLACEMENT POLICY singleaz CONSTRAINTS="[+zone=zone1]" SURVIVAL_PREFERENCES="[host]";
 ```
 
-对于以上例子，绑定了 `multiaz` 该放置策略的表，会以 3 副本的形式放置在不同的可用区里, 数据会先优先满足跨 `zone`（即可用区）级别数据隔离的生存目标，再满足跨 `host`（即机器）级别的数据隔离的生存目标；
-应用了 singleaz 放置策略的数据，会以 3 副本的形式放置在名为 `zone1` 这个可用区里, 再满足跨 `host`（即机器）级别的数据隔离的生存目标。
+对于以上例子，绑定了 `multiaz` 该放置策略的表，会以 3 副本的形式放置在不同的可用区里, 数据会先优先满足跨 `zone`（即可用区）级别数据隔离的生存目标，再满足跨 `host`（即机器）级别的数据隔离的生存目标；应用了 `singleaz` 放置策略的数据，会优先以 3 副本的形式全部放置在名为 `zone1` 这个可用区里，再满足跨 `host`（即机器）级别的数据隔离的生存目标。
 
 > **注意：**
 >
