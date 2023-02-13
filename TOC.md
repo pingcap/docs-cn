@@ -5,8 +5,7 @@
 - 关于 TiDB
   - [TiDB 简介](/overview.md)
   - [TiDB 6.5 Release Notes](/releases/release-6.5.0.md)
-  - [基本功能](/basic-features.md)
-  - [实验特性](/experimental-features.md)
+  - [功能概览](/basic-features.md)
   - [与 MySQL 的兼容性](/mysql-compatibility.md)
   - [使用限制](/tidb-limitations.md)
   - [荣誉列表](/credits.md)
@@ -21,9 +20,10 @@
     - [使用 TiDB Cloud (Serverless Tier) 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md)
     - [使用 TiDB 的增删改查 SQL](/develop/dev-guide-tidb-crud-sql.md)
   - 示例程序
-    - [Java](/develop/dev-guide-sample-application-java.md)
-    - [Java (Spring Boot)](/develop/dev-guide-sample-application-spring-boot.md)
     - [Golang](/develop/dev-guide-sample-application-golang.md)
+    - [Java (Spring Boot)](/develop/dev-guide-sample-application-spring-boot.md)
+    - [Java](/develop/dev-guide-sample-application-java.md)
+    - [Python (Django)](/develop/dev-guide-sample-application-django.md)
     - [Python](/develop/dev-guide-sample-application-python.md)
   - 连接到 TiDB
     - [选择驱动或 ORM 框架](/develop/dev-guide-choose-driver-or-orm.md)
@@ -589,6 +589,38 @@
     - [存储](/tidb-storage.md)
     - [计算](/tidb-computing.md)
     - [调度](/tidb-scheduling.md)
+  - 存储引擎 TiKV
+    - [TiKV 简介](/tikv-overview.md)
+    - [RocksDB 简介](/storage-engine/rocksdb-overview.md)
+    - [Titan 简介](/storage-engine/titan-overview.md)
+    - [Titan 配置说明](/storage-engine/titan-configuration.md)
+  - 存储引擎 TiFlash
+    - [TiFlash 简介](/tiflash/tiflash-overview.md)
+    - [构建 TiFlash 副本](/tiflash/create-tiflash-replicas.md)
+    - [使用 TiDB 读取 TiFlash](/tiflash/use-tidb-to-read-tiflash.md)
+    - [使用 TiSpark 读取 TiFlash](/tiflash/use-tispark-to-read-tiflash.md)
+    - [使用 MPP 模式](/tiflash/use-tiflash-mpp-mode.md)
+    - [TiFlash 支持的计算下推](/tiflash/tiflash-supported-pushdown-calculations.md)
+    - [TiFlash 查询结果物化](/tiflash/tiflash-results-materialization.md)
+    - [TiFlash 数据校验](/tiflash/tiflash-data-validation.md)
+    - [TiFlash 兼容性说明](/tiflash/tiflash-compatibility.md)
+  - [系统变量](/system-variables.md)
+  - 配置文件参数
+    - [tidb-server](/tidb-configuration-file.md)
+    - [tikv-server](/tikv-configuration-file.md)
+    - [tiflash-server](/tiflash/tiflash-configuration.md)
+    - [pd-server](/pd-configuration-file.md)
+  - CLI
+    - [tikv-ctl](/tikv-control.md)
+    - [pd-ctl](/pd-control.md)
+    - [tidb-ctl](/tidb-control.md)
+    - [pd-recover](/pd-recover.md)
+    - [binlog-ctl](/tidb-binlog/binlog-control.md)
+  - 命令行参数
+    - [tidb-server](/command-line-flags-for-tidb-configuration.md)
+    - [tikv-server](/command-line-flags-for-tikv-configuration.md)
+    - [tiflash-server](/tiflash/tiflash-command-line-flags.md)
+    - [pd-server](/command-line-flags-for-pd-configuration.md)
   - 监控指标
     - [Overview 面板](/grafana-overview-dashboard.md)
     - [Performance Overview 面板](/grafana-performance-overview-dashboard.md)
@@ -805,6 +837,7 @@
     - [分区表](/partitioned-table.md)
     - [临时表](/temporary-tables.md)
     - [缓存表](/cached-tables.md)
+    - [外键约束](/foreign-key.md)
     - 字符集和排序
       - [概述](/character-set-and-collation.md)
       - [GBK](/character-set-gbk.md)
@@ -899,39 +932,6 @@
         - [分享会话](/dashboard/dashboard-session-share.md)
         - [配置 SSO 登录](/dashboard/dashboard-session-sso.md)
       - [常见问题](/dashboard/dashboard-faq.md)
-  - CLI
-    - [tikv-ctl](/tikv-control.md)
-    - [pd-ctl](/pd-control.md)
-    - [tidb-ctl](/tidb-control.md)
-    - [pd-recover](/pd-recover.md)
-    - [binlog-ctl](/tidb-binlog/binlog-control.md)
-  - 命令行参数
-    - [tidb-server](/command-line-flags-for-tidb-configuration.md)
-    - [tikv-server](/command-line-flags-for-tikv-configuration.md)
-    - [tiflash-server](/tiflash/tiflash-command-line-flags.md)
-    - [pd-server](/command-line-flags-for-pd-configuration.md)
-  - 配置文件参数
-    - [tidb-server](/tidb-configuration-file.md)
-    - [tikv-server](/tikv-configuration-file.md)
-    - [tiflash-server](/tiflash/tiflash-configuration.md)
-    - [pd-server](/pd-configuration-file.md)
-  - [系统变量](/system-variables.md)
-  - 存储引擎
-    - TiKV
-      - [TiKV 简介](/tikv-overview.md)
-      - [RocksDB 简介](/storage-engine/rocksdb-overview.md)
-      - [Titan 简介](/storage-engine/titan-overview.md)
-      - [Titan 配置说明](/storage-engine/titan-configuration.md)
-    - TiFlash
-      - [TiFlash 简介](/tiflash/tiflash-overview.md)
-      - [构建 TiFlash 副本](/tiflash/create-tiflash-replicas.md)
-      - [使用 TiDB 读取 TiFlash](/tiflash/use-tidb-to-read-tiflash.md)
-      - [使用 TiSpark 读取 TiFlash](/tiflash/use-tispark-to-read-tiflash.md)
-      - [使用 MPP 模式](/tiflash/use-tiflash-mpp-mode.md)
-      - [TiFlash 支持的计算下推](/tiflash/tiflash-supported-pushdown-calculations.md)
-      - [TiFlash 查询结果物化](/tiflash/tiflash-results-materialization.md)
-      - [TiFlash 数据校验](/tiflash/tiflash-data-validation.md)
-      - [TiFlash 兼容性说明](/tiflash/tiflash-compatibility.md)
   - [遥测](/telemetry.md)
   - [错误码](/error-codes.md)
   - [通过拓扑 label 进行副本调度](/schedule-replicas-by-topology-labels.md)
@@ -961,6 +961,7 @@
   - v6.2
     - [6.2.0-DMR](/releases/release-6.2.0.md)
   - v6.1
+    - [6.1.4](/releases/release-6.1.4.md)
     - [6.1.3](/releases/release-6.1.3.md)
     - [6.1.2](/releases/release-6.1.2.md)
     - [6.1.1](/releases/release-6.1.1.md)
