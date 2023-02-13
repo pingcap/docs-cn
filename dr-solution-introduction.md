@@ -26,7 +26,7 @@ summary: 了解 TiDB 提供的几种容灾方案，包括基于主备集群的�
 
 ## 组件架构
 
-在介绍具体的容灾方案之前，本部分将从容灾角度介绍容灾系统中的组件架构，包括 TiDB、TiCDC 和 BR。 
+在介绍具体的容灾方案之前，本部分将从容灾角度介绍容灾系统中的组件架构，包括 TiDB、TiCDC 和 BR。
 
 ### TiDB 架构
 
@@ -42,7 +42,7 @@ TiDB 的设计采用了存储-计算分离的架构：
 
 ### TiCDC 架构
 
-![TiCDC architecture](/media/dr/ticdc-architecture.png)
+![TiCDC architecture](/media/ticdc/cdc-architecture.png)
 
 TiCDC 作为 TiDB 的增量数据同步工具，通过 PD 内部的 etcd 实现高可用，通过多个 Capture 进程获取 TiKV 节点上的数据改变，在内部进行排序、合并等处理之后，通过多个同步任务，同时向多个下游系统进行数据同步。在上面的架构中：
 
@@ -53,7 +53,7 @@ TiCDC 作为 TiDB 的增量数据同步工具，通过 PD 内部的 etcd 实现�
 
 ### BR 架构
 
-![BR architecture](/media/dr/br-architecture.png)
+![BR architecture](/media/br/br-snapshot-arch.png)
 
 BR 作为 TiDB 的备份恢复工具， 可以对 TiDB 集群进行基于时间点的全量快照备份和持续的日志备份，从而对 TiDB 集群的数据进行保护，当 TiDB 集群完全不可用时，可以通过备份文件，在全新的集群中进行恢复。备份恢复通常是数据安全的最后一道防线。
 
