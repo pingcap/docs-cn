@@ -1199,9 +1199,9 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 - 作用域：GLOBAL
 - 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
-- 默认值: `ON`
+- 默认值：`ON`
 - 可选值：`OFF`，`ON`
-- 用于设置该 TiDB 服务器是否运行 DDL 语句。
+- 用于设置该 TiDB 实例是否可以成为 DDL owner。若当前 TiDB 集群中只有一台 TiDB 实例，则不能禁止该实例成为 DDL owner，即不能设置为 `OFF`。
 
 ### `tidb_enable_enhanced_security`
 
