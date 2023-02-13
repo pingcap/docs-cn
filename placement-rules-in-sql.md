@@ -250,18 +250,17 @@ PARTITION BY RANGE( YEAR(purchased) ) (
 
 ### 生存偏好
 
-一些重要的数据可能需要跨可用区存储多个副本，从而具备高的容灾生存能力，比如具备云区域级别的生存能力。在创建或修改放置策略时，你可以使用 `SURVIVAL_PREFERENCES` 选项设置数据的生存能力偏好。
+在创建或修改放置策略时，你可以使用 `SURVIVAL_PREFERENCES` 选项设置数据的生存能力偏好。
 
-例如，在创建放置策略时，你可以按照以下方式设置 `SURVIVAL_PREFERENCES`，要求数据尽量满足所设置的生存偏好：
+例如，在一个部署在 3 个可用区，每个可用区上的节点可能混布多个进程的拓扑的集群:
 
 ``` sql
-CREATE PLACEMENT POLICY multiregion
-    follower=4
-    PRIMARY_REGION="us-east-1"
-    SURVIVAL_PREFERENCES="[region, zone]";
+	CREATE PLACEMENT POLICY multiaz SURVIVAL_PREFERENCES="[zone, host]";
+	CREATE PLACEMENT POLICY singleaz CONSTRAINTS="[+zone=zone1]" SURVIVAL_PREFERENCES="[rack]";
 ```
 
-对于绑定了该放置策略的表，数据会先优先满足跨 `region`（即云区域）级别数据隔离的生存目标，再满足跨 `zone`（即可用区）级别的数据隔离的生存目标。
+对于以上例子，绑定了 `multiaz` 该放置策略的表，会以 3 副本的形式放置在不同的可用区里, 数据会先优先满足跨 `zone`（即可用区）级别数据隔离的生存目标，再满足跨 `host`（即机器）级别的数据隔离的生存目标；
+应用了 singleaz 放置策略的数据，会以 3 副本的形式放置在名为 `zone1` 这个可用区里, 再满足跨 `host`（即机器）级别的数据隔离的生存目标。
 
 > **注意：**
 >
