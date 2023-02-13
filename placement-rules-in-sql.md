@@ -252,7 +252,7 @@ PARTITION BY RANGE( YEAR(purchased) ) (
 
 在创建或修改放置策略时，你可以使用 `SURVIVAL_PREFERENCES` 选项设置数据的生存能力偏好。
 
-例如，在一个部署在 3 个可用区，每个可用区上的节点可能混布多个进程的拓扑的集群:
+例如，在一个拓扑是部署在 3 个 `zone` (即可用区），每个可用区的 `host`（即节点）上混合部署多个 tikv 实例的集群上:
 
 ``` sql
 	CREATE PLACEMENT POLICY multiaz SURVIVAL_PREFERENCES="[zone, host]";
