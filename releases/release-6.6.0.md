@@ -223,6 +223,12 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 
     更多信息，请参考[用户文档](/statement-summary-tables.md#持久化-statements-summary)。
 
+### 遥测
+
+从 v6.6.0 起，TiDB 和 TiDB Dashboard 默认关闭遥测功能。
+
+从 v1.11.3 起，新部署的 TiUP 默认关闭遥测功能。如果从 v1.11.3 之前的 TiUP 版本升级至 v1.11.3 或更高 TiUP 版本，遥测保持升级前的开启或关闭状态。
+
 ### 生态系统
 
 * TiDB Data Migration (DM) 集成了 TiDB Lightning 的 Physical Import Mode，全量迁移性能提升最高达到 10 倍（实验特性）@[lance6716](https://github.com/lance6716) **tw@ran-huang**
@@ -257,12 +263,18 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 
     更多信息，请参考[用户文档](/ticdc/ticdc-sink-to-kafka.md#横向扩展大单表的负载到多个-ticdc-节点)。
 
-* [GORM] 已添加 TiDB 集成测试。目前 TiDB 已成为 GORM 默认支持的数据库。
+* GORM 已添加 TiDB 集成测试。目前 TiDB 已成为 GORM 默认支持的数据库。
 
     - [GORM MySQL driver](https://github.com/go-gorm/mysql) 在 `v1.4.6` 中新增 TiDB `AUTO_RANDOM` 特性适配 [#104](https://github.com/go-gorm/mysql/pull/104) @[Icemap](https://github.com/Icemap)
     - [GORM MySQL driver](https://github.com/go-gorm/mysql) 在 `v1.4.6` 中修复连接 TiDB 时，在 `AutoMigrate` 期间无法更改 `Unique` 字段的非 `Unique` 属性的问题 [#105](https://github.com/go-gorm/mysql/pull/104) @[Icemap](https://github.com/Icemap)
     - [GORM](https://github.com/go-gorm/gorm) 新增 TiDB 作为默认数据库 [#6014](https://github.com/go-gorm/gorm/pull/6014) @[Icemap](https://github.com/Icemap)
-    - [GORM 文档](https://github.com/go-gorm/gorm.io) 新增 TiDB 作为默认数据库 [#638](https://github.com/go-gorm/gorm.io/pull/638) @[Icemap](https://github.com/Icemap)
+    - [GORM 文档](https://github.com/go-gorm/gorm.io) 提及 TiDB 作为默认数据库 [#638](https://github.com/go-gorm/gorm.io/pull/638) @[Icemap](https://github.com/Icemap)
+
+## 兼容性变更
+
+> **注意**
+>
+> 如果是从 v6.4 或之前版本升级到 v6.6，可能也需要考虑和查看中间版本 release notes 中提到的兼容性变更信息。
 
 ### MySQL 兼容性
 
@@ -273,12 +285,6 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 * 支持兼容 MySQL 语法的多值索引 [#39592](https://github.com/pingcap/tidb/issues/39592) @[xiongjiwei](https://github.com/xiongjiwei) @[qw4990](https://github.com/qw4990) **tw@TomShawn**
 
     更多信息，请参考 v6.6.0 Release Notes 中 [SQL 部分](#sql)以及用户文档](/sql-statements/sql-statement-create-index.md#多值索引)。
-
-## 兼容性变更
-
-> **注意**
->
-> 如果是从 v6.4 或之前版本升级到 v6.6，可能也需要考虑和查看中间版本 release notes 中提到的兼容性变更信息。
 
 ### 系统变量
 
