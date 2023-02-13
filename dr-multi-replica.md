@@ -106,7 +106,7 @@ summary: 了解 TiDB 提供的基于多副本的单集群容灾方案。
 
     # 下面的步骤用于向集群中添加一些测试数据，可选
     # tiup bench tpcc  prepare -H 127.0.0.1 -P 4000 -D tpcc --warehouses 1
-    ``````
+    ```
 
     指定 PD leader 的优先级:
 
