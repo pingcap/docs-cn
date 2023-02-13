@@ -867,6 +867,13 @@ raftstore 相关的配置项。
 + 默认值：1MB
 + 最小值：0
 
+### `report-min-resolved-ts-interval`
+
++ 设置 PD leader 收到 Resolved TS 的最小间隔时间。如果该值设置为 `0`，表示禁用该功能。
++ 默认值：`"1s"`，即最小正值
++ 最小值：0
++ 单位：秒
+
 ## coprocessor
 
 coprocessor 相关的配置项。
