@@ -298,7 +298,7 @@ Compared with the previous LTS 6.1.0, 6.5.0 not only includes new features, impr
 
 | Variable name | Change type | Description |
 |--------|------------------------------|------|
-|[`tidb_enable_amend_pessimistic_txn`](/system-variables.md#tidb_enable_amend_pessimistic_txn-new-in-v407)| Deprecated | Starting from v6.5.0, this variable is deprecated, and TiDB uses the [Metadata Lock](/metadata-lock.md) feature by default to avoid the `Information schema is changed` error. |
+|`tidb_enable_amend_pessimistic_txn`| Deprecated | Starting from v6.5.0, this variable is deprecated, and TiDB uses the [Metadata Lock](/metadata-lock.md) feature by default to avoid the `Information schema is changed` error. |
 | [`tidb_enable_outer_join_reorder`](/system-variables.md#tidb_enable_outer_join_reorder-new-in-v610) | Modified | Changes the default value from `OFF` to `ON` after further tests, meaning that the support of Outer Join for the [Join Reorder](/join-reorder.md) algorithm is enabled by default. |
 | [`tidb_cost_model_version`](/system-variables.md#tidb_cost_model_version-new-in-v620) | Modified | Changes the default value from `1` to `2` after further tests, meaning that Cost Model Version 2 is used for index selection and operator selection by default.  |
 | [`tidb_enable_gc_aware_memory_track`](/system-variables.md#tidb_enable_gc_aware_memory_track)  |  Modified |   Changes the default value from `ON` to `OFF`. Because the GC-aware memory track is found inaccurate in tests and causes too large analyzed memory size tracked, the memory track is disabled. In addition, in Golang 1.19, the memory tracked by the GC-aware memory track does not have much impact on the overall memory.  |
@@ -359,7 +359,7 @@ Compared with the previous LTS 6.1.0, 6.5.0 not only includes new features, impr
 
 ## Deprecated feature
 
-Starting from v6.5.0, the [`AMEND TRANSACTION`](/system-variables.md#tidb_enable_amend_pessimistic_txn-new-in-v407) mechanism introduced in v4.0.7 is deprecated and replaced by [Metadata Lock](/metadata-lock.md).
+Starting from v6.5.0, the `AMEND TRANSACTION` mechanism introduced in v4.0.7 is deprecated and replaced by [Metadata Lock](/metadata-lock.md).
 
 ## Improvements
 

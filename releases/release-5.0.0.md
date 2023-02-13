@@ -43,7 +43,7 @@ In v5.0, the key new features or improvements are as follows:
     - [`tidb_gc_run_interval`](/system-variables.md#tidb_gc_run_interval-new-in-v50)
     - [`tidb_gc_scan_lock_mode`](/system-variables.md#tidb_gc_scan_lock_mode-new-in-v50)
 + Change the default value of [`enable-joint-consensus`](/pd-configuration-file.md#enable-joint-consensus-new-in-v50) from `false` to `true`, which enables the Joint Consensus feature by default.
-+ Change the value of [`tidb_enable_amend_pessimistic_txn`](/system-variables.md#tidb_enable_amend_pessimistic_txn-new-in-v407) from `0` or `1` to `ON` or `OFF`.
++ Change the value of `tidb_enable_amend_pessimistic_txn` from `0` or `1` to `ON` or `OFF`.
 + Change the default value of [`tidb_enable_clustered_index`](/system-variables.md#tidb_enable_clustered_index-new-in-v50) from `OFF` to `INT_ONLY` with the following new meanings:
     + `ON`: clustered index is enabled. Adding or deleting non-clustered indexes is supported.
     + `OFF`: clustered index is disabled. Adding or deleting non-clustered indexes is supported.
@@ -111,11 +111,11 @@ The `EXCEPT` operator is a set operator, which combines the result sets of two q
 
 ### Transaction
 
-[User document](/system-variables.md#tidb_enable_amend_pessimistic_txn-new-in-v407), [#18005](https://github.com/pingcap/tidb/issues/18005)
+[#18005](https://github.com/pingcap/tidb/issues/18005)
 
 In the pessimistic transaction mode, if the tables involved in a transaction contain concurrent DDL operations or `SCHEMA VERSION` changes, the system automatically updates the transaction's `SCHEMA VERSION` to the latest to ensure the successful transaction commit, and to avoid that the client receives the `Information schema is changed` error when the transaction is interrupted by DDL operations or `SCHEMA VERSION` changes.
 
-This feature is disabled by default. To enable the feature, modify the value of [`tidb_enable_amend_pessimistic_txn`](/system-variables.md#tidb_enable_amend_pessimistic_txn-new-in-v407) system variable. This feature is introduced in v4.0.7 and has the following issues fixed in v5.0:
+This feature is disabled by default. To enable the feature, modify the value of `tidb_enable_amend_pessimistic_txn` system variable. This feature is introduced in v4.0.7 and has the following issues fixed in v5.0:
 
 + The compatibility issue that occurs when TiDB Binlog executes `Add Column` operations
 + The data inconsistency issue that occurs when using the feature together with the unique index
