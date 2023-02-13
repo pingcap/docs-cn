@@ -37,7 +37,7 @@ summary: 本文介绍了 Performance Overview 仪表盘中 TiFlash 部分，帮�
 
 该负载中 `Cop` 请求的处理时间占比最高，Cop 请求产生的原因可以通过 SQL 执行计划确认。
 
-![Cop](/media/performance/tiflash/tifl)
+![Cop](/media/performance/tiflash/tiflash_request_duration_by_type.png)
   
 - Request Duration: 所有 TiFlash 实例每种 MPP 和 coprocessor 请求类型的总处理时间，包含平均和 P99 处理延迟。
 - Request Handle Duration：所有 TiFlash 实例 MPP 和 coprocessor 请求的处理时间，此时间为该 coprocessor 请求从开始执行到结束的时间，包含平均和 P99 延迟
