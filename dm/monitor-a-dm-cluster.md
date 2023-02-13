@@ -62,15 +62,13 @@ overview 下包含运行当前选定 task 的所有 DM-worker/master instance/so
 
 | metric 名称 | 说明 | 告警说明 | 告警级别 |
 |:----|:------------|:----|:----|
+| dump progress | dump unit 导出过程的进度百分比，值变化范围为：0% - 100%  | N/A | N/A |
 | load progress | load unit 导入过程的进度百分比，值变化范围为：0% - 100%  | N/A | N/A |
-| data file size | load unit 导入的全量数据中数据文件（内含 `INSERT INTO` 语句）的总大小 | N/A | N/A |
+| checksum progress | load unit 导入完成后，数据校验过程的进度百分比，值变化范围为：0% - 100%  | N/A | N/A |
+| total bytes for load unit | load unit 导入过程中源数据解析、生成数据 KV、生成索引 KV 阶段处理的字节数 | N/A | N/A |
+| chunk process duration | load unit 处理数据源文件 chunk 的耗时，单位：秒 | N/A | N/A |
 | dump process exits with error | dump unit 在 DM-worker 内部遇到错误并且退出了 | 立即告警 | critical |
 | load process exits with error | load unit 在 DM-worker 内部遇到错误并且退出了  | 立即告警 | critical |
-| table count | load unit 导入的全量数据中 table 的数量总和  | N/A | N/A |
-| data file count | load unit 导入的全量数据中数据文件（内含 `INSERT INTO` 语句）的数量总和| N/A | N/A |
-| transaction execution latency | load unit 在执行事务的时延，单位：秒 | N/A | N/A |
-| statement execution latency | load unit 执行语句的耗时，单位：秒 | N/A | N/A |
-| remaining time | load unit 完成同步的剩余时间，单位：秒 | N/A | N/A |
 
 ### Binlog replication
 

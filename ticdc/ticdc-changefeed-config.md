@@ -78,7 +78,7 @@ matcher = ["test.worker"] # matcher 是一个白名单，表示该过滤规则�
 ignore-event = ["insert"] # 过滤掉 insert 事件
 ignore-sql = ["^drop", "add column"] # 过滤掉以 "drop" 开头或者包含 "add column" 的 DDL
 ignore-delete-value-expr = "name = 'john'" # 过滤掉包含 name = 'john' 条件的 delete DML
-ignore-insert-value-expr = "id >= 100" # 过滤掉包含 id >= 100 条件的 insert DML 
+ignore-insert-value-expr = "id >= 100" # 过滤掉包含 id >= 100 条件的 insert DML
 ignore-update-old-value-expr = "age < 18" # 过滤掉旧值 age < 18 的 update DML
 ignore-update-new-value-expr = "gender = 'male'" # 过滤掉新值 gender = 'male' 的 update DML
 
@@ -88,6 +88,13 @@ matcher = ["test.fruit"] # 该事件过滤器只应用于 test.fruit 表
 ignore-event = ["drop table"] # 忽略 drop table 事件
 ignore-sql = ["delete"] # 忽略 delete DML
 ignore-insert-value-expr = "price > 1000 and origin = 'no where'" # 忽略包含 price > 1000 和 origin = 'no where' 条件的 insert DML
+
+[scheduler]
+# 将表按 Region 个数划分成多个同步范围，这些范围可由多个 TiCDC 节点同步。
+# 注意：
+# 1. 该参数只在 Kafka changefeed 上生效，暂不支持 MySQL changefeed。
+# 2. TiCDC 不会将小于该参数 Region 个数的表划分成多个同步范围。
+# region-per-span = 50000
 
 [sink]
 # 对于 MQ 类的 Sink，可以通过 dispatchers 配置 event 分发器

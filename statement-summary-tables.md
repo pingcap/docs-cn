@@ -173,9 +173,36 @@ select * from information_schema.statements_summary_evicted;
 
 ## 目前的限制
 
-Statement summary tables 现在还存在以下限制：
+由于 statement summary tables 默认都存储在内存中，TiDB server 重启后，statement summary 会全部丢失。
 
-- TiDB server 重启后以上 4 张表的 statement summary 会全部丢失。因为 statement summary tables 全部都是内存表，不会持久化数据，所以一旦 server 被重启，statement summary 随之丢失。
+为解决该问题，TiDB v6.6.0 实验性地引入了 [statement summary 持久化](#持久化-statements-summary)功能，该功能默认为关闭。开启该功能后，历史数据不再存储在内存内，而是直接写入磁盘。TiDB server 重启后，历史数据也依然可用。
+
+## 持久化 statements summary
+
+> **警告：**
+>
+> statements summary 持久化目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+
+如[目前的限制](#目前的限制)一节所描述，默认情况下 statements summary 只在内存中维护，一旦 TiDB server 发生重启，所有 statements summary 数据都会丢失。自 v6.6.0 起，TiDB 实验性地提供了配置项 [`tidb_stmt_summary_enable_persistent`](/tidb-configuration-file.md#tidb_stmt_summary_enable_persistent-从-v660-版本开始引入) 来允许用户控制是否开启 statements summary 持久化。
+
+如果要开启 statements summary 持久化，可以在 TiDB 配置文件中添加如下配置：
+
+```toml
+[instance]
+tidb_stmt_summary_enable_persistent = true
+# 以下配置为默认值，可根据需求调整。
+# tidb_stmt_summary_filename = "tidb-statements.log"
+# tidb_stmt_summary_file_max_days = 3
+# tidb_stmt_summary_file_max_size = 64 # MiB
+# tidb_stmt_summary_file_max_backups = 0
+```
+
+开启 statements summary 持久化后，内存中只维护当前的实时数据，不再维护历史数据。历史数据生成后直接被写入磁盘文件，写入周期参考[参数配置](#参数配置)一节所描述的 `tidb_stmt_summary_refresh_interval`。后续针对 `statements_summary_history` 或 `cluster_statements_summary_history` 表的查询将结合内存和磁盘两处数据返回结果。
+
+> **注意：**
+>
+> - 当开启持久化后，由于不再于内存中维护历史数据，因此[参数配置](#参数配置)一节所描述的 `tidb_stmt_summary_history_size` 将不再生效，而是由 [`tidb_stmt_summary_file_max_days`](/tidb-configuration-file.md#tidb_stmt_summary_file_max_days-从-v660-版本开始引入)、[`tidb_stmt_summary_file_max_size`](/tidb-configuration-file.md#tidb_stmt_summary_file_max_size-从-v660-版本开始引入) 和 [`tidb_stmt_summary_file_max_backups`](/tidb-configuration-file.md#tidb_stmt_summary_file_max_backups-从-v660-版本开始引入) 这三项配置来决定历史数据在磁盘上的保留数量和时间。
+> - `tidb_stmt_summary_refresh_interval` 取值越小，数据写入到磁盘就越实时，但写入磁盘的冗余数据也会随之增多。
 
 ## 排查示例
 

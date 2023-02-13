@@ -29,7 +29,6 @@ TiDB 高度兼容 MySQL 5.7 协议、MySQL 5.7 常用的功能及语法。MySQL 
 * 触发器
 * 事件
 * 自定义函数
-* 外键约束 [#18209](https://github.com/pingcap/tidb/issues/18209)
 * 全文语法与索引 [#1793](https://github.com/pingcap/tidb/issues/1793)
 * 空间类型的函数（即 `GIS`/`GEOMETRY`）、数据类型和索引 [#6347](https://github.com/pingcap/tidb/issues/6347)
 * 非 `ascii`、`latin1`、`binary`、`utf8`、`utf8mb4`、`gbk` 的字符集
@@ -179,10 +178,6 @@ TiDB 支持大部分 [SQL 模式](/sql-mode.md)。不支持的 SQL 模式如下�
     + TiDB 中 `utf8mb4` 字符集默认：`utf8mb4_bin`。
     + MySQL 5.7 中 `utf8mb4` 字符集默认：`utf8mb4_general_ci`。
     + MySQL 8.0 中 `utf8mb4` 字符集默认：`utf8mb4_0900_ai_ci`。
-
-- `foreign_key_checks`：
-    + TiDB 默认：`OFF`，且仅支持设置该值为 `OFF`。
-    + MySQL 5.7 默认：`ON`。
 
 - SQL mode：
     + TiDB 默认：`ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION`。
