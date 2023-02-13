@@ -6,7 +6,7 @@ title: TiDB 6.6.0 Release Notes
 
 发版日期：2023 年 x 月 x 日
 
-TiDB 版本：6.6.0
+TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 
 试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v6.6/quick-start-with-tidb) | [下载离线包](https://cn.pingcap.com/product-community/)
 
