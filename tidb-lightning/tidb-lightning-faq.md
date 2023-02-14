@@ -119,6 +119,11 @@ sql-mode = ""
 - 索引会占据额外的空间
 - RocksDB 的空间放大效应
 
+TiKV 压缩系数：
+
+- CSV：经验值 3
+- Parquet：经验值 5
+
 ## TiDB Lightning 使用过程中是否可以重启 TiKV Importer？
 
 不能，TiKV Importer 会在内存中存储一些引擎文件，重启后，`tidb-lightning` 会因连接失败而停止。此时，你需要[清除失败的断点](/tidb-lightning/tidb-lightning-checkpoints.md#--checkpoint-error-destroy)，因为这些 TiKV Importer 特有的信息丢失了。你可以在之后[重启 TiDB Lightning](#如何正确重启-tidb-lightning)。
