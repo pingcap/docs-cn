@@ -252,7 +252,7 @@ PARTITION BY RANGE( YEAR(purchased) ) (
 
 在创建或修改放置策略时，你可以使用 `SURVIVAL_PREFERENCES` 选项设置数据的生存能力偏好。
 
-例如，假设你有一个 TiDB 集群，它分布在 3 个 `zone` (即可用区），且每个可用区的 `host`（即节点）上混合部署了多个 TiKV 实例。在为该集群创建放置策略时，假设 `SURVIVAL_PREFERENCES` 的设置如下：
+例如，假设你的 TiDB 集群分布在 3 个 `zone`（即可用区），且每个可用区的 `host`（即节点）上混合部署了多个 TiKV 实例。在为该集群创建放置策略时，假设 `SURVIVAL_PREFERENCES` 的设置如下：
 
 ``` sql
 CREATE PLACEMENT POLICY multiaz SURVIVAL_PREFERENCES="[zone, host]";
@@ -260,8 +260,8 @@ CREATE PLACEMENT POLICY singleaz CONSTRAINTS="[+zone=zone1]" SURVIVAL_PREFERENCE
 ```
 
 创建好放置策略后，你可以按需将放置策略绑定到对应的表上：
-- 对于绑定了 `multiaz` 放置策略的表，数据将以 3 副本的形式放置在不同的可用区里，优先满足跨 `zone`（即可用区）级别数据隔离的生存目标，再满足跨 `host`（即节点）级别的数据隔离的生存目标。
-- 对于绑定了 `singleaz` 放置策略的表，数据会优先以 3 副本的形式全部放置在 `zone1` 这个可用区里，再满足跨 `host`（即节点）级别的数据隔离的生存目标。
+- 对于绑定了 `multiaz` 放置策略的表，数据将以 3 副本的形式放置在不同的可用区里，优先满足跨 `zone` 级别数据隔离的生存目标，再满足跨 `host` 级别的数据隔离的生存目标。
+- 对于绑定了 `singleaz` 放置策略的表，数据会优先以 3 副本的形式全部放置在 `zone1` 这个可用区里，再满足跨 `host` 级别的数据隔离的生存目标。
 
 > **注意：**
 >
