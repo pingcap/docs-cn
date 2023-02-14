@@ -7,6 +7,14 @@ summary: Learn the `SLOW_QUERY` information_schema table.
 
 The `SLOW_QUERY` table provides the slow query information of the current node, which is the parsing result of the TiDB slow log file. The column names in the table are corresponding to the field names in the slow log.
 
+<CustomContent platform="tidb-cloud">
+
+> **Note:**
+>
+> The `SLOW_QUERY` table is unavailable for [Serverless Tier clusters](/tidb-cloud/select-cluster-tier.md#serverless-tier-beta).
+  
+</CustomContent>
+
 <CustomContent platform="tidb">
 
 For how to use this table to identify problematic statements and improve query performance, see [Slow Query Log Document](/identify-slow-queries.md).

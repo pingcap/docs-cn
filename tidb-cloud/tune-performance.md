@@ -13,6 +13,10 @@ TiDB Cloud provides [Statement Analysis](#statement-analysis), [Slow Query](#slo
 
 - Key Visualizer helps you observe TiDB's data access patterns and data hotspots.
 
+> **Note:**
+>
+> Currently, these three features are unavailable for [Serverless Tier clusters](/tidb-cloud/select-cluster-tier.md#serverless-tier-beta).
+  
 ## Statement Analysis
 
 To use the statement analysis, perform the following steps:
