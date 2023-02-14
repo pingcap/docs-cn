@@ -151,7 +151,7 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 
 * 支持配置只读存储节点来执行资源消耗型任务 [#issue号](链接) @[v01dstar](https://github.com/v01dstar) **tw@Oreoxmt**
 
-    在生产环境中，可能有部分只读操作定期消耗大量资源，对整个集群的性能产生影响，比如备份和大规模数据读取分析等。TiDB v6.6.0 支持配置只读存储节点，用来执行重度资源消耗的只读任务，避免对线上业务的影响。目前支持 TiDB、TiSpark 和 BR 读取只读节点上的数据。你可以按照[操作步骤](/readonly-nodes.md#操作步骤)配置只读存储节点，并通过 TiDB 系统变量 `tidb_replica_read`、TiSpark 配置项 `spark.tispark.replica_read` 或 br 命令行参数 `--backup-replica-read-label` 指定数据读取位置，以保证集群性能稳定。
+    在生产环境中，可能有部分只读操作定期消耗大量资源，对整个集群的性能产生影响，比如备份和大规模数据读取分析等。TiDB v6.6.0 支持配置只读存储节点，用来执行重度资源消耗的只读任务，避免对线上业务的影响。目前支持 TiDB、TiSpark 和 BR 读取只读节点上的数据。你可以按照[操作步骤](/readonly-nodes.md#操作步骤)配置只读存储节点，并通过 TiDB 系统变量 `tidb_replica_read`、TiSpark 配置项 `spark.tispark.replica_read` 或 br 命令行参数 `--replica-read-label` 指定数据读取位置，以保证集群性能稳定。
 
      更多信息，请参考[用户文档](/best-practices/readonly-nodes.md)。
 
@@ -329,13 +329,14 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 | PD  | [`pd-server.server-memory-limit`](/pd-configuration-file.md#server-memory-limit-从-v660-版本开始引入) | 新增 | PD 实例的内存限制比例。`0` 表示不设内存限制。 |
 | PD  |  [`pd-server.server-memory-limit-gc-trigger`](/pd-configuration-file.md#server-memory-limit-gc-trigger-从-v660-版本开始引入) | 新增 | PD 尝试触发 GC 的阈值比例。默认值为 `0.7`。 |
 | TiCDC | [`scheduler.region-per-span`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-配置文件说明) | 新增 | 该配置项用于将表按 Region 个数划分成多个同步范围，这些范围可由多个 TiCDC 节点同步，默认值为 `50000`。 |
+| TiDB Lightning | [`compress-kv-pairs`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置) | 新增 | 该配置项控制 Physical Import Mode 向 TiKV 发送 KV 时是否启用压缩，默认值为空，代表不启用压缩。 |
 | DM | `on-duplicate` | 删除 | 该配置项控制全量导入阶段针对冲突数据的解决方式。自 v6.6.0 起，引入新的配置项 `on-duplicate-logical` 和 `on-duplicate-physical`，取代 `on-duplicate`。 |
-| DM | [`import-mode`](/dm/task-configuration-file-full.md) | 修改 | 该配置项的可选值由 `"sql"` 和 `"loader"` 变更为 `"logical"` 和 `"physical"`。默认值为 `"logical"`，即使用 TiDB Lightning 的 logical import mode 进行导入。 |
+| DM | [`import-mode`](/dm/task-configuration-file-full.md) | 修改 | 该配置项的可选值由 `"sql"` 和 `"loader"` 变更为 `"logical"` 和 `"physical"`。默认值为 `"logical"`，即使用 TiDB Lightning 的 Logical Import Mode 进行导入。 |
 | DM | [`checksum-physical`](/dm/task-configuration-file-full.md) | 新增 | 该配置项控制 physical import 在导入完成一张表后，对每一个表执行 `ADMIN CHECKSUM TABLE <table>` 进行数据校验。默认值为 `"required"`。表示导入完成后进行数据校验，如果校验失败会让任务暂停，需要用户手动处理。|
 | DM | [`disk-quota-physical`](/dm/task-configuration-file-full.md) | 新增 | 该配置项设置了磁盘的空间限制，对应 TiDB Lightning 的 [`disk-quota` 配置](/tidb-lightning/tidb-lightning-physical-import-mode-usage#磁盘资源配额-从-v620-版本开始引入)。|
-| DM | [`on-duplicate-logical`](/dm/task-configuration-file-full.md) | 新增 | 该配置项控制 logical import 针对冲突数据的解决方式。默认值为 `"replace"`，表示用最新数据替代已有数据。 |
-| DM | [`on-duplicate-physical`](/dm/task-configuration-file-full.md) | 新增 | 该配置项控制 physical import 针对冲突数据的解决方式。默认值为 `"none"`，表示遇到冲突数据时不进行处理。该模式性能最佳，但下游数据库会遇到数据索引不一致的问题。  |
-| DM | [`sorting-dir-physical`](/dm/task-configuration-file-full.md) | 新增 | 该配置项控制 physical import 用作本地排序的目录位置，该选项的默认值与 `dir` 配置项一致。 |
+| DM | [`on-duplicate-logical`](/dm/task-configuration-file-full.md) | 新增 | 该配置项控制 Logical Import 针对冲突数据的解决方式。默认值为 `"replace"`，表示用最新数据替代已有数据。 |
+| DM | [`on-duplicate-physical`](/dm/task-configuration-file-full.md) | 新增 | 该配置项控制 Physical Import 针对冲突数据的解决方式。默认值为 `"none"`，表示遇到冲突数据时不进行处理。该模式性能最佳，但下游数据库会遇到数据索引不一致的问题。  |
+| DM | [`sorting-dir-physical`](/dm/task-configuration-file-full.md) | 新增 | 该配置项控制 Physical Import 用作本地排序的目录位置，该选项的默认值与 `dir` 配置项一致。 |
 | sync-diff-inspector   | [`skip-non-existing-table`](/sync-diff-inspector/sync-diff-inspector-overview.md#配置文件说明)   |  新增 | 当下游数据库的表在上游不存在时，该配置项决定是否跳过对上下游数据库表数量不一致场景的校验。  |
 | TiSpark | [`spark.tispark.replica_read`](/tispark-overview.md#tispark-配置) | 新增 | 控制读取副本的类型，可选值为 `leader`、`follower`、`learner`。 |
 | TiSpark | [`spark.tispark.replica_read.label`](/tispark-overview.md#tispark-配置) | 新增 | 设置目标 TiKV 节点的标签。 |
