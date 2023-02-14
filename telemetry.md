@@ -6,7 +6,13 @@ aliases: ['/docs-cn/dev/telemetry/']
 
 # 遥测
 
-TiDB、TiUP 及 TiDB Dashboard 默认会收集使用情况信息，并将这些信息分享给 PingCAP 用于改善产品，例如，通过这些使用信息，PingCAP 可以了解常见的 TiDB 集群操作，从而确定新功能优先级。
+开启遥测后，TiDB、TiUP 及 TiDB Dashboard 会收集使用情况信息，并将这些信息分享给 PingCAP 用于改善产品，例如，通过这些使用信息，PingCAP 可以了解常见的 TiDB 集群操作，从而确定新功能优先级。
+
+> **注意：**
+>
+> 在当前版本中，默认关闭遥测功能，即 TiDB 和 TiDB Dashboard 默认不收集使用情况信息，不将这些信息分享给 PingCAP 用于改善产品。
+>
+> TiUP 从 v1.11.3 版本起，默认关闭遥测功能。
 
 ## 哪些使用情况信息会被收集？
 
@@ -62,6 +68,10 @@ TIUP_CLUSTER_DEBUG=enable tiup cluster list
 
 ### TiSpark
 
+> **注意：**
+>
+> 自 TiSpark v3.3 起，默认关闭遥测功能，即 TiSpark 默认不收集使用情况信息，不将这些信息分享给 PingCAP 用于改善产品。
+
 当 TiSpark 遥测功能开启时，Spark 在使用 TiSpark 时会发送会将使用情况信息分享给 PingCAP，包括（但不限于）：
 
 - 随机生成的遥测标示符
@@ -80,7 +90,7 @@ cat {spark.log} | grep Telemetry report | tail -n 1
 
 ### 部署 TiDB 时禁用 TiDB 遥测
 
-部署 TiDB 集群时，可以为每个 TiDB 集群设置 [`enable-telemetry = false`](/tidb-configuration-file.md#enable-telemetry-从-v402-版本开始引入) 以禁用 TiDB 遥测功能。也可以在已部署的 TiDB 集群上修改该配置项，但需要重启集群后才能生效。
+在已有 TiDB 集群上开启遥测后，可以为每个集群设置 [`enable-telemetry = false`](/tidb-configuration-file.md#enable-telemetry-从-v402-版本开始引入) 以禁用 TiDB 遥测功能，但需要重启集群后才能生效。
 
 以下是在各个部署工具中修改遥测配置的具体步骤。
 

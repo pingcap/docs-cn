@@ -231,10 +231,6 @@ Cluster name:       <cluster-name>
 Cluster version:    v6.5.0
 ```
 
-> **注意：**
->
-> TiUP 及 TiDB 默认会收集使用情况信息，并将这些信息分享给 PingCAP 用于改善产品。若要了解所收集的信息详情及如何禁用该行为，请参见[遥测](/telemetry.md)。
-
 ## 4. 升级 FAQ
 
 本部分介绍使用 TiUP 升级 TiDB 集群遇到的常见问题。
