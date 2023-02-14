@@ -265,7 +265,7 @@ CREATE PLACEMENT POLICY singleaz CONSTRAINTS="[+zone=zone1]" SURVIVAL_PREFERENCE
 
 > **注意：**
 >
-> `SURVIVAL_PREFERENCES` 和 PD 中的 `LOCATION_LABELS` 是等价的，更多信息可以参考[通过拓扑 label 进行副本调度](/schedule-replicas-by-topology-labels.md)。
+> `SURVIVAL_PREFERENCES` 和 PD 中的 `location-labels` 是等价的，更多信息可以参考[通过拓扑 label 进行副本调度](/schedule-replicas-by-topology-labels.md)。
 
 ## 工具兼容性
 
