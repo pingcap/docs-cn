@@ -1332,6 +1332,15 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 默认值：`OFF`
 - 该变量用于一个未发布的特性，**请勿修改该变量值**。
 
+### `tidb_enable_historical_stats_for_capture` <span class="version-mark">从 v6.6.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 类型：布尔型
+- 默认值：`OFF`
+- 该变量用于一个未发布的特性，**请勿修改该变量值**。
+- 这个变量用来控制 Plan Replayer Capture 抓取的内容是否默认带历史统计信息。
+
 ### `tidb_enable_index_merge` <span class="version-mark">从 v4.0 版本开始引入</span>
 
 > **注意：**
@@ -1942,6 +1951,14 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 单位：线程
 - 这个变量用来设置并行 hash aggregation 算法 partial 阶段的执行并发度。对于聚合函数参数不为 distinct 的情况，HashAgg 分为 partial 和 final 阶段分别并行执行。
 - 默认值 `-1` 表示使用 `tidb_executor_concurrency` 的值。
+
+### `tidb_historical_stats_duration`
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 类型：Duration
+- 默认值：`168h`
+- 这个变量用来控制历史统计信息在存储中的保留时间。默认值 7 天。
 
 ### `tidb_ignore_prepared_cache_close_stmt` <span class="version-mark">从 v6.0.0 版本开始引入</span>
 
