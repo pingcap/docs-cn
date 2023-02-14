@@ -400,10 +400,10 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 
         - 优化了 DM 的告警规则和内容 [#7376](https://github.com/pingcap/tiflow/issues/7376) @[D3Hunter](https://github.com/D3Hunter) **tw@hfxsd**
 
-        之前 "DM_XXX_process_exits_with_error" 类告警是遇到相关错误就报警，但有些告警是由于数据库连接长时间 idle 导致的，重连后即可恢复。为了减少这类报警，DM 将错误分为了可自动恢复错误和不可自动恢复错误：
+            之前 "DM_XXX_process_exits_with_error" 类告警是遇到相关错误就报警，但有些告警是由于数据库连接长时间 idle 导致的，重连后即可恢复。为了减少这类报警，DM 将错误分为了可自动恢复错误和不可自动恢复错误：
 
-        - 对于可自动恢复的错误，只有在 2 分钟内发生超过 3 次时才报警。
-        - 对于不可自动恢复的错误，维持原有行为，立即报警。
+            - 对于可自动恢复的错误，只有在 2 分钟内发生超过 3 次时才报警。
+            - 对于不可自动恢复的错误，维持原有行为，立即报警。
 
         - 优化 relay 性能[#4287](https://github.com/pingcap/tiflow/issues/4287) @[GMHDBJD]
 
