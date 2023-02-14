@@ -266,7 +266,7 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 * GORM 已添加 TiDB 集成测试。目前 TiDB 已成为 GORM 默认支持的数据库。
 
     - [GORM MySQL driver](https://github.com/go-gorm/mysql) 在 `v1.4.6` 中新增 TiDB `AUTO_RANDOM` 特性适配 [#104](https://github.com/go-gorm/mysql/pull/104) @[Icemap](https://github.com/Icemap)
-    - [GORM MySQL driver](https://github.com/go-gorm/mysql) 在 `v1.4.6` 中修复连接 TiDB 时，在 `AutoMigrate` 期间无法更改 `Unique` 字段的非 `Unique` 属性的问题 [#105](https://github.com/go-gorm/mysql/pull/104) @[Icemap](https://github.com/Icemap)
+    - [GORM MySQL driver](https://github.com/go-gorm/mysql) 在 `v1.4.6` 中修复连接 TiDB 时，在 `AutoMigrate` 期间无法更改 `Unique` 字段的非 `Unique` 属性的问题 [#105](https://github.com/go-gorm/mysql/pull/105) @[Icemap](https://github.com/Icemap)
     - [GORM](https://github.com/go-gorm/gorm) 新增 TiDB 作为默认数据库 [#6014](https://github.com/go-gorm/gorm/pull/6014) @[Icemap](https://github.com/Icemap)
     - [GORM 文档](https://github.com/go-gorm/gorm.io) 提及 TiDB 作为默认数据库 [#638](https://github.com/go-gorm/gorm.io/pull/638) @[Icemap](https://github.com/Icemap)
 
