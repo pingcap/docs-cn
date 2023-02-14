@@ -119,10 +119,10 @@ sql-mode = ""
 - 索引会占据额外的空间
 - RocksDB 的空间放大效应
 
-TiKV 压缩系数：
+TiKV 压缩系数经验值：
 
-- CSV：经验值 3
-- Parquet：经验值 5
+- CSV：3
+- Parquet：5
 
 ## TiDB Lightning 使用过程中是否可以重启 TiKV Importer？
 
