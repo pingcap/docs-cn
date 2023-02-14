@@ -10,9 +10,11 @@ aliases: ['/docs-cn/dev/telemetry/']
 
 > **注意：**
 >
-> 2023 年 2 月 20 日及之后发布的 [TiDB](/releases/release-timeline.md) 和 TiDB Dashboard 版本中，默认关闭遥测功能，即 TiDB 和 TiDB Dashboard 默认不收集使用情况信息，不将这些信息分享给 PingCAP 用于改善产品。
+> 在 v6.6.0 及之后发布的里程碑版本 (DMR) 和长期支持版本 (LTS) 中，TiDB 和 TiDB Dashboard 默认关闭遥测功能，即默认不再收集使用情况信息。如果升级前使用默认的遥测配置，则升级后遥测功能处于关闭状态。
 >
-> TiUP 从 v1.11.3 版本起，默认关闭遥测功能，新部署的 TiUP 默认不再收集使用情况分享给 PingCAP。
+> 此外，2022 年 2 月 20 日后，为 TiDB LTS 版本发布的补丁版本也默认关闭遥测功能，默认不再收集使用情况信息分享给 PingCAP。具体的版本可参考 [TiDB 版本发布时间线](/releases/release-timeline.md)。
+>
+> 从 v1.11.3 起，新部署的 TiUP 默认关闭遥测功能，即默认不再收集使用情况信息。如果从 v1.11.3 之前的 TiUP 版本升级至 v1.11.3 或更高 TiUP 版本，遥测保持升级前的开启或关闭状态。
 
 ## 哪些使用情况信息会被收集？
 
