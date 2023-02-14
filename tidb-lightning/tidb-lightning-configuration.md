@@ -236,8 +236,15 @@ delimiter = '"'
 # Line terminator. Empty value means both "\n" (LF) and "\r\n" (CRLF) are line terminators.
 terminator = ''
 # Whether the CSV files contain a header.
-# If `header` is true, the first line will be skipped.
+# If `header` is true, TiDB Lightning treats the first row as a table header and does not import it as data. If `header` is false, the first row is also imported as CSV data.
 header = true
+# Whether the column names in the CSV file header are matched to those defined in the target table.
+# The default value is `true`, which means that you have confirmed that the column names in the CSV header are consistent with those in the target table, so that even if the order of the columns is different between the two, TiDB Lightning can still import the data successfully by mapping the column names.
+# If the column names between the CSV table header and the target table do not match (for example, some column names in the CSV table header cannot be found in the target table) but the column order is the same, set this configuration to `false`.
+# In this scenario, TiDB Lightning will ignore the CSV header to avoid errors and import the data directly in the order of the columns in the target table.
+# Therefore, if the columns are not in the same order, you need to manually adjust the order of the columns in the CSV file to be consistent with that in the target table before importing; otherwise data discrepancies might occur.
+# It is important to note that this parameter only applies if the `header` parameter is set to `true`. If `header` is set to `false`, it means that the CSV file does not contain a header, so this parameter is not relevant.
+header-schema-match = true
 # Whether the CSV contains any NULL value.
 # If `not-null` is true, all columns from CSV cannot be NULL.
 not-null = false
