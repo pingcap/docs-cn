@@ -398,7 +398,7 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
     + TiCDC
         <!-- 2 -->
         - 支持 batch update dml 语句，提升 TiCDC 同步批量 update DML 的性能 [#8084](https://github.com/pingcap/tiflow/issues/8084)
-        - 将 pull-based sink 设置为默认模式，提升 TiCDC 日常吞吐、开启 Redo log 场景下的性能 [#5928](https://github.com/pingcap/tiflow/issues/5928)
+        (dup: release-6.3.0.md > 改进提升> Tools> TiCDC)- 采用异步的模式实现 MQ sink 和 MySQL sink，提升 sink 的吞吐能力 [#5928](https://github.com/pingcap/tiflow/issues/5928) @[hicqu](https://github.com/hicqu) @[hi-rustin](https://github.com/hi-rustin)
 
     + TiDB Data Migration (DM)
         <!-- 2 -->
@@ -455,7 +455,7 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
     - 修复了分配自增 ID 时的数据竞争问题 [#40584](https://github.com/pingcap/tidb/issues/40584) @[Dousir9](https://github.com/Dousir9)
     - 修复了 JSON 的 not 表达式实现与 MySQL 实现不兼容的问题 [#40683](https://github.com/pingcap/tidb/issues/40683) @[YangKeao](https://github.com/YangKeao)
     - 修复了并发视图时可能会造成 DDL 操作卡住的问题 [#40352](https://github.com/pingcap/tidb/issues/40352) @[zeminzhou](https://github.com/zeminzhou)
-    - 修复了并发对分区表执行 Modify Column 的 DDL 操作时有可能会造成数据不一致的问题 [#40620](https://github.com/pingcap/tidb/issues/40620) @[mjonss](https://github.com/mjonss)
+    (dup: release-6.1.4.md > 兼容性变更> TiDB)- 由于可能存在正确性问题，分区表目前不再支持修改列类型 [#40620](https://github.com/pingcap/tidb/issues/40620) @[mjonss](https://github.com/mjonss) @[mjonss](https://github.com/mjonss)
     - 修复了使用 `caching_sha2_password` 方式进行认证时如果不指定的密码会报错 "Malformed packet" 的问题 [#40831](https://github.com/pingcap/tidb/issues/40831) @[dveeden](https://github.com/dveeden)
     - 修复了在执行 TTL 任务时，如果表的主键包含 `ENUM` 类型的列任务会失败的问题 [#40456](https://github.com/pingcap/tidb/issues/40456) @[lcwangchao](https://github.com/lcwangchao)
     - 修复了某些被 MDL 阻塞的 DDL 操作无法在 `mysql.tidb_mdl_view` 中查询到的问题 [#40838](https://github.com/pingcap/tidb/issues/40838) @[YangKeao](https://github.com/YangKeao)
@@ -493,7 +493,7 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
     - 减少resolve-ts带来的网络流量 [#14098](https://github.com/tikv/tikv/issues/14092) @[overvenus] (https://github.com/overvenus)
     - 支持TiKV在小于1 core的CPU下启动 [#13586] [#13752] [#14017](https://github.com/tikv/tikv/issues/13586) @[andreid-db](https://github.com/andreid-db)
     - copr: 修复old collation时Like中的 _ pattern的行为 [#13785](https://github.com/tikv/tikv/pull/13785) @[Yangkeao](https://github.com/Yangkeao)
-    - txn: 在重复的acqurie_pessimsitic_lock请求时的做限制性检查。修复并发的DML时当TiDB和TiKV有网络故障时潜在的数据不一致。 [#14038](https://github.com/tikv/tikv/issues/14038) @[myonkeminta](https://github.com/myonkeminta)
+    (dup: release-6.1.4.md > Bug 修复> TiKV)- 修复 TiDB 中事务在执行悲观 DML 失败后，再执行其他 DML 时，如果 TiDB 和 TiKV 之间存在网络故障，可能会造成数据不一致的问题 [#14038](https://github.com/tikv/tikv/issues/14038) @[MyonKeminta](https://github.com/MyonKeminta) @[myonkeminta](https://github.com/myonkeminta)
 
 + PD
     <!-- 4 -->
@@ -524,7 +524,7 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 
     + TiCDC
         <!-- 6 -->
-        - 修复 changefeed 里面某些参数不能通过 configure 文件更新的问题 [#7935](https://github.com/pingcap/tiflow/issues/7935)
+        (dup: release-6.1.4.md > Bug 修复> Tools> TiCDC)- 修复不能通过配置文件修改 `transaction_atomicity` 和 `protocol` 参数的问题 [#7935](https://github.com/pingcap/tiflow/issues/7935) @[CharlesCheung96](https://github.com/CharlesCheung96)
         - 修复 redo log 存储路径没做权限预检查的问题。 [#6335](https://github.com/pingcap/tiflow/issues/6335)
         - 修复 redo log 容忍S3存储故障过短的问题。 [#8089](https://github.com/pingcap/tiflow/issues/8089)
         - 修复 changefeed 在 tikv、CDC 节点扩缩容特殊场景下卡住的问题。 [#8197](https://github.com/pingcap/tiflow/issues/8197)
@@ -535,8 +535,8 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
         <!-- 4 -->
         - 修复 binlog-schema delete 失败的问题[#7373](https://github.com/pingcap/tiflow/issues/7373) @[liumengya94]
         - 修复最后一个 binlog 为被 skip 的 ddl 会导致 checkpoint 不推进的问题[#8175](https://github.com/pingcap/tiflow/issues/8175) @[D3Hunter]
-        - 修复在同时有 update 和 non-update 类型的 expression filter 时所有的 update 类型的行变更都被跳过的问题 [#7831](https://github.com/pingcap/tiflow/issues/7831) @[lance6716]
-        - 修复当某个表只有 `update-old-value-expr` 或 `update-new-value-expr` 被设置时，不生效或 panic 的问题 [#7774](https://github.com/pingcap/tiflow/issues/7774) @[lance6716]
+        (dup: release-6.1.4.md > Bug 修复> Tools> TiDB Data Migration (DM))- 修复当在某个表上同时指定 `UPDATE` 和非 `UPDATE` 类型的表达式过滤规则 `expression-filter` 时，所有 `UPDATE` 操作被跳过的问题 [#7831](https://github.com/pingcap/tiflow/issues/7831) @[lance6716](https://github.com/lance6716) @[lance6716]
+        (dup: release-6.1.4.md > Bug 修复> Tools> TiDB Data Migration (DM))- 修复当某个表上仅指定 `update-old-value-expr` 或 `update-new-value-expr` 时，过滤规则不生效或 DM 发生 panic 的问题 [#7774](https://github.com/pingcap/tiflow/issues/7774) @[lance6716](https://github.com/lance6716) @[lance6716]
 
     + TiDB Lightning
         <!-- 9 -->
@@ -548,7 +548,7 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
         - 修复当数据文件中存在未闭合的 delimiter 可能导致 OOM 的问题 [#40400](https://github.com/pingcap/tidb/issues/40400) @[buchuitoudegou]
         - 修复报错中的文件 offset 超过文件大小的问题 [#40034](https://github.com/pingcap/tidb/issues/40034) @[buchuitoudegou]
         - 修复新版 PDClient 可能导致并行导入失败的问题 [#40493](https://github.com/pingcap/tidb/issues/40493) @[AmoebaProtozoa]
-        - 修复检测目标表是否为空的检查项无法检测到之前导入的脏数据的问题 [#39477](https://github.com/pingcap/tidb/issues/39477) @[dsdashun]
+        (dup: release-6.1.4.md > Bug 修复> Tools> TiDB Lightning)- 修复 precheck 检查项有时无法监测到之前的导入失败遗留的脏数据的问题 [#39477](https://github.com/pingcap/tidb/issues/39477) @[dsdashun](https://github.com/dsdashun) @[dsdashun]
 
 ## 贡献者
 
