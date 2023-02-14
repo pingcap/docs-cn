@@ -70,7 +70,7 @@ You can use the `pd-ctl` tool to convert the timestamp to readable time:
 {{< copyable "" >}}
 
 ```shell
-tiup ctl:<cluster-version> pd -u https://127.0.0.1:2379 tso {TIMESTAMP}
+tiup ctl:v<CLUSTER_VERSION> pd -u https://127.0.0.1:2379 tso {TIMESTAMP}
 ```
 
 You can use `tableID` to find the name of the related table:

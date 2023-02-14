@@ -38,4 +38,4 @@ You can manage a TiCDC cluster and its replication tasks using the command-line 
 
 You can also use the HTTP interface (the TiCDC OpenAPI feature) to manage a TiCDC cluster and its replication tasks. For details, see [TiCDC OpenAPI](/ticdc/ticdc-open-api.md).
 
-If your TiCDC is deployed using TiUP, you can start `cdc cli` by running the `tiup ctl:<version> cdc` command. Replace `<version>` with the TiCDC cluster version. You can also run `cdc cli` directly.
+If your TiCDC is deployed using TiUP, you can start `cdc cli` by running the `tiup ctl:v<CLUSTER_VERSION> cdc` command. Replace `v<CLUSTER_VERSION>` with the TiCDC cluster version, such as `v6.5.0`. You can also run `cdc cli` directly.

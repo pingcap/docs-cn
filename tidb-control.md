@@ -18,7 +18,7 @@ You can get TiDB Control by installing it using TiUP or by compiling it from sou
 
 ### Install TiDB Control using TiUP
 
-After installing TiUP, you can use `tiup ctl:<cluster-version> tidb` command to get and execute TiDB Control.
+After installing TiUP, you can use `tiup ctl:v<CLUSTER_VERSION> tidb` command to get and execute TiDB Control.
 
 ### Compile from source code
 

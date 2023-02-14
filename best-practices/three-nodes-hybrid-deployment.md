@@ -109,7 +109,7 @@ In addition to setting this parameter value in the configuration file, you can a
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup ctl:<cluster-version> tikv --host=${ip:port} modify-tikv-config -n gc.max_write_bytes_per_sec -v ${limit}
+tiup ctl:v<CLUSTER_VERSION> tikv --host=${ip:port} modify-tikv-config -n gc.max_write_bytes_per_sec -v ${limit}
 ```
 
 > **Note:**

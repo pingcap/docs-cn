@@ -52,8 +52,8 @@ This section lists the types of diagnostic data that can be collected by Diag fr
 | Error log | `pd_stderr.log` | `--include=log` |
 | Configuration file | `pd.toml` | `--include=config` |
 | Real-time configuration | `config.json` | `--include=config` |
-| Outputs of the command `tiup ctl:<cluster-version> pd -u http://${pd IP}:${PORT} store` | `store.json` | `--include=config` |
-| Outputs of the command `tiup ctl:<cluster-version> pd -u http://${pd IP}:${PORT} config placement-rules show` | `placement-rule.json` | `--include=config` |
+| Outputs of the command `tiup ctl:v<CLUSTER_VERSION> pd -u http://${pd IP}:${PORT} store` | `store.json` | `--include=config` |
+| Outputs of the command `tiup ctl:v<CLUSTER_VERSION> pd -u http://${pd IP}:${PORT} config placement-rules show` | `placement-rule.json` | `--include=config` |
 
 ### TiFlash diagnostic data
 

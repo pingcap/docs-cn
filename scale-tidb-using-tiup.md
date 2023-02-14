@@ -156,7 +156,7 @@ This section exemplifies how to add a TiFlash node to the `10.0.1.4` host.
 > When adding a TiFlash node to an existing TiDB cluster, note the following:
 >
 > - Confirm that the current TiDB version supports using TiFlash. Otherwise, upgrade your TiDB cluster to v5.0 or later versions.
-> - Run the `tiup ctl:<cluster-version> pd -u http://<pd_ip>:<pd_port> config set enable-placement-rules true` command to enable the Placement Rules feature. Or run the corresponding command in [pd-ctl](/pd-control.md).
+> - Run the `tiup ctl:v<CLUSTER_VERSION> pd -u http://<pd_ip>:<pd_port> config set enable-placement-rules true` command to enable the Placement Rules feature. Or run the corresponding command in [pd-ctl](/pd-control.md).
 
 1. Add the node information to the `scale-out.yaml` file:
 
@@ -381,12 +381,12 @@ In special cases (such as when a node needs to be forcibly taken down), or if th
 
     * Enter the store command in [pd-ctl](/pd-control.md) (the binary file is under `resources/bin` in the tidb-ansible directory).
 
-    * If you use TiUP deployment, replace `pd-ctl` with `tiup ctl:<cluster-version> pd`:
+    * If you use TiUP deployment, replace `pd-ctl` with `tiup ctl:v<CLUSTER_VERSION> pd`:
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    tiup ctl:<cluster-version> pd -u http://<pd_ip>:<pd_port> store
+    tiup ctl:v<CLUSTER_VERSION> pd -u http://<pd_ip>:<pd_port> store
     ```
 
     > **Note:**
@@ -397,12 +397,12 @@ In special cases (such as when a node needs to be forcibly taken down), or if th
 
     * Enter `store delete <store_id>` in pd-ctl (`<store_id>` is the store ID of the TiFlash node found in the previous step.
 
-    * If you use TiUP deployment, replace `pd-ctl` with `tiup ctl:<cluster-version> pd`:
+    * If you use TiUP deployment, replace `pd-ctl` with `tiup ctl:v<CLUSTER_VERSION> pd`:
 
         {{< copyable "shell-regular" >}}
 
         ```shell
-        tiup ctl:<cluster-version> pd -u http://<pd_ip>:<pd_port> store delete <store_id>
+        tiup ctl:v<CLUSTER_VERSION> pd -u http://<pd_ip>:<pd_port> store delete <store_id>
         ```
 
     > **Note:**

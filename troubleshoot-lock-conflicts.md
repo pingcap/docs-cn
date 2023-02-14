@@ -271,8 +271,8 @@ Solutions:
     Checking the time interval using the PD control tool:
 
     ```shell
-    tiup ctl:<cluster-version> pd tso [start_ts]
-    tiup ctl:<cluster-version> pd tso [commit_ts]
+    tiup ctl:v<CLUSTER_VERSION> pd tso [start_ts]
+    tiup ctl:v<CLUSTER_VERSION> pd tso [commit_ts]
     ```
 
 * It is recommended to check whether the write performance is slow, which might cause that the efficiency of transaction commit is poor, and thus the lock is cleared.

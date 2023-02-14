@@ -19,7 +19,7 @@ TiKV Control (`tikv-ctl`) is a command line tool of TiKV, used to manage the clu
 `tikv-ctl` is also integrated in the `tiup` command. Execute the following command to call the `tikv-ctl` tool:
 
 ```shell
-tiup ctl:<cluster-version> tikv
+tiup ctl:v<CLUSTER_VERSION> tikv
 ```
 
 ```
@@ -84,7 +84,7 @@ SUBCOMMANDS:
     unsafe-recover        Unsafely recover the cluster when the majority replicas are failed
 ```
 
-You can add corresponding parameters and subcommands after `tiup ctl:<cluster-version> tikv`.
+You can add corresponding parameters and subcommands after `tiup ctl:v<CLUSTER_VERSION> tikv`.
 
 ## General options
 
