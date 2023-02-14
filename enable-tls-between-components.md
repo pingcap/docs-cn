@@ -1,16 +1,16 @@
 ---
 title: 为 TiDB 组件间通信开启加密传输
+summary: 了解如何为 TiDB 集群内各组件间开启加密传输。
 aliases: ['/docs-cn/dev/enable-tls-between-components/','/docs-cn/dev/how-to/secure/enable-tls-between-components/']
 ---
 
 # 为 TiDB 组件间通信开启加密传输
 
-本部分介绍如何为 TiDB 集群内各部组件间开启加密传输，一旦开启以下组件间均将使用加密传输：
+本部分介绍如何为 TiDB 集群内各组件间开启加密传输。一旦开启，以下组件间均将使用加密传输：
 
-- TiDB 与 TiKV、PD
-- TiKV 与 PD
+- TiDB、TiKV、PD、TiFlash 之间的通讯
 - TiDB Control 与 TiDB，TiKV Control 与 TiKV，PD Control 与 PD
-- TiKV、PD、TiDB 各自集群内内部通讯
+- TiKV、PD、TiDB、TiFlash 各自集群内内部通讯
 
 目前暂不支持只开启其中部分组件的加密传输。
 
@@ -189,8 +189,8 @@ aliases: ['/docs-cn/dev/enable-tls-between-components/','/docs-cn/dev/how-to/sec
 
 ## 证书重新加载
 
-- 如果 TiDB 集群部署在本地的数据中心，TiDB、PD、TiKV、TiCDC 和各种 client 在每次新建相互通讯的连接时都会重新读取当前的证书和密钥文件内容，实现证书和密钥的重新加载，无需重启 TiDB 集群。
-- 如果 TiDB 集群部署在自己管理的 Cloud，TLS 证书的签发需要与云服务商的证书管理服务集成，TiDB、PD、TiKV、TiCDC 组件的 TLS 证书支持自动轮换，无需重启 TiDB 集群。
+- 如果 TiDB 集群部署在本地的数据中心，TiDB、PD、TiKV、TiFlash、TiCDC 和各种 client 在每次新建相互通讯的连接时都会重新读取当前的证书和密钥文件内容，实现证书和密钥的重新加载，无需重启 TiDB 集群。
+- 如果 TiDB 集群部署在自己管理的 Cloud，TLS 证书的签发需要与云服务商的证书管理服务集成，TiDB、PD、TiKV、TiFlash、TiCDC 组件的 TLS 证书支持自动轮换，无需重启 TiDB 集群。
 
 ## 证书有效期
 
