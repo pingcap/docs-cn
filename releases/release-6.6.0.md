@@ -263,12 +263,13 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 
     更多信息，请参考[用户文档](/ticdc/ticdc-sink-to-kafka.md#横向扩展大单表的负载到多个-ticdc-节点)。
 
-* GORM 已添加 TiDB 集成测试。目前 TiDB 已成为 GORM 默认支持的数据库。
+* [GORM](https://github.com/go-gorm/gorm) 已添加 TiDB 集成测试。目前 TiDB 已成为 GORM 默认支持的数据库 [#6014](https://github.com/go-gorm/gorm/pull/6014) @[Icemap](https://github.com/Icemap)
 
-    - [GORM MySQL driver](https://github.com/go-gorm/mysql) 在 `v1.4.6` 中新增 TiDB `AUTO_RANDOM` 特性适配 [#104](https://github.com/go-gorm/mysql/pull/104) @[Icemap](https://github.com/Icemap)
-    - [GORM MySQL driver](https://github.com/go-gorm/mysql) 在 `v1.4.6` 中修复连接 TiDB 时，在 `AutoMigrate` 期间无法更改 `Unique` 字段的非 `Unique` 属性的问题 [#105](https://github.com/go-gorm/mysql/pull/105) @[Icemap](https://github.com/Icemap)
-    - [GORM](https://github.com/go-gorm/gorm) 新增 TiDB 作为默认数据库 [#6014](https://github.com/go-gorm/gorm/pull/6014) @[Icemap](https://github.com/Icemap)
-    - [GORM 文档](https://github.com/go-gorm/gorm.io) 提及 TiDB 作为默认数据库 [#638](https://github.com/go-gorm/gorm.io/pull/638) @[Icemap](https://github.com/Icemap)
+    [GORM MySQL driver](https://github.com/go-gorm/mysql) 在 `v1.4.6` 中新增 TiDB `AUTO_RANDOM` 特性适配 [#104](https://github.com/go-gorm/mysql/pull/104) @[Icemap](https://github.com/Icemap)。并修复连接 TiDB 时，在 `AutoMigrate` 期间无法更改 `Unique` 字段的非 `Unique` 属性的问题 [#105](https://github.com/go-gorm/mysql/pull/105) @[Icemap](https://github.com/Icemap)
+
+    [GORM 文档](https://github.com/go-gorm/gorm.io) 提及 TiDB 作为默认数据库 [#638](https://github.com/go-gorm/gorm.io/pull/638) @[Icemap](https://github.com/Icemap)
+
+    更多信息，请参考[GORM 用户文档](https://gorm.io/docs/index.html)。
 
 ## 兼容性变更
 
@@ -406,11 +407,6 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 
         - 新增 `skip-non-existing-table` 参数，当下游数据库的表在上游不存在时，可配置该参数为 `true` 跳过对上下游数据库表数量不一致场景的校验 [#692](https://github.com/pingcap/tidb-tools/issues/692) @[lichunzhu](https://github.com/lichunzhu) @[liumengya94](https://github.com/liumengya94) **tw@shichun-0415**
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
-+ Eco-system
-
-    + [GORM](https://gorm.io/docs/index.html)
-
-
 
 ## 错误修复
 
