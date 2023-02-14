@@ -241,9 +241,10 @@ This feature splits a single large table into multiple data ranges based on the 
 - A single TiCDC node cannot replicate a large single table in time.
 - The resources (such as CPU and memory) consumed by TiCDC nodes are not evenly distributed.
 
-> **Note:**
+> **Warning:**
 >
-> TiCDC v6.6.0 only supports scaling out a large single table on Kafka changefeeds.
+> - Scaling out a single large table is an experimental feature. It is not recommended that you use it in the production environment. This feature might be changed or removed without prior notice. If you find a bug, you can report an [issue](https://github.com/pingcap/tidb/issues) on GitHub.
+> - TiCDC v6.6.0 only supports scaling out a large single table on Kafka changefeeds.
 
 Sample configuration:
 
