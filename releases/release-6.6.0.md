@@ -225,9 +225,9 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 
 ### 遥测
 
-从 v6.6.0 起，TiDB 和 TiDB Dashboard 默认关闭遥测功能。
+从 v6.6.0 起，TiDB 和 TiDB Dashboard 默认关闭遥测功能，即默认不再收集使用情况信息。如果升级前使用默认的遥测配置，则升级后遥测功能处于关闭状态。
 
-从 v1.11.3 起，新部署的 TiUP 默认关闭遥测功能。如果从 v1.11.3 之前的 TiUP 版本升级至 v1.11.3 或更高 TiUP 版本，遥测保持升级前的开启或关闭状态。
+从 v1.11.3 起，新部署的 TiUP 默认关闭遥测功能，即默认不再收集使用情况信息。如果从 v1.11.3 之前的 TiUP 版本升级至 v1.11.3 或更高 TiUP 版本，遥测保持升级前的开启或关闭状态。
 
 ### 生态系统
 
@@ -297,6 +297,7 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 | [`foreign_key_checks`](/system-variables.md#foreign_key_checks) | 修改 | 用于控制是否开启外键约束检查。默认值由 `OFF` 修改为 `ON`，表示默认开启外键检查。|
 | [`tidb_enable_foreign_key`](/system-variables.md#tidb_enable_foreign_key-从-v630-版本开始引入) | 修改 | 用于控制是否开启外键功能。默认值由 `OFF` 修改为 `ON`，表示默认开启外键功能。|
 | `tidb_enable_general_plan_cache`  |  修改  |   这个变量用来控制是否开启 General Plan Cache。自 v6.6.0 起，该变量更名为 [`tidb_enable_non_prepared_plan_cache`](/system-variables.md#tidb_enable_non_prepared_plan_cache)。 |
+|  [`tidb_enable_telemetry`](/system-variables.md#tidb_enable_telemetry-从-v402-版本开始引入)  |  修改  |  默认值由 `ON` 修改为 `OFF`，表示默认关闭 TiDB 的遥测功能。 |
 |  `tidb_general_plan_cache_size`  |  修改   |   这个变量用来控制 General Plan Cache 最多能够缓存的计划数量。自 v6.6.0 起，该变量更名为 [`tidb_non_prepared_plan_cache_size`](/system-variables.md#tidb_non_prepared_plan_cache_size)。 |
 | [`tidb_replica_read`](/system-variables.md#tidb_replica_read-从-v40-版本开始引入) | 修改 | 新增选项 `learner`，指定 TiDB 从只读节点中读取数据的 learner 副本。 |
 | [`tidb_replica_read`](/system-variables.md#tidb_replica_read-从-v40-版本开始引入) | 修改 | 新增选项 `prefer-leader`，以提高 TiDB 集群整体的读可用性。该选项被启用时，TiDB 会优先选择 Leader 副本进行读取操作；当 Leader 副本的处理性能显著下降时，TiDB 会自动将读操作转发给 Follower 副本。|
@@ -315,7 +316,9 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 | -------- | -------- | -------- | -------- |
 | TiKV  |  `enable-statistics`  |  删除   |  该配置项指定是否开启 RocksDB 的统计信息收集功能。从 v6.6.0 起，删除该配置项。所有集群默认开启统计信息收集，以便于故障排查。详情参见 [#13942](https://github.com/tikv/tikv/pull/13942)。  |
 | TiKV | `storage.block-cache.shared` | 删除 | 从 v6.6.0 起删除该配置项，默认开启 block cache 且无法关闭，详情参见 [#12936](https://github.com/tikv/tikv/issues/12936)。 |
+| TiDB  |  [`enable-telemetry`](/tidb-configuration-file.md#enable-telemetry-从-v402-版本开始引入)  |   自 v6.6.0 起，该配置项默认值由 `true` 改为 `false`，表示默认关闭 TiDB 的遥测功能。  |
 | TiKV | `storage.block-cache.block-cache-size` | 修改 | 从 v6.6.0 起，该配置项仅用于计算 `storage.block-cache.capacity` 的默认值。详情参见 [#12936](https://github.com/tikv/tikv/issues/12936)。 |
+| PD   |  [`enable-telemetry`](/pd-configuration-file.md#enable-telemetry)  |  修改  |   从 v6.6.0 起，该配置项的默认值由 `true` 改为 `false`，表示默认关闭 TiDB Dasboard 的遥测功能。  |
 | TiFlash |  [`profile.default.max_memory_usage_for_all_queries`](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml)  |  修改  |  表示所有查询过程中，节点对中间数据的内存限制。自 v6.6.0 起默认值由 `0` 改为 `0.8`，表示节点占总内存的 80%。  |
 | TiCDC  | [`consistent.storage`](/ticdc/ticdc-sink-to-mysql.md#使用前提)  |  修改  | redo log 备份文件的地址，除了 NFS，支持的 `scheme` 新增了 GCS 和 Azure。  |
 | TiDB  | [`initialize-sql-file`](/tidb-configuration-file.md#initialize-sql-file-从-v660-版本开始引入)  | 新增 | 用于指定 TiDB 集群初次启动时执行的 SQL 脚本。默认值为空。  |
@@ -388,11 +391,6 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 
 + Tools
 
-    + Backup & Restore (BR)
-
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
-
     + TiCDC
 
         - 支持 batch update dml 语句，提升 TiCDC 同步批量 update DML 的性能 [#8084](https://github.com/pingcap/tiflow/issues/8084)
@@ -407,15 +405,24 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
         - 对于可自动恢复的错误，只有在 2 分钟内发生超过 3 次时才报警。
         - 对于不可自动恢复的错误，维持原有行为，立即报警。
 
+        - 优化 relay 性能[#4287](https://github.com/pingcap/tiflow/issues/4287) @[GMHDBJD]
+
     + TiDB Lightning
 
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
+        - physical 导入模式支持 keyspace [#40531](https://github.com/pingcap/tidb/issues/40531) @[iosmanthus]
+        - 支持通过 lightning.max-error 设置最大冲突个数 [#40743](https://github.com/pingcap/tidb/issues/40743) @[dsdashun]
+        - 支持带有 BOM header 的数据文件 [#40744](https://github.com/pingcap/tidb/issues/40744) @[dsdashun]
+        - 优化遇到 tikv 限流错误时处理逻辑，改为尝试其他不繁忙的 region [#40205](https://github.com/pingcap/tidb/issues/40205) @[lance6716]
+        - 导入时关闭对表外键的检查 [#40027](https://github.com/pingcap/tidb/issues/40027) @[gozssky]
 
     + TiUP
 
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
+
+    + Dumpling
+
+        - 支持导出外键相关设置 [#39913](https://github.com/pingcap/tidb/issues/39913) @[lichunzhu]
 
     + sync-diff-inspector
 
@@ -520,22 +527,35 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 
     + TiDB Data Migration (DM)
 
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
+        - 修复 binlog-schema delete 失败的问题[#7373](https://github.com/pingcap/tiflow/issues/7373) @[liumengya94]
+        - 修复最后一个 binlog 为被 skip 的 ddl 会导致 checkpoint 不推进的问题[#8175](https://github.com/pingcap/tiflow/issues/8175) @[D3Hunter]
+        - 修复在同时有 update 和 non-update 类型的 expression filter 时所有的 update 类型的行变更都被跳过的问题 [#7831](https://github.com/pingcap/tiflow/issues/7831) @[lance6716]
+        - 修复当某个表只有 `update-old-value-expr` 或 `update-new-value-expr` 被设置时，不生效或 panic 的问题 [#7774](https://github.com/pingcap/tiflow/issues/7774) @[lance6716]
 
     + TiDB Lightning
 
         - 修复了部分场景下 TiDB 重启导致 TiDB Lightning 卡住的问题 [#33714](https://github.com/pingcap/tidb/issues/33714) @[lichunzhu](https://github.com/lichunzhu) **tw@shichun-0415**
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
-
-    + TiUP
-
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
+        - 修复并行导入时，当除最后一个外的 lightning 实例都遇到本地重复时，lightning 可能会跳过冲突处理的问题 [#40923](https://github.com/pingcap/tidb/issues/40923) @[lichunzhu]
+        - 修复 precheck 无法准确检测目标集群是否存在运行中的 CDC 的问题 [#41040](https://github.com/pingcap/tidb/issues/41040) @[lance6716]
+        - 修复 lightning 在 split-region 阶段 panic 问题（next key） [#40934](https://github.com/pingcap/tidb/issues/40934) @[lance6716]
+        - 修复踢重逻辑可能导致 checksum 不一致的问题 [#40657](https://github.com/pingcap/tidb/issues/40657) @[gozssky]
+        - 修复当数据文件中存在未闭合的 delimiter 可能导致 OOM 的问题 [#40400](https://github.com/pingcap/tidb/issues/40400) @[buchuitoudegou]
+        - 修复报错中的文件 offset 超过文件大小的问题 [#40034](https://github.com/pingcap/tidb/issues/40034) @[buchuitoudegou]
+        - 修复新版 PDClient 可能导致并行导入失败的问题 [#40493](https://github.com/pingcap/tidb/issues/40493) @[AmoebaProtozoa]
+        - 修复检测目标表是否为空的检查项无法检测到之前导入的脏数据的问题 [#39477](https://github.com/pingcap/tidb/issues/39477) @[dsdashun]
 
 ## 贡献者
 
 感谢来自 TiDB 社区的贡献者们：
 
-- [贡献者 GitHub ID]()
+- [morgo](https://github.com/morgo)
+- [jiyfhust](https://github.com/jiyfhust)
+- [b41sh](https://github.com/b41sh)
+- [sourcelliu](https://github.com/sourcelliu)
+- [songzhibin97](https://github.com/songzhibin97)
+- [mamil](https://github.com/mamil)
+- [Dousir9](https://github.com/Dousir9)
+- [hihihuhu](https://github.com/hihihuhu)
+- [mychoxin](https://github.com/mychoxin)
+- [xuning97](https://github.com/xuning97)
+- [andreid-db](https://github.com/andreid-db)
