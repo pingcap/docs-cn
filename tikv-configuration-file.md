@@ -1011,11 +1011,6 @@ rocksdb 相关的配置项。
 + 最小值：0
 + 单位：B|KB|MB|GB
 
-### `enable-statistics`
-
-+ 开启 RocksDB 的统计信息。
-+ 默认值：true
-
 ### `stats-dump-period`
 
 + 将统计信息输出到日志中的间隔时间。

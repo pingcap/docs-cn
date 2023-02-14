@@ -59,11 +59,11 @@ sync-diff-inspector 需要获取表结构信息、查询数据，需要的数据
 
 sync-diff-inspector 的配置总共分为五个部分：
 
-- Global config: 通用配置，包括校验的线程数量、是否输出修复 SQL 、是否比对数据等。
-- Datasource config: 配置上下游数据库实例。
-- Routes: 上游多表名通过正则匹配下游单表名的规则。**（可选）**
-- Task config: 配置校验哪些表，如果有的表在上下游有一定的映射关系或者有一些特殊要求，则需要对指定的表进行配置。
-- Table config: 对具体表的特殊配置，例如指定范围、忽略的列等等。**（可选）**
+- Global config：通用配置，包括校验的线程数量、是否输出修复 SQL、是否比对数据、是否跳过校验上游或下游不存在的表等。
+- Datasource config：配置上下游数据库实例。
+- Routes：上游多表名通过正则匹配下游单表名的规则。**（可选）**
+- Task config：配置校验哪些表，如果有的表在上下游有一定的映射关系或者有一些特殊要求，则需要对指定的表进行配置。
+- Table config：对具体表的特殊配置，例如指定范围、忽略的列等等。**（可选）**
 
 下面是一个完整配置文件的说明：
 
@@ -83,6 +83,8 @@ export-fix-sql = true
 # 只对比表结构而不对比数据
 check-struct-only = false
 
+# 如果开启，会跳过校验上游或下游不存在的表。
+skip-non-existing-table = false
 
 ######################### Datasource config #########################
 [data-sources]
@@ -131,10 +133,10 @@ target-table = "t2" # 目标表名
 # 配置需要对比的*目标数据库*中的表
 [task]
     # output-dir 会保存如下信息
-    # 1 sql: 检查出错误后生成的修复 SQL 文件，并且一个 chunk 对应一个文件
-    # 2 log: sync-diff.log 保存日志信息
-    # 3 summary: summary.txt 保存总结
-    # 4 checkpoint: a dir 保存断点续传信息
+    # 1 sql：检查出错误后生成的修复 SQL 文件，并且一个 chunk 对应一个文件
+    # 2 log：sync-diff.log 保存日志信息
+    # 3 summary：summary.txt 保存总结
+    # 4 checkpoint：a dir 保存断点续传信息
     output-dir = "./output"
 
     # 上游数据库，内容是 data-sources 声明的唯一标识 id
@@ -213,9 +215,11 @@ The data of `sbtest`.`sbtest99` is not equal
 The data of `sbtest`.`sbtest96` is not equal
 
 The rest of tables are all equal.
-The patch file has been generated in 
+
+A total of 2 tables have been compared, 0 tables finished, 2 tables failed, 0 tables skipped.
+The patch file has been generated in
         'output/fix-on-tidb2/'
-You can view the comparision details through 'output/sync_diff.log'
+You can view the comparison details through 'output/sync_diff.log'
 ```
 
 ### 输出文件
@@ -251,21 +255,21 @@ sync-diff-inspector 会在运行时定期（间隔 10s）输出校验进度到 c
 当校验结束时，sync-diff-inspector 会输出一份校验报告，位于 `${output}/summary.txt` 中，其中 `${output}` 是 `config.toml` 文件中 `output-dir` 的值。
 
 ```summary
-+---------------------+--------------------+----------------+---------+-----------+
-|        TABLE        | STRUCTURE EQUALITY | DATA DIFF ROWS | UPCOUNT | DOWNCOUNT |
-+---------------------+--------------------+----------------+---------+-----------+
-| `sbtest`.`sbtest99` | true               | +97/-97        |  999999 |    999999 |
-| `sbtest`.`sbtest96` | true               | +0/-101        |  999999 |   1000100 |
-+---------------------+--------------------+----------------+---------+-----------+
++---------------------+---------+--------------------+----------------+---------+-----------+
+|        TABLE        | RESULT  | STRUCTURE EQUALITY | DATA DIFF ROWS | UPCOUNT | DOWNCOUNT |
++---------------------+---------+--------------------+----------------+---------+-----------+
+| `sbtest`.`sbtest99` | succeed | true               | +97/-97        |  999999 |    999999 |
+| `sbtest`.`sbtest96` | succeed | true               | +0/-101        |  999999 |   1000100 |
+| `sbtest`.`sbtest97` | skipped | false              | +999999/-0     |  999999 |         0 |
++---------------------+---------+--------------------+----------------+---------+-----------+
 Time Cost: 16.75370462s
 Average Speed: 113.277149MB/s
 ```
 
-- TABLE: 该列表示对应的数据库及表名
-
-- STRUCTURE EQUALITY: 表结构是否相同
-
-- DATA DIFF ROWS: 即 `rowAdd` / `rowDelete`，表示该表修复需要增加/删除的行数
+- `TABLE`：该列表示对应的数据库及表名
+- `RESULT`：校验是否完成。如果设置了 `skip-non-existing-table = true`，对于上游或下游不存在的表，该列的值将为 `skipped`
+- `STRUCTURE EQUALITY`：表结构是否相同
+- `DATA DIFF ROWS`：即 `rowAdd`/`rowDelete`，表示该表修复需要增加/删除的行数
 
 #### SQL 修复
 
@@ -281,11 +285,11 @@ Average Speed: 113.277149MB/s
 -- table: sbtest.sbtest99
 -- range in sequence: (3690708) < (id) <= (3720581)
 /*
-  DIFF COLUMNS ╏   `K`   ╏                `C`                 ╏               `PAD`       
+  DIFF COLUMNS ╏   `K`   ╏                `C`                 ╏               `PAD`
 ╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╋╍╍╍╍╍╍╍╍╍╋╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╋╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍
-  source data  ╏ 2501808 ╏ 'hello'                            ╏ 'world'                
+  source data  ╏ 2501808 ╏ 'hello'                            ╏ 'world'
 ╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╋╍╍╍╍╍╍╍╍╍╋╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╋╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍
-  target data  ╏ 5003616 ╏ '0709824117-9809973320-4456050422' ╏ '1714066100-7057807621-1425865505'  
+  target data  ╏ 5003616 ╏ '0709824117-9809973320-4456050422' ╏ '1714066100-7057807621-1425865505'
 ╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╋╍╍╍╍╍╍╍╍╍╋╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╋╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍
 */
 REPLACE INTO `sbtest`.`sbtest99`(`id`,`k`,`c`,`pad`) VALUES (3700000,2501808,'hello','world');

@@ -8,6 +8,26 @@ aliases: ['/docs-cn/dev/br/backup-and-restore-storages/','/zh/tidb/dev/backup-st
 
 TiDB 支持 Amazon S3、Google Cloud Storage (GCS)、Azure Blob Storage 和 NFS 作为备份恢复的存储。具体来说，可以在 `br` 的 `--storage` 或 `-s` 选项中指定备份存储的 URL。本文介绍不同外部存储服务中 [URL 的定义格式](#url-格式)、存储过程中的[鉴权方案](#鉴权)以及[存储服务端加密](#存储服务端加密)。
 
+## BR 向 TiKV 发送凭证
+
+| 命令行参数 | 描述 | 默认值 |
+|:----------|:-------|:-------|
+| `--send-credentials-to-tikv` | 是否将 BR 获取到的权限凭证发送给 TiKV。 | `true` |
+
+在默认情况下，使用 Amazon S3、Google Cloud Storage (GCS)、Azure Blob Storage 存储时，BR 会将凭证发送到每个 TiKV 节点，以减少设置的复杂性。该操作由参数 `--send-credentials-to-tikv`（或简写为 `-c`）控制。
+
+但是，这个操作不适合云端环境，如果采用了 IAM Role 方式授权，那么每个节点都有自己的角色和权限。在这种情况下，你需要设置 `--send-credentials-to-tikv=false`（或简写为 `-c=0`）来禁止发送凭证：
+
+```bash
+./br backup full -c=0 -u pd-service:2379 --storage 's3://bucket-name/prefix'
+```
+
+使用 SQL 进行[备份](/sql-statements/sql-statement-backup.md)[恢复](/sql-statements/sql-statement-restore.md)时，可加上 `SEND_CREDENTIALS_TO_TIKV = FALSE` 选项：
+
+```sql
+BACKUP DATABASE * TO 's3://bucket-name/prefix' SEND_CREDENTIALS_TO_TIKV = FALSE;
+```
+
 ## URL 格式
 
 ### 格式说明

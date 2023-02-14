@@ -26,6 +26,8 @@ TiDB 支持 MySQL 5.7 GA 版本发布的大多数 JSON 函数。
 | [->>][json_short_extract_unquote]                            | 返回执行路径后面的 JSON 列的值和转义后的结果； `JSON_UNQUOTE(JSON_EXTRACT(doc, path_literal))` 的别名 |
 | [JSON_KEYS(json_doc[, path])][json_keys]                     | 返回从 JSON 对象的顶级值作为 JSON array 的键，如果给定了路径参数，则从选定路径中获取顶级键 |
 | [JSON_SEARCH(json_doc, one_or_all, search_str[, escape_char[, path] ...])][json_search] | 返回指定字符在 JSON 文档中的路径                             |
+| [value MEMBER OF(json_array)][MEMBER_OF] | 如果传入值是 JSON array 中的一个元素，返回 1，否则返回 0 |
+| [JSON_OVERLAPS(json_doc1, json_doc2)][json_overlaps] | 表示两个 JSON 文档中是否包含公共部分。返回 1 表示两个 JSON 文档中包含公共部分，否则返回 0 |
 
 ## 修改 JSON 值的函数
 
@@ -135,3 +137,7 @@ TiDB 支持 MySQL 5.7 GA 版本发布的大多数 JSON 函数。
 [json_storage_free]: https://dev.mysql.com/doc/refman/8.0/en/json-utility-functions.html#function_json-storage-free
 
 [json_storage_size]: https://dev.mysql.com/doc/refman/5.7/en/json-utility-functions.html#function_json-storage-size
+
+[MEMBER_OF]: https://dev.mysql.com/doc/refman/8.0/en/json-search-functions.html#operator_member-of
+
+[json_overlaps]: https://dev.mysql.com/doc/refman/8.0/en/json-search-functions.html#function_json-overlaps
