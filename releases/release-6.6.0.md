@@ -230,7 +230,7 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 
 > **注意：**
 >
-> 除了 v6.6.0 及之后发布的 DMR 和 LTS 版本默认关闭遥测外，2022 年 2 月 20 日后，为 TiDB LTS 版本发布的补丁版本也默认关闭遥测功能，默认不再收集使用情况信息分享给 PingCAP。具体的版本可参考 [TiDB 版本发布时间线](/releases/release-timeline.md)。
+> 除了 v6.6.0 及之后发布的 DMR 和 LTS 版本默认关闭遥测外，2023 年 2 月 20 日后，为 TiDB LTS 版本发布的补丁版本也默认关闭遥测功能，默认不再收集使用情况信息分享给 PingCAP。具体的版本可参考 [TiDB 版本发布时间线](/releases/release-timeline.md)。
 
 ### 生态系统
 
