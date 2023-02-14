@@ -1960,6 +1960,15 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 单位：行
 - 这个变量用来设置 index lookup join 操作的 batch 大小，AP 类应用适合较大的值，TP 类应用适合较小的值。
 
+### `tidb_index_join_double_read_penalty_cost_rate`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 类型：浮点数
+- 默认值：`0`
+- 范围：`[0, 18446744073709551615]`
+- 这个变量用来设置是否给 index join 增加一些惩罚性的代价，以降低优化器选择 index join 操作的倾向，增加选择其他 join 方式的倾向，如 hash join, tiflash join 等。
+
 ### `tidb_index_lookup_concurrency`
 
 > **警告：**
