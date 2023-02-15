@@ -512,31 +512,31 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 
     <!-- planner 4-->
     - 修复了非法的 datetime 值导致 analyze 失败的问题 [#39336](https://github.com/pingcap/tidb/issues/39336) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes)
-    - 修复了由 virtual column 引发的 can't find proper physical plan 问题 [#41014](https://github.com/pingcap/tidb/issues/41014) @[AilinKid](https://github.com/AilinKid)
+    - 修复了由虚拟列引发的 `can't find proper physical plan` 问题 [#41014](https://github.com/pingcap/tidb/issues/41014) @[AilinKid](https://github.com/AilinKid)
     - 修复了当动态裁剪模式下的分区表有 global binding 时，TiDB 重启失败的问题 [#40368](https://github.com/pingcap/tidb/issues/40368) @[Yisaer](https://github.com/Yisaer)
     - 修复了 auto analyze 导致 graceful shutdown 耗时的问题 [#40038](https://github.com/pingcap/tidb/issues/40038) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes)
 
     <!-- compute 2-->
-    - 修复了 IndexMerge 算子在触发内存限制行为时可能导致 tidb-server 崩溃的问题[#41036](https://github.com/pingcap/tidb/pull/41036) @[guo-shaoge](https://github.com/guo-shaoge)
-    - 修复了在分区表上执行查询 `select * from t limit 1` 时，执行速度慢的问题[#40741](https://github.com/pingcap/tidb/pull/40741)@[solotzg](https://github.com/solotzg)
+    - 修复了 IndexMerge 算子在触发内存限制行为时可能导致 TiDB server 崩溃的问题[#41036](https://github.com/pingcap/tidb/pull/41036) @[guo-shaoge](https://github.com/guo-shaoge)
+    - 修复了在分区表上执行 `SELECT * FROM table_name LIMIT 1` 查询时，执行速度慢的问题 [#40741](https://github.com/pingcap/tidb/pull/40741) @[solotzg](https://github.com/solotzg)
 
     <!-- transaction 1-->
-    - 修复了过期的 region cache 可能残留导致的内存泄漏和性能下降问题 [#40461](https://github.com/pingcap/tidb/issues/40461) @[sticnarf](https://github.com/sticnarf)
+    - 修复了过期的 region 缓存可能残留导致的内存泄漏和性能下降问题 [#40461](https://github.com/pingcap/tidb/issues/40461) @[sticnarf](https://github.com/sticnarf)
 
 + TiKV
     <!-- 5 -->
-    - 修复cast const Enum 到其他类型时的错误 [#14156](https://github.com/tikv/tikv/issues/14156) @[wshwsh12](https://github.com/wshwsh12)
-    - 减少resolve-ts带来的网络流量 [#14098](https://github.com/tikv/tikv/issues/14092) @[overvenus] (https://github.com/overvenus)
-    - 支持TiKV在小于1 core的CPU下启动 [#13586] [#13752] [#14017](https://github.com/tikv/tikv/issues/13586) @[andreid-db](https://github.com/andreid-db)
+    - 修复转换 `const Enum` 类型到其他类型时报错的问题 [#14156](https://github.com/tikv/tikv/issues/14156) @[wshwsh12](https://github.com/wshwsh12)
+    - 修复 Resolved TS 导致网络流量升高的问题 [#14098](https://github.com/tikv/tikv/issues/14092) @[overvenus] (https://github.com/overvenus)
+    - 修复 TiKV 在 CPU 核数小于 1 时无法启动的问题  [#13586] [#13752] [#14017](https://github.com/tikv/tikv/issues/13586) @[andreid-db](https://github.com/andreid-db)
     - copr: 修复old collation时Like中的 _ pattern的行为 [#13785](https://github.com/tikv/tikv/pull/13785) @[Yangkeao](https://github.com/Yangkeao)
     (dup: release-6.1.4.md > Bug 修复> TiKV)- 修复 TiDB 中事务在执行悲观 DML 失败后，再执行其他 DML 时，如果 TiDB 和 TiKV 之间存在网络故障，可能会造成数据不一致的问题 [#14038](https://github.com/tikv/tikv/issues/14038) @[MyonKeminta](https://github.com/MyonKeminta) @[myonkeminta](https://github.com/myonkeminta)
 
 + PD
     <!-- 4 -->
-    - 修复 region scatter 任务会生产多余非预期副本的问题 [#5920](https://github.com/tikv/pd/pull/5920) @[HundunDM](https://github.com/HunDunDM)
-    - 修复 online-unsafe-recovery 在 auto-detect 模式下卡住并超时的问题 [#5754](https://github.com/tikv/pd/pull/5754) @[Connor1996](https://github.com/Connor1996)
-    - 修复 replace down peer 在特定条件下执行变慢的问题 [#5789](https://github.com/tikv/pd/pull/5789)@[HundunDM](https://github.com/HunDunDM)
-    - 修复调用 ReportMinResolvedTS 过高的情况下造成 PD OOM 的问题  [#5965](https://github.com/tikv/pd/issues/5965) @[HundunDM](https://github.com/HunDunDM)
+    - 修复 Region Scatter 任务会生成非预期的多余副本的问题 [#5909](https://github.com/tikv/pd/issues/5909) @[HundunDM](https://github.com/HunDunDM)
+    - 修复 Online Unsafe Recovery 功能在 `auto-detect` 模式下卡住并超时的问题 [#5753](https://github.com/tikv/pd/issues/5753) @[Connor1996](https://github.com/Connor1996)
+    - 修复 `replace-down-peer` 在特定条件下执行变慢的问题 [#5788](https://github.com/tikv/pd/issues/5788) @[HundunDM](https://github.com/HunDunDM)
+    - 修复调用 `ReportMinResolvedTS` 过高的情况下造成 PD OOM 的问题  [#5965](https://github.com/tikv/pd/issues/5965) @[HundunDM](https://github.com/HunDunDM)
 
 + TiFlash
     <!-- 3 -->
