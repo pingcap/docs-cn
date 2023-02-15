@@ -1957,7 +1957,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 作用域：GLOBAL
 - 是否持久化到集群：是
 - 类型：Duration
-- 默认值：`168h`
+- 默认值：`168h`，即 7 天
 - 这个变量用来控制历史统计信息在存储中的保留时间。
 
 ### `tidb_ignore_prepared_cache_close_stmt` <span class="version-mark">从 v6.0.0 版本开始引入</span>
