@@ -385,6 +385,7 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 - 支持动态修改参数 [`store-io-pool-size`](/tikv-configuration-file.md#store-io-pool-size-从-v530-版本开始引入)，增加了 TiKV 性能调优的灵活性。
 - 解除了执行计划缓存对 `LIMIT` 子句的限制，提升了执行效率。
 - v6.6.0 及以上的 BR 版本不支持恢复数据到 v6.5.0 及以下版本的集群。
+- 由于可能存在正确性问题，分区表目前不再支持修改列类型。
 
 ## 改进提升
 
@@ -490,7 +491,6 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
     - 修复了分配自增 ID 时的数据竞争问题 [#40584](https://github.com/pingcap/tidb/issues/40584) @[Dousir9](https://github.com/Dousir9)
     - 修复了 JSON 的 not 表达式实现与 MySQL 实现不兼容的问题 [#40683](https://github.com/pingcap/tidb/issues/40683) @[YangKeao](https://github.com/YangKeao)
     - 修复了并发视图模式可能会造成 DDL 操作卡住的问题 [#40352](https://github.com/pingcap/tidb/issues/40352) @[zeminzhou](https://github.com/zeminzhou)
-    (dup: release-6.1.4.md > 兼容性变更> TiDB)- 由于可能存在正确性问题，分区表目前不再支持修改列类型 [#40620](https://github.com/pingcap/tidb/issues/40620) @[mjonss](https://github.com/mjonss) @[mjonss](https://github.com/mjonss)
     - 修复了使用 `caching_sha2_password` 方式进行认证但不指定密码导致的 "Malformed packet" 问题 [#40831](https://github.com/pingcap/tidb/issues/40831) @[dveeden](https://github.com/dveeden)
     - 修复了在执行 TTL 任务时，如果表的主键包含 `ENUM` 类型的列任务会失败的问题 [#40456](https://github.com/pingcap/tidb/issues/40456) @[lcwangchao](https://github.com/lcwangchao)
     - 修复了某些被 MDL 阻塞的 DDL 操作无法在 `mysql.tidb_mdl_view` 中查询到的问题 [#40838](https://github.com/pingcap/tidb/issues/40838) @[YangKeao](https://github.com/YangKeao)
