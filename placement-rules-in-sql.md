@@ -134,6 +134,7 @@ SELECT * FROM information_schema.partitions WHERE tidb_placement_policy_name IS 
 | `FOLLOWER_CONSTRAINTS`     | 仅适用于 follower 的约束列表。                                           |
 | `LEARNER_CONSTRAINTS`     | 仅适用于 learner 的约束列表。                                           |
 | `LEARNERS`                 | 指定 learner 的数量。     |
+| `SURVIVAL_PREFERENCE`      | 指定按 label 容灾等级的优先级放置副本。例如 `SURVIVAL_PREFERENCE="[region, zone, host]"`。    |
 
 ## 示例
 
@@ -246,6 +247,26 @@ PARTITION BY RANGE( YEAR(purchased) ) (
 > **注意：**
 >
 > 字典和列表格式都基于 YAML 解析，但 YAML 语法有些时候不能被正常解析。例如 YAML 会把 `"{+disk=ssd:1,+disk=nvme:2}"`（`:` 后无空格）错误地解析成 `'{"+disk=ssd:1": null, "+disk=nvme:2": null}'`，不符合预期。但 `"{+disk=ssd: 1,+disk=nvme: 2}"`（`:` 后有空格）能被正确解析成 `'{"+disk=ssd": 1, "+disk=nvme": 2}'`。
+
+### 生存偏好
+
+在创建或修改放置策略时，你可以使用 `SURVIVAL_PREFERENCES` 选项设置数据的生存能力偏好。
+
+例如，假设你的 TiDB 集群分布在 3 个 `zone`（即可用区），且每个可用区的 `host`（即节点）上混合部署了多个 TiKV 实例。在为该集群创建放置策略时，假设 `SURVIVAL_PREFERENCES` 的设置如下：
+
+``` sql
+CREATE PLACEMENT POLICY multiaz SURVIVAL_PREFERENCES="[zone, host]";
+CREATE PLACEMENT POLICY singleaz CONSTRAINTS="[+zone=zone1]" SURVIVAL_PREFERENCES="[host]";
+```
+
+创建好放置策略后，你可以按需将放置策略绑定到对应的表上：
+
+- 对于绑定了 `multiaz` 放置策略的表，数据将以 3 副本的形式放置在不同的可用区里，优先满足跨 `zone` 级别数据隔离的生存目标，再满足跨 `host` 级别的数据隔离的生存目标。
+- 对于绑定了 `singleaz` 放置策略的表，数据会优先以 3 副本的形式全部放置在 `zone1` 这个可用区里，再满足跨 `host` 级别的数据隔离的生存目标。
+
+> **注意：**
+>
+> `SURVIVAL_PREFERENCES` 和 PD 中的 `location-labels` 是等价的，更多信息可以参考[通过拓扑 label 进行副本调度](/schedule-replicas-by-topology-labels.md)。
 
 ## 工具兼容性
 
