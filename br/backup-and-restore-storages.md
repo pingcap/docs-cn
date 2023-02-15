@@ -157,7 +157,7 @@ BACKUP DATABASE * TO 's3://bucket-name/prefix' SEND_CREDENTIALS_TO_TIKV = FALSE;
 
 - 方式一：指定访问密钥
 
-    如果指定访问密钥和秘密访问密钥，将按照指定的访问密钥和秘密访问密钥进行鉴权。除了在 URL 中指定密钥外，还支持以下方式：
+    如果指定访问密钥和秘密访问密钥，将按照指定的访问密钥和秘密访问密钥进行鉴权。除了在 URI 中指定密钥外，还支持以下方式：
 
     - br 命令行工具读取 `$AWS_ACCESS_KEY_ID` 和 `$AWS_SECRET_ACCESS_KEY` 环境变量
     - br 命令行工具读取 `$AWS_ACCESS_KEY` 和 `$AWS_SECRET_KEY` 环境变量
@@ -176,7 +176,7 @@ BACKUP DATABASE * TO 's3://bucket-name/prefix' SEND_CREDENTIALS_TO_TIKV = FALSE;
 </div>
 <div label="GCS" value="gcs">
 
-配置访问 GCS 的账户可以通过指定访问密钥的方式。如果指定了 `credentials-file` 参数，将按照指定的 `credentials-file` 进行鉴权。除了在 URL 中指定密钥文件外，还支持以下方式：
+配置访问 GCS 的账户可以通过指定访问密钥的方式。如果指定了 `credentials-file` 参数，将按照指定的 `credentials-file` 进行鉴权。除了在 URI 中指定密钥文件外，还支持以下方式：
 
 - br 命令行工具读取位于 `$GOOGLE_APPLICATION_CREDENTIALS` 环境变量所指定路径的文件内容
 - br 命令行工具读取位于 `~/.config/gcloud/application_default_credentials.json` 的文件内容
@@ -187,7 +187,7 @@ BACKUP DATABASE * TO 's3://bucket-name/prefix' SEND_CREDENTIALS_TO_TIKV = FALSE;
 
 - 方式一：指定访问密钥
 
-    在 URL 配置 `account-name` 和 `account-key`，则使用该参数指定的密钥。除了在 URL 中指定密钥文件外，还支持 br 命令行工具读取 `$AZURE_STORAGE_KEY` 的方式。
+    在 URI 配置 `account-name` 和 `account-key`，则使用该参数指定的密钥。除了在 URI 中指定密钥文件外，还支持 br 命令行工具读取 `$AZURE_STORAGE_KEY` 的方式。
 
 - 方式二：使用 Azure AD 备份恢复
 
