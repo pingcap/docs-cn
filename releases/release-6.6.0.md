@@ -12,13 +12,49 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 
 在 6.6.0 版本中，你可以获得以下关键特性：
 
-- 引入 MySQL 兼容的多值索引，增强 JSON 类型，提升 TiDB 对 MySQL 8.0 的兼容性（实验特性）。
-- 支持 MySQL 语法兼容的外键约束，帮助保持数据一致性和提升数据质量。
-- 支持基于资源组的资源管控，将不同的数据库用户映射到对应的资源组中，根据实际需要设置每个资源组的配额（实验特性）。
-- 绑定历史执行计划 GA，支持通过 TiDB Dashboard 快速绑定执行计划。
-- TiFlash 引擎支持带压缩的数据交换，提升数据交换效率。
-- TiFlash 支持 Stale Read 功能，进一步提高查询性能。
-- TiDB Data Migration (DM) 集成 TiDB Lightning 的 Physical Import 模式，提升 DM 全量数据迁移时的性能，大幅缩短大数据量场景下的迁移时间（实验特性）。
+<table>
+<thead>
+  <tr>
+    <th>分类</th>
+    <th>功能</th>
+    <th>描述</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td rowspan="2">SQL<br /><br /><i>SEAMLESS to use</i></td>
+    <td>外键约束</td>
+    <td>支持 MySQL 兼容的外键约束，帮助保持数据一致性和提升数据质量</td>
+  </tr>
+  <tr>
+    <td>多值索引（实验特性）</td>
+    <td>引入 MySQL 兼容的多值索引，增强 JSON 类型，提升 TiDB 对 MySQL 8.0 的兼容性</td>
+  </tr>
+  <tr>
+    <td>数据库管理<br /><br /><i>SMOOTH to use</i></td>
+    <td>用户资源管控（实验特性）</td>
+    <td>支持基于资源组的资源管控，将不用的数据库用户映射到对应的资源组中，根据实际需要设置每个资源组的配额</td>
+  </tr>
+  <tr>
+    <td>稳定性<br /><br /><i>RELIABLE to use</i></td>
+    <td>绑定历史执行计划</td>
+    <td>支持绑定历史执行计划，支持通过 TiDB Dashboard 快速绑定执行计划</td>
+  </tr>
+  <tr>
+    <td rowspan="3">性能<br /><br /><i>POWERFUL to use</i></td>
+    <td>TiFlash MPP 支持数据压缩</td>
+    <td>TiFlash 支持带压缩的数据交换，可提升并行数据的交换效率</td>
+  </tr>
+  <tr>
+    <td>TiFlash 支持 Stale Read</td>
+    <td>TiFlash 支持 Stale Read 功能，在非实时性要求的场景可提升查询性能</td>
+  </tr>
+  <tr>
+    <td>DM 集成物理导入模式（实验特性）</td>
+    <td>TiDB Data Migration (DM) 集成 TiDB Lightning 的 Physical Import 模式，提升 DM 全量数据迁移时的性能，大数据量场景下的迁移时间最多可提升 10 倍</td>
+  </tr>
+</tbody>
+</table>
 
 ## 新功能
 
