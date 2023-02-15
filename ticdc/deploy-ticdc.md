@@ -152,10 +152,10 @@ tiup cluster upgrade <cluster-name> <cluster-version> --transfer-timeout 600
 
 ## 使用 TiCDC 命令行工具来查看集群状态
 
-执行以下命令来查看 TiCDC 集群运行状态，注意需要将 `<version>` 替换为 TiCDC 集群版本：
+执行以下命令来查看 TiCDC 集群运行状态，注意需要将 `v<CLUSTER_VERSION>` 替换为 TiCDC 集群版本：
 
 ```shell
-tiup ctl:<version> cdc capture list --server=http://10.0.10.25:8300
+tiup ctl:v<CLUSTER_VERSION> cdc capture list --server=http://10.0.10.25:8300
 ```
 
 ```shell

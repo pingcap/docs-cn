@@ -132,6 +132,8 @@ addr = "172.16.31.10:8287"
 # duplicate-resolution = 'none'
 # Physical Import Mode 一次请求中发送的 KV 数量。
 # send-kv-pairs = 32768
+# Physical Import Mode 向 TiKV 发送 KV 时是否启用压缩。目前只支持 Gzip 压缩算法，可填写 "gzip" 或者 "gz"。默认不启用压缩。
+# compress-kv-pairs = ""
 # Physical Import Mode 本地进行 KV 排序的路径。如果磁盘性能较低（如使用机械盘），建议设置成与 `data-source-dir` 不同的磁盘，这样可有效提升导入性能。
 # sorted-kv-dir = ""
 # Physical Import Mode TiKV 写入 KV 数据的并发度。当 TiDB Lightning 和 TiKV 直接网络传输速度超过万兆的时候，可以适当增加这个值。
@@ -207,8 +209,15 @@ delimiter = '"'
 # 行尾定界字符，支持一个或多个字符。设置为空（默认值）表示 "\n"（换行）和 "\r\n" （回车+换行），均表示行尾。
 terminator = ""
 # CSV 文件是否包含表头。
-# 如果 header = true，将跳过首行。
+# 如果 header = true，将把首行的内容作为表头处理，不作为数据导入。如果设置为 false，首行也作为 CSV 数据导入，此时请确保 CSV 文件的列顺序与目标表的列顺序一致，否则可能会导致数据差异。
 header = true
+# CSV 表头是否匹配目标表的表结构。
+# 默认为 true，表示在导入数据时，会根据 CSV 表头的字段名去匹配目标表对应的列名，这样即使 CSV 文件和目标表列的顺序不一致也能按照对应的列名进行导入。
+# 如果 CSV 表头中的字段名和目标表的列名不匹配（例如，CSV 表头中的某些字段名在目标表中可能找不到对应的同名列）但列的顺序是一致的，请将该配置设置为 false。
+# 这时，在导入的时候，会直接忽略 CSV 表头的内容，以避免导入错误。在这种情况下，直接把 CSV 数据按照目标表列的顺序导入。
+# 因此，如果列的顺序不一致，请手动调整一致后再导入，否则可能会导致数据差异。
+# 注意：只有在 header = true 时，该参数才会生效。如果 header = false ，表示 CSV 文件没有表头，此时不需要考虑相关列名匹配的问题。
+header-schema-match = true
 # CSV 文件是否包含 NULL。
 # 如果 not-null = true，CSV 所有列都不能解析为 NULL。
 not-null = false
