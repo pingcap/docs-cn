@@ -17,20 +17,20 @@ aliases: ['/zh/tidb/dev/build-cluster-in-cloud']
 1. 如果你还未拥有 TiDB Cloud 帐号，请先在此[注册](https://tidbcloud.com/free-trial)。
 2. 使用你的 TiDB Cloud 帐号[登录](https://tidbcloud.com/)。
 
-    默认显示 [**Clusters**](https://tidbcloud.com/console/clusters) 页面。
+    登录后，默认进入 [**Clusters**](https://tidbcloud.com/console/clusters) 页面。
 
 3. 对于新注册的用户，TiDB Cloud 会自动为你创建一个 Serverless Tier 集群 `Cluster0`。你可以使用这个默认集群进行后续操作，也可以自行创建一个新的 Serverless Tier 集群。
 
-    如果你想创建一个新的 Serverless Tier 集群，请执行以下操作：
+    如果你想创建一个新的 Serverless Tier 集群，请进行以下操作：
 
     1. 点击 **Create Cluster**。
     2. **Create Cluster** 页面默认选择 **Serverless Tier**。你可以根据需要修改集群名称、选择可用区，然后点击 **Create**。你的 Serverless Tier 集群将于 30 秒后创建完毕。
 
 4. 点击目标集群名称，进入集群概览页面，然后点击右上角的 **Connect** 按钮，弹出连接对话框。
 
-5. 在对话框中选择你需要的连接方式和操作系统并保存对应的连接字符串。下面连接到集群的步骤将以 MySQL 客户端为例。
+5. 在对话框中，选择你需要的连接方式和操作系统并保存对应的连接字符串。下面连接到集群的步骤将以 MySQL 客户端为例。
 
-6. 点击 **Create password** 生成随机密码。生成的密码不会再次显示，因此请将密码保存在安全的位置。如果你没有设置 root 密码，你将无法连接到集群。
+6. 点击 **Create password** 生成随机密码。生成的密码不会再次显示，因此请将密码妥善保存。如果没有设置 root 密码，你将无法连接到集群。
 
     > **注意：**
     >
