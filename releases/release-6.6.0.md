@@ -396,35 +396,35 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 
     + Backup & Restore (BR)
 
-        - 优化 TiKV 端下载日志备份文件的并发度，提升常规场景下 PITR 恢复的性能。[#14206](https://github.com/tikv/tikv/issues/14206) @[YuJuncen](https://github.com/YuJuncen)
+        - 优化 TiKV 端下载日志备份文件的并发度，提升常规场景下 PITR 恢复的性能 [#14206](https://github.com/tikv/tikv/issues/14206) @[YuJuncen](https://github.com/YuJuncen)
 
     + TiCDC
         <!-- 2 -->
-        - 支持 batch update dml 语句，提升 TiCDC 同步批量 update DML 的性能 [#8084](https://github.com/pingcap/tiflow/issues/8084)
-        (dup: release-6.3.0.md > 改进提升> Tools> TiCDC)- 采用异步的模式实现 MQ sink 和 MySQL sink，提升 sink 的吞吐能力 [#5928](https://github.com/pingcap/tiflow/issues/5928) @[hicqu](https://github.com/hicqu) @[hi-rustin](https://github.com/hi-rustin)
+        - 支持 Batch UPDATE DML 语句，提升 TiCDC 同步 Batch UPDATE DML 的性能 [#8084](https://github.com/pingcap/tiflow/issues/8084)
+        - 采用异步模式实现 MQ sink 和 MySQL sink，提升 sink 的吞吐能力 [#5928](https://github.com/pingcap/tiflow/issues/5928) @[hicqu](https://github.com/hicqu) @[hi-rustin](https://github.com/hi-rustin)
 
     + TiDB Data Migration (DM)
         <!-- 2 -->
         - 优化了 DM 的告警规则和内容 [#7376](https://github.com/pingcap/tiflow/issues/7376) @[D3Hunter](https://github.com/D3Hunter) **tw@hfxsd**
 
-            之前 "DM_XXX_process_exits_with_error" 类告警是遇到相关错误就报警，但有些告警是由于数据库连接长时间 idle 导致的，重连后即可恢复。为了减少这类报警，DM 将错误分为了可自动恢复错误和不可自动恢复错误：
+            之前 "DM_XXX_process_exits_with_error" 类告警是遇到相关错误即报警，但有些告警是由于数据库连接长时间 idle 导致的，重连后即可恢复。为了减少此类报警，DM 将错误分为了可自动恢复错误和不可自动恢复错误：
 
             - 对于可自动恢复的错误，只有在 2 分钟内发生超过 3 次时才报警。
             - 对于不可自动恢复的错误，维持原有行为，立即报警。
 
-        - 优化 relay 性能[#4287](https://github.com/pingcap/tiflow/issues/4287) @[GMHDBJD]
+        - 优化 relay 性能 [#4287](https://github.com/pingcap/tiflow/issues/4287) @[GMHDBJD](https://github.com/GMHDBJD)
 
     + TiDB Lightning
         <!-- 5 -->
-        - physical 导入模式支持 keyspace [#40531](https://github.com/pingcap/tidb/issues/40531) @[iosmanthus]
-        - 支持通过 lightning.max-error 设置最大冲突个数 [#40743](https://github.com/pingcap/tidb/issues/40743) @[dsdashun]
-        - 支持带有 BOM header 的数据文件 [#40744](https://github.com/pingcap/tidb/issues/40744) @[dsdashun]
-        - 优化遇到 tikv 限流错误时处理逻辑，改为尝试其他不繁忙的 region [#40205](https://github.com/pingcap/tidb/issues/40205) @[lance6716]
-        - 导入时关闭对表外键的检查 [#40027](https://github.com/pingcap/tidb/issues/40027) @[gozssky]
+        - Physical Import Mode 支持 Keyspace [#40531](https://github.com/pingcap/tidb/issues/40531) @[iosmanthus](https://github.com/iosmanthus)
+        - 支持通过 `lightning.max-error` 设置最大冲突个数 [#40743](https://github.com/pingcap/tidb/issues/40743) @[dsdashun](https://github.com/dsdashun)
+        - 支持导入带有 BOM header 的 CSV 数据文件 [#40744](https://github.com/pingcap/tidb/issues/40744) @[dsdashun](https://github.com/dsdashun)
+        - 优化遇到 TiKV 限流错误时的处理逻辑，改为尝试其他空闲的 Region [#40205](https://github.com/pingcap/tidb/issues/40205) @[lance6716](https://github.com/lance6716)
+        - 导入时关闭对表外键的检查 [#40027](https://github.com/pingcap/tidb/issues/40027) @[gozssky](https://github.com/gozssky)
 
     + Dumpling
 
-        - 支持导出外键相关设置 [#39913](https://github.com/pingcap/tidb/issues/39913) @[lichunzhu]
+        - 支持导出外键相关设置 [#39913](https://github.com/pingcap/tidb/issues/39913) @[lichunzhu](https://github.com/lichunzhu)
 
     + sync-diff-inspector
 
@@ -513,17 +513,17 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 
 + Tools
 
-    + Backup & Restore (BR)
+    + Backup & Restore (BR) @hfxsd 
         <!-- 9 -->
-        - 修复了恢复日志备份时热点 Region 导致恢复失败的问题 [#37207](https://github.com/pingcap/tidb/issues/37207) @[Leavrth](https://github.com/Leavrth)
-        - 修复了恢复数据到正在运行日志备份的集群，导致日志备份文件无法恢复的问题 [#40797](https://github.com/pingcap/tidb/issues/40797) @[Leavrth](https://github.com/Leavrth)
-        - 修复了 PITR 功能不支持 CA-bundle 认证的问题 [#38775](https://github.com/pingcap/tidb/issues/38775) @[YuJuncen](https://github.com/YuJuncen)
-        - 修复了恢复时重复的临时表导致的 Panic 问题 [#40797](https://github.com/pingcap/tidb/issues/40797) @[joccau](https://github.com/joccau)
-        - 修复了 PITR 不支持 PD 集群配置变更的问题 [#14165](https://github.com/tikv/tikv/issues/14165) @[YuJuncen](https://github.com/YuJuncen)
-        - 修复了 PD 与 tidb-server 的连接故障导致 PITR 备份进度不推进的问题 [#41082](https://github.com/pingcap/tidb/issues/41082) @[YuJuncen](https://github.com/YuJuncen)
-        - 修复了 PD 与 TiKV 的连接故障导致 TiKV 不能监听 PITR 任务的问题 [#14159](https://github.com/tikv/tikv/issues/14159) @[YuJuncen](https://github.com/YuJuncen)
-        - 修复了当 TiDB 集群不存在 PITR 备份任务时，`resolve lock` 频率过高的问题 [#40759](https://github.com/pingcap/tidb/issues/40759) @[joccau](https://github.com/joccau)
-        - 修复了 PITR 备份任务被删除时存在备份信息残留导致新任务出现数据不一致的问题 [#40403](https://github.com/pingcap/tidb/issues/40403) @[joccau](https://github.com/joccau)
+        - 修复恢复日志备份时热点 Region 导致恢复失败的问题 [#37207](https://github.com/pingcap/tidb/issues/37207) @[Leavrth](https://github.com/Leavrth)
+        - 修复恢复数据到正在运行日志备份的集群，导致日志备份文件无法恢复的问题 [#40797](https://github.com/pingcap/tidb/issues/40797) @[Leavrth](https://github.com/Leavrth)
+        - 修复 PITR 功能不支持 CA-bundle 认证的问题 [#38775](https://github.com/pingcap/tidb/issues/38775) @[YuJuncen](https://github.com/YuJuncen)
+        - 修复恢复时重复的临时表导致的 Panic 问题 [#40797](https://github.com/pingcap/tidb/issues/40797) @[joccau](https://github.com/joccau)
+        - 修复 PITR 不支持 PD 集群配置变更的问题 [#14165](https://github.com/tikv/tikv/issues/14165) @[YuJuncen](https://github.com/YuJuncen)
+        - 修复 PD 与 tidb-server 的连接故障导致 PITR 备份进度不推进的问题 [#41082](https://github.com/pingcap/tidb/issues/41082) @[YuJuncen](https://github.com/YuJuncen)
+        - 修复 PD 与 TiKV 的连接故障导致 TiKV 不能监听 PITR 任务的问题 [#14159](https://github.com/tikv/tikv/issues/14159) @[YuJuncen](https://github.com/YuJuncen)
+        - 修复当 TiDB 集群不存在 PITR 备份任务时，`resolve lock` 频率过高的问题 [#40759](https://github.com/pingcap/tidb/issues/40759) @[joccau](https://github.com/joccau)
+        - 修复 PITR 备份任务被删除时，存在备份信息残留导致新任务出现数据不一致的问题 [#40403](https://github.com/pingcap/tidb/issues/40403) @[joccau](https://github.com/joccau)
 
     + TiCDC
         <!-- 6 -->
