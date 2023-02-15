@@ -59,6 +59,7 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 | [整型主键上的聚簇索引](/constraints.md)                                |  Y  |  Y   |  Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
 | [复合或非整型主键上的聚簇索引](/constraints.md)                        |  Y  |  Y   |  Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    N     |
 | [多值索引](/sql-statements/sql-statement-create-index.md#多值索引) | E | N | N | N | N | N | N | N |
+| [外键约束](/constraints.md#foreign-key) | Y | N | N | N | N | N | N | N |
 
 ## SQL 语句
 
@@ -97,6 +98,8 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 | [通过系统变量 `tidb_snapshot` 读取历史数据](/read-historical-data.md) |    Y    |    Y    |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
 | [Optimizer hints](/optimizer-hints.md)                              |    Y    |    Y    |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
 | [MPP 执行引擎](/explain-mpp.md)                                     |    Y    |    Y    |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     | N        |
+| [MPP 执行引擎 - compression exchange](/explain-mpp.md#mpp-version-和-exchange-数据压缩) |  Y | N  | N | N | N | N | N | N | N |
+
 | [索引合并](/explain-index-merge.md)                                 |    Y    |    Y    |    Y    |    Y     | E | E | E | E | E |
 | [基于 SQL 的数据放置规则](/placement-rules-in-sql.md)                |    Y    |    Y    |    Y    | E | E |    N     |    N     |    N     | N        |
 | [Cascades Planner](/system-variables.md#tidb_enable_cascades_planner) | E | E | E | E | E | E | E | E | E |
@@ -206,6 +209,7 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 | [Information schema](/information-schema/information-schema.md)           |    Y    |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
 | [Metrics schema](/metrics-schema.md)                                      |    Y    |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
 | [Statements summary tables](/statement-summary-tables.md)                 |    Y    |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
+| [Statements summary tables - 持久化 statements summary](/statement-summary-tables.md#持久化-statements-summary)                 |    E    |    N    |    N     |    N     |    N     |    N     |    N     |    N     | N        |
 | [慢查询日志](/identify-slow-queries.md)                                    |    Y    |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
 | [TiUP 部署](/tiup/tiup-overview.md)                                      |    Y    |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
 | [Kubernetes operator](https://docs.pingcap.com/tidb-in-kubernetes/stable) |    Y    |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
