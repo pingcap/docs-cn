@@ -55,6 +55,8 @@ CREATE TABLE test.select (BEGIN int, END int);
 Query OK, 0 rows affected (0.08 sec)
 ```
 
+## 关键字列表
+
 下表列出了 TiDB 中所有的关键字。其中保留字用 `(R)` 来标识。[窗口函数](/functions-and-operators/window-functions.md)的保留字用 `(R-Window)` 来标识：
 
 <TabsPanel letters="ABCDEFGHIJKLMNOPQRSTUVWXYZ" />
@@ -677,3 +679,9 @@ Query OK, 0 rows affected (0.08 sec)
 <a id="Z" class="letter" href="#Z">Z</a>
 
 - ZEROFILL (R)
+
+## 特殊关键字
+
+存在一些特殊的非保留关键字，需要使用反引号包裹进行转义（有时候不进行转义也可以正常使用），因此，推荐你将它们用作保留关键字。这类特殊关键字目前有：
+
+- PLACEMENT
