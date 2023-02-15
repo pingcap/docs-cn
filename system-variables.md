@@ -1984,7 +1984,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 类型：浮点数
 - 默认值：`0`
 - 范围：`[0, 18446744073709551615]`
-- 这个变量用来设置是否给 index join 增加一些惩罚性的代价，以降低优化器选择 index join 操作的倾向，增加选择其他 join 方式的倾向，如 hash join, tiflash join 等。
+- 这个变量用来设置是否给选择 index join 增加一些惩罚性的代价，以降低优化器选择 index join 操作的倾向，从而增加选择其他 join 方式的倾向，例如如选择 hash join 和 tiflash join 等。
 - Index join 可能触发较多的回表请求，造成较多的资源开销，此时可以通过设置这个变量，来减少优化器选择 index join 的倾向。
 - 此变量只有在 `tidb_cost_model_version` 设置为 `2` 时生效。
 
