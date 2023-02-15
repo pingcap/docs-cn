@@ -319,7 +319,7 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 | -------- | -------- | -------- | -------- |
 | TiKV  |  `enable-statistics`  |  删除   |  该配置项指定是否开启 RocksDB 的统计信息收集功能。从 v6.6.0 起，删除该配置项。所有集群默认开启统计信息收集，以便于故障排查。详情参见 [#13942](https://github.com/tikv/tikv/pull/13942)。  |
 | TiKV | `storage.block-cache.shared` | 删除 | 从 v6.6.0 起删除该配置项，默认开启 block cache 且无法关闭，详情参见 [#12936](https://github.com/tikv/tikv/issues/12936)。 |
-| TiDB  |  [`enable-telemetry`](/tidb-configuration-file.md#enable-telemetry-从-v402-版本开始引入)  |   自 v6.6.0 起，该配置项默认值由 `true` 改为 `false`，表示默认关闭 TiDB 的遥测功能。  |
+| TiDB  |  [`enable-telemetry`](/tidb-configuration-file.md#enable-telemetry-从-v402-版本开始引入)  |  修改 |  自 v6.6.0 起，该配置项默认值由 `true` 改为 `false`，表示默认关闭 TiDB 的遥测功能。  |
 | TiKV | `storage.block-cache.block-cache-size` | 修改 | 从 v6.6.0 起，该配置项仅用于计算 `storage.block-cache.capacity` 的默认值。详情参见 [#12936](https://github.com/tikv/tikv/issues/12936)。 |
 | PD   |  [`enable-telemetry`](/pd-configuration-file.md#enable-telemetry)  |  修改  |   从 v6.6.0 起，该配置项的默认值由 `true` 改为 `false`，表示默认关闭 TiDB Dasboard 的遥测功能。  |
 | TiFlash |  [`profile.default.max_memory_usage_for_all_queries`](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml)  |  修改  |  表示所有查询过程中，节点对中间数据的内存限制。自 v6.6.0 起默认值由 `0` 改为 `0.8`，表示节点占总内存的 80%。  |
