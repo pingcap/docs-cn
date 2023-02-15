@@ -408,7 +408,7 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
             - 对于可自动恢复的错误，只有在 2 分钟内发生超过 3 次时才报警。
             - 对于不可自动恢复的错误，维持原有行为，立即报警。
 
-        - 优化 relay 性能 [#4287](https://github.com/pingcap/tiflow/issues/4287) @[GMHDBJD](https://github.com/GMHDBJD)
+        - 新增 async/batch relay writer 以优化 relay 性能 [#4287](https://github.com/pingcap/tiflow/issues/4287) @[GMHDBJD](https://github.com/GMHDBJD)
 
     + TiDB Lightning
         <!-- 5 -->
