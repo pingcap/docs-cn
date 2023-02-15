@@ -400,7 +400,7 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 
     + TiCDC
         <!-- 2 -->
-        - 支持 Batch UPDATE DML 语句，提升 TiCDC 同步 Batch UPDATE DML 的性能 [#8084](https://github.com/pingcap/tiflow/issues/8084)
+        - 支持 Batch UPDATE DML 语句，提升 TiCDC 的同步性能 [#8084](https://github.com/pingcap/tiflow/issues/8084)
         - 采用异步模式实现 MQ sink 和 MySQL sink，提升 sink 的吞吐能力 [#5928](https://github.com/pingcap/tiflow/issues/5928) @[hicqu](https://github.com/hicqu) @[hi-rustin](https://github.com/hi-rustin)
 
     + TiDB Data Migration (DM)
