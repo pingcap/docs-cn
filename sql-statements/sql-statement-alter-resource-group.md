@@ -58,7 +58,7 @@ mysql> SELECT * FROM information_schema.resource_groups WHERE NAME ='rg1';
 | NAME | RU_PER_SEC  | BURSTABLE |
 +------+-------------+-----------+
 | rg1  |         100 | YES       |
-+------+-------------+-----------+-----------+
++------+-------------+-----------+
 1 rows in set (1.30 sec)
 mysql> ALTER RESOURCE GROUP rg1
     ->  RU_PER_SEC = 200;
@@ -68,7 +68,7 @@ mysql> SELECT * FROM information_schema.resource_groups WHERE NAME ='rg1';
 | NAME | RU_PER_SEC  | BURSTABLE |
 +------+-------------+-----------+
 | rg1  |         200 | NO        |
-+------+-------------+-----------+-----------+
++------+-------------+-----------+
 1 rows in set (1.30 sec)
 ```
 

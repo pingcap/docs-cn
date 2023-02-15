@@ -162,7 +162,7 @@ SELECT USER, HOST, USER_ATTRIBUTES FROM MYSQL.USER WHERE USER='newuser7';
 
 ```sql
 +-----------+------+---------------------------------------------------+
-| USER      | HOST | ATTRIBUTE                                         |
+| USER      | HOST | USER_ATTRIBUTES                                   |
 +-----------+------+---------------------------------------------------+
 | newuser7  | %    | {"resource_group": "rg1"} |
 +-----------+------+---------------------------------------------------+

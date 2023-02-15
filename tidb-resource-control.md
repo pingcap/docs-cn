@@ -118,7 +118,7 @@ Request Unit (RU) 是 TiDB 对 CPU、IO 等系统资源的统一抽象的单位,
 
 TiDB 会定时采集资源管控的运行时信息，并在 Grafana 的 **Resource Control Dashboard** 中提供了相关指标的可视化图表。指标详情参见 [Resource Control 监控指标详解](/grafana-resource-control-dashboard.md) 。
 
-TiKV 中也记录了来自于不同资源组的请求 QPS，详见 [TiKV监控指标详解](/grafana-tikv-dashboard.md###gRPC)
+TiKV 中也记录了来自于不同资源组的请求 QPS，详见 [TiKV监控指标详解](/grafana-tikv-dashboard.md#gRPC)
 
 ## 工具兼容性
 
