@@ -226,7 +226,7 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 | [全局内存控制](/configure-memory-usage.md#如何配置-tidb-server-实例使用内存的阈值)   |    Y    |    Y    |    N    |    N     |    N     |    N     |    N     |    N     |  N        |
 | [RawKV 跨集群复制](/tikv-configuration-file.md#api-version-从-v610-版本开始引入) | E | E | N | N | N | N | N | N | N |
 | [Green GC](/system-variables.md#tidb_gc_scan_lock_mode-从-v50-版本开始引入) | E | E | E | E | E | E | E | E | N |
-| [资源管控 (Resource Control) ](/tidb-resource-control.md) | E | N | N | N | N | N | N | N | N |
+| [资源管控 (Resource Control)](/tidb-resource-control.md) | E | N | N | N | N | N | N | N | N |
 
 [^1]: TiDB 误将 latin1 处理为 utf8 的子集。见 [TiDB #18955](https://github.com/pingcap/tidb/issues/18955)。
 
