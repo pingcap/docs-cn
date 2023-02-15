@@ -170,7 +170,7 @@ region = "us-west-2"
 
 ## TiFlash 静态加密
 
-TiFlash 当前支持的加密算法包括 AES128-CTR、AES192-CTR、AES256-CTR 和 SM4-CTR (仅 v6.4.0 及之后版本)。TiFlash 同样使用信封加密 (envelop encryption)，所以启用加密后，TiFlash 使用以下两种类型的密钥：
+TiFlash 当前支持的加密算法与 TiKV 一致，即包括 AES128-CTR、AES192-CTR、AES256-CTR 和 SM4-CTR (仅 v6.4.0 及之后版本)。TiFlash 同样使用信封加密 (envelop encryption)，所以启用加密后，TiFlash 使用以下两种类型的密钥：
 
 * 主密钥 (master key)：主密钥由用户提供，用于加密 TiFlash 生成的数据密钥。用户在 TiFlash 外部进行主密钥的管理。
 * 数据密钥 (data key)：数据密钥由 TiFlash 生成，是实际用于加密的密钥。
