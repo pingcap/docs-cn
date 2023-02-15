@@ -1339,7 +1339,6 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 类型：布尔型
 - 默认值：`OFF`
 - 该变量用于一个未发布的特性，**请勿修改该变量值**。
-- 这个变量用来控制 Plan Replayer Capture 抓取的内容是否默认带历史统计信息。
 
 ### `tidb_enable_index_merge` <span class="version-mark">从 v4.0 版本开始引入</span>
 
