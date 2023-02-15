@@ -8,7 +8,7 @@ aliases: ['/docs-cn/dev/keywords/','/docs-cn/dev/keywords-and-reserved-words/','
 
 本文介绍 TiDB 的关键字，对保留字和非保留字作出区分，并汇总所有的关键字以供查询使用。
 
-关键字是 SQL 语句中具有特殊含义的单词，例如 `SELECT`，`UPDATE`，`DELETE` 等等。它们之中有的能够直接作为标识符，被称为**非保留关键字**（简称**非保留字**），但有需要经过特殊处理才能作为标识符的字，被称为**保留关键字**（简称**保留字**）。
+关键字是 SQL 语句中具有特殊含义的单词，例如 `SELECT`，`UPDATE`，`DELETE` 等等。它们之中有的能够直接作为标识符，被称为**非保留关键字**（简称**非保留字**），但有需要经过特殊处理才能作为标识符的字，被称为**保留关键字**（简称**保留字**）。存在一些特殊的非保留关键字，需要使用反引号包裹进行转义（有时候不进行转义也可以正常使用），推荐你将它们用作保留关键字。
 
 对于保留字，必须使用反引号包裹，才能作为标识符被使用。例如：
 
@@ -58,7 +58,7 @@ Query OK, 0 rows affected (0.08 sec)
 
 ## 关键字列表
 
-下表列出了 TiDB 中所有的关键字。其中保留字用 `(R)` 来标识。[窗口函数](/functions-and-operators/window-functions.md)的保留字用 `(R-Window)` 来标识：
+下表列出了 TiDB 中所有的关键字。其中保留字用 `(R)` 来标识。[窗口函数](/functions-and-operators/window-functions.md)的保留字用 `(R-Window)` 来标识。需要用反引号 `` ` `` 包裹的特殊非保留字用 `(S)` 来标识。
 
 <TabsPanel letters="ABCDEFGHIJKLMNOPQRSTUVWXYZ" />
 
@@ -449,6 +449,7 @@ Query OK, 0 rows affected (0.08 sec)
 - PER_DB
 - PER_TABLE
 - PESSIMISTIC (R)
+- PLACEMENT (S)
 - PLUGINS
 - PRECEDING
 - PRECISION (R)
@@ -680,9 +681,3 @@ Query OK, 0 rows affected (0.08 sec)
 <a id="Z" class="letter" href="#Z">Z</a>
 
 - ZEROFILL (R)
-
-## 特殊关键字
-
-存在一些特殊的非保留关键字，需要使用反引号包裹进行转义（有时候不进行转义也可以正常使用），因此，推荐你将它们用作保留关键字。这类特殊关键字目前有：
-
-- PLACEMENT
