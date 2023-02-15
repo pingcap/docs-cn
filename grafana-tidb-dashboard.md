@@ -113,7 +113,6 @@ aliases: ['/docs-cn/dev/grafana-tidb-dashboard/','/docs-cn/dev/reference/key-mon
 - KV Request Duration 99 by store：根据 TiKV 显示 KV Request 执行时间
 - KV Request Duration 99 by type：根据类型显示 KV Request 的执行时间
 
-<<<<<<< HEAD
 ### PD Client
 
 - PD Client CMD OPS：PD Client 每秒执行命令的数量
