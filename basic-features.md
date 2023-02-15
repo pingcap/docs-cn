@@ -99,7 +99,6 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 | [Optimizer hints](/optimizer-hints.md)                              |    Y    |    Y    |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
 | [MPP 执行引擎](/explain-mpp.md)                                     |    Y    |    Y    |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     | N        |
 | [MPP 执行引擎 - compression exchange](/explain-mpp.md#mpp-version-和-exchange-数据压缩) |  Y | N  | N | N | N | N | N | N | N |
-
 | [索引合并](/explain-index-merge.md)                                 |    Y    |    Y    |    Y    |    Y     | E | E | E | E | E |
 | [基于 SQL 的数据放置规则](/placement-rules-in-sql.md)                |    Y    |    Y    |    Y    | E | E |    N     |    N     |    N     | N        |
 | [Cascades Planner](/system-variables.md#tidb_enable_cascades_planner) | E | E | E | E | E | E | E | E | E |
