@@ -532,8 +532,8 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 
     + TiDB Data Migration (DM)
         <!-- 4 -->
-        - 修复 binlog-schema delete 失败的问题[#7373](https://github.com/pingcap/tiflow/issues/7373) @[liumengya94]
-        - 修复最后一个 binlog 为被 skip 的 ddl 会导致 checkpoint 不推进的问题[#8175](https://github.com/pingcap/tiflow/issues/8175) @[D3Hunter]
+        - 修复 `binlog-schema delete` 命令执行失败的问题 [#7373](https://github.com/pingcap/tiflow/issues/7373) @[liumengya94]
+        - 修复当最后一个 binlog 是被 skip 的 DDL 时，checkpoint 不推进的问题 [#8175](https://github.com/pingcap/tiflow/issues/8175) @[D3Hunter]
         (dup: release-6.1.4.md > Bug 修复> Tools> TiDB Data Migration (DM))- 修复当在某个表上同时指定 `UPDATE` 和非 `UPDATE` 类型的表达式过滤规则 `expression-filter` 时，所有 `UPDATE` 操作被跳过的问题 [#7831](https://github.com/pingcap/tiflow/issues/7831) @[lance6716](https://github.com/lance6716) @[lance6716]
         (dup: release-6.1.4.md > Bug 修复> Tools> TiDB Data Migration (DM))- 修复当某个表上仅指定 `update-old-value-expr` 或 `update-new-value-expr` 时，过滤规则不生效或 DM 发生 panic 的问题 [#7774](https://github.com/pingcap/tiflow/issues/7774) @[lance6716](https://github.com/lance6716) @[lance6716]
 
