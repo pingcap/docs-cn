@@ -1332,7 +1332,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 默认值：`OFF`
 - 该变量用于一个未发布的特性，**请勿修改该变量值**。
 
-### `tidb_enable_historical_stats_for_capture` <span class="version-mark">从 v6.6.0 版本开始引入</span>
+### `tidb_enable_historical_stats_for_capture`
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
