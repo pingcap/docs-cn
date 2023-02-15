@@ -113,7 +113,7 @@ Quota Limiter is an experimental feature introduced in TiDB v6.0.0. If the machi
 
 ## R
 
-## Raft Engine
+### Raft Engine
 
 Raft Engine is an embedded persistent storage engine with a log-structured design. It is built for TiKV to store multi-Raft logs. Since v5.4, TiDB supports using Raft Engine as the log storage engine. For details, see [Raft Engine](/tikv-configuration-file.md#raft-engine).
 
