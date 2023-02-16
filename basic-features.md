@@ -186,8 +186,8 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 | 数据导入和导出                                                          |  6.6  |  6.5  |  6.1  |  5.4   |  5.3   |  5.2   |  5.1   |  5.0   |  4.0   |
 | ----------------------------------------------------------------------- | :----: | :----: | :----: | :----: | :----: | :----: | :----: | :----: | :----: |
 | [快速导入 (TiDB Lightning)](/tidb-lightning/tidb-lightning-overview.md) |   Y   |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |
-| mydumper 逻辑导入                                                       | 已废弃 | 已废弃| 已废弃 | 已废弃 | 已废弃 | 已废弃 | 已废弃 | 已废弃 | 已废弃 |
-| [Dumpling 逻辑导入](/dumpling-overview.md)                              |   Y   |   Y   |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |
+| mydumper 逻辑导出                                                       | 已废弃 | 已废弃| 已废弃 | 已废弃 | 已废弃 | 已废弃 | 已废弃 | 已废弃 | 已废弃 |
+| [Dumpling 逻辑导出](/dumpling-overview.md)                              |   Y   |   Y   |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |
 | [事务 `LOAD DATA`](/sql-statements/sql-statement-load-data.md)          |   Y   |   Y   |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    | N [^5] |
 | [数据迁移工具](/migration-overview.md)                                  |   Y   |   Y   |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |
 | [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md)                     |   Y   |   Y   |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |
