@@ -13,7 +13,7 @@ tiup cluster upgrade <cluster-name> <version> [flags]
 ```
 
 - `<cluster-name>`: the cluster name to operate on. If you forget the cluster name, you can check it with the [cluster list](/tiup/tiup-component-cluster-list.md) command.
-- `<version>`: the target version to upgrade to. Currently, it is only allowed to upgrade to a version higher than the current cluster, that is, no downgrade is allowed. It is also not allowed to upgrade to the nightly version.
+- `<version>`: the target version to upgrade to, such as `v6.5.0`. Currently, it is only allowed to upgrade to a version higher than the current cluster, that is, no downgrade is allowed. It is also not allowed to upgrade to the nightly version.
 
 ## Options
 

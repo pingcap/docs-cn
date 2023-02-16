@@ -200,7 +200,7 @@ tiup cluster upgrade <cluster-name> v6.5.0
 >
 > + To upgrade TiFlash from versions earlier than 5.3 to 5.3 or later, you should stop TiFlash and then upgrade it. The following steps help you upgrade TiFlash without interrupting other components:
 >    1. Stop the TiFlash instance: `tiup cluster stop <cluster-name> -R tiflash`
->    2. Upgrade the TiDB cluster without restarting it (only updating the files): `tiup cluster upgrade <cluster-name> <version> --offline`
+>    2. Upgrade the TiDB cluster without restarting it (only updating the files): `tiup cluster upgrade <cluster-name> <version> --offline`, such as `tiup cluster upgrade <cluster-name> v6.3.0 --offline`
 >    3. Reload the TiDB cluster: `tiup cluster reload <cluster-name>`. After the reload, the TiFlash instance is started and you do not need to manually start it.
 >
 > + Try to avoid creating a new clustered index table when you apply rolling updates to the clusters using TiDB Binlog.
@@ -215,7 +215,7 @@ tiup cluster upgrade <cluster-name> v6.5.0
     tiup cluster stop <cluster-name>
     ```
 
-2. Use the `upgrade` command with the `--offline` option to perform the offline upgrade.
+2. Use the `upgrade` command with the `--offline` option to perform the offline upgrade. Fill in the name of your cluster for `<cluster-name>` and the version to upgrade to for `<version>`, such as `v6.5.0`.
 
     {{< copyable "shell-regular" >}}
 
@@ -279,7 +279,7 @@ Re-execute the `tiup cluster upgrade` command to resume the upgrade. The upgrade
 
 ### The evict leader has waited too long during the upgrade. How to skip this step for a quick upgrade?
 
-You can specify `--force`. Then the processes of transferring PD leader and evicting TiKV leader are skipped during the upgrade. The cluster is directly restarted to update the version, which has a great impact on the cluster that runs online. Here is the command:
+You can specify `--force`. Then the processes of transferring PD leader and evicting TiKV leader are skipped during the upgrade. The cluster is directly restarted to update the version, which has a great impact on the cluster that runs online. In the following command, `<version>` is the version to upgrade to, such as `v6.5.0`.
 
 {{< copyable "shell-regular" >}}
 
