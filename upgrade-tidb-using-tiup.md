@@ -186,7 +186,7 @@ tiup cluster upgrade <cluster-name> v6.5.0
 > - 如果希望保持性能稳定，则需要保证 TiKV 上的所有 leader 驱逐完成后再停止该 TiKV 实例，可以指定 `--transfer-timeout` 为一个更大的值，如 `--transfer-timeout 3600`，单位为秒。
 > - 若想将 TiFlash 从 5.3 之前的版本升级到 5.3 及之后的版本，必须进行 TiFlash 的停机升级。参考如下步骤，可以在确保其他组件正常运行的情况下升级 TiFlash：
 >   1. 关闭 TiFlash 实例：`tiup cluster stop <cluster-name> -R tiflash`
->   2. 使用 `--offline` 参数在不重启（只更新文件）的情况下升级集群：`tiup cluster upgrade <cluster-name> <version> --offline`
+>   2. 使用 `--offline` 参数在不重启（只更新文件）的情况下升级集群：`tiup cluster upgrade <cluster-name> <version> --offline`，例如 `tiup cluster upgrade <cluster-name> v6.3.0 --offline`
 >   3. reload 整个集群：`tiup cluster reload <cluster-name>`。此时，TiFlash 也会正常启动，无需额外操作。
 
 #### 停机升级
@@ -199,7 +199,7 @@ tiup cluster upgrade <cluster-name> v6.5.0
 tiup cluster stop <cluster-name>
 ```
 
-之后通过 `upgrade` 命令添加 `--offline` 参数来进行停机升级。
+之后通过 `upgrade` 命令添加 `--offline` 参数来进行停机升级，其中 `<cluster-name>` 为集群名，`<version>` 为升级的目标版本，例如 `v6.5.0`。
 
 {{< copyable "shell-regular" >}}
 
@@ -263,7 +263,7 @@ Cluster version:    v6.5.0
 
 ### 4.2 升级过程中 evict leader 等待时间过长，如何跳过该步骤快速升级
 
-可以指定 `--force`，升级时会跳过 `PD transfer leader` 和 `TiKV evict leader` 过程，直接重启并升级版本，对线上运行的集群性能影响较大。命令如下：
+可以指定 `--force`，升级时会跳过 `PD transfer leader` 和 `TiKV evict leader` 过程，直接重启并升级版本，对线上运行的集群性能影响较大。命令如下，其中 `<version>` 为升级的目标版本，例如 `v6.5.0`：
 
 {{< copyable "shell-regular" >}}
 
