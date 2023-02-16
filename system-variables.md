@@ -745,19 +745,7 @@ MPP is a distributed computing framework provided by the TiFlash engine, which a
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
 - Type: Integer
-
-<CustomContent platform="tidb">
-
-- Default value: `2`
-
-</CustomContent>
-
-<CustomContent platform="tidb-cloud">
-
-- Default value: `1`
-
-</CustomContent>
-
+- Default value: `2` for on-premises TiDB and `1` for TiDB Cloud
 - Range: `[1, 2]`
 - Controls how TiDB collects statistics.
 
