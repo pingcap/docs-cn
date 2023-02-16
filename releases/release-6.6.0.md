@@ -350,7 +350,6 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 | [`tidb_stmt_summary_file_max_days`](/system-variables.md#tidb_stmt_summary_file_max_days-从-v660-版本开始引入) | 新增 | 只读变量。表示当开启 [statement summary tables 持久化](/statement-summary-tables.md#持久化-statements-summary)后持久化数据文件所保留的最大天数。该变量的值与配置文件中 [`tidb_stmt_summary_file_max_days`](/tidb-configuration-file.md#tidb_stmt_summary_file_max_days-从-v660-版本开始引入) 的取值相同。 |
 | [`tidb_stmt_summary_file_max_size`](/system-variables.md#tidb_stmt_summary_file_max_size-从-v660-版本开始引入) | 新增 | 只读变量。表示当开启 [statement summary tables 持久化](/statement-summary-tables.md#持久化-statements-summary)后持久化数据单个文件的大小限制。该变量的值与配置文件中 [`tidb_stmt_summary_file_max_size`](/tidb-configuration-file.md#tidb_stmt_summary_file_max_size-从-v660-版本开始引入) 的取值相同。 |
 
-
 ### 配置文件参数
 
 | 配置文件 | 配置项 | 修改类型 | 描述 |
@@ -358,6 +357,7 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 | TiKV  |  `enable-statistics`  |  删除   |  该配置项指定是否开启 RocksDB 的统计信息收集功能。从 v6.6.0 起，删除该配置项。所有集群默认开启统计信息收集，以便于故障排查。详情参见 [#13942](https://github.com/tikv/tikv/pull/13942)。  |
 | TiKV | `storage.block-cache.shared` | 删除 | 从 v6.6.0 起删除该配置项，默认开启 block cache 且无法关闭，详情参见 [#12936](https://github.com/tikv/tikv/issues/12936)。 |
 | TiDB  |  [`enable-telemetry`](/tidb-configuration-file.md#enable-telemetry-从-v402-版本开始引入)  |  修改 |  自 v6.6.0 起，该配置项默认值由 `true` 改为 `false`，表示默认关闭 TiDB 的遥测功能。  |
+| TiKV  | [`rocksdb.defaultcf.block-size`](/tikv-configuration-file.md#block-size) 和 [`rocksdb.writecf.block-size`](/tikv-configuration-file.md#block-size)  |  修改  |   默认值由 `64K` 调整为 `16K`。  |
 | TiKV | `storage.block-cache.block-cache-size` | 修改 | 从 v6.6.0 起，该配置项仅用于计算 `storage.block-cache.capacity` 的默认值。详情参见 [#12936](https://github.com/tikv/tikv/issues/12936)。 |
 | PD   |  [`enable-telemetry`](/pd-configuration-file.md#enable-telemetry)  |  修改  |   从 v6.6.0 起，该配置项的默认值由 `true` 改为 `false`，表示默认关闭 TiDB Dasboard 的遥测功能。  |
 | TiFlash |  [`profile.default.max_memory_usage_for_all_queries`](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml)  |  修改  |  表示所有查询过程中，节点对中间数据的内存限制。自 v6.6.0 起默认值由 `0` 改为 `0.8`，表示节点占总内存的 80%。  |
@@ -391,40 +391,39 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 - 支持动态修改参数 [`store-io-pool-size`](/tikv-configuration-file.md#store-io-pool-size-从-v530-版本开始引入)，增加了 TiKV 性能调优的灵活性。
 - 解除了执行计划缓存对 `LIMIT` 子句的限制，提升了执行效率。
 - v6.6.0 及以上的 BR 版本不支持恢复数据到 v6.5.0 及以下版本的集群。
-- 由于可能存在正确性问题，分区表目前不再支持修改列类型。
+- 自 v6.6.0 起，由于可能存在正确性问题，分区表目前不再支持修改列类型。
 
 ## 改进提升
 
 + TiDB
 
     <!-- sql-infra 5-->
-    - 改进了 TTL 后台清理任务的调度机制。允许将单个表的清理任务拆分成若干子任务并调度到多个 TiDB 节点同时运行。 [#40361](https://github.com/pingcap/tidb/issues/40361) @[YangKeao](https://github.com/YangKeao)
-    - 优化了在设置了非默认的 delimiter 后运行 multi-statement 返回结果的列名的显示 [#39662](https://github.com/pingcap/tidb/issues/39662) @[mjonss](https://github.com/mjonss)
-    - 优化了生成警告信息时的执行效率 [#39702](https://github.com/pingcap/tidb/issues/39702) @[tiancaiamao](https://github.com/tiancaiamao)
-    - 为 ADD INDEX 支持分布式数据回填 (实验特性) [#37119](https://github.com/pingcap/tidb/issues/37119) @[zimulala](https://github.com/zimulala)
-    - 允许使用 CURDATE() 作为列的默认值 [#38356](https://github.com/pingcap/tidb/issues/38356) @[CbcWestwolf](https://github.com/CbcWestwolf)
+    - 改进了 TTL 后台清理任务的调度机制，允许将单个表的清理任务拆分成若干子任务并调度到多个 TiDB 节点同时运行 [#40361](https://github.com/pingcap/tidb/issues/40361) @[YangKeao](https://github.com/YangKeao)
+    - 优化了在设置了非默认的 delimiter 后多语句返回结果的列名显示 [#39662](https://github.com/pingcap/tidb/issues/39662) @[mjonss](https://github.com/mjonss)
+    - 优化了生成警告信息后的语句执行效率 [#39702](https://github.com/pingcap/tidb/issues/39702) @[tiancaiamao](https://github.com/tiancaiamao)
+    - 为 `ADD INDEX` 支持分布式数据回填（实验特性）[#37119](https://github.com/pingcap/tidb/issues/37119) @[zimulala](https://github.com/zimulala)
+    - 允许使用 `CURDATE()` 作为列的默认值 [#38356](https://github.com/pingcap/tidb/issues/38356) @[CbcWestwolf](https://github.com/CbcWestwolf)
 
     <!-- sql-planner 3-->
-    - 增加了 partial order prop push down 对 LIST 类型的分区表的支持 [#40273](https://github.com/pingcap/tidb/issues/40273) @[winoros](https://github.com/winoros)
-    - 增加了 hint 和 binding 冲突时的 warning 信息 [#40910](https://github.com/pingcap/tidb/issues/40910) @[Reminiscent](https://github.com/Reminiscent)
-    - 优化了 Plan Cache 策略避免在一些场景使用 Plan Cache 时产生不优的计划 [#40312](https://github.com/pingcap/tidb/pull/40312) [#40218](https://github.com/pingcap/tidb/pull/40218) [#40280](https://github.com/pingcap/tidb/pull/40280) [#41136](https://github.com/pingcap/tidb/pull/41136) [#40686](https://github.com/pingcap/tidb/pull/40686) @[qw4990](https://github.com/qw4990)
+    - 增加了 `partial order prop push down` 对 LIST 类型分区表的支持 [#40273](https://github.com/pingcap/tidb/issues/40273) @[winoros](https://github.com/winoros)
+    - 为优化器提示和执行计划绑定的冲突新增报错信息 [#40910](https://github.com/pingcap/tidb/issues/40910) @[Reminiscent](https://github.com/Reminiscent)
+    - 优化了 Plan Cache 策略，避免在一些场景使用 Plan Cache 时产生不优计划 [#40312](https://github.com/pingcap/tidb/pull/40312) [#40218](https://github.com/pingcap/tidb/pull/40218) [#40280](https://github.com/pingcap/tidb/pull/40280) [#41136](https://github.com/pingcap/tidb/pull/41136) [#40686](https://github.com/pingcap/tidb/pull/40686) @[qw4990](https://github.com/qw4990)
 
 + TiKV
     <!-- 6 -->
-    - 优化一些参数的默认值，当partitioned-raft-kv开启时block-cache调整为0.3可用内存(原来是0.45), region-split-size调整为10GB。当沿用raft-kv时且enable-region-bucket为true时，region-split-size默认调整为1GB [#12842](https://github.com/tikv/tikv/issues/12842) @[tonyxuqqi](https://github.com/tonyxuqqi)
-    - 支持在Raftstore异步写入中的优先级调度[#13730] (https://github.com/tikv/tikv/issues/13730) @[Connor1996](https://github.com/Connor1996)
-    - 支持TiKV在小于1 core的CPU下启动 [#13586] [#13752] [#14017](https://github.com/tikv/tikv/issues/13586) @[andreid-db](https://github.com/andreid-db)
-    - 修改rocksdb.defaultcf.block-size以及rocksdb.writecf.block-size的默认参数为16KB [#14052](https://github.com/tikv/tikv/issues/14052) @[tonyxuqqi](https://github.com/tonyxuqqi)
-    - raftstore: 优化slow score探测的新机制，加入新的`evict-slow-trend-scheduler` [#14131](https://github.com/tikv/tikv/issues/14131) @[innerr](https://github.com/innerr)
-    - rocksdb的block cache强制为共享的。不支持按照CF单独设置Block cache [#12936](https://github.com/tikv/tikv/issues/12936) @[busyjay](https://github.com/busyjay)
+    - 在 partitioned-raft-kv 模式下优化了一些参数的默认值：TiKV 配置项 `storage.block-cache.capacity` 的默认值由 45% 调整为 30%，`region-split-size` 的默认值由 `96MiB` 调整为 `10GiB`。当沿用 raft-kv 模式且 `enable-region-bucket` 为 `true` 时，`region-split-size` 默认调整为 1GiB [#12842](https://github.com/tikv/tikv/issues/12842) @[tonyxuqqi](https://github.com/tonyxuqqi)
+    - 支持在 Raftstore 异步写入中进行优先级调度 [#13730] (https://github.com/tikv/tikv/issues/13730) @[Connor1996](https://github.com/Connor1996)
+    - 支持在小于 1 core 的 CPU 下启动 TiKV [#13586](https://github.com/tikv/tikv/issues/13586) [#13752](https://github.com/tikv/tikv/issues/13752) [#14017](https://github.com/tikv/tikv/issues/13586) @[andreid-db](https://github.com/andreid-db)
+    - 优化 Raftstore slow score 探测的新机制，新增 `evict-slow-trend-scheduler` [#14131](https://github.com/tikv/tikv/issues/14131) @[innerr](https://github.com/innerr)
+    - 强制 RocksDB 的 block cache 为共享的，不再支持按照 CF 单独设置 block cache [#12936](https://github.com/tikv/tikv/issues/12936) @[busyjay](https://github.com/busyjay)
 
 + PD
     <!-- 5 -->
     - 增加全局内存阈值管理功能以缓解 OOM 问题（实验特性）[#5827](https://github.com/tikv/pd/issues/5827) @[hnes](https://github.com/hnes)
     - 增加 GC Tuner 功能以缓解 GC 压力（实验特性）[#5827](https://github.com/tikv/pd/issues/5827) @[hnes](https://github.com/hnes)
     - 新增 `balance-witness-scheduler` 调度器用于调度 witness [#5763](https://github.com/tikv/pd/pull/5763) @[ethercflow](https://github.com/ethercflow)
-    - 新加 `evict-slow-trend-scheduler` 调度器用于异常节点检测和调度 [#5808](https://github.com/tikv/pd/pull/5808) @[innerr](https://github.com/innerr)
-    - 新加 keyspace manager，支持对 keyspace 的管理 [#5293](https://github.com/tikv/pd/issues/5293) @[AmoebaProtozoa](https://github.com/AmoebaProtozoa)
+    - 新增 `evict-slow-trend-scheduler` 调度器用于检测和调度异常节点 [#5808](https://github.com/tikv/pd/pull/5808) @[innerr](https://github.com/innerr)
+    - 新增 keyspace manager，支持对 keyspace 的管理 [#5293](https://github.com/tikv/pd/issues/5293) @[AmoebaProtozoa](https://github.com/AmoebaProtozoa)
 
 + TiFlash
     <!-- 2 -->
