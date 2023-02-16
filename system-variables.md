@@ -984,6 +984,19 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 > - 如果先启动添加索引加速任务，再启动 PITR 备份任务，此时 PITR 备份任务会报错，但不影响正在添加索引的任务。
 > - 如果同时启动 PITR 备份任务和添加索引加速任务，可能会由于两个任务无法察觉到对方而导致 PITR 不能成功备份增加的索引数据。
 
+### `tidb_ddl_distribute_reorg` <span class="version-mark">从 v6.6.0 版本开始引入</span>
+
+> **警告：**
+>
+> - 该功能目前为实验特性。不推荐在生产环境中开启该功能。
+> - 当前启用此功能后，在 DDL reorg 阶段遇到某些异常只会做简单重试，还没有兼容 DDL 操作的重试方式，即目前无法依据  [`tidb_ddl_error_count_limit`](#tidb_ddl_error_count_limit) 的大小控制重试次数。
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 默认值：`OFF`
+- 这个变量用于控制是否开启分布式执行 DDL reorg 阶段，来提升此阶段的速度。目前此开关只对 `ADD INDEX` 语句有效。开启该变量对于数据量较大的表有一定的性能提升。分布式 DDL 会通过 DDL 动态资源管控，控制 DDL 的 CPU 使用量，来防止对线上业务产生影响。
+- 要验证已经完成的 `ADD INDEX` 操作是否使用了此功能，可以查看 `mysql.tidb_ddl_backfill_history` 表是否有对应任务。
+
 ### `tidb_ddl_error_count_limit`
 
 - 作用域：GLOBAL
