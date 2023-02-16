@@ -13,7 +13,7 @@ summary: TiDB 数据库中 ALTER RESOURCE GROUP 的使用概况。
 AlterResourceGroupStmt:
    "ALTER" "RESOURCE" "GROUP" IfExists ResourceGroupName ResourceGroupOptionList
 
-IfNotExists ::=
+IfExists ::=
     ('IF' 'EXISTS')?
 
 ResourceGroupName:
