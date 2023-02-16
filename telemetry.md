@@ -84,6 +84,7 @@ TIUP_CLUSTER_DEBUG=enable tiup cluster list
 ```shell
 cat {spark.log} | grep Telemetry report | tail -n 1
 ```
+
 ## 开启遥测功能
 
 ### 开启 TiDB 遥测
