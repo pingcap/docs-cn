@@ -142,12 +142,12 @@ aliases: ['/docs-cn/dev/production-offline-deployment-using-tiup/', '/zh/tidb/de
 
     如果从官网下载的离线镜像不满足你的具体需求，或者希望对已有的离线镜像内容进行调整，例如增加某个组件的新版本等，可以采取以下步骤进行操作：
 
-    1. 在制作离线镜像时，可通过参数指定具体的组件和版本等信息，获得不完整的离线镜像。例如，要制作一个只包括 v1.11.0 版本 TiUP 和 TiUP Cluster 的离线镜像，可执行如下命令：
+    1. 在制作离线镜像时，可通过参数指定具体的组件和版本等信息，获得不完整的离线镜像。例如，要制作一个只包括 v1.11.3 版本 TiUP 和 TiUP Cluster 的离线镜像，可执行如下命令：
 
         {{< copyable "shell-regular" >}}
 
         ```bash
-        tiup mirror clone tiup-custom-mirror-v1.11.0 --tiup v1.11.0 --cluster v1.11.0
+        tiup mirror clone tiup-custom-mirror-v1.11.3 --tiup v1.11.3 --cluster v1.11.3
         ```
 
         如果只需要某一特定平台的组件，也可以通过 `--os` 和 `--arch` 参数来指定。
@@ -179,10 +179,10 @@ aliases: ['/docs-cn/dev/production-offline-deployment-using-tiup/', '/zh/tidb/de
         {{< copyable "shell-regular" >}}
 
         ```bash
-        tiup mirror merge tiup-custom-mirror-v1.11.0
+        tiup mirror merge tiup-custom-mirror-v1.11.3
         ```
 
-    5. 上述步骤完成后，通过 `tiup list` 命令检查执行结果。在本文例子中，使用 `tiup list tiup` 和 `tiup list cluster` 均应能看到对应组件的 `v1.11.0` 版本出现在结果中。
+    5. 上述步骤完成后，通过 `tiup list` 命令检查执行结果。在本文例子中，使用 `tiup list tiup` 和 `tiup list cluster` 均应能看到对应组件的 `v1.11.3` 版本出现在结果中。
 
 #### 部署离线环境 TiUP 组件
 
