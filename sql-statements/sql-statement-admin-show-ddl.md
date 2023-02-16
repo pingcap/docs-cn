@@ -11,7 +11,7 @@ The `ADMIN SHOW DDL [JOBS|JOB QUERIES]` statement shows information about runnin
 
 ```ebnf+diagram
 AdminStmt ::=
-    'ADMIN' ( 'SHOW' ( 'DDL' ( 'JOBS' Int64Num? WhereClauseOptional | 'JOB' 'QUERIES' NumList )? | TableName 'NEXT_ROW_ID' | 'SLOW' AdminShowSlow ) | 'CHECK' ( 'TABLE' TableNameList | 'INDEX' TableName Identifier ( HandleRange ( ',' HandleRange )* )? ) | 'RECOVER' 'INDEX' TableName Identifier | 'CLEANUP' ( 'INDEX' TableName Identifier | 'TABLE' 'LOCK' TableNameList ) | 'CHECKSUM' 'TABLE' TableNameList | 'CANCEL' 'DDL' 'JOBS' NumList | 'RELOAD' ( 'EXPR_PUSHDOWN_BLACKLIST' | 'OPT_RULE_BLACKLIST' | 'BINDINGS' ) | 'PLUGINS' ( 'ENABLE' | 'DISABLE' ) PluginNameList | 'REPAIR' 'TABLE' TableName CreateTableStmt | ( 'FLUSH' | 'CAPTURE' | 'EVOLVE' ) 'BINDINGS' )
+    'ADMIN' ( 'SHOW' ( 'DDL' ( 'JOBS' Int64Num? WhereClauseOptional | 'JOB' 'QUERIES' NumList | 'JOB' 'QUERIES' 'LIMIT' m 'OFFSET' n )? | TableName 'NEXT_ROW_ID' | 'SLOW' AdminShowSlow ) | 'CHECK' ( 'TABLE' TableNameList | 'INDEX' TableName Identifier ( HandleRange ( ',' HandleRange )* )? ) | 'RECOVER' 'INDEX' TableName Identifier | 'CLEANUP' ( 'INDEX' TableName Identifier | 'TABLE' 'LOCK' TableNameList ) | 'CHECKSUM' 'TABLE' TableNameList | 'CANCEL' 'DDL' 'JOBS' NumList | 'RELOAD' ( 'EXPR_PUSHDOWN_BLACKLIST' | 'OPT_RULE_BLACKLIST' | 'BINDINGS' ) | 'PLUGINS' ( 'ENABLE' | 'DISABLE' ) PluginNameList | 'REPAIR' 'TABLE' TableName CreateTableStmt | ( 'FLUSH' | 'CAPTURE' | 'EVOLVE' ) 'BINDINGS' )
 
 NumList ::=
     Int64Num ( ',' Int64Num )*
@@ -112,6 +112,57 @@ mysql> ADMIN SHOW DDL JOB QUERIES 51;
 ```
 
 You can only search the running DDL job corresponding to `job_id` within the last ten results in the DDL history job queue.
+
+### `ADMIN SHOW DDL JOB QUERIES LIMIT m OFFSET n`
+
+ To view the original SQL statements of the DDL job within a specified range `[n+1, n+m]` corresponding to `job_id`, use `ADMIN SHOW DDL JOB QUERIES LIMIT m OFFSET n`:
+
+ {{< copyable "sql" >}}
+
+```sql
+ ADMIN SHOW DDL JOB QUERIES LIMIT m;  # Retrieve first m rows
+ ADMIN SHOW DDL JOB QUERIES LIMIT n, m;  # Retrieve rows [n+1, n+m]
+ ADMIN SHOW DDL JOB QUERIES LIMIT m OFFSET n;  # Retrieve rows [n+1, n+m]
+ ```
+ 
+ where `n` and `m` are integers greater or equal to 0.
+
+ ```sql
+ ADMIN SHOW DDL JOB QUERIES LIMIT 3;  # Retrieve first 3 rows
+ +--------+--------------------------------------------------------------+
+ | JOB_ID | QUERY                                                        | 
+ +--------+--------------------------------------------------------------+
+ |     59 | ALTER TABLE t1 ADD INDEX index2 (col2)                       | 
+ |     60 | ALTER TABLE t2 ADD INDEX index1 (col1)                       | 
+ |     58 | CREATE TABLE t2 (id INT NOT NULL PRIMARY KEY auto_increment) | 
+ +--------+--------------------------------------------------------------+
+ 3 rows in set (0.00 sec)
+ ```
+
+ ```sql
+ ADMIN SHOW DDL JOB QUERIES LIMIT 6, 2;  # Retrieve rows 7-8
+ +--------+----------------------------------------------------------------------------+
+ | JOB_ID | QUERY                                                                      | 
+ +--------+----------------------------------------------------------------------------+
+ |     52 | ALTER TABLE t1 ADD INDEX index1 (col1)                                     | 
+ |     51 | CREATE TABLE IF NOT EXISTS t1 (id INT NOT NULL PRIMARY KEY auto_increment) | 
+ +--------+----------------------------------------------------------------------------+
+ 3 rows in set (0.00 sec)
+ ```
+
+ ```sql
+ ADMIN SHOW DDL JOB QUERIES LIMIT 3 OFFSET 4;  # Retrieve rows 5-7
+ +--------+----------------------------------------+
+ | JOB_ID | QUERY                                  | 
+ +--------+----------------------------------------+
+ |     54 | DROP TABLE IF EXISTS t3                |
+ |     53 | ALTER TABLE t1 DROP INDEX index1       |
+ |     52 | ALTER TABLE t1 ADD INDEX index1 (col1) | 
+ +--------+----------------------------------------+
+ 3 rows in set (0.00 sec)
+ ```
+
+ You can search the running DDL job corresponding to `job_id` within an arbitrarily specified range of results in the DDL history job queue. This syntax does not have the limitation of the last ten results of `ADMIN SHOW DDL JOB QUERIES`.
 
 ## MySQL compatibility
 
