@@ -193,3 +193,4 @@ aliases: ['/docs-cn/dev/grafana-tidb-dashboard/','/docs-cn/dev/reference/key-mon
 - TTL Scan/Delete Query Duration：TTL 的扫描/删除语句的执行时间。
 - TTL Scan/Delete Worker Time By Phase：TTL 内部工作线程的不同阶段所占用的时间。
 - TTL Job Count By Status：当前正在执行的 TTL 任务的数量。
+- TTL Task Count By Status：当前正在执行的 TTL 子任务的数量。
