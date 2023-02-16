@@ -11,7 +11,7 @@ summary: TiDB 数据库中 ALTER RESOURCE GROUP 的使用概况。
 
 ```ebnf+diagram
 AlterResourceGroupStmt:
-   "ALTER" "RESOURCE" "GROUP" IfNotExists ResourceGroupName ResourceGroupOptionList
+   "ALTER" "RESOURCE" "GROUP" IfExists ResourceGroupName ResourceGroupOptionList
 
 IfNotExists ::=
     ('IF' 'EXISTS')?
