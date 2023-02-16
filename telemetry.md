@@ -89,9 +89,9 @@ cat {spark.log} | grep Telemetry report | tail -n 1
 
 ### 开启 TiDB 遥测
 
-#### 步骤 1：修改配置文件中的遥测配置
+#### 第 1 步：修改配置文件中的遥测配置
 
-在已有 TiDB 集群上开启遥测功能，需要为集群设置 [`enable-telemetry = true`](/tidb-configuration-file.md#enable-telemetry-从-v402-版本开始引入) ，但需要重启集群后才能生效。
+在已有 TiDB 集群上开启遥测功能，需要为集群设置 [`enable-telemetry = true`](/tidb-configuration-file.md#enable-telemetry-从-v402-版本开始引入)，但需要重启集群后才能生效。
 
 以下是在各个部署工具中修改遥测配置的具体步骤。
 
@@ -163,9 +163,9 @@ server_configs:
 
 </details>
 
-#### 步骤 2：修改系统全局变量的遥测配置
+#### 第 2 步：修改系统全局变量的遥测配置
 
-在步骤 1 完成后，还需要修改系统全局变量 [`tidb_enable_telemetry`](/system-variables.md#tidb_enable_telemetry-从-v402-版本开始引入) ，才能打开 TiDB 遥测功能：
+在步骤 1 完成后，还需要修改系统全局变量 [`tidb_enable_telemetry`](/system-variables.md#tidb_enable_telemetry-从-v402-版本开始引入)，才能打开 TiDB 遥测功能：
 
 {{< copyable "sql" >}}
 
@@ -263,7 +263,7 @@ tiup telemetry enable
 
 ### 开启 TiSpark 遥测
 
-可以通过在 Spark 配置文件设置 `spark.tispark.telemetry.enable = true` 来禁用 TiSpark 的遥测功能。
+可以通过在 Spark 配置文件设置 `spark.tispark.telemetry.enable = true` 来开启 TiSpark 的遥测功能。
 
 ## 禁用遥测功能
 
