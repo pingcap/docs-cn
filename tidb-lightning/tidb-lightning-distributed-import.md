@@ -104,7 +104,14 @@ backend = "local"
 sorted-kv-dir = "/path/to/sorted-dir"
 ```
 
-如果数据源存放在 Amazon S3 或 GCS 等外部存储中，请参考[外部存储](/br/external-storage.md)。
+如果数据源存放在 Amazon S3 或 GCS 等外部存储中，需要额外的连接配置，你可以为这类配置指定参数。如下例子假设数据源存放在 Amazon S3 中：
+
+```
+./tidb-lightning --tidb-port=4000 --pd-urls=127.0.0.1:2379 --backend=local --sorted-kv-dir=/tmp/sorted-kvs \
+    -d 's3://my-bucket/sql-backup'
+```
+
+更多参数设置，请参考[外部存储 URL 格式](/br/backup-and-restore-storages.md#url-格式)。
 
 ### 第 3 步：开启 TiDB Lightning 进行数据导入
 
@@ -136,7 +143,7 @@ nohup tiup tidb-lightning -config tidb-lightning.toml > nohup.out &
 
 ## 示例 2：使用 TiDB Lightning 并行导入单表数据
 
-TiDB Lightning 也支持并行导入单表的数据。例如，将存放在 Amazon S3 中的多个单表文件，分别由不同的 TiDB Lightning 实例并行导入到下游 TiDB 数据库中。该方法可以加快整体导入速度。关于更多远端存储信息，请参考 [TiDB Lightning 支持的远端存储](/br/external-storage.md)。
+TiDB Lightning 也支持并行导入单表的数据。例如，将存放在 Amazon S3 中的多个单表文件，分别由不同的 TiDB Lightning 实例并行导入到下游 TiDB 数据库中。该方法可以加快整体导入速度。TiDB Lightning 使用云端存储时的配置参数与 BR 大致相同，关于详细的参数配置，可以参考[外部存储 URL 格式](/br/backup-and-restore-storages.md#url-格式)。
 
 > **注意：**
 >

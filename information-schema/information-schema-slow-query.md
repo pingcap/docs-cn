@@ -78,6 +78,7 @@ DESC slow_query;
 | Backoff_total                 | double              | YES  |      | NULL    |       |
 | Write_sql_response_total      | double              | YES  |      | NULL    |       |
 | Result_rows                   | bigint(22)          | YES  |      | NULL    |       |
+| Warnings                      | longtext            | YES  |      | NULL    |       |
 | Backoff_Detail                | varchar(4096)       | YES  |      | NULL    |       |
 | Prepared                      | tinyint(1)          | YES  |      | NULL    |       |
 | Succ                          | tinyint(1)          | YES  |      | NULL    |       |
@@ -92,7 +93,7 @@ DESC slow_query;
 | Prev_stmt                     | longtext            | YES  |      | NULL    |       |
 | Query                         | longtext            | YES  |      | NULL    |       |
 +-------------------------------+---------------------+------+------+---------+-------+
-73 rows in set (0.000 sec)
+74 rows in set (0.001 sec)
 ```
 
 ## CLUSTER_SLOW_QUERY table
@@ -170,6 +171,7 @@ desc cluster_slow_query;
 | Backoff_total                 | double              | YES  |      | NULL    |       |
 | Write_sql_response_total      | double              | YES  |      | NULL    |       |
 | Result_rows                   | bigint(22)          | YES  |      | NULL    |       |
+| Warnings                      | longtext            | YES  |      | NULL    |       |
 | Backoff_Detail                | varchar(4096)       | YES  |      | NULL    |       |
 | Prepared                      | tinyint(1)          | YES  |      | NULL    |       |
 | Succ                          | tinyint(1)          | YES  |      | NULL    |       |
@@ -184,7 +186,7 @@ desc cluster_slow_query;
 | Prev_stmt                     | longtext            | YES  |      | NULL    |       |
 | Query                         | longtext            | YES  |      | NULL    |       |
 +-------------------------------+---------------------+------+------+---------+-------+
-74 rows in set (0.000 sec)
+75 rows in set (0.001 sec)
 ```
 
 查询集群系统表时，TiDB 也会将相关计算下推给其他节点执行，而不是把所有节点的数据都取回来，可以查看执行计划，如下：

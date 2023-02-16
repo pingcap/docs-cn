@@ -237,8 +237,9 @@ mysql> SELECT * FROM t1;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 默认值：`OFF`
-- 为保持兼容，TiDB 对外键检查返回 `OFF`。
+- 类型：布尔型
+- 默认值：在 v6.6.0 之前版本中为 `OFF`，在 v6.6.0 及之后的版本中为 `ON`。
+- 表示是否开启外键约束检查。
 
 ### `group_concat_max_len`
 
@@ -296,7 +297,7 @@ mysql> SELECT * FROM t1;
 - 默认值：`28800`
 - 范围：`[1, 31536000]`
 - 单位：秒
-- 该变量表示交互式用户会话的空闲超时。交互式用户会话是指使用 `CLIENT_INTERACTIVE` 选项调用 [`mysql_real_connect()`](https://dev.mysql.com/doc/c-api/5.7/en/mysql-real-connect.html) API 建立的会话（例如：MySQL shell 客户端）。该变量与 MySQL 完全兼容。
+- 该变量表示交互式用户会话的空闲超时。交互式用户会话是指使用 `CLIENT_INTERACTIVE` 选项调用 [`mysql_real_connect()`](https://dev.mysql.com/doc/c-api/5.7/en/mysql-real-connect.html) API 建立的会话（例如：MySQL shell 和 MySQL client）。该变量与 MySQL 完全兼容。
 
 ### `last_insert_id` <span class="version-mark">从 v5.3.0 版本开始引入</span>
 
@@ -401,6 +402,29 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 - 该变量取值应为 1024 的整数倍。若取值无法被 1024 整除，则会提示 warning 并向下取整。例如设置为 1025 时，则 TiDB 中的实际取值为 1024。
 - 服务器端和客户端在一次传送数据包的过程中所允许最大的数据包大小，单位为字节。
 - 该变量的行为与 MySQL 兼容。
+
+### `mpp_exchange_compression_mode` <span class="version-mark">从 v6.6.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 默认值：`UNSPECIFIED`
+- 可选值：`NONE`，`FAST`，`HIGH_COMPRESSION`，`UNSPECIFIED`
+- 该变量用于选择 MPP Exchange 算子的数据压缩模式，当 TiDB 选择版本号为 `1` 的 MPP 执行计划时生效。该变量值的含义如下：
+    - `UNSPECIFIED`：表示未指定，TiDB 将自动选择压缩模式，当前 TiDB 自动选择 `FAST` 模式
+    - `NONE`：不使用数据压缩
+    - `FAST`：快速模式，整体性能较好，压缩比小于 `HIGH_COMPRESSION`
+    - `HIGH_COMPRESSION`：高压缩比模式
+
+### `mpp_version` <span class="version-mark">从 v6.6.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 默认值：`UNSPECIFIED`
+- 可选值：`UNSPECIFIED`，`0`，`1`
+- 该变量用于指定不同版本的 MPP 执行计划。指定后，TiDB 会选择指定版本的 MPP 执行计划。该变量值含义如下：
+    - `UNSPECIFIED`：表示未指定，此时 TiDB 自动选择最新版本 `1`。
+    - `0`：兼容所有 TiDB 集群版本，MPP 版本大于 `0` 的新特性均不会生效。
+    - `1`：从 v6.6.0 版本开始引入，用于开启 TiFlash 带压缩的数据交换，详情参见 [MPP Version 和 Exchange 数据压缩](/explain-mpp.md#mpp-version-和-exchange-数据压缩)。
 
 ### `password_history` <span class="version-mark">从 v6.5.0 版本开始引入</span>
 
@@ -525,6 +549,7 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 - 是否持久化到集群：是
 - 默认值：`18446744073709551615`
 - 范围：`[0, 18446744073709551615]`
+- 单位：行
 - `SELECT` 语句返回的最大行数。
 
 ### `ssl_ca`
@@ -739,7 +764,8 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 是否持久化到集群：是
 - 默认值：`10240`
 - 范围：`[0, 9223372036854775807]`
-- 单位为行数。如果 join 的对象为子查询，优化器无法估计子查询结果集大小，在这种情况下通过结果集行数判断。如果子查询的行数估计值小于该变量，则选择 Broadcast Hash Join 算法。否则选择 Shuffled Hash Join 算法。
+- 单位：行
+- 如果 join 的对象为子查询，优化器无法估计子查询结果集大小，在这种情况下通过结果集行数判断。如果子查询的行数估计值小于该变量，则选择 Broadcast Hash Join 算法。否则选择 Shuffled Hash Join 算法。
 
 ### `tidb_broadcast_join_threshold_size` <span class="version-mark">从 v5.0 版本开始引入</span>
 
@@ -755,6 +781,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 类型：整数型
+- 单位：线程
 - 默认值：`4`
 - 取值范围：`[1, 256]`
 - 这个变量用来设置 ANALYZE 语句执行时并发度。
@@ -801,6 +828,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 类型：整数型
 - 默认值：`4`
 - 取值范围：`[1, 256]`
+- 单位：线程
 - 这个变量用来设置 [`ADMIN CHECKSUM TABLE`](/sql-statements/sql-statement-admin-checksum-table.md) 语句执行时扫描索引的并发度。当这个变量被设置得更大时，会对其它的查询语句执行性能产生一定影响。
 
 ### `tidb_config`
@@ -948,8 +976,8 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 > **警告：**
 >
-> 当前索引加速功能和[单条 `ALTER TABLE` 语句增删改多个列或索引](/sql-statements/sql-statement-alter-table.md)功能未完全兼容。在使用索引加速功能添加唯一索引时，请避免在单条语句添加唯一索引的同时操作其他列或者索引对象。
-> 
+> 当前索引加速功能未完全兼容添加唯一索引操作。在添加唯一索引时，建议关闭索引加速功能（将 `tidb_ddl_enable_fast_reorg` 设置为 `OFF`）。
+>
 > 当前索引加速功能与 [PITR (Point-in-time recovery)](/br/br-pitr-guide.md) 功能不兼容。在使用索引加速功能时，需要确保后台没有启动 PITR 备份任务，否则可能会出现非预期结果。非预期场景包括：
 >
 > - 如果先启动 PITR 备份任务，再添加索引，此时即使索引加速功能打开，也不会使用加速索引功能，但不影响索引兼容性。由于 PITR 备份任务会一直运行，相当于索引加速功能被关闭。在这种情况下，如果需要加速索引创建，你可以先停止 PITR 后台备份任务，启动并完成添加索引任务，然后再启动 PITR 后台备份任务，并做一次全量备份。
@@ -979,10 +1007,11 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 是否持久化到集群：是
 - 默认值：`256`
 - 范围：`[32, 10240]`
+- 单位：行
 - 这个变量用来设置 DDL 操作 `re-organize` 阶段的 batch size。比如 `ADD INDEX` 操作，需要回填索引数据，通过并发 `tidb_ddl_reorg_worker_cnt` 个 worker 一起回填数据，每个 worker 以 batch 为单位进行回填。
 
     - 如果 `ADD INDEX` 操作时有较多 `UPDATE` 操作或者 `REPLACE` 等更新操作，batch size 越大，事务冲突的概率也会越大，此时建议调小 batch size 的值，最小值是 32。
-    - 在没有事务冲突的情况下，batch size 可设为较大值（需要参考 worker 数量，见[线上负载与 `ADD INDEX` 相互影响测试](/benchmark/online-workloads-and-add-index-operations.md)），最大值是 10240，这样回填数据的速度更快，但是 TiKV 的写入压力也会变大。
+    - 在没有事务冲突的情况下，batch size 可设为较大值（需要参考 worker 数量，见[线上负载与 `ADD INDEX` 相互影响测试](/benchmark/online-workloads-and-add-index-operations.md)），这样回填数据的速度更快，但是 TiKV 的写入压力也会变大。
 
 ### `tidb_ddl_reorg_priority`
 
@@ -998,6 +1027,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 是否持久化到集群：是
 - 默认值：`4`
 - 范围：`[1, 256]`
+- 单位：线程
 - 这个变量用来设置 DDL 操作 `re-organize` 阶段的并发度。
 
 ### `tidb_default_string_match_selectivity` <span class="version-mark">从 v6.2.0 版本开始引入</span>
@@ -1034,6 +1064,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 是否持久化到集群：是
 - 默认值：`15`
 - 范围：`[1, 256]`
+- 单位：线程
 - 这个变量用来设置 scan 操作的并发度。
 - AP 类应用适合较大的值，TP 类应用适合较小的值。对于 AP 类应用，最大值建议不要超过所有 TiKV 节点的 CPU 核数。
 - 若表的分区较多可以适当调小该参数（取决于扫描数据量的大小以及扫描频率），避免 TiKV 内存溢出 (OOM)。
@@ -1048,6 +1079,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 是否持久化到集群：是
 - 默认值：`0`
 - 范围：`[0, 2147483647]`
+- 单位：行
 - 这个变量的值大于 `0` 时，TiDB 会将 `INSERT` 或 `LOAD DATA` 等语句在更小的事务中批量提交。这样可减少内存使用，确保大批量修改时事务大小不会达到 `txn-total-size-limit` 限制。
 - 只有变量值为 `0` 时才符合 ACID 要求。否则无法保证 TiDB 的原子性和隔离性要求。
 - 要使该特性生效，还需要开启 `tidb_enable_batch_dml`，以及至少开启 `tidb_batch_insert` 和 `tidb_batch_delete` 中的一个。
@@ -1064,25 +1096,6 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 > - 对于新创建的集群，默认值为 ON。对于升级版本的集群，如果升级前是 v5.0 以下版本，升级后默认值为 `OFF`。
 > - 启用 TiDB Binlog 后，开启该选项无法获得性能提升。要获得性能提升，建议使用 [TiCDC](/ticdc/ticdc-overview.md) 替代 TiDB Binlog。
 > - 启用该参数仅意味着一阶段提交成为可选的事务提交模式，实际由 TiDB 自行判断选择最合适的提交模式进行事务提交。
-
-### `tidb_enable_amend_pessimistic_txn` <span class="version-mark">从 v4.0.7 版本开始引入</span>
-
-> **警告：**
->
-> 该变量从 v6.5.0 开始废弃，并计划将从 v6.6.0 移除。TiDB 默认使用[元数据锁](/metadata-lock.md)机制解决 `Information schema is changed` 报错的问题。
-
-- 作用域：SESSION | GLOBAL
-- 是否持久化到集群：是
-- 默认值：`OFF`
-- 这个变量用于控制是否开启 `AMEND TRANSACTION` 特性。在[悲观事务模式](/pessimistic-transaction.md)下开启该特性后，如果该事务相关的表存在并发 DDL 操作和 SCHEMA VERSION 变更，TiDB 会尝试对该事务进行 amend 操作，修正该事务的提交内容，使其和最新的有效 SCHEMA VERSION 保持一致，从而成功提交该事务而不返回 `Information schema is changed` 报错。该特性对以下并发 DDL 变更生效：
-
-    - `ADD COLUMN` 或 `DROP COLUMN` 类型的 DDL 操作。
-    - `MODIFY COLUMN` 或 `CHANGE COLUMN` 类型的 DDL 操作，且只对增大字段长度的操作生效。
-    - `ADD INDEX` 或 `DROP INDEX` 类型的 DDL 操作，且操作的索引列须在事务开启之前创建。
-
-> **注意：**
->
-> 目前该特性可能造成事务语义的变化，且与 TiDB Binlog 存在部分不兼容的场景，可以参考[事务语义行为区别](https://github.com/pingcap/tidb/issues/21069)和[与 TiDB Binlog 兼容问题汇总](https://github.com/pingcap/tidb/issues/20996)了解更多关于该特性的使用注意事项。
 
 ### `tidb_enable_analyze_snapshot` <span class="version-mark">从 v6.2.0 版本开始引入</span>
 
@@ -1182,25 +1195,13 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 默认值：`OFF`
 - 这个变量用于控制是否开启 TiDB 对 `PREDICATE COLUMNS` 的收集。关闭该变量后，之前收集的 `PREDICATE COLUMNS` 会被清除。详情见[收集部分列的统计信息](/statistics.md#收集部分列的统计信息)。
 
-### `tidb_enable_concurrent_ddl` <span class="version-mark">从 v6.2.0 版本开始引入</span>
-
-> **警告：**
->
-> **请勿修改该变量值**，因为关闭后风险不确定，有可能导致集群元数据出错。
-
-- 作用域：GLOBAL
-- 是否持久化到集群：是
-- 类型：布尔型
-- 默认值：`ON`
-- 这个变量用于控制是否让 TiDB 使用并发 DDL 语句。在开启并发 DDL 语句后，DDL 语句的执行流程有所改变，DDL 语句不容易被其他 DDL 语句阻塞，并且能够同时添加多个索引。
-
 ### `tidb_enable_ddl`
 
 - 作用域：GLOBAL
 - 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
-- 默认值: `ON`
+- 默认值：`ON`
 - 可选值：`OFF`，`ON`
-- 用于设置该 TiDB 服务器是否运行 DDL 语句。
+- 用于设置该 TiDB 实例是否可以成为 DDL owner。若当前 TiDB 集群中只有一台 TiDB 实例，则不能禁止该实例成为 DDL owner，即不能设置为 `OFF`。
 
 ### `tidb_enable_enhanced_security`
 
@@ -1285,14 +1286,10 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 ### `tidb_enable_foreign_key` <span class="version-mark">从 v6.3.0 版本开始引入</span>
 
-> **警告：**
->
-> 当前版本中该变量控制的功能尚未完全生效，请保留默认值。
-
 - 作用域：GLOBAL
 - 是否持久化到集群：是
 - 类型：布尔型
-- 默认值：`OFF`
+- 默认值：在 v6.6.0 之前版本中为 `OFF`，在 v6.6.0 及之后的版本中为 `ON`。
 - 这个变量用于控制是否开启 `FOREIGN KEY` 特性。
 
 ### `tidb_enable_gc_aware_memory_track`
@@ -1505,14 +1502,11 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 ### `tidb_enable_plan_replayer_capture`
 
-> 警告：
->
-> 当前版本中该变量控制的功能尚未完全生效，请保留默认值。
-
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 类型：布尔型
 - 默认值：`OFF`
+- 这个变量用来控制是否开启 [`PLAN REPLAYER CAPTURE` 功能](/sql-plan-replayer.md#使用-plan-replayer-capture-抓取目标计划)。默认值 `OFF` 代表关闭 `PLAN REPLAYER CAPTURE` 功能。
 
 ### `tidb_enable_prepared_plan_cache` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
@@ -1733,6 +1727,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 是否持久化到集群：是
 - 默认值：`5`
 - 范围：`[1, 256]`
+- 单位：线程
 
 变量用来统一设置各个 SQL 算子的并发度，包括：
 
@@ -1782,6 +1777,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 是否持久化到集群：是
 - 默认值：`-1`
 - 范围：`[1, 256]`
+- 单位：线程
 - 这个变量用于指定 GC 在[Resolve Locks（清理锁）](/garbage-collection-overview.md#resolve-locks清理锁)步骤中线程的数量。默认值 `-1` 表示由 TiDB 自主判断运行 GC 要使用的线程的数量。
 
 ### `tidb_gc_enable` <span class="version-mark">从 v5.0 版本开始引入</span>
@@ -1915,6 +1911,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 是否持久化到集群：是
 - 默认值：`-1`
 - 范围：`[1, 256]`
+- 单位：线程
 - 这个变量用来设置 hash join 算法的并发度。
 - 默认值 `-1` 表示使用 `tidb_executor_concurrency` 的值。
 
@@ -1928,6 +1925,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 是否持久化到集群：是
 - 默认值：`-1`
 - 范围：`[1, 256]`
+- 单位：线程
 - 这个变量用来设置并行 hash aggregation 算法 final 阶段的执行并发度。对于聚合函数参数不为 distinct 的情况，HashAgg 分为 partial 和 final 阶段分别并行执行。
 - 默认值 `-1` 表示使用 `tidb_executor_concurrency` 的值。
 
@@ -1941,6 +1939,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 是否持久化到集群：是
 - 默认值：`-1`
 - 范围：`[1, 256]`
+- 单位：线程
 - 这个变量用来设置并行 hash aggregation 算法 partial 阶段的执行并发度。对于聚合函数参数不为 distinct 的情况，HashAgg 分为 partial 和 final 阶段分别并行执行。
 - 默认值 `-1` 表示使用 `tidb_executor_concurrency` 的值。
 
@@ -1958,6 +1957,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 是否持久化到集群：是
 - 默认值：`25000`
 - 范围：`[1, 2147483647]`
+- 单位：行
 - 这个变量用来设置 index lookup join 操作的 batch 大小，AP 类应用适合较大的值，TP 类应用适合较小的值。
 
 ### `tidb_index_lookup_concurrency`
@@ -1970,6 +1970,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 是否持久化到集群：是
 - 默认值：`-1`
 - 范围：`[1, 256]`
+- 单位：线程
 - 这个变量用来设置 index lookup 操作的并发度，AP 类应用适合较大的值，TP 类应用适合较小的值。
 - 默认值 `-1` 表示使用 `tidb_executor_concurrency` 的值。
 
@@ -1983,6 +1984,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 是否持久化到集群：是
 - 默认值：`-1`
 - 范围：`[1, 256]`
+- 单位：线程
 - 这个变量用来设置 index lookup join 算法的并发度。
 - 默认值 `-1` 表示使用 `tidb_executor_concurrency` 的值。
 
@@ -2001,6 +2003,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 是否持久化到集群：是
 - 默认值：`20000`
 - 范围：`[1, 2147483647]`
+- 单位：行
 - 这个变量用来设置 index lookup 操作的 batch 大小，AP 类应用适合较大的值，TP 类应用适合较小的值。
 
 ### `tidb_index_serial_scan_concurrency`
@@ -2009,6 +2012,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 是否持久化到集群：是
 - 默认值：`1`
 - 范围：`[1, 256]`
+- 单位：线程
 - 这个变量用来设置顺序 scan 操作的并发度，AP 类应用适合较大的值，TP 类应用适合较小的值。
 
 ### `tidb_init_chunk_size`
@@ -2017,6 +2021,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 是否持久化到集群：是
 - 默认值：`32`
 - 范围：`[1, 32]`
+- 单位：行
 - 这个变量用来设置执行过程中初始 chunk 的行数。默认值是 32，可设置的范围是 1～32。
 
 ### `tidb_isolation_read_engines` <span class="version-mark">从 v4.0 版本开始引入</span>
@@ -2100,6 +2105,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 是否持久化到集群：是
 - 默认值：`1024`
 - 范围：`[32, 2147483647]`
+- 单位：行
 - 这个变量用来设置执行过程中一个 chunk 最大的行数，设置过大可能引起缓存局部性的问题。
 
 ### `tidb_max_delta_schema_count`
@@ -2763,6 +2769,19 @@ SHOW WARNINGS;
 - 默认值：`ON`
 - 这个变量用于控制是否开启 [ANALYZE 配置持久化](/statistics.md#analyze-配置持久化)特性。
 
+### `tidb_pessimistic_txn_aggressive_locking` <span class="version-mark">从 v6.6.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 类型：布尔型
+- 默认值：`OFF`
+- 是否对悲观锁启用加强的悲观锁唤醒模型。该模型可严格控制悲观锁单点冲突场景下事务的唤醒顺序，避免无效唤醒，大大降低原有唤醒机制中的随机性对事务延迟带来的不确定性。如果业务场景中遇到了单点悲观锁冲突频繁的情况（如高频更新同一行数据等），并进而引起语句重试频繁、尾延迟高，甚至偶尔发生 `pessimistic lock retry limit reached` 错误，可以尝试开启该变量来解决问题。
+
+> **注意：**
+>
+> * 视具体业务场景的不同，启用该选项可能对存在频繁锁冲突的事务造成一定程度的吞吐下降（平均延迟上升）。
+> * 该选项目前仅对需要上锁单个 key 的语句有效。如果一个语句需要对多行同时上锁，则该选项不会对此类语句生效。
+
 ### `tidb_placement_mode` <span class="version-mark">从 v6.0.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
@@ -2871,6 +2890,7 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 - 是否持久化到集群：是
 - 默认值：`-1`
 - 范围：`[-1, 256]`
+- 单位：线程
 - 这个变量用来设置 `Projection` 算子的并发度。
 - 默认值 `-1` 表示使用 `tidb_executor_concurrency` 的值。
 
@@ -2962,7 +2982,7 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 默认值：`leader`
-- 可选值：`leader`、`follower`、`leader-and-follower`、`closest-replicas`、`closest-adaptive` 和 `learner`。其中，`learner` 从 v6.6.0 开始引入。
+- 可选值：`leader`、`follower`、`leader-and-follower`，`prefer-leader`、`closest-replicas`、`closest-adaptive` 和 `learner`。其中，`learner` 从 v6.6.0 开始引入。
 - 这个变量用于控制 TiDB 的 Follower Read 功能的行为。
 - 关于使用方式与实现原理，见 [Follower Read](/follower-read.md)。
 
@@ -2978,7 +2998,7 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 默认值：`1`
+- 默认值：`2`
 - 范围：`[1, 2]`
 - 控制新保存数据的表数据格式版本。TiDB v4.0 中默认使用版本号为 2 的[新表数据格式](https://github.com/pingcap/tidb/blob/master/docs/design/2018-07-19-row-format.md)保存新数据。
 
@@ -3174,14 +3194,10 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 ### `tidb_store_batch_size`
 
-> **警告：**
->
-> 目前 `tidb_store_batch_size` 尚未稳定，未来此变量可能会删除，不建议业务依赖此变量或在生产环境中使用，请保留默认值。
-
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 类型：整数型
-- 默认值：`0`
+- 默认值：`4`
 - 范围：`[0, 25000]`
 - 设置 `IndexLookUp` 算子回表时多个 Coprocessor Task 的 batch 大小。`0` 代表不使用 batch。当 `IndexLookUp` 算子的回表 Task 数量特别多，出现极长的慢查询时，可以适当调大该参数以加速查询。
 
@@ -3363,7 +3379,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 是否持久化到集群：是
 - 默认值：`500`
 - 范围：`[1, 10240]`
-- 这个变量用于设置 TTL 任务中用来扫描过期数据的每个 `SELECT` 语句的 `LIMIT` 的值。 
+- 这个变量用于设置 TTL 任务中用来扫描过期数据的每个 `SELECT` 语句的 `LIMIT` 的值。
 
 ### `tidb_ttl_scan_worker_count` <span class="version-mark">从 v6.5.0 版本开始引入</span>
 
@@ -3480,6 +3496,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 是否持久化到集群：是
 - 默认值：`-1`
 - 范围：`[1, 256]`
+- 单位：线程
 - 这个变量用于设置 window 算子的并行度。
 - 默认值 `-1` 表示使用 `tidb_executor_concurrency` 的值。
 

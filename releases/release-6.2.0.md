@@ -19,7 +19,7 @@ TiDB 版本：6.2.0-DMR
 - TiDB [锁视图支持乐观事务被阻塞的信息](/information-schema/information-schema-data-lock-waits.md)，方便快速定位锁冲突。
 - TiFlash 引入[新的存储格式 PageStorage V3](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml)，提升稳定性和性能。
 - 实现[细粒度数据交换 (shuffle)](/system-variables.md#tiflash_fine_grained_shuffle_batch_size-从-v620-版本开始引入) 使窗口函数 (Window function) 可以利用多线程并行计算。
-- 引入[新的 DDL 并行执行框架](/system-variables.md#tidb_enable_concurrent_ddl-从-v620-版本开始引入)，减少 DDL 阻塞，大幅提升执行效率。
+- 引入新的 DDL 并行执行框架，减少 DDL 阻塞，大幅提升执行效率。
 - TiKV 支持[自适应调整 CPU 使用率](/tikv-configuration-file.md#后台限流)，确保数据库稳定高效运行。
 - 支持 [point-in-time recovery (PITR)](/br/backup-and-restore-overview.md)，允许恢复备份集群的历史任意时间点的快照。
 - TiDB Lightning 使用 Physical Import Mode [导入时限制调度范围从集群降低到表级别](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#导入时限制调度范围从集群降低到表级别)。
@@ -95,7 +95,7 @@ TiDB 版本：6.2.0-DMR
 
     TiDB v6.2.0 引入新的 DDL 并行执行框架，在不同表对象上的 DDL 可以并发执行，解决了之前不同表之间 DDL 相互阻塞的问题。同时在不同表对象的追加索引、列类型变更等场景下支持并行执行，大幅提升执行效率。
 
-    [用户文档](/system-variables.md#tidb_enable_concurrent_ddl-从-v620-版本开始引入) [#32031](https://github.com/pingcap/tidb/issues/32031) @[wjhuang2016](https://github.com/wjhuang2016)
+    [#32031](https://github.com/pingcap/tidb/issues/32031) @[wjhuang2016](https://github.com/wjhuang2016)
 
 * 优化器增强了对字符串条件匹配的估算方式
 
@@ -238,7 +238,6 @@ TiDB 版本：6.2.0-DMR
 | ------ | ------ | ------ |
 | [tidb_enable_new_cost_interface](/system-variables.md#tidb_enable_new_cost_interface-从-v620-版本开始引入) | 新增 | 控制是否使用重构后的代价模型 [Cost Model Version 2](/cost-model.md#cost-model-version-2)。 |
 | [tidb_cost_model_version](/system-variables.md#tidb_cost_model_version-从-v620-版本开始引入) | 新增 | TiDB 在进行物理优化时会使用代价模型来进行索引选择和算子选择，该变量用于选择代价模型的版本。TiDB v6.2.0 引入了代价模型 Cost Model Version 2，在内部测试中比此前版本的代价模型更加准确。 |
-| [tidb_enable_concurrent_ddl](/system-variables.md#tidb_enable_concurrent_ddl-从-v620-版本开始引入) | 新增 | 用于控制是否让 TiDB 使用并发 DDL 语句。不可修改该变量值关闭该功能，因为关闭后风险不确定，有可能导致集群元数据出错。 |
 | [tiflash_fine_grained_shuffle_stream_count](/system-variables.md#tiflash_fine_grained_shuffle_stream_count-从-v620-版本开始引入) | 新增 | 当窗口函数下推到 TiFlash 执行时，可以通过该变量控制窗口函数执行的并行度。 |
 | [tiflash_fine_grained_shuffle_batch_size](/system-variables.md#tiflash_fine_grained_shuffle_batch_size-从-v620-版本开始引入) | 新增 | 细粒度 shuffle 功能开启时，该变量控制发送端发送数据的攒批大小，即发送端累计行数超过该值就会进行一次数据发送。 |
 | [tidb_default_string_match_selectivity](/system-variables.md#tidb_default_string_match_selectivity-从-v620-版本开始引入) | 新增 | 设置过滤条件中的 `like`、`rlike`、`regexp` 函数在行数估算时的默认选择率，以及是否对这些函数启用 TopN 辅助估算。 |
@@ -246,7 +245,7 @@ TiDB 版本：6.2.0-DMR
 | [tidb_generate_binary_plan](/system-variables.md#tidb_generate_binary_plan-从-v620-版本开始引入) | 新增 | 用于指定是否在 slow log 和 statement summary 里包含以二进制格式编码的执行计划。 |
 | [tidb_opt_skew_distinct_agg](/system-variables.md#tidb_opt_skew_distinct_agg-从-v620-版本开始引入) | 新增 | 用于设置优化器是否将带有 `DISTINCT` 的聚合函数（例如 `SELECT b, COUNT(DISTINCT a) FROM t GROUP BY b`）改写为两层聚合函数（例如 `SELECT b, COUNT(a) FROM (SELECT b, a FROM t GROUP BY b, a) t GROUP BY b`）。 |
 | [tidb_enable_noop_variables](/system-variables.md#tidb_enable_noop_variables-从-v620-版本开始引入) | 新增 | 用于设置 `SHOW [GLOBAL] VARIABLES` 是否显示 noop 变量。 |
-| [tidb_enable_concurrent_ddl](/system-variables.md#tidb_enable_concurrent_ddl-从-v620-版本开始引入) | 新增 | 用于控制是否让 TiDB 使用并发 DDL 语句。 |
+| tidb_enable_concurrent_ddl | 新增 | 用于控制是否让 TiDB 使用并发 DDL 语句。 |
 | [tidb_min_paging_size](/system-variables.md#tidb_min_paging_size-从-v620-版本开始引入) | 新增 | 用来设置 coprocessor 协议中 paging size 的最小的行数。 |
 | [tidb_txn_commit_batch_size](/system-variables.md#tidb_txn_commit_batch_size-从-v620-版本开始引入) | 新增 | 用于控制 TiDB 向 TiKV 发送的事务提交请求的批量大小。 |
 | tidb_enable_change_multi_schema | 删除 | TiDB 支持使用一个 `ALTER TABLE` 语句增删改多个列或索引。 |

@@ -9,7 +9,7 @@ aliases: ['/docs-cn/dev/tiflash/tiflash-configuration/','/docs-cn/dev/reference/
 
 ## PD 调度参数
 
-可通过 [pd-ctl](/pd-control.md) 调整参数。如果你使用 TiUP 部署，可以用 `tiup ctl:<cluster-version> pd` 代替 `pd-ctl -u <pd_ip:pd_port>` 命令。
+可通过 [pd-ctl](/pd-control.md) 调整参数。如果你使用 TiUP 部署，可以用 `tiup ctl:v<CLUSTER_VERSION> pd` 代替 `pd-ctl -u <pd_ip:pd_port>` 命令。
 
 - [`replica-schedule-limit`](/pd-configuration-file.md#replica-schedule-limit)：用来控制 replica 相关 operator 的产生速度（涉及到下线、补副本的操作都与该参数有关）
 
