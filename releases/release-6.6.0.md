@@ -409,12 +409,14 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
     - 增加了 `partial order prop push down` 对 LIST 类型分区表的支持 [#40273](https://github.com/pingcap/tidb/issues/40273) @[winoros](https://github.com/winoros)
     - 为优化器提示和执行计划绑定的冲突新增报错信息 [#40910](https://github.com/pingcap/tidb/issues/40910) @[Reminiscent](https://github.com/Reminiscent)
     - 优化了 Plan Cache 策略，避免在一些场景使用 Plan Cache 时产生不优计划 [#40312](https://github.com/pingcap/tidb/pull/40312) [#40218](https://github.com/pingcap/tidb/pull/40218) [#40280](https://github.com/pingcap/tidb/pull/40280) [#41136](https://github.com/pingcap/tidb/pull/41136) [#40686](https://github.com/pingcap/tidb/pull/40686) @[qw4990](https://github.com/qw4990)
+- 定期清理过期的 Region 缓存，避免内存泄漏和性能下降问题 [#40461](https://github.com/pingcap/tidb/issues/40461) @[sticnarf](https://github.com/sticnarf)
+
 
 + TiKV
     <!-- 6 -->
     - 在 partitioned-raft-kv 模式下优化了一些参数的默认值：TiKV 配置项 `storage.block-cache.capacity` 的默认值由 45% 调整为 30%，`region-split-size` 的默认值由 `96MiB` 调整为 `10GiB`。当沿用 raft-kv 模式且 `enable-region-bucket` 为 `true` 时，`region-split-size` 默认调整为 1GiB [#12842](https://github.com/tikv/tikv/issues/12842) @[tonyxuqqi](https://github.com/tonyxuqqi)
     - 支持在 Raftstore 异步写入中进行优先级调度 [#13730] (https://github.com/tikv/tikv/issues/13730) @[Connor1996](https://github.com/Connor1996)
-    - 支持在小于 1 core 的 CPU 下启动 TiKV [#13586](https://github.com/tikv/tikv/issues/13586) [#13752](https://github.com/tikv/tikv/issues/13752) [#14017](https://github.com/tikv/tikv/issues/13586) @[andreid-db](https://github.com/andreid-db)
+    - 支持在小于 1 core 的 CPU 下启动 TiKV [#13586](https://github.com/tikv/tikv/issues/13586) [#13752](https://github.com/tikv/tikv/issues/13752) [#14017](https://github.com/tikv/tikv/issues/14017) @[andreid-db](https://github.com/andreid-db)
     - 优化 Raftstore slow score 探测的新机制，新增 `evict-slow-trend-scheduler` [#14131](https://github.com/tikv/tikv/issues/14131) @[innerr](https://github.com/innerr)
     - 强制 RocksDB 的 block cache 为共享的，不再支持按照 CF 单独设置 block cache [#12936](https://github.com/tikv/tikv/issues/12936) @[busyjay](https://github.com/busyjay)
 
@@ -524,9 +526,6 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
     <!-- compute 2-->
     - 修复了 IndexMerge 算子在触发内存限制行为时可能导致 TiDB server 崩溃的问题 [#41036](https://github.com/pingcap/tidb/pull/41036) @[guo-shaoge](https://github.com/guo-shaoge)
     - 修复了在分区表上执行 `SELECT * FROM table_name LIMIT 1` 查询时，执行速度慢的问题 [#40741](https://github.com/pingcap/tidb/pull/40741) @[solotzg](https://github.com/solotzg)
-
-    <!-- transaction 1-->
-    - 定期清理过期的 Region 缓存，避免内存泄漏和性能下降问题 [#40461](https://github.com/pingcap/tidb/issues/40461) @[sticnarf](https://github.com/sticnarf)
 
 + TiKV
     <!-- 5 -->
