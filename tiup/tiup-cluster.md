@@ -674,7 +674,7 @@ tiup cluster check <cluster-name> --cluster
 此时可以通过命令行参数 `--ssh=system` 启用系统自带命令行：
 
 - 部署集群：`tiup cluster deploy <cluster-name> <version> <topo> --ssh=system`，其中 `<cluster-name>` 为集群名称，`<version>` 为 TiDB 集群版本（例如 `v6.5.0`），`<topo>` 为拓扑文件路径
-- 启动集群：`tiup cluster start <cluster-name> --ssh=system`，其中 `<cluster-name>` 为集群名称
+- 启动集群：`tiup cluster start <cluster-name> --ssh=system`
 - 升级集群：`tiup cluster upgrade ... --ssh=system`
 
 所有涉及集群操作的步骤都可以加上 `--ssh=system` 来使用系统自带的客户端。
