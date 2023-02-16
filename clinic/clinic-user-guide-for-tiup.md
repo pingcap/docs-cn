@@ -17,7 +17,7 @@ For TiDB clusters and DM clusters deployed using TiUP, you can use PingCAP Clini
 
 - [Troubleshoot cluster problems remotely](#troubleshoot-cluster-problems-remotely)
 
-    - When your cluster has some problems, if you need to contact PingCAP technical support, you can perform the following operations to facilitate the remote troubleshooting: collect diagnostic data with Diag, upload the collected data to the Clinic Server, and provide the data access link to the technical support staff.
+    - When your cluster has some problems, if you need to [get support](/support.md) from PingCAP, you can perform the following operations to facilitate the remote troubleshooting: collect diagnostic data with Diag, upload the collected data to the Clinic Server, and provide the data access link to the technical support staff.
     - When your cluster has some problems, if you cannot analyze the problems immediately, you can use Diag to collect and save the data for later analysis.
 
 - [Perform a quick check on the cluster status locally](#perform-a-quick-check-on-the-cluster-status-locally)

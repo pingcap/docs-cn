@@ -68,7 +68,7 @@ iperf Done.
 
 If the output shows low network bandwidth and high bandwidth fluctuations, a large number of retries and EOF errors might appear in each component log. In this case, you need to consult your network service provider to improve the network quality.
 
-If the output of each metric looks good, try to update each component. If the problem persists after the updating, you can [contact us](https://tidbcommunity.slack.com/archives/CH7TTLL7P).
+If the output of each metric looks good, try to update each component. If the problem persists after the updating, [get support](/support.md) from PingCAP or the community.
 
 ### If I accidentally import the MySQL user table into TiDB, or forget the password and cannot log in, how to deal with it?
 
@@ -122,7 +122,7 @@ This issue might have the following causes:
 + The database's primary keys are not evenly distributed (for example, when you enable [`SHARD_ROW_ID_BITS`](/shard-row-id-bits.md)).
 + The upstream database is TiDB and the exported table is a partitioned table.
 
-For the above cases, Dumpling splits excessively large data chunk for the export and sends queries with excessively large results. To address the issue, you can [contact us](https://tidbcommunity.slack.com/archives/CH7TTLL7P) to get the nightly version of Dumpling.
+For the above cases, Dumpling splits excessively large data chunk for the export and sends queries with excessively large results. To address the issue, you can get the latest version of Dumpling.
 
 ### Does TiDB have a function like the Flashback Query in Oracle? Does it support DDL?
 

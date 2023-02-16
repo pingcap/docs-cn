@@ -340,7 +340,17 @@ In addition, when other concurrent writes occur, the number of rows processed in
 
 The shard column does not support `ENUM`, `BIT`, `SET`, `JSON` types. Try to specify a new shard column. It is recommended to use an integer or string type column.
 
-If the error occurs when the selected shard column is not one of these unsupported types, contact PingCAP technical support.
+<CustomContent platform="tidb">
+
+If the error occurs when the selected shard column is not one of these unsupported types, [get support](/support.md) from PingCAP or the community.
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+If the error occurs when the selected shard column is not one of these unsupported types, [contact TiDB Cloud Support](/tidb-cloud/tidb-cloud-support.md).
+
+</CustomContent>
 
 ### Non-transactional `DELETE` has "exceptional" behavior that is not equivalent to ordinary `DELETE`
 

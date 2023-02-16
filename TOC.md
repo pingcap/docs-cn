@@ -197,6 +197,7 @@
     - [Identify Expensive Queries Using Top SQL](/dashboard/top-sql.md)
     - [Identify Expensive Queries Using Logs](/identify-expensive-queries.md)
     - [Save and Restore the On-Site Information of a Cluster](/sql-plan-replayer.md)
+  - [Support Resources](/support.md)
 - Performance Tuning
   - Tuning Guide
     - [Performance Tuning Overview](/performance-tuning-overview.md)

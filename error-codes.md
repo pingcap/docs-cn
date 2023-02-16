@@ -16,7 +16,7 @@ TiDB is compatible with the error codes in MySQL, and in most cases returns the 
 >
 > Some error codes stand for internal errors. Normally, TiDB handles the error rather than return it to the user, so some error codes are not listed here.
 >
-> If you encounter an error code that is not listed here, [contact PingCAP](mailto:info@pingcap.com) for support.
+> If you encounter an error code that is not listed here, [get support](/support.md) from PingCAP or the community.
 
 * Error Number: 8001
 
@@ -34,7 +34,7 @@ TiDB is compatible with the error codes in MySQL, and in most cases returns the 
 
     If the data in a row is not consistent with the index when executing the [`ADMIN CHECK TABLE`](/sql-statements/sql-statement-admin-check-table-index.md) command, TiDB returns this error. This error is commonly seen when you check the data corruption in the table.
 
-    You can [contact PingCAP](mailto:info@pingcap.com) for support.
+    You can [get support](/support.md) from PingCAP or the community.
 
 * Error Number: 8004
 
@@ -84,7 +84,7 @@ TiDB is compatible with the error codes in MySQL, and in most cases returns the 
 
     Invalid transactions. If TiDB finds that no transaction ID (Start Timestamp) is obtained for the transaction that is being executed, which means this transaction is invalid, this error is returned.
 
-    Usually this error does not occur. If you encounter this error, [contact PingCAP](mailto:info@pingcap.com) for support.
+    Usually this error does not occur. If you encounter this error, [get support](/support.md) from PingCAP or the community.
 
 * Error Number: 8025
 
@@ -166,13 +166,13 @@ TiDB is compatible with the error codes in MySQL, and in most cases returns the 
 
     Unknown data type is encountered when TiDB parses the Exec argument list sent by the client.
 
-    If you encounter this error, check the client. If the client is normal, [contact PingCAP](mailto:info@pingcap.com) for support.
+    If you encounter this error, check the client. If the client is normal, [get support](/support.md) from PingCAP or the community.
 
 * Error Number: 8052
 
     The serial number of the data packet from the client is incorrect.
 
-    If you encounter this error, check the client. If the client is normal, [contact PingCAP](mailto:info@pingcap.com) for support.
+    If you encounter this error, check the client. If the client is normal, [get support](/support.md) from PingCAP or the community.
 
 * Error Number: 8055
 
@@ -256,7 +256,7 @@ TiDB is compatible with the error codes in MySQL, and in most cases returns the 
 
     The plugin defines a system variable whose name does not begin with the plugin name.
 
-    Contact the developer of the plugin to modify.
+    Contact the developer of the plugin to modify, or [get support](/support.md) from PingCAP or the community.
 
 * Error Number: 8107
 
@@ -268,7 +268,7 @@ TiDB is compatible with the error codes in MySQL, and in most cases returns the 
 
     Unsupported execution plan type. This error is an internal error.
 
-    If you encounter this error, [contact PingCAP](mailto:info@pingcap.com) for support.
+    If you encounter this error, [get support](/support.md) from PingCAP or the community.
 
 * Error Number: 8109
 
@@ -372,7 +372,7 @@ TiDB is compatible with the error codes in MySQL, and in most cases returns the 
 
     [`ADMIN REPAIR TABLE`](/sql-statements/sql-statement-admin.md#admin-repair-statement) fails.
 
-    If you encounter this error, [contact PingCAP](mailto:info@pingcap.com) for support.
+    If you encounter this error, [get support](/support.md) from PingCAP or the community.
 
 * Error Number: 8216
 
@@ -384,7 +384,7 @@ TiDB is compatible with the error codes in MySQL, and in most cases returns the 
 
     This error occurs when detecting that the data is not consistent with the index.
 
-    If you encounter this error, [contact PingCAP](mailto:info@pingcap.com) for support.
+    If you encounter this error, [get support](/support.md) from PingCAP or the community.
 
 * Error Number: 8224
 

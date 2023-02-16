@@ -92,7 +92,7 @@ For the critical-level alerts, a close watch on the abnormal metrics is required
         - If Drainer `execute time` is too large, check the network bandwidth and latency between the machine with Drainer deployed and the machine with the target database deployed, and the state of the target database.
         - If Drainer `execute time` is not too large and Drainer `event` is too small, add `work count` and `batch` and retry.
 
-    - If the two solutions above cannot work, contact [support@pingcap.com](mailto:support@pingcap.com).
+    - If the two solutions above cannot work, [get support](/support.md) from PingCAP or the community.
 
 ### Warning-level alerts
 
@@ -111,7 +111,7 @@ Warning-level alerts are a reminder for an issue or error.
 * Solution:
 
     - Verify the disk performance pressure and check the disk performance monitoring via `node exported`.
-    - If both `disk latency` and `util` are low, contact [support@pingcap.com](mailto:support@pingcap.com).
+    - If both `disk latency` and `util` are low, [get support](/support.md) from PingCAP or the community.
 
 #### `binlog_pump_storage_write_binlog_duration_time_bucket`
 

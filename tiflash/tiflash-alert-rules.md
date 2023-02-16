@@ -20,7 +20,7 @@ This document introduces the alert rules of the TiFlash cluster.
 
 - Solution:
 
-    The error might be caused by some wrong logic. Contact [TiFlash R&D](mailto:support@pingcap.com) for support.
+    The error might be caused by some wrong logic. [Get support](/support.md) from PingCAP or the community.
 
 ## `TiFlash_schema_apply_duration`
 
@@ -34,7 +34,7 @@ This document introduces the alert rules of the TiFlash cluster.
 
 - Solution:
 
-    It might be caused by the internal problems of the TiFlash storage engine. Contact [TiFlash R&D](mailto:support@pingcap.com) for support.
+    It might be caused by the internal problems of the TiFlash storage engine. [Get support](/support.md) from PingCAP or the community.
 
 ## `TiFlash_raft_read_index_duration`
 
@@ -66,4 +66,4 @@ This document introduces the alert rules of the TiFlash cluster.
 
 - Solution:
 
-    It might be caused by a communication error between TiKV and the proxy. Contact [TiFlash R&D](mailto:support@pingcap.com) for support.
+    It might be caused by a communication error between TiKV and the proxy. [Get support](/support.md) from PingCAP or the community.

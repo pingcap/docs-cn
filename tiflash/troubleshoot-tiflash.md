@@ -32,7 +32,7 @@ The issue might occur due to different reasons. It is recommended that you troub
 
 3. Use the PD Control tool to check whether there is any TiFlash instance that failed to go offline on the node (same IP and Port) and force the instance(s) to go offline. For detailed steps, refer to [Scale in a TiFlash cluster](/scale-tidb-using-tiup.md#scale-in-a-tiflash-cluster).
 
-If the above methods cannot resolve your issue, save the TiFlash log files and email to [info@pingcap.com](mailto:info@pingcap.com) for more information.
+If the above methods cannot resolve your issue, save the TiFlash log files and [get support](/support.md) from PingCAP or the community.
 
 ## TiFlash replica is always unavailable
 
@@ -203,7 +203,7 @@ After deploying a TiFlash node and starting replication (by performing the ALTER
     Search the `pd.log` file for the `table-<table_id>-r` keyword and scheduling behaviors like `add operator`.
 
     - If the keyword is found, the PD schedules properly.
-    - If not, the PD does not schedule properly. Contact PingCAP technical support for help.
+    - If not, the PD does not schedule properly. You can [get support](/support.md) from PingCAP or the community.
 
 ## Data replication gets stuck
 
@@ -230,7 +230,7 @@ If data replication on TiFlash starts normally but then all or some data fails t
 
     On Grafana, choose **TiFlash-Proxy-Details** > **Thread CPU** > **Region task worker pre-handle/generate snapshot CPU**. Check the CPU usage of `<instance-ip>:<instance-port>-region-worker`.
 
-    If the curve is a straight line, the TiFlash node is stuck. Terminate the TiFlash process and restart it, or contact PingCAP technical support for help.
+    If the curve is a straight line, the TiFlash node is stuck. Terminate the TiFlash process and restart it, or [get support](/support.md) from PingCAP or the community.
 
 ## Data replication is slow
 

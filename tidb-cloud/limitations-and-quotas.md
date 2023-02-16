@@ -9,7 +9,7 @@ TiDB Cloud limits how many of each kind of component you can create, and the com
 
 > **Note:**
 >
-> If any of these limits or quotas present a problem for your organization, please contact [TiDB Cloud support](/tidb-cloud/tidb-cloud-support.md).
+> If any of these limits or quotas present a problem for your organization, please contact [TiDB Cloud Support](/tidb-cloud/tidb-cloud-support.md).
 
 ## Cluster Limits
 

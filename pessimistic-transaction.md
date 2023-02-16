@@ -190,7 +190,7 @@ set config tikv pessimistic-txn.pipelined='false';
 
 <CustomContent platform="tidb-cloud">
 
-If the application logic relies on the locking or lock waiting mechanisms, or if you want to guarantee as much as possible the success rate of transaction commits even in the case of TiKV cluster anomalies, you can contact <a href="mailto:tidbcloud-support@pingcap.com">PingCAP Support</a> to disable the pipelined locking feature.
+If the application logic relies on the locking or lock waiting mechanisms, or if you want to guarantee as much as possible the success rate of transaction commits even in the case of TiKV cluster anomalies, you can [contact TiDB Cloud Support](/tidb-cloud/tidb-cloud-support.md) to disable the pipelined locking feature.
 
 </CustomContent>
 

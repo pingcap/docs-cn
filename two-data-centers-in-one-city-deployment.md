@@ -278,10 +278,10 @@ This section introduces the disaster recovery solution of the two data centers i
 
 When a disaster occurs to a cluster in the synchronous replication mode, you can perform data recovery with `RPO = 0`:
 
-- If the primary data center fails and most of the Voter replicas are lost, but complete data exists in the DR data center, the lost data can be recovered from the DR data center. At this time, manual intervention is required with professional tools. You can contact the TiDB team for a recovery solution.
+- If the primary data center fails and most of the Voter replicas are lost, but complete data exists in the DR data center, the lost data can be recovered from the DR data center. At this time, manual intervention is required with professional tools. You can [get support](/support.md) from PingCAP or the community for a recovery solution.
 
 - If the DR center fails and a few Voter replicas are lost, the cluster automatically switches to the asynchronous replication mode.
 
 When a disaster occurs to a cluster that is not in the synchronous replication mode and you cannot perform data recovery with `RPO = 0`:
 
-- If most of the Voter replicas are lost, manual intervention is required with professional tools. You can contact the TiDB team for a recovery solution.
+- If most of the Voter replicas are lost, manual intervention is required with professional tools. You can [get support](/support.md) from PingCAP or the community for a recovery solution.

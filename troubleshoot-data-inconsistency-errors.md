@@ -7,7 +7,17 @@ summary: Learn how to deal with errors reported by the consistency check between
 
 TiDB checks consistency between data and indexes when it executes transactions or the [`ADMIN CHECK [TABLE|INDEX]`](/sql-statements/sql-statement-admin-check-table-index.md) statement. If the check finds that a record key-value and the corresponding index key-value are inconsistent, that is, a key-value pair storing row data and the corresponding key-value pair storing its index are inconsistent (for example, more indexes or missing indexes), TiDB reports a data inconsistency error and prints the related errors in error logs.
 
-This document describes the meanings of data inconsistency errors and provides some methods to bypass the consistency check. When a data consistency error occurs, contact PingCAP technical support for troubleshooting.
+<CustomContent platform="tidb">
+
+This document describes the meanings of data inconsistency errors and provides some methods to bypass the consistency check. If a data consistency error occurs, you can [get support](/support.md) from PingCAP or the community.
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+This document describes the meanings of data inconsistency errors and provides some methods to bypass the consistency check. If a data consistency error occurs, you can [contact TiDB Cloud Support](/tidb-cloud/tidb-cloud-support.md).
+
+</CustomContent>
 
 ## Error explanation
 
@@ -74,7 +84,17 @@ This error indicates that `index-values` are null and `record-values` are not nu
 
 ## Solutions
 
-If you encounter a data inconsistency error, contact PingCAP technical support for troubleshooting immediately instead of dealing with the error by yourself. If your application needs to skip such errors urgently, you can use the following methods to bypass the check.
+<CustomContent platform="tidb">
+
+If you encounter a data inconsistency error, [get support](/support.md) from PingCAP for troubleshooting immediately instead of dealing with the error by yourself. If your application needs to skip such errors urgently, you can use the following methods to bypass the check.
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+If you encounter a data inconsistency error, [contact TiDB Cloud Support](/tidb-cloud/tidb-cloud-support.md) for troubleshooting immediately instead of dealing with the error by yourself. If your application needs to skip such errors urgently, you can use the following methods to bypass the check.
+
+</CustomContent>
 
 ### Rewrite SQL
 
