@@ -8,11 +8,54 @@ aliases: ['/docs/dev/dashboard/dashboard-statement-details/']
 
 Click any item in the list to enter the detail page of the SQL statement to view more detailed information. This information includes the following parts:
 
-- The overview of SQL statements, which includes the SQL template, the SQL template ID, the current time range of displayed SQL executions, the number of execution plans and the database in which the SQL statement is executed (area 1 in the following figure).
+- The overview of SQL statements, which includes the SQL template, the SQL template ID, the current time range of displayed SQL executions, the number of execution plans, the database in which the SQL statement is executed, and the fast plan binding feature (area 1 in the following figure).
 - The execution plan list: If a SQL statement has multiple execution plans, this list is displayed. Besides text information of execution plans, TiDB v6.2.0 introduces visual execution plans, through which you can learn each operator of a statement and detailed information more intuitively. You can select different execution plans, and the details of the selected plans are displayed below the list (area 2 in the following figure).
 - Execution detail of plans, which displays the detailed information of the selected execution plans. See [Execution plan in details](#execution-details-of-plans) (area 3 in the following figure).
 
-![Details](/media/dashboard/dashboard-statement-detail-v620.png)
+![Details](/media/dashboard/dashboard-statement-detail-v660.png)
+
+## Fast plan binding
+
+Starting from v6.6.0, TiDB introduces the fast plan binding feature. You can quickly bind a SQL statement to a specific execution plan in TiDB Dashboard.
+
+### Usage
+
+#### Bind an execution plan
+
+1. Click **Plan Binding**. The **Plan Binding** dialog box is displayed.
+
+    ![Fast plan binding - not bound - entry](/media/dashboard/dashboard-quick-binding-entry-notbound.png)
+
+2. Select a plan that you want to bind and click **Bind**.
+
+    ![Fast plan binding - popup](/media/dashboard/dashboard-quick-binding-popup-notbound.png)
+
+3. After the binding is completed, you can see the **Bound** label.
+
+    ![Fast plan binding - popup - binding completed](/media/dashboard/dashboard-quick-binding-popup-bound.png)
+
+#### Drop an existing binding
+
+1. On the page of a SQL statement that has an existing binding, click **Plan Binding**. The **Plan Binding** dialog box is displayed.
+
+    ![Fast plan binding - bound - entry](/media/dashboard/dashboard-quick-binding-entry-bound.png)
+
+2. Click **Drop**.
+
+    ![Fast plan binding - popup - bound](/media/dashboard/dashboard-quick-binding-popup-bound.png)
+
+3. After the binding is dropped, you can see the **Not bound** label.
+
+    ![Fast plan binding - popup](/media/dashboard/dashboard-quick-binding-popup-notbound.png)
+
+### Limitation
+
+Currently, the fast plan binding feature does not support the following types of SQL statements:
+
+- Statements that are not `SELECT`, `DELETE`, `UPDATE`, `INSERT`, or `REPLACE`
+- Queries with subqueries
+- Queries that access TiFlash
+- Queries that join three or more tables
 
 ## Execution details of plans
 
