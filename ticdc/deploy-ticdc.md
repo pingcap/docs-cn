@@ -90,12 +90,12 @@ TiUP 支持升级 TiDB 集群，包括 TiCDC 组件。执行升级指令时，Ti
 ```shell
 tiup update --self && \
 tiup update --all && \
-tiup cluster upgrade <cluster-name> <cluster-version> --transfer-timeout 600
+tiup cluster upgrade <cluster-name> <version> --transfer-timeout 600
 ```
 
 > **注意：**
 >
-> 命令中的 `<cluster-name>` 需要替换为集群名字，`<cluster-version>` 需要替换为目标版本号，例如 v6.5.0。
+> 命令中的 `<cluster-name>` 需要替换为集群名字，`<version>` 需要替换为目标版本号，例如 `v6.5.0`。
 
 ### 升级的注意事项
 
@@ -152,7 +152,7 @@ tiup cluster upgrade <cluster-name> <cluster-version> --transfer-timeout 600
 
 ## 使用 TiCDC 命令行工具来查看集群状态
 
-执行以下命令来查看 TiCDC 集群运行状态，注意需要将 `v<CLUSTER_VERSION>` 替换为 TiCDC 集群版本：
+执行以下命令来查看 TiCDC 集群运行状态，注意需要将 `v<CLUSTER_VERSION>` 替换为 TiCDC 集群版本，例如 `v6.5.0`：
 
 ```shell
 tiup ctl:v<CLUSTER_VERSION> cdc capture list --server=http://10.0.10.25:8300
