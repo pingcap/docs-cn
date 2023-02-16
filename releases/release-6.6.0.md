@@ -344,6 +344,12 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 | [`tidb_enable_plan_replayer_capture`](/system-variables.md#tidb_enable_plan_replayer_capture) | 新增 | 这个变量用来控制是否开启 [`PLAN REPLAYER CAPTURE`](/sql-plan-replayer.md#使用-plan-replayer-capture-抓取目标计划)。默认值 `OFF`，代表默认关闭 `PLAN REPLAYER CAPTURE`。 |
 | [`tidb_enable_resource_control`](/system-variables.md#tidb_enable_resource_control-从-v660-版本开始引入) | 新增  | 该变量是[资源管控特性](/tidb-resource-control.md)的开关。默认值为 `OFF`。该变量设置为 `ON` 后，集群支持应用按照资源组做资源隔离。 |
 | [`tidb_pessimistic_txn_aggressive_locking`](/system-variables.md#tidb_pessimistic_txn_aggressive_locking-从-v660-版本开始引入) | 新增 | 是否对悲观锁启用加强的悲观锁唤醒模型。默认值为 `OFF`，表示默认不对悲观锁启用加强的悲观锁唤醒模型。 |
+| [`tidb_stmt_summary_enable_persistent`](/system-variables.md#tidb_stmt_summary_enable_persistent-从-v660-版本开始引入) | 新增 | 只读变量。表示是否开启 [statement summary tables 持久化](/statement-summary-tables.md#持久化-statements-summary)。该变量的值与配置文件中 [`tidb_stmt_summary_enable_persistent`](/tidb-configuration-file.md#tidb_stmt_summary_enable_persistent-从-v660-版本开始引入) 的取值相同。 |
+| [`tidb_stmt_summary_filename`](/system-variables.md#tidb_stmt_summary_filename-从-v660-版本开始引入) | 新增 | 只读变量。表示当开启 [statement summary tables 持久化](/statement-summary-tables.md#持久化-statements-summary)后持久化数据所写入的文件。该变量的值与配置文件中 [`tidb_stmt_summary_filename`](/tidb-configuration-file.md#tidb_stmt_summary_filename-从-v660-版本开始引入) 的取值相同。 | 
+| [`tidb_stmt_summary_file_max_backups`](/system-variables.md#tidb_stmt_summary_file_max_backups-从-v660-版本开始引入) | 新增 | 只读变量。表示当开启 [statement summary tables 持久化](/statement-summary-tables.md#持久化-statements-summary)后持久化数据文件的最大数量限制。该变量的值与配置文件中 [`tidb_stmt_summary_file_max_backups`](/tidb-configuration-file.md#tidb_stmt_summary_file_max_backups-从-v660-版本开始引入) 的取值相同。 |
+| [`tidb_stmt_summary_file_max_days`](/system-variables.md#tidb_stmt_summary_file_max_days-从-v660-版本开始引入) | 新增 | 只读变量。表示当开启 [statement summary tables 持久化](/statement-summary-tables.md#持久化-statements-summary)后持久化数据文件所保留的最大天数。该变量的值与配置文件中 [`tidb_stmt_summary_file_max_days`](/tidb-configuration-file.md#tidb_stmt_summary_file_max_days-从-v660-版本开始引入) 的取值相同。 |
+| [`tidb_stmt_summary_file_max_size`](/system-variables.md#tidb_stmt_summary_file_max_size-从-v660-版本开始引入) | 新增 | 只读变量。表示当开启 [statement summary tables 持久化](/statement-summary-tables.md#持久化-statements-summary)后持久化数据单个文件的大小限制。该变量的值与配置文件中 [`tidb_stmt_summary_file_max_size`](/tidb-configuration-file.md#tidb_stmt_summary_file_max_size-从-v660-版本开始引入) 的取值相同。 |
+
 
 ### 配置文件参数
 
