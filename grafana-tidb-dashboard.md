@@ -194,3 +194,4 @@ To understand the key metrics displayed on the TiDB dashboard, check the followi
 - TTL Scan/Delete Query Duration: the execution time of TTL scan/delete statements.
 - TTL Scan/Delete Worker Time By Phase: the time consumed by different phases of TTL internal worker threads.
 - TTL Job Count By Status: the number of TTL jobs currently being executed.
+- TTL Task Count By Status: the number of TTL tasks currently being executed.

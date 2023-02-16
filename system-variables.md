@@ -4077,18 +4077,6 @@ For details, see [Identify Slow Queries](/identify-slow-queries.md).
 - Range: `[1, 256]`
 - This variable is used to set the maximum concurrency of TTL scan jobs on each TiDB node.
 
-### tidb_ttl_job_run_interval <span class="version-mark">New in v6.5.0</span>
-
-> **Warning:**
->
-> [TTL](/time-to-live.md) is an experimental feature. This system variable might be changed or removed in future releases.
-
-- Scope: GLOBAL
-- Persists to cluster: Yes
-- Default value: `1h0m0s`
-- Range: `[10m0s, 8760h0m0s]`
-- This variable is used to control the scheduling interval of TTL jobs in the background. For example, if the current value is set to `1h0m0s`, each table with TTL attributes cleans up expired data once every hour.
-
 ### tidb_ttl_job_schedule_window_start_time <span class="version-mark">New in v6.5.0</span>
 
 > **Warning:**
