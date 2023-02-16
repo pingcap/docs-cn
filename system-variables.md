@@ -3171,7 +3171,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 - 作用域：GLOBAL
 - 类型：字符串
-- 默认值：`tidb-statements.log`
+- 默认值：`"tidb-statements.log"`
 - 只读变量。表示当开启 [statement summary tables 持久化](/statement-summary-tables.md#持久化-statements-summary)后持久化数据所写入的文件。该变量的值与配置文件中 [`tidb_stmt_summary_filename`](/tidb-configuration-file.md#tidb_stmt_summary_filename-从-v660-版本开始引入) 的取值相同。
 
 ### `tidb_stmt_summary_file_max_backups` <span class="version-mark">从 v6.6.0 版本开始引入</span>
