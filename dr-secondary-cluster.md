@@ -28,7 +28,7 @@ summary: 了解如何使用 TiCDC 构建主备集群进行容灾。
 
 ![TiCDC secondary cluster architecture](/media/dr/dr-ticdc-secondary-cluster.png)
 
-在上述架构中，包含了两个 TiDB 集群：Primary Cluster 和 Secondary Cluster。
+上述架构包含两个 TiDB 集群：Primary Cluster 和 Secondary Cluster。
 
 - Primary Cluster：主用集群，运行在 Region 1，三副本，用于处理读写业务。
 - Secondary Cluster：备用集群，运行在 Region 2，通过 TiCDC 从 Primary Cluster 同步数据。
@@ -227,7 +227,7 @@ s3://backup?access-key=minio&secret-access-key=miniostorage&endpoint=http://10.0
     storage = "s3://redo?access-key=minio&secret-access-key=miniostorage&endpoint=http://10.0.1.10:6060&force-path-style=true"
     ```
 
-    在上游集群中，执行以下命令创建从上游到下游集群的同步链路：
+    在主用集群中，执行以下命令创建从主用集群到备用集群的同步链路：
 
     ```shell
     tiup cdc cli changefeed create --server=http://10.1.1.9:8300 --sink-uri="mysql://{username}:{password}@10.1.1.4:4000" --changefeed-id="dr-primary-to-secondary" --start-ts="431434047157698561"
@@ -265,6 +265,8 @@ s3://backup?access-key=minio&secret-access-key=miniostorage&endpoint=http://10.0
     ```sql
     SELECT @@global.tidb_gc_enable;
     ```
+
+    结果输出 `1` 表明 GC 已开启：
 
     结果输出 `1` 表明 GC 已开启：
 
