@@ -84,6 +84,185 @@ TIUP_CLUSTER_DEBUG=enable tiup cluster list
 ```shell
 cat {spark.log} | grep Telemetry report | tail -n 1
 ```
+## 开启遥测功能
+
+### 开启 TiDB 遥测
+
+#### 步骤 1：修改配置文件中的遥测配置
+
+在已有 TiDB 集群上开启遥测功能，需要为集群设置 [`enable-telemetry = true`](/tidb-configuration-file.md#enable-telemetry-从-v402-版本开始引入) ，但需要重启集群后才能生效。
+
+以下是在各个部署工具中修改遥测配置的具体步骤。
+
+<details>
+  <summary>通过二进制手工部署</summary>
+
+创建配置文件 `tidb_config.toml` 包含如下内容：
+
+{{< copyable "" >}}
+
+```toml
+enable-telemetry = true
+```
+
+启动 TiDB 时指定命令行参数 `--config=tidb_config.toml` 使得该配置生效。
+
+详情参见 [TiDB 配置参数](/command-line-flags-for-tidb-configuration.md#--config)、[TiDB 配置文件描述](/tidb-configuration-file.md#enable-telemetry-从-v402-版本开始引入)。
+
+</details>
+
+<details>
+  <summary>通过 TiUP Playground 试用</summary>
+
+创建配置文件 `tidb_config.toml` 包含如下内容：
+
+{{< copyable "" >}}
+
+```toml
+enable-telemetry = true
+```
+
+启动 TiUP Playground 时，指定命令行参数 `--db.config tidb_config.toml` 使得该配置生效，如：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+tiup playground --db.config tidb_config.toml
+```
+
+详情参见 [TiUP - 本地快速部署 TiDB 集群](/tiup/tiup-playground.md)。
+
+</details>
+
+<details>
+  <summary>通过 TiUP Cluster 部署</summary>
+
+修改部署拓扑文件 `topology.yaml`，新增（或在现有项中添加）以下内容：
+
+{{< copyable "" >}}
+
+```yaml
+server_configs:
+  tidb:
+    enable-telemetry: true
+```
+
+</details>
+
+<details>
+  <summary>通过 TiDB Operator 在 Kubernetes 上部署</summary>
+
+在 `tidb-cluster.yaml` 中或者 TidbCluster Custom Resource 中配置 `spec.tidb.config.enable-telemetry: true`。
+
+详情参见[在标准 Kubernetes 上部署 TiDB 集群](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/deploy-on-general-kubernetes)。
+
+> **注意：**
+>
+> 该配置需使用 TiDB Operator v1.1.3 或更高版本才能生效。
+
+</details>
+
+#### 步骤 2：修改系统全局变量的遥测配置
+
+在步骤 1 完成后，还需要修改系统全局变量 [`tidb_enable_telemetry`](/system-variables.md#tidb_enable_telemetry-从-v402-版本开始引入) ，才能打开 TiDB 遥测功能：
+
+{{< copyable "sql" >}}
+
+```sql
+SET GLOBAL tidb_enable_telemetry = 1;
+```
+
+配置文件和全局变量都开启后，遥测功能才能处于开启状态。
+
+### 开启 TiDB Dashboard 遥测
+
+可以修改 PD 配置中 [`dashboard.enable-telemetry = true`](/pd-configuration-file.md#enable-telemetry) 启动 TiDB Dashboard 遥测功能。对于已启动的集群，该配置需要重启后才能生效。
+
+以下列出在各个部署工具中修改遥测配置的具体步骤。
+
+<details>
+  <summary>通过二进制手工部署</summary>
+
+创建配置文件 `pd_config.toml` 包含如下内容：
+
+{{< copyable "" >}}
+
+```toml
+[dashboard]
+enable-telemetry = true
+```
+
+启动 PD 时指定命令行参数 `--config=pd_config.toml` 使得该配置生效。
+
+详情参见 [PD 配置参数](/command-line-flags-for-pd-configuration.md#--config)、[PD 配置文件描述](/pd-configuration-file.md#enable-telemetry)。
+
+</details>
+
+<details>
+  <summary>通过 TiUP Playground 试用</summary>
+
+创建配置文件 `pd_config.toml` 包含如下内容：
+
+{{< copyable "" >}}
+
+```toml
+[dashboard]
+enable-telemetry = true
+```
+
+启动 TiUP Playground 时，指定命令行参数 `--pd.config pd_config.toml` 使得该配置生效，如：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+tiup playground --pd.config pd_config.toml
+```
+
+详情参见 [TiUP - 本地快速部署 TiDB 集群](/tiup/tiup-playground.md)。
+
+</details>
+
+<details>
+  <summary>通过 TiUP Cluster 部署</summary>
+
+修改部署拓扑文件 `topology.yaml`，新增（或在现有项中添加）以下内容：
+
+{{< copyable "" >}}
+
+```yaml
+server_configs:
+  pd:
+    dashboard.enable-telemetry: true
+```
+
+</details>
+
+<details>
+  <summary>通过 TiDB Operator 在 Kubernetes 上部署</summary>
+
+在 `tidb-cluster.yaml` 中或者 TidbCluster Custom Resource 中配置 `spec.pd.config.dashboard.enable-telemetry: true`。
+
+详情参见[在标准 Kubernetes 上部署 TiDB 集群](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/deploy-on-general-kubernetes)。
+
+> **注意：**
+>
+> 该配置需使用 TiDB Operator v1.1.3 或更高版本才能生效。
+
+</details>
+
+### 开启 TiUP 遥测
+
+可通过执行以下命令开启 TiUP 遥测功能：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+tiup telemetry enable
+```
+
+### 开启 TiSpark 遥测
+
+可以通过在 Spark 配置文件设置 `spark.tispark.telemetry.enable = true` 来禁用 TiSpark 的遥测功能。
 
 ## 禁用遥测功能
 
