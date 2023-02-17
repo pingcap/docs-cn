@@ -531,7 +531,6 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
     <!-- 5 -->
     - 修复转换 `const Enum` 类型到其他类型时报错的问题 [#14156](https://github.com/tikv/tikv/issues/14156) @[wshwsh12](https://github.com/wshwsh12)
     - 修复 Resolved TS 导致网络流量升高的问题 [#14098](https://github.com/tikv/tikv/issues/14092) @[overvenus](https://github.com/overvenus)
-    - 修复 TiKV 在 CPU 核数小于 1 时无法启动的问题  [#13586](https://github.com/tikv/tikv/issues/13586) [#13752](https://github.com/tikv/tikv/issues/13752) [#14017](https://github.com/tikv/tikv/issues/14017) @[andreid-db](https://github.com/andreid-db)
     (dup: release-6.1.4.md > Bug 修复> TiKV)- 修复 TiDB 中事务在执行悲观 DML 失败后，再执行其他 DML 时，如果 TiDB 和 TiKV 之间存在网络故障，可能会造成数据不一致的问题 [#14038](https://github.com/tikv/tikv/issues/14038) @[MyonKeminta](https://github.com/MyonKeminta) @[myonkeminta](https://github.com/myonkeminta)
 
 + PD
