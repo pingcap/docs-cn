@@ -16,7 +16,7 @@ Clinic Server 是部署在云端的云服务，根据数据存储的位置不同
 
 ## TiDB 集群
 
-本节列出了 Diag 在使用 TiUP 部署的 TiDB 集群中能够采集的诊断数据类型。
+本节列出了 [Diag](https://github.com/pingcap/diag) 在使用 TiUP 部署的 TiDB 集群中能够采集的诊断数据类型。
 
 ### TiDB 集群信息
 
