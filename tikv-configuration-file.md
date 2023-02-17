@@ -1875,3 +1875,13 @@ Raft Engine 相关的配置项。
 + 单次时间戳请求的最大数量。
 + 在默认的一个 TSO 物理时钟更新周期内 (50ms)，PD 最多提供 262144 个 TSO，超过这个数量后 PD 会暂缓 TSO 请求的处理。这个配置用于避免 PD 的 TSO 消耗殆尽、影响其他业务的使用。如果增大这个参数，建议同时减小 PD 的 [`tso-update-physical-interval`](/pd-configuration-file.md#tso-update-physical-interval) 参数，以获得足够的 TSO。
 + 默认值：8192
+
+## resource-control
+
+资源控制 (Resource Control) 在 TiKV 存储层相关的配置项。
+
+### `enabled` <span class="version-mark">从 v6.6.0 版本开始引入</span>
+
++ 是否支持对用户前台的读写请求按照对应的资源组配额做优先级调度。有关 TiDB 资源组和资源管控的信息，请参考 [TiDB 资源管控](/tidb-resource-control.md)
++ 在 TiDB 侧开启 [`tidb_enable_resource_control`](/system-variables.md#tidb_enable_resource_control-从-v660-版本开始引入) 全局变量的情况下，开启这个配置项才有意义。此配置参数开启后，TiKV 会使用优先级队列对排队的用户前台读写请求做调度，调度的优先级和请求所在资源组已经消费的资源量反相关，和对应资源组的配额正相关。
++ 默认值：false（即关闭按照资源组配额调度）
