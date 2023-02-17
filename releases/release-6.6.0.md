@@ -73,7 +73,7 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 
 * 支持悲观锁队列的稳定唤醒模型 [#13298](https://github.com/tikv/tikv/issues/13298) @[MyonKeminta](https://github.com/MyonKeminta) **tw@TomShawn**
 
-    如果业务场景存在单点悲观锁冲突频繁的情况，原有的唤醒机制无法保证事务获取锁的时间，造成长尾延迟高，甚至获取锁超时。自 v6.6.0 起，用户可通过设置系统变量 [`tidb_pessimistic_txn_aggressive_locking`](/system-variables.md#tidb_pessimistic_txn_aggressive_locking-从-v660-版本开始引入) 为 `ON` 开启悲观锁的稳定唤醒模型。在该唤醒模型下，队列的唤醒顺序可被严格控制，避免无效唤醒造成的资源浪费。在锁冲突严重的场景中，能够减少长尾延时，降低 P99 响应时间。
+    如果业务场景存在单点悲观锁冲突频繁的情况，原有的唤醒机制无法保证事务获取锁的时间，造成长尾延迟高，甚至获取锁超时。自 v6.6.0 起，你可以通过设置系统变量 [`tidb_pessimistic_txn_aggressive_locking`](/system-variables.md#tidb_pessimistic_txn_aggressive_locking-从-v660-版本开始引入) 为 `ON` 开启悲观锁的稳定唤醒模型。在该唤醒模型下，队列的唤醒顺序可被严格控制，避免无效唤醒造成的资源浪费。在锁冲突严重的场景中，能够减少长尾延时，降低 P99 响应时间。
 
     更多信息，请参考[用户文档](/system-variables.md#tidb_pessimistic_txn_aggressive_locking-从-v660-版本开始引入)。
 
@@ -93,7 +93,7 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 
     为了协同多节点进行计算，TiFlash 引擎需要在不同节点中进行数据交换。当需要交换的数据量非常大时，数据交换的性能可能影响整体计算效率。在 v6.6.0 版本中，TiFlash 引擎引入压缩机制，在必要时对需要交换的数据进行压缩，然后进行交换，从而提升数据交换效率。
 
-    更多信息，参见[用户文档](/explain-mpp.md#启用-mpp-数据压缩的执行计划)。
+    更多信息，请参考[用户文档](/explain-mpp.md##mpp-version-和-exchange-数据压缩)。
 
 * TiFlash 支持 Stale Read 功能 [#4483](https://github.com/pingcap/tiflash/issues/4483) @[hehechen](https://github.com/hehechen) **tw@qiancai**
 
@@ -107,9 +107,9 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 
 ### 稳定性
 
-* 支持基于资源组的资源管控 (实验特性) [#38825](https://github.com/pingcap/tidb/issues/38825) @[nolouch](https://github.com/nolouch) @[BornChanger](https://github.com/BornChanger) @[glorv](https://github.com/glorv) @[tiancaiamao](https://github.com/tiancaiamao) @[Connor1996](https://github.com/Connor1996) @[JmPotato](https://github.com/JmPotato) @[hnes](https://github.com/hnes) @[CabinfeverB](https://github.com/CabinfeverB) @[HuSharp](https://github.com/HuSharp) **tw@hfxsd**
+* 支持基于资源组的资源管控（实验特性）[#38825](https://github.com/pingcap/tidb/issues/38825) @[nolouch](https://github.com/nolouch) @[BornChanger](https://github.com/BornChanger) @[glorv](https://github.com/glorv) @[tiancaiamao](https://github.com/tiancaiamao) @[Connor1996](https://github.com/Connor1996) @[JmPotato](https://github.com/JmPotato) @[hnes](https://github.com/hnes) @[CabinfeverB](https://github.com/CabinfeverB) @[HuSharp](https://github.com/HuSharp) **tw@hfxsd**
 
-    你可以为 TiDB 集群创建资源组，将不同的数据库用户映射到对应的资源组中，根据需要设置每个资源组的配额。当集群资源紧张时，来自同一个资源组的会话所使用的全部资源将被限制在配额内，避免其中一个资源组过度消耗从而影响其他资源组中的会话正常运行。TiDB 在 Grafana 上提供了内置视图展示资源的实际使用情况，协助你更合理地配置资源。
+    你可以为 TiDB 集群创建资源组，将不同的数据库用户映射到对应的资源组中，根据需要设置每个资源组的配额。当集群资源紧张时，来自同一个资源组的会话所使用的全部资源将被限制在配额内，避免其中一个资源组过度消耗，从而影响其他资源组中的会话正常运行。TiDB 在 Grafana 上提供了内置视图展示资源的实际使用情况，协助你更合理地配置资源。
 
     资源管控特性的引入对 TiDB 具有里程碑的意义。它能够将一个分布式数据库集群划分成多个逻辑单元，即使个别单元对资源过度使用，也不会挤占其他单元所需的资源。利用该特性：
 
@@ -194,21 +194,21 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 
     更多信息，请参考[用户文档](/tidb-configuration-file.md#initialize-sql-file-从-v660-版本开始引入)。
 
-- TiDB Data Migration (DM) 集成了 TiDB Lightning 的 Physical Import Mode，全量迁移性能提升最高达到 10 倍（实验特性）@[lance6716](https://github.com/lance6716) **tw@ran-huang**
+- TiDB Data Migration (DM) 集成了 TiDB Lightning 的 Physical Import Mode（实验特性）@[lance6716](https://github.com/lance6716) **tw@ran-huang**
 
-    在 v6.6.0 版本中，DM 的全量迁移能力集成了 TiDB Lightning 的 Physical Import Mode，使得 DM 全量数据迁移的性能最高可提升 10 倍，大大缩短了大数据量场景下的迁移时间。在 v6.6.0 以前，数据量较多的场景下，需要单独配置 TiDB Lightning 的 Physical Import Mode 任务来进行快速的全量数据迁移，再用 DM 来进行增量数据迁移，配置较为复杂。从 v6.6.0 起，用户迁移大数据量的场景，无需再配置 TiDB Lightning 的任务，使用一个 DM 任务即可完成。
+    在 v6.6.0 版本中，DM 的全量迁移能力集成了 TiDB Lightning 的 Physical Import Mode，使得 DM 全量数据迁移的性能最高可提升 10 倍，大大缩短了大数据量场景下的迁移时间。在 v6.6.0 以前，数据量较多的场景下，需要单独配置 TiDB Lightning 的 Physical Import Mode 任务来进行快速的全量数据迁移，再用 DM 来进行增量数据迁移，配置较为复杂。从 v6.6.0 起，在迁移大数据量的场景，无需再配置 TiDB Lightning 的任务，使用一个 DM 任务即可完成。
 
     更多信息，请参考[用户文档](/dm/dm-precheck.md#physical-import-检查项)。
 
 - TiDB Lightning 新增配置文件参数 "header-schema-match" 用于解决源文件里的列名和目标表的列名不匹配的问题 @[dsdashun](https://github.com/dsdashun)
 
-    在 v6.6.0 版本中，TiDB Lightning 新增配置文件参数 "header-schema-match"，默认取值为 `true`，表示源 CSV 文件第一行有表的列名信息，且和目标表列名保持一致。如果 CSV 表头中的字段名和目标表的列名不匹配，此时可以将该配置设置为 false，TiDB Lightning 将忽略不匹配的问题，继续按目标表中的列顺序导入数据。
+    在 v6.6.0 版本中，TiDB Lightning 新增配置文件参数 "header-schema-match"，默认取值为 `true`，表示源 CSV 文件第一行有表的列名信息，且和目标表列名保持一致。如果 CSV 表头中的字段名和目标表的列名不匹配，此时可以将该配置设置为 `false`，TiDB Lightning 将忽略不匹配的问题，继续按目标表中的列顺序导入数据。
 
     更多信息，请参考 [TiDB Lightning 任务配置](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置)。
 
 - TiDB Lightning 向 TiKV 传输键值对时支持启用压缩传输 [#41163](https://github.com/pingcap/tidb/issues/41163) @[gozssky](https://github.com/gozssky) **tw@qiancai**
 
-    自 v6.6.0 起，TiDB Lightning 支持将本地编码排序后的键值对在网络传输时进行压缩再发送到 TiKV，从而减少网络传输的数据量，降低网络带宽开销 。之前版本不支持该功能，在数据量较大的情况下，TiDB Lightning 对网络带宽要求相对较高，且会产生较高的流量费。
+    自 v6.6.0 起，TiDB Lightning 支持将本地编码排序后的键值对在网络传输时进行压缩再发送到 TiKV，从而减少网络传输的数据量，降低网络带宽开销。之前版本不支持该功能，在数据量较大的情况下，TiDB Lightning 对网络带宽要求相对较高，且会产生较高的流量费。
 
     该功能默认关闭，你可以通过将 TiDB Lightning 配置项 `compress-kv-pairs` 设置为 "gzip" 或者 "gz" 开启此功能。
 
@@ -232,13 +232,13 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 
     [GORM 文档](https://github.com/go-gorm/gorm.io) 提及 TiDB 作为默认数据库 [#638](https://github.com/go-gorm/gorm.io/pull/638) @[Icemap](https://github.com/Icemap)
 
-    更多信息，请参考[GORM 用户文档](https://gorm.io/docs/index.html)。
+    更多信息，请参考 [GORM 用户文档](https://gorm.io/docs/index.html)。
 
 ### 可观测性
 
 * 支持在 TiDB Dashboard 中快速绑定执行计划 [#781](https://github.com/pingcap/tidb-dashboard/issues/781) @[YiniXu9506](https://github.com/YiniXu9506) **tw@ran-huang**
 
-    TiDB v6.6.0 中引入了执行计划快速绑定功能，允许用户在 TiDB Dashboard 中快速完成 SQL 语句与特定计划的绑定。
+    TiDB v6.6.0 中引入了执行计划快速绑定功能，你可以在 TiDB Dashboard 中快速完成 SQL 语句与特定计划的绑定。
 
     通过提供友好的界面，简化了在 TiDB Dashboard 上绑定 SQL 执行计划的过程，提高绑定过程的效率和用户体验。
 
@@ -278,7 +278,7 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 
 * 自动捕获执行计划的生成 [#38779](https://github.com/pingcap/tidb/issues/38779) @[Yisaer](https://github.com/Yisaer) **tw@ran-huang**
 
-    在执行计划问题的排查过程中，`PLAN REPLAYER` 能够协助保存现场，提升诊断的效率。但在个别场景中，一些执行计划的生成无法任意重现，给诊断工作增加了难度。针对这类场景，在 TiDB v6.6.0 中，`PLAN REPLAYER` 扩展了自动捕获的能力。通过 `PLAN REPLAYER CAPTURE` 命令，用户可提前注册目标 SQL 语句，也可以同时指定目标执行计划。当 TiDB 检测到执行的 SQL 语句或执行计划与注册目标匹配时，会自动生成并打包 `PLAN REPLAYER` 的信息，提升执行计划不稳定时的诊断效率。
+    在执行计划问题的排查过程中，`PLAN REPLAYER` 能够协助保存现场，提升诊断的效率。但在个别场景中，一些执行计划的生成无法任意重现，给诊断工作增加了难度。针对这类场景，在 TiDB v6.6.0 中，`PLAN REPLAYER` 扩展了自动捕获的能力。通过 `PLAN REPLAYER CAPTURE` 命令，你可以提前注册目标 SQL 语句，也可以同时指定目标执行计划。当 TiDB 检测到执行的 SQL 语句或执行计划与注册目标匹配时，会自动生成并打包 `PLAN REPLAYER` 的信息，提升执行计划不稳定时的诊断效率。
 
     要启用该功能，需要将系统变量 [`tidb_enable_plan_replayer_capture`](/system-variables.md#tidb_enable_plan_replayer_capture) 的值设为 `ON`。
 
@@ -323,7 +323,7 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 
 * 支持兼容 MySQL 语法的多值索引 [#39592](https://github.com/pingcap/tidb/issues/39592) @[xiongjiwei](https://github.com/xiongjiwei) @[qw4990](https://github.com/qw4990) **tw@TomShawn**
 
-    更多信息，请参考 v6.6.0 Release Notes 中 [SQL 部分](#sql)以及[用户文档](/sql-statements/sql-statement-create-index.md#多值索引)。
+    更多信息，请参考本文的 [SQL 部分](#sql)以及[用户文档](/sql-statements/sql-statement-create-index.md#多值索引)。
 
 ### 系统变量
 
