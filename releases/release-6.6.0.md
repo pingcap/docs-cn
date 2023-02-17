@@ -28,6 +28,10 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
     <td>TiDB 支持将发送到相同 TiKV 实例的数据请求部分合并，减少子任务的数量和 RPC 请求的开销。在数据离散分布且 gRPC 线程池资源紧张的情况下，批量化请求能够提升超 50% 性能</td>
   </tr>
   <tr>
+      <td>TiKV 支持 Partitioned-Raft-KV 存储引擎</td>
+      <td>TiKV 引入下一代存储引擎 Partitioned-Raft-KV，通过每个 Region 独享 RocksDB 实例轻松把集群的存储能力从 TB 级扩展到 PB 级，并提供更稳定的写入延迟和更强大的扩容能力</td>
+  </tr>
+  <tr>
     <td>TiFlash 支持压缩数据交换</td>
     <td>TiFlash 支持带压缩的数据交换，可提升并行处理的数据交换效率，TPC-H 总体性能提升约 10%，流量节省超 50%</td>
   </tr>
