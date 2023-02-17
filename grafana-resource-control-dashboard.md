@@ -9,7 +9,7 @@ summary: 了解资源管控 (Resource Control) 的 Grafana Dashboard 中所展�
 
 目前 Grafana Dashboard 整体分为 PD、TiDB、TiKV、Node_exporter、Overview、Performance_overview 等。
 
-如果你的集群配置了 [Resource Control](tidb-resource-control.md) ，通过观察 Resource Control 面板上的 Metrics，你可以了解当前集群整体的资源消耗状态。
+如果你的集群配置了 [Resource Control](/tidb-resource-control.md) ，通过观察 Resource Control 面板上的 Metrics，你可以了解当前集群整体的资源消耗状态。
 
 以下为 **Resource Control** 关键监控指标的说明。
 
