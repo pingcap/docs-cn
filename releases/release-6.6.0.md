@@ -23,7 +23,29 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 </thead>
 <tbody>
   <tr>
-    <td rowspan="2">SQL<br /><br /><i>SEAMLESS to use</i></td>
+    <td rowspan="3">可扩展性与性能<br /></td>
+    <td>TiKV 支持批量聚合数据请求</td>
+    <td>TiDB 支持将发送到相同 TiKV 实例的数据请求部分合并，减少子任务的数量和 RPC 请求的开销。在数据离散分布且 gRPC 线程池资源紧张的情况下，批量化请求能够提升超 50% 性能</td>
+  </tr>
+  <tr>
+    <td>TiFlash 支持压缩数据交换</td>
+    <td>TiFlash 支持带压缩的数据交换，可提升并行处理的数据交换效率，TPCH 总体性能提升约 10%，流量节省超 50%</td>
+  </tr>
+  <tr>
+    <td>TiFlash 支持 Stale Read</td>
+    <td>TiFlash 支持 Stale Read 功能，在非实时性要求的场景可提升查询性能</td>
+  </tr>
+  <tr>
+    <td rowspan="2">稳定性与高可用<br /></td>
+    <td>资源管控（实验特性）</td>
+    <td>引入资源管控框架，当前支持将资源配额映射到用户定义的资源组，在集群资源发生争用时，对资源组内用户的资源使用进行限制</td>
+  </tr>
+  <tr>
+    <td>绑定历史执行计划</td>
+    <td>支持绑定历史执行计划，支持通过 TiDB Dashboard 快速绑定执行计划</td>
+  </tr>
+  <tr>
+    <td rowspan="2">功能与兼容性<br /></td>
     <td>外键约束</td>
     <td>支持 MySQL 兼容的外键约束，帮助保持数据一致性和提升数据质量</td>
   </tr>
@@ -32,28 +54,11 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
     <td>引入 MySQL 兼容的多值索引，增强 JSON 类型，提升 TiDB 对 MySQL 8.0 的兼容性</td>
   </tr>
   <tr>
-    <td>数据库管理<br /><br /><i>SMOOTH to use</i></td>
-    <td>用户资源管控（实验特性）</td>
-    <td>支持基于资源组的资源管控，将不用的数据库用户映射到对应的资源组中，根据实际需要设置每个资源组的配额</td>
-  </tr>
-  <tr>
-    <td>稳定性<br /><br /><i>RELIABLE to use</i></td>
-    <td>绑定历史执行计划</td>
-    <td>支持绑定历史执行计划，支持通过 TiDB Dashboard 快速绑定执行计划</td>
-  </tr>
-  <tr>
-    <td rowspan="3">性能<br /><br /><i>POWERFUL to use</i></td>
-    <td>TiFlash MPP 支持数据压缩</td>
-    <td>TiFlash 支持带压缩的数据交换，可提升并行数据的交换效率</td>
-  </tr>
-  <tr>
-    <td>TiFlash 支持 Stale Read</td>
-    <td>TiFlash 支持 Stale Read 功能，在非实时性要求的场景可提升查询性能</td>
-  </tr>
-  <tr>
+    <td>数据库管理与可观测性<br /></td>
     <td>DM 集成物理导入模式（实验特性）</td>
     <td>TiDB Data Migration (DM) 集成 TiDB Lightning 的 Physical Import 模式，提升 DM 全量数据迁移时的性能，大数据量场景下的迁移时间最多可提升 10 倍</td>
   </tr>
+  
 </tbody>
 </table>
 
