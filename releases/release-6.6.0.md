@@ -58,7 +58,6 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
     <td>DM 集成物理导入模式（实验特性）</td>
     <td>TiDB Data Migration (DM) 集成 TiDB Lightning 的 Physical Import 模式，提升 DM 全量数据迁移时的性能，大数据量场景下的迁移时间最多可提升 10 倍</td>
   </tr>
-
 </tbody>
 </table>
 
