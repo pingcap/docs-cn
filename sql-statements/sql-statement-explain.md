@@ -212,8 +212,21 @@ The `xx.dot` is the result returned by the above statement.
 ## MySQL 兼容性
 
 * `EXPLAIN` 的格式和 TiDB 中潜在的执行计划都与 MySQL 有很大不同。
+<<<<<<< HEAD
 * TiDB 不像 MySQL 那样支持 `EXPLAIN FORMAT = JSON`。
 * TiDB 目前不支持插入语句的 `EXPLAIN`。
+=======
+* TiDB 不支持 `FORMAT=JSON` 或 `FORMAT=TREE` 选项。
+* TiDB 支持的 `FORMAT=tidb_json` 是对当前默认 `EXPLAIN` 格式的 JSON 编码，与 MySQL 的 `FORMAT=JSON` 结果的格式、字段信息都不同。
+
+## `EXPLAIN FOR CONNECTION`
+
+`EXPLAIN FOR CONNECTION` 用于获得一个连接中当前正在执行 SQL 的执行计划或者是最后执行 SQL 的执行计划，其输出格式与 `EXPLAIN` 完全一致。但 TiDB 中的实现与 MySQL 不同，除了输出格式之外，还有以下区别：
+
+- 如果连接处于睡眠状态，MySQL 返回为空，而 TiDB 返回的是最后执行的查询计划。
+- 如果获取当前会话连接的执行计划，MySQL 会报错，而 TiDB 会正常返回。
+- MySQL 的文档中指出，MySQL 要求登录用户与被查询的连接相同，或者拥有 `PROCESS` 权限，而 TiDB 则要求登录用户与被查询的连接相同，或者拥有 `SUPER` 权限。
+>>>>>>> e5cdb970e (explain for connection: fix the compatibility with MySQL (#13045))
 
 ## 另请参阅
 
