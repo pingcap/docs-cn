@@ -1,7 +1,6 @@
 ---
 title: TiDB Dashboard 实例性能分析 - 手动分析页面
 summary: 了解如何收集集群各个实例当前性能数据，从而分析复杂问题
-aliases: ['/docs-cn/dev/dashboard/dashboard-profiling/']
 ---
 
 # TiDB Dashboard 实例性能分析 - 手动分析页面

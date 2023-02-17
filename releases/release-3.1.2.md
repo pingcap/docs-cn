@@ -1,6 +1,5 @@
 ---
 title: TiDB 3.1.2 Release Notes
-aliases: ['/docs-cn/dev/releases/release-3.1.2/']
 ---
 
 # TiDB 3.1.2 Release Notes
