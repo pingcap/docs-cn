@@ -15,7 +15,7 @@ TiDB v6.6.0 之前，TiKV 基于 Raft 的存储引擎使用一个单一的 Rocks
 ## 相关配置
 ### storage.engine
 设置engine类型。该配置只能在创建新集群时指定，且后续无法更改。**实验特性**
-* `raft-kv`: raft-kv是6.6以前的Engine，也是该选项的默认值
+* `raft-kv`: raft-kv是 TiDB v6.6.0 之前的默认存储引擎
 * `partitioned-raft-kv`: partitioned-raft-kv是6.6新引入的Engine类型。
 
 ### rocksdb.write-buffer-limit
