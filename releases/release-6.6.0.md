@@ -23,7 +23,7 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 </thead>
 <tbody>
   <tr>
-    <td rowspan="3">可扩展性与性能<br /></td>
+    <td rowspan="4">可扩展性与性能<br /></td>
     <td>TiKV 支持批量聚合数据请求</td>
     <td>TiDB 支持将发送到相同 TiKV 实例的数据请求部分合并，减少子任务的数量和 RPC 请求的开销。在数据离散分布且 gRPC 线程池资源紧张的情况下，批量化请求能够提升超 50% 性能</td>
   </tr>
