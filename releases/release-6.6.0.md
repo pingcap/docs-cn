@@ -29,7 +29,7 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
   </tr>
   <tr>
     <td>TiFlash 支持压缩数据交换</td>
-    <td>TiFlash 支持带压缩的数据交换，可提升并行处理的数据交换效率，TPCH 总体性能提升约 10%，流量节省超 50%</td>
+    <td>TiFlash 支持带压缩的数据交换，可提升并行处理的数据交换效率，TPC-H 总体性能提升约 10%，流量节省超 50%</td>
   </tr>
   <tr>
     <td>TiFlash 支持 Stale Read</td>
@@ -88,7 +88,7 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
     TiDB v6.6.0 移除了执行计划缓存的限制，带有变量的 `LIMIT` 子句可以进入执行计划缓存，如 `LIMIT ?` 或者 `LIMIT 10, ?`。这使得更多的 SQL 能够从计划缓存中获益，提升执行效率。
 
     更多信息，请参考[用户文档](/sql-prepared-plan-cache.md)。
-    
+
 * TiFlash 引擎支持带压缩的数据交换 [#6620](https://github.com/pingcap/tiflash/issues/6620) @[solotzg](https://github.com/solotzg) **tw@TomShawn**
 
     为了协同多节点进行计算，TiFlash 引擎需要在不同节点中进行数据交换。当需要交换的数据量非常大时，数据交换的性能可能影响整体计算效率。在 v6.6.0 版本中，TiFlash 引擎引入压缩机制，在必要时对需要交换的数据进行压缩，然后进行交换，从而提升数据交换效率。
@@ -303,7 +303,7 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
     在 v6.6.0 之前，TiDB Lightning 仅支持通过 AWS IAM **用户密钥**访问 S3 的数据，无法使用临时会话令牌。自 v6.6.0 起，TiDB Lightning 支持通过 AWS IAM **角色密钥 + 会话令牌**的方式来访问 S3 数据，以提高安全性。
 
     更多信息，请参考[用户文档](/tidb-lightning/tidb-lightning-data-source.md#从-amazon-s3-导入数据)。
-    
+
 ### 遥测
 
 - 自 2023 年 2 月 20 日起，新发布的 TiDB 和 TiDB Dashboard 版本（含 v6.6.0），默认关闭遥测功能，即默认不再收集使用情况信息分享给 PingCAP。如果升级至这些版本前使用默认的遥测配置，则升级后遥测功能处于关闭状态。具体的版本可参考 [TiDB 版本发布时间线](/releases/release-timeline.md)。
