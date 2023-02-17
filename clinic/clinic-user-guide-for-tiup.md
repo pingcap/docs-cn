@@ -5,7 +5,7 @@ summary: Learn how to use the PingCAP Clinic Diagnostic Service to troubleshoot 
 
 # Troubleshoot Clusters Using PingCAP Clinic
 
-For TiDB clusters and DM clusters deployed using TiUP, you can use PingCAP Clinic Diagnostic Service (PingCAP Clinic) to troubleshoot cluster problems remotely and perform a quick check on cluster status locally using Diag client (Diag) and Clinic Server.
+For TiDB clusters and DM clusters deployed using TiUP, you can use PingCAP Clinic Diagnostic Service (PingCAP Clinic) to troubleshoot cluster problems remotely and perform a quick check on cluster status locally using [Diag client (Diag)](https://github.com/pingcap/diag) and Clinic Server.
 
 > **Note:**
 >

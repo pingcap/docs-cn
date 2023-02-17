@@ -16,7 +16,7 @@ A diagnostic service deployed in the cloud, Clinic Server provides two independe
 
 ## TiDB clusters
 
-This section lists the types of diagnostic data that can be collected by Diag from the TiDB clusters deployed using TiUP.
+This section lists the types of diagnostic data that can be collected by [Diag](https://github.com/pingcap/diag) from the TiDB clusters deployed using TiUP.
 
 ### TiDB cluster information
 

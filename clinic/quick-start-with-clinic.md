@@ -7,7 +7,7 @@ summary: Learn how to use PingCAP Clinic to collect, upload, and view cluster di
 
 This document describes how to use PingCAP Clinic diagnosis service (PingCAP Clinic) to collect, upload, and view cluster diagnosis data quickly.
 
-PingCAP Clinic consists of two components: Diag client (shorten as Diag) and Clinic Server cloud service (shorten as Clinic Server). For details of these two components, refer to [PingCAP Clinic Overview](/clinic/clinic-introduction.md).
+PingCAP Clinic consists of two components: [Diag client](https://github.com/pingcap/diag) (shorten as Diag) and Clinic Server cloud service (shorten as Clinic Server). For details of these two components, refer to [PingCAP Clinic Overview](/clinic/clinic-introduction.md).
 
 ## User scenarios
 

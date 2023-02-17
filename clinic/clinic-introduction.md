@@ -9,9 +9,9 @@ PingCAP Clinic Diagnostic Service (PingCAP Clinic) is a diagnostic service provi
 
 PingCAP Clinic provides the following two components to diagnose cluster problems:
 
-- Diag client:
+- [Diag client](https://github.com/pingcap/diag):
 
-    Diag client (Diag) is a diagnostic tool deployed on the cluster side. Diag is used to collect cluster diagnostic data, upload diagnostic data to the Clinic Server, and perform a quick health check locally on your cluster. For a full list of diagnostic data that can be collected by Diag, see [PingCAP Clinic Diagnostic Data](/clinic/clinic-data-instruction-for-tiup.md).
+    Diag client (Diag) is an open-source diagnostic tool deployed on the cluster side. Diag is used to collect cluster diagnostic data, upload diagnostic data to the Clinic Server, and perform a quick health check locally on your cluster. For a full list of diagnostic data that can be collected by Diag, see [PingCAP Clinic Diagnostic Data](/clinic/clinic-data-instruction-for-tiup.md).
 
     > **Note:**
     >
