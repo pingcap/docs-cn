@@ -16,10 +16,10 @@ TiDB v6.6.0 之前，TiKV 基于 Raft 的存储引擎使用一个单一的 Rocks
 ### storage.engine
 设置engine类型。该配置只能在创建新集群时指定，且后续无法更改。**实验特性**
 * `raft-kv`: raft-kv是 TiDB v6.6.0 之前的默认存储引擎
-* `partitioned-raft-kv`: partitioned-raft-kv是6.6新引入的Engine类型。
+* `partitioned-raft-kv`: partitioned-raft-kv 是 TiDB v6.6.0 新引入的存储引擎
 
 ### rocksdb.write-buffer-limit
-设置单个TiKV中所有RocksDB中使用的memtable的内存上限,默认值为本机内存的25%, 推荐不低于5GB。该选项只作用于`partitioned-raft-kv`.**实验特性**
+设置单个 TiKV 所有的 RocksDB 实例使用的 memtable 的总内存上限，默认值为本机内存的 25%，推荐配置不低于 5GB 的内存。该配置只作用于`partitioned-raft-kv`.**实验特性**
 * 默认值: 25%可用内存
 * 单位: KB|MB|GB
 
@@ -37,6 +37,7 @@ TiDB v6.6.0 之前，TiKV 基于 Raft 的存储引擎使用一个单一的 Rocks
 
 ## 该功能的限制
 由于该功能处于实验特性，以下功能仍然在开发中，目前不支持。
-* lightning导入, TiCDC, BR, dumping, Tikv-ctl等工具均不支持
+* 暂不支持 Lightning，TiCDC，BR，PITR，dumping 等数据导入、同步和备份工具
+* 暂不支持 tikv-ctl 命令行管理工具
 * 不支持和TiFlash共同使用
 * 一旦启用该功能后无法回退到6.5或者以前的版本。
