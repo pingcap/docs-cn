@@ -69,6 +69,9 @@ This section provides a detailed description of these key metrics on the **TiKV-
 - Average gRPC message duration: The average execution time of gRPC messages
 - gRPC batch size: The batch size of gRPC messages between TiDB and TiKV
 - Raft message batch size: The batch size of Raft messages between TiKV instances
+- gRPC request sources QPS: The QPS of gRPC request sources
+- gRPC request sources duration: The execution time of gRPC request sources
+- gRPC resource group QPS: The QPS of gRPC request sources by resource groups
 
 ### Thread CPU
 

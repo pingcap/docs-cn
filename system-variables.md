@@ -1825,6 +1825,18 @@ MPP is a distributed computing framework provided by the TiFlash engine, which a
 
 </CustomContent>
 
+### `tidb_enable_resource_control` <span class="version-mark">New in v6.6.0</span>
+
+> **Warning:**
+>
+> This feature is experimental and its form and usage might change in subsequent versions.
+
+- Scope: GLOBAL
+- Persists to cluster: Yes
+- Default value: `OFF`
+- Type: Boolean
+- This variable is a switch for [the resource control feature](/tidb-resource-control.md). When this variable is set to `ON`, the TiDB cluster can isolate application resources based on resource groups.
+
 ### tidb_enable_reuse_chunk <span class="version-mark">New in v6.4.0</span>
 
 - Scope: SESSION | GLOBAL

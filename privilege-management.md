@@ -364,6 +364,18 @@ Requires `SUPER` privilege.
 
 Requires `SUPER` or `CONNECTION_ADMIN` privilege to kill other user sessions.
 
+### CREATE RESOURCE GROUP
+
+Requires `SUPER` or `RESOURCE_GROUP_ADMIN` privilege.
+
+### ALTER RESOURCE GROUP
+
+Requires `SUPER` or `RESOURCE_GROUP_ADMIN` privilege.
+
+### DROP RESOURCE GROUP
+
+Requires `SUPER` or `RESOURCE_GROUP_ADMIN` privilege.
+
 ## Implementation of the privilege system
 
 ### Privilege table
