@@ -111,7 +111,7 @@ If the data source is stored in external storage such as Amazon S3 or GCS, you n
     -d 's3://my-bucket/sql-backup'
 ```
 
-For more parameter descriptions, see [external storage URL](/br/backup-and-restore-storages.md#url-format).
+For more parameter descriptions, see [external storage URI](/br/backup-and-restore-storages.md#uri-format).
 
 ### Step 3: Start TiDB Lightning to import data
 
@@ -143,7 +143,7 @@ Wait for all TiDB Lightning instances to finish, then the entire import is compl
 
 ## Example 2: Import single tables in parallel
 
-TiDB Lightning also supports parallel import of single tables. For example, import multiple single tables stored in Amazon S3 by different TiDB Lightning instances into the downstream TiDB cluster in parallel. This method can speed up the overall import speed. When remote storages such as Amazon S3 is used, the configuration parameters of TiDB Lightning are the same as those of BR. For more details, see [external storage URL](/br/backup-and-restore-storages.md#url-format).
+TiDB Lightning also supports parallel import of single tables. For example, import multiple single tables stored in Amazon S3 by different TiDB Lightning instances into the downstream TiDB cluster in parallel. This method can speed up the overall import speed. When remote storages such as Amazon S3 is used, the configuration parameters of TiDB Lightning are the same as those of BR. For more details, see [external storage URI](/br/backup-and-restore-storages.md#uri-format).
 
 > **Note:**
 >

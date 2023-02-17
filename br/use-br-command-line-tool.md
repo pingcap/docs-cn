@@ -42,7 +42,7 @@ A `br` command consists of multiple layers of sub-commands. Currently, br comman
 ### Common options
 
 * `--pd`: specifies the PD service address. For example, `"${PD_IP}:2379"`.
-* `-s` (or `--storage`): specifies the path where the backup files are stored. Amazon S3, Google Cloud Storage (GCS), Azure Blob Storage, and NFS are supported to store backup data. For more details, refer to [URL format of backup storages](/br/backup-and-restore-storages.md#url-format).
+* `-s` (or `--storage`): specifies the path where the backup files are stored. Amazon S3, Google Cloud Storage (GCS), Azure Blob Storage, and NFS are supported to store backup data. For more details, refer to [URI format of backup storages](/br/backup-and-restore-storages.md#uri-format).
 * `--ca`: specifies the path to the trusted CA certificate in the PEM format.
 * `--cert`: specifies the path to the SSL certificate in the PEM format.
 * `--key`: specifies the path to the SSL certificate key in the PEM format.

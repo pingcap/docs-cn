@@ -72,7 +72,7 @@ The target TiKV cluster must have enough disk space to store the imported data. 
     |`-P` or `--port`       |MySQL port|
     |`-h` or `--host`       |MySQL IP address|
     |`-t` or `--thread`     |The number of threads used for export|
-    |`-o` or `--output`     |The directory that stores the exported file. Supports a local path or an [external storage URL](/br/backup-and-restore-storages.md#url-format)|
+    |`-o` or `--output`     |The directory that stores the exported file. Supports a local path or an [external storage URI](/br/backup-and-restore-storages.md#uri-format)|
     |`-r` or `--row`        |The maximum number of rows in a single file|
     |`-F`                   |The maximum size of a single file, in MiB. Recommended value: 256 MiB.|
     |-`B` or `--database`   |Specifies a database to be exported|

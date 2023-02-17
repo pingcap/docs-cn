@@ -1,12 +1,12 @@
 ---
 title: Backup Storages
-summary: Describes the storage URL format used in TiDB backup and restore.
+summary: Describes the storage URI format used in TiDB backup and restore.
 aliases: ['/docs/dev/br/backup-and-restore-storages/','/tidb/dev/backup-storage-S3/','/tidb/dev/backup-storage-azblob/','/tidb/dev/backup-storage-gcs/','/tidb/dev/external-storage/']
 ---
 
 # Backup Storages
 
-TiDB supports storing backup data to Amazon S3, Google Cloud Storage (GCS), Azure Blob Storage, and NFS. Specifically, you can specify the URL of backup storage in the `--storage` or `-s` parameter of `br` commands. This document introduces the [URL format](#url-format) and [authentication](#authentication) of different external storage services, and [server-side encryption](#server-side-encryption).
+TiDB supports storing backup data to Amazon S3, Google Cloud Storage (GCS), Azure Blob Storage, and NFS. Specifically, you can specify the URI of backup storage in the `--storage` or `-s` parameter of `br` commands. This document introduces the [URI format](#uri-format) and [authentication](#authentication) of different external storage services, and [server-side encryption](#server-side-encryption).
 
 ## Send credentials to TiKV
 
@@ -28,11 +28,11 @@ If you back up or restore data using the [`BACKUP`](/sql-statements/sql-statemen
 BACKUP DATABASE * TO 's3://bucket-name/prefix' SEND_CREDENTIALS_TO_TIKV = FALSE;
 ```
 
-## URL format
+## URI format
 
-### URL format description
+### URI format description
 
-This section describes the URL format of the storage services:
+This section describes the URI format of the storage services:
 
 ```shell
 [scheme]://[host]/[path]?[parameters]
@@ -47,6 +47,7 @@ This section describes the URL format of the storage services:
 
     - `access-key`: Specifies the access key.
     - `secret-access-key`: Specifies the secret access key.
+    - `session-token`: Specifies the session token.
     - `use-accelerate-endpoint`: Specifies whether to use the accelerate endpoint on Amazon S3 (defaults to `false`).
     - `endpoint`: Specifies the URL of custom endpoint for S3-compatible services (for example, `<https://s3.example.com/>`).
     - `force-path-style`: Use path style access rather than virtual hosted style access (defaults to `true`).
@@ -80,9 +81,9 @@ This section describes the URL format of the storage services:
 </div>
 </SimpleTab>
 
-### URL examples
+### URI examples
 
-This section provides some URL examples by using `external` as the `host` parameter (`bucket name` or `container name` in the preceding sections).
+This section provides some URI examples by using `external` as the `host` parameter (`bucket name` or `container name` in the preceding sections).
 
 <SimpleTab groupId="storage">
 <div label="Amazon S3" value="amazon">
@@ -156,7 +157,7 @@ It is recommended that you configure access to S3 using either of the following 
 
 - Method 1: Specify the access key
 
-    If you specify an access key and a secret access key in the URL, authentication is performed using the specified access key and secret access key. Besides specifying the key in the URL, the following methods are also supported:
+    If you specify an access key and a secret access key in the URI, authentication is performed using the specified access key and secret access key. Besides specifying the key in the URI, the following methods are also supported:
 
     - BR reads the environment variables `$AWS_ACCESS_KEY_ID` and `$AWS_SECRET_ACCESS_KEY`.
     - BR reads the environment variables `$AWS_ACCESS_KEY` and `$AWS_SECRET_KEY`.
@@ -175,7 +176,7 @@ It is recommended that you configure access to S3 using either of the following 
 </div>
 <div label="GCS" value="gcs">
 
-You can configure the account used to access GCS by specifying the access key. If you specify the `credentials-file` parameter, the authentication is performed using the specified `credentials-file`. Besides specifying the key in the URL, the following methods are also supported:
+You can configure the account used to access GCS by specifying the access key. If you specify the `credentials-file` parameter, the authentication is performed using the specified `credentials-file`. Besides specifying the key in the URI, the following methods are also supported:
 
 - BR reads the file in the path specified by the environment variable `$GOOGLE_APPLICATION_CREDENTIALS`
 - BR reads the file `~/.config/gcloud/application_default_credentials.json`.
@@ -186,7 +187,7 @@ You can configure the account used to access GCS by specifying the access key. I
 
 - Method 1: Specify the access key
 
-    If you specify `account-name` and `account-key` in the URL, the authentication is performed using the specified access key and secret access key. Besides the method of specifying the key in the URL, BR can also read the key from the environment variable `$AZURE_STORAGE_KEY`.
+    If you specify `account-name` and `account-key` in the URI, the authentication is performed using the specified access key and secret access key. Besides the method of specifying the key in the URI, BR can also read the key from the environment variable `$AZURE_STORAGE_KEY`.
 
 - Method 2: Use Azure AD for backup and restore
 

@@ -78,7 +78,7 @@ The example output only shows the common parameters. These parameters are descri
 - `task-name`: specifies the task name for the log backup. This name is also used to query, pause, and resume the backup task.
 - `--ca`, `--cert`, `--key`: specifies the mTLS encryption method to communicate with TiKV and PD.
 - `--pd`: specifies the PD address for the backup cluster. BR needs to access PD to start the log backup task.
-- `--storage`: specifies the backup storage address. Currently, BR supports Amazon S3, Google Cloud Storage (GCS), or Azure Blob Storage as the storage for log backup. The preceding command uses Amazon S3 as an example. For details, see [URL format of backup storages](/br/backup-and-restore-storages.md#url-format).
+- `--storage`: specifies the backup storage address. Currently, BR supports Amazon S3, Google Cloud Storage (GCS), or Azure Blob Storage as the storage for log backup. The preceding command uses Amazon S3 as an example. For details, see [URI format of backup storages](/br/backup-and-restore-storages.md#uri-format).
 
 Usage example:
 
@@ -284,7 +284,7 @@ This command only accesses the backup storage and does not access the TiDB clust
 
 - `--dry-run`: run the command but do not really delete the files.
 - `--until`: delete all log backup data before the specified timestamp.
-- `--storage`: the backup storage address. Currently, BR supports Amazon S3, GCS, or Azure Blob Storage as the storage for log backup. For details, see [URL format of backup storages](/br/backup-and-restore-storages.md#url-format).
+- `--storage`: the backup storage address. Currently, BR supports Amazon S3, GCS, or Azure Blob Storage as the storage for log backup. For details, see [URI format of backup storages](/br/backup-and-restore-storages.md#uri-format).
 
 Usage example:
 
@@ -325,7 +325,7 @@ Global Flags:
 
 This command only accesses the backup storage and does not access the TiDB cluster.
 
-The `--storage` parameter is used to specify the backup storage address. Currently, BR supports Amazon S3, GCS, or Azure Blob Storage as the storage for log backup. For details, see [URL format of backup storages](/br/backup-and-restore-storages.md#url-format).
+The `--storage` parameter is used to specify the backup storage address. Currently, BR supports Amazon S3, GCS, or Azure Blob Storage as the storage for log backup. For details, see [URI format of backup storages](/br/backup-and-restore-storages.md#uri-format).
 
 Usage example:
 
@@ -369,12 +369,12 @@ Global Flags:
 
 The example output only shows the common parameters. These parameters are described as follows:
 
-- `--full-backup-storage`: the storage address for the snapshot (full) backup. To use PITR, specify this parameter and choose the latest snapshot backup before the restore timestamp. To restore only log backup data, you can omit this parameter. Currently, BR supports Amazon S3, GCS, or Azure Blob Storage as the storage for log backup. For details, see [URL format of backup storages](/br/backup-and-restore-storages.md#url-format).
+- `--full-backup-storage`: the storage address for the snapshot (full) backup. To use PITR, specify this parameter and choose the latest snapshot backup before the restore timestamp. To restore only log backup data, you can omit this parameter. Currently, BR supports Amazon S3, GCS, or Azure Blob Storage as the storage for log backup. For details, see [URI format of backup storages](/br/backup-and-restore-storages.md#uri-format).
 - `--restored-ts`: the timestamp that you want to restore data to. If this parameter is not specified, BR restores data to the latest timestamp available in the log backup, that is, the checkpoint of the backup data.
 - `--start-ts`: the start timestamp that you want to restore log backup data from. If you only need to restore log backup data, you must specify this parameter.
 - `--pd`: the PD address of the restore cluster.
 - `--ca`, `--cert`, `--key`: specify the mTLS encryption method to communicate with TiKV and PD.
-- `--storage`: the storage address for the log backup. Currently, BR supports Amazon S3, GCS, or Azure Blob Storage as the storage for log backup. For details, see [URL format of backup storages](/br/backup-and-restore-storages.md#url-format).
+- `--storage`: the storage address for the log backup. Currently, BR supports Amazon S3, GCS, or Azure Blob Storage as the storage for log backup. For details, see [URI format of backup storages](/br/backup-and-restore-storages.md#uri-format).
 
 Usage example:
 

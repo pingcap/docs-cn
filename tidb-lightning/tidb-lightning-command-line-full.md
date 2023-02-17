@@ -17,7 +17,7 @@ You can configure the following parameters using `tidb-lightning`:
 | :---- | :---- | :---- |
 | `--config <file>` | Read the global configuration from the file. If this parameter is not specified, TiDB Lightning uses the default configuration. | |
 | `-V` | Print the program version. | |
-| `-d <directory>` | Local directory or [external storage URL](/br/backup-and-restore-storages.md#url-format) of data files. | `mydumper.data-source-dir` |
+| `-d <directory>` | Local directory or [external storage URI](/br/backup-and-restore-storages.md#uri-format) of data files. | `mydumper.data-source-dir` |
 | `-L <level>` | Log level: `debug`, `info`, `warn`, `error`, or `fatal`. `info` by default.| `lightning.level` |
 | `-f <rule>` | [Table filter rules](/table-filter.md). Can be specified multiple times. | `mydumper.filter` |
 | `--backend <backend>` | Select an import mode. `local` refers to [physical import mode](/tidb-lightning/tidb-lightning-physical-import-mode.md); `tidb` refers to [logical import mode](/tidb-lightning/tidb-lightning-logical-import-mode.md). | `tikv-importer.backend` |

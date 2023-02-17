@@ -106,13 +106,13 @@ In the command above:
 
 <CustomContent platform="tidb">
 
-+ The `-o` (or `--output`) option specifies the export directory of the storage, which supports a local file path or an [external storage URL](/br/backup-and-restore-storages.md#url-format).
++ The `-o` (or `--output`) option specifies the export directory of the storage, which supports a local file path or an [external storage URI](/br/backup-and-restore-storages.md#uri-format).
 
 </CustomContent>
 
 <CustomContent platform="tidb-cloud">
 
-+ The `-o` (or `--output`) option specifies the export directory of the storage, which supports a local file path or an [external storage URL](https://docs.pingcap.com/tidb/stable/backup-and-restore-storages#url-format).
++ The `-o` (or `--output`) option specifies the export directory of the storage, which supports a local file path or an [external storage URI](https://docs.pingcap.com/tidb/stable/backup-and-restore-storages#uri-format).
 
 </CustomContent>
 
@@ -251,13 +251,13 @@ export AWS_SECRET_ACCESS_KEY=${SecretKey}
 
 <CustomContent platform="tidb">
 
-Dumpling also supports reading credential files from `~/.aws/credentials`. For more Dumpling configuration, see the configuration of [External storages](/br/backup-and-restore-storages.md).
+Dumpling also supports reading credential files from `~/.aws/credentials`. Parameters for exporting data to Amazon S3 using Dumpling are the same as the parameters used in BR. For more parameter descriptions, see [external storage URI](/br/backup-and-restore-storages.md#uri-format).
 
 </CustomContent>
 
 <CustomContent platform="tidb-cloud">
 
-Dumpling also supports reading credential files from `~/.aws/credentials`. Parameters for exporting data to Amazon S3 using Dumpling are the same as the parameters used in BR. For more parameter descriptions, see [external storage URL](https://docs.pingcap.com/tidb/stable/backup-and-restore-storages#url-format).
+Dumpling also supports reading credential files from `~/.aws/credentials`. Parameters for exporting data to Amazon S3 using Dumpling are the same as the parameters used in BR. For more parameter descriptions, see [external storage URI](https://docs.pingcap.com/tidb/stable/backup-and-restore-storages#uri-format).
 
 </CustomContent>
 
@@ -435,7 +435,7 @@ SET GLOBAL tidb_gc_life_time = '10m';
 | `-s` or `--statement-size`   | Control the size of the `INSERT` statements; the unit is bytes                                                                                                                                                                                                                                                                     |
 | `-F` or `--filesize`         | The file size of the divided tables. The unit must be specified such as `128B`, `64KiB`, `32MiB`, and `1.5GiB`.                                                                                                                                                                                                                    |
 | `--filetype`                 | Exported file type (csv/sql)                                                                                                                                                                                                                                                                                                       | "sql"                                      |
-| `-o` or `--output`           | The path of exported local files or [external storage URL](https://docs.pingcap.com/tidb/stable/backup-and-restore-storages#url-format)                                                                                                                                                                                                                                                                                                    | "./export-${time}"                         |
+| `-o` or `--output`           | The path of exported local files or [external storage URI](https://docs.pingcap.com/tidb/stable/backup-and-restore-storages#uri-format)                                                                                                                                                                                                                                                                                                    | "./export-${time}"                         |
 | `-S` or `--sql`              | Export data according to the specified SQL statement. This command does not support concurrent export.                                                                                                                                                                                                                             |
 | `--consistency`              | flush: use FTWRL before the dump <br/> snapshot: dump the TiDB data of a specific snapshot of a TSO <br/> lock: execute `lock tables read` on all tables to be dumped <br/> none: dump without adding locks, which cannot guarantee consistency <br/> auto: use --consistency flush for MySQL; use --consistency snapshot for TiDB | "auto"                                     |
 | `--snapshot`                 | Snapshot TSO; valid only when `consistency=snapshot`                                                                                                                                                                                                                                                                               |

@@ -12,7 +12,7 @@ To specify the data source for TiDB Lightning, use the following configuration:
 
 ```toml
 [mydumper]
-# Local source data directory or the URL of the external storage such as S3.
+# Local source data directory or the URI of the external storage such as S3. For more information about the URI of the external storage, see https://docs.pingcap.com/tidb/v6.6/backup-and-restore-storages#uri-format.
 data-source-dir = "/data/my_database"
 ```
 
@@ -334,27 +334,41 @@ type = '$3'
 
 ## Import data from Amazon S3
 
-The following examples show how to import data from Amazon S3 using TiDB Lightning. For more parameter configurations, see [external storage URL](/br/backup-and-restore-storages.md#url-format).
+The following examples show how to import data from Amazon S3 using TiDB Lightning. For more parameter configurations, see [external storage URI](/br/backup-and-restore-storages.md#uri-format).
 
-+ Use TiDB Lightning to import data from S3:
++ Use the locally configured permissions to access S3 data:
 
     ```bash
     ./tidb-lightning --tidb-port=4000 --pd-urls=127.0.0.1:2379 --backend=local --sorted-kv-dir=/tmp/sorted-kvs \
         -d 's3://my-bucket/sql-backup'
     ```
 
-+ Use TiDB Lightning to import data from S3 (using the path-style request):
++ Use the path-style request to access S3 data:
 
     ```bash
     ./tidb-lightning --tidb-port=4000 --pd-urls=127.0.0.1:2379 --backend=local --sorted-kv-dir=/tmp/sorted-kvs \
         -d 's3://my-bucket/sql-backup?force-path-style=true&endpoint=http://10.154.10.132:8088'
     ```
 
-+ Use TiDB Lightning to import data from S3 (access S3 data by using a specific IAM role):
++ Use a specific AWS IAM role ARN to access S3 data:
 
     ```bash
     ./tidb-lightning --tidb-port=4000 --pd-urls=127.0.0.1:2379 --backend=local --sorted-kv-dir=/tmp/sorted-kvs \
         -d 's3://my-bucket/test-data?role-arn=arn:aws:iam::888888888888:role/my-role'
+    ```
+
+* Use access keys of an AWS IAM user to access S3 data:
+
+    ```bash
+    ./tidb-lightning --tidb-port=4000 --pd-urls=127.0.0.1:2379 --backend=local --sorted-kv-dir=/tmp/sorted-kvs \
+        -d 's3://my-bucket/test-data?access_key={my_access_key}&secret_access_key={my_secret_access_key}'
+    ```
+
+* Use the combination of AWS IAM role access keys and session tokens to access S3 data:
+
+    ```bash
+    ./tidb-lightning --tidb-port=4000 --pd-urls=127.0.0.1:2379 --backend=local --sorted-kv-dir=/tmp/sorted-kvs \
+        -d 's3://my-bucket/test-data?access_key={my_access_key}&secret_access_key={my_secret_access_key}&session-token={my_session_token}'
     ```
 
 ## More resources

@@ -100,7 +100,7 @@ Corresponding to the backup features, you can perform two types of restore: full
 
 TiDB supports backing up data to Amazon S3, Google Cloud Storage (GCS), Azure Blob Storage, NFS, and other S3-compatible file storage services. For details, see the following documents:
 
-- [Specify backup storage in URL](/br/backup-and-restore-storages.md#url-format)
+- [Specify backup storage in URI](/br/backup-and-restore-storages.md#uri-format)
 - [Configure access privileges to backup storages](/br/backup-and-restore-storages.md#authentication)
 
 ## Compatibility

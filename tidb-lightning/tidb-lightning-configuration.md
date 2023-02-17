@@ -181,7 +181,7 @@ read-block-size = "64KiB" # default value
 # This value should be in the range (0 <= batch-import-ratio < 1).
 batch-import-ratio = 0.75
 
-# Local source data directory or the URL of the external storage.
+# Local source data directory or the URI of the external storage. For more information about the URI of the external storage, see https://docs.pingcap.com/tidb/v6.6/backup-and-restore-storages#uri-format.
 data-source-dir = "/data/my_database"
 
 # The character set of the schema files, containing CREATE TABLE statements;
@@ -361,7 +361,7 @@ log-progress = "5m"
 |:----|:----|:----|
 | --config *file* | Reads global configuration from *file*. If not specified, the default configuration would be used. | |
 | -V | Prints program version | |
-| -d *directory* | Directory or [external storage URL](/br/backup-and-restore-storages.md#url-format) of the data dump to read from | `mydumper.data-source-dir` |
+| -d *directory* | Directory or [external storage URI](/br/backup-and-restore-storages.md#uri-format) of the data dump to read from | `mydumper.data-source-dir` |
 | -L *level* | Log level: debug, info, warn, error, fatal (default = info) | `lightning.log-level` |
 | -f *rule* | [Table filter rules](/table-filter.md) (can be specified multiple times) | `mydumper.filter` |
 | --backend *[backend](/tidb-lightning/tidb-lightning-overview.md)* | Select an import mode. `local` refers to the physical import mode; `tidb` refers to the logical import mode. | `local` |

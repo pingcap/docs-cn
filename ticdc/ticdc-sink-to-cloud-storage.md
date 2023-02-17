@@ -43,7 +43,7 @@ This section describes how to configure storage services in the changefeed URI, 
 
 ### Configure Amazon S3 or Azure Blob Storage
 
-The URI parameters of Amazon S3 and Azure Blob Storage in TiCDC are the same as their URL parameters in BR. For details, see [Backup storage URL format](/br/backup-and-restore-storages.md#url-format-description).
+The URI parameters of Amazon S3 and Azure Blob Storage in TiCDC are the same as their URL parameters in BR. For details, see [Backup storage URI format](/br/backup-and-restore-storages.md#uri-format-description).
 
 ### Configure NFS
 

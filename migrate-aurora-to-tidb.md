@@ -69,7 +69,7 @@ The parameters used in the command above are as follows. For more parameters, re
 |`-P` or `--port`       |MySQL port|
 |`-h` or `--host`       |MySQL IP address|
 |`-t` or `--thread`     |The number of threads used for export|
-|`-o` or `--output`     |The directory that stores the exported file. Supports local path or [external storage URL](/br/backup-and-restore-storages.md)|
+|`-o` or `--output`     |The directory that stores the exported file. Supports local path or [external storage URI](/br/backup-and-restore-storages.md)|
 |`-r` or `--row`        |The maximum number of rows in a single file|
 |`-F`                   |The maximum size of a single file, in MiB. Recommended value: 256 MiB.|
 |`-B` or `--database`   |Specifies a database to be exported|
