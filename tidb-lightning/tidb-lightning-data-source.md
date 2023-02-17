@@ -9,7 +9,7 @@ TiDB Lightning 支持从多种类型的文件导入数据到 TiDB 集群。通�
 
 ```toml
 [mydumper]
-# 本地源数据目录或 S3 等外部存储 URL
+# 本地源数据目录或 S3 等外部存储 URI。关于外部存储 URI 详情可参考 https://docs.pingcap.com/zh/tidb/v6.6/backup-and-restore-storages#uri-%E6%A0%BC%E5%BC%8F。
 data-source-dir = "/data/my_database"
 ```
 
@@ -330,27 +330,41 @@ type = '$3'
 
 ## 从 Amazon S3 导入数据
 
-如下为从 Amazon S3 导入数据的示例，更多配置参数描述，可参考[外部存储 URL 格式](/br/backup-and-restore-storages.md#url-格式)。
+如下为从 Amazon S3 导入数据的示例，更多配置参数描述，可参考[外部存储 URI 格式](/br/backup-and-restore-storages.md#uri-格式)。
 
-* 用 TiDB Lightning 从 S3 导入数据：
+* 使用本地已设置的权限访问 S3：
 
     ```bash
     ./tidb-lightning --tidb-port=4000 --pd-urls=127.0.0.1:2379 --backend=local --sorted-kv-dir=/tmp/sorted-kvs \
         -d 's3://my-bucket/sql-backup'
     ```
 
-* 用 TiDB Lightning 从 S3 导入数据（使用路径类型的请求模式）：
+* 使用路径类型的请求模式：
 
     ```bash
     ./tidb-lightning --tidb-port=4000 --pd-urls=127.0.0.1:2379 --backend=local --sorted-kv-dir=/tmp/sorted-kvs \
         -d 's3://my-bucket/sql-backup?force-path-style=true&endpoint=http://10.154.10.132:8088'
     ```
 
-* 用 TiDB Lightning 从 S3 导入数据（使用特定 IAM 角色来访问 S3 数据）：
+* 使用 AWS IAM 角色的 ARN 来访问 S3 数据：
 
     ```bash
     ./tidb-lightning --tidb-port=4000 --pd-urls=127.0.0.1:2379 --backend=local --sorted-kv-dir=/tmp/sorted-kvs \
         -d 's3://my-bucket/test-data?role-arn=arn:aws:iam::888888888888:role/my-role'
+    ```
+
+* 使用 AWS IAM 用户密钥来访问 S3 数据：
+
+    ```bash
+    ./tidb-lightning --tidb-port=4000 --pd-urls=127.0.0.1:2379 --backend=local --sorted-kv-dir=/tmp/sorted-kvs \
+        -d 's3://my-bucket/test-data?access_key={my_access_key}&secret_access_key={my_secret_access_key}'
+    ```
+
+* 使用 AWS IAM 角色的密钥以及会话令牌来访问 S3 数据：
+
+    ```bash
+    ./tidb-lightning --tidb-port=4000 --pd-urls=127.0.0.1:2379 --backend=local --sorted-kv-dir=/tmp/sorted-kvs \
+        -d 's3://my-bucket/test-data?access_key={my_access_key}&secret_access_key={my_secret_access_key}&session-token={my_session_token}'
     ```
 
 ## 更多
