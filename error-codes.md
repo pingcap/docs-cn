@@ -1,6 +1,5 @@
 ---
 title: 错误码与故障诊断
-aliases: ['/docs-cn/dev/error-codes/','/docs-cn/dev/reference/error-codes/']
 ---
 
 # 错误码与故障诊断
