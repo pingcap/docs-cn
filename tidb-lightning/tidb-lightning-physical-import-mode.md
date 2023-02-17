@@ -64,7 +64,7 @@ Physical Import Mode 对应的后端模式为 `local`。
 
 - 使用多个 TiDB Lightning 向同一目标导入时，请勿混用不同的 backend，即不可同时使用 Physical Import Mode 和 Logical Import Mode 导入同一 TiDB 集群。
 
-- 在导入数据的过程中，请勿向目标表中读写数据，否则会导致导入失败或数据不一致。请在导入操作完成后再进行读写操作。
+- 在导入数据的过程中，请勿在目标表进行读写操作，否则会导致导入失败或数据不一致。请在导入操作完成后再进行读写操作。
 
 - 单个 Lightning 进程导入单表不应超过 10 TB，使用并行导入 Lightning 实例不应超过 10 个。
 
