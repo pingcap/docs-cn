@@ -1586,6 +1586,18 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 当读数据的算子只剩 1 个线程且当单条 SQL 语句的内存使用继续超过 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 时，该 SQL 语句会触发其它的内存控制行为，例如[落盘](/system-variables.md#tidb_enable_tmp_storage_on_oom)。
 - 该变量在单条查询仅涉及读数据的情况下，对内存控制效果较好。若还存在额外的计算操作（如连接、聚合等），打开该变量可能会导致内存不受 `tidb_mem_quota_query` 控制，加剧 OOM 风险。
 
+### `tidb_enable_resource_control` <span class="version-mark">从 v6.6.0 版本开始引入</span>
+
+> **警告：**
+>
+> [资源管控](/tidb-resource-control.md) 目前为实验性特性，此变量定义可能在之后发生变化或者删除。
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 默认值：`OFF`
+- 类型：布尔型
+- 该变量是[资源管控特性](/tidb-resource-control.md)的开关。该变量设置为 `ON` 后，集群支持应用按照资源组做资源隔离。
+
 ### `tidb_enable_reuse_chunk` <span class="version-mark">从 v6.4.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
