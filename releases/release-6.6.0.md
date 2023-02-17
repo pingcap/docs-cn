@@ -93,7 +93,7 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 
     为了协同多节点进行计算，TiFlash 引擎需要在不同节点中进行数据交换。当需要交换的数据量非常大时，数据交换的性能可能影响整体计算效率。在 v6.6.0 版本中，TiFlash 引擎引入压缩机制，在必要时对需要交换的数据进行压缩，然后进行交换，从而提升数据交换效率。
 
-    更多信息，请参考[用户文档](/explain-mpp.md##mpp-version-和-exchange-数据压缩)。
+    更多信息，请参考[用户文档](/explain-mpp.md#mpp-version-和-exchange-数据压缩)。
 
 * TiFlash 支持 Stale Read 功能 [#4483](https://github.com/pingcap/tiflash/issues/4483) @[hehechen](https://github.com/hehechen) **tw@qiancai**
 
