@@ -8,7 +8,7 @@ aliases: ['/docs-cn/dev/partitioned-raft-kv/']
 本文介绍 TiKV 的分区raft kv。
 
 ## 介绍
-在v6.6以前的版本中, TiKV基于Raft的后台存储引擎使用一个单一的RocksDB实例。一个TiKV上所有Region的数据都存储在该RocksDB实例中。
+TiDB v6.6.0 之前，TiKV 基于 Raft 的存储引擎使用一个单一的 RocksDB 实例存储该 TiKV 实例所有 Region 的数据。
 为了更平稳的支持更大的集群，从 TiDB v6.6.0 开始，我们引入了一个全新的 TiKV 存储引擎，该引擎使用多个 RocksDB 实例来存储 TiKV 的 Region 数据，每个 Region 的数据都独立存储在单独的 RocksDB 实例中。新引擎能够更好的控制 RocksDB 实例的文件数和层级，并实现了 Region 间数据操作的物理隔离，避免互相影响，支持平稳管理更多的数据。可以理解为 TiKV 通过分区管理多个 RocksDB 实例，这也是该特性分区 Raft KV 名字的由来。该功能目前是实验特性，不推荐在生产环境中使用。
 该功能的主要优势在于更好的写入性能，更快的扩缩容，相同硬件下可以支持更大的数据，也能支持更大的集群规模。
 
