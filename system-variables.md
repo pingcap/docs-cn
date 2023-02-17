@@ -1510,7 +1510,7 @@ MPP is a distributed computing framework provided by the TiFlash engine, which a
 - Default value: `OFF`
 - This variable controls whether to enable GC-Aware memory track.
 
-### `tidb_enable_general_plan_cache` <span class="version-mark">New in v6.3.0</span>
+### tidb_enable_non_prepared_plan_cache
 
 > **Warning:**
 >
@@ -2239,7 +2239,7 @@ For a system upgraded to v5.0 from an earlier version, if you have not modified 
 
 </CustomContent>
 
-### tidb_general_plan_cache_size <span class="version-mark">New in v6.3.0</span>
+### tidb_non_prepared_plan_cache_size
 
 > **Warning:**
 >
