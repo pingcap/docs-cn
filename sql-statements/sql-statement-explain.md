@@ -342,7 +342,8 @@ In the output, `id`, `estRows`, `taskType`, `accessObject`, and `operatorInfo` h
 
 `EXPLAIN FOR CONNECTION` is used to get the execution plan of the currently executed SQL query or the last executed SQL query in a connection. The output format is the same as that of `EXPLAIN`. However, the implementation of `EXPLAIN FOR CONNECTION` in TiDB is different from that in MySQL. Their differences (apart from the output format) are listed as follows:
 
-- MySQL returns the query plan that is **being executing**, while TiDB returns the **last executed** query plan.
+- If the connection is sleeping, MySQL returns an empty result, while TiDB returns the last executed query plan.
+- If you try to get the execution plan of the current session, MySQL returns an error, while TiDB returns the result normally.
 - MySQL requires the login user to be the same as the connection being queried, or the login user has the **`PROCESS`** privilege; while TiDB requires the login user to be the same as the connection being queried, or the login user has the **`SUPER`** privilege.
 
 ## See also
