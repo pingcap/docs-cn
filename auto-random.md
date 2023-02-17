@@ -15,13 +15,14 @@ summary: 本文介绍了 TiDB 的 `AUTO_RANDOM` 列属性。
 
 `AUTO_RANDOM` 是应用在 `BIGINT` 类型列的属性，用于列值的自动分配。其自动分配的值满足**随机性**和**唯一性**。
 
-以下语句均可创建包含 `AUTO_RANDOM` 列的表，其中 `AUTO_RANDOM` 列必须被包含在主键中，且主键只有该列。
+以下语句均可创建包含 `AUTO_RANDOM` 列的表，其中 `AUTO_RANDOM` 列必须被包含在主键中，并且是主键的第一列。
 
 ```sql
 CREATE TABLE t (a BIGINT AUTO_RANDOM, b VARCHAR(255), PRIMARY KEY (a));
 CREATE TABLE t (a BIGINT PRIMARY KEY AUTO_RANDOM, b VARCHAR(255));
 CREATE TABLE t (a BIGINT AUTO_RANDOM(6), b VARCHAR(255), PRIMARY KEY (a));
 CREATE TABLE t (a BIGINT AUTO_RANDOM(5, 54), b VARCHAR(255), PRIMARY KEY (a));
+CREATE TABLE t (a BIGINT AUTO_RANDOM(5, 54), b VARCHAR(255), PRIMARY KEY (a, b));
 ```
 
 `AUTO_RANDOM` 关键字可以被包裹在 TiDB 可执行注释中，注释语法请参考 [TiDB 可执行注释](/comment-syntax.md#tidb-可执行的注释语法)。
