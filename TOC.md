@@ -272,6 +272,7 @@
     - [海量 Region 集群调优](/best-practices/massive-regions-best-practices.md)
     - [三节点混合部署最佳实践](/best-practices/three-nodes-hybrid-deployment.md)
     - [在三数据中心下就近读取数据](/best-practices/three-dc-local-read.md)
+    - [只读存储节点最佳实践](/best-practices/readonly-nodes.md)
   - [Placement Rules 使用文档](/configure-placement-rules.md)
   - [Load Base Split 使用文档](/configure-load-base-split.md)
   - [Store Limit 使用文档](/configure-store-limit.md)
@@ -843,6 +844,7 @@
     - [分区表](/partitioned-table.md)
     - [临时表](/temporary-tables.md)
     - [缓存表](/cached-tables.md)
+    - [外键约束](/foreign-key.md)
     - 字符集和排序
       - [概述](/character-set-and-collation.md)
       - [GBK](/character-set-gbk.md)
@@ -967,6 +969,7 @@
   - v6.2
     - [6.2.0-DMR](/releases/release-6.2.0.md)
   - v6.1
+    - [6.1.4](/releases/release-6.1.4.md)
     - [6.1.3](/releases/release-6.1.3.md)
     - [6.1.2](/releases/release-6.1.2.md)
     - [6.1.1](/releases/release-6.1.1.md)

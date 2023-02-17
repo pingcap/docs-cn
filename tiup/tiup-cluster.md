@@ -61,7 +61,7 @@ Flags:
 tiup cluster deploy <cluster-name> <version> <topology.yaml> [flags]
 ```
 
-该命令需要提供集群的名字、集群使用的 TiDB 版本，以及一个集群的拓扑文件。
+该命令需要提供集群的名字、集群使用的 TiDB 版本（例如 `v6.5.0`），以及一个集群的拓扑文件。
 
 拓扑文件的编写可参考[示例](https://github.com/pingcap/tiup/blob/master/embed/examples/cluster/topology.example.yaml)。以一个最简单的拓扑为例，将下列文件保存为 `/tmp/topology.yaml`：
 
@@ -600,7 +600,7 @@ tiup cluster exec test-cluster --command='ls /tmp'
 
 ```bash
 Usage:
-  tiup ctl {tidb/pd/tikv/binlog/etcd} [flags]
+  tiup ctl:v<CLUSTER_VERSION> {tidb/pd/tikv/binlog/etcd} [flags]
 
 Flags:
   -h, --help   help for tiup
@@ -621,7 +621,7 @@ etcdctl [args] = tiup ctl etcd [args]
 {{< copyable "shell-regular" >}}
 
 ```bash
-tiup ctl:<cluster-version> pd -u http://127.0.0.1:2379 store
+tiup ctl:v<CLUSTER_VERSION> pd -u http://127.0.0.1:2379 store
 ```
 
 ## 部署机环境检查
@@ -673,9 +673,9 @@ tiup cluster check <cluster-name> --cluster
 
 此时可以通过命令行参数 `--ssh=system` 启用系统自带命令行：
 
-- 部署集群: `tiup cluster deploy <cluster-name> <version> <topo> --ssh=system`
-- 启动集群: `tiup cluster start <cluster-name> --ssh=system`
-- 升级集群: `tiup cluster upgrade ... --ssh=system`
+- 部署集群：`tiup cluster deploy <cluster-name> <version> <topo> --ssh=system`，其中 `<cluster-name>` 为集群名称，`<version>` 为 TiDB 集群版本（例如 `v6.5.0`），`<topo>` 为拓扑文件路径
+- 启动集群：`tiup cluster start <cluster-name> --ssh=system`
+- 升级集群：`tiup cluster upgrade ... --ssh=system`
 
 所有涉及集群操作的步骤都可以加上 `--ssh=system` 来使用系统自带的客户端。
 

@@ -111,10 +111,6 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 + gRPC 消息的压缩算法，取值：none，deflate，gzip。
 + 默认值：none
 
-> **注意：**
->
-> 取值为 `gzip` 时，部分 TiDB Dashboard 可能无法完成对应的压缩运算，会显示异常。调整回默认值 `none` 后，TiDB Dashboard 可正常显示。
-
 ### `grpc-concurrency`
 
 + gRPC 工作线程的数量。调整 gRPC 线程池的大小时，请参考 [TiKV 线程池调优](/tune-tikv-thread-performance.md#tikv-线程池调优)。
@@ -870,6 +866,13 @@ raftstore 相关的配置项。
 + 默认值：1MB
 + 最小值：0
 
+### `report-min-resolved-ts-interval`
+
++ 设置 PD leader 收到 Resolved TS 的最小间隔时间。如果该值设置为 `0`，表示禁用该功能。
++ 默认值：`"1s"`，即最小正值
++ 最小值：0
++ 单位：秒
+
 ## coprocessor
 
 coprocessor 相关的配置项。
@@ -1010,11 +1013,6 @@ rocksdb 相关的配置项。
 + 默认值：0
 + 最小值：0
 + 单位：B|KB|MB|GB
-
-### `enable-statistics`
-
-+ 开启 RocksDB 的统计信息。
-+ 默认值：true
 
 ### `stats-dump-period`
 
