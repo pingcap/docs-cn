@@ -249,6 +249,7 @@ TiDB 会定时采集 TTL 的运行时信息，并在 Grafana 中提供了相关�
 
 - 如何合理配置 `tidb_ttl_scan_worker_count` 和 `tidb_ttl_delete_worker_count`？
    
-   首先，可以参考问题 "如何判断 TTL 任务的瓶颈在扫描还是删除？" 来考虑提升 `tidb_ttl_scan_worker_count` 还是 `tidb_ttl_delete_worker_count`。同时如果 TiKV 节点数量较多，提升 `tidb_ttl_scan_worker_count` 能够使 TTL 任务负载更加均匀。
+   1. 可以参考问题 "如何判断 TTL 任务的瓶颈在扫描还是删除？" 来考虑提升 `tidb_ttl_scan_worker_count` 还是 `tidb_ttl_delete_worker_count`。
+   2. 如果 TiKV 节点数量较多，提升 `tidb_ttl_scan_worker_count` 能够使 TTL 任务负载更加均匀。
    
    由于过高的 TTL worker 数量将会造成较大的压力，所以需要综合观察 TiDB 的 CPU 水平与 TiKV 的磁盘与 CPU 使用量。根据不同场景和需求（需要尽量加速 TTL，或是需要减少 TTL 对其他请求的影响）来调整 `tidb_ttl_scan_worker_count` 与 `tidb_ttl_delete_worker_count`，从而提升 TTL 扫描和删除数据的速度，或降低 TTL 任务对性能的影响。
