@@ -45,7 +45,7 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
     <td>支持绑定历史执行计划，支持通过 TiDB Dashboard 快速绑定执行计划</td>
   </tr>
   <tr>
-    <td rowspan="2">功能与兼容性<br /></td>
+    <td rowspan="2">功能特性与兼容性<br /></td>
     <td>外键约束</td>
     <td>支持 MySQL 兼容的外键约束，帮助保持数据一致性和提升数据质量</td>
   </tr>
@@ -61,58 +61,21 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 </tbody>
 </table>
 
-## 新功能
+## 功能详情
 
-### SQL
+### 可扩展性
 
-* 支持兼容 MySQL 语法的外键约束 [#18209](https://github.com/pingcap/tidb/issues/18209) @[crazycs520](https://github.com/crazycs520) **tw@Oreoxmt**
+* 支持 DDL 分布式并行执行框架（实验特性）[#37125](https://github.com/pingcap/tidb/issues/37125) @[zimulala](https://github.com/zimulala) **tw@ran-huang**
 
-    TiDB v6.6.0 引入了兼容 MySQL 语法的外键约束功能，支持在表内、表间关联数据并进行约束校验，并且支持级联操作。该特性有助于将 MySQL 上的应用迁移到 TiDB、保持数据一致性、提升数据质量并且方便数据建模。
+    在过去的版本中，整个 TiDB 集群中仅允许一个 TiDB 实例作为 DDL Owner 处理 Schema 变更任务。为了进一步提升 DDL 的并发性，TiDB v6.6.0 版本引入了 DDL 分布式并行执行框架，支持集群中所有的 TiDB 实例并发执行同一个任务的 `StateWriteReorganization` 阶段，加速 DDL 的执行。该功能由系统变量 [`tidb_ddl_distribute_reorg`](/system-variables.md#tidb_ddl_distribute_reorg-从-v660-版本开始引入) 控制是否开启，目前只支持 `Add Index` 操作。
 
-    更多信息，请参考[用户文档](/foreign-key.md)。
-
-* 支持 MySQL 兼容的多值索引 (Multi-Valued Index)（实验特性）[#39592](https://github.com/pingcap/tidb/issues/39592) @[xiongjiwei](https://github.com/xiongjiwei) @[qw4990](https://github.com/qw4990) **tw@TomShawn**
-
-    TiDB 在 v6.6.0 引入了 MySQL 兼容的多值索引 (Multi-Valued Index)。过滤 JSON 列中某个数组的值是常见的操作，但普通索引对这类操作起不到加速作用。在数组上创建多值索引能够大幅提升过滤的性能。如果 JSON 列中的某个数组上存在多值索引，那么可以利用多值索引过滤带有 `MEMBER OF()`、`JSON_CONTAINS()`、`JSON_OVERLAPS()` 函数的检索条件，从而减少大量的 I/O 消耗，提升运行速度。
-
-    多值索引的引入，进一步增强了 TiDB 对 JSON 类型的支持，同时也提升了 TiDB 对 MySQL 8.0 的兼容性。
-
-    更多信息，请参考[用户文档](/sql-statements/sql-statement-create-index.md#多值索引)。
-
-* 支持通过 `FLASHBACK CLUSTER TO TIMESTAMP` 命令闪回 DDL 操作 [#14088](https://github.com/tikv/tikv/issues/14045) @[Defined2014](https://github.com/Defined2014) @[JmPotato](https://github.com/JmPotato) **tw@ran-huang**
-
-    [`FLASHBACK CLUSTER TO TIMESTAMP`](/sql-statements/sql-statement-flashback-to-timestamp.md) 语句支持在 Garbage Collection (GC) life time 内快速回退整个集群到指定的时间点。在 TiDB v6.6.0 版本中，该功能新支持撤销 DDL 操作，适用于快速撤消集群的 DML 或 DDL 误操作、支持分钟级别的快速回退集群、支持在时间线上多次回退以确定特定数据更改发生的时间。
-
-    更多信息，请参考[用户文档](/sql-statements/sql-statement-flashback-to-timestamp.md)。
-
-### 稳定性
-
-* 绑定历史执行计划 GA [#39199](https://github.com/pingcap/tidb/issues/39199) @[fzzf678](https://github.com/fzzf678) **tw@TomShawn**
-
-    在 v6.5.0 中，TiDB 扩展了 [`CREATE [GLOBAL | SESSION] BINDING`](/sql-statements/sql-statement-create-binding.md) 语句中的绑定对象，支持根据历史执行计划创建绑定。在 v6.6.0 中该功能 GA，执行计划的选择不仅限于当前 TiDB 节点，任意 TiDB 节点产生的历史执行计划都可以被选为 [SQL Binding](/sql-statements/sql-statement-create-binding.md) 的目标，进一步提升了功能的易用性。
-
-    更多信息，请参考[用户文档](/sql-plan-management.md#根据历史执行计划创建绑定)。
-
-* 新增若干优化器 Hint [#39964](https://github.com/pingcap/tidb/issues/39964) @[Reminiscent](https://github.com/Reminiscent) **tw@TomShawn**
-
-    TiDB 在 v6.6.0 中增加了若干优化器 Hint，用来控制 `LIMIT` 操作的执行计划选择：
-
-    - [`ORDER_INDEX()`](/optimizer-hints.md#keep_ordert1_name-idx1_name--idx2_name-)：提示优化器使用指定的索引，读取数据时保持索引的顺序，生成类似 `Limit + IndexScan(keep order: true)` 的计划。
-    - [`NO_ORDER_INDEX()`](/optimizer-hints.md#no_keep_ordert1_name-idx1_name--idx2_name-)：提示优化器使用指定的索引，读取数据时不保持顺序，生成类似 `TopN + IndexScan(keep order: false)` 的计划。
-
-    持续引入优化器 Hint 为用户提供了更多的干预手段，有助于解决 SQL 性能问题，并提升了整体性能的稳定性。
+### 性能
 
 * 支持悲观锁队列的稳定唤醒模型 [#13298](https://github.com/tikv/tikv/issues/13298) @[MyonKeminta](https://github.com/MyonKeminta) **tw@TomShawn**
 
     如果业务场景存在单点悲观锁冲突频繁的情况，原有的唤醒机制无法保证事务获取锁的时间，造成长尾延迟高，甚至获取锁超时。自 v6.6.0 起，用户可通过设置系统变量 [`tidb_pessimistic_txn_aggressive_locking`](/system-variables.md#tidb_pessimistic_txn_aggressive_locking-从-v660-版本开始引入) 为 `ON` 开启悲观锁的稳定唤醒模型。在该唤醒模型下，队列的唤醒顺序可被严格控制，避免无效唤醒造成的资源浪费。在锁冲突严重的场景中，能够减少长尾延时，降低 P99 响应时间。
 
     更多信息，请参考[用户文档](/system-variables.md#tidb_pessimistic_txn_aggressive_locking-从-v660-版本开始引入)。
-
-* 支持 DDL 动态资源管控（实验特性）[#38025](https://github.com/pingcap/tidb/issues/38025) @[hawkingrei](https://github.com/hawkingrei) **tw@ran-huang**
-
-    TiDB v6.6.0 版本引入了 DDL 动态资源管控，通过自动控制 DDL 的 CPU 使用量，尽量降低 DDL 变更任务对线上业务的影响。该功能仅在开启 [DDL 分布式并行执行框架](/system-variables.md#tidb_ddl_distribute_reorg-从-v660-版本开始引入)后生效。
-
-### 性能
 
 * 批量聚合数据请求 [#39361](https://github.com/pingcap/tidb/issues/39361) @[cfzjywxk](https://github.com/cfzjywxk) @[you06](https://github.com/you06) **tw@TomShawn**
 
@@ -125,13 +88,7 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
     TiDB v6.6.0 移除了执行计划缓存的限制，带有变量的 `LIMIT` 子句可以进入执行计划缓存，如 `LIMIT ?` 或者 `LIMIT 10, ?`。这使得更多的 SQL 能够从计划缓存中获益，提升执行效率。
 
     更多信息，请参考[用户文档](/sql-prepared-plan-cache.md)。
-
-* 支持 DDL 分布式并行执行框架（实验特性）[#37125](https://github.com/pingcap/tidb/issues/37125) @[zimulala](https://github.com/zimulala) **tw@ran-huang**
-
-    在过去的版本中，整个 TiDB 集群中仅允许一个 TiDB 实例作为 DDL Owner 处理 Schema 变更任务。为了进一步提升 DDL 的并发性，TiDB v6.6.0 版本引入了 DDL 分布式并行执行框架，支持集群中所有的 TiDB 实例并发执行同一个任务的 `StateWriteReorganization` 阶段，加速 DDL 的执行。该功能由系统变量 [`tidb_ddl_distribute_reorg`](/system-variables.md#tidb_ddl_distribute_reorg-从-v660-版本开始引入) 控制是否开启，目前只支持 `Add Index` 操作。
-
-### HTAP
-
+    
 * TiFlash 引擎支持带压缩的数据交换 [#6620](https://github.com/pingcap/tiflash/issues/6620) @[solotzg](https://github.com/solotzg) **tw@TomShawn**
 
     为了协同多节点进行计算，TiFlash 引擎需要在不同节点中进行数据交换。当需要交换的数据量非常大时，数据交换的性能可能影响整体计算效率。在 v6.6.0 版本中，TiFlash 引擎引入压缩机制，在必要时对需要交换的数据进行压缩，然后进行交换，从而提升数据交换效率。
@@ -148,32 +105,7 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 
 * 支持下推字符串函数 `regexp_replace` 至 TiFlash [#6115](https://github.com/pingcap/tiflash/issues/6115) @[xzhangxian1008](https://github.com/xzhangxian1008) **tw@qiancai**
 
-### 高可用
-
-* [Placement Rules in SQL](/placement-rules-in-sql.md) 支持指定 `SURVIVAL_PREFERENCE` [#38605](https://github.com/pingcap/tidb/issues/38605) @[nolouch](https://github.com/nolouch) **tw@qiancai**
-
-    `SURVIVAL_PREFERENCES` 为数据提供了生存偏好设置，从而提高数据的容灾生存能力。通过指定 `SURVIVAL_PREFERENCE`，你可以控制：
-
-    - 对于跨云区域部署的 TiDB 集群，当某个云区域产生故障时，指定数据库或表能在另一个云区域继续提供服务。
-    - 对于单个云区域内部署的 TiDB 集群，当某个可用区产生故障时，指定数据库或表能在另一个可用区继续提供服务。
-
-    更多信息，请参考[用户文档](/placement-rules-in-sql.md#生存偏好)。
-
-### 安全
-
-* TiFlash 支持 TLS 证书自动轮换 [#5503](https://github.com/pingcap/tiflash/issues/5503) @[ywqzzy](https://github.com/ywqzzy) **tw@qiancai**
-
-    TiDB v6.6.0 引入了 TiFlash TLS 证书自动轮换功能。在开启组件间加密传输的 TiDB 集群上，当 TiFlash 的 TLS 证书过期需要重新签发时，支持自动加载新的 TiFlash TLS 证书，无需重启 TiDB 集群。而且，TiDB 集群内部组件之间 TLS 过期轮换不影响 TiDB 集群的正常使用，保障了 TiDB 集群的高可用。
-
-    更多信息，请[用户文档](/enable-tls-between-components.md)。
-
-* TiDB Lightning 支持通过 AWS IAM 角色的密钥以及会话令牌来访问 S3 数据 [#4075](https://github.com/pingcap/tidb/issues/40750) @[okJiang](https://github.com/okJiang) **tw@qiancai**
-
-    在 v6.6.0 之前，TiDB Lightning 仅支持通过 AWS IAM **用户密钥**访问 S3 的数据，无法使用临时会话令牌。自 v6.6.0 起，TiDB Lightning 支持通过 AWS IAM **角色密钥 + 会话令牌**的方式来访问 S3 数据，以提高安全性。
-
-    更多信息，请参考[用户文档](/tidb-lightning/tidb-lightning-data-source.md#从-amazon-s3-导入数据)。
-
-### 数据库管理
+### 稳定性
 
 * 支持基于资源组的资源管控 (实验特性) [#38825](https://github.com/pingcap/tidb/issues/38825) @[nolouch](https://github.com/nolouch) @[BornChanger](https://github.com/BornChanger) @[glorv](https://github.com/glorv) @[tiancaiamao](https://github.com/tiancaiamao) @[Connor1996](https://github.com/Connor1996) @[JmPotato](https://github.com/JmPotato) @[hnes](https://github.com/hnes) @[CabinfeverB](https://github.com/CabinfeverB) @[HuSharp](https://github.com/HuSharp) **tw@hfxsd**
 
@@ -189,6 +121,60 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
     在 v6.6.0 中，启用资源管控特性需要同时打开 TiDB 的全局变量 [`tidb_enable_resource_control`](/system-variables.md#tidb_enable_resource_control-从-v660-版本开始引入) 及 TiKV 的配置项 [`resource-control.enabled`](/tikv-configuration-file.md#resource-control)。当前支持的限额方式基于“[用量](/tidb-resource-control.md#什么是-request-unit-ru)”（Request Unit，即 RU），RU 是 TiDB 对 CPU、IO 等系统资源的统一抽象单位。
 
     更多信息，请参考[用户文档](/tidb-resource-control.md)。
+
+* 绑定历史执行计划 GA [#39199](https://github.com/pingcap/tidb/issues/39199) @[fzzf678](https://github.com/fzzf678) **tw@TomShawn**
+
+    在 v6.5.0 中，TiDB 扩展了 [`CREATE [GLOBAL | SESSION] BINDING`](/sql-statements/sql-statement-create-binding.md) 语句中的绑定对象，支持根据历史执行计划创建绑定。在 v6.6.0 中该功能 GA，执行计划的选择不仅限于当前 TiDB 节点，任意 TiDB 节点产生的历史执行计划都可以被选为 [SQL Binding](/sql-statements/sql-statement-create-binding.md) 的目标，进一步提升了功能的易用性。
+
+    更多信息，请参考[用户文档](/sql-plan-management.md#根据历史执行计划创建绑定)。
+
+* 新增若干优化器 Hint [#39964](https://github.com/pingcap/tidb/issues/39964) @[Reminiscent](https://github.com/Reminiscent) **tw@TomShawn**
+
+    TiDB 在 v6.6.0 中增加了若干优化器 Hint，用来控制 `LIMIT` 操作的执行计划选择：
+
+    - [`ORDER_INDEX()`](/optimizer-hints.md#keep_ordert1_name-idx1_name--idx2_name-)：提示优化器使用指定的索引，读取数据时保持索引的顺序，生成类似 `Limit + IndexScan(keep order: true)` 的计划。
+    - [`NO_ORDER_INDEX()`](/optimizer-hints.md#no_keep_ordert1_name-idx1_name--idx2_name-)：提示优化器使用指定的索引，读取数据时不保持顺序，生成类似 `TopN + IndexScan(keep order: false)` 的计划。
+
+    持续引入优化器 Hint 为用户提供了更多的干预手段，有助于解决 SQL 性能问题，并提升了整体性能的稳定性。
+
+* 支持 DDL 动态资源管控（实验特性）[#38025](https://github.com/pingcap/tidb/issues/38025) @[hawkingrei](https://github.com/hawkingrei) **tw@ran-huang**
+
+    TiDB v6.6.0 版本引入了 DDL 动态资源管控，通过自动控制 DDL 的 CPU 使用量，尽量降低 DDL 变更任务对线上业务的影响。该功能仅在开启 [DDL 分布式并行执行框架](/system-variables.md#tidb_ddl_distribute_reorg-从-v660-版本开始引入)后生效。
+
+### 高可用
+
+* [Placement Rules in SQL](/placement-rules-in-sql.md) 支持指定 `SURVIVAL_PREFERENCE` [#38605](https://github.com/pingcap/tidb/issues/38605) @[nolouch](https://github.com/nolouch) **tw@qiancai**
+
+    `SURVIVAL_PREFERENCES` 为数据提供了生存偏好设置，从而提高数据的容灾生存能力。通过指定 `SURVIVAL_PREFERENCE`，你可以控制：
+
+    - 对于跨云区域部署的 TiDB 集群，当某个云区域产生故障时，指定数据库或表能在另一个云区域继续提供服务。
+    - 对于单个云区域内部署的 TiDB 集群，当某个可用区产生故障时，指定数据库或表能在另一个可用区继续提供服务。
+
+    更多信息，请参考[用户文档](/placement-rules-in-sql.md#生存偏好)。
+
+* 支持通过 `FLASHBACK CLUSTER TO TIMESTAMP` 命令闪回 DDL 操作 [#14088](https://github.com/tikv/tikv/issues/14045) @[Defined2014](https://github.com/Defined2014) @[JmPotato](https://github.com/JmPotato) **tw@ran-huang**
+
+    [`FLASHBACK CLUSTER TO TIMESTAMP`](/sql-statements/sql-statement-flashback-to-timestamp.md) 语句支持在 Garbage Collection (GC) life time 内快速回退整个集群到指定的时间点。在 TiDB v6.6.0 版本中，该功能新支持撤销 DDL 操作，适用于快速撤消集群的 DML 或 DDL 误操作、支持分钟级别的快速回退集群、支持在时间线上多次回退以确定特定数据更改发生的时间。
+
+    更多信息，请参考[用户文档](/sql-statements/sql-statement-flashback-to-timestamp.md)。
+
+### SQL 功能
+
+* 支持兼容 MySQL 语法的外键约束 [#18209](https://github.com/pingcap/tidb/issues/18209) @[crazycs520](https://github.com/crazycs520) **tw@Oreoxmt**
+
+    TiDB v6.6.0 引入了兼容 MySQL 语法的外键约束功能，支持在表内、表间关联数据并进行约束校验，并且支持级联操作。该特性有助于将 MySQL 上的应用迁移到 TiDB、保持数据一致性、提升数据质量并且方便数据建模。
+
+    更多信息，请参考[用户文档](/foreign-key.md)。
+
+* 支持 MySQL 兼容的多值索引 (Multi-Valued Index)（实验特性）[#39592](https://github.com/pingcap/tidb/issues/39592) @[xiongjiwei](https://github.com/xiongjiwei) @[qw4990](https://github.com/qw4990) **tw@TomShawn**
+
+    TiDB 在 v6.6.0 引入了 MySQL 兼容的多值索引 (Multi-Valued Index)。过滤 JSON 列中某个数组的值是常见的操作，但普通索引对这类操作起不到加速作用。在数组上创建多值索引能够大幅提升过滤的性能。如果 JSON 列中的某个数组上存在多值索引，那么可以利用多值索引过滤带有 `MEMBER OF()`、`JSON_CONTAINS()`、`JSON_OVERLAPS()` 函数的检索条件，从而减少大量的 I/O 消耗，提升运行速度。
+
+    多值索引的引入，进一步增强了 TiDB 对 JSON 类型的支持，同时也提升了 TiDB 对 MySQL 8.0 的兼容性。
+
+    更多信息，请参考[用户文档](/sql-statements/sql-statement-create-index.md#多值索引)。
+
+### 数据库管理
 
 * 支持配置只读存储节点来执行资源消耗型任务 @[v01dstar](https://github.com/v01dstar) **tw@Oreoxmt**
 
@@ -207,6 +193,46 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
     TiDB 集群初次启动时，可通过命令行参数 `--initialize-sql-file` 指定执行的 SQL 脚本。该功能可用于修改系统变量的值、创建用户或分配权限等。
 
     更多信息，请参考[用户文档](/tidb-configuration-file.md#initialize-sql-file-从-v660-版本开始引入)。
+
+- TiDB Data Migration (DM) 集成了 TiDB Lightning 的 Physical Import Mode，全量迁移性能提升最高达到 10 倍（实验特性）@[lance6716](https://github.com/lance6716) **tw@ran-huang**
+
+    在 v6.6.0 版本中，DM 的全量迁移能力集成了 TiDB Lightning 的 Physical Import Mode，使得 DM 全量数据迁移的性能最高可提升 10 倍，大大缩短了大数据量场景下的迁移时间。在 v6.6.0 以前，数据量较多的场景下，需要单独配置 TiDB Lightning 的 Physical Import Mode 任务来进行快速的全量数据迁移，再用 DM 来进行增量数据迁移，配置较为复杂。从 v6.6.0 起，用户迁移大数据量的场景，无需再配置 TiDB Lightning 的任务，使用一个 DM 任务即可完成。
+
+    更多信息，请参考[用户文档](/dm/dm-precheck.md#physical-import-检查项)。
+
+- TiDB Lightning 新增配置文件参数 "header-schema-match" 用于解决源文件里的列名和目标表的列名不匹配的问题 @[dsdashun](https://github.com/dsdashun)
+
+    在 v6.6.0 版本中，TiDB Lightning 新增配置文件参数 "header-schema-match"，默认取值为 `true`，表示源 CSV 文件第一行有表的列名信息，且和目标表列名保持一致。如果 CSV 表头中的字段名和目标表的列名不匹配，此时可以将该配置设置为 false，TiDB Lightning 将忽略不匹配的问题，继续按目标表中的列顺序导入数据。
+
+    更多信息，请参考 [TiDB Lightning 任务配置](tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置)。
+
+- TiDB Lightning 向 TiKV 传输键值对时支持启用压缩传输 [#41163](https://github.com/pingcap/tidb/issues/41163) @[gozssky](https://github.com/gozssky) **tw@qiancai**
+
+    自 v6.6.0 起，TiDB Lightning 支持将本地编码排序后的键值对在网络传输时进行压缩再发送到 TiKV，从而减少网络传输的数据量，降低网络带宽开销 。之前版本不支持该功能，在数据量较大的情况下，TiDB Lightning 对网络带宽要求相对较高，且会产生较高的流量费。
+
+    该功能默认关闭，你可以通过将 TiDB Lightning 配置项 `compress-kv-pairs` 设置为 "gzip" 或者 "gz" 开启此功能。
+
+    更多信息，请参考[用户文档](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置)。
+
+- TiKV-CDC 工具 GA，支持订阅 RawKV 的数据变更 [#48](https://github.com/tikv/migration/issues/48) @[zeminzhou](https://github.com/zeminzhou) @[haojinming](https://github.com/haojinming) @[pingyu](https://github.com/pingyu) **tw@Oreoxmt**
+
+    TiKV-CDC 是一个 TiKV 集群的 CDC (Change Data Capture) 工具。TiKV 可以独立于 TiDB，与 PD 构成 KV 数据库，此时的产品形态为 RawKV。TiKV-CDC 支持订阅 RawKV 的数据变更，并实时同步到下游 TiKV 集群，从而实现 RawKV 的跨集群复制。
+
+    更多信息，请参考[用户文档](https://tikv.org/docs/latest/concepts/explore-tikv-features/cdc/cdc-cn/)。
+
+- TiCDC 支持在 Kafka 同步任务上开启单表的横向扩展功能，将单表的同步任务下发到多个 TiCDC 节点上执行 (实验特性) [#7720](https://github.com/pingcap/tiflow/issues/7720) @[overvenus](https://github.com/overvenus) **tw@Oreoxmt**
+
+    在 v6.6.0 之前，当上游单表写入量较大时，单表的复制能力无法横向扩展导致同步延迟增加。自 TiCDC v6.6.0 起，下游为 Kafka 的同步任务可以将上游单表的同步任务下发到多个 TiCDC 节点上执行，实现单表同步性能的横向扩展。
+
+    更多信息，请参考[用户文档](/ticdc/ticdc-sink-to-kafka.md#横向扩展大单表的负载到多个-ticdc-节点)。
+
+- [GORM](https://github.com/go-gorm/gorm) 已添加 TiDB 集成测试。目前 TiDB 已成为 GORM 默认支持的数据库 [#6014](https://github.com/go-gorm/gorm/pull/6014) @[Icemap](https://github.com/Icemap)
+
+    [GORM MySQL driver](https://github.com/go-gorm/mysql) 在 `v1.4.6` 中新增 TiDB `AUTO_RANDOM` 特性适配 [#104](https://github.com/go-gorm/mysql/pull/104) @[Icemap](https://github.com/Icemap)。并修复连接 TiDB 时，在 `AutoMigrate` 期间无法更改 `Unique` 字段的非 `Unique` 属性的问题 [#105](https://github.com/go-gorm/mysql/pull/105) @[Icemap](https://github.com/Icemap)
+
+    [GORM 文档](https://github.com/go-gorm/gorm.io) 提及 TiDB 作为默认数据库 [#638](https://github.com/go-gorm/gorm.io/pull/638) @[Icemap](https://github.com/Icemap)
+
+    更多信息，请参考[GORM 用户文档](https://gorm.io/docs/index.html)。
 
 ### 可观测性
 
@@ -264,52 +290,25 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 
     更多信息，请参考[用户文档](/statement-summary-tables.md#持久化-statements-summary)。
 
+### 安全
+
+* TiFlash 支持 TLS 证书自动轮换 [#5503](https://github.com/pingcap/tiflash/issues/5503) @[ywqzzy](https://github.com/ywqzzy) **tw@qiancai**
+
+    TiDB v6.6.0 引入了 TiFlash TLS 证书自动轮换功能。在开启组件间加密传输的 TiDB 集群上，当 TiFlash 的 TLS 证书过期需要重新签发时，支持自动加载新的 TiFlash TLS 证书，无需重启 TiDB 集群。而且，TiDB 集群内部组件之间 TLS 过期轮换不影响 TiDB 集群的正常使用，保障了 TiDB 集群的高可用。
+
+    更多信息，请[用户文档](/enable-tls-between-components.md)。
+
+* TiDB Lightning 支持通过 AWS IAM 角色的密钥以及会话令牌来访问 S3 数据 [#4075](https://github.com/pingcap/tidb/issues/40750) @[okJiang](https://github.com/okJiang) **tw@qiancai**
+
+    在 v6.6.0 之前，TiDB Lightning 仅支持通过 AWS IAM **用户密钥**访问 S3 的数据，无法使用临时会话令牌。自 v6.6.0 起，TiDB Lightning 支持通过 AWS IAM **角色密钥 + 会话令牌**的方式来访问 S3 数据，以提高安全性。
+
+    更多信息，请参考[用户文档](/tidb-lightning/tidb-lightning-data-source.md#从-amazon-s3-导入数据)。
+    
 ### 遥测
 
 - 自 2023 年 2 月 20 日起，新发布的 TiDB 和 TiDB Dashboard 版本（含 v6.6.0），默认关闭遥测功能，即默认不再收集使用情况信息分享给 PingCAP。如果升级至这些版本前使用默认的遥测配置，则升级后遥测功能处于关闭状态。具体的版本可参考 [TiDB 版本发布时间线](/releases/release-timeline.md)。
 - 从 v1.11.3 起，新部署的 TiUP 默认关闭遥测功能，即默认不再收集使用情况信息。如果从 v1.11.3 之前的 TiUP 版本升级至 v1.11.3 或更高 TiUP 版本，遥测保持升级前的开启或关闭状态。
 
-### TiDB 工具
-
-- TiDB Data Migration (DM) 集成了 TiDB Lightning 的 Physical Import Mode，全量迁移性能提升最高达到 10 倍（实验特性）@[lance6716](https://github.com/lance6716) **tw@ran-huang**
-
-    在 v6.6.0 版本中，DM 的全量迁移能力集成了 TiDB Lightning 的 Physical Import Mode，使得 DM 全量数据迁移的性能最高可提升 10 倍，大大缩短了大数据量场景下的迁移时间。在 v6.6.0 以前，数据量较多的场景下，需要单独配置 TiDB Lightning 的 Physical Import Mode 任务来进行快速的全量数据迁移，再用 DM 来进行增量数据迁移，配置较为复杂。从 v6.6.0 起，用户迁移大数据量的场景，无需再配置 TiDB Lightning 的任务，使用一个 DM 任务即可完成。
-
-    更多信息，请参考[用户文档](/dm/dm-precheck.md#physical-import-检查项)。
-
-- TiDB Lightning 新增配置文件参数 "header-schema-match" 用于解决源文件里的列名和目标表的列名不匹配的问题 @[dsdashun](https://github.com/dsdashun)
-
-    在 v6.6.0 版本中，TiDB Lightning 新增配置文件参数 "header-schema-match"，默认取值为 `true`，表示源 CSV 文件第一行有表的列名信息，且和目标表列名保持一致。如果 CSV 表头中的字段名和目标表的列名不匹配，此时可以将该配置设置为 false，TiDB Lightning 将忽略不匹配的问题，继续按目标表中的列顺序导入数据。
-
-    更多信息，请参考 [TiDB Lightning 任务配置](tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置)。
-
-- TiDB Lightning 向 TiKV 传输键值对时支持启用压缩传输 [#41163](https://github.com/pingcap/tidb/issues/41163) @[gozssky](https://github.com/gozssky) **tw@qiancai**
-
-    自 v6.6.0 起，TiDB Lightning 支持将本地编码排序后的键值对在网络传输时进行压缩再发送到 TiKV，从而减少网络传输的数据量，降低网络带宽开销 。之前版本不支持该功能，在数据量较大的情况下，TiDB Lightning 对网络带宽要求相对较高，且会产生较高的流量费。
-
-    该功能默认关闭，你可以通过将 TiDB Lightning 配置项 `compress-kv-pairs` 设置为 "gzip" 或者 "gz" 开启此功能。
-
-    更多信息，请参考[用户文档](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置)。
-
-- TiKV-CDC 工具 GA，支持订阅 RawKV 的数据变更 [#48](https://github.com/tikv/migration/issues/48) @[zeminzhou](https://github.com/zeminzhou) @[haojinming](https://github.com/haojinming) @[pingyu](https://github.com/pingyu) **tw@Oreoxmt**
-
-    TiKV-CDC 是一个 TiKV 集群的 CDC (Change Data Capture) 工具。TiKV 可以独立于 TiDB，与 PD 构成 KV 数据库，此时的产品形态为 RawKV。TiKV-CDC 支持订阅 RawKV 的数据变更，并实时同步到下游 TiKV 集群，从而实现 RawKV 的跨集群复制。
-
-    更多信息，请参考[用户文档](https://tikv.org/docs/latest/concepts/explore-tikv-features/cdc/cdc-cn/)。
-
-- TiCDC 支持在 Kafka 同步任务上开启单表的横向扩展功能，将单表的同步任务下发到多个 TiCDC 节点上执行 (实验特性) [#7720](https://github.com/pingcap/tiflow/issues/7720) @[overvenus](https://github.com/overvenus) **tw@Oreoxmt**
-
-    在 v6.6.0 之前，当上游单表写入量较大时，单表的复制能力无法横向扩展导致同步延迟增加。自 TiCDC v6.6.0 起，下游为 Kafka 的同步任务可以将上游单表的同步任务下发到多个 TiCDC 节点上执行，实现单表同步性能的横向扩展。
-
-    更多信息，请参考[用户文档](/ticdc/ticdc-sink-to-kafka.md#横向扩展大单表的负载到多个-ticdc-节点)。
-
-- [GORM](https://github.com/go-gorm/gorm) 已添加 TiDB 集成测试。目前 TiDB 已成为 GORM 默认支持的数据库 [#6014](https://github.com/go-gorm/gorm/pull/6014) @[Icemap](https://github.com/Icemap)
-
-    [GORM MySQL driver](https://github.com/go-gorm/mysql) 在 `v1.4.6` 中新增 TiDB `AUTO_RANDOM` 特性适配 [#104](https://github.com/go-gorm/mysql/pull/104) @[Icemap](https://github.com/Icemap)。并修复连接 TiDB 时，在 `AutoMigrate` 期间无法更改 `Unique` 字段的非 `Unique` 属性的问题 [#105](https://github.com/go-gorm/mysql/pull/105) @[Icemap](https://github.com/Icemap)
-
-    [GORM 文档](https://github.com/go-gorm/gorm.io) 提及 TiDB 作为默认数据库 [#638](https://github.com/go-gorm/gorm.io/pull/638) @[Icemap](https://github.com/Icemap)
-
-    更多信息，请参考[GORM 用户文档](https://gorm.io/docs/index.html)。
 
 ## 兼容性变更
 
