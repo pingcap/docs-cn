@@ -571,21 +571,21 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 
     + TiDB Data Migration (DM)
         <!-- 4 -->
-        - 修复 `binlog-schema delete` 命令执行失败的问题 [#7373](https://github.com/pingcap/tiflow/issues/7373) @[liumengya94]
-        - 修复当最后一个 binlog 是被 skip 的 DDL 时，checkpoint 不推进的问题 [#8175](https://github.com/pingcap/tiflow/issues/8175) @[D3Hunter]
-        (dup: release-6.1.4.md > Bug 修复> Tools> TiDB Data Migration (DM))- 修复当在某个表上同时指定 `UPDATE` 和非 `UPDATE` 类型的表达式过滤规则 `expression-filter` 时，所有 `UPDATE` 操作被跳过的问题 [#7831](https://github.com/pingcap/tiflow/issues/7831) @[lance6716](https://github.com/lance6716) @[lance6716]
-        (dup: release-6.1.4.md > Bug 修复> Tools> TiDB Data Migration (DM))- 修复当某个表上仅指定 `update-old-value-expr` 或 `update-new-value-expr` 时，过滤规则不生效或 DM 发生 panic 的问题 [#7774](https://github.com/pingcap/tiflow/issues/7774) @[lance6716](https://github.com/lance6716) @[lance6716]
+        - 修复 `binlog-schema delete` 命令执行失败的问题 [#7373](https://github.com/pingcap/tiflow/issues/7373) @[liumengya94](https://github.com/liumengya94)
+        - 修复当最后一个 binlog 是被 skip 的 DDL 时，checkpoint 不推进的问题 [#8175](https://github.com/pingcap/tiflow/issues/8175) @[D3Hunter](https://github.com/D3Hunter)
+        (dup: release-6.1.4.md > Bug 修复> Tools> TiDB Data Migration (DM))- 修复当在某个表上同时指定 `UPDATE` 和非 `UPDATE` 类型的表达式过滤规则 `expression-filter` 时，所有 `UPDATE` 操作被跳过的问题 [#7831](https://github.com/pingcap/tiflow/issues/7831) @[lance6716](https://github.com/lance6716)
+        (dup: release-6.1.4.md > Bug 修复> Tools> TiDB Data Migration (DM))- 修复当某个表上仅指定 `update-old-value-expr` 或 `update-new-value-expr` 时，过滤规则不生效或 DM 发生 panic 的问题 [#7774](https://github.com/pingcap/tiflow/issues/7774) @[lance6716](https://github.com/lance6716)
 
     + TiDB Lightning
         <!-- 9 -->
         - 修复了部分场景下 TiDB 重启导致 TiDB Lightning 卡住的问题 [#33714](https://github.com/pingcap/tidb/issues/33714) @[lichunzhu](https://github.com/lichunzhu) **tw@shichun-0415**
-        - 修复在并行导入时，当除最后一个 TiDB Lightning 实例外的其他实例都遇到本地重复记录时，TiDB Lightning 可能会错误地跳过冲突处理的问题 [#40923](https://github.com/pingcap/tidb/issues/40923) @[lichunzhu]
-        - 修复 precheck 无法准确检测目标集群是否存在运行中的 TiCDC 的问题 [#41040](https://github.com/pingcap/tidb/issues/41040) @[lance6716]
-        - 修复 TiDB Lightning 在 split-region 阶段发生 panic 的问题 [#40934](https://github.com/pingcap/tidb/issues/40934) @[lance6716]
-        - 修复冲突处理逻辑 (`duplicate-resolution`) 可能导致 checksum 不一致的问题 [#40657](https://github.com/pingcap/tidb/issues/40657) @[gozssky]
-        - 修复当数据文件中存在未闭合的 delimiter 时可能 OOM 的问题 [#40400](https://github.com/pingcap/tidb/issues/40400) @[buchuitoudegou]
-        - 修复报错中的文件 offset 超过文件大小的问题 [#40034](https://github.com/pingcap/tidb/issues/40034) @[buchuitoudegou]
-        - 修复新版 PDClient 可能导致并行导入失败的问题 [#40493](https://github.com/pingcap/tidb/issues/40493) @[AmoebaProtozoa]
+        - 修复在并行导入时，当除最后一个 TiDB Lightning 实例外的其他实例都遇到本地重复记录时，TiDB Lightning 可能会错误地跳过冲突处理的问题 [#40923](https://github.com/pingcap/tidb/issues/40923) @[lichunzhu](https://github.com/lichunzhu)
+        - 修复 precheck 无法准确检测目标集群是否存在运行中的 TiCDC 的问题 [#41040](https://github.com/pingcap/tidb/issues/41040) @[lance6716](https://github.com/lance6716)
+        - 修复 TiDB Lightning 在 split-region 阶段发生 panic 的问题 [#40934](https://github.com/pingcap/tidb/issues/40934) @[lance6716](https://github.com/lance6716)
+        - 修复冲突处理逻辑 (`duplicate-resolution`) 可能导致 checksum 不一致的问题 [#40657](https://github.com/pingcap/tidb/issues/40657) @[gozssky](https://github.com/gozssky)
+        - 修复当数据文件中存在未闭合的 delimiter 时可能 OOM 的问题 [#40400](https://github.com/pingcap/tidb/issues/40400) @[buchuitoudegou](https://github.com/buchuitoudegou)
+        - 修复报错中的文件 offset 超过文件大小的问题 [#40034](https://github.com/pingcap/tidb/issues/40034) @[buchuitoudegou](https://github.com/buchuitoudegou)
+        - 修复新版 PD Client 可能导致并行导入失败的问题 [#40493](https://github.com/pingcap/tidb/issues/40493) @[AmoebaProtozoa](https://github.com/AmoebaProtozoa)
         (dup: release-6.1.4.md > Bug 修复> Tools> TiDB Lightning)- 修复 precheck 检查项有时无法监测到之前的导入失败遗留的脏数据的问题 [#39477](https://github.com/pingcap/tidb/issues/39477) @[dsdashun](https://github.com/dsdashun) @[dsdashun]
 
 ## 贡献者
