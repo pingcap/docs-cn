@@ -5,7 +5,7 @@ summary: 了解 BR 支持的备份存储服务的 URL 格式、鉴权方案和�
 
 # 备份存储
 
-TiDB 支持 Amazon S3、Google Cloud Storage (GCS)、Azure Blob Storage 和 NFS 作为备份恢复的存储。具体来说，可以在 `br` 的 `--storage` 或 `-s` 选项中指定备份存储的 URL。本文介绍不同外部存储服务中 [URL 的定义格式](#url-格式)、存储过程中的[鉴权方案](#鉴权)以及[存储服务端加密](#存储服务端加密)。
+TiDB 支持 Amazon S3、Google Cloud Storage (GCS)、Azure Blob Storage 和 NFS 作为备份恢复的存储。具体来说，可以在 `br` 的 `--storage` 或 `-s` 选项中指定备份存储的 URI。本文介绍不同外部存储服务中 [URI 的定义格式](#uri-格式)、存储过程中的[鉴权方案](#鉴权)以及[存储服务端加密](#存储服务端加密)。
 
 ## BR 向 TiKV 发送凭证
 
@@ -27,11 +27,11 @@ TiDB 支持 Amazon S3、Google Cloud Storage (GCS)、Azure Blob Storage 和 NFS 
 BACKUP DATABASE * TO 's3://bucket-name/prefix' SEND_CREDENTIALS_TO_TIKV = FALSE;
 ```
 
-## URL 格式
+## URI 格式
 
 ### 格式说明
 
-本部分介绍存储服务的 URL 格式：
+本部分介绍存储服务的 URI 格式：
 
 ```shell
 [scheme]://[host]/[path]?[parameters]
@@ -46,6 +46,7 @@ BACKUP DATABASE * TO 's3://bucket-name/prefix' SEND_CREDENTIALS_TO_TIKV = FALSE;
 
     - `access-key`：访问密钥
     - `secret-access-key`：秘密访问密钥
+    - `session-token`：会话令牌
     - `use-accelerate-endpoint`：是否在 Amazon S3 上使用加速端点，默认为 `false`
     - `endpoint`：Amazon S3 兼容服务自定义端点的 URL，例如 `<https://s3.example.com/>`
     - `force-path-style`：使用路径类型 (path-style)，而不是虚拟托管类型 (virtual-hosted-style)，默认为 `true`
@@ -79,7 +80,7 @@ BACKUP DATABASE * TO 's3://bucket-name/prefix' SEND_CREDENTIALS_TO_TIKV = FALSE;
 </div>
 </SimpleTab>
 
-### URL 示例
+### URI 示例
 
 本部分示例以 `host`（上表中 `bucket name`、`container name`）为 `external` 为例进行介绍。
 
@@ -155,7 +156,7 @@ BACKUP DATABASE * TO 's3://bucket-name/prefix' SEND_CREDENTIALS_TO_TIKV = FALSE;
 
 - 方式一：指定访问密钥
 
-    如果指定访问密钥和秘密访问密钥，将按照指定的访问密钥和秘密访问密钥进行鉴权。除了在 URL 中指定密钥外，还支持以下方式：
+    如果指定访问密钥和秘密访问密钥，将按照指定的访问密钥和秘密访问密钥进行鉴权。除了在 URI 中指定密钥外，还支持以下方式：
 
     - br 命令行工具读取 `$AWS_ACCESS_KEY_ID` 和 `$AWS_SECRET_ACCESS_KEY` 环境变量
     - br 命令行工具读取 `$AWS_ACCESS_KEY` 和 `$AWS_SECRET_KEY` 环境变量
@@ -174,7 +175,7 @@ BACKUP DATABASE * TO 's3://bucket-name/prefix' SEND_CREDENTIALS_TO_TIKV = FALSE;
 </div>
 <div label="GCS" value="gcs">
 
-配置访问 GCS 的账户可以通过指定访问密钥的方式。如果指定了 `credentials-file` 参数，将按照指定的 `credentials-file` 进行鉴权。除了在 URL 中指定密钥文件外，还支持以下方式：
+配置访问 GCS 的账户可以通过指定访问密钥的方式。如果指定了 `credentials-file` 参数，将按照指定的 `credentials-file` 进行鉴权。除了在 URI 中指定密钥文件外，还支持以下方式：
 
 - br 命令行工具读取位于 `$GOOGLE_APPLICATION_CREDENTIALS` 环境变量所指定路径的文件内容
 - br 命令行工具读取位于 `~/.config/gcloud/application_default_credentials.json` 的文件内容
@@ -185,7 +186,7 @@ BACKUP DATABASE * TO 's3://bucket-name/prefix' SEND_CREDENTIALS_TO_TIKV = FALSE;
 
 - 方式一：指定访问密钥
 
-    在 URL 配置 `account-name` 和 `account-key`，则使用该参数指定的密钥。除了在 URL 中指定密钥文件外，还支持 br 命令行工具读取 `$AZURE_STORAGE_KEY` 的方式。
+    在 URI 配置 `account-name` 和 `account-key`，则使用该参数指定的密钥。除了在 URI 中指定密钥文件外，还支持 br 命令行工具读取 `$AZURE_STORAGE_KEY` 的方式。
 
 - 方式二：使用 Azure AD 备份恢复
 

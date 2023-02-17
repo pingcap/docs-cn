@@ -67,7 +67,7 @@ tiup dumpling --host ${host} --port 3306 --user root --password ${password} --fi
 |-P 或 --port       |MySQL 数据库的端口|
 |-h 或 --host       |MySQL 数据库的 IP 地址|
 |-t 或 --thread     |导出的线程数|
-|-o 或 --output     |存储导出文件的目录，支持本地文件路径或[外部存储 URL 格式](/br/backup-and-restore-storages.md)|
+|-o 或 --output     |存储导出文件的目录，支持本地文件路径或[外部存储 URI 格式](/br/backup-and-restore-storages.md)|
 |-r 或 --row        |单个文件的最大行数|
 |-F                 |指定单个文件的最大大小，单位为 MiB，建议值 256 MiB|
 |-B 或 --database   |导出指定数据库|
