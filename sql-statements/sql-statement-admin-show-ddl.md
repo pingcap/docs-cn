@@ -11,7 +11,7 @@ summary: TiDB 数据库中 ADMIN SHOW DDL [JOBS|JOB QUERIES] 的使用概况。
 
 ```ebnf+diagram
 AdminStmt ::=
-    'ADMIN' ( 'SHOW' ( 'DDL' ( 'JOBS' Int64Num? WhereClauseOptional | 'JOB' 'QUERIES' NumList )? | TableName 'NEXT_ROW_ID' | 'SLOW' AdminShowSlow ) | 'CHECK' ( 'TABLE' TableNameList | 'INDEX' TableName Identifier ( HandleRange ( ',' HandleRange )* )? ) | 'RECOVER' 'INDEX' TableName Identifier | 'CLEANUP' ( 'INDEX' TableName Identifier | 'TABLE' 'LOCK' TableNameList ) | 'CHECKSUM' 'TABLE' TableNameList | 'CANCEL' 'DDL' 'JOBS' NumList | 'RELOAD' ( 'EXPR_PUSHDOWN_BLACKLIST' | 'OPT_RULE_BLACKLIST' | 'BINDINGS' ) | 'PLUGINS' ( 'ENABLE' | 'DISABLE' ) PluginNameList | 'REPAIR' 'TABLE' TableName CreateTableStmt | ( 'FLUSH' | 'CAPTURE' | 'EVOLVE' ) 'BINDINGS' )
+    'ADMIN' ( 'SHOW' ( 'DDL' ( 'JOBS' Int64Num? WhereClauseOptional | 'JOB' 'QUERIES' NumList | 'JOB' 'QUERIES' 'LIMIT' m 'OFFSET' n )? | TableName 'NEXT_ROW_ID' | 'SLOW' AdminShowSlow ) | 'CHECK' ( 'TABLE' TableNameList | 'INDEX' TableName Identifier ( HandleRange ( ',' HandleRange )* )? ) | 'RECOVER' 'INDEX' TableName Identifier | 'CLEANUP' ( 'INDEX' TableName Identifier | 'TABLE' 'LOCK' TableNameList ) | 'CHECKSUM' 'TABLE' TableNameList | 'CANCEL' 'DDL' 'JOBS' NumList | 'RELOAD' ( 'EXPR_PUSHDOWN_BLACKLIST' | 'OPT_RULE_BLACKLIST' | 'BINDINGS' ) | 'PLUGINS' ( 'ENABLE' | 'DISABLE' ) PluginNameList | 'REPAIR' 'TABLE' TableName CreateTableStmt | ( 'FLUSH' | 'CAPTURE' | 'EVOLVE' ) 'BINDINGS' )
 
 NumList ::=
     Int64Num ( ',' Int64Num )*
@@ -112,6 +112,57 @@ ADMIN SHOW DDL JOB QUERIES 51;
 ```
 
 只能在 DDL 历史作业队列中最近十条结果中搜索与 `job_id` 对应的正在运行中的 DDL 作业。
+
+### `ADMIN SHOW DDL JOB QUERIES LIMIT m OFFSET n`
+
+`ADMIN SHOW DDL JOB QUERIES LIMIT m OFFSET n` 语句用于查看指定范围 `[n+1, n+m]` 的 `job_id` 对应的 DDL 任务的原始 SQL 语句：
+
+{{< copyable "sql" >}}
+
+```sql
+ADMIN SHOW DDL JOB QUERIES LIMIT m;           # -- 取出前 m 行
+ADMIN SHOW DDL JOB QUERIES LIMIT n, m;        # -- 取出第 n+1 到 n+m 行
+ADMIN SHOW DDL JOB QUERIES LIMIT m OFFSET n;  # -- 取出第 n+1 到 n+m 行
+```
+
+以上语法中 `n` 和 `m` 都是非负整数。语法的具体示例如下：
+
+```sql
+ADMIN SHOW DDL JOB QUERIES LIMIT 3;  # Retrieve first 3 rows
++--------+--------------------------------------------------------------+
+| JOB_ID | QUERY                                                        | 
++--------+--------------------------------------------------------------+
+|     59 | ALTER TABLE t1 ADD INDEX index2 (col2)                       | 
+|     60 | ALTER TABLE t2 ADD INDEX index1 (col1)                       | 
+|     58 | CREATE TABLE t2 (id INT NOT NULL PRIMARY KEY auto_increment) | 
++--------+--------------------------------------------------------------+
+3 rows in set (0.00 sec)
+```
+
+```sql
+ADMIN SHOW DDL JOB QUERIES LIMIT 6, 2;  # Retrieve rows 7-8
++--------+----------------------------------------------------------------------------+
+| JOB_ID | QUERY                                                                      | 
++--------+----------------------------------------------------------------------------+
+|     52 | ALTER TABLE t1 ADD INDEX index1 (col1)                                     | 
+|     51 | CREATE TABLE IF NOT EXISTS t1 (id INT NOT NULL PRIMARY KEY auto_increment) | 
++--------+----------------------------------------------------------------------------+
+3 rows in set (0.00 sec)
+```
+
+```sql
+ADMIN SHOW DDL JOB QUERIES LIMIT 3 OFFSET 4;  # Retrieve rows 5-7
++--------+----------------------------------------+
+| JOB_ID | QUERY                                  | 
++--------+----------------------------------------+
+|     54 | DROP TABLE IF EXISTS t3                |
+|     53 | ALTER TABLE t1 DROP INDEX index1       |
+|     52 | ALTER TABLE t1 ADD INDEX index1 (col1) | 
++--------+----------------------------------------+
+3 rows in set (0.00 sec)
+```
+
+该语句可以在 DDL 历史作业队列任意指定范围中搜索与 `job_id` 对应的正在运行中的 DDL 作业，没有 `ADMIN SHOW DDL JOB QUERIES` 语句的最近 10 条结果的限制。
 
 ## MySQL 兼容性
 
