@@ -1130,9 +1130,7 @@ rocksdb defaultcf、rocksdb writecf 和 rocksdb lockcf 相关的配置项。
 ### `block-size`
 
 + 一个 RocksDB block 的默认大小。
-+ `defaultcf` 默认值：64KB
-+ `writecf` 默认值：64KB
-+ `lockcf` 默认值：16KB
++ 默认值：16KB
 + 最小值：1KB
 + 单位：KB|MB|GB
 
