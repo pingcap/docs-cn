@@ -8,11 +8,54 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-statement-details/','/docs-cn/dev/da
 
 在列表中点击任意一行可以进入该 SQL 语句的详情页查看更详细的信息，此信息包括三大部分：
 
-- SQL 语句概况：包括 SQL 模板、SQL 模板 ID、当前查看的时间范围、执行计划个数以及执行所在的数据库（下图区域 1）
+- SQL 语句概况：包括 SQL 模板、SQL 模板 ID、当前查看的时间范围、执行计划个数、执行所在的数据库以及快速绑定执行计划功能（下图区域 1）
 - 执行计划列表：如果一个 SQL 语句有多个执行计划，则显示执行计划列表。除了文本信息显示，TiDB 自 v6.2.0 开始引入图形化执行计划，通过图形化的执行计划，你可以更清晰地了解一个语句的具体算子和对应的内容。可以选择不同的执行计划，在列表和图形下方会显示该执行计划详情（下图区域 2）
 - 执行计划详情：显示选中的执行计划的详细信息，具体见下一小节（下图区域 3）
 
-![详情](/media/dashboard/dashboard-statement-detail-v620.png)
+![详情](/media/dashboard/dashboard-statement-detail-v660.png)
+
+## 快速绑定执行计划
+
+自 v6.6.0 起，TiDB 引入了快速绑定执行计划的功能。你可以在 TiDB Dashboard 中，快速完成 SQL 语句与特定计划的绑定。
+
+### 使用方式
+
+#### 绑定一个执行计划
+
+1. 点击**执行计划绑定** (Plan Binding)，弹出弹窗。
+
+    ![快速绑定执行计划-未绑定-入口](/media/dashboard/dashboard-quick-binding-entry-notbound.png)
+
+2. 选择一个需要绑定的执行计划，点击**绑定** (Bind)。
+
+    ![快速绑定执行计划-弹窗](/media/dashboard/dashboard-quick-binding-popup-notbound.png)
+
+3. 绑定成功后，可以看到**已绑定** (Bound) 提示。
+
+    ![快速绑定执行计划-弹窗-绑定成功](/media/dashboard/dashboard-quick-binding-popup-bound.png)
+
+#### 取消已有的执行计划绑定
+
+1. 在已经绑定了执行计划的 SQL 语句页面上，点击**执行计划绑定** (Plan Binding)，弹出弹窗。
+
+    ![快速绑定执行计划-已绑定-入口](/media/dashboard/dashboard-quick-binding-entry-bound.png)
+
+2. 点击**取消绑定** (Drop)。
+
+    ![快速绑定执行计划-弹窗-绑定成功](/media/dashboard/dashboard-quick-binding-popup-bound.png)
+
+3. 取消成功后，可以看到**未绑定** (Not Bound) 提示。
+
+    ![快速绑定执行计划-弹窗](/media/dashboard/dashboard-quick-binding-popup-notbound.png)
+
+### 使用限制
+
+目前还不支持通过 TiDB Dashboard 绑定下列语句的执行计划：
+
+- 非 `SELECT`、`DELETE`、`UPDATE`、`INSERT`、`REPLACE` 类型语句
+- 带有子查询的查询
+- 访问 TiFlash 的查询
+- 对三张表或更多表进行 Join 的查询
 
 ## 执行计划详情
 

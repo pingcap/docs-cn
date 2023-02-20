@@ -274,8 +274,8 @@ TxnLockNotFound 错误是由于事务提交的慢了，超过了 TTL 的时间�
     查看提交间隔：
 
     ```shell
-    tiup ctl:<cluster-version> pd tso [start_ts]
-    tiup ctl:<cluster-version> pd tso [commit_ts]
+    tiup ctl:v<CLUSTER_VERSION> pd tso [start_ts]
+    tiup ctl:v<CLUSTER_VERSION> pd tso [commit_ts]
     ```
 
 * 建议检查下是否是因为写入性能的缓慢导致事务提交的效率差，进而出现了锁被清除的情况。
@@ -309,6 +309,7 @@ err="pessimistic lock retry limit reached"
 处理建议：
 
 * 如果上述报错出现的比较频繁，建议从业务的角度进行调整。
+* 如果业务中包含对同一行（同一个 key）的高并发上锁而频繁冲突，可以尝试启用系统变量 [`tidb_pessimistic_txn_aggressive_locking`](/system-variables.md#tidb_pessimistic_txn_aggressive_locking-从-v660-版本开始引入)。需要注意启用该选项可能对存在锁冲突的事务带来一定程度的吞吐下降（平均延迟上升）的代价。
 
 ### Lock wait timeout exceeded
 

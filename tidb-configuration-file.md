@@ -15,14 +15,14 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：true
 + 如果需要创建大量的表（例如 10 万张以上），建议将此参数设置为 false。
 
-### `tidb_max_reuse_chunk` <span class="version-mark">从 v6.4.0 版本开始引入</span>
+### `tidb-max-reuse-chunk` <span class="version-mark">从 v6.4.0 版本开始引入</span>
 
 + 用于控制每个连接最多缓存的 Chunk 对象数。配置过大会增加 OOM 的风险。
 + 默认值：64
 + 最小值：0
 + 最大值：2147483647
 
-### `tidb_max_reuse_column` <span class="version-mark">从 v6.4.0 版本开始引入</span>
+### `tidb-max-reuse-column` <span class="version-mark">从 v6.4.0 版本开始引入</span>
 
 + 用于控制每个连接最多缓存的 column 对象数。配置过大会增加 OOM 的风险。
 + 默认值：256
@@ -810,10 +810,61 @@ TiDB 服务状态相关配置。
 
 ### `tidb_enable_ddl`
 
-+ 用于表示该 tidb-server 是否运行 DDL 语句。
++ 用于表示该 tidb-server 是否可以成为 DDL owner。
 + 默认值：true
 + 该值作为系统变量 [`tidb_enable_ddl`](/system-variables.md#tidb_enable_ddl) 的初始值。
 + 在 v6.3.0 之前，该功能由配置项 `run-ddl` 进行设置。
+
+### `tidb_stmt_summary_enable_persistent` <span class="version-mark">从 v6.6.0 版本开始引入</span>
+
+> **警告：**
+>
+> statements summary 持久化目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+
++ 用于控制是否开启 statements summary 持久化。
++ 默认值：false
++ 详情参考[持久化 statements summary](/statement-summary-tables.md#持久化-statements-summary)。
+
+### `tidb_stmt_summary_filename` <span class="version-mark">从 v6.6.0 版本开始引入</span>
+
+> **警告：**
+>
+> statements summary 持久化目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+
++ 当开启了 statements summary 持久化时，该配置用于指定持久化数据所写入的文件。
++ 默认值："tidb-statements.log"
+
+### `tidb_stmt_summary_file_max_days` <span class="version-mark">从 v6.6.0 版本开始引入</span>
+
+> **警告：**
+>
+> statements summary 持久化目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+
++ 当开启了 statements summary 持久化时，该配置用于指定持久化数据文件所保留的最大天数。
++ 默认值：3
++ 单位：天
++ 可结合数据保留时长需求与磁盘空间占用适当调整。
+
+### `tidb_stmt_summary_file_max_size` <span class="version-mark">从 v6.6.0 版本开始引入</span>
+
+> **警告：**
+>
+> statements summary 持久化目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+
++ 当开启了 statements summary 持久化时，该配置用于限制持久化数据单个文件的大小。
++ 默认值：64
++ 单位：MiB
++ 可结合数据保留时长需求与磁盘空间占用适当调整。
+
+### `tidb_stmt_summary_file_max_backups` <span class="version-mark">从 v6.6.0 版本开始引入</span>
+
+> **警告：**
+>
+> statements summary 持久化目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+
++ 当开启了 statements summary 持久化时，该配置用于限制持久化数据文件最大数量，`0` 表示不限制。
++ 默认值：0
++ 可结合数据保留时长需求与磁盘空间占用适当调整。
 
 ## proxy-protocol
 
