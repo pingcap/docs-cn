@@ -106,7 +106,7 @@ When you upgrade a TiCDC cluster, you need to pay attention to the following:
 - Since v6.3.0, TiCDC supports rolling upgrade. During the upgrade, the replication latency is stable and does not fluctuate significantly. Rolling upgrade takes effect automatically if the following conditions are met:
 
 - TiCDC is v6.3.0 or later.
-    - TiUP is v1.11.0 or later.
+    - TiUP is v1.11.3 or later.
     - At least two TiCDC instances are running in the cluster.
 
 ## Modify TiCDC cluster configurations using TiUP

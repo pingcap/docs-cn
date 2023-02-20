@@ -70,12 +70,12 @@ Example 2: Use TiUP to install the nightly version of TiDB.
 tiup install tidb:nightly
 ```
 
-Example 3: Use TiUP to install TiKV v6.5.0.
+Example 3: Use TiUP to install TiKV v6.6.0.
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup install tikv:v6.5.0
+tiup install tikv:v6.6.0
 ```
 
 ## Upgrade components
@@ -128,12 +128,12 @@ Before the component is started, TiUP creates a directory for it, and then puts 
 
 If you want to start the same component multiple times and reuse the previous working directory, you can use `--tag` to specify the same name when the component is started. After the tag is specified, the working directory will *not be automatically deleted* when the instance is terminated, which makes it convenient to reuse the working directory.
 
-Example 1: Operate TiDB v6.5.0.
+Example 1: Operate TiDB v6.6.0.
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup tidb:v6.5.0
+tiup tidb:v6.6.0
 ```
 
 Example 2: Specify the tag with which TiKV operates.
@@ -219,12 +219,12 @@ The following flags are supported in this command:
 - If the version is ignored, adding `--all` means to uninstall all versions of this component.
 - If the version and the component are both ignored, adding `--all` means to uninstall all components of all versions.
 
-Example 1: Uninstall TiDB v6.5.0.
+Example 1: Uninstall TiDB v6.6.0.
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup uninstall tidb:v6.5.0
+tiup uninstall tidb:v6.6.0
 ```
 
 Example 2: Uninstall TiKV of all versions.
