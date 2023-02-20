@@ -25,7 +25,7 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
   <tr>
     <td rowspan="3">可扩展性与性能<br /></td>
       <td>TiKV 支持 Partitioned-Raft-KV 存储引擎（实验特性）</td>
-      <td>TiKV 引入下一代存储引擎 Partitioned-Raft-KV，通过每个数据 Region 独享 RocksDB 实例，轻松把集群的存储能力从 TB 级扩展到 PB 级，并提供更稳定的写入延迟和更强大的扩容能力。</td>
+      <td>TiKV 引入下一代存储引擎 Partitioned-Raft-KV，通过每个数据 Region 独享 RocksDB 实例，可将集群的存储能力从 TB 级扩展到 PB 级，并提供更稳定的写入延迟和更强大的扩容能力。</td>
   </tr>
   <tr>
       <td>TiKV 支持<a href="https://docs.pingcap.com/zh/tidb/v6.6/system-variables#tidb_store_batch_size" target="_blank">批量聚合数据请求</a></td>
@@ -38,7 +38,7 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
   <tr>
     <td rowspan="2">稳定性与高可用<br /></td>
     <td><a href="https://docs.pingcap.com/zh/tidb/v6.6/tidb-resource-control" target="_blank">资源管控</a>（实验特性）</td>
-    <td>引入资源管控框架，当前支持将资源配额映射到用户定义的资源组，在集群资源发生争用时，对资源组内用户的资源使用进行限制。</td>
+    <td>引入资源管控框架，支持将资源配额映射到用户定义的资源组，在集群资源发生争用时，对资源组内用户的资源使用进行限制。</td>
   </tr>
   <tr>
     <td><a href="https://docs.pingcap.com/zh/tidb/v6.6/sql-plan-management#根据历史执行计划创建绑定" target="_blank">绑定历史执行计划</a></td>
@@ -513,7 +513,7 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
     - 修复了在执行 TTL 任务时，如果表的主键包含 `ENUM` 类型的列任务会失败的问题 [#40456](https://github.com/pingcap/tidb/issues/40456) @[lcwangchao](https://github.com/lcwangchao)
     - 修复了某些被 MDL 阻塞的 DDL 操作无法在 `mysql.tidb_mdl_view` 中查询到的问题 [#40838](https://github.com/pingcap/tidb/issues/40838) @[YangKeao](https://github.com/YangKeao)
     - 修复了 DDL 在 ingest 过程中可能会发生数据竞争的问题 [#40970](https://github.com/pingcap/tidb/issues/40970) @[tangenta](https://github.com/tangenta)
-    - 修复了在改变时区后 TTL 任务可能会错误删除某些数据的问题 [41043](https://github.com/pingcap/tidb/issues/41043) @[lcwangchao](https://github.com/lcwangchao)
+    - 修复了在改变时区后 TTL 任务可能会错误删除某些数据的问题 [#41043](https://github.com/pingcap/tidb/issues/41043) @[lcwangchao](https://github.com/lcwangchao)
     - 修复了 `JSON_OBJECT` 在某些情况下会报错的问题 [#39806](https://github.com/pingcap/tidb/issues/39806) @[YangKeao](https://github.com/YangKeao)
     - 修复了 TiDB 在初始化时有可能死锁的问题 [#40408](https://github.com/pingcap/tidb/issues/40408) @[Defined2014](https://github.com/Defined2014)
     - 修复了内存重用导致的在某些情况下系统变量的值会被错误修改的问题 [#40979](https://github.com/pingcap/tidb/issues/40979) @[lcwangchao](https://github.com/lcwangchao)
