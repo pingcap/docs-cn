@@ -438,7 +438,6 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 
     - 增加全局内存阈值管理功能以缓解 OOM 问题（实验特性）[#5827](https://github.com/tikv/pd/issues/5827) @[hnes](https://github.com/hnes)
     - 增加 GC Tuner 功能以缓解 GC 压力（实验特性）[#5827](https://github.com/tikv/pd/issues/5827) @[hnes](https://github.com/hnes)
-    - 新增 `balance-witness-scheduler` 调度器用于调度 witness [#5763](https://github.com/tikv/pd/pull/5763) @[ethercflow](https://github.com/ethercflow)
     - 新增 `evict-slow-trend-scheduler` 调度器用于检测和调度异常节点 [#5808](https://github.com/tikv/pd/pull/5808) @[innerr](https://github.com/innerr)
     - 新增 keyspace manager，支持对 keyspace 的管理 [#5293](https://github.com/tikv/pd/issues/5293) @[AmoebaProtozoa](https://github.com/AmoebaProtozoa)
 
