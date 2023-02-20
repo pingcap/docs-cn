@@ -5,7 +5,7 @@ summary: 了解 TiDB 6.6.0 版本的新功能、兼容性变更、改进提升�
 
 # TiDB 6.6.0 Release Notes
 
-发版日期：2023 年 x 月 x 日
+发版日期：2023 年 2 月 20 日
 
 TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 
@@ -25,38 +25,38 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
   <tr>
     <td rowspan="3">可扩展性与性能<br /></td>
       <td>TiKV 支持 Partitioned-Raft-KV 存储引擎（实验特性）</td>
-      <td>TiKV 引入下一代存储引擎 Partitioned-Raft-KV，通过每个数据 Region 独享 RocksDB 实例轻松把集群的存储能力从 TB 级扩展到 PB 级，并提供更稳定的写入延迟和更强大的扩容能力</td>
+      <td>TiKV 引入下一代存储引擎 Partitioned-Raft-KV，通过每个数据 Region 独享 RocksDB 实例，轻松把集群的存储能力从 TB 级扩展到 PB 级，并提供更稳定的写入延迟和更强大的扩容能力。</td>
   </tr>
   <tr>
       <td>TiKV 支持<a href="https://docs.pingcap.com/zh/tidb/v6.6/system-variables#tidb_store_batch_size" target="_blank">批量聚合数据请求</a></td>
-      <td>TiDB 支持将发送到相同 TiKV 实例的数据请求部分合并，减少子任务的数量和 RPC 请求的开销。在数据离散分布且 gRPC 线程池资源紧张的情况下，批量化请求能够提升超 50% 性能</td> 
+      <td>TiDB 支持将发送到相同 TiKV 实例的数据请求部分合并，减少子任务的数量和 RPC 请求的开销。在数据离散分布且 gRPC 线程池资源紧张的情况下，批量化请求能够提升性能超 50%。</td>
   </tr>
   <tr>
     <td>TiFlash 支持 <a href="https://docs.pingcap.com/zh/tidb/v6.6/stale-read" target="_blank">Stale Read</a> 和 <a href="https://docs.pingcap.com/zh/tidb/v6.6/explain-mpp#mpp-version-和-exchange-数据压缩" target="_blank">压缩数据交换</a></td>
-    <td>TiFlash 支持 Stale Read 功能，在非实时性要求的场景可提升查询性能。TiFlash 默认支持带压缩的数据交换，可提升并行处理的数据交换效率，TPC-H 总体性能提升约 10%，流量节省超 50%</td>
+    <td>TiFlash 支持 Stale Read 功能，在非实时性要求的场景可提升查询性能。TiFlash 默认支持带压缩的数据交换，可提升并行处理的数据交换效率，TPC-H 总体性能提升约 10%，流量节省超 50%。</td>
   </tr>
   <tr>
     <td rowspan="2">稳定性与高可用<br /></td>
     <td><a href="https://docs.pingcap.com/zh/tidb/v6.6/tidb-resource-control" target="_blank">资源管控</a>（实验特性）</td>
-    <td>引入资源管控框架，当前支持将资源配额映射到用户定义的资源组，在集群资源发生争用时，对资源组内用户的资源使用进行限制</td>
+    <td>引入资源管控框架，当前支持将资源配额映射到用户定义的资源组，在集群资源发生争用时，对资源组内用户的资源使用进行限制。</td>
   </tr>
   <tr>
     <td><a href="https://docs.pingcap.com/zh/tidb/v6.6/sql-plan-management#根据历史执行计划创建绑定" target="_blank">绑定历史执行计划</a></td>
-    <td>支持绑定历史执行计划，支持通过 TiDB Dashboard 快速绑定执行计划</td>
+    <td>支持绑定历史执行计划，支持通过 TiDB Dashboard 快速绑定执行计划。</td>
   </tr>
   <tr>
     <td rowspan="2">功能特性与兼容性<br /></td>
     <td><a href="https://docs.pingcap.com/zh/tidb/v6.6/foreign-key" target="_blank">外键约束</a></td>
-    <td>支持 MySQL 兼容的外键约束，帮助保持数据一致性和提升数据质量</td>
+    <td>支持 MySQL 兼容的外键约束，帮助保持数据一致性和提升数据质量。</td>
   </tr>
   <tr>
     <td><a href="https://docs.pingcap.com/zh/tidb/v6.6/sql-statement-create-index/#多值索引" target="_blank">多值索引</a>（实验特性）</td>
-    <td>引入 MySQL 兼容的多值索引，增强 JSON 类型，提升 TiDB 对 MySQL 8.0 的兼容性</td>
+    <td>引入 MySQL 兼容的多值索引，增强 JSON 类型，提升 TiDB 对 MySQL 8.0 的兼容性。</td>
   </tr>
   <tr>
     <td>数据库管理与可观测性<br /></td>
     <td><a href="https://docs.pingcap.com/zh/tidb/v6.6/dm-precheck/#physical-import-检查项" target="_blank">DM 集成物理导入模式</a>（实验特性）</td>
-    <td>TiDB Data Migration (DM) 集成 TiDB Lightning 的 Physical Import 模式，提升 DM 全量数据迁移时的性能，大数据量场景下的迁移时间最多可提升 10 倍</td>
+    <td>TiDB Data Migration (DM) 集成 TiDB Lightning 的 Physical Import 模式，提升 DM 全量数据迁移时的性能，大数据量场景下的迁移时间最多可提升 10 倍。</td>
   </tr>
 </tbody>
 </table>
@@ -122,11 +122,11 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
     - 你可以将多个来自不同系统的中小型应用合入一个 TiDB 集群中，个别应用的负载提升，不会影响其他应用的正常运行。而在系统负载较低的时候，繁忙的应用即使超过设定的读写配额，也仍然可以被分配到所需的系统资源，达到资源的最大化利用。
     - 你可以选择将所有测试环境合入一个集群，或者将消耗较大的批量任务编入一个单独的资源组，在保证重要应用获得必要资源的同时，提升硬件利用率，降低运行成本。
 
-    此外，合理利用资源管控特性可以减少集群数量，降低运维难度及管理成本。
+  此外，合理利用资源管控特性可以减少集群数量，降低运维难度及管理成本。
 
-    在 v6.6.0 中，启用资源管控特性需要同时打开 TiDB 的全局变量 [`tidb_enable_resource_control`](/system-variables.md#tidb_enable_resource_control-从-v660-版本开始引入) 及 TiKV 的配置项 [`resource-control.enabled`](/tikv-configuration-file.md#resource-control)。当前支持的限额方式基于“[用量](/tidb-resource-control.md#什么是-request-unit-ru)”（Request Unit，即 RU），RU 是 TiDB 对 CPU、I/O 等系统资源的统一抽象单位。
+  在 v6.6.0 中，启用资源管控特性需要同时打开 TiDB 的全局变量 [`tidb_enable_resource_control`](/system-variables.md#tidb_enable_resource_control-从-v660-版本开始引入) 及 TiKV 的配置项 [`resource-control.enabled`](/tikv-configuration-file.md#resource-control)。当前支持的限额方式基于“[用量](/tidb-resource-control.md#什么是-request-unit-ru)”（Request Unit，即 RU），RU 是 TiDB 对 CPU、I/O 等系统资源的统一抽象单位。
 
-    更多信息，请参考[用户文档](/tidb-resource-control.md)。
+  更多信息，请参考[用户文档](/tidb-resource-control.md)。
 
 * 绑定历史执行计划 GA [#39199](https://github.com/pingcap/tidb/issues/39199) @[fzzf678](https://github.com/fzzf678)
 
@@ -138,8 +138,8 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 
     TiDB 在 v6.6.0 中增加了若干优化器 Hint，用来控制 `LIMIT` 操作的执行计划选择：
 
-    - [`ORDER_INDEX()`](/optimizer-hints.md#keep_ordert1_name-idx1_name--idx2_name-)：提示优化器使用指定的索引，读取数据时保持索引的顺序，生成类似 `Limit + IndexScan(keep order: true)` 的计划。
-    - [`NO_ORDER_INDEX()`](/optimizer-hints.md#no_keep_ordert1_name-idx1_name--idx2_name-)：提示优化器使用指定的索引，读取数据时不保持顺序，生成类似 `TopN + IndexScan(keep order: false)` 的计划。
+    - [`ORDER_INDEX()`](/optimizer-hints.md#order_indext1_name-idx1_name--idx2_name-)：提示优化器使用指定的索引，读取数据时保持索引的顺序，生成类似 `Limit + IndexScan(keep order: true)` 的计划。
+    - [`NO_ORDER_INDEX()`](/optimizer-hints.md#no_order_indext1_name-idx1_name--idx2_name-)：提示优化器使用指定的索引，读取数据时不保持顺序，生成类似 `TopN + IndexScan(keep order: false)` 的计划。
 
   持续引入优化器 Hint 为用户提供了更多的干预手段，有助于解决 SQL 性能问题，并提升了整体性能的稳定性。
 
@@ -206,11 +206,11 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 
     更多信息，请参考[用户文档](/dm/dm-precheck.md#physical-import-检查项)。
 
-- TiDB Lightning 新增配置文件参数 "header-schema-match" 用于解决源文件里的列名和目标表的列名不匹配的问题 @[dsdashun](https://github.com/dsdashun)
+- TiDB Lightning 新增配置文件参数 `"header-schema-match"` 用于解决源文件里的列名和目标表的列名不匹配的问题 @[dsdashun](https://github.com/dsdashun)
 
-    在 v6.6.0 版本中，TiDB Lightning 新增配置文件参数 "header-schema-match"，默认取值为 `true`，表示源 CSV 文件第一行有表的列名信息，且和目标表列名保持一致。如果 CSV 表头中的字段名和目标表的列名不匹配，此时可以将该配置设置为 `false`，TiDB Lightning 将忽略不匹配的问题，继续按目标表中的列顺序导入数据。
+    在 v6.6.0 版本中，TiDB Lightning 新增配置文件参数 `"header-schema-match"`，默认取值为 `true`，表示源 CSV 文件第一行有表的列名信息，且和目标表列名保持一致。如果 CSV 表头中的字段名和目标表的列名不匹配，此时可以将该配置设置为 `false`，TiDB Lightning 将忽略不匹配的问题，继续按目标表中的列顺序导入数据。
 
-    更多信息，请参考 [TiDB Lightning 任务配置](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置)。
+    更多信息，请参考[用户文档](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置)。
 
 - TiDB Lightning 向 TiKV 传输键值对时支持启用压缩传输 [#41163](https://github.com/pingcap/tidb/issues/41163) @[gozssky](https://github.com/gozssky)
 
@@ -238,7 +238,7 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
     - [GORM MySQL driver](https://github.com/go-gorm/mysql) 在 `v1.4.6` 中，修复了连接 TiDB 时，在 `AutoMigrate` 期间无法更改 `Unique` 字段的非 `Unique` 属性的问题 [#105](https://github.com/go-gorm/mysql/pull/105) @[Icemap](https://github.com/Icemap)
     - [GORM 文档](https://github.com/go-gorm/gorm.io) 提及 TiDB 作为默认数据库 [#638](https://github.com/go-gorm/gorm.io/pull/638) @[Icemap](https://github.com/Icemap)
 
-    更多信息，请参考 [GORM 用户文档](https://gorm.io/docs/index.html)。
+  更多信息，请参考 [GORM 用户文档](https://gorm.io/docs/index.html)。
 
 ### 可观测性
 
@@ -274,7 +274,7 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 
     在以上例子中，优化器进行了非 INT 类型到 INT 类型的转换，产生的执行计划可能随着参数变化而存在风险，因此 TiDB 不缓存该计划。
 
-    更多信息，请参考[用户文档](/sql-prepared-plan-cache.md#prepared-plan-cache-诊断)。
+    更多信息，请参考[用户文档](/sql-prepared-plan-cache.md#诊断-prepared-plan-cache)。
 
 * 在慢查询中增加告警字段 [#39893](https://github.com/pingcap/tidb/issues/39893) @[time-and-fate](https://github.com/time-and-fate)
 
@@ -284,7 +284,9 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 
 * 自动捕获执行计划的生成 [#38779](https://github.com/pingcap/tidb/issues/38779) @[Yisaer](https://github.com/Yisaer)
 
-    在执行计划问题的排查过程中，`PLAN REPLAYER` 能够协助保存现场，提升诊断的效率。但在个别场景中，一些执行计划的生成无法任意重现，给诊断工作增加了难度。针对这类场景，在 TiDB v6.6.0 中，`PLAN REPLAYER` 扩展了自动捕获的能力。通过 `PLAN REPLAYER CAPTURE` 命令，你可以提前注册目标 SQL 语句，也可以同时指定目标执行计划。当 TiDB 检测到执行的 SQL 语句或执行计划与注册目标匹配时，会自动生成并打包 `PLAN REPLAYER` 的信息，提升执行计划不稳定时的诊断效率。
+    在执行计划问题的排查过程中，`PLAN REPLAYER` 能够协助保存现场，提升诊断的效率。但在个别场景中，一些执行计划的生成无法任意重现，给诊断工作增加了难度。
+
+    针对这类场景，在 TiDB v6.6.0 中，`PLAN REPLAYER` 扩展了自动捕获的能力。通过 `PLAN REPLAYER CAPTURE` 命令，你可以提前注册目标 SQL 语句，也可以同时指定目标执行计划。当 TiDB 检测到执行的 SQL 语句或执行计划与注册目标匹配时，会自动生成并打包 `PLAN REPLAYER` 的信息，提升执行计划不稳定时的诊断效率。
 
     要启用该功能，需要将系统变量 [`tidb_enable_plan_replayer_capture`](/system-variables.md#tidb_enable_plan_replayer_capture) 的值设为 `ON`。
 
@@ -317,19 +319,19 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 
 ## 兼容性变更
 
-> **注意**
+> **注意：**
 >
-> 以下为从 v6.5.0 升级至 v6.6.0 所需兼容性变更信息。如果从 v6.4.0 或之前版本升级到 v6.6.0，可能也需要考虑和查看中间版本 release notes 中提到的兼容性变更信息。
+> 以下为从 v6.5.0 升级至当前版本 (v6.6.0) 所需兼容性变更信息。如果从 v6.4.0 或之前版本升级到当前版本，可能也需要考虑和查看中间版本 release notes 中提到的兼容性变更信息。
 
 ### MySQL 兼容性
 
 * 支持兼容 MySQL 语法的外键约束 [#18209](https://github.com/pingcap/tidb/issues/18209) @[crazycs520](https://github.com/crazycs520)
 
-    更多信息，请参考 v6.6.0 Release Notes 中 [SQL 部分](#sql)以及[用户文档](/foreign-key.md)。
+    更多信息，请参考 v6.6.0 Release Notes 中 [SQL 部分](#sql-功能)以及[用户文档](/foreign-key.md)。
 
 * 支持兼容 MySQL 语法的多值索引 [#39592](https://github.com/pingcap/tidb/issues/39592) @[xiongjiwei](https://github.com/xiongjiwei) @[qw4990](https://github.com/qw4990)
 
-    更多信息，请参考本文的 [SQL 部分](#sql)以及[用户文档](/sql-statements/sql-statement-create-index.md#多值索引)。
+    更多信息，请参考本文的 [SQL 部分](#sql-功能)以及[用户文档](/sql-statements/sql-statement-create-index.md#多值索引)。
 
 ### 系统变量
 
@@ -588,7 +590,7 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
         - 修复冲突处理逻辑 (`duplicate-resolution`) 可能导致 checksum 不一致的问题 [#40657](https://github.com/pingcap/tidb/issues/40657) @[gozssky](https://github.com/gozssky)
         - 修复当数据文件中存在未闭合的 delimiter 时可能 OOM 的问题 [#40400](https://github.com/pingcap/tidb/issues/40400) @[buchuitoudegou](https://github.com/buchuitoudegou)
         - 修复报错中的文件 offset 超过文件大小的问题 [#40034](https://github.com/pingcap/tidb/issues/40034) @[buchuitoudegou](https://github.com/buchuitoudegou)
-        - 修复新版 PD Client 可能导致并行导入失败的问题 [#40493](https://github.com/pingcap/tidb/issues/40493) @[AmoebaProtozoa](https://github.com/AmoebaProtozoa)
+        - 修复新版 PD client 可能导致并行导入失败的问题 [#40493](https://github.com/pingcap/tidb/issues/40493) @[AmoebaProtozoa](https://github.com/AmoebaProtozoa)
         - 修复 precheck 检查项有时无法监测到之前的导入失败遗留的脏数据的问题 [#39477](https://github.com/pingcap/tidb/issues/39477) @[dsdashun](https://github.com/dsdashun)
 
 ## 贡献者
