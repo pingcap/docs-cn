@@ -1138,7 +1138,11 @@ rocksdb defaultcf、rocksdb writecf 和 rocksdb lockcf 相关的配置项。
 
 ### `block-cache-size`
 
-+ 一个 RocksDB block 的默认缓存大小。从 v6.6.0 起，该配置仅用于计算 `storage.block-cache.capacity` 的默认值。
+> **警告：**
+>
+> 从 v6.6.0 起，该配置项被废弃。
+
++ 一个 RocksDB block 的默认缓存大小。
 + `defaultcf` 默认值：机器总内存 * 25%
 + `writecf` 默认值：机器总内存 * 15%
 + `lockcf` 默认值：机器总内存 * 2%
