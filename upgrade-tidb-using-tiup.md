@@ -281,7 +281,7 @@ tiup cluster upgrade <cluster-name> <version> --force
 tiup install ctl:v6.5.0
 ```
 
-## 5. TiDB 6.5.0 兼容性变化
+## 5. TiDB 6.6.0 兼容性变化
 
-- 兼容性变化请参考 6.5.0 Release Notes。
+- 兼容性变化请参考 [6.6.0 Release Notes](/releases/release-6.6.0.md)。
 - 请避免在对使用 TiDB Binlog 的集群进行滚动升级过程中新创建聚簇索引表。
