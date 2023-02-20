@@ -314,7 +314,7 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 
 ### 遥测
 
-- 自 2023 年 2 月 20 日起，新发布的 TiDB 和 TiDB Dashboard 版本（含 v6.6.0），默认关闭遥测功能，即默认不再收集使用情况信息分享给 PingCAP。如果升级至这些版本前使用默认的遥测配置，则升级后遥测功能处于关闭状态。具体的版本可参考 [TiDB 版本发布时间线](/releases/release-timeline.md)。
+- 自 2023 年 2 月 20 日起，新发布的 TiDB 和 TiDB Dashboard 版本（含 v6.6.0），默认关闭[遥测功能](/telemetry.md)，即默认不再收集使用情况信息分享给 PingCAP。如果升级至这些版本前使用默认的遥测配置，则升级后遥测功能处于关闭状态。具体的版本可参考 [TiDB 版本发布时间线](/releases/release-timeline.md)。
 - 从 v1.11.3 起，新部署的 TiUP 默认关闭遥测功能，即默认不再收集使用情况信息。如果从 v1.11.3 之前的 TiUP 版本升级至 v1.11.3 或更高 TiUP 版本，遥测保持升级前的开启或关闭状态。
 
 ## 兼容性变更
@@ -329,7 +329,7 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 
     更多信息，请参考 v6.6.0 Release Notes 中 [SQL 部分](#sql-功能)以及[用户文档](/foreign-key.md)。
 
-* 支持兼容 MySQL 语法的多值索引 [#39592](https://github.com/pingcap/tidb/issues/39592) @[xiongjiwei](https://github.com/xiongjiwei) @[qw4990](https://github.com/qw4990)
+* 支持兼容 MySQL 语法的多值索引（实验特性）[#39592](https://github.com/pingcap/tidb/issues/39592) @[xiongjiwei](https://github.com/xiongjiwei) @[qw4990](https://github.com/qw4990)
 
     更多信息，请参考本文的 [SQL 部分](#sql-功能)以及[用户文档](/sql-statements/sql-statement-create-index.md#多值索引)。
 
@@ -374,7 +374,7 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 | DM | `on-duplicate` | 删除 | 该配置项控制全量导入阶段针对冲突数据的解决方式。自 v6.6.0 起，引入新的配置项 `on-duplicate-logical` 和 `on-duplicate-physical`，取代 `on-duplicate`。 |
 | TiDB  |  [`enable-telemetry`](/tidb-configuration-file.md#enable-telemetry-从-v402-版本开始引入)  |  修改 |  自 v6.6.0 起，该配置项默认值由 `true` 改为 `false`，表示默认关闭 TiDB 的遥测功能。  |
 | TiKV  | [`rocksdb.defaultcf.block-size`](/tikv-configuration-file.md#block-size) 和 [`rocksdb.writecf.block-size`](/tikv-configuration-file.md#block-size)  |  修改  |   默认值由 `64K` 调整为 `32K`。  |
-| TiKV | `storage.block-cache.block-cache-size` | 修改 | 从 v6.6.0 起，该配置项仅用于计算 `storage.block-cache.capacity` 的默认值。详情参见 [#12936](https://github.com/tikv/tikv/issues/12936)。 |
+| TiKV | [`rocksdb.defaultcf.block-cache-size`](/tikv-configuration-file.md#block-cache-size), [`rocksdb.writecf.block-cache-size`](/tikv-configuration-file.md#block-cache-size), [`rocksdb.lockcf.block-cache-size`](/tikv-configuration-file.md#block-cache-size) | 修改 | 从 v6.6.0 起，该配置项仅用于计算 `storage.block-cache.capacity` 的默认值。详情参见 [#12936](https://github.com/tikv/tikv/issues/12936)。 |
 | PD   |  [`enable-telemetry`](/pd-configuration-file.md#enable-telemetry)  |  修改  |   从 v6.6.0 起，该配置项的默认值由 `true` 改为 `false`，表示默认关闭 TiDB Dasboard 的遥测功能。  |
 | TiFlash |  [`profile.default.max_memory_usage_for_all_queries`](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml)  |  修改  |  表示所有查询过程中，节点对中间数据的内存限制。自 v6.6.0 起默认值由 `0` 改为 `0.8`，表示节点占总内存的 80%。  |
 | TiCDC  | [`consistent.storage`](/ticdc/ticdc-sink-to-mysql.md#使用前提)  |  修改  | redo log 备份文件的地址，除了 NFS，支持的 `scheme` 新增了 GCS 和 Azure。  |
