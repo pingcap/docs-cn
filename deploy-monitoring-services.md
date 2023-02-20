@@ -17,7 +17,7 @@ Assume that the TiDB cluster topology is as follows:
 | Name  | Host IP | Services |
 | :-- | :-- | :-------------- |
 | Node1 | 192.168.199.113| PD1, TiDB, node_export, Prometheus, Grafana |
-| Node2 | 192.168.199.114| PD2, node_export |
+| Node2 | 192.168.199.114| PD2, node_export  |
 | Node3 | 192.168.199.115| PD3, node_export |
 | Node4 | 192.168.199.116| TiKV1, node_export |
 | Node5 | 192.168.199.117| TiKV2, node_export |
