@@ -82,6 +82,7 @@ Slow Query 基础信息：
 * `Backoff_total`：表示这个语句在执行过程中所有 backoff 花费的时间。
 * `Write_sql_response_total`：表示这个语句把结果发送回客户端花费的时间。
 * `Result_rows`：表示这个语句查询结果的行数。
+* `Warnings`：表示这个语句执行过程中产生的警告，采用 JSON 格式。通常和 [`SHOW WARNINGS`](/sql-statements/sql-statement-show-warnings.md) 语句的输出结果一致，但是可能会包含 [`SHOW WARNINGS`](/sql-statements/sql-statement-show-warnings.md) 中没有的警告，因而可以提供更多诊断信息。这类警告将被标记为 `IsExtra: true`。
 * `IsExplicitTxn`：表示这个语句是否在一个明确声明的事务中。如果是 `false`，表示这个语句的事务是 `autocommit=1`，即语句执行完成后就自动提交的事务。
 
 和事务执行相关的字段：

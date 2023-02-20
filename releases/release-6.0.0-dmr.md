@@ -8,6 +8,10 @@ title: TiDB 6.0.0 Release Notes
 
 TiDB 版本：6.0.0-DMR
 
+> **注意：**
+>
+> TiDB 6.0.0-DMR 的用户文档已[归档](https://docs-archive.pingcap.com/zh/tidb/v6.0)。如无特殊需求，建议使用 TiDB 数据库的[最新 LTS 版本](https://docs.pingcap.com/zh/tidb/stable)。
+
 在 6.0.0-DMR 版本中，你可以获得以下关键特性：
 
 - 基于 SQL 的数据放置规则，提供更灵活的数据放置管理能力。

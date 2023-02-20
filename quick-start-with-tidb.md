@@ -23,7 +23,7 @@ aliases: ['/docs-cn/dev/quick-start-with-tidb/','/docs-cn/dev/how-to/get-started
 
 要快速了解 TiUP 的基本功能、使用 TiUP 快速搭建 TiDB 集群的方法与连接 TiDB 集群并执行 SQL 的方法，建议先观看下面的培训视频（时长 15 分钟）。注意本视频只作为学习参考，如需了解 [TiUP](/tiup/tiup-overview.md) 的具体使用方法和 [TiDB 快速上手具体操作步骤](#部署本地测试集群)，请以文档内容为准。
 
-<video src="https://download.pingcap.com/docs-cn%2FLesson07_quick_start.mp4" width="100%" height="100%" controls="controls" poster="https://tidb-docs.s3.us-east-2.amazonaws.com/thumbnail+-+lesson+7.png"></video>
+<video src="https://download.pingcap.com/docs-cn%2FLesson07_quick_start.mp4" width="100%" height="100%" controls="controls" poster="https://download.pingcap.com/docs-cn/poster_lesson7.png"></video>
 
 ## 部署本地测试集群
 
@@ -430,11 +430,11 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
     {{< copyable "shell-regular" >}}
 
     ```shell
-    tiup cluster deploy <cluster-name> <tidb-version> ./topo.yaml --user root -p
+    tiup cluster deploy <cluster-name> <version> ./topo.yaml --user root -p
     ```
 
     - 参数 `<cluster-name>` 表示设置集群名称
-    - 参数 `<tidb-version>` 表示设置集群版本，可以通过 `tiup list tidb` 命令来查看当前支持部署的 TiDB 版本
+    - 参数 `<version>` 表示设置集群版本，例如 `v6.5.0`。可以通过 `tiup list tidb` 命令来查看当前支持部署的 TiDB 版本
     - 参数 `-p` 表示在连接目标机器时使用密码登录
 
         > **注意：**

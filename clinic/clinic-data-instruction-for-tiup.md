@@ -52,8 +52,8 @@ Clinic Server 是部署在云端的云服务，根据数据存储的位置不同
 | Error 日志 | `pd_stderr.log` | `--include=log` |
 | 配置文件 | `pd.toml` | `--include=config` |
 | 实时配置 | `config.json` | `--include=config` |
-| `tiup ctl:<cluster-version> pd -u http://${pd IP}:${PORT} store` 的输出结果 | `store.json` | `--include=config` |
-| `tiup ctl:<cluster-version> pd -u http://${pd IP}:${PORT} config placement-rules show` 的输出结果 | `placement-rule.json` | `--include=config` |
+| `tiup ctl:v<CLUSTER_VERSION> pd -u http://${pd IP}:${PORT} store` 的输出结果 | `store.json` | `--include=config` |
+| `tiup ctl:v<CLUSTER_VERSION> pd -u http://${pd IP}:${PORT} config placement-rules show` 的输出结果 | `placement-rule.json` | `--include=config` |
 
 ### TiFlash 诊断数据
 

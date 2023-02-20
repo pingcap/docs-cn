@@ -24,6 +24,7 @@ summary: 介绍 TiDB 中元数据锁的概念、原理、实现和影响。
 - [`DROP PARTITION`](/partitioned-table.md#分区管理)
 - [`TRUNCATE TABLE`](/sql-statements/sql-statement-truncate.md)
 - [`EXCHANGE PARTITION`](/partitioned-table.md#分区管理)
+- [`CHANGE COLUMN`](/sql-statements/sql-statement-change-column.md)
 - [`MODIFY COLUMN`](/sql-statements/sql-statement-modify-column.md)
 
 使用元数据锁机制会给 TiDB DDL 任务的执行带来一定的性能影响。为了降低元数据锁对 DDL 任务的影响，下列场景不需要加元数据锁：
