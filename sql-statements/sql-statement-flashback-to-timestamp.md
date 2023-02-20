@@ -37,7 +37,7 @@ FlashbackToTimestampStmt ::=
 * `FLASHBACK CLUSTER` 指定的时间点不能存在未执行完成的 DDL 记录。若存在，TiDB 会拒绝该 DDL 操作。
 * 在执行 `FLASHBACK CLUSTER TO TIMESTAMP` 前，TiDB 会主动断开所有相关表上的连接，并禁止对这些表进行读写操作，直到 `FLASHBACK CLUSTER` 完成。
 * `FLASHBACK CLUSTER TO TIMESTAMP` 命令不能取消，一旦开始执行 TiDB 会一直重试，直到成功。
-* 在 `FLASHBACK CLUSTER` 执行期间，若有数据备份需求，只支持使用 [BR 命令行工具](https://docs.pingcap.com/zh/tidb/dev/br-use-overview#%E9%80%9A%E8%BF%87%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%B7%A5%E5%85%B7%E6%8E%A8%E8%8D%90)进行备份，并需要指定早于 `FLASHBACK CLUSTER` 开始时间的 `BackupTS` 进行备份。同时，在执行 FLASHBACK CLUSTER 时，[开启日志备份](https://docs.pingcap.com/zh/tidb/dev/br-pitr-guide#tidb-%E6%97%A5%E5%BF%97%E5%A4%87%E4%BB%BD%E4%B8%8E-pitr-%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97)的操作会失败，请等待 `FLASHBACK CLUSTER` 结束后再尝试开启日志备份
+* 在 `FLASHBACK CLUSTER` 执行期间，若有数据备份需求，只支持使用 [BR 命令行工具进行快照备份](https://docs.pingcap.com/zh/tidb/dev/br-snapshot-guide)，并需要指定早于 `FLASHBACK CLUSTER` 开始时间的 `BackupTS` 进行备份。同时，在执行 `FLASHBACK CLUSTER` 时，[开启日志备份](https://docs.pingcap.com/zh/tidb/dev/br-pitr-guide)的操作会失败，请等待 `FLASHBACK CLUSTER` 结束后再尝试开启日志备份
 * 若 `FLASHBACK CLUSTER` 导致了元信息（表结构、库结构）的回滚，则相关的修改**不会**被 TiCDC 同步。因此，用户需主动暂停任务，待 `FLASHBACK CLUSTER` 完成后将上下游的 schema 定义手动同步一致，然后重新创建 TiCDC changefeed。
 
 ## 示例
