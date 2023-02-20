@@ -77,16 +77,16 @@ TiDB Dashboard 与 TiDB 使用相同的用户权限体系和登录验证方式�
     -- 如果要使自定义的 SQL 用户能修改 TiDB Dashboard 界面上的各项配置，可以增加以下权限
     GRANT SUPER ON *.* TO 'dashboardAdmin'@'%';
     
-    -- 如果要使用[快速绑定执行计划](dashboard-statement-details.md)功能，可以增加以下权限
+    -- 如果要使用快速绑定执行计划（具体参见 https://docs.pingcap.com/zh/tidb/dev/dashboard-statement-details#快速绑定执行计划）功能，可以增加以下权限
     GRANT SYSTEM_VARIABLES_ADMIN ON *.* TO 'dashboardAdmin'@'%';
-    GRANT SUPER ON *.* TO 'dashboardAdmin'@'%';    
+    GRANT SUPER ON *.* TO 'dashboardAdmin'@'%';
     ```
 
 ## 示例：通过 RBAC 授权 SQL 用户登录 TiDB Dashboard
 
 以下示例演示了如何在[基于角色的访问控制 (RBAC)](/role-based-access-control.md) 机制下创建角色及用户来登录 TiDB Dashboard。
 
-1. 创建一个包含所有 TiDB Dashboard 功能所需权限的角色 `dashboard_access`：
+1. 创建一个包含 TiDB Dashboard 所有功能所需权限的角色 `dashboard_access`：
 
     ```sql
     CREATE ROLE 'dashboard_access';
