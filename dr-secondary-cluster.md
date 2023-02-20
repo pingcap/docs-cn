@@ -223,7 +223,7 @@ s3://backup?access-key=minio&secret-access-key=miniostorage&endpoint=http://10.0
     max-log-size = 64
     # 刷新或上传 redo log 至 S3 的间隔，单位毫秒，默认 1000，建议范围 500-2000。
     flush-interval = 2000
-    # 存储 redo log
+    # 存储 redo log 的地址
     storage = "s3://redo?access-key=minio&secret-access-key=miniostorage&endpoint=http://10.0.1.10:6060&force-path-style=true"
     ```
 
@@ -346,7 +346,7 @@ TiDB 目前还没有提供 DR Dashboard，你可以通过以下 Dashboard 了解
 
     - `--storage`：指定 redo log 所在的 S3 位置
     - `--tmp-dir`：为从 S3 下载 redo log 的缓存目录
-    - `--sink-uri`：指定下游集群的地址
+    - `--sink-uri`：指定备份集群的地址
 
 2. 修改业务应用的数据库访问配置，并重启业务应用，使得业务访问备用集群。
 3. 检查业务状态是否正常。
@@ -374,7 +374,7 @@ TiDB 目前还没有提供 DR Dashboard，你可以通过以下 Dashboard 了解
 当业务需要从备用集群查询数据的时候，在业务应用中设置 `SET GLOBAL|SESSION tidb_enable_external_ts_read = ON;` 就可以在备用集群上获得事务状态完成的数据。
 
 ```toml
-# 从 v6.3.0 开始支持，使用 Syncpoint 功能需要同步任务拥有下游集群的 SYSTEM_VARIABLES_ADMIN 或者 SUPER 权限
+# 从 v6.4.0 开始支持，使用 Syncpoint 功能需要同步任务拥有下游集群的 SYSTEM_VARIABLES_ADMIN 或者 SUPER 权限
 enable-sync-point = true
 
 # 记录主集群和备用集群一致快照点的时间间隔，它也代表能读到完整事务的最大延迟时间，比如在备用集群读取到主集群两分钟之前的事务数据

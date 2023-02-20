@@ -174,12 +174,13 @@ summary: 了解 TiDB 提供的基于多副本的单集群容灾方案。
 
     说明：请根据需要修改上面的数据库名称、表名和 placement rule 的名称。
 
-    ``` shell
     执行如下命令，调低 Region 1 的 PD 节点的优先级，并调高 Region 2 的 PD 节点的优先级。
-    # tiup ctl:v6.4.0 pd member leader_priority  pd-1 2
-    # tiup ctl:v6.4.0 pd member leader_priority  pd-2 1
-    # tiup ctl:v6.4.0 pd member leader_priority  pd-3 4
-    # tiup ctl:v6.4.0 pd member leader_priority  pd-4 3
+
+    ``` shell
+    tiup ctl:v6.4.0 pd member leader_priority  pd-1 2
+    tiup ctl:v6.4.0 pd member leader_priority  pd-2 1
+    tiup ctl:v6.4.0 pd member leader_priority  pd-3 4
+    tiup ctl:v6.4.0 pd member leader_priority  pd-4 3
     ```
 
 2. 观察 Grafana 中 PD 和 TiKV 部分中的内容，确保 PD 的 Leader 和用户表的 Leader 已经迁移到对应的区域。另外，切换回原有区域的步骤与上面的步骤基本相同，本文不做过多的描述。
@@ -191,7 +192,7 @@ summary: 了解 TiDB 提供的基于多副本的单集群容灾方案。
 1. 执行类似下面的命令终止区域 1 上所有的 TiKV、TiDB 和 PD 节点:
 
     ``` shell
-    # tiup cluster stop drtest -N tidb-dr-test1:20160,tidb-dr-test2:20160,tidb-dr-test1:2379,tidb-dr-test2:2379
+    tiup cluster stop drtest -N tidb-dr-test1:20160,tidb-dr-test2:20160,tidb-dr-test1:2379,tidb-dr-test2:2379
     ```
 
 2. 运行类似于下面的命令切换用户表的 leader 到区域 2:
