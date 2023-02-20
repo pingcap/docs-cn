@@ -93,29 +93,29 @@ summary: 了解 TiDB 提供的基于多副本的单集群容灾方案。
 2. 使用上面的配置文件创建集群：
 
     ```toml
-    # tiup cluster deploy drtest v6.4.0 ./topo.yaml
-    # tiup cluster start drtest --init
-    # tiup cluster display drtest
+    tiup cluster deploy drtest v6.4.0 ./topo.yaml
+    tiup cluster start drtest --init
+    tiup cluster display drtest
     ```
 
     对集群的副本数和 Leader 限制进行配置：
 
     ```toml
-    # tiup ctl:v6.4.0 pd config set max-replicas 5
-    # tiup ctl:v6.4.0 pd config set label-property reject-leader Region Region3
+    tiup ctl:v6.4.0 pd config set max-replicas 5
+    tiup ctl:v6.4.0 pd config set label-property reject-leader Region Region3
 
     # 下面的步骤用于向集群中添加一些测试数据，可选
-    # tiup bench tpcc  prepare -H 127.0.0.1 -P 4000 -D tpcc --warehouses 1
+    tiup bench tpcc  prepare -H 127.0.0.1 -P 4000 -D tpcc --warehouses 1
     ```
 
     指定 PD leader 的优先级:
 
     ```toml
-    # tiup ctl:v6.4.0 pd member leader_priority  pd-1 4
-    # tiup ctl:v6.4.0 pd member leader_priority  pd-2 3
-    # tiup ctl:v6.4.0 pd member leader_priority  pd-3 2
-    # tiup ctl:v6.4.0 pd member leader_priority  pd-4 1
-    # tiup ctl:v6.4.0 pd member leader_priority  pd-5 0
+    tiup ctl:v6.4.0 pd member leader_priority  pd-1 4
+    tiup ctl:v6.4.0 pd member leader_priority  pd-2 3
+    tiup ctl:v6.4.0 pd member leader_priority  pd-3 2
+    tiup ctl:v6.4.0 pd member leader_priority  pd-4 1
+    tiup ctl:v6.4.0 pd member leader_priority  pd-5 0
     ```
 
     > **说明：**
@@ -137,14 +137,14 @@ summary: 了解 TiDB 提供的基于多副本的单集群容灾方案。
     -- 说明：请根据需要修改上面的数据库名称、表名和 placement rule 的名称。
 
     -- 使用类似下面的查询，用户可以查看每个区域包含的 leader 数量，以确认 leader 迁移是否完成。
-    select STORE_ID, address, leader_count, label from TIKV_STORE_STATUS order by store_id;
+    SELECT STORE_ID, address, leader_count, label FROM TIKV_STORE_STATUS ORDER BY store_id;
     ```
 
     下面的语句可以产生一个 sql 脚本，把所有非系统 schema 中的表的 leader 都设置到特定的 region 上：
 
     ```sql
-    set @region_name=primary_rule_for_region1;
-    select concat('ALTER TABLE ', table_schema, '.', table_name, ' PLACEMENT POLICY=', @region_name, ';') from information_schema.tables where table_schema not in ('METRICS_SCHEMA', 'PERFORMANCE_SCHEMA', 'INFORMATION_SCHEMA','mysql');
+    SET @region_name=primary_rule_for_region1;
+    SELECT concat('ALTER TABLE ', table_schema, '.', table_name, ' PLACEMENT POLICY=', @region_name, ';') FROM information_schema.tables WHERE table_schema NOT IN ('METRICS_SCHEMA', 'PERFORMANCE_SCHEMA', 'INFORMATION_SCHEMA','mysql');
     ```
 
 ## 监控集群
@@ -166,7 +166,7 @@ summary: 了解 TiDB 提供的基于多副本的单集群容灾方案。
 
 1. 执行如下命令，将所有用户表和 PD Leader 都切换到区域 2：
 
-    ``` sql
+    ```sql
     -- 将之前创建的规则 secondary_rule_for_region2 应用到对应的用户表上。
     ALTER TABLE tpcc.warehouse PLACEMENT POLICY=secondary_rule_for_region2;
     ALTER TABLE tpcc.district PLACEMENT POLICY=secondary_rule_for_region2;
@@ -174,12 +174,14 @@ summary: 了解 TiDB 提供的基于多副本的单集群容灾方案。
 
     说明：请根据需要修改上面的数据库名称、表名和 placement rule 的名称。
 
-    ``` shell
     执行如下命令，调低 Region 1 的 PD 节点的优先级，并调高 Region 2 的 PD 节点的优先级。
-    # tiup ctl:v6.4.0 pd member leader_priority  pd-1 2
-    # tiup ctl:v6.4.0 pd member leader_priority  pd-2 1
-    # tiup ctl:v6.4.0 pd member leader_priority  pd-3 4
-    # tiup ctl:v6.4.0 pd member leader_priority  pd-4 3
+
+    ``` shell
+
+    tiup ctl:v6.4.0 pd member leader_priority  pd-1 2
+    tiup ctl:v6.4.0 pd member leader_priority  pd-2 1
+    tiup ctl:v6.4.0 pd member leader_priority  pd-3 4
+    tiup ctl:v6.4.0 pd member leader_priority  pd-4 3
     ```
 
 2. 观察 Grafana 中 PD 和 TiKV 部分中的内容，确保 PD 的 Leader 和用户表的 Leader 已经迁移到对应的区域。另外，切换回原有区域的步骤与上面的步骤基本相同，本文不做过多的描述。
@@ -191,7 +193,7 @@ summary: 了解 TiDB 提供的基于多副本的单集群容灾方案。
 1. 执行类似下面的命令终止区域 1 上所有的 TiKV、TiDB 和 PD 节点:
 
     ``` shell
-    # tiup cluster stop drtest -N tidb-dr-test1:20160,tidb-dr-test2:20160,tidb-dr-test1:2379,tidb-dr-test2:2379
+    tiup cluster stop drtest -N tidb-dr-test1:20160,tidb-dr-test2:20160,tidb-dr-test1:2379,tidb-dr-test2:2379
     ```
 
 2. 运行类似于下面的命令切换用户表的 leader 到区域 2:
@@ -202,7 +204,7 @@ summary: 了解 TiDB 提供的基于多副本的单集群容灾方案。
     ALTER TABLE tpcc.district PLACEMENT POLICY=secondary_rule_for_region2;
 
     ---可以使用类似下面的查询查看每个区域包含的 leader 数量，以确认 leader 迁移是否完成。
-    select STORE_ID, address, leader_count, label from TIKV_STORE_STATUS order by store_id;
+    SELECT STORE_ID, address, leader_count, label FROM TIKV_STORE_STATUS ORDER BY store_id;
     ```
 
     当区域 1 恢复正常之后，可以使用类似于上面的命令将用户表的 leader 重新切换到区域 1。

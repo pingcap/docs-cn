@@ -342,7 +342,7 @@ TiDB 目前还没有提供 DR Dashboard，你可以通过以下 Dashboard 了解
     tiup cdc redo apply --storage "s3://redo?access-key=minio&secret-access-key=miniostorage&endpoint=http://10.0.1.10:6060&force-path-style=true" --tmp-dir /tmp/redo --sink-uri "mysql://{username}:{password}@10.1.1.4:4000"
     ```
 
-    其中：
+    命令中参数描述如下：
 
     - `--storage`：指定 redo log 所在的 S3 位置
     - `--tmp-dir`：为从 S3 下载 redo log 的缓存目录
