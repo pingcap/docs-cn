@@ -124,7 +124,7 @@ MySQL 中，返回结果的顺序可能较为固定，因为查询是通过单�
 
 ## TiDB 是否支持 `SELECT FOR UPDATE`？
 
-支持。当 TiDB 使用悲观锁（自 TiDB v3.0 起默认使用）时，TiDB 中 `SELECT FOR UPDATE` 的行为与 MySQL 中的基本一致。
+支持。当 TiDB 使用悲观锁（自 TiDB v3.0.8 起默认使用）时，TiDB 中 `SELECT FOR UPDATE` 的行为与 MySQL 中的基本一致。
 
 当 TiDB 使用乐观锁时，`SELECT FOR UPDATE` 不会在事务启动时对数据加锁，而是在提交事务时检查冲突。如果检查出冲突，会回滚待提交的事务。
 
