@@ -44,7 +44,11 @@ aliases: ['/docs-cn/dev/upgrade-tidb-using-tiup/','/docs-cn/dev/how-to/upgrade/u
 
 本部分介绍实际开始升级前需要进行的更新 TiUP 和 TiUP Cluster 组件版本等准备工作。
 
-### 2.1 升级 TiUP 或更新 TiUP 离线镜像
+### 2.1 查阅兼容性变更
+
+查阅 TiDB v6.6.0 release notes 中的[兼容性变更](/releases/release-6.6.0.md#兼容性变更)。如果有任何变更影响到了你的升级，请采取相应的措施。
+
+### 2.2 升级 TiUP 或更新 TiUP 离线镜像
 
 #### 升级 TiUP 和 TiUP Cluster
 
@@ -87,7 +91,7 @@ source /home/tidb/.bash_profile
 ```
 
 > **建议：**
-> 
+>
 > 关于 `TiDB-community-server` 软件包和 `TiDB-community-toolkit` 软件包的内容物，请查阅 [TiDB 离线包](/binary-package.md)。
 
 覆盖升级完成后，需将 server 和 toolkit 两个离线镜像合并，执行以下命令合并离线组件到 server 目录下。
@@ -112,7 +116,7 @@ tiup update cluster
 
 此时离线镜像已经更新成功。如果覆盖后发现 TiUP 运行报错，可能是 manifest 未更新导致，可尝试 `rm -rf ~/.tiup/manifests/*` 后再使用。
 
-### 2.2 编辑 TiUP Cluster 拓扑配置文件
+### 2.3 编辑 TiUP Cluster 拓扑配置文件
 
 > **注意：**
 >
@@ -137,7 +141,7 @@ tiup update cluster
 >
 > 升级到 6.6.0 版本前，请确认已在 4.0 修改的参数在 6.6.0 版本中是兼容的，可参考 [TiKV 配置文件描述](/tikv-configuration-file.md)。
 
-### 2.3 检查当前集群的健康状况
+### 2.4 检查当前集群的健康状况
 
 为避免升级过程中出现未定义行为或其他故障，建议在升级前对集群当前的 region 健康状态进行检查，此操作可通过 `check` 子命令完成。
 
@@ -149,7 +153,7 @@ tiup cluster check <cluster-name> --cluster
 
 执行结束后，最后会输出 region status 检查结果。如果结果为 "All regions are healthy"，则说明当前集群中所有 region 均为健康状态，可以继续执行升级；如果结果为 "Regions are not fully healthy: m miss-peer, n pending-peer" 并提示 "Please fix unhealthy regions before other operations."，则说明当前集群中有 region 处在异常状态，应先排除相应异常状态，并再次检查结果为 "All regions are healthy" 后再继续升级。
 
-### 2.4 检查当前集群的 DDL 和 Backup 情况
+### 2.5 检查当前集群的 DDL 和 Backup 情况
 
 为避免升级过程中出现未定义行为或其他故障，建议检查以下指标后再进行升级操作。
 
@@ -187,8 +191,9 @@ tiup cluster upgrade <cluster-name> v6.6.0
 > - 如果希望保持性能稳定，则需要保证 TiKV 上的所有 leader 驱逐完成后再停止该 TiKV 实例，可以指定 `--transfer-timeout` 为一个更大的值，如 `--transfer-timeout 3600`，单位为秒。
 > - 若想将 TiFlash 从 5.3 之前的版本升级到 5.3 及之后的版本，必须进行 TiFlash 的停机升级。参考如下步骤，可以在确保其他组件正常运行的情况下升级 TiFlash：
 >   1. 关闭 TiFlash 实例：`tiup cluster stop <cluster-name> -R tiflash`
->   2. 使用 `--offline` 参数在不重启（只更新文件）的情况下升级集群：`tiup cluster upgrade <cluster-name> <version> --offline`
+>   2. 使用 `--offline` 参数在不重启（只更新文件）的情况下升级集群：`tiup cluster upgrade <cluster-name> <version> --offline`，例如 `tiup cluster upgrade <cluster-name> v6.3.0 --offline`
 >   3. reload 整个集群：`tiup cluster reload <cluster-name>`。此时，TiFlash 也会正常启动，无需额外操作。
+> - 在对使用 TiDB Binlog 的集群进行滚动升级过程中，请避免新创建聚簇索引表。
 
 #### 停机升级
 
@@ -200,7 +205,7 @@ tiup cluster upgrade <cluster-name> v6.6.0
 tiup cluster stop <cluster-name>
 ```
 
-之后通过 `upgrade` 命令添加 `--offline` 参数来进行停机升级。
+之后通过 `upgrade` 命令添加 `--offline` 参数来进行停机升级，其中 `<cluster-name>` 为集群名，`<version>` 为升级的目标版本，例如 `v6.5.0`。
 
 {{< copyable "shell-regular" >}}
 
@@ -264,7 +269,7 @@ Cluster version:    v6.6.0
 
 ### 4.2 升级过程中 evict leader 等待时间过长，如何跳过该步骤快速升级
 
-可以指定 `--force`，升级时会跳过 `PD transfer leader` 和 `TiKV evict leader` 过程，直接重启并升级版本，对线上运行的集群性能影响较大。命令如下：
+可以指定 `--force`，升级时会跳过 `PD transfer leader` 和 `TiKV evict leader` 过程，直接重启并升级版本，对线上运行的集群性能影响较大。命令如下，其中 `<version>` 为升级的目标版本，例如 `v6.5.0`：
 
 {{< copyable "shell-regular" >}}
 
@@ -281,8 +286,3 @@ tiup cluster upgrade <cluster-name> <version> --force
 ```
 tiup install ctl:v6.6.0
 ```
-
-## 5. TiDB 6.6.0 兼容性变化
-
-- 兼容性变化请参考 6.6.0 Release Notes。
-- 请避免在对使用 TiDB Binlog 的集群进行滚动升级过程中新创建聚簇索引表。
