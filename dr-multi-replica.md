@@ -177,7 +177,6 @@ summary: 了解 TiDB 提供的基于多副本的单集群容灾方案。
     执行如下命令，调低 Region 1 的 PD 节点的优先级，并调高 Region 2 的 PD 节点的优先级。
 
     ``` shell
-
     tiup ctl:v6.4.0 pd member leader_priority  pd-1 2
     tiup ctl:v6.4.0 pd member leader_priority  pd-2 1
     tiup ctl:v6.4.0 pd member leader_priority  pd-3 4
