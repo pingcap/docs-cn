@@ -423,6 +423,8 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
     - 定期清理过期的 Region 缓存，避免内存泄漏和性能下降问题 [#40461](https://github.com/pingcap/tidb/issues/40461) @[sticnarf](https://github.com/sticnarf)
     - 不支持在分区表上执行 `MODIFY COLUMN` [#39915](https://github.com/pingcap/tidb/issues/39915) @[wjhuang2016](https://github.com/wjhuang2016)
     - 禁止重命名分区表所依赖的列 [#40150](https://github.com/pingcap/tidb/issues/40150) @[mjonss](https://github.com/mjonss)
+    - 优化了删除分区表所依赖的列的错误提示 [#38739](https://github.com/pingcap/tidb/issues/38739) @[jiyfhust](https://github.com/jiyfhust)
+    - 增加了 `FLASHBACK CLUSTER` 在检查 `min-resolved-ts` 失败后的重试机制 [#39836](https://github.com/pingcap/tidb/issues/39836) @[Defined2014](https://github.com/Defined2014)
 
 + TiKV
 
@@ -489,9 +491,7 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 
     - 修复了收集统计信息任务因为错误的 `datetime` 值而失败的问题 [#39336](https://github.com/pingcap/tidb/issues/39336) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes)
     - 修复了创建表之后 `stats_meta` 未创建的问题 [#38189](https://github.com/pingcap/tidb/issues/38189) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes)
-    - 优化了删除分区表所依赖的列的错误提示 [#38739](https://github.com/pingcap/tidb/issues/38739) @[jiyfhust](https://github.com/jiyfhust)
     - 修复了 DDL 回填数据时频繁出现的事务写冲突问题 [#24427](https://github.com/pingcap/tidb/issues/24427) @[mjonss](https://github.com/mjonss)
-    - 增加了 `FLASHBACK CLUSTER` 在检查 `min-resolved-ts` 失败后的重试机制 [#39836](https://github.com/pingcap/tidb/issues/39836) @[Defined2014](https://github.com/Defined2014)
     - 修复了部分情况下空表无法使用 ingest 模式添加索引的问题 [#39641](https://github.com/pingcap/tidb/issues/39641) @[tangenta](https://github.com/tangenta)
     - 修复了同一事务中不同 SQL 的慢日志 `wait_ts` 相同的问题 [#39713](https://github.com/pingcap/tidb/issues/39713) @[TonsnakeLin](https://github.com/TonsnakeLin)
     - 修复了在添加列的过程中删除行记录时报 `Assertion Failed` 错误的问题 [#39570](https://github.com/pingcap/tidb/issues/39570) @[wjhuang2016](https://github.com/wjhuang2016)
