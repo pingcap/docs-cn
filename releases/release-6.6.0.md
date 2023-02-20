@@ -236,7 +236,7 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 
     - [GORM MySQL driver](https://github.com/go-gorm/mysql) 在 `v1.4.6` 中，新增 TiDB `AUTO_RANDOM` 特性适配 [#104](https://github.com/go-gorm/mysql/pull/104) @[Icemap](https://github.com/Icemap)。
     - [GORM MySQL driver](https://github.com/go-gorm/mysql) 在 `v1.4.6` 中，修复了连接 TiDB 时，在 `AutoMigrate` 期间无法更改 `Unique` 字段的非 `Unique` 属性的问题 [#105](https://github.com/go-gorm/mysql/pull/105) @[Icemap](https://github.com/Icemap)
-    - [GORM 文档](https://github.com/go-gorm/gorm.io) 提及 TiDB 作为默认数据库 [#638](https://github.com/go-gorm/gorm.io/pull/638) @[Icemap](https://github.com/Icemap)
+    - [GORM 文档](https://github.com/go-gorm/gorm.io)提及 TiDB 作为默认数据库 [#638](https://github.com/go-gorm/gorm.io/pull/638) @[Icemap](https://github.com/Icemap)
 
   更多信息，请参考 [GORM 用户文档](https://gorm.io/docs/index.html)。
 
@@ -327,7 +327,7 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 
 * 支持兼容 MySQL 语法的外键约束 [#18209](https://github.com/pingcap/tidb/issues/18209) @[crazycs520](https://github.com/crazycs520)
 
-    更多信息，请参考 v6.6.0 Release Notes 中 [SQL 部分](#sql-功能)以及[用户文档](/foreign-key.md)。
+    更多信息，请参考本文的 [SQL 部分](#sql-功能)以及[用户文档](/foreign-key.md)。
 
 * 支持兼容 MySQL 语法的多值索引（实验特性）[#39592](https://github.com/pingcap/tidb/issues/39592) @[xiongjiwei](https://github.com/xiongjiwei) @[qw4990](https://github.com/qw4990)
 
@@ -424,7 +424,7 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 
 + TiKV
 
-    - 在 partitioned-raft-kv 模式下优化了一些参数的默认值：TiKV 配置项 `storage.block-cache.capacity` 的默认值由 45% 调整为 30%，`region-split-size` 的默认值由 `96MiB` 调整为 `10GiB`。当沿用 raft-kv 模式且 `enable-region-bucket` 为 `true` 时，`region-split-size` 默认调整为 1GiB [#12842](https://github.com/tikv/tikv/issues/12842) @[tonyxuqqi](https://github.com/tonyxuqqi)
+    - 在 partitioned-raft-kv 模式下优化了一些参数的默认值：TiKV 配置项 `storage.block-cache.capacity` 的默认值由 45% 调整为 30%，`region-split-size` 的默认值由 `96MiB` 调整为 `10GiB`。当沿用 raft-kv 模式且 `enable-region-bucket` 为 `true` 时，`region-split-size` 默认调整为 `1GiB` [#12842](https://github.com/tikv/tikv/issues/12842) @[tonyxuqqi](https://github.com/tonyxuqqi)
     - 支持在 Raftstore 异步写入中进行优先级调度 [#13730](https://github.com/tikv/tikv/issues/13730) @[Connor1996](https://github.com/Connor1996)
     - 支持在小于 1 core 的 CPU 下启动 TiKV [#13586](https://github.com/tikv/tikv/issues/13586) [#13752](https://github.com/tikv/tikv/issues/13752) [#14017](https://github.com/tikv/tikv/issues/14017) @[andreid-db](https://github.com/andreid-db)
     - 优化 Raftstore slow score 探测的新机制，新增 `evict-slow-trend-scheduler` [#14131](https://github.com/tikv/tikv/issues/14131) @[innerr](https://github.com/innerr)
