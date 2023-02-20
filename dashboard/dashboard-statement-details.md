@@ -56,6 +56,8 @@ summary: 查看单个 SQL 语句执行的详细情况
 - 访问 TiFlash 的查询
 - 对三张表或更多表进行 Join 的查询
 
+目前该功能需用户拥有 `SUPER` 权限才可使用。如果在使用过程中提示权限不足，请参考 [TiDB Dashboard 用户管理](/dashboard/dashboard-user.md)补充所需权限。
+
 ## 执行计划详情
 
 执行计划详情包括以下内容：
