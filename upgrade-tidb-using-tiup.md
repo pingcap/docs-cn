@@ -146,16 +146,6 @@ tiup cluster check <cluster-name> --cluster
 
 执行结束后，最后会输出 region status 检查结果。如果结果为 "All regions are healthy"，则说明当前集群中所有 region 均为健康状态，可以继续执行升级；如果结果为 "Regions are not fully healthy: m miss-peer, n pending-peer" 并提示 "Please fix unhealthy regions before other operations."，则说明当前集群中有 region 处在异常状态，应先排除相应异常状态，并再次检查结果为 "All regions are healthy" 后再继续升级。
 
-<<<<<<< HEAD
-=======
-### 2.5 检查当前集群的 DDL 和 Backup 情况
-
-为避免升级过程中出现未定义行为或其他故障，建议检查以下指标后再进行升级操作。
-
-- 集群 DDL 情况：建议使用 [`ADMIN SHOW DDL`](/sql-statements/sql-statement-admin-show-ddl.md) 命令查看集群中是否有正在进行的 DDL Job。如需升级，请等待 DDL 执行完成或使用 [`ADMIN CANCEL DDL`](/sql-statements/sql-statement-admin-cancel-ddl.md) 命令取消该 DDL Job 后再进行升级。
-- 集群 Backup 情况：建议使用 [`SHOW [BACKUPS|RESTORES]`](/sql-statements/sql-statement-show-backups.md) 命令查看集群中是否有正在进行的 Backup 或者 Restore 任务。如需升级，请等待 Backup 执行完成后，得到一个有效的备份后再执行升级。
-
->>>>>>> 6c754e169 (upgrade: move compatibility changes to a more noticeable position (#13081))
 ## 3. 升级 TiDB 集群
 
 本部分介绍如何滚动升级 TiDB 集群以及如何进行升级后的验证。
@@ -282,11 +272,3 @@ tiup cluster upgrade <cluster-name> <version> --force
 ```
 tiup install ctl:v6.1.4
 ```
-<<<<<<< HEAD
-
-## 5. TiDB 6.1.0 兼容性变化
-
-- 兼容性变化请参考 6.1.0 Release Notes。
-- 请避免在对使用 TiDB Binlog 的集群进行滚动升级过程中新创建聚簇索引表。
-=======
->>>>>>> 6c754e169 (upgrade: move compatibility changes to a more noticeable position (#13081))
