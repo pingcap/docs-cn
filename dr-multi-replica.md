@@ -122,11 +122,11 @@ summary: 了解 TiDB 提供的基于多副本的单集群容灾方案。
     >
     > 优先级数值越大的节点成为 leader 的可能性越高。
 
-3. 创建 placement rule，并将测试表的主副本固定在 Region 1：
+3. 创建 placement rule，并将测试表的主副本固定在区域 1：
 
     ```sql
-    -- 创建两个 placement rules，第一个是 Region1 作为主 Region，在系统正常时使用，第二个是 Region2 作为备 Region。
-    -- 作为主 Region，当 Region1 出现问题时，Region2 会作为主 Region。
+    -- 创建两个 placement rules，第一个是区域 1 作为主区域，在系统正常时使用，第二个是区域 2 作为备区域。
+    -- 作为主区域，当区域 1 出现问题时，区域 2 会作为主区域。
     MySQL [(none)]> CREATE PLACEMENT POLICY primary_rule_for_region1 PRIMARY_REGION="Region1" REGIONS="Region1, Region2,Region3";
     MySQL [(none)]> CREATE PLACEMENT POLICY secondary_rule_for_region2 PRIMARY_REGION="Region2" REGIONS="Region1,Region2,Region3";
 
@@ -140,7 +140,7 @@ summary: 了解 TiDB 提供的基于多副本的单集群容灾方案。
     SELECT STORE_ID, address, leader_count, label FROM TIKV_STORE_STATUS ORDER BY store_id;
     ```
 
-    下面的语句可以产生一个 sql 脚本，把所有非系统 schema 中的表的 leader 都设置到特定的 region 上：
+    下面的语句可以产生一个 sql 脚本，把所有非系统 schema 中的表的 leader 都设置到特定的区域上：
 
     ```sql
     SET @region_name=primary_rule_for_region1;
@@ -174,7 +174,7 @@ summary: 了解 TiDB 提供的基于多副本的单集群容灾方案。
 
     说明：请根据需要修改上面的数据库名称、表名和 placement rule 的名称。
 
-    执行如下命令，调低 Region 1 的 PD 节点的优先级，并调高 Region 2 的 PD 节点的优先级。
+    执行如下命令，调低区域 1 的 PD 节点的优先级，并调高区域 2 的 PD 节点的优先级。
 
     ``` shell
     tiup ctl:v6.4.0 pd member leader_priority  pd-1 2

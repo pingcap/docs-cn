@@ -30,8 +30,8 @@ summary: 了解如何使用 TiCDC 构建主备集群进行容灾。
 
 上述架构包含两个 TiDB 集群：Primary Cluster 和 Secondary Cluster。
 
-- Primary Cluster：主用集群，运行在 Region 1，三副本，用于处理读写业务。
-- Secondary Cluster：备用集群，运行在 Region 2，通过 TiCDC 从 Primary Cluster 同步数据。
+- Primary Cluster：主用集群，运行在区域 1 (Region 1)，三副本，用于处理读写业务。
+- Secondary Cluster：备用集群，运行在区域 2 (Region 2)，通过 TiCDC 从 Primary Cluster 同步数据。
 
 这种容灾架构简洁易用，可以容忍区域级别的故障，既可以保证主用集群的写入性能不会下降，还可以在备用集群处理一些延迟不敏感的只读业务。该方案的 Recovery Point Objective (RPO) 在秒级别，Recovery Time Objective (RTO) 可以达到分钟级别甚至更低。这个方案适用于重要的生产系统。
 
@@ -41,19 +41,19 @@ summary: 了解如何使用 TiCDC 构建主备集群进行容灾。
 
 ### 搭建主备集群
 
-本文将 TiDB 主集群和备用集群分别部署在两个不同的区域（Region 1 和 Region 2）。由于主备集群之间存在一定的网络延迟，TiCDC 与 TiDB 备用集群应部署在一起，以实现最好的数据同步性能。在本教程示例中，每台服务器部署一个组件节点，具体的部署拓扑如下：
+本文将 TiDB 主集群和备用集群分别部署在两个不同的区域（区域 1 和区域 2）。由于主备集群之间存在一定的网络延迟，TiCDC 与 TiDB 备用集群应部署在一起，以实现最好的数据同步性能。在本教程示例中，每台服务器部署一个组件节点，具体的部署拓扑如下：
 
 |区域 | 主机 | 集群 | 组件 |
 | --- | --- | --- | --- |
-| Region 1 | 10.0.1.1/10.0.1.2/10.0.1.3 | Primary | PD |
-| Region 1 | 10.0.1.4/10.0.1.5 | Primary| TiDB |
-| Region 1 | 10.0.1.6/10.0.1.7/10.0.1.8 | Primary | TiKV |
-| Region 1 | 10.0.1.9 | Primary | Monitor、Grafana 或 AlterManager |
-| Region 2 | 10.1.1.9/10.1.1.10 | Primary | TiCDC |
-| Region 2 | 10.1.1.1/10.1.1.2/10.1.1.3 | Secondary | PD |
-| Region 2 | 10.1.1.4/10.1.1.5 | Secondary | TiDB |
-| Region 2 | 10.1.1.6/10.1.1.7/10.1.1.8 | Secondary | TiKV |
-| Region 2 | 10.0.1.11 | Secondary | Monitor、Grafana 或 AlterManager |
+| 区域 1 | 10.0.1.1/10.0.1.2/10.0.1.3 | Primary | PD |
+| 区域 1 | 10.0.1.4/10.0.1.5 | Primary| TiDB |
+| 区域 1 | 10.0.1.6/10.0.1.7/10.0.1.8 | Primary | TiKV |
+| 区域 1 | 10.0.1.9 | Primary | Monitor、Grafana 或 AlterManager |
+| 区域 2 | 10.1.1.9/10.1.1.10 | Primary | TiCDC |
+| 区域 2 | 10.1.1.1/10.1.1.2/10.1.1.3 | Secondary | PD |
+| 区域 2 | 10.1.1.4/10.1.1.5 | Secondary | TiDB |
+| 区域 2 | 10.1.1.6/10.1.1.7/10.1.1.8 | Secondary | TiKV |
+| 区域 2 | 10.0.1.11 | Secondary | Monitor、Grafana 或 AlterManager |
 
 关于服务器配置信息，可以参考如下文档：
 
@@ -113,7 +113,7 @@ summary: 了解如何使用 TiCDC 构建主备集群进行容灾。
 * 搭建 [MinIO](https://docs.min.io/docs/minio-quickstart-guide.html) 作为备份存储系统，使用 S3 协议将数据备份到 MinIO 中。
 * 挂载 NFS 盘（如 NAS）到 br、TiKV 和 TiCDC 实例节点，使用 POSIX 文件系统接口将备份数据写入对应的 NFS 目录中。
 
-下面以 MinIO 为示例，仅供参考。注意需要在 Region 1 或者 Region 2 中准备独立的服务器部署 MinIO。
+下面以 MinIO 为示例，仅供参考。注意需要在区域 1 或者区域 2 中准备独立的服务器部署 MinIO。
 
 ```shell
 wget https://dl.min.io/server/minio/release/linux-amd64/minio
@@ -336,7 +336,7 @@ TiDB 目前还没有提供 DR Dashboard，你可以通过以下 Dashboard 了解
 
 当发生真正的灾难，比如主集群所在区域停电，主备集群的同步链路可能会突然中断，从而导致备用集群数据处于事务不一致的状态。
 
-1. 恢复备用集群到事务一致的状态。在 Region 2 的任意 TiCDC 节点执行以下命令，以向备用集群重放 redo log，使备用集群达到最终一致性状态：
+1. 恢复备用集群到事务一致的状态。在区域 2 的任意 TiCDC 节点执行以下命令，以向备用集群重放 redo log，使备用集群达到最终一致性状态：
 
     ```shell
     tiup cdc redo apply --storage "s3://redo?access-key=minio&secret-access-key=miniostorage&endpoint=http://10.0.1.10:6060&force-path-style=true" --tmp-dir /tmp/redo --sink-uri "mysql://{username}:{password}@10.1.1.4:4000"
