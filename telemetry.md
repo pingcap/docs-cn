@@ -6,7 +6,12 @@ aliases: ['/docs/dev/telemetry/']
 
 # Telemetry
 
-By default, TiDB, TiUP and TiDB Dashboard collect usage information and share the information with PingCAP to help understand how to improve the product. For example, this usage information helps prioritize new features.
+When the telemetry is enabled, TiDB, TiUP and TiDB Dashboard collect usage information and share the information with PingCAP to help understand how to improve the product. For example, this usage information helps prioritize new features.
+
+> **Note:**
+>
+> - Starting from February 20, 2023, the telemetry feature is disabled by default in new versions of TiDB and TiDB Dashboard, including v6.6.0, and usage information is not collected and shared with PingCAP. Before upgrading to these versions, if the cluster uses the default telemetry configuration, the telemetry feature is disabled after the upgrade. See [TiDB Release Timeline](/releases/release-timeline.md) for the specific version.
+> - Starting from v1.11.3, the telemetry feature is disabled by default in newly deployed TiUP, and usage information is not collected. If you upgrade from a TiUP version earlier than v1.11.3 to v1.11.3 or a later version, the telemetry feature keeps the same status as before the upgrade.
 
 ## What is shared?
 
@@ -62,6 +67,10 @@ TIUP_CLUSTER_DEBUG=enable tiup cluster list
 
 ### TiSpark
 
+> **Note:**
+>
+> Starting from v3.3, the telemetry collection is disabled by default in TiSpark, and usage information is not collected and shared with PingCAP.
+
 When the telemetry collection feature is enabled for TiSpark, the Spark module will share the usage details of TiSpark, including (but not limited to):
 
 - A randomly generated telemetry ID.
@@ -78,7 +87,7 @@ cat {spark.log} | grep Telemetry report | tail -n 1
 
 ### Disable TiDB telemetry at deployment
 
-When deploying TiDB clusters, configure [`enable-telemetry = false`](/tidb-configuration-file.md#enable-telemetry-new-in-v402) to disable the TiDB telemetry collection on all TiDB instances. You can also use this setting to disable telemetry in an existing TiDB cluster, which does not take effect until you restart the cluster.
+When the telemetry is enabled in existing TiDB clusters, you can configure [`enable-telemetry = false`](/tidb-configuration-file.md#enable-telemetry-new-in-v402) on each TiDB instance to disable the TiDB telemetry collection on that instance, which does not take effect until you restart the cluster.
 
 Detailed steps to disable telemetry in different deployment tools are listed below.
 

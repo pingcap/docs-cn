@@ -10,10 +10,6 @@ aliases: ['/docs/dev/production-deployment-using-tiup/','/docs/dev/how-to/deploy
 
 TiUP supports deploying TiDB, TiFlash, TiDB Binlog, TiCDC, and the monitoring system. This document introduces how to deploy TiDB clusters of different topologies.
 
-> **Note:**
->
-> TiDB, TiUP and TiDB Dashboard share usage details with PingCAP to help understand how to improve the product. For details about what is shared and how to disable the sharing, see [Telemetry](/telemetry.md).
-
 ## Step 1. Prerequisites and precheck
 
 Make sure that you have read the following documents:

@@ -447,7 +447,7 @@ Configuration items related to the [TiDB Dashboard](/dashboard/dashboard-intro.m
 ### `enable-telemetry`
 
 + Determines whether to enable the telemetry collection feature in TiDB Dashboard.
-+ Default value: `true`
++ Default value: `false`
 + See [Telemetry](/telemetry.md) for details.
 
 ## `replication-mode`

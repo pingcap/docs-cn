@@ -30,7 +30,7 @@ tiup --version
 
 > **Note:**
 >
-> By default, TiUP shares usage details with PingCAP to help understand how to improve the product. For details about what is shared and how to disable the sharing, see [Telemetry](/telemetry.md).
+> For TiUP versions starting from v1.11.3, the telemetry is disabled by default in newly deployed TiUP, and usage information is not collected and shared with PingCAP. For details about what is shared and how to disable the sharing, see [Telemetry](/telemetry.md).
 
 ## TiUP ecosystem introduction
 

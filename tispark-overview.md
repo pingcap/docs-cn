@@ -458,7 +458,6 @@ For more information, see [Authorization and authentication through TiDB server]
 - [Stale read](https://github.com/pingcap/tispark/blob/master/docs/features/stale_read.md)
 - [TiSpark with multiple catalogs](https://github.com/pingcap/tispark/wiki/TiSpark-with-multiple-catalogs)
 - [TiSpark TLS](#tls-configurations)
-- [TiSpark Telemetry](https://github.com/pingcap/tispark/blob/master/docs/features/telemetry.md)
 - [TiSpark plan](https://github.com/pingcap/tispark/blob/master/docs/features/query_execution_plan_in_TiSpark.md)
 
 ## Statistics information
