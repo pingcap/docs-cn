@@ -12,7 +12,7 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-alter-user/','/docs-cn/dev/
 
 ```ebnf+diagram
 AlterUserStmt ::=
-    'ALTER' 'USER' IfExists (UserSpecList RequireClauseOpt ConnectionOptions PasswordOption LockOption AttributeOption | 'USER' '(' ')' 'IDENTIFIED' 'BY' AuthString)
+    'ALTER' 'USER' IfExists (UserSpecList RequireClauseOpt ConnectionOptions PasswordOption LockOption AttributeOption | 'USER' '(' ')' 'IDENTIFIED' 'BY' AuthString) ResourceGroupNameOption
 
 UserSpecList ::=
     UserSpec ( ',' UserSpec )*
@@ -31,6 +31,8 @@ PasswordOption ::= ( 'PASSWORD' 'EXPIRE' ( 'DEFAULT' | 'NEVER' | 'INTERVAL' N 'D
 LockOption ::= ( 'ACCOUNT' 'LOCK' | 'ACCOUNT' 'UNLOCK' )?
 
 AttributeOption ::= ( 'COMMENT' CommentString | 'ATTRIBUTE' AttributeString )?
+
+ResourceGroupNameOption::= ( 'RESOURCE' 'GROUP' Identifier)?
 ```
 
 ## 示例
@@ -157,6 +159,16 @@ Query OK, 0 rows affected (0.02 sec)
 
 ```sql
 ALTER USER 'newuser' PASSWORD REUSE INTERVAL 90 DAY;
+```
+
+```
+Query OK, 0 rows affected (0.02 sec)
+```
+
+通过 `ALTER USER ... RESOURCE GROUP` 修改用户 `newuser` 的资源组到 `rg1`：
+
+```sql
+ALTER USER 'newuser' RESOURCE GROUP rg1;
 ```
 
 ```

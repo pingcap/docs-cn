@@ -178,7 +178,7 @@ tikv_servers:
     raftstore.raft-max-election-timeout-ticks: 1200
     ```
 
-- 调度设置。在集群启动后，通过 `tiup ctl:<cluster-version> pd` 工具进行调度策略修改。修改 TiKV Raft 副本数按照安装时规划好的副本数进行设置，在本例中为 5 副本。
+- 调度设置。在集群启动后，通过 `tiup ctl:v<CLUSTER_VERSION> pd` 工具进行调度策略修改。修改 TiKV Raft 副本数按照安装时规划好的副本数进行设置，在本例中为 5 副本。
 
     ```
     config set max-replicas 5

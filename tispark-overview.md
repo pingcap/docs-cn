@@ -294,6 +294,8 @@ spark.sql("select t1.id,t2.id from spark_catalog.default.t t1 left join tidb_cat
 | `spark.tispark.tikv.conn_recycle_time`          | `60s`            | 清理 TiKV 失效连接的时间间隔。默认时间为 `60s`。当重载证书开启时此配置才会生效。                                                                                                                                                                                                                                         |
 | `spark.tispark.host_mapping`                    |                  | 路由映射配置。用于配置公有 IP 地址和私有 IP 地址的映射。当 TiDB 在私有网络上运行时，你可以将一系列内部 IP 地址映射到公网 IP 地址以便 Spark 集群访问。其格式为 `{Intranet IP1}:{Public IP1};{Intranet IP2}:{Public IP2}`，例如 `192.168.0.2:8.8.8.8;192.168.0.3:9.9.9.9`。                                                                                  |
 | `spark.tispark.new_collation_enable`            |                  | 当 TiDB 开启 [new collation](https://docs.pingcap.com/tidb/stable/character-set-and-collation#new-framework-for-collations)，推荐将此配置设为`true`。当 TiDB 关闭 `new collation`，推荐将此配置设置为 `false`。在未配置的情况下，TiSpark 会依据 TiDB 版本自动配置 `new collation`。其规则为：当 TiDB 版本大于等于 v6.0.0 时为 `true`；否则为 `false`。 |
+| `spark.tispark.replica_read`                   | `leader`         | 读取副本的类型。可选值为 `leader`、`follower`、`learner`。可以同时指定多个类型，TiSpark 会根据顺序选择。  |
+| `spark.tispark.replica_read.label`             |                  | 目标 TiKV 节点的标签。格式为 `label_x=value_x,label_y=value_y`，各项之间为“逻辑与”的关系。 |
 
 ### TLS 配置
 
