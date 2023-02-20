@@ -261,13 +261,19 @@ SHOW GRANTS FOR `rw_user`@`192.168.%`;
 
 动态权限包括：
 
-* `SYSTEM_USER`
 * `BACKUP_ADMIN`
 * `RESTORE_ADMIN`
-* `ROLE_ADMIN`
-* `PLACEMENT_ADMIN` 允许创建、删除和修改放置策略（placement policy）。
-* `CONNECTION_ADMIN`
+* `SYSTEM_USER`
 * `SYSTEM_VARIABLES_ADMIN`
+* `ROLE_ADMIN`
+* `CONNECTION_ADMIN`
+* `PLACEMENT_ADMIN` 允许创建、删除和修改放置策略 (placement policy)。
+* `DASHBOARD_CLIENT` 允许登录 TiDB Dashboard。
+* `RESTRICTED_TABLES_ADMIN` 允许在 SEM 打开的情况下查看系统表。
+* `RESTRICTED_STATUS_ADMIN` 允许在 SEM 打开的情况下查看 [`SHOW [GLOBAL|SESSION] STATUS`](/sql-statements/sql-statement-show-status.md) 中的状态变量。
+* `RESTRICTED_VARIABLES_ADMIN` 允许在 SEM 打开的情况下查看所有系统变量。
+* `RESTRICTED_USER_ADMIN` 不允许在 SEM 打开的情况下使用 `SUPER` 用户撤销访问权限。
+* `RESTRICTED_CONNECTION_ADMIN` 允许 KILL 属于 `RESTRICTED_USER_ADMIN` 用户的连接。该权限对 `KILL` 和 `KILL TIDB` 语句生效。
 * `RESTRICTED_REPLICA_WRITER_ADMIN` 允许权限拥有者在 TiDB 集群开启了只读模式的情况下不受影响地执行写入或更新操作，详见 [`tidb_restricted_read_only` 配置项](/system-variables.md#tidb_restricted_read_only-从-v520-版本开始引入)。
 
 若要查看全部的动态权限，请执行 `SHOW PRIVILEGES` 语句。由于用户可使用插件来添加新的权限，因此可分配的权限列表可能因用户的 TiDB 安装情况而异。
