@@ -421,6 +421,8 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
     - 为 Optimizer Hints 和执行计划绑定的冲突新增报错信息 [#40910](https://github.com/pingcap/tidb/issues/40910) @[Reminiscent](https://github.com/Reminiscent)
     - 优化了 Plan Cache 策略，避免在一些场景使用 Plan Cache 时产生不优计划 [#40312](https://github.com/pingcap/tidb/pull/40312) [#40218](https://github.com/pingcap/tidb/pull/40218) [#40280](https://github.com/pingcap/tidb/pull/40280) [#41136](https://github.com/pingcap/tidb/pull/41136) [#40686](https://github.com/pingcap/tidb/pull/40686) @[qw4990](https://github.com/qw4990)
     - 定期清理过期的 Region 缓存，避免内存泄漏和性能下降问题 [#40461](https://github.com/pingcap/tidb/issues/40461) @[sticnarf](https://github.com/sticnarf)
+    - 不支持在分区表上执行 `MODIFY COLUMN` [#39915](https://github.com/pingcap/tidb/issues/39915) @[wjhuang2016](https://github.com/wjhuang2016)
+    - 禁止重命名分区表所依赖的列 [#40150](https://github.com/pingcap/tidb/issues/40150) @[mjonss](https://github.com/mjonss)
 
 + TiKV
 
@@ -499,8 +501,6 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
     - 修复了当生成的列表达式包含表名时，重命名表后无法插入数据的问题 [#39826](https://github.com/pingcap/tidb/issues/39826) @[Defined2014](https://github.com/Defined2014)
     - 修复了当列处于 write-only 状态时 `INSERT ignore` 语句无法正确填充默认值的问题 [#40192](https://github.com/pingcap/tidb/issues/40192) @[YangKeao](https://github.com/YangKeao)
     - 修复了关闭资源管控模块时未能释放资源的问题 [#40546](https://github.com/pingcap/tidb/issues/40546) @[zimulala](https://github.com/zimulala)
-    - 不支持在分区表上执行 `MODIFY COLUMN` [#39915](https://github.com/pingcap/tidb/issues/39915) @[wjhuang2016](https://github.com/wjhuang2016)
-    - 禁止重命名分区表所依赖的列 [#40150](https://github.com/pingcap/tidb/issues/40150) @[mjonss](https://github.com/mjonss)
     - 修复了 TTL 任务不能及时触发统计信息更新的问题 [#40109](https://github.com/pingcap/tidb/issues/40109) @[YangKeao](https://github.com/YangKeao)
     - 修复了 TiDB 构造 key 范围时对 `NULL` 值处理不当，导致读取非预期数据的问题 [#40158](https://github.com/pingcap/tidb/issues/40158) @[tiancaiamao](https://github.com/tiancaiamao)
     - 修复了 `MODIFY COLUMN` 同时修改列默认值导致写入非法值的问题 [#40164](https://github.com/pingcap/tidb/issues/40164) @[wjhuang2016](https://github.com/wjhuang2016)
