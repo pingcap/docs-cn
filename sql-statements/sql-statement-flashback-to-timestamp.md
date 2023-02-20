@@ -40,12 +40,28 @@ FlashbackToTimestampStmt ::=
     SELECT * FROM mysql.tidb WHERE variable_name = 'tikv_gc_safe_point';
     ```
 
+<CustomContent platform='tidb'>
+
+* Only a user with the `SUPER` privilege can execute the `FLASHBACK CLUSTER` SQL statement.
+* `FLASHBACK CLUSTER` does not support rolling back DDL statements that modify PD-related information, such as `ALTER TABLE ATTRIBUTE`, `ALTER TABLE REPLICA`, and `CREATE PLACEMENT POLICY`.
+* At the time specified in the `FLASHBACK` statement, there cannot be a DDL statement that is not completely executed. If such a DDL exists, TiDB will reject it.
+* Before executing `FLASHBACK CLUSTER TO TIMESTAMP`, TiDB disconnects all related connections and prohibits read and write operations on these tables until the `FLASHBACK CLUSTER` statement is completed.
+* The `FLASHBACK CLUSTER TO TIMESTAMP` statement cannot be canceled after being executed. TiDB will keep retrying until it succeeds.
+* During the execution of `FLASHBACK CLUSTER`, if you need to back up data, you can only use [Backup & Restore](/br/br-snapshot-guide.md) and specify a `BackupTS` that is earlier than the start time of `FLASHBACK CLUSTER`. In addition, during the execution of `FLASHBACK CLUSTER`, enabling [log backup](/br/br-pitr-guide.md) will fail. Therefore, try to enable log backup after `FLASHBACK CLUSTER` is completed.
+* If the `FLASHBACK CLUSTER` statement causes the rollback of metadata (table structure, database structure), the related modifications will **not** be replicated by TiCDC. Therefore, you need to pause the task manually, wait for the completion of `FLASHBACK CLUSTER`, and manually replicate the schema definitions of the upstream and downstream to make sure that they are consistent. After that, you need to recreate the TiCDC changefeed.
+
+</CustomContent>
+
+<CustomContent platform='tidb-cloud'>
+
 * Only a user with the `SUPER` privilege can execute the `FLASHBACK CLUSTER` SQL statement.
 * `FLASHBACK CLUSTER` does not support rolling back DDL statements that modify PD-related information, such as `ALTER TABLE ATTRIBUTE`, `ALTER TABLE REPLICA`, and `CREATE PLACEMENT POLICY`.
 * At the time specified in the `FLASHBACK` statement, there cannot be a DDL statement that is not completely executed. If such a DDL exists, TiDB will reject it.
 * Before executing `FLASHBACK CLUSTER TO TIMESTAMP`, TiDB disconnects all related connections and prohibits read and write operations on these tables until the `FLASHBACK CLUSTER` statement is completed.
 * The `FLASHBACK CLUSTER TO TIMESTAMP` statement cannot be canceled after being executed. TiDB will keep retrying until it succeeds.
 * If the `FLASHBACK CLUSTER` statement causes the rollback of metadata (table structure, database structure), the related modifications will **not** be replicated by TiCDC. Therefore, you need to pause the task manually, wait for the completion of `FLASHBACK CLUSTER`, and manually replicate the schema definitions of the upstream and downstream to make sure that they are consistent. After that, you need to recreate the TiCDC changefeed.
+
+</CustomContent>
 
 ## Example
 

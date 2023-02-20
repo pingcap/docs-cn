@@ -1535,16 +1535,20 @@ MPP is a distributed computing framework provided by the TiFlash engine, which a
 - Scope: GLOBAL
 - Persists to cluster: Yes
 - Type: Boolean
-- Default value: `OFF`
-- This variable is used for an unreleased feature. **Do not change the variable value**.
+- Default value: `ON`
+- This variable controls whether to enable historical statistics. The default value changes from `OFF` to `ON`, which means that historical statistics are enabled by default.
 
-### `tidb_enable_historical_stats_for_capture`
+### tidb_enable_historical_stats_for_capture
+
+> **Warning:**
+>
+> The feature controlled by this variable is not fully functional in the current TiDB version. Do not change the default value.
 
 - Scope: GLOBAL
 - Persists to cluster: Yes
 - Type: Boolean
 - Default value: `OFF`
-- This variable is used for an unreleased feature. **Do not change the variable value**.
+- This variable controls whether the information captured by `PLAN REPLAYER CAPTURE` includes historical statistics by default. The default value `OFF` means that historical statistics are not included by default.
 
 ### tidb_enable_index_merge <span class="version-mark">New in v4.0</span>
 
@@ -1749,8 +1753,8 @@ MPP is a distributed computing framework provided by the TiFlash engine, which a
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
 - Type: Boolean
-- Default value: `OFF`
-- This variable controls whether to enable the [`PLAN REPLAYER CAPTURE` feature](/sql-plan-replayer.md#use-plan-replayer-capture-to-capture-target-plans). The default value `OFF` means to disable the `PLAN REPLAYER CAPTURE` feature.
+- Default value: `ON`
+- This variable controls whether to enable the [`PLAN REPLAYER CAPTURE` feature](/sql-plan-replayer.md#use-plan-replayer-capture-to-capture-target-plans). The default value `ON` means to enable the `PLAN REPLAYER CAPTURE` feature.
 
 </CustomContent>
 

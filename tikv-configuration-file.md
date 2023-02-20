@@ -1262,7 +1262,11 @@ Configuration items related to `rocksdb.defaultcf`, `rocksdb.writecf`, and `rock
 
 ### `block-cache-size`
 
-+ The cache size of a RocksDB block. Starting from v6.6.0, this configuration is only used to calculate the default value of `storage.block-cache.capacity`.
+> **Warning:**
+>
+> Starting from v6.6.0, this configuration is deprecated.
+
++ The cache size of a RocksDB block.
 + Default value for `defaultcf`: `Total machine memory * 25%`
 + Default value for `writecf`: `Total machine memory * 15%`
 + Default value for `lockcf`: `Total machine memory * 2%`
