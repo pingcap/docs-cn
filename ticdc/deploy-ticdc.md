@@ -106,7 +106,7 @@ tiup cluster upgrade <cluster-name> <version> --transfer-timeout 600
 - TiCDC 自 v6.3.0 起支持滚动升级，使用 TiUP 升级 TiCDC 节点期间，能够保证同步延迟稳定，不发生剧烈波动。满足以下条件将自动启用滚动升级：
 
     - TiCDC 版本大于等于 v6.3.0。
-    - TiUP 版本大于等于 v1.11.0。
+    - TiUP 版本大于等于 v1.11.3。
     - 集群中至少有两个正在运行的 TiCDC 实例。
 
 ## 使用 TiUP 变更 TiCDC 集群配置
