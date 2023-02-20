@@ -56,20 +56,31 @@ TiDB is highly compatible with the MySQL protocol and supports [most MySQL synta
 
 Since TiDB is compatible with the MySQL protocol and MySQL syntax, most of the ORMs that support MySQL are also compatible with TiDB.
 
-## Read More
-
-- [Quick Start](/develop/dev-guide-build-cluster-in-cloud.md)
-- [Choose Driver or ORM](/develop/dev-guide-choose-driver-or-orm.md)
+## Read more
 
 <CustomContent platform="tidb">
 
+- [Quick Start](/develop/dev-guide-build-cluster-in-cloud.md)
+- [Choose Driver or ORM](/develop/dev-guide-choose-driver-or-orm.md)
 - [Connect to TiDB](/develop/dev-guide-connect-to-tidb.md)
-
-</CustomContent>
-
 - [Database Schema Design](/develop/dev-guide-schema-design-overview.md)
 - [Write Data](/develop/dev-guide-insert-data.md)
 - [Read Data](/develop/dev-guide-get-data-from-single-table.md)
 - [Transaction](/develop/dev-guide-transaction-overview.md)
 - [Optimize](/develop/dev-guide-optimize-sql-overview.md)
 - [Example Applications](/develop/dev-guide-sample-application-spring-boot.md)
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+- [Quick Start](/develop/dev-guide-build-cluster-in-cloud.md)
+- [Choose Driver or ORM](/develop/dev-guide-choose-driver-or-orm.md)
+- [Database Schema Design](/develop/dev-guide-schema-design-overview.md)
+- [Write Data](/develop/dev-guide-insert-data.md)
+- [Read Data](/develop/dev-guide-get-data-from-single-table.md)
+- [Transaction](/develop/dev-guide-transaction-overview.md)
+- [Optimize](/develop/dev-guide-optimize-sql-overview.md)
+- [Example Applications](/develop/dev-guide-sample-application-spring-boot.md)
+
+</CustomContent>
