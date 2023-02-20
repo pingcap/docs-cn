@@ -17,8 +17,8 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 + 设置 TiKV panic 时是否调用 `abort()` 退出进程。此选项影响 TiKV 是否允许系统生成 core dump 文件。
 
-    + 如果此配置项值为 false ，当 TiKV panic 时，TiKV 调用 `exit()` 退出进程。
-    + 如果此配置项值为 true ，当 TiKV panic 时，TiKV 调用 `abort()` 退出进程。此时 TiKV 允许系统在退出时生成 core dump 文件。要生成 core dump 文件，你还需要进行 core dump 相关的系统配置（比如打开 `ulimit -c` 和配置 core dump 路径，不同操作系统配置方式不同）。建议将 core dump 生成路径设置在 TiKV 数据的不同磁盘分区，避免 core dump 文件占用磁盘空间过大，造成 TiKV 磁盘空间不足。
+    + 如果此配置项值为 false，当 TiKV panic 时，TiKV 调用 `exit()` 退出进程。
+    + 如果此配置项值为 true，当 TiKV panic 时，TiKV 调用 `abort()` 退出进程。此时 TiKV 允许系统在退出时生成 core dump 文件。要生成 core dump 文件，你还需要进行 core dump 相关的系统配置（比如打开 `ulimit -c` 和配置 core dump 路径，不同操作系统配置方式不同）。建议将 core dump 生成路径设置在 TiKV 数据的不同磁盘分区，避免 core dump 文件占用磁盘空间过大，造成 TiKV 磁盘空间不足。
 
 + 默认值：false
 
@@ -110,10 +110,6 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 + gRPC 消息的压缩算法，取值：none，deflate，gzip。
 + 默认值：none
-
-> **注意：**
->
-> 取值为 `gzip` 时，部分 TiDB Dashboard 可能无法完成对应的压缩运算，会显示异常。调整回默认值 `none` 后，TiDB Dashboard 可正常显示。
 
 ### `grpc-concurrency`
 
@@ -433,12 +429,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 ## storage.block-cache
 
-RocksDB 多个 CF 之间共享 block cache 的配置选项。当开启时，为每个 CF 单独配置的 block cache 将无效。
-
-### `shared`
-
-+ 是否开启共享 block cache。
-+ 默认值：true
+RocksDB 多个 CF 之间共享 block cache 的配置选项。
 
 ### `capacity`
 
@@ -875,6 +866,13 @@ raftstore 相关的配置项。
 + 默认值：1MB
 + 最小值：0
 
+### `report-min-resolved-ts-interval`
+
++ 设置 PD leader 收到 Resolved TS 的最小间隔时间。如果该值设置为 `0`，表示禁用该功能。
++ 默认值：`"1s"`，即最小正值
++ 最小值：0
++ 单位：秒
+
 ## coprocessor
 
 coprocessor 相关的配置项。
@@ -1016,11 +1014,6 @@ rocksdb 相关的配置项。
 + 最小值：0
 + 单位：B|KB|MB|GB
 
-### `enable-statistics`
-
-+ 开启 RocksDB 的统计信息。
-+ 默认值：true
-
 ### `stats-dump-period`
 
 + 将统计信息输出到日志中的间隔时间。
@@ -1137,15 +1130,15 @@ rocksdb defaultcf、rocksdb writecf 和 rocksdb lockcf 相关的配置项。
 ### `block-size`
 
 + 一个 RocksDB block 的默认大小。
-+ `defaultcf` 默认值：64KB
-+ `writecf` 默认值：64KB
++ `defaultcf` 默认值：32KB
++ `writecf` 默认值：32KB
 + `lockcf` 默认值：16KB
 + 最小值：1KB
 + 单位：KB|MB|GB
 
 ### `block-cache-size`
 
-+ 一个 RocksDB block 的默认缓存大小。
++ 一个 RocksDB block 的默认缓存大小。从 v6.6.0 起，该配置仅用于计算 `storage.block-cache.capacity` 的默认值。
 + `defaultcf` 默认值：机器总内存 * 25%
 + `writecf` 默认值：机器总内存 * 15%
 + `lockcf` 默认值：机器总内存 * 2%
@@ -1572,7 +1565,7 @@ Raft Engine 相关的配置项。
 ### `data-encryption-method`
 
 + 数据文件的加密方法。
-+ 可选值：`"plaintext"`，`"aes128-ctr"`，`"aes192-ctr"`，`"aes256-ctr"`， `"sm4-ctr"`（从 v6.3.0 开始支持）
++ 可选值：`"plaintext"`，`"aes128-ctr"`，`"aes192-ctr"`，`"aes256-ctr"`，`"sm4-ctr"`（从 v6.3.0 开始支持）
 + 选择 `"plaintext"` 以外的值则表示启用加密功能。此时必须指定主密钥。
 + 默认值：`"plaintext"`
 
@@ -1882,3 +1875,13 @@ Raft Engine 相关的配置项。
 + 单次时间戳请求的最大数量。
 + 在默认的一个 TSO 物理时钟更新周期内 (50ms)，PD 最多提供 262144 个 TSO，超过这个数量后 PD 会暂缓 TSO 请求的处理。这个配置用于避免 PD 的 TSO 消耗殆尽、影响其他业务的使用。如果增大这个参数，建议同时减小 PD 的 [`tso-update-physical-interval`](/pd-configuration-file.md#tso-update-physical-interval) 参数，以获得足够的 TSO。
 + 默认值：8192
+
+## resource-control
+
+资源控制 (Resource Control) 在 TiKV 存储层相关的配置项。
+
+### `enabled` <span class="version-mark">从 v6.6.0 版本开始引入</span>
+
++ 是否支持对用户前台的读写请求按照对应的资源组配额做优先级调度。有关 TiDB 资源组和资源管控的信息，请参考 [TiDB 资源管控](/tidb-resource-control.md)
++ 在 TiDB 侧开启 [`tidb_enable_resource_control`](/system-variables.md#tidb_enable_resource_control-从-v660-版本开始引入) 全局变量的情况下，开启这个配置项才有意义。此配置参数开启后，TiKV 会使用优先级队列对排队的用户前台读写请求做调度，调度的优先级和请求所在资源组已经消费的资源量反相关，和对应资源组的配额正相关。
++ 默认值：false（即关闭按照资源组配额调度）

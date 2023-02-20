@@ -10,9 +10,11 @@ aliases: ['/docs-cn/dev/br/backup-and-restore-faq/','/zh/tidb/dev/pitr-troublesh
 
 如果遇到未包含在此文档且无法解决的问题，可以在 [AskTUG](https://asktug.com/) 社区中提问。
 
-## 备份与恢复性能问题
+## 当误删除或误更新数据后，如何原地快速恢复？
 
-### 在 TiDB v5.4.0 及后续版本中，当在有负载的集群进行备份时，备份速度为什么会变得很慢？
+从 TiDB v6.4.0 引入了完整的 Flashback 功能，可以支持原地快速恢复 GC 时间内的数据到指定时间点。在误操作场景下，推荐使用 Flashback 来恢复数据，具体可以参考 [Flashback 集群](/sql-statements/sql-statement-flashback-to-timestamp.md) 和 [Flashback 数据库](/sql-statements/sql-statement-flashback-database.md)语法。
+
+## 在 TiDB v5.4.0 及后续版本中，当在有负载的集群进行备份时，备份速度为什么会变得很慢？
 
 从 TiDB v5.4.0 起，TiKV 的备份新增了自动调节功能。对于 v5.4.0 及以上版本，该功能会默认开启。当集群负载较高时，该功能会自动限制备份任务使用的资源，从而减少备份对在线集群的性能造成的影响。如需了解关于自动调节功能的更多信息，请参见[自动调节](/br/br-auto-tune.md)。
 
@@ -28,6 +30,12 @@ TiKV 支持[动态配置](/tikv-control.md#动态修改-tikv-的配置)自动调
 在离线备份场景中，你也可以使用 `tikv-ctl` 把 `backup.num-threads` 修改为更大的数字，从而提升备份任务的速度。
 
 ## PITR 问题
+
+### [PITR 功能](/br/br-pitr-guide.md)和 [flashback 集群](/sql-statements/sql-statement-flashback-to-timestamp.md)有什么区别?
+
+从使用场景角度来看，PITR 通常用于在集群完全停止服务或数据损坏且无法使用其他方案恢复时，将集群的数据恢复到指定的时间点。使用 PITR 时，你需要通过一个新的集群来完成数据恢复。而 flashback 集群则通常用于发生误操作或其他因素导致的数据错误时，将集群的数据恢复到数据错误发生前的最近时间点。
+
+在大多数情况下，因为 flashback 具有更短的 RPO（接近零）和 RTO，flashback 比 PITR 更适合由于人为错误导致的数据错误场景。但当集群完全不可用时，flashback 集群功能也无法运行，此时 PITR 是恢复集群的唯一方案。因此，相比于 flashback，虽然 PITR 的 RPO（最长 5 分钟）和 RTO 时间较长，但 PITR 是制定数据库灾难恢复策略时必须考虑的数据安全基础。
 
 ### 上游数据库使用 TiDB Lightning Physical 方式导入数据时，为什么无法使用日志备份功能？
 
@@ -59,9 +67,9 @@ Issue 链接：[#37207](https://github.com/pingcap/tidb/issues/37207)
 
 当前版本中建议在集群初始化后，进行一次有效快照备份，并且以此作为基础进行 PITR 恢复。
 
-### 在使用 `br restore point` 命令恢复下游集群后， TiFlash 引擎数据没有恢复？
+### 在使用 `br restore point` 命令恢复下游集群后，TiFlash 引擎数据没有恢复？
 
-PITR 目前不支持在恢复阶段直接将数据写入 TiFlash ，在数据恢复完成后，br 会执行 `ALTER TABLE table_name SET TIFLASH REPLICA ***`， 因此 TiFlash 副本在 PITR 完成恢复之后并不能马上可用，而是需要等待一段时间从 TiKV 节点同步数据。要查看同步进度，可以查询 `INFORMATION_SCHEMA.tiflash_replica` 表中的 `progress` 信息。
+PITR 目前不支持在恢复阶段直接将数据写入 TiFlash，在数据恢复完成后，br 会执行 `ALTER TABLE table_name SET TIFLASH REPLICA ***`，因此 TiFlash 副本在 PITR 完成恢复之后并不能马上可用，而是需要等待一段时间从 TiKV 节点同步数据。要查看同步进度，可以查询 `INFORMATION_SCHEMA.tiflash_replica` 表中的 `progress` 信息。
 
 ### 日志备份任务的 `status` 变为 `ERROR`，该如何处理？
 
@@ -166,7 +174,7 @@ BR 在 v6.0.0 之前不支持[放置规则](/placement-rules-in-sql.md)，在 v6
 
 > **注意：**
 >
-> 如果没有挂载 NFS 到 br 工具或 TiKV 节点，或者使用了支持 S3、GCS 或 Azure Blob Storage 协议的远端存储，那么 br 工具备份的数据会在各个 TiKV 节点生成。**注意这不是推荐的备份和恢复使用方式** ，因为备份数据会分散在各个节点的本地文件系统中，聚集这些备份数据可能会造成数据冗余和运维上的麻烦，而且在不聚集这些数据便直接恢复的时候会遇到 `SST file not found` 报错。
+> 如果没有挂载 NFS 到 br 工具或 TiKV 节点，或者使用了支持 S3、GCS 或 Azure Blob Storage 协议的远端存储，那么 br 工具备份的数据会在各个 TiKV 节点生成。**注意这不是推荐的备份和恢复使用方式**，因为备份数据会分散在各个节点的本地文件系统中，聚集这些备份数据可能会造成数据冗余和运维上的麻烦，而且在不聚集这些数据便直接恢复的时候会遇到 `SST file not found` 报错。
 
 在使用 local storage 的时候，会在运行 br 命令行工具的节点生成 `backupmeta`，在各个 Region 的 Leader 所在 TiKV 节点生成备份文件。
 
@@ -257,7 +265,7 @@ BR 在 v6.0.0 之前不支持[放置规则](/placement-rules-in-sql.md)，在 v6
     drwxr-xr-x 11 root root 310 Jul  4 10:35 ..
     ```
 
-    由以上命令输出结果可知，`tikv-server` 实例由用户 `tidb_ouo` 启动，但该账号没有 `backup` 目录的写入权限， 所以备份失败。
+    由以上命令输出结果可知，`tikv-server` 实例由用户 `tidb_ouo` 启动，但该账号没有 `backup` 目录的写入权限，所以备份失败。
 
 ### 恢复集群的时候，在 MySQL 下的业务表为什么没有恢复？
 
@@ -285,7 +293,7 @@ br restore full -f '*.*' -f '!mysql.*' -f 'mysql.usertable' -s $external_storage
 br restore full -f 'mysql.usertable' -s $external_storage_url --with-sys-table
 ```
 
-此外请注意，即使设置了 [table filter](/table-filter.md#表库过滤语法) ，**BR 也不会恢复以下系统表**：
+此外请注意，即使设置了 [table filter](/table-filter.md#表库过滤语法)，**BR 也不会恢复以下系统表**：
 
 - 统计信息表（`mysql.stat_*`）
 - 系统变量表（`mysql.tidb`、`mysql.global_variables`）

@@ -44,7 +44,7 @@ cdc_servers:
 
 > **注意：**
 >
-> 在安装之前，请确认TiUP 中控机与 TiCDC 目标主机的 [SSH 互信及 sudo 免密](/check-before-deployment.md#手动配置-ssh-互信及-sudo-免密码)已经完成配置。
+> 在安装之前，请确认 TiUP 中控机与 TiCDC 目标主机的 [SSH 互信及 sudo 免密](/check-before-deployment.md#手动配置-ssh-互信及-sudo-免密码)已经完成配置。
 
 ## 使用 TiUP 在原有 TiDB 集群上新增或扩容 TiCDC 组件
 
@@ -90,12 +90,12 @@ TiUP 支持升级 TiDB 集群，包括 TiCDC 组件。执行升级指令时，Ti
 ```shell
 tiup update --self && \
 tiup update --all && \
-tiup cluster upgrade <cluster-name> <cluster-version> --transfer-timeout 600
+tiup cluster upgrade <cluster-name> <version> --transfer-timeout 600
 ```
 
 > **注意：**
 >
-> 命令中的 `<cluster-name>` 需要替换为集群名字，`<cluster-version>` 需要替换为目标版本号，例如 v6.4.0。
+> 命令中的 `<cluster-name>` 需要替换为集群名字，`<version>` 需要替换为目标版本号，例如 v6.6.0。
 
 ### 升级的注意事项
 
@@ -106,12 +106,12 @@ tiup cluster upgrade <cluster-name> <cluster-version> --transfer-timeout 600
 - TiCDC 自 v6.3.0 起支持滚动升级，使用 TiUP 升级 TiCDC 节点期间，能够保证同步延迟稳定，不发生剧烈波动。满足以下条件将自动启用滚动升级：
 
     - TiCDC 版本大于等于 v6.3.0。
-    - TiUP 版本大于等于 v1.11.0。
+    - TiUP 版本大于等于 v1.11.3。
     - 集群中至少有两个正在运行的 TiCDC 实例。
 
 ## 使用 TiUP 变更 TiCDC 集群配置
 
-本节介绍如何使用 TiUP 的 [`tiup cluster edit-config`](/tiup/tiup-component-cluster-edit-config.md) 命令来修改 TiCDC 的配置。在以下例子中，假设需要把 TiCDC 的 `gc-ttl` 从默认值 `86400` 修改为 `3600`，即 1 小时。
+本节介绍如何使用 TiUP 的 [`tiup cluster edit-config`](/tiup/tiup-component-cluster-edit-config.md) 命令来修改 TiCDC 的配置。在以下例子中，假设需要把 TiCDC 的 `gc-ttl` 从默认值 `86400` 修改为 `172800`，即 48 小时。
 
 1. 执行 `tiup cluster edit-config` 命令，注意将 `<cluster-name>` 替换成实际的集群名：
 
@@ -131,10 +131,10 @@ tiup cluster upgrade <cluster-name> <cluster-version> --transfer-timeout 600
       pump: {}
       drainer: {}
       cdc:
-        gc-ttl: 86400
+        gc-ttl: 172800
     ```
 
-    以上把 TiCDC 的 `gc-ttl` 的值设置为 24 小时。
+    以上把 TiCDC 的 `gc-ttl` 的值设置为 48 小时。
 
 3. 执行 `tiup cluster reload -R cdc` 命令重新加载配置。
 
@@ -152,10 +152,10 @@ tiup cluster upgrade <cluster-name> <cluster-version> --transfer-timeout 600
 
 ## 使用 TiCDC 命令行工具来查看集群状态
 
-执行以下命令来查看 TiCDC 集群运行状态，注意需要将 `<version>` 替换为 TiCDC 集群版本：
+执行以下命令来查看 TiCDC 集群运行状态，注意需要将 `v<CLUSTER_VERSION>` 替换为 TiCDC 集群版本，例如 `v6.5.0`：
 
 ```shell
-tiup ctl:<version> cdc capture list --server=http://10.0.10.25:8300
+tiup ctl:v<CLUSTER_VERSION> cdc capture list --server=http://10.0.10.25:8300
 ```
 
 ```shell

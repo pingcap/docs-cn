@@ -29,7 +29,6 @@ TiDB 高度兼容 MySQL 5.7 协议、MySQL 5.7 常用的功能及语法。MySQL 
 * 触发器
 * 事件
 * 自定义函数
-* 外键约束 [#18209](https://github.com/pingcap/tidb/issues/18209)
 * 全文语法与索引 [#1793](https://github.com/pingcap/tidb/issues/1793)
 * 空间类型的函数（即 `GIS`/`GEOMETRY`）、数据类型和索引 [#6347](https://github.com/pingcap/tidb/issues/6347)
 * 非 `ascii`、`latin1`、`binary`、`utf8`、`utf8mb4`、`gbk` 的字符集
@@ -46,6 +45,7 @@ TiDB 高度兼容 MySQL 5.7 协议、MySQL 5.7 常用的功能及语法。MySQL 
 * `OPTIMIZE TABLE` 语法
 * `HANDLER` 语句
 * `CREATE TABLESPACE` 语句
+* "Session Tracker: 将 GTID 上下文信息添加到 OK 包中"
 
 ## 与 MySQL 有差异的特性详细说明
 
@@ -179,10 +179,6 @@ TiDB 支持大部分 [SQL 模式](/sql-mode.md)。不支持的 SQL 模式如下�
     + MySQL 5.7 中 `utf8mb4` 字符集默认：`utf8mb4_general_ci`。
     + MySQL 8.0 中 `utf8mb4` 字符集默认：`utf8mb4_0900_ai_ci`。
 
-- `foreign_key_checks`：
-    + TiDB 默认：`OFF`，且仅支持设置该值为 `OFF`。
-    + MySQL 5.7 默认：`ON`。
-
 - SQL mode：
     + TiDB 默认：`ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION`。
     + MySQL 5.7 默认与 TiDB 相同。
@@ -191,9 +187,9 @@ TiDB 支持大部分 [SQL 模式](/sql-mode.md)。不支持的 SQL 模式如下�
 - `lower_case_table_names`：
     + TiDB 默认：`2`，且仅支持设置该值为 `2`。
     + MySQL 默认如下：
-        - Linux 系统中该值为 `0`
-        - Windows 系统中该值为 `1`
-        - macOS 系统中该值为 `2`
+        - Linux 系统中该值为 `0`，表示表名和数据库名按照在 `CREATE TABLE` 或 `CREATE DATABASE` 语句中指定的字母大小写存储在磁盘上，且名称比较时区分大小写。
+        - Windows 系统中该值为 `1`，表示表名按照小写字母存储在磁盘上，名称比较时不区分大小写。MySQL 在存储和查询时将所有表名转换为小写。该行为也适用于数据库名称和表的别名。
+        - macOS 系统中该值为 `2`，表示表名和数据库名按照在 `CREATE TABLE` 或 `CREATE DATABASE` 语句中指定的字母大小写存储在磁盘上，但 MySQL 在查询时将它们转换为小写。名称比较时不区分大小写。
 
 - `explicit_defaults_for_timestamp`：
     + TiDB 默认：`ON`，且仅支持设置该值为 `ON`。
@@ -219,4 +215,12 @@ TiDB 支持大部分 [SQL 模式](/sql-mode.md)。不支持的 SQL 模式如下�
 TiDB 不支持 MySQL 中标记为弃用的功能，包括：
 
 * 指定浮点类型的精度。MySQL 8.0 [弃用](https://dev.mysql.com/doc/refman/8.0/en/floating-point-types.html)了此功能，建议改用 `DECIMAL` 类型。
-* `ZEROFILL` 属性。 MySQL 8.0 [弃用](https://dev.mysql.com/doc/refman/8.0/en/numeric-type-attributes.html)了此功能，建议在业务应用中填充数字值。
+* `ZEROFILL` 属性。MySQL 8.0 [弃用](https://dev.mysql.com/doc/refman/8.0/en/numeric-type-attributes.html)了此功能，建议在业务应用中填充数字值。
+
+### `CREATE RESOURCE GROUP`，`DROP RESOURCE GROUP` 和 `ALTER RESOURCE GROUP`
+
+TiDB 资源组创建与修改语句的语法与 MySQL 官方不同，详情参见：
+
+- [`CREATE RESOURCE GROUP`](/sql-statements/sql-statement-create-resource-group.md)
+- [`DROP RESOURCE GROUP`](/sql-statements/sql-statement-drop-resource-group.md)
+- [`ALTER RESOURCE GROUP`](/sql-statements/sql-statement-alter-resource-group.md)

@@ -78,7 +78,7 @@ matcher = ["test.worker"] # matcher 是一个白名单，表示该过滤规则�
 ignore-event = ["insert"] # 过滤掉 insert 事件
 ignore-sql = ["^drop", "add column"] # 过滤掉以 "drop" 开头或者包含 "add column" 的 DDL
 ignore-delete-value-expr = "name = 'john'" # 过滤掉包含 name = 'john' 条件的 delete DML
-ignore-insert-value-expr = "id >= 100" # 过滤掉包含 id >= 100 条件的 insert DML 
+ignore-insert-value-expr = "id >= 100" # 过滤掉包含 id >= 100 条件的 insert DML
 ignore-update-old-value-expr = "age < 18" # 过滤掉旧值 age < 18 的 update DML
 ignore-update-new-value-expr = "gender = 'male'" # 过滤掉新值 gender = 'male' 的 update DML
 
@@ -88,6 +88,14 @@ matcher = ["test.fruit"] # 该事件过滤器只应用于 test.fruit 表
 ignore-event = ["drop table"] # 忽略 drop table 事件
 ignore-sql = ["delete"] # 忽略 delete DML
 ignore-insert-value-expr = "price > 1000 and origin = 'no where'" # 忽略包含 price > 1000 和 origin = 'no where' 条件的 insert DML
+
+[scheduler]
+# 将表按 Region 个数划分成多个同步范围，这些范围可由多个 TiCDC 节点同步。
+# 注意：
+# 1. 横向扩展功能目前为实验特性，不建议在生产环境中使用。
+# 2. 该参数只在 Kafka changefeed 上生效，暂不支持 MySQL changefeed。
+# 3. TiCDC 不会将小于该参数 Region 个数的表划分成多个同步范围。
+# region-per-span = 50000
 
 [sink]
 # 对于 MQ 类的 Sink，可以通过 dispatchers 配置 event 分发器
@@ -100,7 +108,27 @@ dispatchers = [
     {matcher = ['test6.*'], partition = "ts"}
 ]
 
-# 对于 MQ 类的 Sink，可以指定消息的协议格式
-# 目前支持 canal-json、open-protocol、canal、avro 和 maxwell 五种协议。
+# protocol 用于指定传递到下游的协议格式
+# 当下游类型是 Kafka 时，支持 canal-json、avro 两种协议。
+# 当下游类型是存储服务时，目前仅支持 canal-json、csv 两种协议。
 protocol = "canal-json"
+
+# 以下三个配置项仅在同步到存储服务的 sink 中使用，在 MQ 和 MySQL 类 sink 中无需设置。
+# 换行符，用来分隔两个数据变更事件。默认值为空，表示使用 "\r\n" 作为换行符。
+terminator = ''
+# 文件路径的日期分隔类型。可选类型有 `none`、`year`、`month` 和 `day`。默认值为 `none`，即不使用日期分隔。详见 <https://docs.pingcap.com/zh/tidb/dev/ticdc-sink-to-cloud-storage#数据变更记录>。
+date-separator = 'none'
+# 是否使用 partition 作为分隔字符串。默认值为 false，即一张表中各个 partition 的数据不会分不同的目录来存储。详见 <https://docs.pingcap.com/zh/tidb/dev/ticdc-sink-to-cloud-storage#数据变更记录>。
+enable-partition-separator = false
+
+# 从 v6.5.0 开始，TiCDC 支持以 CSV 格式将数据变更记录保存至存储服务中，在 MQ 和 MySQL 类 sink 中无需设置。
+[sink.csv]
+# 字段之间的分隔符。必须为 ASCII 字符，默认值为 `,`。
+delimiter = ','
+# 用于包裹字段的引号字符。空值代表不使用引号字符。默认值为 `"`。
+quote = '"'
+# CSV 中列为 NULL 时将以什么字符来表示。默认值为 `\N`。
+null = '\N'
+# 是否在 CSV 行中包含 commit-ts。默认值为 false。
+include-commit-ts = false
 ```

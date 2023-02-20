@@ -8,7 +8,7 @@ aliases: ['/zh/tidb/dev/get-data-from-single-table']
 
 # 单表查询
 
-在这个章节当中，将开始介绍如何使用 SQL来对数据库中的数据进行查询。
+在这个章节当中，将开始介绍如何使用 SQL 来对数据库中的数据进行查询。
 
 ## 开始之前
 
@@ -65,8 +65,6 @@ SELECT id, name FROM authors;
 - 使用 `String` 类型变量存放 `varchar` 类型的数据。
 - ...
 
-{{< copyable "" >}}
-
 ```java
 public class Author {
     private Long id;
@@ -80,8 +78,6 @@ public class Author {
      // Skip the getters and setters.
 }
 ```
-
-{{< copyable "" >}}
 
 ```java
 public class AuthorDAO {

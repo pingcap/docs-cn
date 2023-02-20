@@ -5,7 +5,7 @@ summary: 了解如何构建 TiFlash 副本。
 
 # 构建 TiFlash 副本
 
-本文档介绍如何按表和库构建 TiFlash副本，以及如何设置可用区来调度副本。
+本文档介绍如何按表和库构建 TiFlash 副本，以及如何设置可用区来调度副本。
 
 ## 按表构建 TiFlash 副本
 
@@ -153,7 +153,7 @@ SELECT TABLE_NAME FROM information_schema.tables where TABLE_SCHEMA = "<db_name>
    tiup ctl:v<CLUSTER_VERSION> pd -u http://<PD_ADDRESS>:2379 store limit all engine tiflash 60 add-peer
    ```
 
-   > 上述命令中，需要将 `<CLUSTER_VERSION>` 替换为该集群版本，`<PD_ADDRESS>:2379` 替换为任一 PD 节点的地址。替换后样例为：
+   > 上述命令中，需要将 `v<CLUSTER_VERSION>` 替换为该集群版本，例如 `v6.5.0`，`<PD_ADDRESS>:2379` 替换为任一 PD 节点的地址。替换后样例为：
    >
    > ```shell
    > tiup ctl:v6.1.1 pd -u http://192.168.1.4:2379 store limit all engine tiflash 60 add-peer

@@ -236,7 +236,7 @@ TiDB 版本：5.4.0
 
     [用户文档](/tidb-lightning/tidb-lightning-error-resolution.md)
 
-- **在 TiDB Data Migration (DM) 中 优化 relay log 的使用方式**
+- **在 TiDB Data Migration (DM) 中优化 relay log 的使用方式**
 
     - 恢复 `source` 配置中 `enable-relay` 开关。
     - 增加通过 `start-relay` 和 `stop-relay` 命令动态开启和关闭 relay log 的功能。

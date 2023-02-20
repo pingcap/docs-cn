@@ -6,8 +6,8 @@ aliases: ['/zh/tidb/dev/connection-parameters']
 
 # 连接池与连接参数
 
-> - 连接池参数 - 连接数配置、探活配置两节摘自 [开发 Java 应用使用 TiDB 的最佳实践 - 连接池](/best-practices/java-app-best-practices.md#连接池)。
-> - 连接参数摘自 [开发 Java 应用使用 TiDB 的最佳实践 - JDBC](/best-practices/java-app-best-practices.md#jdbc)。
+> - 连接池参数 - 连接数配置、探活配置两节摘自[开发 Java 应用使用 TiDB 的最佳实践 - 连接池](/best-practices/java-app-best-practices.md#连接池)。
+> - 连接参数摘自[开发 Java 应用使用 TiDB 的最佳实践 - JDBC](/best-practices/java-app-best-practices.md#jdbc)。
 
 ## 连接池参数
 
@@ -73,7 +73,7 @@ connections = ((core_count * 2) + effective_spindle_count)
 
 这个说明指出：
 
-1. **core_count** 就是 _物理核心数_ ，与你是否开启[超线程](https://en.wikipedia.org/wiki/Hyper-threading)无关。
+1. **core_count** 就是_物理核心数_，与你是否开启[超线程](https://en.wikipedia.org/wiki/Hyper-threading)无关。
 2. 数据被全量缓存时，**effective_spindle_count** 应被设置为 0，随着命中率的下降，会更加接近实际的 HDD 个数。
 3. **这里没有任何基于 _SSD_ 的经验公式。**
 
@@ -171,8 +171,6 @@ JDBC 实现通常通过 JDBC URL 参数的形式来提供实现相关的配置�
 
 在进行 batch 写入处理时推荐配置 `rewriteBatchedStatements = true`，在已经使用 `addBatch` 或 `executeBatch` 后默认 JDBC 还是会一条条 SQL 发送，例如：
 
-{{< copyable "" >}}
-
 ```java
 pstmt = prepare("INSERT INTO `t` (`a`) VALUES(?)");
 pstmt.setInt(1, 10);
@@ -185,8 +183,6 @@ pstmt.executeBatch();
 
 虽然使用了 batch 但发送到 TiDB 语句还是单独的多条 insert：
 
-{{< copyable "sql" >}}
-
 ```sql
 INSERT INTO `t` (`a`) VALUES(10);
 INSERT INTO `t` (`a`) VALUES(11);
@@ -195,15 +191,11 @@ INSERT INTO `t` (`a`) VALUES(12);
 
 如果设置 `rewriteBatchedStatements = true`，发送到 TiDB 的 SQL 将是：
 
-{{< copyable "sql" >}}
-
 ```sql
 INSERT INTO `t` (`a`) VALUES(10),(11),(12);
 ```
 
 需要注意的是，insert 语句的改写，只能将多个 values 后的值拼接成一整条 SQL, insert 语句如果有其他差异将无法被改写。例如：
-
-{{< copyable "sql" >}}
 
 ```sql
 INSERT INTO `t` (`a`) VALUES (10) ON DUPLICATE KEY UPDATE `a` = 10;
@@ -213,8 +205,6 @@ INSERT INTO `t` (`a`) VALUES (12) ON DUPLICATE KEY UPDATE `a` = 12;
 
 上述 insert 语句将无法被改写成一条语句。该例子中，如果将 SQL 改写成如下形式：
 
-{{< copyable "sql" >}}
-
 ```sql
 INSERT INTO `t` (`a`) VALUES (10) ON DUPLICATE KEY UPDATE `a` = values(`a`);
 INSERT INTO `t` (`a`) VALUES (11) ON DUPLICATE KEY UPDATE `a` = values(`a`);
@@ -223,15 +213,11 @@ INSERT INTO `t` (`a`) VALUES (12) ON DUPLICATE KEY UPDATE `a` = values(`a`);
 
 即可满足改写条件，最终被改写成：
 
-{{< copyable "sql" >}}
-
 ```sql
 INSERT INTO `t` (`a`) VALUES (10), (11), (12) ON DUPLICATE KEY UPDATE `a` = values(`a`);
 ```
 
 批量更新时如果有 3 处或 3 处以上更新，则 SQL 语句会改写为 multiple-queries 的形式并发送，这样可以有效减少客户端到服务器的请求开销，但副作用是会产生较大的 SQL 语句，例如这样：
-
-{{< copyable "sql" >}}
 
 ```sql
 UPDATE `t` SET `a` = 10 WHERE `id` = 1;

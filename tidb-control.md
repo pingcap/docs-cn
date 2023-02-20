@@ -17,7 +17,7 @@ TiDB Control 是 TiDB 的命令行工具，用于获取 TiDB 状态信息，多�
 
 ### 通过 TiUP 安装
 
-在安装 TiUP 之后，可以使用 `tiup ctl:<cluster-version> tidb` 命令来获取 TiDB Control 的二进制程序以及运行 TiDB Control。
+在安装 TiUP 之后，可以使用 `tiup ctl:v<CLUSTER_VERSION> tidb` 命令来获取 TiDB Control 的二进制程序以及运行 TiDB Control。
 
 ### 从源代码编译安装
 

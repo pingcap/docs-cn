@@ -8,6 +8,10 @@ title: TiDB 6.0.0 Release Notes
 
 TiDB 版本：6.0.0-DMR
 
+> **注意：**
+>
+> TiDB 6.0.0-DMR 的用户文档已[归档](https://docs-archive.pingcap.com/zh/tidb/v6.0)。如无特殊需求，建议使用 TiDB 数据库的[最新 LTS 版本](https://docs.pingcap.com/zh/tidb/stable)。
+
 在 6.0.0-DMR 版本中，你可以获得以下关键特性：
 
 - 基于 SQL 的数据放置规则，提供更灵活的数据放置管理能力。
@@ -485,7 +489,7 @@ TiDB 提供两个[离线包下载](https://pingcap.com/zh/product-community/)：
         - 支持放置规则 (placement rules) [#4846)](https://github.com/pingcap/tiflow/issues/4846)
         - 同步处理 HTTP API [#1710](https://github.com/pingcap/tiflow/issues/1710)
         - 为 changefeed 重启操作添加指数退避机制 [#3329](https://github.com/pingcap/tiflow/issues/3329)
-        - 设置 MySQL sink 的默认隔离级别为 Read Committed，以减少MySQL 中的死锁 [#3589](https://github.com/pingcap/tiflow/issues/3589)
+        - 设置 MySQL sink 的默认隔离级别为 Read Committed，以减少 MySQL 中的死锁 [#3589](https://github.com/pingcap/tiflow/issues/3589)
         - 在创建 changefeed 时验证参数合法，优化报错信息 [#1716](https://github.com/pingcap/tiflow/issues/1716) [#1718](https://github.com/pingcap/tiflow/issues/1718) [#1719](https://github.com/pingcap/tiflow/issues/1719) [#4472](https://github.com/pingcap/tiflow/issues/4472)
         - 暴露 Kafka producer 配置参数，使之在 TiCDC 中可配置 [#4385](https://github.com/pingcap/tiflow/issues/4385)
 

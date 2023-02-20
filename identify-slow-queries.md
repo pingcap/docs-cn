@@ -82,6 +82,7 @@ Slow Query 基础信息：
 * `Backoff_total`：表示这个语句在执行过程中所有 backoff 花费的时间。
 * `Write_sql_response_total`：表示这个语句把结果发送回客户端花费的时间。
 * `Result_rows`：表示这个语句查询结果的行数。
+* `Warnings`：表示这个语句执行过程中产生的警告，采用 JSON 格式。通常和 [`SHOW WARNINGS`](/sql-statements/sql-statement-show-warnings.md) 语句的输出结果一致，但是可能会包含 [`SHOW WARNINGS`](/sql-statements/sql-statement-show-warnings.md) 中没有的警告，因而可以提供更多诊断信息。这类警告将被标记为 `IsExtra: true`。
 * `IsExplicitTxn`：表示这个语句是否在一个明确声明的事务中。如果是 `false`，表示这个语句的事务是 `autocommit=1`，即语句执行完成后就自动提交的事务。
 
 和事务执行相关的字段：
@@ -136,7 +137,7 @@ Slow Query 基础信息：
 
 * [tidb_slow_log_threshold](/system-variables.md#tidb_slow_log_threshold)：设置慢日志的阈值，执行时间超过阈值的 SQL 语句将被记录到慢日志中。默认值是 300 ms。
 * [tidb_query_log_max_len](/system-variables.md#tidb_query_log_max_len)：设置慢日志记录 SQL 语句的最大长度。默认值是 4096 byte。
-* [tidb_redact_log](/system-variables.md#tidb_redact_log)：设置慢日志记录 SQL 时是否将用户数据脱敏用 `?` 代替。默认值是 0 ，即关闭该功能。
+* [tidb_redact_log](/system-variables.md#tidb_redact_log)：设置慢日志记录 SQL 时是否将用户数据脱敏用 `?` 代替。默认值是 `0`，即关闭该功能。
 * [tidb_enable_collect_execution_info](/system-variables.md#tidb_enable_collect_execution_info)：设置是否记录执行计划中各个算子的物理执行信息，默认值是 `1`。该功能对性能的影响约为 3%。开启该项后查看 `Plan` 的示例如下：
 
 ```sql

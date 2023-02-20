@@ -173,3 +173,72 @@ mysql> show stats_meta;
 ```
 
 加载并还原所需现场后，即可在该现场诊断和改进执行计划。
+
+## 使用 `PLAN REPLAYER CAPTURE` 抓取目标计划
+
+在用户定位 TiDB 执行计划的部分场景中，目标 SQL 语句与目标计划可能仅在查询中偶尔出现，无法使用 `PLAN REPLAYER` 直接抓取。此时你可以使用 `PLAN REPLAYER CAPTURE` 来帮助定向抓取目标 SQL 语句与目标计划的优化器信息。
+
+`PLAN REPLAYER CAPTURE` 主要功能如下：
+
+- 在 TiDB 集群内部提前注册目标 SQL 语句与执行计划的 Digest，并开始匹配目标查询。
+- 当目标查询匹配成功时，直接抓取其优化器相关信息，导出为 ZIP 格式的文件用于保存。
+- 针对匹配到的每组 SQL 和执行计划，信息只抓取一次。
+- 通过系统表显示正在进行的匹配任务，以及生成的文件。
+- 定时清理历史文件。
+
+### 开启 `PLAN REPLAYER CAPTURE`
+
+`PLAN REPLAYER CAPTURE` 功能通过系统变量 [`tidb_enable_plan_replayer_capture`](/system-variables.md#tidb_enable_plan_replayer_capture) 控制。要开启 `PLAN REPLAYER CAPTURE`，将变量值设为 `ON`。
+
+### 使用 `PLAN REPLAYER CAPTURE` 功能
+
+你可以通过以下方式向 TiDB 集群注册目标 SQL 语句和计划的 Digest:
+
+```sql
+PLAN REPLAYER CAPTURE 'sql_digest' 'plan_digest';
+```
+
+当你的目标 SQL 语句对应多种执行计划，且你想抓取所有执行计划时，你可以通过以下 SQL 语句一键注册:
+
+```sql
+PLAN REPLAYER CAPTURE 'sql_digest' '*';
+```
+
+### 查看 `PLAN REPLAYER CAPTURE` 抓取任务
+
+你可以通过以下方式查看集群中目前正在工作的 `PLAN REPLAYER CAPTURE` 的抓取任务:
+
+```sql
+mysql> PLAN PLAYER CAPTURE 'example_sql' 'example_plan';
+Query OK, 1 row affected (0.01 sec)
+
+mysql> SELECT * FROM mysql.plan_replayer_task;
++-------------+--------------+---------------------+
+| sql_digest  | plan_digest  | update_time         |
++-------------+--------------+---------------------+
+| example_sql | example_plan | 2023-01-28 11:58:22 |
++-------------+--------------+---------------------+
+1 row in set (0.01 sec)
+```
+
+### 查看 `PLAN REPLAYER CAPTURE` 抓取结果
+
+当 `PLAN REPLAYER CAPTURE` 成功抓取到结果后，可以通过以下 SQL 语句查看用于下载的文件标识:
+
+```sql
+mysql> SELECT * FROM mysql.plan_replayer_status;
++------------------------------------------------------------------+------------------------------------------------------------------+------------+-----------------------------------------------------------+---------------------+-------------+-----------------+
+| sql_digest                                                       | plan_digest                                                      | origin_sql | token                                                     | update_time         | fail_reason | instance        |
++------------------------------------------------------------------+------------------------------------------------------------------+------------+-----------------------------------------------------------+---------------------+-------------+-----------------+
+| 086e3fbd2732f7671c17f299d4320689deeeb87ba031240e1e598a0ca14f808c | 042de2a6652a6d20afc629ff90b8507b7587a1c7e1eb122c3e0b808b1d80cc02 |            | replayer_Utah4nkz2sIEzkks7tIRog==_1668746293523179156.zip | 2022-11-18 12:38:13 | NULL        | 172.16.4.4:4022 |
+| b5b38322b7be560edb04f33f15b15a885e7c6209a22b56b0804622e397199b54 | 1770efeb3f91936e095f0344b629562bf1b204f6e46439b7d8f842319297c3b5 |            | replayer_Z2mUXNHDjU_WBmGdWQqifw==_1668746293560115314.zip | 2022-11-18 12:38:13 | NULL        | 172.16.4.4:4022 |
+| 96d00c0b3f08795fe94e2d712fa1078ab7809faf4e81d198f276c0dede818cf9 | 8892f74ac2a42c2c6b6152352bc491b5c07c73ac3ed66487b2c990909bae83e8 |            | replayer_RZcRHJB7BaCccxFfOIAhWg==_1668746293578282450.zip | 2022-11-18 12:38:13 | NULL        | 172.16.4.4:4022 |
++------------------------------------------------------------------+------------------------------------------------------------------+------------+-----------------------------------------------------------+---------------------+-------------+-----------------+
+3 rows in set (0.00 sec)
+```
+
+下载 `PLAN REPLAYER CAPTURE` 的文件方法与 `PLAN REPLAYER` 相同，请参考 [`PLAN REPLAYER` 导出示例](#plan-replayer-导出示例)。
+
+> **注意：**
+> 
+> `PLAN REPLAYER CAPTURE` 的结果文件最多会在 TiDB 集群中保存一个小时，超时后 TiDB 会将其删除。

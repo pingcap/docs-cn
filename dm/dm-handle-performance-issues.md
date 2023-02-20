@@ -14,7 +14,7 @@ aliases: ['/docs-cn/tidb-data-migration/dev/handle-performance-issues/']
 
 在诊断问题前，也可以先了解 DM 的[性能测试报告](https://github.com/pingcap/docs-dm/blob/release-5.3/zh/dm-benchmark-v5.3.0.md)。
 
-当数据迁移过程存在较大延迟时，若需快速定位瓶颈是在 DM 组件内部还是在 TiDB 集群，可先排查 [写入 SQL 到下游](#写入-sql-到下游) 部分的 `DML queue remain length`。
+当数据迁移过程存在较大延迟时，若需快速定位瓶颈是在 DM 组件内部还是在 TiDB 集群，可先排查[写入 SQL 到下游](#写入-sql-到下游) 部分的 `DML queue remain length`。
 
 ## relay log 模块的性能问题及处理方法
 

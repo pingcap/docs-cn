@@ -10,9 +10,9 @@ title: TiDB Data Migration 数据迁移任务配置向导
 
 配置需要迁移的数据源之前，首先应该确认已经在 DM 创建相应数据源：
 
-- 查看数据源可以参考 [查看数据源配置](/dm/dm-manage-source.md#查看数据源配置)
-- 创建数据源可以参考 [在 DM 创建数据源](/dm/migrate-data-using-dm.md#第-3-步创建数据源)
-- 数据源配置可以参考 [数据源配置文件介绍](/dm/dm-source-configuration-file.md)
+- 查看数据源可以参考[查看数据源配置](/dm/dm-manage-source.md#查看数据源配置)
+- 创建数据源可以参考[在 DM 创建数据源](/dm/migrate-data-using-dm.md#第-3-步创建数据源)
+- 数据源配置可以参考[数据源配置文件介绍](/dm/dm-source-configuration-file.md)
 
 仿照下面的 `mysql-instances:` 示例定义数据迁移任务需要同步的单个或者多个数据源。
 

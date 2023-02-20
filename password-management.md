@@ -345,7 +345,7 @@ ALTER USER 'test'@'localhost'
 >
 > - 如果多次设置密码重用策略，则最后一次设置的值生效。
 > - `PASSWORD HISTORY` 和 `PASSWORD REUSE INTERVAL` 选项的默认值为 0，表示禁用该项重用策略。
-> - 在修改用户名时， TiDB 会将 `mysql.password_history` 系统表中原用户名的历史密码记录迁移到新用户名的记录中。
+> - 在修改用户名时，TiDB 会将 `mysql.password_history` 系统表中原用户名的历史密码记录迁移到新用户名的记录中。
 
 ## 密码连续错误限制登录策略
 

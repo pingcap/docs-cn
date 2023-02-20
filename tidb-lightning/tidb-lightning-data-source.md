@@ -10,7 +10,7 @@ TiDB Lightning 支持从多种类型的文件导入数据到 TiDB 集群。通�
 
 ```toml
 [mydumper]
-# 本地源数据目录或 S3 等外部存储 URL
+# 本地源数据目录或 S3 等外部存储 URI。关于外部存储 URI 详情可参考 https://docs.pingcap.com/zh/tidb/v6.6/backup-and-restore-storages#uri-%E6%A0%BC%E5%BC%8F。
 data-source-dir = "/data/my_database"
 ```
 
@@ -305,7 +305,7 @@ TiDB Lightning 仅识别符合命名要求的数据文件，但在某些情况�
 
 通常 `data-source-dir` 会被配置为`S3://some-bucket/some-subdir/some-database/` 以导入 `some-database` 库。
 
-根据上述 Parquet 文件的路径，你可以编写正则表达式 `(?i)^(?:[^/]*/)*([a-z0-9_]+)\.([a-z0-9_]+)/(?:[^/]*/)*(?:[a-z0-9\-_.]+\.(parquet))$`，得到的 match group 中 index=1 的内容为 `some-database` ，index=2 的内容为 `some-table`，index=3 的内容为 `parquet`。
+根据上述 Parquet 文件的路径，你可以编写正则表达式 `(?i)^(?:[^/]*/)*([a-z0-9_]+)\.([a-z0-9_]+)/(?:[^/]*/)*(?:[a-z0-9\-_.]+\.(parquet))$`，得到的 match group 中 index=1 的内容为 `some-database`，index=2 的内容为 `some-table`，index=3 的内容为 `parquet`。
 
 根据上述正则表达式及相应的 index 编写配置文件，TiDB Lightning 即可识别非默认命名规则的文件，最终实际配置如下：
 
@@ -328,6 +328,45 @@ type = '$3'
     - 正则表达式匹配到的 group 序号，例如 “$3”。
 - **key**：文件的序号，即前文所述`${db_name}.${table_name}.001.csv`中的`001`。
     - 正则表达式匹配到的 group 序号，例如 “$4”。
+
+## 从 Amazon S3 导入数据
+
+如下为从 Amazon S3 导入数据的示例，更多配置参数描述，可参考[外部存储 URI 格式](/br/backup-and-restore-storages.md#uri-格式)。
+
+* 使用本地已设置的权限访问 S3：
+
+    ```bash
+    ./tidb-lightning --tidb-port=4000 --pd-urls=127.0.0.1:2379 --backend=local --sorted-kv-dir=/tmp/sorted-kvs \
+        -d 's3://my-bucket/sql-backup'
+    ```
+
+* 使用路径类型的请求模式：
+
+    ```bash
+    ./tidb-lightning --tidb-port=4000 --pd-urls=127.0.0.1:2379 --backend=local --sorted-kv-dir=/tmp/sorted-kvs \
+        -d 's3://my-bucket/sql-backup?force-path-style=true&endpoint=http://10.154.10.132:8088'
+    ```
+
+* 使用 AWS IAM 角色的 ARN 来访问 S3 数据：
+
+    ```bash
+    ./tidb-lightning --tidb-port=4000 --pd-urls=127.0.0.1:2379 --backend=local --sorted-kv-dir=/tmp/sorted-kvs \
+        -d 's3://my-bucket/test-data?role-arn=arn:aws:iam::888888888888:role/my-role'
+    ```
+
+* 使用 AWS IAM 用户密钥来访问 S3 数据：
+
+    ```bash
+    ./tidb-lightning --tidb-port=4000 --pd-urls=127.0.0.1:2379 --backend=local --sorted-kv-dir=/tmp/sorted-kvs \
+        -d 's3://my-bucket/test-data?access_key={my_access_key}&secret_access_key={my_secret_access_key}'
+    ```
+
+* 使用 AWS IAM 角色的密钥以及会话令牌来访问 S3 数据：
+
+    ```bash
+    ./tidb-lightning --tidb-port=4000 --pd-urls=127.0.0.1:2379 --backend=local --sorted-kv-dir=/tmp/sorted-kvs \
+        -d 's3://my-bucket/test-data?access_key={my_access_key}&secret_access_key={my_secret_access_key}&session-token={my_session_token}'
+    ```
 
 ## 更多
 
