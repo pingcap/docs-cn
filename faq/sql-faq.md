@@ -124,7 +124,7 @@ In TiDB, you can also use the system variable [`tidb_enable_ordered_result_mode`
 
 ## Does TiDB support `SELECT FOR UPDATE`?
 
-Yes. When using pessimistic locking (the default since TiDB v3.0) the `SELECT FOR UPDATE` execution behaves similar to MySQL.
+Yes. When using pessimistic locking (the default since TiDB v3.0.8) the `SELECT FOR UPDATE` execution behaves similar to MySQL.
 
 When using optimistic locking, `SELECT FOR UPDATE` does not lock data when the transaction is started, but checks conflicts when the transaction is committed. If the check reveals conflicts, the committing transaction rolls back.
 
