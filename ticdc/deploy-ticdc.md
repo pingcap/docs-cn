@@ -95,7 +95,7 @@ tiup cluster upgrade <cluster-name> <version> --transfer-timeout 600
 
 > **注意：**
 >
-> 命令中的 `<cluster-name>` 需要替换为集群名字，`<version>` 需要替换为目标版本号，例如 `v6.5.0`。
+> 命令中的 `<cluster-name>` 需要替换为集群名字，`<version>` 需要替换为目标版本号，例如 v6.6.0。
 
 ### 升级的注意事项
 
