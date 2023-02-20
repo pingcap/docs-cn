@@ -141,7 +141,7 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
     - [`ORDER_INDEX()`](/optimizer-hints.md#keep_ordert1_name-idx1_name--idx2_name-)：提示优化器使用指定的索引，读取数据时保持索引的顺序，生成类似 `Limit + IndexScan(keep order: true)` 的计划。
     - [`NO_ORDER_INDEX()`](/optimizer-hints.md#no_keep_ordert1_name-idx1_name--idx2_name-)：提示优化器使用指定的索引，读取数据时不保持顺序，生成类似 `TopN + IndexScan(keep order: false)` 的计划。
 
-    持续引入优化器 Hint 为用户提供了更多的干预手段，有助于解决 SQL 性能问题，并提升了整体性能的稳定性。
+  持续引入优化器 Hint 为用户提供了更多的干预手段，有助于解决 SQL 性能问题，并提升了整体性能的稳定性。
 
 * 支持 DDL 动态资源管控（实验特性）[#38025](https://github.com/pingcap/tidb/issues/38025) @[hawkingrei](https://github.com/hawkingrei)
 
@@ -156,7 +156,7 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
     - 对于跨云区域部署的 TiDB 集群，当某个云区域产生故障时，指定数据库或表能在另一个云区域继续提供服务。
     - 对于单个云区域内部署的 TiDB 集群，当某个可用区产生故障时，指定数据库或表能在另一个可用区继续提供服务。
 
-    更多信息，请参考[用户文档](/placement-rules-in-sql.md#生存偏好)。
+  更多信息，请参考[用户文档](/placement-rules-in-sql.md#生存偏好)。
 
 * 支持通过 `FLASHBACK CLUSTER TO TIMESTAMP` 命令闪回 DDL 操作 [#14088](https://github.com/tikv/tikv/issues/14045) @[Defined2014](https://github.com/Defined2014) @[JmPotato](https://github.com/JmPotato)
 
@@ -216,7 +216,7 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 
     自 v6.6.0 起，TiDB Lightning 支持将本地编码排序后的键值对在网络传输时进行压缩再发送到 TiKV，从而减少网络传输的数据量，降低网络带宽开销。之前版本不支持该功能，在数据量较大的情况下，TiDB Lightning 对网络带宽要求相对较高，且会产生较高的流量费。
 
-    该功能默认关闭，你可以通过将 TiDB Lightning 配置项 `compress-kv-pairs` 设置为 "gzip" 或者 "gz" 开启此功能。
+    该功能默认关闭，你可以通过将 TiDB Lightning 配置项 `compress-kv-pairs` 设置为 `"gzip"` 或者 `"gz"` 开启此功能。
 
     更多信息，请参考[用户文档](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置)。
 
