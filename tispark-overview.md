@@ -434,7 +434,6 @@ spark.sql.tidb.password $your_tidb_server_password
 - [历史读](https://github.com/pingcap/tispark/blob/master/docs/features/stale_read.md)
 - [TiSpark with multiple catalogs](https://github.com/pingcap/tispark/wiki/TiSpark-with-multiple-catalogs)
 - [TiSpark TLS](#tls-配置)
-- [TiSpark 遥测](https://github.com/pingcap/tispark/blob/master/docs/features/telemetry.md)
 - [TiSpark 执行计划](https://github.com/pingcap/tispark/blob/master/docs/features/query_execution_plan_in_TiSpark.md)
 
 ## 统计信息
