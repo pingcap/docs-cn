@@ -435,6 +435,18 @@ SELECT * FROM INFORMATION_SCHEMA.USER_PRIVILEGES WHERE grantee = "'root'@'%'";
 
 使用 `KILL` 终止其他用户的会话需要拥有 `SUPER` 或者 `CONNECTION_ADMIN` 权限。
 
+### CREATE RESOURCE GROUP
+
+需要拥有 `SUPER` 或者 `RESOURCE_GROUP_ADMIN` 权限。
+
+### ALTER RESOURCE GROUP
+
+需要拥有 `SUPER` 或者 `RESOURCE_GROUP_ADMIN` 权限。
+
+### DROP RESOURCE GROUP
+
+需要拥有 `SUPER` 或者 `RESOURCE_GROUP_ADMIN` 权限。
+
 ## 权限系统的实现
 
 ### 授权表
