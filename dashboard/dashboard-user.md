@@ -34,6 +34,7 @@ TiDB Dashboard 与 TiDB 使用相同的用户权限体系和登录验证方式�
 
 - 若希望 SQL 用户在登录 TiDB Dashboard 后允许使用[快速绑定执行计划](dashboard-statement-details.md)功能。
 
+    - SYSTEM_VARIABLES_ADMIN
     - SUPER
 
 > **注意：**
@@ -58,6 +59,7 @@ TiDB Dashboard 与 TiDB 使用相同的用户权限体系和登录验证方式�
     GRANT SYSTEM_VARIABLES_ADMIN ON *.* TO 'dashboardAdmin'@'%';
     
     -- 如果要使用[快速绑定执行计划](dashboard-statement-details.md)功能，可以增加以下权限
+    GRANT SYSTEM_VARIABLES_ADMIN ON *.* TO 'dashboardAdmin'@'%';
     GRANT Super ON *.* TO 'dashboardAdmin'@'%';
     ```
 
