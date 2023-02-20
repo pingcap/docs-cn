@@ -1,8 +1,9 @@
 ---
-title: tiup dm patch
+title: Apply Hotfix to DM Clusters Online
+summary: Learn how to apply hotfix patches to DM clusters.
 ---
 
-# tiup dm patch
+# Apply Hotfix to DM Clusters Online
 
 If you need to dynamically replace the binaries of a service while the cluster is running (that is, to keep the cluster available during the replacement), you can use the `tiup dm patch` command. The command does the following:
 
@@ -18,8 +19,8 @@ If you need to dynamically replace the binaries of a service while the cluster i
 tiup dm patch <cluster-name> <package-path> [flags]
 ```
 
-- `<cluster-name>`: The name of the cluster to be operated.
-- `<package-path>`: The path to the binary package used for replacement.
+- `<cluster-name>`: The name of the cluster to be operated
+- `<package-path>`: The path to the binary package used for replacement
 
 ### Preparation
 
@@ -72,8 +73,132 @@ You need to pack the binary package required for this command in advance accordi
 - Data type: `BOOLEAN`
 - This option is disabled by default with the `false` value. To enable this option, add this option to the command, and either pass the `true` value or do not pass any value.
 
-## Outputs
+## Example
 
-The execution log of tiup-dm.
+The following example shows how to apply `v5.3.0-hotfix` to the `v5.3.0` cluster deployed using TiUP. The operations might vary if you deploy the cluster using other methods.
+
+> **Note:**
+>
+> Hotfix is used only for emergency fixes. Its daily maintenance is complicated. It is recommend that you upgrade the DM cluster to an official version as soon as it is released.
+
+### Preparations
+
+Before applying a hotfix, prepare the hotfix package `dm-linux-amd64.tar.gz` and confirm the current DM software version:
+
+```shell
+/home/tidb/dm/deploy/dm-master-8261/bin/dm-master/dm-master -V
+```
+
+Output:
+
+```
+Release Version: v5.3.0
+
+Git Commit Hash: 20626babf21fc381d4364646c40dd84598533d66
+Git Branch: heads/refs/tags/v5.3.0
+UTC Build Time: 2021-11-29 08:29:49
+Go Version: go version go1.16.4 linux/amd64
+```
+
+### Prepare the patch package and apply it to the DM cluster
+
+1. Prepare the DM software package that matches the current version:
+
+    ```shell
+    mkdir -p /tmp/package
+    tar -zxvf /root/.tiup/storage/dm/packages/dm-master-v5.3.0-linux-amd64.tar.gz -C /tmp/package/
+    tar -zxvf /root/.tiup/storage/dm/packages/dm-worker-v5.3.0-linux-amd64.tar.gz -C /tmp/package/
+    ```
+
+2. Replace the binary file with the hotfix package:
+
+    ```shell
+    # Decompress the hotfix package and use it to replace the binary file.
+    cd /root; tar -zxvf dm-linux-amd64.tar.gz
+    cp /root/dm-linux-amd64/bin/dm-master /tmp/package/dm-master/dm-master
+    cp /root/dm-linux-amd64/bin/dm-worker /tmp/package/dm-worker/dm-worker
+    # Re-package the modified files.
+    # Note that the packaging method might be different for other deployment methods.
+    cd /tmp/package/ && tar -czvf dm-master-hotfix-linux-amd64.tar.gz dm-master/
+    cd /tmp/package/ && tar -czvf dm-worker-hotfix-linux-amd64.tar.gz dm-worker/
+    ```
+
+3. Apply the hotfix:
+
+    Query the cluster status. The following uses the cluster named `dm-test` as an example:
+
+    ```shell
+    tiup dm display dm-test
+    ```
+
+    Output:
+
+    ```
+    Cluster type:       dm
+    Cluster name:       dm-test
+    Cluster version:    v5.3.0
+    Deploy user:        tidb
+    SSH type:           builtin
+    ID                  Role                 Host           Ports      OS/Arch       Status     Data Dir                              Deploy Dir
+    --                  ----                 ----           -----      -------       ------     --------                              ----------
+    172.16.100.21:9093  alertmanager         172.16.100.21  9093/9094  linux/x86_64  Up         /home/tidb/dm/data/alertmanager-9093  /home/tidb/dm/deploy/alertmanager-9093
+    172.16.100.21:8261  dm-master            172.16.100.21  8261/8291  linux/x86_64  Healthy|L  /home/tidb/dm/data/dm-master-8261     /home/tidb/dm/deploy/dm-master-8261
+    172.16.100.21:8262  dm-worker            172.16.100.21  8262       linux/x86_64  Free       /home/tidb/dm/data/dm-worker-8262     /home/tidb/dm/deploy/dm-worker-8262
+    172.16.100.21:3000  grafana              172.16.100.21  3000       linux/x86_64  Up         -                                     /home/tidb/dm/deploy/grafana-3000
+    172.16.100.21:9090  prometheus           172.16.100.21  9090       linux/x86_64  Up         /home/tidb/dm/data/prometheus-9090    /home/tidb/dm/deploy/prometheus-9090
+    Total nodes: 5
+    ```
+
+    Apply the hotfix to the specified node or specified role. If both `-R` and `-N` are specified, the intersection will be taken.
+
+    ```
+    # Apply hotfix to a specified node.
+    tiup dm patch dm-test dm-master-hotfix-linux-amd64.tar.gz -N 172.16.100.21:8261
+    tiup dm patch dm-test dm-worker-hotfix-linux-amd64.tar.gz -N 172.16.100.21:8262
+    # Apply hotfix to a specified role.
+    tiup dm patch dm-test dm-master-hotfix-linux-amd64.tar.gz -R dm-master
+    tiup dm patch dm-test dm-worker-hotfix-linux-amd64.tar.gz -R dm-worker
+    ```
+
+4. Query the hotfix application result:
+
+    ```shell
+    /home/tidb/dm/deploy/dm-master-8261/bin/dm-master/dm-master -V
+    ```
+
+    Output:
+
+    ```
+    Release Version: v5.3.0-20211230
+    Git Commit Hash: ca7070c45013c24d34bd9c1e936071253451d707
+    Git Branch: heads/refs/tags/v5.3.0-20211230
+    UTC Build Time: 2022-01-05 14:19:02
+    Go Version: go version go1.16.4 linux/amd64
+    ```
+
+    The cluster information changes accordingly:
+
+    ```shell
+    tiup dm display dm-test
+    ```
+
+    Output:
+
+    ```
+    Starting component `dm`: /root/.tiup/components/dm/v1.8.1/tiup-dm display dm-test
+    Cluster type:       dm
+    Cluster name:       dm-test
+    Cluster version:    v5.3.0
+    Deploy user:        tidb
+    SSH type:           builtin
+    ID                  Role                 Host           Ports      OS/Arch       Status     Data Dir                              Deploy Dir
+    --                  ----                 ----           -----      -------       ------     --------                              ----------
+    172.16.100.21:9093  alertmanager         172.16.100.21  9093/9094  linux/x86_64  Up         /home/tidb/dm/data/alertmanager-9093  /home/tidb/dm/deploy/alertmanager-9093
+    172.16.100.21:8261  dm-master (patched)  172.16.100.21  8261/8291  linux/x86_64  Healthy|L  /home/tidb/dm/data/dm-master-8261     /home/tidb/dm/deploy/dm-master-8261
+    172.16.100.21:8262  dm-worker (patched)  172.16.100.21  8262       linux/x86_64  Free       /home/tidb/dm/data/dm-worker-8262     /home/tidb/dm/deploy/dm-worker-8262
+    172.16.100.21:3000  grafana              172.16.100.21  3000       linux/x86_64  Up         -                                     /home/tidb/dm/deploy/grafana-3000
+    172.16.100.21:9090  prometheus           172.16.100.21  9090       linux/x86_64  Up         /home/tidb/dm/data/prometheus-9090    /home/tidb/dm/deploy/prometheus-9090
+    Total nodes: 5
+    ```
 
 [<< Back to the previous page - TiUP DM command list](/tiup/tiup-component-dm.md#command-list)
