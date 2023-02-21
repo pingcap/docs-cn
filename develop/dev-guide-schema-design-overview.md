@@ -47,23 +47,17 @@ There are two common types of indexes:
 
 #### Specialized indexes
 
-To improve query performance of various user scenarios, TiDB provides you with some specialized types of indexes. For details of each type, see the following links:
-
-- [Expression indexes](/sql-statements/sql-statement-create-index.md#expression-index) (Experimental)
-- [Columnar storage (TiFlash)](/tiflash/tiflash-overview.md)
-- [RocksDB engine](/storage-engine/rocksdb-overview.md)
-
 <CustomContent platform="tidb">
 
-- [Titan plugin](/storage-engine/titan-overview.md)
+To improve query performance of various user scenarios, TiDB provides you with some specialized types of indexes. For details of each type, see [Indexing and constraints](/basic-features.md#indexing-and-constraints).
 
 </CustomContent>
 
-- [Invisible indexes](/sql-statements/sql-statement-add-index.md)
-- [Composite `PRIMARY KEY`](/constraints.md#primary-key)
-- [Unique indexes](/constraints.md#unique-key)
-- [Clustered indexes on integer `PRIMARY KEY`](/constraints.md)
-- [Clustered indexes on composite or non-integer key](/constraints.md)
+<CustomContent platform="tidb-cloud">
+
+To improve query performance of various user scenarios, TiDB provides you with some specialized types of indexes. For details of each type, see [Indexing and constraints](https://docs.pingcap.com/tidb/stable/basic-features#indexing-and-constraints).
+
+</CustomContent>
 
 ### Other supported logical objects
 
@@ -93,56 +87,4 @@ As a best practice, it is recommended that you use a [MySQL client](https://dev.
 
 ## Object limitations
 
-This section lists the object limitations on identifier length, a single table, and string types. For more information, see [TiDB Limitations](/tidb-limitations.md).
-
-### Limitations on identifier length
-
-| Identifier type | Maximum length (number of characters allowed) |
-|:---------|:--------------|
-| Database | 64 |
-| Table    | 64 |
-| Column   | 64 |
-| Index    | 64 |
-| View     | 64 |
-| Sequence | 64 |
-
-### Limitations on a single table
-
-| Type       | Upper limit (default value)  |
-|:----------|:----------|
-| Columns   | Defaults to 1017 and can be adjusted up to 4096     |
-| Indexes   |  Defaults to 64 and can be adjusted up to 512        |
-| Partitions | 8192     |
-| Size of a single line | 6 MB by default. |
-| Size of a single column in a line  | 6 MB       |
-
-<CustomContent platform="tidb">
-
-You can adjust the size limit of a single line via the [**txn-entry-size-limit**](/tidb-configuration-file.md#txn-entry-size-limit-new-in-v50) configuration item.
-
-</CustomContent>
-
-### Limitations on string types
-
-| Type       | Upper limit   |
-|:----------|:----------|
-| CHAR       | 256 characters      |
-| BINARY     | 256 characters      |
-| VARBINARY  | 65535 characters    |
-| VARCHAR    | 16383 characters    |
-| TEXT       | 6 MB                |
-| BLOB       | 6 MB                |
-
-### Number of rows
-
-<CustomContent platform="tidb">
-
-TiDB supports an **unlimited** number of rows by adding nodes to the cluster. For the relevant principles, see [TiDB Best Practices](/best-practices/tidb-best-practices.md).
-
-</CustomContent>
-
-<CustomContent platform="tidb-cloud">
-
-TiDB supports an **unlimited** number of rows by adding nodes to the cluster. For the relevant principles, see [TiDB Best Practices](https://docs.pingcap.com/tidb/stable/tidb-best-practices).
-
-</CustomContent>
+For more information, see [TiDB Limitations](/tidb-limitations.md).
