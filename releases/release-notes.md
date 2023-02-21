@@ -7,7 +7,7 @@ aliases: ['/docs/dev/releases/release-notes/','/docs/dev/releases/rn/']
 
 ## 6.6
 
-- [6.6.0](/releases/release-6.6.0.md): 2023-02-20
+- [6.6.0-DMR](/releases/release-6.6.0.md): 2023-02-20
 
 ## 6.5
 
