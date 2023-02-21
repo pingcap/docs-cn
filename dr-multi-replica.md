@@ -17,7 +17,7 @@ summary: 了解 TiDB 提供的基于多副本的单集群容灾方案。
 
 对于重要的生产系统，很多用户需要能够实现区域级别的容灾，并且做到 RPO = 0 和分钟级别的 RTO。TiDB 作为基于 Raft 协议的分布式数据库，其自带的多副本特性可以用于支持区域级别的容灾目标，并同时确保数据的一致性和高可用性。而同区域可用区 (Available Zone, AZ) 之间的网络延迟相对较小，可以把业务流量同时派发到同区域两个 AZ，并通过控制 Region Leader 和 PD Leader 分布实现同区域 AZ 共同负载业务流量。
 
-## 搭建集群
+## 搭建集群和配置副本
 
 在这一部分当中，会以一个 5 副本的集群为例，演示如何使用 TiUP 创建一个跨 3 个区域的集群，以及如何控制数据和 PD 的分布位置，从而达到容灾的目的。
 
@@ -92,7 +92,7 @@ summary: 了解 TiDB 提供的基于多副本的单集群容灾方案。
 
 2. 使用上面的配置文件创建集群：
 
-    ```toml
+    ```shell
     tiup cluster deploy drtest v6.4.0 ./topo.yaml
     tiup cluster start drtest --init
     tiup cluster display drtest
@@ -100,7 +100,7 @@ summary: 了解 TiDB 提供的基于多副本的单集群容灾方案。
 
     对集群的副本数和 Leader 限制进行配置：
 
-    ```toml
+    ```shell
     tiup ctl:v6.4.0 pd config set max-replicas 5
     tiup ctl:v6.4.0 pd config set label-property reject-leader Region Region3
 
@@ -110,7 +110,7 @@ summary: 了解 TiDB 提供的基于多副本的单集群容灾方案。
 
     指定 PD leader 的优先级:
 
-    ```toml
+    ```shell
     tiup ctl:v6.4.0 pd member leader_priority  pd-1 4
     tiup ctl:v6.4.0 pd member leader_priority  pd-2 3
     tiup ctl:v6.4.0 pd member leader_priority  pd-3 2
