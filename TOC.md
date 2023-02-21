@@ -961,7 +961,7 @@
   - [TiDB 版本规则](/releases/versioning.md)
   - [TiDB 离线包](/binary-package.md)
   - v6.6
-    - [6.6.0](/releases/release-6.6.0.md)
+    - [6.6.0-DMR](/releases/release-6.6.0.md)
   - v6.5
     - [6.5.0](/releases/release-6.5.0.md)
   - v6.4
