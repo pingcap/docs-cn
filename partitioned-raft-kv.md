@@ -5,8 +5,6 @@ summary: 了解 TiKV 的分区 Raft KV 特性。
 
 # 分区 Raft KV
 
-## 概述
-
 > **警告：**
 >
 > 分区 Raft KV 目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
@@ -15,9 +13,9 @@ v6.6.0 之前，基于 Raft 的存储引擎，TiKV 使用单一的 RocksDB 实�
 
 为了更平稳地支持更大的集群，从 v6.6.0 开始，TiDB 引入了一个全新的 TiKV 存储引擎，该引擎使用多个 RocksDB 实例来存储 TiKV 的 Region 数据，每个 Region 的数据都独立存储在单个 RocksDB 实例中。
 
-## 原理及优势
-
 新的 TiKV 引擎能够更好地控制 RocksDB 实例的文件数和层级，并实现了 Region 间数据操作的物理隔离，避免相互影响。同时，该引擎支持平稳管理更多的数据。你可以理解为，TiKV 通过分区管理多个 RocksDB 实例，这也是该特性分区 Raft KV 名字的由来。
+
+## 使用方法
 
 要启用 Raft KV，需要将配置项 [`storage.engine`](/tikv-configuration-file.md#storageengine-从-v660-版本开始引入) 设为 `raft-kv`。同时，可以在使用 Raft KV 时，通过配置项 [`rocksdb.write-buffer-flush-oldest-first`](/tikv-configuration-file.md#rocksdbwrite-buffer-flush-oldest-first-从-v660-版本开始引入) 和 [`rocksdb.write-buffer-limit`](/tikv-configuration-file.md#rocksdbwrite-buffer-limit-从-v660-版本开始引入) 来控制 RocksDB 的内存使用。
 
