@@ -9,9 +9,13 @@ TiDB is highly compatible with the MySQL protocol. For a full list of client lin
 
 TiDB supports the [MySQL Client/Server Protocol](https://dev.mysql.com/doc/internals/en/client-server-protocol.html), which allows most client drivers and ORM frameworks to connect to TiDB just as they connect to MySQL.
 
+## MySQL
+
 You can choose to use MySQL Client or MySQL Shell based on your personal preferences.
 
-## MySQL Client
+<SimpleTab>
+
+<div label="MySQL Client">
 
 You can connect to TiDB using MySQL Client, which can be used as a command-line tool for TiDB. To install MySQL Client, follow the instructions below for YUM based Linux distributions.
 
@@ -25,13 +29,19 @@ After the installation, you can connect to TiDB using the following command:
 mysql --host <tidb_server_host> --port 4000 -u root -p --comments
 ```
 
-## MySQL Shell
+</div>
+
+<div label="MySQL Shell">
 
 You can connect to TiDB using MySQL Shell, which can be used as a command-line tool for TiDB. To install MySQL Shell, follow the instructions in the [MySQL Shell documentation](https://dev.mysql.com/doc/mysql-shell/8.0/en/mysql-shell-install.html). After the installation, you can connect to TiDB using the following command:
 
 ```shell
 mysqlsh --sql mysql://root@<tidb_server_host>:4000
 ```
+
+</div>
+
+</SimpleTab>
 
 ## JDBC
 
