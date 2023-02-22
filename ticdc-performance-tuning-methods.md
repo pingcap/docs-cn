@@ -21,7 +21,7 @@ summary: 本文介绍了 Performance Overview 仪表盘中 TiCDC 部分，帮助
 - Changefeed checkpoint lag：同步任务上下游数据的进度差（以时间单位秒计算）如果TiCDC消费数据的速度和写入下游的速度跟得上上游的数据变更，checkpoint lag 将维持在短时间内，通常是 1 分钟以内；如果TiCDC消费数据的速度和写入下游的速度跟不上上游的数据变更，checkpoint lag 将持续增长。常见TiCDCcheckpoint lag 过长的原因：
   - 系统资源不足：如果 TiCDC 系统中的 CPU、内存或磁盘空间不足，可能会导致数据处理速度过慢，从而导致 TiCDC Changefeed checkpoint 过长。
   - 网络问题：如果 TiCDC 系统中存在网络中断、延迟或带宽不足的问题，可能会影响数据的传输速度，从而导致 TiCDC Changefeed checkpoint 过长。
-  - 上游 QPS 过高：如果 TiCDC 系统需要处理的数据量过大，可能会导致数据处理超时，从而导致 TiCDC Changefeed checkpoint 过长，通常一个TiCDC节点处理的 QPS 上线为 30K 左右。
+  - 上游 QPS 过高：如果 TiCDC 系统需要处理的数据量过大，可能会导致数据处理超时，从而导致 TiCDC Changefeed checkpoint 上升，通常一个 TiCDC 节点处理的 QPS 上限为 60K 左右。
   - 数据库问题：
     - 上游TiKV 集群 min resolve ts 和最新的 PD TSO 差距过大
     - 下游数据库写入延迟高导致 TiCDC 数据堆积
