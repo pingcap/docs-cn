@@ -1,42 +1,43 @@
 ---
-title: 分区raft kv
-aliases: ['/docs-cn/dev/partitioned-raft-kv/']
+title: 分区 Raft KV
+summary: 了解 TiKV 的分区 Raft KV 特性。
 ---
 
-# 分区raft kv
+# 分区 Raft KV
 
-本文介绍 TiKV 的分区raft kv。
+## 概述
 
-## 介绍
-在v6.6以前的版本中, TiKV基于Raft的后台存储引擎使用一个单一的RocksDB实例。一个TiKV上所有Region的数据都存储在该RocksDB实例中。
-在v6.6中，我们引入了一个新的Raft存储引擎，该引擎仍然使用RocksDB，但每个Region的数据都存储在单独的RocksDB实例中，也就是说每个RocksDB也是分区的，这也是分区raft kv名字的由来。目前该功能是实验特性，不推荐在生产环境中使用。
+> **警告：**
+>
+> 分区 Raft KV 目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+
+v6.6.0 之前，基于 Raft 的存储引擎，TiKV 使用单一的 RocksDB 实例存储该 TiKV 实例所有 Region 的数据。
+
+为了更平稳地支持更大的集群，从 v6.6.0 开始，TiDB 引入了一个全新的 TiKV 存储引擎，该引擎使用多个 RocksDB 实例来存储 TiKV 的 Region 数据，每个 Region 的数据都独立存储在单个 RocksDB 实例中。
+
+## 原理及优势
+
+新的 TiKV 引擎能够更好地控制 RocksDB 实例的文件数和层级，并实现了 Region 间数据操作的物理隔离，避免相互影响。同时，该引擎支持平稳管理更多的数据。你可以理解为，TiKV 通过分区管理多个 RocksDB 实例，这也是该特性分区 Raft KV 名字的由来。
+
+要启用 Raft KV，需要将配置项 [`storage.engine`](/tikv-configuration-file.md#storageengine-从-v660-版本开始引入) 设为 `raft-kv`。同时，可以在使用 Raft KV 时，通过配置项 [`rocksdb.write-buffer-flush-oldest-first`](/tikv-configuration-file.md#rocksdbwrite-buffer-flush-oldest-first-从-v660-版本开始引入) 和 [`rocksdb.write-buffer-limit`](/tikv-configuration-file.md#rocksdbwrite-buffer-limit-从-v660-版本开始引入) 来控制 RocksDB 的内存使用。
+
 该功能的主要优势在于更好的写入性能，更快的扩缩容，相同硬件下可以支持更大的数据，也能支持更大的集群规模。
 
-## 相关配置
-### storage.engine
-设置engine类型。该配置只能在创建新集群时指定，且后续无法更改。**实验特性**
-* `raft-kv`: raft-kv是6.6以前的Engine，也是该选项的默认值
-* `partitioned-raft-kv`: partitioned-raft-kv是6.6新引入的Engine类型。
+## 使用场景
 
-### rocksdb.write-buffer-limit
-设置单个TiKV中所有RocksDB中使用的memtable的内存上限,默认值为本机内存的25%, 推荐不低于5GB。该选项只作用于`partitioned-raft-kv`.**实验特性**
-* 默认值: 25%可用内存
-* 单位: KB|MB|GB
+如果你的 TiKV 集群有以下特点，可以考虑使用该功能：
 
-### rocksdb.write-buffer-flush-oldest-first
-设置当RocksDB当前memtable内存占用达到阈值之后的Flush策略。**实验特性**
-* false，是默认值，表明Flush的策略是优先选择数据量大的memtable落盘到SST。
-* true，表明Flush的策略是优先选择最老的memtable落盘到SST。该策略用于有明显冷热数据的场景，可以把冷数据的memtable清除。
+* 需要在单个 TiKV 支持更多的数据。
+* 有大量写入吞吐。
+* 需要频繁地扩缩容。
+* 负载有较为严重的读写放大。
+* TiKV 内存尚有富余。
 
-## 该功能的使用场景
-* 需要在单个TiKV支持更大的数据
-* 有大量写入吞吐
-* 频繁做扩缩容
-* 读、写放大比较严重的负载
-* TiKV内存尚有富余
+## 使用限制
 
-## 该功能的限制
-由于该功能处于实验特性，以下功能仍然在开发中，目前不支持。
-* lightning导入, TiCDC, BR, dumping, Tikv-ctl等工具均不支持
-* 不支持和TiFlash共同使用
-* 一旦启用该功能后无法回退到6.5或者以前的版本。
+由于该功能为实验特性，目前有以下限制：
+
+* 暂不支持 TiDB Lightning、TiCDC、BR、PITR、Dumping 等数据导入、同步和备份工具。
+* 暂不支持 tikv-ctl 命令行管理工具。
+* 不支持同时和 TiFlash 使用。
+* 一旦启用该功能，集群无法回退到 v6.5.0 或者更早版本。
