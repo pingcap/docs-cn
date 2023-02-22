@@ -10,15 +10,39 @@ aliases: ['/zh/tidb/dev/connect-to-tidb']
 
 TiDB 支持 [MySQL 客户端/服务器协议](https://dev.mysql.com/doc/internals/en/client-server-protocol.html)。这使得大多数客户端驱动程序和 ORM 框架可以像连接到 MySQL 一样地连接到 TiDB。
 
-## MySQL Client
+## MySQL
 
-你可以使用 MySQL Client 作为 TiDB 的命令行工具。在 [MySQL Shell 官方文档](https://dev.mysql.com/doc/mysql-shell/8.0/en/mysql-shell-install.html) 你可以找到不同操作系统的安装方式。在安装完后你可以使用如下命令行连接到 TiDB：
+你可以选择使用 MySQL Client 或 MySQL Shell 连接到 TiDB。
+
+<SimpleTab>
+
+<div label="MySQL Client">
+
+你可以使用 MySQL Client 作为 TiDB 的命令行工具连接到 TiDB。下面以基于 YUM 的 Linux 发行版为例，介绍如何安装 MySQL Client。
+
+```shell
+sudo yum install mysql
+```
+
+安装完成后，你可以使用如下命令连接到 TiDB：
 
 ```shell
 mysql --host <tidb_server_host> --port 4000 -u root -p --comments
 ```
 
-注意：MySQL 命令行客户端在 5.7.7 版本之前默认清除了 [Optimizer Hints](/optimizer-hints.md#optimizer-hints)。如果需要在这些早期版本的客户端中使用 Hint 语法，需要在启动客户端时加上 `--comments` 选项。
+</div>
+
+<div label="MySQL Shell">
+
+你可以使用 MySQL Shell 作为 TiDB 的命令行工具连接到 TiDB。参考 [MySQL Shell 文档](https://dev.mysql.com/doc/mysql-shell/8.0/en/mysql-shell-install.html)进行安装。安装完成后，你可以使用如下命令连接到 TiDB：
+
+```shell
+mysqlsh --sql mysql://root@<tidb_server_host>:4000
+```
+
+</div>
+
+</SimpleTab>
 
 ## JDBC
 
