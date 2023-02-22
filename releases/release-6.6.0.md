@@ -24,7 +24,7 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 <tbody>
   <tr>
     <td rowspan="3">可扩展性与性能<br /></td>
-      <td>TiKV 支持 Partitioned-Raft-KV 存储引擎（实验特性）</td>
+      <td>TiKV 支持 <a href="https://docs.pingcap.com/zh/tidb/v6.6/partitioned-raft-kv" target="_blank">Partitioned-Raft-KV 存储引擎</a>（实验特性）</td>
       <td>TiKV 引入下一代存储引擎 Partitioned-Raft-KV，通过每个数据 Region 独享 RocksDB 实例，可将集群的存储能力从 TB 级扩展到 PB 级，并提供更稳定的写入延迟和更强大的扩容能力。</td>
   </tr>
   <tr>
