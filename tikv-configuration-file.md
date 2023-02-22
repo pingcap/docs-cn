@@ -444,9 +444,10 @@ RocksDB 多个 CF 之间共享 block cache 的配置选项。
 > 该功能目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
 
 + 设置存储引擎类型。该配置只能在创建新集群时指定，且后续无法更改。
++ 默认值：`"raft-kv"`
 + 可选值：
 
-    + `"raft-kv"`：TiDB v6.6.0 之前的默认存储引擎。
+    + `"raft-kv"`：TiDB v6.6.0 之前版本的默认存储引擎。
     + `"partitioned-raft-kv"`：TiDB v6.6.0 新引入的存储引擎。
 
 ## storage.flow-control
