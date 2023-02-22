@@ -24,8 +24,8 @@ In v6.6.0-DMR, the key new features and improvements are as follows:
 <tbody>
   <tr>
     <td rowspan="3">Scalability and Performance<br /></td>
-    <td>TiKV supports Partitioned-Raft-KV storage engine (experimental)</td>
-    <td>TiKV introduces the Partitioned-Raft-KV storage engine, and each Region uses an independent RocksDB instance, which can easily expand the storage capacity of the cluster from TB to PB and provide more stable write latency and stronger scalability.</td>
+    <td>TiKV supports <a href="https://docs.pingcap.com/tidb/v6.6/partitioned-raft-kv" target="_blank">Partitioned Raft KV storage engine</a> (experimental)</td>
+    <td>TiKV introduces the Partitioned Raft KV storage engine, and each Region uses an independent RocksDB instance, which can easily expand the storage capacity of the cluster from TB to PB and provide more stable write latency and stronger scalability.</td>
   </tr>
   <tr>
     <td>TiKV supports <a href="https://docs.pingcap.com/tidb/v6.6/system-variables#tidb_store_batch_size" target="_blank">batch aggregating data requests</a></td>
@@ -65,11 +65,13 @@ In v6.6.0-DMR, the key new features and improvements are as follows:
 
 ### Scalability
 
-* Support Partitioned-Raft-KV storage engine (experimental) [#11515](https://github.com/tikv/tikv/issues/11515) [#12842](https://github.com/tikv/tikv/issues/12842) @[busyjay](https://github.com/busyjay) @[tonyxuqqi](https://github.com/tonyxuqqi) @[tabokie](https://github.com/tabokie) @[bufferflies](https://github.com/bufferflies) @[5kbpers](https://github.com/5kbpers) @[SpadeA-Tang](https://github.com/SpadeA-Tang) @[nolouch](https://github.com/nolouch)
+* Support Partitioned Raft KV storage engine (experimental) [#11515](https://github.com/tikv/tikv/issues/11515) [#12842](https://github.com/tikv/tikv/issues/12842) @[busyjay](https://github.com/busyjay) @[tonyxuqqi](https://github.com/tonyxuqqi) @[tabokie](https://github.com/tabokie) @[bufferflies](https://github.com/bufferflies) @[5kbpers](https://github.com/5kbpers) @[SpadeA-Tang](https://github.com/SpadeA-Tang) @[nolouch](https://github.com/nolouch)
 
     Before TiDB v6.6.0, TiKV's Raft-based storage engine used a single RocksDB instance to store the data of all 'Regions' of the TiKV instance. To support larger clusters more stably, starting from TiDB v6.6.0, a new TiKV storage engine is introduced, which uses multiple RocksDB instances to store TiKV Region data, and the data of each Region is independently stored in a separate RocksDB instance. The new engine can better control the number and level of files in the RocksDB instance, achieve physical isolation of data operations between Regions, and support stably managing more data. You can see it as TiKV managing multiple RocksDB instances through partitioning, which is why the feature is named Partitioned-Raft-KV. The main advantage of this feature is better write performance, faster scaling, and larger volume of data supported with the same hardware. It can also support larger cluster scales.
 
     Currently, this feature is experimental and not recommended for use in production environments.
+
+    For more information, see [documentation](/partitioned-raft-kv.md).
 
 * Support the distributed parallel execution framework for DDL operations (experimental) [#37125](https://github.com/pingcap/tidb/issues/37125) @[zimulala](https://github.com/zimulala)
 
@@ -392,6 +394,9 @@ In v6.6.0-DMR, the key new features and improvements are as follows:
 | TiDB | [`tidb_stmt_summary_file_max_size`](/tidb-configuration-file.md#tidb_stmt_summary_file_max_size-new-in-v660) | Newly added | When statements summary persistence is enabled, this configuration specifies the maximum size of a persistent data file (in MiB). |
 | TiDB | [`tidb_stmt_summary_filename`](/tidb-configuration-file.md#tidb_stmt_summary_filename-new-in-v660) | Newly added | When statements summary persistence is enabled, this configuration specifies the file to which persistent data is written. |
 | TiKV | [`resource-control.enabled`](/tikv-configuration-file.md#resource-control) | Newly added | Whether to enable scheduling for user foreground read/write requests according to the Request Unit (RU) of the corresponding resource groups. The default value is `false`, which means to disable scheduling according to the RU of the corresponding resource groups. |
+| TiKV | [`storage.engine`](/tikv-configuration-file.md#engine-new-in-v660) | Newly added | This configuration item specifies the type of the storage engine. Value options are `"raft-kv"` and `"partitioned-raft-kv"`. This configuration item can only be specified when creating a cluster and cannot be modified once being specified. |
+| TiKV | [`rocksdb.write-buffer-flush-oldest-first`](/tikv-configuration-file.md#write-buffer-flush-oldest-first-new-in-v660) | Newly added | This configuration item specifies the flush strategy used when the memory usage of `memtable` of the current RocksDB reaches the threshold.  |
+| TiKV | [`rocksdb.write-buffer-limit`](/tikv-configuration-file.md#write-buffer-limit-new-in-v660) | Newly added | This configuration item specifies the limit on total memory used by `memtable` of all RocksDB instances in a single TiKV. The default value is 25% of the total machine memory.  |
 | PD  | [`pd-server.enable-gogc-tuner`](/pd-configuration-file.md#enable-gogc-tuner-new-in-v660) | Newly added | This configuration item controls whether to enable the GOGC tuner, which is disabled by default. |
 | PD  | [`pd-server.gc-tuner-threshold`](/pd-configuration-file.md#gc-tuner-threshold-new-in-v660) | Newly added | This configuration item specifies the maximum memory threshold ratio for tuning GOGC. The default value is `0.6`. |
 | PD  | [`pd-server.server-memory-limit-gc-trigger`](/pd-configuration-file.md#server-memory-limit-gc-trigger-new-in-v660) | Newly added | This configuration item specifies the threshold ratio at which PD tries to trigger GC. The default value is `0.7`. |

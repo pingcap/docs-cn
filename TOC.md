@@ -575,6 +575,7 @@
     - [RocksDB Overview](/storage-engine/rocksdb-overview.md)
     - [Titan Overview](/storage-engine/titan-overview.md)
     - [Titan Configuration](/storage-engine/titan-configuration.md)
+    - [Partitioned Raft KV](/partitioned-raft-kv.md)
   - Storage Engine - TiFlash
     - [Overview](/tiflash/tiflash-overview.md)
     - [Create TiFlash Replicas](/tiflash/create-tiflash-replicas.md)
