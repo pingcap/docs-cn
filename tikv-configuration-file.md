@@ -359,7 +359,12 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 存储相关的配置项。
 
-## engine <span class="version-mark">从 v6.6.0 版本开始引入</span>
+### data dir
+
++ RocksDB 存储路径。
++ 默认值：`"./"`
+
+### engine <span class="version-mark">从 v6.6.0 版本开始引入</span>
 
 > **警告：**
 >
