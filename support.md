@@ -9,7 +9,7 @@ summary: 在使用 TiDB 时遇到问题，如何获取支持。
 
 + 从 PingCAP 获取支持（需要订阅 [TiDB 企业版](https://www.pingcap.com/tidb-enterprise/)）：
 
-    - [提交工单](support.pingcap.cn)
+    - [提交工单](https://support.pingcap.cn/)
 
 + 从 TiDB 社区寻求帮助：
 
