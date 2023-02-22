@@ -25,17 +25,17 @@ v6.6.0 之前，基于 Raft 的存储引擎，TiKV 使用单一的 RocksDB 实�
 * 负载有较为严重的读写放大。
 * TiKV 内存尚有富余。
 
+该功能的主要优势在于更好的写入性能，更快的扩缩容，相同硬件下可以支持更大的数据，也能支持更大的集群规模。
+
 ## 使用方法
 
-要启用 Raft KV，需要将配置项 [`storage.engine`](/tikv-configuration-file.md#storageengine-从-v660-版本开始引入) 设为 `partitioned-raft-kv`。同时，可以在使用 Raft KV 时，通过配置项 [`rocksdb.write-buffer-flush-oldest-first`](/tikv-configuration-file.md#rocksdbwrite-buffer-flush-oldest-first-从-v660-版本开始引入) 和 [`rocksdb.write-buffer-limit`](/tikv-configuration-file.md#rocksdbwrite-buffer-limit-从-v660-版本开始引入) 来控制 RocksDB 的内存使用。
-
-该功能的主要优势在于更好的写入性能，更快的扩缩容，相同硬件下可以支持更大的数据，也能支持更大的集群规模。
+要启用 Raft KV，需要在创建集群时将配置项 [`storage.engine`](/tikv-configuration-file.md#storageengine-从-v660-版本开始引入) 设为 `partitioned-raft-kv`。同时，可以在使用 Raft KV 时，通过配置项 [`rocksdb.write-buffer-flush-oldest-first`](/tikv-configuration-file.md#rocksdbwrite-buffer-flush-oldest-first-从-v660-版本开始引入) 和 [`rocksdb.write-buffer-limit`](/tikv-configuration-file.md#rocksdbwrite-buffer-limit-从-v660-版本开始引入) 来控制 RocksDB 的内存使用。
 
 ## 使用限制
 
 由于该功能为实验特性，目前有以下限制：
 
-* 暂不支持 TiDB Lightning、TiCDC、BR、PITR、Dumping 等数据导入、同步和备份工具。
+* 暂不支持 TiDB Lightning、TiCDC、BR、Dumping 等数据导入、同步和备份工具。
 * 暂不支持 tikv-ctl 命令行管理工具。
 * 不支持同时和 TiFlash 使用。
-* 一旦启用该功能，集群无法回退到 v6.5.0 或者更早版本。
+* 需要在创建集群时启用，不支持集群创建后开启。
