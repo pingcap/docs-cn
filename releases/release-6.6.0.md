@@ -388,9 +388,9 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 | TiDB | [`tidb_stmt_summary_file_max_size`](/tidb-configuration-file.md#tidb_stmt_summary_file_max_size-从-v660-版本开始引入) | 新增 | 当开启了 statements summary 持久化时，该配置用于限制持久化数据单个文件的大小 (MiB)，默认值为 `64`。 |
 | TiDB | [`tidb_stmt_summary_filename`](/tidb-configuration-file.md#tidb_stmt_summary_filename-从-v660-版本开始引入) | 新增 | 当开启了 statements summary 持久化时，该配置用于指定持久化数据所写入的文件名称，默认为 `tidb-statements.log`。 |
 | TiKV | [`resource-control.enabled`](/tikv-configuration-file.md#resource-control) | 新增 | 控制是否支持对用户前台的读写请求按照对应的资源组配额做优先级调度。默认为 `false`，即关闭按照资源组配额调度。 |
-| TiKV | [`storage.engine`](/tikv-configuration-file.md#storageengine-从-v660-版本开始引入) | 新增 | 用于设置存储引擎类型，可选值有 `"raft-kv"` 和 `"partitioned-raft-kv"`。该配置只能在创建新集群时指定，且后续无法更改。 |
+| TiKV | [`storage.engine`](/tikv-configuration-file.md#engine-从-v660-版本开始引入) | 新增 | 用于设置存储引擎类型，可选值有 `"raft-kv"` 和 `"partitioned-raft-kv"`。该配置只能在创建新集群时指定，且后续无法更改。 |
 | TiKV | [`rocksdb.write-buffer-flush-oldest-first`](/tikv-configuration-file.md#write-buffer-flush-oldest-first-从-v660-版本开始引入) | 新增 | 用于设置当 RocksDB 当前 memtable 内存占用达到阈值之后的 Flush 策略。 |
-| TiKV | [`rocksdb.write-buffer-limit`](/tikv-configuration-file.md#rocksdb-write-buffer-limit-从-v660-版本开始引入) | 新增 | 用于设置单个 TiKV 中所有 RocksDB 实例使用的 memtable 的总内存上限，默认值为本机内存的 25%。 |
+| TiKV | [`rocksdb.write-buffer-limit`](/tikv-configuration-file.md#write-buffer-limit-从-v660-版本开始引入) | 新增 | 用于设置单个 TiKV 中所有 RocksDB 实例使用的 memtable 的总内存上限，默认值为本机内存的 25%。 |
 | PD  | [`pd-server.enable-gogc-tuner`](/pd-configuration-file.md#enable-gogc-tuner-从-v660-版本开始引入) | 新增 | 控制是否开启 GOGC Tuner。默认关闭。 |
 | PD  | [`pd-server.gc-tuner-threshold`](/pd-configuration-file.md#gc-tuner-threshold-从-v660-版本开始引入) | 新增 | GOGC Tuner 自动调节的最大内存阈值比例。默认值为 `0.6`。 |
 | PD  | [`pd-server.server-memory-limit`](/pd-configuration-file.md#server-memory-limit-从-v660-版本开始引入) | 新增 | PD 实例的内存限制比例。`0` 表示不设内存限制。 |
