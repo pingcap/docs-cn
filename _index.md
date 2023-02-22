@@ -63,9 +63,7 @@ hide_commit: true
 
 [扩容集群](https://docs.pingcap.com/zh/tidb/dev/scale-tidb-using-tiup)
 
-[备份数据](https://docs.pingcap.com/zh/tidb/dev/br-usage-backup)
-
-[恢复数据](https://docs.pingcap.com/zh/tidb/dev/br-usage-restore)
+[备份与恢复](https://docs.pingcap.com/zh/tidb/dev/backup-and-restore-overview)
 
 [日常巡检](https://docs.pingcap.com/zh/tidb/dev/daily-check)
 

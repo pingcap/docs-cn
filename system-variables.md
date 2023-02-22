@@ -1342,16 +1342,20 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 作用域：GLOBAL
 - 是否持久化到集群：是
 - 类型：布尔型
-- 默认值：`OFF`
-- 该变量用于一个未发布的特性，**请勿修改该变量值**。
+- 默认值：`ON`
+- 这个变量用来控制是否开启历史统计信息。默认值为 `ON` 表示默认开启历史统计信息。
 
 ### `tidb_enable_historical_stats_for_capture`
+
+> **警告：**
+>
+> 当前版本中该变量控制的功能尚未完全生效，请保留默认值。
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
 - 类型：布尔型
 - 默认值：`OFF`
-- 该变量用于一个未发布的特性，**请勿修改该变量值**。
+- 这个变量用来控制 `PLAN REPLAYER CAPTURE` 抓取的内容是否默认带历史统计信息。默认值为 `OFF`，表示默认不带历史统计信息。
 
 ### `tidb_enable_index_merge` <span class="version-mark">从 v4.0 版本开始引入</span>
 
@@ -1534,8 +1538,8 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 类型：布尔型
-- 默认值：`OFF`
-- 这个变量用来控制是否开启 [`PLAN REPLAYER CAPTURE` 功能](/sql-plan-replayer.md#使用-plan-replayer-capture-抓取目标计划)。默认值 `OFF` 代表关闭 `PLAN REPLAYER CAPTURE` 功能。
+- 默认值：`ON`
+- 这个变量用来控制是否开启 [`PLAN REPLAYER CAPTURE` 功能](/sql-plan-replayer.md#使用-plan-replayer-capture-抓取目标计划)。默认值 `ON` 代表开启 `PLAN REPLAYER CAPTURE` 功能。
 
 ### `tidb_enable_plan_replayer_continues_capture`
 
