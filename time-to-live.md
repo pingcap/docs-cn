@@ -156,7 +156,7 @@ SET @@global.tidb_ttl_job_schedule_window_end_time = '05:00 +0000';
 
 The preceding statement allows TTL jobs to be scheduled only between 1:00 and 5:00 UTC. By default, the time window is set to `00:00 +0000` to `23:59 +0000`, which allows the jobs to be scheduled at any time.
 
-## Monitoring metrics and charts
+## Observability
 
 <CustomContent platform="tidb-cloud">
 
@@ -174,6 +174,61 @@ For details of the metrics, see the TTL section in [TiDB Monitoring Metrics](/gr
 
 </CustomContent>
 
+In addition, TiDB provides three tables to obtain more information about TTL jobs:
+
++ The `mysql.tidb_ttl_table_status` table contains information about the previously executed TTL job and ongoing TTL job for all TTL tables
+
+    ```sql
+    MySQL [(none)]> SELECT * FROM mysql.tidb_ttl_table_status LIMIT 1\G;
+    *************************** 1. row ***************************
+                          table_id: 85
+                  parent_table_id: 85
+                  table_statistics: NULL
+                      last_job_id: 0b4a6d50-3041-4664-9516-5525ee6d9f90
+              last_job_start_time: 2023-02-15 20:43:46
+              last_job_finish_time: 2023-02-15 20:44:46
+              last_job_ttl_expire: 2023-02-15 19:43:46
+                  last_job_summary: {"total_rows":4369519,"success_rows":4369519,"error_rows":0,"total_scan_task":64,"scheduled_scan_task":64,"finished_scan_task":64}
+                    current_job_id: NULL
+              current_job_owner_id: NULL
+            current_job_owner_addr: NULL
+        current_job_owner_hb_time: NULL
+            current_job_start_time: NULL
+            current_job_ttl_expire: NULL
+                current_job_state: NULL
+                current_job_status: NULL
+    current_job_status_update_time: NULL
+    1 row in set (0.040 sec)
+    ```
+
+    The column `table_id` is the ID of the partitioned table, and the `parent_table_id` is the ID of the table, corresponding with the ID in  `infomation_schema.tables`. If the table is not a partitioned table, the two IDs are the same.
+
+    The columns `{last, current}_job_{start_time, finish_time, ttl_expire}` describe respectively the start time, finish time, and expiration time used by the TTL job of the last or current execution. The `last_job_summary` column describes the execution status of the last TTL task, including the total number of rows, the number of successful rows, and the number of failed rows.
+
++ The `mysql.tidb_ttl_task` table contains information about the ongoing TTL subtasks. A TTL job is split into many subtasks, and this table records the subtasks that are currently being executed.
++ The `mysql.tidb_ttl_job_history` table contains information about the TTL jobs that have been executed. The record of TTL job history is kept for 90 days.
+
+    ```sql
+    MySQL [(none)]> SELECT * FROM mysql.tidb_ttl_job_history LIMIT 1\G;
+    *************************** 1. row ***************************
+              job_id: f221620c-ab84-4a28-9d24-b47ca2b5a301
+            table_id: 85
+      parent_table_id: 85
+        table_schema: test_schema
+          table_name: TestTable
+      partition_name: NULL
+          create_time: 2023-02-15 17:43:46
+          finish_time: 2023-02-15 17:45:46
+          ttl_expire: 2023-02-15 16:43:46
+        summary_text: {"total_rows":9588419,"success_rows":9588419,"error_rows":0,"total_scan_task":63,"scheduled_scan_task":63,"finished_scan_task":63}
+        expired_rows: 9588419
+        deleted_rows: 9588419
+    error_delete_rows: 0
+              status: finished
+    ```
+
+    The column `table_id` is the ID of the partitioned table, and the `parent_table_id` is the ID of the table, corresponding with the ID in  `infomation_schema.tables`. `table_schema`, `table_name`, and `partition_name` correspond to the database, table name, and partition name. `create_time`, `finish_time`, and `ttl_expire` indicate the creation time, end time, and expiration time of the TTL task. `expired_rows` and `deleted_rows` indicate the number of expired rows and the number of rows deleted successfully.
+
 ## Compatibility with TiDB tools
 
 As an experimental feature, the TTL feature is not compatible with data import and export tools, including BR, TiDB Lightning, and TiCDC.
@@ -185,4 +240,45 @@ Currently, the TTL feature has the following limitations:
 * The TTL attribute cannot be set on temporary tables, including local temporary tables and global temporary tables.
 * A table with the TTL attribute does not support being referenced by other tables as the primary table in a foreign key constraint.
 * It is not guaranteed that all expired data is deleted immediately. The time when expired data is deleted depends on the scheduling interval and scheduling window of the background cleanup job.
-* Currently, a single table can only run a cleanup job on a single TiDB node at a given time. This might cause performance bottlenecks in some scenarios (for example, when the table is extremely large). This issue will be optimized in future releases.
+
+## FAQs
+
+<CustomContent platform="tidb">
+
+- How can I determine whether the deletion is fast enough to keep the data size relatively stable?
+
+    In the [Grafana `TiDB` dashboard](/grafana-tidb-dashboard.md), the panel `TTL Insert Rows Per Hour` records the total number of rows inserted in the previous hour. The corresponding `TTL Delete Rows Per Hour` records the total number of rows deleted by the TTL task in the previous hour. If `TTL Insert Rows Per Hour` is higher than `TTL Delete Rows Per Hour` for a long time, it means that the rate of insertion is higher than the rate of deletion and the total amount of data will increase. For example:
+
+    ![insert fast example](/media/ttl/insert-fast.png)
+
+    It is worth noting that since TTL does not guarantee that the expired rows will be deleted immediately, and the rows currently inserted will be deleted in a future TTL task, even if the speed of TTL deletion is lower than the speed of insertion in a short period of time, it does not necessarily mean that the speed of TTL is too slow. You need to consider the situation in its context.
+
+- How can I determine whether the bottleneck of a TTL task is in scanning or deleting?
+
+    Look at the `TTL Scan Worker Time By Phase` and `TTL Delete Worker Time By Phase` panels. If the scan worker is in the `dispatch` phase for a large percentage of time and the delete worker is rarely in the `idle` phase, then the scan worker is waiting for the delete worker to finish the deletion. If the cluster resources are still free at this point, you can consider increasing `tidb_ttl_ delete_worker_count` to increase the number of delete workers. For example:
+
+    ![scan fast example](/media/ttl/scan-fast.png)
+
+    In contrast, if the scan worker is rarely in the `dispatch` phase and the delete worker is in the `idle` phase for a long time, then the scan worker is relatively busy. For example:
+
+    ![delete fast example](/media/ttl/delete-fast.png)
+
+    The percentage of scan and delete in TTL jobs is related to the machine configuration and data distribution, so the monitoring data at each moment is only representative of the TTL Jobs being executed. You can read the table `mysql.tidb_ttl_job_history` to determine which TTL job is running at a certain moment and the corresponding table of the job.
+
+- How to configure `tidb_ttl_scan_worker_count` and `tidb_ttl_delete_worker_count` properly?
+
+    1. Refer to the question "How to determine whether the bottleneck of TTL tasks is in scanning or deleting?" to consider whether to increase the value of `tidb_ttl_scan_worker_count` or `tidb_ttl_delete_worker_count`.
+    2. If the number of TiKV nodes is high, increase the value of `tidb_ttl_scan_worker_count` can make the TTL task workload more balanced.
+
+   Since too many TTL workers will cause a lot of pressure, you need to evaluate the CPU level of TiDB and the disk and CPU usage of TiKV together. Depending on different scenarios and needs (whether you need to speed up TTL as much as possible, or to reduce the impact of TTL on other queries), you can adjust the value of `tidb_ttl_scan_worker_count` and `tidb_ttl_delete_worker_count` to improve the speed of TTL scanning and deleting or reduce the performance impact brought by TTL tasks.
+
+</CustomContent>
+<CustomContent platform="tidb-cloud">
+
+- How to configure `tidb_ttl_scan_worker_count` and `tidb_ttl_delete_worker_count` properly?
+
+   If the number of TiKV nodes is high, increase the value of `tidb_ttl_scan_worker_count` can make the TTL task workload more balanced.
+
+   But too many TTL workers will cause a lot of pressure, you need to evaluate the CPU level of TiDB and the disk and CPU usage of TiKV together. Depending on different scenarios and needs (whether you need to speed up TTL as much as possible, or to reduce the impact of TTL on other queries), you can adjust the value of `tidb_ttl_scan_worker_count` and `tidb_ttl_delete_worker_count` to improve the speed of TTL scanning and deleting or reduce the performance impact brought by TTL tasks.
+
+</CustomContent>
