@@ -15,14 +15,14 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：true
 + 如果需要创建大量的表（例如 10 万张以上），建议将此参数设置为 false。
 
-### `tidb_max_reuse_chunk` <span class="version-mark">从 v6.4.0 版本开始引入</span>
+### `tidb-max-reuse-chunk` <span class="version-mark">从 v6.4.0 版本开始引入</span>
 
 + 用于控制每个连接最多缓存的 Chunk 对象数。配置过大会增加 OOM 的风险。
 + 默认值：64
 + 最小值：0
 + 最大值：2147483647
 
-### `tidb_max_reuse_column` <span class="version-mark">从 v6.4.0 版本开始引入</span>
+### `tidb-max-reuse-column` <span class="version-mark">从 v6.4.0 版本开始引入</span>
 
 + 用于控制每个连接最多缓存的 column 对象数。配置过大会增加 OOM 的风险。
 + 默认值：256
@@ -157,8 +157,9 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 ### `enable-telemetry` <span class="version-mark">从 v4.0.2 版本开始引入</span>
 
 + 是否开启 TiDB 遥测功能。
-+ 默认值：true
-+ 如果所有 TiDB 实例上该选项都设置为 `false`，那么将完全禁用 TiDB 遥测功能，且忽略 [`tidb_enable_telemetry`](/system-variables.md#tidb_enable_telemetry-从-v402-版本开始引入) 系统变量。参阅[遥测](/telemetry.md)了解该功能详情。
++ 默认值：false
++ 如果在 TiDB 实例上该配置项设为 `true`，该 TiDB 实例上将开启遥测功能，且 [`tidb_enable_telemetry`](/system-variables.md#tidb_enable_telemetry-从-v402-版本开始引入) 系统变量生效。
++ 如果所有 TiDB 实例上该选项都设置为 `false`，那么将完全禁用 TiDB 遥测功能，且忽略 `tidb_enable_telemetry` 系统变量。参阅[遥测](/telemetry.md)了解该功能详情。
 
 ### `enable-tcp4-only` <span class="version-mark">从 v5.0 版本开始引入</span>
 
@@ -810,7 +811,7 @@ TiDB 服务状态相关配置。
 
 ### `tidb_enable_ddl`
 
-+ 用于表示该 tidb-server 是否运行 DDL 语句。
++ 用于表示该 tidb-server 是否可以成为 DDL owner。
 + 默认值：true
 + 该值作为系统变量 [`tidb_enable_ddl`](/system-variables.md#tidb_enable_ddl) 的初始值。
 + 在 v6.3.0 之前，该功能由配置项 `run-ddl` 进行设置。

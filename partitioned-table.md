@@ -720,7 +720,7 @@ Empty set (0.00 sec)
 请注意对于以下 TiDB 专有的特性，当表结构中包含这些特性时，在 TiDB 中使用 `EXCHANGE PARTITION` 功能不仅需要满足 [MySQL 的 EXCHANGE PARTITION 条件](https://dev.mysql.com/doc/refman/8.0/en/partitioning-management-exchange.html)，还要保证这些专有特性对于分区表和非分区表的定义相同。
 
 * [Placement Rules in SQL](/placement-rules-in-sql.md)：Placement Policy 定义相同。
-* [TiFlash](/tikv-overview.md)：TiFlash Replica 数量相同。
+* [TiFlash](/tiflash/tiflash-overview.md)：TiFlash Replica 数量相同。
 * [聚簇索引](/clustered-indexes.md)：分区表和非分区表要么都是聚簇索引 (CLUSTERED)，要么都不是聚簇索引 (NONCLUSTERED)。
 
 此外，`EXCHANGE PARTITION` 和其他组件兼容性上存在一些限制，需要保证分区表和非分区表的一致性：
