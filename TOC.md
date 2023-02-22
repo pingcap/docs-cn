@@ -594,6 +594,7 @@
     - [RocksDB 简介](/storage-engine/rocksdb-overview.md)
     - [Titan 简介](/storage-engine/titan-overview.md)
     - [Titan 配置说明](/storage-engine/titan-configuration.md)
+    - [Partitioned-Raft-Kv 简介](/partitioned-raft-kv.md)
   - 存储引擎 TiFlash
     - [TiFlash 简介](/tiflash/tiflash-overview.md)
     - [构建 TiFlash 副本](/tiflash/create-tiflash-replicas.md)
