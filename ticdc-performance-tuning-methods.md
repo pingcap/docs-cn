@@ -4,7 +4,7 @@ summary: 本文介绍了 Performance Overview 仪表盘中 TiCDC 部分，帮助
 ---
 
 #TiCDC性能分析和优化方法
-本文介绍 TiCDC 资源使用率和关键的性能指标，用户通过 TiCDC 仪表盘，可以用来监控和评估TiCDC 同步数据的性能。
+本文介绍 TiCDC 资源使用率和关键的性能指标，用户通过 TiCDC 仪表盘，可以用来监控和评估 TiCDC 同步数据的性能。
 
 ##TiCDC集群资源利用率
 
