@@ -15,4 +15,4 @@ aliases: ['/docs-cn/dev/tidb-binlog/troubleshoot-tidb-binlog/','/docs-cn/dev/ref
 
 3. 查看 Pump、Drainer 日志中是否有 `ERROR`、`WARN`，并根据详细的日志信息初步判断问题原因。
 
-通过以上方式定位到问题后，在 [FAQ](/tidb-binlog/tidb-binlog-faq.md) 以及[常见错误及修复](/tidb-binlog/handle-tidb-binlog-errors.md) 中查找解决方案，如果没有查找到解决方案或者提供的解决方案无法解决问题，请提交 [issue](https://github.com/pingcap/tidb-binlog/issues) 或者联系相关技术支持人员。
+通过以上方式定位到问题后，在 [FAQ](/tidb-binlog/tidb-binlog-faq.md) 以及[常见错误及修复](/tidb-binlog/handle-tidb-binlog-errors.md) 中查找解决方案，如果没有查找到解决方案或者提供的解决方案无法解决问题，请提交 [issue](https://github.com/pingcap/tidb-binlog/issues)，或从 PingCAP 官方或 TiDB 社区[获取支持](/support.md)。
