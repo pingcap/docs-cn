@@ -443,10 +443,11 @@ RocksDB 多个 CF 之间共享 block cache 的配置选项。
 >
 > 该功能目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
 
-设置 engine 类型，可选值有 `raft-kv` 和 `partitioned-raft-kv`。该配置只能在创建新集群时指定，且后续无法更改。
++ 设置存储引擎类型。该配置只能在创建新集群时指定，且后续无法更改。
++ 可选值：
 
-- `raft-kv`：TiDB v6.6.0 之前的默认存储引擎。
-- `partitioned-raft-kv`：TiDB v6.6.0 新引入的存储引擎。
+    + `raft-kv`：TiDB v6.6.0 之前的默认存储引擎。
+    + `partitioned-raft-kv`：TiDB v6.6.0 新引入的存储引擎。
 
 ## storage.flow-control
 
@@ -1002,10 +1003,11 @@ rocksdb 相关的配置项。
 >
 > 该功能目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
 
-设置当 RocksDB 当前 memtable 内存占用达到阈值之后的 Flush 策略。
-
-- `false`：默认值，Flush 策略是优先选择数据量大的 memtable 落盘到 SST。
-- `true`：Flush 策略是优先选择最早的 memtable 落盘到 SST。该策略可以清除冷数据的 memtable，用于有明显冷热数据的场景。
++ 设置当 RocksDB 当前 memtable 内存占用达到阈值之后的 Flush 策略。
++ 默认值：`false`
++ 可选值：
+    + `false`：Flush 策略是优先选择数据量大的 memtable 落盘到 SST。
+    + `true`：Flush 策略是优先选择最早的 memtable 落盘到 SST。该策略可以清除冷数据的 memtable，用于有明显冷热数据的场景。
 
 ### rocksdb.write-buffer-limit <span class="version-mark">从 v6.6.0 版本开始引入</span>
 
@@ -1013,9 +1015,9 @@ rocksdb 相关的配置项。
 >
 > 该功能目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
 
-+ 设置单个 TiKV 中所有 RocksDB 实例使用的 memtable 的总内存上限，默认值为本机内存的 25%，推荐配置不低于 5 GiB 的内存。该配置只对`partitioned-raft-kv` 生效。
++ 设置单个 TiKV 中所有 RocksDB 实例使用的 memtable 的总内存上限，默认值为本机内存的 25%，推荐配置不低于 5 GiB 的内存。该配置只对 `partitioned-raft-kv` 生效。
 + 默认值：25%
-+ 单位：KB|MB|GB
++ 单位：KiB|MiB|GiB
 
 ### `wal-recovery-mode`
 

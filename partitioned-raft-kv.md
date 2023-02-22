@@ -9,7 +9,7 @@ summary: 了解 TiKV 的分区 Raft KV 特性。
 >
 > 分区 Raft KV 目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
 
-v6.6.0 之前，基于 Raft 的存储引擎，TiKV 使用单一的 RocksDB 实例存储该 TiKV 实例所有 Region 的数据。
+v6.6.0 之前，基于 Raft 的存储引擎，TiKV 使用单个 RocksDB 实例存储该 TiKV 实例所有 Region 的数据。
 
 为了更平稳地支持更大的集群，从 v6.6.0 开始，TiDB 引入了一个全新的 TiKV 存储引擎，该引擎使用多个 RocksDB 实例来存储 TiKV 的 Region 数据，每个 Region 的数据都独立存储在单个 RocksDB 实例中。
 
@@ -19,17 +19,17 @@ v6.6.0 之前，基于 Raft 的存储引擎，TiKV 使用单一的 RocksDB 实�
 
 如果你的 TiKV 集群有以下特点，可以考虑使用该功能：
 
-* 需要在单个 TiKV 支持更多的数据。
-* 有大量写入吞吐。
+* 需要在单个 TiKV 实例支持更多的数据。
+* 具有大量写入吞吐。
 * 需要频繁地扩缩容。
 * 负载有较为严重的读写放大。
 * TiKV 内存尚有富余。
 
-该功能的主要优势在于更好的写入性能，更快的扩缩容，相同硬件下可以支持更大的数据，也能支持更大的集群规模。
+该功能的主要优势在于，提高写入性能，加快扩缩容速度，以及在相同硬件下支持更多数据和更大的集群。
 
 ## 使用方法
 
-要启用 Raft KV，需要在创建集群时将配置项 [`storage.engine`](/tikv-configuration-file.md#storageengine-从-v660-版本开始引入) 设为 `partitioned-raft-kv`。同时，可以在使用 Raft KV 时，通过配置项 [`rocksdb.write-buffer-flush-oldest-first`](/tikv-configuration-file.md#rocksdbwrite-buffer-flush-oldest-first-从-v660-版本开始引入) 和 [`rocksdb.write-buffer-limit`](/tikv-configuration-file.md#rocksdbwrite-buffer-limit-从-v660-版本开始引入) 来控制 RocksDB 的内存使用。
+要启用 Raft KV，需要在创建集群时将配置项 [`storage.engine`](/tikv-configuration-file.md#storageengine-从-v660-版本开始引入) 设为 `partitioned-raft-kv`。同时，在使用 Raft KV 时，可以通过配置项 [`rocksdb.write-buffer-flush-oldest-first`](/tikv-configuration-file.md#rocksdbwrite-buffer-flush-oldest-first-从-v660-版本开始引入) 和 [`rocksdb.write-buffer-limit`](/tikv-configuration-file.md#rocksdbwrite-buffer-limit-从-v660-版本开始引入) 来控制 RocksDB 的内存使用。
 
 ## 使用限制
 
@@ -38,4 +38,4 @@ v6.6.0 之前，基于 Raft 的存储引擎，TiKV 使用单一的 RocksDB 实�
 * 暂不支持 TiDB Lightning、TiCDC、BR、Dumping 等数据导入、同步和备份工具。
 * 暂不支持 tikv-ctl 命令行管理工具。
 * 不支持同时和 TiFlash 使用。
-* 需要在创建集群时启用，不支持集群创建后开启。
+* 需要在创建集群时启用，不支持在集群创建后开启。
