@@ -181,11 +181,7 @@ show warnings;
 
 6. 检查 PD 是否为表设置  Placement rule。
 
-<<<<<<< HEAD
-    可以通过 `curl http://<pd-ip>:<pd-port>/pd/api/v1/config/rules/group/tiflash` 查询比较当前 PD 上的所有 TiFlash Placement Rule。如果观察到有 id 为 `table-<table_id>-r` 的 Rule ，则表示 PD Rule 设置成功。
-=======
     可以通过 `curl http://<pd-ip>:<pd-port>/pd/api/v1/config/rules/group/tiflash` 查询比较当前 PD 上的所有 TiFlash 的 Placement rule。如果观察到有 id 为 `table-<table_id>-r` 的 Rule，则表示 PD rule 设置成功。
->>>>>>> 0125c506c (tiflash: update some description in troubleshooting (#13101))
 
 7. 检查 PD 是否正常发起调度。
 
