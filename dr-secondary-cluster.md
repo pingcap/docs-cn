@@ -268,8 +268,6 @@ s3://backup?access-key=minio&secret-access-key=miniostorage&endpoint=http://10.0
 
     结果输出 `1` 表明 GC 已开启：
 
-    结果输出 `1` 表明 GC 已开启：
-
     ```
     +-------------------------+
     | @@global.tidb_gc_enable |
