@@ -23,7 +23,7 @@ summary: 本文介绍了 Performance Overview 仪表盘中 TiCDC 部分，帮助
   - 网络问题：如果 TiCDC 系统中存在网络中断、延迟或带宽不足的问题，可能会影响数据的传输速度，从而导致 TiCDC Changefeed checkpoint 过长。
   - 上游 QPS 过高：如果 TiCDC 系统需要处理的数据量过大，可能会导致数据处理超时，从而导致 TiCDC Changefeed checkpoint 上升，通常一个 TiCDC 节点处理的 QPS 上限为 60K 左右。
   - 数据库问题：
-    - 上游TiKV 集群 min resolve ts 和最新的 PD TSO 差距过大
+    - 上游 TiKV 集群 min resolved ts 和最新的 PD TSO 差距过大，通常是因为上游写入负载过大，TiKV 无法及时推进 resolved ts 造成。
     - 下游数据库写入延迟高导致 TiCDC 无法及时把数据同步到下游
 
 
