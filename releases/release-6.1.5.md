@@ -1,6 +1,6 @@
 ---
-title: TiDB 6.1.4 Release Notes
-summary: 了解 TiDB 6.1.4 版本的新功能、兼容性变更、改进提升，以及错误修复。
+title: TiDB 6.1.5 Release Notes
+summary: 了解 TiDB 6.1.5 版本的新功能、兼容性变更、改进提升，以及错误修复。
 ---
 
 # TiDB 6.1.5 Release Notes
