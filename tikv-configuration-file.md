@@ -359,12 +359,12 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 存储相关的配置项。
 
-### data dir
+### `data-dir`
 
 + RocksDB 存储路径。
 + 默认值：`"./"`
 
-### engine <span class="version-mark">从 v6.6.0 版本开始引入</span>
+### `engine` <span class="version-mark">从 v6.6.0 版本开始引入</span>
 
 > **警告：**
 >
@@ -1116,7 +1116,7 @@ rocksdb 相关的配置项。
 + 日志存储目录。
 + 默认值：""
 
-### write-buffer-flush-oldest-first <span class="version-mark">从 v6.6.0 版本开始引入</span>
+### `write-buffer-flush-oldest-first` <span class="version-mark">从 v6.6.0 版本开始引入</span>
 
 > **警告：**
 >
@@ -1128,7 +1128,7 @@ rocksdb 相关的配置项。
     + `false`：Flush 策略是优先选择数据量大的 memtable 落盘到 SST。
     + `true`：Flush 策略是优先选择最早的 memtable 落盘到 SST。该策略可以清除冷数据的 memtable，用于有明显冷热数据的场景。
 
-### write-buffer-limit <span class="version-mark">从 v6.6.0 版本开始引入</span>
+### `write-buffer-limit` <span class="version-mark">从 v6.6.0 版本开始引入</span>
 
 > **警告：**
 >
