@@ -38,7 +38,7 @@ summary: 本文介绍了 Performance Overview 仪表盘中 TiCDC 部分，帮助
 
 **示例1 ：单个 TiCDC 节点上游 QPS 过高导致 checkponit lag 过高 **
 
-因为上游 QPS 过高，改集群中只有单个 TiCDC 节点，TiCDC 节点处于过载状态， CPU 使用率较高，Changefeed checkpoint lag 和 Changefeed resolved ts lag 持续增长。changefeeds 的状态不断出错。这种情况通常通过增加资源解决问题：
+因为上游 QPS 过高，该集群中只有单个 TiCDC 节点，TiCDC 节点处于过载状态， CPU 使用率较高，Changefeed checkpoint lag 和 Changefeed resolved ts lag 持续增长。changefeeds 的状态不断出错。这种情况通常通过增加资源解决问题：
 - 添加 TiCDC 节点：将 TiCDC 集群扩展到多个节点，以增加处理能力。
 - 优化 TiCDC 节点的资源：提高 TiCDC 节点的 CPU 和内存配置，以改善性能。
 
