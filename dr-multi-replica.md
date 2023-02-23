@@ -57,7 +57,6 @@ In this example, TiDB contains five replicas and three regions. Region 1 is the 
       - host: tidb-dr-test1
       - host: tidb-dr-test3
 
-
     tikv_servers:  # Label the Regions and AZs of each TiKV node through the labels option.
       - host: tidb-dr-test1
         config:
@@ -86,7 +85,7 @@ In this example, TiDB contains five replicas and three regions. Region 1 is the 
 
     alertmanager_servers:
       - host: tidb-dr-test2
-      ```
+    ```
 
     The preceding configurations use the following options to optimize toward cross-region DR:
 
