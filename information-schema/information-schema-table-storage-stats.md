@@ -50,3 +50,14 @@ EMPTY_REGION_COUNT: 1
         TABLE_KEYS: 0
 1 row in set (0.00 sec)
 ```
+
+`TABLE_STORAGE_STATS` 表各列字段含义如下：
+
+* `TABLE_SCHEMA`：
+* `TABLE_NAME`：
+* `TABLE_ID`：
+* `PEER_COUNT`：
+* `REGION_COUNT`：
+* `EMPTY_REGION_COUNT`：
+* `TABLE_SIZE`：
+* `TABLE_KEYS`：
