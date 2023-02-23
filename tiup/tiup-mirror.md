@@ -119,11 +119,11 @@ tiup list
 
 ### 更新私有仓库
 
-如果使用同样的 `target-dir` 目录再次运行 `tiup mirror clone` 命令，机器会创建新的清单，并下载可用的最新版本的组件。
+如果使用同样的 `target-dir` 目录再次运行 `tiup mirror clone` 命令，机器会创建新的 manifest，并下载可用的最新版本的组件。
 
 > **注意：**
 >
-> 重新创建清单之前，请确保所有组件和版本（包括之前下载的早期版本）都包含在内。
+> 重新创建 manifest 之前，请确保所有组件和版本（包括之前下载的早期版本）都包含在内。
 
 ## 自定义仓库
 
@@ -197,7 +197,7 @@ tiup mirror grant jdoe
     hello
     ```
 
-    执行 `tiup mirror merge` 命令，可以将自定义组件的仓库合并到另一个仓库中。本文假设 `/data/my_custom_components` 中的所有组件都使用 `$USER` 签名：
+    执行 `tiup mirror merge` 命令，可以将自定义组件的仓库合并到另一个仓库中。这一操作假设 `/data/my_custom_components` 中的所有组件都使用 `$USER` 签名：
 
     ```bash
     $ tiup mirror set /data/my_mirror
