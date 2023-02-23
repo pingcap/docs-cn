@@ -12,7 +12,7 @@ aliases: ['/docs-cn/dev/minimal-deployment-topology/']
 
 |实例 | 个数 | 物理机配置 | IP |配置 |
 | :-- | :-- | :-- | :-- | :-- |
-| TiDB |3 | 16 VCore 32GB * 1 | 10.0.1.1 <br/> 10.0.1.2 <br/> 10.0.1.3 | 默认端口 <br/>  全局目录配置 |
+| TiDB |2 | 16 VCore 32GB * 1 | 10.0.1.1 <br/> 10.0.1.2 | 默认端口 <br/>  全局目录配置 |
 | PD | 3 | 4 VCore 8GB * 1 |10.0.1.4 <br/> 10.0.1.5 <br/> 10.0.1.6 | 默认端口 <br/> 全局目录配置 |
 | TiKV | 3 | 16 VCore 32GB 2TB (nvme ssd) * 1 | 10.0.1.7 <br/> 10.0.1.8 <br/> 10.0.1.9 | 默认端口 <br/> 全局目录配置 |
 | Monitoring & Grafana | 1 | 4 VCore 8GB * 1 500GB (ssd) | 10.0.1.10 | 默认端口 <br/> 全局目录配置 |
