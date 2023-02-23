@@ -99,9 +99,9 @@ absent -> delete only -> write only -> write reorg -> public
 
 在 TiDB v6.2 前，该 DDL 执行框架存在以下限制：
 
-- TiKV 集群中只有 `general job queue` 和 `add index job queue` 两个队列，分别处理 General DDL 和 Reorg DDL。
+- TiKV 集群中只有 `general job queue` 和 `add index job queue` 两个队列，分别处理逻辑 DDL 和物理 DDL。
 - DDL Owner 总是以先入先出的方式处理 DDL Job。
-- DDL Owner 每次只能执行一个同种类型（General 或 Reorg）的 DDL 任务，这个约束较为严格。
+- DDL Owner 每次只能执行一个同种类型（逻辑 或 物理）的 DDL 任务，这个约束较为严格。
 
 这些限制可能会导致一些“非预期”的 DDL 阻塞行为。具体可以参考 [SQL FAQ - DDL 执行](/faq/sql-faq.md#ddl-执行)
 
@@ -114,18 +114,17 @@ absent -> delete only -> write only -> write reorg -> public
 
 为了提升用户体验，为用户提供更为强大的 DDL 执行能力，TiDB v6.2 版本对原有的 DDL Owner 进行升级，使得 Owner 能对 DDL 任务做相关性判断，判断逻辑如下：
 
-+ 数据库的对象按照下图形成分层结构，一个 DB (schema) 包含多张表、视图、函数和 stored procedure。一张表又包含多个索引和列。
-+ 在同一层 (Level) 的不同对象之间，可以并行进行 DDL 变更。
-+ 在不同层对象之间执行 DDL 任务需要阻塞，例如：A 用户正在删除数据库 `DB1`，此时 B 用户不能在数据库 `DB1` 中创建一张新表 `T1`。
-
-![DDL DB structure](/media/ddl-db-structure.png)
++ 涉及同一张表的 DDL 相互阻塞。
++ Drop database 和 Database 内所有对象的 DDL 互相阻塞。
++ 涉及不同表的加索引和列类型变更可以并发执行。
++ 逻辑 DDL 需要等待之前未被阻塞的逻辑 DDL 执行完才能执行。
++ 其他情况下 DDL 可以执行。
 
 具体来说，TiDB 在 v6.2 中对 DDL 执行框架进行了如下升级：
 
 + DDL Owner 能够根据以上判断逻辑并行执行 DDL 任务。
 + 改善了 DDL Job 队列先入先出的问题。DDL Owner 不再选择当前队列最前面的 DDL Job，而是选择当前可以执行的 DDL Job。
 + 扩充了处理 Reorg DDL 的 worker 数量，使得能够并行地添加多个索引。
-+ 同时避免使用传统的 MDL 锁机制来进行调度。
 
     因为 TiDB 中所有支持的 DDL 任务都是以 Online 方式来实现的，TiDB 只需要通过 Owner 对于新的 DDL Job 进行相关性判断，并根据相关性结果进行 DDL 任务的调度。最后实现和传统数据库中 DDL 并发相同的效果，同时，这也是一种对于分布式数据库友好的调度算法。
 
