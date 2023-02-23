@@ -21,11 +21,11 @@ UUID 文本是一个包含 36 字符的字符串，如 `ab06f63e-8fe7-11ec-a514-
 
 ### UUID 格式二进制顺序和聚簇主键
 
-`UUID_TO_BIN()` 函数可以使用一个参数（UUID）或两个参数（第二个为 `swap_flag`）。建议不要在 TiDB 中设置 `swap_flag`，以避免出现[热点](/best-practices/high-concurrency-best-practices.md)问题。
+`UUID_TO_BIN()` 函数可以接收一个参数 (UUID) 或两个参数（第一个为 UUID，第二个为 `swap_flag`）。建议不要在 TiDB 中设置 `swap_flag`，以避免出现[热点](/best-practices/high-concurrency-best-practices.md)问题。
 
 同时，你也可以在 UUID 主键上显式设置 [`CLUSTERED` 选项](/clustered-indexes.md)来避免热点问题。
 
-为了演示 `swap_flag` 的效果，这里有两个表结构相同的表。区别在于，`uuid_demo_1` 中插入的数据使用 `UUID_TO_BIN(?, 0)`，而 `uuid_demo_2` 使用 `UUID_TO_BIN(?, 1)`。
+为了演示 `swap_flag` 的效果，本文以表结构相同的两张表为例。区别在于，`uuid_demo_1` 表中插入的数据使用 `UUID_TO_BIN(?, 0)`，而 `uuid_demo_2` 表中使用 `UUID_TO_BIN(?, 1)`。
 
 在如下的[流量可视化页面](/dashboard/dashboard-key-visualizer.md)，你可以看到写入操作集中在 `uuid_demo_2` 表的单个 Region 中，而这个表中的二进制格式字段顺序被调换过。
 
@@ -49,4 +49,4 @@ CREATE TABLE `uuid_demo_2` (
 
 ## 与 MySQL 兼容性
 
-UUID  也可以在 MySQL 中使用。MySQL 8.0 引入了 `BIN_TO_UUID()` 和 `UUID_TO_BIN()` 函数。`UUID()` 函数在较早的 MySQL 版本中也可以使用。
+UUID 也可以在 MySQL 中使用。MySQL 8.0 引入了 `BIN_TO_UUID()` 和 `UUID_TO_BIN()` 函数。`UUID()` 函数在较早的 MySQL 版本中也可以使用。
