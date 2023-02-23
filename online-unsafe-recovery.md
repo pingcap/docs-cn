@@ -38,7 +38,7 @@ Before using Online Unsafe Recovery, make sure that the following requirements a
 
 ### Step 1. Specify the stores that cannot be recovered
 
-Use PD Control to specify the TiKV nodes that cannot be recovered and trigger the automatic recovery by running [`unsafe remove-failed-stores <store_id>[,<store_id>,...]`](/pd-control.md#unsafe-remove-failed-stores-store-ids--show).
+To trigger automatic recovery, use PD Control to execute [`unsafe remove-failed-stores <store_id>[,<store_id>,...]`](/pd-control.md#unsafe-remove-failed-stores-store-ids--show) and specify **all** the TiKV nodes that cannot be recovered, seperated by commas.
 
 {{< copyable "shell-regular" >}}
 
@@ -142,6 +142,12 @@ The whole recovery process takes multiple stages and one stage might be retried 
 }
 ```
 
+After you get the affected table IDs, you can query `INFORMATION_SCHEMA.TABLES` to view the affected table names.
+
+```sql
+SELECT TABLE_SCHEMA, TABLE_NAME, TIDB_TABLE_ID FROM INFORMATION_SCHEMA.TABLES WHERE TIDB_TABLE_ID IN (64, 27);
+```
+
 > **Note:**
 >
 > - The recovery operation has turned some failed voters to failed learners. Then PD scheduling needs some time to remove these failed learners.
@@ -158,11 +164,35 @@ If an error occurs during the task, the last stage in the output shows `"Unsafe 
 
 ### Step 3. Check the consistency of data and index (not required for RawKV)
 
-After the recovery is completed, the data and index might be inconsistent. Use the SQL commands [`ADMIN CHECK`](/sql-statements/sql-statement-admin-check-table-index.md), `ADMIN RECOVER`, and `ADMIN CLEANUP` to check the consistency of the affected tables (you can get IDs from the output of `"Unsafe recovery finished"`) for data consistency and index consistency, and to recover the tables.
-
 > **Note:**
 >
 > Although the data can be read and written, it does not mean that there is no data loss.
+
+After the recovery is completed, the data and index might be inconsistent. Use the SQL command [`ADMIN CHECK`](/sql-statements/sql-statement-admin-check-table-index.md) to check the data and index consistency of the affected tables
+
+```sql
+ADMIN CHECK TABLE table_name;
+```
+
+If there are inconsistent indexes, you can fix the index inconsistency by renaming the old index, creating a new index, and then droping the old index.
+
+1. Rename the old index:
+
+    ```sql
+    ALTER TABLE table_name RENAME INDEX index_name TO index_name_lame_duck;
+    ```
+
+2. Create a new index:
+
+    ```sql
+    ALTER TABLE table_name ADD INDEX index_name (column_name);
+    ```
+
+3. Drop the old index:
+
+    ```sql
+    ALTER TABLE table_name DROP INDEX index_name_lame_duck;
+    ```
 
 ### Step 4: Remove unrecoverable stores (optional)
 
