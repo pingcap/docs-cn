@@ -19,6 +19,7 @@ By default, **CHOOSE MASTER ONLY** so your changes will be applied to the next T
 For details, see [tips for choosing the affected versions](https://github.com/pingcap/docs/blob/master/CONTRIBUTING.md#guideline-for-choosing-the-affected-versions).
 
 - [ ] master (the latest development version)
+- [ ] v7.0 (TiDB 7.0 versions)
 - [ ] v6.6 (TiDB 6.6 versions)
 - [ ] v6.5 (TiDB 6.5 versions)
 - [ ] v6.4 (TiDB 6.4 versions)

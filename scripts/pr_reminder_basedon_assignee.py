@@ -9,7 +9,7 @@ docs_cn_url = 'https://github.com/pingcap/docs-cn/pulls?q=is%3Apr'
 docs_url = 'https://github.com/pingcap/docs/pulls?q=is%3Apr'
 open_url = '+is%3Aopen+is%3Apr'
 close_url = '+is%3Aclosed+label%3Atranslation%2Fdoing'
-ver_no = '+label%3Av6.6'
+ver_no = '+label%3Av7.0'
 type_compatibility_change = '+label%3Atype%2Fcompatibility-or-feature-change'
 type_oncall = '+label%3AONCALL'
 type_bugfix = '+label%3Atype%2Fbug-fix'
@@ -234,7 +234,7 @@ if __name__ == "__main__":
                         [
                             {
                                 "tag": "text",
-                                "text": "v6.6 发版文档，中英文截止日期 2023-02-08，预计发版日期 2023-02-16"
+                                "text": "v7.0 发版文档，中英文截止日期 2023-03-22，预计发版日期 2023-03-30"
                             }
                         ],
                         [
