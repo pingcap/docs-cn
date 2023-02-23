@@ -1345,7 +1345,7 @@ rocksdb defaultcf、rocksdb writecf 和 rocksdb lockcf 相关的配置项。
 + 开启将整个 key 放到 bloom filter 中的开关。
 + `defaultcf` 默认值：`true`
 + `writecf` 默认值：`false`
-+ `lockcf` 默认值：`false`
++ `lockcf` 默认值：`true`
 
 ### `bloom-filter-bits-per-key`
 
