@@ -13,8 +13,8 @@ summary: 介绍 TiDB 集群的最小拓扑。
 | :-- | :-- | :-- | :-- | :-- |
 | TiDB |2 | 16 VCore 32 GiB <br/> 100 GiB 用于存储| 10.0.1.1 <br/> 10.0.1.2 | 默认端口 <br/>  全局目录配置 |
 | PD | 3 | 4 VCore 8 GiB <br/> 100 GiB 用于存储|10.0.1.4 <br/> 10.0.1.5 <br/> 10.0.1.6 | 默认端口 <br/> 全局目录配置 |
-| TiKV | 3 | 16 VCore 32 GiB <br/> 2 TiB (nvme ssd) 用于存储 | 10.0.1.7 <br/> 10.0.1.8 <br/> 10.0.1.9 | 默认端口 <br/> 全局目录配置 |
-| Monitoring & Grafana | 1 | 4 VCore 8 GiB <br/> 500 GiB (ssd) 用于存储 | 10.0.1.10 | 默认端口 <br/> 全局目录配置 |
+| TiKV | 3 | 16 VCore 32 GiB <br/> 2 TiB (NVMe SSD) 用于存储 | 10.0.1.7 <br/> 10.0.1.8 <br/> 10.0.1.9 | 默认端口 <br/> 全局目录配置 |
+| Monitoring & Grafana | 1 | 4 VCore 8 GiB <br/> 500 GiB (SSD) 用于存储 | 10.0.1.10 | 默认端口 <br/> 全局目录配置 |
 
 ### 拓扑模版
 
