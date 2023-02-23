@@ -54,7 +54,6 @@ summary: 了解 TiDB 提供的基于多副本的单集群容灾方案。
       - host: tidb-dr-test1
       - host: tidb-dr-test3
 
-
     tikv_servers:  # 在 TiKV 节点中通过 labels 选项来对每个 TiKV 节点所在的 Region 和 AZ 进行标记
       - host: tidb-dr-test1
         config:
@@ -83,7 +82,7 @@ summary: 了解 TiDB 提供的基于多副本的单集群容灾方案。
 
     alertmanager_servers:
       - host: tidb-dr-test2
-      ```
+    ```
 
     在上面的配置中，使用了以下一系列配置来针对跨区域容灾场景进行优化：
 
@@ -118,7 +117,7 @@ summary: 了解 TiDB 提供的基于多副本的单集群容灾方案。
     tiup ctl:v6.4.0 pd member leader_priority  pd-5 0
     ```
 
-    > **说明：**
+    > **注意：**
     >
     > 优先级数值越大的节点成为 leader 的可能性越高。
 
