@@ -1388,7 +1388,7 @@ MPP is a distributed computing framework provided by the TiFlash engine, which a
 - Persists to cluster: No, only applicable to the current TiDB instance that you are connecting to.
 - Default value: `ON`
 - Possible values: `OFF`, `ON`
-- This variable controls whether the corresponding TiDB server can run DDL statements or not.
+- This variable controls whether the corresponding TiDB instance can become a DDL owner or not. If there is only one TiDB instance in the current TiDB cluster, you cannot prevent it from becoming a DDL owner, which means you cannot set it to `OFF`.
 
 ### tidb_enable_collect_execution_info
 

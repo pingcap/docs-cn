@@ -809,7 +809,7 @@ Configuration items related to read isolation.
 
 ### `tidb_enable_ddl`
 
-- This configuration controls whether the corresponding TiDB instance can run DDL statements or not.
+- This configuration controls whether the corresponding TiDB instance can become a DDL owner or not.
 - Default value: `true`
 - Possible values: `OFF`, `ON`
 - The value of this configuration will initialize the value of the system variable [`tidb_enable_ddl`](/system-variables.md#tidb_enable_ddl)
