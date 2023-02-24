@@ -353,16 +353,6 @@ spark.sql.tidb.password $your_tidb_server_password
 >
 > 开启鉴权功能后，TiSpark Spark SQL 只能使用 TiDB 作为数据源，切换到其他数据源（例如 Hive）会导致数据表不可见。
 
-<<<<<<< HEAD
-## TiSpark FAQ
-=======
-- [下推](https://github.com/pingcap/tispark/blob/master/docs/features/push_down.md)
-- [TiSpark 删除数据](https://github.com/pingcap/tispark/blob/master/docs/features/delete_userguide.md)
-- [历史读](https://github.com/pingcap/tispark/blob/master/docs/features/stale_read.md)
-- [TiSpark with multiple catalogs](https://github.com/pingcap/tispark/wiki/TiSpark-with-multiple-catalogs)
-- [TiSpark TLS](#tls-配置)
-- [TiSpark 执行计划](https://github.com/pingcap/tispark/blob/master/docs/features/query_execution_plan_in_TiSpark.md)
->>>>>>> 33ef1d5ea (*: disable telemetry by default (#13009))
 
 - Q. 是独立部署还是和现有 Spark／Hadoop 集群共用资源？
 
