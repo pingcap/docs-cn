@@ -1618,11 +1618,6 @@ raftdb 相关配置项。
 + 如果值为 `true`，当数据库不存在时将自动创建。
 + 默认值：`true`
 
-### `enable-statistics`
-
-+ 控制是否开启 Raft RocksDB 的统计信息。
-+ 默认值：`true`
-
 ### `stats-dump-period`
 
 + 输出统计信息到日志的时间间隔。
