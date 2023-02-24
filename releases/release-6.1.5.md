@@ -31,8 +31,8 @@ TiDB 版本：6.1.5
 
 + TiDB
 
-    - Issue 描述 [#issue](issue-url) @[author](author-github-url)
-    - Issue 描述 [#issue](issue-url) @[author](author-github-url)
+    - 修复 data race 可能导致 TiDB 重启的问题 [#27725](https://github.com/pingcap/tidb/issues/27725) @[XuHuaiyu](https://github.com/XuHuaiyu)
+    - 修复使用 Read Committed 隔离级别 update 时可能读不到最新数据的问题 [#41581](https://github.com/pingcap/tidb/issues/41581) @ [cfzjywxk](https://github.com/cfzjywxk)
 
 - PD
 
@@ -47,10 +47,9 @@ TiDB 版本：6.1.5
 
     + TiCDC
 
-        - Issue 描述 [#issue](issue-url) @[author](author-github-url)
-        - Issue 描述 [#issue](issue-url) @[author](author-github-url)
-        - Issue 描述 [#issue](issue-url) @[author](author-github-url)
-        - Issue 描述 [#issue](issue-url) @[author](author-github-url)
+        - 修复在延迟过大时 apply redo log 可能会出现 OOM 的问题 [#8085](https://github.com/pingcap/tiflow/issues/8085)
+        - 修复部分 DML 执行出错时重试无效的逻辑 [#8087](https://github.com/pingcap/tiflow/issues/8087)
+        - 修复开启 redo log 写 meta 时性能下降的问题 [#8074](https://github.com/pingcap/tiflow/issues/8074)
 
     + TiDB Data Migration (DM)
 
