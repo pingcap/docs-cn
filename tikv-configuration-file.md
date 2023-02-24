@@ -1179,7 +1179,7 @@ RocksDB 相关的配置项。
 
 ### `rate-limiter-refill-period`
 
-+ 控制 I/O 令牌的刷新频率。较小的值可以减少 I/O 突发，但会增加 CPU 开销。
++ 控制 I/O 令牌的刷新频率。较小的值可以减少 I/O 尖刺，但会增加 CPU 开销。
 + 默认值：`"100ms"`
 
 ### `rate-limiter-mode`
