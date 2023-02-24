@@ -281,7 +281,7 @@ mysql> explain analyze delete from parent where id = 1;
 
 ### TiDB 版本间兼容性
 
-TiDB 在 v6.6.0 之前已经支持创建外键的语法，但创建的外键并不生效。如果将之前创建的 TiDB 集群升级到 v6.6.0 及之后的版本，之前创建的外键依然是不生效的。只有在 v6.6.0 及之后版本中新创建的外键才生效。你可以使用 `SHOW CREATE TABLE` 语句查看外键是否生效，不生效的外键会有一条 `/* FOREIGN KEY INVALID */` 注释。
+TiDB 在 v6.6.0 之前已经支持创建外键的语法，但创建的外键并不生效。如果将之前创建的 TiDB 集群升级到 v6.6.0 及之后的版本，之前创建的外键依然是不生效的，可以先删除不生效的外键后再创建外键使外键约束生效。只有在 v6.6.0 及之后版本中新创建的外键才生效。你可以使用 `SHOW CREATE TABLE` 语句查看外键是否生效，不生效的外键会有一条 `/* FOREIGN KEY INVALID */` 注释。
 
 ```sql
 mysql> SHOW CREATE TABLE child\G
