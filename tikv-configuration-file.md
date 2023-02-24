@@ -114,18 +114,18 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 ### `addr`
 
-+ 服务器监听的 IP 地址和端口号
++ 服务器监听的 IP 地址和端口号。
 + 默认值：`"127.0.0.1:20160"`
 
 ### `advertise-addr`
 
-+ 用于客户端通信的对外访问地址
-+ 如果没有设置该配置项，则使用 `addr` 的值
++ 用于客户端通信的对外访问地址。
++ 如果没有设置该配置项，则使用 `addr` 的值。
 + 默认值：`""`
 
 ### `status-addr`
 
-+ 通过 HTTP 直接报告 TiKV 状态的地址
++ 通过 HTTP 直接报告 TiKV 状态的地址。
 
     > **警告：**
     >
@@ -142,7 +142,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 ### `grpc-compression-type`
 
-+ gRPC 消息的压缩算法
++ gRPC 消息的压缩算法。
 + 可选值：`"none"`、`"deflate"`、`"gzip"`
 + 默认值：`"none"`
 
@@ -229,18 +229,18 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 ### `enable-request-batch`
 
-+ 控制是否开启批处理请求
++ 控制是否开启批处理请求。
 + 默认值：`true`
 
 ### `labels`
 
-+ 指定服务器属性，例如 `{ zone = "us-west-1", disk = "ssd" }`
++ 指定服务器属性，例如 `{ zone = "us-west-1", disk = "ssd" }`。
 + 默认值：`{}`
 
 ### `background-thread-count`
 
-+ 后台线程池的工作线程数量，包括 endpoint 线程、BR 线程、split check 线程、Region 线程以及其他延迟不敏感的任务线程
-+ 默认值：当 CPU 核数小于 16 时。默认值为 `2`。否则，默认值为 `3`。
++ 后台线程池的工作线程数量，包括 endpoint 线程、BR 线程、split check 线程、Region 线程以及其他延迟不敏感的任务线程。
++ 默认值：当 CPU 核数小于 16 时，默认值为 `2`。否则，默认值为 `3`。
 
 ### `end-point-slow-log-threshold`
 
@@ -558,12 +558,12 @@ I/O rate limiter 相关的配置项。
 
 ### `endpoints`
 
-+ PD 的地址。当指定多个地址时，需要用逗号 (,) 分隔
++ PD 的地址。当指定多个地址时，需要用逗号 (,) 分隔。
 + 默认值：`["127.0.0.1:2379"]`
 
 ### `retry-interval`
 
-+ 初始化 PD 连接时的重试间隔
++ 初始化 PD 连接时的重试间隔。
 + 默认值：`"300ms"`
 
 ### `retry-log-every`
@@ -680,7 +680,7 @@ raftstore 相关的配置项。
 
 ### `raft-log-compact-sync-interval` <span class="version-mark">从 v5.3 版本开始引入</span>
 
-+ 压缩非必要 Raft 日志的时间间隔
++ 压缩非必要 Raft 日志的时间间隔。
 + 默认值："2s"
 + 最小值："0s"
 
@@ -738,8 +738,8 @@ raftstore 相关的配置项。
 
 ### `region-split-check-diff`
 
-+ 允许 Region 数据超过指定大小的最大值
-+ 默认值：Region 大小的 1/16。
++ 允许 Region 数据超过指定大小的最大值。
++ 默认值：Region 大小的 1/16
 + 最小值：0
 
 ### `region-compact-check-interval`
@@ -861,7 +861,7 @@ raftstore 相关的配置项。
 
 ### `snap-apply-batch-size`
 
-+ 当导入 snapshot 文件需要写数据时，内存写缓存的大小
++ 当导入 snapshot 文件需要写数据时，内存写缓存的大小。
 + 默认值：10MB
 + 最小值：0
 + 单位：MB
@@ -1445,7 +1445,7 @@ rocksdb defaultcf、rocksdb writecf 和 rocksdb lockcf 相关的配置项。
 
 ### `compaction-pri`
 
-+ 优先处理 compaction 的类型
++ 优先处理 compaction 的类型。
 + 可选值：
     + `"by-compensated-size"`：根据大小顺序，优先对大文件进行 compaction。
     + `"oldest-largest-seq-first"`：根据时间顺序，优先对数据更新时间晚的文件进行 compaction。当你只在小范围内更新部分热点键 (hot keys) 时，可以使用此配置。
@@ -1572,7 +1572,7 @@ rocksdb defaultcf titan 相关的配置项。
 
 ### `blob-run-mode`
 
-+ Titan 的运行模式选择
++ Titan 的运行模式选择。
 + 可选值：
     + "normal"：value size 超过 min-blob-size 的数据会写入到 blob 文件。
     + "read_only"：不再写入新数据到 blob，原有 blob 内的数据仍然可以读取。
@@ -1737,7 +1737,7 @@ Raft Engine 相关的配置项。
 
 ### `enable`
 
-+ 决定是否使用 Raft Engine 来存储 Raft 日志。开启该配置项后，`raftdb` 的配置不再生效
++ 决定是否使用 Raft Engine 来存储 Raft 日志。开启该配置项后，`raftdb` 的配置不再生效。
 + 默认值：`true`
 
 ### `dir`
@@ -1824,17 +1824,17 @@ Raft Engine 相关的配置项。
 
 ### `ca-path`
 
-+ CA 文件路径
++ CA 文件路径。
 + 默认值：""
 
 ### `cert-path`
 
-+ 包含 X.509 证书的 PEM 文件路径
++ 包含 X.509 证书的 PEM 文件路径。
 + 默认值：""
 
 ### `key-path`
 
-+ 包含 X.509 key 的 PEM 文件路径
++ 包含 X.509 key 的 PEM 文件路径。
 + 默认值：""
 
 ### `cert-allowed-cn`
@@ -1917,7 +1917,7 @@ Raft Engine 相关的配置项。
 
 ### `enable-compaction-filter` <span class="version-mark">从 v5.0 版本开始引入</span>
 
-+ 是否开启 GC in Compaction Filter 特性
++ 是否开启 GC in Compaction Filter 特性。
 + 默认值：true
 
 ### `ratio-threshold`
@@ -2057,7 +2057,7 @@ Raft Engine 相关的配置项。
 
 ### `enable`
 
-+ 是否为所有 Region 维护 Resolved TS
++ 是否为所有 Region 维护 Resolved TS。
 + 默认值：true
 
 ### `advance-ts-interval`
