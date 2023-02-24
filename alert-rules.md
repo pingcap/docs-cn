@@ -659,7 +659,7 @@ summary: TiDB 集群中各组件的报警规则详解。
 
 * 报警规则：
 
-    `histogram_quantile(0.99, sum(rate(tikv_scheduler_command_duration_seconds_bucket[1m])) by (le, instance, type)  / 1000) > 1`
+    `histogram_quantile(0.99, sum(rate(tikv_scheduler_command_duration_seconds_bucket[1m])) by (le, instance, type)) > 1`
 
 * 规则描述：
 
