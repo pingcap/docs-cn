@@ -281,7 +281,7 @@ mysql> explain analyze delete from parent where id = 1;
 
 ### Compatibility between TiDB versions
 
-Before v6.6.0, TiDB supports the syntax of creating foreign keys, but the created foreign keys are ineffective. If you upgrade a TiDB cluster created before v6.6.0 to v6.6.0 or later, the foreign keys created before the upgrade are still ineffective. Only the foreign keys created in v6.6.0 or later versions are effective. You can use the `SHOW CREATE TABLE` statement to check whether the foreign keys are effective. The invalid foreign key has a `/* FOREIGN KEY INVALID */` comment.
+Before v6.6.0, TiDB supports the syntax of creating foreign keys, but the created foreign keys are ineffective. If you upgrade a TiDB cluster created before v6.6.0 to v6.6.0 or later, the foreign keys created before the upgrade are still ineffective. Only the foreign keys created in v6.6.0 or later versions are effective. You can delete the invalid foreign key and create a new one to make the foreign key constraints effective. You can use the `SHOW CREATE TABLE` statement to check whether the foreign keys are effective. The invalid foreign key has a `/* FOREIGN KEY INVALID */` comment.
 
 ```sql
 mysql> SHOW CREATE TABLE child\G
@@ -300,7 +300,7 @@ Create Table | CREATE TABLE `child` (
 <CustomContent platform="tidb">
 
 - [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md) does not support foreign keys.
-- [DM](/dm/dm-overview.md) v6.6.0 disables the [`foreign_key_checks`](/system-variables.md#foreign_key_checks) of the downstream TiDB when replicating data to TiDB. Therefore, the cascading operations caused by foreign keys are not replicated from the upstream to the downstream, which might cause data inconsistency. Because TiDB does not support foreign keys before v6.6.0, this behavior is consistent with the previous DM versions.
+- [DM](/dm/dm-overview.md) does not support foreign keys. DM v6.6.0 disables the [`foreign_key_checks`](/system-variables.md#foreign_key_checks) of the downstream TiDB when replicating data to TiDB. Therefore, the cascading operations caused by foreign keys are not replicated from the upstream to the downstream, which might cause data inconsistency. This behavior is consistent with the previous DM versions.
 - [TiCDC](/ticdc/ticdc-overview.md) v6.6.0 is compatible with foreign keys. The previous versions of TiCDC might report an error when replicating tables with foreign keys. It is recommended to disable the `foreign_key_checks` of the downstream TiDB cluster when using a TiCDC version earlier than v6.6.0.
 - [BR](/br/backup-and-restore-overview.md) v6.6.0 is compatible with foreign keys. The previous versions of BR might report an error when restoring tables with foreign keys to a v6.6.0 or later cluster. It is recommended to disable the `foreign_key_checks` of the downstream TiDB cluster before restoring the cluster when using a BR earlier than v6.6.0.
 - When you use [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md), it is recommended to disable the `foreign_key_checks` of the downstream TiDB cluster before importing data.
