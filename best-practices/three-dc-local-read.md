@@ -24,6 +24,6 @@ zone=dc-1
 
 [Stale Read](/stale-read.md) is a mechanism that TiDB provides for the users to read historical data. Using this mechanism, you can read the corresponding historical data of a specific point in time or within a specified time range, and thus save the latency brought by data replication between storage nodes. When using Stale Read in some scenarios of geo-distributed deployment, TiDB accesses the replica in the current data center to read the corresponding data at the expense of some real-time performance, which avoids network latency brought by cross-center connection and reduces the access latency for the entire query process.
 
-When TiDB receives a Stale Read query, if the `zone` label of that TiDB node is configured, then TiDB sends the request to the TiKV node with the same `zone` label where the corresponding data replica resides.
+When TiDB receives a Stale Read query, if the `zone` label of that TiDB node is configured, and [`tidb_replica_read`](/system-variables.md#tidb_replica_read-new-in-v40) is set to `closest-replicas`, then TiDB sends the request to the TiKV node with the same `zone` label where the corresponding data replica resides.
 
 For how to perform Stale Read, see [Perform Stale Read using the `AS OF TIMESTAMP` clause](/as-of-timestamp.md).
