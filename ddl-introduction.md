@@ -117,7 +117,7 @@ absent -> delete only -> write only -> write reorg -> public
 + 涉及同一张表的 DDL 相互阻塞。
 + Drop database 和 Database 内所有对象的 DDL 互相阻塞。
 + 涉及不同表的加索引和列类型变更可以并发执行。
-+ 逻辑 DDL 需要等待之前未被阻塞的逻辑 DDL 执行完才能执行。
++ 逻辑 DDL 需要等待之前正在执行的逻辑 DDL 执行完才能执行。
 + 其他情况下 DDL 可以执行。
 
 具体来说，TiDB 在 v6.2 中对 DDL 执行框架进行了如下升级：
