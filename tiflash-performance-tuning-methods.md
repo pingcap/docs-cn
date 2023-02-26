@@ -24,8 +24,9 @@ summary: 本文介绍了 Performance Overview 仪表盘中 TiFlash 部分，帮�
 ## TiFlash 关键指标
 
 ### 吞吐指标
-- MPP Query count: 每个 TiFlash 实例每秒 MPP 查询数量
+- MPP Query count: 每个 TiFlash 实例 MPP 查询数量的瞬时值，表示当前 TiFlash 实例需要处理的 MPP 查询数量（包括正在处理的以及还没被调度到的）
 - Request QPS: 所有 TiFlash 实例收到的 coprocessor 请求数量。
+    - `run_mpp_task`, `dispatch_mpp_task` 和 `mpp_establish_conn` 为 mpp 请求，通常包含 join 和数据分发的操作。
     - `batch`：batch 请求数量
     - `batch_cop`：batch 请求中的 coprocessor 请求数量
     - `cop`：直接通过 coprocessor 接口发送的 coprocessor 请求数量
@@ -35,13 +36,13 @@ summary: 本文介绍了 Performance Overview 仪表盘中 TiFlash 部分，帮�
 
 ### 延迟指标
 - Request Duration Overview: 每秒所有 TiFlash 实例处理所有请求类型的总时长堆叠图。
-  - 如果请求类型为 mpp_establish_conn 和 run_mpp_task，说明 SQL 语句的执行已经完全下推到 TiFlash 上进行，这是 TiFlash 最常见的服务类型。
+  - 如果请求类型为 `run_mpp_task`, `dispatch_mpp_task` 和 `mpp_establish_conn`，说明 SQL 语句的执行已经部分或者完全下推到 TiFlash 上进行，通常包含 join 和数据分发的操作，这是 TiFlash 最常见的服务类型。
   - 如果请求类型为 Cop，说明整个语句并没有完全下推到 TiFlash，通常 TiDB 会将全表扫描算子下推到 TiFlash 上进行数据访问和过滤。在堆叠图中，如果 Cop 占据主导地位，需要仔细权衡是否合理。
     - 如果 SQL 访问的数据量很大，优化器可能根据成本模型估算 TiFlash 全表扫描的成本更低。
     - 如果表结构缺少合适的索引，将查询下推到 TiFlash 上是一种无奈之举。在这种情况下，通过索引优化或使用 TiKV 访问数据可能更加高效。
 
 - Request Duration: 所有 TiFlash 实例每种 MPP 和 coprocessor 请求类型的总处理时间，包含平均和 P99 处理延迟。
-- Request Handle Duration：所有 TiFlash 实例 MPP 和 coprocessor 请求的处理时间，此时间为该 coprocessor 请求从开始执行到结束的时间，包含平均和 P99 延迟
+- Request Handle Duration：指 `cop`、`batch cop` 从开始执行到执行结束的时间，不包括等待时间，只包含 `cop` 和 `batch cop` 两种类型，包含平均和 P99 延迟
 
 **示例 1 ：TiFlash MPP 请求处理时间概览 **
 
