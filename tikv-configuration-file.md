@@ -1127,17 +1127,15 @@ RocksDB 相关的配置项。
 + 最小值：0
 + 单位：B|KB|MB|GB
 
-<<<<<<< HEAD
 ### `enable-statistics`
 
 + 开启 RocksDB 的统计信息。
 + 默认值：true
-=======
+
 ### `max-total-wal-size`
 
 + RocksDB WAL 总大小限制，即 `data-dir` 目录下 `*.log` 文件的大小总和。
 + 默认值：`"4GB"`
->>>>>>> c7faf38d0 (add missing TiKV configuration items (#13169))
 
 ### `stats-dump-period`
 
@@ -1228,8 +1226,6 @@ RocksDB 相关的配置项。
 + 日志存储目录。
 + 默认值：""
 
-<<<<<<< HEAD
-=======
 ### `info-log-level`
 
 + RocksDB 的日志级别。
@@ -1257,7 +1253,6 @@ RocksDB 相关的配置项。
 + 默认值：25%
 + 单位：KiB|MiB|GiB
 
->>>>>>> c7faf38d0 (add missing TiKV configuration items (#13169))
 ## rocksdb.titan
 
 Titan 相关的配置项。
