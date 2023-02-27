@@ -27,13 +27,13 @@ TiDB 采用在线异步变更的方式执行 DDL 语句，这样 DDL 语句的�
 
 - **物理 DDL 语句**：不但会修改变更对象的元数据，同时也修改变更对象所存储的用户数据。例如，为表创建索引，不仅需要变更表的定义，同时也需要做一次全表扫描以构建新增加的索引。
 
-    在 TiDB 中，物理 DDL 被称为 Reorg DDL（Reorg 即  Reorganization）。目前只有 `ADD INDEX` 以及有损列类型变更（例如从 `INT` 转成 `CHAR` 类型）这两种 Reorg DDL。Reorg DDL 的特点是执行时间较长，与表的数据量、机器配置以及业务负载有关。
+    在 TiDB 中，物理 DDL 被称为 Reorg DDL（Reorg 即  Reorganization）。目前只有 `ADD INDEX` 以及有损列类型变更（例如从 `INT` 转成 `CHAR` 类型）这两种物理 DDL。物理 DDL 的特点是执行时间较长，与表的数据量、机器配置以及业务负载有关。
 
-    执行 Reorg DDL 会影响业务负载，具体有两个方面。一方面需要从 TiKV 中读取数据并写入新数据，因此会消耗 TiKV 的 CPU 及 I/O 资源。另一方面，DDL Owner 所在的 TiDB 节点需要进行相应的计算，因此会消耗更多的 CPU 资源。由于目前 TiDB 还不支持分布式执行 DDL 语句，因此其他 TiDB 节点不会占用更多的系统资源。
+    执行物理 DDL 会影响业务负载，具体有两个方面。一方面需要从 TiKV 中读取数据并写入新数据，因此会消耗 TiKV 的 CPU 及 I/O 资源。另一方面，DDL Owner 所在的 TiDB 节点需要进行相应的计算，因此会消耗更多的 CPU 资源。由于目前 TiDB 还不支持分布式执行 DDL 语句，因此其他 TiDB 节点不会占用更多的系统资源。
 
     > **注意：**
     >
-    > DDL 语句对用户业务的影响通常都是由于执行 Reorg DDL 任务造成的。因此要优化 DDL 语句对于用户业务的影响，重点在于对 Reorg DDL 任务执行期间的设计，降低对于用户业务的影响。
+    > DDL 语句对用户业务的影响通常都是由于执行物理 DDL 任务造成的。因此要优化 DDL 语句对于用户业务的影响，重点在于对物理 DDL 任务执行期间的设计，降低对于用户业务的影响。
 
 ### TiDB DDL 模块
 
@@ -117,14 +117,14 @@ absent -> delete only -> write only -> write reorg -> public
 + 涉及同一张表的 DDL 相互阻塞。
 + Drop database 和 Database 内所有对象的 DDL 互相阻塞。
 + 涉及不同表的加索引和列类型变更可以并发执行。
-+ 逻辑 DDL 需要等待之前未被阻塞的逻辑 DDL 执行完才能执行。
-+ 其他情况下 DDL 可以执行。
++ 逻辑 DDL 需要等待之前正在执行的逻辑 DDL 执行完才能执行。
++ 其他情况下 DDL 可以根据 Concurrent DDL 并行度可用情况确定是否可以执行。
 
 具体来说，TiDB 在 v6.2 中对 DDL 执行框架进行了如下升级：
 
 + DDL Owner 能够根据以上判断逻辑并行执行 DDL 任务。
 + 改善了 DDL Job 队列先入先出的问题。DDL Owner 不再选择当前队列最前面的 DDL Job，而是选择当前可以执行的 DDL Job。
-+ 扩充了处理 Reorg DDL 的 worker 数量，使得能够并行地添加多个索引。
++ 扩充了处理物理 DDL 的 worker 数量，使得能够并行地添加多个物理 DDL。
 
     因为 TiDB 中所有支持的 DDL 任务都是以 Online 方式来实现的，TiDB 只需要通过 Owner 对于新的 DDL Job 进行相关性判断，并根据相关性结果进行 DDL 任务的调度。最后实现和传统数据库中 DDL 并发相同的效果，同时，这也是一种对于分布式数据库友好的调度算法。
 
@@ -135,9 +135,9 @@ absent -> delete only -> write only -> write reorg -> public
 
 ## 最佳实践
 
-### 通过系统变量来平衡 Reorg DDL 的执行速度与对业务负载的影响
+### 通过系统变量来平衡物理 DDL 的执行速度与对业务负载的影响
 
-执行 Reorg DDL（包括添加索引或列类型变更）时，适当调整以下系统变量以平衡 DDL 执行速度与对业务负载的影响：
+执行物理 DDL（包括添加索引或列类型变更）时，适当调整以下系统变量以平衡 DDL 执行速度与对业务负载的影响：
 
 - [`tidb_ddl_reorg_worker_cnt`](/system-variables.md#tidb_ddl_reorg_worker_cnt)：用来设置这个变量用来设置 DDL 操作 reorg worker 的数量，控制回填的并发度。
 
