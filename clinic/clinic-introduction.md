@@ -9,7 +9,7 @@ PingCAP Clinic 诊断服务（以下简称为 PingCAP Clinic）是 PingCAP 为 T
 
 PingCAP Clinic 服务提供以下两个组件进行集群诊断：
 
-- Diag 诊断客户端：部署在集群侧的工具，用于采集集群的诊断数据 (collect)、上传诊断数据到 Clinic Server、对集群进行本地快速健康检查 (check)。如需了解 Diag 工具可采集的详细的数据列表，请参阅 [PingCAP Clinic 数据采集说明](/clinic/clinic-data-instruction-for-tiup.md)。
+- [Diag 诊断客户端](https://github.com/pingcap/diag)：部署在集群侧的开源工具，用于采集集群的诊断数据 (collect)、上传诊断数据到 Clinic Server、对集群进行本地快速健康检查 (check)。如需了解 Diag 工具可采集的详细的数据列表，请参阅 [PingCAP Clinic 数据采集说明](/clinic/clinic-data-instruction-for-tiup.md)。
 
     > **注意：**
     >
