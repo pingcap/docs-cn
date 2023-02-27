@@ -274,7 +274,9 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
     在 TiDB 场景测试验证中，TiCDC 的性能得到了比较大的提升。
 
-    单台 TiCDC 节点能处理的最大行变更吞吐可以达到 30K rows/s，同步延迟降低到 10s。即使在常规的 TiKV/TiCDC 滚动升级场景，同步延迟也小于 30s；在容灾场景测试中，打开 TiCDC redo log 和 Syncpoint 后，吞吐从 4000 行每秒提升到 35000 行每秒，容灾复制延迟可以保持在 2s。
+    在同步到 Kafka 的场景中，单台 TiCDC 节点能处理的最大行变更吞吐可以达到 30K rows/s，同步延迟降低到 10s。即使在常规的 TiKV/TiCDC 滚动升级场景，同步延迟也小于 30s。
+    
+    在容灾场景测试中，打开 TiCDC redo log 和 Syncpoint 后，吞吐从 4000 行每秒提升到 35000 行每秒，容灾复制延迟可以保持在 2s。
 
 ### 备份和恢复
 
