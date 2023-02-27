@@ -95,8 +95,6 @@ absent -> delete only -> write only -> write reorg -> public
 
 5. TiDB server 将回复返回至 MySQL Client。
 
-![ddl-framework](/media/ddl-framework.png)
-
 在 TiDB v6.2 前，该 DDL 执行框架存在以下限制：
 
 - TiKV 集群中只有 `general job queue` 和 `add index job queue` 两个队列，分别处理逻辑 DDL 和物理 DDL。
