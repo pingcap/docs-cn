@@ -371,7 +371,8 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 
 | 配置文件 | 配置项 | 修改类型 | 描述 |
 | -------- | -------- | -------- | -------- |
-| TiKV  |  `enable-statistics`  |  删除   |  该配置项指定是否开启 RocksDB 的统计信息收集功能。从 v6.6.0 起，删除该配置项。所有集群默认开启统计信息收集，以便于故障排查。详情参见 [#13942](https://github.com/tikv/tikv/pull/13942)。  |
+| TiKV  |  `rocksdb.enable-statistics`  |  删除   |  该配置项指定是否开启 RocksDB 的统计信息收集功能。从 v6.6.0 起，删除该配置项。所有集群默认开启统计信息收集，以便于故障排查。详情参见 [#13942](https://github.com/tikv/tikv/pull/13942)。  |
+| TiKV  |  `raftdb.enable-statistics`  |  删除   |  该配置项指定是否开启 Raft RocksDB 的统计信息收集功能。从 v6.6.0 起，删除该配置项。所有集群默认开启统计信息收集，以便于故障排查。详情参见 [#13942](https://github.com/tikv/tikv/pull/13942)。  |
 | TiKV | `storage.block-cache.shared` | 删除 | 从 v6.6.0 起删除该配置项，默认开启 block cache 且无法关闭，详情参见 [#12936](https://github.com/tikv/tikv/issues/12936)。 |
 | DM | `on-duplicate` | 删除 | 该配置项控制全量导入阶段针对冲突数据的解决方式。自 v6.6.0 起，引入新的配置项 `on-duplicate-logical` 和 `on-duplicate-physical`，取代 `on-duplicate`。 |
 | TiDB  |  [`enable-telemetry`](/tidb-configuration-file.md#enable-telemetry-从-v402-版本开始引入)  |  修改 |  自 v6.6.0 起，该配置项默认值由 `true` 改为 `false`，表示默认关闭 TiDB 的遥测功能。  |
