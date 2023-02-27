@@ -16,7 +16,7 @@ title: TiCDC 简介
 ### 核心能力
 
 - 提供 TiDB -> TiDB 之间数据容灾复制的能力，实现秒级别 RPO 和分钟级别 RTO
-- 提供 TiDB <-> TiDB 之间双向复制的能力，支持通过 TiCDC 构建多写多活的 TiDB 集群
+- 提供 TiDB 之间双向复制的能力，支持通过 TiCDC 构建多写多活的 TiDB 集群
 - 提供 TiDB -> MySQL（或其他兼容 MySQL 协议的数据库）的低延迟的增量数据同步能力
 - 提供 TiDB -> Kafka 增量数据同步能力，推荐的数据格式包含 [Canal-JSON](/ticdc/ticdc-canal-json.md)，[Avro](/ticdc/ticdc-avro-protocol.md) 等
 - 提供表级别数据同步能力，支持同步过程中过滤数据库、表、DML、DDL 的能力
