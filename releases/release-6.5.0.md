@@ -272,7 +272,9 @@ Compared with the previous LTS 6.1.0, 6.5.0 not only includes new features, impr
 
 * TiCDC performance improves significantly [#7540](https://github.com/pingcap/tiflow/issues/7540) [#7478](https://github.com/pingcap/tiflow/issues/7478) [#7532](https://github.com/pingcap/tiflow/issues/7532) @[sdojjy](https://github.com/sdojjy) [@3AceShowHand](https://github.com/3AceShowHand)
 
-    In a test scenario of the TiDB cluster, the performance of TiCDC has improved significantly. Specifically, the maximum row changes that a single TiCDC can process reaches 30K rows/s, and the replication latency is reduced to 10s. Even during TiKV and TiCDC rolling upgrade, the replication latency is less than 30s. In a disaster recovery (DR) scenario, by enabling TiCDC redo logs and Syncpoint, the TiCDC throughput of [replicating data to Kafka](/replicate-data-to-kafka.md) can be improved from 4000 rows/s to 35000 rows/s, and the replication latency can be maintained at 2s.
+    In a test scenario of the TiDB cluster, the performance of TiCDC has improved significantly. Specifically, in the scenario of replicating data to Kafka, the maximum row changes that a single TiCDC can process reaches 30K rows/s, and the replication latency is reduced to 10s. Even during TiKV and TiCDC rolling upgrade, the replication latency is less than 30s.
+
+    In a disaster recovery (DR) scenario, if TiCDC redo log and Syncpoint are enabled, the TiCDC throughput of [replicating data to Kafka](/replicate-data-to-kafka.md) can be improved from 4000 rows/s to 35000 rows/s, and the replication latency can be limited to 2s.
 
 ### Backup and restore
 

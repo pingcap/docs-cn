@@ -18,6 +18,7 @@ aliases: ['/docs/dev/ticdc/ticdc-overview/','/docs/dev/reference/tools/ticdc/ove
 ### Key capabilities
 
 - Replicate incremental data from one TiDB cluster to another TiDB cluster with second-level RPO and minute-level RTO.
+- Replicate data bidirectionally between TiDB clusters, based on which you can create a multi-active TiDB solution using TiCDC.
 - Replicate incremental data from a TiDB cluster to a MySQL database (or other MySQL-compatible databases) with low latency.
 - Replicate incremental data from a TiDB cluster to a Kafka cluster. The recommended data format includes [Canal-JSON](/ticdc/ticdc-canal-json.md) and [Avro](/ticdc/ticdc-avro-protocol.md).
 - Replicate tables with the ability to filter databases, tables, DMLs, and DDLs.
@@ -90,7 +91,3 @@ Currently, the following scenarios are not supported:
 - The [DDL operation `CREATE SEQUENCE`](/sql-statements/sql-statement-create-sequence.md) and the [SEQUENCE function](/sql-statements/sql-statement-create-sequence.md#sequence-function) in TiDB. When the upstream TiDB uses `SEQUENCE`, TiCDC ignores `SEQUENCE` DDL operations/functions performed upstream. However, DML operations using `SEQUENCE` functions can be correctly replicated.
 
 TiCDC only provides partial support for scenarios of large transactions in the upstream. For details, refer to [Does TiCDC support replicating large transactions? Is there any risk?](/ticdc/ticdc-faq.md#does-ticdc-support-replicating-large-transactions-is-there-any-risk).
-
-> **Note:**
->
-> Since v5.3.0, TiCDC no longer supports the cyclic replication feature.
