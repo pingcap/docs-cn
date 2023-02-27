@@ -1,6 +1,6 @@
 ---
 title: TiKV 配置文件描述
-summary: 了解 TiKV 的配置文件。
+summary: 了解 TiKV 的配置文件参数。
 aliases: ['/docs-cn/dev/tikv-configuration-file/','/docs-cn/dev/reference/configuration/tikv-server/configuration-file/']
 ---
 
@@ -39,7 +39,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 ### `memory-usage-limit`
 
 + TiKV 实例的内存使用限制。当 TiKV 的内存使用量接近此阈值时，内部缓存会被清除以释放内存。
-+ 在大多数情况下，TiKV 实例被设置为使用系统总可用内存的 75%，因此你不需要显式指定此配置项。剩余 25% 的内存用于操作系统的页缓存，详情参见 [`storage.block-cache.capacity`](#capacity)。
++ 在大多数情况下，TiKV 实例被设置为占系统可用总内存的 75%，因此你不需要显式指定此配置项。剩余 25% 的内存用于操作系统的页缓存，详情参见 [`storage.block-cache.capacity`](#capacity)。
 + 在单个物理机上部署多个 TiKV 节点时，你也不需要设置此配置项。在这种情况下，TiKV 实例使用 `5/3 * block-cache.capacity` 的内存。
 + 不同系统内存容量的默认值如下：
 
@@ -447,7 +447,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 ### `enable-async-apply-prewrite`
 
-+ 控制异步提交 Async Commit 事务是否在应用 prewrite 请求之前响应 TiKV 客户端。开启该配置项可以降低 apply 耗时较高时的延迟，或者减少 apply 耗时不稳定时的延迟抖动。
++ 控制异步提交 (Async Commit) 事务在应用 prewrite 请求之前是否响应 TiKV 客户端。开启该配置项可以降低 apply 耗时较高时的延迟，或者减少 apply 耗时不稳定时的延迟抖动。
 + 默认值：`false`
 
 ### `reserve-space`
@@ -558,7 +558,7 @@ I/O rate limiter 相关的配置项。
 
 ### `endpoints`
 
-+ PD 的地址。当指定多个地址时，需要用逗号 (,) 分隔。
++ PD 的地址。当指定多个地址时，需要用逗号 `,` 分隔。
 + 默认值：`["127.0.0.1:2379"]`
 
 ### `retry-interval`
@@ -568,13 +568,13 @@ I/O rate limiter 相关的配置项。
 
 ### `retry-log-every`
 
-+ 指定 PD 客户端在观察到错误时跳过报错的频率。例如，当配置项值为 `5` 时，每次 PD 观察错误时，将跳过 4 次报错，直到第 5 次错误时才报告。
++ 指定 PD 客户端在观察到错误时跳过报错的频率。例如，当配置项值为 `5` 时，每次 PD 观察到错误时，将跳过 4 次报错，直到第 5 次错误时才报告。
 + 要禁用此功能，请将值设置为 `1`。
 + 默认值：`10`
 
 ### `retry-max-count`
 
-+ 初始化 PD 连接的最大重试次数
++ 初始化 PD 连接的最大重试次数。
 + 要禁用重试，请将该值设置为 `0`。要解除重试次数的限制，请将该值设置为 `-1`。
 + 默认值：`-1`
 
@@ -716,7 +716,7 @@ raftstore 相关的配置项。
 
 ### `raft-engine-purge-interval`
 
-+ 清除旧的 TiKV 日志文件的间隔时间，以尽快回收磁盘空间。Raft 引擎是可替换的组件，因此某些实现需要清除过程。
++ 清除旧的 TiKV 日志文件的间隔时间，以尽快回收磁盘空间。Raft 引擎是可替换的组件，因此某些功能或优化的实现需要清除 TiKV 日志文件。
 + 默认值：`"10s"`
 
 ### `raft-entry-cache-life-time`
@@ -1025,15 +1025,15 @@ Coprocessor 相关的配置项。
 
 ### `consistency-check-method`
 
-+ 指定数据一致性检查的方法
-+ 对于 MVCC 数据的一致性检查，设置该值为 `"mvcc"`。对于原始数据的一致性检查，设置该值为 `"raw"`。
++ 指定数据一致性检查的方法。
++ 要对 MVCC 数据进行一致性检查，设置该值为 `"mvcc"`。要对原始数据进行一致性检查，设置该值为 `"raw"`。
 + 默认值：`"mvcc"`
 
 ## coprocessor-v2
 
 ### `coprocessor-plugin-directory`
 
-+ 编译后的 coprocessor 插件所在目录的路径。TiKV 会自动加载该目录下的插件。
++ 已编译 coprocessor 插件所在目录的路径。TiKV 会自动加载该目录下的插件。
 + 如果未设置该配置项，则 coprocessor 插件会被禁用。
 + 默认值：`"./coprocessors"`
 
