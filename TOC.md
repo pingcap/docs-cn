@@ -193,6 +193,7 @@
     - [使用 Top SQL 定位系统资源消耗过多的查询](/dashboard/top-sql.md)
     - [通过日志定位消耗系统资源多的查询](/identify-expensive-queries.md)
     - [保存和恢复集群现场信息](/sql-plan-replayer.md)
+  - [获取支持](/support.md)
 - 性能调优
   - 优化手册
     - [优化概述](/performance-tuning-overview.md)
