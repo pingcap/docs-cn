@@ -845,7 +845,7 @@ summary: TiDB 集群中各组件的报警规则详解。
 
 * 报警规则：
 
-    `(((node_memory_MemTotal-node_memory_MemFree-node_memory_Cached)/(node_memory_MemTotal)*100)) >= 80`
+    `(((node_memory_MemTotal_bytes-node_memory_MemFree_bytes-node_memory_Cached_bytes)/(node_memory_MemTotal_bytes)*100)) >= 80`
 
 * 规则描述：
 
