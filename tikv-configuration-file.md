@@ -1605,11 +1605,6 @@ Configuration items related to `raftdb`
 + If the value is `true`, the database will be created if it is missing
 + Default value: `true`
 
-### `enable-statistics`
-
-+ Determines whether to enable the statistics of Raft RocksDB
-+ Default value: `true`
-
 ### `stats-dump-period`
 
 + The interval at which statistics are output to the log

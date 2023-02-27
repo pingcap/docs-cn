@@ -140,9 +140,6 @@ max-manifest-file-size = "20MB"
 # In most cases, set the maximum total size of RocksDB WAL logs to the default value.
 # max-total-wal-size = "4GB"
 
-# Use this parameter to enable or disable the statistics of RocksDB.
-# enable-statistics = true
-
 # Use this parameter to enable the readahead feature during RocksDB compaction. If you are using mechanical disks, it is recommended to set the value to 2MB at least.
 # compaction-readahead-size = "2MB"
 
@@ -224,9 +221,6 @@ target-file-size-base = "32MB"
 [raftdb]
 # The maximum number of the file handles RaftDB can open
 # max-open-files = 40960
-
-# Configure this parameter to enable or disable the RaftDB statistics information.
-# enable-statistics = true
 
 # Enable the readahead feature in RaftDB compaction. If you are using mechanical disks, it is recommended to set
 # this value to 2MB at least.
