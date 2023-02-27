@@ -170,6 +170,7 @@
   - [锁冲突与 TTL 超时](/troubleshoot-lock-conflicts.md)
   - [TiFlash 常见问题](/tiflash/troubleshoot-tiflash.md)
   - [数据索引不一致报错](/troubleshoot-data-inconsistency-errors.md)
+  - [获取支持](/support.md)
 - 性能调优
   - 优化手册
     - [优化概述](/performance-tuning-overview.md)

@@ -84,7 +84,7 @@ title: TiDB Binlog 集群监控
         * 如果 Drainer execute time 过大，则检查到目标库网络带宽和延迟，以及目标库状态。
         * 如果 Drainer execute time 不大，Drainer event 过小，则增加 work count 和 batch 进行重试。
 
-    * 如果上面都不满足或者操作后没有改观，则报备开发人员 [support@pingcap.com](mailto:support@pingcap.com) 进行处理。
+    * 如果上面都不满足或者操作后没有改观，请从 PingCAP 官方或 TiDB 社区[获取支持](/support.md)。
 
 ### 警告级别报警项
 
@@ -103,7 +103,7 @@ title: TiDB Binlog 集群监控
 * 处理方法：
 
     * 确认磁盘性能压力，通过 `node exported` 查看 disk performance 监控。
-    * 如果 `disk latency` 和 `util` 都很低，那么报备开发人员 [support@pingcap.com](mailto:support@pingcap.com) 进行处理。
+    * 如果 `disk latency` 和 `util` 都很低，请从 PingCAP 官方或 TiDB 社区[获取支持](/support.md)。
 
 #### `binlog_pump_storage_write_binlog_duration_time_bucket`
 
