@@ -115,7 +115,7 @@ absent -> delete only -> write only -> write reorg -> public
 为了提升用户体验，为用户提供更为强大的 DDL 执行能力，TiDB v6.2 版本对原有的 DDL Owner 进行升级，使得 Owner 能对 DDL 任务做相关性判断，判断逻辑如下：
 
 + 涉及同一张表的 DDL 相互阻塞。
-+ Drop database 和 Database 内所有对象的 DDL 互相阻塞。
++ `DROP DATABASE` 和数据库内所有对象的 DDL 互相阻塞。
 + 涉及不同表的加索引和列类型变更可以并发执行。
 + 逻辑 DDL 需要等待之前正在执行的逻辑 DDL 执行完才能执行。
 + 其他情况下 DDL 可以根据 Concurrent DDL 并行度可用情况确定是否可以执行。
