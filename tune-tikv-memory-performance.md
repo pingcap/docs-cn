@@ -136,9 +136,6 @@ max-manifest-file-size = "20MB"
 # RocksDB WAL 日志的最大总大小，通常情况下使用默认值就可以了。
 # max-total-wal-size = "4GB"
 
-# 可以通过该参数打开或者关闭 RocksDB 的统计信息。
-# enable-statistics = true
-
 # 开启 RocksDB compaction 过程中的预读功能，如果使用的是机械磁盘，建议该值至少为2MB。
 # compaction-readahead-size = "2MB"
 
@@ -217,9 +214,6 @@ target-file-size-base = "32MB"
 [raftdb]
 # RaftDB 能够打开的最大文件句柄数。
 # max-open-files = 40960
-
-# 可以通过该参数打开或者关闭 RaftDB 的统计信息。
-# enable-statistics = true
 
 # 开启 RaftDB compaction 过程中的预读功能，如果使用的是机械磁盘，建议该值至少为2MB。
 # compaction-readahead-size = "2MB"
