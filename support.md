@@ -14,7 +14,7 @@ summary: 在使用 TiDB 时遇到问题，如何获取支持。
 + 从 TiDB 社区寻求帮助：
 
     - [AskTUG 论坛](https://asktug.com/)
-    - [Stack Overflow](https://stackoverflow.com/questions/tagged/tidb) (在 #tidb 标签下提问)
+    - [Stack Overflow](https://stackoverflow.com/questions/tagged/tidb)（在 #tidb 标签下提问）
 
 + 了解 TiDB 的实现和设计
 
