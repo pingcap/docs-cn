@@ -7,6 +7,8 @@ aliases: ['/docs-cn/dev/functions-and-operators/string-functions/','/docs-cn/dev
 
 TiDB 支持使用大部分 MySQL 5.7 中提供的[字符串函数](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html)、一部分 MySQL 8.0 中提供的[字符串函数](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html)和一部分 Oracle 21 所提供的[函数](https://docs.oracle.com/en/database/oracle/oracle-database/21/sqlqr/SQL-Functions.html#GUID-93EC62F8-415D-4A7E-B050-5D5B2C127009)。
 
+关于 Oracle 函数和 TiDB 函数的对照关系，请参考 [Oracle 与 TiDB 函数和语法差异对照](/oracle-functions-to-tidb.md)。
+
 ## 支持的函数
 
 | 函数名   | 功能描述          |
@@ -68,6 +70,7 @@ TiDB 支持使用大部分 MySQL 5.7 中提供的[字符串函数](https://dev.m
 | [`UCASE()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_ucase)       | 与 `UPPER()` 功能相同   |
 | [`UNHEX()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_unhex)  | 返回一个数的十六进制表示，形式为字符串 |
 | [`UPPER()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_upper)   | 参数转换为大写形式  |
+| [`WEIGHT_STRING()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_weight-string)   | 返回字符串的权重  |
 
 ## 不支持的函数
 
@@ -75,7 +78,6 @@ TiDB 支持使用大部分 MySQL 5.7 中提供的[字符串函数](https://dev.m
 * `MATCH`
 * `SOUNDEX()`
 * `SOUNDS LIKE`
-* `WEIGHT_STRING()`
 
 ## 正则函数与 MySQL 的兼容性
 

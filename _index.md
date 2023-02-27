@@ -11,7 +11,7 @@ hide_commit: true
 
 [TiDB 简介](https://docs.pingcap.com/zh/tidb/dev/overview)
 
-[基本功能](https://docs.pingcap.com/zh/tidb/dev/basic-features)
+[功能概览](https://docs.pingcap.com/zh/tidb/dev/basic-features)
 
 [TiFlash](https://docs.pingcap.com/zh/tidb/dev/tiflash-overview)
 
@@ -63,9 +63,7 @@ hide_commit: true
 
 [扩容集群](https://docs.pingcap.com/zh/tidb/dev/scale-tidb-using-tiup)
 
-[备份数据](https://docs.pingcap.com/zh/tidb/dev/br-usage-backup)
-
-[恢复数据](https://docs.pingcap.com/zh/tidb/dev/br-usage-restore)
+[备份与恢复](https://docs.pingcap.com/zh/tidb/dev/backup-and-restore-overview)
 
 [日常巡检](https://docs.pingcap.com/zh/tidb/dev/daily-check)
 
@@ -120,6 +118,22 @@ hide_commit: true
 [TiDB Operator](https://docs.pingcap.com/zh/tidb/dev/tidb-operator-overview)
 
 [TiSpark](https://docs.pingcap.com/zh/tidb/dev/tispark-overview)
+
+</LearningPath>
+
+<LearningPath label="参考" icon="cloud-dev">
+
+[TiDB 配置文件参数](https://docs.pingcap.com/zh/tidb/dev/tidb-configuration-file)
+
+[TiDB 命令行参数](https://docs.pingcap.com/zh/tidb/dev/command-line-flags-for-tidb-configuration)
+
+[TiDB Control](https://docs.pingcap.com/zh/tidb/dev/tidb-control)  
+
+[系统变量](https://docs.pingcap.com/zh/tidb/dev/system-variables)
+
+[发布历史](https://docs.pingcap.com/zh/tidb/dev/release-notes)
+
+[常见问题](https://docs.pingcap.com/zh/tidb/dev/faq-overview)
 
 </LearningPath>
 

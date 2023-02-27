@@ -228,7 +228,7 @@ TiUniManager 正常运行需要网络环境提供如下端口配置，管理员�
 
 ## 升级 TiUniManager v1.0.0 至 v1.0.1
 
-本节介绍的方法适用于 从 v1.0.0 升级至 v1.0.1。如需升级至更高版本，请先升级至 v1.0.1，再参考[升级 TiUniManager（适用于 v1.0.1 及以上版本）](#升级-tiunimanager适用于-v101-及以上版本)进行升级。如首次安装可跳过本节。
+本节介绍的方法适用于从 v1.0.0 升级至 v1.0.1。如需升级至更高版本，请先升级至 v1.0.1，再参考[升级 TiUniManager（适用于 v1.0.1 及以上版本）](#升级-tiunimanager适用于-v101-及以上版本)进行升级。如首次安装可跳过本节。
 
 > **注意：**
 >
@@ -508,7 +508,7 @@ TiUniManager 可以通过 `config.yaml` 文件中全局的 `external_elasticsear
 
 Kibana 是一个针对 Elasticsearch 的开源分析及可视化平台，用来搜索、查看交互存储在 Elasticsearch 索引中的数据。使用 Kibana，可以通过各种图表进行高级数据分析及展示。
 
-目前 TiUniManager 默认安装 Kibana， 集成 Kibana 主要是做日志的展示，在控制台页面系统管理下的系统日志进行查看。
+目前 TiUniManager 默认安装 Kibana，集成 Kibana 主要是做日志的展示，在控制台页面系统管理下的系统日志进行查看。
 
 如果不想安装 kibana 组件，则直接在 `config.yaml` 文件中将 `kibana_servers` 组件相关的配置注释掉即可。
 

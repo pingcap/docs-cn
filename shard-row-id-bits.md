@@ -10,7 +10,7 @@ aliases: ['/docs-cn/dev/shard-row-id-bits/']
 
 ## 基本概念
 
-对于非整数主键或没有主键的表，TiDB 会使用一个隐式的自增 rowid。大量执行 `INSERT` 插入语句时会把数据集中写入单个 Region，造成写入热点。
+对于非[聚簇索引表](/clustered-indexes.md)，TiDB 会使用一个隐式的自增 rowid。大量执行 `INSERT` 插入语句时会把数据集中写入单个 Region，造成写入热点。
 
 通过设置 `SHARD_ROW_ID_BITS`，可以把 rowid 打散写入多个不同的 Region，缓解写入热点问题。
 

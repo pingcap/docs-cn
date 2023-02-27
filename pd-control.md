@@ -15,23 +15,24 @@ PD Control 是 PD 的命令行工具，用于获取集群状态信息和调整�
 
 ### 使用 TiUP
 
-可直接通过 `tiup ctl:<cluster-version> pd -u http://<pd_ip>:<pd_port> [-i]` 使用。
+可直接通过 `tiup ctl:v<CLUSTER_VERSION> pd -u http://<pd_ip>:<pd_port> [-i]` 使用。
 
 ### 下载安装包
 
-如需下载最新版本的 `pd-ctl`，直接下载 TiDB 安装包即可。`pd-ctl` 位于 TiDB 安装包的 `ctl-{version}-linux-amd64.tar.gz` 包中。
+如需下载最新版本的 `pd-ctl`，直接下载 TiDB 安装包即可。`pd-ctl` 位于 TiDB 安装包的 `ctl-{version}-linux-{arch}.tar.gz` 包中。
 
 | 安装包                                                                    | 操作系统 | 架构  | SHA256 校验和                                                    |
 | :------------------------------------------------------------------------ | :------- | :---- | :--------------------------------------------------------------- |
 | `https://download.pingcap.org/tidb-community-server-{version}-linux-amd64.tar.gz` (pd-ctl) | Linux    | amd64 | `https://download.pingcap.org/tidb-community-server-{version}-linux-amd64.sha256` |
+| `https://download.pingcap.org/tidb-community-server-{version}-linux-arm64.tar.gz` (pd-ctl) | Linux | arm64 | `https://download.pingcap.org/tidb-community-server-{version}-linux-arm64.sha256` |
 
 > **注意：**
 >
-> 下载链接中的 `{version}` 为 TiDB 的版本号。例如 `v6.2.0` 版本的下载链接为 `https://download.pingcap.org/tidb-community-server-v6.2.0-linux-amd64.tar.gz`。
+> 下载链接中的 `{version}` 为 TiDB 的版本号。例如，amd64 架构的 `v6.6.0` 版本的下载链接为 `https://download.pingcap.org/tidb-community-server-v6.6.0-linux-amd64.tar.gz`。
 
 ### 源码编译
 
-1. [Go](https://golang.org/) Version 1.13 以上
+1. [Go](https://golang.org/) Version 1.19 以上
 2. 在 PD 项目根目录使用 `make` 或者 `make pd-ctl` 命令进行编译，生成 bin/pd-ctl
 
 ## 简单例子
@@ -41,7 +42,7 @@ PD Control 是 PD 的命令行工具，用于获取集群状态信息和调整�
 {{< copyable "shell-regular" >}}
 
 ```bash
-tiup ctl pd store -u http://127.0.0.1:2379
+tiup ctl:v<CLUSTER_VERSION> pd store -u http://127.0.0.1:2379
 ```
 
 交互模式：
@@ -49,7 +50,7 @@ tiup ctl pd store -u http://127.0.0.1:2379
 {{< copyable "shell-regular" >}}
 
 ```bash
-tiup ctl pd -i -u http://127.0.0.1:2379
+tiup ctl:v<CLUSTER_VERSION> pd -i -u http://127.0.0.1:2379
 ```
 
 使用环境变量：
@@ -58,7 +59,7 @@ tiup ctl pd -i -u http://127.0.0.1:2379
 
 ```bash
 export PD_ADDR=http://127.0.0.1:2379 &&
-tiup ctl pd
+tiup ctl:v<CLUSTER_VERSION> pd
 ```
 
 使用 TLS 加密：
@@ -66,7 +67,7 @@ tiup ctl pd
 {{< copyable "shell-regular" >}}
 
 ```bash
-tiup ctl pd -u https://127.0.0.1:2379 --cacert="path/to/ca" --cert="path/to/cert" --key="path/to/key"
+tiup ctl:v<CLUSTER_VERSION> pd -u https://127.0.0.1:2379 --cacert="path/to/ca" --cert="path/to/cert" --key="path/to/key"
 ```
 
 ## 命令行参数 (flags)
@@ -1174,7 +1175,8 @@ scheduler config balance-hot-region-scheduler  // 显示 balance-hot-region 调�
     "key"
   ],
   "strict-picking-store": "true",
-  "enable-for-tiflash": "true"
+  "enable-for-tiflash": "true",
+  "rank-formula-version": "v2"
 }
 ```
 
@@ -1233,10 +1235,20 @@ scheduler config balance-hot-region-scheduler  // 显示 balance-hot-region 调�
     scheduler config balance-hot-region-scheduler set read-priorities query,byte
     ```
 
-- `strict-picking-store` 是控制热点调度搜索空间的开关，通常为打开。当打开时，热点调度的目标是保证所配置的两个维度的热点均衡。当关闭后，热点调度只保证处于第一优先级的维度的热点均衡表现更好，但可能会导致其他维度的热点不再那么均衡。通常用户不需要修改这个配置项。
+- `strict-picking-store` 是控制热点调度搜索空间的开关，通常为打开。该配置项仅影响 `rank-formula-version` 为 `v1` 时的行为。当打开时，热点调度的目标是保证所配置的两个维度的热点均衡。当关闭后，热点调度只保证处于第一优先级的维度的热点均衡表现更好，但可能会导致其他维度的热点不再那么均衡。通常用户不需要修改这个配置项。
 
     ```bash
     scheduler config balance-hot-region-scheduler set strict-picking-store true
+    ```
+
+- `rank-formula-version` 适用于热点调度，其用来确定调度策略的算法版本，支持的值有 `["v1", "v2"]`。目前该配置的默认值为 `v2`。
+
+    - `v1` 版本为 v6.3.0 之前的策略，主要关注调度是否降低了不同 Store 之间的负载差值，以及是否在另一维度引入副作用。
+    - `v2` 版本是 v6.3.0 引入的实验特性算法，在 v6.4.0 正式发布，主要关注 Store 之间均衡度的提升率，同时降低了对副作用的关注度。对比 `strict-picking-store` 为 `true` 的 `v1` 算法，`v2` 版本更注重优先均衡第一维度。对比 `strict-picking-store` 为 `false` 的 `v1` 算法，`v2` 版本兼顾了第二维度的均衡。
+    - `strict-picking-store` 为 `true` 的 `v1` 版本算法较为保守，只有当存在两个维度的负载都偏高的 Store 时才能产生调度。在特定场景下有可能因为维度冲突导致无法继续均衡，需要将 `strict-picking-store` 改为 `false` 才能在第一维度取得更好的均衡效果。`v2` 版本算法则可以在两个维度都取得更好的均衡效果，并减少无效调度。
+
+    ```bash
+    scheduler config balance-hot-region-scheduler set rank-formula-version v2
     ```
 
 - `enable-for-tiflash` 是控制热点调度是否对 TiFlash 生效的开关。通常为打开，关闭后将不会产生 TiFlash 实例之间的热点调度。
@@ -1282,7 +1294,7 @@ store 1
 store delete 1
 ```
 
-执行 `store cancel-delete` 命令，你可以撤销已使用 `store delete` 下线并处于 `Offline` 状态的 store。撤销后，该 store 会从 `Offline` 状态变为 `Up` 状态。注意， `store cancel-delete` 命令无法使 `Tombstone` 状态的 store 变回 `Up` 状态。
+执行 `store cancel-delete` 命令，你可以撤销已使用 `store delete` 下线并处于 `Offline` 状态的 store。撤销后，该 store 会从 `Offline` 状态变为 `Up` 状态。注意，`store cancel-delete` 命令无法使 `Tombstone` 状态的 store 变回 `Up` 状态。
 
 撤销通过 `store delete` 下线 id 为 1 的 store：
 
@@ -1359,8 +1371,7 @@ store weight 1 5 10
 
 > **注意：**
 >
-> * `store limit` 命令原有的 `region-add` 和 `region-remove` 子命令已废弃，请使用 `add-peer` 和 `remove-peer` 来替代。
-> * 使用 `pd-ctl` 可以查看 TiKV 节点的状态信息，即 `Up`，`Disconnect`，`Offline`，`Down`，或 `Tombstone`。如需查看各个状态之间的关系，请参考 [TiKV Store 状态之间的关系](/tidb-scheduling.md#信息收集)。
+> 使用 `pd-ctl` 可以查看 TiKV 节点的状态信息，即 `Up`，`Disconnect`，`Offline`，`Down`，或 `Tombstone`。如需查看各个状态之间的关系，请参考 [TiKV Store 状态之间的关系](/tidb-scheduling.md#信息收集)。
 
 ### `log [fatal | error | warn | info | debug]`
 
