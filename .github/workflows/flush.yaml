@@ -3,7 +3,7 @@ name: Flush PDF
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 0 * * *"
+    - cron: "0 0 * * 0" # auto flush pdf on sunday
 
 jobs:
   flush-pdf:
