@@ -130,8 +130,9 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 ### `enable-telemetry` <span class="version-mark">从 v4.0.2 版本开始引入</span>
 
 + 是否开启 TiDB 遥测功能。
-+ 默认值：true
-+ 如果所有 TiDB 实例上该选项都设置为 `false`，那么将完全禁用 TiDB 遥测功能，且忽略 [`tidb_enable_telemetry`](/system-variables.md#tidb_enable_telemetry-从-v402-版本开始引入) 系统变量。参阅[遥测](/telemetry.md)了解该功能详情。
++ 默认值：对于 TiDB v6.1.0 ~ v6.1.4，默认值为 true；对于 v6.1.5 以及之后的 v6.1.x 版本，默认值为 false。
++ 如果在 TiDB 实例上该配置项设为 `true`，且 [`tidb_enable_telemetry`](/system-variables.md#tidb_enable_telemetry-从-v402-版本开始引入) 系统变量设置为 `ON`，该 TiDB 实例上将开启遥测功能。
++ 如果所有 TiDB 实例上该选项都设置为 `false`，那么将完全禁用 TiDB 遥测功能，且忽略 `tidb_enable_telemetry` 系统变量。参阅[遥测](/telemetry.md)了解该功能详情。
 
 ### `enable-tcp4-only` <span class="version-mark">从 v5.0 版本开始引入</span>
 
