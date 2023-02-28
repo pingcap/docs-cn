@@ -547,7 +547,7 @@ MOD(YEAR('2005-09-01'),4)
 
 ### Key 分区
 
-v6.7.0 开始从功能上支持 Key 分区。在 v6.7.0 之前的版本中创建 Key 分区表时会当作普通表创建并给出告警。 Key 分区与 Hash 分区都是保证将数据均匀地分散到一定数量的分区里面，区别是 Hash 分区根据一个单独的整形表达式或字段进行分区，Key 分区根据字段列表进行分区，且 Key 分区的分区字段不局限于整形字段。TiDB Key 分区表的 Hash 算法与 MySQL 不一样，因此表的数据分布也会不一样。
+v7.0 开始从功能上支持 Key 分区。在 v7.0 之前的版本中创建 Key 分区表时会当作普通表创建并给出告警。 Key 分区与 Hash 分区都是保证将数据均匀地分散到一定数量的分区里面，区别是 Hash 分区根据一个单独的整形表达式或字段进行分区，Key 分区根据字段列表进行分区，且 Key 分区的分区字段不局限于整形字段。TiDB Key 分区表的 Hash 算法与 MySQL 不一样，因此表的数据分布也会不一样。
 使用 Key 分区时，需要在 `CREATE TABLE` 后面添加 `PARTITION BY HASH (columList)`，其中 `columnList` 是字段列表，每个字段的类型可以是除 `BLOB`、`JSON`、`GEOMETRY` 之外的任意类型。此外，你很可能还需要加上 `PARTITIONS num`，其中 `num` 是一个正整数，表示将表划分多少分区。
 
 下面的语句将创建一个 Key 分区表，按 `store_id` 分成 4 个分区：
@@ -640,7 +640,7 @@ PARTITIONS 4;
 
 ### TiDB 对 Linear Key 分区的处理
 
-v6.7.0 开始从功能上支持 Key 分区。在 v6.7.0 之前的版本中创建 Key 分区表时会当作普通表创建并给出告警。TiDB 支持解析 MySQL 的 `PARTITION BY LINEAR HASH` 语法，但会忽略其中的 `LINEAR` 关键字，只采用非线性 Hash 算法。
+v7.0 开始从功能上支持 Key 分区。在 v7.0 之前的版本中创建 Key 分区表时会当作普通表创建并给出告警。TiDB 支持解析 MySQL 的 `PARTITION BY LINEAR HASH` 语法，但会忽略其中的 `LINEAR` 关键字，只采用非线性 Hash 算法。
 
 ### 分区对 NULL 值的处理
 
