@@ -31,6 +31,4 @@ summary: 了解资源管控 (Resource Control) 的 Grafana Dashboard 中所展�
 - Bytes Written：以 Resource Group 为单位进行实时统计的写入数据量。`total` 为当前所有 Resource Group 写入数据量之和。
 - Bytes Written Per Query：平均每个 SQL 语句的写入数据量。计算方法是将前述 Bytes Written 监控指标除以当前每秒执行的 SQL 语句数量。
 - KV CPU Time：以 Resource Group 为单位进行实时统计的 KV 层 CPU 时间消耗。`total` 为当前所有 Resource Group 消耗 KV 层 CPU 时间之和。
-- KV CPU Time Per Query：平均每个 SQL 语句的 KV 层 CPU 时间消耗之和。计算方法是将前述 KV CPU Time 监控指标除以当前每秒执行的 SQL 语句数量。
 - SQL CPU Time：以 Resource Group 为单位进行实时统计的 SQL 层 CPU 时间消耗。`total` 为当前所有 Resource Group 消耗 SQL 层 CPU 时间之和。
-- SQL CPU Time Per Query：平均每个 SQL 语句的 SQL 层 CPU 时间消耗之和。计算方法是将前述 SQL CPU Time 监控除以当前每秒执行的 SQL 语句数量。
