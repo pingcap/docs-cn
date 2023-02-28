@@ -93,3 +93,4 @@ mysql> alter table table_x set tiflash replica 1;
 - 从一种架构迁移到另外一种架构，需要重新同步所有 TiFlash 的数据
 - 不允许不同架构的节点同时存在一个集群中
 - 存算分离架构只支持使用 S3 API 的对象存储；存算一体架构只支持本地存储
+- 使用 S3 存储的情况下，无法启用 "[静态加密](https://docs.pingcap.com/tidb/dev/encryption-at-rest)" 功能，因为 TiFlash 节点无法知道不是本节点生成的文件的密钥
