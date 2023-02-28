@@ -29,6 +29,7 @@ TiDB 历史版本发布声明如下：
 
 ## 6.1
 
+- [6.1.5](/releases/release-6.1.5.md): 2023-02-28
 - [6.1.4](/releases/release-6.1.4.md): 2023-02-08
 - [6.1.3](/releases/release-6.1.3.md): 2022-12-05
 - [6.1.2](/releases/release-6.1.2.md): 2022-10-24
