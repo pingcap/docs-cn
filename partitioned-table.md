@@ -9,7 +9,7 @@ aliases: ['/docs-cn/dev/partitioned-table/','/docs-cn/dev/reference/sql/partitio
 
 ## 分区类型
 
-本节介绍 TiDB 中的分区类型。当前支持的类型包括 [Range 分区](#range-分区)、[Range COLUMNS 分区](#range-columns-分区)、[Range INTERVAL 分区](#range-interval-分区)、[List 分区](#list-分区)、[List COLUMNS 分区](#list-columns-分区)和 [Hash 分区](#hash-分区)。Range 分区、Range COLUMNS 分区、List 分区和 List COLUMNS 分区可以用于解决业务中大量删除带来的性能问题，支持快速删除分区。Hash 分区则可以用于大量写入场景下的数据打散。
+本节介绍 TiDB 中的分区类型。当前支持的类型包括 [Range 分区](#range-分区)、[Range COLUMNS 分区](#range-columns-分区)、[Range INTERVAL 分区](#range-interval-分区)、[List 分区](#list-分区)、[List COLUMNS 分区](#list-columns-分区)、[Hash 分区](#hash-分区)和 Key 分区。Range 分区、Range COLUMNS 分区、List 分区和 List COLUMNS 分区可以用于解决业务中大量删除带来的性能问题，支持快速删除分区。Hash 分区则可以用于大量写入场景下的数据打散。Key 分区同样可以用于大量写入场景下的数据打散，与 Hash 分区相比支持多列打散和非整形字段的打散。
 
 ### Range 分区
 
@@ -545,6 +545,89 @@ MOD(YEAR('2005-09-01'),4)
 =  1
 ```
 
+### Key 分区
+
+v6.7.0 开始从功能上支持 Key 分区。在 v6.7.0 之前的版本中创建 Key 分区表时会当作普通表创建并给出告警。 Key 分区与 Hash 分区都是保证将数据均匀地分散到一定数量的分区里面，区别是 Hash 分区根据一个单独的整形表达式或字段进行分区，Key 分区根据字段列表进行分区，且 Key 分区的分区字段不局限于整形字段。TiDB Key 分区表的 Hash 算法与 MySQL 不一样，因此表的数据分布也会不一样。
+使用 Key 分区时，需要在 `CREATE TABLE` 后面添加 `PARTITION BY HASH (columList)`，其中 `columnList` 是字段列表，每个字段的类型可以是除 `BLOB`、`JSON`、`GEOMETRY` 之外的任意类型。此外，你很可能还需要加上 `PARTITIONS num`，其中 `num` 是一个正整数，表示将表划分多少分区。
+
+下面的语句将创建一个 Key 分区表，按 `store_id` 分成 4 个分区：
+
+{{< copyable "sql" >}}
+
+```sql
+CREATE TABLE employees (
+    id INT NOT NULL,
+    fname VARCHAR(30),
+    lname VARCHAR(30),
+    hired DATE NOT NULL DEFAULT '1970-01-01',
+    separated DATE DEFAULT '9999-12-31',
+    job_code INT,
+    store_id INT
+)
+
+PARTITION BY HASH(store_id)
+PARTITIONS 4;
+```
+
+如果不指定 `PARTITIONS num`，默认的分区数量为 1。
+
+也可以根据 VARCHAR 等非整形字段创建 Key 分区表。下面的语句按 `fname` 将表分成 4 个分区：
+
+{{< copyable "sql" >}}
+
+```sql
+CREATE TABLE employees (
+    id INT NOT NULL,
+    fname VARCHAR(30),
+    lname VARCHAR(30),
+    hired DATE NOT NULL DEFAULT '1970-01-01',
+    separated DATE DEFAULT '9999-12-31',
+    job_code INT,
+    store_id INT
+)
+
+PARTITION BY KEY(fname)
+PARTITIONS 4;
+```
+
+还可以根据多列字段创建 Key 分区表。下面的语句按 `fname`、`store_id` 将表分成 4 个分区：
+
+{{< copyable "sql" >}}
+
+```sql
+CREATE TABLE employees (
+    id INT NOT NULL,
+    fname VARCHAR(30),
+    lname VARCHAR(30),
+    hired DATE NOT NULL DEFAULT '1970-01-01',
+    separated DATE DEFAULT '9999-12-31',
+    job_code INT,
+    store_id INT
+)
+
+PARTITION BY KEY(fname, store_id)
+PARTITIONS 4;
+```
+
+TiDB 暂不支持不指定分区字段的 Key 分区表。下面的语句将创建一个非分区表，并向客户端发出 `Unsupported partition type RANGE, treat as normal table` 警告。
+
+{{< copyable "sql" >}}
+
+```sql
+CREATE TABLE employees (
+    id INT NOT NULL,
+    fname VARCHAR(30),
+    lname VARCHAR(30),
+    hired DATE NOT NULL DEFAULT '1970-01-01',
+    separated DATE DEFAULT '9999-12-31',
+    job_code INT,
+    store_id INT
+)
+
+PARTITION BY KEY()
+PARTITIONS 4;
+```
+
 ### TiDB 对 Linear Hash 分区的处理
 
 在 v6.4.0 之前，如果在 TiDB 上执行 [MySQL Linear Hash 分区](https://dev.mysql.com/doc/refman/5.7/en/partitioning-linear-hash.html) 的 DDL 语句，TiDB 只能创建非分区表。在这种情况下，如果你仍然想要在 TiDB 中创建分区表，你需要修改这些 DDL 语句。
@@ -554,6 +637,10 @@ MOD(YEAR('2005-09-01'),4)
 - 对于 MySQL Linear Hash 分区的 `CREATE` 语句，TiDB 将创建一个常规的非线性 Hash 分区表（注意 TiDB 内部实际不存在 Linear Hash 分区表）。如果分区数是 2 的幂，该分区表中行的分布情况与 MySQL 相同。如果分区数不是 2 的幂，该分区表中行的分布情况与 MySQL 会有所差异。这是因为 TiDB 中非线性分区表使用简单的“分区模数”，而线性分区表使用“模数的下一个 2 次方并会折叠分区数和下一个 2 次方之间的值”。详情请见 [#38450](https://github.com/pingcap/tidb/issues/38450)。
 
 - 对于 MySQL Linear Hash 分区的其他 SQL 语句，TiDB 将正常返回对应的 Hash 分区的查询结果。但当分区数不是 2 的幂（意味着分区表中行的分布情况与 MySQL 不同）时，[分区选择](#分区选择)、`TRUNCATE PARTITION`、`EXCHANGE PARTITION` 返回的结果将和 MySQL 有所差异。
+
+### TiDB 对 Linear Key 分区的处理
+
+v6.7.0 开始从功能上支持 Key 分区。在 v6.7.0 之前的版本中创建 Key 分区表时会当作普通表创建并给出告警。TiDB 支持解析 MySQL 的 `PARTITION BY LINEAR HASH` 语法，但会忽略其中的 `LINEAR` 关键字，只采用非线性 Hash 算法。
 
 ### 分区对 NULL 值的处理
 
@@ -703,6 +790,10 @@ Empty set (0.00 sec)
 >
 > TiDB 的最终行为以本文档描述为准。
 
+#### Hash 分区对 NULL 的处理
+
+在 Key 分区中 NULL 值的处理与 Hash 分区一致，如果分区字段的值为 NULL，它会被当作 0 值处理。
+
 ## 分区管理
 
 对于 `LIST` 和 `RANGE` 分区表，通过 `ALTER TABLE <表名> ADD PARTITION (<分区说明>)` 或 `ALTER TABLE <表名> DROP PARTITION <分区列表>` 语句，可以执行添加和删除分区的操作。
@@ -817,6 +908,22 @@ alter table members optimize partition p0;
 ERROR 8200 (HY000): Unsupported optimize partition
 ```
 
+### Key 分区管理
+
+目前 TiDB 中 Key 分区支持的分区管理语句只有有 `ALTER TABLE ... TRUNCATE PARTITION`。
+
+对于暂不支持的分区管理语句，TiDB 会返回错误。
+
+{{< copyable "sql" >}}
+
+```sql
+alter table members optimize partition p0;
+```
+
+```sql
+ERROR 8200 (HY000): Unsupported optimize partition
+```
+
 ## 分区裁剪
 
 有一个优化叫做[“分区裁剪”](/partition-pruning.md)，它基于一个非常简单的概念：不需要扫描那些匹配不上的分区。
@@ -917,7 +1024,7 @@ SELECT fname, lname, region_code, dob
 
     如果 TiKV 不支持 `fn`，则优化阶段不会把 `fn(col)` 推到叶子节点，而是在叶子上面连接一个 Selection 节点，分区裁剪的实现没有处理这种父节点的 Selection 中的条件，因此对不能下推到 TiKV 的表达式不支持分区裁剪。
 
-4. 对于 Hash 分区类型，只有等值比较的查询条件能够支持分区裁剪。
+4. 对于 Hash 和 Key 分区类型，只有等值比较的查询条件能够支持分区裁剪。
 
 5. 对于 Range 分区类型，分区表达式必须是 `col` 或者 `fn(col)` 的简单形式，查询条件是 `>`、`<`、`=`、`>=`、`<=` 时才能支持分区裁剪。如果分区表达式是 `fn(col)` 形式，还要求 `fn` 必须是单调函数，才有可能分区裁剪。
 
@@ -1338,9 +1445,9 @@ YEARWEEK()
 
 ### 兼容性
 
-目前 TiDB 支持 Range 分区、List 分区、List COLUMNS 分区和 Hash 分区，其它的 MySQL 分区类型（例如 Key 分区）尚不支持。
+目前 TiDB 支持 Range 分区、List 分区、List COLUMNS 分区、Hash 分区和 Key 分区，其它的 MySQL 分区类型尚不支持。
 
-对于 Range Columns 类型的分区表，目前只支持单列的场景。
+对于 Range Columns 类型的分区表，目前只支持单列的场景。对于 Key 分区，目前不支持分区字段为空的场景。
 
 分区管理方面，只要底层实现可能会涉及数据挪动的操作，目前都暂不支持。包括且不限于：调整 Hash 分区表的分区数量，修改 Range 分区表的范围，合并分区，交换分区等。
 
@@ -1690,7 +1797,7 @@ mysql> explain select /*+ TIDB_INLJ(t1, t2) */ t1.* from t1, t2 where t2.code = 
     可以按需将 `ALL COLUMNS` 改为实际需要的列。
 
 3. 将批量更新语句导出到文件：
-    
+
     {{< copyable "sql" >}}
 
     ```sql
