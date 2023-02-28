@@ -234,7 +234,7 @@ TiDB 支持改变[全局](/system-variables.md#tidb_force_priority)或单个语�
 
 ## DDL 执行
 
-本节为 DDL 语句执行的相关问题。DDL 执行原理的详细说明，参见 [TiDB 中 DDL 执行原理及最佳实践](/ddl-introduction.md)。
+本节列出了 DDL 语句执行的相关问题。DDL 执行原理的详细说明，参见 [TiDB 中 DDL 执行原理及最佳实践](/ddl-introduction.md)。
 
 ### 各类 DDL 操作的预估耗时是多长？
 
@@ -242,8 +242,8 @@ TiDB 支持改变[全局](/system-variables.md#tidb_force_priority)或单个语�
 
 | DDL 操作类型                                                                                                                                                                    | 预估耗时                   |
 |:------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:-----------------------|
-| Reorg DDL，例如 `ADD INDEX`、`MODIFY COLUMN`（Reorg 类型的数据更改）                                                                                                                      | 取决于数据量、系统负载以及 DDL 参数的设置 |
-| General DDL（除 Reorg DDL 外的 DDL 类型），例如 `CREATE DATABASE`、`CREATE TABLE`、`DROP DATABASE`、`DROP TABLE`、`TRUNCATE TABLE`、`ALTER TABLE ADD`、`ALTER TABLE DROP`、`MODIFY COLUMN`（只更改元数据）、`DROP INDEX` | 1 秒左右                   |
+| Reorg DDL：例如 `ADD INDEX`、`MODIFY COLUMN`（Reorg 类型的数据更改）                                                                                                                      | 取决于数据量、系统负载以及 DDL 参数的设置 |
+| General DDL（除 Reorg DDL 外的 DDL 类型）：例如 `CREATE DATABASE`、`CREATE TABLE`、`DROP DATABASE`、`DROP TABLE`、`TRUNCATE TABLE`、`ALTER TABLE ADD`、`ALTER TABLE DROP`、`MODIFY COLUMN`（只更改元数据）、`DROP INDEX` | 1 秒左右                   |
 
 > **注意：**
 >
@@ -253,15 +253,15 @@ TiDB 支持改变[全局](/system-variables.md#tidb_force_priority)或单个语�
 
 - 在一个链接上，DDL 语句之前有非 auto-commit 的 DML 语句，并且该 DML 语句的提交操作比较慢，会导致 DDL 语句执行慢。即执行 DDL 语句前，会先提交之前没有提交的 DML 语句。
 - 多个 DDL 语句一起执行的时候，后面的几个 DDL 语句可能会比较慢，因为可能需要排队等待。排队场景包括：
-    - 同一类型 DDL 语句需要排队（例如 `CREATE TABLE` 和 `CREATE DATABASE` 都是 General DDL，两个操作同时执行时，需要排队）。自 TiDB v6.2 起，支持并行 DDL 语句，但也有并发度限制，会有一定的排队情况。因此避免 DDL 使用过多 TiDB 的计算资源。
+    - 同一类型 DDL 语句需要排队（例如 `CREATE TABLE` 和 `CREATE DATABASE` 都是 General DDL，两个操作同时执行时，需要排队）。自 TiDB v6.2.0 起，支持并行 DDL 语句，但为了避免 DDL 使用过多 TiDB 的计算资源，也有并发度限制，因此会有一定的排队情况。
     - 对同一张表上执行的 DDL 操作存在依赖关系，后面的 DDL 语句需要等待前面的 DDL 操作完成。
-- 在集群正常启动后，第一个 DDL 操作的执行时间可能会比较久，可能是 DDL 模块在做 DDL Owner 的选举。
-- 由于终止 TiDB 时，TiDB 不能与 PD 正常通信（包括停电的情况）或者用 `kill -9` 命令终止 TiDB 导致 TiDB 没有及时从 PD 清理注册数据。
+- 在集群正常启动后，第一个 DDL 操作的执行时间可能会比较久，可能是 因为 DDL 模块在进行 DDL Owner 的选举。
+- 终止 TiDB 时，TiDB 不能与 PD 正常通信（包括停电的情况），或者用 `kill -9` 命令终止 TiDB 导致 TiDB 没有及时从 PD 清理注册数据。
 - 集群中某个 TiDB 与 PD 或者 TiKV 之间发生通信问题，即 TiDB 不能及时获取最新版本信息。
 
 ### 触发 Information schema is changed 错误的原因？
 
-TiDB 在执行 SQL 语句时，会根据隔离级确定一个对象的 `schema` 版本来处理该 SQL 语句，而且 TiDB 支持在线异步变更 DDL。那么，在执行 DML 的时候可能有 DDL 语句也在执行，而你需要确保每个 SQL 语句在同一个 `schema` 上执行。所以当执行 DML 时，遇到正在执行中的 DDL 操作就可能会报 `Information schema is changed` 的错误。从 v6.4 版本开始 TiDB 实现了[元数据锁机制](/metadata-lock.md)，可以让 DML 语句的执行和 DDL Schema 变更有一个协同进行，避免掉大部分 `Information schema is changed` 错误的发生。
+TiDB 在执行 SQL 语句时，会根据隔离级别确定一个对象的 `schema` 版本来处理该 SQL 语句，而且 TiDB 支持在线异步变更 DDL。那么，在执行 DML 的时候可能有 DDL 语句也在执行，而你需要确保每个 SQL 语句在同一个 `schema` 上执行。所以当执行 DML 时，如果遇到正在执行中的 DDL 操作，TiDB 可能会报 `Information schema is changed` 的错误。从 v6.4.0 开始， TiDB 实现了[元数据锁机制](/metadata-lock.md)，可以让 DML 语句的执行和 DDL Schema 变更协同进行，可以避免掉大部分 `Information schema is changed` 错误的发生。
 
 报错的可能原因如下：
 
@@ -280,7 +280,7 @@ TiDB 在执行 SQL 语句时，会根据隔离级确定一个对象的 `schema` 
 
 ### 触发 Information schema is out of date 错误的原因？
 
-在 6.5 版本之前，当执行 DML 时，TiDB 超过一个 DDL lease 时间（默认 45s）没能加载到最新的 schema 就可能会报 `Information schema is out of date` 的错误。遇到此错的可能原因如下：
+在 v6.5.0 之前，当执行 DML 时，TiDB 超过一个 DDL lease 时间（默认 45s）没能加载到最新的 schema 就可能会报 `Information schema is out of date` 的错误。遇到此错的可能原因如下：
 
 - 执行此 DML 的 TiDB 被 kill 后准备退出，且此 DML 对应的事务执行时间超过一个 DDL lease，在事务提交时会报这个错误。
 - TiDB 在执行此 DML 时，有一段时间内连不上 PD 或者 TiKV，导致 TiDB 超过一个 DDL lease 时间没有 load schema，或者导致 TiDB 断开与 PD 之间带 keep alive 设置的连接。
@@ -293,7 +293,7 @@ TiDB 在执行 SQL 语句时，会根据隔离级确定一个对象的 `schema` 
 
 ### DDL 执行被阻塞的原因
 
-在 TiDB v6.2 版本前，TiDB 按照 DDL 语句类型将 DDL 分配到两个先入先出的队列中，即 Reorg DDL 进入 Reorg 队列中，General DDL 进入 general 队列中。由于先入先出以及同一张表上的 DDL 语句需要串行执行，多个 DDL 语句在执行过程中可能会出现阻塞的问题。
+在 TiDB v6.2.0 前，TiDB 按照 DDL 语句类型将 DDL 分配到两个先入先出的队列中，即 Reorg DDL 进入 Reorg 队列中，General DDL 进入 general 队列中。由于先入先出以及同一张表上的 DDL 语句需要串行执行，多个 DDL 语句在执行过程中可能会出现阻塞的问题。
 
 例如对于以下 DDL 语句：
 
@@ -303,9 +303,9 @@ TiDB 在执行 SQL 语句时，会根据隔离级确定一个对象的 `schema` 
 
 由于队列先入先出的限制，DDL 3 需要等待 DDL 2 执行。同时又因为同一张表上的 DDL 语句需要串行执行，DDL 2 需要等待 DDL 1 执行。因此，DDL 3 需要等待 DDL 1 先执行完，即使它们操作在不同的表上。
 
-在 TiDB v6.2 版本及之后的版本中，TiDB DDL 模块采用了并发框架。在并发的框架下，不再有同一个队列先进先出的问题，而是从所有 DDL 任务中选出可以执行的 DDL 来执行。并且对 Reorg worker 的数量进行了扩充，大概为节点 `CPU/4`，这使得在并发框架中 TiDB 可以同时为多张表建索引。
+在 TiDB v6.2.0 及之后的版本中，TiDB DDL 模块采用了并发框架。在并发的框架下，不再有同一个队列先进先出的问题，而是从所有 DDL 任务中选出可以执行的 DDL 来执行。并且对 Reorg worker 的数量进行了扩充，大概为节点 `CPU/4`，这使得在并发框架中 TiDB 可以同时为多张表建索引。
 
-不管是新集群还是从旧版本升级的集群，在 TiDB v6.2 及以上版本中，TiDB 都会自动使用并发框架，用户无需进行调整。
+无论是新集群还是从旧版本升级的集群，在 TiDB v6.2 及以上版本中，TiDB 都会自动使用并发框架，用户无需进行调整。
 
 ### 定位 DDL 执行卡住的问题
 
@@ -314,7 +314,7 @@ TiDB 在执行 SQL 语句时，会根据隔离级确定一个对象的 `schema` 
     + 通过 `curl http://{TiDBIP}:10080/info/all` 获取当前集群的 Owner
     + 通过监控 **DDL** > **DDL META OPM** 查看某个时间段的 Owner
 
-- 如果 Owner 不存在，尝试手动触发 Owner 选举：`curl -X POST http://{TiDBIP}:10080/ddl/owner/resign`
+- 如果 Owner 不存在，尝试手动触发 Owner 选举：`curl -X POST http://{TiDBIP}:10080/ddl/owner/resign`。
 - 如果 Owner 存在，导出 Goroutine 堆栈并检查可能卡住的地方。
 
 ## SQL 优化

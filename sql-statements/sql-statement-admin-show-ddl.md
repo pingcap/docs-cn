@@ -24,7 +24,7 @@ WhereClauseOptional ::=
 
 ### `ADMIN SHOW DDL`
 
-可以通过 `ADMIN SHOW DDL` 语句查看当前正在运行的 DDL 作业状态，包括当前 schema 版本号、owner 的 DDL ID 和地址、正在执行的 DDL 任务和 SQL、当前 TiDB 实例的 DDL ID。
+可以通过 `ADMIN SHOW DDL` 语句查看当前正在运行的 DDL 作业状态，包括当前 schema 版本号、Owner 的 DDL ID 和地址、正在执行的 DDL 任务和 SQL、当前 TiDB 实例的 DDL ID。
 
 {{< copyable "sql" >}}
 
