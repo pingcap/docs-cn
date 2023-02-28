@@ -55,7 +55,7 @@ tiup cluster prune mycluster              # Remove the tiflash nodes in tombesto
 
 2. 准备 TiFlash 的拓扑配置文件，比如 scale-out.topo.yaml 的配置内容如下：
 
-```shell
+```yaml
 tiflash_servers:
   - host: 172.31.8.1
     config:
