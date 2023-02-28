@@ -110,7 +110,7 @@ absent -> delete only -> write only -> write reorg -> public
 
 当 DDL 任务之间不存在相关依赖时，并行执行并不会影响数据正确性和一致性。例如：用户 A 在 `T1` 表上增加一个索引，同时用户 B 从 `T2` 表删除一列。这两条 DDL 语句可以并行执行。
 
-为了提升用户体验，为用户提供更为强大的 DDL 执行能力，TiDB v6.2 版本对原有的 DDL Owner 进行升级，使得 Owner 能对 DDL 任务做相关性判断，判断逻辑如下：
+为了提升 DDL 执行的用户体验，从 v6.2.0 起，TiDB 对原有的 DDL Owner 角色进行了升级，使得 Owner 能对 DDL 任务做相关性判断，判断逻辑如下：
 
 + 涉及同一张表的 DDL 相互阻塞。
 + `DROP DATABASE` 和数据库内所有对象的 DDL 互相阻塞。
