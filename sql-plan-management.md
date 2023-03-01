@@ -15,7 +15,6 @@ aliases: ['/docs-cn/dev/sql-plan-management/','/docs-cn/dev/reference/performanc
 >
 > 目前该功能需用户拥有 `SUPER` 权限才可使用。如果在使用过程中提示权限不足，可参考[权限管理](/privilege-management.md)补充所需权限。
 
-
 ### 创建绑定
 
 你可以根据 SQL 或者历史执行计划为指定的 SQL 语句创建绑定。
