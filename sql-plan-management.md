@@ -14,7 +14,6 @@ title: 执行计划管理 (SPM)
 >
 > 目前该功能需用户拥有 `SUPER` 权限才可使用。如果在使用过程中提示权限不足，可参考[权限管理](/privilege-management.md)补充所需权限。
 
-
 ### 创建绑定
 
 {{< copyable "sql" >}}
