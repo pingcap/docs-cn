@@ -27,11 +27,9 @@ summary: 本文介绍了 Performance Overview 仪表盘中 TiFlash 部分，帮�
 - MPP Query count: 每个 TiFlash 实例 MPP 查询数量的瞬时值，表示当前 TiFlash 实例需要处理的 MPP 查询数量（包括正在处理的以及还没被调度到的）
 - Request QPS: 所有 TiFlash 实例收到的 coprocessor 请求数量。
     - `run_mpp_task`, `dispatch_mpp_task` 和 `mpp_establish_conn` 为 mpp 请求。
-    - `batch`：batch 请求数量
-    - `batch_cop`：batch 请求中的 coprocessor 请求数量
     - `cop`：直接通过 coprocessor 接口发送的 coprocessor 请求数量
-    - `cop_dag`：所有 coprocessor 请求中 dag 请求数量
     - `cop_execution`：正在执行的的 coprocessor 请求数量
+    - `remote_read`, `remote_read_constructed` 和 `remote_read_sent` 为 remote read 相关指标，remote read 增多一般意味着系统出现了问题。
 - Executor QPS：所有 TiFlash 实例收到的请求中，每种 dag 算子的数量，其中 `table_scan` 是扫表算子，`selection` 是过滤算子，`aggregation` 是聚合算子，`top_n` 是 TopN 算子，`limit` 是 limit 算子, `join` 为关联算子，`exchange_sender` 和 `exchange_receiver` 为数据发送和接收算子。
 
 ### 延迟指标
