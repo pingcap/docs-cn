@@ -3549,6 +3549,14 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 默认值：`23:59 +0000`
 - 这个变量用于控制 TTL 后台清理任务的调度窗口的结束时间。请谨慎调整此参数，过小的窗口有可能会造成过期数据的清理无法完成。
 
+### `tidb_ttl_running_tasks` <span class="version-mark">从 v7.0.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 默认值：`-1`
+- 范围：`[1, 256]`
+- 这个变量用于限制 TTL 的并发量。`-1` 表示与 TiKV 节点的数量相同。
+
 ### `tidb_txn_assertion_level` <span class="version-mark">从 v6.0.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
