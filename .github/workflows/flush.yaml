@@ -1,4 +1,4 @@
-name: Flush PDF
+name: Flush All PDF
 
 on:
   workflow_dispatch:
@@ -23,8 +23,10 @@ jobs:
       - name: refresh url
         run: |
           qshell account ${{ secrets.QINIU_ACCESS_KEY }} ${{ secrets.QINIU_SECRET_KEY }} tidb
-          if qshell cdnrefresh -i cdnfresh.txt | grep -w '200'; then
+          result=$(qshell cdnrefresh -i cdnfresh.txt)
+          if echo $result | grep -w '200'; then
             echo 'CDN refresh success'
           else
+            echo "CDN refresh failed: $result"
             exit 1
           fi
