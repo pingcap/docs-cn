@@ -2,6 +2,20 @@ name: Flush PDF
 
 on:
   workflow_dispatch:
+    inputs:
+      cloud:
+        default: false
+        required: false
+        type: boolean
+        description: "Is cloud?"
+      version:
+        required: false
+        type: string
+        description: "The version, e.g. 'v6.5' or 'dev'"
+      lang:
+        required: false
+        type: string
+        description: "The language, e.g. 'en' or 'zh'"
   schedule:
     - cron: "0 0 * * 0" # auto flush pdf on sunday
 
@@ -15,16 +29,27 @@ jobs:
         with:
           version: '2.6.2'
 
-      - name: Download PDF list
+      - name: Get pdf list (tidb)
+        if: ${{ !inputs.cloud}}
         run: |
-          curl https://raw.githubusercontent.com/pingcap/docs-cn/master/resources/cdnfresh.txt --output cdnfresh.txt
-          cat cdnfresh.txt
+          echo "https://download.pingcap.org/tidb-${{inputs.version}}-${{inputs.lang}}-manual.pdf" > pdf.txt
+          cat pdf.txt
+
+      - name: Get pdf list (tidb cloud)
+        if: ${{ inputs.cloud}}
+        run: |
+          echo "https://download.pingcap.org/tidbcloud-en-manual.pdf" > pdf.txt
+          cat pdf.txt
+
 
       - name: refresh url
         run: |
           qshell account ${{ secrets.QINIU_ACCESS_KEY }} ${{ secrets.QINIU_SECRET_KEY }} tidb
-          if qshell cdnrefresh -i cdnfresh.txt | grep -w '200'; then
+          result=$(qshell cdnrefresh -i pdf.txt)
+          if echo $result | grep -w '200'; then
             echo 'CDN refresh success'
           else
+            echo "CDN refresh failed: $result"
             exit 1
           fi
+
