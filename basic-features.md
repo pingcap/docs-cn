@@ -137,17 +137,16 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 
 ## 分区
 
-| 分区                                             | 7.0 | 6.6 | 6.5 | 6.1 | 5.4          |   5.3    |   5.2    |   5.1    |   5.0    | 4.0 |
+| 分区                                             | 6.6 | 6.5 | 6.1 | 5.4          |   5.3    |   5.2    |   5.1    |   5.0    | 4.0 |
 | ------------------------------------------------------------ | :--: | :--: | ------------ | :----------: | :----------: | :----------: | :----------: | :-----: | :-----: |
-| [Range 分区](/partitioned-table.md)                  | Y | Y | Y | Y | Y            |      Y       |      Y       |      Y       |      Y       |    Y    |
-| [Hash 分区](/partitioned-table.md)                   | Y | Y | Y  | Y | Y            |      Y       |      Y       |      Y       |      Y       |    Y    |
-| [Key 分区](/partitioned-table.md)                    | Y | N | N  | N | N            |      N       |      N       |      N       |      N       |    Y    |
-| [List 分区](/partitioned-table.md)                   | Y | Y | Y | Y | E | E | E | E | E |    N    |
-| [List COLUMNS 分区](/partitioned-table.md)           | Y | Y | Y | Y | E | E | E | E | E |    N    |
-| [`EXCHANGE PARTITION`](/partitioned-table.md)               | Y | Y | Y  | E | E | E | E | E | E |    N    |
-| [动态裁剪](/partitioned-table.md#动态裁剪模式) | Y | Y | Y | Y | E | E | E | E |      N       |    N    |
-| [Range COLUMNS 分区](/partitioned-table.md#range-columns-分区) | Y | Y | Y | N | N | N |N | N | N |      N       |
-| [Range INTERVAL 分区](/partitioned-table.md#range-interval-分区) | Y | E | E | N | N | N |N | N | N |      N       |
+| [Range 分区](/partitioned-table.md)                  | Y | Y | Y | Y            |      Y       |      Y       |      Y       |      Y       |    Y    |
+| [Hash 分区](/partitioned-table.md)                   | Y | Y  | Y | Y            |      Y       |      Y       |      Y       |      Y       |    Y    |
+| [List 分区](/partitioned-table.md)                   | Y | Y | Y | E | E | E | E | E |    N    |
+| [List COLUMNS 分区](/partitioned-table.md)           | Y | Y | Y | E | E | E | E | E |    N    |
+| [`EXCHANGE PARTITION`](/partitioned-table.md)               | Y | Y  | E | E | E | E | E | E |    N    |
+| [动态裁剪](/partitioned-table.md#动态裁剪模式) | Y | Y | Y | E | E | E | E |      N       |    N    |
+| [Range COLUMNS 分区](/partitioned-table.md#range-columns-分区) | Y | Y | N | N | N |N | N | N |      N       |
+| [Range INTERVAL 分区](/partitioned-table.md#range-interval-分区) | E | E | N | N | N |N | N | N |      N       |
 
 ## 统计信息
 
