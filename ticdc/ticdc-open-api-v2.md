@@ -125,6 +125,118 @@ curl -X GET http://127.0.0.1:8300/api/v1/health
 
 #### 请求体参数
 
+#### json 模板
+```json
+{
+  "changefeed_id": "string",
+  "replica_config": {
+    "bdr_mode": true,
+    "case_sensitive": true,
+    "check_gc_safe_point": true,
+    "consistent": {
+      "flush_interval": 0,
+      "level": "string",
+      "max_log_size": 0,
+      "storage": "string"
+    },
+    "enable_old_value": true,
+    "enable_sync_point": true,
+    "filter": {
+      "do_dbs": [
+        "string"
+      ],
+      "do_tables": [
+        {
+          "database_name": "string",
+          "table_name": "string"
+        }
+      ],
+      "event_filters": [
+        {
+          "ignore_delete_value_expr": "string",
+          "ignore_event": [
+            "string"
+          ],
+          "ignore_insert_value_expr": "string",
+          "ignore_sql": [
+            "string"
+          ],
+          "ignore_update_new_value_expr": "string",
+          "ignore_update_old_value_expr": "string",
+          "matcher": [
+            "string"
+          ]
+        }
+      ],
+      "ignore_dbs": [
+        "string"
+      ],
+      "ignore_tables": [
+        {
+          "database_name": "string",
+          "table_name": "string"
+        }
+      ],
+      "ignore_txn_start_ts": [
+        0
+      ],
+      "rules": [
+        "string"
+      ]
+    },
+    "force_replicate": true,
+    "ignore_ineligible_table": true,
+    "memory_quota": 0,
+    "mounter": {
+      "worker_num": 0
+    },
+    "scheduler": {
+      "enable_split_span": true,
+      "region_per_span": 0
+    },
+    "sink": {
+      "column_selectors": [
+        {
+          "columns": [
+            "string"
+          ],
+          "matcher": [
+            "string"
+          ]
+        }
+      ],
+      "csv": {
+        "delimiter": "string",
+        "include_commit_ts": true,
+        "null": "string",
+        "quote": "string"
+      },
+      "date_separator": "string",
+      "dispatchers": [
+        {
+          "matcher": [
+            "string"
+          ],
+          "partition": "string",
+          "topic": "string"
+        }
+      ],
+      "enable_partition_separator": true,
+      "encoder_concurrency": 0,
+      "protocol": "string",
+      "schema_registry": "string",
+      "terminator": "string",
+      "transaction_atomicity": "string"
+    },
+    "sync_point_interval": "string",
+    "sync_point_retention": "string"
+  },
+  "sink_uri": "string",
+  "start_ts": 0,
+  "target_ts": 0
+}
+```
+
 | 参数名                       | 说明                                      |
 |:--------------------------|:----------------------------------------|
 | `changefeed_id`           | `STRING` 类型，同步任务的 ID。 （非必选）             |
@@ -185,6 +297,139 @@ curl -X POST -H "'Content-type':'application/json'" http://127.0.0.1:8300/api/v2
 
 若是请求成功，则返回 `200 OK`，若请求失败，则返回错误信息和错误码。
 
+### 响应体格式
+```json
+{
+  "admin_job_type": 0,
+  "checkpoint_time": "string",
+  "checkpoint_ts": 0,
+  "config": {
+    "bdr_mode": true,
+    "case_sensitive": true,
+    "check_gc_safe_point": true,
+    "consistent": {
+      "flush_interval": 0,
+      "level": "string",
+      "max_log_size": 0,
+      "storage": "string"
+    },
+    "enable_old_value": true,
+    "enable_sync_point": true,
+    "filter": {
+      "do_dbs": [
+        "string"
+      ],
+      "do_tables": [
+        {
+          "database_name": "string",
+          "table_name": "string"
+        }
+      ],
+      "event_filters": [
+        {
+          "ignore_delete_value_expr": "string",
+          "ignore_event": [
+            "string"
+          ],
+          "ignore_insert_value_expr": "string",
+          "ignore_sql": [
+            "string"
+          ],
+          "ignore_update_new_value_expr": "string",
+          "ignore_update_old_value_expr": "string",
+          "matcher": [
+            "string"
+          ]
+        }
+      ],
+      "ignore_dbs": [
+        "string"
+      ],
+      "ignore_tables": [
+        {
+          "database_name": "string",
+          "table_name": "string"
+        }
+      ],
+      "ignore_txn_start_ts": [
+        0
+      ],
+      "rules": [
+        "string"
+      ]
+    },
+    "force_replicate": true,
+    "ignore_ineligible_table": true,
+    "memory_quota": 0,
+    "mounter": {
+      "worker_num": 0
+    },
+    "scheduler": {
+      "enable_split_span": true,
+      "region_per_span": 0
+    },
+    "sink": {
+      "column_selectors": [
+        {
+          "columns": [
+            "string"
+          ],
+          "matcher": [
+            "string"
+          ]
+        }
+      ],
+      "csv": {
+        "delimiter": "string",
+        "include_commit_ts": true,
+        "null": "string",
+        "quote": "string"
+      },
+      "date_separator": "string",
+      "dispatchers": [
+        {
+          "matcher": [
+            "string"
+          ],
+          "partition": "string",
+          "topic": "string"
+        }
+      ],
+      "enable_partition_separator": true,
+      "encoder_concurrency": 0,
+      "protocol": "string",
+      "schema_registry": "string",
+      "terminator": "string",
+      "transaction_atomicity": "string"
+    },
+    "sync_point_interval": "string",
+    "sync_point_retention": "string"
+  },
+  "create_time": "string",
+  "creator_version": "string",
+  "error": {
+    "addr": "string",
+    "code": "string",
+    "message": "string"
+  },
+  "id": "string",
+  "resolved_ts": 0,
+  "sink_uri": "string",
+  "start_ts": 0,
+  "state": "string",
+  "target_ts": 0,
+  "task_status": [
+    {
+      "capture_id": "string",
+      "table_ids": [
+        0
+      ]
+    }
+  ]
+}
+```
+
+
 ## 删除同步任务
 
 该接口是幂等的，用于删除一个 changefeed 同步任务，请求成功会返回 `200 OK`。
@@ -209,7 +454,7 @@ curl -X POST -H "'Content-type':'application/json'" http://127.0.0.1:8300/api/v2
 curl -X DELETE http://127.0.0.1:8300/api/v1/changefeeds/test1
 ```
 
-若是请求成功，则返回 `204 NoContent`，若请求失败，则返回错误信息和错误码。
+若是请求成功，则返回 `200 OK`，若请求失败，则返回错误信息和错误码。
 
 ## 更新同步任务配置
 
@@ -231,16 +476,122 @@ curl -X DELETE http://127.0.0.1:8300/api/v1/changefeeds/test1
 
 #### 请求体参数
 
+```json
+{
+  "replica_config": {
+    "bdr_mode": true,
+    "case_sensitive": true,
+    "check_gc_safe_point": true,
+    "consistent": {
+      "flush_interval": 0,
+      "level": "string",
+      "max_log_size": 0,
+      "storage": "string"
+    },
+    "enable_old_value": true,
+    "enable_sync_point": true,
+    "filter": {
+      "do_dbs": [
+        "string"
+      ],
+      "do_tables": [
+        {
+          "database_name": "string",
+          "table_name": "string"
+        }
+      ],
+      "event_filters": [
+        {
+          "ignore_delete_value_expr": "string",
+          "ignore_event": [
+            "string"
+          ],
+          "ignore_insert_value_expr": "string",
+          "ignore_sql": [
+            "string"
+          ],
+          "ignore_update_new_value_expr": "string",
+          "ignore_update_old_value_expr": "string",
+          "matcher": [
+            "string"
+          ]
+        }
+      ],
+      "ignore_dbs": [
+        "string"
+      ],
+      "ignore_tables": [
+        {
+          "database_name": "string",
+          "table_name": "string"
+        }
+      ],
+      "ignore_txn_start_ts": [
+        0
+      ],
+      "rules": [
+        "string"
+      ]
+    },
+    "force_replicate": true,
+    "ignore_ineligible_table": true,
+    "memory_quota": 0,
+    "mounter": {
+      "worker_num": 0
+    },
+    "scheduler": {
+      "enable_split_span": true,
+      "region_per_span": 0
+    },
+    "sink": {
+      "column_selectors": [
+        {
+          "columns": [
+            "string"
+          ],
+          "matcher": [
+            "string"
+          ]
+        }
+      ],
+      "csv": {
+        "delimiter": "string",
+        "include_commit_ts": true,
+        "null": "string",
+        "quote": "string"
+      },
+      "date_separator": "string",
+      "dispatchers": [
+        {
+          "matcher": [
+            "string"
+          ],
+          "partition": "string",
+          "topic": "string"
+        }
+      ],
+      "enable_partition_separator": true,
+      "encoder_concurrency": 0,
+      "protocol": "string",
+      "schema_registry": "string",
+      "terminator": "string",
+      "transaction_atomicity": "string"
+    },
+    "sync_point_interval": "string",
+    "sync_point_retention": "string"
+  },
+  "sink_uri": "string",
+  "target_ts": 0
+}
+```
+
 目前仅支持通过 API 修改同步任务的如下配置。
 
 | 参数名                   | 说明                                      |
 |:----------------------|:----------------------------------------|
 | `target_ts`           | `UINT64` 类型，指定 changefeed 的目标 TSO。（非必选） |
 | `sink_uri`            | `STRING` 类型，同步任务下游的地址。（非必选)             |
-| `filter_rules`        | `STRING` 类型数组，表库过滤的规则。（非必选）             |
-| `ignore_txn_start_ts` | `UINT64` 类型数组，忽略指定 start_ts 的事务。 （非必选）  |
-| `mounter_worker_num`  | `INT` 类型，mounter 线程数。（非必选）              |
-| `sink_config`         | sink 的配置参数。（非必选）                        |
+| `replica_config`      | sink 的配置参数。（非必选）                        |
 
 以上参数含义与[创建同步任务](#创建同步任务)中的参数相同，此处不再赘述。
 
@@ -253,6 +604,7 @@ curl -X DELETE http://127.0.0.1:8300/api/v1/changefeeds/test1
 ```
 
 若是请求成功，则返回 `200 OK`，若请求失败，则返回错误信息和错误码。
+响应的 JSON 格式以及字段含义与[创建同步任务](#创建同步任务)中的参数相同，此处不再赘述。
 
 ## 查询同步任务列表
 
@@ -324,53 +676,7 @@ curl -X GET http://127.0.0.1:8300/api/v2/changefeeds?state=normal
 curl -X GET http://127.0.0.1:8300/api/v1/changefeeds/test1
 ```
 
-```json
-{
-  "upstream_id":7204854053024313036,
-  "namespace":"default",
-  "id":"test2",
-  "sink_uri":"blackhole:",
-  "create_time":"2023-02-27 23:46:41.728",
-  "start_ts":439749915859484676,
-  "engine":"unified",
-  "config":{
-    "memory_quota":1073741824,
-    "case_sensitive":true,
-    "enable_old_value":true,
-    "force_replicate":false,
-    "ignore_ineligible_table":false,
-    "check_gc_safe_point":true,
-    "enable_sync_point":false,
-    "bdr_mode":false,
-    "sync_point_interval":"10m0s",
-    "sync_point_retention":"24h0m0s",
-    "filter":{
-      "rules":["*.*"],
-      "event_filters":null
-    },
-    "mounter":{
-      "worker_num":16
-    },
-    "sink":{
-      "protocol":"",
-      "schema_registry":"",
-      "csv":{
-        "delimiter":",",
-        "quote":"\"",
-        "null":"\\N",
-        "include_commit_ts":false
-      },
-      "column_selectors":null,
-      "transaction_atomicity":"",
-      "encoder_concurrency":16,
-      "terminator":"\r\n",
-      "date_separator":"none",
-      "enable_partition_separator":false
-    },
-    "consistent":{"level":"none","max_log_size":64,"flush_interval":2000,"storage":""},"scheduler":{"enable_split_span":false,"region_per_span":100000}},"state":"normal","creator_version":"v6.7.0-master-dirty","resolved_ts":439749939268419588,"checkpoint_ts":439749939268419588,
-  "checkpoint_time":"2023-02-27 23:48:10.886",
-  "task_status":[{"capture_id":"d2912e63-3349-447c-90ba-72a4e04b5e9e","table_ids":[],"table_operations":null}]}
-```
+响应的 JSON 格式以及字段含义与[创建同步任务](#创建同步任务)中的参数相同，此处不再赘述。
 
 ## 暂停同步任务
 
@@ -395,9 +701,6 @@ curl -X GET http://127.0.0.1:8300/api/v1/changefeeds/test1
 ```shell
 curl -X POST http://127.0.0.1:8300/api/v1/changefeeds/test1/pause
 ```
-```json
-{}
-```
 
 若是请求成功，则返回 `200 OK`，若请求失败，则返回错误信息和错误码。
 
@@ -418,6 +721,12 @@ curl -X POST http://127.0.0.1:8300/api/v1/changefeeds/test1/pause
 | `changefeed_id` | 需要恢复的同步任务 (changefeed) 的 ID |
 
 #### 请求体参数
+
+```json
+{
+  "overwrite_checkpoint_ts": 0
+}
+```
 
 | 参数名                        | 说明                                       |
 |:---------------------------|:-----------------------------------------|
@@ -505,10 +814,16 @@ curl -X GET http://127.0.0.1:8300/api/v2/captures
 ```json
 {"total":1,
   "items":[
-    {"id":"d2912e63-3349-447c-90ba-72a4e04b5e9e","is_owner":true,"address":"127.0.0.1:8300","cluster_id":"default"}
+    {"id":"d2912e63-3349-447c-90ba-72a4e04b5e9e","is_owner":true,"address":"127.0.0.1:8300"}
   ]
 }
 ```
+
+此处对以上返回的信息做进一步阐述：
+
+- `id`：`capture` 的 ID
+- `is_owner`：该 `capture` 是否是 owner 。
+- `address`：该 `capture` 的地址。
 
 ## 驱逐 owner 节点
 
