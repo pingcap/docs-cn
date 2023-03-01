@@ -203,7 +203,7 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 + 控制对同一个 Region 做 split 和 merge 操作的间隔，即对于新 split 的 Region 一段时间内不会被 merge。
 + 默认：1h
 
-### `switch-witness-interval` <span class="version-mark">从 v6.6.0 版本开始引入</span>
+### `switch-witness-interval` <span class="version-mark">从 v7.0.0 版本开始引入</span>
 
 + 控制某个 Region 在 [Witness](/glossary.md#witness) 和 Non-Witness 之间切换的间隔，即一个新切换为 Non-Witness 的 Region 在一段时间内不会被切换为 Witness。
 + 默认值：1h
@@ -258,14 +258,14 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 + 同时进行的 Region Merge 调度的任务，设置为 0 则关闭 Region Merge。
 + 默认值：8
 
-### `witness-schedule-limit` <span class="version-mark">从 v6.6.0 版本开始引入</span>
+### `witness-schedule-limit` <span class="version-mark">从 v7.0.0 版本开始引入</span>
 
 + 控制并行 Witness 调度任务的个数。
 + 默认值：4
 + 最小值：1
 + 最大值：9
 
-### `enable-witness` <span class="version-mark">从 v6.6.0 版本开始引入</span>
+### `enable-witness` <span class="version-mark">从 v7.0.0 版本开始引入</span>
 
 + 控制是否开启 Witness 副本功能。
 + Witness 副本的使用场景如下：
