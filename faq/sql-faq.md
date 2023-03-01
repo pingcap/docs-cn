@@ -309,7 +309,7 @@ TiDB 在执行 SQL 语句时，会根据隔离级别确定一个对象的 `schem
 
 ### 定位 DDL 执行卡住的问题
 
-1. 先排除正常会慢的可能原因。
+1. 先排除 DDL 语句通常执行慢的可能原因。
 2. 使用以下任一方法找出 DDL owner 节点：
     + 通过 `curl http://{TiDBIP}:10080/info/all` 获取当前集群的 Owner
     + 通过监控 **DDL** > **DDL META OPM** 查看某个时间段的 Owner
