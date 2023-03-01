@@ -5,7 +5,7 @@ summary: TiDB 数据库中 ADMIN RECOVER INDEX 的使用概况。
 
 # ADMIN RECOVER INDEX
 
-`ADMIN RECOVER INDEX` 语句用于在表发生行数据和索引的一致性故障时，根据表中多余的索引，使表的行数据和索引重新回到一致状态。注意，该语法尚不支持[外键约束](/foreign-key.md)。
+`ADMIN RECOVER INDEX` 语句用于在表发生行数据和索引的一致性故障时，根据表中多余的索引，使表的行数据和索引重新恢复到一致状态。注意，该语法尚不支持[外键约束](/foreign-key.md)。
 
 ## 语法图
 
@@ -27,8 +27,6 @@ ERROR 1105 (HY000): handle &kv.CommonHandle{encoded:[]uint8{0x1, 0x0, 0x0, 0x0, 
 ```
 
 从 `SELECT` 查询的错误信息可以看到，`tbl` 表中包含 3 条行数据和 2 条索引数据，这意味着行数据与索引数据出现了不一致故障，同时至少有 1 条行数据缺少了对应的索引。此时可以使用 `ADMIN RECOVER INDEX` 语句补充的缺少的索引：
-
-{{< copyable "sql" >}}
 
 ```sql
 ADMIN RECOVER INDEX tbl idx;

@@ -31,8 +31,6 @@ ERROR 1105 (HY000): handle &kv.CommonHandle{encoded:[]uint8{0x1, 0x0, 0x0, 0x0, 
 
 从 `SELECT` 查询的错误信息可以看到，`tbl` 表中包含 2 条行数据和 3 条索引数据，这意味着行数据与索引数据出现了不一致故障，同时至少有 1 条索引处于悬空状态。此时可以使用 `ADMIN CLEANUP INDEX` 语句删除悬空的索引：
 
-{{< copyable "sql" >}}
-
 ```sql
 ADMIN CLEANUP INDEX tbl idx;
 ```
@@ -48,7 +46,7 @@ MySQL [sample]> ADMIN CLEANUP INDEX tbl idx;
 +---------------+
 ```
 
-此时，可以重新使用 `ADMIN CHECK INDEX` 语句对数据索引的一致性进行检查，验证数据恢复到正常状态：
+此时，可以重新使用 `ADMIN CHECK INDEX` 语句检查数据索引的一致性，验证数据是否恢复到正常状态：
 
 ```sql
 MySQL [sample]> ADMIN CHECK INDEX tbl idx;
