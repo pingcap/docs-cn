@@ -261,7 +261,7 @@ TiDB 支持改变[全局](/system-variables.md#tidb_force_priority)或单个语�
 
 ### 触发 Information schema is changed 错误的原因？
 
-TiDB 在执行 SQL 语句时，会根据隔离级别确定一个对象的 `schema` 版本来处理该 SQL 语句，而且 TiDB 支持在线异步变更 DDL。那么，在执行 DML 的时候可能有 DDL 语句也在执行，而你需要确保每个 SQL 语句在同一个 `schema` 上执行。所以当执行 DML 时，如果遇到正在执行中的 DDL 操作，TiDB 可能会报 `Information schema is changed` 的错误。从 v6.4.0 开始， TiDB 实现了[元数据锁机制](/metadata-lock.md)，可以让 DML 语句的执行和 DDL Schema 变更协同进行，可以避免掉大部分 `Information schema is changed` 错误的发生。
+TiDB 在执行 SQL 语句时，会根据隔离级别确定一个对象的 `schema` 版本来处理该 SQL 语句，而且 TiDB 支持在线异步变更 DDL。那么，在执行 DML 的时候可能有 DDL 语句也在执行，而你需要确保每个 SQL 语句在同一个 `schema` 上执行。所以当执行 DML 时，如果遇到正在执行中的 DDL 操作，TiDB 可能会报 `Information schema is changed` 的错误。从 v6.4.0 开始，TiDB 实现了[元数据锁机制](/metadata-lock.md)，可以让 DML 语句的执行和 DDL Schema 变更协同进行，可以避免大部分 `Information schema is changed` 错误的发生。
 
 报错的可能原因如下：
 
