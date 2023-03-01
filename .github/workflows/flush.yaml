@@ -1,23 +1,27 @@
 name: Flush PDF
 
 on:
+  # manual flush pdf for specified version
   workflow_dispatch:
     inputs:
-      cloud:
-        default: false
-        required: false
-        type: boolean
-        description: "Is cloud?"
+      type:
+        required: true
+        type: choice
+        options: ['tidb', 'tidb cloud', 'tidb operator']
+        default: 'tidb'
+        description: "the type"
       version:
         required: false
         type: string
-        description: "The version, e.g. 'v6.5' or 'dev'"
-      lang:
-        required: false
-        type: string
-        description: "The language, e.g. 'en' or 'zh'"
+        description: "the version, e.g. v6.5 or dev"
+      # lang:
+      #   required: false
+      #   type: choice
+      #   options: ['en', 'zh']
+      #   description: "The language"
   schedule:
-    - cron: "0 0 * * 0" # auto flush pdf on sunday
+    # auto flush pdf on sunday
+    - cron: "0 0 * * 0"
 
 jobs:
   flush-pdf:
@@ -29,18 +33,25 @@ jobs:
         with:
           version: '2.6.2'
 
-      - name: Get pdf list (tidb)
-        if: ${{ !inputs.cloud}}
+      - name: print pdf to a file (tidb)
+        if: ${{ inputs.type == 'tidb' }}
         run: |
-          echo "https://download.pingcap.org/tidb-${{inputs.version}}-${{inputs.lang}}-manual.pdf" > pdf.txt
+          echo "https://download.pingcap.org/tidb-${{inputs.version}}-en-manual.pdf" >> pdf.txt
+          echo "https://download.pingcap.org/tidb-${{inputs.version}}-zh-manual.pdf" >> pdf.txt
           cat pdf.txt
 
-      - name: Get pdf list (tidb cloud)
-        if: ${{ inputs.cloud}}
+      - name: print pdf to a file (tidb cloud)
+        if: ${{ inputs.type == 'tidb cloud' }}
         run: |
           echo "https://download.pingcap.org/tidbcloud-en-manual.pdf" > pdf.txt
           cat pdf.txt
 
+      - name: print pdf to a file (tidb operator)
+        if: ${{ inputs.type == 'tidb operator' }}
+        run: |
+          echo "https://download.pingcap.org/tidb-in-kubernetes-${{inputs.version}}-en-manual.pdf" >> pdf.txt
+          echo "https://download.pingcap.org/tidb-in-kubernetes-${{inputs.version}}-zh-manual.pdf" >> pdf.txt
+          cat pdf.txt
 
       - name: refresh url
         run: |
@@ -52,4 +63,3 @@ jobs:
             echo "CDN refresh failed: $result"
             exit 1
           fi
-
