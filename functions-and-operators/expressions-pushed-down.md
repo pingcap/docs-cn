@@ -8,6 +8,8 @@ aliases: ['/docs-cn/dev/functions-and-operators/expressions-pushed-down/','/docs
 
 当 TiDB 从 TiKV 中读取数据的时候，TiDB 会尽量下推一些表达式运算到 TiKV 中，从而减少数据传输量以及 TiDB 单一节点的计算压力。本文将介绍 TiDB 已支持下推的表达式，以及如何禁止下推特定表达式。
 
+TiFlash 也支持[本页](/tiflash/tiflash-supported-pushdown-calculations.md)列出的函数和算子下推。
+
 ## 已支持下推的表达式列表
 
 | 表达式分类 | 具体操作 |
