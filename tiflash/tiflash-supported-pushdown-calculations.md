@@ -29,7 +29,7 @@ TiFlash 支持部分算子的下推，支持的算子如下：
 
 ## 支持下推的表达式
 
-| Expression Type | Operations |
+| 表达式类型 | 运算 |
 | :-------------- | :------------------------------------- |
 | [数学函数](/functions-and-operators/numeric-functions-and-operators.md) | `+`, `-`, `/`, `*`, `%`, `>=`, `<=`, `=`, `!=`, `<`, `>`, `ROUND()`, `ABS()`, `FLOOR(int)`, `CEIL(int)`, `CEILING(int)`, `SQRT()`, `LOG()`, `LOG2()`, `LOG10()`, `LN()`, `EXP()`, `POW()`, `SIGN()`, `RADIANS()`, `DEGREES()`, `CONV()`, `CRC32()`, `GREATEST(int/real)`, `LEAST(int/real)` |
 | [逻辑函数](/functions-and-operators/control-flow-functions.md)和[算子](/functions-and-operators/operators.md) | `AND`, `OR`, `NOT`, `CASE WHEN`, `IF()`, `IFNULL()`, `ISNULL()`, `IN`, `LIKE`, `COALESCE`, `IS` |
