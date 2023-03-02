@@ -266,7 +266,6 @@ TiDB 在执行 SQL 语句时，会根据隔离级别确定一个对象的 `schem
 
 从 v6.4.0 开始，TiDB 实现了[元数据锁机制](/metadata-lock.md)，可以让 DML 语句的执行和 DDL Schema 变更协同进行，可以避免大部分 `Information schema is changed` 错误的发生。
 
-
 报错的可能原因如下：
 
 - 原因 1：正在执行的 DML 所涉及的表和集群中正在执行的 DDL 的表有相同的，那么这个 DML 语句就会报此错。可以通过命令 `admin show ddl job` 查看正在执行的 DDL 操作。
