@@ -44,9 +44,6 @@ server_configs:
     # capture-session-ttl: 10
     # sorter.sort-dir: "/tmp/cdc_sort"
     # gc-ttl: 86400
-    deploy_dir: "/tidb-deploy/cdc-8300"
-    data_dir: "/tidb-data/cdc-8300"
-    log_dir: "/tidb-deploy/cdc-8300/log"
 
 
 pd_servers:
