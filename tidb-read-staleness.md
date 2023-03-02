@@ -23,7 +23,7 @@ summary: 了解如何通过系统变量 `tidb_read_staleness` 读取历史数据
 
 > **注意：**
 >
-> 如何提高 Stale Read 数据时效性（即减少延时）参见[减少 Stale Read 延时](/stale-read.md#减少-stale-read-延时)。
+> 你可以通过调整 TiKV 的 `advance-ts-interval` 配置项提高 Stale Read 数据的时效性（即减少延时），详情参见[减少 Stale Read 延时](/stale-read.md#减少-stale-read-延时)。
 
 ## 示例
 
