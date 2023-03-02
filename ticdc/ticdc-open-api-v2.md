@@ -207,7 +207,7 @@ curl -X GET http://127.0.0.1:8300/api/v1/health
       "worker_num": 0
     },
     "scheduler": {
-      "enable_split_span": true,
+      "enable_table_across_nodes": true,
       "region_per_span": 0
     },
     "sink": {
@@ -281,7 +281,6 @@ server 上。
 | `ignore_ineligible_table` | `BOOLEAN` 类型，该值默认为 false，当指定为 true 时，同步任务会忽略无法进行同步的表。（非必选）     |
 | `memory_quota`            | `UINT64` 类型，同步任务的内存 quota。（非必选）                                |
 | `mounter`                 | 同步任务 `mounter` 配置。（非必选）                                        |
-| `scheduler`               | 同步任务的调度器配置。（非必选）                                               |
 | `sink`                    | 同步任务的`sink`配置。（非必选）                                            |
 | `sync_point_interval`     | `STRING` 类型，`sync point`功能开启时，sync point 表多久更新一次。（非必选）         |
 | `sync_point_retention`    | `STRING` 类型，`sync point`功能开启时，sync point 表数据保留时间。（非必选）         |
@@ -297,11 +296,15 @@ server 上。
 
 `filter` 参数说明如下
 
-| 参数名      | 说明                      |
-|:---------|:------------------------|
-| `do_dbs` | `STRING ARRAY` 类型。（非必选） |
-
-下面会对一些需要补充说明的参数进行进一步阐述。
+| 参数名                   | 说明                                                                                |
+|:----------------------|:----------------------------------------------------------------------------------|
+| `do_dbs`              | `STRING ARRAY` 类型，需要同步的数据库。（非必选）                                                  |
+| `do_tables`           | 需要同步的表。（非必选）                                                                      |
+| `ignore_dbs`          | `STRING ARRAY` 类型，忽略的数据库。（非必选）                                                    |
+| `do_dbs`              | 需要同步的表。。（非必选）                                                                     |
+| `event_filters`       | event 过滤配置（非必选）                                                                   |
+| `ignore_txn_start_ts` | `UINT64 ARRAY` 指定之后会忽略指定 start_ts 的事务，如 `[1, 2]`（非必选）                             |
+| `rules`               | `STRING ARRAY`表库过滤的规则,如 `['foo*.*', 'bar*.*']` 详情参考[表库过滤](/table-filter.md)。（非必选） |
 
 `mounter` 参数说明如下
 
@@ -309,49 +312,38 @@ server 上。
 |:-------------|:------------------------------------------------------------|
 | `worker_num` | `INT` 类型。 Mounter 线程数，Mounter 用于解码 TiKV 输出的数据，默认值为 16。（非必选） |
 
-`scheduler` 参数说明如下
-
-| 参数名                 | 说明                                                              |
-|:--------------------|:----------------------------------------------------------------|
-| `enable_split_span` | `BOOLEAN` 类型。 Mounter 线程数，Mounter 用于解码 TiKV 输出的数据，默认值为 16。（非必选） |
-
 `sink` 参数说明如下
 
-| 参数名                 | 说明                                                              |
-|:--------------------|:----------------------------------------------------------------|
-| `enable_split_span` | `BOOLEAN` 类型。 Mounter 线程数，Mounter 用于解码 TiKV 输出的数据，默认值为 16。（非必选） |
+| 参数名                          | 说明                                                                                                      |
+|:-----------------------------|:--------------------------------------------------------------------------------------------------------|
+| `column_selectors`           | column selector 配置（非必选）                                                                                 |
+| `csv`                        | csv 配置（非必选）                                                                                             |
+| `date_separator`             | `STRING` 类型，date 分隔符。（非必选）                                                                              |
+| `dispatchers`                | 事件分发配置数组（非必选）                                                                                           |
+| `enable_partition_separator` | `BOOLEAN` 类型。开启后一个 table 会被拆分成多个 span 并分发到多个 TiCDC 节点。 默认值为 false。（非必选）                                 |
+| `encoder_concurrency`        | `BOOLEAN` 类型。开启后一个 table 会被拆分成多个 span 并分发到多个 TiCDC 节点。 默认值为 false。（非必选）                                 |
+| `protocol`                   | `STRING` 类型。对于 MQ 类的 Sink，可以指定消息的协议格式。目前支持 `canal-json`、`open-protocol`、`canal`、`avro` 和 `maxwell`五种协议。 |
+| `schema_registry`            | `STRING` 类型，schema registry 地址。（非必选）                                                                    |
+| `terminator`                 | `STRING` 类型，结束符（非必选）                                                                                    |
+| `transaction_atomicity`      | `STRING` 类型，事务一致性等级。（非必选）                                                                               |
 
-下面会对一些需要补充说明的参数进行进一步阐述。
+`sink.column_selectors` 是一个数组，元素参数说明如下
 
-`filter_rules`：表库过滤的规则，如 `filter_rules = ['foo*.*', 'bar*.*']` 详情参考[表库过滤](/table-filter.md)。
+| 参数名       | 说明                                        |
+|:----------|:------------------------------------------|
+| `columns` | `STRING ARRAY` column 数组。                 |
+| `matcher` | `STRING ARRAY` matcher 配置，匹配语法和过滤器规则语法相同。 |
 
-`ignore_txn_start_ts`：指定之后会忽略指定 start_ts 的事务，如 `ignore-txn-start-ts = [1, 2]`。
+`sink.csv` 参数说明如下
 
-`sink_config`：sink 的配置参数，如下
+| 参数名                 | 说明                             |
+|:--------------------|:-------------------------------|
+| `delimiter`         | `STRING`csv 分隔符。               |
+| `include_commit_ts` | `BOOLEAN` csv 是否包含 commint ts。 |
+| `null`              | `STRING`。                      |
+| `quote`             | `STRING`。                      |
 
-```json
-{
-  "dispatchers": [
-    {
-      "matcher": [
-        "test1.*",
-        "test2.*"
-      ],
-      "dispatcher": "ts"
-    },
-    {
-      "matcher": [
-        "test3.*",
-        "test4.*"
-      ],
-      "dispatcher": "rowid"
-    }
-  ],
-  "protocol": "canal-json"
-}
-```
-
-`dispatchers`：对于 MQ 类的 Sink，可以通过 dispatchers 配置 event 分发器，支持 default、ts、rowid、table 四种分发器，分发规则如下：
+`sink.dispatchers`：对于 MQ 类的 Sink，可以通过 dispatchers 配置 event 分发器，支持 default、ts、rowid、table 四种分发器，分发规则如下：
 
 - default：有多个唯一索引（包括主键）时按照 table 模式分发；只有一个唯一索引（或主键）按照 rowid 模式分发；如果开启了 old value
   特性，按照 table 分发。
@@ -359,10 +351,13 @@ server 上。
 - rowid：以所选的 HandleKey 列名和列值做 Hash 计算并进行 event 分发。
 - table：以表的 schema 名和 table 名做 Hash 计算并进行 event 分发。
 
-`matcher`：匹配语法和过滤器规则语法相同。
+`sink.dispatchers`是一个数组，元素参数说明如下
 
-`protocol`：对于 MQ 类的 Sink，可以指定消息的协议格式。目前支持 `canal-json`、`open-protocol`、`canal`、`avro` 和 `maxwell`
-五种协议。
+| 参数名         | 说明                             |
+|:------------|:-------------------------------|
+| `matcher`   | `STRING ARRAY` 匹配语法和过滤器规则语法相同。 |
+| `partition` | `STRING`事件分发的目标 partition。     |
+| `topic`     | `STRING` 事件分发的目标 topic。        |
 
 ### 使用样例
 
@@ -506,6 +501,32 @@ curl -X POST -H "'Content-type':'application/json'" http://127.0.0.1:8300/api/v2
   ]
 }
 ```
+
+参数说明如下
+
+| 参数名               | 说明                          |
+|:------------------|:----------------------------|
+| `admin_job_type`  | `INTEGER` admin 事件类型。       |
+| `checkpoint_time` | `STRING` checkpoint 格式化后时间。 |
+| `checkpoint_ts`   | `STRING` checkpoint ts。     |
+| `config`          | 同步任务配置，结构和含义与上述配置           |
+| `create_time`     | `STRING` 同步任务创建的时间          |
+| `creator_version` | `STRING` 同步任务创建时 TiCDC 的版本  |
+| `error`           | 同步任务错误                      |
+| `id`              | `STRING` 同步任务 ID            |
+| `resolved_ts`     | `UINT64` 同步任务 resolved ts   |
+| `sink_uri`        | `STRING` 同步任务的 sink uri     |
+| `start_ts`        | `UINT64` 同步任务 start ts      |
+| `state`           | `STRING` 同步任务状态             |
+| `target_ts`       | `UINT64` 同步任务的 target ts    |
+| `task_status`     | 同步任务分发的详细状态                 |
+
+`task_status`参数说明如下
+
+| 参数名          | 说明                                      |
+|:-------------|:----------------------------------------|
+| `capture_id` | `STRING` `Capture` ID                   |
+| `table_ids`  | `UINT64 ARRAY`该 Capture 上正在同步的 table ID |
 
 ## 删除同步任务
 
