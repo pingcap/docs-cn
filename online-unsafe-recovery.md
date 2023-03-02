@@ -177,25 +177,25 @@ SELECT TABLE_SCHEMA, TABLE_NAME, TIDB_TABLE_ID FROM INFORMATION_SCHEMA.TABLES WH
 ADMIN CHECK TABLE table_name;
 ```
 
-若结果有不一致的索引，可以通过重命名旧索引、创建新索引、删除旧索引的方式来修复数据索引不一致的问题。
+若结果有不一致的索引，可以通过重命名旧索引、创建新索引，然后再删除旧索引的步骤来修复数据索引不一致的问题。
 
-重命名旧索引：
+1. 重命名旧索引：
 
-```sql
-ALTER TABLE table_name RENAME INDEX index_name TO index_name_lame_duck;
-```
+    ```sql
+    ALTER TABLE table_name RENAME INDEX index_name TO index_name_lame_duck;
+    ```
 
-创建新索引：
+2. 创建新索引：
 
-```sql
-ALTER TABLE table_name ADD INDEX index_name (column_name);
-```
+    ```sql
+    ALTER TABLE table_name ADD INDEX index_name (column_name);
+    ```
 
-删除旧索引：
+3. 删除旧索引：
 
-```sql
-ALTER TABLE table_name DROP INDEX index_name_lame_duck;
-```
+    ```sql
+    ALTER TABLE table_name DROP INDEX index_name_lame_duck;
+    ```
 
 ### 第 4 步：移除无法恢复的节点（可选）
 
@@ -203,7 +203,7 @@ ALTER TABLE table_name DROP INDEX index_name_lame_duck;
 <div label="通过 TiUP 部署的节点">
 
 1. 缩容无法恢复的节点：
-   
+
     {{< copyable "shell-regular" >}}
 
     ```bash

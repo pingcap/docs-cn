@@ -67,7 +67,7 @@ dumpling -u root -P 4000 -h 127.0.0.1 --filetype sql -t 8 -o /tmp/test -r 200000
 以上命令中：
 
 - `-h`、`-P`、`-u` 分别代表地址、端口、用户。如果需要密码验证，可以使用 `-p $YOUR_SECRET_PASSWORD` 将密码传给 Dumpling。
-- `-o`（或 `--output`）用于选择存储导出文件的目录，支持本地文件路径或[外部存储 URL 格式](/br/backup-and-restore-storages.md#url-格式)。
+- `-o`（或 `--output`）用于选择存储导出文件的目录，支持本地文件路径或[外部存储 URI 格式](/br/backup-and-restore-storages.md#uri-格式)。
 - `-t` 用于指定导出的线程数。增加线程数会增加 Dumpling 并发度提高导出速度，但也会加大数据库内存消耗，因此不宜设置过大。一般不超过 64。
 - `-r` 用于指定单个文件的最大行数，指定该参数后 Dumpling 会开启表内并发加速导出，同时减少内存使用。当上游为 TiDB 且版本为 v3.0 或更新版本时，设置 `-r` 参数大于 0 表示使用 TiDB region 信息划分表内并发，具体取值不影响划分算法。对上游为 MySQL 且表的主键是 int 的场景，该参数也有表内并发效果。
 - `-F` 选项用于指定单个文件的最大大小，单位为 `MiB`，可接受类似 `5GiB` 或 `8KB` 的输入。如果你想使用 TiDB Lightning 将该文件加载到 TiDB 实例中，建议将 `-F` 选项的值保持在 256 MiB 或以下。
@@ -182,7 +182,7 @@ export AWS_ACCESS_KEY_ID=${AccessKey}
 export AWS_SECRET_ACCESS_KEY=${SecretKey}
 ```
 
-Dumpling 同时还支持从 `~/.aws/credentials` 读取凭证文件。Dumpling 导出到 Amazon S3 的配置参数与 BR 大致相同，更多参数描述，请参考[外部存储 URL 格式](/br/backup-and-restore-storages.md#url-格式)。
+Dumpling 同时还支持从 `~/.aws/credentials` 读取凭证文件。Dumpling 导出到 Amazon S3 的配置参数与 BR 大致相同，更多参数描述，请参考[外部存储 URI 格式](/br/backup-and-restore-storages.md#uri-格式)。
 
 {{< copyable "shell-regular" >}}
 
@@ -334,7 +334,7 @@ SET GLOBAL tidb_gc_life_time = '10m';
 | -s 或--statement-size | 控制 `INSERT` SQL 语句的大小，单位 bytes |
 | -F 或 --filesize | 将 table 数据划分出来的文件大小，需指明单位（如 `128B`, `64KiB`, `32MiB`, `1.5GiB`） |
 | --filetype| 导出文件类型（csv/sql） | "sql" |
-| -o 或 --output | 导出本地文件路径或[外部存储 URL 格式](/br/backup-and-restore-storages.md#url-格式) | "./export-${time}" |
+| -o 或 --output | 导出本地文件路径或[外部存储 URI 格式](/br/backup-and-restore-storages.md#uri-格式) | "./export-${time}" |
 | -S 或 --sql | 根据指定的 sql 导出数据，该选项不支持并发导出 |
 | --consistency | flush: dump 前用 FTWRL <br/> snapshot: 通过 TSO 来指定 dump 某个快照时间点的 TiDB 数据 <br/> lock: 对需要 dump 的所有表执行 `lock tables read` 命令 <br/> none: 不加锁 dump，无法保证一致性 <br/> auto: 对 MySQL 使用 --consistency flush；对 TiDB 使用 --consistency snapshot | "auto" |
 | --snapshot | snapshot tso，只在 consistency=snapshot 下生效 |

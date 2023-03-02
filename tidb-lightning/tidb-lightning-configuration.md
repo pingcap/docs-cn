@@ -159,7 +159,7 @@ read-block-size = "64KiB" # 默认值
 # 取值范围为（0 <= batch-import-ratio < 1）。
 batch-import-ratio = 0.75
 
-# 本地源数据目录或外部存储 URL
+# 本地源数据目录或外部存储 URI。关于外部存储 URI 详情可参考 https://docs.pingcap.com/zh/tidb/v6.6/backup-and-restore-storages#uri-%E6%A0%BC%E5%BC%8F。
 data-source-dir = "/data/my_database"
 
 # 指定包含 `CREATE TABLE` 语句的表结构文件的字符集。只支持下列选项：
@@ -325,7 +325,7 @@ log-progress = "5m"
 |:----|:----|:----|
 | --config *file* | 从 *file* 读取全局设置。如果没有指定则使用默认设置。 | |
 | -V | 输出程序的版本 | |
-| -d *directory* | 读取数据的本地目录或[外部存储 URL](/br/backup-and-restore-storages.md#url-格式) | `mydumper.data-source-dir` |
+| -d *directory* | 读取数据的本地目录或[外部存储 URI](/br/backup-and-restore-storages.md#uri-格式) | `mydumper.data-source-dir` |
 | -L *level* | 日志的等级： debug、info、warn、error 或 fatal (默认为 info) | `lightning.log-level` |
 | -f *rule* | [表库过滤的规则](/table-filter.md) (可多次指定) | `mydumper.filter` |
 | --backend [*backend*](/tidb-lightning/tidb-lightning-overview.md) | 选择导入的模式：`local`为 Physical Import Mode，`tidb`为 Logical Import Mode  | `local` |

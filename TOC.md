@@ -4,7 +4,7 @@
 - [文档中心](https://docs.pingcap.com/zh)
 - 关于 TiDB
   - [TiDB 简介](/overview.md)
-  - [TiDB 6.5 Release Notes](/releases/release-6.5.0.md)
+  - [TiDB 6.6 Release Notes](/releases/release-6.6.0.md)
   - [功能概览](/basic-features.md)
   - [与 MySQL 的兼容性](/mysql-compatibility.md)
   - [使用限制](/tidb-limitations.md)
@@ -156,6 +156,11 @@
       - [使用 Dumpling 和 TiDB Lightning 备份与恢复](/backup-and-restore-using-dumpling-lightning.md)
       - [备份与恢复 RawKV](/br/rawkv-backup-and-restore.md)
       - [增量备份与恢复](/br/br-incremental-guide.md)
+  - 集群容灾
+    - [容灾方案介绍](/dr-solution-introduction.md)
+    - [基于主备集群的容灾](/dr-secondary-cluster.md)
+    - [基于多副本的单集群容灾](/dr-multi-replica.md)
+    - [基于备份与恢复的容灾](/dr-backup-restore.md)
   - [使用资源管控 (Resource Control) 实现资源隔离](/tidb-resource-control.md)
   - [修改时区](/configure-time-zone.md)
   - [日常巡检](/daily-check.md)
@@ -195,6 +200,7 @@
     - [使用 Top SQL 定位系统资源消耗过多的查询](/dashboard/top-sql.md)
     - [通过日志定位消耗系统资源多的查询](/identify-expensive-queries.md)
     - [保存和恢复集群现场信息](/sql-plan-replayer.md)
+  - [获取支持](/support.md)
 - 性能调优
   - 优化手册
     - [优化概述](/performance-tuning-overview.md)
@@ -272,6 +278,7 @@
     - [海量 Region 集群调优](/best-practices/massive-regions-best-practices.md)
     - [三节点混合部署最佳实践](/best-practices/three-nodes-hybrid-deployment.md)
     - [在三数据中心下就近读取数据](/best-practices/three-dc-local-read.md)
+    - [使用 UUID](/best-practices/uuid.md)
     - [只读存储节点最佳实践](/best-practices/readonly-nodes.md)
   - [Placement Rules 使用文档](/configure-placement-rules.md)
   - [Load Base Split 使用文档](/configure-load-base-split.md)
@@ -596,6 +603,7 @@
     - [RocksDB 简介](/storage-engine/rocksdb-overview.md)
     - [Titan 简介](/storage-engine/titan-overview.md)
     - [Titan 配置说明](/storage-engine/titan-configuration.md)
+    - [分区 Raft KV](/partitioned-raft-kv.md)
   - 存储引擎 TiFlash
     - [TiFlash 简介](/tiflash/tiflash-overview.md)
     - [构建 TiFlash 副本](/tiflash/create-tiflash-replicas.md)
@@ -960,6 +968,8 @@
   - [版本发布时间线](/releases/release-timeline.md)
   - [TiDB 版本规则](/releases/versioning.md)
   - [TiDB 离线包](/binary-package.md)
+  - v6.6
+    - [6.6.0-DMR](/releases/release-6.6.0.md)
   - v6.5
     - [6.5.0](/releases/release-6.5.0.md)
   - v6.4
@@ -969,6 +979,7 @@
   - v6.2
     - [6.2.0-DMR](/releases/release-6.2.0.md)
   - v6.1
+    - [6.1.5](/releases/release-6.1.5.md)
     - [6.1.4](/releases/release-6.1.4.md)
     - [6.1.3](/releases/release-6.1.3.md)
     - [6.1.2](/releases/release-6.1.2.md)

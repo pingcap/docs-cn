@@ -22,26 +22,29 @@ TiFlash 支持部分算子的下推，支持的算子如下：
     * 只有在 [MPP 模式](/tiflash/use-tiflash-mpp-mode.md)下才能被下推
     * 支持的 Join 类型包括 Inner Join、Left Join、Semi Join、Anti Semi Join、Left Semi Join、Anti Left Semi Join
     * 对于上述类型，既支持带等值条件的连接，也支持不带等值条件的连接（即 Cartesian Join）；在计算 Cartesian Join 时，只会使用 Broadcast 算法，而不会使用 Shuffle Hash Join 算法
-* Window：当前支持下推的窗口函数包括：row_number()、rank()、dense_rank()、lead() 和 lag()
+* [Window](/functions-and-operators/window-functions.md)：当前支持下推的窗口函数包括 `ROW_NUMBER()`、`RANK()`、`DENSE_RANK()`、`LEAD()` 和 `LAG()`
 
 在 TiDB 中，算子之间会呈现树型组织结构。一个算子能下推到 TiFlash 的前提条件，是该算子的所有子算子都能下推到 TiFlash。因为大部分算子都包含有表达式计算，当且仅当一个算子所包含的所有表达式均支持下推到 TiFlash 时，该算子才有可能下推给 TiFlash。
 
 ## 支持下推的表达式
 
-* 数学函数：`+, -, /, *, %, >=, <=, =, !=, <, >, round, abs, floor(int), ceil(int), ceiling(int), sqrt, log, log2, log10, ln, exp, pow, sign, radians, degrees, conv, crc32, greatest(int/real), least(int/real)`
-* 逻辑函数：`and, or, not, case when, if, ifnull, isnull, in, like, coalesce, is`
-* 位运算：`bitand, bitor, bigneg, bitxor`
-* 字符串函数：`substr, char_length, replace, concat, concat_ws, left, right, ascii, length, trim, ltrim, rtrim, position, format, lower, ucase, upper, substring_index, lpad, rpad, strcmp, regexp, regexp_like, regexp_instr, regexp_substr, regexp_replace`
-* 日期函数：`date_format, timestampdiff, from_unixtime, unix_timestamp(int), unix_timestamp(decimal), str_to_date(date), str_to_date(datetime), datediff, year, month, day, extract(datetime), date, hour, microsecond, minute, second, sysdate, date_add/adddate(datetime, int), date_add/adddate(string, int), date_add/adddate(string, real), date_sub/subdate(datetime, int), date_sub/subdate(string, int), date_sub/subdate(string, real), quarter, dayname, dayofmonth, dayofweek, dayofyear, last_day, monthname, to_seconds, to_days, from_days, weekofyear`
-* JSON 函数：`json_length, ->, ->>, json_extract`
-* 转换函数：`cast(int as double), cast(int as decimal), cast(int as string), cast(int as time), cast(double as int), cast(double as decimal), cast(double as string), cast(double as time), cast(string as int), cast(string as double), cast(string as decimal), cast(string as time), cast(decimal as int), cast(decimal as string), cast(decimal as time), cast(time as int), cast(time as decimal), cast(time as string), cast(time as real)`
-* 聚合函数：`min, max, sum, count, avg, approx_count_distinct, group_concat`
-* 其他函数：`inetntoa, inetaton, inet6ntoa, inet6aton`
+| 表达式类型 | 运算 |
+| :-------------- | :------------------------------------- |
+| [数学函数](/functions-and-operators/numeric-functions-and-operators.md) | `+`, `-`, `/`, `*`, `%`, `>=`, `<=`, `=`, `!=`, `<`, `>`, `ROUND()`, `ABS()`, `FLOOR(int)`, `CEIL(int)`, `CEILING(int)`, `SQRT()`, `LOG()`, `LOG2()`, `LOG10()`, `LN()`, `EXP()`, `POW()`, `SIGN()`, `RADIANS()`, `DEGREES()`, `CONV()`, `CRC32()`, `GREATEST(int/real)`, `LEAST(int/real)` |
+| [逻辑函数](/functions-and-operators/control-flow-functions.md)和[算子](/functions-and-operators/operators.md) | `AND`, `OR`, `NOT`, `CASE WHEN`, `IF()`, `IFNULL()`, `ISNULL()`, `IN`, `LIKE`, `COALESCE`, `IS` |
+| [位运算](/functions-and-operators/bit-functions-and-operators.md) | `&` (bitand), `\|` (bitor), `~` (bitneg), `^` (bitxor) |
+| [字符串函数](/functions-and-operators/string-functions.md) | `SUBSTR()`, `CHAR_LENGTH()`, `REPLACE()`, `CONCAT()`, `CONCAT_WS()`, `LEFT()`, `RIGHT()`, `ASCII()`, `LENGTH()`, `TRIM()`, `LTRIM()`, `RTRIM()`, `POSITION()`, `FORMAT()`, `LOWER()`, `UCASE()`, `UPPER()`, `SUBSTRING_INDEX()`, `LPAD()`, `RPAD()`, `STRCMP()` |
+| [正则函数和算子](/functions-and-operators/string-functions.md) | `REGEXP`, `REGEXP_LIKE()`, `REGEXP_INSTR()`, `REGEXP_SUBSTR()`, `REGEXP_REPLACE()` |
+| [日期函数](/functions-and-operators/date-and-time-functions.md) | `DATE_FORMAT()`, `TIMESTAMPDIFF()`, `FROM_UNIXTIME()`, `UNIX_TIMESTAMP(int)`, `UNIX_TIMESTAMP(decimal)`, `STR_TO_DATE(date)`, `STR_TO_DATE(datetime)`, `DATEDIFF()`, `YEAR()`, `MONTH()`, `DAY()`, `EXTRACT(datetime)`, `DATE()`, `HOUR()`, `MICROSECOND()`, `MINUTE()`, `SECOND()`, `SYSDATE()`, `DATE_ADD/ADDDATE(datetime, int)`, `DATE_ADD/ADDDATE(string, int/real)`, `DATE_SUB/SUBDATE(datetime, int)`, `DATE_SUB/SUBDATE(string, int/real)`, `QUARTER()`, `DAYNAME()`, `DAYOFMONTH()`, `DAYOFWEEK()`, `DAYOFYEAR()`, `LAST_DAY()`, `MONTHNAME()`, `TO_SECONDS()`, `TO_DAYS()`, `FROM_DAYS()`, `WEEKOFYEAR()`
+| [JSON 函数](/functions-and-operators/json-functions.md) | `JSON_LENGTH()`, `->`, `->>`, `JSON_EXTRACT()` |
+| [转换函数](/functions-and-operators/cast-functions-and-operators.md) | `CAST(int AS DOUBLE), CAST(int AS DECIMAL)`, `CAST(int AS STRING)`, `CAST(int AS TIME)`, `CAST(double AS INT)`, `CAST(double AS DECIMAL)`, `CAST(double AS STRING)`, `CAST(double AS TIME)`, `CAST(string AS INT)`, `CAST(string AS DOUBLE), CAST(string AS DECIMAL)`, `CAST(string AS TIME)`, `CAST(decimal AS INT)`, `CAST(decimal AS STRING)`, `CAST(decimal AS TIME)`, `CAST(time AS INT)`, `CAST(time AS DECIMAL)`, `CAST(time AS STRING)`, `CAST(time AS REAL)` |
+| [聚合函数](/functions-and-operators/aggregate-group-by-functions.md) | `MIN()`, `MAX()`, `SUM()`, `COUNT()`, `AVG()`, `APPROX_COUNT_DISTINCT()`, `GROUP_CONCAT()` |
+| [其他函数](/functions-and-operators/miscellaneous-functions.md) | `INET_NTOA()`, `INET_ATON()`, `INET6_NTOA()`, `INET6_ATON()` |
 
 ## 下推限制
 
 * 所有包含 Bit、Set 和 Geometry 类型的表达式均不能下推到 TiFlash
-* date_add、date_sub、adddate 和 subdate 中的 interval 类型只支持如下几种，如使用了其他类型的 interval，TiFlash 会在运行时报错。
+* `DATE_ADD()`、`DATE_SUB()`、`ADDDATE()` 以及 `SUBDATE()` 中的 interval 类型只支持如下几种，如使用了其他类型的 interval，TiFlash 会在运行时报错。
     * DAY
     * WEEK
     * MONTH
@@ -51,6 +54,8 @@ TiFlash 支持部分算子的下推，支持的算子如下：
     * SECOND
 
 如查询遇到不支持的下推计算，则需要依赖 TiDB 完成剩余计算，可能会很大程度影响 TiFlash 加速效果。对于暂不支持的算子/表达式，将会在后续版本中陆续支持。
+
+类似 `MAX()` 这样的函数在聚合算子中支持下推，但是在窗口函数算子中还不支持下推。
 
 ## 示例
 
@@ -74,10 +79,9 @@ EXPLAIN SELECT * FROM t LIMIT 3;
 |       └─TableFullScan_14     | 3.00    | mpp[tiflash] | table:t       | keep order:false, stats:pseudo |
 +------------------------------+---------+--------------+---------------+--------------------------------+
 5 rows in set (0.18 sec)
-
 ```
 
-在该查询中，算子 Limit 被下推到 TiFlash 对数据进行过滤，减少了网络传输数据量，进而减少网络传输开销。
+在该查询中，算子 Limit 被下推到 TiFlash 对数据进行过滤，减少了网络传输数据量，进而减少网络传输开销。具体可查看以上示例中 `Limit_15` 算子的 `task` 列，其值为 `mpp[tiflash]`，表示该算子被下推到 TiFlash。
 
 ### 示例 2：下推表达式到 TiFlash 存储
 
@@ -104,7 +108,7 @@ EXPLAIN SELECT MAX(id + a) FROM t GROUP BY a;
 
 ```
 
-在该查询中，表达式 `id + a` 被下推到 TiFlash，从而能提前进行计算，减少网络传输数据量，进而减少网络传输开销，提升整体计算性能。
+在该查询中，表达式 `id + a` 被下推到 TiFlash，从而能提前进行计算，减少网络传输数据量，进而减少网络传输开销，提升整体计算性能。具体可查看以上示例中 `operator` 列为 `plus(test.t.id, test.t.a)` 的行的 `task` 列，其值为 `mpp[tiflash]`，表示该表达式被下推到 TiFlash。
 
 ### 示例 3：下推限制
 
@@ -145,3 +149,51 @@ SHOW WARNINGS;
 ```
 
 可以看出，该查询的表达式无法完全下推至 TiFlash，因为 `Time` 函数和 `Cast` 函数无法下推至 TiFlash。
+
+### 示例 4：窗口函数
+
+```sql
+CREATE TABLE t(id INT PRIMARY KEY, c1 VARCHAR(100));
+ALTER TABLE t SET TIFLASH REPLICA 1;
+INSERT INTO t VALUES(1,"foo"),(2,"bar"),(3,"bar foo"),(10,"foo"),(20,"bar"),(30,"bar foo");
+
+EXPLAIN SELECT id, ROW_NUMBER() OVER (PARTITION BY id > 10) FROM t;
++----------------------------------+----------+--------------+---------------+---------------------------------------------------------------------------------------------------------------+
+| id                               | estRows  | task         | access object | operator info                                                                                                 |
++----------------------------------+----------+--------------+---------------+---------------------------------------------------------------------------------------------------------------+
+| TableReader_30                   | 10000.00 | root         |               | MppVersion: 1, data:ExchangeSender_29                                                                         |
+| └─ExchangeSender_29              | 10000.00 | mpp[tiflash] |               | ExchangeType: PassThrough                                                                                     |
+|   └─Projection_7                 | 10000.00 | mpp[tiflash] |               | test.t.id, Column#5, stream_count: 4                                                                          |
+|     └─Window_28                  | 10000.00 | mpp[tiflash] |               | row_number()->Column#5 over(partition by Column#4 rows between current row and current row), stream_count: 4  |
+|       └─Sort_14                  | 10000.00 | mpp[tiflash] |               | Column#4, stream_count: 4                                                                                     |
+|         └─ExchangeReceiver_13    | 10000.00 | mpp[tiflash] |               | stream_count: 4                                                                                               |
+|           └─ExchangeSender_12    | 10000.00 | mpp[tiflash] |               | ExchangeType: HashPartition, Compression: FAST, Hash Cols: [name: Column#4, collate: binary], stream_count: 4 |
+|             └─Projection_10      | 10000.00 | mpp[tiflash] |               | test.t.id, gt(test.t.id, 10)->Column#4                                                                        |
+|               └─TableFullScan_11 | 10000.00 | mpp[tiflash] | table:t       | keep order:false, stats:pseudo                                                                                |
++----------------------------------+----------+--------------+---------------+---------------------------------------------------------------------------------------------------------------+
+9 rows in set (0.0073 sec)
+```
+
+可以看到，`Window` 操作在 `task` 列中有一个 `mpp[tiflash]` 的值，表示 `ROW_NUMBER() OVER (PARTITION BY id > 10)` 操作能够被下推至 TiFlash。
+
+```sql
+CREATE TABLE t(id INT PRIMARY KEY, c1 VARCHAR(100));
+ALTER TABLE t SET TIFLASH REPLICA 1;
+INSERT INTO t VALUES(1,"foo"),(2,"bar"),(3,"bar foo"),(10,"foo"),(20,"bar"),(30,"bar foo");
+
+EXPLAIN SELECT id, MAX(id) OVER (PARTITION BY id > 10) FROM t;
++-----------------------------+----------+-----------+---------------+------------------------------------------------------------+
+| id                          | estRows  | task      | access object | operator info                                              |
++-----------------------------+----------+-----------+---------------+------------------------------------------------------------+
+| Projection_6                | 10000.00 | root      |               | test.t1.id, Column#5                                       |
+| └─Shuffle_14                | 10000.00 | root      |               | execution info: concurrency:5, data sources:[Projection_8] |
+|   └─Window_7                | 10000.00 | root      |               | max(test.t1.id)->Column#5 over(partition by Column#4)      |
+|     └─Sort_13               | 10000.00 | root      |               | Column#4                                                   |
+|       └─Projection_8        | 10000.00 | root      |               | test.t1.id, gt(test.t1.id, 10)->Column#4                   |
+|         └─TableReader_10    | 10000.00 | root      |               | data:TableFullScan_9                                       |
+|           └─TableFullScan_9 | 10000.00 | cop[tikv] | table:t1      | keep order:false, stats:pseudo                             |
++-----------------------------+----------+-----------+---------------+------------------------------------------------------------+
+7 rows in set (0.0010 sec)
+```
+
+可以看到，`Window` 操作在 `task` 列中有一个 `root` 的值，表示 `MAX(id) OVER (PARTITION BY id > 10)` 操作不能被下推至 TiFlash。这是因为，`MAX()` 只支持作为聚合函数下推，而不支持作为窗口函数下推。
