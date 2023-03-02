@@ -28,6 +28,10 @@ title: TiFlash 配置参数
 
 ## TiFlash 配置参数
 
+> **Tip:**
+>
+> 如果你需要调整配置项的值，请参考[修改配置参数](/maintain-tidb-using-tiup.md#修改配置参数)进行操作。
+
 ### 配置文件 tiflash.toml
 
 ```toml
@@ -159,8 +163,17 @@ delta_index_cache_size = 0
     ## 单次 coprocessor 查询过程中，对中间数据的内存限制，单位为 byte，默认为 0，表示不限制
     max_memory_usage = 0
 
+<<<<<<< HEAD
     ## 所有查询过程中，对中间数据的内存限制，单位为 byte，默认为 0，表示不限制
     max_memory_usage_for_all_queries = 0
+=======
+    ## 所有查询过程中，节点对中间数据的内存限制
+    ## 设置为整数时，单位为 byte，比如 34359738368 表示 32 GiB 的内存限制，0 表示无限制
+    ## 设置为 [0.0, 1.0) 之间的浮点数时，指节点总内存的比值，比如 0.8 表示总内存的 80%，0.0 表示无限制
+    ## 默认值为 0.8，表示总内存的 80%
+    ## 当查询试图申请超过限制的内存时，查询终止执行并且报错
+    max_memory_usage_for_all_queries = 0.8
+>>>>>>> e811f18a9 (*: add instruction for editing config (#11284))
 
     ## 从 v5.0 引入，表示 TiFlash Coprocessor 最多同时执行的 cop 请求数量。如果请求数量超过了该配置指定的值，多出的请求会排队等待。如果设为 0 或不设置，则使用默认值，即物理核数的两倍。
     cop_pool_size = 0
