@@ -45,7 +45,6 @@ server_configs:
     # sorter.sort-dir: "/tmp/cdc_sort"
     # gc-ttl: 86400
 
-
 pd_servers:
   - host: 10.0.1.4
     # ssh_port: 22
