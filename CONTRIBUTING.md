@@ -2,14 +2,14 @@
 
 无论你是热爱技术的程序员，还是擅长书面表达的语言爱好者，亦或是纯粹想帮 TiDB 改进文档的热心小伙伴，都欢迎来为 TiDB 文档做贡献，一起打造更加易用友好的 TiDB 文档！
 
-## 可贡献的内容
+## 我能为 TiDB 文档做什么贡献？
 
-欢迎任何对提升 TiDB 文档质量、易用性、维护效率、翻译效率的贡献，比如，你可以在以下方面进行贡献：
+你可以在提升 TiDB 文档质量、易用性、维护效率、翻译效率等方面做贡献，比如：
 
 - [改进中文文档](#改进中文文档)
-- [翻译中文文档的更新](#翻译中文文档)
+- [翻译中文文档](#翻译中文文档)
 - 优化文档提交的流程、维护方式
-- 建立 TiDB 文档的翻译记忆库、术语库
+- 建立文档翻译记忆库、术语库
 
 下面主要介绍了如何为前两项做出贡献。
 
@@ -17,20 +17,21 @@
 
 你可从以下任一方面入手：
 
-- 修复文档格式（如标点、空格、缩进、代码块等）和错别字
-- 修改过时或不当的内容描述
-- 增加缺失的文档内容
+- 修复文档格式，如标点、空格、缩进、代码块等
+- 改正错别字
+- 更新过时内容
+- 补充缺失内容
 - 回复或解决 [issue](https://github.com/pingcap/docs-cn/issues?q=is%3Aopen+is%3Aissue) 并提 PR 更新相关文档
 - 其它改进
 
 ### 翻译中文文档
 
-TiDB 中文文档的日常更新特别活跃，相应地，[TiDB 英文文档](https://docs.pingcap.com/tidb/dev/)也需要频繁更新。这一过程会涉及很多的**中译英**，即将 pingcap/docs-cn 仓库里已 merge 但尚未进行翻译处理的 Pull Request 翻译为英文，并提交 Pull Request 至 [pingcap/docs 仓库](https://github.com/pingcap/docs)中。**具体的认领方式**如下。
+TiDB 中文文档的日常更新特别活跃，相应地，[TiDB 英文文档](https://docs.pingcap.com/tidb/dev/)也需要频繁更新。这一过程会涉及很多的**中译英**，即将 pingcap/docs-cn 仓库里已 merge 但尚未进行翻译处理的 Pull Request 翻译为英文，并在 [pingcap/docs 仓库](https://github.com/pingcap/docs)中提交 Pull Request。**具体的认领方式**如下。
 
 > **注意：**
 >
-> - 由于受众不同，TiDB 的中文文档与英文文档并非完全相同。但绝大多数情况下，中英版本会保持一致。
-> - 通常，TiDB 文档是先有中文版，后有英文版。但也有一小部分文档，是先有英文版，后有中文版。
+> - 绝大多数情况下，中英版需要保持完全一致。但个别文档由于受众不同，可能会有差异。
+> - 通常，TiDB 文档先完成中文版后再完成英文版。但也偶有例外。
 > - [快速上手资源](#快速上手资源)一节中汇总了**中英术语表**和**风格指南**等参考文档，建议译前阅读。
 
 #### 中文翻译任务的认领方式
@@ -65,7 +66,9 @@ TiDB 中文文档的日常更新特别活跃，相应地，[TiDB 英文文档](h
 
 6. 分配 Reviewer（推荐，非必需）
 
-    每个 PR 都需要经过 Review 后才能合并，分配 Reviewer 一般由文档仓库管理员负责，但我们也十分欢迎你来主动承担这个任务。具体操作为：在新建的 PR 下发送 `/cc @TomShawn @technical-reviewer`（将 technical-reviewer 替换为源 PR 作者的 GitHub ID），即可将 Review 任务分配给 docs 仓库管理员 @TomShawn 及源 PR 的作者。
+    每个 PR 都需要经过 Review 后才能合并，分配 Reviewer 一般由文档仓库管理员负责，但我们也十分欢迎你来主动承担这个任务。
+
+    具体操作为：在新建的 PR 下发送 `/cc @TomShawn @technical-reviewer`（将 technical-reviewer 替换为源 PR 作者的 GitHub ID），即可将 Review 任务分配给 docs 仓库管理员 @TomShawn 及源 PR 的作者。
 
 ## 快速上手资源
 
@@ -79,7 +82,7 @@ TiDB 中文文档的日常更新特别活跃，相应地，[TiDB 英文文档](h
 - [PingCAP 中文文档风格指南](/resources/pingcap-style-guide-zh.pdf)
 - [PingCAP 中英术语表](https://shimo.im/sheets/tTRyydP8Xkdv8yxq/MODOC)
 - [TiDB 中文用户文档模板](/resources/doc-templates)
-- [必须遵循的 Markdown 规范](#必须遵循的-markdown-规范)
+- [Markdown 规范](#markdown-规范)
 - [代码注释规范](https://github.com/pingcap/community/blob/master/contributors/code-comment-style.md)
 - 图片风格：[Figma 快速上手教程](/resources/figma-quick-start-guide.md)
 
@@ -91,7 +94,7 @@ TiDB 文档的修改需要遵循一定的流程，具体如下。考虑到有些
 
 > **注意：**
 >
-> 目前 TiDB 主要维护以下几个版本的文档：dev（最新开发版，对应文档仓库的 master 分支）、v6.1、v6.0、v5.4、v5.3、v5.2、v5.1、v5.0、v4.0、v3.1、v3.0 以及 v2.1。提 Pull Request 前请务必考虑修改会影响的文档版本，并据此修改所有相应的版本。选择版本时，请参考[版本选择指南](#版本选择指南)。
+> 目前 TiDB 主要维护以下几个版本的文档：dev（最新开发版，对应文档仓库的 master 分支）、v6.6、v6.5、v6.4、v6.1、v6.0、v5.4、v5.3、v5.2、v5.1、v5.0。提 Pull Request 前请务必考虑修改会影响的文档版本，并据此修改所有相应的版本。选择版本时，请参考[版本选择指南](#版本选择指南)。
 
 ### 第 0 步：签署 Contributor License Agreement
 
@@ -167,13 +170,39 @@ git push -u origin new-branch-name
 >
 > - 如果你的修改影响多个文档版本 (dev, v5.0, v4.0, v3.1, v3.0, v2.1)，务必**在 PR 描述框中勾选相应的版本**，后续仓库管理员会为你的 PR 打上相应的 cherry-pick 标签。
 
-## 必须遵循的 Markdown 规范
+## PR Checklist
+
+在提交 PR 之前，请务必检查以下内容：
+
+- 文档内容准确、清晰、简洁，遵循写作规范。参考 [PingCAP 中文技术文档风格 — 极简指南](#pingcap-中文技术文档风格--极简指南)。
+- PR 的各元素完整、准确，包括：
+    - 标题清晰、有意义，包括修改的类型+文档所属的模块。例如：
+        - Fix typos in tidb-monitoring-api.md
+        - Add v5.3.0 benchmark documents
+        - Add note about SELECT CAST(MeN AS CHAR) incompatibility
+    - 有简要描述，例如修改背景等，并添加对应的 issue 号
+    - 选择正确的标签
+    - cherry-pick 到对应的分支版本
+- 如果新增文档、删除文档，需要更新 TOC.md。
+- PR 经过了至少两轮 review，包括 technical review 和 editorial review，确保技术准确、语言规范。Comments 全部处理完，且 reviewers 已经 approved 该 PR。
+- 预览文档，确保文档格式正确、清晰、可读，特别注意表格、图片、列表等特殊样式能够正常显示。
+- 文档通过了 CI check。
+
+## PingCAP 中文技术文档风格 — 极简指南
+
+![1 Pager Style Guide](/media/1pager-style-guide.png)
+
+参考文档：
+
+- [PingCAP 用户文档模版](https://github.com/pingcap/docs-cn/tree/master/resources/doc-templates)
+
+## Markdown 规范
 
 TiDB 中文文档使用 Markdown 语言进行编写，为了保证文档质量和格式规范，你修改的文档需要遵循一定的 Markdown 规则。我们为 docs-cn 仓库设置了检测 markdown 文件规范的 CI check，即 [markdownlint check](https://github.com/DavidAnson/markdownlint/blob/master/doc/Rules.md)。如果你提交的 PR 不符合规范，很可能**无法通过 markdownlint check**，最终导致无法合并 PR。
 
-我们为 TiDB 中文文档提前设置了 25 条 [markdownlint 规则](/resources/markdownlint-rules.md)，并附上了简单易懂的解释，强烈推荐花 5 分钟大致浏览一遍。
+我们为 TiDB 中文文档提前设置了 25 条 [markdownlint 规则](/resources/markdownlint-rules.md)，并附上了简单易懂的解释，强烈推荐花 5 分钟通读一遍。
 
-假如你提 PR 之前没有熟悉相关 Markdown 规范，提 PR 时遇到了 markdownlint check 失败，也不必担心，报错信息里会明确告诉你哪个文件的哪一行出了什么问题，根据提示在 PR 里更新一下文档内容即可搞定。
+假如你提 PR 之前没有熟悉相关 Markdown 规范，提 PR 时遇到了 markdownlint check 失败，也不必担心，报错信息里会明确告诉你哪个文件的哪一行出了什么问题，根据提示修改文档即可解决。
 
 此外，你还可以选择在本地进行 markdownlint check：
 
@@ -200,9 +229,9 @@ TiDB 中文文档使用 Markdown 语言进行编写，为了保证文档质量�
 
 如果你的 PR 改动符合以下任一情况，推荐**只选择 master 分支**。此 PR 的改动在合并后将显示到[官网文档 Dev 页面](https://docs.pingcap.com/zh/tidb/dev/)，在下一次 TiDB 发新版本时将显示到对应版本的文档页面。
 
-- 完善和优化文档内容，例如补充缺失或不完整的信息。
-- 修正不准确或错误的文档内容，例如默认值错误、描述不准确、示例错误、拼写错误等。
-- 重新组织现有文档的某个局部，例如“部署标准集群”、“数据迁移”、“TiDB 数据迁移工具”等。
+- 完善文档，例如补充缺失或不完整的信息。
+- 改正错误，例如默认值错误、描述不准确、示例错误、拼写错误等。
+- 重构文档，例如“部署标准集群”、“数据迁移”、“TiDB 数据迁移工具”等。
 
 如果你的 PR 改动符合以下任一情况，请**选择 master 分支以及受影响的 release 分支**：
 
