@@ -205,10 +205,6 @@ curl -X GET http://127.0.0.1:8300/api/v2/health
     "mounter": {
       "worker_num": 0
     },
-    "scheduler": {
-      "enable_table_across_nodes": true,
-      "region_per_span": 0
-    },
     "sink": {
       "column_selectors": [
         {
@@ -447,10 +443,6 @@ curl -X POST -H "'Content-type':'application/json'" http://127.0.0.1:8300/api/v2
     "mounter": {
       "worker_num": 0
     },
-    "scheduler": {
-      "enable_split_span": true,
-      "region_per_span": 0
-    },
     "sink": {
       "column_selectors": [
         {
@@ -646,10 +638,6 @@ curl -X DELETE http://127.0.0.1:8300/api/v2/changefeeds/test1
     "memory_quota": 0,
     "mounter": {
       "worker_num": 0
-    },
-    "scheduler": {
-      "enable_split_span": true,
-      "region_per_span": 0
     },
     "sink": {
       "column_selectors": [
