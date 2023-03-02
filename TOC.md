@@ -283,6 +283,7 @@
   - [Placement Rules 使用文档](/configure-placement-rules.md)
   - [Load Base Split 使用文档](/configure-load-base-split.md)
   - [Store Limit 使用文档](/configure-store-limit.md)
+  - [DDL 执行原理及最佳实践](/ddl-introduction.md)
 - TiDB 工具
   - [功能概览](/ecosystem-tool-user-guide.md)
   - [使用场景](/ecosystem-tool-user-case.md)
