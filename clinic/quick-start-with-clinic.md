@@ -7,7 +7,7 @@ summary: 了解如何使用 PingCAP Clinic 诊断服务快速采集、上传、�
 
 本指南介绍如何使用 PingCAP Clinic 诊断服务（以下简称为 PingCAP Clinic）快速采集、上传、查看集群诊断数据。
 
-PingCAP Clinic 由 Diag 诊断客户端（以下简称为 Diag）和 Clinic Server 云服务平台（以下简称为 Clinic Server）组成。关于 Diag 和 Clinic Server 的详细介绍，请参考 [PingCAP Clinic 诊断服务简介](/clinic/clinic-introduction.md)。
+PingCAP Clinic 由 [Diag 诊断客户端](https://github.com/pingcap/diag)（以下简称为 Diag）和 Clinic Server 云服务平台（以下简称为 Clinic Server）组成。关于 Diag 和 Clinic Server 的详细介绍，请参考 [PingCAP Clinic 诊断服务简介](/clinic/clinic-introduction.md)。
 
 ## 使用场景
 
@@ -16,7 +16,7 @@ PingCAP Clinic 由 Diag 诊断客户端（以下简称为 Diag）和 Clinic Serv
 
 > **注意：**
 >
-> - 本文档提供的采集和上传数据的方式**仅**适用于使用 [TiUP 部署](/production-deployment-using-tiup.md)的集群。如需查看适用于使用 Operator 部署的集群，请参阅 [在 TiDB Operator 部署环境使用 PingCAP Clinic](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/clinic-user-guide)。
+> - 本文档提供的采集和上传数据的方式**仅**适用于使用 [TiUP 部署](/production-deployment-using-tiup.md)的集群。如需查看适用于使用 Operator 部署的集群，请参阅[在 TiDB Operator 部署环境使用 PingCAP Clinic](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/clinic-user-guide)。
 > - 通过 PingCAP Clinic 采集和上传的数据**仅**用于定位和诊断集群问题。
 
 ## 准备工作
@@ -155,7 +155,7 @@ PingCAP Clinic 由 Diag 诊断客户端（以下简称为 Diag）和 Clinic Serv
 - 在 TiUP 部署环境使用 PingCAP Clinic
 
     - [PingCAP Clinic 诊断服务简介](/clinic/clinic-introduction.md)
-    - [使用 PingCAP Clinic 诊断 TiDB 集群](/clinic/clinic-user-guide-for-tiup.md)
+    - [使用 PingCAP Clinic 诊断集群](/clinic/clinic-user-guide-for-tiup.md)
     - [使用 PingCAP Clinic 生成诊断报告](/clinic/clinic-report.md)
     - [PingCAP Clinic 数据采集说明](/clinic/clinic-data-instruction-for-tiup.md)
 

@@ -10,7 +10,7 @@ TiDB Lightning 是用于从静态文件导入 TB 级数据到 TiDB 集群的工�
 
 要快速了解 Lightning 的基本原理和使用方法，建议先观看下面的培训视频（时长 32 分钟）。注意本视频只为学习参考，具体操作步骤和最新功能，请以文档内容为准。
 
-<video src="https://download.pingcap.com/docs-cn%2FLesson19_lightning.mp4" width="600px" height="450px" controls="controls" poster="https://tidb-docs.s3.us-east-2.amazonaws.com/thumbnail+-+lesson+19.png"></video>
+<video src="https://download.pingcap.com/docs-cn%2FLesson19_lightning.mp4" width="100%" height="100%" controls="controls" poster="https://download.pingcap.com/docs-cn/poster_lesson19.png"></video>
 
 TiDB Lightning 支持以下文件类型：
 
@@ -21,8 +21,8 @@ TiDB Lightning 支持以下文件类型：
 TiDB Lightning 支持从以下位置读取：
 
 - 本地
-- [Amazon S3](/br/backup-and-restore-storages.md#s3-的-url-参数)
-- [Google GCS](/br/backup-and-restore-storages.md#gcs-的-url-参数)
+- [Amazon S3](/br/backup-and-restore-storages.md#uri-格式)
+- [Google GCS](/br/backup-and-restore-storages.md#uri-格式)
 
 ## TiDB Lightning 整体架构
 

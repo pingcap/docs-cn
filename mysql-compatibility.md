@@ -6,16 +6,18 @@ aliases: ['/docs-cn/dev/mysql-compatibility/','/docs-cn/dev/reference/mysql-comp
 
 # 与 MySQL 兼容性对比
 
-- TiDB 高度兼容 MySQL 5.7 协议、MySQL 5.7 常用的功能及语法。MySQL 5.7 生态中的系统工具 (PHPMyAdmin、Navicat、MySQL Workbench、mysqldump、Mydumper/Myloader)、客户端等均适用于 TiDB。
+TiDB 高度兼容 MySQL 5.7 协议、MySQL 5.7 常用的功能及语法。MySQL 5.7 生态中的系统工具（PHPMyAdmin、Navicat、MySQL Workbench、mysqldump、Mydumper/Myloader）、客户端等均适用于 TiDB。
 
-- 但 TiDB 尚未支持一些 MySQL 功能，可能的原因如下：
-    - 有更好的解决方案，例如 JSON 取代 XML 函数。
-    - 目前对这些功能的需求度不高，例如存储流程和函数。
-    - 一些功能在分布式系统上的实现难度较大。
+但 TiDB 尚未支持一些 MySQL 功能，可能的原因如下：
 
-- 除此以外，TiDB 不支持 MySQL 复制协议，但提供了专用工具用于与 MySQL 复制数据
-    - 从 MySQL 复制：[TiDB Data Migration (DM)](/dm/dm-overview.md) 是将 MySQL/MariaDB 数据迁移到 TiDB 的工具，可用于增量数据的复制。
-    - 向 MySQL 复制：[TiCDC](/ticdc/ticdc-overview.md) 是一款通过拉取 TiKV 变更日志实现的 TiDB 增量数据同步工具，可通过 [MySQL sink](/ticdc/ticdc-overview.md#sink-支持) 将 TiDB 增量数据复制到 MySQL。
+- 有更好的解决方案，例如 JSON 取代 XML 函数。
+- 目前对这些功能的需求度不高，例如存储流程和函数。
+- 一些功能在分布式系统上的实现难度较大。
+
+除此以外，TiDB 不支持 MySQL 复制协议，但提供了专用工具用于与 MySQL 复制数据：
+
+- 从 MySQL 复制：[TiDB Data Migration (DM)](/dm/dm-overview.md) 是将 MySQL/MariaDB 数据迁移到 TiDB 的工具，可用于增量数据的复制。
+- 向 MySQL 复制：[TiCDC](/ticdc/ticdc-overview.md) 是一款通过拉取 TiKV 变更日志实现的 TiDB 增量数据同步工具，可通过 [MySQL sink](/ticdc/ticdc-sink-to-mysql.md) 将 TiDB 增量数据复制到 MySQL。
 
 > **注意：**
 >
@@ -27,7 +29,6 @@ aliases: ['/docs-cn/dev/mysql-compatibility/','/docs-cn/dev/reference/mysql-comp
 * 触发器
 * 事件
 * 自定义函数
-* 外键约束 [#18209](https://github.com/pingcap/tidb/issues/18209)
 * 全文语法与索引 [#1793](https://github.com/pingcap/tidb/issues/1793)
 * 空间类型的函数（即 `GIS`/`GEOMETRY`）、数据类型和索引 [#6347](https://github.com/pingcap/tidb/issues/6347)
 * 非 `ascii`、`latin1`、`binary`、`utf8`、`utf8mb4`、`gbk` 的字符集
@@ -44,12 +45,13 @@ aliases: ['/docs-cn/dev/mysql-compatibility/','/docs-cn/dev/reference/mysql-comp
 * `OPTIMIZE TABLE` 语法
 * `HANDLER` 语句
 * `CREATE TABLESPACE` 语句
+* "Session Tracker: 将 GTID 上下文信息添加到 OK 包中"
 
 ## 与 MySQL 有差异的特性详细说明
 
 ### 自增 ID
 
-- TiDB 的自增列既能保证唯一，也能保证在单个 TiDB server 中自增，但不保证多个 TiDB server 中自增，不保证自动分配的值的连续性。不建议将缺省值和自定义值混用，若混用可能会收到 `Duplicated Error` 的错误信息。
+- TiDB 的自增列既能保证唯一，也能保证在单个 TiDB server 中自增，使用 [`AUTO_INCREMENT` MySQL 兼容模式](/auto-increment.md#mysql-兼容模式)能保证多个 TiDB server 中自增 ID，但不保证自动分配的值的连续性。不建议将缺省值和自定义值混用，若混用可能会收到 `Duplicated Error` 的错误信息。
 
 - TiDB 可通过 `tidb_allow_remove_auto_inc` 系统变量开启或者关闭允许移除列的 `AUTO_INCREMENT` 属性。删除列属性的语法是：`ALTER TABLE MODIFY` 或 `ALTER TABLE CHANGE`。
 
@@ -113,6 +115,7 @@ TiDB 中，所有支持的 DDL 变更操作都是在线执行的。与 MySQL 相
 * 分区表支持 `HASH`、`RANGE` 和 `LIST` 分区类型。对于不支持的分区类型，TiDB 可能会报 `Warning: Unsupported partition type %s, treat as normal table` 错误，其中 `%s` 为不支持的具体分区类型。
 * 分区表还支持 `ADD`、`DROP`、`TRUNCATE` 操作。其他分区操作会被忽略。TiDB 不支持以下分区表语法：
     + `PARTITION BY KEY`
+    + `PARTITION BY LINEAR KEY`
     + `SUBPARTITION`
     + `{CHECK|TRUNCATE|OPTIMIZE|REPAIR|IMPORT|DISCARD|REBUILD|REORGANIZE|COALESCE} PARTITION`
 
@@ -176,10 +179,6 @@ TiDB 支持大部分 [SQL 模式](/sql-mode.md)。不支持的 SQL 模式如下�
     + MySQL 5.7 中 `utf8mb4` 字符集默认：`utf8mb4_general_ci`。
     + MySQL 8.0 中 `utf8mb4` 字符集默认：`utf8mb4_0900_ai_ci`。
 
-- `foreign_key_checks`：
-    + TiDB 默认：`OFF`，且仅支持设置该值为 `OFF`。
-    + MySQL 5.7 默认：`ON`。
-
 - SQL mode：
     + TiDB 默认：`ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION`。
     + MySQL 5.7 默认与 TiDB 相同。
@@ -188,9 +187,9 @@ TiDB 支持大部分 [SQL 模式](/sql-mode.md)。不支持的 SQL 模式如下�
 - `lower_case_table_names`：
     + TiDB 默认：`2`，且仅支持设置该值为 `2`。
     + MySQL 默认如下：
-        - Linux 系统中该值为 `0`
-        - Windows 系统中该值为 `1`
-        - macOS 系统中该值为 `2`
+        - Linux 系统中该值为 `0`，表示表名和数据库名按照在 `CREATE TABLE` 或 `CREATE DATABASE` 语句中指定的字母大小写存储在磁盘上，且名称比较时区分大小写。
+        - Windows 系统中该值为 `1`，表示表名按照小写字母存储在磁盘上，名称比较时不区分大小写。MySQL 在存储和查询时将所有表名转换为小写。该行为也适用于数据库名称和表的别名。
+        - macOS 系统中该值为 `2`，表示表名和数据库名按照在 `CREATE TABLE` 或 `CREATE DATABASE` 语句中指定的字母大小写存储在磁盘上，但 MySQL 在查询时将它们转换为小写。名称比较时不区分大小写。
 
 - `explicit_defaults_for_timestamp`：
     + TiDB 默认：`ON`，且仅支持设置该值为 `ON`。
@@ -216,4 +215,12 @@ TiDB 支持大部分 [SQL 模式](/sql-mode.md)。不支持的 SQL 模式如下�
 TiDB 不支持 MySQL 中标记为弃用的功能，包括：
 
 * 指定浮点类型的精度。MySQL 8.0 [弃用](https://dev.mysql.com/doc/refman/8.0/en/floating-point-types.html)了此功能，建议改用 `DECIMAL` 类型。
-* `ZEROFILL` 属性。 MySQL 8.0 [弃用](https://dev.mysql.com/doc/refman/8.0/en/numeric-type-attributes.html)了此功能，建议在业务应用中填充数字值。
+* `ZEROFILL` 属性。MySQL 8.0 [弃用](https://dev.mysql.com/doc/refman/8.0/en/numeric-type-attributes.html)了此功能，建议在业务应用中填充数字值。
+
+### `CREATE RESOURCE GROUP`，`DROP RESOURCE GROUP` 和 `ALTER RESOURCE GROUP`
+
+TiDB 资源组创建与修改语句的语法与 MySQL 官方不同，详情参见：
+
+- [`CREATE RESOURCE GROUP`](/sql-statements/sql-statement-create-resource-group.md)
+- [`DROP RESOURCE GROUP`](/sql-statements/sql-statement-drop-resource-group.md)
+- [`ALTER RESOURCE GROUP`](/sql-statements/sql-statement-alter-resource-group.md)

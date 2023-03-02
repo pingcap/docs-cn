@@ -41,7 +41,7 @@ DESC deadlocks;
 * `CURRENT_SQL_DIGEST`：试图上锁的事务中当前正在执行的 SQL 语句的 Digest。
 * `CURRENT_SQL_DIGEST_TEXT`：试图上锁的事务中当前正在执行的 SQL 语句的归一化形式。
 * `KEY`：该事务试图上锁、但是被阻塞的 key，以十六进制编码的形式显示。
-* `KEY_INFO`：对 `KEY` 进行解读得出的一些详细信息，详见 [KEY_INFO](#key_info)。。
+* `KEY_INFO`：对 `KEY` 进行解读得出的一些详细信息，详见 [KEY_INFO](#key_info)。
 * `TRX_HOLDING_LOCK`：该 key 上当前持锁并导致阻塞的事务 ID，即事务的 `start_ts`。
 
 要调整 `DEADLOCKS` 表中可以容纳的死锁事件数量，可通过 TiDB 配置文件中的 [`pessimistic-txn.deadlock-history-capacity`](/tidb-configuration-file.md#deadlock-history-capacity) 配置项进行调整，默认容纳最近 10 次死锁错误的信息。

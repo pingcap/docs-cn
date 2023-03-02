@@ -199,7 +199,7 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
 * 规则描述：
 
-    PD 长时间（默认配置是 30 分钟）没有收到 TiKV/TiFlash 心跳。 
+    PD 长时间（默认配置是 30 分钟）没有收到 TiKV/TiFlash 心跳。
 
 * 处理方法：
 
@@ -257,6 +257,20 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
     * 检查 TiKV/TiFlash 进程是否正常、网络是否隔离以及负载是否过高，并尽可能地恢复服务。
     * 如果确定 TiKV/TiFlash 无法恢复，可做下线处理。
     * 如果确定 TiKV/TiFlash 可以恢复，但在短时间内还无法恢复，可以考虑延长 `max-down-time` 配置，防止超时后 TiKV/TiFlash 被判定为无法恢复并开始搬移数据。
+
+#### `PD_cluster_unhealthy_tikv_nums`
+
+* 报警规则：
+
+    `(sum(pd_cluster_status{type="store_unhealth_count"}) by (instance) > 0) and (sum(etcd_server_is_leader) by (instance) > 0)`
+
+* 规则描述：
+
+    表示存在异常状态的 Store。如果这种状态持续一段时间（取决于配置的 [`max-store-down-time`](/pd-configuration-file.md#max-store-down-time)，默认值为 `30m`），Store 可能会变为 `Offline` 状态并触发 [`PD_cluster_down_store_nums`](#pd_cluster_down_store_nums) 报警。
+
+* 处理方法：
+
+    检查 TiKV Store 的状态。
 
 #### `PD_cluster_low_space`
 
@@ -368,7 +382,7 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 * 处理方法：
 
     * 确认是否需要扩容。
-    * 排查是否有文件占用了大量磁盘空间，比如日志、快照或 core dump等文件。
+    * 排查是否有文件占用了大量磁盘空间，比如日志、快照或 core dump 等文件。
 
 #### `PD_system_time_slow`
 
@@ -438,7 +452,7 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
 * 报警规则：
 
-    `sum(increase(tikv_gcworker_gc_tasks_vec{task="gc"}[1d])) < 1 and (sum(increase(tikv_gc_compaction_filter_perform[1d])) < 1 and sum(increase(tikv_engine_event_total{db="kv", cf="write", type="compaction"}[1d])) >= 1)` 
+    `sum(increase(tikv_gcworker_gc_tasks_vec{task="gc"}[1d])) < 1 and (sum(increase(tikv_gc_compaction_filter_perform[1d])) < 1 and sum(increase(tikv_engine_event_total{db="kv", cf="write", type="compaction"}[1d])) >= 1)`
 
 * 规则描述：
 
@@ -448,7 +462,7 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
     1. 执行 `SELECT VARIABLE_VALUE FROM mysql.tidb WHERE VARIABLE_NAME="tikv_gc_leader_desc"` 来找到 gc leader 对应的 `tidb-server`；
     2. 查看该 `tidb-server` 的日志，grep gc_worker tidb.log；
-    3. 如果发现这段时间一直在 resolve locks（最后一条日志是 `start resolve locks`）或者 delete ranges（最后一条日志是 `start delete {number} ranges`），说明 GC 进程是正常的。否则需要报备开发人员 [support@pingcap.com](mailto:support@pingcap.com) 进行处理。
+    3. 如果发现这段时间一直在 resolve locks（最后一条日志是 `start resolve locks`）或者 delete ranges（最后一条日志是 `start delete {number} ranges`），说明 GC 进程是正常的。否则请从 PingCAP 官方或 TiDB 社区[获取支持](/support.md)。
 
 ### 严重级别报警项
 
@@ -675,7 +689,7 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
 * 报警规则：
 
-    `histogram_quantile(0.99, sum(rate(tikv_scheduler_command_duration_seconds_bucket[1m])) by (le, instance, type)  / 1000) > 1`
+    `histogram_quantile(0.99, sum(rate(tikv_scheduler_command_duration_seconds_bucket[1m])) by (le, instance, type)) > 1`
 
 * 规则描述：
 
@@ -775,7 +789,7 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
 ## TiCDC 报警规则
 
-关于TiCDC 报警规则的详细描述，参见 [TiCDC 集群监控报警](/ticdc/ticdc-alert-rules.md)。
+关于 TiCDC 报警规则的详细描述，参见 [TiCDC 集群监控报警](/ticdc/ticdc-alert-rules.md)。
 
 ## Node_exporter 主机报警规则
 
@@ -832,7 +846,7 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
 * 报警规则：
 
-    `(((node_memory_MemTotal-node_memory_MemFree-node_memory_Cached)/(node_memory_MemTotal)*100)) >= 80`
+    `(((node_memory_MemTotal_bytes-node_memory_MemFree_bytes-node_memory_Cached_bytes)/(node_memory_MemTotal_bytes)*100)) >= 80`
 
 * 规则描述：
 

@@ -54,7 +54,7 @@ aliases: ['/docs-cn/dev/tidb-lightning/tidb-lightning-glossary/','/docs-cn/dev/r
 * 所有键值对的总长度
 * 每个键值对 [CRC-64-ECMA](https://en.wikipedia.org/wiki/Cyclic_redundancy_check) 按位异或的结果
 
-TiDB Lightning 通过比较每个表的[本地校验和](#local-checksum)和[远程校验和](#remote-checksum)来验证导入数据的正确性。如果有任一对校验和不匹配，导入进程就会停止。如果你需要跳过校验和检查，可以将 `post-restore.checksum` 设置为 `false` 。
+TiDB Lightning 通过比较每个表的[本地校验和](#local-checksum)和[远程校验和](#remote-checksum)来验证导入数据的正确性。如果有任一对校验和不匹配，导入进程就会停止。如果你需要跳过校验和检查，可以将 `post-restore.checksum` 设置为 `false`。
 
 遇到校验和不匹配的问题时，参考[常见问题](/tidb-lightning/troubleshoot-tidb-lightning.md#checksum-failed-checksum-mismatched-remote-vs-local)进行处理。
 

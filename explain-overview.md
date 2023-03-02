@@ -59,6 +59,80 @@ Records: 2  Duplicates: 0  Warnings: 0
 + `access-object` 显示被访问的表、分区和索引。显示的索引为部分索引。以上示例中 TiDB 使用了 `a` 列的索引。尤其是在有组合索引的情况下，该字段显示的信息很有参考意义。
 + `operator info` 显示访问表、分区和索引的其他信息。详见 [`operator info` 结果](#operator-info-结果)。
 
+> **注意：**
+>
+> 在执行计划返回结果中，自 v6.4.0 版本起，特定算子（即 `IndexJoin` 和 `Apply` 算子的 Probe 端所有子节点）的 `estRows` 字段意义与 v6.4.0 版本之前的有所不同。
+>
+> 在 v6.4.0 之前，`estRows` 表示对于 Build 端子节点的每一行，Probe 端预计会处理的行数。自 v6.4.0 起，`estRows` 表示 Probe 端预计会处理的**总行数**。由于 `EXPLAIN ANALYZE` 中展示的实际行数（`actRows` 列）表示的是总行数，v6.4.0 起这些算子 `estRows` 的含义与 `actRows` 列的含义保持一致。
+>
+>
+> 例如：
+>
+> ```sql
+> CREATE TABLE t1(a INT, b INT);
+> CREATE TABLE t2(a INT, b INT, INDEX ia(a));
+> EXPLAIN SELECT /*+ INL_JOIN(t2) */ * FROM t1 JOIN t2 ON t1.a = t2.a;
+> EXPLAIN SELECT (SELECT a FROM t2 WHERE t2.a = t1.b LIMIT 1) FROM t1;
+> ```
+>
+> ```sql
+> -- v6.4.0 之前：
+> +---------------------------------+----------+-----------+-----------------------+-----------------------------------------------------------------------------------------------------------------+
+> | id                              | estRows  | task      | access object         | operator info                                                                                                   |
+> +---------------------------------+----------+-----------+-----------------------+-----------------------------------------------------------------------------------------------------------------+
+> | IndexJoin_12                    | 12487.50 | root      |                       | inner join, inner:IndexLookUp_11, outer key:test.t1.a, inner key:test.t2.a, equal cond:eq(test.t1.a, test.t2.a) |
+> | ├─TableReader_24(Build)         | 9990.00  | root      |                       | data:Selection_23                                                                                               |
+> | │ └─Selection_23                | 9990.00  | cop[tikv] |                       | not(isnull(test.t1.a))                                                                                          |
+> | │   └─TableFullScan_22          | 10000.00 | cop[tikv] | table:t1              | keep order:false, stats:pseudo                                                                                  |
+> | └─IndexLookUp_11(Probe)         | 1.25     | root      |                       |                                                                                                                 |
+> |   ├─Selection_10(Build)         | 1.25     | cop[tikv] |                       | not(isnull(test.t2.a))                                                                                          |
+> |   │ └─IndexRangeScan_8          | 1.25     | cop[tikv] | table:t2, index:ia(a) | range: decided by [eq(test.t2.a, test.t1.a)], keep order:false, stats:pseudo                                    |
+> |   └─TableRowIDScan_9(Probe)     | 1.25     | cop[tikv] | table:t2              | keep order:false, stats:pseudo                                                                                  |
+> +---------------------------------+----------+-----------+-----------------------+-----------------------------------------------------------------------------------------------------------------+
+> +---------------------------------+----------+-----------+-----------------------+------------------------------------------------------------------------------+
+> | id                              | estRows  | task      | access object         | operator info                                                                |
+> +---------------------------------+----------+-----------+-----------------------+------------------------------------------------------------------------------+
+> | Projection_12                   | 10000.00 | root      |                       | test.t2.a                                                                    |
+> | └─Apply_14                      | 10000.00 | root      |                       | CARTESIAN left outer join                                                    |
+> |   ├─TableReader_16(Build)       | 10000.00 | root      |                       | data:TableFullScan_15                                                        |
+> |   │ └─TableFullScan_15          | 10000.00 | cop[tikv] | table:t1              | keep order:false, stats:pseudo                                               |
+> |   └─Limit_17(Probe)             | 1.00     | root      |                       | offset:0, count:1                                                            |
+> |     └─IndexReader_21            | 1.00     | root      |                       | index:Limit_20                                                               |
+> |       └─Limit_20                | 1.00     | cop[tikv] |                       | offset:0, count:1                                                            |
+> |         └─IndexRangeScan_19     | 1.00     | cop[tikv] | table:t2, index:ia(a) | range: decided by [eq(test.t2.a, test.t1.b)], keep order:false, stats:pseudo |
+> +---------------------------------+----------+-----------+-----------------------+------------------------------------------------------------------------------+
+> 
+> -- 自 v6.4.0 起：
+>
+> -- 可以发现 `IndexLookUp_11`、`Selection_10`、`IndexRangeScan_8` 和 `TableRowIDScan_9` 在 `estRows` 列显示的行数与 v6.4.0 以前的不同
+> +---------------------------------+----------+-----------+-----------------------+-----------------------------------------------------------------------------------------------------------------+
+> | id                              | estRows  | task      | access object         | operator info                                                                                                   |
+> +---------------------------------+----------+-----------+-----------------------+-----------------------------------------------------------------------------------------------------------------+
+> | IndexJoin_12                    | 12487.50 | root      |                       | inner join, inner:IndexLookUp_11, outer key:test.t1.a, inner key:test.t2.a, equal cond:eq(test.t1.a, test.t2.a) |
+> | ├─TableReader_24(Build)         | 9990.00  | root      |                       | data:Selection_23                                                                                               |
+> | │ └─Selection_23                | 9990.00  | cop[tikv] |                       | not(isnull(test.t1.a))                                                                                          |
+> | │   └─TableFullScan_22          | 10000.00 | cop[tikv] | table:t1              | keep order:false, stats:pseudo                                                                                  |
+> | └─IndexLookUp_11(Probe)         | 12487.50 | root      |                       |                                                                                                                 |
+> |   ├─Selection_10(Build)         | 12487.50 | cop[tikv] |                       | not(isnull(test.t2.a))                                                                                          |
+> |   │ └─IndexRangeScan_8          | 12500.00 | cop[tikv] | table:t2, index:ia(a) | range: decided by [eq(test.t2.a, test.t1.a)], keep order:false, stats:pseudo                                    |
+> |   └─TableRowIDScan_9(Probe)     | 12487.50 | cop[tikv] | table:t2              | keep order:false, stats:pseudo                                                                                  |
+> +---------------------------------+----------+-----------+-----------------------+-----------------------------------------------------------------------------------------------------------------+
+>
+> -- 可以发现 `Limit_17`、`IndexReader_21`、`Limit_20` 和 `IndexRangeScan_19` 在 `estRows` 列显示的行数与 v6.4.0 以前的不同
+> +---------------------------------+----------+-----------+-----------------------+------------------------------------------------------------------------------+
+> | id                              | estRows  | task      | access object         | operator info                                                                |
+> +---------------------------------+----------+-----------+-----------------------+------------------------------------------------------------------------------+
+> | Projection_12                   | 10000.00 | root      |                       | test.t2.a                                                                    |
+> | └─Apply_14                      | 10000.00 | root      |                       | CARTESIAN left outer join                                                    |
+> |   ├─TableReader_16(Build)       | 10000.00 | root      |                       | data:TableFullScan_15                                                        |
+> |   │ └─TableFullScan_15          | 10000.00 | cop[tikv] | table:t1              | keep order:false, stats:pseudo                                               |
+> |   └─Limit_17(Probe)             | 10000.00 | root      |                       | offset:0, count:1                                                            |
+> |     └─IndexReader_21            | 10000.00 | root      |                       | index:Limit_20                                                               |
+> |       └─Limit_20                | 10000.00 | cop[tikv] |                       | offset:0, count:1                                                            |
+> |         └─IndexRangeScan_19     | 10000.00 | cop[tikv] | table:t2, index:ia(a) | range: decided by [eq(test.t2.a, test.t1.b)], keep order:false, stats:pseudo |
+> +---------------------------------+----------+-----------+-----------------------+------------------------------------------------------------------------------+
+> ```
+
 ### 算子简介
 
 算子是为返回查询结果而执行的特定步骤。真正执行扫表（读盘或者读 TiKV Block Cache）操作的算子有如下几类：
@@ -102,7 +176,7 @@ Build 总是先于 Probe 执行，并且 Build 总是出现在 Probe 前面。�
 
 目前 TiDB 的计算任务分为两种不同的 task：cop task 和 root task。Cop task 是指使用 TiKV 中的 Coprocessor 执行的计算任务，root task 是指在 TiDB 中执行的计算任务。
 
-SQL 优化的目标之一是将计算尽可能地下推到 TiKV 中执行。TiKV 中的 Coprocessor 能支持大部分 SQL 内建函数（包括聚合函数和标量函数）、SQL `LIMIT` 操作、索引扫描和表扫描。但是，所有的 Join 操作都只能作为 root task 在 TiDB 上执行。
+SQL 优化的目标之一是将计算尽可能地下推到 TiKV 中执行。TiKV 中的 Coprocessor 能支持大部分 SQL 内建函数（包括聚合函数和标量函数）、SQL `LIMIT` 操作、索引扫描和表扫描。
 
 ### `operator info` 结果
 

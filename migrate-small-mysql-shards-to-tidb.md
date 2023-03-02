@@ -13,7 +13,7 @@ aliases: ['/zh/tidb/dev/usage-scenario-shard-merge/','/zh/tidb/dev/usage-scenari
 
 若要迁移分表总和 1 TiB 以上的数据，则 DM 工具耗时较长，可参考[从大数据量分库分表 MySQL 合并迁移数据到 TiDB](/migrate-large-mysql-shards-to-tidb.md)。
 
-在本文档的示例中，数据源 MySQL 实例 1 和 实例 2 均使用以下表结构，计划将 store_01 和 store_02 中 sale 开头的表合并导入下游 store.sale 表。
+在本文档的示例中，数据源 MySQL 实例 1 和实例 2 均使用以下表结构，计划将 store_01 和 store_02 中 sale 开头的表合并导入下游 store.sale 表。
 
 |Schema|Tables|
 |-|-|
@@ -63,7 +63,7 @@ CREATE TABLE `sale` (
 
 ## 第 1 步：创建数据源
 
-新建 `source1.yaml` 文件, 写入以下内容：
+新建 `source1.yaml` 文件，写入以下内容：
 
 {{< copyable "shell-regular" >}}
 
@@ -100,7 +100,7 @@ tiup dmctl --master-addr ${advertise-addr} operate-source create source1.yaml
 
 ## 第 2 步：创建迁移任务
 
-新建`task1.yaml`文件, 写入以下内容：
+新建`task1.yaml`文件，写入以下内容：
 
 {{< copyable "" >}}
 
@@ -138,10 +138,20 @@ mysql-instances:
 # 分表合并配置
 routes:
   sale-route-rule:
-    schema-pattern: "store_*"
-    table-pattern: "sale_*"
+    schema-pattern: "store_*"                               # 合并 store_01 和 store_02 库到下游 store 库
+    table-pattern: "sale_*"                                 # 合并上述库中的 sale_01 和 sale_02 表到下游 sale 表
     target-schema: "store"
     target-table:  "sale"
+    # 可选配置：提取各分库分表的源信息，并写入下游用户自建的列，用于标识合表中各行数据的来源。如果配置该项，需要提前在下游手动创建合表，具体可参考下面 Table routing 的用法
+    # extract-table:                                        # 提取分表去除 sale_ 的后缀信息，并写入下游合表 c_table 列，例如，sale_01 分表的数据会提取 01 写入下游 c_table 列
+    #   table-regexp: "sale_(.*)"
+    #   target-column: "c_table"
+    # extract-schema:                                       # 提取分库去除 store_ 的后缀信息，并写入下游合表 c_schema 列，例如，store_02 分库的数据会提取 02 写入下游 c_schema 列
+    #   schema-regexp: "store_(.*)"
+    #   target-column: "c_schema"
+    # extract-source:                                       # 提取数据库源实例信息写入 c_source 列，例如，mysql-01 数据源实例的数据会提取 mysql-01 写入下游 c_source 列
+    #   source-regexp: "(.*)"
+    #   target-column: "c_source"
 
 # 过滤部分 DDL 事件
 filters:
@@ -166,8 +176,8 @@ block-allow-list:
 
 若想了解配置文件中 `routes`、`filters` 等更多用法，请参考：
 
-- [Table routing](/dm/dm-key-features.md#table-routing)
-- [Block & Allow Table Lists](/dm/dm-key-features.md#block--allow-table-lists)
+- [Table routing](/dm/dm-table-routing.md)
+- [Block & Allow Table Lists](/dm/dm-block-allow-table-lists.md)
 - [如何过滤 binlog 事件](/filter-binlog-event.md)
 - [如何通过 SQL 表达式过滤 DML](/filter-dml-event.md)
 
@@ -196,7 +206,7 @@ tiup dmctl --master-addr ${advertise-addr} start-task task.yaml
 | `--master-addr` | dmctl 要连接的集群的任意 DM-master 节点的 `{advertise-addr}`，例如：172.16.10.71:8261 |
 | `start-task` | 命令用于创建数据迁移任务 |
 
-如果任务启动失败，可根据返回结果的提示进行配置变更后执行 start-task task.yaml 命令重新启动任务。遇到问题请参考 [故障及处理方法](/dm/dm-error-handling.md) 以及 [常见问题](/dm/dm-faq.md)。
+如果任务启动失败，可根据返回结果的提示进行配置变更后执行 start-task task.yaml 命令重新启动任务。遇到问题请参考[故障及处理方法](/dm/dm-error-handling.md)以及[常见问题](/dm/dm-faq.md)。
 
 ## 第 4 步：查看任务状态
 
@@ -216,7 +226,7 @@ tiup dmctl --master-addr ${advertise-addr} query-status ${task-name}
 
 - 通过 Grafana 查看
 
-    如果使用 TiUP 部署 DM 集群时，正确部署了 Prometheus、Alertmanager 与 Grafana，则使用部署时填写的 IP 及 端口进入 Grafana，选择 DM 的 dashboard 查看 DM 相关监控项。
+    如果使用 TiUP 部署 DM 集群时，正确部署了 Prometheus、Alertmanager 与 Grafana，则使用部署时填写的 IP 及端口进入 Grafana，选择 DM 的 dashboard 查看 DM 相关监控项。
 
 - 通过日志查看
 

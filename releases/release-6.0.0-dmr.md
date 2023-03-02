@@ -8,6 +8,10 @@ title: TiDB 6.0.0 Release Notes
 
 TiDB 版本：6.0.0-DMR
 
+> **注意：**
+>
+> TiDB 6.0.0-DMR 的用户文档已[归档](https://docs-archive.pingcap.com/zh/tidb/v6.0)。如无特殊需求，建议使用 TiDB 数据库的[最新 LTS 版本](https://docs.pingcap.com/zh/tidb/stable)。
+
 在 6.0.0-DMR 版本中，你可以获得以下关键特性：
 
 - 基于 SQL 的数据放置规则，提供更灵活的数据放置管理能力。
@@ -304,7 +308,7 @@ v6.0.0 是 DMR 版本，版本名称为 6.0.0-DMR。
 | TiDB | [`new_collations_enabled_on_first_bootstrap`](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap) | 修改 | 用于开启新的 collation 支持。自 v6.0.0 起默认值从 false 改为 true。该配置项只有在初次初始化集群时生效，初始化集群后，无法通过更改该配置项打开或关闭新的 collation 框架。 |
 | TiKV | [`backup.num-threads`](/tikv-configuration-file.md#num-threads-1) | 修改 | 修改可调整范围为 `[1, CPU]`。 |
 | TiKV | [`raftstore.apply-max-batch-size`](/tikv-configuration-file.md#apply-max-batch-size) | 修改 | 添加最大值为 `10240`。 |
-| TiKV | [`raftstore.raft-max-size-per-msg`](/tikv-configuration-file.md#raft-max-size-per-msg) | 修改 | <ul><li>修改最小值（由 `0` 修改为大于 `0`）</li><li>添加最大值为 `3GB`</li><li>添加单位（由 `MB` 增加为 `KB\|MB\|GB`）</li></ul> |
+| TiKV | [`raftstore.raft-max-size-per-msg`](/tikv-configuration-file.md#raft-max-size-per-msg) | 修改 | <ul><li>修改最小值（由 `0` 修改为大于 `0`）</li><li>添加最大值为 `3GB`</li><li>添加单位（由 `MB` 增加为 <code>KB\|MB\|GB</code>）</li></ul> |
 | TiKV | [`raftstore.store-max-batch-size`](/tikv-configuration-file.md#store-max-batch-size) | 修改 | 添加最大值为 `10240`。 |
 | TiKV | [`readpool.unified.max-thread-count`](/tikv-configuration-file.md#max-thread-count) | 修改 | 修改可调整范围为 `[min-thread-count, MAX(4, CPU)]`。 |
 | TiKV | [`rocksdb.enable-pipelined-write`](/tikv-configuration-file.md#enable-pipelined-write) | 修改 | 修改默认值为 `false`。开启时会使用旧的 Pipelined Write，关闭时会使用新的 Pipelined Commit 机制。 |
@@ -320,9 +324,9 @@ v6.0.0 是 DMR 版本，版本名称为 6.0.0-DMR。
 | TiFlash | [`profiles.default.dt_compression_level`](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml) | 新增 | TiFlash 存储引擎的压缩级别，默认值 `1`。 |
 | DM | [`loaders.<name>.import-mode`](/dm/task-configuration-file-full.md#完整配置文件示例) | 新增 | 该配置项控制全量阶段数据导入的模式。自 v6.0.0 起全量阶段默认使用 TiDB Lightning 的 TiDB-backend 方式导入，替换原来的 Loader 组件。此变动为内部组件替换，对日常使用没有明显影响。<br/>默认值 `sql` 表示启用 tidb-backend 组件，可能在极少数场景下存在未能完全兼容的情况，可以通过配置为 "loader" 回退。 |
 | DM | [`loaders.<name>.on-duplicate`](/dm/task-configuration-file-full.md#完整配置文件示例) | 新增 | 该配置项控制全量导入阶段出现的冲突数据的解决方式。默认值为 `replace`，覆盖重复数据。 |
-| TiCDC | [`dial-timeout`](/ticdc/manage-ticdc.md#sink-uri-配置-kafka) | 新增 | 和下游 Kafka 建立连接的超时时长，默认值为 `10s` |
-| TiCDC | [`read-timeout`](/ticdc/manage-ticdc.md#sink-uri-配置-kafka) | 新增 | 读取下游 Kafka 返回的 response 的超时时长，默认值 `10s` |
-| TiCDC | [`write-timeout`](/ticdc/manage-ticdc.md#sink-uri-配置-kafka) | 新增 | 向下游 Kafka 发送 request 的超时时长，默认值为 `10s` |
+| TiCDC | [`dial-timeout`](/ticdc/ticdc-sink-to-kafka.md#sink-uri-配置-kafka) | 新增 | 和下游 Kafka 建立连接的超时时长，默认值为 `10s` |
+| TiCDC | [`read-timeout`](/ticdc/ticdc-sink-to-kafka.md#sink-uri-配置-kafka) | 新增 | 读取下游 Kafka 返回的 response 的超时时长，默认值 `10s` |
+| TiCDC | [`write-timeout`](/ticdc/ticdc-sink-to-kafka.md#sink-uri-配置-kafka) | 新增 | 向下游 Kafka 发送 request 的超时时长，默认值为 `10s` |
 
 ### 其他
 
@@ -485,7 +489,7 @@ TiDB 提供两个[离线包下载](https://pingcap.com/zh/product-community/)：
         - 支持放置规则 (placement rules) [#4846)](https://github.com/pingcap/tiflow/issues/4846)
         - 同步处理 HTTP API [#1710](https://github.com/pingcap/tiflow/issues/1710)
         - 为 changefeed 重启操作添加指数退避机制 [#3329](https://github.com/pingcap/tiflow/issues/3329)
-        - 设置 MySQL sink 的默认隔离级别为 Read Committed，以减少MySQL 中的死锁 [#3589](https://github.com/pingcap/tiflow/issues/3589)
+        - 设置 MySQL sink 的默认隔离级别为 Read Committed，以减少 MySQL 中的死锁 [#3589](https://github.com/pingcap/tiflow/issues/3589)
         - 在创建 changefeed 时验证参数合法，优化报错信息 [#1716](https://github.com/pingcap/tiflow/issues/1716) [#1718](https://github.com/pingcap/tiflow/issues/1718) [#1719](https://github.com/pingcap/tiflow/issues/1719) [#4472](https://github.com/pingcap/tiflow/issues/4472)
         - 暴露 Kafka producer 配置参数，使之在 TiCDC 中可配置 [#4385](https://github.com/pingcap/tiflow/issues/4385)
 

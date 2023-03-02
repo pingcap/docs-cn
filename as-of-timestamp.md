@@ -7,15 +7,6 @@ summary: 了解如何使用 AS OF TIMESTAMP 语法读取历史数据。
 
 本文档介绍如何通过 `AS OF TIMESTAMP` 语句使用 [Stale Read](/stale-read.md) 功能来读取 TiDB 历史版本数据，包括具体的操作示例以及历史数据的保存策略。
 
-> **警告：**
->
-> 目前 Stale Read 特性无法和 TiFlash 一起使用。如果你的查询中带有 `AS OF TIMESTAMP` 并且 TiDB 可能从 TiFlash 副本读取数据，你可能会遇到 `ERROR 1105 (HY000): stale requests require tikv backend` 报错信息。
->
-> 要解决该问题，你需要为使用 Stale Read 特性的查询禁用 TiFlash 副本。要禁用 TiFlash 副本，你可以使用以下任一方法：
->
-> + 通过设置变量来禁用 TiFlash 副本 `set session tidb_isolation_read_engines='tidb,tikv'`。
-> + 使用 [hint](/optimizer-hints.md#read_from_storagetiflasht1_name--tl_name--tikvt2_name--tl_name-) 强制 TiDB 从 TiKV 读取数据。
-
 TiDB 支持通过标准 SQL 接口，即通过 `AS OF TIMESTAMP` SQL 语法的形式读取历史数据，无需特殊的服务器或者驱动器。当数据被更新或删除后，你可以通过 SQL 接口将更新或删除前的数据读取出来。
 
 > **注意：**
