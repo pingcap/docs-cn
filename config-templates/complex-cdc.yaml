@@ -43,6 +43,7 @@ server_configs:
   cdc:
     # capture-session-ttl: 10
     # sorter.sort-dir: "/tmp/cdc_sort"
+    # gc-ttl: 86400
 
 pd_servers:
   - host: 10.0.1.4
