@@ -10,6 +10,10 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 
 本文档只阐述未包含在命令行参数中的参数，命令行参数参见 [PD 配置参数](/command-line-flags-for-pd-configuration.md)。
 
+> **Tip:**
+>
+> 如果你需要调整配置项的值，请参考[修改配置参数](/maintain-tidb-using-tiup.md#修改配置参数)进行操作。
+
 ### `name`
 
 + PD 节点名称。
@@ -290,7 +294,7 @@ pd-server 相关配置项。
 + 设置是否开启跨表 merge。
 + 默认值：true
 
-### `region-score-formula-version` <span class="version-mark">从 v5.0 版本开始引入</span> 
+### `region-score-formula-version` <span class="version-mark">从 v5.0 版本开始引入</span>
 
 + 设置 Region 算分公式版本。
 + 默认值：v2
