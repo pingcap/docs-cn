@@ -504,22 +504,22 @@ curl -X POST -H "'Content-type':'application/json'" http://127.0.0.1:8300/api/v2
 
 参数说明如下
 
-| 参数名               | 说明                          |
-|:------------------|:----------------------------|
-| `admin_job_type`  | `INTEGER` admin 事件类型。       |
-| `checkpoint_time` | `STRING` checkpoint 格式化后时间。 |
-| `checkpoint_ts`   | `STRING` checkpoint ts。     |
-| `config`          | 同步任务配置，结构和含义与上述配置           |
-| `create_time`     | `STRING` 同步任务创建的时间          |
-| `creator_version` | `STRING` 同步任务创建时 TiCDC 的版本  |
-| `error`           | 同步任务错误                      |
-| `id`              | `STRING` 同步任务 ID            |
-| `resolved_ts`     | `UINT64` 同步任务 resolved ts   |
-| `sink_uri`        | `STRING` 同步任务的 sink uri     |
-| `start_ts`        | `UINT64` 同步任务 start ts      |
-| `state`           | `STRING` 同步任务状态             |
-| `target_ts`       | `UINT64` 同步任务的 target ts    |
-| `task_status`     | 同步任务分发的详细状态                 |
+| 参数名               | 说明                                                          |
+|:------------------|:------------------------------------------------------------|
+| `admin_job_type`  | `INTEGER` admin 事件类型。                                       |
+| `checkpoint_time` | `STRING` 同步任务当前 checkpoint 的格式化时间表示。                        |
+| `checkpoint_ts`   | `STRING` 同步任务当前 checkpoint 的 TSO 表示。                        |
+| `config`          | 同步任务配置，结构和含义与上述配置                                           |
+| `create_time`     | `STRING` 同步任务创建的时间                                          |
+| `creator_version` | `STRING` 同步任务创建时 TiCDC 的版本                                  |
+| `error`           | 同步任务错误                                                      |
+| `id`              | `STRING` 同步任务 ID                                            |
+| `resolved_ts`     | `UINT64` 同步任务 resolved ts                                   |
+| `sink_uri`        | `STRING` 同步任务的 sink uri                                     |
+| `start_ts`        | `UINT64` 同步任务 start ts                                      |
+| `state`           | `STRING` 同步任务状态，状态可分为 normal、stopped、error、failed、finished。 |
+| `target_ts`       | `UINT64` 同步任务的 target ts                                    |
+| `task_status`     | 同步任务分发的详细状态                                                 |
 
 `task_status`参数说明如下
 
@@ -689,20 +689,20 @@ curl -X DELETE http://127.0.0.1:8300/api/v1/changefeeds/test1
 |:-----------------|:----------------------------------------|
 | `target_ts`      | `UINT64` 类型，指定 changefeed 的目标 TSO。（非必选） |
 | `sink_uri`       | `STRING` 类型，同步任务下游的地址。（非必选)             |
-| `replica_config` | sink 的配置参数。（非必选）                        |
+| `replica_config` | sink 的配置参数, 必须是完整的配置。（非必选）              |
 
 以上参数含义与[创建同步任务](#创建同步任务)中的参数相同，此处不再赘述。
 
 ### 使用样例
 
-以下请求会更新 ID 为 `test1` 的同步任务的 `mounter_worker_num` 为 `32`。
+以下请求会更新 ID 为 `test1` 的同步任务的 `target_ts` 为 `32`。
 
 ```shell
- curl -X PUT -H "'Content-type':'application/json'" http://127.0.0.1:8300/api/v2/changefeeds/test1 -d '{"mounter_worker_num":32}'
+ curl -X PUT -H "'Content-type':'application/json'" http://127.0.0.1:8300/api/v2/changefeeds/test1 -d '{"target_ts":32}'
 ```
 
 若是请求成功，则返回 `200 OK`，若请求失败，则返回错误信息和错误码。
-响应的 JSON 格式以及字段含义与[创建同步任务](#创建同步任务)中的参数相同，此处不再赘述。
+响应的 JSON 格式以及字段含义与[创建同步任务](#创建同步任务)中的响应参数相同，此处不再赘述。
 
 ## 查询同步任务列表
 
@@ -737,8 +737,6 @@ curl -X GET http://127.0.0.1:8300/api/v2/changefeeds?state=normal
   "total": 2,
   "items": [
     {
-      "upstream_id": 7204854053024313036,
-      "namespace": "default",
       "id": "test",
       "state": "normal",
       "checkpoint_tso": 439749918821711874,
@@ -746,8 +744,6 @@ curl -X GET http://127.0.0.1:8300/api/v2/changefeeds?state=normal
       "error": null
     },
     {
-      "upstream_id": 7204854053024313036,
-      "namespace": "default",
       "id": "test2",
       "state": "normal",
       "checkpoint_tso": 439749918821711874,
@@ -790,7 +786,7 @@ curl -X GET http://127.0.0.1:8300/api/v2/changefeeds?state=normal
 curl -X GET http://127.0.0.1:8300/api/v1/changefeeds/test1
 ```
 
-响应的 JSON 格式以及字段含义与[创建同步任务](#创建同步任务)中的参数相同，此处不再赘述。
+响应的 JSON 格式以及字段含义与[创建同步任务](#创建同步任务)中的响应参数相同，此处不再赘述。
 
 ## 暂停同步任务
 
@@ -875,23 +871,25 @@ curl -X GET http://127.0.0.1:8300/api/v1/processors
   "total": 3,
   "items": [
     {
-      "namespace": "default",
       "changefeed_id": "test2",
       "capture_id": "d2912e63-3349-447c-90ba-72a4e04b5e9e"
     },
     {
-      "namespace": "default",
       "changefeed_id": "test1",
       "capture_id": "d2912e63-3349-447c-90ba-72a4e04b5e9e"
     },
     {
-      "namespace": "default",
       "changefeed_id": "test",
       "capture_id": "d2912e63-3349-447c-90ba-72a4e04b5e9e"
     }
   ]
 }
 ```
+
+此处对以上返回的信息做进一步阐述：
+
+- `changefeed_id`：同步任务的 ID
+- `capture_id`：`Capture` 的 ID
 
 ## 查询特定同步子任务
 
@@ -927,6 +925,10 @@ curl -X GET http://127.0.0.1:8300/api/v2/processors/test1/561c3784-77f0-4863-ad5
   ]
 }
 ```
+
+此处对以上返回的信息做进一步阐述：
+
+- `table_ids`：在这个 capture 上同步的 table ID
 
 ## 查询 TiCDC 服务进程列表
 
@@ -1002,10 +1004,6 @@ dpanic"、"panic"、"fatal"。
 
 ```shell
 curl -X POST -H "'Content-type':'application/json'" http://127.0.0.1:8300/api/v1/log -d '{"log_level":"debug"}'
-```
-
-```json
-{}
 ```
 
 若是请求成功，则返回 `200 OK`，若请求失败，则返回错误信息和错误码。
