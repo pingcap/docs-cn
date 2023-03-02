@@ -7,7 +7,7 @@ summary: 了解如何使用 OpenAPI V2 接口来管理集群状态和数据同�
 
 TiCDC 提供 OpenAPI 功能，你可以通过 OpenAPI V2 对 TiCDC 集群进行查询和运维操作。OpenAPI
 的功能是 [`cdc cli` 工具](/ticdc/ticdc-manage-changefeed.md)的一个子集。
-注意： Open API v1 将在未来版本中被删除。
+注意： Open API V1 将在未来版本中被删除。
 
 你可以通过 OpenAPI 完成 TiCDC 集群的如下运维操作：
 
@@ -26,7 +26,7 @@ TiCDC 提供 OpenAPI 功能，你可以通过 OpenAPI V2 对 TiCDC 集群进行�
 - [驱逐 owner 节点](#驱逐-owner-节点)
 - [动态调整 TiCDC Server 日志级别](#动态调整-ticdc-server-日志级别)
 
-所有 API 的请求体与返回值统一使用 JSON 格式数据。本文档以下部分描述当前提供的 API 的具体使用方法。
+所有 API 的请求体与返回值统一使用 JSON 格式数据, 请求如果成功则统一返回 `200 OK` 。本文档以下部分描述当前提供的 API 的具体使用方法。
 在下文的示例描述中，假设 TiCDC server 的监听 IP 地址为 `127.0.0.1`，端口为 `8300`（在启动 TiCDC server
 时可以通过 `--addr=ip:port` 指定绑定的 IP 和端口）。
 
@@ -118,7 +118,7 @@ curl -X GET http://127.0.0.1:8300/api/v2/status
 ### 使用样例
 
 ```shell
-curl -X GET http://127.0.0.1:8300/api/v1/health
+curl -X GET http://127.0.0.1:8300/api/v2/health
 ```
 
 响应
@@ -559,7 +559,7 @@ curl -X POST -H "'Content-type':'application/json'" http://127.0.0.1:8300/api/v2
 以下请求会删除 ID 为 `test1` 的同步任务。
 
 ```shell
-curl -X DELETE http://127.0.0.1:8300/api/v1/changefeeds/test1
+curl -X DELETE http://127.0.0.1:8300/api/v2/changefeeds/test1
 ```
 
 若是请求成功，则返回 `200 OK`，若请求失败，则返回错误信息和错误码。
@@ -793,7 +793,7 @@ curl -X GET http://127.0.0.1:8300/api/v2/changefeeds?state=normal
 以下请求会查询 ID 为 `test1` 的同步任务的详细信息。
 
 ```shell
-curl -X GET http://127.0.0.1:8300/api/v1/changefeeds/test1
+curl -X GET http://127.0.0.1:8300/api/v2/changefeeds/test1
 ```
 
 响应的 JSON 格式以及字段含义与[创建同步任务](#创建同步任务)中的响应参数相同，此处不再赘述。
@@ -819,7 +819,7 @@ curl -X GET http://127.0.0.1:8300/api/v1/changefeeds/test1
 以下请求会暂停 ID 为 `test1` 的同步任务。
 
 ```shell
-curl -X POST http://127.0.0.1:8300/api/v1/changefeeds/test1/pause
+curl -X POST http://127.0.0.1:8300/api/v2/changefeeds/test1/pause
 ```
 
 若是请求成功，则返回 `200 OK`，若请求失败，则返回错误信息和错误码。
@@ -873,7 +873,7 @@ curl -X POST http://127.0.0.1:8300/api/v2/changefeeds/test1/resume -d '{}'
 ### 使用样例
 
 ```shell
-curl -X GET http://127.0.0.1:8300/api/v1/processors
+curl -X GET http://127.0.0.1:8300/api/v2/processors
 ```
 
 ```json
@@ -1013,7 +1013,7 @@ dpanic"、"panic"、"fatal"。
 ### 使用样例
 
 ```shell
-curl -X POST -H "'Content-type':'application/json'" http://127.0.0.1:8300/api/v1/log -d '{"log_level":"debug"}'
+curl -X POST -H "'Content-type':'application/json'" http://127.0.0.1:8300/api/v2/log -d '{"log_level":"debug"}'
 ```
 
 若是请求成功，则返回 `200 OK`，若请求失败，则返回错误信息和错误码。
