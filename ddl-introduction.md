@@ -77,7 +77,7 @@ absent -> delete only -> write only -> write reorg -> public
 对于用户来说，新建的索引在 `public` 状态前都不可用。
 
 <SimpleTab>
-<div label="Online DDL 异步变更流程（TiDB v6.2 前）">
+<div label="Online DDL 异步变更流程（TiDB v6.2.0 前）">
 
 在 v6.2.0 之前，TiDB SQL 层中处理异步 Schema 变更的基本流程如下：
 
@@ -150,7 +150,7 @@ absent -> delete only -> write only -> write reorg -> public
 >
 > - 以上两个变量均可以在 DDL 任务执行过程中动态调整，并且在下一个事务批次中生效。
 > - 根据 DDL 操作的类型，并结合业务负载压力，选择合适的时间点执行，例如建议在业务负载比较低的情况运行 `ADD INDEX` 操作。
-> - 由于添加索引的时间跨度较长，发送相关的指令后，TiDB 会在后台执行任务，TiDB server 挂掉不会影响继续执行。
+> - 由于添加索引的时间跨度较长，发送相关的指令后，TiDB 会在后台执行任务，TiDB server 宕机不会影响继续执行。
 
 ### 并发发送 DDL 请求实现快速建大量表
 
@@ -174,7 +174,7 @@ absent -> delete only -> write only -> write reorg -> public
 
 - `ADMIN SHOW DDL JOB QUERIES job_id [, job_id]`：用于查看 job_id 对应的 DDL 任务的原始 SQL 语句。详情参阅 [`ADMIN SHOW DDL JOB QUERIES`](/sql-statements/sql-statement-admin-show-ddl.md#admin-show-ddl-job-queries)。
 
-- `ADMIN CANCEL DDL JOBS job_id, [, job_id]`：用于取消已经提交但未执行完成的 DDL 任务。取消完成后，执行 DDL 任务的 SQL 语句会返回 `ERROR 8214 (HY000): Cancelled DDL job` 错误。
+- `ADMIN CANCEL DDL JOBS job_id [, job_id]`：用于取消已经提交但未执行完成的 DDL 任务。取消完成后，执行 DDL 任务的 SQL 语句会返回 `ERROR 8214 (HY000): Cancelled DDL job` 错误。
 
     取消一个已经执行完成的 DDL 任务会在 RESULT 列看到 `DDL Job:90 not found` 的错误，表示该任务已从 DDL 等待队列中被移除。
 

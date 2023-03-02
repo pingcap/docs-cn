@@ -255,13 +255,17 @@ TiDB 支持改变[全局](/system-variables.md#tidb_force_priority)或单个语�
 - 多个 DDL 语句一起执行的时候，后面的几个 DDL 语句可能会比较慢，因为可能需要排队等待。排队场景包括：
     - 同一类型 DDL 语句需要排队（例如 `CREATE TABLE` 和 `CREATE DATABASE` 都是 General DDL，两个操作同时执行时，需要排队）。自 TiDB v6.2.0 起，支持并行 DDL 语句，但为了避免 DDL 使用过多 TiDB 的计算资源，也有并发度限制，因此会有一定的排队情况。
     - 对同一张表上执行的 DDL 操作存在依赖关系，后面的 DDL 语句需要等待前面的 DDL 操作完成。
-- 在集群正常启动后，第一个 DDL 操作的执行时间可能会比较久，可能是 因为 DDL 模块在进行 DDL Owner 的选举。
+- 在集群正常启动后，第一个 DDL 操作的执行时间可能会比较久，可能是因为 DDL 模块在进行 DDL Owner 的选举。
+
 - 终止 TiDB 时，TiDB 不能与 PD 正常通信（包括停电的情况），或者用 `kill -9` 命令终止 TiDB 导致 TiDB 没有及时从 PD 清理注册数据。
 - 集群中某个 TiDB 与 PD 或者 TiKV 之间发生通信问题，即 TiDB 不能及时获取最新版本信息。
 
 ### 触发 Information schema is changed 错误的原因？
 
-TiDB 在执行 SQL 语句时，会根据隔离级别确定一个对象的 `schema` 版本来处理该 SQL 语句，而且 TiDB 支持在线异步变更 DDL。那么，在执行 DML 的时候可能有 DDL 语句也在执行，而你需要确保每个 SQL 语句在同一个 `schema` 上执行。所以当执行 DML 时，如果遇到正在执行中的 DDL 操作，TiDB 可能会报 `Information schema is changed` 的错误。从 v6.4.0 开始，TiDB 实现了[元数据锁机制](/metadata-lock.md)，可以让 DML 语句的执行和 DDL Schema 变更协同进行，可以避免大部分 `Information schema is changed` 错误的发生。
+TiDB 在执行 SQL 语句时，会根据隔离级别确定一个对象的 `schema` 版本来处理该 SQL 语句，而且 TiDB 支持在线异步变更 DDL。那么，在执行 DML 的时候可能有 DDL 语句也在执行，而你需要确保每个 SQL 语句在同一个 `schema` 上执行。所以当执行 DML 时，如果遇到正在执行中的 DDL 操作，TiDB 可能会报 `Information schema is changed` 的错误。
+
+从 v6.4.0 开始，TiDB 实现了[元数据锁机制](/metadata-lock.md)，可以让 DML 语句的执行和 DDL Schema 变更协同进行，可以避免大部分 `Information schema is changed` 错误的发生。
+
 
 报错的可能原因如下：
 
