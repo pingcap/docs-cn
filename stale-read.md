@@ -27,7 +27,7 @@ TiDB 提供语句级别、会话级别以及全局级别的 Stale Read 使用方
 
 ### 减少 Stale Read 延时
 
-Stale Read 功能会定期推进 TiDB 集群的 Resolved TS 时间戳，该时间戳能保证 TiDB 读到满足事务一致性的数据。当 Stale Read 使用的时间戳（比如 `AS OF TIMESTAMP '2016-10-08 16:45:26'`）大于 Resolved TS 时，Stale Read 会先等待 Resolved TS 推进，从而导致延时上升。
+Stale Read 功能会定期推进 TiDB 集群的 Resolved TS 时间戳，该时间戳能保证 TiDB 读到满足事务一致性的数据。当 Stale Read 使用的时间戳（比如 `AS OF TIMESTAMP '2016-10-08 16:45:26'`）大于 Resolved TS 时，Stale Read 会先触发 TiDB 推进 Resolved TS，等待推进完成后再读取数据，从而导致延时上升。
 
 通过调整下面 TiKV 的配置项，你可以使 TiDB 加快 Resolved TS 推进，以减少 Stale Read 延时：
 
