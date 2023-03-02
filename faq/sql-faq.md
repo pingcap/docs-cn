@@ -237,9 +237,43 @@ TiDB supports multiple ways to override the default query optimizer behavior, in
 SELECT column_name FROM table_name USE INDEX（index_name）WHERE where_condition;
 ```
 
-## Why the `Information schema is changed` error is reported?
+## DDL Execution
 
-TiDB handles the SQL statement using the `schema` of the time and supports online asynchronous DDL change. A DML statement and a DDL statement might be executed at the same time and you must ensure that each statement is executed using the same `schema`. Therefore, when the DML operation meets the ongoing DDL operation, the `Information schema is changed` error might be reported. Some improvements have been made to prevent too many error reportings during the DML operation.
+This section lists issues related to DDL statement execution. For detailed explanations on the DDL execution principles, see [Execution Principles and Best Practices of DDL Statements](/ddl-introduction.md).
+
+### How long does it take to perform various DDL operations?
+
+Assume that DDL operations are not blocked, each TiDB server can update the schema version normally, and the DDL Owner node is running normally. In this case, the estimated time for various DDL operations is as follows:
+
+| DDL Operation Type | Estimated Time |
+|:----------|:-----------|
+| Reorg DDL, such as `ADD INDEX`, `MODIFY COLUMN` (Reorg type data changes) | Depends on the amount of data, system load, and DDL parameter settings. |
+| General DDL (DDL types other than Reorg), such as `CREATE DATABASE`, `CREATE TABLE`, `DROP DATABASE`, `DROP TABLE`, `TRUNCATE TABLE`, `ALTER TABLE ADD`, `ALTER TABLE DROP`, `MODIFY COLUMN` (only changes metadata), `DROP INDEX` | About 1 second |
+
+> **Note:**
+>
+> The above is estimated time for the operations. The actual time might be different.
+
+### Possible reasons why DDL execution is slow
+
+- In a user session, if there is a non-auto-commit DML statement before a DDL statement, and if the commit operation of the non-auto-commit DML statement is slow, it will cause the DDL statement to execute slowly. That is, TiDB commits the uncommitted DML statement before executing the DDL statement.
+
+- When multiple DDL statements are executed together, the execution of the later DDL statements might be slower because they might need to wait in queue. Queuing scenarios include:
+
+    - The same type of DDL statements need to be queued. For example, both `CREATE TABLE` and `CREATE DATABASE` are general DDL statements, so when both operations are executed at the same time, they need to be queued. Starting from TiDB v6.2.0, parallel DDL statements are supported, but to avoid DDL execution using too many TiDB computing resources, there is also a concurrency limit. Queuing occurs when DDL exceeds the concurrency limit.
+    - The DDL operations performed on the same table have a dependency relationship between them. The later DDL statement needs to wait for the previous DDL operation to complete.
+
+- After the cluster is started normally, the execution time of the first DDL operation might be relatively long because the DDL module is electing the DDL Owner.
+
+- TiDB is terminated, which causes TiDB to not able to communicate with PD normally (including power-off situations). Or TiDB is terminated by the `kill -9` command, which causes TiDB to not timely clear the registration data from PD.
+
+- A communication problem occurs between a certain TiDB node in the cluster and PD or TiKV, which makes TiDB not able to obtain the latest version information in time.
+
+### What triggers the `Information schema is changed` error?
+
+When executing SQL statements, TiDB determines the schema version of an object based on the isolation level and processes the SQL statement accordingly. TiDB also supports online asynchronous DDL changes. When you execute DML statements, there might be DDL statements being executed at the same time, and you need to ensure that each SQL statement is executed on the same schema. Therefore, when executing DML, if a DDL operation is ongoing, TiDB might report an `Information schema is changed` error. 
+
+Starting from v6.4.0, TiDB has implemented a [metadata lock mechanism](/metadata-lock.md), which allows the coordinated execution of DML statements and DDL schema changes, and avoids most `Information schema is changed` errors.
 
 Now, there are still a few causes for this error reporting:
 
@@ -256,18 +290,44 @@ In the preceding causes, only Cause 1 is related to tables. Cause 1 and Cause 2 
 > + For each DDL operation, the number of `schema` version changes is the same with the number of corresponding `schema state` version changes.
 > + Different DDL operations cause different number of `schema` version changes. For example, the `CREATE TABLE` statement causes one `schema` version change while the `ADD COLUMN` statement causes four.
 
-## What are the causes of the "Information schema is out of date" error?
+### What are the causes of the "Information schema is out of date" error?
 
-When executing a DML statement, if TiDB fails to load the latest schema within a DDL lease (45s by default), the `Information schema is out of date` error might occur. Possible causes are:
+Before TiDB v6.5.0, when executing a DML statement, if TiDB fails to load the latest schema within a DDL lease (45s by default), the `Information schema is out of date` error might occur. Possible causes are:
 
 - The TiDB instance that executed this DML was killed, and the transaction execution corresponding to this DML statement took longer than a DDL lease. When the transaction was committed, the error occurred.
 - TiDB failed to connect to PD or TiKV while executing this DML statement. As a result, TiDB failed to load schema within a DDL lease or disconnected from PD due to the keepalive setting.
 
-## Error is reported when executing DDL statements under high concurrency?
+### Error is reported when executing DDL statements under high concurrency?
 
 When you execute DDL statements (such as creating tables in batches) under high concurrency, a very few of these statements might fail because of key conflicts during the concurrent execution.
 
 It is recommended to keep the number of concurrent DDL statements under 20. Otherwise, you need to retry the failed statements from the client.
+
+### Why is DDL execution blocked?
+
+Before TiDB v6.2.0, TiDB allocates DDL statements to two first-in-first-out queues based on the type of DDL statements. More specifically, Reorg DDLs go to the Reorg queue and General DDLs go to the general queue. Because of the first-in-first-out limitation and the need for serial execution of DDL statements on the same table, multiple DDL statements might be blocked during execution.
+
+For example, consider the following DDL statements:
+
+- DDL 1: `CREATE INDEX idx on t(a int);`
+- DDL 2: `ALTER TABLE t ADD COLUMN b int;`
+- DDL 3: `CREATE TABLE t1(a int);`
+
+Due to the limitation of the first-in-first-out queue, DDL 3 must wait for DDL 2 to execute. Also, because DDL statements on the same table need to be executed in serial, DDL 2 must wait for DDL 1 to execute. Therefore, DDL 3 needs to wait for DDL 1 to be executed first, even if they operate on different tables.
+
+Starting from TiDB v6.2.0, the TiDB DDL module uses a concurrent framework. In the concurrent framework, there is no longer the limitation of the first-in-first-out queue. Instead, TiDB picks up the DDL task that can be executed from all DDL tasks. Additionally, the number of Reorg workers has been expanded, approximately to `CPU/4` per node. This allows TiDB to build indexes for multiple tables simultaneously in the concurrent framework.
+
+Whether your cluster is a new cluster or an upgraded cluster from an earlier version, TiDB automatically uses the concurrent framework in TiDB v6.2 and later versions. You do not need to make manual adjustments.
+
+### Identify the cause of stuck DDL execution
+
+1. Eliminate other reasons that make the DDL statement execution slow.
+2. Use one of the following methods to identify the DDL Owner node:
+    - Use `curl http://{TiDBIP}:10080/info/all` to obtain the owner of the current cluster.
+    - View the owner during a specific time period from the monitoring dashboard **DDL** > **DDL META OPM**.
+
+- If the owner does not exist, try manually triggering owner election with: `curl -X POST http://{TiDBIP}:10080/ddl/owner/resign`.
+- If the owner exists, export the Goroutine stack and check for the possible stuck location.
 
 ## SQL optimization
 

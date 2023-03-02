@@ -80,7 +80,7 @@ Refer to [5 PD issues](#5-pd-issues).
 
 - 3.1.3 TiDB reports `information schema is changed` error in log
 
-    - For the detailed causes and solution, see [Why the `Information schema is changed` error is reported](/faq/sql-faq.md#why-the-information-schema-is-changed-error-is-reported).
+    - For the detailed causes and solution, see [Why the `Information schema is changed` error is reported](/faq/sql-faq.md#what-triggers-the-information-schema-is-changed-error).
 
     - Background: The increased number of `schema version` is consistent with the number of `schema state` of each DDL change operation. For example, the `create table` operation has 1 version change, and the `add column` operation has 4 version changes. Therefore, too many column change operations might cause `schema version` to increase fast. For details, refer to [online schema change](https://static.googleusercontent.com/media/research.google.com/zh-CN//pubs/archive/41376.pdf).
 

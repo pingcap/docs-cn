@@ -24,7 +24,7 @@ WhereClauseOptional ::=
 
 ### `ADMIN SHOW DDL`
 
-To view the currently running DDL jobs, use `ADMIN SHOW DDL`:
+To view the status of the currently running DDL jobs, use `ADMIN SHOW DDL`. The output includes the current schema version, the DDL ID and address of the owner, the running DDL jobs and SQL statements, and the DDL ID of the current TiDB instance.
 
 {{< copyable "sql" >}}
 
@@ -44,7 +44,57 @@ mysql> ADMIN SHOW DDL;
 
 ### `ADMIN SHOW DDL JOBS`
 
-To view all the results in the current DDL job queue (including tasks that are running and waiting to be run) and the last ten results in the completed DDL job queue, use `ADMIN SHOW DDL JOBS`:
+The `ADMIN SHOW DDL JOBS` statement is used to view all the results in the current DDL job queue, including running and queuing tasks, as well as the latest ten results in the completed DDL job queue. The returned result fields are described as follows:
+
+<CustomContent platform="tidb">
+
+- `JOB_ID`: each DDL operation corresponds to a DDL job. `JOB_ID` is globally unique.
+- `DB_NAME`: the name of the database where the DDL operation is performed.
+- `TABLE_NAME`: the name of the table where the DDL operation is performed.
+- `JOB_TYPE`: the type of DDL operation.
+- `SCHEMA_STATE`: the current state of the schema object that the DDL operates on. If `JOB_TYPE` is `ADD INDEX`, it is the state of the index; if `JOB_TYPE` is `ADD COLUMN`, it is the state of the column; if `JOB_TYPE` is `CREATE TABLE`, it is the state of the table. Common states include the following:
+    - `none`: indicates that it does not exist. Generally, after the `DROP` operation or after the `CREATE` operation fails and rolls back, it will become the `none` state.
+    - `delete only`, `write only`, `delete reorganization`, `write reorganization`: these four states are intermediate states. For their specific meanings, see [How the Online DDL Asynchronous Change Works in TiDB](/ddl-introduction.md#how-the-online-ddl-asynchronous-change-works-in-tidb). As the intermediate state conversion is fast, these states are generally not visible during operation. Only when performing `ADD INDEX` operation can the `write reorganization` state be seen, indicating that index data is being added.
+    - `public`: indicates that it exists and is available to users. Generally, after `CREATE TABLE` and `ADD INDEX` (or `ADD COLUMN`) operations are completed, it will become the `public` state, indicating that the newly created table, column, and index can be read and written normally.
+- `SCHEMA_ID`: the ID of the database where the DDL operation is performed.
+- `TABLE_ID`: the ID of the table where the DDL operation is performed.
+- `ROW_COUNT`: when performing the `ADD INDEX` operation, it is the number of data rows that have been added.
+- `START_TIME`: the start time of the DDL operation.
+- `STATE`: the state of the DDL operation. Common states include the following:
+    - `queueing`: indicates that the operation job has entered the DDL job queue but has not been executed because it is still waiting for an earlier DDL job to complete. Another reason might be that after executing the `DROP` operation, it will become the `none` state, but it will soon be updated to the `synced` state, indicating that all TiDB instances have been synchronized to that state.
+    - `running`: indicates that the operation is being executed.
+    - `synced`: indicates that the operation has been executed successfully and all TiDB instances have been synchronized to this state.
+    - `rollback done`: indicates that the operation has failed and the rollback has been completed.
+    - `rollingback`: indicates that the operation has failed and is rolling back.
+    - `cancelling`: indicates that the operation is being canceled. This state only appears when you use the `ADMIN CANCEL DDL JOBS` command to cancel the DDL job.
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+- `JOB_ID`: each DDL operation corresponds to a DDL job. `JOB_ID` is globally unique.
+- `DB_NAME`: the name of the database where the DDL operation is performed.
+- `TABLE_NAME`: the name of the table where the DDL operation is performed.
+- `JOB_TYPE`: the type of DDL operation.
+- `SCHEMA_STATE`: the current state of the schema object that the DDL operates on. If `JOB_TYPE` is `ADD INDEX`, it is the state of the index; if `JOB_TYPE` is `ADD COLUMN`, it is the state of the column; if `JOB_TYPE` is `CREATE TABLE`, it is the state of the table. Common states include the following:
+    - `none`: indicates that it does not exist. Generally, after the `DROP` operation or after the `CREATE` operation fails and rolls back, it will become the `none` state.
+    - `delete only`, `write only`, `delete reorganization`, `write reorganization`: these four states are intermediate states. For their specific meanings, see [How the Online DDL Asynchronous Change Works in TiDB](https://docs.pingcap.com/tidb/stable/ddl-introduction#how-the-online-ddl-asynchronous-change-works-in-tidb). As the intermediate state conversion is fast, these states are generally not visible during operation. Only when performing `ADD INDEX` operation can the `write reorganization` state be seen, indicating that index data is being added.
+    - `public`: indicates that it exists and is available to users. Generally, after `CREATE TABLE` and `ADD INDEX` (or `ADD COLUMN`) operations are completed, it will become the `public` state, indicating that the newly created table, column, and index can be read and written normally.
+- `SCHEMA_ID`: the ID of the database where the DDL operation is performed.
+- `TABLE_ID`: the ID of the table where the DDL operation is performed.
+- `ROW_COUNT`: when performing the `ADD INDEX` operation, it is the number of data rows that have been added.
+- `START_TIME`: the start time of the DDL operation.
+- `STATE`: the state of the DDL operation. Common states include the following:
+    - `queueing`: indicates that the operation job has entered the DDL job queue but has not been executed because it is still waiting for an earlier DDL job to complete. Another reason might be that after executing the `DROP` operation, it will become the `none` state, but it will soon be updated to the `synced` state, indicating that all TiDB instances have been synchronized to that state.
+    - `running`: indicates that the operation is being executed.
+    - `synced`: indicates that the operation has been executed successfully and all TiDB instances have been synchronized to this state.
+    - `rollback done`: indicates that the operation has failed and the rollback has been completed.
+    - `rollingback`: indicates that the operation has failed and is rolling back.
+    - `cancelling`: indicates that the operation is being canceled. This state only appears when you use the `ADMIN CANCEL DDL JOBS` command to cancel the DDL job.
+
+</CustomContent>
+
+The following example shows the results of `ADMIN SHOW DDL JOBS`:
 
 {{< copyable "sql" >}}
 
@@ -124,17 +174,17 @@ You can only search the running DDL job corresponding to `job_id` within the las
  ADMIN SHOW DDL JOB QUERIES LIMIT n, m;  # Retrieve rows [n+1, n+m]
  ADMIN SHOW DDL JOB QUERIES LIMIT m OFFSET n;  # Retrieve rows [n+1, n+m]
  ```
- 
+
  where `n` and `m` are integers greater or equal to 0.
 
  ```sql
  ADMIN SHOW DDL JOB QUERIES LIMIT 3;  # Retrieve first 3 rows
  +--------+--------------------------------------------------------------+
- | JOB_ID | QUERY                                                        | 
+ | JOB_ID | QUERY                                                        |
  +--------+--------------------------------------------------------------+
- |     59 | ALTER TABLE t1 ADD INDEX index2 (col2)                       | 
- |     60 | ALTER TABLE t2 ADD INDEX index1 (col1)                       | 
- |     58 | CREATE TABLE t2 (id INT NOT NULL PRIMARY KEY auto_increment) | 
+ |     59 | ALTER TABLE t1 ADD INDEX index2 (col2)                       |
+ |     60 | ALTER TABLE t2 ADD INDEX index1 (col1)                       |
+ |     58 | CREATE TABLE t2 (id INT NOT NULL PRIMARY KEY auto_increment) |
  +--------+--------------------------------------------------------------+
  3 rows in set (0.00 sec)
  ```
@@ -142,10 +192,10 @@ You can only search the running DDL job corresponding to `job_id` within the las
  ```sql
  ADMIN SHOW DDL JOB QUERIES LIMIT 6, 2;  # Retrieve rows 7-8
  +--------+----------------------------------------------------------------------------+
- | JOB_ID | QUERY                                                                      | 
+ | JOB_ID | QUERY                                                                      |
  +--------+----------------------------------------------------------------------------+
- |     52 | ALTER TABLE t1 ADD INDEX index1 (col1)                                     | 
- |     51 | CREATE TABLE IF NOT EXISTS t1 (id INT NOT NULL PRIMARY KEY auto_increment) | 
+ |     52 | ALTER TABLE t1 ADD INDEX index1 (col1)                                     |
+ |     51 | CREATE TABLE IF NOT EXISTS t1 (id INT NOT NULL PRIMARY KEY auto_increment) |
  +--------+----------------------------------------------------------------------------+
  3 rows in set (0.00 sec)
  ```
@@ -153,11 +203,11 @@ You can only search the running DDL job corresponding to `job_id` within the las
  ```sql
  ADMIN SHOW DDL JOB QUERIES LIMIT 3 OFFSET 4;  # Retrieve rows 5-7
  +--------+----------------------------------------+
- | JOB_ID | QUERY                                  | 
+ | JOB_ID | QUERY                                  |
  +--------+----------------------------------------+
  |     54 | DROP TABLE IF EXISTS t3                |
  |     53 | ALTER TABLE t1 DROP INDEX index1       |
- |     52 | ALTER TABLE t1 ADD INDEX index1 (col1) | 
+ |     52 | ALTER TABLE t1 ADD INDEX index1 (col1) |
  +--------+----------------------------------------+
  3 rows in set (0.00 sec)
  ```
