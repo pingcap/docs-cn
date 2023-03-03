@@ -51,7 +51,7 @@ TiFlash 存算分离架构适合于希望获得更高性价比的数据分析服
 1. 确保 TiDB 集群中没有任何 TiFlash 节点。如果有，则需要将所有表的 TiFlash 副本数设置为 0，然后缩容掉所有 TiFlash 节点。比如：
 
 ```shell
-mysql> select * from information_schema.tiflash_replica; # Show all tables with TiFlash replica
+mysql> SELECT * FROM INFORMATION_SCHEMA.TIFLASH_REPLICA; # 查询所有带有 TiFlash 副本的表
 mysql> alter table table_x set tiflash replica 0;        # Remove TiFlash replicas from all tables
 
 tiup cluster scale-in mycuster -N tiflash # Scale in all TiFlash nodes
