@@ -29,7 +29,7 @@ TiFlash 默认使用存算一体的架构进行部署，即 TiFlash 节点既是
 
   负责执行从 TiDB 节点发过来的查询请求。它首先访问 Write Node 以获取数据的快照 (data snapshots)，然后分别从 Write Node 读取最新的数据（即尚未上传到 S3 的数据），从 S3 读取剩下的大部分数据。
 
-  Compute Node 利用本地磁盘（通常是 NVMe SSD）来作为数据文件的 cache，从而避免相同的数据反复从远端（Write Node 或者 S3）读取，以提高查询性能。
+  Compute Node 利用本地磁盘（通常是 NVMe SSD）来作为数据文件的缓存，从而避免相同的数据反复从远端（Write Node 或者 S3）读取，以提高查询性能。
 
   Compute Node 是无状态节点，它拥有秒级的扩容和缩容速度。用户可以利用这个特性降低成本：在查询负载较低时减少 Compute Node 的数量从而节省成本，甚至没有查询时停掉所有 Compute Node；在查询负载变高时快速增加 Compute Node 的数量保证查询性能。
 
