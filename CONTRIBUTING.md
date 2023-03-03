@@ -73,8 +73,30 @@ TiDB 中文文档的日常更新特别活跃，相应地，[TiDB 英文文档](h
 
 </details>
 
+## 如何提 Pull Request
+
+最常见的贡献方式就是提 Pull Request 了，那么提交流程是怎样的，又需要遵守哪些规范呢？我们已准备好齐全的快速上手指南，你也可以查阅 [docs-cn 现有的 Pull Request](https://github.com/pingcap/docs-cn/pulls) 作为参考。
+
+请参考下面视频教程，快速上手 GitHub 的 Pull Request 流程。
+
+**基本概念篇（4 分钟）**
+
+<video src="https://download.pingcap.com/docs-cn%2FLesson10_config.mp4" width="600px" height="450px" controls="controls" poster="https://download.pingcap.com/docs-cn/pr_00_basic_concepts.png"></video>
+
+**创建 PR（4 分钟）**
+
+<video src="https://download.pingcap.com/docs-cn/GTV_1_zh_How_to_Create_a_PR.mp4" width="600px" height="450px" controls="controls" poster="https://download.pingcap.com/docs-cn/pr_01_create_pr.png"></video>
+
+**PR 的后续跟进（5 分钟）**
+
+<video src="https://download.pingcap.com/docs-cn/GTV_2_zh_PR_Follow_up.mp4" width="600px" height="450px" controls="controls" poster="https://download.pingcap.com/docs-cn/pr_01_follow_up.png"></video>
+
+**批量修改建议和 CI 检查（4 分钟）**
+
+<video src="https://download.pingcap.com/docs-cn/GTV_3_zh_Batch_Suggestion_and_CI_Check.mp4" width="600px" height="450px" controls="controls" poster="https://download.pingcap.com/docs-cn/pr_01_suggestions.png"></video>
+
 <details>
-<summary>Pull Request 提交流程</summary>
+<summary>Pull Request 提交的详细流程</summary>
 
 TiDB 文档的修改需要遵循一定的流程，具体如下。考虑到有些小伙伴是纯语言背景，命令行的流程掌握起来可能需要花些时间，之后我们也会提供更适合小白上手的 GitHub Desktop 客户端版提交流程（在添加至这里之前，可暂时参考 [lilin90](https://github.com/lilin90) 撰写的[小白上手流程](https://zhuanlan.zhihu.com/p/64880410)）。
 
@@ -230,21 +252,14 @@ TiDB 中文文档使用 Markdown 语言进行编写，为了保证文档质量�
 
 ## 快速上手资源
 
-最常见的贡献方式就是提 Pull Request 了，那么提交流程是怎样的，又需要遵守哪些规范呢？我们已准备好齐全的快速上手指南，你也可以查阅 [docs-cn 现有的 Pull Request](https://github.com/pingcap/docs-cn/pulls) 作为参考。
-
-- Pull Request (PR) 提交 ⭐️
-    - [Pull Request 提交流程](#pull-request-提交流程)
-    - [Pull Request Commit Message 规范](https://github.com/pingcap/community/blob/master/contributors/commit-message-pr-style.md#how-to-write-a-good-commit-message)
-    - [Pull Request 标题规范](https://github.com/pingcap/community/blob/master/contributors/commit-message-pr-style.md#pull-request-title-style)
-    - [常用 bot 命令](#常用-bot-命令)
+- [Pull Request Commit Message 规范](https://github.com/pingcap/community/blob/master/contributors/commit-message-pr-style.md#how-to-write-a-good-commit-message)
+- [Pull Request 标题规范](https://github.com/pingcap/community/blob/master/contributors/commit-message-pr-style.md#pull-request-title-style)
 - [PingCAP 中文文档风格指南](/resources/pingcap-style-guide-zh.pdf)
 - [PingCAP 中英术语表](https://shimo.im/sheets/tTRyydP8Xkdv8yxq/MODOC)
 - [TiDB 中文用户文档模板](/resources/doc-templates)
 - [Markdown 规范](#markdown-规范)
 - [代码注释规范](https://github.com/pingcap/community/blob/master/contributors/code-comment-style.md)
-- 图片风格：[Figma 快速上手教程](/resources/figma-quick-start-guide.md)
-
-    为确保文档图片风格统一，建议使用 Figma 绘制图片。绘制图片时，请参考模板提供的图形元素和配色方案。
+- [Figma 快速上手教程](/resources/figma-quick-start-guide.md)
 
 ## 联系我们
 
