@@ -15,7 +15,7 @@ TiFlash 默认使用存算一体的架构进行部署，即 TiFlash 节点既是
 
 ![TiFlash Write and Compute Separation Architect](/media/tiflash/tiflash-s3.png)
 
-如图，在存算分离架构中，TiFlash 原有进程的不同部分的功能，被拆分到两种不同的节点中，分别是 Write Node 和 Compute Node，它们可以分别部署，各自扩展，即你可以选择部署任意数量的 Write Node 或者 Compute Node。
+如图，在存算分离架构中，TiFlash 原有进程的不同部分的功能，被拆分到两种不同的节点中，分别是 Write Node 和 Compute Node。这两种节点可以分别部署，各自扩展，即你可以选择部署任意数量的 Write Node 或者 Compute Node。
 
 - TiFlash Write Node 
 
