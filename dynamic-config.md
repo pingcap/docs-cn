@@ -187,6 +187,16 @@ show warnings;
 | {db-name}.{cf-name}.soft-pending-compaction-bytes-limit | pending compaction bytes 的软限制 |
 | {db-name}.{cf-name}.hard-pending-compaction-bytes-limit | pending compaction bytes 的硬限制 |
 | {db-name}.{cf-name}.titan.blob-run-mode | 处理 blob 文件的模式 |
+<<<<<<< HEAD
+=======
+| server.grpc-memory-pool-quota | gRPC 可使用的内存大小限制 |
+| server.max-grpc-send-msg-len | gRPC 可发送的最大消息长度 |
+| server.raft-msg-max-batch-size | 单个 gRPC 消息可包含的最大 Raft 消息个数 |
+| server.simplify-metrics | 精简监控采样数据的开关 |
+| server.snap-max-write-bytes-per-sec | 处理 snapshot 时最大允许使用的磁盘带宽 |
+| server.concurrent-send-snap-limit | 同时发送 snapshot 的最大个数 |
+| server.concurrent-recv-snap-limit | 同时接受 snapshot 的最大个数 |
+>>>>>>> c39d90fc7 (tikv: add some missing dynamic config items (#13236))
 | storage.block-cache.capacity | 共享 block cache 的大小（自 v4.0.3 起支持） |
 | backup.num-threads | backup 线程的数量（自 v4.0.3 起支持） |
 | split.qps-threshold | 对 Region 执行 load-base-split 的阈值。如果连续一段时间内，某个 Region 的读请求的 QPS 超过 qps-threshold，则切分该 Region |
