@@ -198,6 +198,9 @@ show warnings;
 | server.grpc-memory-pool-quota | gRPC 可使用的内存大小限制 |
 | server.max-grpc-send-msg-len | gRPC 可发送的最大消息长度 |
 | server.raft-msg-max-batch-size | 单个 gRPC 消息可包含的最大 Raft 消息个数 |
+| server.snap-max-write-bytes-per-sec | 处理 snapshot 时最大允许使用的磁盘带宽 |
+| server.concurrent-send-snap-limit | 同时发送 snapshot 的最大个数 |
+| server.concurrent-recv-snap-limit | 同时接受 snapshot 的最大个数 |
 | storage.block-cache.capacity | 共享 block cache 的大小（自 v4.0.3 起支持） |
 | storage.scheduler-worker-pool-size | Scheduler 线程池中线程的数量 |
 | backup.num-threads | backup 线程的数量（自 v4.0.3 起支持） |
