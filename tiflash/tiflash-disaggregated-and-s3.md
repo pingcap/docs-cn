@@ -55,11 +55,11 @@ mysql> SELECT * FROM INFORMATION_SCHEMA.TIFLASH_REPLICA; # 查询所有带有 Ti
 mysql> ALTER TABLE table_name SET TIFLASH REPLICA 0;        # 将所有表的 TiFlash 副本数设置为 0
 
 tiup cluster scale-in mycuster -N tiflash # Scale in all TiFlash nodes
-tiup cluster display mycluster            # Wait until all TiFlash nodes are in tombstone status
-tiup cluster prune mycluster              # Remove the tiflash nodes in tombestone status
+tiup cluster display mycluster            # 等待所有 TiFlash 节点进入 Tombstone 状态
+tiup cluster prune mycluster              # 移除所有处于 Tombstone 状态的 TiFlash 节点
 ```
 
-2. 准备 TiFlash 的拓扑配置文件，比如 scale-out.topo.yaml 的配置内容如下：
+2. 准备 TiFlash 的拓扑配置文件，比如 scale-out.topo.yaml，配置内容如下：
 
 ```yaml
 tiflash_servers:
@@ -89,14 +89,16 @@ tiflash_servers:
 
 ```shell
 tiup cluster scale-out mycluster ./scale-out.topo.yaml
+```
 
-mysql> alter table table_x set tiflash replica 1;
+```sql
+mysql> ALTER TABLE table_name SET TIFLASH REPLICA 1;
 ```
 
 ## 使用限制
 
-- TiFlash 不支持在两个架构之间原地切换。在切换架构前，需要把原有 TiFlash 节点全部删除
-- 从一种架构迁移到另外一种架构，需要重新同步所有 TiFlash 的数据
-- 不允许不同架构的节点同时存在一个集群中
-- 存算分离架构只支持使用 S3 API 的对象存储；存算一体架构只支持本地存储
-- 使用 S3 存储的情况下，无法启用 "[静态加密](https://docs.pingcap.com/tidb/dev/encryption-at-rest)" 功能，因为 TiFlash 节点无法知道不是本节点生成的文件的密钥
+- TiFlash 不支持在存算一体架构和存算分离架构之间原地切换。在切换架构前，需要将原有 TiFlash 节点全部删除。
+- 从一种架构迁移到另外一种架构后，需要重新同步所有 TiFlash 的数据。
+- 同一个 TiDB 集群只允许存在相同架构的 TiFlash 节点，不允许两种架构同时存在。
+- 存算分离架构只支持使用 S3 API 的对象存储，存算一体架构只支持本地存储。
+- 使用 S3 存储的情况下，TiFlash 节点无法获取非本节点文件的密钥，因此无法启用[静态加密](/encryption-at-rest.md) 功能。
