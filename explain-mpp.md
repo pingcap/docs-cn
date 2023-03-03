@@ -173,7 +173,7 @@ Compared to the output of `EXPLAIN`, the `operator info` column of the operator 
 
 ## MPP version and exchange data compression
 
-Starting from v6.6.6, the new fields `MPPVersion` and `Compression` are added to the MPP execution plan.
+Starting from v6.6.0, the new fields `MPPVersion` and `Compression` are added to the MPP execution plan.
 
 - `MppVersion`: The version number of the MPP execution plan, which can be set through the system variable [`mpp_version`](/system-variables.md#mpp_version-new-in-v660).
 - `Compression`: The data compression mode of the `Exchange` operator, which can be set through the system variable [`mpp_exchange_compression_mode`](/system-variables.md#mpp_exchange_compression_mode-new-in-v660). If data compression is not enabled, this field is not displayed in the execution plan.
