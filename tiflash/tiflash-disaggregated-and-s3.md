@@ -66,7 +66,7 @@ TiFlash 存算分离架构适合于希望获得更高性价比的数据分析服
   ```yaml
   tiflash_servers:
     # TiFlash 节点存在 storage.s3 配置说明使用存算分离模式。
-    # 如果配置了 flash.disaggregated_mode 为 tiflash_compute，则节点类型是 Compute Node；否则是 Write Node
+    # 如果配置了 flash.disaggregated_mode: tiflash_compute，则节点类型是 Compute Node；否则是 Write Node
 
     # 172.31.8.1~2 是 TiFlash Write Node
     - host: 172.31.8.1
