@@ -79,24 +79,24 @@ TiDB 中文文档的日常更新特别活跃，相应地，[TiDB 英文文档](h
 
 请参考下面视频教程，快速上手 GitHub 的 Pull Request 流程。
 
-**基本概念篇（4 分钟）**
+**基本概念篇（4 min）**
 
 <video src="https://download.pingcap.com/docs-cn%2FLesson10_config.mp4" width="600px" height="450px" controls="controls" poster="https://download.pingcap.com/docs-cn/pr_00_basic_concepts.png"></video>
 
-**创建 PR（4 分钟）**
+**创建 PR（4 min）**
 
 <video src="https://download.pingcap.com/docs-cn/GTV_1_zh_How_to_Create_a_PR.mp4" width="600px" height="450px" controls="controls" poster="https://download.pingcap.com/docs-cn/pr_01_create_pr.png"></video>
 
-**PR 的后续跟进（5 分钟）**
+**PR 的后续跟进（5 min）**
 
 <video src="https://download.pingcap.com/docs-cn/GTV_2_zh_PR_Follow_up.mp4" width="600px" height="450px" controls="controls" poster="https://download.pingcap.com/docs-cn/pr_01_follow_up.png"></video>
 
-**批量修改建议和 CI 检查（4 分钟）**
+**批量修改建议和 CI 检查（4 min）**
 
 <video src="https://download.pingcap.com/docs-cn/GTV_3_zh_Batch_Suggestion_and_CI_Check.mp4" width="600px" height="450px" controls="controls" poster="https://download.pingcap.com/docs-cn/pr_01_suggestions.png"></video>
 
 <details>
-<summary>Pull Request 提交的详细流程</summary>
+<summary>提交 Pull Request 的详细流程</summary>
 
 TiDB 文档的修改需要遵循一定的流程，具体如下。考虑到有些小伙伴是纯语言背景，命令行的流程掌握起来可能需要花些时间，之后我们也会提供更适合小白上手的 GitHub Desktop 客户端版提交流程（在添加至这里之前，可暂时参考 [lilin90](https://github.com/lilin90) 撰写的[小白上手流程](https://zhuanlan.zhihu.com/p/64880410)）。
 
@@ -184,19 +184,19 @@ git push -u origin new-branch-name
 
 在提交 PR 之前，请务必检查以下内容：
 
-- 文档内容准确、清晰、简洁，遵循写作规范。参考 [PingCAP 中文技术文档风格 — 极简指南](#pingcap-中文技术文档风格--极简指南)。
-- PR 的各元素完整、准确，包括：
-    - 标题清晰、有意义，包括修改的类型+文档所属的模块。例如：
-        - Fix typos in tidb-monitoring-api.md
-        - Add v5.3.0 benchmark documents
-        - Add note about SELECT CAST(MeN AS CHAR) incompatibility
-    - 有简要描述，例如修改背景等，并添加对应的 issue 号
-    - 选择正确的标签
-    - cherry-pick 到对应的分支版本
-- 如果新增文档、删除文档，需要更新 TOC.md。
-- PR 经过了至少两轮 review，包括 technical review 和 editorial review，确保技术准确、语言规范。Comments 全部处理完，且 reviewers 已经 approved 该 PR。
-- 预览文档，确保文档格式正确、清晰、可读，特别注意表格、图片、列表等特殊样式能够正常显示。
-- 文档通过了 CI check。
+- [ ] 文档内容准确、清晰、简洁，遵循写作规范。参考 [PingCAP 中文技术文档风格 — 极简指南](#pingcap-中文技术文档风格--极简指南)。
+- [ ] PR 的各元素完整、准确，包括：
+    - [ ] 标题清晰、有意义，包括修改的类型+文档所属的模块。例如：
+        - [ ] Fix typos in tidb-monitoring-api.md
+        - [ ] Add v5.3.0 benchmark documents
+        - [ ] Add note about SELECT CAST(MeN AS CHAR) incompatibility
+    - [ ] 有简要描述，例如修改背景等，并添加对应的 issue 号
+    - [ ] 选择正确的标签
+    - [ ] cherry-pick 到对应的分支版本
+- [ ] 如果新增文档、删除文档，需要更新 TOC.md。
+- [ ] PR 经过了至少两轮 review，包括 technical review 和 editorial review，确保技术准确、语言规范。Comments 全部处理完，且 reviewers 已经 approved 该 PR。
+- [ ] 预览文档，确保文档格式正确、清晰、可读，特别注意表格、图片、列表等特殊样式能够正常显示。
+- [ ] 文档通过了 CI check。
 
 ## PingCAP 中文技术文档风格 — 极简指南
 
