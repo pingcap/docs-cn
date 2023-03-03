@@ -1,6 +1,6 @@
 ---
 title: TiFlash 存算分离架构与 S3 支持
-summary: 了解 TiFlash 存算分离架构与 S3 支持
+summary: 了解 TiFlash 存算分离架构与 S3 支持。
 ---
 
 # TiFlash 存算分离架构与 S3 支持
