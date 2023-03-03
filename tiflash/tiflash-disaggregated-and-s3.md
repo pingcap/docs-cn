@@ -63,57 +63,64 @@ TiFlash 存算分离架构适合于希望获得更高性价比的数据分析服
 
 2. 准备 TiFlash 的拓扑配置文件，比如 scale-out.topo.yaml，配置内容如下：
 
-```yaml
-tiflash_servers:
-  # TiFlash 节点存在 storage.s3 配置说明使用存算分离模式。
-  # 如果配置了 flash.disaggregated_mode 为 tiflash_compute，则节点类型是 Compute Node；否则是 Write Node
+  ```yaml
+  tiflash_servers:
+    # TiFlash 节点存在 storage.s3 配置说明使用存算分离模式。
+    # 如果配置了 flash.disaggregated_mode 为 tiflash_compute，则节点类型是 Compute Node；否则是 Write Node
 
-  # 172.31.8.1~2 是 TiFlash Write Node
-  - host: 172.31.8.1
-    config:
-      storage.s3.endpoint: http://s3.{region}.amazonaws.com # S3 的 endpoint 地址
-      storage.s3.bucket: my_bucket                          # TiFlash 的所有数据存储在这个 bucket 中
-      storage.s3.access_key_id: {ACCESS_KEY_ID}             # 访问 S3 的 ACCESS_KEY_ID
-      storage.s3.secret_access_key: {SECRET_ACCESS_KEY}     # 访问 S3 的 SECRET_ACCESS_KEY
-      storage.main.dir: ["/data1/tiflash/data"]             # Write Node 的本地数据目录，和存算一体的配置方式相同
-  - host: 172.31.8.2
-    config:
-      storage.s3.endpoint: http://s3.{region}.amazonaws.com # S3 的 endpoint 地址
-      storage.s3.bucket: my_bucket                          # TiFlash 的所有数据存储在这个 bucket 中
-      storage.s3.access_key_id: {ACCESS_KEY_ID}             # 访问 S3 的 ACCESS_KEY_ID
-      storage.s3.secret_access_key: {SECRET_ACCESS_KEY}     # 访问 S3 的 SECRET_ACCESS_KEY
-      storage.main.dir: ["/data1/tiflash/data"]             # Write Node 的本地数据目录，和存算一体的配置方式相同
+    # 172.31.8.1~2 是 TiFlash Write Node
+    - host: 172.31.8.1
+      config:
+        storage.s3.endpoint: http://s3.{region}.amazonaws.com # S3 的 endpoint 地址
+        storage.s3.bucket: my_bucket                          # TiFlash 的所有数据存储在这个 bucket 中
+        storage.s3.access_key_id: {ACCESS_KEY_ID}             # 访问 S3 的 ACCESS_KEY_ID
+        storage.s3.secret_access_key: {SECRET_ACCESS_KEY}     # 访问 S3 的 SECRET_ACCESS_KEY
+        storage.main.dir: ["/data1/tiflash/data"]             # Write Node 的本地数据目录，和存算一体的配置方式相同
+    - host: 172.31.8.2
+      config:
+        storage.s3.endpoint: http://s3.{region}.amazonaws.com # S3 的 endpoint 地址
+        storage.s3.bucket: my_bucket                          # TiFlash 的所有数据存储在这个 bucket 中
+        storage.s3.access_key_id: {ACCESS_KEY_ID}             # 访问 S3 的 ACCESS_KEY_ID
+        storage.s3.secret_access_key: {SECRET_ACCESS_KEY}     # 访问 S3 的 SECRET_ACCESS_KEY
+        storage.main.dir: ["/data1/tiflash/data"]             # Write Node 的本地数据目录，和存算一体的配置方式相同
 
-  # 172.31.9.1~2 是 TiFlash Compute Node
-  - host: 172.31.9.1
-    config:
-      flash.disaggregated_mode: tiflash_compute             # 这是一个 Compute Node
-      storage.s3.endpoint: http://s3.{region}.amazonaws.com # S3 的 endpoint 地址
-      storage.s3.bucket: my_bucket                          # TiFlash 的所有数据存储在这个 bucket 中
-      storage.s3.access_key_id: {ACCESS_KEY_ID}             # 访问 S3 的 ACCESS_KEY_ID
-      storage.s3.secret_access_key: {SECRET_ACCESS_KEY}     # 访问 S3 的 SECRET_ACCESS_KEY
-      storage.s3.cache_dir: /data1/tiflash/cache            # Compute Node 的本地数据缓存目录
-      storage.s3.cache_capacity: 858993459200               # 800GiB
-  - host: 172.31.9.2
-    config:
-      flash.disaggregated_mode: tiflash_compute             # 这是一个 Compute Node
-      storage.s3.endpoint: http://s3.{region}.amazonaws.com # S3 的 endpoint 地址
-      storage.s3.bucket: my_bucket                          # TiFlash 的所有数据存储在这个 bucket 中
-      storage.s3.access_key_id: {ACCESS_KEY_ID}             # 访问 S3 的 ACCESS_KEY_ID
-      storage.s3.secret_access_key: {SECRET_ACCESS_KEY}     # 访问 S3 的 SECRET_ACCESS_KEY
-      storage.s3.cache_dir: /data1/tiflash/cache            # Compute Node 的本地数据缓存目录
-      storage.s3.cache_capacity: 858993459200               # 800GiB
-```
+    # 172.31.9.1~2 是 TiFlash Compute Node
+    - host: 172.31.9.1
+      config:
+        flash.disaggregated_mode: tiflash_compute             # 这是一个 Compute Node
+        storage.s3.endpoint: http://s3.{region}.amazonaws.com # S3 的 endpoint 地址
+        storage.s3.bucket: my_bucket                          # TiFlash 的所有数据存储在这个 bucket 中
+        storage.s3.access_key_id: {ACCESS_KEY_ID}             # 访问 S3 的 ACCESS_KEY_ID
+        storage.s3.secret_access_key: {SECRET_ACCESS_KEY}     # 访问 S3 的 SECRET_ACCESS_KEY
+        storage.s3.cache_dir: /data1/tiflash/cache            # Compute Node 的本地数据缓存目录
+        storage.s3.cache_capacity: 858993459200               # 800GiB
+    - host: 172.31.9.2
+      config:
+        flash.disaggregated_mode: tiflash_compute             # 这是一个 Compute Node
+        storage.s3.endpoint: http://s3.{region}.amazonaws.com # S3 的 endpoint 地址
+        storage.s3.bucket: my_bucket                          # TiFlash 的所有数据存储在这个 bucket 中
+        storage.s3.access_key_id: {ACCESS_KEY_ID}             # 访问 S3 的 ACCESS_KEY_ID
+        storage.s3.secret_access_key: {SECRET_ACCESS_KEY}     # 访问 S3 的 SECRET_ACCESS_KEY
+        storage.s3.cache_dir: /data1/tiflash/cache            # Compute Node 的本地数据缓存目录
+        storage.s3.cache_capacity: 858993459200               # 800GiB
+  ```
+
+  注意以上 ACCESS_KEY_ID 和 SECRET_ACCESS_KEY 是直接写在配置文件中的。用户也可以选择使用环境变量的方式单独配置。环境变量的优先级高于配置文件。在 TiFlash 进程的启动用户环境（通常是 tidb 用户）下，修改 ~/.bash_profile，增加这些配置：
+
+  ```shell
+  export S3_ACCESS_KEY_ID={ACCESS_KEY_ID}
+  export S3_SECRET_ACCESS_KEY={SECRET_ACCESS_KEY}
+  ```
 
 3. 执行扩容 TiFlash 节点，并重新设置 TiFlash replica
 
-```shell
-tiup cluster scale-out mycluster ./scale-out.topo.yaml
-```
+  ```shell
+  tiup cluster scale-out mycluster ./scale-out.topo.yaml
+  ```
 
-```sql
-ALTER TABLE table_name SET TIFLASH REPLICA 1;
-```
+  ```sql
+  ALTER TABLE table_name SET TIFLASH REPLICA 1;
+  ```
 
 ## 使用限制
 
