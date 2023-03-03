@@ -34,7 +34,7 @@ For critical alerts, you need to pay close attention to abnormal monitoring metr
 
 - Description:
 
-     The Resolved TS of a replication task is delayed more than 10 minutes.
+     The Resolved TS of a replication task is delayed more than 5 minutes.
 
 - Solution:
 
