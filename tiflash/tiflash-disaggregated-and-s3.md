@@ -50,33 +50,38 @@ TiFlash 存算分离架构适合于希望获得更高性价比的数据分析服
 
 1. 确保 TiDB 集群中没有任何 TiFlash 节点。如果有，则需要将所有表的 TiFlash 副本数设置为 0，然后缩容掉所有 TiFlash 节点。比如：
 
-```sql
-SELECT * FROM INFORMATION_SCHEMA.TIFLASH_REPLICA; # 查询所有带有 TiFlash 副本的表
-ALTER TABLE table_name SET TIFLASH REPLICA 0;     # 将所有表的 TiFlash 副本数设置为 0
-```
+  ```sql
+  SELECT * FROM INFORMATION_SCHEMA.TIFLASH_REPLICA; # 查询所有带有 TiFlash 副本的表
+  ALTER TABLE table_name SET TIFLASH REPLICA 0;     # 将所有表的 TiFlash 副本数设置为 0
+  ```
 
-```shell
-tiup cluster scale-in mycuster -N tiflash # 缩容掉所有 TiFlash 节点
-tiup cluster display mycluster            # 等待所有 TiFlash 节点进入 Tombstone 状态
-tiup cluster prune mycluster              # 移除所有处于 Tombstone 状态的 TiFlash 节点
-```
+  ```shell
+  tiup cluster scale-in mycuster -N tiflash # 缩容掉所有 TiFlash 节点
+  tiup cluster display mycluster            # 等待所有 TiFlash 节点进入 Tombstone 状态
+  tiup cluster prune mycluster              # 移除所有处于 Tombstone 状态的 TiFlash 节点
+  ```
 
 2. 准备 TiFlash 的拓扑配置文件，比如 scale-out.topo.yaml，配置内容如下：
 
 ```yaml
 tiflash_servers:
+  # TiFlash 节点存在 storage.s3 配置说明使用存算分离模式。
+  # 如果配置了 flash.disaggregated_mode 为 tiflash_compute，则节点类型是 Compute Node；否则是 Write Node
+
+  # 172.31.8.1~2 是 TiFlash Write Node
   - host: 172.31.8.1
     config:
-      flash.disaggregated_mode: tiflash_storage             # 这是一个 Write Node
       storage.s3.endpoint: http://s3.{region}.amazonaws.com # S3 的 endpoint 地址
       storage.s3.bucket: my_bucket                          # TiFlash 的所有数据存储在这个 bucket 中
+      
       storage.main.dir: ["/data1/tiflash/data"]             # Write Node 的本地数据目录，和存算一体的配置方式相同
   - host: 172.31.8.2
     config:
-      flash.disaggregated_mode: tiflash_storage             # 这是一个 Write Node
       storage.s3.endpoint: http://s3.{region}.amazonaws.com # S3 的 endpoint 地址
       storage.s3.bucket: my_bucket                          # TiFlash 的所有数据存储在这个 bucket 中
       storage.main.dir: ["/data1/tiflash/data"]             # Write Node 的本地数据目录，和存算一体的配置方式相同
+
+  # 172.31.9.1~2 是 TiFlash Compute Node
   - host: 172.31.9.1
     config:
       flash.disaggregated_mode: tiflash_compute             # 这是一个 Compute Node
