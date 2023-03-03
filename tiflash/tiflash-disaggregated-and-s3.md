@@ -73,12 +73,15 @@ tiflash_servers:
     config:
       storage.s3.endpoint: http://s3.{region}.amazonaws.com # S3 的 endpoint 地址
       storage.s3.bucket: my_bucket                          # TiFlash 的所有数据存储在这个 bucket 中
-      
+      storage.s3.access_key_id: {ACCESS_KEY_ID}             # 访问 S3 的 ACCESS_KEY_ID
+      storage.s3.secret_access_key: {SECRET_ACCESS_KEY}     # 访问 S3 的 SECRET_ACCESS_KEY
       storage.main.dir: ["/data1/tiflash/data"]             # Write Node 的本地数据目录，和存算一体的配置方式相同
   - host: 172.31.8.2
     config:
       storage.s3.endpoint: http://s3.{region}.amazonaws.com # S3 的 endpoint 地址
       storage.s3.bucket: my_bucket                          # TiFlash 的所有数据存储在这个 bucket 中
+      storage.s3.access_key_id: {ACCESS_KEY_ID}             # 访问 S3 的 ACCESS_KEY_ID
+      storage.s3.secret_access_key: {SECRET_ACCESS_KEY}     # 访问 S3 的 SECRET_ACCESS_KEY
       storage.main.dir: ["/data1/tiflash/data"]             # Write Node 的本地数据目录，和存算一体的配置方式相同
 
   # 172.31.9.1~2 是 TiFlash Compute Node
@@ -87,6 +90,8 @@ tiflash_servers:
       flash.disaggregated_mode: tiflash_compute             # 这是一个 Compute Node
       storage.s3.endpoint: http://s3.{region}.amazonaws.com # S3 的 endpoint 地址
       storage.s3.bucket: my_bucket                          # TiFlash 的所有数据存储在这个 bucket 中
+      storage.s3.access_key_id: {ACCESS_KEY_ID}             # 访问 S3 的 ACCESS_KEY_ID
+      storage.s3.secret_access_key: {SECRET_ACCESS_KEY}     # 访问 S3 的 SECRET_ACCESS_KEY
       storage.s3.cache_dir: /data1/tiflash/cache            # Compute Node 的本地数据缓存目录
       storage.s3.cache_capacity: 858993459200               # 800GiB
   - host: 172.31.9.2
@@ -94,6 +99,8 @@ tiflash_servers:
       flash.disaggregated_mode: tiflash_compute             # 这是一个 Compute Node
       storage.s3.endpoint: http://s3.{region}.amazonaws.com # S3 的 endpoint 地址
       storage.s3.bucket: my_bucket                          # TiFlash 的所有数据存储在这个 bucket 中
+      storage.s3.access_key_id: {ACCESS_KEY_ID}             # 访问 S3 的 ACCESS_KEY_ID
+      storage.s3.secret_access_key: {SECRET_ACCESS_KEY}     # 访问 S3 的 SECRET_ACCESS_KEY
       storage.s3.cache_dir: /data1/tiflash/cache            # Compute Node 的本地数据缓存目录
       storage.s3.cache_capacity: 858993459200               # 800GiB
 ```
