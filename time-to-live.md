@@ -15,11 +15,6 @@ TTL 常见的使用场景：
 
 TTL 设计的目标是在不影响在线读写负载的前提下，帮助用户周期性且及时地清理不需要的数据。TTL 会以表为单位，并发地分发不同的任务到不同的 TiDB Server 节点上，进行并行删除处理。TTL 并不保证所有过期数据立即被删除，也就是说即使数据过期了，客户端仍然有可能在这之后的一段时间内读到过期的数据，直到其真正的被后台处理任务删除。
 
-> **警告：**
->
-> 当前该功能为实验特性，不建议在生产环境中使用。
-> TTL 无法在 [Serverless Tier clusters](https://docs.pingcap.com/tidbcloud/select-cluster-tier#serverless-tier-beta) 上使用。
-
 ## 语法
 
 你可以通过 [`CREATE TABLE`](/sql-statements/sql-statement-create-table.md) 或 [`ALTER TABLE`](/sql-statements/sql-statement-alter-table.md) 语句来配置表的 TTL 功能。
@@ -215,9 +210,23 @@ TiDB 会定时采集 TTL 的运行时信息，并在 Grafana 中提供了相关�
 
   其中列 `table_id` 为分区表 ID，而 `parent_table_id` 为表的 ID，与 `infomation_schema.tables` 表中的 ID 对应。`table_schema`、`table_name`、`partition_name` 分别对应表示数据库、表名、分区名。`create_time`、`finish_time`、`ttl_expire` 分别表示 TTL 任务的创建时间、结束时间和过期时间。`expired_rows` 与 `deleted_rows` 表示过期行数与成功删除的行数。
 
-## 工具兼容性
+## TiDB 数据迁移工具兼容性
 
-作为实验特性，TTL 特性暂时不兼容包括 BR、TiDB Lightning、TiCDC 在内的数据导入导出以及同步工具。
+TTL 功能能够与 TiDB 的迁移、备份、恢复工具一同使用。
+
+| 工具名称 | 最低兼容版本 | 说明 |
+| --- | --- | --- |
+| Backup & Restore (BR) | v6.6.0 | 恢复时会自动将表的 `TTL_ENABLE` 属性设置为 `OFF`，关闭 TTL。这样可以防止 TiDB 在备份恢复后立即删除过期的数据。此时你需要手动重新配置 `TTL_ENABLE` 属性来重新开启各个表的 TTL。 |
+| TiDB Lightning | v6.6.0 | 导入后如果表中有 TTL 属性，会自动将表的 `TTL_ENABLE` 属性设置为 `OFF`，关闭 TTL。这样可以防止 TiDB 在导入后立即删除过期的数据。此时你需要手动重新配置 `TTL_ENABLE` 属性来重新开启各个表的 TTL。 |
+| TiCDC | v7.0.0 | 上游的 TTL 删除将会同步至下游。因此，为了防止重复删除，下游表的 `TTL_ENABLE` 属性将被强制设置为 `OFF`。 |
+
+## 与 TiDB 其他特性的兼容性
+
+| 特性名称 | 说明 |
+| :-- | :---- |
+| [`FLASHBACK TABLE`](/sql-statements/sql-statement-flashback-table.md) |  `FLASHBACK TABLE` 语句会将每个表的 `TTL_ENABLE` 属性强制设置为 `OFF`。这样可以防止 TiDB 在 FLASHBACK 后立即删除过期的数据。此时你需要手动重新配置 `TTL_ENABLE` 属性来重新开启各个表的 TTL。 |
+| [`FLASHBACK DATABASE`](/sql-statements/sql-statement-flashback-database.md) | `FLASHBACK DATABASE` 语句会将每个表的 `TTL_ENABLE` 属性强制设置为 `OFF`。这样可以防止 TiDB 在 FLASHBACK 后立即删除过期的数据。此时你需要手动重新配置 `TTL_ENABLE` 属性来重新开启各个表的 TTL。 |
+| [`FLASHBACK CLUSTER TO TIMESTAMP`](/sql-statements/sql-statement-flashback-to-timestamp.md) | `FLASHBACK CLUSTER TO TIMESTAMP` 会将 [`TIDB_TTL_JOB_ENABLE`](/system-variables.md#tidb_ttl_job_enable-从-v650-版本开始引入) 系统变量设置为 `OFF`，同时表的 `TTL_ENABLE` 属性将保持原样。 |
 
 ## 使用限制
 
