@@ -54,7 +54,7 @@ TiFlash 存算分离架构适合于希望获得更高性价比的数据分析服
 mysql> SELECT * FROM INFORMATION_SCHEMA.TIFLASH_REPLICA; # 查询所有带有 TiFlash 副本的表
 mysql> ALTER TABLE table_name SET TIFLASH REPLICA 0;        # 将所有表的 TiFlash 副本数设置为 0
 
-tiup cluster scale-in mycuster -N tiflash # Scale in all TiFlash nodes
+tiup cluster scale-in mycuster -N tiflash # 缩容掉所有 TiFlash 节点
 tiup cluster display mycluster            # 等待所有 TiFlash 节点进入 Tombstone 状态
 tiup cluster prune mycluster              # 移除所有处于 Tombstone 状态的 TiFlash 节点
 ```
