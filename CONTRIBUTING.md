@@ -17,10 +17,10 @@
 
 你可从以下任一方面入手：
 
-- 修复文档格式，如标点、空格、缩进、代码块等
-- 改正错别字
 - 更新过时内容
 - 补充缺失内容
+- 修复文档格式，如标点、空格、缩进、代码块等
+- 改正错别字
 - 回复或解决 [issue](https://github.com/pingcap/docs-cn/issues?q=is%3Aopen+is%3Aissue) 并提 PR 更新相关文档
 - 其它改进
 
@@ -34,7 +34,8 @@ TiDB 中文文档的日常更新特别活跃，相应地，[TiDB 英文文档](h
 > - 通常，TiDB 文档先完成中文版后再完成英文版。但也偶有例外。
 > - [快速上手资源](#快速上手资源)一节中汇总了**中英术语表**和**风格指南**等参考文档，建议译前阅读。
 
-#### 中文翻译任务的认领方式
+<details>
+<summary>中文翻译任务的认领方式</summary>
 
 目前，中文文档翻译任务以 [docs-cn 仓库的 Pull Request](https://github.com/pingcap/docs-cn/pulls) (PR) 为形式，通过仓库管理员为 PR 加上的 labels 来认领翻译任务及追踪翻译任务状态。
 
@@ -70,25 +71,10 @@ TiDB 中文文档的日常更新特别活跃，相应地，[TiDB 英文文档](h
 
     具体操作为：在新建的 PR 下发送 `/cc @TomShawn @technical-reviewer`（将 technical-reviewer 替换为源 PR 作者的 GitHub ID），即可将 Review 任务分配给 docs 仓库管理员 @TomShawn 及源 PR 的作者。
 
-## 快速上手资源
+</details>
 
-最常见的贡献方式就是提 Pull Request 了，那么提交流程是怎样的，又需要遵守哪些规范呢？我们已准备好齐全的快速上手指南，你也可以查阅 [docs-cn 现有的 Pull Request](https://github.com/pingcap/docs-cn/pulls) 作为参考。
-
-- Pull Request (PR) 提交 ⭐️
-    - [Pull Request 提交流程](#pull-request-提交流程)
-    - [Pull Request Commit Message 规范](https://github.com/pingcap/community/blob/master/contributors/commit-message-pr-style.md#how-to-write-a-good-commit-message)
-    - [Pull Request 标题规范](https://github.com/pingcap/community/blob/master/contributors/commit-message-pr-style.md#pull-request-title-style)
-    - [常用 bot 命令](#常用-bot-命令)
-- [PingCAP 中文文档风格指南](/resources/pingcap-style-guide-zh.pdf)
-- [PingCAP 中英术语表](https://shimo.im/sheets/tTRyydP8Xkdv8yxq/MODOC)
-- [TiDB 中文用户文档模板](/resources/doc-templates)
-- [Markdown 规范](#markdown-规范)
-- [代码注释规范](https://github.com/pingcap/community/blob/master/contributors/code-comment-style.md)
-- 图片风格：[Figma 快速上手教程](/resources/figma-quick-start-guide.md)
-
-    为确保文档图片风格统一，建议使用 Figma 绘制图片。绘制图片时，请参考模板提供的图形元素和配色方案。
-
-## Pull Request 提交流程
+<details>
+<summary>Pull Request 提交流程</summary>
 
 TiDB 文档的修改需要遵循一定的流程，具体如下。考虑到有些小伙伴是纯语言背景，命令行的流程掌握起来可能需要花些时间，之后我们也会提供更适合小白上手的 GitHub Desktop 客户端版提交流程（在添加至这里之前，可暂时参考 [lilin90](https://github.com/lilin90) 撰写的[小白上手流程](https://zhuanlan.zhihu.com/p/64880410)）。
 
@@ -96,16 +82,16 @@ TiDB 文档的修改需要遵循一定的流程，具体如下。考虑到有些
 >
 > 目前 TiDB 主要维护以下几个版本的文档：dev（最新开发版，对应文档仓库的 master 分支）、v6.6、v6.5、v6.4、v6.1、v6.0、v5.4、v5.3、v5.2、v5.1、v5.0。提 Pull Request 前请务必考虑修改会影响的文档版本，并据此修改所有相应的版本。选择版本时，请参考[版本选择指南](#版本选择指南)。
 
-### 第 0 步：签署 Contributor License Agreement
+**第 0 步：签署 Contributor License Agreement**
 
 首次在本仓库提 PR 时，请务必签署 [Contributor License Agreement](https://cla-assistant.io/pingcap/docs-cn) (CLA)，否则我们将无法合并你的 PR。成功签署 CLA 后，可继续进行后续操作。
 
-### 第 1 步：Fork pingcap/docs-cn 仓库
+**第 1 步：Fork pingcap/docs-cn 仓库**
 
 1. 打开 pingcap/docs-cn 项目[仓库](https://help.github.com/articles/github-glossary/#repository)：<https://github.com/pingcap/docs-cn>
 2. 点击右上角的 [**Fork**](https://help.github.com/articles/github-glossary/#fork) 按钮，等待 Fork 完成即可。
 
-### 第 2 步：将 Fork 的仓库克隆至本地
+**第 2 步：将 Fork 的仓库克隆至本地**
 
 ```
 cd $working_dir # 将 $working_dir 替换为你想放置 repo 的目录。例如，`cd ~/Documents/GitHub`
@@ -116,7 +102,7 @@ git remote add upstream git@github.com:pingcap/docs-cn.git # 添加上游仓库
 git remote -v
 ```
 
-### 第 3 步：新建一个 Branch
+**第 3 步：新建一个 Branch**
 
 1. 确保本地 master branch 与 upstream/master 保持最新。
 
@@ -133,11 +119,11 @@ git remote -v
     git checkout -b new-branch-name
     ```
 
-### 第 4 步：编辑文档进行增删或修改
+**第 4 步：编辑文档进行增删或修改**
 
 在建好的 `new-branch-name` branch 上进行编辑，可使用 Markdown 编辑器（如 Visual Studio Code）打开 docs-cn repo，对相应文档进行增、删，或修改，并保存你的修改。
 
-### 第 5 步：提交你的修改
+**第 5 步：提交你的修改**
 
 ```
 git status
@@ -147,7 +133,7 @@ git commit -m "commit-message: update the xx"
 
 参考[如何写 commit message](https://github.com/pingcap/community/blob/master/contributors/commit-message-pr-style.md#how-to-write-a-good-commit-message)。
 
-### 第 6 步：保持新建 branch 与 upstream/master 一致
+**第 6 步：保持新建 branch 与 upstream/master 一致**
 
 ```
 # 在新建 branch 上
@@ -155,20 +141,22 @@ git fetch upstream
 git rebase upstream/master
 ```
 
-### 第 7 步：将你的修改推至远程
+**第 7 步：将你的修改推至远程**
 
 ```
 git push -u origin new-branch-name
 ```
 
-### 第 8 步：创建一个 Pull Request
+**第 8 步：创建一个 Pull Request**
 
 1. 打开你 Fork 的仓库：<https://github.com/$user/docs-cn>（将 `$user` 替换为你的 GitHub ID）
 2. 点击 `Compare & pull request` 按钮即可创建 PR。参考[如何写 PR title 和描述](https://github.com/pingcap/community/blob/master/contributors/commit-message-pr-style.md)。
 
 > **注意：**
 >
-> - 如果你的修改影响多个文档版本 (dev, v5.0, v4.0, v3.1, v3.0, v2.1)，务必**在 PR 描述框中勾选相应的版本**，后续仓库管理员会为你的 PR 打上相应的 cherry-pick 标签。
+> - 如果你的修改影响多个文档版本 (如 dev、v6.6、v6.5等)，务必**在 PR 描述框中勾选相应的版本**，后续仓库管理员会为你的 PR 打上相应的 cherry-pick 标签。
+
+</details>
 
 ## PR Checklist
 
@@ -239,6 +227,24 @@ TiDB 中文文档使用 Markdown 语言进行编写，为了保证文档质量�
 - 涉及与版本相关的兼容性变化，例如更改某个配置项或变量的默认值。
 - 修复文档页面的渲染或显示错误。
 - 修复文档内的死链。
+
+## 快速上手资源
+
+最常见的贡献方式就是提 Pull Request 了，那么提交流程是怎样的，又需要遵守哪些规范呢？我们已准备好齐全的快速上手指南，你也可以查阅 [docs-cn 现有的 Pull Request](https://github.com/pingcap/docs-cn/pulls) 作为参考。
+
+- Pull Request (PR) 提交 ⭐️
+    - [Pull Request 提交流程](#pull-request-提交流程)
+    - [Pull Request Commit Message 规范](https://github.com/pingcap/community/blob/master/contributors/commit-message-pr-style.md#how-to-write-a-good-commit-message)
+    - [Pull Request 标题规范](https://github.com/pingcap/community/blob/master/contributors/commit-message-pr-style.md#pull-request-title-style)
+    - [常用 bot 命令](#常用-bot-命令)
+- [PingCAP 中文文档风格指南](/resources/pingcap-style-guide-zh.pdf)
+- [PingCAP 中英术语表](https://shimo.im/sheets/tTRyydP8Xkdv8yxq/MODOC)
+- [TiDB 中文用户文档模板](/resources/doc-templates)
+- [Markdown 规范](#markdown-规范)
+- [代码注释规范](https://github.com/pingcap/community/blob/master/contributors/code-comment-style.md)
+- 图片风格：[Figma 快速上手教程](/resources/figma-quick-start-guide.md)
+
+    为确保文档图片风格统一，建议使用 Figma 绘制图片。绘制图片时，请参考模板提供的图形元素和配色方案。
 
 ## 联系我们
 
