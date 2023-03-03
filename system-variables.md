@@ -4472,7 +4472,7 @@ Internally, the TiDB parser transforms the `SET TRANSACTION ISOLATION LEVEL [REA
 - This variable is used to set whether the current session transaction is a global transaction or a local transaction.
 - This variable is used for the internal operation of TiDB. It is **NOT recommended** to set this variable.
 
-### `validate_password`.check_user_name <span class="version-mark">New in v6.5.0</span>
+### `validate_password.check_user_name` <span class="version-mark">New in v6.5.0</span>
 
 - Scope: GLOBAL
 - Persists to cluster: Yes
@@ -4482,7 +4482,7 @@ Internally, the TiDB parser transforms the `SET TRANSACTION ISOLATION LEVEL [REA
 - When this variable is effective and set to `ON`, if you set a password, TiDB compares the password with the username (excluding the hostname). If the password matches the username, the password is rejected.
 - This variable is independent of [`validate_password.policy`](#validate_passwordpolicy-new-in-v650) and not affected by the password complexity check level.
 
-### `validate_password`.dictionary <span class="version-mark">New in v6.5.0</span>
+### `validate_password.dictionary` <span class="version-mark">New in v6.5.0</span>
 
 - Scope: GLOBAL
 - Persists to cluster: Yes
@@ -4492,7 +4492,7 @@ Internally, the TiDB parser transforms the `SET TRANSACTION ISOLATION LEVEL [REA
 - This variable is a string not longer than 1024 characters. It contains a list of words that cannot exist in the password. Each word is separated by semicolon (`;`).
 - This variable is set to an empty string by default, which means no dictionary check is performed. To perform the dictionary check, you need to include the words to be matched in the string. If this variable is configured, when you set a password, TiDB compares each substring (length in 4 to 100 characters) of the password with the words in the dictionary. If any substring of the password matches a word in the dictionary, the password is rejected. The comparison is case-insensitive.
 
-### `validate_password`.enable <span class="version-mark">New in v6.5.0</span>
+### `validate_password.enable` <span class="version-mark">New in v6.5.0</span>
 
 - Scope: GLOBAL
 - Persists to cluster: Yes
@@ -4500,7 +4500,7 @@ Internally, the TiDB parser transforms the `SET TRANSACTION ISOLATION LEVEL [REA
 - Type: Boolean
 - This variable controls whether to perform password complexity check. If this variable is set to `ON`, TiDB performs the password complexity check when you set a password.
 
-### `validate_password`.length <span class="version-mark">New in v6.5.0</span>
+### `validate_password.length` <span class="version-mark">New in v6.5.0</span>
 
 - Scope: GLOBAL
 - Persists to cluster: Yes
@@ -4511,7 +4511,7 @@ Internally, the TiDB parser transforms the `SET TRANSACTION ISOLATION LEVEL [REA
 - The value of this variable must not be smaller than the expression: `validate_password.number_count + validate_password.special_char_count + (2 * validate_password.mixed_case_count)`.
 - If you change the value of `validate_password.number_count`, `validate_password.special_char_count`, or `validate_password.mixed_case_count` such that the expression value is larger than `validate_password.length`, the value of `validate_password.length` is automatically changed to match the expression value.
 
-### `validate_password`.mixed_case_count <span class="version-mark">New in v6.5.0</span>
+### `validate_password.mixed_case_count` <span class="version-mark">New in v6.5.0</span>
 
 - Scope: GLOBAL
 - Persists to cluster: Yes
@@ -4521,7 +4521,7 @@ Internally, the TiDB parser transforms the `SET TRANSACTION ISOLATION LEVEL [REA
 - This variable is a check item in the password complexity check. It checks whether the password contains sufficient uppercase and lowercase letters. This variable takes effect only when [`validate_password.enable`](#validate_passwordenable-new-in-v650) is enabled and [`validate_password.policy`](#validate_passwordpolicy-new-in-v650) is set to `1` (MEDIUM) or larger.
 - Neither the number of uppercase letters nor the number of lowercase letters in the password can be fewer than the value of `validate_password.mixed_case_count`. For example, when the variable is set to `1`, the password must contain at least one uppercase letter and one lowercase letter.
 
-### `validate_password`.number_count <span class="version-mark">New in v6.5.0</span>
+### `validate_password.number_count` <span class="version-mark">New in v6.5.0</span>
 
 - Scope: GLOBAL
 - Persists to cluster: Yes
@@ -4530,7 +4530,7 @@ Internally, the TiDB parser transforms the `SET TRANSACTION ISOLATION LEVEL [REA
 - Range: `[0, 2147483647]`
 - This variable is a check item in the password complexity check. It checks whether the password contains sufficient numbers. This variable takes effect only when [`validate_password.enable`](#password_reuse_interval-new-in-v650) is enabled and [`validate_password.policy`](#validate_passwordpolicy-new-in-v650) is set to `1` (MEDIUM) or larger.
 
-### `validate_password`.policy <span class="version-mark">New in v6.5.0</span>
+### `validate_password.policy` <span class="version-mark">New in v6.5.0</span>
 
 - Scope: GLOBAL
 - Persists to cluster: Yes
@@ -4543,7 +4543,7 @@ Internally, the TiDB parser transforms the `SET TRANSACTION ISOLATION LEVEL [REA
     - 1 or MEDIUM: password length, uppercase and lowercase letters, numbers, and special characters.
     - 2 or STRONG: password length, uppercase and lowercase letters, numbers, special characters, and dictionary match.
 
-### `validate_password`.special_char_count <span class="version-mark">New in v6.5.0</span>
+### `validate_password.special_char_count` <span class="version-mark">New in v6.5.0</span>
 
 - Scope: GLOBAL
 - Persists to cluster: Yes
