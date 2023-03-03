@@ -47,7 +47,7 @@ TiFlash 存算分离架构适合于希望获得更高性价比的数据分析服
 
 默认情况下，TiUP 会将 TiFlash 部署为存算一体架构。如需将 TiFlash 部署为存算分离架构，请参考以下步骤手动进行配置：
 
-1. 确保 TiDB 集群没有任何 TiFlash 节点。如果有，则需要将所有表的 tiflash replica 设置为 0，然后缩容掉所有 TiFlash 节点。比如
+1. 确保 TiDB 集群中没有任何 TiFlash 节点。如果有，则需要将所有表的 TiFlash 副本数设置为 0，然后缩容掉所有 TiFlash 节点。比如：
 
 ```shell
 mysql> select * from information_schema.tiflash_replica; # Show all tables with TiFlash replica
