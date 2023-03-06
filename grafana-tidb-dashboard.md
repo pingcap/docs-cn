@@ -127,7 +127,7 @@ summary: 了解 Grafana Dashboard 中展示的关键指标。
     - Owner Handle Syncer Duration：DDL Owner 在执行更新，获取以及检查 Schema Version 的耗时
     - Update Self Version Duration：Schema Version Syncer 更新版本信息耗时
     - DDL OPM：DDL 语句的每秒执行次数
-    - DDL add index progress in percentage：添加索引的进度展示
+    - DDL backfill progress in percentage：backfill DDL 任务的进度展示
 
 - Statistics
     - Auto Analyze Duration 95：自动 ANALYZE 耗时
