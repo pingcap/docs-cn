@@ -38,6 +38,10 @@ Sink URI 用于指定 TiCDC 目标系统的连接信息，遵循以下格式：
 [scheme]://[userinfo@][host]:[port][/path]?[query_parameters]
 ```
 
+> **注意：**
+>
+> `/path` 不适用于 MySQL sink。
+
 一个通用的配置样例如下所示：
 
 ```shell
