@@ -38,6 +38,10 @@ Sink URI is used to specify the connection information of the TiCDC target syste
 [scheme]://[userinfo@][host]:[port][/path]?[query_parameters]
 ```
 
+> **Note:**
+>
+> `/path` is not used for the MySQL sink.
+
 Sample configuration for MySQL:
 
 ```shell
