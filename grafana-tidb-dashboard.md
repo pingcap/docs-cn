@@ -126,7 +126,7 @@ title: TiDB 重要监控指标详解
     - Owner Handle Syncer Duration：DDL Owner 在执行更新，获取以及检查 Schema Version 的耗时
     - Update Self Version Duration：Schema Version Syncer 更新版本信息耗时
     - DDL OPM：DDL 语句的每秒执行次数
-    - DDL add index progress in percentage：添加索引的进度展示
+    - DDL backfill progress in percentage：backfill DDL 任务的进度展示
 
 - Statistics
     - Auto Analyze Duration 95：自动 ANALYZE 耗时统计
@@ -162,6 +162,5 @@ title: TiDB 重要监控指标详解
 
 - Batch Client
     - Pending Request Count by TiKV：等待处理的 Batch 消息数量
-
     - Batch Client Unavailable Duration 95：Batch 客户端不可用的时间
     - No Available Connection Counter：Batch 客户端找不到可用链接的次数
