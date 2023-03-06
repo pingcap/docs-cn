@@ -45,7 +45,7 @@ title: TiDB 重要监控指标详解
     - Keep Alive OPM：每个 TiDB 实例每分钟刷新监控的次数，通常不需要关注
     - Panic And Critical Error：TiDB 中出现的 Panic、Critical Error 数量
     - Time Jump Back OPS：每个 TiDB 实例上每秒操作系统时间回跳的次数
-    - Get Token Duration：每个连接获取 Token 的耗时  
+    - Get Token Duration：每个连接获取 Token 的耗时
     - Skip Binlog Count：TiDB 写入 Binlog 失败的数量
     - Client Data Traffic：TiDB 和客户端的数据流量统计
     - Handshake Error OPS：每个 TiDB 实例每秒握手错误的次数
@@ -61,7 +61,7 @@ title: TiDB 重要监控指标详解
         - 一个用户的事务，在 TiDB 内部可能会触发多次事务执行，其中包含，内部元数据的读取，用户事务原子性地多次重试执行等
         - TiDB 内部的定时任务也会通过事务来操作数据库，这部分也包含在这个面板里
     - KV Transaction Duration：每个 TiDB 内部执行事务的耗时
-    - Transaction Regions Num：事务操作的 Region 数量  
+    - Transaction Regions Num：事务操作的 Region 数量
     - Transaction Write KV Num Rate and Sum：事务写入 KV 的速率和总计
     - Transaction Write KV Num：事务操作的 KV 数量
     - Statement Lock Keys：单个语句的加锁个数
@@ -70,7 +70,7 @@ title: TiDB 重要监控指标详解
     - Transaction Write Size Bytes：事务写入的数据大小
     - Acquire Pessimistic Locks Duration：加锁所消耗的时间
     - TTL Lifetime Reach Counter：事务的 TTL 达到了上限的数量。TTL 上限默认值 1 小时，它的含义是从悲观事务第一次加锁，或者乐观事务的第一个 prewrite 开始，超过了 1 小时。可以通过修改 TiDB 配置文件中 `max-txn-ttl` 来改变 TTL 寿命上限
-    - Load Safepoint OPS：加载 Safepoint 的次数统计。Safepoint 作用是在事务读数据时，保证不读到 Safepoint 之前的数据，保证数据安全。因为，Safepoint 之前的数据有可能被 GC 清理掉    
+    - Load Safepoint OPS：加载 Safepoint 的次数统计。Safepoint 作用是在事务读数据时，保证不读到 Safepoint 之前的数据，保证数据安全。因为，Safepoint 之前的数据有可能被 GC 清理掉
     - Pessimistic Statement Retry OPS：悲观语句重试次数统计。当语句尝试加锁时，可能遇到写入冲突，此时，语句会重新获取新的 snapshot 并再次加锁
     - Transaction Types Per Seconds：每秒采用两阶段提交 (2PC)、异步提交 （Async Commit) 和一阶段提交 (1PC) 机制的事务数量，提供成功和失败两种数量
 
@@ -126,7 +126,7 @@ title: TiDB 重要监控指标详解
     - Owner Handle Syncer Duration：DDL Owner 在执行更新，获取以及检查 Schema Version 的耗时
     - Update Self Version Duration：Schema Version Syncer 更新版本信息耗时
     - DDL OPM：DDL 语句的每秒执行次数
-    - DDL add index progress in percentage：添加索引的进度展示
+    - DDL backfill progress in percentage：backfill DDL 任务的进度展示
 
 - Statistics
     - Auto Analyze Duration 95：自动 ANALYZE 耗时统计
@@ -162,6 +162,5 @@ title: TiDB 重要监控指标详解
 
 - Batch Client
     - Pending Request Count by TiKV：等待处理的 Batch 消息数量
-
     - Batch Client Unavailable Duration 95：Batch 客户端不可用的时间
     - No Available Connection Counter：Batch 客户端找不到可用链接的次数
