@@ -1,0 +1,91 @@
+---
+title: 非 Prepared 语句执行计划缓存
+aliases: ['/docs-cn/dev/sql-non-prepare-plan-cache/','zh/tidb/dev/sql-non-prepare-plan-cache']
+---
+
+# 非 Prepared 语句执行计划缓存
+
+> **警告：**
+>
+> 该功能为实验特性，不推荐在生产环境中使用。
+
+对于一部分非 Prepared 语句，TiDB 也能像 [`Prepare` / `Execute` 语句](sql-prepared-plan-cache.md) 一样支持查询计划缓存，可以让这些语句跳过优化器阶段，以获得性能上的提升。
+
+打开此功能后，TiDB 首先根据 AST 对查询进行参数化，如将 `select * from t where b<10 and a=1` 参数化为 `select * from t where b<? and a=?`。
+
+然后如下图，用参数化后的结果在 Non-Prep Plan Cache 中查找，如果能找到可以复用的计划，则直接使用这个计划，并跳过整个优化阶段；如果找不到，则继续进行优化，并在生成计划后将计划放回到 Cache 中，以便下次进行复用：
+
+![tidb-non-prepared-plan-cache](medial/../media/tidb-non-prepared-plan-cache.png)
+
+Non-Prepared Plan Cache 为 Session 级别，且和 [Prepared Plan Cache](sql-prepared-plan-cache.md) 相互独立，其中缓存的 Plan 互不影响。
+
+你可以通过 `tidb_enable_non_prepared_plan_cache` 来打开和关闭此项功能，同时通过 `tidb_non_prepared_plan_cache_size` 来控制 Non-Prepared Plan Cache 的大小，当缓存的计划数超过 `tidb_non_prepared_plan_cache_size` 时，会使用 LRU 策略来进行逐出。
+
+## 实例
+
+下面是一些实例：
+
+{{< copyable "sql" >}}
+
+```sql
+mysql> create table t (a int, b int, key(b));           -- 创建用于测试的 table
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> set tidb_enable_non_prepared_plan_cache=true;    -- 打开 Non-Prepared Plan Cache
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from t where b < 10 and a=1;            -- 第一次执行查询
+Empty set (0.00 sec)
+
+mysql> select * from t where b < 5 and a=2;             -- 第二次执行查询
+Empty set (0.00 sec)
+
+mysql> select @@last_plan_from_cache;                   -- 可以看到第二次执行的查询计划来自于 Cache
++------------------------+
+| @@last_plan_from_cache |
++------------------------+
+|                      1 |
++------------------------+
+1 row in set (0.00 sec)
+```
+
+## 限制及注意事项
+
+TiDB 对一种参数化后的查询，只能缓存一个计划，比如对于 `select * from t where a<1` 和 `select * from t where a<100000`，由于参数化后的形式相同，因此他们会共用一个计划；
+
+但这个计划并不一定同时对他们是最优的，因此可能会有一些风险；如果遇到这个问题，可以通过创建 binding `create binding for select ... using select /*+ ignore_plan_cache() */` 来处理。
+
+由于上述风险，以及 `Plan Cache` 只在简单的查询上有明显收益（如果查询较为复杂，本身执行时间较长，使用 `Plan Cache` 收益不大），TiDB 目前对 Non-Prepared Plan Cache 的生效范围有比较严格的限制，如下：
+
+1. [Prepared Plan Cache](sql-prepared-plan-cache.md) 无法支持的查询或者计划，Non-Prepared Plan Cache 同样无法支持；
+2. 目前仅支持包含 Scan-Selection-Projection 算子的单表的点查或范围查询，如 `select * from t where a<10 and b in (1, 2)`；包含 `Agg`, `Limit`, `Window`, `Sort` 等更复杂算子的查询暂不支持；包含非范围查询条件如 `c like 'c%'` 等的查询不支持；
+3. `JSON`, `Enum`, `Set` 或 `Bit` 类型的列出现在过滤条件中的查询不支持，如 `select * from t where json_col='{}'`；
+4. 过滤条件中有 `Null` 值出现的查询不支持，如 `select * from t where a=null`；
+5. 参数化后参数个数超过 50 个的查询不支持，如 `select * from t where a in (1, 2, 3, ... 51)`；
+6. 访问分区表，虚拟列，临时表，视图，内存表的查询不支持，如 `select * from information_schema.colunms`，其中 `columns` 为 TiDB 内存表；
+
+## 诊断
+
+开启 Non Prepared Plan Cache 后，可以通过 `Explain` 来验证查询是否能够命中，对于无法命中的查询，会通过 warning 的方式返回其无法命中的原因，如：
+
+```sql
+mysql> explain select * from t where a+2 < 10;
+...
+3 rows in set, 1 warning (0.00 sec)
+
+mysql> show warnings;
++---------+------+-----------------------------------------------------------------------+
+| Level   | Code | Message                                                               |
++---------+------+-----------------------------------------------------------------------+
+| Warning | 1105 | skip non-prep plan cache: query has some unsupported binary operation |
++---------+------+-----------------------------------------------------------------------+
+1 row in set (0.00 sec)
+```
+
+可以看到在上述例子中，由于 `+` 操作并不被 Non-Prepared Plan Cache 支持，所以无法命中缓存。
+
+## 监控
+
+开启 Non Prepared Plan Cache 的开关后，可以在下面两个面板中看到其对应的内存占用情况。
+
+![](media/tidb-non-prepared-plan-cache-metrics.png)
