@@ -35,7 +35,7 @@ TiDB 中文文档的日常更新特别活跃，相应地，[TiDB 英文文档](h
 > - [快速上手资源](#快速上手资源)一节中汇总了**中英术语表**和**风格指南**等参考文档，建议译前阅读。
 
 <details>
-<summary>**认领中文翻译任务**</summary>
+<summary>认领中文翻译任务</summary>
 
 目前，中文文档翻译任务以 [docs-cn 仓库的 Pull Request](https://github.com/pingcap/docs-cn/pulls) (PR) 为形式，通过仓库管理员为 PR 加上的 labels 来认领翻译任务及追踪翻译任务状态。
 
@@ -96,7 +96,7 @@ TiDB 中文文档的日常更新特别活跃，相应地，[TiDB 英文文档](h
 你也可以查阅 [docs-cn 现有的 Pull Request](https://github.com/pingcap/docs-cn/pulls) 作为参考。
 
 <details>
-<summary>**提交 Pull Request 的详细流程**</summary>
+<summary>提交 Pull Request 的详细流程</summary>
 
 TiDB 文档的修改需要遵循一定的流程，具体如下。考虑到有些小伙伴是纯语言背景，命令行的流程掌握起来可能需要花些时间，之后我们也会提供更适合小白上手的 GitHub Desktop 客户端版提交流程（在添加至这里之前，可暂时参考 [lilin90](https://github.com/lilin90) 撰写的[小白上手流程](https://zhuanlan.zhihu.com/p/64880410)）。
 
@@ -206,8 +206,10 @@ git push -u origin new-branch-name
 
 - [PingCAP 用户文档模版](https://github.com/pingcap/docs-cn/tree/master/resources/doc-templates)
 
+## 参考资料
+
 <details>
-<summary>## Markdown 规范</summary>
+<summary>Markdown 规范</summary>
 
 TiDB 中文文档使用 Markdown 语言进行编写，为了保证文档质量和格式规范，你修改的文档需要遵循一定的 Markdown 规则。我们为 docs-cn 仓库设置了检测 markdown 文件规范的 CI check，即 [markdownlint check](https://github.com/DavidAnson/markdownlint/blob/master/doc/Rules.md)。如果你提交的 PR 不符合规范，很可能**无法通过 markdownlint check**，最终导致无法合并 PR。
 
@@ -224,7 +226,7 @@ TiDB 中文文档使用 Markdown 语言进行编写，为了保证文档质量�
 </details>
 
 <details>
-<summary>## 常用 bot 命令</summary>
+<summary>常用 bot 命令</summary>
 
 我们为 docs 和 docs-cn 仓库提前设置了一些命令语句，只要按照一定的格式在 PR 中留言，就能触发 bot 完成相应操作。详情见下表。
 
@@ -240,7 +242,7 @@ TiDB 中文文档使用 Markdown 语言进行编写，为了保证文档质量�
 </details>
 
 <details>
-<summary>## 如何选择文档适用的版本分支？</summary>
+<summary>如何选择文档适用的版本分支？</summary>
 
 创建 Pull Request 时，你需要在 Pull Request 的描述模版中选择文档改动适用的版本分支。
 
