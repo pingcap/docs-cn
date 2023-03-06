@@ -92,8 +92,8 @@ TiFlash 存算分离架构适合于希望获得更高性价比的数据分析服
         storage.s3.bucket: my_bucket                          # TiFlash 的所有数据存储在这个 bucket 中
         storage.s3.access_key_id: {ACCESS_KEY_ID}             # 访问 S3 的 ACCESS_KEY_ID
         storage.s3.secret_access_key: {SECRET_ACCESS_KEY}     # 访问 S3 的 SECRET_ACCESS_KEY
-        storage.s3.cache_dir: /data1/tiflash/cache            # Compute Node 的本地数据缓存目录
-        storage.s3.cache_capacity: 858993459200               # 800GiB
+        storage.remote.cache_dir: /data1/tiflash/cache            # Compute Node 的本地数据缓存目录
+        storage.remote.cache_capacity: 858993459200               # 800GiB
     - host: 172.31.9.2
       config:
         flash.disaggregated_mode: tiflash_compute             # 这是一个 Compute Node
@@ -101,8 +101,8 @@ TiFlash 存算分离架构适合于希望获得更高性价比的数据分析服
         storage.s3.bucket: my_bucket                          # TiFlash 的所有数据存储在这个 bucket 中
         storage.s3.access_key_id: {ACCESS_KEY_ID}             # 访问 S3 的 ACCESS_KEY_ID
         storage.s3.secret_access_key: {SECRET_ACCESS_KEY}     # 访问 S3 的 SECRET_ACCESS_KEY
-        storage.s3.cache_dir: /data1/tiflash/cache            # Compute Node 的本地数据缓存目录
-        storage.s3.cache_capacity: 858993459200               # 800GiB
+        storage.remote.cache_dir: /data1/tiflash/cache            # Compute Node 的本地数据缓存目录
+        storage.remote.cache_capacity: 858993459200               # 800GiB
   ```
 
   注意以上 `ACCESS_KEY_ID` 和 `SECRET_ACCESS_KEY` 是直接写在配置文件中的。用户也可以选择使用环境变量的方式单独配置。环境变量的优先级高于配置文件。在所有部署 TiFlash 进程的机器上，切换到启动 TiFlash 进程的用户环境（通常是 `tidb`），修改 `~/.bash_profile`，增加这些配置：
