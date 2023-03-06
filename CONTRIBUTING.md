@@ -83,7 +83,8 @@ TiDB 中文文档的日常更新特别活跃，相应地，[TiDB 英文文档](h
 
 参考文档：
 
-- [PingCAP 用户文档模版](https://github.com/pingcap/docs-cn/tree/master/resources/doc-templates)
+- [PingCAP 中文文档风格指南](/resources/pingcap-style-guide-zh.pdf)
+- [TiDB 中文用户文档模板](/resources/doc-templates)
 
 ## 参考资料
 
@@ -266,9 +267,7 @@ git push -u origin new-branch-name
 
 其他快速上手资源
 
-- [PingCAP 中文文档风格指南](/resources/pingcap-style-guide-zh.pdf)
 - [PingCAP 中英术语表](https://shimo.im/sheets/tTRyydP8Xkdv8yxq/MODOC)
-- [TiDB 中文用户文档模板](/resources/doc-templates)
 - [Pull Request Commit Message 规范](https://github.com/pingcap/community/blob/master/contributors/commit-message-pr-style.md#how-to-write-a-good-commit-message)
 - [Pull Request 标题规范](https://github.com/pingcap/community/blob/master/contributors/commit-message-pr-style.md#pull-request-title-style)
 - [代码注释规范](https://github.com/pingcap/community/blob/master/contributors/code-comment-style.md)
