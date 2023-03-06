@@ -263,12 +263,11 @@ TiDB 中文文档使用 Markdown 语言进行编写，为了保证文档质量�
 
 ## 快速上手资源
 
-- [Pull Request Commit Message 规范](https://github.com/pingcap/community/blob/master/contributors/commit-message-pr-style.md#how-to-write-a-good-commit-message)
-- [Pull Request 标题规范](https://github.com/pingcap/community/blob/master/contributors/commit-message-pr-style.md#pull-request-title-style)
 - [PingCAP 中文文档风格指南](/resources/pingcap-style-guide-zh.pdf)
 - [PingCAP 中英术语表](https://shimo.im/sheets/tTRyydP8Xkdv8yxq/MODOC)
 - [TiDB 中文用户文档模板](/resources/doc-templates)
-- [Markdown 规范](#markdown-规范)
+- [Pull Request Commit Message 规范](https://github.com/pingcap/community/blob/master/contributors/commit-message-pr-style.md#how-to-write-a-good-commit-message)
+- [Pull Request 标题规范](https://github.com/pingcap/community/blob/master/contributors/commit-message-pr-style.md#pull-request-title-style)
 - [代码注释规范](https://github.com/pingcap/community/blob/master/contributors/code-comment-style.md)
 - [Figma 快速上手教程](/resources/figma-quick-start-guide.md)
 
