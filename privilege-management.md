@@ -280,8 +280,8 @@ SHOW GRANTS FOR `rw_user`@`192.168.%`;
 
 ## `SUPER` 权限
 
-1. 拥有 `SUPER` 权限的用户能完成几乎所有的操作，默认情况下只有 `root` 用户拥有该权限。请谨慎向其它用户授予 `SUPER` 权限。
-2. `SUPER` 权限[在 MySQL 8.0 中被认为是过时的](https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#dynamic-privileges-migration-from-super)，可以通过 [动态权限](#动态权限) 替代 `SUPER` 权限进行更细粒度的权限控制。
+- 拥有 `SUPER` 权限的用户能完成几乎所有的操作，默认情况下只有 `root` 用户拥有该权限。请谨慎向其它用户授予 `SUPER` 权限。
+- `SUPER` 权限[在 MySQL 8.0 中被认为是过时的](https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#dynamic-privileges-migration-from-super)，可以通过[动态权限](#动态权限)替代 `SUPER` 权限进行更细粒度的权限控制。
 
 ## TiDB 各操作需要的权限
 
