@@ -8,6 +8,8 @@ aliases: ['/docs-cn/dev/functions-and-operators/expressions-pushed-down/','/docs
 
 当 TiDB 从 TiKV 中读取数据的时候，TiDB 会尽量下推一些表达式运算到 TiKV 中，从而减少数据传输量以及 TiDB 单一节点的计算压力。本文将介绍 TiDB 已支持下推的表达式，以及如何禁止下推特定表达式。
 
+TiFlash 也支持[本页](/tiflash/tiflash-supported-pushdown-calculations.md)列出的函数和算子下推。
+
 ## 已支持下推的表达式列表
 
 | 表达式分类 | 具体操作 |
@@ -71,7 +73,7 @@ tidb> desc mysql.expr_pushdown_blacklist;
 
 ### 黑名单使用示例
 
-以下示例首先将函数 `DATE_FORMAT()`、运算符 `>` 及 数据类型 `BIT` 加入黑名单，然后再将运算符 `>` 从黑名单中移出。
+以下示例首先将函数 `DATE_FORMAT()`、运算符 `>` 及数据类型 `BIT` 加入黑名单，然后再将运算符 `>` 从黑名单中移出。
 
 黑名单是否生效可以从 `explain` 结果中进行观察（参见[如何理解 `explain` 结果](/explain-overview.md)）。
 

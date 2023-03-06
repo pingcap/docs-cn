@@ -1,16 +1,16 @@
 ---
 title: 为 TiDB 组件间通信开启加密传输
+summary: 了解如何为 TiDB 集群内各组件间开启加密传输。
 aliases: ['/docs-cn/dev/enable-tls-between-components/','/docs-cn/dev/how-to/secure/enable-tls-between-components/']
 ---
 
 # 为 TiDB 组件间通信开启加密传输
 
-本部分介绍如何为 TiDB 集群内各部组件间开启加密传输，一旦开启以下组件间均将使用加密传输：
+本部分介绍如何为 TiDB 集群内各组件间开启加密传输。一旦开启，以下组件间均将使用加密传输：
 
-- TiDB 与 TiKV、PD
-- TiKV 与 PD
+- TiDB、TiKV、PD、TiFlash 之间的通讯
 - TiDB Control 与 TiDB，TiKV Control 与 TiKV，PD Control 与 PD
-- TiKV、PD、TiDB 各自集群内内部通讯
+- TiKV、PD、TiDB、TiFlash 各自集群内内部通讯
 
 目前暂不支持只开启其中部分组件的加密传输。
 
@@ -92,7 +92,16 @@ aliases: ['/docs-cn/dev/enable-tls-between-components/','/docs-cn/dev/how-to/sec
 
     - TiCDC
 
-        在启动命令行中设置，并设置相应的 URL 为 `https`：
+        在 `config` 文件中设置
+
+        ```toml
+        [security]
+        ca-path = "/path/to/ca.pem"
+        cert-path = "/path/to/cdc-server.pem"
+        key-path = "/path/to/cdc-server-key.pem"
+        ```
+
+        或者在启动命令行中设置，并设置相应的 URL 为 `https`：
 
         {{< copyable "shell-regular" >}}
 
@@ -115,7 +124,7 @@ aliases: ['/docs-cn/dev/enable-tls-between-components/','/docs-cn/dev/how-to/sec
     {{< copyable "shell-regular" >}}
 
     ```bash
-    tiup ctl pd -u https://127.0.0.1:2379 --cacert /path/to/ca.pem --cert /path/to/client.pem --key /path/to/client-key.pem
+    tiup ctl:v<CLUSTER_VERSION> pd -u https://127.0.0.1:2379 --cacert /path/to/ca.pem --cert /path/to/client.pem --key /path/to/client-key.pem
     ```
 
     {{< copyable "shell-regular" >}}
@@ -162,16 +171,6 @@ aliases: ['/docs-cn/dev/enable-tls-between-components/','/docs-cn/dev/how-to/sec
     cert-allowed-cn = ["TiKV-Server", "TiDB-Server", "PD-Control"]
     ```
 
-- TiCDC
-
-    在启动命令行中设置：
-
-    {{< copyable "shell-regular" >}}
-
-    ```bash
-    cdc server --pd=https://127.0.0.1:2379 --log-file=ticdc.log --addr=0.0.0.0:8301 --advertise-addr=127.0.0.1:8301 --ca=/path/to/ca.pem --cert=/path/to/ticdc-cert.pem --key=/path/to/ticdc-key.pem --cert-allowed-cn="client1,client2"
-    ```
-
 - TiFlash（从 v4.0.5 版本开始引入）
 
     在 `tiflash.toml` 文件中设置：
@@ -188,9 +187,14 @@ aliases: ['/docs-cn/dev/enable-tls-between-components/','/docs-cn/dev/how-to/sec
     cert-allowed-cn = ["PD-Server", "TiKV-Server", "TiFlash-Server"]
     ```
 
-## 证书重加载
+## 证书重新加载
 
-TiDB、PD 和 TiKV 和各种 Client 都会在每次新建相互通讯的连接时重新读取当前的证书和密钥文件内容，实现证书和密钥的重加载。目前暂不支持 CA 的重加载。
+- 如果 TiDB 集群部署在本地的数据中心，TiDB、PD、TiKV、TiFlash、TiCDC 和各种 client 在每次新建相互通讯的连接时都会重新读取当前的证书和密钥文件内容，实现证书和密钥的重新加载，无需重启 TiDB 集群。
+- 如果 TiDB 集群部署在自己管理的 Cloud，TLS 证书的签发需要与云服务商的证书管理服务集成，TiDB、PD、TiKV、TiFlash、TiCDC 组件的 TLS 证书支持自动轮换，无需重启 TiDB 集群。
+
+## 证书有效期
+
+你可以自定义 TiDB 集群中各组件 TLS 证书的有效期。例如，使用 OpenSSL 签发生成 TLS 证书时，可以通过 **days** 参数设置有效期，详见[生成自签名证书](/generate-self-signed-certificates.md)。
 
 ## 另请参阅
 

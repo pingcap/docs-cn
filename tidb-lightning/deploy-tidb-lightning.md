@@ -1,5 +1,6 @@
 ---
 title: 部署 TiDB Lightning
+summary: 了解如何部署 TiDB Lightning，包括在线部署和离线部署。
 aliases: ['/docs-cn/dev/tidb-lightning/deploy-tidb-lightning/','/docs-cn/dev/reference/tools/tidb-lightning/deployment/']
 ---
 
@@ -8,7 +9,7 @@ aliases: ['/docs-cn/dev/tidb-lightning/deploy-tidb-lightning/','/docs-cn/dev/ref
 本文主要介绍 TiDB Lightning 进行数据导入的硬件需求，以及手动部署 TiDB Lightning 的方式。Lightning 不同的导入模式，其硬件要求有所不同，请先阅读：
 
 - [Physical Import Mode 必要条件及限制](/tidb-lightning/tidb-lightning-physical-import-mode.md#必要条件及限制)
-- [Logical Import Mode 必要条件及限制](/tidb-lightning/tidb-lightning-logical-import-mode.md#必要条件及限制)
+- [Logical Import Mode 必要条件及限制](/tidb-lightning/tidb-lightning-logical-import-mode.md#必要条件)
 
 ## 使用 TiUP 联网部署（推荐）
 
@@ -22,7 +23,7 @@ aliases: ['/docs-cn/dev/tidb-lightning/deploy-tidb-lightning/','/docs-cn/dev/ref
 
    安装完成后，`~/.bashrc` 已将 TiUP 加入到路径中，你需要新开一个终端或重新声明全局变量 `source ~/.bashrc` 来使用 TiUP。(也可能是`~/.profile`，以 TiUP 输出为准。)
 
-2. 安装 TiUP DM 组件：
+2. 安装 TiUP Lightning 组件：
 
     {{< copyable "shell-regular" >}}
 

@@ -134,6 +134,7 @@ SELECT * FROM information_schema.partitions WHERE tidb_placement_policy_name IS 
 | `FOLLOWER_CONSTRAINTS`     | 仅适用于 follower 的约束列表。                                           |
 | `LEARNER_CONSTRAINTS`     | 仅适用于 learner 的约束列表。                                           |
 | `LEARNERS`                 | 指定 learner 的数量。     |
+| `SURVIVAL_PREFERENCE`      | 指定按 label 容灾等级的优先级放置副本。例如 `SURVIVAL_PREFERENCE="[region, zone, host]"`。    |
 
 ## 示例
 
@@ -245,13 +246,33 @@ PARTITION BY RANGE( YEAR(purchased) ) (
 
 > **注意：**
 >
-> 字典和列表格式都基于YAML解析，但 YAML 语法有些时候不能被正常解析。例如 YAML 会把 "{+disk=ssd:1,+disk=nvme:2}" 错误地解析成 '{"+disk=ssd:1": null, "+disk=nvme:2": null}'，不符合预期。但 "{+disk=ssd: 1,+disk=nvme: 2}" 能被正确解析成 '{"+disk=ssd": 1, "+disk=nvme": 2}'。
+> 字典和列表格式都基于 YAML 解析，但 YAML 语法有些时候不能被正常解析。例如 YAML 会把 `"{+disk=ssd:1,+disk=nvme:2}"`（`:` 后无空格）错误地解析成 `'{"+disk=ssd:1": null, "+disk=nvme:2": null}'`，不符合预期。但 `"{+disk=ssd: 1,+disk=nvme: 2}"`（`:` 后有空格）能被正确解析成 `'{"+disk=ssd": 1, "+disk=nvme": 2}'`。
+
+### 生存偏好
+
+在创建或修改放置策略时，你可以使用 `SURVIVAL_PREFERENCES` 选项设置数据的生存能力偏好。
+
+例如，假设你的 TiDB 集群分布在 3 个 `zone`（即可用区），且每个可用区的 `host`（即节点）上混合部署了多个 TiKV 实例。在为该集群创建放置策略时，假设 `SURVIVAL_PREFERENCES` 的设置如下：
+
+``` sql
+CREATE PLACEMENT POLICY multiaz SURVIVAL_PREFERENCES="[zone, host]";
+CREATE PLACEMENT POLICY singleaz CONSTRAINTS="[+zone=zone1]" SURVIVAL_PREFERENCES="[host]";
+```
+
+创建好放置策略后，你可以按需将放置策略绑定到对应的表上：
+
+- 对于绑定了 `multiaz` 放置策略的表，数据将以 3 副本的形式放置在不同的可用区里，优先满足跨 `zone` 级别数据隔离的生存目标，再满足跨 `host` 级别的数据隔离的生存目标。
+- 对于绑定了 `singleaz` 放置策略的表，数据会优先以 3 副本的形式全部放置在 `zone1` 这个可用区里，再满足跨 `host` 级别的数据隔离的生存目标。
+
+> **注意：**
+>
+> `SURVIVAL_PREFERENCES` 和 PD 中的 `location-labels` 是等价的，更多信息可以参考[通过拓扑 label 进行副本调度](/schedule-replicas-by-topology-labels.md)。
 
 ## 工具兼容性
 
 | 工具名称 | 最低兼容版本 | 说明 |
 | --- | --- | --- |
-| Backup & Restore (BR) | 6.0 | 支持放置规则的导入与导出，见 [BR 兼容性](/br/backup-and-restore-overview.md#功能的兼容性) |
+| Backup & Restore (BR) | 6.0 | BR 在 v6.0 之前不支持放置规则的备份与恢复，见[恢复 Placement Rule 到集群时为什么会报错？](/faq/backup-and-restore-faq.md#恢复-placement-rule-到集群时为什么会报错) |
 | TiDB Lightning | 暂时不兼容 | 导入包含放置策略的数据时会报错 |
 | TiCDC | 6.0 | 忽略放置规则，不同步规则到下游集群 |
 | TiDB Binlog | 6.0 | 忽略放置规则，不同步规则到下游集群 |
@@ -262,5 +283,4 @@ PARTITION BY RANGE( YEAR(purchased) ) (
 
 * 临时表不支持放置规则。
 * 设置 `PRIMARY_REGION` 和 `REGIONS` 时允许存在语法糖。但在未来版本中，我们计划为 `PRIMARY_RACK`、`PRIMARY_ZONE` 和 `PRIMARY_HOST` 添加变体支持，见 [issue #18030](https://github.com/pingcap/tidb/issues/18030)。
-* 不支持同时绑定放置规则和构建 TiFlash 副本。
 * 放置规则仅保证静态数据被放置在正确的 TiKV 节点上。该规则不保证传输中的数据（通过用户查询或内部操作）只出现在特定区域内。

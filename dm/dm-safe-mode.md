@@ -24,7 +24,7 @@ DM 从 checkpoint 恢复数据同步任务后，可能重复执行某些 binlog 
 * `INSERT` 语句会被改写成 `REPLACE` 语句。
 * `UPDATE` 语句会被分析，得到该语句涉及的行的主键或唯一索引的值，然后改写成 `DELETE` + `REPLACE` 语句 ：先根据主键或唯一索引的定位删除对应的行，然后使用 `REPLACE` 语句插入一条最新值的行记录。
 
-`REPLACE` 操作是 MySQL 特有的数据插入语法。使用 `REPLACE` 语法插入数据时，如果新插入的数据和现有数据存在主键或唯一约束冲突，MySQL 会删除所有冲突的记录，然后再执行插入记录操作，相当于“强制插入”的操作。具体请参考 [MySQL 官方文档的 `REPLACE` 语句相关介绍](https://dev.mysql.com/doc/refman/8.0/en/replace.html) 。
+`REPLACE` 操作是 MySQL 特有的数据插入语法。使用 `REPLACE` 语法插入数据时，如果新插入的数据和现有数据存在主键或唯一约束冲突，MySQL 会删除所有冲突的记录，然后再执行插入记录操作，相当于“强制插入”的操作。具体请参考 [MySQL 官方文档的 `REPLACE` 语句相关介绍](https://dev.mysql.com/doc/refman/8.0/en/replace.html)。
 
 比如，假设一张表 `dummydb.dummytbl` 的主键是 `id`，在这张表中重复执行下面的 SQL 语句：
 
@@ -65,7 +65,7 @@ REPLACE INTO dummydb.dummytbl (id, int_value, str_value) VALUES (999, 888888, 'a
     
     第二种情况下，DM 并不知道哪些 checkpoint 之后的 binlog 已经被执行过。为了保险起见，只要没有在 checkpoint 找到 `safemode_exit_point` 信息，DM 就会在前 2 个 checkpoint 间隔中都开启安全模式，确保这段时间里的 binlog 被重复执行不会引发问题。默认的 checkpoint 间隔是 30 秒，也就是说，一个正常的增量同步任务开始时，前 2 * 30 = 60 秒会自动强制开启安全模式。
     
-    你可以配置 syncer 的配置项 `checkpoint-flush-interval` 来调整 checkpoint 的间隔，从而影响增量同步任务开始时安全模式的持续时间。一般情况下不建议调整，如有需要，应优先使用[手动开启](#手动开启)。
+如果你需要调整增量同步任务开始时安全模式的持续时间，可以设置 `syncers` 的配置项 [`safe-mode-duration`](/dm/task-configuration-file-full.md)。
 
 ### 手动开启
 

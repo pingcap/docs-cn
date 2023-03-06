@@ -25,7 +25,7 @@ Load Base Split 是 TiKV 在 4.0 版本引入的特性，旨在解决 Region 访
 
 Load Base Split 会基于统计信息自动拆分 Region。通过统计信息识别出读流量或 CPU 使用率在 10s 内持续超过阈值的 Region，并在合适的位置将这些 Region 拆分。在选择拆分的位置时，会尽可能平衡拆分后两个 Region 的访问量，并尽量避免跨 Region 的访问。
 
-Load Base Split 后的 Region 不会被迅速 Merge。一方面，PD 的 `MergeChecker` 会跳过 hot Region ，另一方面 PD 也会针对心跳信息中的 `QPS`去进行判断，避免 Merge 两个 `QPS` 很高的 Region。
+Load Base Split 后的 Region 不会被迅速 Merge。一方面，PD 的 `MergeChecker` 会跳过 hot Region，另一方面 PD 也会针对心跳信息中的 `QPS`去进行判断，避免 Merge 两个 `QPS` 很高的 Region。
 
 ## 使用方法
 
@@ -46,7 +46,12 @@ Load Base Split 后的 Region 不会被迅速 Merge。一方面，PD 的 `MergeC
     {{< copyable "sql" >}}
 
     ```sql
-    set config tikv split.qps-threshold=3000
+    # 设置 QPS 阈值为 1500
+    SET config tikv split.qps-threshold=1500;
+    # 设置 Byte 阈值为 15 MiB (15 * 1024 * 1024)
+    SET config tikv split.byte-threshold=15728640;
+    # 设置 CPU 使用率阈值为 50%
+    SET config tikv split.region-cpu-overload-threshold-ratio=0.5;
     ```
 
 - 通过 TiKV 修改，例如：
@@ -54,7 +59,9 @@ Load Base Split 后的 Region 不会被迅速 Merge。一方面，PD 的 `MergeC
     {{< copyable "shell-regular" >}}
 
     ```shell
-    curl -X POST "http://ip:status_port/config" -H "accept: application/json" -d '{"split.qps-threshold":"3000"}'
+    curl -X POST "http://ip:status_port/config" -H "accept: application/json" -d '{"split.qps-threshold":"1500"}'
+    curl -X POST "http://ip:status_port/config" -H "accept: application/json" -d '{"split.byte-threshold":"15728640"}'
+    curl -X POST "http://ip:status_port/config" -H "accept: application/json" -d '{"split.region-cpu-overload-threshold-ratio":"0.5"}'
     ```
 
 同理，目前也有两种办法查看配置：

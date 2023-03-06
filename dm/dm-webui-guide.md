@@ -29,7 +29,7 @@ DM WebUI 主要包含以下界面：
 
 ## 访问方式
 
-你可以从 DM 集群的任意 master 节点访问 DM WebUI，访问端口与 DM OpenAPI 保持一致，默认为 `8261`。访问地址示例：`http://{master_ip}:{master_port}/dashboard/`。
+在开启 [OpenAPI](/dm/dm-open-api.md) 后，你可以从 DM 集群的任意 master 节点访问 DM WebUI，访问端口与 DM OpenAPI 保持一致，默认为 `8261`。访问地址示例：`http://{master_ip}:{master_port}/dashboard/`。
 
 ## 数据迁移
 

@@ -5,7 +5,7 @@ summary: 了解如何使用 TiDB Lightning 的 Physical Import Mode。
 
 # 使用 Physical Import Mode
 
-本文档介绍如何编写 Physical Import Mode 的配置文件，如何进行性能调优、使用磁盘资源配额等内容。
+本文档介绍如何编写 [Physical Import Mode](/tidb-lightning/tidb-lightning-physical-import-mode.md) 的配置文件，如何进行性能调优、使用磁盘资源配额等内容。
 
 ## 配置及使用
 
@@ -24,7 +24,7 @@ max-backups = 14
 check-requirements = true
 
 [mydumper]
-# 本地源数据目录或外部存储 URL
+# 本地源数据目录或外部存储 URI。关于外部存储 URI 详情可参考 https://docs.pingcap.com/zh/tidb/v6.6/backup-and-restore-storages#uri-%E6%A0%BC%E5%BC%8F。
 data-source-dir = "/data/my_database"
 
 [tikv-importer]
@@ -126,11 +126,9 @@ mysql> select table_name,index_name,key_data,row_data from conflict_error_v1 lim
 
 根据上述信息人工甄别需要保留的重复数据，手动插回原表即可。
 
-## 导入数据到生产集群
+## 导入时限制调度范围从集群降低到表级别
 
-自 TiDB Lightning v6.2.0 版本起，TiDB Lightning 支持使用 Physical Import Mode 向已经投入生产的 TiDB 集群导入数据，并提供机制控制导入数据过程对在线业务的影响。
-
-在技术实现上，TiDB Lightning 不会暂停全局的调度，而是只暂停目标表数据范围所在 region 的调度，大大降低了对在线业务的影响。
+自 TiDB Lightning v6.2.0 版本起，TiDB Lightning 提供机制控制导入数据过程对在线业务的影响。TiDB Lightning 不会暂停全局的调度，而是只暂停目标表数据范围所在 region 的调度，降低了对在线业务的影响。
 
 > **注意：**
 >
@@ -213,10 +211,6 @@ io-concurrency = 5
 此外，TiKV 的 [num-threads](/tikv-configuration-file.md#num-threads) 配置也可能影响性能，新集群建议设置为 CPU 核数。
 
 ## 磁盘资源配额 <span class="version-mark">从 v6.2.0 版本开始引入</span>
-
-> **警告：**
->
-> 磁盘资源配额目前是实验性功能，不建议在生产环境中使用。
 
 TiDB Lightning 在使用物理模式导入数据时，会在本地磁盘创建大量的临时文件，用来对原始数据进行编码、排序、分割。当用户本地磁盘空间不足时，TiDB Lightning 会由于写入文件失败而报错退出。
 
