@@ -34,8 +34,113 @@ TiDB 中文文档的日常更新特别活跃，相应地，[TiDB 英文文档](h
 > - 通常，TiDB 文档先完成中文版后再完成英文版。但也偶有例外。
 > - [快速上手资源](#快速上手资源)一节中汇总了**中英术语表**和**风格指南**等参考文档，建议译前阅读。
 
+关于如何认领翻译任务的详细步骤，请参考 [参考资料](#参考资料)。
+
+## 如何提 Pull Request？
+
+最常见的贡献方式就是提 Pull Request 了，那么提交流程是怎样的，又需要遵守哪些规范呢？请参考下面视频教程，快速上手 GitHub 的 Pull Request 流程。
+
+**基本概念篇（4 min）**
+
+<video src="https://download.pingcap.com/docs-cn%2FLesson10_config.mp4" width="600px" height="450px" controls="controls" poster="https://download.pingcap.com/docs-cn/pr_00_basic_concepts.png"></video>
+
+**创建 PR（4 min）**
+
+<video src="https://download.pingcap.com/docs-cn/GTV_1_zh_How_to_Create_a_PR.mp4" width="600px" height="450px" controls="controls" poster="https://download.pingcap.com/docs-cn/pr_01_create_pr.png"></video>
+
+**PR 的后续跟进（5 min）**
+
+<video src="https://download.pingcap.com/docs-cn/GTV_2_zh_PR_Follow_up.mp4" width="600px" height="450px" controls="controls" poster="https://download.pingcap.com/docs-cn/pr_01_follow_up.png"></video>
+
+**批量修改建议和 CI 检查（4 min）**
+
+<video src="https://download.pingcap.com/docs-cn/GTV_3_zh_Batch_Suggestion_and_CI_Check.mp4" width="600px" height="450px" controls="controls" poster="https://download.pingcap.com/docs-cn/pr_01_suggestions.png"></video>
+
+你也可以查阅 [docs-cn 现有的 Pull Request](https://github.com/pingcap/docs-cn/pulls) 作为参考。
+
+## PR Checklist
+
+在提交 PR 之前，请务必检查以下内容：
+
+- [ ] 文档内容准确、清晰、简洁，遵循写作规范。参考 [PingCAP 中文技术文档风格 — 极简指南](#pingcap-中文技术文档风格--极简指南)。
+- [ ] PR 的各元素完整、准确，包括：
+    - [ ] 标题清晰、有意义，包括修改的类型+文档所属的模块。例如：
+        - Fix typos in tidb-monitoring-api.md
+        - Add v5.3.0 benchmark documents
+        - Add note about SELECT CAST(MeN AS CHAR) incompatibility
+    - [ ] 有简要描述，例如修改背景等，并添加对应的 issue 号
+    - [ ] 选择正确的标签
+    - [ ] cherry-pick 到对应的分支版本
+- [ ] 如果新增文档、删除文档，需要更新 TOC.md。
+- [ ] PR 经过了至少两轮 review，包括 technical review 和 editorial review，确保技术准确、语言规范。Comments 全部处理完，且 reviewers 已经 approved 该 PR。
+- [ ] 预览文档，确保文档格式正确、清晰、可读，特别注意表格、图片、列表等特殊样式能够正常显示。
+- [ ] 文档通过了 CI check。
+
+## PingCAP 中文技术文档风格 — 极简指南
+
+![1 Pager Style Guide](/media/1pager-style-guide.png)
+
+参考文档：
+
+- [PingCAP 用户文档模版](https://github.com/pingcap/docs-cn/tree/master/resources/doc-templates)
+
+## 参考资料
+
 <details>
-<summary>认领中文翻译任务</summary>
+<summary>Markdown 规范</summary>
+
+TiDB 中文文档使用 Markdown 语言进行编写，为了保证文档质量和格式规范，你修改的文档需要遵循一定的 Markdown 规则。我们为 docs-cn 仓库设置了检测 markdown 文件规范的 CI check，即 [markdownlint check](https://github.com/DavidAnson/markdownlint/blob/master/doc/Rules.md)。如果你提交的 PR 不符合规范，很可能**无法通过 markdownlint check**，最终导致无法合并 PR。
+
+我们为 TiDB 中文文档提前设置了 25 条 [markdownlint 规则](/resources/markdownlint-rules.md)，并附上了简单易懂的解释，强烈推荐花 5 分钟通读一遍。
+
+假如你提 PR 之前没有熟悉相关 Markdown 规范，提 PR 时遇到了 markdownlint check 失败，也不必担心，报错信息中有错误详情、出错的文件和位置，帮你快速定位和解决问题。
+
+此外，你还可以选择在本地进行 markdownlint check：
+
+```bash
+./scripts/markdownlint [FILE...]
+```
+
+</details>
+
+<details>
+<summary>常用 bot 命令</summary>
+
+我们为 docs 和 docs-cn 仓库提前设置了一些命令语句，只要按照一定的格式在 PR 中留言，就能触发 bot 完成相应操作。详情见下表。
+
+| 命令 | 含义 | 示例 |
+| ------ | ------ | ------ |
+| `/label` | 给 PR 添加 label，多个 label 间需要用逗号分隔。如果 label 中有斜线 `/`，则命令为 `/[label 的第一个单词] [label 其他部分]` | `/label contribution`，`/translation from-docs` |
+| `/remove-label` | 删除 PR label。如果 label 中有斜线 `/`，则命令为 `/remove-[label 的第一个单词] [label 其他部分]` | `/remove-label contribution`，`/remove-translation welcome` |
+| `/assign` | 将 PR 分配给指定的人，需 @指定用户的 GitHub ID，多个 GitHub ID 间用逗号分隔。如果想要将 PR 分配给自己，`/assign`后可不跟 GitHub ID。 | `/assign @CharLotteiu` |
+| `/unassign` | 移除 PR 之前指定的 assignee。 | `/unassign @CharLotteiu` |
+| `/cc` | 将 PR 分配给指定的 reviewer，需 @指定用户的 GitHub ID，多个 GitHub ID 间用逗号分隔。 | `/cc @TomShawn, @yikeke` |
+| `/uncc` | 移除 PR 之前指定的 reviewer。  | `/uncc @TomShawn`|
+
+</details>
+
+<details>
+<summary>如何选择文档适用的版本分支？</summary>
+
+创建 Pull Request 时，你需要在 Pull Request 的描述模版中选择文档改动适用的版本分支。
+
+如果你的 PR 改动符合以下任一情况，推荐**只选择 master 分支**。此 PR 的改动在合并后将显示到[官网文档 Dev 页面](https://docs.pingcap.com/zh/tidb/dev/)，在下一次 TiDB 发新版本时将显示到新版本的文档页面。
+
+- 完善文档，例如补充缺失或不完整的信息。
+- 改正错误，例如默认值错误、描述不准确、示例错误、拼写错误等。
+- 重构文档，例如“部署标准集群”、“数据迁移”、“TiDB 数据迁移工具”等。
+
+如果你的 PR 改动符合以下任一情况，请**选择 master 分支以及受影响的 release 分支**：
+
+- 涉及与版本相关的功能行为变化。
+- 涉及与版本相关的兼容性变化，例如更改某个配置项或变量的默认值。
+- 修复文档页面的渲染或显示错误。
+- 修复文档内的死链。
+
+</details>
+
+<details>
+<summary>如何认领中文翻译任务？</summary>
 
 目前，中文文档翻译任务以 [docs-cn 仓库的 Pull Request](https://github.com/pingcap/docs-cn/pulls) (PR) 为形式，通过仓库管理员为 PR 加上的 labels 来认领翻译任务及追踪翻译任务状态。
 
@@ -72,28 +177,6 @@ TiDB 中文文档的日常更新特别活跃，相应地，[TiDB 英文文档](h
     具体操作为：在新建的 PR 下发送 `/cc @TomShawn @technical-reviewer`（将 technical-reviewer 替换为源 PR 作者的 GitHub ID），即可将 Review 任务分配给 docs 仓库管理员 @TomShawn 及源 PR 的作者。
 
 </details>
-
-## 如何提 Pull Request
-
-最常见的贡献方式就是提 Pull Request 了，那么提交流程是怎样的，又需要遵守哪些规范呢？请参考下面视频教程，快速上手 GitHub 的 Pull Request 流程。
-
-**基本概念篇（4 min）**
-
-<video src="https://download.pingcap.com/docs-cn%2FLesson10_config.mp4" width="600px" height="450px" controls="controls" poster="https://download.pingcap.com/docs-cn/pr_00_basic_concepts.png"></video>
-
-**创建 PR（4 min）**
-
-<video src="https://download.pingcap.com/docs-cn/GTV_1_zh_How_to_Create_a_PR.mp4" width="600px" height="450px" controls="controls" poster="https://download.pingcap.com/docs-cn/pr_01_create_pr.png"></video>
-
-**PR 的后续跟进（5 min）**
-
-<video src="https://download.pingcap.com/docs-cn/GTV_2_zh_PR_Follow_up.mp4" width="600px" height="450px" controls="controls" poster="https://download.pingcap.com/docs-cn/pr_01_follow_up.png"></video>
-
-**批量修改建议和 CI 检查（4 min）**
-
-<video src="https://download.pingcap.com/docs-cn/GTV_3_zh_Batch_Suggestion_and_CI_Check.mp4" width="600px" height="450px" controls="controls" poster="https://download.pingcap.com/docs-cn/pr_01_suggestions.png"></video>
-
-你也可以查阅 [docs-cn 现有的 Pull Request](https://github.com/pingcap/docs-cn/pulls) 作为参考。
 
 <details>
 <summary>提交 Pull Request 的详细流程</summary>
@@ -180,88 +263,7 @@ git push -u origin new-branch-name
 
 </details>
 
-## PR Checklist
-
-在提交 PR 之前，请务必检查以下内容：
-
-- [ ] 文档内容准确、清晰、简洁，遵循写作规范。参考 [PingCAP 中文技术文档风格 — 极简指南](#pingcap-中文技术文档风格--极简指南)。
-- [ ] PR 的各元素完整、准确，包括：
-    - [ ] 标题清晰、有意义，包括修改的类型+文档所属的模块。例如：
-        - Fix typos in tidb-monitoring-api.md
-        - Add v5.3.0 benchmark documents
-        - Add note about SELECT CAST(MeN AS CHAR) incompatibility
-    - [ ] 有简要描述，例如修改背景等，并添加对应的 issue 号
-    - [ ] 选择正确的标签
-    - [ ] cherry-pick 到对应的分支版本
-- [ ] 如果新增文档、删除文档，需要更新 TOC.md。
-- [ ] PR 经过了至少两轮 review，包括 technical review 和 editorial review，确保技术准确、语言规范。Comments 全部处理完，且 reviewers 已经 approved 该 PR。
-- [ ] 预览文档，确保文档格式正确、清晰、可读，特别注意表格、图片、列表等特殊样式能够正常显示。
-- [ ] 文档通过了 CI check。
-
-## PingCAP 中文技术文档风格 — 极简指南
-
-![1 Pager Style Guide](/media/1pager-style-guide.png)
-
-参考文档：
-
-- [PingCAP 用户文档模版](https://github.com/pingcap/docs-cn/tree/master/resources/doc-templates)
-
-## 参考资料
-
-<details>
-<summary>Markdown 规范</summary>
-
-TiDB 中文文档使用 Markdown 语言进行编写，为了保证文档质量和格式规范，你修改的文档需要遵循一定的 Markdown 规则。我们为 docs-cn 仓库设置了检测 markdown 文件规范的 CI check，即 [markdownlint check](https://github.com/DavidAnson/markdownlint/blob/master/doc/Rules.md)。如果你提交的 PR 不符合规范，很可能**无法通过 markdownlint check**，最终导致无法合并 PR。
-
-我们为 TiDB 中文文档提前设置了 25 条 [markdownlint 规则](/resources/markdownlint-rules.md)，并附上了简单易懂的解释，强烈推荐花 5 分钟通读一遍。
-
-假如你提 PR 之前没有熟悉相关 Markdown 规范，提 PR 时遇到了 markdownlint check 失败，也不必担心，报错信息中有错误详情、出错的文件和位置，帮你快速定位和解决问题。
-
-此外，你还可以选择在本地进行 markdownlint check：
-
-```bash
-./scripts/markdownlint [FILE...]
-```
-
-</details>
-
-<details>
-<summary>常用 bot 命令</summary>
-
-我们为 docs 和 docs-cn 仓库提前设置了一些命令语句，只要按照一定的格式在 PR 中留言，就能触发 bot 完成相应操作。详情见下表。
-
-| 命令 | 含义 | 示例 |
-| ------ | ------ | ------ |
-| `/label` | 给 PR 添加 label，多个 label 间需要用逗号分隔。如果 label 中有斜线 `/`，则命令为 `/[label 的第一个单词] [label 其他部分]` | `/label contribution`，`/translation from-docs` |
-| `/remove-label` | 删除 PR label。如果 label 中有斜线 `/`，则命令为 `/remove-[label 的第一个单词] [label 其他部分]` | `/remove-label contribution`，`/remove-translation welcome` |
-| `/assign` | 将 PR 分配给指定的人，需 @指定用户的 GitHub ID，多个 GitHub ID 间用逗号分隔。如果想要将 PR 分配给自己，`/assign`后可不跟 GitHub ID。 | `/assign @CharLotteiu` |
-| `/unassign` | 移除 PR 之前指定的 assignee。 | `/unassign @CharLotteiu` |
-| `/cc` | 将 PR 分配给指定的 reviewer，需 @指定用户的 GitHub ID，多个 GitHub ID 间用逗号分隔。 | `/cc @TomShawn, @yikeke` |
-| `/uncc` | 移除 PR 之前指定的 reviewer。  | `/uncc @TomShawn`|
-
-</details>
-
-<details>
-<summary>如何选择文档适用的版本分支？</summary>
-
-创建 Pull Request 时，你需要在 Pull Request 的描述模版中选择文档改动适用的版本分支。
-
-如果你的 PR 改动符合以下任一情况，推荐**只选择 master 分支**。此 PR 的改动在合并后将显示到[官网文档 Dev 页面](https://docs.pingcap.com/zh/tidb/dev/)，在下一次 TiDB 发新版本时将显示到新版本的文档页面。
-
-- 完善文档，例如补充缺失或不完整的信息。
-- 改正错误，例如默认值错误、描述不准确、示例错误、拼写错误等。
-- 重构文档，例如“部署标准集群”、“数据迁移”、“TiDB 数据迁移工具”等。
-
-如果你的 PR 改动符合以下任一情况，请**选择 master 分支以及受影响的 release 分支**：
-
-- 涉及与版本相关的功能行为变化。
-- 涉及与版本相关的兼容性变化，例如更改某个配置项或变量的默认值。
-- 修复文档页面的渲染或显示错误。
-- 修复文档内的死链。
-
-</details>
-
-## 快速上手资源
+其他快速上手资源
 
 - [PingCAP 中文文档风格指南](/resources/pingcap-style-guide-zh.pdf)
 - [PingCAP 中英术语表](https://shimo.im/sheets/tTRyydP8Xkdv8yxq/MODOC)
