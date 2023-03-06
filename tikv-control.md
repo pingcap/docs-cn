@@ -298,7 +298,6 @@ middle_key_by_approximate_size:
     - `force` 表示 compact 总是包括最下层文件。
 
 - 在本地模式 compact data，执行如下命令：
->>>>>>> 4a2c35be8 (tikv-control: make a parameter in right places (#11026))
 
     ```shell
     tikv-ctl --data-dir /path/to/tikv compact --db kv
