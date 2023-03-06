@@ -143,7 +143,7 @@ To understand the key metrics displayed on the TiDB dashboard, check the followi
 - Owner Handle Syncer Duration: the time that it takes the DDL Owner to update, obtain, and check the Schema Version
 - Update Self Version Duration: the time consumed by updating the version information of Schema Version Syncer
 - DDL OPM: the number of DDL executions per second
-- DDL Add Index Progress In Percentage: the progress of adding an index
+- DDL backfill progress in percentage: the progress of backfilling DDL tasks
 
 ### Statistics
 
