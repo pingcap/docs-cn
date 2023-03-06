@@ -3,7 +3,7 @@ title: TiDB 6.5.1 Release Notes
 summary: 了解 TiDB 6.5.1 版本的兼容性变更、改进提升，以及错误修复。
 ---
 
-# TiDB 6.5.0 Release Notes
+# TiDB 6.5.1 Release Notes
 
 发版日期：2023 年 1 月 xx 日
 
