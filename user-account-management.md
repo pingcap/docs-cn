@@ -185,20 +185,47 @@ TiDB stores passwords in the `mysql.user` system database. Operations that assig
 
 ## Forget the `root` password
 
-1. Modify the configuration file by adding `skip-grant-table` in the `security` part:
+1. Modify the configuration file:
 
-    ```
-    [security]
-    skip-grant-table = true
-    ```
+    1. Log in to the machine where one of the tidb-server instances is located.
+    2. Enter the `conf` directory under the TiDB node deployment directory, and find the `tidb.toml` configuration file.
+    3. Add the configuration item `skip-grant-table` in the `security` section of the configuration file. If there is no `security` section, add the following two lines to the end of the tidb.toml configuration file:
 
-2. Start TiDB with the modified configuration. Use `root` to log in and then modify the password:
+        ```
+        [security]
+        skip-grant-table = true
+        ```
 
-    ```bash
-    mysql -h 127.0.0.1 -P 4000 -u root
-    ```
+2. Stop the tidb-server process:
 
-When the `skip-grant-table` is set, starting the TiDB process will check whether the user is an administrator of the operating system, and only the `root` user of the operating system can start the TiDB process.
+    1. View the tidb-server process:
+
+        ```bash
+        ps aux | grep tidb-server
+        ```
+
+    2. Find the process ID (PID) corresponding to tidb-server and use the `kill` command to stop the process:
+
+        ```bash
+        kill -9 <pid>
+        ```
+
+3. Start TiDB using the modified configuration:
+
+    > **Note:**
+    >
+    > If you set `skip-grant-table` before starting the TiDB process, a check on the operating system user will be initiated. Only the `root` user of the operating system can start the TiDB process.
+
+    1. Enter the `scripts` directory under the TiDB node deployment directory.
+    2. Switch to the `root` account of the operating system.
+    3. Run the `run_tidb.sh` script in the directory in the foreground.
+    4. Log in as `root` in a new terminal window and change the password.
+
+        ```bash
+        mysql -h 127.0.0.1 -P 4000 -u root
+        ```
+
+4. Stop running the `run_tidb.sh` script, remove the content added in the TiDB configuration file in step 1, and wait for tidb-server to start automatically.
 
 ## `FLUSH PRIVILEGES`
 
