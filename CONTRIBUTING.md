@@ -254,7 +254,7 @@ git push -u origin new-branch-name
 
 **第 8 步：创建一个 Pull Request**
 
-1. 打开你 Fork 的仓库：<https://github.com/$user/docs-cn>（将 `$user` 替换为你的 GitHub ID）
+1. 打开你 Fork 的仓库：`https://github.com/$user/docs-cn`（将其中的 `$user` 替换为你的 GitHub ID）
 2. 点击 `Compare & pull request` 按钮即可创建 PR。参考[如何写 PR title 和描述](https://github.com/pingcap/community/blob/master/contributors/commit-message-pr-style.md)。
 
 > **注意：**
