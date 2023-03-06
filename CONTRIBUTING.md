@@ -34,7 +34,7 @@ TiDB 中文文档的日常更新特别活跃，相应地，[TiDB 英文文档](h
 > - 通常，TiDB 文档先完成中文版后再完成英文版。但也偶有例外。
 > - [参考资料](#参考资料)一节中汇总了**中英术语表**和**风格指南**等参考文档，建议译前阅读。
 
-关于如何认领翻译任务的详细步骤，请参考[参考资料](#参考资料)。
+关于如何认领翻译任务的详细步骤，请参见[参考资料](#参考资料)。
 
 ## 如何提 Pull Request？
 
@@ -72,7 +72,8 @@ TiDB 中文文档的日常更新特别活跃，相应地，[TiDB 英文文档](h
     - [ ] 选择正确的标签
     - [ ] cherry-pick 到对应的分支版本
 - [ ] 如果新增文档、删除文档，需要更新 TOC.md。
-- [ ] PR 经过了至少两轮 review，包括 technical review 和 editorial review，确保技术准确、语言规范。Comments 全部处理完，且 reviewers 已经 approved 该 PR。
+- [ ] PR 经过了至少两轮 review，包括 technical review 和 editorial review，确保技术准确、语言规范。
+- [ ] Comments 全部处理完，且 reviewers 已经 approved 该 PR。
 - [ ] 预览文档，确保文档格式正确、清晰、可读，特别注意表格、图片、列表等特殊样式能够正常显示。
 - [ ] 文档通过了 CI check。
 
