@@ -5,7 +5,7 @@ summary: TiDB 数据库中 ADMIN CLEANUP 的使用概况。
 
 # ADMIN CLEANUP INDEX
 
-`ADMIN CHECK INDEX` 语句用于在表发生行数据和索引的一致性故障时，删除表中多余的索引，使表的行数据和索引重新回到一致状态。注意，该语法尚不支持[外键约束](/foreign-key.md)。
+`ADMIN CLEANUP INDEX` 语句用于在表发生行数据和索引的一致性故障时，删除表中多余的索引，使表的行数据和索引恢复一致状态。注意，该语法尚不支持[外键约束](/foreign-key.md)。
 
 ## 语法图
 
@@ -22,10 +22,10 @@ TableNameList ::=
 假设由于一些原因（例如灾难恢复场景，集群中丢失了部分行数据），数据库中的 `tbl` 表出现数据和索引不一致现象：
 
 ```sql
-MySQL [sample]> SELECT * FROM tbl;
+SELECT * FROM tbl;
 ERROR 1105 (HY000): inconsistent index idx handle count 3 isn't equal to value count 2
 
-MySQL [sample]> ADMIN CHECK INDEX tbl idx ;
+ADMIN CHECK INDEX tbl idx ;
 ERROR 1105 (HY000): handle &kv.CommonHandle{encoded:[]uint8{0x1, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0xf8}, colEndOffsets:[]uint16{0xa}}, index:types.Datum{k:0x5, decimal:0x0, length:0x0, i:0, collation:"utf8mb4_bin", b:[]uint8{0x0}, x:interface {}(nil)} != record:<nil>
 ```
 
@@ -38,7 +38,7 @@ ADMIN CLEANUP INDEX tbl idx;
 执行结果示例如下：
 
 ```sql
-MySQL [sample]> ADMIN CLEANUP INDEX tbl idx;
+ADMIN CLEANUP INDEX tbl idx;
 +---------------+
 | REMOVED_COUNT |
 +---------------+
@@ -49,7 +49,7 @@ MySQL [sample]> ADMIN CLEANUP INDEX tbl idx;
 此时，可以重新使用 `ADMIN CHECK INDEX` 语句检查数据索引的一致性，验证数据是否恢复到正常状态：
 
 ```sql
-MySQL [sample]> ADMIN CHECK INDEX tbl idx;
+ADMIN CHECK INDEX tbl idx;
 Query OK, 0 rows affected (0.01 sec)
 ```
 
