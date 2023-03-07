@@ -33,7 +33,7 @@ Stale Read 功能会定期推进 TiDB 集群的 Resolved TS 时间戳，该时�
 
 ```toml
 [resolved-ts]
-advance-ts-interval = "20s" # 默认为 20 秒，可适当调小，比如 1 秒。
+advance-ts-interval = "20s" # 默认为 20 秒，可适当调小该值以加快 Resolved TS 推进，比如调整为 1 秒。
 ```
 
 > **注意：**
