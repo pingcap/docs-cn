@@ -36,3 +36,5 @@
 ## 贡献者数量增长图
 
 [![Contributor over time](https://contributor-graph-api.apiseven.com/contributors-svg?chart=contributorOverTime&repo=pingcap/docs-cn)](https://www.apiseven.com/en/contributor-graph?chart=contributorOverTime&repo=pingcap/docs-cn)
+
+<iframe width="560" height="315" src="https://download.pingcap.com/docs-cn%2FLesson10_config.mp4" frameborder="0" allowfullscreen></iframe>
