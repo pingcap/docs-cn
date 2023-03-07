@@ -11,15 +11,16 @@ aliases: ['/docs-cn/dev/sql-non-prepare-plan-cache/','zh/tidb/dev/sql-non-prepar
 
 对于一部分非 Prepared 语句，TiDB 也能像 [`Prepare` / `Execute` 语句](sql-prepared-plan-cache.md) 一样支持查询计划缓存，可以让这些语句跳过优化器阶段，以获得性能上的提升。
 
-打开此功能后，TiDB 首先根据 AST 对查询进行参数化，如将 `select * from t where b<10 and a=1` 参数化为 `select * from t where b<? and a=?`。
+此功能基本原理如下：
 
-然后如下图，用参数化后的结果在 Non-Prep Plan Cache 中查找，如果能找到可以复用的计划，则直接使用这个计划，并跳过整个优化阶段；如果找不到，则继续进行优化，并在生成计划后将计划放回到 Cache 中，以便下次进行复用：
-
-![tidb-non-prepared-plan-cache](medial/../media/tidb-non-prepared-plan-cache.png)
+1. 打开此功能后，TiDB 首先根据 AST 对查询进行参数化，如将 `select * from t where b<10 and a=1` 参数化为 `select * from t where b<? and a=?`；
+2. 然后用参数化后的查询，在 Non-Prepared Plan Cache 中进行查找；
+3. 如果能找到可以直接复用的计划，则直接使用，并跳过整个优化过程；
+4. 如果找不到可以直接复用的计划，则继续进行查询优化，并在最后把生成的计划放回到 Cache 中，以便下次进行复用；
 
 Non-Prepared Plan Cache 为 Session 级别，且和 [Prepared Plan Cache](sql-prepared-plan-cache.md) 相互独立，其中缓存的 Plan 互不影响。
 
-你可以通过 `tidb_enable_non_prepared_plan_cache` 来打开和关闭此项功能，同时通过 `tidb_non_prepared_plan_cache_size` 来控制 Non-Prepared Plan Cache 的大小，当缓存的计划数超过 `tidb_non_prepared_plan_cache_size` 时，会使用 LRU 策略来进行逐出。
+目前可以通过 `tidb_enable_non_prepared_plan_cache` 来打开和关闭此项功能，同时通过 `tidb_non_prepared_plan_cache_size` 来控制 Non-Prepared Plan Cache 的大小，当缓存的计划数超过 `tidb_non_prepared_plan_cache_size` 时，会使用 LRU 策略来进行逐出。
 
 ## 实例
 
