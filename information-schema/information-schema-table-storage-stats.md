@@ -59,5 +59,5 @@ EMPTY_REGION_COUNT: 1
 * `PEER_COUNT`：副本个数
 * `REGION_COUNT`：表所在的 Region 个数
 * `EMPTY_REGION_COUNT`：没有该表数据的 Region 个数
-* `TABLE_SIZE`：数据量大小
+* `TABLE_SIZE`：数据量大小，单位 MiB
 * `TABLE_KEYS`：表记录个数
