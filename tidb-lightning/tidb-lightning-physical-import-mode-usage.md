@@ -130,11 +130,9 @@ mysql> select table_name,index_name,key_data,row_data from conflict_error_v1 lim
 
 You can manually identify the records that need to be retained and insert these records into the table.
 
-## Import data into a cluster in production
+## Pause scheduling on the table level
 
-Starting from TiDB Lightning v6.2.0, you can import data into a cluster in production using the physical import mode. TiDB Lightning implements a new mechanism to limit the impact of the import on the online application.
-
-With the new mechanism, TiDB Lightning does not pause the global scheduling, but only pauses scheduling for the region that stores the target table data. This significantly reduces the impact of the import on the online application.
+Starting from v6.2.0, TiDB Lightning implements a mechanism to limit the impact of data import on online applications. With the new mechanism, TiDB Lightning does not pause the global scheduling, but only pauses scheduling for the region that stores the target table data. This significantly reduces the impact of the import on online applications.
 
 <Note>
 TiDB Lightning does not support importing data into a table that already contains data.
