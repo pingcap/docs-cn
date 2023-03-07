@@ -9,7 +9,7 @@ aliases: ['/docs-cn/dev/sql-non-prepare-plan-cache/','zh/tidb/dev/sql-non-prepar
 >
 > 该功能为实验特性，不推荐在生产环境中使用。
 
-对于一部分非 Prepared 语句，TiDB 也能像 [`Prepare` / `Execute` 语句](sql-prepared-plan-cache.md) 一样支持查询计划缓存，可以让这些语句跳过优化器阶段，以获得性能上的提升。
+对于一部分非 Prepared 语句，TiDB 也能像 [`Prepare` / `Execute` 语句](sql-prepared-plan-cache.md) 一样支持执行计划缓存，可以让这些语句跳过优化器阶段，以获得性能上的提升。
 
 此功能基本原理如下：
 
@@ -41,7 +41,7 @@ Empty set (0.00 sec)
 mysql> select * from t where b < 5 and a=2;             -- 第二次执行查询
 Empty set (0.00 sec)
 
-mysql> select @@last_plan_from_cache;                   -- 可以看到第二次执行的查询计划来自于 Cache
+mysql> select @@last_plan_from_cache;                   -- 可以看到第二次执行的执行计划来自于 Cache
 +------------------------+
 | @@last_plan_from_cache |
 +------------------------+
@@ -59,11 +59,12 @@ TiDB 对一种参数化后的查询，只能缓存一个计划，比如对于 `s
 由于上述风险，以及 `Plan Cache` 只在简单的查询上有明显收益（如果查询较为复杂，本身执行时间较长，使用 `Plan Cache` 收益不大），TiDB 目前对 Non-Prepared Plan Cache 的生效范围有比较严格的限制，如下：
 
 1. [Prepared Plan Cache](sql-prepared-plan-cache.md) 无法支持的查询或者计划，Non-Prepared Plan Cache 同样无法支持；
-2. 目前仅支持包含 Scan-Selection-Projection 算子的单表的点查或范围查询，如 `select * from t where a<10 and b in (1, 2)`；包含 `Agg`, `Limit`, `Window`, `Sort` 等更复杂算子的查询暂不支持；包含非范围查询条件如 `c like 'c%'` 等的查询不支持；
+2. 目前仅支持包含 Scan-Selection-Projection 算子的单表的点查或范围查询，如 `select * from t where a<10 and b in (1, 2)`；包含 `Agg`, `Limit`, `Window`, `Sort` 等更复杂算子的查询暂不支持；包含非范围查询条件如 `c like 'c%'`, `a+1<2`（不支持 `+` 操作） 等的查询不支持；
 3. `JSON`, `Enum`, `Set` 或 `Bit` 类型的列出现在过滤条件中的查询不支持，如 `select * from t where json_col='{}'`；
 4. 过滤条件中有 `Null` 值出现的查询不支持，如 `select * from t where a=null`；
 5. 参数化后参数个数超过 50 个的查询不支持，如 `select * from t where a in (1, 2, 3, ... 51)`；
 6. 访问分区表，虚拟列，临时表，视图，内存表的查询不支持，如 `select * from information_schema.colunms`，其中 `columns` 为 TiDB 内存表；
+7. 带有 hint、子查询、Lock 的查询不支持；
 
 ## 诊断
 
