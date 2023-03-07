@@ -53,11 +53,11 @@ EMPTY_REGION_COUNT: 1
 
 `TABLE_STORAGE_STATS` 表各列字段含义如下：
 
-* `TABLE_SCHEMA`：表所在 SCHEMA 名字
+* `TABLE_SCHEMA`：表所在 schema 名字
 * `TABLE_NAME`：表名
 * `TABLE_ID`：表 ID
 * `PEER_COUNT`：副本个数
-* `REGION_COUNT`：所在的 REGION 个数
-* `EMPTY_REGION_COUNT`：没有该表数据的 REGION 个数
+* `REGION_COUNT`：表所在的 Region 个数
+* `EMPTY_REGION_COUNT`：没有该表数据的 Region 个数
 * `TABLE_SIZE`：数据量大小
 * `TABLE_KEYS`：表记录个数
