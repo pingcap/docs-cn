@@ -30,8 +30,7 @@ TiCDC 提供 OpenAPI 功能，你可以通过 OpenAPI v2 对 TiCDC 集群进行�
 
 所有 API 的请求体与返回值统一使用 JSON 格式数据。请求如果成功则统一返回 `200 OK` 。本文档以下部分描述当前提供的 API 的具体使用方法。
 
-在下文的示例描述中，假设 TiCDC server 的监听 IP 地址为 `127.0.0.1`，端口为 `8300`（在启动 TiCDC server
-时可以通过 `--addr=ip:port` 指定绑定的 IP 和端口）。
+在下文的示例描述中，假设 TiCDC server 的监听 IP 地址为 `127.0.0.1`，端口为 `8300`（在启动 TiCDC server 时可以通过 `--addr=ip:port` 指定绑定的 IP 和端口）。
 
 ## API 统一错误格式
 
@@ -71,8 +70,7 @@ TiCDC 提供 OpenAPI 功能，你可以通过 OpenAPI v2 对 TiCDC 集群进行�
 如上所示:
 
 - `total`: 表示有一共有多少个资源。
-- `items`: 当次请求返回的资源在这个数组里，数组所有的元素都是同种资源， 如果 API
-  提供分页功能，数组元素个数可能小于 `total`。
+- `items`: 当次请求返回的资源在这个数组里，数组所有的元素都是同种资源， 如果 API 提供分页功能，数组元素个数可能小于 `total`。
 
 ## 获取 TiCDC 节点状态信息
 
@@ -259,10 +257,7 @@ curl -X GET http://127.0.0.1:8300/api/v2/health
 | `start_ts`       | `UINT64` 类型，指定 changefeed 的开始 TSO。TiCDC 集群将从这个 TSO 开始拉取数据。默认为当前时间。（非必选）             |
 | `target_ts`      | `UINT64` 类型，指定 changefeed 的目标 TSO。TiCDC 集群拉取数据直到这个 TSO 停止。默认为空，即 TiCDC 不会自动停止。（非必选） |
 
-`changefeed_id`、`start_ts`、`target_ts`、`sink_uri`
-的含义和格式与[使用 cli 创建同步任务](/ticdc/ticdc-manage-changefeed.md#创建同步任务)
-中所作的解释相同，具体解释请参见该文档。需要注意，当在 `sink_uri` 中指定证书的路径时，须确保已将对应证书上传到对应的 TiCDC
-server 上。
+`changefeed_id`、`start_ts`、`target_ts`、`sink_uri` 的含义和格式与[使用 cli 创建同步任务](/ticdc/ticdc-manage-changefeed.md#创建同步任务)中所作的解释相同，具体解释请参见该文档。需要注意，当在 `sink_uri` 中指定证书的路径时，须确保已将对应证书上传到对应的 TiCDC server 上。
 
 `replica_config` 参数说明如下
 
@@ -304,8 +299,7 @@ server 上。
 | `ignore_txn_start_ts` | `UINT64 ARRAY` 类型，指定之后会忽略指定 start_ts 的事务，如 `[1, 2]`（非必选）                              |
 | `rules`               | `STRING ARRAY` 类型，表库过滤的规则,如 `['foo*.*', 'bar*.*']` 详情参考[表库过滤](/table-filter.md)。（非必选） |
 
-`filter.event_filters` 参数说明如下
-可参考[日志过滤器](ticdc-filter)
+`filter.event_filters` 参数说明如下,可参考[日志过滤器](ticdc-filter.md)
 
 | 参数名                            | 说明                                                                                          |
 |:-------------------------------|:--------------------------------------------------------------------------------------------|
@@ -355,8 +349,7 @@ server 上。
 
 `sink.dispatchers`：对于 MQ 类的 Sink，可以通过 dispatchers 配置 event 分发器，支持 default、ts、rowid、table 四种分发器，分发规则如下：
 
-- default：有多个唯一索引（包括主键）时按照 table 模式分发；只有一个唯一索引（或主键）按照 rowid 模式分发；如果开启了 old value
-  特性，按照 table 分发。
+- default：有多个唯一索引（包括主键）时按照 table 模式分发；只有一个唯一索引（或主键）按照 rowid 模式分发；如果开启了 old value 特性，按照 table 分发。
 - ts：以行变更的 commitTs 做 Hash 计算并进行 event 分发。
 - rowid：以所选的 HandleKey 列名和列值做 Hash 计算并进行 event 分发。
 - table：以表的 schema 名和 table 名做 Hash 计算并进行 event 分发。
@@ -703,8 +696,7 @@ curl -X DELETE http://127.0.0.1:8300/api/v2/changefeeds/test1
  curl -X PUT -H "'Content-type':'application/json'" http://127.0.0.1:8300/api/v2/changefeeds/test1 -d '{"target_ts":32}'
 ```
 
-若是请求成功，则返回 `200 OK`，若请求失败，则返回错误信息和错误码。
-响应的 JSON 格式以及字段含义与[创建同步任务](#创建同步任务)中的响应参数相同，此处不再赘述。
+若是请求成功，则返回 `200 OK`，若请求失败，则返回错误信息和错误码。响应的 JSON 格式以及字段含义与[创建同步任务](#创建同步任务)中的响应参数相同，此处不再赘述。
 
 ## 查询同步任务列表
 
@@ -912,8 +904,7 @@ curl -X GET http://127.0.0.1:8300/api/v2/processors
 
 ### 使用样例
 
-以下请求查询 `changefeed_id` 为 `test`、`capture_id` 为 `561c3784-77f0-4863-ad52-65a3436db6af`
-的同步子任务。一个同步子任务通过 `changefeed_id` 和 `capture_id` 来标识。
+以下请求查询 `changefeed_id` 为 `test`、`capture_id` 为 `561c3784-77f0-4863-ad52-65a3436db6af`的同步子任务。一个同步子任务通过 `changefeed_id` 和 `capture_id` 来标识。
 
 ```shell
 curl -X GET http://127.0.0.1:8300/api/v2/processors/test1/561c3784-77f0-4863-ad52-65a3436db6af
@@ -999,8 +990,7 @@ curl -X POST http://127.0.0.1:8300/api/v2/owner/resign
 |:------------|:----------|
 | `log_level` | 想要设置的日志等级 |
 
-`log_level` 支持 [zap 提供的日志级别](https://godoc.org/go.uber.org/zap#UnmarshalText)："debug"、"info"、"warn"、"error"、"
-dpanic"、"panic"、"fatal"。
+`log_level` 支持 [zap 提供的日志级别](https://godoc.org/go.uber.org/zap#UnmarshalText)："debug"、"info"、"warn"、"error"、"dpanic"、"panic"、"fatal"。
 
 ### 使用样例
 
