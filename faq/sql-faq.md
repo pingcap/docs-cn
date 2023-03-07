@@ -205,6 +205,8 @@ TiDB supports changing the priority on a [global](/system-variables.md#tidb_forc
 
 - `LOW_PRIORITY`: this statement has a low priority, that is, TiDB reduces the priority of this statement during the execution period.
 
+- `DELAYED`: this statement has normal priority and is the same as the `NO_PRIORITY` setting for `tidb_force_priority`.
+
 You can combine the above two parameters with the DML of TiDB to use them. For example:
 
 1. Adjust the priority by writing SQL statements in the database:
@@ -212,14 +214,14 @@ You can combine the above two parameters with the DML of TiDB to use them. For e
     {{< copyable "sql" >}}
 
     ```sql
-    select HIGH_PRIORITY | LOW_PRIORITY count(*) from table_name;
-    insert HIGH_PRIORITY | LOW_PRIORITY into table_name insert_values;
-    delete HIGH_PRIORITY | LOW_PRIORITY from table_name;
-    update HIGH_PRIORITY | LOW_PRIORITY table_reference set assignment_list where where_condition;
-    replace HIGH_PRIORITY | LOW_PRIORITY into table_name;
+    SELECT HIGH_PRIORITY | LOW_PRIORITY | DELAYED COUNT(*) FROM table_name;
+    INSERT HIGH_PRIORITY | LOW_PRIORITY | DELAYED INTO table_name insert_values;
+    DELETE HIGH_PRIORITY | LOW_PRIORITY | DELAYED FROM table_name;
+    UPDATE HIGH_PRIORITY | LOW_PRIORITY | DELAYED table_reference SET assignment_list WHERE where_condition;
+    REPLACE HIGH_PRIORITY | LOW_PRIORITY | DELAYED INTO table_name;
     ```
 
-2. The full table scan statement automatically adjusts itself to a low priority. `analyze` has a low priority by default.
+2. The full table scan statement automatically adjusts itself to a low priority. [`ANALYZE`](/sql-statements/sql-statement-analyze-table.md) has a low priority by default.
 
 ## What's the trigger strategy for `auto analyze` in TiDB?
 
