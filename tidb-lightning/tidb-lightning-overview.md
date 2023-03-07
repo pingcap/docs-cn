@@ -26,12 +26,13 @@ TiDB Lightning can read data from the following sources:
 
 TiDB Lightning supports two import modes, configured by `backend`. The import mode determines the way data is imported into TiDB.
 
-- [Physical Import Mode](/tidb-lightning/tidb-lightning-physical-import-mode.md): TiDB Lightning first encodes data into key-value pairs and stores them in a local temporary directory, then uploads these key-value pairs to each TiKV node, and finally calls the TiKV Ingest interface to insert data into TiKV's RocksDB. If you need to perform initial import, consider the physical import mode, which has higher import speed.
+- [Physical Import Mode](/tidb-lightning/tidb-lightning-physical-import-mode.md): TiDB Lightning first encodes data into key-value pairs and stores them in a local temporary directory, then uploads these key-value pairs to each TiKV node, and finally calls the TiKV Ingest interface to insert data into TiKV's RocksDB. If you need to perform initial import, consider the physical import mode, which has higher import speed. The backend for the physical import mode is `local`.
 
-- [Logical Import Mode](/tidb-lightning/tidb-lightning-logical-import-mode.md): TiDB Lightning first encodes the data into SQL statements and then runs these SQL statements directly for data import. If the cluster to be imported is in production, or if the target table to be imported already contains data, use the logical import mode.
+- [Logical Import Mode](/tidb-lightning/tidb-lightning-logical-import-mode.md): TiDB Lightning first encodes the data into SQL statements and then runs these SQL statements directly for data import. If the cluster to be imported is in production, or if the target table to be imported already contains data, use the logical import mode. The backend for the logical import mode is `tidb`.
 
 | Import mode | Physical Import Mode | Logical Import Mode |
 |:---|:---|:---|
+| Backend | `local` | `tidb` |
 | Speed | Fast (100~500 GiB/hour) | Low (10~50 GiB/hour)|
 | Resource consumption| High | Low |
 | Network bandwidth consumption | High | Low |

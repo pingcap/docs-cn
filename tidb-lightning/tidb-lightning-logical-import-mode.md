@@ -9,6 +9,8 @@ The logical import mode is one of the two import modes supported by TiDB Lightni
 
 If your TiDB cluster already contains data and provides service for external applications, it is recommended to import data in the logical import mode. The behavior of the logical import mode is the same as executing normal SQL statements, and thus it guarantees ACID compliance.
 
+The backend for the logical import mode is `tidb`.
+
 ## Environment requirements
 
 **Operating system**:

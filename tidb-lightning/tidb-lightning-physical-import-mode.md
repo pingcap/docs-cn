@@ -9,6 +9,8 @@ Physical import mode is an efficient and fast import mode that inserts data dire
 
 Before you use the physical import mode, make sure to read [Requirements and restrictions](#requirements-and-restrictions).
 
+The backend for the physical import mode is `local`.
+
 ## Implementation
 
 1. Before importing data, TiDB Lightning automatically switches the TiKV nodes to "import mode", which improves write performance and stops auto-compaction. TiDB Lightning determines whether to pause global scheduling according to the TiDB cluster version.
