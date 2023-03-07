@@ -271,7 +271,7 @@ server 上。
 | `bdr_mode`                | `BOOLEAN` 类型，是否开启 [双向同步复制](/ticdc-bidirectional-replication),默认值为 `false`。（非必选）                     |
 | `case_sensitive`          | `BOOLEAN` 类型，是否大小写敏感 table name 过滤，默认值为 `true`。（非必选）                                                |
 | `check_gc_safe_point`     | `BOOLEAN` 类型，是否检查同步任务的开始时间超过了 GC 时间，默认值为 `true`。（非必选）                                               |
-| `consistent`              | 同步任务一致性配置。（非必选）                                                                                     |
+| `consistent`              | Redo log 配置。（非必选）                                                                                   |
 | `enable_old_value`        | `BOOLEAN` 类型，是否输出 old value 值。（非必选）                                                                 |
 | `enable_sync_point`       | `BOOLEAN` 类型，是否开启 `sync point` 功能。（非必选）                                                             |
 | `filter`                  | filter 配置。（非必选）                                                                                     |
@@ -285,12 +285,12 @@ server 上。
 
 `consistent` 参数说明如下
 
-| 参数名              | 说明                                |
-|:-----------------|:----------------------------------|
-| `flush_interval` | `UINT64` 类型，log 文件 flush 间隔。（非必选） |
-| `level`          | `STRING` 类型，同步数据的一致性级别（非必选）       |
-| `max_log_size`   | `UINT64` 类型，log 的最大值。（非必选）        |
-| `storage`        | `STRING` 类型，存储的目标地址。（非必选）         |
+| 参数名              | 说明                                     |
+|:-----------------|:---------------------------------------|
+| `flush_interval` | `UINT64` 类型，redo log 文件 flush 间隔。（非必选） |
+| `level`          | `STRING` 类型，同步数据的一致性级别（非必选）            |
+| `max_log_size`   | `UINT64` 类型，redo log 的最大值。（非必选）        |
+| `storage`        | `STRING` 类型，存储的目标地址。（非必选）              |
 
 `filter` 参数说明如下
 
