@@ -1,6 +1,6 @@
 ---
-title: TiCDC OpenAPI V2
-summary: 了解如何使用 OpenAPI V2 接口来管理集群状态和数据同步。
+title: TiCDC OpenAPI v2
+summary: 了解如何使用 OpenAPI v2 接口来管理集群状态和数据同步。
 ---
 
 # TiCDC OpenAPI V2
