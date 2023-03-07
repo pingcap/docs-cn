@@ -127,7 +127,7 @@ TiDB 版本：6.5.1
 + TiFlash
 
     - (dup): release-6.6.0.md > 错误修复> TiFlash - 修复半连接在计算笛卡尔积时，使用内存过量的问题 [#6730](https://github.com/pingcap/tiflash/issues/6730) @[gengliqi](https://github.com/gengliqi)
-    - 修复 TiFlash 配置不支持 ipv6 的问题 (https://github.com/pingcap/tiflash/issues/6734) @[ywqzzy](https://github.com/ywqzzy)
+    - 修复 TiFlash 配置不支持 ipv6 的问题 [#6734](https://github.com/pingcap/tiflash/issues/6734) @[ywqzzy](https://github.com/ywqzzy)
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
 + Tools
