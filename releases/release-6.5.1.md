@@ -126,6 +126,9 @@ TiDB 版本：6.5.1
 
 + TiFlash
 
+    - 修复 TiFlash 日志搜索过慢的问题 [#6829](https://github.com/pingcap/tiflash/issues/6829) @[hehechen](https://github.com/hehechen)
+    - 修复 TiFlash 在反复重启后由于文件错误被删除而无法启动的问题 [#6486](https://github.com/pingcap/tiflash/issues/6486) @[JaySon-Huang](https://github.com/JaySon-Huang)
+    - 修复 TiFlash 可能在添加新列后查询报错的问题 [#6726](https://github.com/pingcap/tiflash/issues/6726) @[JaySon-Huang](https://github.com/JaySon-Huang)
     - (dup): release-6.6.0.md > 错误修复> TiFlash - 修复半连接在计算笛卡尔积时，使用内存过量的问题 [#6730](https://github.com/pingcap/tiflash/issues/6730) @[gengliqi](https://github.com/gengliqi)
     - 修复 TiFlash 配置不支持 ipv6 的问题 [#6734](https://github.com/pingcap/tiflash/issues/6734) @[ywqzzy](https://github.com/ywqzzy)
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
