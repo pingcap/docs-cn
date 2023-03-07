@@ -19,14 +19,14 @@ AdminCleanupStmt ::=
 假设由于一些原因（例如灾难恢复场景，集群中丢失了部分索引数据），数据库中的 `tbl` 表出现行数据和索引不一致现象：
 
 ```sql
-MySQL [sample]> SELECT * FROM tbl;
+SELECT * FROM tbl;
 ERROR 1105 (HY000): inconsistent index idx handle count 2 isn't equal to value count 3
 
-MySQL [sample]> ADMIN CHECK INDEX tbl idx ;
+ADMIN CHECK INDEX tbl idx ;
 ERROR 1105 (HY000): handle &kv.CommonHandle{encoded:[]uint8{0x1, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0xf8}, colEndOffsets:[]uint16{0xa}}, index:types.Datum{k:0x5, decimal:0x0, length:0x0, i:0, collation:"utf8mb4_bin", b:[]uint8{0x0}, x:interface {}(nil)} != record:<nil>
 ```
 
-从 `SELECT` 查询的错误信息可以看到，`tbl` 表中包含 3 条行数据和 2 条索引数据，这意味着行数据与索引数据出现了不一致故障，同时至少有 1 条行数据缺少了对应的索引。此时可以使用 `ADMIN RECOVER INDEX` 语句补充的缺少的索引：
+从 `SELECT` 查询的错误信息可以看到，`tbl` 表中包含 3 条行数据和 2 条索引数据，这意味着行数据与索引数据出现了不一致故障，同时至少有 1 条行数据缺少了对应的索引。此时可以使用 `ADMIN RECOVER INDEX` 语句补充缺少的索引：
 
 ```sql
 ADMIN RECOVER INDEX tbl idx;
@@ -35,7 +35,7 @@ ADMIN RECOVER INDEX tbl idx;
 执行结果示例如下：
 
 ```sql
-MySQL [sample]> ADMIN RECOVER INDEX tbl idx;
+ADMIN RECOVER INDEX tbl idx;
 +-------------+------------+
 | ADDED_COUNT | SCAN_COUNT |
 +-------------+------------+
@@ -47,7 +47,7 @@ MySQL [sample]> ADMIN RECOVER INDEX tbl idx;
 此时，可以重新使用 `ADMIN CHECK INDEX` 语句对数据索引的一致性进行检查，验证数据恢复到正常状态：
 
 ```sql
-MySQL [sample]> ADMIN CHECK INDEX tbl idx;
+ADMIN CHECK INDEX tbl idx;
 Query OK, 0 rows affected (0.01 sec)
 ```
 
