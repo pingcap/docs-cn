@@ -6,10 +6,6 @@ aliases: ['/zh/tidb/dev/sql-statement-set-tiflash-mode']
 
 # FastScan
 
-> **警告：**
->
-> 该功能目前是实验性功能，其形式和使用方法可能会在未来版本中发生变化。
-
 本文档介绍通过使用 FastScan 来加速 Online Analytical Processing (OLAP) 场景中查询的方法。
 
 默认情况下，TiFlash 能够保证查询结果精度以及数据一致性。如果使用 FastScan，TiFlash 可以实现更高效的查询性能，但不保证查询结果精度和数据一致性。
