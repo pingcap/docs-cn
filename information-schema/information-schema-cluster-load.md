@@ -1,12 +1,12 @@
 ---
 title: CLUSTER_LOAD
 summary: 了解 information_schema 表 `CLUSTER_LOAD`。
-aliases: ['/docs-cn/dev/system-tables/system-table-cluster-load/','/docs-cn/dev/reference/system-databases/cluster-load/','/zh/tidb/dev/system-table-cluster-load/']
+aliases: ['/docs-cn/stable/system-tables/system-table-cluster-load/','/docs-cn/v4.0/system-tables/system-table-cluster-load/','/docs-cn/stable/reference/system-databases/cluster-load/','/zh/tidb/stable/system-table-cluster-load/','/docs-cn/v4.0/reference/system-databases/cluster-load/','/zh/tidb/v4.0/system-table-cluster-load/']
 ---
 
 # CLUSTER_LOAD
 
-集群负载表 `CLUSTER_LOAD` 提供集群各个实例所在服务器的当前负载信息。
+集群负载表 `CLUSTER_LOAD` 提供集群各个实例所在服务器的的当前负载信息。
 
 {{< copyable "sql" >}}
 

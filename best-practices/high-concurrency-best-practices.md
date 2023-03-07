@@ -1,7 +1,7 @@
 ---
 title: TiDB 高并发写入场景最佳实践
 summary: 了解 TiDB 在高并发写入场景下的最佳实践。
-aliases: ['/docs-cn/dev/best-practices/high-concurrency-best-practices/','/docs-cn/dev/reference/best-practices/high-concurrency/']
+aliases: ['/docs-cn/stable/best-practices/high-concurrency-best-practices/','/docs-cn/v4.0/best-practices/high-concurrency-best-practices/','/docs-cn/stable/reference/best-practices/high-concurrency/']
 ---
 
 # TiDB 高并发写入场景最佳实践
@@ -31,11 +31,11 @@ aliases: ['/docs-cn/dev/best-practices/high-concurrency-best-practices/','/docs-
 
 如果要解决以上挑战，需要从 TiDB 数据切分以及调度的原理开始讲起。这里只作简单说明，详情可参阅[谈调度](https://pingcap.com/blog-cn/tidb-internal-3/)。
 
-TiDB 以 Region 为单位对数据进行切分，每个 Region 有大小限制（默认 96M）。Region 的切分方式是范围切分。每个 Region 会有多副本，每一组副本，称为一个 Raft Group。每个 Raft Group 中由 Leader 负责执行这块数据的读 & 写（TiDB 支持 [Follower-Read](/follower-read.md)）。Leader 会自动地被 PD 组件均匀调度在不同的物理节点上，用以均分读写压力。
+TiDB 以 Region 为单位对数据进行切分，每个 Region 有大小限制（默认 96M）。Region 的切分方式是范围切分。每个 Region 会有多副本，每一组副本，称为一个 Raft Group。每个 Raft Group 中由 Leader 负责执行这块数据的读 & 写（TiDB 即将支持 [Follower-Read](https://zhuanlan.zhihu.com/p/78164196)）。Leader 会自动地被 PD 组件均匀调度在不同的物理节点上，用以均分读写压力。
 
 ![TiDB 数据概览](/media/best-practices/tidb-data-overview.png)
 
-从原理上来说，只要没有业务上的写入热点（即业务写入没有 `AUTO_INCREMENT` 的主键和单调递增的索引，更多细节可参阅 [TiDB 正确使用方式](https://zhuanlan.zhihu.com/p/25574778)），依靠这个架构，TiDB 不仅具备线性扩展的读写能力，也能够充分利用分布式资源。从这一点看，TiDB 尤其适合高并发批量写入场景的业务。
+只要业务的写入没有 `AUTO_INCREMENT` 的主键，或没有单调递增的索引（即没有业务上的写入热点，更多细节可参阅 [TiDB 正确使用方式](https://zhuanlan.zhihu.com/p/25574778)），从原理上来说，TiDB 依靠这个架构可具备线性扩展的读写能力，并且可以充分利用分布式资源。从这一点看，TiDB 尤其适合高并发批量写入场景的业务。
 
 但理论场景和实际情况往往存在不同。以下实例说明了热点是如何产生的。
 
@@ -57,25 +57,7 @@ CREATE TABLE IF NOT EXISTS TEST_HOTSPOT(
 {{< copyable "sql" >}}
 
 ```sql
-SET SESSION cte_max_recursion_depth = 1000000;
-INSERT INTO TEST_HOTSPOT
-SELECT
-  n,                                       -- ID
-  RAND()*80,                               -- 0 到 80 之间的随机数
-  CONCAT('user-',n),
-  CONCAT(
-    CHAR(65 + (RAND() * 25) USING ascii),  -- 65 到 65+25 之间的随机数，转换为一个 A-Z 字符
-    '-user-',
-    n,
-    '@example.com'
-  )
-FROM
-  (WITH RECURSIVE nr(n) AS
-    (SELECT 1                              -- 从 1 开始 CTE
-      UNION ALL SELECT n + 1               -- 每次循环 n 增加 1
-      FROM nr WHERE n < 1000000            -- 当 n 为 1_000_000 时停止循环
-    ) SELECT n FROM nr
-  ) a;
+INSERT INTO TEST_HOTSPOT(id, age, user_name, email) values(%v, %v, '%v', '%v');
 ```
 
 负载是短时间内密集地执行以上写入语句。
@@ -160,24 +142,18 @@ SPLIT TABLE TEST_HOTSPOT BETWEEN (0) AND (9223372036854775807) REGIONS 128;
 
 切分完成以后，可以通过 `SHOW TABLE test_hotspot REGIONS;` 语句查看打散的情况。如果 `SCATTERING` 列值全部为 `0`，代表调度成功。
 
-也可以通过以下 SQL 语句查看 Region 的分布。你需要将 `table_name` 替换为实际的表名。
+也可以通过 [table-regions.py](https://github.com/pingcap/tidb-ansible/blob/dabf60baba5e740a4bee9faf95e77563d8084be1/scripts/table-regions.py) 脚本，查看 Region 的分布。目前分布已经比较均匀了：
 
-{{< copyable "sql" >}}
-
-```sql
-SELECT
-    p.STORE_ID,
-    COUNT(s.REGION_ID) PEER_COUNT
-FROM
-    INFORMATION_SCHEMA.TIKV_REGION_STATUS s
-    JOIN INFORMATION_SCHEMA.TIKV_REGION_PEERS p ON s.REGION_ID = p.REGION_ID
-WHERE
-    TABLE_NAME = 'table_name'
-    AND p.is_leader = 1
-GROUP BY
-    p.STORE_ID
-ORDER BY
-    PEER_COUNT DESC;
+```
+[root@172.16.4.4 scripts]# python table-regions.py --host 172.16.4.3 --port 31453 test test_hotspot
+[RECORD - test.test_hotspot] - Leaders Distribution:
+  total leader count: 127
+  store: 1, num_leaders: 21, percentage: 16.54%
+  store: 4, num_leaders: 20, percentage: 15.75%
+  store: 6, num_leaders: 21, percentage: 16.54%
+  store: 46, num_leaders: 21, percentage: 16.54%
+  store: 82, num_leaders: 23, percentage: 18.11%
+  store: 62, num_leaders: 21, percentage: 16.54%
 ```
 
 再重新运行写入负载：
@@ -218,7 +194,7 @@ ORDER BY
 create table t (a int, b int) SHARD_ROW_ID_BITS = 4 PRE_SPLIT_REGIONS=3;
 ```
 
-- `SHARD_ROW_ID_BITS = 4` 表示 tidb_rowid 的值会随机分布成 16 (16=2^4) 个范围区间。
+- `SHARD_ROW_ID_BITS = 4` 表示 tidb_rowid 的值会随机分布成 16 （16=2^4） 个范围区间。
 - `PRE_SPLIT_REGIONS=3` 表示建完表后提前切分出 8 (2^3) 个 Region。
 
 开始写数据进表 t 后，数据会被写入提前切分好的 8 个 Region 中，这样也避免了刚开始建表完后因为只有一个 Region 而存在的写热点问题。

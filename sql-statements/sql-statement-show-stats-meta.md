@@ -1,7 +1,7 @@
 ---
 title: SHOW STATS_META
 summary: TiDB 数据库中 SHOW STATS_META 语句的简单说明。
-aliases: ['/docs-cn/dev/sql-statements/sql-statement-show-stats-meta/']
+aliases: ['/docs-cn/stable/sql-statements/sql-statement-show-stats-meta/','/docs-cn/v4.0/sql-statements/sql-statement-show-stats-meta/']
 ---
 
 # SHOW STATS_META
@@ -10,7 +10,7 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-show-stats-meta/']
 
 目前 `SHOW STATS_META` 会输出 6 列，具体如下：
 
-| 列名 | 说明            |
+| 语法元素 | 说明            |
 | -------- | ------------- |
 | db_name  |  数据库名    |
 | table_name | 表名 |

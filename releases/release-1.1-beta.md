@@ -1,6 +1,6 @@
 ---
 title: TiDB 1.1 Beta Release Notes
-aliases: ['/docs-cn/dev/releases/release-1.1-beta/','/docs-cn/dev/releases/11beta/']
+aliases: ['/docs-cn/stable/releases/release-1.1-beta/','/docs-cn/v4.0/releases/release-1.1-beta/','/docs-cn/stable/releases/11beta/']
 ---
 
 # TiDB 1.1 Beta Release Notes
@@ -9,7 +9,7 @@ aliases: ['/docs-cn/dev/releases/release-1.1-beta/','/docs-cn/dev/releases/11bet
 
 ## TiDB
 
-+ 添加更多监控项，优化日志
++ 添加更多监控项, 优化日志
 + 兼容更多 MySQL 语法
 + 在 `information_schema` 中支持显示建表时间
 + 提速包含 `MaxOneRow` 算子的查询

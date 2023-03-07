@@ -1,12 +1,12 @@
 ---
 title: CREATE DATABASE
 summary: TiDB 数据库中 CREATE DATABASE 的使用概况。
-aliases: ['/docs-cn/dev/sql-statements/sql-statement-create-database/','/docs-cn/dev/reference/sql/statements/create-database/']
+aliases: ['/docs-cn/stable/sql-statements/sql-statement-create-database/','/docs-cn/v4.0/sql-statements/sql-statement-create-database/','/docs-cn/stable/reference/sql/statements/create-database/']
 ---
 
 # CREATE DATABASE
 
-`CREATE DATABASE` 语句用于在 TiDB 上创建新数据库。按照 SQL 标准，“数据库”一词在 MySQL 术语中最接近 “schema”。
+`CREATE DATABASE` 语句用于在 TiDB 上创建新数据库。按照 SQL 标准，“数据库” 一词在 MySQL 术语中最接近 “schema”。
 
 ## 语法图
 
@@ -22,17 +22,6 @@ DBName ::=
 
 DatabaseOptionListOpt ::=
     DatabaseOptionList?
-
-DatabaseOptionList ::=
-    DatabaseOption ( ','? DatabaseOption )*
-
-DatabaseOption ::=
-    DefaultKwdOpt ( CharsetKw '='? CharsetName | 'COLLATE' '='? CollationName | 'ENCRYPTION' '='? EncryptionOpt )
-|   DefaultKwdOpt PlacementPolicyOption
-
-PlacementPolicyOption ::=
-    "PLACEMENT" "POLICY" EqOpt PolicyName
-|   "PLACEMENT" "POLICY" (EqOpt | "SET") "DEFAULT"
 ```
 
 ## 语法说明

@@ -1,7 +1,7 @@
 ---
 title: ADD COLUMN
 summary: TiDB 数据库中 ADD COLUMN 的使用概况。
-aliases: ['/docs-cn/dev/sql-statements/sql-statement-add-column/','/docs-cn/dev/reference/sql/statements/add-column/']
+aliases: ['/docs-cn/stable/sql-statements/sql-statement-add-column/','/docs-cn/v4.0/sql-statements/sql-statement-add-column/','/docs-cn/stable/reference/sql/statements/add-column/','/docs-cn/v4.0/reference/sql/statements/add-column']
 ---
 
 # ADD COLUMN
@@ -11,37 +11,37 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-add-column/','/docs-cn/dev/
 ## 语法图
 
 ```ebnf+diagram
-AlterTableStmt
-         ::= 'ALTER' 'IGNORE'? 'TABLE' TableName AddColumnSpec ( ',' AddColumnSpec )*
+AlterTableStmt ::=
+    'ALTER' IgnoreOptional 'TABLE' TableName ( AlterTableSpecListOpt AlterTablePartitionOpt | 'ANALYZE' 'PARTITION' PartitionNameList ( 'INDEX' IndexNameList )? AnalyzeOptionListOpt )
 
-TableName ::=
-    Identifier ('.' Identifier)?
+AlterTableSpec ::=
+    TableOptionList
+|   'SET' 'TIFLASH' 'REPLICA' LengthNum LocationLabelList
+|   'CONVERT' 'TO' CharsetKw ( CharsetName | 'DEFAULT' ) OptCollate
+|   'ADD' ( ColumnKeywordOpt IfNotExists ( ColumnDef ColumnPosition | '(' TableElementList ')' ) | Constraint | 'PARTITION' IfNotExists NoWriteToBinLogAliasOpt ( PartitionDefinitionListOpt | 'PARTITIONS' NUM ) )
+|   ( ( 'CHECK' | 'TRUNCATE' ) 'PARTITION' | ( 'OPTIMIZE' | 'REPAIR' | 'REBUILD' ) 'PARTITION' NoWriteToBinLogAliasOpt ) AllOrPartitionNameList
+|   'COALESCE' 'PARTITION' NoWriteToBinLogAliasOpt NUM
+|   'DROP' ( ColumnKeywordOpt IfExists ColumnName RestrictOrCascadeOpt | 'PRIMARY' 'KEY' | 'PARTITION' IfExists PartitionNameList | ( KeyOrIndex IfExists | 'CHECK' ) Identifier | 'FOREIGN' 'KEY' IfExists Symbol )
+|   'EXCHANGE' 'PARTITION' Identifier 'WITH' 'TABLE' TableName WithValidationOpt
+|   ( 'IMPORT' | 'DISCARD' ) ( 'PARTITION' AllOrPartitionNameList )? 'TABLESPACE'
+|   'REORGANIZE' 'PARTITION' NoWriteToBinLogAliasOpt ReorganizePartitionRuleOpt
+|   'ORDER' 'BY' AlterOrderItem ( ',' AlterOrderItem )*
+|   ( 'DISABLE' | 'ENABLE' ) 'KEYS'
+|   ( 'MODIFY' ColumnKeywordOpt IfExists | 'CHANGE' ColumnKeywordOpt IfExists ColumnName ) ColumnDef ColumnPosition
+|   'ALTER' ( ColumnKeywordOpt ColumnName ( 'SET' 'DEFAULT' ( SignedLiteral | '(' Expression ')' ) | 'DROP' 'DEFAULT' ) | 'CHECK' Identifier EnforcedOrNot | 'INDEX' Identifier IndexInvisible )
+|   'RENAME' ( ( 'COLUMN' | KeyOrIndex ) Identifier 'TO' Identifier | ( 'TO' | '='? | 'AS' ) TableName )
+|   LockClause
+|   AlgorithmClause
+|   'FORCE'
+|   ( 'WITH' | 'WITHOUT' ) 'VALIDATION'
+|   'SECONDARY_LOAD'
+|   'SECONDARY_UNLOAD'
 
-AddColumnSpec
-         ::= 'ADD' 'COLUMN' 'IF NOT EXISTS'? ColumnName ColumnType ColumnOption+ ( 'FIRST' | 'AFTER' ColumnName )?
+ColumnDef ::=
+    ColumnName ( Type | 'SERIAL' ) ColumnOptionListOpt
 
-ColumnType
-         ::= NumericType
-           | StringType
-           | DateAndTimeType
-           | 'SERIAL'
-
-ColumnOption
-         ::= 'NOT'? 'NULL'
-           | 'AUTO_INCREMENT'
-           | 'PRIMARY'? 'KEY' ( 'CLUSTERED' | 'NONCLUSTERED' )?
-           | 'UNIQUE' 'KEY'?
-           | 'DEFAULT' ( NowSymOptionFraction | SignedLiteral | NextValueForSequence )
-           | 'SERIAL' 'DEFAULT' 'VALUE'
-           | 'ON' 'UPDATE' NowSymOptionFraction
-           | 'COMMENT' stringLit
-           | ( 'CONSTRAINT' Identifier? )? 'CHECK' '(' Expression ')' ( 'NOT'? ( 'ENFORCED' | 'NULL' ) )?
-           | 'GENERATED' 'ALWAYS' 'AS' '(' Expression ')' ( 'VIRTUAL' | 'STORED' )?
-           | 'REFERENCES' TableName ( '(' IndexPartSpecificationList ')' )? Match? OnDeleteUpdateOpt
-           | 'COLLATE' CollationName
-           | 'COLUMN_FORMAT' ColumnFormat
-           | 'STORAGE' StorageMedia
-           | 'AUTO_RANDOM' ( '(' LengthNum ')' )?
+ColumnPosition ::=
+    ( 'FIRST' | 'AFTER' ColumnName )?
 ```
 
 ## 示例
@@ -133,6 +133,7 @@ SELECT * FROM t1;
 
 ## MySQL 兼容性
 
+* 不支持在一条语句中同时添加多列。
 * 不支持将新添加的列设为 `PRIMARY KEY`。
 * 不支持将新添加的列设为 `AUTO_INCREMENT`。
 * 对添加生成列有局限性，具体可参考：[生成列局限性](/generated-columns.md#生成列的局限性)。

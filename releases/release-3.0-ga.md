@@ -1,6 +1,6 @@
 ---
 title: TiDB 3.0 GA Release Notes
-aliases: ['/docs-cn/dev/releases/release-3.0-ga/','/docs-cn/dev/releases/3.0-ga/']
+aliases: ['/docs-cn/stable/releases/release-3.0-ga/','/docs-cn/v4.0/releases/release-3.0-ga/','/docs-cn/stable/releases/3.0-ga/']
 ---
 
 # TiDB 3.0 GA Release Notes
@@ -25,10 +25,10 @@ TiDB Ansible 版本：3.0.0
 + 新功能
     - 新增 Window Function，支持所有 MySQL 8.0 中的窗口函数，包括 `NTILE`，`LEAD`，`LAG`、`PERCENT_RANK`、`NTH_VALUE`、`CUME_DIST`、`FIRST_VALUE`、`LAST_VALUE`、`RANK`、`DENSE_RANK`、`ROW_NUMBER` 函数
     - 新增 View 功能（**实验特性**）
-    - 完善 Table Partition 功能：
+    - 完善  Table Partition 功能：
         - Range Partition
         - Hash Partition
-    - 新增插件系统，官方提供 IP 白名单（**企业版特性**），审计日志（**企业版特性**）等插件
+    - 新增插件系统，官方提供 IP 白名单（**企业版特性**），审记日志（**企业版特性**）等插件
     - 新增 `SQL Plan Management` 功能，通过绑定 SQL 执行计划确保查询的稳定性（**实验特性**）
 + SQL 优化器
     - 优化`NOT EXISTS` 子查询，转化为 Anti Semi Join 提升性能
@@ -52,7 +52,7 @@ TiDB Ansible 版本：3.0.0
     - 新增导入导出列的关联性信息功能
 + SQL 执行引擎
     - 优化日志输出，`EXECUTE` 语句输出用户变量，`COMMIT` 语句输出慢查询日志，方便排查问题
-    - 新增 `EXPLAIN ANALYZE` 功能，提升 SQL 调优易用性
+    - 新增 `EXPLAIN ANALYZE` 功能，提升SQL 调优易用性
     - 新增 `admin show next_row_id` 功能，方便获取下一行 ID
     - 新增 `JSON_QUOTE`、`JSON_ARRAY_APPEND`、`JSON_MERGE_PRESERVE`、`BENCHMARK`、`COALESCE`、`NAME_CONST` 6 个内建函数
     - 优化 Chunk 大小控制逻辑，根据查询上下文件动态调整，降低 SQL 执行时间和资源消耗，提升性能
@@ -79,7 +79,7 @@ TiDB Ansible 版本：3.0.0
     - 新增列属性包含 `AUTO_INCREMENT` 时利用 `SHARD_ROW_ID_BITS` 打散行 ID 功能，缓解热点问题
     - 优化无效 DDL 元信息存活时间，使集群升级后一段时间 DDL 操作比较慢的情况变短
 + 事务
-    - 新增悲观事务模式（**实验特性**）
+    - 新增悲观事务模型（**实验特性**）
     - 优化事务处理逻辑，适应更多场景，具体如下：
         - `tidb_disable_txn_auto_retry` 的默认值为 `on` ，即不会重试非自动提交的事务
         - 新增 `tidb_batch_commit` 系统变量控制将事务拆分成多个事务并发执行
@@ -154,7 +154,7 @@ TiDB Ansible 版本：3.0.0
 - 新增批量接收和发送 Raft 消息功能，写入密集的场景 TPS 提升 7%
 - 新增 Apply snapshot 之前检查 RocksDB level 0 文件的优化，避免产生 Write stall
 - 新增 Titan 存储引擎插件，提升 Value 超过 1KiB 时系统的性能，一定程度上缓解写放大问题（**实验特性**）
-- 新增悲观事务模式（**实验特性**）
+- 新增悲观事务模型（**实验特性**）
 - 新增通过 HTTP 方式获取监控信息功能
 - 修改 Insert 语义，仅在 Key 不存在的时候 Prewrite 才成功
 - 制定日志格式规范，重构日志系统，方便工具收集分析
@@ -210,7 +210,7 @@ TiDB Ansible 版本：3.0.0
     - Grafana 从 4.6.3 升级到 6.1.6 版本
     - Ansible 从 2.5.14 升级到 2.7.11 版本
 - 新增 TiKV summary 监控面板，方便查看集群状态
-- 新增 TiKV trouble_shooting 监控面板，删除重复项，方便排查问题
+- 新增 TiKV trouble_shooting  监控面板，删除重复项，方便排查问题
 - 新增 TiKV details 监控面板，方便调试排查问题
 - 新增滚动升级并发检测版本是否一致功能，提升滚动升级性能
 - 新增 lightning 部署运维功能

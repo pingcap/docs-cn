@@ -1,7 +1,7 @@
 ---
 title: RENAME INDEX
 summary: TiDB 数据库中 RENAME INDEX 的使用概况。
-aliases: ['/docs-cn/dev/sql-statements/sql-statement-rename-index/','/docs-cn/dev/reference/sql/statements/rename-index/']
+aliases: ['/docs-cn/stable/sql-statements/sql-statement-rename-index/','/docs-cn/v4.0/sql-statements/sql-statement-rename-index/','/docs-cn/stable/reference/sql/statements/rename-index/','/docs-cn/v4.0/reference/sql/statements/rename-index/']
 ---
 
 # RENAME INDEX
@@ -11,11 +11,12 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-rename-index/','/docs-cn/de
 ## 语法图
 
 ```ebnf+diagram
-AlterTableStmt
-         ::= 'ALTER' 'IGNORE'? 'TABLE' TableName RenameIndexSpec ( ',' RenameIndexSpec )*
+AlterTableStmt ::=
+    'ALTER' IgnoreOptional 'TABLE' TableName ( AlterTableSpecListOpt AlterTablePartitionOpt | 'ANALYZE' 'PARTITION' PartitionNameList ( 'INDEX' IndexNameList )? AnalyzeOptionListOpt )
 
-RenameIndexSpec
-         ::= 'RENAME' ( 'KEY' | 'INDEX' ) Identifier 'TO' Identifier
+KeyOrIndex ::=
+    'KEY'
+|   'INDEX'
 ```
 
 ## 示例
@@ -86,4 +87,3 @@ Create Table: CREATE TABLE `t1` (
 * [CREATE INDEX](/sql-statements/sql-statement-create-index.md)
 * [DROP INDEX](/sql-statements/sql-statement-drop-index.md)
 * [SHOW INDEX](/sql-statements/sql-statement-show-index.md)
-* [ALTER INDEX](/sql-statements/sql-statement-alter-index.md)

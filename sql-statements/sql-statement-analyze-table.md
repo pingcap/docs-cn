@@ -1,7 +1,7 @@
 ---
 title: ANALYZE
 summary: TiDB 数据库中 ANALYZE 的使用概况。
-aliases: ['/docs-cn/dev/sql-statements/sql-statement-analyze-table/','/docs-cn/dev/reference/sql/statements/analyze-table/']
+aliases: ['/docs-cn/stable/sql-statements/sql-statement-analyze-table/','/docs-cn/v4.0/sql-statements/sql-statement-analyze-table/','/docs-cn/stable/reference/sql/statements/analyze-table/']
 ---
 
 # ANALYZE
@@ -16,34 +16,13 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-analyze-table/','/docs-cn/d
 
 ```ebnf+diagram
 AnalyzeTableStmt ::=
-    'ANALYZE' ( 'TABLE' ( TableNameList ( 'ALL COLUMNS' | 'PREDICATE COLUMNS' ) | TableName ( 'INDEX' IndexNameList? | AnalyzeColumnOption | 'PARTITION' PartitionNameList ( 'INDEX' IndexNameList? | AnalyzeColumnOption )? )? ) | 'INCREMENTAL' 'TABLE' TableName ( 'PARTITION' PartitionNameList )? 'INDEX' IndexNameList? ) AnalyzeOptionListOpt
-
-AnalyzeOptionListOpt ::=
-( WITH AnalyzeOptionList )?
-
-AnalyzeOptionList ::=
-AnalyzeOption ( ',' AnlyzeOption )*
-
-AnalyzeOption ::=
-( NUM ( 'BUCKETS' | 'TOPN' | ( 'CMSKETCH' ( 'DEPTH' | 'WIDTH' ) ) | 'SAMPLES' ) ) | ( FLOATNUM 'SAMPLERATE' )
-
-AnalyzeColumnOption ::=
-( 'ALL COLUMNS' | 'PREDICATE COLUMNS' | 'COLUMNS' ColumnNameList )
+    'ANALYZE' ( 'TABLE' ( TableNameList | TableName ( 'INDEX' IndexNameList | 'PARTITION' PartitionNameList ( 'INDEX' IndexNameList )? ) ) | 'INCREMENTAL' 'TABLE' TableName ( 'PARTITION' PartitionNameList )? 'INDEX' IndexNameList ) AnalyzeOptionListOpt
 
 TableNameList ::=
     TableName (',' TableName)*
 
 TableName ::=
     Identifier ( '.' Identifier )?
-
-ColumnNameList ::=
-    Identifier ( ',' Identifier )*
-
-IndexNameList ::=
-    Identifier ( ',' Identifier )*
-
-PartitionNameList ::=
-    Identifier ( ',' Identifier )*
 ```
 
 ## 示例

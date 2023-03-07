@@ -1,6 +1,6 @@
 ---
 title: GROUP BY 聚合函数
-aliases: ['/docs-cn/dev/functions-and-operators/aggregate-group-by-functions/','/docs-cn/dev/reference/sql/functions-and-operators/aggregate-group-by-functions/']
+aliases: ['/docs-cn/stable/functions-and-operators/aggregate-group-by-functions/','/docs-cn/v4.0/functions-and-operators/aggregate-group-by-functions/','/docs-cn/stable/reference/sql/functions-and-operators/aggregate-group-by-functions/']
 ---
 
 # GROUP BY 聚合函数
@@ -39,6 +39,8 @@ TiDB 支持的 MySQL `GROUP BY` 聚合函数如下所示：
 
     该函数中，表达式的返回结果必须为[数值类型](/data-type-numeric.md)或[日期与时间类型](/data-type-date-and-time.md)。函数不支持计算其他类型的返回结果，并直接返回 `NULL`。
 
+    该函数自 v4.0.8 版本起支持使用。
+
     以下是一个计算第 50 百分位数的例子：
 
     {{< copyable "sql" >}}
@@ -63,8 +65,6 @@ TiDB 支持的 MySQL `GROUP BY` 聚合函数如下所示：
     +--------------------------+
     1 row in set (0.00 sec)
     ```
-
-上述聚合函数除 `GROUP_CONCAT()` 和 `APPROX_PERCENTILE()` 以外，均可作为[窗口函数](/functions-and-operators/window-functions.md)使用。
 
 ## GROUP BY 修饰符
 
@@ -143,7 +143,7 @@ select distinct a, b from t order by c;
 
 但是在 TiDB 中，上述查询是合规的，详情参阅 [#4254](https://github.com/pingcap/tidb/issues/4254)。
 
-TiDB 中另一个标准 SQL 的扩展允许 `HAVING` 子句中的引用使用 `SELECT` 列表中的别名表达式。例如：以下查询返回在 `orders` 中只出现一次的 `name` 值
+TiDB 中另一个标准 SQL 的扩展允许 `HAVING` 子句中的引用使用 `SELECT` 列表中的别名表达式。例如：以下查询返回在 `orders` 中只出现一次的 `name` 值：
 
 {{< copyable "sql" >}}
 
@@ -185,6 +185,8 @@ from tbl_name
 group by id, val;
 ```
 
-## 相关系统变量
+## TiDB 不支持的聚合函数
 
-`group_concat_max_len` 变量设置 `GROUP_CONCAT()` 函数中的最大项目数。
+TiDB 目前不支持的聚合函数如下所示，相关进展参阅 [TiDB #7623](https://github.com/pingcap/tidb/issues/7623)。
+
+- `JSON_ARRAYAGG`

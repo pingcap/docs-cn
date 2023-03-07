@@ -1,7 +1,7 @@
 ---
 title: ALTER USER
 summary: TiDB 数据库中 ALTER USER 的使用概况。
-aliases: ['/docs-cn/dev/sql-statements/sql-statement-alter-user/','/docs-cn/dev/reference/sql/statements/alter-user/']
+aliases: ['/docs-cn/stable/sql-statements/sql-statement-alter-user/','/docs-cn/v4.0/sql-statements/sql-statement-alter-user/','/docs-cn/stable/reference/sql/statements/alter-user/']
 ---
 
 # ALTER USER
@@ -12,7 +12,7 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-alter-user/','/docs-cn/dev/
 
 ```ebnf+diagram
 AlterUserStmt ::=
-    'ALTER' 'USER' IfExists (UserSpecList RequireClauseOpt ConnectionOptions PasswordOption LockOption AttributeOption | 'USER' '(' ')' 'IDENTIFIED' 'BY' AuthString) ResourceGroupNameOption
+    'ALTER' 'USER' IfExists (UserSpecList RequireClauseOpt ConnectionOptions PasswordOrLockOptions | 'USER' '(' ')' 'IDENTIFIED' 'BY' AuthString)
 
 UserSpecList ::=
     UserSpec ( ',' UserSpec )*
@@ -25,14 +25,6 @@ Username ::=
 
 AuthOption ::=
     ( 'IDENTIFIED' ( 'BY' ( AuthString | 'PASSWORD' HashString ) | 'WITH' StringName ( 'BY' AuthString | 'AS' HashString )? ) )?
-
-PasswordOption ::= ( 'PASSWORD' 'EXPIRE' ( 'DEFAULT' | 'NEVER' | 'INTERVAL' N 'DAY' )? | 'PASSWORD' 'HISTORY' ( 'DEFAULT' | N ) | 'PASSWORD' 'REUSE' 'INTERVAL' ( 'DEFAULT' | N 'DAY' ) | 'FAILED_LOGIN_ATTEMPTS' N | 'PASSWORD_LOCK_TIME' ( N | 'UNBOUNDED' ) )*
-
-LockOption ::= ( 'ACCOUNT' 'LOCK' | 'ACCOUNT' 'UNLOCK' )?
-
-AttributeOption ::= ( 'COMMENT' CommentString | 'ATTRIBUTE' AttributeString )?
-
-ResourceGroupNameOption::= ( 'RESOURCE' 'GROUP' Identifier)?
 ```
 
 ## 示例
@@ -87,93 +79,9 @@ SHOW CREATE USER 'newuser';
 1 row in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
+## MySQL 兼容性
 
-```sql
-ALTER USER 'newuser' ACCOUNT LOCK;
-```
-
-```
-Query OK, 0 rows affected (0.02 sec)
-```
-
-修改 `newuser` 的属性：
-
-```sql
-ALTER USER 'newuser' ATTRIBUTE '{"newAttr": "value", "deprecatedAttr": null}';
-SELECT * FROM information_schema.user_attributes;
-```
-
-```sql
-+-----------+------+--------------------------+
-| USER      | HOST | ATTRIBUTE                |
-+-----------+------+--------------------------+
-| newuser   | %    | {"newAttr": "value"}     |
-+-----------+------+--------------------------+
-1 rows in set (0.00 sec)
-```
-
-通过 `ALTER USER ... COMMENT` 修改用户 `newuser` 的注释：
-
-```sql
-ALTER USER 'newuser' COMMENT 'Here is the comment';
-SELECT * FROM information_schema.user_attributes;
-```
-
-```sql
-+-----------+------+--------------------------------------------------------+
-| USER      | HOST | ATTRIBUTE                                              |
-+-----------+------+--------------------------------------------------------+
-| newuser   | %    | {"comment": "Here is the comment", "newAttr": "value"} |
-+-----------+------+--------------------------------------------------------+
-1 rows in set (0.00 sec)
-```
-
-通过 `ALTER USER ... ATTRIBUTE` 删除用户 `newuser` 的注释：
-
-```sql
-ALTER USER 'newuser' ATTRIBUTE '{"comment": null}';
-SELECT * FROM information_schema.user_attributes;
-```
-
-```sql
-+-----------+------+---------------------------+
-| USER      | HOST | ATTRIBUTE                 |
-+-----------+------+---------------------------+
-| newuser   | %    | {"newAttr": "value"}      |
-+-----------+------+---------------------------+
-1 rows in set (0.00 sec)
-```
-
-通过 `ALTER USER ... PASSWORD EXPIRE NEVER` 修改用户 `newuser` 的自动密码过期策略为永不过期：
-
-```sql
-ALTER USER 'newuser' PASSWORD EXPIRE NEVER;
-```
-
-```
-Query OK, 0 rows affected (0.02 sec)
-```
-
-通过 `ALTER USER ... PASSWORD REUSE INTERVAL ... DAY` 修改用户 `newuser` 的密码重用策略为不允许重复使用最近 90 天内使用过的密码：
-
-```sql
-ALTER USER 'newuser' PASSWORD REUSE INTERVAL 90 DAY;
-```
-
-```
-Query OK, 0 rows affected (0.02 sec)
-```
-
-通过 `ALTER USER ... RESOURCE GROUP` 修改用户 `newuser` 的资源组到 `rg1`：
-
-```sql
-ALTER USER 'newuser' RESOURCE GROUP rg1;
-```
-
-```
-Query OK, 0 rows affected (0.02 sec)
-```
+* 在 MySQL 中，`ALTER` 语句用于更改属性，例如使密码失效。但 TiDB 尚不支持此功能。
 
 ## 另请参阅
 

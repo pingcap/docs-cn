@@ -1,26 +1,21 @@
 ---
 title: ALTER TABLE
 summary: TiDB 数据库中 ALTER TABLE 的使用概况。
-aliases: ['/docs-cn/dev/sql-statements/sql-statement-alter-table/','/docs-cn/dev/reference/sql/statements/alter-table/']
+aliases: ['/docs-cn/stable/sql-statements/sql-statement-alter-table/','/docs-cn/v4.0/sql-statements/sql-statement-alter-table/','/docs-cn/stable/reference/sql/statements/alter-table/']
 ---
 
 # ALTER TABLE
 
 `ALTER TABLE` 语句用于对已有表进行修改，以符合新表结构。`ALTER TABLE` 语句可用于：
 
-- [`ADD`](/sql-statements/sql-statement-add-index.md)，[`DROP`](/sql-statements/sql-statement-drop-index.md)，或 [`RENAME`](/sql-statements/sql-statement-rename-index.md) 索引
-- [`ADD`](/sql-statements/sql-statement-add-column.md)，[`DROP`](/sql-statements/sql-statement-drop-column.md)，[`MODIFY`](/sql-statements/sql-statement-modify-column.md) 或 [`CHANGE`](/sql-statements/sql-statement-change-column.md) 列
-- [`COMPACT`](/sql-statements/sql-statement-alter-table-compact.md) 表数据
+* [`ADD`](/sql-statements/sql-statement-add-index.md)，[`DROP`](/sql-statements/sql-statement-drop-index.md)，或 [`RENAME`](/sql-statements/sql-statement-rename-index.md) 索引
+* [`ADD`](/sql-statements/sql-statement-add-column.md)，[`DROP`](/sql-statements/sql-statement-drop-column.md)，[`MODIFY`](/sql-statements/sql-statement-modify-column.md) 或 [`CHANGE`](/sql-statements/sql-statement-change-column.md) 列
 
 ## 语法图
 
 ```ebnf+diagram
 AlterTableStmt ::=
-    'ALTER' IgnoreOptional 'TABLE' TableName (
-        AlterTableSpecListOpt AlterTablePartitionOpt |
-        'ANALYZE' 'PARTITION' PartitionNameList ( 'INDEX' IndexNameList )? AnalyzeOptionListOpt |
-        'COMPACT' ( 'PARTITION' PartitionNameList )? 'TIFLASH' 'REPLICA'
-    )
+    'ALTER' IgnoreOptional 'TABLE' TableName ( AlterTableSpecListOpt AlterTablePartitionOpt | 'ANALYZE' 'PARTITION' PartitionNameList ( 'INDEX' IndexNameList )? AnalyzeOptionListOpt )
 
 TableName ::=
     Identifier ('.' Identifier)?
@@ -47,19 +42,6 @@ AlterTableSpec ::=
 |   ( 'WITH' | 'WITHOUT' ) 'VALIDATION'
 |   'SECONDARY_LOAD'
 |   'SECONDARY_UNLOAD'
-|   ( 'AUTO_INCREMENT' | 'AUTO_ID_CACHE' | 'AUTO_RANDOM_BASE' | 'SHARD_ROW_ID_BITS' ) EqOpt LengthNum
-|   ( 'CACHE' | 'NOCACHE' )
-|   (
-        'TTL' EqOpt TimeColumnName '+' 'INTERVAL' Expression TimeUnit (TTLEnable EqOpt ( 'ON' | 'OFF' ))?
-        | 'REMOVE' 'TTL'
-        | TTLEnable EqOpt ( 'ON' | 'OFF' )
-        | TTLJobInterval EqOpt stringLit
-    )
-|   PlacementPolicyOption
-
-PlacementPolicyOption ::=
-    "PLACEMENT" "POLICY" EqOpt PolicyName
-|   "PLACEMENT" "POLICY" (EqOpt | "SET") "DEFAULT"
 ```
 
 ## 示例
@@ -165,29 +147,20 @@ Query OK, 0 rows affected, 1 warning (0.25 sec)
 
 TiDB 中的 `ALTER TABLE` 语法主要存在以下限制：
 
-- 使用 `ALTER TABLE` 语句修改一个表的多个模式对象（如列、索引）时：
-    - 不允许在多个更改中指定同一个模式对象。
-    - TiDB 根据**执行前**的表结构检查合法性。例如 `ALTER TABLE ADD INDEX i(b), DROP INDEX i;` 会报错，因为表结构中不存在名字为 `i` 的索引。
-    - TiDB 的执行顺序是从左往右逐个执行更改，该行为在个别场景下和 MySQL 不兼容。
-- 不支持主键列上 [Reorg-Data](/sql-statements/sql-statement-modify-column.md#reorg-data-change) 类型的变更。
-- 不支持分区表上的列类型变更。
-- 不支持生成列上的列类型变更。
-- 不支持部分数据类型（例如，部分时间类型、Bit、Set、Enum、JSON 等）的变更，因为 TiDB 中的 `CAST` 函数与 MySQL 的行为存在兼容性问题。
-- 不支持空间数据类型。
-- `ALTER TABLE t CACHE | NOCACHE` 不是 MySQL 标准语法，而是 TiDB 扩展功能，参见[缓存表](/cached-tables.md)。
+* 单条 `ALTER TABLE` 语句不能完成多项操作。
+* 当前不支持有损更改，例如从 `BIGINT` 类型更改为 `INT` 类型。
+* 不支持空间数据类型。
 
 其它限制可参考：[TiDB 中 DDL 语句与 MySQL 的兼容性情况](/mysql-compatibility.md#ddl-的限制)。
 
 ## 另请参阅
 
-- [与 MySQL 兼容性对比](/mysql-compatibility.md#ddl-的限制)
-- [ALTER TABLE ... COMPACT](/sql-statements/sql-statement-alter-table-compact.md)
-- [ADD COLUMN](/sql-statements/sql-statement-add-column.md)
-- [DROP COLUMN](/sql-statements/sql-statement-drop-column.md)
-- [ADD INDEX](/sql-statements/sql-statement-add-index.md)
-- [DROP INDEX](/sql-statements/sql-statement-drop-index.md)
-- [RENAME INDEX](/sql-statements/sql-statement-rename-index.md)
-- [ALTER INDEX](/sql-statements/sql-statement-alter-index.md)
-- [CREATE TABLE](/sql-statements/sql-statement-create-table.md)
-- [DROP TABLE](/sql-statements/sql-statement-drop-table.md)
-- [SHOW CREATE TABLE](/sql-statements/sql-statement-show-create-table.md)
+* [与 MySQL 兼容性对比](/mysql-compatibility.md#ddl-的限制)
+* [ADD COLUMN](/sql-statements/sql-statement-add-column.md)
+* [DROP COLUMN](/sql-statements/sql-statement-drop-column.md)
+* [ADD INDEX](/sql-statements/sql-statement-add-index.md)
+* [DROP INDEX](/sql-statements/sql-statement-drop-index.md)
+* [RENAME INDEX](/sql-statements/sql-statement-rename-index.md)
+* [CREATE TABLE](/sql-statements/sql-statement-create-table.md)
+* [DROP TABLE](/sql-statements/sql-statement-drop-table.md)
+* [SHOW CREATE TABLE](/sql-statements/sql-statement-show-create-table.md)

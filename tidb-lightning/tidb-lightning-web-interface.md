@@ -1,7 +1,7 @@
 ---
 title: TiDB Lightning Web 界面
 summary: 了解 TiDB Lightning 的服务器模式——通过 Web 界面来控制 TiDB Lightning。
-aliases: ['/docs-cn/dev/tidb-lightning/tidb-lightning-web-interface/','/docs-cn/dev/reference/tools/tidb-lightning/web/']
+aliases: ['/docs-cn/stable/tidb-lightning/tidb-lightning-web-interface/','/docs-cn/v4.0/tidb-lightning/tidb-lightning-web-interface/','/docs-cn/stable/reference/tools/tidb-lightning/web/']
 ---
 
 # TiDB Lightning Web 界面
@@ -13,7 +13,7 @@ TiDB Lightning 支持在网页上查看导入进度或执行一些简单任务�
 1. 在启动 `tidb-lightning` 时加上命令行参数 `--server-mode`。
 
     ```sh
-    tiup tidb-lightning --server-mode --status-addr :8289
+    ./tidb-lightning --server-mode --status-addr :8289
     ```
 
 2. 在配置文件中设置 `lightning.server-mode`。

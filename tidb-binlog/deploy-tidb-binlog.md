@@ -1,6 +1,6 @@
 ---
 title: TiDB Binlog 集群部署
-aliases: ['/docs-cn/dev/tidb-binlog/deploy-tidb-binlog/','/docs-cn/dev/reference/tidb-binlog/deploy/','/docs-cn/dev/how-to/deploy/tidb-binlog/','/docs-cn/dev/reference/tools/tidb-binlog/deploy/']
+aliases: ['/docs-cn/stable/tidb-binlog/deploy-tidb-binlog/','/docs-cn/v4.0/tidb-binlog/deploy-tidb-binlog/','/docs-cn/stable/reference/tidb-binlog/deploy/','/docs-cn/stable/reference/tools/tidb-binlog/deploy/','/docs-cn/stable/how-to/deploy/tidb-binlog/']
 ---
 
 # TiDB Binlog 集群部署
@@ -16,13 +16,284 @@ Pump 和 Drainer 均可部署和运行在 Intel x86-64 架构的 64 位通用硬
 
 ## 使用 TiUP 部署 TiDB Binlog
 
-推荐使用 TiUP 部署 TiDB Binlog。即在使用 TiUP 部署 TiDB 时，在[拓扑文件](/tidb-binlog-deployment-topology.md)中添加 TiDB Binlog 的 `drainer` 和 `pump` 节点信息后，再随 TiDB 一起部署。详细部署方式参考 [TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)。
+推荐使用 TiUP 部署 TiDB Binlog，详细部署方式参考 [TiUP 部署 TiDB Binlog](/production-deployment-using-tiup.md)。
+
+## 使用 TiDB Ansible 部署 TiDB Binlog
+
+### 第 1 步：下载 TiDB Ansible
+
+1. 以 TiDB 用户登录中控机并进入 `/home/tidb` 目录。以下为 TiDB Ansible 分支与 TiDB 版本的对应关系，版本选择可咨询官方 info@pingcap.com。
+
+    | TiDB Ansible 分支 | TiDB 版本 | 备注 |
+    | ---------------- | --------- | --- |
+    | master | master 版本 | 包含最新特性，每日更新。 |
+
+2. 使用以下命令从 GitHub [TiDB Ansible 项目](https://github.com/pingcap/tidb-ansible)上下载 TiDB Ansible 相应分支，默认的文件夹名称为 `tidb-ansible`。
+
+    - 下载 master 版本：
+
+        {{< copyable "shell-regular" >}}
+
+        ```bash
+        git clone https://github.com/pingcap/tidb-ansible.git
+        ```
+
+### 第 2 步：部署 Pump
+
+1. 修改 tidb-ansible/inventory.ini 文件
+
+    1. 设置 `enable_binlog = True`，表示 TiDB 集群开启 binlog。
+
+        ```ini
+        ## binlog trigger
+        enable_binlog = True
+        ```
+
+    2. 为 `pump_servers` 主机组添加部署机器 IP。
+
+        ```ini
+        ## Binlog Part
+        [pump_servers]
+        172.16.10.72
+        172.16.10.73
+        172.16.10.74
+        ```
+
+        默认 Pump 保留 7 天数据，如需修改可修改 `tidb-ansible/conf/pump.yml`（TiDB 3.0.0~3.0.2 版本中为 `tidb-ansible/conf/pump-cluster.yml`）文件中 `gc` 变量值，并取消注释。
+
+        {{< copyable "" >}}
+
+        ```yaml
+        global:
+          # an integer value to control the expiry date of the binlog data, which indicates for how long (in days) the binlog data would be stored
+          # must be bigger than 0
+          # gc: 7
+        ```
+
+        请确保部署目录有足够空间存储 binlog，详见[调整部署目录](/online-deployment-using-ansible.md#调整部署目录)，也可为 Pump 设置单独的部署目录。
+
+        ```ini
+        ## Binlog Part
+        [pump_servers]
+        pump1 ansible_host=172.16.10.72 deploy_dir=/data1/pump
+        pump2 ansible_host=172.16.10.73 deploy_dir=/data2/pump
+        pump3 ansible_host=172.16.10.74 deploy_dir=/data3/pump
+        ```
+
+2. 部署并启动含 Pump 组件的 TiDB 集群
+
+    参照上文配置完 `inventory.ini` 文件后，从以下两种方式中选择一种进行部署。
+
+    **方式一**：在已有的 TiDB 集群上增加 Pump 组件，需按以下步骤逐步进行。
+
+    1. 部署 pump_servers 和 node_exporters
+
+        {{< copyable "shell-regular" >}}
+
+        ```bash
+        ansible-playbook deploy.yml --tags=pump -l ${pump1_ip},${pump2_ip},[${alias1_name},${alias2_name}]
+        ```
+
+        > **注意：**
+        >
+        > 以上命令中，逗号后不要加空格，否则会报错。
+
+    2. 启动 pump_servers
+
+        {{< copyable "shell-regular" >}}
+
+        ```bash
+        ansible-playbook start.yml --tags=pump
+        ```
+
+    3. 更新并重启 tidb_servers
+
+        {{< copyable "shell-regular" >}}
+
+        ```bash
+        ansible-playbook rolling_update.yml --tags=tidb
+        ```
+
+    4. 更新监控信息
+
+        {{< copyable "shell-regular" >}}
+
+        ```bash
+        ansible-playbook rolling_update_monitor.yml --tags=prometheus
+        ```
+
+    **方式二**：从零开始部署含 Pump 组件的 TiDB 集群
+
+    使用 TiDB Ansible 部署 TiDB 集群，方法参考 [使用 TiDB Ansible 部署 TiDB 集群](/online-deployment-using-ansible.md)。
+
+3. 查看 Pump 服务状态
+
+    使用 binlogctl 查看 Pump 服务状态，pd-urls 参数请替换为集群 PD 地址，结果 State 为 online 表示 Pump 启动成功。
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    cd /home/tidb/tidb-ansible &&
+    resources/bin/binlogctl -pd-urls=http://172.16.10.72:2379 -cmd pumps
+    ```
+
+    ```
+    INFO[0000] pump: {NodeID: ip-172-16-10-72:8250, Addr: 172.16.10.72:8250, State: online, MaxCommitTS: 403051525690884099, UpdateTime: 2018-12-25 14:23:37 +0800 CST}
+    INFO[0000] pump: {NodeID: ip-172-16-10-73:8250, Addr: 172.16.10.73:8250, State: online, MaxCommitTS: 403051525703991299, UpdateTime: 2018-12-25 14:23:36 +0800 CST}
+    INFO[0000] pump: {NodeID: ip-172-16-10-74:8250, Addr: 172.16.10.74:8250, State: online, MaxCommitTS: 403051525717360643, UpdateTime: 2018-12-25 14:23:35 +0800 CST}
+    ```
+
+### 第 3 步：部署 Drainer
+
+1. 获取 initial_commit_ts 的值
+
+    Drainer 初次启动时需要获取 initial_commit_ts 这个时间戳信息。
+
+    - 如果从最近的时间点开始同步，initial_commit_ts 使用 `-1` 即可。
+
+    - 如果下游为 MySQL 或 TiDB，为了保证数据的完整性，需要进行全量数据的备份与恢复。此时 initial_commit_ts 的值必须是全量备份的时间戳。
+
+        如果使用 mydumper 进行全量备份，可以在导出目录中找到 metadata 文件，其中的 `Pos` 字段值即全量备份的时间戳。metadata 文件示例如下：
+
+        ```
+        Started dump at: 2019-12-30 13:25:41
+        SHOW MASTER STATUS:
+                Log: tidb-binlog
+                Pos: 413580274257362947
+                GTID:
+
+        Finished dump at: 2019-12-30 13:25:41
+        ```
+
+2. 修改 `tidb-ansible/inventory.ini` 文件
+
+    为 `drainer_servers` 主机组添加部署机器 IP，initial_commit_ts 请设置为获取的 initial_commit_ts，仅用于 Drainer 第一次启动。
+
+    - 以下游为 MySQL 为例，别名为 `drainer_mysql`。
+
+        ```ini
+        [drainer_servers]
+        drainer_mysql ansible_host=172.16.10.71 initial_commit_ts="402899541671542785"
+        ```
+
+    - 以下游为 file 为例，别名为 `drainer_file`。
+
+        ```ini
+        [drainer_servers]
+        drainer_file ansible_host=172.16.10.71 initial_commit_ts="402899541671542785"
+        ```
+
+3. 修改配置文件
+
+    - 以下游为 MySQL 为例
+
+        {{< copyable "shell-regular" >}}
+
+        ```bash
+        cd /home/tidb/tidb-ansible/conf &&
+        cp drainer.toml drainer_mysql_drainer.toml &&
+        vi drainer_mysql_drainer.toml
+        ```
+
+        > **注意：**
+        >
+        > 配置文件名命名规则为 `别名_drainer.toml`，否则部署时无法找到自定义配置文件。
+
+        db-type 设置为 "mysql"， 配置下游 MySQL 信息。
+
+        {{< copyable "" >}}
+
+        ```toml
+        [syncer]
+        # downstream storage, equal to --dest-db-type
+        # Valid values are "mysql", "file", "tidb", "kafka".
+        db-type = "mysql"
+
+        # the downstream MySQL protocol database
+        [syncer.to]
+        host = "172.16.10.72"
+        user = "root"
+        password = "123456"
+        port = 3306
+        ```
+
+    - 以下游为增量备份文件为例
+
+        {{< copyable "shell-regular" >}}
+
+        ```bash
+        cd /home/tidb/tidb-ansible/conf &&
+        cp drainer.toml drainer_file_drainer.toml &&
+        vi drainer_file_drainer.toml
+        ```
+
+        db-type 设置为 "file"。
+
+        {{< copyable "" >}}
+
+        ```toml
+        [syncer]
+        # downstream storage, equal to --dest-db-type
+        # Valid values are "mysql", "file", "tidb", "kafka".
+        db-type = "file"
+
+        # Uncomment this if you want to use "file" as "db-type".
+        [syncer.to]
+        # default data directory: "{{ deploy_dir }}/data.drainer"
+        dir = "data.drainer"
+        ```
+
+4. 部署 Drainer
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    ansible-playbook deploy_drainer.yml
+    ```
+
+5. 启动 Drainer
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    ansible-playbook start_drainer.yml
+    ```
 
 ## 使用 Binary 部署 TiDB Binlog
 
-### 下载 TiDB Binlog 安装包
+### 下载官方 Binary
 
-TiDB Binlog 安装包位于 TiDB 离线工具包中。下载方式，请参考 [TiDB 工具下载](/download-ecosystem-tools.md)。
+{{< copyable "shell-regular" >}}
+
+```bash
+wget https://download.pingcap.org/tidb-{version}-linux-amd64.tar.gz &&
+wget https://download.pingcap.org/tidb-{version}-linux-amd64.sha256
+```
+
+检查文件完整性，返回 ok 则正确：
+
+{{< copyable "shell-regular" >}}
+
+```bash
+sha256sum -c tidb-{version}-linux-amd64.sha256
+```
+
+对于 v2.1.0 GA 及以上版本，Pump 和 Drainer 已经包含在 TiDB 的下载包中，其他版本需要单独下载 Pump 和 Drainer:
+
+{{< copyable "shell-regular" >}}
+
+```bash
+wget https://download.pingcap.org/tidb-binlog-latest-linux-amd64.tar.gz &&
+wget https://download.pingcap.org/tidb-binlog-latest-linux-amd64.sha256
+```
+
+检查文件完整性，返回 ok 则正确：
+
+{{< copyable "shell-regular" >}}
+
+```bash
+sha256sum -c tidb-binlog-latest-linux-amd64.sha256
+```
 
 ### 使用样例
 
@@ -139,7 +410,7 @@ Drainer="192.168.0.13"
         {{< copyable "shell-regular" >}}
 
         ```bash
-        ./pump -config pump.toml
+        ./bin/pump -config pump.toml
         ```
 
         如果命令行参数与配置文件中的参数重合，则使用命令行设置的参数的值。
@@ -327,10 +598,7 @@ Drainer="192.168.0.13"
         # zookeeper-addrs = "127.0.0.1:2181"
         # kafka-addrs = "127.0.0.1:9092"
         # kafka-version = "0.8.2.0"
-        # 配置单条 broker request 中的最大 message 数（即 binlog 数），不配置或配置小于等于 0 时会使用默认值 1024
         # kafka-max-messages = 1024
-        # 配置单条 broker request 的最大 size（单位为 Byte），默认为 1 GiB，最大可配置为 2 GiB
-        # kafka-max-message-size = 1073741824
 
         # 保存 binlog 数据的 Kafka 集群的 topic 名称，默认值为 <cluster-id>_obinlog
         # 如果运行多个 Drainer 同步数据到同一个 Kafka 集群，每个 Drainer 的 topic-name 需要设置不同的名称
@@ -341,14 +609,14 @@ Drainer="192.168.0.13"
 
         > **注意：**
         >
-        > 如果下游为 MySQL/TiDB，为了保证数据的完整性，在 Drainer 初次启动前需要获取 `initial-commit-ts` 的值，并进行全量数据的备份与恢复。
+        > 如果下游为 MySQL/TiDB，为了保证数据的完整性，在 Drainer 初次启动前需要获取 `initial-commit-ts` 的值，并进行全量数据的备份与恢复。详细信息参见[部署 Drainer](#第-3-步部署-drainer)。
 
-        初次启动时使用参数 `initial-commit-ts`，命令如下：
+        初次启动时使用参数 `initial-commit-ts`， 命令如下：
 
         {{< copyable "shell-regular" >}}
 
         ```bash
-        ./drainer -config drainer.toml -initial-commit-ts {initial-commit-ts}
+        ./bin/drainer -config drainer.toml -initial-commit-ts {initial-commit-ts}
         ```
 
         如果命令行参数与配置文件中的参数重合，则使用命令行设置的参数的值。

@@ -1,7 +1,7 @@
 ---
 title: SET ROLE
 summary: TiDB 数据库中 SET ROLE 的使用概况。
-aliases: ['/docs-cn/dev/sql-statements/sql-statement-set-role/']
+aliases: ['/docs-cn/stable/sql-statements/sql-statement-set-role/','/docs-cn/v4.0/sql-statements/sql-statement-set-role/']
 ---
 
 # SET ROLE
@@ -24,7 +24,7 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-set-role/']
 
 ## 示例
 
-创建一个用户 `'u1'@'%'`，创建三个角色 `'r1'@'%'`、`'r2'@'%'` 和 `'r3'@'%'` 并将这些角色授予给 `'u1'@'%'`。将 `'u1'@'%'` 的默认启用角色设置为 `'r1'@'%'`。
+创建一个用户 `'u1'@'%'`, 创建三个角色 `'r1'@'%'`, `'r2'@'%'`, `'r3'@'%'` 并将这些角色授予给 `'u1'@'%'`。将 `'u1'@'%'` 的默认启用角色设置为 `'r1'@'%'`。
 
 {{< copyable "sql" >}}
 

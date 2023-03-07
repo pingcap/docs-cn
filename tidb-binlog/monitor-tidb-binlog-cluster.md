@@ -1,11 +1,11 @@
 ---
 title: TiDB Binlog 集群监控
-aliases: ['/docs-cn/dev/tidb-binlog/monitor-tidb-binlog-cluster/','/docs-cn/dev/reference/tidb-binlog/monitor/','/docs-cn/dev/how-to/monitor/tidb-binlog-monitor/','/docs-cn/dev/reference/tools/tidb-binlog/monitor/','/docs-cn/dev/how-to/monitor/tidb-binlog/']
+aliases: ['/docs-cn/stable/tidb-binlog/monitor-tidb-binlog-cluster/','/docs-cn/v4.0/tidb-binlog/monitor-tidb-binlog-cluster/','/docs-cn/stable/reference/tidb-binlog/monitor/','/docs-cn/stable/reference/tools/tidb-binlog/monitor/']
 ---
 
 # TiDB Binlog 集群监控
 
-成功部署 TiDB Binlog 集群后，可以进入 Grafana Web 界面（默认地址: <http://grafana_ip:3000>，默认账号：admin，密码：admin）查看 Pump 和 Drainer 的运行状态。
+使用 TiDB Ansible 成功部署 TiDB Binlog 集群后，可以进入 Grafana Web 界面（默认地址: <http://grafana_ip:3000>，默认账号：admin，密码：admin）查看 Pump 和 Drainer 的运行状态。
 
 ## 监控指标
 
@@ -85,7 +85,7 @@ aliases: ['/docs-cn/dev/tidb-binlog/monitor-tidb-binlog-cluster/','/docs-cn/dev/
         * 如果 Drainer execute time 过大，则检查到目标库网络带宽和延迟，以及目标库状态。
         * 如果 Drainer execute time 不大，Drainer event 过小，则增加 work count 和 batch 进行重试。
 
-    * 如果上面都不满足或者操作后没有改观，请从 PingCAP 官方或 TiDB 社区[获取支持](/support.md)。
+    * 如果上面都不满足或者操作后没有改观，则报备开发人员 [support@pingcap.com](mailto:support@pingcap.com) 进行处理。
 
 ### 警告级别报警项
 
@@ -104,7 +104,7 @@ aliases: ['/docs-cn/dev/tidb-binlog/monitor-tidb-binlog-cluster/','/docs-cn/dev/
 * 处理方法：
 
     * 确认磁盘性能压力，通过 `node exported` 查看 disk performance 监控。
-    * 如果 `disk latency` 和 `util` 都很低，请从 PingCAP 官方或 TiDB 社区[获取支持](/support.md)。
+    * 如果 `disk latency` 和 `util` 都很低，那么报备开发人员 [support@pingcap.com](mailto:support@pingcap.com) 进行处理。
 
 #### `binlog_pump_storage_write_binlog_duration_time_bucket`
 

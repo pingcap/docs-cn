@@ -1,7 +1,7 @@
 ---
 title: SHOW [BACKUPS|RESTORES]
 summary: TiDB 数据库中 SHOW [BACKUPS|RESTORES] 的使用概况。
-aliases: ['/docs-cn/dev/sql-statements/sql-statement-show-backups/']
+aliases: ['/docs-cn/stable/sql-statements/sql-statement-show-backups/','/docs-cn/v4.0/sql-statements/sql-statement-show-backups/']
 ---
 
 # SHOW [BACKUPS|RESTORES]
@@ -28,7 +28,7 @@ ShowLikeOrWhere ::=
 {{< copyable "sql" >}}
 
 ```sql
-BACKUP DATABASE `test` TO 's3://example-bucket/backup-01/';
+BACKUP DATABASE `test` TO 's3://example-bucket/backup-01/?region=us-west-1';
 ```
 
 在备份完成之前，在新的连接中执行 `SHOW BACKUPS`：

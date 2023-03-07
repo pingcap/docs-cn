@@ -1,6 +1,6 @@
 ---
 title: TiDB Dashboard 概况页面
-aliases: ['/docs-cn/dev/dashboard/dashboard-overview/']
+aliases: ['/docs-cn/stable/dashboard/dashboard-overview/','/docs-cn/v4.0/dashboard/dashboard-overview/']
 ---
 
 # TiDB Dashboard 概况页面
@@ -16,9 +16,9 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-overview/']
 
 ## 访问
 
-登录 TiDB Dashboard 后默认进入该页面，也可以左侧导航条点击**概况** (Overview) 进入：
+登录 TiDB Dashboard 后默认进入该页面，也可以左侧导航条点击**概况**（Overview）进入：
 
-![访问](/media/dashboard/dashboard-overview-access-v650.png)
+![访问](/media/dashboard/dashboard-overview-access.png)
 
 ## QPS
 
@@ -58,13 +58,13 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-overview/']
 
 ![界面](/media/dashboard/dashboard-overview-slow-query.png)
 
-默认情况下运行时间超过 300ms 的 SQL 查询即会被计为慢查询并显示在该表格中。可通过调整 [tidb_slow_log_threshold](/system-variables.md#tidb_slow_log_threshold) 变量或 TiDB [slow-threshold](/tidb-configuration-file.md#slow-threshold) 参数调整阈值。
+默认情况下运行时间超过 300ms 的SQL 查询即会被计为慢查询并显示在该表格中。可通过调整 [tidb_slow_log_threshold](/system-variables.md#tidb_slow_log_threshold) 变量或 TiDB [slow-threshold](/tidb-configuration-file.md#slow-threshold) 参数调整阈值。
 
 该区域显示的内容与[慢查询页面](/dashboard/dashboard-slow-query.md)一致，可点击**最近的慢查询** (Recent Slow Queries) 标题查看完整列表。关于该表格中各列详情，见[慢查询页面](/dashboard/dashboard-slow-query.md)。
 
 > **注意：**
 >
-> 该功能仅在配置开启了慢查询日志的集群中可用，使用 TiUP 部署的集群默认开启慢查询日志。
+> 该功能仅在配置开启了慢查询日志的集群中可用，使用 TiUP 或 Ansible 部署的集群默认开启慢查询日志。
 
 ## 实例
 

@@ -1,13 +1,13 @@
 ---
 title: Reparo 使用文档
-aliases: ['/docs-cn/dev/tidb-binlog/tidb-binlog-reparo/','/docs-cn/dev/reference/tidb-binlog/reparo/','/docs-cn/dev/reference/tools/tidb-binlog/reparo/']
+aliases: ['/docs-cn/stable/tidb-binlog/tidb-binlog-reparo/','/docs-cn/v4.0/tidb-binlog/tidb-binlog-reparo/','/docs-cn/stable/reference/tidb-binlog/reparo/','/docs-cn/v4.0/reference/tidb-binlog/reparo/']
 ---
 
 # Reparo 使用文档
 
 Reparo 是 TiDB Binlog 的一个配套工具，用于增量的恢复。使用 TiDB Binlog 中的 Drainer 将 binlog 按照 protobuf 格式输出到文件，通过这种方式来备份增量数据。当需要恢复增量数据时，使用 Reparo 解析文件中的 binlog，并将其应用到 TiDB／MySQL 中。
 
-Reparo 的安装包 `reparo` 位于 TiDB 离线工具包中。下载方式，请参考 [TiDB 工具下载](/download-ecosystem-tools.md)。
+下载链接：[tidb-binlog-cluster-latest-linux-amd64.tar.gz](https://download.pingcap.org/tidb-binlog-cluster-latest-linux-amd64.tar.gz)
 
 ## Reparo 使用
 
@@ -54,7 +54,6 @@ log-level = "info"
 # stop-datetime = ""
 
 # start-tso、stop-tso 分别对应 start-datetime 和 stop-datetime，也是用于恢复指定时间范围内的 binlog，用 tso 的值来设置。如果已经设置了 start-datetime 和 stop-datetime，就不需要再设置 start-tso 和 stop-tso。
-# 在从全量或者上次增量位置继续同步时，start-tso 应当指定为全量 tso + 1 或者上次增量的 stop-tso + 1
 # start-tso = 0
 # stop-tso = 0
 
@@ -93,7 +92,7 @@ password = ""
 {{< copyable "shell-regular" >}}
 
 ```bash
-./reparo -config reparo.toml
+./bin/reparo -config reparo.toml
 ```
 
 > **注意：**

@@ -1,7 +1,7 @@
 ---
 title: SET TRANSACTION
 summary: TiDB 数据库中 SET TRANSACTION 的使用概况。
-aliases: ['/docs-cn/dev/sql-statements/sql-statement-set-transaction/','/docs-cn/dev/reference/sql/statements/set-transaction/']
+aliases: ['/docs-cn/stable/sql-statements/sql-statement-set-transaction/','/docs-cn/v4.0/sql-statements/sql-statement-set-transaction/','/docs-cn/stable/reference/sql/statements/set-transaction/']
 ---
 
 # SET TRANSACTION
@@ -10,23 +10,17 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-set-transaction/','/docs-cn
 
 ## 语法图
 
-```ebnf+diagram
+**SetStmt:**
 
-SetStmt ::=
-    'SET' ( VariableAssignmentList | 
-    'PASSWORD' ('FOR' Username)? '=' PasswordOpt | 
-    ( 'GLOBAL'| 'SESSION' )? 'TRANSACTION' TransactionChars | 
-    'CONFIG' ( Identifier | stringLit) ConfigItemName EqOrAssignmentEq SetExpr )
+![SetStmt](/media/sqlgram/SetStmt.png)
 
-TransactionChars ::=
-    ( 'ISOLATION' 'LEVEL' IsolationLevel | 'READ' 'WRITE' | 'READ' 'ONLY' AsOfClause? )
+**TransactionChar:**
 
-IsolationLevel ::=
-    ( 'REPEATABLE' 'READ' | 'READ' ( 'COMMITTED' | 'UNCOMMITTED' ) | 'SERIALIZABLE' )
+![TransactionChar](/media/sqlgram/TransactionChar.png)
 
-AsOfClause ::=
-    ( 'AS' 'OF' 'TIMESTAMP' Expression)
-```
+**IsolationLevel:**
+
+![IsolationLevel](/media/sqlgram/IsolationLevel.png)
 
 ## 示例
 

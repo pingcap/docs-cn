@@ -1,6 +1,6 @@
 ---
 title: TiFlash 报警规则
-aliases: ['/docs-cn/dev/tiflash/tiflash-alert-rules/','/docs-cn/dev/reference/tiflash/alert-rules/']
+aliases: ['/docs-cn/stable/tiflash/tiflash-alert-rules/','/docs-cn/v4.0/tiflash/tiflash-alert-rules/','/docs-cn/stable/reference/tiflash/alert-rules/','/docs-cn/v4.0/reference/tiflash/alert-rules/']
 ---
 
 # TiFlash 报警规则
@@ -33,7 +33,7 @@ aliases: ['/docs-cn/dev/tiflash/tiflash-alert-rules/','/docs-cn/dev/reference/ti
 
 - 处理方法：
 
-    可能是 TiFlash 存储引擎内部问题，联系 TiFlash 开发人员。
+    可能是 TiFlash TMT 引擎内部问题，联系 TiFlash 开发人员。
 
 ## `TiFlash_raft_read_index_duration`
 

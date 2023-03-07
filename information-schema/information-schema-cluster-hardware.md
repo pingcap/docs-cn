@@ -1,7 +1,7 @@
 ---
 title: CLUSTER_HARDWARE
 summary: 了解 TiDB 集群硬件表 `CLUSTER_HARDWARE`。
-aliases: ['/docs-cn/dev/system-tables/system-table-cluster-hardware/','/docs-cn/dev/reference/system-databases/cluster-hardware/','/zh/tidb/dev/system-table-cluster-hardware/']
+aliases: ['/docs-cn/stable/system-tables/system-table-cluster-hardware/','/docs-cn/v4.0/system-tables/system-table-cluster-hardware/','/docs-cn/stable/reference/system-databases/cluster-hardware/','/zh/tidb/stable/system-table-cluster-hardware/','/zh/tidb/v4.0/system-table-cluster-hardware/']
 ---
 
 # CLUSTER_HARDWARE

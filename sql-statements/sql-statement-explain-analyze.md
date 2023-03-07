@@ -1,7 +1,7 @@
 ---
 title: EXPLAIN ANALYZE
 summary: TiDB 数据库中 EXPLAIN ANALYZE 的使用概况。
-aliases: ['/docs-cn/dev/sql-statements/sql-statement-explain-analyze/','/docs-cn/dev/reference/sql/statements/explain-analyze/']
+aliases: ['/docs-cn/stable/sql-statements/sql-statement-explain-analyze/','/docs-cn/v4.0/sql-statements/sql-statement-explain-analyze/','/docs-cn/stable/reference/sql/statements/explain-analyze/']
 ---
 
 # EXPLAIN ANALYZE
@@ -88,12 +88,12 @@ EXPLAIN ANALYZE SELECT * FROM t1;
 ```
 
 ```
-+-------------------+----------+---------+-----------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------------------------------+-----------+------+
-| id                | estRows  | actRows | task      | access object | execution info                                                                                                                                                                                                                            | operator info                  | memory    | disk |
-+-------------------+----------+---------+-----------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------------------------------+-----------+------+
-| TableReader_5     | 10000.00 | 3       | root      |               | time:278.2µs, loops:2, cop_task: {num: 1, max: 437.6µs, proc_keys: 3, rpc_num: 1, rpc_time: 423.9µs, copr_cache_hit_ratio: 0.00}                                                                                                          | data:TableFullScan_4           | 251 Bytes | N/A  |
-| └─TableFullScan_4 | 10000.00 | 3       | cop[tikv] | table:t1      | tikv_task:{time:0s, loops:1}, scan_detail: {total_process_keys: 3, total_process_keys_size: 111, total_keys: 4, rocksdb: {delete_skipped_count: 0, key_skipped_count: 3, block: {cache_hit_count: 0, read_count: 0, read_byte: 0 Bytes}}} | keep order:false, stats:pseudo | N/A       | N/A  |
-+-------------------+----------+---------+-----------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------------------------------+-----------+------+
++-------------------+---------+---------+-----------+---------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------------------------------+-----------+------+
+| id                | estRows | actRows | task      | access object | execution info                                                                                                                                                                                                  | operator info                  | memory    | disk |
++-------------------+---------+---------+-----------+---------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------------------------------+-----------+------+
+| TableReader_5     | 13.00   | 13      | root      |               | time:923.459µs, loops:2, cop_task: {num: 4, max: 839.788µs, min: 779.374µs, avg: 810.926µs, p95: 839.788µs, max_proc_keys: 12, p95_proc_keys: 12, rpc_num: 4, rpc_time: 3.116964ms, copr_cache_hit_ratio: 0.00} | data:TableFullScan_4           | 632 Bytes | N/A  |
+| └─TableFullScan_4 | 13.00   | 13      | cop[tikv] | table:t1      | proc max:0s, min:0s, p80:0s, p95:0s, iters:4, tasks:4                                                                                                                                                           | keep order:false, stats:pseudo | N/A       | N/A  |
++-------------------+---------+---------+-----------+---------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------------------------------+-----------+------+
 2 rows in set (0.00 sec)
 ```
 
@@ -105,7 +105,7 @@ EXPLAIN ANALYZE SELECT * FROM t1;
 
 `Point_Get` 算子可能包含以下执行信息：
 
-- `Get:{num_rpc:1, total_time:697.051µs}`：向 TiKV 发送 `Get` 类型的 RPC 请求的数量 (`num_rpc`) 和所有 RPC 请求的总耗时 (`total_time`)。
+- `Get:{num_rpc:1, total_time:697.051µs}`：向 TiKV 发送 `Get` 类型的 RPC 请求的数量（`num_rpc`）和所有 RPC 请求的总耗时（`total_time`）。
 - `ResolveLock:{num_rpc:1, total_time:12.117495ms}`：读数据遇到锁后，进行 resolve lock 的时间。一般在读写冲突的场景下会出现。
 - `regionMiss_backoff:{num:11, total_time:2010 ms},tikvRPC_backoff:{num:11, total_time:10691 ms}`：RPC 请求失败后，会在等待 backoff 的时间后重试，包括了 backoff 的类型（如 regionMiss，tikvRPC），backoff 等待的总时间 (total_time) 和 backoff 的总次数 (num)。
 
@@ -113,7 +113,7 @@ EXPLAIN ANALYZE SELECT * FROM t1;
 
 `Batch_Point_get` 算子的执行信息和 `Point_Get` 算子类似，不过 `Batch_Point_Get` 一般向 TiKV 发送 `BatchGet` 类型的 RPC 请求来读取数据。
 
-`BatchGet:{num_rpc:2, total_time:83.13µs}`：向 TiKV 发送 `BatchGet` 类型的 RPC 请求的数量 (`num_rpc`) 和所有 RPC 请求的总耗时 (`total_time`)。
+`BatchGet:{num_rpc:2, total_time:83.13µs}`：向 TiKV 发送 `BatchGet` 类型的 RPC 请求的数量（`num_rpc`）和所有 RPC 请求的总耗时（`total_time`）。
 
 ### TableReader
 
@@ -154,9 +154,9 @@ prepare:109.616µs, check_insert:{total_time:1.431678ms, mem_insert_time:667.878
 `IndexJoin` 算子有 1 个 outer worker 和 N 个 inner worker 并行执行，其 join 结果的顺序和 outer table 的顺序一致，具体执行流程如下：
 
 1. Outer worker 读取 N 行 outer table 的数据，然后包装成一个 task 发送给 result channel 和 inner worker channel。
-2. Inner worker 从 inner worker channel 里面接收 task，然后根据 task 生成需要读取 inner table 的 key ranges 范围，然后读取相应范围的 inner table 行数据，并生成一个 inner table row 的 hash table。
+2. Inner worker 从 inner worker channel 里面接收 task，然后根据 task 生成需要读取 inner table 的 key ranges 范围, 然后读取相应范围的 inner table 行数据，并生成一个 inner table row 的 hash table。
 3. `IndexJoin` 的主线程从 result channel 中接收 task，然后等待 inner worker 执行完这个 task。
-4. `IndexJoin` 的主线程用 outer table rows 和 inner table rows 的 hash table 做 join。
+4. `IndexJoin` 的主线程用 outer table rows 和 inner table rows 的 hash table 做 join 。
 
 `IndexJoin` 算子包含以下执行信息：
 
@@ -204,7 +204,7 @@ inner:{total:4.429220003s, concurrency:5, task:17, construct:96.207725ms, fetch:
 `HashJoin` 算子有一个 inner worker，一个 outer worker 和 N 个 join worker，其具体执行逻辑如下：
 
 1. inner worker 读取 inner table rows 并构造 hash table。
-2. outer worker 读取 outer table rows，然后包装成 task 发送给 join worker。
+2. outer worker 读取 outer table rows, 然后包装成 task 发送给 join worker。
 3. 等待第 1 步的 hash table 构造完成。
 4. join worker 用 task 里面的 outer table rows 和 hash table 做 join，然后把 join 结果发送给 result channel。
 5. `HashJoin` 的主线程从 result channel 中接收 join 结果。
@@ -225,33 +225,6 @@ build_hash_table:{total:146.071334ms, fetch:110.338509ms, build:35.732825ms}, pr
     - `max`：单个 join worker 执行的最大耗时。
     - `probe`: 用 outer table rows 和 hash table 做 join 的总耗时。
     - `fetch`：join worker 等待读取 outer table rows 数据的总耗时。
-
-### TableFullScan (TiFlash)
-
-在 TiFlash 节点上执行的 `TableFullScan` 算子包含以下执行信息：
-
-```sql
-tiflash_scan: {
-  dtfile: {
-    total_scanned_packs: 2, 
-    total_skipped_packs: 1, 
-    total_scanned_rows: 16000, 
-    total_skipped_rows: 8192, 
-    total_rough_set_index_load_time: 2ms, 
-    total_read_time: 20ms
-  }, 
-  total_create_snapshot_time: 1ms
-}
-```
-
-+ `dtfile`：扫表过程中与 DTFile （即 DeltaTree File）相关的信息；这基本反映了 TiFlash 在 Stable 层数据的读取情况。
-    - `total_scanned_packs`：DTFile 内累计读取的 Pack 的数量；Pack 是 TiFlash DTFile 读取的最小粒度，默认情况下每 8192 行构成一个 Pack。
-    - `total_skipped_packs`：DTFile 内累计跳过的 Pack 的数量；Pack 会由于 `WHERE` 条件命中粗糙索引或主键范围过滤而被跳过。
-    - `total_scanned_rows`：DTFile 内累计读取的行数；若存在 MVCC 带来的多版本更新或删除，则每个版本独立计数。
-    - `total_skipped_rows`：DTFile 内累计跳过的行数。
-    - `total_rs_index_load_time`：读取 DTFile 粗糙索引的累计耗时。
-    - `total_read_time`：读取 DTFile 数据的累计耗时。
-+ `total_create_snapshot_time`：扫表过程中创建快照的总耗时。
 
 ### lock_keys 执行信息
 
@@ -281,10 +254,6 @@ commit_txn: {prewrite:48.564544ms, wait_prewrite_binlog:47.821579, get_commit_ts
 - `commit`：事务 2PC 提交阶段中，`commit` 阶段的耗时。
 - `write_keys`：事务中写入 `key` 的数量。
 - `write_byte`：事务中写入 `key-value` 的总字节数量，单位是 byte。
-
-### 其它常见执行信息
-
-Coprocessor 算子通常包含 `cop_task` 和 `tikv_task` 两部分执行时间信息。前者是 TiDB 端记录的时间，从发出请求到接收回复；后者是 TiKV Coprocessor 算子自己记录的时间。两者相差较大可能说明在等待、gRPC 或网络上耗时较长。
 
 ## MySQL 兼容性
 

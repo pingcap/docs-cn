@@ -1,6 +1,6 @@
 ---
 title: TiFlash 配置参数
-aliases: ['/docs-cn/dev/tiflash/tiflash-configuration/','/docs-cn/dev/reference/tiflash/configuration/']
+aliases: ['/docs-cn/stable/tiflash/tiflash-configuration/','/docs-cn/v4.0/tiflash/tiflash-configuration/','/docs-cn/stable/reference/tiflash/configuration/']
 ---
 
 # TiFlash 配置参数
@@ -9,29 +9,23 @@ aliases: ['/docs-cn/dev/tiflash/tiflash-configuration/','/docs-cn/dev/reference/
 
 ## PD 调度参数
 
-可通过 [pd-ctl](/pd-control.md) 调整参数。如果你使用 TiUP 部署，可以用 `tiup ctl:v<CLUSTER_VERSION> pd` 代替 `pd-ctl -u <pd_ip:pd_port>` 命令。
+可通过 [pd-ctl](/pd-control.md) 调整参数。如果你使用 TiUP 部署，可以用 `tiup ctl:<cluster-version> pd` 代替 `pd-ctl -u <pd_ip:pd_port>` 命令。
 
 - [`replica-schedule-limit`](/pd-configuration-file.md#replica-schedule-limit)：用来控制 replica 相关 operator 的产生速度（涉及到下线、补副本的操作都与该参数有关）
 
-  > **注意：**
-  >
-  > 不要超过 `region-schedule-limit`，否则会影响正常 TiKV 之间的 Region 调度。
+    > **注意：**
+    >
+    > 不要超过 `region-schedule-limit`，否则会影响正常 TiKV 之间的 Region 调度。
 
-- `store-balance-rate`：用于限制每个 TiKV store 或 TiFlash store 的 Region 调度速度。注意这个参数只对新加入集群的 store 有效，如果想立刻生效请用下面的方式。
+- [`store-balance-rate`](/pd-configuration-file.md#store-balance-rate)：用于限制每个 TiKV store 或 TiFlash store 的 Region 调度速度。注意这个参数只对新加入集群的 store 有效，如果想立刻生效请用下面的方式。
 
-  > **注意：**
-  >
-  > 4.0.2 版本之后（包括 4.0.2 版本）废弃了 `store-balance-rate` 参数且 `store limit` 命令有部分变化。该命令变化的细节请参考 [store-limit 文档](/configure-store-limit.md)。
+    > **注意：**
+    >
+    > 4.0.2 版本之后（包括 4.0.2 版本）废弃了 `store-balance-rate` 参数且 `store limit` 命令有部分变化。该命令变化的细节请参考 [store-limit 文档](/configure-store-limit.md)。
 
     - 使用 `pd-ctl -u <pd_ip:pd_port> store limit <store_id> <value>` 命令单独设置某个 store 的 Region 调度速度。（`store_id` 可通过 `pd-ctl -u <pd_ip:pd_port> store` 命令获得）如果没有单独设置，则继承 `store-balance-rate` 的设置。你也可以使用 `pd-ctl -u <pd_ip:pd_port> store limit` 命令查看当前设置值。
 
-- [`replication.location-labels`](/pd-configuration-file.md#location-labels)：用来表示 TiKV 实例的拓扑关系，其中 key 的顺序代表了不同标签的层次关系。在 TiFlash 开启的情况下需要使用 [`pd-ctl config placement-rules`](/pd-control.md#config-show--set-option-value--placement-rules) 来设置默认值，详细可参考 [geo-distributed-deployment-topology](/geo-distributed-deployment-topology.md)。
-
 ## TiFlash 配置参数
-
-> **Tip:**
->
-> 如果你需要调整配置项的值，请参考[修改配置参数](/maintain-tidb-using-tiup.md#修改配置参数)进行操作。
 
 ### 配置文件 tiflash.toml
 
@@ -46,31 +40,20 @@ http_port = 8123
 mark_cache_size = 5368709120
 ## 数据块 min-max 索引的内存 cache 大小限制，通常不需要修改
 minmax_index_cache_size = 5368709120
-## DeltaIndex 内存 cache 大小限制，默认为 0，代表没有限制
-delta_index_cache_size = 0
 
 ## TiFlash 数据的存储路径。如果有多个目录，以英文逗号分隔。
 ## 从 v4.0.9 版本开始，不推荐使用 path 及 path_realtime_mode 参数。推荐使用 [storage] 下的配置项代替，这样在多盘部署的场景下能更好地利用节点性能。
-## 从 v5.2.0 版本开始，如果要使用配置项 storage.io_rate_limit，需要同时将 TiFlash 的数据存储路径设置为 storage.main.dir。
-## 当 [storage] 配置项存在的情况下，path 和 path_realtime_mode 两个配置会被忽略。
 # path = "/tidb-data/tiflash-9000"
 ## 或
 # path = "/ssd0/tidb-data/tiflash,/ssd1/tidb-data/tiflash,/ssd2/tidb-data/tiflash"
 ## 默认为 false。如果设为 true，且 path 配置了多个目录，表示在第一个目录存放最新数据，在其他目录存放较旧的数据。
 # path_realtime_mode = false
 
-## TiFlash 临时文件的存放路径。默认使用 [`path` 或者 `storage.latest.dir` 的第一个目录] + "/tmp"
-# tmp_path = "/tidb-data/tiflash-9000/tmp"
+## TiFlash 临时文件的存放路径。通常使用 [`path` 或者 `storage.latest.dir` 的第一个目录] + "/tmp"
+tmp_path = "/tidb-data/tiflash-9000/tmp"
 
 ## 存储路径相关配置，从 v4.0.9 开始生效
 [storage]
-
-    ## DTFile 储存文件格式
-    ## * format_version = 2 v6.0.0 以前版本的默认文件格式
-    ## * format_version = 3 v6.0.0 及 v6.1.x 版本的默认文件格式，具有更完善的检验功能
-    ## * format_version = 4 v6.2.0 及以后版本的默认文件格式，优化了写放大问题，同时减少了后台线程消耗
-    # format_version = 4
-
     [storage.main]
     ## 用于存储主要的数据，该目录列表中的数据占总数据的 90% 以上。
     dir = [ "/tidb-data/tiflash-9000" ]
@@ -91,30 +74,6 @@ delta_index_cache_size = 0
     ## storage.latest.dir 存储目录列表中，每个目录的最大可用容量。
     # capacity = [ 10737418240, 10737418240 ]
 
-    ## [storage.io_rate_limit] 相关配置从 v5.2.0 开始引入。
-    [storage.io_rate_limit]
-    ## 该配置项是 I/O 限流功能的开关，默认关闭。TiFlash 的 I/O 限流功能适用于磁盘带宽较小且磁盘带宽大小明确的云盘场景。
-    ## I/O 限流功能限制下的读写流量总带宽，单位为 Byte，默认值为 0，即默认关闭 I/O 限流功能。
-    # max_bytes_per_sec = 0
-    ## max_read_bytes_per_sec 和 max_write_bytes_per_sec 的含义和 max_bytes_per_sec 类似，分别指 I/O 限流功能限制下的读流量总带宽和写流量总带宽。
-    ## 分别用两个配置项控制读写带宽限制，适用于一些读写带宽限制分开计算的云盘，例如 GCP 上的 persistent disk。
-    ## 当 max_bytes_per_sec 配置不为 0 时，优先使用 max_bytes_per_sec。
-    # max_read_bytes_per_sec = 0
-    # max_write_bytes_per_sec = 0
-
-    ## 下面的参数用于控制不同 I/O 流量类型分配到的带宽权重，一般不需要调整。
-    ## TiFlash 内部将 I/O 请求分成 4 种类型：前台写、后台写、前台读、后台读。
-    ## I/O 限流初始化时，TiFlash 会根据下面的权重 (weight) 比例分配带宽。
-    ## 以下默认配置表示每一种流量将获得 25 / (25 + 25 + 25 + 25) = 25% 的权重。
-    ## 如果将 weight 配置为 0，则对应的 I/O 操作不会被限流。
-    # foreground_write_weight = 25
-    # background_write_weight = 25
-    # foreground_read_weight = 25
-    # background_read_weight = 25
-    ## TiFlash 支持根据当前的 I/O 负载情况自动调整各种 I/O 类型的限流带宽，有可能会超过设置的权重。
-    ## auto_tune_sec 表示自动调整的执行间隔，单位为秒。设为 0 表示关闭自动调整。
-    # auto_tune_sec = 5
-
 [flash]
     tidb_status_addr = tidb status 端口地址 # 多个地址以逗号分割
     service_addr =  TiFlash raft 服务 和 coprocessor 服务监听地址
@@ -128,91 +87,54 @@ delta_index_cache_size = 0
     log = pd buddy log 路径
 
 [flash.proxy]
-    addr = proxy 监听地址，不填则默认是 127.0.0.1:20170
-    advertise-addr = 外部访问 addr 的地址，不填则默认是 "addr"
+    addr = proxy 监听地址
+    advertise-addr = 外部访问 addr 的地址，不填则默认是 addr
     data-dir = proxy 数据存储路径
     config = proxy 配置文件路径
     log-file = proxy log 路径
-    log-level = proxy log 级别，默认是 "info"
-    status-addr = 拉取 proxy metrics｜status 信息的监听地址，不填则默认是 127.0.0.1:20292
-    advertise-status-addr = 外部访问 status-addr 的地址，不填则默认是 "status-addr"
+    log-level = proxy log 级别，默认为 "info"
+    status-addr = 拉取 proxy metrics｜status 信息的监听地址
+    advertise-status-addr = 外部访问 status-addr 的地址，不填则默认是 status-addr
 
 [logger]
-    ## log 级别（支持 "trace"、"debug"、"info"、"warn"、"error"），默认是 "debug"
-    level = "debug"
+    level = log 级别（支持 trace、debug、information、warning、error）
     log = TiFlash log 路径
     errorlog = TiFlash error log 路径
-    ## 单个日志文件的大小，默认是 "100M"
-    size = "100M"
-    ## 最多保留日志文件个数，默认是 10
-    count = 10
+    size = 单个日志文件的大小
+    count = 最多保留日志文件个数
 
 [raft]
     pd_addr = pd 服务地址 # 多个地址以逗号隔开
 
 [status]
-    ## Prometheus 拉取 metrics 信息的端口，默认是 8234
-    metrics_port = 8234
+    metrics_port = Prometheus 拉取 metrics 信息的端口
 
 [profiles]
 
 [profiles.default]
-    ## 存储引擎的 segment 分裂是否使用逻辑分裂。使用逻辑分裂可以减小写放大，但是会造成一定程度的硬盘空间回收不及时。默认为 false。
-    ## 在 v6.2.0 以及后续版本，强烈建议保留默认值 `false`，不要将其修改为 `true`。具体请参考已知问题 [#5576](https://github.com/pingcap/tiflash/issues/5576)。
-    # dt_enable_logical_split = false
-
-    ## 单次查询过程中，节点对中间数据的内存限制
-    ## 设置为整数时，单位为 byte，比如 34359738368 表示 32 GiB 的内存限制，0 表示无限制
-    ## 设置为 [0.0, 1.0) 之间的浮点数时，指节点总内存的比值，比如 0.8 表示总内存的 80%，0.0 表示无限制
-    ## 默认值为 0，表示不限制
-    ## 当查询试图申请超过限制的内存时，查询终止执行并且报错
+    ## 存储引擎的 segment 分裂是否使用逻辑分裂。使用逻辑分裂可以减小写放大，提高写入速度，但是会造成一定程度的硬盘空间回收不及时。默认为 true
+    dt_enable_logical_split = true
+    ## 单次 coprocessor 查询过程中，对中间数据的内存限制，单位为 byte，默认为 0，表示不限制
     max_memory_usage = 0
-
-    ## 所有查询过程中，节点对中间数据的内存限制
-    ## 设置为整数时，单位为 byte，比如 34359738368 表示 32 GiB 的内存限制，0 表示无限制
-    ## 设置为 [0.0, 1.0) 之间的浮点数时，指节点总内存的比值，比如 0.8 表示总内存的 80%，0.0 表示无限制
-    ## 默认值为 0.8，表示总内存的 80%
-    ## 当查询试图申请超过限制的内存时，查询终止执行并且报错
-    max_memory_usage_for_all_queries = 0.8
-
-    ## 从 v5.0 引入，表示 TiFlash Coprocessor 最多同时执行的 cop 请求数量。如果请求数量超过了该配置指定的值，多出的请求会排队等待。如果设为 0 或不设置，则使用默认值，即物理核数的两倍。
+    ## 所有查询过程中，对中间数据的内存限制，单位为 byte，默认为 0，表示不限制
+    max_memory_usage_for_all_queries = 0
+    ## 从 v4.0.11 引入，表示 TiFlash Coprocessor 最多同时执行的 cop 请求数量。如果请求数量超过了该配置指定的值，多出的请求会排队等待。如果设为 0 或不设置，则使用默认值，即物理核数的两倍。
     cop_pool_size = 0
-
-    ## 从 v5.0 引入，表示 TiFlash Coprocessor 最多同时执行的 batch 请求数量。如果请求数量超过了该配置指定的值，多出的请求会排队等待。如果设为 0 或不设置，则使用默认值，即物理核数的两倍。
+    ## 从 v4.0.11 引入，表示 TiFlash Coprocessor 最多同时执行的 batch 请求数量。如果请求数量超过了该配置指定的值，多出的请求会排队等待。如果设为 0 或不设置，则使用默认值，即物理核数的两倍。
     batch_cop_pool_size = 0
-
-    ## 从 v6.1 引入，指定 TiFlash 执行来自 TiDB 的 ALTER TABLE ... COMPACT 请求时，能同时并行处理的请求数量。
-    ## 如果这个值没有设置或设为了 0，则会采用默认值（1）。
-    manual_compact_pool_size = 1
-
-    ## 从 v5.4.0 引入，表示是否启用弹性线程池，这项功能可以显著提高 TiFlash 在高并发场景的 CPU 利用率。默认为 true。
-    # enable_elastic_threadpool = true
-
-    ## TiFlash 存储引擎的压缩算法，支持 LZ4、zstd 和 LZ4HC，大小写不敏感。默认使用 LZ4 算法。
-    dt_compression_method = "LZ4"
-
-    ## TiFlash 存储引擎的压缩级别，默认为 1。
-    ## 如果 dt_compression_method 设置为 LZ4，推荐将该值设为 1；
-    ## 如果 dt_compression_method 设置为 zstd，推荐将该值设为 -1 或 1，设置为 -1 的压缩率更小，但是读性能会更好；
-    ## 如果 dt_compression_method 设置为 LZ4HC，推荐将该值设为 9。
-    dt_compression_level = 1
-
-    ## 从 v6.2.0 引入，表示 PageStorage 单个数据文件中有效数据的最低比例。当某个数据文件的有效数据比例低于该值时，会触发 GC 对该文件的数据进行整理。默认为 0.5。
-    dt_page_gc_threshold = 0.5
 
 ## 安全相关配置，从 v4.0.5 开始生效
 [security]
-    ## 从 v5.0 引入，控制是否开启日志脱敏
-    ## 若开启该选项，日志中的用户数据会以 `?` 代替显示
-    ## 注意，tiflash-learner 对应的安全配置选项为 `security.redact-info-log`，需要在 tiflash-learner.toml 中另外开启
-    # redact_info_log = false
-
     ## 包含可信 SSL CA 列表的文件路径。如果你设置了该值，`cert_path` 和 `key_path` 中的路径也需要填写
     # ca_path = "/path/to/ca.pem"
     ## 包含 PEM 格式的 X509 certificate 文件路径
     # cert_path = "/path/to/tiflash-server.pem"
     ## 包含 PEM 格式的 X509 key 文件路径
     # key_path = "/path/to/tiflash-server-key.pem"
+
+    ## 从 v4.0.10 引入。若开启该选项，日志中的用户数据会以 `?` 代替显示
+    ## 注意，tiflash-learner 对应的安全配置选项为 `security.redact-info-log`，需要在 tiflash-learner.toml 中另外开启
+    # redact_info_log = false
 ```
 
 ### 配置文件 tiflash-learner.toml
@@ -220,47 +142,18 @@ delta_index_cache_size = 0
 ```toml
 [server]
     engine-addr = 外部访问 TiFlash coprocessor 服务的地址
-
 [raftstore]
-    ## 处理 Raft 数据落盘的线程池中线程的数量
-    apply-pool-size = 4
-    ## 处理 Raft 的线程池中线程的数量，即 Raftstore 线程池的大小。
-    store-pool-size = 4
     ## 控制处理 snapshot 的线程数，默认为 2。设为 0 则关闭多线程优化
     snap-handle-pool-size = 2
-    ## 控制 raft store 持久化 WAL 的最小间隔。通过适当增大延迟以减少 IOPS 占用，默认为 "4ms"，设为 "0ms" 则关闭该优化。
+    ## 控制 raft store 持久化 WAL 的最小间隔。通过适当增大延迟以减少 IOPS 占用，默认为 4ms，设为 0ms 则关闭该优化。
     store-batch-retry-recv-timeout = "4ms"
-
-[security]
-    ## 从 v5.0 引入，控制是否开启日志脱敏
-    ## 若开启该选项，日志中的用户数据会以 `?` 代替显示
-    ## 默认值为 false
-    redact-info-log = false
-
-[security.encryption]
-    ## 数据文件的加密方法。
-    ## 可选值为 "aes128-ctr"、"aes192-ctr"、"aes256-ctr"、"sm4-ctr" (仅 v6.4.0 及之后版本) 和 "plaintext"。
-    ## 默认值为 "plaintext"，即默认不开启加密功能。选择 "plaintext" 以外的值则表示启用加密功能。此时必须指定主密钥。
-    data-encryption-method = "aes128-ctr"
-    ## 轮换密钥的频率，默认值：`7d`。
-    data-key-rotation-period = "168h" # 7 days
-
-[security.encryption.master-key]
-    ## 指定启用加密时的主密钥。若要了解如何配置主密钥，可以参考《静态加密 - 配置加密》：https://docs.pingcap.com/zh/tidb/dev/encryption-at-rest#配置加密
-
-[security.encryption.previous-master-key]
-    ## 指定轮换新主密钥时的旧主密钥。旧主密钥的配置格式与主密钥相同。若要了解如何配置主密钥，可以参考《静态加密 - 配置加密》：https://docs.pingcap.com/zh/tidb/dev/encryption-at-rest#配置加密
 ```
 
-除以上几项外，其余功能参数和 TiKV 的配置相同。需要注意的是：`key` 为 `engine` 的 `label` 是保留项，不可手动配置。
-
-### 通过拓扑 label 进行副本调度
-
-[TiFlash 设置可用区](/tiflash/create-tiflash-replicas.md#设置可用区)
+除以上几项外，其余功能参数和 TiKV 的配置相同。需要注意的是：`tiflash.toml [flash.proxy]` 中的配置项会覆盖 `tiflash-learner.toml` 中的重合参数；`key` 为 `engine` 的 `label` 是保留项，不可手动配置。
 
 ### 多盘部署
 
-TiFlash 支持单节点多盘部署。如果你的部署节点上有多块硬盘，可以通过以下的方式配置参数，提高节点的硬盘 I/O 利用率。TiUP 中参数配置格式参照[详细 TiFlash 配置模版](https://github.com/pingcap/docs-cn/blob/master/config-templates/complex-tiflash.yaml)。
+TiFlash 支持单节点多盘部署。如果你的部署节点上有多块硬盘，可以通过以下的方式配置参数，提高节点的硬盘 I/O 利用率。TiUP 中参数配置格式参照[详细 TiFlash 配置模版](https://github.com/pingcap/docs-cn/blob/release-4.0/config-templates/complex-tiflash.yaml)。
 
 #### TiDB 集群版本低于 v4.0.9
 
@@ -282,4 +175,5 @@ TiDB v4.0.9 及之后的版本中，TiFlash 支持将存储引擎的主要数据
 
 > **警告：**
 >
-> `[storage]` 参数从 TiUP v1.2.5 版本开始支持。如果你的 TiDB 版本为 v4.0.9 及以上，请确保你的 TiUP 版本不低于 v1.2.5，否则 `[storage]` 中定义的数据目录不会被 TiUP 纳入管理。
+> * `[storage]` 参数从 TiUP v1.2.5 版本开始支持。如果你的 TiDB 版本为 v4.0.9 及以上，请确保你的 TiUP 版本不低于 v1.2.5，否则 `[storage]` 中定义的数据目录不会被 TiUP 纳入管理。
+> * 在 TiFlash 节点改为使用 `[storage]` 配置后，如果将集群版本降级到低于 v4.0.9，可能导致 TiFlash 部分数据丢失。

@@ -1,14 +1,14 @@
 ---
 title: RESTORE
 summary: TiDB 数据库中 RESTORE 的使用概况。
-aliases: ['/docs-cn/dev/sql-statements/sql-statement-restore/']
+aliases: ['/docs-cn/stable/sql-statements/sql-statement-restore/','/docs-cn/v4.0/sql-statements/sql-statement-restore/']
 ---
 
 # RESTORE
 
 `RESTORE` 语句用于执行分布式恢复，把 [`BACKUP` 语句](/sql-statements/sql-statement-backup.md)生成的备份文件恢复到 TiDB 集群中。
 
-`RESTORE` 语句使用的引擎与 [BR](/br/backup-and-restore-overview.md) 相同，但恢复过程是由 TiDB 本身驱动，而非单独的 BR 工具。BR 工具的优势和警告也适用于 `RESTORE` 语句。需要注意的是，**`RESTORE` 语句目前不遵循 ACID 原则**。
+`RESTORE` 语句使用的引擎与 [BR](/br/backup-and-restore-use-cases.md) 相同，但恢复过程是由 TiDB 本身驱动，而非单独的 BR 工具。BR 工具的优势和警告也适用于 `RESTORE` 语句。需要注意的是，**`RESTORE` 语句目前不遵循 ACID 原则**。
 
 执行 `RESTORE` 语句前，确保集群已满足以下要求：
 
@@ -16,13 +16,13 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-restore/']
 * 执行全量恢复时，确保即将恢复的表不存在于集群中，因为现有的数据可能被覆盖，从而导致数据与索引不一致。
 * 执行增量恢复时，表的状态应该与创建备份时 `LAST_BACKUP` 时间戳的状态完全一致。
 
-执行 `RESTORE` 需要 `RESTORE_ADMIN` 或 `SUPER` 权限。此外，执行恢复操作的 TiDB 节点和集群中的所有 TiKV 节点都必须有对目标存储的读权限。
+执行 `RESTORE` 需要 `SUPER` 权限。此外，执行恢复操作的 TiDB 节点和集群中的所有 TiKV 节点都必须有对目标存储的读权限。
 
 `RESTORE` 语句开始执行后将会被阻塞，直到整个恢复任务完成、失败或取消。因此，执行 `RESTORE` 时需要准备一个持久的连接。如需取消任务，可执行 [`KILL TIDB QUERY`](/sql-statements/sql-statement-kill.md) 语句。
 
 一次只能执行一个 `BACKUP` 和 `RESTORE` 任务。如果 TiDB server 上已经在执行一个 `BACKUP` 或 `RESTORE` 语句，新的 `RESTORE` 将等待前面所有的任务完成后再执行。
 
-`RESTORE` 只能在 "tikv" 存储引擎上使用，如果使用 "unistore" 存储引擎，`RESTORE` 操作会失败。
+`RESTORE` 只能在 "tikv" 存储引擎上使用，如果使用 "mocktikv" 存储引擎，`RESTORE` 操作会失败。
 
 ## 语法图
 
@@ -98,17 +98,17 @@ BR 支持从 Amazon S3 或 Google Cloud Storage (GCS) 恢复数据：
 {{< copyable "sql" >}}
 
 ```sql
-RESTORE DATABASE * FROM 's3://example-bucket-2020/backup-05/';
+RESTORE DATABASE * FROM 's3://example-bucket-2020/backup-05/?region=us-west-2';
 ```
 
-有关详细的 URL 语法，见[外部存储 URI 格式](/br/backup-and-restore-storages.md#uri-格式)。
+有关详细的 URL 语法，见[外部存储](/br/backup-and-restore-storages.md)。
 
 当运行在云环境中时，不能分发凭证，可设置 `SEND_CREDENTIALS_TO_TIKV` 选项为 `FALSE`：
 
 {{< copyable "sql" >}}
 
 ```sql
-RESTORE DATABASE * FROM 's3://example-bucket-2020/backup-05/'
+RESTORE DATABASE * FROM 's3://example-bucket-2020/backup-05/?region=us-west-2'
     SEND_CREDENTIALS_TO_TIKV = FALSE;
 ```
 

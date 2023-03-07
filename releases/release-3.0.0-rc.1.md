@@ -1,6 +1,6 @@
 ---
 title: TiDB 3.0.0-rc.1 Release Notes
-aliases: ['/docs-cn/dev/releases/release-3.0.0-rc.1/','/docs-cn/dev/releases/3.0.0-rc.1/']
+aliases: ['/docs-cn/stable/releases/release-3.0.0-rc.1/','/docs-cn/v4.0/releases/release-3.0.0-rc.1/','/docs-cn/stable/releases/3.0.0-rc.1/','/docs/v4.0/releases/3.0.0-rc.1/']
 ---
 
 # TiDB 3.0.0-rc.1 Release Notes
@@ -100,7 +100,7 @@ TiDB Ansible 版本：3.0.0-rc.1
     - 新增 batch 聚合框架 [#4533](https://github.com/tikv/tikv/pull/4533)
     - 新增 `BatchSelectionExecutor` [#4562](https://github.com/tikv/tikv/pull/4562)
     - 实现 batch aggression function `AVG` [#4570](https://github.com/tikv/tikv/pull/4570)
-    - 实现 RPN function `LogicalAnd` [#4575](https://github.com/tikv/tikv/pull/4575)
+    - 实现  RPN function `LogicalAnd` [#4575](https://github.com/tikv/tikv/pull/4575)
 + Misc
     - 支持选用 tcmalloc 为内存分配器 [#4370](https://github.com/tikv/tikv/pull/4370)
 
@@ -119,7 +119,7 @@ TiDB Ansible 版本：3.0.0-rc.1
     - Importer 支持 upload SST 到 TiKV 限速 [#4412](https://github.com/tikv/tikv/pull/4412)
     - Lightning 优化导入表的顺序，按照表的数据大小顺序进行导入，减少导入过程中大表执行 checksum 和 Analyze 对集群的影响，并且提高 Checksum 和 Analyze 的成功率 [#156](https://github.com/pingcap/tidb-lightning/pull/156)
     - 提升 Lightning encode SQL 性能，性能提升 50%，直接解析数据源文件内容成 TiDB 的 types.Datum，省去 KV encoder 的多余解析工作 [#145](https://github.com/pingcap/tidb-lightning/pull/145)
-    - 日志格式改为 Unified Log Format [#162](https://github.com/pingcap/tidb-lightning/pull/162)
+    - 日志格式改为 [Unified Log Format](https://github.com/tikv/rfcs/blob/master/text/2018-12-19-unified-log-format.md) [#162](https://github.com/pingcap/tidb-lightning/pull/162)
     - 新增一些命令行选项，即使缺少配置文件也能使用。[#157](https://github.com/pingcap/tidb-lightning/pull/157)
 + 数据同步对比工具 (sync-diff-inspector)
     - 支持 checkpoint，记录校验状态，重启后从上次进度继续校验 [#224](https://github.com/pingcap/tidb-tools/pull/224)

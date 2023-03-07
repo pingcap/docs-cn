@@ -1,6 +1,6 @@
 ---
 title: TiDB RC2 Release Notes
-aliases: ['/docs-cn/dev/releases/release-rc.2/','/docs-cn/dev/releases/rc2/']
+aliases: ['/docs-cn/stable/releases/release-rc.2/','/docs-cn/v4.0/releases/release-rc.2/','/docs-cn/stable/releases/rc2/']
 ---
 
 # TiDB RC2 Release Notes
@@ -25,7 +25,7 @@ aliases: ['/docs-cn/dev/releases/release-rc.2/','/docs-cn/dev/releases/rc2/']
 + 支持 Rename Table 语句
 + 限制单个事务大小，避免大事务阻塞整个集群
 + Load Data 过程中对数据进行自动拆分
-+ 优化 AddIndex、Delete 语句性能
++ 优化  AddIndex、Delete 语句性能
 + 支持 "ANSI_QUOTES" sql_mode
 + 完善监控
 + 修复 Bug
@@ -43,7 +43,7 @@ aliases: ['/docs-cn/dev/releases/release-rc.2/','/docs-cn/dev/releases/rc2/']
 
 ## TiKV
 
-+ 支持 Async Apply 提升整体写入性能
++ 支持 Async Apply  提升整体写入性能
 + 使用 prefix seek 提升 Write CF 的读取性能
 + 使用 memory hint prefix 提升 Raft CF 插入性能
 + 优化单行读事务性能

@@ -1,6 +1,6 @@
 ---
 title: TiDB 4.0 RC.1 Release Notes
-aliases: ['/docs-cn/dev/releases/release-4.0.0-rc.1/','/docs-cn/dev/releases/4.0.0-rc.1/']
+aliases: ['/docs-cn/stable/releases/release-4.0.0-rc.1/','/docs-cn/v4.0/releases/release-4.0.0-rc.1/','/docs-cn/stable/releases/4.0.0-rc.1/']
 ---
 
 # TiDB 4.0 RC.1 Release Notes
@@ -78,7 +78,7 @@ TiDB 版本：4.0.0-rc.1
 
 + TiFlash
 
-    - 添加 DeltaTree 引擎读写负载相关 metrics 上报
+    - 添加 DeltaTree 引擎读写负载相关 metrics上报
     - 缓存 `handle` 列和 `version` 列减小单次读请求的磁盘 I/O
     - 增加了 TiFlash 对于 `FromUnixTime` 和 `Date_format` 函数的支持
     - 根据第一块盘估算全局状态并上报

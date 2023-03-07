@@ -1,6 +1,6 @@
 ---
 title: TiDB Binlog 常见问题
-aliases: ['/docs-cn/dev/tidb-binlog/tidb-binlog-faq/','/docs-cn/dev/reference/tidb-binlog/faq/','/docs-cn/dev/faq/tidb-binlog/','/docs-cn/dev/reference/tools/tidb-binlog/faq/']
+aliases: ['/docs-cn/stable/tidb-binlog/tidb-binlog-faq/','/docs-cn/v4.0/tidb-binlog/tidb-binlog-faq/','/docs-cn/stable/reference/tidb-binlog/faq/','/docs-cn/stable/reference/tools/tidb-binlog/faq/']
 ---
 
 # TiDB Binlog 常见问题
@@ -30,7 +30,6 @@ Drainer 同步帐号需要有如下权限：
 * Execute
 * Index
 * Select
-* Create View
 
 ## Pump 磁盘快满了怎么办？
 

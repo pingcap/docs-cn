@@ -1,7 +1,7 @@
 ---
 title: 三节点混合部署最佳实践
 summary: 了解三节点混合部署最佳实践。
-aliases: ['/docs-cn/dev/best-practices/three-nodes-hybrid-deployment/']
+aliases: ['/docs-cn/stable/best-practices/three-nodes-hybrid-deployment/','/docs-cn/v4.0/best-practices/three-nodes-hybrid-deployment/']
 ---
 
 # 三节点混合部署的最佳实践
@@ -45,6 +45,7 @@ tikv:
     rocksdb.rate-bytes-per-sec: “200M”
 
   tidb:
+    performance.committer-concurrency: 4
     performance.max-procs: 8
 ```
 
@@ -108,7 +109,7 @@ RocksDB 线程池是进行 Compact 和 Flush 任务的线程池，默认大小�
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup ctl:v<CLUSTER_VERSION> tikv --host=${ip:port} modify-tikv-config -n gc.max_write_bytes_per_sec -v ${limit}
+tiup ctl:<cluster-version> tikv --host=${ip:port} modify-tikv-config -n gc.max_write_bytes_per_sec -v ${limit}
 ```
 
 > **注意：**

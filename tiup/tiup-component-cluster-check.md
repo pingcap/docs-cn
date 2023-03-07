@@ -22,11 +22,7 @@ title: tiup cluster check
 
 ### 系统时间
 
-检查部署机系统时间是否同步：将部署机系统时间与中控机对比，偏差超出某一阈值（500ms）后报错。
-
-### 系统时区
-
-检查部署机系统时区是否同步：将部署机系统的时区配置进行对比，如果时区不一致则报错。
+检查部署器系统时间是否同步：将部署机系统时间与中控机对比，偏差超出某一阈值（500ms）后报错。
 
 ### 时间同步服务
 
@@ -121,9 +117,7 @@ title: tiup cluster check
 tiup cluster check <topology.yml | cluster-name> [flags]
 ```
 
-- 若集群尚未部署，需要传递将用于部署集群的 [topology.yml](/tiup/tiup-cluster-topology-reference.md) 文件，tiup-cluster 会根据该文件的内容连接到对应机器去检查。
-- 若集群已经部署，则可以使用集群的名字 `<cluster-name>` 作为检查对象。
-- 如果需要检查已部署集群的扩容拓扑文件，可以将 `<scale-out.yml>` 和 `<cluster-name>` 作为检查对象。
+若集群尚未部署，需要传递将用于部署集群的 [topology.yml](/tiup/tiup-cluster-topology-reference.md) 文件，tiup-cluster 会根据该文件的内容连接到对应机器去检查。若集群已经部署，则可以使用集群的名字 `<cluster-name>` 作为检查对象。
 
 > **注意：**
 >
@@ -145,34 +139,17 @@ tiup cluster check <topology.yml | cluster-name> [flags]
 - 数据类型：`BOOLEAN`
 - 该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
 
-> **注意：**
->
-> `tiup cluster check` 也支持修复已部署集群的扩容拓扑文件，命令格式：
->
->```shell
-> tiup cluster check <cluster-name> scale-out.yaml --cluster --apply --user root [-p] [-i /home/root/.ssh/gcp_rsa]
->```
-
 ### --cluster
 
-- 对已部署的集群进行检查。
-- 数据类型：`BOOLEAN`
-- 默认值：`false`
-- 在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
-- 命令格式：
+tiup-cluster 支持对未部署的集群进行检查，也支持对已部署的集群进行检查，命令格式：
 
-    ```shell
-    tiup cluster check <topology.yml | cluster-name> --cluster [flags]
-    ```
+```shell
+tiup cluster check <topology.yml | cluster-name> [flags]
+```
 
-> **注意：**
->
-> - 若选择的格式为 `tiup cluster check <cluster-name>`，则必须加上该选项：`tiup cluster check <cluster-name> --cluster`。
-> - `tiup cluster check` 也支持检查已部署集群的扩容拓扑文件，命令格式：
->
->    ```shell
->     tiup cluster check <cluster-name> scale-out.yaml --cluster --user root [-p] [-i /home/root/.ssh/gcp_rsa]
->    ```
+若选择的格式为 `tiup cluster check <cluster-name>` 则必须加上该选项：`tiup cluster check <cluster-name> --cluster`。
+
+该选项的数据类型为 `BOOLEAN`。该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
 
 ### -N, --node
 

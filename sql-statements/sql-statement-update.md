@@ -1,7 +1,7 @@
 ---
 title: UPDATE
 summary: TiDB 数据库中 UPDATE 的使用概况。
-aliases: ['/docs-cn/dev/sql-statements/sql-statement-update/','/docs-cn/dev/reference/sql/statements/update/']
+aliases: ['/docs-cn/stable/sql-statements/sql-statement-update/','/docs-cn/v4.0/sql-statements/sql-statement-update/','/docs-cn/stable/reference/sql/statements/update/']
 ---
 
 # UPDATE
@@ -104,7 +104,17 @@ SELECT * FROM t1;
 
 ## MySQL 兼容性
 
-`UPDATE` 语句与 MySQL 完全兼容。如发现任何兼容性差异，请在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues/new/choose)。
+在计算表达式中的列时，TiDB 总使用原始的值。例如：
+
+```sql
+CREATE TABLE t (a int, b int);
+INSERT INTO t VALUES (1,2);
+UPDATE t SET a = a+1,b=a;
+```
+
+在 MySQL 中，`b` 列的值会被更新成 2，因为 `b` 列被设置为与 `a` 列相同，而 `a`（最初是 1）在同一条语句中被更新成了 2。
+
+TiDB 遵守标准的 SQL 行为，这里将 `b` 列值更新成 1。
 
 ## 另请参阅
 

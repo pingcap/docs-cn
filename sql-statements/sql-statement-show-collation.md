@@ -1,7 +1,7 @@
 ---
 title: SHOW COLLATION
 summary: TiDB 数据库中 SHOW COLLATION 的使用概况。
-aliases: ['/docs-cn/dev/sql-statements/sql-statement-show-collation/','/docs-cn/dev/reference/sql/statements/show-collation/']
+aliases: ['/docs-cn/stable/sql-statements/sql-statement-show-collation/','/docs-cn/v4.0/sql-statements/sql-statement-show-collation/','/docs-cn/stable/reference/sql/statements/show-collation/']
 ---
 
 # SHOW COLLATION
@@ -57,17 +57,13 @@ SHOW COLLATION;
 +--------------------+---------+------+---------+----------+---------+
 | ascii_bin          | ascii   |   65 | Yes     | Yes      |       1 |
 | binary             | binary  |   63 | Yes     | Yes      |       1 |
-| gbk_bin            | gbk     |   87 |         | Yes      |       1 |
-| gbk_chinese_ci     | gbk     |   28 | Yes     | Yes      |       1 |
 | latin1_bin         | latin1  |   47 | Yes     | Yes      |       1 |
 | utf8_bin           | utf8    |   83 | Yes     | Yes      |       1 |
 | utf8_general_ci    | utf8    |   33 |         | Yes      |       1 |
-| utf8_unicode_ci    | utf8    |  192 |         | Yes      |       1 |
 | utf8mb4_bin        | utf8mb4 |   46 | Yes     | Yes      |       1 |
 | utf8mb4_general_ci | utf8mb4 |   45 |         | Yes      |       1 |
-| utf8mb4_unicode_ci | utf8mb4 |  224 |         | Yes      |       1 |
 +--------------------+---------+------+---------+----------+---------+
-11 rows in set (0.001 sec)
+7 rows in set (0.00 sec)
 ```
 
 ## MySQL 兼容性

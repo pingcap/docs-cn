@@ -22,15 +22,11 @@ RoleSpec ::=
 
 ## 示例
 
-以 `root` 用户连接 TiDB：
-
-```shell
-mysql -h 127.0.0.1 -P 4000 -u root
-```
-
 创建新角色 `analyticsteam` 和新用户 `jennifer`：
 
 ```sql
+$ mysql -uroot
+
 CREATE ROLE analyticsteam;
 Query OK, 0 rows affected (0.02 sec)
 
@@ -44,15 +40,11 @@ GRANT analyticsteam TO jennifer;
 Query OK, 0 rows affected (0.01 sec)
 ```
 
-以 `jennifer` 用户连接 TiDB：
-
-```shell
-mysql -h 127.0.0.1 -P 4000 -u jennifer
-```
-
-需要注意的是，默认情况下，用户 `jennifer` 需要执行 `SET ROLE analyticsteam` 语句才能使用与 `analyticsteam` 角色相关联的权限：
+需要注意的是，默认情况下，用户 `jennifer` 需要执行 `SET ROLE analyticsteam` 语句才能使用与角色相关联的权限：
 
 ```sql
+$ mysql -ujennifer
+
 SHOW GRANTS;
 +---------------------------------------------+
 | Grants for User                             |
@@ -72,7 +64,7 @@ SHOW GRANTS;
 | Grants for User                             |
 +---------------------------------------------+
 | GRANT USAGE ON *.* TO 'jennifer'@'%'        |
-| GRANT SELECT ON test.* TO 'jennifer'@'%'    |
+| GRANT Select ON test.* TO 'jennifer'@'%'    |
 | GRANT 'analyticsteam'@'%' TO 'jennifer'@'%' |
 +---------------------------------------------+
 3 rows in set (0.00 sec)
@@ -86,34 +78,24 @@ SHOW TABLES IN test;
 1 row in set (0.00 sec)
 ```
 
-以 `root` 用户连接 TiDB：
-
-```shell
-mysql -h 127.0.0.1 -P 4000 -u root
-```
-
-执行 `SET DEFAULT ROLE` 语句将用户 `jennifer` 与 `analyticsteam` 角色相关联：
+执行 `SET DEFAULT ROLE` 语句将用户 `jennifer` 与某一角色相关联，这样该用户无需执行 `SET ROLE` 语句就能拥有与角色相关联的权限。
 
 ```sql
+$ mysql -uroot
+
 SET DEFAULT ROLE analyticsteam TO jennifer;
 Query OK, 0 rows affected (0.02 sec)
 ```
 
-以 `jennifer` 用户连接 TiDB：
-
-```shell
-mysql -h 127.0.0.1 -P 4000 -u jennifer
-```
-
-此时 `jennifer` 用户无需执行 `SET ROLE` 语句就能拥有 `analyticsteam` 角色相关联的权限：
-
 ```sql
+$ mysql -ujennifer
+
 SHOW GRANTS;
 +---------------------------------------------+
 | Grants for User                             |
 +---------------------------------------------+
 | GRANT USAGE ON *.* TO 'jennifer'@'%'        |
-| GRANT SELECT ON test.* TO 'jennifer'@'%'    |
+| GRANT Select ON test.* TO 'jennifer'@'%'    |
 | GRANT 'analyticsteam'@'%' TO 'jennifer'@'%' |
 +---------------------------------------------+
 3 rows in set (0.00 sec)

@@ -1,7 +1,7 @@
 ---
 title: CREATE TABLE LIKE
 summary: TiDB 数据库中 CREATE TABLE LIKE 的使用概况。
-aliases: ['/docs-cn/dev/sql-statements/sql-statement-create-table-like/','/docs-cn/dev/reference/sql/statements/create-table-like/']
+aliases: ['/docs-cn/stable/sql-statements/sql-statement-create-table-like/','/docs-cn/v4.0/sql-statements/sql-statement-create-table-like/','/docs-cn/stable/reference/sql/statements/create-table-like/']
 ---
 
 # CREATE TABLE LIKE
@@ -12,17 +12,11 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-create-table-like/','/docs-
 
 ```ebnf+diagram
 CreateTableLikeStmt ::=
-    'CREATE' OptTemporary 'TABLE' IfNotExists TableName LikeTableWithOrWithoutParen OnCommitOpt
-
-OptTemporary ::=
-    ( 'TEMPORARY' | ('GLOBAL' 'TEMPORARY') )?
+    'CREATE' OptTemporary 'TABLE' IfNotExists TableName LikeTableWithOrWithoutParen
 
 LikeTableWithOrWithoutParen ::=
     'LIKE' TableName
 |   '(' 'LIKE' TableName ')'
-
-OnCommitOpt ::=
-    ('ON' 'COMMIT' 'DELETE' 'ROWS')?
 ```
 
 ## 示例

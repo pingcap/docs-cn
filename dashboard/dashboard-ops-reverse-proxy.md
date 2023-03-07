@@ -1,6 +1,6 @@
 ---
 title: 通过反向代理使用 TiDB Dashboard
-aliases: ['/docs-cn/dev/dashboard/dashboard-ops-reverse-proxy/']
+aliases: ['/docs-cn/stable/dashboard/dashboard-ops-reverse-proxy/','/docs-cn/v4.0/dashboard/dashboard-ops-reverse-proxy/']
 ---
 
 # 通过反向代理使用 TiDB Dashboard
@@ -11,7 +11,7 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-ops-reverse-proxy/']
 
 ### 第 1 步：获取实际 TiDB Dashboard 地址
 
-当集群中部署有多个 PD 实例时，其中仅有一个 PD 实例会真正运行 TiDB Dashboard，因此需要确保反向代理的上游 (Upstream) 指向了正确的地址。关于该机制的详情，可参阅 [TiDB Dashboard 多 PD 实例部署](/dashboard/dashboard-ops-deploy.md#多-pd-实例部署)章节。
+当集群中部署有多个 PD 实例时，其中仅有一个 PD 实例会真正运行 TiDB Dashboard，因此需要确保反向代理的上游 (Upstream) 指向了正确的地址。关于该机制的详情，可参阅 [TiDB Dashboard 多 PD 实例部署](/dashboard/dashboard-ops-deploy.md#多-pd-实例部署) 章节。
 
 使用 TiUP 部署工具时，操作命令如下（将 `CLUSTER_NAME` 替换为集群名称）：
 
@@ -66,7 +66,7 @@ http://192.168.0.123:2379/dashboard/
 
 2. 重启 HAProxy，以使配置生效。
 
-3. 测试反向代理是否生效：访问 HAProxy 所在机器的 8033 端口下 `/dashboard/` 地址，如 <http://example.com:8033/dashboard/>，即可访问 TiDB Dashboard。
+3. 测试反向代理是否生效：访问 HAProxy 所在机器的 8033 端口下 `/dashboard/` 地址，如 <http://example.com:8033/dashboard/> ，即可访问 TiDB Dashboard。
 
 </details>
 
@@ -98,7 +98,7 @@ http://192.168.0.123:2379/dashboard/
    sudo nginx -s reload
    ```
 
-3. 测试反向代理是否生效：访问 NGINX 所在机器的 8033 端口下 `/dashboard/` 地址，如 `http://example.com:8033/dashboard/`，即可访问 TiDB Dashboard。
+3. 测试反向代理是否生效：访问 NGINX 所在机器的 8033 端口下 `/dashboard/` 地址，如 `http://example.com:8033/dashboard/` ，即可访问 TiDB Dashboard。
 
 </details>
 
@@ -121,7 +121,7 @@ server_configs:
 <details>
   <summary>使用 TiUP 部署全新集群时修改配置</summary>
 
-若要全新部署集群，可在 TiUP 拓扑文件 `topology.yaml` 中加入上述配置项后进行部署，具体步骤参阅 [TiUP 部署文档](/production-deployment-using-tiup.md#第-3-步初始化集群拓扑文件)。
+若要全新部署集群，可在 TiUP 拓扑文件 `topology.yaml` 中加入上述配置项后进行部署，具体步骤参阅 [TiUP 部署文档](/production-deployment-using-tiup.md#第-3-步编辑初始化配置文件)。
 
 </details>
 
@@ -247,7 +247,7 @@ server {
 
 > **警告：**
 >
-> 请务必保留 `proxy_pass` 指令中的 `/dashboard/` 路径，确保只有该路径下的服务会被反向代理，否则将引入安全风险。参见[提高 TiDB Dashboard 安全性](/dashboard/dashboard-ops-security.md)。
+> 请务必保留 `proxy_pass` 指令中的 `/dashboard/` 路径，确保只有该路径下的服务会被反向代理，否则将引入安全风险。参见 [提高 TiDB Dashboard 安全性](/dashboard/dashboard-ops-security.md)。
 
 若希望运行在根路径（如 `http://example.com:8033/`），NGINX 配置为：
 

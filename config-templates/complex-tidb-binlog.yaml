@@ -16,9 +16,9 @@ monitored:
 
 # # Server configs are used to specify the runtime configuration of TiDB components.
 # # All configuration items can be found in TiDB docs:
-# # - TiDB: https://docs.pingcap.com/zh/tidb/stable/tidb-configuration-file
-# # - TiKV: https://docs.pingcap.com/zh/tidb/stable/tikv-configuration-file
-# # - PD: https://docs.pingcap.com/zh/tidb/stable/pd-configuration-file
+# # - TiDB: https://pingcap.com/docs/stable/reference/configuration/tidb-server/configuration-file/
+# # - TiKV: https://pingcap.com/docs/stable/reference/configuration/tikv-server/configuration-file/
+# # - PD: https://pingcap.com/docs/stable/reference/configuration/pd-server/configuration-file/
 # # All configuration items use points to represent the hierarchy, e.g:
 # #   readpool.storage.use-unified-pool
 # #      
@@ -92,35 +92,35 @@ pump_servers:
   - host: 10.0.1.1
     ssh_port: 22
     port: 8250
-    deploy_dir: "/tidb-deploy/pump-8250"
-    data_dir: "/tidb-data/pump-8250"
+    deploy_dir: "/tidb-deploy/pump-8249"
+    data_dir: "/tidb-data/pump-8249"
     # The following configs are used to overwrite the `server_configs.pump` values.
     config:
       gc: 7
   - host: 10.0.1.2
     ssh_port: 22
     port: 8250
-    deploy_dir: "/tidb-deploy/pump-8250"
-    data_dir: "/tidb-data/pump-8250"
+    deploy_dir: "/tidb-deploy/pump-8249"
+    data_dir: "/tidb-data/pump-8249"
     # The following configs are used to overwrite the `server_configs.pump` values.
     config:
       gc: 7
   - host: 10.0.1.3
     ssh_port: 22
     port: 8250
-    deploy_dir: "/tidb-deploy/pump-8250"
-    data_dir: "/tidb-data/pump-8250"
+    deploy_dir: "/tidb-deploy/pump-8249"
+    data_dir: "/tidb-data/pump-8249"
     # The following configs are used to overwrite the `server_configs.pump` values.
     config:
       gc: 7
 drainer_servers:
   - host: 10.0.1.12
     port: 8249
-    deploy_dir: "/tidb-deploy/drainer-8249"
     data_dir: "/tidb-data/drainer-8249"
     # If drainer doesn't have a checkpoint, use initial commitTS as the initial checkpoint.
     # Will get a latest timestamp from pd if commit_ts is set to -1 (the default value).
     commit_ts: -1
+    deploy_dir: "/tidb-deploy/drainer-8249"
     # The following configs are used to overwrite the `server_configs.drainer` values.
     config:
       syncer.db-type: "tidb"

@@ -1,7 +1,7 @@
 ---
 title: BEGIN
 summary: TiDB 数据库中 BEGIN 的使用概况。
-aliases: ['/docs-cn/dev/sql-statements/sql-statement-begin/','/docs-cn/dev/reference/sql/statements/begin/']
+aliases: ['/docs-cn/stable/sql-statements/sql-statement-begin/','/docs-cn/v4.0/sql-statements/sql-statement-begin/','/docs-cn/stable/reference/sql/statements/begin/']
 ---
 
 # BEGIN
@@ -70,4 +70,4 @@ TiDB 支持 `BEGIN PESSIMISTIC` 或 `BEGIN OPTIMISTIC` 的语法扩展，用户�
 * [ROLLBACK](/sql-statements/sql-statement-rollback.md)
 * [START TRANSACTION](/sql-statements/sql-statement-start-transaction.md)
 * [TiDB 乐观事务模型](/optimistic-transaction.md)
-* [TiDB 悲观事务模式](/pessimistic-transaction.md)
+* [TiDB 悲观事务模型](/pessimistic-transaction.md)

@@ -1,6 +1,6 @@
 ---
 title: TiDB Sysbench 性能对比测试报告 - v4.0 对比 v3.0
-aliases: ['/docs-cn/dev/benchmark/benchmark-sysbench-v4-vs-v3/']
+aliases: ['/docs-cn/stable/benchmark/benchmark-sysbench-v4-vs-v3/','/docs-cn/v4.0/benchmark/benchmark-sysbench-v4-vs-v3/']
 ---
 
 # TiDB Sysbench 性能对比测试报告 - v4.0 对比 v3.0
@@ -9,7 +9,7 @@ aliases: ['/docs-cn/dev/benchmark/benchmark-sysbench-v4-vs-v3/']
 
 测试对比 TiDB v4.0 和 v3.0 在 OLTP 场景下的性能。
 
-## 测试环境 (AWS EC2)
+## 测试环境 (AWS EC2）
 
 ### 硬件配置
 
@@ -80,6 +80,7 @@ raftstore.apply-pool-size: 3
 rocksdb.max-background-jobs: 3
 raftdb.max-background-jobs: 3
 raftdb.allow-concurrent-memtable-write: true
+server.request-batch-enable-cross-command: false
 server.grpc-concurrency: 6
 readpool.unified.min-thread-count: 5
 readpool.unified.max-thread-count: 20

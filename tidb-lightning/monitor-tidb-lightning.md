@@ -1,6 +1,6 @@
 ---
 title: TiDB Lightning 监控告警
-aliases: ['/docs-cn/dev/tidb-lightning/monitor-tidb-lightning/','/docs-cn/dev/reference/tools/tidb-lightning/monitor/']
+aliases: ['/docs-cn/stable/tidb-lightning/monitor-tidb-lightning/','/docs-cn/v4.0/tidb-lightning/monitor-tidb-lightning/','/docs-cn/stable/reference/tools/tidb-lightning/monitor/']
 ---
 
 # TiDB Lightning 监控告警
@@ -9,7 +9,8 @@ aliases: ['/docs-cn/dev/tidb-lightning/monitor-tidb-lightning/','/docs-cn/dev/re
 
 ## 监控配置
 
-如果是手动部署 TiDB Lightning，则参照以下步骤进行配置。
+- 如果是使用 TiDB Ansible 部署 TiDB Lightning，只要将服务器地址加到 `inventory.ini` 文件里的 `[monitored_servers]` 部分即可。
+- 如果是手动部署 TiDB Lightning，则参照以下步骤进行配置。
 
 只要 Prometheus 能发现 `tidb-lightning` 和 `tikv-importer` 的监控地址，就能收集对应的监控指标。
 
@@ -40,7 +41,7 @@ scrape_configs:
   - job_name: 'lightning'
     static_configs:
       - targets: ['192.168.20.10:8289']
-  - job_name: 'tikv-importer'
+  - job_name: 'tikv-importer
     static_configs:
       - targets: ['192.168.20.9:8286']
 ```
@@ -48,6 +49,10 @@ scrape_configs:
 ## Grafana 面板
 
 [Grafana](https://grafana.com/) 的可视化面板可以让你在网页上监控 Prometheus 指标。
+
+使用 TiDB Ansible 部署 TiDB 集群时，会同时部署一套 Grafana + Prometheus 的监控系统。
+
+如果使用其他方式部署 TiDB Lightning，需先导入[面板的 JSON 文件](https://raw.githubusercontent.com/pingcap/tidb-ansible/master/scripts/lightning.json)。
 
 ### 第一行：速度面板
 

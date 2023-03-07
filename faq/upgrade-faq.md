@@ -1,7 +1,7 @@
 ---
 title: 升级与升级后常见问题
 summary: TiDB 升级与升级后的常见问题与解决办法。
-aliases: ['/docs-cn/dev/faq/upgrade-faq/','/docs-cn/dev/faq/upgrade/']
+aliases: ['/docs-cn/stable/faq/upgrade-faq/','/docs-cn/v4.0/faq/upgrade-faq/','/docs-cn/stable/faq/upgrade/']
 ---
 
 # 升级与升级后常见问题
@@ -12,19 +12,13 @@ aliases: ['/docs-cn/dev/faq/upgrade-faq/','/docs-cn/dev/faq/upgrade/']
 
 本小节列出了 TiDB 升级相关的常见问题与解决办法。
 
-### 滚动升级有那些影响？
+### 滚动升级有那些影响?
 
-滚动升级 TiDB 期间，业务运行会受到一定影响。因此，不建议在业务高峰期进行滚动升级。需要配置最小集群拓扑 (TiDB \* 2、PD \* 3、TiKV \* 3)，如果集群环境中有 Pump 和 Drainer 服务，建议先停止 Drainer，然后滚动升级（升级 TiDB 时会升级 Pump）。
-
-### 集群在执行 DDL 请求期间可以进行升级操作吗？
-
-集群中有 DDL 语句正在被执行时（通常为 `ADD INDEX` 和列类型变更等耗时较久的 DDL 语句），**请勿进行**升级操作。在升级前，建议使用 [`ADMIN SHOW DDL`](/sql-statements/sql-statement-admin-show-ddl.md) 命令查看集群中是否有正在进行的 DDL Job。如需升级，请等待 DDL 执行完成或使用 [`ADMIN CANCEL DDL`](/sql-statements/sql-statement-admin-cancel-ddl.md) 命令取消该 DDL Job 后再进行升级。
-
-另外，在升级 TiDB 集群的过程中，**请勿执行**  DDL 语句，否则可能会出现行为未定义的问题。
+滚动升级 TiDB 服务，滚动升级期间不影响业务运行。需要配置最小集群拓扑（TiDB \* 2、PD \* 3、TiKV \* 3），如果集群环境中有 Pump 和 Drainer 服务，建议先停止 Drainer，然后滚动升级（升级 TiDB 时会升级 Pump）。
 
 ### Binary 如何升级？
 
-不推荐使用 Binary 来升级集群。建议[使用 TiUP 升级 TiDB](/upgrade-tidb-using-tiup.md) 进行升级，确保分布式系统版本一致性和兼容性。
+Binary 不是建议的安装方式，对升级支持也不友好，建议换成 [TiUP 部署](/production-deployment-using-tiup.md)。
 
 ## 升级后常见问题
 
@@ -102,7 +96,7 @@ alter table t change column a a varchar(22) character set utf8;
     curl "http://$IP:10080/schema/test/t" | python -m json.tool
     ```
 
-    这里用了 python 的格式化 json 的工具，也可以不加，此处只是为了方便注释。
+    这里用了 python 的格式化 json的工具，也可以不加，此处只是为了方便注释。
 
     ```json
     {
@@ -219,7 +213,7 @@ alter table t change column a a varchar(22) character set utf8;
 
 #### `ERROR 1366 (HY000): incorrect utf8 value f09f8c80(🌀) for column a`
 
-TiDB 在 v2.1.1 及之前版本中，如果 charset 是 UTF8，没有对 4-byte 的插入数据进行 UTF8 Unicode encoding 检查。在 `v2.1.2` 及之后版本中，添加了该检查。
+TiDB 在 v2.1.1 及之前版本中，如果 charset 是 UTF8，没有对 4-byte 的插入数据进行 UTF8 Unicode encoding 检查。在v2.1.2 及之后版本中，添加了该检查。
 
 - 升级前：v2.1.1 及之前版本
 

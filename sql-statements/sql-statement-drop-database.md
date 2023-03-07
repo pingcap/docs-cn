@@ -1,12 +1,12 @@
 ---
 title: DROP DATABASE
 summary: TiDB 数据库中 DROP DATABASE 的使用概况。
-aliases: ['/docs-cn/dev/sql-statements/sql-statement-drop-database/','/docs-cn/dev/reference/sql/statements/drop-database/']
+aliases: ['/docs-cn/stable/sql-statements/sql-statement-drop-database/','/docs-cn/v4.0/sql-statements/sql-statement-drop-database/','/docs-cn/stable/reference/sql/statements/drop-database/']
 ---
 
 # DROP DATABASE
 
-`DROP DATABASE` 语句用于永久删除指定的数据库，以及删除所有在 schema 中创建的表和视图。与被删数据库相关联的用户权限不受影响。
+`DROP DATABASE` 语句用于永久删除指定的数据库 schema，以及删除所有在 schema 中创建的表和视图。与被删数据库相关联的用户权限不受影响。
 
 ## 语法图
 

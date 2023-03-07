@@ -1,7 +1,7 @@
 ---
 title: SHOW BUILTINS
 summary: TiDB 数据库中 SHOW BUILTINS 的使用概况。
-aliases: ['/docs-cn/dev/sql-statements/sql-statement-show-builtins/']
+aliases: ['/docs-cn/stable/sql-statements/sql-statement-show-builtins/','/docs-cn/v4.0/sql-statements/sql-statement-show-builtins/']
 ---
 
 # SHOW BUILTINS
@@ -243,7 +243,6 @@ SHOW BUILTINS;
 | sign                        |
 | sin                         |
 | sleep                       |
-| sm3                         |
 | space                       |
 | sqrt                        |
 | str_to_date                 |

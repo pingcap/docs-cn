@@ -1,16 +1,16 @@
 ---
 title: BACKUP
 summary: TiDB 数据库中 BACKUP 的使用概况。
-aliases: ['/docs-cn/dev/sql-statements/sql-statement-backup/']
+aliases: ['/docs-cn/stable/sql-statements/sql-statement-backup/','/docs-cn/v4.0/sql-statements/sql-statement-backup/']
 ---
 
 # BACKUP
 
 `BACKUP` 语句用于对 TiDB 集群执行分布式备份操作。
 
-`BACKUP` 语句使用的引擎与 [BR](/br/backup-and-restore-overview.md) 相同，但备份过程是由 TiDB 本身驱动，而非单独的 BR 工具。BR 工具的优势和警告也适用于 `BACKUP` 语句。
+`BACKUP` 语句使用的引擎与 [BR](/br/backup-and-restore-use-cases.md) 相同，但备份过程是由 TiDB 本身驱动，而非单独的 BR 工具。BR 工具的优势和警告也适用于 `BACKUP` 语句。
 
-执行 `BACKUP` 需要 `BACKUP_ADMIN` 或 `SUPER` 权限。此外，执行备份的 TiDB 节点和集群中的所有 TiKV 节点都必须有对目标存储的读或写权限。
+执行 `BACKUP` 需要 `SUPER` 权限。此外，执行备份的 TiDB 节点和集群中的所有 TiKV 节点都必须有对目标存储的读或写权限。
 
 `BACKUP` 语句开始执行后将会被阻塞，直到整个备份任务完成、失败或取消。因此，执行 `BACKUP` 时需要准备一个持久的连接。如需取消任务，可执行 [`KILL TIDB QUERY`](/sql-statements/sql-statement-kill.md) 语句。
 
@@ -94,7 +94,7 @@ BACKUP TABLE sbtest02, sbtest03, sbtest04 TO 'local:///mnt/backup/sbtest/';
 BACKUP DATABASE * TO 'local:///mnt/backup/full/';
 ```
 
-注意，备份中不包含系统表（`mysql.*`、`INFORMATION_SCHEMA.*`、`PERFORMANCE_SCHEMA.*` 等）。
+注意，备份中不包含系统表 (`mysql.*`、`INFORMATION_SCHEMA.*`、`PERFORMANCE_SCHEMA.*` 等)。
 
 ### 外部存储
 
@@ -103,17 +103,17 @@ BR 支持备份数据到 Amazon S3 或 Google Cloud Storage (GCS)：
 {{< copyable "sql" >}}
 
 ```sql
-BACKUP DATABASE `test` TO 's3://example-bucket-2020/backup-05/?access-key={YOUR_ACCESS_KEY}&secret-access-key={YOUR_SECRET_KEY}';
+BACKUP DATABASE `test` TO 's3://example-bucket-2020/backup-05/?region=us-west-2&access-key={YOUR_ACCESS_KEY}&secret-access-key={YOUR_SECRET_KEY}';
 ```
 
-有关详细的 URL 语法，见[外部存储 URI 格式](/br/backup-and-restore-storages.md#uri-格式)。
+有关详细的 URL 语法，见[外部存储](/br/backup-and-restore-storages.md)。
 
 当运行在云环境中时，不能分发凭证，可设置 `SEND_CREDENTIALS_TO_TIKV` 选项为 `FALSE`：
 
 {{< copyable "sql" >}}
 
 ```sql
-BACKUP DATABASE `test` TO 's3://example-bucket-2020/backup-05/'
+BACKUP DATABASE `test` TO 's3://example-bucket-2020/backup-05/?region=us-west-2'
     SEND_CREDENTIALS_TO_TIKV = FALSE;
 ```
 

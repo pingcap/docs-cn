@@ -1,6 +1,6 @@
 ---
 title: TiUP FAQ
-aliases: ['/docs-cn/dev/tiup/tiup-faq/']
+aliases: ['/docs-cn/stable/tiup/tiup-faq/','/docs-cn/v4.0/tiup/tiup-faq/']
 ---
 
 # TiUP FAQ
@@ -20,7 +20,7 @@ TiUP 暂时不支持外部开发的组件，但是 TiUP Team 已经制定了 TiU
 
 ## tiup-playground 和 tiup-cluster 有什么区别？
 
-TiUP Playground 组件主要定位是快速上手和搭建单机的开发环境，支持 Linux/macOS，要运行一个指定版本的 TiUP 集群更加简单。TiUP Cluster 组件主要是部署生产环境集群，通常是一个大规模的集群，还包含运维相关操作。
+TiUP Playground 组件主要定位是快速上手和搭建单机的开发环境，支持 Linux/MacOS，要运行一个指定版本的 TiUP 集群更加简单。TiUP Cluster 组件主要是部署生产环境集群，通常是一个大规模的集群，还包含运维相关操作。
 
 ## 怎么样编写 tiup-cluster 组件的拓扑文件？
 
@@ -46,10 +46,10 @@ TiUP Playground 组件主要定位是快速上手和搭建单机的开发环境�
 
 ## 集群部署期间，TiUP 收到报错 `ssh: handshake failed: read tcp 10.10.10.34:38980 -> 10.10.10.34:3600: read: connection reset by peer`
 
-该报错可能是因为 TiUP 默认并发超过 ssh 默认最大连接数导致，可尝试加大 ssh 默认连接数，然后重启 sshd 服务解决：
+该报错可能是因为 TiUP 默认并发超过 ssh 默认最大连接数导致的，可尝试加大默认连接数，然后重启 sshd 服务解决：
 
 ```
 vi /etc/ssh/sshd_config
 MaxSessions 1000
-MaxStartups 1000
+MaxStartups 1000 
 ```

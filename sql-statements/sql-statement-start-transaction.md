@@ -1,7 +1,7 @@
 ---
 title: START TRANSACTION
 summary: TiDB 数据库中 START TRANSACTION 的使用概况。
-aliases: ['/docs-cn/dev/sql-statements/sql-statement-start-transaction/','/docs-cn/dev/reference/sql/statements/start-transaction/']
+aliases: ['/docs-cn/stable/sql-statements/sql-statement-start-transaction/','/docs-cn/v4.0/sql-statements/sql-statement-start-transaction/','/docs-cn/stable/reference/sql/statements/start-transaction/']
 ---
 
 # START TRANSACTION
@@ -14,14 +14,7 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-start-transaction/','/docs-
 
 **BeginTransactionStmt:**
 
-```ebnf+diagram
-BeginTransactionStmt ::= 
-    'BEGIN' ( 'PESSIMISTIC' | 'OPTIMISTIC' )?
-|   'START' 'TRANSACTION' ( 'READ' ( 'WRITE' | 'ONLY' ( ( 'WITH' 'TIMESTAMP' 'BOUND' TimestampBound )? | AsOfClause ) ) | 'WITH' 'CONSISTENT' 'SNAPSHOT' | 'WITH' 'CAUSAL' 'CONSISTENCY' 'ONLY' )?
-
-AsOfClause ::=
-    ( 'AS' 'OF' 'TIMESTAMP' Expression)
-```
+![BeginTransactionStmt](/media/sqlgram/BeginTransactionStmt.png)
 
 ## 示例
 
@@ -75,4 +68,3 @@ Query OK, 0 rows affected (0.01 sec)
 * [COMMIT](/sql-statements/sql-statement-commit.md)
 * [ROLLBACK](/sql-statements/sql-statement-rollback.md)
 * [BEGIN](/sql-statements/sql-statement-begin.md)
-* [START TRANSACTION WITH CAUSAL CONSISTENCY ONLY](/transaction-overview.md#因果一致性事务)

@@ -1,10 +1,14 @@
 ---
 title: SQL 诊断
 summary: 了解 SQL 诊断功能。
-aliases: ['/docs-cn/dev/system-tables/system-table-sql-diagnostics/','/docs-cn/dev/reference/system-databases/sql-diagnosis/','/docs-cn/dev/system-tables/system-table-sql-diagnosis/','/zh/tidb/dev/check-cluster-status-using-sql-statements','/docs-cn/dev/reference/performance/check-cluster-status-using-sql-statements/','/zh/tidb/dev/system-table-sql-diagnostics/','/docs-cn/dev/check-cluster-status-using-sql-statements/']
+aliases: ['/docs-cn/stable/system-tables/system-table-sql-diagnostics/','/docs-cn/v4.0/system-tables/system-table-sql-diagnostics/','/docs-cn/stable/reference/system-databases/sql-diagnosis/','/docs-cn/stable/system-tables/system-table-sql-diagnosis/','/zh/tidb/stable/check-cluster-status-using-sql-statements','/docs-cn/stable/reference/performance/check-cluster-status-using-sql-statements/','/zh/tidb/stable/system-table-sql-diagnostics/','/docs-cn/stable/check-cluster-status-using-sql-statements/','/zh/tidb/v4.0/check-cluster-status-using-sql-statements','/zh/tidb/v4.0/system-table-sql-diagnostics/']
 ---
 
 # SQL 诊断
+
+> **警告：**
+>
+> 该功能目前为实验特性，不建议在生产环境中使用。
 
 SQL 诊断功能是在 TiDB 4.0 版本中引入的特性，用于提升 TiDB 问题定位的效率。TiDB 4.0 版本以前，用户需要使用不同的工具以异构的方式获取不同信息。新的 SQL 诊断系统对这些离散的信息进行了整体设计，它整合系统各个维度的信息，通过系统表的方式向上层提供一致的接口，提供监控汇总与自动诊断，方便用户查询集群信息。
 

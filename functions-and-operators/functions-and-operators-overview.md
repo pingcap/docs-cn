@@ -1,11 +1,11 @@
 ---
 title: 函数和操作符概述
-aliases: ['/docs-cn/dev/functions-and-operators/functions-and-operators-overview/','/docs-cn/dev/reference/sql/functions-and-operators/reference/']
+aliases: ['/docs-cn/stable/functions-and-operators/functions-and-operators-overview/','/docs-cn/v4.0/functions-and-operators/functions-and-operators-overview/','/docs-cn/stable/reference/sql/functions-and-operators/reference/']
 ---
 
 # 函数和操作符概述
 
-TiDB 中函数和操作符使用方法与 MySQL 基本一致，详情参见：[Functions and Operators](https://dev.mysql.com/doc/refman/5.7/en/functions.html)。
+TiDB 中函数和操作符使用方法与 MySQL 基本一致，详情参见: [Functions and Operators](https://dev.mysql.com/doc/refman/5.7/en/functions.html)。
 
 在 SQL 语句中，表达式可用于诸如 `SELECT` 语句的 `ORDER BY` 或 `HAVING` 子句，`SELECT`/`DELETE`/`UPDATE` 语句的 `WHERE` 子句，或 `SET` 语句之类的地方。
 

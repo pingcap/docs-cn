@@ -1,11 +1,11 @@
 ---
 title: TiUP 简介
-aliases: ['/docs-cn/dev/tiup/tiup-overview/','/docs-cn/dev/reference/tools/tiup/overview/']
+aliases: ['/docs-cn/stable/tiup/tiup-overview/','/docs-cn/v4.0/tiup/tiup-overview/','/docs-cn/stable/reference/tools/tiup/overview/']
 ---
 
 # TiUP 简介
 
-在各种系统软件和应用软件的安装管理中，包管理器均有着广泛的应用，包管理工具的出现大大简化了软件的安装和升级维护工作。例如，几乎所有使用 RPM 的 Linux 都会使用 yum 来进行包管理，而 Anaconda 则可以非常方便地管理 Python 的环境和相关软件包。
+在各种系统软件和应用软件的安装管理中，包管理器均有着广泛的应用，包管理工具的出现大大简化了软件的安装和升级维护工作。例如，几乎所有使用 RPM 的 Linux 都会使用 Yum 来进行包管理，而 Anaconda 则可以非常方便地管理 python 的环境和相关软件包。
 
 在早期的 TiDB 生态中，没有专门的包管理工具，使用者只能通过相应的配置文件和文件夹命名来手动管理，如 Prometheus 等第三方监控报表工具甚至需要额外的特殊管理，这样大大提升了运维管理难度。
 
@@ -33,7 +33,7 @@ tiup --version
 
 > **注意：**
 >
-> 对于 v1.11.3 及以上版本的 TiUP，默认不会收集使用情况信息分享给 PingCAP。若要了解所收集的信息详情及如何关闭分享行为，请参见[遥测](/telemetry.md)。
+> TiUP 默认会收集使用情况信息，并将这些信息分享给 PingCAP 用于改善产品。若要了解所收集的信息详情及如何禁用该行为，请参见[遥测](/telemetry.md)。
 
 ## TiUP 生态介绍
 
@@ -74,10 +74,11 @@ Components Manifest:
   use "tiup list" to fetch the latest components manifest
 
 Flags:
-      --binary <component>[:version]   Print binary path of a specific version of a component <component>[:version]
+  -B, --binary <component>[:version]   Print binary path of a specific version of a component <component>[:version]
                                        and the latest version installed will be selected if no version specified
       --binpath string                 Specify the binary path of component instance
   -h, --help                           help for tiup
+      --skip-version-check             Skip the strict version check, by default a version must be a valid SemVer string
   -T, --tag string                     Specify a tag for component instance
   -v, --version                        version for tiup
 

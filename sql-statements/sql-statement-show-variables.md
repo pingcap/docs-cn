@@ -1,7 +1,7 @@
 ---
 title: SHOW [GLOBAL|SESSION] VARIABLES
 summary: TiDB 数据库中 SHOW [GLOBAL|SESSION] VARIABLES 的使用概况。
-aliases: ['/docs-cn/dev/sql-statements/sql-statement-show-variables/','/docs-cn/dev/reference/sql/statements/show-variables/']
+aliases: ['/docs-cn/stable/sql-statements/sql-statement-show-variables/','/docs-cn/v4.0/sql-statements/sql-statement-show-variables/','/docs-cn/stable/reference/sql/statements/show-variables/']
 ---
 
 # SHOW [GLOBAL|SESSION] VARIABLES
@@ -45,6 +45,7 @@ SHOW GLOBAL VARIABLES LIKE 'tidb%';
 | tidb_backoff_weight                 | 2                   |
 | tidb_batch_commit                   | 0                   |
 | tidb_batch_delete                   | 0                   |
+| tidb_batch_insert                   | 0                   |
 | tidb_build_stats_concurrency        | 4                   |
 | tidb_capture_plan_baselines         | off                 |
 | tidb_check_mb4_value_in_utf8        | 1                   |
