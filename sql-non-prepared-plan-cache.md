@@ -50,7 +50,7 @@ mysql> select @@last_plan_from_cache;                   -- 可以看到第二次
 1 row in set (0.00 sec)
 ```
 
-## 限制及注意事项
+## 限制
 
 TiDB 对一种参数化后的查询，只能缓存一个计划，比如对于 `select * from t where a<1` 和 `select * from t where a<100000`，由于参数化后的形式相同，因此他们会共用一个计划；
 
@@ -93,3 +93,31 @@ mysql> show warnings;
 开启 Non Prepared Plan Cache 的开关后，可以在下面几个面板看到 Cache 的内存使用情况、Cache 中 Plan 的个数、Cache 命中情况等：
 
 ![](media/tidb-non-prepared-plan-cache-metrics.png)
+
+在 `Statement Summary` 表和慢查询日志中，也会对 Cache 命中情况有所体现，如下面是 `Statement Summary` 中的例子：
+
+```sql
+mysql> create table t (a int);
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> set @@tidb_enable_non_prepared_plan_cache=1; -- 打开开关
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from t where a<1;                   -- 第一次执行
+Empty set (0.02 sec)
+
+mysql> select * from t where a<2;                   -- 第二次执行
+Empty set (0.01 sec)
+
+mysql> select * from t where a<3;                   -- 第三次执行
+Empty set (0.00 sec)
+
+-- 查询执行过三次，且命中 Plan Cache 两次
+mysql> select digest_text, query_sample_text, exec_count, plan_in_cache, plan_cache_hits from information_schema.statements_summary where digest_text like '%select * from %';
++---------------------------------+------------------------------------------+------------+---------------+-----------------+
+| digest_text                     | query_sample_text                        | exec_count | plan_in_cache | plan_cache_hits |
++---------------------------------+------------------------------------------+------------+---------------+-----------------+
+| select * from `t` where `a` < ? | select * from t where a<1 [arguments: 1] |          3 |             1 |               2 |
++---------------------------------+------------------------------------------+------------+---------------+-----------------+
+1 row in set (0.01 sec)
+```
