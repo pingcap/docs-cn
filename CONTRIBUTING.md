@@ -268,6 +268,7 @@ git push -u origin new-branch-name
 其他快速上手资源
 
 - [PingCAP 中英术语表](https://shimo.im/sheets/tTRyydP8Xkdv8yxq/MODOC)
+- [GitHub Docs](https://docs.github.com/en)
 - [Pull Request Commit Message 规范](https://github.com/pingcap/community/blob/master/contributors/commit-message-pr-style.md#how-to-write-a-good-commit-message)
 - [Pull Request 标题规范](https://github.com/pingcap/community/blob/master/contributors/commit-message-pr-style.md#pull-request-title-style)
 - [代码注释规范](https://github.com/pingcap/community/blob/master/contributors/code-comment-style.md)
