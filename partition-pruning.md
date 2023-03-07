@@ -238,10 +238,8 @@ Partition pruning applies to the scenario where the partition expression is in t
 
 If the `fn` function is monotonous, for any `x` and `y`, if `x > y`, then `fn(x) > fn(y)`. Then this `fn` function can be called strictly monotonous. For any `x` and `y`, if `x > y`, then `fn(x) >= fn(y)`. In this case, `fn` could also be called "monotonous". Theoretically, all monotonous functions, strictly or not, are supported by partition pruning. Currently, TiDB only supports the following monotonous functions:
 
-```
-unix_timestamp
-to_days
-```
+* [`UNIX_TIMESTAMP()`](/functions-and-operators/date-and-time-functions.md)
+* [`TO_DAYS()`](/functions-and-operators/date-and-time-functions.md)
 
 For example, partition pruning takes effect when the partition expression is in the form of `fn(col)`, where the `fn` is monotonous function `to_days`:
 

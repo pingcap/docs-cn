@@ -947,10 +947,8 @@ Currently, partition pruning does not work with `LIKE` conditions.
 
     Currently, partition pruning in TiDB only support those monotonous functions:
 
-    ```
-    unix_timestamp
-    to_days
-    ```
+    * [`UNIX_TIMESTAMP()`](/functions-and-operators/date-and-time-functions.md)
+    * [`TO_DAYS()`](/functions-and-operators/date-and-time-functions.md)
 
     For example, the partition expression is a simple column:
 
