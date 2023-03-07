@@ -32,7 +32,9 @@ TiDB 版本：6.5.1
         TiDB 集群初次启动时，可通过命令行参数 `--initialize-sql-file` 指定执行的 SQL 脚本。该功能可用于修改系统变量的值、创建用户或分配权限等。更多信息，请参考[用户文档](/tidb-configuration-file.md#initialize-sql-file-从-v660-版本开始引入)。
 
     - (dup): release-6.6.0.md > 改进提升> TiDB - 定期清理过期的 Region 缓存，避免内存泄漏和性能下降问题 [#40461](https://github.com/pingcap/tidb/issues/40461) @[sticnarf](https://github.com/sticnarf)
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
+    - 添加 `-proxy protocol fallbackable` 选项，让 TiDB 可以处理客户端 IP 在 proxy 协议允许的 IP 列表中的原始连接。[#41409](https://github.com/pingcap/tidb/issues/41409) @[blacktear23](https://github.com/blacktear23)
+    - 改进了 memory tracker 的准确度 [#40900](https://github.com/pingcap/tidb/issues/40900) [#40500](https://github.com/pingcap/tidb/issues/40500) @[wshwsh12](https://github.com/wshwsh12)
+    - note [#issue](链接) @[贡献者 GitHub ID](链接) https://github.com/pingcap/tidb/issues/40900
 
 + TiKV
 
@@ -98,12 +100,19 @@ TiDB 版本：6.5.1
     - (dup): release-6.6.0.md > 错误修复> TiDB - 修复了添加索引时可能导致数据竞争的问题 [#40879](https://github.com/pingcap/tidb/issues/40879) @[tangenta](https://github.com/tangenta)
     - (dup): release-6.6.0.md > 错误修复> TiDB - 修复了表 Region 比较多时因 Region 缓存失效导致加索引效率低下的问题 [#38436](https://github.com/pingcap/tidb/issues/38436) @[tangenta](https://github.com/tangenta)
     - (dup): release-6.1.4.md > Bug 修复> TiDB - 修复使用 "Cursor Read" 方式读取数据时可能因为 GC 而报错的问题 [#39447](https://github.com/pingcap/tidb/issues/39447) @[zyguan](https://github.com/zyguan)
+    - 修复“show processlist”信息中未显示“execute”语句的问题 [#41156](https://github.com/pingcap/tidb/issues/41156) @[YangKeao](https://github.com/YangKeao)
+    - 修复了 `globalMemoryControl ` 在 kill query 时可能会遇上 kill 不结束的问题 [#41057](https://github.com/pingcap/tidb/issues/41057) @[wshwsh12](https://github.com/wshwsh12)
+    - 修复了 `indexMerge` 遇到错误之后可能会导致 TiDB crash 的问题 [#41047](https://github.com/pingcap/tidb/issues/41047) [#40877](https://github.com/pingcap/tidb/issues/40877) @[guo-shaoge](https://github.com/guo-shaoge) @[windtalker](https://github.com/windtalker)
+    - 修复 `analyze` 语句可能会被 kill 的问题 [#41825](https://github.com/pingcap/tidb/issues/41825) @[XuHuaiyu](https://github.com/XuHuaiyu)
+    - 修复了 `indexMerge` 中可能会出现 goroutine 泄露的问题 [#41545](https://github.com/pingcap/tidb/issues/41545) [#41605](https://github.com/pingcap/tidb/issues/41605) @[guo-shaoge](https://github.com/guo-shaoge)
+    - 修复了 `unsigned tinyint/smallint/int` 和小于 0 的 `decimal/float/double` 比较时结果可能出错的问题 [#41736](https://github.com/pingcap/tidb/issues/41736) @[LittleFall](https://github.com/LittleFall)
+    - 修复了开启 `tidb_enable_reuse_chunk` 后可能会 memory leak 的问题 [#40987](https://github.com/pingcap/tidb/issues/40987) @[guo-shaoge](https://github.com/guo-shaoge)
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
 + TiKV
 
     - (dup): release-6.6.0.md > 错误修复> TiKV - 修复 Resolved TS 导致网络流量升高的问题 [#14092](https://github.com/tikv/tikv/issues/14092) @[overvenus](https://github.com/overvenus)
-    - (dup): release-6.1.4.md > Bug 修复> TiKV - 修复 TiDB 中事务在执行悲观 DML 失败后，再执行其他 DML 时，如果 TiDB 和 TiKV 之间存在网络故障，可能会造成数据不一致的问题 [#14038](https://github.com/tikv/tikv/issues/14038) @[MyonKeminta](https://github.com/MyonKeminta)	
+    - (dup): release-6.1.4.md > Bug 修复> TiKV - 修复 TiDB 中事务在执行悲观 DML 失败后，再执行其他 DML 时，如果 TiDB 和 TiKV 之间存在网络故障，可能会造成数据不一致的问题 [#14038](https://github.com/tikv/tikv/issues/14038) @[MyonKeminta](https://github.com/MyonKeminta)
     - (dup): release-6.6.0.md > 错误修复> TiKV - 修复转换 `const Enum` 类型到其他类型时报错的问题 [#14156](https://github.com/tikv/tikv/issues/14156) @[wshwsh12](https://github.com/wshwsh12)
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
@@ -118,6 +127,7 @@ TiDB 版本：6.5.1
 + TiFlash
 
     - (dup): release-6.6.0.md > 错误修复> TiFlash - 修复半连接在计算笛卡尔积时，使用内存过量的问题 [#6730](https://github.com/pingcap/tiflash/issues/6730) @[gengliqi](https://github.com/gengliqi)
+    - 修复 TiFlash 配置不支持 ipv6 的问题 (https://github.com/pingcap/tiflash/issues/6734) @[ywqzzy](https://github.com/ywqzzy)
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
 + Tools
@@ -129,7 +139,7 @@ TiDB 版本：6.5.1
         - (dup): release-6.6.0.md > 错误修复> Tools> Backup & Restore (BR) - 修复 PITR 不支持 PD 集群配置变更的问题 [#14165](https://github.com/tikv/tikv/issues/14165) @[YuJuncen](https://github.com/YuJuncen)
         - (dup): release-6.6.0.md > 错误修复> Tools> Backup & Restore (BR) - 修复 PITR 功能不支持 CA-bundle 认证的问题 [#38775](https://github.com/pingcap/tidb/issues/38775) @[YuJuncen](https://github.com/YuJuncen)
         - (dup): release-6.6.0.md > 错误修复> Tools> Backup & Restore (BR) - 修复 PITR 备份任务被删除时，存在备份信息残留导致新任务出现数据不一致的问题 [#40403](https://github.com/pingcap/tidb/issues/40403) @[joccau](https://github.com/joccau)
-        - (dup): release-6.1.4.md > Bug 修复> Tools> Backup & Restore (BR) - 修复使用 `br debug` 命令解析 backupmeta 文件导致的 panic 的问题 [#40878](https://github.com/pingcap/tidb/issues/40878) @[MoCuishle28](https://github.com/MoCuishle28)		
+        - (dup): release-6.1.4.md > Bug 修复> Tools> Backup & Restore (BR) - 修复使用 `br debug` 命令解析 backupmeta 文件导致的 panic 的问题 [#40878](https://github.com/pingcap/tidb/issues/40878) @[MoCuishle28](https://github.com/MoCuishle28)
         - (dup): release-6.1.4.md > Bug 修复> Tools> Backup & Restore (BR) - 修复在某些情况下因无法获取 Region 大小导致恢复失败的问题 [#36053](https://github.com/pingcap/tidb/issues/36053) @[YuJuncen](https://github.com/YuJuncen)
         - (dup): release-6.6.0.md > 错误修复> Tools> Backup & Restore (BR) - 修复当 TiDB 集群不存在 PITR 备份任务时，`resolve lock` 频率过高的问题 [#40759](https://github.com/pingcap/tidb/issues/40759) @[joccau](https://github.com/joccau)
         - (dup): release-6.6.0.md > 错误修复> Tools> Backup & Restore (BR) - 修复恢复数据到正在运行日志备份的集群，导致日志备份文件无法恢复的问题 [#40797](https://github.com/pingcap/tidb/issues/40797) @[Leavrth](https://github.com/Leavrth)
@@ -146,6 +156,9 @@ TiDB 版本：6.5.1
         - (dup): release-6.1.5.md > Bug 修复> Tools> TiCDC - 修复当同步的延迟过大时 apply redo log 可能会出现 OOM 的问题 [#8085](https://github.com/pingcap/tiflow/issues/8085) @[CharlesCheung96](https://github.com/CharlesCheung96)
         - (dup): release-6.1.5.md > Bug 修复> Tools> TiCDC - 修复当开启 redo log 写 meta 时性能下降的问题 [#8074](https://github.com/pingcap/tiflow/issues/8074) @[CharlesCheung96](https://github.com/CharlesCheung96)
         - (dup): release-6.1.4.md > Bug 修复> Tools> TiCDC - 修复没有配置大事务拆分时，同步数据超过 context deadline 的问题 [#7982](https://github.com/pingcap/tiflow/issues/7982) @[hi-rustin](https://github.com/hi-rustin)
+        - 默认打开 pull-based sink 功能提升系统的吞吐 [#8232](https://github.com/pingcap/tiflow/issues/8232) @[hi-rustin](https://github.com/hi-rustin)
+        - 修复在PD 异常时，暂停一个 changefeed 会错误设置状态的问题 [#8330](https://github.com/pingcap/tiflow/issues/8330) @[sdojjy](https://github.com/sdojjy)
+        - 修复下游为 tidb/mysql ，无主键且非空唯一索引所在列指定了 CHARACTER SET 同步时可能会出现数据不一致的问题。[#8420](https://github.com/pingcap/tiflow/issues/8420) @[asddongmen](https://github.com/asddongmen)
 
     + TiDB Data Migration (DM)
 
