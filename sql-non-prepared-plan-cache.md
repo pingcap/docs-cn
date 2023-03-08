@@ -107,7 +107,7 @@ mysql> show warnings;
 
 开启 Non-Prepared Plan Cache 的开关后，可以在下面几个面板看到 Cache 的内存使用情况、Cache 中 Plan 的个数、Cache 命中情况等：
 
-![](media/tidb-non-prepared-plan-cache-metrics.png)
+![non-prepared-plan-cache](media/tidb-non-prepared-plan-cache-metrics.png)
 
 在 `Statement Summary` 表和慢查询日志中，也会对 Cache 命中情况有所体现，如下面是 `Statement Summary` 中的例子：
 
