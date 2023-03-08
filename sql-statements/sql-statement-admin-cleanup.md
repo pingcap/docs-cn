@@ -5,7 +5,7 @@ summary: TiDB 数据库中 ADMIN CLEANUP 的使用概况。
 
 # ADMIN CLEANUP INDEX
 
-`ADMIN CLEANUP INDEX` 语句用于在表发生行数据和索引的一致性故障时，删除表中多余的索引，使表的行数据和索引恢复一致状态。注意，该语法尚不支持[外键约束](/foreign-key.md)。
+`ADMIN CLEANUP INDEX` 语句用于在表发生行数据和索引的一致性故障时，删除表中多余的索引，使表的行数据和索引恢复一致状态。注意，该语法尚不支持外键约束。
 
 ## 语法图
 
