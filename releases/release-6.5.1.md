@@ -48,7 +48,6 @@ TiDB 版本：6.5.1
     + Backup & Restore (BR)
 
         - (dup): release-6.6.0.md > 改进提升> Tools> Backup & Restore (BR) - 优化 TiKV 端下载日志备份文件的并发度，提升常规场景下 PITR 恢复的性能 [#14206](https://github.com/tikv/tikv/issues/14206) @[YuJuncen](https://github.com/YuJuncen)
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
     + TiCDC
 
