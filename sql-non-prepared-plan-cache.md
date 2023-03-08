@@ -53,7 +53,7 @@ mysql> select @@last_plan_from_cache;                   -- 可以看到第二次
 
 TiDB 对一种参数化后的查询，只能缓存一个计划，比如对于 `select * from t where a<1` 和 `select * from t where a<100000`，由于参数化后的形式相同，因此他们会共用一个计划；
 
-但这个计划并不一定同时对他们是最优的，因此可能会有一些风险；如果遇到这个问题，可以通过创建 binding `create binding for select ... using select /*+ ignore_plan_cache() */` 来处理。
+如果由此产生性能问题，可以通过 hint ` ignore_plan_cache()` 忽略计划缓存中的计划，让优化器每次重新为 SQL 生成执行计划。 在 SQL 无法修改的情况下，可以通过创建 binding 来解决，比如 `create binding for select ... using select /*+ ignore_plan_cache() */` ...
 
 由于上述风险，以及 `Plan Cache` 只在简单的查询上有明显收益（如果查询较为复杂，本身执行时间较长，使用 `Plan Cache` 收益不大），TiDB 目前对 Non-Prepared Plan Cache 的生效范围有比较严格的限制，如下：
 
