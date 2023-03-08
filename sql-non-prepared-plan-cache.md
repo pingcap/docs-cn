@@ -19,7 +19,7 @@ title: 非 Prepared 语句执行计划缓存
 3. 如果能找到可以直接复用的计划，则直接使用，并跳过整个优化过程；
 4. 如果找不到可以直接复用的计划，则继续进行查询优化，并在最后把生成的计划放回到 Cache 中，以便下次进行复用；
 
-Non-Prepared Plan Cache 为 Session 级别，且和 [Prepared Plan Cache](sql-prepared-plan-cache.md) 相互独立，其中缓存的 Plan 互不影响。
+Non-Prepared Plan Cache 为会话级别，并且与 [Prepared Plan Cache](/sql-prepared-plan-cache.md) 相互独立。其中缓存的计划互不影响。
 
 ## 使用方法
 
