@@ -3,7 +3,7 @@ title: TiCDC OpenAPI v2
 summary: 了解如何使用 OpenAPI v2 接口来管理集群状态和数据同步。
 ---
 
-# TiCDC OpenAPI V2
+# TiCDC OpenAPI v2
 
 TiCDC 提供 OpenAPI 功能，你可以通过 OpenAPI v2 对 TiCDC 集群进行查询和运维操作。OpenAPI 的功能是 [`cdc cli` 工具](/ticdc/ticdc-manage-changefeed.md)的一个子集。
 
