@@ -35,6 +35,8 @@ TiDB 版本：6.5.1
     - 添加 `-proxy protocol fallbackable` 选项，让 TiDB 可以处理客户端 IP 在 proxy 协议允许的 IP 列表中的原始连接。[#41409](https://github.com/pingcap/tidb/issues/41409) @[blacktear23](https://github.com/blacktear23)
     - 改进了 memory tracker 的准确度 [#40900](https://github.com/pingcap/tidb/issues/40900) [#40500](https://github.com/pingcap/tidb/issues/40500) @[wshwsh12](https://github.com/wshwsh12)
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
+    - 当 Plan Cache 无法生效时通过 Warning 返回原因 [#40210](https://github.com/pingcap/tidb/issues/40210) @[qw4990](https://github.com/qw4990)
+    - 条件优化器在进行越界估算时的策略 [#39011](https://github.com/pingcap/tidb/issues/39011) @[time-and-fate](https://github.com/time-and-fate)
 
 + TiKV
 
@@ -88,6 +90,19 @@ TiDB 版本：6.5.1
     - 修复 cursour read 中 statement context 被错误 cache 的问题 [#39998](https://github.com/pingcap/tidb/issues/39998) @[zyguan](https://github.com/zyguan)
     - Clear stale region cache periodically to avoid memory leak and performance degradation [#40355](https://github.com/pingcap/tidb/issues/40355) @[sticnarf](https://github.com/sticnarf)
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
+    - 修复对包含 `year <cmp> const` 查询使用 Plan Cache 时可能出错的问题 [#41628](https://github.com/pingcap/tidb/issues/41628) @[qw4990](https://github.com/qw4990)
+    - 修复查询区间太多且数据改动量大时估算误差可能较大的问题 [#40472](https://github.com/pingcap/tidb/issues/40472) @[time-and-fate](https://github.com/time-and-fate)
+    - 修复使用 Plan Cache 时部分条件无法被下推过 Join 算子的问题 [#40218](https://github.com/pingcap/tidb/issues/40218) @[qw4990](https://github.com/qw4990)
+    - 修复 IndexMerge 计划在 SET 类型列上可能生成错误区间的问题 [#41361](https://github.com/pingcap/tidb/issues/41361) @[time-and-fate](https://github.com/time-and-fate)
+    - 修复 Plan Cache 处理 `int_col <cmp> decimal` 条件时可能缓存 FullScan 计划的问题 [#41136](https://github.com/pingcap/tidb/issues/41136) @[qw4990](https://github.com/qw4990)
+    - 修复 Plan Cache 处理 `int_col in (decimal...)` 条件时可能缓存 FullScan 计划的问题 [#40312](https://github.com/pingcap/tidb/issues/40312) @[qw4990](https://github.com/qw4990)
+    - 修复 `ignore_plan_cache` hint 对 Insert 语句可能不生效的问题 [#40080](https://github.com/pingcap/tidb/issues/40080) @[qw4990](https://github.com/qw4990)
+    - 修复 Auto Analyze 可能阻碍 TiDB 退出的问题 [#40284](https://github.com/pingcap/tidb/issues/40284) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes)
+    - 修复在分区表的 Unsigned Primary Key 上可能构造错误访问区间的问题 [#40313](https://github.com/pingcap/tidb/issues/40313) @[winoros](https://github.com/winoros)
+    - 修复 Plan Cache 可能缓存 Shuffle 算子导致返回错误结果的问题 [#41185](https://github.com/pingcap/tidb/issues/41185) @[qw4990](https://github.com/qw4990)
+    - 修复在分区表上创建 Global Binding 后可能导致 TiDB 启动错误的问题 [#40402](https://github.com/pingcap/tidb/issues/40402) @[Yisaer](https://github.com/Yisaer)
+    - 修复慢日志中查询计划算子可能缺失的问题 [#41461](https://github.com/pingcap/tidb/issues/41461) @[time-and-fate](https://github.com/time-and-fate)
+    - 修复错误下推包含虚拟列的 TopN 算子到 TiKV/TiFlash 导致结果错误的问题 [#41370](https://github.com/pingcap/tidb/issues/41370) @[Dousir9](https://github.com/Dousir9)
 
 + TiKV
 
