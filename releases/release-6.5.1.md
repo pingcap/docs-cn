@@ -34,7 +34,6 @@ TiDB 版本：6.5.1
     - (dup): release-6.6.0.md > 改进提升> TiDB - 定期清理过期的 Region 缓存，避免内存泄漏和性能下降问题 [#40461](https://github.com/pingcap/tidb/issues/40461) @[sticnarf](https://github.com/sticnarf)
     - 添加 `-proxy protocol fallbackable` 选项，让 TiDB 可以处理客户端 IP 在 proxy 协议允许的 IP 列表中的原始连接。[#41409](https://github.com/pingcap/tidb/issues/41409) @[blacktear23](https://github.com/blacktear23)
     - 改进了 memory tracker 的准确度 [#40900](https://github.com/pingcap/tidb/issues/40900) [#40500](https://github.com/pingcap/tidb/issues/40500) @[wshwsh12](https://github.com/wshwsh12)
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
     - 当 Plan Cache 无法生效时通过 Warning 返回原因 [#40210](https://github.com/pingcap/tidb/issues/40210) @[qw4990](https://github.com/qw4990)
     - 条件优化器在进行越界估算时的策略 [#39011](https://github.com/pingcap/tidb/issues/39011) @[time-and-fate](https://github.com/time-and-fate)
 
