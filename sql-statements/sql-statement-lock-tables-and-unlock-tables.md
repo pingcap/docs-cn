@@ -68,7 +68,7 @@ ERROR 8020 (HY000): Table 't1' was locked in WRITE by server: f4799bcb-cad7-4285
 
 ```sql
 > LOCK TABLE t WRITE, t READ;
-(1066, "Not unique table/alias: 't'")
+ERROR 1066 (42000): Not unique table/alias: 't'
 ```
 
 ## 释放表锁
