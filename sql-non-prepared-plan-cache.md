@@ -71,7 +71,7 @@ TiDB 对一种参数化后的查询，只能缓存一个计划，比如对于 `s
 
 由于上述风险，以及 `Plan Cache` 只在简单的查询上有明显收益（如果查询较为复杂，本身执行时间较长，使用 `Plan Cache` 收益不大），TiDB 目前对 Non-Prepared Plan Cache 的生效范围有比较严格的限制，如下：
 
-1. [Prepared Plan Cache](sql-prepared-plan-cache.md) 无法支持的查询或者计划，Non-Prepared Plan Cache 同样无法支持；
+1. [Prepared Plan Cache](/sql-prepared-plan-cache.md) 无法支持的查询或者计划，Non-Prepared Plan Cache 同样无法支持；
 2. 目前仅支持包含 Scan-Selection-Projection 算子的单表的点查或范围查询，如 `select * from t where a<10 and b in (1, 2)`；包含 `Agg`, `Limit`, `Window`, `Sort` 等更复杂算子的查询暂不支持；包含非范围查询条件如 `c like 'c%'`, `a+1<2`（不支持 `+` 操作） 等的查询不支持；
 3. `JSON`, `Enum`, `Set` 或 `Bit` 类型的列出现在过滤条件中的查询不支持，如 `select * from t where json_col='{}'`；
 4. 过滤条件中有 `Null` 值出现的查询不支持，如 `select * from t where a=null`；
