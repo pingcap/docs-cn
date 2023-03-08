@@ -101,7 +101,7 @@ TiDB 版本：6.5.1
     - 修复添加索引时数据不一致的问题 [#40698](https://github.com/pingcap/tidb/issues/40698）[#40730](https://github.com/pingcap/tidb/issues/40730）[#41459](https://github.com/pingcap/tidb/issues/41459）[#40464](https://github.com/pingcap/tidb/issues/40464）[#40217](https://github.com/pingcap/tidb/issues/40217）@[tangenta](https://github.com/tangenta)
     - 修复添加索引时 Pessimistic lock not found 的报错问题 [#41515](https://github.com/pingcap/tidb/issues/41515) @[tangenta](https://github.com/tangenta)
     - 修复添加唯一索引时误报重复键的问题 [#41630](https://github.com/pingcap/tidb/issues/41630) @[tangenta](https://github.com/tangenta)
-
+    - 修复 TiDB 使用 `paging` 时性能下降的问题 #40741 @[solotzg](https://github.com/solotzg)
 + TiKV
 
     - (dup): release-6.6.0.md > 错误修复> TiKV - 修复 Resolved TS 导致网络流量升高的问题 [#14092](https://github.com/tikv/tikv/issues/14092) @[overvenus](https://github.com/overvenus)
