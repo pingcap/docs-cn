@@ -5,7 +5,7 @@ summary: TiDB 数据库中 ADMIN RECOVER INDEX 的使用概况。
 
 # ADMIN RECOVER INDEX
 
-`ADMIN RECOVER INDEX` 语句用于在表发生行数据和索引的一致性故障时，根据表中多余的索引，使表的行数据和索引重新恢复到一致状态。注意，该语法尚不支持[外键约束](/foreign-key.md)。
+`ADMIN RECOVER INDEX` 语句用于在表发生行数据和索引的一致性故障时，根据表中多余的索引，使表的行数据和索引重新恢复到一致状态。注意，该语法尚不支持外键约束。
 
 ## 语法图
 
