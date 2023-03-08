@@ -43,6 +43,9 @@ TiDB 版本：6.5.1
     - 提高unified read pool的线程上限至CPU vCore的10倍 [#13690](https://github.com/tikv/tikv/issues/13690) @[v01dstar](https://github.com/v01dstar)
     - 延长resolved-ts.advance-ts-interval到20s， 从而节省跨域流量 [#14100](https://github.com/tikv/tikv/issues/14100) @[overvenus](https://github.com/overvenus)
 
+TiFlash
+    - 显著提升 TiFlash 在大数据量下的启动速度 [#6395](https://github.com/pingcap/tiflash/issues/6395) @[hehechen](https://github.com/hehechen)
+
 + Tools
 
     + Backup & Restore (BR)
