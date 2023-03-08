@@ -1,6 +1,5 @@
 ---
 title: 非 Prepared 语句执行计划缓存
-aliases: ['/docs-cn/dev/sql-non-prepare-plan-cache/','zh/tidb/dev/sql-non-prepare-plan-cache']
 ---
 
 # 非 Prepared 语句执行计划缓存
