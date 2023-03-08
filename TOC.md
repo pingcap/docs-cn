@@ -252,6 +252,7 @@
         - [Distinct 优化](/agg-distinct-optimization.md)
         - [代价模型](/cost-model.md)
       - [执行计划缓存](/sql-prepared-plan-cache.md)
+      - [非 Prepare 语句执行计划缓存](/sql-non-prepared-plan-cache.md)
     - 控制执行计划
       - [控制执行计划概览](/control-execution-plan.md)
       - [Optimizer Hints](/optimizer-hints.md)
