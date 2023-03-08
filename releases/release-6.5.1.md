@@ -63,8 +63,6 @@ TiDB 版本：6.5.1
     - (dup): release-6.1.4.md > Bug 修复> TiDB - 修复 `INSERT` 或 `REPLACE` 语句在长会话连接中执行可能造成 Panic 的问题 [#40351](https://github.com/pingcap/tidb/issues/40351) @[fanrenhoo](https://github.com/fanrenhoo)
     - (dup): release-6.6.0.md > 错误修复> TiDB - 修复了 `auto analyze` 导致 graceful shutdown 耗时长的问题 [#40038](https://github.com/pingcap/tidb/issues/40038) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes)
     - (dup): release-6.6.0.md > 错误修复> TiDB - 修复了 DDL 在 ingest 过程中可能会发生数据竞争的问题 [#40970](https://github.com/pingcap/tidb/issues/40970) @[tangenta](https://github.com/tangenta)
-    - (dup): release-6.6.0.md > 错误修复> TiDB - 修复了 ingest 模式下创建唯一索引可能会导致数据和索引不一致的问题 [#40464](https://github.com/pingcap/tidb/issues/40464) @[tangenta](https://github.com/tangenta)
-    - (dup): release-6.6.0.md > 错误修复> TiDB - 修复了某些情况下唯一索引仍然可能产生重复数据的问题 [#40217](https://github.com/pingcap/tidb/issues/40217) @[tangenta](https://github.com/tangenta)
     - (dup): release-6.6.0.md > 错误修复> TiDB - 修复了添加索引时可能导致数据竞争的问题 [#40879](https://github.com/pingcap/tidb/issues/40879) @[tangenta](https://github.com/tangenta)
     - (dup): release-6.6.0.md > 错误修复> TiDB - 修复了表 Region 比较多时因 Region 缓存失效导致加索引效率低下的问题 [#38436](https://github.com/pingcap/tidb/issues/38436) @[tangenta](https://github.com/tangenta)
     - (dup): release-6.6.0.md > 错误修复> TiDB - 修复了 TiDB 在初始化时有可能死锁的问题 [#40408](https://github.com/pingcap/tidb/issues/40408) @[Defined2014](https://github.com/Defined2014)
@@ -100,6 +98,9 @@ TiDB 版本：6.5.1
     - 修复在分区表上创建 Global Binding 后可能导致 TiDB 启动错误的问题 [#40402](https://github.com/pingcap/tidb/issues/40402) @[Yisaer](https://github.com/Yisaer)
     - 修复慢日志中查询计划算子可能缺失的问题 [#41461](https://github.com/pingcap/tidb/issues/41461) @[time-and-fate](https://github.com/time-and-fate)
     - 修复错误下推包含虚拟列的 TopN 算子到 TiKV/TiFlash 导致结果错误的问题 [#41370](https://github.com/pingcap/tidb/issues/41370) @[Dousir9](https://github.com/Dousir9)
+    - 修复添加索引时数据不一致的问题 [#40698](https://github.com/pingcap/tidb/issues/40698）[#40730](https://github.com/pingcap/tidb/issues/40730）[#41459](https://github.com/pingcap/tidb/issues/41459）[#40464](https://github.com/pingcap/tidb/issues/40464）[#40217](https://github.com/pingcap/tidb/issues/40217）@[tangenta](https://github.com/tangenta)
+    - 修复添加索引时 Pessimistic lock not found 的报错问题 [#41515](https://github.com/pingcap/tidb/issues/41515) @[tangenta](https://github.com/tangenta)
+    - 修复添加唯一索引时误报重复键的问题 [#41630](https://github.com/pingcap/tidb/issues/41630) @[tangenta](https://github.com/tangenta)
 
 + TiKV
 
