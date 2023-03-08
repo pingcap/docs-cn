@@ -8,7 +8,7 @@ title: 非 Prepared 语句执行计划缓存
 >
 > 非 Prepared 语句执行计划缓存目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
 
-对于一部分非 Prepared 语句，TiDB 也能像 [`Prepare` / `Execute` 语句](sql-prepared-plan-cache.md) 一样支持执行计划缓存，可以让这些语句跳过优化器阶段，以获得性能上的提升。
+对于某些非 `PREPARE` 语句，TiDB 可以像 [`Prepare`/`Execute` 语句](/sql-prepared-plan-cache.md)一样支持执行计划缓存。这可以让这些语句跳过优化器阶段，以提升性能。
 
 此功能基本原理如下：
 
