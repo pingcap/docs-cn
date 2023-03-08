@@ -5,13 +5,13 @@ summary: TiDB 数据库中 LOCK TABLES 和 UNLOCK TABLES 的使用概况。
 
 # LOCK TABLES 和 UNLOCK TABLES
 
-> **Warning:**
+> **警告：**
 >
 > `LOCK TABLES` 和 `UNLOCK TABLES` 目前为实验特性，不建议在生产环境中使用。
 
 客户端会话可以使用 `LOCK TABLES` 语句获取表锁，以便和其他会话合作访问表，或者防止其他会话修改表。会话只能为自己获取或释放锁。一个会话无法为另一个会话获取表锁或释放另一个会话持有的表锁。
 
-`LOCK TABLES` 可以为当前客户端会话获取表锁。你可以获取普通表的表锁，但你必须拥有锁定对象的 `LOCK TABLES` 和 `SELECT ` 权限。
+`LOCK TABLES` 可以为当前客户端会话获取表锁。你可以获取普通表的表锁，但你必须拥有锁定对象的 `LOCK TABLES` 和 `SELECT` 权限。
 
 `UNLOCK TABLES` 显式释放当前会话持有的所有表锁。`LOCK TABLES` 在获取新锁之前会隐式释放当前会话持有的所有表锁。
 
@@ -19,7 +19,7 @@ summary: TiDB 数据库中 LOCK TABLES 和 UNLOCK TABLES 的使用概况。
 
 > **警告：**
 >
-> 开启表锁功能需要在所有 TiDB 的配置文件中设置 [`enable-table-lock`](/tidb-configuration-file.md#enable-table-lock-从-v400-版本开始引入) 为 `true`。
+> 开启表锁功能需要在所有 TiDB 实例的配置文件中设置 [`enable-table-lock`](/tidb-configuration-file.md#enable-table-lock-从-v400-版本开始引入) 为 `true`。
 
 ## 语法图
 
@@ -42,21 +42,21 @@ LockType
 
 `READ` 锁：
 
-  - 持有 `READ` 锁的会话可以读表，但不能写入。
-  - 多个会话可以同时获取同一个表的 `READ` 锁。
-  - 其他会话可以在不显式获取 `READ` 锁的情况下读表。
+- 持有 `READ` 锁的会话可以读表，但不能写入。
+- 多个会话可以同时获取同一个表的 `READ` 锁。
+- 其他会话可以在不显式获取 `READ` 锁的情况下读表。
 
 `READ LOCAL` 锁只是语法兼容 MySQL，实际上并不支持。
 
 `WRITE` 锁：
 
-  - 持有 `WRITE` 锁的会话可以读取和写入表。
-  - 只有持有 `WRITE` 锁的会话才能访问该表。在释放锁之前，其他会话不能读取或写入该表。
+- 持有 `WRITE` 锁的会话可以读取和写入表。
+- 只有持有 `WRITE` 锁的会话才能访问该表。在释放锁之前，其他会话不能读取或写入该表。
 
 `WRITE LOCAL` 锁：
 
-  - 持有 `WRITE LOCAL` 锁的会话可以读取和写入表。
-  - 只有持有 `WRITE LOCAL` 锁的会话才能写入该表，但其他会话依然可以读取该表的数据。
+- 持有 `WRITE LOCAL` 锁的会话可以读取和写入表。
+- 只有持有 `WRITE LOCAL` 锁的会话才能写入该表，但其他会话依然可以读取该表的数据。
 
 如果 `LOCK TABLES` 语句想要获取的表锁被其他会话持有且必须等待锁释放时，则 `LOCK TABLES` 语句会执行报错，例如：
 
@@ -95,7 +95,7 @@ ERROR 1066 (42000): Not unique table/alias: 't'
 
 - 在 TiDB 中，如果会话 A 已经持有了一个表的表锁，另一个会话 B 对该表写入时会报错；但 MySQL 会阻塞会话 B 对该表的写入，直到会话 A 释放该表锁。其他会话对该表的锁请求会被阻塞直到当前会话释放 `WRITE` 锁。
 - 在 TiDB 中，如果 `LOCK TABLES` 语句想要获取的表锁被其他会话持有且必须等待锁释放时，`LOCK TABLES` 语句会执行报错；但 MySQL 会阻塞 `LOCK TABLES` 语句的执行，直到成功获取想要的表锁。
-- 在 TiDB 中，使用 `LOCK TABLES` 语句获取表锁的作用域是整个集群；但 MySQL 中表锁的作用域是单个 MySQL 服务器，与 NDB 群集不兼容。 
+- 在 TiDB 中，使用 `LOCK TABLES` 语句获取表锁的作用域是整个集群；但 MySQL 中表锁的作用域是单个 MySQL 服务器，与 NDB 群集不兼容。
 
 ### 释放表锁
 
