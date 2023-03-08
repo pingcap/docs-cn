@@ -94,8 +94,8 @@ ERROR 1066 (42000): Not unique table/alias: 't'
 ### 获取表锁
 
 - 在 TiDB 中，如果会话 A 已经持有了一个表的表锁，另一个会话 B 对该表写入时会报错；但 MySQL 会阻塞会话 B 对该表的写入，直到会话 A 释放该表锁。其他会话对该表的锁请求会被阻塞直到当前会话释放 `WRITE` 锁。
-- 在 TiDB 中，如果 `LOCK TABLES` 语句想要获取的表锁被其他会话持有且必须等待锁释放时，则 `LOCK TABLES` 语句会执行报错；但 MySQL 会阻塞 `LOCK TABLES` 语句的执行直到成功获取想要的表锁。
-- 在 TiDB 中，使用 `LOCK TABLES` 语句获取表锁的作用域是整个集群生效的；但 MySQL 中表锁的作用域是单个 MySQL 服务器，与NDB群集不兼容。 
+- 在 TiDB 中，如果 `LOCK TABLES` 语句想要获取的表锁被其他会话持有且必须等待锁释放时，`LOCK TABLES` 语句会执行报错；但 MySQL 会阻塞 `LOCK TABLES` 语句的执行，直到成功获取想要的表锁。
+- 在 TiDB 中，使用 `LOCK TABLES` 语句获取表锁的作用域是整个集群；但 MySQL 中表锁的作用域是单个 MySQL 服务器，与 NDB 群集不兼容。 
 
 ### 释放表锁
 
