@@ -26,8 +26,9 @@ desc cluster_info;
 | GIT_HASH       | varchar(64) | YES  |      | NULL    |       |
 | START_TIME     | varchar(32) | YES  |      | NULL    |       |
 | UPTIME         | varchar(32) | YES  |      | NULL    |       |
+| SERVER_ID      | bigint(21)  | YES  |      | NULL    |       |
 +----------------+-------------+------+------+---------+-------+
-7 rows in set (0.00 sec)
+8 rows in set (0.01 sec)
 ```
 
 Field description:
@@ -39,6 +40,7 @@ Field description:
 * `GIT_HASH`: The Git Commit Hash when compiling the instance version, which is used to identify whether two instances are of the absolutely consistent version.
 * `START_TIME`: The starting time of the corresponding instance.
 * `UPTIME`: The uptime of the corresponding instance.
+* `SERVER_ID`: The server ID of the corresponding instance.
 
 {{< copyable "sql" >}}
 

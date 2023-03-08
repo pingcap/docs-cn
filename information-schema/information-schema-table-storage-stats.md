@@ -50,3 +50,14 @@ EMPTY_REGION_COUNT: 1
         TABLE_KEYS: 0
 1 row in set (0.00 sec)
 ```
+
+Fields in the `TABLE_STORAGE_STATS` table are described as follows:
+
+* `TABLE_SCHEMA`: The name of the schema to which the table belongs.
+* `TABLE_NAME`: The name of the table.
+* `TABLE_ID`: The ID of the table.
+* `PEER_COUNT`: The number of replicas of the table.
+* `REGION_COUNT`: The number of Regions.
+* `EMPTY_REGION_COUNT`: The number of Regions that do not contain data in this table.
+* `TABLE_SIZE`: The total size of the table, in the unit of MiB.
+* `TABLE_KEYS`: The total number of records in the table.
