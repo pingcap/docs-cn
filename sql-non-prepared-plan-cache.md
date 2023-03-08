@@ -27,7 +27,7 @@ Non-Prepared Plan Cache 为会话级别，并且与 [Prepared Plan Cache](/sql-p
 
 ## 示例
 
-下面是一些实例：
+下面是使用示例：
 
 {{< copyable "sql" >}}
 
