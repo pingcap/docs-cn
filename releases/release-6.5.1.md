@@ -127,7 +127,8 @@ TiDB 版本：6.5.1
         - (dup): release-6.1.4.md > Bug 修复> Tools> Backup & Restore (BR) - 修复在某些情况下因无法获取 Region 大小导致恢复失败的问题 [#36053](https://github.com/pingcap/tidb/issues/36053) @[YuJuncen](https://github.com/YuJuncen)
         - (dup): release-6.6.0.md > 错误修复> Tools> Backup & Restore (BR) - 修复当 TiDB 集群不存在 PITR 备份任务时，`resolve lock` 频率过高的问题 [#40759](https://github.com/pingcap/tidb/issues/40759) @[joccau](https://github.com/joccau)
         - (dup): release-6.6.0.md > 错误修复> Tools> Backup & Restore (BR) - 修复恢复数据到正在运行日志备份的集群，导致日志备份文件无法恢复的问题 [#40797](https://github.com/pingcap/tidb/issues/40797) @[Leavrth](https://github.com/Leavrth)
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
+        - 修复全量备份失败后，从断点重启备份 panic 的问题 [#40704](https://github.com/pingcap/tidb/issues/40704) @[Leavrth](https://github.com/Leavrth)
+        - 修复 pitr 错误被覆盖的问题 [#40576](https://github.com/pingcap/tidb/issues/40576)@[Leavrth](https://github.com/Leavrth)
 
     + TiCDC
 
