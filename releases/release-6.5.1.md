@@ -89,7 +89,6 @@ TiDB 版本：6.5.1
     - 修复 cop 并发度上限不受限制的问题 [#41134](https://github.com/pingcap/tidb/issues/41134) @[you06](https://github.com/you06)
     - 修复 cursour read 中 statement context 被错误 cache 的问题 [#39998](https://github.com/pingcap/tidb/issues/39998) @[zyguan](https://github.com/zyguan)
     - Clear stale region cache periodically to avoid memory leak and performance degradation [#40355](https://github.com/pingcap/tidb/issues/40355) @[sticnarf](https://github.com/sticnarf)
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
     - 修复对包含 `year <cmp> const` 查询使用 Plan Cache 时可能出错的问题 [#41628](https://github.com/pingcap/tidb/issues/41628) @[qw4990](https://github.com/qw4990)
     - 修复查询区间太多且数据改动量大时估算误差可能较大的问题 [#40472](https://github.com/pingcap/tidb/issues/40472) @[time-and-fate](https://github.com/time-and-fate)
     - 修复使用 Plan Cache 时部分条件无法被下推过 Join 算子的问题 [#40218](https://github.com/pingcap/tidb/issues/40218) @[qw4990](https://github.com/qw4990)
