@@ -39,7 +39,8 @@ TiDB 版本：6.5.1
 + TiKV
 
     - (dup): release-6.6.0.md > 改进提升> TiKV - 支持在小于 1 core 的 CPU 下启动 TiKV [#13586](https://github.com/tikv/tikv/issues/13586) [#13752](https://github.com/tikv/tikv/issues/13752) [#14017](https://github.com/tikv/tikv/issues/14017) @[andreid-db](https://github.com/andreid-db)
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
+    - 提高unified read pool的线程上限至CPU vCore的10倍 [#13690](https://github.com/tikv/tikv/issues/13690) @[v01dstar](https://github.com/v01dstar)
+    - 延长resolved-ts.advance-ts-interval到20s， 从而节省跨域流量 [#14100](https://github.com/tikv/tikv/issues/14100) @[overvenus](https://github.com/overvenus)
 
 + PD
 
@@ -107,6 +108,10 @@ TiDB 版本：6.5.1
     - 修复了 `indexMerge` 中可能会出现 goroutine 泄露的问题 [#41545](https://github.com/pingcap/tidb/issues/41545) [#41605](https://github.com/pingcap/tidb/issues/41605) @[guo-shaoge](https://github.com/guo-shaoge)
     - 修复了 `unsigned tinyint/smallint/int` 和小于 0 的 `decimal/float/double` 比较时结果可能出错的问题 [#41736](https://github.com/pingcap/tidb/issues/41736) @[LittleFall](https://github.com/LittleFall)
     - 修复了开启 `tidb_enable_reuse_chunk` 后可能会 memory leak 的问题 [#40987](https://github.com/pingcap/tidb/issues/40987) @[guo-shaoge](https://github.com/guo-shaoge)
+    - 修复时区使用可能导致数据索引不一致问题 [#40710](https://github.com/pingcap/tidb/issues/40710) @[wjhuang2016](https://github.com/wjhuang2016)
+    - 修复 batch cop 执行过程 scan detail 信息不准确的问题 [#41582](https://github.com/pingcap/tidb/issues/41582) @[you06](https://github.com/you06)
+    - 修复 cop 并发度上限不受限制的问题 [#41134](https://github.com/pingcap/tidb/issues/41134) @[you06](https://github.com/you06)
+    - 修复 cursour read 中 statement context 被错误 cache 的问题 [#39998](https://github.com/pingcap/tidb/issues/39998) @[zyguan](https://github.com/zyguan) 
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
 + TiKV
@@ -114,7 +119,9 @@ TiDB 版本：6.5.1
     - (dup): release-6.6.0.md > 错误修复> TiKV - 修复 Resolved TS 导致网络流量升高的问题 [#14092](https://github.com/tikv/tikv/issues/14092) @[overvenus](https://github.com/overvenus)
     - (dup): release-6.1.4.md > Bug 修复> TiKV - 修复 TiDB 中事务在执行悲观 DML 失败后，再执行其他 DML 时，如果 TiDB 和 TiKV 之间存在网络故障，可能会造成数据不一致的问题 [#14038](https://github.com/tikv/tikv/issues/14038) @[MyonKeminta](https://github.com/MyonKeminta)
     - (dup): release-6.6.0.md > 错误修复> TiKV - 修复转换 `const Enum` 类型到其他类型时报错的问题 [#14156](https://github.com/tikv/tikv/issues/14156) @[wshwsh12](https://github.com/wshwsh12)
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
+    - 修复 cop task paging 计算相关问题 [#14254](https://github.com/tikv/tikv/issues/14254)  @[you06](https://github.com/you06)
+    - 修复 batch cop scan details 不准确问题 [#14109](https://github.com/tikv/tikv/issues/14109) @[you06](https://github.com/you06)
+    - 修复Raft-Engine一个潜在的错误可能导致TiKV因检测到Raft数据corrupt而无法重启[#14338](https://github.com/tikv/tikv/issues/14338) @[tonyxuqqi](https://github.com/tonyxuqqi)
 
 + PD
 
@@ -176,7 +183,7 @@ TiDB 版本：6.5.1
         - (dup): release-6.6.0.md > 错误修复> Tools> TiDB Lightning - 修复 TiDB Lightning 在 split-region 阶段发生 panic 的问题 [#40934](https://github.com/pingcap/tidb/issues/40934) @[lance6716](https://github.com/lance6716)
         - (dup): release-6.6.0.md > 错误修复> Tools> TiDB Lightning - 修复冲突处理逻辑 (`duplicate-resolution`) 可能导致 checksum 不一致的问题 [#40657](https://github.com/pingcap/tidb/issues/40657) @[gozssky](https://github.com/gozssky)
         - (dup): release-6.6.0.md > 错误修复> Tools> TiDB Lightning - 修复在并行导入时，当除最后一个 TiDB Lightning 实例外的其他实例都遇到本地重复记录时，TiDB Lightning 可能会错误地跳过冲突处理的问题 [#40923](https://github.com/pingcap/tidb/issues/40923) @[lichunzhu](https://github.com/lichunzhu)	
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
+        - 修复了在使用 Local Backend 模式导入数据时，当导入目标表的复合主键中存在 `auto_random` 列，且源数据中没有指定该列的值时，相关列没有自动生成数据的问题。[#41454](https://github.com/pingcap/tidb/issues/41454) @[D3Hunter](https://github.com/D3Hunter)
 
     + TiUP
 
