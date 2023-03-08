@@ -87,7 +87,7 @@ ERROR 1066 (42000): Not unique table/alias: 't'
 
 你可以安全地使用 `KILL` 语句终止已经持有表锁的会话。
 
-你不能获取 `INFORMATION_SCHEMA`，`PERFORMANCE_SCHEMA`，`METRICS_SCHEMA` 和 `mysql` 数据库中的表的表锁。
+你不能获取 `INFORMATION_SCHEMA`、`PERFORMANCE_SCHEMA`、`METRICS_SCHEMA` 和 `mysql` 数据库中表的表锁。
 
 ## 和 MySQL 的兼容性
 
