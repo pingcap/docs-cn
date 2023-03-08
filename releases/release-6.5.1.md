@@ -53,7 +53,7 @@ TiDB 版本：6.5.1
 
         - (dup): release-6.6.0.md > 改进提升> Tools> TiCDC - 支持 Batch UPDATE DML 语句，提升 TiCDC 的同步性能 [#8084](https://github.com/pingcap/tiflow/issues/8084) @[amyangfei](https://github.com/amyangfei)
         - (dup): release-6.1.4.md > 提升改进> Tools> TiCDC - 支持将 redo log 存储至兼容 GCS 或 Azure 协议的对象存储 [#7987](https://github.com/pingcap/tiflow/issues/7987) @[CharlesCheung96](https://github.com/CharlesCheung96)
-        - (dup): release-6.6.0.md > 改进提升> Tools> TiCDC - 采用异步模式实现 MQ sink 和 MySQL sink，提升 sink 的吞吐能力 [#5928](https://github.com/pingcap/tiflow/issues/5928) @[hicqu](https://github.com/hicqu) @[hi-rustin](https://github.com/hi-rustin)
+        - (dup): release-6.6.0.md > 改进提升> Tools> TiCDC - 采用异步模式实现 MQ sink 和 MySQL sink，提升 sink 的吞吐能力 [#5928](https://github.com/pingcap/tiflow/issues/5928) @[amyangfei](https://github.com/amyangfei) @[CharlesCheung96](https://github.com/CharlesCheung96)
 
 ## 错误修复
 
@@ -61,7 +61,6 @@ TiDB 版本：6.5.1
 
     - (dup): release-6.1.4.md > Bug 修复> TiDB - 修复 [`pessimistic-auto-commit`](/tidb-configuration-file.md#pessimistic-auto-commit) 配置项对 "Point Get" 查询不生效的问题 [#39928](https://github.com/pingcap/tidb/issues/39928) @[zyguan](https://github.com/zyguan)
     - (dup): release-6.1.4.md > Bug 修复> TiDB - 修复 `INSERT` 或 `REPLACE` 语句在长会话连接中执行可能造成 Panic 的问题 [#40351](https://github.com/pingcap/tidb/issues/40351) @[fanrenhoo](https://github.com/fanrenhoo)
-    - (dup): release-6.1.4.md > Bug 修复> TiDB - 修复 `LazyTxn.LockKeys` 函数中的数据争用问题 [#40355](https://github.com/pingcap/tidb/issues/40355) @[HuSharp](https://github.com/HuSharp)
     - (dup): release-6.6.0.md > 错误修复> TiDB - 修复了 `auto analyze` 导致 graceful shutdown 耗时长的问题 [#40038](https://github.com/pingcap/tidb/issues/40038) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes)
     - (dup): release-6.6.0.md > 错误修复> TiDB - 修复了 DDL 在 ingest 过程中可能会发生数据竞争的问题 [#40970](https://github.com/pingcap/tidb/issues/40970) @[tangenta](https://github.com/tangenta)
     - (dup): release-6.6.0.md > 错误修复> TiDB - 修复了 ingest 模式下创建唯一索引可能会导致数据和索引不一致的问题 [#40464](https://github.com/pingcap/tidb/issues/40464) @[tangenta](https://github.com/tangenta)
@@ -86,7 +85,8 @@ TiDB 版本：6.5.1
     - 修复时区使用可能导致数据索引不一致问题 [#40710](https://github.com/pingcap/tidb/issues/40710) @[wjhuang2016](https://github.com/wjhuang2016)
     - 修复 batch cop 执行过程 scan detail 信息不准确的问题 [#41582](https://github.com/pingcap/tidb/issues/41582) @[you06](https://github.com/you06)
     - 修复 cop 并发度上限不受限制的问题 [#41134](https://github.com/pingcap/tidb/issues/41134) @[you06](https://github.com/you06)
-    - 修复 cursour read 中 statement context 被错误 cache 的问题 [#39998](https://github.com/pingcap/tidb/issues/39998) @[zyguan](https://github.com/zyguan) 
+    - 修复 cursour read 中 statement context 被错误 cache 的问题 [#39998](https://github.com/pingcap/tidb/issues/39998) @[zyguan](https://github.com/zyguan)
+    - Clear stale region cache periodically to avoid memory leak and performance degradation [#40355](https://github.com/pingcap/tidb/issues/40355) @[sticnarf](https://github.com/sticnarf)
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
 + TiKV
@@ -132,18 +132,18 @@ TiDB 版本：6.5.1
 
     + TiCDC
 
-        - (dup): release-6.6.0.md > 错误修复> Tools> TiCDC - 优化 pull-based sink 打开时 TiCDC 在 CPU 利用率、内存控制、吞吐等方面若干性能问题 [#8142](https://github.com/pingcap/tiflow/issues/8142) [#8157](https://github.com/pingcap/tiflow/issues/8157) [#8001](https://github.com/pingcap/tiflow/issues/8001) [#5928](https://github.com/pingcap/tiflow/issues/5928) @[hicqu](https://github.com/hicqu) @[hi-rustin](https://github.com/hi-rustin)
         - (dup): release-6.6.0.md > 错误修复> Tools> TiCDC - 修复 changefeed 在 TiKV、TiCDC 节点扩缩容等特殊场景下卡住的问题 [#8174](https://github.com/pingcap/tiflow/issues/8174) @[hicqu](https://github.com/hicqu)
         - (dup): release-6.6.0.md > 错误修复> Tools> TiCDC - 修复 redo log 存储路径没做权限预检查的问题 [#6335](https://github.com/pingcap/tiflow/issues/6335) @[CharlesCheung96](https://github.com/CharlesCheung96)
         - (dup): release-6.6.0.md > 错误修复> Tools> TiCDC - 修复 redo log 容忍 S3 存储故障的时间过短的问题 [#8089](https://github.com/pingcap/tiflow/issues/8089) @[CharlesCheung96](https://github.com/CharlesCheung96)
         - (dup): release-6.1.4.md > Bug 修复> Tools> TiCDC - 修复不能通过配置文件修改 `transaction_atomicity` 和 `protocol` 参数的问题 [#7935](https://github.com/pingcap/tiflow/issues/7935) @[CharlesCheung96](https://github.com/CharlesCheung96)
-        - (dup): release-6.1.4.md > Bug 修复> Tools> TiCDC - 修复在同步大量表时 checkpoint 不推进问题 [#8004](https://github.com/pingcap/tiflow/issues/8004) @[asddongmen](https://github.com/asddongmen)		
+        - (dup): release-6.1.4.md > Bug 修复> Tools> TiCDC - 修复在同步大量表时 checkpoint 不推进问题 [#8004](https://github.com/pingcap/tiflow/issues/8004) @[overvenus](https://github.com/overvenus)
         - (dup): release-6.1.5.md > Bug 修复> Tools> TiCDC - 修复当同步的延迟过大时 apply redo log 可能会出现 OOM 的问题 [#8085](https://github.com/pingcap/tiflow/issues/8085) @[CharlesCheung96](https://github.com/CharlesCheung96)
         - (dup): release-6.1.5.md > Bug 修复> Tools> TiCDC - 修复当开启 redo log 写 meta 时性能下降的问题 [#8074](https://github.com/pingcap/tiflow/issues/8074) @[CharlesCheung96](https://github.com/CharlesCheung96)
         - (dup): release-6.1.4.md > Bug 修复> Tools> TiCDC - 修复没有配置大事务拆分时，同步数据超过 context deadline 的问题 [#7982](https://github.com/pingcap/tiflow/issues/7982) @[hi-rustin](https://github.com/hi-rustin)
         - 默认打开 pull-based sink 功能提升系统的吞吐 [#8232](https://github.com/pingcap/tiflow/issues/8232) @[hi-rustin](https://github.com/hi-rustin)
         - 修复在PD 异常时，暂停一个 changefeed 会错误设置状态的问题 [#8330](https://github.com/pingcap/tiflow/issues/8330) @[sdojjy](https://github.com/sdojjy)
         - 修复下游为 tidb/mysql ，无主键且非空唯一索引所在列指定了 CHARACTER SET 同步时可能会出现数据不一致的问题。[#8420](https://github.com/pingcap/tiflow/issues/8420) @[asddongmen](https://github.com/asddongmen)
+        - Fix panics about table scheduling or blackhole sink [#8024](https://github.com/pingcap/tiflow/issues/8024) [#8142](https://github.com/pingcap/tiflow/issues/8142) @[hicqu](https://github.com/hicqu)
 
     + TiDB Data Migration (DM)
 
