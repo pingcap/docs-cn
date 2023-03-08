@@ -65,7 +65,7 @@ LockType
 ERROR 8020 (HY000): Table 't1' was locked in WRITE by server: f4799bcb-cad7-4285-8a6d-23d3555173f1_session: 2199023255959
 ```
 
-上面的错误信息说明在 TiDB `f4799bcb-cad7-4285-8a6d-23d3555173f1` 中会话 ID 为 `2199023255959` 的会话已经持有表 `t1` 的 `WRITE` 锁，所以当前会话无法获取表 `t1` 的 `READ` 锁。
+以上错误信息表明，在 TiDB `f4799bcb-cad7-4285-8a6d-23d3555173f1` 中，ID 为 `2199023255959` 的会话已经持有表 `t1` 的 `WRITE` 锁，所以，当前会话无法获取表 `t1` 的 `READ` 锁。
 
 不能在单个 `LOCK TABLES` 语句中多次获取同一个表的锁。
 
