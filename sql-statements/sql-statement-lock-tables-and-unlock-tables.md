@@ -15,8 +15,7 @@ summary: TiDB 数据库中 LOCK TABLES 和 UNLOCK TABLES 的使用概况。
 
 > **警告：**
 >
-> `LOCK TABLES` 和 `UNLOCK TABLES` 目前为实验特性，不建议在生产环境中使用。
-> 开启表锁功能需要在所有 TiDB 的配置文件中设置 [enable-table-lock](/tidb-configuration-file.md#enable-table-lock-从-v400-版本开始引入) 为 `true`。
+> 开启表锁功能需要在所有 TiDB 的配置文件中设置 [`enable-table-lock`](/tidb-configuration-file.md#enable-table-lock-从-v400-版本开始引入) 为 `true`。
 
 ## 语法图
 
