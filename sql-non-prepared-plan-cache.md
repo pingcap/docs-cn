@@ -27,27 +27,41 @@ Non-Prepared Plan Cache 为 Session 级别，且和 [Prepared Plan Cache](sql-pr
 
 {{< copyable "sql" >}}
 
-```sql
-mysql> create table t (a int, b int, key(b));           -- 创建用于测试的 table
-Query OK, 0 rows affected (0.06 sec)
+1. 创建用于测试的表 `t`：
 
-mysql> set tidb_enable_non_prepared_plan_cache=true;    -- 打开 Non-Prepared Plan Cache
-Query OK, 0 rows affected (0.00 sec)
+    ```sql
+    CREATE TABLE t (a INT, b INT, KEY(b));
+    ```
 
-mysql> select * from t where b < 10 and a=1;            -- 第一次执行查询
-Empty set (0.00 sec)
+2. 开启 Non-Prepared Plan Cache：
 
-mysql> select * from t where b < 5 and a=2;             -- 第二次执行查询
-Empty set (0.00 sec)
+    ```sql
+    SET tidb_enable_non_prepared_plan_cache = true;
+    ```
 
-mysql> select @@last_plan_from_cache;                   -- 可以看到第二次执行的执行计划来自于 Cache
-+------------------------+
-| @@last_plan_from_cache |
-+------------------------+
-|                      1 |
-+------------------------+
-1 row in set (0.00 sec)
-```
+3. 依次执行以下查询：
+
+    ```sql
+    SELECT * FROM t WHERE b < 10 AND a = 1;
+    SELECT * FROM t WHERE b < 5 AND a = 2;
+    ```
+
+4. 查看第二个查询语句是否命中 cache：
+
+    ```sql
+    SELECT @@last_plan_from_cache;
+    ```
+
+    输出结果中 `last_plan_from_cache` 的值为 `1`，表示第二次执行的查询计划来自于 cache。
+
+    ```sql
+    +------------------------+
+    | @@last_plan_from_cache |
+    +------------------------+
+    |                      1 |
+    +------------------------+
+    1 row in set (0.00 sec)
+    ```
 
 ## 限制
 
