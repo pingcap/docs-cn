@@ -129,7 +129,7 @@ TiDB 版本：6.5.1
     - (dup): release-6.1.4.md > Bug 修复> PD - 修复 PD 可能会非预期地向 Region 添加多个 Learner 的问题 [#5786](https://github.com/tikv/pd/issues/5786) @[HunDunDM](https://github.com/HunDunDM)
     - (dup): release-6.6.0.md > 错误修复> PD - 修复 Region Scatter 任务会生成非预期的多余副本的问题 [#5909](https://github.com/tikv/pd/issues/5909) @[HundunDM](https://github.com/HunDunDM)
     - (dup): release-6.1.5.md > Bug 修复> PD - 修复调用 `ReportMinResolvedTS` 过于频繁导致 PD OOM 的问题 [#5965](https://github.com/tikv/pd/issues/5965) @[HundunDM](https://github.com/HunDunDM)	
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
+    - 修复 region scatter 接口会导致 leader 分布不均匀的问题  [#6017](https://github.com/tikv/pd/issues/6017) @[HunDunDM](https://github.com/HunDunDM)
 
 + TiFlash
 
