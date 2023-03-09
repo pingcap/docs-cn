@@ -244,12 +244,12 @@ partition 分发器用 partition = "xxx" 来指定，支持 default、ts、index
 
 > **警告：**
 >
-> - 横向扩展功能目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
-> - TiCDC v6.6.0 仅支持在 Kafka 同步任务上开启大单表的横向扩展功能。
+> - TiCDC v6.7.0 仅支持在 Kafka 同步任务上开启大单表的横向扩展功能。
 
 配置样例如下所示：
 
 ```toml
 [scheduler]
-region-per-span = 50000
+enable-table-across-nodes = true
+region-threshold = 100000
 ```
