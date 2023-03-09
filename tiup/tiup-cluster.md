@@ -15,7 +15,7 @@ tiup cluster
 ```
 
 ```
-Starting component `cluster`: /home/tidb/.tiup/components/cluster/v1.11.0/cluster
+Starting component `cluster`: /home/tidb/.tiup/components/cluster/v1.11.3/cluster
 Deploy a TiDB cluster for production
 
 Usage:
@@ -551,7 +551,7 @@ tiup cluster audit
 ```
 
 ```
-Starting component `cluster`: /home/tidb/.tiup/components/cluster/v1.11.0/cluster audit
+Starting component `cluster`: /home/tidb/.tiup/components/cluster/v1.11.3/cluster audit
 ID      Time                       Command
 --      ----                       -------
 4BLhr0  2023-03-10T13:25:09+08:00  /home/tidb/.tiup/components/cluster/v1.11.3/cluster deploy test v6.5.1 /tmp/topology.yaml
