@@ -23,7 +23,7 @@ TiDB 版本：6.5.1
 
 - (dup): release-6.1.4.md > 兼容性变更> TiDB - 由于可能存在正确性问题，分区表目前不再支持修改列类型 [#40620](https://github.com/pingcap/tidb/issues/40620) @[mjonss](https://github.com/mjonss)
 
-- TiKV 配置项 `advance-ts-interval` 默认值由 `1s` 改为 `20s`。你可以通过调整该配置项提高 Stale Read 数据的时效性（即减少延时），详情参见[减少 Stale Read 延时](/stale-read.md#减少-stale-read-延时)。
+- TiKV 配置项 [`advance-ts-interval`](/tikv-configuration-file.md#advance-ts-interval) 默认值由 `1s` 修改为 `20s`。你可以通过调整该配置项提高 Stale Read 数据的时效性（即减少延时），详情参见[减少 Stale Read 延时](/stale-read.md#减少-stale-read-延时)。
 
 ## 改进提升
 
@@ -38,7 +38,7 @@ TiDB 版本：6.5.1
    
     - (dup): release-6.6.0.md > - 支持指定集群初次启动时的初始化 SQL 脚本 [#35624](https://github.com/pingcap/tidb/issues/35624) @[morgo](https://github.com/morgo)
 
-        TiDB 集群初次启动时，可通过命令行参数 `--initialize-sql-file` 指定执行的 SQL 脚本。该功能可用于修改系统变量的值、创建用户或分配权限等。更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/v6.5/tidb-configuration-file#initialize-sql-file-从-v651-版本开始引入)。
+        TiDB v6.5.1 新增 [`initialize-sql-file`](https://docs.pingcap.com/zh/tidb/v6.5/tidb-configuration-file#initialize-sql-file-从-v651-版本开始引入) 配置项。集群初次启动时，你可通过命令行参数 `--initialize-sql-file` 指定执行的 SQL 脚本。该功能可用于修改系统变量的值、创建用户或分配权限等。更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/v6.5/tidb-configuration-file#initialize-sql-file-从-v651-版本开始引入)。
 
     - (dup): release-6.6.0.md > 改进提升> TiDB - 定期清理过期的 Region 缓存，避免内存泄漏和性能下降问题 [#40461](https://github.com/pingcap/tidb/issues/40461) @[sticnarf](https://github.com/sticnarf)
     - 添加 `-proxy protocol fallbackable` 选项，让 TiDB 可以处理客户端 IP 在 proxy 协议允许的 IP 列表中的原始连接。[#41409](https://github.com/pingcap/tidb/issues/41409) @[blacktear23](https://github.com/blacktear23)
