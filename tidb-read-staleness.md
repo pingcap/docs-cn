@@ -21,6 +21,10 @@ summary: 了解如何通过系统变量 `tidb_read_staleness` 读取历史数据
 - 结束当前会话。
 - 使用 `SET` 语句，把 `tidb_read_staleness` 变量的值设为 `""`。
 
+> **注意：**
+>
+> 你可以通过调整 TiKV 的 `advance-ts-interval` 配置项提高 Stale Read 数据的时效性（即减少延时），详情参见[减少 Stale Read 延时](/stale-read.md#减少-stale-read-延时)。
+
 ## 示例
 
 本节通过具体操作示例介绍系统变量 `tidb_read_staleness`的使用方法。
