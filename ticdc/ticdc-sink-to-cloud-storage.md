@@ -92,7 +92,7 @@ URI 中其他可配置的参数如下：
     - `month`：以事务提交的年份和月份分隔文件路径。例如：<code>s3://bucket/bbb/ccc/test/table1/9999/**2022-01**</code>。
     - `day`：以事务提交的年月日来分隔文件路径。例如：<code>s3://bucket/bbb/ccc/test/table1/9999/**2022-01-02**</code>。
 - `num`：存储数据变更记录的目录下文件的序号。例如：<code>s3://bucket/bbb/ccc/test/table1/9999/2022-01-02/CDC**000005**.csv</code>。
-- `extension`：文件的扩展名。从 v6.5.0 起， TiDB 支持 CSV 和 Canal-JSON 格式。
+- `extension`：文件的扩展名。从 v6.5.0 起，TiDB 支持 CSV 和 Canal-JSON 格式。
 
 > **注意：**
 >
