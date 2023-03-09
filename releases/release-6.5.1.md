@@ -33,15 +33,15 @@ TiDB 版本：6.5.1
 
     - (dup): release-6.6.0.md > 改进提升> TiDB - 定期清理过期的 Region 缓存，避免内存泄漏和性能下降问题 [#40461](https://github.com/pingcap/tidb/issues/40461) @[sticnarf](https://github.com/sticnarf)
     - 添加 `-proxy protocol fallbackable` 选项，让 TiDB 可以处理客户端 IP 在 proxy 协议允许的 IP 列表中的原始连接。[#41409](https://github.com/pingcap/tidb/issues/41409) @[blacktear23](https://github.com/blacktear23)
-    - 改进了 memory tracker 的准确度 [#40900](https://github.com/pingcap/tidb/issues/40900) [#40500](https://github.com/pingcap/tidb/issues/40500) @[wshwsh12](https://github.com/wshwsh12)
-    - 当 Plan Cache 无法生效时通过 Warning 返回原因 [#40210](https://github.com/pingcap/tidb/issues/40210) @[qw4990](https://github.com/qw4990)
-    - 条件优化器在进行越界估算时的策略 [#39011](https://github.com/pingcap/tidb/issues/39011) @[time-and-fate](https://github.com/time-and-fate)
+    - 提升了 Memory Tracker 的准确度 [#40900](https://github.com/pingcap/tidb/issues/40900) [#40500](https://github.com/pingcap/tidb/issues/40500) @[wshwsh12](https://github.com/wshwsh12)
+    - 当执行计划缓存无法生效时，系统会通过 Warning 返回原因 [#40210](https://github.com/pingcap/tidb/issues/40210) @[qw4990](https://github.com/qw4990)
+    - 改进了条件优化器在进行越界估算时的策略 [#39011](https://github.com/pingcap/tidb/issues/39011) @[time-and-fate](https://github.com/time-and-fate)
 
 + TiKV
 
     - (dup): release-6.6.0.md > 改进提升> TiKV - 支持在小于 1 core 的 CPU 下启动 TiKV [#13586](https://github.com/tikv/tikv/issues/13586) [#13752](https://github.com/tikv/tikv/issues/13752) [#14017](https://github.com/tikv/tikv/issues/14017) @[andreid-db](https://github.com/andreid-db)
     - 提高unified read pool的线程上限至CPU vCore的10倍 [#13690](https://github.com/tikv/tikv/issues/13690) @[v01dstar](https://github.com/v01dstar)
-    - 延长resolved-ts.advance-ts-interval到20s， 从而节省跨域流量 [#14100](https://github.com/tikv/tikv/issues/14100) @[overvenus](https://github.com/overvenus)
+    - 为了节省跨域流量，`resolved-ts.advance-ts-interval` 的默认值从 `"1s"` 修改为 `"20s"` [#14100](https://github.com/tikv/tikv/issues/14100) @[overvenus](https://github.com/overvenus)
 
 TiFlash
     - 显著提升 TiFlash 在大数据量下的启动速度 [#6395](https://github.com/pingcap/tiflash/issues/6395) @[hehechen](https://github.com/hehechen)
@@ -111,9 +111,9 @@ TiFlash
     - (dup): release-6.6.0.md > 错误修复> TiKV - 修复 Resolved TS 导致网络流量升高的问题 [#14092](https://github.com/tikv/tikv/issues/14092) @[overvenus](https://github.com/overvenus)
     - (dup): release-6.1.4.md > Bug 修复> TiKV - 修复 TiDB 中事务在执行悲观 DML 失败后，再执行其他 DML 时，如果 TiDB 和 TiKV 之间存在网络故障，可能会造成数据不一致的问题 [#14038](https://github.com/tikv/tikv/issues/14038) @[MyonKeminta](https://github.com/MyonKeminta)
     - (dup): release-6.6.0.md > 错误修复> TiKV - 修复转换 `const Enum` 类型到其他类型时报错的问题 [#14156](https://github.com/tikv/tikv/issues/14156) @[wshwsh12](https://github.com/wshwsh12)
-    - 修复 cop task paging 计算相关问题 [#14254](https://github.com/tikv/tikv/issues/14254)  @[you06](https://github.com/you06)
-    - 修复 batch cop scan details 不准确问题 [#14109](https://github.com/tikv/tikv/issues/14109) @[you06](https://github.com/you06)
-    - 修复Raft-Engine一个潜在的错误可能导致TiKV因检测到Raft数据corrupt而无法重启[#14338](https://github.com/tikv/tikv/issues/14338) @[tonyxuqqi](https://github.com/tonyxuqqi)
+    - 修复 cop task 分页计算错误的问题 [#14254](https://github.com/tikv/tikv/issues/14254)  @[you06](https://github.com/you06)
+    - 修复 `batch cop` 模式下 `scan_detail` 不准确问题 [#14109](https://github.com/tikv/tikv/issues/14109) @[you06](https://github.com/you06)
+    - 修复 Raft Engine 中的一个潜在错误，该错误可能导致 TiKV 检测到 Raft 数据损坏而无法重启 [#14338](https://github.com/tikv/tikv/issues/14338) @[tonyxuqqi](https://github.com/tonyxuqqi)
 
 + PD
 
@@ -121,7 +121,7 @@ TiFlash
     - (dup): release-6.1.4.md > Bug 修复> PD - 修复 PD 可能会非预期地向 Region 添加多个 Learner 的问题 [#5786](https://github.com/tikv/pd/issues/5786) @[HunDunDM](https://github.com/HunDunDM)
     - (dup): release-6.6.0.md > 错误修复> PD - 修复 Region Scatter 任务会生成非预期的多余副本的问题 [#5909](https://github.com/tikv/pd/issues/5909) @[HundunDM](https://github.com/HunDunDM)
     - (dup): release-6.1.5.md > Bug 修复> PD - 修复调用 `ReportMinResolvedTS` 过于频繁导致 PD OOM 的问题 [#5965](https://github.com/tikv/pd/issues/5965) @[HundunDM](https://github.com/HunDunDM)	
-    - 修复 region scatter 接口会导致 leader 分布不均匀的问题  [#6017](https://github.com/tikv/pd/issues/6017) @[HunDunDM](https://github.com/HunDunDM)
+    - 修复 Region Scatter 接口可能导致 leader 分布不均匀的问题 [#6017](https://github.com/tikv/pd/issues/6017) @[HunDunDM](https://github.com/HunDunDM)
 
 + TiFlash
 
