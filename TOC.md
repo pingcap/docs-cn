@@ -780,6 +780,7 @@
       - [`SHOW INDEX [FROM|IN]`](/sql-statements/sql-statement-show-index.md)
       - [`SHOW INDEXES [FROM|IN]`](/sql-statements/sql-statement-show-indexes.md)
       - [`SHOW KEYS [FROM|IN]`](/sql-statements/sql-statement-show-keys.md)
+      - [`SHOW LOAD DATA`](/sql-statements/sql-statement-show-load-data.md)
       - [`SHOW MASTER STATUS`](/sql-statements/sql-statement-show-master-status.md)
       - [`SHOW PLACEMENT`](/sql-statements/sql-statement-show-placement.md)
       - [`SHOW PLACEMENT FOR`](/sql-statements/sql-statement-show-placement-for.md)
@@ -811,6 +812,7 @@
       - [`UPDATE`](/sql-statements/sql-statement-update.md)
       - [`USE`](/sql-statements/sql-statement-use.md)
       - [`WITH`](/sql-statements/sql-statement-with.md)
+      - [`[CANCEL|DROP] LOAD DATA`](/sql-statements/sql-statement-operate-load-data-job.md)
     - 数据类型
       - [数据类型概述](/data-type-overview.md)
       - [数据类型默认值](/data-type-default-values.md)
