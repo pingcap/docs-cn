@@ -23,10 +23,19 @@ TiDB 版本：6.5.1
 
 - (dup): release-6.1.4.md > 兼容性变更> TiDB - 由于可能存在正确性问题，分区表目前不再支持修改列类型 [#40620](https://github.com/pingcap/tidb/issues/40620) @[mjonss](https://github.com/mjonss)
 
+- TiKV 配置项 `advance-ts-interval` 默认值由 `1s` 改为 `20s`。你可以通过调整该配置项提高 Stale Read 数据的时效性（即减少延时），详情参见[减少 Stale Read 延时](/stale-read.md#减少-stale-read-延时)。
+
 ## 改进提升
 
 + TiDB
 
+- 从 v6.5.1 起，由 **v1.4.3 或以上版本的 TiDB Operator** 部署的 TiDB 全栈支持 IPv6 地址，这意味着 TiDB 可以支持更大的地址空间，并带来更好的安全性和网络性能。
+
+    - 完全支持 IPv6 寻址：TiDB 支持使用 IPv6 地址进行所有网络连接，包括客户端连接、节点之间的内部通信以及与外部系统的通信。
+    - 双栈支持：如果你尚未准备好完全切换到 IPv6，TiDB 也支持双栈网络。这意味着你可以在同一个 TiDB 集群中使用 IPv4 和 IPv6 地址，可以通过配置 IPv6 优先的方式来选择网络部署模式。
+    
+    部署相关信息，请参考[TiDB on Kubernetes 用户文档]()。
+   
     - (dup): release-6.6.0.md > - 支持指定集群初次启动时的初始化 SQL 脚本 [#35624](https://github.com/pingcap/tidb/issues/35624) @[morgo](https://github.com/morgo)
 
         TiDB 集群初次启动时，可通过命令行参数 `--initialize-sql-file` 指定执行的 SQL 脚本。该功能可用于修改系统变量的值、创建用户或分配权限等。更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/v6.5/tidb-configuration-file#initialize-sql-file-从-v651-版本开始引入)。
