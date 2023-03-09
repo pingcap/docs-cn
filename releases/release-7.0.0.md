@@ -24,6 +24,12 @@ TiDB 版本：7.0.0
 
     更多信息，请参考[用户文档](链接)。
 
+* TiFlash 引擎支持存算分离和对象存储（实验特性） [#6882](https://github.com/pingcap/tiflash/issues/6882) @[flowbehappy](https://github.com/flowbehappy)
+
+    在 v7.0.0 之前的版本中，TiFlash 引擎以存算一体的方式部署，即 TiFlash 节点即是存储节点，也是计算节点；同时，TiFlash 节点只能使用本地存储。存算一体的部署方式使得 TiFlash 的计算能力和存储能力无法独立扩展。在 v7.0.0 版本中，TiFlash 引擎新增存算分离架构，并在存算分离架构下，支持兼容 S3 API 的对象存储。在 TiFlash 存算分离架构下，TiFlash 节点分为计算节点和写节点。这两种节点都可以单独扩缩容，独立调整计算或数据存储能力。TiFlash 引擎的存算分离架构不能和存算一体架构混合使用、相互转换，需要在部署 TiFlash 时进行相应的配置设定，确定使用存算分离架构或者存算一体架构。
+
+    更多信息，请参考[用户文档](/tiflash/tiflash-disaggregated-and-s3.md)。
+
 ### 性能
 
 * 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接)
@@ -57,6 +63,12 @@ TiDB 版本：7.0.0
     功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
 
     更多信息，请参考[用户文档](链接)。
+
+* TiFlash 引擎支持 Spill-to-disk 功能 [#5252](https://github.com/pingcap/tiflash/issues/5252) @[windtalker](https://github.com/windtalker)
+
+    为了执行性能，TiFlash 引擎尽量将数据全部放在内存中运行。当数据量太大，超过内存总大小时，TiFlash 会终止查询，避免内存潮用引发系统崩溃。因此，TiFlash 可处理的数据量受限于内存大小。从 v7.0.0 版本开始，TiFlash 引擎支持 Spill-to-disk 功能，当算子使用内存超过一定阈值时，会自动将数据落盘，牺牲一定的性能，从而处理更多数据。
+
+    更多信息，请参考[用户文档]()。
 
 ### 高可用
 
