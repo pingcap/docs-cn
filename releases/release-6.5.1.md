@@ -41,15 +41,15 @@ TiDB 版本：6.5.1
         TiDB v6.5.1 新增 [`initialize-sql-file`](https://docs.pingcap.com/zh/tidb/v6.5/tidb-configuration-file#initialize-sql-file-从-v651-版本开始引入) 配置项。集群初次启动时，你可通过命令行参数 `--initialize-sql-file` 指定执行的 SQL 脚本。该功能可用于修改系统变量的值、创建用户或分配权限等。更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/v6.5/tidb-configuration-file#initialize-sql-file-从-v651-版本开始引入)。
 
     - (dup): release-6.6.0.md > 改进提升> TiDB - 定期清理过期的 Region 缓存，避免内存泄漏和性能下降问题 [#40461](https://github.com/pingcap/tidb/issues/40461) @[sticnarf](https://github.com/sticnarf)
-    - 添加 `-proxy protocol fallbackable` 选项，让 TiDB 可以处理客户端 IP 在 proxy 协议允许的 IP 列表中的原始连接。[#41409](https://github.com/pingcap/tidb/issues/41409) @[blacktear23](https://github.com/blacktear23)
+    - 新增 `--proxy-protocol-fallbackable` 配置项，控制是否启用 PROXY 协议回退模式。如果设置为 `true`，TiDB 可以接受非 PROXY 协议规范或者没有发送 PROXY 协议头的客户端连接 [#41409](https://github.com/pingcap/tidb/issues/41409) @[blacktear23](https://github.com/blacktear23)
     - 提升了 Memory Tracker 的准确度 [#40900](https://github.com/pingcap/tidb/issues/40900) [#40500](https://github.com/pingcap/tidb/issues/40500) @[wshwsh12](https://github.com/wshwsh12)
-    - 当执行计划缓存无法生效时，系统会通过 Warning 返回原因 [#40210](https://github.com/pingcap/tidb/issues/40210) @[qw4990](https://github.com/qw4990)
-    - 改进了条件优化器在进行越界估算时的策略 [#39011](https://github.com/pingcap/tidb/issues/39011) @[time-and-fate](https://github.com/time-and-fate)
+    - 当执行计划缓存无法生效时，系统会通过 Warning 返回原因 [#40210](https://github.com/pingcap/tidb/pull/40210) @[qw4990](https://github.com/qw4990)
+    - 改进了条件优化器在进行越界估算时的策略 [#39008](https://github.com/pingcap/tidb/issues/39008) @[time-and-fate](https://github.com/time-and-fate)
 
 + TiKV
 
     - (dup): release-6.6.0.md > 改进提升> TiKV - 支持在小于 1 core 的 CPU 下启动 TiKV [#13586](https://github.com/tikv/tikv/issues/13586) [#13752](https://github.com/tikv/tikv/issues/13752) [#14017](https://github.com/tikv/tikv/issues/14017) @[andreid-db](https://github.com/andreid-db)
-    - 提高unified read pool的线程上限至CPU vCore的10倍 [#13690](https://github.com/tikv/tikv/issues/13690) @[v01dstar](https://github.com/v01dstar)
+    - 将 Unified Read Pool 的线程上限 (`readpool.unified.max-thread-count`) 提高至 CPU 配额的 10 倍 [#13690](https://github.com/tikv/tikv/issues/13690) @[v01dstar](https://github.com/v01dstar)
     - 为了节省跨域流量，`resolved-ts.advance-ts-interval` 的默认值从 `"1s"` 修改为 `"20s"` [#14100](https://github.com/tikv/tikv/issues/14100) @[overvenus](https://github.com/overvenus)
 
 TiFlash
