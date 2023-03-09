@@ -29,7 +29,7 @@ TiDB 版本：6.5.1
 
 + TiDB
 
-    - 从 v6.5.1 起，由 **v1.4.3 或以上版本的 TiDB Operator** 部署的 TiDB 全栈支持 IPv6 地址，这意味着 TiDB 可以支持更大的地址空间，并带来更好的安全性和网络性能。
+    - 从 v6.5.1 起，由 **v1.4.3 或以上版本的 TiDB Operator** 部署的 TiDB 全栈支持 IPv6 地址，这意味着 TiDB 可以支持更大的地址空间，并提供更好的安全性和网络性能。
 
         - 完全支持 IPv6 寻址：TiDB 支持使用 IPv6 地址进行所有网络连接，包括客户端连接、节点之间的内部通信以及与外部系统的通信。
         - 双栈支持：如果你尚未准备好完全切换到 IPv6，TiDB 也支持双栈网络。这意味着你可以在同一个 TiDB 集群中使用 IPv4 和 IPv6 地址，可以通过配置 IPv6 优先的方式来选择网络部署模式。
@@ -52,7 +52,8 @@ TiDB 版本：6.5.1
     - 将 Unified Read Pool 的线程上限 (`readpool.unified.max-thread-count`) 提高至 CPU 配额的 10 倍 [#13690](https://github.com/tikv/tikv/issues/13690) @[v01dstar](https://github.com/v01dstar)
     - 为了节省跨域流量，`resolved-ts.advance-ts-interval` 的默认值从 `"1s"` 修改为 `"20s"` [#14100](https://github.com/tikv/tikv/issues/14100) @[overvenus](https://github.com/overvenus)
 
-TiFlash
++ TiFlash
+
     - 显著提升 TiFlash 在大数据量下的启动速度 [#6395](https://github.com/pingcap/tiflash/issues/6395) @[hehechen](https://github.com/hehechen)
 
 + Tools
@@ -113,7 +114,7 @@ TiFlash
     - 修复添加索引时数据不一致的问题 [#40698](https://github.com/pingcap/tidb/issues/40698）[#40730](https://github.com/pingcap/tidb/issues/40730）[#41459](https://github.com/pingcap/tidb/issues/41459）[#40464](https://github.com/pingcap/tidb/issues/40464）[#40217](https://github.com/pingcap/tidb/issues/40217）@[tangenta](https://github.com/tangenta)
     - 修复添加索引时出现 "Pessimistic lock not found" 的报错问题 [#41515](https://github.com/pingcap/tidb/issues/41515) @[tangenta](https://github.com/tangenta)
     - 修复添加唯一索引时误报重复键的问题 [#41630](https://github.com/pingcap/tidb/issues/41630) @[tangenta](https://github.com/tangenta)
-    - 修复 TiDB 使用 `paging` 时性能下降的问题 #40741 @[solotzg](https://github.com/solotzg)
+    - 修复 TiDB 使用 `paging` 时性能下降的问题 [#40741](https://github.com/pingcap/tidb/issues/40741) @[solotzg](https://github.com/solotzg)
 
 + TiKV
 
