@@ -278,6 +278,11 @@ SHOW GRANTS FOR `rw_user`@`192.168.%`;
 
 若要查看全部的动态权限，请执行 `SHOW PRIVILEGES` 语句。由于用户可使用插件来添加新的权限，因此可分配的权限列表可能因用户的 TiDB 安装情况而异。
 
+## `SUPER` 权限
+
+- 拥有 `SUPER` 权限的用户能完成几乎所有的操作，默认情况下只有 `root` 用户拥有该权限。请谨慎向其它用户授予 `SUPER` 权限。
+- `SUPER` 权限[在 MySQL 8.0 中被认为是过时的](https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#dynamic-privileges-migration-from-super)，可以通过[动态权限](#动态权限)替代 `SUPER` 权限进行更细粒度的权限控制。
+
 ## TiDB 各操作需要的权限
 
 TiDB 用户目前拥有的权限可以在 `INFORMATION_SCHEMA.USER_PRIVILEGES` 表中查找到。例如：
