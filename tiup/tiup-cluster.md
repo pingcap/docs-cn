@@ -170,7 +170,7 @@ tiup cluster list
 ```
 
 ```
-Starting /root/.tiup/components/cluster/v1.11.0/cluster list
+Starting /root/.tiup/components/cluster/v1.11.3/cluster list
 Name          User  Version    Path                                               PrivateKey
 ----          ----  -------    ----                                               ----------
 prod-cluster  tidb  v6.5.1    /root/.tiup/storage/cluster/clusters/prod-cluster  /root/.tiup/storage/cluster/clusters/prod-cluster/ssh/id_rsa
@@ -199,7 +199,7 @@ tiup cluster display prod-cluster
 ```
 
 ```
-Starting /root/.tiup/components/cluster/v1.11.0/cluster display prod-cluster
+Starting /root/.tiup/components/cluster/v1.11.3/cluster display prod-cluster
 TiDB Cluster: prod-cluster
 TiDB Version: v6.5.1
 ID                  Role        Host          Ports                            OS/Arch       Status  Data Dir              Deploy Dir
@@ -267,7 +267,7 @@ tiup cluster display prod-cluster
 ```
 
 ```
-Starting /root/.tiup/components/cluster/v1.11.0/cluster display prod-cluster
+Starting /root/.tiup/components/cluster/v1.11.3/cluster display prod-cluster
 TiDB Cluster: prod-cluster
 TiDB Version: v6.5.1
 ID                  Role        Host          Ports                            OS/Arch       Status   Data Dir              Deploy Dir
