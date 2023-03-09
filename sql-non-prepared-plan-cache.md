@@ -81,6 +81,8 @@ TiDB 对一种参数化后的查询，只能缓存一个计划，比如对于 `s
 7. 带有 hint、子查询、Lock 的查询不支持；
 8. DML 语句不支持；
 
+后续我们会逐步解掉上述限制，让更多的查询能够享受到 Non-Prepared Plan Cache 带来的性能收益。
+
 ## 诊断
 
 开启 Non-Prepared Plan Cache 后，可以通过 `explain format='plan_cache' select ...` 来验证查询是否能够命中，对于无法命中的查询，会通过 warning 的方式返回其无法命中的原因。
