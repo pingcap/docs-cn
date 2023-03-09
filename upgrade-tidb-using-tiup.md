@@ -46,7 +46,7 @@ title: 使用 TiUP 升级 TiDB
 
 查阅 TiDB release notes 中的兼容性变更。如果有任何变更影响到了你的升级，请采取相应的措施。
 
-以下为从 v6.4.0 升级至当前版本 (v6.5.1) 所需兼容性变更信息。如果从 v6.3.0 或之前版本升级到当前版本，可能也需要考虑和查看中间版本 release notes 中提到的兼容性变更信息。
+以下为从 v6.4.0 升级至当前版本 (v6.5.1) 所需兼容性变更信息。如果从 v6.3.0 或之前版本升级到当前版本，可能也需要考虑和查看中间版本 [release notes](/releases/release-notes.md) 中提到的兼容性变更信息。
 
 - TiDB v6.5.0 release notes 中的[兼容性变更](/releases/release-6.5.0.md#兼容性变更)和[废弃功能](/releases/release-6.5.0.md#废弃功能)
 - TiDB v6.5.1 release notes 中的[兼容性变更](/releases/release-6.5.1.md#兼容性变更)
