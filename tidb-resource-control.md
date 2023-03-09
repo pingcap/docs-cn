@@ -57,7 +57,7 @@ Request Unit (RU) 是 TiDB 对 CPU、IO 等系统资源的统一抽象的单位,
 | `resource-control.enabled`= true  | 流控和调度（推荐组合）                        | 无效配置                         |
 | `resource-control.enabled`= false | 仅流控（不推荐）                           |  特性被关闭                   |
 
-关于资源管控实现机制及相关参数的详细介绍，请参考 [RFC: Global Resource Control in TiDB](https://docs.google.com/document/d/1sV5EVv8Cdpc6aBCDihc2akpE0iuantPf/edit?n=RFC_Global_Resource_Control_in_TiDB.docx#heading=h.sjp9cmjfszlu)。
+关于资源管控实现机制及相关参数的详细介绍，请参考 [RFC: Global Resource Control in TiDB](https://github.com/pingcap/tidb/blob/9fb2d6c35790c4733db0ffa6f3574414c91f1dbb/docs/design/2022-11-25-global-resource-control.md)。
 
 ## 使用方法
 
