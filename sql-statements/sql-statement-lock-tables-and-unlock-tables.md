@@ -25,7 +25,7 @@ summary: TiDB 数据库中 LOCK TABLES 和 UNLOCK TABLES 的使用概况。
 
 ```ebnf+diagram
 LockTablesDef
-         ::= 'LOCK' 'TABLES' TableName LockType ( ',' TableName LockType)*
+         ::= 'LOCK' ( 'TABLES' | 'TABLE' ) TableName LockType ( ',' TableName LockType)*
 
 
 UnlockTablesDef
@@ -61,7 +61,7 @@ LockType
 如果 `LOCK TABLES` 语句想要获取的表锁被其他会话持有且必须等待锁释放时，则 `LOCK TABLES` 语句会执行报错，例如：
 
 ```sql
-> lock table t1 read;
+> LOCK TABLES t1 read;
 ERROR 8020 (HY000): Table 't1' was locked in WRITE by server: f4799bcb-cad7-4285-8a6d-23d3555173f1_session: 2199023255959
 ```
 
@@ -70,7 +70,7 @@ ERROR 8020 (HY000): Table 't1' was locked in WRITE by server: f4799bcb-cad7-4285
 不能在单个 `LOCK TABLES` 语句中多次获取同一个表的锁。
 
 ```sql
-> LOCK TABLE t WRITE, t READ;
+> LOCK TABLES t WRITE, t READ;
 ERROR 1066 (42000): Not unique table/alias: 't'
 ```
 
