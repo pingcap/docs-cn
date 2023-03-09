@@ -9,7 +9,7 @@ summary: 了解 TiDB 6.5.0 版本的新功能、兼容性变更、改进提升�
 
 TiDB 版本：6.5.0
 
-试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v6.5/quick-start-with-tidb) | [生产部署](https://docs.pingcap.com/zh/tidb/v6.5/production-deployment-using-tiup) | [下载离线包](https://cn.pingcap.com/product-community/?version=v6.5.0#version-list)
+试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v6.5/quick-start-with-tidb) | [生产部署](https://docs.pingcap.com/zh/tidb/v6.5/production-deployment-using-tiup) | [下载离线包](https://cn.pingcap.com/product-community/?version=v6.5.1#version-list)
 
 TiDB 6.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
@@ -35,23 +35,23 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 * TiDB 添加索引的性能约提升为原来的 10 倍 (GA) [#35983](https://github.com/pingcap/tidb/issues/35983) @[benjamin2037](https://github.com/benjamin2037) @[tangenta](https://github.com/tangenta)
 
-    TiDB v6.3.0 引入了[添加索引加速](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入)作为实验特性，提升了添加索引回填过程的速度。该功能在 v6.5.0 正式 GA 并默认打开，预期大表添加索引的性能约提升为 v6.1.0 的 10 倍。添加索引加速适用于单条 SQL 语句串行添加索引的场景，在多条 SQL 并行添加索引时仅对其中一条添加索引的 SQL 语句生效。
+    TiDB v6.3.0 引入了[添加索引加速](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入)作为实验特性，提升了添加索引回填过程的速度。该功能在 v6.5.1 正式 GA 并默认打开，预期大表添加索引的性能约提升为 v6.1.0 的 10 倍。添加索引加速适用于单条 SQL 语句串行添加索引的场景，在多条 SQL 并行添加索引时仅对其中一条添加索引的 SQL 语句生效。
 
 * 提供轻量级元数据锁，提升 DDL 变更过程 DML 的成功率 (GA) [#37275](https://github.com/pingcap/tidb/issues/37275) @[wjhuang2016](https://github.com/wjhuang2016)
 
-    TiDB v6.3.0 引入了[元数据锁](/metadata-lock.md)作为实验特性，通过协调表元数据变更过程中 DML 语句和 DDL 语句的优先级，让执行中的 DDL 语句等待持有旧版本元数据的 DML 语句提交，尽可能避免 DML 语句的 `Information schema is changed` 错误。该功能在 v6.5.0 正式 GA 并默认打开，适用于各类 DDL 变更场景。当集群从 v6.5.0 之前的版本升级到 v6.5.0 及之后的版本时，TiDB 默认自动开启该功能。如果需要关闭该功能，你可以将系统变量 [`tidb_enable_metadata_lock`](/system-variables.md#tidb_enable_metadata_lock-从-v630-版本开始引入) 设置为 `OFF`。
+    TiDB v6.3.0 引入了[元数据锁](/metadata-lock.md)作为实验特性，通过协调表元数据变更过程中 DML 语句和 DDL 语句的优先级，让执行中的 DDL 语句等待持有旧版本元数据的 DML 语句提交，尽可能避免 DML 语句的 `Information schema is changed` 错误。该功能在 v6.5.1 正式 GA 并默认打开，适用于各类 DDL 变更场景。当集群从 v6.5.1 之前的版本升级到 v6.5.1 及之后的版本时，TiDB 默认自动开启该功能。如果需要关闭该功能，你可以将系统变量 [`tidb_enable_metadata_lock`](/system-variables.md#tidb_enable_metadata_lock-从-v630-版本开始引入) 设置为 `OFF`。
 
     更多信息，请参考[用户文档](/metadata-lock.md)。
 
 * 支持通过 `FLASHBACK CLUSTER TO TIMESTAMP` 命令将集群快速回退到特定的时间点 (GA) [#37197](https://github.com/pingcap/tidb/issues/37197) [#13303](https://github.com/tikv/tikv/issues/13303) @[Defined2014](https://github.com/Defined2014) @[bb7133](https://github.com/bb7133) @[JmPotato](https://github.com/JmPotato) @[Connor1996](https://github.com/Connor1996) @[HuSharp](https://github.com/HuSharp) @[CalvinNeo](https://github.com/CalvinNeo)
 
-    TiDB v6.4.0 引入了 [`FLASHBACK CLUSTER TO TIMESTAMP`](/sql-statements/sql-statement-flashback-to-timestamp.md) 语句作为实验特性，支持在 Garbage Collection (GC) life time 内快速回退整个集群到指定的时间点。该功能在 v6.5.0 新增对 TiCDC 和 PITR 的兼容性支持并正式 GA，适用于快速撤消 DML 误操作、支持集群分钟级别的快速回退、支持在时间线上多次回退以确定特定数据更改发生的时间。
+    TiDB v6.4.0 引入了 [`FLASHBACK CLUSTER TO TIMESTAMP`](/sql-statements/sql-statement-flashback-to-timestamp.md) 语句作为实验特性，支持在 Garbage Collection (GC) life time 内快速回退整个集群到指定的时间点。该功能在 v6.5.1 新增对 TiCDC 和 PITR 的兼容性支持并正式 GA，适用于快速撤消 DML 误操作、支持集群分钟级别的快速回退、支持在时间线上多次回退以确定特定数据更改发生的时间。
 
     更多信息，请参考[用户文档](/sql-statements/sql-statement-flashback-to-timestamp.md)。
 
 * 完整支持包含 `INSERT`、`REPLACE`、`UPDATE` 和 `DELETE` 的非事务 DML 语句 [#33485](https://github.com/pingcap/tidb/issues/33485) @[ekexium](https://github.com/ekexium)
 
-    在大批量的数据处理场景，单一大事务 SQL 处理可能对集群稳定性和性能造成影响。非事务 DML 语句将一个 DML 语句拆成多个 SQL 语句在内部执行。拆分后的语句将牺牲事务原子性和隔离性，但是对于集群的稳定性有很大提升。TiDB 从 v6.1.0 开始支持非事务 `DELETE` 语句，v6.5.0 新增对非事务 `INSERT`、`REPLACE` 和 `UPDATE` 语句的支持。
+    在大批量的数据处理场景，单一大事务 SQL 处理可能对集群稳定性和性能造成影响。非事务 DML 语句将一个 DML 语句拆成多个 SQL 语句在内部执行。拆分后的语句将牺牲事务原子性和隔离性，但是对于集群的稳定性有很大提升。TiDB 从 v6.1.0 开始支持非事务 `DELETE` 语句，v6.5.1 新增对非事务 `INSERT`、`REPLACE` 和 `UPDATE` 语句的支持。
 
     更多信息，请参考[非事务 DML 语句](/non-transactional-dml.md) 和 [`BATCH` 语句](/sql-statements/sql-statement-batch.md)。
 
@@ -63,7 +63,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 * 支持通过 `INSERT INTO SELECT` 语句保存 TiFlash 查询结果（实验特性）[#37515](https://github.com/pingcap/tidb/issues/37515) @[gengliqi](https://github.com/gengliqi)
 
-    从 v6.5.0 起，TiDB 支持下推 `INSERT INTO SELECT` 语句中的 `SELECT` 子句（分析查询）到 TiFlash，你可以将 TiFlash 的查询结果方便地保存到 `INSERT INTO` 指定的 TiDB 表中供后续分析使用，起到了结果缓存（即结果物化）的效果。例如：
+    从 v6.5.1 起，TiDB 支持下推 `INSERT INTO SELECT` 语句中的 `SELECT` 子句（分析查询）到 TiFlash，你可以将 TiFlash 的查询结果方便地保存到 `INSERT INTO` 指定的 TiDB 表中供后续分析使用，起到了结果缓存（即结果物化）的效果。例如：
 
     ```sql
     INSERT INTO t2 SELECT Mod(x,y) FROM t1;
@@ -81,7 +81,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
     受 SQL 语句执行时各种因素的影响，之前最优的执行计划偶尔会被新的执行计划替代，进而影响 SQL 性能。在这种场景下，最优的执行计划可能仍旧在 SQL 执行历史中，还没有被清除。
 
-    在 v6.5.0 中，TiDB 扩展了 [`CREATE [GLOBAL | SESSION] BINDING`](/sql-statements/sql-statement-create-binding.md) 语句中的绑定对象，支持根据历史执行计划创建绑定。当 SQL 语句的执行计划发生改变时，只要原来的执行计划仍然在 SQL 执行历史内存表（例如，`statements_summary`）中，就可以在 `CREATE [GLOBAL | SESSION] BINDING` 语句中通过指定 `plan_digest` 绑定原来的执行计划，快速恢复 SQL 性能。此方式可以简化执行计划突变问题的处理，提升运维效率。
+    在 v6.5.1 中，TiDB 扩展了 [`CREATE [GLOBAL | SESSION] BINDING`](/sql-statements/sql-statement-create-binding.md) 语句中的绑定对象，支持根据历史执行计划创建绑定。当 SQL 语句的执行计划发生改变时，只要原来的执行计划仍然在 SQL 执行历史内存表（例如，`statements_summary`）中，就可以在 `CREATE [GLOBAL | SESSION] BINDING` 语句中通过指定 `plan_digest` 绑定原来的执行计划，快速恢复 SQL 性能。此方式可以简化执行计划突变问题的处理，提升运维效率。
 
     更多信息，请参考[用户文档](/sql-plan-management.md#根据历史执行计划创建绑定)。
 
@@ -117,7 +117,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 * TiDB Dashboard 在 Kubernetes 环境支持独立 Pod 部署 [#1447](https://github.com/pingcap/tidb-dashboard/issues/1447) @[SabaPing](https://github.com/SabaPing)
 
-    TiDB v6.5.0 且 TiDB Operator v1.4.0 之后，在 Kubernetes 上支持将 TiDB Dashboard 作为独立的 Pod 部署。在 TiDB Operator 环境，可直接访问该 Pod 的 IP 来打开 TiDB Dashboard。
+    TiDB v6.5.1 且 TiDB Operator v1.4.0 之后，在 Kubernetes 上支持将 TiDB Dashboard 作为独立的 Pod 部署。在 TiDB Operator 环境，可直接访问该 Pod 的 IP 来打开 TiDB Dashboard。
 
     独立部署 TiDB Dashboard，可以获得以下收益：
 
@@ -129,7 +129,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 * Performance Overview 面板中新增 TiFlash 和 CDC (Change Data Capture) 面板 [#39230](https://github.com/pingcap/tidb/issues/39230) @[dbsid](https://github.com/dbsid)
 
-    TiDB 从 v6.1.0 起在 Grafana 中引入了 Performance Overview 面板，为 TiDB、TiKV、PD 提供了系统级别的总体性能诊断入口。在 v6.5.0 中，Performance Overview 面板中新增了 TiFlash 和 CDC 面板。通过此次新增，从 v6.5.0 起，使用单个 Performance Overview 面板即可分析 TiDB 集群中所有组件的性能。
+    TiDB 从 v6.1.0 起在 Grafana 中引入了 Performance Overview 面板，为 TiDB、TiKV、PD 提供了系统级别的总体性能诊断入口。在 v6.5.1 中，Performance Overview 面板中新增了 TiFlash 和 CDC 面板。通过此次新增，从 v6.5.1 起，使用单个 Performance Overview 面板即可分析 TiDB 集群中所有组件的性能。
 
     TiFlash 和 CDC 面板重新编排了 TiFlash 和 TiCDC 相关的监控信息，可以帮助你大幅提高 TiFlash 和 TiCDC 的性能分析和故障诊断效率：
 
@@ -142,7 +142,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 * 索引合并 [INDEX MERGE](/glossary.md#index-merge) 功能支持 `AND` 连接的表达式 [#39333](https://github.com/pingcap/tidb/issues/39333) @[guo-shaoge](https://github.com/guo-shaoge) @[time-and-fate](https://github.com/time-and-fate) @[hailanwhu](https://github.com/hailanwhu)
 
-    在 v6.5.0 前，TiDB 只支持对 `OR` 连接词的过滤条件使用索引合并特性。自 v6.5.0 起，TiDB 支持对于在 `WHERE` 子句中使用 `AND` 连接的过滤条件使用索引合并特性。TiDB 的索引合并至此可以覆盖更多普遍的查询过滤条件组合，不再限定于并集 (`OR`) 关系。v6.5.0 仅支持优化器自动选择 `OR` 条件下的索引合并。要开启对于 `AND` 连接的索引合并，你需要使用 [`USE_INDEX_MERGE`](/optimizer-hints.md#use_index_merget1_name-idx1_name--idx2_name-) Hint。
+    在 v6.5.1 前，TiDB 只支持对 `OR` 连接词的过滤条件使用索引合并特性。自 v6.5.1 起，TiDB 支持对于在 `WHERE` 子句中使用 `AND` 连接的过滤条件使用索引合并特性。TiDB 的索引合并至此可以覆盖更多普遍的查询过滤条件组合，不再限定于并集 (`OR`) 关系。v6.5.1 仅支持优化器自动选择 `OR` 条件下的索引合并。要开启对于 `AND` 连接的索引合并，你需要使用 [`USE_INDEX_MERGE`](/optimizer-hints.md#use_index_merget1_name-idx1_name--idx2_name-) Hint。
 
     关于索引合并功能的更多信息，请参阅 [v5.4.0 Release Notes](/releases/release-5.4.0.md#性能)，以及优化器相关的[用户文档](/explain-index-merge.md)。
 
@@ -162,17 +162,17 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 * 新增全局 Hint 干预[视图](/views.md)内查询计划的生成 [#37887](https://github.com/pingcap/tidb/issues/37887) @[Reminiscent](https://github.com/Reminiscent)
 
-    部分视图访问的场景需要用 Hint 对视图内查询的执行计划进行干预，以获得最佳性能。在 v6.5.0 中，TiDB 允许针对视图内的查询块添加全局 Hint，使查询中定义的 Hint 能够在视图内部生效。该特性为包含复杂视图嵌套的 SQL 提供 Hint 的注入手段，增强了执行计划控制能力，进而稳定复杂 SQL 的执行性能。全局 Hint 通过[查询块命名](/optimizer-hints.md#第-1-步使用-qb_name-hint-重命名视图内的查询块)和 [Hint 引用](/optimizer-hints.md#第-2-步添加实际需要的-hint)来开启。
+    部分视图访问的场景需要用 Hint 对视图内查询的执行计划进行干预，以获得最佳性能。在 v6.5.1 中，TiDB 允许针对视图内的查询块添加全局 Hint，使查询中定义的 Hint 能够在视图内部生效。该特性为包含复杂视图嵌套的 SQL 提供 Hint 的注入手段，增强了执行计划控制能力，进而稳定复杂 SQL 的执行性能。全局 Hint 通过[查询块命名](/optimizer-hints.md#第-1-步使用-qb_name-hint-重命名视图内的查询块)和 [Hint 引用](/optimizer-hints.md#第-2-步添加实际需要的-hint)来开启。
 
     更多信息，请参考[用户文档](/optimizer-hints.md#全局生效的-hint)。
 
 * 支持将[分区表](/partitioned-table.md)的排序操作下推至 TiKV [#26166](https://github.com/pingcap/tidb/issues/26166) @[winoros](https://github.com/winoros)
 
-    [分区表](/partitioned-table.md)特性在 v6.1.0 正式 GA 后，TiDB 仍然在持续提升分区表相关的性能。在 v6.5.0 中，TiDB 支持将 `ORDER BY` 和 `LIMIT` 等排序操作下推至 TiKV 进行计算和过滤，降低网络 I/O 的开销，提升了使用分区表时 SQL 的性能。
+    [分区表](/partitioned-table.md)特性在 v6.1.0 正式 GA 后，TiDB 仍然在持续提升分区表相关的性能。在 v6.5.1 中，TiDB 支持将 `ORDER BY` 和 `LIMIT` 等排序操作下推至 TiKV 进行计算和过滤，降低网络 I/O 的开销，提升了使用分区表时 SQL 的性能。
 
 * 优化器引入更精准的代价模型 Cost Model Version 2 (GA) [#35240](https://github.com/pingcap/tidb/issues/35240) @[qw4990](https://github.com/qw4990)
 
-    TiDB v6.2.0 引入了代价模型 [Cost Model Version 2](/cost-model.md#cost-model-version-2) 作为实验特性，通过更准确的代价估算方式，有利于最优执行计划的选择。尤其在部署了 TiFlash 的情况下，Cost Model Version 2 自动选择合理的存储引擎，避免过多的人工介入。经过一段时间真实场景的测试，这个模型在 v6.5.0 正式 GA。新创建的集群将默认使用 Cost Model Version 2。对于升级到 v6.5.0 的集群，由于 Cost Model Version 2 可能会改变原有的执行计划，在经过充分的性能测试之后，你可以通过设置变量 [`tidb_cost_model_version = 2`](/system-variables.md#tidb_cost_model_version-从-v620-版本开始引入) 使用新的代价模型。
+    TiDB v6.2.0 引入了代价模型 [Cost Model Version 2](/cost-model.md#cost-model-version-2) 作为实验特性，通过更准确的代价估算方式，有利于最优执行计划的选择。尤其在部署了 TiFlash 的情况下，Cost Model Version 2 自动选择合理的存储引擎，避免过多的人工介入。经过一段时间真实场景的测试，这个模型在 v6.5.1 正式 GA。新创建的集群将默认使用 Cost Model Version 2。对于升级到 v6.5.1 的集群，由于 Cost Model Version 2 可能会改变原有的执行计划，在经过充分的性能测试之后，你可以通过设置变量 [`tidb_cost_model_version = 2`](/system-variables.md#tidb_cost_model_version-从-v620-版本开始引入) 使用新的代价模型。
 
     Cost Model Version 2 成为正式功能大幅提升了 TiDB 优化器的整体能力，并使 TiDB 切实地向更加强大的 HTAP 数据库演进。
 
@@ -180,17 +180,17 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 * TiFlash 对获取表行数的操作进行优化 [#37165](https://github.com/pingcap/tidb/issues/37165) @[elsa0520](https://github.com/elsa0520)
 
-    在数据分析的场景中，通过无过滤条件的 `COUNT(*)` 获取表的实际行数是一个常见操作。TiFlash 在 v6.5.0 中优化了 `COUNT(*)` 的改写，自动选择带有“非空”属性且列定义最短的列进行计数，这样可以有效降低 TiFlash 上发生的 I/O 数量，进而提升获取表行数的执行效率。
+    在数据分析的场景中，通过无过滤条件的 `COUNT(*)` 获取表的实际行数是一个常见操作。TiFlash 在 v6.5.1 中优化了 `COUNT(*)` 的改写，自动选择带有“非空”属性且列定义最短的列进行计数，这样可以有效降低 TiFlash 上发生的 I/O 数量，进而提升获取表行数的执行效率。
 
 ### 稳定性
 
 * TiDB 全局内存控制成为正式功能 (GA) [#37816](https://github.com/pingcap/tidb/issues/37816) @[wshwsh12](https://github.com/wshwsh12)
 
-    TiDB v6.4.0 引入了全局内存控制作为实验特性。自 v6.5.0 起，全局内存控制成为正式功能，能够跟踪到 TiDB 中主要的内存消耗。当全局内存消耗达到 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 所定义的阈值时，TiDB 会尝试 GC 或取消 SQL 操作等方法限制内存使用，保证 TiDB 的稳定性。
+    TiDB v6.4.0 引入了全局内存控制作为实验特性。自 v6.5.1 起，全局内存控制成为正式功能，能够跟踪到 TiDB 中主要的内存消耗。当全局内存消耗达到 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 所定义的阈值时，TiDB 会尝试 GC 或取消 SQL 操作等方法限制内存使用，保证 TiDB 的稳定性。
 
     需要注意的是，会话中事务所消耗的内存（由配置项 [`txn-total-size-limit`](/tidb-configuration-file.md#txn-total-size-limit) 设置最大值）如今被内存管理模块跟踪：当单个会话的内存消耗达到系统变量 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 所定义的阀值时，将会触发系统变量 [`tidb_mem_oom_action`](/system-variables.md#tidb_mem_oom_action-从-v610-版本开始引入) 所定义的行为（默认为 `CANCEL`，即取消操作）。为了保证向前兼容，当配置 [`txn-total-size-limit`](/tidb-configuration-file.md#txn-total-size-limit) 为非默认值时，TiDB 仍旧会保证事务可以使用到 `txn-total-size-limit` 所设定的内存量而不被取消。
 
-    在使用 v6.5.0 及以上版本时，建议移除配置项 [`txn-total-size-limit`](/tidb-configuration-file.md#txn-total-size-limit)，取消对事务内存做单独的限制，转而使用系统变量 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 和 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 对全局内存进行管理，从而提高内存的使用效率。
+    在使用 v6.5.1 及以上版本时，建议移除配置项 [`txn-total-size-limit`](/tidb-configuration-file.md#txn-total-size-limit)，取消对事务内存做单独的限制，转而使用系统变量 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 和 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 对全局内存进行管理，从而提高内存的使用效率。
 
     更多信息，请参考[用户文档](/configure-memory-usage.md)。
 
@@ -198,13 +198,13 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 * 完善 `EXPLAIN ANALYZE` 输出结果中 TiFlash 的 TableFullScan 算子的执行信息 [#5926](https://github.com/pingcap/tiflash/issues/5926) @[hongyunyan](https://github.com/hongyunyan)
 
-    `EXPLAIN ANALYZE` 语句可以输出执行计划及运行时的统计信息。在 v6.5.0 中，TiFlash 对 TableFullScan 算子的执行信息进行了完善，补充了 DMFile 相关的执行信息。你可以更加直观地查看 TiFlash 的数据扫描状态信息，方便进行性能分析。
+    `EXPLAIN ANALYZE` 语句可以输出执行计划及运行时的统计信息。在 v6.5.1 中，TiFlash 对 TableFullScan 算子的执行信息进行了完善，补充了 DMFile 相关的执行信息。你可以更加直观地查看 TiFlash 的数据扫描状态信息，方便进行性能分析。
 
     更多信息，请参考[用户文档](/sql-statements/sql-statement-explain-analyze.md)。
 
 * 支持将执行计划打印为 JSON 格式 [#39261](https://github.com/pingcap/tidb/issues/39261) @[fzzf678](https://github.com/fzzf678)
 
-    在 v6.5.0 中，TiDB 扩展了执行计划的打印格式。通过在 `EXPLAIN` 语句中指定 `FORMAT = "tidb_json"` 能够将 SQL 的执行计划以 JSON 格式输出。借助这个能力，SQL 调试工具和诊断工具能够更方便准确地解读执行计划，进而提升 SQL 诊断调优的易用性。
+    在 v6.5.1 中，TiDB 扩展了执行计划的打印格式。通过在 `EXPLAIN` 语句中指定 `FORMAT = "tidb_json"` 能够将 SQL 的执行计划以 JSON 格式输出。借助这个能力，SQL 调试工具和诊断工具能够更方便准确地解读执行计划，进而提升 SQL 诊断调优的易用性。
 
     更多信息，请参考[用户文档](/sql-statements/sql-statement-explain.md)。
 
@@ -212,7 +212,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 * 支持高性能、全局单调递增的 `AUTO_INCREMENT` 列属性 (GA) [#38442](https://github.com/pingcap/tidb/issues/38442) @[tiancaiamao](https://github.com/tiancaiamao)
 
-    TiDB v6.4.0 引入了 `AUTO_INCREMENT` 的 MySQL 兼容模式作为实验特性，通过中心化分配自增 ID，实现了自增 ID 在所有 TiDB 实例上单调递增。使用该特性能够更容易地实现查询结果按自增 ID 排序。该功能在 v6.5.0 正式 GA。使用该功能的单表写入 TPS 预期超过 2 万，并支持通过弹性扩容提升单表和整个集群的写入吞吐。要使用 MySQL 兼容模式，你需要在建表时将 `AUTO_ID_CACHE` 设置为 `1`。
+    TiDB v6.4.0 引入了 `AUTO_INCREMENT` 的 MySQL 兼容模式作为实验特性，通过中心化分配自增 ID，实现了自增 ID 在所有 TiDB 实例上单调递增。使用该特性能够更容易地实现查询结果按自增 ID 排序。该功能在 v6.5.1 正式 GA。使用该功能的单表写入 TPS 预期超过 2 万，并支持通过弹性扩容提升单表和整个集群的写入吞吐。要使用 MySQL 兼容模式，你需要在建表时将 `AUTO_ID_CACHE` 设置为 `1`。
 
     ```sql
     CREATE TABLE t(a int AUTO_INCREMENT key) AUTO_ID_CACHE 1;
@@ -232,7 +232,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 * 优化了 binlog 解析能力 [#924](https://github.com/pingcap/dm/issues/924) @[gmhdbjd](https://github.com/GMHDBJD)
 
-    该功能允许过滤掉不在迁移任务里的库和表对象的 binlog event，不做解析，从而提升解析效率和稳定性。该策略在 v6.5.0 版本默认生效，无需额外操作。
+    该功能允许过滤掉不在迁移任务里的库和表对象的 binlog event，不做解析，从而提升解析效率和稳定性。该策略在 v6.5.1 版本默认生效，无需额外操作。
 
     有这个功能之前，即使仅迁移几张表，也需要解析上游整个 binlog 文件，即仍要解析该 binlog 文件中不需要迁移的表的 binlog event，效率较低。同时，如果不在迁移任务里的库表的 binlog event 不支持解析，还会导致任务失败。推出该功能后，通过只解析在迁移任务里的库表对象的 binlog event，可以大大提升 binlog 解析效率，提升任务稳定性。
 
@@ -268,7 +268,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 * TiCDC 支持在线更新 TLS 证书 [tiflow#7908](https://github.com/pingcap/tiflow/issues/7908) @[CharlesCheung96](https://github.com/CharlesCheung96)
 
-    为确保系统数据安全，用户会对系统使用的证书设置相应的过期策略，经过固定的时间后会将系统使用的证书更换成新证书。TiCDC v6.5.0 支持在线更新 TLS 证书，在不影响同步任务的前提下，TiCDC 会自动检测和更新证书，无需用户手动操作，满足用户对证书更新的需求。
+    为确保系统数据安全，用户会对系统使用的证书设置相应的过期策略，经过固定的时间后会将系统使用的证书更换成新证书。TiCDC v6.5.1 支持在线更新 TLS 证书，在不影响同步任务的前提下，TiCDC 会自动检测和更新证书，无需用户手动操作，满足用户对证书更新的需求。
 
 * TiCDC 性能提升 [#7540](https://github.com/pingcap/tiflow/issues/7540) [#7478](https://github.com/pingcap/tiflow/issues/7478) [#7532](https://github.com/pingcap/tiflow/issues/7532) @[sdojjy](https://github.com/sdojjy) [@3AceShowHand](https://github.com/3AceShowHand)
 
@@ -302,15 +302,15 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 | 变量名  | 修改类型                      | 描述 |
 |--------|------------------------------|------|
-|[`tidb_enable_amend_pessimistic_txn`](/system-variables.md#tidb_enable_amend_pessimistic_txn-从-v407-版本开始引入)| 废弃 | 从 v6.5.0 起，该变量被废弃，TiDB 会默认使用[元数据锁](/metadata-lock.md)机制解决 `Information schema is changed` 报错的问题。|
+|[`tidb_enable_amend_pessimistic_txn`](/system-variables.md#tidb_enable_amend_pessimistic_txn-从-v407-版本开始引入)| 废弃 | 从 v6.5.1 起，该变量被废弃，TiDB 会默认使用[元数据锁](/metadata-lock.md)机制解决 `Information schema is changed` 报错的问题。|
 | [`tidb_enable_outer_join_reorder`](/system-variables.md#tidb_enable_outer_join_reorder-从-v610-版本开始引入) | 修改 | 经进一步的测试后，该变量默认值从 `OFF` 修改为 `ON`，表示默认启用 Outer Join 的 [Join Reorder 算法](/join-reorder.md)。|
 | [`tidb_cost_model_version`](/system-variables.md#tidb_cost_model_version-从-v620-版本开始引入) | 修改 | 经进一步的测试后，该变量默认值从 `1` 修改为 `2`，表示默认使用 Cost Model Version 2 进行索引选择和算子选择。 |
 | [`tidb_enable_gc_aware_memory_track`](/system-variables.md#tidb_enable_gc_aware_memory_track) |  修改 | 该变量默认值由 `ON` 修改为 `OFF`。由于在测试中发现 GC-Aware memory track 不准确，导致 Analyze 追踪到的内存过大的情况，因此先关闭内存追踪。在 Golang 1.19 下，GC-Aware memory track 追踪的内存对整体内存的影响变小。|
 | [`tidb_enable_metadata_lock`](/system-variables.md#tidb_enable_metadata_lock-从-v630-版本开始引入) | 修改 | 经进一步的测试后，该变量默认值从 `OFF` 修改为 `ON`，表示默认开启元数据锁。 |
-| [`tidb_enable_tiflash_read_for_write_stmt`](/system-variables.md#tidb_enable_tiflash_read_for_write_stmt-从-v630-版本开始引入) | 修改 | 该变量从 v6.5.0 开始生效，默认值为 `OFF`，用来控制包含增删改的 SQL 语句中的读取操作能否下推到 TiFlash。|
+| [`tidb_enable_tiflash_read_for_write_stmt`](/system-variables.md#tidb_enable_tiflash_read_for_write_stmt-从-v630-版本开始引入) | 修改 | 该变量从 v6.5.1 开始生效，默认值为 `OFF`，用来控制包含增删改的 SQL 语句中的读取操作能否下推到 TiFlash。|
 | [`tidb_ddl_enable_fast_reorg`](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) | 修改 | 经进一步的测试后，该变量默认值从 `OFF` 修改为 `ON`，表示默认开启创建索引加速功能。 |
-| [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) | 修改 | 在 v6.5.0 之前的版本中，该变量用来设置单条查询的内存使用限制。在 v6.5.0 及之后的版本中，为了对 DML 语句的内存进行更准确地控制，该变量用来设置单个会话整体的内存使用限制。 |
-| [`tidb_replica_read`](/system-variables.md#tidb_replica_read-从-v40-版本开始引入) | 修改 | 从 v6.5.0 起，为了优化各个 TiDB 节点的负载均衡，当该变量的值为 `closest-adaptive` 时，如果一个读请求的预估返回结果大于或等于 [`tidb_adaptive_closest_read_threshold`](/system-variables.md#tidb_adaptive_closest_read_threshold-从-v630-版本开始引入)，在每个可用区中 `closest-adaptive` 配置实际生效的 TiDB 节点数总是与包含 TiDB 节点最少的可用区中的 TiDB 节点数相同。对于生效的节点，TiDB 会优先选择分布在同一可用区的副本执行读取操作，其他多出的 TiDB 节点将自动切换为读取 leader 副本。 |
+| [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) | 修改 | 在 v6.5.1 之前的版本中，该变量用来设置单条查询的内存使用限制。在 v6.5.1 及之后的版本中，为了对 DML 语句的内存进行更准确地控制，该变量用来设置单个会话整体的内存使用限制。 |
+| [`tidb_replica_read`](/system-variables.md#tidb_replica_read-从-v40-版本开始引入) | 修改 | 从 v6.5.1 起，为了优化各个 TiDB 节点的负载均衡，当该变量的值为 `closest-adaptive` 时，如果一个读请求的预估返回结果大于或等于 [`tidb_adaptive_closest_read_threshold`](/system-variables.md#tidb_adaptive_closest_read_threshold-从-v630-版本开始引入)，在每个可用区中 `closest-adaptive` 配置实际生效的 TiDB 节点数总是与包含 TiDB 节点最少的可用区中的 TiDB 节点数相同。对于生效的节点，TiDB 会优先选择分布在同一可用区的副本执行读取操作，其他多出的 TiDB 节点将自动切换为读取 leader 副本。 |
 | [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) |  修改 | 该变量默认值由 `0` 修改为 `80%`，因为 TiDB 全局内存控制特性 GA，该调整默认开启 TiDB 实例的内存限制，并将默认的内存限制设为总内存的 80%。|
 | [`default_password_lifetime`](/system-variables.md#default_password_lifetime-从-v650-版本开始引入) | 新增 | 用于设置全局自动密码过期策略，要求用户定期修改密码。默认值为 `0`，表示禁用全局自动密码过期策略。 |
 | [`disconnect_on_expired_password`](/system-variables.md#disconnect_on_expired_password-从-v650-版本开始引入) | 新增 | 该变量是一个只读变量，用来显示 TiDB 是否会直接断开密码已过期用户的连接。 |
@@ -343,9 +343,9 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 | 配置文件 | 配置项 | 修改类型 | 描述 |
 | -------- | -------- | -------- | -------- |
-| TiDB | [`server-memory-quota`](/tidb-configuration-file.md#server-memory-quota-从-v409-版本开始引入) | 废弃 | 自 v6.5.0 起，该配置项被废弃。请使用 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 系统变量进行设置。 |
+| TiDB | [`server-memory-quota`](/tidb-configuration-file.md#server-memory-quota-从-v409-版本开始引入) | 废弃 | 自 v6.5.1 起，该配置项被废弃。请使用 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 系统变量进行设置。 |
 | TiDB | [`disconnect-on-expired-password`](/tidb-configuration-file.md#disconnect-on-expired-password-从-v650-版本开始引入) | 新增 | 该配置用于控制 TiDB 服务端是否直接断开密码已过期用户的连接，默认值为 `true`，表示 TiDB 服务端将直接断开密码已过期用户的连接。 |
-| TiKV | `raw-min-ts-outlier-threshold` | 删除 | 从 v6.4.0 起，该配置项被废弃。从 v6.5.0 起，该配置项被删除。 |
+| TiKV | `raw-min-ts-outlier-threshold` | 删除 | 从 v6.4.0 起，该配置项被废弃。从 v6.5.1 起，该配置项被删除。 |
 | TiKV | [`cdc.min-ts-interval`](/tikv-configuration-file.md#min-ts-interval) | 修改 | 为了降低 CDC 延迟，该配置的默认值从 `1s` 修改为 `200ms`。 |
 | TiKV | [`memory-use-ratio`](/tikv-configuration-file.md#memory-use-ratio-从-v650-版本开始引入) | 新增 | 表示 PITR 日志恢复功能中可用内存与系统总内存的占比。 |
 | TiCDC | [`sink.terminator`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-配置文件说明) | 新增 | 换行符，用来分隔两个数据变更事件。默认值为空，表示使用 `\r\n` 作为换行符。 |
@@ -358,12 +358,12 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 ### 其他
 
-- 从 v6.5.0 起，`mysql.user` 表新增 `Password_reuse_history` 和 `Password_reuse_time` 两个字段。
-- 从 v6.5.0 起，[添加索引加速功能](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入)默认开启。该功能和[单条 `ALTER TABLE` 语句增删改多个列或索引](/sql-statements/sql-statement-alter-table.md)功能未完全兼容，在使用索引加速功能添加唯一索引时，请避免在单条语句添加唯一索引的同时操作其他列或者索引对象。同时，该功能与 [PITR (Point-in-time recovery)](/br/br-pitr-guide.md) 不兼容。在使用索引加速功能时，需要确保后台没有启动 PITR 备份任务，否则可能会出现非预期结果。详情请参考 [`tidb_ddl_enable_fast_reorg`](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入)。
+- 从 v6.5.1 起，`mysql.user` 表新增 `Password_reuse_history` 和 `Password_reuse_time` 两个字段。
+- 从 v6.5.1 起，[添加索引加速功能](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入)默认开启。该功能和[单条 `ALTER TABLE` 语句增删改多个列或索引](/sql-statements/sql-statement-alter-table.md)功能未完全兼容，在使用索引加速功能添加唯一索引时，请避免在单条语句添加唯一索引的同时操作其他列或者索引对象。同时，该功能与 [PITR (Point-in-time recovery)](/br/br-pitr-guide.md) 不兼容。在使用索引加速功能时，需要确保后台没有启动 PITR 备份任务，否则可能会出现非预期结果。详情请参考 [`tidb_ddl_enable_fast_reorg`](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入)。
 
 ## 废弃功能
 
-从 v6.5.0 起，废弃 v4.0.7 版本引入的 [`AMEND TRANSACTION`](/system-variables.md#tidb_enable_amend_pessimistic_txn-从-v407-版本开始引入) 机制，并使用[元数据锁](/metadata-lock.md)替代。
+从 v6.5.1 起，废弃 v4.0.7 版本引入的 [`AMEND TRANSACTION`](/system-variables.md#tidb_enable_amend_pessimistic_txn-从-v407-版本开始引入) 机制，并使用[元数据锁](/metadata-lock.md)替代。
 
 ## 改进提升
 
