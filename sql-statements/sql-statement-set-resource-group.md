@@ -23,7 +23,6 @@ ResourceGroupName:
 
 创建一个用户 `'u1'@'%'`，创建两个资源组 `rg1` 和 `rg2`， 并将用户 `'u1'@'%'` 绑定资源组 `rg1`。
 
-
 {{< copyable "sql" >}}
 
 ```sql
