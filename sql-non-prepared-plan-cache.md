@@ -72,14 +72,18 @@ TiDB 对一种参数化后的查询，只能缓存一个计划。例如，对于
 
 由于上述风险以及执行计划缓存只在简单查询上有明显收益（如果查询较为复杂，查询本身执行时间较长，使用执行计划缓存收益不大），TiDB 目前对 Non-Prepared Plan Cache 的生效范围有严格的限制。具体限制如下：
 
-1. [Prepared Plan Cache](/sql-prepared-plan-cache.md) 无法支持的查询或者计划，Non-Prepared Plan Cache 同样无法支持；
-2. 目前仅支持包含 Scan-Selection-Projection 算子的单表的点查或范围查询，如 `select * from t where a<10 and b in (1, 2)`；包含 `Agg`, `Limit`, `Window`, `Sort` 等更复杂算子的查询暂不支持；包含非范围查询条件如 `c like 'c%'`（不支持 `like`）, `a+1<2`（不支持 `+` 操作）等的查询不支持；
-3. `JSON`, `Enum`, `Set` 或 `Bit` 类型的列出现在过滤条件中的查询不支持，如 `select * from t where json_col='{}'`；
-4. 过滤条件中有 `Null` 值出现的查询不支持，如 `select * from t where a=null`；
-5. 参数化后参数个数超过 50 个的查询不支持，如 `select * from t where a in (1, 2, 3, ... 51)`；
-6. 访问分区表，虚拟列，临时表，视图，内存表的查询不支持，如 `select * from information_schema.colunms`，其中 `columns` 为 TiDB 内存表；
-7. 带有 hint、子查询、Lock 的查询不支持；
-8. DML 语句不支持；
+- [Prepared Plan Cache](/sql-prepared-plan-cache.md) 不支持的查询或者计划，Non-Prepared Plan Cache 也不支持。
+- 目前仅支持包含 Scan-Selection-Projection 算子的单表的点查或范围查询，例如 `SELECT * FROM t WHERE a < 10 AND b in (1, 2)`。
+- 不支持包含 `Agg`、`Limit`、`Window` 或 `Sort` 等复杂算子的查询。
+- 不支持包含非范围查询条件，例如：
+    - 不支持 `LIKE`，例如 `c LIKE 'c%'`
+    - 不支持 `+` 操作，例如 `a+1 < 2`
+- 不支持过滤条件中包含 `JSON`、`ENUM`、`SET` 或 `BIT` 类型的列的查询，例如 `SELECT * FROM t WHERE json_col = '{}'`。
+- 不支持过滤条件中出现 `NULL` 值的查询，例如 `SELECT * FROM t WHERE a is NULL`。
+- 不支持参数化后参数个数超过 50 个的查询，例如 `SELECT * FROM t WHERE a in (1, 2, 3, ... 51)`。
+- 不支持访问分区表、虚拟列、临时表、视图、或内存表的查询，例如 `SELECT * FROM INFORMATION_SCHEMA.COLUNMS`，其中 `COLUMNS` 为 TiDB 内存表。
+- 不支持带有 Hint、子查询、Lock 的查询。
+- 不支持 DML 语句。
 
 后续我们会逐步解掉上述限制，让更多的查询能够享受到 Non-Prepared Plan Cache 带来的性能收益。
 
