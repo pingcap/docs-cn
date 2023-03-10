@@ -70,7 +70,7 @@ TiDB 对一种参数化后的查询，只能缓存一个计划。例如，对于
 
 如果由此产生性能问题，可以使用 `ignore_plan_cache()` Hint 忽略计划缓存中的计划，让优化器每次重新为 SQL 生成执行计划。如果 SQL 无法修改，可以通过创建 binding 来解决，例如 `CREATE BINDING FOR SELECT ... USING SELECT /*+ ignore_plan_cache() */ ...`。
 
-由于上述风险，以及 `Plan Cache` 只在简单查询上有明显收益（如果查询较为复杂，本身执行时间较长，使用 `Plan Cache` 收益不大），TiDB 目前对 Non-Prepared Plan Cache 的生效范围有比较严格的限制，如下：
+由于上述风险以及执行计划缓存只在简单查询上有明显收益（如果查询较为复杂，查询本身执行时间较长，使用执行计划缓存收益不大），TiDB 目前对 Non-Prepared Plan Cache 的生效范围有严格的限制。具体限制如下：
 
 1. [Prepared Plan Cache](/sql-prepared-plan-cache.md) 无法支持的查询或者计划，Non-Prepared Plan Cache 同样无法支持；
 2. 目前仅支持包含 Scan-Selection-Projection 算子的单表的点查或范围查询，如 `select * from t where a<10 and b in (1, 2)`；包含 `Agg`, `Limit`, `Window`, `Sort` 等更复杂算子的查询暂不支持；包含非范围查询条件如 `c like 'c%'`（不支持 `like`）, `a+1<2`（不支持 `+` 操作）等的查询不支持；
