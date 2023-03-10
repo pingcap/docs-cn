@@ -47,7 +47,7 @@ Non-Prepared Plan Cache 为会话级别，并且与 [Prepared Plan Cache](/sql-p
     SELECT * FROM t WHERE b < 5 AND a = 2;
     ```
 
-4. 查看第二个查询语句是否命中 cache：
+4. 查看第二个查询语句是否命中缓存：
 
     ```sql
     SELECT @@last_plan_from_cache;
