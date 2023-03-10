@@ -11,6 +11,7 @@ aliases: ['/docs/dev/releases/release-notes/','/docs/dev/releases/rn/']
 
 ## 6.5
 
+- [6.5.1](/releases/release-6.5.1.md): 2023-03-10
 - [6.5.0](/releases/release-6.5.0.md): 2022-12-29
 
 ## 6.4
