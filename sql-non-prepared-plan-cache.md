@@ -86,7 +86,7 @@ TiDB 对一种参数化后的查询，只能缓存一个计划，比如对于 `s
 
 开启 Non-Prepared Plan Cache 后，可以通过 `explain format='plan_cache' select ...` 来验证查询是否能够命中，对于无法命中的查询，会通过 warning 的方式返回其无法命中的原因。
 
-注意如果不加 `format='plan_cache'`，则 `explain` 永远不会命中 Cache。
+需要注意的是，如果不加 `FORMAT='plan_cache'`，则 `EXPLAIN` 语句永远不会命中缓存。
 
 ```sql
 mysql> explain format='plan_cache' select * from t where a+2 < 10;
