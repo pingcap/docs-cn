@@ -126,7 +126,7 @@ SHOW warnings;
 
 开启 Non-Prepared Plan Cache 后，可以在以下几个面板中查看缓存的内存使用情况、缓存中计划的个数、缓存命中的情况等信息。
 
-![non-prepared-plan-cache](media/tidb-non-prepared-plan-cache-metrics.png)
+![non-prepared-plan-cache](/media/tidb-non-prepared-plan-cache-metrics.png)
 
 `statements_summary` 表和慢查询日志也会体现缓存的命中情况。下面是查看 `statements_summary` 表中缓存命中情况的例子：
 
