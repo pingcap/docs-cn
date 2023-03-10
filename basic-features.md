@@ -62,6 +62,7 @@ summary: 了解 TiDB 的基本功能。
 | [`EXPLAIN`](/sql-statements/sql-statement-explain.md)                                                    | Y            | Y            | Y            | Y            |
 | [`EXPLAIN ANALYZE`](/sql-statements/sql-statement-explain-analyze.md)                                    | Y            | Y            | Y            | Y            |
 | [用户自定义变量](/user-defined-variables.md)                                                     | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
+| [表级锁 (Table Lock)](/sql-statements/sql-statement-lock-tables-and-unlock-tables.md)           | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
 
 ## 高级 SQL 功能
 
