@@ -78,6 +78,10 @@ TiDB 版本：7.0.0
 
     更多信息，请参考[用户文档]()。
 
+* 提升统计信息的收集效率 [#41930](https://github.com/pingcap/tidb/issues/41930) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes)
+
+    在 v7.0.0， TiDB 统计信息收集的逻辑被进一步优化，收集时间大概降低了 25% 左右。 提升了中大型数据库集群的运行效率和稳定性，减少了统计信息收集对集群性能的影响。 
+
 ### 高可用
 
 * 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接)
