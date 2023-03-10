@@ -1042,4 +1042,4 @@ public class PlayerController {
 >
 > _—— 节选自 Hibernate 官方文档： [Database Dialect](https://docs.jboss.org/hibernate/orm/6.0/userguide/html_single/Hibernate_User_Guide.html#database-dialect)_
 
-随后，即可获取一个空白的，拥有与示例程序相同依赖的 **Spring Boot** 应用程序。
+随后，即可获取一个拥有与示例程序相同依赖的空白 **Spring Boot** 应用程序。
