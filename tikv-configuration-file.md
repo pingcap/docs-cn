@@ -2029,7 +2029,7 @@ Raft Engine 相关的配置项。
 ### `advance-ts-interval`
 
 + 定期推进 Resolved TS 的时间间隔。
-+ 默认值：1s
++ 默认值：对于 TiDB v6.5.0，默认值为 1s；对于 v6.5.1 以及之后的 v6.5.x 版本，默认值为 20s。
 
 ### `scan-lock-pool-size`
 
