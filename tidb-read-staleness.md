@@ -21,6 +21,10 @@ After reading the historical data, you can read the latest data in the following
 - Start a new session.
 - Set the value of the `tidb_read_staleness` variable to `""` using the `SET` statement.
 
+> **Note:**
+>
+> To reduce the latency and improve the timeliness of the Stale Read data, you can modify the TiKV `advance-ts-interval` configuration item. See [Reduce Stale Read latency](/stale-read.md#reduce-stale-read-latency) for details.
+
 ## Usage examples
 
 This section describes how to use `tidb_read_staleness` with examples.

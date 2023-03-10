@@ -37,6 +37,21 @@ TiDB provides the methods of performing Stale Read at the statement level, the s
 
 Besides, TiDB provides a way to specify an exact point in time by setting the [`tidb_external_ts`](/system-variables.md#tidb_external_ts-new-in-v640) system variable on session or global level. For detailed usage, refer to [Perform Stale Read Using `tidb_external_ts`](/tidb-external-ts.md).
 
+### Reduce Stale Read latency
+
+The Stale Read feature periodically advances the Resolved TS timestamp of the TiDB cluster, which ensures that TiDB reads data that meets transaction consistency. If the timestamp used by Stale Read (for example, `AS OF TIMESTAMP '2016-10-08 16:45:26'`) is greater than the Resolved TS, Stale Read will trigger TiDB to advance the Resolved TS first and wait for the advance to complete before reading the data, leading to an increase in latency.
+
+To reduce the Stale Read latency, you can modify the following TiKV configuration item to make TiDB advance the Resolved TS timestamp more frequently:
+
+```toml
+[resolved-ts]
+advance-ts-interval = "20s" # The default value is "20s". You can set it to a smaller value such as "1s" to advance the Resolved TS timestamp more frequently.
+```
+
+> **Note:**
+>
+> Decreasing the preceding TiKV configuration item will lead to an increase in TiKV CPU usage and traffic between nodes.
+
 ## Restrictions
 
 When a Stale Read query for a table is pushed down to TiFlash, the query will return an error if this table has newer DDL operations executed after the read timestamp specified by the query. This is because TiFlash only supports reading data from the tables with the latest schemas.

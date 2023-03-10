@@ -2054,7 +2054,7 @@ Configuration items related to maintaining the Resolved TS to serve Stale Read r
 ### `advance-ts-interval`
 
 + The interval at which Resolved TS is calculated and forwarded.
-+ Default value: `"1s"`
++ Default value: `"20s"`
 
 ### `scan-lock-pool-size`
 
