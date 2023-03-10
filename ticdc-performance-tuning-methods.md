@@ -29,7 +29,6 @@ summary: 本文介绍了 Performance Overview 仪表盘中 TiCDC 部分，帮助
         - 上游 TiKV 集群 min resolved ts 和最新的 PD TSO 差距过大，通常是因为上游写入负载过大，TiKV 无法及时推进 resolved ts 造成。
         - 下游数据库写入延迟高导致 TiCDC 无法及时把数据同步到下游。
 
-
 - Changefeed resolved ts lag：TiCDC 节点内部同步状态与上游的进度差，以时间单位秒计算。如果 TiCDC Changefeed resolved ts lag 值很高，可能意味着 TiCDC 系统的 Puller 或者 Sorter 模块数据处理能力不足，或者可能存在网络延迟或磁盘读写速度慢的问题。在这种情况下，需要采取适当的措施，例如增加 TiCDC 实例数量或优化网络配置，以确保 TiCDC 系统的高效和稳定运行。
 - Changefeed 的状态。各状态的解释参考 [Changefeed 状态流转](/ticdc//ticdc-changefeed-overview.md)：
 
