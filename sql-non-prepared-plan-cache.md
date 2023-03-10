@@ -22,7 +22,7 @@ Non-Prepared Plan Cache 为会话级别，并且与 [Prepared Plan Cache](/sql-p
 
 ## 使用方法
 
-目前可以通过 [`tidb_enable_non_prepared_plan_cache`](/system-variables.md#tidb_enable_non_prepared_plan_cache) 来打开和关闭此项功能，同时通过 [`tidb_non_prepared_plan_cache_size`](/system-variables.md#tidb_non_prepared_plan_cache_size) 来控制 Non-Prepared Plan Cache 的大小，当缓存的计划数超过 `tidb_non_prepared_plan_cache_size` 时，会使用 LRU 策略来进行逐出。
+目前，你可以通过 [`tidb_enable_non_prepared_plan_cache`](/system-variables.md#tidb_enable_non_prepared_plan_cache) 开启或关闭 Non-Prepared Plan Cache。同时，你还可以通过 [`tidb_non_prepared_plan_cache_size`](/system-variables.md#tidb_non_prepared_plan_cache_size) 来控制 Non-Prepared Plan Cache 的大小。当缓存的计划数超过 `tidb_non_prepared_plan_cache_size` 时，TiDB 会使用 LRU (Least Recently Used) 策略进行逐出。
 
 ## 示例
 
