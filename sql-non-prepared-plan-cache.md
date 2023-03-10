@@ -1,5 +1,6 @@
 ---
 title: 非 Prepare 语句执行计划缓存
+summary: 介绍 TiDB 中非 Prepare 语句执行计划缓存的原理、使用方法及示例。
 ---
 
 # 非 Prepare 语句执行计划缓存
