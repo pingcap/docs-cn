@@ -87,7 +87,7 @@ TiDB 对一种参数化后的查询，只能缓存一个计划。例如，对于
 
 ## 诊断
 
-开启 Non-Prepared Plan Cache 后，可以通过 `explain format='plan_cache' select ...` 来验证查询是否能够命中，对于无法命中的查询，会通过 warning 的方式返回其无法命中的原因。
+开启 Non-Prepared Plan Cache 后，可以使用 `EXPLAIN FORMAT='plan_cache' SELECT ...` 语句验证查询是否能够命中缓存。对于无法命中缓存的查询，系统会通过 warning 的方式返回无法命中的原因。
 
 需要注意的是，如果不加 `FORMAT='plan_cache'`，则 `EXPLAIN` 语句永远不会命中缓存。
 
