@@ -1379,6 +1379,15 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 表示是否启用 `IndexMergeJoin` 算子。
 - 该变量为 TiDB 内部变量，**不推荐使用**，否则可能会造成数据正确性问题。
 
+### `tidb_enable_late_materialization` <span class="version-mark">从 v7.0.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 类型：布尔型
+- 默认值：`OFF`
+- 表示是否启用 [TiFlash 延迟物化](/develop/dev-guide-use-late-materialization.md)功能
+- 如果开启 TiFlash 延迟物化功能（设置为 ON 时）, 当 SELECT 语句中包含过滤条件（ WHERE 子句）时，普通的处理方式是扫描所有数据后进行过滤。TiFlash 延迟物化功能可以先扫描过滤条件相关列数据，过滤得到符合条件的行后，再扫描这些行的其他列数据，继续后续计算，从而减少扫描 IO 和数据解析的计算量。
+
 ### `tidb_enable_legacy_instance_scope` <span class="version-mark">从 v6.0.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
