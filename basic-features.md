@@ -81,7 +81,7 @@ aliases: ['/zh/tidb/v6.5/experimental-features','/zh/tidb/stable/experimental-fe
 | [`BATCH [ON COLUMN] LIMIT INTEGER DELETE`](/sql-statements/sql-statement-batch.md) | Y | Y | N | N | N | N | N | N |
 | [`BATCH [ON COLUMN] LIMIT INTEGER INSERT/UPDATE/REPLACE`](/sql-statements/sql-statement-batch.md) | Y | N | N | N | N | N | N | N |
 | [`ALTER TABLE ... COMPACT`](/sql-statements/sql-statement-alter-table-compact.md) | Y | E | N | N | N | N | N | N |
-| [表级锁 (Table Lock)](/tidb-configuration-file.md#enable-table-lock-从-v400-版本开始引入) | E | E | E | E | E | E | E | E |
+| [表级锁 (Table Lock)](/sql-statements/sql-statement-lock-tables-and-unlock-tables.md) | E | E | E | E | E | E | E | E |
 | [物化列式存储的查询结果](/tiflash/tiflash-results-materialization.md) | E | N | N | N | N | N | N | N |
 
 ## 高级 SQL 功能
