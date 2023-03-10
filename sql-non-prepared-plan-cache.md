@@ -53,7 +53,7 @@ Non-Prepared Plan Cache 为会话级别，并且与 [Prepared Plan Cache](/sql-p
     SELECT @@last_plan_from_cache;
     ```
 
-    输出结果中 `last_plan_from_cache` 的值为 `1`，表示第二次执行的查询计划来自于 cache。
+    输出结果中 `last_plan_from_cache` 的值为 `1`，表示第二次执行的查询计划来自于缓存：
 
     ```sql
     +------------------------+
