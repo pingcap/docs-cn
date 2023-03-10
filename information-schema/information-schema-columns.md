@@ -1,18 +1,18 @@
 ---
 title: COLUMNS
-summary: Learn the `COLUMNS` information_schema table.
+summary: Learn the `COLUMNS` INFORMATION_SCHEMA table.
 ---
 
 # COLUMNS
 
 The `COLUMNS` table provides detailed information about columns in tables.
 
-{{< copyable "sql" >}}
-
 ```sql
-USE information_schema;
-DESC columns;
+USE INFORMATION_SCHEMA;
+DESC COLUMNS;
 ```
+
+The output is as follows:
 
 ```sql
 +--------------------------+---------------+------+------+---------+-------+
@@ -43,14 +43,16 @@ DESC columns;
 21 rows in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
+Create a table `test.t1` and query the information in the `COLUMNS` table:
 
 ```sql
 CREATE TABLE test.t1 (a int);
-SELECT * FROM columns WHERE table_schema='test' AND TABLE_NAME='t1'\G
+SELECT * FROM COLUMNS WHERE table_schema='test' AND TABLE_NAME='t1'\G
 ```
 
-```
+输出结果如下：
+
+```sql
 *************************** 1. row ***************************
            TABLE_CATALOG: def
             TABLE_SCHEMA: test
@@ -68,11 +70,11 @@ CHARACTER_MAXIMUM_LENGTH: NULL
       CHARACTER_SET_NAME: NULL
           COLLATION_NAME: NULL
              COLUMN_TYPE: int(11)
-              COLUMN_KEY: 
-                   EXTRA: 
+              COLUMN_KEY:
+                   EXTRA:
               PRIVILEGES: select,insert,update,references
-          COLUMN_COMMENT: 
-   GENERATION_EXPRESSION: 
+          COLUMN_COMMENT:
+   GENERATION_EXPRESSION:
 1 row in set (0.02 sec)
 ```
 
@@ -106,13 +108,13 @@ The description of columns in the `COLUMNS` table is as follows:
 
 The corresponding `SHOW` statement is as follows:
 
-{{< copyable "sql" >}}
-
 ```sql
 SHOW COLUMNS FROM t1 FROM test;
 ```
 
-```
+The output is as follows:
+
+```sql
 +-------+---------+------+------+---------+-------+
 | Field | Type    | Null | Key  | Default | Extra |
 +-------+---------+------+------+---------+-------+

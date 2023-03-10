@@ -1,18 +1,18 @@
 ---
 title: CHARACTER_SETS
-summary: Learn the `CHARACTER_SETS` information_schema table.
+summary: Learn the `CHARACTER_SETS` INFORMATION_SCHEMA table.
 ---
 
 # CHARACTER_SETS
 
 The `CHARACTER_SETS` table provides information about [character sets](/character-set-and-collation.md). Currently, TiDB only supports some of the character sets.
 
-{{< copyable "sql" >}}
-
 ```sql
-USE information_schema;
-DESC character_sets;
+USE INFORMATION_SCHEMA;
+DESC CHARACTER_SETS;
 ```
+
+The output is as follows:
 
 ```
 +----------------------+-------------+------+------+---------+-------+
@@ -26,23 +26,26 @@ DESC character_sets;
 4 rows in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
+View the `CHARACTER_SETS` table:
 
 ```sql
-SELECT * FROM `character_sets`;
+SELECT * FROM `CHARACTER_SETS`;
 ```
 
-```
-+--------------------+----------------------+---------------+--------+
-| CHARACTER_SET_NAME | DEFAULT_COLLATE_NAME | DESCRIPTION   | MAXLEN |
-+--------------------+----------------------+---------------+--------+
-| utf8               | utf8_bin             | UTF-8 Unicode |      3 |
-| utf8mb4            | utf8mb4_bin          | UTF-8 Unicode |      4 |
-| ascii              | ascii_bin            | US ASCII      |      1 |
-| latin1             | latin1_bin           | Latin1        |      1 |
-| binary             | binary               | binary        |      1 |
-+--------------------+----------------------+---------------+--------+
-5 rows in set (0.00 sec)
+The output is as follows:
+
+```sql
++--------------------+----------------------+-------------------------------------+--------+
+| CHARACTER_SET_NAME | DEFAULT_COLLATE_NAME | DESCRIPTION                         | MAXLEN |
++--------------------+----------------------+-------------------------------------+--------+
+| ascii              | ascii_bin            | US ASCII                            |      1 |
+| binary             | binary               | binary                              |      1 |
+| gbk                | gbk_chinese_ci       | Chinese Internal Code Specification |      2 |
+| latin1             | latin1_bin           | Latin1                              |      1 |
+| utf8               | utf8_bin             | UTF-8 Unicode                       |      3 |
+| utf8mb4            | utf8mb4_bin          | UTF-8 Unicode                       |      4 |
++--------------------+----------------------+-------------------------------------+--------+
+6 rows in set (0.00 sec)
 ```
 
 The description of columns in the `CHARACTER_SETS` table is as follows:

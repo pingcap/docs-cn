@@ -1,18 +1,18 @@
 ---
 title: DEADLOCKS
-summary: Learn the `DEADLOCKS` information_schema table.
+summary: Learn the `DEADLOCKS` INFORMATION_SCHEMA table.
 ---
 
 # DEADLOCKS
 
 The `DEADLOCKS` table shows the information of the several deadlock errors that have occurred recently on the current TiDB node.
 
-{{< copyable "sql" >}}
-
 ```sql
-USE information_schema;
+USE INFORMATION_SCHEMA;
 DESC deadlocks;
 ```
+
+Thhe output is as follows:
 
 ```sql
 +-------------------------+---------------------+------+------+---------+-------+
@@ -41,7 +41,7 @@ The meaning of each column field in the `DEADLOCKS` table is as follows:
 * `CURRENT_SQL_DIGEST`: The digest of the SQL statement currently being executed in the lock-acquiring transaction.
 * `CURRENT_SQL_DIGEST_TEXT`: The normalized form of the SQL statement that is currently being executed in the lock-acquiring transaction.
 * `KEY`: The blocked key that the transaction tries to lock. The value of this field is displayed in the form of hexadecimal string.
-* `KEY_INFO`: The detailed information of `KEY`. See the [KEY_INFO](#key_info) section.
+* `KEY_INFO`: The detailed information of `KEY`. See the [`KEY_INFO`](#key_info) section.
 * `TRX_HOLDING_LOCK`: The ID of the transaction that currently holds the lock on the key and causes blocking. This ID is also the `start_ts` of the transaction.
 
 <CustomContent platform="tidb">
@@ -113,19 +113,15 @@ In case 1, TiDB will report a deadlock error to the client of transaction A and 
 
 In case 2, the statement currently being executed in transaction A will be automatically retried in TiDB. For example, suppose that transaction A executes the following statement:
 
-{{< copyable "sql" >}}
-
 ```sql
-update t set v = v + 1 where id = 1 or id = 2;
+UPDATE t SET v = v + 1 WHERE id = 1 OR id = 2;
 ```
 
 Transaction B executes the following two statements successively.
 
-{{< copyable "sql" >}}
-
 ```sql
-update t set v = 4 where id = 2;
-update t set v = 2 where id = 1;
+UPDATE t SET v = 4 WHERE id = 2;
+UPDATE t SET v = 2 WHERE id = 1;
 ```
 
 Then if transaction A locks the two rows with `id = 1` and `id = 2`, and the two transactions run in the following sequence:
@@ -141,30 +137,26 @@ When a retryable deadlock occurs, the internal automatic retry will not cause a 
 
 ## Example 1
 
-Assume that the table definition and the initial data are as follows:
-
-{{< copyable "sql" >}}
+Assume that the table definition and the initial data is as follows:
 
 ```sql
-create table t (id int primary key, v int);
-insert into t values (1, 10), (2, 20);
+CREATE TABLE t (id int primary key, v int);
+INSERT INTO t VALUES (1, 10), (2, 20);
 ```
 
 Two transactions are executed in the following order:
 
 | Transaction 1                               | Transaction 2                               | Description                 |
 |--------------------------------------|--------------------------------------|----------------------|
-| `update t set v = 11 where id = 1;`  |                                      |                      |
-|                                      | `update t set v = 21 where id = 2;`  |                      |
-| `update t set v = 12 where id = 2;`  |                                      | Transaction 1 gets blocked.          |
-|                                      | `update t set v = 22 where id = 1;`  | Transaction 2 reports a deadlock error.  |
+| `UPDATE t SET v = 11 WHERE id = 1;`  |                                      |                      |
+|                                      | `UPDATE t SET v = 21 WHERE id = 2;`  |                      |
+| `UPDATE t SET v = 12 WHERE id = 2;`  |                                      | Transaction 1 gets blocked.          |
+|                                      | `UPDATE t SET v = 22 WHERE id = 1;`  | Transaction 2 reports a deadlock error.  |
 
 Next, transaction 2 reports a deadlock error. At this time, query the `DEADLOCKS` table:
 
-{{< copyable "sql" >}}
-
 ```sql
-select * from information_schema.deadlocks;
+SELECT * FROM INFORMATION_SCHEMA.DEADLOCKS;
 ```
 
 The expected output is as follows:
@@ -196,7 +188,7 @@ Assume that you query the `DEADLOCKS` table and get the following result:
 +-------------+----------------------------+-----------+--------------------+------------------------------------------------------------------+-----------------------------------------+----------------------------------------+----------------------------------------------------------------------------------------------------+--------------------+
 ```
 
-The `DEADLOCK_ID` column in the above query result shows that the first two rows together represent the information of a deadlock error, and the two transactions that wait for each other form the deadlock. The next three rows together represent the information of another deadlock error, and the three transactions that wait in a cycle form the deadlock.
+The `DEADLOCK_ID` column in the preceding query result shows that the first two rows together represent the information of a deadlock error, and the two transactions that wait for each other form the deadlock. The next three rows together represent the information of another deadlock error, and the three transactions that wait in a cycle form the deadlock.
 
 ## CLUSTER_DEADLOCKS
 
@@ -204,12 +196,12 @@ The `CLUSTER_DEADLOCKS` table returns information about the recent deadlock erro
 
 Note that, because `DEADLOCK_ID` does not guarantee global uniqueness, in the query result of the `CLUSTER_DEADLOCKS` table, you need to use the `INSTANCE` and `DEADLOCK_ID` together to distinguish the information of different deadlock errors in the result set.
 
-{{< copyable "sql" >}}
-
 ```sql
-USE information_schema;
-DESC cluster_deadlocks;
+USE INFORMATION_SCHEMA;
+DESC CLUSTER_DEADLOCKS;
 ```
+
+The output is as follows:
 
 ```sql
 +-------------------------+---------------------+------+------+---------+-------+

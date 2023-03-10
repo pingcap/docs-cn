@@ -1,20 +1,20 @@
 ---
 title: TABLE_STORAGE_STATS
-summary: Learn the `TABLE_STORAGE_STATS` information_schema table.
+summary: Learn the `TABLE_STORAGE_STATS` INFORMATION_SCHEMA table.
 ---
 
 # TABLE_STORAGE_STATS
 
 The `TABLE_STORAGE_STATS` table provides information about table sizes as stored by the storage engine (TiKV).
 
-{{< copyable "sql" >}}
+```sql
+USE INFORMATION_SCHEMA;
+DESC TABLE_STORAGE_STATS;
+```
+
+The output is as follows:
 
 ```sql
-USE information_schema;
-DESC table_storage_stats;
-```
-
-```
 +--------------------+-------------+------+------+---------+-------+
 | Field              | Type        | Null | Key  | Default | Extra |
 +--------------------+-------------+------+------+---------+-------+
@@ -30,15 +30,15 @@ DESC table_storage_stats;
 8 rows in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
-
 ```sql
 CREATE TABLE test.t1 (id INT);
 INSERT INTO test.t1 VALUES (1);
-SELECT * FROM table_storage_stats WHERE table_schema = 'test' AND table_name = 't1'\G
+SELECT * FROM TABLE_STORAGE_STATS WHERE table_schema = 'test' AND table_name = 't1'\G
 ```
 
-```
+The output is as follows:
+
+```sql
 *************************** 1. row ***************************
       TABLE_SCHEMA: test
         TABLE_NAME: t1

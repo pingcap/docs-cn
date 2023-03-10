@@ -7,14 +7,14 @@ summary: Learn the `USER_PRIVILEGES` information_schema table.
 
 The `USER_PRIVILEGES` table provides information about global privileges. This information comes from the `mysql.user` system table:
 
-{{< copyable "sql" >}}
+```sql
+USE INFORMATION_SCHEMA;
+DESC USER_PRIVILEGES;
+```
+
+The output is as follows:
 
 ```sql
-USE information_schema;
-DESC user_privileges;
-```
-
-```
 +----------------+--------------+------+------+---------+-------+
 | Field          | Type         | Null | Key  | Default | Extra |
 +----------------+--------------+------+------+---------+-------+
@@ -26,35 +26,38 @@ DESC user_privileges;
 4 rows in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
+View the information in the `USER_PRIVILEGES` table:
 
 ```sql
-SELECT * FROM user_privileges;
+SELECT * FROM USER_PRIVILEGES;
 ```
 
-```
+The output is as follows:
+
+```sql
 +------------+---------------+-------------------------+--------------+
 | GRANTEE    | TABLE_CATALOG | PRIVILEGE_TYPE          | IS_GRANTABLE |
 +------------+---------------+-------------------------+--------------+
-| 'root'@'%' | def           | Select                  | YES          |
-| 'root'@'%' | def           | Insert                  | YES          |
-| 'root'@'%' | def           | Update                  | YES          |
-| 'root'@'%' | def           | Delete                  | YES          |
-| 'root'@'%' | def           | Create                  | YES          |
-| 'root'@'%' | def           | Drop                    | YES          |
-| 'root'@'%' | def           | Process                 | YES          |
-| 'root'@'%' | def           | References              | YES          |
-| 'root'@'%' | def           | Alter                   | YES          |
-| 'root'@'%' | def           | Show Databases          | YES          |
-| 'root'@'%' | def           | Super                   | YES          |
-| 'root'@'%' | def           | Execute                 | YES          |
-| 'root'@'%' | def           | Index                   | YES          |
-| 'root'@'%' | def           | Create User             | YES          |
-| 'root'@'%' | def           | Trigger                 | YES          |
-| 'root'@'%' | def           | Create View             | YES          |
-| 'root'@'%' | def           | Show View               | YES          |
-| 'root'@'%' | def           | Create Role             | YES          |
-| 'root'@'%' | def           | Drop Role               | YES          |
+| 'root'@'%' | def           | SELECT                  | YES          |
+| 'root'@'%' | def           | INSERT                  | YES          |
+| 'root'@'%' | def           | UPDATE                  | YES          |
+| 'root'@'%' | def           | DELETE                  | YES          |
+| 'root'@'%' | def           | CREATE                  | YES          |
+| 'root'@'%' | def           | DROP                    | YES          |
+| 'root'@'%' | def           | PROCESS                 | YES          |
+| 'root'@'%' | def           | REFERENCES              | YES          |
+| 'root'@'%' | def           | ALTER                   | YES          |
+| 'root'@'%' | def           | SHOW DATABASES          | YES          |
+| 'root'@'%' | def           | SUPER                   | YES          |
+| 'root'@'%' | def           | EXECUTE                 | YES          |
+| 'root'@'%' | def           | INDEX                   | YES          |
+| 'root'@'%' | def           | CREATE USER             | YES          |
+| 'root'@'%' | def           | CREATE TABLESPACE       | YES          |
+| 'root'@'%' | def           | TRIGGER                 | YES          |
+| 'root'@'%' | def           | CREATE VIEW             | YES          |
+| 'root'@'%' | def           | SHOW VIEW               | YES          |
+| 'root'@'%' | def           | CREATE ROLE             | YES          |
+| 'root'@'%' | def           | DROP ROLE               | YES          |
 | 'root'@'%' | def           | CREATE TEMPORARY TABLES | YES          |
 | 'root'@'%' | def           | LOCK TABLES             | YES          |
 | 'root'@'%' | def           | CREATE ROUTINE          | YES          |
@@ -64,8 +67,10 @@ SELECT * FROM user_privileges;
 | 'root'@'%' | def           | RELOAD                  | YES          |
 | 'root'@'%' | def           | FILE                    | YES          |
 | 'root'@'%' | def           | CONFIG                  | YES          |
+| 'root'@'%' | def           | REPLICATION CLIENT      | YES          |
+| 'root'@'%' | def           | REPLICATION SLAVE       | YES          |
 +------------+---------------+-------------------------+--------------+
-28 rows in set (0.00 sec)
+31 rows in set (0.00 sec)
 ```
 
 Fields in the `USER_PRIVILEGES` table are described as follows:

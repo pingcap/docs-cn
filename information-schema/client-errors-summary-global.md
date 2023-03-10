@@ -1,6 +1,6 @@
 ---
 title: CLIENT_ERRORS_SUMMARY_GLOBAL
-summary: Learn about the `CLIENT_ERRORS_SUMMARY_GLOBAL` information_schema table.
+summary: Learn about the `CLIENT_ERRORS_SUMMARY_GLOBAL` INFORMATION_SCHEMA table.
 ---
 
 # CLIENT_ERRORS_SUMMARY_GLOBAL
@@ -13,16 +13,16 @@ The table `CLIENT_ERRORS_SUMMARY_GLOBAL` provides a global summary of all SQL er
 * Permission errors.
 * A table does not exist.
 
-Client errors are returned to the client via the MySQL server protocol, where applications are expected to take appropriate action. The `information_schema`.`CLIENT_ERRORS_SUMMARY_GLOBAL` table provides a high-level overview, and is useful in the scenario where applications are not correctly handling (or logging) errors returned by the TiDB server.
+Client errors are returned to the client via the MySQL server protocol, where applications are expected to take appropriate action. The `INFORMATION_SCHEMA.CLIENT_ERRORS_SUMMARY_GLOBAL` table provides a high-level overview, and is useful in the scenario where applications are not correctly handling (or logging) errors returned by the TiDB server.
 
 The summarized counts can be reset with the statement `FLUSH CLIENT_ERRORS_SUMMARY`. The summary is local to each TiDB server and is only retained in memory. Summaries will be lost if the TiDB server restarts.
 
-{{< copyable "sql" >}}
-
 ```sql
-USE information_schema;
+USE INFORMATION_SCHEMA;
 DESC CLIENT_ERRORS_SUMMARY_GLOBAL;
 ```
+
+The output is as follows:
 
 ```sql
 +---------------+---------------+------+------+---------+-------+
@@ -49,14 +49,14 @@ Field description:
 
 The following example shows a warning being generated when connecting to a local TiDB server. The summary is reset after executing `FLUSH CLIENT_ERRORS_SUMMARY`:
 
-{{< copyable "sql" >}}
-
 ```sql
 SELECT 0/0;
 SELECT * FROM CLIENT_ERRORS_SUMMARY_GLOBAL;
 FLUSH CLIENT_ERRORS_SUMMARY;
 SELECT * FROM CLIENT_ERRORS_SUMMARY_GLOBAL;
 ```
+
+The output is as follows:
 
 ```sql
 +-----+

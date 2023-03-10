@@ -1,20 +1,20 @@
 ---
 title: TIFLASH_REPLICA
-summary: Learn the `TIFLASH_REPLICA` information_schema table.
+summary: Learn the `TIFLASH_REPLICA` INFORMATION_SCHEMA table.
 ---
 
 # TIFLASH_REPLICA
 
 The `TIFLASH_REPLICA` table provides information about TiFlash replicas available.
 
-{{< copyable "sql" >}}
+```sql
+USE INFORMATION_SCHEMA;
+DESC TIFLASH_REPLICA;
+```
+
+The output is as follows:
 
 ```sql
-USE information_schema;
-DESC tiflash_replica;
-```
-
-```
 +-----------------+-------------+------+------+---------+-------+
 | Field           | Type        | Null | Key  | Default | Extra |
 +-----------------+-------------+------+------+---------+-------+

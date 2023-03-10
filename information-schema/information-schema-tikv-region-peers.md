@@ -1,20 +1,20 @@
 ---
 title: TIKV_REGION_PEERS
-summary: Learn the `TIKV_REGION_PEERS` information_schema table.
+summary: Learn the `TIKV_REGION_PEERS` INFORMATION_SCHEMA table.
 ---
 
 # TIKV_REGION_PEERS
 
 The `TIKV_REGION_PEERS` table shows detailed information of a single Region node in TiKV, such as whether it is a learner or leader.
 
-{{< copyable "sql" >}}
+```sql
+USE INFORMATION_SCHEMA;
+DESC TIKV_REGION_PEERS;
+```
+
+The output is as follows:
 
 ```sql
-USE information_schema;
-DESC tikv_region_peers;
-```
-
-```
 +--------------+-------------+------+------+---------+-------+
 | Field        | Type        | Null | Key  | Default | Extra |
 +--------------+-------------+------+------+---------+-------+
@@ -33,17 +33,17 @@ For example, you can query the specific TiKV addresses for the top 3 Regions wit
 
 ```sql
 SELECT
- address,
- tikv.address,
- region.region_id
+  address,
+  tikv.address,
+  region.region_id
 FROM
- tikv_store_status tikv,
- tikv_region_peers peer,
- (SELECT * FROM tikv_region_status ORDER BY written_bytes DESC LIMIT 3) region
+  TIKV_STORE_STATUS tikv,
+  TIKV_REGION_PEERS peer,
+  (SELECT * FROM tikv_region_status ORDER BY written_bytes DESC LIMIT 3) region
 WHERE
   region.region_id = peer.region_id
- AND peer.is_leader = 1
- AND peer.store_id = tikv.store_id;
+  AND peer.is_leader = 1
+  AND peer.store_id = tikv.store_id;
 ```
 
 Fields in the `TIKV_REGION_PEERS` table are described as follows:

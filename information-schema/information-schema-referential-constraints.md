@@ -1,18 +1,18 @@
 ---
 title: REFERENTIAL_CONSTRAINTS
-summary: Learn the `REFERENTIAL_CONSTRAINTS` information_schema table.
+summary: Learn the `REFERENTIAL_CONSTRAINTS` INFORMATION_SCHEMA table.
 ---
 
 # REFERENTIAL_CONSTRAINTS
 
 The `REFERENTIAL_CONSTRAINTS` table provides information about `FOREIGN KEY` relationships between tables.
 
-{{< copyable "sql" >}}
-
 ```sql
-USE information_schema;
-DESC referential_constraints;
+USE INFORMATION_SCHEMA;
+DESC REFERENTIAL_CONSTRAINTS;
 ```
+
+The output is as follows:
 
 ```sql
 +---------------------------+--------------+------+------+---------+-------+
@@ -33,26 +33,26 @@ DESC referential_constraints;
 11 rows in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
-
 ```sql
 CREATE TABLE test.parent (
- id INT NOT NULL AUTO_INCREMENT,
- PRIMARY KEY (id)
+  id INT NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (id)
 );
 
 CREATE TABLE test.child (
- id INT NOT NULL AUTO_INCREMENT,
- name varchar(255) NOT NULL,
- parent_id INT DEFAULT NULL,
- PRIMARY KEY (id),
- CONSTRAINT fk_parent FOREIGN KEY (parent_id) REFERENCES parent (id) ON UPDATE CASCADE ON DELETE RESTRICT
+  id INT NOT NULL AUTO_INCREMENT,
+  name varchar(255) NOT NULL,
+  parent_id INT DEFAULT NULL,
+  PRIMARY KEY (id),
+  CONSTRAINT fk_parent FOREIGN KEY (parent_id) REFERENCES parent (id) ON UPDATE CASCADE ON DELETE RESTRICT
 );
 
-SELECT * FROM referential_constraints\G
+SELECT * FROM REFERENTIAL_CONSTRAINTS\G
 ```
 
-```
+The output is as follows:
+
+```sql
 *************************** 1. row ***************************
        CONSTRAINT_CATALOG: def
         CONSTRAINT_SCHEMA: test
