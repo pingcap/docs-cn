@@ -9,7 +9,7 @@ summary: 本文介绍了 Performance Overview 仪表盘中 TiCDC 部分，帮助
 
 ## TiCDC 集群的资源利用率
 
-通过以下三个数据，可以快速判断TiCDC集群的资源使用率
+通过以下三个数据，可以快速判断 TiCDC 集群的资源使用率
 
 - CPU usage：TiCDC 节点的 CPU 使用情况
 - Memory usage：TiCDC 节点的内存使用情况
