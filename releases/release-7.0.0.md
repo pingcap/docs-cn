@@ -56,6 +56,14 @@ TiDB 版本：7.0.0
 
     更多信息，请参考[用户文档]()。
 
+* 非 prepared 语句的执行计划可以被缓存(实验特性) [#issue号](链接) @[qw4990](https://github.com/qw4990)
+
+    执行计划缓存是提升并发 OLTP 负载能力的重要手段， TiDB 已经支持对 [prepared 语句的计划进行缓存](/sql-prepared-plan-cache.md)。 在 v7.0.0 中， 非 prepared 语句的执行计划也能够被缓存，使得执行计划缓存能够被应用在更广泛场景下，进而提升 TiDB 的并发处理能力。 
+
+    这个功能目前默认关闭， 用户通过变量 [`tidb_enable_non_prepared_plan_cache`](/system-variables.md#tidb_enable_non_prepared_plan_cache) 打开。 出于稳定性考虑，在当前版本中，TiDB 开辟了一块新的区域用于缓存非 prepare 语句的执行计划，通过变量 [`tidb_non_prepared_plan_cache_size`](/system-variables.md#tidb_non_prepared_plan_cache_size) 设置缓存大小；另外，对 SQL 的模式也有一定的限制，具体参见[文档](/sql-non-prepared-plan-cache.md#限制)。
+
+    更多信息，请参考[用户文档](/sql-non-prepared-plan-cache.md)。
+
 ### 稳定性
 
 * 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接)
