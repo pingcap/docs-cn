@@ -805,6 +805,7 @@
       - [`SPLIT REGION`](/sql-statements/sql-statement-split-region.md)
       - [`START TRANSACTION`](/sql-statements/sql-statement-start-transaction.md)
       - [`TABLE`](/sql-statements/sql-statement-table.md)
+      - [`LOCK TABLES` 和 `UNLOCK TABLES`](/sql-statements/sql-statement-lock-tables-and-unlock-tables.md)
       - [`TRACE`](/sql-statements/sql-statement-trace.md)
       - [`TRUNCATE`](/sql-statements/sql-statement-truncate.md)
       - [`UNLOCK STATS`](/sql-statements/sql-statement-unlock-stats.md)

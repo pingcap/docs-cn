@@ -81,7 +81,7 @@ summary: 了解 TiDB 的功能概览。
 | [`BATCH [ON COLUMN] LIMIT INTEGER DELETE`](/sql-statements/sql-statement-batch.md) | Y | Y | Y | N | N | N | N | N | N |
 | [`BATCH [ON COLUMN] LIMIT INTEGER INSERT/UPDATE/REPLACE`](/sql-statements/sql-statement-batch.md) | Y | Y | N | N | N | N | N | N | N |
 | [`ALTER TABLE ... COMPACT`](/sql-statements/sql-statement-alter-table-compact.md) | Y | Y | E | N | N | N | N | N | N |
-| [表级锁 (Table Lock)](/tidb-configuration-file.md#enable-table-lock-从-v400-版本开始引入) | E | E | E | E | E | E | E | E | E |
+| [表级锁 (Table Lock)](/sql-statements/sql-statement-lock-tables-and-unlock-tables.md) | E | E | E | E | E | E | E | E | E |
 | [物化列式存储的查询结果](/tiflash/tiflash-results-materialization.md) | E | E | N | N | N | N | N | N | N |
 
 ## 高级 SQL 功能
