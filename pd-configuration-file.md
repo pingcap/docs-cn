@@ -402,5 +402,5 @@ PD 中内置的 [TiDB Dashboard](/dashboard/dashboard-intro.md) 相关配置项�
 ### `enable-telemetry`
 
 + 是否启用 TiDB Dashboard 遥测功能。
-+ 默认值：true
++ 默认值：对于 TiDB v6.5.0，默认值为 true；对于 v6.5.1 以及之后的 v6.5.x 版本，默认值为 false。
 + 参阅[遥测](/telemetry.md)了解该功能详情。
