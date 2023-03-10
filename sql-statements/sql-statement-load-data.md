@@ -17,7 +17,7 @@ LoadDataStmt ::=
 LocalOpt ::= ('LOCAL')?
 
 FormatOpt ::=
-    ('DELIMITED DATA' | 'SQL FILE' | 'PARQUET')?
+    ('FORMAT' ('DELIMITED FILE' | 'SQL FILE' | 'PARQUET'))?
 
 Fields ::=
     ('TERMINATED' 'BY' stringLit
