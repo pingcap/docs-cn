@@ -88,12 +88,27 @@ TiDB 对一种参数化后的查询，只能缓存一个计划，比如对于 `s
 
 需要注意的是，如果不加 `FORMAT='plan_cache'`，则 `EXPLAIN` 语句永远不会命中缓存。
 
-```sql
-mysql> explain format='plan_cache' select * from t where a+2 < 10;
-...
-3 rows in set, 1 warning (0.00 sec)
+执行下面 `EXPLAIN FORMAT='plan_cache'` 语句，查看查询是否能够命中：
 
-mysql> show warnings;
+```sql
+EXPLAIN FORMAT='plan_cache' SELECT * FROM t WHERE a+2 < 10;
+```
+
+输出结果示例如下：
+
+```sql
+3 rows in set, 1 warning (0.00 sec)
+```
+
+通过 `SHOW warnings;` 查看无法命中缓存的查询信息：
+
+```sql
+SHOW warnings;
+```
+
+输出结果示例如下：
+
+```sql
 +---------+------+-----------------------------------------------------------------------+
 | Level   | Code | Message                                                               |
 +---------+------+-----------------------------------------------------------------------+
@@ -102,7 +117,7 @@ mysql> show warnings;
 1 row in set (0.00 sec)
 ```
 
-可以看到在上述例子中，由于 `+` 操作并不被 Non-Prepared Plan Cache 支持，所以无法命中缓存。
+可以看到在上述例子中，由于 Non-Prepared Plan Cache 不支持 `+` 操作，所以无法命中缓存。
 
 ## 监控
 
