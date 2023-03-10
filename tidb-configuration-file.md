@@ -187,6 +187,13 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：true
 + 当该配置项值为 `true` 时，`KILL` 语句和 `KILL TIDB` 语句均能跨节点终止查询或连接，无需担心错误地终止其他查询或连接。当你使用客户端连接到任何一个 TiDB 节点执行 `KILL` 语句或 `KILL TIDB` 语句时，该语句会被转发给对应的 TiDB 节点。当客户端和 TiDB 中间有代理时，`KILL` 语句或 `KILL TIDB` 语句也会被转发给对应的 TiDB 节点执行。目前暂时不支持在 `enable-global-kill` 为 `true` 时用 MySQL 命令行 <kbd>ctrl</kbd>+<kbd>c</kbd> 终止查询或连接。关于 `KILL` 语句的更多信息，请参考 [KILL [TIDB]](/sql-statements/sql-statement-kill.md)。
 
+### `initialize-sql-file` <span class="version-mark">从 v6.5.1 版本开始引入</span>
+
++ 用于指定 TiDB 集群初次启动时执行的 SQL 脚本。
++ 默认值：""
++ 脚本中的所有 SQL 语句将以最高权限执行，不会进行权限检查。若指定的 SQL 脚本无法正确执行，可能导致 TiDB 集群启动失败。
++ 通常用于修改系统变量的值、创建用户或分配权限等。
+
 ### `enable-forwarding` <span class="version-mark">从 v5.0.0 版本开始引入</span>
 
 + 控制 TiDB 中的 PD client 以及 TiKV client 在疑似网络隔离的情况下是否通过 follower 将请求转发给 leader。

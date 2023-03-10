@@ -60,6 +60,11 @@ title: TiDB 配置参数
 - 在安全模式下启动 tidb-server
 - 默认：false
 
+## `--initialize-sql-file`
+
+- 用于指定 TiDB 集群初次启动时执行的 SQL 脚本。参考[配置项 `initialize-sql-file`](/tidb-configuration-file.md#initialize-sql-file-从-v651-版本开始引入)
+- 默认：""
+
 ## `-L`
 
 + Log 级别
