@@ -45,7 +45,9 @@ summary: 本文介绍了 Performance Overview 仪表盘中 TiCDC 部分，帮助
 ![TiCDC overview](/media/performance/cdc/cdc-slow.png)
 
 ### 数据流吞吐指标和下游延迟信息
+
 你可通过以下指标来了解数据流的吞吐和下游延迟信息：
+
 - Puller output events/s：TiCDC 节点中 Puller 模块每秒输出到 Sorter 模块的数据变更行数
 - Sorter output events/s：TiCDC 节点中 Sorter 模块每秒输出到 Mounter 模块的行数
 - Mounter output events/s：TiCDC 节点中 Mounter 模块每秒输出到 Sink 模块的行数
