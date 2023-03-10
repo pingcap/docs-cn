@@ -82,7 +82,7 @@ This document lists the features supported in different TiDB versions, including
 | [`BATCH [ON COLUMN] LIMIT INTEGER DELETE`](/sql-statements/sql-statement-batch.md) | Y | Y | Y | N | N | N | N | N | N |
 | [`BATCH [ON COLUMN] LIMIT INTEGER INSERT/UPDATE/REPLACE`](/sql-statements/sql-statement-batch.md) | Y | Y | N | N | N | N | N | N | N |
 | [`ALTER TABLE ... COMPACT`](/sql-statements/sql-statement-alter-table-compact.md) | Y | Y | E | N | N | N | N | N | N |
-| [Table Lock](/tidb-configuration-file.md#enable-table-lock-new-in-v400) | E | E | E | E | E | E | E | E | E |
+| [Table Lock](/sql-statements/sql-statement-lock-tables-and-unlock-tables.md) | E | E | E | E | E | E | E | E | E |
 | [TiFlash Query Result Materialization](/tiflash/tiflash-results-materialization.md) | E | E | N | N | N | N | N | N | N |
 
 ## Advanced SQL features

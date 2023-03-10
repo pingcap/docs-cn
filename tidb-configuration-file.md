@@ -208,7 +208,7 @@ The TiDB configuration file supports more options than command-line parameters. 
 
 + Controls whether to enable the table lock feature.
 + Default value: `false`
-+ The table lock is used to coordinate concurrent access to the same table among multiple sessions. Currently, the `READ`, `WRITE`, and `WRITE LOCAL` lock types are supported. When the configuration item is set to `false`, executing the `LOCK TABLE` or `UNLOCK TABLE` statement does not take effect and returns the "LOCK/UNLOCK TABLES is not supported" warning.
++ The table lock is used to coordinate concurrent access to the same table among multiple sessions. Currently, the `READ`, `WRITE`, and `WRITE LOCAL` lock types are supported. When the configuration item is set to `false`, executing the `LOCK TABLES` or `UNLOCK TABLES` statement does not take effect and returns the "LOCK/UNLOCK TABLES is not supported" warning. For more information, see [`LOCK TABLES` and `UNLOCK TABLES`](/sql-statements/sql-statement-lock-tables-and-unlock-tables.md).
 
 ## Log
 
