@@ -127,28 +127,41 @@ SHOW warnings;
 
 在 `Statement Summary` 表和慢查询日志中，也会对 Cache 命中情况有所体现，如下面是 `Statement Summary` 中的例子：
 
-```sql
-mysql> create table t (a int);
-Query OK, 0 rows affected (0.03 sec)
+1. 创建表 `t`：
 
-mysql> set @@tidb_enable_non_prepared_plan_cache=1; -- 打开开关
-Query OK, 0 rows affected (0.00 sec)
+    ```sql
+    CREATE TABLE t (a int);
+    ```
 
-mysql> select * from t where a<1;                   -- 第一次执行
-Empty set (0.02 sec)
+2. 打开 Non-Prepared Plan Cache 开关：
 
-mysql> select * from t where a<2;                   -- 第二次执行
-Empty set (0.01 sec)
+    ```sql
+    SET @@tidb_enable_non_prepared_plan_cache=1;
+    ```
 
-mysql> select * from t where a<3;                   -- 第三次执行
-Empty set (0.00 sec)
+3. 依次执行以下三个查询：
 
--- 查询执行过三次，且命中 Plan Cache 两次
-mysql> select digest_text, query_sample_text, exec_count, plan_in_cache, plan_cache_hits from information_schema.statements_summary where digest_text like '%select * from %';
-+---------------------------------+------------------------------------------+------------+---------------+-----------------+
-| digest_text                     | query_sample_text                        | exec_count | plan_in_cache | plan_cache_hits |
-+---------------------------------+------------------------------------------+------------+---------------+-----------------+
-| select * from `t` where `a` < ? | select * from t where a<1 [arguments: 1] |          3 |             1 |               2 |
-+---------------------------------+------------------------------------------+------------+---------------+-----------------+
-1 row in set (0.01 sec)
-```
+    ```sql
+    SELECT * FROM t WHERE a<1;
+    SELECT * FROM t WHERE a<2;
+    SELECT * FROM t WHERE a<3;
+    ```
+
+4. 查询 `statement_summary` 表查看查询命中缓存的情况：
+
+    ```sql
+    SELECT digest_text, query_sample_text, exec_count, plan_in_cache, plan_cache_hits FROM INFORMATION_SCHEMA.STATEMENTS_SUMMARY WHERE digest_text LIKE '%SELECT * FROM %';
+    ```
+
+    输出结果如下：
+
+    ```sql
+    +---------------------------------+------------------------------------------+------------+---------------+-----------------+
+    | digest_text                     | query_sample_text                        | exec_count | plan_in_cache | plan_cache_hits |
+    +---------------------------------+------------------------------------------+------------+---------------+-----------------+
+    | SELECT * FROM `t` WHERE `a` < ? | SELECT * FROM t WHERE a<1 [arguments: 1] |          3 |             1 |               2 |
+    +---------------------------------+------------------------------------------+------------+---------------+-----------------+
+    1 row in set (0.01 sec)
+    ```
+
+    可以看到，查询执行了三次且命中缓存两次。
