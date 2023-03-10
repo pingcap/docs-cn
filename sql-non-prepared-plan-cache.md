@@ -121,7 +121,7 @@ SHOW warnings;
 
 ## 监控
 
-开启 Non-Prepared Plan Cache 的开关后，可以在下面几个面板看到 Cache 的内存使用情况、Cache 中 Plan 的个数、Cache 命中情况等：
+开启 Non-Prepared Plan Cache 后，可以在以下几个面板中查看缓存的内存使用情况、缓存中计划的个数、缓存命中的情况等信息。
 
 ![non-prepared-plan-cache](media/tidb-non-prepared-plan-cache-metrics.png)
 
