@@ -89,97 +89,6 @@ For other installation methods, refer to the [Maven official documentation](http
 
 Download or clone the [sample code repository](https://github.com/pingcap-inc/tidb-example-java) and navigate to the `spring-jpa-hibernate` directory.
 
-### Create a blank application with the same dependency (optional)
-
-This application is built using [Spring Initializr](https://start.spring.io/). You can quickly get a blank application with the same dependencies as this sample application by clicking on the following options and changing a few configuration items:
-
-**Project**
-
-- Maven Project
-
-**Language**
-
-- Java
-
-**Spring Boot**
-
-- 3.0.1
-
-**Project Metadata**
-
-- Group: com.pingcap
-- Artifact: spring-jpa-hibernate
-- Name: spring-jpa-hibernate
-- Package name: com.pingcap
-- Packaging: Jar
-- Java: 17
-
-**Dependencies**
-
-- Spring Web
-- Spring Data JPA
-- MySQL Driver
-
-The complete configuration is as follows:
-
-![Spring Initializr Configuration](/media/develop/develop-spring-initializr-configuration.png)
-
-> **Note:**
->
-> Although SQL is relatively standardized, each database vendor uses a subset and superset of ANSI SQL defined syntax. This is referred to as the database's dialect. Hibernate handles variations across these dialects through its `org.hibernate.dialect.Dialect` class and the various subclasses for each database vendor.
->
-> In most cases, Hibernate will be able to determine the proper Dialect to use by asking some questions of the JDBC Connection during bootstrap. For information on Hibernate's ability to determine the proper Dialect to use (and your ability to influence that resolution), see [Dialect resolution](https://docs.jboss.org/hibernate/orm/6.0/userguide/html_single/Hibernate_User_Guide.html#portability-dialectresolver).
->
-> If for some reason it is not able to determine the proper one or you want to use a custom Dialect, you will need to set the `hibernate.dialect` setting.
->
-> _—— Excerpt from the Hibernate official documentation: [Database Dialect](https://docs.jboss.org/hibernate/orm/6.0/userguide/html_single/Hibernate_User_Guide.html#database-dialect)_
-
-After the configuration, the project can be used normally, but only in the same way that you use with MySQL, that is, using the **MySQL dialect**. This is because **Hibernate** supports the **TiDB dialect** in `6.0.0.Beta2` and later versions, but the default dependency of Spring Data JPA on Hibernate is `5.6.4.Final`. Therefore, we recommend the following changes to `pom.xml`.
-
-1. Exclude the `jakarta` packages introduced in `Spring Data JPA`, as shown in this [dependency file](https://github.com/pingcap-inc/tidb-example-java/blob/main/spring-jpa-hibernate/pom.xml#L26):
-
-    Change the dependency file from:
-
-    {{< copyable "" >}}
-
-    ```xml
-    <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-data-jpa</artifactId>
-    </dependency>
-    ```
-
-    To:
-
-    {{< copyable "" >}}
-
-    ```xml
-    <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-data-jpa</artifactId>
-        <exclusions>
-            <exclusion>
-                <groupId>org.hibernate</groupId>
-                <artifactId>hibernate-core-jakarta</artifactId>
-            </exclusion>
-        </exclusions>
-    </dependency>
-    ```
-
-2. Introduce **Hibernate** dependencies from `6.0.0.Beta2` or a later version, as shown in this [dependency file](https://github.com/pingcap-inc/tidb-example-java/blob/main/spring-jpa-hibernate/pom.xml#L53):
-
-    {{< copyable "" >}}
-
-    ```xml
-    <dependency>
-        <groupId>org.hibernate.orm</groupId>
-        <artifactId>hibernate-core</artifactId>
-        <version>6.0.0.CR2</version>
-    </dependency>
-    ```
-
-    Once the changes are made, you can get a blank **Spring Boot** application with the same dependencies as the sample application.
-
 ## Step 5: Run the application
 
 In this step, the application code is compiled and run, which produces a web application. Hibernate creates a `player_jpa` table within the `test` database. If you make requests using the application's RESTful API, these requests run [database transactions](/develop/dev-guide-transaction-overview.md) on the TiDB cluster.
@@ -1065,3 +974,50 @@ public class PlayerController {
     - [`@PathVariable`](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/bind/annotation/PathVariable.html) shows that the annotation has placeholders like `{id}` and `{limit_size}`, which are bound to the variable annotated by `@PathVariable`. Such binding is based on the annotation attribute `name`. If the annotation attribute `name` is not specified, it is the same as the variable name. The variable name can be omitted, that is, `@PathVariable(name="limit_size")` can be written as `@PathVariable("limit_size")`.
 - [`@PutMapping`](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/bind/annotation/PutMapping.html) declares that this function responds to a [PUT](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/PUT) request in HTTP.
 - [`@RequestParam`](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/bind/annotation/RequestParam.html) declares that this function parses URL parameters, form parameters, and other parameters in the request and binds them to the annotated variables.
+
+## Create a blank application with the same dependency (optional)
+
+This application is built using [Spring Initializr](https://start.spring.io/). You can quickly get a blank application with the same dependencies as this sample application by clicking on the following options and changing a few configuration items:
+
+**Project**
+
+- Maven Project
+
+**Language**
+
+- Java
+
+**Spring Boot**
+
+- Latest stable version
+
+**Project Metadata**
+
+- Group: com.pingcap
+- Artifact: spring-jpa-hibernate
+- Name: spring-jpa-hibernate
+- Package name: com.pingcap
+- Packaging: Jar
+- Java: 17
+
+**Dependencies**
+
+- Spring Web
+- Spring Data JPA
+- MySQL Driver
+
+The complete configuration is as follows:
+
+![Spring Initializr Configuration](/media/develop/develop-spring-initializr-configuration.png)
+
+> **Note:**
+>
+> Although SQL is relatively standardized, each database vendor uses a subset and superset of ANSI SQL defined syntax. This is referred to as the database's dialect. Hibernate handles variations across these dialects through its `org.hibernate.dialect.Dialect` class and the various subclasses for each database vendor.
+>
+> In most cases, Hibernate will be able to determine the proper Dialect to use by asking some questions of the JDBC Connection during bootstrap. For information on Hibernate's ability to determine the proper Dialect to use (and your ability to influence that resolution), see [Dialect resolution](https://docs.jboss.org/hibernate/orm/6.0/userguide/html_single/Hibernate_User_Guide.html#portability-dialectresolver).
+>
+> If for some reason it is not able to determine the proper one or you want to use a custom Dialect, you will need to set the `hibernate.dialect` setting.
+>
+> _—— Excerpt from the Hibernate official documentation: [Database Dialect](https://docs.jboss.org/hibernate/orm/6.0/userguide/html_single/Hibernate_User_Guide.html#database-dialect)_
+
+After the configuration, you can get a blank **Spring Boot** application with the same dependencies as the sample application.
