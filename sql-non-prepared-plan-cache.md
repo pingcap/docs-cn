@@ -66,7 +66,7 @@ Non-Prepared Plan Cache 为会话级别，并且与 [Prepared Plan Cache](/sql-p
 
 ## 限制
 
-TiDB 对一种参数化后的查询，只能缓存一个计划，比如对于 `select * from t where a<1` 和 `select * from t where a<100000`，由于参数化后的形式相同，因此他们会共用一个计划；
+TiDB 对一种参数化后的查询，只能缓存一个计划。例如，对于 `SELECT * FROM t WHERE a < 1` 和 `SELECT * FROM t where a < 100000` 这两个查询语句，由于参数化后的形式相同，均为 `SELECT * FROM t WHERE a < ?`，因此它们会共用一个计划。
 
 如果由此产生性能问题，可以通过 hint ` ignore_plan_cache()` 忽略计划缓存中的计划，让优化器每次重新为 SQL 生成执行计划。 在 SQL 无法修改的情况下，可以通过创建 binding 来解决，比如 `create binding for select ... using select /*+ ignore_plan_cache() */` ...
 
