@@ -26,7 +26,8 @@ Non-Prepared Plan Cache 为会话级别，并且与 [Prepared Plan Cache](/sql-p
 
 ## 示例
 
-下面是使用示例：
+下面是一个使用示例：
+
 1. 创建用于测试的表 `t`：
 
     ```sql
