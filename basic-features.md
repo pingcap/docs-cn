@@ -47,6 +47,7 @@ summary: 了解 TiDB 的基本功能。
 
 ## SQL 语句
 
+<<<<<<< HEAD
 | SQL 语句 [^2]                                                               |   6.1  |   6.0  |   5.4    |   5.3    |   5.2    |   5.1    |   5.0    |   4.0    |
 | --------------------------------------------------------------------------- | :------: | :------: | :------: | :------: | :------: | :------: | :------: | :------: |
 | `SELECT`，`INSERT`，`UPDATE`，`DELETE`，`REPLACE`                           |   Y     |   Y     |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
@@ -64,6 +65,29 @@ summary: 了解 TiDB 的基本功能。
 | [`EXPLAIN ANALYZE`](/sql-statements/sql-statement-explain-analyze.md)       |   Y     |   Y     |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
 | [用户自定义变量](/user-defined-variables.md)                                | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
 | [`BATCH [ON COLUMN] LIMIT INTEGER DELETE`](/sql-statements/sql-statement-batch.md) | Y | N | N | N | N | N | N | N |
+=======
+| SQL 语句 [^3]                                                               | 6.6 | 6.5 |   6.1  |   5.4    |   5.3    |   5.2    |   5.1    |   5.0    |   4.0    |
+| --------------------------------------------------------------------------- | :------: | :------: | :------: | :------: | :------: | :------: | :------: | :------: | :------: |
+| `SELECT`，`INSERT`，`UPDATE`，`DELETE`，`REPLACE`                           |   Y    |   Y     |   Y     |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
+| `INSERT ON DUPLICATE KEY UPDATE`                                            |   Y    |   Y     |   Y     |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
+| `LOAD DATA INFILE`                                                          |   Y    |   Y     |   Y     |   Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
+| `SELECT INTO OUTFILE`                                                       |   Y    |   Y     |   Y     |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
+| `INNER JOIN`, <code>LEFT\|RIGHT [OUTER] JOIN</code>                         |   Y    |   Y     |   Y     |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
+| `UNION`，`UNION ALL`                                                        |   Y    |   Y     |   Y     |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
+| [`EXCEPT` 和 `INTERSECT` 运算符](/functions-and-operators/set-operators.md) |   Y    |   Y     |   Y     |    Y     |    Y     |    Y     |    Y     |    Y     |    N     |
+| `GROUP BY`，`ORDER BY`                                                      |   Y    |   Y     |   Y     |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
+| [窗口函数](/functions-and-operators/window-functions.md)                   |   Y     |   Y      |   Y     |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
+| [公共表表达式 (CTE)](/sql-statements/sql-statement-with.md)                 |   Y    |   Y     |   Y     |    Y     |    Y     |    Y     |    Y     |    N     |    N     |
+| `START TRANSACTION`，`COMMIT`，`ROLLBACK`                                   |   Y    |   Y     |   Y     |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
+| [`EXPLAIN`](/sql-statements/sql-statement-explain.md)                       |   Y    |   Y     |   Y     |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
+| [`EXPLAIN ANALYZE`](/sql-statements/sql-statement-explain-analyze.md)       |   Y    |   Y     |   Y     |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
+| [用户自定义变量](/user-defined-variables.md)                               | E | E | E | E | E | E | E | E | E |
+| [`BATCH [ON COLUMN] LIMIT INTEGER DELETE`](/sql-statements/sql-statement-batch.md) | Y | Y | Y | N | N | N | N | N | N |
+| [`BATCH [ON COLUMN] LIMIT INTEGER INSERT/UPDATE/REPLACE`](/sql-statements/sql-statement-batch.md) | Y | Y | N | N | N | N | N | N | N |
+| [`ALTER TABLE ... COMPACT`](/sql-statements/sql-statement-alter-table-compact.md) | Y | Y | E | N | N | N | N | N | N |
+| [表级锁 (Table Lock)](/sql-statements/sql-statement-lock-tables-and-unlock-tables.md) | E | E | E | E | E | E | E | E | E |
+| [物化列式存储的查询结果](/tiflash/tiflash-results-materialization.md) | E | E | N | N | N | N | N | N | N |
+>>>>>>> 8be3de2e9 (sql-statements: add doc of lock tables and unlock tables (#13301))
 
 ## 高级 SQL 功能
 
