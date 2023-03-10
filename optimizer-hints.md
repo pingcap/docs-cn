@@ -761,8 +761,6 @@ SELECT /*+ NTH_PLAN(3) */ count(*) from t where a > 5;
 
 示例：
 
-{{< copyable "sql" >}}
-
 ```sql
 SELECT /*+ RESOURCE_GROUP(rg1) */ * FROM t limit 10;
 ```

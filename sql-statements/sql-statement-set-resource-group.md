@@ -23,8 +23,6 @@ ResourceGroupName:
 
 创建一个用户 `'u1'@'%'`，创建两个资源组 `rg1` 和 `rg2`， 并将用户 `'u1'@'%'` 绑定资源组 `rg1`。
 
-{{< copyable "sql" >}}
-
 ```sql
 CREATE USER 'u1'@'%';
 CREATE RESOURCE GROUP 'rg1' RU_PER_SEC = 1000;
@@ -32,8 +30,6 @@ ALTER USER 'u1' RESOURCE GROUP `rg1`;
 ```
 
 使用 `'u1'@'%'` 登录，查看当前用户绑定的资源组。
-
-{{< copyable "sql" >}}
 
 ```sql
 SELECT CURRENT_RESOURCE_GROUP();
@@ -50,8 +46,6 @@ SELECT CURRENT_RESOURCE_GROUP();
 
 执行 `SET RESOURCE GROUP` 将当前会话的资源组设置为 `rg2`。
 
-{{< copyable "sql" >}}
-
 ```sql
 SET RESOURCE GROUP `rg2`;
 SELECT CURRENT_RESOURCE_GROUP();
@@ -67,8 +61,6 @@ SELECT CURRENT_RESOURCE_GROUP();
 ```
 
 执行 `SET RESOURCE GROUP` 将启用角色设置为默认资源组。
-
-{{< copyable "sql" >}}
 
 ```sql
 SET RESOURCE GROUP ``;
