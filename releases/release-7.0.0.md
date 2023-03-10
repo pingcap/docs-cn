@@ -82,6 +82,20 @@ TiDB 版本：7.0.0
 
     在 v7.0.0， TiDB 统计信息收集的逻辑被进一步优化，收集时间大概降低了 25% 左右。 提升了中大型数据库集群的运行效率和稳定性，减少了统计信息收集对集群性能的影响。 
 
+* 新增优化器 Hint 对 MPP 进行干预 [#39710](https://github.com/pingcap/tidb/issues/39710) @[Reminiscent](https://github.com/Reminiscent)
+
+    TiDB 在 v7.0.0 中增加了一系列优化器 Hint，来影响 MPP 操作执行计划的生成。
+
+    - [`SHUFFLE_JOIN()`](/optimizer-hints.md#shuffle_joint1_name-tl_name): 针对 MPP 生效。 提示优化器对指定表使用 Shuffle Join 算法。
+    - [`BROADCAST_JOIN()`](/optimizer-hints.md#broadcast_joint1_name-tl_name): 针对 MPP 生效。提示优化器对指定表使用 Broadcast Join 算法。
+    - [`MPP_1PHASE_AGG()`](/optimizer-hints.md#mpp_1phase_agg): 针对 MPP 生效。提示优化器对指定查询块中所有聚合函数使用一阶段聚合算法。
+    - [`MPP_2PHASE_AGG()`](/optimizer-hints.md#mpp_2phase_agg): 针对 MPP 生效。 提示优化器对指定查询块中所有聚合函数使用二阶段聚合算法。
+
+    MPP 优化器 Hint 能够协助客户对 HTAP 查询进行干预，提升 HTAP 负载下的性能和稳定性。
+
+    更多信息，请参考[用户文档](/optimizer-hints.md)。
+
+
 ### 高可用
 
 * 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接)
