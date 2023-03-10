@@ -125,7 +125,7 @@ SHOW warnings;
 
 ![non-prepared-plan-cache](media/tidb-non-prepared-plan-cache-metrics.png)
 
-在 `Statement Summary` 表和慢查询日志中，也会对 Cache 命中情况有所体现，如下面是 `Statement Summary` 中的例子：
+`statements_summary` 表和慢查询日志也会体现缓存的命中情况。下面是查看 `statements_summary` 表中缓存命中情况的例子：
 
 1. 创建表 `t`：
 
