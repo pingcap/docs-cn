@@ -23,7 +23,7 @@ TiDB 版本：6.5.1
 
 - 由于可能存在正确性问题，分区表目前不再支持修改列类型 [#40620](https://github.com/pingcap/tidb/issues/40620) @[mjonss](https://github.com/mjonss)
 
-- TiKV 配置项 [`advance-ts-interval`](/tikv-configuration-file.md#advance-ts-interval) 默认值由 `1s` 修改为 `20s`。你可以通过调整该配置项提高 Stale Read 数据的时效性（即减少延时），详情参见[减少 Stale Read 延时](/stale-read.md#减少-stale-read-延时)。
+- TiKV 配置项 [`advance-ts-interval`](/tikv-configuration-file.md#advance-ts-interval) 默认值由 `1s` 修改为 `20s`。你可以通过调整该配置项提高 Stale Read 数据的时效性（即减少延时），详情参见[减少 Stale Read 延时](https://docs.pingcap.com/zh/tidb/stable/stale-read#减少-stale-read-延时)。
 
 ## 改进提升
 
