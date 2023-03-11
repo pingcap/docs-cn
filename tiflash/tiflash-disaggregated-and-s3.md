@@ -74,7 +74,7 @@ TiFlash 存算分离架构适合于希望获得更高性价比的数据分析服
         flash.disaggregated_mode: tiflash_write               # 这是一个 Write Node
         storage.s3.endpoint: http://s3.{region}.amazonaws.com # S3 的 endpoint 地址
         storage.s3.bucket: my_bucket                          # TiFlash 的所有数据存储在这个 bucket 中
-        storage.s3.root: /cluster1_data                       # S3 bucket 中存储数据的跟目录
+        storage.s3.root: /cluster1_data                       # S3 bucket 中存储数据的根目录
         storage.s3.access_key_id: {ACCESS_KEY_ID}             # 访问 S3 的 ACCESS_KEY_ID
         storage.s3.secret_access_key: {SECRET_ACCESS_KEY}     # 访问 S3 的 SECRET_ACCESS_KEY
         storage.main.dir: ["/data1/tiflash/data"]             # Write Node 的本地数据目录，和存算一体的配置方式相同
@@ -83,7 +83,7 @@ TiFlash 存算分离架构适合于希望获得更高性价比的数据分析服
         flash.disaggregated_mode: tiflash_write               # 这是一个 Write Node
         storage.s3.endpoint: http://s3.{region}.amazonaws.com # S3 的 endpoint 地址
         storage.s3.bucket: my_bucket                          # TiFlash 的所有数据存储在这个 bucket 中
-        storage.s3.root: /cluster1_data                       # S3 bucket 中存储数据的跟目录
+        storage.s3.root: /cluster1_data                       # S3 bucket 中存储数据的根目录
         storage.s3.access_key_id: {ACCESS_KEY_ID}             # 访问 S3 的 ACCESS_KEY_ID
         storage.s3.secret_access_key: {SECRET_ACCESS_KEY}     # 访问 S3 的 SECRET_ACCESS_KEY
         storage.main.dir: ["/data1/tiflash/data"]             # Write Node 的本地数据目录，和存算一体的配置方式相同
@@ -94,7 +94,7 @@ TiFlash 存算分离架构适合于希望获得更高性价比的数据分析服
         flash.disaggregated_mode: tiflash_compute             # 这是一个 Compute Node
         storage.s3.endpoint: http://s3.{region}.amazonaws.com # S3 的 endpoint 地址
         storage.s3.bucket: my_bucket                          # TiFlash 的所有数据存储在这个 bucket 中
-        storage.s3.root: /cluster1_data                       # S3 bucket 中存储数据的跟目录
+        storage.s3.root: /cluster1_data                       # S3 bucket 中存储数据的根目录
         storage.s3.access_key_id: {ACCESS_KEY_ID}             # 访问 S3 的 ACCESS_KEY_ID
         storage.s3.secret_access_key: {SECRET_ACCESS_KEY}     # 访问 S3 的 SECRET_ACCESS_KEY
         storage.remote.cache.dir: /data1/tiflash/cache        # Compute Node 的本地数据缓存目录
@@ -104,7 +104,7 @@ TiFlash 存算分离架构适合于希望获得更高性价比的数据分析服
         flash.disaggregated_mode: tiflash_compute             # 这是一个 Compute Node
         storage.s3.endpoint: http://s3.{region}.amazonaws.com # S3 的 endpoint 地址
         storage.s3.bucket: my_bucket                          # TiFlash 的所有数据存储在这个 bucket 中
-        storage.s3.root: /cluster1_data                       # S3 bucket 中存储数据的跟目录
+        storage.s3.root: /cluster1_data                       # S3 bucket 中存储数据的根目录
         storage.s3.access_key_id: {ACCESS_KEY_ID}             # 访问 S3 的 ACCESS_KEY_ID
         storage.s3.secret_access_key: {SECRET_ACCESS_KEY}     # 访问 S3 的 SECRET_ACCESS_KEY
         storage.remote.cache.dir: /data1/tiflash/cache        # Compute Node 的本地数据缓存目录
