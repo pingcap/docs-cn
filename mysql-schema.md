@@ -67,3 +67,4 @@ aliases: ['/docs-cn/dev/system-tables/system-table-overview/','/docs-cn/dev/refe
 * `expr_pushdown_blacklist` 表达式下推的黑名单
 * `opt_rule_blacklist` 逻辑优化规则的黑名单
 * `table_cache_meta` 缓存表的信息
+* TiDB 企业版中还有 [TiDB 审计日志相关系统表](/new-audit-log.md#审计日志相关系统表)

@@ -3827,3 +3827,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 是否持久化到集群：是
 - 默认值：`ON`
 - 这个变量用于控制计算窗口函数时是否采用高精度模式。
+
+### TiDB 审计日志相关系统变量
+
+详情见 [TiDB 审计日志](/new-audit-log.md#审计日志相关系统变量)。
