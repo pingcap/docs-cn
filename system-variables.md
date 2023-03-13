@@ -2527,7 +2527,7 @@ mysql> desc select count(distinct a) from test.t;
 - 是否持久化到集群：是
 - 类型：布尔型
 - 默认值：`ON`
-- 这个变量用来控制包括 [`HASH_JOIN` hint](/optimizer-hints.md#hash_joint1_name--tl_name-), [`MERGE_JOIN` hint](/optimizer-hints.md#merge_joint1_name--tl_name-) 等用于控制连接算法的 join method hint 是否会影响 join reorder 的优化过程，包括 [`LEADING()` hint](/optimizer-hints.md#leadingt1_name--tl_name-) 的使用。默认值为 `ON`，即默认不影响。如果设置为 `OFF`，在一些同时使用 join method hint 和 `LEADING()` hint 的场景下会有冲突产生。
+- 这个变量用来控制包括 [`HASH_JOIN()` Hint](/optimizer-hints.md#hash_joint1_name--tl_name-)、[`MERGE_JOIN()` Hint](/optimizer-hints.md#merge_joint1_name--tl_name-) 等用于控制连接算法的 Join Method Hint 是否会影响 Join Reorder 的优化过程，包括 [`LEADING()` Hint](/optimizer-hints.md#leadingt1_name--tl_name-) 的使用。默认值为 `ON`，即默认不影响。如果设置为 `OFF`，在一些同时使用 Join Method Hint 和 `LEADING()` Hint 的场景下可能会产生冲突。
 
 > **注意：**
 >
