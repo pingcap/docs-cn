@@ -17,6 +17,22 @@ summary: 介绍通过使用 TiFlash 延迟物化来加速 OLAP 场景的查询�
 
 启用 TiFlash 延迟物化功能后，TiDB 优化器会根据统计信息和查询的过滤条件，决定哪些过滤条件会被下推。优化器会优化考虑下推过滤率高的过滤条件，详细算法可以参考 [RFC 文档]()。
 
+```
+explain select a, b, c from t1 where a < 1;
+```
+
+```
++-------------------------+----------+--------------+---------------+-------------------------------------------------------+
+| id                      | estRows  | task         | access object | operator info                                         |
++-------------------------+----------+--------------+---------------+-------------------------------------------------------+
+| TableReader_12          | 12288.00 | root         |               | MppVersion: 1, data:ExchangeSender_11                 |
+| └─ExchangeSender_11     | 12288.00 | mpp[tiflash] |               | ExchangeType: PassThrough                             |
+|   └─TableFullScan_9     | 12288.00 | mpp[tiflash] | table:t1      | pushed down filter:lt(test.t1.a, 1), keep order:false |
++-------------------------+----------+--------------+---------------+-------------------------------------------------------+
+```
+
+过滤条件 `a < 1` 被下推到了 TableScan 算子，TiFlash 会先读取列 `a` 的全部数据，然后根据过滤条件 `a < 1` 进行过滤，得到符合条件的行后，再读取这些行的列 `b` 和 `c` 的数据。
+
 ## 启用和禁用 TiFlash 延迟物化
 
 默认情况下，session 和 global 级别的变量 `tidb_enable_late_materialization=OFF`，即没有开启 TiFlash 延迟物化 功能。你可以通过以下语句来查看对应的变量信息。
