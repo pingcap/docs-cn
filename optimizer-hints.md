@@ -221,9 +221,9 @@ EXPLAIN SELECT * FROM t WHERE EXISTS (SELECT /*+ SEMI_JOIN_REWRITE() */ 1 FROM t
 
 `SHUFFLE_JOIN(t1_name [, tl_name ...])` 提示优化器对指定表使用 Shuffle Join 算法，该 Hint 只在 MPP 模式下生效。例如：
 
- ```sql
- SELECT /*+ SHUFFLE_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id = t2.id;
- ```
+```sql
+SELECT /*+ SHUFFLE_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id = t2.id;
+```
 
 > **注意：**
 >
@@ -234,9 +234,9 @@ EXPLAIN SELECT * FROM t WHERE EXISTS (SELECT /*+ SEMI_JOIN_REWRITE() */ 1 FROM t
 
 `BROADCAST_JOIN(t1_name [, tl_name ...])` 提示优化器对指定表使用 Broadcast Join 算法，该 Hint 只在 MPP 模式下生效。例如：
 
- ```sql
- SELECT /*+ BROADCAST_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id = t2.id;
- ```
+```sql
+SELECT /*+ BROADCAST_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id = t2.id;
+```
 
 > **注意：**
 >
@@ -333,9 +333,9 @@ SELECT /*+ STREAM_AGG() */ count(*) FROM t1, t2 WHERE t1.a > 10 GROUP BY t1.id;
 
 `MPP_1PHASE_AGG()` 提示优化器对指定查询块中所有聚合函数使用一阶段聚合算法，该 Hint 只在 MPP 模式下生效。例如：
 
- ```sql
- SELECT /*+ MPP_1PHASE_AGG() */ count(*) FROM t1, t2 WHERE t1.a > 10 GROUP BY t1.id;
- ```
+```sql
+SELECT /*+ MPP_1PHASE_AGG() */ COUNT(*) FROM t1, t2 WHERE t1.a > 10 GROUP BY t1.id;
+```
 
 > **注意：**
 >
@@ -345,9 +345,9 @@ SELECT /*+ STREAM_AGG() */ count(*) FROM t1, t2 WHERE t1.a > 10 GROUP BY t1.id;
 
 `MPP_2PHASE_AGG()` 提示优化器对指定查询块中所有聚合函数使用二阶段聚合算法，该 Hint 只在 MPP 模式下生效。例如：
 
- ```sql
- SELECT /*+ MPP_2PHASE_AGG() */ count(*) FROM t1, t2 WHERE t1.a > 10 GROUP BY t1.id;
- ```
+```sql
+SELECT /*+ MPP_2PHASE_AGG() */ COUNT(*) FROM t1, t2 WHERE t1.a > 10 GROUP BY t1.id;
+```
 
 > **注意：**
 >
