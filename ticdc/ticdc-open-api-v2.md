@@ -714,9 +714,9 @@ curl -X DELETE http://127.0.0.1:8300/api/v2/changefeeds/test1
 |:--------|:------------------------|
 | `state` | 非必选，指定后将会只返回该状态的同步任务的信息 |
 
-`state` 可选值为 all、normal、stopped、error、failed、finished。
+`state` 可选值为 `all`、`normal`、`stopped`、`error`、`failed`、`finished`。
 
-若不指定该参数，则默认返回处于 normal、stopped、failed 状态的同步任务基本信息。
+若不指定该参数，则默认返回处于 `normal`、`stopped`、`failed` 状态的同步任务基本信息。
 
 ### 使用样例
 
