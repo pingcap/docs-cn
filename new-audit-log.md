@@ -77,13 +77,6 @@ TiDB 审计日志有以下事件类型：
 | EXECUTE_PARAMS | 记录传入 [`EXECUTE` 语句](/sql-statements/sql-statement-execute.md)的参数。仅当事件类型包含 `EXECUTE`，且未开启日志脱敏时才会记录该信息 |
 | AFFECTED_ROWS | 该 SQL 语句影响的行数，仅当事件类型包含 `QUERY_DML` 时记录该信息 |
 
-> **注意：**
->
-> 对于包含用户密码的 SQL 语句（[`CREATE USER ... IDENTIFIED BY ...`](sql-statements/sql-statement-create-user.md), [`SET PASSWORD`](sql-statements/sql-statement-set-password.md) 和 [`ALTER USER ... IDENTIFIED BY ...`](sql-statements/sql-statement-alter-user.md)），无论是否开启日志脱敏，审计日志均会对其进行脱敏。
->
-> 但是如果一条包含密码的 SQL 语句出现语法错误，则密码信息可能泄漏在 REASON 信息中。
-> 一个避免此泄漏风险的方法是，使用过滤器将出现错误的 SQL 语句（即 STATUS_CODE 为 `0`、EVENT 包含 `QUERY` 的记录）从审计日志中过滤掉。
-
 ### 连接信息
 
 当事件类型为 `CONNECTION` 或其子类型时，审计日志将记录以下信息：
@@ -175,7 +168,16 @@ TiDB 中通过 [`audit_log_create_filter`](#audit_log_create_filter) 函数创�
 
 ### 过滤规则
 
-TODO
+创建过滤器之后，可以通过过滤规则将过滤器与用户进行绑定。绑定后的用户的操作会经过该过滤器决定是否记录到审计日志中，也可以方便地禁用/启用该过滤器。
+
+一条过滤规则由审计用户与过滤器名组成。
+
+* 审计用户由用户名与用户主机名组成，并以 `@` 作为用户名与用户主机名的分隔符。
+* 过滤器名必须存在于 `mysql.audit_log_filters` 中
+
+TiDB 中通过 [`audit_log_create_rule`](#audit_log_create_rule) 函数创建过滤器，创建成功后可以通过 [`mysql.audit_log_filter_rules`](#mysqlaudit_log_filter_rules) 查询过滤器。
+
+过滤规则创建成功后，过滤器将对所有指定的审计用户生效。可以通过 [`audit_log_enable_rule`](#audit_log_enable_rule) 启用一个过滤规则，通过 [`audit_log_disable_rule`](#audit_log_disable_rule) 禁用一个过滤规则。
 
 > **注意：**
 >
@@ -185,21 +187,41 @@ TODO
 
 ## 日志文件格式
 
-TODO
+TiDB 审计日志支持以文本或 `JSON` 两种格式进行记录。可以通过 [`tidb_audit_log_format`](#tidb_audit_log_format) 选择日志格式。
+
+对 `select * from t`，文本格式的审计日志示例如下：
+
+```
+[2023/03/13 16:51:40.174 +08:00] [INFO] [ID=851e8de3-b016-4384-8440-7386c033ef54-0031] [EVENT="[QUERY,SELECT]"] [USER=root] [ROLES="[]"] [CONNECTION_ID=2199023255955] [TABLES="[`test`.`t`]"] [STATUS_CODE=1] [CURRENT_DB=test] [SQL_TEXT="select * from `t`"]
+```
+
+`JSON` 格式的审计日志示例如下：
+
+```json
+{"TIME":"2023/03/13 16:51:30.660 +08:00","ID":"851e8de3-b016-4384-8440-7386c033ef54-002f","EVENT":["QUERY","SELECT"],"USER":"root","ROLES":[],"CONNECTION_ID":"2199023255955","TABLES":["`test`.`t`"],"STATUS_CODE":1,"CURRENT_DB":"test","SQL_TEXT":"select * from `t`"}
+```
 
 ## 日志轮替
 
-TODO
-
-[日志轮替（log rotation）](https://zh.wikipedia.org/wiki/%E6%97%A5%E5%BF%97%E8%BD%AE%E6%9B%BF)
+[日志轮替（log rotation）](https://zh.wikipedia.org/wiki/%E6%97%A5%E5%BF%97%E8%BD%AE%E6%9B%BF) 可以用于限制日志文件的大小。TiDB 中可以使用 [`tidb_audit_log_max_size`](#tidb_audit_log_max_size) 设置单个审计日志文件的大小，可以通过 [`tidb_audit_log_max_lifetime`](#tidb_audit_log_max_lifetime) 设置触发审计日志轮替的时间，也可以通过 [`audit_log_rotate`](#audit_log_rotate) 函数手动触发一次日志轮替。
 
 ## 日志文件保留数量与时间
 
-TODO
+为了防止审计日志文件占据过多存储空间，TiDB 提供系统变量来控制审计日志保留的数量与时间：
+
+* [`tidb_audit_log_reserved_backups`](#tidb_audit_log_reserved_backups) 控制每台 TiDB 服务器上保留的审计日志文件的数量
+* [`tidb_audit_log_reserved_days`](#tidb_audit_log_reserved_days) 控制单个审计日志在 TiDB 服务器上保留的天数
 
 ## 日志脱敏
 
-TODO
+TiDB 在提供详细的审计日志信息时，可能会把数据库敏感的数据（例如用户数据）打印出来，造成数据安全方面的风险。因此 TiDB 提供 [`tidb_audit_redact_log`](#tidb_audit_redact_log) 来控制是否对审计日志脱敏。
+
+> **注意：**
+>
+> 对于包含用户密码的 SQL 语句（[`CREATE USER ... IDENTIFIED BY ...`](sql-statements/sql-statement-create-user.md), [`SET PASSWORD`](sql-statements/sql-statement-set-password.md) 和 [`ALTER USER ... IDENTIFIED BY ...`](sql-statements/sql-statement-alter-user.md)），无论是否开启日志脱敏，审计日志均会对密码信息进行脱敏。
+>
+> 但是如果一条包含密码的 SQL 语句出现语法错误，则密码信息可能泄漏在 REASON 信息中。
+> 一个避免此泄漏风险的方法是，使用过滤器将出现错误的 SQL 语句（即 STATUS_CODE 为 `0`、EVENT 包含 `QUERY` 的记录）从审计日志中过滤掉。
 
 ## 审计日志相关系统表
 
@@ -236,8 +258,8 @@ select * from mysql.audit_log_filters;
 +-------------+---------------------------------------+
 | FILTER_NAME | CONTENT                               |
 +-------------+---------------------------------------+
-| all_query   | {"filter":[{"class":["QUERY"]}]}       |
-| all_connect | {"filter":[{"class":["CONNECT"]}]}     |
+| all_query   | {"filter":[{"class":["QUERY"]}]}      |
+| all_connect | {"filter":[{"class":["CONNECT"]}]}    |
 +-------------+---------------------------------------+
 ```
 
