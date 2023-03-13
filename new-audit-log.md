@@ -27,27 +27,27 @@ TiDB 审计日志根据 SQL 语句的类型将 SQL 操作分为若干事件类�
 
 TiDB 审计日志有以下事件类型：
 
-| **事件类型** | **描述** |
-|---|---|
-| `CONNECTION` | 记录所有与连接相关的操作，包括握手、建立连接、断开连接、重设连接、变更用户等 |
-| `CONNECT` | 记录连接过程中的握手操作。属于 `CONNECTION` 的子类型 |
-| `DISCONNECT` | 记录断开连接的操作。属于 `CONNECTION` 的子类型 |
-| `CHANGE_USER` | 记录变更用户的操作。属于 `CONNECTION` 的子类型 |
-| `QUERY` | 记录所有执行 SQL 语句的操作 |
-| `EXECUTE` | 记录所有执行 [`EXECUTE` 语句](/sql-statements/sql-statement-execute.md)的操作。属于 `QUERY` 的子类型 |
-| `QUERY_DML` | 记录所有 DML 语句的操作，包括 [`INSERT`](/sql-statements/sql-statement-insert.md)、[`REPLACE`](/sql-statements/sql-statement-replace.md)、[`UPDATE`](/sql-statements/sql-statement-update.md)、[`DELETE`](/sql-statements/sql-statement-delete.md) 和 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md)。属于 `QUERY` 的子类型 |
-| `INSERT` | 记录所有 [`INSERT`](/sql-statements/sql-statement-insert.md) 语句的操作。属于 `QUERY_DML` 的子类型 |
-| `REPLACE` | 记录所有 [`REPLACE`](/sql-statements/sql-statement-replace.md) 语句的操作。属于 `QUERY_DML` 的子类型 |
-| `UPDATE` | 记录所有 [`UPDATE`](/sql-statements/sql-statement-update.md) 语句的操作。属于 `QUERY_DML` 的子类型 |
-| `DELETE` | 记录所有 [`DELETE`](/sql-statements/sql-statement-delete.md) 语句的操作。属于 `QUERY_DML` 的子类型 |
-| `LOAD DATA` | 记录所有 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md) 语句的操作。属于 `QUERY_DML` 的子类型 |
-| `SELECT` | 记录所有 [`SELECT`](/sql-statements/sql-statement-select.md) 语句的操作。属于 `QUERY` 的子类型 |
-| `QUERY_DDL` | 记录所有 DDL 语句的操作。属于 `QUERY` 的子类型 |
-| `AUDIT` | 记录所有 TiDB 审计日志相关设置语句的操作，包括系统变量和函数调用 |
-| `AUDIT_SET_SYS_VAR` | 记录所有设置 [TiDB 审计日志相关系统变量](#审计日志相关系统变量)语句的操作。属于 `AUDIT` 的子类型 |
-| `AUDIT_FUNC_CALL` | 记录所有调用 [TiDB 审计日志相关函数](#审计日志相关函数)的操作。属于 `AUDIT` 的子类型 |
-| `AUDIT_ENABLE` | 记录所有[开启 TiDB 审计日志](#tidb_audit_enabled)的操作。属于 `AUDIT_SET_SYS_VAR` 的子类型 |
-| `AUDIT_DISABLE` | 记录所有[关闭 TiDB 审计日志](#tidb_audit_enabled)的操作。属于 `AUDIT_SET_SYS_VAR` 的子类型 |
+| **事件类型** | **描述** | **父类型** |
+|---|---|---|
+| `CONNECTION` | 记录所有与连接相关的操作，包括握手、建立连接、断开连接、重设连接、变更用户等 | - |
+| `CONNECT` | 记录连接过程中的握手操作 | `CONNECTION` | 
+| `DISCONNECT` | 记录断开连接的操作 | `CONNECTION` |
+| `CHANGE_USER` | 记录变更用户的操作 | `CONNECTION` |
+| `QUERY` | 记录所有执行 SQL 语句的操作 | - |
+| `EXECUTE` | 记录所有执行 [`EXECUTE` 语句](/sql-statements/sql-statement-execute.md)的操作 | `QUERY` |
+| `QUERY_DML` | 记录所有 DML 语句的操作，包括 [`INSERT`](/sql-statements/sql-statement-insert.md)、[`REPLACE`](/sql-statements/sql-statement-replace.md)、[`UPDATE`](/sql-statements/sql-statement-update.md)、[`DELETE`](/sql-statements/sql-statement-delete.md) 和 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md) | `QUERY` |
+| `INSERT` | 记录所有 [`INSERT`](/sql-statements/sql-statement-insert.md) 语句的操作 | `QUERY_DML` |
+| `REPLACE` | 记录所有 [`REPLACE`](/sql-statements/sql-statement-replace.md) 语句的操作 | `QUERY_DML` |
+| `UPDATE` | 记录所有 [`UPDATE`](/sql-statements/sql-statement-update.md) 语句的操作 | `QUERY_DML` |
+| `DELETE` | 记录所有 [`DELETE`](/sql-statements/sql-statement-delete.md) 语句的操作 | `QUERY_DML` |
+| `LOAD DATA` | 记录所有 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md) 语句的操作 | `QUERY_DML` |
+| `SELECT` | 记录所有 [`SELECT`](/sql-statements/sql-statement-select.md) 语句的操作 | `QUERY` |
+| `QUERY_DDL` | 记录所有 DDL 语句的操作 | `QUERY` |
+| `AUDIT` | 记录所有 TiDB 审计日志相关设置语句的操作，包括系统变量和函数调用 | - |
+| `AUDIT_SET_SYS_VAR` | 记录所有设置 [TiDB 审计日志相关系统变量](#审计日志相关系统变量)语句的操作 | `AUDIT` |
+| `AUDIT_FUNC_CALL` | 记录所有调用 [TiDB 审计日志相关函数](#审计日志相关函数)的操作 | `AUDIT` |
+| `AUDIT_ENABLE` | 记录所有[开启 TiDB 审计日志](#tidb_audit_enabled)的操作 | `AUDIT_SET_SYS_VAR` |
+| `AUDIT_DISABLE` | 记录所有[关闭 TiDB 审计日志](#tidb_audit_enabled)的操作 | `AUDIT_SET_SYS_VAR` |
 
 ## 审计日志记录信息
 
@@ -165,6 +165,10 @@ TiDB 审计日志有以下事件类型：
 ```
 
 TiDB 中通过 [`audit_log_create_filter`](#audit_log_create_filter) 函数创建过滤器，创建成功后可以通过 [`mysql.audit_log_filters`](#mysqlaudit_log_filters) 查询过滤器。
+
+> **注意：**
+>
+> `AUDIT` 事件类型的审计日志会强制记录，无法通过过滤器排除。
 
 ### 过滤规则
 
@@ -309,72 +313,225 @@ select * from mysql.audit_log_filter_rules;
 
 ### `tidb_audit_enabled`
 
-TODO
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 类型：布尔型
+- 默认值：`OFF`
+- 控制是否开启 TiDB 审计日志。
 
 ### `tidb_audit_log`
 
-TODO
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 类型：字符串
+- 默认值：`tidb-audit.log`
+- 控制 TiDB 审计日志的文件名与存储路径。
+- 当设置的值是一个绝对路径时，TiDB 将会设置该路径的文件为审计日志的写入文件，如果文件不存在会创建文件。
+- 当设置的值是一个相对路径时，如果此时 TiDB 日志路径已经设置，则会使用相同的文件夹来创建审计日志；否则使用 TiDB 服务器的工作目录来创建审计日志
+- 当 TiDB 没有设置的审计日志文件的权限时，审计的相关事件的执行将不会收到影响，但会在 TiDB 日志中写入 `ERROR` 信息
+- 设置 `tidb_audit_log` 时可以使用占位符 `%e` 来表示地址信息，TiDB 会自动将 `%e` 替换为 `IP 地址-端口`，比如 `set global tidb_audit_log='tidb-audit-%e.log'` 将会创建名为 `tidb-audit-192-168-197-164-4000.log` 的审计日志文件
+- 发生[日志轮替](#日志轮替)之后，旧的日志文件会以 `文件名.时间戳` 的形式被重命名，新的日志文件保留 `tidb_audit_log` 设置的值。
 
 ### `tidb_audit_log_format`
 
-TODO
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 类型：枚举值
+- 默认值：`TEXT`
+- 可选值：`TEXT`、`JSON`
+- 设置 TiDB 审计日志的输出格式。当设置为 `JSON` 格式时，TiDB 会将日志写入文件名为 `@@tidb_audit_log+".json"` 的文件中。比如当 `tidb_audit_log` 为 `tidb-audit.log` 时，`JSON` 格式的审计日志记录在 `tidb-audit.log.json`
 
 ### `tidb_audit_log_max_size`
 
-TODO
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 类型：整数型
+- 默认值：`100`，单位 `MB`
+- 范围：`[0, 102400]`，最大值对应 `100GB`
+- 设置 TiDB 审计日志的文件大小上限，超过该上限将触发[日志轮替](#日志轮替)。
+- 设置为 `0` 时会自动设置为 `100`
 
 ### `tidb_audit_log_max_lifetime`
 
-TODO
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 类型：整数型
+- 默认值：`86400`，单位 `秒`，对应 `1 天`
+- 范围：`[0, 2592000]`，最大值对应 `30 天`
+- 设置 TiDB 审计日志自动轮替的时间。
+- 设置为 `0` 时表示不按照时间进行自动轮替
 
 ### `tidb_audit_log_reserved_backups`
 
-TODO
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 类型：整数型
+- 默认值：`10`
+- 范围：`[0, 1024]`
+- 设置每个 TiDB 节点保存的审计日志文件的数量。当某个节点中存在的审计日志文件的数量超过该设置时，将删除最旧的审计日志文件。
+- 设置为 `0` 时表示不对审计日志文件的数量做限制
 
 ### `tidb_audit_log_reserved_days`
 
-TODO
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 类型：整数型
+- 默认值：`0`
+- 范围：`[0, 1024]`
+- 设置 TiDB 审计日志文件被轮替后保留的天数。当某个已被轮替的审计日志文件的保留天数超过该设置时，将删除该审计日志文件。
+- 设置为 `0` 时表示不对审计日志文件轮替后保留的时长做限制
 
 ### `tidb_audit_redact_log`
 
-TODO
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 类型：布尔型
+- 默认值：`ON`
+- 设置是否对 TiDB 审计日志开启脱敏。所有修改用户密码的操作在 TiDB 审计日志中总是脱敏。
 
 ## 审计日志相关函数
 
 ### `audit_log_rotate`
 
-TODO
+```sql
+SELECT audit_log_rotate();
+```
+
+在所有 TiDB 节点上手动强制触发一次审计日志轮替
 
 ### `audit_log_create_filter`
 
-TODO
+```sql
+SELECT audit_log_create_filter('<name>', '<filter>');
+```
+
+* 创建一个名为 `<name>` 的过滤器，内容为 `<filter>`，即[前文](#过滤器)所述的 `JSON` 形式的过滤器
+* `<name>` 为大小写敏感的字符串，最大长度为 128 个字符。不能创建两个同名的过滤器。`<name>` 不需要与 `<filter>` 中的 `"name"` 字段相同，因为 `"name"` 字段是可选的
+* 创建成功后，对应的过滤器信息可通过查找 [`mysql.audit_log_filters`](#mysqlaudit_log_filters) 得到
+
+#### 示例
+
+创建一个名为 `all_dml` 的过滤器，对所有的 DML 操作进行审计，`mysql` 数据库除外：
+
+```sql
+set @r = '{
+   "filter": [
+      {
+         "class": ["QUERY_DML"],
+         "table_excl": ["mysql.*"]
+      }
+   ]
+}';
+select audit_log_create_filter('all_dml', @r);
+```
+
+创建一个名为 `all` 的过滤器，对所有连接、查询、审计操作进行审计：
+
+```sql
+select audit_log_create_filter('all', '{}');
+```
+
+创建一个名为 `fail_connect` 的过滤器，对所有握手失败的连接进行审计：
+
+```sql
+set @r = '{
+   "filter": [
+      {
+         "class": ["CONNECT"],
+         "status_code": [0]
+      }
+   ]
+}';
+select audit_log_create_filter('fail_connect', @r);
+```
 
 ### `audit_log_remove_filter`
 
-TODO
+```sql
+SELECT audit_log_remove_filter('<name>');
+```
+
+* 删除名为 `<name>` 的过滤器。
+* 正被过滤规则引用的过滤器无法删除，需要先通过 [`audit_log_remove_rule`](#audit_log_remove_rule) 删除所有引用该过滤器的规则之后才能删除。
 
 ### `audit_log_create_rule`
 
-TODO
+```sql
+SELECT audit_log_create_rule('<user>@<host>', '<name>');
+```
+
+* 对审计用户 `<user>@<host>` 创建一个关联过滤器 `<name>` 的过滤规则，并立即启用
+* 过滤器 `<name>` 必须已经存在于 `mysql.audit_log_filters` 中
+* 审计用户 `<user>@<host>` 包含用户名和用户主机名，以 `@` 作为分隔符，其中 `@` 和 `<host>` 可忽略，表示包含所有的主机名。用户名和主机名可以是具体的标识符，也可以使用通配符进行匹配：
+  * `%` 表示匹配任意用户名/主机名
+  * `_` 表示匹配任一字符
+* 不能对同一个审计用户创建关联同一个过滤器的过滤规则
+* 创建成功后，对应的过滤规则信息可通过查找 [`mysql.audit_log_filter_rules`](#mysqlaudit_log_filter_rules) 得到
+
+#### 示例
+
+假设现在已有名为 `f` 的过滤器。将该过滤器与所有用户相关联：
+
+```sql
+SELECT audit_log_create_rule('%@%', 'f');
+```
+
+将该过滤器与名为 `root` 的所有用户相关联:
+
+```sql
+SELECT audit_log_create_rule('root@%', 'f');
+```
+
+将该过滤器与所有 `192.` 开头的主机用户相关联：
+
+```sql
+SELECT audit_log_create_rule('%@192.%', 'f');
+```
+
+将该过滤器与用户 `admin@localhost` 相关联：
+
+```sql
+SELECT audit_log_create_rule('admin@localhost', 'f');
+```
 
 ### `audit_log_remove_rule`
 
-TODO
+```sql
+SELECT audit_log_remove_rule('<user>@<host>', '<name>');
+```
+
+删除 `<user>@<host>` 与 `<name>` 的过滤规则，即取消 `<user>@<host>` 与 `<name>` 的关联。
 
 ### `audit_log_enable_rule`
 
-TODO
+```sql
+SELECT audit_log_enable_rule('<user>@<host>', '<name>');
+```
+
+启用 `<user>@<host>` 与 `<name>` 的过滤规则。
 
 ### `audit_log_disable_rule`
 
-TODO
+```sql
+SELECT audit_log_disable_rule('<user>@<host>', '<name>');
+```
 
-## 审计日志相关权限
+停止使用（但不删除）`<user>@<host>` 与 `<name>` 的过滤规则。
+
+## 审计日志相关动态权限
 
 ### `AUDIT_ADMIN`
 
-TODO
+当 [安全增强模式（`SEM`）](/system-variables.md#tidb_enable_enhanced_security)模式关闭时，只有拥有 `AUDIT_ADMIN` 或者 `SUPER` 权限的用户才能执行审计日志相关的设置与修改，包括：
+
+* 使用 [审计日志相关函数](#审计日志相关函数)
+* 查询和修改 [审计日志相关系统变量](#审计日志相关系统变量)
+* 查询和修改 [审计日志相关系统表](#审计日志相关系统表)
 
 ### `RESTRICTED_VARIABLES_ADMIN`
 
-TODO
+当 [安全增强模式（`SEM`）](/system-variables.md#tidb_enable_enhanced_security)模式开启时，只有拥有 `RESTRICTED_VARIABLES_ADMIN` 权限的用户才能执行审计日志相关的设置与修改，包括：
+
+* 使用 [审计日志相关函数](#审计日志相关函数)
+* 查询和修改 [审计日志相关系统变量](#审计日志相关系统变量)
+* 查询和修改 [审计日志相关系统表](#审计日志相关系统表)
