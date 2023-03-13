@@ -94,6 +94,7 @@ TiFlash 存算分离架构适合于希望获得更高性价比的数据分析服
     - host: 172.31.9.1
       config:
         flash.disaggregated_mode: tiflash_compute             # 这是一个 Compute Node
+        flash.use_autoscaler: false
         storage.format_version: 5                             # 只有 5 支持 S3 存储
         storage.s3.endpoint: http://s3.{region}.amazonaws.com # S3 的 endpoint 地址
         storage.s3.bucket: my_bucket                          # TiFlash 的所有数据存储在这个 bucket 中
@@ -105,6 +106,7 @@ TiFlash 存算分离架构适合于希望获得更高性价比的数据分析服
     - host: 172.31.9.2
       config:
         flash.disaggregated_mode: tiflash_compute             # 这是一个 Compute Node
+        flash.use_autoscaler: false
         storage.format_version: 5                             # 只有 5 支持 S3 存储
         storage.s3.endpoint: http://s3.{region}.amazonaws.com # S3 的 endpoint 地址
         storage.s3.bucket: my_bucket                          # TiFlash 的所有数据存储在这个 bucket 中
