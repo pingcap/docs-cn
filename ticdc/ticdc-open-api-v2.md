@@ -283,7 +283,7 @@ curl -X GET http://127.0.0.1:8300/api/v2/health
 | 参数名              | 说明                                     |
 |:-----------------|:---------------------------------------|
 | `flush_interval` | `UINT64` 类型，redo log 文件 flush 间隔。（非必选） |
-| `level`          | `STRING` 类型，同步数据的一致性级别（非必选）            |
+| `level`          | `STRING` 类型，同步数据的一致性级别。（非必选）            |
 | `max_log_size`   | `UINT64` 类型，redo log 的最大值。（非必选）        |
 | `storage`        | `STRING` 类型，存储的目标地址。（非必选）              |
 
