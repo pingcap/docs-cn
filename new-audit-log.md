@@ -35,13 +35,13 @@ TiDB 审计日志有以下事件类型：
 | `CHANGE_USER` | 记录变更用户的操作。属于 `CONNECTION` 的子类型 |
 | `QUERY` | 记录所有执行 SQL 语句的操作 |
 | `EXECUTE` | 记录所有执行 [`EXECUTE` 语句](/sql-statements/sql-statement-execute.md)的操作。属于 `QUERY` 的子类型 |
-| `QUERY_DML` | 记录所有 DML 语句的操作，包括 [`INSERT`](sql-statements/sql-statement-insert.md)、[`REPLACE`](sql-statements/sql-statement-replace.md)、[`UPDATE`](sql-statements/sql-statement-update.md)、[`DELETE`](sql-statements/sql-statement-delete.md) 和 [`LOAD DATA`](sql-statements/sql-statement-load-data.md)。属于 `QUERY` 的子类型 |
-| `INSERT` | 记录所有 [`INSERT`](sql-statements/sql-statement-insert.md) 语句的操作。属于 `QUERY_DML` 的子类型 |
-| `REPLACE` | 记录所有 [`REPLACE`](sql-statements/sql-statement-replace.md) 语句的操作。属于 `QUERY_DML` 的子类型 |
-| `UPDATE` | 记录所有 [`UPDATE`](sql-statements/sql-statement-update.md) 语句的操作。属于 `QUERY_DML` 的子类型 |
-| `DELETE` | 记录所有 [`DELETE`](sql-statements/sql-statement-delete.md) 语句的操作。属于 `QUERY_DML` 的子类型 |
-| `LOAD DATA` | 记录所有 [`LOAD DATA`](sql-statements/sql-statement-load-data.md) 语句的操作。属于 `QUERY_DML` 的子类型 |
-| `SELECT` | 记录所有 [`SELECT`](sql-statements/sql-statement-select.md) 语句的操作。属于 `QUERY` 的子类型 |
+| `QUERY_DML` | 记录所有 DML 语句的操作，包括 [`INSERT`](/sql-statements/sql-statement-insert.md)、[`REPLACE`](/sql-statements/sql-statement-replace.md)、[`UPDATE`](/sql-statements/sql-statement-update.md)、[`DELETE`](/sql-statements/sql-statement-delete.md) 和 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md)。属于 `QUERY` 的子类型 |
+| `INSERT` | 记录所有 [`INSERT`](/sql-statements/sql-statement-insert.md) 语句的操作。属于 `QUERY_DML` 的子类型 |
+| `REPLACE` | 记录所有 [`REPLACE`](/sql-statements/sql-statement-replace.md) 语句的操作。属于 `QUERY_DML` 的子类型 |
+| `UPDATE` | 记录所有 [`UPDATE`](/sql-statements/sql-statement-update.md) 语句的操作。属于 `QUERY_DML` 的子类型 |
+| `DELETE` | 记录所有 [`DELETE`](/sql-statements/sql-statement-delete.md) 语句的操作。属于 `QUERY_DML` 的子类型 |
+| `LOAD DATA` | 记录所有 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md) 语句的操作。属于 `QUERY_DML` 的子类型 |
+| `SELECT` | 记录所有 [`SELECT`](/sql-statements/sql-statement-select.md) 语句的操作。属于 `QUERY` 的子类型 |
 | `QUERY_DDL` | 记录所有 DDL 语句的操作。属于 `QUERY` 的子类型 |
 | `AUDIT` | 记录所有 TiDB 审计日志相关设置语句的操作，包括系统变量和函数调用 |
 | `AUDIT_SET_SYS_VAR` | 记录所有设置 [TiDB 审计日志相关系统变量](#审计日志相关系统变量)语句的操作。属于 `AUDIT` 的子类型 |
@@ -218,7 +218,7 @@ TiDB 在提供详细的审计日志信息时，可能会把数据库敏感的数
 
 > **注意：**
 >
-> 对于包含用户密码的 SQL 语句（[`CREATE USER ... IDENTIFIED BY ...`](sql-statements/sql-statement-create-user.md), [`SET PASSWORD`](sql-statements/sql-statement-set-password.md) 和 [`ALTER USER ... IDENTIFIED BY ...`](sql-statements/sql-statement-alter-user.md)），无论是否开启日志脱敏，审计日志均会对密码信息进行脱敏。
+> 对于包含用户密码的 SQL 语句（[`CREATE USER ... IDENTIFIED BY ...`](/sql-statements/sql-statement-create-user.md), [`SET PASSWORD`](/sql-statements/sql-statement-set-password.md) 和 [`ALTER USER ... IDENTIFIED BY ...`](/sql-statements/sql-statement-alter-user.md)），无论是否开启日志脱敏，审计日志均会对密码信息进行脱敏。
 >
 > 但是如果一条包含密码的 SQL 语句出现语法错误，则密码信息可能泄漏在 REASON 信息中。
 > 一个避免此泄漏风险的方法是，使用过滤器将出现错误的 SQL 语句（即 STATUS_CODE 为 `0`、EVENT 包含 `QUERY` 的记录）从审计日志中过滤掉。
