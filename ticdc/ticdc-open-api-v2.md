@@ -907,7 +907,7 @@ curl -X GET http://127.0.0.1:8300/api/v2/processors
 以下请求查询 `changefeed_id` 为 `test`、`capture_id` 为 `561c3784-77f0-4863-ad52-65a3436db6af`的同步子任务。一个同步子任务通过 `changefeed_id` 和 `capture_id` 来标识。
 
 ```shell
-curl -X GET http://127.0.0.1:8300/api/v2/processors/test1/561c3784-77f0-4863-ad52-65a3436db6af
+curl -X GET http://127.0.0.1:8300/api/v2/processors/test/561c3784-77f0-4863-ad52-65a3436db6af
 
 ```
 
