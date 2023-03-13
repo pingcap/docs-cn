@@ -67,22 +67,7 @@ Request Unit (RU) 是 TiDB 对 CPU、IO 等系统资源的统一抽象的单位,
 
 对于已有的资源组，可以通过 [`ALTER RESOURCE GROUP`](/sql-statements/sql-statement-alter-resource-group.md) 修改资源组的读写配额，对资源组的配额修改会立即生效。
 
-可以通过 [`DROP RESOURCE GROUP`](/sql-statements/sql-statement-drop-resource-group.md) 删除资源组。
-
-### 将会话绑定资源组
-
-通过将会话绑定资源组，对应会话上执行的语句对资源的占用会受到指定用量 (RU) 的限制。TiDB 支持如下三个级别的资源组设置：
-
-- 用户级别。通过 [`CREATE USER`](/sql-statements/sql-statement-create-user.md) 或 [`ALTER USER`](/sql-statements/sql-statement-alter-user.md) 语句将用户绑定到特定的资源组。将资源组绑定用户后，使用对应的用户创建的会话会自动绑定对应的资源组。
-- 会话级别。通过 [`SET RESOURCE GROUP`](/sql-statements/sql-statement-set-resource-group.md) 设置当前会话的资源组。
-- 语句级别。通过 [`RESOURCE_GROUP()`](/optimizer-hints.md#resource_groupresource_group_name) 设置当前语句使用的资源组。
-
-> **注意：**
->
-> - `CREATE USER` 或者 `ALTER USER` 对用户资源组绑定后，不会对该用户的已有会话生效，而是只对该用户新建的会话生效。
-> - 如果用户没有绑定到某个资源组或者是绑定到 `default` 资源组，该用户的请求不会受 TiDB 的流控限制。`default` 资源组目前对用户不可见也不可以创建或者修改属性，不能通过 `SHOW CREATE RESOURCE GROUP` 或 `SELECT * FROM information_schema.resource_groups` 查看，但是可以通过 `mysql.user` 表查看。
-
-### 第 1 步：开启资源管控特性
+### 开启资源管控特性
 
 1. 执行以下命令开启资源管控特性：
 
@@ -92,9 +77,9 @@ Request Unit (RU) 是 TiDB 对 CPU、IO 等系统资源的统一抽象的单位,
 
 2. 将 TiKV 参数 [`resource-control.enabled`](/tikv-configuration-file.md#resource-control) 设为 `true`。
 
-### 第 2 步：创建资源组，并绑定用户到资源组
+### 创建资源组
 
-下面举例说明如何创建资源组，并绑定用户到资源组。
+下面举例说明如何创建资源组。
 
 1. 创建 `rg1` 资源组，RU 的回填速度是每秒 500 RU，并且允许这个资源组的应用超额占用资源。
 
@@ -108,19 +93,42 @@ Request Unit (RU) 是 TiDB 对 CPU、IO 等系统资源的统一抽象的单位,
     CREATE RESOURCE GROUP IF NOT EXISTS rg2 RU_PER_SEC = 600;
     ```
 
-3. 将用户 `usr1` 和 `usr2` 分别绑定到资源组 `rg1` 和 `rg2`。
+### 绑定资源组
 
-    ```sql
-    ALTER USER usr1 RESOURCE GROUP rg1;
-    ```
+通过将会话绑定资源组，对应会话上执行的语句对资源的占用会受到指定用量 (RU) 的限制。TiDB 支持如下三个级别的资源组设置：
 
-    ```sql
-    ALTER USER usr2 RESOURCE GROUP rg2;
-    ```
+- 用户级别。通过 [`CREATE USER`](/sql-statements/sql-statement-create-user.md) 或 [`ALTER USER`](/sql-statements/sql-statement-alter-user.md) 语句将用户绑定到特定的资源组。将资源组绑定用户后，使用对应的用户创建的会话会自动绑定对应的资源组。
+- 会话级别。通过 [`SET RESOURCE GROUP`](/sql-statements/sql-statement-set-resource-group.md) 设置当前会话使用的资源组。
+- 语句级别。通过 [`RESOURCE_GROUP()`](/optimizer-hints.md#resource_groupresource_group_name) 设置当前语句使用的资源组。
 
-完成上述创建资源组和绑定用户的操作后，用户新建立的会话对资源的占用会受到指定用量 (RU) 的限制。如果系统负载比较高，没有多余的容量，`usr2` 用户的资源消耗速度会严格控制不超过指定用量，由于 `usr1` 绑定的 `rg1` 配置了 `BURSTABLE`，所以 `usr1` 消耗速度允许超过指定用量。
+#### 将用户绑定到资源组
+
+下面示例使用 `ALTER USER` 将用户 `usr1` 和 `usr2` 分别绑定到资源组 `rg1` 和 `rg2`。
+
+```sql
+ALTER USER usr1 RESOURCE GROUP rg1;
+```
+
+```sql
+ALTER USER usr2 RESOURCE GROUP rg2;
+```
+
+绑定用户后，用户新建立的会话对资源的占用会受到指定用量 (RU) 的限制。如果系统负载比较高，没有多余的容量，`usr2` 用户的资源消耗速度会严格控制不超过指定用量，由于 `usr1` 绑定的 `rg1` 配置了 `BURSTABLE`，所以 `usr1` 消耗速度允许超过指定用量。
 
 如果资源组对应的请求太多导致资源组的资源不足，客户端的请求处理会发生等待。如果等待时间过长，请求会报错。
+
+> **注意：**
+>
+> - `CREATE USER` 或者 `ALTER USER` 对用户资源组绑定后，不会对该用户的已有会话生效，而是只对该用户新建的会话生效。
+> - 如果用户没有绑定到某个资源组或者是绑定到 `default` 资源组，该用户的请求不会受 TiDB 的流控限制。`default` 资源组目前对用户不可见也不可以创建或者修改属性，不能通过 `SHOW CREATE RESOURCE GROUP` 或 `SELECT * FROM information_schema.resource_groups` 查看，但是可以通过 `mysql.user` 表查看。
+
+#### 将会话绑定到资源组
+
+#### 将语句绑定到资源组
+
+### 删除资源组
+
+可以使用[`DROP RESOURCE GROUP`](/sql-statements/sql-statement-drop-resource-group.md) 删除资源组。
 
 ## 监控与图表
 
