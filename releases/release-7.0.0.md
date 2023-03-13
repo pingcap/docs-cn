@@ -37,7 +37,12 @@ TiDB 版本：7.0.0
     功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
 
     更多信息，请参考[用户文档](链接)。
-
+* 实现 [Fast Online DDL](../system-variables.md###tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 和 PITR 的兼容 [#38045](https://github.com/pingcap/tidb/issues/38045) @[Leavrth](https://github.com/Leavrth)
+    TiDB v6.5.0 版本支持的 [Fast Online DDL](../system-variables.md###tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 功能和 [PITR](../br/backup-and-restore-overview.md) 未完全兼容，在 TiDB v6.5.0 版本建议通过先停止 [PITR](../br/backup-and-restore-overview.md) 后台备份任务，以 [Fast Online DDL](../system-variables.md###tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 方式快速添加索引，然后再启动 [PITR](../br/backup-and-restore-overview.md) 备份任务实现全量数据备份。
+    
+    从 TiDB v7.0.0 版本开始，该功能和 [PITR](../br/backup-and-restore-overview.md) 已经完全兼容：通过 [PITR](../br/backup-and-restore-overview.md) 恢复集群数据时，将自动回放日志备份期间记录的通过[Fast Online DDL](../system-variables.md###tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 方式添加的索引操作，达到兼容效果。
+    
+    更多信息，请参考[用户文档](../ddl-introduction.md)。
 * TiFlash 引擎支持 `Null-Aware Semi Join` 和 `Null-Aware Anti Semi Join` 算子 [#6674](https://github.com/pingcap/tiflash/issues/6674) @[gengliqi](https://github.com/gengliqi)
 
     `IN`、`NOT IN`、`=ANY`、`!= ALL` 算子引导的关联子查询会转化为 `Semi Join` 或 `Anti Semi Join`，从而提升计算性能。当转换后的 JOIN KEY 的列可能为 NULL 时，需要具有 Null-Aware 特性的 Join 算法，即需要 [`Null-Aware Semi Join`](/explain-subqueries#null-aware-semi-joinin-和--any-子查询) 和 [`Null-Aware Anti Semi Join`](/explain-subqueries#null-aware-anti-semi-joinnot-in-和--all-子查询) 算子。在 v7.0.0 之前的版本中，TiFlash 引擎不支持 `Null-Aware Semi Join` 和 `Null-Aware Anti Semi Join` 算子，所以这几种子查询无法直接下推至 TiFlash 引擎进行计算。在 v7.0.0 版本中，TiFlash 引擎支持了 `Null-Aware Semi Join` 和 `Null-Aware Anti Semi Join` 算子。当 SQL 包含这几种关联子查询，查询的表包含 TiFlash 副本，且启用 [MPP 模式](/tiflash/use-tiflash-mpp-mode.md)时，优化器将自动判断是否将 `Null-Aware Semi Join` 和 `Null-Aware Anti Semi Join` 算子下推至 TiFlash 引擎进行计算以提升整体性能。
