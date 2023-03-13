@@ -38,7 +38,7 @@ TiDB 通常采用多 AZ 部署方案保证集群高可用和容灾能力。多 A
 
 以下 `tiup topology.yaml` 示例拓扑文件为单区域双 AZ 典型的拓扑配置：
 
-```
+```yaml
 # # Global variables are applied to all deployments and used as the default value of
 # # the deployments if a specific deployment value is missing.
 global:
@@ -48,7 +48,7 @@ global:
   data_dir: "/data/tidb_cluster/tidb-data"
 server_configs:
   pd:
-    replication.location-labels:  ["az","rack","host"]
+    replication.location-labels: ["az","rack","host"]
 pd_servers:
   - host: 10.63.10.10
     name: "pd-10"
