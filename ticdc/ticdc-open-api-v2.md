@@ -30,7 +30,7 @@ TiCDC 提供 OpenAPI 功能，你可以通过 OpenAPI v2 对 TiCDC 集群进行�
 
 所有 API 的请求体与返回值统一使用 JSON 格式数据。请求如果成功则统一返回 `200 OK` 。本文档以下部分描述当前提供的 API 的具体使用方法。
 
-在下文的示例描述中，假设 TiCDC server 的监听 IP 地址为 `127.0.0.1`，端口为 `8300`（在启动 TiCDC server 时可以通过 `--addr=ip:port` 指定绑定的 IP 和端口）。
+在下文的示例描述中，假设 TiCDC server 的监听 IP 地址为 `127.0.0.1`，端口为 `8300`。在启动 TiCDC server 时可以通过 `--addr=ip:port` 指定绑定的 IP 和端口。
 
 ## API 统一错误格式
 
