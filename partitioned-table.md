@@ -554,7 +554,7 @@ TiDB 从 v7.0.0 开始支持 Key 分区。在 v7.0.0 之前的版本中，创建
 
 Key 分区与 Hash 分区都可以保证将数据均匀地分散到一定数量的分区里面，区别是 Hash 分区只能根据一个指定的整数表达式或字段进行分区，而 Key 分区可以根据字段列表进行分区，且 Key 分区的分区字段不局限于整数类型。TiDB Key 分区表的 Hash 算法与 MySQL 不一样，因此表的数据分布也不一样。
 
-使用 Key 分区时，你需要在 `CREATE TABLE` 后面添加 `PARTITION BY KEY (columList)`，其中 `columnList` 是字段列表，可以包含一个或多个字段。每个字段的类型可以是除 `BLOB`、`JSON`、`GEOMETRY` 之外的任意类型。此外，你很可能还需要加上 `PARTITIONS num`，其中 `num` 是一个正整数，表示将表划分多少个分区。
+使用 Key 分区时，你需要在 `CREATE TABLE` 后面添加 `PARTITION BY KEY (columList)`，其中 `columnList` 是字段列表，可以包含一个或多个字段。每个字段的类型可以是除 `BLOB`、`JSON`、`GEOMETRY` 之外的任意类型（请注意 TiDB 不支持 `GEOMETRY` 类型）。此外，你很可能还需要加上 `PARTITIONS num`，其中 `num` 是一个正整数，表示将表划分多少个分区。
 
 下面的语句将创建一个 Key 分区表，按 `store_id` 分成 4 个分区：
 
@@ -808,7 +808,7 @@ Empty set (0.00 sec)
 
 对于 `LIST` 和 `RANGE` 分区表，暂不支持 `REORGANIZE PARTITION` 语句。
 
-对于 `HASH` 分区表，暂不支持 `COALESCE PARTITION` 和 `ADD PARTITION` 语句。
+对于 `HASH` 和 `KEY` 分区表，暂不支持 `COALESCE PARTITION` 和 `ADD PARTITION` 语句。
 
 `EXCHANGE PARTITION` 语句用来交换分区和非分区表，类似于重命名表如 `RENAME TABLE t1 TO t1_tmp, t2 TO t1, t1_tmp TO t2` 的操作。
 
