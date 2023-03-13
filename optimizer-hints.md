@@ -227,8 +227,8 @@ EXPLAIN SELECT * FROM t WHERE EXISTS (SELECT /*+ SEMI_JOIN_REWRITE() */ 1 FROM t
 
 > **注意：**
 >
-> 使用该 Hint 前，需要保证当前 TiDB 集群能够支持在查询中使用 TiFlash MPP 模式，具体细节见文档[使用 TiFlash MPP 模式](/tiflash/use-tiflash-mpp-mode.md)。
-> 该 Hint 能与 [`HASH_JOIN_BUILD` Hint](#hash_join_buildt1_name--tl_name-) 和 [`HASH_JOIN_PROBE` Hint](#hash_join_probet1_name--tl_name-) 组合使用，达到控制 Shuffle Join 算法的 Build 端和 Probe 端的作用。
+> - 使用该 Hint 前，需要保证当前 TiDB 集群能够支持在查询中使用 TiFlash MPP 模式，具体细节见文档[使用 TiFlash MPP 模式](/tiflash/use-tiflash-mpp-mode.md)。
+> - 该 Hint 能与 [`HASH_JOIN_BUILD` Hint](#hash_join_buildt1_name--tl_name-) 和 [`HASH_JOIN_PROBE` Hint](#hash_join_probet1_name--tl_name-) 组合使用，达到控制 Shuffle Join 算法的 Build 端和 Probe 端的作用。
 
 ### BROADCAST_JOIN(t1_name [, tl_name ...])
 
