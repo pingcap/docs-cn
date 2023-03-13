@@ -118,17 +118,17 @@ TiDB 审计日志有以下事件类型：
 
 ```json
 {
-  "name": <nameOfTheFilter>,
+  "name": "<nameOfTheFilter>",
   "filter": [
     {
-      "class": <stringArray>,
-      "class_excl": <stringArray>,
-      "table": <stringArray>,
-      "table_excl": <stringArray>,
-      "status_code": <intArray>
+      "class": ["<stringArray>"],
+      "class_excl": ["<stringArray>"],
+      "table": ["<stringArray>"],
+      "table_excl": ["<stringArray>"],
+      "status_code": ["<intArray>"],
     },
     {
-      ...
+      // more filterSpec
     }
   ]
 }
