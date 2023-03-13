@@ -60,7 +60,7 @@ SELECT CURRENT_RESOURCE_GROUP();
 1 row in set (0.00 sec)
 ```
 
-执行 `SET RESOURCE GROUP` 将当前会话的资源组设置为默认资源组。
+执行 `SET RESOURCE GROUP` 设置当前会话使用默认资源组。
 
 ```sql
 SET RESOURCE GROUP ``;
