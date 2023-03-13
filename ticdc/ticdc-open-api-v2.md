@@ -720,7 +720,7 @@ curl -X DELETE http://127.0.0.1:8300/api/v2/changefeeds/test1
 
 ### 使用样例
 
-以下请求查询所有状态 (state) 为 normal 的同步任务的基本信息。
+以下请求查询所有状态 (state) 为 `normal` 的同步任务的基本信息。
 
 ```shell
 curl -X GET http://127.0.0.1:8300/api/v2/changefeeds?state=normal
