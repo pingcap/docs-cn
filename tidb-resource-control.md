@@ -103,11 +103,13 @@ TiDB 支持如下三个级别的资源组设置：
 
 #### 将用户绑定到资源组
 
-下面示例使用 `ALTER USER` 将用户 `usr1` 和 `usr2` 分别绑定到资源组 `rg1` 和 `rg2`。
+下面的示例创建一个用户 `usr1` 并将其绑定到资源组 `rg1`。
 
 ```sql
-ALTER USER usr1 RESOURCE GROUP rg1;
+CREATE USER 'usr1'@'%' IDENTIFIED BY '123' RESOURCE GROUP rg1;
 ```
+
+下面示例使用 `ALTER USER` 将用户 `usr2` 绑定到资源组 `rg2`。
 
 ```sql
 ALTER USER usr2 RESOURCE GROUP rg2;
@@ -122,11 +124,23 @@ ALTER USER usr2 RESOURCE GROUP rg2;
 > - `CREATE USER` 或者 `ALTER USER` 对用户资源组绑定后，不会对该用户的已有会话生效，而是只对该用户新建的会话生效。
 > - 如果用户没有绑定到某个资源组或者是绑定到 `default` 资源组，该用户的请求不会受 TiDB 的流控限制。`default` 资源组目前对用户不可见也不可以创建或者修改属性，不能通过 `SHOW CREATE RESOURCE GROUP` 或 `SELECT * FROM information_schema.resource_groups` 查看，但是可以通过 `mysql.user` 表查看。
 
-#### 将会话绑定到资源组
+#### 将当前会话绑定到资源组
 
-通过将会话绑定资源组，对应会话上执行的语句对资源的占用会受到指定用量 (RU) 的限制。
+下面的示例将当前的会话绑定至资源组 `rg1`。
+
+```sql
+SET RESOURCE GROUP rg1;
+```
 
 #### 将语句绑定到资源组
+
+通过使用 [`Optimizer Hint`](/optimizer-hints.md#resource_groupresource_group_name), 可以指定 SQL 语句绑定的资源组。此 Hint 支持 Select、 Insert、Update 和 Delete 四种语句。
+
+示例：
+
+```sql
+SELECT /*+ RESOURCE_GROUP(rg1) */ * FROM t limit 10;
+```
 
 ### 删除资源组
 
