@@ -95,7 +95,7 @@ Request Unit (RU) 是 TiDB 对 CPU、IO 等系统资源的统一抽象的单位,
 
 ### 绑定资源组
 
-通过将会话绑定资源组，对应会话上执行的语句对资源的占用会受到指定用量 (RU) 的限制。TiDB 支持如下三个级别的资源组设置：
+TiDB 支持如下三个级别的资源组设置：
 
 - 用户级别。通过 [`CREATE USER`](/sql-statements/sql-statement-create-user.md) 或 [`ALTER USER`](/sql-statements/sql-statement-alter-user.md) 语句将用户绑定到特定的资源组。将资源组绑定用户后，使用对应的用户创建的会话会自动绑定对应的资源组。
 - 会话级别。通过 [`SET RESOURCE GROUP`](/sql-statements/sql-statement-set-resource-group.md) 设置当前会话使用的资源组。
@@ -123,6 +123,8 @@ ALTER USER usr2 RESOURCE GROUP rg2;
 > - 如果用户没有绑定到某个资源组或者是绑定到 `default` 资源组，该用户的请求不会受 TiDB 的流控限制。`default` 资源组目前对用户不可见也不可以创建或者修改属性，不能通过 `SHOW CREATE RESOURCE GROUP` 或 `SELECT * FROM information_schema.resource_groups` 查看，但是可以通过 `mysql.user` 表查看。
 
 #### 将会话绑定到资源组
+
+通过将会话绑定资源组，对应会话上执行的语句对资源的占用会受到指定用量 (RU) 的限制。
 
 #### 将语句绑定到资源组
 
