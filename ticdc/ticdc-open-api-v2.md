@@ -834,7 +834,7 @@ curl -X POST http://127.0.0.1:8300/api/v2/changefeeds/test1/pause
 
 | 参数名                       | 说明                                                     |
 |:--------------------------|:-------------------------------------------------------|
-| `overwrite_checkpoint_ts` | `UINT64` 类型， 恢复同步任务 (changefeed) 时重新指定的 checkpoint tso |
+| `overwrite_checkpoint_ts` | `UINT64` 类型，恢复同步任务 (changefeed) 时重新指定的 checkpoint tso |
 
 ### 使用样例
 
