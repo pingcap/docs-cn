@@ -78,6 +78,12 @@ TiDB 版本：7.0.0
 
     更多信息，请参考[用户文档](链接)。
 
+* 支持 [Fast Online DDL](../system-variables.md###tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 的检查点机制，提升容错性和自动恢复能力 [#42164](https://github.com/pingcap/tidb/issues/42164) @[tangenta](https://github.com/tangenta)
+  
+    TiDB v7.0.0 版本引入 [Fast Online DDL](../system-variables.md###tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 的检查点机制，可以大幅提升 [Fast Online DDL](../system-variables.md###tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 的容错性和自动恢复能力。即使在 TiDB DDL Owner 故障重启或切换时，通过周期性记录并同步 DDL 进度，正在执行中的 DDL 仍能以 [Fast Online DDL](../system-variables.md###tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 方式继续执行，从而让 DDL 执行更加稳定高效。
+    
+    更多信息，请参考[用户文档](../ddl-introduction.md)。    
+     
 * TiFlash 引擎支持 Spill-to-disk 功能 [#5252](https://github.com/pingcap/tiflash/issues/5252) @[windtalker](https://github.com/windtalker)
 
     为了执行性能，TiFlash 引擎尽量将数据全部放在内存中运行。当数据量太大，超过内存总大小时，TiFlash 会终止查询，避免内存潮用引发系统崩溃。因此，TiFlash 可处理的数据量受限于内存大小。从 v7.0.0 版本开始，TiFlash 引擎支持 Spill-to-disk 功能，当算子使用内存超过一定阈值时，会自动将数据落盘，牺牲一定的性能，从而处理更多数据。
