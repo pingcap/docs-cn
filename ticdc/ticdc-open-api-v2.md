@@ -505,19 +505,19 @@ curl -X POST -H "'Content-type':'application/json'" http://127.0.0.1:8300/api/v2
 
 | 参数名               | 说明                                                              |
 |:------------------|:----------------------------------------------------------------|
-| `admin_job_type`  | `INTEGER` 类型， admin 事件类型。                                       |
-| `checkpoint_time` | `STRING` 类型， 同步任务当前 checkpoint 的格式化时间表示。                        |
-| `checkpoint_ts`   | `STRING` 类型， 同步任务当前 checkpoint 的 TSO 表示。                        |
+| `admin_job_type`  | `INTEGER` 类型，admin 事件类型。                                       |
+| `checkpoint_time` | `STRING` 类型，同步任务当前 checkpoint 的格式化时间表示。                        |
+| `checkpoint_ts`   | `STRING` 类型，同步任务当前 checkpoint 的 TSO 表示。                        |
 | `config`          | 同步任务配置，结构和含义与上述配置                                               |
-| `create_time`     | `STRING` 类型， 同步任务创建的时间                                          |
-| `creator_version` | `STRING` 类型， 同步任务创建时 TiCDC 的版本                                  |
+| `create_time`     | `STRING` 类型，同步任务创建的时间                                          |
+| `creator_version` | `STRING` 类型，同步任务创建时 TiCDC 的版本                                  |
 | `error`           | 同步任务错误                                                          |
-| `id`              | `STRING` 类型， 同步任务 ID                                            |
-| `resolved_ts`     | `UINT64` 类型， 同步任务 resolved ts                                   |
-| `sink_uri`        | `STRING` 类型， 同步任务的 sink uri                                     |
-| `start_ts`        | `UINT64` 类型， 同步任务 start ts                                      |
-| `state`           | `STRING` 类型， 同步任务状态，状态可分为 normal、stopped、error、failed、finished。 |
-| `target_ts`       | `UINT64` 类型， 同步任务的 target ts                                    |
+| `id`              | `STRING` 类型，同步任务 ID                                            |
+| `resolved_ts`     | `UINT64` 类型，同步任务 resolved ts                                   |
+| `sink_uri`        | `STRING` 类型，同步任务的 sink uri                                     |
+| `start_ts`        | `UINT64` 类型，同步任务 start ts                                      |
+| `state`           | `STRING` 类型，同步任务状态，状态可分为 normal、stopped、error、failed、finished。 |
+| `target_ts`       | `UINT64` 类型，同步任务的 target ts                                    |
 | `task_status`     | 同步任务分发的详细状态                                                     |
 
 `task_status`参数说明如下
