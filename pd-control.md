@@ -1065,9 +1065,11 @@ region topsize
 }
 ```
 
-### `region check [miss-peer | extra-peer | down-peer | pending-peer | offline-peer | empty-region | hist-size | hist-keys]`
+### `region check [miss-peer | extra-peer | down-peer | pending-peer | offline-peer | empty-region | hist-size | hist-keys] [--jq="<query string>"]`
 
-用于查询处于异常状态的 Region，各类型的意义如下
+用于查询处于异常状态的 Region，使用 jq 格式化输出请参考 [jq 格式化 JSON 输出示例](#jq-格式化-json-输出示例)。
+
+各类型的意义如下：
 
 - miss-peer：缺副本的 Region
 - extra-peer：多副本的 Region

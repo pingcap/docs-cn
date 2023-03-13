@@ -44,18 +44,18 @@ FLAGS:
     -V, --version                 Prints version information
 
 OPTIONS:
-        --ca-path <ca_path>              Set the CA certificate path
-        --cert-path <cert_path>          Set the certificate path
-        --config <config>                Set the config for rocksdb
-        --db <db>                        Set the rocksdb path
+        --ca-path <ca-path>              Set the CA certificate path
+        --cert-path <cert-path>          Set the certificate path
+        --config <config>                TiKV config path, by default it's <deploy-dir>/conf/tikv.toml
+        --data-dir <data-dir>            TiKV data directory path, check <deploy-dir>/scripts/run.sh to get it
         --decode <decode>                Decode a key in escaped format
         --encode <encode>                Encode a key in escaped format
         --to-hex <escaped-to-hex>        Convert an escaped key to hex key
         --to-escaped <hex-to-escaped>    Convert a hex key to escaped key
         --host <host>                    Set the remote host
-        --key-path <key_path>            Set the private key path
+        --key-path <key-path>            Set the private key path
+        --log-level <log-level>          Set the log level [default:warn]
         --pd <pd>                        Set the address of pd
-        --raftdb <raftdb>                Set the raft rocksdb path
 
 SUBCOMMANDS:
     bad-regions           Get all regions with corrupt raft
@@ -113,7 +113,12 @@ tikv-ctl 提供以下两种运行模式：
     store:"127.0.0.1:20160" compact db:KV cf:default range:([], []) success!
     ```
 
-- **本地模式**。通过 `--data-dir` 选项来指定本地 TiKV 数据的目录路径。在此模式下，需要停止正在运行的 TiKV 实例。
+- **本地模式**：
+
+    - 通过 `--data-dir` 选项来指定本地 TiKV 数据的目录路径。
+    - 通过 `--config` 选项来指定本地 TiKV 配置文件到路径。
+
+  在此模式下，需要停止正在运行的 TiKV 实例。
 
 以下如无特殊说明，所有命令都同时支持这两种模式。
 
@@ -305,24 +310,28 @@ middle_key_by_approximate_size:
 
 ### 手动 compact 单个 TiKV 的数据
 
-`compact` 命令可以对单个 TiKV 进行手动 compact。如果指定 `--from` 和 `--to` 选项，那么它们的参数也是 escaped raw key 形式的。
+`compact` 命令可以对单个 TiKV 进行手动 compact。
 
-- `--host` 参数可以指定要 compact 的 TiKV。
-- `-d` 参数可以指定要 compact 的 RocksDB，有 `kv` 和 `raft` 参数值可以选。
-- `--data-dir` 参数指定本地 TiKV 数据的目录路径。
-- `--threads` 参数可以指定 compact 的并发数，默认值是 8。一般来说，并发数越大，compact 的速度越快，但是也会对服务造成影响，所以需要根据情况选择合适的并发数。
-- `--bottommost` 参数可以指定 compact 是否包括最下层的文件。可选值为 `default`、`skip` 和 `force`，默认为 `default`。
+- `--from` 和 `--to` 选项以 escaped raw key 形式指定 compact 的范围。如果没有设置，表示 compact 整个 TiKV。
+- `--region` 选项指定 compact Region 的范围。如果设置，则 `--from` 和 `--to` 选项会被忽略。
+- `--db` 选项可以指定要 compact 的 RocksDB，可选值为 `kv` 和 `raft`。
+- `--threads` 选项可以指定 compact 的并发数，默认值是 8。一般来说，并发数越大，compact 的速度越快，但是也会对服务造成影响，所以需要根据情况选择合适的并发数。
+- `--bottommost` 选项可以指定 compact 是否包括最下层的文件。可选值为 `default`、`skip` 和 `force`，默认为 `default`。
     - `default` 表示只有开启了 Compaction Filter 时 compact 才会包括最下层文件。
     - `skip` 表示 compact 不包括最下层文件。
     - `force` 表示 compact 总是包括最下层文件。
 
-```shell
-tikv-ctl --data-dir /path/to/tikv compact -d kv
-```
+- 在本地模式 compact data，执行如下命令：
 
-```
-success!
-```
+    ```shell
+    tikv-ctl --data-dir /path/to/tikv compact --db kv
+    ```
+
+- 在远程模式 compact data，执行如下命令：
+
+    ```shell
+    tikv-ctl --host ip:port compact --db kv
+    ```
 
 ### 手动 compact 整个 TiKV 集群的数据
 
@@ -487,7 +496,7 @@ success
 ### 强制 Region 从多副本失败状态恢复服务（弃用）
 
 > **警告：**
-> 
+>
 > 不推荐使用该功能，恢复需求可通过 `pd-ctl` 的 Online Unsafe Recovery 功能实现。它提供了一键式自动恢复的能力，无需停止服务等额外操作，具体使用方式请参考 [Online Unsafe Recovery 使用文档](/online-unsafe-recovery.md)。
 
 `unsafe-recover remove-fail-stores` 命令可以将故障机器从指定 Region 的 peer 列表中移除。运行命令之前，需要目标 TiKV 先停掉服务以便释放文件锁。

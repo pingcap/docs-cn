@@ -1015,7 +1015,7 @@ public class PlayerController {
 
 **Spring Boot**
 
-- 3.0.0-M2
+- 最新稳定版本
 
 **Project Metadata**
 
@@ -1032,10 +1032,6 @@ public class PlayerController {
 - Spring Data JPA
 - MySQL Driver
 
-配置完毕后如图所示：
-
-![Spring Initializr Config](/media/develop/IMG_20220401-234316020.png)
-
 > **注意：**
 >
 > 尽管 SQL 相对标准化，但每个数据库供应商都使用 ANSI SQL 定义语法的子集和超集。这被称为数据库的方言。 Hibernate 通过其 org.hibernate.dialect.Dialect 类和每个数据库供应商的各种子类来处理这些方言的变化。
@@ -1046,46 +1042,4 @@ public class PlayerController {
 >
 > _—— 节选自 Hibernate 官方文档： [Database Dialect](https://docs.jboss.org/hibernate/orm/6.0/userguide/html_single/Hibernate_User_Guide.html#database-dialect)_
 
-随后，此项目即可正常使用，但仅可使用 TiDB 与 MySQL 相同的能力部分，即使用 MySQL 方言。这是由于 Hibernate 支持 TiDB 方言的版本为 6.0.0.Beta2 以上，而 Spring Data JPA 对 Hibernate 的默认依赖版本为 5.6.4.Final。所以，推荐对 pom.xml 作出以下修改：
-
-1. 如此[依赖文件](https://github.com/pingcap-inc/tidb-example-java/blob/main/spring-jpa-hibernate/pom.xml#L26)中所示，将 **Spring Data JPA** 内引入的 `jakarta` 包进行排除，即将：
-
-    {{< copyable "" >}}
-
-    ```xml
-    <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-data-jpa</artifactId>
-    </dependency>
-    ```
-
-    更改为：
-
-    {{< copyable "" >}}
-
-    ```xml
-    <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-data-jpa</artifactId>
-        <exclusions>
-            <exclusion>
-                <groupId>org.hibernate</groupId>
-                <artifactId>hibernate-core-jakarta</artifactId>
-            </exclusion>
-        </exclusions>
-    </dependency>
-    ```
-
-2. 随后如此[依赖文件](https://github.com/pingcap-inc/tidb-example-java/blob/main/spring-jpa-hibernate/pom.xml#L53)中所示，引入 `6.0.0.Beta2` 版本以上的 **Hibernate** 依赖，此处以 `6.0.0.CR2` 版本为例：
-
-    {{< copyable "" >}}
-
-    ```xml
-    <dependency>
-        <groupId>org.hibernate.orm</groupId>
-        <artifactId>hibernate-core</artifactId>
-        <version>6.0.0.CR2</version>
-    </dependency>
-    ```
-
-    更改完毕后即可获取一个空白的，拥有与示例程序相同依赖的 **Spring Boot** 应用程序。
+随后，即可获取一个拥有与示例程序相同依赖的空白 **Spring Boot** 应用程序。
