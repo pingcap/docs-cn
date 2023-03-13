@@ -21,15 +21,15 @@ ResourceGroupName:
 
 ## 示例
 
-创建一个用户 `'u1'@'%'`，创建两个资源组 `rg1` 和 `rg2`， 并将用户 `'u1'@'%'` 绑定资源组 `rg1`。
+创建一个用户 `user1`，创建两个资源组 `rg1` 和 `rg2`， 并将用户 `user1` 绑定资源组 `rg1`。
 
 ```sql
-CREATE USER 'u1'@'%';
+CREATE USER 'user1';
 CREATE RESOURCE GROUP 'rg1' RU_PER_SEC = 1000;
 ALTER USER 'u1' RESOURCE GROUP `rg1`;
 ```
 
-使用 `'u1'@'%'` 登录，查看当前用户绑定的资源组。
+使用 `user1` 登录，查看当前用户绑定的资源组。
 
 ```sql
 SELECT CURRENT_RESOURCE_GROUP();

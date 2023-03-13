@@ -61,7 +61,7 @@ Request Unit (RU) 是 TiDB 对 CPU、IO 等系统资源的统一抽象的单位,
 
 ## 使用方法
 
-### 资源组的管理
+### 管理资源组
 
 你可以通过 [`CREATE RESOURCE GROUP`](/sql-statements/sql-statement-create-resource-group.md) 在集群中创建资源组。
 
