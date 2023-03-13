@@ -101,6 +101,13 @@ TiDB 版本：7.0.0
 
     更多信息，请参考[用户文档](/optimizer-hints.md)。
 
+* 优化器 Hint 兼容连接方式与连接顺序的指定 [#36600](https://github.com/pingcap/tidb/issues/36600) @[Reminiscent](https://github.com/Reminiscent)
+  
+    在 v7.0.0 中，优化器 Hint [`LEADING()`](/optimizer-hints.md#leadingt1_name--tl_name-) 能够和影响连接方式的 Hint 配合使用，两者行为兼容。 这样在多表连接的情况下，可以有效指定最佳的连接方式和连接顺序，提升优化器 Hint 对执行计划的控制能力。 
+
+    新的 Hint 行为会有微小的变化。 为确保向前兼容，TiDB 引入了变量 [`tidb_opt_advanced_join_hint`](/system-variables.md#tidb_opt_advanced_join_hint-从-v700-版本开始引入)， 当此变量为 `OFF` 时，行为向前兼容。 从旧版本升级到 v7.0.0 及之后版本的集群，该变量会被设置成 `OFF`。为了获取更灵活的 Hint 行为，强烈建议在确保无性能回退的情况下，将该变量切换为 `ON`。
+
+    更多信息，请参考[用户文档](/optimizer-hints.md)。
 
 ### 高可用
 
@@ -175,7 +182,7 @@ TiDB 版本：7.0.0
 
 | 变量名  | 修改类型（包括新增/修改/删除）    | 描述 |
 |--------|------------------------------|------|
-|        |                              |      |
+|[`tidb_opt_advanced_join_hint`](/system-variables.md#tidb_opt_advanced_join_hint-从-v700-版本开始引入) |  新增  | 这个变量用来控制用于控制连接算法的 Join Method Hint 是否会影响 Join Reorder 的优化过程。 默认值为 `ON`，即采用新的兼容控制模式；`OFF` 则与 v7.0.0 以前的行为保持一致。为了向前兼容，从旧版本升级到 v7.0.0 及之后版本的集群，该变量会被设置成 `OFF`。|
 |        |                              |      |
 |        |                              |      |
 |        |                              |      |
