@@ -5,9 +5,10 @@ summary: 了解如何使用 OpenAPI v2 接口来管理集群状态和数据同�
 
 # TiCDC OpenAPI v2
 
-TiCDC 提供 OpenAPI 功能，你可以通过 OpenAPI v2 对 TiCDC 集群进行查询和运维操作。OpenAPI 的功能是 [`cdc cli` 工具](/ticdc/ticdc-manage-changefeed.md)的一个子集。
+TiCDC 提供 OpenAPI 功能，你可以通过 OpenAPI v2 对 TiCDC 集群进行查询和运维操作。OpenAPI
+的功能是 [`cdc cli` 工具](/ticdc/ticdc-manage-changefeed.md)的一个子集。
 
->**注意：**
+> **注意：**
 >
 > Open API v1 将在未来版本中被删除。
 
@@ -28,9 +29,11 @@ TiCDC 提供 OpenAPI 功能，你可以通过 OpenAPI v2 对 TiCDC 集群进行�
 - [驱逐 owner 节点](#驱逐-owner-节点)
 - [动态调整 TiCDC Server 日志级别](#动态调整-ticdc-server-日志级别)
 
-所有 API 的请求体与返回值统一使用 JSON 格式数据。请求如果成功则统一返回 `200 OK` 。本文档以下部分描述当前提供的 API 的具体使用方法。
+所有 API 的请求体与返回值统一使用 JSON 格式数据。请求如果成功则统一返回 `200 OK` 。本文档以下部分描述当前提供的 API
+的具体使用方法。
 
-在下文的示例描述中，假设 TiCDC server 的监听 IP 地址为 `127.0.0.1`，端口为 `8300`。在启动 TiCDC server 时可以通过 `--addr=ip:port` 指定绑定的 IP 和端口。
+在下文的示例描述中，假设 TiCDC server 的监听 IP 地址为 `127.0.0.1`，端口为 `8300`。在启动 TiCDC server
+时可以通过 `--addr=ip:port` 指定绑定的 IP 和端口。
 
 ## API 统一错误格式
 
@@ -137,10 +140,6 @@ curl -X GET http://127.0.0.1:8300/api/v2/health
 `POST /api/v2/changefeeds`
 
 ### 参数说明
-
-#### 请求体参数
-
-#### JSON 定义
 
 ```json
 {
@@ -251,13 +250,16 @@ curl -X GET http://127.0.0.1:8300/api/v2/health
 
 | 参数名              | 说明                                                                                  |
 |:-----------------|:------------------------------------------------------------------------------------|
-| `changefeed_id`  | `STRING` 类型，同步任务的 ID。（非必选）                                                         |
+| `changefeed_id`  | `STRING` 类型，同步任务的 ID。（非必选）                                                          |
 | `replica_config` | 同步任务的配置参数。（非必选）                                                                     |
 | **`sink_uri`**   | `STRING` 类型，同步任务下游的地址。（**必选**）                                                      |
 | `start_ts`       | `UINT64` 类型，指定 changefeed 的开始 TSO。TiCDC 集群将从这个 TSO 开始拉取数据。默认为当前时间。（非必选）             |
 | `target_ts`      | `UINT64` 类型，指定 changefeed 的目标 TSO。TiCDC 集群拉取数据直到这个 TSO 停止。默认为空，即 TiCDC 不会自动停止。（非必选） |
 
-`changefeed_id`、`start_ts`、`target_ts`、`sink_uri` 的含义和格式与[使用 cli 创建同步任务](/ticdc/ticdc-manage-changefeed.md#创建同步任务)中所作的解释相同，具体解释请参见该文档。需要注意，当在 `sink_uri` 中指定证书的路径时，须确保已将对应证书上传到对应的 TiCDC server 上。
+`changefeed_id`、`start_ts`、`target_ts`、`sink_uri`
+的含义和格式与[使用 cli 创建同步任务](/ticdc/ticdc-manage-changefeed.md#创建同步任务)
+中所作的解释相同，具体解释请参见该文档。需要注意，当在 `sink_uri` 中指定证书的路径时，须确保已将对应证书上传到对应的 TiCDC
+server 上。
 
 `replica_config` 参数说明如下
 
@@ -270,8 +272,8 @@ curl -X GET http://127.0.0.1:8300/api/v2/health
 | `enable_old_value`        | `BOOLEAN` 类型，是否输出 old value 值。（非必选）                                                                 |
 | `enable_sync_point`       | `BOOLEAN` 类型，是否开启 `sync point` 功能。（非必选）                                                             |
 | `filter`                  | filter 配置。（非必选）                                                                                     |
-| `force_replicate`         | `BOOLEAN` 类型，该值默认为 `false`，当指定为 `true` 时，同步任务会尝试强制同步没有唯一索引的表。（非必选）                                      |
-| `ignore_ineligible_table` | `BOOLEAN` 类型，该值默认为 `false`，当指定为 `true` 时，同步任务会忽略无法进行同步的表。（非必选）                                          |
+| `force_replicate`         | `BOOLEAN` 类型，该值默认为 `false`，当指定为 `true` 时，同步任务会尝试强制同步没有唯一索引的表。（非必选）                                  |
+| `ignore_ineligible_table` | `BOOLEAN` 类型，该值默认为 `false`，当指定为 `true` 时，同步任务会忽略无法进行同步的表。（非必选）                                      |
 | `memory_quota`            | `UINT64` 类型，同步任务的内存 quota。（非必选）                                                                     |
 | `mounter`                 | 同步任务 `mounter` 配置。（非必选）                                                                             |
 | `sink`                    | 同步任务的`sink`配置。（非必选）                                                                                 |
@@ -283,7 +285,7 @@ curl -X GET http://127.0.0.1:8300/api/v2/health
 | 参数名              | 说明                                     |
 |:-----------------|:---------------------------------------|
 | `flush_interval` | `UINT64` 类型，redo log 文件 flush 间隔。（非必选） |
-| `level`          | `STRING` 类型，同步数据的一致性级别。（非必选）            |
+| `level`          | `STRING` 类型，同步数据的一致性级别。（非必选）           |
 | `max_log_size`   | `UINT64` 类型，redo log 的最大值。（非必选）        |
 | `storage`        | `STRING` 类型，存储的目标地址。（非必选）              |
 
@@ -296,7 +298,7 @@ curl -X GET http://127.0.0.1:8300/api/v2/health
 | `ignore_dbs`          | `STRING ARRAY` 类型，不同步的数据库。（非必选）                                                       |
 | `ignore_tables`       | 需要同步的表。（非必选）                                                                          |
 | `event_filters`       | event 过滤配置（非必选）                                                                       |
-| `ignore_txn_start_ts` | `UINT64 ARRAY` 类型，指定之后会忽略指定 start_ts 的事务，如 `[1, 2]`。（非必选）                              |
+| `ignore_txn_start_ts` | `UINT64 ARRAY` 类型，指定之后会忽略指定 start_ts 的事务，如 `[1, 2]`。（非必选）                             |
 | `rules`               | `STRING ARRAY` 类型，表库过滤的规则，如 `['foo*.*', 'bar*.*']` 详情参考[表库过滤](/table-filter.md)。（非必选） |
 
 `filter.event_filters` 参数说明如下,可参考[日志过滤器](/ticdc/ticdc-filter.md)
@@ -309,12 +311,12 @@ curl -X GET http://127.0.0.1:8300/api/v2/health
 | `ignore_sql`                   | `STRING ARRAY` 类型，如 `["^drop", "add column"]` 表示过滤掉以 "DROP" 开头或者包含 "ADD COLUMN" 的 DDL。（非必选） |
 | `ignore_update_new_value_expr` | `STRING ARRAY` 类型，如 `"gender = 'male'"` 表示过滤掉新值 gender = 'male' 的 update DML。（非必选）          |
 | `ignore_update_old_value_expr` | `STRING ARRAY` 类型，如 `"age < 18"` 表示过滤掉旧值 age < 18 的 UPDATE DML。（非必选）                        |
-| `matcher`                      | `STRING ARRAY` 类型，是一个白名单，如`["test.worker"]`，表示该过滤规则只应用于 test 库中的 worker 表。（非必选）            |
+| `matcher`                      | `STRING ARRAY` 类型，是一个白名单，如`["test.worker"]`，表示该过滤规则只应用于 test 库中的 worker 表。（非必选）             |
 
 `mounter` 参数说明如下
 
-| 参数名          | 说明                                                          |
-|:-------------|:------------------------------------------------------------|
+| 参数名          | 说明                                                         |
+|:-------------|:-----------------------------------------------------------|
 | `worker_num` | `INT` 类型。Mounter 线程数，Mounter 用于解码 TiKV 输出的数据，默认值为 16。（非必选） |
 
 `sink` 参数说明如下
@@ -325,7 +327,7 @@ curl -X GET http://127.0.0.1:8300/api/v2/health
 | `csv`                   | csv 配置（非必选）                                                                                             |
 | `date_separator`        | `STRING` 类型，文件路径的日期分隔类型。可选类型有 `none`、`year`、`month` 和 `day`。默认值为 `none`，即不使用日期分隔。（非必选）                  |
 | `dispatchers`           | 事件分发配置数组（非必选）                                                                                           |
-| `encoder_concurrency`   | `INT` 类型。MQ sink 中编码器的线程数。默认值为 16。（非必选）                                                                |
+| `encoder_concurrency`   | `INT` 类型。MQ sink 中编码器的线程数。默认值为 16。（非必选）                                                                 |
 | `protocol`              | `STRING` 类型，对于 MQ 类的 Sink，可以指定消息的协议格式。目前支持 `canal-json`、`open-protocol`、`canal`、`avro` 和 `maxwell`五种协议。 |
 | `schema_registry`       | `STRING` 类型，schema registry 地址。（非必选）                                                                    |
 | `terminator`            | `STRING` 类型，换行符，用来分隔两个数据变更事件。默认值为空，表示使用 "\r\n" 作为换行符。（非必选）                                              |
@@ -344,12 +346,13 @@ curl -X GET http://127.0.0.1:8300/api/v2/health
 |:--------------------|:------------------------------------------------|
 | `delimiter`         | `STRING` 类型，字段之间的分隔符。必须为 ASCII 字符，默认值为 `,`。     |
 | `include_commit_ts` | `BOOLEAN` 类型，是否在 CSV 行中包含 commit-ts。默认值为 false。 |
-| `null`              | `STRING` 类型，如果这一列是 null，那这一列该如何表示,认是用 '\N' 来表示。  |
+| `null`              | `STRING` 类型，如果这一列是 null，那这一列该如何表示,认是用 '\N' 来表示。 |
 | `quote`             | `STRING` 类型，用于包裹字段的引号字符。空值代表不使用引号字符。默认值为 `"`。   |
 
 `sink.dispatchers`：对于 MQ 类的 Sink，可以通过 dispatchers 配置 event 分发器，支持 default、ts、rowid、table 四种分发器，分发规则如下：
 
-- default：有多个唯一索引（包括主键）时按照 table 模式分发；只有一个唯一索引（或主键）按照 rowid 模式分发；如果开启了 old value 特性，按照 table 分发。
+- default：有多个唯一索引（包括主键）时按照 table 模式分发；只有一个唯一索引（或主键）按照 rowid 模式分发；如果开启了 old value
+  特性，按照 table 分发。
 - ts：以行变更的 commitTs 做 Hash 计算并进行 event 分发。
 - rowid：以所选的 HandleKey 列名和列值做 Hash 计算并进行 event 分发。
 - table：以表的 schema 名和 table 名做 Hash 计算并进行 event 分发。
@@ -503,22 +506,22 @@ curl -X POST -H "'Content-type':'application/json'" http://127.0.0.1:8300/api/v2
 
 参数说明如下
 
-| 参数名               | 说明                                                              |
-|:------------------|:----------------------------------------------------------------|
+| 参数名               | 说明                                                             |
+|:------------------|:---------------------------------------------------------------|
 | `admin_job_type`  | `INTEGER` 类型，admin 事件类型。                                       |
 | `checkpoint_time` | `STRING` 类型，同步任务当前 checkpoint 的格式化时间表示。                        |
 | `checkpoint_ts`   | `STRING` 类型，同步任务当前 checkpoint 的 TSO 表示。                        |
-| `config`          | 同步任务配置，结构和含义与上述配置                                               |
+| `config`          | 同步任务配置，结构和含义与上述配置                                              |
 | `create_time`     | `STRING` 类型，同步任务创建的时间                                          |
 | `creator_version` | `STRING` 类型，同步任务创建时 TiCDC 的版本                                  |
-| `error`           | 同步任务错误                                                          |
+| `error`           | 同步任务错误                                                         |
 | `id`              | `STRING` 类型，同步任务 ID                                            |
 | `resolved_ts`     | `UINT64` 类型，同步任务 resolved ts                                   |
 | `sink_uri`        | `STRING` 类型，同步任务的 sink uri                                     |
 | `start_ts`        | `UINT64` 类型，同步任务 start ts                                      |
 | `state`           | `STRING` 类型，同步任务状态，状态可分为 normal、stopped、error、failed、finished。 |
 | `target_ts`       | `UINT64` 类型，同步任务的 target ts                                    |
-| `task_status`     | 同步任务分发的详细状态                                                     |
+| `task_status`     | 同步任务分发的详细状态                                                    |
 
 `task_status`参数说明如下
 
@@ -696,7 +699,8 @@ curl -X DELETE http://127.0.0.1:8300/api/v2/changefeeds/test1
  curl -X PUT -H "'Content-type':'application/json'" http://127.0.0.1:8300/api/v2/changefeeds/test1 -d '{"target_ts":32}'
 ```
 
-若是请求成功，则返回 `200 OK`，若请求失败，则返回错误信息和错误码。响应的 JSON 格式以及字段含义与[创建同步任务](#创建同步任务)中的响应参数相同，此处不再赘述。
+若是请求成功，则返回 `200 OK`，若请求失败，则返回错误信息和错误码。响应的 JSON
+格式以及字段含义与[创建同步任务](#创建同步任务)中的响应参数相同，此处不再赘述。
 
 ## 查询同步任务列表
 
@@ -832,8 +836,8 @@ curl -X POST http://127.0.0.1:8300/api/v2/changefeeds/test1/pause
 }
 ```
 
-| 参数名                       | 说明                                                     |
-|:--------------------------|:-------------------------------------------------------|
+| 参数名                       | 说明                                                    |
+|:--------------------------|:------------------------------------------------------|
 | `overwrite_checkpoint_ts` | `UINT64` 类型，恢复同步任务 (changefeed) 时重新指定的 checkpoint tso |
 
 ### 使用样例
@@ -904,7 +908,8 @@ curl -X GET http://127.0.0.1:8300/api/v2/processors
 
 ### 使用样例
 
-以下请求查询 `changefeed_id` 为 `test`、`capture_id` 为 `561c3784-77f0-4863-ad52-65a3436db6af`的同步子任务。一个同步子任务通过 `changefeed_id` 和 `capture_id` 来标识。
+以下请求查询 `changefeed_id` 为 `test`、`capture_id` 为 `561c3784-77f0-4863-ad52-65a3436db6af`
+的同步子任务。一个同步子任务通过 `changefeed_id` 和 `capture_id` 来标识。
 
 ```shell
 curl -X GET http://127.0.0.1:8300/api/v2/processors/test/561c3784-77f0-4863-ad52-65a3436db6af
@@ -990,7 +995,8 @@ curl -X POST http://127.0.0.1:8300/api/v2/owner/resign
 |:------------|:----------|
 | `log_level` | 想要设置的日志等级 |
 
-`log_level` 支持 [zap 提供的日志级别](https://godoc.org/go.uber.org/zap#UnmarshalText)："debug"、"info"、"warn"、"error"、"dpanic"、"panic"、"fatal"。
+`log_level` 支持 [zap 提供的日志级别](https://godoc.org/go.uber.org/zap#UnmarshalText)："debug"、"info"、"warn"、"error"、"
+dpanic"、"panic"、"fatal"。
 
 ### 使用样例
 
