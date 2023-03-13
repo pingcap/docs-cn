@@ -64,6 +64,12 @@ TiDB 版本：7.0.0
 
     更多信息，请参考[用户文档](/sql-non-prepared-plan-cache.md)。
 
+* 解除执行计划缓存对子查询的限制 [#40219](https://github.com/pingcap/tidb/issues/40219) @[fzzf678](https://github.com/fzzf678)
+
+    TiDB v7.0.0 移除了计划缓存对子查询的限制，带有子查询的 SQL 语句的执行计划可以被缓存，比如 " `select * from t where a > (select ...)` "。 这进一步扩大了执行计划缓存的应用范围，提升 SQL 的执行效率。
+
+    更多信息，请参考[用户文档](/sql-prepared-plan-cache.md)。
+
 ### 稳定性
 
 * 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接)
