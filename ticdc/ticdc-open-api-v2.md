@@ -317,10 +317,10 @@ curl -X GET http://127.0.0.1:8300/api/v2/health
 
 | 参数名                     | 说明                                                                                                      |
 |:------------------------|:--------------------------------------------------------------------------------------------------------|
-| `column_selectors`      | column selector 配置（非必选）                                                                                 |
+| `column_selectors`      | column selector 配置。（非必选）                                                                                 |
 | `csv`                   | csv 配置（非必选）                                                                                             |
 | `date_separator`        | `STRING` 类型，文件路径的日期分隔类型。可选类型有 `none`、`year`、`month` 和 `day`。默认值为 `none`，即不使用日期分隔。（非必选）                  |
-| `dispatchers`           | 事件分发配置数组（非必选）                                                                                           |
+| `dispatchers`           | 事件分发配置数组。（非必选）                                                                                           |
 | `encoder_concurrency`   | `INT` 类型。MQ sink 中编码器的线程数。默认值为 16。（非必选）                                                                 |
 | `protocol`              | `STRING` 类型，对于 MQ 类的 Sink，可以指定消息的协议格式。目前支持 `canal-json`、`open-protocol`、`canal`、`avro` 和 `maxwell`五种协议。 |
 | `schema_registry`       | `STRING` 类型，schema registry 地址。（非必选）                                                                    |
