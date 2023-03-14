@@ -904,7 +904,6 @@ curl -X GET http://127.0.0.1:8300/api/v2/processors
 
 ```shell
 curl -X GET http://127.0.0.1:8300/api/v2/processors/test/561c3784-77f0-4863-ad52-65a3436db6af
-
 ```
 
 ```json
