@@ -189,6 +189,8 @@ TiDB 中通过 [`audit_log_create_rule`](#audit_log_create_rule) 函数创建过
 > 
 > 例如，有一个名为 `visit_test` 的过滤器 `{"filter":[{"table":["test.*"]}]}` 用于过滤所有访问 `test` 数据库的操作，另一个名为 `not_visit_test` 的过滤器 `{"filter":[{"table_excl":["test.*"]}]}` 用于排除所有访问 `test` 数据库的操作。当这两个过滤器对应的过滤规则同时生效时，所有对 `test` 数据库的操作因为满足 `visit_test` 而将被审计日志记录。
 
+只要审计功能打开， `AUDIT`类型的所有事件将会被强制审计，不会被任何规则移除。 
+
 ## 日志文件格式
 
 TiDB 审计日志支持以文本或 `JSON` 两种格式进行记录。可以通过 [`tidb_audit_log_format`](#tidb_audit_log_format) 选择日志格式。
@@ -207,13 +209,13 @@ TiDB 审计日志支持以文本或 `JSON` 两种格式进行记录。可以通�
 
 ## 日志轮替
 
-[日志轮替（log rotation）](https://zh.wikipedia.org/wiki/%E6%97%A5%E5%BF%97%E8%BD%AE%E6%9B%BF) 可以用于限制日志文件的大小。TiDB 中可以使用 [`tidb_audit_log_max_size`](#tidb_audit_log_max_size) 设置单个审计日志文件的大小，可以通过 [`tidb_audit_log_max_lifetime`](#tidb_audit_log_max_lifetime) 设置触发审计日志轮替的时间，也可以通过 [`audit_log_rotate`](#audit_log_rotate) 函数手动触发一次日志轮替。
+[日志轮替（log rotation）](https://zh.wikipedia.org/wiki/%E6%97%A5%E5%BF%97%E8%BD%AE%E6%9B%BF) 可以用于限制日志文件的大小。TiDB 中可以使用 [`tidb_audit_log_max_size`](#tidb_audit_log_max_size) 设置单个审计日志文件的大小，可以通过 [`tidb_audit_log_max_lifetime`](#tidb_audit_log_max_lifetime) 设置触发审计日志轮替的时间，也可以通过 [`audit_log_rotate`](#audit_log_rotate) 函数手动触发一次日志轮替。 用户可以同时设置上述两个变量，满足任一条件都会触发日志轮替。
 
 ## 日志文件保留数量与时间
 
-为了防止审计日志文件占据过多存储空间，TiDB 提供系统变量来控制审计日志保留的数量与时间：
+为了实现对审计归档文件的自动管理，TiDB 提供系统变量来控制审计日志保留的数量与时间：
 
-* [`tidb_audit_log_reserved_backups`](#tidb_audit_log_reserved_backups) 控制每台 TiDB 服务器上保留的审计日志文件的数量
+* [`tidb_audit_log_reserved_backups`](#tidb_audit_log_reserved_backups) 控制每台 TiDB 服务器上保留的审计日志文件的数量。结合日志文件大小 [`tidb_audit_log_max_size`](#tidb_audit_log_max_size) 的设置，可以限制总体日志大小的上限。
 * [`tidb_audit_log_reserved_days`](#tidb_audit_log_reserved_days) 控制单个审计日志在 TiDB 服务器上保留的天数
 
 ## 日志脱敏
