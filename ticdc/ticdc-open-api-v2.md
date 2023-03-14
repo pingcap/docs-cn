@@ -350,7 +350,7 @@ curl -X GET http://127.0.0.1:8300/api/v2/health
 - rowid：以所选的 HandleKey 列名和列值做 Hash 计算并进行 event 分发。
 - table：以表的 schema 名和 table 名做 Hash 计算并进行 event 分发。
 
-`sink.dispatchers`是一个数组，元素参数说明如下
+`sink.dispatchers`是一个数组，元素参数说明如下：
 
 | 参数名         | 说明                                |
 |:------------|:----------------------------------|
