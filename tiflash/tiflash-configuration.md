@@ -207,7 +207,7 @@ delta_index_cache_size = 0
     max_bytes_before_external_sort = 0
 
     ## 从 v7.0.0 引入，表示带等值 join 条件的 HashJoin 算子在触发 spill 之前的最大可用内存，超过该阈值之后 HashJoin 算子会采用 spill to disk 的方式来减小内存使用。默认值为 0，表示内存使用无限制。
-    max_bytes_before_external_sort = 0
+    max_bytes_before_external_join = 0
 
 ## 安全相关配置，从 v4.0.5 开始生效
 [security]
