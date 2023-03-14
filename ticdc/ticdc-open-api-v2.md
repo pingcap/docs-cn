@@ -334,7 +334,7 @@ curl -X GET http://127.0.0.1:8300/api/v2/health
 | `columns` | `STRING ARRAY` column 数组。                 |
 | `matcher` | `STRING ARRAY` matcher 配置，匹配语法和过滤器规则语法相同。 |
 
-`sink.csv` 参数说明如下
+`sink.csv` 参数说明如下：
 
 | 参数名                 | 说明                                              |
 |:--------------------|:------------------------------------------------|
