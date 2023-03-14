@@ -744,7 +744,7 @@ curl -X GET http://127.0.0.1:8300/api/v2/changefeeds?state=normal
 }
 ```
 
-此处对以上返回的信息做进一步阐述：
+以上返回的信息的说明如下：
 
 - `id`：同步任务的 ID
 - `state`：同步任务当前所处的[状态](/ticdc/ticdc-changefeed-overview.md#changefeed-状态流转)。
