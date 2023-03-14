@@ -994,4 +994,4 @@ curl -X POST http://127.0.0.1:8300/api/v2/owner/resign
 curl -X POST -H "'Content-type':'application/json'" http://127.0.0.1:8300/api/v2/log -d '{"log_level":"debug"}'
 ```
 
-若是请求成功，则返回 `200 OK`，若请求失败，则返回错误信息和错误码。
+如果请求成功，则返回 `200 OK`。如果请求失败，则返回错误信息和错误码。
