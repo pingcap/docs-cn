@@ -147,14 +147,14 @@ TiDB 审计日志有以下事件类型：
 {}
 ```
 
-下面是一个名字为 `a`、审计所有失败 DDL 和所有对 `test` 数据库的查询的过滤器：
+下面是一个名字为 `a`、审计所有失败的 DDL、失败的连接，以及所有对 `test` 数据库的查询的过滤器：
 
 ```json
 {
   "name": "a",
   "filter": [
     {
-      "class": ["QUERY_DDL"],
+      "class": ["QUERY_DDL", "CONNECTION"],
       "status_code": [0]
     },
     {
