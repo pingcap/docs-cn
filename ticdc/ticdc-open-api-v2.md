@@ -914,7 +914,7 @@ curl -X GET http://127.0.0.1:8300/api/v2/processors/test/561c3784-77f0-4863-ad52
 }
 ```
 
-此处对以上返回的信息做进一步阐述：
+以上返回的信息的解释如下：
 
 - `table_ids`：在这个 capture 上同步的 table ID
 
