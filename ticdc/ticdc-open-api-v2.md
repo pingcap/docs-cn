@@ -516,7 +516,7 @@ curl -X POST -H "'Content-type':'application/json'" http://127.0.0.1:8300/api/v2
 | `target_ts`       | `UINT64` 类型，同步任务的 target ts                                    |
 | `task_status`     | 同步任务分发的详细状态                                                    |
 
-`task_status`参数说明如下
+`task_status` 参数说明如下：
 
 | 参数名          | 说明                                          |
 |:-------------|:--------------------------------------------|
