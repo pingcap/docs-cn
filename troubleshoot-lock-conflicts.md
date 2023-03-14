@@ -216,8 +216,8 @@ Solutions:
 * You can use the sub-command [`decoder`](/tidb-control.md#the-decoder-command) of TiDB Control to view the table id and rowid of the row corresponding to the specified key:
 
     ```sh
-    ./tidb-ctl decoder -f table_row -k "t\x00\x00\x00\x00\x00\x00\x00\x1c_r\x00\x00\x00\x00\x00\x00\x00\xfa"
-
+    ./tidb-ctl decoder "t\x00\x00\x00\x00\x00\x00\x00\x1c_r\x00\x00\x00\x00\x00\x00\x00\xfa"
+    format: table_row
     table_id: -9223372036854775780
     row_id: -9223372036854775558
     ```
