@@ -2144,6 +2144,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 ### `tidb_load_based_replica_read_threshold` <span class="version-mark">从 v7.0.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
 - 默认值：`"0s"`
 - 范围：`[0s, 1h]`
 - 类型：字符串
