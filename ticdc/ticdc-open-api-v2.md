@@ -255,7 +255,7 @@ curl -X GET http://127.0.0.1:8300/api/v2/health
 
 `changefeed_id`、`start_ts`、`target_ts`、`sink_uri` 的含义和格式与[使用 cli 创建同步任务](/ticdc/ticdc-manage-changefeed.md#创建同步任务) 中所作的解释相同，具体解释请参见该文档。需要注意，当在 `sink_uri` 中指定证书的路径时，须确保已将对应证书上传到对应的 TiCDC server 上。
 
-`replica_config` 参数说明如下
+`replica_config` 参数说明如下：
 
 | 参数名                       | 说明                                                                                                  |
 |:--------------------------|:----------------------------------------------------------------------------------------------------|
