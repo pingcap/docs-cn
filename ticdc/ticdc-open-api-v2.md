@@ -512,7 +512,7 @@ curl -X POST -H "'Content-type':'application/json'" http://127.0.0.1:8300/api/v2
 | `resolved_ts`     | `UINT64` 类型，同步任务 resolved ts                                   |
 | `sink_uri`        | `STRING` 类型，同步任务的 sink uri                                     |
 | `start_ts`        | `UINT64` 类型，同步任务 start ts                                      |
-| `state`           | `STRING` 类型，同步任务状态，状态可分为 normal、stopped、error、failed、finished。 |
+| `state`           | `STRING` 类型，同步任务状态，状态可分为 `normal`、`stopped`、`error`、`failed`、`finished` |
 | `target_ts`       | `UINT64` 类型，同步任务的 target ts                                    |
 | `task_status`     | 同步任务分发的详细状态                                                    |
 
