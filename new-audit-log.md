@@ -406,10 +406,12 @@ SELECT audit_log_rotate();
 
 ```sql
 SELECT audit_log_create_filter('<name>', '<filter>');
+SELECT audit_log_create_filter('<name>', '<filter>', 1);
 ```
 
 * 创建一个名为 `<name>` 的过滤器，内容为 `<filter>`，即[前文](#过滤器)所述的 `JSON` 形式的过滤器
 * `<name>` 为大小写敏感的字符串，最大长度为 128 个字符。不能创建两个同名的过滤器。`<name>` 不需要与 `<filter>` 中的 `"name"` 字段相同，因为 `"name"` 字段是可选的
+* 如果需要创建一个新的过滤器覆盖掉旧的同名过滤器，可以在调用函数时使用第三个参数 `1`
 * 创建成功后，对应的过滤器信息可通过查找 [`mysql.audit_log_filters`](#mysqlaudit_log_filters) 得到
 
 #### 示例
@@ -461,6 +463,7 @@ SELECT audit_log_remove_filter('<name>');
 
 ```sql
 SELECT audit_log_create_rule('<user>@<host>', '<name>');
+SELECT audit_log_create_rule('<user>@<host>', '<name>', 1);
 ```
 
 * 对审计用户 `<user>@<host>` 创建一个关联过滤器 `<name>` 的过滤规则，并立即启用
@@ -468,7 +471,7 @@ SELECT audit_log_create_rule('<user>@<host>', '<name>');
 * 审计用户 `<user>@<host>` 包含用户名和用户主机名，以 `@` 作为分隔符，其中 `@` 和 `<host>` 可忽略，表示包含所有的主机名。用户名和主机名可以是具体的标识符，也可以使用通配符进行匹配：
   * `%` 表示匹配任意用户名/主机名
   * `_` 表示匹配任一字符
-* 不能对同一个审计用户创建关联同一个过滤器的过滤规则
+* 不能对同一个审计用户创建关联同一个过滤器的过滤规则。如果需要创建一个新的过滤规则覆盖掉旧的同名过滤规则，可以在调用函数时使用第三个参数 `1`
 * 创建成功后，对应的过滤规则信息可通过查找 [`mysql.audit_log_filter_rules`](#mysqlaudit_log_filter_rules) 得到
 
 #### 示例
