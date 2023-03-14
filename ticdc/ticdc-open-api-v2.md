@@ -307,7 +307,7 @@ curl -X GET http://127.0.0.1:8300/api/v2/health
 | `ignore_update_old_value_expr` | `STRING ARRAY` 类型，如 `"age < 18"` 表示过滤掉旧值 age < 18 的 UPDATE DML。（非必选）                        |
 | `matcher`                      | `STRING ARRAY` 类型，是一个白名单，如`["test.worker"]`，表示该过滤规则只应用于 test 库中的 worker 表。（非必选）             |
 
-`mounter` 参数说明如下
+`mounter` 参数说明如下：
 
 | 参数名          | 说明                                                         |
 |:-------------|:-----------------------------------------------------------|
