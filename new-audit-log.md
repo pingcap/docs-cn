@@ -33,7 +33,7 @@ TiDB 审计日志有以下事件类型：
 | `CONNECT` | 记录连接过程中的握手操作 | `CONNECTION` | 
 | `DISCONNECT` | 记录断开连接的操作 | `CONNECTION` |
 | `CHANGE_USER` | 记录变更用户的操作 | `CONNECTION` |
-| `QUERY` | 记录所有执行 SQL 语句的操作 | - |
+| `QUERY` | 记录所有执行 SQL 语句的操作，包括所有对数据的查询和修改报错。  | - |
 | `TRANSACTION` | 记录所有与事务相关的语句， 比如 `BEGIN`，`COMMIT`，`ROLLBACK` 等 | `QUERY` |
 | `EXECUTE` | 记录所有执行 [`EXECUTE` 语句](/sql-statements/sql-statement-execute.md)的操作 | `QUERY` |
 | `QUERY_DML` | 记录所有 DML 语句的操作，包括 [`INSERT`](/sql-statements/sql-statement-insert.md)、[`REPLACE`](/sql-statements/sql-statement-replace.md)、[`UPDATE`](/sql-statements/sql-statement-update.md)、[`DELETE`](/sql-statements/sql-statement-delete.md) 和 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md) | `QUERY` |
@@ -352,7 +352,7 @@ select * from mysql.audit_log_filter_rules;
 - 默认值：`100`，单位 `MB`
 - 范围：`[0, 102400]`，最大值对应 `100GB`
 - 设置 TiDB 审计日志的文件大小上限，超过该上限将触发[日志轮替](#日志轮替)。
-- 设置为 `0` 时会自动设置为 `100`
+- 在当前版本中，设置为 `0` 会自动设置为 `100`，单日志最大为 `102400` MB。后续版本 `0` 将会代表不做日志轮替。 
 
 ### `tidb_audit_log_max_lifetime`
 
