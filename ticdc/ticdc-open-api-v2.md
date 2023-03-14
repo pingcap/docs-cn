@@ -802,7 +802,7 @@ curl -X GET http://127.0.0.1:8300/api/v2/changefeeds/test1
 curl -X POST http://127.0.0.1:8300/api/v2/changefeeds/test1/pause
 ```
 
-若是请求成功，则返回 `200 OK`，若请求失败，则返回错误信息和错误码。
+如果请求成功，则返回 `200 OK`。如果请求失败，则返回错误信息和错误码。
 
 ## 恢复同步任务
 
