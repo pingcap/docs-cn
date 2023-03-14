@@ -210,18 +210,18 @@ TiDB 审计日志支持以文本或 `JSON` 两种格式进行记录。可以通�
 
 ## 日志轮替
 
-[日志轮替（log rotation）](https://zh.wikipedia.org/wiki/%E6%97%A5%E5%BF%97%E8%BD%AE%E6%9B%BF) 可以用于限制日志文件的大小。TiDB 中可以使用 [`tidb_audit_log_max_size`](#tidb_audit_log_max_size) 设置单个审计日志文件的大小，可以通过 [`tidb_audit_log_max_lifetime`](#tidb_audit_log_max_lifetime) 设置触发审计日志轮替的时间，也可以通过 [`audit_log_rotate`](#audit_log_rotate) 函数手动触发一次日志轮替。 用户可以同时设置上述两个变量，满足任一条件都会触发日志轮替。
+[日志轮替（log rotation）](https://zh.wikipedia.org/wiki/%E6%97%A5%E5%BF%97%E8%BD%AE%E6%9B%BF) 可以用于限制日志文件的大小。TiDB 中可以使用 [`tidb_audit_log_max_filesize`](#tidb_audit_log_max_filesize) 设置单个审计日志文件的大小，可以通过 [`tidb_audit_log_max_lifetime`](#tidb_audit_log_max_lifetime) 设置触发审计日志轮替的时间，也可以通过 [`audit_log_rotate`](#audit_log_rotate) 函数手动触发一次日志轮替。 用户可以同时设置上述两个变量，满足任一条件都会触发日志轮替。
 
 ## 日志文件保留数量与时间
 
 为了实现对审计归档文件的自动管理，TiDB 提供系统变量来控制审计日志保留的数量与时间：
 
-* [`tidb_audit_log_reserved_backups`](#tidb_audit_log_reserved_backups) 控制每台 TiDB 服务器上保留的审计日志文件的数量。结合日志文件大小 [`tidb_audit_log_max_size`](#tidb_audit_log_max_size) 的设置，可以限制总体日志大小的上限。
+* [`tidb_audit_log_reserved_backups`](#tidb_audit_log_reserved_backups) 控制每台 TiDB 服务器上保留的审计日志文件的数量。结合日志文件大小 [`tidb_audit_log_max_filesize`](#tidb_audit_log_max_filesize) 的设置，可以限制总体日志大小的上限。
 * [`tidb_audit_log_reserved_days`](#tidb_audit_log_reserved_days) 控制单个审计日志在 TiDB 服务器上保留的天数
 
 ## 日志脱敏
 
-TiDB 在提供详细的审计日志信息时，可能会把数据库敏感的数据（例如用户数据）打印出来，造成数据安全方面的风险。因此 TiDB 提供 [`tidb_audit_redact_log`](#tidb_audit_redact_log) 来控制是否对审计日志脱敏。
+TiDB 在提供详细的审计日志信息时，可能会把数据库敏感的数据（例如用户数据）打印出来，造成数据安全方面的风险。因此 TiDB 提供 [`tidb_audit_log_redacted`](#tidb_audit_log_redacted) 来控制是否对审计日志脱敏。
 
 > **注意：**
 >
@@ -344,7 +344,7 @@ select * from mysql.audit_log_filter_rules;
 - 可选值：`TEXT`、`JSON`
 - 设置 TiDB 审计日志的输出格式。当设置为 `JSON` 格式时，TiDB 会将日志写入文件名为 `@@tidb_audit_log+".json"` 的文件中。比如当 `tidb_audit_log` 为 `tidb-audit.log` 时，`JSON` 格式的审计日志记录在 `tidb-audit.log.json`
 
-### `tidb_audit_log_max_size`
+### `tidb_audit_log_max_filesize`
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
@@ -384,7 +384,7 @@ select * from mysql.audit_log_filter_rules;
 - 设置 TiDB 审计日志文件被轮替后保留的天数。当某个已被轮替的审计日志文件的保留天数超过该设置时，将删除该审计日志文件。
 - 设置为 `0` 时表示不对审计日志文件轮替后保留的时长做限制
 
-### `tidb_audit_redact_log`
+### `tidb_audit_log_redacted`
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
