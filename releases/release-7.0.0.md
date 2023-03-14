@@ -76,6 +76,12 @@ TiDB 版本：7.0.0
 
     TiKV 在 v6.3.0 中引入了 Raft [日志回收](../tikv-configuration-file.md###enable-log-recycle-从-v630-版本开始引入) 特性, 用以减少写负载的长尾延迟。但是，"日志回收"需要 Raft 日志文件数量达到一定阈值后方可介入，使得用户无法直观感受该特性带来的写负载的吞吐提升。为了提升用户感受，v7.0.0 中正式引入了 `prefill-for-recycle` 功能，用以控制 TiKV 是否在进程启动时自动生成空的日志文件用于日志回收。该配置项启用时，TiKV 中的 Raft Engine 将在初始化时自动填充一批空日志文件用于日志回收，保证日志回收在初始化后立即生效。
 
+* 支持通过 [Fast Online DDL](../system-variables.md###tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 创建唯一索引 [#40730](https://github.com/pingcap/tidb/issues/40730) @[tangenta](https://github.com/tangenta)
+
+    TiDB v6.5.0 版本支持通过 [Fast Online DDL](../system-variables.md###tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 模式创建普通的二级索引，而 v7.0.0 版本开始则支持通过 [Fast Online DDL](../system-variables.md###tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 模式创建唯一索引。相比于 TiDB v6.1.0，预期大表添加唯一索引的性能约提升为 v6.1.0 的数倍。
+
+    更多信息，请参考[用户文档](../ddl-introduction.md)。
+
 ### 稳定性
 
 * 支持基于资源组的资源管控 [#38825](https://github.com/pingcap/tidb/issues/38825) @[nolouch](https://github.com/nolouch) @[BornChanger](https://github.com/BornChanger) @[glorv](https://github.com/glorv) @[tiancaiamao](https://github.com/tiancaiamao) @[Connor1996](https://github.com/Connor1996) @[JmPotato](https://github.com/JmPotato) @[hnes](https://github.com/hnes) @[CabinfeverB](https://github.com/CabinfeverB) @[HuSharp](https://github.com/HuSharp)
@@ -135,11 +141,11 @@ TiDB 版本：7.0.0
 
 ### 高可用
 
-* 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接)
+* TiDB 支持 prefer-leader 选项，在网络不稳定的情况下提供更高的读可用性，降低响应延迟 [#40905](https://github.com/pingcap/tidb/issues/40905) @[LykxSassinator](https://github.com/LykxSassinator)
 
-    功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
+    TiDB 支持通过 `tidb_replica_read` 参数控制 TiDB 的数据读取行为，新增支持 `prefer-leader` 选项。当设置为 `prefer-leader` 时，TiDB 会优先选择 leader 副本执行读取操作。当 leader 副本的处理速度明显变慢时，例如由于磁盘或网络性能抖动，TiDB 将选择其他可用的 follower 副本来执行读取操作，从而提供更高的可用性，降低响应延迟。
 
-    更多信息，请参考[用户文档](链接)。
+    更多信息，请参考[用户文档](/develop/dev-guide-use-follower-read.md)
 
 ### SQL 功能
 
