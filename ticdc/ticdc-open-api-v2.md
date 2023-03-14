@@ -295,7 +295,7 @@ curl -X GET http://127.0.0.1:8300/api/v2/health
 | `ignore_txn_start_ts` | `UINT64 ARRAY` 类型，指定之后会忽略指定 start_ts 的事务，如 `[1, 2]`。（非必选）                             |
 | `rules`               | `STRING ARRAY` 类型，表库过滤的规则，如 `['foo*.*', 'bar*.*']` 详情参考[表库过滤](/table-filter.md)。（非必选） |
 
-`filter.event_filters` 参数说明如下,可参考[日志过滤器](/ticdc/ticdc-filter.md)
+`filter.event_filters` 参数说明如下，可参考[日志过滤器](/ticdc/ticdc-filter.md)。
 
 | 参数名                            | 说明                                                                                          |
 |:-------------------------------|:--------------------------------------------------------------------------------------------|
