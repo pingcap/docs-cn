@@ -327,7 +327,7 @@ curl -X GET http://127.0.0.1:8300/api/v2/health
 | `terminator`            | `STRING` 类型，换行符，用来分隔两个数据变更事件。默认值为空，表示使用 "\r\n" 作为换行符。（非必选）                                              |
 | `transaction_atomicity` | `STRING` 类型，事务一致性等级。（非必选）                                                                               |
 
-`sink.column_selectors` 是一个数组，元素参数说明如下
+`sink.column_selectors` 是一个数组，元素参数说明如下：
 
 | 参数名       | 说明                                        |
 |:----------|:------------------------------------------|
