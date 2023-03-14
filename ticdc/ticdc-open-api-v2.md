@@ -340,7 +340,7 @@ curl -X GET http://127.0.0.1:8300/api/v2/health
 |:--------------------|:------------------------------------------------|
 | `delimiter`         | `STRING` 类型，字段之间的分隔符。必须为 ASCII 字符，默认值为 `,`。     |
 | `include_commit_ts` | `BOOLEAN` 类型，是否在 CSV 行中包含 commit-ts。默认值为 false。 |
-| `null`              | `STRING` 类型，如果这一列是 null，那这一列该如何表示,认是用 '\N' 来表示。 |
+| `null`              | `STRING` 类型，如果这一列是 null，那这一列该如何表示。默认是用 '\N' 来表示。 |
 | `quote`             | `STRING` 类型，用于包裹字段的引号字符。空值代表不使用引号字符。默认值为 `"`。   |
 
 `sink.dispatchers`：对于 MQ 类的 Sink，可以通过 dispatchers 配置 event 分发器，支持 default、ts、rowid、table 四种分发器，分发规则如下：
