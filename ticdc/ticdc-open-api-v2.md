@@ -47,7 +47,7 @@ TiCDC 提供 OpenAPI 功能，你可以通过 OpenAPI v2 对 TiCDC 集群进行�
 
 ## API List 接口统一返回格式
 
-一个 API 请求如果是返回一个资源列表，比如说请求返回所有的 `Captures`，TiCDC 统一的返回格式如下，
+一个 API 请求如果是返回一个资源列表，比如说请求返回所有的 `Captures`，TiCDC 统一的返回格式如下：
 
 ```json
 {
