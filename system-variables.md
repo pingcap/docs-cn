@@ -2144,10 +2144,10 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 ### `tidb_load_based_replica_read_threshold` <span class="version-mark">从 v7.0.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
-- 默认值："0s"
+- 默认值：`"0s"`
 - 范围：`[0s, 1h]`
 - 类型：字符串
-- 这个变量用来设置 load-based replica read 的触发阈值。当 leader 的预估排队时间高于阈值时，TiDB 会优先从 follower 读取数据。格式为时间，例如 `100ms` 或 `1s`。
+- 这个变量用来设置基于负载的 replica read 的触发阈值。当 leader 节点的预估排队时间超过阈值时，TiDB 会优先从 follower 节点读取数据。格式为时间，例如 `"100ms"` 或 `"1s"`。
 
 ### `tidb_log_file_max_days` <span class="version-mark">从 v5.3.0 版本开始引入</span>
 
