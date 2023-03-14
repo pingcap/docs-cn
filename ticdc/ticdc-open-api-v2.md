@@ -946,9 +946,9 @@ curl -X GET http://127.0.0.1:8300/api/v2/captures
 }
 ```
 
-此处对以上返回的信息做进一步阐述：
+以上返回的信息的解释如下：
 
-- `id`：`capture` 的 ID
+- `id`：`capture` 的 ID。
 - `is_owner`：该 `capture` 是否是 owner 。
 - `address`：该 `capture` 的地址。
 
