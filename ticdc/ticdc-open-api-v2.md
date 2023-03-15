@@ -245,6 +245,8 @@ curl -X GET http://127.0.0.1:8300/api/v2/health
 }
 ```
 
+参数说明如下：
+
 | 参数名              | 说明                                                                                  |
 |:-----------------|:------------------------------------------------------------------------------------|
 | `changefeed_id`  | `STRING` 类型，同步任务的 ID。（非必选）                                                          |
@@ -321,8 +323,8 @@ curl -X GET http://127.0.0.1:8300/api/v2/health
 | `csv`                   | CSV 配置（非必选）                                                                                             |
 | `date_separator`        | `STRING` 类型，文件路径的日期分隔类型。可选类型有 `none`、`year`、`month` 和 `day`。默认值为 `none`，即不使用日期分隔。（非必选）                  |
 | `dispatchers`           | 事件分发配置数组。（非必选）                                                                                           |
-| `encoder_concurrency`   | `INT` 类型。MQ sink 中编码器的线程数。默认值为 16。（非必选）                                                                 |
-| `protocol`              | `STRING` 类型，对于 MQ 类的 Sink，可以指定消息的协议格式。目前支持 `canal-json`、`open-protocol`、`canal`、`avro` 和 `maxwell`五种协议。 |
+| `encoder_concurrency`   | `INT` 类型。MQ sink 中编码器的线程数。默认值为 `16`。（非必选）                                                                 |
+| `protocol`              | `STRING` 类型，对于 MQ 类的 Sink，可以指定消息的协议格式。目前支持以下协议：`canal-json`、`open-protocol`、`canal`、`avro` 和 `maxwell`。 |
 | `schema_registry`       | `STRING` 类型，schema registry 地址。（非必选）                                                                    |
 | `terminator`            | `STRING` 类型，换行符，用来分隔两个数据变更事件。默认值为空，表示使用 "\r\n" 作为换行符。（非必选）                                              |
 | `transaction_atomicity` | `STRING` 类型，事务一致性等级。（非必选）                                                                               |
@@ -331,8 +333,8 @@ curl -X GET http://127.0.0.1:8300/api/v2/health
 
 | 参数名       | 说明                                        |
 |:----------|:------------------------------------------|
-| `columns` | `STRING ARRAY` column 数组。                 |
-| `matcher` | `STRING ARRAY` matcher 配置，匹配语法和过滤器规则语法相同。 |
+| `columns` | `STRING ARRAY` 类型。column 数组。                 |
+| `matcher` | `STRING ARRAY` 类型。matcher 配置，匹配语法和过滤器规则语法相同。 |
 
 `sink.csv` 参数说明如下：
 
@@ -343,14 +345,14 @@ curl -X GET http://127.0.0.1:8300/api/v2/health
 | `null`              | `STRING` 类型，如果这一列是 null，那这一列该如何表示。默认是用 '\N' 来表示。 |
 | `quote`             | `STRING` 类型，用于包裹字段的引号字符。空值代表不使用引号字符。默认值为 `"`。   |
 
-`sink.dispatchers`：对于 MQ 类的 Sink，可以通过 dispatchers 配置 event 分发器，支持 default、ts、rowid、table 四种分发器，分发规则如下：
+`sink.dispatchers`：对于 MQ 类的 Sink，可以通过该参数配置 event 分发器，支持以下分发器：`default`、`ts`、`rowid`、`table` 。分发规则如下：
 
-- default：有多个唯一索引（包括主键）时按照 table 模式分发；只有一个唯一索引（或主键）按照 rowid 模式分发；如果开启了 old value 特性，按照 table 分发。
-- ts：以行变更的 commitTs 做 Hash 计算并进行 event 分发。
-- rowid：以所选的 HandleKey 列名和列值做 Hash 计算并进行 event 分发。
-- table：以表的 schema 名和 table 名做 Hash 计算并进行 event 分发。
+- `default`：有多个唯一索引（包括主键）时按照 table 模式分发；只有一个唯一索引（或主键）按照 rowid 模式分发；如果开启了 old value 特性，按照 table 分发。
+- `ts`：以行变更的 commitTs 做 Hash 计算并进行 event 分发。
+- `rowid`：以所选的 HandleKey 列名和列值做 Hash 计算并进行 event 分发。
+- `table`：以表的 schema 名和 table 名做 Hash 计算并进行 event 分发。
 
-`sink.dispatchers`是一个数组，元素参数说明如下：
+`sink.dispatchers` 是一个数组，元素参数说明如下：
 
 | 参数名         | 说明                                |
 |:------------|:----------------------------------|
@@ -525,7 +527,7 @@ curl -X POST -H "'Content-type':'application/json'" http://127.0.0.1:8300/api/v2
 
 ## 删除同步任务
 
-该接口是幂等的，用于删除一个 changefeed 同步任务，请求成功会返回 `200 OK`。
+该接口是幂等的，用于删除一个 changefeed 同步任务，请求成功会返回 `200 OK`。该返回结果表示服务器收到了执行命令指示，并不代表命令被成功执行。
 
 ### 请求 URI
 
@@ -780,7 +782,7 @@ curl -X GET http://127.0.0.1:8300/api/v2/changefeeds/test1
 
 ## 暂停同步任务
 
-该接口暂停一个同步任务，请求成功会返回 `200 OK`。
+该接口暂停一个同步任务，请求成功会返回 `200 OK`。该返回结果表示服务器收到了执行命令指示，并不代表命令被成功执行。
 
 ### 请求 URI
 
@@ -953,7 +955,7 @@ curl -X GET http://127.0.0.1:8300/api/v2/captures
 
 ## 驱逐 owner 节点
 
-该接口是一个异步的请求，请求成功会返回 `200 OK`，它只代表服务器答应执行该命令，不保证命令会被成功的执行。
+该接口是一个异步的请求，请求成功会返回 `200 OK`。该返回结果表示服务器收到了执行命令指示，并不代表命令被成功执行。
 
 ### 请求 URI
 
