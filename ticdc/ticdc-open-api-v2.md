@@ -504,7 +504,7 @@ curl -X POST -H "'Content-type':'application/json'" http://127.0.0.1:8300/api/v2
 | `admin_job_type`  | `INTEGER` 类型，admin 事件类型                                       |
 | `checkpoint_time` | `STRING` 类型，同步任务当前 checkpoint 的格式化时间表示                        |
 | `checkpoint_ts`   | `STRING` 类型，同步任务当前 checkpoint 的 TSO 表示                        |
-| `config`          | 同步任务配置，结构和含义与上述配置                                              |
+| `config`          | 同步任务配置，结构和含义与上节创建同步任务中的 `replica_config` 配置项相同                                              |
 | `create_time`     | `STRING` 类型，同步任务创建的时间                                          |
 | `creator_version` | `STRING` 类型，同步任务创建时 TiCDC 的版本                                  |
 | `error`           | 同步任务错误                                                         |
