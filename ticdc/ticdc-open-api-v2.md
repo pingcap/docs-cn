@@ -261,7 +261,7 @@ curl -X GET http://127.0.0.1:8300/api/v2/health
 |:--------------------------|:----------------------------------------------------------------------------------------------------|
 | `bdr_mode`                | `BOOLEAN` 类型，是否开启[双向同步复制](/ticdc/ticdc-bidirectional-replication.md)。默认值为 `false`。（非必选）            |
 | `case_sensitive`          | `BOOLEAN` 类型，是否大小写敏感 table name 过滤，默认值为 `true`。（非必选）                                                |
-| `check_gc_safe_point`     | `BOOLEAN` 类型，是否检查同步任务的开始时间超过了 GC 时间，默认值为 `true`。（非必选）                                               |
+| `check_gc_safe_point`     | `BOOLEAN` 类型，是否检查同步任务的开始时间早于 GC 时间，默认值为 `true`。（非必选）                                               |
 | `consistent`              | Redo log 配置。（非必选）                                                                                   |
 | `enable_old_value`        | `BOOLEAN` 类型，是否输出 old value 值。（非必选）                                                                 |
 | `enable_sync_point`       | `BOOLEAN` 类型，是否开启 `sync point` 功能。（非必选）                                                             |
@@ -290,35 +290,35 @@ curl -X GET http://127.0.0.1:8300/api/v2/health
 | `do_dbs`              | `STRING ARRAY` 类型，需要同步的数据库。（非必选）                                                      |
 | `do_tables`           | 需要同步的表。（非必选）                                                                          |
 | `ignore_dbs`          | `STRING ARRAY` 类型，不同步的数据库。（非必选）                                                       |
-| `ignore_tables`       | 需要同步的表。（非必选）                                                                          |
+| `ignore_tables`       |  不同步的表。（非必选）                                                                          |
 | `event_filters`       | event 过滤配置（非必选）                                                                       |
 | `ignore_txn_start_ts` | `UINT64 ARRAY` 类型，指定之后会忽略指定 start_ts 的事务，如 `[1, 2]`。（非必选）                             |
-| `rules`               | `STRING ARRAY` 类型，表库过滤的规则，如 `['foo*.*', 'bar*.*']` 详情参考[表库过滤](/table-filter.md)。（非必选） |
+| `rules`               | `STRING ARRAY` 类型，表库过滤的规则，如 `['foo*.*', 'bar*.*']`。详情请参考[表库过滤](/table-filter.md)。（非必选） |
 
 `filter.event_filters` 参数说明如下，可参考[日志过滤器](/ticdc/ticdc-filter.md)。
 
 | 参数名                            | 说明                                                                                          |
 |:-------------------------------|:--------------------------------------------------------------------------------------------|
-| `ignore_delete_value_expr`     | `STRING ARRAY` 类型，如 `"name = 'john'"` 表示过滤掉包含 name = 'john' 条件的 delete DML。（非必选）            |
+| `ignore_delete_value_expr`     | `STRING ARRAY` 类型，如 `"name = 'john'"` 表示过滤掉包含 name = 'john' 条件的 DELETE DML。（非必选）            |
 | `ignore_event`                 | `STRING ARRAY` 类型，如 `["insert"]` 表示过滤掉 INSERT 事件。（非必选）                                      |
 | `ignore_insert_value_expr`     | `STRING ARRAY` 类型，如 "id >= 100" 表示过滤掉包含 id >= 100 条件的 INSERT DML。（非必选）                     |
 | `ignore_sql`                   | `STRING ARRAY` 类型，如 `["^drop", "add column"]` 表示过滤掉以 "DROP" 开头或者包含 "ADD COLUMN" 的 DDL。（非必选） |
 | `ignore_update_new_value_expr` | `STRING ARRAY` 类型，如 `"gender = 'male'"` 表示过滤掉新值 gender = 'male' 的 UPDATE DML。（非必选）          |
 | `ignore_update_old_value_expr` | `STRING ARRAY` 类型，如 `"age < 18"` 表示过滤掉旧值 age < 18 的 UPDATE DML。（非必选）                        |
-| `matcher`                      | `STRING ARRAY` 类型，是一个白名单，如`["test.worker"]`，表示该过滤规则只应用于 test 库中的 worker 表。（非必选）             |
+| `matcher`                      | `STRING ARRAY` 类型，是一个白名单，如 `["test.worker"]`，表示该过滤规则只应用于 `test` 库中的 `worker` 表。（非必选）             |
 
 `mounter` 参数说明如下：
 
 | 参数名          | 说明                                                         |
 |:-------------|:-----------------------------------------------------------|
-| `worker_num` | `INT` 类型。Mounter 线程数，Mounter 用于解码 TiKV 输出的数据，默认值为 16。（非必选） |
+| `worker_num` | `INT` 类型。Mounter 线程数，Mounter 用于解码 TiKV 输出的数据，默认值为 `16`。（非必选） |
 
 `sink` 参数说明如下：
 
 | 参数名                     | 说明                                                                                                      |
 |:------------------------|:--------------------------------------------------------------------------------------------------------|
 | `column_selectors`      | column selector 配置。（非必选）                                                                                 |
-| `csv`                   | csv 配置（非必选）                                                                                             |
+| `csv`                   | CSV 配置（非必选）                                                                                             |
 | `date_separator`        | `STRING` 类型，文件路径的日期分隔类型。可选类型有 `none`、`year`、`month` 和 `day`。默认值为 `none`，即不使用日期分隔。（非必选）                  |
 | `dispatchers`           | 事件分发配置数组。（非必选）                                                                                           |
 | `encoder_concurrency`   | `INT` 类型。MQ sink 中编码器的线程数。默认值为 16。（非必选）                                                                 |
