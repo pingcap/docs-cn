@@ -139,7 +139,6 @@ TiFlash 存算分离架构适合于希望获得更高性价比的数据分析服
   server_configs:
     tidb:
       disaggregated-tiflash: true   # 使用存算分离的方式查询 TiFlash
-      use-autoscaler: false
   ```
 
 ## 使用限制
