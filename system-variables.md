@@ -185,8 +185,7 @@ mysql> SELECT * FROM t1;
 - 作用域：GLOBAL
 - 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
 - 类型：整数型
-- 默认值：`300`<img width="889" alt="image" src="https://user-images.githubusercontent.com/3692139/225192522-7f1404ff-0575-44f8-ba97-9264793d61d0.png">
-
+- 默认值：`300`
 - 取值范围：`[0, 2147483647]`
 - 单位：毫秒
 - 耗时超过该阈值的 DDL 操作会被输出到日志。
