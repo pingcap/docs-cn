@@ -74,11 +74,10 @@ Compared to Mydumper, Dumpling has the following improvements:
 
 ### Required privileges
 
-- SELECT
-- RELOAD
-- LOCK TABLES
-- REPLICATION CLIENT
-- PROCESS
+- SELECT: Required when exporting tables.
+- RELOAD: Required when using `consistency flush`. Note that only TiDB supports this privilege. When the upstream is an RDS database or a managed service, you can ignore this privilege.
+- LOCK TABLES: Required when using `consistency lock`. This privilege must be granted for all the databases and tables to be exported.
+- REPLICATION CLIENT: Required when exporting metadata to record data snapshot. This privilege is optional and you can ignore it if you do not need to export metadata.
 
 ### Export to SQL files
 
