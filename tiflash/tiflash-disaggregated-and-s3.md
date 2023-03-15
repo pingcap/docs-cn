@@ -9,7 +9,7 @@ summary: 了解 TiFlash 存算分离架构与 S3 支持。
 >
 > TiFlash 存算分离架构目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tiflash/issues) 反馈。
 
-TiFlash 默认使用存算一体的架构进行部署，即 TiFlash 节点既是存储节点，也是计算节点。从 TiDB v7.0.0 开始，TiFlash 支持存算分离架构，并且将数据存储在 AWS S3，或者兼容 S3 API 的对象存储中（比如 MinIO）。
+TiFlash 默认使用存算一体的架构进行部署，即 TiFlash 节点既是存储节点，也是计算节点。从 TiDB v7.0.0 开始，TiFlash 支持存算分离架构，并将数据存储在 Amazon S3 或兼容 S3 API 的对象存储中（比如 MinIO）。
 
 ## 架构介绍
 
@@ -19,7 +19,7 @@ TiFlash 默认使用存算一体的架构进行部署，即 TiFlash 节点既是
 
 - TiFlash Write Node 
 
-  负责接收 TiKV 的 Raft logs 数据，将数据转换成列存格式，并每隔一小段时间将这段时间的所有数据更新打包上传到 S3 中。此外，Write Node 也负责管理 S3 上的数据，比如不断整理数据使之有更好的查询性能，以及删除无用的数据等。
+  负责接收 TiKV 的 Raft logs 数据，将数据转换成列存格式，并每隔一小段时间将这段时间的所有数据更新打包上传到 S3 中。此外，Write Node 也负责管理 S3 上的数据，比如不断整理数据使之具有更好的查询性能，以及删除无用的数据等。
 
   Write Node 利用本地磁盘（通常是 NVMe SSD）来缓存最新写入的数据，从而避免内存使用过多。
 
@@ -38,7 +38,7 @@ TiFlash 默认使用存算一体的架构进行部署，即 TiFlash 节点既是
 
 ## 使用场景
 
-TiFlash 存算分离架构适合于希望获得更高性价比的数据分析服务的场景。在这个架构下，存储和计算资源可以单独按需扩展。在这些场景将会有比较大收益：
+TiFlash 存算分离架构适合于希望获得更高性价比的数据分析服务的场景。在这个架构下，存储和计算资源可以单独按需扩展。在这些场景将会有较大收益：
 
 - 数据量虽然很大，但是只有少量数据被频繁查询；其他大部分数据属于冷数据，很少被查询。此时经常被查询的数据通常已被缓存在 Compute Node 的本地 SSD 上，可以提供较快查询性能；而其他大部分冷数据则存储在成本较低的 S3 或者其他对象存储上，从而节省存储成本。
 
@@ -65,7 +65,7 @@ TiFlash 存算分离架构适合于希望获得更高性价比的数据分析服
 
   ```yaml
   tiflash_servers:
-    # TiFlash 节点存在 storage.s3 配置说明使用存算分离模式。
+    # TiFlash 节点存在 storage.s3 配置说明使用存算分离模式
     # 如果配置了 flash.disaggregated_mode: tiflash_compute，则节点类型是 Compute Node；否则是 Write Node
 
     # 172.31.8.1~2 是 TiFlash Write Node
@@ -111,39 +111,47 @@ TiFlash 存算分离架构适合于希望获得更高性价比的数据分析服
         storage.remote.cache.capacity: 858993459200           # 800GiB
   ```
 
-  * 注意以上 `ACCESS_KEY_ID` 和 `SECRET_ACCESS_KEY` 是直接写在配置文件中的。用户也可以选择使用环境变量的方式单独配置。环境变量的优先级高于配置文件。在所有部署 TiFlash 进程的机器上，切换到启动 TiFlash 进程的用户环境（通常是 `tidb`），修改 `~/.bash_profile`，增加这些配置：
-
-  ```shell
-  export S3_ACCESS_KEY_ID={ACCESS_KEY_ID}
-  export S3_SECRET_ACCESS_KEY={SECRET_ACCESS_KEY}
-  ```
+    * 注意以上 `ACCESS_KEY_ID` 和 `SECRET_ACCESS_KEY` 是直接写在配置文件中的。你也可以选择使用环境变量的方式单独配置。环境变量的优先级高于配置文件。
   
-  * `storage.s3.endpoint` 支持使用 `http` 模式和 `https` 模式连接 S3，可以直接通过修改 URL 来选择。比如 `https://s3.{region}.amazonaws.com`。
+        如需通过环境变量配置，请在所有部署了 TiFlash 进程的机器上，切换到启动 TiFlash 进程的用户环境（通常是 `tidb`），然后修改 `~/.bash_profile`，增加这些配置：
 
-3. 执行扩容 TiFlash 节点，并重新设置 TiFlash replica
+    ```shell
+    export S3_ACCESS_KEY_ID={ACCESS_KEY_ID}
+    export S3_SECRET_ACCESS_KEY={SECRET_ACCESS_KEY}
+    ```
+  
+    * `storage.s3.endpoint` 支持使用 `http` 模式和 `https` 模式连接 S3，可以直接通过修改 URL 来选择。比如 `https://s3.{region}.amazonaws.com`。
 
-  ```shell
-  tiup cluster scale-out mycluster ./scale-out.topo.yaml
-  ```
+3. 执行扩容 TiFlash 节点，并重新设置 TiFlash replica：
 
-  ```sql
-  ALTER TABLE table_name SET TIFLASH REPLICA 1;
-  ```
+    ```shell
+    tiup cluster scale-out mycluster ./scale-out.topo.yaml
+    ```
 
-4. 修改 TiDB 配置，用存算分离的方式查询 TiFlash
-  ```shell
-  tiup cluster edit-config mycluster
-  ```
-  给 TiDB 添加以下配置项：
-  ```shell
-  server_configs:
-    tidb:
-      disaggregated-tiflash: true   # 使用存算分离的方式查询 TiFlash
-  ```
-  然后重启 TiDB
-  ```shell
-  tiup cluster reload mycluster -R tidb
-  ```
+    ```sql
+    ALTER TABLE table_name SET TIFLASH REPLICA 1;
+    ```
+
+4. 修改 TiDB 配置，用存算分离的方式查询 TiFlash。
+
+    1. 以编辑模式打开 TiDB 配置文件：
+
+          ```shell
+          tiup cluster edit-config mycluster
+          ```
+    2. 在 TiDB 配置文件中添加以下配置项：
+
+        ```shell
+        server_configs:
+        tidb:
+        disaggregated-tiflash: true   # 使用存算分离的方式查询 TiFlash
+        ```
+
+    3. 重启 TiDB:
+
+        ```shell
+        tiup cluster reload mycluster -R tidb
+        ```
 
 ## 使用限制
 
