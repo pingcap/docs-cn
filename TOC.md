@@ -613,6 +613,7 @@
     - [使用 MPP 模式](/tiflash/use-tiflash-mpp-mode.md)
     - [TiFlash 支持的计算下推](/tiflash/tiflash-supported-pushdown-calculations.md)
     - [TiFlash 查询结果物化](/tiflash/tiflash-results-materialization.md)
+    - [TiFlash 延迟物化](/tiflash/tiflash-late-materialization.md)
     - [TiFlash 数据校验](/tiflash/tiflash-data-validation.md)
     - [TiFlash 兼容性说明](/tiflash/tiflash-compatibility.md)
   - [系统变量](/system-variables.md)
