@@ -70,10 +70,7 @@ BR 可以直接将命令下发到 TiKV 集群来执行备份和恢复，不依�
 
 BR 工具已支持自适应 GC，会自动将 `backupTS`（默认是最新的 PD timestamp）注册到 PD 的 `safePoint`，保证 TiDB 的 GC Safe Point 在备份期间不会向前移动，即可避免手动设置 GC。
 
-运行 [`br backup`](/br/use-br-command-line-tool.md#br-命令行描述) 命令进行备份前，请确保以下条件：
-
-1. TiDB 集群中没有正在运行中的 DDL。
-2. 用于创建备份的存储设备有足够的空间（具有备份集群的 1/3 的磁盘空间即可）。
+运行 [`br backup`](/br/use-br-command-line-tool.md#br-命令行描述) 命令进行备份前，请确保用于创建备份的存储设备有足够的空间（具有备份集群的 1/3 的磁盘空间即可）。
 
 #### 恢复前的准备工作
 
