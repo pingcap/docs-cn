@@ -37,7 +37,7 @@ EXPLAIN SELECT a, b, c FROM t1 WHERE a < 1;
 
 ## 启用和禁用 TiFlash 延迟物化
 
-默认情况下，session 和 global 级别的变量 `tidb_opt_enable_late_materialization=OFF`，即没有开启 TiFlash 延迟物化功能。你可以通过以下语句来查看对应的变量信息。
+默认情况下，session 和 global 级别的变量 `tidb_opt_enable_late_materialization=OFF`，即未开启 TiFlash 延迟物化功能。你可以通过以下语句来查看对应的变量信息。
 
 ```sql
 SHOW VARIABLES LIKE 'tidb_opt_enable_late_materialization';
