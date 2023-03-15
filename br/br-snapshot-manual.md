@@ -42,6 +42,10 @@ br backup full \
 - `--ratelimit`：**每个 TiKV** 执行备份任务的速度上限（单位 MiB/s）。
 - `--log-file`：备份日志写入的目标文件。
 
+> **注意：**
+>
+> BR 工具已支持自适应 GC，会自动将 `backupTS`（默认是最新的 PD timestamp）注册到 PD 的 `safePoint`，保证 TiDB 的 GC Safe Point 在备份期间不会向前移动，即可避免手动设置 GC。
+
 备份期间终端会显示进度条，效果如下。当进度条达到 100% 时，表示备份完成。
 
 ```shell
