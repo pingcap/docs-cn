@@ -321,7 +321,7 @@ This feature is disabled by default. You can enable this feature by modifying th
 
 [User document](/sql-plan-management.md)
 
-#### SQL Binding supports the `INSERT`、`REPLACE`、`UPDATE`、`DELETE` statements
+#### SQL Binding supports the `INSERT`, `REPLACE`, `UPDATE`, `DELETE` statements
 
 When tuning performance or maintaining the database, if you find that the system performance is unstable due to unstable execution plans, you can select a manually optimized SQL statement according to your judgement or tested by `EXPLAIN ANALYZE`. You can bind the optimized SQL statement to the SQL statement to be executed in the application code to ensure stable performance.
 
