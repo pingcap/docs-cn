@@ -1327,7 +1327,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 是否持久化到集群：是
 - 类型：布尔型
 - 默认值：`OFF`
-- 这个变量用来控制是否开启 General Plan Cache。
+- 这个变量用来控制是否开启[非 Prepare 语句执行计划缓存](/sql-non-prepared-plan-cache.md)。
 
 ### `tidb_enable_gogc_tuner` <span class="version-mark">从 v6.4.0 版本开始引入</span>
 
@@ -1918,7 +1918,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 类型：整数型
 - 默认值：`100`
 - 范围：`[1, 100000]`
-- 这个变量用来控制 General Plan Cache 最多能够缓存的计划数量。
+- 这个变量用来控制[非 Prepare 语句执行计划缓存](/sql-non-prepared-plan-cache.md)最多能够缓存的计划数量。
 
 ### `tidb_generate_binary_plan` <span class="version-mark">从 v6.2.0 版本开始引入</span>
 
