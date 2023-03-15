@@ -185,7 +185,8 @@ mysql> SELECT * FROM t1;
 - 作用域：GLOBAL
 - 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
 - 类型：整数型
-- 默认值：`300`
+- 默认值：`300`<img width="889" alt="image" src="https://user-images.githubusercontent.com/3692139/225192522-7f1404ff-0575-44f8-ba97-9264793d61d0.png">
+
 - 取值范围：`[0, 2147483647]`
 - 单位：毫秒
 - 耗时超过该阈值的 DDL 操作会被输出到日志。
@@ -2990,7 +2991,7 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 - 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
 - 默认值：`OFF`
 - 该变量用于优化时间戳的获取，适用于悲观事务 `READ-COMMITTED` 隔离级别下读写冲突较少的场景，开启此变量可以避免获取全局 timestamp 带来的延迟和开销，并优化事务内读语句延迟。
-- 如果读写冲突较为严重，开启此功能会增加额外开销和延迟，造成性能回退。更详细的说明，请参考[读已提交隔离级别 (Read Committed) 文档](/transaction-isolation-levels.md#读已提交隔离级别-read-committed)。
+- 如果读写冲突较为严重，开启此功能会增加额外开销和延迟，造成性能回退。更详细的说明，请参考[读已提交隔离级别 (Read Committed) 文档](/transaction-isolation-levels.md#读已提交隔离级别-read-committed)。**v7.0 版本之后，该变量对于使用 prepared statement 协议下 cursor fetch read 模式不再生效**。 
 
 ### `tidb_rc_write_check_ts` <span class="version-mark">从 v6.3.0 版本开始引入</span>
 
