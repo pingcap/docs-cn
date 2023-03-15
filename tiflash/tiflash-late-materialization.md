@@ -11,15 +11,15 @@ summary: 介绍通过使用 TiFlash 延迟物化的方式来加速 OLAP 场景�
 
 本文档介绍通过使用 TiFlash 延迟物化的方式来加速 Online Analytical Processing (OLAP) 场景的查询。
 
-默认情况下，TiFlash 会先读取查询所需列的全部数据，然后再根据查询条件对数据进行过滤、聚合等计算任务。延迟物化是一种优化方式，它支持下推部分过滤条件 到 TableScan 算子，即先扫描过滤条件相关的列数据，过滤得到符合条件的行后，再扫描这些行的其他列数据，继续后续计算，从而减少扫描 IO 和数据解析的计算量。
+默认情况下，TiFlash 会先读取查询所需列的全部数据，然后再根据查询条件对数据进行过滤、聚合等计算任务。延迟物化是一种优化方式，它支持下推部分过滤条件到 TableScan 算子，即先扫描过滤条件相关的列数据，过滤得到符合条件的行后，再扫描这些行的其他列数据，继续后续计算，从而减少扫描 IO 和数据解析的计算量。
 
-如果希望提升 OLAP 场景部分查询的性能，可以在 session 级别或 global 级别开启 TiFlash 延迟物化功能，你可以通过修改变量 `tidb_opt_enable_late_materialization` 的值来选择是否启用 TiFlash 延迟物化功能。
+如果希望提升 OLAP 场景部分查询的性能，可以在 session 级别或 global 级别开启 TiFlash 延迟物化功能。你可以通过修改变量 `tidb_opt_enable_late_materialization` 的值来选择是否启用 TiFlash 延迟物化功能。
 
 启用 TiFlash 延迟物化功能后，TiDB 优化器会根据统计信息和查询的过滤条件，决定哪些过滤条件会被下推。优化器会优化考虑下推过滤率高的过滤条件，详细算法可以参考 [RFC 文档]()。
 
 例如：
 
-```
+```sql
 EXPLAIN SELECT a, b, c FROM t1 WHERE a < 1;
 ```
 
@@ -39,7 +39,7 @@ EXPLAIN SELECT a, b, c FROM t1 WHERE a < 1;
 
 默认情况下，session 和 global 级别的变量 `tidb_opt_enable_late_materialization=OFF`，即没有开启 TiFlash 延迟物化功能。你可以通过以下语句来查看对应的变量信息。
 
-```
+```sql
 SHOW VARIABLES LIKE 'tidb_opt_enable_late_materialization';
 ```
 
@@ -51,7 +51,7 @@ SHOW VARIABLES LIKE 'tidb_opt_enable_late_materialization';
 +--------------------------------------+-------+
 ```
 
-```
+```sql
 SHOW GLOBAL VARIABLES LIKE 'tidb_opt_enable_late_materialization';
 ```
 
@@ -64,6 +64,7 @@ SHOW GLOBAL VARIABLES LIKE 'tidb_opt_enable_late_materialization';
 ```
 
 变量 `tidb_opt_enable_late_materialization` 支持 session 级别和 global 级别的修改。
+
 - 如果需要在当前 session 中启用 TiFlash 延迟物化功能，可以通过以下语句设置:
     ```
     set session tidb_opt_enable_late_materialization=ON;
