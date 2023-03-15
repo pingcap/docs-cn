@@ -18,7 +18,7 @@ TiDB 优化器对这两类查询的处理是一样的：`Prepare` 时将参数�
 
 - `SELECT`、`UPDATE`、`INSERT`、`DELETE`、`Union`、`Intersect`、`Except` 以外的 SQL 语句；
 - 访问分区表、临时表或访问表中包含生成列的查询；
-- 查询中包含非关联子查询的，例如 `select * from t1 where t1.a > (select 1 from t2 where t2.b < 1)` 
+- 查询中包含非关联子查询的，例如 `select * from t1 where t1.a > (select 1 from t2 where t2.b < 1)` ；
 - 执行计划中带有 `PhysicalApply` 算子的关联子查询，例如  `select * from t1 where t1.a > (select a from t2 where t1.b > t2.b)` 
 - 包含 `ignore_plan_cache` 这一 Hint 的查询，例如 `select /*+ ignore_plan_cache() */ * from t`；
 - 包含除 `?` 外其他变量（即系统变量或用户自定义变量）的查询，例如 `select * from t where a>? and b>@x`；
