@@ -106,7 +106,7 @@ curl -X GET http://127.0.0.1:8300/api/v2/status
 - `id`：该节点的 capture ID。
 - `pid`：该节点 capture 进程的 PID。
 - `is_owner`：表示该节点是否是 owner。
-- `liveness`: 该节点的 liveness 状态。0 表示正常，1 表示处于 `graceful shutdown` 状态。
+- `liveness`: 该节点的 liveness 状态。`0` 表示正常，`1` 表示处于 `graceful shutdown` 状态。
 
 ## 检查 TiCDC 集群的健康状态
 
