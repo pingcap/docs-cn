@@ -558,8 +558,6 @@ Key 分区与 Hash 分区都可以保证将数据均匀地分散到一定数量�
 
 下面的语句将创建一个 Key 分区表，按 `store_id` 分成 4 个分区：
 
-{{< copyable "sql" >}}
-
 ```sql
 CREATE TABLE employees (
     id INT NOT NULL,
@@ -579,8 +577,6 @@ PARTITIONS 4;
 
 你也可以根据 VARCHAR 等非整数字段创建 Key 分区表。下面的语句按 `fname` 将表分成 4 个分区：
 
-{{< copyable "sql" >}}
-
 ```sql
 CREATE TABLE employees (
     id INT NOT NULL,
@@ -598,8 +594,6 @@ PARTITIONS 4;
 
 你还可以根据多列字段创建 Key 分区表。下面的语句按 `fname`、`store_id` 将表分成 4 个分区：
 
-{{< copyable "sql" >}}
-
 ```sql
 CREATE TABLE employees (
     id INT NOT NULL,
@@ -616,8 +610,6 @@ PARTITIONS 4;
 ```
 
 目前，TiDB 不支持分区字段列表 `PARTITION BY KEY` 为空的 Key 分区表。下面的语句将创建一个非分区表，并向客户端返回 `Unsupported partition type RANGE, treat as normal table` 警告。
-
-{{< copyable "sql" >}}
 
 ```sql
 CREATE TABLE employees (
@@ -921,8 +913,6 @@ ERROR 8200 (HY000): Unsupported optimize partition
 目前 TiDB 中 Key 分区支持的分区管理语句只有 `ALTER TABLE ... TRUNCATE PARTITION`。
 
 对于暂不支持的分区管理语句，TiDB 会返回错误。
-
-{{< copyable "sql" >}}
 
 ```sql
 ALTER TABLE members OPTIMIZE PARTITION p0;
