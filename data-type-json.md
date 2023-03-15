@@ -27,7 +27,7 @@ SELECT id FROM city WHERE population >= 100;
 ## 使用限制
 
 - 暂不支持将 JSON 函数下推至 TiFlash。
-- TiDB Backup & Restore（BR）在 v6.3.0 之前不支持恢复包含 JSON 列的数据。另外，任何版本的 BR 都不支持恢复包含 JSON 列的数据到 v6.3.0 之前的 TiDB 集群。
+- TiDB Backup & Restore（BR）在 v6.3.0 版本对 JSON 列的数据的编码进行了修改。因此不建议使用 BR 恢复包含 JSON 列的数据到 v6.3.0 之前的 TiDB 集群。
 - 请勿使用任何同步工具同步非标准 JSON 类型（例如 DATE、DATETIME、TIME 等）的数据。
 
 ## MySQL 兼容性
