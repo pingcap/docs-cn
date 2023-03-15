@@ -140,7 +140,9 @@ TiFlash 存算分离架构适合于希望获得更高性价比的数据分析服
     tidb:
       disaggregated-tiflash: true   # 使用存算分离的方式查询 TiFlash
   ```
-
+  然后重启 TiDB
+  ```shell
+  tiup cluster reload mycluster -R tidb
 ## 使用限制
 
 - TiFlash 不支持在存算一体架构和存算分离架构之间原地切换。在切换架构前，需要将原有 TiFlash 节点全部删除。
