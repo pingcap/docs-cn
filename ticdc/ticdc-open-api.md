@@ -157,7 +157,7 @@ curl -X GET http://127.0.0.1:8300/api/v1/health
 
 ### 使用样例
 
-以下请求会创建一个 ID 为 `test5`，sink_uri 为 `blackhome://` 的同步任务。
+以下请求会创建一个 ID 为 `test5`，sink_uri 为 `blackhole://` 的同步任务。
 
 ```shell
 curl -X POST -H "'Content-type':'application/json'" http://127.0.0.1:8300/api/v1/changefeeds -d '{"changefeed_id":"test5","sink_uri":"blackhole://"}'
