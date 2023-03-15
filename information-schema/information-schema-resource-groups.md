@@ -22,6 +22,7 @@ DESC resource_groups;
 +------------+-------------+------+------+---------+-------+
 | NAME       | varchar(32) | NO   |      | NULL    |       |
 | RU_PER_SEC | bigint(21)  | YES  |      | NULL    |       |
+| PRIORITY   | varchar(3)  | YES  |      | NULL    |       |
 | BURSTABLE  | varchar(3)  | YES  |      | NULL    |       |
 +------------+-------------+------+------+---------+-------+
 3 rows in set (0.00 sec)
@@ -33,18 +34,18 @@ DESC resource_groups;
 mysql> CREATE RESOURCE GROUP rg1 RU_PER_SEC=1000; -- 创建资源组 rg1
 Query OK, 0 rows affected (0.34 sec)
 mysql> SHOW CREATE RESOURCE GROUP rg1; -- 显示 rg1 资源组的定义
-+----------------+---------------------------------------------+
-| Resource_Group | Create Resource Group                       |
-+----------------+---------------------------------------------+
-| rg1            | CREATE RESOURCE GROUP `rg1` RU_PER_SEC=1000 |
-+----------------+---------------------------------------------+
++----------------+---------------------------------------------------------------+
+| Resource_Group | Create Resource Group                                         |
++----------------+---------------------------------------------------------------+
+| rg1            | CREATE RESOURCE GROUP `rg1` RU_PER_SEC=1000 PRIORITY="MEDIUM" |
++----------------+---------------------------------------------------------------+
 1 row in set (0.00 sec)
 mysql> SELECT * FROM information_schema.resource_groups WHERE NAME = 'rg1';
-+------+------------+-----------+
-| NAME | RU_PER_SEC | BURSTABLE |
-+------+------------+-----------+
-| rg1  |       1000 | NO        |
-+------+------------+-----------+
++------+------------+----------+-----------+
+| NAME | RU_PER_SEC | PRIORITY | BURSTABLE |
++------+------------+----------+-----------+
+| rg1  |       1000 | MEDIUM   | NO        |
++------+------------+----------+-----------+
 1 row in set (0.00 sec)
 ```
 
@@ -52,4 +53,5 @@ mysql> SELECT * FROM information_schema.resource_groups WHERE NAME = 'rg1';
 
 * `NAME`：资源组名称。
 * `RU_PER_SEC`：资源组的回填速度，单位为每秒回填的 [Request Unit (RU)](/tidb-resource-control.md#什么是-request-unit-ru) 数量。
+* `PRIORITY`: 资源组在执行过程中的优先级，不同的资源按照 `PRIORITY` 的设置进行调度，如果不同资源组处于相同 `PRIORITY`，则按 `RU_PER_SEC` 越大，越优先。默认情况下，RESOURCE GROUP 的 `PRIORITY` 为 `MIDDLE`。
 * `BURSTABLE`：是否允许此资源组超额使用剩余的系统资源。

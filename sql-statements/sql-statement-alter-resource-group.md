@@ -26,6 +26,7 @@ ResourceGroupOptionList:
 
 DirectResourceGroupOption:
     "RU_PER_SEC" EqOpt stringLit
+|   "PRIORITY"   EqOpt stringLit
 |   "BURSTABLE"
 
 ```
@@ -54,21 +55,21 @@ mysql> CREATE RESOURCE GROUP IF NOT EXISTS rg1
     ->  BURSTABLE;
 Query OK, 0 rows affected (0.08 sec)
 mysql> SELECT * FROM information_schema.resource_groups WHERE NAME ='rg1';
-+------+-------------+-----------+
-| NAME | RU_PER_SEC  | BURSTABLE |
-+------+-------------+-----------+
-| rg1  |         100 | YES       |
-+------+-------------+-----------+
++------+------------+----------+-----------+
+| NAME | RU_PER_SEC | PRIORITY | BURSTABLE |
++------+------------+----------+-----------+
+| rg1  |       100  | MEDIUM   | YES       |
++------+------------+----------+-----------+
 1 rows in set (1.30 sec)
 mysql> ALTER RESOURCE GROUP rg1
     ->  RU_PER_SEC = 200;
 Query OK, 0 rows affected (0.08 sec)
 mysql> SELECT * FROM information_schema.resource_groups WHERE NAME ='rg1';
-+------+-------------+-----------+
-| NAME | RU_PER_SEC  | BURSTABLE |
-+------+-------------+-----------+
-| rg1  |         200 | NO        |
-+------+-------------+-----------+
++------+------------+----------+-----------+
+| NAME | RU_PER_SEC | PRIORITY | BURSTABLE |
++------+------------+----------+-----------+
+| rg1  |       200  | MEDIUM   | NO        |
++------+------------+----------+-----------+
 1 rows in set (1.30 sec)
 ```
 

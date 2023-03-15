@@ -34,11 +34,11 @@ Query OK, 0 rows affected (0.22 sec)
 mysql> CREATE RESOURCE GROUP IF NOT EXISTS rg1 RU_PER_SEC = 500 BURSTABLE;
 Query OK, 0 rows affected (0.08 sec)
 mysql> SELECT * FROM information_schema.resource_groups WHERE NAME ='rg1';
-+------+------------+-----------+
-| NAME | RU_PER_SEC | BURSTABLE |
-+------+------------+-----------+
-| rg1  |        500 | YES       |
-+------+------------+-----------+
++------+------------+----------+-----------+
+| NAME | RU_PER_SEC | PRIORITY | BURSTABLE |
++------+------------+----------+-----------+
+| rg1  |       500 | MEDIUM    | YES       |
++------+------------+----------+-----------+
 1 row in set (0.01 sec)
 
 mysql> DROP RESOURCE GROUP IF EXISTS rg1;

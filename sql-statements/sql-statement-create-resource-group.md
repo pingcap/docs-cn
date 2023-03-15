@@ -59,12 +59,13 @@ mysql> CREATE RESOURCE GROUP IF NOT EXISTS rg2
     ->  RU_PER_SEC = 200;
 Query OK, 0 rows affected (0.08 sec)
 mysql> SELECT * FROM information_schema.resource_groups WHERE NAME ='rg1' or NAME = 'rg2';
-+------+-------------+-----------+
-| NAME | RU_PER_SEC  | BURSTABLE |
-+------+-------------+-----------+
-| rg1  |         100 | YES       |
-| rg2  |         200 | NO        |
-+------+-------------+-----------+
+
++------+------------+----------+-----------+
+| NAME | RU_PER_SEC | PRIORITY | BURSTABLE |
++------+------------+----------+-----------+
+| rg1  |       100  | MEDIUM   | YES       |
+| rg2  |       200  | MEDIUM   | NO        |
++------+------------+----------+-----------+
 2 rows in set (1.30 sec)
 ```
 
