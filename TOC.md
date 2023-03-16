@@ -262,9 +262,9 @@
       - [SQL Plan Management](/sql-plan-management.md)
       - [The Blocklist of Optimization Rules and Expression Pushdown](/blocklist-control-plan.md)
 - Tutorials
-  - [Multiple Data Centers in One City Deployment](/multi-data-centers-in-one-city-deployment.md)
-  - [Three Data Centers in Two Cities Deployment](/three-data-centers-in-two-cities-deployment.md)
-  - [Two Data Centers in One City Deployment](/two-data-centers-in-one-city-deployment.md)
+  - [Multiple Availability Zones in One Region Deployment](/multi-data-centers-in-one-city-deployment.md)
+  - [Three Availability Zones in Two Regions Deployment](/three-data-centers-in-two-cities-deployment.md)
+  - [Two Availability Zones in One Region Deployment](/two-data-centers-in-one-city-deployment.md)
   - Read Historical Data
     - Use Stale Read (Recommended)
       - [Usage Scenarios of Stale Read](/stale-read.md)
