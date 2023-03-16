@@ -42,7 +42,7 @@ This document introduces the user scenarios, supported upstreams and downstreams
 
 ## [Backup & Restore (BR)](/br/backup-and-restore-overview.md)
 
-| User scenario | <span style="font-weight:normal">Migrate a large amount of TiDB custer data by backing up and restoring data</span> |
+| User scenario | <span style="font-weight:normal">Migrate a large amount of TiDB cluster data by backing up and restoring data</span> |
 |---|---|
 | **Upstream** | TiDB |
 | **Downstream (the output file)** | SST, backup.meta files, backup.lock files |
