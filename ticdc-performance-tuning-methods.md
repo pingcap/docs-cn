@@ -1,6 +1,6 @@
 ---
 title: TiCDC 性能分析和优化方法
-summary: 本文介绍了 Performance Overview 仪表盘中 TiCDC 部分，帮助 TiDB 用户了解和监控 TiCDC 工作负载。
+summary: 本文介绍了 Performance Overview 面板中的 TiCDC 部分，帮助你了解和监控 TiCDC 工作负载。
 ---
 
 # TiCDC 性能分析和优化方法
