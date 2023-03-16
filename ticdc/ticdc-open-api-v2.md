@@ -533,7 +533,6 @@ curl -X POST -H "'Content-type':'application/json'" http://127.0.0.1:8300/api/v2
 | `code` | `STRING` 类型，错误码          |
 | `message` | `STRING` 类型，错误的详细信息      |
 
-
 ## 删除同步任务
 
 该接口是幂等的，用于删除一个 changefeed 同步任务，请求成功会返回 `200 OK`。该返回结果表示服务器收到了执行命令指示，并不代表命令被成功执行。
