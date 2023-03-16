@@ -59,7 +59,7 @@ summary: 本文介绍了 Performance Overview 仪表盘中 TiCDC 部分，帮助
 - MQ Worker Send Message Duration Percentile：下游为 Kafka 时 MQ worker 发送消息的延迟
 - Kafka Outgoing Bytes：MQ Workload 写下游事务的流量
 
-示例 2：下游数据库写入速度 对 TiCDC 数据同步性能的影响。
+示例 2：下游数据库写入速度对 TiCDC 数据同步性能的影响
 
 如下图所示，该环境上下游都为 TiDB 集群。上游数据库的 QPS 值，可以通过 `TiCDC Puller output events/s` 确认，第一段负载的下游数据库平均写入延迟高，第二段负载的下游平均写入延迟低，通过 `Transaction Sink Full Flush Duration` 可以确认。
 
