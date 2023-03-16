@@ -27,6 +27,7 @@ aliases: ['/docs-cn/dev/blacklist-control-plan/','/zh/tidb/dev/blacklist-control
 | 聚合下推 | aggregation_push_down | 尝试将执行计划中的聚合算子下推到更底层的计算节点 |
 | TopN 下推 | topn_push_down | 尝试将执行计划中的 TopN 算子下推到离数据源更近的算子上 |
 | Join 重排序 | join_reorder | 对多表 join 确定连接顺序 |
+| 从窗口函数中推导 TopN 或 Limit | derive_topn_from_window | 从窗口函数中推导出 TopN 或者 Limit |
 
 ### 禁用优化规则
 
