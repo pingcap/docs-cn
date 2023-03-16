@@ -89,7 +89,7 @@ mysql> SELECT _tidb_rowid, id FROM t;
 3 rows in set (0.01 sec)
 ```
 
-> 可以看到，由于共用分配器，id 每次自增是 2。[MySQL 兼容模式](/auto-increment.md#mysql-兼容模式) 中改掉了该行为，没有共用分配器，不会跳号。
+可以看到，由于共用分配器，id 每次自增步长是 2。在 [MySQL 兼容模式](/auto-increment.md#mysql-兼容模式)中改掉了该行为，没有共用分配器，因此不会跳号。
 
 > **注意：**
 >
