@@ -194,7 +194,6 @@ explain SELECT * FROM (SELECT ROW_NUMBER() OVER (PARTITION BY id1) AS rownumber 
 
 在该查询中，即使 PARTITION 的列是主键的前缀，但是因为主键不是 clustered index，所以 SQL 没被改写。
 
-
 ### 限制
 
 * 目前支持改写的窗口函数仅包括 ROW_NUMBER()
