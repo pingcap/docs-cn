@@ -35,9 +35,9 @@ summary: 本文介绍了 Performance Overview 面板中的 TiCDC 部分，帮助
         - 下游数据库写入延迟高导致 TiCDC 无法及时将数据同步到下游。
 
 - Changefeed resolved ts lag：TiCDC 节点内部同步状态与上游的进度差，以时间单位秒计算。如果 TiCDC Changefeed resolved ts lag 值很高，可能意味着 TiCDC 系统的 Puller 或者 Sorter 模块数据处理能力不足，或者可能存在网络延迟或磁盘读写速度慢的问题。在这种情况下，需要采取适当的措施，例如增加 TiCDC 实例数量或优化网络配置，以确保 TiCDC 系统的高效和稳定运行。
-- Changefeed 的状态。各状态的解释参考 [Changefeed 状态流转](/ticdc//ticdc-changefeed-overview.md)：
+- The status of changefeeds：Changefeed 各状态的解释，请参考 [Changefeed 状态流转](/ticdc//ticdc-changefeed-overview.md)。
 
-示例1 ：单个 TiCDC 节点上游 QPS 过高导致 checkpoint lag 过高 
+示例 1：单个 TiCDC 节点上游 QPS 过高导致 checkpoint lag 过高 
 
 如下图所示，因为上游 QPS 过高，该集群中只有单个 TiCDC 节点，TiCDC 节点处于过载状态，CPU 使用率较高，Changefeed checkpoint lag 和 Changefeed resolved ts lag 持续增长。Changefeeds 的状态不断出错。你可尝试通过增加资源解决该问题：
 
