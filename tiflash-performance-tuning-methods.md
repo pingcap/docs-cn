@@ -9,7 +9,7 @@ summary: 本文介绍了 Performance Overview 仪表盘中 TiFlash 部分，帮�
 
 ## TiFlash 集群资源利用率
 
-通过以下三个数据，可以快速判断 TiFlash 集群的资源使用率：
+通过以下三个指标，你可以快速判断 TiFlash 集群的资源使用率：
 
 - CPU：每个 TiFlash 实例的 CPU 使用率
 - Memory：每个 TiFlash 实例内存的使用情况
