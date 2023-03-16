@@ -28,6 +28,11 @@ WITH t_topN AS (SELECT a FROM t1 ORDER BY a LIMIT 3) SELECT * FROM (SELECT ROW_N
 * 设置 session 变量 [tidb_opt_derive_topn](/system-variables.md#tidb_opt_derive_topn-从-v700-版本开始引入) 为 `false`
 * 可参照[优化规则及表达式下推的黑名单](/blocklist-control-plan.md)中的关闭方法。
 
+### 限制
+
+* 目前仅有 ROW_NUMBER() 窗口函数支持 SQL 语句改写。
+* 只有当 SQL 语句的过滤条件是针对 ROW_NUMBER() 结果而且过滤条件为 `<` 或者 `<=` 时，TiDB 才支持改写 SQL 语句。
+
 ## 示例
 
 以下通过一些例子对该优化规则进行说明。
@@ -185,8 +190,3 @@ EXPLAIN SELECT * FROM (SELECT ROW_NUMBER() OVER (PARTITION BY id1) AS rownumber 
 ```
 
 在该查询中，即使 PARTITION 的列是主键的前缀，但是因为主键不是聚簇索引，所以 SQL 没被改写。
-
-### 限制
-
-* 目前仅有 ROW_NUMBER() 窗口函数支持 SQL 语句改写。
-* 只有当 SQL 语句的过滤条件是针对 ROW_NUMBER() 结果而且过滤条件为 `<` 或者 `<=` 时，TiDB 才支持改写 SQL 语句。
