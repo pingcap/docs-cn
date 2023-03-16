@@ -5,7 +5,7 @@ summary: 了解 TiFlash 存算分离架构与 S3 支持。
 
 # TiFlash 存算分离架构与 S3 支持
 
-> ** 警告: **
+> **警告：**
 >
 > TiFlash 存算分离架构目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tiflash/issues) 反馈。
 
@@ -46,7 +46,7 @@ TiFlash 存算分离架构适合于希望获得更高性价比的数据分析服
 
 ## 准备条件
 
-准备一个用于存储 TiFlash 数据的 S3 bucket。可以使用已有的 bucket，但是每个 TiDB 集群需要有专门的存储目录。
+准备一个用于存储 TiFlash 数据的 Amazon S3 bucket。你也可以使用已有的 bucket，但需要为每个 TiDB 集群创建专门的存储目录。关于 S3 bucket 的更多信息，请参考 [AWS 文档](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/userguide/creating-buckets-s3.html)。
 
 ## 使用方式
 
