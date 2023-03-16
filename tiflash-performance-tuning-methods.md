@@ -96,6 +96,6 @@ Read flow 加上 Write flow，除以 总的Write Throughput By Instance, 为整�
 
 示例 2 ：[CH-benCHmark 负载](/benchmark/benchmark-tidb-using-ch.md) 公有云环境 Raft 和 IO 指标
 
-如下图所示，Raft Wait Index 等待时间 99 分位数最大为 438 毫秒，Raft Batch Read Index 等待时间 99 分位数最大为 125 毫秒。该集群只有一个 TiFlash 节点，每秒 TiKV 同步到 TiFlash 的增量数据约为 5MB。稳定层((File Descriptor))的最大写入流量为78 MB/s，最大读取流量为221 MB/s，Delta 层(Page)最大写入流量为8 MB/s，最大读取流量为18 MB/s。这个环境中的 TiFlash 使用的是 AWS EBS 云盘，其 IO 吞吐能力相对较弱。
+如下图所示，Raft Wait Index 等待时间 99 分位数最高为 438 毫秒，Raft Batch Read Index 等待时间 99 分位数最高为 125 毫秒。该集群只有一个 TiFlash 节点，每秒 TiKV 同步到 TiFlash 的增量数据约为 5 MB。稳定层 (File Descriptor) 的最大写入流量为 78 MB/s，最大读取流量为 221 MB/s，Delta 层 (Page) 最大写入流量为8 MB/s，最大读取流量为18 MB/s。这个环境中的 TiFlash 使用的是 AWS EBS 云盘，其 IO 吞吐能力相对较弱。
 
 ![CH-TiFlash-MPP](/media/performance/tiflash/ch-1tiflash-raft-io-flow-cloud.png)
