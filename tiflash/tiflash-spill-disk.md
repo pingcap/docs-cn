@@ -25,15 +25,15 @@ summary: 介绍 TiFlash 数据落盘功能。
 
 本示例构造一个占用大量内存的 SQL 语句来对 Hash Aggregation 的落盘功能进行演示：
 
-1. 准备数据：建立一个 2 节点的 TiFlash 集群并导入 TPCH-100 的数据
-2. 执行以下语句
+* 准备数据：建立一个 2 节点的 TiFlash 集群并导入 TPCH-100 的数据
+* 执行以下语句
 
 ```sql
 set tidb_max_bytes_before_tiflash_external_group_by = 0;
 select l_orderkey, max(L_COMMENT), max(L_SHIPMODE), max(L_SHIPINSTRUCT), max(L_SHIPDATE), max(L_EXTENDEDPRICE) from lineitem group by l_orderkey having sum(l_quantity) > 314;
 ```
 
-3. 从 TiFlash 的 log 中可以看到
+* 从 TiFlash 的 log 中可以看到
 
 ```
 [DEBUG] [MemoryTracker.cpp:69] ["Peak memory usage (total): 29.55 GiB."] [source=MemoryTracker] [thread_id=468]
@@ -41,14 +41,14 @@ select l_orderkey, max(L_COMMENT), max(L_SHIPMODE), max(L_SHIPINSTRUCT), max(L_S
 
 说明该 query 在单个 TiFlash 节点上需要消耗 29 G 内存
 
-4. 执行以下语句
+* 执行以下语句
 
 ```sql
 set tidb_max_bytes_before_tiflash_external_group_by = 10737418240;
 select l_orderkey, max(L_COMMENT), max(L_SHIPMODE), max(L_SHIPINSTRUCT), max(L_SHIPDATE), max(L_EXTENDEDPRICE) from lineitem group by l_orderkey having sum(l_quantity) > 314;
 ```
 
-5. 从 TiFlash 的 log 中可以看到
+* 从 TiFlash 的 log 中可以看到
 
 ```
 [DEBUG] [MemoryTracker.cpp:69] ["Peak memory usage (total): 12.80 GiB."] [source=MemoryTracker] [thread_id=110]
