@@ -214,7 +214,7 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 
     更多信息，请参考[用户文档](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置)。
 
-- TiDB Lightning 向 TiKV 传输键值对时支持启用压缩传输 [#41163](https://github.com/pingcap/tidb/issues/41163) @[gozssky](https://github.com/gozssky)
+- TiDB Lightning 向 TiKV 传输键值对时支持启用压缩传输（实验特性） [#41163](https://github.com/pingcap/tidb/issues/41163) @[gozssky](https://github.com/gozssky)
 
     自 v6.6.0 起，TiDB Lightning 支持将本地编码排序后的键值对在网络传输时进行压缩再发送到 TiKV，从而减少网络传输的数据量，降低网络带宽开销。之前版本不支持该功能，在数据量较大的情况下，TiDB Lightning 对网络带宽要求相对较高，且会产生较高的流量费。
 
