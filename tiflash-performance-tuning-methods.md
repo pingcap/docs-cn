@@ -38,7 +38,8 @@ summary: 本文介绍了 Performance Overview 仪表盘中 TiFlash 部分，帮�
 
 ### 延迟指标
 
-你可通过以下指标来了解数 TiFlash 的延迟指标：
+通过以下指标，你可以了解 TiFlash 的延迟处理情况：
+
 - Request Duration Overview: 每秒所有 TiFlash 实例处理所有请求类型的总时长堆叠图。
   - 如果请求类型为 `run_mpp_task`, `dispatch_mpp_task` 和 `mpp_establish_conn`，说明 SQL 语句的执行已经部分或者完全下推到 TiFlash 上进行，通常包含 join 和数据分发的操作，这是 TiFlash 最常见的服务类型。
   - 如果请求类型为 Cop，说明整个语句并没有完全下推到 TiFlash，通常 TiDB 会将全表扫描算子下推到 TiFlash 上进行数据访问和过滤。在堆叠图中，如果 Cop 占据主导地位，需要仔细权衡是否合理。
