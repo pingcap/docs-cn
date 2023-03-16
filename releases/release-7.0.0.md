@@ -18,7 +18,7 @@ TiDB 版本：7.0.0
 
 ### 可扩展性
 
-* TiFlash 引擎支持存算分离和对象存储（实验特性）[#6882](https://github.com/pingcap/tiflash/issues/6882) @[flowbehappy](https://github.com/flowbehappy)
+* TiFlash 引擎支持存算分离和对象存储（实验特性）[#6882](https://github.com/pingcap/tiflash/issues/6882) @[flowbehappy](https://github.com/flowbehappy) **tw:qiancai**
 
     在 v7.0.0 之前的版本中，TiFlash 引擎以存算一体的方式部署，即 TiFlash 节点即是存储节点，也是计算节点；同时，TiFlash 节点只能使用本地存储。存算一体的部署方式使得 TiFlash 的计算能力和存储能力无法独立扩展。在 v7.0.0 版本中，TiFlash 引擎新增存算分离架构，并在存算分离架构下，支持兼容 S3 API 的对象存储。在 TiFlash 存算分离架构下，TiFlash 节点分为计算节点和写节点。这两种节点都可以单独扩缩容，独立调整计算或数据存储能力。TiFlash 引擎的存算分离架构不能和存算一体架构混合使用、相互转换，需要在部署 TiFlash 时进行相应的配置设定，确定使用存算分离架构或者存算一体架构。
 
@@ -26,15 +26,15 @@ TiDB 版本：7.0.0
 
 ### 性能
 
-* 实现 [Fast Online DDL](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 和 PITR 的兼容 [#38045](https://github.com/pingcap/tidb/issues/38045) @[Leavrth](https://github.com/Leavrth)
+* 实现 [Fast Online DDL](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 和 PITR 的兼容 [#38045](https://github.com/pingcap/tidb/issues/38045) @[Leavrth](https://github.com/Leavrth) **tw:ran-huang**
 
-    TiDB v6.5.0 版本支持的 [Fast Online DDL](../system-variables.md###tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 功能和 [PITR](../br/backup-and-restore-overview.md) 未完全兼容，在 TiDB v6.5.0 版本建议通过先停止 [PITR](/br/backup-and-restore-overview.md) 后台备份任务，以 [Fast Online DDL](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 方式快速添加索引，然后再启动 [PITR](/br/backup-and-restore-overview.md) 备份任务实现全量数据备份。
+    TiDB v6.5.0 版本支持的 [Fast Online DDL](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 功能和 [PITR](/br/backup-and-restore-overview.md) 未完全兼容，在 TiDB v6.5.0 版本建议通过先停止 [PITR](/br/backup-and-restore-overview.md) 后台备份任务，以 [Fast Online DDL](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 方式快速添加索引，然后再启动 [PITR](/br/backup-and-restore-overview.md) 备份任务实现全量数据备份。
 
-    从 TiDB v7.0.0 版本开始，该功能和 [PITR](../br/backup-and-restore-overview.md) 已经完全兼容：通过 [PITR](../br/backup-and-restore-overview.md) 恢复集群数据时，将自动回放日志备份期间记录的通过[Fast Online DDL](../system-variables.md###tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 方式添加的索引操作，达到兼容效果。
+    从 TiDB v7.0.0 版本开始，该功能和 [PITR](/br/backup-and-restore-overview.md) 已经完全兼容：通过 [PITR](../br/backup-and-restore-overview.md) 恢复集群数据时，将自动回放日志备份期间记录的通过[Fast Online DDL](/system-variables.md###tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 方式添加的索引操作，达到兼容效果。
 
-    更多信息，请参考[用户文档](../ddl-introduction.md)。
+    更多信息，请参考[用户文档](/ddl-introduction.md)。
 
-* TiFlash 引擎支持 `Null-Aware Semi Join` 和 `Null-Aware Anti Semi Join` 算子 [#6674](https://github.com/pingcap/tiflash/issues/6674) @[gengliqi](https://github.com/gengliqi)
+* TiFlash 引擎支持 `Null-Aware Semi Join` 和 `Null-Aware Anti Semi Join` 算子 [#6674](https://github.com/pingcap/tiflash/issues/6674) @[gengliqi](https://github.com/gengliqi) **tw:Oreoxmt**
 
     `IN`、`NOT IN`、`=ANY`、`!= ALL` 算子引导的关联子查询会转化为 `Semi Join` 或 `Anti Semi Join`，从而提升计算性能。当转换后的 JOIN KEY 的列可能为 NULL 时，需要具有 Null-Aware 特性的 Join 算法，即需要 [`Null-Aware Semi Join`](/explain-subqueries#null-aware-semi-joinin-和--any-子查询) 和 [`Null-Aware Anti Semi Join`](/explain-subqueries#null-aware-anti-semi-joinnot-in-和--all-子查询) 算子。
 
@@ -42,19 +42,19 @@ TiDB 版本：7.0.0
 
     更多信息，请参考[用户文档](/tiflash/tiflash-supported-pushdown-calculations)。
 
-* TiFlash 引擎支持 FastScan 功能 [#5252](https://github.com/pingcap/tiflash/issues/5252) @[hongyunyan](https://github.com/hongyunyan)
+* TiFlash 引擎支持 FastScan 功能 [#5252](https://github.com/pingcap/tiflash/issues/5252) @[hongyunyan](https://github.com/hongyunyan) **tw:Oreoxmt**
 
     TiFlash 引擎从 v6.3.0 版本发布了实验特性的快速扫描功能 (FastScan)。在 v7.0.0 版本中，该功能正式 GA。通过使用系统变量 [`tiflash_fastscan`](/system-variables.md#tiflash_fastscan-从-v630-版本开始引入) 可以启用快速扫描功能。快速扫描功能通过牺牲强一致性保证，可以大幅提升扫表性能。如果对应的表只有 INSERT 操作，没有 UPDATE/DELETE 操作，则快速扫描功能在提升扫表性能的同时，不会损失强一致性。
 
     更多信息，请参考[用户文档](/develop/dev-guide-use-fastscan.md)。
 
-* TiFlash 引擎支持 Selection 延迟物化功能（实验特性） [#5829](https://github.com/pingcap/tiflash/issues/5829) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
+* TiFlash 引擎支持 Selection 延迟物化功能（实验特性） [#5829](https://github.com/pingcap/tiflash/issues/5829) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger) **tw:qiancai**
 
-    当 SELECT 语句中包含过滤条件（ WHERE 子句）时，普通的处理方式是扫描所有数据后进行过滤。Selection 延迟物化功能可以先扫描过滤条件相关列数据，过滤得到符合条件的行后，再扫描这些行的其他列数据，继续后续计算，从而减少扫描 IO 和数据解析的计算量。在 v7.0.0 中，TiFlash 引擎支持 Selection 延迟物化功能，并通过 variable 控制是否启用该功能。当功能启用时，优化器会根据过滤条件的信息，自动判断选择哪些过滤条件下推到 TableScan 算子。
+    当 SELECT 语句中包含过滤条件（WHERE子句）时，普通的处理方式是扫描所有数据后进行过滤。Selection 延迟物化功能可以先扫描过滤条件相关列数据，过滤得到符合条件的行后，再扫描这些行的其他列数据，继续后续计算，从而减少扫描 IO 和数据解析的计算量。在 v7.0.0 中，TiFlash 引擎支持 Selection 延迟物化功能，并通过 variable 控制是否启用该功能。当功能启用时，优化器会根据过滤条件的信息，自动判断选择哪些过滤条件下推到 TableScan 算子。
 
-    更多信息，请参考[用户文档]()。
+    更多信息，请参考[用户文档](/tiflash/tiflash-late-materialization.md)。
 
-* 非 prepared 语句的执行计划可以被缓存（实验特性）[#issue号](链接) @[qw4990](https://github.com/qw4990)
+* 非 prepared 语句的执行计划可以被缓存（实验特性）[#issue号](链接) @[qw4990](https://github.com/qw4990) **tw:Oreoxmt**
 
     执行计划缓存是提升并发 OLTP 负载能力的重要手段， TiDB 已经支持对 [prepared 语句的计划进行缓存](/sql-prepared-plan-cache.md)。 在 v7.0.0 中， 非 prepared 语句的执行计划也能够被缓存，使得执行计划缓存能够被应用在更广泛场景下，进而提升 TiDB 的并发处理能力。
 
@@ -62,23 +62,23 @@ TiDB 版本：7.0.0
 
     更多信息，请参考[用户文档](/sql-non-prepared-plan-cache.md)。
 
-* 解除执行计划缓存对子查询的限制 [#40219](https://github.com/pingcap/tidb/issues/40219) @[fzzf678](https://github.com/fzzf678)
+* 解除执行计划缓存对子查询的限制 [#40219](https://github.com/pingcap/tidb/issues/40219) @[fzzf678](https://github.com/fzzf678) **tw:Oreoxmt**
 
     TiDB v7.0.0 移除了计划缓存对子查询的限制，带有子查询的 SQL 语句的执行计划可以被缓存，比如 " `select * from t where a > (select ...)` "。 这进一步扩大了执行计划缓存的应用范围，提升 SQL 的执行效率。
 
     更多信息，请参考[用户文档](/sql-prepared-plan-cache.md)。
 
-* TiKV 默认打开 `enable-log-recycle` 特性 [#14379](https://github.com/tikv/tikv/issues/14379) @[LykxSassinator](https://github.com/LykxSassinator)
+* TiKV 默认打开 `enable-log-recycle` 特性 [#14379](https://github.com/tikv/tikv/issues/14379) @[LykxSassinator](https://github.com/LykxSassinator) **tw:ran-huang**
 
     TiKV 在 v6.3.0 中引入了 Raft [日志回收](../tikv-configuration-file.md###enable-log-recycle-从-v630-版本开始引入) 特性, 用以减少写负载的长尾延迟。在 v7.0.0 中，该特性将默认开启。
 
-* TiKV 新增 `prefill-for-recycle` 特性[#14371](https://github.com/tikv/tikv/issues/14371) @[LykxSassinator](https://github.com/LykxSassinator)
+* TiKV 新增 `prefill-for-recycle` 特性[#14371](https://github.com/tikv/tikv/issues/14371) @[LykxSassinator](https://github.com/LykxSassinator) **tw:ran-huang**
 
     TiKV 在 v6.3.0 中引入了 Raft [日志回收](../tikv-configuration-file.md###enable-log-recycle-从-v630-版本开始引入) 特性, 用以减少写负载的长尾延迟。但是，"日志回收"需要 Raft 日志文件数量达到一定阈值后方可介入，使得用户无法直观感受该特性带来的写负载的吞吐提升。为了提升用户感受，v7.0.0 中正式引入了 `prefill-for-recycle` 功能，用以控制 TiKV 是否在进程启动时自动生成空的日志文件用于日志回收。该配置项启用时，TiKV 将在初始化时自动填充一批空日志文件用于日志回收，保证日志回收在初始化后立即生效。
 
-* 新增支持下推 `ROW_NUMBER` [窗口函数](/functions-and-operators/expressions-pushed-down.md) 至 TiKV [#13936](https://github.com/tikv/tikv/issues/13936) @[windtalker](https://github.com/windtalker)
+* 新增从[窗口函数](/functions-and-operators/expressions-pushed-down.md)中推导出 TopN/Limit 的优化规则，提升窗口函数的性能 [#13936](https://github.com/tikv/tikv/issues/13936) @[windtalker](https://github.com/windtalker) **tw:qiancai**
 
-* 支持通过 [Fast Online DDL](../system-variables.md###tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 创建唯一索引 [#40730](https://github.com/pingcap/tidb/issues/40730) @[tangenta](https://github.com/tangenta)
+* 支持通过 [Fast Online DDL](../system-variables.md###tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 创建唯一索引 [#40730](https://github.com/pingcap/tidb/issues/40730) @[tangenta](https://github.com/tangenta) **tw:ran-huang**
 
     TiDB v6.5.0 版本支持通过 [Fast Online DDL](../system-variables.md###tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 模式创建普通的二级索引，而 v7.0.0 版本开始则支持通过 [Fast Online DDL](../system-variables.md###tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 模式创建唯一索引。相比于 TiDB v6.1.0，预期大表添加唯一索引的性能约提升为 v6.1.0 的数倍。
 
@@ -86,7 +86,7 @@ TiDB 版本：7.0.0
 
 ### 稳定性
 
-* 支持基于资源组的资源管控 [#38825](https://github.com/pingcap/tidb/issues/38825) @[nolouch](https://github.com/nolouch) @[BornChanger](https://github.com/BornChanger) @[glorv](https://github.com/glorv) @[tiancaiamao](https://github.com/tiancaiamao) @[Connor1996](https://github.com/Connor1996) @[JmPotato](https://github.com/JmPotato) @[hnes](https://github.com/hnes) @[CabinfeverB](https://github.com/CabinfeverB) @[HuSharp](https://github.com/HuSharp)
+* 支持基于资源组的资源管控 [#38825](https://github.com/pingcap/tidb/issues/38825) @[nolouch](https://github.com/nolouch) @[BornChanger](https://github.com/BornChanger) @[glorv](https://github.com/glorv) @[tiancaiamao](https://github.com/tiancaiamao) @[Connor1996](https://github.com/Connor1996) @[JmPotato](https://github.com/JmPotato) @[hnes](https://github.com/hnes) @[CabinfeverB](https://github.com/CabinfeverB) @[HuSharp](https://github.com/HuSharp) **tw:hfxsd**
 
     TiDB 正式发布了基于资源组的资源管控特性，该特性将会极大地提升 TiDB 集群的资源利用效率和性能表现。资源管控特性的引入对 TiDB 具有里程碑的意义，它允许用户将一个分布式数据库集群划分成多个逻辑单元，将不同的数据库用户映射到对应的资源组中，并根据需要设置每个资源组的配额。当集群资源紧张时，来自同一个资源组的会话所使用的全部资源将被限制在配额内，避免其中一个资源组过度消耗，从而影响其他资源组中的会话正常运行。
 
@@ -104,23 +104,23 @@ TiDB 版本：7.0.0
 
   更多信息，请参考[用户文档](/tidb-resource-control.md)。
 
-* 支持 [Fast Online DDL](../system-variables.md###tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 的检查点机制，提升容错性和自动恢复能力 [#42164](https://github.com/pingcap/tidb/issues/42164) @[tangenta](https://github.com/tangenta)
+* 支持 [Fast Online DDL](../system-variables.md###tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 的检查点机制，提升容错性和自动恢复能力 [#42164](https://github.com/pingcap/tidb/issues/42164) @[tangenta](https://github.com/tangenta) **tw:ran-huang**
 
     TiDB v7.0.0 版本引入 [Fast Online DDL](../system-variables.md###tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 的检查点机制，可以大幅提升 [Fast Online DDL](../system-variables.md###tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 的容错性和自动恢复能力。即使在 TiDB DDL Owner 故障重启或切换时，通过周期性记录并同步 DDL 进度，正在执行中的 DDL 仍能以 [Fast Online DDL](../system-variables.md###tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 方式继续执行，从而让 DDL 执行更加稳定高效。
 
     更多信息，请参考[用户文档](../ddl-introduction.md)。
 
-* TiFlash 引擎支持 Spill-to-disk 功能 [#6528](https://github.com/pingcap/tiflash/issues/6528) @[windtalker](https://github.com/windtalker)
+* TiFlash 引擎支持 Spill-to-disk 功能 [#6528](https://github.com/pingcap/tiflash/issues/6528) @[windtalker](https://github.com/windtalker) **tw:ran-huang**
 
     为了执行性能，TiFlash 引擎尽量将数据全部放在内存中运行。当数据量太大，超过内存总大小时，TiFlash 会终止查询，避免内存潮用引发系统崩溃。因此，TiFlash 可处理的数据量受限于内存大小。从 v7.0.0 版本开始，TiFlash 引擎支持 Spill-to-disk 功能，通过调整算子内存使用阈值 `max_bytes_before_external_group_by`、`max_bytes_before_external_sort`、`max_bytes_before_external_join`，控制对应算子的最大内存使用量。当算子使用内存超过一定阈值时，会自动将数据落盘，牺牲一定的性能，从而处理更多数据。
 
     更多信息，请参考[用户文档](/tiflash/tiflash-spill-disk.md)。
 
-* 提升统计信息的收集效率 [#41930](https://github.com/pingcap/tidb/issues/41930) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes)
+* 提升统计信息的收集效率 [#41930](https://github.com/pingcap/tidb/issues/41930) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes) **tw:ran-huang**
 
     在 v7.0.0， TiDB 统计信息收集的逻辑被进一步优化，收集时间大概降低了 25% 左右。 提升了中大型数据库集群的运行效率和稳定性，减少了统计信息收集对集群性能的影响。
 
-* 新增优化器 Hint 对 MPP 进行干预 [#39710](https://github.com/pingcap/tidb/issues/39710) @[Reminiscent](https://github.com/Reminiscent)
+* 新增优化器 Hint 对 MPP 进行干预 [#39710](https://github.com/pingcap/tidb/issues/39710) @[Reminiscent](https://github.com/Reminiscent) **tw:ran-huang**
 
     TiDB 在 v7.0.0 中增加了一系列优化器 Hint，来影响 MPP 操作执行计划的生成。
 
@@ -143,7 +143,7 @@ TiDB 版本：7.0.0
 
 ### 高可用
 
-* TiDB 支持 prefer-leader 选项，在网络不稳定的情况下提供更高的读可用性，降低响应延迟 [#40905](https://github.com/pingcap/tidb/issues/40905) @[LykxSassinator](https://github.com/LykxSassinator)
+* TiDB 支持 prefer-leader 选项，在网络不稳定的情况下提供更高的读可用性，降低响应延迟 [#40905](https://github.com/pingcap/tidb/issues/40905) @[LykxSassinator](https://github.com/LykxSassinator) **tw:ran-huang**
 
     TiDB 支持通过 `tidb_replica_read` 参数控制 TiDB 的数据读取行为，新增支持 `prefer-leader` 选项。当设置为 `prefer-leader` 时，TiDB 会优先选择 leader 副本执行读取操作。当 leader 副本的处理速度明显变慢时，例如由于磁盘或网络性能抖动，TiDB 将选择其他可用的 follower 副本来执行读取操作，从而提供更高的可用性，降低响应延迟。
 
@@ -151,7 +151,7 @@ TiDB 版本：7.0.0
 
 ### SQL 功能
 
-* MySQL 兼容的多值索引 (Multi-Valued Index) GA [#39592](https://github.com/pingcap/tidb/issues/39592) @[xiongjiwei](https://github.com/xiongjiwei) @[qw4990](https://github.com/qw4990)
+* MySQL 兼容的多值索引 (Multi-Valued Index) GA [#39592](https://github.com/pingcap/tidb/issues/39592) @[xiongjiwei](https://github.com/xiongjiwei) @[qw4990](https://github.com/qw4990) **tw:ran-huang**
 
     过滤 JSON 列中某个数组的值是常见的操作，但普通索引对这类操作起不到加速作用。在数组上创建多值索引能够大幅提升过滤的性能。如果 JSON 列中的某个数组上存在多值索引，那么可以利用多值索引过滤带有 `MEMBER OF()`、`JSON_CONTAINS()`、`JSON_OVERLAPS()` 函数的检索条件，从而减少大量的 I/O 消耗，提升运行速度。
 
@@ -159,19 +159,19 @@ TiDB 版本：7.0.0
 
     更多信息，请参考[用户文档](/sql-statements/sql-statement-create-index.md#多值索引)。
 
-* Time to live (TTL) 已基本可用 [#39262](https://github.com/pingcap/tidb/issues/39262) @[lcwangchao](https://github.com/lcwangchao) @[YangKeao](https://github.com/YangKeao)
+* Time to live (TTL) 已基本可用 [#39262](https://github.com/pingcap/tidb/issues/39262) @[lcwangchao](https://github.com/lcwangchao) @[YangKeao](https://github.com/YangKeao) **tw:ran-huang**
 
     TTL 提供了行级别的生命周期控制策略。在 TiDB 中，设置了 TTL 属性的表会根据配置自动检查并删除过期的行数据。TTL 设计的目标是在不影响在线读写负载的前提下，帮助用户周期性且及时地清理不需要的数据。
 
     更多信息，请参考[用户文档](/time-to-live.md)。
 
-* 支持 `ALTER TABLE…REORGANIZE PARTITION` [#15000](https://github.com/pingcap/tidb/issues/15000) @[mjonss](https://github.com/mjonss)
+* 支持 `ALTER TABLE…REORGANIZE PARTITION` [#15000](https://github.com/pingcap/tidb/issues/15000) @[mjonss](https://github.com/mjonss) **tw:qiancai**
 
     TiDB 支持 `ALTER TABLE…REORGANIZE PARTITION` 语法。通过该语法，你可以对表的部分或所有分区进行重新组织，包括合并、拆分、或者其他修改，并且不丢失数据。
 
     更多信息，请参考[用户文档](/partitioned-table.md#重组分区)。
 
-* 支持 Key Partitioning [#41364](https://github.com/pingcap/tidb/issues/41364) @[TonsnakeLin](https://github.com/TonsnakeLin)
+* 支持 Key Partitioning [#41364](https://github.com/pingcap/tidb/issues/41364) @[TonsnakeLin](https://github.com/TonsnakeLin) **tw:qiancai**
 
     TiDB 支持 Key 分区。Key 分区与 Hash 分区都可以保证将数据均匀地分散到一定数量的分区里面，区别是 Hash 分区只能根据一个指定的整数表达式或字段进行分区，而 Key 分区可以根据字段列表进行分区，且 Key 分区的分区字段不局限于整数类型。
 
@@ -179,13 +179,13 @@ TiDB 版本：7.0.0
 
 ### 数据库管理
 
-* TiCDC 支持 storage sink，可输出变更数据至 cloud storage (GA) [#6797](https://github.com/pingcap/tiflow/issues/6797) @[zhaoxinyu](https://github.com/zhaoxinyu)
+* TiCDC 支持 storage sink，可输出变更数据至 cloud storage (GA) [#6797](https://github.com/pingcap/tiflow/issues/6797) @[zhaoxinyu](https://github.com/zhaoxinyu) **tw:hfxsd**
 
     TiCDC 支持将 changed log 输出到 Amazon S3、Azure Blob Storage、NFS，以及兼容 Amazon S3 协议的存储服务中。Cloud storage 价格便宜，使用方便。对于不使用 Kafka 的用户，可以选择使用 storage sink。使用该功能，TiCDC 会将 changed log 保存到文件，发送到存储系统中。用户自研的消费程序定时从存储系统读取新产生的 changed log 进行数据处理。
 
     Storage sink 支持格式为 canal-json 和 csv 的 changed log。更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/stable/ticdc-sink-to-cloud-storage)。
 
-* TiCDC Open API V2 GA @[sdojjy](https://github.com/sdojjy)
+* TiCDC Open API V2 GA @[sdojjy](https://github.com/sdojjy) **tw:hfxsd**
 
     TiCDC 提供 OpenAPI 功能，用户可以通过 OpenAPI v2 对 TiCDC 集群进行查询和运维操作。OpenAPI 的功能是 [`cdc cli` 工具](/ticdc/ticdc-manage-changefeed.md)的一个子集。用户可以通过 OpenAPI 完成 TiCDC 集群的如下运维操作：
 
@@ -224,7 +224,7 @@ TiDB 版本：7.0.0
 
 ### 数据迁移
 
-* Load data 语句集成 Lightning ，用户可以使用 Load data 命令完成原先需要单独使用 Lightning 才能完成的数据导入任务。    [#40499](https://github.com/pingcap/tidb/issues/40499) @[lance6716](https://github.com/lance6716)
+* Load data 语句集成 Lightning ，用户可以使用 Load data 命令完成原先需要单独使用 Lightning 才能完成的数据导入任务。    [#40499](https://github.com/pingcap/tidb/issues/40499) @[lance6716](https://github.com/lance6716) **tw:hfxsd**
 
     在集成 Lightning 之前，Load data 语句只能用于导入位于客户端的数据文件，如果用户要从云存储导入数据，就得借助 Lightning 来实现。但是单独部署 Lightning 又会带来额外的部署成本和管理成本。将 Lightning 逻辑导入能力（TiDB backend ）集成到 Load data 命令后，不仅可以省去 Lightning 的部署和管理成本。还可以借助 Lightning 的功能大大扩展 load data 语句的能力。 部分增强的功能举例说明如下：
 
@@ -237,7 +237,7 @@ TiDB 版本：7.0.0
 
   更多信息，请参考[用户文档](待补充)。
 
-* TiDB Lightning 向 TiKV 传输键值对时支持启用压缩传输 [#41163](https://github.com/pingcap/tidb/issues/41163) @[gozssky](https://github.com/gozssky)
+* TiDB Lightning 向 TiKV 传输键值对时支持启用压缩传输 [#41163](https://github.com/pingcap/tidb/issues/41163) @[gozssky](https://github.com/gozssky) **tw:qiancai**
 
     自 v6.6.0 起，TiDB Lightning 支持将本地编码排序后的键值对在网络传输时进行压缩再发送到 TiKV，从而减少网络传输的数据量，降低网络带宽开销。之前版本不支持该功能，在数据量较大的情况下，TiDB Lightning 对网络带宽要求相对较高，且会产生较高的流量费。
 
@@ -253,7 +253,7 @@ TiDB 版本：7.0.0
 
 ### MySQL 兼容性
 
-* TiDB 支持移除自增列必须是索引的约束 [#issue]() @[tiancaiamao](https://github.com/tiancaiamao)
+* TiDB 支持移除自增列必须是索引的约束 [#issue]() @[tiancaiamao](https://github.com/tiancaiamao) **tw:ran-huang**
 
     TiDB v7.0.0 开始支持移除自增列必须是索引或索引前缀的限制。这意味着用户现在可以更灵活地定义表的主键，并方便地使用自增列实现排序分页，同时避免自增列带来的写入热点问题，并通过使用 Cluster Indexed Table 提高查询性能。之前，TiDB 的行为与 MySQL 一致，要求自增列必须是索引或索引前缀。现在，通过此次更新，您可以使用以下语法创建表并成功移除自增列约束：
 
@@ -267,6 +267,8 @@ TiDB 版本：7.0.0
     ```
 
     此功能不影响 TiCDC 同步数据。
+
+    更多信息，请参考[用户文档]()。
 
 * 兼容性 2
 
