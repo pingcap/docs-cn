@@ -229,8 +229,7 @@ TiDB 版本：7.0.0
     在集成 Lightning 之前，Load data 语句只能用于导入位于客户端的数据文件，如果用户要从云存储导入数据，就得借助 Lightning 来实现。但是单独部署 Lightning 又会带来额外的部署成本和管理成本。将 Lightning 逻辑导入能力（TiDB backend ）集成到 Load data 命令后，不仅可以省去 Lightning 的部署和管理成本。还可以借助 Lightning 的功能大大扩展 load data 语句的能力。 部分增强的功能举例说明如下：
 
     - 支持从 S3 导入数据到 TiDB，且支持通配符一次性匹配多个源文件导入到 TiDB 。
-    - 支持 CSV、TSV、Parquet、SQL 格式的源文件。
-    - 支持导入压缩后的 CSV，Parquet 源文件。支持 ZSTD、GZ、SNAPPY 压缩格式。
+    - 支持 CSV、TSV、Parquet、SQL(mydumper/dumpling) 格式的源文件。
     - 支持 precheck ，可在导入之前将所有不满足导入数据的问题检测出来，用户根据检测结果优化后，再次提交任务。提升任务配置体验。
     - 支持将任务设置为 Detached，让任务在后台执行。
     - 支持任务管理，可通过 show load data jobid 查询任务状态和进展详情。方便用户管理和维护。
