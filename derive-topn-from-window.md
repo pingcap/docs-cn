@@ -1,17 +1,18 @@
 ---
 title: 从窗口函数中推导 TopN 或 Limit
-aliases: ['/docs-cn/dev/derive-topn-from-window/']
 ---
 
 # 从窗口函数中推导 TopN 或 Limit
 
-窗口函数是一种在 SQL 语句中常见的函数，而对于 ROW_NUMBER() 或者 RANK() 等编号相关的窗口函数，一个常见的用法是在进行窗口函数求值之后，对 ROW_NUMBER() 或者 RANK() 的结果做过滤，例如
+[窗口函数](/functions-and-operators/window-functions.md)是一种常见的 SQL 函数。对于 ROW_NUMBER() 或者 RANK() 等编号相关的窗口函数，一种常见的用法是在进行窗口函数求值之后，对求值的结果进行过滤，例如：
 
 ```sql
 SELECT * FROM (SELECT ROW_NUMBER() OVER (ORDER BY a) AS rownumber FROM t) dt WHERE rownumber <= 3
 ```
 
-按照正常的 SQL 执行流程，TiDB 需要对 `t` 表的所有数据进行排序后给每一行都求得相应的 `ROW_NUMBER()` 结果之后再进行 `rownumber <= 3` 的过滤，而该优化可以将原始 SQL 等价改写成
+按照正常的 SQL 执行流程，TiDB 需要先对 `t` 表的所有数据进行排序，然后为每一行都求得相应的 `ROW_NUMBER()` 结果，最后再进行 `rownumber <= 3` 的过滤。 
+
+从 v7.0.0 开始，TiDB 支持从窗口函数中推导 TopN 或 Limit。通过该优化规则，TiDB 可以将原始 SQL 等价改写成以下形式：
 
 ```sql
 WITH t_topN AS (SELECT a FROM t1 ORDER BY a LIMIT 3) SELECT * FROM (SELECT ROW_NUMBER() OVER (ORDER BY a) AS rownumber FROM t_topN) dt WHERE rownumber <= 3
@@ -21,16 +22,16 @@ WITH t_topN AS (SELECT a FROM t1 ORDER BY a LIMIT 3) SELECT * FROM (SELECT ROW_N
 
 有两种方法关闭此优化
 
-* 设置 session 变量 [tidb_opt_derive_topn](/system-variables.md#tidb_opt_derive_topn-从-v610-版本开始引入) 为 false
+* 设置 session 变量 [tidb_opt_derive_topn](/system-variables.md#tidb_opt_derive_topn-从-v700-版本开始引入) 为 `false`
 * 可参照[优化规则及表达式下推的黑名单](/blocklist-control-plan.md)中的关闭方法。
 
 ## 示例
 
-以下通过一些例子对改优化规则进行说明。
+以下通过一些例子对该优化规则进行说明。
 
 ### 不带 PARTITION BY 的窗口函数
 
-#### 示例 1：不带 ORDER BY 的窗口函数
+#### 示例 1：不包含 ORDER BY 的窗口函数
 
 {{< copyable "sql" >}}
 
@@ -56,7 +57,7 @@ explain SELECT * FROM (SELECT ROW_NUMBER() OVER () AS rownumber FROM t) dt WHERE
 
 在该查询中，优化器从窗口函数中推导出来了 Limit 并将它下推给了 TiKV。
 
-#### 示例 2：带 ORDER BY 的窗口函数
+#### 示例 2：包含 ORDER BY 的窗口函数
 
 {{< copyable "sql" >}}
 
@@ -82,13 +83,13 @@ explain SELECT * FROM (SELECT ROW_NUMBER() OVER (ORDER BY value) AS rownumber FR
 
 在该查询中，优化器从窗口函数中推导出来了 TopN 并将它下推给了 TiKV。
 
-### 带 PARTITION BY 的窗口函数
+### 包含 PARTITION BY 的窗口函数
 
 > **注意：**
-> 当窗口函数带有 PARTITION BY 时，该优化仅在 partition 列是主键的前缀且主键本身是 clustered index 的时候才能生效
 >
+> 当窗口函数包含 PARTITION BY 时，该优化规则仅在 partition 列是主键的前缀且主键是聚簇索引的时候才能生效。
 
-#### 示例 3：不带 ORDER BY 的窗口函数
+#### 示例 3：不包含 ORDER BY 的窗口函数
 
 {{< copyable "sql" >}}
 
@@ -115,7 +116,7 @@ explain SELECT * FROM (SELECT ROW_NUMBER() OVER (PARTITION BY id1) AS rownumber 
 
 在该查询中，优化器从窗口函数中推导出来了 Limit 并将它下推给了 TiKV, 值得一提的是这个 Limit 其实是 partition Limit，也就是说 Limit 实际上作用于每个不同的 id1 的值组成一个 partition 上。
 
-#### 示例 4：带 ORDER BY 的窗口函数
+#### 示例 4：包含 ORDER BY 的窗口函数
 
 {{< copyable "sql" >}}
 
@@ -140,7 +141,7 @@ explain SELECT * FROM (SELECT ROW_NUMBER() OVER (PARTITION BY id1 ORDER BY value
 +------------------------------------+----------+-----------+---------------+----------------------------------------------------------------------------------------------------------------------+
 ```
 
-在该查询中，优化器从窗口函数中推导出来了 TopN 并将它下推给了 TiKV, 值得一提的是这个 TopN 其实是 partition TopN。
+在该查询中，优化器从窗口函数中推导出来了 TopN 并将它下推给了 TiKV。需要注意的是，这个 TopN 其实是 partition 的 TopN。
 
 #### 示例 5：PARTITION BY 列不是主键的前缀
 
@@ -168,7 +169,7 @@ explain SELECT * FROM (SELECT ROW_NUMBER() OVER (PARTITION BY value1) AS rownumb
 
 在该查询中，因为 partition 的列不是主键的前缀，所以 SQL 没有被改写。
 
-#### 示例 6：PARTITION BY 列主键的前缀, 但是主键不是 clustered index
+#### 示例 6：PARTITION BY 列是主键的前缀，但主键不是聚簇索引
 
 {{< copyable "sql" >}}
 
@@ -192,10 +193,9 @@ explain SELECT * FROM (SELECT ROW_NUMBER() OVER (PARTITION BY id1) AS rownumber 
 +----------------------------------+----------+-----------+---------------+-----------------------------------------------------------------------------------------------+
 ```
 
-在该查询中，即使 PARTITION 的列是主键的前缀，但是因为主键不是 clustered index，所以 SQL 没被改写。
+在该查询中，即使 PARTITION 的列是主键的前缀，但是因为主键不是聚簇索引，所以 SQL 没被改写。
 
 ### 限制
 
-* 目前支持改写的窗口函数仅包括 ROW_NUMBER()
-* 当对 ROW_NUMBER() 过滤条件不是 `<` 或者 `<=` 时不支持改写
-* 当过滤条件不是针对 ROW_NUMBER() 时不支持改写
+* 目前仅有 ROW_NUMBER() 窗口函数支持 SQL 语句改写。
+* 只有当 SQL 语句的过滤条件是针对 ROW_NUMBER() 结果而且过滤条件为 `<` 或者 `<=` 时，TiDB 才支持改写 SQL 语句。
