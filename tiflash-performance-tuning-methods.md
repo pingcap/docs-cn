@@ -1,6 +1,6 @@
 ---
 title: TiFlash 性能分析和优化方法
-summary: 本文介绍了 Performance Overview 仪表盘中 TiFlash 部分，帮助 TiDB 用户了解和监控 TiFlash MPP 的工作负载。
+summary: 本文介绍了 Performance Overview 面板中 TiFlash 部分，帮助你了解和监控 TiFlash 的工作负载。
 ---
 
 # TiFlash 性能分析和优化方法
