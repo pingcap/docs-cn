@@ -18,7 +18,7 @@ SELECT * FROM (SELECT ROW_NUMBER() OVER (ORDER BY a) AS rownumber FROM t) dt WHE
 WITH t_topN AS (SELECT a FROM t1 ORDER BY a LIMIT 3) SELECT * FROM (SELECT ROW_NUMBER() OVER (ORDER BY a) AS rownumber FROM t_topN) dt WHERE rownumber <= 3
 ```
 
-可以看出，该优化从窗口函数与后续的过滤条件中推导出了一个 TopN 算子，相比于原始 SQL 中的 Sort 算子，TopN 算子的运行效率远高于 Sort 算子，而且 TiKV/TiFlash 支持 TopN 算子的下推，这能进一步加速改写之后的 SQL 的性能。
+可以看出，改写后，TiDB 可以从窗口函数与后续的过滤条件中推导出一个 TopN 算子，相比于原始 SQL 中的 Sort 算子（对应 ORDER BY ），TopN 算子的运行效率远高于 Sort 算子，而且 TiKV 和 TiFlash 均支持 TopN 算子的下推，因此这能进一步加速改写之后的 SQL 的性能。
 
 从窗口函数中推导 TopN 或 Limit 这个优化规则默认关闭。你可以通过将设置 session 变量 [tidb_opt_derive_topn](/system-variables.md#tidb_opt_derive_topn-从-v700-版本开始引入) 为 ON 开启。
 
@@ -38,9 +38,9 @@ WITH t_topN AS (SELECT a FROM t1 ORDER BY a LIMIT 3) SELECT * FROM (SELECT ROW_N
 {{< copyable "sql" >}}
 
 ```sql
-create table t(id int, value int);
-set tidb_opt_derive_topn=on;
-explain SELECT * FROM (SELECT ROW_NUMBER() OVER () AS rownumber FROM t) dt WHERE rownumber <= 3;
+CREATE TABLE t(id int, value int);
+SET tidb_opt_derive_topn=on;
+EXPLAIN SELECT * FROM (SELECT ROW_NUMBER() OVER () AS rownumber FROM t) dt WHERE rownumber <= 3;
 ```
 
 ```
@@ -64,9 +64,9 @@ explain SELECT * FROM (SELECT ROW_NUMBER() OVER () AS rownumber FROM t) dt WHERE
 {{< copyable "sql" >}}
 
 ```sql
-create table t(id int, value int);
-set tidb_opt_derive_topn=on;
-explain SELECT * FROM (SELECT ROW_NUMBER() OVER (ORDER BY value) AS rownumber FROM t) dt WHERE rownumber <= 3;
+CREATE TABLE t(id int, value int);
+SET tidb_opt_derive_topn=on;
+EXPLAIN SELECT * FROM (SELECT ROW_NUMBER() OVER (ORDER BY value) AS rownumber FROM t) dt WHERE rownumber <= 3;
 ```
 
 ```
@@ -96,9 +96,9 @@ explain SELECT * FROM (SELECT ROW_NUMBER() OVER (ORDER BY value) AS rownumber FR
 {{< copyable "sql" >}}
 
 ```sql
-create table t(id1 int, id2 int, value1 int, value2 int, primary key(id1,id2) clustered);
-set tidb_opt_derive_topn=on;
-explain SELECT * FROM (SELECT ROW_NUMBER() OVER (PARTITION BY id1) AS rownumber FROM t) dt WHERE rownumber <= 3;
+CREATE TABLE t(id1 int, id2 int, value1 int, value2 int, primary key(id1,id2) clustered);
+SET tidb_opt_derive_topn=on;
+EXPLAIN SELECT * FROM (SELECT ROW_NUMBER() OVER (PARTITION BY id1) AS rownumber FROM t) dt WHERE rownumber <= 3;
 ```
 
 ```
@@ -123,9 +123,9 @@ explain SELECT * FROM (SELECT ROW_NUMBER() OVER (PARTITION BY id1) AS rownumber 
 {{< copyable "sql" >}}
 
 ```sql
-create table t(id1 int, id2 int, value1 int, value2 int, primary key(id1,id2) clustered);
-set tidb_opt_derive_topn=on;
-explain SELECT * FROM (SELECT ROW_NUMBER() OVER (PARTITION BY id1 ORDER BY value1) AS rownumber FROM t) dt WHERE rownumber <= 3;
+CREATE TABLE t(id1 int, id2 int, value1 int, value2 int, primary key(id1,id2) clustered);
+SET tidb_opt_derive_topn=on;
+EXPLAIN SELECT * FROM (SELECT ROW_NUMBER() OVER (PARTITION BY id1 ORDER BY value1) AS rownumber FROM t) dt WHERE rownumber <= 3;
 ```
 
 ```
@@ -150,9 +150,9 @@ explain SELECT * FROM (SELECT ROW_NUMBER() OVER (PARTITION BY id1 ORDER BY value
 {{< copyable "sql" >}}
 
 ```sql
-create table t(id1 int, id2 int, value1 int, value2 int, primary key(id1,id2) clustered);
-set tidb_opt_derive_topn=on;
-explain SELECT * FROM (SELECT ROW_NUMBER() OVER (PARTITION BY value1) AS rownumber FROM t) dt WHERE rownumber <= 3;
+CREATE TABLE t(id1 int, id2 int, value1 int, value2 int, primary key(id1,id2) clustered);
+SET tidb_opt_derive_topn=on;
+EXPLAIN SELECT * FROM (SELECT ROW_NUMBER() OVER (PARTITION BY value1) AS rownumber FROM t) dt WHERE rownumber <= 3;
 ```
 
 ```
@@ -176,9 +176,9 @@ explain SELECT * FROM (SELECT ROW_NUMBER() OVER (PARTITION BY value1) AS rownumb
 {{< copyable "sql" >}}
 
 ```sql
-create table t(id1 int, id2 int, value1 int, value2 int, primary key(id1,id2) nonclustered);
-set tidb_opt_derive_topn=on;
-explain SELECT * FROM (SELECT ROW_NUMBER() OVER (PARTITION BY id1) AS rownumber FROM t use index()) dt WHERE rownumber <= 3;
+CREATE TABLE t(id1 int, id2 int, value1 int, value2 int, primary key(id1,id2) nonclustered);
+SET tidb_opt_derive_topn=on;
+EXPLAIN SELECT * FROM (SELECT ROW_NUMBER() OVER (PARTITION BY id1) AS rownumber FROM t use index()) dt WHERE rownumber <= 3;
 ```
 
 ```
