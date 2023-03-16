@@ -256,10 +256,7 @@ enable-table-across-nodes = true
 region-threshold = 100000
 ```
 
-> **注意：**
->
-> 一个表包含的 Region 个数可用如下 SQL 查询：
->
-> ```sql
-> SELECT COUNT(*) FROM INFORMATION_SCHEMA.TIKV_REGION_STATUS WHERE DB_NAME="库名" AND TABLE_NAME="表名" AND IS_INDEX=0;
-> ```
+一个表包含的 Region 个数可用如下 SQL 查询：
+
+```sql
+SELECT COUNT(*) FROM INFORMATION_SCHEMA.TIKV_REGION_STATUS WHERE DB_NAME="database1" AND TABLE_NAME="table1" AND IS_INDEX=0;
