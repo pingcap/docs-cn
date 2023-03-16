@@ -87,7 +87,6 @@ summary: 本文介绍了 Performance Overview 仪表盘中 TiFlash 部分，帮�
   
 Read flow 加上 Write flow，除以 总的Write Throughput By Instance, 为整个 TiFlash 集群的写放大倍数
 
-
 示例 1 ：[CH 负载](https://docs.pingcap.com/zh/tidb/dev/benchmark-tidb-using-ch) OP 环境 Raft 和 IO 指标
 
 如下图所示，该 TiFlash 集群的 Raft Wait Index 和 Raft Batch Read Index 99 分位数较高，分别为 3.24 秒和 753 毫秒。这是因为该集群的 TiFlash 负载较高，数据同步存在延迟。
