@@ -341,7 +341,7 @@ curl -X GET http://127.0.0.1:8300/api/v2/health
 | 参数名                 | 说明                                              |
 |:--------------------|:------------------------------------------------|
 | `delimiter`         | `STRING` 类型，字段之间的分隔符。必须为 ASCII 字符，默认值为 `,`。     |
-| `include_commit_ts` | `BOOLEAN` 类型，是否在 CSV 行中包含 commit-ts。默认值为 false。 |
+| `include_commit_ts` | `BOOLEAN` 类型，是否在 CSV 行中包含 commit-ts。默认值为 `false`。 |
 | `null`              | `STRING` 类型，如果这一列是 null，那这一列该如何表示。默认是用 '\N' 来表示。 |
 | `quote`             | `STRING` 类型，用于包裹字段的引号字符。空值代表不使用引号字符。默认值为 `"`。   |
 
