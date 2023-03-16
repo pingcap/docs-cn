@@ -61,7 +61,7 @@ summary: 本文介绍了 Performance Overview 仪表盘中 TiCDC 部分，帮助
 
 示例 2：下游数据库写入速度对 TiCDC 数据同步性能的影响
 
-如下图所示，该环境上下游都为 TiDB 集群。上游数据库的 QPS 值，可以通过 `TiCDC Puller output events/s` 确认，第一段负载的下游数据库平均写入延迟高，第二段负载的下游平均写入延迟低，通过 `Transaction Sink Full Flush Duration` 可以确认。
+如下图所示，该环境上下游都为 TiDB 集群。通过 `TiCDC Puller output events/s` 可以确认上游数据库的 QPS 值。通过 `Transaction Sink Full Flush Duration` 可以确认，第一段负载的下游数据库平均写入延迟高，第二段负载的下游平均写入延迟低。
 
 在第一段负载期间，由于下游 TiDB 集群写入数据缓慢，导致 TiCDC 消费数据的速度跟不上上游的 QPS，引起 Changefeed checkpoint lag 不断增长。然而，Changefeed resolved ts lag 仍然在 300 毫秒以内，说明同步延迟和吞吐瓶颈不在 puller 和 sorter 模块中，而在下游的 sink 模块。在第二段负载期间，因为下游 TiDB 集群的写入速度快，TiCDC 同步数据的速度完全追上了上游的速度，因此 Changefeed checkpoint lag 和 Changefeed resolved ts lag 保持在 500 毫秒以内，此时 TiCDC 的同步速度较为理想。
 
