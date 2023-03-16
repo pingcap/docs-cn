@@ -20,7 +20,9 @@ WITH t_topN AS (SELECT a FROM t1 ORDER BY a LIMIT 3) SELECT * FROM (SELECT ROW_N
 
 可以看出，该优化从窗口函数与后续的过滤条件中推导出了一个 TopN 算子，相比于原始 SQL 中的 Sort 算子，TopN 算子的运行效率远高于 Sort 算子，而且 TiKV/TiFlash 支持 TopN 算子的下推，这能进一步加速改写之后的 SQL 的性能。
 
-有两种方法关闭此优化
+从窗口函数中推导 TopN 或 Limit 这个优化规则默认关闭。你可以通过将设置 session 变量 [tidb_opt_derive_topn](/system-variables.md#tidb_opt_derive_topn-从-v700-版本开始引入) 为 ON 开启。
+
+开启后，如需关闭，可以进行以下操作之一：
 
 * 设置 session 变量 [tidb_opt_derive_topn](/system-variables.md#tidb_opt_derive_topn-从-v700-版本开始引入) 为 `false`
 * 可参照[优化规则及表达式下推的黑名单](/blocklist-control-plan.md)中的关闭方法。
