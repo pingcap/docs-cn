@@ -6,13 +6,17 @@ aliases: ['/docs-cn/dev/derive-topn-from-window/']
 # 从窗口函数中推导 TopN 或 Limit
 
 窗口函数是一种在 SQL 语句中常见的函数，而对于 row_number() 或者 rank() 等编号相关的窗口函数，一个常见的用法是在进行窗口函数求值之后，对 row_number() 或者 rank() 的结果做过滤，例如
+
 ```sql
 select * from (select row_number() over (order by a) as rownumber from t) DT where rownumber <= 3
 ```
+
 按照正常的 SQL 执行流程，TiDB 需要对 `t` 表的所有数据进行排序后给每一行都求得相应的 `row_number()` 结果之后再进行 `rownumber <= 3` 的过滤，而该优化可以将原始 SQL 等价改写成
+
 ```sql
 WITH t_topN as (select a from t1 order by a limit 3) select * from (select row_number() over (order by a) as rownumber from t_topN) DT where rownumber <= 3
 ```
+
 可以看出，该优化从窗口函数与后续的过滤条件中推导出了一个 TopN 算子，相比于原始 SQL 中的 Sort 算子，TopN 算子的运行效率远高于 Sort 算子，而且 TiKV/TiFlash 支持 TopN 算子的下推，这能进一步加速改写之后的 SQL 的性能。
 
 有两种方法关闭此优化
