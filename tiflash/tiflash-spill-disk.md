@@ -15,25 +15,37 @@ summary: 介绍 TiFlash 数据落盘功能。
 
 ## TiFlash 数据落盘的触发机制
 
-目前 TiFlash 支持落盘的算子都有相应的配置来控制落盘的阈值
-* max_bytes_before_external_join: 控制 Hash Join 算子是否落盘的阈值，设置为 0 则不落盘，否则当 Hash Join 内存使用超过该阈值时会触发数据落盘
-* max_bytes_before_external_group_by: 控制 Hash Aggregation 算子是否落盘的阈值，设置为 0 则不落盘，否则当 Hash Aggregation 内存使用超过该阈值时会触发数据落盘
-* max_bytes_before_external_sort: 控制 TopN 以及 Sort 算子是否落盘的阈值，设置为 0 则不落盘，否则当 TopN 或者 Sort 内存使用超过该阈值时会触发数据落盘
+目前 TiFlash 支持落盘的算子都有相应的 TiDB session 变量来控制落盘的阈值
+* [tidb_max_bytes_before_tiflash_external_group_by](/system-variables.md#tidb_max_bytes_before_tiflash_external_group_by-从-v700-版本开始引入)
+* [tidb_max_bytes_before_tiflash_external_join](/system-variables.md#tidb_max_bytes_before_tiflash_external_join-从-v700-版本开始引入)
+* [tidb_max_bytes_before_tiflash_external_sort](/system-variables.md#tidb_max_bytes_before_tiflash_external_sort-从-v700-版本开始引入)
 
 ## 示例
 本示例构造一个占用大量内存的 SQL 语句来对 Hash Aggregation 的落盘功能进行演示：
 1. 准备数据：建立一个 2 节点的 TiFlash 集群并导入 TPCH-100 的数据
-2. 通过 [tiup cluster edit-config](/tiup/tiup-component-cluster-edit-config.md) 将集群中 TiFlash 的 max_bytes_before_external_group_by 配置为 0
-3. 执行以下语句
+2. 执行以下语句
+
 ```sql
-select l_orderkey, max(L_COMMENT), max(L_SHIPMODE), max(L_SHIPINSTRUCT), max(L_SHIPDATE), max(L_EXTENDEDPRICE) from lineitem group by l_orderkey having sum(l_quantity) > 314
+set tidb_max_bytes_before_tiflash_external_group_by = 0;
+select l_orderkey, max(L_COMMENT), max(L_SHIPMODE), max(L_SHIPINSTRUCT), max(L_SHIPDATE), max(L_EXTENDEDPRICE) from lineitem group by l_orderkey having sum(l_quantity) > 314;
 ```
-4. 从 TiFlash 的 log 中可以看到
+
+3. 从 TiFlash 的 log 中可以看到
+
 ```
 [DEBUG] [MemoryTracker.cpp:69] ["Peak memory usage (total): 29.55 GiB."] [source=MemoryTracker] [thread_id=468]
 ```
+
 说明该 query 在单个 TiFlash 节点上需要消耗 29 G 内存
-5. 通过 [tiup cluster edit-config](/tiup/tiup-component-cluster-edit-config.md) 将集群中 TiFlash 的 max_bytes_before_external_group_by 配置为 10737418240 (10 G)，继续运行上述 query，从 TiFlash 的 log 里面可以看到
+4. 执行以下语句
+
+```sql
+set tidb_max_bytes_before_tiflash_external_group_by = 10737418240;
+select l_orderkey, max(L_COMMENT), max(L_SHIPMODE), max(L_SHIPINSTRUCT), max(L_SHIPDATE), max(L_EXTENDEDPRICE) from lineitem group by l_orderkey having sum(l_quantity) > 314;
+```
+
+5. 从 TiFlash 的 log 中可以看到
+
 ```
 [DEBUG] [MemoryTracker.cpp:69] ["Peak memory usage (total): 12.80 GiB."] [source=MemoryTracker] [thread_id=110]
 ```

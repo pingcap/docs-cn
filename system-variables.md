@@ -2174,6 +2174,45 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 单位：秒
 - 这个变量用于指定自动 ANALYZE 的最大执行时间。当执行时间超出指定的时间时，自动 ANALYZE 会被终止。当该变量值为 0 时，自动 ANALYZE 没有最大执行时间的限制。
 
+### `tidb_max_bytes_before_tiflash_external_group_by` <span class="version-mark">从 v7.0.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 类型：整数型
+- 默认值：`-1`
+- 范围：`[-1, 9223372036854775807]`
+- 这个变量用于指定 TiFlash 中带 group by 的 hash aggregation 算子的最大内存使用量，超过该值之后 TiFlash 会触发 hash aggregation 算子的落盘。当该变量值为 -1 时，TiDB 不传递该变量给 TiFlash，只有该变量值大于等于 0 时 TiDB 才会传递给变量给 TiFlash，而该变量为 0 时表示内存使用无限制，即 TiFlash hash aggregation 算子不会触发落盘。
+
+> **注意：**
+>
+> 假设一个 TiDB 集群有多个 TiFlash 节点，aggregation 一般来说会在多个 TiFlash 节点中分布式执行，而该变量是指单个 TiFlash 节点中 aggregation 算子的最大内存使用量。
+
+### `tidb_max_bytes_before_tiflash_external_join` <span class="version-mark">从 v7.0.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 类型：整数型
+- 默认值：`-1`
+- 范围：`[-1, 9223372036854775807]`
+- 这个变量用于指定 TiFlash 中带等值 join 条件的 hash join 算子的最大内存使用量，超过该值之后 TiFlash 会触发 hash join 算子的落盘。当该变量值为 -1 时，TiDB 不传递该变量给 TiFlash，只有该变量值大于等于 0 时 TiDB 才会传递给变量给 TiFlash，而该变量为 0 时表示内存使用无限制，即 TiFlash hash join 算子不会触发落盘。
+
+> **注意：**
+>
+> 假设一个 TiDB 集群有多个 TiFlash 节点，join 一般来说会在多个 TiFlash 节点中分布式执行，而该变量是指单个 TiFlash 节点中 join 算子的最大内存使用量。
+
+### `tidb_max_bytes_before_tiflash_external_sort` <span class="version-mark">从 v7.0.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 类型：整数型
+- 默认值：`-1`
+- 范围：`[-1, 9223372036854775807]`
+- 这个变量用于指定 TiFlash 中带 topN 和 sort 算子的最大内存使用量，超过该值之后 TiFlash 会触发 topN 和 sort 算子的落盘。当该变量值为 -1 时，TiDB 不传递该变量给 TiFlash，只有该变量值大于等于 0 时 TiDB 才会传递给变量给 TiFlash，而该变量为 0 时表示内存使用无限制，即 TiFlash topN 和 sort 算子不会触发落盘。
+
+> **注意：**
+>
+> 假设一个 TiDB 集群有多个 TiFlash 节点，topN 和 sort 一般来说会在多个 TiFlash 节点中分布式执行，而该变量是指单个 TiFlash 节点中 topN 和 sort 算子的最大内存使用量。
+
 ### `tidb_max_chunk_size`
 
 - 作用域：SESSION | GLOBAL
