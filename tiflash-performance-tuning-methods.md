@@ -17,7 +17,7 @@ summary: 本文介绍了 Performance Overview 仪表盘中 TiFlash 部分，帮�
 
 示例：CH 负载资源使用率 
 
-- 该 TiFlash 集群包含两个节点，每个节点配置为 16 核心、48G 内存。当 CH 负载运行时，CPU 利用率最高可达到 1500%，内存占用最大可达 20GB，IO 利用率达到 91%。这表明 TiFlash 节点资源接近饱和状态。
+该 TiFlash 集群包含两个节点，每个节点配置均为 16 核、48G 内存。当 CH 负载运行时，CPU 利用率最高可达到 1500%，内存占用最大可达 20GB，IO 利用率达到 91%。这表明 TiFlash 节点资源接近饱和状态。
 
 ![CH-TiFlash-MPP](/media/performance/tiflash/ch-2tiflash-op.png)
 
