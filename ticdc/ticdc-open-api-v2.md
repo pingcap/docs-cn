@@ -28,13 +28,13 @@ TiCDC 提供 OpenAPI 功能，你可以通过 OpenAPI v2 对 TiCDC 集群进行�
 - [驱逐 owner 节点](#驱逐-owner-节点)
 - [动态调整 TiCDC Server 日志级别](#动态调整-ticdc-server-日志级别)
 
-所有 API 的请求体与返回值统一使用 JSON 格式数据。请求如果成功则统一返回 `200 OK` 。本文档以下部分描述当前提供的 API 的具体使用方法。
+所有 API 的请求体与返回值统一使用 JSON 格式数据。请求如果成功，则统一返回 `200 OK` 。本文档以下部分描述当前提供的 API 的具体使用方法。
 
-在下文的示例描述中，假设 TiCDC server 的监听 IP 地址为 `127.0.0.1`，端口为 `8300`。在启动 TiCDC server 时可以通过 `--addr=ip:port` 指定绑定的 IP 和端口。
+在下文的示例描述中，假设 TiCDC server 的监听 IP 地址为 `127.0.0.1`，端口为 `8300`。在启动 TiCDC server 时，可以通过 `--addr=ip:port` 指定 TiCDC 绑定的 IP 地址和端口。
 
 ## API 统一错误格式
 
-对 API 发起的请求后，如发生错误，返回错误信息的格式如下所示：
+对 API 发起请求后，如发生错误，返回错误信息的格式如下所示：
 
 ```json
 {
@@ -47,7 +47,7 @@ TiCDC 提供 OpenAPI 功能，你可以通过 OpenAPI v2 对 TiCDC 集群进行�
 
 ## API List 接口统一返回格式
 
-一个 API 请求如果是返回一个资源列表，比如说请求返回所有的 `Captures`，TiCDC 统一的返回格式如下：
+一个 API 请求如果返回是一个资源列表（例如，返回所有的服务进程 `Captures`），TiCDC 统一的返回格式如下：
 
 ```json
 {
@@ -106,7 +106,7 @@ curl -X GET http://127.0.0.1:8300/api/v2/status
 - `id`：该节点的 capture ID。
 - `pid`：该节点 capture 进程的 PID。
 - `is_owner`：表示该节点是否是 owner。
-- `liveness`: 该节点的 liveness 状态。`0` 表示正常，`1` 表示处于 `graceful shutdown` 状态。
+- `liveness`: 该节点是否在线。`0` 表示正常，`1` 表示处于 `graceful shutdown` 状态。
 
 ## 检查 TiCDC 集群的健康状态
 
@@ -253,16 +253,16 @@ curl -X GET http://127.0.0.1:8300/api/v2/health
 | `replica_config` | 同步任务的配置参数。（非必选）                                                                     |
 | **`sink_uri`**   | `STRING` 类型，同步任务下游的地址。（**必选**）                                                      |
 | `start_ts`       | `UINT64` 类型，指定 changefeed 的开始 TSO。TiCDC 集群将从这个 TSO 开始拉取数据。默认为当前时间。（非必选）             |
-| `target_ts`      | `UINT64` 类型，指定 changefeed 的目标 TSO。TiCDC 集群拉取数据直到这个 TSO 停止。默认为空，即 TiCDC 不会自动停止。（非必选） |
+| `target_ts`      | `UINT64` 类型，指定 changefeed 的目标 TSO。达到这个 TSO 后，TiCDC 集群将停止拉取数据。默认为空，即 TiCDC 不会自动停止。（非必选） |
 
-`changefeed_id`、`start_ts`、`target_ts`、`sink_uri` 的含义和格式与[使用 cli 创建同步任务](/ticdc/ticdc-manage-changefeed.md#创建同步任务) 中所作的解释相同，具体解释请参见该文档。需要注意，当在 `sink_uri` 中指定证书的路径时，须确保已将对应证书上传到对应的 TiCDC server 上。
+`changefeed_id`、`start_ts`、`target_ts`、`sink_uri` 的含义和格式与[使用 cli 创建同步任务](/ticdc/ticdc-manage-changefeed.md#创建同步任务)中所作的解释相同，具体解释请参见该文档。需要注意，当在 `sink_uri` 中指定证书的路径时，须确保已将对应证书上传到对应的 TiCDC server 上。
 
 `replica_config` 参数说明如下：
 
 | 参数名                       | 说明                                                                                                  |
 |:--------------------------|:----------------------------------------------------------------------------------------------------|
 | `bdr_mode`                | `BOOLEAN` 类型，是否开启[双向同步复制](/ticdc/ticdc-bidirectional-replication.md)。默认值为 `false`。（非必选）            |
-| `case_sensitive`          | `BOOLEAN` 类型，是否大小写敏感 table name 过滤，默认值为 `true`。（非必选）                                                |
+| `case_sensitive`          | `BOOLEAN` 类型，过滤表名时大小写是否敏感，默认值为 `true`。（非必选）                                                |
 | `check_gc_safe_point`     | `BOOLEAN` 类型，是否检查同步任务的开始时间早于 GC 时间，默认值为 `true`。（非必选）                                               |
 | `consistent`              | Redo log 配置。（非必选）                                                                                   |
 | `enable_old_value`        | `BOOLEAN` 类型，是否输出 old value 值。（非必选）                                                                 |
@@ -273,7 +273,7 @@ curl -X GET http://127.0.0.1:8300/api/v2/health
 | `memory_quota`            | `UINT64` 类型，同步任务的内存 quota。（非必选）                                                                     |
 | `mounter`                 | 同步任务 `mounter` 配置。（非必选）                                                                             |
 | `sink`                    | 同步任务的`sink`配置。（非必选）                                                                                 |
-| `sync_point_interval`     | `STRING` 类型，注意返回值为 `UINT64` 类型的纳秒级时间，`sync point` 功能开启时，对齐上下游 snapshot 的时间间隔。默认值为 10m，最小值为 `30s`。（非必选） |
+| `sync_point_interval`     | `STRING` 类型，注意返回值为 `UINT64` 类型的纳秒级时间，`sync point` 功能开启时，对齐上下游 snapshot 的时间间隔。默认值为 `10m`，最小值为 `30s`。（非必选） |
 | `sync_point_retention`    | `STRING` 类型，注意返回值为 `UINT64` 类型的纳秒级时间，`sync point` 功能开启时，在下游表中保存的数据的时长，超过这个时间的数据会被清理。默认值为 `24h`。（非必选） |
 
 `consistent` 参数说明如下：
@@ -303,8 +303,8 @@ curl -X GET http://127.0.0.1:8300/api/v2/health
 |:-------------------------------|:--------------------------------------------------------------------------------------------|
 | `ignore_delete_value_expr`     | `STRING ARRAY` 类型，如 `"name = 'john'"` 表示过滤掉包含 `name = 'john'` 条件的 DELETE DML。（非必选）            |
 | `ignore_event`                 | `STRING ARRAY` 类型，如 `["insert"]` 表示过滤掉 INSERT 事件。（非必选）                                      |
-| `ignore_insert_value_expr`     | `STRING ARRAY` 类型，如 "id >= 100" 表示过滤掉包含 `id >= 100` 条件的 INSERT DML。（非必选）                     |
-| `ignore_sql`                   | `STRING ARRAY` 类型，如 `["^drop", "add column"]` 表示过滤掉以 "DROP" 开头或者包含 "ADD COLUMN" 的 DDL。（非必选） |
+| `ignore_insert_value_expr`     | `STRING ARRAY` 类型，如 `"id >= 100"` 表示过滤掉包含 `id >= 100` 条件的 INSERT DML。（非必选）                     |
+| `ignore_sql`                   | `STRING ARRAY` 类型，如 `["^drop", "add column"]` 表示过滤掉以 `DROP` 开头或者包含 `ADD COLUMN` 的 DDL。（非必选） |
 | `ignore_update_new_value_expr` | `STRING ARRAY` 类型，如 `"gender = 'male'"` 表示过滤掉新值 `gender = 'male'` 的 UPDATE DML。（非必选）          |
 | `ignore_update_old_value_expr` | `STRING ARRAY` 类型，如 `"age < 18"` 表示过滤掉旧值 `age < 18` 的 UPDATE DML。（非必选）                        |
 | `matcher`                      | `STRING ARRAY` 类型，是一个白名单，如 `["test.worker"]`，表示该过滤规则只应用于 `test` 库中的 `worker` 表。（非必选）             |
@@ -333,8 +333,8 @@ curl -X GET http://127.0.0.1:8300/api/v2/health
 
 | 参数名       | 说明                                        |
 |:----------|:------------------------------------------|
-| `columns` | `STRING ARRAY` 类型。column 数组。                 |
-| `matcher` | `STRING ARRAY` 类型。matcher 配置，匹配语法和过滤器规则语法相同。 |
+| `columns` | `STRING ARRAY` 类型，column 数组。                 |
+| `matcher` | `STRING ARRAY` 类型，matcher 配置，匹配语法和过滤器规则的语法相同。 |
 
 `sink.csv` 参数说明如下：
 
@@ -342,12 +342,12 @@ curl -X GET http://127.0.0.1:8300/api/v2/health
 |:--------------------|:------------------------------------------------|
 | `delimiter`         | `STRING` 类型，字段之间的分隔符。必须为 ASCII 字符，默认值为 `,`。     |
 | `include_commit_ts` | `BOOLEAN` 类型，是否在 CSV 行中包含 commit-ts。默认值为 `false`。 |
-| `null`              | `STRING` 类型，如果这一列是 null，那这一列该如何表示。默认是用 '\N' 来表示。 |
+| `null`              | `STRING` 类型，如果这一列是 null，那这一列该如何表示。默认是用 `\N` 来表示。 |
 | `quote`             | `STRING` 类型，用于包裹字段的引号字符。空值代表不使用引号字符。默认值为 `"`。   |
 
 `sink.dispatchers`：对于 MQ 类的 Sink，可以通过该参数配置 event 分发器，支持以下分发器：`default`、`ts`、`rowid`、`table` 。分发规则如下：
 
-- `default`：有多个唯一索引（包括主键）时按照 table 模式分发；只有一个唯一索引（或主键）按照 rowid 模式分发；如果开启了 old value 特性，按照 table 分发。
+- `default`：有多个唯一索引（包括主键）时按照 table 模式分发；只有一个唯一索引（或主键）时按照 rowid 模式分发；如果开启了 old value 特性，按照 table 模式分发。
 - `ts`：以行变更的 commitTs 做 Hash 计算并进行 event 分发。
 - `rowid`：以所选的 HandleKey 列名和列值做 Hash 计算并进行 event 分发。
 - `table`：以表的 schema 名和 table 名做 Hash 计算并进行 event 分发。
@@ -356,7 +356,7 @@ curl -X GET http://127.0.0.1:8300/api/v2/health
 
 | 参数名         | 说明                                |
 |:------------|:----------------------------------|
-| `matcher`   | `STRING ARRAY` 类型，匹配语法和过滤器规则语法相同。 |
+| `matcher`   | `STRING ARRAY` 类型，匹配语法和过滤器规则的语法相同。 |
 | `partition` | `STRING` 类型，事件分发的目标 partition。    |
 | `topic`     | `STRING` 类型，事件分发的目标 topic。        |
 
@@ -506,7 +506,7 @@ curl -X POST -H "'Content-type':'application/json'" http://127.0.0.1:8300/api/v2
 | `admin_job_type`  | `INTEGER` 类型，admin 事件类型                                       |
 | `checkpoint_time` | `STRING` 类型，同步任务当前 checkpoint 的格式化时间表示                        |
 | `checkpoint_ts`   | `STRING` 类型，同步任务当前 checkpoint 的 TSO 表示                        |
-| `config`          | 同步任务配置，结构和含义与上节创建同步任务中的 `replica_config` 配置项相同                                              |
+| `config`          | 同步任务配置，结构和含义与创建同步任务中的 `replica_config` 配置项相同                                              |
 | `create_time`     | `STRING` 类型，同步任务创建的时间                                          |
 | `creator_version` | `STRING` 类型，同步任务创建时 TiCDC 的版本                                  |
 | `error`           | 同步任务错误                                                         |
@@ -523,7 +523,7 @@ curl -X POST -H "'Content-type':'application/json'" http://127.0.0.1:8300/api/v2
 | 参数名          | 说明                                          |
 |:-------------|:--------------------------------------------|
 | `capture_id` | `STRING` 类型，`Capture` ID                    |
-| `table_ids`  | `UINT64 ARRAY` 类型，该 Capture 上正在同步的 table ID |
+| `table_ids`  | `UINT64 ARRAY` 类型，该 Capture 上正在同步的 table 的 ID |
 
 `error` 参数说明如下：
 
@@ -756,7 +756,7 @@ curl -X GET http://127.0.0.1:8300/api/v2/changefeeds?state=normal
 
 以上返回的信息的说明如下：
 
-- `id`：同步任务的 ID
+- `id`：同步任务的 ID。
 - `state`：同步任务当前所处的[状态](/ticdc/ticdc-changefeed-overview.md#changefeed-状态流转)。
 - `checkpoint_tso`：同步任务当前 checkpoint 的 TSO 表示。
 - `checkpoint_time`：同步任务当前 checkpoint 的格式化时间表示。
@@ -840,7 +840,7 @@ curl -X POST http://127.0.0.1:8300/api/v2/changefeeds/test1/pause
 
 | 参数名                       | 说明                                                    |
 |:--------------------------|:------------------------------------------------------|
-| `overwrite_checkpoint_ts` | `UINT64` 类型，恢复同步任务 (changefeed) 时重新指定的 checkpoint tso |
+| `overwrite_checkpoint_ts` | `UINT64` 类型，恢复同步任务 (changefeed) 时重新指定的 checkpoint TSO |
 
 ### 使用样例
 
@@ -886,10 +886,10 @@ curl -X GET http://127.0.0.1:8300/api/v2/processors
 }
 ```
 
-此处对以上返回的信息做进一步阐述：
+以上返回的信息的说明如下：
 
-- `changefeed_id`：同步任务的 ID
-- `capture_id`：`Capture` 的 ID
+- `changefeed_id`：同步任务的 ID。
+- `capture_id`：`Capture` 的 ID。
 
 ## 查询特定同步子任务
 
@@ -924,9 +924,9 @@ curl -X GET http://127.0.0.1:8300/api/v2/processors/test/561c3784-77f0-4863-ad52
 }
 ```
 
-以上返回的信息的解释如下：
+以上返回的信息的说明如下：
 
-- `table_ids`：在这个 capture 上同步的 table ID
+- `table_ids`：在这个 capture 上同步的 table 的 ID。
 
 ## 查询 TiCDC 服务进程列表
 
@@ -955,7 +955,7 @@ curl -X GET http://127.0.0.1:8300/api/v2/captures
 }
 ```
 
-以上返回的信息的解释如下：
+以上返回的信息的说明如下：
 
 - `id`：`capture` 的 ID。
 - `is_owner`：该 `capture` 是否是 owner 。
