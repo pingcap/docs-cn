@@ -16,12 +16,15 @@ summary: 介绍 TiFlash 数据落盘功能。
 ## TiFlash 数据落盘的触发机制
 
 目前 TiFlash 支持落盘的算子都有相应的 TiDB session 变量来控制落盘的阈值
+
 * [tidb_max_bytes_before_tiflash_external_group_by](/system-variables.md#tidb_max_bytes_before_tiflash_external_group_by-从-v700-版本开始引入)
 * [tidb_max_bytes_before_tiflash_external_join](/system-variables.md#tidb_max_bytes_before_tiflash_external_join-从-v700-版本开始引入)
 * [tidb_max_bytes_before_tiflash_external_sort](/system-variables.md#tidb_max_bytes_before_tiflash_external_sort-从-v700-版本开始引入)
 
 ## 示例
+
 本示例构造一个占用大量内存的 SQL 语句来对 Hash Aggregation 的落盘功能进行演示：
+
 1. 准备数据：建立一个 2 节点的 TiFlash 集群并导入 TPCH-100 的数据
 2. 执行以下语句
 
@@ -37,6 +40,7 @@ select l_orderkey, max(L_COMMENT), max(L_SHIPMODE), max(L_SHIPINSTRUCT), max(L_S
 ```
 
 说明该 query 在单个 TiFlash 节点上需要消耗 29 G 内存
+
 4. 执行以下语句
 
 ```sql
@@ -53,6 +57,7 @@ select l_orderkey, max(L_COMMENT), max(L_SHIPMODE), max(L_SHIPINSTRUCT), max(L_S
 可以看到通过配置 `max_bytes_before_external_group_by`, TiFlash 触发了中间结果落盘，显著减小了 query 所需要的内存。
 
 ## 注意
+
 * 当 Hash Aggregation 不带 group by key 时不支持落盘，即使该 Hash Aggregation 中含有 distinct 聚合函数也不能落盘。
 * 目前阈值只是针对单个算子来说的，如果一个 query 里面有两个 Hash Aggregation，而阈值设成 10 G 时，两个 Hash Aggregation 仅会在自己占用的内存超过 10 G 的时候才会触发数据落盘
 * 目前 Hash Aggregation 与 TopN/Sort 在 restore 阶段采用的是 merge aggregation 和 merge sort 的算法，所以这两个算子只会触发一次数据落盘，如果需要的内存特别大以至于在 restore 阶段内存使用仍然超阈值，不会再次触发落盘
