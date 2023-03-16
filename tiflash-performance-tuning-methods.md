@@ -28,7 +28,7 @@ summary: 本文介绍了 Performance Overview 仪表盘中 TiFlash 部分，帮�
 通过以下指标，你可以了解 TiFlash 的吞吐情况：
 
 - MPP Query count: 每个 TiFlash 实例 MPP 查询数量的瞬时值，表示当前 TiFlash 实例需要处理的 MPP 查询数量（包括正在处理的以及还没被调度到的）。
-- Request QPS: 所有 TiFlash 实例收到的 coprocessor 请求数量。
+- Request QPS：所有 TiFlash 实例收到的 coprocessor 请求数量。
     - `run_mpp_task`, `dispatch_mpp_task` 和 `mpp_establish_conn` 为 mpp 请求。
     - `batch`：batch 请求数量
     - `cop`：直接通过 coprocessor 接口发送的 coprocessor 请求数量
