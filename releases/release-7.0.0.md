@@ -253,7 +253,7 @@ TiDB 版本：7.0.0
 
 ### MySQL 兼容性
 
-* TiDB 支持移除自增列必须是索引的约束 [#issue]() @[tiancaiamao](https://github.com/tiancaiamao) **tw:ran-huang**
+* TiDB 支持移除自增列必须是索引的约束 [#40580](https://github.com/pingcap/tidb/issues/40580) @[tiancaiamao](https://github.com/tiancaiamao) **tw:ran-huang**
 
     TiDB v7.0.0 开始支持移除自增列必须是索引或索引前缀的限制。这意味着用户现在可以更灵活地定义表的主键，并方便地使用自增列实现排序分页，同时避免自增列带来的写入热点问题，并通过使用 Cluster Indexed Table 提高查询性能。之前，TiDB 的行为与 MySQL 一致，要求自增列必须是索引或索引前缀。现在，通过此次更新，您可以使用以下语法创建表并成功移除自增列约束：
 
