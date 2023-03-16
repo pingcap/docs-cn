@@ -5,7 +5,7 @@ summary: 本文介绍了 Performance Overview 仪表盘中 TiCDC 部分，帮助
 
 # TiCDC 性能分析和优化方法
 
-本文介绍 TiCDC 资源使用率和关键的性能指标。你可以通过 Performance Overview 面板的 TiCDC 仪表盘来监控和评估 TiCDC 同步数据的性能。
+本文介绍 TiCDC 资源使用率和关键的性能指标。你可以通过 Performance Overview 面板中的 [CDC 面板](/grafana-performance-overview-dashboard.md#cdc)来监控和评估 TiCDC 同步数据的性能。
 
 ## TiCDC 集群的资源利用率
 
