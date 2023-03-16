@@ -37,7 +37,7 @@ include-commit-ts = true
 
 ## 数据存储路径结构
 
-数据存储路径结构请参考[同步数据到存储服务](/ticdc/ticdc-sink-to-cloud-storage.md#存储路径组织结构)
+关于数据存储路径结构的更多信息，请参考[同步数据到存储服务](/ticdc/ticdc-sink-to-cloud-storage.md#存储路径组织结构)。
 
 ## 数据格式定义
 
