@@ -301,7 +301,7 @@ curl -X GET http://127.0.0.1:8300/api/v2/health
 
 | 参数名                            | 说明                                                                                          |
 |:-------------------------------|:--------------------------------------------------------------------------------------------|
-| `ignore_delete_value_expr`     | `STRING ARRAY` 类型，如 `"name = 'john'"` 表示过滤掉包含 name = 'john' 条件的 DELETE DML。（非必选）            |
+| `ignore_delete_value_expr`     | `STRING ARRAY` 类型，如 `"name = 'john'"` 表示过滤掉包含 `name = 'john'` 条件的 DELETE DML。（非必选）            |
 | `ignore_event`                 | `STRING ARRAY` 类型，如 `["insert"]` 表示过滤掉 INSERT 事件。（非必选）                                      |
 | `ignore_insert_value_expr`     | `STRING ARRAY` 类型，如 "id >= 100" 表示过滤掉包含 id >= 100 条件的 INSERT DML。（非必选）                     |
 | `ignore_sql`                   | `STRING ARRAY` 类型，如 `["^drop", "add column"]` 表示过滤掉以 "DROP" 开头或者包含 "ADD COLUMN" 的 DDL。（非必选） |
