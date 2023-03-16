@@ -76,7 +76,7 @@ summary: 本文介绍了 Performance Overview 仪表盘中 TiFlash 部分，帮�
 
 ### IO 流量指标
 
-你可通过以下指标来了解数 TiFlash 的 IO 流量指标：
+通过以下指标，你可以了解 TiFlash 的 IO 流量情况：
 - Write Throughput By Instance：每个 TiFlash 实例写入数据的吞吐量，包括 apply Raft 数据日志以及 Raft 快照的写入吞吐量
 - Write flow：所有 TiFlash 实例磁盘写操作的流量
   - File Descriptor：TiFlash 所使用的的 DeltaTree 存储引擎的稳定层
