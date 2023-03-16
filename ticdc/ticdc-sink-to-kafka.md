@@ -244,12 +244,22 @@ partition 分发器用 partition = "xxx" 来指定，支持 default、ts、index
 
 > **警告：**
 >
-> - TiCDC v7.0 仅支持在 Kafka 同步任务上开启大单表的横向扩展功能。
+> - TiCDC v7.0.0 仅支持在 Kafka 同步任务上开启大单表的横向扩展功能。
 
 配置样例如下所示：
 
 ```toml
 [scheduler]
+# 设置为 "true" 以打开该功能。
 enable-table-across-nodes = true
+# 打开该功能后，该功能只对 Region 个数大于 `region-threshold` 值的表生效。
 region-threshold = 100000
 ```
+
+> **注意：**
+>
+> 一个表包含的 Region 个数可用如下 SQL 查询：
+>
+> ```sql
+> SELECT COUNT(*) FROM INFORMATION_SCHEMA.TIKV_REGION_STATUS WHERE DB_NAME="库名" AND TABLE_NAME="表名" AND IS_INDEX=0;
+> ```

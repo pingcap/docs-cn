@@ -95,7 +95,7 @@ ignore-insert-value-expr = "price > 1000 and origin = 'no where'" # 忽略包含
 #
 # 默认为 "false"。设置为 "true" 以打开该功能。
 enable-table-across-nodes = false
-# 在一张表上启用该功能，该表最少需要包含的 Region 个数。
+# 打开该功能后，该功能只对 Region 个数大于 `region-threshold` 值的表生效。
 region-threshold = 100000
 
 [sink]
