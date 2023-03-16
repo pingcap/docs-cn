@@ -63,7 +63,8 @@ summary: 本文介绍了 Performance Overview 仪表盘中 TiFlash 部分，帮�
   
 ### Raft 相关指标
 
-你可通过以下指标来了解数 TiFlash 的 Raft 相关指标：
+通过以下指标，你可以了解 TiFlash 的 Raft 同步情况：
+
 - Raft Wait Index Duration：所有 TiFlash 实例等待本地 Region index >= read_index 所花费的时间，即进行 wait_index 操作的延迟。如果 Wait Index 延迟过高，这意味着 TiKV 和 TiFlash 之间数据同步存在明显的延迟，通常可能是以下原因导致的：
   - TiKV 资源过载
   - TiFlash 资源过载，特别是 IO 资源
