@@ -99,7 +99,7 @@ URI 中其他可配置的参数如下：
 
 ### Index 文件
 
-Index 文件与数据变更记录存储在相同路径：
+Index 文件用于防止已写入的数据被错误覆盖，与数据变更记录存储在相同路径：
 
 ```shell
 {scheme}://{prefix}/{schema}/{table}/{table-version-separator}/{partition-separator}/{date-separator}/CDC.index
