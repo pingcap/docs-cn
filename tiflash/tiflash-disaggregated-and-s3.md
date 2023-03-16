@@ -21,7 +21,7 @@ TiFlash 默认使用存算一体的架构进行部署，即 TiFlash 节点既是
 
     负责接收 TiKV 的 Raft logs 数据，将数据转换成列存格式，并每隔一小段时间将这段时间的所有数据更新打包上传到 S3 中。此外，Write Node 也负责管理 S3 上的数据，比如不断整理数据使之具有更好的查询性能，以及删除无用的数据等。
 
-    Write Node 利用本地磁盘（通常是 NVMe SSD）来缓存最新写入的数据，从而避免内存使用过多。
+    Write Node 利用本地磁盘（通常是 NVMe SSD）来缓存最新写入的数据，从而避免过多使用内存。
 
     Write Node 比原来存算一体的 TiFlash 节点有更快的扩容和缩容速度，即增加或者删除 Write Node 后，数据能更快地在 Write Node 之间达到平衡。原理是 Write Node 把所有数据存储到了 S3，运行时只需要在本地存储很少的数据。扩容和缩容本质上是 Region Peer 在节点间的迁移。当某个 Write Node 要将某个 Region Peer 移动到自己之上管理时，它只需要从 Region Peer 所在的 Write Node 上传到 S3 的最新文件中下载少量关于此 Region 的元数据，再从 TiKV 同步最近的 Region 更新，就可以追上 Region Leader 的进度，从而完成 Region Peer 的迁移。
 
@@ -38,7 +38,7 @@ TiFlash 默认使用存算一体的架构进行部署，即 TiFlash 节点既是
 
 ## 使用场景
 
-TiFlash 存算分离架构适合于希望获得更高性价比的数据分析服务的场景。在这个架构下，存储和计算资源可以单独按需扩展。在这些场景将会有较大收益：
+TiFlash 存算分离架构适用于高性价比的数据分析服务的场景。在这个架构下，存储和计算资源可以单独按需扩展。在这些场景将会有较大收益：
 
 - 数据量虽然很大，但是只有少量数据被频繁查询；其他大部分数据属于冷数据，很少被查询。此时经常被查询的数据通常已被缓存在 Compute Node 的本地 SSD 上，可以提供较快查询性能；而其他大部分冷数据则存储在成本较低的 S3 或者其他对象存储上，从而节省存储成本。
 
@@ -77,7 +77,7 @@ TiFlash 存算分离架构适合于希望获得更高性价比的数据分析服
         config:
           flash.disaggregated_mode: tiflash_write               # 这是一个 Write Node
           storage.s3.endpoint: http://s3.{region}.amazonaws.com # S3 的 endpoint 地址
-          storage.s3.bucket: my_bucket                          # TiFlash 的所有数据存储在这个 bucket 中
+          storage.s3.bucket: mybucket                          # TiFlash 的所有数据存储在这个 bucket 中
           storage.s3.root: /cluster1_data                       # S3 bucket 中存储数据的根目录
           storage.s3.access_key_id: {ACCESS_KEY_ID}             # 访问 S3 的 ACCESS_KEY_ID
           storage.s3.secret_access_key: {SECRET_ACCESS_KEY}     # 访问 S3 的 SECRET_ACCESS_KEY
@@ -86,7 +86,7 @@ TiFlash 存算分离架构适合于希望获得更高性价比的数据分析服
         config:
           flash.disaggregated_mode: tiflash_write               # 这是一个 Write Node
           storage.s3.endpoint: http://s3.{region}.amazonaws.com # S3 的 endpoint 地址
-          storage.s3.bucket: my_bucket                          # TiFlash 的所有数据存储在这个 bucket 中
+          storage.s3.bucket: mybucket                          # TiFlash 的所有数据存储在这个 bucket 中
           storage.s3.root: /cluster1_data                       # S3 bucket 中存储数据的根目录
           storage.s3.access_key_id: {ACCESS_KEY_ID}             # 访问 S3 的 ACCESS_KEY_ID
           storage.s3.secret_access_key: {SECRET_ACCESS_KEY}     # 访问 S3 的 SECRET_ACCESS_KEY
@@ -97,20 +97,22 @@ TiFlash 存算分离架构适合于希望获得更高性价比的数据分析服
         config:
           flash.disaggregated_mode: tiflash_compute             # 这是一个 Compute Node
           storage.s3.endpoint: http://s3.{region}.amazonaws.com # S3 的 endpoint 地址
-          storage.s3.bucket: my_bucket                          # TiFlash 的所有数据存储在这个 bucket 中
+          storage.s3.bucket: mybucket                          # TiFlash 的所有数据存储在这个 bucket 中
           storage.s3.root: /cluster1_data                       # S3 bucket 中存储数据的根目录
           storage.s3.access_key_id: {ACCESS_KEY_ID}             # 访问 S3 的 ACCESS_KEY_ID
           storage.s3.secret_access_key: {SECRET_ACCESS_KEY}     # 访问 S3 的 SECRET_ACCESS_KEY
+          storage.main.dir: ["/data1/tiflash/"]                 # Compute Node 的节点信息数据目录
           storage.remote.cache.dir: /data1/tiflash/cache        # Compute Node 的本地数据缓存目录
           storage.remote.cache.capacity: 858993459200           # 800GiB
       - host: 172.31.9.2
         config:
           flash.disaggregated_mode: tiflash_compute             # 这是一个 Compute Node
           storage.s3.endpoint: http://s3.{region}.amazonaws.com # S3 的 endpoint 地址
-          storage.s3.bucket: my_bucket                          # TiFlash 的所有数据存储在这个 bucket 中
+          storage.s3.bucket: mybucket                          # TiFlash 的所有数据存储在这个 bucket 中
           storage.s3.root: /cluster1_data                       # S3 bucket 中存储数据的根目录
           storage.s3.access_key_id: {ACCESS_KEY_ID}             # 访问 S3 的 ACCESS_KEY_ID
           storage.s3.secret_access_key: {SECRET_ACCESS_KEY}     # 访问 S3 的 SECRET_ACCESS_KEY
+          storage.main.dir: ["/data1/tiflash/"]                 # Compute Node 的节点信息数据目录
           storage.remote.cache.dir: /data1/tiflash/cache        # Compute Node 的本地数据缓存目录
           storage.remote.cache.capacity: 858993459200           # 800GiB
     ```
