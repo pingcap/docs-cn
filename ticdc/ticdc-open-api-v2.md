@@ -265,7 +265,7 @@ curl -X GET http://127.0.0.1:8300/api/v2/health
 | `case_sensitive`          | `BOOLEAN` 类型，过滤表名时大小写是否敏感，默认值为 `true`。（非必选）                                                |
 | `check_gc_safe_point`     | `BOOLEAN` 类型，是否检查同步任务的开始时间早于 GC 时间，默认值为 `true`。（非必选）                                               |
 | `consistent`              | Redo log 配置。（非必选）                                                                                   |
-| `enable_old_value`        | `BOOLEAN` 类型，是否输出 old value 值。（非必选）                                                                 |
+| `enable_old_value`        | `BOOLEAN` 类型，是否输出 old value 值，默认值为 `true`。（非必选）                                                                 |
 | `enable_sync_point`       | `BOOLEAN` 类型，是否开启 `sync point` 功能。（非必选）                                                             |
 | `filter`                  | filter 配置。（非必选）                                                                                     |
 | `force_replicate`         | `BOOLEAN` 类型，该值默认为 `false`，当指定为 `true` 时，同步任务会尝试强制同步没有唯一索引的表。（非必选）                                  |
