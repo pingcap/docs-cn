@@ -17,7 +17,7 @@ summary: 本文介绍了 Performance Overview 面板中 TiFlash 部分，帮助�
 
 示例：[CH-benCHmark 负载](/benchmark/benchmark-tidb-using-ch.md)资源使用率 
 
-该 TiFlash 集群包含两个节点，每个节点配置均为 16 核、48G 内存。当 CH 负载运行时，CPU 利用率最高可达到 1500%，内存占用最大可达 20GB，IO 利用率达到 91%。这表明 TiFlash 节点资源接近饱和状态。
+该 TiFlash 集群包含两个节点，每个节点配置均为 16 核、48G 内存。当 CH-benCHmark 负载 负载运行时，CPU 利用率最高可达到 1500%，内存占用最大可达 20GB，IO 利用率达到 91%。这表明 TiFlash 节点资源接近饱和状态。
 
 ![CH-TiFlash-MPP](/media/performance/tiflash/ch-2tiflash-op.png)
 
@@ -83,20 +83,20 @@ summary: 本文介绍了 Performance Overview 面板中 TiFlash 部分，帮助�
 - Write Throughput By Instance：每个 TiFlash 实例写入数据的吞吐量，包括 apply Raft 数据日志以及 Raft 快照的写入吞吐量。
 - Write flow：所有 TiFlash 实例磁盘写操作的流量。
 
-  - File Descriptor：TiFlash 所使用的的 DeltaTree 存储引擎的稳定层。
-  - Page:  指 Pagestore，TiFlash 所使用的的 DeltaTree 存储引擎的 Delta 变更层。
+  - File Descriptor：TiFlash 所使用的 DeltaTree 存储引擎的稳定层。
+  - Page:  指 Pagestore，TiFlash 所使用的 DeltaTree 存储引擎的 Delta 变更层。
 
 - Read flow：所有 TiFlash 实例磁盘读操作的流量。
-  - File Descriptor：TiFlash 所使用的的 DeltaTree 存储引擎的稳定层。
-  - Page:  指 Pagestore，TiFlash 所使用的的 DeltaTree 存储引擎的 Delta 变更层。
+  - File Descriptor：TiFlash 所使用的 DeltaTree 存储引擎的稳定层。
+  - Page:  指 Pagestore，TiFlash 所使用的 DeltaTree 存储引擎的 Delta 变更层。
   
 你可以通过 `(Read flow + Write flow) ÷ 总的 Write Throughput By Instance` 计算出整个 TiFlash 集群的写放大倍数。
 
-示例 1 ：[CH 负载](https://docs.pingcap.com/zh/tidb/dev/benchmark-tidb-using-ch) OP 环境 Raft 和 IO 指标
+示例 1 ：[CH-benCHmark 负载](/benchmark/benchmark-tidb-using-ch.md) OP 环境 Raft 和 IO 指标
 
 如下图所示，该 TiFlash 集群的 Raft Wait Index 和 Raft Batch Read Index 99 分位数较高，分别为 3.24 秒和 753 毫秒。这是因为该集群的 TiFlash 负载较高，数据同步存在延迟。
 
-该集群包含两个 TiFlash 节点，每秒 TiKV 同步到 TiFlash 的增量数据约为 28MB。稳定层 (File Descriptor)的文件描述符最大写流量为 939MB/s，最大读流量为 1.1 GiB/s，而 Delta 层 (Page) 最大写流量为 74 MB/s，最大读流量为 111 MB/s。该环境中的 TiFlash 使用独立的 NVME 盘，具有较强的 IO 吞吐能力。
+该集群包含两个 TiFlash 节点，每秒 TiKV 同步到 TiFlash 的增量数据约为 28 MB。稳定层 (File Descriptor)的文件描述符最大写流量为 939MB/s，最大读流量为 1.1 GiB/s，而 Delta 层 (Page) 最大写流量为 74 MB/s，最大读流量为 111 MB/s。该环境中的 TiFlash 使用独立的 NVME 盘，具有较强的 IO 吞吐能力。
 ![CH-2TiFlash-OP](/media/performance/tiflash/ch-2tiflash-raft-io-flow.png)
 
 示例 2 ：[CH-benCHmark 负载](/benchmark/benchmark-tidb-using-ch.md) 公有云环境 Raft 和 IO 指标
