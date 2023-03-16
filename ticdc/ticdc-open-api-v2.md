@@ -326,7 +326,7 @@ curl -X GET http://127.0.0.1:8300/api/v2/health
 | `encoder_concurrency`   | `INT` 类型。MQ sink 中编码器的线程数。默认值为 `16`。（非必选）                                                                 |
 | `protocol`              | `STRING` 类型，对于 MQ 类的 Sink，可以指定消息的协议格式。目前支持以下协议：`canal-json`、`open-protocol`、`canal`、`avro` 和 `maxwell`。 |
 | `schema_registry`       | `STRING` 类型，schema registry 地址。（非必选）                                                                    |
-| `terminator`            | `STRING` 类型，换行符，用来分隔两个数据变更事件。默认值为空，表示使用 "\r\n" 作为换行符。（非必选）                                              |
+| `terminator`            | `STRING` 类型，换行符，用来分隔两个数据变更事件。默认值为空，表示使用 `"\r\n"` 作为换行符。（非必选）                                              |
 | `transaction_atomicity` | `STRING` 类型，事务一致性等级。（非必选）                                                                               |
 
 `sink.column_selectors` 是一个数组，元素参数说明如下：
