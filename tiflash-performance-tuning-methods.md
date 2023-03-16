@@ -21,7 +21,7 @@ summary: 本文介绍了 Performance Overview 仪表盘中 TiFlash 部分，帮�
 
 ![CH-TiFlash-MPP](/media/performance/tiflash/ch-2tiflash-op.png)
 
-## TiFlash 关键指标
+## TiFlash 关键性能指标
 
 ### 吞吐指标
 
