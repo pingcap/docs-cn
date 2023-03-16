@@ -609,7 +609,7 @@ PARTITION BY KEY(fname, store_id)
 PARTITIONS 4;
 ```
 
-目前，TiDB 不支持分区字段列表 `PARTITION BY KEY` 为空的 Key 分区表。下面的语句将创建一个非分区表，并向客户端返回 `Unsupported partition type RANGE, treat as normal table` 警告。
+目前，TiDB 不支持分区字段列表 `PARTITION BY KEY` 为空的 Key 分区表。下面的语句将创建一个非分区表，并向客户端返回 `Unsupported partition type KEY, treat as normal table` 警告。
 
 ```sql
 CREATE TABLE employees (
@@ -1445,7 +1445,7 @@ YEARWEEK()
 
 目前 TiDB 支持 Range 分区、List 分区、List COLUMNS 分区、Hash 分区和 Key 分区，其它的 MySQL 分区类型尚不支持。
 
-对于 Range Columns 类型的分区表，目前只支持单列的场景。对于 Key 分区，目前不支持分区字段为空的场景。
+对于 Key 分区，目前不支持分区字段为空的场景。
 
 分区管理方面，只要底层实现可能会涉及数据挪动的操作，目前都暂不支持。包括且不限于：调整 Hash 分区表的分区数量，修改 Range 分区表的范围，合并分区，交换分区等。
 
