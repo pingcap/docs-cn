@@ -39,7 +39,7 @@ Info: {"upstream_id":7171388873935111376,"namespace":"default","id":"simple-repl
 
 ### 配置外部存储
 
-Amazon S3、GCS 以及 Azure Blob Storage 的 URI 参数与 BR 中这两种存储的 URI 参数相同。详细参数说明请参考 [BR 备份存储服务的 URI 格式](/br/backup-and-restore-storages.md#格式说明)。
+Amazon S3、GCS 以及 Azure Blob Storage 的 URI 参数与 BR 中这三种存储的 URI 参数相同。详细参数说明请参考 [BR 备份存储服务的 URI 格式](/br/backup-and-restore-storages.md#格式说明)。
 
 ### 配置 NFS
 
