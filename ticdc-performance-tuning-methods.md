@@ -17,7 +17,9 @@ summary: 本文介绍了 Performance Overview 仪表盘中 TiCDC 部分，帮助
 
 ## TiCDC 数据同步关键指标
 
-### TiCDC 概览
+### TiCDC 整体指标
+
+通过以下指标，你可以了解 TiCDC 数据同步的整体情况：
 
 - Changefeed checkpoint lag：同步任务上下游数据的进度差，以时间单位秒计算。
 
