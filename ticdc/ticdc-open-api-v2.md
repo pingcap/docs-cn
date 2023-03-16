@@ -122,7 +122,7 @@ curl -X GET http://127.0.0.1:8300/api/v2/status
 curl -X GET http://127.0.0.1:8300/api/v2/health
 ```
 
-响应
+响应为返回一个空的 json {}：
 
 ```json
 {}
