@@ -44,7 +44,7 @@ summary: 本文介绍了 Performance Overview 面板中 TiFlash 部分，帮助�
   - 如果请求类型为 `run_mpp_task`、`dispatch_mpp_task` 或 `mpp_establish_conn`，说明 SQL 语句的执行已经部分或者完全下推到 TiFlash 上进行，通常包含 join 和数据分发的操作，这是 TiFlash 最常见的服务类型。
   - 如果请求类型为 `cop`，说明整个语句并没有完全下推到 TiFlash，通常 TiDB 会将全表扫描算子下推到 TiFlash 上进行数据访问和过滤。在堆叠图中，如果 `cop` 占据主导地位，需要仔细权衡是否合理。
     - 如果 SQL 访问的数据量很大，优化器可能根据成本模型估算 TiFlash 全表扫描的成本更低。
-    - 如果表结构缺少合适的索引，即使访问的数据量不大，优化器也只能将查询下推到 TiFlash 进行全表扫描。在这种情况下，创建合适的索引，通过 TiKV 访问数据更加高效。
+    - 如果表结构缺少合适的索引，即使访问的数据量很少，优化器也只能将查询下推到 TiFlash 进行全表扫描。在这种情况下，创建合适的索引，通过 TiKV 访问数据更加高效。
 
 - Request Duration: 所有 TiFlash 实例每种 MPP 和 coprocessor 请求类型的总处理时间，包含平均和 P99 处理延迟。
 - Request Handle Duration：指 `cop` 和`batch cop` 从开始执行到执行结束的时间，不包括等待时间，只包含 `cop` 和 `batch cop` 两种类型，包含平均和 P99 延迟。
