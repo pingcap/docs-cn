@@ -122,7 +122,7 @@ curl -X GET http://127.0.0.1:8300/api/v2/status
 curl -X GET http://127.0.0.1:8300/api/v2/health
 ```
 
-如果集群健康，则返回一个空的 json {}：
+如果集群健康，则返回 `200 OK` 和一个空的 json {}：
 
 ```json
 {}
