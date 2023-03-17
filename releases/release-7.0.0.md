@@ -283,13 +283,13 @@ TiDB 版本：7.0.0
 | 配置文件 | 配置项 | 修改类型 | 描述 |
 | -------- | -------- | -------- | -------- |
 | TiFlash | [flash.disaggregated_mode](https://docs.pingcap.com/zh/tidb/stable/tiflash-disaggregated-and-s3) |  新增  |在 TiFlash 的存算分离架构中，表示此 TiFlash 节点是 Write Node 还是 Compute Node。有效值是 tiflash_write 或者 tiflash_compute|
-| TiFlash | [storage.s3.endpoint](https://docs.pingcap.com/zh/tidb/stable/tiflash-disaggregated-and-s3)) |  新增  | S3 的 endpoint 地址 |
-| TiFlash | [storage.s3.bucket](https://docs.pingcap.com/zh/tidb/stable/tiflash-disaggregated-and-s3)) |  新增  | TiFlash 的所有数据存储在这个 bucket 中 |
-| TiFlash | [storage.s3.root](https://docs.pingcap.com/zh/tidb/stable/tiflash-disaggregated-and-s3)) |  新增  | S3 bucket 中存储数据的根目录 |
-| TiFlash | [storage.s3.access_key_id](https://docs.pingcap.com/zh/tidb/stable/tiflash-disaggregated-and-s3)) |  新增  | 访问 S3 的 ACCESS_KEY_ID |
-| TiFlash | [storage.s3.secret_access_key](https://docs.pingcap.com/zh/tidb/stable/tiflash-disaggregated-and-s3)) |  新增  | 访问 S3 的 SECRET_ACCESS_KEY |
-| TiFlash | [storage.remote.cache.dir](https://docs.pingcap.com/zh/tidb/stable/tiflash-disaggregated-and-s3)) |  新增  | TiFlash Compute Node 的本地数据缓存目录 |
-| TiFlash | [storage.remote.cache.capacity](https://docs.pingcap.com/zh/tidb/stable/tiflash-disaggregated-and-s3)) |  新增  | TiFlash Compute Node 的本地数据缓存目录的大小 |
+| TiFlash | [storage.s3.endpoint](https://docs.pingcap.com/zh/tidb/stable/tiflash-disaggregated-and-s3) |  新增  | S3 的 endpoint 地址 |
+| TiFlash | [storage.s3.bucket](https://docs.pingcap.com/zh/tidb/stable/tiflash-disaggregated-and-s3) |  新增  | TiFlash 的所有数据存储在这个 bucket 中 |
+| TiFlash | [storage.s3.root](https://docs.pingcap.com/zh/tidb/stable/tiflash-disaggregated-and-s3) |  新增  | S3 bucket 中存储数据的根目录 |
+| TiFlash | [storage.s3.access_key_id](https://docs.pingcap.com/zh/tidb/stable/tiflash-disaggregated-and-s3) |  新增  | 访问 S3 的 ACCESS_KEY_ID |
+| TiFlash | [storage.s3.secret_access_key](https://docs.pingcap.com/zh/tidb/stable/tiflash-disaggregated-and-s3) |  新增  | 访问 S3 的 SECRET_ACCESS_KEY |
+| TiFlash | [storage.remote.cache.dir](https://docs.pingcap.com/zh/tidb/stable/tiflash-disaggregated-and-s3) |  新增  | TiFlash Compute Node 的本地数据缓存目录 |
+| TiFlash | [storage.remote.cache.capacity](https://docs.pingcap.com/zh/tidb/stable/tiflash-disaggregated-and-s3) |  新增  | TiFlash Compute Node 的本地数据缓存目录的大小 |
 |          |          |          |          |
 |          |          |          |          |
 
