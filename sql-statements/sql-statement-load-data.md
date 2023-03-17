@@ -61,7 +61,7 @@ LoadDataOption ::=
 FIELDS TERMINATED BY ',' ENCLOSED BY '\"' LINES TERMINATED BY '\r\n'
 ```
 
-当数据格式为 `DELIMITED DATA`，且不指定处理数据的参数，将会按以下参数处理
+当数据格式为 `DELIMITED DATA` 且不指定处理数据的参数时，将按以下参数处理：
 
 ```sql
 FIELDS TERMINATED BY '\t' ENCLOSED BY '' ESCAPED BY '\\'
