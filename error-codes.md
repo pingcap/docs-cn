@@ -331,7 +331,7 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 8164
 
-    `LOAD DATA ... WITH ...` 选项取值不合法，请参考[`LOAD DATA`](/sql-statements/sql-statement-load-data.md)查看合法的取值。
+    `LOAD DATA ... WITH ...` 选项取值无效。请参考 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md) 查看有效的取值。
 
 * Error Number: 8165
 
