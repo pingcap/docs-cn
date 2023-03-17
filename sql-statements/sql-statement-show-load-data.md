@@ -41,41 +41,16 @@ ShowLoadDataJobStmt ::=
 {{< copyable "sql" >}}
 
 ```sql
-SHOW LOAD DATA JOBS\G;
+SHOW LOAD DATA JOBS;
 ```
 
 ```
-*************************** 1. row ***************************
-          Job_ID: 1
-     Create_Time: 2023-03-17 15:16:08.352125
-      Start_Time: 2023-03-17 15:16:08.355728
-        End_Time: 2023-03-17 15:16:08.363810
-     Data_Source: s3://mybucket/small.csv
-    Target_Table: `test`.`t`
-     Import_Mode: logical
-      Created_By: root@%
-       Job_State: loading
-      Job_Status: finished
-Source_File_Size: 17B
-Loaded_File_Size: 17B
-     Result_Code: 0
-  Result_Message: Records: 2  Deleted: 0  Skipped: 0  Warnings: 0
-*************************** 2. row ***************************
-          Job_ID: 30002
-     Create_Time: 2023-03-17 15:24:35.839165
-      Start_Time: 2023-03-17 15:24:35.841178
-        End_Time: 2023-03-17 15:16:08.363810
-     Data_Source: s3://mybucket/small.csv
-    Target_Table: `test`.`t`
-     Import_Mode: logical
-      Created_By: root@%
-       Job_State: loading
-      Job_Status: running
-Source_File_Size: NULL
-Loaded_File_Size: NULL
-     Result_Code: 0
-  Result_Message:
-2 rows in set (0.00 sec)
++--------+----------------------------+----------------------------+---------------------+---------------------------+--------------------+-------------+------------+-----------+------------+------------------+------------------+-------------+----------------+
+| Job_ID | Create_Time                | Start_Time                 | End_Time            | Data_Source               | Target_Table       | Import_Mode | Created_By | Job_State | Job_Status | Source_File_Size | Loaded_File_Size | Result_Code | Result_Message |
++--------+----------------------------+----------------------------+---------------------+---------------------------+-------------------+-------------+------------+-----------+------------+------------------+------------------+-------------+----------------+
+|      1 | 2023-03-16 22:29:12.990576 | 2023-03-16 22:29:12.991951 | 0000-00-00 00:00:00 | s3://bucket-name/test.csv | `my_db`.`my_table` | logical     | root@%     | loading   | running    | 52.43MB          | 43.58MB          |           0 |                |
++--------+----------------------------+----------------------------+---------------------+---------------------------+--------------------+-------------+------------+-----------+------------+------------------+------------------+-------------+----------------+
+1 row in set (0.01 sec)
 ```
 
 {{< copyable "sql" >}}
@@ -85,21 +60,11 @@ SHOW LOAD DATA JOB 1\G;
 ```
 
 ```
-*************************** 1. row ***************************
-          Job_ID: 1
-     Create_Time: 2023-03-17 15:16:08.352125
-      Start_Time: 2023-03-17 15:16:08.355728
-        End_Time: 2023-03-17 15:16:08.363810
-     Data_Source: s3://mybucket/small.csv
-    Target_Table: `test`.`t`
-     Import_Mode: logical
-      Created_By: root@%
-       Job_State: loading
-      Job_Status: finished
-Source_File_Size: 17B
-Loaded_File_Size: 17B
-     Result_Code: 0
-  Result_Message: Records: 2  Deleted: 0  Skipped: 0  Warnings: 0
++--------+----------------------------+----------------------------+---------------------+---------------------------+--------------------+-------------+------------+-----------+------------+------------------+------------------+-------------+----------------+
+| Job_ID | Create_Time                | Start_Time                 | End_Time            | Data_Source               | Target_Table       | Import_Mode | Created_By | Job_State | Job_Status | Source_File_Size | Loaded_File_Size | Result_Code | Result_Message |
++--------+----------------------------+----------------------------+---------------------+---------------------------+-------------------+-------------+------------+-----------+------------+------------------+------------------+-------------+----------------+
+|      1 | 2023-03-16 22:29:12.990576 | 2023-03-16 22:29:12.991951 | 0000-00-00 00:00:00 | s3://bucket-name/test.csv | `my_db`.`my_table` | logical     | root@%     | loading   | running    | 52.43MB          | 43.58MB          |           0 |                |
++--------+----------------------------+----------------------------+---------------------+---------------------------+--------------------+-------------+------------+-----------+------------+------------------+------------------+-------------+----------------+
 1 row in set (0.01 sec)
 ```
 

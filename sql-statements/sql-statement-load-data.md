@@ -73,25 +73,36 @@ LINES TERMINATED BY '\n' STARTING BY ''
 
 ## 示例
 
+后台运行 job，执行后会输出对应的 job id：
+
 {{< copyable "sql" >}}
 
 ```sql
-CREATE TABLE trips (
-    trip_id bigint NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    duration integer not null,
-    start_date datetime,
-    end_date datetime,
-    start_station_number integer,
-    start_station varchar(255),
-    end_station_number integer,
-    end_station varchar(255),
-    bike_number varchar(255),
-    member_type varchar(255)
-    );
+LOAD DATA INFILE 's3://bucket-name/test.csv?access_key=XXX&secret_access_key=XXX' INTO TABLE my_db.my_table FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '' LINES TERMINATED BY '\n' WITH detached;
 ```
 
 ```
-Query OK, 0 rows affected (0.14 sec)
++--------+
+| Job_ID |
++--------+
+|      1 |
++--------+
+1 row in set (3.14 sec)
+```
+
+{{< copyable "sql" >}}
+
+```sql
+SHOW LOAD DATA JOB 1;
+```
+
+```
++--------+----------------------------+----------------------------+---------------------+---------------------------+--------------------+-------------+------------+-----------+------------+------------------+------------------+-------------+----------------+
+| Job_ID | Create_Time                | Start_Time                 | End_Time            | Data_Source               | Target_Table       | Import_Mode | Created_By | Job_State | Job_Status | Source_File_Size | Loaded_File_Size | Result_Code | Result_Message |
++--------+----------------------------+----------------------------+---------------------+---------------------------+-------------------+-------------+------------+-----------+------------+------------------+------------------+-------------+----------------+
+|      1 | 2023-03-16 22:29:12.990576 | 2023-03-16 22:29:12.991951 | 0000-00-00 00:00:00 | s3://bucket-name/test.csv | `my_db`.`my_table` | logical     | root@%     | loading   | running    | 52.43MB          | 43.58MB          |           0 |                |
++--------+----------------------------+----------------------------+---------------------+---------------------------+--------------------+-------------+------------+-----------+------------+------------------+------------------+-------------+----------------+
+1 row in set (0.01 sec)
 ```
 
 通过 `LOAD DATA` 导入数据，指定数据的分隔符为逗号，忽略包围数据的引号，并且忽略文件的第一行数据。
@@ -121,23 +132,6 @@ LOAD DATA LOCAL INFILE '/mnt/evo970/data-sets/bikeshare-data/2017Q4-capitalbikes
 
 以上示例中 `x'2c'` 是字符 `,` 的十六进制表示，`b'100010'` 是字符 `"` 的二进制表示。
 
-后台运行 `LOAD DATA`:
-
-{{< copyable "sql" >}}
-
-```sql
-load data infile 's3://mybucket/small.csv' into table t fields enclosed by '"' terminated by ',' (id,a,b) with detached;
-```
-
-执行后，会输出后台运行的 job id：
-```
-+--------+
-| Job_ID |
-+--------+
-|      2 |
-+--------+
-1 row in set (0.01 sec)
-```
 
 ## MySQL 兼容性
 
