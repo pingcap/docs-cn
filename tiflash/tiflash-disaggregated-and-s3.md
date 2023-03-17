@@ -81,7 +81,7 @@ TiFlash 使用的 S3 API 接口列表包括：
 
     ```yaml
     tiflash_servers:
-      # TiFlash 节点存在 storage.s3 配置说明使用存算分离模式
+      # TiFlash 的拓扑配置中存在 storage.s3 配置，说明部署时使用存算分离架构
       # 如果配置了 flash.disaggregated_mode: tiflash_compute，则节点类型是 Compute Node；否则是 Write Node
 
       # 172.31.8.1~2 是 TiFlash Write Node
@@ -115,7 +115,7 @@ TiFlash 使用的 S3 API 接口列表包括：
           storage.s3.secret_access_key: {SECRET_ACCESS_KEY}     # 访问 S3 的 SECRET_ACCESS_KEY
           storage.main.dir: ["/data1/tiflash/data"]             # Compute Node 的本地数据目录，和存算一体的配置方式相同
           storage.remote.cache.dir: /data1/tiflash/cache        # Compute Node 的本地数据缓存目录
-          storage.remote.cache.capacity: 858993459200           # 800GiB
+          storage.remote.cache.capacity: 858993459200           # 800 GiB
       - host: 172.31.9.2
         config:
           flash.disaggregated_mode: tiflash_compute             # 这是一个 Compute Node
@@ -126,10 +126,10 @@ TiFlash 使用的 S3 API 接口列表包括：
           storage.s3.secret_access_key: {SECRET_ACCESS_KEY}     # 访问 S3 的 SECRET_ACCESS_KEY
           storage.main.dir: ["/data1/tiflash/data"]             # Compute Node 的本地数据目录，和存算一体的配置方式相同
           storage.remote.cache.dir: /data1/tiflash/cache        # Compute Node 的本地数据缓存目录
-          storage.remote.cache.capacity: 858993459200           # 800GiB
+          storage.remote.cache.capacity: 858993459200           # 800 GiB
     ```
 
-    * 注意以上 `ACCESS_KEY_ID` 和 `SECRET_ACCESS_KEY` 是直接写在配置文件中的。你也可以选择使用环境变量的方式单独配置。环境变量的优先级高于配置文件。
+    * 注意以上 `ACCESS_KEY_ID` 和 `SECRET_ACCESS_KEY` 是直接写在配置文件中的。你也可以选择使用环境变量的方式单独配置。如果两种方式都配置了，环境变量的优先级高于配置文件。
 
         如需通过环境变量配置，请在所有部署了 TiFlash 进程的机器上，切换到启动 TiFlash 进程的用户环境（通常是 `tidb`），然后修改 `~/.bash_profile`，增加这些配置：
 
@@ -140,7 +140,7 @@ TiFlash 使用的 S3 API 接口列表包括：
 
     * `storage.s3.endpoint` 支持使用 `http` 模式和 `https` 模式连接 S3，可以直接通过修改 URL 来选择。比如 `https://s3.{region}.amazonaws.com`。
 
-3. 执行扩容 TiFlash 节点，并重新设置 TiFlash replica：
+3. 执行扩容 TiFlash 节点，并重新设置 TiFlash 副本数：
 
     ```shell
     tiup cluster scale-out mycluster ./scale-out.topo.yaml
