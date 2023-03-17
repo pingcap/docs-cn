@@ -345,6 +345,10 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
     指定的 `LOAD DATA` JOB 不存在或不是由当前用户创建，目前用户只能查看自己创建的 JOB。
 
+* Error Number: 8171
+
+    对不支持的 `LOAD DATA` 任务状态进行运维操作，请参照具体提示解决错误。
+
 * Error Number: 8172
 
     指定 `LOCAL` 的 `LOAD DATA` 不能后台运行，请参考[`LOAD DATA`](/sql-statements/sql-statement-load-data.md)更改 SQL 语句。
