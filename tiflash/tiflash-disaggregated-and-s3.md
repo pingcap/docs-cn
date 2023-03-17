@@ -48,6 +48,18 @@ TiFlash 存算分离架构适用于高性价比的数据分析服务的场景。
 
 准备一个用于存储 TiFlash 数据的 Amazon S3 bucket。你也可以使用已有的 bucket，但需要为每个 TiDB 集群创建专门的存储目录。关于 S3 bucket 的更多信息，请参考 [AWS 文档](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/userguide/creating-buckets-s3.html)。
 
+也可以使用兼容 S3 的其他对象存储，比如 [MinIO](https://min.io/).
+
+TiFlash 需要使用这些 S3 的 API 街口:
+
+- PutObject
+- GetObject
+- CopyObject
+- DeleteObject
+- ListObjectV2
+- GetObjectTagging
+- PutBucketLifecycle
+
 ## 使用方式
 
 默认情况下，TiUP 会将 TiFlash 部署为存算一体架构。如需将 TiFlash 部署为存算分离架构，请参考以下步骤手动进行配置：
