@@ -121,13 +121,13 @@ delta_index_cache_size = 0
 
     # [storage.remote.cache]
     # dir: /data1/tiflash/cache        # TiFlash Compute Node 的本地数据缓存目录
-    # capacity: 858993459200           # 800GiB
+    # capacity: 858993459200           # 800 GiB
 
 [flash]
     tidb_status_addr = tidb status 端口地址 # 多个地址以逗号分割
     service_addr =  TiFlash raft 服务 和 coprocessor 服务监听地址
 
-    ## 这个配置表示使用存算分离模式，详细参考文档 [TiFlash 存算分离架构与 S3 支持](/tiflash/tiflash-disaggregated-and-s3.md)
+    ## 这个配置表示使用存算分离架构，详细参考文档 [TiFlash 存算分离架构与 S3 支持](/tiflash/tiflash-disaggregated-and-s3.md)
     # disaggregated_mode = tiflash_write # tiflash_write 或者 tiflash_compute
 
 # 多个 TiFlash 节点会选一个 master 来负责往 PD 增删 placement rule，通过 flash.flash_cluster 中的参数控制。
