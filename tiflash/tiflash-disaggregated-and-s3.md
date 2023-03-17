@@ -89,7 +89,7 @@ TiFlash 使用的 S3 API 接口列表:
         config:
           flash.disaggregated_mode: tiflash_write               # 这是一个 Write Node
           storage.s3.endpoint: http://s3.{region}.amazonaws.com # S3 的 endpoint 地址
-          storage.s3.bucket: mybucket                          # TiFlash 的所有数据存储在这个 bucket 中
+          storage.s3.bucket: mybucket                           # TiFlash 的所有数据存储在这个 bucket 中
           storage.s3.root: /cluster1_data                       # S3 bucket 中存储数据的根目录
           storage.s3.access_key_id: {ACCESS_KEY_ID}             # 访问 S3 的 ACCESS_KEY_ID
           storage.s3.secret_access_key: {SECRET_ACCESS_KEY}     # 访问 S3 的 SECRET_ACCESS_KEY
@@ -98,7 +98,7 @@ TiFlash 使用的 S3 API 接口列表:
         config:
           flash.disaggregated_mode: tiflash_write               # 这是一个 Write Node
           storage.s3.endpoint: http://s3.{region}.amazonaws.com # S3 的 endpoint 地址
-          storage.s3.bucket: mybucket                          # TiFlash 的所有数据存储在这个 bucket 中
+          storage.s3.bucket: mybucket                           # TiFlash 的所有数据存储在这个 bucket 中
           storage.s3.root: /cluster1_data                       # S3 bucket 中存储数据的根目录
           storage.s3.access_key_id: {ACCESS_KEY_ID}             # 访问 S3 的 ACCESS_KEY_ID
           storage.s3.secret_access_key: {SECRET_ACCESS_KEY}     # 访问 S3 的 SECRET_ACCESS_KEY
@@ -109,22 +109,22 @@ TiFlash 使用的 S3 API 接口列表:
         config:
           flash.disaggregated_mode: tiflash_compute             # 这是一个 Compute Node
           storage.s3.endpoint: http://s3.{region}.amazonaws.com # S3 的 endpoint 地址
-          storage.s3.bucket: mybucket                          # TiFlash 的所有数据存储在这个 bucket 中
+          storage.s3.bucket: mybucket                           # TiFlash 的所有数据存储在这个 bucket 中
           storage.s3.root: /cluster1_data                       # S3 bucket 中存储数据的根目录
           storage.s3.access_key_id: {ACCESS_KEY_ID}             # 访问 S3 的 ACCESS_KEY_ID
           storage.s3.secret_access_key: {SECRET_ACCESS_KEY}     # 访问 S3 的 SECRET_ACCESS_KEY
-          storage.main.dir: ["/data1/tiflash/"]                 # Compute Node 的节点信息数据目录
+          storage.main.dir: ["/data1/tiflash/data"]             # Compute Node 的节点信息数据目录
           storage.remote.cache.dir: /data1/tiflash/cache        # Compute Node 的本地数据缓存目录
           storage.remote.cache.capacity: 858993459200           # 800GiB
       - host: 172.31.9.2
         config:
           flash.disaggregated_mode: tiflash_compute             # 这是一个 Compute Node
           storage.s3.endpoint: http://s3.{region}.amazonaws.com # S3 的 endpoint 地址
-          storage.s3.bucket: mybucket                          # TiFlash 的所有数据存储在这个 bucket 中
+          storage.s3.bucket: mybucket                           # TiFlash 的所有数据存储在这个 bucket 中
           storage.s3.root: /cluster1_data                       # S3 bucket 中存储数据的根目录
           storage.s3.access_key_id: {ACCESS_KEY_ID}             # 访问 S3 的 ACCESS_KEY_ID
           storage.s3.secret_access_key: {SECRET_ACCESS_KEY}     # 访问 S3 的 SECRET_ACCESS_KEY
-          storage.main.dir: ["/data1/tiflash/"]                 # Compute Node 的节点信息数据目录
+          storage.main.dir: ["/data1/tiflash/data"]             # Compute Node 的节点信息数据目录
           storage.remote.cache.dir: /data1/tiflash/cache        # Compute Node 的本地数据缓存目录
           storage.remote.cache.capacity: 858993459200           # 800GiB
     ```
