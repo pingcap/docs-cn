@@ -327,7 +327,7 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 8163
 
-    未知的 `LOAD DATA ... WITH ...` 选项，请参考[`LOAD DATA`](/sql-statements/sql-statement-load-data.md)查看合法的选项。
+    未知的 `LOAD DATA ... WITH ...` 选项。请参考 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md) 查看支持的选项。
 
 * Error Number: 8164
 
