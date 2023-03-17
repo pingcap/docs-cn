@@ -53,10 +53,13 @@ This document describes the operators precedence, comparison functions and opera
 | [REGEXP](https://dev.mysql.com/doc/refman/5.7/en/regexp.html#operator_regexp) | Pattern matching using regular expressions |
 | [>>](https://dev.mysql.com/doc/refman/5.7/en/bit-functions.html#operator_right-shift) | Right shift |
 | [RLIKE](https://dev.mysql.com/doc/refman/5.7/en/regexp.html#operator_regexp) | Synonym for REGEXP |
-| [SOUNDS LIKE](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#operator_sounds-like) | Compare sounds |
 | [*](https://dev.mysql.com/doc/refman/5.7/en/arithmetic-functions.html#operator_times) | Multiplication operator |
 | [-](https://dev.mysql.com/doc/refman/5.7/en/arithmetic-functions.html#operator_unary-minus) | Change the sign of the argument |
 | [XOR](https://dev.mysql.com/doc/refman/5.7/en/logical-operators.html#operator_xor) | Logical XOR |
+
+## Unsupported operators
+
+* [`SOUNDS LIKE`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#operator_sounds-like)
 
 ## Operator precedence
 
