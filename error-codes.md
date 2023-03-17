@@ -323,7 +323,7 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 8162
 
-    `LOAD DATA` 语句存在错误，请参考[`LOAD DATA`](/sql-statements/sql-statement-load-data.md)查看已支持的功能。
+    `LOAD DATA` 语句存在错误。请参考 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md) 查看已支持的功能。
 
 * Error Number: 8163
 
