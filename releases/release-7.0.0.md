@@ -54,7 +54,7 @@ TiDB 版本：7.0.0
 
     更多信息，请参考[用户文档](/tiflash/tiflash-late-materialization.md)。
 
-* 非 prepared 语句的执行计划可以被缓存（实验特性）[#issue号](链接) @[qw4990](https://github.com/qw4990) **tw:Oreoxmt**
+* 非 prepared 语句的执行计划可以被缓存（实验特性）[#qw4990](https://github.com/pingcap/tidb/issues/36598) @[qw4990](https://github.com/qw4990) **tw:Oreoxmt**
 
     执行计划缓存是提升并发 OLTP 负载能力的重要手段， TiDB 已经支持对 [prepared 语句的计划进行缓存](/sql-prepared-plan-cache.md)。 在 v7.0.0 中， 非 prepared 语句的执行计划也能够被缓存，使得执行计划缓存能够被应用在更广泛场景下，进而提升 TiDB 的并发处理能力。
 
