@@ -73,7 +73,7 @@ TiDB 对参数化后形式相同的查询，只能缓存一个计划。例如，
 由于上述风险以及执行计划缓存只在简单查询上有明显收益（如果查询较为复杂，查询本身执行时间较长，使用执行计划缓存收益不大），TiDB 目前对 Non-Prepared Plan Cache 的生效范围有严格的限制。具体限制如下：
 
 - [Prepared Plan Cache](/sql-prepared-plan-cache.md) 不支持的查询或者计划，Non-Prepared Plan Cache 也不支持。
-- 目前仅支持包含 `Scan-Selection-Projection` 算子的单表的点查或范围查询，例如 `SELECT * FROM t WHERE a < 10 AND b in (1, 2)`。
+- 目前仅支持包含 `Scan`、`Selection` 或 `Projection` 算子的单表的点查或范围查询，例如 `SELECT * FROM t WHERE a < 10 AND b in (1, 2)`。
 - 不支持包含 `Agg`、`Limit`、`Window` 或 `Sort` 等复杂算子的查询。
 - 不支持包含非范围查询条件，例如：
     - 不支持 `LIKE`，例如 `c LIKE 'c%'`
