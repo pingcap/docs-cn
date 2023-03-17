@@ -40,7 +40,7 @@ sorted-kv-dir = "./some-dir"
 # 限制 TiDB Lightning 向每个 TiKV 节点写入的带宽大小，默认为 0，表示不限制。
 # store-write-bwlimit = "128MiB"
 
-# 配置是否通过 SQL 方式添加索引。默认根据 TiDB 版本自动选择，如果 TiDB 版本 >= v7.0.0, 则 TiDB Lightning 会使用 SQL 方式添加索引。
+# 配置是否通过 SQL 方式添加索引。默认根据 TiDB 版本自动选择。如果 TiDB 版本早于 v7.0.0，则默认为 `false`。从 v7.0.0 版本开始，默认为 `true`，即 TiDB Lightning 会使用 SQL 方式添加索引。
 # 通过 SQL 方式添加索引的优点是可以快速导入数据，即使索引添加失败，也不会影响数据的一致性。
 #add-index-by-sql = true
 
