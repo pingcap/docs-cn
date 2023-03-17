@@ -17,7 +17,7 @@ LoadDataStmt ::=
 LocalOpt ::= ('LOCAL')?
 
 FormatOpt ::=
-    ('FORMAT' ('DELIMITED FILE' | 'SQL FILE' | 'PARQUET'))?
+    ('FORMAT' ('DELIMITED DATA' | 'SQL FILE' | 'PARQUET'))?
 
 Fields ::=
     ('TERMINATED' 'BY' stringLit
@@ -26,14 +26,17 @@ Fields ::=
     | 'DEFINED' 'NULL' 'BY' stringLit ('OPTIONALLY' 'ENCLOSED')?)?
 
 LoadDataOptionListOpt ::=
-    ('WITH' detached)?
+    ('WITH' (LoadDataOption (',' LoadDataOption)*))?
+
+LoadDataOption ::=
+    detached | batch_size '=' numberLiteral
 ```
 
 ## 参数说明
 
-用户可以使用 `LOCAL` 来指定导入的数据文件位于客户端，此时传入文件参数必须为客户的文件路径。当用户不指定 `LOCAL` 时，文件参数可以是存放在服务器端的文件，此时该参数为磁盘文件路径；也可以是存储在 `S3` 上的文件。
+用户可以使用 `LOCAL` 来指定导入的数据文件位于客户端，此时传入文件参数必须为客户端文件系统路径。当用户不指定 `LOCAL` 时，文件参数需要是合法的 `S3` 路径，详见[外部存储](/br/backup-and-restore-storages.md)。
 
-当数据文件存储在 `S3` 上时，用户可以导入单个文件，也可使用[通配符](https://pkg.go.dev/path/filepath#Match)来匹配需要导入的多个文件，注意通配符不会递归处理子目录下相关的文件，示例如下:
+当数据文件存储在 `S3` 上时，用户可以导入单个文件，也可使用通配符 `*` 来匹配需要导入的多个文件，注意通配符不会递归处理子目录下相关的文件，示例如下:
 - 导入单个文件: `s3://<bucket-name>/path/to/data/foo.csv`.
 - 导入指定目录下的所有文件: `s3://<bucket-name>/path/to/data/*`.
 - 导入指定路径下的所有以 `.csv`结尾的文件: `s3://<bucket-name>/path/to/data/*.csv`.
@@ -42,7 +45,7 @@ LoadDataOptionListOpt ::=
 
 用户可以通过 `FormatOpt` 参数来指定数据文件的格式，当不指定该语句时格式为 `DELIMITED DATA`，该格式即 MySQL `LOAD DATA` 支持的数据格式。当数据格式不为 `DELIMITED DATA` 时，不能指定 `Fields` `Lines` `IgnoreLines` 等语句。
 
-当数据格式为 `TSV` 时，用户可以使用 `Fields` 和 `Lines` 参数来指定如何处理数据格式，使用 `FIELDS TERMINATED BY` 来指定每个数据的分隔符号，使用 `FIELDS ENCLOSED BY` 来指定消除数据的包围符号。如果用户希望以某个字符为结尾切分每行数据，可以使用 `LINES TERMINATED BY` 来指定行的终止符，可以使用 `DEFINED NULL BY` 来指定数据文件中如何表示 NULL 值。
+当数据格式为 `DELIMITED DATA` 时，用户可以使用 `Fields` 和 `Lines` 参数来指定如何处理数据格式，使用 `FIELDS TERMINATED BY` 来指定每个数据的分隔符号，使用 `FIELDS ENCLOSED BY` 来指定消除数据的包围符号。如果用户希望以某个字符为结尾切分每行数据，可以使用 `LINES TERMINATED BY` 来指定行的终止符，可以使用 `DEFINED NULL BY` 来指定数据文件中如何表示 NULL 值。
 
 例如对于以下格式的数据：
 
@@ -66,7 +69,7 @@ LINES TERMINATED BY '\n' STARTING BY ''
 
 用户可以通过 `IGNORE number LINES` 参数来忽略文件开始的 `number` 行，例如可以使用 `IGNORE 1 LINES` 来忽略文件的首行。
 
-当用户不指定 `LocalOpt` 参数时，用户可以通过 `WITH detached` 来让 `LOAD DATA` 在后台运行，用户可通过 [SHOW LOAD DATA](/sql-statements/sql-statement-show-load-data.md) 查看创建的 JOB，也可以使用 [OPERATE LOAD DATA JOB](/sql-statements/sql-statement-operate-load-data-job.md) 来取消或删除创建的 JOB。
+当用户不指定 `LocalOpt` 参数时，用户可以通过 `WITH detached` 来让 `LOAD DATA` 在后台运行，用户可通过 [SHOW LOAD DATA](/sql-statements/sql-statement-show-load-data.md) 查看创建的 JOB，也可以使用 [OPERATE LOAD DATA JOB](/sql-statements/sql-statement-operate-load-data-job.md) 来取消或删除创建的 JOB。用户可以通过 `batch_size=<number>` 来指定批量写入 TiDB 时的行数，默认值 1000。
 
 ## 示例
 
@@ -118,14 +121,33 @@ LOAD DATA LOCAL INFILE '/mnt/evo970/data-sets/bikeshare-data/2017Q4-capitalbikes
 
 以上示例中 `x'2c'` 是字符 `,` 的十六进制表示，`b'100010'` 是字符 `"` 的二进制表示。
 
+后台运行 `LOAD DATA`:
+
+{{< copyable "sql" >}}
+
+```sql
+load data infile 's3://mybucket/small.csv' into table t fields enclosed by '"' terminated by ',' (id,a,b) with detached;
+```
+
+执行后，会输出后台运行的 job id：
+```
++--------+
+| Job_ID |
++--------+
+|      2 |
++--------+
+1 row in set (0.01 sec)
+```
+
 ## MySQL 兼容性
 
 TiDB 中的 `LOAD DATA` 语句应该完全兼容 MySQL（除字符集选项被解析但会被忽略以外）。若发现任何兼容性差异，请在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues/new/choose)。
 
 > **注意：**
 >
-> 在 TiDB 的早期版本中，`LOAD DATA` 语句每 20000 行进行一次提交。新版本的 TiDB 默认在一个事务中提交所有行。从 TiDB 4.0 及以前版本升级后，可能出现 `ERROR 8004 (HY000) at line 1: Transaction is too large, size: 100000058` 错误。
+> 在 TiDB 的早期版本中，`LOAD DATA` 语句每 20000 行进行一次提交。新版本的 TiDB （版本 <= 6.6.0） 默认在一个事务中提交所有行，从 7.0.0 开始批量提交的行数由 `LOAD DATA` 语句的 `WITH batch_size=<number>` 参数控制。
 >
+> 从 TiDB 4.0 及以前版本升级后，可能出现 `ERROR 8004 (HY000) at line 1: Transaction is too large, size: 100000058` 错误。
 > 要解决该问题，建议调大 `tidb.toml` 文件中的 `txn-total-size-limit` 值。如果无法增加此限制，还可以将 [`tidb_dml_batch_size`](/system-variables.md#tidb_dml_batch_size) 的值设置为 `20000` 来恢复升级前的行为。
 
 ## 另请参阅
