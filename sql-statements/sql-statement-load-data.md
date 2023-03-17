@@ -37,6 +37,7 @@ LoadDataOption ::=
 用户可以使用 `LOCAL` 来指定导入的数据文件位于客户端，此时传入文件参数必须为客户端文件系统路径。当用户不指定 `LOCAL` 时，文件参数需要是合法的 `S3` 路径，详见[外部存储](/br/backup-and-restore-storages.md)。
 
 当数据文件存储在 `S3` 上时，用户可以导入单个文件，也可使用通配符 `*` 来匹配需要导入的多个文件，注意通配符不会递归处理子目录下相关的文件，示例如下:
+
 - 导入单个文件: `s3://<bucket-name>/path/to/data/foo.csv`.
 - 导入指定目录下的所有文件: `s3://<bucket-name>/path/to/data/*`.
 - 导入指定路径下的所有以 `.csv`结尾的文件: `s3://<bucket-name>/path/to/data/*.csv`.
