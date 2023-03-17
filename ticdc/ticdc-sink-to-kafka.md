@@ -66,7 +66,7 @@ URI 中可配置的的参数如下：
 | `cert`     | 连接下游 Kafka 实例所需的证书文件路径（可选）。 |
 | `key`      | 连接下游 Kafka 实例所需的证书密钥文件路径（可选）。 |
 | `sasl-user` | 连接下游 Kafka 实例所需的 SASL/PLAIN 或 SASL/SCRAM 认证的用户名（authcid）（可选）。 |
-| `sasl-password` | 连接下游 Kafka 实例所需的 SASL/PLAIN 或 SASL/SCRAM 认证的密码（可选）。如有特殊字符，需要用 URL encode 转义 |
+| `sasl-password` | 连接下游 Kafka 实例所需的 SASL/PLAIN 或 SASL/SCRAM 认证的密码（可选）。如有特殊字符，需要用 URL encode 转义。 |
 | `sasl-mechanism` | 连接下游 Kafka 实例所需的 SASL 认证方式的名称，可选值有 `plain`、`scram-sha-256`、`scram-sha-512` 和 `gssapi`。 |
 | `sasl-gssapi-auth-type` | gssapi 认证类型，可选值有 `user` 和 `keytab`（可选）。 |
 | `sasl-gssapi-keytab-path` | gssapi keytab 路径（可选）。|
