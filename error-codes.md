@@ -299,7 +299,7 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 8155
 
-    目前 `LOAD DATA` 只能从 `S3` 导入 parquet 格式的数据文件。可以将数据上传到 `S3` 再进行导入。
+    目前 `LOAD DATA` 只支持从 S3 导入 Parquet 格式的数据文件。可以将数据上传到 S3 后再导入。
 
 * Error Number: 8156
 
