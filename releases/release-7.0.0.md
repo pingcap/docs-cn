@@ -230,7 +230,7 @@ TiDB 版本：7.0.0
     - 支持将任务设置为 Detached，让任务在后台执行。
     - 支持任务管理，可通过 show load data jobid 查询任务状态和进展详情。方便用户管理和维护。
 
-  更多信息，请参考[用户文档](待补充)。
+  更多信息，请参考[用户文档](/sql-statements/sql-statement-load-data.md)。
 
 * TiDB Lightning 向 TiKV 传输键值对时支持启用压缩传输 [#41163](https://github.com/pingcap/tidb/issues/41163) @[gozssky](https://github.com/gozssky) **tw:qiancai**
 
