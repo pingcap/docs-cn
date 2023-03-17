@@ -50,7 +50,7 @@ TiFlash 存算分离架构适用于高性价比的数据分析服务的场景。
 
 也可以使用兼容 S3 的其他对象存储，比如 [MinIO](https://min.io/)。
 
-TiFlash 使用的 S3 API 接口列表:
+TiFlash 使用的 S3 API 接口列表包括：
 
 - PutObject
 - GetObject
