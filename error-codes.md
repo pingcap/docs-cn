@@ -339,7 +339,7 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 8166
 
-    某些 `LOAD DATA ... WITH ...` 选项只能在特定的导入模式下才可以使用，请参考[`LOAD DATA`](/sql-statements/sql-statement-load-data.md)查看合法的选项。
+    某些 `LOAD DATA ... WITH ...` 选项只能在特定的导入模式下才可以使用。请参考 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md) 查看支持的选项。
 
 * Error Number: 8170
 
