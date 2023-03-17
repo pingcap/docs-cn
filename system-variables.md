@@ -1476,7 +1476,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 是否持久化到集群：是
 - 类型：布尔型
 - 默认值：`OFF`
-- 该变量用于控制当内表上有 `Selection`/`Projection` 算子时是否支持 Index Join。
+- 该变量用于控制当内表上有 `Selection`/`Projection` 算子时是否支持 Index Join。`OFF` 表示不支持。
 
 ### `tidb_enable_ordered_result_mode`
 
