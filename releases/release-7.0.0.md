@@ -274,7 +274,7 @@ TiDB 版本：7.0.0
 |[`tidb_opt_advanced_join_hint`](/system-variables.md#tidb_opt_advanced_join_hint-从-v700-版本开始引入) |  新增  | 这个变量用来控制用于控制连接算法的 Join Method Hint 是否会影响 Join Reorder 的优化过程。 默认值为 `ON`，即采用新的兼容控制模式；`OFF` 则与 v7.0.0 以前的行为保持一致。为了向前兼容，从旧版本升级到 v7.0.0 及之后版本的集群，该变量会被设置成 `OFF`。|
 |[`tidb_pessimistic_txn_fair_locking`](/system-variables.md#tidb_pessimistic_txn_fair_locking-从-v700-版本开始引入) | 新增 | 是否对悲观锁启用加强的悲观锁唤醒模型，以降低单行冲突场景下事务的尾延迟。默认值为 `ON`，从旧版本升级到 v7.0.0 或之后版本，该变量会被设置成 `OFF` |
 |[`tidb_pessimistic_txn_aggressive_locking`] | 删除 | 更名为 [`tidb_pessimistic_txn_fair_locking`](/system-variables.md#tidb_pessimistic_txn_fair_locking-从-v700-版本开始引入) |
-|        |                              |      |
+|[`tidb_opt_enable_late_materialization`]  |  新增  |   这个变量用来控制用于控制 TiFlash 延迟物化功能是否开启。 默认值为 `OFF`，即不开启 TiFlash 延迟物化功能。 |
 |        |                              |      |
 |        |                              |      |
 
