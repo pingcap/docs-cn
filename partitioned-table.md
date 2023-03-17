@@ -927,10 +927,8 @@ SELECT fname, lname, region_code, dob
 
     理论上所有满足单调条件（严格或者非严格）的函数都是可以支持分区裁剪。实际上，目前 TiDB 已经支持的单调函数只有：
 
-    ```
-    unix_timestamp
-    to_days
-    ```
+    * [`UNIX_TIMESTAMP()`](/functions-and-operators/date-and-time-functions.md)
+    * [`TO_DAYS()`](/functions-and-operators/date-and-time-functions.md)
 
     例如，分区表达式是简单列的情况：
 
@@ -1654,9 +1652,10 @@ mysql> explain select /*+ TIDB_INLJ(t1, t2) */ t1.* from t1, t2 where t2.code = 
     {{< copyable "sql" >}}
 
     ```sql
-    select distinct concat(TABLE_SCHEMA,'.',TABLE_NAME)
-        from information_schema.PARTITIONS
-        where TABLE_SCHEMA not in ('INFORMATION_SCHEMA','mysql','sys','PERFORMANCE_SCHEMA','METRICS_SCHEMA');
+    SELECT DISTINCT CONCAT(TABLE_SCHEMA,'.', TABLE_NAME)
+        FROM information_schema.PARTITIONS
+        WHERE TIDB_PARTITION_ID IS NOT NULL
+        AND TABLE_SCHEMA NOT IN ('INFORMATION_SCHEMA', 'mysql', 'sys', 'PERFORMANCE_SCHEMA', 'METRICS_SCHEMA');
     ```
 
     ```

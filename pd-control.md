@@ -1065,9 +1065,11 @@ region topsize
 }
 ```
 
-### `region check [miss-peer | extra-peer | down-peer | pending-peer | offline-peer | empty-region | hist-size | hist-keys]`
+### `region check [miss-peer | extra-peer | down-peer | pending-peer | offline-peer | empty-region | hist-size | hist-keys] [--jq="<query string>"]`
 
-用于查询处于异常状态的 Region，各类型的意义如下
+用于查询处于异常状态的 Region，使用 jq 格式化输出请参考 [jq 格式化 JSON 输出示例](#jq-格式化-json-输出示例)。
+
+各类型的意义如下：
 
 - miss-peer：缺副本的 Region
 - extra-peer：多副本的 Region
@@ -1256,6 +1258,23 @@ scheduler config balance-hot-region-scheduler  // 显示 balance-hot-region 调�
     ```bash
     scheduler config balance-hot-region-scheduler set enable-for-tiflash true
     ```
+
+### `service-gc-safepoint`
+
+用于查询当前的 GC safepoint 与 service GC safepoint，输出结果示例如下：
+
+```bash
+{
+  "service_gc_safe_points": [
+    {
+      "service_id": "gc_worker",
+      "expired_at": 9223372036854775807,
+      "safe_point": 439923410637160448
+    }
+  ],
+  "gc_safe_point": 0
+}
+```
 
 ### `store [delete | cancel-delete | label | weight | remove-tombstone | limit ] <store_id> [--jq="<query string>"]`
 
