@@ -46,7 +46,7 @@ LoadDataOption ::=
 
 用户可以通过 `FormatOpt` 参数来指定数据文件的格式，当不指定该语句时格式为 `DELIMITED DATA`，该格式即 MySQL `LOAD DATA` 支持的数据格式。当数据格式不为 `DELIMITED DATA` 时，不能指定 `Fields` `Lines` `IgnoreLines` 等语句。
 
-当数据格式为 `DELIMITED DATA` 时，用户可以使用 `Fields` 和 `Lines` 参数来指定如何处理数据格式，使用 `FIELDS TERMINATED BY` 来指定每个数据的分隔符号，使用 `FIELDS ENCLOSED BY` 来指定消除数据的包围符号。如果用户希望以某个字符为结尾切分每行数据，可以使用 `LINES TERMINATED BY` 来指定行的终止符，可以使用 `DEFINED NULL BY` 来指定数据文件中如何表示 NULL 值。
+当数据格式为 `DELIMITED DATA` 时，你可以使用 `Fields` 和 `Lines` 参数来指定如何处理数据格式。使用 `FIELDS TERMINATED BY` 来指定每个数据的分隔符号，使用 `FIELDS ENCLOSED BY` 来指定消除数据的包围符号。如果你希望以某个字符为结尾切分每行数据，可以使用 `LINES TERMINATED BY` 来指定行的终止符。可以使用 `DEFINED NULL BY` 来指定数据文件中如何表示 NULL 值。
 
 例如对于以下格式的数据：
 
