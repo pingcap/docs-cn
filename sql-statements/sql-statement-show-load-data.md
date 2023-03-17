@@ -75,4 +75,4 @@ SHOW LOAD DATA JOB 1;
 ## 另请参阅
 
 * [LOAD DATA](/sql-statements/sql-statement-load-data.md)
-* [OPERATE LOAD DATA JOB](/sql-statements/sql-statement-operate-load-data-job.md)
+* [[CANCEL|DROP] LOAD DATA](/sql-statements/sql-statement-operate-load-data-job.md)
