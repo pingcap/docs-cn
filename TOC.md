@@ -610,7 +610,7 @@
     - [使用 TiDB 读取 TiFlash](/tiflash/use-tidb-to-read-tiflash.md)
     - [使用 TiSpark 读取 TiFlash](/tiflash/use-tispark-to-read-tiflash.md)
     - [使用 MPP 模式](/tiflash/use-tiflash-mpp-mode.md)
-    - [使用 FastScan 模式](/tiflash/use-fastscan.md)
+    - [使用 FastScan 功能](/tiflash/use-fastscan.md)
     - [TiFlash 支持的计算下推](/tiflash/tiflash-supported-pushdown-calculations.md)
     - [TiFlash 查询结果物化](/tiflash/tiflash-results-materialization.md)
     - [TiFlash 数据校验](/tiflash/tiflash-data-validation.md)
