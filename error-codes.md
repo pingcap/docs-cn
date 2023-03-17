@@ -319,7 +319,7 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 8160
 
-    `LOAD DATA` 读取数据文件失败，可根据具体的错误提示来处理。
+    `LOAD DATA` 读取数据文件失败。请根据具体的错误提示进行处理。
 
 * Error Number: 8162
 
