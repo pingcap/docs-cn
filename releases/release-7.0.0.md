@@ -157,7 +157,7 @@ TiDB 版本：7.0.0
 
 * Time to live (TTL) 已基本可用 [#39262](https://github.com/pingcap/tidb/issues/39262) @[lcwangchao](https://github.com/lcwangchao) @[YangKeao](https://github.com/YangKeao) **tw:ran-huang**
 
-    TTL 提供了行级别的生命周期控制策略。在 TiDB 中，设置了 TTL 属性的表会根据配置自动检查并删除过期的行数据。TTL 设计的目标是在不影响在线读写负载的前提下，帮助用户周期性且及时地清理不需要的数据。
+    TTL 提供了行级别的生命周期控制策略。在 TiDB 中，设置了 TTL 属性的表会根据配置自动检查并删除过期的行数据。TTL 设计的目标是帮助用户周期性且及时地清理不需要的数据，并尽量减少对用户负载的影响。
 
     更多信息，请参考[用户文档](/time-to-live.md)。
 
@@ -275,7 +275,7 @@ TiDB 版本：7.0.0
 |[`tidb_pessimistic_txn_fair_locking`](/system-variables.md#tidb_pessimistic_txn_fair_locking-从-v700-版本开始引入) | 新增 | 是否对悲观锁启用加强的悲观锁唤醒模型，以降低单行冲突场景下事务的尾延迟。默认值为 `ON`，从旧版本升级到 v7.0.0 或之后版本，该变量会被设置成 `OFF` |
 |[`tidb_pessimistic_txn_aggressive_locking`] | 删除 | 更名为 [`tidb_pessimistic_txn_fair_locking`](/system-variables.md#tidb_pessimistic_txn_fair_locking-从-v700-版本开始引入) |
 |[`tidb_opt_enable_late_materialization`]  |  新增  |   这个变量用来控制用于控制 TiFlash 延迟物化功能是否开启。 默认值为 `OFF`，即不开启 TiFlash 延迟物化功能。 |
-|        |                              |      |
+| [`tidb_load_based_replica_read_threshold`](/system-variables.md#tidb_load_based_replica_read_threshold) | 新增 | 这个变量用来设置基于负载的 replica read 的触发阈值。当 leader 节点的预估排队时间超过阈值时，TiDB 会优先从 follower 节点读取数据。格式为时间，例如 `"100ms"` 或 `"1s"`。 当前版本中该变量控制的功能尚未完全生效，请保留默认值。|
 |        |                              |      |
 
 ### 配置文件参数
@@ -347,7 +347,7 @@ TiDB 版本：7.0.0
 
         - Lightning local backend 支持导入数据和索引分离导入，提升导入速度和稳定性 [#42132](https://github.com/pingcap/tidb/issues/42132) @[gozssky](https://github.com/gozssky)
 
-            Lightning 增加 add-index-by-sql 参数。默认取值为 true，表示在物理导入模式（ local backend）下，会在导入数据完成后，通过 add index 的 SQL 语句帮用户建索引，提升导入数据的速度和稳定性。取值为 false，和历史版本保存一致，表示仍然会用 Lightning  将行数据以及索引数据编码成 kv pairs 后再一同导入到 TiKV。
+            Lightning 增加 add-index-by-sql 参数。当 TiDB 版本大于等于 v7.0.0 时默认取值为 true，表示在物理导入模式（ local backend）下，会在导入数据完成后，通过 add index 的 SQL 语句帮用户建索引，提升导入数据的速度和稳定性。当 TiDB 版本低于 v7.0.0 时默认取值为 false，和历史版本保存一致，表示仍然会用 Lightning  将行数据以及索引数据编码成 kv pairs 后再一同导入到 TiKV。
 
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
