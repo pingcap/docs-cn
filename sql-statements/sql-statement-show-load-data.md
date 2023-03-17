@@ -34,7 +34,7 @@ ShowLoadDataJobStmt ::=
 |Source_File_Size |源文件大小|
 |Loaded_File_Size |已经读到并写入目标表的数据量大小|
 |Result_Code |任务状态为 `finished` 时为 0，`failed` 时为对应的错误码|
-|Result_Message |具体错误信息|
+|Result_Message |成功导入时返回的摘要信息或者错误时的错误信息|
 
 ## 示例
 
