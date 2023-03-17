@@ -113,7 +113,7 @@ ALTER USER usr2 RESOURCE GROUP rg2;
 > **注意：**
 >
 > - `CREATE USER` 或者 `ALTER USER` 对用户资源组绑定后，不会对该用户的已有会话生效，而是只对该用户新建的会话生效。
-> - 如果用户没有绑定到某个资源组或者是绑定到 `default` 资源组，该用户的请求不会受 TiDB 的流控限制。`default` 资源组目前对用户不可见也不可以创建或者修改属性，不能通过 `SHOW CREATE RESOURCE GROUP` 或 `SELECT * FROM information_schema.resource_groups` 查看，但是可以通过 `mysql.user` 表查看。
+> - `TiDB` 集群在初始化时会自动创建 `default`  资源组，对于没有绑定资源组的语句会自动绑定至此资源组。此资源组不支持删除，但允许修改其 RU 的配置。
 
 #### 将当前会话绑定到资源组
 
