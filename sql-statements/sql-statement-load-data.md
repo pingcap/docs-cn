@@ -69,7 +69,7 @@ LINES TERMINATED BY '\n' STARTING BY ''
 
 用户可以通过 `IGNORE number LINES` 参数来忽略文件开始的 `number` 行，例如可以使用 `IGNORE 1 LINES` 来忽略文件的首行。
 
-当用户不指定 `LocalOpt` 参数时，用户可以通过 `WITH detached` 来让 `LOAD DATA` 在后台运行，用户可通过 [SHOW LOAD DATA](/sql-statements/sql-statement-show-load-data.md) 查看创建的 JOB，也可以使用 [OPERATE LOAD DATA JOB](/sql-statements/sql-statement-operate-load-data-job.md) 来取消或删除创建的 JOB。用户可以通过 `batch_size=<number>` 来指定批量写入 TiDB 时的行数，默认值 1000。
+如果你不指定 `LocalOpt` 参数时，你可以通过 `WITH detached` 来让 `LOAD DATA` 在后台运行。你可通过 [SHOW LOAD DATA](/sql-statements/sql-statement-show-load-data.md) 查看创建的 job，也可以使用 [OPERATE LOAD DATA JOB](/sql-statements/sql-statement-operate-load-data-job.md) 取消或删除创建的 job。你可以通过 `batch_size=<number>` 来指定批量写入 TiDB 时的行数，默认值为 1000。
 
 ## 示例
 
