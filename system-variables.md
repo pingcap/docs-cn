@@ -2597,7 +2597,7 @@ mysql> desc select count(distinct a) from test.t;
 - 默认值：`1.0`
 - 表示传输 1 比特数据的网络净开销。该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
 
-### `tidb_opt_ordering_index_selectivity_threshold` <span class="version-mark">从 v7.0 版本开始引入</span>
+### `tidb_opt_ordering_index_selectivity_threshold` <span class="version-mark">从 v7.0.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
@@ -2608,10 +2608,10 @@ mysql> desc select count(distinct a) from test.t;
 - 对于此类查询，优化器会考虑选择对应的索引来满足 `ORDER BY` 和 `LIMIT` 子句（即使这个索引并不满足任何过滤条件）。但是由于数据分布的复杂性，优化器可能在这种场景下选择不优的索引。
 - 该变量表示一个阈值。当存在索引能满足过滤条件，且其选择率估算值低于该阈值时，优化器会避免选择用于满足 `ORDER BY` 和 `LIMIT` 的索引，而优先选择用于满足过滤条件的索引。
 - 例如，当把该变量设为 `0` 时，优化器保持默认行为；当设为 `1` 时，优化器总是优先选择满足过滤条件的索引，避免选择满足 `ORDER BY` 和 `LIMIT` 的索引。
-- 在以下示例中，`t` 表共有 1000000 行数据。使用 `b` 列上的索引时，其估算行数是大约 8748 行，因此其选择率估算值大约是 0.0087。默认情况下，优化器选择了 `a` 列上的索引。而将该变量设为 `0.01` 之后，由于 `b` 列上的索引的选择率（0.0087）低于 0.01，优化器选择了 `b` 列上的索引。
+- 在以下示例中，`t` 表共有 1,000,000 行数据。使用 `b` 列上的索引时，其估算行数是大约 8,748 行，因此其选择率估算值大约是 0.0087。默认情况下，优化器选择了 `a` 列上的索引。而将该变量设为 `0.01` 之后，由于 `b` 列上的索引的选择率（0.0087）低于 0.01，优化器选择了 `b` 列上的索引。
 
 ```sql
-> explain select * from t where b <= 9000 order by a limit 1;
+> EXPLAIN SELECT * FROM t WHERE b <= 9000 ORDER BY a LIMIT 1;
 +-----------------------------------+---------+-----------+----------------------+--------------------+
 | id                                | estRows | task      | access object        | operator info      |
 +-----------------------------------+---------+-----------+----------------------+--------------------+
@@ -2623,9 +2623,9 @@ mysql> desc select count(distinct a) from test.t;
 |       └─TableRowIDScan_22         | 114.30  | cop[tikv] | table:t              | keep order:false   |
 +-----------------------------------+---------+-----------+----------------------+--------------------+
 
-> set session tidb_opt_ordering_index_selectivity_threshold = 0.01;
+> SET SESSION tidb_opt_ordering_index_selectivity_threshold = 0.01;
 
-> explain select * from t where b <= 9000 order by a limit 1;
+> EXPLAIN SELECT * FROM t WHERE b <= 9000 ORDER BY a LIMIT 1;
 +----------------------------------+---------+-----------+----------------------+-------------------------------------+
 | id                               | estRows | task      | access object        | operator info                       |
 +----------------------------------+---------+-----------+----------------------+-------------------------------------+
