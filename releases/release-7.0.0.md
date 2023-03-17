@@ -301,7 +301,7 @@ TiDB 版本：7.0.0
 
 + TiDB
 
-    - 加强的悲观锁唤醒模型的开关变量由 `tidb_pessimistic_txn_aggressive_locking` 更名为 `tidb_pessimistic_txn_fair_locking`，并在新集群中默认启用 [#42147](https://github.com/pingcap/tidb/issues/42147) @[MyonKeminta](https://github.com/MyonKeminta)
+    - 加强的悲观锁唤醒模型的开关变量由 `tidb_pessimistic_txn_aggressive_locking` 更名为 `tidb_pessimistic_txn_fair_locking`，并在新集群中默认启用。这可以使悲观事务严重单点冲突的场景下，事务被阻塞后唤醒的顺序尽可能保证公平，达到事务延迟更加稳定、尾延迟更低的效果 [#42147](https://github.com/pingcap/tidb/issues/42147) @[MyonKeminta](https://github.com/MyonKeminta)
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
