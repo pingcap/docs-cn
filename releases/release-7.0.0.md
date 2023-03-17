@@ -151,14 +151,6 @@ TiDB 版本：7.0.0
 
 ### SQL 功能
 
-* MySQL 兼容的多值索引 (Multi-Valued Index) GA [#39592](https://github.com/pingcap/tidb/issues/39592) @[xiongjiwei](https://github.com/xiongjiwei) @[qw4990](https://github.com/qw4990) **tw:ran-huang**
-
-    过滤 JSON 列中某个数组的值是常见的操作，但普通索引对这类操作起不到加速作用。在数组上创建多值索引能够大幅提升过滤的性能。如果 JSON 列中的某个数组上存在多值索引，那么可以利用多值索引过滤带有 `MEMBER OF()`、`JSON_CONTAINS()`、`JSON_OVERLAPS()` 函数的检索条件，从而减少大量的 I/O 消耗，提升运行速度。
-
-    在 v7.0.0 中， TiDB 多值索引 (Multi-Valued Index) 支持更多的数据类型，并与 TiDB 的工具链兼容， 这个功能 GA ，支持用户在生成环境中利用“多值索引”加速对 JSON 数组的检索操作。
-
-    更多信息，请参考[用户文档](/sql-statements/sql-statement-create-index.md#多值索引)。
-
 * Time to live (TTL) 已基本可用 [#39262](https://github.com/pingcap/tidb/issues/39262) @[lcwangchao](https://github.com/lcwangchao) @[YangKeao](https://github.com/YangKeao) **tw:ran-huang**
 
     TTL 提供了行级别的生命周期控制策略。在 TiDB 中，设置了 TTL 属性的表会根据配置自动检查并删除过期的行数据。TTL 设计的目标是在不影响在线读写负载的前提下，帮助用户周期性且及时地清理不需要的数据。
