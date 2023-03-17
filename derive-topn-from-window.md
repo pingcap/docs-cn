@@ -111,7 +111,7 @@ EXPLAIN SELECT * FROM (SELECT ROW_NUMBER() OVER (PARTITION BY id1) AS rownumber 
 |     └─Window_12                    | 3.00    | root      |               | row_number()->Column#6 over(partition by test.t.id1 rows between current row and current row) |
 |       └─Sort_25                    | 3.00    | root      |               | test.t.id1                                                                                    |
 |         └─TableReader_24           | 3.00    | root      |               | data:Limit_23                                                                                 |
-|           └─Limit_23               | 3.00    | cop[tikv] |               | offset:0, count:3                                                                             |
+|           └─Limit_23               | 3.00    | cop[tikv] |               | partition by test.t.id1, offset:0, count:3                                                    |
 |             └─TableFullScan_22     | 3.00    | cop[tikv] | table:t       | keep order:false, stats:pseudo                                                                |
 +------------------------------------+---------+-----------+---------------+-----------------------------------------------------------------------------------------------+
 ```
@@ -141,7 +141,7 @@ EXPLAIN SELECT * FROM (SELECT ROW_NUMBER() OVER (PARTITION BY id1 ORDER BY value
 +------------------------------------+----------+-----------+---------------+----------------------------------------------------------------------------------------------------------------------+
 ```
 
-在该查询中，优化器从窗口函数中推导出来了 TopN 并将它下推给了 TiKV。需要注意的是，这个 TopN 其实是 partition 的 TopN。
+在该查询中，优化器从窗口函数中推导出来了 TopN 并将它下推给了 TiKV。需要注意的是，这个 TopN 其实是 partition 的 TopN, 也就是说对于每个相同 `id1` 值组成的一组数据上都会进行一次 TopN。
 
 #### 示例 5：PARTITION BY 列不是主键的前缀
 
