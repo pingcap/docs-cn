@@ -38,11 +38,11 @@ LoadDataOption ::=
 
 当数据文件存储在 S3 上时，你可以导入单个文件，也可使用通配符 `*` 来匹配需要导入的多个文件。注意通配符不会递归处理子目录下相关的文件，示例如下:
 
-- 导入单个文件: `s3://<bucket-name>/path/to/data/foo.csv`.
-- 导入指定目录下的所有文件: `s3://<bucket-name>/path/to/data/*`.
-- 导入指定路径下的所有以 `.csv`结尾的文件: `s3://<bucket-name>/path/to/data/*.csv`.
-- 导入指定路径下所有以 `foo` 为前缀的文件: `s3://<bucket-name>/path/to/data/foo*`.
-- 导入指定路径下以 `foo` 开头，以 `.csv`结尾的文件: `s3://<bucket-name>/path/to/data/foo*.csv`.
+- 导入单个文件：`s3://<bucket-name>/path/to/data/foo.csv`
+- 导入指定目录下的所有文件：`s3://<bucket-name>/path/to/data/*`
+- 导入指定路径下的所有以 `.csv` 结尾的文件：`s3://<bucket-name>/path/to/data/*.csv`
+- 导入指定路径下所有以 `foo` 为前缀的文件：`s3://<bucket-name>/path/to/data/foo*`
+- 导入指定路径下以 `foo` 为前缀、以 `.csv` 结尾的文件：`s3://<bucket-name>/path/to/data/foo*.csv`
 
 用户可以通过 `FormatOpt` 参数来指定数据文件的格式，当不指定该语句时格式为 `DELIMITED DATA`，该格式即 MySQL `LOAD DATA` 支持的数据格式。当数据格式不为 `DELIMITED DATA` 时，不能指定 `Fields` `Lines` `IgnoreLines` 等语句。
 
