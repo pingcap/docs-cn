@@ -150,4 +150,4 @@ TiDB 中的 `LOAD DATA` 语句应该完全兼容 MySQL（除字符集选项被�
 * [乐观事务模型](/optimistic-transaction.md)
 * [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md)
 * [SHOW LOAD DATA](/sql-statements/sql-statement-show-load-data.md)
-* [OPERATE LOAD DATA JOB](/sql-statements/sql-statement-operate-load-data-job.md)
+* [[CANCEL|DROP] LOAD DATA](/sql-statements/sql-statement-operate-load-data-job.md)
