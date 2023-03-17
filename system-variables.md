@@ -2186,6 +2186,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 > **注意：**
 >
 > 假设一个 TiDB 集群有多个 TiFlash 节点，aggregation 一般来说会在多个 TiFlash 节点中分布式执行，而该变量是指单个 TiFlash 节点中 aggregation 算子的最大内存使用量。
+> 当该变量设置为 -1 时，TiFlash 将根据自身配置项 max_bytes_before_external_group_by 的值来来决定 aggregation 算子的最大内存使用量
 
 ### `tidb_max_bytes_before_tiflash_external_join` <span class="version-mark">从 v7.0.0 版本开始引入</span>
 
@@ -2199,6 +2200,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 > **注意：**
 >
 > 假设一个 TiDB 集群有多个 TiFlash 节点，join 一般来说会在多个 TiFlash 节点中分布式执行，而该变量是指单个 TiFlash 节点中 join 算子的最大内存使用量。
+> 当该变量设置为 -1 时，TiFlash 将根据自身配置项 max_bytes_before_external_join 的值来来决定 join 算子的最大内存使用量
 
 ### `tidb_max_bytes_before_tiflash_external_sort` <span class="version-mark">从 v7.0.0 版本开始引入</span>
 
@@ -2212,6 +2214,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 > **注意：**
 >
 > 假设一个 TiDB 集群有多个 TiFlash 节点，topN 和 sort 一般来说会在多个 TiFlash 节点中分布式执行，而该变量是指单个 TiFlash 节点中 topN 和 sort 算子的最大内存使用量。
+> 当该变量设置为 -1 时，TiFlash 将根据自身配置项 max_bytes_before_external_sort 的值来来决定 topN 和 sort 算子的最大内存使用量
 
 ### `tidb_max_chunk_size`
 
