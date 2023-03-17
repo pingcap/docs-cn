@@ -112,7 +112,7 @@ TiDB 版本：7.0.0
 
 * TiFlash 引擎支持 Spill-to-disk 功能 [#6528](https://github.com/pingcap/tiflash/issues/6528) @[windtalker](https://github.com/windtalker) **tw:ran-huang**
 
-    为了执行性能，TiFlash 引擎尽量将数据全部放在内存中运行。当数据量太大，超过内存总大小时，TiFlash 会终止查询，避免内存潮用引发系统崩溃。因此，TiFlash 可处理的数据量受限于内存大小。从 v7.0.0 版本开始，TiFlash 引擎支持 Spill-to-disk 功能，通过调整算子内存使用阈值 `max_bytes_before_external_group_by`、`max_bytes_before_external_sort`、`max_bytes_before_external_join`，控制对应算子的最大内存使用量。当算子使用内存超过一定阈值时，会自动将数据落盘，牺牲一定的性能，从而处理更多数据。
+    为了执行性能，TiFlash 引擎尽量将数据全部放在内存中运行。当数据量太大，超过内存总大小时，TiFlash 会终止查询，避免内存潮用引发系统崩溃。因此，TiFlash 可处理的数据量受限于内存大小。从 v7.0.0 版本开始，TiFlash 引擎支持 Spill-to-disk 功能，通过调整算子内存使用阈值 `tidb_max_bytes_before_tiflash_external_group_by`、`tidb_max_bytes_before_tiflash_external_sort`、`tidb_max_bytes_before_tiflash_external_join`，控制对应算子的最大内存使用量。当算子使用内存超过一定阈值时，会自动将数据落盘，牺牲一定的性能，从而处理更多数据。
 
     更多信息，请参考[用户文档](/tiflash/tiflash-spill-disk.md)。
 
