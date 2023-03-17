@@ -343,7 +343,7 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 8170
 
-    指定的 `LOAD DATA` JOB 不存在或不是由当前用户创建，目前用户只能查看自己创建的 JOB。
+    指定的 `LOAD DATA` job 不存在或不是由当前用户创建。目前用户只能查看自己创建的 job。
 
 * Error Number: 8171
 
