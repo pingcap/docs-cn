@@ -56,7 +56,7 @@ SHOW LOAD DATA JOBS;
 {{< copyable "sql" >}}
 
 ```sql
-SHOW LOAD DATA JOB 1\G;
+SHOW LOAD DATA JOB 1;
 ```
 
 ```
