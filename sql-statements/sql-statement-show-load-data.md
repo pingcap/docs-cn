@@ -19,26 +19,24 @@ ShowLoadDataJobStmt ::=
 
 `SHOW LOAD DATA` 语句显示的字段含义如下:
 
-| 列名 | 说明            |
-| -------- | ------------- |
-|Job_ID |任务 ID|
-|Create_Time |任务创建时间|
-|Start_Time |任务启动时间|
-|End_Time |任务结束时间|
-|Data_Source |数据源信息|
-|Target_Table |目标表|
-|Import_Mode |导入模式，目前该字段只能取值 `logical`|
-|Created_By |创建该任务的数据库用户名|
-| Job_State | 表示任务当前所处的阶段，对于 `logical` 模式的任务，只有 `loading` 这一个阶段 |
-|Job_Status |表示当前任务的状态。有以下几种状态：`pending`，表示任务已创建但还未开始运行；`running`，表示运行中；`canceled`，表示已经取消的任务；`failed`，表示任务失败并退出；`finished`，表示任务已完成。|
-|Source_File_Size |源文件大小|
-|Loaded_File_Size |已经读到并写入目标表的数据量大小|
-|Result_Code |任务状态为 `finished` 时为 0，`failed` 时为对应的错误码|
-|Result_Message |成功导入时返回的摘要信息或者错误时的错误信息|
+| 列名              | 说明                    |
+|------------------|-------------------------|
+| Job_ID           | 任务 ID                  |
+| Create_Time      | 任务创建时间              |
+| Start_Time       | 任务启动时间              |
+| End_Time         | 任务结束时间              |
+| Data_Source      | 数据源信息                |
+| Target_Table     | 目标表                    |
+| Import_Mode      | 导入模式，目前该字段只能取值 `logical`                        |
+| Created_By       | 创建该任务的数据库用户名                                      |
+| Job_State        | 表示任务当前所处的阶段，对于 `logical` 模式的任务，只有 `loading` 这一个阶段                                      |
+| Job_Status       | 表示当前任务的状态。有以下几种状态：`pending` 表示任务已创建但还未开始运行；`running` 表示运行中；`canceled` 表示已经取消的任务；`failed` 表示任务失败并退出；`finished` 表示任务已完成。                 |
+| Source_File_Size | 源文件大小                                                   |
+| Loaded_File_Size | 已经读到并写入目标表的数据量大小                               |
+| Result_Code      | 任务状态为 `finished` 时为 0，`failed` 时为对应的错误码        |
+| Result_Message   | 成功导入时返回的摘要信息或者错误时的错误信息                    |
 
 ## 示例
-
-{{< copyable "sql" >}}
 
 ```sql
 SHOW LOAD DATA JOBS;
@@ -52,8 +50,6 @@ SHOW LOAD DATA JOBS;
 +--------+----------------------------+----------------------------+---------------------+---------------------------+--------------------+-------------+------------+-----------+------------+------------------+------------------+-------------+----------------+
 1 row in set (0.01 sec)
 ```
-
-{{< copyable "sql" >}}
 
 ```sql
 SHOW LOAD DATA JOB 1;

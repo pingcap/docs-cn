@@ -21,8 +21,6 @@ DropLoadDataJobsStmt ::=
 
 ## 示例
 
-{{< copyable "sql" >}}
-
 ```sql
 CANCEL LOAD DATA JOB 1;
 ```
@@ -30,8 +28,6 @@ CANCEL LOAD DATA JOB 1;
 ```
 Query OK, 0 rows affected (0.01 sec)
 ```
-
-{{< copyable "sql" >}}
 
 ```sql
 DROP LOAD DATA JOB 1;

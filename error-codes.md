@@ -295,15 +295,15 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 8154
 
-    目前 `LOAD DATA` 不支持从 TiDB 服务器本地导入数据，可以指定 `LOCAL` 从客户端导入，或者将数据上传到 S3 再进行导入。
+    目前 `LOAD DATA` 不支持从 TiDB 服务器本地导入数据，可以指定 `LOCAL` 从客户端导入，或者将数据上传到 S3 再进行导入。请参考 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md)。
 
 * Error Number: 8155
 
-    目前 `LOAD DATA` 只支持从 S3 导入 Parquet 格式的数据文件。可以将数据上传到 S3 后再导入。
+    目前 `LOAD DATA` 只支持从 S3 导入 Parquet 格式的数据文件。可以将数据上传到 S3 后再导入。请参考 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md)。
 
 * Error Number: 8156
 
-    `LOAD DATA` 语句的文件路径不能为空。需要设置正确的路径再进行导入。
+    `LOAD DATA` 语句的文件路径不能为空。需要设置正确的路径再进行导入。请参考 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md)。
 
 * Error Number: 8157
 
