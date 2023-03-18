@@ -82,7 +82,7 @@ LINES TERMINATED BY '\n' STARTING BY ''
 
 可以通过 [SHOW LOAD DATA](/sql-statements/sql-statement-show-load-data.md) 查看创建的 job，也可以使用 [OPERATE LOAD DATA JOB](/sql-statements/sql-statement-operate-load-data-job.md) 取消或删除创建的 job。
 
-可以通过 `batch_size=<number>` 来指定批量写入 TiDB 时的行数，默认值为 1000。
+可以通过 `WITH batch_size=<number>` 来指定批量写入 TiDB 时的行数，默认值为 1000。
 
 ## 示例
 
