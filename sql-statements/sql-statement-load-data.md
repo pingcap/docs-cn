@@ -34,7 +34,11 @@ LoadDataOption ::=
 
 ## 参数说明
 
+### `LOCAL`
+
 你可以使用 `LOCAL` 来指定导入位于客户端的数据文件，此时传入文件参数必须为客户端文件系统路径。
+
+### S3 路径
 
 如果你不指定 `LOCAL`，则文件参数必须是有效的 S3 路径，详见[外部存储](/br/backup-and-restore-storages.md)。
 
@@ -46,7 +50,13 @@ LoadDataOption ::=
 - 导入指定路径下所有以 `foo` 为前缀的文件：`s3://<bucket-name>/path/to/data/foo*`
 - 导入指定路径下以 `foo` 为前缀、以 `.csv` 结尾的文件：`s3://<bucket-name>/path/to/data/foo*.csv`
 
-你可以通过 `FormatOpt` 参数来指定数据文件的格式。如果不指定该语句时，格式为 `DELIMITED DATA`，该格式即 MySQL `LOAD DATA` 支持的数据格式。只有数据格式是 `DELIMITED DATA` 时，才能指定 `Fields`、`Lines`、`Ignore Lines` 等语句。
+### `FormatOpt`
+
+你可以通过 `FormatOpt` 参数来指定数据文件的格式。
+
+### `DELIMITED DATA`、`Fields`、`Lines`、`Ignore Lines`
+
+如果不指定该语句时，格式为 `DELIMITED DATA`，该格式即 MySQL `LOAD DATA` 支持的数据格式。只有数据格式是 `DELIMITED DATA` 时，才能指定 `Fields`、`Lines`、`Ignore Lines` 等语句。
 
 当数据格式为 `DELIMITED DATA` 时，你可以使用 `Fields` 和 `Lines` 参数来指定如何处理数据格式：
 
@@ -76,11 +86,15 @@ FIELDS TERMINATED BY '\t' ENCLOSED BY '' ESCAPED BY '\\'
 LINES TERMINATED BY '\n' STARTING BY ''
 ```
 
-你可以通过 `IGNORE <number> LINES` 参数来忽略文件开始的 `<number>` 行，例如可以使用 `IGNORE 1 LINES` 来忽略文件的第一行。
+你可以通过 `IGNORE <number> LINES` 参数来忽略文件开始的 `<number>` 行。例如，可以使用 `IGNORE 1 LINES` 来忽略文件的第一行。
+
+### `WITH detached`
 
 如果你不指定 `LocalOpt` 参数，可以通过 `WITH detached` 来让 `LOAD DATA` 在后台运行。
 
 可以通过 [SHOW LOAD DATA](/sql-statements/sql-statement-show-load-data.md) 查看创建的 job，也可以使用 [OPERATE LOAD DATA JOB](/sql-statements/sql-statement-operate-load-data-job.md) 取消或删除创建的 job。
+
+### `WITH batch_size=<number>`
 
 可以通过 `WITH batch_size=<number>` 来指定批量写入 TiDB 时的行数，默认值为 1000。
 
