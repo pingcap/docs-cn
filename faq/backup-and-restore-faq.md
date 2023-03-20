@@ -45,11 +45,9 @@ In upstream clusters where you create log backup tasks, avoid using the TiDB Lig
 
 Issue: [#38045](https://github.com/pingcap/tidb/issues/38045)
 
-Currently, the [acceleration of adding indexes](/system-variables.md#tidb_ddl_enable_fast_reorg-new-in-v630) feature is not compatible with PITR. When using index acceleration, you need to ensure that there are no PITR log backup tasks running in the background. Otherwise, unexpected behaviors might occur, including:
+Currently, index data created through the [index acceleration](/system-variables.md#tidb_ddl_enable_fast_reorg-new-in-v630) feature cannot be backed up by PITR.
 
-- If you start a log backup task first, and then add an index. The adding index process is not accelerated even if index acceleration is enabled. But the index is added in a slow way.
-- If you start an index acceleration task first, and then start a log backup task. The log backup task returns an error. But the index acceleration is not affected.
-- If you start a log backup task and an index acceleration task at the same time, the two tasks might not be aware of each other. This might result in PITR failing to back up the newly added index.
+Therefore, after PITR recovery is complete, BR will delete the index data created by index acceleration, and then recreate it. If many indexes are created by index acceleration or the index data is large during the log backup, it is recommended to perform a full backup after creating the indexes.
 
 ### The cluster has recovered from the network partition failure, but the checkpoint of the log backup task progress still does not resume. Why?
 
