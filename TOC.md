@@ -51,7 +51,6 @@
       - [Follower Read](/develop/dev-guide-use-follower-read.md)
       - [Stale Read](/develop/dev-guide-use-stale-read.md)
     - [HTAP Queries](/develop/dev-guide-hybrid-oltp-and-olap-queries.md)
-    - [FastScan](/develop/dev-guide-use-fastscan.md)
   - Transaction
     - [Overview](/develop/dev-guide-transaction-overview.md)
     - [Optimistic and Pessimistic Transactions](/develop/dev-guide-optimistic-and-pessimistic-transaction.md)
@@ -588,6 +587,7 @@
     - [Use TiDB to Read TiFlash Replicas](/tiflash/use-tidb-to-read-tiflash.md)
     - [Use TiSpark to Read TiFlash Replicas](/tiflash/use-tispark-to-read-tiflash.md)
     - [Use MPP Mode](/tiflash/use-tiflash-mpp-mode.md)
+    - [Use FastScan](/tiflash/use-fastscan.md)
     - [Supported Push-down Calculations](/tiflash/tiflash-supported-pushdown-calculations.md)
     - [TiFlash Query Result Materialization](/tiflash/tiflash-results-materialization.md)
     - [Data Validation](/tiflash/tiflash-data-validation.md)

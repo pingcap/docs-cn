@@ -4396,7 +4396,7 @@ For details, see [Identify Slow Queries](/identify-slow-queries.md).
 - Scope: SESSION | GLOBAL
 - Default value: `OFF`
 - Type: Boolean
-- If [FastScan](/develop/dev-guide-use-fastscan.md) is enabled (set to `ON`), TiFlash provides more efficient query performance, but does not guarantee the accuracy of the query results or data consistency.
+- If [FastScan](/tiflash/use-fastscan.md) is enabled (set to `ON`), TiFlash provides more efficient query performance, but does not guarantee the accuracy of the query results or data consistency.
 
 ### tiflash_fine_grained_shuffle_batch_size <span class="version-mark">New in v6.2.0</span>
 

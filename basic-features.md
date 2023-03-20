@@ -44,22 +44,22 @@ This document lists the features supported in different TiDB versions, including
 
 ## Indexing and constraints
 
-| Indexing and constraints                                    | 6.6 | 6.5 | 6.1 | 5.4          |   5.3    |   5.2    |   5.1    |   5.0    |   4.0    |
-| ------------------------------------------------------------ | :--: | :--: | ------------ | :----------: | :----------: | :----------: | :----------: | :----------: | :----------: |
-| [Expression indexes](/sql-statements/sql-statement-create-index.md#expression-index) [^2] | Y | Y | E | E | E | E | E | E ||
-| [Columnar storage (TiFlash)](/tiflash/tiflash-overview.md)   | Y | Y | Y | Y            |      Y       |      Y       |      Y       |      Y       |      Y       |
-| [Use FastScan to accelerate queries in OLAP scenarios](/develop/dev-guide-use-fastscan.md) | E | E | N | N | N | N | N | N | N |
-| [RocksDB engine](/storage-engine/rocksdb-overview.md)        | Y | Y | Y | Y            |      Y       |      Y       |      Y       |      Y       |      Y       |
-| [Titan plugin](/storage-engine/titan-overview.md)            | Y | Y | Y | Y            |      Y       |      Y       |      Y       |      Y       |      Y       |
-| [Titan Level Merge](/storage-engine/titan-configuration.md#level-merge-experimental)   |  E  |  E   |  E    |    E     |    E     |    E     |    E     |    E     |    E     |
-| [Use buckets to improve scan concurrency](/tune-region-performance.md#use-bucket-to-increase-concurrency) | E | E | E | N | N | N | N | N | N |
-| [Invisible indexes](/sql-statements/sql-statement-add-index.md) | Y | Y | Y | Y            |      Y       |      Y       |      Y       |      Y       |      N       |
-| [Composite `PRIMARY KEY`](/constraints.md)                   | Y | Y | Y | Y            |      Y       |      Y       |      Y       |      Y       |      Y       |
-| [Unique indexes](/constraints.md)                            | Y | Y | Y | Y            |      Y       |      Y       |      Y       |      Y       |      Y       |
-| [Clustered index on integer `PRIMARY KEY`](/constraints.md)  | Y | Y | Y | Y            |      Y       |      Y       |      Y       |      Y       |      Y       |
-| [Clustered index on composite or non-integer key](/constraints.md) | Y | Y | Y | Y            |      Y       |      Y       |      Y       |      Y       |      N       |
-| [Multi-valued index](/sql-statements/sql-statement-create-index.md#multi-valued-index) | E | N | N | N | N | N | N | N |
-| [Foreign key](/constraints.md#foreign-key) | Y | N | N | N | N | N | N | N |
+| Indexing and constraints                                    | 7.0 | 6.6 | 6.5 | 6.1 | 5.4          |   5.3    |   5.2    |   5.1    |   5.0    |   4.0    |
+| ------------------------------------------------------------ | :--: | :--: | :--: | ------------ | :----------: | :----------: | :----------: | :----------: | :----------: | :----------: |
+| [Expression indexes](/sql-statements/sql-statement-create-index.md#expression-index) [^2] | Y | Y | Y | E | E | E | E | E | E ||
+| [Columnar storage (TiFlash)](/tiflash/tiflash-overview.md)   | Y | Y | Y | Y | Y            |      Y       |      Y       |      Y       |      Y       |      Y       |
+| [Use FastScan to accelerate queries in OLAP scenarios](/tiflash/use-fastscan.md) | Y | E | E | N | N | N | N | N | N | N |
+| [RocksDB engine](/storage-engine/rocksdb-overview.md)        | Y | Y | Y | Y | Y            |      Y       |      Y       |      Y       |      Y       |      Y       |
+| [Titan plugin](/storage-engine/titan-overview.md)            | Y | Y | Y | Y | Y            |      Y       |      Y       |      Y       |      Y       |      Y       |
+| [Titan Level Merge](/storage-engine/titan-configuration.md#level-merge-experimental)   | E |  E  |  E   |  E    |    E     |    E     |    E     |    E     |    E     |    E     |
+| [Use buckets to improve scan concurrency](/tune-region-performance.md#use-bucket-to-increase-concurrency) | E | E | E | E | N | N | N | N | N | N |
+| [Invisible indexes](/sql-statements/sql-statement-add-index.md) | Y | Y | Y | Y | Y            |      Y       |      Y       |      Y       |      Y       |      N       |
+| [Composite `PRIMARY KEY`](/constraints.md)                   | Y | Y | Y | Y | Y | Y            |      Y       |      Y       |      Y       |      Y       |      Y       |
+| [Unique indexes](/constraints.md)                            | Y | Y | Y | Y | Y            |      Y       |      Y       |      Y       |      Y       |      Y       |
+| [Clustered index on integer `PRIMARY KEY`](/constraints.md)  | Y | Y | Y | Y | Y            |      Y       |      Y       |      Y       |      Y       |      Y       |
+| [Clustered index on composite or non-integer key](/constraints.md) | Y | Y | Y | Y | Y            |      Y       |      Y       |      Y       |      Y       |      N       |
+| [Multi-valued index](/sql-statements/sql-statement-create-index.md#multi-valued-index) | E | E | N | N | N | N | N | N | N |
+| [Foreign key](/constraints.md#foreign-key) | Y | Y | N | N | N | N | N | N | N |
 
 ## SQL statements
 
