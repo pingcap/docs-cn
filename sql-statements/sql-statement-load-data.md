@@ -96,7 +96,7 @@ LINES TERMINATED BY '\n' STARTING BY ''
 
 ### `WITH batch_size=<number>`
 
-可以通过 `WITH batch_size=<number>` 来指定批量写入 TiDB 时的行数，默认值为 1000。
+可以通过 `WITH batch_size=<number>` 来指定批量写入 TiDB 时的行数，默认值为 1000。如果不希望分批写入，可以指定为 0。
 
 ## 示例
 
