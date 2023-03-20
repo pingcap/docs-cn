@@ -63,6 +63,7 @@ TiFlash 存算分离架构适用于高性价比的数据分析服务的场景。
     - PutBucketLifecycle
 
 2. 给准备好的 S3 bucket 添加一个用于清理已删除数据的[生命周期](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/userguide/object-lifecycle-mgmt.html)：
+
     ```shell
     "Expiration": {
         "Days": 1
