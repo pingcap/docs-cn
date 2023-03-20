@@ -3017,6 +3017,18 @@ mysql> desc select count(distinct a) from test.t;
 - Default value: `OFF`
 - This variable is used to control whether common table expressions (CTEs) in the entire session are inlined or not. The default value is `OFF`, which means that inlining CTE is not enforced by default. However, you can still inline CTE by specifying the `MERGE()` hint. If the variable is set to `ON`, all CTEs (except recursive CTE) in this session are forced to be inlined.
 
+### tidb_opt_advanced_join_hint <span class="version-mark">New in v7.0.0</span>
+
+- Scope: SESSION | GLOBAL
+- Persists to cluster: Yes
+- Type: Boolean
+- Default value: `ON`
+- This variable is used to control whether the Join Method hint, such as [`HASH_JOIN()` hint](/optimizer-hints.md#hash_joint1_name--tl_name-) and [`MERGE_JOIN()` hint](/optimizer-hints.md#merge_joint1_name--tl_name-), affects the Join Reorder optimization process, including the use of [`LEADING()` hint](/optimizer-hints.md#leadingt1_name--tl_name-). The default value is `ON`, which means that it does not affect. If it is set to `OFF`, there might be conflicts in some scenarios where both Join Method hint and `LEADING()` hint are used at the same time.
+
+> **Note:**
+>
+> The behavior of versions earlier than v7.0.0 is consistent with that of setting this variable to `OFF`. To ensure forward compatibility, when you upgrade from an earlier version to a v7.0.0 or later cluster, this variable is set to `OFF`. To obtain more flexible hint behavior, it is strongly recommended to switch this variable to `ON` under the condition that there is no performance regression.
+
 ### tidb_opt_insubq_to_join_and_agg
 
 - Scope: SESSION | GLOBAL

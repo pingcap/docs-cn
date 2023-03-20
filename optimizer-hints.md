@@ -201,6 +201,32 @@ EXPLAIN SELECT * FROM t WHERE EXISTS (SELECT /*+ SEMI_JOIN_REWRITE() */ 1 FROM t
 
 From the preceding example, you can see that when using the `SEMI_JOIN_REWRITE()` hint, TiDB can select the execution method of IndexJoin based on the driving table `t1`.
 
+### SHUFFLE_JOIN(t1_name [, tl_name ...])
+
+The `SHUFFLE_JOIN(t1_name [, tl_name ...])` hint tells the optimizer to use the Shuffle Join algorithm on specified tables. This hint only takes effect in the MPP mode. For example:
+
+```sql
+SELECT /*+ SHUFFLE_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id = t2.id;
+```
+
+> **Note:**
+>
+> - Before using this hint, make sure that the current TiDB cluster can support using TiFlash MPP mode in the query. For details, refer to [Use TiFlash MPP Mode](/tiflash/use-tiflash-mpp-mode.md).
+> - This hint can be used in combination with the [`HASH_JOIN_BUILD` hint](#hash_join_buildt1_name--tl_name-) and [`HASH_JOIN_PROBE` hint](#hash_join_probet1_name--tl_name-) to control the Build side and Probe side of the Shuffle Join algorithm.
+
+### BROADCAST_JOIN(t1_name [, tl_name ...])
+
+`BROADCAST_JOIN(t1_name [, tl_name ...])` hint tells the optimizer to use the Broadcast Join algorithm on specified tables. This hint only takes effect in the MPP mode. For example:
+
+```sql
+SELECT /*+ BROADCAST_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id = t2.id;
+```
+
+> **Note:**
+>
+> - Before using this hint, make sure that the current TiDB cluster can support using TiFlash MPP mode in the query. For details, refer to [Use TiFlash MPP Mode](/tiflash/use-tiflash-mpp-mode.md).
+>- This hint can be used in combination with the [`HASH_JOIN_BUILD` hint](#hash_join_buildt1_name--tl_name-) and [`HASH_JOIN_PROBE` hint](#hash_join_probet1_name--tl_name-) to control the Build side and Probe side of the Broadcast Join algorithm.
+
 ### NO_DECORRELATE()
 
 The `NO_DECORRELATE()` hint tells the optimizer not to try to perform decorrelation for the correlated subquery in the specified query block. This hint is applicable to the `EXISTS`, `IN`, `ANY`, `ALL`, `SOME` subqueries and scalar subqueries that contain correlated columns (that is, correlated subqueries).
@@ -286,6 +312,30 @@ The `STREAM_AGG()` hint tells the optimizer to use the stream aggregation algori
 ```sql
 select /*+ STREAM_AGG() */ count(*) from t1, t2 where t1.a > 10 group by t1.id;
 ```
+
+### MPP_1PHASE_AGG()
+
+`MPP_1PHASE_AGG()` tells the optimizer to use the one-phase aggregation algorithm for all aggregate functions in the specified query block. This hint only takes effect in the MPP mode. For example:
+
+```sql
+SELECT /*+ MPP_1PHASE_AGG() */ COUNT(*) FROM t1, t2 WHERE t1.a > 10 GROUP BY t1.id;
+```
+
+> **Note:**
+>
+> Before using this hint, make sure that the current TiDB cluster can support using TiFlash MPP mode in the query. For details, refer to [Use TiFlash MPP Mode](/tiflash/use-tiflash-mpp-mode.md).
+
+### MPP_2PHASE_AGG()
+
+`MPP_2PHASE_AGG()` tells the optimizer to use the two-phase aggregation algorithm for all aggregate functions in the specified query block. This hint only takes effect in the MPP mode. For example:
+
+```sql
+SELECT /*+ MPP_2PHASE_AGG() */ COUNT(*) FROM t1, t2 WHERE t1.a > 10 GROUP BY t1.id;
+```
+
+> **Note:**
+>
+> Before using this hint, make sure that the current TiDB cluster can support using TiFlash MPP mode in the query. For details, refer to [Use TiFlash MPP Mode](/tiflash/use-tiflash-mpp-mode.md).
 
 ### USE_INDEX(t1_name, idx1_name [, idx2_name ...])
 
