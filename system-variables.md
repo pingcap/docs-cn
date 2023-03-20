@@ -3531,99 +3531,76 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 ### `tidb_ttl_delete_rate_limit` <span class="version-mark">从 v6.5.0 版本开始引入</span>
 
-> **警告：**
->
-> [TTL](/time-to-live.md) 目前为实验性特性，此变量定义可能在之后发生变化或者删除。
-
 - 作用域：GLOBAL
 - 是否持久化到集群：是
 - 默认值：`0`
 - 范围：`[0, 9223372036854775807]`
-- 这个变量用来对每个 TiDB 节点的 TTL 删除操作进行限流。其值代表了在 TTL 任务中单个节点每秒允许 `DELETE` 语句执行的最大次数。当此变量设置为 `0` 时，则表示不做限制。
+- 这个变量用来对每个 TiDB 节点的 TTL 删除操作进行限流。其值代表了在 TTL 任务中单个节点每秒允许 `DELETE` 语句执行的最大次数。当此变量设置为 `0` 时，则表示不做限制。更多信息，请参考 [Time to Live](/time-to-live.md)。
 
 ### `tidb_ttl_delete_batch_size` <span class="version-mark">从 v6.5.0 版本开始引入</span>
-
-> **警告：**
->
-> [TTL](/time-to-live.md) 目前为实验性特性，此变量定义可能在之后发生变化或者删除。
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
 - 默认值：`100`
 - 范围：`[1, 10240]`
-- 这个变量用于设置 TTL 任务中单个删除事务中允许删除的最大行数。
+- 这个变量用于设置 TTL 任务中单个删除事务中允许删除的最大行数。更多信息，请参考 [Time to Live](/time-to-live.md)。
 
 ### `tidb_ttl_delete_worker_count` <span class="version-mark">从 v6.5.0 版本开始引入</span>
-
-> **警告：**
->
-> [TTL](/time-to-live.md) 目前为实验性特性，此变量定义可能在之后发生变化或者删除。
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
 - 默认值：`4`
 - 范围：`[1, 256]`
-- 这个变量用于设置每个 TiDB 节点上 TTL 删除任务的最大并发数。
+- 这个变量用于设置每个 TiDB 节点上 TTL 删除任务的最大并发数。更多信息，请参考 [Time to Live](/time-to-live.md)。
 
 ### `tidb_ttl_job_enable` <span class="version-mark">从 v6.5.0 版本开始引入</span>
-
-> **警告：**
->
-> [TTL](/time-to-live.md) 目前为实验性特性，此变量定义可能在之后发生变化或者删除。
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
 - 默认值：`ON`
 - 类型：布尔型
-- 这个变量用于控制是否启动 TTL 后台清理任务。如果设置为 `OFF`，所有具有 TTL 属性的表会自动停止对过期数据的清理。
+- 这个变量用于控制是否启动 TTL 后台清理任务。如果设置为 `OFF`，所有具有 TTL 属性的表会自动停止对过期数据的清理。更多信息，请参考 [Time to Live](/time-to-live.md)。
 
 ### `tidb_ttl_scan_batch_size` <span class="version-mark">从 v6.5.0 版本开始引入</span>
-
-> **警告：**
->
-> [TTL](/time-to-live.md) 目前为实验性特性，此变量定义可能在之后发生变化或者删除。
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
 - 默认值：`500`
 - 范围：`[1, 10240]`
-- 这个变量用于设置 TTL 任务中用来扫描过期数据的每个 `SELECT` 语句的 `LIMIT` 的值。
+- 这个变量用于设置 TTL 任务中用来扫描过期数据的每个 `SELECT` 语句的 `LIMIT` 的值。更多信息，请参考 [Time to Live](/time-to-live.md)。
 
 ### `tidb_ttl_scan_worker_count` <span class="version-mark">从 v6.5.0 版本开始引入</span>
-
-> **警告：**
->
-> [TTL](/time-to-live.md) 目前为实验性特性，此变量定义可能在之后发生变化或者删除。
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
 - 默认值：`4`
 - 范围：`[1, 256]`
-- 这个变量用于设置每个 TiDB 节点 TTL 扫描任务的最大并发数。
+- 这个变量用于设置每个 TiDB 节点 TTL 扫描任务的最大并发数。更多信息，请参考 [Time to Live](/time-to-live.md)。
 
 ### `tidb_ttl_job_schedule_window_start_time` <span class="version-mark">从 v6.5.0 版本开始引入</span>
-
-> **警告：**
->
-> [TTL](/time-to-live.md) 目前为实验性特性，此变量定义可能在之后发生变化或者删除。
 
 - 作用域：GLOBAL
 - 类型：时间
 - 是否持久化到集群：是
 - 默认值：`00:00 +0000`
-- 这个变量用于控制 TTL 后台清理任务的调度窗口的起始时间。请谨慎调整此参数，过小的窗口有可能会造成过期数据的清理无法完成。
+- 这个变量用于控制 TTL 后台清理任务的调度窗口的起始时间。请谨慎调整此参数，过小的窗口有可能会造成过期数据的清理无法完成。更多信息，请参考 [Time to Live](/time-to-live.md)。
 
 ### `tidb_ttl_job_schedule_window_end_time` <span class="version-mark">从 v6.5.0 版本开始引入</span>
-
-> **警告：**
->
-> [TTL](/time-to-live.md) 目前为实验性特性，此变量定义可能在之后发生变化或者删除。
 
 - 作用域：GLOBAL
 - 类型：时间
 - 是否持久化到集群：是
 - 默认值：`23:59 +0000`
-- 这个变量用于控制 TTL 后台清理任务的调度窗口的结束时间。请谨慎调整此参数，过小的窗口有可能会造成过期数据的清理无法完成。
+- 这个变量用于控制 TTL 后台清理任务的调度窗口的结束时间。请谨慎调整此参数，过小的窗口有可能会造成过期数据的清理无法完成。更多信息，请参考 [Time to Live](/time-to-live.md)。
+
+### `tidb_ttl_running_tasks` <span class="version-mark">从 v7.0.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 类型：整数型
+- 默认值：`-1`
+- 范围：`-1` 或 `[1, 256]`
+- 这个变量用于限制整个集群内 TTL 任务的并发量。`-1` 表示与 TiKV 节点的数量相同。更多信息，请参考 [Time to Live](/time-to-live.md)。
 
 ### `tidb_txn_assertion_level` <span class="version-mark">从 v6.0.0 版本开始引入</span>
 
