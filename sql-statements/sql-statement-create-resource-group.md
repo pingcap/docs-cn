@@ -26,8 +26,13 @@ ResourceGroupOptionList:
 
 DirectResourceGroupOption:
     "RU_PER_SEC" EqOpt stringLit
+|   "PRIORITY" EqOpt ResourceGroupPriorityOption
 |   "BURSTABLE"
 
+ResourceGroupPriorityOption:
+    LOW 
+|   MEDIUM
+|   HIGH
 ```
 
 资源组的 `ResourceGroupName` 是全局唯一的，不允许重复。
@@ -37,8 +42,8 @@ TiDB 支持以下 `DirectResourceGroupOption`, 其中 [Request Unit (RU)](/tidb-
 | 参数            | 含义           | 举例                                   |
 |---------------|--------------|--------------------------------------|
 | `RU_PER_SEC`  | 每秒 RU 填充的速度 | `RU_PER_SEC = 500` 表示此资源组每秒回填 500 个 RU |
-
-如果设置了 `BURSTABLE` 属性，TiDB 允许对应的资源组超出配额后使用空余的系统资源。
+| `PRIORITY`    | 任务被 TiKV 处理的优先级  | `PRIORITY = HIGH` 若未指定默认为 MEDIUM |
+| `BURSTABLE`   | 允许对应的资源组超出配额后使用空余的系统资源 |
 
 > **注意：**
 >
@@ -54,18 +59,18 @@ mysql> DROP RESOURCE GROUP IF EXISTS rg1;
 Query OK, 0 rows affected (0.22 sec)
 mysql> CREATE RESOURCE GROUP IF NOT EXISTS rg1
     ->  RU_PER_SEC = 100
+    ->  PRIORITY = HIGH
     ->  BURSTABLE;
 Query OK, 0 rows affected (0.08 sec)
 mysql> CREATE RESOURCE GROUP IF NOT EXISTS rg2
     ->  RU_PER_SEC = 200;
 Query OK, 0 rows affected (0.08 sec)
 mysql> SELECT * FROM information_schema.resource_groups WHERE NAME ='rg1' or NAME = 'rg2';
-
 +------+------------+----------+-----------+
 | NAME | RU_PER_SEC | PRIORITY | BURSTABLE |
 +------+------------+----------+-----------+
-| rg1  |       100  | MEDIUM   | YES       |
-| rg2  |       200  | MEDIUM   | NO        |
+| rg1  |        100 | HIGH     | YES       |
+| rg2  |        200 | MEDIUM   | NO        |
 +------+------------+----------+-----------+
 2 rows in set (1.30 sec)
 ```

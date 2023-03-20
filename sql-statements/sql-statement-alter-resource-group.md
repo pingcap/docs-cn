@@ -26,9 +26,13 @@ ResourceGroupOptionList:
 
 DirectResourceGroupOption:
     "RU_PER_SEC" EqOpt stringLit
-|   "PRIORITY"   EqOpt stringLit
+|   "PRIORITY" EqOpt ResourceGroupPriorityOption
 |   "BURSTABLE"
 
+ResourceGroupPriorityOption:
+    LOW 
+|   MEDIUM
+|   HIGH
 ```
 
 TiDB 支持以下 `DirectResourceGroupOption`, 其中 [Request Unit (RU)](/tidb-resource-control.md#什么是-request-unit-ru) 是 TiDB 对 CPU、IO 等系统资源统一抽象的单位。
@@ -36,8 +40,8 @@ TiDB 支持以下 `DirectResourceGroupOption`, 其中 [Request Unit (RU)](/tidb-
 | 参数            | 含义           | 举例                                   |
 |---------------|--------------|--------------------------------------|
 | `RU_PER_SEC`  | 每秒 RU 填充的速度 | `RU_PER_SEC = 500` 表示此资源组每秒回填 500 个 RU |
-
-如果设置了 `BURSTABLE` 属性，TiDB 允许对应的资源组超出配额后使用空余的系统资源。
+| `PRIORITY`    | 任务被 TiKV 处理的优先级  | `PRIORITY = HIGH` 若未指定默认为 MEDIUM |
+| `BURSTABLE`   | 允许对应的资源组超出配额后使用空余的系统资源 |
 
 > **注意：**
 > 
@@ -62,13 +66,14 @@ mysql> SELECT * FROM information_schema.resource_groups WHERE NAME ='rg1';
 +------+------------+----------+-----------+
 1 rows in set (1.30 sec)
 mysql> ALTER RESOURCE GROUP rg1
-    ->  RU_PER_SEC = 200;
+    ->  RU_PER_SEC = 200
+    ->  PRIORITY = LOW;
 Query OK, 0 rows affected (0.08 sec)
 mysql> SELECT * FROM information_schema.resource_groups WHERE NAME ='rg1';
 +------+------------+----------+-----------+
 | NAME | RU_PER_SEC | PRIORITY | BURSTABLE |
 +------+------------+----------+-----------+
-| rg1  |       200  | MEDIUM   | NO        |
+| rg1  |       200  | LOW      | NO        |
 +------+------------+----------+-----------+
 1 rows in set (1.30 sec)
 ```
