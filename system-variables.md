@@ -3088,6 +3088,46 @@ mysql> desc select count(distinct a) from test.t;
 - Default value: `1.0`
 - Indicates the net cost of transferring 1 byte of data through the network. This variable is internally used in the [Cost Model](/cost-model.md), and it is **NOT** recommended to modify its value.
 
+### tidb_opt_ordering_index_selectivity_threshold <span class="version-mark">New in v7.0.0</span>
+
+- Scope: SESSION | GLOBAL
+- Persists to cluster: Yes
+- Type: Float
+- Default value: `0`
+- Range: `[0, 1]`
+- This variable is used to control how the optimizer selects an index when there are `ORDER BY` and `LIMIT` clauses with filter conditions in a SQL statement.
+- For such queries, the optimizer considers selecting the corresponding index to satisfy the `ORDER BY` and `LIMIT` clauses (even if this index does not satisfy any filter conditions). However, due to the complexity of data distribution, the optimizer might select a suboptimal index in this scenario.
+- This variable represents a threshold. When an index exists that can satisfy filtering conditions and its selectivity estimate is lower than this threshold, the optimizer will avoid selecting an index used to satisfy `ORDER BY` and `LIMIT`. Instead, it prioritizes an index that satisfies the filtering conditions.
+- For example, when the variable is set to `0`, the optimizer maintains its default behavior; when it is set to `1`, the optimizer always prioritizes selecting indexes that satisfy the filter conditions and avoids selecting indexes that satisfy both `ORDER BY` and `LIMIT` clauses.
+- In the following example, table `t` has a total of 1,000,000 rows. When using an index on column `b`, its estimated row count is approximately 8,748, so its selectivity estimate value is about 0.0087. By default, the optimizer selects an index on column `a`. However, after setting this variable to 0.01, since the selectivity of an index on column `b` (0.0087) is less than 0.01, the optimizer selects an index on column `b`.
+
+```sql
+> EXPLAIN SELECT * FROM t WHERE b <= 9000 ORDER BY a LIMIT 1;
++-----------------------------------+---------+-----------+----------------------+--------------------+
+| id                                | estRows | task      | access object        | operator info      |
++-----------------------------------+---------+-----------+----------------------+--------------------+
+| Limit_12                          | 1.00    | root      |                      | offset:0, count:1  |
+| └─Projection_25                   | 1.00    | root      |                      | test.t.a, test.t.b |
+|   └─IndexLookUp_24                | 1.00    | root      |                      |                    |
+|     ├─IndexFullScan_21(Build)     | 114.30  | cop[tikv] | table:t, index:ia(a) | keep order:true    |
+|     └─Selection_23(Probe)         | 1.00    | cop[tikv] |                      | le(test.t.b, 9000) |
+|       └─TableRowIDScan_22         | 114.30  | cop[tikv] | table:t              | keep order:false   |
++-----------------------------------+---------+-----------+----------------------+--------------------+
+
+> SET SESSION tidb_opt_ordering_index_selectivity_threshold = 0.01;
+
+> EXPLAIN SELECT * FROM t WHERE b <= 9000 ORDER BY a LIMIT 1;
++----------------------------------+---------+-----------+----------------------+-------------------------------------+
+| id                               | estRows | task      | access object        | operator info                       |
++----------------------------------+---------+-----------+----------------------+-------------------------------------+
+| TopN_9                           | 1.00    | root      |                      | test.t.a, offset:0, count:1         |
+| └─IndexLookUp_20                 | 1.00    | root      |                      |                                     |
+|   ├─IndexRangeScan_17(Build)     | 8748.62 | cop[tikv] | table:t, index:ib(b) | range:[-inf,9000], keep order:false |
+|   └─TopN_19(Probe)               | 1.00    | cop[tikv] |                      | test.t.a, offset:0, count:1         |
+|     └─TableRowIDScan_18          | 8748.62 | cop[tikv] | table:t              | keep order:false                    |
++----------------------------------+---------+-----------+----------------------+-------------------------------------+
+```
+
 ### tidb_opt_prefer_range_scan <span class="version-mark">New in v5.0</span>
 
 - Scope: SESSION | GLOBAL
