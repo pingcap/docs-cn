@@ -245,13 +245,13 @@ mysql> SELECT * FROM mysql.plan_replayer_status;
 
 ### 使用 `PLAN REPLAYER CONTINUOUS CAPTURE`
 
-`PLAN REPLAYER CONTINUOUS CAPTURE` 功能通过系统变量 [`tidb_enable_plan_replayer_continuous_capture`](/system-variables.md#tidb_enable_plan_replayer_continuous_capture) 控制。要开启 `PLAN REPLAYER CONTINUOUS CAPTURE`，将变量值设为 `ON`。
+开启 `PLAN REPLAYER CONTINUOUS CAPTURE` 功能后，TiDB 将以 SQL DIGEST 和 PLAN DIGEST 为维度异步地将业务 SQL 语句以 `PLAN REPLAYER` 的方式进行记录，对于相同 DIGEST 的 SQL 语句与执行计划, `PLAN REPLAYER CONTINUOUS CAPTURE` 不会重复记录。
 
-开启 `PLAN REPLAYER CONTINUOUS CAPTURE` 功能后， TiDB 将根据 SQL DIGEST 和 PLAN DIGEST 为维度异步地将业务 SQL 以 PLAN REPLAYER 的方式进行记录，对于相同 DIGEST 的 SQL 与 PLAN, `PLAN REPLAYER CONTINUOUS CAPTURE` 不会进行重复记录。
+`PLAN REPLAYER CONTINUOUS CAPTURE` 功能通过系统变量 [`tidb_enable_plan_replayer_continuous_capture`](/system-variables.md#tidb_enable_plan_replayer_continuous_capture) 控制。要开启 `PLAN REPLAYER CONTINUOUS CAPTURE`，将变量值设为 `ON`。
 
 ### 查看 `PLAN REPLAYER CONTINUOUS CAPTURE` 抓取结果
 
-同 `PLAN REPLAYER CAPTURE` 
+查看 `PLAN REPLAYER CONTINUOUS CAPTURE` 抓取结果的方法同[查看 `PLAN REPLAYER CAPTURE` 抓取结果](#查看-plan-replayer-continuous-capture-抓取结果)。
 
 ## 使用 EXTRACT HTTP 接口导出负载计划
 
