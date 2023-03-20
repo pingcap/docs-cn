@@ -52,7 +52,7 @@ table-concurrency = 6
 
 # 数据的并发数。默认与逻辑 CPU 的数量相同。
 # 混合部署的情况下可以将其大小配置为逻辑 CPU 数的 75%，以限制 CPU 的使用。
-# region-concurrency =
+# region-concurrency = 16
 
 # I/O 最大并发数。I/O 并发量太高时，会因硬盘内部缓存频繁被刷新
 # 而增加 I/O 等待时间，导致缓存未命中和读取速度降低。
@@ -254,9 +254,9 @@ log-level = "error"
 # 设置 TiDB 会话变量，提升 Checksum 和 Analyze 的速度。
 # 各参数定义可参阅”控制 Analyze 并发度“文档
 build-stats-concurrency = 20
-distsql-scan-concurrency = 100
+distsql-scan-concurrency = 15
 index-serial-scan-concurrency = 20
-checksum-table-concurrency = 16
+checksum-table-concurrency = 2
 
 # 解析和执行 SQL 语句的默认 SQL 模式。
 sql-mode = "ONLY_FULL_GROUP_BY,NO_ENGINE_SUBSTITUTION"
