@@ -1,10 +1,10 @@
 ---
-title: SQL Prepare Execution Plan Cache
-summary: Learn about SQL Prepare Execution Plan Cache in TiDB.
+title: SQL Prepared Execution Plan Cache
+summary: Learn about SQL Prepared Execution Plan Cache in TiDB.
 aliases: ['/tidb/dev/sql-prepare-plan-cache']
 ---
 
-# SQL Prepare Execution Plan Cache
+# SQL Prepared Execution Plan Cache
 
 TiDB supports execution plan caching for `Prepare` and `Execute` queries. This includes both forms of prepared statements:
 

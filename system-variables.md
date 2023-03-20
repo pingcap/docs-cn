@@ -1505,13 +1505,13 @@ MPP is a distributed computing framework provided by the TiFlash engine, which a
 
 > **Warning:**
 >
-> The feature controlled by this variable is not fully functional in the current TiDB version. Do not change the default value.
+> The non-prepared execution plan cache is an experimental feature. It is not recommended that you use it in the production environment. This feature might be changed or removed without prior notice. If you find a bug, you can report an [issue](https://github.com/pingcap/tidb/issues) on GitHub.
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
 - Type: Boolean
 - Default value: `OFF`
-- This variable controls whether to enable the General Plan Cache feature.
+- This variable controls whether to enable the [Non-prepared plan cache](/sql-non-prepared-plan-cache.md) feature.
 
 ### tidb_enable_gogc_tuner <span class="version-mark">New in v6.4.0</span>
 
@@ -2286,14 +2286,14 @@ For a system upgraded to v5.0 from an earlier version, if you have not modified 
 
 > **Warning:**
 >
-> The feature controlled by this variable is not fully functional in the current TiDB version. Do not change the default value.
+> The non-prepared execution plan cache is an experimental feature. It is not recommended that you use it in the production environment. This feature might be changed or removed without prior notice. If you find a bug, you can report an [issue](https://github.com/pingcap/tidb/issues) on GitHub.
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
 - Type: Integer
 - Default value: `100`
 - Range: `[1, 100000]`
-- This variable controls the maximum number of execution plans that can be cached by General Plan Cache.
+- This variable controls the maximum number of execution plans that can be cached by [Non-prepared plan cache](/sql-non-prepared-plan-cache.md).
 
 ### tidb_generate_binary_plan <span class="version-mark">New in v6.2.0</span>
 
