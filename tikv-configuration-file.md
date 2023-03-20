@@ -1821,7 +1821,7 @@ Raft Engine 相关的配置项。
 > 仅在 [`format-version`](#format-version-从-v630-版本开始引入) 的值大于等于 2 时，该配置项才生效。
 
 + 控制 Raft Engine 是否回收过期的日志文件。该配置项启用时，Raft Engine 将保留逻辑上被清除的日志文件，用于日志回收，减少写负载的长尾延迟。
-+ 默认值：`false`
++ 默认值：`true`
 
 ## security
 

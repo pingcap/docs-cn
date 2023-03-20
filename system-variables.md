@@ -976,13 +976,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 > **警告：**
 >
-> 当前索引加速功能未完全兼容添加唯一索引操作。在添加唯一索引时，建议关闭索引加速功能（将 `tidb_ddl_enable_fast_reorg` 设置为 `OFF`）。
->
-> 当关闭 [PITR (Point-in-time recovery)](/br/backup-and-restore-overview.md) 时使用索引加速功能，添加索引的速度预期是 v6.1.0 的 10 倍。但是同时开启 PITR 和索引加速时，不会有性能提升。为了优化性能，建议你先停止 PITR 后台备份任务，以索引加速的方式快速添加索引，然后再启动 PITR 备份任务。否则，可能会发生以下行为：
->
-> - 如果先启动 PITR 备份任务，再添加索引，此时即使索引加速功能打开，添加索引任务默认会自动回退到旧模式，即以较慢的速度添加索引，但 PITR 的备份任务能够正常运行并备份新增的索引数据。
-> - 如果先启动添加索引加速任务，再尝试启动 PITR 备份任务，此时 PITR 备份任务会抛出错误并退出，但这不会影响正在添加索引的任务。在索引加速任务完成后，你需要重新启动 PITR 日志备份任务，并手动执行一次全量备份。
-> - 如果同时启动 PITR 备份任务和添加索引加速任务，可能会由于两个任务无法察觉到对方而导致 PITR 不能成功备份新增的索引数据。在添加索引任务完成后，你仍需要重新启动 PITR 日志备份任务，并手动执行一次全量备份。
+> 目前，PITR 恢复会额外处理日志备份时间段内通过索引加速功能创建的索引，以达到兼容效果。详细内容请参考[索引加速功能为什么与 PITR 功能不兼容](/faq/backup-and-restore-faq.md#索引加速功能为什么与-pitr-功能不兼容)。
 
 ### `tidb_ddl_distribute_reorg` <span class="version-mark">从 v6.6.0 版本开始引入</span>
 
@@ -1321,13 +1315,13 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 > **警告：**
 >
-> 当前版本中该变量控制的功能尚未完全生效，请保留默认值。
+> 非 Prepare 语句执行计划缓存目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 类型：布尔型
 - 默认值：`OFF`
-- 这个变量用来控制是否开启 General Plan Cache。
+- 这个变量用来控制是否开启[非 Prepare 语句执行计划缓存](/sql-non-prepared-plan-cache.md)。
 
 ### `tidb_enable_gogc_tuner` <span class="version-mark">从 v6.4.0 版本开始引入</span>
 
@@ -1470,8 +1464,9 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 类型：布尔型
-- 默认值：`OFF`
+- 默认值：在 v7.0.0 之前版本中为 `OFF`，即默认关闭。在 v7.0.0 及之后的版本中为 `ON`，即默认开启。
 - 这个变量用于控制 TiDB 对特殊集合算子 `NOT IN` 和 `!= ALL` 引导的子查询产生的 ANTI JOIN 是否采用 Null Aware Hash Join 的执行方式。
+- 从旧版本升级到 v7.0.0 及之后版本，该功能自动开启，即该变量的值修改为默认值 `ON`。
 
 ### `tidb_enable_outer_join_reorder` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
@@ -1484,6 +1479,14 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
     - 如果升级前 TiDB 的版本低于 v6.1.0，升级后该变量的默认值为 `ON`。
     - 如果升级前 TiDB 的版本等于或大于 v6.1.0，升级后该变量的默认值跟随升级前的设定值。
+
+### `tidb_enable_inl_join_inner_multi_pattern` <span class="version-mark">从 v7.0.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 类型：布尔型
+- 默认值：`OFF`
+- 该变量用于控制当内表上有 `Selection`/`Projection` 算子时是否支持 Index Join。`OFF` 表示不支持。
 
 ### `tidb_enable_ordered_result_mode`
 
@@ -1532,6 +1535,14 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 类型：布尔型
 - 默认值：`ON`
 - 这个变量用来控制 Prepared Plan Cache 是否缓存 `LIMIT` 后面带变量 (`LIMIT ?`) 的执行计划。目前不支持缓存 `LIMIT` 后面带变量且变量值大于 10000 的执行计划。
+
+### `tidb_enable_plan_cache_for_subquery` <span class="version-mark">从 v7.0.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 类型：布尔型
+- 默认值：`ON`
+- 这个变量用来控制 Prepared Plan Cache 是否缓存包含子查询的查询。
 
 ### `tidb_enable_plan_replayer_capture`
 
@@ -1911,14 +1922,14 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 > **警告：**
 >
-> 当前版本中该变量控制的功能尚未完全生效，请保留默认值。
+> 非 Prepare 语句执行计划缓存目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 类型：整数型
 - 默认值：`100`
 - 范围：`[1, 100000]`
-- 这个变量用来控制 General Plan Cache 最多能够缓存的计划数量。
+- 这个变量用来控制[非 Prepare 语句执行计划缓存](/sql-non-prepared-plan-cache.md)最多能够缓存的计划数量。
 
 ### `tidb_generate_binary_plan` <span class="version-mark">从 v6.2.0 版本开始引入</span>
 
@@ -2140,6 +2151,19 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 作用域：SESSION
 - 类型：字符串
 - 这个变量是一个只读变量，用于获取当前会话中最后一个 `PLAN REPLAYER dump` 的结果。
+
+### `tidb_load_based_replica_read_threshold` <span class="version-mark">从 v7.0.0 版本开始引入</span>
+
+> **警告：**
+>
+> 当前版本中该变量控制的功能尚未完全生效，请保留默认值。
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 默认值：`"0s"`
+- 范围：`[0s, 1h]`
+- 类型：字符串
+- 这个变量用来设置基于负载的 replica read 的触发阈值。当 leader 节点的预估排队时间超过阈值时，TiDB 会优先从 follower 节点读取数据。格式为时间，例如 `"100ms"` 或 `"1s"`。
 
 ### `tidb_log_file_max_days` <span class="version-mark">从 v5.3.0 版本开始引入</span>
 
@@ -2521,6 +2545,18 @@ mysql> desc select count(distinct a) from test.t;
 - 默认值：`OFF`
 - 这个变量用来控制是否强制 inline CTE。默认值为 `OFF`，即默认不强制 inline CTE。注意，此时依旧可以通过 `MERGE()` hint 来开启个别 CTE 的 inline。如果设置为 `ON`，则当前 session 中所有查询的 CTE（递归 CTE 除外）都会 inline。
 
+### `tidb_opt_advanced_join_hint` <span class="version-mark">从 v7.0.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 类型：布尔型
+- 默认值：`ON`
+- 这个变量用来控制包括 [`HASH_JOIN()` Hint](/optimizer-hints.md#hash_joint1_name--tl_name-)、[`MERGE_JOIN()` Hint](/optimizer-hints.md#merge_joint1_name--tl_name-) 等用于控制连接算法的 Join Method Hint 是否会影响 Join Reorder 的优化过程，包括 [`LEADING()` Hint](/optimizer-hints.md#leadingt1_name--tl_name-) 的使用。默认值为 `ON`，即默认不影响。如果设置为 `OFF`，在一些同时使用 Join Method Hint 和 `LEADING()` Hint 的场景下可能会产生冲突。
+
+> **注意：**
+>
+> v7.0.0 之前的版本行为和将该变量设置为 `OFF` 的行为一致。为确保向前兼容，从旧版本升级到 v7.0.0 及之后版本的集群，该变量会被设置成 `OFF`。为了获取更灵活的 Hint 行为，强烈建议在确保无性能回退的情况下，将该变量切换为 `ON`。
+
 ### `tidb_opt_insubq_to_join_and_agg`
 
 - 作用域：SESSION | GLOBAL
@@ -2596,6 +2632,46 @@ mysql> desc select count(distinct a) from test.t;
 - 范围：`[0, 2147483647]`
 - 默认值：`1.0`
 - 表示传输 1 比特数据的网络净开销。该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
+
+### `tidb_opt_ordering_index_selectivity_threshold` <span class="version-mark">从 v7.0.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 类型：浮点数
+- 默认值：`0`
+- 范围：`[0, 1]`
+- 用于当 SQL 中存在 `ORDER BY` 和 `LIMIT` 子句且带有过滤条件时，控制优化器选择索引的行为。
+- 对于此类查询，优化器会考虑选择对应的索引来满足 `ORDER BY` 和 `LIMIT` 子句（即使这个索引并不满足任何过滤条件）。但是由于数据分布的复杂性，优化器在这种场景下可能会选择不优的索引。
+- 该变量表示一个阈值。当存在索引能满足过滤条件，且其选择率估算值低于该阈值时，优化器会避免选择用于满足 `ORDER BY` 和 `LIMIT` 的索引，而优先选择用于满足过滤条件的索引。
+- 例如，当把该变量设为 `0` 时，优化器保持默认行为；当设为 `1` 时，优化器总是优先选择满足过滤条件的索引，避免选择满足 `ORDER BY` 和 `LIMIT` 的索引。
+- 在以下示例中，`t` 表共有 1,000,000 行数据。使用 `b` 列上的索引时，其估算行数是大约 8,748 行，因此其选择率估算值大约是 0.0087。默认情况下，优化器选择了 `a` 列上的索引。而将该变量设为 `0.01` 之后，由于 `b` 列上的索引的选择率 (0.0087) 低于 0.01，优化器选择了 `b` 列上的索引。
+
+```sql
+> EXPLAIN SELECT * FROM t WHERE b <= 9000 ORDER BY a LIMIT 1;
++-----------------------------------+---------+-----------+----------------------+--------------------+
+| id                                | estRows | task      | access object        | operator info      |
++-----------------------------------+---------+-----------+----------------------+--------------------+
+| Limit_12                          | 1.00    | root      |                      | offset:0, count:1  |
+| └─Projection_25                   | 1.00    | root      |                      | test.t.a, test.t.b |
+|   └─IndexLookUp_24                | 1.00    | root      |                      |                    |
+|     ├─IndexFullScan_21(Build)     | 114.30  | cop[tikv] | table:t, index:ia(a) | keep order:true    |
+|     └─Selection_23(Probe)         | 1.00    | cop[tikv] |                      | le(test.t.b, 9000) |
+|       └─TableRowIDScan_22         | 114.30  | cop[tikv] | table:t              | keep order:false   |
++-----------------------------------+---------+-----------+----------------------+--------------------+
+
+> SET SESSION tidb_opt_ordering_index_selectivity_threshold = 0.01;
+
+> EXPLAIN SELECT * FROM t WHERE b <= 9000 ORDER BY a LIMIT 1;
++----------------------------------+---------+-----------+----------------------+-------------------------------------+
+| id                               | estRows | task      | access object        | operator info                       |
++----------------------------------+---------+-----------+----------------------+-------------------------------------+
+| TopN_9                           | 1.00    | root      |                      | test.t.a, offset:0, count:1         |
+| └─IndexLookUp_20                 | 1.00    | root      |                      |                                     |
+|   ├─IndexRangeScan_17(Build)     | 8748.62 | cop[tikv] | table:t, index:ib(b) | range:[-inf,9000], keep order:false |
+|   └─TopN_19(Probe)               | 1.00    | cop[tikv] |                      | test.t.a, offset:0, count:1         |
+|     └─TableRowIDScan_18          | 8748.62 | cop[tikv] | table:t              | keep order:false                    |
++----------------------------------+---------+-----------+----------------------+-------------------------------------+
+```
 
 ### `tidb_opt_prefer_range_scan` <span class="version-mark">从 v5.0 版本开始引入</span>
 
@@ -3626,7 +3702,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 是否持久化到集群：是
 - 默认值：`OFF`
 - 类型：布尔型
-- 如果开启 [FastScan 功能](/develop/dev-guide-use-fastscan.md)（设置为 `ON` 时），TiFlash 可以提供更高效的查询性能，但不保证查询结果的精度和数据一致性。
+- 如果开启 [FastScan 功能](/tiflash/use-fastscan.md)（设置为 `ON` 时），TiFlash 可以提供更高效的查询性能，但不保证查询结果的精度和数据一致性。
 
 ### `tiflash_fine_grained_shuffle_batch_size` <span class="version-mark">从 v6.2.0 版本开始引入</span>
 
