@@ -46,6 +46,10 @@ title: 操作符
 | [`-`](https://dev.mysql.com/doc/refman/5.7/en/arithmetic-functions.html#operator_unary-minus) | 取反符号 |
 | [`XOR`](https://dev.mysql.com/doc/refman/5.7/en/logical-operators.html#operator_xor) | 逻辑亦或 |
 
+## 不支持的操作符
+
+* [`SOUNDS LIKE`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#operator_sounds-like)
+
 ## 操作符优先级
 
 操作符优先级显示在以下列表中，从最高优先级到最低优先级。同一行显示的操作符具有相同的优先级。
