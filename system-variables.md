@@ -1727,6 +1727,14 @@ MPP is a distributed computing framework provided by the TiFlash engine, which a
 - Default value: `ON`
 - This variable controls whether Prepared Plan Cache caches execution plans with a variable as the `LIMIT` parameter (`LIMIT ?`). The default value is `ON`, which means Prepared Plan Cache supports caching such execution plans. Note that Prepared Plan Cache does not support caching execution plans with a variable that is greater than 10000.
 
+### tidb_enable_plan_cache_for_subquery <span class="version-mark">New in v7.0.0</span>
+
+- Scope: SESSION | GLOBAL
+- Persists to cluster: Yes
+- Type: Boolean
+- Default value: `ON`
+- This variable controls whether Prepared Plan Cache caches queries that contain subqueries.
+
 ### tidb_enable_plan_replayer_capture
 
 <CustomContent platform="tidb-cloud">

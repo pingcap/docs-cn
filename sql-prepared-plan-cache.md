@@ -19,7 +19,8 @@ In the current version of TiDB, if a `Prepare` statement meets any of the follow
 
 - The query contains SQL statements other than `SELECT`, `UPDATE`, `INSERT`, `DELETE`, `Union`, `Intersect`, and `Except`.
 - The query accesses partitioned tables or temporary tables, or a table that contains generated columns.
-- The query contains sub-queries, such as `select * from t where a > (select ...)`.
+- The query contains non-correlated sub-queries, such as `SELECT * FROM t1 WHERE t1.a > (SELECT 1 FROM t2 WHERE t2.b < 1)`.
+- The query contains correlated sub-queries with `PhysicalApply` operators in the execution plan, such as `SELECT * FROM t1 WHERE t1.a > (SELECT a FROM t2 WHERE t1.b > t2.b)`.
 - The query contains the `ignore_plan_cache` hint, such as `select /*+ ignore_plan_cache() */ * from t`.
 - The query contains variables other than `?` (including system variables or user-defined variables), such as `select * from t where a>? and b>@x`.
 - The query contains the functions that cannot be cached: `database()`, `current_user`, `current_role`, `user`, `connection_id`, `last_insert_id`, `row_count`, `version`, and `like`.
