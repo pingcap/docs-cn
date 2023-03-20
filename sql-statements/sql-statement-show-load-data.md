@@ -33,7 +33,7 @@ ShowLoadDataJobStmt ::=
 | Job_Status       | 表示当前任务的状态。有以下几种状态：`pending` 表示任务已创建但还未开始运行；`running` 表示运行中；`canceled` 表示已经取消的任务；`failed` 表示任务失败并退出；`finished` 表示任务已完成。                 |
 | Source_File_Size | 源文件大小                                                   |
 | Loaded_File_Size | 已经读到并写入目标表的数据量大小                               |
-| Result_Code      | 任务状态为 `finished` 时为 0，`failed` 时为对应的错误码        |
+| Result_Code      | 任务状态为 `finished` 时，其值为 `0`。任务状态为 `failed` 时，其值为对应的错误码。    |
 | Result_Message   | 成功导入时返回的摘要信息或者错误时的错误信息                    |
 
 ## 示例
