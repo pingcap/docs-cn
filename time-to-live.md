@@ -15,11 +15,6 @@ The following are some common scenarios for TTL:
 
 TTL is designed to help users clean up unnecessary data periodically and in a timely manner without affecting the online read and write workloads. TTL concurrently dispatches different jobs to different TiDB nodes to delete data in parallel in the unit of table. TTL does not guarantee that all expired data is deleted immediately, which means that even if some data is expired, the client might still read that data some time after the expiration time until that data is deleted by the background TTL job.
 
-> **Warning:**
->
-> This is an experimental feature. It is not recommended that you use it in a production environment.
-> TTL is not available for [TiDB Cloud Serverless Tier](https://docs.pingcap.com/tidbcloud/select-cluster-tier#serverless-tier-beta).
-
 ## Syntax
 
 You can configure the TTL attribute of a table using the [`CREATE TABLE`](/sql-statements/sql-statement-create-table.md) or [`ALTER TABLE`](/sql-statements/sql-statement-alter-table.md) statement.
@@ -141,6 +136,8 @@ ALTER TABLE orders TTL_JOB_INTERVAL = '24h';
 
 `TTL_JOB_INTERVAL` is set to `1h` by default.
 
+When executing a TTL job, TiDB will split the table into up to 64 tasks, with the Region being the smallest unit. These tasks will be executed distributedly. You can limit the number of concurrent TTL tasks across the entire cluster by setting the system variable [`tidb_ttl_running_tasks`](/system-variables.md#tidb_ttl_running_tasks-new-in-v700). However, not all TTL jobs for all kinds of tables can be split into tasks. For more details on which kinds of tables' TTL jobs cannot be split into tasks, refer to the [Limitations](#limitations) section.
+
 To disable the execution of TTL jobs, in addition to setting the `TTL_ENABLE='OFF'` table option, you can also disable the execution of TTL jobs in the entire cluster by setting the [`tidb_ttl_job_enable`](/system-variables.md#tidb_ttl_job_enable-new-in-v650) global variable:
 
 ```sql
@@ -231,7 +228,21 @@ In addition, TiDB provides three tables to obtain more information about TTL job
 
 ## Compatibility with TiDB tools
 
-As an experimental feature, the TTL feature is not compatible with data import and export tools, including BR, TiDB Lightning, and TiCDC.
+TTL can be used with other TiDB migration, backup, and recovery tools.
+
+| Tool name | Minimum supported version | Description |
+| --- | --- | --- |
+| Backup & Restore (BR) | v6.6.0 | After you restore data using BR, the `TTL_ENABLE` attribute of the tables will be set to `OFF`. This prevents TiDB from immediately deleting expired data after backup and restore. You need to manually turn on the `TTL_ENABLE` attribute to re-enable TTL for each table. |
+| TiDB Lightning | v6.6.0 | After you import data using TiDB Lighting, the `TTL_ENABLE` attribute of the imported table will be set to `OFF`.  This prevents TiDB from immediately deleting expired data after importing. You need to manually turn on the `TTL_ENABLE` attribute to re-enable TTL for each table. |
+| TiCDC | v7.0.0 | The `TTL_ENABLE` attribute in the downstream will be automatically set to `OFF`. The upstream TTL deletions will be synchronized to the downstream. Therefore, to prevent duplicate deletions, the `TTL_ENABLE` attribute of the downstream tables will be forcibly set to `OFF`. |
+
+## Compatibility with SQL
+
+| Feature name | Description |
+| :-- | :---- |
+| [`FLASHBACK TABLE`](/sql-statements/sql-statement-flashback-table.md) |  `FLASHBACK TABLE` will set the `TTL_ENABLE` attribute of the tables to `OFF`. This prevents TiDB from immediately deleting expired data after the flashback. You need to manually turn on the `TTL_ENABLE` attribute to re-enable TTL for each table. |
+| [`FLASHBACK DATABASE`](/sql-statements/sql-statement-flashback-database.md) | `FLASHBACK DATABASE` will set the `TTL_ENABLE` attribute of the tables to `OFF`, and the `TTL_ENABLE` attribute will not be modified. This prevents TiDB from immediately deleting expired data after the flashback. You need to manually turn on the `TTL_ENABLE` attribute to re-enable TTL for each table. |
+| [`FLASHBACK CLUSTER TO TIMESTAMP`](/sql-statements/sql-statement-flashback-to-timestamp.md) | `FLASHBACK CLUSTER TO TIMESTAMP` will set the system variable [`TIDB_TTL_JOB_ENABLE`](/system-variables.md#tidb_ttl_job_enable-new-in-v650) to `OFF` and do not change the value of the `TTL_ENABLE` attribute. |
 
 ## Limitations
 
@@ -240,6 +251,8 @@ Currently, the TTL feature has the following limitations:
 * The TTL attribute cannot be set on temporary tables, including local temporary tables and global temporary tables.
 * A table with the TTL attribute does not support being referenced by other tables as the primary table in a foreign key constraint.
 * It is not guaranteed that all expired data is deleted immediately. The time when expired data is deleted depends on the scheduling interval and scheduling window of the background cleanup job.
+* For tables that use [clustered indexes](/clustered-indexes.md), if the primary key is neither an integer nor a binary string type, the TTL job cannot be split into multiple tasks. This will cause the TTL job to be executed sequentially on a single TiDB node. If the table contains a large amount of data, the execution of the TTL job might become slow.
+* TTL is not available for [TiDB Cloud Serverless Tier](https://docs.pingcap.com/tidbcloud/select-cluster-tier#serverless-tier-beta). 
 
 ## FAQs
 
