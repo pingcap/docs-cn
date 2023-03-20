@@ -90,7 +90,7 @@ LINES TERMINATED BY '\n' STARTING BY ''
 
 ### `WITH detached`
 
-如果你不指定 `LOCAL` 参数，可以通过 `WITH detached` 来让 `LOAD DATA` 在后台运行。
+如果你不指定 `LOCAL` 参数，可以通过 `WITH detached` 来让 `LOAD DATA` 在后台运行。此时 `LOAD DATA` 会返回 job ID。
 
 可以通过 [SHOW LOAD DATA](/sql-statements/sql-statement-show-load-data.md) 查看创建的 job，也可以使用 [OPERATE LOAD DATA JOB](/sql-statements/sql-statement-operate-load-data-job.md) 取消或删除创建的 job。
 
