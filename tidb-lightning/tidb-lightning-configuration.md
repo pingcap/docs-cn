@@ -147,7 +147,7 @@ addr = "172.16.31.10:8287"
 # disk-quota = "10GB" 
 
 # Physical Import Mode 是否通过 SQL 方式添加索引。默认根据 TiDB 版本自动选择。如果 TiDB 版本早于 v7.0.0，则默认为 `false`，表示 Lightning 会将行数据以及索引数据都编码成 kv paris 后一同导入 TiKV，和历史版本保持一致。从 v7.0.0 版本开始，默认为 `true`，即 TiDB Lightning 会在导入数据完成后，使用 add index 的 SQL 来添加索引。
-# 通过 SQL 方式添加索引的优点是可以快速导入数据，即使索引添加失败，也不会影响数据的一致性。
+# 通过 SQL 方式添加索引的优点是将导入数据与导入索引分开，可以快速导入数据，即使导入数据后，索引添加失败，也不会影响数据的一致性。
 # add-index-by-sql = true
 
 [mydumper]
