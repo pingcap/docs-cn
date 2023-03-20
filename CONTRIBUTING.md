@@ -38,7 +38,7 @@ TiDB 中文文档的日常更新特别活跃，相应地，[TiDB 英文文档](h
 
 ## 如何提 Pull Request？
 
-最常见的贡献方式就是提 Pull Request 了，那么提交流程是怎样的，又需要遵守哪些规范呢？请参考下面视频教程，快速上手 GitHub 的 Pull Request 流程。
+最常见的贡献方式就是提 Pull Request 了，那么提交流程是怎样的，又需要遵守哪些规范呢？下面的视频教程可以帮你快速上手 GitHub 的 Pull Request 流程。
 
 **基本概念篇（4 min）**
 
