@@ -70,6 +70,5 @@ TiDB 支持使用大部分 MySQL 5.7 中提供的[字符串函数](https://dev.m
 ## 不支持的函数
 
 * `LOAD_FILE()`
-* `MATCH`
+* `MATCH()`
 * `SOUNDEX()`
-* `SOUNDS LIKE`
