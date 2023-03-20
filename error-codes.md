@@ -295,11 +295,11 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 8154
 
-    目前 `LOAD DATA` 不支持从 TiDB 服务器本地导入数据，可以指定 `LOCAL` 从客户端导入，或者将数据上传到 S3 再进行导入。请参考 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md)。
+    目前 `LOAD DATA` 不支持从 TiDB 服务器本地导入数据，可以指定 `LOCAL` 从客户端导入，或者将数据上传到 S3/GCS 再进行导入。请参考 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md)。
 
 * Error Number: 8155
 
-    目前 `LOAD DATA` 只支持从 S3 导入 Parquet 格式的数据文件。可以将数据上传到 S3 后再导入。请参考 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md)。
+    目前 `LOAD DATA` 只支持从 S3/GCS 导入 Parquet 格式的数据文件。可以将数据上传到 S3/GCS 后再导入。请参考 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md)。
 
 * Error Number: 8156
 
@@ -311,11 +311,11 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 8158
 
-    传入的 S3 路径无效。请参考[外部存储](/br/backup-and-restore-storages.md)设置有效的路径。
+    传入的 S3/GCS 路径无效。请参考[外部存储](/br/backup-and-restore-storages.md)设置有效的路径。
 
 * Error Number: 8159
 
-    TiDB 无法访问 `LOAD DATA` 语句中传入的 S3 路径。请确保填入的 S3 bucket 存在、TiDB 服务器可访问 S3 且有权限访问对应 bucket。
+    TiDB 无法访问 `LOAD DATA` 语句中传入的 S3/GCS 路径。请确保填入的 S3/GCS bucket 存在、TiDB 服务器可访问 S3/GCS 且有权限访问对应 bucket。
 
 * Error Number: 8160
 
