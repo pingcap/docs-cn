@@ -52,7 +52,7 @@ LoadDataOption ::=
 
 ### `Format`
 
-你可以通过 `Format` 参数来指定数据文件的格式。如果不指定该参数时，需要使用的格式为 `DELIMITED DATA`，该格式即 MySQL `LOAD DATA` 支持的数据格式。
+你可以通过 `Format` 参数来指定数据文件的格式。如果不指定该参数，需要使用的格式为 `DELIMITED DATA`，该格式即 MySQL `LOAD DATA` 支持的数据格式。
 
 ### `Fields`、`Lines`、`Ignore Lines`
 
@@ -68,7 +68,7 @@ LoadDataOption ::=
 
 例如对于以下格式的数据：
 
-```
+```sql
 "bob","20","street 1"\r\n
 "alice","33","street 1"\r\n
 ```
@@ -106,7 +106,7 @@ LINES TERMINATED BY '\n' STARTING BY ''
 LOAD DATA INFILE 's3://bucket-name/test.csv?access_key=XXX&secret_access_key=XXX' INTO TABLE my_db.my_table FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '' LINES TERMINATED BY '\n' WITH detached;
 ```
 
-```
+```sql
 +--------+
 | Job_ID |
 +--------+
@@ -119,7 +119,7 @@ LOAD DATA INFILE 's3://bucket-name/test.csv?access_key=XXX&secret_access_key=XXX
 SHOW LOAD DATA JOB 1;
 ```
 
-```
+```sql
 +--------+----------------------------+----------------------------+---------------------+---------------------------+--------------------+-------------+------------+-----------+------------+------------------+------------------+-------------+----------------+
 | Job_ID | Create_Time                | Start_Time                 | End_Time            | Data_Source               | Target_Table       | Import_Mode | Created_By | Job_State | Job_Status | Source_File_Size | Loaded_File_Size | Result_Code | Result_Message |
 +--------+----------------------------+----------------------------+---------------------+---------------------------+-------------------+-------------+------------+-----------+------------+------------------+------------------+-------------+----------------+
@@ -136,7 +136,7 @@ SHOW LOAD DATA JOB 1;
 LOAD DATA LOCAL INFILE '/mnt/evo970/data-sets/bikeshare-data/2017Q4-capitalbikeshare-tripdata.csv' INTO TABLE trips FIELDS TERMINATED BY ',' ENCLOSED BY '\"' LINES TERMINATED BY '\r\n' IGNORE 1 LINES (duration, start_date, end_date, start_station_number, start_station, end_station_number, end_station, bike_number, member_type);
 ```
 
-```
+```sql
 Query OK, 815264 rows affected (39.63 sec)
 Records: 815264  Deleted: 0  Skipped: 0  Warnings: 0
 ```
