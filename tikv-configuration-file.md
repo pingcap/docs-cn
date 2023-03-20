@@ -1811,7 +1811,7 @@ Configuration items related to Raft Engine.
 > This configuration item is only available when [`format-version`](#format-version-new-in-v630) >= 2.
 
 + Determines whether to recycle stale log files in Raft Engine. When it is enabled, logically purged log files will be reserved for recycling. This reduces the long tail latency on write workloads.
-+ Default value: `false`
++ Default value: `true`
 
 ## security
 
