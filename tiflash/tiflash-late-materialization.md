@@ -68,13 +68,13 @@ SHOW GLOBAL VARIABLES LIKE 'tidb_opt_enable_late_materialization';
 - 如果需要在当前 session 中启用 TiFlash 延迟物化功能，可以通过以下语句设置:
     
     ```sql
-    set session tidb_opt_enable_late_materialization=ON;
+    SET SESSION tidb_opt_enable_late_materialization=ON;
     ```
 
 - 如果需要在 global 级别启用 TiFlash 延迟物化功能，可以通过以下语句设置：
     
     ```sql
-    set global tidb_opt_enable_late_materialization=ON;
+    SET GLOBAL tidb_opt_enable_late_materialization=ON;
     ```
     
     设置后，新建的会话中 session 和 global 级别 `tidb_opt_enable_late_materialization` 都将默认启用新值。
@@ -82,11 +82,11 @@ SHOW GLOBAL VARIABLES LIKE 'tidb_opt_enable_late_materialization';
 如需禁用 TiFlash 延迟物化功能，可以通过以下语句设置：
 
 ```sql
-set session tidb_opt_enable_late_materialization=OFF;
+SET SESSION tidb_opt_enable_late_materialization=OFF;
 ```
 
 ```sql
-set global tidb_opt_enable_late_materialization=OFF;
+SET GLOBAL tidb_opt_enable_late_materialization=OFF;
 ```
 
 ## 实现机制
@@ -94,7 +94,7 @@ set global tidb_opt_enable_late_materialization=OFF;
 当有过滤条件下推到 TableScan 算子时，TableScan 算子的执行过程主要包括了以下步骤：
 
 1. 读取 `<handle, del_mark, version>` 三列，执行多版本并发控制 (MVCC) 过滤，生成 MVCC Bitmap。
-2. 读取过滤条件相关的列，执行过滤条件，生成 Filter Bitmap。
+2. 读取过滤条件相关的列，过滤满足条件的行，生成 Filter Bitmap。
 3. 将 MVCC Bitmap 和 Filter Bitmap 进行与操作 (AND)，生成 Final Bitmap。
 4. 根据 Final Bitmap 读取剩余列的对应的行。
-5. 返回结果。
+5. 合并两次读取的数据，返回结果。
