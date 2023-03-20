@@ -50,9 +50,9 @@ LoadDataOption ::=
 - 导入指定路径下所有以 `foo` 为前缀的文件：`s3://<bucket-name>/path/to/data/foo*`
 - 导入指定路径下以 `foo` 为前缀、以 `.csv` 结尾的文件：`s3://<bucket-name>/path/to/data/foo*.csv`
 
-### `Format`
+### `FORMAT`
 
-你可以通过 `Format` 参数来指定数据文件的格式。如果不指定该参数，需要使用的格式为 `DELIMITED DATA`，该格式即 MySQL `LOAD DATA` 支持的数据格式。
+你可以通过 `FORMAT` 参数来指定数据文件的格式。如果不指定该参数，需要使用的格式为 `DELIMITED DATA`，该格式即 MySQL `LOAD DATA` 支持的数据格式。
 
 ### `Fields`、`Lines`、`Ignore Lines`
 
@@ -90,7 +90,7 @@ LINES TERMINATED BY '\n' STARTING BY ''
 
 ### `WITH detached`
 
-如果你不指定 `Local` 参数，可以通过 `WITH detached` 来让 `LOAD DATA` 在后台运行。
+如果你不指定 `LOCAL` 参数，可以通过 `WITH detached` 来让 `LOAD DATA` 在后台运行。
 
 可以通过 [SHOW LOAD DATA](/sql-statements/sql-statement-show-load-data.md) 查看创建的 job，也可以使用 [OPERATE LOAD DATA JOB](/sql-statements/sql-statement-operate-load-data-job.md) 取消或删除创建的 job。
 
