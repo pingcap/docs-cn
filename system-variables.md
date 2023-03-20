@@ -976,8 +976,6 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 > **警告：**
 >
-> 当前索引加速功能未完全兼容添加唯一索引操作。在添加唯一索引时，建议关闭索引加速功能（将 `tidb_ddl_enable_fast_reorg` 设置为 `OFF`）。
-> 
 > 目前，PITR 恢复会额外处理日志备份时间段内通过索引加速功能创建的索引，以达到兼容效果。详细内容请参考[索引加速功能为什么与 PITR 功能不兼容](/faq/backup-and-restore-faq.md#索引加速功能为什么与-pitr-功能不兼容)。
 
 ### `tidb_ddl_distribute_reorg` <span class="version-mark">从 v6.6.0 版本开始引入</span>
