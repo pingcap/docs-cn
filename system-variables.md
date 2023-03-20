@@ -2517,6 +2517,18 @@ mysql> desc select count(distinct a) from test.t;
 - 默认值：`OFF`
 - 这个变量用来控制是否强制 inline CTE。默认值为 `OFF`，即默认不强制 inline CTE。注意，此时依旧可以通过 `MERGE()` hint 来开启个别 CTE 的 inline。如果设置为 `ON`，则当前 session 中所有查询的 CTE（递归 CTE 除外）都会 inline。
 
+### `tidb_opt_advanced_join_hint` <span class="version-mark">从 v7.0.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 类型：布尔型
+- 默认值：`ON`
+- 这个变量用来控制包括 [`HASH_JOIN()` Hint](/optimizer-hints.md#hash_joint1_name--tl_name-)、[`MERGE_JOIN()` Hint](/optimizer-hints.md#merge_joint1_name--tl_name-) 等用于控制连接算法的 Join Method Hint 是否会影响 Join Reorder 的优化过程，包括 [`LEADING()` Hint](/optimizer-hints.md#leadingt1_name--tl_name-) 的使用。默认值为 `ON`，即默认不影响。如果设置为 `OFF`，在一些同时使用 Join Method Hint 和 `LEADING()` Hint 的场景下可能会产生冲突。
+
+> **注意：**
+>
+> v7.0.0 之前的版本行为和将该变量设置为 `OFF` 的行为一致。为确保向前兼容，从旧版本升级到 v7.0.0 及之后版本的集群，该变量会被设置成 `OFF`。为了获取更灵活的 Hint 行为，强烈建议在确保无性能回退的情况下，将该变量切换为 `ON`。
+
 ### `tidb_opt_insubq_to_join_and_agg`
 
 - 作用域：SESSION | GLOBAL
