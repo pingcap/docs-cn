@@ -166,7 +166,6 @@ show warnings;
 | coprocessor.region-max-keys | Region 最多允许的 key 的个数 |
 | coprocessor.region-split-keys | 分裂后新 Region 的 key 的个数 |
 | pessimistic-txn.wait-for-lock-timeout | 悲观事务遇到锁后的最长等待时间 |
-| pessimistic-txn.wake-up-delay-duration | 悲观事务被重新唤醒的时间 |
 | pessimistic-txn.pipelined | 是否开启流水线式加悲观锁流程 |
 | pessimistic-txn.in-memory | 是否开启内存悲观锁功能 |
 | quota.foreground-cpu-time | 限制处理 TiKV 前台读写请求所使用的 CPU 资源使用量，软限制 |
