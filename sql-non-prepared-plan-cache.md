@@ -150,7 +150,7 @@ SHOW warnings;
     SELECT * FROM t WHERE a<3;
     ```
 
-4. 查询 `statement_summary` 表查看查询命中缓存的情况：
+4. 查询 `statements_summary` 表查看查询命中缓存的情况：
 
     ```sql
     SELECT digest_text, query_sample_text, exec_count, plan_in_cache, plan_cache_hits FROM INFORMATION_SCHEMA.STATEMENTS_SUMMARY WHERE digest_text LIKE '%SELECT * FROM %';
