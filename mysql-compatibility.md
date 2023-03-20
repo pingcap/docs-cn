@@ -57,9 +57,9 @@ TiDB 高度兼容 MySQL 5.7 协议、MySQL 5.7 常用的功能及语法。MySQL 
 
 - TiDB 不支持添加列的 `AUTO_INCREMENT` 属性，移除该属性后不可恢复。
 
-自增 ID 详情可参阅 [AUTO_INCREMENT](/auto-increment.md)。
+- 对于 v6.6.0 及更早的 TiDB 版本，TiDB 的行为与 MySQL InnoDB 保持一致，要求自增列必须为主键或者索引前缀。从 v7.0.0 开始，TiDB 移除自增列必须是索引或索引前缀的限制，允许用户更灵活地定义表的主键。关于此更改的详细信息，请参阅 [#40580](https://github.com/pingcap/tidb/issues/40580)
 
-- 对于 v6.6.0 及更早的 TiDB 版本，TiDB 的行为与 MySQL InnoDB  保持一致，要求自增列必须为主键或者索引前缀。 从 v7.0.0 开始，TiDB 移除自增列必须是索引或索引前缀的限制，允许用户更灵活地定义表的主键。 [#40580](https://github.com/pingcap/tidb/issues/40580)
+自增 ID 详情可参阅 [AUTO_INCREMENT](/auto-increment.md)。
 
 > **注意：**
 >
