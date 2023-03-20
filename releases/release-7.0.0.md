@@ -271,7 +271,9 @@ TiDB 版本：7.0.0
 
 | 变量名  | 修改类型（包括新增/修改/删除）    | 描述 |
 |--------|------------------------------|------|
+| [`tidb_enable_non_prepared_plan_cache`](/system-variables.md#tidb_enable_non_prepared_plan_cache) | 修改 | 该变量从 v7.0.0 开始生效，用来控制是否开启[非 Prepare 语句执行计划缓存](/sql-non-prepared-plan-cache.md)。 |
 | [`tidb_enable_null_aware_anti_join`](/system-variables.md#tidb_enable_null_aware_anti_join-从-v630-版本开始引入) | 修改 | 经进一步的测试后，该变量默认值从 `OFF` 修改为 `ON`，表示 TiDB 默认开启对特殊集合算子 `NOT IN` 和 `!= ALL` 引导的子查询产生的 Anti Join 采用 Null-Aware Hash Join 的执行方式。 |
+| [`tidb_non_prepared_plan_cache_size`](/system-variables.md#tidb_non_prepared_plan_cache_size) | 修改 | 该变量从 v7.0.0 开始生效，用来控制[非 Prepare 语句执行计划缓存](/sql-non-prepared-plan-cache.md)最多能够缓存的计划数量。 |
 | [`tidb_enable_inl_join_inner_multi_pattern`](/system-variables.md#tidb_enable_inl_join_inner_multi_pattern-从-v700-版本开始引入) | 新增 | 该变量用于控制当内表上有 `Selection`/`Projection` 算子时是否支持 Index Join。 |
 | [`tidb_enable_plan_cache_for_subquery`](/system-variables.md#tidb_enable_plan_cache_for_subquery-从-v700-版本开始引入) | 新增 | 该变量用于控制 Prepared Plan Cache 是否缓存包含子查询的查询。 |
 | [`tidb_load_based_replica_read_threshold`](/system-variables.md#tidb_load_based_replica_read_threshold-从-v700-版本开始引入) | 新增 | 该变量用于设置基于负载的 replica read 的触发阈值。在 v7.0.0，该变量控制的功能尚未完全生效，请保留默认值。 |
