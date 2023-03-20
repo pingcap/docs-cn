@@ -45,14 +45,14 @@ LoadDataOption ::=
 当数据文件存储在 S3 上时，你可以导入单个文件，也可使用通配符 `*` 来匹配需要导入的多个文件。注意通配符不会递归处理子目录下相关的文件。示例如下:
 
 - 导入单个文件：`s3://<bucket-name>/path/to/data/foo.csv`
-- 导入指定目录下的所有文件：`s3://<bucket-name>/path/to/data/*`
+- 导入指定路径下的所有文件：`s3://<bucket-name>/path/to/data/*`
 - 导入指定路径下的所有以 `.csv` 结尾的文件：`s3://<bucket-name>/path/to/data/*.csv`
 - 导入指定路径下所有以 `foo` 为前缀的文件：`s3://<bucket-name>/path/to/data/foo*`
 - 导入指定路径下以 `foo` 为前缀、以 `.csv` 结尾的文件：`s3://<bucket-name>/path/to/data/foo*.csv`
 
-### `FormatOpt`
+### `Format`
 
-你可以通过 `FormatOpt` 参数来指定数据文件的格式。如果不指定该语句时，格式为 `DELIMITED DATA`，该格式即 MySQL `LOAD DATA` 支持的数据格式。
+你可以通过 `Format` 参数来指定数据文件的格式。如果不指定该参数，需要使用的格式为 `DELIMITED DATA`，该格式即 MySQL `LOAD DATA` 支持的数据格式。
 
 ### `Fields`、`Lines`、`Ignore Lines`
 
@@ -60,8 +60,8 @@ LoadDataOption ::=
 
 当数据格式为 `DELIMITED DATA` 时，你可以使用 `Fields` 和 `Lines` 参数来指定如何处理数据格式：
 
-- 使用 `FIELDS TERMINATED BY` 来指定每个数据的分隔符号。
-- 使用 `FIELDS ENCLOSED BY` 来指定消除数据的包围符号。
+- 使用 `FIELDS TERMINATED BY` 来指定数据的分隔符号。
+- 使用 `FIELDS ENCLOSED BY` 来指定数据的包围符号。
 - 如果你希望以某个字符为结尾切分每行数据，可以使用 `LINES TERMINATED BY` 来指定行的终止符。
 
 可以使用 `DEFINED NULL BY` 来指定数据文件中如何表示 NULL 值。
@@ -90,7 +90,7 @@ LINES TERMINATED BY '\n' STARTING BY ''
 
 ### `WITH detached`
 
-如果你不指定 `LocalOpt` 参数，可以通过 `WITH detached` 来让 `LOAD DATA` 在后台运行。
+如果你不指定 `Local` 参数，可以通过 `WITH detached` 来让 `LOAD DATA` 在后台运行。
 
 可以通过 [SHOW LOAD DATA](/sql-statements/sql-statement-show-load-data.md) 查看创建的 job，也可以使用 [OPERATE LOAD DATA JOB](/sql-statements/sql-statement-operate-load-data-job.md) 取消或删除创建的 job。
 
