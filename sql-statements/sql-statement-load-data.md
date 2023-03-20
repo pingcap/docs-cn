@@ -52,11 +52,11 @@ LoadDataOption ::=
 
 ### `FormatOpt`
 
-你可以通过 `FormatOpt` 参数来指定数据文件的格式。
+你可以通过 `FormatOpt` 参数来指定数据文件的格式。如果不指定该语句时，格式为 `DELIMITED DATA`，该格式即 MySQL `LOAD DATA` 支持的数据格式。
 
-### `DELIMITED DATA`、`Fields`、`Lines`、`Ignore Lines`
+### `Fields`、`Lines`、`Ignore Lines`
 
-如果不指定该语句时，格式为 `DELIMITED DATA`，该格式即 MySQL `LOAD DATA` 支持的数据格式。只有数据格式是 `DELIMITED DATA` 时，才能指定 `Fields`、`Lines`、`Ignore Lines` 等语句。
+只有数据格式是 `DELIMITED DATA` 时，才能指定 `Fields`、`Lines`、`Ignore Lines` 等语句。
 
 当数据格式为 `DELIMITED DATA` 时，你可以使用 `Fields` 和 `Lines` 参数来指定如何处理数据格式：
 
