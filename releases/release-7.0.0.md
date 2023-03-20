@@ -280,12 +280,16 @@ TiDB 版本：7.0.0
 |[`tidb_pessimistic_txn_aggressive_locking`] | 删除 | 更名为 [`tidb_pessimistic_txn_fair_locking`](/system-variables.md#tidb_pessimistic_txn_fair_locking-从-v700-版本开始引入) |
 |[`tidb_opt_enable_late_materialization`]  |  新增  |   这个变量用来控制用于控制 TiFlash 延迟物化功能是否开启。 默认值为 `OFF`，即不开启 TiFlash 延迟物化功能。 |
 | [`tidb_load_based_replica_read_threshold`](/system-variables.md#tidb_load_based_replica_read_threshold) | 新增 | 这个变量用来设置基于负载的 replica read 的触发阈值。当 leader 节点的预估排队时间超过阈值时，TiDB 会优先从 follower 节点读取数据。格式为时间，例如 `"100ms"` 或 `"1s"`。 当前版本中该变量控制的功能尚未完全生效，请保留默认值。|
-|        |                              |      |
+| [tidb_ttl_running_tasks](/system-variables.md#tidb_ttl_running_tasks-new-in-v700) | 新增 | 这个变量用于限制整个集群内 TTL 任务的并发量。默认值 `-1` 表示与 TiKV 节点的数量相同。 |
+| [tidb_opt_advanced_join_hint](/system-variables.md#tidb_opt_advanced_join_hint-从-v700-版本开始引入) | 新增 | 这个变量用来控制包括 [`HASH_JOIN()` Hint](/optimizer-hints.md#hash_joint1_name--tl_name-)、[`MERGE_JOIN()` Hint](/optimizer-hints.md#merge_joint1_name--tl_name-) 等用于控制连接算法的 Join Method Hint 是否会影响 Join Reorder 的优化过程，包括 [`LEADING()` Hint](/optimizer-hints.md#leadingt1_name--tl_name-) 的使用。默认值为 `ON`，即默认不影响。v7.0.0 之前的版本行为和将该变量设置为 `OFF` 的行为一致。 |
+| [tidb_opt_ordering_index_selectivity_threshold](/system-variables.md#tidb_opt_ordering_index_selectivity_threshold-从-v700-版本开始引入) | 新增 | 该变量用于当 SQL 中存在 `ORDER BY` 和 `LIMIT` 子句且带有过滤条件时，控制优化器选择索引的行为。 |
 
 ### 配置文件参数
 
 | 配置文件 | 配置项 | 修改类型 | 描述 |
 | -------- | -------- | -------- | -------- |
+| TiKV | [raft-engine.prefill-for-recycle](/tikv-configuration-file.md#prefill-for-recycle-从-v700-版本开始引入) | 新增 | 控制 Raft Engine 是否回收过期的日志文件。默认值为 `FALSE`。|
+| TiKV | [server.snap-max-write-bytes-per-sec](/tikv-configuration-file.md#snap-io-max-bytes-per-sec) | 重命名 | 配置项 `server.snap-max-write-bytes-per-sec` 重命名为 `server.snap-io-max-bytes-per-sec`。 |
 | TiFlash | [flash.disaggregated_mode](https://docs.pingcap.com/zh/tidb/dev/tiflash-disaggregated-and-s3) |  新增  |在 TiFlash 的存算分离架构中，表示此 TiFlash 节点是 Write Node 还是 Compute Node。有效值是 tiflash_write 或者 tiflash_compute|
 | TiFlash | [storage.s3.endpoint](https://docs.pingcap.com/zh/tidb/dev/tiflash-disaggregated-and-s3) |  新增  | S3 的 endpoint 地址 |
 | TiFlash | [storage.s3.bucket](https://docs.pingcap.com/zh/tidb/dev/tiflash-disaggregated-and-s3) |  新增  | TiFlash 的所有数据存储在这个 bucket 中 |
