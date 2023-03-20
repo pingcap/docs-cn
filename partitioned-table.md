@@ -800,7 +800,7 @@ Empty set (0.00 sec)
 
 对于 `LIST` 和 `RANGE` 分区表，暂不支持 `REORGANIZE PARTITION` 语句。
 
-对于 `HASH` 和 `KEY` 分区表，暂不支持 `COALESCE PARTITION` 和 `ADD PARTITION` 语句。
+对于 `HASH` 和 `KEY` 分区表，目前只支持 `ALTER TABLE ... TRUNCATE PARTITION` 分区管理语句，不支持 `COALESCE PARTITION` 和 `ADD PARTITION` 语句。
 
 `EXCHANGE PARTITION` 语句用来交换分区和非分区表，类似于重命名表如 `RENAME TABLE t1 TO t1_tmp, t2 TO t1, t1_tmp TO t2` 的操作。
 
@@ -911,6 +911,14 @@ ERROR 8200 (HY000): Unsupported optimize partition
 ### Key 分区管理
 
 目前 TiDB 中 Key 分区支持的分区管理语句只有 `ALTER TABLE ... TRUNCATE PARTITION`。
+
+```sql
+ALTER TABLE members TRUNCATE PARTITION p0;
+```
+
+```
+Query OK, 0 rows affected (0.03 sec)
+```
 
 对于暂不支持的分区管理语句，TiDB 会返回错误。
 
