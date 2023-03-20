@@ -28,7 +28,7 @@ TiCDC 提供 OpenAPI 功能，你可以通过 OpenAPI v2 对 TiCDC 集群进行�
 - [驱逐 owner 节点](#驱逐-owner-节点)
 - [动态调整 TiCDC Server 日志级别](#动态调整-ticdc-server-日志级别)
 
-所有 API 的请求体与返回值统一使用 JSON 格式数据。请求如果成功，则统一返回 `200 OK` 。本文档以下部分描述当前提供的 API 的具体使用方法。
+所有 API 的请求体与返回值统一使用 JSON 格式数据。请求如果成功，则统一返回 `200 OK`。本文档以下部分描述当前提供的 API 的具体使用方法。
 
 在下文的示例描述中，假设 TiCDC server 的监听 IP 地址为 `127.0.0.1`，端口为 `8300`。在启动 TiCDC server 时，可以通过 `--addr=ip:port` 指定 TiCDC 绑定的 IP 地址和端口。
 
