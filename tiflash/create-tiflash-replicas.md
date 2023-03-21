@@ -147,7 +147,7 @@ Before TiFlash replicas are added, each TiKV instance performs a full table scan
 
    ```sql
    -- The default value for both configurations are 100MiB, i.e. the maximum disk bandwidth used for writing snapshots is no more than 100MiB/s.
-   SET CONFIG tikv `server.snap-max-write-bytes-per-sec` = '300MiB';
+   SET CONFIG tikv `server.snap-io-max-bytes-per-sec` = '300MiB';
    SET CONFIG tiflash `raftstore-proxy.server.snap-max-write-bytes-per-sec` = '300MiB';
    ```
 
@@ -186,7 +186,7 @@ Before TiFlash replicas are added, each TiKV instance performs a full table scan
    Execute the following SQL statements to restore the default snapshot write speed limit:
 
    ```sql
-   SET CONFIG tikv `server.snap-max-write-bytes-per-sec` = '100MiB';
+   SET CONFIG tikv `server.snap-io-max-bytes-per-sec` = '100MiB';
    SET CONFIG tiflash `raftstore-proxy.server.snap-max-write-bytes-per-sec` = '100MiB';
    ```
 

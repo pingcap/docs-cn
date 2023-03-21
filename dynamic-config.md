@@ -209,7 +209,7 @@ The following TiKV configuration items can be modified dynamically:
 | `{db-name}.{cf-name}.titan.blob-run-mode` | The mode of processing blob files |
 | `server.grpc-memory-pool-quota` | Limits the memory size that can be used by gRPC |
 | `server.max-grpc-send-msg-len` | Sets the maximum length of a gRPC message that can be sent |
-| `server.snap-max-write-bytes-per-sec` | Sets the maximum allowable disk bandwidth when processing snapshots |
+| `server.snap-io-max-bytes-per-sec` | Sets the maximum allowable disk bandwidth when processing snapshots |
 | `server.concurrent-send-snap-limit` | Sets the maximum number of snapshots sent at the same time |
 | `server.concurrent-recv-snap-limit` | Sets the maximum number of snapshots received at the same time |
 | `server.raft-msg-max-batch-size` | Sets the maximum number of Raft messages that are contained in a single gRPC message |
