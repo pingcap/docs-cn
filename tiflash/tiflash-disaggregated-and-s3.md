@@ -68,12 +68,16 @@ TiFlash 存算分离架构适用于高性价比的数据分析服务的场景。
     "Expiration": {
         "Days": 1
     },
-    "Tags": [
-        {
-            "Value": "tiflash_deleted", 
-            "Key": "true"
+    "Filter": {
+        "And": {
+            "Tags": [
+                {
+                    "Value": "tiflash_deleted", 
+                    "Key": "true"
+                }
+            ]
         }
-    ]
+    }
     ```
 
 ## 使用方式
