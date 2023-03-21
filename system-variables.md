@@ -2181,12 +2181,12 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 类型：整数型
 - 默认值：`-1`
 - 范围：`[-1, 9223372036854775807]`
-- 这个变量用于指定 TiFlash 中带 group by 的 hash aggregation 算子的最大内存使用量，超过该值之后 TiFlash 会触发 hash aggregation 算子的落盘。当该变量值为 -1 时，TiDB 不传递该变量给 TiFlash，只有该变量值大于等于 0 时 TiDB 才会传递给变量给 TiFlash，而该变量为 0 时表示内存使用无限制，即 TiFlash hash aggregation 算子不会触发落盘。
+- 这个变量用于指定 TiFlash 中带 group by 的 Hash Aggregation 算子的最大内存使用量，超过该值之后 TiFlash 会触发 Hash Aggregation 算子的落盘。当该变量值为 -1 时，TiDB 不传递该变量给 TiFlash。只有该变量值大于等于 0 时，TiDB 才会传递该变量给 TiFlash。该变量为 0 时表示内存使用无限制，即 TiFlash Hash Aggregation 算子不会触发落盘。
 
 > **注意：**
 >
-> 假设一个 TiDB 集群有多个 TiFlash 节点，aggregation 一般来说会在多个 TiFlash 节点中分布式执行，而该变量是指单个 TiFlash 节点中 aggregation 算子的最大内存使用量。
-> 当该变量设置为 -1 时，TiFlash 将根据自身配置项 max_bytes_before_external_group_by 的值来决定 aggregation 算子的最大内存使用量
+> 假设一个 TiDB 集群有多个 TiFlash 节点，aggregation 一般来说会在多个 TiFlash 节点中分布式执行。该变量控制的是单个 TiFlash 节点中 aggregation 算子的最大内存使用量。
+> 当该变量设置为 -1 时，TiFlash 将根据自身配置项 [`max_bytes_before_external_group_by`](/tiflash/tiflash-configuration.md#tiflash-配置参数-1) 的值来决定 aggregation 算子的最大内存使用量。
 
 ### `tidb_max_bytes_before_tiflash_external_join` <span class="version-mark">从 v7.0.0 版本开始引入</span>
 
@@ -2195,12 +2195,12 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 类型：整数型
 - 默认值：`-1`
 - 范围：`[-1, 9223372036854775807]`
-- 这个变量用于指定 TiFlash 中带等值 join 条件的 hash join 算子的最大内存使用量，超过该值之后 TiFlash 会触发 hash join 算子的落盘。当该变量值为 -1 时，TiDB 不传递该变量给 TiFlash，只有该变量值大于等于 0 时 TiDB 才会传递给变量给 TiFlash，而该变量为 0 时表示内存使用无限制，即 TiFlash hash join 算子不会触发落盘。
+- 这个变量用于指定 TiFlash 中带等值 join 条件的 hash join 算子的最大内存使用量，超过该值之后 TiFlash 会触发 hash join 算子的落盘。当该变量值为 -1 时，TiDB 不传递该变量给 TiFlash。只有该变量值大于等于 0 时，TiDB 才会传递该变量给 TiFlash。该变量为 0 时表示内存使用无限制，即 TiFlash hash join 算子不会触发落盘。
 
 > **注意：**
 >
-> 假设一个 TiDB 集群有多个 TiFlash 节点，join 一般来说会在多个 TiFlash 节点中分布式执行，而该变量是指单个 TiFlash 节点中 join 算子的最大内存使用量。
-> 当该变量设置为 -1 时，TiFlash 将根据自身配置项 max_bytes_before_external_join 的值来决定 join 算子的最大内存使用量
+> 假设一个 TiDB 集群有多个 TiFlash 节点，join 一般来说会在多个 TiFlash 节点中分布式执行。该变量控制的是单个 TiFlash 节点中 join 算子的最大内存使用量。
+> 当该变量设置为 -1 时，TiFlash 将根据自身配置项 [`max_bytes_before_external_join`](/tiflash/tiflash-configuration.md#tiflash-配置参数-1) 的值来决定 join 算子的最大内存使用量。
 
 ### `tidb_max_bytes_before_tiflash_external_sort` <span class="version-mark">从 v7.0.0 版本开始引入</span>
 
@@ -2209,12 +2209,12 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 类型：整数型
 - 默认值：`-1`
 - 范围：`[-1, 9223372036854775807]`
-- 这个变量用于指定 TiFlash 中带 topN 和 sort 算子的最大内存使用量，超过该值之后 TiFlash 会触发 topN 和 sort 算子的落盘。当该变量值为 -1 时，TiDB 不传递该变量给 TiFlash，只有该变量值大于等于 0 时 TiDB 才会传递给变量给 TiFlash，而该变量为 0 时表示内存使用无限制，即 TiFlash topN 和 sort 算子不会触发落盘。
+- 这个变量用于指定 TiFlash 中带 topN 和 sort 算子的最大内存使用量，超过该值之后 TiFlash 会触发 topN 和 sort 算子的落盘。当该变量值为 -1 时，TiDB 不传递该变量给 TiFlash。只有该变量值大于等于 0 时，TiDB 才会传递该变量给 TiFlash。该变量为 0 时表示内存使用无限制，即 TiFlash topN 和 sort 算子不会触发落盘。
 
 > **注意：**
 >
-> 假设一个 TiDB 集群有多个 TiFlash 节点，topN 和 sort 一般来说会在多个 TiFlash 节点中分布式执行，而该变量是指单个 TiFlash 节点中 topN 和 sort 算子的最大内存使用量。
-> 当该变量设置为 -1 时，TiFlash 将根据自身配置项 max_bytes_before_external_sort 的值来决定 topN 和 sort 算子的最大内存使用量
+> 假设一个 TiDB 集群有多个 TiFlash 节点，topN 和 sort 一般来说会在多个 TiFlash 节点中分布式执行。该变量控制的是单个TiFlash 节点中 topN 和 sort 算子的最大内存使用量。
+> 当该变量设置为 -1 时，TiFlash 将根据自身配置项 [`max_bytes_before_external_sort`](/tiflash/tiflash-configuration.md#tiflash-配置参数-1) 的值来决定 topN 和 sort 算子的最大内存使用量。
 
 ### `tidb_max_chunk_size`
 
