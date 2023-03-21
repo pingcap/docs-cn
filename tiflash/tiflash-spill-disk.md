@@ -46,7 +46,7 @@ TiDB 提供了以下系统变量，来控制各算子数据落盘的阈值。当
     SELECT l_orderkey, MAX(L_COMMENT), MAX(L_SHIPMODE), MAX(L_SHIPINSTRUCT), MAX(L_SHIPDATE), MAX(L_EXTENDEDPRICE) FROM lineitem GROUP BY l_orderkey HAVING SUM(l_quantity) > 314;
     ```
 
-5. 从 TiFlash 的 log 中可以看出，通过配置 `max_bytes_before_external_group_by`，TiFlash 触发了中间结果落盘，显著减小了查询所需的内存。
+5. 从 TiFlash 的日志中可以看出，通过配置 `max_bytes_before_external_group_by`，TiFlash 触发了中间结果落盘，显著减小了查询所需的内存。
 
     ```
     [DEBUG] [MemoryTracker.cpp:69] ["Peak memory usage (total): 12.80 GiB."] [source=MemoryTracker] [thread_id=110]
