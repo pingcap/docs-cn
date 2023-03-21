@@ -58,6 +58,7 @@ URI 中可配置的参数如下：
 | `127.0.0.1`    | 下游数据库的 IP。                                |
 | `3306`         | 下游数据的连接端口。                                 |
 | `worker-count` | 向下游执行 SQL 的并发度（可选，默认值为 `16`）。       |
+| `cache-prep-stmts` | 向下游执行 SQL 时是否使用 prepared statement 并且开启客户端的 prepared statement 缓存（可选，默认值为 `true`）。 |
 | `max-txn-row`  | 向下游执行 SQL 的 batch 大小（可选，默认值为 `256`）。 |
 | `ssl-ca`       | 连接下游 MySQL 实例所需的 CA 证书文件路径（可选）。 |
 | `ssl-cert`     | 连接下游 MySQL 实例所需的证书文件路径（可选）。 |
