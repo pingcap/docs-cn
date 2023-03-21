@@ -70,13 +70,13 @@ TiDB 版本：7.0.0
 
 * TiKV 默认打开 Raft 日志回收特性 [#14379](https://github.com/tikv/tikv/issues/14379) @[LykxSassinator](https://github.com/LykxSassinator) **tw:ran-huang**
 
-    TiKV 在 v6.3.0 中引入了 Raft 日志回收特性，用以减少写负载的长尾延迟。在 v7.0.0 中，该特性将默认开启。
+    TiKV 在 v6.3.0 中引入了 [Raft 日志回收](/tikv-configuration-file.md#enable-log-recycle-从-v630-版本开始引入)特性，用以减少写负载的长尾延迟。在 v7.0.0 中，该特性将默认开启。
     
     更多信息，请参考[用户文档](/tikv-configuration-file.md#enable-log-recycle-从-v630-版本开始引入)。
 
 * TiKV 支持自动生成空的日志文件用于日志回收 [#14371](https://github.com/tikv/tikv/issues/14371) @[LykxSassinator](https://github.com/LykxSassinator) **tw:ran-huang**
 
-    TiKV 在 v6.3.0 中引入了 [Raft 日志回收](../tikv-configuration-file.md###enable-log-recycle-从-v630-版本开始引入)特性，用以减少写负载的长尾延迟。但是，“日志回收”需要 Raft 日志文件数量达到一定阈值后方可介入，使得用户无法直观感受该特性带来的写负载的吞吐提升。
+    TiKV 在 v6.3.0 中引入了 [Raft 日志回收](/tikv-configuration-file.md#enable-log-recycle-从-v630-版本开始引入)特性，用以减少写负载的长尾延迟。但是，“日志回收”需要 Raft 日志文件数量达到一定阈值后方可介入，使得用户无法直观感受该特性带来的写负载的吞吐提升。
 
     为了提升用户感受，v7.0.0 中正式引入了 `raft-engine.prefill-for-recycle` 配置项，用以控制 TiKV 是否在进程启动时自动生成空的日志文件用于日志回收。该配置项启用时，TiKV 将在初始化时自动填充一批空日志文件用于日志回收，保证日志回收在初始化后立即生效。
     
@@ -90,7 +90,7 @@ TiDB 版本：7.0.0
 
 * 支持通过 Fast Online DDL 创建唯一索引 [#40730](https://github.com/pingcap/tidb/issues/40730) @[tangenta](https://github.com/tangenta) **tw:ran-huang**
 
-    TiDB v6.5.0 版本支持通过 [Fast Online DDL](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入)  模式创建普通的二级索引，从 v7.0.0 版本开始，支持通过 Fast Online DDL 模式创建唯一索引。相比于 TiDB v6.1.0，大表添加唯一索引的性能预期将提升数倍。
+    TiDB v6.5.0 版本支持通过 [Fast Online DDL](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 模式创建普通的二级索引，从 v7.0.0 版本开始，支持通过 Fast Online DDL 模式创建唯一索引。相比于 TiDB v6.1.0，大表添加唯一索引的性能预期将提升数倍。
 
     更多信息，请参考[用户文档](/ddl-introduction.md)。
 
@@ -116,13 +116,13 @@ TiDB 版本：7.0.0
 
 * 支持 Fast Online DDL 的检查点机制，提升容错性和自动恢复能力 [#42164](https://github.com/pingcap/tidb/issues/42164) @[tangenta](https://github.com/tangenta) **tw:ran-huang**
 
-    TiDB v7.0.0 版本引入 [Fast Online DDL](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 的检查点机制，可以大幅提升 Fast Online DDL 的容错性和自动恢复能力。通过周期性记录并同步 DDL 进度，即使在 TiDB DDL Owner 故障重启或切换时，正在执行中的 DDL 仍能以 Fast Online DDL 方式继续执行，从而让 DDL 执行更加稳定高效。
+    TiDB v7.0.0 引入 [Fast Online DDL](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 的检查点机制，可以大幅提升 Fast Online DDL 的容错性和自动恢复能力。通过周期性记录并同步 DDL 进度，即使在 TiDB DDL Owner 故障重启或切换时，正在执行中的 DDL 仍能以 Fast Online DDL 方式继续执行，从而让 DDL 执行更加稳定高效。
 
     更多信息，请参考[用户文档](/ddl-introduction.md)。
 
-* TiFlash 引擎支持数据落盘 [#6528](https://github.com/pingcap/tiflash/issues/6528) @[windtalker](https://github.com/windtalker) **tw:ran-huang**
+* TiFlash 引擎支持数据落盘 (Spill-to-disk) [#6528](https://github.com/pingcap/tiflash/issues/6528) @[windtalker](https://github.com/windtalker) **tw:ran-huang**
 
-    为了执行性能，TiFlash 引擎尽量将数据全部放在内存中运行。当数据量太大，超过内存总大小时，TiFlash 会终止查询，避免内存潮用引发系统崩溃。因此，TiFlash 可处理的数据量受限于内存大小。
+    为了提高执行性能，TiFlash 引擎尽可能将数据全部放在内存中运行。当数据量超过内存总大小时，TiFlash 会终止查询，避免内存耗尽导致系统崩溃。因此，TiFlash 可处理的数据量受限于可用的内存大小。
 
     从 v7.0.0 版本开始，TiFlash 引擎支持数据落盘功能，通过调整算子内存使用阈值 [`tidb_max_bytes_before_tiflash_external_group_by`](/system-variables.md#tidb_max_bytes_before_tiflash_external_group_by-从-v700-版本开始引入)、[`tidb_max_bytes_before_tiflash_external_sort`](/system-variables.md#tidb_max_bytes_before_tiflash_external_sort-从-v700-版本开始引入)、[`tidb_max_bytes_before_tiflash_external_join`](/system-variables.md#tidb_max_bytes_before_tiflash_external_join-从-v700-版本开始引入)，控制对应算子的最大内存使用量。当算子使用内存超过一定阈值时，会自动将数据落盘，牺牲一定的性能，从而处理更多数据。
 
@@ -141,11 +141,11 @@ TiDB 版本：7.0.0
     - [`MPP_1PHASE_AGG()`](/optimizer-hints.md#mpp_1phase_agg)：针对 MPP 生效。提示优化器对指定查询块中所有聚合函数使用一阶段聚合算法。
     - [`MPP_2PHASE_AGG()`](/optimizer-hints.md#mpp_2phase_agg)：针对 MPP 生效。 提示优化器对指定查询块中所有聚合函数使用二阶段聚合算法。
 
-  MPP 优化器 Hint 能够协助客户对 HTAP 查询进行干预，提升 HTAP 负载下的性能和稳定性。
+  MPP 优化器 Hint 能够协助你干预 HTAP 查询，提升 HTAP 负载下的性能和稳定性。
 
   更多信息，请参考[用户文档](/optimizer-hints.md)。
 
-* 优化器 Hint 兼容连接方式与连接顺序的指定 [#36600](https://github.com/pingcap/tidb/issues/36600) @[Reminiscent](https://github.com/Reminiscent) **tw:ran-huang**
+* 优化器 Hint 可兼容指定连接方式与连接顺序 [#36600](https://github.com/pingcap/tidb/issues/36600) @[Reminiscent](https://github.com/Reminiscent) **tw:ran-huang**
 
     在 v7.0.0 中，优化器 Hint [`LEADING()`](/optimizer-hints.md#leadingt1_name--tl_name-) 能够和影响连接方式的 Hint 配合使用，两者行为兼容。在多表连接的情况下，可以有效指定最佳的连接方式和连接顺序，提升优化器 Hint 对执行计划的控制能力。
 
@@ -157,7 +157,7 @@ TiDB 版本：7.0.0
 
 * TiDB 支持 prefer-leader 选项，在网络不稳定的情况下提供更高的读可用性，降低响应延迟 [#40905](https://github.com/pingcap/tidb/issues/40905) @[LykxSassinator](https://github.com/LykxSassinator) **tw:ran-huang**
 
-    TiDB 支持通过 [`tidb_replica_read`](/system-variables.md#tidb_replica_read-从-v40-版本开始引入) 参数控制 TiDB 的数据读取行为，新增支持 `prefer-leader` 选项。当设置为 `prefer-leader` 时，TiDB 会优先选择 leader 副本执行读取操作。当 leader 副本的处理速度明显变慢时，例如由于磁盘或网络性能抖动，TiDB 将选择其他可用的 follower 副本来执行读取操作，从而提供更高的可用性，降低响应延迟。
+    你可以通过系统变量 [`tidb_replica_read`](/system-variables.md#tidb_replica_read-从-v40-版本开始引入) 控制 TiDB 的数据读取行为。在 v7.0.0 中，该变量新增支持 `prefer-leader` 选项。当设置为 `prefer-leader` 时，TiDB 会优先选择 leader 副本执行读取操作。当 leader 副本的处理速度明显变慢时，例如由于磁盘或网络性能抖动，TiDB 将选择其他可用的 follower 副本来执行读取操作，从而提供更高的可用性，降低响应延迟。
 
     更多信息，请参考[用户文档](/develop/dev-guide-use-follower-read.md)
 
@@ -165,7 +165,7 @@ TiDB 版本：7.0.0
 
 * Time to live (TTL) 已基本可用 [#39262](https://github.com/pingcap/tidb/issues/39262) @[lcwangchao](https://github.com/lcwangchao) @[YangKeao](https://github.com/YangKeao) **tw:ran-huang**
 
-    TTL 提供了行级别的生命周期控制策略。在 TiDB 中，设置了 TTL 属性的表会根据配置自动检查并删除过期的行数据。TTL 设计的目标是帮助用户周期性且及时地清理不需要的数据，并尽量减少对用户负载的影响。
+    TTL 提供了行级别的生命周期控制策略。在 TiDB 中，设置了 TTL 属性的表会根据配置自动检查并删除过期的行数据。TTL 的目标是帮助用户周期性且及时地清理不需要的数据，并尽量减少对用户负载的影响。
 
     更多信息，请参考[用户文档](/time-to-live.md)。
 
@@ -258,10 +258,10 @@ TiDB 版本：7.0.0
 
 * TiDB 移除了自增列必须是索引的约束 [#40580](https://github.com/pingcap/tidb/issues/40580) @[tiancaiamao](https://github.com/tiancaiamao) **tw:ran-huang**
 
-    TiDB v7.0.0 开始支持移除自增列必须是索引或索引前缀的限制。这意味着用户现在可以更灵活地定义表的主键，并方便地使用自增列实现排序分页，同时避免自增列带来的写入热点问题，并通过使用 Cluster Indexed Table 提高查询性能。之前，TiDB 的行为与 MySQL 一致，要求自增列必须是索引或索引前缀。现在，通过此次更新，您可以使用以下语法创建表并成功移除自增列约束：
+    自 TiDB v7.0.0 起，移除了自增列必须是索引或索引前缀的限制。这意味着用户现在可以更灵活地定义表的主键，并方便地使用自增列实现排序分页，同时避免自增列带来的写入热点问题，并通过使用 Cluster Indexed Table 提高查询性能。在 v7.0.0 之前，TiDB 的行为与 MySQL 一致，要求自增列必须是索引或索引前缀。现在，通过此次更新，你可以使用以下语法创建表并成功移除自增列约束：
 
     ```sql
-    create table test1 (
+    CREATE TABLE test1 (
         `id` int(11) NOT NULL AUTO_INCREMENT,
         `k` int(11) NOT NULL DEFAULT '0',
         `c` char(120) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
@@ -273,7 +273,10 @@ TiDB 版本：7.0.0
 
     更多信息，请参考[用户文档](/mysql-compatibility.md#自增-id)。
 
-* 兼容性 2
+### TiCDC 兼容性
+
+* TiCDC 修复了 Avro 编码 Float 类型数据错误的问题[#8490](https://github.com/pingcap/tiflow/issues/8490)。在升级 TiCDC 集群时，如果使用 Avro 同步的表包含 Float 数据类型，请在升级前手动调整 Confluent Schema Registry 的兼容性策略为 None，使 changefeed 能够成功更新 schema，否则在升级之后 changefeed 将无法更新 schema 并进入错误状态
+
 
 ### 系统变量
 
@@ -282,6 +285,7 @@ TiDB 版本：7.0.0
 | [`tidb_enable_non_prepared_plan_cache`](/system-variables.md#tidb_enable_non_prepared_plan_cache) | 修改 | 该变量从 v7.0.0 开始生效，用来控制是否开启[非 Prepare 语句执行计划缓存](/sql-non-prepared-plan-cache.md)。 |
 | [`tidb_enable_null_aware_anti_join`](/system-variables.md#tidb_enable_null_aware_anti_join-从-v630-版本开始引入) | 修改 | 经进一步的测试后，该变量默认值从 `OFF` 修改为 `ON`，表示 TiDB 默认开启对特殊集合算子 `NOT IN` 和 `!= ALL` 引导的子查询产生的 Anti Join 采用 Null-Aware Hash Join 的执行方式。 |
 | [`tidb_non_prepared_plan_cache_size`](/system-variables.md#tidb_non_prepared_plan_cache_size) | 修改 | 该变量从 v7.0.0 开始生效，用来控制[非 Prepare 语句执行计划缓存](/sql-non-prepared-plan-cache.md)最多能够缓存的计划数量。 |
+| [`tidb_rc_read_check_ts`](/system-variables.md#tidb_rc_read_check_ts-从-v600-版本开始引入) | 修改 | 该变量从 v7.0.0 版本开始，该变量对于使用 prepared statement 协议下 cursor fetch read 游标模式不再生效。  |
 | [`tidb_enable_inl_join_inner_multi_pattern`](/system-variables.md#tidb_enable_inl_join_inner_multi_pattern-从-v700-版本开始引入) | 新增 | 该变量用于控制当内表上有 `Selection`/`Projection` 算子时是否支持 Index Join。 |
 | [`tidb_enable_plan_cache_for_subquery`](/system-variables.md#tidb_enable_plan_cache_for_subquery-从-v700-版本开始引入) | 新增 | 该变量用于控制 Prepared Plan Cache 是否缓存包含子查询的查询。 |
 | [`tidb_load_based_replica_read_threshold`](/system-variables.md#tidb_load_based_replica_read_threshold-从-v700-版本开始引入) | 新增 | 该变量用于设置基于负载的 replica read 的触发阈值。在 v7.0.0，该变量控制的功能尚未完全生效，请保留默认值。 |
@@ -298,6 +302,7 @@ TiDB 版本：7.0.0
 
 | 配置文件 | 配置项 | 修改类型 | 描述 |
 | -------- | -------- | -------- | -------- |
+| TiKV | [raft-engine.enable-log-recycle](/tikv-configuration-file.md#enable-log-recycle-从-v630-版本开始引入) | 修改 | 默认值由 `false` 变更为 `true`。 |
 | TiKV | [raft-engine.prefill-for-recycle](/tikv-configuration-file.md#prefill-for-recycle-从-v700-版本开始引入) | 新增 | 控制 Raft Engine 是否回收过期的日志文件。默认值为 `FALSE`。|
 | TiKV | [server.snap-max-write-bytes-per-sec](/tikv-configuration-file.md#snap-io-max-bytes-per-sec) | 重命名 | 配置项 `server.snap-max-write-bytes-per-sec` 重命名为 `server.snap-io-max-bytes-per-sec`。 |
 | TiFlash | [flash.disaggregated_mode](https://docs.pingcap.com/zh/tidb/dev/tiflash-disaggregated-and-s3) |  新增  |在 TiFlash 的存算分离架构中，表示此 TiFlash 节点是 Write Node 还是 Compute Node。有效值是 tiflash_write 或者 tiflash_compute|
@@ -308,7 +313,15 @@ TiDB 版本：7.0.0
 | TiFlash | [storage.s3.secret_access_key](https://docs.pingcap.com/zh/tidb/dev/tiflash-disaggregated-and-s3) |  新增  | 访问 S3 的 SECRET_ACCESS_KEY |
 | TiFlash | [storage.remote.cache.dir](https://docs.pingcap.com/zh/tidb/dev/tiflash-disaggregated-and-s3) |  新增  | TiFlash Compute Node 的本地数据缓存目录 |
 | TiFlash | [storage.remote.cache.capacity](https://docs.pingcap.com/zh/tidb/dev/tiflash-disaggregated-and-s3) |  新增  | TiFlash Compute Node 的本地数据缓存目录的大小 |
-|          |          |          |          |
+| TiDB Lightning   | [`add-index-by-sql`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-task)       |    新增     |  控制 Physical Import Mode 是否通过 SQL 方式添加索引。默认根据 TiDB 版本自动选择。通过 SQL 方式添加索引的优点是将导入数据与导入索引分开，可以快速导入数据，即使导入数据后，索引添加失败，也不会影响数据的一致性。        |
+| TiCDC      | [`enable-table-across-nodes`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-配置文件说明)          |   新增    |    将表按 Region 个数划分成多个同步范围，这些范围可由多个 TiCDC 节点同步。    |
+| TiCDC      | [`region-threshold`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-配置文件说明)    | 新增         | 开启了 enable-table-across-nodes 后，该功能只对 Region 个数大于 `region-threshold` 值的表生效。      |
+| PD         | [`degraded-mode-wait-duration`](/pd-configuration-file.md#degraded-mode-wait-duration)         | 新增         | PD 中内置的 [Resource Control](/tidb-resource-control.md) 相关配置项。用于配置触发降级模式需要等待的时间。默认值为 `0s`。         |
+| PD         |  [`read-base-cost`](/pd-configuration-file.md#read-base-cost)      | 新增         |  PD 中内置的 [Resource Control](/tidb-resource-control.md) 相关配置项。用于设置每次读请求转换成 RU 的基准系数。默认值为 0.25。      |
+| PD         |  [`read-cost-per-byte`](/pd-configuration-file.md#read-cost-per-byte)      | 新增         |  PD 中内置的 [Resource Control](/tidb-resource-control.md) 相关配置项。用于设置读流量转换成 RU 的基准系数。默认值为 1/ (64 * 1024)。     |
+| PD         |  [`read-cpu-ms-cost`](/pd-configuration-file.md#read-cpu-ms-cost)      | 新增         |  PD 中内置的 [Resource Control](/tidb-resource-control.md) 相关配置项。用于设置 CPU 转换成 RU 的基准系数。默认值为 1/3     |
+| PD         |  [`write-base-cost`](/pd-configuration-file.md#write-base-cost)      | 新增         |  PD 中内置的 [Resource Control](/tidb-resource-control.md) 相关配置项。用于设置每次写请求转换成 RU 的基准系数。默认值为 1。      |
+| PD         |  [`write-cost-per-byte`](/pd-configuration-file.md#write-cost-per-byte)      | 新增         |  PD 中内置的 [Resource Control](/tidb-resource-control.md) 相关配置项。用于设置写流量转换成 RU 的基准系数。默认值为 1/1024。      |
 |          |          |          |          |
 
 ### 其他
@@ -318,7 +331,7 @@ TiDB 版本：7.0.0
 ## 改进提升
 
 + TiDB
-
+    - `tidb_rc_read_check_ts` 对于使用 prepared statement cursor 游标模式不再生效 [#42184](https://github.com/pingcap/tidb/issues/42184) @[cfzjywxk](https://github.com/cfzjywxk)
     - 加强的悲观锁唤醒模型的开关变量由 `tidb_pessimistic_txn_aggressive_locking` 更名为 `tidb_pessimistic_txn_fair_locking`，并在新集群中默认启用。这可以使悲观事务严重单点冲突的场景下，事务被阻塞后唤醒的顺序尽可能保证公平，达到事务延迟更加稳定、尾延迟更低的效果 [#42147](https://github.com/pingcap/tidb/issues/42147) @[MyonKeminta](https://github.com/MyonKeminta)
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
@@ -405,7 +418,7 @@ TiDB 版本：7.0.0
 
     + TiCDC
 
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
+        - 修复了 Avro 编码 schema 时，float 类型使用错误的问题 [#8490 (https://github.com/pingcap/tiflow/issues/8490) @[3AceShowHand](https://github.com/3AceShowHand)
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
     + TiDB Data Migration (DM)
