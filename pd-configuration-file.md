@@ -482,7 +482,7 @@ PD 中内置的 [Resource Control](/tidb-resource-control.md) 相关配置项。
 + 默认值: 1/1024
 + 1 RU = 1 KiB 写入字节
 
-####  `read-cpu-ms-cost`
+#### `read-cpu-ms-cost`
 
 + CPU 转换成 RU 的基准系数
 + 默认值: 1/3
