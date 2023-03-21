@@ -29,7 +29,7 @@ TiFlash 也支持[本页](/tiflash/tiflash-supported-pushdown-calculations.md)�
 
 ## 禁止特定表达式下推
 
-当[已支持下推的表达式列表](#已支持下推的表达式列表)中的函数和运算符，或特定的数据类型（**仅限** [`ENUM` 类型](/data-type-string.md#enum-类型) 和 [`BIT` 类型](/data-type-numeric.md#bit-类型)）的计算过程因下推而出现异常时，你可以使用黑名单功能禁止其下推，从而快速恢复 TiDB 业务。具体而言，你可以将函数名、运算符名，或数据列类型加入黑名单 `mysql.expr_pushdown_blacklist` 中，以禁止特定表达式下推。具体方法，请参阅[表达式下推黑名单](/blocklist-control-plan.md#禁止特定表达式下推)。
+当[已支持下推的表达式列表](#已支持下推的表达式列表)中的函数和运算符，或特定的数据类型（**仅限** [`ENUM` 类型](/data-type-string.md#enum-类型)和 [`BIT` 类型](/data-type-numeric.md#bit-类型)）的计算过程因下推而出现异常时，你可以使用黑名单功能禁止其下推，从而快速恢复 TiDB 业务。具体而言，你可以将函数名、运算符名，或数据列类型加入黑名单 `mysql.expr_pushdown_blacklist` 中，以禁止特定表达式下推。具体方法，请参阅[表达式下推黑名单](/blocklist-control-plan.md#禁止特定表达式下推)。
 
 [json_extract]: https://dev.mysql.com/doc/refman/5.7/en/json-search-functions.html#function_json-extract
 
