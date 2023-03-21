@@ -69,7 +69,9 @@ In addition, TiDB does not support the MySQL replication protocol, but provides 
 
 + TiDB does not support adding the `AUTO_INCREMENT` column attribute, and this attribute cannot be recovered once it is removed.
 
-+ See [`AUTO_INCREMENT`](/auto-increment.md) for more details.
++ For TiDB v6.6.0 and earlier versions, TiDB behaves the same as MySQL InnoDB, which requires auto-increment columns to be primary keys or index prefixes. Starting from v7.0.0, TiDB removes the restriction that auto-increment columns must be indexes or index prefixes, which allows you to define table primary keys more flexibly. [#40580](https://github.com/pingcap/tidb/issues/40580)
+
+For more details, see [`AUTO_INCREMENT`](/auto-increment.md).
 
 > **Note:**
 >
@@ -79,20 +81,27 @@ In addition, TiDB does not support the MySQL replication protocol, but provides 
 mysql> CREATE TABLE t(id INT UNIQUE KEY AUTO_INCREMENT);
 Query OK, 0 rows affected (0.05 sec)
 
-mysql> INSERT INTO t VALUES(),(),();
-Query OK, 3 rows affected (0.00 sec)
-Records: 3  Duplicates: 0  Warnings: 0
+mysql> INSERT INTO t VALUES();
+Query OK, 1 rows affected (0.00 sec)
+
+mysql> INSERT INTO t VALUES();
+Query OK, 1 rows affected (0.00 sec)
+
+mysql> INSERT INTO t VALUES();
+Query OK, 1 rows affected (0.00 sec)
 
 mysql> SELECT _tidb_rowid, id FROM t;
 +-------------+------+
 | _tidb_rowid | id   |
 +-------------+------+
-|           4 |    1 |
-|           5 |    2 |
-|           6 |    3 |
+|           2 |    1 |
+|           4 |    3 |
+|           6 |    5 |
 +-------------+------+
 3 rows in set (0.01 sec)
 ```
+
+As you can see, because of the shared allocator, the `id` increments by 2 each time. This behavior is changed in [MySQL compatibility mode](/auto-increment.md#mysql-compatibility-mode), where there is no shared allocator and therefore no skipping of numbers.
 
 <CustomContent platform="tidb">
 

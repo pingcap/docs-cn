@@ -376,7 +376,7 @@ After you enable the MySQL compatibility mode, the allocated IDs are **unique** 
 
 Currently, `AUTO_INCREMENT` has the following restrictions when used in TiDB:
 
-- It must be defined on the first column of the primary key or the first column of an index.
+- For TiDB v6.6.0 and earlier versions, the defined column must be either primary key or index prefixes.
 - It must be defined on the column of `INTEGER`, `FLOAT`, or `DOUBLE` type.
 - It cannot be specified on the same column with the `DEFAULT` column value.
 - `ALTER TABLE` cannot be used to add the `AUTO_INCREMENT` attribute.
