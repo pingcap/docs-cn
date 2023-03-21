@@ -276,4 +276,4 @@ Schema Registry 支持三种 [Subject Name Strategy](https://docs.confluent.io/p
 
 ### 特殊说明
 
-* 修复了 Avro 编码 schema 时，float 类型使用错误的问题 [#8490](https://github.com/pingcap/tiflow/issues/8490)。用户在升级 TiCDC 集群时，如果使用 Avro 同步的表数据携带有 Float 类型，需要手动调整 Confluent Schema Registry 的兼容性策略为 None，让 Changefeed 能够成功更新 schema，否则在升级之后 Changefeed 无法更新 schema 将进入 error 状态。
+* 在升级 TiCDC 集群时，如果使用 Avro 同步的表包含 Float 数据类型，请在升级前手动调整 Confluent Schema Registry 的兼容性策略为 None，使 changefeed 能够成功更新 schema，否则在升级之后 changefeed 将无法更新 schema 并进入错误状态。详情请参考 GitHub issue [#8490](https://github.com/pingcap/tiflow/issues/8490)。
