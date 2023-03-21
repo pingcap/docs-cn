@@ -5,7 +5,7 @@ summary: 介绍从窗口函数中推导 TopN 或 Limit 的优化规则，以及�
 
 # 从窗口函数中推导 TopN 或 Limit
 
-[窗口函数](/functions-and-operators/window-functions.md)是一种常见的 SQL 函数。对于 ROW_NUMBER() 或者 RANK() 等编号相关的窗口函数，一种常见的用法是在进行窗口函数求值之后，对求值的结果进行过滤，例如：
+[窗口函数](/functions-and-operators/window-functions.md)是一种常见的 SQL 函数。对于 `ROW_NUMBER()` 或者 `RANK()` 等编号相关的窗口函数，一种常见的用法是在进行窗口函数求值之后，对求值的结果进行过滤，例如：
 
 ```sql
 SELECT * FROM (SELECT ROW_NUMBER() OVER (ORDER BY a) AS rownumber FROM t) dt WHERE rownumber <= 3
@@ -30,8 +30,8 @@ WITH t_topN AS (SELECT a FROM t1 ORDER BY a LIMIT 3) SELECT * FROM (SELECT ROW_N
 
 ## 限制
 
-* 目前仅 ROW_NUMBER() 窗口函数支持 SQL 语句改写。
-* 只有当 SQL 语句的过滤条件是针对 ROW_NUMBER() 结果而且过滤条件为 `<` 或者 `<=` 时，TiDB 才支持改写 SQL 语句。
+* 目前仅 `ROW_NUMBER()` 窗口函数支持 SQL 语句改写。
+* 只有当 SQL 语句的过滤条件是针对 `ROW_NUMBER()` 结果而且过滤条件为 `<` 或者 `<=` 时，TiDB 才支持改写 SQL 语句。
 
 ## 示例
 
