@@ -191,7 +191,7 @@ summary: 了解 TiDB 的功能概览。
 | [数据迁移工具](/migration-overview.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y |
 | [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y |
 | [Change data capture (CDC)](/ticdc/ticdc-overview.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y |
-| [TiCDC 支持保存数据到存储服务 (S3/NFS/Azure Blob Storage)](/ticdc/ticdc-sink-to-cloud-storage.md) | E | E | E | N | N | N | N | N | N | N |
+| [TiCDC 支持保存数据到存储服务 (S3/NFS/Azure Blob Storage/GCP)](/ticdc/ticdc-sink-to-cloud-storage.md) | Y | E | E | N | N | N | N | N | N | N |
 | [TiCDC 支持在两个 TiDB 集群之间进行双向复制](/ticdc/ticdc-bidirectional-replication.md) | Y | Y | Y | N | N | N | N | N | N | N |
 
 ## 管理，可视化和工具
