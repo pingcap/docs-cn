@@ -243,12 +243,20 @@ This feature splits a single large table into multiple data ranges based on the 
 
 > **Warning:**
 >
-> - Scaling out a single large table is an experimental feature. It is not recommended that you use it in the production environment. This feature might be changed or removed without prior notice. If you find a bug, you can report an [issue](https://github.com/pingcap/tidb/issues) on GitHub.
-> - TiCDC v6.6.0 only supports scaling out a large single table on Kafka changefeeds.
+> TiCDC v7.0.0 only supports scaling out the load of a large single table on Kafka changefeeds.
 
 Sample configuration:
 
 ```toml
 [scheduler]
-region-per-span = 50000
+# Set it to "true" to enable this feature.
+enable-table-across-nodes = true
+# When you enable this feature, it only takes effect for tables with the number of regions greater than the `region-threshold` value.
+region-threshold = 100000
+```
+
+You can query the number of Regions a table contains by the following SQL statement:
+
+```sql
+SELECT COUNT(*) FROM INFORMATION_SCHEMA.TIKV_REGION_STATUS WHERE DB_NAME="database1" AND TABLE_NAME="table1" AND IS_INDEX=0;
 ```
