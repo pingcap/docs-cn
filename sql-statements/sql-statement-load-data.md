@@ -74,7 +74,7 @@ LoadDataOption ::=
 
 例如对于以下格式的数据：
 
-```sql
+```
 "bob","20","street 1"\r\n
 "alice","33","street 1"\r\n
 ```
