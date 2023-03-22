@@ -87,7 +87,7 @@ OR, ||
 | [`>`](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#operator_greater-than) | 大于 |
 | [`>=`](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#operator_greater-than-or-equal) | 大于或等于 |
 | [`GREATEST()`](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#function_greatest) | 返回最大值 |
-| [`IN()`](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#function_in) | 判断值是否在一个值的集合内 |
+| [`IN()`](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#operator_in) | 判断值是否在一个值的集合内 |
 | [`INTERVAL()`](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#function_interval) | 返回一个小于第一个参数的参数的下标 |
 | [`IS`](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#operator_is) | 判断是否等于一个布尔值 |
 | [`IS NOT`](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#operator_is-not) | 判断是否不等于一个布尔值 |
@@ -100,7 +100,7 @@ OR, ||
 | [`LIKE`](https://dev.mysql.com/doc/refman/5.7/en/string-comparison-functions.html#operator_like) | 简单模式匹配 |
 | [`NOT BETWEEN ... AND ...`](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#operator_not-between) | 判断值是否不在范围内 |
 | [`!=`, `<>`](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#operator_not-equal) | 不等于 |
-| [`NOT IN()`](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#function_not-in) | 判断值是否不在一个值的集合内 |
+| [`NOT IN()`](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#operator_not-in) | 判断值是否不在一个值的集合内 |
 | [`NOT LIKE`](https://dev.mysql.com/doc/refman/5.7/en/string-comparison-functions.html#operator_not-like) | 不满足简单模式匹配 |
 | [`STRCMP()`](https://dev.mysql.com/doc/refman/5.7/en/string-comparison-functions.html#function_strcmp) | 比较两个字符串 |
 
