@@ -614,6 +614,7 @@
     - [使用 TiDB 读取 TiFlash](/tiflash/use-tidb-to-read-tiflash.md)
     - [使用 TiSpark 读取 TiFlash](/tiflash/use-tispark-to-read-tiflash.md)
     - [使用 MPP 模式](/tiflash/use-tiflash-mpp-mode.md)
+    - [TiFlash 存算分离架构与 S3 支持](/tiflash/tiflash-disaggregated-and-s3.md)
     - [使用 FastScan 功能](/tiflash/use-fastscan.md)
     - [TiFlash 支持的计算下推](/tiflash/tiflash-supported-pushdown-calculations.md)
     - [TiFlash 查询结果物化](/tiflash/tiflash-results-materialization.md)

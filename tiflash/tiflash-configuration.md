@@ -115,9 +115,24 @@ delta_index_cache_size = 0
     ## auto_tune_sec 表示自动调整的执行间隔，单位为秒。设为 0 表示关闭自动调整。
     # auto_tune_sec = 5
 
+    ## 下面的配置只针对存算分离模式生效，详细请参考 TiFlash 存算分离架构与 S3 支持文档 https://docs.pingcap.com/zh/tidb/dev/tiflash-disaggregated-and-s3
+    # [storage.s3]
+    # endpoint: http://s3.{region}.amazonaws.com # S3 的 endpoint 地址
+    # bucket: mybucket                           # TiFlash 的所有数据存储在这个 bucket 中
+    # root: /cluster1_data                       # S3 bucket 中存储数据的根目录
+    # access_key_id: {ACCESS_KEY_ID}             # 访问 S3 的 ACCESS_KEY_ID
+    # secret_access_key: {SECRET_ACCESS_KEY}     # 访问 S3 的 SECRET_ACCESS_KEY
+
+    # [storage.remote.cache]
+    # dir: /data1/tiflash/cache        # TiFlash Compute Node 的本地数据缓存目录
+    # capacity: 858993459200           # 800 GiB
+
 [flash]
     tidb_status_addr = tidb status 端口地址 # 多个地址以逗号分割
     service_addr =  TiFlash raft 服务 和 coprocessor 服务监听地址
+
+    ## 下面的配置只针对存算分离模式生效，详情请参考 TiFlash 存算分离架构与 S3 支持文档 https://docs.pingcap.com/zh/tidb/dev/tiflash-disaggregated-and-s3
+    # disaggregated_mode = tiflash_write # 可选值为 tiflash_write 或者 tiflash_compute
 
 # 多个 TiFlash 节点会选一个 master 来负责往 PD 增删 placement rule，通过 flash.flash_cluster 中的参数控制。
 [flash.flash_cluster]
