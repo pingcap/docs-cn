@@ -303,32 +303,39 @@ TiDB 版本：7.0.0
 ### 系统变量
 
 | 变量名  | 修改类型（包括新增/修改/删除）    | 描述 |
-|--------|------------------------------|------|
+|--------|--|------|
+| `tidb_pessimistic_txn_aggressive_locking` | 删除 | 更名为 [`tidb_pessimistic_txn_fair_locking`](/system-variables.md#tidb_pessimistic_txn_fair_locking-从-v700-版本开始引入)。|
 | [`tidb_enable_non_prepared_plan_cache`](/system-variables.md#tidb_enable_non_prepared_plan_cache) | 修改 | 该变量从 v7.0.0 开始生效，用来控制是否开启[非 Prepare 语句执行计划缓存](/sql-non-prepared-plan-cache.md)。 |
 | [`tidb_enable_null_aware_anti_join`](/system-variables.md#tidb_enable_null_aware_anti_join-从-v630-版本开始引入) | 修改 | 经进一步的测试后，该变量默认值从 `OFF` 修改为 `ON`，表示 TiDB 默认开启对特殊集合算子 `NOT IN` 和 `!= ALL` 引导的子查询产生的 Anti Join 采用 Null-Aware Hash Join 的执行方式。 |
+| [`tidb_enable_resource_control`](/system-variables.md#tidb_enable_resource_control-从-v660-版本开始引入) | 修改 | 该变量默认值从 `OFF` 修改为 `ON`，表示默认开启集群按照资源组做资源隔离。 |
 | [`tidb_non_prepared_plan_cache_size`](/system-variables.md#tidb_non_prepared_plan_cache_size) | 修改 | 该变量从 v7.0.0 开始生效，用来控制[非 Prepare 语句执行计划缓存](/sql-non-prepared-plan-cache.md)最多能够缓存的计划数量。 |
 | [`tidb_rc_read_check_ts`](/system-variables.md#tidb_rc_read_check_ts-从-v600-版本开始引入) | 修改 | 该变量从 v7.0.0 版本开始，该变量对于使用 prepared statement 协议下 cursor fetch read 游标模式不再生效。  |
 | [`tidb_enable_inl_join_inner_multi_pattern`](/system-variables.md#tidb_enable_inl_join_inner_multi_pattern-从-v700-版本开始引入) | 新增 | 该变量用于控制当内表上有 `Selection`/`Projection` 算子时是否支持 Index Join。 |
 | [`tidb_enable_plan_cache_for_subquery`](/system-variables.md#tidb_enable_plan_cache_for_subquery-从-v700-版本开始引入) | 新增 | 该变量用于控制 Prepared Plan Cache 是否缓存包含子查询的查询。 |
 | [`tidb_load_based_replica_read_threshold`](/system-variables.md#tidb_load_based_replica_read_threshold-从-v700-版本开始引入) | 新增 | 该变量用于设置基于负载的 replica read 的触发阈值。在 v7.0.0，该变量控制的功能尚未完全生效，请保留默认值。 |
-|[`tidb_opt_advanced_join_hint`](/system-variables.md#tidb_opt_advanced_join_hint-从-v700-版本开始引入) |  新增  | 这个变量用来控制用于控制连接算法的 Join Method Hint 是否会影响 Join Reorder 的优化过程。 默认值为 `ON`，即采用新的兼容控制模式；`OFF` 则与 v7.0.0 以前的行为保持一致。为了向前兼容，从旧版本升级到 v7.0.0 及之后版本的集群，该变量会被设置成 `OFF`。|
-| [`tidb_opt_enable_late_materialization`](/system-variables.md#tidb_opt_enable_late_materialization-从-v700-版本开始引入) | 新增 | 这个变量用来控制是否启用 [TiFlash 延迟物化](/tiflash/tiflash-late-materialization.md)功能。 默认值为 `OFF`，即未开启 TiFlash 延迟物化功能。|
+|[`tidb_opt_advanced_join_hint`](/system-variables.md#tidb_opt_advanced_join_hint-从-v700-版本开始引入) | 新增 | 这个变量用来控制用于控制连接算法的 Join Method Hint 是否会影响 Join Reorder 的优化过程。 默认值为 `ON`，即采用新的兼容控制模式；`OFF` 则与 v7.0.0 以前的行为保持一致。为了向前兼容，从旧版本升级到 v7.0.0 及之后版本的集群，该变量会被设置成 `OFF`。|
 | [`tidb_opt_derive_topn`](/system-variables.md#tidb_opt_derive_topn-从-v700-版本开始引入) | 新增 | 这个变量用来控制是否开启[从窗口函数中推导 TopN 或 Limit](/derive-topn-from-window.md) 的优化规则。 默认值为 `OFF`，即未开启该优化规则。|
+| [`tidb_opt_enable_late_materialization`](/system-variables.md#tidb_opt_enable_late_materialization-从-v700-版本开始引入) | 新增 | 这个变量用来控制是否启用 [TiFlash 延迟物化](/tiflash/tiflash-late-materialization.md)功能。 默认值为 `OFF`，即未开启 TiFlash 延迟物化功能。|
 |[`tidb_pessimistic_txn_fair_locking`](/system-variables.md#tidb_pessimistic_txn_fair_locking-从-v700-版本开始引入) | 新增 | 是否对悲观锁启用加强的悲观锁唤醒模型，以降低单行冲突场景下事务的尾延迟。默认值为 `ON`，从旧版本升级到 v7.0.0 或之后版本，该变量会被设置成 `OFF` |
-|[`tidb_pessimistic_txn_aggressive_locking`] | 删除 | 更名为 [`tidb_pessimistic_txn_fair_locking`](/system-variables.md#tidb_pessimistic_txn_fair_locking-从-v700-版本开始引入) |
-| [`tidb_load_based_replica_read_threshold`](/system-variables.md#tidb_load_based_replica_read_threshold) | 新增 | 这个变量用来设置基于负载的 replica read 的触发阈值。当 leader 节点的预估排队时间超过阈值时，TiDB 会优先从 follower 节点读取数据。格式为时间，例如 `"100ms"` 或 `"1s"`。 当前版本中该变量控制的功能尚未完全生效，请保留默认值。|
-| [tidb_ttl_running_tasks](/system-variables.md#tidb_ttl_running_tasks-new-in-v700) | 新增 | 这个变量用于限制整个集群内 TTL 任务的并发量。默认值 `-1` 表示与 TiKV 节点的数量相同。 |
-| [tidb_opt_advanced_join_hint](/system-variables.md#tidb_opt_advanced_join_hint-从-v700-版本开始引入) | 新增 | 这个变量用来控制包括 [`HASH_JOIN()` Hint](/optimizer-hints.md#hash_joint1_name--tl_name-)、[`MERGE_JOIN()` Hint](/optimizer-hints.md#merge_joint1_name--tl_name-) 等用于控制连接算法的 Join Method Hint 是否会影响 Join Reorder 的优化过程，包括 [`LEADING()` Hint](/optimizer-hints.md#leadingt1_name--tl_name-) 的使用。默认值为 `ON`，即默认不影响。v7.0.0 之前的版本行为和将该变量设置为 `OFF` 的行为一致。 |
-| [tidb_opt_ordering_index_selectivity_threshold](/system-variables.md#tidb_opt_ordering_index_selectivity_threshold-从-v700-版本开始引入) | 新增 | 该变量用于当 SQL 中存在 `ORDER BY` 和 `LIMIT` 子句且带有过滤条件时，控制优化器选择索引的行为。 |
+| [`tidb_opt_advanced_join_hint`](/system-variables.md#tidb_opt_advanced_join_hint-从-v700-版本开始引入) | 新增 | 这个变量用来控制包括 [`HASH_JOIN()` Hint](/optimizer-hints.md#hash_joint1_name--tl_name-)、[`MERGE_JOIN()` Hint](/optimizer-hints.md#merge_joint1_name--tl_name-) 等用于控制连接算法的 Join Method Hint 是否会影响 Join Reorder 的优化过程，包括 [`LEADING()` Hint](/optimizer-hints.md#leadingt1_name--tl_name-) 的使用。默认值为 `ON`，即默认不影响。v7.0.0 之前的版本行为和将该变量设置为 `OFF` 的行为一致。 |
+| [`tidb_opt_ordering_index_selectivity_threshold`](/system-variables.md#tidb_opt_ordering_index_selectivity_threshold-从-v700-版本开始引入) | 新增 | 该变量用于当 SQL 中存在 `ORDER BY` 和 `LIMIT` 子句且带有过滤条件时，控制优化器选择索引的行为。 |
+| [`tidb_ttl_running_tasks`](/system-variables.md#tidb_ttl_running_tasks-new-in-v700) | 新增 | 这个变量用于限制整个集群内 TTL 任务的并发量。默认值 `-1` 表示与 TiKV 节点的数量相同。 |
 
 ### 配置文件参数
 
 | 配置文件 | 配置项 | 修改类型 | 描述 |
 | -------- | -------- | -------- | -------- |
+| TiKV | `server.snap-max-write-bytes-per-sec` | 删除 | 更名为 [`server.snap-io-max-bytes-per-sec`](/tikv-configuration-file.md#snap-io-max-bytes-per-sec)。 |
+| TiKV | [`raft-engine.enable-log-recycle`](/tikv-configuration-file.md#enable-log-recycle-从-v630-版本开始引入) | 修改 | 默认值由 `false` 变更为 `true`。 |
 | TiKV | [`resolved-ts.advance-ts-interval`](/tikv-configuration-file.md#advance-ts-interval) | 修改 | 默认值由 `1s` 变更为 `20s`。该修改可以延长定期推进 Resolved TS 的时间间隔，从而减少 TiKV 节点之间的流量消耗。 |
-| TiKV | [raft-engine.enable-log-recycle](/tikv-configuration-file.md#enable-log-recycle-从-v630-版本开始引入) | 修改 | 默认值由 `false` 变更为 `true`。 |
-| TiKV | [raft-engine.prefill-for-recycle](/tikv-configuration-file.md#prefill-for-recycle-从-v700-版本开始引入) | 新增 | 控制 Raft Engine 是否回收过期的日志文件。默认值为 `FALSE`。|
-| TiKV | [server.snap-max-write-bytes-per-sec](/tikv-configuration-file.md#snap-io-max-bytes-per-sec) | 重命名 | 配置项 `server.snap-max-write-bytes-per-sec` 重命名为 `server.snap-io-max-bytes-per-sec`。 |
+| TiKV | [`resource-control.enabled`](/tikv-configuration-file.md#resource-control) | 修改 | 默认值由 `false` 变更为 `true`。 |
+| TiKV | [`raft-engine.prefill-for-recycle`](/tikv-configuration-file.md#prefill-for-recycle-从-v700-版本开始引入) | 新增 | 控制 Raft Engine 是否回收过期的日志文件。默认值为 `FALSE`。|
+| PD         | [`degraded-mode-wait-duration`](/pd-configuration-file.md#degraded-mode-wait-duration)         | 新增         | PD 中内置的 [Resource Control](/tidb-resource-control.md) 相关配置项。用于配置触发降级模式需要等待的时间。默认值为 `0s`。         |
+| PD         |  [`read-base-cost`](/pd-configuration-file.md#read-base-cost)      | 新增         |  PD 中内置的 [Resource Control](/tidb-resource-control.md) 相关配置项。用于设置每次读请求转换成 RU 的基准系数。默认值为 0.25。      |
+| PD         |  [`read-cost-per-byte`](/pd-configuration-file.md#read-cost-per-byte)      | 新增         |  PD 中内置的 [Resource Control](/tidb-resource-control.md) 相关配置项。用于设置读流量转换成 RU 的基准系数。默认值为 1/ (64 * 1024)。     |
+| PD         |  [`read-cpu-ms-cost`](/pd-configuration-file.md#read-cpu-ms-cost)      | 新增         |  PD 中内置的 [Resource Control](/tidb-resource-control.md) 相关配置项。用于设置 CPU 转换成 RU 的基准系数。默认值为 1/3     |
+| PD         |  [`write-base-cost`](/pd-configuration-file.md#write-base-cost)      | 新增         |  PD 中内置的 [Resource Control](/tidb-resource-control.md) 相关配置项。用于设置每次写请求转换成 RU 的基准系数。默认值为 1。      |
+| PD         |  [`write-cost-per-byte`](/pd-configuration-file.md#write-cost-per-byte)      | 新增         |  PD 中内置的 [Resource Control](/tidb-resource-control.md) 相关配置项。用于设置写流量转换成 RU 的基准系数。默认值为 1/1024。      |
 | TiFlash | [`flash.disaggregated_mode`](tiflash/tiflash-disaggregated-and-s3.md) |  新增  | 在 TiFlash 的存算分离架构中，表示此 TiFlash 节点是 Write Node 还是 Compute Node。可选值为 `tiflash_write` 或者 `tiflash_compute`。 |
 | TiFlash | [`storage.s3.endpoint`](tiflash/tiflash-disaggregated-and-s3.md) |  新增  | S3 的 endpoint 地址 |
 | TiFlash | [`storage.s3.bucket`](tiflash/tiflash-disaggregated-and-s3.md) |  新增  | TiFlash 的所有数据存储的 bucket  |
@@ -340,13 +347,6 @@ TiDB 版本：7.0.0
 | TiDB Lightning   | [`add-index-by-sql`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-task)       |    新增     |  控制 Physical Import Mode 是否通过 SQL 方式添加索引。默认根据 TiDB 版本自动选择。通过 SQL 方式添加索引的优点是将导入数据与导入索引分开，可以快速导入数据，即使导入数据后，索引添加失败，也不会影响数据的一致性。        |
 | TiCDC      | [`enable-table-across-nodes`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-配置文件说明)          |   新增    |    将表按 Region 个数划分成多个同步范围，这些范围可由多个 TiCDC 节点同步。    |
 | TiCDC      | [`region-threshold`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-配置文件说明)    | 新增         | 开启了 enable-table-across-nodes 后，该功能只对 Region 个数大于 `region-threshold` 值的表生效。      |
-| PD         | [`degraded-mode-wait-duration`](/pd-configuration-file.md#degraded-mode-wait-duration)         | 新增         | PD 中内置的 [Resource Control](/tidb-resource-control.md) 相关配置项。用于配置触发降级模式需要等待的时间。默认值为 `0s`。         |
-| PD         |  [`read-base-cost`](/pd-configuration-file.md#read-base-cost)      | 新增         |  PD 中内置的 [Resource Control](/tidb-resource-control.md) 相关配置项。用于设置每次读请求转换成 RU 的基准系数。默认值为 0.25。      |
-| PD         |  [`read-cost-per-byte`](/pd-configuration-file.md#read-cost-per-byte)      | 新增         |  PD 中内置的 [Resource Control](/tidb-resource-control.md) 相关配置项。用于设置读流量转换成 RU 的基准系数。默认值为 1/ (64 * 1024)。     |
-| PD         |  [`read-cpu-ms-cost`](/pd-configuration-file.md#read-cpu-ms-cost)      | 新增         |  PD 中内置的 [Resource Control](/tidb-resource-control.md) 相关配置项。用于设置 CPU 转换成 RU 的基准系数。默认值为 1/3     |
-| PD         |  [`write-base-cost`](/pd-configuration-file.md#write-base-cost)      | 新增         |  PD 中内置的 [Resource Control](/tidb-resource-control.md) 相关配置项。用于设置每次写请求转换成 RU 的基准系数。默认值为 1。      |
-| PD         |  [`write-cost-per-byte`](/pd-configuration-file.md#write-cost-per-byte)      | 新增         |  PD 中内置的 [Resource Control](/tidb-resource-control.md) 相关配置项。用于设置写流量转换成 RU 的基准系数。默认值为 1/1024。      |
-|          |          |          |          |
 
 ### 其他
 
