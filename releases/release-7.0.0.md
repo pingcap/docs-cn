@@ -414,7 +414,9 @@ TiDB 版本：7.0.0
 
 + TiDB
 
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
+    - 修复 IndexMerge 中 goroutine 泄露的问题 [#41610](https://github.com/pingcap/tidb/pull/41610) @[guo-shaoge](https://github.com/guo-shaoge)
+    - 修复非 bigint 类型的无符号整数与 string/decimal 比较时可能会结果错误的问题 [#41791](https://github.com/pingcap/tidb/pull/41791)，@[LittleFall](https://github.com/LittleFall)
+    - 修复了 analyze 语句可能会因为当前 session 前一个 analyze 语句因为内存超限被 kill 导致当前 analyze 语句也被 kill 的问题 [#41826](https://github.com/pingcap/tidb/pull/41826)，@[XuHuaiyu](https://github.com/XuHuaiyu)
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
 + TiKV
@@ -429,7 +431,10 @@ TiDB 版本：7.0.0
 
 + TiFlash
 
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
+    - 修复 Decimal 除法在一些情况下最后一位没有进位的问题 [#7035](https://github.com/pingcap/tiflash/pull/7035)，@[LittleFall](https://github.com/LittleFall)
+    - 修复 Decimal cast 在一些情况下进位出错的问题 [#7026](https://github.com/pingcap/tiflash/pull/7026)，@[windtalker](https://github.com/windtalker)
+    - 修复 TopN/Sort 算子在开启了 new collation 之后结果可能会出错的问题 [#7002](https://github.com/pingcap/tiflash/pull/7002)，@[xzhangxian1008](https://github.com/xzhangxian1008)
+    - 修复了单台 TiFlash 节点 aggregation 结果集很大（超过 1200w 时），TiFlash 可能会报错的问题 [#7063](https://github.com/pingcap/tiflash/pull/7063)，@[windtalker](https://github.com/windtalker)
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
 + Tools
