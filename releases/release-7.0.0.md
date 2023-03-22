@@ -290,7 +290,7 @@ TiDB 版本：7.0.0
     store_id INT) PARTITION BY KEY(store_id) PARTITIONS 4;
     ```
 
-    Key 分区类型暂不支持分区字段列表为空的语句。
+    自 TiDB v7.0.0 起，TiDB 支持 Key 分区，并支持解析 MySQL 的 `PARTITION BY LINEAR KEY` 语法，但会忽略其中的 `LINEAR` 关键字，只采用非线性 Hash 算法。Key 分区类型暂不支持分区字段列表为空的语句。
 
     更多信息，请参考[用户文档](/partitioned-table.md#key-分区)
 
