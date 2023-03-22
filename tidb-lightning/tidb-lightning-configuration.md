@@ -164,6 +164,10 @@ addr = "172.16.31.10:8287"
 # The default value is `MaxInt64` bytes, that is, 9223372036854775807 bytes.
 # disk-quota = "10GB"
 
+# Specifies whether Physical Import Mode adds indexes via SQL. The default value is automatically decided based on the TiDB version. If the TiDB version is earlier than v7.0.0, the default value is `false`, which means that TiDB Lightning will encode both row data and index data into KV pairs and import them into TiKV together. This mechanism is consistent with that of the historical versions. Starting from TiDB v7.0.0, the default value is `true`, which means that TiDB Lightning adds indexes via SQL after importing the row data.
+# The benefit of adding indexes via SQL is that you can separately import data and import indexes, and import data more quickly. After the data is imported, even if the indexes fail to be added, it does not affect the consistency of the imported data.
+# add-index-by-sql = true
+
 [mydumper]
 # Block size for file reading. Keep it longer than the longest string of the data source.
 read-block-size = "64KiB" # default value
