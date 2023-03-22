@@ -351,7 +351,7 @@ CREATE TABLE t(a int AUTO_INCREMENT key) AUTO_ID_CACHE 1;
 
 目前在 TiDB 中使用 `AUTO_INCREMENT` 有以下限制：
 
-- 定义的列必须为主键或者索引的首列。
+- 对于 v6.6.0 及更早的 TiDB 版本，定义的列必须为主键或者索引前缀。
 - 只能定义在类型为整数、`FLOAT` 或 `DOUBLE` 的列上。
 - 不支持与列的默认值 `DEFAULT` 同时指定在同一列上。
 - 不支持使用 `ALTER TABLE` 来添加 `AUTO_INCREMENT` 属性。

@@ -52,7 +52,6 @@
       - [Follower Read](/develop/dev-guide-use-follower-read.md)
       - [Stale Read](/develop/dev-guide-use-stale-read.md)
     - [HTAP 查询](/develop/dev-guide-hybrid-oltp-and-olap-queries.md)
-    - [FastScan](/develop/dev-guide-use-fastscan.md)
   - 事务
     - [概览](/develop/dev-guide-transaction-overview.md)
     - [乐观事务和悲观事务](/develop/dev-guide-optimistic-and-pessimistic-transaction.md)
@@ -205,7 +204,9 @@
   - 优化手册
     - [优化概述](/performance-tuning-overview.md)
     - [优化方法](/performance-tuning-methods.md)
-    - [优化实践](/performance-tuning-practices.md)
+    - [OLTP 负载性能优化实践](/performance-tuning-practices.md)
+    - [TiFlash 性能分析方法](/tiflash-performance-tuning-methods.md)
+    - [TiCDC 性能分析方法](/ticdc-performance-tuning-methods.md)
     - [延迟的拆解分析](/latency-breakdown.md)
   - 配置调优
       - [操作系统性能参数调优](/tune-operating-system.md)
@@ -251,7 +252,8 @@
         - [错误索引的解决方案](/wrong-index-solution.md)
         - [Distinct 优化](/agg-distinct-optimization.md)
         - [代价模型](/cost-model.md)
-      - [执行计划缓存](/sql-prepared-plan-cache.md)
+      - [Prepare 语句执行计划缓存](/sql-prepared-plan-cache.md)
+      - [非 Prepare 语句执行计划缓存](/sql-non-prepared-plan-cache.md)
     - 控制执行计划
       - [控制执行计划概览](/control-execution-plan.md)
       - [Optimizer Hints](/optimizer-hints.md)
@@ -542,7 +544,8 @@
         - [TiCDC Canal-JSON Protocol](/ticdc/ticdc-canal-json.md)
         - [TiCDC Open Protocol](/ticdc/ticdc-open-protocol.md)
         - [TiCDC CSV Protocol](/ticdc/ticdc-csv.md)
-      - [TiCDC Open API](/ticdc/ticdc-open-api.md)
+      - [TiCDC Open API v2](/ticdc/ticdc-open-api-v2.md)
+      - [TiCDC Open API v1](/ticdc/ticdc-open-api.md)
       - [Storage sink 消费程序编写指引](/ticdc/ticdc-storage-consumer-dev-guide.md)
       - [兼容性](/ticdc/ticdc-compatibility.md)
     - [故障处理](/ticdc/troubleshoot-ticdc.md)
@@ -611,9 +614,12 @@
     - [使用 TiDB 读取 TiFlash](/tiflash/use-tidb-to-read-tiflash.md)
     - [使用 TiSpark 读取 TiFlash](/tiflash/use-tispark-to-read-tiflash.md)
     - [使用 MPP 模式](/tiflash/use-tiflash-mpp-mode.md)
+    - [TiFlash 存算分离架构与 S3 支持](/tiflash/tiflash-disaggregated-and-s3.md)
+    - [使用 FastScan 功能](/tiflash/use-fastscan.md)
     - [TiFlash 支持的计算下推](/tiflash/tiflash-supported-pushdown-calculations.md)
     - [TiFlash 查询结果物化](/tiflash/tiflash-results-materialization.md)
     - [TiFlash 延迟物化](/tiflash/tiflash-late-materialization.md)
+    - [TiFlash 数据落盘](/tiflash/tiflash-spill-disk.md)
     - [TiFlash 数据校验](/tiflash/tiflash-data-validation.md)
     - [TiFlash 兼容性说明](/tiflash/tiflash-compatibility.md)
   - [系统变量](/system-variables.md)
@@ -739,6 +745,7 @@
       - [`LOAD DATA`](/sql-statements/sql-statement-load-data.md)
       - [`LOAD STATS`](/sql-statements/sql-statement-load-stats.md)
       - [`LOCK STATS`](/sql-statements/sql-statement-lock-stats.md)
+      - [`LOCK TABLES` 和 `UNLOCK TABLES`](/sql-statements/sql-statement-lock-tables-and-unlock-tables.md)
       - [`MODIFY COLUMN`](/sql-statements/sql-statement-modify-column.md)
       - [`PREPARE`](/sql-statements/sql-statement-prepare.md)
       - [`RECOVER TABLE`](/sql-statements/sql-statement-recover-table.md)
@@ -806,7 +813,6 @@
       - [`SPLIT REGION`](/sql-statements/sql-statement-split-region.md)
       - [`START TRANSACTION`](/sql-statements/sql-statement-start-transaction.md)
       - [`TABLE`](/sql-statements/sql-statement-table.md)
-      - [`LOCK TABLES` 和 `UNLOCK TABLES`](/sql-statements/sql-statement-lock-tables-and-unlock-tables.md)
       - [`TRACE`](/sql-statements/sql-statement-trace.md)
       - [`TRUNCATE`](/sql-statements/sql-statement-truncate.md)
       - [`UNLOCK STATS`](/sql-statements/sql-statement-unlock-stats.md)
@@ -976,6 +982,7 @@
   - v6.6
     - [6.6.0-DMR](/releases/release-6.6.0.md)
   - v6.5
+    - [6.5.1](/releases/release-6.5.1.md)
     - [6.5.0](/releases/release-6.5.0.md)
   - v6.4
     - [6.4.0-DMR](/releases/release-6.4.0.md)

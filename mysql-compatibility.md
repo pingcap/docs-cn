@@ -57,6 +57,8 @@ TiDB 高度兼容 MySQL 5.7 协议、MySQL 5.7 常用的功能及语法。MySQL 
 
 - TiDB 不支持添加列的 `AUTO_INCREMENT` 属性，移除该属性后不可恢复。
 
+- 对于 v6.6.0 及更早的 TiDB 版本，TiDB 的行为与 MySQL InnoDB 保持一致，要求自增列必须为主键或者索引前缀。从 v7.0.0 开始，TiDB 移除自增列必须是索引或索引前缀的限制，允许用户更灵活地定义表的主键。关于此更改的详细信息，请参阅 [#40580](https://github.com/pingcap/tidb/issues/40580)
+
 自增 ID 详情可参阅 [AUTO_INCREMENT](/auto-increment.md)。
 
 > **注意：**
@@ -67,20 +69,27 @@ TiDB 高度兼容 MySQL 5.7 协议、MySQL 5.7 常用的功能及语法。MySQL 
 mysql> CREATE TABLE t(id INT UNIQUE KEY AUTO_INCREMENT);
 Query OK, 0 rows affected (0.05 sec)
 
-mysql> INSERT INTO t VALUES(),(),();
-Query OK, 3 rows affected (0.00 sec)
-Records: 3  Duplicates: 0  Warnings: 0
+mysql> INSERT INTO t VALUES();
+Query OK, 1 rows affected (0.00 sec)
+
+mysql> INSERT INTO t VALUES();
+Query OK, 1 rows affected (0.00 sec)
+
+mysql> INSERT INTO t VALUES();
+Query OK, 1 rows affected (0.00 sec)
 
 mysql> SELECT _tidb_rowid, id FROM t;
 +-------------+------+
 | _tidb_rowid | id   |
 +-------------+------+
-|           4 |    1 |
-|           5 |    2 |
-|           6 |    3 |
+|           2 |    1 |
+|           4 |    3 |
+|           6 |    5 |
 +-------------+------+
 3 rows in set (0.01 sec)
 ```
+
+可以看到，由于共用分配器，id 每次自增步长是 2。在 [MySQL 兼容模式](/auto-increment.md#mysql-兼容模式)中改掉了该行为，没有共用分配器，因此不会跳号。
 
 > **注意：**
 >
