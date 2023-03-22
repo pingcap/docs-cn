@@ -705,7 +705,7 @@ Empty set (0.00 sec)
 
 ## 分区管理
 
-对于 `LIST` 和 `RANGE` 分区表，你可以进行以下分区管理操作：
+对于 `RANGE`、`RANGE COLUMNS`、`LIST`、`LIST COLUMNS` 分区表，你可以进行以下分区管理操作：
 
 - 使用 `ALTER TABLE <表名> ADD PARTITION (<分区说明>)` 语句添加分区。
 - 使用 `ALTER TABLE <表名> DROP PARTITION <分区列表>` 删除分区。
@@ -734,7 +734,7 @@ Empty set (0.00 sec)
 - TiCDC：分区表和非分区表都有主键或者唯一键时，TiCDC 同步 `EXCHANGE PARTITION` 操作；反之 TiCDC 将不会同步。
 - TiDB Lightning 和 BR：使用 TiDB Lightning 导入或使用 BR 恢复的过程中，不要执行 `EXCHANGE PARTITION` 操作。
 
-### 管理 Range 分区和 List 分区
+### 管理 List 分区、List COLUMNS 分区、Range 分区、Range COLUMNS 分区
 
 本小节将以如下 SQL 语句创建的分区表为例，介绍如何管理 Range 分区和 List 分区。
 
@@ -876,7 +876,7 @@ ALTER TABLE member_level REORGANIZE PARTITION l1_2,l3,l4,l5,l6 INTO
     ERROR 1526 (HY000): Table has no partition for value 6
     ```
 
-### Hash 分区管理
+### 管理 Hash 分区
 
 跟 Range 分区不同，Hash 分区不支持 `DROP PARTITION`。
 
