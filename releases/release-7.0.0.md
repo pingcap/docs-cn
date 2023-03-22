@@ -36,19 +36,19 @@ TiDB 版本：7.0.0
 
     更多信息，请参考[用户文档](/ddl-introduction.md)。
 
-* TiFlash 引擎支持 `Null-Aware Semi Join` 和 `Null-Aware Anti Semi Join` 算子 [#6674](https://github.com/pingcap/tiflash/issues/6674) @[gengliqi](https://github.com/gengliqi) **tw:Oreoxmt**
+* TiFlash 引擎支持 Null-Aware Semi Join 和 Null-Aware Anti Semi Join 算子 [#6674](https://github.com/pingcap/tiflash/issues/6674) @[gengliqi](https://github.com/gengliqi) **tw:Oreoxmt**
 
-    `IN`、`NOT IN`、`=ANY`、`!= ALL` 算子引导的关联子查询会转化为 `Semi Join` 或 `Anti Semi Join`，从而提升计算性能。当转换后的 JOIN KEY 的列可能为 NULL 时，需要具有 Null-Aware 特性的 Join 算法，即需要 [`Null-Aware Semi Join`](/explain-subqueries#null-aware-semi-joinin-和--any-子查询) 和 [`Null-Aware Anti Semi Join`](/explain-subqueries#null-aware-anti-semi-joinnot-in-和--all-子查询) 算子。
+    当使用 `IN`、`NOT IN`、`= ANY` 或 `!= ALL` 算子引导的关联子查询时，TiDB 会将其转化为 Semi Join 或 Anti Semi Join，从而提升计算性能。如果转换后的 Join key 列可能为 `NULL`，则需要具有 Null-Aware 特性的 Join 算法，即 [Null-Aware Semi Join](/explain-subqueries#null-aware-semi-joinin-和--any-子查询) 和 [Null-Aware Anti Semi Join](/explain-subqueries#null-aware-anti-semi-joinnot-in-和--all-子查询) 算子。
 
-    在 v7.0.0 之前的版本中，TiFlash 引擎不支持 `Null-Aware Semi Join` 和 `Null-Aware Anti Semi Join` 算子，所以这几种子查询无法直接下推至 TiFlash 引擎进行计算。在 v7.0.0 版本中，TiFlash 引擎支持了 `Null-Aware Semi Join` 和 `Null-Aware Anti Semi Join` 算子。当 SQL 包含这几种关联子查询，查询的表包含 TiFlash 副本，且启用 [MPP 模式](/tiflash/use-tiflash-mpp-mode.md)时，优化器将自动判断是否将 `Null-Aware Semi Join` 和 `Null-Aware Anti Semi Join` 算子下推至 TiFlash 引擎进行计算以提升整体性能。
+    在 v7.0.0 之前的版本中，TiFlash 引擎不支持 Null-Aware Semi Join 和 Null-Aware Anti Semi Join 算子，因此无法将这些子查询直接下推至 TiFlash 引擎进行计算。从 TiDB v7.0.0 开始，TiFlash 引擎支持了 Null-Aware Semi Join 和 Null-Aware Anti Semi Join 算子。如果 SQL 包含这几种关联子查询，查询的表包含 TiFlash 副本，并且启用了 [MPP 模式](/tiflash/use-tiflash-mpp-mode.md)，优化器将自动判断是否将 Null-Aware Semi Join 和 Null-Aware Anti Semi Join 算子下推至 TiFlash 引擎进行计算以提升整体性能。
 
     更多信息，请参考[用户文档](/tiflash/tiflash-supported-pushdown-calculations)。
 
-* TiFlash 引擎支持 FastScan 功能 [#5252](https://github.com/pingcap/tiflash/issues/5252) @[hongyunyan](https://github.com/hongyunyan) **tw:Oreoxmt**
+* TiFlash 引擎支持 FastScan 功能 (GA) [#5252](https://github.com/pingcap/tiflash/issues/5252) @[hongyunyan](https://github.com/hongyunyan) **tw:Oreoxmt**
 
-    TiFlash 引擎从 v6.3.0 版本发布了实验特性的快速扫描功能 (FastScan)。在 v7.0.0 版本中，该功能正式 GA。通过使用系统变量 [`tiflash_fastscan`](/system-variables.md#tiflash_fastscan-从-v630-版本开始引入) 可以启用快速扫描功能。快速扫描功能通过牺牲强一致性保证，可以大幅提升扫表性能。如果对应的表只有 INSERT 操作，没有 UPDATE/DELETE 操作，则快速扫描功能在提升扫表性能的同时，不会损失强一致性。
+    从 v6.3.0 开始，TiFlash 引擎引入了快速扫描功能 (FastScan) 作为实验特性。在 v7.0.0 中，该功能正式 GA。你可以使用系统变量 [`tiflash_fastscan`](/system-variables.md#tiflash_fastscan-从-v630-版本开始引入) 启用快速扫描功能。通过牺牲强一致性保证，该功能可以大幅提升扫表性能。如果对应的表仅进行 `INSERT` 操作，而没有 `UPDATE`/`DELETE` 操作，则快速扫描功能在提升扫表性能的同时不会损失强一致性。
 
-    更多信息，请参考[用户文档](/develop/dev-guide-use-fastscan.md)。
+    更多信息，请参考[用户文档](/tiflash/use-fastscan.md)。
 
 * TiFlash 查询支持 Selection 延迟物化功能（实验特性）[#5829](https://github.com/pingcap/tiflash/issues/5829) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger) **tw:qiancai**
 
@@ -58,17 +58,17 @@ TiDB 版本：7.0.0
 
     更多信息，请参考[用户文档](/tiflash/tiflash-late-materialization.md)。
 
-* 非 prepared 语句的执行计划可以被缓存（实验特性）[#qw4990](https://github.com/pingcap/tidb/issues/36598) @[qw4990](https://github.com/qw4990) **tw:Oreoxmt**
+* 支持缓存非 Prepare 语句的执行计划（实验特性）[#36598](https://github.com/pingcap/tidb/issues/36598) @[qw4990](https://github.com/qw4990) **tw:Oreoxmt**
 
-    执行计划缓存是提升并发 OLTP 负载能力的重要手段， TiDB 已经支持对 [prepared 语句的计划进行缓存](/sql-prepared-plan-cache.md)。 在 v7.0.0 中， 非 prepared 语句的执行计划也能够被缓存，使得执行计划缓存能够被应用在更广泛场景下，进而提升 TiDB 的并发处理能力。
+    执行计划缓存是提高并发 OLTP 负载能力的重要手段，TiDB 已经支持 [Prepare 语句的计划缓存](/sql-prepared-plan-cache.md)。在 v7.0.0 中，非 Prepare 语句的执行计划也能够被缓存，使执行计划缓存能够应用于更广泛的场景，从而提升 TiDB 的并发处理能力。
 
-    这个功能目前默认关闭， 用户通过变量 [`tidb_enable_non_prepared_plan_cache`](/system-variables.md#tidb_enable_non_prepared_plan_cache) 打开。 出于稳定性考虑，在当前版本中，TiDB 开辟了一块新的区域用于缓存非 prepare 语句的执行计划，通过变量 [`tidb_non_prepared_plan_cache_size`](/system-variables.md#tidb_non_prepared_plan_cache_size) 设置缓存大小；另外，对 SQL 的模式也有一定的限制，具体参见[文档](/sql-non-prepared-plan-cache.md#限制)。
+    这个功能目前默认关闭，你可以通过系统变量 [`tidb_enable_non_prepared_plan_cache`](/system-variables.md#tidb_enable_non_prepared_plan_cache) 打开。出于稳定性考虑，在当前版本中，TiDB 开辟了一块新的区域用于缓存非 Prepare 语句的执行计划，你可以通过系统变量 [`tidb_non_prepared_plan_cache_size`](/system-variables.md#tidb_non_prepared_plan_cache_size) 设置缓存大小。此外，该功能对 SQL 的模式也有一定的限制，具体参见[使用限制](/sql-non-prepared-plan-cache.md#限制)。
 
     更多信息，请参考[用户文档](/sql-non-prepared-plan-cache.md)。
 
 * 解除执行计划缓存对子查询的限制 [#40219](https://github.com/pingcap/tidb/issues/40219) @[fzzf678](https://github.com/fzzf678) **tw:Oreoxmt**
 
-    TiDB v7.0.0 移除了计划缓存对子查询的限制，带有子查询的 SQL 语句的执行计划可以被缓存，比如 " `select * from t where a > (select ...)` "。 这进一步扩大了执行计划缓存的应用范围，提升 SQL 的执行效率。
+    TiDB v7.0.0 移除了计划缓存对子查询的限制。带有子查询的 SQL 语句的执行计划可以被缓存，例如 `SELECT * FROM t WHERE a > (SELECT ...)`。这进一步扩大了执行计划缓存的应用范围，提高了 SQL 的执行效率。
 
     更多信息，请参考[用户文档](/sql-prepared-plan-cache.md)。
 
