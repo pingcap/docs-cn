@@ -18,9 +18,11 @@ TiDB 版本：7.0.0
 
 ### 可扩展性
 
-* TiFlash 引擎支持存算分离和对象存储（实验特性）[#6882](https://github.com/pingcap/tiflash/issues/6882) @[flowbehappy](https://github.com/flowbehappy) @[JaySon-Huang](https://github.com/JaySon-Huang) @[breezewish](https://github.com/breezewish) @[JinheLin](https://github.com/JinheLin) @[lidezhu](https://github.com/lidezhu) @[CalvinNeo](https://github.com/CalvinNeo) **tw:qiancai**
+* TiFlash 支持存算分离和对象存储（实验特性）[#6882](https://github.com/pingcap/tiflash/issues/6882) @[flowbehappy](https://github.com/flowbehappy) @[JaySon-Huang](https://github.com/JaySon-Huang) @[breezewish](https://github.com/breezewish) @[JinheLin](https://github.com/JinheLin) @[lidezhu](https://github.com/lidezhu) @[CalvinNeo](https://github.com/CalvinNeo) **tw:qiancai**
 
-    在 v7.0.0 之前的版本中，TiFlash 引擎以存算一体的方式部署，即 TiFlash 节点即是存储节点，也是计算节点；同时，TiFlash 节点只能使用本地存储。存算一体的部署方式使得 TiFlash 的计算能力和存储能力无法独立扩展。在 v7.0.0 版本中，TiFlash 引擎新增存算分离架构，并在存算分离架构下，支持兼容 S3 API 的对象存储。在 TiFlash 存算分离架构下，TiFlash 节点分为计算节点和写节点。这两种节点都可以单独扩缩容，独立调整计算或数据存储能力。TiFlash 引擎的存算分离架构不能和存算一体架构混合使用、相互转换，需要在部署 TiFlash 时进行相应的配置设定，确定使用存算分离架构或者存算一体架构。
+    在 v7.0.0 之前的版本中，TiFlash 为存算一体架构。在此架构下，TiFlash 节点既是存储节点，也是计算节点，TiFlash 的计算能力和存储能力无法独立扩展；同时，TiFlash 节点只能使用本地存储。
+    
+    从 v7.0.0 起，TiFlash 新增存算分离架构。在此架构下，TiFlash 节点分为 Compute Node （计算节点）和 Write Node（写入节点）两种类型，并支持兼容 S3 API 的对象存储。这两种节点都可以单独扩缩容，独立调整计算或数据存储能力。TiFlash 的存算分离架构和存算一体架构不能混合使用、相互转换，需要在部署 TiFlash 时进行相应的配置指定使用其中的一种架构。
 
     更多信息，请参考[用户文档](/tiflash/tiflash-disaggregated-and-s3.md)。
 
@@ -48,9 +50,11 @@ TiDB 版本：7.0.0
 
     更多信息，请参考[用户文档](/develop/dev-guide-use-fastscan.md)。
 
-* TiFlash 引擎支持 Selection 延迟物化功能（实验特性） [#5829](https://github.com/pingcap/tiflash/issues/5829) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger) **tw:qiancai**
+* TiFlash 查询支持 Selection 延迟物化功能（实验特性）[#5829](https://github.com/pingcap/tiflash/issues/5829) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger) **tw:qiancai**
 
-    当 SELECT 语句中包含过滤条件（WHERE子句）时，普通的处理方式是扫描所有数据后进行过滤。Selection 延迟物化功能可以先扫描过滤条件相关列数据，过滤得到符合条件的行后，再扫描这些行的其他列数据，继续后续计算，从而减少扫描 IO 和数据解析的计算量。在 v7.0.0 中，TiFlash 引擎支持 Selection 延迟物化功能，并通过 variable 控制是否启用该功能。当功能启用时，优化器会根据过滤条件的信息，自动判断选择哪些过滤条件下推到 TableScan 算子。
+  当 `SELECT` 语句中包含过滤条件（`WHERE` 子句）时，TiFlash 通常会先读取该查询所需列的全部数据，然后再根据查询条件对数据进行过滤、聚合等计算任务。延迟物化是一种优化方式，它支持下推部分过滤条件到 TableScan 算子，即先扫描过滤条件相关的列数据，过滤得到符合条件的行后，再扫描这些行的其他列数据，继续后续计算，从而减少 IO 扫描和数据处理的计算量。
+  
+  TiFlash 延迟物化默认关闭，可以通过将系统变量 [`tidb_opt_enable_late_materialization`](/system-variables.md#tidb_opt_enable_late_materialization-从-v700-版本开始引入)设置为 `ON` 开启。开启后，TiDB 优化器会根据统计信息和查询的过滤条件，决定哪些过滤条件会被下推到 TableScan 算子。
 
     更多信息，请参考[用户文档](/tiflash/tiflash-late-materialization.md)。
 
@@ -82,11 +86,11 @@ TiDB 版本：7.0.0
     
     更多信息，请参考[用户文档](/tikv-configuration-file.md#prefill-for-recycle-从-v700-版本开始引入)。
 
-* 新增从[窗口函数](/functions-and-operators/expressions-pushed-down.md)中推导出 TopN/Limit 的优化规则，提升窗口函数的性能 [#13936](https://github.com/tikv/tikv/issues/13936) @[windtalker](https://github.com/windtalker) **tw:qiancai**
+* 支持从[窗口函数](/functions-and-operators/expressions-pushed-down.md)中推导 TopN 或 Limit 的优化规则，提升窗口函数的性能 [#13936](https://github.com/tikv/tikv/issues/13936) @[windtalker](https://github.com/windtalker) **tw:qiancai**
 
-    该功能默认关闭，需要将 session 变量 `tidb_opt_derive_topn` 设置为 ON 来开启。
+    该功能默认关闭，需要将 session 变量 [tidb_opt_derive_topn](/system-variables.md#tidb_opt_derive_topn-从-v700-版本开始引入) 设置为 `ON` 开启。
     
-    更多信息，请参考[用户文档]()。
+    更多信息，请参考[用户文档](derive-topn-from-window.md)。
 
 * 支持通过 Fast Online DDL 创建唯一索引 [#40730](https://github.com/pingcap/tidb/issues/40730) @[tangenta](https://github.com/tangenta) **tw:ran-huang**
 
@@ -175,7 +179,7 @@ TiDB 版本：7.0.0
 
     更多信息，请参考[用户文档](/partitioned-table.md#重组分区)。
 
-* 支持 Key Partitioning [#41364](https://github.com/pingcap/tidb/issues/41364) @[TonsnakeLin](https://github.com/TonsnakeLin) **tw:qiancai**
+* 支持 Key 分区 [#41364](https://github.com/pingcap/tidb/issues/41364) @[TonsnakeLin](https://github.com/TonsnakeLin) **tw:qiancai**
 
     TiDB 支持 Key 分区。Key 分区与 Hash 分区都可以保证将数据均匀地分散到一定数量的分区里面，区别是 Hash 分区只能根据一个指定的整数表达式或字段进行分区，而 Key 分区可以根据字段列表进行分区，且 Key 分区的分区字段不局限于整数类型。
 
@@ -303,18 +307,18 @@ TiDB 版本：7.0.0
 
 | 配置文件 | 配置项 | 修改类型 | 描述 |
 | -------- | -------- | -------- | -------- |
-| TiKV | [`resolved-ts.advance-ts-interval`](/tikv-configuration-file.md#advance-ts-interval) | 修改 | 默认值由 `1s` 变更为 `20s`。 |
+| TiKV | [`resolved-ts.advance-ts-interval`](/tikv-configuration-file.md#advance-ts-interval) | 修改 | 默认值由 `1s` 变更为 `20s`。该修改可以延长定期推进 Resolved TS 的时间间隔，从而减少 TiKV 节点之间的流量消耗。 |
 | TiKV | [raft-engine.enable-log-recycle](/tikv-configuration-file.md#enable-log-recycle-从-v630-版本开始引入) | 修改 | 默认值由 `false` 变更为 `true`。 |
 | TiKV | [raft-engine.prefill-for-recycle](/tikv-configuration-file.md#prefill-for-recycle-从-v700-版本开始引入) | 新增 | 控制 Raft Engine 是否回收过期的日志文件。默认值为 `FALSE`。|
 | TiKV | [server.snap-max-write-bytes-per-sec](/tikv-configuration-file.md#snap-io-max-bytes-per-sec) | 重命名 | 配置项 `server.snap-max-write-bytes-per-sec` 重命名为 `server.snap-io-max-bytes-per-sec`。 |
-| TiFlash | [flash.disaggregated_mode](https://docs.pingcap.com/zh/tidb/dev/tiflash-disaggregated-and-s3) |  新增  |在 TiFlash 的存算分离架构中，表示此 TiFlash 节点是 Write Node 还是 Compute Node。有效值是 tiflash_write 或者 tiflash_compute|
-| TiFlash | [storage.s3.endpoint](https://docs.pingcap.com/zh/tidb/dev/tiflash-disaggregated-and-s3) |  新增  | S3 的 endpoint 地址 |
-| TiFlash | [storage.s3.bucket](https://docs.pingcap.com/zh/tidb/dev/tiflash-disaggregated-and-s3) |  新增  | TiFlash 的所有数据存储在这个 bucket 中 |
-| TiFlash | [storage.s3.root](https://docs.pingcap.com/zh/tidb/dev/tiflash-disaggregated-and-s3) |  新增  | S3 bucket 中存储数据的根目录 |
-| TiFlash | [storage.s3.access_key_id](https://docs.pingcap.com/zh/tidb/dev/tiflash-disaggregated-and-s3) |  新增  | 访问 S3 的 ACCESS_KEY_ID |
-| TiFlash | [storage.s3.secret_access_key](https://docs.pingcap.com/zh/tidb/dev/tiflash-disaggregated-and-s3) |  新增  | 访问 S3 的 SECRET_ACCESS_KEY |
-| TiFlash | [storage.remote.cache.dir](https://docs.pingcap.com/zh/tidb/dev/tiflash-disaggregated-and-s3) |  新增  | TiFlash Compute Node 的本地数据缓存目录 |
-| TiFlash | [storage.remote.cache.capacity](https://docs.pingcap.com/zh/tidb/dev/tiflash-disaggregated-and-s3) |  新增  | TiFlash Compute Node 的本地数据缓存目录的大小 |
+| TiFlash | [`flash.disaggregated_mode`](tiflash/tiflash-disaggregated-and-s3.md) |  新增  | 在 TiFlash 的存算分离架构中，表示此 TiFlash 节点是 Write Node 还是 Compute Node。可选值为 `tiflash_write` 或者 `tiflash_compute`。 |
+| TiFlash | [`storage.s3.endpoint`](tiflash/tiflash-disaggregated-and-s3.md) |  新增  | S3 的 endpoint 地址 |
+| TiFlash | [`storage.s3.bucket`](tiflash/tiflash-disaggregated-and-s3.md) |  新增  | TiFlash 的所有数据存储的 bucket  |
+| TiFlash | [`storage.s3.root`](tiflash/tiflash-disaggregated-and-s3.md) |  新增  | S3 bucket 中数据存储的根目录 |
+| TiFlash | [`storage.s3.access_key_id`](tiflash/tiflash-disaggregated-and-s3.md) |  新增  | 访问 S3 的 ACCESS_KEY_ID |
+| TiFlash | [`storage.s3.secret_access_key`](tiflash/tiflash-disaggregated-and-s3.md) |  新增  | 访问 S3 的 SECRET_ACCESS_KEY |
+| TiFlash | [`storage.remote.cache.dir`](tiflash/tiflash-disaggregated-and-s3.md) |  新增  | TiFlash Compute Node 的本地数据缓存目录 |
+| TiFlash | [`storage.remote.cache.capacity`](tiflash/tiflash-disaggregated-and-s3.md) |  新增  | TiFlash Compute Node 的本地数据缓存目录的大小 |
 | TiDB Lightning   | [`add-index-by-sql`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-task)       |    新增     |  控制 Physical Import Mode 是否通过 SQL 方式添加索引。默认根据 TiDB 版本自动选择。通过 SQL 方式添加索引的优点是将导入数据与导入索引分开，可以快速导入数据，即使导入数据后，索引添加失败，也不会影响数据的一致性。        |
 | TiCDC      | [`enable-table-across-nodes`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-配置文件说明)          |   新增    |    将表按 Region 个数划分成多个同步范围，这些范围可由多个 TiCDC 节点同步。    |
 | TiCDC      | [`region-threshold`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-配置文件说明)    | 新增         | 开启了 enable-table-across-nodes 后，该功能只对 Region 个数大于 `region-threshold` 值的表生效。      |
