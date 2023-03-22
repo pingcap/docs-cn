@@ -40,7 +40,7 @@ LoadDataOption ::=
 
 ### S3/GCS 路径
 
-如果你不指定 `LOCAL`，则文件参数必须是有效的 S3/GCS 路径，详见[外部存储](/br/backup-and-restore-storages.md)。
+如果你不指定 `LOCAL`，则文件参数必须是有效的 S3/GCS URI路径，详见[外部存储](/br/backup-and-restore-storages.md)。
 
 当数据文件存储在 S3/GCS 上时，你可以导入单个文件，也可使用通配符 `*` 来匹配需要导入的多个文件。注意通配符不会递归处理子目录下相关的文件。以数据存储在 S3 为例，示例如下:
 
@@ -65,6 +65,12 @@ LoadDataOption ::=
 - 如果你希望以某个字符为结尾切分每行数据，可以使用 `LINES TERMINATED BY` 来指定行的终止符。
 
 可以使用 `DEFINED NULL BY` 来指定数据文件中如何表示 NULL 值。
+
+- 与 MySQL 行为一致，如果 `ESCAPED BY` 不为空时，例如是默认值 `\`，那么 `\N` 会被认为是 NULL 值。
+- 如果使用 `DEFINED NULL BY`，例如 `DEFINED NULL BY 'my-null'`，`my-null` 会被认为是 NULL 值。
+- 如果使用 `DEFINED NULL BY ... OPTIONALLY ENCLOSED`，例如 `DEFINED NULL BY 'my-null' OPTIONALLY ENCLOSED`，`my-null` 和 `"my-null"`（假设 `ENCLOSED BY '"'`）会被认为是 NULL 值。
+- 如果没有使用 `DEFINED NULL BY` 或者 `DEFINED NULL BY ... OPTIONALLY ENCLOSED`，但使用了 `ENCLOSED BY`，例如 `ENCLOSED BY '"'`，那么 `NULL` 会被认为是 NULL 值。这个行为与 MySQL 一致。
+- 其他情况不会被认为是 NULL 值。
 
 例如对于以下格式的数据：
 
@@ -96,7 +102,7 @@ LINES TERMINATED BY '\n' STARTING BY ''
 
 ### `WITH batch_size=<number>`
 
-可以通过 `WITH batch_size=<number>` 来指定批量写入 TiDB 时的行数，默认值为 1000。如果不希望分批写入，可以指定为 0。
+可以通过 `WITH batch_size=<number>` 来指定批量写入 TiDB 时的行数，默认值为 `1000`。如果不希望分批写入，可以指定为 `0`。
 
 ## 示例
 
@@ -110,7 +116,7 @@ LOAD DATA INFILE 's3://bucket-name/test.csv?access_key=XXX&secret_access_key=XXX
 +--------+
 | Job_ID |
 +--------+
-|      1 |
+|      150063  |
 +--------+
 1 row in set (3.14 sec)
 ```
