@@ -5,11 +5,7 @@ summary: Learn how to replicate data to storage services using TiCDC, and learn 
 
 # Replicate Data to Storage Services
 
-> **Warning:**
->
-> This feature is experimental. It is not recommended to use it in the production environment.
-
-Since v6.5.0, TiCDC supports saving row change events to storage services, including Amazon S3, Azure Blob Storage, and NFS. This document describes how to create a changefeed that replicates incremental data to such storage services using TiCDC, and how data is stored. The organization of this document is as follows:
+Starting from TiDB v6.5.0, TiCDC supports saving row change events to storage services, including Amazon S3, GCS, Azure Blob Storage, and NFS. This document describes how to create a changefeed that replicates incremental data to such storage services using TiCDC, and how data is stored. The organization of this document is as follows:
 
 - [How to replicate data to storage services](#replicate-change-data-to-storage-services).
 - [How data is stored in storage services](#storage-path-structure).
@@ -41,9 +37,9 @@ Info: {"upstream_id":7171388873935111376,"namespace":"default","id":"simple-repl
 
 This section describes how to configure storage services in the changefeed URI, including Amazon S3, Azure Blob Storage, and NFS.
 
-### Configure Amazon S3 or Azure Blob Storage
+### Configure external storage
 
-The URI parameters of Amazon S3 and Azure Blob Storage in TiCDC are the same as their URL parameters in BR. For details, see [Backup storage URI format](/br/backup-and-restore-storages.md#uri-format-description).
+The URI parameters of Amazon S3, GCS, and Azure Blob Storage in TiCDC are the same as their URI parameters in BR. For details, see [Backup storage URI format](/br/backup-and-restore-storages.md#uri-format-description).
 
 ### Configure NFS
 
@@ -100,6 +96,22 @@ Data change records are saved to the following path:
 >
 > - After a DDL operation is performed, the table version is the TSO when the DDL is executed in the upstream TiDB. However, the change of the table version does not mean the change of the table schema. For example, adding a comment to a column does not cause the `schema.json` file content to change.
 > - The changefeed process restarts. The table version is the checkpoint TSO when the process restarts. When there are many tables and the process restarts, it takes a long time to traverse all directories and find the position where each table was written last time. Therefore, data is written to a new directory with the version being the checkpoint TSO, instead of to the earlier directory.
+
+### Index files
+
+An index file is used to prevent written data from being overwritten by mistake. It is stored in the same path as the data change records.
+
+```shell
+{scheme}://{prefix}/{schema}/{table}/{table-version-separator}/{partition-separator}/{date-separator}/CDC.index
+```
+
+The index file records the largest file name used in the current directory. For example:
+
+```
+CDC000005.csv
+```
+
+In this example, the files `CDC000001.csv` through `CDC000004.csv` in this directory are occupied. When a table scheduling or node restart occurs in the TiCDC cluster, the new node reads the index file and determines if `CDC000005.csv` is occupied. If it is not occupied, the new node writes the file starting from `CDC000005.csv`. If it is occupied, it starts writing from `CDC000006.csv`, which prevents overwriting data written by other nodes.
 
 ### Metadata
 
