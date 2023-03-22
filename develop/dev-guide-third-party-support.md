@@ -6,7 +6,7 @@ title: TiDB 支持的第三方工具
 
 > **注意：**
 >
-> 本文档仅列举了常见的 TiDB 支持的第三方工具，未被列入其中的第三方工具并非代表不支持，但 PingCAP 无法了解其是否使用到 TiDB 不支持的特性，从而无法保证兼容性。
+> 本文档仅列举了常见的 TiDB 支持的[第三方工具](https://en.wikipedia.org/wiki/Third-party_source)，未被列入其中的第三方工具并非代表不支持，但 PingCAP 无法了解其是否使用到 TiDB 不支持的特性，从而无法保证兼容性。
 
 TiDB [高度兼容 MySQL 协议](/mysql-compatibility.md)，使得大部分适配 MySQL 的 Driver、ORM 及其他工具与 TiDB 兼容。本文主要介绍这些工具和它们的支持等级。
 

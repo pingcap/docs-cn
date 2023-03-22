@@ -19,6 +19,8 @@ summary: 介绍在测试中发现的 TiDB 与第三方工具的兼容性问题�
 >
 > 这些不支持的功能不兼容将被视为预期行为，不再重复叙述。关于更多 TiDB 与 MySQL 的兼容性对比，你可以查看[与 MySQL 兼容性对比](/mysql-compatibility.md)。
 
+本文列举的兼容性问题是在一些 [TiDB 支持的第三方工具](/develop/dev-guide-third-party-support.md)中发现的。
+
 ## 通用
 
 ### TiDB 中 `SELECT CONNECTION_ID()` 返回结果类型为 64 位整型
