@@ -89,7 +89,7 @@ The results of the combinations of these two parameters are shown in the followi
 | `resource-control.enabled`= true  |  Flow control and scheduling (recommended) | Invalid combination      |  
 | `resource-control.enabled`= false |  Only flow control (not recommended)                 | The feature is disabled. |
 
-For more information about the resource control mechanism and parameters, see [RFC: Global Resource Control in TiDB](https://github.com/pingcap/tidb/blob/9fb2d6c35790c4733db0ffa6f3574414c91f1dbb/docs/design/2022-11-25-global-resource-control.md).
+For more information about the resource control mechanism and parameters, see [RFC: Global Resource Control in TiDB](https://github.com/pingcap/tidb/blob/master/docs/design/2022-11-25-global-resource-control.md).
 
 ## How to use resource control
 
@@ -194,4 +194,4 @@ Currently, the resource control feature has the following limitations:
 * [CREATE RESOURCE GROUP](/sql-statements/sql-statement-create-resource-group.md)
 * [ALTER RESOURCE GROUP](/sql-statements/sql-statement-alter-resource-group.md)
 * [DROP RESOURCE GROUP](/sql-statements/sql-statement-drop-resource-group.md)
-* [RESOURCE GROUP RFC](https://docs.google.com/document/d/1sV5EVv8Cdpc6aBCDihc2akpE0iuantPf/)
+* [RESOURCE GROUP RFC](https://github.com/pingcap/tidb/blob/master/docs/design/2022-11-25-global-resource-control.md)
