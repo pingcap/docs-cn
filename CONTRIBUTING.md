@@ -64,7 +64,7 @@ TiDB 中文文档的日常更新特别活跃，相应地，[TiDB 英文文档](h
 
 - [ ] 文档内容准确、清晰、简洁，遵循写作规范。参考 [PingCAP 中文技术文档风格 — 极简指南](#pingcap-中文技术文档风格--极简指南)。
 - [ ] PR 的各元素完整、准确，包括：
-    - [ ] 标题清晰、有意义，包括修改的类型+文档所属的模块。参考例如：
+    - [ ] 标题清晰、有意义，包括修改的类型+文档所属的模块。参考 [Commit Message and Pull Request Style](https://github.com/pingcap/community/blob/master/contributors/commit-message-pr-style.md)。例如：
         - Fix typos in tidb-monitoring-api.md
         - benchmark: add the v5.3.0 benchmark document
     - [ ] 有简要描述，例如修改背景等，并添加对应的 issue 号（如果有）
@@ -78,7 +78,7 @@ TiDB 中文文档的日常更新特别活跃，相应地，[TiDB 英文文档](h
 
 ## PingCAP 中文技术文档风格 — 极简指南
 
-![1 Pager Style Guide](/media/one-page-style-guide.png)
+![One Page Style Guide](/media/one-page-style-guide.png)
 
 参考文档：
 
