@@ -22,7 +22,7 @@ DESC resource_groups;
 +------------+-------------+------+------+---------+-------+
 | NAME       | varchar(32) | NO   |      | NULL    |       |
 | RU_PER_SEC | bigint(21)  | YES  |      | NULL    |       |
-| PRIORITY   | varchar(3)  | YES  |      | NULL    |       |
+| PRIORITY   | varchar(6)  | YES  |      | NULL    |       |
 | BURSTABLE  | varchar(3)  | YES  |      | NULL    |       |
 +------------+-------------+------+------+---------+-------+
 3 rows in set (0.00 sec)

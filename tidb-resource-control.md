@@ -10,7 +10,7 @@ summary: 介绍如何通过资源管控能力来实现对应用资源消耗的�
 TiDB 资源管控特性提供了两层资源管理能力，包括在 TiDB 层的流控能力和 TiKV 层的优先级调度的能力。两个能力可以单独或者同时开启，详情请参见[参数组合效果表](#相关参数)。
 
 - TiDB 流控：TiDB 流控使用[令牌桶算法](https://en.wikipedia.org/wiki/Token_bucket) 做流控；如果桶内令牌数不够，而且资源组没有指定 `BURSTABLE` 特性，属于该资源组的请求会等待令牌桶回填令牌并重试，重试可能会超时失败。
-- TiKV 调度：在未设置绝对优先级 (PRIORITY) 的情况下，TiKV 使用基于资源组 `RU_PER_SEC` 的取值映射成各自资源组读写请求的优先级，基于各自的优先级在存储层使用优先级队列调度处理请求。另外也支持用户为资源组设置绝对优先级 (PRIORITY) 。
+- TiKV 调度：如果你没有设置绝对优先级 [(`PRIORITY`)](/information-schema/information-schema-resource-groups.md#示例)，TiKV 使用基于资源组 `RU_PER_SEC` 的取值映射成各自资源组读写请求的优先级，基于各自的优先级在存储层使用优先级队列调度处理请求。另外你也可以为资源组设置绝对优先级 (`PRIORITY`) 。
 
 ## 使用场景
 

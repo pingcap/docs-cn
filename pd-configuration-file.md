@@ -458,11 +458,13 @@ PD 中内置的 [Resource Control](/tidb-resource-control.md) 相关配置项。
 
 ### `degraded-mode-wait-duration`
 
-+ 触发降级模式需要等待的时间
++ 触发降级模式需要等待的时间。降级模式是指在 Local Token Bucket (LTB) 和 Global Token Bucket (GTB) 失联的情况下，LTB 回退到 resource group 的配置，不再有 GTB 授权 token，从而保证在网络隔离或者异常情况下，服务不受影响。
 + 默认值: 0s
 + 默认为不开启降级模式
 
 ### `request-unit`
+
+下面是关于 [Request Unit (RU)](/tidb-resource-control.md#什么是-request-unit-ru) 的配置项。
 
 #### `read-base-cost`
 
