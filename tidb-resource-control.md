@@ -21,6 +21,13 @@ TiDB 资源管控特性提供了两层资源管理能力，包括在 TiDB 层的
 
 此外，合理利用资源管控特性可以减少集群数量，降低运维难度及管理成本。
 
+## 使用限制
+
+目前，资源管控特性具有以下限制:
+
+* 本版本只支持对前台客户发起的读写请求做限流和调度，不支持对 DDL 以及 Auto Analyze 等后台任务的限流和调度。
+* 资源管控将带来额外的调度开销。因此，开启该特性后，性能可能会有轻微下降。
+
 ## 什么是 Request Unit (RU)
 
 Request Unit (RU) 是 TiDB 对 CPU、IO 等系统资源的统一抽象的单位, 目前包括 CPU、IOPS 和 IO 带宽三个指标。这三个指标的消耗会按照一定的比例统一到 RU 单位上。
@@ -59,9 +66,13 @@ Request Unit (RU) 是 TiDB 对 CPU、IO 等系统资源的统一抽象的单位,
 
 ### 管理资源组
 
+创建、修改、删除资源组，需要拥有 `SUPER` 或者 `RESOURCE_GROUP_ADMIN` 权限。
+
 你可以通过 [`CREATE RESOURCE GROUP`](/sql-statements/sql-statement-create-resource-group.md) 在集群中创建资源组。
 
 对于已有的资源组，可以通过 [`ALTER RESOURCE GROUP`](/sql-statements/sql-statement-alter-resource-group.md) 修改资源组的读写配额，对资源组的配额修改会立即生效。
+
+可以使用 [`DROP RESOURCE GROUP`](/sql-statements/sql-statement-drop-resource-group.md) 删除资源组。
 
 ### 创建资源组
 
@@ -80,6 +91,7 @@ Request Unit (RU) 是 TiDB 对 CPU、IO 等系统资源的统一抽象的单位,
     ```
 
 3. 创建 `rg3` 资源组，设置绝对优先级为 `HIGH`。绝对优先级目前支持 `LOW|MEDIUM|HIGH`, 资源组的默认绝对优先级为 `MEDIUM`。
+
     ```sql
     CREATE RESOURCE GROUP IF NOT EXISTS rg2 RU_PER_SEC = 100 PRIORITY = HIGH;
     ```
@@ -117,6 +129,8 @@ ALTER USER usr2 RESOURCE GROUP rg2;
 
 #### 将当前会话绑定到资源组
 
+通过把当前会话绑定到资源组，会话对资源的占用会受到指定用量 (RU) 的限制。
+
 下面的示例将当前的会话绑定至资源组 `rg1`。
 
 ```sql
@@ -132,10 +146,6 @@ SET RESOURCE GROUP rg1;
 ```sql
 SELECT /*+ RESOURCE_GROUP(rg1) */ * FROM t limit 10;
 ```
-
-### 删除资源组
-
-可以使用 [`DROP RESOURCE GROUP`](/sql-statements/sql-statement-drop-resource-group.md) 删除资源组。
 
 ## 关闭资源管控特性
 
@@ -156,13 +166,6 @@ TiKV 中也记录了来自于不同资源组的请求 QPS，详见 [TiKV监控�
 ## 工具兼容性
 
 资源管控目前不影响数据导入导出以及其他同步工具的正常使用，BR、TiDB Lightning、TiCDC 等工具不支持对资源管控相关 DDL 的处理，这些工具的资源消耗也不受资源管控的限制。
-
-## 使用限制
-
-目前，资源管控特性具有以下限制:
-
-* 本版本只支持对前台客户发起的读写请求做限流和调度，不支持对 DDL 以及 Auto Analyze 等后台任务的限流和调度。
-* 资源管控将带来额外的调度开销。因此，开启该特性后，性能可能会有轻微下降。
 
 ## 另请参阅
 
