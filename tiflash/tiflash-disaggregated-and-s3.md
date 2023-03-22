@@ -48,7 +48,7 @@ TiFlash 存算分离架构适用于高性价比的数据分析服务的场景。
 
 1. 准备一个 S3 的 bucket，用于存储 TiFlash 数据。
 
-    你也可以使用已有的 bucket，但需要为每个 TiDB 集群创建专门的存储目录。关于 S3 bucket 的更多信息，请参考 [AWS 文档](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/userguide/creating-buckets-s3.html)。
+    你也可以使用已有的 bucket，但需要为每个 TiDB 集群预留专门的 key 前缀。关于 S3 bucket 的更多信息，请参考 [AWS 文档](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/userguide/creating-buckets-s3.html)。
 
     也可以使用兼容 S3 的其他对象存储，比如 [MinIO](https://min.io/)。
 
@@ -103,7 +103,8 @@ TiFlash 存算分离架构适用于高性价比的数据分析服务的场景。
     ```yaml
     tiflash_servers:
       # TiFlash 的拓扑配置中存在 storage.s3 配置，说明部署时使用存算分离架构
-      # 如果配置了 flash.disaggregated_mode: tiflash_compute，则节点类型是 Compute Node；否则是 Write Node
+      # 配置了 flash.disaggregated_mode: tiflash_compute，则节点类型是 Compute Node；
+      # 配置了 flash.disaggregated_mode: tiflash_write，则节点类型是 Write Node
 
       # 172.31.8.1~2 是 TiFlash Write Node
       - host: 172.31.8.1
