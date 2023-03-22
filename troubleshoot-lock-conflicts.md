@@ -306,7 +306,7 @@ err="pessimistic lock retry limit reached"
 Solutions:
 
 * If the above error occurs frequently, it is recommended to adjust from the application side.
-* If your business contains high concurrent locking on the same row (the same key) and encounters frequent conflicts, you can try to enable the system variable [`tidb_pessimistic_txn_aggressive_locking`](/system-variables.md#tidb_pessimistic_txn_aggressive_locking-new-in-v660). Note that enabling this variable might bring some cost of throughput reduction (average latency increase) for transactions with lock conflicts.
+* If your business contains high concurrent locking on the same row (the same key) and encounters frequent conflicts, you can try to enable the system variable [`tidb_pessimistic_txn_fair_locking`](/system-variables.md#tidb_pessimistic_txn_fair_locking-new-in-v700). Note that enabling this variable might bring some cost of throughput reduction (average latency increase) for transactions with lock conflicts. For newly deployed clusters, this variable is enabled (`ON`) by default.
 
 ### Lock wait timeout exceeded
 
