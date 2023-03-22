@@ -3573,6 +3573,7 @@ SHOW WARNINGS;
 >
 > - This feature is incompatible with [`replica-read`](#tidb_replica_read-new-in-v40). Do not enable `tidb_rc_read_check_ts` and `replica-read` at the same time.
 > - If your client uses a cursor, it is not recommended to enable `tidb_rc_read_check_ts` in case that the previous batch of returned data has already been used by the client and the statement eventually fails.
+> - Starting from v7.0.0, this variable is no longer valid for the cursor fetch read mode that uses the prepared statement protocol.
 
 - Scope: GLOBAL
 - Persists to cluster: No, only applicable to the current TiDB instance that you are connecting to.
