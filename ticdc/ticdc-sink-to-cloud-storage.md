@@ -5,7 +5,7 @@ summary: 了解如何使用 TiCDC 将数据同步到存储服务，以及数据�
 
 # 同步数据到存储服务
 
-从 v6.5.0 开始，TiCDC 支持将行变更事件保存至存储服务，如 Amazon S3、GCS、Azure Blob Storage 和 NFS。本文介绍如何使用 TiCDC 创建同步任务 (Changefeed) 将增量数据同步到这类存储服务，并介绍数据的存储方式。具体如下：
+从 TiDB v6.5.0 开始，TiCDC 支持将行变更事件保存至存储服务，如 Amazon S3、GCS、Azure Blob Storage 和 NFS。本文介绍如何使用 TiCDC 创建同步任务 (Changefeed) 将增量数据同步到这类存储服务，并介绍数据的存储方式。具体如下：
 
 - [如何将变更数据同步至存储服务](#同步变更数据至存储服务)。
 - [变更数据如何在存储服务中保存](#存储路径组织结构)。
