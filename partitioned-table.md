@@ -638,7 +638,7 @@ PARTITIONS 4;
 
 ### TiDB 对 Linear Key 分区的处理
 
-TiDB 从 v7.0.0 开始支持 Key 分区，并支持解析 MySQL 的 `PARTITION BY LINEAR HASH` 语法，但会忽略其中的 `LINEAR` 关键字，只采用非线性 Hash 算法。
+TiDB 从 v7.0.0 开始支持 Key 分区，并支持解析 MySQL 的 `PARTITION BY LINEAR  KEY` 语法，但会忽略其中的 `LINEAR` 关键字，只采用非线性 Hash 算法。
 
 在 v7.0.0 之前的版本中，创建 Key 分区表时，TiDB 会将其创建为非分区表并给出告警。
 
