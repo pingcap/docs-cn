@@ -97,4 +97,4 @@ SET GLOBAL tidb_opt_enable_late_materialization=OFF;
 2. 读取过滤条件相关的列，过滤满足条件的行，生成 Filter Bitmap。
 3. 将 MVCC Bitmap 和 Filter Bitmap 进行与操作 (AND)，生成 Final Bitmap。
 4. 根据 Final Bitmap 读取剩余列的对应的行。
-5. 合并两次读取的数据，返回结果。
+5. 合并第 2 步和第 4 步中读取的数据，返回结果。
