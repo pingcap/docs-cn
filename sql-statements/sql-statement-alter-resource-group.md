@@ -39,9 +39,9 @@ TiDB 支持以下 `DirectResourceGroupOption`, 其中 [Request Unit (RU)](/tidb-
 
 | 参数            | 含义           | 举例                                   |
 |---------------|--------------|--------------------------------------|
-| `RU_PER_SEC`  | 每秒 RU 填充的速度 | `RU_PER_SEC = 500` 表示此资源组每秒回填 500 个 RU |
-| `PRIORITY`    | 任务被 TiKV 处理的优先级  | `PRIORITY = HIGH`，若未指定则默认为 `MEDIUM` |
-| `BURSTABLE`   | 允许对应的资源组超出配额后使用空余的系统资源 |
+| `RU_PER_SEC`  | 每秒 RU 填充的速度 | `RU_PER_SEC = 500` 表示此资源组每秒回填 500 个 RU。 |
+| `PRIORITY`    | 任务被 TiKV 处理的优先级  | `PRIORITY = HIGH` 表示优先级高。若未指定则默认为 `MEDIUM`。 |
+| `BURSTABLE`   | 允许对应的资源组超出配额后使用空余的系统资源。 |
 
 > **注意：**
 > 
@@ -52,24 +52,51 @@ TiDB 支持以下 `DirectResourceGroupOption`, 其中 [Request Unit (RU)](/tidb-
 创建一个名为 `rg1` 的资源组，并修改它的属性。
 
 ```sql
-mysql> DROP RESOURCE GROUP IF EXISTS rg1;
+DROP RESOURCE GROUP IF EXISTS rg1;
+```
+
+```sql
 Query OK, 0 rows affected (0.22 sec)
-mysql> CREATE RESOURCE GROUP IF NOT EXISTS rg1
-    ->  RU_PER_SEC = 100
-    ->  BURSTABLE;
+```
+
+```sql
+CREATE RESOURCE GROUP IF NOT EXISTS rg1
+  RU_PER_SEC = 100
+  BURSTABLE;
+```
+
+```sql
 Query OK, 0 rows affected (0.08 sec)
-mysql> SELECT * FROM information_schema.resource_groups WHERE NAME ='rg1';
+```
+
+```sql
+SELECT * FROM information_schema.resource_groups WHERE NAME ='rg1';
+```
+
+```sql
 +------+------------+----------+-----------+
 | NAME | RU_PER_SEC | PRIORITY | BURSTABLE |
 +------+------------+----------+-----------+
 | rg1  |       100  | MEDIUM   | YES       |
 +------+------------+----------+-----------+
 1 rows in set (1.30 sec)
-mysql> ALTER RESOURCE GROUP rg1
-    ->  RU_PER_SEC = 200
-    ->  PRIORITY = LOW;
+```
+
+```sql
+ALTER RESOURCE GROUP rg1
+  RU_PER_SEC = 200
+  PRIORITY = LOW;
+```
+
+```sql
 Query OK, 0 rows affected (0.08 sec)
-mysql> SELECT * FROM information_schema.resource_groups WHERE NAME ='rg1';
+```
+
+```sql
+SELECT * FROM information_schema.resource_groups WHERE NAME ='rg1';
+```
+
+```sql
 +------+------------+----------+-----------+
 | NAME | RU_PER_SEC | PRIORITY | BURSTABLE |
 +------+------------+----------+-----------+

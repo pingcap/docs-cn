@@ -5,12 +5,12 @@ summary: 介绍如何通过资源管控能力来实现对应用资源消耗的�
 
 # 使用资源管控 (Resource Control) 实现资源隔离
 
-使用资源管控特性，集群管理员可以定义资源组 (Resource Group)，通过资源组限定读写的配额。将用户绑定到某个资源组后，TiDB 层会根据用户所绑定资源组设定的读写配额对用户的读写请求做流控，TiKV 层会根据读写配额映射的优先级来对请求做调度。通过流控和调度这两层控制，你可以实现应用的资源隔离，满足服务质量 (QoS) 要求。
+使用资源管控特性，集群管理员可以定义资源组 (Resource Group)，通过资源组限定读写的配额。
 
-TiDB 资源管控特性提供了两层资源管理能力，包括在 TiDB 层的流控能力和 TiKV 层的优先级调度的能力。两个能力可以单独或者同时开启，详情请参见[参数组合效果表](#相关参数)。
+TiDB 资源管控特性提供了两层资源管理能力，包括在 TiDB 层的流控能力和 TiKV 层的优先级调度的能力。两个能力可以单独或者同时开启，详情请参见[参数组合效果表](#相关参数)。将用户绑定到某个资源组后，TiDB 层会根据用户所绑定资源组设定的读写配额对用户的读写请求做流控，TiKV 层会根据读写配额映射的优先级来对请求做调度。通过流控和调度这两层控制，可以实现应用的资源隔离，满足服务质量 (QoS) 要求。
 
-- TiDB 流控：TiDB 流控使用[令牌桶算法](https://en.wikipedia.org/wiki/Token_bucket) 做流控；如果桶内令牌数不够，而且资源组没有指定 `BURSTABLE` 特性，属于该资源组的请求会等待令牌桶回填令牌并重试，重试可能会超时失败。
-- TiKV 调度：如果你没有设置绝对优先级 [(`PRIORITY`)](/information-schema/information-schema-resource-groups.md#示例)，TiKV 使用基于资源组 `RU_PER_SEC` 的取值映射成各自资源组读写请求的优先级，基于各自的优先级在存储层使用优先级队列调度处理请求。另外你也可以为资源组设置绝对优先级 (`PRIORITY`) 。
+- TiDB 流控：TiDB 流控使用[令牌桶算法](https://en.wikipedia.org/wiki/Token_bucket) 做流控。如果桶内令牌数不够，而且资源组没有指定 `BURSTABLE` 特性，属于该资源组的请求会等待令牌桶回填令牌并重试，重试可能会超时失败。
+- TiKV 调度：你也可以为资源组设置绝对优先级 [(`PRIORITY`)](/information-schema/information-schema-resource-groups.md#示例)，不同的资源按照 `PRIORITY` 的设置进行调度，`PRIORITY` 高的任务会被优先调度。如果你没有设置绝对优先级 (`PRIORITY`)，TiKV 使用基于资源组 `RU_PER_SEC` 的取值映射成各自资源组读写请求的优先级，基于各自的优先级在存储层使用优先级队列调度处理请求。
 
 ## 使用场景
 
@@ -25,8 +25,8 @@ TiDB 资源管控特性提供了两层资源管理能力，包括在 TiDB 层的
 
 目前，资源管控特性具有以下限制:
 
-* 本版本只支持对前台客户发起的读写请求做限流和调度，不支持对 DDL 以及 Auto Analyze 等后台任务的限流和调度。
-* 资源管控将带来额外的调度开销。因此，开启该特性后，性能可能会有轻微下降。
+- 本版本只支持对前台客户发起的读写请求做限流和调度，不支持对 DDL 以及 Auto Analyze 等后台任务的限流和调度。
+- 资源管控将带来额外的调度开销。因此，开启该特性后，性能可能会有轻微下降。
 
 ## 什么是 Request Unit (RU)
 
@@ -50,8 +50,8 @@ Request Unit (RU) 是 TiDB 对 CPU、IO 等系统资源的统一抽象的单位,
 
 资源管控特性引入了两个新的全局开关变量：
 
-* TiDB: 通过配置全局变量 [`tidb_enable_resource_control`](/system-variables.md#tidb_enable_resource_control-从-v660-版本开始引入) 控制是否打开资源组流控。
-* TiKV: 通过配置参数 [`resource-control.enabled`](/tikv-configuration-file.md#resource-control) 控制是否使用基于资源组配额的请求调度。
+- TiDB: 通过配置全局变量 [`tidb_enable_resource_control`](/system-variables.md#tidb_enable_resource_control-从-v660-版本开始引入) 控制是否打开资源组流控。
+- TiKV: 通过配置参数 [`resource-control.enabled`](/tikv-configuration-file.md#resource-control) 控制是否使用基于资源组配额的请求调度。
 
 这两个参数的组合效果见下表：
 
@@ -106,13 +106,13 @@ TiDB 支持如下三个级别的资源组设置：
 
 #### 将用户绑定到资源组
 
-下面的示例创建一个用户 `usr1` 并将其绑定到资源组 `rg1`。
+下面的示例创建一个用户 `usr1` 并将其绑定到资源组 `rg1`。其中 `rg1` 为[创建资源组](#创建资源组)示例中创建的资源组。
 
 ```sql
 CREATE USER 'usr1'@'%' IDENTIFIED BY '123' RESOURCE GROUP rg1;
 ```
 
-下面示例使用 `ALTER USER` 将用户 `usr2` 绑定到资源组 `rg2`。
+下面示例使用 `ALTER USER` 将用户 `usr2` 绑定到资源组 `rg2`。其中 `rg2` 为[创建资源组](#创建资源组)示例中创建的资源组。
 
 ```sql
 ALTER USER usr2 RESOURCE GROUP rg2;
