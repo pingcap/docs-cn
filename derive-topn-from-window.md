@@ -13,7 +13,7 @@ SELECT * FROM (SELECT ROW_NUMBER() OVER (ORDER BY a) AS rownumber FROM t) dt WHE
 
 按照正常的 SQL 执行流程，TiDB 需要先对 `t` 表的所有数据进行排序，然后为每一行都求得相应的 `ROW_NUMBER()` 结果，最后再进行 `rownumber <= 3` 的过滤。 
 
-从 v7.0.0 开始，TiDB 支持从窗口函数中推导 TopN 或 Limit。通过该优化规则，TiDB 可以将原始 SQL 等价改写成以下形式：
+从 v7.0.0 开始，TiDB 支持从窗口函数中推导 TopN 或 Limit 算子。通过该优化规则，TiDB 可以将原始 SQL 等价改写成以下形式：
 
 ```sql
 WITH t_topN AS (SELECT a FROM t1 ORDER BY a LIMIT 3) SELECT * FROM (SELECT ROW_NUMBER() OVER (ORDER BY a) AS rownumber FROM t_topN) dt WHERE rownumber <= 3
