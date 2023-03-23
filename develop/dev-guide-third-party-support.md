@@ -26,40 +26,252 @@ If you encounter problems when connecting to TiDB using the tools listed in this
 
 ## Driver
 
-| Language | Driver | Latest tested version | Support level | TiDB adapter | Tutorial |
-| - | - | - | - | - | - |
-| C | [libmysqlclient](https://dev.mysql.com/doc/c-api/8.0/en/c-api-introduction.html) | 8.0 | Compatible | N/A | N/A |
-| C#(.Net) | [MySQL Connector/NET](https://downloads.mysql.com/archives/c-net/) | 8.0 | Compatible | N/A | N/A |
-| ODBC | [MySQL Connector/ODBC](https://downloads.mysql.com/archives/c-odbc/) | 8.0 | Compatible | N/A | N/A |
-| Go | [go-sql-driver/mysql](https://github.com/go-sql-driver/mysql) | v1.6.0 | Full | N/A | [Build a Simple CRUD App with TiDB and Golang](/develop/dev-guide-sample-application-golang.md) |
-| Java | [JDBC](https://dev.mysql.com/downloads/connector/j/) | 8.0 | Full | [pingcap/mysql-connector-j](/develop/dev-guide-choose-driver-or-orm.md#java-drivers) <br/> [pingcap/tidb-loadbalance](/develop/dev-guide-choose-driver-or-orm.md#java-client-load-balancing) | [Build a Simple CRUD App with TiDB and Java](/develop/dev-guide-sample-application-java.md) |
-| JavaScript | [mysql](https://github.com/mysqljs/mysql) | v2.18.1 | Compatible | N/A | N/A |
-| PHP | [mysqlnd](https://dev.mysql.com/downloads/connector/php-mysqlnd/) | PHP 5.4+ | Compatible | N/A | N/A |
-| Python | [MySQL Connector/Python](https://downloads.mysql.com/archives/c-python/) | 8.0 | Compatible | N/A | N/A |
+<table>
+   <thead>
+      <tr>
+         <th>Language</th>
+         <th>Driver</th>
+         <th>Latest tested version</th>
+         <th>Support level</th>
+         <th>TiDB adapter</th>
+         <th>Tutorial</th>
+      </tr>
+   </thead>
+   <tbody>
+      <tr>
+         <td>C</td>
+         <td><a href="https://dev.mysql.com/doc/c-api/8.0/en/c-api-introduction.html" target="_blank" referrerpolicy="no-referrer-when-downgrade">libmysqlclient</a></td>
+         <td>8.0</td>
+         <td>Compatible</td>
+         <td>N/A</td>
+         <td>N/A</td>
+      </tr>
+      <tr>
+         <td>C#(.Net)</td>
+         <td><a href="https://downloads.mysql.com/archives/c-net/" target="_blank" referrerpolicy="no-referrer-when-downgrade">MySQL Connector/NET</a></td>
+         <td>8.0</td>
+         <td>Compatible</td>
+         <td>N/A</td>
+         <td>N/A</td>
+      </tr>
+      <tr>
+         <td>ODBC</td>
+         <td><a href="https://downloads.mysql.com/archives/c-odbc/" target="_blank" referrerpolicy="no-referrer-when-downgrade">MySQL Connector/ODBC</a></td>
+         <td>8.0</td>
+         <td>Compatible</td>
+         <td>N/A</td>
+         <td>N/A</td>
+      </tr>
+      <tr>
+         <td>Go</td>
+         <td><a href="https://github.com/go-sql-driver/mysql" target="_blank" referrerpolicy="no-referrer-when-downgrade">go-sql-driver/mysql</a></td>
+         <td>v1.6.0</td>
+         <td>Full</td>
+         <td>N/A</td>
+         <td><a href="/tidb/dev/dev-guide-sample-application-golang">Build a Simple CRUD App with TiDB and Golang</a></td>
+      </tr>
+      <tr>
+         <td>Java</td>
+         <td><a href="https://dev.mysql.com/downloads/connector/j/" target="_blank" referrerpolicy="no-referrer-when-downgrade">JDBC</a></td>
+         <td>8.0</td>
+         <td>Full</td>
+         <td>
+            <ul>
+               <li><a href="/tidb/dev/dev-guide-choose-driver-or-orm#java-drivers" data-href="/tidb/dev/dev-guide-choose-driver-or-orm#java-drivers">pingcap/mysql-connector-j</a></li>
+               <li><a href="/tidb/dev/dev-guide-choose-driver-or-orm#tidb-loadbalance" data-href="/tidb/dev/dev-guide-choose-driver-or-orm#tidb-loadbalance">pingcap/tidb-loadbalance</a></li>
+            </ul>
+         </td>
+         <td><a href="/tidb/dev/dev-guide-sample-application-java">Build a Simple CRUD App with TiDB and Java</a></td>
+      </tr>
+      <tr>
+         <td>JavaScript</td>
+         <td><a href="https://github.com/mysqljs/mysql" target="_blank" referrerpolicy="no-referrer-when-downgrade">mysql</a></td>
+         <td>v2.18.1</td>
+         <td>Compatible</td>
+         <td>N/A</td>
+         <td>N/A</td>
+      </tr>
+      <tr>
+         <td>PHP</td>
+         <td><a href="https://dev.mysql.com/downloads/connector/php-mysqlnd/" target="_blank" referrerpolicy="no-referrer-when-downgrade">mysqlnd</a></td>
+         <td>PHP 5.4+</td>
+         <td>Compatible</td>
+         <td>N/A</td>
+         <td>N/A</td>
+      </tr>
+      <tr>
+         <td rowspan="3">Python</td>
+         <td><a href="https://dev.mysql.com/doc/connector-python/en/" target="_blank" referrerpolicy="no-referrer-when-downgrade">mysql-connector-python</a></td>
+         <td>8.0</td>
+         <td>Compatible</td>
+         <td>N/A</td>
+         <td><a href="/tidb/dev/dev-guide-sample-application-python">Build a Simple CRUD App with TiDB and Python</a></td>
+      </tr>
+      <tr>
+         <td><a href="https://mysqlclient.readthedocs.io/" target="_blank" referrerpolicy="no-referrer-when-downgrade">mysqlclient</a></td>
+         <td>2.1.1</td>
+         <td>Compatible</td>
+         <td>N/A</td>
+         <td><a href="/tidb/dev/dev-guide-sample-application-python">Build a Simple CRUD App with TiDB and Python</a></td>
+      </tr>
+      <tr>
+         <td><a href="https://pypi.org/project/PyMySQL/" target="_blank" referrerpolicy="no-referrer-when-downgrade">PyMySQL</a></td>
+         <td>1.0.2</td>
+         <td>Compatible</td>
+         <td>N/A</td>
+         <td><a href="/tidb/dev/dev-guide-sample-application-python">Build a Simple CRUD App with TiDB and Python</a></td>
+      </tr>
+   </tbody>
+</table>
 
 ## ORM
 
-| Language | ORM framework | Latest tested version | Support level | TiDB adapter | Tutorial |
-| - | - | - | - | - | - |
-| Go | [gorm](https://github.com/go-gorm/gorm) | v1.23.5 | Full | N/A | [Build a Simple CRUD App with TiDB and Golang](/develop/dev-guide-sample-application-golang.md) |
-| Go | [beego](https://github.com/beego/beego) | v2.0.3 | Full | N/A | N/A |
-| Go | [upper/db](https://github.com/upper/db) | v4.5.2 | Full | N/A | N/A |
-| Go | [xorm](https://gitea.com/xorm/xorm) | v1.3.1 | Full | N/A | N/A |
-| Go | [ent](https://github.com/ent/ent) | v0.11.0 | Compatible | N/A | N/A |
-| Java | [Hibernate](https://hibernate.org/orm/) | 6.1.0.Final | Full | N/A | [Build a Simple CRUD App with TiDB and Java](/develop/dev-guide-sample-application-java.md) |
-| Java | [MyBatis](https://mybatis.org/mybatis-3/) | v3.5.10 | Full | N/A | [Build a Simple CRUD App with TiDB and Java](/develop/dev-guide-sample-application-java.md) |
-| Java | [Spring Data JPA](https://spring.io/projects/spring-data-jpa/) | 2.7.2 | Full | N/A | [Build a TiDB Application Using Spring Boot](/develop/dev-guide-sample-application-spring-boot.md) |
-| Java | [jOOQ](https://github.com/jOOQ/jOOQ) | v3.16.7 (Open Source) | Full | N/A | N/A |
-| Ruby | [Active Record](https://guides.rubyonrails.org/active_record_basics.html) | v7.0 | Full | N/A | N/A |
-| JavaScript/TypeScript | [sequelize](https://www.npmjs.com/package/sequelize) | v6.20.1 | Compatible | N/A | N/A |
-| JavaScript/TypeScript | [Knex.js](https://knexjs.org/) | v1.0.7 | Compatible | N/A | N/A |
-| JavaScript/TypeScript | [Prisma Client](https://www.prisma.io/) | 3.15.1 | Compatible | N/A | N/A |
-| JavaScript/TypeScript | [TypeORM](https://www.npmjs.com/package/typeorm) | v0.3.6 | Compatible | N/A | N/A |
-| PHP | [laravel](https://laravel.com/) | v9.1.10 | Compatible | [laravel-tidb](https://github.com/colopl/laravel-tidb) | N/A |
-| Python | [Django](https://pypi.org/project/Django/) | v4.0.5 | Compatible | [django-tidb](https://github.com/pingcap/django-tidb) | N/A |
-| Python | [peewee](https://github.com/coleifer/peewee/) | v3.14.10 | Compatible | N/A | N/A |
-| Python | [PonyORM](https://ponyorm.org/) | v0.7.16 | Compatible | N/A | N/A |
-| Python | [SQLAlchemy](https://www.sqlalchemy.org/) | v1.4.37 | Compatible | N/A | N/A |
+<table>
+   <thead>
+      <tr>
+         <th>Language</th>
+         <th>ORM framework</th>
+         <th>Latest tested version</th>
+         <th>Support level</th>
+         <th>TiDB adapter</th>
+         <th>Tutorial</th>
+      </tr>
+   </thead>
+   <tbody>
+      <tr>
+         <td rowspan="5">Go</td>
+         <td><a href="https://github.com/go-gorm/gorm" target="_blank" referrerpolicy="no-referrer-when-downgrade">gorm</a></td>
+         <td>v1.23.5</td>
+         <td>Full</td>
+         <td>N/A</td>
+         <td><a href="/tidb/dev/dev-guide-sample-application-golang">Build a Simple CRUD App with TiDB and Golang</a></td>
+      </tr>
+      <tr>
+         <td><a href="https://github.com/beego/beego" target="_blank" referrerpolicy="no-referrer-when-downgrade">beego</a></td>
+         <td>v2.0.3</td>
+         <td>Full</td>
+         <td>N/A</td>
+         <td>N/A</td>
+      </tr>
+      <tr>
+         <td><a href="https://github.com/upper/db" target="_blank" referrerpolicy="no-referrer-when-downgrade">upper/db</a></td>
+         <td>v4.5.2</td>
+         <td>Full</td>
+         <td>N/A</td>
+         <td>N/A</td>
+      </tr>
+      <tr>
+         <td><a href="https://gitea.com/xorm/xorm" target="_blank" referrerpolicy="no-referrer-when-downgrade">xorm</a></td>
+         <td>v1.3.1</td>
+         <td>Full</td>
+         <td>N/A</td>
+         <td>N/A</td>
+      </tr>
+      <tr>
+         <td><a href="https://github.com/ent/ent" target="_blank" referrerpolicy="no-referrer-when-downgrade">ent</a></td>
+         <td>v0.11.0</td>
+         <td>Compatible</td>
+         <td>N/A</td>
+         <td>N/A</td>
+      </tr>
+      <tr>
+         <td rowspan="4">Java</td>
+         <td><a href="https://hibernate.org/orm/" target="_blank" referrerpolicy="no-referrer-when-downgrade">Hibernate</a></td>
+         <td>6.1.0.Final</td>
+         <td>Full</td>
+         <td>N/A</td>
+         <td><a href="/tidb/dev/dev-guide-sample-application-java">Build a Simple CRUD App with TiDB and Java</a></td>
+      </tr>
+      <tr>
+         <td><a href="https://mybatis.org/mybatis-3/" target="_blank" referrerpolicy="no-referrer-when-downgrade">MyBatis</a></td>
+         <td>v3.5.10</td>
+         <td>Full</td>
+         <td>N/A</td>
+         <td><a href="/tidb/dev/dev-guide-sample-application-java">Build a Simple CRUD App with TiDB and Java</a></td>
+      </tr>
+      <tr>
+         <td><a href="https://spring.io/projects/spring-data-jpa/" target="_blank" referrerpolicy="no-referrer-when-downgrade">Spring Data JPA</a></td>
+         <td>2.7.2</td>
+         <td>Full</td>
+         <td>N/A</td>
+         <td><a href="/tidb/dev/dev-guide-sample-application-spring-boot">Build a Simple CRUD App with TiDB and Spring Boot</a></td>
+      </tr>
+      <tr>
+         <td><a href="https://github.com/jOOQ/jOOQ" target="_blank" referrerpolicy="no-referrer-when-downgrade">jOOQ</a></td>
+         <td>v3.16.7 (Open Source)</td>
+         <td>Full</td>
+         <td>N/A</td>
+         <td>N/A</td>
+      </tr>
+      <tr>
+         <td>Ruby</td>
+         <td><a href="https://guides.rubyonrails.org/active_record_basics.html" target="_blank" referrerpolicy="no-referrer-when-downgrade">Active Record</a></td>
+         <td>v7.0</td>
+         <td>Full</td>
+         <td>N/A</td>
+         <td>N/A</td>
+      </tr>
+      <tr>
+         <td rowspan="4">JavaScript / TypeScript</td>
+         <td><a href="https://www.npmjs.com/package/sequelize" target="_blank" referrerpolicy="no-referrer-when-downgrade">sequelize</a></td>
+         <td>v6.20.1</td>
+         <td>Compatible</td>
+         <td>N/A</td>
+         <td>N/A</td>
+      </tr>
+      <tr>
+         <td><a href="https://knexjs.org/" target="_blank" referrerpolicy="no-referrer-when-downgrade">Knex.js</a></td>
+         <td>v1.0.7</td>
+         <td>Compatible</td>
+         <td>N/A</td>
+         <td>N/A</td>
+      </tr>
+      <tr>
+         <td><a href="https://www.prisma.io/" target="_blank" referrerpolicy="no-referrer-when-downgrade">Prisma Client</a></td>
+         <td>3.15.1</td>
+         <td>Compatible</td>
+         <td>N/A</td>
+         <td>N/A</td>
+      </tr>
+      <tr>
+         <td><a href="https://www.npmjs.com/package/typeorm" target="_blank" referrerpolicy="no-referrer-when-downgrade">TypeORM</a></td>
+         <td>v0.3.6</td>
+         <td>Compatible</td>
+         <td>N/A</td>
+         <td>N/A</td>
+      </tr>
+      <tr>
+         <td>PHP</td>
+         <td><a href="https://laravel.com/" target="_blank" referrerpolicy="no-referrer-when-downgrade">laravel</a></td>
+         <td>v9.1.10</td>
+         <td>Compatible</td>
+         <td><a href="https://github.com/colopl/laravel-tidb" target="_blank" referrerpolicy="no-referrer-when-downgrade">laravel-tidb</a></td>
+         <td>N/A</td>
+      </tr>
+      <tr>
+         <td rowspan="4">Python</td>
+         <td><a href="https://pypi.org/project/Django/" target="_blank" referrerpolicy="no-referrer-when-downgrade">Django</a></td>
+         <td>v4.0.5</td>
+         <td>Compatible</td>
+         <td><a href="https://github.com/pingcap/django-tidb" target="_blank" referrerpolicy="no-referrer-when-downgrade">django-tidb</a></td>
+         <td>N/A</td>
+      </tr>
+      <tr>
+         <td><a href="https://github.com/coleifer/peewee/" target="_blank" referrerpolicy="no-referrer-when-downgrade">peewee</a></td>
+         <td>v3.14.10</td>
+         <td>Compatible</td>
+         <td>N/A</td>
+         <td><a href="/tidb/dev/dev-guide-sample-application-python">Build a Simple CRUD App with TiDB and Python</a></td>
+      </tr>
+      <tr>
+         <td><a href="https://www.sqlalchemy.org/" target="_blank" referrerpolicy="no-referrer-when-downgrade">SQLAlchemy</a></td>
+         <td>v1.4.37</td>
+         <td>Compatible</td>
+         <td>N/A</td>
+         <td><a href="/tidb/dev/dev-guide-sample-application-python">Build a Simple CRUD App with TiDB and Python</a></td>
+      </tr>
+   </tbody>
+</table>
 
 ## GUI
 
@@ -69,9 +281,38 @@ If you encounter problems when connecting to TiDB using the tools listed in this
 | [Navicat for MySQL](https://www.navicat.com/) | 16.0.14 | Compatible | N/A |
 | [MySQL Workbench](https://www.mysql.com/products/workbench/) | 8.0 | Compatible | N/A |
 
-| IDE | Plugin | Support level | Tutorial |
-| - | - | - | - |
-| [DataGrip](https://www.jetbrains.com/datagrip/) | N/A | Compatible | N/A |
-| [IntelliJ IDEA](https://www.jetbrains.com/idea/) | N/A | Compatible | N/A |
-| [Visual Studio Code](https://code.visualstudio.com/) | [TiDE](https://marketplace.visualstudio.com/items?itemName=dragonly.ticode) | Compatible | N/A |
-| [Visual Studio Code](https://code.visualstudio.com/) | [MySQL](https://marketplace.visualstudio.com/items?itemName=formulahendry.vscode-mysql) | Compatible | N/A |
+<table>
+   <thead>
+      <tr>
+         <th>IDE</th>
+         <th>Plugin</th>
+         <th>Support level</th>
+         <th>Tutorial</th>
+      </tr>
+   </thead>
+   <tbody>
+      <tr>
+         <td><a href="https://www.jetbrains.com/datagrip/" target="_blank" referrerpolicy="no-referrer-when-downgrade">DataGrip</a></td>
+         <td>N/A</td>
+         <td>Compatible</td>
+         <td>N/A</td>
+      </tr>
+      <tr>
+         <td><a href="https://www.jetbrains.com/idea/" target="_blank" referrerpolicy="no-referrer-when-downgrade">IntelliJ IDEA</a></td>
+         <td>N/A</td>
+         <td>Compatible</td>
+         <td>N/A</td>
+      </tr>
+      <tr>
+         <td rowspan="2"><a href="https://code.visualstudio.com/" target="_blank" referrerpolicy="no-referrer-when-downgrade">Visual Studio Code</a></td>
+         <td><a href="https://marketplace.visualstudio.com/items?itemName=dragonly.ticode" target="_blank" referrerpolicy="no-referrer-when-downgrade">TiDE</a></td>
+         <td>Compatible</td>
+         <td>N/A</td>
+      </tr>
+      <tr>
+         <td><a href="https://marketplace.visualstudio.com/items?itemName=formulahendry.vscode-mysql" target="_blank" referrerpolicy="no-referrer-when-downgrade">MySQL</a></td>
+         <td>Compatible</td>
+         <td>N/A</td>
+      </tr>
+   </tbody>
+</table>

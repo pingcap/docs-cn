@@ -141,6 +141,33 @@ func main() {
 
 </div>
 
+<div label="Python" value="python">
+
+In Python, the example is as follows:
+
+```python
+import MySQLdb
+import datetime
+import time
+connection = MySQLdb.connect(
+    host="127.0.0.1",
+    port=4000,
+    user="root",
+    password="",
+    database="bookshop",
+    autocommit=True
+)
+with connection:
+    with connection.cursor() as cursor:
+        start_time = datetime.datetime(2022, 4, 15)
+        end_time = datetime.datetime(2022, 4, 15, 0, 15)
+        delete_sql = "DELETE FROM `bookshop`.`ratings` WHERE `rated_at` >= %s AND `rated_at` <= %s"
+        affect_rows = cursor.execute(delete_sql, (start_time, end_time))
+        print(f'delete {affect_rows} data')
+```
+
+</div>
+
 </SimpleTab>
 
 <CustomContent platform="tidb">
@@ -309,6 +336,38 @@ func deleteBatch(db *sql.DB, startTime, endTime time.Time) (int64, error) {
     fmt.Printf("delete %d data\n", affectedRows)
     return affectedRows, nil
 }
+```
+
+In each iteration, `DELETE` deletes up to 1000 rows from `2022-04-15 00:00:00` to `2022-04-15 00:15:00`.
+
+</div>
+
+<div label="Python" value="python">
+
+In Python, the bulk-delete example is as follows:
+
+```python
+import MySQLdb
+import datetime
+import time
+connection = MySQLdb.connect(
+    host="127.0.0.1",
+    port=4000,
+    user="root",
+    password="",
+    database="bookshop",
+    autocommit=True
+)
+with connection:
+    with connection.cursor() as cursor:
+        start_time = datetime.datetime(2022, 4, 15)
+        end_time = datetime.datetime(2022, 4, 15, 0, 15)
+        affect_rows = -1
+        while affect_rows != 0:
+            delete_sql = "DELETE FROM `bookshop`.`ratings` WHERE `rated_at` >= %s AND  `rated_at` <= %s LIMIT 1000"
+            affect_rows = cursor.execute(delete_sql, (start_time, end_time))
+            print(f'delete {affect_rows} data')
+            time.sleep(1)
 ```
 
 In each iteration, `DELETE` deletes up to 1000 rows from `2022-04-15 00:00:00` to `2022-04-15 00:15:00`.

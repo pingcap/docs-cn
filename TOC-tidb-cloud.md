@@ -18,9 +18,10 @@
     - [Build a TiDB Cluster in TiDB Cloud (Serverless Tier)](/develop/dev-guide-build-cluster-in-cloud.md)
     - [CRUD SQL in TiDB](/develop/dev-guide-tidb-crud-sql.md)
   - Example Applications
-    - [Java](/develop/dev-guide-sample-application-java.md)
-    - [Java (Spring Boot)](/develop/dev-guide-sample-application-spring-boot.md)
     - [Golang](/develop/dev-guide-sample-application-golang.md)
+    - [Java (Spring Boot)](/develop/dev-guide-sample-application-spring-boot.md)
+    - [Java](/develop/dev-guide-sample-application-java.md)
+    - [Python](/develop/dev-guide-sample-application-python.md)
   - Connect to TiDB
     - [Choose Driver or ORM](/develop/dev-guide-choose-driver-or-orm.md)
     - [Connection Pools and Connection Parameters](/develop/dev-guide-connection-parameters.md)

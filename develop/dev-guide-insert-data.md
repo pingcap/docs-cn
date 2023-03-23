@@ -113,11 +113,11 @@ The following is a typical scenario of JDBC connection string configurations. In
 jdbc:mysql://127.0.0.1:4000/test?user=root&useConfigs=maxPerformance&useServerPrepStmts=true&prepStmtCacheSqlLimit=2048&prepStmtCacheSize=256&rewriteBatchedStatements=true&allowMultiQueries=true
 ```
 
-For a complete example in Java, see:
+For complete examples in Java, see:
 
-- [Build a Simple CRUD App with TiDB and Java - Using JDBC](/develop/dev-guide-sample-application-java.md#step-2-get-the-code)
-- [Build a Simple CRUD App with TiDB and Java - Using Hibernate](/develop/dev-guide-sample-application-java.md#step-2-get-the-code)
-- [Build the TiDB Application using Spring Boot](/develop/dev-guide-sample-application-spring-boot.md)
+- [Build a simple CRUD application with TiDB and Java - using JDBC](/develop/dev-guide-sample-application-java.md#step-2-get-the-code)
+- [Build a simple CRUD application with TiDB and Java - using Hibernate](/develop/dev-guide-sample-application-java.md#step-2-get-the-code)
+- [Build the TiDB application using Spring Boot](/develop/dev-guide-sample-application-spring-boot.md)
 
 </div>
 
@@ -189,10 +189,40 @@ func buildBulkInsertSQL(amount int) string {
 }
 ```
 
-For a complete example in Golang, see:
+For complete examples in Golang, see:
 
-- [Use go-sql-driver/mysql to build a simple CRUD app with TiDB and Golang](/develop/dev-guide-sample-application-golang.md#step-2-get-the-code)
-- [Use GORM to build a simple CRUD app with TiDB and Golang](/develop/dev-guide-sample-application-java.md#step-2-get-the-code)
+- [Use go-sql-driver/mysql to build a simple CRUD application with TiDB and Golang](/develop/dev-guide-sample-application-golang.md#step-2-get-the-code)
+- [Use GORM to build a simple CRUD application with TiDB and Golang](/develop/dev-guide-sample-application-java.md#step-2-get-the-code)
+
+</div>
+
+<div label="Python">
+
+```python
+import MySQLdb
+connection = MySQLdb.connect(
+    host="127.0.0.1",
+    port=4000,
+    user="root",
+    password="",
+    database="bookshop",
+    autocommit=True
+)
+
+with get_connection(autocommit=True) as connection:
+    with connection.cursor() as cur:
+        player_list = random_player(1919)
+        for idx in range(0, len(player_list), 114):
+            cur.executemany("INSERT INTO player (id, coins, goods) VALUES (%s, %s, %s)", player_list[idx:idx + 114])
+```
+
+For complete examples in Python, see:
+
+- [Use PyMySQL to build a simple CRUD application with TiDB and Python](/develop/dev-guide-sample-application-python.md#step-2-get-the-code)
+- [Use mysqlclient to build a simple CRUD application with TiDB and Python](/develop/dev-guide-sample-application-python.md#step-2-get-the-code)
+- [Use mysql-connector-python to build a simple CRUD application with TiDB and Python](/develop/dev-guide-sample-application-python.md#step-2-get-the-code)
+- [Use SQLAlchemy to build a simple CRUD application with TiDB and Python](/develop/dev-guide-sample-application-python.md#step-2-get-the-code)
+- [Use peewee to build a simple CRUD application with TiDB and Python](/develop/dev-guide-sample-application-python.md#step-2-get-the-code)
 
 </div>
 
