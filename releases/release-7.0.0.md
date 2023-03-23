@@ -447,7 +447,10 @@ TiDB 版本：7.0.0
 
     + Backup & Restore (BR)
 
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
+        - 修复了在 PITR 恢复过程中 split region 重试等待时间不足的问题 [#42001](https://github.com/pingcap/tidb/issues/42001) @[joccau](https://github.com/joccau)
+        - 修复了 PITR 恢复过程遇到 memory is limited 错误而恢复失败的问题 [#41983](https://github.com/pingcap/tidb/issues/41983) @[joccau](https://github.com/joccau)
+        - 修复了 PD 节点宕机可能导致 PITR 日志备份进度不推进的问题 [#14184](https://github.com/tikv/tikv/issues/14184) @[YuJuncen](https://github.com/YuJuncen)
+        - 优化了 region leadership 迁移导致了 PITR 日志备份进度延迟变高的问题 [#13638](https://github.com/tikv/tikv/issues/13638) @[YuJuncen](https://github.com/YuJuncen) 
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
     + TiCDC
