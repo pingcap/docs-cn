@@ -471,7 +471,7 @@ TiDB 版本：7.0.0
         - 修复了 ddl sink 内部一个 data race 问题 [#8238](https://github.com/pingcap/tiflow/issues/8238) @[3AceShowHand](https://github.com/3AceShowHand)
         - 修复了可能导致 stopped 状态的 changefeed 自动重启的问题. [#8330](https://github.com/pingcap/tiflow/issues/8330) @[sdojjy](https://github.com/sdojjy)
         - 修复了当所有 kafka server 不可访问时会导致 cdc panic 的问题 [#8523](https://github.com/pingcap/tiflow/issues/8523) @[3AceShowHand](https://github.com/3AceShowHand)
-        - 修复了当下游是 MySQL 时可能会丢数据的问题. [#8453](https://github.com/pingcap/tiflow/issues/8453) @[asddongmen](https://github.com/asddongmen)
+        - 修复了下游为 mysql 且执行语句和 tidb 行为不兼容时可能导致数据丢失的 BUG。具体可以参考: [UPDATE-MySQL compatibility](https://docs.pingcap.com/tidb/stable/sql-statement-update#mysql-compatibility). [#8453](https://github.com/pingcap/tiflow/issues/8453) @[asddongmen](https://github.com/asddongmen)
         - 修复了一个 rolling upgrade 可能导致 CDC OOM 或者 checkpoint 卡住的问题 [#8329](https://github.com/pingcap/tiflow/issues/8329) @[overvenus](https://github.com/overvenus)
         - 修复了一个在 K8s 上不能 graceful upgrade TiCDC 集群的问题 [#8484](https://github.com/pingcap/tiflow/issues/8484) @[overvenus](https://github.com/overvenus)
         
