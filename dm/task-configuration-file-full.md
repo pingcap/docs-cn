@@ -150,8 +150,8 @@ loaders:                             # load 处理单元的运行配置参数
     # Checksum 对比失败通常表示导入异常（数据丢失或数据不一致），因此建议总是开启 Checksum。
     checksum-physical: "required"
     # 配置是否在 CHECKSUM 结束后对所有表逐个执行 `ANALYZE TABLE <table>` 操作。
-    # - "required"（默认值）。表示导入完成后进行 Analyze 操作，如果校验失败会让任务暂停，需要用户手动处理。
-    # - "optional"。表示导入完成后进行数据分析，如果校验失败会打印 warn 日志，任务不会暂停。
+    # - "required"（默认值）。表示导入完成后进行 Analyze 操作，如果操作失败会让任务暂停，需要用户手动处理。
+    # - "optional"。表示导入完成后进行数据分析，如果操作失败会打印 warn 日志，任务不会暂停。
     # - "off"。表示导入完成后不进行数据分析。
     # Analyze 仅影响统计数据，建议在大部分场景下无需开启 Analyze。
     analyze: "off"
