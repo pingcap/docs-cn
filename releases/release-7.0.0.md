@@ -238,7 +238,6 @@ TiDB 版本：7.0.0
 
     - 支持从 S3 导入数据到 TiDB，且支持通配符一次性匹配多个源文件导入到 TiDB 。
     - 支持 CSV、TSV、Parquet、SQL(mydumper/dumpling) 格式的源文件。
-    - 支持 precheck ，可在导入之前将所有不满足导入数据的问题检测出来，用户根据检测结果优化后，再次提交任务。提升任务配置体验。
     - 支持将任务设置为 Detached，让任务在后台执行。
     - 支持任务管理，可通过 show load data jobid 查询任务状态和进展详情。方便用户管理和维护。
 
