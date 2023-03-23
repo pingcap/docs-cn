@@ -369,7 +369,7 @@ TiDB 版本：7.0.0
 
     + Backup & Restore (BR)
 
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
+        - 优化了 region leadership 迁移导致了 PITR 日志备份进度延迟变高的问题 [#13638](https://github.com/tikv/tikv/issues/13638) @[YuJuncen](https://github.com/YuJuncen) 
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
     + TiCDC
