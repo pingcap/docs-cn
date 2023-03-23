@@ -1823,6 +1823,15 @@ Raft Engine 相关的配置项。
 + 控制 Raft Engine 是否回收过期的日志文件。该配置项启用时，Raft Engine 将保留逻辑上被清除的日志文件，用于日志回收，减少写负载的长尾延迟。
 + 默认值：`true`
 
+### `prefill-for-recycle` <span class="version-mark">从 v7.0.0 版本开始引入</span>
+
+> **注意：**
+>
+> 仅在 [`enable-log-recycle`](#enable-log-recycle-从-v630-版本开始引入) 的值为 `true` 时，该配置项才生效。
+
++ 控制 Raft Engine 是否自动生成空的日志文件用于日志回收。该配置项启用时，Raft Engine 将在初始化时自动填充一批空日志文件用于日志回收，保证日志回收在初始化后立即生效。
++ 默认值：`false`
+
 ## security
 
 安全相关配置项。
