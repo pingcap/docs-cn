@@ -355,6 +355,7 @@ TiDB 版本：7.0.0
 
 + TiKV
 
+    - 优化收集统计信息时的内存占用和速度 [#14204](https://github.com/tikv/tikv/pull/14204) [#14280](https://github.com/tikv/tikv/pull/14280) [#14345](https://github.com/tikv/tikv/pull/14345) [#14376](https://github.com/tikv/tikv/pull/14376) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes)
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
@@ -402,9 +403,9 @@ TiDB 版本：7.0.0
 
     + TiDB Lightning
 
-        - Lightning local backend 支持导入数据和索引分离导入，提升导入速度和稳定性 [#42132](https://github.com/pingcap/tidb/issues/42132) @[gozssky](https://github.com/gozssky)
+        - TiDB Lightning local backend 支持导入数据和索引分离导入，提升导入速度和稳定性 [#42132](https://github.com/pingcap/tidb/issues/42132) @[gozssky](https://github.com/gozssky)
 
-            Lightning 增加 add-index-by-sql 参数。当 TiDB 版本大于等于 v7.0.0 时默认取值为 true，表示在物理导入模式（ local backend）下，会在导入数据完成后，通过 add index 的 SQL 语句帮用户建索引，提升导入数据的速度和稳定性。当 TiDB 版本低于 v7.0.0 时默认取值为 false，和历史版本保存一致，表示仍然会用 Lightning  将行数据以及索引数据编码成 kv pairs 后再一同导入到 TiKV。
+            TiDB Lightning 增加 `add-index-by-sql` 参数。默认取值为 `false`，表示仍然会用 TiDB Lightning 将行数据以及索引数据编码成 KV pairs 后再一同导入到 TiKV。如果设置为 `true`，表示在物理导入模式（local backend）下，会在导入数据完成后，通过 add index 的 SQL 语句帮用户建索引，提升导入数据的速度和稳定性。
 
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
