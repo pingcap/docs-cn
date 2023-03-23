@@ -464,7 +464,7 @@ PD 中内置的 [Resource Control](/tidb-resource-control.md) 相关的配置项
 
 ### `request-unit`
 
-下面是关于 [Request Unit (RU)](/tidb-resource-control.md#什么是-request-unit-ru) 相关的配置项。
+下面是 [Request Unit (RU)](/tidb-resource-control.md#什么是-request-unit-ru) 相关的配置项。
 
 #### `read-base-cost`
 

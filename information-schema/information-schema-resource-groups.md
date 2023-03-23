@@ -53,5 +53,5 @@ mysql> SELECT * FROM information_schema.resource_groups WHERE NAME = 'rg1';
 
 * `NAME`：资源组名称。
 * `RU_PER_SEC`：资源组的回填速度，单位为每秒回填的 [Request Unit (RU)](/tidb-resource-control.md#什么是-request-unit-ru) 数量。
-* `PRIORITY`: 资源组在执行过程中的优先级。不同的资源按照 `PRIORITY` 的设置进行调度，`PRIORITY` 高的任务会被优先调度。如果资源组的 `PRIORITY` 相同，则 `RU_PER_SEC` 越大，优先级越高。如果不指定 `PRIORITY`，资源组的默认优先级为 `MEDIUM`。
+* `PRIORITY`：资源组在执行过程中的绝对优先级。不同的资源按照 `PRIORITY` 的设置进行调度，`PRIORITY` 高的任务会被优先调度。如果资源组的 `PRIORITY` 相同，则 `RU_PER_SEC` 越大，优先级越高。如果不指定 `PRIORITY`，资源组的默认优先级为 `MEDIUM`。
 * `BURSTABLE`：是否允许此资源组超额使用剩余的系统资源。

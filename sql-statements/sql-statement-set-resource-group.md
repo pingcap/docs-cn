@@ -5,7 +5,7 @@ summary: TiDB 数据库中 SET RESOURCE GROUP 的使用概况。
 
 # SET RESOURCE GROUP
 
-`SET RESOURCE GROUP` 用于设置当前用户会话的资源组。
+`SET RESOURCE GROUP` 用于设置当前会话使用的资源组。
 
 ## 语法图
 

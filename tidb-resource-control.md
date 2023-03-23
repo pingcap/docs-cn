@@ -10,7 +10,7 @@ summary: 介绍如何通过资源管控能力来实现对应用资源消耗的�
 TiDB 资源管控特性提供了两层资源管理能力，包括在 TiDB 层的流控能力和 TiKV 层的优先级调度的能力。两个能力可以单独或者同时开启，详情请参见[参数组合效果表](#相关参数)。将用户绑定到某个资源组后，TiDB 层会根据用户所绑定资源组设定的读写配额对用户的读写请求做流控，TiKV 层会根据读写配额映射的优先级来对请求做调度。通过流控和调度这两层控制，可以实现应用的资源隔离，满足服务质量 (QoS) 要求。
 
 - TiDB 流控：TiDB 流控使用[令牌桶算法](https://en.wikipedia.org/wiki/Token_bucket) 做流控。如果桶内令牌数不够，而且资源组没有指定 `BURSTABLE` 特性，属于该资源组的请求会等待令牌桶回填令牌并重试，重试可能会超时失败。
-- TiKV 调度：你也可以为资源组设置绝对优先级 [(`PRIORITY`)](/information-schema/information-schema-resource-groups.md#示例)，不同的资源按照 `PRIORITY` 的设置进行调度，`PRIORITY` 高的任务会被优先调度。如果你没有设置绝对优先级 (`PRIORITY`)，TiKV 使用基于资源组 `RU_PER_SEC` 的取值映射成各自资源组读写请求的优先级，基于各自的优先级在存储层使用优先级队列调度处理请求。
+- TiKV 调度：你可以为资源组设置绝对优先级 ([`PRIORITY`](/information-schema/information-schema-resource-groups.md#示例))，不同的资源按照 `PRIORITY` 的设置进行调度，`PRIORITY` 高的任务会被优先调度。如果没有设置绝对优先级 (`PRIORITY`)，TiKV 会将资源组的 `RU_PER_SEC` 取值映射成各自资源组读写请求的优先级，并基于各自的优先级在存储层使用优先级队列调度处理请求。
 
 ## 使用场景
 
@@ -25,7 +25,7 @@ TiDB 资源管控特性提供了两层资源管理能力，包括在 TiDB 层的
 
 目前，资源管控特性具有以下限制:
 
-- 本版本只支持对前台客户发起的读写请求做限流和调度，不支持对 DDL 以及 Auto Analyze 等后台任务的限流和调度。
+- 只支持对前台客户发起的读写请求做限流和调度，不支持对 DDL 以及 Auto Analyze 等后台任务的限流和调度。
 - 资源管控将带来额外的调度开销。因此，开启该特性后，性能可能会有轻微下降。
 
 ## 什么是 Request Unit (RU)
@@ -90,17 +90,17 @@ Request Unit (RU) 是 TiDB 对 CPU、IO 等系统资源的统一抽象的单位,
     CREATE RESOURCE GROUP IF NOT EXISTS rg2 RU_PER_SEC = 600;
     ```
 
-3. 创建 `rg3` 资源组，设置绝对优先级为 `HIGH`。绝对优先级目前支持 `LOW|MEDIUM|HIGH`, 资源组的默认绝对优先级为 `MEDIUM`。
+3. 创建 `rg3` 资源组，设置绝对优先级为 `HIGH`。绝对优先级目前支持 `LOW|MEDIUM|HIGH`，资源组的默认绝对优先级为 `MEDIUM`。
 
     ```sql
-    CREATE RESOURCE GROUP IF NOT EXISTS rg2 RU_PER_SEC = 100 PRIORITY = HIGH;
+    CREATE RESOURCE GROUP IF NOT EXISTS rg3 RU_PER_SEC = 100 PRIORITY = HIGH;
     ```
 
 ### 绑定资源组
 
 TiDB 支持如下三个级别的资源组设置：
 
-- 用户级别。通过 [`CREATE USER`](/sql-statements/sql-statement-create-user.md) 或 [`ALTER USER`](/sql-statements/sql-statement-alter-user.md) 语句将用户绑定到特定的资源组。将资源组绑定用户后，使用对应的用户创建的会话会自动绑定对应的资源组。
+- 用户级别。通过 [`CREATE USER`](/sql-statements/sql-statement-create-user.md) 或 [`ALTER USER`](/sql-statements/sql-statement-alter-user.md) 语句将用户绑定到特定的资源组。绑定后，对应的用户新创建的会话会自动绑定对应的资源组。
 - 会话级别。通过 [`SET RESOURCE GROUP`](/sql-statements/sql-statement-set-resource-group.md) 设置当前会话使用的资源组。
 - 语句级别。通过 [`RESOURCE_GROUP()`](/optimizer-hints.md#resource_groupresource_group_name) 设置当前语句使用的资源组。
 
@@ -118,13 +118,13 @@ CREATE USER 'usr1'@'%' IDENTIFIED BY '123' RESOURCE GROUP rg1;
 ALTER USER usr2 RESOURCE GROUP rg2;
 ```
 
-绑定用户后，用户新建立的会话对资源的占用会受到指定用量 (RU) 的限制。如果系统负载比较高，没有多余的容量，`usr2` 用户的资源消耗速度会严格控制不超过指定用量。由于 `usr1` 绑定的 `rg1` 配置了 `BURSTABLE`，所以 `usr1` 消耗速度允许超过指定用量。
+绑定用户后，用户新建立的会话对资源的占用会受到指定用量 (RU) 的限制。如果系统负载比较高，没有多余的容量，用户 `usr2` 的资源消耗速度会被严格控制不超过指定用量。由于 `usr1` 绑定的 `rg1` 配置了 `BURSTABLE`，所以 `usr1` 消耗速度允许超过指定用量。
 
 如果资源组对应的请求太多导致资源组的资源不足，客户端的请求处理会发生等待。如果等待时间过长，请求会报错。
 
 > **注意：**
 >
-> - `CREATE USER` 或者 `ALTER USER` 对用户资源组绑定后，不会对该用户的已有会话生效，而是只对该用户新建的会话生效。
+> - 使用 `CREATE USER` 或者 `ALTER USER` 将用户绑定到资源组后，只会对该用户新建的会话生效，不会对该用户已有的会话生效。
 > - TiDB 集群在初始化时会自动创建 `default` 资源组，对于没有绑定资源组的语句会自动绑定至此资源组。此资源组不支持删除，但允许修改其 RU 的配置。
 
 #### 将当前会话绑定到资源组
@@ -139,7 +139,7 @@ SET RESOURCE GROUP rg1;
 
 #### 将语句绑定到资源组
 
-通过使用 [`Optimizer Hint`](/optimizer-hints.md#resource_groupresource_group_name), 可以指定 SQL 语句绑定的资源组。此 Hint 支持 SELECT、INSERT、UPDATE、DELETE 四种语句。
+通过在 SQL 语句中添加 [`RESOURCE_GROUP(resource_group_name)`](/optimizer-hints.md#resource_groupresource_group_name) Hint，可以将该语句绑定到指定的资源组。此 Hint 支持 `SELECT`、`INSERT`、`UPDATE`、`DELETE` 四种语句。
 
 示例：
 
@@ -149,13 +149,13 @@ SELECT /*+ RESOURCE_GROUP(rg1) */ * FROM t limit 10;
 
 ## 关闭资源管控特性
 
-1. 执行以下命令开启资源管控特性：
+1. 执行以下命令关闭资源管控特性：
 
     ```sql
     SET GLOBAL tidb_enable_resource_control = 'OFF';
     ```
 
-2. 将 TiKV 参数 [`resource-control.enabled`](/tikv-configuration-file.md#resource-control) 设为 `false`。
+2. 将 TiKV 参数 [`resource-control.enabled`](/tikv-configuration-file.md#resource-control) 设为 `false`，关闭按照资源组配额调度。
 
 ## 监控与图表
 
