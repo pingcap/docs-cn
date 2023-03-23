@@ -371,7 +371,8 @@ TiDB 版本：7.0.0
 
 + TiFlash
 
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
+    - 减少 TiFlash 在写路径上的内存使用量 [#7144](https://github.com/pingcap/tiflash/issues/7144) @[hongyunyan](https://github.com/hongyunyan)
+    - 减少 TiFlash 在有较多表的情况下的重启时间 [#7146](https://github.com/pingcap/tiflash/issues/7146) @[hongyunyan](https://github.com/hongyunyan)
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
 + Tools
