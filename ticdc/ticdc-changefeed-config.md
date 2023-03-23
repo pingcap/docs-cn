@@ -91,11 +91,11 @@ ignore-insert-value-expr = "price > 1000 and origin = 'no where'" # 忽略包含
 
 [scheduler]
 # 将表按 Region 个数划分成多个同步范围，这些范围可由多个 TiCDC 节点同步。
-# 注意：
-# 1. 横向扩展功能目前为实验特性，不建议在生产环境中使用。
-# 2. 该参数只在 Kafka changefeed 上生效，暂不支持 MySQL changefeed。
-# 3. TiCDC 不会将小于该参数 Region 个数的表划分成多个同步范围。
-# region-per-span = 50000
+# 注意：该功能只在 Kafka changefeed 上生效，暂不支持 MySQL changefeed。
+# 默认为 "false"。设置为 "true" 以打开该功能。
+enable-table-across-nodes = false
+# 打开该功能后，该功能只对 Region 个数大于 `region-threshold` 值的表生效。
+region-threshold = 100000
 
 [sink]
 # 对于 MQ 类的 Sink，可以通过 dispatchers 配置 event 分发器
