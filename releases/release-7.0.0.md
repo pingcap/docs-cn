@@ -188,7 +188,7 @@ TiDB 版本：7.0.0
 * TiCDC 支持输出变更数据至 storage sink (GA) [#6797](https://github.com/pingcap/tiflow/issues/6797) @[zhaoxinyu](https://github.com/zhaoxinyu) **tw:hfxsd**
 
     TiCDC 支持将 changed log 输出到兼容 Amazon S3 协议的存储服务、GCS、Azure Blob Storage 以及 NFS 中。Cloud storage 价格便宜，使用方便。对于不使用 Kafka 的用户，可以选择使用 storage sink。使用该功能，TiCDC 会将 changed log 保存到文件，发送到存储系统中。用户自研的消费程序可以定时从存储系统读取新产生的 changed log 进行数据处理。Storage sink 支持格式为 canal-json 和 CSV 的 changed log。
-    
+
     更多信息，请参考[用户文档](/ticdc/ticdc-sink-to-cloud-storage)。
 
 * TiCDC OpenAPI v2 GA @[sdojjy](https://github.com/sdojjy) **tw:hfxsd**
@@ -338,33 +338,26 @@ TiDB 版本：7.0.0
 
 + TiDB
 
-- 引入 `EXPAND` 算子来辅助优化在单个 SELECT 中包含多个 DISTINCT 的 SQL 性能 [#16581](https://github.com/pingcap/tidb/issues/16581) @[AilinKid](https://github.com/AilinKid)
-- 优化在单个 SELECT 中包含多个 DISTINCT 的 SQL 性能 [#16581](https://github.com/pingcap/tidb/issues/16581) @[AilinKid](https://github.com/AilinKid)
-- Index Join 支持更多的 SQL 格式 [#40505](https://github.com/pingcap/tidb/issues/40505) @[Yisaer](https://github.com/Yisaer)
-- 通过不主动读取索引的 FMSketch 优化统计信息的内存占用  [#42052](https://github.com/pingcap/tidb/issues/42052) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes)
-- JOIN 顺序的 HINT 和 JOIN 算法的 HINT 可以同时生效 [#36600](https://github.com/pingcap/tidb/issues/36600) @[Reminiscent](https://github.com/Reminiscent)
-- 避免某些情况下分区表数据需要在 TiDB 做全局排序 [#26166](https://github.com/pingcap/tidb/issues/26166) @[Defined2014](https://github.com/Defined2014)
-- 优化统计信息的收集速度 [#41930](https://github.com/pingcap/tidb/issues/41930) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes)
-- 增加新的控制变量 `tidb_opt_ordering_index_selectivity_threshold` 来辅助优化器对 `WHERE filters on index_1 ORDER BY index_2` 模式的查询生成更优的执行计划 [#42060](https://github.com/pingcap/tidb/issues/42060) @[time-and-fate](https://github.com/time-and-fate)
-- 支持同时使用 `fair lock mode` 和 `lock only if exists` 功能 [#42068](https://github.com/pingcap/tidb/issues/42068) @[MyonKeminta](https://github.com/MyonKeminta)
-- 支持打印 slow transaction log 以及相关 transaction 内部事件 [41863](https://github.com/pingcap/tidb/issues/41863) @[ekexium](https://github.com/ekexium)
+    - 引入 `EXPAND` 算子来辅助优化在单个 SELECT 中包含多个 DISTINCT 的 SQL 性能 [#16581](https://github.com/pingcap/tidb/issues/16581) @[AilinKid](https://github.com/AilinKid)
+    - 优化在单个 SELECT 中包含多个 DISTINCT 的 SQL 性能 [#16581](https://github.com/pingcap/tidb/issues/16581) @[AilinKid](https://github.com/AilinKid)
+    - Index Join 支持更多的 SQL 格式 [#40505](https://github.com/pingcap/tidb/issues/40505) @[Yisaer](https://github.com/Yisaer)
+    - 通过不主动读取索引的 FMSketch 优化统计信息的内存占用  [#42052](https://github.com/pingcap/tidb/issues/42052) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes)
+    - JOIN 顺序的 HINT 和 JOIN 算法的 HINT 可以同时生效 [#36600](https://github.com/pingcap/tidb/issues/36600) @[Reminiscent](https://github.com/Reminiscent)
+    - 避免某些情况下分区表数据需要在 TiDB 做全局排序 [#26166](https://github.com/pingcap/tidb/issues/26166) @[Defined2014](https://github.com/Defined2014)
+    - 优化统计信息的收集速度 [#41930](https://github.com/pingcap/tidb/issues/41930) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes)
+    - 增加新的控制变量 `tidb_opt_ordering_index_selectivity_threshold` 来辅助优化器对 `WHERE filters on index_1 ORDER BY index_2` 模式的查询生成更优的执行计划 [#42060](https://github.com/pingcap/tidb/issues/42060) @[time-and-fate](https://github.com/time-and-fate)
+    - 支持同时使用 `fair lock mode` 和 `lock only if exists` 功能 [#42068](https://github.com/pingcap/tidb/issues/42068) @[MyonKeminta](https://github.com/MyonKeminta)
+    - 支持打印 slow transaction log 以及相关 transaction 内部事件 [41863](https://github.com/pingcap/tidb/issues/41863) @[ekexium](https://github.com/ekexium)
     - `tidb_rc_read_check_ts` 对于使用 prepared statement cursor 游标模式不再生效 [#42184](https://github.com/pingcap/tidb/issues/42184) @[cfzjywxk](https://github.com/cfzjywxk)
     - 加强的悲观锁唤醒模型的开关变量由 `tidb_pessimistic_txn_aggressive_locking` 更名为 `tidb_pessimistic_txn_fair_locking`，并在新集群中默认启用。这可以使悲观事务严重单点冲突的场景下，事务被阻塞后唤醒的顺序尽可能保证公平，达到事务延迟更加稳定、尾延迟更低的效果 [#42147](https://github.com/pingcap/tidb/issues/42147) @[MyonKeminta](https://github.com/MyonKeminta)
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
 + TiKV
 
     - 优化收集统计信息时的内存占用和速度 [#14204](https://github.com/tikv/tikv/pull/14204) [#14280](https://github.com/tikv/tikv/pull/14280) [#14345](https://github.com/tikv/tikv/pull/14345) [#14376](https://github.com/tikv/tikv/pull/14376) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes)
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
 + PD
 
-- 新增了由于受 store limit 限制导致调度无法生成的监控指标 [#6043](https://github.com/tikv/pd/issues/6043) @[nolouch](https://github.com/nolouch)
-
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
+    - 新增了由于受 store limit 限制导致调度无法生成的监控指标 [#6043](https://github.com/tikv/pd/issues/6043) @[nolouch](https://github.com/nolouch)
 
 + TiFlash
 
@@ -389,9 +382,8 @@ TiDB 版本：7.0.0
         - 在 MQ sink 中添加了 big row 监控指标 [#8286](https://github.com/pingcap/tiflow/issues/8286) @[hi-rustin](https://github.com/hi-rustin)
         - 在一个 region 中包含多个表的数据的场景下，减少了 TiKV 与 TiCDC 节点间的网络流量 [#6346](https://github.com/pingcap/tiflow/issues/6346) @[overvenus](https://github.com/overvenus)
         - 将checkpoint ts 和 resolved ts 的 p99 指标的面板移动到了 lag analyze 面板 [#8524](https://github.com/pingcap/tiflow/issues/8524) @[hi-rustin](https://github.com/hi-rustin)
-        -  支持在 redo log 里 apply DDL 事件. [#8361](https://github.com/pingcap/tiflow/issues/8361) @[CharlesCheung96](https://github.com/CharlesCheung96)
+        - 支持在 redo log 里 apply DDL 事件. [#8361](https://github.com/pingcap/tiflow/issues/8361) @[CharlesCheung96](https://github.com/CharlesCheung96)
         - 支持根据上游写入吞吐来拆分调度表到 TiCDC 节点. [#7720](https://github.com/pingcap/tiflow/issues/7720) @[overvenus](https://github.com/overvenus)
-        
 
     + TiDB Data Migration (DM)
 
@@ -430,11 +422,11 @@ TiDB 版本：7.0.0
     - 修复 IndexMerge 中 goroutine 泄露的问题 [#41610](https://github.com/pingcap/tidb/pull/41610) @[guo-shaoge](https://github.com/guo-shaoge)
     - 修复非 bigint 类型的无符号整数与 string/decimal 比较时可能会结果错误的问题 [#41791](https://github.com/pingcap/tidb/pull/41791)，@[LittleFall](https://github.com/LittleFall)
     - 修复了 analyze 语句可能会因为当前 session 前一个 analyze 语句因为内存超限被 kill 导致当前 analyze 语句也被 kill 的问题 [#41826](https://github.com/pingcap/tidb/pull/41826)，@[XuHuaiyu](https://github.com/XuHuaiyu)
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
-- 修复 batch coprocessor 搜集信息过程中存在 data race 的问题 [41412](https://github.com/pingcap/tidb/issues/41412) @[you06](https://github.com/you06)
-- 修复 assertion error 无法为 partition table 打印 mvcc 信息的问题 [40629](https://github.com/pingcap/tidb/issues/40629) @[ekexium](https://github.com/ekexium)
-- 修复 `fair lock mode` 对于存在 key 加锁处理问题 [41527](https://github.com/pingcap/tidb/issues/41527) @[ekexium](https://github.com/ekexium)
-- 修复 insert-ignore 和 replace 语句对不修改 value 的 key 没有加锁的问题 [42121](https://github.com/pingcap/tidb/issues/42121) @[zyguan](https://github.com/zyguan)
+    - 修复 batch coprocessor 搜集信息过程中存在 data race 的问题 [41412](https://github.com/pingcap/tidb/issues/41412) @[you06](https://github.com/you06)
+    - 修复 assertion error 无法为 partition table 打印 mvcc 信息的问题 [40629](https://github.com/pingcap/tidb/issues/40629) @[ekexium](https://github.com/ekexium)
+    - 修复 `fair lock mode` 对于存在 key 加锁处理问题 [41527](https://github.com/pingcap/tidb/issues/41527) @[ekexium](https://github.com/ekexium)
+    - 修复 insert-ignore 和 replace 语句对不修改 value 的 key 没有加锁的问题 [42121](https://github.com/pingcap/tidb/issues/42121) @[zyguan](https://github.com/zyguan)
+
 + TiKV
 
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
@@ -442,13 +434,10 @@ TiDB 版本：7.0.0
 
 + PD
 
-- 修复了 scatter region 后 leader 分布不均衡的问题 [#6017](https://github.com/tikv/pd/issues/6017)，@[HunDunDM](https://github.com/HunDunDM)
-- 修复了启动过程中获取 PD 成员时存在的数据竞争问题 [#6069](https://github.com/tikv/pd/issues/6069)，@[rleungx](https://github.com/rleungx)
-- 修复了热点统计信息中存在的数据竞争问题 [#6069](https://github.com/tikv/pd/issues/6069)，@[lhy1024](https://github.com/lhy1024)
-- 修复了切换 placement rule 时可能存在的 leader 分布不均衡的问题 [#6195](https://github.com/tikv/pd/issues/6195)，@[bufferflies](https://github.com/bufferflies)
-
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
+    - 修复了 scatter region 后 leader 分布不均衡的问题 [#6017](https://github.com/tikv/pd/issues/6017)，@[HunDunDM](https://github.com/HunDunDM)
+    - 修复了启动过程中获取 PD 成员时存在的数据竞争问题 [#6069](https://github.com/tikv/pd/issues/6069)，@[rleungx](https://github.com/rleungx)
+    - 修复了热点统计信息中存在的数据竞争问题 [#6069](https://github.com/tikv/pd/issues/6069)，@[lhy1024](https://github.com/lhy1024)
+    - 修复了切换 placement rule 时可能存在的 leader 分布不均衡的问题 [#6195](https://github.com/tikv/pd/issues/6195)，@[bufferflies](https://github.com/bufferflies)
 
 + TiFlash
 
@@ -456,7 +445,6 @@ TiDB 版本：7.0.0
     - 修复 Decimal cast 在一些情况下进位出错的问题 [#7026](https://github.com/pingcap/tiflash/pull/7026)，@[windtalker](https://github.com/windtalker)
     - 修复 TopN/Sort 算子在开启了 new collation 之后结果可能会出错的问题 [#7002](https://github.com/pingcap/tiflash/pull/7002)，@[xzhangxian1008](https://github.com/xzhangxian1008)
     - 修复了单台 TiFlash 节点 aggregation 结果集很大（超过 1200w 时），TiFlash 可能会报错的问题 [#7063](https://github.com/pingcap/tiflash/pull/7063)，@[windtalker](https://github.com/windtalker)
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
 + Tools
 
@@ -465,12 +453,11 @@ TiDB 版本：7.0.0
         - 修复了在 PITR 恢复过程中 split region 重试等待时间不足的问题 [#42001](https://github.com/pingcap/tidb/issues/42001) @[joccau](https://github.com/joccau)
         - 修复了 PITR 恢复过程遇到 memory is limited 错误而恢复失败的问题 [#41983](https://github.com/pingcap/tidb/issues/41983) @[joccau](https://github.com/joccau)
         - 修复了 PD 节点宕机可能导致 PITR 日志备份进度不推进的问题 [#14184](https://github.com/tikv/tikv/issues/14184) @[YuJuncen](https://github.com/YuJuncen)
-        - 优化了 region leadership 迁移导致了 PITR 日志备份进度延迟变高的问题 [#13638](https://github.com/tikv/tikv/issues/13638) @[YuJuncen](https://github.com/YuJuncen) 
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
+        - 优化了 region leadership 迁移导致了 PITR 日志备份进度延迟变高的问题 [#13638](https://github.com/tikv/tikv/issues/13638) @[YuJuncen](https://github.com/YuJuncen)
 
     + TiCDC
 
-        - 修复了 Avro 编码 schema 时，float 类型使用错误的问题 [#8490 (https://github.com/pingcap/tiflow/issues/8490) @[3AceShowHand](https://github.com/3AceShowHand)
+        - 修复了 Avro 编码 schema 时，float 类型使用错误的问题 [#8490](https://github.com/pingcap/tiflow/issues/8490) @[3AceShowHand](https://github.com/3AceShowHand)
         - 修复了重启 chnagefeed 时可能造成数据丢失或者 checkpoint 无法推进的问题. [#8242](https://github.com/pingcap/tiflow/issues/8242) @[overvenus](https://github.com/overvenus)
         - 修复了 ddl sink 内部一个 data race 问题 [#8238](https://github.com/pingcap/tiflow/issues/8238) @[3AceShowHand](https://github.com/3AceShowHand)
         - 修复了可能导致 stopped 状态的 changefeed 自动重启的问题. [#8330](https://github.com/pingcap/tiflow/issues/8330) @[sdojjy](https://github.com/sdojjy)
@@ -478,7 +465,7 @@ TiDB 版本：7.0.0
         - 修复了下游为 mysql 且执行语句和 tidb 行为不兼容时可能导致数据丢失的 BUG。具体可以参考: [UPDATE-MySQL compatibility](https://docs.pingcap.com/tidb/stable/sql-statement-update#mysql-compatibility). [#8453](https://github.com/pingcap/tiflow/issues/8453) @[asddongmen](https://github.com/asddongmen)
         - 修复了一个 rolling upgrade 可能导致 CDC OOM 或者 checkpoint 卡住的问题 [#8329](https://github.com/pingcap/tiflow/issues/8329) @[overvenus](https://github.com/overvenus)
         - 修复了一个在 K8s 上不能 graceful upgrade TiCDC 集群的问题 [#8484](https://github.com/pingcap/tiflow/issues/8484) @[overvenus](https://github.com/overvenus)
-        
+
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
     + TiDB Data Migration (DM)
