@@ -22,7 +22,7 @@ summary: 了解资源管控 (Resource Control) 的 Grafana Dashboard 中所展�
 - WRU：以 Resource Group 为单位进行实时统计的写请求 Write Request Unit 消耗信息。`total` 为当前所有 Resource Group 消耗的 Write Request Unit 之和。
 - WRU Per Query：平均每个 SQL 语句消耗的 Write Request Unit 数量。计算方法是将前述 Write Request Unit 监控指标除以当前每秒执行的 SQL 语句数量。
 
-## 资源相关指标
+## Resource 相关指标
 
 - KV Request Count：以 Resource Group 为单位进行实时统计的 KV 请求数量，区分了读和写两种类型。`total` 为当前所有 Resource Group 涉及的 KV 请求数量之和。
 - KV Request Count Per Query：平均每个 SQL 语句涉及的读写 KV 请求数量。计算方法是将前述 KV Request Count 监控指标除以当前每秒执行的 SQL 语句数量。
@@ -32,3 +32,13 @@ summary: 了解资源管控 (Resource Control) 的 Grafana Dashboard 中所展�
 - Bytes Written Per Query：平均每个 SQL 语句的写入数据量。计算方法是将前述 Bytes Written 监控指标除以当前每秒执行的 SQL 语句数量。
 - KV CPU Time：以 Resource Group 为单位进行实时统计的 KV 层 CPU 时间消耗。`total` 为当前所有 Resource Group 消耗 KV 层 CPU 时间之和。
 - SQL CPU Time：以 Resource Group 为单位进行实时统计的 SQL 层 CPU 时间消耗。`total` 为当前所有 Resource Group 消耗 SQL 层 CPU 时间之和。
+
+## Client 相关指标
+
+- Active Resource groups：实时统计各个 Controller Client 的 Resource Groups 数量。
+- Total KV Request Count：以 Resource Group 为单位，实时统计各个 Controller Client 的 KV 请求数量。`total` 为 Controller Client 下 KV 请求数量之和。
+- Failed KV Request Count：以 Resource Group 为单位，实时统计各个 Controller Client 的 KV 失败请求数量。`total` 为 Controller Client 下 KV 失败请求数量之和。
+- Seccessful KV Request Count：以 Resource Group 为单位，实时统计各个 Controller Client 的 KV 成功请求数量。`total` 为 Controller Client 下 KV 成功请求数量之和。 
+- Seccessful KV Request Wait Duration (99/90)：以 Resource Group 为单位，实时统计各个 Controller Client 成功 KV 请求等待时间（不同百分位）。
+- Token Request Handle Duration (999/99)：以 Resource Group 为单位，实时统计各个 Controller Client 向 Server 端申请 Token 等待响应时间（不同百分位）。
+- Token Request Count：以 Resource Group 为单位，实时统计各个 Controller Client 向 Server 端申请 Token 次数。`seccessful`/`failed` 分别为 Controller Client 下 KV 成功/失败请求数量之和。 
