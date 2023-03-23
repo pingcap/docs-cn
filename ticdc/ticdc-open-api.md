@@ -1,9 +1,13 @@
 ---
-title: TiCDC OpenAPI
+title: TiCDC OpenAPI v1
 summary: 了解如何使用 OpenAPI 接口来管理集群状态和数据同步。
 ---
 
-# TiCDC OpenAPI
+# TiCDC OpenAPI v1
+
+> **注意：**
+>
+> TiCDC OpenAPI v1 将在未来版本中被删除。推荐使用 [TiCDC OpenAPI v2](/ticdc/ticdc-open-api-v2.md)。
 
 TiCDC 提供 OpenAPI 功能，你可以通过 OpenAPI 对 TiCDC 集群进行查询和运维操作。OpenAPI 的总体功能和 [`cdc cli` 工具](/ticdc/ticdc-manage-changefeed.md)类似。
 
@@ -118,7 +122,7 @@ curl -X GET http://127.0.0.1:8300/api/v1/health
 | `mounter_worker_num`      | `INT` 类型，Mounter 线程数。（非必选）                   |
 | `sink_config`             | sink 的配置参数。（非必选）                            |
 
-`changefeed_id`、`start_ts`、`target_ts`、`sink_uri` 的含义和格式与 [使用 cli 创建同步任务](/ticdc/ticdc-manage-changefeed.md#创建同步任务)中所作的解释相同，具体解释请参见该文档。需要注意，当在 `sink_uri` 中指定证书的路径时，须确保已将对应证书上传到对应的 TiCDC server 上。
+`changefeed_id`、`start_ts`、`target_ts`、`sink_uri` 的含义和格式与[使用 cli 创建同步任务](/ticdc/ticdc-manage-changefeed.md#创建同步任务)中所作的解释相同，具体解释请参见该文档。需要注意，当在 `sink_uri` 中指定证书的路径时，须确保已将对应证书上传到对应的 TiCDC server 上。
 
 下面会对一些需要补充说明的参数进行进一步阐述。
 
@@ -130,7 +134,7 @@ curl -X GET http://127.0.0.1:8300/api/v1/health
 
 `ignore_txn_start_ts`：指定之后会忽略指定 start_ts 的事务，如 `ignore-txn-start-ts = [1, 2]`。
 
-`mounter_worker_num`： Mounter 线程数，Mounter 用于解码 TiKV 输出的数据，默认值为 16 。
+`mounter_worker_num`： Mounter 线程数，Mounter 用于解码 TiKV 输出的数据，默认值为 16。
 
 `sink_config`：sink 的配置参数，如下
 
@@ -157,7 +161,7 @@ curl -X GET http://127.0.0.1:8300/api/v1/health
 
 ### 使用样例
 
-以下请求会创建一个 ID 为 `test5`，sink_uri 为 `blackhome://` 的同步任务。
+以下请求会创建一个 ID 为 `test5`，sink_uri 为 `blackhole://` 的同步任务。
 
 ```shell
 curl -X POST -H "'Content-type':'application/json'" http://127.0.0.1:8300/api/v1/changefeeds -d '{"changefeed_id":"test5","sink_uri":"blackhole://"}'

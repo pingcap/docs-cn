@@ -18,26 +18,34 @@ summary: 给出一个 TiDB 和 Golang 的简单 CRUD 应用程序示例。
 
 本节将介绍 TiDB 集群的启动方法。
 
-### 使用 TiDB Cloud Serverless Tier 集群
+<SimpleTab groupId="cluster">
+
+<div label="TiDB Cloud" value="serverless-cluster">
 
 [创建 Serverless Tier 集群](/develop/dev-guide-build-cluster-in-cloud.md#第-1-步创建-serverless-tier-集群)。
 
-### 使用本地集群
+</div>
+
+<div label="本地集群" value="local-cluster">
 
 你可以部署一个本地测试的 TiDB 集群或正式的 TiDB 集群。详细步骤，请参考：
 
 - [部署本地测试 TiDB 集群](/quick-start-with-tidb.md#部署本地测试集群)
-- [部署正式 TiDB 集群](/production-deployment-using-tiup.md)。
+- [部署正式 TiDB 集群](/production-deployment-using-tiup.md)
 
-### 使用云原生开发环境
+</div>
+
+<div label="Gitpod" value="gitpod-cluster">
 
 基于 Git 的预配置的开发环境：[现在就试试](/develop/dev-guide-playground-gitpod.md)
 
 该环境会自动克隆代码，并通过 TiUP 部署测试集群。
 
-## 第 2 步：获取代码
+</div>
 
-{{< copyable "shell-regular" >}}
+</SimpleTab>
+
+## 第 2 步：获取代码
 
 ```shell
 git clone https://github.com/pingcap-inc/tidb-example-golang.git
@@ -47,13 +55,9 @@ git clone https://github.com/pingcap-inc/tidb-example-golang.git
 
 <div label="使用 GORM（推荐）" value="gorm">
 
-可以看到，go-sql-driver/mysql 实现的代码略显冗余，需要自己管控错误处理逻辑，手动关闭 `*sql.Rows`，且不能很好的复用代码。并非最佳实践。
-
 当前开源比较流行的 Golang ORM 为 GORM，此处将以 v1.23.5 版本进行说明。
 
 封装一个用于适配 TiDB 事务的工具包 [util](https://github.com/pingcap-inc/tidb-example-golang/tree/main/util)，编写以下代码备用：
-
-{{< copyable "" >}}
 
 ```go
 package util
@@ -84,8 +88,6 @@ func TiDBGormBegin(db *gorm.DB, pessimistic bool, fc func(tx *gorm.DB) error) (e
 
 进入目录 `gorm` ：
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 cd gorm
 ```
@@ -103,8 +105,6 @@ cd gorm
 其中，`gorm.go` 是 `gorm` 这个示例程序的主体。使用 gorm 时，相较于 go-sql-driver/mysql，gorm 屏蔽了创建数据库连接时，不同数据库差异的细节，其还封装了大量的操作，如 AutoMigrate、基本对象的 CRUD 等，极大的简化了代码量。
 
 `Player` 是数据结构体，为数据库表在程序内的映射。`Player` 的每个属性都对应着 `player` 表的一个字段。相较于 go-sql-driver/mysql，gorm 的 `Player` 数据结构体为了给 gorm 提供更多的信息，加入了形如 `` `gorm:"primaryKey;type:VARCHAR(36);column:id"` `` 的注解，用来指示映射关系。
-
-{{< copyable "" >}}
 
 ```go
 
@@ -266,8 +266,6 @@ func buyGoods(db *gorm.DB, sellID, buyID string, amount, price int) error {
 
 使用 go-sql-driver/mysql 时，首先进入目录 `sqldriver`：
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 cd sqldriver
 ```
@@ -288,8 +286,6 @@ cd sqldriver
 
 其中，`dbinit.sql` 为数据表初始化语句：
 
-{{< copyable "sql" >}}
-
 ```sql
 USE test;
 DROP TABLE IF EXISTS player;
@@ -303,8 +299,6 @@ CREATE TABLE player (
 ```
 
 `sqldriver.go` 是 `sqldriver` 这个示例程序的主体。因为 TiDB 与 MySQL 协议兼容，因此，需要初始化一个 MySQL 协议的数据源 `db, err := sql.Open("mysql", dsn)`，以此连接到 TiDB。并在其后，调用 `dao.go` 中的一系列方法，用来管理数据对象，进行增删改查等操作。
-
-{{< copyable "" >}}
 
 ```go
 package main
@@ -407,8 +401,6 @@ func openDB(driverName, dataSourceName string, runnable func(db *sql.DB)) {
 
 随后，封装一个用于适配 TiDB 事务的工具包 [util](https://github.com/pingcap-inc/tidb-example-golang/tree/main/util)，编写以下代码备用：
 
-{{< copyable "" >}}
-
 ```go
 package util
 
@@ -460,8 +452,6 @@ func (tx *TiDBSqlTx) Rollback() error {
 ```
 
 在 `dao.go` 中定义一系列数据的操作方法，用来对提供数据的写入能力。这也是本例子中和核心部分。
-
-{{< copyable "" >}}
 
 ```go
 package main
@@ -695,8 +685,6 @@ func randomPlayers(amount int) []Player {
 
 `sql.go` 中存放了 SQL 语句的常量。
 
-{{< copyable "" >}}
-
 ```go
 package main
 
@@ -740,15 +728,11 @@ const (
 
 使用 go-sql-driver/mysql 时，需手动初始化数据库表，若你本地已经安装了 `mysql-client`，且使用本地集群，可直接在 `sqldriver` 目录下运行：
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 make mysql
 ```
 
 或直接执行：
-
-{{< copyable "shell-regular" >}}
 
 ```shell
 mysql --host 127.0.0.1 --port 4000 -u root<sql/dbinit.sql
@@ -767,8 +751,6 @@ mysql --host 127.0.0.1 --port 4000 -u root<sql/dbinit.sql
 <div label="使用 GORM（推荐）" value="gorm">
 
 若你使用 TiDB Cloud Serverless Tier 集群，更改 `gorm.go` 内 `dsn` 参数值：
-
-{{< copyable "" >}}
 
 ```go
 dsn := "root:@tcp(127.0.0.1:4000)/test?charset=utf8mb4"
@@ -797,8 +779,6 @@ dsn := "2aEp24QWEDLqRFs.root:123456@tcp(xxx.tidbcloud.com:4000)/test?charset=utf
 
 若你使用 TiDB Cloud Serverless Tier 集群，更改 `sqldriver.go` 内 `dsn` 参数的值：
 
-{{< copyable "" >}}
-
 ```go
 dsn := "root:@tcp(127.0.0.1:4000)/test?charset=utf8mb4"
 ```
@@ -810,8 +790,6 @@ dsn := "root:@tcp(127.0.0.1:4000)/test?charset=utf8mb4"
 - User: `2aEp24QWEDLqRFs.root`
 
 那么此处应将 `mysql.RegisterTLSConfig` 和 `dsn` 更改为：
-
-{{< copyable "" >}}
 
 ```go
 mysql.RegisterTLSConfig("register-tidb-tls", &tls.Config {

@@ -1,14 +1,10 @@
 ---
-title: FastScan
+title: 使用 FastScan 功能
 summary: 介绍通过使用 FastScan 来加速 OLAP 场景的查询的方法。
-aliases: ['/zh/tidb/dev/sql-statement-set-tiflash-mode']
+aliases: ['/zh/tidb/dev/sql-statement-set-tiflash-mode/','/zh/tidb/dev/dev-guide-use-fastscan/']
 ---
 
-# FastScan
-
-> **警告：**
->
-> 该功能目前是实验性功能，其形式和使用方法可能会在未来版本中发生变化。
+# 使用 FastScan 功能
 
 本文档介绍通过使用 FastScan 来加速 Online Analytical Processing (OLAP) 场景中查询的方法。
 
@@ -69,7 +65,7 @@ TiFlash 存储层的数据主要存放在 Delta 层和 Stable 层。
 
 在默认状态下（即未开启 FastScan 功能），TableScan 算子过程整体包括了以下步骤：
 
-1. Read data：在 Delta 层 和 Stable 层分别建立数据流，进行各自数据的读取。
+1. Read data：在 Delta 层和 Stable 层分别建立数据流，进行各自数据的读取。
 2. Sort Merge：将步骤 1 中建立的数据流进行合并，并且将数据按照 (handle, version) 顺序排列返回。
 3. Range Filter：根据读取范围限制，对步骤 2 中的数据进行过滤筛选并返回。
 4. MVCC + Column Filter：对步骤 3 中的数据进行 MVCC 过滤，同时过滤掉不需要的列并返回。

@@ -28,7 +28,7 @@ TiCDC 集群由多个 TiCDC 对等节点组成，是一种分布式无状态的�
 - Mounter：将变更按照对应的 Schema 信息转换成 TiCDC 可以处理的格式。
 - Sink：将对应的变更应用到下游系统。
 
-为了实现高可用，每个 TiCDC 集群都包含多个 TiCDC 节点，这些节点定期向 PD 集群中的 etcd 集群汇报自己的状态，并选举出其中一个节点作为 TiCDC 集群的 owner。owner 采用 etcd 统一存储状态来进行调度，并将调度结果直接写入 etcd。Processor 按照状态完成对应的任务，如果 Processor 所在节点出现异常，集群会将表调度到其他节点。如果 owner 节点出现异常，其他节点的 Capture 进程会选举出新的 owner，如下图所示：
+为了实现高可用，每个 TiCDC 集群都包含多个 TiCDC 节点，这些节点定期向 PD 集群中的 etcd 集群汇报自己的状态，并选举出其中一个节点作为 TiCDC 集群的 Owner。Owner 采用 etcd 统一存储状态来进行调度，并将调度结果直接写入 etcd。Processor 按照状态完成对应的任务，如果 Processor 所在节点出现异常，集群会将表调度到其他节点。如果 Owner 节点出现异常，其他节点的 Capture 进程会选举出新的 Owner，如下图所示：
 
 ![TiCDC architecture](/media/ticdc/ticdc-architecture-3.PNG)
 
@@ -43,7 +43,7 @@ TiCDC 中的 Changefeed 和 Task 是两个逻辑概念，前者是分配同步�
 例如：
 
 ```
-cdc cli changefeed create --pd=http://10.0.10.25:2379 --sink-uri="kafka://127.0.0.1:9092/cdc-test?kafka-version=2.4.0&partition-num=6&max-message-bytes=67108864&replication-factor=1"
+cdc cli changefeed create --server="http://127.0.0.1:8300" --sink-uri="kafka://127.0.0.1:9092/cdc-test?kafka-version=2.4.0&partition-num=6&max-message-bytes=67108864&replication-factor=1"
 cat changefeed.toml
 ......
 [sink]
@@ -64,7 +64,7 @@ dispatchers = [
 
 如果将 Changefeed 和 Task 也包含到上文中提及的架构图，完整的 TiCDC 架构图如下：
 
-![TiCDC architecture](/media/ticdc/ticdc-architecture-4.jpg)
+![TiCDC architecture](/media/ticdc/ticdc-architecture-6.jpg)
 
 上图创建了一个 Changefeed，需要同步 4 张表，这个 Changefeed 被拆分成了 3 个任务，均匀的分发到了 TiCDC 集群的 3 个 Capture 节点上，在 TiCDC 对这些数据进行了处理之后，数据同步到了下游的系统。
 
@@ -75,7 +75,7 @@ dispatchers = [
 1. 推流：发生数据改变时，TiKV 集群将数据主动推送给 Puller 模块。
 2. 增量扫：Puller 模块在发现收到的数据改变不连续的时候，向 TiKV 节点主动拉取需要的数据。
 3. 排序：Sorter 模块对获取的数据按照时间进行排序，并将排好序的数据发送给 Mounter。
-4. 装载：Mounter 模块收到数据变更后，根据表的 schema 信息，将数据变更装载成 TiCD sink 可以理解的格式。
+4. 装载：Mounter 模块收到数据变更后，根据表的 schema 信息，将数据变更装载成 TiCDC sink 可以理解的格式。
 5. 同步：Sink 模块根据下游的类型将数据变更同步到下游。
 
 由于 TiCDC 的上游是支持事务的分布式关系型数据库 TiDB，在同步数据的时候，如何保证数据的一致性，以及在同步多张表的时候，如何保证事务的一致性，都是很大的挑战。下面的章节会介绍 TiCDC 在确保事务特性时所使用的关键技术和概念。
@@ -86,14 +86,14 @@ dispatchers = [
 
 ### 架构相关概念
 
-- Capture：TiCDC 节点的运行进程，多个 Capture 进程构成了 TiCDC集群，Capture 进程负责 TiKV 的数据变更的同步，包括接受和主动拉取两种方式，并向下游同步数据。
+- Capture：TiCDC 节点的运行进程，多个 Capture 进程构成了 TiCDC 集群，Capture 进程负责 TiKV 的数据变更的同步，包括接收和主动拉取两种方式，并向下游同步数据。
 - Capture Owner：是一种 Capture 的角色，每个 TiCDC 集群同一时刻最多只存在一个 Capture Owner 角色，负责集群内部的调度。
 - Processor：是 Capture 内部的逻辑线程，每个 Processor 负责处理同一个同步流中一个或多个 table 的数据。一个 Capture 节点可以运行多个 Processor。
 - ChangeFeed：一个由用户启动的从上游 TiDB 同步到下游的任务，其中包含多个 Task，Task 会分布在不同的 Capture 节点进行数据同步处理。
 
 ### 时间戳相关概念
 
-由于 TiCDC 需要确保数据被至少一次同步到下游，并且确保一定的一致性，因此引入了一系列时间戳（Timestamp，简称TS）来对数据同步的状态进行描述。
+由于 TiCDC 需要确保数据被至少一次同步到下游，并且确保一定的一致性，因此引入了一系列时间戳（Timestamp，简称 TS）来对数据同步的状态进行描述。
 
 #### ResolvedTS
 
@@ -109,56 +109,58 @@ dispatchers = [
     对于 TiCDC 节点来说，TiKV 节点发送过来的 ResolvedTS 信息是一种特殊的事件，它只包含一个格式为 `<resolvedTS:  时间戳>` 的特殊事件。通常情况下，ResolvedTS 满足以下约束：
 
     ```
-    table resolved TS >= local resolved TS >= global Resolved TS
+    table ResolvedTS >= global ResolvedTS
     ```
 
 #### CheckpointTS
 
-这个时间戳只在 TiCDC 中存在，它表示 TiCDC 已经同步给下游的数据的最低水位线，即 TiCDC 认为在这个时间戳之前的数据已经被同步到下游系统了。由于 TiCDC 同步数据的单位是表，所以 table checkpointTS 表示表级别的同步数据的水位线，Processor checkpointTS 表示各个 Processor 中最低的 checkpointTS；Global checkpointTS 表示各个 Processor checkpointTS 中最低的 checkpointTS。通常情况下，Checkpoint TS 满足以下约束：
+这个时间戳只在 TiCDC 中存在，它表示 TiCDC 已经同步给下游的数据的最低水位线，即 TiCDC 认为在这个时间戳之前的数据已经被同步到下游系统了。由于 TiCDC 同步数据的单位是表，所以 table CheckpointTS 表示表级别的同步数据的水位线，Processor CheckpointTS 表示各个 Processor 中最小的 table CheckpointTS；Global checkpointTS 表示各个 Processor checkpointTS 中最低的 checkpointTS。通常情况下，Checkpoint TS 满足以下约束：
 
 ```
-table checkpoint TS >= local checkpoint TS >= global checkpoint TS
+table CheckpointTS >= global CheckpointTS
 ```
 
-如果将 ResolvedTS 和 checkpointTS 结合来看，完整的关系可以表达为：
+因为 TiCDC 只会复制小于 global ResolvedTS 的数据到下游，所以存在下面的约束：
 
 ```
-table resolved TS >= local resolved TS >= global Resolved TS >= table checkpoint TS >= local checkpoint TS >= global checkpoint TS
+table ResolvedTS >= global ResolvedTS >= table CheckpointTS >= global CheckpointTS
 ```
 
-随着数据的改变和事务的提交，TiKV 节点上的 resolvedTS 会不断的向前推进，TiCDC 节点的 Puller 模块也会不断的收到 TiKV 推流过来的数据，并且根据收到的信息决定是否执行增量扫的过程，从而确保数据改变都能够被发送到 TiCDC 节点上。Sorter 模块则负责将 Puller 模块收到的信息按照时间戳进行升序排序，从而确保数据在表级别是满足一致性的。接下来，Mounter 模块把上游的数据改变装配成 Sink 模块可以消费的格式，并发送给 Sink，而 Sink 则负责把 checkpointTS 到 ResolvedTS 之间的数据改变，按照发生的 TS 顺序同步到下游，并在下游返回后推进 checkpointTS。
+随着数据的改变和事务的提交，TiKV 节点上的 ResolvedTS 会不断的向前推进，TiCDC 节点的 Puller 模块也会不断的收到 TiKV 推流过来的数据，并且根据收到的信息决定是否执行增量扫的过程，从而确保数据改变都能够被发送到 TiCDC 节点上。Sorter 模块则负责将 Puller 模块收到的信息按照时间戳进行升序排序，从而确保数据在表级别是满足一致性的。接下来，Mounter 模块把上游的数据改变装配成 Sink 模块可以消费的格式，并发送给 Sink，而 Sink 则负责把 CheckpointTS 到 ResolvedTS 之间的数据改变，按照发生的 TS 顺序同步到下游，并在下游返回后推进 CheckpointTS。
 
 上面的内容只介绍了和 DML 语句相关的数据改变，并没有包含 DDL 相关的内容。下面对 DDL 语句相关的关键概念进行介绍。
 
 #### Barrier TS
 
-当系统发生 DDL 语句或者使用了 TiCDC 的 Syncpoint 时会产生的一个时间戳。
+当系统发生 DDL 变更或者用户使用了 TiCDC 的 Syncpoint 时会产生的一个时间戳。
 
-- 对于 DDL 语句，这个时间戳会用来确保在这个 DDL 语句之前的改变都被应用到下游，之后执行对应的 DDL 语句，在 DDL 语句同步完成之后再同步其他的数据改变。由于 DDL 语句的处理是 owner 角色的 Capture 负责的，DDL 语句对应的 Barrier TS 只会由 owner 节点的 Processor 线程产生。
-- sync point Barrier TS 也是一个时间戳，当你启用 TiCDC 的 Syncpoint 特性后，TiCDC 会根据你指定的间隔产生一个 Barrier TS，当所有的表都同步到了这个 Barrier TS 之后，记录一下对应的时间点，之后继续向下同步数据。
+- DDL：这个时间戳会用来确保在这个 DDL 语句之前的改变都被应用到下游，之后执行对应的 DDL 语句，在 DDL 语句同步完成之后再同步其他的数据改变。由于 DDL 语句的处理是 Owner 角色的 Capture 负责的，DDL 语句对应的 Barrier TS 只会由 Owner 节点产生。
+- Syncpoint：当你启用 TiCDC 的 Syncpoint 特性后，TiCDC 会根据你指定的间隔产生一个 Barrier TS。等所有表都同步到这个 Barrier TS 后，TiCDC 将此刻的 global CheckpointTS 作为 Primary Ts 插入下游的 TiDB 记录 tsMap 信息的表中，然后 TiCDC 才会继续向下游同步数据。
 
-TiCDC 是通过对 global checkpoint TS 和 barrier TS 进行比较来确定数据是否已经同步到 barrier TS 的。如果 global checkpoint TS = barrier TS，则说明所有表都至少推进到 barrier TS。如果等式不成立，说明有表还没推进到该 barrier TS，在这种情况下也不会更新 barrier TS，因此不会有表的 sink 节点对应 resolved TS 会超过 barrier TS，即不会有表的 check point TS 超过 barrier TS。
+一个 Barrier TS 被生成后, TiCDC 会保证只有小于 Barrier TS 的数据会被复制到下游，并且保证小于 Barrier TS 的数据全部被复制到下游之前，同步任务不会再推进。Owner 不断地比较 global CheckpointTS 和 Barrier TS 的大小，确定小于 Barrier TS 的数据是否已经被同步完成。如果 global CheckpointTS = Barrier TS，执行完对应的操作（如 DDL 或者记录 global CheckpointTS 到下游）后，同步继续；否则需要继续等待所有小于 Barrier TS 数据的同步完成。
 
 ## 主要流程
 
 本章节将介绍 TiCDC 软件的常见操作所对应的主要流程，以帮助你更好的理解 TiCDC 的工作原理。
 
+注意，下面所描述的启动流程只存在于 TiCDC 进程内部，对于用户是完全透明的。因此，你在启动 TiCDC 进程时无需关心自己启动的是什么节点。
+
 ### 启动 TiCDC 节点
 
-- 启动非 owner 的 TiCDC 节点：
+- 启动非 Owner 的 TiCDC 节点：
 
     1. 启动 Capture 进程。
     2. 启动 processor。
-    3. 接受 Owner 下发的 Task 调度命令。
+    3. 接收 Owner 下发的 Task 调度命令。
     4. 根据调度命令启动或停止 tablePipeline。
 
-- 启动 owner 的 TiCDC 节点：
+- 启动 Owner 的 TiCDC 节点：
 
     1. 启动 Capture 进程。
     2. 当选 Owner 并启动对应的线程。
     3. 读取 Changefeed 信息。
     4. 启动 Changefeed 管理逻辑。
-    5. 根据 Changefeed 配置和最新 checkpointTS, 读取 TiKV 中的 schema 信息，确定需要被同步的表。
+    5. 根据 Changefeed 配置和最新 CheckpointTS，读取 TiKV 中的 schema 信息，确定需要被同步的表。
     6. 读取各 Processor 当前同步的表的列表，分发需要添加的表。
     7. 更新进度信息。
 

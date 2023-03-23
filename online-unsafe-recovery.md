@@ -38,7 +38,7 @@ Online Unsafe Recovery 功能适用于以下场景：
 
 ### 第 1 步：指定无法恢复的节点
 
-使用 PD Control 执行 [`unsafe remove-failed-stores <store_id>[,<store_id>,...]`](/pd-control.md#unsafe-remove-failed-stores-store-ids--show) 命令，指定已确定无法恢复的 TiKV 节点，并触发自动恢复。
+使用 PD Control 执行 [`unsafe remove-failed-stores <store_id>[,<store_id>,...]`](/pd-control.md#unsafe-remove-failed-stores-store-ids--show) 命令，指定已确定无法恢复的**所有** TiKV 节点，并用逗号隔开，以触发自动恢复。
 
 {{< copyable "shell-regular" >}}
 
@@ -145,6 +145,12 @@ PD 下发恢复计划后，会等待 TiKV 上报执行的结果。如上述输�
 }
 ```
 
+得到受影响的 table id 后，可以使用 `INFORMATION_SCHEMA.TABLES` 来查看受影响的表名。
+
+```sql
+SELECT TABLE_SCHEMA, TABLE_NAME, TIDB_TABLE_ID FROM INFORMATION_SCHEMA.TABLES WHERE TIDB_TABLE_ID IN (64, 27);
+```
+
 > **注意：**
 >
 > - 恢复操作把一些 failed Voter 变成了 failed Learner，之后还需要 PD 调度经过一些时间将这些 failed Learner 移除。
@@ -161,11 +167,35 @@ PD 下发恢复计划后，会等待 TiKV 上报执行的结果。如上述输�
 
 ### 第 3 步：检查数据索引一致性（RawKV 不需要）
 
-执行完成后，可能会导致数据索引不一致。请使用 SQL 的 [`ADMIN CHECK`](/sql-statements/sql-statement-admin-check-table-index.md)、`ADMIN RECOVER`、`ADMIN CLEANUP` 命令对受影响的表（从 `"Unsafe recovery finished"` 输出的 `"Affected table ids"` 可知）进行数据索引的一致性检查及恢复。
-
 > **注意：**
 >
 > 数据可以读写并不代表没有数据丢失。
+
+执行完成后，数据和索引可能会不一致。请使用 [`ADMIN CHECK`](/sql-statements/sql-statement-admin-check-table-index.md) 对受影响的表进行数据索引的一致性检查。
+
+```sql
+ADMIN CHECK TABLE table_name;
+```
+
+若结果有不一致的索引，可以通过重命名旧索引、创建新索引，然后再删除旧索引的步骤来修复数据索引不一致的问题。
+
+1. 重命名旧索引：
+
+    ```sql
+    ALTER TABLE table_name RENAME INDEX index_name TO index_name_lame_duck;
+    ```
+
+2. 创建新索引：
+
+    ```sql
+    ALTER TABLE table_name ADD INDEX index_name (column_name);
+    ```
+
+3. 删除旧索引：
+
+    ```sql
+    ALTER TABLE table_name DROP INDEX index_name_lame_duck;
+    ```
 
 ### 第 4 步：移除无法恢复的节点（可选）
 
@@ -173,7 +203,7 @@ PD 下发恢复计划后，会等待 TiKV 上报执行的结果。如上述输�
 <div label="通过 TiUP 部署的节点">
 
 1. 缩容无法恢复的节点：
-   
+
     {{< copyable "shell-regular" >}}
 
     ```bash

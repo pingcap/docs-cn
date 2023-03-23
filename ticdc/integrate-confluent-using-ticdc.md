@@ -99,7 +99,7 @@ Confluent 是一个兼容 Apache Kafka 的数据流平台，能够访问、存�
 2. 创建一个 changefeed，将增量数据输出到 Confluent Cloud：
 
     ```shell
-    tiup ctl:<cluster-version> cdc changefeed create --pd="http://127.0.0.1:2379" --sink-uri="kafka://<broker_endpoint>/ticdc-meta?protocol=avro&replication-factor=3&enable-tls=true&auto-create-topic=true&sasl-mechanism=plain&sasl-user=<broker_api_key>&sasl-password=<broker_api_secret>" --schema-registry="https://<schema_registry_api_key>:<schema_registry_api_secret>@<schema_registry_endpoint>" --changefeed-id="confluent-changefeed" --config changefeed.conf
+    tiup ctl:v<CLUSTER_VERSION> cdc changefeed create --server="http://127.0.0.1:8300" --sink-uri="kafka://<broker_endpoint>/ticdc-meta?protocol=avro&replication-factor=3&enable-tls=true&auto-create-topic=true&sasl-mechanism=plain&sasl-user=<broker_api_key>&sasl-password=<broker_api_secret>" --schema-registry="https://<schema_registry_api_key>:<schema_registry_api_secret>@<schema_registry_endpoint>" --changefeed-id="confluent-changefeed" --config changefeed.conf
     ```
 
     将如下字段替换为[第 2 步：创建 Access Key Pair](#第-2-步创建-access-key-pair)中创建和记录的值：
@@ -114,7 +114,7 @@ Confluent 是一个兼容 Apache Kafka 的数据流平台，能够访问、存�
     其中 `<schema_registry_api_secret>` 需要经过 [HTML URL 编码](https://www.w3schools.com/tags/ref_urlencode.asp)后再替换，替换完毕后示例如下：
 
     ```shell
-    tiup ctl:<cluster-version> cdc changefeed create --pd="http://127.0.0.1:2379" --sink-uri="kafka://xxx-xxxxx.ap-east-1.aws.confluent.cloud:9092/ticdc-meta?protocol=avro&replication-factor=3&enable-tls=true&auto-create-topic=true&sasl-mechanism=plain&sasl-user=L5WWA4GK4NAT2EQV&sasl-password=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" --schema-registry="https://7NBH2CAFM2LMGTH7:xxxxxxxxxxxxxxxxxx@yyy-yyyyy.us-east-2.aws.confluent.cloud" --changefeed-id="confluent-changefeed" --config changefeed.conf
+    tiup ctl:v<CLUSTER_VERSION> cdc changefeed create --server="http://127.0.0.1:8300" --sink-uri="kafka://xxx-xxxxx.ap-east-1.aws.confluent.cloud:9092/ticdc-meta?protocol=avro&replication-factor=3&enable-tls=true&auto-create-topic=true&sasl-mechanism=plain&sasl-user=L5WWA4GK4NAT2EQV&sasl-password=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" --schema-registry="https://7NBH2CAFM2LMGTH7:xxxxxxxxxxxxxxxxxx@yyy-yyyyy.us-east-2.aws.confluent.cloud" --changefeed-id="confluent-changefeed" --config changefeed.conf
     ```
 
     - 如果命令执行成功，将会返回被创建的 changefeed 的相关信息，包含被创建的 changefeed 的 ID 以及相关信息，内容如下：
@@ -130,10 +130,10 @@ Confluent 是一个兼容 Apache Kafka 的数据流平台，能够访问、存�
 3. Changefeed 创建成功后，执行如下命令，查看 changefeed 的状态：
 
     ```shell
-    tiup ctl:<cluster-version> cdc changefeed list --pd="http://127.0.0.1:2379"
+    tiup ctl:v<CLUSTER_VERSION> cdc changefeed list --server="http://127.0.0.1:8300"
     ```
 
-    可以参考 [管理 Changefeed](/ticdc/ticdc-manage-changefeed.md)对 changefeed 状态进行管理。
+    可以参考[管理 Changefeed](/ticdc/ticdc-manage-changefeed.md)，对 changefeed 状态进行管理。
 
 ### 第 4 步：写入数据以产生变更日志
 
@@ -188,7 +188,126 @@ Snowflake 是一种云原生数据仓库。借助 Confluent 的能力，你只�
 
     ![Data preview](/media/integrate/data-preview.png)
 
-6. 在 Snowflake 控制面板中，选择 **Data** > **Database** > **TPCC** > **TiCDC**，可以观察到 TiDB 中的增量数据实时同步到了 Snowflake，如上图。至此，就完成了 TiDB 与 Snowflake 的数据集成。
+6. 在 Snowflake 控制面板中，选择 **Data** > **Database** > **TPCC** > **TiCDC**，可以观察到 TiDB 中的增量数据实时同步到了 Snowflake，如上图。但 Snowflake 中的表结构和 TiDB 中的表结构不同，数据也以“追加”的方式插入 Snowflake 表。在大多数业务场景中，都希望 Snowflake 中的表数据是 TiDB 表的一个副本，而不是存储 TiDB 表的变更日志。该问题将在下一章节解决。
+
+### 在 Snowflake 中创建 TiDB 表对应的数据副本
+
+在上一章节，TiDB 的增量变更日志已经被同步到 Snowflake 中，本章节将介绍如何借助 Snowflake 的 TASK 和 STREAM 功能，将实时写入 Snowflake 的数据变更日志根据 `INSERT`、`UPDATE` 和 `DELETE` 等事件类型分别处理，写入一个与上游 TiDB 结构相同的表中，从而在 Snowflake 中创建一个数据副本。下面以 `ITEM` 表为例。
+
+`ITEM` 表结构为：
+
+```
+CREATE TABLE `item` (
+  `i_id` int(11) NOT NULL,
+  `i_im_id` int(11) DEFAULT NULL,
+  `i_name` varchar(24) DEFAULT NULL,
+  `i_price` decimal(5,2) DEFAULT NULL,
+  `i_data` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`i_id`)
+);
+```
+
+Snowflake 中存在一张名为 `TIDB_TEST_ITEM` 的表，这张表是 Confluent Snowflake Sink Connector 自动创建的，表结构如下：
+
+```
+create or replace TABLE TIDB_TEST_ITEM (
+        RECORD_METADATA VARIANT,
+        RECORD_CONTENT VARIANT
+);
+```
+
+1. 根据 TiDB 中的表结构，在 Snowflake 中创建结构相同的表：
+
+    ```
+    create or replace table TEST_ITEM (
+        i_id INTEGER primary key,
+        i_data VARCHAR,
+        i_im_id INTEGER,
+        i_name VARCHAR,
+        i_price DECIMAL(36,2)
+    );
+    ```
+
+2. 为 `TIDB_TEST_ITEM` 创建一个 STREAM，将 `append_only` 设为 `true`，表示仅接收 `INSERT` 事件。创建的 STREAM 可以实时捕获 `TIDB_TEST_ITEM` 的 `INSERT` 事件，也就是说，当 TiDB 中 `ITEM` 有新的变更日志时，变更日志将会被插入到 `TIDB_TEST_ITEM` 表，然后被 STREAM 捕获。
+
+    ```
+    create or replace stream TEST_ITEM_STREAM on table TIDB_TEST_ITEM append_only=true;
+    ```
+
+3. 处理 STREAM 中的数据，根据不同的事件类型，在 `TEST_ITEM` 表中插入、更新或删除 STREAM 数据。
+
+    ```
+    --将数据合并到 TEST_ITEM 表
+    merge into TEST_ITEM n 
+      using 
+          -- 查询 TEST_ITEM_STREAM
+          (SELECT RECORD_METADATA:key as k, RECORD_CONTENT:val as v from TEST_ITEM_STREAM) stm 
+          -- 以 i_id 相等为条件将流和表做匹配
+          on k:i_id = n.i_id 
+      -- 如果 TEST_ITEM 表中存在匹配 i_id 的记录，并且 v 为空，则删除这条记录
+      when matched and IS_NULL_VALUE(v) = true then 
+          delete 
+      
+      -- 如果 TEST_ITEM 表中存在匹配 i_id 的记录，并且 v 不为空，则更新这条记录
+      when matched and IS_NULL_VALUE(v) = false then 
+          update set n.i_data = v:i_data, n.i_im_id = v:i_im_id, n.i_name = v:i_name, n.i_price = v:i_price 
+  
+      -- 如果 TEST_ITEM 表中不存在匹配 i_id 的记录，则插入这条记录
+      when not matched then 
+          insert 
+              (i_data, i_id, i_im_id, i_name, i_price) 
+          values 
+              (v:i_data, v:i_id, v:i_im_id, v:i_name, v:i_price)
+    ;
+    ```
+
+    在上面的语句中，我们使用了 Snowflake 的 `MERGE INTO` 语句，这个语句可以根据条件将流和表做匹配，然后根据不同的匹配结果，执行不同的操作，比如删除、更新或插入。在这个例子中，我们使用了三个 `WHEN` 子句，分别对应了三种情况：
+
+    - 当流和表匹配时，且流中的数据为空，则删除表中的记录
+    - 当流和表匹配时，且流中的数据不为空，则更新表中的记录
+    - 当流和表不匹配时，则插入流中的数据
+
+4. 周期性执行第三步中的语句，以保证数据的实时性。可通过 Snowflake 的 `SCHEDULED TASK` 来实现：
+
+    ```
+    -- 创建一个 TASK，周期性执行 MERGE INTO 语句
+    create or replace task STREAM_TO_ITEM
+        warehouse = test
+        -- 每分钟执行一次
+        schedule = '1 minute' 
+    when
+        -- 当 TEST_ITEM_STREAM 中无数据时跳过
+        system$stream_has_data('TEST_ITEM_STREAM') 
+    as
+    -- 将数据合并到 TEST_ITEM 表，和上文中的 merge into 语句相同
+    merge into TEST_ITEM n 
+      using 
+          (select RECORD_METADATA:key as k, RECORD_CONTENT:val as v from TEST_ITEM_STREAM) stm 
+          on k:i_id = n.i_id 
+      when matched and IS_NULL_VALUE(v) = true then 
+          delete 
+      when matched and IS_NULL_VALUE(v) = false then 
+          update set n.i_data = v:i_data, n.i_im_id = v:i_im_id, n.i_name = v:i_name, n.i_price = v:i_price 
+      when not matched then 
+          insert 
+              (i_data, i_id, i_im_id, i_name, i_price) 
+          values 
+              (v:i_data, v:i_id, v:i_im_id, v:i_name, v:i_price)
+    ;
+    ```
+
+至此，你就建立了一条具备一定 ETL 能力的数据通路，使得 TiDB 的增量数据变更日志能够被输出到 Snowflake，并且维护一个 TiDB 表的数据副本，实现在 Snowflake 中使用 TiDB 表的数据。最后一步操作是定期清理 `TIDB_TEST_ITEM` 表中的无用数据：
+
+```
+-- 每两小时清空表 TIDB_TEST_ITEM
+create or replace task TRUNCATE_TIDB_TEST_ITEM
+    warehouse = test
+    schedule = '120 minute'
+when
+    system$stream_has_data('TIDB_TEST_ITEM')
+as
+    TRUNCATE table TIDB_TEST_ITEM;
+```
 
 ## 与 ksqlDB 进行数据集成
 

@@ -13,11 +13,12 @@ summary: 介绍在测试中发现的 TiDB 与第三方工具的兼容性问题�
 > - 触发器
 > - 事件
 > - 自定义函数
-> - 外键约束
 > - 空间类型的函数、数据类型和索引
 > - `XA` 语法
 >
 > 这些不支持的功能不兼容将被视为预期行为，不再重复叙述。关于更多 TiDB 与 MySQL 的兼容性对比，你可以查看[与 MySQL 兼容性对比](/mysql-compatibility.md)。
+
+本文列举的兼容性问题是在一些 [TiDB 支持的第三方工具](/develop/dev-guide-third-party-support.md)中发现的。
 
 ## 通用
 
@@ -87,7 +88,7 @@ MySQL Connector/J 的排序规则保存在客户端内，通过获取的服务�
 
 **描述**
 
-TiDB 中 无法使用 `NO_BACKSLASH_ESCAPES` 参数从而不进行 `\` 字符的转义。已提 [issue](https://github.com/pingcap/tidb/issues/35302)。
+TiDB 中无法使用 `NO_BACKSLASH_ESCAPES` 参数从而不进行 `\` 字符的转义。已提 [issue](https://github.com/pingcap/tidb/issues/35302)。
 
 **规避方法**
 
@@ -163,7 +164,6 @@ TiDB 对其进行了两个维度的修复：
 
 根据测试结果，TiDB 支持绝大部分 Sequelize 功能（[使用 `MySQL` 作为方言](https://sequelize.org/docs/v6/other-topics/dialect-specific-things/#mysql)），不支持的功能有：
 
-- 不支持与外键约束相关的功能（包括多对多关联）。
 - [不支持 `GEOMETRY`](https://github.com/pingcap/tidb/issues/6347) 相关。
 - 不支持修改整数主键。
 - 不支持 `PROCEDURE` 相关。

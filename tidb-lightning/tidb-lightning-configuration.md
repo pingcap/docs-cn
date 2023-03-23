@@ -118,7 +118,7 @@ driver = "file"
 # incremental-import = false
 # 当后端是 “importer” 时，tikv-importer 的监听地址（需改为实际地址）。
 addr = "172.16.31.10:8287"
-# Logical Import Mode 插入重复数据时执行的操作。
+# Logical Import Mode 插入冲突数据时执行的操作。关于冲突检测详细信息请查阅：https://docs.pingcap.com/zh/tidb/dev/tidb-lightning-logical-import-mode-usage#冲突数据检测
 # - replace：新数据替代已有数据
 # - ignore：保留已有数据，忽略新数据
 # - error：中止导入并报错
@@ -132,12 +132,23 @@ addr = "172.16.31.10:8287"
 # duplicate-resolution = 'none'
 # Physical Import Mode 一次请求中发送的 KV 数量。
 # send-kv-pairs = 32768
+# Physical Import Mode 向 TiKV 发送 KV 时是否启用压缩。目前只支持 Gzip 压缩算法，可填写 "gzip" 或者 "gz"。默认不启用压缩。
+# compress-kv-pairs = ""
 # Physical Import Mode 本地进行 KV 排序的路径。如果磁盘性能较低（如使用机械盘），建议设置成与 `data-source-dir` 不同的磁盘，这样可有效提升导入性能。
 # sorted-kv-dir = ""
 # Physical Import Mode TiKV 写入 KV 数据的并发度。当 TiDB Lightning 和 TiKV 直接网络传输速度超过万兆的时候，可以适当增加这个值。
 # range-concurrency = 16
 # Physical Import Mode 限制 TiDB Lightning 向每个 TiKV 节点写入的带宽大小，默认为 0，表示不限制。
 # store-write-bwlimit = "128MiB"
+
+# 使用 Physical Import Mode 时，配置 TiDB Lightning 本地临时文件使用的磁盘配额 (disk quota)。当磁盘配额不足时，TiDB Lightning 会暂停读取源数据以及写入临时文件的过程，优先将已经完成排序的 key-value 写入到 TiKV，TiDB Lightning 删除本地临时文件后，再继续导入过程。
+# 需要同时配合把 `backend` 设置为 `local` 模式才能生效。
+# 默认值为 MaxInt64 字节，即 9223372036854775807 字节。
+# disk-quota = "10GB" 
+
+# Physical Import Mode 是否通过 SQL 方式添加索引。默认根据 TiDB 版本自动选择。如果 TiDB 版本早于 v7.0.0，则默认为 `false`，表示 TiDB Lightning 会将行数据以及索引数据都编码成 KV pairs 后一同导入 TiKV，实现机制和历史版本保持一致。从 v7.0.0 版本开始，默认为 `true`，即 TiDB Lightning 会在导入数据完成后，使用 add index 的 SQL 来添加索引。
+# 通过 SQL 方式添加索引的优点是将导入数据与导入索引分开，可以快速导入数据，即使导入数据后，索引添加失败，也不会影响数据的一致性。
+# add-index-by-sql = true
 
 [mydumper]
 # 设置文件读取的区块大小，确保该值比数据源的最长字符串长。
@@ -152,7 +163,7 @@ read-block-size = "64KiB" # 默认值
 # 取值范围为（0 <= batch-import-ratio < 1）。
 batch-import-ratio = 0.75
 
-# 本地源数据目录或外部存储 URL
+# 本地源数据目录或外部存储 URI。关于外部存储 URI 详情可参考 https://docs.pingcap.com/zh/tidb/v6.6/backup-and-restore-storages#uri-%E6%A0%BC%E5%BC%8F。
 data-source-dir = "/data/my_database"
 
 # 指定包含 `CREATE TABLE` 语句的表结构文件的字符集。只支持下列选项：
@@ -202,8 +213,15 @@ delimiter = '"'
 # 行尾定界字符，支持一个或多个字符。设置为空（默认值）表示 "\n"（换行）和 "\r\n" （回车+换行），均表示行尾。
 terminator = ""
 # CSV 文件是否包含表头。
-# 如果 header = true，将跳过首行。
+# 如果 header = true，将把首行的内容作为表头处理，不作为数据导入。如果设置为 false，首行也作为 CSV 数据导入，此时请确保 CSV 文件的列顺序与目标表的列顺序一致，否则可能会导致数据差异。
 header = true
+# CSV 表头是否匹配目标表的表结构。
+# 默认为 true，表示在导入数据时，会根据 CSV 表头的字段名去匹配目标表对应的列名，这样即使 CSV 文件和目标表列的顺序不一致也能按照对应的列名进行导入。
+# 如果 CSV 表头中的字段名和目标表的列名不匹配（例如，CSV 表头中的某些字段名在目标表中可能找不到对应的同名列）但列的顺序是一致的，请将该配置设置为 false。
+# 这时，在导入的时候，会直接忽略 CSV 表头的内容，以避免导入错误。在这种情况下，直接把 CSV 数据按照目标表列的顺序导入。
+# 因此，如果列的顺序不一致，请手动调整一致后再导入，否则可能会导致数据差异。
+# 注意：只有在 header = true 时，该参数才会生效。如果 header = false ，表示 CSV 文件没有表头，此时不需要考虑相关列名匹配的问题。
+header-schema-match = true
 # CSV 文件是否包含 NULL。
 # 如果 not-null = true，CSV 所有列都不能解析为 NULL。
 not-null = false
@@ -296,6 +314,9 @@ analyze = "optional"
 switch-mode = "5m"
 # 在日志中打印导入进度的持续时间。
 log-progress = "5m"
+
+# 使用 Physical Import Mode 时，检查本地磁盘配额的时间间隔，默认为 60 秒。
+# check-disk-quota = "60s"
 ```
 
 ## 命令行参数
@@ -308,11 +329,11 @@ log-progress = "5m"
 |:----|:----|:----|
 | --config *file* | 从 *file* 读取全局设置。如果没有指定则使用默认设置。 | |
 | -V | 输出程序的版本 | |
-| -d *directory* | 读取数据的本地目录或[外部存储 URL](/br/external-storage.md) | `mydumper.data-source-dir` |
+| -d *directory* | 读取数据的本地目录或[外部存储 URI](/br/backup-and-restore-storages.md#uri-格式) | `mydumper.data-source-dir` |
 | -L *level* | 日志的等级： debug、info、warn、error 或 fatal (默认为 info) | `lightning.log-level` |
 | -f *rule* | [表库过滤的规则](/table-filter.md) (可多次指定) | `mydumper.filter` |
-| --backend [*backend*](/tidb-lightning/tidb-lightning-overview.md) | 选择导入的模式：`local`为 Physical Import Mode ，`tidb`为 Logical Import Mode  | `local` |
-| --log-file *file* | 日志文件路径（默认值为 `/tmp/lightning.log.{timestamp}`, 设置为 '-' 表示日志输出到终端） | `lightning.log-file` |
+| --backend [*backend*](/tidb-lightning/tidb-lightning-overview.md) | 选择导入的模式：`local`为 Physical Import Mode，`tidb`为 Logical Import Mode  | `local` |
+| --log-file *file* | 日志文件路径（默认值为 `/tmp/lightning.log.{timestamp}`，设置为 '-' 表示日志输出到终端） | `lightning.log-file` |
 | --status-addr *ip:port* | TiDB Lightning 服务器的监听地址 | `lightning.status-port` |
 | --importer *host:port* | TiKV Importer 的地址 | `tikv-importer.addr` |
 | --pd-urls *host:port* | PD endpoint 的地址 | `tidb.pd-addr` |

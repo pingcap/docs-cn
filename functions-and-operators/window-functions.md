@@ -7,6 +7,8 @@ aliases: ['/docs-cn/dev/functions-and-operators/window-functions/','/docs-cn/dev
 
 TiDB 中窗口函数的使用方法与 MySQL 8.0 基本一致，详情可参见 [MySQL 窗口函数](https://dev.mysql.com/doc/refman/8.0/en/window-functions.html)。由于窗口函数会使用一些保留关键字，可能导致原先可以正常执行的 SQL 语句在升级 TiDB 后无法被解析语法，此时可以将 `tidb_enable_window_function` 设置为 `0`，该参数的默认值为 `1`。
 
+[本页](/tiflash/tiflash-supported-pushdown-calculations.md)列出的窗口函数可以下推到 TiFlash。
+
 TiDB 支持除 `GROUP_CONCAT()` 和 `APPROX_PERCENTILE()` 以外的所有 [`GROUP BY` 聚合函数](/functions-and-operators/aggregate-group-by-functions.md)。此外，TiDB 支持的其他窗口函数如下：
 
 | 函数名 | 功能描述 |

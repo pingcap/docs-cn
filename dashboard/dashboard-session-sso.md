@@ -210,7 +210,7 @@ TiDB Dashboard 支持基于 [OIDC](https://openid.net/connect/) 协议的单点�
 
     ![Settings](/media/dashboard/dashboard-session-sso-casdoor-settings-1.png)
 
-4. 填写**名称**和**显示名称**，比如：**TiDB Dashboard** 。
+4. 填写**名称**和**显示名称**，比如：**TiDB Dashboard**。
 
 5. 在**回调 URLs** 中添加如下内容：
 

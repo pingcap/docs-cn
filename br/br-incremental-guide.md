@@ -13,17 +13,17 @@ TiDB 集群增量数据包含在某个时间段的起始和结束两个快照的
 
 ## 对集群进行增量备份
 
-使用 `br backup` 进行增量备份只需要指定**上一次的备份时间戳** `--lastbackupts`，BR 会判定需要备份 `lastbackupts` 和当前时间之间增量数据。使用 `validate` 指令获取上一次备份的时间戳，示例如下：
+使用 `br backup` 进行增量备份只需要指定**上一次的备份时间戳** `--lastbackupts`，br 命令行工具会判定需要备份 `lastbackupts` 和当前时间之间增量数据。使用 `validate` 指令获取上一次备份的时间戳，示例如下：
 
 ```shell
-LAST_BACKUP_TS=`tiup br validate decode --field="end-version" --storage "s3://backup-101/snapshot-202209081330?access_key=${access_key}&secret_access_key=${secret_access_key}"| tail -n1`
+LAST_BACKUP_TS=`tiup br validate decode --field="end-version" --storage "s3://backup-101/snapshot-202209081330?access-key=${access-key}&secret-access-key=${secret-access-key}"| tail -n1`
 ```
 
 备份 `(LAST_BACKUP_TS, current timestamp]` 之间的增量数据，以及这段时间内的 DDL：
 
 ```shell
 tiup br backup full --pd "${PD_IP}:2379" \
---storage "s3://backup-101/snapshot-202209081330/incr?access_key=${access_key}&secret_access_key=${secret_access_key}" \
+--storage "s3://backup-101/snapshot-202209081330/incr?access-key=${access-key}&secret-access-key=${secret-access-key}" \
 --lastbackupts ${LAST_BACKUP_TS} \
 --ratelimit 128
 ```
@@ -32,7 +32,7 @@ tiup br backup full --pd "${PD_IP}:2379" \
 
 - `--lastbackupts`：上一次的备份时间戳。
 - `--ratelimit`：**每个 TiKV** 执行备份任务的速度上限（单位 MiB/s）。
-- `storage`：数据备份到存储地址。增量备份数据需要与快照备份数据保存在不同的路径下，例如上例保存在全量备份数据下的 `incr` 目录中。详细参考[备份存储 URL 配置](/br/backup-and-restore-storages.md#url-格式)。
+- `storage`：数据备份到存储地址。增量备份数据需要与快照备份数据保存在不同的路径下，例如上例保存在全量备份数据下的 `incr` 目录中。详细参考[备份存储 URI 配置](/br/backup-and-restore-storages.md#uri-格式)。
 
 ## 恢复增量备份数据
 
@@ -42,12 +42,12 @@ tiup br backup full --pd "${PD_IP}:2379" \
 
 ```shell
 tiup br restore full --pd "${PD_IP}:2379" \
---storage "s3://backup-101/snapshot-202209081330?access_key=${access_key}&secret_access_key=${secret_access_key}"
+--storage "s3://backup-101/snapshot-202209081330?access-key=${access-key}&secret-access-key=${secret-access-key}"
 ```
 
 恢复全量备份后的增量备份数据，备份数据存储在 `backup-101/snapshot-202209081330/incr` 目录下：
 
 ```shell
 tiup br restore full --pd "${PD_IP}:2379" \
---storage "s3://backup-101/snapshot-202209081330/incr?access_key=${access_key}&secret_access_key=${secret_access_key}"
+--storage "s3://backup-101/snapshot-202209081330/incr?access-key=${access-key}&secret-access-key=${secret-access-key}"
 ```

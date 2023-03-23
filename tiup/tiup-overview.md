@@ -33,7 +33,7 @@ tiup --version
 
 > **注意：**
 >
-> TiUP 默认会收集使用情况信息，并将这些信息分享给 PingCAP 用于改善产品。若要了解所收集的信息详情及如何禁用该行为，请参见[遥测](/telemetry.md)。
+> 对于 v1.11.3 及以上版本的 TiUP，默认不会收集使用情况信息分享给 PingCAP。若要了解所收集的信息详情及如何关闭分享行为，请参见[遥测](/telemetry.md)。
 
 ## TiUP 生态介绍
 
@@ -78,7 +78,6 @@ Flags:
                                        and the latest version installed will be selected if no version specified
       --binpath string                 Specify the binary path of component instance
   -h, --help                           help for tiup
-      --skip-version-check             Skip the strict version check, by default a version must be a valid SemVer string
   -T, --tag string                     Specify a tag for component instance
   -v, --version                        version for tiup
 

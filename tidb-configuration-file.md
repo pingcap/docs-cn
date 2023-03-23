@@ -9,20 +9,24 @@ aliases: ['/docs-cn/dev/tidb-configuration-file/','/docs-cn/dev/reference/config
 
 TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/config.toml.example](https://github.com/pingcap/tidb/blob/master/config/config.toml.example) 找到默认值的配置文件，重命名为 `config.toml` 即可。本文档只介绍未包含在[命令行参数](/command-line-flags-for-tidb-configuration.md)中的参数。
 
+> **Tip:**
+>
+> 如果你需要调整配置项的值，请参考[修改配置参数](/maintain-tidb-using-tiup.md#修改配置参数)进行操作。
+
 ### `split-table`
 
 + 为每个 table 建立单独的 Region。
 + 默认值：true
 + 如果需要创建大量的表（例如 10 万张以上），建议将此参数设置为 false。
 
-### `tidb_max_reuse_chunk` <span class="version-mark">从 v6.4.0 版本开始引入</span>
+### `tidb-max-reuse-chunk` <span class="version-mark">从 v6.4.0 版本开始引入</span>
 
 + 用于控制每个连接最多缓存的 Chunk 对象数。配置过大会增加 OOM 的风险。
 + 默认值：64
 + 最小值：0
 + 最大值：2147483647
 
-### `tidb_max_reuse_column` <span class="version-mark">从 v6.4.0 版本开始引入</span>
+### `tidb-max-reuse-column` <span class="version-mark">从 v6.4.0 版本开始引入</span>
 
 + 用于控制每个连接最多缓存的 column 对象数。配置过大会增加 OOM 的风险。
 + 默认值：256
@@ -38,10 +42,16 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 最大值（64 位平台）：`18446744073709551615`
 + 最大值（32 位平台）：`4294967295`
 
+### `temp-dir` <span class="version-mark">从 v6.3.0 版本开始引入</span>
+
++ TiDB 用于存放临时数据的路径。如果一个功能需要使用 TiDB 节点的本地存储，TiDB 将把对应数据临时存放在这个目录下。
++ 在创建索引的过程中，如果开启了[创建索引加速](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入)，那么新创建索引需要回填的数据会被先存放在 TiDB 本地临时存储路径，然后批量导入到 TiKV，从而提升索引创建速度。
++ 默认值："/tmp/tidb"
+
 ### `oom-use-tmp-storage`
 
 > **警告：**
-> 
+>
 > 自 v6.3.0 起，该配置项被废弃，其功能由系统变量 [`tidb_enable_tmp_storage_on_oom`](/system-variables.md#tidb_enable_tmp_storage_on_oom) 代替。集群升级到 v6.3.0 及之后的版本后，会自动继承升级前的 `oom-use-tmp-storage` 设置，升级后再设置 `oom-use-tmp-storage` 将不生效。
 
 + 设置是否在单条 SQL 语句的内存使用超出系统变量 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 限制时为某些算子启用临时磁盘。
@@ -120,7 +130,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 + 用于开启新的 collation 支持
 + 默认值：true
-+ 注意：该配置项只有在初次初始化集群时生效，初始化集群后，无法通过更改该配置项打开或关闭新的 collation 框架；4.0 版本之前的 TiDB 集群升级到 4.0 或更高版本时，由于集群已经初始化过，该参数无论如何配置，都作为 false 处理。
++ 注意：该配置项只有在初次初始化集群时生效，初始化集群后，无法通过更改该配置项打开或关闭新的 collation 框架。
 
 ### `max-server-connections`
 
@@ -151,8 +161,9 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 ### `enable-telemetry` <span class="version-mark">从 v4.0.2 版本开始引入</span>
 
 + 是否开启 TiDB 遥测功能。
-+ 默认值：true
-+ 如果所有 TiDB 实例上该选项都设置为 `false`，那么将完全禁用 TiDB 遥测功能，且忽略 [`tidb_enable_telemetry`](/system-variables.md#tidb_enable_telemetry-从-v402-版本开始引入) 系统变量。参阅[遥测](/telemetry.md)了解该功能详情。
++ 默认值：false
++ 如果在 TiDB 实例上该配置项设为 `true`，该 TiDB 实例上将开启遥测功能，且 [`tidb_enable_telemetry`](/system-variables.md#tidb_enable_telemetry-从-v402-版本开始引入) 系统变量生效。
++ 如果所有 TiDB 实例上该选项都设置为 `false`，那么将完全禁用 TiDB 遥测功能，且忽略 `tidb_enable_telemetry` 系统变量。参阅[遥测](/telemetry.md)了解该功能详情。
 
 ### `enable-tcp4-only` <span class="version-mark">从 v5.0 版本开始引入</span>
 
@@ -178,6 +189,13 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：true
 + 当该配置项值为 `true` 时，`KILL` 语句和 `KILL TIDB` 语句均能跨节点终止查询或连接，无需担心错误地终止其他查询或连接。当你使用客户端连接到任何一个 TiDB 节点执行 `KILL` 语句或 `KILL TIDB` 语句时，该语句会被转发给对应的 TiDB 节点。当客户端和 TiDB 中间有代理时，`KILL` 语句或 `KILL TIDB` 语句也会被转发给对应的 TiDB 节点执行。目前暂时不支持在 `enable-global-kill` 为 `true` 时用 MySQL 命令行 <kbd>ctrl</kbd>+<kbd>c</kbd> 终止查询或连接。关于 `KILL` 语句的更多信息，请参考 [KILL [TIDB]](/sql-statements/sql-statement-kill.md)。
 
+### `initialize-sql-file` <span class="version-mark">从 v6.6.0 版本开始引入</span>
+
++ 用于指定 TiDB 集群初次启动时执行的 SQL 脚本。
++ 默认值：""
++ 脚本中的所有 SQL 语句将以最高权限执行，不会进行权限检查。若指定的 SQL 脚本无法正确执行，可能导致 TiDB 集群启动失败。
++ 通常用于修改系统变量的值、创建用户或分配权限等。
+
 ### `enable-forwarding` <span class="version-mark">从 v5.0.0 版本开始引入</span>
 
 + 控制 TiDB 中的 PD client 以及 TiKV client 在疑似网络隔离的情况下是否通过 follower 将请求转发给 leader。
@@ -193,7 +211,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 + 控制是否开启表级锁特性。
 + 默认值：false
-+ 表级锁用于协调多个 session 之间对同一张表的并发访问。目前已支持的锁种类包括 `READ`、`WRITE` 和 `WRITE LOCAL`。当该配置项为 `false` 时，执行 `LOCK TABLE` 和 `UNLOCK TABLE` 语句不会生效，并且会报 "LOCK/UNLOCK TABLES is not supported" 的警告。
++ 表级锁用于协调多个 session 之间对同一张表的并发访问。目前已支持的锁种类包括 `READ`、`WRITE` 和 `WRITE LOCAL`。当该配置项为 `false` 时，执行 `LOCK TABLES` 和 `UNLOCK TABLES` 语句不会生效，并且会报 "LOCK/UNLOCK TABLES is not supported" 的警告。更多信息，请参考 [`LOCK TABLES` 和 `UNLOCK TABLES`](/sql-statements/sql-statement-lock-tables-and-unlock-tables.md)。
 
 ## log
 
@@ -363,6 +381,28 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 设置 `tidb_auth_token` 认证方式的 JWKS 刷新时间间隔。
 + 默认值：1h
 
+### `disconnect-on-expired-password` <span class="version-mark">从 v6.5.0 版本开始引入</span>
+
++ 对于密码已过期的用户，通过 `disconnect-on-expired-password` 控制 TiDB 服务端是否直接断开该用户的连接。
++ 默认值：`true`
++ 默认值为 "true" 表示 TiDB 服务端将直接断开密码已过期用户的连接。设置为 "false" 时，TiDB 服务端将密码已过期用户的连接置于“沙盒模式”，允许该用户建立连接并执行密码重置操作。
+
+### `session-token-signing-cert` <span class="version-mark">从 v6.4.0 版本开始引入</span>
+
+> **警告：**
+>
+> 该配置与一个未发布的特性相关。**请勿设置该配置**。
+
++ 默认值：""
+
+### `session-token-signing-key` <span class="version-mark">从 v6.4.0 版本开始引入</span>
+
+> **警告：**
+>
+> 该配置与一个未发布的特性相关。**请勿设置该配置**。
+
++ 默认值：""
+
 ## performance
 
 性能相关配置。
@@ -377,7 +417,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 > **警告：**
 >
-> `server-memory-quota` 目前为实验性特性，不建议在生产环境中使用。
+> 自 v6.5.0 起，该配置项被废弃。请使用 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 系统变量进行设置。
 
 + 设置 tidb-server 实例的最大内存用量，单位为字节。
 + 默认值：0
@@ -390,6 +430,8 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 单位：Byte
 + 事务中单个 key-value 记录的大小限制。若超出该限制，TiDB 将会返回 `entry too large` 错误。该配置项的最大值不超过 `125829120`（表示 120MB）。
 + 注意，TiKV 有类似的限制。若单个写入请求的数据量大小超出 [`raft-entry-max-size`](/tikv-configuration-file.md#raft-entry-max-size)，默认为 8MB，TiKV 会拒绝处理该请求。当表的一行记录较大时，需要同时修改这两个配置。
++ [`max_allowed_packet`](/system-variables.md#max_allowed_packet-从-v610-版本开始引入) (MySQL 协议的最大数据包大小) 的默认值为 `67108864`（64 MiB）。如果一行记录的大小超过 `max_allowed_packet`，该行记录会被截断。
++ [`txn-total-size-limit`](#txn-total-size-limit)（TiDB 单个事务大小限制）的默认值为 100 MiB。如果将 `txn-entry-size-limit` 的值设置为 100 MiB 以上，需要相应地调大 `txn-total-size-limit` 的值。
 
 ### `txn-total-size-limit`
 
@@ -397,6 +439,9 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：104857600
 + 单位：Byte
 + 单个事务中，所有 key-value 记录的总大小不能超过该限制。该配置项的最大值不超过 `1099511627776`（表示 1TB）。注意，如果使用了以 `Kafka` 为下游消费者的 `binlog`，如：`arbiter` 集群，该配置项的值不能超过 `1073741824`（表示 1GB），因为这是 `Kafka` 的处理单条消息的最大限制，超过该限制 `Kafka` 将会报错。
++ 在 v6.5.0 及之后的版本中，不再推荐使用该配置项，事务的内存大小会被累计计入所在会话的内存使用量中，并由 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 变量在单个会话内存超阈值时采取控制行为。为了向前兼容，由低版本升级至 v6.5.0 及更高版本时，该配置项的行为如下所述:
+    + 若该配置项未设置，或设置为默认值 (`104857600`)，升级后事务内存大小将会计入所在会话的内存使用中，由 `tidb_mem_quota_query` 变量控制。
+    + 若该配置项未设为默认值 (`104857600`)，升级前后该配置项仍生效，对单个事务大小的限制行为不会发生变化，事务内存大小不由 `tidb_mem_quota_query` 控制。
 
 ### `max-txn-ttl`
 
@@ -770,10 +815,61 @@ TiDB 服务状态相关配置。
 
 ### `tidb_enable_ddl`
 
-+ 用于表示该 tidb-server 是否运行 DDL 语句。
++ 用于表示该 tidb-server 是否可以成为 DDL owner。
 + 默认值：true
 + 该值作为系统变量 [`tidb_enable_ddl`](/system-variables.md#tidb_enable_ddl) 的初始值。
 + 在 v6.3.0 之前，该功能由配置项 `run-ddl` 进行设置。
+
+### `tidb_stmt_summary_enable_persistent` <span class="version-mark">从 v6.6.0 版本开始引入</span>
+
+> **警告：**
+>
+> statements summary 持久化目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+
++ 用于控制是否开启 statements summary 持久化。
++ 默认值：false
++ 详情参考[持久化 statements summary](/statement-summary-tables.md#持久化-statements-summary)。
+
+### `tidb_stmt_summary_filename` <span class="version-mark">从 v6.6.0 版本开始引入</span>
+
+> **警告：**
+>
+> statements summary 持久化目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+
++ 当开启了 statements summary 持久化时，该配置用于指定持久化数据所写入的文件。
++ 默认值："tidb-statements.log"
+
+### `tidb_stmt_summary_file_max_days` <span class="version-mark">从 v6.6.0 版本开始引入</span>
+
+> **警告：**
+>
+> statements summary 持久化目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+
++ 当开启了 statements summary 持久化时，该配置用于指定持久化数据文件所保留的最大天数。
++ 默认值：3
++ 单位：天
++ 可结合数据保留时长需求与磁盘空间占用适当调整。
+
+### `tidb_stmt_summary_file_max_size` <span class="version-mark">从 v6.6.0 版本开始引入</span>
+
+> **警告：**
+>
+> statements summary 持久化目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+
++ 当开启了 statements summary 持久化时，该配置用于限制持久化数据单个文件的大小。
++ 默认值：64
++ 单位：MiB
++ 可结合数据保留时长需求与磁盘空间占用适当调整。
+
+### `tidb_stmt_summary_file_max_backups` <span class="version-mark">从 v6.6.0 版本开始引入</span>
+
+> **警告：**
+>
+> statements summary 持久化目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+
++ 当开启了 statements summary 持久化时，该配置用于限制持久化数据文件最大数量，`0` 表示不限制。
++ 默认值：0
++ 可结合数据保留时长需求与磁盘空间占用适当调整。
 
 ## proxy-protocol
 
@@ -789,12 +885,6 @@ PROXY 协议相关的配置项。
 > **警告：**
 >
 > 需谨慎使用 `*` 符号，因为 `*` 允许来自任何 IP 的客户端自行汇报其 IP 地址，从而可能引入安全风险。另外，`*` 可能导致部分直接连接 TiDB 的内部组件无法使用，例如 TiDB Dashboard。
-
-### `temp-dir` <span class="version-mark">从 v6.3.0 版本开始引入</span>
-
-+ TiDB 用于存放临时数据的路径。如果一个功能需要使用 TiDB 节点的本地存储，TiDB 将把对应数据临时存放在这个目录下。
-+ 在创建索引的过程中，如果开启了[创建索引加速](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入)，那么新创建索引需要回填的数据会被先存放在 TiDB 本地临时存储路径，然后批量导入到 TiKV，从而提升索引创建速度。
-+ 默认值："/tmp/tidb"
 
 ## experimental
 

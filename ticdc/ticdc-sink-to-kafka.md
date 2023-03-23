@@ -1,6 +1,6 @@
 ---
 title: 同步数据到 Kafka
-summary: 了解如何使用 TiCDC 将数据同步到 Kafka
+summary: 了解如何使用 TiCDC 将数据同步到 Kafka。
 ---
 
 # 同步数据到 Kafka
@@ -56,6 +56,8 @@ URI 中可配置的的参数如下：
 | `partition-num`      | 下游 Kafka partition 数量（可选，不能大于实际 partition 数量，否则创建同步任务会失败，默认值 `3`）。|
 | `max-message-bytes`  | 每次向 Kafka broker 发送消息的最大数据量（可选，默认值 `10MB`）。从 v5.0.6 和 v4.0.6 开始，默认值分别从 64MB 和 256MB 调整至 10 MB。|
 | `replication-factor` | Kafka 消息保存副本数（可选，默认值 `1`）。                       |
+| `required-acks`      | 在 `Produce` 请求中使用的配置项，用于告知 broker 需要收到多少副本确认后才进行响应。可选值有：`0`（`NoResponse`：不发送任何响应，只有 TCP ACK），`1`（`WaitForLocal`：仅等待本地提交成功后再响应）和 `-1`（`WaitForAll`：等待所有同步副本提交后再响应。最小同步副本数量可通过 broker 的 [`min.insync.replicas`](https://kafka.apache.org/33/documentation.html#brokerconfigs_min.insync.replicas) 配置项进行配置）。（可选，默认值为 `-1`）。                      |
+| `compression`        | 设置发送消息时使用的压缩算法（可选值为 `none`、`lz4`、`gzip`、`snappy` 和 `zstd`，默认值为 `none`）。|
 | `protocol` | 输出到 Kafka 的消息协议，可选值有 `canal-json`、`open-protocol`、`canal`、`avro`、`maxwell`。 |
 | `auto-create-topic` | 当传入的 `topic-name` 在 Kafka 集群不存在时，TiCDC 是否要自动创建该 topic（可选，默认值 `true`）。 |
 | `enable-tidb-extension` | 可选，默认值是 `false`。当输出协议为 `canal-json` 时，如果该值为 `true`，TiCDC 会发送 [Resolved 事件](/ticdc/ticdc-canal-json.md#watermark-event)，并在 Kafka 消息中添加 TiDB 扩展字段。从 6.1.0 开始，该参数也可以和输出协议 `avro` 一起使用。如果该值为 `true`，TiCDC 会在 Kafka 消息中添加[三个 TiDB 扩展字段](/ticdc/ticdc-avro-protocol.md#tidb-扩展字段)。|
@@ -65,14 +67,14 @@ URI 中可配置的的参数如下：
 | `cert`     | 连接下游 Kafka 实例所需的证书文件路径（可选）。 |
 | `key`      | 连接下游 Kafka 实例所需的证书密钥文件路径（可选）。 |
 | `sasl-user` | 连接下游 Kafka 实例所需的 SASL/PLAIN 或 SASL/SCRAM 认证的用户名（authcid）（可选）。 |
-| `sasl-password` | 连接下游 Kafka 实例所需的 SASL/PLAIN 或 SASL/SCRAM 认证的密码（可选）。 |
+| `sasl-password` | 连接下游 Kafka 实例所需的 SASL/PLAIN 或 SASL/SCRAM 认证的密码（可选）。如有特殊字符，需要用 URL encode 转义。 |
 | `sasl-mechanism` | 连接下游 Kafka 实例所需的 SASL 认证方式的名称，可选值有 `plain`、`scram-sha-256`、`scram-sha-512` 和 `gssapi`。 |
 | `sasl-gssapi-auth-type` | gssapi 认证类型，可选值有 `user` 和 `keytab`（可选）。 |
 | `sasl-gssapi-keytab-path` | gssapi keytab 路径（可选）。|
 | `sasl-gssapi-kerberos-config-path` | gssapi kerberos 配置路径（可选）。 |
 | `sasl-gssapi-service-name` | gssapi 服务名称（可选）。 |
 | `sasl-gssapi-user` | gssapi 认证使用的用户名（可选）。 |
-| `sasl-gssapi-password` | gssapi 认证使用的密码（可选）。 |
+| `sasl-gssapi-password` | gssapi 认证使用的密码（可选）。如有特殊字符，需要用 URL encode 转义。 |
 | `sasl-gssapi-realm` | gssapi realm 名称（可选）。 |
 | `sasl-gssapi-disable-pafxfast` | gssapi 是否禁用 PA-FX-FAST（可选）。 |
 | `dial-timeout` | 和下游 Kafka 建立连接的超时时长，默认值为 `10s`。 |
@@ -81,7 +83,7 @@ URI 中可配置的的参数如下：
 | `avro-decimal-handling-mode` | 仅在输出协议是 `avro` 时有效。该参数决定了如何处理 DECIMAL 类型的字段，值可以是 `string` 或 `precise`，表明映射成字符串还是浮点数。 |
 | `avro-bigint-unsigned-handling-mode` | 仅在输出协议是 `avro` 时有效。该参数决定了如何处理 BIGINT UNSIGNED 类型的字段，值可以是 `string` 或 `long`，表明映射成字符串还是 64 位整形。|
 
-最佳实践：
+### 最佳实践
 
 * TiCDC 推荐用户自行创建 Kafka Topic，你至少需要设置该 Topic 每次向 Kafka broker 发送消息的最大数据量和下游 Kafka partition 的数量。在创建 changefeed 的时候，这两项设置分别对应 `max-message-bytes` 和 `partition-num` 参数。
 * 如果你在创建 changefeed 时，使用了尚未存在的 Topic，那么 TiCDC 会尝试使用 `partition-num` 和 `replication-factor` 参数自行创建 Topic。建议明确指定这两个参数。
@@ -151,7 +153,7 @@ dispatchers = [
 ]
 ```
 
-集成具体步骤详见 [与 Confluent Cloud 进行数据集成](/ticdc/integrate-confluent-using-ticdc.md)。
+集成具体步骤详见[与 Confluent Cloud 进行数据集成](/ticdc/integrate-confluent-using-ticdc.md)。
 
 ## 自定义 Kafka Sink 的 Topic 和 Partition 的分发规则
 
@@ -232,3 +234,30 @@ partition 分发器用 partition = "xxx" 来指定，支持 default、ts、index
 > ```
 > {matcher = ['*.*'], dispatcher = "ts", partition = "table"},
 > ```
+
+## 横向扩展大单表的负载到多个 TiCDC 节点
+
+该功能通过将大单表按 Region 个数切分成多个数据范围，将这些数据范围分布到多个 TiCDC 节点上，使得多个 TiCDC 节点可以同时同步大单表。该功能可以解决以下两个问题：
+
+- 单个 TiCDC 节点不能及时同步大单表。
+- TiCDC 节点之间资源（CPU、内存等）消耗不均匀。
+
+> **警告：**
+>
+> TiCDC v7.0.0 仅支持在 Kafka 同步任务上开启大单表的横向扩展功能。
+
+配置样例如下所示：
+
+```toml
+[scheduler]
+# 设置为 "true" 以打开该功能。
+enable-table-across-nodes = true
+# 打开该功能后，该功能只对 Region 个数大于 `region-threshold` 值的表生效。
+region-threshold = 100000
+```
+
+一个表包含的 Region 个数可用如下 SQL 查询：
+
+```sql
+SELECT COUNT(*) FROM INFORMATION_SCHEMA.TIKV_REGION_STATUS WHERE DB_NAME="database1" AND TABLE_NAME="table1" AND IS_INDEX=0;
+```
