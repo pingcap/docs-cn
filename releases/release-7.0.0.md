@@ -338,6 +338,14 @@ TiDB 版本：7.0.0
 
 + TiDB
 
+- 引入 `EXPAND` 算子来辅助优化在单个 SELECT 中包含多个 DISTINCT 的 SQL 性能 [#16581](https://github.com/pingcap/tidb/issues/16581) @[AilinKid](https://github.com/AilinKid)
+- 优化在单个 SELECT 中包含多个 DISTINCT 的 SQL 性能 [#16581](https://github.com/pingcap/tidb/issues/16581) @[AilinKid](https://github.com/AilinKid)
+- Index Join 支持更多的 SQL 格式 [#40505](https://github.com/pingcap/tidb/issues/40505) @[Yisaer](https://github.com/Yisaer)
+- 通过不主动读取索引的 FMSketch 优化统计信息的内存占用  [#42052](https://github.com/pingcap/tidb/issues/42052) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes)
+- JOIN 顺序的 HINT 和 JOIN 算法的 HINT 可以同时生效 [#36600](https://github.com/pingcap/tidb/issues/36600) @[Reminiscent](https://github.com/Reminiscent)
+- 避免某些情况下分区表数据需要在 TiDB 做全局排序 [#26166](https://github.com/pingcap/tidb/issues/26166) @[Defined2014](https://github.com/Defined2014)
+- 优化统计信息的收集速度 [#41930](https://github.com/pingcap/tidb/issues/41930) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes)
+- 增加新的控制变量 `tidb_opt_ordering_index_selectivity_threshold` 来辅助优化器对 `WHERE filters on index_1 ORDER BY index_2` 模式的查询生成更优的执行计划 [#42060](https://github.com/pingcap/tidb/issues/42060) @[time-and-fate](https://github.com/time-and-fate)
 - 支持同时使用 `fair lock mode` 和 `lock only if exists` 功能 [#42068](https://github.com/pingcap/tidb/issues/42068) @[MyonKeminta](https://github.com/MyonKeminta)
 - 支持打印 slow transaction log 以及相关 transaction 内部事件 [41863](https://github.com/pingcap/tidb/issues/41863) @[ekexium](https://github.com/ekexium)
     - `tidb_rc_read_check_ts` 对于使用 prepared statement cursor 游标模式不再生效 [#42184](https://github.com/pingcap/tidb/issues/42184) @[cfzjywxk](https://github.com/cfzjywxk)
@@ -409,6 +417,15 @@ TiDB 版本：7.0.0
 
 + TiDB
 
+    - 修复 TiFlash 执行中遇到生成列会报错的问题 [#40663](https://github.com/pingcap/tidb/issues/40663) @[guo-shaoge](https://github.com/guo-shaoge)
+    - 修复在存在时间类型时，TiDB 可能无法正确获取统计信息的问题 [#41938](https://github.com/pingcap/tidb/issues/41938) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes)
+    - 修复索引全表扫在开启 prepare plan cache 时可能会报错的问题 [#42150](https://github.com/pingcap/tidb/issues/42150) @[fzzf678](https://github.com/fzzf678)
+    - 修复 `IFNULL(NOT NULL COLUMN, ...)` 可能返回错误结果的问题 [#41734](https://github.com/pingcap/tidb/issues/41734) @[LittleFall](https://github.com/LittleFall)
+    - 修复当分区表的所有数据落在单个 region 时，TiDB 可能执行得到错误结果的问题 [#41801](https://github.com/pingcap/tidb/issues/41801) @[Defined2014](https://github.com/Defined2014)
+    - 修复当同一个 SQL 中出现多个不同的分区表时，TiDB 可能执行得到错误结果的问题 [#42135](https://github.com/pingcap/tidb/issues/42135) @[mjonss](https://github.com/mjonss)
+    - 修复在为分区表添加新的索引之后，该分区表的统计信息的自动收集可能无法正确触发的问题 [#41638](https://github.com/pingcap/tidb/issues/41638) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes)
+    - 修复在连续两次收集统计信息后，TiDB 可能读取到错误的列统计信息的问题 [#42073](https://github.com/pingcap/tidb/issues/42073) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes)
+    - 修复 Index merge 在开启 prepare plan cache 时可能得到错误结果的问题 [#41828](https://github.com/pingcap/tidb/issues/41828) @[qw4990](https://github.com/qw4990)
     - 修复 IndexMerge 中 goroutine 泄露的问题 [#41610](https://github.com/pingcap/tidb/pull/41610) @[guo-shaoge](https://github.com/guo-shaoge)
     - 修复非 bigint 类型的无符号整数与 string/decimal 比较时可能会结果错误的问题 [#41791](https://github.com/pingcap/tidb/pull/41791)，@[LittleFall](https://github.com/LittleFall)
     - 修复了 analyze 语句可能会因为当前 session 前一个 analyze 语句因为内存超限被 kill 导致当前 analyze 语句也被 kill 的问题 [#41826](https://github.com/pingcap/tidb/pull/41826)，@[XuHuaiyu](https://github.com/XuHuaiyu)
