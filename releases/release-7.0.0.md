@@ -54,7 +54,7 @@ TiDB 版本：7.0.0
 
   当 `SELECT` 语句中包含过滤条件（`WHERE` 子句）时，TiFlash 默认会先读取该查询所需列的全部数据，然后再根据查询条件对数据进行过滤、聚合等计算任务。延迟物化是一种优化方式，它支持下推部分过滤条件到 TableScan 算子，即先扫描过滤条件相关的列数据，过滤得到符合条件的行后，再扫描这些行的其他列数据，继续后续计算，从而减少 IO 扫描和数据处理的计算量。
 
-  TiFlash 延迟物化默认关闭，可以通过将系统变量 [`tidb_opt_enable_late_materialization`](/system-variables.md#tidb_opt_enable_late_materialization-从-v700-版本开始引入)设置为 `ON` 开启。开启后，TiDB 优化器会根据统计信息和查询的过滤条件，决定哪些过滤条件会被下推到 TableScan 算子。
+  TiFlash 延迟物化默认关闭，可以通过将系统变量 [`tidb_opt_enable_late_materialization`](/system-variables.md#tidb_opt_enable_late_materialization-从-v700-版本开始引入) 设置为 `ON` 开启。开启后，TiDB 优化器会根据统计信息和查询的过滤条件，决定哪些过滤条件会被下推到 TableScan 算子。
 
     更多信息，请参考[用户文档](/tiflash/tiflash-late-materialization.md)。
 
@@ -189,30 +189,15 @@ TiDB 版本：7.0.0
 
 * TiCDC 支持 storage sink，可输出变更数据至 cloud storage (GA) [#6797](https://github.com/pingcap/tiflow/issues/6797) @[zhaoxinyu](https://github.com/zhaoxinyu) **tw:hfxsd**
 
-    TiCDC 支持将 changed log 输出到兼容 Amazon S3 协议的存储服务、GCS、Azure Blob Storage以及 NFS 中。Cloud storage 价格便宜，使用方便。对于不使用 Kafka 的用户，可以选择使用 storage sink。使用该功能，TiCDC 会将 changed log 保存到文件，发送到存储系统中。用户自研的消费程序可以定时从存储系统读取新产生的 changed log 进行数据处理。
+    TiCDC 支持将 changed log 输出到兼容 Amazon S3 协议的存储服务、GCS、Azure Blob Storage 以及 NFS 中。Cloud storage 价格便宜，使用方便。对于不使用 Kafka 的用户，可以选择使用 storage sink。使用该功能，TiCDC 会将 changed log 保存到文件，发送到存储系统中。用户自研的消费程序可以定时从存储系统读取新产生的 changed log 进行数据处理。Storage sink 支持格式为 canal-json 和 csv 的 changed log。
+    
+    更多信息，请参考[用户文档](/ticdc/ticdc-sink-to-cloud-storage)。
 
-    Storage sink 支持格式为 canal-json 和 csv 的 changed log。更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/stable/ticdc-sink-to-cloud-storage)。
+* TiCDC OpenAPI v2 GA @[sdojjy](https://github.com/sdojjy) **tw:hfxsd**
 
-* TiCDC Open API V2 GA @[sdojjy](https://github.com/sdojjy) **tw:hfxsd**
+    TiCDC 提供 OpenAPI v2 功能。相比 OpenAPI v1,  OpenAPI v2 提供了完整的同步任务支持。你可以通过 OpenAPI v2 对 TiCDC 集群进行查询和运维操作。OpenAPI 的功能是 [`cdc cli` 工具](/ticdc/ticdc-manage-changefeed.md)的一个子集。你可以通过 OpenAPI 完成 TiCDC 集群的运维操作，如获取 TiCDC 节点状态、检查集群健康状态、管理同步任务等。
 
-    TiCDC 提供 OpenAPI 功能，用户可以通过 OpenAPI v2 对 TiCDC 集群进行查询和运维操作。OpenAPI 的功能是 [`cdc cli` 工具](/ticdc/ticdc-manage-changefeed.md)的一个子集。用户可以通过 OpenAPI 完成 TiCDC 集群的如下运维操作：
-
-    - [获取 TiCDC 节点状态信息](#获取-ticdc-节点状态信息)
-    - [检查 TiCDC 集群的健康状态](#检查-ticdc-集群的健康状态)
-    - [创建同步任务](#创建同步任务)
-    - [删除同步任务](#删除同步任务)
-    - [更新同步任务配置](#更新同步任务配置)
-    - [查询同步任务列表](#查询同步任务列表)
-    - [查询特定同步任务](#查询特定同步任务)
-    - [暂停同步任务](#暂停同步任务)
-    - [恢复同步任务](#恢复同步任务)
-    - [查询同步子任务列表](#查询同步子任务列表)
-    - [查询特定同步子任务](#查询特定同步子任务)
-    - [查询 TiCDC 服务进程列表](#查询-ticdc-服务进程列表)
-    - [驱逐 owner 节点](#驱逐-owner-节点)
-    - [动态调整 TiCDC Server 日志级别](#动态调整-ticdc-server-日志级别)
-
-  更多信息，请参考[用户文档](https://github.com/pingcap/docs-cn/pull/13224)。
+    更多信息，请参考[用户文档](/ticdc/ticdc-open-api-v2.md)。
 
 ### 可观测性
 
@@ -236,12 +221,13 @@ TiDB 版本：7.0.0
 
     在集成 Lightning 之前，Load data 语句只能用于导入位于客户端的数据文件，如果用户要从云存储导入数据，就得借助 Lightning 来实现。但是单独部署 Lightning 又会带来额外的部署成本和管理成本。将 Lightning 逻辑导入能力（TiDB backend ）集成到 Load data 命令后，不仅可以省去 Lightning 的部署和管理成本。还可以借助 Lightning 的功能大大扩展 load data 语句的能力。 部分增强的功能举例说明如下：
 
-    - 支持从 S3 导入数据到 TiDB，且支持通配符一次性匹配多个源文件导入到 TiDB 。
+    - 支持从 Amazon S3 和 Google Cloud Storage 导入数据到 TiDB，且支持通配符一次性匹配多个源文件导入到 TiDB
+    - 支持 DEFINED NULL BY 来定义 null
     - 支持 CSV、TSV、Parquet、SQL(mydumper/dumpling) 格式的源文件。
     - 支持将任务设置为 Detached，让任务在后台执行。
     - 支持任务管理，可通过 show load data jobid 查询任务状态和进展详情。方便用户管理和维护。
 
-  更多信息，请参考[用户文档](/sql-statements/sql-statement-load-data.md)。
+    更多信息，请参考[用户文档](/sql-statements/sql-statement-load-data.md)。
 
 * TiDB Lightning 向 TiKV 传输键值对时支持启用压缩传输 [#41163](https://github.com/pingcap/tidb/issues/41163) @[gozssky](https://github.com/gozssky) **tw:qiancai**
 
