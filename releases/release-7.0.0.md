@@ -108,8 +108,6 @@ TiDB 版本：7.0.0
 
     该特性不仅提供了内置视图展示资源的实际使用情况，协助你更合理地配置资源，还支持基于会话和语句级别（Hint）的动态资源管控能力。这些功能的引入将帮助你更精确地掌控 TiDB 集群的资源使用情况，并根据实际需要动态调整配额。
 
-    要启用资源管控特性，需要同时启动 TiDB 的全局变量 [`tidb_enable_resource_control`](/system-variables.md#tidb_enable_resource_control-从-v660-版本开始引入) 和 TiKV 的配置项 [`resource-control.enabled`](/tikv-configuration-file.md#resource-control)。当前支持的限额方式基于“[用量](/tidb-resource-control.md#什么是-request-unit-ru)”（Request Unit, RU），RU 是 TiDB 对 CPU、I/O 等系统资源的统一抽象单位。
-
     你可以通过以下方式使用资源组：
 
     - 用户级别。通过 [`CREATE USER`](/sql-statements/sql-statement-create-user.md) 或 [`ALTER USER`](/sql-statements/sql-statement-alter-user.md) 语句将用户绑定到特定的资源组。将资源组绑定用户后，使用对应的用户创建的会话会自动绑定对应的资源组。
