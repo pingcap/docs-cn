@@ -353,7 +353,7 @@ TiDB 版本：7.0.0
 
 + TiKV
 
-    - 优化收集统计信息时的内存占用和速度 [#14204](https://github.com/tikv/tikv/pull/14204) [#14280](https://github.com/tikv/tikv/pull/14280) [#14345](https://github.com/tikv/tikv/pull/14345) [#14376](https://github.com/tikv/tikv/pull/14376) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes)
+    - 优化收集统计信息时的内存占用和速度 [#14231](https://github.com/tikv/tikv/issues/14231) [#14280](https://github.com/tikv/tikv/pull/14280) [#14345](https://github.com/tikv/tikv/pull/14345) [#14376](https://github.com/tikv/tikv/pull/14376) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes)
 
 + PD
 
@@ -419,9 +419,9 @@ TiDB 版本：7.0.0
     - 修复在为分区表添加新的索引之后，该分区表的统计信息的自动收集可能无法正确触发的问题 [#41638](https://github.com/pingcap/tidb/issues/41638) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes)
     - 修复在连续两次收集统计信息后，TiDB 可能读取到错误的列统计信息的问题 [#42073](https://github.com/pingcap/tidb/issues/42073) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes)
     - 修复 Index merge 在开启 prepare plan cache 时可能得到错误结果的问题 [#41828](https://github.com/pingcap/tidb/issues/41828) @[qw4990](https://github.com/qw4990)
-    - 修复 IndexMerge 中 goroutine 泄露的问题 [#41610](https://github.com/pingcap/tidb/pull/41610) @[guo-shaoge](https://github.com/guo-shaoge)
-    - 修复非 bigint 类型的无符号整数与 string/decimal 比较时可能会结果错误的问题 [#41791](https://github.com/pingcap/tidb/pull/41791)，@[LittleFall](https://github.com/LittleFall)
-    - 修复了 analyze 语句可能会因为当前 session 前一个 analyze 语句因为内存超限被 kill 导致当前 analyze 语句也被 kill 的问题 [#41826](https://github.com/pingcap/tidb/pull/41826)，@[XuHuaiyu](https://github.com/XuHuaiyu)
+    - 修复 IndexMerge 中 goroutine 泄露的问题 [#41605](https://github.com/pingcap/tidb/issues/41605) @[guo-shaoge](https://github.com/guo-shaoge)
+    - 修复非 bigint 类型的无符号整数与 string/decimal 比较时可能会结果错误的问题 [#41736](https://github.com/pingcap/tidb/issues/41736)，@[LittleFall](https://github.com/LittleFall)
+    - 修复了 analyze 语句可能会因为当前 session 前一个 analyze 语句因为内存超限被 kill 导致当前 analyze 语句也被 kill 的问题 [#41825](https://github.com/pingcap/tidb/issues/41825)，@[XuHuaiyu](https://github.com/XuHuaiyu)
     - 修复 batch coprocessor 搜集信息过程中存在 data race 的问题 [41412](https://github.com/pingcap/tidb/issues/41412) @[you06](https://github.com/you06)
     - 修复 assertion error 无法为 partition table 打印 mvcc 信息的问题 [40629](https://github.com/pingcap/tidb/issues/40629) @[ekexium](https://github.com/ekexium)
     - 修复 `fair lock mode` 对于存在 key 加锁处理问题 [41527](https://github.com/pingcap/tidb/issues/41527) @[ekexium](https://github.com/ekexium)
@@ -441,10 +441,10 @@ TiDB 版本：7.0.0
 
 + TiFlash
 
-    - 修复 Decimal 除法在一些情况下最后一位没有进位的问题 [#7035](https://github.com/pingcap/tiflash/pull/7035)，@[LittleFall](https://github.com/LittleFall)
-    - 修复 Decimal cast 在一些情况下进位出错的问题 [#7026](https://github.com/pingcap/tiflash/pull/7026)，@[windtalker](https://github.com/windtalker)
-    - 修复 TopN/Sort 算子在开启了 new collation 之后结果可能会出错的问题 [#7002](https://github.com/pingcap/tiflash/pull/7002)，@[xzhangxian1008](https://github.com/xzhangxian1008)
-    - 修复了单台 TiFlash 节点 aggregation 结果集很大（超过 1200w 时），TiFlash 可能会报错的问题 [#7063](https://github.com/pingcap/tiflash/pull/7063)，@[windtalker](https://github.com/windtalker)
+    - 修复 Decimal 除法在一些情况下最后一位没有进位的问题 [#7022](https://github.com/pingcap/tiflash/issues/7022)，@[LittleFall](https://github.com/LittleFall)
+    - 修复 Decimal cast 在一些情况下进位出错的问题 [#6994](https://github.com/pingcap/tiflash/issues/6994)，@[windtalker](https://github.com/windtalker)
+    - 修复 TopN/Sort 算子在开启了 new collation 之后结果可能会出错的问题 [#6807](https://github.com/pingcap/tiflash/issues/6807)，@[xzhangxian1008](https://github.com/xzhangxian1008)
+    - 修复了单台 TiFlash 节点 aggregation 结果集很大（超过 1200w 时），TiFlash 可能会报错的问题 [#6993](https://github.com/pingcap/tiflash/issues/6993)，@[windtalker](https://github.com/windtalker)
 
 + Tools
 
