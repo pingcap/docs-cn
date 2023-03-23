@@ -354,6 +354,9 @@ TiDB 版本：7.0.0
 ## 改进提升
 
 + TiDB
+
+- 支持同时使用 `fair lock mode` 和 `lock only if exists` 功能 [#42068](https://github.com/pingcap/tidb/issues/42068) @[MyonKeminta](https://github.com/MyonKeminta)
+- 支持打印 slow transaction log 以及相关 transaction 内部事件 [41863](https://github.com/pingcap/tidb/issues/41863) @[ekexium](https://github.com/ekexium)
     - `tidb_rc_read_check_ts` 对于使用 prepared statement cursor 游标模式不再生效 [#42184](https://github.com/pingcap/tidb/issues/42184) @[cfzjywxk](https://github.com/cfzjywxk)
     - 加强的悲观锁唤醒模型的开关变量由 `tidb_pessimistic_txn_aggressive_locking` 更名为 `tidb_pessimistic_txn_fair_locking`，并在新集群中默认启用。这可以使悲观事务严重单点冲突的场景下，事务被阻塞后唤醒的顺序尽可能保证公平，达到事务延迟更加稳定、尾延迟更低的效果 [#42147](https://github.com/pingcap/tidb/issues/42147) @[MyonKeminta](https://github.com/MyonKeminta)
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
@@ -365,6 +368,8 @@ TiDB 版本：7.0.0
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
 + PD
+
+- 新增了由于受 store limit 限制导致调度无法生成的监控指标 [#6043](https://github.com/tikv/pd/issues/6043) @[nolouch](https://github.com/nolouch)
 
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
@@ -388,7 +393,14 @@ TiDB 版本：7.0.0
 
             用户可以通过设置 TiCDC 配置 `enable_table_across_nodes` 为 `true` 来启用这个功能，并通过设置`region_threshold` 来指定当一张表的 region 个数超过阀值时 TiCDC 开始将对应的表上的数据改变分布到多个 TiCDC 节点。
 
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
+        - 在 applier 中拆分事件提升了 RTO . [#8318](https://github.com/pingcap/tiflow/issues/8318) @[CharlesCheung96](https://github.com/CharlesCheung96)
+        - 改进了 table 调度策略，可以将一个表更均匀地拆分到 各个TiCDC 节点上 [#8247](https://github.com/pingcap/tiflow/issues/8247) @[overvenus](https://github.com/overvenus)
+        - 在 MQ sink 中添加了 big row 监控指标 [#8286](https://github.com/pingcap/tiflow/issues/8286) @[hi-rustin](https://github.com/hi-rustin)
+        - 在一个 region 中包含多个表的数据的场景下，减少了 TiKV 与 TiCDC 节点间的网络流量 [#6346](https://github.com/pingcap/tiflow/issues/6346) @[overvenus](https://github.com/overvenus)
+        - 将checkpoint ts 和 resolved ts 的 p99 指标的面板移动到了 lag analyze 面板 [#8524](https://github.com/pingcap/tiflow/issues/8524) @[hi-rustin](https://github.com/hi-rustin)
+        -  支持在 redo log 里 apply DDL 事件. [#8361](https://github.com/pingcap/tiflow/issues/8361) @[CharlesCheung96](https://github.com/CharlesCheung96)
+        - 支持根据上游写入吞吐来拆分调度表到 TiCDC 节点. [#7720](https://github.com/pingcap/tiflow/issues/7720) @[overvenus](https://github.com/overvenus)
+        
 
     + TiDB Data Migration (DM)
 
@@ -419,13 +431,21 @@ TiDB 版本：7.0.0
     - 修复非 bigint 类型的无符号整数与 string/decimal 比较时可能会结果错误的问题 [#41791](https://github.com/pingcap/tidb/pull/41791)，@[LittleFall](https://github.com/LittleFall)
     - 修复了 analyze 语句可能会因为当前 session 前一个 analyze 语句因为内存超限被 kill 导致当前 analyze 语句也被 kill 的问题 [#41826](https://github.com/pingcap/tidb/pull/41826)，@[XuHuaiyu](https://github.com/XuHuaiyu)
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
-
+- 修复 batch coprocessor 搜集信息过程中存在 data race 的问题 [41412](https://github.com/pingcap/tidb/issues/41412) @[you06](https://github.com/you06)
+- 修复 assertion error 无法为 partition table 打印 mvcc 信息的问题 [40629](https://github.com/pingcap/tidb/issues/40629) @[ekexium](https://github.com/ekexium)
+- 修复 `fair lock mode` 对于存在 key 加锁处理问题 [41527](https://github.com/pingcap/tidb/issues/41527) @[ekexium](https://github.com/ekexium)
+- 修复 insert-ignore 和 replace 语句对不修改 value 的 key 没有加锁的问题 [42121](https://github.com/pingcap/tidb/issues/42121) @[zyguan](https://github.com/zyguan)
 + TiKV
 
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
 + PD
+
+- 修复了 scatter region 后 leader 分布不均衡的问题 [#6017](https://github.com/tikv/pd/issues/6017)，@[HunDunDM](https://github.com/HunDunDM)
+- 修复了启动过程中获取 PD 成员时存在的数据竞争问题 [#6069](https://github.com/tikv/pd/issues/6069)，@[rleungx](https://github.com/rleungx)
+- 修复了热点统计信息中存在的数据竞争问题 [#6069](https://github.com/tikv/pd/issues/6069)，@[lhy1024](https://github.com/lhy1024)
+- 修复了切换 placement rule 时可能存在的 leader 分布不均衡的问题 [#6195](https://github.com/tikv/pd/issues/6195)，@[bufferflies](https://github.com/bufferflies)
 
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
