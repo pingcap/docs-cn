@@ -189,13 +189,13 @@ TiDB 版本：7.0.0
 
 * TiCDC 支持 storage sink，可输出变更数据至 cloud storage (GA) [#6797](https://github.com/pingcap/tiflow/issues/6797) @[zhaoxinyu](https://github.com/zhaoxinyu) **tw:hfxsd**
 
-    TiCDC 支持将 changed log 输出到兼容 Amazon S3 协议的存储服务、GCS、Azure Blob Storage 以及 NFS 中。Cloud storage 价格便宜，使用方便。对于不使用 Kafka 的用户，可以选择使用 storage sink。使用该功能，TiCDC 会将 changed log 保存到文件，发送到存储系统中。用户自研的消费程序可以定时从存储系统读取新产生的 changed log 进行数据处理。Storage sink 支持格式为 canal-json 和 csv 的 changed log。
+    TiCDC 支持将 changed log 输出到兼容 Amazon S3 协议的存储服务、GCS、Azure Blob Storage 以及 NFS 中。Cloud storage 价格便宜，使用方便。对于不使用 Kafka 的用户，可以选择使用 storage sink。使用该功能，TiCDC 会将 changed log 保存到文件，发送到存储系统中。用户自研的消费程序可以定时从存储系统读取新产生的 changed log 进行数据处理。Storage sink 支持格式为 canal-json 和 CSV 的 changed log。
     
     更多信息，请参考[用户文档](/ticdc/ticdc-sink-to-cloud-storage)。
 
 * TiCDC OpenAPI v2 GA @[sdojjy](https://github.com/sdojjy) **tw:hfxsd**
 
-    TiCDC 提供 OpenAPI v2 功能。相比 OpenAPI v1,  OpenAPI v2 提供了完整的同步任务支持。你可以通过 OpenAPI v2 对 TiCDC 集群进行查询和运维操作。OpenAPI 的功能是 [`cdc cli` 工具](/ticdc/ticdc-manage-changefeed.md)的一个子集。你可以通过 OpenAPI 完成 TiCDC 集群的运维操作，如获取 TiCDC 节点状态、检查集群健康状态、管理同步任务等。
+    TiCDC 提供 OpenAPI v2 功能。相比 OpenAPI v1, OpenAPI v2 提供了完整的同步任务支持。你可以通过 OpenAPI v2 对 TiCDC 集群进行查询和运维操作。OpenAPI 的功能是 [`cdc cli` 工具](/ticdc/ticdc-manage-changefeed.md)的一个子集。你可以通过 OpenAPI 完成 TiCDC 集群的运维操作，如获取 TiCDC 节点状态、检查集群健康状态、管理同步任务等。
 
     更多信息，请参考[用户文档](/ticdc/ticdc-open-api-v2.md)。
 
@@ -217,15 +217,15 @@ TiDB 版本：7.0.0
 
 ### 数据迁移
 
-* Load data 语句集成 TiDB Lightning，用户可以使用 Load Data 命令完成原先需要单独使用 TiDB Lightning 才能完成的数据导入任务。[#40499](https://github.com/pingcap/tidb/issues/40499) @[lance6716](https://github.com/lance6716) **tw:hfxsd**
+* `LOAD DATA` 语句集成 TiDB Lightning，你可以使用 `LOAD DATA`  命令完成原先需要单独使用 TiDB Lightning 才能完成的数据导入任务。[#40499](https://github.com/pingcap/tidb/issues/40499) @[lance6716](https://github.com/lance6716) **tw:hfxsd**
 
-    在集成 Lightning 之前，Load data 语句只能用于导入位于客户端的数据文件，如果用户要从云存储导入数据，就得借助 Lightning 来实现。但是单独部署 Lightning 又会带来额外的部署成本和管理成本。将 Lightning 逻辑导入能力（TiDB backend ）集成到 Load data 命令后，不仅可以省去 Lightning 的部署和管理成本。还可以借助 Lightning 的功能大大扩展 load data 语句的能力。 部分增强的功能举例说明如下：
+    在集成 TiDB Lightning 之前，`LOAD DATA` 语句只能用于导入位于客户端的数据文件，如果用户要从云存储导入数据，就得借助 TiDB Lightning 来实现。但是单独部署 TiDB Lightning 又会带来额外的部署成本和管理成本。将 TiDB Lightning 逻辑导入能力（TiDB backend ）集成到 `LOAD DATA` 命令后，不仅可以省去 TiDB Lightning 的部署和管理成本，还可以借助 TiDB Lightning 的功能大大扩展 `LOAD DATA` 语句的能力。部分增强的功能举例说明如下：
 
     - 支持从 Amazon S3 和 Google Cloud Storage 导入数据到 TiDB，且支持通配符一次性匹配多个源文件导入到 TiDB
-    - 支持 DEFINED NULL BY 来定义 null
-    - 支持 CSV、TSV、Parquet、SQL(mydumper/dumpling) 格式的源文件。
-    - 支持将任务设置为 Detached，让任务在后台执行。
-    - 支持任务管理，可通过 show load data jobid 查询任务状态和进展详情。方便用户管理和维护。
+    - 支持 `DEFINED NULL BY` 来定义 null。
+    - 支持 CSV、TSV、Parquet、SQL (mydumper/dumpling) 格式的源文件。
+    - 支持将任务设置为 `Detached`，让任务在后台执行。
+    - 支持任务管理，可通过 `SHOW LOAD DATA jobid` 查询任务状态和进展详情。方便用户管理和维护。
 
     更多信息，请参考[用户文档](/sql-statements/sql-statement-load-data.md)。
 
