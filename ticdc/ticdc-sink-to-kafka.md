@@ -67,14 +67,14 @@ URI 中可配置的的参数如下：
 | `cert`     | 连接下游 Kafka 实例所需的证书文件路径（可选）。 |
 | `key`      | 连接下游 Kafka 实例所需的证书密钥文件路径（可选）。 |
 | `sasl-user` | 连接下游 Kafka 实例所需的 SASL/PLAIN 或 SASL/SCRAM 认证的用户名（authcid）（可选）。 |
-| `sasl-password` | 连接下游 Kafka 实例所需的 SASL/PLAIN 或 SASL/SCRAM 认证的密码（可选）。 |
+| `sasl-password` | 连接下游 Kafka 实例所需的 SASL/PLAIN 或 SASL/SCRAM 认证的密码（可选）。如有特殊字符，需要用 URL encode 转义。 |
 | `sasl-mechanism` | 连接下游 Kafka 实例所需的 SASL 认证方式的名称，可选值有 `plain`、`scram-sha-256`、`scram-sha-512` 和 `gssapi`。 |
 | `sasl-gssapi-auth-type` | gssapi 认证类型，可选值有 `user` 和 `keytab`（可选）。 |
 | `sasl-gssapi-keytab-path` | gssapi keytab 路径（可选）。|
 | `sasl-gssapi-kerberos-config-path` | gssapi kerberos 配置路径（可选）。 |
 | `sasl-gssapi-service-name` | gssapi 服务名称（可选）。 |
 | `sasl-gssapi-user` | gssapi 认证使用的用户名（可选）。 |
-| `sasl-gssapi-password` | gssapi 认证使用的密码（可选）。 |
+| `sasl-gssapi-password` | gssapi 认证使用的密码（可选）。如有特殊字符，需要用 URL encode 转义。 |
 | `sasl-gssapi-realm` | gssapi realm 名称（可选）。 |
 | `sasl-gssapi-disable-pafxfast` | gssapi 是否禁用 PA-FX-FAST（可选）。 |
 | `dial-timeout` | 和下游 Kafka 建立连接的超时时长，默认值为 `10s`。 |
@@ -244,12 +244,20 @@ partition 分发器用 partition = "xxx" 来指定，支持 default、ts、index
 
 > **警告：**
 >
-> - 横向扩展功能目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
-> - TiCDC v6.6.0 仅支持在 Kafka 同步任务上开启大单表的横向扩展功能。
+> TiCDC v7.0.0 仅支持在 Kafka 同步任务上开启大单表的横向扩展功能。
 
 配置样例如下所示：
 
 ```toml
 [scheduler]
-region-per-span = 50000
+# 设置为 "true" 以打开该功能。
+enable-table-across-nodes = true
+# 打开该功能后，该功能只对 Region 个数大于 `region-threshold` 值的表生效。
+region-threshold = 100000
+```
+
+一个表包含的 Region 个数可用如下 SQL 查询：
+
+```sql
+SELECT COUNT(*) FROM INFORMATION_SCHEMA.TIKV_REGION_STATUS WHERE DB_NAME="database1" AND TABLE_NAME="table1" AND IS_INDEX=0;
 ```
