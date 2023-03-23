@@ -245,9 +245,9 @@ mysql> SELECT * FROM mysql.plan_replayer_status;
 
 ### 使用 `PLAN REPLAYER CONTINUOUS CAPTURE`
 
-开启 `PLAN REPLAYER CONTINUOUS CAPTURE` 功能后，TiDB 将以 SQL DIGEST 和 PLAN DIGEST 为维度异步地将业务 SQL 语句以 `PLAN REPLAYER` 的方式进行记录，对于相同 DIGEST 的 SQL 语句与执行计划, `PLAN REPLAYER CONTINUOUS CAPTURE` 不会重复记录。
+开启 `PLAN REPLAYER CONTINUOUS CAPTURE` 功能后，TiDB 将以 SQL DIGEST 和 PLAN DIGEST 为维度异步地将业务 SQL 语句以 `PLAN REPLAYER` 的方式进行记录，对于相同 DIGEST 的 SQL 语句与执行计划，`PLAN REPLAYER CONTINUOUS CAPTURE` 不会重复记录。
 
-`PLAN REPLAYER CONTINUOUS CAPTURE` 功能通过系统变量 [`tidb_enable_plan_replayer_continuous_capture`](/system-variables.md#tidb_enable_plan_replayer_continuous_capture) 控制。要开启 `PLAN REPLAYER CONTINUOUS CAPTURE`，将变量值设为 `ON`。
+`PLAN REPLAYER CONTINUOUS CAPTURE` 功能通过系统变量 [`tidb_enable_plan_replayer_continuous_capture`](/system-variables.md#tidb_enable_plan_replayer_continuous_capture-从-v700-版本开始引入) 控制。要开启 `PLAN REPLAYER CONTINUOUS CAPTURE`，将变量值设为 `ON`。
 
 ### 查看 `PLAN REPLAYER CONTINUOUS CAPTURE` 抓取结果
 
@@ -258,8 +258,6 @@ mysql> SELECT * FROM mysql.plan_replayer_status;
 EXTRACT HTTP 的导出接口如下。
 
 + 通过以下接口可以获取开始时间 `${begin}` 和结束时间 `${end}` 的 ZIP 格式的负载计划：
-
-    {{< copyable "" >}}
 
     ```
     http://${tidb-server-ip}:${tidb-server-status-port}/extract_task/dump?begin=2023-03-09 12:12:12&end=2023-03-09 16:12:12&type=plan&isDump=true
