@@ -450,6 +450,18 @@ This variable is an alias for [`last_insert_id`](#last_insert_id).
 >
 > Unlike in MySQL, the `max_execution_time` system variable currently works on all kinds of statements in TiDB, not only restricted to the `SELECT` statement. The precision of the timeout value is roughly 100ms. This means the statement might not be terminated in accurate milliseconds as you specify.
 
+<CustomContent platform="tidb">
+
+For a SQL statement with the [`MAX_EXECUTION_TIME`](/optimizer-hints.md#max_execution_timen) hint, the maximum execution time of this statement is limited by the hint instead of this variable. The hint can also be used with SQL bindings as described [in the SQL FAQ](/faq/sql-faq.md#how-to-prevent-the-execution-of-a-particular-sql-statement).
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+For a SQL statement with the [`MAX_EXECUTION_TIME`](/optimizer-hints.md#max_execution_timen) hint, the maximum execution time of this statement is limited by the hint instead of this variable. The hint can also be used with SQL bindings as described [in the SQL FAQ](https://docs.pingcap.com/tidb/stable/sql-faq).
+
+</CustomContent>
+
 ### max_prepared_stmt_count
 
 - Scope: GLOBAL
