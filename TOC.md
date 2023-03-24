@@ -245,6 +245,7 @@
         - [分区裁剪](/partition-pruning.md)
         - [TopN 和 Limit 下推](/topn-limit-push-down.md)
         - [Join Reorder](/join-reorder.md)
+        - [从窗口函数中推导 TopN 或 Limit](/derive-topn-from-window.md)
       - 物理优化
         - [物理优化概览](/sql-physical-optimization.md)
         - [索引的选择](/choose-index.md)
