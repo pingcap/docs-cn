@@ -26,6 +26,7 @@ The blocklist of optimization rules is one way to tune optimization rules, mainl
 | Aggregation pushdown | aggregation_push_down | Tries to push aggregations down to their children. |
 | TopN pushdown | topn_push_down | Tries to push the TopN operator to the place closer to the data source. |
 | Join reorder | join_reorder | Decides the order of multi-table joins. |
+| Derive TopN or Limit from window functions | derive_topn_from_window | Derives the TopN or Limit operator from window functions. |
 
 ### Disable optimization rules
 

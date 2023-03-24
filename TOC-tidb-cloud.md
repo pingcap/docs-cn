@@ -165,6 +165,7 @@
         - [Partition Pruning](/partition-pruning.md)
         - [TopN and Limit Push Down](/topn-limit-push-down.md)
         - [Join Reorder](/join-reorder.md)
+        - [Derive TopN or Limit from Window Functions](/derive-topn-from-window.md)
       - Physical Optimization
         - [Overview](/sql-physical-optimization.md)
         - [Index Selection](/choose-index.md)
