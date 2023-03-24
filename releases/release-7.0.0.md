@@ -470,13 +470,13 @@ TiDB 版本：7.0.0
 
     + TiDB Data Migration (DM)
 
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
+        - 修复了 DM worker 节点的存储使用云上对象存储的场景下，由于断点续传信息记录过于频繁，达到了对象存储的请求频次上限，导致了 DM worker 无法把数据写入对应的云上对象存储中，从而全量数据加载失败的问题。 [#8482](https://github.com/pingcap/tiflow/issues/8482) @[maxshuang](https://github.com/maxshuang)
+        - 修复了在多个导入任务同时同一个下游同步数据，并且都使用下游元数据表来记录断点续传信息时，所有任务的断点续传信息写入了同一张元数据表，并且使用了同样的任务 ID 的问题 [#8500](https://github.com/pingcap/tiflow/issues/8500) @[maxshuang](https://github.com/maxshuang)
 
     + TiDB Lightning
 
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
+        - 修复了在使用 Local Backend 模式导入数据时，当导入目标表的复合主键中存在 `auto_random` 列，且源数据中没有指定该列的值时，相关列没有自动生成数据的问题 [#41454](https://github.com/pingcap/tidb/issues/41454) @[D3Hunter](https://github.com/D3Hunter)
+        - 修复了当 Lightning 以 TiDB Backend 模式导入数据时，如果配置的目标集群用户没有 CONFIG 权限将无法成功导入的问题 [#41915](https://github.com/pingcap/tidb/issues/41915) @[lichunzhu](https://github.com/lichunzhu)
 
     + TiUP
 
