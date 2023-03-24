@@ -62,7 +62,7 @@ LoadDataOption ::=
 
 - 使用 `FIELDS TERMINATED BY` 来指定数据的分隔符号。
 - 使用 `FIELDS ENCLOSED BY` 来指定数据的包围符号。
-- 如果你希望以某个字符为结尾切分每行数据，可以使用 `LINES TERMINATED BY` 来指定行的终止符。
+- 如果你希望以某个字符为结尾来切分行数据，可以使用 `LINES TERMINATED BY` 来指定行的终止符。
 
 可以使用 `DEFINED NULL BY` 来指定数据文件中如何表示 NULL 值。
 
