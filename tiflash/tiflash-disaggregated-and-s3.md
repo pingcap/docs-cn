@@ -58,7 +58,7 @@ TiFlash disaggregated storage and compute architecture is suitable for cost-effe
     - GetObject
     - CopyObject
     - DeleteObject
-    - ListObjectV2
+    - ListObjectsV2
     - GetObjectTagging
     - PutBucketLifecycle
 
