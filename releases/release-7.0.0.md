@@ -307,6 +307,10 @@ TiDB 版本：7.0.0
 
 | 配置文件 | 配置项 | 修改类型 | 描述 |
 | -------- | -------- | -------- | -------- |
+| DM | `analyze`  | 新增 | 配置是否在 CHECKSUM 结束后对所有表逐个执行 `ANALYZE TABLE <table>` 操作，可配置 `required`/`optional`/`off` 默认为 `optional` |
+| DM | `range-concurrency`  | 新增 | 配置 dm-worker 向 TiKV 写入 KV 数据的并发 |
+| DM | `compress-kv-pairs`  | 新增 | 配置 dm-worker 向 TiKV 发送 KV 时是否启用压缩，可配置 `gzip`，默认为空表示不压缩 |
+| DM | `pd-addr`  | 新增 | 配置 physical import 时连接下游 pd-server 的地址，填一个即可。为空时默认使用 TiDB 中查询到的 pd 地址信息 |
 | TiKV | `server.snap-max-write-bytes-per-sec` | 删除 | 更名为 [`server.snap-io-max-bytes-per-sec`](/tikv-configuration-file.md#snap-io-max-bytes-per-sec)。 |
 | TiKV | [`raft-engine.enable-log-recycle`](/tikv-configuration-file.md#enable-log-recycle-从-v630-版本开始引入) | 修改 | 默认值由 `false` 变更为 `true`。 |
 | TiKV | [`resolved-ts.advance-ts-interval`](/tikv-configuration-file.md#advance-ts-interval) | 修改 | 默认值由 `1s` 变更为 `20s`。该修改可以延长定期推进 Resolved TS 的时间间隔，从而减少 TiKV 节点之间的流量消耗。 |
