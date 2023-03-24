@@ -150,6 +150,8 @@ addr = "172.16.31.10:8287"
 # 通过 SQL 方式添加索引的优点是将导入数据与导入索引分开，可以快速导入数据，即使导入数据后，索引添加失败，也不会影响数据的一致性。
 # add-index-by-sql = true
 
+# 在使用 TiDB Lightning 导入多租户的 TiDB cluster 的场景下，指定对应的 key space 名称。默认取值为空字符串，表示 TiDB Lightning 会自动获取导入对应租户的 key space 名称；如果指定了值，则使用指定的 key space 名称来导入。
+# keyspace-name = ""
 [mydumper]
 # 设置文件读取的区块大小，确保该值比数据源的最长字符串长。
 read-block-size = "64KiB" # 默认值
