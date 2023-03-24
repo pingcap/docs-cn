@@ -5,9 +5,9 @@ summary: TiDB 数据库中 [CANCEL|DROP] LOAD DATA 的使用概况。
 
 # [CANCEL|DROP] LOAD DATA
 
-`CANCEL LOAD DATA` 语句用于取消系统中创建的 LOAD DATA JOB。
+`CANCEL LOAD DATA` 语句用于取消系统中创建的 LOAD DATA 任务。
 
-`DROP LOAD DATA` 语句用于删除系统中创建的 LOAD DATA JOB。
+`DROP LOAD DATA` 语句用于删除系统中创建的 LOAD DATA 任务。
 
 ## 语法图
 
