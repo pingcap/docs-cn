@@ -58,7 +58,7 @@ TiFlash 存算分离架构适用于高性价比的数据分析服务的场景。
     - GetObject
     - CopyObject
     - DeleteObject
-    - ListObjectV2
+    - ListObjectsV2
     - GetObjectTagging
     - PutBucketLifecycle
 
