@@ -307,10 +307,6 @@ TiDB 版本：7.0.0
 
 | 配置文件 | 配置项 | 修改类型 | 描述 |
 | -------- | -------- | -------- | -------- |
-| DM | `analyze`  | 新增 | 配置是否在 CHECKSUM 结束后对所有表逐个执行 `ANALYZE TABLE <table>` 操作，可配置 `required`/`optional`/`off` 默认为 `optional` |
-| DM | `range-concurrency`  | 新增 | 配置 dm-worker 向 TiKV 写入 KV 数据的并发 |
-| DM | `compress-kv-pairs`  | 新增 | 配置 dm-worker 向 TiKV 发送 KV 时是否启用压缩，可配置 `gzip`，默认为空表示不压缩 |
-| DM | `pd-addr`  | 新增 | 配置 physical import 时连接下游 pd-server 的地址，填一个即可。为空时默认使用 TiDB 中查询到的 pd 地址信息 |
 | TiKV | `server.snap-max-write-bytes-per-sec` | 删除 | 更名为 [`server.snap-io-max-bytes-per-sec`](/tikv-configuration-file.md#snap-io-max-bytes-per-sec)。 |
 | TiKV | [`raft-engine.enable-log-recycle`](/tikv-configuration-file.md#enable-log-recycle-从-v630-版本开始引入) | 修改 | 默认值由 `false` 变更为 `true`。 |
 | TiKV | [`resolved-ts.advance-ts-interval`](/tikv-configuration-file.md#advance-ts-interval) | 修改 | 默认值由 `1s` 变更为 `20s`。该修改可以延长定期推进 Resolved TS 的时间间隔，从而减少 TiKV 节点之间的流量消耗。 |
@@ -333,6 +329,10 @@ TiDB 版本：7.0.0
 | TiDB Lightning   | [`add-index-by-sql`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-task)       |    新增     |  控制 Physical Import Mode 是否通过 SQL 方式添加索引。默认根据 TiDB 版本自动选择。通过 SQL 方式添加索引的优点是将导入数据与导入索引分开，可以快速导入数据，即使导入数据后，索引添加失败，也不会影响数据的一致性。        |
 | TiCDC      | [`enable-table-across-nodes`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-配置文件说明)          |   新增    |    将表按 Region 个数划分成多个同步范围，这些范围可由多个 TiCDC 节点同步。    |
 | TiCDC      | [`region-threshold`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-配置文件说明)    | 新增         | 开启了 enable-table-across-nodes 后，该功能只对 Region 个数大于 `region-threshold` 值的表生效。      |
+| DM | [`analyze`](/dm/task-configuration-file-full.md#完整配置文件示例)  | 新增 | 配置是否在 CHECKSUM 结束后对所有表逐个执行 `ANALYZE TABLE <table>` 操作，可配置 `required`/`optional`/`off`。默认为 `optional`。|
+| DM | [`range-concurrency`](/dm/task-configuration-file-full.md#完整配置文件示例)  | 新增 | 配置 dm-worker 向 TiKV 写入 KV 数据的并发。 |
+| DM | [`compress-kv-pairs`](/dm/task-configuration-file-full.md#完整配置文件示例)  | 新增 | 配置 dm-worker 向 TiKV 发送 KV 数据时是否启用压缩，可配置 `gzip`，默认为空表示不压缩。 |
+| DM | [`pd-addr`](/dm/task-configuration-file-full.md#完整配置文件示例)  | 新增 | 配置 physical import 时连接下游 PD server 的地址，填一个即可。配置项为空时，默认使用 TiDB 中查询到的 PD 地址信息。 |
 
 ### 其他
 
@@ -367,7 +367,6 @@ TiDB 版本：7.0.0
 
     - 减少 TiFlash 在写路径上的内存使用量 [#7144](https://github.com/pingcap/tiflash/issues/7144) @[hongyunyan](https://github.com/hongyunyan)
     - 减少 TiFlash 在有较多表的情况下的重启时间 [#7146](https://github.com/pingcap/tiflash/issues/7146) @[hongyunyan](https://github.com/hongyunyan)
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
 + Tools
 
@@ -415,21 +414,21 @@ TiDB 版本：7.0.0
 + TiDB
 
     - 修复 TiFlash 执行中遇到生成列会报错的问题 [#40663](https://github.com/pingcap/tidb/issues/40663) @[guo-shaoge](https://github.com/guo-shaoge)
-    - 修复在存在时间类型时，TiDB 可能无法正确获取统计信息的问题 [#41938](https://github.com/pingcap/tidb/issues/41938) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes)
-    - 修复索引全表扫在开启 prepare plan cache 时可能会报错的问题 [#42150](https://github.com/pingcap/tidb/issues/42150) @[fzzf678](https://github.com/fzzf678)
+    - 修复当存在时间类型时，TiDB 可能无法正确获取统计信息的问题 [#41938](https://github.com/pingcap/tidb/issues/41938) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes)
+    - 修复在开启 prepare plan cache 的情况下，索引全表扫可能会报错的问题 [#42150](https://github.com/pingcap/tidb/issues/42150) @[fzzf678](https://github.com/fzzf678)
     - 修复 `IFNULL(NOT NULL COLUMN, ...)` 可能返回错误结果的问题 [#41734](https://github.com/pingcap/tidb/issues/41734) @[LittleFall](https://github.com/LittleFall)
     - 修复当分区表的所有数据落在单个 region 时，TiDB 可能执行得到错误结果的问题 [#41801](https://github.com/pingcap/tidb/issues/41801) @[Defined2014](https://github.com/Defined2014)
     - 修复当同一个 SQL 中出现多个不同的分区表时，TiDB 可能执行得到错误结果的问题 [#42135](https://github.com/pingcap/tidb/issues/42135) @[mjonss](https://github.com/mjonss)
-    - 修复在为分区表添加新的索引之后，该分区表的统计信息的自动收集可能无法正确触发的问题 [#41638](https://github.com/pingcap/tidb/issues/41638) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes)
+    - 修复在为分区表添加新的索引之后，该分区表可能无法正确触发统计信息的自动收集的问题 [#41638](https://github.com/pingcap/tidb/issues/41638) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes)
     - 修复在连续两次收集统计信息后，TiDB 可能读取到错误的列统计信息的问题 [#42073](https://github.com/pingcap/tidb/issues/42073) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes)
-    - 修复 Index merge 在开启 prepare plan cache 时可能得到错误结果的问题 [#41828](https://github.com/pingcap/tidb/issues/41828) @[qw4990](https://github.com/qw4990)
+    - 修复在开启 prepare plan cache 时 Index merge 可能得到错误结果的问题 [#41828](https://github.com/pingcap/tidb/issues/41828) @[qw4990](https://github.com/qw4990)
     - 修复 IndexMerge 中 goroutine 泄露的问题 [#41605](https://github.com/pingcap/tidb/issues/41605) @[guo-shaoge](https://github.com/guo-shaoge)
-    - 修复非 bigint 类型的无符号整数与 string/decimal 比较时可能会结果错误的问题 [#41736](https://github.com/pingcap/tidb/issues/41736)，@[LittleFall](https://github.com/LittleFall)
+    - 修复非 bigint 类型的无符号整数与 string/decimal 比较时可能出现错误结果的问题 [#41736](https://github.com/pingcap/tidb/issues/41736)，@[LittleFall](https://github.com/LittleFall)
     - 修复了 analyze 语句可能会因为当前 session 前一个 analyze 语句因为内存超限被 kill 导致当前 analyze 语句也被 kill 的问题 [#41825](https://github.com/pingcap/tidb/issues/41825)，@[XuHuaiyu](https://github.com/XuHuaiyu)
     - 修复 batch coprocessor 搜集信息过程中存在 data race 的问题 [41412](https://github.com/pingcap/tidb/issues/41412) @[you06](https://github.com/you06)
-    - 修复 assertion error 无法为 partition table 打印 mvcc 信息的问题 [40629](https://github.com/pingcap/tidb/issues/40629) @[ekexium](https://github.com/ekexium)
-    - 修复 `fair lock mode` 对于存在 key 加锁处理问题 [41527](https://github.com/pingcap/tidb/issues/41527) @[ekexium](https://github.com/ekexium)
-    - 修复 insert-ignore 和 replace 语句对不修改 value 的 key 没有加锁的问题 [42121](https://github.com/pingcap/tidb/issues/42121) @[zyguan](https://github.com/zyguan)
+    - 修复 assertion 错误导致无法为分区表打印 MVCC 信息的问题 [40629](https://github.com/pingcap/tidb/issues/40629) @[ekexium](https://github.com/ekexium)
+    - 修复 `fair lock mode` 对不存在的 key 加锁处理的问题 [41527](https://github.com/pingcap/tidb/issues/41527) @[ekexium](https://github.com/ekexium)
+    - 修复 INSERT IGNORE 和 REPLACE 语句对不修改 value 的 key 没有加锁的问题 [42121](https://github.com/pingcap/tidb/issues/42121) @[zyguan](https://github.com/zyguan)
 
 + TiKV
 
@@ -445,10 +444,10 @@ TiDB 版本：7.0.0
 
 + TiFlash
 
-    - 修复 Decimal 除法在一些情况下最后一位没有进位的问题 [#7022](https://github.com/pingcap/tiflash/issues/7022)，@[LittleFall](https://github.com/LittleFall)
-    - 修复 Decimal cast 在一些情况下进位出错的问题 [#6994](https://github.com/pingcap/tiflash/issues/6994)，@[windtalker](https://github.com/windtalker)
-    - 修复 TopN/Sort 算子在开启了 new collation 之后结果可能会出错的问题 [#6807](https://github.com/pingcap/tiflash/issues/6807)，@[xzhangxian1008](https://github.com/xzhangxian1008)
-    - 修复了单台 TiFlash 节点 aggregation 结果集很大（超过 1200w 时），TiFlash 可能会报错的问题 [#6993](https://github.com/pingcap/tiflash/issues/6993)，@[windtalker](https://github.com/windtalker)
+    - 修复了 Decimal 除法在某些情况下最后一位未进位的问题 [#7022](https://github.com/pingcap/tiflash/issues/7022) @[LittleFall](https://github.com/LittleFall)
+    - 修复了 Decimal 转换在某些情况下进位错误的问题 [#6994](https://github.com/pingcap/tiflash/issues/6994) @[windtalker](https://github.com/windtalker)
+    - 修复了开启 new collation 后 TopN/Sort 算子结果可能出错的问题 [#6807](https://github.com/pingcap/tiflash/issues/6807) @[xzhangxian1008](https://github.com/xzhangxian1008)
+    - 修复了单个 TiFlash 节点聚合结果集过大（超过 1200 万）时可能会导致 TiFlash 报错的问题 [#6993](https://github.com/pingcap/tiflash/issues/6993) @[windtalker](https://github.com/windtalker)
 
 + Tools
 
