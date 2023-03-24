@@ -252,13 +252,3 @@ mysql> SELECT * FROM mysql.plan_replayer_status;
 ### 查看 `PLAN REPLAYER CONTINUOUS CAPTURE` 抓取结果
 
 查看 `PLAN REPLAYER CONTINUOUS CAPTURE` 抓取结果的方法同[查看 `PLAN REPLAYER CAPTURE` 抓取结果](#查看-plan-replayer-continuous-capture-抓取结果)。
-
-## 使用 EXTRACT HTTP 接口导出负载计划
-
-EXTRACT HTTP 的导出接口如下。
-
-+ 通过以下接口可以获取开始时间 `${begin}` 和结束时间 `${end}` 的 ZIP 格式的负载计划：
-
-    ```
-    http://${tidb-server-ip}:${tidb-server-status-port}/extract_task/dump?begin=2023-03-09 12:12:12&end=2023-03-09 16:12:12&type=plan&isDump=true
-    ```
