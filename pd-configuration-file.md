@@ -453,3 +453,45 @@ Configuration items related to the [TiDB Dashboard](/dashboard/dashboard-intro.m
 ## `replication-mode`
 
 Configuration items related to the replication mode of all Regions. See [Enable the DR Auto-Sync mode](/two-data-centers-in-one-city-deployment.md#enable-the-dr-auto-sync-mode) for details.
+
+## Controllor
+
+This section describes the configuration items that are built into PD for [Resource Control](/tidb-resource-control.md).
+
+### `degraded-mode-wait-duration`
+
++ Time to wait to trigger the degradation mode. Degradation mode means that when the Local Token Bucket (LTB) and Global Token Bucket (GTB) are lost, the LTB falls back to the default resource group configuration and no longer has a GTB authorization token, thus ensuring that the service is not affected in the event of network isolation or anomalies.
++ Default value: 0s
++ The degradation mode is disabled by default.
+
+### `request-unit`
+
+The following are the configuration items about the [Request Unit (RU)](/tidb-resource-control.md#what-is-request-unit-ru).
+
+#### `read-base-cost`
+
++ Basis factor for conversion from a read request to RU
++ Default value: 0.25
+
+#### `write-base-cost`
+
++ Basis factor for conversion from a write request to RU
++ Default value: 1
+
+#### `read-cost-per-byte`
+
++ Basis factor for conversion from read flow to RU
++ Default value: 1/(64 * 1024)
++ 1 RU = 64 KiB read bytes
+
+#### `write-cost-per-byte`
+
++ Basis factor for conversion from write flow to RU
++ Default value: 1/1024
++ 1 RU = 1 KiB write bytes
+
+#### `read-cpu-ms-cost`
+
++ Basis factor for conversion from CPU to RU
++ Default value: 1/3
++ 1 RU = 3 millisecond CPU time

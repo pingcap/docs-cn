@@ -34,7 +34,12 @@ ResourceGroupOptionList:
 
 DirectResourceGroupOption:
     "RU_PER_SEC" EqOpt stringLit
+|   "PRIORITY" EqOpt ResourceGroupPriorityOption
 |   "BURSTABLE"
+ResourceGroupPriorityOption:
+    LOW
+|   MEDIUM
+|   HIGH
 
 ```
 
@@ -43,11 +48,11 @@ TiDB supports the following `DirectResourceGroupOption`, where [Request Unit (RU
 | Option     | Description                         | Example                |
 |---------------|-------------------------------------|------------------------|
 | `RU_PER_SEC` | Rate of RU backfilling per second | `RU_PER_SEC = 500` indicates that this resource group is backfilled with 500 RUs per second |
-
-If the `BURSTABLE` attribute is set, TiDB allows the corresponding resource group to use the available system resources when the quota is exceeded.
+| `PRIORITY`    | The absolute priority of tasks to be processed on TiKV  | `PRIORITY = HIGH` indicates that the priority is high. If not specified, the default value is `MEDIUM`. |
+| `BURSTABLE`   | If the `BURSTABLE` attribute is set, TiDB allows the corresponding resource group to use the available system resources when the quota is exceeded. |
 
 > **Note:**
-> 
+>
 > The `ALTER RESOURCE GROUP` statement can only be executed when the global variable [`tidb_enable_resource_control`](/system-variables.md#tidb_enable_resource_control-new-in-v660) is set to `ON`.
 
 ## Examples
@@ -55,28 +60,53 @@ If the `BURSTABLE` attribute is set, TiDB allows the corresponding resource grou
 Create a resource group named `rg1` and modify its properties.
 
 ```sql
-mysql> DROP RESOURCE GROUP IF EXISTS rg1;
+DROP RESOURCE GROUP IF EXISTS rg1;
+```
+
+```
 Query OK, 0 rows affected (0.22 sec)
-mysql> CREATE RESOURCE GROUP IF NOT EXISTS rg1
-    ->  RU_PER_SEC = 100
-    ->  BURSTABLE;
+```
+
+```sql
+CREATE RESOURCE GROUP IF NOT EXISTS rg1
+  RU_PER_SEC = 100
+  BURSTABLE;
+```
+
+```sql
 Query OK, 0 rows affected (0.08 sec)
-mysql> SELECT * FROM information_schema.resource_groups WHERE NAME ='rg1';
-+------+------------+-----------+
-| NAME | RU_PER_SEC | BURSTABLE |
-+------+------------+-----------+
-| rg1  |        100 | YES       |
-+------+------------+-----------+
+```
+
+```sql
+SELECT * FROM information_schema.resource_groups WHERE NAME ='rg1';
++------+------------+----------+-----------+
+| NAME | RU_PER_SEC | PRIORITY | BURSTABLE |
++------+------------+----------+-----------+
+| rg1  |       100  | MEDIUM   | YES       |
++------+------------+----------+-----------+
 1 rows in set (1.30 sec)
-mysql> ALTER RESOURCE GROUP rg1
-    ->  RU_PER_SEC = 200;
+```
+
+```sql
+ALTER RESOURCE GROUP rg1
+  RU_PER_SEC = 200
+  PRIORITY = LOW;
+```
+
+```sql
 Query OK, 0 rows affected (0.08 sec)
-mysql> SELECT * FROM information_schema.resource_groups WHERE NAME ='rg1';
-+------+------------+-----------+
-| NAME | RU_PER_SEC | BURSTABLE |
-+------+------------+-----------+
-| rg1  |        200 | NO        |
-+------+------------+-----------+
+```
+
+```sql
+SELECT * FROM information_schema.resource_groups WHERE NAME ='rg1';
+```
+
+```sql
++------+------------+----------+-----------+
+| NAME | RU_PER_SEC | PRIORITY | BURSTABLE |
++------+------------+----------+-----------+
+| rg1  |       200  | LOW      | NO        |
++------+------------+----------+-----------+
 1 rows in set (1.30 sec)
 ```
 
