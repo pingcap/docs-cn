@@ -70,5 +70,5 @@ SHOW LOAD DATA JOB 1;
 
 ## 另请参阅
 
-* [LOAD DATA](/sql-statements/sql-statement-load-data.md)
-* [[CANCEL|DROP] LOAD DATA](/sql-statements/sql-statement-operate-load-data-job.md)
+* [`LOAD DATA`](/sql-statements/sql-statement-load-data.md)
+* [`CANCEL LOAD DATA 和 DROP LOAD DATA`](/sql-statements/sql-statement-operate-load-data-job.md)

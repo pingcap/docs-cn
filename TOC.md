@@ -690,6 +690,7 @@
       - [`BACKUP`](/sql-statements/sql-statement-backup.md)
       - [`BATCH`](/sql-statements/sql-statement-batch.md)
       - [`BEGIN`](/sql-statements/sql-statement-begin.md)
+      - [`CANCEL LOAD DATA 和 DROP LOAD DATA`](/sql-statements/sql-statement-operate-load-data-job.md)
       - [`CHANGE COLUMN`](/sql-statements/sql-statement-change-column.md)
       - [`CHANGE DRAINER`](/sql-statements/sql-statement-change-drainer.md)
       - [`CHANGE PUMP`](/sql-statements/sql-statement-change-pump.md)
@@ -812,7 +813,6 @@
       - [`UPDATE`](/sql-statements/sql-statement-update.md)
       - [`USE`](/sql-statements/sql-statement-use.md)
       - [`WITH`](/sql-statements/sql-statement-with.md)
-      - [`[CANCEL|DROP] LOAD DATA`](/sql-statements/sql-statement-operate-load-data-job.md)
     - 数据类型
       - [数据类型概述](/data-type-overview.md)
       - [数据类型默认值](/data-type-default-values.md)

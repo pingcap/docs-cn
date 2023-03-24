@@ -1,9 +1,9 @@
 ---
-title: [CANCEL|DROP] LOAD DATA
-summary: TiDB 数据库中 [CANCEL|DROP] LOAD DATA 的使用概况。
+title: CANCEL LOAD DATA 和 DROP LOAD DATA
+summary: TiDB 数据库中 CANCEL LOAD DATA 和 DROP LOAD DATA 的使用概况。
 ---
 
-# [CANCEL|DROP] LOAD DATA
+# CANCEL LOAD DATA and DROP LOAD DATA
 
 `CANCEL LOAD DATA` 语句用于取消系统中创建的 LOAD DATA 任务。
 
