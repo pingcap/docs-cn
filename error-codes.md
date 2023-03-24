@@ -347,11 +347,11 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 8171
 
-    对不支持的 `LOAD DATA` 任务状态不能进行运维操作。请参照具体提示进行处理。
+    对不支持的 `LOAD DATA` 任务状态不能进行运维操作。请根据具体的错误提示进行处理。
 
 * Error Number: 8172
 
-    指定 `LOCAL` 的 `LOAD DATA` 不能在后台运行，只有使用 S3/GCS 路径的 LOAD DATA 可以在后台运行。请参考 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md) 更改 SQL 语句。
+    指定 `LOCAL` 的 `LOAD DATA` 不能在后台运行，只有使用 S3/GCS 路径的 `LOAD DATA` 可以在后台运行。请参考 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md) 更改 SQL 语句。
 
 * Error Number: 8200
 
