@@ -37,7 +37,7 @@ WITH t_topN AS (SELECT a FROM t1 ORDER BY a LIMIT 3) SELECT * FROM (SELECT ROW_N
 
 以下通过一些例子对该优化规则进行说明。
 
-### 不带 PARTITION BY 的窗口函数
+### 不包含 PARTITION BY 的窗口函数
 
 #### 示例 1：不包含 ORDER BY 的窗口函数
 
