@@ -40,7 +40,7 @@ LoadDataOption ::=
 
 ### S3/GCS 路径
 
-如果你不指定 `LOCAL`，则文件参数必须是有效的 S3/GCS URI路径，详见[外部存储](/br/backup-and-restore-storages.md)。
+如果你不指定 `LOCAL`，则文件参数必须是有效的 S3/GCS URI 路径，详见[外部存储](/br/backup-and-restore-storages.md)。
 
 当数据文件存储在 S3/GCS 上时，你可以导入单个文件，也可使用通配符 `*` 来匹配需要导入的多个文件。注意通配符不会递归处理子目录下相关的文件。以数据存储在 S3 为例，示例如下:
 
