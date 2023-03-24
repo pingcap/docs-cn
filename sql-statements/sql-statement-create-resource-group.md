@@ -42,7 +42,7 @@ TiDB 支持以下 `DirectResourceGroupOption`, 其中 [Request Unit (RU)](/tidb-
 | 参数            | 含义           | 举例                                   |
 |---------------|--------------|--------------------------------------|
 | `RU_PER_SEC`  | 每秒 RU 填充的速度 | `RU_PER_SEC = 500` 表示此资源组每秒回填 500 个 RU。 |
-| `PRIORITY`    | 任务被 TiKV 处理的优先级  | `PRIORITY = HIGH` 表示优先级高。若未指定，则默认为 `MEDIUM`。 |
+| `PRIORITY`    | 任务在 TiKV 上处理的绝对优先级  | `PRIORITY = HIGH` 表示优先级高。若未指定，则默认为 `MEDIUM`。 |
 | `BURSTABLE`   | 允许对应的资源组超出配额后使用空余的系统资源。 |
 
 > **注意：**

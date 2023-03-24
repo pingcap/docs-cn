@@ -53,7 +53,7 @@ SELECT * FROM information_schema.resource_groups WHERE NAME ='rg1';
 +------+------------+----------+-----------+
 | NAME | RU_PER_SEC | PRIORITY | BURSTABLE |
 +------+------------+----------+-----------+
-| rg1  |       500 | MEDIUM    | YES       |
+| rg1     |       500      | MEDIUM | YES           |
 +------+------------+----------+-----------+
 1 row in set (0.01 sec)
 ```
