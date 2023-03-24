@@ -347,7 +347,7 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 8171
 
-    对不支持的 `LOAD DATA` 任务状态进行运维操作。请参照具体提示进行处理。
+    对不支持的 `LOAD DATA` 任务状态不能进行运维操作。请参照具体提示进行处理。
 
 * Error Number: 8172
 
