@@ -52,9 +52,9 @@ TiDB 版本：7.0.0
 
 * TiFlash 查询支持延迟物化功能（实验特性）[#5829](https://github.com/pingcap/tiflash/issues/5829) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger) **tw:qiancai**
 
-  当 `SELECT` 语句中包含过滤条件（`WHERE` 子句）时，TiFlash 默认会先读取该查询所需列的全部数据，然后再根据查询条件对数据进行过滤、聚合等计算任务。延迟物化是一种优化方式，它支持下推部分过滤条件到 TableScan 算子，即先扫描过滤条件相关的列数据，过滤得到符合条件的行后，再扫描这些行的其他列数据，继续后续计算，从而减少 IO 扫描和数据处理的计算量。
+    当 `SELECT` 语句中包含过滤条件（`WHERE` 子句）时，TiFlash 默认会先读取该查询所需列的全部数据，然后再根据查询条件对数据进行过滤、聚合等计算任务。延迟物化是一种优化方式，它支持下推部分过滤条件到 TableScan 算子，即先扫描过滤条件相关的列数据，过滤得到符合条件的行后，再扫描这些行的其他列数据，继续后续计算，从而减少 IO 扫描和数据处理的计算量。
 
-  TiFlash 延迟物化默认关闭，可以通过将系统变量 [`tidb_opt_enable_late_materialization`](/system-variables.md#tidb_opt_enable_late_materialization-从-v700-版本开始引入) 设置为 `ON` 开启。开启后，TiDB 优化器会根据统计信息和查询的过滤条件，决定哪些过滤条件会被下推到 TableScan 算子。
+    TiFlash 延迟物化默认关闭，可以通过将系统变量 [`tidb_opt_enable_late_materialization`](/system-variables.md#tidb_opt_enable_late_materialization-从-v700-版本开始引入) 设置为 `ON` 开启。开启后，TiDB 优化器会根据统计信息和查询的过滤条件，决定哪些过滤条件会被下推到 TableScan 算子。
 
     更多信息，请参考[用户文档](/tiflash/tiflash-late-materialization.md)。
 
@@ -187,11 +187,11 @@ TiDB 版本：7.0.0
 
 * TiCDC 支持同步变更数据至存储服务 (GA) [#6797](https://github.com/pingcap/tiflow/issues/6797) @[zhaoxinyu](https://github.com/zhaoxinyu) **tw:hfxsd**
 
-    TiCDC 支持将 changed log 同步到兼容 Amazon S3 协议的存储服务、GCS、Azure Blob Storage 以及 NFS 中。存储服务价格便宜，使用方便。对于不使用 Kafka 的用户，可以选择同步变更数据到存储服务。使用该功能，TiCDC 会将 changed log 保存到文件，发送到存储服务中。用户自研的消费程序可以定时从存储服务读取新产生的 changed log 进行数据处理。目前，TiCDC 支持将格式为 canal-json 和 CSV 的 changed log 同步至存储服务。
+    TiCDC 支持将变更数据同步到兼容 Amazon S3 协议的存储服务、GCS、Azure Blob Storage 以及 NFS 中。存储服务价格便宜，使用方便。对于不使用 Kafka 的用户，可以选择同步变更数据到存储服务。使用该功能，TiCDC 会将变更数据保存到文件，发送到存储服务中。用户自研的消费程序可以定时从存储服务读取新产生的变更数据进行数据处理。目前，TiCDC 支持将格式为 canal-json 和 CSV 的变更数据同步至存储服务。
 
     更多信息，请参考[用户文档](/ticdc/ticdc-sink-to-cloud-storage)。
 
-* TiCDC OpenAPI v2 GA @[sdojjy](https://github.com/sdojjy) **tw:hfxsd**
+* TiCDC OpenAPI v2 GA [#8019](https://github.com/pingcap/tiflow/issues/8019) @[sdojjy](https://github.com/sdojjy) **tw:hfxsd**
 
     TiCDC 提供 OpenAPI v2。相比 OpenAPI v1，OpenAPI v2 提供了更完整的同步任务支持。OpenAPI 提供的功能是 [`cdc cli` 工具](/ticdc/ticdc-manage-changefeed.md)的一个子集。你可以通过 OpenAPI v2 对 TiCDC 集群进行查询和运维操作，如获取 TiCDC 节点状态、检查集群健康状态、管理同步任务等。
 
