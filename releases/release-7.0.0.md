@@ -490,4 +490,17 @@ TiDB 版本：7.0.0
 
 感谢来自 TiDB 社区的贡献者们：
 
-- [贡献者 GitHub ID]()
+- [AntiTopQuark](https://github.com/AntiTopQuark)
+- [blacktear23](https://github.com/blacktear23)
+- [BornChanger](https://github.com/BornChanger)
+- [Dousir9](https://github.com/Dousir9)
+- [erwadba](https://github.com/erwadba)
+- [HappyUncle](https://github.com/HappyUncle)
+- [jiyfhust](https://github.com/jiyfhust)
+- [L-maple](https://github.com/L-maple)
+- [lionelee](https://github.com/lionelee)
+- [liumengya94](https://github.com/liumengya94)
+- [nathan-edgar](https://github.com/nathan-edgar)
+- [sticnarf](https://github.com/sticnarf)
+- [woofyzhao](https://github.com/woofyzhao)
+- [xiaguan](https://github.com/xiaguan)
