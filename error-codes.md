@@ -293,6 +293,66 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
    当 [`tidb_constraint_check_in_place_pessimistic`](/system-variables.md#tidb_constraint_check_in_place_pessimistic-从-v630-版本开始引入) 设置为 `OFF` 时，为保证事务的正确性，SQL 语句执行时产生的任何错误都可能导致 TiDB 返回 `8147` 报错并中止当前事务。具体的错误原因，请参考对应的报错信息。详见[约束](/constraints.md#悲观事务)。
 
+* Error Number: 8154
+
+    目前 `LOAD DATA` 不支持从 TiDB 服务器本地导入数据，可以指定 `LOCAL` 从客户端导入，或者将数据上传到 S3/GCS 再进行导入。请参考 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md)。
+
+* Error Number: 8155
+
+    目前 `LOAD DATA` 不支持从 local 导入 Parquet 格式的数据文件，只支持从 S3/GCS 导入 Parquet 格式的数据文件。你可以将数据上传到 S3/GCS 后再导入。请参考 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md)。
+
+* Error Number: 8156
+
+    `LOAD DATA` 语句的文件路径不能为空。需要设置正确的路径再进行导入。请参考 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md)。
+
+* Error Number: 8157
+
+    不支持的数据格式。请参考 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md) 查看支持的数据格式。
+
+* Error Number: 8158
+
+    传入的 S3/GCS 路径无效。请参考[外部存储](/br/backup-and-restore-storages.md)设置有效的路径。
+
+* Error Number: 8159
+
+    TiDB 无法访问 `LOAD DATA` 语句中传入的 S3/GCS 路径。请确保填入的 S3/GCS bucket 存在，且你输入了正确的 access key 和 secret access key 以让 TiDB 服务器有权限访问 S3/GCS 对应的 bucket。
+
+* Error Number: 8160
+
+    `LOAD DATA` 读取数据文件失败。请根据具体的错误提示进行处理。
+
+* Error Number: 8162
+
+    `LOAD DATA` 语句存在错误。请参考 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md) 查看已支持的功能。
+
+* Error Number: 8163
+
+    未知的 `LOAD DATA ... WITH ...` 选项。请参考 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md) 查看支持的选项。
+
+* Error Number: 8164
+
+    `LOAD DATA ... WITH ...` 选项取值无效。请参考 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md) 查看有效的取值。
+
+* Error Number: 8165
+
+    重复指定了 `LOAD DATA ... WITH ...` 选项，每个选项只能指定一次。
+
+* Error Number: 8166
+
+    某些 `LOAD DATA ... WITH ...` 选项只能在特定的导入模式下才可以使用。请参考 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md) 查看支持的选项。
+
+* Error Number: 8170
+
+    指定的 `LOAD DATA` job 不存在或不是由当前用户创建。目前用户只能查看自己创建的 job。
+
+* Error Number: 8171
+
+    对不支持的 `LOAD DATA` 任务状态不能进行运维操作。请根据具体的错误提示进行处理。
+
+* Error Number: 8172
+
+    指定 `LOCAL` 的 `LOAD DATA` 不能在后台运行，只有使用 S3/GCS 路径的 `LOAD DATA` 可以在后台运行。请参考 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md) 更改 SQL 语句。
+
 * Error Number: 8200
 
     尚不支持的 DDL 语法。请参考[与 MySQL DDL 的兼容性](/mysql-compatibility.md#ddl-的限制)。

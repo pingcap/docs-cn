@@ -26,8 +26,13 @@ ResourceGroupOptionList:
 
 DirectResourceGroupOption:
     "RU_PER_SEC" EqOpt stringLit
+|   "PRIORITY" EqOpt ResourceGroupPriorityOption
 |   "BURSTABLE"
 
+ResourceGroupPriorityOption:
+    LOW
+|   MEDIUM
+|   HIGH
 ```
 
 资源组的 `ResourceGroupName` 是全局唯一的，不允许重复。
@@ -36,35 +41,58 @@ TiDB 支持以下 `DirectResourceGroupOption`, 其中 [Request Unit (RU)](/tidb-
 
 | 参数            | 含义           | 举例                                   |
 |---------------|--------------|--------------------------------------|
-| `RU_PER_SEC`  | 每秒 RU 填充的速度 | `RU_PER_SEC = 500` 表示此资源组每秒回填 500 个 RU |
-
-如果设置了 `BURSTABLE` 属性，TiDB 允许对应的资源组超出配额后使用空余的系统资源。
+| `RU_PER_SEC`  | 每秒 RU 填充的速度 | `RU_PER_SEC = 500` 表示此资源组每秒回填 500 个 RU。 |
+| `PRIORITY`    | 任务在 TiKV 上处理的绝对优先级  | `PRIORITY = HIGH` 表示优先级高。若未指定，则默认为 `MEDIUM`。 |
+| `BURSTABLE`   | 允许对应的资源组超出配额后使用空余的系统资源。 |
 
 > **注意：**
 >
-> `CREATE RESOURCE GROUP` 语句只能在全局变量 [`tidb_enable_resource_control`](/system-variables.md#tidb_enable_resource_control-从-v660-版本开始引入) 参数设置为 `ON` 时才能执行。
+> - `CREATE RESOURCE GROUP` 语句只能在全局变量 [`tidb_enable_resource_control`](/system-variables.md#tidb_enable_resource_control-从-v660-版本开始引入) 设置为 `ON` 时才能执行。
+> - TiDB 集群在初始化时会自动创建 `default` 资源组，所有未绑定资源组的请求都将自动绑定至此资源组。
 
 ## 示例
 
 创建 `rg1` 和 `rg2` 两个资源组。
 
 ```sql
-mysql> DROP RESOURCE GROUP IF EXISTS rg1;
+DROP RESOURCE GROUP IF EXISTS rg1;
+```
+
+```sql
 Query OK, 0 rows affected (0.22 sec)
-mysql> CREATE RESOURCE GROUP IF NOT EXISTS rg1
-    ->  RU_PER_SEC = 100
-    ->  BURSTABLE;
+```
+
+```sql
+CREATE RESOURCE GROUP IF NOT EXISTS rg1
+  RU_PER_SEC = 100
+  PRIORITY = HIGH
+  BURSTABLE;
+```
+
+```sql
 Query OK, 0 rows affected (0.08 sec)
-mysql> CREATE RESOURCE GROUP IF NOT EXISTS rg2
-    ->  RU_PER_SEC = 200;
+```
+
+```sql
+CREATE RESOURCE GROUP IF NOT EXISTS rg2
+  RU_PER_SEC = 200;
+```
+
+```sql
 Query OK, 0 rows affected (0.08 sec)
-mysql> SELECT * FROM information_schema.resource_groups WHERE NAME ='rg1' or NAME = 'rg2';
-+------+-------------+-----------+
-| NAME | RU_PER_SEC  | BURSTABLE |
-+------+-------------+-----------+
-| rg1  |         100 | YES       |
-| rg2  |         200 | NO        |
-+------+-------------+-----------+
+```
+
+```sql
+SELECT * FROM information_schema.resource_groups WHERE NAME ='rg1' or NAME = 'rg2';
+```
+
+```sql
++------+------------+----------+-----------+
+| NAME | RU_PER_SEC | PRIORITY | BURSTABLE |
++------+------------+----------+-----------+
+| rg1  |        100 | HIGH     | YES       |
+| rg2  |        200 | MEDIUM   | NO        |
++------+------------+----------+-----------+
 2 rows in set (1.30 sec)
 ```
 

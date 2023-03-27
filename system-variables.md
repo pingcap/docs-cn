@@ -1552,16 +1552,13 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 默认值：`ON`
 - 这个变量用来控制是否开启 [`PLAN REPLAYER CAPTURE` 功能](/sql-plan-replayer.md#使用-plan-replayer-capture-抓取目标计划)。默认值 `ON` 代表开启 `PLAN REPLAYER CAPTURE` 功能。
 
-### `tidb_enable_plan_replayer_continues_capture`
-
-> **警告：**
->
-> 当前版本中该变量控制的功能尚未完全生效，请保留默认值。
+### `tidb_enable_plan_replayer_continuous_capture` <span class="version-mark">从 v7.0.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 类型：布尔型
 - 默认值：`OFF`
+- 这个变量用来控制是否开启 [`PLAN REPLAYER CONTINUOUS CAPTURE` 功能](/sql-plan-replayer.md#使用-plan-replayer-continuous-capture)。默认值 `OFF` 代表关闭功能。
 
 ### `tidb_enable_prepared_plan_cache` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
@@ -1599,15 +1596,11 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 ### `tidb_enable_resource_control` <span class="version-mark">从 v6.6.0 版本开始引入</span>
 
-> **警告：**
->
-> [资源管控](/tidb-resource-control.md) 目前为实验性特性，此变量定义可能在之后发生变化或者删除。
-
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 默认值：`OFF`
+- 默认值：`ON`
 - 类型：布尔型
-- 该变量是[资源管控特性](/tidb-resource-control.md)的开关。该变量设置为 `ON` 后，集群支持应用按照资源组做资源隔离。
+- 该变量是[资源管控特性](/tidb-resource-control.md)的开关。该变量设置为 `ON` 时，集群支持应用按照资源组做资源隔离。
 
 ### `tidb_enable_reuse_chunk` <span class="version-mark">从 v6.4.0 版本开始引入</span>
 
@@ -2519,6 +2512,14 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 范围：`[0, 2147483647]`
 - 默认值：`3.0`
 - 表示 TiDB 处理一行数据的 CPU 开销。该变量是[代价模型](/cost-model.md)内部使用的变量，不建议修改该变量的值。
+
+### `tidb_opt_derive_topn` <span class="version-mark">从 v7.0.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 类型：布尔型
+- 默认值：`OFF`
+- 表示是否开启[从窗口函数中推导 TopN 或 Limit](/derive-topn-from-window.md) 的优化规则。
 
 ### `tidb_opt_desc_factor`
 

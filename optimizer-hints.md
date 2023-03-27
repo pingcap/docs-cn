@@ -804,3 +804,13 @@ SELECT /*+ NTH_PLAN(3) */ count(*) from t where a > 5;
 > **注意：**
 >
 > `NTH_PLAN(N)` 主要用于测试用途，并且在未来不保证其兼容性，请谨慎使用。
+
+### RESOURCE_GROUP(resource_group_name)
+
+`RESOURCE_GROUP(resource_group_name)` 用于[使用资源管控 (Resource Control) 实现资源隔离](/tidb-resource-control.md)。此 Hint 将临时使用指定的资源组执行当前的语句。如果指定的资源组不存在，则该 Hint 将被忽略。
+
+示例：
+
+```sql
+SELECT /*+ RESOURCE_GROUP(rg1) */ * FROM t limit 10;
+```
