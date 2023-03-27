@@ -277,7 +277,7 @@ TiDB 版本：7.0.0
 
     更多信息，请参考[用户文档](/partitioned-table.md#key-分区)
 
-### TiCDC 兼容性
+### 行为变更
 
 * TiCDC 修复了 Avro 编码 `FLOAT` 类型数据错误的问题 [#8490](https://github.com/pingcap/tiflow/issues/8490) @[3AceShowHand](https://github.com/3AceShowHand) **tw:ran-huang**
 
