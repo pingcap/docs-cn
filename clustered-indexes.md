@@ -59,7 +59,7 @@ CREATE TABLE t (a BIGINT, b VARCHAR(255), PRIMARY KEY(a, b) /*T![clustered_index
 CREATE TABLE t (a BIGINT, b VARCHAR(255), PRIMARY KEY(a, b) /*T![clustered_index] NONCLUSTERED */);
 ```
 
-对于未显式指定该关键字的语句，默认行为受系统变量 `@@global.tidb_enable_clustered_index` 影响。该变量有三个取值：
+对于未显式指定该关键字的语句，默认行为受系统变量 [`@@global.tidb_enable_clustered_index`](/system-variables.md#tidb_enable_clustered_index-从-v50-版本开始引入) 影响。该变量有三个取值：
 
 - `OFF` 表示所有主键默认使用非聚簇索引。
 - `ON` 表示所有主键默认使用聚簇索引。
