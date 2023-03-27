@@ -30,7 +30,16 @@ This example constructs a SQL statement that consumes a lot of memory to demonst
 
     ```sql
     SET tidb_max_bytes_before_tiflash_external_group_by = 0;
-    SELECT l_orderkey, MAX(L_COMMENT), MAX(L_SHIPMODE), MAX(L_SHIPINSTRUCT), MAX(L_SHIPDATE), MAX(L_EXTENDEDPRICE) FROM lineitem GROUP BY l_orderkey HAVING SUM(l_quantity) > 314;
+    SELECT
+      l_orderkey,
+      MAX(L_COMMENT),
+      MAX(L_SHIPMODE),
+      MAX(L_SHIPINSTRUCT),
+      MAX(L_SHIPDATE),
+      MAX(L_EXTENDEDPRICE)
+    FROM lineitem
+    GROUP BY l_orderkey
+    HAVING SUM(l_quantity) > 314;
     ```
 
 3. From the log of TiFlash, you can see that the query needs to consume 29.55 GiB of memory on a single TiFlash node:
@@ -43,7 +52,16 @@ This example constructs a SQL statement that consumes a lot of memory to demonst
 
     ```sql
     SET tidb_max_bytes_before_tiflash_external_group_by = 10737418240;
-    SELECT l_orderkey, MAX(L_COMMENT), MAX(L_SHIPMODE), MAX(L_SHIPINSTRUCT), MAX(L_SHIPDATE), MAX(L_EXTENDEDPRICE) FROM lineitem GROUP BY l_orderkey HAVING SUM(l_quantity) > 314;
+    SELECT
+      l_orderkey,
+      MAX(L_COMMENT),
+      MAX(L_SHIPMODE),
+      MAX(L_SHIPINSTRUCT),
+      MAX(L_SHIPDATE),
+      MAX(L_EXTENDEDPRICE)
+    FROM lineitem
+    GROUP BY l_orderkey
+    HAVING SUM(l_quantity) > 314;
     ```
 
 5. From the log of TiFlash, you can see that by configuring `tidb_max_bytes_before_tiflash_external_group_by`, TiFlash triggers the spilling of intermediate results, significantly reducing the memory used by the query.
