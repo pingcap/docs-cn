@@ -31,7 +31,7 @@ DESC resource_groups;
 ## 示例
 
 ```sql
-SELECT * FROM information_schema.resource_groups; -- 查看资源组, tidb 默认预置 default 资源组
+SELECT * FROM information_schema.resource_groups; -- 查看资源组，TiDB 默认预置 `default` 资源组
 ```
 
 ```sql
@@ -43,7 +43,7 @@ SELECT * FROM information_schema.resource_groups; -- 查看资源组, tidb 默�
 ```
 
 ```sql
-CREATE RESOURCE GROUP rg1 RU_PER_SEC=1000; -- 创建资源组 rg1
+CREATE RESOURCE GROUP rg1 RU_PER_SEC=1000; -- 创建资源组 `rg1`
 ```
 
 ```sql
@@ -51,7 +51,7 @@ Query OK, 0 rows affected (0.34 sec)
 ```
 
 ```sql
-SHOW CREATE RESOURCE GROUP rg1; -- 显示 rg1 资源组的定义
+SHOW CREATE RESOURCE GROUP rg1; -- 显示 `rg1` 资源组的定义
 ```
 
 ```sql
@@ -64,7 +64,7 @@ SHOW CREATE RESOURCE GROUP rg1; -- 显示 rg1 资源组的定义
 ```
 
 ```sql
-SELECT * FROM information_schema.resource_groups WHERE NAME = 'rg1';
+SELECT * FROM information_schema.resource_groups WHERE NAME = 'rg1'; -- 查看资源组 `rg1`
 ```
 
 ```sql
@@ -85,4 +85,4 @@ SELECT * FROM information_schema.resource_groups WHERE NAME = 'rg1';
 
 > **注意：**
 >
-> TiDB 默认预置了 `default` 资源组。`default` 资源组是所有语句执行默认使用的资源组。其 `RU_PER_SEC` 的默认值为 `UNLIMITED` (等同于`INT`类型最大值，即 `2147483647`)，且为 `BURSTABLE` 模式。在新建配置其他资源组时，建议根据实际情况修改 `default` 资源组的配置。
+> TiDB 集群在初始化时会自动创建 `default` 资源组，其 `RU_PER_SEC` 的默认值为 `UNLIMITED` (等同于`INT`类型最大值，即 `2147483647`)，且为 `BURSTABLE` 模式。所有未绑定资源组的请求都将自动绑定至此资源组。在新建配置其他资源组时，建议根据实际情况修改 `default` 资源组的配置。
