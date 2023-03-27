@@ -30,15 +30,16 @@ TiDB 提供了以下系统变量，来控制各算子数据落盘的阈值。当
 
     ```sql
     SET tidb_max_bytes_before_tiflash_external_group_by = 0;
-    SELECT l_orderkey,
-        Max(l_comment),
-        Max(l_shipmode),
-        Max(l_shipinstruct),
-        Max(l_shipdate),
-        Max(l_extendedprice)
-    FROM   lineitem
-    GROUP  BY l_orderkey
-    HAVING Sum(l_quantity) > 314;
+    SELECT
+      l_orderkey,
+      MAX(L_COMMENT),
+      MAX(L_SHIPMODE),
+      MAX(L_SHIPINSTRUCT),
+      MAX(L_SHIPDATE),
+      MAX(L_EXTENDEDPRICE)
+    FROM lineitem
+    GROUP BY l_orderkey
+    HAVING SUM(l_quantity) > 314;
     ```
 
 3. 从 TiFlash 的日志中可以看到，该查询在单个 TiFlash 节点上需要消耗 29.55 GiB 内存：
