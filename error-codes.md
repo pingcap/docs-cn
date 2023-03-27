@@ -358,6 +358,66 @@ TiDB is compatible with the error codes in MySQL, and in most cases returns the 
 
     When [`tidb_constraint_check_in_place_pessimistic`](/system-variables.md#tidb_constraint_check_in_place_pessimistic-new-in-v630) is set to `OFF`, to ensure the correctness of transactions, any errors in the SQL statement execution might cause TiDB to return this `8147` error and abort the current transaction. For specific causes of the error, refer to the error message. For more information, see [Constraints](/constraints.md#pessimistic-transactions).
 
+* Error Number: 8154
+
+    Currently `LOAD DATA` does not support importing data locally from TiDB server. You can specify `LOCAL` to import from client, or upload data to S3 or GCS and then import it. See [`LOAD DATA`](/sql-statements/sql-statement-load-data.md).
+
+* Error Number: 8155
+
+    Currently, `LOAD DATA` only supports importing Parquet files from S3 or GCS. You can upload Parquet files to S3 or GCS and then import them. See [`LOAD DATA`](/sql-statements/sql-statement-load-data.md).
+
+* Error Number: 8156
+
+    The file path of the `LOAD DATA` statement cannot be empty. You need to set the correct path before importing. See [`LOAD DATA`](/sql-statements/sql-statement-load-data.md).
+
+* Error Number: 8157
+
+    Unsupported data format. See [`LOAD DATA`](/sql-statements/sql-statement-load-data.md) to check the supported data formats.
+
+* Error Number: 8158
+
+    The S3 or GCS path is invalid. See [external storage](/br/backup-and-restore-storages.md) to set a valid path.
+
+* Error Number: 8159
+
+    TiDB cannot access the S3 or GCS path provided in the `LOAD DATA` statement. Make sure that the S3 or GCS bucket exists, and that you have used the correct access key and secret access key to let TiDB access the bucket.
+
+* Error Number: 8160
+
+    `LOAD DATA` fails to read the data file. Refer to the specific error message for action.
+
+* Error Number: 8162
+
+    There is an error in the `LOAD DATA` statement. See [`LOAD DATA`](/sql-statements/sql-statement-load-data.md) for supported features.
+
+* Error Number: 8163
+
+    Unknown `LOAD DATA...WITH...` option. See [`LOAD DATA`](/sql-statements/sql-statement-load-data.md) for supported options.
+
+* Error Number: 8164
+
+    The `LOAD DATA...WITH...` option takes an invalid value. See [`LOAD DATA`](/sql-statements/sql-statement-load-data.md) for valid values.
+
+* Error Number: 8165
+
+    Specify duplicated `LOAD DATA...WITH...` options. Each option can be specified only once.
+
+* Error Number: 8166
+
+    Some `LOAD DATA...WITH...` options can only be used in certain import modes. See [`LOAD DATA`](/sql-statements/sql-statement-load-data.md) to see the supported options.
+
+* Error Number: 8170
+
+    The specified `LOAD DATA` job does not exist or is not created by the current user. Currently you can only view jobs that you created.
+
+* Error Number: 8171
+
+    You cannot perform operation and maintenance for unsupported `LOAD DATA` task status. Refer to the specific error message for action.
+
+* Error Number: 8172
+
+    `LOAD DATA` specified with `LOCAL` cannot be run in the background. Only `LOAD DATA` specified with the S3 or GCS path can be run in the background. See [`LOAD DATA`](/sql-statements/sql-statement-load-data.md) to change the SQL statement.
+
 * Error Number: 8200
 
     The DDL syntax is not yet supported.
