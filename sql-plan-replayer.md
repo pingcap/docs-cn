@@ -242,3 +242,13 @@ mysql> SELECT * FROM mysql.plan_replayer_status;
 > **注意：**
 > 
 > `PLAN REPLAYER CAPTURE` 的结果文件最多会在 TiDB 集群中保存一个小时，超时后 TiDB 会将其删除。
+
+### 使用 `PLAN REPLAYER CONTINUOUS CAPTURE`
+
+开启 `PLAN REPLAYER CONTINUOUS CAPTURE` 功能后，TiDB 将以 SQL DIGEST 和 PLAN DIGEST 为维度异步地将业务 SQL 语句以 `PLAN REPLAYER` 的方式进行记录，对于相同 DIGEST 的 SQL 语句与执行计划，`PLAN REPLAYER CONTINUOUS CAPTURE` 不会重复记录。
+
+`PLAN REPLAYER CONTINUOUS CAPTURE` 功能通过系统变量 [`tidb_enable_plan_replayer_continuous_capture`](/system-variables.md#tidb_enable_plan_replayer_continuous_capture-从-v700-版本开始引入) 控制。要开启 `PLAN REPLAYER CONTINUOUS CAPTURE`，将变量值设为 `ON`。
+
+### 查看 `PLAN REPLAYER CONTINUOUS CAPTURE` 抓取结果
+
+查看 `PLAN REPLAYER CONTINUOUS CAPTURE` 抓取结果的方法同[查看 `PLAN REPLAYER CAPTURE` 抓取结果](#查看-plan-replayer-continuous-capture-抓取结果)。
