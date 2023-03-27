@@ -85,4 +85,4 @@ SELECT * FROM information_schema.resource_groups WHERE NAME = 'rg1';
 
 > **注意：**
 >
-> TiDB 默认预置了 `default` 资源组。`default` 资源组是所有语句执行默认使用的资源组。默认配置 `RU_PER_SEC` 为 `UNLIMITED` (等同于`INT`类型最大值，即 `2147483647`), 且为 `BURSTABLE` 模式。在新建配置其他资源组时，建议根据实际情况修改 `default` 资源组的配置。
+> TiDB 默认预置了 `default` 资源组。`default` 资源组是所有语句执行默认使用的资源组。其 `RU_PER_SEC` 的默认值为 `UNLIMITED` (等同于`INT`类型最大值，即 `2147483647`)，且为 `BURSTABLE` 模式。在新建配置其他资源组时，建议根据实际情况修改 `default` 资源组的配置。
