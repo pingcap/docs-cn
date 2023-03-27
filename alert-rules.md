@@ -228,7 +228,7 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
 * 报警规则：
 
-    `(sum(pd_regions_status{type="miss_peer_region_count"}) by (instance)  > 100) and (sum(etcd_server_is_leader) by (instance) > 0)`
+    `(sum(pd_regions_status{type="miss-peer-region-count"}) by (instance)  > 100) and (sum(etcd_server_is_leader) by (instance) > 0)`
 
 * 规则描述：
 
@@ -237,7 +237,7 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 * 处理方法：
 
     * 查看是否有 TiKV 宕机或在做下线操作，尝试定位问题产生的原因。
-    * 观察 region health 面板，查看 `miss_peer_region_count` 是否在不断减少。
+    * 观察 region health 面板，查看 `miss-peer-region-count` 是否在不断减少。
 
 ### 警告级别报警项
 

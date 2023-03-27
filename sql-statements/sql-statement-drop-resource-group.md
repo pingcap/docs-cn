@@ -22,29 +22,55 @@ ResourceGroupName:
 
 > **注意：**
 >
-> `DROP RESOURCE GROUP` 语句只能在全局变量 [`tidb_enable_resource_control`](/system-variables.md#tidb_enable_resource_control-从-v660-版本开始引入) 参数设置为 `ON` 时才能执行。
+> - `DROP RESOURCE GROUP` 语句只能在全局变量 [`tidb_enable_resource_control`](/system-variables.md#tidb_enable_resource_control-从-v660-版本开始引入) 设置为 `ON` 时才能执行。
+> - `default` 资源组为系统保留的资源组，不支持删除。
 
 ## 示例
 
 删除名为 `rg1` 的资源组：
 
 ```sql
-mysql> DROP RESOURCE GROUP IF EXISTS rg1;
+DROP RESOURCE GROUP IF EXISTS rg1;
+```
+
+```sql
 Query OK, 0 rows affected (0.22 sec)
-mysql> CREATE RESOURCE GROUP IF NOT EXISTS rg1 RU_PER_SEC = 500 BURSTABLE;
+```
+
+```sql
+CREATE RESOURCE GROUP IF NOT EXISTS rg1 RU_PER_SEC = 500 BURSTABLE;
+```
+
+```sql
 Query OK, 0 rows affected (0.08 sec)
-mysql> SELECT * FROM information_schema.resource_groups WHERE NAME ='rg1';
-+------+------------+-----------+
-| NAME | RU_PER_SEC | BURSTABLE |
-+------+------------+-----------+
-| rg1  |        500 | YES       |
-+------+------------+-----------+
+```
+
+```sql
+SELECT * FROM information_schema.resource_groups WHERE NAME ='rg1';
+```
+
+```sql
++------+------------+----------+-----------+
+| NAME | RU_PER_SEC | PRIORITY | BURSTABLE |
++------+------------+----------+-----------+
+| rg1  |       500  | MEDIUM   | YES       |
++------+------------+----------+-----------+
 1 row in set (0.01 sec)
+```
 
-mysql> DROP RESOURCE GROUP IF EXISTS rg1;
+```sql
+DROP RESOURCE GROUP IF EXISTS rg1;
+```
+
+```sql
 Query OK, 1 rows affected (0.09 sec)
+```
 
-mysql> SELECT * FROM information_schema.resource_groups WHERE NAME ='rg1';
+```sql
+SELECT * FROM information_schema.resource_groups WHERE NAME ='rg1';
+```
+
+```sql
 Empty set (0.00 sec)
 ```
 

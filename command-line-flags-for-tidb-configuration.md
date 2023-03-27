@@ -130,6 +130,11 @@ aliases: ['/docs-cn/dev/command-line-flags-for-tidb-configuration/','/docs-cn/de
 >
 > 如果使用 AWS 的 Network Load Balancer (NLB) 并开启 PROXY 协议，需要设置 NLB 的 `target group` 属性：将 `proxy_protocol_v2.client_to_server.header_place` 设为 `on_first_ack`。同时向 AWS 的 Support 提工单开通此功能的支持。注意，AWS NLB 在开启 PROXY 协议后，客户端将无法获取服务器端的握手报文，因此报文会一直阻塞到客户端超时。这是因为，NLB 默认只在客户端发送数据之后才会发送 PROXY 的报文，而在客户端发送数据包之前，服务器端发送的任何数据包都会在内网被丢弃。
 
+## `--proxy-protocol-fallbackable`
+
++ 用于控制是否启用 PROXY 协议回退模式。如果设置为 `true`，TiDB 可以接受非 PROXY 协议规范或者没有发送 PROXY 协议头的客户端连接。默认情况下，TiDB 仅接受发送 PROXY 协议头的客户端连接。
++ 默认：`false`
+
 ## `--proxy-protocol-header-timeout`
 
 + PROXY 协议请求头读取超时时间
