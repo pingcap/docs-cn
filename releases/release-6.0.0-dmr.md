@@ -113,7 +113,7 @@ TiDB v6.0.0 is a DMR, and its version is 6.0.0-DMR.
 
     With its native architecture of separating computing from storage, TiDB supports filtering out invalid data by pushing down operators, which greatly reduces the data transmission between TiDB and TiKV and thereby improves the query efficiency. In v6.0.0, TiDB supports pushing down more expressions and the `BIT` data type to TiKV, improving the query efficiency when computing the expressions and data type.
 
-    [User document](/functions-and-operators/expressions-pushed-down.md#add-to-the-blocklist), [#30738](https://github.com/pingcap/tidb/issues/30738)
+    [User document](/functions-and-operators/expressions-pushed-down.md), [#30738](https://github.com/pingcap/tidb/issues/30738)
 
 - Optimization of hotspot index
 
