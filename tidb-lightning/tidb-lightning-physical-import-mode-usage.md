@@ -40,9 +40,9 @@ sorted-kv-dir = "./some-dir"
 # 限制 TiDB Lightning 向每个 TiKV 节点写入的带宽大小，默认为 0，表示不限制。
 # store-write-bwlimit = "128MiB"
 
-# Physical Import Mode 是否通过 SQL 方式添加索引。默认根据 TiDB 版本自动选择。如果 TiDB 版本早于 v7.0.0，则默认为 `false` 表示仍然会用 TiDB Lightning 将所需导入的数据以及索引编码成 KV pairs 后再一同导入到 TiKV，实现机制和历史版本保持一致。从 v7.0.0 版本开始，默认为 `true`，即 TiDB Lightning 会导完数据后，再使用 add index 的 SQL 来添加索引。
+# Physical Import Mode 是否通过 SQL 方式添加索引。默认为 `false`，表示 TiDB Lightning 会将行数据以及索引数据都编码成 KV pairs 后一同导入 TiKV，实现机制和历史版本保持一致。如果设置为 `true`，即 TiDB Lightning 会导完数据后，再使用 add index 的 SQL 来添加索引。
 # 通过 SQL 方式添加索引的优点是将导入数据与导入索引分开，可以快速导入数据，即使导入数据后，索引添加失败，也不会影响数据的一致性。
-# add-index-by-sql = true
+# add-index-by-sql = false
 
 [tidb]
 # 目标集群的信息。tidb-server 的地址，填一个即可。
