@@ -698,7 +698,7 @@
       - [`BACKUP`](/sql-statements/sql-statement-backup.md)
       - [`BATCH`](/sql-statements/sql-statement-batch.md)
       - [`BEGIN`](/sql-statements/sql-statement-begin.md)
-      - [`CANCEL LOAD DATA 和 DROP LOAD DATA`](/sql-statements/sql-statement-operate-load-data-job.md)
+      - [`CANCEL LOAD DATA` 和 `DROP LOAD DATA`](/sql-statements/sql-statement-operate-load-data-job.md)
       - [`CALIBRATE RESOURCE`](/sql-statements/sql-statement-calibrate-resource.md)
       - [`CHANGE COLUMN`](/sql-statements/sql-statement-change-column.md)
       - [`CHANGE DRAINER`](/sql-statements/sql-statement-change-drainer.md)
