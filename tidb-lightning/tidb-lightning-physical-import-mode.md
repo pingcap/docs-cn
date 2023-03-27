@@ -20,7 +20,7 @@ The backend for the physical import mode is `local`.
 
 2. TiDB Lightning creates table schemas in the target database and fetches the metadata.
 
-    Starting from TiDB v7.0.0, `tidb-lightning` adds indexes via the SQL interface by default, and drops all secondary indexes from the target table before importing the data.
+    If you set `add-index-by-sql` to `true`, `tidb-lightning` adds indexes via the SQL interface, and drops all secondary indexes from the target table before importing the data.
 
 3. Each table is divided into multiple contiguous **blocks**, so that TiDB Lightning can import data from large tables (greater than 200 GB) in parallel.
 
@@ -30,7 +30,7 @@ The backend for the physical import mode is `local`.
 
     The engine file contains two types of engines: **data engine** and **index engine**. Each engine corresponds to a type of key-value pairs: row data and secondary index. Normally, row data is completely ordered in the data source, and the secondary index is unordered. Therefore, the data engine files are imported immediately after the corresponding block is written, and all index engine files are imported only after the entire table is encoded.
 
-    Note that when `tidb-lightning` adds indexes via the SQL interface, the index engine will not write data because the secondary indexes of the target table have already been dropped in step 2.
+    Note that when `tidb-lightning` adds indexes via the SQL interface (that is, you set `add-index-by-sql` to `true`), the index engine will not write data because the secondary indexes of the target table have already been dropped in step 2.
 
 6. After all engine files are imported, TiDB Lightning compares the checksum between the local data source and the downstream cluster, and ensures that the imported data is not corrupted. Then TiDB Lightning adds the previously dropped secondary indexes in step 2, or lets TiDB analyze the new data (`ANALYZE`) to optimize future operations. Meanwhile, `tidb-lightning` adjusts the `AUTO_INCREMENT` value to prevent conflicts in the future.
 

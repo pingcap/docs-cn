@@ -41,6 +41,10 @@ sorted-kv-dir = "./some-dir"
 # node in the physical import mode. 0 by default, which means no limit.
 # store-write-bwlimit = "128MiB"
 
+# Specifies whether Physical Import Mode adds indexes via SQL. The default value is `false`, which means that TiDB Lightning will encode both row data and index data into KV pairs and import them into TiKV together. This mechanism is consistent with that of the historical versions. If you set it to `true`, it means that TiDB Lightning adds indexes via SQL after importing the row data.
+# The benefit of adding indexes via SQL is that you can separately import data and import indexes, and import data more quickly. After the data is imported, even if the indexes fail to be added, it does not affect the consistency of the imported data.
+# add-index-by-sql = false
+
 [tidb]
 # The information of the target cluster. The address of any tidb-server from the cluster.
 host = "172.16.31.1"
