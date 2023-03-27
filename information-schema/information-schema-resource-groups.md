@@ -31,23 +31,43 @@ DESC resource_groups;
 ## 示例
 
 ```sql
-mysql> SELECT * FROM information_schema.resource_groups; -- 查看资源组, tidb 默认预置 default 资源组
+SELECT * FROM information_schema.resource_groups; -- 查看资源组, tidb 默认预置 default 资源组
+```
+
+```sql
 +---------+------------+----------+-----------+
 | NAME    | RU_PER_SEC | PRIORITY | BURSTABLE |
 +---------+------------+----------+-----------+
 | default | UNLIMITED  | MEDIUM   | YES       |
 +---------+------------+----------+-----------+
+```
 
-mysql> CREATE RESOURCE GROUP rg1 RU_PER_SEC=1000; -- 创建资源组 rg1
+```sql
+CREATE RESOURCE GROUP rg1 RU_PER_SEC=1000; -- 创建资源组 rg1
+```
+
+```sql
 Query OK, 0 rows affected (0.34 sec)
-mysql> SHOW CREATE RESOURCE GROUP rg1; -- 显示 rg1 资源组的定义
+```
+
+```sql
+SHOW CREATE RESOURCE GROUP rg1; -- 显示 rg1 资源组的定义
+```
+
+```sql
 +----------------+---------------------------------------------------------------+
 | Resource_Group | Create Resource Group                                         |
 +----------------+---------------------------------------------------------------+
 | rg1            | CREATE RESOURCE GROUP `rg1` RU_PER_SEC=1000 PRIORITY="MEDIUM" |
 +----------------+---------------------------------------------------------------+
 1 row in set (0.00 sec)
-mysql> SELECT * FROM information_schema.resource_groups WHERE NAME = 'rg1';
+```
+
+```sql
+SELECT * FROM information_schema.resource_groups WHERE NAME = 'rg1';
+```
+
+```sql
 +------+------------+----------+-----------+
 | NAME | RU_PER_SEC | PRIORITY | BURSTABLE |
 +------+------------+----------+-----------+
@@ -65,4 +85,4 @@ mysql> SELECT * FROM information_schema.resource_groups WHERE NAME = 'rg1';
 
 > **注意：**
 >
-> TiDB 默认会预置 default 资源组，default 资源组是所有语句执行默认使用的资源组。默认配置 RU_PER_SEC 为 unlimited (等同于2147483647), 且为 burstable 模式。在新建配置其他资源组时，建议同时根据实际情况修改 default 资源组的配置。
+> TiDB 默认预置了 `default` 资源组。`default` 资源组是所有语句执行默认使用的资源组。默认配置 `RU_PER_SEC` 为 `UNLIMITED` (等同于`MaxInt32=2147483647`), 且为 `BURSTABLE` 模式。在新建配置其他资源组时，建议根据实际情况修改 `default` 资源组的配置。
