@@ -41,14 +41,14 @@ TiDB 支持以下 `DirectResourceGroupOption`, 其中 [Request Unit (RU)](/tidb-
 
 | 参数            | 含义           | 举例                                   |
 |---------------|--------------|--------------------------------------|
-| `RU_PER_SEC`  | 每秒 RU 填充的速度 | `RU_PER_SEC = 500` 表示此资源组每秒回填 500 个 RU。 |
+| `RU_PER_SEC`  | 每秒 RU 填充的速度 | `RU_PER_SEC = 500` 表示此资源组每秒回填 500 个 RU。取值范围为 (0, MAXINT32]，默认值为 `MAXINT32` (即 `UNLIMITED`)。 |
 | `PRIORITY`    | 任务在 TiKV 上处理的绝对优先级  | `PRIORITY = HIGH` 表示优先级高。若未指定，则默认为 `MEDIUM`。 |
 | `BURSTABLE`   | 允许对应的资源组超出配额后使用空余的系统资源。 |
 
 > **注意：**
 >
 > - `CREATE RESOURCE GROUP` 语句只能在全局变量 [`tidb_enable_resource_control`](/system-variables.md#tidb_enable_resource_control-从-v660-版本开始引入) 设置为 `ON` 时才能执行。
-> - TiDB 集群在初始化时会自动创建 `default` 资源组，所有未绑定资源组的请求都将自动绑定至此资源组。
+> - TiDB 集群在初始化时会自动创建 `default` 资源组，所有未绑定资源组的请求都将自动绑定至此资源组。默认配置 `RU_PER_SEC` 为 `UNLIMITED` (等同于`maxint32`), 且为 `BURSTABLE` 模式。在新建配置其他资源组时，建议根据实际情况修改 `default` 资源组的配置。
 
 ## 示例
 
