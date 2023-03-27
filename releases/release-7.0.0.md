@@ -346,7 +346,6 @@ TiDB 版本：7.0.0
     - Index Join 支持更多的 SQL 格式 [#40505](https://github.com/pingcap/tidb/issues/40505) @[Yisaer](https://github.com/Yisaer)
     - Join 顺序的 Hint 和 Join 算法的 Hint 可以同时生效 [#36600](https://github.com/pingcap/tidb/issues/36600) @[Reminiscent](https://github.com/Reminiscent)
     - 避免某些情况下分区表数据需要在 TiDB 全局排序 [#26166](https://github.com/pingcap/tidb/issues/26166) @[Defined2014](https://github.com/Defined2014)
-    - 优化统计信息的收集速度 [#41930](https://github.com/pingcap/tidb/issues/41930) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes)
     - 新增系统变量 `tidb_opt_ordering_index_selectivity_threshold` 辅助优化器为 `WHERE filters on index_1 ORDER BY index_2` 模式的查询生成更优的执行计划 [#42060](https://github.com/pingcap/tidb/issues/42060) @[time-and-fate](https://github.com/time-and-fate)
     - 支持同时使用 `fair lock mode` 和 `lock only if exists` 功能 [#42068](https://github.com/pingcap/tidb/issues/42068) @[MyonKeminta](https://github.com/MyonKeminta)
     - 支持打印事务慢日志以及相关事务内部事件 [#41863](https://github.com/pingcap/tidb/issues/41863) @[ekexium](https://github.com/ekexium)
