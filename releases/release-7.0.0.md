@@ -466,11 +466,11 @@ TiDB 版本：7.0.0
 
     + TiCDC
 
-        - 修复了 Kafka sink 使用 'canal-json' protocol 时，`FLOAT` 类型的数值精度丢失的问题 [#8490](https://github.com/pingcap/tiflow/issues/8490) @[3AceShowHand](https://github.com/3AceShowHand)
-        - 修复了重启 chnagefeed 可能导致数据丢失或者 checkpoint 无法推进的问题 [#8242](https://github.com/pingcap/tiflow/issues/8242) @[overvenus](https://github.com/overvenus)
+        - 修复了 Kafka sink 使用 `canal-json` protocol 时，`FLOAT` 类型的数值精度丢失的问题 [#8490](https://github.com/pingcap/tiflow/issues/8490) @[3AceShowHand](https://github.com/3AceShowHand)
+        - 修复了重启 changefeed 可能导致数据丢失或者 checkpoint 无法推进的问题 [#8242](https://github.com/pingcap/tiflow/issues/8242) @[overvenus](https://github.com/overvenus)
         - 修复了 DDL sink 出现 data race 的问题 [#8238](https://github.com/pingcap/tiflow/issues/8238) @[3AceShowHand](https://github.com/3AceShowHand)
         - 修复了状态为 `stopped` 的 changefeed 可能会自动重启的问题 [#8330](https://github.com/pingcap/tiflow/issues/8330) @[sdojjy](https://github.com/sdojjy)
-        - 修复了当所有 Kafka server 不可访问时会导致 cdc server panic 的问题 [#8523](https://github.com/pingcap/tiflow/issues/8523) @[3AceShowHand](https://github.com/3AceShowHand)
+        - 修复了当所有 Kafka server 不可访问时会导致 TiCDC server panic 的问题 [#8523](https://github.com/pingcap/tiflow/issues/8523) @[3AceShowHand](https://github.com/3AceShowHand)
         - 修复了下游为 MySQL 且执行语句和 TiDB 行为不兼容时可能导致数据丢失的问题 [#8453](https://github.com/pingcap/tiflow/issues/8453) @[asddongmen](https://github.com/asddongmen)
         - 修复了 rolling upgrade 可能导致 TiCDC OOM 或者 checkpoint 卡住的问题 [#8329](https://github.com/pingcap/tiflow/issues/8329) @[overvenus](https://github.com/overvenus)
         - 修复了 Kubernetes 上不能平滑升级 (graceful upgrade) TiCDC 集群的问题 [#8484](https://github.com/pingcap/tiflow/issues/8484) @[overvenus](https://github.com/overvenus)
@@ -478,12 +478,12 @@ TiDB 版本：7.0.0
     + TiDB Data Migration (DM)
 
         - 修复了 DM worker 节点使用云上对象存储时，由于断点续传信息记录过于频繁，达到了对象存储的请求频次上限，导致 DM worker 无法把数据写入云上对象存储中，从而导致全量数据加载失败的问题 [#8482](https://github.com/pingcap/tiflow/issues/8482) @[maxshuang](https://github.com/maxshuang)
-        - 修复了在多个导入任务同时同步同一个下游的数据，并且都使用下游元数据表来记录断点续传信息时，所有任务的断点续传信息写入了同一张元数据表，并且使用了同样的任务 ID 的问题 [#8500](https://github.com/pingcap/tiflow/issues/8500) @[maxshuang](https://github.com/maxshuang)
+        - 修复了在多个导入任务同时同步同一个下游的数据，并且都使用了下游元数据表来记录断点续传信息时，所有任务的断点续传信息被写入了同一张元数据表，并且使用了相同的任务 ID 的问题 [#8500](https://github.com/pingcap/tiflow/issues/8500) @[maxshuang](https://github.com/maxshuang)
 
     + TiDB Lightning
 
-        - 修复了当 TiDB Lightning 使用 Physical Import Mode 模式导入数据时，当导入目标表的复合主键中存在 `auto_random` 列，且源数据中没有指定该列的值时，相关列没有自动生成数据的问题 [#41454](https://github.com/pingcap/tidb/issues/41454) @[D3Hunter](https://github.com/D3Hunter)
-        - 修复了当 TiDB Lightning 使用 Logical Import Mode 模式导入数据时，由于目标集群用户没有 `CONFIG` 权限导致导入失败的问题 [#41915](https://github.com/pingcap/tidb/issues/41915) @[lichunzhu](https://github.com/lichunzhu)
+        - 修复了当使用 TiDB Lightning 的 Physical Import Mode 导入数据时，如果目标表的复合主键中存在 `auto_random` 列，但源数据中没有指定该列的值，相关列没有自动生成数据的问题 [#41454](https://github.com/pingcap/tidb/issues/41454) @[D3Hunter](https://github.com/D3Hunter)
+        - 修复了当使用 TiDB Lightning 的 Logical Import Mode 导入数据时，由于目标集群用户没有 `CONFIG` 权限导致导入失败的问题 [#41915](https://github.com/pingcap/tidb/issues/41915) @[lichunzhu](https://github.com/lichunzhu)
 
     + TiUP
 
