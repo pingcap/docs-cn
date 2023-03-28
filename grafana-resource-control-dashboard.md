@@ -24,7 +24,7 @@ summary: 了解资源管控 (Resource Control) 的 Grafana Dashboard 中所展�
 
 ## Resource 相关指标
 
-- KV Request Count：以 Resource Group 为单位进行实时统计的 KV 请求数量，区分了读和写两种类型。`total` 为当前所有 Resource Group 涉及的 KV 请求数量之和。
+- KV Request Count：以 Resource Group（资源组）为单位进行实时统计的 KV 请求数量，区分了读和写两种类型。`total` 为当前所有 Resource Group 涉及的 KV 请求数量之和。
 - KV Request Count Per Query：平均每个 SQL 语句涉及的读写 KV 请求数量。计算方法是将前述 KV Request Count 监控指标除以当前每秒执行的 SQL 语句数量。
 - Bytes Read：以 Resource Group 为单位进行实时统计的读取数据量。`total` 为当前所有 Resource Group 读取数据量之和。
 - Bytes Read Per Query：平均每个 SQL 语句的读取数据量。将前述 Bytes Read 监控指标除以当前每秒执行的 SQL 语句数量。
@@ -38,7 +38,7 @@ summary: 了解资源管控 (Resource Control) 的 Grafana Dashboard 中所展�
 - Active Resource groups：实时统计各个 Resource Controller Client 的 Resource Groups 数量。
 - Total KV Request Count：以 Resource Group 为单位，实时统计各个 Resource Controller Client 的 KV 请求数量。`total` 为 Resource Controller Client 下 KV 请求数量之和。
 - Failed KV Request Count：以 Resource Group 为单位，实时统计各个 Resource Controller Client 的 KV 失败请求数量。`total` 为 Resource Controller Client 下 KV 失败请求数量之和。
-- Seccessful KV Request Count：以 Resource Group 为单位，实时统计各个 Resource Controller Client 的 KV 成功请求数量。`total` 为 Resource Controller Client 下 KV 成功请求数量之和。 
+- Seccessful KV Request Count：以 Resource Group 为单位，实时统计各个 Resource Controller Client 的 KV 成功请求数量。`total` 为 Resource Controller Client 下 KV 成功请求数量之和。
 - Seccessful KV Request Wait Duration (99/90)：以 Resource Group 为单位，实时统计各个 Resource Controller Client 成功 KV 请求等待时间（不同百分位）。
 - Token Request Handle Duration (999/99)：以 Resource Group 为单位，实时统计各个 Resource Controller Client 向 Server 端申请 Token 等待响应时间（不同百分位）。
-- Token Request Count：以 Resource Group 为单位，实时统计各个 Resource Controller Client 向 Server 端申请 Token 次数。`seccessful`/`failed` 分别为 Resource Controller Client 下 KV 成功/失败请求数量之和。 
+- Token Request Count：以 Resource Group 为单位，实时统计各个 Resource Controller Client 向 Server 端申请 Token 次数。`seccessful` 和 `failed` 分别为 Resource Controller Client 下 KV 成功和失败请求数量之和。
