@@ -60,6 +60,7 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 | [复合或非整型主键上的聚簇索引](/constraints.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y | N |
 | [多值索引](/sql-statements/sql-statement-create-index.md#多值索引) | E | E | N | N | N | N | N | N | N |  |
 | [外键约束](/constraints.md#外键约束) | Y | Y | N | N | N | N | N | N | N |  |
+| [TiFlash 延迟物化](/tiflash/tiflash-late-materialization.md) | E | N | N | N | N | N | N | N | N | N |
 
 ## SQL 语句
 
@@ -139,11 +140,13 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 
 | 分区 | 7.0 | 6.6 | 6.5 | 6.1 | 5.4 | 5.3 | 5.2 | 5.1 | 5.0 | 4.0 |
 |---|---|:---:|:---:|---|:---:|:---:|:---:|:---:|:---:|:---:|
-| [Range 分区](/partitioned-table.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y |
-| [Hash 分区](/partitioned-table.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y |
-| [List 分区](/partitioned-table.md) | Y | Y | Y | Y | E | E | E | E | E | N |
-| [List COLUMNS 分区](/partitioned-table.md) | Y | Y | Y | Y | E | E | E | E | E | N |
+| [Range 分区](/partitioned-table.md#range-分区) | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y |
+| [Hash 分区](/partitioned-table.md#hash-分区) | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y |
+| [Key 分区](/partitioned-table.md#key-分区) | Y | N | N | N | N | N | N | N | N | N |
+| [List 分区](/partitioned-table.md#list-分区) | Y | Y | Y | Y | E | E | E | E | E | N |
+| [List COLUMNS 分区](/partitioned-table.md#list-columns-分区) | Y | Y | Y | Y | E | E | E | E | E | N |
 | [`EXCHANGE PARTITION`](/partitioned-table.md) | Y | Y | Y | E | E | E | E | E | E | N |
+| [`REORGANIZE PARTITION`](/partitioned-table.md#重组分区) | Y | N | N | N | N | N | N | N | N | N |
 | [动态裁剪](/partitioned-table.md#动态裁剪模式) | Y | Y | Y | Y | E | E | E | E | N | N |
 | [Range COLUMNS 分区](/partitioned-table.md#range-columns-分区) | Y | Y | Y | N | N | N | N | N | N | N |
 | [Range INTERVAL 分区](/partitioned-table.md#range-interval-分区) | E | E | E | N | N | N | N | N | N | N |
@@ -228,6 +231,7 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 | [RawKV 跨集群复制](/tikv-configuration-file.md#api-version-从-v610-版本开始引入) | E | E | E | N | N | N | N | N | N | N |
 | [Green GC](/system-variables.md#tidb_gc_scan_lock_mode-从-v50-版本开始引入) | E | E | E | E | E | E | E | E | E | N |
 | [资源管控 (Resource Control)](/tidb-resource-control.md) | Y | E | N | N | N | N | N | N | N | N |
+| [TiFlash 存算分离架构与 S3 支持](/tiflash/tiflash-disaggregated-and-s3.md) | E | N | N | N | N | N | N | N | N | N |
 
 [^1]: TiDB 误将 latin1 处理为 utf8 的子集。见 [TiDB #18955](https://github.com/pingcap/tidb/issues/18955)。
 
