@@ -247,3 +247,15 @@ The method of downloading the file of `PLAN REPLAYER CAPTURE` is the same as tha
 > **Note:**
 >
 > The result file of `PLAN REPLAYER CAPTURE` is kept in the TiDB cluster for up to one hour. After one hour, TiDB deletes the file.
+
+## Use `PLAN REPLAYER CONTINUOUS CAPTURE`
+
+After `PLAN REPLAYER CONTINUOUS CAPTURE` is enabled, TiDB asynchronously records the applications' SQL statements with the `PLAN REPLAYER` method according to their `SQL DIGEST` and `PLAN DIGEST`. For SQL statements and execution plans that share the same DIGEST, `PLAN REPLAYER CONTINUOUS CAPTURE` does not record them repeatedly.
+
+### Enable `PLAN REPLAYER CONTINUOUS CAPTURE`
+
+`PLAN REPLAYER CONTINUOUS CAPTURE` is controlled by the system variable [`tidb_enable_plan_replayer_continuous_capture`](/system-variables.md#tidb_enable_plan_replayer_continuous_capture-new-in-v700). To enable `PLAN REPLAYER CONTINUOUS CAPTURE`, set the value of the system variable to `ON`.
+
+### View the capture results
+
+The method of viewing the capture results of `PLAN REPLAYER CONTINUOUS CAPTURE` is the same as that of [Viewing the capture results of `PLAN REPLAYER CAPTURE`](#view-the-capture-results).
