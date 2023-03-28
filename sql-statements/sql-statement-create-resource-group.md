@@ -55,7 +55,7 @@ TiDB supports the following `DirectResourceGroupOption`, where [Request Unit (RU
 > **Note:**
 >
 > - The `CREATE RESOURCE GROUP` statement can only be executed when the global variable [`tidb_enable_resource_control`](/system-variables.md#tidb_enable_resource_control-new-in-v660) is set to `ON`.
-> - The TiDB cluster automatically creates a `default` resource group when it is initialized, all requests not bound to a resource group will be automatically bound to this resource group.
+> TiDB automatically creates a `default` resource group during cluster initialization. For this resource group, the default value of `RU_PER_SEC` is `UNLIMITED` (equivalent to the maximum value of the `INT` type, that is, `2147483647`) and it is in `BURSTABLE` mode. All requests that are not bound to any resource group are automatically bound to this `default` resource group. When you create a new configuration for another resource group, it is recommended to modify the `default` resource group configuration as needed.
 
 ## Examples
 

@@ -75,11 +75,11 @@ SET RESOURCE GROUP ``;
 SELECT CURRENT_RESOURCE_GROUP();
 ```
 
-```
+```sql
 +--------------------------+
 | CURRENT_RESOURCE_GROUP() |
 +--------------------------+
-|                          |
+| default                  |
 +--------------------------+
 1 row in set (0.00 sec)
 ```
