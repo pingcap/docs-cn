@@ -9,7 +9,10 @@ aliases: ['/docs-cn/dev/partitioned-table/','/docs-cn/dev/reference/sql/partitio
 
 ## 分区类型
 
-本节介绍 TiDB 中的分区类型。当前支持的类型包括 [Range 分区](#range-分区)、[Range COLUMNS 分区](#range-columns-分区)、[Range INTERVAL 分区](#range-interval-分区)、[List 分区](#list-分区)、[List COLUMNS 分区](#list-columns-分区)和 [Hash 分区](#hash-分区)。Range 分区、Range COLUMNS 分区、List 分区和 List COLUMNS 分区可以用于解决业务中大量删除带来的性能问题，支持快速删除分区。Hash 分区则可以用于大量写入场景下的数据打散。
+本节介绍 TiDB 中的分区类型。当前支持的类型包括 [Range 分区](#range-分区)、[Range COLUMNS 分区](#range-columns-分区)、[Range INTERVAL 分区](#range-interval-分区)、[List 分区](#list-分区)、[List COLUMNS 分区](#list-columns-分区)、[Hash 分区](#hash-分区)和 [Key 分区](#key-分区)。
+
+- Range 分区、Range COLUMNS 分区、List 分区和 List COLUMNS 分区可以用于解决业务中大量删除带来的性能问题，支持快速删除分区。
+- Hash 分区和 Key 分区可以用于大量写入场景下的数据打散。与 Hash 分区相比，Key 分区支持多列打散和非整数类型字段的打散。
 
 ### Range 分区
 
@@ -266,7 +269,7 @@ PARTITION BY RANGE COLUMNS(`report_date`)
 
 可选参数 `NULL PARTITION` 会创建一个分区，其中分区表达式推导出的值为 `NULL` 的数据会放到该分区。在分区表达式中，`NULL` 会被认为是小于任何其他值。参见[分区对 NULL 值的处理](#range-分区对-null-的处理)。
 
-可选参数 `MAXVALUE PARTITION` 会创建一个最后的分区，其值为 `PARTITION P_MAXVALUE VALUES LESS THAN (MAXVALUE)`。 
+可选参数 `MAXVALUE PARTITION` 会创建一个最后的分区，其值为 `PARTITION P_MAXVALUE VALUES LESS THAN (MAXVALUE)`。
 
 #### ALTER INTERVAL 分区
 
@@ -475,7 +478,7 @@ PARTITION BY LIST COLUMNS(id,name) (
 
 Hash 分区主要用于保证数据均匀地分散到一定数量的分区里面。在 Range 分区中你必须为每个分区指定值的范围；在 Hash 分区中，你只需要指定分区的数量。
 
-使用 Hash 分区时，需要在 `CREATE TABLE` 后面添加 `PARTITION BY HASH (expr)`，其中 `expr` 是一个返回整数的表达式。当这一列的类型是整数类型时，它可以是一个列名。此外，你很可能还需要加上 `PARTITIONS num`，其中 `num` 是一个正整数，表示将表划分多少分区。
+创建 Hash 分区表时，需要在 `CREATE TABLE` 后面添加 `PARTITION BY HASH (expr)`，其中 `expr` 是一个返回整数的表达式。当这一列的类型是整数类型时，它可以是一个列名。此外，你很可能还需要加上 `PARTITIONS num`，其中 `num` 是一个正整数，表示将表划分多少分区。
 
 下面的语句将创建一个 Hash 分区表，按 `store_id` 分成 4 个分区：
 
@@ -545,6 +548,84 @@ MOD(YEAR('2005-09-01'),4)
 =  1
 ```
 
+### Key 分区
+
+TiDB 从 v7.0.0 开始支持 Key 分区。在 v7.0.0 之前的版本中，创建 Key 分区表时，TiDB 会将其创建为非分区表并给出告警。 
+
+Key 分区与 Hash 分区都可以保证将数据均匀地分散到一定数量的分区里面，区别是 Hash 分区只能根据一个指定的整数表达式或字段进行分区，而 Key 分区可以根据字段列表进行分区，且 Key 分区的分区字段不局限于整数类型。TiDB Key 分区表的 Hash 算法与 MySQL 不一样，因此表的数据分布也不一样。
+
+创建 Key 分区表时，你需要在 `CREATE TABLE` 后面添加 `PARTITION BY KEY (columList)`，其中 `columnList` 是字段列表，可以包含一个或多个字段。每个字段的类型可以是除 `BLOB`、`JSON`、`GEOMETRY` 之外的任意类型（请注意 TiDB 不支持 `GEOMETRY` 类型）。此外，你很可能还需要加上 `PARTITIONS num`，其中 `num` 是一个正整数，表示将表划分多少个分区；或者加上分区名的定义，例如，加上 `(PARTITION p0, PARTITION p1)` 代表将表划分为两个分区，分区名为 `p0` 和 `p1`。
+
+下面的语句将创建一个 Key 分区表，按 `store_id` 分成 4 个分区：
+
+```sql
+CREATE TABLE employees (
+    id INT NOT NULL,
+    fname VARCHAR(30),
+    lname VARCHAR(30),
+    hired DATE NOT NULL DEFAULT '1970-01-01',
+    separated DATE DEFAULT '9999-12-31',
+    job_code INT,
+    store_id INT
+)
+
+PARTITION BY KEY(store_id)
+PARTITIONS 4;
+```
+
+如果不指定 `PARTITIONS num`，默认的分区数量为 1。
+
+你也可以根据 VARCHAR 等非整数字段创建 Key 分区表。下面的语句按 `fname` 将表分成 4 个分区：
+
+```sql
+CREATE TABLE employees (
+    id INT NOT NULL,
+    fname VARCHAR(30),
+    lname VARCHAR(30),
+    hired DATE NOT NULL DEFAULT '1970-01-01',
+    separated DATE DEFAULT '9999-12-31',
+    job_code INT,
+    store_id INT
+)
+
+PARTITION BY KEY(fname)
+PARTITIONS 4;
+```
+
+你还可以根据多列字段创建 Key 分区表。下面的语句按 `fname`、`store_id` 将表分成 4 个分区：
+
+```sql
+CREATE TABLE employees (
+    id INT NOT NULL,
+    fname VARCHAR(30),
+    lname VARCHAR(30),
+    hired DATE NOT NULL DEFAULT '1970-01-01',
+    separated DATE DEFAULT '9999-12-31',
+    job_code INT,
+    store_id INT
+)
+
+PARTITION BY KEY(fname, store_id)
+PARTITIONS 4;
+```
+
+目前，TiDB 不支持分区字段列表 `PARTITION BY KEY` 为空的 Key 分区表。下面的语句将创建一个非分区表，并向客户端返回 `Unsupported partition type KEY, treat as normal table` 警告。
+
+```sql
+CREATE TABLE employees (
+    id INT NOT NULL,
+    fname VARCHAR(30),
+    lname VARCHAR(30),
+    hired DATE NOT NULL DEFAULT '1970-01-01',
+    separated DATE DEFAULT '9999-12-31',
+    job_code INT,
+    store_id INT
+)
+
+PARTITION BY KEY()
+PARTITIONS 4;
+```
+
 ### TiDB 对 Linear Hash 分区的处理
 
 在 v6.4.0 之前，如果在 TiDB 上执行 [MySQL Linear Hash 分区](https://dev.mysql.com/doc/refman/5.7/en/partitioning-linear-hash.html) 的 DDL 语句，TiDB 只能创建非分区表。在这种情况下，如果你仍然想要在 TiDB 中创建分区表，你需要修改这些 DDL 语句。
@@ -554,6 +635,12 @@ MOD(YEAR('2005-09-01'),4)
 - 对于 MySQL Linear Hash 分区的 `CREATE` 语句，TiDB 将创建一个常规的非线性 Hash 分区表（注意 TiDB 内部实际不存在 Linear Hash 分区表）。如果分区数是 2 的幂，该分区表中行的分布情况与 MySQL 相同。如果分区数不是 2 的幂，该分区表中行的分布情况与 MySQL 会有所差异。这是因为 TiDB 中非线性分区表使用简单的“分区模数”，而线性分区表使用“模数的下一个 2 次方并会折叠分区数和下一个 2 次方之间的值”。详情请见 [#38450](https://github.com/pingcap/tidb/issues/38450)。
 
 - 对于 MySQL Linear Hash 分区的其他 SQL 语句，TiDB 将正常返回对应的 Hash 分区的查询结果。但当分区数不是 2 的幂（意味着分区表中行的分布情况与 MySQL 不同）时，[分区选择](#分区选择)、`TRUNCATE PARTITION`、`EXCHANGE PARTITION` 返回的结果将和 MySQL 有所差异。
+
+### TiDB 对 Linear Key 分区的处理
+
+TiDB 从 v7.0.0 开始支持 Key 分区，并支持解析 MySQL 的 `PARTITION BY LINEAR  KEY` 语法，但会忽略其中的 `LINEAR` 关键字，只采用非线性 Hash 算法。
+
+在 v7.0.0 之前的版本中，创建 Key 分区表时，TiDB 会将其创建为非分区表并给出告警。
 
 ### 分区对 NULL 值的处理
 
@@ -703,13 +790,22 @@ Empty set (0.00 sec)
 >
 > TiDB 的最终行为以本文档描述为准。
 
+#### Key 分区对 NULL 的处理
+
+在 Key 分区中 NULL 值的处理与 Hash 分区一致：如果分区字段的值为 NULL，它会被当作 0 值处理。
+
 ## 分区管理
 
-对于 `LIST` 和 `RANGE` 分区表，通过 `ALTER TABLE <表名> ADD PARTITION (<分区说明>)` 或 `ALTER TABLE <表名> DROP PARTITION <分区列表>` 语句，可以执行添加和删除分区的操作。
+对于 `RANGE`、`RANGE COLUMNS`、`LIST`、`LIST COLUMNS` 分区表，你可以进行以下分区管理操作：
+
+- 使用 `ALTER TABLE <表名> ADD PARTITION (<分区说明>)` 语句添加分区。
+- 使用 `ALTER TABLE <表名> DROP PARTITION <分区列表>` 删除分区。
+- 使用 `ALTER TABLE <表名> TRUNCATE PARTITION <分区列表>` 语句清空分区里的数据。`TRUNCATE PARTITION` 的逻辑与 [`TRUNCATE TABLE`](/sql-statements/sql-statement-truncate.md) 相似，但它的操作对象为分区。
+- 使用 `ALTER TABLE <表名> REORGANIZE PARTITION <分区列表> INTO (<新的分区说明>)`语句对分区进行合并、拆分、或者其他修改。
 
 对于 `LIST` 和 `RANGE` 分区表，暂不支持 `REORGANIZE PARTITION` 语句。
 
-对于 `HASH` 分区表，暂不支持 `COALESCE PARTITION` 和 `ADD PARTITION` 语句。
+对于 `HASH` 和 `KEY` 分区表，目前只支持 `ALTER TABLE ... TRUNCATE PARTITION` 分区管理语句，不支持 `COALESCE PARTITION` 和 `ADD PARTITION` 语句。
 
 `EXCHANGE PARTITION` 语句用来交换分区和非分区表，类似于重命名表如 `RENAME TABLE t1 TO t1_tmp, t2 TO t1, t1_tmp TO t2` 的操作。
 
@@ -729,88 +825,178 @@ Empty set (0.00 sec)
 - TiCDC：分区表和非分区表都有主键或者唯一键时，TiCDC 同步 `EXCHANGE PARTITION` 操作；反之 TiCDC 将不会同步。
 - TiDB Lightning 和 BR：使用 TiDB Lightning 导入或使用 BR 恢复的过程中，不要执行 `EXCHANGE PARTITION` 操作。
 
-### Range 分区管理
+### 管理 List 分区、List COLUMNS 分区、Range 分区、Range COLUMNS 分区
 
-创建分区表：
-
-{{< copyable "sql" >}}
+本小节将以如下 SQL 语句创建的分区表为例，介绍如何管理 Range 分区和 List 分区。
 
 ```sql
 CREATE TABLE members (
-    id INT,
-    fname VARCHAR(25),
-    lname VARCHAR(25),
-    dob DATE
+    id int,
+    fname varchar(255),
+    lname varchar(255),
+    dob date,
+    data json
 )
+PARTITION BY RANGE (YEAR(dob)) (
+ PARTITION pBefore1950 VALUES LESS THAN (1950),
+ PARTITION p1950 VALUES LESS THAN (1960),
+ PARTITION p1960 VALUES LESS THAN (1970),
+ PARTITION p1970 VALUES LESS THAN (1980),
+ PARTITION p1980 VALUES LESS THAN (1990),
+ PARTITION p1990 VALUES LESS THAN (2000));
 
-PARTITION BY RANGE( YEAR(dob) ) (
-    PARTITION p0 VALUES LESS THAN (1980),
-    PARTITION p1 VALUES LESS THAN (1990),
-    PARTITION p2 VALUES LESS THAN (2000)
-);
+CREATE TABLE member_level (
+ id int,
+ level int,
+ achievements json
+)
+PARTITION BY LIST (level) (
+ PARTITION l1 VALUES IN (1),
+ PARTITION l2 VALUES IN (2),
+ PARTITION l3 VALUES IN (3),
+ PARTITION l4 VALUES IN (4),
+ PARTITION l5 VALUES IN (5));
 ```
 
-删除分区：
-
-{{< copyable "sql" >}}
+### 删除分区
 
 ```sql
-ALTER TABLE members DROP PARTITION p2;
+ALTER TABLE members DROP PARTITION p1990;
+
+ALTER TABLE member_level DROP PARTITION l5;
 ```
 
-```
-Query OK, 0 rows affected (0.03 sec)
-```
-
-清空分区：
-
-{{< copyable "sql" >}}
+### 清空分区
 
 ```sql
-ALTER TABLE members TRUNCATE PARTITION p1;
+ALTER TABLE members TRUNCATE PARTITION p1980;
+
+ALTER TABLE member_level TRUNCATE PARTITION l4;
 ```
 
-```
-Query OK, 0 rows affected (0.03 sec)
-```
-
-> **注意：**
->
-> `ALTER TABLE ... REORGANIZE PARTITION` 在 TiDB 中暂不支持。
-
-添加分区：
-
-{{< copyable "sql" >}}
+### 添加分区
 
 ```sql
-ALTER TABLE members ADD PARTITION (PARTITION p3 VALUES LESS THAN (2010));
+ALTER TABLE members ADD PARTITION (PARTITION `p1990to2010` VALUES LESS THAN (2010));
+
+ALTER TABLE member_level ADD PARTITION (PARTITION l5_6 VALUES IN (5,6));
 ```
 
-Range 分区中，`ADD PARTITION` 只能在分区列表的最后面添加，如果是添加到已存在的分区范围则会报错：
-
-{{< copyable "sql" >}}
+对于 Range 分区表，`ADD PARTITION` 只能在分区列表的最后添加新的分区。与分区列表中已有的分区相比，你需要将新分区的 `VALUES LESS THAN` 定义为更大的值。否则，执行该语句时将会报错。
 
 ```sql
-ALTER TABLE members
-    ADD PARTITION (
-    PARTITION n VALUES LESS THAN (1970));
+ALTER TABLE members ADD PARTITION (PARTITION p1990 VALUES LESS THAN (2000));
 ```
 
 ```
-ERROR 1463 (HY000): VALUES LESS THAN value must be strictly »
-   increasing for each partition
+ERROR 1493 (HY000): VALUES LESS THAN value must be strictly increasing for each partition
 ```
 
-### Hash 分区管理
+### 重组分区
 
-跟 Range 分区不同，Hash 分区不能够 `DROP PARTITION`。
+拆分分区：
+
+```sql
+ALTER TABLE members REORGANIZE PARTITION `p1990to2010` INTO
+(PARTITION p1990 VALUES LESS THAN (2000),
+ PARTITION p2000 VALUES LESS THAN (2010),
+ PARTITION p2010 VALUES LESS THAN (2020),
+ PARTITION p2020 VALUES LESS THAN (2030),
+ PARTITION pMax VALUES LESS THAN (MAXVALUE));
+
+ALTER TABLE member_level REORGANIZE PARTITION l5_6 INTO
+(PARTITION l5 VALUES IN (5),
+ PARTITION l6 VALUES IN (6));
+```
+
+合并分区：
+
+```sql
+ALTER TABLE members REORGANIZE PARTITION pBefore1950,p1950 INTO (PARTITION pBefore1960 VALUES LESS THAN (1960));
+
+ALTER TABLE member_level REORGANIZE PARTITION l1,l2 INTO (PARTITION l1_2 VALUES IN (1,2));
+```
+
+修改分区表定义：
+
+```sql
+ALTER TABLE members REORGANIZE PARTITION pBefore1960,p1960,p1970,p1980,p1990,p2000,p2010,p2020,pMax INTO
+(PARTITION p1800 VALUES LESS THAN (1900),
+ PARTITION p1900 VALUES LESS THAN (2000),
+ PARTITION p2000 VALUES LESS THAN (2100));
+
+ALTER TABLE member_level REORGANIZE PARTITION l1_2,l3,l4,l5,l6 INTO
+(PARTITION lOdd VALUES IN (1,3,5),
+ PARTITION lEven VALUES IN (2,4,6));
+```
+
+在重组分区时，需要注意以下关键点：
+
+- 重组分区（包括合并或拆分分区）只能修改分区定义，无法修改分区表类型。例如，无法将 List 类型修改为 Range 类型，或将 Range COLUMNS 类型修改为 Range 类型。
+
+- 对于 Range 分区表，你只能对表中相邻的分区进行重组：
+
+    ```sql
+    ALTER TABLE members REORGANIZE PARTITION p1800,p2000 INTO (PARTITION p2000 VALUES LESS THAN (2100));
+    ```
+
+    ```
+    ERROR 8200 (HY000): Unsupported REORGANIZE PARTITION of RANGE; not adjacent partitions
+    ```
+
+- 对于 Range 分区表，如需修改 Range 定义中的最大值，必须保证 `VALUES LESS THAN` 中新定义的值大于现有分区中的所有值。否则，TiDB 将报错，提示现有的行值对应不到分区。
+
+    ```sql
+    INSERT INTO members VALUES (313, "John", "Doe", "2022-11-22", NULL);
+    ALTER TABLE members REORGANIZE PARTITION p2000 INTO (PARTITION p2000 VALUES LESS THAN (2050)); -- 执行成功，因为 2050 包含了现有的所有行
+    ALTER TABLE members REORGANIZE PARTITION p2000 INTO (PARTITION p2000 VALUES LESS THAN (2020)); -- 执行失败，因为 2022 将对应不到分区
+    ```
+
+    ```
+    ERROR 1526 (HY000): Table has no partition for value 2022
+    ```
+
+- 对于 List 分区表，如需修改分区定义中的数据集合，必须保证新的数据集合能覆盖到该分区中现有的所有值，否则 TiDB 将报错。
+
+    ```sql
+    INSERT INTO member_level (id, level) values (313, 6);
+    ALTER TABLE member_level REORGANIZE PARTITION lEven INTO (PARTITION lEven VALUES IN (2,4));
+    ```
+
+    ```
+    ERROR 1526 (HY000): Table has no partition for value 6
+    ```
+
+### 管理 Hash 分区
+
+跟 Range 分区不同，Hash 分区不支持 `DROP PARTITION`。
 
 目前 TiDB 的实现暂时不支持 `ALTER TABLE ... COALESCE PARTITION`。对于暂不支持的分区管理语句，TiDB 会返回错误。
 
-{{< copyable "sql" >}}
+```sql
+ALTER TABLE MEMBERS OPTIMIZE PARTITION p0;
+```
 
 ```sql
-alter table members optimize partition p0;
+ERROR 8200 (HY000): Unsupported optimize partition
+```
+
+### Key 分区管理
+
+目前 TiDB 中 Key 分区支持的分区管理语句只有 `ALTER TABLE ... TRUNCATE PARTITION`。
+
+```sql
+ALTER TABLE members TRUNCATE PARTITION p0;
+```
+
+```
+Query OK, 0 rows affected (0.03 sec)
+```
+
+对于暂不支持的分区管理语句，TiDB 会返回错误。
+
+```sql
+ALTER TABLE members OPTIMIZE PARTITION p0;
 ```
 
 ```sql
@@ -917,7 +1103,7 @@ SELECT fname, lname, region_code, dob
 
     如果 TiKV 不支持 `fn`，则优化阶段不会把 `fn(col)` 推到叶子节点，而是在叶子上面连接一个 Selection 节点，分区裁剪的实现没有处理这种父节点的 Selection 中的条件，因此对不能下推到 TiKV 的表达式不支持分区裁剪。
 
-4. 对于 Hash 分区类型，只有等值比较的查询条件能够支持分区裁剪。
+4. 对于 Hash 和 Key 分区类型，只有等值比较的查询条件能够支持分区裁剪。
 
 5. 对于 Range 分区类型，分区表达式必须是 `col` 或者 `fn(col)` 的简单形式，查询条件是 `>`、`<`、`=`、`>=`、`<=` 时才能支持分区裁剪。如果分区表达式是 `fn(col)` 形式，还要求 `fn` 必须是单调函数，才有可能分区裁剪。
 
@@ -927,10 +1113,8 @@ SELECT fname, lname, region_code, dob
 
     理论上所有满足单调条件（严格或者非严格）的函数都是可以支持分区裁剪。实际上，目前 TiDB 已经支持的单调函数只有：
 
-    ```
-    unix_timestamp
-    to_days
-    ```
+    * [`UNIX_TIMESTAMP()`](/functions-and-operators/date-and-time-functions.md)
+    * [`TO_DAYS()`](/functions-and-operators/date-and-time-functions.md)
 
     例如，分区表达式是简单列的情况：
 
@@ -1338,11 +1522,11 @@ YEARWEEK()
 
 ### 兼容性
 
-目前 TiDB 支持 Range 分区、List 分区、List COLUMNS 分区和 Hash 分区，其它的 MySQL 分区类型（例如 Key 分区）尚不支持。
+目前 TiDB 支持 Range 分区、Range Columns 分区、List 分区、List COLUMNS 分区、Hash 分区和 Key 分区，其它的 MySQL 分区类型尚不支持。
 
-对于 Range Columns 类型的分区表，目前只支持单列的场景。
+对于 Key 分区，目前不支持分区字段为空的场景。
 
-分区管理方面，只要底层实现可能会涉及数据挪动的操作，目前都暂不支持。包括且不限于：调整 Hash 分区表的分区数量，修改 Range 分区表的范围，合并分区，交换分区等。
+分区管理方面，只要底层实现可能会涉及数据挪动的操作，目前都暂不支持。包括且不限于：调整 Hash 分区表的分区数量，修改 Range 分区表的范围，合并分区等。
 
 对于暂不支持的分区类型，在 TiDB 中建表时会忽略分区信息，以普通表的形式创建，并且会报 Warning。
 
@@ -1654,9 +1838,10 @@ mysql> explain select /*+ TIDB_INLJ(t1, t2) */ t1.* from t1, t2 where t2.code = 
     {{< copyable "sql" >}}
 
     ```sql
-    select distinct concat(TABLE_SCHEMA,'.',TABLE_NAME)
-        from information_schema.PARTITIONS
-        where TABLE_SCHEMA not in ('INFORMATION_SCHEMA','mysql','sys','PERFORMANCE_SCHEMA','METRICS_SCHEMA');
+    SELECT DISTINCT CONCAT(TABLE_SCHEMA,'.', TABLE_NAME)
+        FROM information_schema.PARTITIONS
+        WHERE TIDB_PARTITION_ID IS NOT NULL
+        AND TABLE_SCHEMA NOT IN ('INFORMATION_SCHEMA', 'mysql', 'sys', 'PERFORMANCE_SCHEMA', 'METRICS_SCHEMA');
     ```
 
     ```
@@ -1690,7 +1875,7 @@ mysql> explain select /*+ TIDB_INLJ(t1, t2) */ t1.* from t1, t2 where t2.code = 
     可以按需将 `ALL COLUMNS` 改为实际需要的列。
 
 3. 将批量更新语句导出到文件：
-    
+
     {{< copyable "sql" >}}
 
     ```sql

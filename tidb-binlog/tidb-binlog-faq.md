@@ -17,9 +17,9 @@ aliases: ['/docs-cn/dev/tidb-binlog/tidb-binlog-faq/','/docs-cn/dev/reference/ti
 
 TiDB Binlog 的同步延迟为秒级别，在非业务高峰时延迟一般为 3 秒左右。
 
-## Drainer 同步下游 TiDB/MySQL 的帐号需要哪些权限？
+## Drainer 同步下游 TiDB/MySQL 的账号需要哪些权限？
 
-Drainer 同步帐号需要有如下权限：
+Drainer 同步账号需要有如下权限：
 
 * Insert
 * Update

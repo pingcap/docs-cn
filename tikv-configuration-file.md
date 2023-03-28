@@ -12,6 +12,12 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 本文档只阐述未包含在命令行参数中的参数，命令行参数参见 [TiKV 配置参数](/command-line-flags-for-tikv-configuration.md)。
 
+> **Tip:**
+>
+> 如果你需要调整配置项的值，请参考[修改配置参数](/maintain-tidb-using-tiup.md#修改配置参数)进行操作。
+
+<!-- markdownlint-disable MD001 -->
+
 ## 全局配置
 
 ### `abort-on-panic`
@@ -220,7 +226,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 + 默认值：60s
 + 最小值：1s
 
-### `snap-max-write-bytes-per-sec`
+### `snap-io-max-bytes-per-sec`
 
 + 处理 snapshot 时最大允许使用的磁盘带宽。
 + 默认值：100MB
@@ -275,8 +281,12 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 ### `max-thread-count`
 
 + 统一处理读请求的线程池最多的线程数量，即 UnifyReadPool 线程池的大小。调整该线程池的大小时，请参考 [TiKV 线程池调优](/tune-tikv-thread-performance.md#tikv-线程池调优)。
-+ 可调整范围：`[min-thread-count, MAX(4, CPU)]`。其中，`MAX(4, CPU)` 表示：如果 CPU 核心数量小于 `4`，取 `4`；如果 CPU 核心数量大于 `4`，则取 CPU 核心数量。
-+ 默认值：MAX(4, CPU * 0.8)
++ 可调整范围：`[min-thread-count, MAX(4, CPU quota * 10)]`。其中，`MAX(4, CPU quota * 10)` 表示：如果 CPU 配额乘 10 小于 `4`，取 `4`；如果 CPU 配额乘 10 大于 `4`，即 CPU 配额大于 `0.4`，则取 CPU 配额乘 10。
++ 默认值：MAX(4, CPU quota * 0.8)
+
+> **注意：**
+>
+> 增加线程数量会导致上下文切换增多，可能会导致性能下降，因此不推荐修改此配置。
 
 ### `stack-size`
 
@@ -1811,6 +1821,15 @@ Raft Engine 相关的配置项。
 > 仅在 [`format-version`](#format-version-从-v630-版本开始引入) 的值大于等于 2 时，该配置项才生效。
 
 + 控制 Raft Engine 是否回收过期的日志文件。该配置项启用时，Raft Engine 将保留逻辑上被清除的日志文件，用于日志回收，减少写负载的长尾延迟。
++ 默认值：`true`
+
+### `prefill-for-recycle` <span class="version-mark">从 v7.0.0 版本开始引入</span>
+
+> **注意：**
+>
+> 仅在 [`enable-log-recycle`](#enable-log-recycle-从-v630-版本开始引入) 的值为 `true` 时，该配置项才生效。
+
++ 控制 Raft Engine 是否自动生成空的日志文件用于日志回收。该配置项启用时，Raft Engine 将在初始化时自动填充一批空日志文件用于日志回收，保证日志回收在初始化后立即生效。
 + 默认值：`false`
 
 ## security
@@ -2058,7 +2077,7 @@ Raft Engine 相关的配置项。
 ### `advance-ts-interval`
 
 + 定期推进 Resolved TS 的时间间隔。
-+ 默认值：1s
++ 默认值：20s
 
 ### `scan-lock-pool-size`
 
@@ -2213,4 +2232,4 @@ Raft Engine 相关的配置项。
 
 + 是否支持对用户前台的读写请求按照对应的资源组配额做优先级调度。有关 TiDB 资源组和资源管控的信息，请参考 [TiDB 资源管控](/tidb-resource-control.md)
 + 在 TiDB 侧开启 [`tidb_enable_resource_control`](/system-variables.md#tidb_enable_resource_control-从-v660-版本开始引入) 全局变量的情况下，开启这个配置项才有意义。此配置参数开启后，TiKV 会使用优先级队列对排队的用户前台读写请求做调度，调度的优先级和请求所在资源组已经消费的资源量反相关，和对应资源组的配额正相关。
-+ 默认值：false（即关闭按照资源组配额调度）
++ 默认值：true（即开启按照资源组配额调度）

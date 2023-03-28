@@ -32,7 +32,7 @@ online-ddl: true                # 支持上游 "gh-ost" 、"pt" 的自动处理
 online-ddl-scheme: "gh-ost"     # `online-ddl-scheme` 已被弃用，建议使用 `online-ddl`。
 clean-dump-file: true           # 是否清理 dump 阶段产生的文件，包括 metadata 文件、建库建表 SQL 文件以及数据导入 SQL 文件
 collation_compatible: "loose"   # 同步 CREATE 语句中缺省 Collation 的方式，可选 "loose" 和 "strict"，默认为 "loose"。"loose" 模式不会显式补充上游缺省的 Collation，"strict" 会显式补充上游缺省的 Collation。当使用 "strict" 模式，但下游不支持上游缺省的 Collation 时，下游可能会报错。
-ignore-checking-items: []       # 忽略检查项。可用值请参考 precheck 说明页面。
+ignore-checking-items: []       # 忽略检查项。可用值请参考 precheck 说明：https://docs.pingcap.com/zh/tidb/stable/dm-precheck。
 
 target-database:                # 下游数据库实例配置
   host: "192.168.0.1"
@@ -149,6 +149,18 @@ loaders:                             # load 处理单元的运行配置参数
     # - "off"。表示导入完成后不进行数据校验。
     # Checksum 对比失败通常表示导入异常（数据丢失或数据不一致），因此建议总是开启 Checksum。
     checksum-physical: "required"
+    # 配置在 CHECKSUM 结束后是否对所有表执行 `ANALYZE TABLE <table>` 操作。
+    # - "required"（默认值）。表示导入完成后进行 ANALYZE 操作，ANALYZE 操作失败时任务暂停，需要用户手动处理。
+    # - "optional"。表示导入完成后进行 ANALYZE 操作，ANALYZE 操作失败时输出警告日志，任务不会暂停。
+    # - "off"。表示导入完成后不进行 ANALYZE 操作。
+    # ANALYZE 只影响统计数据，在大部分场景下建议不开启 ANALYZE。
+    analyze: "off"
+    # Physical Import Mode 向 TiKV 写入 KV 数据的并发度。当 dm-worker 和 TiKV 网络传输速度超过万兆时，可适当增加这个值。
+    # range-concurrency: 16
+    # Physical Import Mode 向 TiKV 发送 KV 数据时是否启用压缩。目前仅支持 Gzip 压缩算法，可填写 "gzip" 或 "gz"。默认不启用压缩。
+    # compress-kv-pairs: ""
+    # PD server 的地址，填一个即可。该值为空时，默认使用 TiDB 查询到的 PD 地址信息。
+    # pd-addr: "192.168.0.1:2379"
 
 syncers:                             # sync 处理单元的运行配置参数
   global:                            # 配置名称

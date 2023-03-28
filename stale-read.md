@@ -25,6 +25,21 @@ TiDB 提供语句级别、会话级别以及全局级别的 Stale Read 使用方
 
 除此以外，你也可以通过设置系统变量 [`tidb_external_ts`](/system-variables.md#tidb_external_ts-从-v640-版本开始引入) 来在某一会话或全局范围读取某一时间点前的历史数据。要使用该方式，请参阅[通过系统变量 `tidb_external_ts` 读取历史数据](/tidb-external-ts.md)。
 
+### 减少 Stale Read 延时
+
+Stale Read 功能会定期推进 TiDB 集群的 Resolved TS 时间戳，该时间戳能保证 TiDB 读到满足事务一致性的数据。当 Stale Read 使用的时间戳（比如 `AS OF TIMESTAMP '2016-10-08 16:45:26'`）大于 Resolved TS 时，Stale Read 会先触发 TiDB 推进 Resolved TS，等待推进完成后再读取数据，从而导致延时上升。
+
+通过调整下面 TiKV 的配置项，你可以使 TiDB 加快 Resolved TS 推进，以减少 Stale Read 延时：
+
+```toml
+[resolved-ts]
+advance-ts-interval = "20s" # 默认为 20 秒，可适当调小该值以加快 Resolved TS 推进，比如调整为 1 秒。
+```
+
+> **注意：**
+>
+> 调小该参数会增加 TiKV CPU 使用率和各节点之间的流量。
+
 ## 限制
 
 当对表的 Stale Read 查询下推到 TiFlash 时，如果该表在 Stale Read 所指定的读取时间戳之后执行过 DDL 操作，此查询将会报错。原因是 TiFlash 只支持从最新的表结构读取数据。
