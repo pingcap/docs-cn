@@ -411,9 +411,9 @@ TiDB 版本：7.0.0
 
     - 修复 TiDB 从 v6.5.1 升级到新版本时遗漏部分更新的问题 [#41502](https://github.com/pingcap/tidb/issues/41502) @[chrysan](https://github.com/chrysan)
     - 修复部分系统变量升级后默认值没有修改的问题 [#41423](https://github.com/pingcap/tidb/issues/41423) @[crazycs520](https://github.com/crazycs520)
-    - 修复加索引相关 Coprocessor 请求类型显示为未知的问题 [#41400](https://github.com/pingcap/tidb/issues/41400) @[tangenta](https://github.com/tangenta)
-    - 修复加索引时返回未找到悲观锁的问题 [#41515](https://github.com/pingcap/tidb/issues/41515) @[tangenta](https://github.com/tangenta)
-    - 修复加唯一索引时误返回 `duplicate key` 的问题 [#41630](https://github.com/pingcap/tidb/issues/41630) @[tangenta](https://github.com/tangenta)
+    - 修复加索引相关 Coprocessor 请求类型显示为 unknown 的问题 [#41400](https://github.com/pingcap/tidb/issues/41400) @[tangenta](https://github.com/tangenta)
+    - 修复加索引时报 `PessimisticLockNotFound` 错误的问题 [#41515](https://github.com/pingcap/tidb/issues/41515) @[tangenta](https://github.com/tangenta)
+    - 修复加唯一索引时误报 `found duplicate key` 错误的问题 [#41630](https://github.com/pingcap/tidb/issues/41630) @[tangenta](https://github.com/tangenta)
     - 修复加索引时 panic 的问题 [#41880](https://github.com/pingcap/tidb/issues/41880) @[tangenta](https://github.com/tangenta)
     - 修复 TiFlash 执行中遇到生成列会报错的问题 [#40663](https://github.com/pingcap/tidb/issues/40663) @[guo-shaoge](https://github.com/guo-shaoge)
     - 修复当存在时间类型时，TiDB 可能无法正确获取统计信息的问题 [#41938](https://github.com/pingcap/tidb/issues/41938) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes)
