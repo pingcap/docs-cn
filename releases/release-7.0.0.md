@@ -72,12 +72,6 @@ TiDB 版本：7.0.0
 
     更多信息，请参考[用户文档](/sql-prepared-plan-cache.md)。
 
-* TiKV 默认开启 Raft 日志回收特性 [#14379](https://github.com/tikv/tikv/issues/14379) @[LykxSassinator](https://github.com/LykxSassinator) **tw:ran-huang**
-
-    TiKV 在 v6.3.0 中引入了 [Raft 日志回收](/tikv-configuration-file.md#enable-log-recycle-从-v630-版本开始引入)特性，用以减少写负载的长尾延迟。在 v7.0.0 中，该特性将默认开启。
-
-    更多信息，请参考[用户文档](/tikv-configuration-file.md#enable-log-recycle-从-v630-版本开始引入)。
-
 * TiKV 支持自动生成空的日志文件用于日志回收 [#14371](https://github.com/tikv/tikv/issues/14371) @[LykxSassinator](https://github.com/LykxSassinator) **tw:ran-huang**
 
     TiKV 在 v6.3.0 中引入了 [Raft 日志回收](/tikv-configuration-file.md#enable-log-recycle-从-v630-版本开始引入)特性，用以减少写负载的长尾延迟。但是，日志回收需要在 Raft 日志文件数量达到一定阈值后才能生效，使得用户无法直观感受到该特性对写负载吞吐的提升。
