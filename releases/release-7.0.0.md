@@ -341,12 +341,9 @@ TiDB 版本：7.0.0
 
     - 引入 `EXPAND` 算子辅助优化单个 `SELECT` 中包含多个 `DISTINCT` 的 SQL 性能 [#16581](https://github.com/pingcap/tidb/issues/16581) @[AilinKid](https://github.com/AilinKid)
     - Index Join 支持更多的 SQL 格式 [#40505](https://github.com/pingcap/tidb/issues/40505) @[Yisaer](https://github.com/Yisaer)
-    - Join 顺序的 Hint 和 Join 算法的 Hint 可以同时生效 [#36600](https://github.com/pingcap/tidb/issues/36600) @[Reminiscent](https://github.com/Reminiscent)
     - 避免某些情况下分区表数据需要在 TiDB 全局排序 [#26166](https://github.com/pingcap/tidb/issues/26166) @[Defined2014](https://github.com/Defined2014)
-    - 新增系统变量 `tidb_opt_ordering_index_selectivity_threshold` 辅助优化器为 `WHERE filters on index_1 ORDER BY index_2` 模式的查询生成更优的执行计划 [#42060](https://github.com/pingcap/tidb/issues/42060) @[time-and-fate](https://github.com/time-and-fate)
     - 支持同时使用 `fair lock mode` 和 `lock only if exists` 功能 [#42068](https://github.com/pingcap/tidb/issues/42068) @[MyonKeminta](https://github.com/MyonKeminta)
     - 支持打印事务慢日志以及相关事务内部事件 [#41863](https://github.com/pingcap/tidb/issues/41863) @[ekexium](https://github.com/ekexium)
-    - 在新集群中默认启用加强的悲观锁唤醒模型（由 `tidb_pessimistic_txn_fair_locking` 控制）。这可以在悲观事务严重单点冲突的场景下，尽可能公平地唤醒被阻塞的事务，从而实现更稳定的事务延迟和更低的尾延迟效果 [#42147](https://github.com/pingcap/tidb/issues/42147) @[MyonKeminta](https://github.com/MyonKeminta)
 
 + TiKV
 
@@ -354,7 +351,7 @@ TiDB 版本：7.0.0
 
 + PD
 
-    - 新增由于 store limit 限制而无法生成调度的监控指标 [#6043](https://github.com/tikv/pd/issues/6043) @[nolouch](https://github.com/nolouch)
+    - 新增监控指标以展示 store limit 限制导致的调度生成失败 [#6043](https://github.com/tikv/pd/issues/6043) @[nolouch](https://github.com/nolouch)
 
 + TiFlash
 
@@ -433,7 +430,7 @@ TiDB 版本：7.0.0
 
 + PD
 
-    - 修复了 Scatter Region 后 leader 分布不均衡的问题 [#6017](https://github.com/tikv/pd/issues/6017) @[HunDunDM](https://github.com/HunDunDM)
+    - 修复了 Scatter Region 操作后 leader 分布不均衡的问题 [#6017](https://github.com/tikv/pd/issues/6017) @[HunDunDM](https://github.com/HunDunDM)
     - 修复了启动过程中获取 PD 成员时的数据竞争问题 [#6069](https://github.com/tikv/pd/issues/6069) @[rleungx](https://github.com/rleungx)
     - 修复了热点统计信息中的数据竞争问题 [#6069](https://github.com/tikv/pd/issues/6069) @[lhy1024](https://github.com/lhy1024)
     - 修复了切换 Placement Rule 时可能存在的 leader 分布不均衡的问题 [#6195](https://github.com/tikv/pd/issues/6195) @[bufferflies](https://github.com/bufferflies)
