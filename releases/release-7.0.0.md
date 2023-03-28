@@ -410,9 +410,9 @@ TiDB 版本：7.0.0
 
 + TiDB
 
-    - 修复 TiDB 从 v6.5.1 升级到新版本时遗漏掉一些更新的问题 [#41502](https://github.com/pingcap/tidb/issues/41502) @[chrysan](https://github.com/chrysan)
+    - 修复 TiDB 从 v6.5.1 升级到新版本时遗漏部分更新的问题 [#41502](https://github.com/pingcap/tidb/issues/41502) @[chrysan](https://github.com/chrysan)
     - 修复部分系统变量升级后默认值没有修改的问题 [#41423](https://github.com/pingcap/tidb/issues/41423) @[crazycs520](https://github.com/crazycs520)
-    - 修复加索引相关 coprocessor 请求类型显示的问题 [#41400](https://github.com/pingcap/tidb/issues/41400) @[tangenta](https://github.com/tangenta)
+    - 修复加索引相关 Coprocessor 请求类型显示为未知的问题 [#41400](https://github.com/pingcap/tidb/issues/41400) @[tangenta](https://github.com/tangenta)
     - 修复加索引时返回未找到悲观锁的问题 [#41515](https://github.com/pingcap/tidb/issues/41515) @[tangenta](https://github.com/tangenta)
     - 修复加唯一索引时误返回 `duplicate key` 的问题 [#41630](https://github.com/pingcap/tidb/issues/41630) @[tangenta](https://github.com/tangenta)
     - 修复加索引时 panic 的问题 [#41880](https://github.com/pingcap/tidb/issues/41880) @[tangenta](https://github.com/tangenta)
