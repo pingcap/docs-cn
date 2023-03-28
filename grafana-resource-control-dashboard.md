@@ -33,7 +33,7 @@ summary: 了解资源管控 (Resource Control) 的 Grafana Dashboard 中所展�
 - KV CPU Time：以 Resource Group 为单位进行实时统计的 KV 层 CPU 时间消耗。`total` 为当前所有 Resource Group 消耗 KV 层 CPU 时间之和。
 - SQL CPU Time：以 Resource Group 为单位进行实时统计的 SQL 层 CPU 时间消耗。`total` 为当前所有 Resource Group 消耗 SQL 层 CPU 时间之和。
 
-## Client 相关指标
+## Resource Controller Client 相关指标
 
 - Active Resource groups：实时统计各个 Resource Controller Client 的 Resource Groups 数量。
 - Total KV Request Count：以 Resource Group 为单位，实时统计各个 Resource Controller Client 的 KV 请求数量。`total` 为 Resource Controller Client 下 KV 请求数量之和。
