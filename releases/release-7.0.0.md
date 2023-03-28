@@ -375,17 +375,17 @@ TiDB 版本：7.0.0
 
     + TiCDC
 
-        - TiCDC 在 v7.0.0 版本支持在 Kafka 为下游的场景中将单个大表的数据改变分布到多个 TiCDC 节点，从而解决用户在大规模 TiDB 集群的数据集成场景下的单表扩展性问题。
+        - TiCDC 在 v7.0.0 版本支持在 Kafka 为下游的场景中，将单个大表的数据改变分布到多个 TiCDC 节点，从而解决用户在大规模 TiDB 集群的数据集成场景下的单表扩展性问题。
 
-            用户可以通过设置 TiCDC 配置 `enable_table_across_nodes` 为 `true` 来启用这个功能，并通过设置`region_threshold` 来指定当一张表的 region 个数超过阀值时 TiCDC 开始将对应的表上的数据改变分布到多个 TiCDC 节点。
+            你可以通过设置 TiCDC 配置 `enable_table_across_nodes` 为 `true` 来启用这个功能，并通过设置 `region_threshold` 来指定当一张表的 region 个数超过阀值时，TiCDC 开始将对应的表上的数据改变分布到多个 TiCDC 节点。
 
-        - 在 applier 中拆分事件提升了 RTO . [#8318](https://github.com/pingcap/tiflow/issues/8318) @[CharlesCheung96](https://github.com/CharlesCheung96)
-        - 改进了 table 调度策略，可以将一个表更均匀地拆分到 各个TiCDC 节点上 [#8247](https://github.com/pingcap/tiflow/issues/8247) @[overvenus](https://github.com/overvenus)
-        - 在 MQ sink 中添加了 big row 监控指标 [#8286](https://github.com/pingcap/tiflow/issues/8286) @[hi-rustin](https://github.com/hi-rustin)
+        - 在 applier 中拆分事务提升了 RTO [#8318](https://github.com/pingcap/tiflow/issues/8318) @[CharlesCheung96](https://github.com/CharlesCheung96)
+        - 改进了表调度策略，可以将一个表更均匀地拆分到各个 TiCDC 节点上 [#8247](https://github.com/pingcap/tiflow/issues/8247) @[overvenus](https://github.com/overvenus)
+        - 在 MQ sink 中添加了 Large Row 监控指标 [#8286](https://github.com/pingcap/tiflow/issues/8286) @[hi-rustin](https://github.com/hi-rustin)
         - 在一个 region 中包含多个表的数据的场景下，减少了 TiKV 与 TiCDC 节点间的网络流量 [#6346](https://github.com/pingcap/tiflow/issues/6346) @[overvenus](https://github.com/overvenus)
-        - 将checkpoint ts 和 resolved ts 的 p99 指标的面板移动到了 lag analyze 面板 [#8524](https://github.com/pingcap/tiflow/issues/8524) @[hi-rustin](https://github.com/hi-rustin)
-        - 支持在 redo log 里 apply DDL 事件. [#8361](https://github.com/pingcap/tiflow/issues/8361) @[CharlesCheung96](https://github.com/CharlesCheung96)
-        - 支持根据上游写入吞吐来拆分调度表到 TiCDC 节点. [#7720](https://github.com/pingcap/tiflow/issues/7720) @[overvenus](https://github.com/overvenus)
+        - 将 Checkpoint TS 和 Resolved TS 的 P99 指标的面板移动到 Lag analyze 面板 [#8524](https://github.com/pingcap/tiflow/issues/8524) @[hi-rustin](https://github.com/hi-rustin)
+        - 支持在 redo log 里 apply DDL 事件 [#8361](https://github.com/pingcap/tiflow/issues/8361) @[CharlesCheung96](https://github.com/CharlesCheung96)
+        - 支持根据上游写入吞吐来拆分调度表到 TiCDC 节点 [#7720](https://github.com/pingcap/tiflow/issues/7720) @[overvenus](https://github.com/overvenus)
 
     + TiDB Data Migration (DM)
 
@@ -459,10 +459,10 @@ TiDB 版本：7.0.0
 
     + Backup & Restore (BR)
 
-        - 修复了在 PITR 恢复过程中 split region 重试等待时间不足的问题 [#42001](https://github.com/pingcap/tidb/issues/42001) @[joccau](https://github.com/joccau)
-        - 修复了 PITR 恢复过程遇到 memory is limited 错误而恢复失败的问题 [#41983](https://github.com/pingcap/tidb/issues/41983) @[joccau](https://github.com/joccau)
+        - 修复了在 PITR 恢复过程中等待 split Region 重试的时间不足的问题 [#42001](https://github.com/pingcap/tidb/issues/42001) @[joccau](https://github.com/joccau)
+        - 修复了在 PITR 恢复过程遇到 `memory is limited` 错误导致恢复失败的问题 [#41983](https://github.com/pingcap/tidb/issues/41983) @[joccau](https://github.com/joccau)
         - 修复了 PD 节点宕机可能导致 PITR 日志备份进度不推进的问题 [#14184](https://github.com/tikv/tikv/issues/14184) @[YuJuncen](https://github.com/YuJuncen)
-        - 优化了 region leadership 迁移导致了 PITR 日志备份进度延迟变高的问题 [#13638](https://github.com/tikv/tikv/issues/13638) @[YuJuncen](https://github.com/YuJuncen)
+        - 缓解了 Region leadership 迁移导致 PITR 日志备份进度延迟变高的问题 [#13638](https://github.com/tikv/tikv/issues/13638) @[YuJuncen](https://github.com/YuJuncen)
 
     + TiCDC
 
@@ -479,13 +479,13 @@ TiDB 版本：7.0.0
 
     + TiDB Data Migration (DM)
 
-        - 修复了 DM worker 节点的存储使用云上对象存储的场景下，由于断点续传信息记录过于频繁，达到了对象存储的请求频次上限，导致了 DM worker 无法把数据写入对应的云上对象存储中，从而全量数据加载失败的问题。 [#8482](https://github.com/pingcap/tiflow/issues/8482) @[maxshuang](https://github.com/maxshuang)
-        - 修复了在多个导入任务同时同一个下游同步数据，并且都使用下游元数据表来记录断点续传信息时，所有任务的断点续传信息写入了同一张元数据表，并且使用了同样的任务 ID 的问题 [#8500](https://github.com/pingcap/tiflow/issues/8500) @[maxshuang](https://github.com/maxshuang)
+        - 修复了 DM worker 节点使用云上对象存储时，由于断点续传信息记录过于频繁，达到了对象存储的请求频次上限，导致 DM worker 无法把数据写入云上对象存储中，从而导致全量数据加载失败的问题 [#8482](https://github.com/pingcap/tiflow/issues/8482) @[maxshuang](https://github.com/maxshuang)
+        - 修复了在多个导入任务同时同步同一个下游的数据，并且都使用下游元数据表来记录断点续传信息时，所有任务的断点续传信息写入了同一张元数据表，并且使用了同样的任务 ID 的问题 [#8500](https://github.com/pingcap/tiflow/issues/8500) @[maxshuang](https://github.com/maxshuang)
 
     + TiDB Lightning
 
-        - 修复了在使用 Local Backend 模式导入数据时，当导入目标表的复合主键中存在 `auto_random` 列，且源数据中没有指定该列的值时，相关列没有自动生成数据的问题 [#41454](https://github.com/pingcap/tidb/issues/41454) @[D3Hunter](https://github.com/D3Hunter)
-        - 修复了当 Lightning 以 TiDB Backend 模式导入数据时，如果配置的目标集群用户没有 CONFIG 权限将无法成功导入的问题 [#41915](https://github.com/pingcap/tidb/issues/41915) @[lichunzhu](https://github.com/lichunzhu)
+        - 修复了当 TiDB Lightning 使用 Physical Import Mode 模式导入数据时，当导入目标表的复合主键中存在 `auto_random` 列，且源数据中没有指定该列的值时，相关列没有自动生成数据的问题 [#41454](https://github.com/pingcap/tidb/issues/41454) @[D3Hunter](https://github.com/D3Hunter)
+        - 修复了当 TiDB Lightning 使用 Logical Import Mode 模式导入数据时，由于目标集群用户没有 `CONFIG` 权限导致导入失败的问题 [#41915](https://github.com/pingcap/tidb/issues/41915) @[lichunzhu](https://github.com/lichunzhu)
 
     + TiUP
 
