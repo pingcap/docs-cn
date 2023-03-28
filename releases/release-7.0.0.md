@@ -466,14 +466,14 @@ TiDB 版本：7.0.0
 
     + TiCDC
 
-        - 修复了 Avro 编码 schema 时，float 类型使用错误的问题 [#8490](https://github.com/pingcap/tiflow/issues/8490) @[3AceShowHand](https://github.com/3AceShowHand)
-        - 修复了重启 chnagefeed 时可能造成数据丢失或者 checkpoint 无法推进的问题. [#8242](https://github.com/pingcap/tiflow/issues/8242) @[overvenus](https://github.com/overvenus)
-        - 修复了 ddl sink 内部一个 data race 问题 [#8238](https://github.com/pingcap/tiflow/issues/8238) @[3AceShowHand](https://github.com/3AceShowHand)
-        - 修复了可能导致 stopped 状态的 changefeed 自动重启的问题. [#8330](https://github.com/pingcap/tiflow/issues/8330) @[sdojjy](https://github.com/sdojjy)
-        - 修复了当所有 kafka server 不可访问时会导致 cdc panic 的问题 [#8523](https://github.com/pingcap/tiflow/issues/8523) @[3AceShowHand](https://github.com/3AceShowHand)
-        - 修复了下游为 mysql 且执行语句和 tidb 行为不兼容时可能导致数据丢失的 BUG。具体可以参考: [UPDATE-MySQL compatibility](https://docs.pingcap.com/tidb/stable/sql-statement-update#mysql-compatibility). [#8453](https://github.com/pingcap/tiflow/issues/8453) @[asddongmen](https://github.com/asddongmen)
-        - 修复了一个 rolling upgrade 可能导致 CDC OOM 或者 checkpoint 卡住的问题 [#8329](https://github.com/pingcap/tiflow/issues/8329) @[overvenus](https://github.com/overvenus)
-        - 修复了一个在 K8s 上不能 graceful upgrade TiCDC 集群的问题 [#8484](https://github.com/pingcap/tiflow/issues/8484) @[overvenus](https://github.com/overvenus)
+        - 修复了 Kafka sink 使用 'canal-json' protocol 时，`FLOAT` 类型的数值精度丢失的问题 [#8490](https://github.com/pingcap/tiflow/issues/8490) @[3AceShowHand](https://github.com/3AceShowHand)
+        - 修复了重启 chnagefeed 可能导致数据丢失或者 checkpoint 无法推进的问题 [#8242](https://github.com/pingcap/tiflow/issues/8242) @[overvenus](https://github.com/overvenus)
+        - 修复了 DDL sink 出现 data race 的问题 [#8238](https://github.com/pingcap/tiflow/issues/8238) @[3AceShowHand](https://github.com/3AceShowHand)
+        - 修复了状态为 `stopped` 的 changefeed 可能会自动重启的问题 [#8330](https://github.com/pingcap/tiflow/issues/8330) @[sdojjy](https://github.com/sdojjy)
+        - 修复了当所有 Kafka server 不可访问时会导致 cdc server panic 的问题 [#8523](https://github.com/pingcap/tiflow/issues/8523) @[3AceShowHand](https://github.com/3AceShowHand)
+        - 修复了下游为 MySQL 且执行语句和 TiDB 行为不兼容时可能导致数据丢失的问题 [#8453](https://github.com/pingcap/tiflow/issues/8453) @[asddongmen](https://github.com/asddongmen)
+        - 修复了 rolling upgrade 可能导致 TiCDC OOM 或者 checkpoint 卡住的问题 [#8329](https://github.com/pingcap/tiflow/issues/8329) @[overvenus](https://github.com/overvenus)
+        - 修复了 Kubernetes 上不能平滑升级 (graceful upgrade) TiCDC 集群的问题 [#8484](https://github.com/pingcap/tiflow/issues/8484) @[overvenus](https://github.com/overvenus)
 
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
