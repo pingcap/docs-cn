@@ -233,7 +233,7 @@ TiDB 版本：7.0.0
 
     该功能默认关闭，你可以通过将 TiDB Lightning 配置项 `compress-kv-pairs` 设置为 `"gzip"` 或者 `"gz"` 开启此功能。
 
-    更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/v6.6/tidb-lightning-configuration#tidb-lightning-%E4%BB%BB%E5%8A%A1%E9%85%8D%E7%BD%AE)。
+    更多信息，请参考[用户文档](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置)。
 
 ## 兼容性变更
 
@@ -473,7 +473,7 @@ TiDB 版本：7.0.0
 
     + TiDB Data Migration (DM)
 
-        - 修复了 DM worker 节点使用云上对象存储时，由于断点续传信息记录过于频繁，达到了对象存储的请求频次上限，导致 DM worker 无法把数据写入云上对象存储中，从而导致全量数据加载失败的问题 [#8482](https://github.com/pingcap/tiflow/issues/8482) @[maxshuang](https://github.com/maxshuang)
+        - 修复了 DM worker 节点使用 GCP Cloud Storage 时，由于断点续传信息记录过于频繁，达到了 GCP Cloud Storage 的请求频次上限，导致 DM worker 无法把数据写入 GCP Cloud Storage 中，从而导致全量数据加载失败的问题 [#8482](https://github.com/pingcap/tiflow/issues/8482) @[maxshuang](https://github.com/maxshuang)
         - 修复了在多个导入任务同时同步同一个下游的数据，并且都使用了下游元数据表来记录断点续传信息时，所有任务的断点续传信息被写入了同一张元数据表，并且使用了相同的任务 ID 的问题 [#8500](https://github.com/pingcap/tiflow/issues/8500) @[maxshuang](https://github.com/maxshuang)
 
     + TiDB Lightning
