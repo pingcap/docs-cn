@@ -90,7 +90,7 @@ summary: 了解 TiDB 的功能概览。
 |---|---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|---|:---:|
 | [执行计划缓存](/sql-prepared-plan-cache.md) | Y | Y | Y | Y | Y | Y | E | E | E | E |
 | [执行计划管理 (SPM)](/sql-plan-management.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y |
-| [根据历史执行计划创建绑定](/sql-plan-management.md#根据历史执行计划创建绑定) | E | E | E | N | N | N | N | N | N | N |
+| [根据历史执行计划创建绑定](/sql-plan-management.md#根据历史执行计划创建绑定) | Y | Y | E | N | N | N | N | N | N | N |
 | [下推计算结果缓存 (Coprocessor Cache)](/coprocessor-cache.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y | E |
 | [Stale Read](/stale-read.md) | Y | Y | Y | Y | Y | Y | Y | Y | N | N |
 | [Follower Read](/follower-read.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y |
