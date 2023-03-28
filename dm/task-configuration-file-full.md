@@ -160,6 +160,18 @@ loaders:
     # If checksum fails, the import is abnormal, which means the data is inconsistent or lost.
     # Therefore, it is recommended to always enable checksum.
     checksum-physical: "required"
+    # Only available for physical import. Determines whether to perform the `ANALYZE TABLE <table>` operation for each table after the CHECKSUM process is completed.
+    # - "required" (default). Indicates that the Analyze operation will be performed after the import is complete. If the analysis fails, the task will pause and require manual processing by the user.
+    # - "optional". Indicates that the data will be analyzed after the import is complete. If the analysis fails, a warning log will be printed and the task will not be paused.
+    # - "off". Indicates that no data analysis will be performed after the import is complete.
+    # Analyze only affects statistics data and it is recommended that Analyze is set to off in most scenarios.
+    analyze: "off"
+    # Only available for physical import. The concurrency of sending KV data to TiKV. This can be increased when the direct network transfer speed between dm-worker and TiKV exceeds 10,000 Mb/s.
+    # range-concurrency: 16
+    # Only available for physical import mode. Whether to enable compression when sending KV data to TiKV. Currently, only Gzip compression is supported and can be specified using either "gzip" or "gz". Compression is not enabled by default.
+    # compress-kv-pairs: ""
+    # One or more PD server addresses. If no address is specified, use the PD address information from the TiDB query by default.
+    # pd-addr: "192.168.0.1:2379"
 
 # Configuration arguments of the sync processing unit.
 syncers:
