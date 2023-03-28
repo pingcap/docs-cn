@@ -283,6 +283,8 @@ TiDB 版本：7.0.0
 
     在升级 TiCDC 集群到 v7.0.0 时，如果使用 Avro 同步的表包含 `FLOAT` 类型数据，请在升级前手动调整 Confluent Schema Registry 的兼容性策略为 `None`，使 changefeed 能够成功更新 schema。否则，在升级之后 changefeed 将无法更新 schema 并进入错误状态。
 
+* [`LOAD DATA` SQL 语句](/sql-statements/sql-statement-load-data.md)在 v7.0.0 中新增参数 `batch_size` 来实现事务的拆分。`batch_size` 参数默认值为 `1000`，表示将待导入 TiDB 的数据拆分成多个事务提交，每一个事务插入 1000 行记录到 TiDB。在 v7.0.0 以前控制事务拆分的参数为 [`tidb_dml_batch_size`](/system-variables.md#tidb_dml_batch_size)，自 v7.0.0 起不再生效。
+
 ### 系统变量
 
 | 变量名  | 修改类型（包括新增/修改/删除）    | 描述 |
