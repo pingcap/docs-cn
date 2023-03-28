@@ -475,8 +475,6 @@ TiDB 版本：7.0.0
         - 修复了 rolling upgrade 可能导致 TiCDC OOM 或者 checkpoint 卡住的问题 [#8329](https://github.com/pingcap/tiflow/issues/8329) @[overvenus](https://github.com/overvenus)
         - 修复了 Kubernetes 上不能平滑升级 (graceful upgrade) TiCDC 集群的问题 [#8484](https://github.com/pingcap/tiflow/issues/8484) @[overvenus](https://github.com/overvenus)
 
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
-
     + TiDB Data Migration (DM)
 
         - 修复了 DM worker 节点使用云上对象存储时，由于断点续传信息记录过于频繁，达到了对象存储的请求频次上限，导致 DM worker 无法把数据写入云上对象存储中，从而导致全量数据加载失败的问题 [#8482](https://github.com/pingcap/tiflow/issues/8482) @[maxshuang](https://github.com/maxshuang)
