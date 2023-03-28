@@ -58,8 +58,8 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 | [唯一约束](/constraints.md#唯一约束) | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y |
 | [整型主键上的聚簇索引](/constraints.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y |
 | [复合或非整型主键上的聚簇索引](/constraints.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y | N |
-| [多值索引](/sql-statements/sql-statement-create-index.md#多值索引) | E | E | N | N | N | N | N | N | N |  |
-| [外键约束](/constraints.md#外键约束) | Y | Y | N | N | N | N | N | N | N |  |
+| [多值索引](/sql-statements/sql-statement-create-index.md#多值索引) | E | E | N | N | N | N | N | N | N | N |
+| [外键约束](/constraints.md#外键约束) | Y | Y | N | N | N | N | N | N | N | N |
 | [TiFlash 延迟物化](/tiflash/tiflash-late-materialization.md) | E | N | N | N | N | N | N | N | N | N |
 
 ## SQL 语句
@@ -70,7 +70,7 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 | `INSERT ON DUPLICATE KEY UPDATE` | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y |
 | `LOAD DATA INFILE` | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y |
 | `SELECT INTO OUTFILE` | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y |
-| `INNER JOIN`, LEFT\|RIGHT [OUTER] JOIN | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y |
+| `INNER JOIN`, <code>LEFT\|RIGHT [OUTER] JOIN</code> | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y |
 | `UNION`，`UNION ALL` | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y |
 | [`EXCEPT` 和 `INTERSECT` 运算符](/functions-and-operators/set-operators.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y | N |
 | `GROUP BY`，`ORDER BY` | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y |
@@ -198,7 +198,6 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 | [TiCDC 支持保存数据到存储服务 (S3/NFS/Azure Blob Storage/GCP)](/ticdc/ticdc-sink-to-cloud-storage.md) | Y | E | E | N | N | N | N | N | N | N |
 | [TiCDC 支持在两个 TiDB 集群之间进行双向复制](/ticdc/ticdc-bidirectional-replication.md) | Y | Y | Y | N | N | N | N | N | N | N |
 | [TiCDC OpenAPI v2](/ticdc/ticdc-open-api-v2.md) | Y | N | N | N | N | N | N | N | N | N |
-| [TiCDC OpenAPI v2](/ticdc/ticdc-open-api-v2.md) | Y | N | N | N | N | N | N | N | N | N |
 
 ## 管理，可视化和工具
 
@@ -224,7 +223,7 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 | [`SET CONFIG`](/dynamic-config.md) | Y | Y | Y | Y | E | E | E | E | E | E |
 | [DM WebUI](/dm/dm-webui-guide.md) | E | E | E | E | N | N | N | N | N | N |
 | [前台限流](/tikv-configuration-file.md#前台限流) | Y | Y | Y | E | N | N | N | N | N | N |
-| [后台限流](/tikv-configuration-file.md#后台限流) | Y | E | E | N | N | N | N | N | N | N |
+| [后台限流](/tikv-configuration-file.md#后台限流) | E | E | E | N | N | N | N | N | N | N |
 | [基于 EBS 的备份和恢复](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.4/volume-snapshot-backup-restore) | Y | Y | Y | N | N | N | N | N | N | N |
 | [PITR](/br/br-pitr-guide.md) | Y | Y | Y | N | N | N | N | N | N | N |
 | [全局内存控制](/configure-memory-usage.md#如何配置-tidb-server-实例使用内存的阈值) | Y | Y | Y | N | N | N | N | N | N | N |
