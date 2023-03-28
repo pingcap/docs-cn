@@ -399,7 +399,6 @@ TiDB 版本：7.0.0
             TiDB Lightning 增加 `add-index-by-sql` 参数。默认值为 `false`，表示仍然会用 TiDB Lightning 将行数据以及索引数据编码成 KV pairs 后再一同导入到 TiKV。如果设置为 `true`，表示在物理导入模式（Physical Import Mode）下，会在导入数据完成后，通过 `ADD INDEX` 的 SQL 语句帮你建索引，提升导入数据的速度和稳定性。
             
         - TiDB Lightning 增加 `tikv-importer.keyspace-name` 参数。默认值为空字符串，表示 TiDB Lightning 会去自动获取这次导入对应的 keyspace 名字。如果指定了值，那么使用指定的 keyspace 名字来导入。这个参数使得 TiDB Lightning 导入多租户的 TiDB Cluster 场景下可以进行灵活配置。[#41915](https://github.com/pingcap/tidb/issues/41915) @[lichunzhu](https://github.com/lichunzhu)
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
     + TiUP
 
