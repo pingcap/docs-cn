@@ -389,9 +389,6 @@ TiDB 版本：7.0.0
 
     + TiDB Data Migration (DM)
 
-        - 优化 Data Migration（DM）检查下游数据库账号权限的前置检查项 [#issue](链接-待补充) @[maxshuang](https://github.com/maxshuang)
-
-            在之前的版本，Data Migration 进行前置检查，检查用户提供的下游数据库账号是具备所需的权限时，是非必须通过项，现改为必须通过项，避免该账号权限不足导致任务失败。
 
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
