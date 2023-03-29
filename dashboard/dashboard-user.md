@@ -57,8 +57,8 @@ TiDB Dashboard 与 TiDB 使用相同的用户权限体系和登录验证方式�
 
     -- 如果要使自定义的 SQL 用户能修改 TiDB Dashboard 界面上的各项配置，可以增加以下权限
     GRANT SYSTEM_VARIABLES_ADMIN ON *.* TO 'dashboardAdmin'@'%';
-    
-    -- 如果要使用快速绑定执行计划（具体参见 https://docs.pingcap.com/zh/tidb/dev/dashboard-statement-details#快速绑定执行计划）功能，可以增加以下权限
+
+    -- 如果要使用快速绑定执行计划（具体参见 https://docs.pingcap.com/zh/tidb/v7.0/dashboard-statement-details#快速绑定执行计划）功能，可以增加以下权限
     GRANT SYSTEM_VARIABLES_ADMIN ON *.* TO 'dashboardAdmin'@'%';
     GRANT SUPER ON *.* TO 'dashboardAdmin'@'%';
     ```
@@ -76,8 +76,8 @@ TiDB Dashboard 与 TiDB 使用相同的用户权限体系和登录验证方式�
 
     -- 如果要使自定义的 SQL 用户能修改 TiDB Dashboard 界面上的各项配置，可以增加以下权限
     GRANT SUPER ON *.* TO 'dashboardAdmin'@'%';
-    
-    -- 如果要使用快速绑定执行计划（具体参见 https://docs.pingcap.com/zh/tidb/dev/dashboard-statement-details#快速绑定执行计划）功能，可以增加以下权限
+
+    -- 如果要使用快速绑定执行计划（具体参见 https://docs.pingcap.com/zh/tidb/v7.0/dashboard-statement-details#快速绑定执行计划）功能，可以增加以下权限
     GRANT SYSTEM_VARIABLES_ADMIN ON *.* TO 'dashboardAdmin'@'%';
     GRANT SUPER ON *.* TO 'dashboardAdmin'@'%';
     ```
