@@ -11,7 +11,7 @@ summary: 了解资源管控 (Resource Control) 的 Grafana Dashboard 中所展�
 
 如果你的集群配置了 [Resource Control](/tidb-resource-control.md) ，通过观察 Resource Control 面板上的 Metrics，你可以了解当前集群整体的资源消耗状态。
 
-TiDB 使用[令牌桶算法](https://en.wikipedia.org/wiki/Token_bucket) 做流控，正如资源管控实现机制中所描述 [RFC: Global Resource Control in TiDB](https://github.com/pingcap/tidb/blob/master/docs/design/2022-11-25-global-resource-control.md#distributed-token-buckets)：一个 TiDB 节点可能存在多个 Resource Group（资源组），将在 PD 端的 GAC（Global Admission Control）进行流控。具体实现为：每个 TiDB 节点中的本地令牌桶（Local Token Buckets）将定期（默认 5 秒）与 PD 端的 GAC 进行通信，以重新配置本地令牌。
+TiDB 使用[令牌桶算法](https://en.wikipedia.org/wiki/Token_bucket) 做流控，正如资源管控实现机制中所描述 [RFC: Global Resource Control in TiDB](https://github.com/pingcap/tidb/blob/master/docs/design/2022-11-25-global-resource-control.md#distributed-token-buckets)：一个 TiDB 节点可能存在多个 Resource Group（资源组），将在 PD 端的 GAC（Global Admission Control）进行流控。每个 TiDB 节点中的本地令牌桶（Local Token Buckets）将定期（默认 5 秒）与 PD 端的 GAC 进行通信，以重新配置本地令牌。其中的本地令牌桶（Local Token Buckets）具体实现为 Resource Controller Client。
 
 以下为 **Resource Control** 关键监控指标的说明。
 
@@ -36,8 +36,6 @@ TiDB 使用[令牌桶算法](https://en.wikipedia.org/wiki/Token_bucket) 做流�
 - SQL CPU Time：以 Resource Group 为单位进行实时统计的 SQL 层 CPU 时间消耗。`total` 为当前所有 Resource Group 消耗 SQL 层 CPU 时间之和。
 
 ## Resource Controller Client 相关指标
-
-Resource Controller Client 用于实时统计各个 TiDB 节点中的本地令牌桶（Local Token Buckets）相关指标。
 
 - Active Resource Groups：实时统计各个 Resource Controller Client 的 Resource Groups 数量。
 - Total KV Request Count：以 Resource Group 为单位，实时统计各个 Resource Controller Client 的 KV 请求数量。`total` 为 Resource Controller Client 下 KV 请求数量之和。
