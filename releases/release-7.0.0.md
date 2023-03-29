@@ -238,7 +238,7 @@ TiDB 版本：7.0.0
 
     更多信息，请参考[用户文档](/ticdc/ticdc-sink-to-cloud-storage.md)。
 
-* TiCDC OpenAPI v2 GA [#8019](https://github.com/pingcap/tiflow/issues/8019) @[sdojjy](https://github.com/sdojjy)
+* TiCDC OpenAPI v2 (GA) [#8019](https://github.com/pingcap/tiflow/issues/8019) @[sdojjy](https://github.com/sdojjy)
 
     TiCDC 提供 OpenAPI v2。相比 OpenAPI v1，OpenAPI v2 提供了更完整的同步任务支持。OpenAPI 提供的功能是 [`cdc cli` 工具](/ticdc/ticdc-manage-changefeed.md)的一个子集。你可以通过 OpenAPI v2 对 TiCDC 集群进行查询和运维操作，如获取 TiCDC 节点状态、检查集群健康状态、管理同步任务等。
 
