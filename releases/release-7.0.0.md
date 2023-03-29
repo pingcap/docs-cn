@@ -38,7 +38,7 @@ TiDB 版本：7.0.0
   <tr>
     <td rowspan="2">稳定性与高可用</td>
     <td>优化资源管控（实验特性）</td>
-    <td>支持使用资源组来为一个集群中的不同应用或工作负载分配和隔离资源。在这个版本中，TiDB 增加了对不同资源的绑定模式（用户级、会话级、语句级）和用户定义的优先级的支持，用户还可以使用命令来对集群整体资源量进行预估。</td>
+    <td>支持使用资源组来为一个集群中的不同应用或工作负载分配和隔离资源。在这个版本中，TiDB 增加了对不同资源的绑定模式（用户级、会话级、语句级）和用户定义的优先级的支持，你还可以使用命令来对集群整体资源量进行预估。</td>
   </tr>
   <tr>
     <td>TiFlash 支持数据落盘</td>
@@ -60,7 +60,7 @@ TiDB 版本：7.0.0
   </tr>
   <tr>
     <td>TiCDC 支持对象存储 Sink (GA)</td>
-    <td>TiCDC 支持将行变更事件同步到对象存储服务，包括 Amazon S3、Azure Blob Storage 和 NFS 等。</td>
+    <td>TiCDC 支持将行变更事件同步到对象存储服务，包括 Amazon S3、GCS、Azure Blob Storage 和 NFS 等。</td>
   </tr>
 </tbody>
 </table>
@@ -228,7 +228,7 @@ TiDB 版本：7.0.0
 
     TiDB 支持 Key 分区。Key 分区与 Hash 分区都可以保证将数据均匀地分散到一定数量的分区里面，区别是 Hash 分区只能根据一个指定的整数表达式或字段进行分区，而 Key 分区可以根据字段列表进行分区，且 Key 分区的分区字段不局限于整数类型。
 
-    更多信息，请参考[用户文档](/partitioned-table.md#key-分区)
+    更多信息，请参考[用户文档](/partitioned-table.md#key-分区)。
 
 ### 数据库管理
 
@@ -275,7 +275,7 @@ TiDB 版本：7.0.0
 
 * `LOAD DATA` 语句集成 TiDB Lightning，你可以使用 `LOAD DATA` 语句完成原先需要使用 TiDB Lightning 才能完成的数据导入任务 [#40499](https://github.com/pingcap/tidb/issues/40499) @[lance6716](https://github.com/lance6716) **tw:hfxsd**
 
-    在集成 TiDB Lightning 之前，`LOAD DATA` 语句只能用于导入客户端的数据文件，如果你需要从云存储导入数据，不得不借助 TiDB Lightning 来实现。但是单独部署 TiDB Lightning 又会带来额外的部署成本和管理成本。将 TiDB Lightning 逻辑导入能力（TiDB backend）集成到 `LOAD DATA` 语句后，不仅可以省去 TiDB Lightning 的部署和管理成本，还可以借助 TiDB Lightning 的功能极大扩展 `LOAD DATA` 语句的能力。部分扩展的功能举例说明如下：
+    在集成 TiDB Lightning 之前，`LOAD DATA` 语句只能用于导入客户端的数据文件，如果你需要从云存储导入数据，不得不借助 TiDB Lightning 来实现。但是单独部署 TiDB Lightning 又会带来额外的部署成本和管理成本。将 TiDB Lightning 逻辑导入能力（Logical Import Mode）集成到 `LOAD DATA` 语句后，不仅可以省去 TiDB Lightning 的部署和管理成本，还可以借助 TiDB Lightning 的功能极大扩展 `LOAD DATA` 语句的能力。部分扩展的功能举例说明如下：
 
     - 支持从 Amazon S3 和 Google Cloud Storage 导入数据到 TiDB，且支持使用通配符一次性匹配多个源文件导入到 TiDB。
     - 支持 `DEFINED NULL BY` 来定义 null。
@@ -333,7 +333,7 @@ TiDB 版本：7.0.0
 
     自 TiDB v7.0.0 起，TiDB 支持 Key 分区，并支持解析 MySQL 的 `PARTITION BY LINEAR KEY` 语法，但会忽略其中的 `LINEAR` 关键字，只采用非线性 Hash 算法。Key 分区类型暂不支持分区字段列表为空的语句。
 
-    更多信息，请参考[用户文档](/partitioned-table.md#key-分区)
+    更多信息，请参考[用户文档](/partitioned-table.md#key-分区)。
 
 ### 行为变更
 
@@ -387,7 +387,7 @@ TiDB 版本：7.0.0
 | TiFlash | [`storage.s3.secret_access_key`](tiflash/tiflash-disaggregated-and-s3.md) |  新增  | 访问 S3 的 SECRET_ACCESS_KEY。 |
 | TiFlash | [`storage.remote.cache.dir`](tiflash/tiflash-disaggregated-and-s3.md) |  新增  | TiFlash Compute Node 的本地数据缓存目录。 |
 | TiFlash | [`storage.remote.cache.capacity`](tiflash/tiflash-disaggregated-and-s3.md) |  新增  | TiFlash Compute Node 的本地数据缓存目录的大小。 |
-| TiDB Lightning   | [`add-index-by-sql`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-task)       |    新增     |  控制 Physical Import Mode 是否通过 SQL 方式添加索引。默认根据 TiDB 版本自动选择。通过 SQL 方式添加索引的优点是将导入数据与导入索引分开，可以快速导入数据，即使导入数据后，索引添加失败，也不会影响数据的一致性。        |
+| TiDB Lightning   | [`add-index-by-sql`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-task)       |    新增     |  控制 Physical Import Mode 是否通过 SQL 方式添加索引。默认为 `false`，表示 TiDB Lightning 会将行数据以及索引数据都编码成 KV pairs 后一同导入 TiKV，实现机制和历史版本保持一致。通过 SQL 方式添加索引的优点是将导入数据与导入索引分开，可以快速导入数据，即使导入数据后，索引添加失败，也不会影响数据的一致性。        |
 | TiCDC      | [`enable-table-across-nodes`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-配置文件说明)          |   新增    |    将表按 Region 个数划分成多个同步范围，这些范围可由多个 TiCDC 节点同步。    |
 | TiCDC      | [`region-threshold`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-配置文件说明)    | 新增         | 开启了 `enable-table-across-nodes` 后，该功能只对 Region 个数大于 `region-threshold` 值的表生效。      |
 | DM | [`analyze`](/dm/task-configuration-file-full.md#完整配置文件示例)  | 新增 | 配置是否在 CHECKSUM 结束后对所有表逐个执行 `ANALYZE TABLE <table>` 操作，可配置 `"required"`/`"optional"`/`"off"`。默认为 `"optional"`。|
@@ -481,8 +481,8 @@ TiDB 版本：7.0.0
     - 修复在开启 Prepared Plan Cache 时 Index Merge 可能得到错误结果的问题 [#41828](https://github.com/pingcap/tidb/issues/41828) @[qw4990](https://github.com/qw4990)
     - 修复 IndexMerge 中 goroutine 泄露的问题 [#41605](https://github.com/pingcap/tidb/issues/41605) @[guo-shaoge](https://github.com/guo-shaoge)
     - 修复非 `BIGINT` 类型的无符号整数与 `STRING`/`DECIMAL` 比较时可能出现错误结果的问题 [#41736](https://github.com/pingcap/tidb/issues/41736) @[LittleFall](https://github.com/LittleFall)
-    - 修复了 `ANALYZE` 语句可能会因为当前 session 前一个 `ANALYZE` 语句因为内存超限被 kill 导致当前 `ANALYZE` 语句也被 kill 的问题 [#41825](https://github.com/pingcap/tidb/issues/41825) @[XuHuaiyu](https://github.com/XuHuaiyu)
-    - 修复 batch coprocessor 搜集信息过程中存在数据竞争问题的问题 [#41412](https://github.com/pingcap/tidb/issues/41412) @[you06](https://github.com/you06)
+    - 修复 `ANALYZE` 语句可能会因为当前 session 的前一个 `ANALYZE` 语句因为内存超限被 kill 导致当前 `ANALYZE` 语句也被 kill 的问题 [#41825](https://github.com/pingcap/tidb/issues/41825) @[XuHuaiyu](https://github.com/XuHuaiyu)
+    - 修复 batch coprocessor 搜集信息过程中存在的数据竞争问题 [#41412](https://github.com/pingcap/tidb/issues/41412) @[you06](https://github.com/you06)
     - 修复 assertion 错误导致无法为分区表打印 MVCC 信息的问题 [#40629](https://github.com/pingcap/tidb/issues/40629) @[ekexium](https://github.com/ekexium)
     - 修复 `fair lock mode` 对不存在的 key 加锁处理的问题 [#41527](https://github.com/pingcap/tidb/issues/41527) @[ekexium](https://github.com/ekexium)
     - 修复 `INSERT IGNORE` 和 `REPLACE` 语句对不修改 value 的 key 没有加锁的问题 [#42121](https://github.com/pingcap/tidb/issues/42121) @[zyguan](https://github.com/zyguan)
