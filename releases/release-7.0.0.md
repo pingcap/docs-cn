@@ -244,6 +244,17 @@ TiDB 版本：7.0.0
 
     更多信息，请参考[用户文档](/ticdc/ticdc-open-api-v2.md)。
 
+* DBeaver v23.0.1 默认支持 TiDB [#17396](https://github.com/dbeaver/dbeaver/issues/17396) @[Icemap](https://github.com/Icemap) **tw:ran-huang** 
+
+    - 独立的 TiDB 模块、Icon 和标识；
+    - 默认配置支持 Serverless Tier，你可以更方便的连接 Serverless Tier；
+    - 支持识别 TiDB 版本，从而显示或隐藏外键 Tab；
+    - 支持 Explain SQL 计划显示；
+    - 支持 TiDB 语法高亮，如 `PESSIMISTIC`, `OPTIMISTIC`, `AUTO_RANDOM`, `PLACEMENT`, `POLICY`, `REORGANIZE`, `EXCHANGE`, `CACHE`, `NONCLUSTERED`, `CLUSTERED` 等。
+    - 支持 TiDB 函数高亮，如 `TIDB_BOUNDED_STALENESS`, `TIDB_DECODE_KEY`, `TIDB_DECODE_PLAN`, `TIDB_IS_DDL_OWNER`, `TIDB_PARSE_TSO`, `TIDB_VERSION`, `TIDB_DECODE_SQL_DIGESTS`, `TIDB_SHARD` 等。
+
+    更多信息，请参考[用户文档](https://github.com/dbeaver/dbeaver/wiki)。
+
 ### 可观测性
 
 * 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接)
