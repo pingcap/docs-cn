@@ -35,10 +35,10 @@ summary: 了解资源管控 (Resource Control) 的 Grafana Dashboard 中所展�
 
 ## Resource Controller Client 相关指标
 
-- Active Resource groups：实时统计各个 Resource Controller Client 的 Resource Groups 数量。
+- Active Resource Groups：实时统计各个 Resource Controller Client 的 Resource Groups 数量。
 - Total KV Request Count：以 Resource Group 为单位，实时统计各个 Resource Controller Client 的 KV 请求数量。`total` 为 Resource Controller Client 下 KV 请求数量之和。
 - Failed KV Request Count：以 Resource Group 为单位，实时统计各个 Resource Controller Client 的 KV 失败请求数量。`total` 为 Resource Controller Client 下 KV 失败请求数量之和。
 - Successful KV Request Count：以 Resource Group 为单位，实时统计各个 Resource Controller Client 的 KV 成功请求数量。`total` 为 Resource Controller Client 下 KV 成功请求数量之和。
-- Successful KV Request Wait Duration (99/90)：以 Resource Group 为单位，实时统计各个 Resource Controller Client 成功 KV 请求等待时间（不同百分位）。
-- Token Request Handle Duration (999/99)：以 Resource Group 为单位，实时统计各个 Resource Controller Client 向 Server 端申请 Token 等待响应时间（不同百分位）。
-- Token Request Count：以 Resource Group 为单位，实时统计各个 Resource Controller Client 向 Server 端申请 Token 次数。`successful` 和 `failed` 分别为 Resource Controller Client 下申请 Token 成功和失败数量之和。
+- Successful KV Request Wait Duration (99/90)：以 Resource Group 为单位，实时统计各个 Resource Controller Client 成功 KV 请求的等待时间（不同百分位）。
+- Token Request Handle Duration (999/99)：以 Resource Group 为单位，实时统计各个 Resource Controller Client 向 Server 端申请 Token 等待的响应时间（不同百分位）。
+- Token Request Count：以 Resource Group 为单位，实时统计各个 Resource Controller Client 向 Server 端申请 Token 的次数。`successful` 和 `failed` 分别为 Resource Controller Client 下申请 Token 成功和失败数量之和。
