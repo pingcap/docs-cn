@@ -37,7 +37,7 @@ TiDB 使用[令牌桶算法](https://en.wikipedia.org/wiki/Token_bucket) 做流�
 
 ## Resource Controller Client 相关指标
 
-实时统计每个 TiDB 节点中的本地令牌桶（Local Token Buckets）相关指标。
+Resource Controller Client 用于实时统计各个 TiDB 节点中的本地令牌桶（Local Token Buckets）相关指标。
 
 - Active Resource Groups：实时统计各个 Resource Controller Client 的 Resource Groups 数量。
 - Total KV Request Count：以 Resource Group 为单位，实时统计各个 Resource Controller Client 的 KV 请求数量。`total` 为 Resource Controller Client 下 KV 请求数量之和。
