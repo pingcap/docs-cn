@@ -1,7 +1,6 @@
 ---
 title: Schema 对象名
 summary: 本文介绍 TiDB SQL 语句中的模式对象名。
-aliases: ['/docs-cn/dev/schema-object-names/','/docs-cn/dev/reference/sql/language-structure/schema-object-names/']
 ---
 
 # Schema 对象名
@@ -24,7 +23,7 @@ SELECT * FROM `table` WHERE `table`.id = 20;
 
 ```sql
 MySQL [test]> CREATE TABLE "test" (a varchar(10));
-ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your TiDB version for the right syntax to use line 1 column 19 near ""test" (a varchar(10))" 
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your TiDB version for the right syntax to use line 1 column 19 near ""test" (a varchar(10))"
 
 MySQL [test]> SET SESSION sql_mode='ANSI_QUOTES';
 Query OK, 0 rows affected (0.000 sec)

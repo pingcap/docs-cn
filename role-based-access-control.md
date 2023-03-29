@@ -1,6 +1,5 @@
 ---
 title: 基于角色的访问控制
-aliases: ['/docs-cn/dev/role-based-access-control/','/docs-cn/dev/reference/security/role-based-access-control/']
 ---
 
 # 基于角色的访问控制

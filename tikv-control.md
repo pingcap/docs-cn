@@ -1,6 +1,5 @@
 ---
 title: TiKV Control 使用说明
-aliases: ['/docs-cn/dev/tikv-control/','/docs-cn/dev/reference/tools/tikv-control/']
 ---
 
 # TiKV Control 使用说明
@@ -168,20 +167,20 @@ tikv-ctl --host 127.0.0.1:20160 raft region -r 1239
 
 ```
 "region id": 1239
-"region state": { 
-    id: 1239, 
-    start_key: 7480000000000000FF4E5F728000000000FF1443770000000000FA, 
-    end_key: 7480000000000000FF4E5F728000000000FF21C4420000000000FA, 
-    region_epoch: {conf_ver: 1 version: 43}, 
-    peers: [ {id: 1240 store_id: 1 role: Voter} ] 
+"region state": {
+    id: 1239,
+    start_key: 7480000000000000FF4E5F728000000000FF1443770000000000FA,
+    end_key: 7480000000000000FF4E5F728000000000FF21C4420000000000FA,
+    region_epoch: {conf_ver: 1 version: 43},
+    peers: [ {id: 1240 store_id: 1 role: Voter} ]
 }
 "raft state": {
-    hard_state {term: 8 vote: 5 commit: 7} 
+    hard_state {term: 8 vote: 5 commit: 7}
     last_index: 8)
 }
 "apply state": {
     applied_index: 8 commit_index: 8 commit_term: 8
-    truncated_state {index: 5 term: 5} 
+    truncated_state {index: 5 term: 5}
 }
 ```
 
@@ -195,16 +194,16 @@ tikv-ctl --host 127.0.0.1:20160 raft region --start 7480000000000000FF4E5F728000
 ```
 
 ```
-"region state": { 
+"region state": {
     id: 1009
-    start_key: 7480000000000000FF4E5F728000000000FF21C4420000000000FA, 
-    end_key: 7480000000000000FF5000000000000000F8, 
+    start_key: 7480000000000000FF4E5F728000000000FF21C4420000000000FA,
+    end_key: 7480000000000000FF5000000000000000F8,
     ...
 }
-"region state": { 
+"region state": {
     id: 1239
-    start_key: 7480000000000000FF4E5F728000000000FF06C6D60000000000FA, 
-    end_key: 7480000000000000FF4E5F728000000000FF1443770000000000FA, 
+    start_key: 7480000000000000FF4E5F728000000000FF06C6D60000000000FA,
+    end_key: 7480000000000000FF4E5F728000000000FF1443770000000000FA,
     ...
 }
 ```

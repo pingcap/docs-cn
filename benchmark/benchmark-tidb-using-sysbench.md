@@ -1,6 +1,5 @@
 ---
 title: 如何用 Sysbench 测试 TiDB
-aliases: ['/docs-cn/dev/benchmark/benchmark-tidb-using-sysbench/','/docs-cn/dev/benchmark/how-to-run-sysbench/']
 ---
 
 # 如何用 Sysbench 测试 TiDB

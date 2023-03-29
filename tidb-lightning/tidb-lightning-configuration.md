@@ -1,7 +1,6 @@
 ---
 title: TiDB Lightning 配置参数
 summary: 使用配置文件或命令行配置 TiDB Lightning。
-aliases: ['/docs-cn/dev/tidb-lightning/tidb-lightning-configuration/','/docs-cn/dev/reference/tools/tidb-lightning/config/']
 ---
 
 # TiDB Lightning 配置参数
@@ -52,7 +51,7 @@ table-concurrency = 6
 
 # 数据的并发数。默认与逻辑 CPU 的数量相同。
 # 混合部署的情况下可以将其大小配置为逻辑 CPU 数的 75%，以限制 CPU 的使用。
-# region-concurrency = 
+# region-concurrency =
 
 # I/O 最大并发数。I/O 并发量太高时，会因硬盘内部缓存频繁被刷新
 # 而增加 I/O 等待时间，导致缓存未命中和读取速度降低。
@@ -145,7 +144,7 @@ addr = "172.16.31.10:8287"
 # 使用 Physical Import Mode 时，配置 TiDB Lightning 本地临时文件使用的磁盘配额 (disk quota)。当磁盘配额不足时，TiDB Lightning 会暂停读取源数据以及写入临时文件的过程，优先将已经完成排序的 key-value 写入到 TiKV，TiDB Lightning 删除本地临时文件后，再继续导入过程。
 # 需要同时配合把 `backend` 设置为 `local` 模式才能生效。
 # 默认值为 MaxInt64 字节，即 9223372036854775807 字节。
-# disk-quota = "10GB" 
+# disk-quota = "10GB"
 
 # Physical Import Mode 是否通过 SQL 方式添加索引。默认为 `false`，表示 TiDB Lightning 会将行数据以及索引数据都编码成 KV pairs 后一同导入 TiKV，实现机制和历史版本保持一致。如果设置为 `true`，即 TiDB Lightning 会在导入数据完成后，使用 add index 的 SQL 来添加索引。
 # 通过 SQL 方式添加索引的优点是将导入数据与导入索引分开，可以快速导入数据，即使导入数据后，索引添加失败，也不会影响数据的一致性。

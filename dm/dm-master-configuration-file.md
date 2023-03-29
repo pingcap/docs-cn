@@ -1,6 +1,5 @@
 ---
 title: DM-master 配置文件介绍
-aliases: ['/docs-cn/tidb-data-migration/dev/dm-master-configuration-file/']
 ---
 
 # DM-master 配置文件介绍
@@ -33,7 +32,7 @@ join = ""
 ssl-ca = "/path/to/ca.pem"
 ssl-cert = "/path/to/cert.pem"
 ssl-key = "/path/to/key.pem"
-cert-allowed-cn = ["dm"] 
+cert-allowed-cn = ["dm"]
 ```
 
 ## 配置项说明

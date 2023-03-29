@@ -1,7 +1,6 @@
 ---
 title: TiDB 中的各种超时
 summary: 简单介绍 TiDB 中的各种超时，为排查错误提供依据。
-aliases: ['/zh/tidb/dev/timeouts-in-tidb']
 ---
 
 # TiDB 中的各种超时

@@ -1,6 +1,5 @@
 ---
 title: DM 任务完整配置文件介绍
-aliases: ['/docs-cn/tidb-data-migration/dev/task-configuration-file-full/','/docs-cn/tidb-data-migration/dev/dm-portal/','/zh/tidb/dev/task-configuration-file']
 ---
 
 # DM 任务完整配置文件介绍
@@ -129,10 +128,10 @@ loaders:                             # load 处理单元的运行配置参数
     # - "error"。插入重复数据时报错并停止同步任务。
     on-duplicate-logical: "replace"
     # physical import 针对冲突数据的解决方式：
-    # - "none"（默认）。对应 TiDB Lightning physical import 冲突数据检测的 "none" 选项 
+    # - "none"（默认）。对应 TiDB Lightning physical import 冲突数据检测的 "none" 选项
     # (https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-physical-import-mode-usage#冲突数据检测)，
     # 表示遇到冲突数据时不进行处理。该模式性能最佳，但下游数据库会遇到数据索引不一致的问题。
-    # - "manual"。对应 TiDB Lightning physical import 冲突数据检测的 "remove" 选项 
+    # - "manual"。对应 TiDB Lightning physical import 冲突数据检测的 "remove" 选项
     # (https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-physical-import-mode-usage#冲突数据检测)。
     # 在遇到冲突数据时将所有相互冲突的数据删除，并记录在 ${meta-schema}_${name}.conflict_error_v1 表中。
     # 在本配置文件中，会记录在 dm_meta_test.conflict_error_v1 表中。全量导入阶段结束后，任务

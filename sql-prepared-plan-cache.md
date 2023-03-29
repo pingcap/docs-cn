@@ -1,6 +1,5 @@
 ---
 title: 执行计划缓存
-aliases: ['/docs-cn/dev/sql-prepare-plan-cache/','zh/tidb/dev/sql-prepare-plan-cache']
 ---
 
 # 执行计划缓存
@@ -152,7 +151,7 @@ mysql> SHOW WARNINGS;  -- 查看查询计划无法被缓存的原因
 mysql> PREPARE st FROM 'SELECT * FROM t WHERE a<?';
 Query OK, 0 rows affected (0.00 sec)
 
-mysql> SET @a='1'; 
+mysql> SET @a='1';
 Query OK, 0 rows affected (0.00 sec)
 
 mysql> EXECUTE st USING @a;  -- 该优化中进行了非 INT 类型到 INT 类型的转换，产生的执行计划可能随着参数变化而存在风险，因此 TiDB 不缓存该计划

@@ -1,7 +1,6 @@
 ---
 title: TiDB 执行计划概览
 summary: 了解 TiDB 中 EXPLAIN 语句返回的执行计划。
-aliases: ['/docs-cn/dev/query-execution-plan/','/docs-cn/dev/reference/performance/understanding-the-query-execution-plan/','/docs-cn/dev/index-merge/','/docs-cn/dev/reference/performance/index-merge/','/zh/tidb/dev/query-execution-plan/']
 ---
 
 # TiDB 执行计划概览
@@ -101,7 +100,7 @@ Records: 2  Duplicates: 0  Warnings: 0
 > |       └─Limit_20                | 1.00     | cop[tikv] |                       | offset:0, count:1                                                            |
 > |         └─IndexRangeScan_19     | 1.00     | cop[tikv] | table:t2, index:ia(a) | range: decided by [eq(test.t2.a, test.t1.b)], keep order:false, stats:pseudo |
 > +---------------------------------+----------+-----------+-----------------------+------------------------------------------------------------------------------+
-> 
+>
 > -- 自 v6.4.0 起：
 >
 > -- 可以发现 `IndexLookUp_11`、`Selection_10`、`IndexRangeScan_8` 和 `TableRowIDScan_9` 在 `estRows` 列显示的行数与 v6.4.0 以前的不同
