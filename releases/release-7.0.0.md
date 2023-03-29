@@ -476,7 +476,7 @@ TiDB 版本：7.0.0
     + TiCDC
 
         - 修复了重启 changefeed 可能导致数据丢失或者 checkpoint 无法推进的问题 [#8242](https://github.com/pingcap/tiflow/issues/8242) @[overvenus](https://github.com/overvenus)
-        - 修复了 DDL sink 出现 data race 的问题 [#8238](https://github.com/pingcap/tiflow/issues/8238) @[3AceShowHand](https://github.com/3AceShowHand)
+        - 修复了 DDL sink 出现的数据竞争问题 [#8238](https://github.com/pingcap/tiflow/issues/8238) @[3AceShowHand](https://github.com/3AceShowHand)
         - 修复了状态为 `stopped` 的 changefeed 可能会自动重启的问题 [#8330](https://github.com/pingcap/tiflow/issues/8330) @[sdojjy](https://github.com/sdojjy)
         - 修复了当所有 Kafka server 不可访问时会导致 TiCDC server panic 的问题 [#8523](https://github.com/pingcap/tiflow/issues/8523) @[3AceShowHand](https://github.com/3AceShowHand)
         - 修复了下游为 MySQL 且执行语句和 TiDB 行为不兼容时可能导致数据丢失的问题 [#8453](https://github.com/pingcap/tiflow/issues/8453) @[asddongmen](https://github.com/asddongmen)
