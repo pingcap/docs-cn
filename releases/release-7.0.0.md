@@ -89,11 +89,11 @@ TiDB 版本：7.0.0
 
 * TiFlash 引擎支持 Null-Aware Semi Join 和 Null-Aware Anti Semi Join 算子 [#6674](https://github.com/pingcap/tiflash/issues/6674) @[gengliqi](https://github.com/gengliqi) **tw:Oreoxmt**
 
-    当使用 `IN`、`NOT IN`、`= ANY` 或 `!= ALL` 算子引导的关联子查询时，TiDB 会将其转化为 Semi Join 或 Anti Semi Join，从而提升计算性能。如果转换后的 Join key 列可能为 `NULL`，则需要具有 Null-Aware 特性的 Join 算法，即 [Null-Aware Semi Join](/explain-subqueries#null-aware-semi-joinin-和--any-子查询) 和 [Null-Aware Anti Semi Join](/explain-subqueries#null-aware-anti-semi-joinnot-in-和--all-子查询) 算子。
+    当使用 `IN`、`NOT IN`、`= ANY` 或 `!= ALL` 算子引导的关联子查询时，TiDB 会将其转化为 Semi Join 或 Anti Semi Join，从而提升计算性能。如果转换后的 Join key 列可能为 `NULL`，则需要具有 Null-Aware 特性的 Join 算法，即 [Null-Aware Semi Join](/explain-subqueries.md#null-aware-semi-joinin-和--any-子查询) 和 [Null-Aware Anti Semi Join](/explain-subqueries.md#null-aware-anti-semi-joinnot-in-和--all-子查询) 算子。
 
     在 v7.0.0 之前的版本中，TiFlash 引擎不支持 Null-Aware Semi Join 和 Null-Aware Anti Semi Join 算子，因此无法将这些子查询直接下推至 TiFlash 引擎进行计算。从 TiDB v7.0.0 开始，TiFlash 引擎支持了 Null-Aware Semi Join 和 Null-Aware Anti Semi Join 算子。如果 SQL 包含这几种关联子查询，查询的表包含 TiFlash 副本，并且启用了 [MPP 模式](/tiflash/use-tiflash-mpp-mode.md)，优化器将自动判断是否将 Null-Aware Semi Join 和 Null-Aware Anti Semi Join 算子下推至 TiFlash 引擎进行计算以提升整体性能。
 
-    更多信息，请参考[用户文档](/tiflash/tiflash-supported-pushdown-calculations)。
+    更多信息，请参考[用户文档](/tiflash/tiflash-supported-pushdown-calculations.md)。
 
 * TiFlash 引擎支持 FastScan 功能 (GA) [#5252](https://github.com/pingcap/tiflash/issues/5252) @[hongyunyan](https://github.com/hongyunyan) **tw:Oreoxmt**
 
@@ -135,7 +135,7 @@ TiDB 版本：7.0.0
 
     该功能默认关闭，需要将 session 变量 [tidb_opt_derive_topn](/system-variables.md#tidb_opt_derive_topn-从-v700-版本开始引入) 设置为 `ON` 开启。
 
-    更多信息，请参考[用户文档](derive-topn-from-window.md)。
+    更多信息，请参考[用户文档](/derive-topn-from-window.md)。
 
 * 支持通过 Fast Online DDL 创建唯一索引 [#40730](https://github.com/pingcap/tidb/issues/40730) @[tangenta](https://github.com/tangenta) **tw:ran-huang**
 
@@ -236,7 +236,7 @@ TiDB 版本：7.0.0
 
     TiCDC 支持将变更数据同步到兼容 Amazon S3 协议的存储服务、GCS、Azure Blob Storage 以及 NFS 中。存储服务价格便宜，使用方便。对于不使用 Kafka 的用户，可以选择同步变更数据到存储服务。使用该功能，TiCDC 会将变更数据保存到文件，发送到存储服务中。用户自研的消费程序可以定时从存储服务读取新产生的变更数据进行数据处理。目前，TiCDC 支持将格式为 canal-json 和 CSV 的变更数据同步至存储服务。
 
-    更多信息，请参考[用户文档](/ticdc/ticdc-sink-to-cloud-storage)。
+    更多信息，请参考[用户文档](/ticdc/ticdc-sink-to-cloud-storage.md)。
 
 * TiCDC OpenAPI v2 GA [#8019](https://github.com/pingcap/tiflow/issues/8019) @[sdojjy](https://github.com/sdojjy) **tw:hfxsd**
 
@@ -379,14 +379,14 @@ TiDB 版本：7.0.0
 | PD         |  [`read-cpu-ms-cost`](/pd-configuration-file.md#read-cpu-ms-cost)      | 新增         |  PD 中内置的 [Resource Control](/tidb-resource-control.md) 相关配置项。用于设置 CPU 转换成 RU 的基准系数。默认值为 `1/3`。 |
 | PD         |  [`write-base-cost`](/pd-configuration-file.md#write-base-cost)      | 新增         |  PD 中内置的 [Resource Control](/tidb-resource-control.md) 相关配置项。用于设置每次写请求转换成 RU 的基准系数。默认值为 `1`。 |
 | PD         |  [`write-cost-per-byte`](/pd-configuration-file.md#write-cost-per-byte)      | 新增         |  PD 中内置的 [Resource Control](/tidb-resource-control.md) 相关配置项。用于设置写流量转换成 RU 的基准系数。默认值为 `1/1024`。 |
-| TiFlash | [`flash.disaggregated_mode`](tiflash/tiflash-disaggregated-and-s3.md) |  新增  | 在 TiFlash 的存算分离架构中，表示此 TiFlash 节点是 Write Node 还是 Compute Node。可选值为 `tiflash_write` 或者 `tiflash_compute`。 |
-| TiFlash | [`storage.s3.endpoint`](tiflash/tiflash-disaggregated-and-s3.md) |  新增  | S3 的 endpoint 地址。 |
-| TiFlash | [`storage.s3.bucket`](tiflash/tiflash-disaggregated-and-s3.md) |  新增  | TiFlash 的所有数据存储的 bucket。 |
-| TiFlash | [`storage.s3.root`](tiflash/tiflash-disaggregated-and-s3.md) |  新增  | S3 bucket 中数据存储的根目录。 |
-| TiFlash | [`storage.s3.access_key_id`](tiflash/tiflash-disaggregated-and-s3.md) |  新增  | 访问 S3 的 ACCESS_KEY_ID。 |
-| TiFlash | [`storage.s3.secret_access_key`](tiflash/tiflash-disaggregated-and-s3.md) |  新增  | 访问 S3 的 SECRET_ACCESS_KEY。 |
-| TiFlash | [`storage.remote.cache.dir`](tiflash/tiflash-disaggregated-and-s3.md) |  新增  | TiFlash Compute Node 的本地数据缓存目录。 |
-| TiFlash | [`storage.remote.cache.capacity`](tiflash/tiflash-disaggregated-and-s3.md) |  新增  | TiFlash Compute Node 的本地数据缓存目录的大小。 |
+| TiFlash | [`flash.disaggregated_mode`](/tiflash/tiflash-disaggregated-and-s3.md) |  新增  | 在 TiFlash 的存算分离架构中，表示此 TiFlash 节点是 Write Node 还是 Compute Node。可选值为 `tiflash_write` 或者 `tiflash_compute`。 |
+| TiFlash | [`storage.s3.endpoint`](/tiflash/tiflash-disaggregated-and-s3.md) |  新增  | S3 的 endpoint 地址。 |
+| TiFlash | [`storage.s3.bucket`](/tiflash/tiflash-disaggregated-and-s3.md) |  新增  | TiFlash 的所有数据存储的 bucket。 |
+| TiFlash | [`storage.s3.root`](/tiflash/tiflash-disaggregated-and-s3.md) |  新增  | S3 bucket 中数据存储的根目录。 |
+| TiFlash | [`storage.s3.access_key_id`](/tiflash/tiflash-disaggregated-and-s3.md) |  新增  | 访问 S3 的 ACCESS_KEY_ID。 |
+| TiFlash | [`storage.s3.secret_access_key`](/tiflash/tiflash-disaggregated-and-s3.md) |  新增  | 访问 S3 的 SECRET_ACCESS_KEY。 |
+| TiFlash | [`storage.remote.cache.dir`](/tiflash/tiflash-disaggregated-and-s3.md) |  新增  | TiFlash Compute Node 的本地数据缓存目录。 |
+| TiFlash | [`storage.remote.cache.capacity`](/tiflash/tiflash-disaggregated-and-s3.md) |  新增  | TiFlash Compute Node 的本地数据缓存目录的大小。 |
 | TiDB Lightning   | [`add-index-by-sql`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-task)       |    新增     |  控制 Physical Import Mode 是否通过 SQL 方式添加索引。默认为 `false`，表示 TiDB Lightning 会将行数据以及索引数据都编码成 KV pairs 后一同导入 TiKV，实现机制和历史版本保持一致。通过 SQL 方式添加索引的优点是将导入数据与导入索引分开，可以快速导入数据，即使导入数据后，索引添加失败，也不会影响数据的一致性。        |
 | TiCDC      | [`enable-table-across-nodes`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-配置文件说明)          |   新增    |    将表按 Region 个数划分成多个同步范围，这些范围可由多个 TiCDC 节点同步。    |
 | TiCDC      | [`region-threshold`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-配置文件说明)    | 新增         | 开启了 `enable-table-across-nodes` 后，该功能只对 Region 个数大于 `region-threshold` 值的表生效。      |
