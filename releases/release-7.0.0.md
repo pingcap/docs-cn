@@ -379,10 +379,6 @@ TiDB 版本：7.0.0
 | DM | [`compress-kv-pairs`](/dm/task-configuration-file-full.md#完整配置文件示例)  | 新增 | 配置 dm-worker 向 TiKV 发送 KV 数据时是否启用压缩，可配置 `"gzip"`，默认为空表示不压缩。 |
 | DM | [`pd-addr`](/dm/task-configuration-file-full.md#完整配置文件示例)  | 新增 | 配置 Physical Import 时连接下游 PD server 的地址，填一个或多个均可。配置项为空时，默认使用 TiDB 中查询到的 PD 地址信息。 |
 
-### 其他
-
-## 废弃功能
-
 ## 改进提升
 
 + TiDB
