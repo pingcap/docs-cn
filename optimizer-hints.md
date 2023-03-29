@@ -1,6 +1,5 @@
 ---
 title: Optimizer Hints
-aliases: ['/docs-cn/dev/optimizer-hints/','/docs-cn/dev/reference/performance/optimizer-hints/']
 ---
 
 # Optimizer Hints
@@ -20,7 +19,7 @@ TiDB 支持 Optimizer Hints 语法，它基于 MySQL 5.7 中介绍的类似 comm
 > ```sql
 > tidb> SELECT /*+ HASH_JOIN(t2, t) */ * FROM t, test2.t2;
 > Empty set, 1 warning (0.00 sec)
-> 
+>
 > tidb> SHOW WARNINGS;
 > +---------+------+-------------------------------------------------------------------------------------------------------------------------------------------------------+
 > | Level   | Code | Message                                                                                                                                               |
@@ -31,10 +30,10 @@ TiDB 支持 Optimizer Hints 语法，它基于 MySQL 5.7 中介绍的类似 comm
 >
 > tidb> SELECT /*+ HASH_JOIN(test2.t2, t) */ * FROM t, test2.t2;
 > Empty set (0.00 sec)
-> 
+>
 > tidb> SELECT /*+ READ_FROM_STORAGE(TIFLASH[test1.t1,test2.t2]) */ t1.a FROM test1.t t1, test2.t t2 WHERE t1.a = t2.a;
 > Empty set (0.00 sec)
-> 
+>
 > ```
 >
 > 本文档中后续示例演示部分，皆是同一个数据库范围内的表。如果你使用的表不在同一个数据库内，请参照指示显式指定数据库名。
@@ -404,7 +403,7 @@ SELECT /*+ IGNORE_INDEX(t1, idx1, idx2) */ * FROM t t1;
 
 > **警告：**
 >
-> 这个 hint 有可能会导致 SQL 语句报错，建议先进行测试。如果测试时发生报错，请移除该 Hint。如果测试时运行正常，则可以继续使用。 
+> 这个 hint 有可能会导致 SQL 语句报错，建议先进行测试。如果测试时发生报错，请移除该 Hint。如果测试时运行正常，则可以继续使用。
 
 此 hint 通常应用在下面这种场景中：
 
@@ -428,7 +427,7 @@ EXPLAIN SELECT /*+ ORDER_INDEX(t, a) */ a FROM t ORDER BY a LIMIT 10;
 
 > **注意：**
 >
-> - 如果查询本身并不需要按顺序读取索引，即在不使用 Hint 的前提下，优化器在任何情况下都不会生成按顺序读取索引的计划。此时，如果指定了 `ORDER_INDEX` Hint，会出现报错 `Can't find a proper physical plan for this query`，此时应考虑移除对应的 `ORDER_INDEX` Hint。 
+> - 如果查询本身并不需要按顺序读取索引，即在不使用 Hint 的前提下，优化器在任何情况下都不会生成按顺序读取索引的计划。此时，如果指定了 `ORDER_INDEX` Hint，会出现报错 `Can't find a proper physical plan for this query`，此时应考虑移除对应的 `ORDER_INDEX` Hint。
 >
 > - 分区表上的索引无法支持按顺序读取，所以不应该对分区表及其相关的索引使用 `ORDER_INDEX` Hint。
 
@@ -554,7 +553,7 @@ SHOW WARNINGS;
 
 ### MERGE()
 
-在含有[公共表表达式](/develop/dev-guide-use-common-table-expression.md)的查询中使用 `MERGE()` hint，可关闭对当前子查询的物化过程，并将内部查询的内联展开到外部查询。该 hint 适用于非递归的公共表表达式查询，在某些场景下，使用该 hint 会比默认分配一块临时空间的语句执行效率更高。例如将外部查询的条件下推或在嵌套的 CTE 查询中： 
+在含有[公共表表达式](/develop/dev-guide-use-common-table-expression.md)的查询中使用 `MERGE()` hint，可关闭对当前子查询的物化过程，并将内部查询的内联展开到外部查询。该 hint 适用于非递归的公共表表达式查询，在某些场景下，使用该 hint 会比默认分配一块临时空间的语句执行效率更高。例如将外部查询的条件下推或在嵌套的 CTE 查询中：
 
 {{< copyable "sql" >}}
 
@@ -569,10 +568,10 @@ WITH CTE1 AS (SELECT * FROM t1), CTE2 AS (WITH CTE3 AS (SELECT /*+ MERGE() */ * 
 > **注意：**
 >
 > `MERGE()` 只适用于简单的 CTE 查询，在以下情况下无法使用该 hint：
-> 
+>
 > - [递归的 CTE 查询](/develop/dev-guide-use-common-table-expression.md#递归的-cte)
 > - 子查询中有无法进行内联展开的部分，例如聚合算子、窗口函数以及 `DINSTINCT` 等
-> 
+>
 > 当 CTE 引用次数过多时，查询性能可能低于默认的物化方式。
 
 ## 全局生效的 Hint

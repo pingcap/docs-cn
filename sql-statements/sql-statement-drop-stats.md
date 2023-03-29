@@ -1,7 +1,6 @@
 ---
 title: DROP STATS
 summary: TiDB 数据库中 DROP STATS 的使用概况。
-aliases: ['/docs-cn/dev/sql-statements/sql-statement-drop-stats/']
 ---
 
 # DROP STATS
@@ -12,7 +11,7 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-drop-stats/']
 
 ```ebnf+diagram
 DropStatsStmt ::=
-    'DROP' 'STATS' TableNameList 
+    'DROP' 'STATS' TableNameList
 
 TableNameList ::=
     TableName ( ',' TableName )*

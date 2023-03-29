@@ -1,7 +1,6 @@
 ---
 title: INSPECTION_SUMMARY
 summary: 了解 TiDB 系统表 `INSPECTION_SUMMARY`。
-aliases: ['/docs-cn/dev/system-tables/system-table-inspection-summary/','/docs-cn/dev/reference/system-databases/inspection-summary/','/zh/tidb/dev/system-table-inspection-summary/']
 ---
 
 # INSPECTION_SUMMARY
@@ -53,7 +52,7 @@ DESC inspection_summary;
 以下为一个例子，对比以下两个时间段，读系统链路的监控项:
 
 * `(2020-01-16 16:00:54.933, 2020-01-16 16:10:54.933)`
-* `(2020-01-16 16:10:54.933, 2020-01-16 16:20:54.933)` 
+* `(2020-01-16 16:10:54.933, 2020-01-16 16:20:54.933)`
 
 {{< copyable "sql" >}}
 

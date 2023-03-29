@@ -1,7 +1,6 @@
 ---
 title: CREATE [GLOBAL|SESSION] BINDING
 summary: TiDB 数据库中 CREATE [GLOBAL|SESSION] BINDING 的使用概况。
-aliases: ['/docs-cn/dev/sql-statements/sql-statement-create-binding/']
 ---
 
 # CREATE [GLOBAL|SESSION] BINDING
@@ -16,7 +15,7 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-create-binding/']
 
 ```ebnf+diagram
 CreateBindingStmt ::=
-    'CREATE' GlobalScope 'BINDING' ( 'FOR' BindableStmt 'USING' BindableStmt  
+    'CREATE' GlobalScope 'BINDING' ( 'FOR' BindableStmt 'USING' BindableStmt
 |   'FROM' 'HISTORY' 'USING' 'PLAN' 'DIGEST' PlanDigest )
 
 GlobalScope ::=
@@ -31,7 +30,7 @@ BindableStmt ::=
 ## 示例
 
 你可以根据 SQL 或历史执行计划创建绑定。
- 
+
 下面的示例演示如何根据 SQL 创建绑定。
 
 {{< copyable "sql" >}}

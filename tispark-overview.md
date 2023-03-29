@@ -1,7 +1,6 @@
 ---
 title: TiSpark 用户指南
 summary: 使用 TiSpark 一站式解决用户的 HTAP 需求。
-aliases: ['/docs-cn/dev/tispark-overview/','/docs-cn/dev/reference/tispark/','/zh/tidb/dev/get-started-with-tispark/','/docs-cn/dev/get-started-with-tispark/','/docs-cn/dev/how-to/get-started/tispark/']
 ---
 
 # TiSpark 用户指南
@@ -105,14 +104,14 @@ TiSpark 是 Spark 的第三方 jar 包，提供读写 TiKV 的能力。
 - 通过以下步骤从源码构建：
 
   1. 下载 TiSpark 源码：
-  
+
       ```
       git clone https://github.com/pingcap/tispark.git
       cd tisapark
       ```
-  
+
   2. 在 TiSpark 根目录运行如下命令：
-  
+
       ```
       // add -Dmaven.test.skip=true to skip the tests
       mvn clean install -Dmaven.test.skip=true

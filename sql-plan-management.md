@@ -1,6 +1,5 @@
 ---
 title: 执行计划管理 (SPM)
-aliases: ['/docs-cn/dev/sql-plan-management/','/docs-cn/dev/reference/performance/execution-plan-bind/','/docs-cn/dev/execution-plan-binding/']
 ---
 
 # 执行计划管理 (SPM)

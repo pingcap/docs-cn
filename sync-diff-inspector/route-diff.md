@@ -1,6 +1,5 @@
 ---
 title: 不同库名或表名的数据校验
-aliases: ['/docs-cn/dev/sync-diff-inspector/route-diff/','/docs-cn/dev/reference/tools/sync-diff-inspector/route-diff/']
 ---
 
 # 不同库名或表名的数据校验
@@ -18,7 +17,7 @@ aliases: ['/docs-cn/dev/sync-diff-inspector/route-diff/','/docs-cn/dev/reference
     password = ""
 
     route-rules = ["rule1"]
-    
+
 [data-sources.tidb0]
     host = "127.0.0.1"
     port = 4000
@@ -46,7 +45,7 @@ target-table = "t_2" # 目标表名
     password = ""
 
     route-rules = ["rule1"]
-    
+
 [data-sources.tidb0]
     host = "127.0.0.1"
     port = 4000
