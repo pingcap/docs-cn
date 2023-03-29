@@ -208,7 +208,7 @@ show warnings;
 | server.max-grpc-send-msg-len | gRPC 可发送的最大消息长度 |
 | server.raft-msg-max-batch-size | 单个 gRPC 消息可包含的最大 Raft 消息个数 |
 | server.simplify-metrics | 精简监控采样数据的开关 |
-| server.snap-io-max-bytes-per-sec | 处理 snapshot 时最大允许使用的磁盘带宽 |
+| server.snap-max-write-bytes-per-sec | 处理 snapshot 时最大允许使用的磁盘带宽 |
 | server.concurrent-send-snap-limit | 同时发送 snapshot 的最大个数 |
 | server.concurrent-recv-snap-limit | 同时接受 snapshot 的最大个数 |
 | storage.block-cache.capacity | 共享 block cache 的大小（自 v4.0.3 起支持） |

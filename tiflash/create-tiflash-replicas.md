@@ -139,7 +139,7 @@ SELECT TABLE_NAME FROM information_schema.tables where TABLE_SCHEMA = "<db_name>
 
    ```sql
    -- 这两个参数默认值都为 100MiB，即用于副本同步的快照最大占用的磁盘带宽不超过 100MiB/s。
-   SET CONFIG tikv `server.snap-io-max-bytes-per-sec` = '300MiB';
+   SET CONFIG tikv `server.snap-max-write-bytes-per-sec` = '300MiB';
    SET CONFIG tiflash `raftstore-proxy.server.snap-max-write-bytes-per-sec` = '300MiB';
    ```
 
@@ -178,7 +178,7 @@ SELECT TABLE_NAME FROM information_schema.tables where TABLE_SCHEMA = "<db_name>
    执行以下 SQL 语句可恢复默认的数据快照写入速度：
 
    ```sql
-   SET CONFIG tikv `server.snap-io-max-bytes-per-sec` = '100MiB';
+   SET CONFIG tikv `server.snap-max-write-bytes-per-sec` = '100MiB';
    SET CONFIG tiflash `raftstore-proxy.server.snap-max-write-bytes-per-sec` = '100MiB';
    ```
 
