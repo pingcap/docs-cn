@@ -24,11 +24,11 @@ In v7.0.0-DMR, the key new features and improvements are as follows:
 <tbody>
   <tr>
     <td rowspan="2">Scalability and Performance<br/></td>
-    <td>Session level non-prepared SQL plan cache (experimental)</td>
+    <td>Session level <a href="https://docs.pingcap.com/tidb/v7.0/sql-non-prepared-plan-cache" target="_blank">non-prepared SQL plan cache</a> (experimental)</td>
     <td>Support automatically reusing plan cache at the session level to reduce compilation and shorten the query time for the same SQL patterns without manually setting prepare statements in advance.</td>
   </tr>
   <tr>
-    <td>TiFlash supports the disaggregated storage and compute architecture and S3 shared storage (experimental)</td>
+    <td>TiFlash supports the <a href="https://docs.pingcap.com/tidb/v7.0/tiflash-disaggregated-and-s3" target="_blank">disaggregated storage and compute architecture and S3 shared storage</a> (experimental)</td>
     <td>TiFlash introduces a cloud-native architecture as an option:
       <ul>
         <li>Disaggregates TiFlash's compute and storage, which is a milestone for elastic HTAP resource utilization.</li>
@@ -38,29 +38,29 @@ In v7.0.0-DMR, the key new features and improvements are as follows:
   </tr>
   <tr>
     <td rowspan="2">Reliability and Availability<br/></td>
-    <td>Resource control enhancement (experimental) </td>
+    <td><a href="https://docs.pingcap.com/tidb/v7.0/tidb-resource-control" target="_blank">Resource control enhancement</a> (experimental) </td>
     <td>Support using resource groups to allocate and isolate resources for various applications or workloads within one cluster. In this release, TiDB adds support for different resource binding modes (user, session, and statement levels) and user-defined priorities. Additionally, you can also use commands to perform resource calibration (estimation for the whole resource amount).</td>
   </tr>
   <tr>
-    <td>TiFlash supports spill to disk</td>
+    <td>TiFlash supports <a href="https://docs.pingcap.com/tidb/v7.0/tiflash-spill-disk" target="_blank">spill to disk</a></td>
     <td>TiFlash supports intermediate result spill to disk to mitigate OOMs in data-intensive operations such as aggregations, sorts, and hash joins.</td>
   </tr>
   <tr>
     <td rowspan="2">SQL</td>
-    <td>Row-level TTL (GA)</td>
+    <td><a href="https://docs.pingcap.com/tidb/v7.0/time-to-live" target="_blank">Row-level TTL</a> (GA)</td>
     <td>Support managing database size and improve performance by automatically expiring data of a certain age.</td>
   </tr>
   <tr>
-    <td>Reorganize <code>LIST</code>/<code>RANGE</code> partition</td>
+    <td><a href="https://docs.pingcap.com/tidb/v7.0/partitioned-table#reorganize-partitions" target="_blank">Reorganize <code>LIST</code>/<code>RANGE</code> partition</a></td>
     <td>The <code>REORGANIZE PARTITION</code> statement can be used for merging adjacent partitions or splitting one partition into many, which provides better usability of partitioned tables.</td>
   </tr>
   <tr>
     <td rowspan="2">DB Operations and Observability<br/></td>
-    <td>The <code>LOAD DATA</code> statement integrates with TiDB Lightning (experimental) </td>
+    <td><a href="https://docs.pingcap.com/tidb/v7.0/sql-statement-load-data" target="_blank">The <code>LOAD DATA</code> statement integrates with TiDB Lightning</a> (experimental)</td>
     <td>The <code>LOAD DATA</code> SQL statement becomes more powerful by integrating TiDB Lightning's logical import mode, such as supporting data import from S3/GCS and supporting task management.<br/></td>
   </tr>
   <tr>
-    <td>TiCDC supports object storage sink (GA)</td>
+    <td>TiCDC supports <a href="https://docs.pingcap.com/tidb/v7.0/ticdc-sink-to-cloud-storage" target="_blank">object storage sink</a> (GA)</td>
     <td>TiCDC supports replicating row change events to object storage services, including Amazon S3, GCS, Azure Blob Storage, and NFS.<br/></td>
   </tr>
 </tbody>
