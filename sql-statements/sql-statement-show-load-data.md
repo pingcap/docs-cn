@@ -7,6 +7,10 @@ summary: TiDB 数据库中 SHOW LOAD DATA 的使用概况。
 
 `SHOW LOAD DATA` 语句用于显示系统中创建的 LOAD DATA 任务。该语句只能显示由当前用户创建的任务。
 
+> **警告：**
+>
+> 当前该功能为实验特性，不建议在生产环境中使用。
+
 ## 语法图
 
 ```ebnf+diagram
