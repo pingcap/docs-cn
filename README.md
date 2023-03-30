@@ -40,3 +40,7 @@
 ## 贡献者数量增长图
 
 [![Contributor over time](https://contributor-graph-api.apiseven.com/contributors-svg?chart=contributorOverTime&repo=pingcap/docs-cn)](https://www.apiseven.com/en/contributor-graph?chart=contributorOverTime&repo=pingcap/docs-cn)
+
+## License
+
+自 TiDB v7.0 起，所有文档的许可证均为 [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/)。
