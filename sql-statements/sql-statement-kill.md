@@ -41,7 +41,7 @@ SHOW PROCESSLIST;
 SELECT ID, USER, INSTANCE, INFO FROM INFORMATION_SCHEMA.CLUSTER_PROCESSLIST;
 ```
 
-```
+```sql
 +---------------------+------+-----------------+-----------------------------------------------------------------------------+
 | ID | USER | INSTANCE | INFO |
 +---------------------+------+-----------------+-----------------------------------------------------------------------------+
@@ -50,11 +50,9 @@ SELECT ID, USER, INSTANCE, INFO FROM INFORMATION_SCHEMA.CLUSTER_PROCESSLIST;
 +---------------------+------+-----------------+-------------------------------------------------------------
 2 rows in set (0.00 sec)
 
-```
-
 连接到与被 kill 的会话相同的 TiDB 节点，执行 `KILL TIDB` 语句。
 
-```
+```shell
 mysql -h127.0.0.1 -P10080 -uroot -p
 ```
 
