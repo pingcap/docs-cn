@@ -9,6 +9,10 @@ The `CANCEL LOAD DATA` statement cancels a LOAD DATA job created in the system.
 
 The `DROP LOAD DATA` statement deletes a LOAD DATA job created in the system.
 
+> **Warning:**
+>
+> For the current version, this feature is still experimental. It is not recommended to use it in a production environment.
+
 <CustomContent platform="tidb-cloud">
 
 > **Note:**

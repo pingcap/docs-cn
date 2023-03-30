@@ -7,6 +7,10 @@ summary: An overview of the usage of SHOW LOAD DATA for the TiDB database.
 
 The `SHOW LOAD DATA` statement displays LOAD DATA jobs created in the system. This statement can only display jobs created by the current user.
 
+> **Warning:**
+>
+> For the current version, this feature is still experimental. It is not recommended to use it in a production environment.
+
 <CustomContent platform="tidb-cloud">
 
 > **Note:**
