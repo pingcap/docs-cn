@@ -38,7 +38,7 @@ TiDB 版本：7.0.0
   </tr>
   <tr>
     <td rowspan="2">稳定性与高可用</td>
-    <td>增强了资源管控特性（实验特性）</td>
+    <td>增强了资源管控（实验特性）</td>
     <td>支持使用资源组来为一个集群中的不同应用或工作负载分配和隔离资源。在这个版本中，TiDB 增加了对不同资源的绑定模式（用户级、会话级、语句级）和用户定义的优先级的支持，你还可以使用命令来对集群整体资源量进行预估。</td>
   </tr>
   <tr>
@@ -254,13 +254,13 @@ TiDB 版本：7.0.0
     - 支持 TiDB 语法高亮，如 `PESSIMISTIC`、`OPTIMISTIC`、`AUTO_RANDOM`、`PLACEMENT`、`POLICY`、`REORGANIZE`、`EXCHANGE`、`CACHE`、`NONCLUSTERED`、`CLUSTERED` 等。
     - 支持 TiDB 函数高亮，如 `TIDB_BOUNDED_STALENESS`、`TIDB_DECODE_KEY`、`TIDB_DECODE_PLAN`、`TIDB_IS_DDL_OWNER`、`TIDB_PARSE_TSO`、`TIDB_VERSION`、`TIDB_DECODE_SQL_DIGESTS`、`TIDB_SHARD` 等。
 
-    更多信息，请参考 [DBeaver 用户文档](https://github.com/dbeaver/dbeaver/wiki)。
+  更多信息，请参考 [DBeaver 用户文档](https://github.com/dbeaver/dbeaver/wiki)。
 
 ### 数据迁移
 
 * `LOAD DATA` 语句集成 TiDB Lightning，你可以使用 `LOAD DATA` 语句完成原先需要使用 TiDB Lightning 才能完成的数据导入任务 [#40499](https://github.com/pingcap/tidb/issues/40499) @[lance6716](https://github.com/lance6716)
 
-    在集成 TiDB Lightning 之前，`LOAD DATA` 语句只能用于导入客户端的数据文件，如果你需要从云存储导入数据，不得不借助 TiDB Lightning 来实现。但是单独部署 TiDB Lightning 又会带来额外的部署成本和管理成本。将 TiDB Lightning 逻辑导入能力（Logical Import Mode）集成到 `LOAD DATA` 语句后，不仅可以省去 TiDB Lightning 的部署和管理成本，还可以借助 TiDB Lightning 的功能极大扩展 `LOAD DATA` 语句的能力。部分扩展的功能举例说明如下：
+    在集成 TiDB Lightning 之前，`LOAD DATA` 语句只能用于导入客户端的数据文件，如果你需要从云存储导入数据，不得不借助 TiDB Lightning 来实现。但是单独部署 TiDB Lightning 又会带来额外的部署成本和管理成本。将 TiDB Lightning 逻辑导入能力 (Logical Import Mode) 集成到 `LOAD DATA` 语句后，不仅可以省去 TiDB Lightning 的部署和管理成本，还可以借助 TiDB Lightning 的功能极大扩展 `LOAD DATA` 语句的能力。部分扩展的功能举例说明如下：
 
     - 支持从 Amazon S3 和 Google Cloud Storage 导入数据到 TiDB，且支持使用通配符一次性匹配多个源文件导入到 TiDB。
     - 支持 `DEFINED NULL BY` 来定义 null。
@@ -268,11 +268,11 @@ TiDB 版本：7.0.0
     - 支持将任务设置为 `Detached`，让任务在后台执行。
     - 支持任务管理，可通过 `SHOW LOAD DATA jobid` 查询任务状态和进展详情，方便管理和维护。
 
-    更多信息，请参考[用户文档](/sql-statements/sql-statement-load-data.md)。
+  更多信息，请参考[用户文档](/sql-statements/sql-statement-load-data.md)。
 
 * TiDB Lightning 向 TiKV 传输键值对时支持启用压缩传输 [#41163](https://github.com/pingcap/tidb/issues/41163) @[gozssky](https://github.com/gozssky)
 
-    自 v7.0.0 起，TiDB Lightning 正式支持将本地编码排序后的键值对在网络传输时进行压缩再发送到 TiKV，从而减少网络传输的数据量，降低 50% ~ 80% 网络带宽开销。在 v6.6.0 版本之前不支持该功能，在数据量较大的情况下，TiDB Lightning 对网络带宽要求相对较高，且会产生较高的流量费。相比 v6.6.0, v7.0.0 优化了压缩算法，能以更快的速度将数据导入到 TiKV 中。同样是开启压缩选项，v6.6.0 会增加 2 倍导入时间，而 v7.0.0 只会增加大约 60% 时间。以上的压缩率和导入时长仅供参考，不同的使用场景会有差异。
+     自 v7.0.0 起，TiDB Lightning 正式支持将本地编码排序后的键值对在网络传输时进行压缩再发送到 TiKV，从而减少网络传输的数据量，降低 50% ~ 80% 网络带宽开销。在 v6.6.0 版本之前不支持该功能，在数据量较大的情况下，TiDB Lightning 对网络带宽要求相对较高，且会产生较高的流量费。相比 v6.6.0, v7.0.0 优化了压缩算法，能以更快的速度将数据导入到 TiKV 中。同样是开启压缩选项，v6.6.0 会增加 2 倍导入时间，而 v7.0.0 只会增加大约 60% 时间。以上的压缩率和导入时长仅供参考，不同的使用场景会有差异。
 
     该功能默认关闭，你可以通过将 TiDB Lightning 配置项 `compress-kv-pairs` 设置为 `"gzip"` 或者 `"gz"` 开启此功能。
 
