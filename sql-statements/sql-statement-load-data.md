@@ -8,6 +8,10 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-load-data/','/docs-cn/dev/r
 
 `LOAD DATA` 语句用于将数据批量加载到 TiDB 表中。
 
+> **警告：**
+>
+> 当前该功能为实验特性，不建议在生产环境中使用。
+
 ## 语法图
 
 ```ebnf+diagram
