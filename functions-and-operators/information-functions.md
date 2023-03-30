@@ -13,6 +13,7 @@ TiDB 支持使用 MySQL 5.7 中提供的大部分[信息函数](https://dev.mysq
 | ------ | ---------------------------------------- |
 | [`BENCHMARK()`](https://dev.mysql.com/doc/refman/5.7/en/information-functions.html#function_benchmark) | 循环执行一个表达式 |
 | [`CONNECTION_ID()`](https://dev.mysql.com/doc/refman/5.7/en/information-functions.html#function_connection-id) | 返回当前连接的连接 ID (线程 ID)                     |
+| `CURRENT_RESOURCE_GROUP()` | 返回当前连接的资源组名 |
 | [`CURRENT_USER()`, `CURRENT_USER`](https://dev.mysql.com/doc/refman/5.7/en/information-functions.html#function_current-user) | 返回当前用户的用户名和主机名                           |
 | [`DATABASE()`](https://dev.mysql.com/doc/refman/5.7/en/information-functions.html#function_database) | 返回默认(当前)的数据库名                            |
 | [`FOUND_ROWS()`](https://dev.mysql.com/doc/refman/5.7/en/information-functions.html#function_found-rows) | 该函数返回对于一个包含 LIMIT 的 SELECT 查询语句，在不包含 LIMIT 的情况下回返回的记录数 |

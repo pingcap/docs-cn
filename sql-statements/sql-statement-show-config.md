@@ -6,10 +6,6 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-show-config/']
 
 # SHOW CONFIG
 
-> **警告：**
->
-> 当前该功能为实验特性，不建议在生产环境中使用。
-
 `SHOW CONFIG` 语句用于展示 TiDB 各个组件当前正在应用的配置，请注意，配置与系统变量作用于不同维度，请不要混淆，如果希望获取系统变量信息，请使用 [SHOW VARIABLES](/sql-statements/sql-statement-show-variables.md) 语法。
 
 ## 语法图
