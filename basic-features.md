@@ -191,7 +191,7 @@ summary: 了解 TiDB 的功能概览。
 | [快速导入 (TiDB Lightning)](/tidb-lightning/tidb-lightning-overview.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y |
 | mydumper 逻辑导出 | 已废弃 | 已废弃 | 已废弃 | 已废弃 | 已废弃 | 已废弃 | 已废弃 | 已废弃 | 已废弃 | 已废弃 |
 | [Dumpling 逻辑导出](/dumpling-overview.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y |
-| [事务 `LOAD DATA`](/sql-statements/sql-statement-load-data.md) | E | Y | Y | Y | Y | Y | Y | Y | Y | N [^5] |
+| [事务 `LOAD DATA`](/sql-statements/sql-statement-load-data.md) | E [^5] | Y | Y | Y | Y | Y | Y | Y | Y | N [^6] |
 | [数据迁移工具](/migration-overview.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y |
 | [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y |
 | [Change data capture (CDC)](/ticdc/ticdc-overview.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y |
@@ -240,4 +240,6 @@ summary: 了解 TiDB 的功能概览。
 
 [^4]: 从 [TiDB v6.4.0](/releases/release-6.4.0.md) 开始，支持[高性能、全局单调递增的 `AUTO_INCREMENT` 列](/auto-increment.md#mysql-兼容模式)
 
-[^5]: 对于 TiDB v4.0，事务 `LOAD DATA` 不保证原子性。
+[^5]: 从 [TiDB v7.0.0](/releases/release-7.0.0.md) 开始，新增参数 `FORMAT`、`FIELDS DEFINED NULL BY`、`With batch_size=<number>,detached`，以及新增支持从 S3 和 GCS 导入数据，均为实验特性。
+
+[^6]: 对于 TiDB v4.0，事务 `LOAD DATA` 不保证原子性。
