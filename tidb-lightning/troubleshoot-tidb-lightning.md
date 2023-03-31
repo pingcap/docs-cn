@@ -48,7 +48,7 @@ strict-format = true
 
 不推荐在命令行中直接使用 `nohup` 启动进程，推荐[使用脚本启动 `tidb-lightning`](/tidb-lightning/deploy-tidb-lightning.md)。
 
-另外，如果从 TiDB Lightning 的 log 的最后一条日志显示遇到的错误是 "Context canceled"，需要在日志中搜索第一条 "ERROR" 级别的日志。在这条日志之前，通常也会紧跟有一条 "got signal to exit"，表示 Lighting 是收到中断信号然后退出的。
+另外，如果从 TiDB Lightning 的 log 的最后一条日志显示遇到的错误是 "Context canceled"，需要在日志中搜索第一条 "ERROR" 级别的日志。在这条日志之前，通常也会紧跟有一条 "got signal to exit"，表示 Lightning 是收到中断信号然后退出的。
 
 ## 使用 TiDB Lightning 后，TiDB 集群变慢，CPU 占用高
 
