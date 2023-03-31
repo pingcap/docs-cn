@@ -75,8 +75,6 @@ DROP TABLE IF EXISTS table_not_exists;
 Query OK, 0 rows affected, 1 warning (0.01 sec)
 ```
 
-{{< copyable "sql" >}}
-
 ```sql
 SHOW WARNINGS;
 ```
