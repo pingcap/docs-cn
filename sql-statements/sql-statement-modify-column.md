@@ -169,13 +169,6 @@ CREATE TABLE `t1` (
 
 ## MySQL 兼容性
 
-* 不支持使用单个 `ALTER TABLE` 语句修改多个列，例如：
-
-    ```sql
-    ALTER TABLE t1 MODIFY col1 BIGINT, MODIFY id BIGINT NOT NULL;
-    ERROR 1105 (HY000): Unsupported multi schema change
-    ```
-
 * 不支持修改主键列上需要 Reorg-Data 的类型，但是支持修改 Meta-Only 的类型。例如：
 
     ```sql

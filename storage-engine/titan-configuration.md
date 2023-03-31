@@ -45,7 +45,7 @@ Titan 对 RocksDB 兼容，也就是说，使用 RocksDB 存储引擎的现有 T
 
 > **警告：**
 >
-> 在不开启 Titan 功能的情况下，RocksDB 无法读取已经迁移到 Titan 的数据。如果在打开过 Titan 的 TiKV 实例上错误地关闭了 Titan（误设置 `rocksdb.titan.enabled = false`），启动 TiKV 会失败，TiKV log 中出现 `You have disabled titan when its data directory is not empty` 错误。如需要关闭 Titan，参考[关闭 Titan](#关闭-titan实验功能) 一节。
+> 在不开启 Titan 功能的情况下，RocksDB 无法读取已经迁移到 Titan 的数据。如果在打开过 Titan 的 TiKV 实例上错误地关闭了 Titan（误设置 `rocksdb.titan.enabled = false`），启动 TiKV 会失败，TiKV log 中出现 `You have disabled titan when its data directory is not empty` 错误。如需要关闭 Titan，参考[关闭 Titan](#关闭-titan) 一节。
 
 ## 相关参数介绍
 
@@ -87,7 +87,7 @@ Titan 对 RocksDB 兼容，也就是说，使用 RocksDB 存储引擎的现有 T
     blob-cache-size = 0
     ```
 
-+ 当一个 blob file 中无用数据（相应的 key 已经被更新或删除）比例超过以下阈值时，将会触发 Titan GC 。
++ 当一个 blob file 中无用数据（相应的 key 已经被更新或删除）比例超过以下阈值时，将会触发 Titan GC。
 
     ```toml
     discardable-ratio = 0.5
@@ -110,7 +110,7 @@ Titan 对 RocksDB 兼容，也就是说，使用 RocksDB 存储引擎的现有 T
     rate-bytes-per-sec = 0
     ```
 
-## 关闭 Titan（实验功能）
+## 关闭 Titan
 
 通过设置 `rocksdb.defaultcf.titan.blob-run-mode` 参数可以关闭 Titan。`blob-run-mode` 可以设置为以下几个值之一：
 
@@ -118,11 +118,33 @@ Titan 对 RocksDB 兼容，也就是说，使用 RocksDB 存储引擎的现有 T
 - 当设置为 `read-only` 时，新写入的 value 不论大小均会写入 RocksDB。
 - 当设置为 `fallback` 时，新写入的 value 不论大小均会写入 RocksDB，并且当 RocksDB 进行 compaction 时，会自动把所碰到的存储在 Titan blob file 中的 value 移回 RocksDB。
 
-当需要关闭 Titan 时，可以设置 `blob-run-mode = "fallback"`，并通过 tikv-ctl 执行全量 compaction。此后通过监控确认 blob file size 降到 `0` 以后，可以更改 `rocksdb.titan.enabled = false` 并重启 TiKV。
+如果现有数据和未来数据均不再需要 Titan，可执行以下步骤完全关闭 Titan：
 
-> **警告：**
->
-> 关闭 Titan 是实验性功能，非必要不建议使用。
+1. 更新需要关闭 Titan 的 TiKV 节点的配置。你可以通过以下两种方式之一更新 TiKV 配置：
+
+    - 执行 `tiup cluster edit-config`，编辑配置文件，再执行 `tiup cluster reload -R tikv`。
+    - 手动修改 TiKV 配置文件，然后重启 TiKV。
+
+    ```toml
+    [rocksdb.defaultcf.titan]
+    blob-run-mode = "fallback"
+    discardable-ratio = 1.0
+    ```
+
+2. 使用 `tikv-ctl` 执行全量数据整理 (Compaction)。这一步骤将消耗大量 I/O 和 CPU 资源。
+
+    ```bash
+    tikv-ctl --pd <PD_ADDR> compact-cluster --bottommost force
+    ```
+
+3. 数据整理结束后，通过 **TiKV-Details**/**Titan - kv** 监控面板确认 **Blob file count** 指标降为 0。
+
+4. 更新 TiKV 节点的配置，关闭 Titan。
+
+    ```toml
+    [rocksdb.titan]
+    enabled = false
+    ```
 
 ## Level Merge（实验功能）
 

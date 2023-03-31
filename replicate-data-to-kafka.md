@@ -8,11 +8,11 @@ aliases: ['/zh/tidb/dev/replicate-incremental-data-to-kafka/']
 
 本文档介绍如何使用 [TiCDC](/ticdc/ticdc-overview.md) 将 TiDB 的数据同步到 Apache Kafka。主要包含以下内容：
 
-- 快速搭建 TiCDC 集群、Kafka 集群和 Flink 集群
-- 创建 changefeed，将 TiDB 增量数据输出至 Kafka
-- 使用 go-tpc 写入数据到上游 TiDB
-- 使用 Kafka console consumer 观察数据被写入到指定的 Topic
-- （可选）配置 Flink 集群消费 Kafka 内数据，实现 TiDB 与 Flink 的数据集成
+1. 快速搭建 TiCDC 集群、Kafka 集群和 Flink 集群
+2. 创建 changefeed，将 TiDB 增量数据输出至 Kafka
+3. 使用 go-tpc 写入数据到上游 TiDB
+4. 使用 Kafka console consumer 观察数据被写入到指定的 Topic
+5. （可选）配置 Flink 集群消费 Kafka 内数据
 
 上述过程将会基于实验环境进行。你也可以参考上述执行步骤，搭建生产级别的集群。
 
@@ -20,7 +20,7 @@ aliases: ['/zh/tidb/dev/replicate-incremental-data-to-kafka/']
 
 1. 部署包含 TiCDC 的 TiDB 集群。
 
-    在实验或测试环境中，可以使用 TiUP Playground 功能，快速部署 TiCDC ，命令如下：
+    在实验或测试环境中，可以使用 TiUP Playground 功能，快速部署 TiCDC，命令如下：
 
     ```shell
     tiup playground --host 0.0.0.0 --db 1 --pd 1 --kv 1 --tiflash 0 --ticdc 1
@@ -53,15 +53,15 @@ aliases: ['/zh/tidb/dev/replicate-incremental-data-to-kafka/']
     ]
     ```
 
-    关于配置文件中 dispatchers 的详细解释，参考[自定义 Kafka Sink 的 Topic 和 Partition 的分发规则](/ticdc/manage-ticdc.md#自定义-kafka-sink-的-topic-和-partition-的分发规则)。
+    关于配置文件中 dispatchers 的详细解释，参考[自定义 Kafka Sink 的 Topic 和 Partition 的分发规则](/ticdc/ticdc-sink-to-kafka.md#自定义-kafka-sink-的-topic-和-partition-的分发规则)。
 
 2. 创建一个 changefeed，将增量数据输出到 Kafka：
 
     ```shell
-    tiup ctl:v6.1.0 cdc changefeed create --pd="http://127.0.0.1:2379" --sink-uri="kafka://127.0.0.1:9092/kafka-topic-name?protocol=canal-json" --changefeed-id="kafka-changefeed" --config="changefeed.conf"
+    tiup ctl:v<CLUSTER_VERSION> cdc changefeed create --server="http://127.0.0.1:8300" --sink-uri="kafka://127.0.0.1:9092/kafka-topic-name?protocol=canal-json" --changefeed-id="kafka-changefeed" --config="changefeed.conf"
     ```
 
-    - 如果命令执行成功，将会返回被创建的 changefeed 的相关信息，包含被创建的 changefeed 的 ID 以及相信信息，内容如下：
+    - 如果命令执行成功，将会返回被创建的 changefeed 的相关信息，包含被创建的 changefeed 的 ID 以及相关信息，内容如下：
 
         ```shell
         Create changefeed successfully!
@@ -74,16 +74,16 @@ aliases: ['/zh/tidb/dev/replicate-incremental-data-to-kafka/']
     生产环境下 Kafka 集群通常有多个 broker 节点，你可以在 sink-uri 中配置多个 broker 的访问地址，这有助于提升 changefeed 到 Kafka 集群访问的稳定性，当部分被配置的 Kafka 节点故障的时候，changefeed 依旧可以正常工作。假设 Kafka 集群中有 3 个 broker 节点，地址分别为 127.0.0.1:9092 / 127.0.0.2:9092 / 127.0.0.3:9092，可以参考如下 sink-uri 创建 changefeed：
 
     ```shell
-    tiup ctl:v6.1.0 cdc changefeed create --pd="http://127.0.0.1:2379" --sink-uri="kafka://127.0.0.1:9092,127.0.0.2:9092,127.0.0.3:9092/kafka-topic-name?protocol=canal-json&partition-num=3&replication-factor=1&max-message-bytes=1048576" --config="changefeed.conf"
+    tiup ctl:v<CLUSTER_VERSION> cdc changefeed create --server="http://127.0.0.1:8300" --sink-uri="kafka://127.0.0.1:9092,127.0.0.2:9092,127.0.0.3:9092/kafka-topic-name?protocol=canal-json&partition-num=3&replication-factor=1&max-message-bytes=1048576" --config="changefeed.conf"
     ```
 
 3. Changefeed 创建成功后，执行如下命令，查看 changefeed 的状态：
 
     ```shell
-    tiup ctl:v6.1.0 cdc changefeed list --pd="http://127.0.0.1:2379"
+    tiup ctl:v<CLUSTER_VERSION> cdc changefeed list --server="http://127.0.0.1:8300"
     ```
 
-    可以参考 [TiCDC 运维操作及任务管理](/ticdc/manage-ticdc.md#管理同步任务-changefeed)，对 changefeed 状态进行管理。
+    可以参考[管理 Changefeed](/ticdc/ticdc-manage-changefeed.md)，对 changefeed 状态进行管理。
 
 ## 第 3 步：写入数据以产生变更日志
 
@@ -102,7 +102,7 @@ aliases: ['/zh/tidb/dev/replicate-incremental-data-to-kafka/']
 
 2. 消费 Kafka Topic 中的数据。
 
-    changefeed 正常运行时，会向 Kafka Topic 写入数据，你可以通过由 Kafka 提供的 kafka-console-consumer.sh, 观测到数据成功被写入到 Kafka Topic 中：
+    changefeed 正常运行时，会向 Kafka Topic 写入数据，你可以通过由 Kafka 提供的 kafka-console-consumer.sh，观测到数据成功被写入到 Kafka Topic 中：
 
     ```shell
     ./bin/kafka-console-consumer.sh --bootstrap-server 127.0.0.1:9092 --from-beginning --topic `${topic-name}`
@@ -120,7 +120,7 @@ aliases: ['/zh/tidb/dev/replicate-incremental-data-to-kafka/']
     - [flink-sql-connector-kafka-1.15.0.jar](https://repo.maven.apache.org/maven2/org/apache/flink/flink-sql-connector-kafka/1.15.0/flink-sql-connector-kafka-1.15.0.jar)
     - [kafka-clients-3.2.0.jar](https://repo.maven.apache.org/maven2/org/apache/kafka/kafka-clients/3.2.0/kafka-clients-3.2.0.jar)
 
-2. 创建 Table。
+2. 创建一个表。
 
     你可以在 Flink 的安装目录执行如下命令，启动 Flink SQL 交互式客户端：
 
@@ -128,7 +128,7 @@ aliases: ['/zh/tidb/dev/replicate-incremental-data-to-kafka/']
     [root@flink flink-1.15.0]# ./bin/sql-client.sh
     ```
 
-    随后，执行如下语句创建 Table：
+    随后，执行如下语句创建一个名为 `tpcc_orders` 的表：
 
     ```sql
     CREATE TABLE tpcc_orders (
@@ -153,7 +153,7 @@ aliases: ['/zh/tidb/dev/replicate-incremental-data-to-kafka/']
 
     请将 `topic` 和 `properties.bootstrap.servers` 参数替换为环境中的实际值。
 
-3. 查询 Table 内容。
+3. 查询表内容。
 
     执行如下命令，查询 `tpcc_orders` 表中的数据：
 

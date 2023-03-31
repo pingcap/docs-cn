@@ -70,7 +70,7 @@ TiDB Lightning 导入数据时，根据导入方式和启用特性等，需要�
    </tr>
    <tr>
       <td>可选</td>
-      <td>checkpoint.driver = “mysql”</td>
+      <td>checkpoint.driver = "mysql"</td>
       <td>checkpoint.schema 设置</td>
       <td>SELECT,INSERT,UPDATE,DELETE,CREATE,DROP</td>
       <td>使用数据库而非文件形式存放 checkpoint 信息时需要</td>
@@ -91,7 +91,7 @@ TiDB Lightning 导入数据时，根据导入方式和启用特性等，需要�
 {{< copyable "sql" >}}
 
 ```sql
-select table_schema,sum(data_length)/1024/1024 as data_length,sum(index_length)/1024/1024 as index_length,sum(data_length+index_length)/1024/1024 as sum from information_schema.tables where table_schema = "${schema_name}" group by table_schema;
+SELECT table_schema, SUM(data_length)/1024/1024 AS data_length, SUM(index_length)/1024/1024 AS index_length, SUM(data_length+index_length)/1024/1024 AS sum FROM information_schema.tables WHERE table_schema = "${schema_name}" GROUP BY table_schema;
 ```
 
 统计最大单表，单位 MiB，注意修改 ${schema_name}
@@ -99,5 +99,5 @@ select table_schema,sum(data_length)/1024/1024 as data_length,sum(index_length)/
 {{< copyable "sql" >}}
 
 ```sql
-select table_name,table_schema,sum(data_length)/1024/1024 as data_length,sum(index_length)/1024/1024 as index_length,sum(data_length+index_length)/1024/1024 as sum from information_schema.tables where table_schema = "${schema_name}" group by table_name,table_schema order by sum  desc limit 5;
+SELECT table_name, table_schema, SUM(data_length)/1024/1024 AS data_length, SUM(index_length)/1024/1024 AS index_length, SUM(data_length+index_length)/1024/1024 AS sum FROM information_schema.tables WHERE table_schema = "${schema_name}" GROUP BY table_name,table_schema ORDER BY sum  DESC LIMIT 5;
 ```

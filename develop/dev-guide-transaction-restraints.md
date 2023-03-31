@@ -16,7 +16,7 @@ TiDB 支持的隔离级别是 RC（Read Committed）与 SI（Snapshot Isolation�
 
 ## SI 可以克服幻读
 
-TiDB 的 SI 隔离级别可以克服幻读异常 (Phantom Reads)，但 ANSI/ISO SQL 标准 中的 RR 不能。
+TiDB 的 SI 隔离级别可以克服幻读异常 (Phantom Reads)，但 ANSI/ISO SQL 标准中的 RR 不能。
 
 所谓幻读是指：事务 A 首先根据条件查询得到 n 条记录，然后事务 B 改变了这 n 条记录之外的 m 条记录或者增添了 m 条符合事务 A 查询条件的记录，导致事务 A 再次发起请求时发现有 n+m 条符合条件记录，就产生了幻读。
 
@@ -32,11 +32,11 @@ TiDB 的 SI 隔离级别不能克服写偏斜异常（Write Skew），需要使�
 
 现在出现这样一种情况，Alice 和 Bob 是两位值班医生。两人都感到不适，所以他们都决定请假。不幸的是，他们恰好在同一时间点击按钮下班。下面用程序来模拟一下这个过程。
 
-<SimpleTab>
+<SimpleTab groupId="language">
 
-<div label="Java" href="write-skew-java">
+<div label="Java" value="java">
 
-{{< copyable "" >}}
+Java 程序示例如下：
 
 ```java
 package com.pingcap.txn.write.skew;
@@ -159,11 +159,9 @@ public class EffectWriteSkew {
 
 </div>
 
-<div label="Golang" href="write-skew-golang">
+<div label="Golang" value="golang">
 
-首先，封装一个用于适配 TiDB 事务的工具包 [util](https://github.com/pingcap-inc/tidb-example-golang/tree/main/util)，随后编写以下代码：
-
-{{< copyable "" >}}
+在 Golang 中，首先，封装一个用于适配 TiDB 事务的工具包 [util](https://github.com/pingcap-inc/tidb-example-golang/tree/main/util)，随后编写以下代码：
 
 ```go
 package main
@@ -333,8 +331,6 @@ func createDoctor(db *sql.DB, id int, name string, onCall bool, shiftID int) err
 
 SQL 日志：
 
-{{< copyable "sql" >}}
-
 ```sql
 /* txn 1 */ BEGIN
     /* txn 2 */ BEGIN
@@ -348,8 +344,6 @@ SQL 日志：
 
 执行结果：
 
-{{< copyable "sql" >}}
-
 ```sql
 mysql> SELECT * FROM doctors;
 +----+-------+---------+----------+
@@ -361,17 +355,17 @@ mysql> SELECT * FROM doctors;
 +----+-------+---------+----------+
 ```
 
-在两个事务中，应用首先检查是否有两个或以上的医生正在值班；如果是的话，它就假定一名医生可以安全地休班。由于数据库使用快照隔离，两次检查都返回 2 ，所以两个事务都进入下一个阶段。Alice 更新自己的记录休班了，而 Bob 也做了一样的事情。两个事务都成功提交了，现在没有医生值班了。违反了至少有一名医生在值班的要求。下图(引用自《Designing Data-Intensive Application》)说明了实际发生的情况：
+在两个事务中，应用首先检查是否有两个或以上的医生正在值班；如果是的话，它就假定一名医生可以安全地休班。由于数据库使用快照隔离，两次检查都返回 2，所以两个事务都进入下一个阶段。Alice 更新自己的记录休班了，而 Bob 也做了一样的事情。两个事务都成功提交了，现在没有医生值班了。违反了至少有一名医生在值班的要求。下图(引用自《Designing Data-Intensive Application》)说明了实际发生的情况：
 
 ![Write Skew](/media/develop/write-skew.png)
 
 现在更改示例程序，使用 `SELECT FOR UPDATE` 来克服写偏斜问题：
 
-<SimpleTab>
+<SimpleTab groupId="language">
 
-<div label="Java" href="overcome-write-skew-java">
+<div label="Java" value="java">
 
-{{< copyable "" >}}
+Java 中使用 `SELECT FOR UPDATE` 来克服写偏斜问题的示例如下：
 
 ```java
 package com.pingcap.txn.write.skew;
@@ -494,9 +488,9 @@ public class EffectWriteSkew {
 
 </div>
 
-<div label="Golang" href="overcome-write-skew-golang">
+<div label="Golang" value="golang">
 
-{{< copyable "" >}}
+Golang 中使用 `SELECT FOR UPDATE` 来克服写偏斜问题的示例如下：
 
 ```go
 package main
@@ -666,8 +660,6 @@ func createDoctor(db *sql.DB, id int, name string, onCall bool, shiftID int) err
 
 SQL 日志：
 
-{{< copyable "sql" >}}
-
 ```sql
 /* txn 1 */ BEGIN
     /* txn 2 */ BEGIN
@@ -681,8 +673,6 @@ At least one doctor is on call
 
 执行结果：
 
-{{< copyable "sql" >}}
-
 ```sql
 mysql> SELECT * FROM doctors;
 +----+-------+---------+----------+
@@ -694,11 +684,9 @@ mysql> SELECT * FROM doctors;
 +----+-------+---------+----------+
 ```
 
-## 不支持 savepoint 和嵌套事务
+## 对 savepoint 和嵌套事务的支持
 
-Spring 支持的 PROPAGATION_NESTED 传播行为会启动一个嵌套的事务，它是当前事务之上独立启动的一个子事务。嵌套事务开始时会记录一个 savepoint ，如果嵌套事务执行失败，事务将会回滚到 savepoint 的状态。嵌套事务是外层事务的一部分，它将会在外层事务提交时一起被提交。下面案例展示了 savepoint 机制：
-
-{{< copyable "sql" >}}
+Spring 支持的 PROPAGATION_NESTED 传播行为会启动一个嵌套的事务，它是当前事务之上独立启动的一个子事务。嵌套事务开始时会记录一个 savepoint，如果嵌套事务执行失败，事务将会回滚到 savepoint 的状态。嵌套事务是外层事务的一部分，它将会在外层事务提交时一起被提交。下面案例展示了 savepoint 机制：
 
 ```sql
 mysql> BEGIN;
@@ -716,7 +704,9 @@ mysql> SELECT * FROM T2;
 +------+
 ```
 
-TiDB 不支持 savepoint 机制，因此也不支持 PROPAGATION_NESTED 传播行为。基于 Java Spring 框架的应用如果使用了 PROPAGATION_NESTED 传播行为，需要在应用端做出调整，将嵌套事务的逻辑移除。
+> **注意：**
+>
+> TiDB 从 v6.2.0 版本开始支持 [savepoint](/sql-statements/sql-statement-savepoint.md) 特性。因此低于 v6.2.0 版本的 TiDB 不支持 `PROPAGATION_NESTED` 传播行为。基于 Java Spring 框架的应用如果使用了 `PROPAGATION_NESTED` 传播行为，需要在应用端做出调整，将嵌套事务的逻辑移除。
 
 ## 大事务限制
 

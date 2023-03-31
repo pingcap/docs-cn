@@ -96,7 +96,7 @@ select * from employee where id in (...) and salary between ? and ?;
 
 `statements_summary`、`statements_summary_history` 和 `statements_summary_evicted` 仅显示单台 TiDB server 的 statement summary 数据。若要查询整个集群的数据，需要查询 `cluster_statements_summary`、`cluster_statements_summary_history` 或 `cluster_statements_summary_evicted` 表。
 
-`cluster_statements_summary` 显示各台 TiDB server 的 `statements_summary` 数据，`cluster_statements_summary_history` 显示各台 TiDB server 的 `statements_summary_history` 数据，而 `cluster_statements_summary_evicted` 则显示各台 TiDB server 的 `statements_summary_evicted` 数据。这三张表用字段 `INSTANCE` 表示 TiDB server 的地址，其他字段与 `statements_summary` 相同。
+`cluster_statements_summary` 显示各台 TiDB server 的 `statements_summary` 数据，`cluster_statements_summary_history` 显示各台 TiDB server 的 `statements_summary_history` 数据，而 `cluster_statements_summary_evicted` 则显示各台 TiDB server 的 `statements_summary_evicted` 数据。这三张表用字段 `INSTANCE` 表示 TiDB server 的地址，其他字段与 `statements_summary`、`statements_summary_history` 和 `statements_summary_evicted` 表相同。
 
 ## 参数配置
 
@@ -105,7 +105,7 @@ select * from employee where id in (...) and salary between ? and ?;
 - `tidb_enable_stmt_summary`：是否打开 statement summary 功能。1 代表打开，0 代表关闭，默认打开。statement summary 关闭后，系统表里的数据会被清空，下次打开后重新统计。经测试，打开后对性能几乎没有影响。
 - `tidb_stmt_summary_refresh_interval`：`statements_summary` 的清空周期，单位是秒 (s)，默认值是 `1800`。
 - `tidb_stmt_summary_history_size`：`statements_summary_history` 保存每种 SQL 的历史的数量，也是 `statements_summary_evicted` 的表容量，默认值是 `24`。
-- `tidb_stmt_summary_max_stmt_count`：statement summary tables 保存的 SQL 种类数量，默认 3000 条。当 SQL 种类超过该值时，会移除最近没有使用的 SQL。这些 SQL 将会被 `statements_summary_evicted` 统计记录。
+- `tidb_stmt_summary_max_stmt_count`：statement summary tables 保存的 SQL 种类数量，默认 3000 条。当 SQL 种类超过该值时，会移除最近没有使用的 SQL。这些 SQL 将会被 `DIGEST` 为 `NULL` 的行和  `statements_summary_evicted` 统计记录。`DIGEST` 为 `NULL` 的行数据在 [TiDB Dashboard SQL 语句分析列表页面](/dashboard/dashboard-statement-list.md#others) 中显示为 `Others`。
 - `tidb_stmt_summary_max_sql_length`：字段 `DIGEST_TEXT` 和 `QUERY_SAMPLE_TEXT` 的最大显示长度，默认值是 4096。
 - `tidb_stmt_summary_internal_query`：是否统计 TiDB 的内部 SQL。1 代表统计，0 代表不统计，默认不统计。
 
@@ -173,9 +173,36 @@ select * from information_schema.statements_summary_evicted;
 
 ## 目前的限制
 
-Statement summary tables 现在还存在以下限制：
+由于 statement summary tables 默认都存储在内存中，TiDB server 重启后，statement summary 会全部丢失。
 
-- TiDB server 重启后以上 4 张表的 statement summary 会全部丢失。因为 statement summary tables 全部都是内存表，不会持久化数据，所以一旦 server 被重启，statement summary 随之丢失。
+为解决该问题，TiDB v6.6.0 实验性地引入了 [statement summary 持久化](#持久化-statements-summary)功能，该功能默认为关闭。开启该功能后，历史数据不再存储在内存内，而是直接写入磁盘。TiDB server 重启后，历史数据也依然可用。
+
+## 持久化 statements summary
+
+> **警告：**
+>
+> statements summary 持久化目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+
+如[目前的限制](#目前的限制)一节所描述，默认情况下 statements summary 只在内存中维护，一旦 TiDB server 发生重启，所有 statements summary 数据都会丢失。自 v6.6.0 起，TiDB 实验性地提供了配置项 [`tidb_stmt_summary_enable_persistent`](/tidb-configuration-file.md#tidb_stmt_summary_enable_persistent-从-v660-版本开始引入) 来允许用户控制是否开启 statements summary 持久化。
+
+如果要开启 statements summary 持久化，可以在 TiDB 配置文件中添加如下配置：
+
+```toml
+[instance]
+tidb_stmt_summary_enable_persistent = true
+# 以下配置为默认值，可根据需求调整。
+# tidb_stmt_summary_filename = "tidb-statements.log"
+# tidb_stmt_summary_file_max_days = 3
+# tidb_stmt_summary_file_max_size = 64 # MiB
+# tidb_stmt_summary_file_max_backups = 0
+```
+
+开启 statements summary 持久化后，内存中只维护当前的实时数据，不再维护历史数据。历史数据生成后直接被写入磁盘文件，写入周期参考[参数配置](#参数配置)一节所描述的 `tidb_stmt_summary_refresh_interval`。后续针对 `statements_summary_history` 或 `cluster_statements_summary_history` 表的查询将结合内存和磁盘两处数据返回结果。
+
+> **注意：**
+>
+> - 当开启持久化后，由于不再于内存中维护历史数据，因此[参数配置](#参数配置)一节所描述的 `tidb_stmt_summary_history_size` 将不再生效，而是由 [`tidb_stmt_summary_file_max_days`](/tidb-configuration-file.md#tidb_stmt_summary_file_max_days-从-v660-版本开始引入)、[`tidb_stmt_summary_file_max_size`](/tidb-configuration-file.md#tidb_stmt_summary_file_max_size-从-v660-版本开始引入) 和 [`tidb_stmt_summary_file_max_backups`](/tidb-configuration-file.md#tidb_stmt_summary_file_max_backups-从-v660-版本开始引入) 这三项配置来决定历史数据在磁盘上的保留数量和时间。
+> - `tidb_stmt_summary_refresh_interval` 取值越小，数据写入到磁盘就越实时，但写入磁盘的冗余数据也会随之增多。
 
 ## 排查示例
 
@@ -245,6 +272,7 @@ SQL 的基础信息：
 - `SAMPLE_USER`：执行这类 SQL 的用户名，多个用户名只取其中一个
 - `PLAN_DIGEST`：执行计划的 digest
 - `PLAN`：原执行计划，多条语句只取其中一条的执行计划
+- `BINARY_PLAN`：以二进制格式编码后的原执行计划，存在多条语句时，只取其中一条语句的执行计划。用 `select tidb_decode_binary_plan('xxx...')` SQL 语句可以解析出具体的执行计划。
 - `PLAN_CACHE_HITS`：这类 SQL 语句命中 plan cache 的总次数
 - `PLAN_IN_CACHE`：这类 SQL 语句的上次执行是否命中了 plan cache
 

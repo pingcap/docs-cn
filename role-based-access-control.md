@@ -222,7 +222,7 @@ SET ROLE {
 }
 ```
 
-例如，登录 `rw_user1` 后，为当前用户启用角色 `app_read` 和 `app_write` ，仅在当前 session 有效：
+例如，登录 `rw_user1` 后，为当前用户启用角色 `app_read` 和 `app_write`，仅在当前 session 有效：
 
 {{< copyable "sql" >}}
 
