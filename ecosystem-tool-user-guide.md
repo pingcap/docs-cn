@@ -118,7 +118,7 @@ TiUniManager 不仅提供对 TiDB 集群的全生命周期的可视化管理，�
 
 基本信息：
 
-- [备份输出和恢复输入的文件类型](/br/backup-and-restore-design.md#备份文件)：SST + `backupmeta` 文件
+- [备份输出和恢复输入的文件类型](/br/backup-and-restore-design.md)
 - 适用 TiDB 版本：v4.0 及以上
 - Kubernetes 支持：[使用 BR 工具备份 TiDB 集群数据到兼容 S3 的存储](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/backup-to-aws-s3-using-br)，[使用 BR 工具恢复 S3 兼容存储上的备份数据](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/restore-from-aws-s3-using-br)
 

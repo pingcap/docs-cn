@@ -18,11 +18,12 @@ TiDB 优化器对这两类查询的处理是一样的：`Prepare` 时将参数�
 
 - `SELECT`、`UPDATE`、`INSERT`、`DELETE`、`Union`、`Intersect`、`Except` 以外的 SQL 语句；
 - 访问分区表、临时表或访问表中包含生成列的查询；
-- 包含子查询的查询，如 `select * from t where a > (select ...)`；
+- 查询中包含非关联子查询，例如 `SELECT * FROM t1 WHERE t1.a > (SELECT 1 FROM t2 WHERE t2.b < 1)`；
+- 执行计划中带有 `PhysicalApply` 算子的关联子查询，例如 `SELECT * FROM t1 WHERE t1.a > (SELECT a FROM t2 WHERE t1.b > t2.b)`；
 - 包含 `ignore_plan_cache` 这一 Hint 的查询，例如 `select /*+ ignore_plan_cache() */ * from t`；
 - 包含除 `?` 外其他变量（即系统变量或用户自定义变量）的查询，例如 `select * from t where a>? and b>@x`；
 - 查询包含无法被缓存函数。目前不能被缓存的函数有：`database()`、`current_user`、`current_role`、`user`、`connection_id`、`last_insert_id`、`row_count`、`version`、`like`；
-- `?` 在 `Limit` 后的查询，如 `Limit ?` 或者 `Limit 10, ?`，此时 `?` 的具体值对查询性能影响较大，故不缓存；
+- `LIMIT` 后面带一个变量 (`LIMIT ?`) 且变量值大于 10000 的执行计划不缓存；
 - `?` 直接在 `Order By` 后的查询，如 `Order By ?`，此时 `?` 表示根据 `Order By` 后第几列排序，排序列不同的查询使用同一个计划可能导致错误结果，故不缓存；如果是普通表达式，如 `Order By a+?` 则会缓存；
 - `?` 紧跟在 `Group by` 后的查询，如 `Group By ?`，此时 `?` 表示根据 `Group By` 后第几列聚合，聚合列不同的查询使用同一个计划可能导致错误结果，故不缓存；如果是普通表达式，如 `Group By a+?` 则会缓存；
 - `?` 出现在窗口函数 `Window Frame` 定义中的查询，如 `(partition by year order by sale rows ? preceding)`；如果 `?` 出现在窗口函数的其他位置，则会缓存；
@@ -132,13 +133,55 @@ MySQL [test]> select @@last_plan_from_cache;
 1 row in set (0.00 sec)
 ```
 
+## 诊断 Prepared Plan Cache
+
+对于无法进行缓存的查询或计划，可通过 `SHOW WARNINGS` 语句查看查询或计划是否被缓存。如果未被缓存，则可在结果中查看无法被缓存的原因。示例如下：
+
+```sql
+mysql> PREPARE st FROM 'SELECT * FROM t WHERE a > (SELECT MAX(a) FROM t)';  -- 该查询包含子查询，因此无法被缓存
+Query OK, 0 rows affected, 1 warning (0.01 sec)
+
+mysql> SHOW WARNINGS;  -- 查看查询计划无法被缓存的原因
++---------+------+-----------------------------------------------+
+| Level   | Code | Message                                       |
++---------+------+-----------------------------------------------+
+| Warning | 1105 | skip plan-cache: sub-queries are un-cacheable |
++---------+------+-----------------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> PREPARE st FROM 'SELECT * FROM t WHERE a<?';
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> SET @a='1'; 
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> EXECUTE st USING @a;  -- 该优化中进行了非 INT 类型到 INT 类型的转换，产生的执行计划可能随着参数变化而存在风险，因此 TiDB 不缓存该计划
+Empty set, 1 warning (0.01 sec)
+
+mysql> SHOW WARNINGS;
++---------+------+----------------------------------------------+
+| Level   | Code | Message                                      |
++---------+------+----------------------------------------------+
+| Warning | 1105 | skip plan-cache: '1' may be converted to INT |
++---------+------+----------------------------------------------+
+1 row in set (0.00 sec)
+```
+
 ## Prepared Plan Cache 的内存管理
 
-使用 Prepared Plan Cache 会有一定的内存开销，在内部测试中，平均每个缓存计划会消耗 100 KiB 内存，且目前 Plan Cache 是 `SESSION` 级别的，因此总内存消耗大致为 `SESSION 个数 * SESSION 平均缓存计划个数 * 100KiB`。
+使用 Prepared Plan Cache 会有一定的内存开销，可以通过 Grafana 中的 [`Plan Cache Memory Usage` 监控](/grafana-tidb-dashboard.md)查看每台 TiDB 实例上所有 `SESSION` 所缓存的计划占用的总内存。
 
-比如目前 TiDB 实例的 `SESSION` 并发数是 50，平均每个 `SESSION` 大致缓存 100 个计划，则总内存开销为 `50 * 100 * 100KiB` 约等于 `512MB`。
+> **注意：**
+>
+> 考虑到 Golang 的内存回收机制以及部分未统计的内存结构，Grafana 中显示的内存与实际的堆内存使用量并不相等。经过实验验证存在约 ±20% 的误差。
 
-目前可以通过变量 `tidb_prepared_plan_cache_size` 来设置每个 `SESSION` 最多缓存的计划数量，针对不同的环境，推荐的设置如下：
+对于每台 TiDB 实例上所缓存的执行计划总数量，可以通过 Grafana 中的 [`Plan Cache Plan Num` 监控](/grafana-tidb-dashboard.md)查看。
+
+Grafana 中 `Plan Cache Memory Usage` 和 `Plan Cache Plan Num` 监控如下图所示：
+
+![grafana_panels](/media/planCache-memoryUsage-planNum-panels.png)
+
+目前可以通过变量 `tidb_prepared_plan_cache_size` 来设置每个 `SESSION` 最多缓存的计划数量，针对不同的环境，推荐的设置如下，你可以结合监控进行调整：
 
 - TiDB Server 实例内存阈值 <= 64 GiB 时，`tidb_prepared_plan_cache_size = 50`
 - TiDB Server 实例内存阈值 > 64 GiB 时，`tidb_prepared_plan_cache_size = 100`
@@ -264,3 +307,9 @@ mysql> select @@last_plan_from_cache;       -- 因为开关打开，第二次依
 +------------------------+
 1 row in set (0.00 sec)
 ```
+
+### 监控
+
+在 [Grafana 面板](/grafana-tidb-dashboard.md)的 TiDB 页面，**Executor** 部分包含“Queries Using Plan Cache OPS”和“Plan Cache Miss OPS”两个图表，用以检查 TiDB 和应用是否正确配置，以便 SQL 执行计划缓存能正常工作。TiDB 页面的 **Server** 部分还提供了“Prepared Statement Count”图表，如果应用使用了预处理语句，这个图表会显示非零值。通过数值变化，可以判断 SQL 执行计划缓存是否正常工作。
+
+![`sql_plan_cache`](/media/performance/sql_plan_cache.png)

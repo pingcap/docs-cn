@@ -10,7 +10,7 @@ TiDB Lightning 支持从多种类型的文件导入数据到 TiDB 集群。通�
 
 ```toml
 [mydumper]
-# 本地源数据目录或 S3 等外部存储 URL
+# 本地源数据目录或 S3 等外部存储 URI。关于外部存储 URI 详情可参考 https://docs.pingcap.com/zh/tidb/v6.6/backup-and-restore-storages#uri-%E6%A0%BC%E5%BC%8F。
 data-source-dir = "/data/my_database"
 ```
 
@@ -22,6 +22,7 @@ TiDB Lightning 运行时将查找 `data-source-dir` 中所有符合命令规则�
 |Schema 文件|包含 `CREATE DATABASE` DDL 语句的文件|`${db_name}-schema-create.sql`|
 |数据文件|包含整张表的数据文件，该文件会被导入 `${db_name}.${table_name}` 表 | <code>\${db_name}.\${table_name}.\${csv\|sql\|parquet}</code>|
 |数据文件| 如果一个表分布于多个数据文件，这些文件命名需加上文件编号的后缀 | <code>\${db_name}.\${table_name}.001.\${csv\|sql\|parquet}</code> |
+|压缩文件| 上述所有类型文件如带压缩文件名后缀，如 `gzip`、`snappy` 或 `zstd`，TiDB Lightning 会流式解压后进行导入 | <code>\${db_name}.\${table_name}.\${csv\|sql\|parquet}.{compress}</code> |
 
 TiDB Lightning 尽量并行处理数据，由于文件必须顺序读取，所以数据处理协程是文件级别的并发（通过 `region-concurrency` 配置控制）。因此导入大文件时性能比较差。通常建议单个文件尺寸为 256MiB，以获得最好的性能。
 
@@ -283,6 +284,17 @@ type = '$3'
 
 关于 `mydumper.files`，请参考[自定义文件匹配](/tidb-lightning/tidb-lightning-data-source.md#自定义文件匹配)。
 
+## 压缩文件
+
+TiDB Lightning 目前支持由 Dumpling 导出的压缩文件或满足符合上文命名规则的压缩文件，目前支持 `gzip`、`snappy`、`zstd` 压缩算法的压缩文件。在文件名符合命名规则时，TiDB Lightning 会自动识别压缩算法在流式解压后导入，无需额外配置。
+
+> **注意**
+>
+> - 由于 TiDB Lightning 无法对单个大压缩文件进行并发解压，因此压缩文件的大小会直接影响导入速度。建议压缩数据文件解压后的源文件大小不超过 256 MiB。
+> - TiDB Lightning 仅支持导入各自独立压缩的数据文件，不支持导入多个数据文件组成的单个压缩文件集合包。
+> - TiDB Lightning 不支持二次压缩的 `parquet` 文件，例如 `db.table.parquet.snappy`。如需压缩 `parquet` 文件，你可以配置 `parquet` 文件数据存储的压缩格式。
+> - TiDB v6.4.0 及之后版本的 TiDB Lightning 支持后缀为压缩算法 `gzip`、`snappy` 、`zstd`，以及后缀名 `.bak` 的数据文件。其他后缀名会报错。你需要提前修改文件名，或将该类文件移出导入数据目录来避免此类错误。
+
 ## 自定义文件匹配
 
 TiDB Lightning 仅识别符合命名要求的数据文件，但在某些情况下已提供的数据文件并不符合要求，因此可能出现 TiDB Lightning 在极短的时间结束，处理文件数量为 0 的情况。
@@ -293,7 +305,7 @@ TiDB Lightning 仅识别符合命名要求的数据文件，但在某些情况�
 
 通常 `data-source-dir` 会被配置为`S3://some-bucket/some-subdir/some-database/` 以导入 `some-database` 库。
 
-根据上述 Parquet 文件的路径，你可以编写正则表达式 `(?i)^(?:[^/]*/)*([a-z0-9_]+)\.([a-z0-9_]+)/(?:[^/]*/)*(?:[a-z0-9\-_.]+\.(parquet))$`，得到的 match group 中 index=1 的内容为 `some-database` ，index=2 的内容为 `some-table`，index=3 的内容为 `parquet`。
+根据上述 Parquet 文件的路径，你可以编写正则表达式 `(?i)^(?:[^/]*/)*([a-z0-9_]+)\.([a-z0-9_]+)/(?:[^/]*/)*(?:[a-z0-9\-_.]+\.(parquet))$`，得到的 match group 中 index=1 的内容为 `some-database`，index=2 的内容为 `some-table`，index=3 的内容为 `parquet`。
 
 根据上述正则表达式及相应的 index 编写配置文件，TiDB Lightning 即可识别非默认命名规则的文件，最终实际配置如下：
 
@@ -316,6 +328,45 @@ type = '$3'
     - 正则表达式匹配到的 group 序号，例如 “$3”。
 - **key**：文件的序号，即前文所述`${db_name}.${table_name}.001.csv`中的`001`。
     - 正则表达式匹配到的 group 序号，例如 “$4”。
+
+## 从 Amazon S3 导入数据
+
+如下为从 Amazon S3 导入数据的示例，更多配置参数描述，可参考[外部存储 URI 格式](/br/backup-and-restore-storages.md#uri-格式)。
+
+* 使用本地已设置的权限访问 S3：
+
+    ```bash
+    ./tidb-lightning --tidb-port=4000 --pd-urls=127.0.0.1:2379 --backend=local --sorted-kv-dir=/tmp/sorted-kvs \
+        -d 's3://my-bucket/sql-backup'
+    ```
+
+* 使用路径类型的请求模式：
+
+    ```bash
+    ./tidb-lightning --tidb-port=4000 --pd-urls=127.0.0.1:2379 --backend=local --sorted-kv-dir=/tmp/sorted-kvs \
+        -d 's3://my-bucket/sql-backup?force-path-style=true&endpoint=http://10.154.10.132:8088'
+    ```
+
+* 使用 AWS IAM 角色的 ARN 来访问 S3 数据：
+
+    ```bash
+    ./tidb-lightning --tidb-port=4000 --pd-urls=127.0.0.1:2379 --backend=local --sorted-kv-dir=/tmp/sorted-kvs \
+        -d 's3://my-bucket/test-data?role-arn=arn:aws:iam::888888888888:role/my-role'
+    ```
+
+* 使用 AWS IAM 用户密钥来访问 S3 数据：
+
+    ```bash
+    ./tidb-lightning --tidb-port=4000 --pd-urls=127.0.0.1:2379 --backend=local --sorted-kv-dir=/tmp/sorted-kvs \
+        -d 's3://my-bucket/test-data?access_key={my_access_key}&secret_access_key={my_secret_access_key}'
+    ```
+
+* 使用 AWS IAM 角色的密钥以及会话令牌来访问 S3 数据：
+
+    ```bash
+    ./tidb-lightning --tidb-port=4000 --pd-urls=127.0.0.1:2379 --backend=local --sorted-kv-dir=/tmp/sorted-kvs \
+        -d 's3://my-bucket/test-data?access_key={my_access_key}&secret_access_key={my_secret_access_key}&session-token={my_session_token}'
+    ```
 
 ## 更多
 

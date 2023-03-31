@@ -39,7 +39,7 @@ monitoring_servers:
     rule_dir: /home/tidb/prometheus_rule   # prometheus rule dir on TiUP machine
 ```
 
-上述配置后，在集群进行 deploy/scale-out/scale-in/reload 操作时， TiUP 将读取**本机** /home/tidb/prometheus_rule 路径下的自定义 rule，然后将该配置发送到 Prometheus Server， 替换默认配置规则。
+上述配置后，在集群进行 deploy/scale-out/scale-in/reload 操作时，TiUP 将读取**本机** /home/tidb/prometheus_rule 路径下的自定义 rule，然后将该配置发送到 Prometheus Server，替换默认配置规则。
 
 ### 自定义 Prometheus scrape 配置
 
@@ -72,7 +72,7 @@ monitoring_servers:
         action: drop
 ```
 
-上述配置后，在集群进行 deploy/scale-out/scale-in/reload 操作时， TiUP 会将 additional_scrape_conf 字段的内容会添加到 Prometheus 配置文件的对应参数中。
+上述配置后，在集群进行 deploy/scale-out/scale-in/reload 操作时，TiUP 会将 additional_scrape_conf 字段的内容会添加到 Prometheus 配置文件的对应参数中。
 
 ## 自定义 Grafana 配置
 
@@ -94,7 +94,7 @@ grafana_servers:
     dashboard_dir: /home/tidb/dashboards   # grafana dashboard dir on TiUP machine
 ```
 
-上述配置后，在集群进行 deploy/scale-out/scale-in/reload 操作时， TiUP 将读取**本机** /home/tidb/dashboards 路径下的自定义 Dashboard ，然后将该配置发送到 Grafana Server， 替换默认配置规则。
+上述配置后，在集群进行 deploy/scale-out/scale-in/reload 操作时，TiUP 将读取**本机** /home/tidb/dashboards 路径下的自定义 Dashboard，然后将该配置发送到 Grafana Server，替换默认配置规则。
 
 ### 自定义 Grafana 其他配置
 
@@ -118,7 +118,7 @@ grafana_servers:
       smtp.skip_verify: true
 ```
 
-上述配置后，在集群进行 deploy/scale-out/scale-in/reload 操作时， TiUP 会将 config 字段的内容会添加到 grafana 的配置文件 grafana.ini 中。
+上述配置后，在集群进行 deploy/scale-out/scale-in/reload 操作时，TiUP 会将 config 字段的内容会添加到 grafana 的配置文件 grafana.ini 中。
 
 ## 自定义 Alertmanager 配置
 
@@ -137,4 +137,4 @@ alertmanager_servers:
     ssh_port: 22
 ```
 
-上述配置后，在集群进行 deploy/scale-out/scale-in/reload 操作时， TiUP 会将 listen_host 字段的内容会添加到 Alertmanager 启动参数的 '--web.listen-address' 中。
+上述配置后，在集群进行 deploy/scale-out/scale-in/reload 操作时，TiUP 会将 listen_host 字段的内容会添加到 Alertmanager 启动参数的 '--web.listen-address' 中。

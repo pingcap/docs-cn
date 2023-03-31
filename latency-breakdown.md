@@ -468,7 +468,7 @@ Diagram(
                 Sequence(
                     Comment("2pc"),
                     NonTerminal("Get commit-ts"),
-                    NonTerminal("Check schema, try to amend if needed"),
+                    NonTerminal("Check schema"),
                     NonTerminal("Commit PK mutation"),
                 ),
                 Sequence(

@@ -111,7 +111,7 @@ COMMIT;
 ```
 
 ```
-ERROR 1062 (23000): Duplicate entry 'bill' for key 'username'
+ERROR 1062 (23000): Duplicate entry 'bill' for key 'users.username'
 ```
 
 在以上乐观事务的示例中，唯一约束的检查推迟到事务提交时才进行。由于 `bill` 值已经存在，这一行为导致了重复键错误。
@@ -149,7 +149,7 @@ INSERT INTO users (username) VALUES ('jane'), ('chris'), ('bill');
 ```
 
 ```
-ERROR 1062 (23000): Duplicate entry 'bill' for key 'username'
+ERROR 1062 (23000): Duplicate entry 'bill' for key 'users.username'
 ```
 
 第一条 `INSERT` 语句导致了重复键错误。这会造成额外的网络通信开销，并可能降低插入操作的吞吐量。
@@ -172,7 +172,7 @@ INSERT INTO users (username) VALUES ('jane'), ('chris'), ('bill');
 ```
 
 ```
-ERROR 1062 (23000): Duplicate entry 'bill' for key 'username'
+ERROR 1062 (23000): Duplicate entry 'bill' for key 'users.username'
 ```
 
 对于悲观事务，你可以设置变量 [`tidb_constraint_check_in_place_pessimistic`](/system-variables.md#tidb_constraint_check_in_place_pessimistic-从-v630-版本开始引入) 为 `OFF` 来推迟唯一约束检查，到下一次对该唯一索引项加锁时或事务提交时再进行检查，同时也跳过对该悲观锁加锁，以获得更好的性能。此时需要注意：
@@ -210,7 +210,7 @@ ERROR 1062 (23000): Duplicate entry 'bill' for key 'username'
     ```
 
     ```
-    ERROR 1062 (23000): Duplicate entry 'bill' for key 'username'
+    ERROR 1062 (23000): Duplicate entry 'bill' for key 'users.username'
     ```
 
 - 关闭该变量时，如果在事务中写入数据，执行 `COMMIT` 语句可能会返回 `Write conflict` 错误。返回该错误时，TiDB 会回滚当前事务。
@@ -264,8 +264,10 @@ ERROR 1062 (23000): Duplicate entry 'bill' for key 'username'
     ```
 
     ```
-    ERROR 8147 (23000): transaction aborted because lazy uniqueness check is enabled and an error occurred: [kv:1062]Duplicate entry 'bill' for key 'username'
+    ERROR 8147 (23000): transaction aborted because lazy uniqueness check is enabled and an error occurred: [kv:1062]Duplicate entry 'bill' for key 'users.username'
     ```
+
+- 关闭该变量时，`1062 Duplicate entry` 报错不一定是当前执行的 SQL 语句所发生的错误。因此，在一个事务操作多个表，且这些表有同名索引时，请注意 `1062` 报错信息中提示的是哪个表的哪个索引发生了错误。
 
 ## 主键约束
 
@@ -335,7 +337,7 @@ Query OK, 0 rows affected (0.10 sec)
 
 > **注意：**
 >
-> TiDB 仅部分支持外键约束功能。
+> TiDB 从 v6.6.0 开始支持[外键约束](/foreign-key.md)。在 v6.6.0 之前，TiDB 支持创建和删除外键约束，但外键约束并不生效。升级到 v6.6.0 后，可以先删除不生效的外键后再创建外键使外键约束生效。
 
 TiDB 支持创建外键约束。例如：
 
@@ -374,13 +376,3 @@ TiDB 也支持使用 `ALTER TABLE` 命令来删除外键 (`DROP FOREIGN KEY`) �
 ALTER TABLE orders DROP FOREIGN KEY fk_user_id;
 ALTER TABLE orders ADD FOREIGN KEY fk_user_id (user_id) REFERENCES users(id);
 ```
-
-### 注意
-
-* TiDB 支持外键是为了在将其他数据库迁移到 TiDB 时，不会因为此语法报错。但是，TiDB 不会在 DML 语句中对外键进行约束检查。例如，即使 `users` 表中不存在 `id=123` 的记录，下列事务也能提交成功：
-
-    ```
-    START TRANSACTION;
-    INSERT INTO orders (user_id, doc) VALUES (123, NULL);
-    COMMIT;
-    ```

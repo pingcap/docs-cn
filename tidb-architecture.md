@@ -8,7 +8,7 @@ aliases: ['/docs-cn/dev/tidb-architecture/','/docs-cn/dev/architecture/']
 
 推荐先观看以下视频（时长约 14 分钟），快速了解 TiDB 的整体架构。
 
-<video src="https://tidb-docs.s3.us-east-2.amazonaws.com/compressed+-+302+Lesson+01+architecture.mp4" width="100%" height="100%" controls="controls" poster="https://tidb-docs.s3.us-east-2.amazonaws.com/tumbnail+-+TiDB+architecture.png"></video>
+<video src="https://download.pingcap.com/docs-cn/tidb_architecture.mp4" width="100%" height="100%" controls="controls" poster="https://download.pingcap.com/docs-cn/poster_tidb_architecture.png"></video>
 
 与传统的单机数据库相比，TiDB 具有以下优势：
 
@@ -20,7 +20,7 @@ aliases: ['/docs-cn/dev/tidb-architecture/','/docs-cn/dev/architecture/']
 
 在内核设计上，TiDB 分布式数据库将整体架构拆分成了多个模块，各模块之间互相通信，组成完整的 TiDB 系统。对应的架构图如下：
 
-![architecture](/media/tidb-architecture-v3.1.png)
+![architecture](/media/tidb-architecture-v6.png)
 
 - [TiDB Server](/tidb-computing.md)：SQL 层，对外暴露 MySQL 协议的连接 endpoint，负责接受客户端的连接，执行 SQL 解析和优化，最终生成分布式执行计划。TiDB 层本身是无状态的，实践中可以启动多个 TiDB 实例，通过负载均衡组件（如 LVS、HAProxy 或 F5）对外提供统一的接入地址，客户端的连接可以均匀地分摊在多个 TiDB 实例上以达到负载均衡的效果。TiDB Server 本身并不存储数据，只是解析 SQL，将实际的数据读取请求转发给底层的存储节点 TiKV（或 TiFlash）。
 

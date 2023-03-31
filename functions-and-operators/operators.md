@@ -8,7 +8,7 @@ aliases: ['/docs-cn/dev/functions-and-operators/operators/','/docs-cn/dev/refere
 | 操作符名 | 功能描述 |
 | ------- | -------------------------------- |
 | [`AND`, &&](https://dev.mysql.com/doc/refman/5.7/en/logical-operators.html#operator_and) | 逻辑与 |
-| [`=`](https://dev.mysql.com/doc/refman/5.7/en/assignment-operators.html#operator_assign-equal) | 赋值 (可用于 [`SET`](https://dev.mysql.com/doc/refman/5.7/en/set-variable.html) 语句中, 或用于 [`UPDATE`](https://dev.mysql.com/doc/refman/5.7/en/update.html) 语句的 `SET` 中 ) |
+| [`=`](https://dev.mysql.com/doc/refman/5.7/en/assignment-operators.html#operator_assign-equal) | 赋值（可用于 [`SET`](https://dev.mysql.com/doc/refman/5.7/en/set-variable.html) 语句中，或用于 [`UPDATE`](https://dev.mysql.com/doc/refman/5.7/en/update.html) 语句的 `SET` 中） |
 | [`:=`](https://dev.mysql.com/doc/refman/5.7/en/assignment-operators.html#operator_assign-value) | 赋值 |
 | [`BETWEEN ... AND ...`](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#operator_between) | 判断值满足范围 |
 | [`BINARY`](https://dev.mysql.com/doc/refman/5.7/en/cast-functions.html#operator_binary) | 将一个字符串转换为一个二进制字符串 |
@@ -47,6 +47,10 @@ aliases: ['/docs-cn/dev/functions-and-operators/operators/','/docs-cn/dev/refere
 | [`-`](https://dev.mysql.com/doc/refman/5.7/en/arithmetic-functions.html#operator_unary-minus) | 取反符号 |
 | [`XOR`](https://dev.mysql.com/doc/refman/5.7/en/logical-operators.html#operator_xor) | 逻辑亦或 |
 
+## 不支持的操作符
+
+* [`SOUNDS LIKE`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#operator_sounds-like)
+
 ## 操作符优先级
 
 操作符优先级显示在以下列表中，从最高优先级到最低优先级。同一行显示的操作符具有相同的优先级。
@@ -84,7 +88,7 @@ OR, ||
 | [`>`](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#operator_greater-than) | 大于 |
 | [`>=`](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#operator_greater-than-or-equal) | 大于或等于 |
 | [`GREATEST()`](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#function_greatest) | 返回最大值 |
-| [`IN()`](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#function_in) | 判断值是否在一个值的集合内 |
+| [`IN()`](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#operator_in) | 判断值是否在一个值的集合内 |
 | [`INTERVAL()`](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#function_interval) | 返回一个小于第一个参数的参数的下标 |
 | [`IS`](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#operator_is) | 判断是否等于一个布尔值 |
 | [`IS NOT`](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#operator_is-not) | 判断是否不等于一个布尔值 |
@@ -97,7 +101,7 @@ OR, ||
 | [`LIKE`](https://dev.mysql.com/doc/refman/5.7/en/string-comparison-functions.html#operator_like) | 简单模式匹配 |
 | [`NOT BETWEEN ... AND ...`](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#operator_not-between) | 判断值是否不在范围内 |
 | [`!=`, `<>`](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#operator_not-equal) | 不等于 |
-| [`NOT IN()`](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#function_not-in) | 判断值是否不在一个值的集合内 |
+| [`NOT IN()`](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#operator_not-in) | 判断值是否不在一个值的集合内 |
 | [`NOT LIKE`](https://dev.mysql.com/doc/refman/5.7/en/string-comparison-functions.html#operator_not-like) | 不满足简单模式匹配 |
 | [`STRCMP()`](https://dev.mysql.com/doc/refman/5.7/en/string-comparison-functions.html#function_strcmp) | 比较两个字符串 |
 
@@ -118,7 +122,7 @@ OR, ||
 
 | 操作符名 | 功能描述 |
 | ------- | -------------------------------- |
-| [`=`](https://dev.mysql.com/doc/refman/5.7/en/assignment-operators.html#operator_assign-equal) | 赋值 (可用于 [`SET`](https://dev.mysql.com/doc/refman/5.7/en/set-variable.html) 语句中, 或用于 [`UPDATE`](https://dev.mysql.com/doc/refman/5.7/en/update.html) 语句的 `SET` 中 ) |
+| [`=`](https://dev.mysql.com/doc/refman/5.7/en/assignment-operators.html#operator_assign-equal) | 赋值（可用于 [`SET`](https://dev.mysql.com/doc/refman/5.7/en/set-variable.html) 语句中，或用于 [`UPDATE`](https://dev.mysql.com/doc/refman/5.7/en/update.html) 语句的 `SET` 中） |
 | [`:=`](https://dev.mysql.com/doc/refman/5.7/en/assignment-operators.html#operator_assign-value) | 赋值 |
 
 详情参见[这里](https://dev.mysql.com/doc/refman/5.7/en/group-by-functional-dependence.html)。

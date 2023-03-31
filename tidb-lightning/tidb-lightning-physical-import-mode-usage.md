@@ -24,7 +24,7 @@ max-backups = 14
 check-requirements = true
 
 [mydumper]
-# 本地源数据目录或外部存储 URL
+# 本地源数据目录或外部存储 URI。关于外部存储 URI 详情可参考 https://docs.pingcap.com/zh/tidb/v6.6/backup-and-restore-storages#uri-%E6%A0%BC%E5%BC%8F。
 data-source-dir = "/data/my_database"
 
 [tikv-importer]
@@ -39,6 +39,10 @@ sorted-kv-dir = "./some-dir"
 
 # 限制 TiDB Lightning 向每个 TiKV 节点写入的带宽大小，默认为 0，表示不限制。
 # store-write-bwlimit = "128MiB"
+
+# Physical Import Mode 是否通过 SQL 方式添加索引。默认为 `false`，表示 TiDB Lightning 会将行数据以及索引数据都编码成 KV pairs 后一同导入 TiKV，实现机制和历史版本保持一致。如果设置为 `true`，即 TiDB Lightning 会导完数据后，再使用 add index 的 SQL 来添加索引。
+# 通过 SQL 方式添加索引的优点是将导入数据与导入索引分开，可以快速导入数据，即使导入数据后，索引添加失败，也不会影响数据的一致性。
+# add-index-by-sql = false
 
 [tidb]
 # 目标集群的信息。tidb-server 的地址，填一个即可。
@@ -211,10 +215,6 @@ io-concurrency = 5
 此外，TiKV 的 [num-threads](/tikv-configuration-file.md#num-threads) 配置也可能影响性能，新集群建议设置为 CPU 核数。
 
 ## 磁盘资源配额 <span class="version-mark">从 v6.2.0 版本开始引入</span>
-
-> **警告：**
->
-> 磁盘资源配额目前是实验性功能，不建议在生产环境中使用。
 
 TiDB Lightning 在使用物理模式导入数据时，会在本地磁盘创建大量的临时文件，用来对原始数据进行编码、排序、分割。当用户本地磁盘空间不足时，TiDB Lightning 会由于写入文件失败而报错退出。
 
