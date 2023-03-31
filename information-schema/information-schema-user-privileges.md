@@ -34,6 +34,8 @@ SELECT * FROM USER_PRIVILEGES;
 
 The output is as follows:
 
+<CustomContent platform="tidb">
+
 ```sql
 +------------+---------------+-------------------------+--------------+
 | GRANTEE    | TABLE_CATALOG | PRIVILEGE_TYPE          | IS_GRANTABLE |
@@ -72,6 +74,51 @@ The output is as follows:
 +------------+---------------+-------------------------+--------------+
 31 rows in set (0.00 sec)
 ```
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+<!--Compared with on-premises TiDB, the root user in TiDB Cloud does not have the SHUTDOWN and CONFIG privileges.-->
+
+```sql
++------------+---------------+-------------------------+--------------+
+| GRANTEE    | TABLE_CATALOG | PRIVILEGE_TYPE          | IS_GRANTABLE |
++------------+---------------+-------------------------+--------------+
+| 'root'@'%' | def           | SELECT                  | YES          |
+| 'root'@'%' | def           | INSERT                  | YES          |
+| 'root'@'%' | def           | UPDATE                  | YES          |
+| 'root'@'%' | def           | DELETE                  | YES          |
+| 'root'@'%' | def           | CREATE                  | YES          |
+| 'root'@'%' | def           | DROP                    | YES          |
+| 'root'@'%' | def           | PROCESS                 | YES          |
+| 'root'@'%' | def           | REFERENCES              | YES          |
+| 'root'@'%' | def           | ALTER                   | YES          |
+| 'root'@'%' | def           | SHOW DATABASES          | YES          |
+| 'root'@'%' | def           | SUPER                   | YES          |
+| 'root'@'%' | def           | EXECUTE                 | YES          |
+| 'root'@'%' | def           | INDEX                   | YES          |
+| 'root'@'%' | def           | CREATE USER             | YES          |
+| 'root'@'%' | def           | CREATE TABLESPACE       | YES          |
+| 'root'@'%' | def           | TRIGGER                 | YES          |
+| 'root'@'%' | def           | CREATE VIEW             | YES          |
+| 'root'@'%' | def           | SHOW VIEW               | YES          |
+| 'root'@'%' | def           | CREATE ROLE             | YES          |
+| 'root'@'%' | def           | DROP ROLE               | YES          |
+| 'root'@'%' | def           | CREATE TEMPORARY TABLES | YES          |
+| 'root'@'%' | def           | LOCK TABLES             | YES          |
+| 'root'@'%' | def           | CREATE ROUTINE          | YES          |
+| 'root'@'%' | def           | ALTER ROUTINE           | YES          |
+| 'root'@'%' | def           | EVENT                   | YES          |
+| 'root'@'%' | def           | RELOAD                  | YES          |
+| 'root'@'%' | def           | FILE                    | YES          |
+| 'root'@'%' | def           | REPLICATION CLIENT      | YES          |
+| 'root'@'%' | def           | REPLICATION SLAVE       | YES          |
++------------+---------------+-------------------------+--------------+
+29 rows in set (0.00 sec)
+```
+
+</CustomContent>
 
 Fields in the `USER_PRIVILEGES` table are described as follows:
 
