@@ -17,7 +17,7 @@ This document introduces the user scenarios, supported upstreams and downstreams
 
 | User scenario |<span style="font-weight:normal">Data migration from MySQL-compatible databases to TiDB</span>|
 |---|---|
-| **Upstream** | MySQL, MariaDB, Aurora, MySQL |
+| **Upstream** | MySQL, MariaDB, Aurora |
 | **Downstream** | TiDB |
 | **Advantages** |<ul><li>A convenient and unified data migration task management tool that supports full data migration and incremental replication</li><li>Support filtering tables and operations</li><li>Support shard merge and migration</li></ul> |
 | **Limitation** | Data import speed is roughly the same as that of TiDB Lightning's [logical import mode](/tidb-lightning/tidb-lightning-logical-import-mode.md), and a lot lower than that of TiDB Lightning's [physical import mode](/tidb-lightning/tidb-lightning-physical-import-mode.md). So it is recommended to use DM to migrate full data with a size of less than 1 TiB. |
