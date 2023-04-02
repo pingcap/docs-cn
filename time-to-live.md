@@ -99,7 +99,7 @@ TTL 可以和[数据类型的默认值](/data-type-default-values.md)一起使�
     ```sql
     CREATE TABLE t1 (
         id int PRIMARY KEY,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
     ) TTL = `created_at` + INTERVAL 3 MONTH;
     ```
 
