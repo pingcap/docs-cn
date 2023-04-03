@@ -200,7 +200,7 @@ Range INTERVAL partitioning is an extension of Range partitioning, which allows 
 
 > **Warning:**
 >
-> This is an experimental feature, which might be changed or removed without prior notice. The syntax and implementation may change before GA. If you find a bug, please open an issue in the [TiDB repository](https://github.com/pingcap/tidb/issues). 
+> This is an experimental feature, which might be changed or removed without prior notice. The syntax and implementation may change before GA. If you find a bug, please open an issue in the [TiDB repository](https://github.com/pingcap/tidb/issues).
 
 The sytax is as follows:
 
@@ -280,7 +280,7 @@ PARTITION BY RANGE COLUMNS(`report_date`)
  PARTITION `P_LT_2025-01-01` VALUES LESS THAN ('2025-01-01'))
 ```
 
-The optional parameter `NULL PARTITION` creates a partition with the definition as `PARTITION P_NULL VALUES LESS THAN (<minimum value of the column type>)`, only matching when the partitioning expression evaluates to `NULL`. See [Handling of NULL with Range partitioning](#handling-of-null-with-range-partitioning), which explains that `NULL` is considered to be less than any other value. 
+The optional parameter `NULL PARTITION` creates a partition with the definition as `PARTITION P_NULL VALUES LESS THAN (<minimum value of the column type>)`, only matching when the partitioning expression evaluates to `NULL`. See [Handling of NULL with Range partitioning](#handling-of-null-with-range-partitioning), which explains that `NULL` is considered to be less than any other value.
 
 The optional parameter `MAXVALUE PARTITION` creates the last partition as `PARTITION P_MAXVALUE VALUES LESS THAN (MAXVALUE)`.
 
@@ -1850,9 +1850,10 @@ Currently, neither `static` nor `dynamic` pruning mode supports prepared stateme
     {{< copyable "sql" >}}
 
     ```sql
-    select distinct concat(TABLE_SCHEMA,'.',TABLE_NAME)
-        from information_schema.PARTITIONS
-        where TABLE_SCHEMA not in('INFORMATION_SCHEMA','mysql','sys','PERFORMANCE_SCHEMA','METRICS_SCHEMA');
+    SELECT DISTINCT CONCAT(TABLE_SCHEMA,'.', TABLE_NAME)
+        FROM information_schema.PARTITIONS
+        WHERE TIDB_PARTITION_ID IS NOT NULL
+        AND TABLE_SCHEMA NOT IN ('INFORMATION_SCHEMA', 'mysql', 'sys', 'PERFORMANCE_SCHEMA', 'METRICS_SCHEMA');
     ```
 
     ```
