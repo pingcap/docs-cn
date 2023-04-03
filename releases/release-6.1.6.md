@@ -70,6 +70,10 @@ TiDB 版本：6.1.6
 
     - (dup): release-6.6.0.md > Bug 修复> TiFlash - 修复半连接在计算笛卡尔积时，使用内存过量的问题 [#6730](https://github.com/pingcap/tiflash/issues/6730) @[gengliqi](https://github.com/gengliqi)
     - (dup): release-6.5.1.md > Bug 修复> TiFlash - 修复 TiFlash 日志搜索过慢的问题 [#6829](https://github.com/pingcap/tiflash/issues/6829) @[hehechen](https://github.com/hehechen)
+    - 修复 `CI Collation` 下聚合函数结果不正确的问题 [#7002](https://github.com/pingcap/tiflash/pull/7002) @[xzhangxian1008](https://github.com/xzhangxian1008)
+    - 修复 `Decimal Cast` 结果不正确的问题 [#7026](https://github.com/pingcap/tiflash/pull/7026) @[windtalker](https://github.com/windtalker)
+    - 修复不能识别生成列的问题 [#6801](https://github.com/pingcap/tiflash/issues/6801) @[guo-shaoge](https://github.com/guo-shaoge)
+    - 修复 `Decimal` 的舍入问题 [#7022](https://github.com/pingcap/tiflash/issues/7022) @[LittleFall](https://github.com/LittleFall)
 
 + Tools
 
