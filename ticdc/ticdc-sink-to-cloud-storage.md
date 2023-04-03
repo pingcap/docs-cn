@@ -5,11 +5,7 @@ summary: 了解如何使用 TiCDC 将数据同步到存储服务，以及数据�
 
 # 同步数据到存储服务
 
-> **警告：**
->
-> 当前该功能为实验特性，不建议在生产环境中使用。
-
-从 v6.5.0 开始，TiCDC 支持将行变更事件保存至存储服务，如 Amazon S3、Azure Blob Storage 和 NFS。本文介绍如何使用 TiCDC 创建同步任务 (Changefeed) 将增量数据同步到这类存储服务，并介绍数据的存储方式。具体如下：
+从 TiDB v6.5.0 开始，TiCDC 支持将行变更事件保存至存储服务，如 Amazon S3、GCS、Azure Blob Storage 和 NFS。本文介绍如何使用 TiCDC 创建同步任务 (Changefeed) 将增量数据同步到这类存储服务，并介绍数据的存储方式。具体如下：
 
 - [如何将变更数据同步至存储服务](#同步变更数据至存储服务)。
 - [变更数据如何在存储服务中保存](#存储路径组织结构)。
@@ -41,9 +37,9 @@ Info: {"upstream_id":7171388873935111376,"namespace":"default","id":"simple-repl
 
 本章节介绍如何在 Changefeed URI 中配置存储服务 Amazon S3、Azure Blob Storage 和 NFS。
 
-### 配置 Amazon S3 和 Azure Blob Storage
+### 配置外部存储
 
-Amazon S3 和 Azure Blob Storage 的 URI 参数与 BR 中这两种存储的 URL 参数相同。详细参数说明请参考 [BR 备份存储服务的 URI 格式](/br/backup-and-restore-storages.md#格式说明)。
+Amazon S3、GCS 以及 Azure Blob Storage 的 URI 参数与 BR 中这三种存储的 URI 参数相同。详细参数说明请参考 [BR 备份存储服务的 URI 格式](/br/backup-and-restore-storages.md#格式说明)。
 
 ### 配置 NFS
 
@@ -100,6 +96,22 @@ URI 中其他可配置的参数如下：
 >
 > - 发生 DDL 操作后，表的版本为该 DDL 在上游 TiDB 执行结束的 TSO。但是，表版本的变化并不意味着表结构的变化。例如，在表中的某一列添加注释，不会导致 `schema.json` 文件内容发生变化。
 > - 进程重启，表的版本为进程重启时 Changefeed 的 checkpoint TSO。在有很多表的情况下，重启时需要遍历所有目录并找到上一次重启时每张表写入的位置，这样的操作耗时较长。因此，TiCDC 选择在一个以 checkpoint TSO 为版本的新目录下写入数据，而不是在旧版本的目录下继续写入数据。
+
+### Index 文件
+
+Index 文件用于防止已写入的数据被错误覆盖，与数据变更记录存储在相同路径：
+
+```shell
+{scheme}://{prefix}/{schema}/{table}/{table-version-separator}/{partition-separator}/{date-separator}/CDC.index
+```
+
+Index 文件记录了当前目录下所使用到的最大文件名，比如：
+
+```
+CDC000005.csv
+```
+
+上述内容表明该目录下 `CDC000001.csv` 到 `CDC000004.csv` 文件已被占用，当 TiCDC 集群中发生表调度或者节点重启时，新的节点会读取 Index 文件，并判断 `CDC000005.csv` 是否被占用。如果未被占用，则新节点会从 `CDC000005.csv` 开始写文件。如果已被占用，则从 `CDC000006.csv` 开始写文件，这样可防止覆盖其他节点写入的数据。
 
 ### 元数据
 
