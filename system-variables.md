@@ -982,7 +982,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 > **注意：**
 > 
-> - 该参数是从 `tidb_ddl_distribute_reorg` 参数改名而来。
+> - 该参数是从 `tidb_ddl_distribute_reorg`参数改名而来。
 > - 该功能目前为实验特性。
 > - 当前启用此功能后，DDL, Import 等后端任务将会启动分布式执行任务的方式来利用集群中的多个 TiDB 节点来共同完成任务。
 
