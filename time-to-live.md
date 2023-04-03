@@ -94,7 +94,7 @@ You can use TTL together with [default values of the data types](/data-type-defa
     ```sql
     CREATE TABLE t1 (
         id int PRIMARY KEY,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
     ) TTL = `created_at` + INTERVAL 3 MONTH;
     ```
 
