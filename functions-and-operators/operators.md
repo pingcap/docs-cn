@@ -131,4 +131,4 @@ OR, ||
 
 ## MySQL 兼容性
 
-* MySQL 不支持`ILIKE`函数
+* MySQL 不支持 `ILIKE` 操作符。
