@@ -165,7 +165,7 @@ DOUBLE PRECISION [(M,D)] [UNSIGNED] [ZEROFILL], REAL[(M,D)] [UNSIGNED] [ZEROFILL
 
 > **注意：**
 >
-> 当 TiDB 将用科学计数法表示的双精度浮点数转换到 `CHAR` 类型时，其结果在显示上与 MySQL 存在不一致，详情参见 [Cast 函数和操作符](functions-and-operators/cast-functions-and-operators.md)。
+> 当 TiDB 将用科学计数法表示的双精度浮点数转换到 `CHAR` 类型时，其结果在显示上与 MySQL 不一致，详情参见 [Cast 函数和操作符](functions-and-operators/cast-functions-and-operators.md)。
 
 ### 存储空间
 
