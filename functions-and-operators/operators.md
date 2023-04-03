@@ -99,7 +99,7 @@ OR, ||
 | [`<`](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#operator_less-than) | 小于 |
 | [`<=`](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#operator_less-than-or-equal) | 小于或等于 |
 | [`LIKE`](https://dev.mysql.com/doc/refman/5.7/en/string-comparison-functions.html#operator_like) | 简单模式匹配 |
-| [`ILIKE`](https://www.postgresql.org/docs/current/functions-matching.html) | 大小写不敏感的简单模式匹配(MySQL 不支持) |
+| [`ILIKE`](https://www.postgresql.org/docs/current/functions-matching.html) | 大小写不敏感的简单模式匹配（TiDB 支持但 MySQL 不支持） |
 | [`NOT BETWEEN ... AND ...`](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#operator_not-between) | 判断值是否不在范围内 |
 | [`!=`, `<>`](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#operator_not-equal) | 不等于 |
 | [`NOT IN()`](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#operator_not-in) | 判断值是否不在一个值的集合内 |
