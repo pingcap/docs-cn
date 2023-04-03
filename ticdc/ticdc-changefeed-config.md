@@ -94,8 +94,11 @@ ignore-insert-value-expr = "price > 1000 and origin = 'no where'" # 忽略包含
 # 注意：该功能只在 Kafka changefeed 上生效，暂不支持 MySQL changefeed。
 # 默认为 "false"。设置为 "true" 以打开该功能。
 enable-table-across-nodes = false
-# 打开该功能后，该功能只对 Region 个数大于 `region-threshold` 值的表生效。
+# 打开该功能后，该功能会对 Region 个数大于 `region-threshold` 值的表生效。
 region-threshold = 100000
+# 打开该功能后，该功能会对每分钟修改行数大于 `write-key-threshold` 值的表生效。
+# 注意：该参数默认值为 0，代表该功能默认不会按修改行数来划分表。
+write-key-threshold = 0
 
 [sink]
 # 对于 MQ 类的 Sink，可以通过 dispatchers 配置 event 分发器

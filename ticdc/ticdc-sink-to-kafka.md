@@ -254,6 +254,9 @@ partition 分发器用 partition = "xxx" 来指定，支持 default、ts、index
 enable-table-across-nodes = true
 # 打开该功能后，该功能只对 Region 个数大于 `region-threshold` 值的表生效。
 region-threshold = 100000
+# 打开该功能后，该功能会对每分钟修改行数大于 `write-key-threshold` 值的表生效。
+# 注意：该参数默认值为 0，代表该功能默认不会按修改行数来划分表。
+write-key-threshold = 0
 ```
 
 一个表包含的 Region 个数可用如下 SQL 查询：
