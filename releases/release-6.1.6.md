@@ -57,6 +57,10 @@ TiDB 版本：6.1.6
     - (dup): release-6.5.1.md > Bug 修复> TiDB - 修复 Plan Cache 可能缓存 Shuffle 算子导致返回错误结果的问题 [#38335](https://github.com/pingcap/tidb/issues/38335) @[qw4990](https://github.com/qw4990)
     - (dup): release-6.5.1.md > Bug 修复> TiDB - 修复了时区中的数据争用可能导致数据和索引不一致问题 [#40710](https://github.com/pingcap/tidb/issues/40710) @[wjhuang2016](https://github.com/wjhuang2016)
     - (dup): release-6.5.1.md > Bug 修复> TiDB - 修复了 `indexMerge` 中可能会出现 goroutine 泄露的问题 [#41545](https://github.com/pingcap/tidb/issues/41545) [#41605](https://github.com/pingcap/tidb/issues/41605) @[guo-shaoge](https://github.com/guo-shaoge)
+    - 修复在使用 Cursor Fetch 且在 Execute、Fetch、Close 之间运行其它语句后，Fetch 与 Close 命令可能会返回错误结果或造成 TiDB Panic 的问题 [#40094](https://github.com/pingcap/tidb/issues/40094) [@YangKeao](https://github.com/YangKeao)
+    - 修复了 DDL 在修改浮点类型，保持长度不变且减少小数位时旧数据仍然保持原样的问题 [#41281](https://github.com/pingcap/tidb/issues/41281) [@zimulala](https://github.com/zimulala)
+    - 修复了 Join `information_schema.columns` 表会造成 TiDB panic 的问题 [#32459](https://github.com/pingcap/tidb/issues/32459) [@tangenta](https://github.com/tangenta)
+    - 修复了生成执行计划过程中，因为获取的 Info Schema 不一致而导致的 TiDB panic [#41622](https://github.com/pingcap/tidb/issues/41622) [@tiancaiamao](https://github.com/tiancaiamao)
 
 + TiKV
 
