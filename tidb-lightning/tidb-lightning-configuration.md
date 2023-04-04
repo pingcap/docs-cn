@@ -124,7 +124,7 @@ addr = "172.16.31.10:8287"
 # - error：中止导入并报错
 # on-duplicate = "replace"
 
-Physical Import Mode 设置是否检测和解决重复的记录（唯一键冲突）。
+# Physical Import Mode 设置是否检测和解决重复的记录（唯一键冲突）。
 # 目前支持三种解决方法：
 #  - record: 数据写入目标表后，将目标表中重复记录添加到目的 TiDB 中的 `lightning_task_info.conflict_error_v1` 表中。注意，该方法要求目的 TiKV 的版本为 v5.2.0 或更新版本。如果版本过低，则会启用下面的 'none' 模式。
 #  - none: 不检测重复记录。该模式是三种模式中性能最佳的，但是如果数据源存在重复记录，会导致 TiDB 中出现数据不一致的情况。
