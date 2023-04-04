@@ -781,7 +781,8 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 默认值：`ON`
-- TiDB 选择 MPP Hash Join 算法时，会根据集群状态估算 Broadcast Hash Join 和 Shuffled Hash Join 所需进行网络交换的数据量，并优先选择网络交换数据量较小的算法。该功能开启后 [`tidb_broadcast_join_threshold_count`](#tidb_broadcast_join_threshold_count-从-v50-版本开始引入) 和 [`tidb_broadcast_join_threshold_size`](#tidb_broadcast_join_threshold_size-从-v50-版本开始引入) 将不再生效。
+- 这个变量用于设定 TiDB 选择 MPP Hash Join 算法时，是否使用最小网络交换的数据量策略。使用该策略时，TiDB 会估算 Broadcast Hash Join 和 Shuffled Hash Join 两种算法所需进行网络交换的数据量，并选择网络交换数据量较小的算法。
+- 该功能开启后 [`tidb_broadcast_join_threshold_count`](#tidb_broadcast_join_threshold_count-从-v50-版本开始引入) 和 [`tidb_broadcast_join_threshold_size`](#tidb_broadcast_join_threshold_size-从-v50-版本开始引入) 将不再生效。
 
 ### `tidb_build_stats_concurrency`
 
