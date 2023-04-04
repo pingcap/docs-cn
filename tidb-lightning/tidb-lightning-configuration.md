@@ -119,8 +119,8 @@ driver = "file"
 # "local": Physical import mode, used by default. It applies to large dataset import, for example, greater than 1 TiB. However, during the import, downstream TiDB is not available to provide services.
 # "tidb": Logical import mode. You can use this mode for small dataset import, for example, smaller than 1 TiB. During the import, downstream TiDB is available to provide services.
 # backend = "local"
-# Whether to allow importing data to tables with data. The default value is `false`.
-# When you use parallel import mode, you must set it to `true`, because multiple TiDB Lightning instances are importing the same table at the same time.
+# Whether to enable multiple TiDB Lightning instances (in physical import mode) to import data to one or more target tables in parallel. The default value is `false`.
+# When you use parallel import mode, you must set the parameter to `true`, but the premise is that no data exists in the target table, that is, all data can only be imported by TiDB Lightning. Note that this parameter **is not for incremental data import** and is only used in scenarios where the target table is empty.
 # incremental-import = false
 
 # The listening address of tikv-importer when backend is "importer". Change it to the actual address.
@@ -133,12 +133,9 @@ addr = "172.16.31.10:8287"
 
 # Whether to detect and resolve duplicate records (unique key conflict) in the physical import mode.
 # The following resolution algorithms are supported:
-#  - record: only records duplicate records to the `lightning_task_info.conflict_error_v1` table on the target TiDB. Note that the
-#    required version of the target TiKV is no earlier than v5.2.0; otherwise it falls back to 'none'.
-#  - none: does not detect duplicate records, which has the best performance of the three algorithms, but might lead to
-#    inconsistent data in the target TiDB.
-#  - remove: records all duplicate records to the lightning_task_info database, like the 'record' algorithm. But it removes all duplicate records from the target table to ensure a consistent
-#    state in the target TiDB.
+#  - record: After the data is written to the target table, add the duplicate records from the target table to the `lightning_task_info.conflict_error_v1` table in the target TiDB. Note that the required version of the target TiKV is no earlier than v5.2.0; otherwise it falls back to 'none'.
+#  - none: does not detect duplicate records, which has the best performance of the three algorithms. But if there are duplicate records in the data source, it might lead to inconsistent data in the target TiDB.
+#  - remove: records all duplicate records in the target table to the lightning_task_info database, like the 'record' algorithm. But it removes all duplicate records from the target table to ensure a consistent state in the target TiDB.
 # duplicate-resolution = 'none'
 # The number of KV pairs sent in one request in the physical import mode.
 # send-kv-pairs = 32768
