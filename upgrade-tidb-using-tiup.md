@@ -46,7 +46,7 @@ title: 使用 TiUP 升级 TiDB
 
 ### 2.1 查阅兼容性变更
 
-查阅 TiDB v6.6.0 release notes 中的[兼容性变更](/releases/release-6.6.0.md#兼容性变更)。如果有任何变更影响到了你的升级，请采取相应的措施。
+查阅 TiDB v7.0.0 release notes 中的[兼容性变更](/releases/release-7.0.0.md#兼容性变更)。如果有任何变更影响到了你的升级，请采取相应的措施。
 
 ### 2.2 升级 TiUP 或更新 TiUP 离线镜像
 
