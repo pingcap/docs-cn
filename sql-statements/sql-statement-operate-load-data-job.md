@@ -25,10 +25,10 @@ The `DROP LOAD DATA` statement deletes a LOAD DATA job created in the system.
 
 ```ebnf+diagram
 CancelLoadDataJobsStmt ::=
-    'CANCEL' 'LAOD' 'DATA' 'JOB' JobID
+    'CANCEL' 'LOAD' 'DATA' 'JOB' JobID
 
 DropLoadDataJobsStmt ::=
-    'DROP' 'LAOD' 'DATA' 'JOB' JobID
+    'DROP' 'LOAD' 'DATA' 'JOB' JobID
 ```
 
 ## Examples

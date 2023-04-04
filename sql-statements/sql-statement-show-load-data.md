@@ -23,10 +23,10 @@ The `SHOW LOAD DATA` statement displays LOAD DATA jobs created in the system. Th
 
 ```ebnf+diagram
 ShowLoadDataJobsStmt ::=
-    'SHOW' 'LAOD' 'DATA' 'JOBS'
+    'SHOW' 'LOAD' 'DATA' 'JOBS'
 
 ShowLoadDataJobStmt ::=
-    'SHOW' 'LAOD' 'DATA' 'JOB' JobID
+    'SHOW' 'LOAD' 'DATA' 'JOB' JobID
 ```
 
 The meanings of the fields displayed by the `SHOW LOAD DATA` statement are as follows:
