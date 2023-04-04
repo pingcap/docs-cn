@@ -40,7 +40,7 @@ This document lists the features supported in different TiDB versions, including
 | [Miscellaneous functions](/functions-and-operators/miscellaneous-functions.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y |
 | [Operators](/functions-and-operators/operators.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y |
 | [Character sets and collations](/character-set-and-collation.md) [^1] | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y |
-| [User-level lock](/functions-and-operators/locking-functions.md) | Y | Y | Y | Y | N | N |  |  |  |  |
+| [User-level lock](/functions-and-operators/locking-functions.md) | Y | Y | Y | Y | N | N | N | N | N | N |
 
 ## Indexing and constraints
 
