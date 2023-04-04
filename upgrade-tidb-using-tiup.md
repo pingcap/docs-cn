@@ -49,7 +49,7 @@ This section introduces the preparation works needed before upgrading your TiDB 
 
 ### Step 1: Review compatibility changes
 
-Review [the compatibility changes](/releases/release-6.6.0.md#compatibility-changes) in TiDB v6.6.0 release notes. If any changes affect your upgrade, take actions accordingly.
+Review [the compatibility changes](/releases/release-7.0.0.md#compatibility-changes) in TiDB v7.0.0 release notes. If any changes affect your upgrade, take actions accordingly.
 
 ### Step 2: Upgrade TiUP or TiUP offline mirror
 
