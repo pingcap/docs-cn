@@ -126,9 +126,9 @@ addr = "172.16.31.10:8287"
 
 # Physical Import Mode 设置是否检测和解决重复的记录（唯一键冲突）。
 # 目前支持三种解决方法：
-#  - record: 数据写入目标表后，将目标表中重复记录添加到目的 TiDB 中的 `lightning_task_info.conflict_error_v1` 表中。注意，该方法要求目的 TiKV 的版本为 v5.2.0 或更新版本。如果版本过低，则会启用下面的 'none' 模式。
+#  - record: 数据写入目标表后，将目标表中重复记录添加到目标 TiDB 中的 `lightning_task_info.conflict_error_v1` 表中。注意，该方法要求目标 TiKV 的版本为 v5.2.0 或更新版本。如果版本过低，则会启用下面的 'none' 模式。
 #  - none: 不检测重复记录。该模式是三种模式中性能最佳的，但是如果数据源存在重复记录，会导致 TiDB 中出现数据不一致的情况。
-#  - remove: 记录所有目标表中的重复记录，和 'record' 模式相似。但是会删除目标表所有的重复记录，以确保目的 TiDB 中的数据状态保持一致。
+#  - remove: 记录所有目标表中的重复记录，和 'record' 模式相似。但是会删除目标表所有的重复记录，以确保目标 TiDB 中的数据状态保持一致。
 # duplicate-resolution = 'none'
 # Physical Import Mode 一次请求中发送的 KV 数量。
 # send-kv-pairs = 32768
