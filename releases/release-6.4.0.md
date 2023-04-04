@@ -132,6 +132,10 @@ In v6.4.0-DMR, the key new features and improvements are as follows:
 
     For more information, see [User document](/system-variables.md#tidb_stats_load_sync_wait-new-in-v540).
 
+* Reduce the impact of batch write requests on the response time of lightweight transactional writes [#13313](https://github.com/tikv/tikv/issues/13313) @[glorv](https://github.com/glorv)
+
+    The business logic of some systems requires periodic batch DML tasks, but processing these batch write tasks increases the latency of online transactions. In v6.3.0, TiKV optimizes the scheduling of read requests in hybrid workload scenarios, so you can enable the [`readpool.unified.auto-adjust-pool-size`](/tikv-configuration-file.md#auto-adjust-pool-size-new-in-v630) configuration item to have TiKV automatically adjust the size of the UnifyReadPool thread pool for all read requests. In v6.4.0, TiKV can dynamically identify and prioritize write requests as well, and control the maximum bytes that the Apply thread can write for one FSM (Finite-state Machine) in one round of poll, thus reducing the impact of batch write requests on the response time of transactional writes.
+
 ### Ease of use
 
 * TiKV API V2 becomes generally available (GA) [#11745](https://github.com/tikv/tikv/issues/11745) @[pingyu](https://github.com/pingyu)
