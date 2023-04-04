@@ -113,8 +113,8 @@ driver = "file"
 # "local"：Physical Import Mode，默认使用。适用于 TB 级以上大数据量，但导入期间下游 TiDB 无法对外提供服务。
 # "tidb"：Logical Import Mode。TB 级以下数据量可以采用，下游 TiDB 可正常提供服务。
 # backend = "local"
-# 是否允许向已存在数据的表导入数据。默认值为 false。
-# 当使用并行导入模式时，由于多个 TiDB Lightning 实例同时导入一张表，因此此开关必须设置为 true。
+# 是否允许启动多个 TiDB Lightning 实例并行导入到一个或多个目标表。默认取值为 false。
+# 多个 TiDB Lightning 实例同时导入一张表时，此开关必须设置为 true。
 # incremental-import = false
 # 当后端是 “importer” 时，tikv-importer 的监听地址（需改为实际地址）。
 addr = "172.16.31.10:8287"
@@ -124,11 +124,11 @@ addr = "172.16.31.10:8287"
 # - error：中止导入并报错
 # on-duplicate = "replace"
 
-# Physical Import Mode 设置是否检测和解决重复的记录（唯一键冲突）。
+Physical Import Mode 设置是否检测和解决重复的记录（唯一键冲突）。
 # 目前支持三种解决方法：
-#  - record: 仅将重复记录添加到目的 TiDB 中的 `lightning_task_info.conflict_error_v1` 表中。注意，该方法要求目的 TiKV 的版本为 v5.2.0 或更新版本。如果版本过低，则会启用下面的 'none' 模式。
-#  - none: 不检测重复记录。该模式是三种模式中性能最佳的，但是可能会导致目的 TiDB 中出现数据不一致的情况。
-#  - remove: 记录所有的重复记录，和 'record' 模式相似。但是会删除所有的重复记录，以确保目的 TiDB 中的数据状态保持一致。
+#  - record: 数据写入目标表后，将目标表中重复记录添加到目的 TiDB 中的 `lightning_task_info.conflict_error_v1` 表中。注意，该方法要求目的 TiKV 的版本为 v5.2.0 或更新版本。如果版本过低，则会启用下面的 'none' 模式。
+#  - none: 不检测重复记录。该模式是三种模式中性能最佳的，但是如果数据源存在重复记录，会导致 TiDB 中出现数据不一致的情况。
+#  - remove: 记录所有目标表中的重复记录，和 'record' 模式相似。但是会删除目标表所有的重复记录，以确保目的 TiDB 中的数据状态保持一致。
 # duplicate-resolution = 'none'
 # Physical Import Mode 一次请求中发送的 KV 数量。
 # send-kv-pairs = 32768
