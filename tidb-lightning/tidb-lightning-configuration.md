@@ -56,7 +56,7 @@ table-concurrency = 6
 # The concurrency number of data. It is set to the number of logical CPU
 # cores by default. When deploying together with other components, you can
 # set it to 75% of the size of logical CPU cores to limit the CPU usage.
-#region-concurrency =
+# region-concurrency =
 
 # The maximum I/O concurrency. Excessive I/O concurrency causes an increase in
 # I/O latency because the disk's internal buffer is frequently refreshed,
@@ -68,6 +68,7 @@ io-concurrency = 5
 # Non-fatal errors are localized to a few rows, and ignoring those rows allows the import process to continue.
 # Setting this to N means that TiDB Lightning will stop as soon as possible when the (N+1)-th error is encountered.
 # The skipped rows will be inserted into tables inside the "task info" schema on the target TiDB, which can be configured below.
+# The default value is `MaxInt64` bytes, that is, 9223372036854775807 bytes.
 max-error = 0
 # task-info-schema-name is the name of the schema or database that stores TiDB Lightning execution results.
 # To disable error recording, set this to an empty string.
@@ -285,9 +286,9 @@ log-level = "error"
 # See https://pingcap.com/docs/dev/reference/performance/statistics/#control-analyze-concurrency
 # for the meaning of each setting
 build-stats-concurrency = 20
-distsql-scan-concurrency = 100
+distsql-scan-concurrency = 15
 index-serial-scan-concurrency = 20
-checksum-table-concurrency = 16
+checksum-table-concurrency = 2
 
 # The default SQL mode used to parse and execute the SQL statements.
 sql-mode = "ONLY_FULL_GROUP_BY,NO_ENGINE_SUBSTITUTION"
