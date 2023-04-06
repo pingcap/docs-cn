@@ -61,6 +61,12 @@ TiDB 版本：6.1.6
     - 修复了 DDL 在修改浮点类型，保持长度不变且减少小数位时旧数据仍然保持原样的问题 [#41281](https://github.com/pingcap/tidb/issues/41281) [@zimulala](https://github.com/zimulala)
     - 修复了 Join `information_schema.columns` 表会造成 TiDB panic 的问题 [#32459](https://github.com/pingcap/tidb/issues/32459) [@tangenta](https://github.com/tangenta)
     - 修复了生成执行计划过程中，因为获取的 Info Schema 不一致而导致的 TiDB panic [#41622](https://github.com/pingcap/tidb/issues/41622) [@tiancaiamao](https://github.com/tiancaiamao)
+    - 修复有虚拟生成列的表在使用 TiFlash 副本读取时，可能会抛出错误的问题 [#40663](https://github.com/pingcap/tidb/issues/40663) @[guo-shaoge](https://github.com/guo-shaoge)
+    - 修复读取 LIST PARTITION 的表时可能抛出错误的问题 [#42135](https://github.com/pingcap/tidb/issues/42135) @[mjonss](https://github.com/mjonss)
+    - 修复 prepare plan cache 开启时，包含 Window Function 的 SQL 执行结果可能错误的问题 [#38335](https://github.com/pingcap/tidb/issues/38335) @[fzzf678](https://github.com/fzzf678)
+    - 修复使用 Index Merge 的方式读取包含 SET 类型的列的表时，结果可能出错的问题 [#41293](https://github.com/pingcap/tidb/issues/41293) @[time-and-fate](https://github.com/time-and-fate)
+    - 修复 prepare plan cache 开启时，使用 Index 扫全表的 SQL 在执行时可能会抛出 panic 的问题 [#42150](https://github.com/pingcap/tidb/issues/42150) @[fzzf678](https://github.com/fzzf678)
+    - 修复当 DDL 执行过程中，使用 PointGet 读取表的 SQL 可能会在执行时抛出 panic 的问题 [#41622](https://github.com/pingcap/tidb/issues/41622) @[tiancaiamao](https://github.com/tiancaiamao)
 
 + TiKV
 
