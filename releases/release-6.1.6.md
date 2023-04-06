@@ -69,7 +69,9 @@ TiDB 版本：6.1.6
     - 修复使用 Index Merge 的方式读取包含 SET 类型的列的表时，结果可能出错的问题 [#41293](https://github.com/pingcap/tidb/issues/41293) @[time-and-fate](https://github.com/time-and-fate)
     - 修复 prepare plan cache 开启时，使用 Index 扫全表的 SQL 在执行时可能会抛出 panic 的问题 [#42150](https://github.com/pingcap/tidb/issues/42150) @[fzzf678](https://github.com/fzzf678)
     - 修复当 DDL 执行过程中，使用 PointGet 读取表的 SQL 可能会在执行时抛出 panic 的问题 [#41622](https://github.com/pingcap/tidb/issues/41622) @[tiancaiamao](https://github.com/tiancaiamao)
-
+    - 修复事务内点更新之后，select 结果不正确的问题 [#28011](https://github.com/pingcap/tidb/issues/28011) @[zyguan](https://github.com/zyguan)
+    - 修复过期 region 信息在 region cache 无法被及时清理回收的问题 [#40461](https://github.com/pingcap/tidb/issues/40461) @[zyguan](https://github.com/zyguan)
+    - 修复 Replace 语句唯一索引键加锁不符合预期 [#42121](https://github.com/pingcap/tidb/issues/42121) @[zyguan](https://github.com/zyguan)
 + TiKV
 
     - (dup): release-6.6.0.md > Bug 修复> TiKV - 修复转换 `const Enum` 类型到其他类型时报错的问题 [#14156](https://github.com/tikv/tikv/issues/14156) @[wshwsh12](https://github.com/wshwsh12)
