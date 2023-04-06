@@ -12,6 +12,22 @@ SQL Plan Management is a set of functions that execute SQL bindings to manually 
 
 An SQL binding is the basis of SPM. The [Optimizer Hints](/optimizer-hints.md) document introduces how to select a specific execution plan using hints. However, sometimes you need to interfere with execution selection without modifying SQL statements. With SQL bindings, you can select a specified execution plan without modifying SQL statements.
 
+<CustomContent platform="tidb">
+
+> **Note:**
+>
+> To use SQL bindings, you need to have the `SUPER` privilege. If TiDB prompts that you do not have sufficient privileges, see [Privilege Management](/privilege-management.md) to add the required privileges.
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+> **Note:**
+>
+> To use SQL bindings, you need to have the `SUPER` privilege. If TiDB prompts that you do not have sufficient privileges, see [Privilege Management](https://docs.pingcap.com/tidb/stable/privilege-management) to add the required privileges.
+
+</CustomContent>
+
 ### Create a binding
 
 You can create a binding for a SQL statement according to a SQL statement or a historical execution plan.
