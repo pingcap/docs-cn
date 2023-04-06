@@ -18,6 +18,8 @@ TiDB 版本：6.1.6
 ## 提升改进
 
 + TiDB
+	- Prepare Plan Cache 可以缓存 BatchPointGet 计划 [#42125](https://github.com/pingcap/tidb/issues/42125) @[qw4990](https://github.com/qw4990)
+	- Index Join 支持更多的模式 [#40505](https://github.com/pingcap/tidb/issues/40505) @[Yisaer](https://github.com/Yisaer)
 
 + TiKV
 
