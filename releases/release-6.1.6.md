@@ -77,6 +77,7 @@ TiDB 版本：6.1.6
 + PD
 
     - (dup): release-6.5.1.md > Bug 修复> PD - 修复 Region Scatter 接口可能导致 leader 分布不均匀的问题 [#6017](https://github.com/tikv/pd/issues/6017) @[HunDunDM](https://github.com/HunDunDM)
+    - 修复 Online recovery 超时不生效的问题 @[v01dstar](https://github.com/v01dstar)
 
 + TiFlash
 
