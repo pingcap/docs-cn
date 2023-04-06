@@ -283,7 +283,7 @@ TiDB 有事务超时的机制，当事务运行超过 [`max-txn-ttl`](/tidb-conf
 - 主键 (PRIMARY KEY) 为有效索引。
 - 唯一索引 (UNIQUE INDEX) 中每一列在表结构中明确定义非空 (NOT NULL) 且不存在虚拟生成列 (VIRTUAL GENERATED COLUMNS)。
 
-聚簇索引指的是 TiDB 5.0 中引入的新特性，详见 [聚簇索引](/clustered-indexes.md)。
+聚簇索引指的是 TiDB 5.0 中引入的新特性，详见[聚簇索引](/clustered-indexes.md)。
 
 TiCDC 在开启 Old Value 功能后：
 
@@ -341,7 +341,13 @@ TiCDC 在开启 Old Value 功能后：
 >
 > **所以，如果需要保证索引列的更新顺序，建议在开启 Old Value 功能时，使用 default 分发模式。**
 
+- 对于非有效索引列的更新事件和有效索引列的更新事件被输出为更新事件的情况，Kafka Sink 的 Avro 格式无法正确的输出旧值。
+  
+> **解析：**
+> 因为在 Avro 实现中，Kafka 消息的 Value 的格式只包含当前列值，因此当一个事件既有新值也有旧值时，无法正确的输出旧值。
+
 - 对于非有效索引列的更新事件和有效索引列的更新事件被输出为更新事件的情况，Cloud Storage Sink 的 CSV 格式无法正确的输出旧值。
 
 > **解析：**
 > 因为 CSV 文件的列数是固定的，因此当一个事件既有新值也有旧值时，无法正确的输出旧值。
+> **所以，如果需要输出旧值，建议使用 Canal-JSON 格式。**
