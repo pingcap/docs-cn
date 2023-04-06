@@ -1,0 +1,41 @@
+# See the OWNERS docs at https://go.k8s.io/owners
+approvers:
+  # docs-maintainers:
+  - lilin90
+  - qiancai
+  # docs-committers:
+  - breezewish
+  - CharLotteiu
+  - csuzhangxc
+  - dcalvin
+  - dragonly
+  - en-jin19
+  - hfxsd
+  - jackysp
+  - kissmydb
+  - lance6716
+  - lichunzhu
+  - Liuxiaozhen12
+  - Oreoxmt
+  - overvenus
+  - QueenyJin
+  - ran-huang
+  - tangenta
+reviewers:
+  # docs-reviewers:
+  - 3pointer
+  - amyangfei
+  - anotherrachel
+  - crazycs520
+  - dveeden
+  - en-jin19
+  - glkappe
+  - GMHDBJD
+  - hfxsd
+  - Icemap
+  - Joyinqin
+  - KanShiori
+  - lucklove
+  - Oreoxmt
+  - tiancaiamao
+  - zimulala
