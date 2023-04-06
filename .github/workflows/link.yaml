@@ -24,12 +24,7 @@ jobs:
         uses: peter-evans/create-issue-from-file@v4
         with:
           title: Broken Link Detected
-<<<<<<< HEAD
-          content-filepath: ./lychee/out.md
-          assignees: TomShawn
-=======
           content-filepath: out.md
->>>>>>> a772ede56 (ci: remove assignees in Links, update the deprecated set-output command (#13612))
 
 #      - name: Fail if there were link errors
 #        run: exit ${{ steps.lychee.outputs.exit_code }}
