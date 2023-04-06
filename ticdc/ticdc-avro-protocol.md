@@ -11,7 +11,7 @@ Avro 是由 [Apache Avro™](https://avro.apache.org/) 定义的一种数据交�
 >
 > 在 enable-old-value = true 时，Avro 协议数据格式无法输出更新事件的旧值。
 >
-> 具体原因请参考 [TiCDC 在开启 Old Value 功能后更新事件格式有何变化？](/ticdc/ticdc-faq.md#ticdc-%E5%9C%A8%E5%BC%80%E5%90%AF-old-value-%E5%8A%9F%E8%83%BD%E5%90%8E%E6%9B%B4%E6%96%B0%E4%BA%8B%E4%BB%B6%E6%A0%BC%E5%BC%8F%E6%9C%89%E4%BD%95%E5%8F%98%E5%8C%96)。
+> 具体原因请参考 [TiCDC 在开启 Old Value 功能后更新事件格式有何变化？](/ticdc/ticdc-faq.md#ticdc-faq.md#ticdc-%E5%9C%A8%E5%BC%80%E5%90%AF-old-value-%E5%8A%9F%E8%83%BD%E5%90%8E%E6%9B%B4%E6%96%B0%E4%BA%8B%E4%BB%B6%E6%A0%BC%E5%BC%8F%E6%9C%89%E4%BD%95%E5%8F%98%E5%8C%96)。
 
 ## 使用 Avro
 
