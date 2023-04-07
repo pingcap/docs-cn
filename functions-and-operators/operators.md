@@ -30,6 +30,7 @@ title: 操作符
 | [`<`](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#operator_less-than) | 小于 |
 | [`<=`](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#operator_less-than-or-equal) | 小于或等于 |
 | [`LIKE`](https://dev.mysql.com/doc/refman/5.7/en/string-comparison-functions.html#operator_like) | 简单模式匹配 |
+| [`ILIKE`](https://www.postgresql.org/docs/current/functions-matching.html) | 大小写不敏感的简单模式匹配（TiDB 支持但 MySQL 不支持） |
 | [`-`](https://dev.mysql.com/doc/refman/5.7/en/arithmetic-functions.html#operator_minus) | 减 |
 | [`%`, `MOD`](https://dev.mysql.com/doc/refman/5.7/en/arithmetic-functions.html#operator_mod) | 求余 |
 | [`NOT`, `!`](https://dev.mysql.com/doc/refman/5.7/en/logical-operators.html#operator_not) | 取反 |
@@ -98,6 +99,7 @@ OR, ||
 | [`<`](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#operator_less-than) | 小于 |
 | [`<=`](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#operator_less-than-or-equal) | 小于或等于 |
 | [`LIKE`](https://dev.mysql.com/doc/refman/5.7/en/string-comparison-functions.html#operator_like) | 简单模式匹配 |
+| [`ILIKE`](https://www.postgresql.org/docs/current/functions-matching.html) | 大小写不敏感的简单模式匹配（TiDB 支持但 MySQL 不支持） |
 | [`NOT BETWEEN ... AND ...`](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#operator_not-between) | 判断值是否不在范围内 |
 | [`!=`, `<>`](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#operator_not-equal) | 不等于 |
 | [`NOT IN()`](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#operator_not-in) | 判断值是否不在一个值的集合内 |
@@ -125,3 +127,7 @@ OR, ||
 | [`:=`](https://dev.mysql.com/doc/refman/5.7/en/assignment-operators.html#operator_assign-value) | 赋值 |
 
 详情参见[这里](https://dev.mysql.com/doc/refman/5.7/en/group-by-functional-dependence.html)。
+
+## MySQL 兼容性
+
+* MySQL 不支持 `ILIKE` 操作符。
