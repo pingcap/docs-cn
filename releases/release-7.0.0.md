@@ -399,7 +399,7 @@ TiDB 版本：7.0.0
 
     - 减少 TiFlash 在写路径上的内存使用量 [#7144](https://github.com/pingcap/tiflash/issues/7144) @[hongyunyan](https://github.com/hongyunyan)
     - 减少 TiFlash 在有较多表的情况下的重启时间 [#7146](https://github.com/pingcap/tiflash/issues/7146) @[hongyunyan](https://github.com/hongyunyan)
-    - 支持下推 `ILIKE`操作符 [#6740](https://github.com/pingcap/tiflash/issues/6740) @[xzhangxian1008](https://github.com/xzhangxian1008)
+    - 支持下推 `ILIKE` 操作符 [#6740](https://github.com/pingcap/tiflash/issues/6740) @[xzhangxian1008](https://github.com/xzhangxian1008)
 
 + Tools
 
