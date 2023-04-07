@@ -95,7 +95,7 @@ In v6.6.0-DMR, the key new features and improvements are as follows:
 
 * Remove the limit on `LIMIT` clauses [#40219](https://github.com/pingcap/tidb/issues/40219) @[fzzf678](https://github.com/fzzf678)
 
-    Starting from v6.6.0, TiDB plan cache supports caching execution plans with a variable as the `LIMIT` parameter, such as `LIMIT ?` or `LIMIT 10, ?`. This feature allows more SQL statements to benefit from plan cache, thus improving execution efficiency.
+    Starting from v6.6.0, TiDB plan cache supports caching execution plans with a variable as the `LIMIT` parameter, such as `LIMIT ?` or `LIMIT 10, ?`. This feature allows more SQL statements to benefit from plan cache, thus improving execution efficiency. Currently, for security considerations, TiDB can only cache execution plans with `?` not greater than 10000.
 
     For more information, see [documentation](/sql-prepared-plan-cache.md).
 
