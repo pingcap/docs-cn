@@ -97,12 +97,12 @@ TiDB 版本：6.1.6
     + Backup & Restore (BR)
 
     + TiCDC
-        - 修复同步数据时由于 `Update` 和 `Insert` 语句乱序可能导致的 `Duplicate entry` 错误问题 [#8635](https://github.com/pingcap/tiflow/pull/8635) @[sdojjy](https://github.com/sojjy)
-        - 修复 `float32` 类型解析错误导致的浮点数精度丢失问题 [#8519](https://github.com/pingcap/tiflow/pull/8519) @[3AceShowHand](https://github.com/3AceShowHand)
-        - 修复由 PD 和 TiCDC 之间网络隔离引起的 TiCDC 程序异常退出的问题 [#8462](https://github.com/pingcap/tiflow/pull/8642) @[overvenus](https://github.com/overvenus)
-        (dup: release-6.5.1.md > 错误修复> Tools> TiCDC)- 修复下游为 TiDB 或 MySQL 时，无主键且非空唯一索引所在列指定了 CHARACTER SET 同步时可能会出现数据不一致的问题 [#8420](https://github.com/pingcap/tiflow/issues/8420) @[asddongmen](https://github.com/asddongmen) @[zhaoxinyu](https://github.com/zhaoxinyu)
-        - 修复 `db sorter` 使用内存没有正确受到 `cgroup memory limit` 限制的问题 [#8623](https://github.com/pingcap/tiflow/pull/8623) @[amyangfei](https://github.com/amyangfei)
-        - 优化 `cdc cli` 在遇到非法输入时的错误提示。 [#8442](https://github.com/pingcap/tiflow/pull/8442) @[CharlesCheung96](https://github.com/CharlesCheung96)
+        - 修复同步数据时由于 `Update` 和 `Insert` 语句乱序可能导致 `Duplicate entry` 错误的问题 [#8597](https://github.com/pingcap/tiflow/issues/8597) @[sdojjy](https://github.com/sojjy)
+        - 修复 `float32` 类型解析错误导致浮点数精度丢失的问题 [#8490](https://github.com/pingcap/tiflow/issues/8490) @[3AceShowHand](https://github.com/3AceShowHand)
+        - 修复由于 PD 和 TiCDC 之间的网络隔离引起 TiCDC 程序异常退出的问题 [#8562](https://github.com/pingcap/tiflow/issues/8562) @[overvenus](https://github.com/overvenus)
+        - 修复在同步没有主键且包含非空唯一索引的表时，数据可能丢失的问题 [#8420](https://github.com/pingcap/tiflow/issues/8420) @[zhaoxinyu](https://github.com/zhaoxinyu)
+        - 修复 `db sorter` 使用内存时未受 `cgroup memory limit` 限制的问题 [#8588](https://github.com/pingcap/tiflow/issues/8588) @[amyangfei](https://github.com/amyangfei)
+        - 优化 `cdc cli` 在遇到非法输入时的错误提示 [#7903](https://github.com/pingcap/tiflow/issues/7903) @[CharlesCheung96]
         (dup: release-6.6.0.md > 错误修复> Tools> TiCDC)- 修复 redo log 容忍 S3 存储故障的时间过短的问题 [#8089](https://github.com/pingcap/tiflow/issues/8089) @[CharlesCheung96](https://github.com/CharlesCheung96) @[CharlesCheung96](https://github.com/CharlesCheung96)
         (dup: release-6.5.1.md > 错误修复> Tools> TiCDC)- 修复在 PD 异常时，暂停一个 changefeed 会错误设置状态的问题 [#8330](https://github.com/pingcap/tiflow/issues/8330) @[sdojjy](https://github.com/sdojjy) @[sdojjy](https://github.com/sdojjy)
 
