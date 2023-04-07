@@ -144,7 +144,7 @@ show create table metrics_schema.tidb_query_duration;
 ```
 
 * `time`：监控项的时间。
-* `instance` 和 `sql_type`：指 `tidb_query_duration` 这个监控项的 label。`instance` 表示监控的地址，`sql_type` 表示执行 SQL 的类似。
+* `instance` 和 `sql_type`：`tidb_query_duration` 监控项的 label。`instance` 表示监控的地址，`sql_type` 表示执行 SQL 的类似。
 * `quantile`，百分位，直方图类型的监控都会有该列，表示查询的百分位时间，如 `quantile=0.9` 就是查询 P90 的时间。
 * `value`：监控项的值。
 
