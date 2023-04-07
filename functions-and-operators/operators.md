@@ -41,6 +41,7 @@ This document describes the operators precedence, comparison functions and opera
 | [<](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#operator_less-than) | Less than operator |
 | [<=](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#operator_less-than-or-equal) | Less than or equal operator |
 | [LIKE](https://dev.mysql.com/doc/refman/5.7/en/string-comparison-functions.html#operator_like) | Simple pattern matching |
+| [ILIKE](https://www.postgresql.org/docs/current/functions-matching.html) | Simple pattern matching with case insensitive (Supported in TiDB, but not supported in MySQL) |
 | [-](https://dev.mysql.com/doc/refman/5.7/en/arithmetic-functions.html#operator_minus) | Minus operator |
 | [%, MOD](https://dev.mysql.com/doc/refman/5.7/en/arithmetic-functions.html#operator_mod) | Modulo operator |
 | [NOT, !](https://dev.mysql.com/doc/refman/5.7/en/logical-operators.html#operator_not) | Negates value |
@@ -109,6 +110,7 @@ For details, see [Operator Precedence](https://dev.mysql.com/doc/refman/5.7/en/o
 | [<](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#operator_less-than) | Less than operator |
 | [<=](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#operator_less-than-or-equal) | Less than or equal operator |
 | [LIKE](https://dev.mysql.com/doc/refman/5.7/en/string-comparison-functions.html#operator_like) | Simple pattern matching |
+| [ILIKE](https://www.postgresql.org/docs/current/functions-matching.html) | Simple pattern matching with case insensitive (Supported in TiDB, but not supported in MySQL) |
 | [NOT BETWEEN ... AND ...](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#operator_not-between) | Check whether a value is not within a range of values |
 | [!=, `<>`](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#operator_not-equal) | Not equal operator |
 | [NOT IN()](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#operator_not-in) | Check whether a value is not within a set of values |
@@ -136,3 +138,7 @@ For details, see [MySQL Handling of GROUP BY](https://dev.mysql.com/doc/refman/5
 | [:=](https://dev.mysql.com/doc/refman/5.7/en/assignment-operators.html#operator_assign-value) | Assign a value |
 
 For details, see [Detection of Functional Dependence](https://dev.mysql.com/doc/refman/5.7/en/group-by-functional-dependence.html).
+
+## MySQL compatibility
+
+* MySQL does not support the `ILIKE` operator.

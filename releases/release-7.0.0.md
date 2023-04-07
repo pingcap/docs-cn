@@ -389,6 +389,7 @@ In v7.0.0-DMR, the key new features and improvements are as follows:
     - Avoid globally sorting partitioned table data in TiDB in some cases [#26166](https://github.com/pingcap/tidb/issues/26166) @[Defined2014](https://github.com/Defined2014)
     - Support using `fair lock mode` and `lock only if exists` at the same time [#42068](https://github.com/pingcap/tidb/issues/42068) @[MyonKeminta](https://github.com/MyonKeminta)
     - Support printing transaction slow logs and transaction internal events [#41863](https://github.com/pingcap/tidb/issues/41863) @[ekexium](https://github.com/ekexium)
+    - Support the `ILIKE` operator [#40943](https://github.com/pingcap/tidb/issues/40943) @[xzhangxian1008](https://github.com/xzhangxian1008)
 
 + PD
 
@@ -398,6 +399,7 @@ In v7.0.0-DMR, the key new features and improvements are as follows:
 
     - Reduce TiFlash's memory usage on write path [#7144](https://github.com/pingcap/tiflash/issues/7144) @[hongyunyan](https://github.com/hongyunyan)
     - Reduce TiFlash's restart time in scenarios with many tables [#7146](https://github.com/pingcap/tiflash/issues/7146) @[hongyunyan](https://github.com/hongyunyan)
+    - Support pushing down the `ILIKE` operator [#6740](https://github.com/pingcap/tiflash/issues/6740) @[xzhangxian1008](https://github.com/xzhangxian1008)
 
 + Tools
 
