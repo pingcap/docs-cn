@@ -7,6 +7,7 @@ aliases: ['/zh/tidb/dev/ticdc-grafana-summary-dashboard']
 # TiCDC 基本监控指标
 
 从 v7.0.0 版本开始，使用 TiUP 一键部署的 Grafana 在其监控页面新增了 TiCDC Summary Dashboard。通过该监控面板，你可以快速地了解 TiCDC 服务器运行状态和同步任务的基本情况。
+
 下图显示了 TiCDC Dashboard 的监控栏：
 
 ![TiCDC Summary Dashboard - Overview](/media/ticdc/ticdc-summary-monitor.png)
@@ -84,7 +85,7 @@ MQ Sink 监控栏示意如下，该监控栏只有下游为 Kafka 时才有数�
 
 Cloud Storage Sink 监控栏示意如下，该监控栏只有下游为 Cloud Storage 时才有数据。
 
-![TiCDC Summary Dashboard - Transaction Sink metrics](/media/ticdc/ticdc-summary-monitor-storage.png)
+![TiCDC Summary Dashboard - Transaction Sink metrics](/media/ticdc/ticdc-summary-monitor-cloud-storage.png)
 
 - Write Bytes/s: Cloud Storage Sink 模块往下游写数据的速率。
 - File Count: Cloud Storage Sink 模块写文件的总数量。
