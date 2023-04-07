@@ -112,7 +112,7 @@ TiDB 版本：6.5.1
     - 修复慢日志中查询计划算子可能缺失的问题 [#41458](https://github.com/pingcap/tidb/issues/41458) @[time-and-fate](https://github.com/time-and-fate)
     - 修复错误下推包含虚拟列的 TopN 算子到 TiKV 或 TiFlash 导致结果错误的问题 [#41355](https://github.com/pingcap/tidb/issues/41355) @[Dousir9](https://github.com/Dousir9)
     - 修复添加索引时数据不一致的问题 [#40698](https://github.com/pingcap/tidb/issues/40698) [#40730](https://github.com/pingcap/tidb/issues/40730) [#41459](https://github.com/pingcap/tidb/issues/41459) [#40464](https://github.com/pingcap/tidb/issues/40464) [#40217](https://github.com/pingcap/tidb/issues/40217) @[tangenta](https://github.com/tangenta)
-    - 修复添加索引时出现 "Pessimistic lock not found" 的报错问题 [#41515](https://github.com/pingcap/tidb/issues/41515) @[tangenta](https://github.com/tangenta)
+    - 修复添加索引时出现 `PessimisticLockNotFound` 的报错问题 [#41515](https://github.com/pingcap/tidb/issues/41515) @[tangenta](https://github.com/tangenta)
     - 修复添加唯一索引时误报重复键的问题 [#41630](https://github.com/pingcap/tidb/issues/41630) @[tangenta](https://github.com/tangenta)
     - 修复 TiDB 使用 `paging` 时性能下降的问题 [#40741](https://github.com/pingcap/tidb/issues/40741) @[solotzg](https://github.com/solotzg)
 
