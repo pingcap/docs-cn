@@ -18,7 +18,7 @@ TiDB 版本：6.1.6
 ## 提升改进
 
 + TiDB
-	- Prepare Plan Cache 可以缓存 BatchPointGet 计划 [#42125](https://github.com/pingcap/tidb/issues/42125) @[qw4990](https://github.com/qw4990)
+	- Prepare Plan Cache 支持缓存 BatchPointGet 计划 [#42125](https://github.com/pingcap/tidb/issues/42125) @[qw4990](https://github.com/qw4990)
 	(dup: release-7.0.0.md > 改进提升> TiDB)- Index Join 支持更多的 SQL 格式 [#40505](https://github.com/pingcap/tidb/issues/40505) @[Yisaer](https://github.com/Yisaer) @[Yisaer](https://github.com/Yisaer)
 
 + TiKV
@@ -60,23 +60,24 @@ TiDB 版本：6.1.6
     (dup: release-6.5.1.md > 错误修复> TiDB)- 修复了时区中的数据争用可能导致数据和索引不一致问题 [#40710](https://github.com/pingcap/tidb/issues/40710) @[wjhuang2016](https://github.com/wjhuang2016) @[wjhuang2016](https://github.com/wjhuang2016)
     (dup: release-6.5.1.md > 错误修复> TiDB)- 修复了 `indexMerge` 中可能会出现 goroutine 泄露的问题 [#41545](https://github.com/pingcap/tidb/issues/41545) [#41605](https://github.com/pingcap/tidb/issues/41605) @[guo-shaoge](https://github.com/guo-shaoge) @[guo-shaoge](https://github.com/guo-shaoge)
     - 修复在使用 Cursor Fetch 且在 Execute、Fetch、Close 之间运行其它语句后，Fetch 与 Close 命令可能会返回错误结果或造成 TiDB Panic 的问题 [#40094](https://github.com/pingcap/tidb/issues/40094) [@YangKeao](https://github.com/YangKeao)
-    - 修复了 DDL 在修改浮点类型，保持长度不变且减少小数位时旧数据仍然保持原样的问题 [#41281](https://github.com/pingcap/tidb/issues/41281) [@zimulala](https://github.com/zimulala)
+    - 修复了使用 DDL 修改浮点类型时，保持长度不变且减少小数位后，旧数据仍然保持原样的问题 [#41281](https://github.com/pingcap/tidb/issues/41281) [@zimulala](https://github.com/zimulala)
     - 修复了 Join `information_schema.columns` 表会造成 TiDB panic 的问题 [#32459](https://github.com/pingcap/tidb/issues/32459) [@tangenta](https://github.com/tangenta)
-    - 修复了生成执行计划过程中，因为获取的 Info Schema 不一致而导致的 TiDB panic [#41622](https://github.com/pingcap/tidb/issues/41622) [@tiancaiamao](https://github.com/tiancaiamao)
+    - 修复了生成执行计划过程中，因为获取的 Info Schema 不一致而导致的 TiDB panic 的问题 [#41622](https://github.com/pingcap/tidb/issues/41622) [@tiancaiamao](https://github.com/tiancaiamao)
     (dup: release-7.0.0.md > 错误修复> TiDB)- 修复 TiFlash 执行中遇到生成列会报错的问题 [#40663](https://github.com/pingcap/tidb/issues/40663) @[guo-shaoge](https://github.com/guo-shaoge) @[guo-shaoge](https://github.com/guo-shaoge)
     (dup: release-7.0.0.md > 错误修复> TiDB)- 修复当同一个 SQL 中出现多个不同的分区表时，TiDB 可能执行得到错误结果的问题 [#42135](https://github.com/pingcap/tidb/issues/42135) @[mjonss](https://github.com/mjonss) @[mjonss](https://github.com/mjonss)
     (dup: release-6.5.1.md > 错误修复> TiDB)- 修复 Plan Cache 可能缓存 Shuffle 算子导致返回错误结果的问题 [#38335](https://github.com/pingcap/tidb/issues/38335) @[qw4990](https://github.com/qw4990) @[fzzf678](https://github.com/fzzf678)
-    - 修复使用 Index Merge 的方式读取包含 SET 类型的列的表时，结果可能出错的问题 [#41293](https://github.com/pingcap/tidb/issues/41293) @[time-and-fate](https://github.com/time-and-fate)
+    - 修复使用 Index Merge 的方式读取包含 SET 类型列的表时，结果可能出错的问题 [#41293](https://github.com/pingcap/tidb/issues/41293) @[time-and-fate](https://github.com/time-and-fate)
     (dup: release-7.0.0.md > 错误修复> TiDB)- 修复在开启 Prepared Plan Cache 的情况下，索引全表扫可能会报错的问题 [#42150](https://github.com/pingcap/tidb/issues/42150) @[fzzf678](https://github.com/fzzf678) @[fzzf678](https://github.com/fzzf678)
-    - 修复当 DDL 执行过程中，使用 PointGet 读取表的 SQL 可能会在执行时抛出 panic 的问题 [#41622](https://github.com/pingcap/tidb/issues/41622) @[tiancaiamao](https://github.com/tiancaiamao)
-    - 修复事务内点更新之后，select 结果不正确的问题 [#28011](https://github.com/pingcap/tidb/issues/28011) @[zyguan](https://github.com/zyguan)
+    - 修复在 DDL 执行过程中，使用 PointGet 读取表的 SQL 语句可能会在执行时抛出 panic 的问题 [#41622](https://github.com/pingcap/tidb/issues/41622) @[tiancaiamao](https://github.com/tiancaiamao)
+    - 修复事务内执行 PointUpdate 之后，SELECT 结果不正确的问题 [#28011](https://github.com/pingcap/tidb/issues/28011) @[zyguan](https://github.com/zyguan)
     (dup: release-6.6.0.md > 改进提升> TiDB)- 定期清理过期的 Region 缓存，避免内存泄漏和性能下降问题 [#40461](https://github.com/pingcap/tidb/issues/40461) @[sticnarf](https://github.com/sticnarf) @[zyguan](https://github.com/zyguan)
     (dup: release-7.0.0.md > 错误修复> TiDB)- 修复 `INSERT IGNORE` 和 `REPLACE` 语句对不修改 value 的 key 没有加锁的问题 [#42121](https://github.com/pingcap/tidb/issues/42121) @[zyguan](https://github.com/zyguan) @[zyguan](https://github.com/zyguan)
+
 + TiKV
 
     (dup: release-6.6.0.md > 错误修复> TiKV)- 修复转换 `const Enum` 类型到其他类型时报错的问题 [#14156](https://github.com/tikv/tikv/issues/14156) @[wshwsh12](https://github.com/wshwsh12) @[wshwsh12](https://github.com/wshwsh12)
-    - 修复 CPU 配额限制问题 [13084](https://github.com/tikv/tikv/issues/13084) @[BornChanger](https://github.com/BornChanger)
-    - 修复 snapshot last index 不正确的问题 [12618](https://github.com/tikv/tikv/issues/12618) @[LintianShi](https://github.com/LintianShi)
+    - 修复 CPU 配额限制的问题 [13084](https://github.com/tikv/tikv/issues/13084) @[BornChanger](https://github.com/BornChanger)
+    - 修复 Snapshot Last Index 不正确的问题 [12618](https://github.com/tikv/tikv/issues/12618) @[LintianShi](https://github.com/LintianShi)
 + PD
 
     (dup: release-6.5.1.md > 错误修复> PD)- 修复 Region Scatter 接口可能导致 leader 分布不均匀的问题 [#6017](https://github.com/tikv/pd/issues/6017) @[HunDunDM](https://github.com/HunDunDM) @[HunDunDM](https://github.com/HunDunDM)
