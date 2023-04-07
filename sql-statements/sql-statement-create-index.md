@@ -382,6 +382,14 @@ Query OK, 1 row affected (0.00 sec)
 - 相比于普通索引，DML 会对多值索引产生更多的索引记录的修改，因此多值索引会带来比普通索引更大的性能影响。
 - 由于多值索引是一种特殊的表达式索引，因此具有表达式索引的限制。
 
+### 工具兼容性
+
+多值索引为实验特性，与 TiDB 相关的工具或功能存在一些已知的兼容性问题：
+
+- [`LOAD DATA`](/sql-statements/sql-statement-load-data.md) 语句和 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 不支持向含有多值索引的表中导入数据。
+- [DM](/dm/dm-overview.md) 和 [TiCDC](/ticdc/ticdc-overview.md) 不支持迁移、同步含有多值索引的表。
+- [sync-diff-inspector](/sync-diff-inspector/sync-diff-inspector-overview.md) 不支持对含有多值索引的表进行数据校验。
+
 ## 不可见索引
 
 不可见索引 (Invisible Indexes) 不会被查询优化器使用：
