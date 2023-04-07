@@ -78,9 +78,10 @@ TiDB 版本：6.1.6
     (dup: release-6.6.0.md > 错误修复> TiKV)- 修复转换 `const Enum` 类型到其他类型时报错的问题 [#14156](https://github.com/tikv/tikv/issues/14156) @[wshwsh12](https://github.com/wshwsh12) @[wshwsh12](https://github.com/wshwsh12)
     - 修复 CPU 配额限制的问题 [13084](https://github.com/tikv/tikv/issues/13084) @[BornChanger](https://github.com/BornChanger)
     - 修复 Snapshot Last Index 不正确的问题 [12618](https://github.com/tikv/tikv/issues/12618) @[LintianShi](https://github.com/LintianShi)
+
 + PD
 
-    (dup: release-6.5.1.md > 错误修复> PD)- 修复 Region Scatter 接口可能导致 leader 分布不均匀的问题 [#6017](https://github.com/tikv/pd/issues/6017) @[HunDunDM](https://github.com/HunDunDM) @[HunDunDM](https://github.com/HunDunDM)
+    (dup: release-6.5.1.md > 错误修复> PD)- 修复 Region Scatter 接口可能导致 leader 分布不均匀的问题 [#6017](https://github.com/tikv/pd/issues/6017) @[HunDunDM](https://github.com/HunDunDM)
     - 修复 Online Unsafe Recovery 超时机制不生效的问题 [#6107](https://github.com/tikv/pd/issues/6107) @[v01dstar](https://github.com/v01dstar)
 
 + TiFlash
