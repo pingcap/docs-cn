@@ -150,23 +150,12 @@ summary: 了解 TiDB 的基本功能。
 | 数据导入和导出                                                          |  6.1  |  6.0   |  5.4   |  5.3   |  5.2   |  5.1   |  5.0   |  4.0   |
 | ----------------------------------------------------------------------- | :----: | :----: | :----: | :----: | :----: | :----: | :----: | :----: |
 | [快速导入 (TiDB Lightning)](/tidb-lightning/tidb-lightning-overview.md) |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |
-<<<<<<< HEAD
-| mydumper 逻辑导入                                                       | 已废弃 | 已废弃 | 已废弃 | 已废弃 | 已废弃 | 已废弃 | 已废弃 | 已废弃 |
-| [Dumpling 逻辑导入](/dumpling-overview.md)                              |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |
+| mydumper 逻辑导出                                                       | 已废弃 | 已废弃 | 已废弃 | 已废弃 | 已废弃 | 已废弃 | 已废弃 | 已废弃 |
+| [Dumpling 逻辑导出](/dumpling-overview.md)                              |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |
 | [事务 `LOAD DATA`](/sql-statements/sql-statement-load-data.md)          |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    | N [^3] |
 | [数据迁移工具](/migration-overview.md)                                  |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |
 | [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md)                     |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |
 | [Change data capture (CDC)](/ticdc/ticdc-overview.md)                   |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |
-=======
-| mydumper 逻辑导出                                                       | 已废弃| 已废弃 | 已废弃 | 已废弃 | 已废弃 | 已废弃 | 已废弃 | 已废弃 |
-| [Dumpling 逻辑导出](/dumpling-overview.md)                              |   Y   |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |
-| [事务 `LOAD DATA`](/sql-statements/sql-statement-load-data.md)          |   Y   |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    | N [^5] |
-| [数据迁移工具](/migration-overview.md)                                  |   Y   |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |
-| [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md)                     |   Y   |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |
-| [Change data capture (CDC)](/ticdc/ticdc-overview.md)                   |   Y   |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |
-| [TiCDC 支持保存数据到存储服务 (S3/NFS/Azure Blob Storage)](/ticdc/ticdc-sink-to-cloud-storage.md)  |   E   |   N    |   N    |   N    |   N    |   N    |   N    |   N    |
-| [TiCDC 支持在两个 TiDB 集群之间进行双向复制](/ticdc/ticdc-bidirectional-replication.md) | Y | N | N | N | N | N | N | N |
->>>>>>> bf33892c5 (fix the wrong description of the dump tool (#13605))
 
 ## 管理，可视化和工具
 
