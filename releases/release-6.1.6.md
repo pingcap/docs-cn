@@ -80,16 +80,16 @@ TiDB 版本：6.1.6
 + PD
 
     (dup: release-6.5.1.md > 错误修复> PD)- 修复 Region Scatter 接口可能导致 leader 分布不均匀的问题 [#6017](https://github.com/tikv/pd/issues/6017) @[HunDunDM](https://github.com/HunDunDM) @[HunDunDM](https://github.com/HunDunDM)
-    - 修复 Online recovery 超时不生效的问题 @[v01dstar](https://github.com/v01dstar)
+    - 修复 Online Unsafe Recovery 超时机制不生效的问题 [#6107](https://github.com/tikv/pd/issues/6107) @[v01dstar](https://github.com/v01dstar)
 
 + TiFlash
 
-    (dup: release-6.6.0.md > 错误修复> TiFlash)- 修复半连接在计算笛卡尔积时，使用内存过量的问题 [#6730](https://github.com/pingcap/tiflash/issues/6730) @[gengliqi](https://github.com/gengliqi) @[gengliqi](https://github.com/gengliqi)
-    (dup: release-6.5.1.md > 错误修复> TiFlash)- 修复 TiFlash 日志搜索过慢的问题 [#6829](https://github.com/pingcap/tiflash/issues/6829) @[hehechen](https://github.com/hehechen) @[hehechen](https://github.com/hehechen)
-    - 修复 `CI Collation` 下聚合函数结果不正确的问题 [#7002](https://github.com/pingcap/tiflash/pull/7002) @[xzhangxian1008](https://github.com/xzhangxian1008)
-    - 修复 `Decimal Cast` 结果不正确的问题 [#7026](https://github.com/pingcap/tiflash/pull/7026) @[windtalker](https://github.com/windtalker)
-    - 修复不能识别生成列的问题 [#6801](https://github.com/pingcap/tiflash/issues/6801) @[guo-shaoge](https://github.com/guo-shaoge)
-    (dup: release-7.0.0.md > 错误修复> TiFlash)- 修复了 Decimal 除法在某些情况下最后一位未进位的问题 [#7022](https://github.com/pingcap/tiflash/issues/7022) @[LittleFall](https://github.com/LittleFall) @[LittleFall](https://github.com/LittleFall)
+    (dup: release-6.6.0.md > 错误修复> TiFlash)- 修复半连接在计算笛卡尔积时，使用内存过量的问题 [#6730](https://github.com/pingcap/tiflash/issues/6730) @[gengliqi](https://github.com/gengliqi)
+    (dup: release-6.5.1.md > 错误修复> TiFlash)- 修复 TiFlash 日志搜索过慢的问题 [#6829](https://github.com/pingcap/tiflash/issues/6829) @[hehechen](https://github.com/hehechen)
+    (dup: release-7.0.0.md > 错误修复> TiFlash)- 修复了开启 new collation 后 TopN/Sort 算子结果可能出错的问题 [#6807](https://github.com/pingcap/tiflash/issues/6807) @[xzhangxian1008](https://github.com/xzhangxian1008)
+    (dup: release-7.0.0.md > 错误修复> TiFlash)- 修复了 Decimal 转换在某些情况下进位错误的问题 [#6994](https://github.com/pingcap/tiflash/issues/6994) @[windtalker](https://github.com/windtalker)
+    - 修复 TiFlash 无法识别生成列的问题 [#6801](https://github.com/pingcap/tiflash/issues/6801) @[guo-shaoge](https://github.com/guo-shaoge)
+    (dup: release-7.0.0.md > 错误修复> TiFlash)- 修复了 Decimal 除法在某些情况下最后一位未进位的问题 [#7022](https://github.com/pingcap/tiflash/issues/7022) @[LittleFall](https://github.com/LittleFall)
 
 + Tools
 
