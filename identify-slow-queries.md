@@ -146,8 +146,8 @@ Slow Query 基础信息：
 * `tiflashRPC`：给 TiFlash 发送 RPC 请求失败而产生的 backoff。
 * `pdRPC`：给 PD 发送 RPC 请求失败而产生的 backoff。
 * `txnLock`：遇到锁冲突后产生的 backoff。
-* `regionMiss`：是 Region 发生分裂或者合并后，导致 TiDB 的 region 缓存信息过期导致请求失败而产生的 backoff。
-* `regionScheduling`：是 Region 还在调度中，还没有选出 Leader 导致无法处理请求而产生的 backoff。
+* `regionMiss`：Region 发生分裂或者合并后，TiDB 的 Region 缓存信息过期导致请求失败而产生的 backoff。
+* `regionScheduling`：Region 还在调度中，尚未选出 Leader 导致无法处理请求而产生的 backoff。
 * `tikvServerBusy`：因为 TiKV 负载太高无法处理新请求而产生的 backoff。
 * `tiflashServerBusy`：因为 TiFlash 负载太高无法处理新请求而产生的 backoff。
 * `tikvDiskFull`：因为 TiKV 的磁盘满了而产生的 backoff。
