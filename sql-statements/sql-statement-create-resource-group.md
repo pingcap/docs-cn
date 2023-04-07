@@ -104,4 +104,5 @@ MySQL 也支持 [CREATE RESOURCE GROUP](https://dev.mysql.com/doc/refman/8.0/en/
 
 * [DROP RESOURCE GROUP](/sql-statements/sql-statement-drop-resource-group.md)
 * [ALTER RESOURCE GROUP](/sql-statements/sql-statement-alter-resource-group.md)
+* [ALTER USER RESOURCE GROUP](/sql-statements/sql-statement-alter-user.md#修改用户绑定的资源组)
 * [RU](/tidb-resource-control.md#什么是-request-unit-ru)
