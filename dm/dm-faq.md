@@ -35,6 +35,10 @@ When you encounter a DDL statement unsupported by TiDB, you need to manually han
 >
 > Currently, TiDB is not compatible with all the DDL statements that MySQL supports. See [MySQL Compatibility](/mysql-compatibility.md#ddl).
 
+## Does DM replicate view-related DDL statements and DML statements to TiDB?
+
+Currently, DM does not replicate view-related DDL statements to the downstream TiDB cluster, nor does it replicate view-related DML statements to the downstream TiDB cluster.
+
 ## How to reset the data migration task?
 
 When an exception occurs during data migration and the data migration task cannot be resumed, you need to reset the task and re-migrate the data:

@@ -58,6 +58,8 @@ Before using the DM tool, note the following restrictions:
 
     - DM reports an error when it encounters an incompatible DDL statement. To solve this error, you need to manually handle it using dmctl, either skipping this DDL statement or replacing it with specified DDL statements. For details, see [Skip or replace abnormal SQL statements](/dm/dm-faq.md#how-to-handle-incompatible-ddl-statements).
 
+    - DM does not replicate view-related DDL statements and DML statements to the downstream TiDB cluster. It is recommended that you create the view in the downstream TiDB cluster manually.
+
 + GBK character set compatibility
 
     - DM does not support migrating `charset=GBK` tables to TiDB clusters earlier than v5.4.0.
