@@ -17,23 +17,31 @@ TiDB 版本：7.1.0
 
 ### 可扩展性
 
-* TiFlash 支持存算分离和对象存储 GA [#6882](https://github.com/pingcap/tiflash/issues/6882) @[flowbehappy](https://github.com/flowbehappy) @[JaySon-Huang](https://github.com/JaySon-Huang) @[breezewish](https://github.com/breezewish) @[JinheLin](https://github.com/JinheLin) @[lidezhu](https://github.com/lidezhu) @[CalvinNeo](https://github.com/CalvinNeo)
+* TiFlash 支持存算分离和对象存储 GA [#6882](https://github.com/pingcap/tiflash/issues/6882) @[flowbehappy](https://github.com/flowbehappy) @[JaySon-Huang](https://github.com/JaySon-Huang) @[breezewish](https://github.com/breezewish) @[JinheLin](https://github.com/JinheLin) @[lidezhu](https://github.com/lidezhu) @[CalvinNeo](https://github.com/CalvinNeo) **tw:qiancai**
 
     在 v7.0.0 版本中，TiFlash 在已有的存算一体架构之外，新增存算分离架构。在此架构下，TiFlash 节点分为 Compute Node （计算节点）和 Write Node（写入节点）两种类型，并支持兼容 S3 API 的对象存储。这两种节点都可以单独扩缩容，独立调整计算或数据存储能力。
-    
+
     从 v7.1.0 版本开始，TiFlash 存算分离架构 GA。TiFlash 的存算分离架构和存算一体架构不能混合使用、相互转换，需要在部署 TiFlash 时进行相应的配置指定使用其中的一种架构。
 
     更多信息，请参考[用户文档](/tiflash/tiflash-disaggregated-and-s3.md)。
 
 ### 性能
 
-* TiFlash 查询支持延迟物化功能 GA [#5829](https://github.com/pingcap/tiflash/issues/5829) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
+* TiFlash 查询支持延迟物化功能 GA [#5829](https://github.com/pingcap/tiflash/issues/5829) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger) **tw:qiancai**
 
     当 `SELECT` 语句中包含过滤条件（`WHERE` 子句）时，TiFlash 默认会先读取该查询所需列的全部数据，然后再根据查询条件对数据进行过滤、聚合等计算任务。延迟物化是一种优化方式，它支持下推部分过滤条件到 TableScan 算子，即先扫描过滤条件相关的列数据，过滤得到符合条件的行后，再扫描这些行的其他列数据，继续后续计算，从而减少 IO 扫描和数据处理的计算量。
 
     从 v7.1.0 版本开始，TiFlash 延迟物化功能 GA。在实验特性阶段引入的系统变量 [`tidb_opt_enable_late_materialization`](/system-variables.md#tidb_opt_enable_late_materialization-从-v700-版本开始引入) 的默认值将调整为 `ON` 开启，TiDB 优化器会根据统计信息和查询的过滤条件，决定哪些过滤条件会被下推到 TableScan 算子。
 
     更多信息，请参考[用户文档](/tiflash/tiflash-late-materialization.md)。
+
+* TiFlash MPP 模式根据网络交换数据量自动选择 JOIN 算法 [#7084](https://github.com/pingcap/tiflash/issues/7084) @[solotzg](https://github.com/solotzg) **tw:qiancai**
+
+    TiFlash MPP 模式有多种 JOIN 算法。在 v7.1.0 版本之前，TiDB 根据变量 `tidb_broadcast_join_threshold_count` 和 `tidb_broadcast_join_threshold_size` 以及实际数据量决定 TiFlash MPP 模式是否使用 Broadcast Join 算法。
+
+    在 v7.1.0 版本中，TiDB 引入变量 `tidb_prefer_broadcast_join_by_exchange_data_size`，表示是否基于最小网络数据交换策略来选择 MPP Join 算法。默认为 `ON`，表示启用该功能，`tidb_broadcast_join_threshold_count` 和 `tidb_broadcast_join_threshold_size` 将不再生效；设定为 `OFF`，表示关闭该功能，使用 v7.1.0 版本之前的评估模型，即和之前的版本功能一致；
+
+    更多信息，请参考[用户文档](/tiflash/use-tiflash-mpp-mode.md#mpp-模式的算法支持)。
 
 * 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接)
 
@@ -43,13 +51,11 @@ TiDB 版本：7.1.0
 
 ### 稳定性
 
-* TiFlash MPP模式根据网络交换数据量自动选择 JOIN 算法 [#7084](https://github.com/pingcap/tiflash/issues/7084) @[solotzg](https://github.com/solotzg)
+* 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接)
 
-    TiFlash MPP模式有多种 JOIN 算法。在 v7.1.0 版本之前，TiDB 根据变量 `tidb_broadcast_join_threshold_count` 和 `tidb_broadcast_join_threshold_size` 以及实际数据量决定 TiFlash MPP 模式是否使用 Broadcast Join 算法。
-    
-    在 v7.1.0 版本中，TiDB 引入变量 `tidb_prefer_broadcast_join_by_exchange_data_size`，指定 Broadcast Join 代价模型。默认为 `0`，表示使用 v7.1.0 版本之前的评估模型，即和之前的版本功能一致；设定为 `1`，表示使用新的 Broadcast Join 代价模型，即通过网络交换数据量自动判断是否使用 Broadcast Join 算法。
+    功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
 
-    更多信息，请参考[用户文档](/tiflash/use-tiflash-mpp-mode.md#mpp-模式的算法支持)。
+    更多信息，请参考[用户文档](链接)。
 
 ### 高可用
 
@@ -61,10 +67,10 @@ TiDB 版本：7.1.0
 
 ### SQL 功能
 
-* 支持通过 `INSERT INTO SELECT` 语句保存 TiFlash 查询结果 GA [#37515](https://github.com/pingcap/tidb/issues/37515) @[gengliqi](https://github.com/gengliqi)
+* 支持通过 `INSERT INTO SELECT` 语句保存 TiFlash 查询结果 GA [#37515](https://github.com/pingcap/tidb/issues/37515) @[gengliqi](https://github.com/gengliqi) **tw:qiancai**
 
     从 v6.5.0 起，TiDB 支持下推 `INSERT INTO SELECT` 语句中的 `SELECT` 子句（分析查询）到 TiFlash，你可以将 TiFlash 的查询结果方便地保存到 `INSERT INTO` 指定的 TiDB 表中供后续分析使用，起到了结果缓存（即结果物化）的效果。
-    
+
     在 v7.1.0 版本中，TiDB 正式将该功能 GA。不同 SQL mode 对于 `INSERT INTO SELECT` 语句的计算有不同要求，而 TiFlash 的计算规则不满足 `STRICT SQL Mode` 要求，因此，TiDB 要求只有当前会话的 SQL Mode 是除 `STRICT_TRANS_TABLES`, `STRICT_ALL_TABLES` 之外的值时，才允许将 `INSERT INTO SELECT` 语句中的查询下推至 TiFlash。同时，在实验特性阶段引入的系统变量 `tidb_enable_tiflash_read_for_write_stmt` 将被移除。TiDB 保持查询结果时，是否将查询下推至 TiFlash，完全根据 SQL Mode 及 TiFlash 副本的代价估算，由优化器自行决定。
 
   更多信息，请参考[用户文档](/tiflash/tiflash-results-materialization.md)。
@@ -93,7 +99,7 @@ TiDB 版本：7.1.0
 
 ### 安全
 
-* 更换 TiFlash 系统表信息的查询接口 [#6941](https://github.com/pingcap/tiflash/issues/6941) @[flowbehappy](https://github.com/flowbehappy)
+* 更换 TiFlash 系统表信息的查询接口 [#6941](https://github.com/pingcap/tiflash/issues/6941) @[flowbehappy](https://github.com/flowbehappy) **tw:qiancai**
 
     在 v7.1.0 之前的版本中，TiFlash 通过 http 服务接口向 TiDB 提供 `information_schema.tiflash_tables` 和 `information_schema.tiflash_segments` 系统表信息查询。但是 http 协议存在安全风险。
 
@@ -119,6 +125,14 @@ TiDB 版本：7.1.0
 
 * 兼容性 2
 
+### 行为变更
+
+* TiFlash 废弃了 HTTP 服务端口（默认 `8123`）**tw:qiancai**
+
+    如果你已经将 TiFlash 升级到 v7.1.0，那么在升级 TiDB 到 v7.1.0 的过程中，TiFlash 系统表（`TIFLASH_SEGMENTS` 和 `TIFLASH_TABLES`）不可读。
+
+* 行为变更 2
+
 ### 系统变量
 
 | 变量名  | 修改类型（包括新增/修改/删除）    | 描述 |
@@ -132,7 +146,7 @@ TiDB 版本：7.1.0
 
 | 配置文件 | 配置项 | 修改类型 | 描述 |
 | -------- | -------- | -------- | -------- |
-|          |          |          |          |
+| TiFlash | `http_port` | 删除 | 废弃 TiFlash HTTP 服务端口（默认 `8123`）。|
 |          |          |          |          |
 |          |          |          |          |
 |          |          |          |          |
