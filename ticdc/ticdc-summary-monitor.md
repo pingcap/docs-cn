@@ -5,7 +5,7 @@ summary: 了解 TiCDC 基本的监控指标。
 
 # TiCDC 基本监控指标
 
-从 v7.0.0 版本开始，使用 TiUP 一键部署的 Grafana 在其监控页面新增了 TiCDC Summary Dashboard。通过该监控面板，你可以快速地了解 TiCDC 服务器运行状态和同步任务的基本情况。
+从 v7.0.0 版本开始，使用 TiUP 一键部署 Grafana 时，会自动在 Grafana 监控页面新增 TiCDC Summary Dashboard。通过该监控面板，你可以快速地了解 TiCDC 服务器运行状态和同步任务的基本情况。
 
 下图显示了 TiCDC Dashboard 的监控栏：
 
