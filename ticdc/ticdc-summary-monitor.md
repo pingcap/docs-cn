@@ -77,8 +77,8 @@ MQ Sink 监控栏示意如下，该监控栏只有下游为 Kafka 时才有数�
 
 ![TiCDC Summary Dashboard - Transaction Sink metrics](/media/ticdc/ticdc-summary-monitor-mq-sink.png)
 
-- Worker Send Message Duration Percentile: TiCDC MQ Sink 的 Worker 往下游发送数据的延迟。
-- Kafka Ongoing Bytes: TiCDC MQ Sink 往下游发送数据的速率。
+- Worker Send Message Duration Percentile：TiCDC MQ Sink 的 Worker 往下游发送数据的延迟。
+- Kafka Ongoing Bytes：TiCDC MQ Sink 往下游发送数据的速率。
 
 ## Cloud Storage Sink 监控栏
 
