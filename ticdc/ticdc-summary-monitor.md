@@ -50,7 +50,7 @@ Changefeed 监控栏示例如下：
 ![TiCDC Summary Dashboard - Sorter metrics](/media/ticdc/ticdc-summary-monitor-dataflow-sorter.png)
 
 - Sorter output events/s：TiCDC 节点中 Sorter 模块每秒输出到 Sink 模块的数据变更个数。值得注意的是，Sorter 的数据输出速率会受到 Sink 模块的影响，因此在发现 Sorter 模块输出速率比 Puller 模块低时，不一定是因为 Sorter 模块排序速度过慢；而应该先观察 Sink 模块的相关指标，确认是否是因为 Sink 模块 Flush 数据的耗时较长，导致 Sorter 模块输出降低。
-- Sorter output event: TiCDC 节点中 Sorter 模块输出到 Sorter 模块的数据变更总个数。
+- Sorter output event：TiCDC 节点中 Sorter 模块输出到 Sorter 模块的数据变更总个数。
 
 ![TiCDC Summary Dashboard - Mounter metrics](/media/ticdc/ticdc-summary-monitor-dataflow-mounter.png)
 
