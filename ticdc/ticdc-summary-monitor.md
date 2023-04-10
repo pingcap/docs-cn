@@ -68,7 +68,7 @@ Transaction Sink 监控栏示意如下，该监控栏只有下游为 MySQL 或�
 
 ![TiCDC Summary Dashboard - Transaction Sink metrics](/media/ticdc/ticdc-summary-monitor-transaction-sink.png)
 
-- Backend Flush Duration: TiCDC Transaction Sink 模块在向下游执行一条 SQL 语句的耗时。通过观察该指标，能够判断下游的性能是否为同步速度的瓶颈。一般来说，p999 应该维持在 500 ms 内为佳，超过该值时，同步速度可能就会受到影响，引起 Checkpoint lag 上升。
+- Backend Flush Duration：TiCDC Transaction Sink 模块在向下游执行一条 SQL 语句的耗时。通过观察该指标，能够判断下游的性能是否为同步速度的瓶颈。一般来说，p999 应该维持在 500 ms 内为佳，超过该值时，同步速度可能就会受到影响，引起 Changefeed checkpoint lag 上升。
 - Full Flush Duration: TiCDC 中每个事务从 Sorter 排序完成直到发送到下游之间的总耗时。用该值减去 Backend Flush Duration 的值，即可得出一个事务在被执行到下游之前的总排队时长。如果排队时长较高，可以考虑给同步任务分配更多的内存 Quota。
 
 ## MQ Sink 监控栏
