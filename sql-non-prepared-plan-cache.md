@@ -5,10 +5,6 @@ summary: 介绍 TiDB 中非 Prepare 语句执行计划缓存的原理、使用�
 
 # 非 Prepare 语句执行计划缓存
 
-> **警告：**
->
-> 非 Prepare 语句执行计划缓存 (Non-Prepared Plan Cache) 目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
-
 对于某些非 `PREPARE` 语句，TiDB 可以像 [`Prepare`/`Execute` 语句](/sql-prepared-plan-cache.md)一样支持执行计划缓存。这可以让这些语句跳过优化器阶段，以提升性能。
 
 ## 原理
@@ -73,17 +69,14 @@ TiDB 对参数化后形式相同的查询，只能缓存一个计划。例如，
 由于上述风险以及执行计划缓存只在简单查询上有明显收益（如果查询较为复杂，查询本身执行时间较长，使用执行计划缓存收益不大），TiDB 目前对 Non-Prepared Plan Cache 的生效范围有严格的限制。具体限制如下：
 
 - [Prepared Plan Cache](/sql-prepared-plan-cache.md) 不支持的查询或者计划，Non-Prepared Plan Cache 也不支持。
-- 目前仅支持包含 `Scan`、`Selection` 或 `Projection` 算子的单表的点查或范围查询，例如 `SELECT * FROM t WHERE a < 10 AND b in (1, 2)`。
-- 不支持包含 `Agg`、`Limit`、`Window` 或 `Sort` 等复杂算子的查询。
-- 不支持包含非范围查询条件，例如：
-    - 不支持 `LIKE`，例如 `c LIKE 'c%'`
-    - 不支持 `+` 操作，例如 `a+1 < 2`
+- 不支持包含 `Window` 或 `Having` 的查询。
+- 不支持包含 3 表及 3 表以上 `Join` 的查询。
+- 不支持 `Order By` 或者 `Group By` 后直接带数字或者表达式的查询，如 `Order By 1`, `Group By a+1`，仅支持 `Order By Columns` 和 `Group By Columns`。
 - 不支持过滤条件中包含 `JSON`、`ENUM`、`SET` 或 `BIT` 类型的列的查询，例如 `SELECT * FROM t WHERE json_col = '{}'`。
 - 不支持过滤条件中出现 `NULL` 值的查询，例如 `SELECT * FROM t WHERE a is NULL`。
 - 不支持参数化后参数个数超过 50 个的查询，例如 `SELECT * FROM t WHERE a in (1, 2, 3, ... 51)`。
 - 不支持访问分区表、虚拟列、临时表、视图、或内存表的查询，例如 `SELECT * FROM INFORMATION_SCHEMA.COLUMNS`，其中 `COLUMNS` 为 TiDB 内存表。
 - 不支持带有 Hint、子查询、Lock 的查询。
-- 不支持 DML 语句。
 
 ## 诊断
 
@@ -94,7 +87,7 @@ TiDB 对参数化后形式相同的查询，只能缓存一个计划。例如，
 执行下面 `EXPLAIN FORMAT='plan_cache'` 语句，查看查询是否能够命中：
 
 ```sql
-EXPLAIN FORMAT='plan_cache' SELECT * FROM t WHERE a+2 < 10;
+EXPLAIN FORMAT='plan_cache' SELECT * FROM (select a+1 from t1) t;
 ```
 
 输出结果示例如下：
@@ -112,11 +105,11 @@ SHOW warnings;
 输出结果示例如下：
 
 ```sql
-+---------+------+-----------------------------------------------------------------------+
-| Level   | Code | Message                                                               |
-+---------+------+-----------------------------------------------------------------------+
-| Warning | 1105 | skip non-prep plan cache: query has some unsupported binary operation |
-+---------+------+-----------------------------------------------------------------------+
++---------+------+-------------------------------------------------------------------------------+
+| Level   | Code | Message                                                                       |
++---------+------+-------------------------------------------------------------------------------+
+| Warning | 1105 | skip non-prepared plan-cache: queries that have sub-queries are not supported |
++---------+------+-------------------------------------------------------------------------------+
 1 row in set (0.00 sec)
 ```
 
@@ -153,7 +146,7 @@ SHOW warnings;
 4. 查询 `statements_summary` 表查看查询命中缓存的情况：
 
     ```sql
-    SELECT digest_text, query_sample_text, exec_count, plan_in_cache, plan_cache_hits FROM INFORMATION_SCHEMA.STATEMENTS_SUMMARY WHERE digest_text LIKE '%SELECT * FROM %';
+    SELECT digest_text, query_sample_text, exec_count, plan_in_cache, plan_cache_hits FROM INFORMATION_SCHEMA.STATEMENTS_SUMMARY WHERE query_sample_text LIKE '%SELECT * FROM %';
     ```
 
     输出结果如下：
@@ -162,7 +155,7 @@ SHOW warnings;
     +---------------------------------+------------------------------------------+------------+---------------+-----------------+
     | digest_text                     | query_sample_text                        | exec_count | plan_in_cache | plan_cache_hits |
     +---------------------------------+------------------------------------------+------------+---------------+-----------------+
-    | SELECT * FROM `t` WHERE `a` < ? | SELECT * FROM t WHERE a<1 [arguments: 1] |          3 |             1 |               2 |
+    | SELECT * FROM `t` WHERE `a` < ? | SELECT * FROM t WHERE a<1                |          3 |             1 |               2 |
     +---------------------------------+------------------------------------------+------------+---------------+-----------------+
     1 row in set (0.01 sec)
     ```
