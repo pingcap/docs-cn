@@ -55,7 +55,7 @@ Changefeed 监控栏示例如下：
 ![TiCDC Summary Dashboard - Mounter metrics](/media/ticdc/ticdc-summary-monitor-dataflow-mounter.png)
 
 - Mounter output events/s：TiCDC 节点中 Mounter 模块每秒解码的数据变更的个数。当上游发生的数据变更包含较多字段时，Mounter 的解码速度可能会受到影响。
-- Mounter output event: TiCDC 节点中 Mounter 模块解码的数据变更的总个数。
+- Mounter output event：TiCDC 节点中 Mounter 模块解码的数据变更的总个数。
 
 ![TiCDC Summary Dashboard - Sink metrics](/media/ticdc/ticdc-summary-monitor-dataflow-sink.png)
 
