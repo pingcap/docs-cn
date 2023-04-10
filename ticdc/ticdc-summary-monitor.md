@@ -37,8 +37,8 @@ Changefeed 监控栏示例如下：
 
 ![TiCDC Summary Dashboard - Changefeed metrics](/media/ticdc/ticdc-summary-monitor-changefeed.png)
 
-- Changefeed checkpoint lag：这个指标代表上游 TiDB 集群和下游系统之间的数据复制延迟，延迟是以时间为单位的。 通常情况下，该指标反映了 Changefeed 整体的数据同步状况是否健康，通常情况下，lag 越小，说明同步任务状态越好。而当 lag 上升时，通常说明 Changefeed 的同步能力或者下游系统的消费能力无法匹配上游的写入速度。
-- Changefeed resolved ts lag：这个指标代表了上游TiDB 集群与 TiCDC 节点之间的数据延迟，延迟是以时间为单位的。该指标能够反映 Changefeed 拉取上游数据变更的能力，当 lag 上升时，说明 Changefeed 无法及时的拉取上游产生的数据变更。
+- Changefeed checkpoint lag：这个指标代表上游 TiDB 集群和下游系统之间的数据复制延迟，延迟以时间为单位。 通常情况下，该指标反映了 Changefeed 整体的数据同步状况是否健康，通常情况下，lag 越小，说明同步任务状态越好。而当 lag 上升时，通常说明 Changefeed 的同步能力或者下游系统的消费能力无法匹配上游的写入速度。
+- Changefeed resolved ts lag：这个指标代表了上游TiDB 集群与 TiCDC 节点之间的数据延迟，延迟以时间为单位。该指标能够反映 Changefeed 拉取上游数据变更的能力，当 lag 上升时，说明 Changefeed 无法及时地拉取上游产生的数据变更。
 
 ## Dataflow 监控栏
 
