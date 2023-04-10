@@ -39,6 +39,7 @@ aliases: ['/docs-cn/dev/system-tables/system-table-overview/','/docs-cn/dev/refe
 * `column_stats_usage` 列统计信息的使用情况
 * `schema_index_usage` 索引的使用情况
 * `analyze_jobs` 正在执行的统计信息收集任务以及过去 7 天内的历史任务记录
+* `load_data_jobs` 正在执行或历史执行的 `LOAD DATA` 任务
 
 ## 执行计划相关系统表
 

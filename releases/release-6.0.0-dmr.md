@@ -113,7 +113,7 @@ v6.0.0 是 DMR 版本，版本名称为 6.0.0-DMR。
 
     TiDB 是原生计算存储分离架构，算子下推可以在存储层过滤无效数据，大大减少 TiDB 与 TiKV 的数据传输，提升查询效率。TiDB 在 v6.0.0 支持更多的表达式和 `BIT` 数据类型下推至 TiKV，以提升运算该类内容时的查询效率。
 
-    [用户文档](/functions-and-operators/expressions-pushed-down.md#加入黑名单)，[#30738](https://github.com/pingcap/tidb/issues/30738)
+    [用户文档](/functions-and-operators/expressions-pushed-down.md)，[#30738](https://github.com/pingcap/tidb/issues/30738)
 
 - 热点索引优化
 

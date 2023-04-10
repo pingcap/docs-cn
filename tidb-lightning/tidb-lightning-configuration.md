@@ -52,7 +52,7 @@ table-concurrency = 6
 
 # 数据的并发数。默认与逻辑 CPU 的数量相同。
 # 混合部署的情况下可以将其大小配置为逻辑 CPU 数的 75%，以限制 CPU 的使用。
-# region-concurrency =
+# region-concurrency = 
 
 # I/O 最大并发数。I/O 并发量太高时，会因硬盘内部缓存频繁被刷新
 # 而增加 I/O 等待时间，导致缓存未命中和读取速度降低。
@@ -63,6 +63,7 @@ io-concurrency = 5
 # 在忽略非严重错误所在的行数据之后，迁移任务可以继续执行。
 # 将该值设置为 N，表示 TiDB Lightning 会在遇到第 (N+1) 个错误时停止迁移任务。
 # 被忽略的行会被记录到位于目标集群的 "task info" 数据库中。最大错误数可以通过下面参数配置。
+# 默认值为 MaxInt64 字节，即 9223372036854775807 字节。
 max-error = 0
 # 参数 task-info-schema-name 指定用于存储 TiDB Lightning 执行结果的数据库。
 # 要关闭该功能，需要将该值设置为空字符串。
@@ -113,8 +114,8 @@ driver = "file"
 # "local"：Physical Import Mode，默认使用。适用于 TB 级以上大数据量，但导入期间下游 TiDB 无法对外提供服务。
 # "tidb"：Logical Import Mode。TB 级以下数据量可以采用，下游 TiDB 可正常提供服务。
 # backend = "local"
-# 是否允许向已存在数据的表导入数据。默认值为 false。
-# 当使用并行导入模式时，由于多个 TiDB Lightning 实例同时导入一张表，因此此开关必须设置为 true。
+# 是否允许启动多个 TiDB Lightning 实例（**physical import mode**）并行导入到一个或多个目标表。默认取值为 false。注意，这个参数**不是用于增量导入数据**，仅限目标表为空的场景使用。
+# 多个 TiDB Lightning 实例（physical import mode）同时导入一张表时，此开关必须设置为 true。但前提是目标表不能存在数据，即所有的数据都只能是由 TiDB Lightning 导入。
 # incremental-import = false
 # 当后端是 “importer” 时，tikv-importer 的监听地址（需改为实际地址）。
 addr = "172.16.31.10:8287"
@@ -126,9 +127,9 @@ addr = "172.16.31.10:8287"
 
 # Physical Import Mode 设置是否检测和解决重复的记录（唯一键冲突）。
 # 目前支持三种解决方法：
-#  - record: 仅将重复记录添加到目的 TiDB 中的 `lightning_task_info.conflict_error_v1` 表中。注意，该方法要求目的 TiKV 的版本为 v5.2.0 或更新版本。如果版本过低，则会启用下面的 'none' 模式。
-#  - none: 不检测重复记录。该模式是三种模式中性能最佳的，但是可能会导致目的 TiDB 中出现数据不一致的情况。
-#  - remove: 记录所有的重复记录，和 'record' 模式相似。但是会删除所有的重复记录，以确保目的 TiDB 中的数据状态保持一致。
+#  - record: 数据写入目标表后，将目标表中重复记录添加到目标 TiDB 中的 `lightning_task_info.conflict_error_v1` 表中。注意，该方法要求目标 TiKV 的版本为 v5.2.0 或更新版本。如果版本过低，则会启用下面的 'none' 模式。
+#  - none: 不检测重复记录。该模式是三种模式中性能最佳的，但是如果数据源存在重复记录，会导致 TiDB 中出现数据不一致的情况。
+#  - remove: 记录所有目标表中的重复记录，和 'record' 模式相似。但是会删除目标表所有的重复记录，以确保目标 TiDB 中的数据状态保持一致。
 # duplicate-resolution = 'none'
 # Physical Import Mode 一次请求中发送的 KV 数量。
 # send-kv-pairs = 32768
@@ -146,6 +147,12 @@ addr = "172.16.31.10:8287"
 # 默认值为 MaxInt64 字节，即 9223372036854775807 字节。
 # disk-quota = "10GB" 
 
+# Physical Import Mode 是否通过 SQL 方式添加索引。默认为 `false`，表示 TiDB Lightning 会将行数据以及索引数据都编码成 KV pairs 后一同导入 TiKV，实现机制和历史版本保持一致。如果设置为 `true`，即 TiDB Lightning 会在导入数据完成后，使用 add index 的 SQL 来添加索引。
+# 通过 SQL 方式添加索引的优点是将导入数据与导入索引分开，可以快速导入数据，即使导入数据后，索引添加失败，也不会影响数据的一致性。
+# add-index-by-sql = false
+
+# 在使用 TiDB Lightning 导入多租户的 TiDB cluster 的场景下，指定对应的 key space 名称。默认取值为空字符串，表示 TiDB Lightning 会自动获取导入对应租户的 key space 名称；如果指定了值，则使用指定的 key space 名称来导入。
+# keyspace-name = ""
 [mydumper]
 # 设置文件读取的区块大小，确保该值比数据源的最长字符串长。
 read-block-size = "64KiB" # 默认值
@@ -254,9 +261,9 @@ log-level = "error"
 # 设置 TiDB 会话变量，提升 Checksum 和 Analyze 的速度。
 # 各参数定义可参阅”控制 Analyze 并发度“文档
 build-stats-concurrency = 20
-distsql-scan-concurrency = 100
+distsql-scan-concurrency = 15
 index-serial-scan-concurrency = 20
-checksum-table-concurrency = 16
+checksum-table-concurrency = 2
 
 # 解析和执行 SQL 语句的默认 SQL 模式。
 sql-mode = "ONLY_FULL_GROUP_BY,NO_ENGINE_SUBSTITUTION"
