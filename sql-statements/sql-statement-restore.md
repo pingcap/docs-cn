@@ -161,3 +161,6 @@ RESTORE DATABASE * FROM 's3://example-bucket/inc-backup-2';
 
 * [BACKUP](/sql-statements/sql-statement-backup.md)
 * [SHOW RESTORES](/sql-statements/sql-statement-show-backups.md)
+* [PITR](/sql-statements/sql-statement-pitr.md)
+* [BR_JOB_ADMIN](/sql-statements/sql-statement-br-job-admin.md)
+* [SHOW_BACKUP_META](/sql-statements/sql-statement-show-backup-meta.md)
