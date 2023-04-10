@@ -29,7 +29,7 @@ Server 监控栏示例如下：
 
 - Uptime：TiCDC 节点已经运行的时间。
 - CPU usage：TiCDC 节点的 CPU 使用量。
-- Memory usage：TiCDC 节点使用的内存。
+- Memory usage：TiCDC 节点的内存使用量。
 
 ## Changefeed 监控栏
 
