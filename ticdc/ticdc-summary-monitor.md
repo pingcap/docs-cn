@@ -86,8 +86,8 @@ Cloud Storage Sink 监控栏示意如下，该监控栏只有下游为 Cloud Sto
 
 ![TiCDC Summary Dashboard - Transaction Sink metrics](/media/ticdc/ticdc-summary-monitor-cloud-storage.png)
 
-- Write Bytes/s: Cloud Storage Sink 模块往下游写数据的速率。
-- File Count: Cloud Storage Sink 模块写文件的总数量。
+- Write Bytes/s：Cloud Storage Sink 模块往下游写数据的速率。
+- File Count：Cloud Storage Sink 模块写文件的总数量。
 
 ## Redo 监控栏
 
