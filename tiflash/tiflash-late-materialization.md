@@ -5,13 +5,13 @@ summary: 介绍通过使用 TiFlash 延迟物化的方式来加速 OLAP 场景�
 
 # 延迟物化
 
-> **警告：**
+> **注意：**
 >
-> 在 TiFlash 存算分离架构和 Fast Scan 模式下，延迟物化功能暂不可用。
+> 在 TiFlash [存算分离架构](/tiflash/tiflash-disaggregated-and-s3.md)和 [Fast Scan 模式](/tiflash/use-fastscan.md)下，延迟物化功能暂不可用。
 
 本文档介绍通过使用 TiFlash 延迟物化的方式来加速 Online Analytical Processing (OLAP) 场景的查询。
 
-默认情况下，当收到一个查询请求时，TiFlash 会先读取该查询所需列的全部数据，然后再根据查询条件对数据进行过滤、聚合等计算任务。延迟物化是一种优化方式，它支持下推部分过滤条件到 TableScan 算子，即先扫描过滤条件相关的列数据，过滤得到符合条件的行后，再扫描这些行的其他列数据，继续后续计算，从而减少 IO 扫描和数据处理的计算量。
+默认情况下，当收到一个查询请求时，TiFlash 会先读取该查询所需列的全部数据，然后再根据查询条件对数据进行过滤、聚合等计算任务。延迟物化是一种优化方式，它支持下推部分过滤条件到 TableScan 算子，即先扫描下推到 TableScan 算子的过滤条件相关的列数据，过滤得到符合条件的行后，再扫描这些行的其他列数据，继续后续计算，从而减少 IO 扫描和数据处理的计算量。
 
 如果希望提升 OLAP 场景部分查询的性能，可以在 session 级别或 global 级别开启 TiFlash 延迟物化功能。你可以通过修改变量 [`tidb_opt_enable_late_materialization`](/system-variables.md#tidb_opt_enable_late_materialization-从-v700-版本开始引入) 的值来选择是否启用 TiFlash 延迟物化功能。
 
