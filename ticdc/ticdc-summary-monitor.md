@@ -16,7 +16,7 @@ summary: 了解 TiCDC 基本的监控指标。
 - Server：集群中 TiCDC 节点的概要信息
 - Changefeed：TiCDC 同步任务延迟和状态信息
 - Dataflow：TiCDC 内部各个模块处理数据改变的各种统计信息
-- Transaction Sink：下游为 Mysql 或者 TiDB 时的写延迟信息
+- Transaction Sink：下游为 MySQL 或者 TiDB 时的写延迟信息
 - MQ Sink: 下游为 MQ 系统时的写延迟信息
 - Cloud Storage Sink：下游为 Cloud Storage 时的写速率信息
 - Redo：开启 Redo 功能时的写延迟信息
