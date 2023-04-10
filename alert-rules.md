@@ -424,8 +424,8 @@ summary: TiDB 集群中各组件的报警规则详解。
 
 * 处理方法：
 
-    * 观察 [TIKV Details 面板](/grafana-tikv-dashboard.md#pd) 中的 PD 监控信息，查看 'Store Slow Score' 监控指标，找出指标数超过 80 的节点，该节点即为被检测到的慢节点。
-    *  观察 [Raft IO dashboard](/grafana-tikv-dashboard.md#raft-io)，看延迟是否升高。如果延迟很高，表明磁盘可能有瓶颈。一个能缓解但不怎么安全的办法是将 sync-log 改成 false。
+    * 观察 [**TiKV-Details** > **PD** 面板](/grafana-tikv-dashboard.md#pd)，查看 Store Slow Score 监控指标，找出指标数值超过 80 的节点，该节点即为被检测到的慢节点。
+    * 观察 [**TiKV-Details** > **Raft IO** 面板](/grafana-tikv-dashboard.md#raft-io)，查看延迟是否升高。如果延迟很高，表明磁盘可能存在瓶颈。
     * 调大 TiKV `raftstore.inspect-interval` 参数，提高延迟检测的超时上限。
     * 如果需要更进一步的分析报警的 TiKV 节点的性能问题，找到优化方法，可以参考 [性能分析和优化](/performance-tuning-methods.md#storage-async-write-durationstore-duration-%E5%92%8C-apply-duration)。
 
@@ -495,9 +495,9 @@ summary: TiDB 集群中各组件的报警规则详解。
 
 * 处理方法：
 
-    1. 观察 [Raft Propose dashboard](/grafana-tikv-dashboard.md#raft-propose)，看这个报警的 TiKV 节点是否明显有比其他 TiKV 高很多。如果是，表明这个 TiKV 上有热点，需要检查热点调度是否能正常工作。
-    2.  观察 [Raft IO dashboard](/grafana-tikv-dashboard.md#raft-io)，看延迟是否升高。如果延迟很高，表明磁盘可能有瓶颈。一个能缓解但不怎么安全的办法是将 `sync-log` 改成 `false`。
-    3. 观察 观察 [Raft Process dashboard](/grafana-tikv-dashboard.md##raft-process)，看 tick duration 是否很高。如果是，需要在 `[raftstore]` 配置下加上 `raft-base-tick-interval = “2s”`。
+    1. 观察 [**TiKV-Details** > **Raft Propose** 面板](/grafana-tikv-dashboard.md#raft-propose)，查看这个报警的 TiKV 节点是否明显比其他 TiKV 高很多。如果是，表明这个 TiKV 上有热点，需要检查热点调度是否能正常工作。
+    2. 观察 [**TiKV-Details** > **Raft IO** 面板](/grafana-tikv-dashboard.md#raft-io)，查看延迟是否升高。如果延迟很高，表明磁盘可能存在瓶颈。
+    3. 观察 [**TiKV-Details** > **Raft process** 面板](/grafana-tikv-dashboard.md##raft-process)，关注 `tick duration` 是否很高。如果是，需要将 TiKV 配置项 [`raftstore.raft-base-tick-interval`](/tikv-configuration-file.md#raft-base-tick-interval) 设置为 `"2s"`。
 
 #### `TiKV_write_stall`
 
@@ -551,9 +551,9 @@ summary: TiDB 集群中各组件的报警规则详解。
 
 * 处理方法：
 
-    1. 观察 [Raft Propose dashboard](/grafana-tikv-dashboard.md#raft-propose)，看这个报警的 TiKV 节点的 ‘99% Propose wait duration per server’ 是否明显有比其他 TiKV 高很多。如果是，表明这个 TiKV 上有热点，需要检查热点调度是否能正常工作。
-    2. 观察 [Raft IO dashboard](/grafana-tikv-dashboard.md#raft-io)，看延迟是否升高。如果延迟很高，表明磁盘可能有瓶颈。一个能缓解但不怎么安全的办法是将 sync-log 改成 false。 
-    3. 如果需要更进一步的分析报警的 TiKV 节点的性能问题，找到优化方法，可以参考 [性能分析和优化](/performance-tuning-methods.md#storage-async-write-durationstore-duration-%E5%92%8C-apply-duration)。
+    1. 观察 [**TiKV-Details** > **Raft propose** 面板](/grafana-tikv-dashboard.md#raft-propose)，查看这个报警的 TiKV 节点的 **99% Propose wait duration per server** 是否明显比其他 TiKV 高很多。如果是，表明这个 TiKV 上有热点，需要检查热点调度是否能正常工作。
+    2. 观察 [**TiKV-Details** > **Raft IO** 面板](/grafana-tikv-dashboard.md#raft-io)，查看延迟是否升高。如果延迟很高，表明磁盘可能存在瓶颈。
+    3. 如果需要进一步分析报警的 TiKV 节点的性能问题，找到优化方法，可以参考[性能分析和优化方法](/performance-tuning-methods#storage-async-write-durationstore-duration-和-apply-duration)。
 
 #### `TiKV_coprocessor_request_wait_seconds`
 
