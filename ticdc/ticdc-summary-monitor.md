@@ -59,8 +59,8 @@ Changefeed 监控栏示例如下：
 
 ![TiCDC Summary Dashboard - Sink metrics](/media/ticdc/ticdc-summary-monitor-dataflow-sink.png)
 
-- Sink flush rows/s: TiCDC 节点中 Sink 模块每秒往下游输出的数据变更个数。该指标反映的是同步任务向下游进行同步的速率，当 Sink flush rows/s 小于 Puller output events/s 时，同步延迟就可能会上升。
-- Sink flush rows: TiCDC 节点中 Sink 模块输出的数据变更的总个数。
+- Sink flush rows/s：TiCDC 节点中 Sink 模块每秒往下游输出的数据变更个数。该指标反映的是同步任务向下游进行同步的速率，当 Sink flush rows/s 小于 Puller output events/s 时，同步延迟可能会上升。
+- Sink flush rows：TiCDC 节点中 Sink 模块输出的数据变更的总个数。
 
 ## Transaction Sink 监控栏
 
