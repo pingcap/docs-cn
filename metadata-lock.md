@@ -64,7 +64,7 @@ Starting from v6.5.0, TiDB enables metadata lock by default. When you upgrade yo
     | `COMMIT;`                  |                                           |
     | `BEGIN;`                   |                                           |
     |                            | `ALTER TABLE t MODIFY COLUMN a CHAR(10);` |
-    | `SELECT * FROM t;` (returns an error `Information schema is changed`) | |
+    | `SELECT * FROM t;` (returns `Error 8028: Information schema is changed`) | |
 
 ## Observability
 
