@@ -179,6 +179,7 @@ Query OK, 0 rows affected (0.02 sec)
 ```
 
 查看当前用户绑定的资源组：
+
 ```sql
 SELECT USER, JSON_EXTRACT(User_attributes, "$.resource_group") from mysql.user WHERE user = "rg1";
 ```
