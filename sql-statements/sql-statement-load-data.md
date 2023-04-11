@@ -33,7 +33,9 @@ LoadDataOptionListOpt ::=
     ('WITH' (LoadDataOption (',' LoadDataOption)*))?
 
 LoadDataOption ::=
-    detached | batch_size '=' numberLiteral
+    detached 
+    | batch_size '=' numberLiteral
+    | threads '=' numberLiteral
 ```
 
 ## 参数说明
@@ -108,6 +110,18 @@ LINES TERMINATED BY '\n' STARTING BY ''
 
 可以通过 `WITH batch_size=<number>` 来指定批量写入 TiDB 时的行数，默认值为 `1000`。如果不希望分批写入，可以指定为 `0`。
 
+### `WITH threads=<number>`
+
+可以通过 `WITH threads=<number>` 来指定写入 TiDB 时的并发度，默认值为 CPU 核数。
+
+## 源文件压缩
+
+`LOAD DATA` 会根据数据源文件的后缀名判断压缩格式，后缀名与支持的压缩格式关系如下
+
+- `gz`, `gzip`: gzip 压缩
+- `zstd`, `zst`: zstandard 压缩
+- `snappy`: snappy 压缩
+
 ## 示例
 
 后台运行 job，执行后会输出对应的 job id：
@@ -120,7 +134,7 @@ LOAD DATA INFILE 's3://bucket-name/test.csv?access_key=XXX&secret_access_key=XXX
 +--------+
 | Job_ID |
 +--------+
-|      150063  |
+| 150063 |
 +--------+
 1 row in set (3.14 sec)
 ```
@@ -161,7 +175,7 @@ LOAD DATA LOCAL INFILE '/mnt/evo970/data-sets/bikeshare-data/2017Q4-capitalbikes
 
 ## MySQL 兼容性
 
-TiDB 中的 `LOAD DATA` 语句应该完全兼容 MySQL（除字符集选项被解析但会被忽略以外）。若发现任何兼容性差异，请在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues/new/choose)。
+TiDB 中的 `LOAD DATA` 语句应该完全兼容 MySQL。若发现任何兼容性差异，请在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues/new/choose)。
 
 > **注意：**
 >
