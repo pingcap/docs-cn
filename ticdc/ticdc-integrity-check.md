@@ -31,4 +31,10 @@ corruption-handle-level="warn"
 
 经由上述配置的 Changefeed，会在每一条写入到 Kafka 的消息中，携带有该条消息对应数据的 Checksum，用户可以根据该 Checksum 的值做数据一致性校验工作。
 
+## 基本原理介绍
+
+TiDB 在启用了 Row Checksum 功能后，使用 CRC32 算法，对该行数据计算一个 Checksum 值，一并写入到 TiKV。TiCDC 从 TiKV 中读取出数据，根据相同的算法，重新计算一遍 Checksum，如果该值和 TiDB 写入的值相同，那么可以说明数据在 TiDB 到 TiCDC 的链路上是正确的。TiCDC 将数据编码成特定的格式，发送到 Kafka，Kafka Consumer 读取出数据之后，可以使用和 TiDB 相同的算法，计算得到一个新的 Checksum，将该值和数据中携带的 Checksum 值进行对比，二者一致则可说明从 TiCDC 到 Kafka Consumer 的链路上数据是正确的。
+
+### Checksum 计算方法
+
 ## 基于 Checksum 的数据校验
