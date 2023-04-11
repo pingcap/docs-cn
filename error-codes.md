@@ -360,7 +360,7 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 8252
 
-     完整的报错信息为 `ERROR 9001 (HY000) : Exceeded resource group quota limitation`。
+     完整的报错信息为 `ERROR 8252 (HY000) : Exceeded resource group quota limitation`。
 
     再尝试消耗超过资源组的限制时返回该错误。一般遇到该错误，是由于单次事务太大或者并发太多导致，需减少客户端并发数并调整事务大小。
 
