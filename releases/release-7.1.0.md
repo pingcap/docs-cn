@@ -43,6 +43,12 @@ TiDB 版本：7.1.0
 
     更多信息，请参考[用户文档](/tiflash/use-tiflash-mpp-mode.md#mpp-模式的算法支持)。
 
+*  自适应副本读来缓解读热点 [#14151](https://github.com/tikv/tikv/issues/14151) @[sticnarf](https://github.com/sticnarf) @[you06](https://github.com/you06)
+
+    发生读热点场景，其他 TiKV 节点可能仍存在闲置资源，与其在数据主节点持续排队等待，转而从其他节点读取副本可能带来更低的延迟。 TiDB 在新版本开始支持负载自适应副本读，通过 [`tidb_load_based_replica_read_threshold`](/system-variables.md#tidb_load_based_replica_read_threshold) 参数来设置排队时间的临界值，当估算的排队时间超过设定时，TiDB 会尝试从副本节点读取数据。在读热点的情况下，相比于不打散有 70%-200% 的读取吞吐量提升。
+
+    更多信息，请参考[用户文档](/distsql-read.md)。
+
 * 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接)
 
     功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
