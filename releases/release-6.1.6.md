@@ -99,7 +99,6 @@ TiDB 版本：6.1.6
 
     + TiCDC
         - 修复同步数据时由于 `Update` 和 `Insert` 语句乱序可能导致 `Duplicate entry` 错误的问题 [#8597](https://github.com/pingcap/tiflow/issues/8597) @[sdojjy](https://github.com/sojjy)
-        - 修复 `float32` 类型解析错误导致浮点数精度丢失的问题 [#8490](https://github.com/pingcap/tiflow/issues/8490) @[3AceShowHand](https://github.com/3AceShowHand)
         - 修复由于 PD 和 TiCDC 之间的网络隔离引起 TiCDC 程序异常退出的问题 [#8562](https://github.com/pingcap/tiflow/issues/8562) @[overvenus](https://github.com/overvenus)
         - 修复在同步没有主键且包含非空唯一索引的表时，数据可能丢失的问题 [#8420](https://github.com/pingcap/tiflow/issues/8420) @[zhaoxinyu](https://github.com/zhaoxinyu)
         - 修复 `db sorter` 使用内存时未受 `cgroup memory limit` 限制的问题 [#8588](https://github.com/pingcap/tiflow/issues/8588) @[amyangfei](https://github.com/amyangfei)
