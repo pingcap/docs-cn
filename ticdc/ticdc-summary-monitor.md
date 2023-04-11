@@ -95,7 +95,7 @@ Redo 监控栏示意如下，该监控栏只有在开启了 Redo Log 功能时�
 
 ![TiCDC Summary Dashboard - Transaction Sink metrics](/media/ticdc/ticdc-summary-monitor-redo.png)
 
-- Redo Write rows/s: Redo 模块每秒写数据的行数。当开启 Redo 功能时，如果发现同步任务的延迟上升，那么可以观察该指标是否和 Puller Output event/s 的值有较大差距。如果是，那么可能是由于 Redo 模块的写入能力不足造成延迟上升。
-- Redo Write Byte/s: Redo 模块每秒写数据的速率。
-- Redo flush log duration: Redo 模块往下游刷写数据的耗时。若该指标值较高，则可能是它影响了同步的速度。
-- Redo flushall duration: 数据变更停留在 Redo 模块中的总时长。
+- Redo Write rows/s：Redo 模块每秒写数据的行数。当开启 Redo 功能时，如果发现同步任务的延迟上升，那么可以观察该指标是否和 Puller Output event/s 的值有较大差距。如果是，那么可能是由于 Redo 模块的写入能力不足造成延迟上升。
+- Redo Write Byte/s：Redo 模块每秒写数据的速率。
+- Redo flush log duration：Redo 模块往下游刷写数据的耗时。若该指标值较高，则可能是它影响了同步的速度。
+- Redo flushall duration：数据变更停留在 Redo 模块中的总时长。
