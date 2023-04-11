@@ -91,6 +91,14 @@ TiDB 版本：7.1.0
 
   更多信息，请参考[用户文档](/tiflash/tiflash-results-materialization.md)。
 
+*   MySQL 兼容的多值索引 (Multi-Valued Index) GA [#39592](https://github.com/pingcap/tidb/issues/39592) @[xiongjiwei](https://github.com/xiongjiwei) @[qw4990](https://github.com/qw4990) @[YangKeao](https://github.com/YangKeao)
+
+    过滤 JSON 列中某个数组的值是一个常见的操作，但普通索引起不到加速作用。在数组上创建多值索引能够大幅提升过滤的性能。如果 JSON 列中的某个数组上存在多值索引，那么函数 `MEMBER OF()`、`JSON_CONTAINS()`、`JSON_OVERLAPS()` 的检索条件可以利用多值索引过滤，从而减少大量的 I/O 消耗，提升执行速度。
+    
+    在 v7.1.0 中， TiDB 多值索引 (Multi-Valued Index) GA，支持更完整的数据类型，并与 TiDB 的工具链兼容。用户可以在生产环境利用“多值索引”加速对 JSON 数组的检索操作。
+    
+    更多信息，请参考[用户文档](/sql-statements/sql-statement-create-index.md#多值索引)
+
 * 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接)
 
     功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
