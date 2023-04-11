@@ -26,7 +26,10 @@ TiDB 版本：7.1.0
     更多信息，请参考[用户文档](/tiflash/tiflash-disaggregated-and-s3.md)。
 
 ### 性能
+* 下一代 [`Partitioned Raft KV`](../partitioned-raft-kv.md) 存储引擎 GA [#issue号](链接) @[busyjay](https://github.com/busyjay) @[tonyxuqqi](https://github.com/tonyxuqqi) @[tabokie](https://github.com/tabokie) @[bufferflies](https://github.com/bufferflies) @[5kbpers](https://github.com/5kbpers) @[SpadeA-Tang](https://github.com/SpadeA-Tang) @[nolouch](https://github.com/nolouch)
+    TiDB v6.6.0 引入的全新的 TiKV 存储引擎 [`Partitioned Raft KV`](../partitioned-raft-kv.md) 在 TiDB v7.1.0 版本正式 GA。该引擎使用多个 RocksDB 实例存储 TiKV 的 Region 数据，为每个 Region 提供独立的 RocksDB 实例。此外，该引擎能够更好地管理 RocksDB 实例的文件数和层级，实现 Region 间的数据操作物理隔离，并支持更多数据的平滑扩展。与原 TiKV 存储引擎相比，使用该引擎在相同硬件条件和读写混合场景下，可实现约 2 倍的写入吞吐、3 倍的读取吞吐，并缩短约 4/5 的弹性伸缩时间。该引擎与 TiFlash 引擎兼容，支持 Lightning / BR / TiCDC 等周边工具。该引擎目前仅支持在新集群中使用，暂不支持从原 TiKV 存储引擎直接升级到该引擎。
 
+    更多信息，请参考[用户文档](../partitioned-raft-kv.md)。
 * TiFlash 查询支持延迟物化功能 GA [#5829](https://github.com/pingcap/tiflash/issues/5829) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger) **tw:qiancai**
 
     当 `SELECT` 语句中包含过滤条件（`WHERE` 子句）时，TiFlash 默认会先读取该查询所需列的全部数据，然后再根据查询条件对数据进行过滤、聚合等计算任务。延迟物化是一种优化方式，它支持下推部分过滤条件到 TableScan 算子，即先扫描过滤条件相关的列数据，过滤得到符合条件的行后，再扫描这些行的其他列数据，继续后续计算，从而减少 IO 扫描和数据处理的计算量。
@@ -72,7 +75,20 @@ TiDB 版本：7.1.0
     功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
 
     更多信息，请参考[用户文档](链接)。
+* 支持 [Fast Online DDL](../system-variables.md###tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 的检查点机制，提升容错性和自动恢复能力 [#issue](https://github.com/pingcap/tidb/issues/issue) @[tangenta](https://github.com/tangenta)
+  
+    TiDB v7.1.0 版本引入 [Fast Online DDL](../system-variables.md###tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 的检查点机制，可以大幅提升 [Fast Online DDL](../system-variables.md###tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 的容错性和自动恢复能力。即使在 TiDB DDL Owner 切换的情况下，也能够通过周期性记录并同步 DDL 进度，让新的 TiDB DDL Owner 仍能以 [Fast Online DDL](../system-variables.md###tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 方式执行切换前的 DDL 语句，无需手动取消和重新执行 DDL 语句，从而让 DDL 执行更加稳定高效。
+    
+    更多信息，请参考[用户文档](../ddl-introduction.md)。
 
+* BR 备份恢复工具支持断点恢复  [#issue](https://github.com/pingcap/tidb/issues/issue) @[Leavrth](https://github.com/Leavrth)
+    
+    如果用户的 TiDB 集群规模较大，之前在进行数据库的快照恢复或日志恢复时，可能会出现一些意外情况导致恢复过程提前结束，例如硬盘空间占满、节点宕机等等。在 TiDB v7.1.0 之前的版本中，这些意外情况会导致之前恢复的进度作废，需要重新进行恢复，给用户带来大量额外成本和麻烦。
+
+    为了解决这个问题，TiDB v7.1.0 引入了备份恢复的断点恢复功能。该功能可以在意外中断后保留上一次恢复的大部分进度，使得用户能够尽可能地继续上一次的恢复的进度，避免不必要的成本和麻烦。
+
+    更多信息，请参考[用户文档](../br/br-checkpoint-restore.md)。
+    
 ### 高可用
 
 * 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接)
@@ -118,6 +134,23 @@ TiDB 版本：7.1.0
     功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
 
     更多信息，请参考[用户文档](链接)。
+* DDL 任务支持暂停和恢复操作  [#issue号](链接) @[godouxm](https://github.com/godouxm) 
+
+    TiDB v7.1.0 之前的版本中，当 DDL 任务执行期间遇到业务高峰时间点时，为了减少对业务的影响，用户只能手动取消 DDL 任务。为了减轻 DDL 操作对业务负载的影响，TiDB v7.1.0 引入了 DDL 任务的暂停和恢复操作，用户可以在高峰时间点暂停 DDL 任务，等到业务高峰时间结束后再恢复 DDL 任务，从而避免了对业务的影响。
+    
+    例如，可以通过如下 [`ADMIN PAUSE DDL JOBS`](/sql-statements/sql-statement-admin-pause-ddl.md)  或  [`ADMIN RESUME DDL JOBS`](/sql-statements/sql-statement-admin-resume-ddl.md) 子句暂停或者恢复多个 DDL 任务：
+    ```sql
+    SQL> admin pause ddl jobs 1,2;
+
+    SQL> admin resume ddl jobs 1,2;
+    ```
+
+    更多信息，请参考 [`ADMIN PAUSE DDL JOBS`](/sql-statements/sql-statement-admin-pause-ddl.md)  和 [`ADMIN RESUME DDL JOBS`](/sql-statements/sql-statement-admin-resume-ddl.md)。
+
+
+* 无需取消 DDL 的平滑集群升级功能 [#issue号](链接) @[zimulala](https://github.com/zimulala) @[hawkingrei](https://github.com/hawkingrei)
+	
+    TiDB v7.1.0 之前的版本在升级集群时需要先手动取消正在运行或排队的 DDL 任务，在升级完毕后再手动添加这些任务。为了让用户享受更加平滑的升级体验，TiDB v7.1.0 引入了自动暂停和恢复 DDL 任务的功能。从 v7.1.0 版本开始，用户可以在不需要手动取消 DDL 任务的情况下升级集群。系统会自动暂停正在执行或排队的 DDL 任务，等待整个集群完成滚动升级后再自动恢复这些任务，让用户可以更加轻松地升级 TiDB 集群。
 
 ### 可观测性
 
@@ -136,7 +169,16 @@ TiDB 版本：7.1.0
     从 v7.1.0 版本开始，TiFlash 使用 gRPC 服务接口向 TiDB 提供`information_schema.tiflash_tables` 和 `information_schema.tiflash_segments` 系统表信息查询，避免 http 服务的安全风险。
 
 ### 数据迁移
+* TiCDC 支持 E2E 单行数据正确性校验功能 [#issue号](链接) @[3AceShowHand](https://github.com/3AceShowHand) @[zyguan](https://github.com/zyguan)
+	
+    从 v7.1.0 版本开始，TiCDC 新增了单行数据正确性校验功能，该功能基于 Checksum 算法对单行数据的正确性进行校验。通过该功能可以校验一行数据从 TiDB 写入、经由 TiCDC 流出，再写入到 Kafka 集群的过程中是否发生了数据错误。该功能仅支持下游是 Kafka Sink 的 Changefeed，支持 Canal-JSON / Avro / Open-Protocol 等协议。
+	    
+    更多信息，请参考[用户文档](/ticdc/ticdc-integrity-check.md)。
 
+* TiCDC 优化 DDL 同步操作 [#8686](https://github.com/pingcap/tiflow/issues/8686) @[nongfushanquan](https://github.com/nongfushanquan)
+
+   在 v7.1.0 版本之前，当用户在一个大表上运行需要影响所有行的 DDL 操作，例如添加 / 删除列时，TiCDC 的同步延迟会显著增加。从 v7.1.0 版本开始，TiCDC 对于这种情况进行了优化，将同步延迟降低到不到 10 秒，以减轻 DDL 操作对下游延迟的影响。
+   
 * 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接)
 
     功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
