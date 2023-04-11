@@ -5,10 +5,6 @@ summary: 了解 TiFlash 存算分离架构与 S3 支持。
 
 # TiFlash 存算分离架构与 S3 支持
 
-> **警告：**
->
-> TiFlash 存算分离架构目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tiflash/issues) 反馈。
-
 TiFlash 默认使用存算一体的架构进行部署，即 TiFlash 节点既是存储节点，也是计算节点。从 TiDB v7.0.0 开始，TiFlash 支持存算分离架构，并将数据存储在 Amazon S3 或兼容 S3 API 的对象存储中（比如 MinIO）。
 
 ## 架构介绍
