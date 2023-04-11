@@ -13,7 +13,9 @@ TiDB 版本：6.1.6
 
 ## 兼容性变更
 
-- 兼容性变更 1
+- TiCDC 修复了 Avro 编码 FLOAT 类型数据错误的问题 [#8490](https://github.com/pingcap/tiflow/issues/8490) @[3AceShowHand](https://github.com/3AceShowHand)
+
+    在升级 TiCDC 集群到 v6.1.6 或更高的 v6.1.x 版本时，如果使用 Avro 同步的表包含 `FLOAT` 类型数据，请在升级前手动调整 Confluent Schema Registry 的兼容性策略为 `None`，使 changefeed 能够成功更新 schema。否则，在升级之后 changefeed 将无法更新 schema 并进入错误状态。
 
 ## 提升改进
 
