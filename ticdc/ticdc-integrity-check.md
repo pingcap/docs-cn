@@ -19,6 +19,9 @@ summary: 了解 TiCDC 数据正确性校验功能
 SET GLOBAL enable_row_level_checksum = true; 
 ```
 
+上述配置仅对新创建的会话生效，因此需要重新链接 TiDB。
+
+
 * 在创建 Changefeed 的 `--config` 参数所指定的配置文件中，添加如下配置:
 
 ```toml
