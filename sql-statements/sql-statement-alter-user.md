@@ -216,7 +216,6 @@ SELECT USER, JSON_EXTRACT(User_attributes, "$.resource_group") from mysql.user W
 1 row in set (0.02 sec)
 ```
 
-
 ## 另请参阅
 
 * [Security Compatibility with MySQL](/security-compatibility-with-mysql.md)
