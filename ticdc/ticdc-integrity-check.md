@@ -13,9 +13,10 @@ summary: 了解 TiCDC 数据正确性校验功能
 
 该功能仅支持下游是 Kafka Sink 的 Changefeed，支持 Canal-JSON / Avro / Open-Protocol 等协议。
 
-1. 首先用户需要在 TiDB 开启行数据 Checksum 功能，执行如下 SQL 语句：
+1. 首先用户需要在上游 TiDB 开启行数据 Checksum 功能，执行如下 SQL 语句：
 
 ```sql
+SET GLOBAL enable_row_level_checksum = true; 
 ```
 
 2. 在创建 Changefeed 的 `--config` 参数所指定的配置文件中，添加如下配置:
