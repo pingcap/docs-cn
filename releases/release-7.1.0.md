@@ -49,6 +49,16 @@ TiDB 版本：7.1.0
 
     更多信息，请参考[用户文档](/distsql-read.md)。
 
+* 非 Prepare 语句的执行计划缓存 GA [#36598](https://github.com/pingcap/tidb/issues/36598) @[qw4990](https://github.com/qw4990)
+
+    TiDB 在 v7.0.0 支持缓存非 Prepare 语句的执行计划，以提升在线交易场景的并发能力。 v7.1.0 持续优化了这个能力，支持更多模式的 SQL 进入缓存，并正式将这个能力 GA 。 
+
+    GA 之后，非 Prepare 与 Prepare SQL 的缓存池合并，以提升内存利用率，缓存大小通过变量 [`tidb_session_plan_cache_size`]() 设置。 原有的变量 [`tidb_prepared_plan_cache_size`](/system-variables.md#tidb_prepared_plan_cache_size) 和 [`tidb_non_prepared_plan_cache_size`](/system-variables.md#tidb_non_prepared_plan_cache_size) 将被废弃。 
+
+    为了保持设置向前兼容，对于从低版本升级到 v7.1.0 的客户，缓存池大小 `tidb_session_plan_cache_size` 将会继承 `tidb_prepared_plan_cache_size`的设置，非 Parepare 语句的缓存保持关闭。经过性能测试后，用户可通过 [`tidb_enable_non_prepared_plan_cache`](/system-variables.md#tidb_enable_non_prepared_plan_cache) 打开。 对于新部署的客户，非 Parepare 语句的缓存则默认打开。 
+
+    更多信息，请参考[用户文档]()。
+
 * 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接)
 
     功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
