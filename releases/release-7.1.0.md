@@ -89,7 +89,7 @@ TiDB 版本：7.1.0
 
     在 v7.1.0 版本中，TiDB 正式将该功能 GA。不同 SQL mode 对于 `INSERT INTO SELECT` 语句的计算有不同要求，而 TiFlash 的计算规则不满足 `STRICT SQL Mode` 要求，因此，TiDB 要求只有当前会话的 SQL Mode 是除 `STRICT_TRANS_TABLES`, `STRICT_ALL_TABLES` 之外的值时，才允许将 `INSERT INTO SELECT` 语句中的查询下推至 TiFlash。同时，在实验特性阶段引入的系统变量 `tidb_enable_tiflash_read_for_write_stmt` 将被移除。TiDB 保持查询结果时，是否将查询下推至 TiFlash，完全根据 SQL Mode 及 TiFlash 副本的代价估算，由优化器自行决定。
 
-  更多信息，请参考[用户文档](/tiflash/tiflash-results-materialization.md)。
+    更多信息，请参考[用户文档](/tiflash/tiflash-results-materialization.md)。
 
 *   MySQL 兼容的多值索引 (Multi-Valued Index) GA [#39592](https://github.com/pingcap/tidb/issues/39592) @[xiongjiwei](https://github.com/xiongjiwei) @[qw4990](https://github.com/qw4990) @[YangKeao](https://github.com/YangKeao)
 
@@ -98,6 +98,12 @@ TiDB 版本：7.1.0
     在 v7.1.0 中， TiDB 多值索引 (Multi-Valued Index) GA，支持更完整的数据类型，并与 TiDB 的工具链兼容。用户可以在生产环境利用“多值索引”加速对 JSON 数组的检索操作。
     
     更多信息，请参考[用户文档](/sql-statements/sql-statement-create-index.md#多值索引)
+
+* 支持完善的分区管理 [#42728](https://github.com/pingcap/tidb/issues/42728) @[mjonss](https://github.com/mjonss)
+
+    在 v7.1.0 版本之前，TiDB 支持 `RANGE`、`LIST`、`HASH`、`KEY` 分区以及 `RANGE`、`LIST` 分区的管理功能。从 v7.1.0 版本开始，TiDB 增加对于 `HASH`、`KEY` 分区的 `ADD PARTITION` 和 `COALESCE PARTITION` 管理功能，以及表的分区类型修改（包括 `REMOVING PARTITIONING`、将非分区表修改为分区表、修改分区表的分区类型），完善整体分表的分区管理能力。你可以根据需要，灵活的对表的分区方式进行调整。
+
+    更多信息，请参考[用户文档](/partitioned-table.md#)。
 
 * 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接)
 
