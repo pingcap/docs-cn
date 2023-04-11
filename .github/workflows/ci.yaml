@@ -11,8 +11,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out
-        uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+        uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
           node-version: "16"
       - name: Verify duplicated file names
@@ -32,13 +32,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out
-        uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+        uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
           node-version: "16"
       - name: Check TOC-tidb-cloud.md existence
         id: check_cloud_toc
-        uses: andstor/file-existence-action@v1
+        uses: andstor/file-existence-action@v2
         with:
           files: "TOC-tidb-cloud.md"
       - name: Verify internal links - cloud only
@@ -57,9 +57,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@master
+        uses: actions/checkout@v3
       - name: Vale Linter
-        uses: errata-ai/vale-action@v1.5.0
+        uses: errata-ai/vale-action@v2.0.1
         with:
           # Optional
           # Specify file path to lint
