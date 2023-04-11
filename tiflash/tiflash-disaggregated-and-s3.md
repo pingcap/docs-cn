@@ -23,8 +23,6 @@ TiFlash 默认使用存算一体的架构进行部署，即 TiFlash 节点既是
 
     Write Node 利用本地磁盘（通常是 NVMe SSD）来缓存最新写入的数据，从而避免过多使用内存。
 
-    Write Node 比原来存算一体的 TiFlash 节点有更快的扩容和缩容速度，即增加或者删除 Write Node 后，数据能更快地在 Write Node 之间达到平衡。原理是 Write Node 把所有数据存储到了 S3，运行时只需要在本地存储很少的数据。扩容和缩容本质上是 Region Peer 在节点间的迁移。当某个 Write Node 要将某个 Region Peer 移动到自己之上管理时，它只需要从 Region Peer 所在的 Write Node 上传到 S3 的最新文件中下载少量关于此 Region 的元数据，再从 TiKV 同步最近的 Region 更新，就可以追上 Region Leader 的进度，从而完成 Region Peer 的迁移。
-
 - TiFlash Compute Node
 
     负责执行从 TiDB 节点发过来的查询请求。它首先访问 Write Node 以获取数据的快照 (data snapshots)，然后分别从 Write Node 读取最新的数据（即尚未上传到 S3 的数据），从 S3 读取剩下的大部分数据。
