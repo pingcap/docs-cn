@@ -7,9 +7,15 @@ summary: TiDB 数据库中 LOAD DATA 的使用概况。
 
 `LOAD DATA` 语句用于将数据批量加载到 TiDB 表中。
 
+在 v7.0.0 版本集成 TiDB Lightning 的逻辑导入模式，使 `LOAD DATA` 语句更加强大，包括：
+
+- 支持从 S3、GCS 导入数据
+- 支持导入 Parquet 格式的数据
+- 新增参数 `FORMAT`、`FIELDS DEFINED NULL BY`、`With batch_size=<number>,detached`
+
 > **警告：**
 >
-> 当前该功能为实验特性，不建议在生产环境中使用。
+> 新增的能力和参数为实验特性，不建议在生产环境中使用。
 
 ## 语法图
 
