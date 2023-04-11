@@ -21,8 +21,9 @@ summary: 了解断点恢复功能，包括它的使用场景、使用方法以�
 
 在日志恢复过程中，日志数据恢复的顺序是无序的，因此可能会出现一个 key 的删除记录优先于该 key 的写入记录恢复的情况。如果此时触发 GC，该 key 的所有数据会被删除，导致该 key 后续恢复的写入记录无法被 GC 处理。为了避免这种情况，br 命令行工具会在日志恢复过程中暂停 GC。当 br 工具中途退出后，GC 将仍然保持暂停状态。
 
-日志恢复完成后会重新启动 gc，不需要手动启动。但如果你不想再继续恢复时，请手动开启 gc，开启方法如下：
-br 工具暂停 GC 的原理是执行 `SET config tikv gc.ratio-threshold = -1.0`，手动开启执行相似的 SQL，例如重置为默认值，你可以执行 SQL `SET config tikv gc.ratio-threshold = 1.1`
+日志恢复完成后会重新启动 GC，不需要手动启动。但如果你不想再继续恢复时，请手动开启 GC，开启方法如下：
+
+br 工具暂停 GC 的原理是执行 `SET config tikv gc.ratio-threshold = -1.0`，你可以通过修改 `gc.ratio-threshold` 的值手动开启 GC，例如执行 `SET config tikv gc.ratio-threshold = 1.1` 将参数重置为默认值。
 
 ### 部分数据需要重新恢复
 
@@ -51,7 +52,7 @@ br 工具暂停 GC 的原理是执行 `SET config tikv gc.ratio-threshold = -1.0
 
 由于数据采用了 MVCC（多版本并发控制）机制，带有固定 TS 的数据可以被无序且重复写入。
 
-快照恢复在恢复库表 ddl 时添加了 `ifExists` 参数。对于已经存在的库表（视作已经创建完毕），br 工具会自动跳过恢复。
+快照恢复在恢复库表 DDL 时添加了 `ifExists` 参数。对于已经存在的库表（视作已经创建完毕），br 工具会自动跳过恢复。
 
 ### 日志恢复
 
