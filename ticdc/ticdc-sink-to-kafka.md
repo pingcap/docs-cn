@@ -237,9 +237,9 @@ partition 分发器用 partition = "xxx" 来指定，支持 default、ts、index
 
 > **警告：**
 >
-> 在 enable-old-value = true 时，如果使用 index-value 分发器可能会导致无法保证相同索引值的行变更顺序，因此建议使用 default 分发器。
+> 在 enable-old-value = true 开启 Old Value 功能时，如果使用 index-value 分发器可能会导致无法保证相同索引值的行变更顺序，因此建议使用 default 分发器。
 >
-> 具体原因请参考 [TiCDC 在开启 Old Value 功能后更新事件格式有何变化？](/ticdc/ticdc-faq.md#%E5%AF%B9%E4%BA%8E%E6%9C%89%E6%95%88%E7%B4%A2%E5%BC%95%E5%88%97%E7%9A%84%E6%9B%B4%E6%96%B0%E4%BA%8B%E4%BB%B6%E8%A2%AB%E8%BE%93%E5%87%BA%E4%B8%BA%E6%9B%B4%E6%96%B0%E4%BA%8B%E4%BB%B6kafka-sink-%E7%9A%84-index-value-%E5%88%86%E5%8F%91%E8%A1%8C%E4%B8%BA%E6%97%A0%E6%B3%95%E4%BF%9D%E8%AF%81%E7%9B%B8%E5%90%8C%E7%B4%A2%E5%BC%95%E5%88%97%E7%9A%84%E6%9B%B4%E6%96%B0%E4%BA%8B%E4%BB%B6%E8%A2%AB%E5%88%86%E5%8F%91%E5%88%B0%E5%90%8C%E4%B8%80%E4%B8%AA%E5%88%86%E5%8C%BA)。
+> 具体原因请参考 [TiCDC 在开启 Old Value 功能后更新事件格式有何变化？](/ticdc/ticdc-faq.md#ticdc-在开启-old-value-功能后更新事件格式有何变化)
 
 ## 横向扩展大单表的负载到多个 TiCDC 节点
 
