@@ -498,7 +498,7 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
     1. 观察 [**TiKV-Details** > **Raft Propose** 面板](/grafana-tikv-dashboard.md#raft-propose)，查看这个报警的 TiKV 节点是否明显比其他 TiKV 高很多。如果是，表明这个 TiKV 上有热点，需要检查热点调度是否能正常工作。
     2. 观察 [**TiKV-Details** > **Raft IO** 面板](/grafana-tikv-dashboard.md#raft-io)，查看延迟是否升高。如果延迟很高，表明磁盘可能存在瓶颈。
-    3. 观察 [**TiKV-Details** > **Raft process** 面板](/grafana-tikv-dashboard.md##raft-process)，关注 `tick duration` 是否很高。如果是，需要将 TiKV 配置项 [`raftstore.raft-base-tick-interval`](/tikv-configuration-file.md#raft-base-tick-interval) 设置为 `"2s"`。
+    3. 观察 [**TiKV-Details** > **Raft process** 面板](/grafana-tikv-dashboard.md#raft-process)，关注 `tick duration` 是否很高。如果是，需要将 TiKV 配置项 [`raftstore.raft-base-tick-interval`](/tikv-configuration-file.md#raft-base-tick-interval) 设置为 `"2s"`。
 
 #### `TiKV_write_stall`
 
