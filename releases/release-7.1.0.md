@@ -176,7 +176,11 @@ TiDB 版本：7.1.0
     更多信息，请参考[用户文档](/ticdc/ticdc-integrity-check.md)。
 
 * TiCDC 优化 DDL 同步操作 [#8686](https://github.com/pingcap/tiflow/issues/8686) @[nongfushanquan](https://github.com/nongfushanquan)
+* Lightning local backend (physical import mode) 支持在导入数据之前检测冲突的记录，并支持通过 insert ignore 和 replace 解决导入过程中的冲突记录 (实验特性) [#41629](https://github.com/pingcap/tidb/issues/41629) @[gozssky](https://github.com/gozssky) 
 
+    在之前的版本使用 Lightning local backend (physical import mode) 导入数据时，当遇到冲突的记录时，无法通过 insert ignore 和  replace 来处理导入过程中的 pk、uk 冲突记录，需要用户自行去重。而本次版本，支持在导入数据之前，检查冲突的记录，并通过 replace 和 insert ignore 的语义来处理 pk、uk 冲突的记录。简化用户的操作，提升处理冲突的性能。
+
+    更多信息，请参考[用户文档](链接)。
    在 v7.1.0 版本之前，当用户在一个大表上运行需要影响所有行的 DDL 操作，例如添加 / 删除列时，TiCDC 的同步延迟会显著增加。从 v7.1.0 版本开始，TiCDC 对于这种情况进行了优化，将同步延迟降低到不到 10 秒，以减轻 DDL 操作对下游延迟的影响。
    
 * 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接)
