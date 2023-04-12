@@ -64,7 +64,7 @@ SHOW CREATE USER 'newuser';
 
 ### 修改用户基本信息
 
-{{< copyable "sql" >}}
+修改用户 `newuser` 的密码：
 
 ```sql
 ALTER USER 'newuser' IDENTIFIED BY 'newnewpassword';
@@ -182,7 +182,7 @@ Query OK, 0 rows affected (0.02 sec)
 查看当前用户绑定的资源组：
 
 ```sql
-SELECT USER, JSON_EXTRACT(User_attributes, "$.resource_group") from mysql.user WHERE user = "rg1";
+SELECT USER, JSON_EXTRACT(User_attributes, "$.resource_group") FROM mysql.user WHERE user = "newuser";
 ```
 
 ```
@@ -198,14 +198,7 @@ SELECT USER, JSON_EXTRACT(User_attributes, "$.resource_group") from mysql.user W
 
 ```sql
 ALTER USER 'newuser' RESOURCE GROUP ``;
-```
-
-```
-Query OK, 0 rows affected (0.02 sec)
-```
-
-```sql
-SELECT USER, JSON_EXTRACT(User_attributes, "$.resource_group") from mysql.user WHERE user = "rg1";
+SELECT USER, JSON_EXTRACT(User_attributes, "$.resource_group") FROM mysql.user WHERE user = "newuser";
 ```
 
 ```
