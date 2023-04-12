@@ -427,7 +427,7 @@ summary: TiDB 集群中各组件的报警规则详解。
     * 观察 [**TiKV-Details** > **PD** 面板](/grafana-tikv-dashboard.md#pd)，查看 Store Slow Score 监控指标，找出指标数值超过 80 的节点，该节点即为被检测到的慢节点。
     * 观察 [**TiKV-Details** > **Raft IO** 面板](/grafana-tikv-dashboard.md#raft-io)，查看延迟是否升高。如果延迟很高，表明磁盘可能存在瓶颈。
     * 调大 TiKV [`raftstore.inspect-interval`](/tikv-configuration-file.md#inspect-interval) 参数，提高延迟检测的超时上限。
-    * 如果需要更进一步的分析报警的 TiKV 节点的性能问题，找到优化方法，[性能分析和优化方法](/performance-tuning-methods#storage-async-write-durationstore-duration-和-apply-duration)。
+    * 如果需要进一步分析报警的 TiKV 节点的性能问题，找到优化方法，可以参考[性能分析和优化方法](/performance-tuning-methods#storage-async-write-durationstore-duration-和-apply-duration)。
 
 ## TiKV 报警规则
 
