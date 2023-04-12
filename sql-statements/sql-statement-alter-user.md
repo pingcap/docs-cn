@@ -89,7 +89,7 @@ SHOW CREATE USER 'newuser';
 1 row in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
+锁定用户 `newuser`：
 
 ```sql
 ALTER USER 'newuser' ACCOUNT LOCK;
