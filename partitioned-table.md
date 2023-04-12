@@ -802,8 +802,6 @@ Empty set (0.00 sec)
 - 使用 `ALTER TABLE <表名> TRUNCATE PARTITION <分区列表>` 语句清空分区里的数据。`TRUNCATE PARTITION` 的逻辑与 [`TRUNCATE TABLE`](/sql-statements/sql-statement-truncate.md) 相似，但它的操作对象为分区。
 - 使用 `ALTER TABLE <表名> REORGANIZE PARTITION <分区列表> INTO (<新的分区说明>)`语句对分区进行合并、拆分、或者其他修改。
 
-对于 `LIST` 和 `RANGE` 分区表，暂不支持 `REORGANIZE PARTITION` 语句。
-
 对于 `HASH` 和 `KEY` 分区表，目前只支持 `ALTER TABLE ... TRUNCATE PARTITION` 分区管理语句，不支持 `COALESCE PARTITION` 和 `ADD PARTITION` 语句。
 
 `EXCHANGE PARTITION` 语句用来交换分区和非分区表，类似于重命名表如 `RENAME TABLE t1 TO t1_tmp, t2 TO t1, t1_tmp TO t2` 的操作。
@@ -857,7 +855,7 @@ PARTITION BY LIST (level) (
  PARTITION l5 VALUES IN (5));
 ```
 
-### 删除分区
+#### 删除分区
 
 ```sql
 ALTER TABLE members DROP PARTITION p1990;
@@ -865,7 +863,7 @@ ALTER TABLE members DROP PARTITION p1990;
 ALTER TABLE member_level DROP PARTITION l5;
 ```
 
-### 清空分区
+#### 清空分区
 
 ```sql
 ALTER TABLE members TRUNCATE PARTITION p1980;
@@ -873,7 +871,7 @@ ALTER TABLE members TRUNCATE PARTITION p1980;
 ALTER TABLE member_level TRUNCATE PARTITION l4;
 ```
 
-### 添加分区
+#### 添加分区
 
 ```sql
 ALTER TABLE members ADD PARTITION (PARTITION `p1990to2010` VALUES LESS THAN (2010));
@@ -891,7 +889,7 @@ ALTER TABLE members ADD PARTITION (PARTITION p1990 VALUES LESS THAN (2000));
 ERROR 1493 (HY000): VALUES LESS THAN value must be strictly increasing for each partition
 ```
 
-### 重组分区
+#### 重组分区
 
 拆分分区：
 
