@@ -162,7 +162,7 @@ tiup cluster check <cluster-name> --cluster
 tiup cluster upgrade <cluster-name> <version>
 ```
 
-以升级到 6.1.5 版本为例：
+以升级到 v6.1.6 为例：
 
 {{< copyable "shell-regular" >}}
 
