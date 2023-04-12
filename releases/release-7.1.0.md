@@ -75,6 +75,17 @@ TiDB 版本：7.1.0
     功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
 
     更多信息，请参考[用户文档](链接)。
+
+* 资源管控 GA [#38825](https://github.com/pingcap/tidb/issues/38825) @[nolouch](https://github.com/nolouch) @[BornChanger](https://github.com/BornChanger) @[glorv](https://github.com/glorv) @[tiancaiamao](https://github.com/tiancaiamao) @[Connor1996](https://github.com/Connor1996) @[JmPotato](https://github.com/JmPotato) @[hnes](https://github.com/hnes) @[CabinfeverB](https://github.com/CabinfeverB) @[HuSharp](https://github.com/HuSharp)
+
+    TiDB 持续增强资源管控能力，并将这个特性 GA。该特性将会极大地提升 TiDB 集群的资源利用效率和性能表现。资源管控特性的引入对 TiDB 具有里程碑的意义，你可以将一个分布式数据库集群划分成多个逻辑单元，将不同的数据库用户映射到对应的资源组中，并根据需要设置每个资源组的配额。当集群资源紧张时，来自同一个资源组的会话所使用的全部资源将被限制在配额内，避免其中一个资源组过度消耗，从而影响其他资源组中的会话正常运行。
+
+    该特性也可以将多个来自不同系统的中小型应用合入一个 TiDB 集群中，个别应用的负载提升，不会影响其他应用的正常运行。而在系统负载较低的时候，繁忙的应用即使超过设定的读写配额，也仍然可以被分配到所需的系统资源，达到资源的最大化利用。此外，合理利用资源管控特性可以减少集群数量，降低运维难度及管理成本。
+
+    在 v7.1.0 中， TiDB 增加了基于实际负载来估算系统容量上限的能力，为客户的容量规划提供了更准确的参考，协助客户更好地管理 TiDB 的资源分配，从而满足企业级场景的稳定性需要。 
+
+    更多信息，请参考[用户文档](/tidb-resource-control.md)。
+
 * 支持 [Fast Online DDL](../system-variables.md###tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 的检查点机制，提升容错性和自动恢复能力 [#issue](https://github.com/pingcap/tidb/issues/issue) @[tangenta](https://github.com/tangenta)
   
     TiDB v7.1.0 版本引入 [Fast Online DDL](../system-variables.md###tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 的检查点机制，可以大幅提升 [Fast Online DDL](../system-variables.md###tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 的容错性和自动恢复能力。即使在 TiDB DDL Owner 切换的情况下，也能够通过周期性记录并同步 DDL 进度，让新的 TiDB DDL Owner 仍能以 [Fast Online DDL](../system-variables.md###tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 方式执行切换前的 DDL 语句，无需手动取消和重新执行 DDL 语句，从而让 DDL 执行更加稳定高效。
