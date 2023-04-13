@@ -181,6 +181,16 @@ TiDB 版本：7.1.0
 
     更多信息，请参考[用户文档](链接)。
 
+* 增加优化器诊断信息 [#issue号](链接) @[time-and-fate](https://github.com/time-and-fate)
+
+    获取充足的信息是 SQL 性能诊断的关键，在 v7.1.0 中，TiDB 持续向各种诊断工具中添加优化器运行信息，可以更好地解释执行计划如何被选择，协助用户和技术支持对 SQL 性能问题进行定位。其中包括：
+
+    * [`PLAN REPLAYER`](/sql-plan-replayer.md#使用-plan-replayer-保存和恢复集群现场信息) 的输出中增加 `debug_trace.json` 文件。
+    * [`EXPLAIN`](/explain-walkthrough.md) 的输出中，为 `operator info` 添加部分统计信息详情。
+    * 为[`慢日志`](/identify-slow-queries.md)的 `Stats` 字段添加部分统计信息详情。
+
+    更多信息，请参考 [使用 `PLAN REPLAYER` 保存和恢复集群线程信息](/sql-plan-replayer.md#使用-plan-replayer-保存和恢复集群现场信息)，[使用 `EXPLAIN` 解读执行计划](/explain-walkthrough.md) 和 [`慢日志查询`](/identify-slow-queries.md) 。
+
 ### 安全
 
 * 更换 TiFlash 系统表信息的查询接口 [#6941](https://github.com/pingcap/tiflash/issues/6941) @[flowbehappy](https://github.com/flowbehappy) **tw:qiancai**
