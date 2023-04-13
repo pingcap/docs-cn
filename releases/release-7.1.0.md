@@ -38,11 +38,11 @@ TiDB 版本：7.1.0
 
     更多信息，请参考[用户文档](/tiflash/tiflash-late-materialization.md)。
 
-* TiFlash MPP 模式根据网络交换数据量自动选择 JOIN 算法 [#7084](https://github.com/pingcap/tiflash/issues/7084) @[solotzg](https://github.com/solotzg) **tw:qiancai**
+* TiFlash 支持根据网络交换数据量自动选择 MPP 模式的 Join 算法 [#7084](https://github.com/pingcap/tiflash/issues/7084) @[solotzg](https://github.com/solotzg) **tw:qiancai**
 
-    TiFlash MPP 模式有多种 JOIN 算法。在 v7.1.0 版本之前，TiDB 根据变量 `tidb_broadcast_join_threshold_count` 和 `tidb_broadcast_join_threshold_size` 以及实际数据量决定 TiFlash MPP 模式是否使用 Broadcast Join 算法。
+    TiFlash MPP 模式有多种 Join 算法。在 v7.1.0 之前的版本中，TiDB 根据变量 [`tidb_broadcast_join_threshold_count`](/system-variables.md#tidb_broadcast_join_threshold_count-从-v50-版本开始引入) 和 [`tidb_broadcast_join_threshold_size`](/system-variables.md#tidb_broadcast_join_threshold_count-从-v50-版本开始引入) 以及实际数据量决定 TiFlash MPP 模式是否使用 Broadcast Hash Join 算法。
 
-    在 v7.1.0 版本中，TiDB 引入变量 `tidb_prefer_broadcast_join_by_exchange_data_size`，控制是否基于最小网络数据交换策略选择 MPP Join 算法。默认为 `OFF`，表示关闭该功能，使用 v7.1.0 版本之前的评估模型，即和之前的版本功能一致；设定为 `ON`，表示启用该功能，`tidb_broadcast_join_threshold_count` 和 `tidb_broadcast_join_threshold_size` 将不再生效；
+    在 v7.1.0 中，TiDB 引入变量 [`tidb_prefer_broadcast_join_by_exchange_data_size`](/system-variables.md#tidb_prefer_broadcast_join_by_exchange_data_size-从-v71-版本开始引入)，控制是否基于最小网络数据交换策略选择 MPP Join 算法。该变量默认关闭，表示默认保持 v7.1.0 之前的算法选择策略。如需开启，请设置该变量为 `ON`。开启后，[`tidb_broadcast_join_threshold_count`](/system-variables.md#tidb_broadcast_join_threshold_count-从-v50-版本开始引入) 和 [`tidb_broadcast_join_threshold_size`](/system-variables.md#tidb_broadcast_join_threshold_count-从-v50-版本开始引入) 将不再生效。
 
     更多信息，请参考[用户文档](/tiflash/use-tiflash-mpp-mode.md#mpp-模式的算法支持)。
 
