@@ -38,8 +38,9 @@ corruption-handle-level="warn"
 * 首先按照 [TiCDC 更新同步任务配置](/ticdc/ticdc-manage-changefeed.md#更新同步任务配置) 的说明，通过`暂停任务 -> 修改配置 -> 恢复任务` 的流程，在 Changefeed 的 `--config` 参数所指定的配置文件中移除 `Integrity` 表的所有配置。
 
 * 用户在上游 TiDB 关闭行数据 Checksum 功能，执行如下 SQL 语句
-    ```sql
-    SET GLOBAL enable_row_level_checksum = false; 
-    ```
+
+```sql
+SET GLOBAL enable_row_level_checksum = false; 
+```
 
 请注意，上述配置仅对新创建的会话生效。当所有写入 TiDB 的客户端都完成数据库连接重建后，Changefeed 写入 Kafka 的消息中就不再携带有该条消息对应数据的 Checksum 值。
