@@ -261,3 +261,19 @@ region-threshold = 100000
 ```sql
 SELECT COUNT(*) FROM INFORMATION_SCHEMA.TIKV_REGION_STATUS WHERE DB_NAME="database1" AND TABLE_NAME="table1" AND IS_INDEX=0;
 ```
+
+## 基于 Kafka-Go 的 Kafka Sink
+
+从 v7.1.0 开始，TiCDC 支持了基于 [Kafka-Go](https://github.com/segmentio/kafka-go) 实现的 Kafka Sink 模块。相较于默认的基于 Sarama 的 Kafka Sink 实现，它具有如下特点：
+
+* 一个 changefeed 同步大量表，且流量很大的情况下，写入数据到 Kafka 集群的吞吐量更大。
+* 同步单张大单表，使用 Index-Value Dispatcher 分发数据时，具有更加显著的吞吐量性能提升。
+* CPU 和 Memory 使用量，减少约 20% ～ 30%。
+
+启用基于 Kafka-Go 的 Kafka sink 实现，创建 changefeed 的配置样例如下所示：
+
+```toml
+[sink]
+# 设置为 "true" 以启用该功能
+enable-kafka-sink-v2 = true
+```
