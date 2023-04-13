@@ -142,6 +142,14 @@ TiDB 版本：7.1.0
 
     更多信息，请参考[用户文档](/partitioned-table.md#)。
 
+* 生成列 (Generated Columns) GA [#issue号](链接) @[bb7133](https://github.com/bb7133)
+
+    生成列 (Generated Columns) 是 MySQL 数据库很有价值的一个功能。 在创建表时定义一列的值由表中其他列的值计算而来，而不是由用户显式插入或更新， 它可以是虚拟列 (Virtual Column) 或存储列(Stored Column)。 TiDB 在早期版本就提供了 MySQL 兼容的生成列，在 v7.1.0 中将这个功能 GA。
+    
+    生成列提升了 TiDB 对 MySQL 的兼容性，方便用户从 MySQL 平滑迁移，同时也简化数据维护的复杂度、增强数据的一致性、提高查询效率。  
+
+    更多信息，请参考[用户文档](/generated-columns.md)。
+
 * 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接)
 
     功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
