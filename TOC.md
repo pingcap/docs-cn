@@ -383,51 +383,38 @@
       - [tiup-cluster 部署运维生产集群](/tiup/tiup-cluster.md)
       - [tiup-mirror 定制离线镜像](/tiup/tiup-mirror.md)
       - [tiup-bench 进行 TPCC/TPCH 压力测试](/tiup/tiup-bench.md)
-  - PingCAP Clinic 诊断服务
-    - [概述](/clinic/clinic-introduction.md)
-    - [快速上手](/clinic/quick-start-with-clinic.md)
-    - [使用 PingCAP Clinic 诊断集群](/clinic/clinic-user-guide-for-tiup.md)
-    - [使用 PingCAP Clinic 生成诊断报告](/clinic/clinic-report.md)
-    - [采集 SQL 查询计划信息](/clinic/clinic-collect-sql-query-plan.md)
-    - [数据采集说明](/clinic/clinic-data-instruction-for-tiup.md)
   - [TiDB Operator](/tidb-operator-overview.md)
-  - [Dumpling](/dumpling-overview.md)
-  - TiDB Lightning
-    - [概述](/tidb-lightning/tidb-lightning-overview.md)
-    - [快速上手](/get-started-with-tidb-lightning.md)
-    - [部署 TiDB Lightning](/tidb-lightning/deploy-tidb-lightning.md)
-    - [目标数据库要求](/tidb-lightning/tidb-lightning-requirements.md)
-    - 数据源
-      - [文件匹配规则](/tidb-lightning/tidb-lightning-data-source.md)
-      - [CSV](/tidb-lightning/tidb-lightning-data-source.md#csv)
-      - [SQL](/tidb-lightning/tidb-lightning-data-source.md#sql)
-      - [Parquet](/tidb-lightning/tidb-lightning-data-source.md#parquet)
-      - [自定义文件匹配](/tidb-lightning/tidb-lightning-data-source.md#自定义文件匹配)
-    - Physical Import Mode
-      - [概述](/tidb-lightning/tidb-lightning-physical-import-mode.md)
-      - [必要条件及限制](/tidb-lightning/tidb-lightning-physical-import-mode.md#必要条件及限制)
-      - [配置及使用](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md)
-      - [冲突检测](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#冲突数据检测)
-      - [性能调优](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#性能调优)
-    - Logical Import Mode
-      - [概述](/tidb-lightning/tidb-lightning-logical-import-mode.md)
-      - [必要条件及限制](/tidb-lightning/tidb-lightning-logical-import-mode.md#必要条件)
-      - [配置及使用](/tidb-lightning/tidb-lightning-logical-import-mode-usage.md)
-      - [冲突检测](/tidb-lightning/tidb-lightning-logical-import-mode-usage.md#冲突数据检测)
-      - [性能调优](/tidb-lightning/tidb-lightning-logical-import-mode-usage.md#性能调优)
-    - [前置检查](/tidb-lightning/tidb-lightning-prechecks.md)
-    - [表库过滤](/table-filter.md)
-    - [断点续传](/tidb-lightning/tidb-lightning-checkpoints.md)
-    - [并行导入](/tidb-lightning/tidb-lightning-distributed-import.md)
-    - [可容忍错误](/tidb-lightning/tidb-lightning-error-resolution.md)
-    - [故障处理](/tidb-lightning/troubleshoot-tidb-lightning.md)
-    - 参考手册
-      - [完整配置文件](/tidb-lightning/tidb-lightning-configuration.md)
-      - [命令行参数](/tidb-lightning/tidb-lightning-command-line-full.md)
-      - [监控告警](/tidb-lightning/monitor-tidb-lightning.md)
-      - [Web 界面](/tidb-lightning/tidb-lightning-web-interface.md)
-      - [FAQ](/tidb-lightning/tidb-lightning-faq.md)
-      - [术语表](/tidb-lightning/tidb-lightning-glossary.md)
+  - TiCDC
+    - [概述](/ticdc/ticdc-overview.md)
+    - [安装部署与集群运维](/ticdc/deploy-ticdc.md)
+    - Changefeed
+      - [Changefeed 概述](/ticdc/ticdc-changefeed-overview.md)
+      - 创建 Changefeed
+        - [同步数据到 MySQL 兼容的数据库](/ticdc/ticdc-sink-to-mysql.md)
+        - [同步数据到 Kafka](/ticdc/ticdc-sink-to-kafka.md)
+        - [同步数据到存储服务](/ticdc/ticdc-sink-to-cloud-storage.md)
+      - [管理 Changefeed](/ticdc/ticdc-manage-changefeed.md)
+      - [日志过滤器](/ticdc/ticdc-filter.md)
+      - [双向复制](/ticdc/ticdc-bidirectional-replication.md)
+    - 监控告警
+      - [监控指标](/ticdc/monitor-ticdc.md)
+      - [报警规则](/ticdc/ticdc-alert-rules.md)
+    - 参考指南
+      - [架构设计与原理](/ticdc/ticdc-architecture.md)
+      - [TiCDC Server 配置参数](/ticdc/ticdc-server-config.md)
+      - [TiCDC Changefeed 配置参数](/ticdc/ticdc-changefeed-config.md)
+      - 输出数据协议
+        - [TiCDC Avro Protocol](/ticdc/ticdc-avro-protocol.md)
+        - [TiCDC Canal-JSON Protocol](/ticdc/ticdc-canal-json.md)
+        - [TiCDC Open Protocol](/ticdc/ticdc-open-protocol.md)
+        - [TiCDC CSV Protocol](/ticdc/ticdc-csv.md)
+      - [TiCDC Open API v2](/ticdc/ticdc-open-api-v2.md)
+      - [TiCDC Open API v1](/ticdc/ticdc-open-api.md)
+      - [Storage sink 消费程序编写指引](/ticdc/ticdc-storage-consumer-dev-guide.md)
+      - [兼容性](/ticdc/ticdc-compatibility.md)
+    - [故障处理](/ticdc/troubleshoot-ticdc.md)
+    - [常见问题解答](/ticdc/ticdc-faq.md)
+    - [术语表](/ticdc/ticdc-glossary.md)
   - TiDB Data Migration
     - [关于 Data Migration](/dm/dm-overview.md)
     - [架构简介](/dm/dm-arch.md)
@@ -573,6 +560,14 @@
       - [故障诊断](/tidb-binlog/troubleshoot-tidb-binlog.md)
       - [常见错误修复](/tidb-binlog/handle-tidb-binlog-errors.md)
     - [FAQ](/tidb-binlog/tidb-binlog-faq.md)
+  - TiSpark
+    - [TiSpark 用户指南](/tispark-overview.md)
+  - sync-diff-inspector
+    - [概述](/sync-diff-inspector/sync-diff-inspector-overview.md)
+    - [不同库名或表名的数据校验](/sync-diff-inspector/route-diff.md)
+    - [分库分表场景下的数据校验](/sync-diff-inspector/shard-diff.md)
+    - [TiDB 主从集群的数据校验](/sync-diff-inspector/upstream-downstream-diff.md)
+    - [基于 DM 同步场景下的数据校验](/sync-diff-inspector/dm-diff.md)
   - TiUniManager
     - [概述](/tiunimanager/tiunimanager-overview.md)
     - [安装和运维](/tiunimanager/tiunimanager-install-and-maintain.md)
@@ -590,14 +585,6 @@
       - [v1.0.2](/tiunimanager/tiunimanager-release-1.0.2.md)
       - [v1.0.1](/tiunimanager/tiunimanager-release-1.0.1.md)
       - [v1.0.0](/tiunimanager/tiunimanager-release-1.0.0.md)
-  - sync-diff-inspector
-    - [概述](/sync-diff-inspector/sync-diff-inspector-overview.md)
-    - [不同库名或表名的数据校验](/sync-diff-inspector/route-diff.md)
-    - [分库分表场景下的数据校验](/sync-diff-inspector/shard-diff.md)
-    - [TiDB 主从集群的数据校验](/sync-diff-inspector/upstream-downstream-diff.md)
-    - [基于 DM 同步场景下的数据校验](/sync-diff-inspector/dm-diff.md)
-  - TiSpark
-    - [TiSpark 用户指南](/tispark-overview.md)
 - 参考指南
   - 架构
     - [概述](/tidb-architecture.md)

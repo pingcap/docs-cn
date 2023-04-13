@@ -101,21 +101,21 @@ hide_commit: true
 
 [TiUP](https://docs.pingcap.com/zh/tidb/dev/tiup-overview)
 
-[Dumpling](https://docs.pingcap.com/zh/tidb/dev/dumpling-overview)
-
-[TiDB Lightning](https://docs.pingcap.com/zh/tidb/dev/tidb-lightning-overview)
-
-[Data Migration](https://docs.pingcap.com/zh/tidb/dev/dm-overview)
+[TiDB Operator](https://docs.pingcap.com/zh/tidb/dev/tidb-operator-overview)
 
 [Backup & Restore (BR)](https://docs.pingcap.com/zh/tidb/dev/backup-and-restore-overview)
 
 [TiCDC](https://docs.pingcap.com/zh/tidb/dev/ticdc-overview)
 
+[Data Migration](https://docs.pingcap.com/zh/tidb/dev/dm-overview)
+
+[TiDB Lightning](https://docs.pingcap.com/zh/tidb/dev/tidb-lightning-overview)
+
+[Dumpling](https://docs.pingcap.com/zh/tidb/dev/dumpling-overview)
+
 [PingCAP Clinic](https://docs.pingcap.com/zh/tidb/dev/clinic-introduction)
 
 [TiUniManager](https://docs.pingcap.com/zh/tidb/dev/tiunimanager-overview)
-
-[TiDB Operator](https://docs.pingcap.com/zh/tidb/dev/tidb-operator-overview)
 
 [TiSpark](https://docs.pingcap.com/zh/tidb/dev/tispark-overview)
 
@@ -127,7 +127,7 @@ hide_commit: true
 
 [TiDB 命令行参数](https://docs.pingcap.com/zh/tidb/dev/command-line-flags-for-tidb-configuration)
 
-[TiDB Control](https://docs.pingcap.com/zh/tidb/dev/tidb-control)  
+[TiDB Control](https://docs.pingcap.com/zh/tidb/dev/tidb-control)
 
 [系统变量](https://docs.pingcap.com/zh/tidb/dev/system-variables)
 
