@@ -981,6 +981,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 ### `tidb_enable_dist_task` <span class="version-mark">从 v7.1.0 版本开始引入</span>
 
 > **注意：**
+> V7.1 只提供分区表 `Add index` 的分布式执行支持。
 > 
 > - 该参数是从 `tidb_ddl_distribute_reorg`参数改名而来。
 > - 该功能目前为实验特性。
