@@ -138,10 +138,33 @@ TiDB 版本：7.1.0
 
 * 支持完善的分区管理 [#42728](https://github.com/pingcap/tidb/issues/42728) @[mjonss](https://github.com/mjonss) **tw:qiancai**
 
-    在 v7.1.0 版本之前，TiDB 支持 `RANGE`、`LIST`、`HASH`、`KEY` 分区以及 `RANGE`、`LIST` 分区的管理功能。从 v7.1.0 版本开始，TiDB 增加对于 `HASH`、`KEY` 分区的 `ADD PARTITION` 和 `COALESCE PARTITION` 管理功能，以及表的分区类型修改（包括 `REMOVING PARTITIONING`、将非分区表修改为分区表、修改分区表的分区类型），完善整体分表的分区管理能力。你可以根据需要，灵活的对表的分区方式进行调整。
+    在 v7.1.0 版本之前，TiDB 支持的分区类型包括 `RANGE`、`LIST`、`HASH`、`KEY` ，其中 `RANGE` 和 `LIST` 分区支持分区管理功能。从 v7.1.0 版本开始，TiDB 新增 `HASH` 和 `KEY` 分区的 `ADD PARTITION` 和 `COALESCE PARTITION` 管理功能，并支持修改分区表类型（包括分区表和非分表之间的相互转换、不同分区类型之间的修改），整体完善了分表表的分区管理能力。你可以根据需要，灵活地对表的分区方式进行调整。
 
     更多信息，请参考[用户文档](/partitioned-table.md#)。
+* `LOAD DATA` SQL 支持从 S3、GCS 导入数据，支持任务管理等功能 GA [#40499](https://github.com/pingcap/tidb/issues/40499) @[lance6716](https://github.com/lance6716) **tw:hfxsd**
 
+    以下 `LOAD DATA` 新增的功能在 7.1 版本 GA：
+    - 支持从 S3、GCS 导入数据
+    - 支持导入 Parquet 文件数据
+    - 支持解析源文件中 ascii、latin1、binary、gbk、utf8mbd 字符集
+    - 支持设置 FIELDS DEFINED NULL BY 将源文件的指定的值转换为 Null 写入目标表。
+    - 支持设置一个 bath_size 即 1 个 batch 插入到目标表的行数，提升写入性能。
+    - 支持设置 detached，允许该 job 在后台运行。
+   - 支持 show load data jobs, show load data jobid,  drop load data jobid 来管理任务。
+
+    更多信息，请参考[用户文档](https://github.com/pingcap/docs-cn/pull/13344)。
+
+* `LOAD DATA` SQL 集成 Lighting local backend（physical import mode） 的导入功能，提升导入性能（实验特性） [#42930](https://github.com/pingcap/tidb/issues/42930) @[D3Hunter](https://github.com/D3Hunter) **tw:hfxsd**
+
+    用户通过 `LOAD DATA` SQL 导入数据时，可以指定 import_mode = physical 来实现 Lightning local backend （physical 导入模式）的导入效果，相比 Load data 原先的 logical 导入模式，可成倍提升导入数据的性能。 
+
+    更多信息，请参考[用户文档](链接)。
+
+*  `LOAD DATA` SQL 支持并行导入，提升导入性能（实验特性）[#40499](https://github.com/pingcap/tidb/issues/40499) @[lance6716](https://github.com/lance6716) **tw:hfxsd**
+
+    原先 load data sql 无法并行导入数据，性能较差。在该版本中支持设置并行导入的参数，通过提升并发，来提升导入的性能。 在实验室环境，相比上个版本，测试逻辑导入性能有接近 4 倍的提升。
+
+    更多信息，请参考[用户文档](https://github.com/pingcap/docs-cn/pull/13676)。
 * 生成列 (Generated Columns) GA [#issue号](链接) @[bb7133](https://github.com/bb7133)
 
     生成列 (Generated Columns) 是 MySQL 数据库很有价值的一个功能。 在创建表时定义一列的值由表中其他列的值计算而来，而不是由用户显式插入或更新， 它可以是虚拟列 (Virtual Column) 或存储列(Stored Column)。 TiDB 在早期版本就提供了 MySQL 兼容的生成列，在 v7.1.0 中将这个功能 GA。
@@ -213,13 +236,17 @@ TiDB 版本：7.1.0
 	    
     更多信息，请参考[用户文档](/ticdc/ticdc-integrity-check.md)。
 
-* TiCDC 优化 DDL 同步操作 [#8686](https://github.com/pingcap/tiflow/issues/8686) @[nongfushanquan](https://github.com/nongfushanquan)
-* Lightning local backend (physical import mode) 支持在导入数据之前检测冲突的记录，并支持通过 insert ignore 和 replace 解决导入过程中的冲突记录 (实验特性) [#41629](https://github.com/pingcap/tidb/issues/41629) @[gozssky](https://github.com/gozssky) 
+* TiCDC 优化 DDL 同步操作 [#8686](https://github.com/pingcap/tiflow/issues/8686) @[nongfushanquan](https://github.com/nongfushanquan) **tw:ran-huang**
 
-    在之前的版本使用 Lightning local backend (physical import mode) 导入数据时，当遇到冲突的记录时，无法通过 insert ignore 和  replace 来处理导入过程中的 pk、uk 冲突记录，需要用户自行去重。而本次版本，支持在导入数据之前，检查冲突的记录，并通过 replace 和 insert ignore 的语义来处理 pk、uk 冲突的记录。简化用户的操作，提升处理冲突的性能。
+   在 v7.1.0 版本之前，当用户在一个大表上运行需要影响所有行的 DDL 操作，例如添加 / 删除列时，TiCDC 的同步延迟会显著增加。从 v7.1.0 版本开始，TiCDC 对于这种情况进行了优化，将同步延迟降低到不到 10 秒，以减轻 DDL 操作对下游延迟的影响。
+   
+    更多信息，请参考[用户文档](链接)。
+   
+* Lightning local backend (physical import mode) 支持在导入数据之前检测冲突的记录，并支持通过 insert ignore 和 replace 解决导入过程中的冲突记录 (实验特性) [#41629](https://github.com/pingcap/tidb/issues/41629) @[gozssky](https://github.com/gozssky) **tw:hfxsd**
+
+    在之前的版本使用 Lightning local backend (physical import mode) 导入数据时，当遇到冲突的记录时，无法通过 insert ignore 和 replace 来处理导入过程中的 pk、uk 冲突记录，需要用户自行去重。而本次版本，支持在导入数据之前，检查冲突的记录，并通过 replace 和 insert ignore 的语义来处理 pk、uk 冲突的记录。简化用户的操作，提升处理冲突的性能。
 
     更多信息，请参考[用户文档](链接)。
-   在 v7.1.0 版本之前，当用户在一个大表上运行需要影响所有行的 DDL 操作，例如添加 / 删除列时，TiCDC 的同步延迟会显著增加。从 v7.1.0 版本开始，TiCDC 对于这种情况进行了优化，将同步延迟降低到不到 10 秒，以减轻 DDL 操作对下游延迟的影响。
    
 * 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接)
 
