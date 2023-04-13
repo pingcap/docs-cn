@@ -110,7 +110,31 @@ Request Unit (RU) 是 TiDB 对 CPU、IO 等系统资源的统一抽象的单位,
     ALTER USER usr2 RESOURCE GROUP rg2;
     ```
 
+<<<<<<< HEAD
 完成上述创建资源组和绑定用户的操作后，用户新建立的会话对资源的占用会受到指定用量 (RU) 的限制。如果系统负载比较高，没有多余的容量，`usr2` 用户的资源消耗速度会严格控制不超过指定用量，由于 `usr1` 绑定的 `rg1` 配置了 `BURSTABLE`，所以 `usr1` 消耗速度允许超过指定用量。
+=======
+TiDB 支持如下三个级别的资源组设置：
+
+- 用户级别。通过 [`CREATE USER`](/sql-statements/sql-statement-create-user.md) 或 [`ALTER USER`](/sql-statements/sql-statement-alter-user.md#修改用户绑定的资源组) 语句将用户绑定到特定的资源组。绑定后，对应的用户新创建的会话会自动绑定对应的资源组。
+- 会话级别。通过 [`SET RESOURCE GROUP`](/sql-statements/sql-statement-set-resource-group.md) 设置当前会话使用的资源组。
+- 语句级别。通过 [`RESOURCE_GROUP()`](/optimizer-hints.md#resource_groupresource_group_name) Optimizer Hint 设置当前语句使用的资源组。
+
+#### 将用户绑定到资源组
+
+下面的示例创建一个用户 `usr1` 并将其绑定到资源组 `rg1`。其中 `rg1` 为[创建资源组](#创建资源组)示例中创建的资源组。
+
+```sql
+CREATE USER 'usr1'@'%' IDENTIFIED BY '123' RESOURCE GROUP rg1;
+```
+
+下面示例使用 `ALTER USER` 将用户 `usr2` 绑定到资源组 `rg2`。其中 `rg2` 为[创建资源组](#创建资源组)示例中创建的资源组。
+
+```sql
+ALTER USER usr2 RESOURCE GROUP rg2;
+```
+
+绑定用户后，用户新建立的会话对资源的占用会受到指定用量 (RU) 的限制。如果系统负载比较高，没有多余的容量，用户 `usr2` 的资源消耗速度会被严格控制不超过指定用量。由于 `usr1` 绑定的 `rg1` 配置了 `BURSTABLE`，所以 `usr1` 消耗速度允许超过指定用量。
+>>>>>>> 00b16591b (resource_control: add a example to reset user resource group to default value (#13649))
 
 如果资源组对应的请求太多导致资源组的资源不足，客户端的请求处理会发生等待。如果等待时间过长，请求会报错。
 
