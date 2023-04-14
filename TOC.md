@@ -384,38 +384,6 @@
       - [tiup-mirror 定制离线镜像](/tiup/tiup-mirror.md)
       - [tiup-bench 进行 TPCC/TPCH 压力测试](/tiup/tiup-bench.md)
   - [TiDB Operator](/tidb-operator-overview.md)
-  - TiCDC
-    - [概述](/ticdc/ticdc-overview.md)
-    - [安装部署与集群运维](/ticdc/deploy-ticdc.md)
-    - Changefeed
-      - [Changefeed 概述](/ticdc/ticdc-changefeed-overview.md)
-      - 创建 Changefeed
-        - [同步数据到 MySQL 兼容的数据库](/ticdc/ticdc-sink-to-mysql.md)
-        - [同步数据到 Kafka](/ticdc/ticdc-sink-to-kafka.md)
-        - [同步数据到存储服务](/ticdc/ticdc-sink-to-cloud-storage.md)
-      - [管理 Changefeed](/ticdc/ticdc-manage-changefeed.md)
-      - [日志过滤器](/ticdc/ticdc-filter.md)
-      - [双向复制](/ticdc/ticdc-bidirectional-replication.md)
-    - 监控告警
-      - [基本监控指标](/ticdc/ticdc-summary-monitor.md)
-      - [详细监控指标](/ticdc/monitor-ticdc.md)
-      - [报警规则](/ticdc/ticdc-alert-rules.md)
-    - 参考指南
-      - [架构设计与原理](/ticdc/ticdc-architecture.md)
-      - [TiCDC Server 配置参数](/ticdc/ticdc-server-config.md)
-      - [TiCDC Changefeed 配置参数](/ticdc/ticdc-changefeed-config.md)
-      - 输出数据协议
-        - [TiCDC Avro Protocol](/ticdc/ticdc-avro-protocol.md)
-        - [TiCDC Canal-JSON Protocol](/ticdc/ticdc-canal-json.md)
-        - [TiCDC Open Protocol](/ticdc/ticdc-open-protocol.md)
-        - [TiCDC CSV Protocol](/ticdc/ticdc-csv.md)
-      - [TiCDC Open API v2](/ticdc/ticdc-open-api-v2.md)
-      - [TiCDC Open API v1](/ticdc/ticdc-open-api.md)
-      - [Storage sink 消费程序编写指引](/ticdc/ticdc-storage-consumer-dev-guide.md)
-      - [兼容性](/ticdc/ticdc-compatibility.md)
-    - [故障处理](/ticdc/troubleshoot-ticdc.md)
-    - [常见问题解答](/ticdc/ticdc-faq.md)
-    - [术语表](/ticdc/ticdc-glossary.md)
   - TiDB Data Migration
     - [关于 Data Migration](/dm/dm-overview.md)
     - [架构简介](/dm/dm-arch.md)
@@ -474,7 +442,7 @@
       - [导出和导入集群的数据源和任务配置](/dm/dm-export-import-config.md)
       - [处理告警](/dm/dm-handle-alerts.md)
       - [日常巡检](/dm/dm-daily-check.md)
-     - 参考手册
+    - 参考手册
         - 架构组件
           - [DM-worker 说明](/dm/dm-worker-intro.md)
           - [安全模式](/dm/dm-safe-mode.md)
@@ -501,14 +469,14 @@
           - [告警信息](/dm/dm-alert-rules.md)
         - [错误码](/dm/dm-error-handling.md#常见故障处理方法)
         - [术语表](/dm/dm-glossary.md)
-      - 使用示例
+    - 使用示例
         - [使用 DM 迁移数据](/dm/migrate-data-using-dm.md)
         - [快速创建迁移任务](/dm/quick-start-create-task.md)
         - [分表合并数据迁移最佳实践](/dm/shard-merge-best-practices.md)
-      - 异常解决
+    - 异常解决
         - [常见问题](/dm/dm-faq.md)
         - [错误处理及恢复](/dm/dm-error-handling.md)
-      - [版本发布历史](/dm/dm-release-notes.md)
+    - [版本发布历史](/dm/dm-release-notes.md)
   - TiDB Lightning
     - [概述](/tidb-lightning/tidb-lightning-overview.md)
     - [快速上手](/get-started-with-tidb-lightning.md)
@@ -546,6 +514,38 @@
       - [FAQ](/tidb-lightning/tidb-lightning-faq.md)
       - [术语表](/tidb-lightning/tidb-lightning-glossary.md)
   - [Dumpling](/dumpling-overview.md)
+  - TiCDC
+    - [概述](/ticdc/ticdc-overview.md)
+    - [安装部署与集群运维](/ticdc/deploy-ticdc.md)
+    - Changefeed
+      - [Changefeed 概述](/ticdc/ticdc-changefeed-overview.md)
+      - 创建 Changefeed
+        - [同步数据到 MySQL 兼容的数据库](/ticdc/ticdc-sink-to-mysql.md)
+        - [同步数据到 Kafka](/ticdc/ticdc-sink-to-kafka.md)
+        - [同步数据到存储服务](/ticdc/ticdc-sink-to-cloud-storage.md)
+      - [管理 Changefeed](/ticdc/ticdc-manage-changefeed.md)
+      - [日志过滤器](/ticdc/ticdc-filter.md)
+      - [双向复制](/ticdc/ticdc-bidirectional-replication.md)
+    - 监控告警
+      - [基本监控指标](/ticdc/ticdc-summary-monitor.md)
+      - [详细监控指标](/ticdc/monitor-ticdc.md)
+      - [报警规则](/ticdc/ticdc-alert-rules.md)
+    - 参考指南
+      - [架构设计与原理](/ticdc/ticdc-architecture.md)
+      - [TiCDC Server 配置参数](/ticdc/ticdc-server-config.md)
+      - [TiCDC Changefeed 配置参数](/ticdc/ticdc-changefeed-config.md)
+      - 输出数据协议
+        - [TiCDC Avro Protocol](/ticdc/ticdc-avro-protocol.md)
+        - [TiCDC Canal-JSON Protocol](/ticdc/ticdc-canal-json.md)
+        - [TiCDC Open Protocol](/ticdc/ticdc-open-protocol.md)
+        - [TiCDC CSV Protocol](/ticdc/ticdc-csv.md)
+      - [TiCDC Open API v2](/ticdc/ticdc-open-api-v2.md)
+      - [TiCDC Open API v1](/ticdc/ticdc-open-api.md)
+      - [Storage sink 消费程序编写指引](/ticdc/ticdc-storage-consumer-dev-guide.md)
+      - [兼容性](/ticdc/ticdc-compatibility.md)
+    - [故障处理](/ticdc/troubleshoot-ticdc.md)
+    - [常见问题解答](/ticdc/ticdc-faq.md)
+    - [术语表](/ticdc/ticdc-glossary.md)
   - PingCAP Clinic 诊断服务
     - [概述](/clinic/clinic-introduction.md)
     - [快速上手](/clinic/quick-start-with-clinic.md)
@@ -573,7 +573,6 @@
       - [故障诊断](/tidb-binlog/troubleshoot-tidb-binlog.md)
       - [常见错误修复](/tidb-binlog/handle-tidb-binlog-errors.md)
     - [FAQ](/tidb-binlog/tidb-binlog-faq.md)
-  - [Dumpling](/dumpling-overview.md)
   - TiSpark
     - [TiSpark 用户指南](/tispark-overview.md)
   - sync-diff-inspector
@@ -582,13 +581,6 @@
     - [分库分表场景下的数据校验](/sync-diff-inspector/shard-diff.md)
     - [TiDB 主从集群的数据校验](/sync-diff-inspector/upstream-downstream-diff.md)
     - [基于 DM 同步场景下的数据校验](/sync-diff-inspector/dm-diff.md)
-  - PingCAP Clinic 诊断服务
-    - [概述](/clinic/clinic-introduction.md)
-    - [快速上手](/clinic/quick-start-with-clinic.md)
-    - [使用 PingCAP Clinic 诊断集群](/clinic/clinic-user-guide-for-tiup.md)
-    - [使用 PingCAP Clinic 生成诊断报告](/clinic/clinic-report.md)
-    - [采集 SQL 查询计划信息](/clinic/clinic-collect-sql-query-plan.md)
-    - [数据采集说明](/clinic/clinic-data-instruction-for-tiup.md)
   - TiUniManager
     - [概述](/tiunimanager/tiunimanager-overview.md)
     - [安装和运维](/tiunimanager/tiunimanager-install-and-maintain.md)
