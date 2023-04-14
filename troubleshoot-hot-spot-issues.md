@@ -174,4 +174,4 @@ TiDB 的 Coprocessor Cache 功能支持下推计算结果缓存。开启该功�
 
 ## 打散读热点
 
-部分读热点场景下并非所有的 TiKV 的资源都已经用满，在 v7.0.0 版本之前，热点 TiKV 上无法及时处理的读请求会排队，v7.0.0 版本开始则支持通过 [`tidb_load_based_replica_read_threshold`](/system-variables.md#tidb_load_based_replica_read_threshold) 参数来控制排队长度，当估算的排队时间超过设定时，TiDB 会尝试从空闲的副本节点读取数据。在读热点的情况下，相比于不打散有 70%-200% 的读取吞吐量提升。
+在读热点场景中，热点 TiKV 无法及时处理读请求，导致排队。但是并非所有 TiKV 资源都已耗尽，为降低延迟，TiDB v7.1.0 引入了负载自适应副本读功能，允许从其他 TiKV 节点读取副本，而不是在热点 TiKV 节点排队等待。你可以通过 [`tidb_load_based_replica_read_threshold`](/system-variables.md#tidb_load_based_replica_read_threshold) 系统变量控制读请求排队长度。当 leader 节点的预估排队时间超过该阈值时，TiDB 会优先从 follower 节点读取数据。在读热点的情况下，与不打散相比，该功能的读取吞吐量提高了 70%～200%。
