@@ -31,8 +31,15 @@ data-source-dir = "/data/my_database"
 # 导入模式配置，设为 local 即使用物理导入模式
 backend = "local"
 
+# 前置冲突检测，支持三种策略:
+# - replace：后处理的数据会覆盖先处理的数据
+# - ignore：保留先处理的数据，忽略后处理的数据
+# - error：中止导入并报错
+# 默认值为空字符串，表示不进行前置冲突检测。
+# on-duplicate = ""
+
 # 冲突数据处理方式
-duplicate-resolution = 'remove'
+duplicate-resolution = 'none'
 
 # 本地进行 KV 排序的路径。
 sorted-kv-dir = "./some-dir"

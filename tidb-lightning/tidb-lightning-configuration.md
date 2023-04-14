@@ -63,8 +63,11 @@ io-concurrency = 5
 # 在忽略非严重错误所在的行数据之后，迁移任务可以继续执行。
 # 将该值设置为 N，表示 TiDB Lightning 会在遇到第 (N+1) 个错误时停止迁移任务。
 # 被忽略的行会被记录到位于目标集群的 "task info" 数据库中。最大错误数可以通过下面参数配置。
-# 默认值为 MaxInt64 字节，即 9223372036854775807 字节。
 max-error = 0
+
+# 设置记录的最大错误数。如果 TiDB Lightning 遇到的错误数超过该值，TiDB Lightning 会停止记录错误。
+max-error-records = 100
+
 # 参数 task-info-schema-name 指定用于存储 TiDB Lightning 执行结果的数据库。
 # 要关闭该功能，需要将该值设置为空字符串。
 # task-info-schema-name = 'lightning_task_info'
@@ -121,7 +124,10 @@ driver = "file"
 # incremental-import = false
 # 当后端是 “importer” 时，tikv-importer 的监听地址（需改为实际地址）。
 addr = "172.16.31.10:8287"
-# 逻辑导入模式插入冲突数据时执行的操作。关于冲突检测详细信息请查阅：https://docs.pingcap.com/zh/tidb/dev/tidb-lightning-logical-import-mode-usage#冲突数据检测
+# 插入冲突数据时执行的操作。Logical Import Mode 与 Physical Import Mode 都支持该参数。
+# Logical Import Mode 默认值为 "replace"，Physical Import Mode 默认值为空，表示不检测冲突数据。
+# 关于 Logical Import Mode 冲突检测详细信息请查阅：https://docs.pingcap.com/zh/tidb/dev/tidb-lightning-logical-import-mode-usage#冲突数据检测
+# 关于 Physical Import Mode 冲突检测详细信息请查阅：https://docs.pingcap.com/zh/tidb/dev/tidb-lightning-physical-import-mode-usage#冲突数据检测
 # - replace：新数据替代已有数据
 # - ignore：保留已有数据，忽略新数据
 # - error：中止导入并报错
