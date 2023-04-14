@@ -346,7 +346,7 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 8249
 
-    资源组不存在。在修改或绑定不存在的资源组时返回该错误。请参考[创建资源组](/tidb-resource-control.md#创建资源组)。
+    资源组不存在。在修改或绑定不存在的资源组时返回该错误。请参考[创建资源组](/tidb-resource-control.md#第-2-步创建资源组并绑定用户到资源组)。
 
 * Error Number: 8250
 
