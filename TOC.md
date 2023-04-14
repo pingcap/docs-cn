@@ -14,7 +14,7 @@
   - [快速上手 HTAP](/quick-start-with-htap.md)
   - [SQL 基本操作](/basic-sql-operations.md)
   - [深入探索 HTAP](/explore-htap.md)
-  - [TiDB 后端任务分布式并行执行框架介绍](/tidb-distributed-parallel-execution-framework.md)
+  - [TiDB 后端任务分布式并行执行框架介绍](/tidb-distributed-execution-framework.md)
 - 应用开发
   - [概览](/develop/dev-guide-overview.md)
   - 快速开始
