@@ -113,11 +113,11 @@ hide_commit: true
 
 [Dumpling](https://docs.pingcap.com/zh/tidb/dev/dumpling-overview)
 
+[TiSpark](https://docs.pingcap.com/zh/tidb/dev/tispark-overview)
+
 [PingCAP Clinic](https://docs.pingcap.com/zh/tidb/dev/clinic-introduction)
 
 [TiUniManager](https://docs.pingcap.com/zh/tidb/dev/tiunimanager-overview)
-
-[TiSpark](https://docs.pingcap.com/zh/tidb/dev/tispark-overview)
 
 </LearningPath>
 
