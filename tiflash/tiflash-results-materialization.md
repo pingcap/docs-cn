@@ -15,7 +15,7 @@ summary: 介绍如何在同一个事务中保存 TiFlash 的查询结果。
 
 > **注意：**
 >
-> - TiDB 要求只有当前会话的 SQL Mode 不包含 `STRICT_TRANS_TABLES`, `STRICT_ALL_TABLES`，即不是 `STRICT SQL Mode` 时，才允许将 `INSERT INTO SELECT` 语句中的查询下推至 TiFlash。满足 SQL Mode 要求后，TiDB 优化器将依据查询代价智能选择是否下推到 TiFlash。如需忽略优化器代价估算强制使用 TiFlash 查询，你可以设置系统变量 [`tidb_enforce_mpp`](/system-variables.md#tidb_enforce_mpp-从-v51-版本开始引入) 为 `ON`。注意：只有当 `tidb_allow_mpp=true` 时该设置才生效。
+> - 优化器将根据 [SQL 模式](/sql-mode.md) 及 TiFlash 副本的代价估算自行决定是否将查询下推至 TiFlash。需要注意的是，只有当前会话的 [SQL 模式](/sql-mode.md) 不包含 `STRICT_TRANS_TABLES` 和 `STRICT_ALL_TABLES`，即不是 `STRICT SQL Mode` 时，TiDB 才允许将包含增删改的 SQL 语句(如 `INSERT INTO SELECT`)中的读取操作下推至 TiFlash。如需忽略优化器代价估算强制使用 TiFlash 查询，你可以设置系统变量 [`tidb_enforce_mpp`](/system-variables.md#tidb_enforce_mpp-从-v51-版本开始引入) 为 `ON`。注意：只有当 `tidb_allow_mpp=true` 时该设置才生效。
 
 `INSERT INTO SELECT` 语法如下：
 
