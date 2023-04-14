@@ -400,6 +400,34 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
     TiDB 目前不支持在新添加的列上使用 Sequence 作为默认值，如果尝试进行这类操作会返回该错误。
 
+* Error Number: 8248
+
+    资源组已存在。在重复创建资源组时返回该错误。
+
+* Error Number: 8249
+
+    资源组不存在。在修改或绑定不存在的资源组时返回该错误。请参考[创建资源组](/tidb-resource-control.md#创建资源组)。
+
+* Error Number: 8250
+
+    完整的报错信息如下：
+    
+    `ERROR 8250 (HY000) : Resource control feature is disabled. Run "SET GLOBAL tidb_enable_resource_control='on'" to enable the feature`
+
+    资源控制的功能没有打开时，使用资源管控 (Resource Control) 相关功能会返回该错误。你可以开启全局变量 [`tidb_enable_resource_control`](/system-variables.md#tidb_enable_resource_control-从-v660-版本开始引入) 启用资源管控。
+
+* Error Number: 8251
+
+    `Resource Control` 组件在 TiDB 启动时进行初始化，相关配置会从 `Resource Control` 的服务端 `Resource Manager` 上获取，如果此过程中出错，则会返回此错误。
+
+* Error Number: 8252
+
+    完整的报错信息如下：
+    
+    `ERROR 8252 (HY000) : Exceeded resource group quota limitation`
+
+    在尝试消耗超过资源组的限制时返回该错误。一般出现该错误，是由于单次事务太大或者并发太多导致，需调整事务大小或减少客户端并发数。
+
 * Error Number: 9001
 
     完整的报错信息为 `ERROR 9001 (HY000) : PD Server Timeout`。
