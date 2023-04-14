@@ -1683,7 +1683,7 @@ Query OK, 0 rows affected (0.09 sec)
 
     - `INSERT INTO SELECT` 语句中的 `SELECT` 查询（典型应用场景为 [TiFlash 查询结果物化](/tiflash/tiflash-results-materialization.md)）
     - `UPDATE` 和 `DELETE` 语句中的 `WHERE` 条件过滤
-- 从 v7.1.0 开始，该变量废弃，其取值将固定为默认值 ON，即默认开启 `tidb_enable_tiflash_read_for_write_stmt`。另外 TiDB 要求只有当前会话的 SQL Mode 不包含 `STRICT_TRANS_TABLES`, `STRICT_ALL_TABLES`，即不是 `STRICT SQL Mode` 时，才允许将包含增删改的 SQL 语句(如 `INSERT INTO SELECT`)中的查询下推至 TiFlash。开启 `tidb_enforce_mpp` 会忽略该情况下 `STRICT SQL Mode` 的限制。
+- 从 v7.1.0 开始，该变量废弃，其取值将固定为默认值 ON，即默认开启 `tidb_enable_tiflash_read_for_write_stmt`。另外 TiDB 要求只有当前会话的 SQL Mode 不包含 `STRICT_TRANS_TABLES`, `STRICT_ALL_TABLES`，即不是 `STRICT SQL Mode` 时，才允许将包含增删改的 SQL 语句(如 `INSERT INTO SELECT`)中的查询下推至 TiFlash。
 
 ### `tidb_enable_tmp_storage_on_oom`
 
@@ -1749,7 +1749,6 @@ Query OK, 0 rows affected (0.09 sec)
 - 这个变量用于控制是否忽略优化器代价估算，强制使用 TiFlash 的 MPP 模式执行查询，可以设置的值包括：
     - 0 或 OFF，代表不强制使用 MPP 模式（默认）
     - 1 或 ON，代表将忽略代价估算，强制使用 MPP 模式。注意：只有当 `tidb_allow_mpp=true` 时该设置才生效。
-- 从 v7.1.0 开始，TiDB 要求只有当前会话的 SQL Mode 不包含 `STRICT_TRANS_TABLES`, `STRICT_ALL_TABLES`，即不是 `STRICT SQL Mode` 时，才允许将包含增删改的 SQL 语句(如 `INSERT INTO SELECT`)中的查询下推至 TiFlash。开启 `tidb_enforce_mpp` 会忽略该情况下 `STRICT SQL Mode` 的限制。
 
 MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数据交换并提供高性能、高吞吐的 SQL 算法。MPP 模式选择的详细说明参见[控制是否选择 MPP 模式](/tiflash/use-tiflash-mpp-mode.md#控制是否选择-mpp-模式)。
 
