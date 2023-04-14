@@ -534,7 +534,8 @@
       - [日志过滤器](/ticdc/ticdc-filter.md)
       - [双向复制](/ticdc/ticdc-bidirectional-replication.md)
     - 监控告警
-      - [监控指标](/ticdc/monitor-ticdc.md)
+      - [基本监控指标](/ticdc/ticdc-summary-monitor.md)
+      - [详细监控指标](/ticdc/monitor-ticdc.md)
       - [报警规则](/ticdc/ticdc-alert-rules.md)
     - 参考指南
       - [架构设计与原理](/ticdc/ticdc-architecture.md)
