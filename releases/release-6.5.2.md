@@ -47,7 +47,6 @@ TiDB 版本：6.5.2
     + TiCDC
 
         - (dup): release-7.0.0.md > 改进提升> Tools> TiCDC - 支持在 redo applier 中拆分事务以提升 apply 吞吐，降低灾难场景的 RTO [#8318](https://github.com/pingcap/tiflow/issues/8318) @[CharlesCheung96](https://github.com/CharlesCheung96)
-        - (dup): release-7.0.0.md > 改进提升> Tools> TiCDC - 支持在 redo applier 中拆分事务以提升 apply 吞吐，降低灾难场景的 RTO [#8318](https://github.com/pingcap/tiflow/issues/8318) @[CharlesCheung96](https://github.com/CharlesCheung96)
         - (dup): release-7.0.0.md > 改进提升> Tools> TiCDC - 支持在 redo log 里 apply DDL 事件 [#8361](https://github.com/pingcap/tiflow/issues/8361) @[CharlesCheung96](https://github.com/CharlesCheung96)
 
     + TiDB Data Migration (DM)
@@ -69,7 +68,6 @@ TiDB 版本：6.5.2
     - (dup): release-6.1.6.md > Bug 修复> TiDB - 修复事务内执行 PointUpdate 之后，`SELECT` 结果不正确的问题 [#28011](https://github.com/pingcap/tidb/issues/28011) @[zyguan](https://github.com/zyguan)
     - (dup): release-6.1.6.md > Bug 修复> TiDB - 修复在使用 Cursor Fetch 且在 Execute、Fetch、Close 之间运行其它语句后，Fetch 与 Close 命令可能会返回错误结果或造成 TiDB Panic 的问题 [#40094](https://github.com/pingcap/tidb/issues/40094) [@YangKeao](https://github.com/YangKeao)
     - (dup): release-7.0.0.md > 错误修复> TiDB - 修复 `INSERT IGNORE` 和 `REPLACE` 语句对不修改 value 的 key 没有加锁的问题 [#42121](https://github.com/pingcap/tidb/issues/42121) @[zyguan](https://github.com/zyguan)
-    - (dup): release-7.0.0.md > 错误修复> TiDB - 修复 TiFlash 执行中遇到生成列会报错的问题 [#40663](https://github.com/pingcap/tidb/issues/40663) @[guo-shaoge](https://github.com/guo-shaoge)
     - (dup): release-7.0.0.md > 错误修复> TiDB - 修复 TiFlash 执行中遇到生成列会报错的问题 [#40663](https://github.com/pingcap/tidb/issues/40663) @[guo-shaoge](https://github.com/guo-shaoge)
     - (dup): release-7.0.0.md > 错误修复> TiDB - 修复当同一个 SQL 中出现多个不同的分区表时，TiDB 可能执行得到错误结果的问题 [#42135](https://github.com/pingcap/tidb/issues/42135) @[mjonss](https://github.com/mjonss)
     - (dup): release-7.0.0.md > 错误修复> TiDB - 修复在开启 Prepared Plan Cache 的情况下，索引全表扫可能会报错的问题 [#42150](https://github.com/pingcap/tidb/issues/42150) @[fzzf678](https://github.com/fzzf678)
@@ -100,8 +98,6 @@ TiDB 版本：6.5.2
 
     + TiCDC
 
-        - (dup): release-6.1.6.md > Bug 修复> Tools> TiCDC - 修复 `db sorter` 使用内存时未受 `cgroup memory limit` 限制的问题 [#8588](https://github.com/pingcap/tiflow/issues/8588) @[amyangfei](https://github.com/amyangfei)
-        - (dup): release-6.1.6.md > Bug 修复> Tools> TiCDC - 修复 `db sorter` 使用内存时未受 `cgroup memory limit` 限制的问题 [#8588](https://github.com/pingcap/tiflow/issues/8588) @[amyangfei](https://github.com/amyangfei)
         - (dup): release-6.1.6.md > Bug 修复> Tools> TiCDC - 修复 `db sorter` 使用内存时未受 `cgroup memory limit` 限制的问题 [#8588](https://github.com/pingcap/tiflow/issues/8588) @[amyangfei](https://github.com/amyangfei)
         - (dup): release-6.1.6.md > Bug 修复> Tools> TiCDC - 修复同步数据时由于 `UPDATE` 和 `INSERT` 语句乱序可能导致 `Duplicate entry` 错误的问题 [#8597](https://github.com/pingcap/tiflow/issues/8597) @[sdojjy](https://github.com/sojjy)
         - (dup): release-6.1.6.md > Bug 修复> Tools> TiCDC - 修复由于 PD 和 TiCDC 之间的网络隔离引起 TiCDC 程序异常退出的问题 [#8562](https://github.com/pingcap/tiflow/issues/8562) @[overvenus](https://github.com/overvenus)
