@@ -482,6 +482,34 @@ TiDB is compatible with the error codes in MySQL, and in most cases returns the 
 
     TiDB currently does not support using Sequence as the default value on newly added columns, and reports this error if you use it.
 
+* Error Number: 8248
+
+    The resource group already exists. This error is returned when a resource group is repeatedly created.
+
+* Error Number: 8249
+
+    The resource group does not exist. This error is returned when you modify or bind a resource group that does not exist. See [Create a resource group](/tidb-resource-control.md#create-a-resource-group).
+
+* Error Number: 8250
+
+    The complete error message is as follows:
+
+    `ERROR 8250 (HY000) : Resource control feature is disabled. Run "SET GLOBAL tidb_enable_resource_control='on'" to enable the feature`
+
+    This error is returned when you try to use the resource control feature but it is not enabled. You can turn on the global variable [`tidb_enable_resource_control`](/system-variables.md#tidb_enable_resource_control-new-in-v660) to enable resource control.
+
+* Error Number: 8251
+
+    The `Resource Control` component is initialized upon TiDB startup. The associated configuration is fetched from the `Resource Manager` on the server side of `Resource Control`. This error is returned if there is an error during this process.
+
+* Error Number: 8252
+
+    The complete error message is as follows: 
+    
+    `ERROR 8252 (HY000) : Exceeded resource group quota limitation`
+
+    This error is returned when the attempted consumption exceeds the resource group limit. This error is usually caused by a single transaction that is too large or too many concurrent transactions. You need to adjust the transaction size or reduce the number of concurrent clients.
+
 * Error Number: 9001
 
     The complete error message: `ERROR 9001 (HY000): PD Server Timeout`
