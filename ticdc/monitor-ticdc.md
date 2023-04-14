@@ -1,12 +1,6 @@
 ---
-<<<<<<< HEAD
-title: TiCDC 重要监控指标详解
-summary: 了解 TiCDC 重要的监控指标。
-=======
 title: TiCDC 详细监控指标
-summary: 了解 TiCDC 详细的监控指标。
-aliases: ['/zh/tidb/dev/ticdc-grafana-dashboard']
->>>>>>> 5b9d76bb3 (add ticdc summary monitor doc (#13331))
+summary: 了解 TiCDC 详细监控指标。
 ---
 
 # TiCDC 详细监控指标
