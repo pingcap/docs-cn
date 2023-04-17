@@ -1,9 +1,9 @@
 ---
-title: TiDB 后端任务分布式框架介绍
+title: TiDB 后端任务分布式框架
 summary: 介绍 TiDB 后端任务分布式框架的原理与使用。
 ---
 
-# TiDB 后端任务分布式框架介绍
+# TiDB 后端任务分布式框架
 
 TiDB 采用计算存储分离架构，具有出色的扩展性和弹性的扩缩容能力。为了进一步挖掘 TiDB 集群分布式架构的资源优势，从 TiDB v7.1.0 开始，引入了一个后端任务分布式执行框架，以实现对所有后端任务的统一调度、整体资源使用的管理。
 
@@ -11,7 +11,7 @@ TiDB 采用计算存储分离架构，具有出色的扩展性和弹性的扩缩
 
 ## 框架原理
 
-本节介绍
+本节介绍了什么是后端任务，以及 TiDB 后端任务分布式执行框架的原理。
 
 ### 后端任务
 
@@ -41,7 +41,7 @@ TiDB 采用计算存储分离架构，具有出色的扩展性和弹性的扩缩
 >
 > 本框架将不会支持 SQL 查询的分布式执行。
 
-### 框架的设计与实现原理
+#### 框架的设计与实现原理
 
 本部分将简单介绍框架的设计与实现原理，根据上面的架构图，分布式框架中的任务的执行主要由以下几个模块来负责：
 
@@ -68,11 +68,12 @@ SET GLOBAL tidb_enable_dist_task = ON|OFF;
 * [tidb_ddl_disk_quota](https://docs.pingcap.com/tidb/stable/system-variables#tidb_ddl_disk_quota-new-in-v630)
 
 **Config parameter:**
+
 * [temp-dir](https://docs.pingcap.com/tidb/stable/tidb-configuration-file#temp-dir-new-in-v630)
 
 > **注意：**
 >
-> 需要检查 TiDB 的 temp-dir 路径是否正确挂载了 SSD 磁盘，因为这个参数是 TiDB 的配置参数，设置后需要重启 TiDB 才能生效。建议用户在升级到 v6.5 之后的版本时需要检查一下，提前设置；
+> 需要检查 TiDB 的 temp-dir 路径是否正确挂载了 SSD 磁盘，因为这个参数是 TiDB 的配置参数，设置后需要重启 TiDB 才能生效。建议用户在升级到 v6.5 之后的版本时需要检查，提前设置。
 
 ### 使用示例
 
