@@ -41,12 +41,14 @@ summary: 介绍 TiCDC 数据正确性校验功能的实现原理和使用方法
 
 ## 关闭功能
 
-* 首先按照 [TiCDC 更新同步任务配置](/ticdc/ticdc-manage-changefeed.md#更新同步任务配置) 的说明，通过`暂停任务 -> 修改配置 -> 恢复任务` 的流程，在 Changefeed 的 `--config` 参数所指定的配置文件中移除 `Integrity` 表的所有配置。
+TiCDC 默认开启单行数据的 Checksum 校验功能。若要在开启此功能后将其关闭，请执行以下步骤：
 
-* 用户在上游 TiDB 关闭行数据 Checksum 功能，执行如下 SQL 语句:
+1. 首先，按照 [TiCDC 更新同步任务配置](/ticdc/ticdc-manage-changefeed.md#更新同步任务配置)的说明，按照 `暂停任务 -> 修改配置 -> 恢复任务` 的流程，在 Changefeed 的 `--config` 参数所指定的配置文件中移除 `[Integrity]` 的所有配置。
 
-```sql
-SET GLOBAL enable_row_level_checksum = false;
-```
+2. 在上游 TiDB 中关闭行数据 Checksum 功能 ([`enable_row_level_checksum`](/system-variables.md#corruption-handle-level-从-v710-版本开始引入))，执行如下 SQL 语句：
 
-请注意，上述配置仅对新创建的会话生效。当所有写入 TiDB 的客户端都完成数据库连接重建后，Changefeed 写入 Kafka 的消息中就不再携带有该条消息对应数据的 Checksum 值。
+    ```sql
+    SET GLOBAL enable_row_level_checksum = false;
+    ```
+
+    上述配置仅对新创建的会话生效。在所有写入 TiDB 的客户端都完成数据库连接重建后，Changefeed 写入 Kafka 的消息中将不再携带该条消息对应数据的 Checksum 值。
