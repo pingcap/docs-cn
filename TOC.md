@@ -380,51 +380,7 @@
       - [tiup-cluster 部署运维生产集群](/tiup/tiup-cluster.md)
       - [tiup-mirror 定制离线镜像](/tiup/tiup-mirror.md)
       - [tiup-bench 进行 TPCC/TPCH 压力测试](/tiup/tiup-bench.md)
-  - PingCAP Clinic 诊断服务
-    - [概述](/clinic/clinic-introduction.md)
-    - [快速上手](/clinic/quick-start-with-clinic.md)
-    - [使用 PingCAP Clinic 诊断集群](/clinic/clinic-user-guide-for-tiup.md)
-    - [使用 PingCAP Clinic 生成诊断报告](/clinic/clinic-report.md)
-    - [采集 SQL 查询计划信息](/clinic/clinic-collect-sql-query-plan.md)
-    - [数据采集说明](/clinic/clinic-data-instruction-for-tiup.md)
   - [TiDB Operator](/tidb-operator-overview.md)
-  - [Dumpling](/dumpling-overview.md)
-  - TiDB Lightning
-    - [概述](/tidb-lightning/tidb-lightning-overview.md)
-    - [快速上手](/get-started-with-tidb-lightning.md)
-    - [部署 TiDB Lightning](/tidb-lightning/deploy-tidb-lightning.md)
-    - [目标数据库要求](/tidb-lightning/tidb-lightning-requirements.md)
-    - 数据源
-      - [文件匹配规则](/tidb-lightning/tidb-lightning-data-source.md)
-      - [CSV](/tidb-lightning/tidb-lightning-data-source.md#csv)
-      - [SQL](/tidb-lightning/tidb-lightning-data-source.md#sql)
-      - [Parquet](/tidb-lightning/tidb-lightning-data-source.md#parquet)
-      - [自定义文件匹配](/tidb-lightning/tidb-lightning-data-source.md#自定义文件匹配)
-    - Physical Import Mode
-      - [概述](/tidb-lightning/tidb-lightning-physical-import-mode.md)
-      - [必要条件及限制](/tidb-lightning/tidb-lightning-physical-import-mode.md#必要条件及限制)
-      - [配置及使用](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md)
-      - [冲突检测](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#冲突数据检测)
-      - [性能调优](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#性能调优)
-    - Logical Import Mode
-      - [概述](/tidb-lightning/tidb-lightning-logical-import-mode.md)
-      - [必要条件及限制](/tidb-lightning/tidb-lightning-logical-import-mode.md#必要条件)
-      - [配置及使用](/tidb-lightning/tidb-lightning-logical-import-mode-usage.md)
-      - [冲突检测](/tidb-lightning/tidb-lightning-logical-import-mode-usage.md#冲突数据检测)
-      - [性能调优](/tidb-lightning/tidb-lightning-logical-import-mode-usage.md#性能调优)
-    - [前置检查](/tidb-lightning/tidb-lightning-prechecks.md)
-    - [表库过滤](/table-filter.md)
-    - [断点续传](/tidb-lightning/tidb-lightning-checkpoints.md)
-    - [并行导入](/tidb-lightning/tidb-lightning-distributed-import.md)
-    - [可容忍错误](/tidb-lightning/tidb-lightning-error-resolution.md)
-    - [故障处理](/tidb-lightning/troubleshoot-tidb-lightning.md)
-    - 参考手册
-      - [完整配置文件](/tidb-lightning/tidb-lightning-configuration.md)
-      - [命令行参数](/tidb-lightning/tidb-lightning-command-line-full.md)
-      - [监控告警](/tidb-lightning/monitor-tidb-lightning.md)
-      - [Web 界面](/tidb-lightning/tidb-lightning-web-interface.md)
-      - [FAQ](/tidb-lightning/tidb-lightning-faq.md)
-      - [术语表](/tidb-lightning/tidb-lightning-glossary.md)
   - TiDB Data Migration
     - [关于 Data Migration](/dm/dm-overview.md)
     - [架构简介](/dm/dm-arch.md)
@@ -483,33 +439,33 @@
       - [导出和导入集群的数据源和任务配置](/dm/dm-export-import-config.md)
       - [处理告警](/dm/dm-handle-alerts.md)
       - [日常巡检](/dm/dm-daily-check.md)
-     - 参考手册
-        - 架构组件
-          - [DM-worker 说明](/dm/dm-worker-intro.md)
-          - [安全模式](/dm/dm-safe-mode.md)
-          - [Relay Log](/dm/relay-log.md)
-          - [DDL 特殊处理说明](/dm/dm-ddl-compatible.md)
-        - 运行机制
-          - [DML 同步机制](/dm/dm-dml-replication-logic.md)
-        - 命令行
-          - [DM-master & DM-worker](/dm/dm-command-line-flags.md)
-        - 配置文件
-          - [概述](/dm/dm-config-overview.md)
-          - [数据源配置](/dm/dm-source-configuration-file.md)
-          - [迁移任务配置](/dm/task-configuration-file-full.md)
-          - [DM-master 配置](/dm/dm-master-configuration-file.md)
-          - [DM-worker 配置](/dm/dm-worker-configuration-file.md)
-          - [Table Selector](/dm/table-selector.md)
-        - [OpenAPI](/dm/dm-open-api.md)
-        - [兼容性目录](/dm/dm-compatibility-catalog.md)
-        - 安全
-          - [为 DM 的连接开启加密传输](/dm/dm-enable-tls.md)
-          - [生成自签名证书](/dm/dm-generate-self-signed-certificates.md)
-        - 监控告警
-          - [监控指标](/dm/monitor-a-dm-cluster.md)
-          - [告警信息](/dm/dm-alert-rules.md)
-        - [错误码](/dm/dm-error-handling.md#常见故障处理方法)
-        - [术语表](/dm/dm-glossary.md)
+    - 参考手册
+      - 架构组件
+        - [DM-worker 说明](/dm/dm-worker-intro.md)
+        - [安全模式](/dm/dm-safe-mode.md)
+        - [Relay Log](/dm/relay-log.md)
+        - [DDL 特殊处理说明](/dm/dm-ddl-compatible.md)
+      - 运行机制
+        - [DML 同步机制](/dm/dm-dml-replication-logic.md)
+      - 命令行
+        - [DM-master & DM-worker](/dm/dm-command-line-flags.md)
+      - 配置文件
+        - [概述](/dm/dm-config-overview.md)
+        - [数据源配置](/dm/dm-source-configuration-file.md)
+        - [迁移任务配置](/dm/task-configuration-file-full.md)
+        - [DM-master 配置](/dm/dm-master-configuration-file.md)
+        - [DM-worker 配置](/dm/dm-worker-configuration-file.md)
+        - [Table Selector](/dm/table-selector.md)
+      - [OpenAPI](/dm/dm-open-api.md)
+      - [兼容性目录](/dm/dm-compatibility-catalog.md)
+      - 安全
+        - [为 DM 的连接开启加密传输](/dm/dm-enable-tls.md)
+        - [生成自签名证书](/dm/dm-generate-self-signed-certificates.md)
+      - 监控告警
+        - [监控指标](/dm/monitor-a-dm-cluster.md)
+        - [告警信息](/dm/dm-alert-rules.md)
+      - [错误码](/dm/dm-error-handling.md#常见故障处理方法)
+      - [术语表](/dm/dm-glossary.md)
       - 使用示例
         - [使用 DM 迁移数据](/dm/migrate-data-using-dm.md)
         - [快速创建迁移任务](/dm/quick-start-create-task.md)
@@ -518,6 +474,43 @@
         - [常见问题](/dm/dm-faq.md)
         - [错误处理及恢复](/dm/dm-error-handling.md)
       - [版本发布历史](/dm/dm-release-notes.md)
+  - TiDB Lightning
+    - [概述](/tidb-lightning/tidb-lightning-overview.md)
+    - [快速上手](/get-started-with-tidb-lightning.md)
+    - [部署 TiDB Lightning](/tidb-lightning/deploy-tidb-lightning.md)
+    - [目标数据库要求](/tidb-lightning/tidb-lightning-requirements.md)
+    - 数据源
+      - [文件匹配规则](/tidb-lightning/tidb-lightning-data-source.md)
+      - [CSV](/tidb-lightning/tidb-lightning-data-source.md#csv)
+      - [SQL](/tidb-lightning/tidb-lightning-data-source.md#sql)
+      - [Parquet](/tidb-lightning/tidb-lightning-data-source.md#parquet)
+      - [自定义文件匹配](/tidb-lightning/tidb-lightning-data-source.md#自定义文件匹配)
+    - Physical Import Mode
+      - [概述](/tidb-lightning/tidb-lightning-physical-import-mode.md)
+      - [必要条件及限制](/tidb-lightning/tidb-lightning-physical-import-mode.md#必要条件及限制)
+      - [配置及使用](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md)
+      - [冲突检测](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#冲突数据检测)
+      - [性能调优](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#性能调优)
+    - Logical Import Mode
+      - [概述](/tidb-lightning/tidb-lightning-logical-import-mode.md)
+      - [必要条件及限制](/tidb-lightning/tidb-lightning-logical-import-mode.md#必要条件)
+      - [配置及使用](/tidb-lightning/tidb-lightning-logical-import-mode-usage.md)
+      - [冲突检测](/tidb-lightning/tidb-lightning-logical-import-mode-usage.md#冲突数据检测)
+      - [性能调优](/tidb-lightning/tidb-lightning-logical-import-mode-usage.md#性能调优)
+    - [前置检查](/tidb-lightning/tidb-lightning-prechecks.md)
+    - [表库过滤](/table-filter.md)
+    - [断点续传](/tidb-lightning/tidb-lightning-checkpoints.md)
+    - [并行导入](/tidb-lightning/tidb-lightning-distributed-import.md)
+    - [可容忍错误](/tidb-lightning/tidb-lightning-error-resolution.md)
+    - [故障处理](/tidb-lightning/troubleshoot-tidb-lightning.md)
+    - 参考手册
+      - [完整配置文件](/tidb-lightning/tidb-lightning-configuration.md)
+      - [命令行参数](/tidb-lightning/tidb-lightning-command-line-full.md)
+      - [监控告警](/tidb-lightning/monitor-tidb-lightning.md)
+      - [Web 界面](/tidb-lightning/tidb-lightning-web-interface.md)
+      - [FAQ](/tidb-lightning/tidb-lightning-faq.md)
+      - [术语表](/tidb-lightning/tidb-lightning-glossary.md)
+  - [Dumpling](/dumpling-overview.md)
   - TiCDC
     - [概述](/ticdc/ticdc-overview.md)
     - [安装部署与集群运维](/ticdc/deploy-ticdc.md)
@@ -568,6 +561,21 @@
       - [故障诊断](/tidb-binlog/troubleshoot-tidb-binlog.md)
       - [常见错误修复](/tidb-binlog/handle-tidb-binlog-errors.md)
     - [FAQ](/tidb-binlog/tidb-binlog-faq.md)
+  - PingCAP Clinic 诊断服务
+    - [概述](/clinic/clinic-introduction.md)
+    - [快速上手](/clinic/quick-start-with-clinic.md)
+    - [使用 PingCAP Clinic 诊断集群](/clinic/clinic-user-guide-for-tiup.md)
+    - [使用 PingCAP Clinic 生成诊断报告](/clinic/clinic-report.md)
+    - [采集 SQL 查询计划信息](/clinic/clinic-collect-sql-query-plan.md)
+    - [数据采集说明](/clinic/clinic-data-instruction-for-tiup.md)
+  - TiSpark
+    - [TiSpark 用户指南](/tispark-overview.md)
+  - sync-diff-inspector
+    - [概述](/sync-diff-inspector/sync-diff-inspector-overview.md)
+    - [不同库名或表名的数据校验](/sync-diff-inspector/route-diff.md)
+    - [分库分表场景下的数据校验](/sync-diff-inspector/shard-diff.md)
+    - [TiDB 主从集群的数据校验](/sync-diff-inspector/upstream-downstream-diff.md)
+    - [基于 DM 同步场景下的数据校验](/sync-diff-inspector/dm-diff.md)
   - TiUniManager
     - [概述](/tiunimanager/tiunimanager-overview.md)
     - [安装和运维](/tiunimanager/tiunimanager-install-and-maintain.md)
@@ -585,14 +593,6 @@
       - [v1.0.2](/tiunimanager/tiunimanager-release-1.0.2.md)
       - [v1.0.1](/tiunimanager/tiunimanager-release-1.0.1.md)
       - [v1.0.0](/tiunimanager/tiunimanager-release-1.0.0.md)
-  - sync-diff-inspector
-    - [概述](/sync-diff-inspector/sync-diff-inspector-overview.md)
-    - [不同库名或表名的数据校验](/sync-diff-inspector/route-diff.md)
-    - [分库分表场景下的数据校验](/sync-diff-inspector/shard-diff.md)
-    - [TiDB 主从集群的数据校验](/sync-diff-inspector/upstream-downstream-diff.md)
-    - [基于 DM 同步场景下的数据校验](/sync-diff-inspector/dm-diff.md)
-  - TiSpark
-    - [TiSpark 用户指南](/tispark-overview.md)
 - 参考指南
   - 架构
     - [概述](/tidb-architecture.md)
