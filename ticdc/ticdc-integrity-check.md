@@ -15,7 +15,7 @@ summary: 介绍 TiCDC 数据正确性校验功能的实现原理和使用方法
 
 TiCDC 数据正确性校验功能默认关闭，要使用该功能，请执行以下步骤：
 
-1. 首先，你需要在上游 TiDB 中开启行数据 Checksum 功能 ([`enable_row_level_checksum`](/system-variables.md))：
+1. 首先，你需要在上游 TiDB 中开启行数据 Checksum 功能 ([`enable_row_level_checksum`](/system-variables.md#corruption-handle-level-从-v710-版本开始引入))：
 
     ```sql
     SET GLOBAL enable_row_level_checksum = true;
