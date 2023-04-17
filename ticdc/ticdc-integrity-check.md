@@ -3,13 +3,13 @@ title: TiCDC 数据正确性校验
 summary: 介绍 TiCDC 数据正确性校验功能的实现原理和使用方法
 ---
 
-# 基于 Checksum 的单行数据正确性校验
+# TiCDC 数据正确性校验
 
-从 v7.1.0 版本开始，TiCDC 新增了单行数据正确性校验功能，该功能基于 Checksum 算法对单行数据的正确性进行校验。通过该功能可以校验一行数据从 TiDB 写入、经由 TiCDC 流出，再写入到 Kafka 集群的过程中是否发生了数据错误。该功能仅支持下游是 Kafka Sink 的 Changefeed，支持 Canal-JSON / Avro / Open-Protocol 等协议。
+从 v7.1.0 开始，TiCDC 引入了单行数据正确性校验功能，该功能基于 Checksum 算法对单行数据的正确性进行校验。该功能可以校验一行数据从 TiDB 写入、通过 TiCDC 同步，然后写入 Kafka 集群的过程中是否出现错误。TiCDC 数据正确性校验功能仅支持下游是 Kafka 的 Changefeed，目前支持 Avro 协议。
 
 ## 实现原理
 
-TiDB 在启用了 Row Checksum 功能后，使用 CRC32 算法，对该行数据计算一个 Checksum 值，一并写入到 TiKV。TiCDC 从 TiKV 中读取出数据，根据相同的算法，重新计算一遍 Checksum，如果该值和 TiDB 写入的值相同，那么可以说明数据在 TiDB 到 TiCDC 的链路上是正确的。TiCDC 将数据编码成特定的格式，发送到 Kafka，Kafka Consumer 读取出数据之后，可以使用和 TiDB 相同的算法，计算得到一个新的 Checksum，将该值和数据中携带的 Checksum 值进行对比，二者一致则可说明从 TiCDC 到 Kafka Consumer 的链路上数据是正确的。
+当启用 Row Checksum 功能后，TiDB 使用 CRC32 算法计算该行数据的 Checksum 值，并将其一并写入 TiKV。TiCDC 从 TiKV 读取数据，根据相同的算法重新计算 Checksum。若该值与 TiDB 写入的值相同，则可证明数据在 TiDB 至 TiCDC 的传输过程中是正确的。TiCDC 将数据编码成特定格式并发送至 Kafka。Kafka Consumer 读取数据后，可以使用与 TiDB 相同的算法计算得到新的 Checksum。将此值与数据中携带的 Checksum 值进行比较，若二者一致，则可证明从 TiCDC 至 Kafka Consumer 的传输链路上的数据是正确的。
 
 ## 启用功能
 
@@ -31,7 +31,7 @@ integrity-check-level="correctness"
 corruption-handle-level="warn"
 ```
 
-3. （可选）当使用 Canal-JSON 或 Avro 作为数据编码格式时，你需要在 [`sink-uri`](/ticdc/ticdc-sink-to-kafka.md#sink-uri-配置-kafka) 中设置 [`enable-tidb-extension=true`](/ticdc/ticdc-sink-to-kafka.md#sink-uri-配置-kafka)。此外，使用 Avro 时，还需设置 [`avro-decimal-handling-mode=string`](/ticdc/ticdc-sink-to-kafka.md#sink-uri-配置-kafka) 为 `string` 和 [`avro-bigint-unsigned-handling-mode=string`](/ticdc/ticdc-sink-to-kafka.md#sink-uri-配置-kafka)。下面是一个配置示例：
+3. 当使用 Avro 作为数据编码格式时，你需要在 [`sink-uri`](/ticdc/ticdc-sink-to-kafka.md#sink-uri-配置-kafka) 中设置 [`enable-tidb-extension=true`](/ticdc/ticdc-sink-to-kafka.md#sink-uri-配置-kafka)，同时还需设置 [`avro-decimal-handling-mode=string`](/ticdc/ticdc-sink-to-kafka.md#sink-uri-配置-kafka) 为 `string` 和 [`avro-bigint-unsigned-handling-mode=string`](/ticdc/ticdc-sink-to-kafka.md#sink-uri-配置-kafka)。下面是一个配置示例：
 
 ```shell
 cdc cli changefeed create --server=http://127.0.0.1:8300 --changefeed-id="kafka-avro-enable-extension" --sink-uri="kafka://127.0.0.1:9092/topic-name?protocol=avro&enable-tidb-extension=true&avro-decimal-handling-mode=string&avro-bigint-unsigned-handling-mode=string" --schema-registry=http://127.0.0.1:8081 --config changefeed_config.toml
@@ -43,7 +43,7 @@ cdc cli changefeed create --server=http://127.0.0.1:8300 --changefeed-id="kafka-
 
 * 首先按照 [TiCDC 更新同步任务配置](/ticdc/ticdc-manage-changefeed.md#更新同步任务配置) 的说明，通过`暂停任务 -> 修改配置 -> 恢复任务` 的流程，在 Changefeed 的 `--config` 参数所指定的配置文件中移除 `Integrity` 表的所有配置。
 
-* 用户在上游 TiDB 关闭行数据 Checksum 功能，执行如下 SQL 语句
+* 用户在上游 TiDB 关闭行数据 Checksum 功能，执行如下 SQL 语句:
 
 ```sql
 SET GLOBAL enable_row_level_checksum = false;
