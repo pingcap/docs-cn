@@ -18,7 +18,7 @@ TiCDC 数据正确性校验功能默认关闭，要使用该功能，请执行�
 1. 首先，你需要在上游 TiDB 中开启行数据 Checksum 功能 ([`enable_row_level_checksum`](/system-variables.md#corruption-handle-level-从-v710-版本开始引入))：
 
     ```sql
-    SET GLOBAL enable_row_level_checksum = true;
+    SET GLOBAL tidb_enable_row_level_checksum = true;
     ```
 
     上述配置仅对新创建的会话生效，因此需要重新连接 TiDB。
@@ -48,7 +48,7 @@ TiCDC 默认开启单行数据的 Checksum 校验功能。若要在开启此功�
 2. 在上游 TiDB 中关闭行数据 Checksum 功能 ([`enable_row_level_checksum`](/system-variables.md#corruption-handle-level-从-v710-版本开始引入))，执行如下 SQL 语句：
 
     ```sql
-    SET GLOBAL enable_row_level_checksum = false;
+    SET GLOBAL tidb_enable_row_level_checksum = false;
     ```
 
     上述配置仅对新创建的会话生效。在所有写入 TiDB 的客户端都完成数据库连接重建后，Changefeed 写入 Kafka 的消息中将不再携带该条消息对应数据的 Checksum 值。
