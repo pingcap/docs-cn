@@ -131,10 +131,10 @@ quote = '"'
 null = '\N'
 # 是否在 CSV 行中包含 commit-ts。默认值为 false。
 include-commit-ts = false
-```
 
 [integrity]
-# 开启行数据的 checksum 校验功能，默认为 "none"
+# 是否开启单行数据的 Checksum 校验功能，默认值为 "none"。
 integrity-check-level="correctness"
-# 行数据 checksum 校验失败时，changefeed 运行，打印错误行数据相关日志
+# 当单行数据的 Checksum 校验失败时，Changefeed 打印错误行数据相关日志的级别，可选值为 "warn"、"error"。
 corruption-handle-level="warn"
+```
