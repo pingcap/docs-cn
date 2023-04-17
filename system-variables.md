@@ -3265,7 +3265,7 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 - 默认值：`100`
 - 范围：`[1, 100000]`
 - 这个变量用来控制 Plan Cache 最多能够缓存的计划数量。
-- [非 Prepare 语句执行计划缓存](/sql-non-prepared-plan-cache.md) 和 [非 Prepare 语句执行计划缓存](/sql-non-prepared-plan-cache.md) 共用一个 Cache。
+- [Prepare 语句执行计划缓存](/sql-prepared-plan-cache.md)和[非 Prepare 语句执行计划缓存](/sql-non-prepared-plan-cache.md)共用一个 Cache。
 
 ### `tidb_shard_allocate_step` <span class="version-mark">从 v5.0 版本开始引入</span>
 
