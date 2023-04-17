@@ -31,7 +31,11 @@ integrity-check-level="correctness"
 corruption-handle-level="warn"
 ```
 
-* 当使用 Canal-JSON 或 Avro 作为数据编码格式的时候，需要在 `sink-uri` 中设置 `enable-tidb-extension` 为 true。除此之外，使用 Avro 时，还需要设置 `avro-decimal-handling-mode` 为 `string`, `avro-bigint-unsigned-handling-mode` 为 `string`
+3. （可选）当使用 Canal-JSON 或 Avro 作为数据编码格式时，你需要在 [`sink-uri`](/ticdc/ticdc-sink-to-kafka.md#sink-uri-配置-kafka) 中设置 [`enable-tidb-extension=true`](/ticdc/ticdc-sink-to-kafka.md#sink-uri-配置-kafka)。此外，使用 Avro 时，还需设置 [`avro-decimal-handling-mode=string`](/ticdc/ticdc-sink-to-kafka.md#sink-uri-配置-kafka) 为 `string` 和 [`avro-bigint-unsigned-handling-mode=string`](/ticdc/ticdc-sink-to-kafka.md#sink-uri-配置-kafka)。下面是一个配置示例：
+
+```shell
+cdc cli changefeed create --server=http://127.0.0.1:8300 --changefeed-id="kafka-avro-enable-extension" --sink-uri="kafka://127.0.0.1:9092/topic-name?protocol=avro&enable-tidb-extension=true&avro-decimal-handling-mode=string&avro-bigint-unsigned-handling-mode=string" --schema-registry=http://127.0.0.1:8081 --config changefeed_config.toml
+```
 
 经由上述配置的 Changefeed，会在每一条写入到 Kafka 的消息中，携带有该条消息对应数据的 Checksum，用户可以根据该 Checksum 的值做数据一致性校验工作。
 
