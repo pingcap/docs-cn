@@ -103,7 +103,7 @@ hide_commit: true
 
 [TiDB Operator](https://docs.pingcap.com/zh/tidb/dev/tidb-operator-overview)
 
-[Data Migration](https://docs.pingcap.com/zh/tidb/dev/dm-overview)
+[TiDB Data Migration (DM)](https://docs.pingcap.com/zh/tidb/dev/dm-overview)
 
 [TiDB Lightning](https://docs.pingcap.com/zh/tidb/dev/tidb-lightning-overview)
 
