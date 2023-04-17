@@ -438,17 +438,6 @@
         - [常见问题](/dm/dm-faq.md)
         - [错误处理及恢复](/dm/dm-error-handling.md)
       - [版本发布历史](/dm/dm-release-notes.md)
-<<<<<<< HEAD
-  - Backup & Restore (BR)
-    - [BR 简介](/br/backup-and-restore-overview.md)
-    - [部署和使用 BR](/br/br-deployment.md)
-    - [使用 BR 备份集群](/br/br-usage-backup.md)
-    - [使用 BR 恢复集群](/br/br-usage-restore.md)
-    - [BR 备份与恢复场景示例](/br/backup-and-restore-use-cases.md)
-    - BR 特性
-      - [自动调节](/br/br-auto-tune.md)
-      - [批量建表](/br/br-batch-create-table.md)
-=======
   - TiDB Lightning
     - [概述](/tidb-lightning/tidb-lightning-overview.md)
     - [快速上手](/get-started-with-tidb-lightning.md)
@@ -486,23 +475,15 @@
       - [FAQ](/tidb-lightning/tidb-lightning-faq.md)
       - [术语表](/tidb-lightning/tidb-lightning-glossary.md)
   - [Dumpling](/dumpling-overview.md)
-  - TiCDC
-    - [概述](/ticdc/ticdc-overview.md)
-    - [安装部署与集群运维](/ticdc/deploy-ticdc.md)
-    - Changefeed
-      - [Changefeed 概述](/ticdc/ticdc-changefeed-overview.md)
-      - 创建 Changefeed
-        - [同步数据到 MySQL 兼容的数据库](/ticdc/ticdc-sink-to-mysql.md)
-        - [同步数据到 Kafka](/ticdc/ticdc-sink-to-kafka.md)
-        - [同步数据到存储服务](/ticdc/ticdc-sink-to-cloud-storage.md)
-      - [管理 Changefeed](/ticdc/ticdc-manage-changefeed.md)
-      - [日志过滤器](/ticdc/ticdc-filter.md)
-      - [双向复制](/ticdc/ticdc-bidirectional-replication.md)
-    - 监控告警
-      - [基本监控指标](/ticdc/ticdc-summary-monitor.md)
-      - [详细监控指标](/ticdc/monitor-ticdc.md)
-      - [报警规则](/ticdc/ticdc-alert-rules.md)
->>>>>>> a4c504b95 (*: adjust tool order in toc and learning path (#13698))
+  - Backup & Restore (BR)
+    - [BR 简介](/br/backup-and-restore-overview.md)
+    - [部署和使用 BR](/br/br-deployment.md)
+    - [使用 BR 备份集群](/br/br-usage-backup.md)
+    - [使用 BR 恢复集群](/br/br-usage-restore.md)
+    - [BR 备份与恢复场景示例](/br/backup-and-restore-use-cases.md)
+    - BR 特性
+      - [自动调节](/br/br-auto-tune.md)
+      - [批量建表](/br/br-batch-create-table.md)
     - 参考指南
       - [BR 设计原理](/br/backup-and-restore-design.md)
       - [BR 命令行介绍](/br/use-br-command-line-tool.md)
@@ -513,6 +494,21 @@
       - [使用 BR 备份和恢复 RawKV 数据](/br/rawkv-backup-and-restore.md)
       - [使用 Dumpling 和 TiDB Lightning 备份和恢复数据](/backup-and-restore-using-dumpling-lightning.md)
       - [BR 常见问题](/br/backup-and-restore-faq.md)
+  - TiCDC
+    - [概述](/ticdc/ticdc-overview.md)
+    - [安装部署](/ticdc/deploy-ticdc.md)
+    - [运维管理](/ticdc/manage-ticdc.md)
+    - 监控告警
+      - [监控指标](/ticdc/monitor-ticdc.md)
+      - [报警规则](/ticdc/ticdc-alert-rules.md)
+    - [故障处理](/ticdc/troubleshoot-ticdc.md)
+    - 参考指南
+      - [TiCDC Open API](/ticdc/ticdc-open-api.md)
+      - [TiCDC Open Protocol](/ticdc/ticdc-open-protocol.md)
+      - [TiCDC Avro Protocol](/ticdc/ticdc-avro-protocol.md)
+      - [TiCDC Canal-JSON Protocol](/ticdc/ticdc-canal-json.md)
+    - [常见问题解答](/ticdc/ticdc-faq.md)
+    - [术语表](/ticdc/ticdc-glossary.md)
   - TiDB Binlog
     - [概述](/tidb-binlog/tidb-binlog-overview.md)
     - [快速上手](/tidb-binlog/get-started-with-tidb-binlog.md)
@@ -533,23 +529,6 @@
       - [故障诊断](/tidb-binlog/troubleshoot-tidb-binlog.md)
       - [常见错误修复](/tidb-binlog/handle-tidb-binlog-errors.md)
     - [FAQ](/tidb-binlog/tidb-binlog-faq.md)
-<<<<<<< HEAD
-  - TiCDC
-    - [概述](/ticdc/ticdc-overview.md)
-    - [安装部署](/ticdc/deploy-ticdc.md)
-    - [运维管理](/ticdc/manage-ticdc.md)
-    - 监控告警
-      - [监控指标](/ticdc/monitor-ticdc.md)
-      - [报警规则](/ticdc/ticdc-alert-rules.md)
-    - [故障处理](/ticdc/troubleshoot-ticdc.md)
-    - 参考指南
-      - [TiCDC Open API](/ticdc/ticdc-open-api.md)
-      - [TiCDC Open Protocol](/ticdc/ticdc-open-protocol.md)
-      - [TiCDC Avro Protocol](/ticdc/ticdc-avro-protocol.md)
-      - [TiCDC Canal-JSON Protocol](/ticdc/ticdc-canal-json.md)
-    - [常见问题解答](/ticdc/ticdc-faq.md)
-    - [术语表](/ticdc/ticdc-glossary.md)
-=======
   - PingCAP Clinic 诊断服务
     - [概述](/clinic/clinic-introduction.md)
     - [快速上手](/clinic/quick-start-with-clinic.md)
@@ -565,7 +544,6 @@
     - [分库分表场景下的数据校验](/sync-diff-inspector/shard-diff.md)
     - [TiDB 主从集群的数据校验](/sync-diff-inspector/upstream-downstream-diff.md)
     - [基于 DM 同步场景下的数据校验](/sync-diff-inspector/dm-diff.md)
->>>>>>> a4c504b95 (*: adjust tool order in toc and learning path (#13698))
   - TiUniManager
     - [概述](/tiunimanager/tiunimanager-overview.md)
     - [安装和运维](/tiunimanager/tiunimanager-install-and-maintain.md)
