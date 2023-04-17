@@ -25,11 +25,11 @@ summary: 介绍 TiCDC 数据正确性校验功能的实现原理和使用方法
 
 2. 在创建 Changefeed 的 `--config` 参数所指定的配置文件中，添加如下配置：
 
-```toml
-[Integrity]
-integrity-check-level="correctness"
-corruption-handle-level="warn"
-```
+    ```toml
+    [Integrity]
+    integrity-check-level="correctness"
+    corruption-handle-level="warn"
+    ```
 
 3. 当使用 Avro 作为数据编码格式时，你需要在 [`sink-uri`](/ticdc/ticdc-sink-to-kafka.md#sink-uri-配置-kafka) 中设置 [`enable-tidb-extension=true`](/ticdc/ticdc-sink-to-kafka.md#sink-uri-配置-kafka)，同时还需设置 [`avro-decimal-handling-mode=string`](/ticdc/ticdc-sink-to-kafka.md#sink-uri-配置-kafka) 为 `string` 和 [`avro-bigint-unsigned-handling-mode=string`](/ticdc/ticdc-sink-to-kafka.md#sink-uri-配置-kafka)。下面是一个配置示例：
 
