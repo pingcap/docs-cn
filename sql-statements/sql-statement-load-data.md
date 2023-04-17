@@ -33,6 +33,9 @@ LocalOpt ::= ('LOCAL')?
 FormatOpt ::=
     ('FORMAT' ('DELIMITED DATA' | 'SQL FILE' | 'PARQUET'))?
 
+DuplicateOpt ::=
+    ('IGNORE' | 'REPLACE')?
+
 Fields ::=
     ('TERMINATED' 'BY' stringLit
     | ('OPTIONALLY')? 'ENCLOSED' 'BY' stringLit
@@ -48,7 +51,6 @@ LoadDataOption ::=
     | thread '=' numberLiteral
     | import_mode '=' ('LOGICAL' | 'PHYSICAL')
     | max_write_speed '=' stringLit
-    | checksum_table '=' ('REQUIRED' | 'OPTIONAL' | 'OFF')
 ```
 
 ## 参数说明
@@ -80,6 +82,12 @@ LoadDataOption ::=
 | .gz / .gzip | gzip 压缩格式 | tbl.0001.csv.gz |
 | .zstd / .zst | ZSTD 压缩格式 | tbl.0001.csv.zstd |
 | .snappy | snappy 压缩格式 | tbl.0001.csv.snappy |
+
+### `DuplicateOpt`
+
+该语句与 MySQL 行为一致，具体请参考 [MySQL LOAD DATA 文档](https://dev.mysql.com/doc/refman/8.0/en/load-data.html)。
+
+该语句对物理导入模式不生效。
 
 ### `CharsetOpt`
 
@@ -147,21 +155,13 @@ LINES TERMINATED BY '\n' STARTING BY ''
 
 可以通过 `import_mode = ('LOGICAL' | 'PHYSICAL')` 来指定数据导入的模式，默认值为 `LOGICAL`。在 v7.1.0 版本开始，`LOAD DATA` 集成 TiDB Lightning 的物理导入模式，可通过 `WITH import_mode = 'physical'` 开启。
 
-物理导入只能在非 `LOCAL` 模式下使用，单线程执行，且目前物理导入尚未接入[冲突监测](https://docs.pingcap.com/zh/tidb/dev/tidb-lightning-physical-import-mode-usage#%E5%86%B2%E7%AA%81%E6%95%B0%E6%8D%AE%E6%A3%80%E6%B5%8B)，因此遇到数据主键冲突会导致 checksum 不一致，建议导入前检查数据文件是否存在键值冲突。其他的限制和必要条件参考 [lightning 物理导入](https://docs.pingcap.com/tidb/dev/tidb-lightning-physical-import-mode)。
+物理导入只能在非 `LOCAL` 模式下使用，单线程执行，且目前物理导入尚未接入[冲突监测](https://docs.pingcap.com/zh/tidb/dev/tidb-lightning-physical-import-mode-usage#%E5%86%B2%E7%AA%81%E6%95%B0%E6%8D%AE%E6%A3%80%E6%B5%8B)，因此遇到数据主键或唯一键冲突时会报 checksum 不一致错误，建议导入前检查数据文件是否存在键值冲突。其他的限制和必要条件参考 [lightning 物理导入](https://docs.pingcap.com/tidb/dev/tidb-lightning-physical-import-mode)。
 
 物理导入模式下 `LOAD DATA` 会将本地排序的数据写入到 TiDB [temp-dir](https://docs.pingcap.com/tidb/stable/tidb-configuration-file#temp-dir-new-in-v630) 的子目录中，子目录命名规则为 `import-<tidb-port>/<job-id>`。物理导入目前尚未接入[磁盘资源配额](https://docs.pingcap.com/zh/tidb/dev/tidb-lightning-physical-import-mode-usage#%E7%A3%81%E7%9B%98%E8%B5%84%E6%BA%90%E9%85%8D%E9%A2%9D-%E4%BB%8E-v620-%E7%89%88%E6%9C%AC%E5%BC%80%E5%A7%8B%E5%BC%95%E5%85%A5)，请确保对应磁盘存在足够的数据空间。
 
 ### `WITH max_write_speed = stringLit`
 
 当使用物理导入时，可通过该参数来指定写入单个 TiKV 的速率限制，默认值为 0，即不做限制。该参数支持 [go-units](https://pkg.go.dev/github.com/docker/go-units#example-RAMInBytes) 格式，比如 `WITH max_write_speed = '1MB'` 即写入到单个 TiKV 的最大速率为 `1MB/s`。
-
-### `WITH checksum_table = ('REQUIRED' | 'OPTIONAL' | 'OFF')`
-
-当使用物理导入时，可通过该参数来指定 checksum 的行为，默认值为 `REQUIRED`，各个取值含义如下：
-
-- `REQUIRED`: 当 checksum 失败时，报错退出。
-- `OPTIONAL`: 当 checksum 失败时，仅在日志中打印 WARN 日志，正常退出。
-- `OFF`: 导入完成后，不进行checksum。
 
 ## 示例
 
