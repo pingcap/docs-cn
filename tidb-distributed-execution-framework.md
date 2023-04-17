@@ -39,7 +39,7 @@ TiDB 采用计算存储分离架构，具有出色的扩展性和弹性的扩缩
 
 TiDB 后端任务分布式执行框架的架构图如下：
 
-![dist-task-architect.jpg](media/dist-task/dist-task-architect.jpg)
+![dist-task-architect.jpg](/media/dist-task/dist-task-architect.jpg)
 
 根据上面的架构图，分布式框架中的任务的执行，主要由以下各模块来负责：
 
