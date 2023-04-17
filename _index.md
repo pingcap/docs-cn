@@ -100,43 +100,22 @@ hide_commit: true
 
 [TiUP](https://docs.pingcap.com/zh/tidb/v7.0/tiup-overview)
 
-<<<<<<< HEAD
-[Dumpling](https://docs.pingcap.com/zh/tidb/v7.0/dumpling-overview)
-=======
-[TiDB Operator](https://docs.pingcap.com/zh/tidb/dev/tidb-operator-overview)
+[TiDB Operator](https://docs.pingcap.com/zh/tidb/v7.0/tidb-operator-overview)
 
-[TiDB Data Migration (DM)](https://docs.pingcap.com/zh/tidb/dev/dm-overview)
->>>>>>> a4c504b95 (*: adjust tool order in toc and learning path (#13698))
+[TiDB Data Migration (DM)](https://docs.pingcap.com/zh/tidb/v7.0/dm-overview)
 
 [TiDB Lightning](https://docs.pingcap.com/zh/tidb/v7.0/tidb-lightning-overview)
 
-<<<<<<< HEAD
-[Data Migration](https://docs.pingcap.com/zh/tidb/v7.0/dm-overview)
-
-[Backup & Restore (BR)](https://docs.pingcap.com/zh/tidb/v7.0/backup-and-restore-overview)
-=======
-[Dumpling](https://docs.pingcap.com/zh/tidb/dev/dumpling-overview)
->>>>>>> a4c504b95 (*: adjust tool order in toc and learning path (#13698))
+[Dumpling](https://docs.pingcap.com/zh/tidb/v7.0/dumpling-overview)
 
 [TiCDC](https://docs.pingcap.com/zh/tidb/v7.0/ticdc-overview)
 
-<<<<<<< HEAD
+[Backup & Restore (BR)](https://docs.pingcap.com/zh/tidb/v7.0/backup-and-restore-overview)
+
 [PingCAP Clinic](https://docs.pingcap.com/zh/tidb/v7.0/clinic-introduction)
-=======
-[Backup & Restore (BR)](https://docs.pingcap.com/zh/tidb/dev/backup-and-restore-overview)
 
-[PingCAP Clinic](https://docs.pingcap.com/zh/tidb/dev/clinic-introduction)
->>>>>>> a4c504b95 (*: adjust tool order in toc and learning path (#13698))
+[TiUniManager](https://docs.pingcap.com/zh/tidb/dev/tiunimanager-overview)
 
-[TiUniManager](https://docs.pingcap.com/zh/tidb/v7.0/tiunimanager-overview)
-
-<<<<<<< HEAD
-[TiDB Operator](https://docs.pingcap.com/zh/tidb/v7.0/tidb-operator-overview)
-
-[TiSpark](https://docs.pingcap.com/zh/tidb/v7.0/tispark-overview)
-
-=======
->>>>>>> a4c504b95 (*: adjust tool order in toc and learning path (#13698))
 </LearningPath>
 
 <LearningPath label="参考" icon="cloud-dev">
@@ -145,11 +124,7 @@ hide_commit: true
 
 [TiDB 命令行参数](https://docs.pingcap.com/zh/tidb/v7.0/command-line-flags-for-tidb-configuration)
 
-<<<<<<< HEAD
 [TiDB Control](https://docs.pingcap.com/zh/tidb/v7.0/tidb-control)
-=======
-[TiDB Control](https://docs.pingcap.com/zh/tidb/dev/tidb-control)
->>>>>>> a4c504b95 (*: adjust tool order in toc and learning path (#13698))
 
 [系统变量](https://docs.pingcap.com/zh/tidb/v7.0/system-variables)
 
