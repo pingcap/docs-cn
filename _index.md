@@ -100,24 +100,43 @@ hide_commit: true
 
 [TiUP](https://docs.pingcap.com/zh/tidb/v6.6/tiup-overview)
 
+<<<<<<< HEAD
 [Dumpling](https://docs.pingcap.com/zh/tidb/v6.6/dumpling-overview)
+=======
+[TiDB Operator](https://docs.pingcap.com/zh/tidb/dev/tidb-operator-overview)
+
+[TiDB Data Migration (DM)](https://docs.pingcap.com/zh/tidb/dev/dm-overview)
+>>>>>>> a4c504b95 (*: adjust tool order in toc and learning path (#13698))
 
 [TiDB Lightning](https://docs.pingcap.com/zh/tidb/v6.6/tidb-lightning-overview)
 
+<<<<<<< HEAD
 [Data Migration](https://docs.pingcap.com/zh/tidb/v6.6/dm-overview)
 
 [Backup & Restore (BR)](https://docs.pingcap.com/zh/tidb/v6.6/backup-and-restore-overview)
+=======
+[Dumpling](https://docs.pingcap.com/zh/tidb/dev/dumpling-overview)
+>>>>>>> a4c504b95 (*: adjust tool order in toc and learning path (#13698))
 
 [TiCDC](https://docs.pingcap.com/zh/tidb/v6.6/ticdc-overview)
 
+<<<<<<< HEAD
 [PingCAP Clinic](https://docs.pingcap.com/zh/tidb/v6.6/clinic-introduction)
+=======
+[Backup & Restore (BR)](https://docs.pingcap.com/zh/tidb/dev/backup-and-restore-overview)
+
+[PingCAP Clinic](https://docs.pingcap.com/zh/tidb/dev/clinic-introduction)
+>>>>>>> a4c504b95 (*: adjust tool order in toc and learning path (#13698))
 
 [TiUniManager](https://docs.pingcap.com/zh/tidb/v6.6/tiunimanager-overview)
 
+<<<<<<< HEAD
 [TiDB Operator](https://docs.pingcap.com/zh/tidb/v6.6/tidb-operator-overview)
 
 [TiSpark](https://docs.pingcap.com/zh/tidb/v6.6/tispark-overview)
 
+=======
+>>>>>>> a4c504b95 (*: adjust tool order in toc and learning path (#13698))
 </LearningPath>
 
 <LearningPath label="参考" icon="cloud-dev">
@@ -126,7 +145,11 @@ hide_commit: true
 
 [TiDB 命令行参数](https://docs.pingcap.com/zh/tidb/v6.6/command-line-flags-for-tidb-configuration)
 
+<<<<<<< HEAD
 [TiDB Control](https://docs.pingcap.com/zh/tidb/v6.6/tidb-control)  
+=======
+[TiDB Control](https://docs.pingcap.com/zh/tidb/dev/tidb-control)
+>>>>>>> a4c504b95 (*: adjust tool order in toc and learning path (#13698))
 
 [系统变量](https://docs.pingcap.com/zh/tidb/v6.6/system-variables)
 
