@@ -15,7 +15,7 @@ summary: 介绍 TiCDC 数据正确性校验功能的实现原理和使用方法
 
 TiCDC 数据正确性校验功能默认关闭，要使用该功能，请执行以下步骤：
 
-1. 首先，你需要在上游 TiDB 中开启行数据 Checksum 功能 ([`enable_row_level_checksum`](/system-variables.md#corruption-handle-level-从-v710-版本开始引入))：
+1. 首先，你需要在上游 TiDB 中开启行数据 Checksum 功能 ([`tidb_enable_row_level_checksum`](/system-variables.md#tidb_enable_row_level_checksum-从-v710-版本开始引入))：
 
     ```sql
     SET GLOBAL tidb_enable_row_level_checksum = true;
@@ -45,7 +45,7 @@ TiCDC 默认开启单行数据的 Checksum 校验功能。若要在开启此功�
 
 1. 首先，按照 [TiCDC 更新同步任务配置](/ticdc/ticdc-manage-changefeed.md#更新同步任务配置)的说明，按照 `暂停任务 -> 修改配置 -> 恢复任务` 的流程，在 Changefeed 的 `--config` 参数所指定的配置文件中移除 `[Integrity]` 的所有配置。
 
-2. 在上游 TiDB 中关闭行数据 Checksum 功能 ([`enable_row_level_checksum`](/system-variables.md#corruption-handle-level-从-v710-版本开始引入))，执行如下 SQL 语句：
+2. 在上游 TiDB 中关闭行数据 Checksum 功能 ([`tidb_enable_row_level_checksum`](/system-variables.md#tidb_enable_row_level_checksum-从-v710-版本开始引入))，执行如下 SQL 语句：
 
     ```sql
     SET GLOBAL tidb_enable_row_level_checksum = false;
