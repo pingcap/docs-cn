@@ -8,15 +8,13 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-load-data/','/docs-cn/dev/r
 
 `LOAD DATA` 语句用于将数据批量加载到 TiDB 表中。
 
-在 v7.0.0 版本集成 TiDB Lightning 的逻辑导入模式，使 `LOAD DATA` 语句更加强大，包括：
+在 v7.0.0 版本开始，`LOAD DATA` 集成 TiDB Lightning 的逻辑导入模式，使 `LOAD DATA` 语句更加强大，包括：
 
 - 支持从 S3、GCS 导入数据
 - 支持导入 Parquet 格式的数据
-- 新增参数 `FORMAT`、`FIELDS DEFINED NULL BY`、`With batch_size=<number>,detached`
-
-> **警告：**
->
-> 新增的能力和参数为实验特性，不建议在生产环境中使用。
+- 支持数据文件压缩
+- 支持并发导入
+- 新增参数 `FORMAT`、`FIELDS DEFINED NULL BY`、`With batch_size=<number>, detached, thread=<number>`
 
 ## 语法图
 
@@ -63,6 +61,22 @@ LoadDataOption ::=
 ### `FORMAT`
 
 你可以通过 `FORMAT` 参数来指定数据文件的格式。如果不指定该参数，需要使用的格式为 `DELIMITED DATA`，该格式即 MySQL `LOAD DATA` 支持的数据格式。
+
+对 `DELIMITED DATA` 时 `SQL FILE` 数据格式，`LOAD DATA` 支持压缩文件，`LOAD DATA` 会根据文件名称的后缀来自动决定压缩格式，目前支持的压缩格式如下：
+
+| 文件后缀 | 压缩格式 | 示例 |
+|:---|:---|:---|
+| .gz / .gzip | gzip 压缩格式 | tbl.0001.csv.gz |
+| .zstd / .zst | ZSTD 压缩格式 | tbl.0001.csv.zstd |
+| .snappy | snappy 压缩格式 | tbl.0001.csv.snappy |
+
+### `CharsetOpt`
+
+可通过 `CharsetOpt` 来指定数据文件的编码格式：
+
+```sql
+LOAD DATA INFILE 's3://<bucket-name>/path/to/data/foo.csv' INTO TABLE load_charset.latin1 CHARACTER SET latin1
+```
 
 ### `Fields`、`Lines`、`Ignore Lines`
 
@@ -113,6 +127,10 @@ LINES TERMINATED BY '\n' STARTING BY ''
 ### `WITH batch_size=<number>`
 
 可以通过 `WITH batch_size=<number>` 来指定批量写入 TiDB 时的行数，默认值为 `1000`。如果不希望分批写入，可以指定为 `0`。
+
+### `WITH thread=<number>`
+
+可以通过 `WITH thread=<number>` 来指定数据导入的并发度，默认值跟 `FORMAT` 有关，如果 `FORMAT` 为 `PARQUET` 默认值为 CPU 核数的 75 %，其他 `FORMAT` 默认值为 CPU 的逻辑核数。
 
 ## 示例
 
