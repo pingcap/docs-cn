@@ -3084,7 +3084,7 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 
 > **警告：**
 >
-> 从 v7.1 版本开始，该变量被废弃。请使用 `tidb_session_plan_cache_size` 进行设置。
+> 从 v7.1.0 开始，该变量被废弃。请使用 [`tidb_session_plan_cache_size`](#tidb_session_plan_cache_size) 进行设置。
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
