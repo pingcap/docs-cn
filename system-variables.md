@@ -1745,7 +1745,7 @@ Query OK, 0 rows affected (0.09 sec)
 - 这个变量用来控制是否开启窗口函数的支持。默认值 1 代表开启窗口函数的功能。
 - 由于窗口函数会使用一些保留关键字，可能导致原先可以正常执行的 SQL 语句在升级 TiDB 后无法被解析语法，此时可以将 `tidb_enable_window_function` 设置为 `OFF`。
 
-### `tidb_enable_row_level_checksum`
+### `tidb_enable_row_level_checksum` <span class="version-mark">从 v7.1.0 版本开始引入</span>
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
