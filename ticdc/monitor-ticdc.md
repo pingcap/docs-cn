@@ -1,9 +1,9 @@
 ---
-title: Key Monitoring Metrics of TiCDC
+title: TiCDC Monitoring Metrics Details
 summary: Learn some key metrics displayed on the Grafana TiCDC dashboard.
 ---
 
-# Key Monitoring Metrics of TiCDC
+# TiCDC Monitoring Metrics Details
 
 If you use TiUP to deploy the TiDB cluster, you can see a sub-dashboard for TiCDC in the monitoring system which is deployed at the same time. You can get an overview of TiCDC's current status from the TiCDC dashboard, where the key metrics are displayed. This document provides a detailed description of these key metrics.
 

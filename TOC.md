@@ -527,7 +527,8 @@
       - [Log Filter](/ticdc/ticdc-filter.md)
       - [Bidirectional Replication](/ticdc/ticdc-bidirectional-replication.md)
     - Monitor and Alert
-      - [Monitoring Metrics](/ticdc/monitor-ticdc.md)
+      - [Monitoring Metrics Summary](/ticdc/ticdc-summary-monitor.md)
+      - [Monitoring Metrics Details](/ticdc/monitor-ticdc.md)
       - [Alert Rules](/ticdc/ticdc-alert-rules.md)
     - Reference
       - [Architecture](/ticdc/ticdc-architecture.md)
