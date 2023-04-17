@@ -13,7 +13,9 @@ TiDB 在启用了 Row Checksum 功能后，使用 CRC32 算法，对该行数据
 
 ## 启用功能
 
-* 首先用户需要在上游 TiDB 开启行数据 Checksum 功能，执行如下 SQL 语句：
+要使用 TiCDC 数据正确性校验功能，
+
+1. 首先，你需要在上游 TiDB 中开启行数据 Checksum 功能 ([`enable_row_level_checksum`](/system-variables.md))：
 
 ```sql
 SET GLOBAL enable_row_level_checksum = true;
