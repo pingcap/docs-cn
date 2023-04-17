@@ -1919,7 +1919,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 > **警告：**
 >
-> 从 v7.1 版本开始，该变量被废弃。请使用 `tidb_session_plan_cache_size` 进行设置。
+> 从 v7.1.0 开始，该变量被废弃。请使用 [`tidb_session_plan_cache_size`](#tidb_session_plan_cache_size) 进行设置。
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
