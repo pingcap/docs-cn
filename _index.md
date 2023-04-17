@@ -115,6 +115,8 @@ hide_commit: true
 
 [PingCAP Clinic](https://docs.pingcap.com/zh/tidb/dev/clinic-introduction)
 
+[TiUniManager](https://docs.pingcap.com/zh/tidb/dev/tiunimanager-overview)
+
 </LearningPath>
 
 <LearningPath label="参考" icon="cloud-dev">

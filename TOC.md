@@ -546,13 +546,6 @@
     - [故障处理](/ticdc/troubleshoot-ticdc.md)
     - [常见问题解答](/ticdc/ticdc-faq.md)
     - [术语表](/ticdc/ticdc-glossary.md)
-  - PingCAP Clinic 诊断服务
-    - [概述](/clinic/clinic-introduction.md)
-    - [快速上手](/clinic/quick-start-with-clinic.md)
-    - [使用 PingCAP Clinic 诊断集群](/clinic/clinic-user-guide-for-tiup.md)
-    - [使用 PingCAP Clinic 生成诊断报告](/clinic/clinic-report.md)
-    - [采集 SQL 查询计划信息](/clinic/clinic-collect-sql-query-plan.md)
-    - [数据采集说明](/clinic/clinic-data-instruction-for-tiup.md)
   - TiDB Binlog
     - [概述](/tidb-binlog/tidb-binlog-overview.md)
     - [快速上手](/tidb-binlog/get-started-with-tidb-binlog.md)
@@ -573,6 +566,13 @@
       - [故障诊断](/tidb-binlog/troubleshoot-tidb-binlog.md)
       - [常见错误修复](/tidb-binlog/handle-tidb-binlog-errors.md)
     - [FAQ](/tidb-binlog/tidb-binlog-faq.md)
+  - PingCAP Clinic 诊断服务
+    - [概述](/clinic/clinic-introduction.md)
+    - [快速上手](/clinic/quick-start-with-clinic.md)
+    - [使用 PingCAP Clinic 诊断集群](/clinic/clinic-user-guide-for-tiup.md)
+    - [使用 PingCAP Clinic 生成诊断报告](/clinic/clinic-report.md)
+    - [采集 SQL 查询计划信息](/clinic/clinic-collect-sql-query-plan.md)
+    - [数据采集说明](/clinic/clinic-data-instruction-for-tiup.md)
   - TiSpark
     - [TiSpark 用户指南](/tispark-overview.md)
   - sync-diff-inspector
