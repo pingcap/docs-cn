@@ -10,19 +10,32 @@ summary: TiDB 数据库中 CALIBRATE RESOURCE 的使用概况。
 ## 语法图
 
 ```ebnf+diagram
-CalibrateResourceStmt ::= 'CALIBRATE' 'RESOURCE'
+CalibrateResourceStmt ::= 'CALIBRATE' 'RESOURCE' WorkloadOption
+
+WorkloadOption ::=
+    ( 'WORKLOAD' ('TPCC' | 'OLTP_READ_WRITE' | 'OLTP_READ_ONLY' | 'OLTP_WRITE_ONLY') )?
 ``` 
 
 ## 示例
+
+WORKLOAD 为可选项，默认为 TPCC，目前支持：OLTP_READ_WRITE、OLTP_READ_ONLY、OLTP_WRITE_ONLY。
 
 ```sql
 CALIBRATE RESOURCE;
 +-------+
 | QUOTA |
 +-------+
-| 68569 |
+| 190470 |
 +-------+
-1 row in set (0.03 sec)
+1 row in set (0.01 sec)
+
+MySQL [(none)]> CALIBRATE RESOURCE WORKLOAD OLTP_READ_WRITE;
++-------+
+| QUOTA |
++-------+
+| 70702 |
++-------+
+1 row in set (0.01 sec)
 ```
 
 > **注意：**
