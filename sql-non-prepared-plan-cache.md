@@ -9,16 +9,16 @@ summary: 介绍 TiDB 中非 Prepare 语句执行计划缓存的原理、使用�
 
 ## 原理
 
-Non-Prepared Plan Cache 为会话级别，并且与 [Prepared Plan Cache](/sql-prepared-plan-cache.md) 相互独立，缓存的计划互不影响。Non-Prepared Plan Cache 功能的基本原理如下：
+Non-Prepared Plan Cache 为会话级别，并且与 [Prepared Plan Cache](/sql-prepared-plan-cache.md) 共用一个缓存。Non-Prepared Plan Cache 功能的基本原理如下：
 
 1. 开启 Non-Prepared Plan Cache 后，TiDB 首先根据 AST（抽象语法树）对查询进行参数化。例如，将 `SELECT * FROM t WHERE b < 10 AND a = 1` 参数化为 `SELECT * FROM t WHERE b < ? and a = ?`。
-2. 然后，使用参数化后的查询在 Non-Prepared Plan Cache 中查找。
+2. 然后，使用参数化后的查询在 Plan Cache 中查找。
 3. 如果能找到可以直接复用的计划，则直接使用，并跳过整个优化过程。
 4. 否则，继续进行查询优化，并在最后将生成的计划放回到缓存中，以便下次复用。
 
 ## 使用方法
 
-目前，你可以通过 [`tidb_enable_non_prepared_plan_cache`](/system-variables.md#tidb_enable_non_prepared_plan_cache) 开启或关闭 Non-Prepared Plan Cache。同时，你还可以通过 [`tidb_non_prepared_plan_cache_size`](/system-variables.md#tidb_non_prepared_plan_cache_size) 来控制 Non-Prepared Plan Cache 的大小。当缓存的计划数超过 `tidb_non_prepared_plan_cache_size` 时，TiDB 会使用 LRU (Least Recently Used) 策略进行逐出。
+目前，你可以通过 [`tidb_enable_non_prepared_plan_cache`](/system-variables.md#tidb_enable_non_prepared_plan_cache) 开启或关闭 Non-Prepared Plan Cache。同时，你还可以通过 [`tidb_session_plan_cache_size`](/system-variables.md#tidb_session_plan_cache_size) 来控制 Plan Cache 的大小。当缓存的计划数超过 `tidb_session_plan_cache_size` 时，TiDB 会使用 LRU (Least Recently Used) 策略进行逐出。
 
 ## 示例
 
@@ -62,21 +62,36 @@ Non-Prepared Plan Cache 为会话级别，并且与 [Prepared Plan Cache](/sql-p
 
 ## 限制
 
+### 缓存不优计划的问题
+
 TiDB 对参数化后形式相同的查询，只能缓存一个计划。例如，对于 `SELECT * FROM t WHERE a < 1` 和 `SELECT * FROM t WHERE a < 100000` 这两个查询语句，由于参数化后的形式相同，均为 `SELECT * FROM t WHERE a < ?`，因此它们会共用一个计划。
 
 如果由此产生性能问题，可以使用 `ignore_plan_cache()` Hint 忽略计划缓存中的计划，让优化器每次重新为 SQL 生成执行计划。如果无法修改 SQL，可以通过创建 binding 来解决，例如 `CREATE BINDING FOR SELECT ... USING SELECT /*+ ignore_plan_cache() */ ...`。
+
+### 支持的范围
 
 由于上述风险以及执行计划缓存只在简单查询上有明显收益（如果查询较为复杂，查询本身执行时间较长，使用执行计划缓存收益不大），TiDB 目前对 Non-Prepared Plan Cache 的生效范围有严格的限制。具体限制如下：
 
 - [Prepared Plan Cache](/sql-prepared-plan-cache.md) 不支持的查询或者计划，Non-Prepared Plan Cache 也不支持。
 - 不支持包含 `Window` 或 `Having` 的查询。
-- 不支持包含三表及以上 `Join` 的查询。
-- 不支持 `ORDER BY` 或者 `GROUP BY` 后直接带数字或者表达式的查询，如 `Order By 1`、`GROUP BY a+1`。仅支持 `ORDER BY column_name` 和 `GROUP BY column_name`。
+- 不支持包含三表及以上 `Join` 或子查询的查询。
+- 不支持 `ORDER BY` 或者 `GROUP BY` 后直接带数字或者表达式的查询，如 `ORDER BB 1`、`GROUP BY a+1`。仅支持 `ORDER BY column_name` 和 `GROUP BY column_name`。
 - 不支持过滤条件中包含 `JSON`、`ENUM`、`SET` 或 `BIT` 类型的列的查询，例如 `SELECT * FROM t WHERE json_col = '{}'`。
 - 不支持过滤条件中出现 `NULL` 值的查询，例如 `SELECT * FROM t WHERE a is NULL`。
-- 不支持参数化后参数个数超过 50 个的查询，例如 `SELECT * FROM t WHERE a in (1, 2, 3, ... 51)`。
+- 不支持参数化后参数个数超过 200 个的查询，例如 `SELECT * FROM t WHERE a in (1, 2, 3, ... 201)`。
 - 不支持访问分区表、虚拟列、临时表、视图、或内存表的查询，例如 `SELECT * FROM INFORMATION_SCHEMA.COLUMNS`，其中 `COLUMNS` 为 TiDB 内存表。
-- 不支持带有 Hint、子查询、Lock 的查询。
+- 不支持带有 Hint 或有 Binding 的查询。
+
+开启此功能后，优化器会对查询进去一个快速判断，如果不满足 Non-Prepared Plan Cache 的支持条件，则会走正常的优化流程。
+
+### 性能收益
+
+在内部的测试中，大多数 TP 场景下打开此功能都能获得明显的性能收益，但是它也不是完全 "免费" 的，其自身也有一些额外的性能开销，包括判断查询是否支持、对查询进行参数化等，如果负载中的大多数查询无法被此功能支持，打开此功能反而可能影响性能。
+
+此时需要观察监控中的 `Plan Cache Miss OPS` 面板中的 `non-prepared-unsupported` 指标和 `Queries Using Plan Cache` 面板中的 `non-prepared` 指标，如果大多数查询都无法被支持，只有少部分查询能命中 Plan Cache，此时可以关闭此项功能。
+
+![unsupport](/media/non-prepapred-plan-cache-unsupprot.png)
+
 
 ## 诊断
 
