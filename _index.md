@@ -124,11 +124,7 @@ hide_commit: true
 
 [TiDB 命令行参数](https://docs.pingcap.com/zh/tidb/v6.6/command-line-flags-for-tidb-configuration)
 
-<<<<<<< HEAD
 [TiDB Control](https://docs.pingcap.com/zh/tidb/v6.6/tidb-control)
-=======
-[TiDB Control](https://docs.pingcap.com/zh/tidb/dev/tidb-control)
->>>>>>> a4c504b95 (*: adjust tool order in toc and learning path (#13698))
 
 [系统变量](https://docs.pingcap.com/zh/tidb/v6.6/system-variables)
 
