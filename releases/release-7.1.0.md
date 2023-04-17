@@ -185,7 +185,7 @@ TiDB 版本：7.1.0
 
     更多信息，请参考 [`ADMIN PAUSE DDL JOBS`](/sql-statements/sql-statement-admin-pause-ddl.md) 和 [`ADMIN RESUME DDL JOBS`](/sql-statements/sql-statement-admin-resume-ddl.md)。
 
-* 无需取消 DDL 的平滑集群升级功能 [#issue号](链接) @[zimulala](https://github.com/zimulala) @[hawkingrei](https://github.com/hawkingrei) **tw:ran-huang**
+* 支持无需取消 DDL 的平滑集群升级功能 [#issue号](链接) @[zimulala](https://github.com/zimulala) @[hawkingrei](https://github.com/hawkingrei) **tw:ran-huang**
 
     在 TiDB v7.1.0 之前的版本中，升级集群时需要先手动取消正在运行或排队的 DDL 任务，并在升级完成后再手动添加这些任务。为了让用户享受更加平滑的升级体验，TiDB v7.1.0 引入了自动暂停和恢复 DDL 任务的功能。从 v7.1.0 开始，用户无需手动取消 DDL 任务即可升级集群。系统会自动暂停正在执行或排队的 DDL 任务，等待整个集群完成滚动升级后再自动恢复这些任务，让用户可以更加轻松地升级 TiDB 集群。
 
