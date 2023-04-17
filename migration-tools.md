@@ -18,15 +18,6 @@ TiDB 提供了丰富的数据迁移相关的工具，用于全量迁移、增量
 | **主要优势** | <ul><li>一体化的数据迁移任务管理工具，支持全量迁移和增量同步</li><li>支持对表与操作进行过滤</li><li>支持分库分表的合并迁移</li></ul>|
 | **使用限制** | 数据导入速度与 TiDB Lightning 的 [Logical Import Mode](/tidb-lightning/tidb-lightning-logical-import-mode.md) 大致相同，而比TiDB Lightning 的 [Physical Import Mode](/tidb-lightning/tidb-lightning-physical-import-mode.md) 低很多。建议用于 1 TB 以内的存量数据迁移。 |
 
-## [Dumpling](/dumpling-overview.md)
-
-| 使用场景 | <span style="font-weight:normal">用于将数据从 MySQL/TiDB 进行全量导出</span> |
-|---|---|
-| **上游** | MySQL，TiDB |
-| **下游（输出文件）** | SQL，CSV |
-| **主要优势** | <ul><li>支持全新的 table-filter，筛选数据更加方便</li><li>支持导出到 Amazon S3 云盘</li></ul> |
-| **使用限制** | <ul><li>如果导出后计划往非 TiDB 的数据库恢复，建议使用 Dumpling。</li><li>如果导出后计划往另一个 TiDB 恢复，建议使用 [BR](/br/backup-and-restore-overview.md)。 </li></ul> |
-
 ## [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md)
 
 | 使用场景 | <span style="font-weight:normal">用于将数据全量导入到 TiDB</span> |
@@ -36,14 +27,14 @@ TiDB 提供了丰富的数据迁移相关的工具，用于全量迁移、增量
 | **主要优势** | <ul><li>支持快速导入大量数据，实现快速初始化 TiDB 集群的指定表</li><li>支持断点续传</li><li>支持数据过滤</li></ul> |
 | **使用限制** | <ul><li>如果使用 [Physical Import Mode](/tidb-lightning/tidb-lightning-physical-import-mode.md) 进行数据导入，TiDB Lightning 运行后，TiDB 集群将无法正常对外提供服务。</li><li>如果你不希望 TiDB 集群的对外服务受到影响，可以参考 TiDB Lightning [Logical Import Mode](/tidb-lightning/tidb-lightning-logical-import-mode.md) 中的硬件需求与部署方式进行数据导入。</li></ul> |
 
-## [Backup & Restore (BR)](/br/backup-and-restore-overview.md)
+## [Dumpling](/dumpling-overview.md)
 
-| 使用场景 | <span style="font-weight:normal">通过对大数据量的 TiDB 集群进行数据备份和恢复，实现数据迁移</span> |
+| 使用场景 | <span style="font-weight:normal">用于将数据从 MySQL/TiDB 进行全量导出</span> |
 |---|---|
-| **上游** | TiDB |
-| **下游（输出文件）** | SST，backup.meta 文件，backup.lock 文件 |
-| **主要优势** | <ul><li>适用于向另一个 TiDB 迁移数据。</li><li>支持数据冷备份到外部存储，可以用于灾备恢复。</li></ul> |
-| **使用限制** | <ul><li>BR 恢复到 TiCDC / Drainer 的上游集群时，恢复数据无法由 TiCDC / Drainer 同步到下游。</li><li>BR 只支持在 `new_collations_enabled_on_first_bootstrap` 开关值相同的集群之间进行操作。</li></ul> |
+| **上游** | MySQL，TiDB |
+| **下游（输出文件）** | SQL，CSV |
+| **主要优势** | <ul><li>支持全新的 table-filter，筛选数据更加方便</li><li>支持导出到 Amazon S3 云盘</li></ul> |
+| **使用限制** | <ul><li>如果导出后计划往非 TiDB 的数据库恢复，建议使用 Dumpling。</li><li>如果导出后计划往另一个 TiDB 恢复，建议使用 [BR](/br/backup-and-restore-overview.md)。 </li></ul> |
 
 ## [TiCDC](/ticdc/ticdc-overview.md)
 
@@ -53,6 +44,15 @@ TiDB 提供了丰富的数据迁移相关的工具，用于全量迁移、增量
 | **下游** | TiDB，MySQL，Kafka，Confluent |
 | **主要优势** | 提供开放数据协议 (TiCDC Open Protocol)。|
 | **使用限制** | TiCDC 只能同步至少存在一个有效索引的表。暂不支持以下场景：<ul><li>单独使用 RawKV 的 TiKV 集群。</li><li>在 TiDB 中创建 SEQUENCE 的 DDL 操作和 SEQUENCE 函数。</li></ul> |
+
+## [Backup & Restore (BR)](/br/backup-and-restore-overview.md)
+
+| 使用场景 | <span style="font-weight:normal">通过对大数据量的 TiDB 集群进行数据备份和恢复，实现数据迁移</span> |
+|---|---|
+| **上游** | TiDB |
+| **下游（输出文件）** | SST，backup.meta 文件，backup.lock 文件 |
+| **主要优势** | <ul><li>适用于向另一个 TiDB 迁移数据。</li><li>支持数据冷备份到外部存储，可以用于灾备恢复。</li></ul> |
+| **使用限制** | <ul><li>BR 恢复到 TiCDC / Drainer 的上游集群时，恢复数据无法由 TiCDC / Drainer 同步到下游。</li><li>BR 只支持在 `new_collations_enabled_on_first_bootstrap` 开关值相同的集群之间进行操作。</li></ul> |
 
 ## [sync-diff-inspector](/sync-diff-inspector/sync-diff-inspector-overview.md)
 
