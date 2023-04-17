@@ -102,23 +102,21 @@ hide_commit: true
 
 [TiUP](https://docs.pingcap.com/zh/tidb/v6.1/tiup-overview)
 
-[Dumpling](https://docs.pingcap.com/zh/tidb/v6.1/dumpling-overview)
+[TiDB Operator](https://docs.pingcap.com/zh/tidb/v6.1/tidb-operator-overview)
+
+[TiDB Data Migration (DM)](https://docs.pingcap.com/zh/tidb/v6.1/dm-overview)
 
 [TiDB Lightning](https://docs.pingcap.com/zh/tidb/v6.1/tidb-lightning-overview)
 
-[Data Migration](https://docs.pingcap.com/zh/tidb/v6.1/dm-overview)
-
-[Backup & Restore (BR)](https://docs.pingcap.com/zh/tidb/v6.1/backup-and-restore-overview)
+[Dumpling](https://docs.pingcap.com/zh/tidb/v6.1/dumpling-overview)
 
 [TiCDC](https://docs.pingcap.com/zh/tidb/v6.1/ticdc-overview)
+
+[Backup & Restore (BR)](https://docs.pingcap.com/zh/tidb/v6.1/backup-and-restore-overview)
 
 [PingCAP Clinic](https://docs.pingcap.com/zh/tidb/v6.1/clinic-introduction)
 
 [TiUniManager](https://docs.pingcap.com/zh/tidb/v6.1/tiunimanager-overview)
-
-[TiDB Operator](https://docs.pingcap.com/zh/tidb/v6.1/tidb-operator-overview)
-
-[TiSpark](https://docs.pingcap.com/zh/tidb/v6.1/tispark-overview)
 
 </LearningPath>
 
@@ -128,7 +126,7 @@ hide_commit: true
 
 [发布历史](https://docs.pingcap.com/zh/tidb/v6.1/release-notes)
 
-[常见问题](https://docs.pingcap.com/zh/tidb/v6.1/faq-overview) 
+[常见问题](https://docs.pingcap.com/zh/tidb/v6.1/faq-overview)
 
 </LearningPath>
 
