@@ -16,7 +16,7 @@ TiDB 在启用了 Row Checksum 功能后，使用 CRC32 算法，对该行数据
 * 首先用户需要在上游 TiDB 开启行数据 Checksum 功能，执行如下 SQL 语句：
 
 ```sql
-SET GLOBAL enable_row_level_checksum = true; 
+SET GLOBAL enable_row_level_checksum = true;
 ```
 
 上述配置仅对新创建的会话生效，因此需要重新链接 TiDB。
