@@ -126,13 +126,7 @@ hide_commit: true
 
 [发布历史](https://docs.pingcap.com/zh/tidb/v6.1/release-notes)
 
-[TiDB Control](https://docs.pingcap.com/zh/tidb/dev/tidb-control)
-
-[系统变量](https://docs.pingcap.com/zh/tidb/dev/system-variables)
-
-[发布历史](https://docs.pingcap.com/zh/tidb/dev/release-notes)
-
-[常见问题](https://docs.pingcap.com/zh/tidb/dev/faq-overview)
+[常见问题](https://docs.pingcap.com/zh/tidb/v6.1/faq-overview)
 
 </LearningPath>
 
