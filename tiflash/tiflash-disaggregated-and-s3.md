@@ -74,12 +74,7 @@ TiFlash 存算分离架构适用于高性价比的数据分析服务的场景。
         }
     }
     ```
-
-## 使用方式
-
-默认情况下，TiUP 会将 TiFlash 部署为存算一体架构。如需将 TiFlash 部署为存算分离架构，请参考以下步骤手动进行配置：
-
-1. 确保 TiDB 集群中没有任何 TiFlash 节点。如果有，则需要将所有表的 TiFlash 副本数设置为 0，然后缩容掉所有 TiFlash 节点。比如：
+3. 确保 TiDB 集群中没有任何 TiFlash 节点。如果有，则需要将所有表的 TiFlash 副本数设置为 0，然后缩容掉所有 TiFlash 节点。比如：
 
     ```sql
     SELECT * FROM INFORMATION_SCHEMA.TIFLASH_REPLICA; # 查询所有带有 TiFlash 副本的表
@@ -92,7 +87,11 @@ TiFlash 存算分离架构适用于高性价比的数据分析服务的场景。
     tiup cluster prune mycluster              # 移除所有处于 Tombstone 状态的 TiFlash 节点
     ```
 
-2. 准备 TiFlash 的拓扑配置文件，比如 scale-out.topo.yaml，配置内容如下：
+## 使用方式
+
+默认情况下，TiUP 会将 TiFlash 部署为存算一体架构。如需将 TiFlash 部署为存算分离架构，请参考以下步骤手动进行配置：
+
+1. 准备 TiFlash 的拓扑配置文件，比如 scale-out.topo.yaml，配置内容如下：
 
     ```yaml
     tiflash_servers:
@@ -156,7 +155,7 @@ TiFlash 存算分离架构适用于高性价比的数据分析服务的场景。
 
     * `storage.s3.endpoint` 支持使用 `http` 模式和 `https` 模式连接 S3，可以直接通过修改 URL 来选择。比如 `https://s3.{region}.amazonaws.com`。
 
-3. 执行扩容 TiFlash 节点，并重新设置 TiFlash 副本数：
+2. 执行扩容 TiFlash 节点，并重新设置 TiFlash 副本数：
 
     ```shell
     tiup cluster scale-out mycluster ./scale-out.topo.yaml
@@ -166,7 +165,7 @@ TiFlash 存算分离架构适用于高性价比的数据分析服务的场景。
     ALTER TABLE table_name SET TIFLASH REPLICA 1;
     ```
 
-4. 修改 TiDB 配置，用存算分离的方式查询 TiFlash。
+3. 修改 TiDB 配置，用存算分离的方式查询 TiFlash。
 
     1. 以编辑模式打开 TiDB 配置文件：
 
