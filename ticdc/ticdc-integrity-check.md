@@ -17,11 +17,11 @@ summary: 介绍 TiCDC 数据正确性校验功能的实现原理和使用方法
 
 1. 首先，你需要在上游 TiDB 中开启行数据 Checksum 功能 ([`enable_row_level_checksum`](/system-variables.md))：
 
-```sql
-SET GLOBAL enable_row_level_checksum = true;
-```
+    ```sql
+    SET GLOBAL enable_row_level_checksum = true;
+    ```
 
-上述配置仅对新创建的会话生效，因此需要重新连接 TiDB。
+    上述配置仅对新创建的会话生效，因此需要重新连接 TiDB。
 
 2. 在创建 Changefeed 的 `--config` 参数所指定的配置文件中，添加如下配置：
 
