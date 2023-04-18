@@ -261,7 +261,7 @@ region-threshold = 100000
 # * 当 `region-threshold` 和 `write-key-threshold` 同时配置时，
 #   该功能将优先检查修改行数是否大于 `write-key-threshold`，
 #   如果不超过，则再检查 Region 个数是否大于 `region-threshold`。
-write-key-threshold = 0
+write-key-threshold = 30000
 ```
 
 一个表包含的 Region 个数可用如下 SQL 查询：
