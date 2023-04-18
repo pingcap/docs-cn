@@ -31,6 +31,41 @@ CalibrateOption ::=
 
 ## 示例
 
+指定初始时间和时间窗口大小，根据实际负载查看 RU 容量。
+
+```sql
+CALIBRATE RESOURCE START_TIME '2023-04-18 08:00:00' DURATION '20m';
++-------+
+| QUOTA |
++-------+
+| 27969 |
++-------+
+1 row in set (0.01 sec)
+```
+
+指定初始时间和结束时间，根据实际负载查看 RU 容量。
+
+```sql
+CALIBRATE RESOURCE START_TIME '2023-04-18 08:00:00' END_TIME '2023-04-18 08:20:00';
++-------+
+| QUOTA |
++-------+
+| 27969 |
++-------+
+1 row in set (0.01 sec)
+```
+
+当时间窗口范围不满足 10 分钟至 24 小时，会发生报错提醒。
+
+```sql
+CALIBRATE RESOURCE START_TIME '2023-04-18 08:00:00' DURATION '25h';
+ERROR 1105 (HY000): the duration of calibration is too long, should be less than 24h0m0s
+CALIBRATE RESOURCE START_TIME '2023-04-18 08:00:00' DURATION '9m';
+ERROR 1105 (HY000): the duration of calibration is too short, should be greater than 10m0s
+```
+
+指定 `WORKLOAD` 查看 RU 容量，默认为 TPCC。
+
 ```sql
 CALIBRATE RESOURCE;
 +-------+
@@ -40,14 +75,11 @@ CALIBRATE RESOURCE;
 +-------+
 1 row in set (0.01 sec)
 
-```
-
-```sql
-CALIBRATE RESOURCE WORKLOAD OLTP_READ_WRITE;
+CALIBRATE RESOURCE WORKLOAD OLTP_WRITE_ONLY;
 +-------+
 | QUOTA |
 +-------+
-| 70702 |
+| 27444 |
 +-------+
 1 row in set (0.01 sec)
 ```
