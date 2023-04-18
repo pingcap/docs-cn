@@ -7,7 +7,9 @@ summary: TiDB 数据库中 CALIBRATE RESOURCE 的使用概况。
 
 `CALIBRATE RESOURCE` 语句用于预估并输出当前集群的 [`Request Unit (RU)`](/tidb-resource-control.md#什么是-request-unit-ru) 的容量。TiDB 提供两种预估方式：
 
-- 方法一：根据实际负载查看指定时间窗口内的容量，时间窗口范围为 10 分钟至 24 小时。
+- 方法一：根据实际负载查看指定时间窗口内的容量，为提高预估准确性，存在以下约束：
+    - 时间窗口范围为 10 分钟至 24 小时
+    - 在指定的时间窗口内，TiDB 与 TiKV 的 CPU 利用率过低时不能进行容量估算
 - 方法二：指定 `WORKLOAD` 查看 RU 容量，默认为 TPCC。目前支持以下选项：
     - OLTP_READ_WRITE
     - OLTP_READ_ONLY
@@ -55,13 +57,20 @@ CALIBRATE RESOURCE START_TIME '2023-04-18 08:00:00' END_TIME '2023-04-18 08:20:0
 1 row in set (0.01 sec)
 ```
 
-当时间窗口范围 `DURATION` 不满足 10 分钟至 24 小时，会发生报错提醒。
+当时间窗口范围 `DURATION` 不满足 10 分钟至 24 小时，会导致报错提醒。
 
 ```sql
 CALIBRATE RESOURCE START_TIME '2023-04-18 08:00:00' DURATION '25h';
-ERROR 1105 (HY000): the duration of calibration is too long, should be less than 24h0m0s
+ERROR 1105 (HY000): the duration of calibration is too long, which could lead to inaccurate output. Please make the duration between 10m0s and 24h0m0s
 CALIBRATE RESOURCE START_TIME '2023-04-18 08:00:00' DURATION '9m';
-ERROR 1105 (HY000): the duration of calibration is too short, should be greater than 10m0s
+ERROR 1105 (HY000): the duration of calibration is too short, which could lead to inaccurate output. Please make the duration between 10m0s and 24h0m0s
+```
+
+当时间窗口范围内的负载过低，会导致报错提醒。
+
+```sql
+CALIBRATE RESOURCE START_TIME '2023-04-18 08:00:00' DURATION '60m';
+ERROR 1105 (HY000): The workload in selected time window is too low, with which TiDB is unable to reach a capacity estimation; please select another time window with higher workload, or calibrate resource by hardware instead
 ```
 
 指定 `WORKLOAD` 查看 RU 容量，默认为 TPCC。
