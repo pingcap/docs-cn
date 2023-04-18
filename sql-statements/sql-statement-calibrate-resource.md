@@ -24,8 +24,8 @@ summary: TiDB 数据库中 CALIBRATE RESOURCE 的使用概况。
 CalibrateResourceStmt ::= 'CALIBRATE' 'RESOURCE' CalibrateOption
 
 CalibrateOption ::=
-('WORKLOAD' ('TPCC' | 'OLTP_READ_WRITE' | 'OLTP_READ_ONLY' | 'OLTP_WRITE_ONLY'))
-| ('START_TIME' 'TIMESTAMP' ('DURATION' stringLit | 'END_TIME' 'TIMESTAMP')?)?
+('START_TIME' 'TIMESTAMP' ('DURATION' stringLit | 'END_TIME' 'TIMESTAMP')?)
+| ('WORKLOAD' ('TPCC' | 'OLTP_READ_WRITE' | 'OLTP_READ_ONLY' | 'OLTP_WRITE_ONLY'))?
 
 ```
 
