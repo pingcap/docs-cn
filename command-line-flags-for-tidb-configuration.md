@@ -126,7 +126,7 @@ When you start the TiDB cluster, you can use command-line options or environment
 
 > **Warning:**
 >
-> Use `*` with caution because it might introduce security risks by allowing a client of any IP address to report its IP address. In addition, using `*` might also cause the internal component that directly connects to TiDB (such as TiDB Dashboard) to be unavailable.
+> Use `*` with caution because it might introduce security risks by allowing a client of any IP address to report its IP address. In addition, even if `*` is set to allow proxy connections from all IP addresses, internal components that connect directly to TiDB (such as TiDB Dashboard) will not be able to connect to the TiDB server. It is recommended to set `--proxy-protocol-fallbackable` to `true`.
 
 > **Note:**
 >
