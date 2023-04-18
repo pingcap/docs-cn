@@ -805,9 +805,9 @@ Empty set (0.00 sec)
 
 对于 `HASH` 和 `KEY` 分区表，你可以进行以下分区管理操作：
 
-- 使用 `ALTER TABLE <table name> COALESCE PARTITION <number of partitions to decrease by>` 语句减少分区数量。此操作通过将整个表在线复制到新的分区数来重组表。
-- 使用 `ALTER TABLE <table name> ADD PARTITION <number of partition to increase by | (additional partition definitions)>` 语句增加分区的数量。此操作通过将整个表复制到新的联机分区数来重组表。
-- 使用 `ALTER TABLE <table name> TRUNCATE PARTITION <list of partitions>` 语句清空分区里的数据。 `TRUNCATE PARTITION` 的逻辑与 [`TRUNCATE TABLE`](/sql-statements/sql-statement-truncate.md) 相似，但它的操作对象为分区。
+- 使用 `ALTER TABLE <table name> COALESCE PARTITION <要减少的分区数量>` 语句减少分区数量。此操作会将整张表在线复制到新的分区数，因此重组了分区。
+- 使用 `ALTER TABLE <table name> ADD PARTITION <要增加的分区数量 | (新的分区说明)>` 语句增加分区的数量。此操作会将整张表在线复制到新的分区数，因此重组了分区。
+- 使用 `ALTER TABLE <table name> TRUNCATE PARTITION <分区列表>` 语句清空分区里的数据。 `TRUNCATE PARTITION` 的逻辑与 [`TRUNCATE TABLE`](/sql-statements/sql-statement-truncate.md) 相似，但它的操作对象为分区。
 
 `EXCHANGE PARTITION` 语句用来交换分区和非分区表，类似于重命名表如 `RENAME TABLE t1 TO t1_tmp, t2 TO t1, t1_tmp TO t2` 的操作。
 
@@ -969,40 +969,96 @@ ALTER TABLE member_level REORGANIZE PARTITION l1_2,l3,l4,l5,l6 INTO
     ERROR 1526 (HY000): Table has no partition for value 6
     ```
 
-### 管理 Hash 分区
+- 分区重组后，相应分区的统计信息将会过期，并返回以下警告。此时，你可以通过 [`ANALYZE TABLE`]（/sql-statements/sql-statement-analyze-table.md）语句更新统计信息。
 
-跟 Range 分区不同，Hash 分区不支持 `DROP PARTITION`。
+    ```sql
+    +---------+------+--------------------------------------------------------------------------------------------------------------------------------------------------------+
+    | Level   | Code | Message                                                                                                                                                |
+    +---------+------+--------------------------------------------------------------------------------------------------------------------------------------------------------+
+    | Warning | 1105 | The statistics of related partitions will be outdated after reorganizing partitions. Please use 'ANALYZE TABLE' statement if you want to update it now |
+    +---------+------+--------------------------------------------------------------------------------------------------------------------------------------------------------+
+    1 row in set (0.00 sec)
+    ```
 
-目前 TiDB 的实现暂时不支持 `ALTER TABLE ... COALESCE PARTITION`。对于暂不支持的分区管理语句，TiDB 会返回错误。
+### 管理 Hash 分区和 Key 分区
+
+本小节将以如下 SQL 语句创建的分区表为例，介绍如何管理 Hash 分区。对于 Key 分区，你也可以使用与 Hash 分区相同的分区管理语句。
 
 ```sql
-ALTER TABLE MEMBERS OPTIMIZE PARTITION p0;
+CREATE TABLE example (
+  id INT PRIMARY KEY,
+  data VARCHAR(1024)
+)
+PARTITION BY HASH(id)
+PARTITIONS 2;
 ```
 
+将 `example` 表的分区个数增加 1 个（从 2 增加到 3）：
+
 ```sql
-ERROR 8200 (HY000): Unsupported optimize partition
+ALTER TABLE example ADD PARTITION PARTITIONS 1;
 ```
 
-### Key 分区管理
-
-目前 TiDB 中 Key 分区支持的分区管理语句只有 `ALTER TABLE ... TRUNCATE PARTITION`。
+你也可以通过添加分区定义来指定分区选项。例如，你可以通过以下语句将分区数量从 3 增加到 5，并指定新增的分区名为 `pExample4` 和 `pExample5`：
 
 ```sql
-ALTER TABLE members TRUNCATE PARTITION p0;
+ALTER TABLE example ADD PARTITION
+(PARTITION pExample4 COMMENT = 'not p3, but pExample4 instead',
+ PARTITION pExample5 COMMENT = 'not p4, but pExample5 instead');
+```
+
+与 Range 和 List 分区不同，Hash 和 Key 分区不支持 `DROP PARTITION`，但可以使用 `COALESCE PARTITION` 来减少分区数量，或使用 `TRUNCATE PARTITION` 清空指定分区的所有数据。
+
+将 `example` 表的分区个数减少 1 个（从 5 减少到 4）：
+
+```sql
+ALTER TABLE example COALESCE PARTITION 1;
+```
+
+> **注意：**
+>
+> 更改 Hash 和 Key 分区表的分区个数的过程会重组分区，将所有数据按照新的分区个数复制到对应的分区。因此，更改 Hash 和 Key 分区表的分区个数后，会遇到以下关于过时统计信息的警告。此时，你可以通过 [`ANALYZE TABLE`](/sql-statements/sql-statement-analyze-table.md) 语句更新统计信息。
+
+>
+> ```sql
+> +---------+------+--------------------------------------------------------------------------------------------------------------------------------------------------------+
+> | Level   | Code | Message                                                                                                                                                |
+> +---------+------+--------------------------------------------------------------------------------------------------------------------------------------------------------+
+> | Warning | 1105 | The statistics of related partitions will be outdated after reorganizing partitions. Please use 'ANALYZE TABLE' statement if you want to update it now |
+> +---------+------+--------------------------------------------------------------------------------------------------------------------------------------------------------+
+> 1 row in set (0.00 sec)
+> ```
+
+为了更好地理解 `example` 表重组后的结构，你可以查看重新创建 `example` 表所需的 SQL 语句，如下所示：
+
+```sql
+SHOW CREATE TABLE\G
+```
+
+```
+*************************** 1. row ***************************
+       Table: example
+Create Table: CREATE TABLE `example` (
+  `id` int(11) NOT NULL,
+  `data` varchar(1024) DEFAULT NULL,
+  PRIMARY KEY (`id`) /*T![clustered_index] CLUSTERED */
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin
+PARTITION BY HASH (`id`)
+(PARTITION `p0`,
+ PARTITION `p1`,
+ PARTITION `p2`,
+ PARTITION `pExample4` COMMENT 'not p3, but pExample4 instead')
+1 row in set (0.01 sec)
+```
+
+清空指定分区的所有数据：
+
+```sql
+ALTER TABLE example TRUNCATE PARTITION p0;
 ```
 
 ```
 Query OK, 0 rows affected (0.03 sec)
-```
-
-对于暂不支持的分区管理语句，TiDB 会返回错误。
-
-```sql
-ALTER TABLE members OPTIMIZE PARTITION p0;
-```
-
-```sql
-ERROR 8200 (HY000): Unsupported optimize partition
 ```
 
 ## 分区裁剪
