@@ -51,6 +51,13 @@ TiDB 作为一款开源一栈式实时 HTAP 数据库，可以很好地部署和
 
 运行时所需的依赖库：glibc（2.28-151.el8 版本）
 
+### 镜像依赖
+
+支持的 CPU 架构如下：
+
+- x86_64，需要 [x84-64-v2指令集](https://developers.redhat.com/blog/2021/01/05/building-red-hat-enterprise-linux-9-for-the-x86-64-v2-microarchitecture-level#)
+- ARM 64
+
 ## 软件配置要求
 
 ### 中控机软件配置
