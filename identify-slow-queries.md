@@ -70,6 +70,12 @@ Slow Query 基础信息：
     - `5000`：自上次收集统计信息以来记录的修改的行数
     - `col1:allEvicted`：`col1` 列对应的统计信息没有完全加载
     - `idx1:allEvicted`：`idx1` 索引对应的统计信息没有完全加载
+* `Succ`：表示语句是否执行成功。
+* `Backoff_time`：表示语句遇到需要重试的错误时在重试前等待的时间。常见的需要重试的错误有以下几种：遇到了 lock、Region 分裂、`tikv server is busy`。
+* `Plan`：表示语句的执行计划，用 `select tidb_decode_plan('xxx...')` SQL 语句可以解析出具体的执行计划。
+* `Binary_plan`：表示以二进制格式编码后的语句的执行计划，用 `select tidb_decode_binary_plan('xxx...')` SQL 语句可以解析出具体的执行计划。传递的信息和 `Plan` 字段基本相同，但是解析出的执行计划的格式会和 `Plan` 字段不同。
+* `Prepared`：表示这个语句是否是 `Prepare` 或 `Execute` 的请求。
+* `Plan_from_cache`：表示这个语句是否命中了执行计划缓存。
 * `Plan_from_binding`：表示这个语句是否用的绑定的执行计划。
 * `Has_more_results`：表示这个语句的查询结果是否还有更多的数据待用户发起 `fetch` 命令获取。
 * `Rewrite_time`：表示这个语句在查询改写阶段花费的时间。
