@@ -5,7 +5,12 @@ summary: TiDB 数据库中 CALIBRATE RESOURCE 的使用概况。
 
 # `CALIBRATE RESOURCE`
 
-`CALIBRATE RESOURCE` 语句用于预估并输出当前集群的 [`Request Unit (RU)`](/tidb-resource-control.md#什么是-request-unit-ru) 的容量。支持指定 WORKLOAD，默认为 TPCC，目前支持：TPCC、OLTP_READ_WRITE、OLTP_READ_ONLY、OLTP_WRITE_ONLY。
+`CALIBRATE RESOURCE` 语句用于预估并输出当前集群的 [`Request Unit (RU)`](/tidb-resource-control.md#什么是-request-unit-ru) 的容量。支持指定 WORKLOAD，默认为 TPCC，目前支持以下选项：
+
+- TPCC
+- OLTP_READ_WRITE
+- OLTP_READ_ONLY
+- OLTP_WRITE_ONLY
 
 ## 语法图
 
@@ -27,7 +32,10 @@ CALIBRATE RESOURCE;
 +-------+
 1 row in set (0.01 sec)
 
-MySQL [(none)]> CALIBRATE RESOURCE WORKLOAD OLTP_READ_WRITE;
+```
+
+```sql
+CALIBRATE RESOURCE WORKLOAD OLTP_READ_WRITE;
 +-------+
 | QUOTA |
 +-------+
