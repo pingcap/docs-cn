@@ -5,12 +5,6 @@ summary: 了解 TiDB 7.1.0 版本的新功能、兼容性变更、改进提升�
 
 # TiDB 7.1.0 Release Notes
 
-发版日期：2023 年 x 月 x 日
-
-TiDB 版本：7.1.0
-
-试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/dev/quick-start-with-tidb) | [下载离线包](https://cn.pingcap.com/product-community/)
-
 在 7.1.0 版本中，你可以获得以下关键特性：
 
 ## 功能详情
@@ -57,7 +51,7 @@ TiDB 版本：7.1.0
 
 * 自适应副本读来缓解读热点 [#14151](https://github.com/tikv/tikv/issues/14151) @[sticnarf](https://github.com/sticnarf) @[you06](https://github.com/you06) **tw:Oreoxmt**
 
-    发生读热点场景，其他 TiKV 节点可能仍存在闲置资源，与其在数据主节点持续排队等待，转而从其他节点读取副本可能带来更低的延迟。TiDB 在新版本开始支持负载自适应副本读，通过 [`tidb_load_based_replica_read_threshold`](/system-variables.md#tidb_load_based_replica_read_threshold-从-v700-版本开始引入) 参数来设置排队时间的临界值，当估算的排队时间超过设定时，TiDB 会尝试从副本节点读取数据。在读热点的情况下，相比于不打散有 70%-200% 的读取吞吐量提升。
+    在读热点场景中，热点 TiKV 无法及时处理读请求，导致读请求排队。但是，此时并非所有 TiKV 资源都已耗尽。为了降低延迟，TiDB v7.1.0 引入了负载自适应副本读取功能，允许从其他 TiKV 节点读取副本，而无需在热点 TiKV 节点排队等待。你可以通过 [`tidb_load_based_replica_read_threshold`](/system-variables.md#tidb_load_based_replica_read_threshold-从-v700-版本开始引入) 系统变量控制读请求的排队长度。当 leader 节点的预估排队时间超过该阈值时，TiDB 会优先从 follower 节点读取数据。在读热点的情况下，与不打散读热点相比，该功能可提高读取吞吐量 70%～200%。
 
     更多信息，请参考[用户文档](/troubleshoot-hot-spot-issues.md#打散读热点)。
 
@@ -218,12 +212,6 @@ TiDB 版本：7.1.0
 * TiCDC 优化 DDL 同步操作 [#8686](https://github.com/pingcap/tiflow/issues/8686) @[nongfushanquan](https://github.com/nongfushanquan) **tw:ran-huang**
 
    在 v7.1.0 之前，当用户在一个大表上运行需要影响所有行的 DDL 操作（例如添加或删除列），TiCDC 的同步延迟会显著增加。从 v7.1.0 开始，TiCDC 对此进行了优化，将同步延迟降低到不到 10 秒，以减轻 DDL 操作对下游延迟的影响。
-
-    更多信息，请参考[用户文档](链接)。
-
-* Lightning local backend (physical import mode) 支持在导入数据之前检测冲突的记录，并支持通过 insert ignore 和 replace 解决导入过程中的冲突记录 (实验特性) [#41629](https://github.com/pingcap/tidb/issues/41629) @[gozssky](https://github.com/gozssky) **tw:hfxsd**
-
-    在之前的版本使用 Lightning local backend (physical import mode) 导入数据时，当遇到冲突的记录时，无法通过 insert ignore 和 replace 来处理导入过程中的 pk、uk 冲突记录，需要用户自行去重。而本次版本，支持在导入数据之前，检查冲突的记录，并通过 replace 和 insert ignore 的语义来处理 pk、uk 冲突的记录。简化用户的操作，提升处理冲突的性能。
 
     更多信息，请参考[用户文档](链接)。
 
