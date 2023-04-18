@@ -135,6 +135,6 @@ include-commit-ts = false
 [integrity]
 # 是否开启单行数据的 Checksum 校验功能，默认值为 "none"，即不开启。可选值为 "none" 和 "correctness"。
 integrity-check-level = "none"
-# 当单行数据的 Checksum 校验失败时，Changefeed 打印错误行数据相关日志的级别，可选值为 "warn" 和 "error"。
+# 当单行数据的 Checksum 校验失败时，Changefeed 打印错误行数据相关日志的级别。默认值为 "warn"，可选值为 "warn" 和 "error"。
 corruption-handle-level = "warn"
 ```

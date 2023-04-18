@@ -1751,7 +1751,7 @@ Query OK, 0 rows affected (0.09 sec)
 - 是否持久化到集群：是
 - 类型：布尔型
 - 默认值：`OFF`
-- 这个变量用于控制是否开启[单行数据正确性校验的功能](/ticdc/ticdc-integrity-check.md)。
+- 这个变量用于控制是否开启 [TiCDC 单行数据正确性校验](/ticdc/ticdc-integrity-check.md)功能。
 
 ### `tidb_enforce_mpp` <span class="version-mark">从 v5.1 版本开始引入</span>
 
