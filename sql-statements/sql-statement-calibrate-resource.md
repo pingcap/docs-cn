@@ -31,7 +31,7 @@ CalibrateOption ::=
 
 ## 示例
 
-指定初始时间和时间窗口大小，根据实际负载查看 RU 容量。
+指定初始时间 `START_TIME` 和时间窗口 `DURATION` 大小，根据实际负载查看 RU 容量。
 
 ```sql
 CALIBRATE RESOURCE START_TIME '2023-04-18 08:00:00' DURATION '20m';
@@ -43,7 +43,7 @@ CALIBRATE RESOURCE START_TIME '2023-04-18 08:00:00' DURATION '20m';
 1 row in set (0.01 sec)
 ```
 
-指定初始时间和结束时间，根据实际负载查看 RU 容量。
+指定初始时间 `START_TIME` 和结束时间 `END_TIME`，根据实际负载查看 RU 容量。
 
 ```sql
 CALIBRATE RESOURCE START_TIME '2023-04-18 08:00:00' END_TIME '2023-04-18 08:20:00';
@@ -55,7 +55,7 @@ CALIBRATE RESOURCE START_TIME '2023-04-18 08:00:00' END_TIME '2023-04-18 08:20:0
 1 row in set (0.01 sec)
 ```
 
-当时间窗口范围不满足 10 分钟至 24 小时，会发生报错提醒。
+当时间窗口范围 `DURATION` 不满足 10 分钟至 24 小时，会发生报错提醒。
 
 ```sql
 CALIBRATE RESOURCE START_TIME '2023-04-18 08:00:00' DURATION '25h';
