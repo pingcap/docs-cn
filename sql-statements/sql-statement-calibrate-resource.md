@@ -10,7 +10,8 @@ summary: TiDB 数据库中 CALIBRATE RESOURCE 的使用概况。
 - 方法一：根据实际负载查看指定时间窗口内的容量，为提高预估准确性，存在以下约束：
     - 时间窗口范围为 10 分钟至 24 小时
     - 在指定的时间窗口内，TiDB 与 TiKV 的 CPU 利用率过低时不能进行容量估算
-- 方法二：指定 `WORKLOAD` 查看 RU 容量，默认为 TPCC。目前支持以下选项：
+
+- 方法二：指定 `WORKLOAD` 查看 RU 容量，默认为 `TPCC`。目前支持以下选项：
     - OLTP_READ_WRITE
     - OLTP_READ_ONLY
     - OLTP_WRITE_ONLY
