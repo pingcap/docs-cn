@@ -18,7 +18,7 @@ Non-Prepared Plan Cache 为会话级别，并且与 [Prepared Plan Cache](/sql-p
 
 ## 使用方法
 
-目前，你可以通过 [`tidb_enable_non_prepared_plan_cache`](/system-variables.md#tidb_enable_non_prepared_plan_cache) 开启或关闭 Non-Prepared Plan Cache。同时，你还可以通过 [`tidb_session_plan_cache_size`](/system-variables.md#tidb_session_plan_cache_size) 来控制 Plan Cache 的大小。当缓存的计划数超过 `tidb_session_plan_cache_size` 时，TiDB 会使用 LRU (Least Recently Used) 策略进行逐出。
+目前，你可以通过 [`tidb_enable_non_prepared_plan_cache`](/system-variables.md#tidb_enable_non_prepared_plan_cache) 开启或关闭 Non-Prepared Plan Cache。同时，你还可以通过 [`tidb_session_plan_cache_size`](/system-variables.md#tidb_session_plan_cache_size-从-v710-版本开始引入) 来控制 Plan Cache 的大小。当缓存的计划数超过 `tidb_session_plan_cache_size` 时，TiDB 会使用 LRU (Least Recently Used) 策略进行逐出。
 
 ## 示例
 
@@ -75,7 +75,7 @@ TiDB 对参数化后形式相同的查询，只能缓存一个计划。例如，
 - [Prepared Plan Cache](/sql-prepared-plan-cache.md) 不支持的查询或者计划，Non-Prepared Plan Cache 也不支持。
 - 不支持包含 `Window` 或 `Having` 的查询。
 - 不支持包含三表及以上 `Join` 或子查询的查询。
-- 不支持 `ORDER BY` 或者 `GROUP BY` 后直接带数字或者表达式的查询，如 `ORDER BB 1`、`GROUP BY a+1`。仅支持 `ORDER BY column_name` 和 `GROUP BY column_name`。
+- 不支持 `ORDER BY` 或者 `GROUP BY` 后直接带数字或者表达式的查询，如 `ORDER BY 1`、`GROUP BY a+1`。仅支持 `ORDER BY column_name` 和 `GROUP BY column_name`。
 - 不支持过滤条件中包含 `JSON`、`ENUM`、`SET` 或 `BIT` 类型的列的查询，例如 `SELECT * FROM t WHERE json_col = '{}'`。
 - 不支持过滤条件中出现 `NULL` 值的查询，例如 `SELECT * FROM t WHERE a is NULL`。
 - 不支持参数化后参数个数超过 200 个的查询，例如 `SELECT * FROM t WHERE a in (1, 2, 3, ... 201)`。
@@ -86,12 +86,11 @@ TiDB 对参数化后形式相同的查询，只能缓存一个计划。例如，
 
 ### 性能收益
 
-在内部的测试中，大多数 TP 场景下打开此功能都能获得明显的性能收益，但是它也不是完全 "免费" 的，其自身也有一些额外的性能开销，包括判断查询是否支持、对查询进行参数化等，如果负载中的大多数查询无法被此功能支持，打开此功能反而可能影响性能。
+在内部测试中，开启 Non-Prepared Plan Cache 功能在大多数 TP 场景下可以获得显著的性能收益。但是它并非完全“免费”，其自身也有一些额外的性能开销，包括判断查询是否支持、对查询进行参数化等。如果负载中的大多数查询无法被此功能支持，开启此功能反而可能影响性能。
 
-此时需要观察监控中的 `Plan Cache Miss OPS` 面板中的 `non-prepared-unsupported` 指标和 `Queries Using Plan Cache` 面板中的 `non-prepared` 指标，如果大多数查询都无法被支持，只有少部分查询能命中 Plan Cache，此时可以关闭此项功能。
+此时，你需要观察 Grafana 监控中的 **Queries Using Plan Cache OPS** 面板中的 `non-prepared` 指标和 **Plan Cache Miss OPS** 面板中的 `non-prepared-unsupported` 指标。如果大多数查询都无法被支持，只有少部分查询能命中 Plan Cache，此时你可以关闭此功能。
 
-![unsupport](/media/non-prepapred-plan-cache-unsupprot.png)
-
+![non-prepared-unsupported](/media/non-prepapred-plan-cache-unsupprot.png)
 
 ## 诊断
 
