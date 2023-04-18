@@ -1,6 +1,6 @@
 ---
 title: TiCDC 数据正确性校验
-summary: 介绍 TiCDC 数据正确性校验功能的实现原理和使用方法
+summary: 介绍 TiCDC 数据正确性校验功能的实现原理和使用方法。
 ---
 
 # TiCDC 数据正确性校验
