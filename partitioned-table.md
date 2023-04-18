@@ -805,8 +805,8 @@ Empty set (0.00 sec)
 
 对于 `HASH` 和 `KEY` 分区表，你可以进行以下分区管理操作：
 
-- 使用 `ALTER TABLE <table name> COALESCE PARTITION <要减少的分区数量>` 语句减少分区数量。此操作会将整张表在线复制到新的分区数，因此重组了分区。
-- 使用 `ALTER TABLE <table name> ADD PARTITION <要增加的分区数量 | (新的分区说明)>` 语句增加分区的数量。此操作会将整张表在线复制到新的分区数，因此重组了分区。
+- 使用 `ALTER TABLE <table name> COALESCE PARTITION <要减少的分区数量>` 语句减少分区数量。此操作会重组分区，将所有数据按照新的分区个数复制到对应的分区。
+- 使用 `ALTER TABLE <table name> ADD PARTITION <要增加的分区数量 | (新的分区说明)>` 语句增加分区的数量。此操作会重组分区，将所有数据按照新的分区个数复制到对应的分区。
 - 使用 `ALTER TABLE <table name> TRUNCATE PARTITION <分区列表>` 语句清空分区里的数据。 `TRUNCATE PARTITION` 的逻辑与 [`TRUNCATE TABLE`](/sql-statements/sql-statement-truncate.md) 相似，但它的操作对象为分区。
 
 `EXCHANGE PARTITION` 语句用来交换分区和非分区表，类似于重命名表如 `RENAME TABLE t1 TO t1_tmp, t2 TO t1, t1_tmp TO t2` 的操作。
@@ -1022,7 +1022,6 @@ ALTER TABLE example COALESCE PARTITION 1;
 > **注意：**
 >
 > 更改 Hash 和 Key 分区表的分区个数的过程会重组分区，将所有数据按照新的分区个数复制到对应的分区。因此，更改 Hash 和 Key 分区表的分区个数后，会遇到以下关于过时统计信息的警告。此时，你可以通过 [`ANALYZE TABLE`](/sql-statements/sql-statement-analyze-table.md) 语句更新统计信息。
-
 >
 > ```sql
 > +---------+------+--------------------------------------------------------------------------------------------------------------------------------------------------------+
