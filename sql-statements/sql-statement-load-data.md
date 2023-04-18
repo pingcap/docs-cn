@@ -75,7 +75,7 @@ LoadDataOption ::=
 
 你可以通过 `FORMAT` 参数来指定数据文件的格式。如果不指定该参数，需要使用的格式为 `DELIMITED DATA`，该格式即 MySQL `LOAD DATA` 支持的数据格式。
 
-对 `DELIMITED DATA` 时 `SQL FILE` 数据格式，`LOAD DATA` 支持压缩文件，`LOAD DATA` 会根据文件名称的后缀来自动决定压缩格式，目前支持的压缩格式如下：
+对 `DELIMITED DATA` 和 `SQL FILE` 数据格式，`LOAD DATA` 支持压缩文件，`LOAD DATA` 会根据文件名称的后缀来自动决定压缩格式，目前支持的压缩格式如下：
 
 | 文件后缀 | 压缩格式 | 示例 |
 |:---|:---|:---|
