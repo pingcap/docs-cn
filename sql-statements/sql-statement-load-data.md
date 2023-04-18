@@ -8,7 +8,7 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-load-data/','/docs-cn/dev/r
 
 `LOAD DATA` 语句用于将数据批量加载到 TiDB 表中。
 
-在 v7.0.0 版本开始，`LOAD DATA` 集成 TiDB Lightning 的逻辑导入模式，使 `LOAD DATA` 语句更加强大，包括：
+在 v7.0.0 版本开始，`LOAD DATA` 集成 TiDB Lightning 的逻辑导入模式 (Logical Import Mode)，使 `LOAD DATA` 语句更加强大，包括：
 
 - 支持从 S3、GCS 导入数据
 - 支持导入 Parquet 格式的数据
@@ -16,8 +16,8 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-load-data/','/docs-cn/dev/r
 - 支持并发导入
 - 新增参数 `FORMAT`、`FIELDS DEFINED NULL BY`、`With batch_size=<number>, detached, thread=<number>`
 
+在 v7.1.0 版本开始，`LOAD DATA` 集成 TiDB Lightning 的物理导入模式 (Physical Import Mode)。
 
-在 v7.1.0 版本开始，`LOAD DATA` 集成 TiDB Lightning 的物理导入模式
 > **警告：**
 >
 > v7.1.0 新增的物理导入模式为实验特性，不建议在生产环境中使用。
@@ -79,9 +79,9 @@ LoadDataOption ::=
 
 | 文件后缀 | 压缩格式 | 示例 |
 |:---|:---|:---|
-| .gz / .gzip | gzip 压缩格式 | tbl.0001.csv.gz |
-| .zstd / .zst | ZSTD 压缩格式 | tbl.0001.csv.zstd |
-| .snappy | snappy 压缩格式 | tbl.0001.csv.snappy |
+| .gz 或 .gzip  | gzip 压缩格式   | tbl.0001.csv.gz     |
+| .zstd 或 .zst | ZSTD 压缩格式   | tbl.0001.csv.zstd   |
+| .snappy      | snappy 压缩格式 | tbl.0001.csv.snappy |
 
 ### `DuplicateOpt`
 
@@ -149,15 +149,15 @@ LINES TERMINATED BY '\n' STARTING BY ''
 
 ### `WITH thread=<number>`
 
-可以通过 `WITH thread=<number>` 来指定数据导入的并发度，默认值跟 `FORMAT` 有关，如果 `FORMAT` 为 `PARQUET` 默认值为 CPU 核数的 75 %，其他 `FORMAT` 默认值为 CPU 的逻辑核数。**该参数目前仅对逻辑导入生效**。
+可以通过 `WITH thread=<number>` 来指定数据导入的并发度，默认值跟 `FORMAT` 有关，如果 `FORMAT` 为 `PARQUET`，默认值为 CPU 核数的 75%。其他 `FORMAT` 默认值为 CPU 的逻辑核数。**该参数目前仅对逻辑导入生效**。
 
 ### `WITH import_mode = ('LOGICAL' | 'PHYSICAL')`
 
-可以通过 `import_mode = ('LOGICAL' | 'PHYSICAL')` 来指定数据导入的模式，默认值为 `LOGICAL`。在 v7.1.0 版本开始，`LOAD DATA` 集成 TiDB Lightning 的物理导入模式，可通过 `WITH import_mode = 'physical'` 开启。
+可以通过 `import_mode = ('LOGICAL' | 'PHYSICAL')` 来指定数据导入的模式，默认值为 `LOGICAL`。在 v7.1.0 版本开始，`LOAD DATA` 集成 TiDB Lightning 的物理导入模式，可通过 `WITH import_mode = 'PHYSICAL'` 开启。
 
-物理导入只能在非 `LOCAL` 模式下使用，单线程执行，且目前物理导入尚未接入[冲突监测](https://docs.pingcap.com/zh/tidb/dev/tidb-lightning-physical-import-mode-usage#%E5%86%B2%E7%AA%81%E6%95%B0%E6%8D%AE%E6%A3%80%E6%B5%8B)，因此遇到数据主键或唯一键冲突时会报 checksum 不一致错误，建议导入前检查数据文件是否存在键值冲突。其他的限制和必要条件参考 [lightning 物理导入](https://docs.pingcap.com/tidb/dev/tidb-lightning-physical-import-mode)。
+物理导入只能在非 `LOCAL` 模式下使用，单线程执行，且目前物理导入尚未接入[冲突监测](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#冲突数据检测)，因此遇到数据主键或唯一键冲突时会报 checksum 不一致错误，建议导入前检查数据文件是否存在键值冲突。其他的限制和必要条件参考 [lightning 物理导入](/tidb-lightning/tidb-lightning-physical-import-mode.md)。
 
-物理导入模式下 `LOAD DATA` 会将本地排序的数据写入到 TiDB [temp-dir](https://docs.pingcap.com/tidb/stable/tidb-configuration-file#temp-dir-new-in-v630) 的子目录中，子目录命名规则为 `import-<tidb-port>/<job-id>`。物理导入目前尚未接入[磁盘资源配额](https://docs.pingcap.com/zh/tidb/dev/tidb-lightning-physical-import-mode-usage#%E7%A3%81%E7%9B%98%E8%B5%84%E6%BA%90%E9%85%8D%E9%A2%9D-%E4%BB%8E-v620-%E7%89%88%E6%9C%AC%E5%BC%80%E5%A7%8B%E5%BC%95%E5%85%A5)，请确保对应磁盘存在足够的数据空间。
+物理导入模式下 `LOAD DATA` 会将本地排序的数据写入到 TiDB [temp-dir](/tidb-configuration-file.md#temp-dir-new-in-v630) 的子目录中，子目录命名规则为 `import-<tidb-port>/<job-id>`。物理导入目前尚未接入[磁盘资源配额](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#磁盘资源配额-从-v620-版本开始引入)，请确保对应磁盘存在足够的数据空间。
 
 ### `WITH max_write_speed = stringLit`
 
