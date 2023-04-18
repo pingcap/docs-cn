@@ -60,9 +60,9 @@ CREATE TABLE `bookshop`.`users` (
 
 **参数描述**
 
-- `{column_name}`: 列名。
-- `{data_type}`: 列的[数据类型](/basic-features.md#数据类型函数和操作符)。
-- `{column_qualification}`: 列的限定条件，如**列级约束**或[生成列](/generated-columns.md)子句。
+- `{column_name}`：列名。
+- `{data_type}`：列的[数据类型](/basic-features.md#数据类型函数和操作符)。
+- `{column_qualification}`：列的限定条件，如**列级约束**或[生成列](/generated-columns.md)子句。
 
 可以为 `users` 表添加一些列，如他们的唯一标识 `id`，余额 `balance` 及昵称 `nickname`。
 
