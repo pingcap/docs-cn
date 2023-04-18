@@ -69,7 +69,7 @@ Slow Query 基础信息：
     - `105000`: 统计信息中维护的总行数
     - `5000`: 自上次收集统计信息以来记录的修改的行数
     - `col1:allEvicted`：`col1` 列对应的统计信息没有完整加载
-    - `idx1:allEvicted`：`idx1` 索引对应的统计信息没有完整加载
+    - `idx1:allEvicted`：`idx1` 索引对应的统计信息没有完整加载 
 * `Succ`：表示语句是否执行成功。
 * `Backoff_time`：表示语句遇到需要重试的错误时在重试前等待的时间。常见的需要重试的错误有以下几种：遇到了 lock、Region 分裂、`tikv server is busy`。
 * `Plan`：表示语句的执行计划，用 `select tidb_decode_plan('xxx...')` SQL 语句可以解析出具体的执行计划。
