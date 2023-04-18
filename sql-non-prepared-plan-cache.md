@@ -82,7 +82,7 @@ TiDB 对参数化后形式相同的查询，只能缓存一个计划。例如，
 - 不支持访问分区表、虚拟列、临时表、视图、或内存表的查询，例如 `SELECT * FROM INFORMATION_SCHEMA.COLUMNS`，其中 `COLUMNS` 为 TiDB 内存表。
 - 不支持带有 Hint 或有 Binding 的查询。
 
-开启此功能后，优化器会对查询进去一个快速判断，如果不满足 Non-Prepared Plan Cache 的支持条件，则会走正常的优化流程。
+开启此功能后，优化器会对查询进行一个快速判断，如果不满足 Non-Prepared Plan Cache 的支持条件，则会走正常的优化流程。
 
 ### 性能收益
 
