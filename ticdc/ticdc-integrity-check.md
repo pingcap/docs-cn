@@ -28,7 +28,7 @@ TiCDC 数据正确性校验功能默认关闭，要使用该功能，请执行�
 2. 在创建 Changefeed 的 `--config` 参数所指定的配置文件中，添加如下配置：
 
     ```toml
-    [Integrity]
+    [integrity]
     integrity-check-level = "correctness"
     corruption-handle-level = "warn"
     ```
