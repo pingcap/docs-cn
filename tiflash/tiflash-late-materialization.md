@@ -7,7 +7,7 @@ summary: 介绍通过使用 TiFlash 延迟物化的方式来加速 OLAP 场景�
 
 > **注意：**
 >
-> 在 TiFlash [存算分离架构](/tiflash/tiflash-disaggregated-and-s3.md)和 [Fast Scan 模式](/tiflash/use-fastscan.md)下，延迟物化功能暂不可用。
+> 在 TiFlash [Fast Scan 模式](/tiflash/use-fastscan.md)下，延迟物化功能暂不可用。
 
 本文档介绍通过使用 TiFlash 延迟物化的方式来加速 Online Analytical Processing (OLAP) 场景的查询。
 
