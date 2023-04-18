@@ -57,7 +57,7 @@ CALIBRATE RESOURCE START_TIME '2023-04-18 08:00:00' END_TIME '2023-04-18 08:20:0
 1 row in set (0.01 sec)
 ```
 
-当时间窗口范围 `DURATION` 不满足 10 分钟至 24 小时，会导致报错提醒。
+当时间窗口范围 `DURATION` 不满足 10 分钟至 24 小时的条件，会导致报错提醒。
 
 ```sql
 CALIBRATE RESOURCE START_TIME '2023-04-18 08:00:00' DURATION '25h';
@@ -73,7 +73,7 @@ CALIBRATE RESOURCE START_TIME '2023-04-18 08:00:00' DURATION '60m';
 ERROR 1105 (HY000): The workload in selected time window is too low, with which TiDB is unable to reach a capacity estimation; please select another time window with higher workload, or calibrate resource by hardware instead
 ```
 
-指定 `WORKLOAD` 查看 RU 容量，默认为 TPCC。
+指定 `WORKLOAD` 查看 RU 容量，默认为 `TPCC`。
 
 ```sql
 CALIBRATE RESOURCE;
