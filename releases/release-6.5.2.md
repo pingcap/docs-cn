@@ -24,6 +24,7 @@ TiDB 版本：6.5.2
     - (dup): release-6.1.6.md > 提升改进> TiDB - Prepared Plan Cache 支持缓存 BatchPointGet 计划 [#42125](https://github.com/pingcap/tidb/issues/42125) @[qw4990](https://github.com/qw4990)
     - (dup): release-7.0.0.md > 改进提升> TiDB - Index Join 支持更多的 SQL 格式 [#40505](https://github.com/pingcap/tidb/issues/40505) @[Yisaer](https://github.com/Yisaer)
     - 将 Index Merge Reader 中的一些 Log 等级从 Info 降低为 Debug [#41949](https://github.com/pingcap/tidb/issues/41949) @[yibin87](https://github.com/yibin87)
+    - 优化带 limit 的 range partition table 的 distsql concurrency 设置，降低查询延迟 [#41500](https://github.com/pingcap/tidb/pull/41500) @[you06](https://github.com/you06)
 
 + TiKV
 
@@ -81,7 +82,7 @@ TiDB 版本：6.5.2
 
 + TiKV
 
-    - note 1
+    - 修复 tikv 解析 cgroup path 没有正确处理 ":" 符号的问题 [#14535](https://github.com/tikv/tikv/pull/14535) @[SpadeA-Tang](https://github.com/SpadeA-Tang) 
 
 + PD
 
