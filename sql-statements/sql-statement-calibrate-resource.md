@@ -21,9 +21,9 @@ summary: TiDB 数据库中 CALIBRATE RESOURCE 的使用概况。
 ## 语法图
 
 ```ebnf+diagram
-CalibrateResourceStmt ::= 'CALIBRATE' 'RESOURCE' WorkloadOption
+CalibrateResourceStmt ::= 'CALIBRATE' 'RESOURCE' CalibrateOption
 
-WorkloadOption ::=
+CalibrateOption ::=
 ('WORKLOAD' ('TPCC' | 'OLTP_READ_WRITE' | 'OLTP_READ_ONLY' | 'OLTP_WRITE_ONLY'))
 | ('START_TIME' 'TIMESTAMP' ('DURATION' stringLit | 'END_TIME' 'TIMESTAMP')?)?
 
