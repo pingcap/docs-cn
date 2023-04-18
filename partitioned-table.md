@@ -803,7 +803,11 @@ Empty set (0.00 sec)
 - 使用 `ALTER TABLE <表名> TRUNCATE PARTITION <分区列表>` 语句清空分区里的数据。`TRUNCATE PARTITION` 的逻辑与 [`TRUNCATE TABLE`](/sql-statements/sql-statement-truncate.md) 相似，但它的操作对象为分区。
 - 使用 `ALTER TABLE <表名> REORGANIZE PARTITION <分区列表> INTO (<新的分区说明>)`语句对分区进行合并、拆分、或者其他修改。
 
-对于 `HASH` 和 `KEY` 分区表，目前只支持 `ALTER TABLE ... TRUNCATE PARTITION` 分区管理语句，不支持 `COALESCE PARTITION` 和 `ADD PARTITION` 语句。
+对于 `HASH` 和 `KEY` 分区表，你可以进行以下分区管理操作：
+
+- 使用 `ALTER TABLE <table name> COALESCE PARTITION <number of partitions to decrease by>` 语句减少分区数量。此操作通过将整个表在线复制到新的分区数来重组表。
+- 使用 `ALTER TABLE <table name> ADD PARTITION <number of partition to increase by | (additional partition definitions)>` 语句增加分区的数量。此操作通过将整个表复制到新的联机分区数来重组表。
+- 使用 `ALTER TABLE <table name> TRUNCATE PARTITION <list of partitions>` 语句清空分区里的数据。 `TRUNCATE PARTITION` 的逻辑与 [`TRUNCATE TABLE`](/sql-statements/sql-statement-truncate.md) 相似，但它的操作对象为分区。
 
 `EXCHANGE PARTITION` 语句用来交换分区和非分区表，类似于重命名表如 `RENAME TABLE t1 TO t1_tmp, t2 TO t1, t1_tmp TO t2` 的操作。
 
