@@ -993,6 +993,8 @@ PARTITION BY HASH(id)
 PARTITIONS 2;
 ```
 
+#### 增加分区数量
+
 将 `example` 表的分区个数增加 1 个（从 2 增加到 3）：
 
 ```sql
@@ -1006,6 +1008,8 @@ ALTER TABLE example ADD PARTITION
 (PARTITION pExample4 COMMENT = 'not p3, but pExample4 instead',
  PARTITION pExample5 COMMENT = 'not p4, but pExample5 instead');
 ```
+
+#### 减少分区数量
 
 与 Range 和 List 分区不同，Hash 和 Key 分区不支持 `DROP PARTITION`，但可以使用 `COALESCE PARTITION` 来减少分区数量，或使用 `TRUNCATE PARTITION` 清空指定分区的所有数据。
 
@@ -1050,6 +1054,8 @@ PARTITION BY HASH (`id`)
  PARTITION `pExample4` COMMENT 'not p3, but pExample4 instead')
 1 row in set (0.01 sec)
 ```
+
+#### 清空分区
 
 清空指定分区的所有数据：
 
