@@ -87,7 +87,7 @@ LoadDataOption ::=
 
 该语句与 MySQL 行为一致，具体请参考 [MySQL LOAD DATA 文档](https://dev.mysql.com/doc/refman/8.0/en/load-data.html)。
 
-该语句对物理导入模式不生效。
+该语句只适用于逻辑导入模式，对物理导入模式不生效。
 
 ### `CharsetOpt`
 
@@ -149,7 +149,12 @@ LINES TERMINATED BY '\n' STARTING BY ''
 
 ### `WITH thread=<number>`
 
-可以通过 `WITH thread=<number>` 来指定数据导入的并发度，默认值跟 `FORMAT` 有关，如果 `FORMAT` 为 `PARQUET`，默认值为 CPU 核数的 75%。其他 `FORMAT` 默认值为 CPU 的逻辑核数。**该参数目前仅对逻辑导入生效**。
+可以通过 `WITH thread=<number>` 来指定数据导入的并发度，默认值跟 `FORMAT` 有关：
+
+- `FORMAT` 为 `PARQUET`，默认值为 CPU 核数的 75%。
+- 其他 `FORMAT`，默认值为 CPU 的逻辑核数。
+
+目前该参数仅对逻辑导入生效。
 
 ### `WITH import_mode = ('LOGICAL' | 'PHYSICAL')`
 
