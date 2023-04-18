@@ -75,7 +75,7 @@ LoadDataOption ::=
 
 你可以通过 `FORMAT` 参数来指定数据文件的格式。如果不指定该参数，需要使用的格式为 `DELIMITED DATA`，该格式即 MySQL `LOAD DATA` 支持的数据格式。
 
-对 `DELIMITED DATA` 和 `SQL FILE` 数据格式，`LOAD DATA` 支持压缩文件，`LOAD DATA` 会根据文件名称的后缀来自动决定压缩格式，目前支持的压缩格式如下：
+数据格式 `DELIMITED DATA` 和 `SQL FILE` 支持压缩文件。`LOAD DATA` 会根据文件名称的后缀来自动决定压缩格式。目前支持的压缩格式如下：
 
 | 文件后缀 | 压缩格式 | 示例 |
 |:---|:---|:---|
@@ -164,7 +164,7 @@ LINES TERMINATED BY '\n' STARTING BY ''
 
 物理导入模式下，`LOAD DATA` 会将本地排序的数据写入到 TiDB [temp-dir](/tidb-configuration-file.md#temp-dir-new-in-v630) 的子目录中。子目录命名规则为 `import-<tidb-port>/<job-id>`。
 
-物理导入模式目前尚未接入[磁盘资源配额](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#磁盘资源配额-从-v620-版本开始引入)，请确保对应磁盘存在足够的数据空间。
+物理导入模式目前尚未接入[磁盘资源配额](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#磁盘资源配额-从-v620-版本开始引入)。请确保对应磁盘存在足够的数据空间。
 
 ### `WITH max_write_speed = stringLit`
 
