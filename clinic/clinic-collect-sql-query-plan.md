@@ -5,7 +5,7 @@ summary: 了解如何使用 PingCAP Clinic Diag 采集 TiUP 部署集群的 SQL 
 
 # 使用 PingCAP Clinic Diag 采集 SQL 查询计划信息
 
-TiDB 在 v5.3.0 中引入了 [`PLAN REPLAYER`](/sql-plan-replayer.md) 命令，能够快速保存和恢复查询计划相关的信息，简化了排查优化器相关问题时提取排查信息的步骤。Clinic Diag 诊断客户端（下称 Diag）集成了 `PLAN REPLAYER` 功能，你可以使用 Diag 方便快捷地保存查询计划相关的数据。
+TiDB 在 v5.3.0 中引入了 [`PLAN REPLAYER`](/sql-plan-replayer.md) 命令，能够快速保存和恢复查询计划相关的信息，简化了排查优化器相关问题时提取排查信息的步骤。[Clinic Diag 诊断客户端](https://github.com/pingcap/diag)（下称 Diag）集成了 `PLAN REPLAYER` 功能，你可以使用 Diag 方便快捷地保存查询计划相关的数据。
 
 ## 使用说明
 
@@ -116,3 +116,7 @@ roles = [
 ```bash
 diag collect <cluster-name> --profile=<profile-filepath> --explain-sql=<statement-filepath>
 ```
+
+### 将结果导入到 TiDB 集群
+
+采集结果中的 `plan_replayer.zip` 可以通过 `PLAN REPLAYER LOAD` 语句直接导入到 TiDB 集群中进行信息查看，具体方法可参考[使用 `PLAN REPLAYER` 导入集群信息](/sql-plan-replayer.md#使用-plan-replayer-导入集群信息)

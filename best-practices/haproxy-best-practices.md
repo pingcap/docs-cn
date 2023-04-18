@@ -9,20 +9,24 @@ aliases: ['/docs-cn/dev/best-practices/haproxy-best-practices/','/docs-cn/dev/re
 
 ![HAProxy 在 TiDB 中的最佳实践](/media/haproxy.jpg)
 
+> **注意：**
+>
+> TiDB 支持的最小 HAProxy 版本为 v1.5。使用 v1.5 到 v2.1 之间的 HAProxy 时，需要在 `mysql-check` 中配置 `post-41`。建议使用 HAProxy v2.2 或更高版本。
+
 ## HAProxy 简介
 
 HAProxy 是由 C 语言编写的自由开放源码的软件，为基于 TCP 和 HTTP 协议的应用程序提供高可用性、负载均衡和代理服务。因为 HAProxy 能够快速、高效使用 CPU 和内存，所以目前使用非常广泛，许多知名网站诸如 GitHub、Bitbucket、Stack Overflow、Reddit、Tumblr、Twitter 和 Tuenti 以及亚马逊网络服务系统都在使用 HAProxy。
 
-HAProxy 由 Linux 内核的核心贡献者 Willy Tarreau 于 2000 年编写，他现在仍然负责该项目的维护，并在开源社区免费提供版本迭代。本文示例使用 HAProxy [2.5.0](https://www.haproxy.com/blog/announcing-haproxy-2-5/)。推荐使用最新稳定版的 HAProxy，详情见[已发布的 HAProxy 版本](http://www.haproxy.org/)。
+HAProxy 由 Linux 内核的核心贡献者 Willy Tarreau 于 2000 年编写，他现在仍然负责该项目的维护，并在开源社区免费提供版本迭代。本文示例使用 HAProxy [2.6](https://www.haproxy.com/blog/announcing-haproxy-2-6/)。推荐使用最新稳定版的 HAProxy，详情见[已发布的 HAProxy 版本](http://www.haproxy.org/)。
 
 ## HAProxy 部分核心功能介绍
 
-- [高可用性](http://cbonte.github.io/haproxy-dconv/2.5/intro.html#3.3.4)：HAProxy 提供优雅关闭服务和无缝切换的高可用功能；
-- [负载均衡](http://cbonte.github.io/haproxy-dconv/2.5/configuration.html#4.2-balance)：L4 (TCP) 和 L7 (HTTP) 两种负载均衡模式，至少 9 类均衡算法，比如 roundrobin，leastconn，random 等；
-- [健康检查](http://cbonte.github.io/haproxy-dconv/2.5/configuration.html#5.2-check)：对 HAProxy 配置的 HTTP 或者 TCP 模式状态进行检查；
-- [会话保持](http://cbonte.github.io/haproxy-dconv/2.5/intro.html#3.3.6)：在应用程序没有提供会话保持功能的情况下，HAProxy 可以提供该项功能；
-- [SSL](http://cbonte.github.io/haproxy-dconv/2.5/intro.html#3.3.2)：支持 HTTPS 通信和解析；
-- [监控与统计](http://cbonte.github.io/haproxy-dconv/2.5/intro.html#3.3.3)：通过 web 页面可以实时监控服务状态以及具体的流量信息。
+- [高可用性](http://cbonte.github.io/haproxy-dconv/2.6/intro.html#3.3.4)：HAProxy 提供优雅关闭服务和无缝切换的高可用功能；
+- [负载均衡](http://cbonte.github.io/haproxy-dconv/2.6/configuration.html#4.2-balance)：L4 (TCP) 和 L7 (HTTP) 两种负载均衡模式，至少 9 类均衡算法，比如 roundrobin，leastconn，random 等；
+- [健康检查](http://cbonte.github.io/haproxy-dconv/2.6/configuration.html#5.2-check)：对 HAProxy 配置的 HTTP 或者 TCP 模式状态进行检查；
+- [会话保持](http://cbonte.github.io/haproxy-dconv/2.6/intro.html#3.3.6)：在应用程序没有提供会话保持功能的情况下，HAProxy 可以提供该项功能；
+- [SSL](http://cbonte.github.io/haproxy-dconv/2.6/intro.html#3.3.2)：支持 HTTPS 通信和解析；
+- [监控与统计](http://cbonte.github.io/haproxy-dconv/2.6/intro.html#3.3.3)：通过 web 页面可以实时监控服务状态以及具体的流量信息。
 
 ## 准备环境
 
@@ -72,16 +76,16 @@ yum -y install epel-release gcc systemd-devel
 
 ## 部署 HAProxy
 
-HAProxy 配置 Database 负载均衡场景操作简单，以下部署操作具有普遍性，不具有特殊性，建议根据实际场景，个性化配置相关的[配置文件](http://cbonte.github.io/haproxy-dconv/2.5/configuration.html)。
+HAProxy 配置 Database 负载均衡场景操作简单，以下部署操作具有普遍性，不具有特殊性，建议根据实际场景，个性化配置相关的[配置文件](http://cbonte.github.io/haproxy-dconv/2.6/configuration.html)。
 
 ### 安装 HAProxy
 
-1. 下载 HAProxy 2.5.0 的源码包：
+1. 下载 HAProxy 2.6.2 的源码包：
 
     {{< copyable "shell-regular" >}}
 
     ```bash
-    wget https://github.com/haproxy/haproxy/archive/refs/tags/v2.5.0.zip
+    wget https://www.haproxy.org/download/2.6/src/haproxy-2.6.2.tar.gz
     ```
 
 2. 解压源码包：
@@ -89,7 +93,7 @@ HAProxy 配置 Database 负载均衡场景操作简单，以下部署操作具�
     {{< copyable "shell-regular" >}}
 
     ```bash
-    unzip v2.5.0.zip
+    tar zxf haproxy-2.6.2.tar.gz
     ```
 
 3. 从源码编译 HAProxy 应用：
@@ -97,7 +101,7 @@ HAProxy 配置 Database 负载均衡场景操作简单，以下部署操作具�
     {{< copyable "shell-regular" >}}
 
     ```bash
-    cd haproxy-2.5.0
+    cd haproxy-2.6.2
     make clean
     make -j 8 TARGET=linux-glibc USE_THREAD=1
     make PREFIX=${/app/haproxy} SBINDIR=${/app/haproxy/bin} install  # 将 `${/app/haproxy}` 和 `${/app/haproxy/bin}` 替换为自定义的实际路径。
@@ -109,6 +113,7 @@ HAProxy 配置 Database 负载均衡场景操作简单，以下部署操作具�
 
     ```bash
     echo 'export PATH=/app/haproxy/bin:$PATH' >> /etc/profile
+    . /etc/profile
     ```
 
 5. 检查 HAProxy 是否安装成功：
@@ -158,7 +163,7 @@ haproxy --help
 | `-x <unix_socket>` | 连接指定的 socket 并从旧进程中获取所有 listening socket，然后，使用这些 socket 而不是绑定新的。 |
 | `-S <bind>[,<bind_options>...]` | 主从模式下，创建绑定到主进程的 socket，此 socket 可访问每个子进程的 socket。 |
 
-更多有关 HAProxy 命令参数的信息，可参阅 [Management Guide of HAProxy](http://cbonte.github.io/haproxy-dconv/2.5/management.html) 和 [General Commands Manual of HAProxy](https://manpages.debian.org/buster-backports/haproxy/haproxy.1.en.html)。
+更多有关 HAProxy 命令参数的信息，可参阅 [Management Guide of HAProxy](http://cbonte.github.io/haproxy-dconv/2.6/management.html) 和 [General Commands Manual of HAProxy](https://manpages.debian.org/buster-backports/haproxy/haproxy.1.en.html)。
 
 ### 配置 HAProxy
 

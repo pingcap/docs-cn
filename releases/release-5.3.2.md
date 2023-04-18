@@ -8,6 +8,10 @@ title: TiDB 5.3.2 Release Notes
 
 TiDB 版本：5.3.2
 
+> **警告：**
+>
+> 不建议使用 v5.3.2，因为该版本已知存在 bug，详情参见 [#12934](https://github.com/tikv/tikv/issues/12934)。该 bug 已在 v5.3.3 中修复，建议升级至 [v5.3.3](/releases/release-5.3.3.md)。
+
 ## 兼容性变更
 
 + TiDB

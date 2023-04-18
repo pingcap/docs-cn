@@ -33,6 +33,7 @@ aliases: ['/docs-cn/dev/tidb-troubleshooting-map/','/docs-cn/dev/how-to/troubles
 - 2.1.1 TiDB 执行计划不对导致延迟升高，请参考 [3.3 执行计划不对](#33-执行计划不对)。
 - 2.1.2 PD 出现选举问题或者 OOM 问题，请参考 [5.2 PD 选举问题](#52-pd-选举问题)和 [5.3 PD OOM 问题](#53-pd-oom)。
 - 2.1.3 某些 TiKV 大量掉 Leader，请参考 [4.4 某些 TiKV 大量掉 Leader](#44-某些-tikv-大量掉-leader)。
+- 2.1.4 其他原因，请参考[读写延迟增加](/troubleshoot-cpu-issues.md)。
 
 ### 2.2 Latency 持续升高
 
@@ -47,6 +48,8 @@ aliases: ['/docs-cn/dev/tidb-troubleshooting-map/','/docs-cn/dev/how-to/troubles
 - 2.2.3 TiKV 写入慢，请参考 [4.5 TiKV 写入慢](#45-tikv-写入慢)。
 
 - 2.2.4 TiDB 执行计划不对，请参考 [3.3 执行计划不对](#33-执行计划不对)。
+
+- 2.2.5 其他原因，请参考[读写延迟增加](/troubleshoot-cpu-issues.md)。
 
 ## 3. TiDB 问题
 
@@ -74,13 +77,7 @@ aliases: ['/docs-cn/dev/tidb-troubleshooting-map/','/docs-cn/dev/how-to/troubles
 
 - 3.1.3 TiDB 日志中报 `information schema is changed` 的错误：
 
-    - 原因 1：正在执行的 DML 所涉及的表和正在执行 DDL 的表相同，可以通过命令 `admin show ddl job` 查看正在运行的 DDL 操作。
-
-    - 原因 2：当前执行的 DML 时间太久，且这段时间内执行了很多 DDL（新版本 `lock table` 也会导致 schema 版本变化），导致中间 `schema version` 变更超过 1024 个版本数。
-
-    - 原因 3：当前执行 DML 请求的 TiDB 实例长时间不能加载到新的 `schema information`（与 PD 或者 TiKV 网络问题等都会导致此问题），而这段时间内执行了很多 DDL 语句（也包括 `lock table` 语句），导致中间 `schema version` 变更超过 1024 个版本数。
-
-    - 解决方法：前 2 种原因都不会导致业务问题，相应的 DML 会在失败后重试；第 3 种原因需要检查 TiDB 实例和 PD 及 TiKV 的网络情况。
+    - 报错的详细原因以及解决办法参见[触发 Information schema is changed 错误的原因](/faq/sql-faq.md#触发-information-schema-is-changed-错误的原因)。
 
     - 背景知识：`schema version` 的增长数量与每个 DDL 变更操作的 `schema state` 个数一致，例如 `create table` 操作会有 1 个版本变更，`add column` 操作会有 4 个版本变更（详情可以参考 [online schema change](https://static.googleusercontent.com/media/research.google.com/zh-CN//pubs/archive/41376.pdf)），所以太多的 column 变更操作会导致 `schema version` 增长得很快。
 
@@ -133,6 +130,8 @@ aliases: ['/docs-cn/dev/tidb-troubleshooting-map/','/docs-cn/dev/how-to/troubles
 
     - SQL 中包含 `Union` 连接的多条子查询，见案例 [case-1828](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case1828.md)。
 
+更多 OOM 的排查方法，请参考 [TiDB OOM 故障排查](/troubleshoot-tidb-oom.md)。
+
 ### 3.3 执行计划不对
 
 - 3.3.1 现象
@@ -168,6 +167,30 @@ aliases: ['/docs-cn/dev/tidb-troubleshooting-map/','/docs-cn/dev/how-to/troubles
     多次 `Decimal` 除法计算后，虽然结果正确，但是这个精度可能越来越大，最终超过 TiDB 内的另一个阈值 72，此时就会报 `Data Truncated` 的错误；`Decimal` 的乘法计算就不会有这个问题，因为绕过越界，会直接把精度设置为最大精度限制。
 
     解决方法：可以通过手动加 `Cast(xx as decimal(a, b))` 来绕过这个问题，a 和 b 就是目标的精度。
+
+### 3.5 慢查询问题
+
+要定位慢查询，参阅[慢查询日志](/identify-slow-queries.md)。要处理慢查询，参阅[分析慢查询](/analyze-slow-queries.md)。
+
+### 3.6 热点问题
+
+TiDB 作为分布式数据库，内建负载均衡机制，尽可能将业务负载均匀地分布到不同计算或存储节点上，更好地利用上整体系统资源。然而，机制不是万能的，在一些场景下仍会有部分业务负载不能被很好地分散，影响性能，形成单点的过高负载，也称为热点。
+
+TiDB 提供了完整的方案用于排查、解决或规避这类热点。通过均衡负载热点，可以提升整体性能，包括提高 QPS 和降低延迟等。详情参见 [TiDB 热点问题处理](/troubleshoot-hot-spot-issues.md)。
+
+### 3.7 TiDB 磁盘 I/O 过高
+
+当出现系统响应变慢的时候，如果已经排查了 CPU 的瓶颈、数据事务冲突的瓶颈后，问题仍存在，就需要从 I/O 来入手来辅助判断目前的系统瓶颈点。参考 [TiDB 磁盘 I/O 过高的处理办法](/troubleshoot-high-disk-io.md)了解如何定位和处理 TiDB 存储 I/O 过高的问题。
+
+### 3.8 锁冲突问题
+
+TiDB 支持完整的分布式事务，自 v3.0 版本起，提供乐观事务与悲观事务两种事务模式。要了解如何排查锁相关的问题，以及如何处理乐观和悲观锁冲突的问题，请参考 [TiDB 锁冲突问题处理](/troubleshoot-lock-conflicts.md)。
+
+### 3.9 数据索引一致性报错
+
+当执行事务或执行 `ADMIN CHECK [TABLE|INDEX]` 命令时，TiDB 会对数据索引的一致性进行检查。如果检查发现 record key-value 和 index key-value 不一致，即存储行数据的键值对和存储其对应索引的键值对之间不一致（例如多索引或缺索引），TiDB 会报数据索引一致性错误，并在日志文件中打印相关错误日志。
+
+要了解更多数据索引一致性报错信息以及如何绕过检查，请参考[数据索引一致性报错](/troubleshoot-data-inconsistency-errors.md)。
 
 ## 4. TiKV 问题
 
@@ -533,9 +556,9 @@ aliases: ['/docs-cn/dev/tidb-troubleshooting-map/','/docs-cn/dev/how-to/troubles
 
 - 7.2.1 `key is locked` 读写冲突，读请求碰到还未提交的数据，需要等待其提交之后才能读。少量这个错误对业务无影响，大量出现这个错误说明业务读写冲突比较严重。
 
-- 7.2.2 `write conflict` 乐观事务中的写写冲突，同时多个事务对相同的 key 进行修改，只有一个事务会成功，其他事务会自动重取 timestamp 然后进行重试，不影响业务。如果业务冲突很严重可能会导致重试多次之后事务失败，这种情况下建议使用悲观锁。
+- 7.2.2 `write conflict` 乐观事务中的写写冲突，同时多个事务对相同的 key 进行修改，只有一个事务会成功，其他事务会自动重取 timestamp 然后进行重试，不影响业务。如果业务冲突很严重可能会导致重试多次之后事务失败，这种情况下建议使用悲观锁。报错以及解决方法详情，参考[乐观事务模型下写写冲突问题排查](/troubleshoot-write-conflicts.md)。
 
-- 7.2.3 `TxnLockNotFound` 事务提交太慢，过了 TTL (Time To Live) 时间之后被其他事务回滚了，该事务会自动重试，通常情况下对业务无感知。对于 0.25 MB 以内的小事务，TTL 默认时间为 3 秒。
+- 7.2.3 `TxnLockNotFound` 事务提交太慢，过了 TTL (Time To Live) 时间之后被其他事务回滚了，该事务会自动重试，通常情况下对业务无感知。对于 0.25 MB 以内的小事务，TTL 默认时间为 3 秒。详情参见[锁被清除 (LockNotFound) 错误](/troubleshoot-lock-conflicts.md#锁被清除-locknotfound-错误)。
 
 - 7.2.4 `PessimisticLockNotFound` 类似 `TxnLockNotFound`，悲观事务提交太慢被其他事务回滚了。
 

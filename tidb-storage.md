@@ -8,7 +8,7 @@ aliases: ['/docs-cn/dev/tidb-storage/']
 
 本文主要介绍 [TiKV](https://github.com/tikv/tikv) 的一些设计思想和关键概念。
 
-![storage-architecture](/media/tidb-storage-architecture.png)
+![storage-architecture](/media/tidb-storage-architecture-1.png)
 
 ## Key-Value Pairs（键值对）
 
@@ -48,7 +48,7 @@ TiKV 利用 Raft 来做数据复制，每个数据变更都会落地为一条 Ra
 * Hash：按照 Key 做 Hash，根据 Hash 值选择对应的存储节点。
 * Range：按照 Key 分 Range，某一段连续的 Key 都保存在一个存储节点上。
 
-TiKV 选择了第二种方式，将整个 Key-Value 空间分成很多段，每一段是一系列连续的 Key，将每一段叫做一个 Region，并且会尽量保持每个 Region 中保存的数据不超过一定的大小，目前在 TiKV 中默认是 96MB。每一个 Region 都可以用 [StartKey，EndKey) 这样一个左闭右开区间来描述。
+TiKV 选择了第二种方式，将整个 Key-Value 空间分成很多段，每一段是一系列连续的 Key，将每一段叫做一个 Region，可以用 [StartKey，EndKey) 这样一个左闭右开区间来描述。每个 Region 中保存的数据量默认维持在 96 MiB 左右（可以通过配置修改）。
 
 ![Region in TiDB](/media/tidb-storage-2.png)
 
@@ -102,4 +102,4 @@ KeyN_Version1 -> Value
 
 ## 分布式 ACID 事务
 
-TiKV 的事务采用的是 Google 在 BigTable 中使用的事务模型：[Percolator](https://research.google.com/pubs/pub36726.html) ，TiKV 根据这篇论文实现，并做了大量的优化。详细介绍参见[事务概览](/transaction-overview.md)。
+TiKV 的事务采用的是 Google 在 BigTable 中使用的事务模型：[Percolator](https://research.google.com/pubs/pub36726.html)，TiKV 根据这篇论文实现，并做了大量的优化。详细介绍参见[事务概览](/transaction-overview.md)。

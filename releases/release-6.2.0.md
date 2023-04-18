@@ -2,11 +2,15 @@
 title: TiDB 6.2.0 Release Notes
 ---
 
-# TiDB v6.2.0 Release Notes
+# TiDB 6.2.0 Release Notes
 
 发版日期：2022 年 8 月 23 日
 
 TiDB 版本：6.2.0-DMR
+
+> **注意：**
+>
+> TiDB 6.2.0-DMR 的用户文档已[归档](https://docs-archive.pingcap.com/zh/tidb/v6.2)。如无特殊需求，建议使用 TiDB 数据库的[最新 LTS 版本](https://docs.pingcap.com/zh/tidb/stable)。
 
 在 6.2.0-DMR 版本中，你可以获得以下关键特性：
 
@@ -15,12 +19,12 @@ TiDB 版本：6.2.0-DMR
 - TiDB [锁视图支持乐观事务被阻塞的信息](/information-schema/information-schema-data-lock-waits.md)，方便快速定位锁冲突。
 - TiFlash 引入[新的存储格式 PageStorage V3](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml)，提升稳定性和性能。
 - 实现[细粒度数据交换 (shuffle)](/system-variables.md#tiflash_fine_grained_shuffle_batch_size-从-v620-版本开始引入) 使窗口函数 (Window function) 可以利用多线程并行计算。
-- 引入[新的 DDL 并行执行框架](/system-variables.md#tidb_enable_concurrent_ddl-从-v620-版本开始引入)，减少 DDL 阻塞，大幅提升执行效率。
+- 引入新的 DDL 并行执行框架，减少 DDL 阻塞，大幅提升执行效率。
 - TiKV 支持[自适应调整 CPU 使用率](/tikv-configuration-file.md#后台限流)，确保数据库稳定高效运行。
-- 支持 [point-in-time recovery (PITR)](/br/point-in-time-recovery.md)，允许恢复备份集群的历史任意时间点的快照。
+- 支持 [point-in-time recovery (PITR)](/br/backup-and-restore-overview.md)，允许恢复备份集群的历史任意时间点的快照。
 - TiDB Lightning 使用 Physical Import Mode [导入时限制调度范围从集群降低到表级别](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#导入时限制调度范围从集群降低到表级别)。
-- Backup & Restore (BR) 支持[恢复用户和权限数据](/br/br-usage-restore.md#恢复-mysql-数据库下的表)，备份恢复体验更平滑。
-- TiCDC 支持[过滤指定类型的 DDL 事件](/ticdc/manage-ticdc.md#event-filter-配置规则-从-v620-版本开始引入)，解锁更多数据同步场景。
+- Backup & Restore (BR) 支持[恢复用户和权限数据](/br/br-snapshot-guide.md#恢复-mysql-数据库下的表)，备份恢复体验更平滑。
+- TiCDC 支持[过滤指定类型的 DDL 事件](/ticdc/ticdc-filter.md#event-filter-事件过滤器-从-v620-版本开始引入)，解锁更多数据同步场景。
 - 事务中支持 [`SAVEPOINT` 机制](/sql-statements/sql-statement-savepoint.md)，可以灵活地控制事务内的回退节点。
 - [单 `ALTER TABLE` 语句增删改多个列或索引](/sql-statements/sql-statement-alter-table.md)，方便实现 SQL 功能，提升产品易用性。
 - 支持 [RawKV 跨集群复制](/tikv-configuration-file.md#api-version-从-v610-版本开始引入)。
@@ -91,7 +95,7 @@ TiDB 版本：6.2.0-DMR
 
     TiDB v6.2.0 引入新的 DDL 并行执行框架，在不同表对象上的 DDL 可以并发执行，解决了之前不同表之间 DDL 相互阻塞的问题。同时在不同表对象的追加索引、列类型变更等场景下支持并行执行，大幅提升执行效率。
 
-    [用户文档](/system-variables.md#tidb_enable_concurrent_ddl-从-v620-版本开始引入) [#32031](https://github.com/pingcap/tidb/issues/32031) @[wjhuang2016](https://github.com/wjhuang2016)
+    [#32031](https://github.com/pingcap/tidb/issues/32031) @[wjhuang2016](https://github.com/wjhuang2016)
 
 * 优化器增强了对字符串条件匹配的估算方式
 
@@ -127,7 +131,7 @@ TiDB 版本：6.2.0-DMR
 
     从更低的版本升级到 v6.2.0 版本时，所有的表默认不开启 FastScan 功能，而是保持一致性的数据扫描功能。你可以为每一张表独立开启 FastScan 功能。如果在 v6.2.0 版本设定表开启 FastScan 功能后，当降级到更低版本时 FastScan 功能设置将失效，但不影响数据的正常读取。这种情况等同于强一致性的数据扫描功能。
 
-    [用户文档](/develop/dev-guide-use-fastscan.md) [#5252](https://github.com/pingcap/tiflash/issues/5252) @[hongyunyan](https://github.com/hongyunyan)
+    [用户文档](/tiflash/use-fastscan.md) [#5252](https://github.com/pingcap/tiflash/issues/5252) @[hongyunyan](https://github.com/hongyunyan)
 
 ### 稳定性
 
@@ -167,9 +171,9 @@ TiDB 版本：6.2.0-DMR
 
 * BR 支持恢复用户和权限数据
 
-    该功能支持恢复用户和权限数据，用户不再需要额外的方案恢复用户和权限数据，只需要在使用 BR 恢复数据时指定参数 `--with-sys-table`。
+    BR 快照备份和恢复支持恢复用户和权限数据，用户不再需要额外的方案恢复用户和权限数据，只需要在使用 BR 恢复数据时指定参数 `--with-sys-table`。
 
-    [用户文档](/br/br-usage-restore.md#恢复-mysql-数据库下的表) [#35395](https://github.com/pingcap/tidb/issues/35395) @[D3Hunter](https://github.com/D3Hunter)
+    [用户文档](/br/br-snapshot-guide.md#恢复-mysql-数据库下的表) [#35395](https://github.com/pingcap/tidb/issues/35395) @[D3Hunter](https://github.com/D3Hunter)
 
 * 支持基于变更日志的备份和恢复实现 Point-in-time recovery
 
@@ -180,7 +184,7 @@ TiDB 版本：6.2.0-DMR
     - 业务历史数据审计，满足司法审查的需求。
     - 该功能初版存在着一些使用限制，详细情况请参考功能使用文档。
 
-    [用户文档](/br/point-in-time-recovery.md) [#29501](https://github.com/pingcap/tidb/issues/29501) @[joccau](https://github.com/joccau)
+    [用户文档](/br/br-use-overview.md) [#29501](https://github.com/pingcap/tidb/issues/29501) @[joccau](https://github.com/joccau)
 
 * DM 支持增量持续数据校验（实验特性）
 
@@ -224,7 +228,7 @@ TiDB 版本：6.2.0-DMR
 
     在一些特殊的场景下，用户可能希望对 TiDB 增量数据变更日志进行一定规则的过滤，例如过滤 Drop Table 等高风险 DDL。自 v6.2.0 起，TiCDC 支持过滤指定类型的 DDL 事件，支持基于 SQL 表达式过滤 DML 事件，从而适应更多的数据同步场景。
 
-    [用户文档](/ticdc/manage-ticdc.md#event-filter-配置规则-从-v620-版本开始引入) [#6160](https://github.com/pingcap/tiflow/issues/6160) @[asddongmen](https://github.com/asddongmen)
+    [用户文档](/ticdc/ticdc-filter.md#event-filter-事件过滤器-从-v620-版本开始引入) [#6160](https://github.com/pingcap/tiflow/issues/6160) @[asddongmen](https://github.com/asddongmen)
 
 ## 兼容性变更
 
@@ -234,7 +238,6 @@ TiDB 版本：6.2.0-DMR
 | ------ | ------ | ------ |
 | [tidb_enable_new_cost_interface](/system-variables.md#tidb_enable_new_cost_interface-从-v620-版本开始引入) | 新增 | 控制是否使用重构后的代价模型 [Cost Model Version 2](/cost-model.md#cost-model-version-2)。 |
 | [tidb_cost_model_version](/system-variables.md#tidb_cost_model_version-从-v620-版本开始引入) | 新增 | TiDB 在进行物理优化时会使用代价模型来进行索引选择和算子选择，该变量用于选择代价模型的版本。TiDB v6.2.0 引入了代价模型 Cost Model Version 2，在内部测试中比此前版本的代价模型更加准确。 |
-| [tidb_enable_concurrent_ddl](/system-variables.md#tidb_enable_concurrent_ddl-从-v620-版本开始引入) | 新增 | 用于控制是否让 TiDB 使用并发 DDL 语句。不可修改该变量值关闭该功能，因为关闭后风险不确定，有可能导致集群元数据出错。 |
 | [tiflash_fine_grained_shuffle_stream_count](/system-variables.md#tiflash_fine_grained_shuffle_stream_count-从-v620-版本开始引入) | 新增 | 当窗口函数下推到 TiFlash 执行时，可以通过该变量控制窗口函数执行的并行度。 |
 | [tiflash_fine_grained_shuffle_batch_size](/system-variables.md#tiflash_fine_grained_shuffle_batch_size-从-v620-版本开始引入) | 新增 | 细粒度 shuffle 功能开启时，该变量控制发送端发送数据的攒批大小，即发送端累计行数超过该值就会进行一次数据发送。 |
 | [tidb_default_string_match_selectivity](/system-variables.md#tidb_default_string_match_selectivity-从-v620-版本开始引入) | 新增 | 设置过滤条件中的 `like`、`rlike`、`regexp` 函数在行数估算时的默认选择率，以及是否对这些函数启用 TopN 辅助估算。 |
@@ -242,8 +245,7 @@ TiDB 版本：6.2.0-DMR
 | [tidb_generate_binary_plan](/system-variables.md#tidb_generate_binary_plan-从-v620-版本开始引入) | 新增 | 用于指定是否在 slow log 和 statement summary 里包含以二进制格式编码的执行计划。 |
 | [tidb_opt_skew_distinct_agg](/system-variables.md#tidb_opt_skew_distinct_agg-从-v620-版本开始引入) | 新增 | 用于设置优化器是否将带有 `DISTINCT` 的聚合函数（例如 `SELECT b, COUNT(DISTINCT a) FROM t GROUP BY b`）改写为两层聚合函数（例如 `SELECT b, COUNT(a) FROM (SELECT b, a FROM t GROUP BY b, a) t GROUP BY b`）。 |
 | [tidb_enable_noop_variables](/system-variables.md#tidb_enable_noop_variables-从-v620-版本开始引入) | 新增 | 用于设置 `SHOW [GLOBAL] VARIABLES` 是否显示 noop 变量。 |
-| [tidb_enable_concurrent_ddl](/system-variables.md#tidb_enable_concurrent_ddl-从-v620-版本开始引入) | 新增 | 用于控制是否让 TiDB 使用并发 DDL 语句。 |
-| [tidb_max_paging_size](/system-variables.md#tidb_max_paging_size-从-v620-版本开始引入) | 新增 | 用来设置 coprocessor 协议中 paging size 的最大的行数。 |
+| tidb_enable_concurrent_ddl | 新增 | 用于控制是否让 TiDB 使用并发 DDL 语句。 |
 | [tidb_min_paging_size](/system-variables.md#tidb_min_paging_size-从-v620-版本开始引入) | 新增 | 用来设置 coprocessor 协议中 paging size 的最小的行数。 |
 | [tidb_txn_commit_batch_size](/system-variables.md#tidb_txn_commit_batch_size-从-v620-版本开始引入) | 新增 | 用于控制 TiDB 向 TiKV 发送的事务提交请求的批量大小。 |
 | tidb_enable_change_multi_schema | 删除 | TiDB 支持使用一个 `ALTER TABLE` 语句增删改多个列或索引。 |
@@ -274,8 +276,8 @@ TiDB 版本：6.2.0-DMR
 | TiFlash | [`storage.format_version`](/tiflash/tiflash-configuration.md#tiflash-配置参数) | 修改 | `format_version` 默认值变更为 4，v6.2.0 及以后版本的默认文件格式，优化了写放大问题，同时减少了后台线程消耗。 |
 | TiFlash | [profiles.default.dt_enable_read_thread](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml) | 新增 | 控制存储引擎是否使用线程池读取数据。默认值为 false，不使用线程池读取数据。 |
 | TiFlash | [profiles.default.dt_page_gc_threshold](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml) | 新增 | 表示 PageStorage 单个数据文件中有效数据的最低比例。 |
-| TiCDC | [--overwrite-checkpoint-ts](/ticdc/manage-ticdc.md#恢复同步任务) | 新增 | 在 cdc cli changefeed resume 子命令下新增的参数。 |
-| TiCDC | [--no-confirm](/ticdc/manage-ticdc.md#恢复同步任务) | 新增 | 在 cdc cli changefeed resume 子命令下新增的参数。 |
+| TiCDC | [--overwrite-checkpoint-ts](/ticdc/ticdc-manage-changefeed.md#恢复同步任务) | 新增 | 在 cdc cli changefeed resume 子命令下新增的参数。 |
+| TiCDC | [--no-confirm](/ticdc/ticdc-manage-changefeed.md#恢复同步任务) | 新增 | 在 cdc cli changefeed resume 子命令下新增的参数。 |
 | DM | [mode](/dm/task-configuration-file-full.md#完整配置文件示例) | 新增 | Validator 参数，取值可以是 full、fast，默认是 none，即不开启校验。 |
 | DM | [worker-count](/dm/task-configuration-file-full.md#完整配置文件示例) | 新增 | Validator 参数，后台校验的 validation worker 数量，默认是 4 个。 |
 | DM | [row-error-delay](/dm/task-configuration-file-full.md#完整配置文件示例) | 新增 | Validator 参数，某一行多久没有验证通过会报错，默认是 30 min。 |
@@ -286,7 +288,7 @@ TiDB 版本：6.2.0-DMR
 
 - TiFlash 的存储格式 (`format_version`) 不能直接从 4 降级到 3，详情请参考 [TiFlash v6.2.0 升级帮助](/tiflash-620-upgrade-guide.md)。
 - 在 v6.2.0 以及后续版本，**强烈建议**保留 `dt_enable_logical_split` 的默认值 `false`，不要将其修改为 `true`。具体请参考已知问题 [#5576](https://github.com/pingcap/tiflash/issues/5576)。
-- 如果备份集群包含 TiFlash，执行 PITR 后恢复集群的数据不包含 TiFlash 副本，需要手动恢复 TiFlash 副本；执行 exchange partition DDL 会导致 PITR restore 出错；上游数据库使用 TiDB Lightning Physical 方式导入的数据，无法作为数据日志备份下来，数据导入后需要执行一次全量备份。关于 PITR 功能使用的其他事项，请参考 [PITR 使用限制](/br/point-in-time-recovery.md#使用限制)。
+- 如果备份集群包含 TiFlash，执行 PITR 后恢复集群的数据不包含 TiFlash 副本，需要手动恢复 TiFlash 副本；执行 exchange partition DDL 会导致 PITR restore 出错；上游数据库使用 TiDB Lightning Physical 方式导入的数据，无法作为数据日志备份下来，数据导入后需要执行一次全量备份。关于 PITR 功能使用的其他事项，请参考 [PITR 使用限制](/br/backup-and-restore-overview.md#使用须知)。
 - 从 v6.2.0 开始，BR 支持通过手动指定参数 `--with-sys-table=true` 来恢复 mysql schema 下的表。
 - 使用 `ALTER TABLE` 增删改多个列或索引时，TiDB 会根据执行前的 schema 结构来验证一致性，而不管同一 DDL 语句中的更改。同时，语句的执行顺序上 TiDB 和 MySQL 在某些场景不兼容。
 - 在集群中，如果 TiDB 组件的版本为 v6.2.0 及以上，则 TiKV 组件版本不得低于 v6.2.0。

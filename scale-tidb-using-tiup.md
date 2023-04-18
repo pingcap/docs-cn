@@ -159,7 +159,7 @@ tiup cluster display <cluster-name>
 > 在原有 TiDB 集群上新增 TiFlash 组件需要注意：
 >
 > 1. 首先确认当前 TiDB 的版本支持 TiFlash，否则需要先升级 TiDB 集群至 v5.0 以上版本。
-> 2. 执行 `tiup ctl:<cluster-version> pd -u http://<pd_ip>:<pd_port> config set enable-placement-rules true` 命令，以开启 PD 的 Placement Rules 功能。或通过 [pd-ctl](/pd-control.md) 执行对应的命令。
+> 2. 执行 `tiup ctl:v<CLUSTER_VERSION> pd -u http://<pd_ip>:<pd_port> config set enable-placement-rules true` 命令，以开启 PD 的 Placement Rules 功能。或通过 [pd-ctl](/pd-control.md) 执行对应的命令。
 
 ### 1. 添加节点信息到 scale-out.yaml 文件
 
@@ -278,11 +278,11 @@ tiup cluster display <cluster-name>
 ```
 
 ```
-Starting /root/.tiup/components/cluster/v1.10.3/cluster display <cluster-name>
+Starting /root/.tiup/components/cluster/v1.11.3/cluster display <cluster-name>
 
 TiDB Cluster: <cluster-name>
 
-TiDB Version: v6.2.0
+TiDB Version: v7.0.0
 
 ID       Role         Host    Ports                            Status  Data Dir        Deploy Dir
 
@@ -359,17 +359,21 @@ tiup cluster display <cluster-name>
 
 ### 1. 根据 TiFlash 剩余节点数调整数据表的副本数
 
-在下线节点之前，确保 TiFlash 集群剩余节点数大于等于所有数据表的最大副本数，否则需要修改相关表的 TiFlash 副本数。
+1. 查询是否有数据表的 TiFlash 副本数大于缩容后的 TiFlash 节点数。`tobe_left_nodes` 表示缩容后的 TiFlash 节点数。如果查询结果为空，可以开始执行缩容。如果查询结果不为空，则需要修改相关表的 TiFlash 副本数。
 
-1. 在 TiDB 客户端中针对所有副本数大于集群剩余 TiFlash 节点数的表执行：
+    ```sql
+    SELECT * FROM information_schema.tiflash_replica WHERE REPLICA_COUNT >  'tobe_left_nodes';
+    ```
+
+2. 对所有 TiFlash 副本数大于缩容后的 TiFlash 节点数的表执行以下语句，`new_replica_num` 必须小于等于 `tobe_left_nodes`：
 
     {{< copyable "sql" >}}
 
     ```sql
-    alter table <db-name>.<table-name> set tiflash replica 0;
+    ALTER TABLE <db-name>.<table-name> SET tiflash replica 'new_replica_num';
     ```
 
-2. 等待相关表的 TiFlash 副本被删除（按照[查看表同步进度](/tiflash/create-tiflash-replicas.md#查看表同步进度)一节操作，查不到相关表的同步信息时即为副本被删除）。
+3. 重新执行步骤 1，确保没有数据表的 TiFlash 副本数大于缩容后的 TiFlash 节点数。
 
 ### 2. 执行缩容操作
 
@@ -406,7 +410,7 @@ tiup cluster display <cluster-name>
         {{< copyable "shell-regular" >}}
 
         ```shell
-        tiup ctl:<cluster-version> pd -u http://<pd_ip>:<pd_port> store
+        tiup ctl:v<CLUSTER_VERSION> pd -u http://<pd_ip>:<pd_port> store
         ```
 
         > **注意：**
@@ -422,7 +426,7 @@ tiup cluster display <cluster-name>
         {{< copyable "shell-regular" >}}
 
         ```shell
-        tiup ctl:<cluster-version> pd -u http://<pd_ip>:<pd_port> store delete <store_id>
+        tiup ctl:v<CLUSTER_VERSION> pd -u http://<pd_ip>:<pd_port> store delete <store_id>
         ```
 
         > **注意：**
