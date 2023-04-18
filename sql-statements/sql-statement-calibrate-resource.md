@@ -19,7 +19,7 @@ CalibrateResourceStmt ::= 'CALIBRATE' 'RESOURCE'
 
 - [`tidb_enable_resource_control`](/system-variables#tidb_enable_resource_control-从-v660-版本开始引入) 需要处于开启状态
 - 需要拥有 `SUPER` 或者 `RESOURCE_GROUP_ADMIN` 权限
-- 需要用户对 `METRICS_SCHEMA` 库下所有表的 `SELECT` 权限
+- 需要拥有 `METRICS_SCHEMA` 库下所有表的 `SELECT` 权限
 
 ## 示例
 
