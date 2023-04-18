@@ -42,6 +42,24 @@ As an open-source distributed SQL database with high performance, TiDB can be de
 > - If you are using the 32-bit version of an operating system listed in the preceding table, TiDB **is not guaranteed** to be compilable, buildable or deployable on the 32-bit operating system and the corresponding CPU architecture, or TiDB does not actively adapt to the 32-bit operating system.
 > - Other operating system versions not mentioned above might work but are not officially supported.
 
+### Libraries required for compiling and running TiDB
+
+|  Libraries required for compiling and running TiDB |  Version   |
+|   :---   |   :---   |
+|   Golang  |  1.18.5 or later  |
+|   Rust    |   nightly-2022-07-31 or later  |
+|  GCC      |   7.x      |
+|  LLVM     |  13.0 or later  |
+
+Library for running TiDB：glibc（2.28-151.el8 version）
+
+### Docker image dependencies
+
+The following CPU architectures are supported:
+
+- x86_64. Starting from TiDB v6.6.0, the [x84-64-v2 instruction set](https://developers.redhat.com/blog/2021/01/05/building-red-hat-enterprise-linux-9-for-the-x86-64-v2-microarchitecture-level) is required.
+- ARM 64
+
 ## Software recommendations
 
 ### Control machine
