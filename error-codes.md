@@ -351,7 +351,7 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 8172
 
-    指定 `LOCAL` 时，不能指定特定的选项，比如 `DETACHED` 和 `import_mode='physical'`。请参考 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md) 更改 SQL 语句。
+    指定 `LOCAL` 时，不能指定特定的选项，比如 `DETACHED` 和 `import_mode='PHYSICAL'`。请参考 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md) 更改 SQL 语句。
 
 * Error Number: 8173
 
