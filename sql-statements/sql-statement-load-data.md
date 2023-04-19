@@ -157,7 +157,7 @@ LINES TERMINATED BY '\n' STARTING BY ''
 
 物理导入只能在非 `LOCAL` 模式下使用，单线程执行，且目前物理导入尚未接入[冲突监测](https://docs.pingcap.com/zh/tidb/dev/tidb-lightning-physical-import-mode-usage#%E5%86%B2%E7%AA%81%E6%95%B0%E6%8D%AE%E6%A3%80%E6%B5%8B)，因此遇到数据主键或唯一键冲突时会报 checksum 不一致错误，建议导入前检查数据文件是否存在键值冲突。其他的限制和必要条件参考 [lightning 物理导入](https://docs.pingcap.com/tidb/dev/tidb-lightning-physical-import-mode)。
 
-物理导入模式下 `LOAD DATA` 会将本地排序的数据写入到 TiDB [temp-dir](https://docs.pingcap.com/tidb/stable/tidb-configuration-file#temp-dir-new-in-v630) 的子目录中，子目录命名规则为 `import-<tidb-port>/<job-id>`。物理导入目前尚未接入[磁盘资源配额](https://docs.pingcap.com/zh/tidb/dev/tidb-lightning-physical-import-mode-usage#%E7%A3%81%E7%9B%98%E8%B5%84%E6%BA%90%E9%85%8D%E9%A2%9D-%E4%BB%8E-v620-%E7%89%88%E6%9C%AC%E5%BC%80%E5%A7%8B%E5%BC%95%E5%85%A5)，请确保对应磁盘存在足够的数据空间。
+物理导入模式下 `LOAD DATA` 会将本地排序的数据写入到 TiDB [temp-dir](https://docs.pingcap.com/tidb/stable/tidb-configuration-file#temp-dir-new-in-v630) 的子目录中，子目录命名规则为 `import-<tidb-port>/<job-id>`。物理导入目前尚未接入[磁盘资源配额](https://docs.pingcap.com/zh/tidb/dev/tidb-lightning-physical-import-mode-usage#%E7%A3%81%E7%9B%98%E8%B5%84%E6%BA%90%E9%85%8D%E9%A2%9D-%E4%BB%8E-v620-%E7%89%88%E6%9C%AC%E5%BC%80%E5%A7%8B%E5%BC%95%E5%85%A5)，请确保对应磁盘存在足够的数据空间，具体可参考[必要条件及限制](https://docs.pingcap.com/zh/tidb/dev/tidb-lightning-physical-import-mode#%E5%BF%85%E8%A6%81%E6%9D%A1%E4%BB%B6%E5%8F%8A%E9%99%90%E5%88%B6)中有关存储空间的部分。
 
 ### `WITH max_write_speed = stringLit`
 

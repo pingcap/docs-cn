@@ -353,6 +353,10 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
     指定 `LOCAL` 时，不能指定特定的选项，比如 `DETACHED` 和 `import_mode='physical'`。请参考 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md) 更改 SQL 语句。
 
+* Error Number: 8173
+
+    执行物理导入时，会对当前环境进行检查，比如检查下游表是否为空等，请根据提示进行处理。请参考 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md)。
+
 * Error Number: 8200
 
     尚不支持的 DDL 语法。请参考[与 MySQL DDL 的兼容性](/mysql-compatibility.md#ddl-的限制)。
