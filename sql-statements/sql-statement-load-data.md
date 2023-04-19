@@ -137,25 +137,6 @@ LINES TERMINATED BY '\n' STARTING BY ''
 
 你可以通过 `IGNORE <number> LINES` 参数来忽略文件开始的 `<number>` 行。例如，可以使用 `IGNORE 1 LINES` 来忽略文件的第一行。
 
-### `WITH detached`
-
-如果你指定了 S3/GCS 路径（且未指定 `LOCAL` 参数），可以通过 `WITH detached` 来让 `LOAD DATA` 任务在后台运行。此时 `LOAD DATA` 会返回 job ID。
-
-可以通过 [`SHOW LOAD DATA`](/sql-statements/sql-statement-show-load-data.md) 查看创建的 job，也可以使用 [`CANCEL LOAD DATA` 和 `DROP LOAD DATA`](/sql-statements/sql-statement-operate-load-data-job.md) 取消或删除创建的 job。
-
-### `WITH batch_size=<number>`
-
-可以通过 `WITH batch_size=<number>` 来指定批量写入 TiDB 时的行数，默认值为 `1000`。如果不希望分批写入，可以指定为 `0`。
-
-### `WITH thread=<number>`
-
-可以通过 `WITH thread=<number>` 来指定数据导入的并发度，默认值跟 `FORMAT` 有关：
-
-- `FORMAT` 为 `PARQUET`，默认值为 CPU 核数的 75%。
-- 其他 `FORMAT`，默认值为 CPU 的逻辑核数。
-
-目前该参数仅对逻辑导入生效。
-
 ### `WITH import_mode = ('LOGICAL' | 'PHYSICAL')`
 
 可以通过 `import_mode = ('LOGICAL' | 'PHYSICAL')` 来指定数据导入的模式，默认值为 `LOGICAL`。在 v7.1.0 版本开始，`LOAD DATA` 集成 TiDB Lightning 的物理导入模式，可通过 `WITH import_mode = 'PHYSICAL'` 开启。
@@ -166,11 +147,30 @@ LINES TERMINATED BY '\n' STARTING BY ''
 
 物理导入模式目前尚未接入[磁盘资源配额](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#磁盘资源配额-从-v620-版本开始引入)。请确保对应磁盘存在足够的数据空间，具体可参考[必要条件及限制](https://docs.pingcap.com/zh/tidb/dev/tidb-lightning-physical-import-mode#%E5%BF%85%E8%A6%81%E6%9D%A1%E4%BB%B6%E5%8F%8A%E9%99%90%E5%88%B6)中有关存储空间的部分。
 
+### `WITH thread=<number>`
+
+可以通过 `WITH thread=<number>` 来指定数据导入的并发度，默认值跟 `FORMAT` 有关：
+
+- `FORMAT` 为 `PARQUET`，默认值为 CPU 核数的 75%。
+- 其他 `FORMAT`，默认值为 CPU 的逻辑核数。
+
+目前该参数仅对逻辑导入生效。
+
+### `WITH batch_size=<number>`
+
+可以通过 `WITH batch_size=<number>` 来指定批量写入 TiDB 时的行数，默认值为 `1000`。如果不希望分批写入，可以指定为 `0`。
+
 ### `WITH max_write_speed = stringLit`
 
 当使用物理导入模式时，可通过该参数来指定写入单个 TiKV 的速率限制，默认值为 `0`，即不做限制。
 
 该参数支持 [go-units](https://pkg.go.dev/github.com/docker/go-units#example-RAMInBytes) 格式，比如 `WITH max_write_speed = '1MB'` 即写入到单个 TiKV 的最大速率为 `1MB/s`。
+
+### `WITH detached`
+
+如果你指定了 S3/GCS 路径（且未指定 `LOCAL` 参数），可以通过 `WITH detached` 来让 `LOAD DATA` 任务在后台运行。此时 `LOAD DATA` 会返回 job ID。
+
+可以通过 [`SHOW LOAD DATA`](/sql-statements/sql-statement-show-load-data.md) 查看创建的 job，也可以使用 [`CANCEL LOAD DATA` 和 `DROP LOAD DATA`](/sql-statements/sql-statement-operate-load-data-job.md) 取消或删除创建的 job。
 
 ## 示例
 
