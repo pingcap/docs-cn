@@ -39,7 +39,7 @@ TiDB 版本：6.5.2
 + TiFlash
 
     - 减少了 TiFlash 在读取过程中的任务调度对 CPU 的消耗 [#6495](https://github.com/pingcap/tiflash/issues/6495) @[JinheLin](https://github.com/JinheLin)
-    - 显著提升默认参数下 BR 和 TiDB Lightning 向 TiFlash 导入数据的性能 [#7272](https://github.com/pingcap/tiflash/issues/7272) @[breezewish](https://github.com/breezewish)
+    - 提升默认参数下 BR 和 TiDB Lightning 向 TiFlash 导入数据的性能 [#7272](https://github.com/pingcap/tiflash/issues/7272) @[breezewish](https://github.com/breezewish)
     - note 2
 
 + Tools
