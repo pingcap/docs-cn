@@ -42,7 +42,7 @@ LRU 链表是设计成 session 级别的缓存，因为 `Prepare`/`Execute` 不�
 - 当前设置的时区，即系统变量 `time_zone` 的值；
 - 系统变量 `sql_select_limit` 的值；
 
-key 中任何一项变动（如切换数据库，重命名 `Prepare` 语句，执行 DDL，或修改 SQL Mode/`time_zone` 的值），或 LRU 淘汰机制触发都会导致 `Execute` 时无法命中执行计划缓存。
+key 中任何一项变动（如切换数据库、重命名 `Prepare` 语句、执行 DDL、修改 SQL Mode/`time_zone` 的值）、或 LRU 淘汰机制触发都会导致 `Execute` 时无法命中执行计划缓存。
 
 成功从缓存中获取到执行计划后，TiDB 会先检查执行计划是否依然合法，如果当前 `Execute` 在显式事务里执行，并且引用的表在事务前序语句中被修改，而缓存的执行计划对该表访问不包含 `UnionScan` 算子，则它不能被执行。
 
