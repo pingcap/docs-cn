@@ -35,10 +35,10 @@ TiDB 提供两种预估方式：
 
 这种方式主要根据当前的集群配置，结合对不同负载观测的经验值进行预估。由于不同类型的负载对硬件的配比要求不同，相同配置的硬件所输出的容量也会有所不同。这里的 `WORKLOAD` 参数提供了以下不同的负载类型供选择，默认为 `TPCC`：
 
-- `TPCC`：数据写入较重的负载，根据类似 TPC-C 的负载模型预测。
-- `OLTP_WRITE_ONLY`：数据写入较重的负载，根据类似 sysbench oltp_write_only 的负载模型预测。
-- `OLTP_READ_WRITE`：数据读写平衡的负载，根据类似 sysbench oltp_read_write 的负载模型预测。
-- `OLTP_READ_ONLY`：数据读取较重的负载，根据类似 sysbench oltp_read_only 的负载模型预测。
+- `TPCC`：数据写入较重的负载，根据类似 `TPC-C` 的负载模型预测。
+- `OLTP_WRITE_ONLY`：数据写入较重的负载，根据类似 `sysbench oltp_write_only` 的负载模型预测。
+- `OLTP_READ_WRITE`：数据读写平衡的负载，根据类似 `sysbench oltp_read_write` 的负载模型预测。
+- `OLTP_READ_ONLY`：数据读取较重的负载，根据类似 `sysbench oltp_read_only` 的负载模型预测。
 
 > **注意：**
 >
