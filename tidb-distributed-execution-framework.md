@@ -37,7 +37,7 @@ TiDB 采用计算存储分离架构，具有出色的扩展性和弹性的扩缩
 - 可能需要周期执行，但是频率不会很高。
 - 运行过程中，如果没有很好地控制资源使用，容易对事务型任务和分析型任务造成影响，影响数据库的服务质量。
 
-### 框架的设计与实现原理
+# 框架的设计与实现原理
 
 TiDB 后端任务分布式执行框架的架构图如下：
 
@@ -50,7 +50,7 @@ TiDB 后端任务分布式执行框架的架构图如下：
 - Subtask Executor：是真正的分布式子任务的执行者，并且将子任务执行状况返回给 Scheduler， 由 Scheduler 来统一更新子任务执行状态。
 - 资源池：通过将上述各类模块的计算资源的池化，提供量化资源的使用与管理的基础。
 
-## 使用 TiDB 后端任务分布式框架
+## 启用 TiDB 后端任务分布式框架
 
 如需使用分布式框架，只要设置 [`tidb_enable_dist_task`](/system-variables.md#tidb_enable_dist_task) 为 `ON`。在运行任务的时候，框架支持的语句即会采用分布式方式执行。
 
@@ -75,10 +75,10 @@ SET GLOBAL tidb_enable_dist_task = ON;
 >
 > 需要检查 TiDB 的 temp-dir 路径是否正确挂载了 SSD 磁盘，因为这个参数是 TiDB 的配置参数，设置后需要重启 TiDB 才能生效。建议用户在升级到 v6.5 之后的版本时需要检查，提前设置。
 
-### 启用分布式框架
+### 启用分布式框架相关
 
-此处以启动后端任务的执行 DDL 为例，相关的系统变量如下，这里对于分布式 `Add index` 执行来讲，只需要设置 tidb_ddl_reorg_worker_cnt
-
+此处以启动后端任务的执行 DDL 为例，相关的系统变量如下，这里对于分布式 `Add index` 执行来讲，只需要设置 tidb_ddl_reorg_worker_cnt。**注意** tidb_ddl_reorg_worker_cnt 使用默认值 4 即可，建议最大不超过 16。
+tidb_ddl_reorg_batch_size 请保持默认即可，最大不超过 1024。
 **System Variables**:
 
 * [tidb_ddl_reorg_worker_cnt](https://docs.pingcap.com/tidb/stable/system-variables#tidb_ddl_reorg_worker_cnt)
@@ -86,10 +86,6 @@ SET GLOBAL tidb_enable_dist_task = ON;
 * [tidb_ddl_error_count_limit](https://docs.pingcap.com/tidb/stable/system-variables#tidb_ddl_error_count_limit)
 * [tidb_ddl_reorg_batch_size](https://docs.pingcap.com/tidb/stable/system-variables#tidb_ddl_reorg_batch_size)
 
-## 异常处理和故障排查
-
-在执行过程中，如果发生任何不可修复的异常，TiDB 将回滚执行的任务。目前，故障排查主要是通过分析 TiDB 的日志来找到错误日志，分析错误根本原因。
-
-另请参阅：
+## 另请参阅：
 
 * [DDL 执行原理及最佳实践](/ddl-introduction.md)
