@@ -123,9 +123,9 @@ summary: 了解 TiDB 7.1.0 版本的新功能、兼容性变更、改进提升�
 
     更多信息，请参考[用户文档](/sql-statements/sql-statement-create-index.md#多值索引)
 
-* 支持完善的分区管理 [#42728](https://github.com/pingcap/tidb/issues/42728) @[mjonss](https://github.com/mjonss) **tw:qiancai**
+* 完善 Hash 分区表和 Key 分区表的分区管理功能 [#42728](https://github.com/pingcap/tidb/issues/42728) @[mjonss](https://github.com/mjonss) **tw:qiancai**
 
-    在 v7.1.0 版本之前，TiDB 支持的分区类型包括 `RANGE`、`LIST`、`HASH`、`KEY` ，其中 `RANGE` 和 `LIST` 分区支持分区管理功能。从 v7.1.0 版本开始，TiDB 新增 `HASH` 和 `KEY` 分区的 `ADD PARTITION` 和 `COALESCE PARTITION` 管理功能，并支持修改分区表类型（包括分区表和非分表之间的相互转换、不同分区类型之间的修改），整体完善了分表表的分区管理能力。你可以根据需要，灵活地对表的分区方式进行调整。
+    在 v7.1.0 之前，TiDB 中的 Hash 分区表和 Key 分区表只支持 `TRUNCATE PARTITION` 分区管理。从 v7.1.0 开始，Hash 分区表和 Key 分区表新增支持 `ADD PARTITION` 和 `COALESCE PARTITION` 分区管理。你可以根据需要灵活调整 Hash 分区表和 Key 分区表的分区数量。例如，通过 `ADD PARTITION` 语句增加分区数量，或通过 `COALESCE PARTITION` 语句减少分区数量。
 
     更多信息，请参考[用户文档](/partitioned-table.md#)。
 
