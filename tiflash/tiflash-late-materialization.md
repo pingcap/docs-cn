@@ -11,11 +11,9 @@ summary: 介绍通过使用 TiFlash 延迟物化的方式来加速 OLAP 场景�
 
 本文档介绍通过使用 TiFlash 延迟物化的方式来加速 Online Analytical Processing (OLAP) 场景的查询。
 
-默认情况下，当收到一个查询请求时，TiFlash 会先读取该查询所需列的全部数据，然后再根据查询条件对数据进行过滤、聚合等计算任务。延迟物化是一种优化方式，它支持下推部分过滤条件到 TableScan 算子，即先扫描下推到 TableScan 算子的过滤条件相关的列数据，过滤得到符合条件的行后，再扫描这些行的其他列数据，继续后续计算，从而减少 IO 扫描和数据处理的计算量。
+当未开启延迟物化功能时，如果 `SELECT` 语句中包含过滤条件（`WHERE` 子句），TiFlash 会先读取该查询所需列的全部数据，然后再根据查询条件对数据进行过滤、聚合等计算任务。当开启延迟物化功能时，TiFlash 支持下推部分过滤条件到 TableScan 算子，即先扫描下推到 TableScan 算子的过滤条件相关的列数据，过滤得到符合条件的行后，再扫描这些行的其他列数据，继续后续计算，从而减少 IO 扫描和数据处理的计算量。
 
-如果希望提升 OLAP 场景部分查询的性能，可以在 session 级别或 global 级别开启 TiFlash 延迟物化功能。你可以通过修改变量 [`tidb_opt_enable_late_materialization`](/system-variables.md#tidb_opt_enable_late_materialization-从-v700-版本开始引入) 的值来选择是否启用 TiFlash 延迟物化功能。
-
-启用 TiFlash 延迟物化功能后，TiDB 优化器会根据统计信息和查询的过滤条件，决定哪些过滤条件会被下推。优化器会优先考虑下推过滤率高的过滤条件，详细算法可以参考 [RFC 文档](https://github.com/pingcap/tidb/tree/master/docs/design/2022-12-06-support-late-materialization.md)。
+为了提升 OLAP 场景部分查询的性能，TiDB 从 v7.1.0 起默认开启了 TiFlash 延迟物化功能，TiDB 优化器会根据统计信息和查询的过滤条件，决定哪些过滤条件会被下推。优化器会优先考虑下推过滤率高的过滤条件，详细算法可以参考 [RFC 文档](https://github.com/pingcap/tidb/tree/master/docs/design/2022-12-06-support-late-materialization.md)。
 
 例如：
 
@@ -66,17 +64,17 @@ SHOW GLOBAL VARIABLES LIKE 'tidb_opt_enable_late_materialization';
 变量 `tidb_opt_enable_late_materialization` 支持 session 级别和 global 级别的修改。
 
 - 如果需要在当前 session 中关闭 TiFlash 延迟物化功能，可以通过以下语句设置:
-    
+
     ```sql
     SET SESSION tidb_opt_enable_late_materialization=OFF;
     ```
 
 - 如果需要在 global 级别关闭 TiFlash 延迟物化功能，可以通过以下语句设置：
-    
+
     ```sql
     SET GLOBAL tidb_opt_enable_late_materialization=OFF;
     ```
-    
+
     设置后，新建的会话中 session 和 global 级别 `tidb_opt_enable_late_materialization` 都将默认启用新值。
 
 如需启用 TiFlash 延迟物化功能，可以通过以下语句设置：
