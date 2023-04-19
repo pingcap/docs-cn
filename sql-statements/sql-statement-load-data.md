@@ -46,11 +46,11 @@ LoadDataOptionListOpt ::=
     ('WITH' (LoadDataOption (',' LoadDataOption)*))?
 
 LoadDataOption ::=
-    DETACHED
-    | batch_size '=' numberLiteral
+    import_mode '=' ('LOGICAL' | 'PHYSICAL')
     | thread '=' numberLiteral
-    | import_mode '=' ('LOGICAL' | 'PHYSICAL')
+    | batch_size '=' numberLiteral
     | max_write_speed '=' stringLit
+    | DETACHED
 ```
 
 ## 参数说明
