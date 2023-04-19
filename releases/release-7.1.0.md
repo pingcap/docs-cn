@@ -170,9 +170,9 @@ summary: 了解 TiDB 7.1.0 版本的新功能、兼容性变更、改进提升�
     例如，可以通过如下 [`ADMIN PAUSE DDL JOBS`](/sql-statements/sql-statement-admin-pause-ddl.md) 或 [`ADMIN RESUME DDL JOBS`](/sql-statements/sql-statement-admin-resume-ddl.md) 语句暂停或者恢复多个 DDL 任务：
 
     ```sql
-    ADMIN PAUSE ddl jobs 1,2;
+    ADMIN PAUSE DDL JOBS 1,2;
 
-    ADMIN RESUME ddl jobs 1,2;
+    ADMIN RESUME DDL JOBS 1,2;
     ```
 
     更多信息，请参考 [`ADMIN PAUSE DDL JOBS`](/sql-statements/sql-statement-admin-pause-ddl.md) 和 [`ADMIN RESUME DDL JOBS`](/sql-statements/sql-statement-admin-resume-ddl.md)。
