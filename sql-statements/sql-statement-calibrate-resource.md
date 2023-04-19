@@ -26,7 +26,7 @@ TiDB 提供两种预估方式：
 
 如果应用已经在线上运行，或者你能够运行实际业务测试，建议利用一段时间的实际负载来预估总容量。为了提高预估准确性，需要遵守以下约束条件：
 
-- 使用 `START_TIME` 参数指定预估开始的时间点，格式为 “2006-01-02 15:04:05”，默认预估结束时间为当前时间。
+- 使用 `START_TIME` 参数指定预估开始的时间点，格式为 `2006-01-02 15:04:05`，默认预估结束时间为当前时间。
 - 指定完成 `START_TIME` 参数后，可以使用 `END_TIME` 参数指定预估结束时间，或者使用 `DURATION` 参数指定距离 `START_TIME` 的预估时间窗口。
 - 时间窗口范围为 10 分钟至 24 小时。
 - 在预估的时间窗口内，TiDB 与 TiKV 的 CPU 利用率不能过低，否则无法进行容量估算。
@@ -35,10 +35,10 @@ TiDB 提供两种预估方式：
 
 这种方式主要根据当前的集群配置，结合对不同负载观测的经验值进行预估。由于不同类型的负载对硬件的配比要求不同，相同配置的硬件所输出的容量也会有所不同。这里的 `WORKLOAD` 参数提供了以下不同的负载类型供选择，默认为 `TPCC`：
 
-- `tpcc`: 数据写入较重的负载，根据类似 TPC-C 的负载模型预测。
-- `oltp_write_only`: 数据写入较重的负载，根据类似 sysbench oltp_write_only 的负载模型预测。
-- `oltp_read_write`: 数据读写平衡的负载，根据类似 sysbench oltp_read_write 的负载模型预测。
-- `oltp_read_only`: 数据读取较重的负载，根据类似 sysbench oltp_read_only 的负载模型预测。
+- `TPCC`：数据写入较重的负载，根据类似 TPC-C 的负载模型预测。
+- `OLTP_WRITE_ONLY`：数据写入较重的负载，根据类似 sysbench oltp_write_only 的负载模型预测。
+- `OLTP_READ_WRITE`：数据读写平衡的负载，根据类似 sysbench oltp_read_write 的负载模型预测。
+- `OLTP_READ_ONLY`：数据读取较重的负载，根据类似 sysbench oltp_read_only 的负载模型预测。
 
 > **注意：**
 >
