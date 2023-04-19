@@ -37,7 +37,7 @@ EXPLAIN SELECT a, b, c FROM t1 WHERE a < 1;
 
 ## 启用和禁用 TiFlash 延迟物化
 
-默认情况下，session 和 global 级别的变量 `tidb_opt_enable_late_materialization=OFF`，即未开启 TiFlash 延迟物化功能。你可以通过以下语句来查看对应的变量信息。
+默认情况下，session 和 global 级别的变量 `tidb_opt_enable_late_materialization=ON`，即开启 TiFlash 延迟物化功能。你可以通过以下语句来查看对应的变量信息。
 
 ```sql
 SHOW VARIABLES LIKE 'tidb_opt_enable_late_materialization';
@@ -47,7 +47,7 @@ SHOW VARIABLES LIKE 'tidb_opt_enable_late_materialization';
 +--------------------------------------+-------+
 | Variable_name                        | Value |
 +--------------------------------------+-------+
-| tidb_opt_enable_late_materialization | OFF   |
+| tidb_opt_enable_late_materialization | ON    |
 +--------------------------------------+-------+
 ```
 
@@ -59,34 +59,34 @@ SHOW GLOBAL VARIABLES LIKE 'tidb_opt_enable_late_materialization';
 +--------------------------------------+-------+
 | Variable_name                        | Value |
 +--------------------------------------+-------+
-| tidb_opt_enable_late_materialization | OFF   |
+| tidb_opt_enable_late_materialization | ON    |
 +--------------------------------------+-------+
 ```
 
 变量 `tidb_opt_enable_late_materialization` 支持 session 级别和 global 级别的修改。
 
-- 如果需要在当前 session 中启用 TiFlash 延迟物化功能，可以通过以下语句设置:
+- 如果需要在当前 session 中关闭 TiFlash 延迟物化功能，可以通过以下语句设置:
     
     ```sql
-    SET SESSION tidb_opt_enable_late_materialization=ON;
+    SET SESSION tidb_opt_enable_late_materialization=OFF;
     ```
 
-- 如果需要在 global 级别启用 TiFlash 延迟物化功能，可以通过以下语句设置：
+- 如果需要在 global 级别关闭 TiFlash 延迟物化功能，可以通过以下语句设置：
     
     ```sql
-    SET GLOBAL tidb_opt_enable_late_materialization=ON;
+    SET GLOBAL tidb_opt_enable_late_materialization=OFF;
     ```
     
     设置后，新建的会话中 session 和 global 级别 `tidb_opt_enable_late_materialization` 都将默认启用新值。
 
-如需禁用 TiFlash 延迟物化功能，可以通过以下语句设置：
+如需启用 TiFlash 延迟物化功能，可以通过以下语句设置：
 
 ```sql
-SET SESSION tidb_opt_enable_late_materialization=OFF;
+SET SESSION tidb_opt_enable_late_materialization=ON;
 ```
 
 ```sql
-SET GLOBAL tidb_opt_enable_late_materialization=OFF;
+SET GLOBAL tidb_opt_enable_late_materialization=ON;
 ```
 
 ## 实现机制
