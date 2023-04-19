@@ -3082,7 +3082,7 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 默认值：`OFF`
-- 这个变量用于设定 TiDB 选择 [MPP Hash Join 算法](/tiflash/use-tiflash-mpp-mode.md#mpp-模式的算法支持)时，是否使用最小网络交换的数据量策略。使用该策略时，TiDB 会估算 Broadcast Hash Join 和 Shuffled Hash Join 两种算法所需进行网络交换的数据量，并选择网络交换数据量较小的算法。
+- 这个变量用于设定 TiDB 选择 [MPP Hash Join 算法](/tiflash/use-tiflash-mpp-mode.md#mpp-模式的算法支持)时，是否使用最小网络交换的数据量策略。开启该变量后，TiDB 会估算 Broadcast Hash Join 和 Shuffled Hash Join 两种算法所需进行网络交换的数据量，并选择网络交换数据量较小的算法。
 - 该功能开启后 [`tidb_broadcast_join_threshold_count`](#tidb_broadcast_join_threshold_count-从-v50-版本开始引入) 和 [`tidb_broadcast_join_threshold_size`](#tidb_broadcast_join_threshold_size-从-v50-版本开始引入) 将不再生效。
 
 ### `tidb_prepared_plan_cache_memory_guard_ratio` <span class="version-mark">从 v6.1.0 版本开始引入</span>
