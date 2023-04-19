@@ -91,7 +91,7 @@ LoadDataOption ::=
 
 ### `CharsetOpt`
 
-可通过 `CharsetOpt` 来指定数据文件的编码格式：
+可通过 `CharsetOpt` 来指定数据文件的编码格式，目前支持下列编码格式：ascii、latin1、binary、utf8、utf8mb4、gbk 
 
 ```sql
 LOAD DATA INFILE 's3://<bucket-name>/path/to/data/foo.csv' INTO TABLE load_charset.latin1 CHARACTER SET latin1
@@ -145,7 +145,7 @@ LINES TERMINATED BY '\n' STARTING BY ''
 
 物理导入模式下，`LOAD DATA` 会将本地排序的数据写入到 TiDB [temp-dir](/tidb-configuration-file.md#temp-dir-new-in-v630) 的子目录中。子目录命名规则为 `import-<tidb-port>/<job-id>`。
 
-物理导入模式目前尚未接入[磁盘资源配额](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#磁盘资源配额-从-v620-版本开始引入)。请确保对应磁盘存在足够的数据空间，具体可参考[必要条件及限制](https://docs.pingcap.com/zh/tidb/dev/tidb-lightning-physical-import-mode#%E5%BF%85%E8%A6%81%E6%9D%A1%E4%BB%B6%E5%8F%8A%E9%99%90%E5%88%B6)中有关存储空间的部分。
+物理导入模式目前尚未接入[磁盘资源配额](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#磁盘资源配额-从-v620-版本开始引入)。请确保对应磁盘存在足够的数据空间，具体可参考[必要条件及限制](/tidb-lightning/tidb-lightning-physical-import-mode#必要条件及限制)中有关存储空间的部分。
 
 ### `WITH thread=<number>`
 
