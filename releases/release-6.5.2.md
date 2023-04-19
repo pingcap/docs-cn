@@ -24,7 +24,7 @@ TiDB 版本：6.5.2
     - (dup): release-6.1.6.md > 提升改进> TiDB - Prepared Plan Cache 支持缓存 BatchPointGet 计划 [#42125](https://github.com/pingcap/tidb/issues/42125) @[qw4990](https://github.com/qw4990)
     - (dup): release-7.0.0.md > 改进提升> TiDB - Index Join 支持更多的 SQL 格式 [#40505](https://github.com/pingcap/tidb/issues/40505) @[Yisaer](https://github.com/Yisaer)
     - 将 Index Merge Reader 中的一些 Log 等级从 Info 降低为 Debug [#41949](https://github.com/pingcap/tidb/issues/41949) @[yibin87](https://github.com/yibin87)
-    - 优化带 limit 的 range partition table 的 distsql concurrency 设置，降低查询延迟 [#41500](https://github.com/pingcap/tidb/pull/41500) @[you06](https://github.com/you06)
+    - 优化带 Limit 的 Range Partition Table 的 distsql concurrency 设置以降低查询延迟 [#41480](https://github.com/pingcap/tidb/issues/41480) @[you06](https://github.com/you06)
 
 + TiKV
 
@@ -67,11 +67,12 @@ TiDB 版本：6.5.2
 ## 错误修复
 
 + TiDB
-- 修复缓存表执行新增列操作后，新增列的值是 NULL 而不是列的默认值的问题 [#42928](https://github.com/pingcap/tidb/issues/42928) [@lqs](https://github.com/lqs)
-- 修复对于特别多分区并且带有 tiflash 副本的分区表，执行 truncate table 操作时出现写冲突导致 DDL 重试的问题 [#42940](https://github.com/pingcap/tidb/issues/42940) [@mjonss](https://github.com/mjonss)
-- 修复对于执行中的 drop table 操作，admin show ddl jobs 的展示结果中表名缺失的问题 [#42268](https://github.com/pingcap/tidb/issues/42268) [@tiancaiamao ](https://github.com/tiancaiamao)
-- 修复读取 cgroup 信息出错导致 tidb server 无法启动的问题，报错信息为 "can't read file memory.stat from cgroup v1: open /sys/memory.stat no such file or directory" [#42659](https://github.com/pingcap/tidb/issues/42659) [@hawkingrei](https://github.com/hawkingrei)
-- 修复在分区表上执行 modify column 操作时，数据截断时没有正确地给出 warning [#24427](https://github.com/pingcap/tidb/issues/24427) [@mjonss](https://github.com/mjonss)
+
+    - 修复缓存表执行新增列操作后，新增列的值是 NULL 而不是列的默认值的问题 [#42928](https://github.com/pingcap/tidb/issues/42928) [@lqs](https://github.com/lqs)
+    - 修复对于特别多分区并且带有 TiFlash 副本的分区表，执行 `TRUNCATE TABLE` 操作时出现写冲突导致 DDL 重试的问题 [#42940](https://github.com/pingcap/tidb/issues/42940) [@mjonss](https://github.com/mjonss)
+    - 修复对于执行中的 DROP TABLE 操作，`admin show ddl jobs` 的展示结果中表名缺失的问题 [#42268](https://github.com/pingcap/tidb/issues/42268) [@tiancaiamao ](https://github.com/tiancaiamao)
+    - 修复读取 cgroup 信息出错导致 TiDB Server 无法启动的问题，报错信息为 "can't read file memory.stat from cgroup v1: open /sys/memory.stat no such file or directory" [#42659](https://github.com/pingcap/tidb/issues/42659) [@hawkingrei](https://github.com/hawkingrei)
+    - 修复在分区表上执行 modify column 操作时，数据截断时没有正确地给出 warning [#24427](https://github.com/pingcap/tidb/issues/24427) [@mjonss](https://github.com/mjonss)
     - release-6.1.6.md > Bug 修复> TiDB - 修复了生成执行计划过程中，因为获取的 InfoSchema 不一致而导致的 TiDB panic 的问题 [#41622](https://github.com/pingcap/tidb/issues/41622) [@tiancaiamao](https://github.com/tiancaiamao)
     - (dup): release-6.1.6.md > Bug 修复> TiDB - 修复了使用 DDL 修改浮点类型时，保持长度不变且减少小数位后，旧数据仍然保持原样的问题 [#41281](https://github.com/pingcap/tidb/issues/41281) [@zimulala](https://github.com/zimulala)
     - (dup): release-6.1.6.md > Bug 修复> TiDB - 修复事务内执行 PointUpdate 之后，`SELECT` 结果不正确的问题 [#28011](https://github.com/pingcap/tidb/issues/28011) @[zyguan](https://github.com/zyguan)
