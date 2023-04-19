@@ -23,8 +23,8 @@ TiDB 版本：6.5.2
 
     - (dup): release-6.1.6.md > 提升改进> TiDB - Prepared Plan Cache 支持缓存 BatchPointGet 计划 [#42125](https://github.com/pingcap/tidb/issues/42125) @[qw4990](https://github.com/qw4990)
     - (dup): release-7.0.0.md > 改进提升> TiDB - Index Join 支持更多的 SQL 格式 [#40505](https://github.com/pingcap/tidb/issues/40505) @[Yisaer](https://github.com/Yisaer)
-    - 将 Index Merge Reader 中的一些 Log 等级从 Info 降低为 Debug [#41949](https://github.com/pingcap/tidb/issues/41949) @[yibin87](https://github.com/yibin87)
-    - 优化带 Limit 的 Range Partition Table 的 distsql concurrency 设置以降低查询延迟 [#41480](https://github.com/pingcap/tidb/issues/41480) @[you06](https://github.com/you06)
+    - 将 Index Merge Reader 中的一些 Log 等级从 `"info"` 降低为 `"debug"` [#41949](https://github.com/pingcap/tidb/issues/41949) @[yibin87](https://github.com/yibin87)
+    - 优化带 Limit 的 Range 类型分区表的 `distsql_concurrency` 设置以降低查询延迟 [#41480](https://github.com/pingcap/tidb/issues/41480) @[you06](https://github.com/you06)
 
 + TiKV
 
@@ -68,26 +68,26 @@ TiDB 版本：6.5.2
 
 + TiDB
 
-    - 修复缓存表执行新增列操作后，新增列的值是 NULL 而不是列的默认值的问题 [#42928](https://github.com/pingcap/tidb/issues/42928) [@lqs](https://github.com/lqs)
-    - 修复对于特别多分区并且带有 TiFlash 副本的分区表，执行 `TRUNCATE TABLE` 操作时出现写冲突导致 DDL 重试的问题 [#42940](https://github.com/pingcap/tidb/issues/42940) [@mjonss](https://github.com/mjonss)
-    - 修复对于执行中的 DROP TABLE 操作，`admin show ddl jobs` 的展示结果中表名缺失的问题 [#42268](https://github.com/pingcap/tidb/issues/42268) [@tiancaiamao ](https://github.com/tiancaiamao)
-    - 修复读取 cgroup 信息出错导致 TiDB Server 无法启动的问题，报错信息为 "can't read file memory.stat from cgroup v1: open /sys/memory.stat no such file or directory" [#42659](https://github.com/pingcap/tidb/issues/42659) [@hawkingrei](https://github.com/hawkingrei)
-    - 修复在分区表上执行 modify column 操作时，数据截断时没有正确地给出 warning [#24427](https://github.com/pingcap/tidb/issues/24427) [@mjonss](https://github.com/mjonss)
-    - release-6.1.6.md > Bug 修复> TiDB - 修复了生成执行计划过程中，因为获取的 InfoSchema 不一致而导致的 TiDB panic 的问题 [#41622](https://github.com/pingcap/tidb/issues/41622) [@tiancaiamao](https://github.com/tiancaiamao)
-    - (dup): release-6.1.6.md > Bug 修复> TiDB - 修复了使用 DDL 修改浮点类型时，保持长度不变且减少小数位后，旧数据仍然保持原样的问题 [#41281](https://github.com/pingcap/tidb/issues/41281) [@zimulala](https://github.com/zimulala)
+    - 修复缓存表执行新增列操作后，新增列值为 `NULL` 而非列的默认值的问题 [#42928](https://github.com/pingcap/tidb/issues/42928) @[lqs](https://github.com/lqs)
+    - 修复分区特别多并且带有 TiFlash 副本的分区表在执行 `TRUNCATE TABLE` 时，出现写冲突导致 DDL 重试的问题 [#42940](https://github.com/pingcap/tidb/issues/42940) @[mjonss](https://github.com/mjonss)
+    - 修复对于执行中的 `DROP TABLE` 操作，`ADMIN SHOW DDL JOBS` 的结果中缺少表名的问题 [#42268](https://github.com/pingcap/tidb/issues/42268) @[tiancaiamao ](https://github.com/tiancaiamao)
+    - 修复读取 cgroup 信息出错导致 TiDB Server 无法启动的问题，报错信息为 "can't read file memory.stat from cgroup v1: open /sys/memory.stat no such file or directory" [#42659](https://github.com/pingcap/tidb/issues/42659) @[hawkingrei](https://github.com/hawkingrei)
+    - 修复在分区表上执行修改列操作时，数据截断没有正确发出警告的问题 [#24427](https://github.com/pingcap/tidb/issues/24427) @[mjonss](https://github.com/mjonss)
+    - (dup): release-6.1.6.md > Bug 修复> TiDB - 修复了生成执行计划过程中，因为获取的 InfoSchema 不一致而导致的 TiDB panic 的问题 [#41622](https://github.com/pingcap/tidb/issues/41622) @[tiancaiamao](https://github.com/tiancaiamao)
+    - (dup): release-6.1.6.md > Bug 修复> TiDB - 修复了使用 DDL 修改浮点类型时，保持长度不变且减少小数位后，旧数据仍然保持原样的问题 [#41281](https://github.com/pingcap/tidb/issues/41281) @[zimulala](https://github.com/zimulala)
     - (dup): release-6.1.6.md > Bug 修复> TiDB - 修复事务内执行 PointUpdate 之后，`SELECT` 结果不正确的问题 [#28011](https://github.com/pingcap/tidb/issues/28011) @[zyguan](https://github.com/zyguan)
-    - release-6.1.6.md > Bug 修复> TiDB - 修复在使用 Cursor Fetch 且在 Execute、Fetch、Close 之间运行其它语句后，Fetch 与 Close 命令可能会返回错误结果或造成 TiDB Panic 的问题 [#40094](https://github.com/pingcap/tidb/issues/40094) [@YangKeao](https://github.com/YangKeao)
+    - release-6.1.6.md > Bug 修复> TiDB - 修复在使用 Cursor Fetch 且在 Execute、Fetch、Close 之间运行其它语句后，Fetch 与 Close 命令可能会返回错误结果或造成 TiDB Panic 的问题 [#40094](https://github.com/pingcap/tidb/issues/40094) @[YangKeao](https://github.com/YangKeao)
     - (dup): release-7.0.0.md > 错误修复> TiDB - 修复 `INSERT IGNORE` 和 `REPLACE` 语句对不修改 value 的 key 没有加锁的问题 [#42121](https://github.com/pingcap/tidb/issues/42121) @[zyguan](https://github.com/zyguan)
     - (dup): release-7.0.0.md > 错误修复> TiDB - 修复 TiFlash 执行中遇到生成列会报错的问题 [#40663](https://github.com/pingcap/tidb/issues/40663) @[guo-shaoge](https://github.com/guo-shaoge)
     - (dup): release-7.0.0.md > 错误修复> TiDB - 修复当同一个 SQL 中出现多个不同的分区表时，TiDB 可能执行得到错误结果的问题 [#42135](https://github.com/pingcap/tidb/issues/42135) @[mjonss](https://github.com/mjonss)
     - (dup): release-7.0.0.md > 错误修复> TiDB - 修复在开启 Prepared Plan Cache 的情况下，索引全表扫可能会报错的问题 [#42150](https://github.com/pingcap/tidb/issues/42150) @[fzzf678](https://github.com/fzzf678)
     - (dup): release-7.0.0.md > 错误修复> TiDB - 修复在开启 Prepared Plan Cache 时 Index Merge 可能得到错误结果的问题 [#41828](https://github.com/pingcap/tidb/issues/41828) @[qw4990](https://github.com/qw4990)
-    - 修复全局内存控制可能 Kill 内存使用量小于 `tidb_server_memory_limit_sess_min_size` 的 SQL 的问题 [#42662](https://github.com/pingcap/tidb/issues/41828) @[XuHuaiyu](https://github.com/XuHuaiyu)
-    - 修复分区表动态裁剪模式下 Index Join 可能发生 Panic 的问题 [#40596](https://github.com/pingcap/tidb/issues/40596) @[tiancaiamao](https://github.com/tiancaiamao)
+    - 修复全局内存控制可能错误地 Kill 内存使用量小于 `tidb_server_memory_limit_sess_min_size` 的 SQL 的问题 [#42662](https://github.com/pingcap/tidb/issues/41828) @[XuHuaiyu](https://github.com/XuHuaiyu)
+    - 修复分区表动态裁剪模式下 Index Join 可能导致 panic 的问题 [#40596](https://github.com/pingcap/tidb/issues/40596) @[tiancaiamao](https://github.com/tiancaiamao)
 
 + TiKV
 
-    - 修复 TiKV 解析 cgroup path 没有正确解析 ":" 符号的问题 [#14538](https://github.com/tikv/tikv/issues/14538) @[SpadeA-Tang](https://github.com/SpadeA-Tang) 
+    - 修复 TiKV 解析 cgroup path 没有正确解析 `:` 符号的问题 [#14538](https://github.com/tikv/tikv/issues/14538) @[SpadeA-Tang](https://github.com/SpadeA-Tang) 
 
 + PD
 
