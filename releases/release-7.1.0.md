@@ -163,7 +163,7 @@ summary: 了解 TiDB 7.1.0 版本的新功能、兼容性变更、改进提升�
 
 ### 数据库管理
 
-* DDL 任务支持暂停和恢复操作 [#issue号](链接) @[godouxm](https://github.com/godouxm) **tw:ran-huang**
+* DDL 任务支持暂停和恢复操作 [#18015](https://github.com/pingcap/tidb/issues/18015) @[godouxm](https://github.com/godouxm) **tw:ran-huang**
 
     TiDB v7.1.0 之前的版本中，当 DDL 任务执行期间遇到业务高峰时间点时，为了减少对业务的影响，只能手动取消 DDL 任务。TiDB v7.1.0 引入了 DDL 任务的暂停和恢复功能，你可以在高峰时间点暂停 DDL 任务，等到业务高峰时间结束后再恢复 DDL 任务，从而避免了 DDL 操作对业务负载的影响。
 
