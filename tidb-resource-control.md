@@ -74,10 +74,10 @@ Request Unit (RU) 是 TiDB 对 CPU、IO 等系统资源的统一抽象的单位,
 
 这种方式主要根据当前的集群配置，结合我们对不同负载观测的经验值进行预估。由于不同类型的负载对硬件的配比要求不同，相同配置的硬件所输出的容量也会有所不同。这里提供了几种不同的负载类型供选择：
 
-- `tpcc`: 数据写入较重的负载
-- `oltp_write_only`: 数据写入较重的负载
-- `oltp_read_write`: 数据读写平衡的负载
-- `oltp_read_only`: 数据读取较重的负载
+- `tpcc`: 数据写入较重的负载，根据类似 TPC-C 的负载模型预测。
+- `oltp_write_only`: 数据写入较重的负载，根据类似 sysbench oltp_write_only 的负载模型预测。
+- `oltp_read_write`: 数据读写平衡的负载，根据类似 sysbench oltp_read_write 的负载模型预测。
+- `oltp_read_only`: 数据读取较重的负载，根据类似 sysbench oltp_read_only 的负载模型预测。
 
 例如，实际应用是读写比较均衡的负载，我们执行下面命令进行容量预估：
 
