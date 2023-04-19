@@ -9,7 +9,8 @@ TiCDC 提供 OpenAPI 功能，你可以通过 OpenAPI v2 对 TiCDC 集群进行�
 
 > **注意：**
 >
-> TiCDC OpenAPI v1 将在未来版本中被删除。推荐使用 TiCDC OpenAPI v2。
+> - TiCDC 从 v6.5.2 起支持 OpenAPI v2。如果你的 TiCDC 版本为 v6.5.0 或 v6.5.1，请使用 [TiCDC OpenAPI v1](/ticdc/ticdc-open-api.md)。
+> - TiCDC OpenAPI v1 将在未来版本中被删除。推荐使用 TiCDC OpenAPI v2。
 
 你可以通过 OpenAPI 完成 TiCDC 集群的如下运维操作：
 
