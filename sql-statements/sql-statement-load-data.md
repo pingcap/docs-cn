@@ -50,7 +50,7 @@ LoadDataOption ::=
     | thread '=' numberLiteral
     | batch_size '=' numberLiteral
     | max_write_speed '=' stringLit
-    | DETACHED
+    | detached
 ```
 
 ## 参数说明
