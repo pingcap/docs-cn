@@ -119,6 +119,14 @@ summary: 了解 TiDB 7.1.0 版本的新功能、兼容性变更、改进提升�
 
     更多信息，请参考[用户文档](/partitioned-table.md#)。
 
+* Range INTERVAL 分区定义语法功能 GA [#35683](https://github.com/pingcap/tidb/issues/35683) @[mjonss](https://github.com/mjonss)
+
+    在 v6.3.0 版本，TiDB 支持了 Range INTERVAL 分区的语法，根据规则定义 Range 分区，不需要枚举所有分区，可大幅度缩短 Range 分区表定义语句冗长的书写方式。语义与原有 Range 分区等价。
+
+    在 v7.1.0 版本中，该功能正式 GA。
+
+    更多信息，请参考[用户文档](/partitioned-table.md#range-interval-分区)。
+
 * `LOAD DATA` SQL 支持从 S3、GCS 导入数据，支持任务管理等功能 GA [#40499](https://github.com/pingcap/tidb/issues/40499) @[lance6716](https://github.com/lance6716) **tw:hfxsd**
 
     以下 `LOAD DATA` 新增的功能在 7.1 版本 GA：
