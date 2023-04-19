@@ -9,12 +9,6 @@ summary: 了解 TiDB 7.1.0 版本的新功能、兼容性变更、改进提升�
 
 ## 功能详情
 
-* 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接)
-
-    功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
-
-    更多信息，请参考[用户文档](链接)。
-
 ### 可扩展性
 
 ### 性能
@@ -41,7 +35,7 @@ summary: 了解 TiDB 7.1.0 版本的新功能、兼容性变更、改进提升�
 
     更多信息，请参考[用户文档](/tiflash/use-tiflash-mpp-mode.md#mpp-模式的算法支持)。
 
-* 自适应副本读来缓解读热点 [#14151](https://github.com/tikv/tikv/issues/14151) @[sticnarf](https://github.com/sticnarf) @[you06](https://github.com/you06) **tw:Oreoxmt**
+* 支持自适应副本读取缓解读热点 [#14151](https://github.com/tikv/tikv/issues/14151) @[sticnarf](https://github.com/sticnarf) @[you06](https://github.com/you06) **tw:Oreoxmt**
 
     在读热点场景中，热点 TiKV 无法及时处理读请求，导致读请求排队。但是，此时并非所有 TiKV 资源都已耗尽。为了降低延迟，TiDB v7.1.0 引入了负载自适应副本读取功能，允许从其他 TiKV 节点读取副本，而无需在热点 TiKV 节点排队等待。你可以通过 [`tidb_load_based_replica_read_threshold`](/system-variables.md#tidb_load_based_replica_read_threshold-从-v700-版本开始引入) 系统变量控制读请求的排队长度。当 leader 节点的预估排队时间超过该阈值时，TiDB 会优先从 follower 节点读取数据。在读热点的情况下，与不打散读热点相比，该功能可提高读取吞吐量 70%～200%。
 
@@ -51,7 +45,7 @@ summary: 了解 TiDB 7.1.0 版本的新功能、兼容性变更、改进提升�
 
     TiDB v7.0.0 引入了非 Prepare 语句的执行计划缓存作为实验特性，以提升在线交易场景的并发处理能力。该功能在 v7.1.0 正式 GA 并默认打开，支持缓存更多模式的 SQL。
 
-    为了提升内存利用率，TiDB v7.1.0 将非 Prepare 与 Prepare 语句的缓存池合并。你可以通过系统变量 [`tidb_session_plan_cache_size`](/system-variables.md#tidb_session_plan_cache_size) 设置缓存大小。原有的系统变量 [`tidb_prepared_plan_cache_size`](/system-variables.md#tidb_prepared_plan_cache_size) 和 [`tidb_non_prepared_plan_cache_size`](/system-variables.md#tidb_non_prepared_plan_cache_size) 被废弃。
+    为了提升内存利用率，TiDB v7.1.0 将非 Prepare 与 Prepare 语句的缓存池合并。你可以通过系统变量 [`tidb_session_plan_cache_size`](/system-variables.md#tidb_session_plan_cache_size-从-v710-版本开始引入) 设置缓存大小。原有的系统变量 [`tidb_prepared_plan_cache_size`](/system-variables.md#tidb_prepared_plan_cache_size-从-v610-版本开始引入) 和 [`tidb_non_prepared_plan_cache_size`](/system-variables.md#tidb_non_prepared_plan_cache_size) 被废弃。
 
     为保持向前兼容，从旧版本升级到 v7.1.0 时，缓存池大小 `tidb_session_plan_cache_size` 的值与 `tidb_prepared_plan_cache_size` 保持一致，[`tidb_enable_non_prepared_plan_cache`](/system-variables.md#tidb_enable_non_prepared_plan_cache) 保持升级前的设置。经过性能测试后，你可通过 `tidb_enable_non_prepared_plan_cache` 开启非 Parepare 语句的执行计划缓存功能。对于新创建的 v7.1.0 集群，非 Parepare 语句的缓存功能默认打开。
 
@@ -119,7 +113,7 @@ summary: 了解 TiDB 7.1.0 版本的新功能、兼容性变更、改进提升�
 
     更多信息，请参考[用户文档](/partitioned-table.md#)。
 
-* Range INTERVAL 分区定义语法功能 GA [#35683](https://github.com/pingcap/tidb/issues/35683) @[mjonss](https://github.com/mjonss)
+* Range INTERVAL 分区定义语法功能 GA [#35683](https://github.com/pingcap/tidb/issues/35683) @[mjonss](https://github.com/mjonss) **tw:qiancai**
 
     在 v6.3.0 版本，TiDB 支持了 Range INTERVAL 分区的语法，根据规则定义 Range 分区，不需要枚举所有分区，可大幅度缩短 Range 分区表定义语句冗长的书写方式。语义与原有 Range 分区等价。
 
