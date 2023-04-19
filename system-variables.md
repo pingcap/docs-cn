@@ -2605,7 +2605,7 @@ mysql> desc select count(distinct a) from test.t;
 - 默认值：`""`
 - 这个变量用来控制优化器的一些内部行为。
 - 一部分优化器行为的选择依赖用户场景或 SQL 的编写。该变量可以让你更细粒度地控制优化器的行为，并且可以防止优化器行为变化导致的性能回退。
-- 每个控制项会对应一个 GitHub Issue，可以通过该变量设置为一个值。设置多个控制项时，不同控制项之间使用逗号隔开。格式形如 `"<#issue1>:<value1>,<#issue2>:<value2>"`，其中 `<#issueN>` 表示 GitHub Issue 编号，`<valueN>` 表示希望设置的值。
+- 该变量支持设置多个控制项，不同控制项之间使用逗号隔开。格式形如 `"<#issue1>:<value1>,<#issue2>:<value2>"`，其中 `<#issueN>` 代表控制项编号，对应链接 `https://github.com/pingcap/tidb/issues/<#issue>` 对该控制项进行说明，`<valueN>` 是为该控制项设置的目标值。
 
 ### `tidb_opt_force_inline_cte` <span class="version-mark">从 v6.3.0 版本开始引入</span>
 
