@@ -85,7 +85,7 @@ LoadDataOption ::=
 
 ### `DuplicateOpt`
 
-该语句与 MySQL 行为一致，具体请参考 [MySQL LOAD DATA 文档](https://dev.mysql.com/doc/refman/8.0/en/load-data.html)。
+该语句与 MySQL 行为一致，具体请参考 [MySQL LOAD DATA 文档](https://dev.mysql.com/doc/refman/8.0/en/load-data.html#load-data-error-handling)。
 
 该语句只适用于逻辑导入模式，对物理导入模式不生效。
 
