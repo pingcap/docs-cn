@@ -38,8 +38,8 @@ TiDB 版本：6.5.2
 
 + TiFlash
 
-    - 减少了 TiFlash 存储引擎的在读过程中的任务调度的 CPU 消耗 [#6495](https://github.com/pingcap/tiflash/issues/6495) @[JinheLin](https://github.com/JinheLin)
-    - 显著提升默认参数下用 BR、Lightning 往 TiFlash 导入数据的性能 [#7272](https://github.com/pingcap/tiflash/issues/7272) @[breezewish](https://github.com/breezewish)
+    - 减少了 TiFlash 在读取过程中的任务调度对 CPU 的消耗 [#6495](https://github.com/pingcap/tiflash/issues/6495) @[JinheLin](https://github.com/JinheLin)
+    - 显著提升默认参数下 BR 和 TiDB Lightning 向 TiFlash 导入数据的性能 [#7272](https://github.com/pingcap/tiflash/issues/7272) @[breezewish](https://github.com/breezewish)
     - note 2
 
 + Tools
@@ -95,7 +95,7 @@ TiDB 版本：6.5.2
     - (dup): release-7.0.0.md > 错误修复> TiFlash - 修复了 Decimal 除法在某些情况下最后一位未进位的问题 [#7022](https://github.com/pingcap/tiflash/issues/7022) @[LittleFall](https://github.com/LittleFall)
     - (dup): release-7.0.0.md > 错误修复> TiFlash - 修复了 Decimal 转换在某些情况下进位错误的问题 [#6994](https://github.com/pingcap/tiflash/issues/6994) @[windtalker](https://github.com/windtalker)
     - (dup): release-7.0.0.md > 错误修复> TiFlash - 修复了开启 new collation 后 TopN/Sort 算子结果可能出错的问题 [#6807](https://github.com/pingcap/tiflash/issues/6807) @[xzhangxian1008](https://github.com/xzhangxian1008)
-    - 修复由于不兼容 CDC 导致 TiFlash 进程失败的问题 [#7212](https://github.com/pingcap/tiflash/issues/7212) @[hongyunyan](https://github.com/hongyunyan)
+    - 修复由于不兼容 TiCDC 导致 TiFlash 进程失败的问题 [#7212](https://github.com/pingcap/tiflash/issues/7212) @[hongyunyan](https://github.com/hongyunyan)
 
 + Tools
 
