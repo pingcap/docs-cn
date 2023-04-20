@@ -184,7 +184,7 @@ absent -> delete only -> write only -> write reorg -> public
 
 - `ADMIN RESUME DDL JOBS job_id [, job_id]`：用于恢复已被暂停的 DDL 任务。执行该命令后，执行 DDL 任务的 SQL 语句体现为正在执行，后台任务正常执行。（实验特性）
 
-    你只能对暂停状态的 DDL 任务进行恢复操作，否则会在 `RESULT` 列看到 `Job 3 can't be resumed`
+    你只能对暂停状态的 DDL 任务进行恢复操作，否则会在 `RESULT` 列看到 `Job 3 can't be resumed`。
 
 
 ## 常见问题
