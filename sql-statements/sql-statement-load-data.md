@@ -159,7 +159,6 @@ LINES TERMINATED BY '\n' STARTING BY ''
 - 当 `FORMAT` 为 `PARQUET` 时，默认值为 CPU 核数的 75%。
 - 对于其他 `FORMAT`，默认值为 CPU 的逻辑核数。
 
-
 ### `WITH batch_size=<number>`
 
 可以通过 `WITH batch_size=<number>` 来指定批量写入 TiDB 时的行数，默认值为 `1000`。如果不希望分批写入，可以指定为 `0`。
