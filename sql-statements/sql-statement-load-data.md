@@ -152,12 +152,13 @@ LINES TERMINATED BY '\n' STARTING BY ''
 
 ### `WITH thread=<number>`
 
-可以通过 `WITH thread=<number>` 来指定数据导入的并发度，默认值跟 `FORMAT` 有关：
-
-- `FORMAT` 为 `PARQUET`，默认值为 CPU 核数的 75%。
-- 其他 `FORMAT`，默认值为 CPU 的逻辑核数。
-
 目前该参数仅对逻辑导入生效。
+
+可以通过 `WITH thread=<number>` 指定数据导入的并发度。默认值与 `FORMAT` 有关：
+
+- 当 `FORMAT` 为 `PARQUET` 时，默认值为 CPU 核数的 75%。
+- 对于其他 `FORMAT`，默认值为 CPU 的逻辑核数。
+
 
 ### `WITH batch_size=<number>`
 
