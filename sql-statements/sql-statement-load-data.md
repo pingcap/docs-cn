@@ -172,9 +172,9 @@ LINES TERMINATED BY '\n' STARTING BY ''
 
 ### `WITH detached`
 
-如果你指定了 S3/GCS 路径（且未指定 `LOCAL` 参数），可以通过 `WITH detached` 来让 `LOAD DATA` 任务在后台运行。此时 `LOAD DATA` 会返回 job ID。
+如果你指定了 S3/GCS 路径（且未指定 `LOCAL` 参数），可以通过 `WITH detached` 让 `LOAD DATA` 任务在后台运行。此时 `LOAD DATA` 会返回任务的 ID。
 
-可以通过 [`SHOW LOAD DATA`](/sql-statements/sql-statement-show-load-data.md) 查看创建的 job，也可以使用 [`CANCEL LOAD DATA` 和 `DROP LOAD DATA`](/sql-statements/sql-statement-operate-load-data-job.md) 取消或删除创建的 job。
+你可以执行 [`SHOW LOAD DATA`](/sql-statements/sql-statement-show-load-data.md) 查看创建的任务，也可以使用 [`CANCEL LOAD DATA` 和 `DROP LOAD DATA`](/sql-statements/sql-statement-operate-load-data-job.md) 取消或删除创建的任务。
 
 ## 示例
 
