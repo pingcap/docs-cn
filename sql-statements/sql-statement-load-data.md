@@ -94,7 +94,7 @@ LoadDataOption ::=
 
 ### `CharsetOpt`
 
-当数据格式是 `DELIMITED DATA` 时，可通过 `CharsetOpt` 来指定数据文件的编码格式，目前支持下列编码格式：ascii、latin1、binary、utf8、utf8mb4、gbk
+当数据格式是 `DELIMITED DATA` 时，可以通过 `CharsetOpt` 指定数据文件的编码格式。目前支持下列编码格式：ascii、latin1、binary、utf8、utf8mb4 和 gbk。
 
 ```sql
 LOAD DATA INFILE 's3://<bucket-name>/path/to/data/foo.csv' INTO TABLE load_charset.latin1 CHARACTER SET latin1
