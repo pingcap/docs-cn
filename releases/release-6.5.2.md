@@ -115,7 +115,7 @@ TiDB 版本：6.5.2
         - 修复同步到对象存储时，表调度可能导致数据丢失的问题 [#8256](https://github.com/pingcap/tiflow/issues/8256) @[zhaoxinyu](https://github.com/zhaoxinyu)
         - 修复不可重入的 DDL 导致同步卡住的问题 [#8662](https://github.com/pingcap/tiflow/issues/8662) @[hicqu](https://github.com/hicqu)
         - 修复同步到对象存储时，TiCDC 扩缩容可能导致数据丢失的问题 [#8666](https://github.com/pingcap/tiflow/issues/8666) @[CharlesCheung96](https://github.com/CharlesCheung96)
-        - 修复在部分场景利用 cgroup 的内存限制不生效问题  [#8588](https://github.com/pingcap/tiflow/issues/8588) @[amyangfei](https://github.com/amyangfei)
+        - 修复在部分场景中 cgroup 的内存限制不生效问题  [#8588](https://github.com/pingcap/tiflow/issues/8588) @[amyangfei](https://github.com/amyangfei)
         - 修复 Redo log 在 apply 时，特殊情况下出现数据丢失的问题 [#8591](https://github.com/pingcap/tiflow/issues/8591) @[CharlesCheung96](https://github.com/CharlesCheung96)
         - 引入 gomemlimit 以防止 TiCDC 出现 OOM 问题 [#8675](https://github.com/pingcap/tiflow/issues/8675) @[amyangfei](https://github.com/amyangfei)
         - 采用 multi-statement 的方式优化批量执行 UPDATE 场景下的同步性能 [#8057](https://github.com/pingcap/tiflow/issues/8057) @[amyangfei](https://github.com/amyangfei)
