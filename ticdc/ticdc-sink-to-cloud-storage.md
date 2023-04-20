@@ -49,7 +49,7 @@ URI 的 `[query_parameters]` 中可配置的参数如下：
 | `flush-interval` | 向下游存储服务保存数据变更记录的间隔                         | `5s`       | `[2s, 10m]`            |
 | `file-size`      | 单个数据变更文件的字节数超过 `file-size` 时将其保存至存储服务中| `67108864` | `[1048576, 536870912]` |
 | `protocol`       | 输出到存储服务的消息协议                                  | N/A         | `canal-json` 和 `csv`  |
-| `enable-tidb-extension` | 输出协议为 `canal-json` 时，如果该值为 `true`，TiCDC 会发送 [WATERMARK 事件](/ticdc/ticdc-canal-json.md#watermark-event)，并在 canal-json 消息中添加 TiDB 扩展字段。 | `false` | `false` 和 `true` |
+| `enable-tidb-extension` | `protocol` 参数为 `canal-json` 时，如果该值为 `true`，TiCDC 会发送 [WATERMARK 事件](/ticdc/ticdc-canal-json.md#watermark-event)，并在 canal-json 消息中添加 [TiDB 扩展字段](/ticdc/ticdc-canal-json.md#tidb-扩展字段)。 | `false` | `false` 和 `true` |
 
 > **注意：**
 >
