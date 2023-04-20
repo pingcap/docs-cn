@@ -166,9 +166,9 @@ LINES TERMINATED BY '\n' STARTING BY ''
 
 ### `WITH max_write_speed = stringLit`
 
-当使用物理导入模式时，可通过该参数来指定写入单个 TiKV 的速率限制，默认值为 `0`，即不做限制。
+在使用物理导入模式时，可以通过该参数指定写入单个 TiKV 的速率限制。默认值为 `0`，表示无限制。
 
-该参数支持 [go-units](https://pkg.go.dev/github.com/docker/go-units#example-RAMInBytes) 格式，比如 `WITH max_write_speed = '1MB'` 即写入到单个 TiKV 的最大速率为 `1MB/s`。
+该参数支持 [go-units](https://pkg.go.dev/github.com/docker/go-units#example-RAMInBytes) 格式。例如，`WITH max_write_speed = '1MB'` 表示写入单个 TiKV 的最大速率为 `1MB/s`。
 
 ### `WITH detached`
 
