@@ -58,7 +58,7 @@ TiDB 后端任务分布式执行框架的架构图如下：
 SET GLOBAL tidb_enable_dist_task = ON;
 ```
 
-### 启用前提条件
+#### 启用前提条件
 
 目前，分布式框架仅支持 `Add index` 任务的分布式执行，前提是需要启动 DDL 的快速模式：
 
