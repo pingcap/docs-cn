@@ -987,9 +987,9 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 作用域：GLOBAL
 - 是否持久化到集群：是
 - 默认值：`OFF`
-- 这个变量用于控制是否开启分布式执行框架。开启分布式执行后，DDL、Import 等支持的后端任务将会由集群中多个 TiDB 节点共同完成。
+- 这个变量用于控制是否开启分布式执行框架。开启分布式执行后，DDL 和 Import 等后端任务将会由集群中多个 TiDB 节点共同完成。
 - 在 TiDB v7.1.0 中，只支持分布式执行分区表的 `ADD INDEX`。
-- 该参数由 `tidb_ddl_distribute_reorg` 参数改名而来。
+- 该变量由 `tidb_ddl_distribute_reorg` 改名而来。
 
 ### `tidb_ddl_error_count_limit`
 
