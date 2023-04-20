@@ -177,7 +177,7 @@ mysql> SELECT * FROM t1;
 
 - 作用域：NONE
 - 默认值：${ip_address:port}
-- 如果变量值的格式为 `ip_address:port`，表示 TiDB 在启动时连接到的 PD 服务器。
+- 变量值的格式为 `ip_address:port`，表示 TiDB 在启动时连接到的 PD 服务器。
 
 ### `ddl_slow_threshold`
 
