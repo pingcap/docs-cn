@@ -146,7 +146,7 @@ LINES TERMINATED BY '\n' STARTING BY ''
 
 物理导入模式只能在非 `LOCAL` 模式下使用，采用单线程执行。目前物理导入尚未接入[冲突监测](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#冲突数据检测)，因此遇到数据主键或唯一键冲突时会报 checksum 不一致错误。建议在导入前检查数据文件是否存在键值冲突。其他的限制和必要条件，请参考 [TiDB Lightning Physical Import Mode 简介](/tidb-lightning/tidb-lightning-physical-import-mode.md)。
 
-物理导入模式下，`LOAD DATA` 会将本地排序的数据写入到 TiDB [temp-dir](/tidb-configuration-file.md#temp-dir-new-in-v630) 的子目录中。子目录命名规则为 `import-<tidb-port>/<job-id>`。
+物理导入模式下，`LOAD DATA` 将本地排序后的数据写入 TiDB [`temp-dir`](/tidb-configuration-file.md#temp-dir-new-in-v630) 子目录中。子目录命名规则为 `import-<tidb-port>/<job-id>`。
 
 物理导入模式目前尚未接入[磁盘资源配额](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#磁盘资源配额-从-v620-版本开始引入)。请确保对应磁盘有足够的空间，具体可参考[必要条件及限制](/tidb-lightning/tidb-lightning-physical-import-mode#必要条件及限制)中存储空间的部分。
 
