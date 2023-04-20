@@ -60,7 +60,7 @@ SET GLOBAL tidb_enable_dist_task = ON;
 
 #### 启用前提条件
 
-目前，分布式框架仅支持 `Add index` 任务的分布式执行，前提是需要启动 DDL 的快速模式：
+目前，分布式框架仅支持 `Add index` 任务的分布式执行，使用前，你需要启动 DDL 的快速模式：
 
 **Fast DDL Path:**
 从 TiDB v6.5 开始 tidb_ddl_enable_fast_reorg 默认打开，因此 
