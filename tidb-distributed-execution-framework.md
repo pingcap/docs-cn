@@ -62,12 +62,12 @@ SET GLOBAL tidb_enable_dist_task = ON;
 
 目前，分布式框架仅支持 `Add index` 任务的分布式执行，使用前，你需要启动 DDL 的快速模式：
 
-**Fast DDL Path:**
-从 TiDB v6.5 开始 tidb_ddl_enable_fast_reorg 默认打开，因此 
-* [tidb_ddl_enable_fast_reorg](https://docs.pingcap.com/tidb/stable/system-variables#tidb_ddl_enable_fast_reorg-new-in-v630)
+Fast DDL 相关系统变量：
+
+* [tidb_ddl_enable_fast_reorg](https://docs.pingcap.com/tidb/stable/system-variables#tidb_ddl_enable_fast_reorg-new-in-v630)：从 TiDB v6.5 开始 `tidb_ddl_enable_fast_reorg` 默认打开。
 * [tidb_ddl_disk_quota](https://docs.pingcap.com/tidb/stable/system-variables#tidb_ddl_disk_quota-new-in-v630)
 
-**Config parameter:**
+配置项：
 
 * [temp-dir](https://docs.pingcap.com/tidb/stable/tidb-configuration-file#temp-dir-new-in-v630)
 
