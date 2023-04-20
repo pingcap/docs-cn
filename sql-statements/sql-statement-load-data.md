@@ -14,11 +14,12 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-load-data/','/docs-cn/dev/r
 - 支持导入 Parquet 格式的数据
 - 新增参数 `FORMAT`、`FIELDS DEFINED NULL BY` 和 `WITH batch_size=<number>,detached`
 
-从 v7.1.0 版本开始，`LOAD DATA` 支持以下特性：
+从 v7.1.0 开始，`LOAD DATA` 支持以下特性：
+
 - 支持导入压缩的 `DELIMITED DATA` 和 `SQL FILE` 数据文件
 - 逻辑导入支持并发导入
 - 支持通过 `CharsetOpt` 来指定数据文件的编码格式
-- `LOAD DATA` 集成 TiDB Lightning 的物理导入模式 (Physical Import Mode)。该模式不经过 SQL 接口，而是直接将数据以键值对的形式插入 TiKV 节点，是一种高效、快速的导入模式。
+- `LOAD DATA` 集成 TiDB Lightning 的物理导入模式 (Physical Import Mode)。该模式不经过 SQL 接口，而是直接将数据以键值对的形式插入 TiKV 节点，是一种高效且快速的导入模式。
 
 > **警告：**
 >
