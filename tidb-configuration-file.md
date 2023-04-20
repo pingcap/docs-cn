@@ -895,6 +895,11 @@ PROXY 协议相关的配置项。
 >
 > 需谨慎使用 `*` 符号，因为 `*` 允许来自任何 IP 的客户端自行汇报其 IP 地址，从而可能引入安全风险。另外，`*` 可能导致部分直接连接 TiDB 的内部组件无法使用，例如 TiDB Dashboard。
 
+### `fallbackable` <span class="version-mark">从 v6.5.1 版本开始引入</span>
+
++ 用于控制是否启用 PROXY 协议回退模式。如果设置为 `true`，TiDB 可以接受属于 `proxy-protocol.networks` 的客户端使用非 PROXY 协议规范或者没有发送 PROXY 协议头的客户端连接。默认情况下，TiDB 仅接受属于 `proxy-protocol.networks` 的客户端发送 PROXY 协议头的客户端连接。
++ 默认：`false`
+
 ## experimental
 
 experimental 部分为 TiDB 实验功能相关的配置。该部分从 v3.1.0 开始引入。
