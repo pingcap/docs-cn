@@ -48,7 +48,7 @@ ACID 是指数据库管理系统在写入或更新资料的过程中，为保证
 
 ### Coalesce Partition
 
-Coalesce Partition 是一种减少 Hash 分区表或 Key 分区表中分区数量的方法。详情参见 [管理 Hash 分区和 Key 分区](/partitioned-table.md#manage-hash-and-key-partitions).
+Coalesce Partition 是一种减少 Hash 分区表或 Key 分区表中分区数量的方法。详情参见[管理 Hash 分区和 Key 分区](/partitioned-table.md#manage-hash-and-key-partitions)。
 
 ### Continuous Profiling
 
@@ -103,7 +103,7 @@ Operator Step 是 Operator 执行过程的一个步骤，一个 Operator 常常�
 
 ## P
 
-[Partitioning](/partitioned-table.md)（分区）指通过 `RANGE`、`LIST`、`HASH` 和 `KEY` 等分区方法在物理上将一张表划分为更小的表分区。
+[Partitioning](/partitioned-table.md)（分区）指通过 `RANGE`、`LIST`、`HASH` 和 `KEY` 等分区方法在物理上将一张表划分为较小的分区。
 
 ### Pending/Down
 
