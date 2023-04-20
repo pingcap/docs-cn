@@ -75,7 +75,7 @@ Fast DDL 相关系统变量：
 >
 > 在升级到 v6.5.0 及以上版本时，建议你检查 TiDB 的 `temp-dir` 路径是否正确挂载了 SSD 磁盘。该参数是 TiDB 的配置参数，设置后需要重启 TiDB 才能生效。因此，在升级前提前进行设置，可以避免再次重启。
 
-### 启用分布式框架相关
+#### 启用分布式框架相关
 
 此处以启动后端任务的执行 DDL 为例，相关的系统变量如下，这里对于分布式 `Add index` 执行来讲，只需要设置 tidb_ddl_reorg_worker_cnt。**注意** tidb_ddl_reorg_worker_cnt 使用默认值 4 即可，建议最大不超过 16。
 tidb_ddl_reorg_batch_size 请保持默认即可，最大不超过 1024。
