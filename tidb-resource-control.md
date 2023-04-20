@@ -186,7 +186,7 @@ TiKV 中也记录了来自于不同资源组的请求 QPS，详见 [TiKV监控�
 
 2. 一个数据库用户是否可以绑定到不同的资源组？
 
-    一个数据库用户的默认资源组只能有一个。但是，在会话运行的过程中，可以通过 [`SET RESOURCE GROUP`](/sql-statements/sql-statement-set-resource-group.md) 设置当前会话使用的资源组。你也可以通过优化器 [`RESOURCE_GROUP()`](/optimizer-hints.md#resource_groupresource_group_name) Hint 为运行的语句设置资源组。
+    不能。一个数据库用户只能绑定到一个资源组。但是，在会话运行的过程中，可以通过 [`SET RESOURCE GROUP`](/sql-statements/sql-statement-set-resource-group.md) 设置当前会话使用的资源组。你也可以通过优化器 [`RESOURCE_GROUP()`](/optimizer-hints.md#resource_groupresource_group_name) Hint 为运行的语句设置资源组。
 
 3. 当各个资源组设置的用量 (`RU_PER_SEC`) 总和超出系统容量会发生什么？
 
