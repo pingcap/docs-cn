@@ -50,7 +50,7 @@ TiDB 后端任务分布式执行框架的架构图如下：
 - Subtask Executor：是真正的分布式子任务的执行者，并且将子任务执行状况返回给 Scheduler， 由 Scheduler 来统一更新子任务执行状态。
 - 资源池：通过将上述各类模块的计算资源的池化，提供量化资源的使用与管理的基础。
 
-## 启用 TiDB 后端任务分布式框架
+### 启用 TiDB 后端任务分布式框架
 
 如需使用分布式框架，只要设置 [`tidb_enable_dist_task`](/system-variables.md#tidb_enable_dist_task) 为 `ON`。在运行任务的时候，框架支持的语句即会采用分布式方式执行。
 
