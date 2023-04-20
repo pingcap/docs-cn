@@ -80,7 +80,7 @@ TiDB 对参数化后形式相同的查询，只能缓存一个计划。例如，
 
 - [Prepared Plan Cache](/sql-prepared-plan-cache.md) 不支持的查询或者计划，Non-Prepared Plan Cache 也不支持。
 - 不支持包含 `Window` 或 `Having` 的查询。
-- 不支持包含三表及以上 `Join` 或子查询的查询。
+- 不支持包含三张表及以上 `Join` 或子查询的查询。
 - 不支持 `ORDER BY` 或者 `GROUP BY` 后直接带数字或者表达式的查询，如 `ORDER BY 1`、`GROUP BY a+1`。仅支持 `ORDER BY column_name` 和 `GROUP BY column_name`。
 - 不支持过滤条件中包含 `JSON`、`ENUM`、`SET` 或 `BIT` 类型的列的查询，例如 `SELECT * FROM t WHERE json_col = '{}'`。
 - 不支持过滤条件中出现 `NULL` 值的查询，例如 `SELECT * FROM t WHERE a is NULL`。
