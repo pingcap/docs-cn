@@ -82,9 +82,9 @@ LoadDataOption ::=
 
 | 文件后缀 | 压缩格式 | 示例 |
 |:---|:---|:---|
-| .gz 或 .gzip  | gzip 压缩格式   | tbl.0001.csv.gz     |
-| .zstd 或 .zst | zstd 压缩格式   | tbl.0001.csv.zstd   |
-| .snappy      | snappy 压缩格式 | tbl.0001.csv.snappy |
+| `.gz` 或 `.gzip`  | gzip 压缩格式   | `tbl.0001.csv.gz`     |
+| `.zstd` 或 `.zst` | zstd 压缩格式   | `tbl.0001.csv.zstd`   |
+| `.snappy`      | snappy 压缩格式 | `tbl.0001.csv.snappy` |
 
 ### `DuplicateOpt`
 
