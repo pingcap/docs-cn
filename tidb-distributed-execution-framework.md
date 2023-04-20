@@ -86,6 +86,6 @@ tidb_ddl_reorg_batch_size 请保持默认即可，最大不超过 1024。
 * [tidb_ddl_error_count_limit](https://docs.pingcap.com/tidb/stable/system-variables#tidb_ddl_error_count_limit)
 * [tidb_ddl_reorg_batch_size](https://docs.pingcap.com/tidb/stable/system-variables#tidb_ddl_reorg_batch_size)
 
-## 另请参阅：
+## 另请参阅
 
 * [DDL 执行原理及最佳实践](/ddl-introduction.md)
