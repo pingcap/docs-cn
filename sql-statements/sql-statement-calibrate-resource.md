@@ -18,7 +18,7 @@ CalibrateOption ::=
 
 ```
 
-## 参数说明
+## 预估方式
 
 TiDB 提供两种预估方式：
 
