@@ -144,7 +144,7 @@ LINES TERMINATED BY '\n' STARTING BY ''
 
 可以通过 `import_mode = ('LOGICAL' | 'PHYSICAL')` 来指定数据导入的模式，默认值为 `LOGICAL`，即逻辑导入。从 v7.1.0 开始，`LOAD DATA` 集成 TiDB Lightning 的物理导入模式，可通过 `WITH import_mode = 'PHYSICAL'` 开启。
 
-物理导入模式只能在非 `LOCAL` 模式下使用，单线程执行，且目前物理导入尚未接入[冲突监测](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#冲突数据检测)，因此遇到数据主键或唯一键冲突时会报 checksum 不一致错误。建议导入前检查数据文件是否存在键值冲突。其他的限制和必要条件，请参考 [TiDB Lightning Physical Import Mode 简介](/tidb-lightning/tidb-lightning-physical-import-mode.md)。
+物理导入模式只能在非 `LOCAL` 模式下使用，采用单线程执行。目前物理导入尚未接入[冲突监测](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#冲突数据检测)，因此遇到数据主键或唯一键冲突时会报 checksum 不一致错误。建议在导入前检查数据文件是否存在键值冲突。其他的限制和必要条件，请参考 [TiDB Lightning Physical Import Mode 简介](/tidb-lightning/tidb-lightning-physical-import-mode.md)。
 
 物理导入模式下，`LOAD DATA` 会将本地排序的数据写入到 TiDB [temp-dir](/tidb-configuration-file.md#temp-dir-new-in-v630) 的子目录中。子目录命名规则为 `import-<tidb-port>/<job-id>`。
 
