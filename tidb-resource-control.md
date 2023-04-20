@@ -18,8 +18,8 @@ TiDB 资源管控特性提供了两层资源管理能力，包括在 TiDB 层的
 
 - 你可以将多个来自不同系统的中小型应用合入一个 TiDB 集群中，个别应用的负载升高，不会影响其他业务的正常运行。而在系统负载较低的时候，繁忙的应用即使超过设定的读写配额，也仍然可以被分配到所需的系统资源，达到资源的最大化利用。
 - 你可以选择将所有测试环境合入一个集群，或者将消耗较大的批量任务编入一个单独的资源组，在保证重要应用获得必要资源的同时，提升硬件利用率，降低运行成本。
-- 当同系统中存在不同的业务负载时，你可以将几种负载分别放入不同的资源组。利用资源管控技术，保证交易类业务的响应时间不被数据分析或批量业务所影响。
-- 当集群出现突发的 SQL 性能问题，也可以利用 SQL Binding 和资源组结合，临时限制某个 SQL 的资源消耗。
+- 当系统中存在多种业务负载时，可以将不同的负载分别放入各自的资源组。利用资源管控技术，确保交易类业务的响应时间不受数据分析或批量业务的影响。
+- 当集群遇到突发的 SQL 性能问题，可以结合 SQL Binding 和资源组，临时限制某个 SQL 的资源消耗。
 
 此外，合理利用资源管控特性可以减少集群数量，降低运维难度及管理成本。
 
@@ -52,8 +52,8 @@ Request Unit (RU) 是 TiDB 对 CPU、IO 等系统资源的统一抽象的单位,
 
 资源管控特性引入了两个新的全局开关变量：
 
-- TiDB: 通过配置全局变量 [`tidb_enable_resource_control`](/system-variables.md#tidb_enable_resource_control-从-v660-版本开始引入) 控制是否打开资源组流控。
-- TiKV: 通过配置参数 [`resource-control.enabled`](/tikv-configuration-file.md#resource-control) 控制是否使用基于资源组配额的请求调度。
+- TiDB：通过配置全局变量 [`tidb_enable_resource_control`](/system-variables.md#tidb_enable_resource_control-从-v660-版本开始引入) 控制是否打开资源组流控。
+- TiKV：通过配置参数 [`resource-control.enabled`](/tikv-configuration-file.md#resource-control) 控制是否使用基于资源组配额的请求调度。
 
 从 v7.0.0 开始，两个开关都被默认打开。这两个参数的组合效果见下表：
 
@@ -68,44 +68,7 @@ Request Unit (RU) 是 TiDB 对 CPU、IO 等系统资源的统一抽象的单位,
 
 ### 预估集群容量
 
-在做资源规划之前，我们需要对集群整体容量有一定的了解。TiDB 提供了命令 [`CALIBRATE RESOURCE`](/sql-statements/sql-statement-calibrate-resource.md) 用来估算集群容量。目前提供两种估算方式：
-
-#### 基于硬件部署估算容量
-
-这种方式主要根据当前的集群配置，结合对不同负载观测的经验值进行预估。由于不同类型的负载对硬件的配比要求不同，相同配置的硬件所输出的容量也会有所不同。TiDB 提供了几种不同的负载类型供选择：
-
-- `tpcc`: 数据写入较重的负载，根据类似 TPC-C 的负载模型预估。
-- `oltp_write_only`: 数据写入较重的负载，根据类似 sysbench oltp_write_only 的负载模型预估。
-- `oltp_read_write`: 数据读写平衡的负载，根据类似 sysbench oltp_read_write 的负载模型预估。
-- `oltp_read_only`: 数据读取较重的负载，根据类似 sysbench oltp_read_only 的负载模型预估。
-
-例如，实际应用是读写比较均衡的负载，可以执行下面命令预估容量：
-
-```sql
-CALIBRATE RESOURCE WORKLOAD oltp_read_write
-```
-
-#### 根据实际负载估算容量
-
-如果应用已经在线上运行，或者你能够运行实际业务测试，那么推荐利用一段时间的实际负载对总容量进行预测。例如：
-
-根据从 '2023-04-18 08:00:00' 开始后的 20 分钟的负载进行预测
-
-```sql
-CALIBRATE RESOURCE WORKLOAD START_TIME '2023-04-18 08:00:00' DURATION '20m';
-```
-
-根据从 '2023-04-18 08:00:00' 到 '2023-04-18 09:00:00' 的负载进行预测
-
-```sql
-CALIBRATE RESOURCE WORKLOAD START_TIME '2023-04-18 08:00:00' END_TIME '2023-04-18 08:20:00';
-```
-
-> **注意：**
->
-> - `CALIBRATE RESOURCE` 是根据采集到的信息进行预估，不会真正引入额外的负载。
-> - 容量的预估是根据经验值计算得出，与运行实际负载时的真实容量可能会有出入。
-
+在进行资源规划之前，你需要了解集群的整体容量。TiDB 提供了命令 [`CALIBRATE RESOURCE`](/sql-statements/sql-statement-calibrate-resource.md) 用来估算集群容量。目前提供两种估算方式：[根据实际负载估算容量](/sql-statements/sql-statement-calibrate-resource.md#根据实际负载估算容量)和[基于硬件部署估算容量](/sql-statements/sql-statement-calibrate-resource.md#基于硬件部署估算容量)。详情请参考 [`CALIBRATE RESOURCE` 参数说明](/sql-statements/sql-statement-calibrate-resource.md#参数说明)
 
 ### 管理资源组
 
@@ -212,17 +175,17 @@ TiKV 中也记录了来自于不同资源组的请求 QPS，详见 [TiKV监控�
 
 ## 常见问题
 
-1. 如果我暂时不想使用资源组对资源进行管控，是否一定要关闭这个特性 ？ 
+1. 如果我暂时不想使用资源组对资源进行管控，是否一定要关闭这个特性？ 
 
-    不需要。没有指定任何资源组的用户，将被放入系统预定义的 `default` 资源组， 而 `default` 资源组默认拥有无限用量。当所有用户都属于 `default` 资源组时，资源分配方式与关闭资源管控时是相同的。
+    不需要。没有指定任何资源组的用户，将被放入系统预定义的 `default` 资源组，而 `default` 资源组默认拥有无限用量。当所有用户都属于 `default` 资源组时，资源分配方式与关闭资源管控时相同。
 
-2. 一个数据库用户能够绑定不同的资源组么？
+2. 一个数据库用户是否可以绑定到不同的资源组？
 
-    一个数据库用户的默认资源组只能有一个。但是，在会话运行的过程中，可以通过 [`SET RESOURCE GROUP`](/sql-statements/sql-statement-set-resource-group.md) 设置当前会话使用的资源组。或者通过优化器 hint [`RESOURCE_GROUP()`](/optimizer-hints.md#resource_groupresource_group_name) 为所运行的语句设置资源组。
+    一个数据库用户的默认资源组只能有一个。但是，在会话运行的过程中，可以通过 [`SET RESOURCE GROUP`](/sql-statements/sql-statement-set-resource-group.md) 设置当前会话使用的资源组。你也可以通过优化器 [`RESOURCE_GROUP()`](/optimizer-hints.md#resource_groupresource_group_name) Hint 为运行的语句设置资源组。
 
 3. 当各个资源组设置的用量 (`RU_PER_SEC`) 总和超出系统容量会发生什么？
 
-    TiDB 并不会在资源组创建时对容量进行检查。当系统有足够的空闲资源时，TiDB 会满足每个资源组的用量设置。当系统资源超限时，TiDB 会优先满足高优先级 (PRIORITY) 资源组的请求。如果来自同一优先级的请求无法被完全满足，TiDB 则会按照用量 (`RU_PER_SEC`) 的大小按比例分配。
+    TiDB 在创建资源组时不会检查容量。只要系统有足够的空闲资源，TiDB 就会满足每个资源组的用量设置。当系统资源超过限制时，TiDB 会优先满足高优先级 (PRIORITY) 资源组的请求。如果同一优先级的请求无法全部满足，TiDB 会根据用量 (`RU_PER_SEC`) 的大小按比例分配。
 
 ## 另请参阅
 
