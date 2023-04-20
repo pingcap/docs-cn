@@ -12,7 +12,7 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-load-data/','/docs-cn/dev/r
 
 - 支持从 S3、GCS 导入数据
 - 支持导入 Parquet 格式的数据
-- 新增参数 `FORMAT`、`FIELDS DEFINED NULL BY`、`WITH batch_size=<number>,detached`
+- 新增参数 `FORMAT`、`FIELDS DEFINED NULL BY` 和 `WITH batch_size=<number>,detached`
 
 从 v7.1.0 版本开始，`LOAD DATA` 支持以下特性：
 - 支持导入压缩的 `DELIMITED DATA` 和 `SQL FILE` 数据文件
