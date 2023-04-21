@@ -27,7 +27,7 @@ TiDB comes with a default database named `test`. However, it is recommended that
 
 A table is a collection of related data in a [database](#database).
 
-Each table consists of **rows** and **columns**. Each value in a row belongs to a specific **column**. Each column allows only a single data type. To further qualify columns, you can add some [constraints](/constraints.md). To accelerate calculations, you can add [generated columns (experimental feature)](/generated-columns.md).
+Each table consists of **rows** and **columns**. Each value in a row belongs to a specific **column**. Each column allows only a single data type. To further qualify columns, you can add some [constraints](/constraints.md). To accelerate calculations, you can add [generated columns](/generated-columns.md).
 
 ### Index
 
@@ -40,7 +40,7 @@ There are two common types of indexes:
 
 > **Note:**
 >
-> In TiDB, the default definition of **Primary Key** is different from that in [InnoDB](https://mariadb.com/kb/en/innodb/) (a common storage engine of MySQL).
+> In TiDB, the default definition of **Primary Key** is different from that in [InnoDB](https://dev.mysql.com/doc/refman/8.0/en/innodb-storage-engine.html) (a common storage engine of MySQL).
 >
 > - In InnoDB, the definition of **Primary Key** is unique, not null, and a **clustered index**.
 > - In TiDB, the definition of **Primary Key** is unique and not null. But the primary key is not guaranteed to be a **clustered index**. To specify whether the primary key is a clustered index, you can add non-reserved keywords `CLUSTERED` or `NONCLUSTERED` after `PRIMARY KEY` in a `CREATE TABLE` statement. If a statement does not explicitly specify these keywords, the default behavior is controlled by the system variable `@@global.tidb_enable_clustered_index`. For more information, see [Clustered Indexes](/clustered-indexes.md).

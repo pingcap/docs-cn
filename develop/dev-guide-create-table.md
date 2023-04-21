@@ -57,7 +57,7 @@ Column definitions typically take the following form.
 
 - `{column_name}`: The column name.
 - `{data_type}`: The column [data type](/data-type-overview.md).
-- `{column_qualification}`: Column qualifications, such as **column-level constraints** or [generated column (experimental feature)](/generated-columns.md) clauses.
+- `{column_qualification}`: Column qualifications, such as **column-level constraints** or [generated column](/generated-columns.md) clauses.
 
 You can add some columns to the `users` table, such as the unique identifier `id`, `balance` and `nickname`.
 
@@ -102,7 +102,7 @@ A [primary key](/constraints.md#primary-key) is a column or a set of columns in 
 
 > **Note:**
 >
-> The default definition of **primary key** in TiDB is different from that in [InnoDB](https://mariadb.com/kb/en/innodb/)(the common storage engine of MySQL). 
+> The default definition of **primary key** in TiDB is different from that in [InnoDB](https://dev.mysql.com/doc/refman/8.0/en/innodb-storage-engine.html)(the common storage engine of MySQL).
 >
 > - In **InnoDB**: A **primary key** is unique, not null, and **index clustered**.
 >

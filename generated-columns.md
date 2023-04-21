@@ -6,10 +6,6 @@ aliases: ['/docs/dev/generated-columns/','/docs/dev/reference/sql/generated-colu
 
 # Generated Columns
 
-> **Warning:**
->
-> This is still an experimental feature. It is **NOT** recommended that you use it in the production environment.
-
 This document introduces the concept and usage of generated columns.
 
 ## Basic concepts
