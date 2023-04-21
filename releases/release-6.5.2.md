@@ -17,7 +17,7 @@ TiDB 版本：6.5.2
 
     在升级 TiCDC 集群到 v6.5.2 或更高的 v6.5.x 版本时，如果使用 Avro 同步的表包含 `FLOAT` 类型数据，请在升级前手动调整 Confluent Schema Registry 的兼容性策略为 `None`，使 changefeed 能够成功更新 schema。否则，在升级之后 changefeed 将无法更新 schema 并进入错误状态。
 
-- TiCDC 配置项 [`sink.enable-partition-separator`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-配置文件说明) 默认值从 `false` 修改为 `true`，代表同步数据到存储服务时 TiCDC 默认将一张表中各个 partition 的数据分不同的目录来存储。[#8581](https://github.com/pingcap/tiflow/issues/8581) @[CharlesCheung96](https://github.com/CharlesCheung96)
+- TiCDC 配置项 [`sink.enable-partition-separator`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-配置文件说明) 默认值从 `false` 修改为 `true`，代表 TiCDC 同步数据到存储服务时默认将一张表中各个 partition 的数据分不同的目录来存储。[#8581](https://github.com/pingcap/tiflow/issues/8581) @[CharlesCheung96](https://github.com/CharlesCheung96)
 
 ## 改进提升
 
