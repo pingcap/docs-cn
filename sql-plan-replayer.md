@@ -31,6 +31,7 @@ Based on `sql-statement`, TiDB sorts out and exports the following on-site infor
 - The table schema in `sql-statement`
 - The statistics of the table in `sql-statement`
 - The result of `EXPLAIN [ANALYZE] sql-statement`
+- Some internal procudures of query optimization
 
 > **Note:**
 >
