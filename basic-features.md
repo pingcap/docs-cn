@@ -58,7 +58,7 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 | [唯一约束](/constraints.md#唯一约束) | Y | Y | Y | Y | Y | Y | Y | Y | Y |
 | [整型主键上的聚簇索引](/constraints.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y |
 | [复合或非整型主键上的聚簇索引](/constraints.md) | Y | Y | Y | Y | Y | Y | Y | Y | N |
-| [多值索引](/sql-statements/sql-statement-create-index.md#多值索引) | E | N | N | N | N | N | N | N | N |
+| [多值索引](/sql-statements/sql-statement-create-index.md#多值索引) | Y | N | N | N | N | N | N | N | N |
 | [外键约束](/constraints.md#外键约束) | Y | N | N | N | N | N | N | N | N |
 | [TiFlash 延迟物化](/tiflash/tiflash-late-materialization.md) | Y | N | N | N | N | N | N | N | N |
 
@@ -110,7 +110,7 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 | 数据定义语言 (DDL) | 7.1 | 6.5 | 6.1 | 5.4 | 5.3 | 5.2 | 5.1 | 5.0 | 4.0 |
 |---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
 | `CREATE`，`DROP`，`ALTER`，`RENAME`，`TRUNCATE` | Y | Y | Y | Y | Y | Y | Y | Y | Y |
-| [生成列](/generated-columns.md) | E | E | E | E | E | E | E | E | E |
+| [生成列](/generated-columns.md) | Y | E | E | E | E | E | E | E | E |
 | [视图](/views.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y |
 | [序列](/sql-statements/sql-statement-create-sequence.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y |
 | [`AUTO_INCREMENT` 列](/auto-increment.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y |
