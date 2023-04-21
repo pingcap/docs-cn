@@ -60,7 +60,7 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 | [复合或非整型主键上的聚簇索引](/constraints.md) | Y | Y | Y | Y | Y | Y | Y | Y | N |
 | [多值索引](/sql-statements/sql-statement-create-index.md#多值索引) | E | N | N | N | N | N | N | N | N |
 | [外键约束](/constraints.md#外键约束) | Y | N | N | N | N | N | N | N | N |
-| [TiFlash 延迟物化](/tiflash/tiflash-late-materialization.md) | E | N | N | N | N | N | N | N | N |
+| [TiFlash 延迟物化](/tiflash/tiflash-late-materialization.md) | Y | N | N | N | N | N | N | N | N |
 
 ## SQL 语句
 
@@ -84,7 +84,7 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 | [`BATCH [ON COLUMN] LIMIT INTEGER INSERT/UPDATE/REPLACE`](/sql-statements/sql-statement-batch.md) | Y | Y | N | N | N | N | N | N | N |
 | [`ALTER TABLE ... COMPACT`](/sql-statements/sql-statement-alter-table-compact.md) | Y | Y | E | N | N | N | N | N | N |
 | [表级锁 (Table Lock)](/sql-statements/sql-statement-lock-tables-and-unlock-tables.md) | E | E | E | E | E | E | E | E | E |
-| [物化列式存储的查询结果](/tiflash/tiflash-results-materialization.md) | E | E | N | N | N | N | N | N | N |
+| [物化列式存储的查询结果](/tiflash/tiflash-results-materialization.md) | Y | E | N | N | N | N | N | N | N |
 
 ## 高级 SQL 功能
 
@@ -148,9 +148,10 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 | [List COLUMNS 分区](/partitioned-table.md#list-columns-分区) | Y | Y | Y | E | E | E | E | E | N |
 | [`EXCHANGE PARTITION`](/partitioned-table.md) | Y | Y | E | E | E | E | E | E | N |
 | [`REORGANIZE PARTITION`](/partitioned-table.md#重组分区) | Y | N | N | N | N | N | N | N | N |
+| [`COALESCE PARTITION`](/partitioned-table.md#减少分区数量) | Y | N | N | N | N | N | N | N | N |
 | [动态裁剪](/partitioned-table.md#动态裁剪模式) | Y | Y | Y | E | E | E | E | N | N |
 | [Range COLUMNS 分区](/partitioned-table.md#range-columns-分区) | Y | Y | N | N | N | N | N | N | N |
-| [Range INTERVAL 分区](/partitioned-table.md#range-interval-分区) | E | E | N | N | N | N | N | N | N |
+| [Range INTERVAL 分区](/partitioned-table.md#range-interval-分区) | Y | E | N | N | N | N | N | N | N |
 
 ## 统计信息
 
