@@ -559,8 +559,8 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 + 用于控制 TiDB 启动时是否采用轻量级的统计信息初始化。
 + 默认值：false
-+ 当 `lite-init-stats` 为 true 时，统计信息初始化时列和索引的直方图、TopN、CMSketch 均不会加载到内存中。当 `lite-init-stats` 为 false 时，统计信息初始化时索引和主键的直方图、TopN、CMSketch 会被加载到内存中，非主键列的直方图、TopN、CMSketch 不会加载到内存中。当优化器需要某一索引或者列的直方图、TopN、CMSketch 时，这些统计信息会被会同步（请参考 [`tidb_stats_load_sync_wait`](/system-variables.md#tidb_stats_load_sync_wait-从-v540-版本开始引入)）或者异步地加载到内存中。
-+ 使用将 `lite-init-stats` 设置为 true，可以加速统计信息初始化，并且避免不必要的统计信息加载，降低 TiDB 的内存使用。请参考[统计信息的加载](/statistics.md#统计信息的加载)。
++ 当 `lite-init-stats` 为 `true` 时，统计信息初始化时列和索引的直方图、TopN、Count-Min Sketch 均不会加载到内存中。当 `lite-init-stats` 为 `false` 时，统计信息初始化时索引和主键的直方图、TopN、Count-Min Sketch 会被加载到内存中，非主键列的直方图、TopN、Count-Min Sketch 不会加载到内存中。当优化器需要某一索引或者列的直方图、TopN、Count-Min Sketch 时，这些统计信息会被同步或异步加载到内存中（由 [`tidb_stats_load_sync_wait`](/system-variables.md#tidb_stats_load_sync_wait-从-v540-版本开始引入) 控制）。
++ 将 `lite-init-stats` 设置为 true，可以加速统计信息初始化，避免加载不必要的统计信息，从而降低 TiDB 的内存使用。详情请参考[统计信息的加载](/statistics.md#统计信息的加载)。
 
 ## opentracing
 
