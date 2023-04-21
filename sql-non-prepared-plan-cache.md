@@ -78,16 +78,16 @@ TiDB 对参数化后形式相同的查询，只能缓存一个计划。例如，
 
 由于上述风险以及执行计划缓存只在简单查询上有明显收益（如果查询较为复杂，查询本身执行时间较长，使用执行计划缓存收益不大），TiDB 目前对 Non-Prepared Plan Cache 的生效范围有严格的限制。具体限制如下：
 
-1. [Prepared Plan Cache](/sql-prepared-plan-cache.md) 不支持的查询或者计划，Non-Prepared Plan Cache 也不支持。
-2. 不支持包含 `Window` 或 `Having` 的查询。
-3. 不支持包含三张表及以上 `Join` 或子查询的查询。
-4. 不支持 `ORDER BY` 或者 `GROUP BY` 后直接带数字或者表达式的查询，如 `ORDER BY 1`、`GROUP BY a+1`。仅支持 `ORDER BY column_name` 和 `GROUP BY column_name`。
-5. 不支持过滤条件中包含 `JSON`、`ENUM`、`SET` 或 `BIT` 类型的列的查询，例如 `SELECT * FROM t WHERE json_col = '{}'`。
-6. 不支持过滤条件中出现 `NULL` 值的查询，例如 `SELECT * FROM t WHERE a is NULL`。
-7. 不支持参数化后参数个数超过 200 个的查询，例如 `SELECT * FROM t WHERE a in (1, 2, 3, ... 201)`。
-8. 不支持访问分区表、虚拟列、临时表、视图、或内存表的查询，例如 `SELECT * FROM INFORMATION_SCHEMA.COLUMNS`，其中 `COLUMNS` 为 TiDB 内存表。
-9. 不支持带有 Hint 或有 Binding 的查询。
-10. DML 语句或包含 `FOR UPDATE` 的查询语句。此限制可以通过设置 `set tidb_enable_non_prepared_plan_cache_for_dml=ON` 打开。
+- [Prepared Plan Cache](/sql-prepared-plan-cache.md) 不支持的查询或者计划，Non-Prepared Plan Cache 也不支持。
+- 不支持包含 `Window` 或 `Having` 的查询。
+- 不支持包含三张表及以上 `Join` 或子查询的查询。
+- 不支持 `ORDER BY` 或者 `GROUP BY` 后直接带数字或者表达式的查询，如 `ORDER BY 1`、`GROUP BY a+1`。仅支持 `ORDER BY column_name` 和 `GROUP BY column_name`。
+- 不支持过滤条件中包含 `JSON`、`ENUM`、`SET` 或 `BIT` 类型的列的查询，例如 `SELECT * FROM t WHERE json_col = '{}'`。
+- 不支持过滤条件中出现 `NULL` 值的查询，例如 `SELECT * FROM t WHERE a is NULL`。
+- 不支持参数化后参数个数超过 200 个的查询，例如 `SELECT * FROM t WHERE a in (1, 2, 3, ... 201)`。
+- 不支持访问分区表、虚拟列、临时表、视图、或内存表的查询，例如 `SELECT * FROM INFORMATION_SCHEMA.COLUMNS`，其中 `COLUMNS` 为 TiDB 内存表。
+- 不支持带有 Hint 或有 Binding 的查询。
+- 默认不支持 DML 语句或包含 `FOR UPDATE` 的查询语句。若要启用支持，你可以执行 `SET tidb_enable_non_prepared_plan_cache_for_dml = ON`。
 
 开启此功能后，优化器会对查询进行快速判断，如果不满足 Non-Prepared Plan Cache 的支持条件，则会走正常的优化流程。
 
