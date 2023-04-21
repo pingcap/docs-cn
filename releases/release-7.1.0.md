@@ -53,7 +53,7 @@ summary: 了解 TiDB 7.1.0 版本的新功能、兼容性变更、改进提升�
 
     该特性也可以将多个来自不同系统的中小型应用合入一个 TiDB 集群中，个别应用的负载提升，不会影响其他应用的正常运行。而在系统负载较低的时候，繁忙的应用即使超过设定的读写配额，也仍然可以被分配到所需的系统资源，达到资源的最大化利用。此外，合理利用资源管控特性可以减少集群数量，降低运维难度及管理成本。
 
-    在 v7.1.0 中，该特性增加了基于实际负载来估算系统容量上限的能力，为你进行容量规划提供了更准确的参考，协助你更好地管理 TiDB 的资源分配，从而满足企业级场景的稳定性需要。
+    在 v7.1.0 中，该特性增加了基于实际负载和硬件部署来估算系统容量上限的能力，为你进行容量规划提供了更准确的参考，协助你更好地管理 TiDB 的资源分配，从而满足企业级场景的稳定性需要。
 
     更多信息，请参考[用户文档](/tidb-resource-control.md)。
 
@@ -65,11 +65,13 @@ summary: 了解 TiDB 7.1.0 版本的新功能、兼容性变更、改进提升�
 
 * BR 备份恢复工具支持断点恢复 [#42339](https://github.com/pingcap/tidb/issues/42339) @[Leavrth](https://github.com/Leavrth) **tw:Oreoxmt**
 
-    快照恢复或日志恢复会因为一些可恢复性错误导致提前结束，例如硬盘空间占满、节点宕机等等一些突发情况。在 TiDB v7.1.0 之前，在错误被处理之后，之前恢复的进度会作废，你需要重新进行恢复。对大规模集群来说，会造成大量额外成本。为了尽可能继续上一次的恢复，从 TiDB v7.1.0 起，备份恢复特性引入了断点恢复的功能。该功能可以在意外中断后保留上一次恢复的大部分进度。
+    快照恢复或日志恢复会因为一些可恢复性错误导致提前结束，例如硬盘空间占满、节点宕机等突发情况。在 TiDB v7.1.0 之前，即使错误被及时处理，之前恢复的进度也会作废，你需要重新进行恢复。对大规模集群来说，会造成大量额外成本。
+    
+    为了尽可能继续上一次的恢复，从 TiDB v7.1.0 起，备份恢复特性引入了断点恢复的功能。该功能可以在意外中断后保留上一次恢复的大部分进度。
 
     更多信息，请参考[用户文档](/br/br-checkpoint-restore.md)。
 
-* 统计信息缓存加载策略优化 [#issue](https://github.com/pingcap/tidb/issues/issue) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes) **tw:hfxsd**
+* 统计信息缓存加载策略优化 [#42160](https://github.com/pingcap/tidb/issues/42160) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes) **tw:hfxsd**
 
     开启[统计信息同步加载](/statistics.md#统计信息的加载)后，TiDB 可以大幅减少启动时必须载入的统计信息的数量，并且在加载完成前不接受用户连接。一方面提升了启动时统计信息的加载速度，另一方面也避免了在启动初始阶段由于统计信息不全而引起的性能回退。该特性提升了 TiDB 在复杂运行环境下的稳定性，降低了个别 TiDB 节点重启对整体服务的影响。
 
@@ -127,19 +129,19 @@ summary: 了解 TiDB 7.1.0 版本的新功能、兼容性变更、改进提升�
     - 支持设置 detached，允许该 job 在后台运行。
     - 支持 show load data jobs, show load data jobid, drop load data jobid 来管理任务。
 
-    更多信息，请参考[用户文档](https://github.com/pingcap/docs-cn/pull/13344)。
+    更多信息，请参考[用户文档](/sql-statements/sql-statement-load-data.md)。
 
-* `LOAD DATA` SQL 集成 Lightning local backend（physical import mode） 的导入功能，提升导入性能（实验特性）[#42930](https://github.com/pingcap/tidb/issues/42930) @[D3Hunter](https://github.com/D3Hunter) **tw:hfxsd**
+* `LOAD DATA` SQL 集成 TiDB Lightning Physical Import Mode） 的导入功能，提升导入性能（实验特性）[#42930](https://github.com/pingcap/tidb/issues/42930) @[D3Hunter](https://github.com/D3Hunter) **tw:hfxsd**
 
-    用户通过 `LOAD DATA` SQL 导入数据时，可以指定 import_mode = physical 来实现 Lightning local backend （physical 导入模式）的导入效果，相比 Load data 原先的 logical 导入模式，可成倍提升导入数据的性能。
+    `LOAD DATA` 集成 TiDB Lightning 的物理导入模式 (Physical Import Mode)，你可以通过设置 `WITH import_mode = 'PHYSICAL'` 开启。相比逻辑导入模式 (Logical Import Mode)，可成倍提升导入数据的性能。
 
-    更多信息，请参考[用户文档](链接)。
+    更多信息，请参考[用户文档](/sql-statements/sql-statement-load-data.md)。
 
-* `LOAD DATA` SQL 支持并行导入，提升导入性能（实验特性）[#40499](https://github.com/pingcap/tidb/issues/40499) @[lance6716](https://github.com/lance6716) **tw:hfxsd**
+* `LOAD DATA` 支持并行导入，提升导入性能（实验特性）[#40499](https://github.com/pingcap/tidb/issues/40499) @[lance6716](https://github.com/lance6716) **tw:hfxsd**
 
-    原先 load data sql 无法并行导入数据，性能较差。在该版本中支持设置并行导入的参数，通过提升并发，来提升导入的性能。在实验室环境，相比上个版本，测试逻辑导入性能有接近 4 倍的提升。
+    之前 `LOAD DATA` 不支持并行导入数据，性能较差。在 TiDB v7.1.0 开始支持设置并行导入的参数，通过提升并发提升导入的性能。在实验室环境，相比上个版本，测试逻辑导入性能有接近 4 倍的提升。
 
-    更多信息，请参考[用户文档](https://github.com/pingcap/docs-cn/pull/13676)。
+    更多信息，请参考[用户文档](/sql-statements/sql-statement-load-data.md)。
 
 * 生成列 (Generated Columns) 成为正式功能 (GA) @[bb7133](https://github.com/bb7133) **tw:ran-huang**
 
@@ -167,9 +169,9 @@ summary: 了解 TiDB 7.1.0 版本的新功能、兼容性变更、改进提升�
 
 ### 可观测性
 
-* 增加优化器诊断信息 [#issue号](链接) @[time-and-fate](https://github.com/time-and-fate) **tw:hfxsd**
+* 增加优化器诊断信息 [#43122](https://github.com/pingcap/tidb/issues/43122) @[time-and-fate](https://github.com/time-and-fate) **tw:hfxsd**
 
-    获取充足的信息是 SQL 性能诊断的关键，在 v7.1.0 中，TiDB 持续向各种诊断工具中添加优化器运行信息，可以更好地解释执行计划如何被选择，协助用户和技术支持对 SQL 性能问题进行定位。其中包括：
+    获取充足的信息是 SQL 性能诊断的关键。在 v7.1.0 中，TiDB 持续向各种诊断工具中添加优化器运行信息，可以更好地解释执行计划如何被选择，协助对 SQL 性能问题进行定位。这些信息包括：
 
     * [`PLAN REPLAYER`](/sql-plan-replayer.md#使用-plan-replayer-保存和恢复集群现场信息) 的输出中增加 `debug_trace.json` 文件。
     * [`EXPLAIN`](/explain-walkthrough.md) 的输出中，为 `operator info` 添加部分统计信息详情。
@@ -209,7 +211,7 @@ summary: 了解 TiDB 7.1.0 版本的新功能、兼容性变更、改进提升�
 
     如果你已经将 TiFlash 升级到 v7.1.0，那么在升级 TiDB 到 v7.1.0 的过程中，TiDB 无法读取 TiFlash 系统表（[`INFORMATION_SCHEMA.TIFLASH_TABLES`](/information-schema/information-schema-tiflash-tables.md) 和 [`INFORMATION_SCHEMA.TIFLASH_SEGMENTS`](/information-schema/information-schema-tiflash-segments.md)）。
 
-* `SHOW LOAD DATA` 的返回值废弃了参数 `Loaded_File_Size`，新增了参数 `Imported_Rows` **tw:hfxsd**
+* [`SHOW LOAD DATA`](/sql-statements/sql-statement-show-load-data.md) 的返回值废弃了参数 `Loaded_File_Size`，新增了参数 `Imported_Rows` **tw:hfxsd**
 
 ### 系统变量
 
