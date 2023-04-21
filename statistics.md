@@ -684,6 +684,13 @@ DROP STATS TableName GLOBAL;
 - 通过修改 TiDB 配置项 [`stats-load-concurrency`](/tidb-configuration-file.md#stats-load-concurrency-从-v540-版本开始引入) 的值控制统计信息同步加载可以并发处理的最大列数。该配置项的默认值为 `5`。
 - 通过修改 TiDB 配置项 [`stats-load-queue-size`](/tidb-configuration-file.md#stats-load-queue-size-从-v540-版本开始引入) 的值设置统计信息同步加载最多可以缓存多少列的请求。该配置项的默认值为 `1000`。
 
+从 v7.1.0 开始，TiDB 引入了轻量级的统计信息初始化。当 `lite-init-stats` 为 true 时，统计信息初始化时列和索引的直方图、TopN、CMSketch 均不会加载到内存中。当 `lite-init-stats` 为 false 时，统计信息初始化时索引和主键的直方图、TopN、CMSketch 会被加载到内存中，非主键列的直方图、TopN、CMSketch 不会加载到内存中。当优化器需要某一索引或者列的直方图、TopN、CMSketch 时，会同步或者异步地加载到内存中。使用将 `lite-init-stats` 设置为 true，可以加速统计信息初始化，并且避免不必要的统计信息加载，降低 TiDB 的内存使用。
+
+
+> **警告：**
+>
+> 轻量级的统计信息初始化目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+
 ## 统计信息的导入导出
 
 ### 导出统计信息
