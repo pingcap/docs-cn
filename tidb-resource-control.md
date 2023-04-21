@@ -91,7 +91,7 @@ Request Unit (RU) 是 TiDB 对 CPU、IO 等系统资源的统一抽象的单位,
 
 下面举例说明如何创建资源组。
 
-1. 创建 `rg1` 资源组，RU 的回填速度是每秒 500 RU，并且允许这个资源组的应用超额占用资源。
+1. 创建 `rg1` 资源组，限额是每秒 500 RU，并且允许这个资源组的应用超额占用资源。
 
     ```sql
     CREATE RESOURCE GROUP IF NOT EXISTS rg1 RU_PER_SEC = 500 BURSTABLE;
