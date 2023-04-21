@@ -110,7 +110,7 @@ protocol = "canal-json"
 terminator = ''
 # 文件路径的日期分隔类型。可选类型有 `none`、`year`、`month` 和 `day`。默认值为 `none`，即不使用日期分隔。详见 <https://docs.pingcap.com/zh/tidb/dev/ticdc-sink-to-cloud-storage#数据变更记录>。
 date-separator = 'none'
-# 是否使用 partition 作为分隔字符串，将一张表中各个 partition 的数据分不同的目录来存储。在 v6.5.0 和 v6.5.1 中，默认值为 false。从 v6.5.2 起，默认值修改为 true。详见 <https://docs.pingcap.com/zh/tidb/dev/ticdc-sink-to-cloud-storage#数据变更记录>。
+# 是否使用 partition 作为分隔字符串，将一张表中各个 partition 的数据分不同的目录来存储。在 v6.5.0 和 v6.5.1 中，默认值为 false。在 v6.5.2 或更高的 v6.5.x 版本中，默认值为 true。使用示例详见 <https://docs.pingcap.com/zh/tidb/dev/ticdc-sink-to-cloud-storage#数据变更记录>。
 enable-partition-separator = true
 
 # 从 v6.5.0 开始，TiCDC 支持以 CSV 格式将数据变更记录保存至存储服务中，在 MQ 和 MySQL 类 sink 中无需设置。
