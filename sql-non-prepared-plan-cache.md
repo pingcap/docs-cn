@@ -39,7 +39,7 @@ Non-Prepared Plan Cache 为会话级别，并且与 [Prepared Plan Cache](/sql-p
 2. 开启 Non-Prepared Plan Cache：
 
     ```sql
-    SET tidb_enable_non_prepared_plan_cache = true;
+    SET tidb_enable_non_prepared_plan_cache = ON;
     ```
 
 3. 依次执行以下查询：
@@ -152,7 +152,7 @@ SHOW warnings;
 2. 打开 Non-Prepared Plan Cache 开关：
 
     ```sql
-    SET @@tidb_enable_non_prepared_plan_cache=1;
+    SET @@tidb_enable_non_prepared_plan_cache = ON;
     ```
 
 3. 依次执行以下三个查询：
