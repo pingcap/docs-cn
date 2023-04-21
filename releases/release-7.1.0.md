@@ -117,15 +117,15 @@ summary: 了解 TiDB 7.1.0 版本的新功能、兼容性变更、改进提升�
 
 * `LOAD DATA` SQL 支持从 S3、GCS 导入数据，支持任务管理等功能 GA [#40499](https://github.com/pingcap/tidb/issues/40499) @[lance6716](https://github.com/lance6716) **tw:hfxsd**
 
-    以下 `LOAD DATA` 新增的功能在 7.1 版本 GA：
+    以下 `LOAD DATA` 新增的功能在 TiDB v7.1.0 GA：
 
-    - 支持从 S3、GCS 导入数据
-    - 支持导入 Parquet 文件数据
-    - 支持解析源文件中 ascii、latin1、binary、gbk、utf8mbd 字符集
-    - 支持设置 FIELDS DEFINED NULL BY 将源文件的指定的值转换为 Null 写入目标表。
-    - 支持设置一个 bath_size 即 1 个 batch 插入到目标表的行数，提升写入性能。
-    - 支持设置 detached，允许该 job 在后台运行。
-    - 支持 show load data jobs, show load data jobid, drop load data jobid 来管理任务。
+    - 支持从 S3、GCS 导入数据。
+    - 支持导入 Parquet 文件数据。
+    - 支持解析源文件中的下列字符集：`ascii`、`latin1`、`binary`、`gbk`、`utf8mbd` 字符集
+    - 支持设置 `FIELDS DEFINED NULL BY` 将源文件的指定的值转换为 `NULL` 写入目标表。
+    - 支持设置 1 个 `bath_size` 即 1 个 batch 插入到目标表的行数，提升写入性能。
+    - 支持设置 `detached`，允许该 job 在后台运行。
+    - 支持使用 `SHOW LOAD DATA` 和 `DROP LOAD DATA` 来管理任务。
 
     更多信息，请参考[用户文档](/sql-statements/sql-statement-load-data.md)。
 
