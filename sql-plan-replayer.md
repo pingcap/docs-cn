@@ -31,6 +31,7 @@ TiDB 根据 `sql-statement` 整理出以下集群现场信息：
 - `sql-statement` 中所包含的表结构
 - `sql-statement` 中所包含表的统计信息
 - `EXPLAIN [ANALYZE] sql-statement` 的结果
+- 优化器进行查询优化的一些内部步骤的记录
 
 > **注意：**
 >
