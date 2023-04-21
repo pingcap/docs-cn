@@ -23,7 +23,7 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-load-data/','/docs-cn/dev/r
 
 > **警告：**
 >
-> v7.1.0 新增的物理导入模式为实验特性，不建议在生产环境中使用。
+> v7.1.0 新增的并发导入和物理导入模式为实验特性，不建议在生产环境中使用。
 
 ## 语法图
 
