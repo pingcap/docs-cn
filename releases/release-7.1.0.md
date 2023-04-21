@@ -209,7 +209,7 @@ summary: 了解 TiDB 7.1.0 版本的新功能、兼容性变更、改进提升�
 
     如果你已经将 TiFlash 升级到 v7.1.0，那么在升级 TiDB 到 v7.1.0 的过程中，TiDB 无法读取 TiFlash 系统表（[`INFORMATION_SCHEMA.TIFLASH_TABLES`](/information-schema/information-schema-tiflash-tables.md) 和 [`INFORMATION_SCHEMA.TIFLASH_SEGMENTS`](/information-schema/information-schema-tiflash-segments.md)）。
 
-* [`SHOW LOAD DATA`](/sql-statements/sql-statement-show-load-data.md) 的返回值废弃了参数 `Loaded_File_Size`，新增了参数 `Imported_Rows` **tw:hfxsd**
+* [`SHOW LOAD DATA`](/sql-statements/sql-statement-show-load-data.md) 的返回值中废弃了参数 `Loaded_File_Size`，替换为参数 `Imported_Rows` **tw:hfxsd**
 
 ### 系统变量
 
