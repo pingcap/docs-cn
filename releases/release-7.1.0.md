@@ -135,9 +135,9 @@ summary: 了解 TiDB 7.1.0 版本的新功能、兼容性变更、改进提升�
 
     更多信息，请参考[用户文档](/sql-statements/sql-statement-load-data.md)。
 
-* `LOAD DATA` 支持并行导入，提升导入性能（实验特性）[#40499](https://github.com/pingcap/tidb/issues/40499) @[lance6716](https://github.com/lance6716) **tw:hfxsd**
+* `LOAD DATA` 支持并发导入，提升导入性能（实验特性）[#40499](https://github.com/pingcap/tidb/issues/40499) @[lance6716](https://github.com/lance6716) **tw:hfxsd**
 
-    之前 `LOAD DATA` 不支持并行导入数据，性能较差。在 TiDB v7.1.0 开始支持设置并行导入的参数，通过提升并发提升导入的性能。在实验室环境，相比上个版本，测试逻辑导入性能有接近 4 倍的提升。
+    之前 `LOAD DATA` 不支持并发导入数据，性能较差。在 TiDB v7.1.0 开始支持设置并发导入的参数 `WITH thread=<number>`，通过提升并发可以提升导入的性能。在实验室环境，相比上个版本，测试逻辑导入性能有接近 4 倍的提升。
 
     更多信息，请参考[用户文档](/sql-statements/sql-statement-load-data.md)。
 
