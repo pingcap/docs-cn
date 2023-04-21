@@ -39,23 +39,13 @@ Info: {"upstream_id":7171388873935111376,"namespace":"default","id":"simple-repl
 
 ## 配置 Sink URI
 
-本章节介绍如何在 Changefeed URI 中配置存储服务 Amazon S3、Azure Blob Storage 和 NFS。
-
-### 配置 Amazon S3 和 Azure Blob Storage
-
-Amazon S3 和 Azure Blob Storage 的 URI 参数与 BR 中这两种存储的 URL 参数相同。详细参数说明请参考 [BR 备份存储服务的 URL 格式](/br/backup-and-restore-storages.md#格式说明)。
-
-### 配置 NFS
-
-NFS 配置样例如下：
+本章节介绍如何在 Sink URI 中配置存储服务 Amazon S3、GCS、Azure Blob Storage 以及 NFS。Sink URI 用于指定 TiCDC 下游系统的连接信息，遵循以下格式：
 
 ```shell
---sink-uri="file:///my-directory/prefix"
+[scheme]://[host]/[path]?[query_parameters]
 ```
 
-### 可选配置
-
-URI 中其他可配置的参数如下：
+URI 的 `[query_parameters]` 中可配置的参数如下：
 
 | 参数              | 描述                                                   | 默认值      | 取值范围                 |
 | :--------------- | :----------------------------------------------------- | :--------- | :--------------------- |
@@ -63,10 +53,45 @@ URI 中其他可配置的参数如下：
 | `flush-interval` | 向下游存储服务保存数据变更记录的间隔                         | `5s`       | `[2s, 10m]`            |
 | `file-size`      | 单个数据变更文件的字节数超过 `file-size` 时将其保存至存储服务中| `67108864` | `[1048576, 536870912]` |
 | `protocol`       | 输出到存储服务的消息协议                                  | N/A         | `canal-json` 和 `csv`  |
+| `enable-tidb-extension` | `protocol` 参数为 `canal-json` 时，如果该值为 `true`，TiCDC 会发送 [WATERMARK 事件](/ticdc/ticdc-canal-json.md#watermark-event)，并在 canal-json 消息中添加 [TiDB 扩展字段](/ticdc/ticdc-canal-json.md#tidb-扩展字段)。 | `false` | `false` 和 `true` |
 
 > **注意：**
 >
 > `flush-interval` 与 `file-size` 二者只要满足其一就会向下游写入数据变更文件。
+> 
+> `protocol` 是必选配置，如果 TiCDC 在创建 changefeed 时未解析到该配置，将会返回 `CDC:ErrSinkUnknownProtocol` 错误。
+
+### 配置外部存储
+
+Amazon S3 配置样例如下：
+
+```shell
+--sink-uri="s3://bucket/prefix?protocol=canal-json"
+```
+
+GCS 配置样例如下：
+
+```shell
+--sink-uri="gcs://bucket/prefix?protocol=canal-json"
+```
+
+Azure Blob Storage 配置样例如下：
+
+```shell
+--sink-uri="azure://bucket/prefix?protocol=canal-json"
+```
+
+> **建议：**
+> 
+> Amazon S3、GCS 以及 Azure Blob Storage 的 URI 参数与 BR 中这三种外部存储的 URI 参数相同。详细参数说明请参考 [BR 备份存储服务的 URI 格式](/br/backup-and-restore-storages.md#格式说明)。
+
+### 配置 NFS
+
+NFS 配置样例如下：
+
+```shell
+--sink-uri="file:///my-directory/prefix?protocol=canal-json"
+```
 
 ## 存储路径组织结构
 
@@ -80,7 +105,7 @@ URI 中其他可配置的参数如下：
 {scheme}://{prefix}/{schema}/{table}/{table-version-separator}/{partition-separator}/{date-separator}/CDC{num}.{extension}
 ```
 
-- `scheme`：数据传输协议，即存储类型。例如：<code>**s3**://xxxxx</code>。
+- `scheme`：存储服务类型。例如：`s3`、`gcs`、`azure`、`file`。
 - `prefix`：用户指定的父目录。例如：<code>s3://**bucket/bbb/ccc**</code>。
 - `schema`：表所属的库名。例如：<code>s3://bucket/bbb/ccc/**test**</code>。
 - `table`：表名。例如：<code>s3://bucket/bbb/ccc/test/**table1**</code>。
@@ -96,10 +121,11 @@ URI 中其他可配置的参数如下：
 
 > **注意：**
 >
-> 表的版本会在以下两种情况下发生变化：
+> 表的版本可能在以下三种情况下发生变化：
 >
 > - 发生 DDL 操作后，表的版本为该 DDL 在上游 TiDB 执行结束的 TSO。但是，表版本的变化并不意味着表结构的变化。例如，在表中的某一列添加注释，不会导致 `schema.json` 文件内容发生变化。
 > - 进程重启，表的版本为进程重启时 Changefeed 的 checkpoint TSO。在有很多表的情况下，重启时需要遍历所有目录并找到上一次重启时每张表写入的位置，这样的操作耗时较长。因此，TiCDC 选择在一个以 checkpoint TSO 为版本的新目录下写入数据，而不是在旧版本的目录下继续写入数据。
+> - 发生表调度后，表的版本为该表调度到当前节点时 Changefeed 的 checkpoint TSO。
 
 ### 元数据
 
