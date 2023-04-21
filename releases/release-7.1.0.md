@@ -109,11 +109,9 @@ summary: 了解 TiDB 7.1.0 版本的新功能、兼容性变更、改进提升�
 
     更多信息，请参考[用户文档](/partitioned-table.md#)。
 
-* Range INTERVAL 分区定义语法功能 GA [#35683](https://github.com/pingcap/tidb/issues/35683) @[mjonss](https://github.com/mjonss) **tw:qiancai**
+* Range INTERVAL 分区定义语法成为正式功能 (GA) [#35683](https://github.com/pingcap/tidb/issues/35683) @[mjonss](https://github.com/mjonss) **tw:qiancai**
 
-    在 v6.3.0 中，TiDB 支持了 Range INTERVAL 分区的语法，根据规则定义 Range 分区，不需要枚举所有分区，可大幅度缩短 Range 分区表的定义语句长度。语义与原有 Range 分区等价。
-
-    在 v7.1.0 中，该功能正式 GA。
+    在 v6.3.0 中引入的 Range INTERVAL 的分区定义语法成为正式功能 (GA)。通过该语法，你可以根据规则定义 Range 分区，不需要枚举所有分区，可大幅度缩短 Range 分区表的定义语句长度。语义与原有 Range 分区等价。
 
     更多信息，请参考[用户文档](/partitioned-table.md#range-interval-分区)。
 
