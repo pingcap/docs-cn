@@ -1683,7 +1683,7 @@ Query OK, 0 rows affected (0.09 sec)
 
     - `INSERT INTO SELECT` 语句中的 `SELECT` 查询（典型应用场景为 [TiFlash 查询结果物化](/tiflash/tiflash-results-materialization.md)）
     - `UPDATE` 和 `DELETE` 语句中的 `WHERE` 条件过滤
-- 从 v7.1.0 开始，该变量废弃。当 [`tidb_allow_mpp = ON`](/system-variables.md#tidb_allow_mpp-从-v50-版本开始引入) 时，优化器将根据 [SQL 模式](/sql-mode.md) 及 TiFlash 副本的代价估算自行决定是否将查询下推至 TiFlash。需要注意的是，只有当前会话的 [SQL 模式](/sql-mode.md) 为非严格模式（即 `sql_mode` 值不包含 `STRICT_TRANS_TABLES` 和 `STRICT_ALL_TABLES`）时，TiDB 才允许将包含增删改的 SQL 语句（如 `INSERT INTO SELECT`）中的读取操作下推至 TiFlash。
+- 从 v7.1.0 开始，该变量废弃。当 [`tidb_allow_mpp = ON`](/system-variables.md#tidb_allow_mpp-从-v50-版本开始引入) 时，优化器将根据 [SQL 模式](/sql-mode.md)及 TiFlash 副本的代价估算自行决定是否将查询下推至 TiFlash。需要注意的是，只有当前会话的 [SQL 模式](/sql-mode.md)为非严格模式（即 `sql_mode` 值不包含 `STRICT_TRANS_TABLES` 和 `STRICT_ALL_TABLES`）时，TiDB 才允许将包含增删改的 SQL 语句（如 `INSERT INTO SELECT`）中的读取操作下推至 TiFlash。
 
 ### `tidb_enable_tmp_storage_on_oom`
 
