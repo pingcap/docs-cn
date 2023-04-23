@@ -13,6 +13,14 @@ summary: TiDB 数据库中 CALIBRATE RESOURCE 的使用概况。
 CalibrateResourceStmt ::= 'CALIBRATE' 'RESOURCE'
 ``` 
 
+## 权限
+
+执行此命令依赖如下配置和权限：
+
+- [`tidb_enable_resource_control`](/system-variables.md#tidb_enable_resource_control-从-v660-版本开始引入) 需要处于开启状态
+- 需要拥有 `SUPER` 或者 `RESOURCE_GROUP_ADMIN` 权限
+- 需要拥有 `METRICS_SCHEMA` 库下所有表的 `SELECT` 权限
+
 ## 示例
 
 ```sql
