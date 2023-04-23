@@ -351,7 +351,11 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 8172
 
-    指定 `LOCAL` 的 `LOAD DATA` 不能在后台运行，只有使用 S3/GCS 路径的 `LOAD DATA` 可以在后台运行。请参考 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md) 更改 SQL 语句。
+    指定 `LOCAL` 时，不能指定特定的选项，比如 `DETACHED` 和 `import_mode='PHYSICAL'`。请参考 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md) 更改 SQL 语句。
+
+* Error Number: 8173
+
+    执行 Physical Import 时，TiDB 会对当前环境进行检查，比如检查下游表是否为空等。请根据提示进行处理。
 
 * Error Number: 8200
 
@@ -412,7 +416,7 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 * Error Number: 8250
 
     完整的报错信息如下：
-    
+
     `ERROR 8250 (HY000) : Resource control feature is disabled. Run "SET GLOBAL tidb_enable_resource_control='on'" to enable the feature`
 
     资源控制的功能没有打开时，使用资源管控 (Resource Control) 相关功能会返回该错误。你可以开启全局变量 [`tidb_enable_resource_control`](/system-variables.md#tidb_enable_resource_control-从-v660-版本开始引入) 启用资源管控。
@@ -424,7 +428,7 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 * Error Number: 8252
 
     完整的报错信息如下：
-    
+
     `ERROR 8252 (HY000) : Exceeded resource group quota limitation`
 
     在尝试消耗超过资源组的限制时返回该错误。一般出现该错误，是由于单次事务太大或者并发太多导致，需调整事务大小或减少客户端并发数。

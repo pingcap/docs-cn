@@ -8,15 +8,22 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-load-data/','/docs-cn/dev/r
 
 `LOAD DATA` 语句用于将数据批量加载到 TiDB 表中。
 
-在 v7.0.0 版本集成 TiDB Lightning 的逻辑导入模式，使 `LOAD DATA` 语句更加强大，包括：
+从 v7.0.0 开始，`LOAD DATA` 集成 TiDB Lightning 的逻辑导入模式 (Logical Import Mode)，使 `LOAD DATA` 语句更加强大，包括：
 
 - 支持从 S3、GCS 导入数据
 - 支持导入 Parquet 格式的数据
-- 新增参数 `FORMAT`、`FIELDS DEFINED NULL BY`、`With batch_size=<number>,detached`
+- 新增参数 `FORMAT`、`FIELDS DEFINED NULL BY` 和 `WITH batch_size=<number>,detached`
+
+从 v7.1.0 开始，`LOAD DATA` 支持以下特性：
+
+- 支持导入压缩的 `DELIMITED DATA` 和 `SQL FILE` 数据文件
+- 逻辑导入支持并发导入
+- 支持通过 `CharsetOpt` 来指定数据文件的编码格式
+- `LOAD DATA` 集成 TiDB Lightning 的物理导入模式 (Physical Import Mode)。该模式不经过 SQL 接口，而是直接将数据以键值对的形式插入 TiKV 节点，是一种高效且快速的导入模式。
 
 > **警告：**
 >
-> 新增的能力和参数为实验特性，不建议在生产环境中使用。
+> v7.1.0 新增的并发导入和物理导入模式为实验特性，不建议在生产环境中使用。
 
 ## 语法图
 
@@ -29,6 +36,9 @@ LocalOpt ::= ('LOCAL')?
 FormatOpt ::=
     ('FORMAT' ('DELIMITED DATA' | 'SQL FILE' | 'PARQUET'))?
 
+DuplicateOpt ::=
+    ('IGNORE' | 'REPLACE')?
+
 Fields ::=
     ('TERMINATED' 'BY' stringLit
     | ('OPTIONALLY')? 'ENCLOSED' 'BY' stringLit
@@ -39,7 +49,11 @@ LoadDataOptionListOpt ::=
     ('WITH' (LoadDataOption (',' LoadDataOption)*))?
 
 LoadDataOption ::=
-    detached | batch_size '=' numberLiteral
+    import_mode '=' ('LOGICAL' | 'PHYSICAL')
+    | thread '=' numberLiteral
+    | batch_size '=' numberLiteral
+    | max_write_speed '=' stringLit
+    | detached
 ```
 
 ## 参数说明
@@ -63,6 +77,28 @@ LoadDataOption ::=
 ### `FORMAT`
 
 你可以通过 `FORMAT` 参数来指定数据文件的格式。如果不指定该参数，需要使用的格式为 `DELIMITED DATA`，该格式即 MySQL `LOAD DATA` 支持的数据格式。
+
+数据格式 `DELIMITED DATA` 和 `SQL FILE` 支持压缩文件。`LOAD DATA` 会根据文件名称的后缀来自动决定压缩格式。目前支持的压缩格式如下：
+
+| 文件后缀 | 压缩格式 | 示例 |
+|:---|:---|:---|
+| `.gz` 或 `.gzip`  | gzip 压缩格式   | `tbl.0001.csv.gz`     |
+| `.zstd` 或 `.zst` | zstd 压缩格式   | `tbl.0001.csv.zstd`   |
+| `.snappy`      | snappy 压缩格式 | `tbl.0001.csv.snappy` |
+
+### `DuplicateOpt`
+
+该参数与 MySQL 行为一致，具体请参考 [MySQL LOAD DATA 文档](https://dev.mysql.com/doc/refman/8.0/en/load-data.html#load-data-error-handling)。
+
+该参数只适用于逻辑导入模式，对物理导入模式不生效。
+
+### `CharsetOpt`
+
+当数据格式是 `DELIMITED DATA` 时，可以通过 `CharsetOpt` 指定数据文件的编码格式。目前支持下列编码格式：`ascii`、`latin1`、`binary`、`utf8`、`utf8mb4` 和 `gbk`。
+
+```sql
+LOAD DATA INFILE 's3://<bucket-name>/path/to/data/foo.csv' INTO TABLE load_charset.latin1 CHARACTER SET latin1
+```
 
 ### `Fields`、`Lines`、`Ignore Lines`
 
@@ -104,15 +140,40 @@ LINES TERMINATED BY '\n' STARTING BY ''
 
 你可以通过 `IGNORE <number> LINES` 参数来忽略文件开始的 `<number>` 行。例如，可以使用 `IGNORE 1 LINES` 来忽略文件的第一行。
 
-### `WITH detached`
+### `WITH import_mode = ('LOGICAL' | 'PHYSICAL')`
 
-如果你指定了 S3/GCS 路径（且未指定 `LOCAL` 参数），可以通过 `WITH detached` 来让 `LOAD DATA` 任务在后台运行。此时 `LOAD DATA` 会返回 job ID。
+可以通过 `import_mode = ('LOGICAL' | 'PHYSICAL')` 来指定数据导入的模式，默认值为 `LOGICAL`，即逻辑导入。从 v7.1.0 开始，`LOAD DATA` 集成 TiDB Lightning 的物理导入模式，可通过 `WITH import_mode = 'PHYSICAL'` 开启。
 
-可以通过 [`SHOW LOAD DATA`](/sql-statements/sql-statement-show-load-data.md) 查看创建的 job，也可以使用 [`CANCEL LOAD DATA` 和 `DROP LOAD DATA`](/sql-statements/sql-statement-operate-load-data-job.md) 取消或删除创建的 job。
+物理导入模式只能在非 `LOCAL` 模式下使用，采用单线程执行。目前物理导入尚未接入[冲突监测](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#冲突数据检测)，因此遇到数据主键或唯一键冲突时会报 checksum 不一致错误。建议在导入前检查数据文件是否存在键值冲突。其他的限制和必要条件，请参考 [TiDB Lightning Physical Import Mode 简介](/tidb-lightning/tidb-lightning-physical-import-mode.md)。
+
+物理导入模式下，`LOAD DATA` 将本地排序后的数据写入 TiDB [`temp-dir`](/tidb-configuration-file.md#temp-dir-从-v630-版本开始引入) 子目录中。子目录命名规则为 `import-<tidb-port>/<job-id>`。
+
+物理导入模式目前尚未接入[磁盘资源配额](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#磁盘资源配额-从-v620-版本开始引入)。请确保对应磁盘有足够的空间，具体可参考[必要条件及限制](/tidb-lightning/tidb-lightning-physical-import-mode.md#必要条件及限制)中存储空间的部分。
+
+### `WITH thread=<number>`
+
+目前该参数仅对逻辑导入生效。
+
+可以通过 `WITH thread=<number>` 指定数据导入的并发度。默认值与 `FORMAT` 有关：
+
+- 当 `FORMAT` 为 `PARQUET` 时，默认值为 CPU 核数的 75%。
+- 对于其他 `FORMAT`，默认值为 CPU 的逻辑核数。
 
 ### `WITH batch_size=<number>`
 
 可以通过 `WITH batch_size=<number>` 来指定批量写入 TiDB 时的行数，默认值为 `1000`。如果不希望分批写入，可以指定为 `0`。
+
+### `WITH max_write_speed = stringLit`
+
+在使用物理导入模式时，可以通过该参数指定写入单个 TiKV 的速率限制。默认值为 `0`，表示无限制。
+
+该参数支持 [go-units](https://pkg.go.dev/github.com/docker/go-units#example-RAMInBytes) 格式。例如，`WITH max_write_speed = '1MB'` 表示写入单个 TiKV 的最大速率为 `1MB/s`。
+
+### `WITH detached`
+
+如果你指定了 S3/GCS 路径（且未指定 `LOCAL` 参数），可以通过 `WITH detached` 让 `LOAD DATA` 任务在后台运行。此时 `LOAD DATA` 会返回任务的 ID。
+
+你可以执行 [`SHOW LOAD DATA`](/sql-statements/sql-statement-show-load-data.md) 查看创建的任务，也可以使用 [`CANCEL LOAD DATA` 和 `DROP LOAD DATA`](/sql-statements/sql-statement-operate-load-data-job.md) 取消或删除创建的任务。
 
 ## 示例
 
