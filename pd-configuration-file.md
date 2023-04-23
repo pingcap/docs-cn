@@ -415,6 +415,7 @@ pd-server 相关配置项。
 + 可选值：
     + v1：在 v1 模式下，你可以手动修改 `store limit` 以限制单个 TiKV 调度速度。
     + v2：（实验特性）在 v2 模式下，你无需关注 `store limit` 值，PD 将根据 TiKV Snapshot 执行情况动态调整 TiKV 调度速度。详情请参考 [store limit v2 原理](/configure-store-limit.md#store-limit-v2-原理)。
+
 ## label-property
 
 标签相关的配置项。
