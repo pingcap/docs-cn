@@ -127,7 +127,7 @@ TiDB 版本：7.1.0（即将发布）
 
     - 支持从 S3、GCS 导入数据。
     - 支持导入 Parquet 文件数据。
-    - 支持解析源文件中的下列字符集：`ascii`、`latin1`、`binary`、`gbk`、`utf8mbd` 字符集
+    - 支持解析源文件中的下列字符集：`ascii`、`latin1`、`binary`、`gbk`、`utf8mbd`
     - 支持设置 `FIELDS DEFINED NULL BY` 将源文件的指定的值转换为 `NULL` 写入目标表。
     - 支持设置 1 个 `bath_size` 即 1 个 batch 插入到目标表的行数，提升写入性能。
     - 支持设置 `detached`，允许该 job 在后台运行。
