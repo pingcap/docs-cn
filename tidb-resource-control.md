@@ -5,10 +5,6 @@ summary: Learn how to use the resource control feature to control and schedule a
 
 # Use Resource Control to Achieve Resource Isolation
 
-> **Warning:**
->
-> This feature is experimental and its form and usage might change in subsequent versions.
-
 <CustomContent platform="tidb-cloud">
 
 > **Note:**
@@ -33,6 +29,8 @@ With this feature, you can:
 
 - Combine multiple small and medium-sized applications from different systems into a single TiDB cluster. When the workload of an application grows larger, it does not affect the normal operation of other applications. When the system workload is low, busy applications can still be allocated the required system resources even if they exceed the set read and write quotas, so as to achieve the maximum utilization of resources.
 - Choose to combine all test environments into a single TiDB cluster, or group the batch tasks that consume more resources into a single resource group. It can improve hardware utilization and reduce operating costs while ensuring that critical applications can always get the necessary resources.
+- When there are mixed workloads in a system, you can put different workloads into separate resource groups. By using the resource control feature, you can ensure that the response time of transactional applications is not affected by data analysis or batch applications.
+- When the cluster encounters an unexpected SQL performance issue, you can use SQL bindings along with resource groups to temporarily limit the resource consumption of a SQL statement.
 
 In addition, the rational use of the resource control feature can reduce the number of clusters, ease the difficulty of operation and maintenance, and save management costs.
 
@@ -79,7 +77,7 @@ The resource control feature introduces two new global variables.
 
 </CustomContent>
 
-The results of the combinations of these two parameters are shown in the following table.
+Starting from TiDB v7.0.0, both parameters are enabled by default. The results of the combinations of these two parameters are shown in the following table.
 
 | `resource-control.enabled`  | `tidb_enable_resource_control`= ON   | `tidb_enable_resource_control`= OFF  |
 |:----------------------------|:-------------------------------------|:-------------------------------------|
@@ -89,6 +87,17 @@ The results of the combinations of these two parameters are shown in the followi
 For more information about the resource control mechanism and parameters, see [RFC: Global Resource Control in TiDB](https://github.com/pingcap/tidb/blob/master/docs/design/2022-11-25-global-resource-control.md).
 
 ## How to use resource control
+
+This section describes how to use the resource control feature to manage resource groups and control the resource allocation of each resource group.
+
+### Estimate cluster capacity
+
+Before resource planning, you need to know the overall capacity of the cluster. TiDB provides the statement [`CALIBRATE RESOURCE`](/sql-statements/sql-statement-calibrate-resource.md) to estimate the cluster capacity. You can use one of the following methods:
+
+- [Estimate capacity based on actual workload](/sql-statements/sql-statement-calibrate-resource.md#estimate-capacity-based-on-actual-workload)
+- [Estimate capacity based on hardware deployment](/sql-statements/sql-statement-calibrate-resource.md#estimate-capacity-based-on-hardware-deployment)
+
+For more information, see [`CALIBRATE RESOURCE`](/sql-statements/sql-statement-calibrate-resource.md#methods-for-estimating-capacity).
 
 ### Manage resource groups
 
@@ -104,7 +113,7 @@ You can delete a resource group by using [`DROP RESOURCE GROUP`](/sql-statements
 
 The following is an example of how to create a resource group.
 
-1. Create a resource group `rg1`. The RU backfill rate is 500 RUs per second and allows applications in this resource group to overrun resources.
+1. Create a resource group `rg1`. The resource limit is 500 RUs per second and allows applications in this resource group to overrun resources.
 
     ```sql
     CREATE RESOURCE GROUP IF NOT EXISTS rg1 RU_PER_SEC = 500 BURSTABLE;
@@ -223,7 +232,21 @@ TiKV also records the request QPS from different resource groups in Grafana's **
 
 ## Tool compatibility
 
-The resource control feature is still in its experimental stage. It does not impact the regular usage of data import, export, and other replication tools. BR, TiDB Lightning, and TiCDC do not currently support processing DDL operations related to resource control, and their resource consumption is not limited by resource control.
+The resource control feature does not impact the regular usage of data import, export, and other replication tools. BR, TiDB Lightning, and TiCDC do not currently support processing DDL operations related to resource control, and their resource consumption is not limited by resource control.
+
+## FAQ
+
+1. Do I have to disable resource control if I don't want to use resource groups?
+
+    No. Users who do not specify any resource groups will be bound to the `default` resource group that has unlimited resources. When all users belong to the `default` resource group, the resource allocation method is the same as when the resource control is disabled.
+
+2. Can a database user be bound to several resource groups?
+
+    No. A database user can only be bound to one resource group. However, during the session runtime, you can use [`SET RESOURCE GROUP`](/sql-statements/sql-statement-set-resource-group.md) to set the resource group used by the current session. You can also use the optimizer hint [`RESOURCE_GROUP()`](/optimizer-hints.md#resource_groupresource_group_name) to set the resource group for the running statement.
+
+3. What happens when the total resource allocation (`RU_PER_SEC`) of all resource groups exceeds the system capacity?
+
+    TiDB does not verify the capacity when you create a resource group. As long as the system has enough available resources, TiDB can meet the resource requirements of each resource group. When the system resources exceed the limit, TiDB prioritizes satisfying requests from resource groups with higher priority. If requests with the same priority cannot all be met, TiDB allocates resources proportionally according to the resource allocation (`RU_PER_SEC`).
 
 ## See also
 

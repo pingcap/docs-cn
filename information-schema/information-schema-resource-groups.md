@@ -5,10 +5,6 @@ summary: Learn the `RESOURCE_GROUPS` information_schema table.
 
 # RESOURCE_GROUPS
 
-> **Warning:**
->
-> This feature is experimental and its form and usage might change in subsequent versions.
-
 <CustomContent platform="tidb-cloud">
 
 > **Note:**
