@@ -403,7 +403,6 @@ pd-server 相关配置项。
 + 默认值：true
 + 参考 [Placement Rules 使用文档](/configure-placement-rules.md)
 
-
 ### `store-limit-version` <span class="version-mark">从 v7.1.0 版本开始引入</span>
 
 > **警告：**
