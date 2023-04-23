@@ -121,7 +121,7 @@ TiDB 版本：7.1.0（即将发布）
 
     更多信息，请参考[用户文档](/partitioned-table.md#range-interval-分区)。
 
-* `LOAD DATA` SQL 支持从 S3、GCS 导入数据，支持任务管理等功能 GA [#40499](https://github.com/pingcap/tidb/issues/40499) @[lance6716](https://github.com/lance6716) **tw:hfxsd**
+* `LOAD DATA` 部分功能 GA [#40499](https://github.com/pingcap/tidb/issues/40499) @[lance6716](https://github.com/lance6716) **tw:hfxsd**
 
     以下 `LOAD DATA` 新增的功能在 TiDB v7.1.0 GA：
 
@@ -135,7 +135,7 @@ TiDB 版本：7.1.0（即将发布）
 
   更多信息，请参考[用户文档](/sql-statements/sql-statement-load-data.md)。
 
-* `LOAD DATA` SQL 集成 TiDB Lightning Physical Import Mode） 的导入功能，提升导入性能（实验特性）[#42930](https://github.com/pingcap/tidb/issues/42930) @[D3Hunter](https://github.com/D3Hunter) **tw:hfxsd**
+* `LOAD DATA` SQL 集成 TiDB Lightning Physical Import Mode 的导入功能，提升导入性能（实验特性）[#42930](https://github.com/pingcap/tidb/issues/42930) @[D3Hunter](https://github.com/D3Hunter) **tw:hfxsd**
 
     `LOAD DATA` 集成 TiDB Lightning 的物理导入模式 (Physical Import Mode)，你可以通过设置 `WITH import_mode = 'PHYSICAL'` 开启。相比逻辑导入模式 (Logical Import Mode)，可成倍提升导入数据的性能。
 
