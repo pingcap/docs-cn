@@ -389,6 +389,10 @@ Requires `SUPER` or `RESOURCE_GROUP_ADMIN` privilege.
 
 Requires `SUPER` or `RESOURCE_GROUP_ADMIN` privilege.
 
+### CALIBRATE RESOURCE
+
+Requires `SUPER` or `RESOURCE_GROUP_ADMIN` privilege.
+
 ## Implementation of the privilege system
 
 ### Privilege table
