@@ -135,7 +135,7 @@ TiDB 版本：7.1.0（即将发布）
 
   更多信息，请参考[用户文档](/sql-statements/sql-statement-load-data.md)。
 
-* `LOAD DATA` SQL 集成 TiDB Lightning Physical Import Mode 的导入功能，提升导入性能（实验特性）[#42930](https://github.com/pingcap/tidb/issues/42930) @[D3Hunter](https://github.com/D3Hunter) **tw:hfxsd**
+* `LOAD DATA` 集成 TiDB Lightning Physical Import Mode 的导入功能，提升导入性能（实验特性）[#42930](https://github.com/pingcap/tidb/issues/42930) @[D3Hunter](https://github.com/D3Hunter) **tw:hfxsd**
 
     `LOAD DATA` 集成 TiDB Lightning 的物理导入模式 (Physical Import Mode)，你可以通过设置 `WITH import_mode = 'PHYSICAL'` 开启。相比逻辑导入模式 (Logical Import Mode)，可成倍提升导入数据的性能。
 
