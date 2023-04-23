@@ -625,7 +625,7 @@ enable-old-value = true
 
 [filter]
 # 忽略指定 start_ts 的事务
-ignore-txn-start-ts = [1, 2]
+# ignore-txn-start-ts = [1, 2]
 
 # 过滤器规则
 # 过滤规则语法：https://docs.pingcap.com/zh/tidb/stable/table-filter#表库过滤语法
@@ -639,16 +639,16 @@ worker-num = 16
 # 对于 MQ 类的 Sink，可以通过 dispatchers 配置 event 分发器
 # 支持 partition 及 topic（从 v6.1 开始支持）两种 event 分发器。二者的详细说明见下一节。
 # matcher 的匹配语法和过滤器规则语法相同，matcher 匹配规则的详细说明见下一节。
-dispatchers = [
-    {matcher = ['test1.*', 'test2.*'], topic = "Topic 表达式 1", partition = "ts" },
-    {matcher = ['test3.*', 'test4.*'], topic = "Topic 表达式 2", partition = "index-value" },
-    {matcher = ['test1.*', 'test5.*'], topic = "Topic 表达式 3", partition = "table"},
-    {matcher = ['test6.*'], partition = "ts"}
-]
+# dispatchers = [
+#    {matcher = ['test1.*', 'test2.*'], topic = "Topic 表达式 1", partition = "ts" },
+#    {matcher = ['test3.*', 'test4.*'], topic = "Topic 表达式 2", partition = "index-value" },
+#    {matcher = ['test1.*', 'test5.*'], topic = "Topic 表达式 3", partition = "table"},
+#    {matcher = ['test6.*'], partition = "ts"}
+# ]
 
 # 对于 MQ 类的 Sink，可以指定消息的协议格式
 # 目前支持 canal-json、open-protocol、canal、avro 和 maxwell 五种协议。
-protocol = "canal-json"
+# protocol = "canal-json"
 ```
 
 ### 配置文件兼容性的注意事项
