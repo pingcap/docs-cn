@@ -258,6 +258,8 @@ summary: 了解 TiDB 7.1.0 版本的新功能、兼容性变更、改进提升�
 
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
     - 提升 TiFlash 在存算分离架构下的性能和稳定性 [#6882](https://github.com/pingcap/tiflash/issues/6882)  @[JaySon-Huang](https://github.com/JaySon-Huang) @[breezewish](https://github.com/breezewish) @[JinheLin](https://github.com/JinheLin) **tw:qiancai**
+    - 在 Semi/Anti-Semi Join 中当左表更小时使用左表作为 Build 端 [#7280](https://github.com/pingcap/tiflash/issues/7280) @[yibin87](https://github.com/yibin87)
+    - 
 
 + Tools
 
