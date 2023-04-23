@@ -176,9 +176,8 @@ mysql> SELECT * FROM t1;
 ### `datadir`
 
 - 作用域：NONE
-- 默认值：/tmp/tidb
-- 这个变量表示数据存储的位置，位置可以是本地路径。如果数据存储在 TiKV 上，则可以是指向 PD 服务器的路径。
-- 如果变量值的格式为 `ip_address:port`，表示 TiDB 在启动时连接到的 PD 服务器。
+- 默认值：${ip_address:port}
+- 变量值的格式为 `ip_address:port`，表示 TiDB 在启动时连接到的 PD 服务器。
 
 ### `ddl_slow_threshold`
 
@@ -1317,20 +1316,25 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 ### `tidb_enable_non_prepared_plan_cache`
 
-> **警告：**
->
-> 非 Prepare 语句执行计划缓存目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 类型：布尔型
+- 默认值：在 v7.1.0 之前版本中为 `OFF`，即默认关闭。在 v7.1.0 及之后的版本中为 `ON`，即默认开启。
+- 这个变量用来控制是否开启[非 Prepare 语句执行计划缓存](/sql-non-prepared-plan-cache.md)。
+- 从旧版本升级到 v7.1.0 及之后版本，该变量开关保持升级前的状态。
+
+### `tidb_enable_non_prepared_plan_cache_for_dml` <span class="version-mark">从 v7.1.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 类型：布尔型
 - 默认值：`OFF`
-- 这个变量用来控制是否开启[非 Prepare 语句执行计划缓存](/sql-non-prepared-plan-cache.md)。
+- 这个变量用来控制[非 Prepare 语句执行计划缓存](/sql-non-prepared-plan-cache.md)是否支持 DML 语句。
 
 ### `tidb_enable_gogc_tuner` <span class="version-mark">从 v6.4.0 版本开始引入</span>
 
 - 作用域：GLOBAL
-- 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
+- 是否持久化到集群：是
 - 类型：布尔型
 - 默认值：`ON`
 - 该变量来用控制是否开启 GOGC Tuner。
@@ -1923,7 +1927,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 > **警告：**
 >
-> 非 Prepare 语句执行计划缓存目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+> 从 v7.1.0 开始，该变量被废弃。请使用 [`tidb_session_plan_cache_size`](#tidb_session_plan_cache_size-从-v710-版本开始引入) 进行设置。
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
@@ -1945,7 +1949,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 ### `tidb_gogc_tuner_threshold` <span class="version-mark">从 v6.4.0 版本开始引入</span>
 
 - 作用域：GLOBAL
-- 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
+- 是否持久化到集群：是
 - 默认值：`0.6`
 - 范围：`[0, 0.9)`
 - 这个变量用来控制 GOGC Tuner 自动调节的最大内存阈值，超过阈值后 GOGC Tuner 会停止工作。
@@ -2155,16 +2159,12 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 ### `tidb_load_based_replica_read_threshold` <span class="version-mark">从 v7.0.0 版本开始引入</span>
 
-> **警告：**
->
-> 当前版本中该变量控制的功能尚未完全生效，请保留默认值。
-
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 默认值：`"0s"`
+- 默认值：`"1s"`
 - 范围：`[0s, 1h]`
 - 类型：字符串
-- 这个变量用来设置基于负载的 replica read 的触发阈值。当 leader 节点的预估排队时间超过阈值时，TiDB 会优先从 follower 节点读取数据。格式为时间，例如 `"100ms"` 或 `"1s"`。
+- 这个变量用来设置基于负载的 replica read 的触发阈值。当 leader 节点的预估排队时间超过阈值时，TiDB 会优先从 follower 节点读取数据。格式为时间，例如 `"100ms"` 或 `"1s"`。详情见 [TiDB 热点问题处理](/troubleshoot-hot-spot-issues.md#打散读热点)。
 
 ### `tidb_log_file_max_days` <span class="version-mark">从 v5.3.0 版本开始引入</span>
 
@@ -3086,6 +3086,10 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 
 ### `tidb_prepared_plan_cache_size` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
+> **警告：**
+>
+> 从 v7.1.0 开始，该变量被废弃。请使用 [`tidb_session_plan_cache_size`](#tidb_session_plan_cache_size-从-v710-版本开始引入) 进行设置。
+
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 默认值：`100`
@@ -3256,6 +3260,16 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 - 默认值：`134217728`（即 128 MB）
 - 取值范围：`[128, 9223372036854775807]`，单位为 Byte。支持带单位的内存格式“KB|MB|GB|TB”。
 - 开启内存限制后，TiDB 会终止当前实例上内存用量最高的 SQL 语句。本变量指定此情况下 SQL 语句被终止的最小内存用量。如果 TiDB 实例的内存超限是由许多内存使用量不明显的会话导致的，可以适当调小该变量值，使得更多会话成为 Cancel 的对象。
+
+### `tidb_session_plan_cache_size` <span class="version-mark">从 v7.1.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 类型：整数型
+- 默认值：`100`
+- 范围：`[1, 100000]`
+- 这个变量用来控制 Plan Cache 最多能够缓存的计划数量。其中，[Prepare 语句执行计划缓存](/sql-prepared-plan-cache.md)和[非 Prepare 语句执行计划缓存](/sql-non-prepared-plan-cache.md)共用一个缓存。
+- 从旧版本升级到 v7.1.0 及之后的版本，`tidb_session_plan_cache_size` 的值与 [`tidb_prepared_plan_cache_size`](#tidb_prepared_plan_cache_size-从-v610-版本开始引入) 保持一致。
 
 ### `tidb_shard_allocate_step` <span class="version-mark">从 v5.0 版本开始引入</span>
 

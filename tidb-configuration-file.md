@@ -213,6 +213,16 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：false
 + 表级锁用于协调多个 session 之间对同一张表的并发访问。目前已支持的锁种类包括 `READ`、`WRITE` 和 `WRITE LOCAL`。当该配置项为 `false` 时，执行 `LOCK TABLES` 和 `UNLOCK TABLES` 语句不会生效，并且会报 "LOCK/UNLOCK TABLES is not supported" 的警告。更多信息，请参考 [`LOCK TABLES` 和 `UNLOCK TABLES`](/sql-statements/sql-statement-lock-tables-and-unlock-tables.md)。
 
+### `labels`
+
++ 指定服务器标签，例如 `{ zone = "us-west-1", dc = "dc1", rack = "rack1", host = "tidb1" }`。
++ 默认值：`{}`
+
+> **注意：**
+>
+> - 标签 `zone` 在 TiDB 中具有特殊用途，用于指定服务器所在的区域信息，当设置 `zone` 为非空值时，对应的值会被自动用于 [`txn-score`](/system-variables.md#txn_scope) 和 [`Follower read`](/follower-read.md) 等功能。
+> - 标签 `group` 在 TiDB Operator 中具有特殊用途。对于使用 [TiDB Operator](/tidb-operator-overview.md) 部署的集群，建议不要手动指定此标签。
+
 ## log
 
 日志相关的配置项。
@@ -885,6 +895,11 @@ PROXY 协议相关的配置项。
 > **警告：**
 >
 > 需谨慎使用 `*` 符号，因为 `*` 允许来自任何 IP 的客户端自行汇报其 IP 地址，从而可能引入安全风险。另外，`*` 可能导致部分直接连接 TiDB 的内部组件无法使用，例如 TiDB Dashboard。
+
+### `fallbackable` <span class="version-mark">从 v6.5.1 版本开始引入</span>
+
++ 用于控制是否启用 PROXY 协议回退模式。如果设置为 `true`，TiDB 可以接受属于 `proxy-protocol.networks` 的客户端使用非 PROXY 协议规范或者没有发送 PROXY 协议头的客户端连接。默认情况下，TiDB 仅接受属于 `proxy-protocol.networks` 的客户端发送 PROXY 协议头的客户端连接。
++ 默认：`false`
 
 ## experimental
 

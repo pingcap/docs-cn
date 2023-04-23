@@ -246,6 +246,8 @@ ERROR 1062 (23000): Duplicate entry 'bill' for key 'users.username'
     ERROR 9007 (HY000): Write conflict, txnStartTS=435688780611190794, conflictStartTS=435688783311536129, conflictCommitTS=435688783311536130, key={tableID=74, indexID=1, indexValues={bill, }} primary={tableID=74, indexID=1, indexValues={bill, }}, reason=LazyUniquenessCheck [try again later]
     ```
 
+- 关闭该变量时，如果多个悲观事务之间存在写冲突，悲观锁可能会在其它悲观事务提交时被强制回滚，因此产生 `PessimisticLockNotFound` 错误。发生该错误时，说明该业务不适合推迟悲观事务的唯一约束检查，应考虑调整业务避免冲突，或在发生错误后重试事务。
+
 - 关闭该变量会导致悲观事务中可能报出错误 `8147: LazyUniquenessCheckFailure`。
 
     > **注意：**
