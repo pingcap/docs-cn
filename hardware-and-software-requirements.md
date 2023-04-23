@@ -52,6 +52,13 @@ TiDB 作为一款开源一栈式实时 HTAP 数据库，可以很好地部署和
 
 运行时所需的依赖库：glibc（2.28-151.el8 版本）
 
+### Docker 镜像依赖
+
+支持的 CPU 架构如下：
+
+- x86_64，从 TiDB v6.6.0 开始，需要 [x84-64-v2 指令集](https://developers.redhat.com/blog/2021/01/05/building-red-hat-enterprise-linux-9-for-the-x86-64-v2-microarchitecture-level)
+- ARM 64
+
 ## 软件配置要求
 
 ### 中控机软件配置
@@ -100,7 +107,7 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 
 | **组件** | **CPU** | **内存** | **硬盘类型** | **网络** | **实例数量(最低要求)** |
 | --- | --- | --- | --- | --- | --- |
-| TiDB | 16 核+ | 48 GB+ | SAS | 万兆网卡（2 块最佳） | 2 |
+| TiDB | 16 核+ | 48 GB+ | SSD | 万兆网卡（2 块最佳） | 2 |
 | PD | 8 核+ | 16 GB+ | SSD | 万兆网卡（2 块最佳） | 3 |
 | TiKV | 16 核+ | 64 GB+ | SSD | 万兆网卡（2 块最佳） | 3 |
 | TiFlash | 48 核+ | 128 GB+ | 1 or more SSDs | 万兆网卡（2 块最佳） | 2 |
