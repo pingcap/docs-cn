@@ -403,6 +403,12 @@ pd-server 相关配置项。
 + 默认值：true
 + 参考 [Placement Rules 使用文档](/configure-placement-rules.md)
 
+
+### `store-limit-version`
++ 设置 store limit 工作模式
++ 默认值：v1
+
+
 ## label-property
 
 标签相关的配置项。

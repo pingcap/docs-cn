@@ -67,3 +67,9 @@ store limit 1 5                     // 设置 store 1 添加和删除 peer 的�
 store limit 1 5 add-peer            // 设置 store 1 添加 peer 的速度上限为每分钟 5 个。
 store limit 1 5 remove-peer         // 设置 store 1 删除 peer 的速度上限为每分钟 5 个。
 ```
+
+
+## Store Limit V2 原理
+当 `store-limit-version` 设置成 `v2` 时生效，operator 调度限制将会根据 TIKV Snapshot 执行情况进行动态调整。当 TIKV 积压的任务越少，PD 将会增加其调度任务。反之，PD 将会减少对该节点的调度任务。用户不再需要关注如何设置 `store limit` 来加速迁移进度。
+
+在该模式下，TIKV 执行速度成为迁移进度的最大瓶颈，用户可以根据 TIKV DeTails --> Snapshot --> Snapshot Speed 面板来判断当前调度速度是否达到 TIKV 限流设置。通过调整 TIKV Snapshot Limit (`snap_io_max_bytes_per_sec`) 来增加/减少该节点的调度速度。
