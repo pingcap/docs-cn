@@ -73,7 +73,7 @@ summary: 了解 TiDB 7.1.0 版本的新功能、兼容性变更、改进提升�
 
 * 统计信息缓存加载策略优化 [#42160](https://github.com/pingcap/tidb/issues/42160) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes) **tw:hfxsd**
 
-    开启[统计信息同步加载](/statistics.md#统计信息的加载)后，TiDB 可以大幅减少启动时必须载入的统计信息的数量，并且在加载完成前不接受用户连接。一方面提升了启动时统计信息的加载速度，另一方面也避免了在启动初始阶段由于统计信息不全而引起的性能回退。该特性提升了 TiDB 在复杂运行环境下的稳定性，降低了个别 TiDB 节点重启对整体服务的影响。
+    开启[统计信息同步加载](/statistics.md#统计信息的加载)后，TiDB 可以大幅减少启动时必须载入的统计信息的数量，提升了启动时统计信息的加载速度。该特性增加了 TiDB 在复杂运行环境下的稳定性，降低了个别 TiDB 节点重启对整体服务的影响。
 
     更多信息，请参考[用户文档](/statistics.md#统计信息的加载)。
 
@@ -111,7 +111,7 @@ summary: 了解 TiDB 7.1.0 版本的新功能、兼容性变更、改进提升�
 
 * Range INTERVAL 分区定义语法成为正式功能 (GA) [#35683](https://github.com/pingcap/tidb/issues/35683) @[mjonss](https://github.com/mjonss) **tw:qiancai**
 
-    在 v6.3.0 中引入的 Range INTERVAL 的分区定义语法成为正式功能 (GA)。通过该语法，你可以根据规则定义 Range 分区，不需要枚举所有分区，可大幅度缩短 Range 分区表的定义语句长度。语义与原有 Range 分区等价。
+    在 v6.3.0 中引入的 Range INTERVAL 的分区定义语法成为正式功能 (GA)。通过该语法，你可以根据所需的间隔（interval）定义 Range 分区，不需要枚举所有分区，可大幅度缩短 Range 分区表的定义语句长度。语义与原有 Range 分区等价。
 
     更多信息，请参考[用户文档](/partitioned-table.md#range-interval-分区)。
 
