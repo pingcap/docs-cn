@@ -8,15 +8,22 @@ aliases: ['/docs/dev/sql-statements/sql-statement-load-data/','/docs/dev/referen
 
 The `LOAD DATA` statement batch loads data into a TiDB table.
 
-In TiDB v7.0.0, the `LOAD DATA` SQL statement becomes more powerful by integrating TiDB Lightning's logical import mode, including the following:
+Starting from TiDB v7.0.0, the `LOAD DATA` SQL statement becomes more powerful by integrating TiDB Lightning's logical import mode, including the following:
 
-- Support importing data from S3 and GCS
-- Support importing Parquet format data
-- Add new parameters `FORMAT`, `FIELDS DEFINED NULL BY`, and `With batch_size=<number>,detached`
+- Support importing data from S3 and GCS.
+- Support importing Parquet format data.
+- Add new parameters `FORMAT`, `FIELDS DEFINED NULL BY`, and `With batch_size=<number>,detached`.
+
+Starting from TiDB v7.1.0, `LOAD DATA` supports the following features:
+
+- Support importing compressed `DELIMITED DATA` and `SQL FILE` data files.
+- Support specifying the concurrency of the data import in logical import mode.
+- Support specifying the encoding format of data files through `CharsetOpt`.
+- `LOAD DATA` integrates TiDB Lightning's physical import mode. This mode skips the SQL interface, and directly inserts data as key-value pairs into the TiKV nodes, which is a more efficient and faster import mode compared to the logical import mode.
 
 > **Warning:**
 >
-> The new capabilities and parameters are experimental. It is not recommended to use it in a production environment.
+> The concurrency of the data import and physical import mode in TiDB v7.1.0 are experimental. It is not recommended that you use it in the production environment. This feature might be changed or removed without prior notice. If you find a bug, you can report an [issue](https://github.com/pingcap/tidb/issues) on GitHub.
 
 <CustomContent platform="tidb-cloud">
 
@@ -37,6 +44,9 @@ LocalOpt ::= ('LOCAL')?
 FormatOpt ::=
     ('FORMAT' ('DELIMITED DATA' | 'SQL FILE' | 'PARQUET'))?
 
+DuplicateOpt ::=
+    ('IGNORE' | 'REPLACE')?
+
 Fields ::=
     ('TERMINATED' 'BY' stringLit
     | ('OPTIONALLY')? 'ENCLOSED' 'BY' stringLit
@@ -47,7 +57,11 @@ LoadDataOptionListOpt ::=
     ('WITH' (LoadDataOption (',' LoadDataOption)*))?
 
 LoadDataOption ::=
-    detached | batch_size '=' numberLiteral
+    import_mode '=' ('LOGICAL' | 'PHYSICAL')
+    | thread '=' numberLiteral
+    | batch_size '=' numberLiteral
+    | max_write_speed '=' stringLit
+    | detached
 ```
 
 ## Parameters
@@ -81,6 +95,28 @@ When the data files are stored on S3 or GCS, you can import individual files or 
 ### `FORMAT`
 
 You can use the `FORMAT` parameter to specify the format of the data file. If you do not specify this parameter, you are using the format defined by `DELIMITED DATA`, which is the default data format of MySQL `LOAD DATA`.
+
+Data formats `DELIMITED DATA` and `SQL FILE` support compressed files. `LOAD DATA` automatically determines the compression format according to the suffix of the file name. The following compression formats are supported:
+
+| File Name Suffix | Compression Format | Example |
+|:---|:---|:---|
+| `.gz` or `.gzip`  | gzip    | `tbl.0001.csv.gz`     |
+| `.snappy`         | snappy  | `tbl.0001.csv.snappy` |
+| `.zstd` or `.zst` | zstd    | `tbl.0001.csv.zstd`   |
+
+### `DuplicateOpt`
+
+This parameter is the same as that in MySQL. See [MySQL LOAD DATA documentation](https://dev.mysql.com/doc/refman/8.0/en/load-data.html#load-data-error-handling).
+
+This parameter only applies to logical import mode and does not take effect for physical import mode.
+
+### `CharsetOpt`
+
+When the data format is `DELIMITED DATA`, you can specify the encoding format of the data file by using `CharsetOpt`. The following encoding formats are supported: `ascii`, `latin1`, `binary`, `utf8`, `utf8mb4`, and `gbk`.
+
+```sql
+LOAD DATA INFILE 's3://<bucket-name>/path/to/data/foo.csv' INTO TABLE load_charset.latin1 CHARACTER SET latin1
+```
 
 ### `Fields`, `Lines`, and `Ignore Lines`
 
@@ -122,15 +158,54 @@ LINES TERMINATED BY '\n' STARTING BY ''
 
 You can ignore the first `number` lines of a file by configuring the `IGNORE <number> LINES` parameter. For example, if you configure `IGNORE 1 LINES`, the first line of a file is ignored.
 
-### `WITH detached`
+### `WITH import_mode = ('LOGICAL' | 'PHYSICAL')`
 
-If you do not specify the `LOCAL` parameter, you can use `WITH detached` to make `LOAD DATA` run in the background.
+You can specify the data import mode by `import_mode = ('LOGICAL' | 'PHYSICAL')`. The default value is `LOGICAL`, which means logical import mode. Starting from v7.1.0, `LOAD DATA` integrates with physical import mode, which can be enabled with `WITH import_mode = 'PHYSICAL'`.
 
-You can view the created jobs via [`SHOW LOAD DATA`](/sql-statements/sql-statement-show-load-data.md) or you can use [`CANCEL LOAD DATA` and `DROP LOAD DATA`](/sql-statements/sql-statement-operate-load-data-job.md) to cancel or delete the created jobs.
+<CustomContent platform="tidb">
+
+Physical import mode can only be used in non-`LOCAL` mode, with single thread execution. Currently, physical import mode is not integrated with [conflict detection](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#conflict-detection), so a checksum inconsistency error occurs when there is a data primary key or unique key conflict. It is recommended that you check the data file to ensure that there are no key conflicts before importing. For other restrictions and requirements, see [TiDB Lightning Physical Import Mode](/tidb-lightning/tidb-lightning-physical-import-mode.md).
+
+In physical import mode, `LOAD DATA` writes the locally sorted data to the TiDB [`temp-dir`](/tidb-configuration-file.md#temp-dir-new-in-v630) subdirectory. The subdirectory naming rule is `import-<tidb-port>/<job-id>`.
+
+Physical import mode currently has not been integrated with [disk resource quota](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#configure-disk-quota-new-in-v620). Ensure that the corresponding disk has enough space. See [Requirements and restrictions](/tidb-lightning/tidb-lightning-physical-import-mode.md#requirements-and-restrictions).
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+Physical import mode can only be used in non-`LOCAL` mode, with single thread execution. Currently, physical import mode is not integrated with [conflict detection](https://docs.pingcap.com/tidb/stable/tidb-lightning-physical-import-mode-usage#conflict-detection), so a checksum inconsistency error occurs when there is a data primary key or unique key conflict. It is recommended that you check the data file to ensure that there are no key conflicts before importing. For other restrictions and requirements, see [TiDB Lightning Physical Import Mode](https://docs.pingcap.com/tidb/stable/tidb-lightning-physical-import-mode-usage).
+
+In physical import mode, `LOAD DATA` writes the locally sorted data to the TiDB [`temp-dir`](https://docs.pingcap.com/tidb/stable/tidb-configuration-file#temp-dir-new-in-v630) subdirectory. The subdirectory naming rule is `import-<tidb-port>/<job-id>`.
+
+Physical import mode currently has not been integrated with [disk resource quota](https://docs.pingcap.com/tidb/stable/tidb-lightning-physical-import-mode-usage#configure-disk-quota-new-in-v620). Ensure that the corresponding disk has enough space. See [Requirements and restrictions](https://docs.pingcap.com/tidb/stable/tidb-lightning-physical-import-mode#requirements-and-restrictions).
+
+</CustomContent>
+
+### `WITH thread=<number>`
+
+Currently this parameter only applies to logical import mode.
+
+You can specify the concurrency of the data import with `WITH thread=<number>`. The default value is related to `FORMAT`:
+
+- If `FORMAT` is `PARQUET`, the default value is 75% of the number of CPU cores in the TiDB node.
+- For other `FORMAT` options, the default value is the number of cores in the TiDB node.
 
 ### `WITH batch_size=<number>`
 
 You can specify the number of rows to be written to TiDB in a batch with `WITH batch_size=<number>`. The default value is `1000`. `0` means no splitting.
+
+### `WITH max_write_speed = stringLit`
+
+When using physical import mode, you can use this parameter to specify the rate limit for writing to a single TiKV. The default value is `0`, which means no limit.
+
+This parameter supports the [go-units](https://pkg.go.dev/github.com/docker/go-units#example-RAMInBytes) format. For example, `WITH max_write_speed = '1MB'` specifies a maximum write rate of `1MB/s` to a single TiKV.
+
+### `WITH detached`
+
+If you specify an S3 or GCS path, and do not specify the `LOCAL` parameter, you can use `WITH detached` to make `LOAD DATA` run in the background. In this case, `LOAD DATA` returns the task ID.
+
+You can view the created jobs via [`SHOW LOAD DATA`](/sql-statements/sql-statement-show-load-data.md), or you can execute [`CANCEL LOAD DATA` and `DROP LOAD DATA`](/sql-statements/sql-statement-operate-load-data-job.md) to cancel or delete the created jobs.
 
 ## Examples
 

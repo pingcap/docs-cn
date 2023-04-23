@@ -416,7 +416,11 @@ TiDB is compatible with the error codes in MySQL, and in most cases returns the 
 
 * Error Number: 8172
 
-    `LOAD DATA` specified with `LOCAL` cannot be run in the background. Only `LOAD DATA` specified with the S3 or GCS path can be run in the background. See [`LOAD DATA`](/sql-statements/sql-statement-load-data.md) to change the SQL statement.
+    If you have specified `LOCAL`, you cannot specify specific options, such as `DETACHED` or `import_mode='PHYSICAL'`. See [`LOAD DATA`](/sql-statements/sql-statement-load-data.md) to change the SQL statement.
+
+* Error Number: 8173
+
+    In Physical Import Mode, TiDB checks the current environment, such as checking if the downstream table is empty. Follow the prompts to resolve the issue.
 
 * Error Number: 8200
 

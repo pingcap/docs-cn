@@ -7,10 +7,6 @@ summary: An overview of the usage of SHOW LOAD DATA for the TiDB database.
 
 The `SHOW LOAD DATA` statement displays LOAD DATA jobs created in the system. This statement can only display jobs created by the current user.
 
-> **Warning:**
->
-> For the current version, this feature is still experimental. It is not recommended to use it in a production environment.
-
 <CustomContent platform="tidb-cloud">
 
 > **Note:**
@@ -44,7 +40,7 @@ The meanings of the fields displayed by the `SHOW LOAD DATA` statement are as fo
 | Job_State        | Indicates the current state of the task. For the `logical` mode task, it can only be `loading`. |
 | Job_Status       | Indicates the status of the current task. The following statuses are available: <ul><li>`pending` indicates that the task has been created but not yet started running; </li><li>`running` indicates that it is running; </li><li>`canceled` indicates that the task has been canceled; </li><li>`failed` indicates that the task has failed and exited; </li><li>`finished` indicates that the task is completed. </li></ul>|
 | Source_File_Size | Size of the source file                                     |
-| Loaded_File_Size | Size of the data that has been read and written to the target table        |
+| Imported_Rows    | The number of rows that has been read and written to the target table        |
 | Result_Code      | When the task status is `finished`, it is `0`. When the task status is `failed`, it is the corresponding error code.  |
 | Result_Message   | If the import succeeds, a summary message is returned. If the import fails, an error message is returned. |
 
@@ -56,9 +52,9 @@ SHOW LOAD DATA JOBS;
 
 ```
 +--------+----------------------------+----------------------------+---------------------+---------------------------+--------------------+-------------+------------+-----------+------------+------------------+------------------+-------------+----------------+
-| Job_ID | Create_Time                | Start_Time                 | End_Time            | Data_Source               | Target_Table       | Import_Mode | Created_By | Job_State | Job_Status | Source_File_Size | Loaded_File_Size | Result_Code | Result_Message |
+| Job_ID | Create_Time                | Start_Time                 | End_Time            | Data_Source               | Target_Table       | Import_Mode | Created_By | Job_State | Job_Status | Source_File_Size | Imported_Rows | Result_Code | Result_Message |
 +--------+----------------------------+----------------------------+---------------------+---------------------------+-------------------+-------------+------------+-----------+------------+------------------+------------------+-------------+----------------+
-|      1 | 2023-03-16 22:29:12.990576 | 2023-03-16 22:29:12.991951 | 0000-00-00 00:00:00 | s3://bucket-name/test.csv | `my_db`.`my_table` | logical     | root@%     | loading   | running    | 52.43MB          | 43.58MB          |           0 |                |
+|      1 | 2023-03-16 22:29:12.990576 | 2023-03-16 22:29:12.991951 | 0000-00-00 00:00:00 | s3://bucket-name/test.csv | `my_db`.`my_table` | logical     | root@%     | loading   | running    | 52.43MB          | 323339          |             |                |
 +--------+----------------------------+----------------------------+---------------------+---------------------------+--------------------+-------------+------------+-----------+------------+------------------+------------------+-------------+----------------+
 1 row in set (0.01 sec)
 ```
@@ -69,9 +65,9 @@ SHOW LOAD DATA JOB 1;
 
 ```
 +--------+----------------------------+----------------------------+---------------------+---------------------------+--------------------+-------------+------------+-----------+------------+------------------+------------------+-------------+----------------+
-| Job_ID | Create_Time                | Start_Time                 | End_Time            | Data_Source               | Target_Table       | Import_Mode | Created_By | Job_State | Job_Status | Source_File_Size | Loaded_File_Size | Result_Code | Result_Message |
+| Job_ID | Create_Time                | Start_Time                 | End_Time            | Data_Source               | Target_Table       | Import_Mode | Created_By | Job_State | Job_Status | Source_File_Size | Imported_Rows | Result_Code | Result_Message |
 +--------+----------------------------+----------------------------+---------------------+---------------------------+-------------------+-------------+------------+-----------+------------+------------------+------------------+-------------+----------------+
-|      1 | 2023-03-16 22:29:12.990576 | 2023-03-16 22:29:12.991951 | 0000-00-00 00:00:00 | s3://bucket-name/test.csv | `my_db`.`my_table` | logical     | root@%     | loading   | running    | 52.43MB          | 43.58MB          |           0 |                |
+|      1 | 2023-03-16 22:29:12.990576 | 2023-03-16 22:29:12.991951 | 0000-00-00 00:00:00 | s3://bucket-name/test.csv | `my_db`.`my_table` | logical     | root@%     | loading   | running    | 52.43MB          | 323339          |             |                |
 +--------+----------------------------+----------------------------+---------------------+---------------------------+--------------------+-------------+------------+-----------+------------+------------------+------------------+-------------+----------------+
 1 row in set (0.01 sec)
 ```
