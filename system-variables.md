@@ -2597,6 +2597,16 @@ mysql> desc select count(distinct a) from test.t;
 - 这个变量用来控制是否启用 [TiFlash 延迟物化](/tiflash/tiflash-late-materialization.md)功能。
 - 默认情况下，如果 `SELECT` 语句中包含过滤条件（`WHERE` 子句），TiFlash 会先扫描查询所需列的全部数据后再进行过滤。当设置该变量为 `ON` 开启 TiFlash 延迟物化功能时，TiFlash 可以先扫描过滤条件相关的列数据，过滤得到符合条件的行后，再扫描这些行的其他列数据，继续后续计算，从而减少 IO 扫描和数据处理的计算量。
 
+### `tidb_opt_fix_control` <span class="version-mark">从 v7.1.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 类型：字符串
+- 默认值：`""`
+- 这个变量用来控制优化器的一些内部行为。
+- 一部分优化器行为的选择依赖用户场景或 SQL 编写方式。通过设置该变量，你可以更细粒度地控制优化器的行为，并且避免集群升级后优化器行为变化导致的性能回退。
+- 该变量支持设置多个控制项，不同控制项之间使用逗号 (`,`) 分隔。格式形如 `"<#issue1>:<value1>,<#issue2>:<value2>,...,<#issueN>:<valueN>"`，其中 `<#issueN>` 代表控制项编号，对应链接 `https://github.com/pingcap/tidb/issues/<#issue>` 对该控制项进行说明，`<valueN>` 是为该控制项设置的目标值。
+
 ### `tidb_opt_force_inline_cte` <span class="version-mark">从 v6.3.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
