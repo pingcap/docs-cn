@@ -154,7 +154,8 @@
       - BR Features
         - [Backup Auto-Tune](/br/br-auto-tune.md)
         - [Batch Create Table](/br/br-batch-create-table.md)
-        - [Checkpoint Backup](/br/br-checkpoint.md)
+        - [Checkpoint Backup](/br/br-checkpoint-backup.md)
+        - [Checkpoint Restore](/br/br-checkpoint-restore.md)
       - [Back up and Restore Data Using Dumpling and TiDB Lightning](/backup-and-restore-using-dumpling-lightning.md)
       - [Back Up and Restore RawKV](/br/rawkv-backup-and-restore.md)
       - [Incremental Backup and Restore](/br/br-incremental-guide.md)

@@ -282,7 +282,7 @@ Compared with the previous LTS 6.1.0, 6.5.0 not only includes new features, impr
 
     TiDB snapshot backup supports resuming backup from a checkpoint. When Backup & Restore (BR) encounters a recoverable error, it retries backup. However, BR exits if the retry fails for several times. The checkpoint backup feature allows for longer recoverable failures to be retried, for example, a network failure of tens of minutes.
 
-    Note that if you do not recover the system from a failure within one hour after BR exits, the snapshot data to be backed up might be recycled by the GC mechanism, causing the backup to fail. For more information, see [documentation](/br/br-checkpoint.md).
+    Note that if you do not recover the system from a failure within one hour after BR exits, the snapshot data to be backed up might be recycled by the GC mechanism, causing the backup to fail. For more information, see [documentation](/br/br-checkpoint-backup.md#backup-retry-must-be-prior-to-gc).
 
 * PITR performance improved remarkably [@joccau](https://github.com/joccau)
 
