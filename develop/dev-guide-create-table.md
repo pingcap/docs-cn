@@ -60,9 +60,9 @@ CREATE TABLE `bookshop`.`users` (
 
 **参数描述**
 
-- `{column_name}`: 列名。
-- `{data_type}`: 列的[数据类型](/basic-features.md#数据类型函数和操作符)。
-- `{column_qualification}`: 列的限定条件，如**列级约束**或[生成列（实验功能）](/generated-columns.md)子句。
+- `{column_name}`：列名。
+- `{data_type}`：列的[数据类型](/basic-features.md#数据类型函数和操作符)。
+- `{column_qualification}`：列的限定条件，如**列级约束**或[生成列](/generated-columns.md)子句。
 
 可以为 `users` 表添加一些列，如他们的唯一标识 `id`，余额 `balance` 及昵称 `nickname`。
 
@@ -107,7 +107,7 @@ CREATE TABLE `bookshop`.`books` (
 
 > **注意：**
 >
-> TiDB 中，关于 **Primary Key** 的默认定义与 MySQL 常用存储引擎 [InnoDB](https://mariadb.com/kb/en/innodb/) 不一致。**InnoDB** 中，**Primary Key** 的语义为：唯一，不为空，**且为聚簇索引**。
+> TiDB 中，关于 **Primary Key** 的默认定义与 MySQL 常用存储引擎 [InnoDB](https://dev.mysql.com/doc/refman/8.0/en/innodb-storage-engine.html) 不一致。**InnoDB** 中，**Primary Key** 的语义为：唯一，不为空，**且为聚簇索引**。
 >
 > 而在 TiDB 中，**Primary Key** 的定义为：唯一，不为空。但主键不保证为**聚簇索引**。而是由另一组关键字 `CLUSTERED`、`NONCLUSTERED` 额外控制 **Primary Key** 是否为聚簇索引，若不指定，则由系统变量 `@@global.tidb_enable_clustered_index` 影响，具体说明请看[此文档](/clustered-indexes.md)。
 

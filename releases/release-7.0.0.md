@@ -389,6 +389,7 @@ TiDB 版本：7.0.0
     - 避免某些情况下分区表数据需要在 TiDB 全局排序 [#26166](https://github.com/pingcap/tidb/issues/26166) @[Defined2014](https://github.com/Defined2014)
     - 支持同时使用 `fair lock mode` 和 `lock only if exists` 功能 [#42068](https://github.com/pingcap/tidb/issues/42068) @[MyonKeminta](https://github.com/MyonKeminta)
     - 支持打印事务慢日志以及相关事务内部事件 [#41863](https://github.com/pingcap/tidb/issues/41863) @[ekexium](https://github.com/ekexium)
+    - 支持 `ILIKE` 操作符 [#40943](https://github.com/pingcap/tidb/issues/40943) @[xzhangxian1008](https://github.com/xzhangxian1008)
 
 + PD
 
@@ -398,6 +399,7 @@ TiDB 版本：7.0.0
 
     - 减少 TiFlash 在写路径上的内存使用量 [#7144](https://github.com/pingcap/tiflash/issues/7144) @[hongyunyan](https://github.com/hongyunyan)
     - 减少 TiFlash 在有较多表的情况下的重启时间 [#7146](https://github.com/pingcap/tiflash/issues/7146) @[hongyunyan](https://github.com/hongyunyan)
+    - 支持下推 `ILIKE` 操作符 [#6740](https://github.com/pingcap/tiflash/issues/6740) @[xzhangxian1008](https://github.com/xzhangxian1008)
 
 + Tools
 

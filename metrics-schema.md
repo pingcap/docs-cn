@@ -116,7 +116,7 @@ select * from information_schema.metrics_tables where table_name='tidb_query_dur
 ```
 
 * `TABLE_NAME`：对应于 `metrics_schema` 中的表名，这里表名是 `tidb_query_duration`。
-* `PROMQL`：因为监控表的原理是将 SQL 映射成 `PromQL` 后向 Prometheus 请求数据，并将 Prometheus 返回的结果转换成 SQL 查询结果。该字段是 `PromQL` 的表达式模板，查询监控表数据时使用查询条件改写模板中的变量，生成最终的查询表达式。
+* `PROMQL`：监控表的原理是将 SQL 映射成 `PromQL` 后向 Prometheus 请求数据，并将 Prometheus 返回的结果转换成 SQL 查询结果。该字段是 `PromQL` 的表达式模板，查询监控表数据时使用查询条件改写模板中的变量，生成最终的查询表达式。
 * `LABELS`：监控项定义的 label，`tidb_query_duration` 有两个 label，分别是 `instance` 和 `sql_type`。
 * `QUANTILE`：百分位。直方图类型的监控数据会指定一个默认百分位。如果值为 `0`，表示该监控表对应的监控不是直方图。`tidb_query_duration` 默认查询 0.9，也就是 P90 的监控值。
 * `COMMENT`：对这个监控表的解释。可以看出 `tidb_query_duration` 表是用来查询 TiDB query 执行的百分位时间，如 P999/P99/P90 的查询耗时，单位是秒。
@@ -144,7 +144,7 @@ show create table metrics_schema.tidb_query_duration;
 ```
 
 * `time`：监控项的时间。
-* `instance` 和 `sql_type`：是 `tidb_query_duration` 这个监控项的 label。`instance` 表示监控的地址，`sql_type` 表示执行 SQL 的类似。
+* `instance` 和 `sql_type`：`tidb_query_duration` 监控项的 label。`instance` 表示监控的地址，`sql_type` 表示执行 SQL 的类似。
 * `quantile`，百分位，直方图类型的监控都会有该列，表示查询的百分位时间，如 `quantile=0.9` 就是查询 P90 的时间。
 * `value`：监控项的值。
 

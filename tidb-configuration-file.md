@@ -46,6 +46,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 + TiDB 用于存放临时数据的路径。如果一个功能需要使用 TiDB 节点的本地存储，TiDB 将把对应数据临时存放在这个目录下。
 + 在创建索引的过程中，如果开启了[创建索引加速](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入)，那么新创建索引需要回填的数据会被先存放在 TiDB 本地临时存储路径，然后批量导入到 TiKV，从而提升索引创建速度。
++ 在使用 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md) 的物理导入模式时，排序后的数据会被先存放在 TiDB 本地临时存储路径，然后批量导入到 TiKV。
 + 默认值："/tmp/tidb"
 
 ### `oom-use-tmp-storage`
@@ -212,6 +213,16 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 控制是否开启表级锁特性。
 + 默认值：false
 + 表级锁用于协调多个 session 之间对同一张表的并发访问。目前已支持的锁种类包括 `READ`、`WRITE` 和 `WRITE LOCAL`。当该配置项为 `false` 时，执行 `LOCK TABLES` 和 `UNLOCK TABLES` 语句不会生效，并且会报 "LOCK/UNLOCK TABLES is not supported" 的警告。更多信息，请参考 [`LOCK TABLES` 和 `UNLOCK TABLES`](/sql-statements/sql-statement-lock-tables-and-unlock-tables.md)。
+
+### `labels`
+
++ 指定服务器标签，例如 `{ zone = "us-west-1", dc = "dc1", rack = "rack1", host = "tidb1" }`。
++ 默认值：`{}`
+
+> **注意：**
+>
+> - 标签 `zone` 在 TiDB 中具有特殊用途，用于指定服务器所在的区域信息，当设置 `zone` 为非空值时，对应的值会被自动用于 [`txn-score`](/system-variables.md#txn_scope) 和 [`Follower read`](/follower-read.md) 等功能。
+> - 标签 `group` 在 TiDB Operator 中具有特殊用途。对于使用 [TiDB Operator](/tidb-operator-overview.md) 部署的集群，建议不要手动指定此标签。
 
 ## log
 
@@ -540,6 +551,17 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 + 用于控制 TiDB 是否开启统计信息缓存的内存上限。
 + 默认值：false
+
+### `lite-init-stats` <span class="version-mark">从 v7.1.0 版本开始引入</span>
+
+> **警告：**
+>
+> 该变量控制的功能目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+
++ 用于控制 TiDB 启动时是否采用轻量级的统计信息初始化。
++ 默认值：false
++ 当 `lite-init-stats` 为 `true` 时，统计信息初始化时列和索引的直方图、TopN、Count-Min Sketch 均不会加载到内存中。当 `lite-init-stats` 为 `false` 时，统计信息初始化时索引和主键的直方图、TopN、Count-Min Sketch 会被加载到内存中，非主键列的直方图、TopN、Count-Min Sketch 不会加载到内存中。当优化器需要某一索引或者列的直方图、TopN、Count-Min Sketch 时，这些统计信息会被同步或异步加载到内存中（由 [`tidb_stats_load_sync_wait`](/system-variables.md#tidb_stats_load_sync_wait-从-v540-版本开始引入) 控制）。
++ 将 `lite-init-stats` 设置为 true，可以加速统计信息初始化，避免加载不必要的统计信息，从而降低 TiDB 的内存使用。详情请参考[统计信息的加载](/statistics.md#统计信息的加载)。
 
 ## opentracing
 
@@ -885,6 +907,11 @@ PROXY 协议相关的配置项。
 > **警告：**
 >
 > 需谨慎使用 `*` 符号，因为 `*` 允许来自任何 IP 的客户端自行汇报其 IP 地址，从而可能引入安全风险。另外，`*` 可能导致部分直接连接 TiDB 的内部组件无法使用，例如 TiDB Dashboard。
+
+### `fallbackable` <span class="version-mark">从 v6.5.1 版本开始引入</span>
+
++ 用于控制是否启用 PROXY 协议回退模式。如果设置为 `true`，TiDB 可以接受属于 `proxy-protocol.networks` 的客户端使用非 PROXY 协议规范或者没有发送 PROXY 协议头的客户端连接。默认情况下，TiDB 仅接受属于 `proxy-protocol.networks` 的客户端发送 PROXY 协议头的客户端连接。
++ 默认：`false`
 
 ## experimental
 
