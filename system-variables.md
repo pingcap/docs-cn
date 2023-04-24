@@ -177,8 +177,8 @@ mysql> SELECT * FROM t1;
 
 - 作用域：NONE
 - 默认值：使用的组件和部署方式不同，默认值也不同。
-    - `/tmp/tidb`：如果你将 [`--store`](/command-line-flags-for-tidb-configuration.md#store) 设置为 `"unistore"` 或没有设置 `--store`，则默认值为 `/tmp/tidb`。
-    - `${pd-ip}:${pd-port}`：如果你使用 TiUP 或 Operator 部署 TiDB，并将 [`--store`](/command-line-flags-for-tidb-configuration.md#store) 设置为 `"tikv"`，则默认值为 `${pd-ip}:${pd-port}`。
+    - `/tmp/tidb`：如果你将 [`--store`](/command-line-flags-for-tidb-configuration.md#--store) 设置为 `"unistore"` 或没有设置 `--store`，则默认值为 `/tmp/tidb`。
+    - `${pd-ip}:${pd-port}`：如果你使用 TiUP 或 Operator 部署 TiDB，并将 [`--store`](/command-line-flags-for-tidb-configuration.md#--store) 设置为 `"tikv"`，则默认值为 `${pd-ip}:${pd-port}`。
 - 这个变量表示数据存储的位置，位置可以是本地路径 `/tmp/tidb`。如果数据存储在 TiKV 上，则可以是指向 PD 服务器的路径。变量值的格式为 `${pd-ip}:${pd-port}`，表示 TiDB 在启动时连接到的 PD 服务器。
 
 ### `ddl_slow_threshold`
