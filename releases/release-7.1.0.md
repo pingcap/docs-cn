@@ -53,13 +53,13 @@ TiDB 版本：7.1.0（即将发布）
 
 ### 稳定性
 
-* 资源管控 GA [#38825](https://github.com/pingcap/tidb/issues/38825) @[nolouch](https://github.com/nolouch) @[BornChanger](https://github.com/BornChanger) @[glorv](https://github.com/glorv) @[tiancaiamao](https://github.com/tiancaiamao) @[Connor1996](https://github.com/Connor1996) @[JmPotato](https://github.com/JmPotato) @[hnes](https://github.com/hnes) @[CabinfeverB](https://github.com/CabinfeverB) @[HuSharp](https://github.com/HuSharp) **tw:hfxsd**
+* 资源管控成为正式功能 (GA) [#38825](https://github.com/pingcap/tidb/issues/38825) @[nolouch](https://github.com/nolouch) @[BornChanger](https://github.com/BornChanger) @[glorv](https://github.com/glorv) @[tiancaiamao](https://github.com/tiancaiamao) @[Connor1996](https://github.com/Connor1996) @[JmPotato](https://github.com/JmPotato) @[hnes](https://github.com/hnes) @[CabinfeverB](https://github.com/CabinfeverB) @[HuSharp](https://github.com/HuSharp) **tw:hfxsd**
 
-    TiDB 持续增强资源管控能力，并将这个特性 GA。该特性将会极大地提升 TiDB 集群的资源利用效率和性能表现。资源管控特性的引入对 TiDB 具有里程碑的意义，你可以将一个分布式数据库集群划分成多个逻辑单元，将不同的数据库用户映射到对应的资源组中，并根据需要设置每个资源组的配额。当集群资源紧张时，来自同一个资源组的会话所使用的全部资源将被限制在配额内，避免其中一个资源组过度消耗，从而影响其他资源组中的会话正常运行。
+    TiDB 持续增强资源管控能力，在 v7.1.0 该功能正式 GA。该特性将极大地提升 TiDB 集群的资源利用率和性能表现。资源管控特性的引入对 TiDB 具有里程碑的意义，你可以将一个分布式数据库集群划分成多个逻辑单元，将不同的数据库用户映射到对应的资源组中，并根据实际需求设置每个资源组的配额。当集群资源紧张时，同一资源组内的会话所使用的全部资源将受到配额限制，防止某一资源组的过度消耗对其他资源组的会话造成影响。
 
-    该特性也可以将多个来自不同系统的中小型应用合入一个 TiDB 集群中，个别应用的负载提升，不会影响其他应用的正常运行。而在系统负载较低的时候，繁忙的应用即使超过设定的读写配额，也仍然可以被分配到所需的系统资源，达到资源的最大化利用。此外，合理利用资源管控特性可以减少集群数量，降低运维难度及管理成本。
+    该特性也可以将多个来自不同系统的中小型应用整合到同一个 TiDB 集群中。即使某个应用的负载增加，也不会影响其他应用的正常运行。而在系统负载较低的时候，繁忙的应用即使超出设定的读写配额，仍可获得所需系统资源，实现资源的最大化利用。此外，合理利用资源管控特性可以减少集群数量，降低运维难度及管理成本。
 
-    在 TiDB v7.1.0 中，该特性增加了基于实际负载和硬件部署来估算系统容量上限的能力，为你进行容量规划提供了更准确的参考，协助你更好地管理 TiDB 的资源分配，从而满足企业级场景的稳定性需要。
+    在 TiDB v7.1.0 中，该特性增加了基于实际负载和硬件部署来估算系统容量上限的能力，为你进行容量规划提供更准确的参考。这有助于你更好地管理 TiDB 的资源分配，从而满足企业级场景的稳定性需求。
 
     更多信息，请参考[用户文档](/tidb-resource-control.md)。
 
@@ -77,9 +77,9 @@ TiDB 版本：7.1.0（即将发布）
 
     更多信息，请参考[用户文档](/br/br-checkpoint-restore.md)。
 
-* 统计信息缓存加载策略优化 [#42160](https://github.com/pingcap/tidb/issues/42160) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes) **tw:hfxsd**
+* 优化统计信息缓存加载策略 [#42160](https://github.com/pingcap/tidb/issues/42160) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes) **tw:hfxsd**
 
-    开启[统计信息同步加载](/statistics.md#统计信息的加载)后，TiDB 可以大幅减少启动时必须载入的统计信息的数量，提升了启动时统计信息的加载速度。该特性增加了 TiDB 在复杂运行环境下的稳定性，降低了个别 TiDB 节点重启对整体服务的影响。
+    开启统计信息同步加载后，TiDB 可以大幅减少启动时必须载入的统计信息的数量，从而提升启动过程中统计信息的加载速度。该特性提升了 TiDB 在复杂运行环境下的稳定性，并降低了部分 TiDB 节点重启对整体服务的影响。
 
     更多信息，请参考[用户文档](/statistics.md#统计信息的加载)。
 
@@ -123,27 +123,27 @@ TiDB 版本：7.1.0（即将发布）
 
 * `LOAD DATA` 部分功能 GA [#40499](https://github.com/pingcap/tidb/issues/40499) @[lance6716](https://github.com/lance6716) **tw:hfxsd**
 
-    以下 `LOAD DATA` 新增的功能在 TiDB v7.1.0 GA：
+    在 TiDB v7.1.0 中，以下 `LOAD DATA` 功能 GA：
 
     - 支持从 S3、GCS 导入数据。
-    - 支持导入 Parquet 文件数据。
-    - 支持解析源文件中的下列字符集：`ascii`、`latin1`、`binary`、`gbk`、`utf8mbd`
-    - 支持设置 `FIELDS DEFINED NULL BY` 将源文件的指定的值转换为 `NULL` 写入目标表。
-    - 支持设置 1 个 `bath_size` 即 1 个 batch 插入到目标表的行数，提升写入性能。
-    - 支持设置 `detached`，允许该 job 在后台运行。
-    - 支持使用 `SHOW LOAD DATA` 和 `DROP LOAD DATA` 来管理任务。
+    - 支持导入 Parquet 格式的数据。
+    - 支持解析源文件中的下列字符集：`ascii`、`latin1`、`binary`、`gbk` 和 `utf8mbd`
+    - 支持设置 `FIELDS DEFINED NULL BY` 将源文件中的指定值转换为 `NULL` 并写入目标表。
+    - 支持设置 `batch_size` 指定批量写入目标表的行数，从而提升写入性能。
+    - 支持设置 `detached`，允许指定任务在后台运行。
+    - 支持使用 `SHOW LOAD DATA` 和 `DROP LOAD DATA` 管理任务。
 
   更多信息，请参考[用户文档](/sql-statements/sql-statement-load-data.md)。
 
 * `LOAD DATA` 集成 TiDB Lightning Physical Import Mode 的导入功能，提升导入性能（实验特性）[#42930](https://github.com/pingcap/tidb/issues/42930) @[D3Hunter](https://github.com/D3Hunter) **tw:hfxsd**
 
-    `LOAD DATA` 集成 TiDB Lightning 的物理导入模式 (Physical Import Mode)，你可以通过设置 `WITH import_mode = 'PHYSICAL'` 开启。相比逻辑导入模式 (Logical Import Mode)，可成倍提升导入数据的性能。
+    `LOAD DATA` 集成 TiDB Lightning 的物理导入模式 (Physical Import Mode)，你可以通过设置 `WITH import_mode = 'PHYSICAL'` 开启。相比逻辑导入模式 (Logical Import Mode)，可成倍提升数据导入的性能。
 
     更多信息，请参考[用户文档](/sql-statements/sql-statement-load-data.md)。
 
 * `LOAD DATA` 支持并发导入，提升导入性能（实验特性）[#40499](https://github.com/pingcap/tidb/issues/40499) @[lance6716](https://github.com/lance6716) **tw:hfxsd**
 
-    之前 `LOAD DATA` 不支持并发导入数据，性能不如预期。在 TiDB v7.1.0 开始支持设置并发导入的参数 `WITH thread=<number>`，通过提升并发可以提升导入的性能。在实验室环境，相比上个版本，测试负载下的逻辑导入性能有接近 4 倍的提升。
+    在 v7.1.0 之前版本中，`LOAD DATA` 不支持并发导入数据，导致性能未达到预期。从 v7.1.0 开始，`LOAD DATA` 支持并发导入数据，你可以通过 `WITH thread=<number>` 提高并发度以提升导入的性能。在内部测试中，相较于 v7.0.0，测试负载下的逻辑导入性能提升了近 4 倍。
 
     更多信息，请参考[用户文档](/sql-statements/sql-statement-load-data.md)。
 
@@ -175,13 +175,13 @@ TiDB 版本：7.1.0（即将发布）
 
 * 增加优化器诊断信息 [#43122](https://github.com/pingcap/tidb/issues/43122) @[time-and-fate](https://github.com/time-and-fate) **tw:hfxsd**
 
-    获取充足的信息是 SQL 性能诊断的关键。在 v7.1.0 中，TiDB 持续向各种诊断工具中添加优化器运行信息，可以更好地解释执行计划如何被选择，协助对 SQL 性能问题进行定位。这些信息包括：
+    获取充足的信息是 SQL 性能诊断的关键。在 v7.1.0 中，TiDB 持续为各种诊断工具增加优化器运行信息，以便更好地解释执行计划如何被选择，从而协助定位 SQL 性能问题。这些信息包括：
 
-    * [`PLAN REPLAYER`](/sql-plan-replayer.md) 的输出中增加 `debug_trace.json` 文件。
-    * [`EXPLAIN`](/explain-walkthrough.md) 的输出中，为 `operator info` 添加部分统计信息详情。
+    * 在 [`PLAN REPLAYER`](/sql-plan-replayer.md) 的输出中增加 `debug_trace.json` 文件。
+    * 在 [`EXPLAIN`](/explain-walkthrough.md) 的输出中为 `operator info` 添加部分统计信息详情。
     * 为[`慢日志`](/identify-slow-queries.md)的 `Stats` 字段添加部分统计信息详情。
 
-  更多信息，请参考[使用 `PLAN REPLAYER` 保存和恢复集群线程信息](/sql-plan-replayer.md)，[使用 `EXPLAIN` 解读执行计划](/explain-walkthrough.md)、[`慢日志查询`](/identify-slow-queries.md)。
+  更多信息，请参考[使用 `PLAN REPLAYER` 保存和恢复集群线程信息](/sql-plan-replayer.md)、[使用 `EXPLAIN` 解读执行计划](/explain-walkthrough.md)和[慢日志查询](/identify-slow-queries.md)。
 
 ### 安全
 
@@ -215,7 +215,7 @@ TiDB 版本：7.1.0（即将发布）
 
     如果你已经将 TiFlash 升级到 v7.1.0，那么在升级 TiDB 到 v7.1.0 的过程中，TiDB 无法读取 TiFlash 系统表（[`INFORMATION_SCHEMA.TIFLASH_TABLES`](/information-schema/information-schema-tiflash-tables.md) 和 [`INFORMATION_SCHEMA.TIFLASH_SEGMENTS`](/information-schema/information-schema-tiflash-segments.md)）。
 
-* [`SHOW LOAD DATA`](/sql-statements/sql-statement-show-load-data.md) 的返回值中废弃了参数 `Loaded_File_Size`，替换为参数 `Imported_Rows` **tw:hfxsd**
+* [`SHOW LOAD DATA`](/sql-statements/sql-statement-show-load-data.md) 的返回值中废弃了参数 `Loaded_File_Size`，修改为参数 `Imported_Rows` **tw:hfxsd**
 
 ### 系统变量
 
