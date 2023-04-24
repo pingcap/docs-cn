@@ -91,7 +91,7 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 | 高级 SQL 功能 | 7.1 | 6.5 | 6.1 | 5.4 | 5.3 | 5.2 | 5.1 | 5.0 | 4.0 |
 |---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
 | [Prepare 语句执行计划缓存](/sql-prepared-plan-cache.md) | Y | Y | Y | Y | Y | E | E | E | E |
-| [非 Prepare 语句执行计划缓存](/sql-non-prepared-plan-cache.md) | E | N | N | N | N | N | N | N | N |
+| [非 Prepare 语句执行计划缓存](/sql-non-prepared-plan-cache.md) | Y | N | N | N | N | N | N | N | N |
 | [执行计划管理 (SPM)](/sql-plan-management.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y |
 | [根据历史执行计划创建绑定](/sql-plan-management.md#根据历史执行计划创建绑定) | Y | E | N | N | N | N | N | N | N |
 | [下推计算结果缓存 (Coprocessor Cache)](/coprocessor-cache.md) | Y | Y | Y | Y | Y | Y | Y | Y | E |
@@ -232,7 +232,7 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 | [全局内存控制](/configure-memory-usage.md#如何配置-tidb-server-实例使用内存的阈值) | Y | Y | N | N | N | N | N | N | N |
 | [RawKV 跨集群复制](/tikv-configuration-file.md#api-version-从-v610-版本开始引入) | E | E | N | N | N | N | N | N | N |
 | [Green GC](/system-variables.md#tidb_gc_scan_lock_mode-从-v50-版本开始引入) | E | E | E | E | E | E | E | E | N |
-| [资源管控 (Resource Control)](/tidb-resource-control.md) | E | N | N | N | N | N | N | N | N |
+| [资源管控 (Resource Control)](/tidb-resource-control.md) | Y | N | N | N | N | N | N | N | N |
 | [TiFlash 存算分离架构与 S3 支持](/tiflash/tiflash-disaggregated-and-s3.md) | E | N | N | N | N | N | N | N | N |
 
 [^1]: TiDB 误将 latin1 处理为 utf8 的子集。见 [TiDB #18955](https://github.com/pingcap/tidb/issues/18955)。
@@ -243,6 +243,6 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 
 [^4]: 从 [TiDB v6.4.0](/releases/release-6.4.0.md) 开始，支持[高性能、全局单调递增的 `AUTO_INCREMENT` 列](/auto-increment.md#mysql-兼容模式)
 
-[^5]: 对于 [TiDB v7.1.0](/releases/release-7.0.0.md)，新增的并行导入功能、集成 Physical Import Mode 功能，均为实验特性。
+[^5]: 对于 [TiDB v7.1.0](/releases/release-7.1.0.md)，新增的并发导入功能、集成 Physical Import Mode 功能，均为实验特性。
 
 [^6]: 对于 TiDB v4.0，事务 `LOAD DATA` 不保证原子性。
