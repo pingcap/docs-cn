@@ -20,7 +20,7 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 
 ## 数据类型，函数和操作符
 
-| 数据类型，函数，操作符 | 7.1 | 6.5 | 6.1 | 5.4 | 5.3 | 5.2 | 5.1 | 5.0 | 4.0 |
+| 数据类型，函数，操作符 | 7.1 (upcoming) | 6.5 | 6.1 | 5.4 | 5.3 | 5.2 | 5.1 | 5.0 | 4.0 |
 |---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
 | [数值类型](/data-type-numeric.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y |
 | [日期和时间类型](/data-type-date-and-time.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y |
@@ -44,7 +44,7 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 
 ## 索引和约束
 
-| 索引和约束 | 7.1 | 6.5 | 6.1 | 5.4 | 5.3 | 5.2 | 5.1 | 5.0 | 4.0 |
+| 索引和约束 | 7.1 (upcoming) | 6.5 | 6.1 | 5.4 | 5.3 | 5.2 | 5.1 | 5.0 | 4.0 |
 |---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
 | [表达式索引](/sql-statements/sql-statement-create-index.md#表达式索引) [^2] | Y | Y | E | E | E | E | E | E | E |
 | [列式存储 (TiFlash)](/tiflash/tiflash-overview.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y |
@@ -64,7 +64,7 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 
 ## SQL 语句
 
-| SQL 语句 [^3] | 7.1 | 6.5 | 6.1 | 5.4 | 5.3 | 5.2 | 5.1 | 5.0 | 4.0 |
+| SQL 语句 [^3] | 7.1 (upcoming) | 6.5 | 6.1 | 5.4 | 5.3 | 5.2 | 5.1 | 5.0 | 4.0 |
 |---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
 | `SELECT`，`INSERT`，`UPDATE`，`DELETE`，`REPLACE` | Y | Y | Y | Y | Y | Y | Y | Y | Y |
 | `INSERT ON DUPLICATE KEY UPDATE` | Y | Y | Y | Y | Y | Y | Y | Y | Y |
@@ -88,7 +88,7 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 
 ## 高级 SQL 功能
 
-| 高级 SQL 功能 | 7.1 | 6.5 | 6.1 | 5.4 | 5.3 | 5.2 | 5.1 | 5.0 | 4.0 |
+| 高级 SQL 功能 | 7.1 (upcoming) | 6.5 | 6.1 | 5.4 | 5.3 | 5.2 | 5.1 | 5.0 | 4.0 |
 |---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
 | [Prepare 语句执行计划缓存](/sql-prepared-plan-cache.md) | Y | Y | Y | Y | Y | E | E | E | E |
 | [非 Prepare 语句执行计划缓存](/sql-non-prepared-plan-cache.md) | Y | N | N | N | N | N | N | N | N |
@@ -107,7 +107,7 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 
 ## 数据定义语言 (DDL)
 
-| 数据定义语言 (DDL) | 7.1 | 6.5 | 6.1 | 5.4 | 5.3 | 5.2 | 5.1 | 5.0 | 4.0 |
+| 数据定义语言 (DDL) | 7.1 (upcoming) | 6.5 | 6.1 | 5.4 | 5.3 | 5.2 | 5.1 | 5.0 | 4.0 |
 |---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
 | `CREATE`，`DROP`，`ALTER`，`RENAME`，`TRUNCATE` | Y | Y | Y | Y | Y | Y | Y | Y | Y |
 | [生成列](/generated-columns.md) | Y | E | E | E | E | E | E | E | E |
@@ -128,7 +128,7 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 
 ## 事务
 
-| 事务 | 7.1 | 6.5 | 6.1 | 5.4 | 5.3 | 5.2 | 5.1 | 5.0 | 4.0 |
+| 事务 | 7.1 (upcoming) | 6.5 | 6.1 | 5.4 | 5.3 | 5.2 | 5.1 | 5.0 | 4.0 |
 |---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
 | [Async commit](/system-variables.md#tidb_enable_async_commit-从-v50-版本开始引入) | Y | Y | Y | Y | Y | Y | Y | Y | N |
 | [1PC](/system-variables.md#tidb_enable_1pc-从-v50-版本开始引入) | Y | Y | Y | Y | Y | Y | Y | Y | N |
@@ -140,7 +140,7 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 
 ## 分区
 
-| 分区 | 7.1 | 6.5 | 6.1 | 5.4 | 5.3 | 5.2 | 5.1 | 5.0 | 4.0 |
+| 分区 | 7.1 (upcoming) | 6.5 | 6.1 | 5.4 | 5.3 | 5.2 | 5.1 | 5.0 | 4.0 |
 |---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
 | [Range 分区](/partitioned-table.md#range-分区) | Y | Y | Y | Y | Y | Y | Y | Y | Y |
 | [Hash 分区](/partitioned-table.md#hash-分区) | Y | Y | Y | Y | Y | Y | Y | Y | Y |
@@ -156,7 +156,7 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 
 ## 统计信息
 
-| 统计信息 | 7.1 | 6.5 | 6.1 | 5.4 | 5.3 | 5.2 | 5.1 | 5.0 | 4.0 |
+| 统计信息 | 7.1 (upcoming) | 6.5 | 6.1 | 5.4 | 5.3 | 5.2 | 5.1 | 5.0 | 4.0 |
 |---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
 | [CM-Sketch](/statistics.md) | 默认关闭 | 默认关闭 | 默认关闭 | 默认关闭 | 默认关闭 | Y | Y | Y | Y |
 | [直方图](/statistics.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y |
@@ -172,7 +172,7 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 
 ## 安全
 
-| 安全 | 7.1 | 6.5 | 6.1 | 5.4 | 5.3 | 5.2 | 5.1 | 5.0 | 4.0 |
+| 安全 | 7.1 (upcoming) | 6.5 | 6.1 | 5.4 | 5.3 | 5.2 | 5.1 | 5.0 | 4.0 |
 |---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
 | [传输层加密 (TLS)](/enable-tls-between-clients-and-servers.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y |
 | [静态加密 (TDE)](/encryption-at-rest.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y |
@@ -189,7 +189,7 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 
 ## 数据导入和导出
 
-| 数据导入和导出 | 7.1 | 6.5 | 6.1 | 5.4 | 5.3 | 5.2 | 5.1 | 5.0 | 4.0 |
+| 数据导入和导出 | 7.1 (upcoming) | 6.5 | 6.1 | 5.4 | 5.3 | 5.2 | 5.1 | 5.0 | 4.0 |
 |---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
 | [快速导入 (TiDB Lightning)](/tidb-lightning/tidb-lightning-overview.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y |
 | mydumper 逻辑导出 | 已废弃 | 已废弃 | 已废弃 | 已废弃 | 已废弃 | 已废弃 | 已废弃 | 已废弃 | 已废弃 |
@@ -204,7 +204,7 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 
 ## 管理，可视化和工具
 
-| 管理，可视化和工具 | 7.1 | 6.5 | 6.1 | 5.4 | 5.3 | 5.2 | 5.1 | 5.0 | 4.0 |
+| 管理，可视化和工具 | 7.1 (upcoming) | 6.5 | 6.1 | 5.4 | 5.3 | 5.2 | 5.1 | 5.0 | 4.0 |
 |---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
 | [TiDB Dashboard 图形化展示](/dashboard/dashboard-intro.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y |
 | [TiDB Dashboard 持续性能分析功能](/dashboard/continuous-profiling.md) | Y | Y | Y | E | E | N | N | N | N |
