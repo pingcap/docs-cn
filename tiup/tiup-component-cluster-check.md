@@ -143,17 +143,6 @@ tiup cluster check <topology.yml | cluster-name> [flags]
 - 数据类型：`BOOLEAN`
 - 该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
 
-<<<<<<< HEAD
-=======
-> **注意：**
->
-> `tiup cluster check` 也支持修复已部署集群的扩容拓扑文件，命令格式：
->
->```shell
-> tiup cluster check <cluster-name> scale-out.yml --cluster --apply --user root [-p] [-i /home/root/.ssh/gcp_rsa]
->```
-
->>>>>>> 728ad25db (tiup: fix the scale-out yaml example (#13775))
 ### --cluster
 
 tiup-cluster 支持对未部署的集群进行检查，也支持对已部署的集群进行检查，命令格式：
@@ -161,21 +150,9 @@ tiup-cluster 支持对未部署的集群进行检查，也支持对已部署的�
 ```shell
 tiup cluster check <topology.yml | cluster-name> [flags]
 ```
-
-<<<<<<< HEAD
 若选择的格式为 `tiup cluster check <cluster-name>` 则必须加上该选项：`tiup cluster check <cluster-name> --cluster`。
 
 该选项的数据类型为 `BOOLEAN`。该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
-=======
-> **注意：**
->
-> - 若选择的格式为 `tiup cluster check <cluster-name>`，则必须加上该选项：`tiup cluster check <cluster-name> --cluster`。
-> - `tiup cluster check` 也支持检查已部署集群的扩容拓扑文件，命令格式：
->
->    ```shell
->     tiup cluster check <cluster-name> scale-out.yml --cluster --user root [-p] [-i /home/root/.ssh/gcp_rsa]
->    ```
->>>>>>> 728ad25db (tiup: fix the scale-out yaml example (#13775))
 
 ### -N, --node
 
