@@ -59,7 +59,7 @@ Fields in the `TIDB_INDEXES` table are described as follows:
 * `KEY_NAME`: The index name. If the index is the primary key, the name is `PRIMARY`.
 * `SEQ_IN_INDEX`: The sequential number of columns in the index, which starts from `1`.
 * `COLUMN_NAME`: The name of the column where the index is located.
-* `SUB_PART`: The prefix length of the index. If the the column is partly indexed, the `SUB_PART` value is the count of the indexed characters; otherwise, the value is `NULL`.
+* `SUB_PART`: The prefix length of the index. If the column is partly indexed, the `SUB_PART` value is the count of the indexed characters; otherwise, the value is `NULL`.
 * `INDEX_COMMENT`: The comment of the index, which is made when the index is created.
 * `INDEX_ID`: The index ID.
 * `IS_VISIBLE`: Whether the index is visible.

@@ -196,7 +196,7 @@ Usage:
 - `max-merge-region-keys` controls the upper limit on the key count of Region Merge. When `regionKeyCount` exceeds the specified value, PD does not merge it with the adjacent Region.
 
     ```bash
-    config set max-merge-region-keys 50000 // Set the the upper limit on keyCount to 50000
+    config set max-merge-region-keys 50000 // Set the upper limit on keyCount to 50000
     ```
 
 - `split-merge-interval` controls the interval between the `split` and `merge` operations on a same Region. This means the newly split Region won't be merged within a period of time.

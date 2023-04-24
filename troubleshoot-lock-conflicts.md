@@ -241,7 +241,7 @@ Solutions:
 
 ### LockNotFound error
 
-The error log of "TxnLockNotFound" means that transaction commit time is longer than the the TTL time, and when the transaction is going to commit, its lock has been rolled back by other transactions. If the TiDB server enables transaction commit retry, this transaction is re-executed according to [tidb_retry_limit](/system-variables.md#tidb_retry_limit). (Note about the difference between explicit and implicit transactions.)
+The error log of "TxnLockNotFound" means that transaction commit time is longer than the TTL time, and when the transaction is going to commit, its lock has been rolled back by other transactions. If the TiDB server enables transaction commit retry, this transaction is re-executed according to [tidb_retry_limit](/system-variables.md#tidb_retry_limit). (Note about the difference between explicit and implicit transactions.)
 
 You can check whether there is any "LockNotFound" error in the following ways:
 

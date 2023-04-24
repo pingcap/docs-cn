@@ -15,6 +15,8 @@ The TiDB optimizer handles these two types of queries in the same way: when prep
 
 When the execution plan cache is enabled, in the first execution every `Prepare` statement checks whether the current query can use the execution plan cache, and if the query can use it, then put the generated execution plan into a cache implemented by LRU (Least Recently Used) linked list. In the subsequent `Execute` queries, the execution plan is obtained from the cache and checked for availability. If the check succeeds, the step of generating an execution plan is skipped. Otherwise, the execution plan is regenerated and saved in the cache.
 
+TiDB also supports execution plan caching for some non-`PREPARE` statements, similar to the `Prepare`/`Execute` statements. For more details, refer to [Non-prepared plan cache](/sql-non-prepared-plan-cache.md).
+
 In the current version of TiDB, if a `Prepare` statement meets any of the following conditions, the query or the plan is not cached:
 
 - The query contains SQL statements other than `SELECT`, `UPDATE`, `INSERT`, `DELETE`, `Union`, `Intersect`, and `Except`.
@@ -32,7 +34,7 @@ In the current version of TiDB, if a `Prepare` statement meets any of the follow
 - The plan attempts to access `TiFlash`.
 - In most cases, the plan that contains `TableDual` is not cached, unless the current `Prepare` statement does not have parameters.
 
-The LRU linked list is designed as a session-level cache because `Prepare` / `Execute` cannot be executed across sessions. Each element of the LRU list is a key-value pair. The value is the execution plan, and the key is composed of the following parts:
+The LRU linked list is designed as a session-level cache because `Prepare`/`Execute` cannot be executed across sessions. Each element of the LRU list is a key-value pair. The value is the execution plan, and the key is composed of the following parts:
 
 - The name of the database where `Execute` is executed
 - The identifier of the `Prepare` statement, that is, the name after the `PREPARE` keyword
@@ -41,7 +43,7 @@ The LRU linked list is designed as a session-level cache because `Prepare` / `Ex
 - The current time zone, which is the value of the `time_zone` system variable
 - The value of the `sql_select_limit` system variable
 
-Any change in the above information (for example, switching databases, renaming `Prepare` statement, executing DDL statements, or modifying the value of SQL mode / `time_zone`), or the LRU cache elimination mechanism causes the execution plan cache miss when executing.
+Any change in the preceding information (for example, switching databases, renaming `Prepare` statement, executing DDL statements, or modifying the value of SQL mode/`time_zone`), or the LRU cache elimination mechanism causes the execution plan cache miss when executing.
 
 After the execution plan cache is obtained from the cache, TiDB first checks whether the execution plan is still valid. If the current `Execute` statement is executed in an explicit transaction, and the referenced table is modified in the transaction pre-order statement, the cached execution plan accessing this table does not contain the `UnionScan` operator, then it cannot be executed.
 
@@ -54,13 +56,13 @@ There are several points worth noting about execution plan caching and query per
 - Considering that the parameters of `Execute` are different, the execution plan cache prohibits some aggressive query optimization methods that are closely related to specific parameter values to ensure adaptability. This causes that the query plan may not be optimal for certain parameter values. For example, the filter condition of the query is `where a > ? And a < ?`, the parameters of the first `Execute` statement are `2` and `1` respectively. Considering that these two parameters maybe be `1` and `2` in the next execution time, the optimizer does not generate the optimal `TableDual` execution plan that is specific to current parameter values;
 - If cache invalidation and elimination are not considered, an execution plan cache is applied to various parameter values, which in theory also results in non-optimal execution plans for certain values. For example, if the filter condition is `where a < ?` and the parameter value used for the first execution is `1`, then the optimizer generates the optimal `IndexScan` execution plan and puts it into the cache. In the subsequent executions, if the value becomes `10000`, the `TableScan` plan might be the better one. But due to the execution plan cache, the previously generated `IndexScan` is used for execution. Therefore, the execution plan cache is more suitable for application scenarios where the query is simple (the ratio of compilation is high) and the execution plan is relatively fixed.
 
-Since v6.1.0, the execution plan cache is enabled by default. You can control prepared plan cache via the system variable [`tidb_enable_prepared_plan_cache`](/system-variables.md#tidb_enable_prepared_plan_cache-new-in-v610).
+Starting from v6.1.0, the execution plan cache is enabled by default. You can control prepared plan cache via the system variable [`tidb_enable_prepared_plan_cache`](/system-variables.md#tidb_enable_prepared_plan_cache-new-in-v610).
 
 > **Note:**
 >
-> The execution plan cache feature applies only to `Prepare` / `Execute` queries and does not take effect for normal queries.
+> The execution plan cache feature applies only to `Prepare`/`Execute` queries and does not take effect for normal queries.
 
-After the execution plan cache feature is enabled, you can use the session-level system variable `last_plan_from_cache` to see whether the previous `Execute` statement used the cached execution plan, for example:
+After the execution plan cache feature is enabled, you can use the session-level system variable [`last_plan_from_cache`](/system-variables.md#last_plan_from_cache-new-in-v40) to see whether the previous `Execute` statement used the cached execution plan, for example:
 
 {{< copyable "sql" >}}
 
@@ -95,7 +97,7 @@ MySQL [test]> select @@last_plan_from_cache;
 1 row in set (0.00 sec)
 ```
 
-If you find that a certain set of `Prepare` / `Execute` has unexpected behavior due to the execution plan cache, you can use the `ignore_plan_cache()` SQL hint to skip using the execution plan cache for the current statement. Still, use the above statement as an example:
+If you find that a certain set of `Prepare`/`Execute` has unexpected behavior due to the execution plan cache, you can use the `ignore_plan_cache()` SQL hint to skip using the execution plan cache for the current statement. Still, use the preceding statement as an example:
 
 {{< copyable "sql" >}}
 
@@ -172,7 +174,7 @@ Using Prepared Plan Cache incurs memory overhead. To view the total memory consu
 
 > **Note:**
 >
-> Because of the the memory reclaim mechanism of Golang and some uncounted memory structures, the memory displayed in Grafana is not equal to the actual heap memory usage. It is tested that there is a deviation of about ±20% between the memory displayed in Grafana and the actual heap memory usage.
+> Because of the memory reclaim mechanism of Golang and some uncounted memory structures, the memory displayed in Grafana is not equal to the actual heap memory usage. It is tested that there is a deviation of about ±20% between the memory displayed in Grafana and the actual heap memory usage.
 
 To view the total number of execution plans cached in each TiDB instance, you can use the [**Plan Cache Plan Num** panel](/grafana-tidb-dashboard.md) in Grafana.
 
@@ -180,7 +182,7 @@ The following is an example of the **Plan Cache Memory Usage** and **Plan Cache 
 
 ![grafana_panels](/media/planCache-memoryUsage-planNum-panels.png)
 
-You can control the maximum number of plans that can be cached in each session by configuring the system variable `tidb_prepared_plan_cache_size`. For different environments, the recommended value is as follows and you can adjust it according to the monitoring panels:
+Starting from v7.1.0, you can control the maximum number of plans that can be cached in each session by configuring the system variable [`tidb_session_plan_cache_size`](/system-variables.md#tidb_session_plan_cache_size-new-in-v710). For different environments, the recommended value is as follows and you can adjust it according to the monitoring panels:
 
 </CustomContent>
 
@@ -190,12 +192,12 @@ Using Prepared Plan Cache has some memory overhead. In internal tests, each cach
 
 For example, the current TiDB instance has 50 sessions in concurrency and each session has approximately 100 cached plans. The total memory consumption is approximately `50 * 100 * 100 KiB` = `512 MB`.
 
-You can control the maximum number of plans that can be cached in each session by configuring the system variable `tidb_prepared_plan_cache_size`. For different environments, the recommended value is as follows:
+You can control the maximum number of plans that can be cached in each session by configuring the system variable [`tidb_session_plan_cache_size`](/system-variables.md#tidb_session_plan_cache_size-new-in-v710). For different environments, the recommended value is as follows:
 
 </CustomContent>
 
-- When the memory threshold of the TiDB server instance is <= 64 GiB, set `tidb_prepared_plan_cache_size` to `50`.
-- When the memory threshold of the TiDB server instance is > 64 GiB, set `tidb_prepared_plan_cache_size` to `100`.
+- When the memory threshold of the TiDB server instance is <= 64 GiB, set `tidb_session_plan_cache_size` to `50`.
+- When the memory threshold of the TiDB server instance is > 64 GiB, set `tidb_session_plan_cache_size` to `100`.
 
 When the unused memory of the TiDB server is less than a certain threshold, the memory protection mechanism of plan cache is triggered, through which some cached plans will be evicted.
 
@@ -217,7 +219,7 @@ Due to memory limit, plan cache might be missed sometimes.
 
 You can clear execution plan cache by executing the `ADMIN FLUSH [SESSION | INSTANCE] PLAN_CACHE` statement.
 
-In this statement, `[SESSION | INSTANCE]`specifies whether the plan cache is cleared for the current session or the whole TiDB instance. If the scope is not specified, the statement above applies to the `SESSION` cache by default.
+In this statement, `[SESSION | INSTANCE]` specifies whether the plan cache is cleared for the current session or the whole TiDB instance. If the scope is not specified, the preceding statement applies to the `SESSION` cache by default.
 
 The following is an example of clearing the `SESSION` execution plan cache:
 
@@ -297,7 +299,7 @@ MySQL [test]> deallocate prepare stmt; -- Release the prepared statement
 
 In such practice, the plan obtained by the first executed statement cannot be reused by the second executed statement.
 
-To address the problem, you can set the system varible [`tidb_ignore_prepared_cache_close_stmt`](/system-variables.md#tidb_ignore_prepared_cache_close_stmt-new-in-v600) to `ON` so TiDB ignores commands to close `prepare stmt`:
+To address the problem, you can set the system variable [`tidb_ignore_prepared_cache_close_stmt`](/system-variables.md#tidb_ignore_prepared_cache_close_stmt-new-in-v600) to `ON` so TiDB ignores commands to close `prepare stmt`:
 
 {{< copyable "sql" >}}
 
