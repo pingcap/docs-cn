@@ -81,22 +81,22 @@ You need to [deploy TiCDC](https://docs.pingcap.com/tidb/dev/deploy-ticdc) to re
 
 1. Confirm whether the current TiDB version supports TiCDC. TiDB v4.0.8.rc.1 and later versions support TiCDC. You can check the TiDB version by executing `select tidb_version();` in the TiDB cluster. If you need to upgrade it, see [Upgrade TiDB Using TiUP](https://docs.pingcap.com/tidb/dev/deploy-ticdc#upgrade-ticdc-using-tiup).
 
-2. Add the TiCDC component to the TiDB cluster. See [Add or scale out TiCDC to an existing TiDB cluster using TiUP](https://docs.pingcap.com/tidb/dev/deploy-ticdc#add-or-scale-out-ticdc-to-an-existing-tidb-cluster-using-tiup). Edit the `scale-out.yaml` file to add TiCDC:
+2. Add the TiCDC component to the TiDB cluster. See [Add or scale out TiCDC to an existing TiDB cluster using TiUP](https://docs.pingcap.com/tidb/dev/deploy-ticdc#add-or-scale-out-ticdc-to-an-existing-tidb-cluster-using-tiup). Edit the `scale-out.yml` file to add TiCDC:
 
     ```yaml
     cdc_servers:
     - host: 10.0.1.3
       gc-ttl: 86400
-      data_dir: /data/deploy/install/data/cdc-8300
+      data_dir: /tidb-data/cdc-8300
     - host: 10.0.1.4
       gc-ttl: 86400
-      data_dir: /data/deploy/install/data/cdc-8300
+      data_dir: /tidb-data/cdc-8300
     ```
 
 3. Add the TiCDC component and check the status.
 
     ```shell
-    tiup cluster scale-out <cluster-name> scale-out.yaml
+    tiup cluster scale-out <cluster-name> scale-out.yml
     tiup cluster display <cluster-name>
     ```
 

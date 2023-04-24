@@ -145,10 +145,10 @@ tiup cluster check <topology.yml | cluster-name> [flags]
 
 > **Note:**
 >
-> `tiup cluster check` also supports repairing the `scale-out.yaml` file for an existing cluster with the following command format:
+> `tiup cluster check` also supports repairing the `scale-out.yml` file for an existing cluster with the following command format:
 >
 >```shell
-> tiup cluster check <cluster-name> scale-out.yaml --cluster --apply --user root [-p] [-i /home/root/.ssh/gcp_rsa]
+> tiup cluster check <cluster-name> scale-out.yml --cluster --apply --user root [-p] [-i /home/root/.ssh/gcp_rsa]
 >```
 
 ### --cluster
@@ -165,10 +165,10 @@ tiup cluster check <topology.yml | cluster-name> [flags]
 > **Note:**
 >
 > - If the `tiup cluster check <cluster-name>` command is used, you must add the `--cluster` option: `tiup cluster check <cluster-name> --cluster`.
-> - `tiup cluster check` also supports checking the `scale-out.yaml` file for an existing cluster with the following command format:
+> - `tiup cluster check` also supports checking the `scale-out.yml` file for an existing cluster with the following command format:
 >
 >   ```shell
->   tiup cluster check <cluster-name> scale-out.yaml --cluster --user root [-p] [-i /home/root/.ssh/gcp_rsa]
+>   tiup cluster check <cluster-name> scale-out.yml --cluster --user root [-p] [-i /home/root/.ssh/gcp_rsa]
 >   ```
 
 ### -N, --node

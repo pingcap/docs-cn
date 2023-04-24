@@ -38,12 +38,12 @@ This section exemplifies how to add a TiDB node to the `10.0.1.5` host.
     > * If multiple instances are deployed on a single machine, you need to allocate different ports and directories for them. If the ports or directories have conflicts, you will receive a notification during deployment or scaling.
     > * Since TiUP v1.0.0, the scale-out configuration inherits the global configuration of the original cluster.
 
-    Add the scale-out topology configuration in the `scale-out.yaml` file:
+    Add the scale-out topology configuration in the `scale-out.yml` file:
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    vi scale-out.yaml
+    vi scale-out.yml
     ```
 
     {{< copyable "" >}}
@@ -54,8 +54,8 @@ This section exemplifies how to add a TiDB node to the `10.0.1.5` host.
       ssh_port: 22
       port: 4000
       status_port: 10080
-      deploy_dir: /data/deploy/install/deploy/tidb-4000
-      log_dir: /data/deploy/install/log/tidb-4000
+      deploy_dir: /tidb-deploy/tidb-4000
+      log_dir: /tidb-deploy/tidb-4000/log
     ```
 
     Here is a TiKV configuration file template:
@@ -68,9 +68,9 @@ This section exemplifies how to add a TiDB node to the `10.0.1.5` host.
       ssh_port: 22
       port: 20160
       status_port: 20180
-      deploy_dir: /data/deploy/install/deploy/tikv-20160
-      data_dir: /data/deploy/install/data/tikv-20160
-      log_dir: /data/deploy/install/log/tikv-20160
+      deploy_dir: /tidb-deploy/tikv-20160
+      data_dir: /tidb-data/tikv-20160
+      log_dir: /tidb-deploy/tikv-20160/log
     ```
 
     Here is a PD configuration file template:
@@ -84,12 +84,12 @@ This section exemplifies how to add a TiDB node to the `10.0.1.5` host.
       name: pd-1
       client_port: 2379
       peer_port: 2380
-      deploy_dir: /data/deploy/install/deploy/pd-2379
-      data_dir: /data/deploy/install/data/pd-2379
-      log_dir: /data/deploy/install/log/pd-2379
+      deploy_dir: /tidb-deploy/pd-2379
+      data_dir: /tidb-data/pd-2379
+      log_dir: /tidb-deploy/pd-2379/log
     ```
 
-    To view the configuration of the current cluster, run `tiup cluster edit-config <cluster-name>`. Because the parameter configuration of `global` and `server_configs` is inherited by `scale-out.yaml` and thus also takes effect in `scale-out.yaml`.
+    To view the configuration of the current cluster, run `tiup cluster edit-config <cluster-name>`. Because the parameter configuration of `global` and `server_configs` is inherited by `scale-out.yml` and thus also takes effect in `scale-out.yml`.
 
 2. Run the scale-out command:
 
@@ -100,7 +100,7 @@ This section exemplifies how to add a TiDB node to the `10.0.1.5` host.
         {{< copyable "shell-regular" >}}
 
         ```shell
-        tiup cluster check <cluster-name> scale-out.yaml --cluster --user root [-p] [-i /home/root/.ssh/gcp_rsa]
+        tiup cluster check <cluster-name> scale-out.yml --cluster --user root [-p] [-i /home/root/.ssh/gcp_rsa]
         ```
 
     2. Enable automatic repair:
@@ -108,7 +108,7 @@ This section exemplifies how to add a TiDB node to the `10.0.1.5` host.
         {{< copyable "shell-regular" >}}
 
         ```shell
-        tiup cluster check <cluster-name> scale-out.yaml --cluster --apply --user root [-p] [-i /home/root/.ssh/gcp_rsa]
+        tiup cluster check <cluster-name> scale-out.yml --cluster --apply --user root [-p] [-i /home/root/.ssh/gcp_rsa]
         ```
 
     3. Run the `scale-out` command:
@@ -116,12 +116,12 @@ This section exemplifies how to add a TiDB node to the `10.0.1.5` host.
         {{< copyable "shell-regular" >}}
 
         ```shell
-        tiup cluster scale-out <cluster-name> scale-out.yaml [-p] [-i /home/root/.ssh/gcp_rsa]
+        tiup cluster scale-out <cluster-name> scale-out.yml [-p] [-i /home/root/.ssh/gcp_rsa]
         ```
 
     In the preceding commands:
 
-    - `scale-out.yaml` is the scale-out configuration file.
+    - `scale-out.yml` is the scale-out configuration file.
     - `--user root` indicates logging in to the target machine as the `root` user to complete the cluster scale out. The `root` user is expected to have `ssh` and `sudo` privileges to the target machine. Alternatively, you can use other users with `ssh` and `sudo` privileges to complete the deployment.
     - `[-i]` and `[-p]` are optional. If you have configured login to the target machine without password, these parameters are not required. If not, choose one of the two parameters. `[-i]` is the private key of the root user (or other users specified by `--user`) that has access to the target machine. `[-p]` is used to input the user password interactively.
 
@@ -158,9 +158,9 @@ This section exemplifies how to add a TiFlash node to the `10.0.1.4` host.
 > - Confirm that the current TiDB version supports using TiFlash. Otherwise, upgrade your TiDB cluster to v5.0 or later versions.
 > - Run the `tiup ctl:v<CLUSTER_VERSION> pd -u http://<pd_ip>:<pd_port> config set enable-placement-rules true` command to enable the Placement Rules feature. Or run the corresponding command in [pd-ctl](/pd-control.md).
 
-1. Add the node information to the `scale-out.yaml` file:
+1. Add the node information to the `scale-out.yml` file:
 
-    Create the `scale-out.yaml` file to add the TiFlash node information.
+    Create the `scale-out.yml` file to add the TiFlash node information.
 
     {{< copyable "" >}}
 
@@ -176,7 +176,7 @@ This section exemplifies how to add a TiFlash node to the `10.0.1.4` host.
     {{< copyable "shell-regular" >}}
 
     ```shell
-    tiup cluster scale-out <cluster-name> scale-out.yaml
+    tiup cluster scale-out <cluster-name> scale-out.yml
     ```
 
     > **Note:**
@@ -207,9 +207,9 @@ After the scale-out, the cluster topology is as follows:
 
 This section exemplifies how to add two TiCDC nodes to the `10.0.1.3` and `10.0.1.4` hosts.
 
-1. Add the node information to the `scale-out.yaml` file:
+1. Add the node information to the `scale-out.yml` file:
 
-    Create the `scale-out.yaml` file to add the TiCDC node information.
+    Create the `scale-out.yml` file to add the TiCDC node information.
 
     {{< copyable "" >}}
 
@@ -217,10 +217,10 @@ This section exemplifies how to add two TiCDC nodes to the `10.0.1.3` and `10.0.
     cdc_servers:
       - host: 10.0.1.3
         gc-ttl: 86400
-        data_dir: /data/deploy/install/data/cdc-8300
+        data_dir: /tidb-data/cdc-8300
       - host: 10.0.1.4
         gc-ttl: 86400
-        data_dir: /data/deploy/install/data/cdc-8300
+        data_dir: /tidb-data/cdc-8300
     ```
 
 2. Run the scale-out command:
@@ -228,7 +228,7 @@ This section exemplifies how to add two TiCDC nodes to the `10.0.1.3` and `10.0.
     {{< copyable "shell-regular" >}}
 
     ```shell
-    tiup cluster scale-out <cluster-name> scale-out.yaml
+    tiup cluster scale-out <cluster-name> scale-out.yml
     ```
 
     > **Note:**

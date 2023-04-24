@@ -50,25 +50,25 @@ More references:
 
 The method of scaling out a TiCDC cluster is similar to that of deploying one. It is recommended to use TiUP to perform the scale-out.
 
-1. Create a `scale-out.yaml` file to add the TiCDC node information. The following is an example:
+1. Create a `scale-out.yml` file to add the TiCDC node information. The following is an example:
 
     ```shell
     cdc_servers:
       - host: 10.1.1.1
         gc-ttl: 86400
-        data_dir: /data/deploy/install/data/cdc-8300
+        data_dir: /tidb-data/cdc-8300
       - host: 10.1.1.2
         gc-ttl: 86400
-        data_dir: /data/deploy/install/data/cdc-8300
+        data_dir: /tidb-data/cdc-8300
       - host: 10.0.1.4:8300
         gc-ttl: 86400
-        data_dir: /data/deploy/install/data/cdc-8300
+        data_dir: /tidb-data/cdc-8300
     ```
 
 2. Run the scale-out command on the TiUP control machine:
 
     ```shell
-    tiup cluster scale-out <cluster-name> scale-out.yaml
+    tiup cluster scale-out <cluster-name> scale-out.yml
     ```
 
 For more use cases, see [Scale out a TiCDC cluster](/scale-tidb-using-tiup.md#scale-out-a-ticdc-cluster).
