@@ -455,6 +455,10 @@ config show cluster-version
 
 - `store-limit-version` 用于设置 `store limit` 限制模式，目前提供两种方式：`v1` 和 `v2`。默认值为 `v1`。在 `v1` 模式下，你可以手动修改 `store limit` 以限制单个 TiKV 调度速度。`v2` 模式为实验特性，在 `v2` 模式下，你无需关注 `store limit` 值，PD 将根据 TiKV Snapshot 执行情况动态调整 TiKV 调度速度。详情请参考 [Store Limit v2 原理](/configure-store-limit.md#store-limit-v2-原理)。
 
+    ```bash
+    config set store-limit-version v2       // 使用 Store Limit v2
+    ```
+
 - PD 会对流量信息的末尾数字进行四舍五入处理，减少 Region 流量信息变化引起的统计信息更新。该配置项用于指定对 Region 流量信息的末尾进行四舍五入的位数。例如流量 `100512` 会归约到 `101000`。默认值为 `3`。该配置替换了 `trace-region-flow`。
 
     示例：将 `flow-round-by-digit` 的值设为 `4`：
