@@ -119,7 +119,7 @@ TiDB 版本：7.1.0 (upcoming)
 
     从 v6.5.0 起，TiDB 支持下推 `INSERT INTO SELECT` 语句中的 `SELECT` 子句（分析查询）到 TiFlash，你可以将 TiFlash 的查询结果方便地保存到 `INSERT INTO` 指定的 TiDB 表中供后续分析使用，起到了结果缓存（即结果物化）的效果。
 
-    在 v7.1.0 版本中，该功能正式 GA。当 TiDB 执行 `INSERT INTO SELECT` 语句中的 `SELECT` 子句时，优化器将根据 [SQL 模式](/sql-mode.md) 及 TiFlash 副本的代价估算自行决定是否将查询下推至 TiFlash。因此，在实验特性阶段引入的系统变量 `tidb_enable_tiflash_read_for_write_stmt` 将被废弃。需要注意的是，TiFlash 对于 `INSERT INTO SELECT` 语句的计算规则不满足 `STRICT SQL Mode` 要求，因此只有当前会话的 [SQL 模式](/sql-mode.md)为非严格模式（即 `sql_mode` 值不包含 `STRICT_TRANS_TABLES` 和 `STRICT_ALL_TABLES`），TiDB 才允许将 `INSERT INTO SELECT` 语句中的 `SELECT` 子句下推至 TiFlash。
+    在 v7.1.0 版本中，该功能正式 GA。当 TiDB 执行 `INSERT INTO SELECT` 语句中的 `SELECT` 子句时，优化器将根据 [SQL 模式](/sql-mode.md)及 TiFlash 副本的代价估算自行决定是否将查询下推至 TiFlash。因此，在实验特性阶段引入的系统变量 `tidb_enable_tiflash_read_for_write_stmt` 将被废弃。需要注意的是，TiFlash 对于 `INSERT INTO SELECT` 语句的计算规则不满足 `STRICT SQL Mode` 要求，因此只有当前会话的 [SQL 模式](/sql-mode.md)为非严格模式（即 `sql_mode` 值不包含 `STRICT_TRANS_TABLES` 和 `STRICT_ALL_TABLES`），TiDB 才允许将 `INSERT INTO SELECT` 语句中的 `SELECT` 子句下推至 TiFlash。
 
     更多信息，请参考[用户文档](/tiflash/tiflash-results-materialization.md)。
 
@@ -235,7 +235,7 @@ TiDB 版本：7.1.0 (upcoming)
 
 | 变量名  | 修改类型 | 描述 |
 |--------|------------------------------|------|
-| [`tidb_enable_tiflash_read_for_write_stmt`](/system-variables.md#tidb_enable_tiflash_read_for_write_stmt-从-v630-版本开始引入) | 废弃 | 默认值从 `OFF` 修改为 `ON`，当 [`tidb_allow_mpp = ON`](/system-variables.md#tidb_allow_mpp-从-v50-版本开始引入) 时，优化器将根据 [SQL 模式](/sql-mode.md) 及 TiFlash 副本的代价估算自行决定是否将查询下推至 TiFlash。 |
+| [`tidb_enable_tiflash_read_for_write_stmt`](/system-variables.md#tidb_enable_tiflash_read_for_write_stmt-从-v630-版本开始引入) | 废弃 | 从 v7.1.0 开始，该变量废弃并且默认值从 `OFF` 修改为 `ON`。当 [`tidb_allow_mpp = ON`](/system-variables.md#tidb_allow_mpp-从-v50-版本开始引入) 时，优化器将根据 [SQL 模式](/sql-mode.md)及 TiFlash 副本的代价估算自行决定是否将查询下推至 TiFlash。 |
 | [`tidb_non_prepared_plan_cache_size`](/system-variables.md#tidb_non_prepared_plan_cache_size) | 废弃 | 从 v7.1.0 起，该变量被废弃，你可以使用 [`tidb_session_plan_cache_size`](#tidb_session_plan_cache_size-从-v710-版本开始引入) 控制 Plan Cache 最多能够缓存的计划数量。 |
 | [`tidb_prepared_plan_cache_size`](/system-variables.md#tidb_prepared_plan_cache_size-从-v610-版本开始引入) | 废弃 | 从 v7.1.0 起，该变量被废弃，你可以使用 [`tidb_session_plan_cache_size`](#tidb_session_plan_cache_size-从-v710-版本开始引入) 控制 Plan Cache 最多能够缓存的计划数量。 |
 | `tidb_ddl_distribute_reorg` | 删除 | 重命名为 [`tidb_enable_dist_task`](/system-variables.md#tidb_enable_dist_task-从-v710-版本开始引入)。 |
@@ -245,6 +245,7 @@ TiDB 版本：7.1.0 (upcoming)
 | [`tidb_enable_dist_task`](/system-variables.md#tidb_enable_dist_task-从-v710-版本开始引入) | 新增 | 控制是否开启分布式执行框架。开启分布式执行后，DDL、Import 等支持的后端任务将会由集群中多个 TiDB 节点共同完成。该变量由 `tidb_ddl_distribute_reorg` 改名而来。|
 | [`tidb_enable_non_prepared_plan_cache_for_dml`](/system-variables.md#tidb_enable_non_prepared_plan_cache_for_dml-从-v710-版本开始引入) | 新增 | 控制非 Prepare 语句执行计划缓存是否支持 DML 语句。 |
 | [`tidb_opt_fix_control`](/system-variables.md#tidb_opt_fix_control-从-v710-版本开始引入) | 新增 | 通过设置该变量，你可以更细粒度地控制优化器的行为，并且避免集群升级后优化器行为变化导致的性能回退。 |
+| [`tidb_plan_cache_max_plan_size`](/system-variables.md#tidb_plan_cache_max_plan_size-从-v710-版本开始引入) | 新增 | 可以缓存的 Prepare 或非 Prepare 语句执行计划的最大大小。 |
 | [`tidb_prefer_broadcast_join_by_exchange_data_size`](/system-variables.md#tidb_prefer_broadcast_join_by_exchange_data_size-从-v710-版本开始引入) | 新增 | 控制是否使用最小网络数据交换策略。使用该策略时，TiDB 会估算 Broadcast Hash Join 和 Shuffled Hash Join 两种算法所需进行网络交换的数据量，并选择网络交换数据量较小的算法。该功能开启后，[`tidb_broadcast_join_threshold_size`](/system-variables.md#tidb_broadcast_join_threshold_size-从-v50-版本开始引入) 和 [`tidb_broadcast_join_threshold_count`](/system-variables.md#tidb_broadcast_join_threshold_count-从-v50-版本开始引入) 将不再生效。 |
 | [`tidb_session_plan_cache_size`](/system-variables.md#tidb_session_plan_cache_size-从-v710-版本开始引入) | 新增 | 控制 Plan Cache 最多能够缓存的计划数量。其中，Prepare 语句执行计划缓存和非 Prepare 语句执行计划缓存共用一个缓存。 |
 |        |                              |      |
