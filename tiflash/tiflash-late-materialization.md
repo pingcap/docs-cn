@@ -5,17 +5,16 @@ summary: Describe how to use the TiFlash late materialization feature to acceler
 
 # TiFlash Late Materialization
 
-> **Warning:**
+> **Note:**
 >
-> Currently, this is an experimental feature. The form and usage might be modified in future releases.
+> TiFlash late materialization does not take effect in the [fast scan mode](/tiflash/use-fastscan.md).
 
-This document describes how to use the TiFlash late materialization feature to accelerate queries in OLAP scenarios.
+TiFlash late materialization is an optimization method to accelerate queries in OLAP scenarios. You can use the [`tidb_opt_enable_late_materialization`](/system-variables.md#tidb_opt_enable_late_materialization-new-in-v700) system variable to control whether to enable or disable TiFlash late materialization.
 
-By default, when receiving a query request, TiFlash reads all the data from the columns required by the query, and then filters and aggregates the data based on the query conditions. Late materialization is an optimization method that supports pushing down part of the filter conditions to the TableScan operator. That is, TiFlash first scans the column data related to the filter conditions that are pushed down, filters the rows that meet the condition, and then scans the other column data of these rows for further calculation, thereby reducing IO scans and computations of data processing.
+- When it is disabled, to process a `SELECT` statement with filter conditions (`WHERE` clause), TiFlash reads all the data from the columns required by the query, and then filters and aggregates the data based on the query conditions.
+- When it is enabled, TiFlash supports pushing down part of the filter conditions to the TableScan operator. That is, TiFlash first scans the column data related to the filter conditions that are pushed down to the TableScan operator, filters the rows that meet the condition, and then scans the other column data of these rows for further calculation, thereby reducing IO scans and computations of data processing.
 
-If you want to improve the performance of certain queries in OLAP scenarios, you can enable the TiFlash late materialization feature at the session level or global level. By modifying the value of the [`tidb_opt_enable_late_materialization`](/system-variables.md#tidb_opt_enable_late_materialization-new-in-v700) system variable, you can choose to enable or disable the TiFlash late materialization feature.
-
-When the TiFlash late materialization feature is enabled, the TiDB optimizer will determine which filter conditions will be pushed down based on statistics and filter conditions. The optimizer will prioritize pushing down the filter conditions with high filtration rates. For detailed algorithms, see the [RFC document](https://github.com/pingcap/tidb/tree/master/docs/design/2022-12-06-support-late-materialization.md).
+To improve the performance of certain queries in OLAP scenarios, starting from v7.1.0, the TiFlash late materialization feature is enabled by default. The TiDB optimizer can determine which filter conditions to be pushed down based on statistics and filter conditions, and prioritize pushing down the filter conditions with high filtration rates. For detailed algorithms, see the [RFC document](https://github.com/pingcap/tidb/tree/master/docs/design/2022-12-06-support-late-materialization.md).
 
 For example:
 
@@ -37,7 +36,7 @@ In this example, the filter condition `a < 1` is pushed down to the TableScan op
 
 ## Enable or disable TiFlash late materialization
 
-By default,  the `tidb_opt_enable_late_materialization` system variable is `OFF` at both the session and global levels, which means that the TiFlash late materialization feature is not enabled. You can use the following statement to view the corresponding variable information:
+By default,  the `tidb_opt_enable_late_materialization` system variable is `ON` at both the session and global levels, which means that the TiFlash late materialization feature is enabled. You can use the following statement to view the corresponding variable information:
 
 ```sql
 SHOW VARIABLES LIKE 'tidb_opt_enable_late_materialization';
@@ -47,7 +46,7 @@ SHOW VARIABLES LIKE 'tidb_opt_enable_late_materialization';
 +--------------------------------------+-------+
 | Variable_name                        | Value |
 +--------------------------------------+-------+
-| tidb_opt_enable_late_materialization | OFF   |
+| tidb_opt_enable_late_materialization | ON    |
 +--------------------------------------+-------+
 ```
 
@@ -59,34 +58,34 @@ SHOW GLOBAL VARIABLES LIKE 'tidb_opt_enable_late_materialization';
 +--------------------------------------+-------+
 | Variable_name                        | Value |
 +--------------------------------------+-------+
-| tidb_opt_enable_late_materialization | OFF   |
+| tidb_opt_enable_late_materialization | ON    |
 +--------------------------------------+-------+
 ```
 
 You can modify the `tidb_opt_enable_late_materialization` variable at the session level or at the global level.
 
-- To enable TiFlash late materialization in the current session, use the following statement:
+- To disable TiFlash late materialization in the current session, use the following statement:
 
     ```sql
-    SET SESSION tidb_opt_enable_late_materialization=ON;
+    SET SESSION tidb_opt_enable_late_materialization=OFF;
     ```
 
-- To enable TiFlash late materialization at the global level, use the following statement:
+- To disable TiFlash late materialization at the global level, use the following statement:
 
     ```sql
-    SET GLOBAL tidb_opt_enable_late_materialization=ON;
+    SET GLOBAL tidb_opt_enable_late_materialization=OFF;
     ```
 
     After this setting, the `tidb_opt_enable_late_materialization` variable will be enabled by default for both session and global levels in new sessions.
 
-To disable TiFlash late materialization, use the following statements:
+To enable TiFlash late materialization, use the following statements:
 
 ```sql
-SET SESSION tidb_opt_enable_late_materialization=OFF;
+SET SESSION tidb_opt_enable_late_materialization=ON;
 ```
 
 ```sql
-SET GLOBAL tidb_opt_enable_late_materialization=OFF;
+SET GLOBAL tidb_opt_enable_late_materialization=ON;
 ```
 
 ## Implementation mechanism
