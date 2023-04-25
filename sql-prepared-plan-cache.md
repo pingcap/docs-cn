@@ -188,7 +188,7 @@ Grafana 中 `Plan Cache Memory Usage` 和 `Plan Cache Plan Num` 监控如下图�
 - TiDB Server 实例内存阈值 <= 64 GiB 时，`tidb_session_plan_cache_size = 50`
 - TiDB Server 实例内存阈值 > 64 GiB 时，`tidb_session_plan_cache_size = 100`
 
-从 v7.1.0 开始，你可以通过变量 [`tidb_plan_cache_max_plan_size`](/system-variables.md#tidb_plan_cache_max_plan_size-从-v710-版本开始引入) 来设置最大可以被缓存的执行计划大小，默认为 2 MB。
+从 v7.1.0 开始，你可以通过变量 [`tidb_plan_cache_max_plan_size`](/system-variables.md#tidb_plan_cache_max_plan_size-从-v710-版本开始引入) 来设置可以缓存的计划的最大大小，默认为 2 MB。
 
 当 TiDB Server 的内存余量小于一定阈值时，会触发 Plan Cache 的内存保护机制，此时会对一些缓存的计划进行逐出。
 
