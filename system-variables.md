@@ -977,18 +977,18 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 >
 > 目前，PITR 恢复会额外处理日志备份时间段内通过索引加速功能创建的索引，以达到兼容效果。详细内容请参考[索引加速功能为什么与 PITR 功能不兼容](/faq/backup-and-restore-faq.md#索引加速功能为什么与-pitr-功能不兼容)。
 
-### `tidb_ddl_distribute_reorg` <span class="version-mark">从 v6.6.0 版本开始引入</span>
+### `tidb_enable_dist_task` <span class="version-mark">从 v7.1.0 版本开始引入</span>
 
 > **警告：**
 >
-> - 该功能目前为实验特性。不推荐在生产环境中开启该功能。
-> - 当前启用此功能后，在 DDL reorg 阶段遇到某些异常只会做简单重试，还没有兼容 DDL 操作的重试方式，即目前无法依据  [`tidb_ddl_error_count_limit`](#tidb_ddl_error_count_limit) 的大小控制重试次数。
+> 该功能目前为实验特性，不建议在生产环境中使用。
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
 - 默认值：`OFF`
-- 这个变量用于控制是否开启分布式执行 DDL reorg 阶段，来提升此阶段的速度。目前此开关只对 `ADD INDEX` 语句有效。开启该变量对于数据量较大的表有一定的性能提升。分布式 DDL 会通过 DDL 动态资源管控，控制 DDL 的 CPU 使用量，来防止对线上业务产生影响。
-- 要验证已经完成的 `ADD INDEX` 操作是否使用了此功能，可以查看 `mysql.tidb_background_subtask_history` 表是否有对应任务。
+- 这个变量用于控制是否开启分布式执行框架。开启分布式执行后，DDL 和 Import 等后端任务将会由集群中多个 TiDB 节点共同完成。
+- 在 TiDB v7.1.0 中，只支持分布式执行分区表的 `ADD INDEX`。
+- 该变量由 `tidb_ddl_distribute_reorg` 改名而来。
 
 ### `tidb_ddl_error_count_limit`
 
