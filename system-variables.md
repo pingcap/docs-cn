@@ -3014,6 +3014,18 @@ SHOW WARNINGS;
 - 该变量用于控制 DDL 语句是否忽略 [Placement Rules in SQL](/placement-rules-in-sql.md) 指定的放置规则。变量值为 `IGNORE` 时将忽略所有放置规则选项。
 - 该变量可由逻辑转储或逻辑恢复工具使用，确保即使绑定了不合适的放置规则，也始终可以成功创建表。这类似于 mysqldump 将 `SET FOREIGN_KEY_CHECKS=0;` 写入每个转储文件的开头部分。
 
+### `tidb_plan_cache_invalidation_on_fresh_stats` <span class="version-mark">从 v7.1.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 类型：布尔型
+- 默认值：`ON`
+- 该变量控制当某张表上的统计信息更新后，涉及这张表的 Plan Cache 是否自动失效。
+- 开启此变量有助于 Plan Cache 更充分地利用可用的统计信息生成执行计划，例如：
+    - 有时 Plan Cache 会在统计信息还不可用的时候就生成执行计划。开启此变量后，Plan Cache 会在统计信息可用后时重新生成执行计划。
+    - 有时表上数据分布的变化会让过去的最优执行计划对于现在不再是最优的。开启此变量后，Plan Cache 会在重新收集统计信息后重新生成执行计划。
+- 对于从 v7.1.0 以前的版本升级到 v7.1.0 或更新版本的 TiDB 集群，该选项默认关闭。
+
 ### `tidb_plan_cache_max_plan_size` <span class="version-mark">从 v7.1.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
