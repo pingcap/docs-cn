@@ -5,7 +5,7 @@ summary: 了解 TiDB 7.1.0 版本的新功能、兼容性变更、改进提升�
 
 # TiDB 7.1.0 Release Notes
 
-TiDB 版本：7.1.0（即将发布）
+TiDB 版本：7.1.0 (upcoming)
 
 > **注意：**
 >
@@ -13,9 +13,39 @@ TiDB 版本：7.1.0（即将发布）
 
 在 7.1.0 版本中，你可以获得以下关键特性：
 
-## 功能详情
+<table>
+<thead>
+  <tr>
+    <th>分类</th>
+    <th>功能</th>
+    <th>描述</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td rowspan="2">可扩展性与性能</td>
+    <td>会话级别内无需手动准备 SQL 执行计划缓存 (GA)</td>
+    <td>支持在会话级别自动重用执行计划缓存，可以减少编译并缩短相同 SQL 查询的时间，而无需事先手动准备 Prepare Statement 语句。</td>
+  </tr>
+  <tr>
+    <td>基于负载的副本读取</td>
+    <td>在读热点场景中，TiDB 可以将热点 TiKV 节点的读请求转发到副本。该功能有效地打散了读热点并优化了集群资源的利用。你可以通过调整系统变量 <code>tidb_load_based_replica_read_threshold</code> 控制基于负载的副本读取的触发阈值。</td>
+  </tr>
+  <tr>
+    <td rowspan="2">SQL</td>
+    <td>多值索引 (GA)</td>
+    <td>引入 MySQL 兼容的多值索引，增强 JSON 类型，提升 TiDB 对 MySQL 8.0 的兼容性。该功能提升了对多值列进行成员检查的效率。
+    </td>
+  </tr>
+  <tr>
+    <td>生成列 (GA)</td>
+    <td>生成列 (Generated Columns) 的值是通过实时计算列定义中的 SQL 表达式得到的。该功能将一些应用逻辑推向数据库层，从而提升效率。
+    </td>
+  </tr>
+</tbody>
+</table>
 
-### 可扩展性
+## 功能详情
 
 ### 性能
 
@@ -82,14 +112,6 @@ TiDB 版本：7.1.0（即将发布）
     开启统计信息同步加载后，TiDB 可以大幅减少启动时必须载入的统计信息的数量，从而提升启动过程中统计信息的加载速度。该特性提升了 TiDB 在复杂运行环境下的稳定性，并降低了部分 TiDB 节点重启对整体服务的影响。
 
     更多信息，请参考[用户文档](/statistics.md#统计信息的加载)。
-
-### 高可用
-
-* 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接)
-
-    功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
-
-    更多信息，请参考[用户文档](链接)。
 
 ### SQL 功能
 
@@ -189,14 +211,6 @@ TiDB 版本：7.1.0（即将发布）
 
     从 v7.1.0 起，TiFlash 在向 TiDB 提供 [`INFORMATION_SCHEMA.TIFLASH_TABLES`](/information-schema/information-schema-tiflash-tables.md) 和 [`INFORMATION_SCHEMA.TIFLASH_SEGMENTS`](/information-schema/information-schema-tiflash-segments.md) 系统表的查询服务时，不再使用 HTTP 端口，而是使用 gRPC 端口，从而避免 HTTP 服务的安全风险。
 
-### 数据迁移
-
-* TiCDC 优化 DDL 同步操作 [#8686](https://github.com/pingcap/tiflow/issues/8686) @[nongfushanquan](https://github.com/nongfushanquan) **tw:ran-huang**
-
-    在 v7.1.0 之前，当用户在一个大表上进行 DDL 操作时，如果 DDL 操作影响该表中的所有行（例如添加或删除列），TiCDC 的同步延迟会显著增加。从 v7.1.0 开始，TiCDC 对此进行了优化，将同步延迟降低到 10 秒以内，以减轻 DDL 操作对下游延迟的影响。
-
-    更多信息，请参考[用户文档](链接)。
-
 ## 兼容性变更
 
 > **注意：**
@@ -269,7 +283,7 @@ TiDB 版本：7.1.0（即将发布）
 + TiFlash
 
     - 提升 TiFlash 在存算分离架构下的性能和稳定性 [#6882](https://github.com/pingcap/tiflash/issues/6882) @[JaySon-Huang](https://github.com/JaySon-Huang) @[breezewish](https://github.com/breezewish) @[JinheLin](https://github.com/JinheLin) **tw:qiancai**
-    - 支持在 Semi Join 或 Anti Semi Join 中，通过选择较小的表作为 Build 端来优化查询性能  [#7280](https://github.com/pingcap/tiflash/issues/7280) @[yibin87](https://github.com/yibin87)
+    - 支持在 Semi Join 或 Anti Semi Join 中，通过选择较小的表作为 Build 端来优化查询性能 [#7280](https://github.com/pingcap/tiflash/issues/7280) @[yibin87](https://github.com/yibin87)
 
 + Tools
 
