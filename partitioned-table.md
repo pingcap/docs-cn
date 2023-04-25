@@ -1032,7 +1032,7 @@ ALTER TABLE example COALESCE PARTITION 1;
 > 1 row in set (0.00 sec)
 > ```
 
-为了更好地理解 `example` 表重组后的结构，你可以查看重新创建 `example` 表所需的 SQL 语句，如下所示：
+为了更好地理解 `example` 表重组后的结构，你可以查看重新创建 `example` 表所使用的 SQL 语句，如下所示：
 
 ```sql
 SHOW CREATE TABLE\G

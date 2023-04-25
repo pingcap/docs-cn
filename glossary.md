@@ -103,6 +103,8 @@ Operator Step 是 Operator 执行过程的一个步骤，一个 Operator 常常�
 
 ## P
 
+### Partitioning
+
 [Partitioning](/partitioned-table.md)（分区）指通过 `RANGE`、`LIST`、`HASH` 和 `KEY` 等分区方法在物理上将一张表划分为较小的分区。
 
 ### Pending/Down
