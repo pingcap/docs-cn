@@ -23,8 +23,6 @@ In the disaggregated storage and compute architecture, different functionalities
 
     The Write Node uses local disks (usually NVMe SSDs) to cache the latest written data to avoid excessive use of memory.
 
-    The Write Node has a faster scaling speed than the TiFlash node in the coupled storage and compute architecture. That is, after adding or removing Write Nodes, data can reach balance faster among Write Nodes. The reason is that the Write Node stores all the data in S3 and only needs to store a small amount of data locally at runtime. The scaling up and down process is essentially the migration of Region Peers among nodes. When migrating a Region Peer from one Write Node to another for management, the target Write node only needs to download a small amount of metadata about the Region from the latest files uploaded to S3 by the Region Peer's original Write Node, and synchronizes the latest Region updates from TiKV. Then, the target Write node can catch up with the Region Leader's progress and complete the migration of the Region Peers.
-
 - TiFlash Compute Node
 
     The Compute Node executes query requests sent from a TiDB node. It first accesses a Write Node to obtain data snapshots, and then reads the latest data (that is, the data not been uploaded to S3 yet) from the Write Node and most of the remaining data from S3.
@@ -81,11 +79,7 @@ TiFlash disaggregated storage and compute architecture is suitable for cost-effe
     }
     ```
 
-## Usage
-
-By default, TiUP deploys TiFlash in the coupled storage and computation architecture. If you need to deploy TiFlash in the disaggregated storage and compute architecture, take the following steps for manual configuration:
-
-1. Make sure that there are no TiFlash nodes in the TiDB cluster. If any, set the TiFlash replica count of all tables to `0` and then remove all TiFlash nodes. For example:
+3. Make sure that there are no TiFlash nodes in the TiDB cluster. If any, set the TiFlash replica count of all tables to `0` and then remove all TiFlash nodes. For example:
 
     ```sql
     SELECT * FROM INFORMATION_SCHEMA.TIFLASH_REPLICA; # Query all tables with TiFlash replicas
@@ -98,7 +92,11 @@ By default, TiUP deploys TiFlash in the coupled storage and computation architec
     tiup cluster prune mycluster              # Remove all TiFlash nodes in the Tombstone state
     ```
 
-2. Prepare a TiFlash topology configuration file, such as `scale-out.topo.yaml`, with the following configuration:
+## Usage
+
+By default, TiUP deploys TiFlash in the coupled storage and computation architecture. If you need to deploy TiFlash in the disaggregated storage and compute architecture, take the following steps for manual configuration:
+
+1. Prepare a TiFlash topology configuration file, such as `scale-out.topo.yaml`, with the following configuration:
 
     ```yaml
     tiflash_servers:
@@ -162,7 +160,7 @@ By default, TiUP deploys TiFlash in the coupled storage and computation architec
 
     * `storage.s3.endpoint` supports connecting to S3 using the `http` or `https` mode, and you can set the mode by directly modifying the URL. For example, `https://s3.{region}.amazonaws.com`.
 
-3. Add TiFlash nodes and reset the number of TiFlash replicas:
+2. Add TiFlash nodes and reset the number of TiFlash replicas:
 
     ```shell
     tiup cluster scale-out mycluster ./scale-out.topo.yaml
@@ -172,7 +170,7 @@ By default, TiUP deploys TiFlash in the coupled storage and computation architec
     ALTER TABLE table_name SET TIFLASH REPLICA 1;
     ```
 
-4. Modify the TiDB configuration to query TiFlash using the disaggregated storage and compute architecture.
+3. Modify the TiDB configuration to query TiFlash using the disaggregated storage and compute architecture.
 
     1. Open the TiDB configuration file in edit mode:
 
