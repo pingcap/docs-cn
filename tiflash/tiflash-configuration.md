@@ -41,8 +41,6 @@ This section introduces the configuration parameters of TiFlash.
 listen_host = "0.0.0.0"
 ## The TiFlash TCP service port.
 tcp_port = 9000
-## The TiFlash HTTP service port.
-http_port = 8123
 ## The cache size limit of the metadata of a data block. Generally, you do not need to change this value.
 mark_cache_size = 5368709120
 ## The cache size limit of the min-max index of a data block. Generally, you do not need to change this value.

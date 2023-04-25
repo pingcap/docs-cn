@@ -325,8 +325,6 @@ tikv_servers:
 
 - `tcp_port`: The port of the TiFlash TCP service. The default value is `9000`.
 
-- `http_port`: The port of the TiFlash HTTP service. The default value is `8123`.
-
 - `flash_service_port`: The port via which TiFlash provides services. TiDB reads data from TiFlash via this port. The default value is `3930`.
 
 - `metrics_port`: TiFlash's status port, which is used to output metric data. The default value is `8234`.
