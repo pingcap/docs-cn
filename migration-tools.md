@@ -45,15 +45,6 @@ TiDB 提供了丰富的数据迁移相关的工具，用于全量迁移、增量
 | **主要优势** | 提供开放数据协议 (TiCDC Open Protocol)。|
 | **使用限制** | TiCDC 只能同步至少存在一个有效索引的表。暂不支持以下场景：<ul><li>单独使用 RawKV 的 TiKV 集群。</li><li>在 TiDB 中创建 SEQUENCE 的 DDL 操作和 SEQUENCE 函数。</li></ul> |
 
-## [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md)
-
-| 使用场景 | <span style="font-weight:normal">用于 TiDB 集群间的增量数据同步，如将其中一个 TiDB 集群作为另一个 TiDB 集群的从集群</span> |
-|---|---|
-| **上游** | TiDB |
-| **下游（输出文件）** | TiDB，MySQL，Kafka，增量备份文件 |
-| **主要优势** | <ul><li>支持实时备份和恢复。</li><li>备份 TiDB 集群数据，同时可以用于 TiDB 集群故障时恢复。</li></ul> |
-| **使用限制** | 与部分 TiDB 版本不兼容。推荐使用 [TiCDC](/ticdc/ticdc-overview.md) 替代 TiDB Binlog。|
-
 ## [Backup & Restore (BR)](/br/backup-and-restore-overview.md)
 
 | 使用场景 | <span style="font-weight:normal">通过对大数据量的 TiDB 集群进行数据备份和恢复，实现数据迁移</span> |
