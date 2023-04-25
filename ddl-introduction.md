@@ -186,7 +186,6 @@ absent -> delete only -> write only -> write reorg -> public
 
     你只能对暂停状态的 DDL 任务进行恢复操作，否则会在 `RESULT` 列看到 `Job 3 can't be resumed`。
 
-
 ## 常见问题
 
 DDL 语句执行相关的常见问题，参考 [SQL FAQ - DDL 执行](/faq/sql-faq.md#ddl-执行)。
