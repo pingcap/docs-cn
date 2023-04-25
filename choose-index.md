@@ -143,10 +143,6 @@ The index selection can be controlled by a single query through [Optimizer Hints
 
 ## Use a multi-valued index
 
-> **Warning:**
->
-> For the current version, this feature is still experimental and it is not recommended to use it in a production environment.
-
 [Multi-value indexes](/sql-statements/sql-statement-create-index.md#multi-valued-index) are different from normal indexes. TiDB currently only uses [IndexMerge](/explain-index-merge.md) to access multi-valued indexes. Therefore, to use multi-valued indexes for data access, make sure that the value of the sytem variable `tidb_enable_index_merge` is set to `ON`.
 
 Currently, TiDB supports accessing multi-valued indexes using IndexMerge that is automatically converted from `json_member_of`, `json_contains`, and `json_overlaps` conditions. You can either rely on the optimizer to automatically select IndexMerge based on cost, or specify the selection of multi-valued indexes through the optimizer hint [`use_index_merge`](/optimizer-hints.md#use_index_merget1_name-idx1_name--idx2_name-) or [`use_index`](/optimizer-hints.md#use_indext1_name-idx1_name--idx2_name-). See the following examples:
