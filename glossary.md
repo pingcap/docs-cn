@@ -48,7 +48,7 @@ ACID 是指数据库管理系统在写入或更新资料的过程中，为保证
 
 ### Coalesce Partition
 
-Coalesce Partition 是一种减少 Hash 分区表或 Key 分区表中分区数量的方法。详情参见[管理 Hash 分区和 Key 分区](/partitioned-table.md#manage-hash-and-key-partitions)。
+Coalesce Partition 是一种减少 Hash 分区表或 Key 分区表中分区数量的方法。详情参见[管理 Hash 分区和 Key 分区](/partitioned-table.md#管理-hash-分区和-key-分区)。
 
 ### Continuous Profiling
 
