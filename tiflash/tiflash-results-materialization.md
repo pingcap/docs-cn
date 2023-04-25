@@ -5,18 +5,16 @@ summary: Learn how to save the query results of TiFlash in a transaction.
 
 # TiFlash Query Result Materialization
 
-> **Warning:**
->
-> This is an experimental feature, which might be changed or removed without prior notice. The syntax and implementation might be modified before GA. If you encounter any problems, you can report an [issue](https://github.com/pingcap/tidb/issues) on GitHub.
-
 This document introduces how to save the TiFlash query result to a specified TiDB table in an `INSERT INTO SELECT` transaction.
 
 Starting from v6.5.0, TiDB supports saving TiFlash query results in a table, that is, TiFlash query result materialization. During the execution of the `INSERT INTO SELECT` statement, if TiDB pushes down the `SELECT` subquery to TiFlash, the TiFlash query result can be saved to a TiDB table specified in the `INSERT INTO` clause. For TiDB versions earlier than v6.5.0, the TiFlash query results are read-only, so if you want to save TiFlash query results, you have to obtain them from the application level, and then save them in a separate transaction or process.
 
 > **Note:**
 >
-> - By default ([`tidb_allow_mpp = ON`](/system-variables.md#tidb_allow_mpp-new-in-v50)), the TiDB optimizer intelligently chooses to push down queries to TiKV or TiFlash based on the query cost. To enforce that the queries are pushed down to TiFlash, you can set the system variable [`tidb_enforce_mpp`](/system-variables.md#tidb_enforce_mpp-new-in-v51) to `ON`.
-> - During the experimental phase, this feature is disabled by default. To enable this feature, you can set the system variable [`tidb_enable_tiflash_read_for_write_stmt`](/system-variables.md#tidb_enable_tiflash_read_for_write_stmt-new-in-v630) to `ON`.
+> By default ([`tidb_allow_mpp = ON`](/system-variables.md#tidb_allow_mpp-new-in-v50)), the optimizer intelligently decides whether to push a query down to TiFlash based on the [SQL mode](/sql-mode.md) and the cost estimates of the TiFlash replica. 
+>
+> - If the [SQL mode](/sql-mode.md) of the current session is not strict (which means the `sql_mode` value does not contain `STRICT_TRANS_TABLES`' and `STRICT_ALL_TABLES`), the optimizer intelligently decides whether to push the `SELECT` subquery in `INSERT INTO SELECT` down to TiFlash based on the cost estimates of the TiFlash replica. In this mode, if you want to ignore the cost estimates of the optimizer and enforce that the queries are pushed down to TiFlash, you can set the [`tidb_enforce_mpp`](/system-variables.md#tidb_enforce_mpp-new-in-v51) system variable to `ON`. 
+> - If the [SQL mode](/sql-mode.md) of the current session is strict (which means the `sql_mode` value contains either `STRICT_TRANS_TABLES` or `STRICT_ALL_TABLES`), the `SELECT` subquery in `INSERT INTO SELECT` cannot be pushed down to TiFlash.
 
 The syntax of `INSERT INTO SELECT` is as follows.
 
