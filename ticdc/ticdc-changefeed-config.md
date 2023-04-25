@@ -118,8 +118,8 @@ protocol = "canal-json"
 terminator = ''
 # Date separator type used in the file directory. Value options are `none`, `year`, `month`, and `day`. `none` is the default value and means that the date is not separated. For more information, see <https://docs.pingcap.com/tidb/dev/ticdc-sink-to-cloud-storage#data-change-records>.
 date-separator = 'none'
-# Whether to use partitions as the separation string. The default value is false, which means that partitions in a table are not stored in separate directories. For more information, see <https://docs.pingcap.com/tidb/dev/ticdc-sink-to-cloud-storage#data-change-records)>.
-enable-partition-separator = false
+# Whether to use partitions as the separation string. The default value is true, which means that partitions in a table are stored in separate directories. It is recommended that you keep the value as `true` to avoid potential data loss in downstream partitioned tables <https://github.com/pingcap/tiflow/issues/8724>. For usage examples, see <https://docs.pingcap.com/tidb/dev/ticdc-sink-to-cloud-storage#data-change-records)>.
+enable-partition-separator = true
 
 # Since v6.5.0, TiCDC supports saving data changes to storage services in CSV format. Ignore the following configurations if you replicate data to MQ or MySQL sinks.
 [sink.csv]
