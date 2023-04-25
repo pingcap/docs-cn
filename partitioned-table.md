@@ -198,11 +198,7 @@ It will partition the data by year and by name in the ranges ['', 'G'), ['G', 'M
 
 Range INTERVAL partitioning is an extension of Range partitioning, which allows you to create partitions of a specified interval easily. Starting from v6.3.0, INTERVAL partitioning is introduced in TiDB as syntactic sugar.
 
-> **Warning:**
->
-> This is an experimental feature, which might be changed or removed without prior notice. The syntax and implementation may change before GA. If you find a bug, please open an issue in the [TiDB repository](https://github.com/pingcap/tidb/issues).
-
-The sytax is as follows:
+The syntax is as follows:
 
 ```sql
 PARTITION BY RANGE [COLUMNS] (<partitioning expression>)
