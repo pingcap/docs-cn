@@ -95,9 +95,9 @@ TiDB 版本：7.1.0 (upcoming)
 
 * 支持 [Fast Online DDL](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 的检查点机制，提升容错性和自动恢复能力 [#42164](https://github.com/pingcap/tidb/issues/42164) @[tangenta](https://github.com/tangenta) **tw:ran-huang**
 
-    TiDB v7.1.0 引入 [Fast Online DDL](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 的检查点机制，可以大幅提升 Fast Online DDL 的容错性和自动恢复能力。即使在 DDL Owner 切换的情况下，TiDB 也能够通过周期性记录并同步 DDL 进度，让新的 DDL Owner 仍能以 Fast Online DDL 的方式执行切换前的 DDL 语句，无需手动取消和重新执行 DDL 语句，从而让 DDL 执行更加稳定高效。
+    TiDB v7.1.0 引入 [Fast Online DDL](/ddl-introduction.md) 的检查点机制，可以大幅提升 Fast Online DDL 的容错性和自动恢复能力。即使 TiDB owner 因故障重启或者切换，TiDB 也能够通过自动定期保存的检查点恢复部分进度，从而让 DDL 执行更加稳定高效。
 
-    更多信息，请参考[用户文档](/ddl-introduction.md)。
+    更多信息，请参考[用户文档](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入)。
 
 * BR 备份恢复工具支持断点恢复 [#42339](https://github.com/pingcap/tidb/issues/42339) @[Leavrth](https://github.com/Leavrth) **tw:Oreoxmt**
 
