@@ -38,8 +38,7 @@ TiDB 版本：7.1.0 (upcoming)
   </tr>
   <tr>
     <td><a href="https://docs.pingcap.com/zh/tidb/dev/generated-columns" target="_blank">生成列</a> (GA)</td>
-    <td>生成列 (Generated Columns) 的值是通过实时计算列定义中的 SQL 表达式得到的。该功能将一些应用逻辑推向数据库层，从而提升查询效率。
-    </td>
+    <td>生成列 (Generated Columns) 的值是通过实时计算列定义中的 SQL 表达式得到的。该功能将一些应用逻辑推向数据库层，从而提升查询效率。</td>
   </tr>
 </tbody>
 </table>
@@ -48,7 +47,7 @@ TiDB 版本：7.1.0 (upcoming)
 
 ### 性能
 
-* TiFlash 查询支持延迟物化功能 (GA) [#5829](https://github.com/pingcap/tiflash/issues/5829) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger) **tw:qiancai**
+* TiFlash 查询支持延迟物化功能 (GA) [#5829](https://github.com/pingcap/tiflash/issues/5829) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
 
     在 v7.0.0 中，TiFlash 引入了延迟物化实验特性，用于优化查询性能。该特性默认关闭（系统变量 [`tidb_opt_enable_late_materialization`](/system-variables.md#tidb_opt_enable_late_materialization-从-v700-版本开始引入) 默认为 `OFF`）。当 `SELECT` 语句中包含过滤条件（`WHERE` 子句）时，TiFlash 默认会先读取该查询所需列的全部数据，然后再根据查询条件对数据进行过滤、聚合等计算任务。开启该特性后，TiFlash 支持下推部分过滤条件到 TableScan 算子，即先扫描过滤条件相关的列数据，过滤得到符合条件的行后，再扫描这些行的其他列数据，继续后续计算，从而减少 IO 扫描和数据处理的计算量。
 
@@ -56,7 +55,7 @@ TiDB 版本：7.1.0 (upcoming)
 
     更多信息，请参考[用户文档](/tiflash/tiflash-late-materialization.md)。
 
-* TiFlash 支持根据网络交换数据量自动选择 MPP 模式的 Join 算法 [#7084](https://github.com/pingcap/tiflash/issues/7084) @[solotzg](https://github.com/solotzg) **tw:qiancai**
+* TiFlash 支持根据网络交换数据量自动选择 MPP 模式的 Join 算法 [#7084](https://github.com/pingcap/tiflash/issues/7084) @[solotzg](https://github.com/solotzg)
 
     TiFlash MPP 模式有多种 Join 算法。在 v7.1.0 之前的版本中，TiDB 根据变量 [`tidb_broadcast_join_threshold_count`](/system-variables.md#tidb_broadcast_join_threshold_count-从-v50-版本开始引入) 和 [`tidb_broadcast_join_threshold_size`](/system-variables.md#tidb_broadcast_join_threshold_count-从-v50-版本开始引入) 以及实际数据量决定 TiFlash MPP 模式是否使用 Broadcast Hash Join 算法。
 
@@ -64,13 +63,13 @@ TiDB 版本：7.1.0 (upcoming)
 
     更多信息，请参考[用户文档](/tiflash/use-tiflash-mpp-mode.md#mpp-模式的算法支持)。
 
-* 支持自适应副本读取缓解读热点 [#14151](https://github.com/tikv/tikv/issues/14151) @[sticnarf](https://github.com/sticnarf) @[you06](https://github.com/you06) **tw:Oreoxmt**
+* 支持自适应副本读取缓解读热点 [#14151](https://github.com/tikv/tikv/issues/14151) @[sticnarf](https://github.com/sticnarf) @[you06](https://github.com/you06)
 
     在读热点场景中，热点 TiKV 无法及时处理读请求，导致读请求排队。但是，此时并非所有 TiKV 资源都已耗尽。为了降低延迟，TiDB v7.1.0 引入了负载自适应副本读取功能，允许从其他有可用资源的 TiKV 节点读取副本，而无需在热点 TiKV 节点排队等待。你可以通过 [`tidb_load_based_replica_read_threshold`](/system-variables.md#tidb_load_based_replica_read_threshold-从-v700-版本开始引入) 系统变量控制读请求的排队长度。当 leader 节点的预估排队时间超过该阈值时，TiDB 会优先从 follower 节点读取数据。在读热点的情况下，与不打散读热点相比，该功能可提高读取吞吐量 70%～200%。
 
     更多信息，请参考[用户文档](/troubleshoot-hot-spot-issues.md#打散读热点)。
 
-* 支持缓存非 Prepare 语句的执行计划 (GA) [#36598](https://github.com/pingcap/tidb/issues/36598) @[qw4990](https://github.com/qw4990) **tw:Oreoxmt**
+* 支持缓存非 Prepare 语句的执行计划 (GA) [#36598](https://github.com/pingcap/tidb/issues/36598) @[qw4990](https://github.com/qw4990)
 
     TiDB v7.0.0 引入了非 Prepare 语句的执行计划缓存作为实验特性，以提升在线交易场景的并发处理能力。该功能在 v7.1.0 正式 GA 并默认打开，支持缓存更多模式的 SQL。
 
@@ -82,7 +81,7 @@ TiDB 版本：7.1.0 (upcoming)
 
 ### 稳定性
 
-* 资源管控成为正式功能 (GA) [#38825](https://github.com/pingcap/tidb/issues/38825) @[nolouch](https://github.com/nolouch) @[BornChanger](https://github.com/BornChanger) @[glorv](https://github.com/glorv) @[tiancaiamao](https://github.com/tiancaiamao) @[Connor1996](https://github.com/Connor1996) @[JmPotato](https://github.com/JmPotato) @[hnes](https://github.com/hnes) @[CabinfeverB](https://github.com/CabinfeverB) @[HuSharp](https://github.com/HuSharp) **tw:hfxsd**
+* 资源管控成为正式功能 (GA) [#38825](https://github.com/pingcap/tidb/issues/38825) @[nolouch](https://github.com/nolouch) @[BornChanger](https://github.com/BornChanger) @[glorv](https://github.com/glorv) @[tiancaiamao](https://github.com/tiancaiamao) @[Connor1996](https://github.com/Connor1996) @[JmPotato](https://github.com/JmPotato) @[hnes](https://github.com/hnes) @[CabinfeverB](https://github.com/CabinfeverB) @[HuSharp](https://github.com/HuSharp)
 
     TiDB 持续增强资源管控能力，在 v7.1.0 该功能正式 GA。该特性将极大地提升 TiDB 集群的资源利用率和性能表现。资源管控特性的引入对 TiDB 具有里程碑的意义，你可以将一个分布式数据库集群划分成多个逻辑单元，将不同的数据库用户映射到对应的资源组中，并根据实际需求设置每个资源组的配额。当集群资源紧张时，同一资源组内的会话所使用的全部资源将受到配额限制，防止某一资源组的过度消耗对其他资源组的会话造成影响。
 
@@ -92,13 +91,13 @@ TiDB 版本：7.1.0 (upcoming)
 
     更多信息，请参考[用户文档](/tidb-resource-control.md)。
 
-* 支持 [Fast Online DDL](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 的检查点机制，提升容错性和自动恢复能力 [#42164](https://github.com/pingcap/tidb/issues/42164) @[tangenta](https://github.com/tangenta) **tw:ran-huang**
+* 支持 [Fast Online DDL](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 的检查点机制，提升容错性和自动恢复能力 [#42164](https://github.com/pingcap/tidb/issues/42164) @[tangenta](https://github.com/tangenta)
 
     TiDB v7.1.0 引入 [Fast Online DDL](/ddl-introduction.md) 的检查点机制，可以大幅提升 Fast Online DDL 的容错性和自动恢复能力。即使 TiDB owner 因故障重启或者切换，TiDB 也能够通过自动定期保存的检查点恢复部分进度，从而让 DDL 执行更加稳定高效。
 
     更多信息，请参考[用户文档](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入)。
 
-* BR 备份恢复工具支持断点恢复 [#42339](https://github.com/pingcap/tidb/issues/42339) @[Leavrth](https://github.com/Leavrth) **tw:Oreoxmt**
+* BR 备份恢复工具支持断点恢复 [#42339](https://github.com/pingcap/tidb/issues/42339) @[Leavrth](https://github.com/Leavrth)
 
     快照恢复或日志恢复会因为一些可恢复性错误导致提前结束，例如硬盘空间占满、节点宕机等突发情况。在 TiDB v7.1.0 之前，即使错误被及时处理，之前恢复的进度也会作废，你需要重新进行恢复。对大规模集群来说，会造成大量额外成本。
 
@@ -106,7 +105,7 @@ TiDB 版本：7.1.0 (upcoming)
 
     更多信息，请参考[用户文档](/br/br-checkpoint-restore.md)。
 
-* 优化统计信息缓存加载策略 [#42160](https://github.com/pingcap/tidb/issues/42160) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes) **tw:hfxsd**
+* 优化统计信息缓存加载策略 [#42160](https://github.com/pingcap/tidb/issues/42160) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes)
 
     开启统计信息同步加载后，TiDB 可以大幅减少启动时必须载入的统计信息的数量，从而提升启动过程中统计信息的加载速度。该特性提升了 TiDB 在复杂运行环境下的稳定性，并降低了部分 TiDB 节点重启对整体服务的影响。
 
@@ -114,7 +113,7 @@ TiDB 版本：7.1.0 (upcoming)
 
 ### SQL 功能
 
-* 支持通过 `INSERT INTO SELECT` 语句保存 TiFlash 查询结果 (GA) [#37515](https://github.com/pingcap/tidb/issues/37515) @[gengliqi](https://github.com/gengliqi) **tw:qiancai**
+* 支持通过 `INSERT INTO SELECT` 语句保存 TiFlash 查询结果 (GA) [#37515](https://github.com/pingcap/tidb/issues/37515) @[gengliqi](https://github.com/gengliqi)
 
     从 v6.5.0 起，TiDB 支持下推 `INSERT INTO SELECT` 语句中的 `SELECT` 子句（分析查询）到 TiFlash，你可以将 TiFlash 的查询结果方便地保存到 `INSERT INTO` 指定的 TiDB 表中供后续分析使用，起到了结果缓存（即结果物化）的效果。
 
@@ -122,27 +121,27 @@ TiDB 版本：7.1.0 (upcoming)
 
     更多信息，请参考[用户文档](/tiflash/tiflash-results-materialization.md)。
 
-* MySQL 兼容的多值索引 (Multi-Valued Index) 成为正式功能 (GA) [#39592](https://github.com/pingcap/tidb/issues/39592) @[xiongjiwei](https://github.com/xiongjiwei) @[qw4990](https://github.com/qw4990) @[YangKeao](https://github.com/YangKeao) **tw:ran-huang**
+* MySQL 兼容的多值索引 (Multi-Valued Index) 成为正式功能 (GA) [#39592](https://github.com/pingcap/tidb/issues/39592) @[xiongjiwei](https://github.com/xiongjiwei) @[qw4990](https://github.com/qw4990) @[YangKeao](https://github.com/YangKeao)
 
     过滤 JSON 列中某个数组的值是一种常见操作，但使用普通索引无法加速此过程。在数组上创建多值索引可以大幅提升过滤性能。如果 JSON 列中的某个数组上存在多值索引，则函数 `MEMBER OF()`、`JSON_CONTAINS()` 和 `JSON_OVERLAPS()` 的检索条件可以利用该多值索引进行过滤，从而减少大量的 I/O 消耗，提升执行速度。
 
     在 v7.1.0 中，TiDB 多值索引成为正式功能 (GA)，支持更完整的数据类型，并与 TiDB 的工具链兼容。你可以在生产环境利用多值索引来加速对 JSON 数组的检索操作。
 
-    更多信息，请参考[用户文档](/sql-statements/sql-statement-create-index.md#多值索引)
+    更多信息，请参考[用户文档](/sql-statements/sql-statement-create-index.md#多值索引)。
 
-* 完善 Hash 分区表和 Key 分区表的分区管理功能 [#42728](https://github.com/pingcap/tidb/issues/42728) @[mjonss](https://github.com/mjonss) **tw:qiancai**
+* 完善 Hash 分区表和 Key 分区表的分区管理功能 [#42728](https://github.com/pingcap/tidb/issues/42728) @[mjonss](https://github.com/mjonss)
 
     在 v7.1.0 之前，TiDB 中的 Hash 分区表和 Key 分区表只支持 `TRUNCATE PARTITION` 分区管理。从 v7.1.0 开始，Hash 分区表和 Key 分区表新增支持 `ADD PARTITION` 和 `COALESCE PARTITION` 分区管理。你可以根据需要灵活调整 Hash 分区表和 Key 分区表的分区数量。例如，通过 `ADD PARTITION` 语句增加分区数量，或通过 `COALESCE PARTITION` 语句减少分区数量。
 
     更多信息，请参考[用户文档](/partitioned-table.md#)。
 
-* Range INTERVAL 分区定义语法成为正式功能 (GA) [#35683](https://github.com/pingcap/tidb/issues/35683) @[mjonss](https://github.com/mjonss) **tw:qiancai**
+* Range INTERVAL 分区定义语法成为正式功能 (GA) [#35683](https://github.com/pingcap/tidb/issues/35683) @[mjonss](https://github.com/mjonss)
 
-    在 v6.3.0 中引入的 Range INTERVAL 的分区定义语法成为正式功能 (GA)。通过该语法，你可以根据所需的间隔（interval）定义 Range 分区，不需要枚举所有分区，可大幅度缩短 Range 分区表的定义语句长度。语义与原有 Range 分区等价。
+    在 v6.3.0 中引入的 Range INTERVAL 的分区定义语法成为正式功能 (GA)。通过该语法，你可以根据所需的间隔 (interval) 定义 Range 分区，不需要枚举所有分区，可大幅度缩短 Range 分区表的定义语句长度。语义与原有 Range 分区等价。
 
     更多信息，请参考[用户文档](/partitioned-table.md#range-interval-分区)。
 
-* `LOAD DATA` 部分功能 GA [#40499](https://github.com/pingcap/tidb/issues/40499) @[lance6716](https://github.com/lance6716) **tw:hfxsd**
+* `LOAD DATA` 部分功能 GA [#40499](https://github.com/pingcap/tidb/issues/40499) @[lance6716](https://github.com/lance6716)
 
     在 TiDB v7.1.0 中，以下 `LOAD DATA` 功能 GA：
 
@@ -156,19 +155,19 @@ TiDB 版本：7.1.0 (upcoming)
 
   更多信息，请参考[用户文档](/sql-statements/sql-statement-load-data.md)。
 
-* `LOAD DATA` 集成 TiDB Lightning Physical Import Mode 的导入功能，提升导入性能（实验特性）[#42930](https://github.com/pingcap/tidb/issues/42930) @[D3Hunter](https://github.com/D3Hunter) **tw:hfxsd**
+* `LOAD DATA` 集成 TiDB Lightning Physical Import Mode 的导入功能，提升导入性能（实验特性）[#42930](https://github.com/pingcap/tidb/issues/42930) @[D3Hunter](https://github.com/D3Hunter)
 
     `LOAD DATA` 集成 TiDB Lightning 的物理导入模式 (Physical Import Mode)，你可以通过设置 `WITH import_mode = 'PHYSICAL'` 开启。相比逻辑导入模式 (Logical Import Mode)，可成倍提升数据导入的性能。
 
     更多信息，请参考[用户文档](/sql-statements/sql-statement-load-data.md)。
 
-* `LOAD DATA` 支持并发导入，提升导入性能（实验特性）[#40499](https://github.com/pingcap/tidb/issues/40499) @[lance6716](https://github.com/lance6716) **tw:hfxsd**
+* `LOAD DATA` 支持并发导入，提升导入性能（实验特性）[#40499](https://github.com/pingcap/tidb/issues/40499) @[lance6716](https://github.com/lance6716)
 
     在 v7.1.0 之前版本中，`LOAD DATA` 不支持并发导入数据，导致性能未达到预期。从 v7.1.0 开始，`LOAD DATA` 支持并发导入数据，你可以通过 `WITH thread=<number>` 提高并发度以提升导入的性能。在内部测试中，相较于 v7.0.0，测试负载下的逻辑导入性能提升了近 4 倍。
 
     更多信息，请参考[用户文档](/sql-statements/sql-statement-load-data.md)。
 
-* 生成列 (Generated Columns) 成为正式功能 (GA) @[bb7133](https://github.com/bb7133) **tw:ran-huang**
+* 生成列 (Generated Columns) 成为正式功能 (GA) @[bb7133](https://github.com/bb7133)
 
     生成列是数据库中非常有价值的一个功能。在创建表时，可以定义一列的值由表中其他列的值计算而来，而不是由用户显式插入或更新。这个生成列可以是虚拟列 (Virtual Column) 或存储列 (Stored Column)。TiDB 在早期版本就提供了与 MySQL 兼容的生成列功能，在 v7.1.0 中这个功能正式 GA。
 
@@ -178,7 +177,7 @@ TiDB 版本：7.1.0 (upcoming)
 
 ### 数据库管理
 
-* DDL 任务支持暂停和恢复操作（实验特性）[#18015](https://github.com/pingcap/tidb/issues/18015) @[godouxm](https://github.com/godouxm) **tw:ran-huang**
+* DDL 任务支持暂停和恢复操作（实验特性）[#18015](https://github.com/pingcap/tidb/issues/18015) @[godouxm](https://github.com/godouxm)
 
     TiDB v7.1.0 之前的版本中，当 DDL 任务执行期间遇到业务高峰时间点时，为了减少对业务的影响，只能手动取消 DDL 任务。TiDB v7.1.0 引入了 DDL 任务的暂停和恢复功能，你可以在高峰时间点暂停 DDL 任务，等到业务高峰时间结束后再恢复 DDL 任务，从而避免了 DDL 操作对业务负载的影响。
 
@@ -193,7 +192,7 @@ TiDB 版本：7.1.0 (upcoming)
 
 ### 可观测性
 
-* 增加优化器诊断信息 [#43122](https://github.com/pingcap/tidb/issues/43122) @[time-and-fate](https://github.com/time-and-fate) **tw:hfxsd**
+* 增加优化器诊断信息 [#43122](https://github.com/pingcap/tidb/issues/43122) @[time-and-fate](https://github.com/time-and-fate)
 
     获取充足的信息是 SQL 性能诊断的关键。在 v7.1.0 中，TiDB 持续为各种诊断工具增加优化器运行信息，以便更好地解释执行计划如何被选择，从而协助定位 SQL 性能问题。这些信息包括：
 
@@ -205,7 +204,7 @@ TiDB 版本：7.1.0 (upcoming)
 
 ### 安全
 
-* 更换 TiFlash 系统表信息的查询接口 [#6941](https://github.com/pingcap/tiflash/issues/6941) @[flowbehappy](https://github.com/flowbehappy) **tw:qiancai**
+* 更换 TiFlash 系统表信息的查询接口 [#6941](https://github.com/pingcap/tiflash/issues/6941) @[flowbehappy](https://github.com/flowbehappy)
 
     从 v7.1.0 起，TiFlash 在向 TiDB 提供 [`INFORMATION_SCHEMA.TIFLASH_TABLES`](/information-schema/information-schema-tiflash-tables.md) 和 [`INFORMATION_SCHEMA.TIFLASH_SEGMENTS`](/information-schema/information-schema-tiflash-segments.md) 系统表的查询服务时，不再使用 HTTP 端口，而是使用 gRPC 端口，从而避免 HTTP 服务的安全风险。
 
@@ -213,19 +212,19 @@ TiDB 版本：7.1.0 (upcoming)
 
 > **注意：**
 >
-> 以下为从 v7.0.0 升级至当前版本 (v7.1.0) 所需兼容性变更信息。如果从 v6.6.0 或之前版本升级到当前版本，可能也需要考虑和查看中间版本 release notes 中提到的兼容性变更信息。
+> 以下为从 v7.0.0 升级至当前版本 (v7.1.0) 所需兼容性变更信息。如果从 v6.6.0 或之前版本升级到当前版本，可能也需要考虑和查看中间版本 Release Notes 中提到的兼容性变更信息。
 
 ### 行为变更
 
-* 为了提高安全性，TiFlash 废弃了 HTTP 服务端口（默认 `8123`），采用 gRPC 端口作为替代 **tw:qiancai**
+* 为了提高安全性，TiFlash 废弃了 HTTP 服务端口（默认 `8123`），采用 gRPC 端口作为替代
 
     如果你已经将 TiFlash 升级到 v7.1.0，那么在升级 TiDB 到 v7.1.0 的过程中，TiDB 无法读取 TiFlash 系统表（[`INFORMATION_SCHEMA.TIFLASH_TABLES`](/information-schema/information-schema-tiflash-tables.md) 和 [`INFORMATION_SCHEMA.TIFLASH_SEGMENTS`](/information-schema/information-schema-tiflash-segments.md)）。
 
-* [`SHOW LOAD DATA`](/sql-statements/sql-statement-show-load-data.md) 的返回值中废弃了参数 `Loaded_File_Size`，修改为参数 `Imported_Rows` **tw:hfxsd**
+* [`SHOW LOAD DATA`](/sql-statements/sql-statement-show-load-data.md) 的返回值中废弃了参数 `Loaded_File_Size`，修改为参数 `Imported_Rows`
 
 ### 系统变量
 
-| 变量名  | 修改类型 | 描述 |
+| 变量名 | 修改类型 | 描述 |
 |--------|------------------------------|------|
 | [`tidb_enable_tiflash_read_for_write_stmt`](/system-variables.md#tidb_enable_tiflash_read_for_write_stmt-从-v630-版本开始引入) | 废弃 | 从 v7.1.0 开始，该变量废弃并且默认值从 `OFF` 修改为 `ON`。当 [`tidb_allow_mpp = ON`](/system-variables.md#tidb_allow_mpp-从-v50-版本开始引入) 时，优化器将根据 [SQL 模式](/sql-mode.md)及 TiFlash 副本的代价估算自行决定是否将查询下推至 TiFlash。 |
 | [`tidb_non_prepared_plan_cache_size`](/system-variables.md#tidb_non_prepared_plan_cache_size) | 废弃 | 从 v7.1.0 起，该变量被废弃，你可以使用 [`tidb_session_plan_cache_size`](/system-variables.md#tidb_session_plan_cache_size-从-v710-版本开始引入) 控制 Plan Cache 最多能够缓存的计划数量。 |
@@ -255,7 +254,7 @@ TiDB 版本：7.1.0 (upcoming)
 
 + TiFlash
 
-    - 提升 TiFlash 在存算分离架构下的性能和稳定性 [#6882](https://github.com/pingcap/tiflash/issues/6882) @[JaySon-Huang](https://github.com/JaySon-Huang) @[breezewish](https://github.com/breezewish) @[JinheLin](https://github.com/JinheLin) **tw:qiancai**
+    - 提升 TiFlash 在存算分离架构下的性能和稳定性 [#6882](https://github.com/pingcap/tiflash/issues/6882) @[JaySon-Huang](https://github.com/JaySon-Huang) @[breezewish](https://github.com/breezewish) @[JinheLin](https://github.com/JinheLin)
     - 支持在 Semi Join 或 Anti Semi Join 中，通过选择较小的表作为 Build 端来优化查询性能 [#7280](https://github.com/pingcap/tiflash/issues/7280) @[yibin87](https://github.com/yibin87)
 
 ## 贡献者
