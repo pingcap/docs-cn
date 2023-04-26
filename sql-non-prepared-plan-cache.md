@@ -22,6 +22,8 @@ To enable or disable the non-prepared plan cache, you can set the [`tidb_enable_
 
 Before TiDB v7.1.0, the default value of `tidb_enable_non_prepared_plan_cache` is `OFF`, which means that the non-prepared plan cache is disabled by default. Starting from v7.1.0, the default value is `ON`, which means that the non-prepared plan cache is enabled by default.
 
+Starting from v7.1.0, you can control the maximum size of a plan that can be cached using the system variable [`tidb_plan_cache_max_plan_size`](/system-variables.md#tidb_plan_cache_max_plan_size-new-in-v710). The default value is 2 MB. If the size of a plan exceeds this value, the plan will not be cached.
+
 > **Note:**
 >
 > The memory specified by `tidb_session_plan_cache_size` is shared between the prepared and non-prepared plan cache. If you have enabled the prepared plan cache for the current cluster, enabling the non-prepared plan cache might reduce the hit rate of the original prepared plan cache.
