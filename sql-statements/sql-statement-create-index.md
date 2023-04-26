@@ -153,12 +153,12 @@ Query OK, 0 rows affected (0.31 sec)
 
 在一些场景中，查询的条件往往是基于某个表达式进行过滤。在这些场景中，一般的索引不能生效，执行查询只能遍历整个表，导致查询性能较差。表达式索引是一种特殊的索引，能将索引建立于表达式上。在创建了表达式索引后，基于表达式的查询便可以使用上索引，极大提升查询的性能。
 
-假设要基于 `col1+cols2` 这个表达式建立索引，示例的 SQL 语句如下：
+假设要基于 `lower(col1)` 这个表达式建立索引，示例的 SQL 语句如下：
 
 {{< copyable "sql" >}}
 
 ```sql
-CREATE INDEX idx1 ON t1 ((col1 + col2));
+CREATE INDEX idx1 ON t1 ((lower(col1)));
 ```
 
 或者等价的语句：
@@ -166,7 +166,7 @@ CREATE INDEX idx1 ON t1 ((col1 + col2));
 {{< copyable "sql" >}}
 
 ```sql
-ALTER TABLE t1 ADD INDEX idx1((col1 + col2));
+ALTER TABLE t1 ADD INDEX idx1((lower(col1)));
 ```
 
 还可以在建表的同时指定表达式索引：
@@ -174,8 +174,12 @@ ALTER TABLE t1 ADD INDEX idx1((col1 + col2));
 {{< copyable "sql" >}}
 
 ```sql
-CREATE TABLE t1(col1 char(10), col2 char(10), key index((col1 + col2)));
+CREATE TABLE t1(col1 char(10), col2 char(10), index((lower(col1))));
 ```
+
+> **注意：**
+>
+> 表达式索引中的表达式需要用 `(` 和 `)` 包围起来，否则会报语法错误。
 
 删除表达式索引与删除普通索引的方法一致：
 
@@ -186,6 +190,18 @@ DROP INDEX idx1 ON t1;
 ```
 
 > **注意：**
+> 
+> 表达式索引涉及众多表达式。为了确保正确性，当前仅允许经充分测试的一部分函数用于创建表达式索引，即生产环境中仅允许表达式中包含这些函数。这些函数可以通过查询变量 `tidb_allow_function_for_expression_index` 得到。在后续版本中，这些函数会持续增加。目前允许的函数如下: 
+> 
+> ```
+> json_array, json_array_append, json_array_insert, json_contains, json_contains_path, json_depth, json_extract, json_insert, json_keys, json_length, json_merge_patch, json_merge_preserve, json_object, json_pretty, json_quote, json_remove, json_replace, json_search, json_set, json_storage_size, json_type, json_unquote, json_valid, lower, md5, reverse, tidb_shard, upper, vitess_hash
+> ```
+>
+> 对于以上列表之外的函数，由于未完成充分测试，当前仍为实验特性，不建议在生产环境中使用。其他的表达式例如运算符、`cast` 和 `case when` 也同样为实验特性，不建议在生产环境中使用。如果仍然希望使用，可以在 [TiDB 配置文件](/tidb-configuration-file.md#allow-expression-index-从-v400-版本开始引入)中进行以下设置：
+>
+> ```sql
+> allow-expression-index = true
+> ```
 >
 > 表达式索引不能为主键。
 >
@@ -253,6 +269,117 @@ SELECT min(col1) FROM t GROUP BY lower(col1);
 
 表达式索引的语法和限制与 MySQL 相同，是通过将索引建立在隐藏的虚拟生成列 (generated virtual column) 上来实现的。因此所支持的表达式继承了虚拟生成列的所有[限制](/generated-columns.md#生成列的局限性)。
 
+## 多值索引
+
+多值索引是一种定义在数组列上的二级索引。在普通索引中，一条索引记录对应一条数据记录 (1:1)。而在多值索引中，存在多条索引记录对应一条数据记录 (N:1)。多值索引用于索引 JSON 数组。例如，一个定义在 `zipcode` 字段上的多值索引会对每一个 `zipcode` 中的记录产生一条索引记录。
+
+```json
+{
+    "user":"Bob",
+    "user_id":31,
+    "zipcode":[94477,94536]
+}
+```
+
+### 创建多值索引
+
+创建多值索引与创建表达式索引的方法一致。在索引定义中使用 `CAST(... AS ... ARRAY)` 表达式来创建一个多值索引。
+
+```sql
+mysql> CREATE TABLE customers (
+    id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    name CHAR(10),
+    custinfo JSON,
+    INDEX zips((CAST(custinfo->'$.zipcode' AS UNSIGNED ARRAY)))
+);
+```
+
+多值索引可以被定义为唯一索引：
+
+```sql
+mysql> CREATE TABLE customers (
+    id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    name CHAR(10),
+    custinfo JSON,
+    UNIQUE INDEX zips( (CAST(custinfo->'$.zipcode' AS UNSIGNED ARRAY)))
+);
+```
+
+当被定义为唯一索引时，试图插入重复数据将会报错：
+
+```sql
+mysql> INSERT INTO customers VALUES (1, 'pingcap', '{"zipcode": [1,2]}');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO customers VALUES (1, 'pingcap', '{"zipcode": [2,3]}');
+ERROR 1062 (23000): Duplicate entry '2' for key 'customers.zips'
+```
+
+允许同一条记录存在重复的值，不同记录出现重复值时将报错：
+
+```sql
+-- 插入成功
+mysql> INSERT INTO t1 VALUES('[1,1,2]');
+mysql> INSERT INTO t1 VALUES('[3,3,3,4,4,4]');
+
+-- 插入失败
+mysql> INSERT INTO t1 VALUES('[1,2]');
+mysql> INSERT INTO t1 VALUES('[2,3]');
+```
+
+多值索引也可以被定义为复合索引：
+
+```sql
+mysql> CREATE TABLE customers (
+    id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    name CHAR(10),
+    custinfo JSON,
+    INDEX zips(name, (CAST(custinfo->'$.zipcode' AS UNSIGNED ARRAY)))
+);
+```
+
+当被定义为复合索引时，多值部分可以出现在任意位置，但是只能出现一次。
+
+```sql
+mysql> CREATE TABLE customers (
+    id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    name CHAR(10),
+    custinfo JSON,
+    INDEX zips(name, (CAST(custinfo->'$.zipcode' AS UNSIGNED ARRAY)), (CAST(custinfo->'$.zipcode' AS UNSIGNED ARRAY)))
+);
+ERROR 1235 (42000): This version of TiDB doesn't yet support 'more than one multi-valued key part per index'.
+```
+
+写入的数据必须与多值索引的定义类型完全匹配，否则数据写入失败：
+
+```sql
+-- zipcode 字段中的所有元素必须为 UNSIGNED 类型
+mysql> INSERT INTO customers VALUES (1, 'pingcap', '{"zipcode": [-1]}');
+ERROR 3752 (HY000): Value is out of range for expression index 'zips' at row 1
+
+mysql> INSERT INTO customers VALUES (1, 'pingcap', '{"zipcode": ["1"]}'); -- 与 MySQL 不兼容
+ERROR 3903 (HY000): Invalid JSON value for CAST for expression index 'zips'
+
+mysql> INSERT INTO customers VALUES (1, 'pingcap', '{"zipcode": [1]}');
+Query OK, 1 row affected (0.00 sec)
+```
+
+### 使用多值索引
+
+请参考[索引的选择](/choose-index.md#使用多值索引)。
+
+### 特性与限制
+
+- 如果是空 JSON 数组，则不会有对应的索引记录。
+- `CAST(... AS ... ARRAY)` 中的目标类型不能是 `BINARY`、`JSON`、`YEAR`、`FLOAT`、`DECIMAL`。其中源类型必须是 JSON。
+- 无法使用多值索引进行排序。
+- 只允许在 JSON 数组上建立多值索引。
+- 多值索引不可以作为主键或外键。
+- 多值索引使用额外的存储空间为：平均每行数组元素个数 * 普通二级索引使用空间。
+- 相比于普通索引，DML 会对多值索引产生更多的索引记录的修改，因此多值索引会带来比普通索引更大的性能影响。
+- 由于多值索引是一种特殊的表达式索引，因此具有表达式索引的限制。
+- 使用备份恢复工具 (BR)、同步工具 (TiCDC)、导入工具 (TiDB Lightning) 无法将定义了多值索引的表备份、同步、导入到低于 v6.6.0 版本的 TiDB。
+
 ## 不可见索引
 
 不可见索引 (Invisible Indexes) 不会被查询优化器使用：
@@ -266,15 +393,16 @@ CREATE UNIQUE INDEX c1 ON t1 (c1) INVISIBLE;
 
 ## 相关系统变量
 
-和 `CREATE INDEX` 语句相关的系统变量有 `tidb_ddl_reorg_worker_cnt` 、`tidb_ddl_reorg_batch_size` 、`tidb_ddl_reorg_priority` 和 `tidb_enable_auto_increment_in_generated`，具体可以参考[系统变量](/system-variables.md#tidb_ddl_reorg_worker_cnt)。
+和 `CREATE INDEX` 语句相关的系统变量有 `tidb_ddl_enable_fast_reorg`、`tidb_ddl_reorg_worker_cnt` 、`tidb_ddl_reorg_batch_size` 、`tidb_ddl_reorg_priority` 和 `tidb_enable_auto_increment_in_generated`，具体可以参考[系统变量](/system-variables.md#tidb_ddl_reorg_worker_cnt)。
 
 ## MySQL 兼容性
 
-* 不支持 `FULLTEXT`，`HASH` 和 `SPATIAL` 索引。
+* TiDB 支持解析 `FULLTEXT` 和 `SPATIAL` 语法，但尚不支持使用 `FULLTEXT`，`HASH` 和 `SPATIAL` 索引。
 * 不支持降序索引 （类似于 MySQL 5.7）。
 * 无法向表中添加 `CLUSTERED` 类型的 `PRIMARY KEY`。要了解关于 `CLUSTERED` 主键的详细信息，请参考[聚簇索引](/clustered-indexes.md)。
 * 表达式索引与视图存在兼容性问题。通过视图进行查询时，无法使用上表达式索引。
 * 表达式索引与 Binding 存在兼容性问题。当表达式索引中的表达式存在常量时，对应查询所建的 Binding 会扩大范围。假设表达式索引中的表达式为 `a+1`，对应的查询条件为 `a+1 > 2`。则建立的 Binding 为 `a+? > ?`，这会导致像 `a+2 > 2` 这样的查询也会强制使用表达式索引，得到一个较差的执行计划。这同样影响 SQL Plan Management (SPM) 中的捕获和演进功能。
+* 多值索引写入的数据必须与定义类型完全匹配，否则数据写入失败。详见[创建多值索引](/sql-statements/sql-statement-create-index.md#创建多值索引)。
 
 ## 另请参阅
 

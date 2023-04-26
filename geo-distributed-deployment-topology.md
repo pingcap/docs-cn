@@ -67,7 +67,7 @@ aliases: ['/docs-cn/dev/geo-distributed-deployment-topology/']
     replication.location-labels: ["zone","dc","rack","host"]
     ```
 
-- 调整 Raft Group 的副本数据量为 5 ，保证集群的高可用性。
+- 调整 Raft Group 的副本数据量为 5，保证集群的高可用性。
 
     ```yaml
     replication.max-replicas: 5
@@ -91,4 +91,4 @@ aliases: ['/docs-cn/dev/geo-distributed-deployment-topology/']
 > **注意：**
 >
 > - 无需手动创建配置文件中的 `tidb` 用户，TiUP cluster 组件会在目标主机上自动创建该用户。可以自定义用户，也可以和中控机的用户保持一致。
-> - 如果部署目录配置为相对路径，会部署在用户家目录下。
+> - 如果部署目录配置为相对路径，会部署在用户的 Home 目录下。

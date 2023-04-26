@@ -42,7 +42,20 @@ TiFlash 面板一共包括 **TiFlash-Summary**、**TiFlash-Proxy-Summary**、**T
 - Request Handle Duration：所有 TiFlash 实例处理 coprocessor 请求处理时间，处理时间为该 coprocessor 请求开始执行到执行结束的时间。
 - Response Bytes/Seconds：所有 TiFlash 实例应答总字节数。
 - Cop task memory usage：所有 TiFlash 实例处理 coprocessor 请求占用的总内存。
-- Handling Request Number：所有 TiFlash 实例正在处理的 coprocessor 请求数量之和。请求的分类与 Request QPS 中的相同.
+- Handling Request Number：所有 TiFlash 实例正在处理的 coprocessor 请求数量之和。请求的分类与 Request QPS 中的分类相同。
+- Threads of RPC：每个 TiFlash 实例使用的实时 RPC 线程数。
+- Max Threads of RPC：最近一段时间每个 TiFlash 实例使用的 RPC 线程数峰值。
+- Threads：每个 TiFlash 实例使用的实时线程数。
+- Max Threads：最近一段时间每个 TiFlash 实例使用的线程数峰值。
+
+## Task Scheduler
+
+- Min TSO：每个 TiFlash 实例上正在运行的查询语句中的最小 TSO，该值确保具有最小 TSO 的查询可以被调度。如果当前没有正在运行的查询，则该值为 `uint64` 整数型最大值。
+- Estimated Thread Usage and Limit：每个 TiFlash 实例上正在运行的所有任务占用的线程估值，以及该实例上任务调度器设置的估算线程用量的软限制和硬限制。
+- Active and Waiting Queries Count：每个 TiFlash 实例上正在运行的查询数量和正在等待的查询数量。
+- Active and Waiting Tasks Count：每个 TiFlash 实例上正在运行的任务数量和正在等待的任务数量。
+- Hard Limit Exceeded Count：每个 TiFlash 实例上运行中任务的估算线程用量超过了设置的硬限制的次数。
+- Task Waiting Duration：每个 TiFlash 实例上任务从初始化到被调度的等待时长。
 
 ## DDL
 
@@ -69,6 +82,20 @@ TiFlash 面板一共包括 **TiFlash-Summary**、**TiFlash-Proxy-Summary**、**T
 > **注意：**
 >
 > 目前这部分监控指标仅包含了 TiFlash 存储层的统计指标，未包括 TiFlash-Proxy 内的信息。
+
+## Storage Write Stall
+
+- Write & Delta Management Throughput：所有实例写入及数据整理的吞吐量。
+    - `throughput_write` 表示通过 Raft 进行数据同步的吞吐量。
+    - `throughput_delta-management` 表示数据整理的吞吐量。
+    - `total_write` 表示自上次启动以来的总写入字节数。
+    - `total_delta-management` 表示自上次启动以来数据整理的总字节数。
+- Write Stall Duration：每个实例写入和移除 Region 数据产生的卡顿时长。
+- Write Throughput By Instance：每个实例写入数据的吞吐量，包括 apply Raft 数据日志以及 Raft 快照的写入吞吐量。
+- Write Command OPS By Instance：每个实例收到各种命令的总计数。
+    - `write block` 表示通过 Raft 同步数据日志。
+    - `delete_range` 表示从该实例中删除一些 Region 或移动一些 Region 到该实例中。
+    - `ingest` 表示这些 Region 的快照被应用到这个实例中。
 
 ## Raft
 

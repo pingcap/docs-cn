@@ -6,7 +6,7 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
 # TiDB 集群报警规则
 
-本文介绍了 TiDB 集群中各组件的报警规则，包括 TiDB、TiKV、PD、TiDB Binlog、Node_exporter 和 Blackbox_exporter 的各报警项的规则描述及处理方法。
+本文介绍了 TiDB 集群中各组件的报警规则，包括 TiDB、TiKV、PD、TiFlash、TiDB Binlog、TiCDC、Node_exporter 和 Blackbox_exporter 的各报警项的规则描述及处理方法。
 
 按照严重程度由高到低，报警项可分为紧急级别 \> 严重级别 \> 警告级别三类。该分级适用于以下各组件的报警项。
 
@@ -119,7 +119,7 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
 * 规则描述：
 
-    TiDB 处理请求的延时。如果 .99 的延迟大于 1 秒，则报警。
+    TiDB 处理请求的延时。如果延迟大于 1 秒的概率超过 99%，则报警。
 
 * 处理方法：
 
@@ -143,11 +143,11 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
     * 重启 TiDB 以恢复服务。
     * 检查 TiDB Binlog 服务是否正常。
 
-#### `TiDB_tikvclient_backoff_total`
+#### `TiDB_tikvclient_backoff_seconds_count`
 
 * 报警规则：
 
-    `increase(tidb_tikvclient_backoff_total[10m]) > 10`
+    `increase(tidb_tikvclient_backoff_seconds_count[10m]) > 10`
 
 * 规则描述：
 
@@ -191,20 +191,20 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
 ### 紧急级别报警项
 
-#### `PD_cluster_offline_tikv_nums`
+#### `PD_cluster_down_store_nums`
 
 * 报警规则：
 
-    `sum(pd_cluster_status{type="store_down_count"}) > 0`
+    `(sum(pd_cluster_status{type="store_down_count"}) by (instance) > 0) and (sum(etcd_server_is_leader) by (instance) > 0)`
 
 * 规则描述：
 
-    PD 长时间（默认配置是 30 分钟）没有收到 TiKV 心跳。
+    PD 长时间（默认配置是 30 分钟）没有收到 TiKV/TiFlash 心跳。
 
 * 处理方法：
 
-    * 检查 TiKV 进程是否正常、网络是否隔离以及负载是否过高，并尽可能地恢复服务。
-    * 如果确定 TiKV 无法恢复，可做下线处理。
+    * 检查 TiKV/TiFlash 进程是否正常、网络是否隔离以及负载是否过高，并尽可能地恢复服务。
+    * 如果确定 TiKV/TiFlash 无法恢复，可做下线处理。
 
 ### 严重级别报警项
 
@@ -212,7 +212,7 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
 * 报警规则：
 
-    `histogram_quantile(0.99, sum(rate(etcd_disk_wal_fsync_duration_seconds_bucket[1m])) by (instance,job,le)) > 1`
+    `histogram_quantile(0.99, sum(rate(etcd_disk_wal_fsync_duration_seconds_bucket[1m])) by (instance, job, le)) > 1`
 
 * 规则描述：
 
@@ -228,45 +228,59 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
 * 报警规则：
 
-    `sum(pd_regions_status{type="miss_peer_region_count"}) > 100`
+    `(sum(pd_regions_status{type="miss-peer-region-count"}) by (instance)  > 100) and (sum(etcd_server_is_leader) by (instance) > 0)`
 
 * 规则描述：
 
-    Region 的副本数小于 `max-replicas` 配置的值。这通常是由于 TiKV 宕机等问题导致一段时间内一些 Region 缺副本。
+    Region 的副本数小于 `max-replicas` 配置的值。
 
 * 处理方法：
 
     * 查看是否有 TiKV 宕机或在做下线操作，尝试定位问题产生的原因。
-    * 观察 region health 面板，查看 `miss_peer_region_count` 是否在不断减少。
+    * 观察 region health 面板，查看 `miss-peer-region-count` 是否在不断减少。
 
 ### 警告级别报警项
 
-#### `PD_cluster_lost_connect_tikv_nums`
+#### `PD_cluster_lost_connect_store_nums`
 
 * 报警规则：
 
-    `sum(pd_cluster_status{type="store_disconnected_count"}) > 0`
+    `(sum(pd_cluster_status{type="store_disconnected_count"}) by (instance) > 0) and (sum(etcd_server_is_leader) by (instance) > 0)`
 
 * 规则描述：
 
-    PD 在 20 秒之内未收到 TiKV 上报心跳。正常情况下是每 10 秒收到 1 次心跳。
+    PD 在 20 秒之内未收到 TiKV/TiFlash 上报心跳。正常情况下是每 10 秒收到 1 次心跳。
 
 * 处理方法：
 
-    * 排查是否在重启 TiKV。
-    * 检查 TiKV 进程是否正常、网络是否隔离以及负载是否过高，并尽可能地恢复服务。
-    * 如果确定 TiKV 无法恢复，可做下线处理。
-    * 如果确定 TiKV 可以恢复，但在短时间内还无法恢复，可以考虑延长 `max-down-time` 配置，防止超时后 TiKV 被判定为无法恢复并开始搬移数据。
+    * 排查是否在重启 TiKV/TiFlash。
+    * 检查 TiKV/TiFlash 进程是否正常、网络是否隔离以及负载是否过高，并尽可能地恢复服务。
+    * 如果确定 TiKV/TiFlash 无法恢复，可做下线处理。
+    * 如果确定 TiKV/TiFlash 可以恢复，但在短时间内还无法恢复，可以考虑延长 `max-down-time` 配置，防止超时后 TiKV/TiFlash 被判定为无法恢复并开始搬移数据。
+
+#### `PD_cluster_unhealthy_tikv_nums`
+
+* 报警规则：
+
+    `(sum(pd_cluster_status{type="store_unhealth_count"}) by (instance) > 0) and (sum(etcd_server_is_leader) by (instance) > 0)`
+
+* 规则描述：
+
+    表示存在异常状态的 Store。如果这种状态持续一段时间（取决于配置的 [`max-store-down-time`](/pd-configuration-file.md#max-store-down-time)，默认值为 `30m`），Store 可能会变为 `Offline` 状态并触发 [`PD_cluster_down_store_nums`](#pd_cluster_down_store_nums) 报警。
+
+* 处理方法：
+
+    检查 TiKV Store 的状态。
 
 #### `PD_cluster_low_space`
 
 * 报警规则：
 
-    `sum(pd_cluster_status{type="store_low_space_count"}) > 0`
+    `(sum(pd_cluster_status{type="store_low_space_count"}) by (instance) > 0) and (sum(etcd_server_is_leader) by (instance) > 0)`
 
 * 规则描述：
 
-    表示 TiKV 节点空间不足。
+    表示 TiKV/TiFlash 节点空间不足。
 
 * 处理方法：
 
@@ -280,7 +294,7 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
 * 报警规则：
 
-    `histogram_quantile(0.99, sum(rate(etcd_network_peer_round_trip_time_seconds_bucket[1m])) by (To,instance,job,le)) > 1`
+    `histogram_quantile(0.99, sum(rate(etcd_network_peer_round_trip_time_seconds_bucket[1m])) by (To, instance, job, le)) > 1`
 
 * 规则描述：
 
@@ -295,7 +309,7 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
 * 报警规则：
 
-    `histogram_quantile(0.99, sum(rate(pd_client_request_handle_requests_duration_seconds_bucket{type="tso"}[1m])) by (instance,job,le)) > 0.1`
+    `histogram_quantile(0.99, sum(rate(pd_client_request_handle_requests_duration_seconds_bucket{type="tso"}[1m])) by (instance, job, le)) > 0.1`
 
 * 规则描述：
 
@@ -312,7 +326,7 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
 * 报警规则：
 
-    `sum(pd_regions_status{type="down_peer_region_count"}) > 0`
+    `(sum(pd_regions_status{type="down-peer-region-count"}) by (instance)  > 0) and (sum(etcd_server_is_leader) by (instance) > 0)`
 
 * 规则描述：
 
@@ -328,7 +342,7 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
 * 报警规则：
 
-    `sum(pd_regions_status{type="pending_peer_region_count"}) > 100`
+    `(sum(pd_regions_status{type="pending-peer-region-count"}) by (instance) > 100) and (sum(etcd_server_is_leader) by (instance) > 0)`
 
 * 规则描述：
 
@@ -343,7 +357,7 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
 * 报警规则：
 
-    `count(changes(pd_server_tso{type="save"}[10m]) > 0) >= 2`
+    `count(changes(pd_tso_events{type="save"}[10m]) > 0) >= 2`
 
 * 规则描述：
 
@@ -368,13 +382,13 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 * 处理方法：
 
     * 确认是否需要扩容。
-    * 排查是否有文件占用了大量磁盘空间，比如日志、快照或 core dump等文件。
+    * 排查是否有文件占用了大量磁盘空间，比如日志、快照或 core dump 等文件。
 
 #### `PD_system_time_slow`
 
 * 报警规则：
 
-    `changes(pd_server_tso{type="system_time_slow"}[10m]) >= 1`
+    `changes(pd_tso_events{type="system_time_slow"}[10m]) >= 1`
 
 * 规则描述：
 
@@ -399,6 +413,23 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
     * 检查 store 是否空间不足。
     * 根据 label 配置（如果有这个配置的话）来检查是否有可以补副本的 store。
 
+#### `PD_cluster_slow_tikv_nums`
+
+* 报警规则：
+
+    `sum(pd_cluster_status{type="store_slow_count"}) by (instance) > 0) and (sum(etcd_server_is_leader) by (instance) > 0`
+
+* 规则描述：
+
+    某一个 TiKV 被检测为慢节点。慢节点的检测由 TiKV `raftstore.inspect-interval` 参数控制，参见 [TiKV 配置文件描述](/tikv-configuration-file.md#inspect-interval)。
+
+* 处理方法：
+
+    * 观察 [**TiKV-Details** > **PD** 面板](/grafana-tikv-dashboard.md#pd)，查看 Store Slow Score 监控指标，找出指标数值超过 80 的节点，该节点即为被检测到的慢节点。
+    * 观察 [**TiKV-Details** > **Raft IO** 面板](/grafana-tikv-dashboard.md#raft-io)，查看延迟是否升高。如果延迟很高，表明磁盘可能存在瓶颈。
+    * 调大 TiKV [`raftstore.inspect-interval`](/tikv-configuration-file.md#inspect-interval) 参数，提高延迟检测的超时上限。
+    * 如果需要进一步分析报警的 TiKV 节点的性能问题，找到优化方法，可以参考[性能分析和优化方法](/performance-tuning-methods.md#storage-async-write-durationstore-duration-和-apply-duration)。
+
 ## TiKV 报警规则
 
 本节介绍了 TiKV 组件的报警项。
@@ -417,13 +448,13 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
 * 处理方法：
 
-    调整 `rockdb.defaultcf` 和 `rocksdb.writecf` 的 `block-cache-size` 的大小。
+    调整 `rocksdb.defaultcf` 和 `rocksdb.writecf` 的 `block-cache-size` 的大小。
 
 #### `TiKV_GC_can_not_work`
 
 * 报警规则：
 
-    `sum(increase(tikv_gcworker_gc_tasks_vec{task="gc"}[1d])) < 1 and sum(increase(tikv_gc_compaction_filter_perform[1d])) < 1`
+    `sum(increase(tikv_gcworker_gc_tasks_vec{task="gc"}[1d])) < 1 and (sum(increase(tikv_gc_compaction_filter_perform[1d])) < 1 and sum(increase(tikv_engine_event_total{db="kv", cf="write", type="compaction"}[1d])) >= 1)`
 
 * 规则描述：
 
@@ -433,7 +464,7 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
     1. 执行 `SELECT VARIABLE_VALUE FROM mysql.tidb WHERE VARIABLE_NAME="tikv_gc_leader_desc"` 来找到 gc leader 对应的 `tidb-server`；
     2. 查看该 `tidb-server` 的日志，grep gc_worker tidb.log；
-    3. 如果发现这段时间一直在 resolve locks（最后一条日志是 `start resolve locks`）或者 delete ranges（最后一条日志是 `start delete {number} ranges`），说明 GC 进程是正常的。否则需要报备开发人员 [support@pingcap.com](mailto:support@pingcap.com) 进行处理。
+    3. 如果发现这段时间一直在 resolve locks（最后一条日志是 `start resolve locks`）或者 delete ranges（最后一条日志是 `start delete {number} ranges`），说明 GC 进程是正常的。否则请从 PingCAP 官方或 TiDB 社区[获取支持](/support.md)。
 
 ### 严重级别报警项
 
@@ -465,9 +496,9 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
 * 处理方法：
 
-    1. 观察 Raft Propose 监控，看这个报警的 TiKV 节点是否明显有比其他 TiKV 高很多。如果是，表明这个 TiKV 上有热点，需要检查热点调度是否能正常工作。
-    2. 观察 Raft IO 监控，看延迟是否升高。如果延迟很高，表明磁盘可能有瓶颈。一个能缓解但不怎么安全的办法是将 `sync-log` 改成 `false`。
-    3. 观察 Raft Process 监控，看 tick duration 是否很高。如果是，需要在 `[raftstore]` 配置下加上 `raft-base-tick-interval = “2s”`。
+    1. 观察 [**TiKV-Details** > **Raft Propose** 面板](/grafana-tikv-dashboard.md#raft-propose)，查看这个报警的 TiKV 节点是否明显比其他 TiKV 高很多。如果是，表明这个 TiKV 上有热点，需要检查热点调度是否能正常工作。
+    2. 观察 [**TiKV-Details** > **Raft IO** 面板](/grafana-tikv-dashboard.md#raft-io)，查看延迟是否升高。如果延迟很高，表明磁盘可能存在瓶颈。
+    3. 观察 [**TiKV-Details** > **Raft process** 面板](/grafana-tikv-dashboard.md#raft-process)，关注 `tick duration` 是否很高。如果是，需要将 TiKV 配置项 [`raftstore.raft-base-tick-interval`](/tikv-configuration-file.md#raft-base-tick-interval) 设置为 `"2s"`。
 
 #### `TiKV_write_stall`
 
@@ -521,8 +552,9 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
 * 处理方法：
 
-    1. 检查 Raftstore 上的压力，参考 [`TiKV_channel_full_total`](#tikv_channel_full_total) 的处理方法。
-    2. 检查 apply worker 线程的压力。
+    1. 观察 [**TiKV-Details** > **Raft propose** 面板](/grafana-tikv-dashboard.md#raft-propose)，查看这个报警的 TiKV 节点的 **99% Propose wait duration per server** 是否明显比其他 TiKV 高很多。如果是，表明这个 TiKV 上有热点，需要检查热点调度是否能正常工作。
+    2. 观察 [**TiKV-Details** > **Raft IO** 面板](/grafana-tikv-dashboard.md#raft-io)，查看延迟是否升高。如果延迟很高，表明磁盘可能存在瓶颈。
+    3. 如果需要进一步分析报警的 TiKV 节点的性能问题，找到优化方法，可以参考[性能分析和优化方法](/performance-tuning-methods.md#storage-async-write-durationstore-duration-和-apply-duration)。
 
 #### `TiKV_coprocessor_request_wait_seconds`
 
@@ -594,11 +626,11 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
 * 报警规则：
 
-    `sum(rate(tikv_thread_cpu_seconds_total{name="apply_worker"}[1m])) by (instance) > 1.8`
+    `max(rate(tikv_thread_cpu_seconds_total{name=~"apply_.*"}[1m])) by (instance) > 0.9`
 
 * 规则描述：
 
-    Apply Raft log 线程压力太大，通常是因为写入太猛了。
+    Apply Raft log 线程压力太大，已经接近或超过 apply 线程的处理上限。通常是因为短期内写入的数据量太多造成的。
 
 ### 警告级别报警项
 
@@ -660,7 +692,7 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
 * 报警规则：
 
-    `histogram_quantile(0.99, sum(rate(tikv_scheduler_command_duration_seconds_bucket[1m])) by (le, instance, type)  / 1000) > 1`
+    `histogram_quantile(0.99, sum(rate(tikv_scheduler_command_duration_seconds_bucket[1m])) by (le, instance, type)) > 1`
 
 * 规则描述：
 
@@ -683,34 +715,6 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 * 处理方法：
 
     参考 [`TiKV_coprocessor_request_wait_seconds`](#tikv_coprocessor_request_wait_seconds) 的处理方法。
-
-#### `TiKV_coprocessor_request_error`
-
-* 报警规则：
-
-    `increase(tikv_coprocessor_request_error{reason=!"meet_lock"}[10m]) > 100`
-
-* 规则描述：
-
-    Coprocessor 的请求错误。
-
-* 处理方法：
-
-    Coprocessor 错误的主要原因分为 "lock"、"outdated" 和 "full" 等。"outdated" 表示请求超时，很可能是由于排队时间过久，或者单个请求的耗时比较长。"full" 表示 Coprocessor 的请求队列已经满了，可能是正在执行的请求比较耗时，导致新来的请求都在排队。耗时比较长的查询需要查看下对应的执行计划是否正确。
-
-#### `TiKV_coprocessor_request_lock_error`
-
-* 报警规则：
-
-    `increase(tikv_coprocessor_request_error{reason="meet_lock"}[10m]) > 10000`
-
-* 规则描述：
-
-    Coprocessor 请求锁的错误。
-
-* 处理方法：
-
-    Coprocessor 错误的主要原因分为 "lock"、"outdated"、"full" 等。"lock" 表示读到的数据正在写入，需要等待一会再读（TiDB 内部会自动重试）。少量这种错误不用关注，如果有大量这种错误，需要查看写入和查询是否有冲突。
 
 #### `TiKV_coprocessor_pending_request`
 
@@ -750,11 +754,19 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
     查看是哪一类任务的值偏高，通常 Coprocessor、apply worker 这类任务都可以在其他指标里找到解决办法。
 
-#### `TiKV_low_space_and_add_region`
+#### `TiKV_low_space`
 
 * 报警规则：
 
-    `count((sum(tikv_store_size_bytes{type="available"}) by (instance) / sum(tikv_store_size_bytes{type="capacity"}) by (instance) < 0.2) and (sum(tikv_raftstore_snapshot_traffic_total{type="applying"}) by (instance) > 0)) > 0`
+    `sum(tikv_store_size_bytes{type="available"}) by (instance) / sum(tikv_store_size_bytes{type="capacity"}) by (instance) < 0.2`
+
+* 规则描述：
+
+    TiKV 数据量超过节点配置容量或物理磁盘容量的 80%。
+
+* 处理方法：
+
+    确认节点空间均衡情况，做好扩容计划。
 
 #### `TiKV_approximate_region_size`
 
@@ -770,9 +782,17 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
     Region 分裂的速度不及写入的速度。为缓解这种情况，建议更新到支持 batch-split 的版本 (>= 2.1.0-rc1)。如暂时无法更新，可以使用 `pd-ctl operator add split-region <region_id> --policy=approximate` 手动分裂 Region。
 
+## TiFlash 报警规则
+
+关于 TiFlash 报警规则的详细描述，参见 [TiFlash 报警规则](/tiflash/tiflash-alert-rules.md)。
+
 ## TiDB Binlog 报警规则
 
 关于 TiDB Binlog 报警规则的详细描述，参见 [TiDB Binlog 集群监控报警文档](/tidb-binlog/monitor-tidb-binlog-cluster.md#监控报警规则)。
+
+## TiCDC 报警规则
+
+关于 TiCDC 报警规则的详细描述，参见 [TiCDC 集群监控报警](/ticdc/ticdc-alert-rules.md)。
 
 ## Node_exporter 主机报警规则
 
@@ -784,7 +804,7 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
 * 报警规则：
 
-    `node_filesystem_avail{fstype=~"(ext.|xfs)", mountpoint!~"/boot"} / node_filesystem_size{fstype=~"(ext.|xfs)", mountpoint!~"/boot"} * 100 <= 20`
+    `node_filesystem_avail_bytes{fstype=~"(ext.|xfs)", mountpoint!~"/boot"} / node_filesystem_size_bytes{fstype=~"(ext.|xfs)", mountpoint!~"/boot"} * 100 <= 20`
 
 * 规则描述：
 
@@ -829,7 +849,7 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
 * 报警规则：
 
-    `(((node_memory_MemTotal-node_memory_MemFree-node_memory_Cached)/(node_memory_MemTotal)*100)) >= 80`
+    `(((node_memory_MemTotal_bytes-node_memory_MemFree_bytes-node_memory_Cached_bytes)/(node_memory_MemTotal_bytes)*100)) >= 80`
 
 * 规则描述：
 
@@ -846,7 +866,7 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
 * 报警规则：
 
-    `(node_load5 / count without (cpu, mode) (node_cpu{mode="system"})) > 1`
+    `(node_load5 / count without (cpu, mode) (node_cpu_seconds_total{mode="system"})) > 1`
 
 * 规则描述：
 
@@ -861,7 +881,7 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
 * 报警规则：
 
-    `avg(irate(node_cpu{mode="idle"}[5m])) by(instance) * 100 <= 20`
+    `avg(irate(node_cpu_seconds_total{mode="idle"}[5m])) by(instance) * 100 <= 20`
 
 * 规则描述：
 
@@ -890,7 +910,7 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
 * 报警规则：
 
-    `((rate(node_disk_read_time_ms{device=~".+"}[5m]) / rate(node_disk_reads_completed{device=~".+"}[5m])) or (irate(node_disk_read_time_ms{device=~".+"}[5m]) / irate(node_disk_reads_completed{device=~".+"}[5m]))) > 32`
+    `((rate(node_disk_read_time_seconds_total{device=~".+"}[5m]) / rate(node_disk_reads_completed_total{device=~".+"}[5m])) or (irate(node_disk_read_time_seconds_total{device=~".+"}[5m]) / irate(node_disk_reads_completed_total{device=~".+"}[5m])) ) * 1000 > 32`
 
 * 规则描述：
 
@@ -906,7 +926,7 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
 * 报警规则：
 
-    `((rate(node_disk_write_time_ms{device=~".+"}[5m]) / rate(node_disk_writes_completed{device=~".+"}[5m])) or (irate(node_disk_write_time_ms{device=~".+"}[5m]) / irate(node_disk_writes_completed{device=~".+"}[5m])))> 16`
+    `((rate(node_disk_write_time_seconds_total{device=~".+"}[5m]) / rate(node_disk_writes_completed_total{device=~".+"}[5m])) or (irate(node_disk_write_time_seconds_total{device=~".+"}[5m]) / irate(node_disk_writes_completed_total{device=~".+"}[5m])))> 16`
 
 * 规则描述：
 
@@ -939,6 +959,22 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
     * 检查 TiDB 服务所在机器是否宕机。
     * 检查 TiDB 进程是否存在。
     * 检查监控机与 TiDB 服务所在机器之间网络是否正常。
+
+#### `TiFlash_server_is_down`
+
+* 报警规则：
+
+    `probe_success{group="tiflash"} == 0`
+
+* 规则描述：
+
+    TiFlash 服务端口探测失败。
+
+* 处理方法：
+
+    * 检查 TiFlash 服务所在机器是否宕机。
+    * 检查 TiFlash 进程是否存在。
+    * 检查监控机与 TiFlash 服务所在机器之间网络是否正常。
 
 #### `Pump_server_is_down`
 
@@ -1114,5 +1150,5 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
 * 处理方法：
 
-    * 在 Grafana Blackbox Exporter dashboard 上检查两个节点间的 ping 延迟是否太高。
-    * 在 Grafana Blackbox Exporter dashboard 的 tcp 面板上检查是否有丢包。
+    * 在 Grafana Blackbox Exporter 页面上检查两个节点间的 ping 延迟是否太高。
+    * 在 Grafana Node Exporter 页面的 TCP 面板上检查是否有丢包。

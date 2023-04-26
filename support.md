@@ -1,15 +1,21 @@
 ---
 title: 支持资源
-aliases: ['/docs-cn/dev/support/','/docs-cn/dev/support-resources/']
+summary: 在使用 TiDB 时遇到问题，如何获取支持。
 ---
 
 # 支持资源
 
-您可以通过以下任何一种方式找到我们的社区成员：
+如果你在使用 TiDB 的过程中遇到了问题，你可以通过以下方式向 PingCAP 或 TiDB 社区寻求帮助：
 
-+ Slack Channel: [https://slack.tidb.io/](https://slack.tidb.io/invite?team=tidb-community&channel=everyone&ref=pingcap)
-+ Stack Overflow: [https://stackoverflow.com/questions/tagged/tidb](https://stackoverflow.com/questions/tagged/tidb)
-+ Reddit: [https://www.reddit.com/r/TiDB](https://www.reddit.com/r/TiDB)
-+ GitHub: [https://github.com/pingcap/tidb/issues](https://github.com/pingcap/tidb/issues)
++ 从 PingCAP 获取支持（需要订阅 [TiDB 企业版](https://cn.pingcap.com/product-enterprise/)）：
 
-有关企业支持合作的信息，请[联系我们](mailto:info@pingcap.com)。
+    - [提交工单](https://support.pingcap.cn/)
+
++ 从 TiDB 社区寻求帮助：
+
+    - [AskTUG 论坛](https://asktug.com/)
+    - [Stack Overflow](https://stackoverflow.com/questions/tagged/tidb)（在 #tidb 标签下提问）
+
++ 了解 TiDB 的实现和设计
+
+    - [TiDB Internals 论坛](https://internals.tidb.io/)

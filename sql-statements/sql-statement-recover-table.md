@@ -18,7 +18,7 @@ RECOVER TABLE table_name
 {{< copyable "sql" >}}
 
 ```sql
-RECOVER TABLE BY JOB ddl_job_id
+RECOVER TABLE BY JOB JOB_ID
 ```
 
 ### 语法图
@@ -57,7 +57,7 @@ TiDB Binlog 在 3.0.1 支持 `RECOVER TABLE` 后，可在下面的情况下使�
 
 * 上下游数据库的同步延迟。类似错误：`snapshot is older than GC safe point 2019-07-10 13:45:57 +0800 CST`。
 
-只能通过重新[全量导入被删除的表](/ecosystem-tool-user-guide.md#备份和恢复)来恢复 TiDB Binlog 的数据同步。
+只能通过重新[全量导入被删除的表](/ecosystem-tool-user-guide.md#备份和恢复---backup--restore)来恢复 TiDB Binlog 的数据同步。
 
 ## 示例
 
@@ -82,7 +82,7 @@ TiDB Binlog 在 3.0.1 支持 `RECOVER TABLE` 后，可在下面的情况下使�
 
 - 根据删除表时的 DDL JOB ID 恢复被删除的表。
 
-    如果第一次删除表 t 后，又新建了一个表 t，然后又把新建的表 t 删除了，此时如果想恢复最开始删除的表 t, 就需要用到指定 DDL JOB ID 的语法了。
+    如果第一次删除表 t 后，又新建了一个表 t，然后又把新建的表 t 删除了，此时如果想恢复最开始删除的表 t，就需要用到指定 DDL JOB ID 的语法了。
 
     {{< copyable "sql" >}}
 

@@ -5,7 +5,32 @@ aliases: ['/docs-cn/dev/statistics/','/docs-cn/dev/reference/performance/statist
 
 # 统计信息简介
 
-TiDB 使用统计信息来决定[索引的选择](/choose-index.md)。变量 `tidb_analyze_version` 用于控制所收集到的统计信息。目前 TiDB 中支持两种统计信息：`tidb_analyze_version = 1` 以及 `tidb_analyze_version = 2`。在 v5.1.0 以前的版本中，该变量的默认值为 `1`。在 v5.1.0 中，该变量的默认值为 `2`，作为实验特性启用。两种版本中，TiDB 维护的统计信息如下：
+TiDB 使用统计信息来决定[索引的选择](/choose-index.md)。变量 `tidb_analyze_version` 用于控制所收集到的统计信息。目前 TiDB 中支持两种统计信息：`tidb_analyze_version = 1` 以及 `tidb_analyze_version = 2`。在 v5.3.0 及之后的版本中，该变量的默认值为 `2`。如果从 v5.3.0 之前版本的集群升级至 v5.3.0 及之后的版本，`tidb_analyze_version` 的默认值不发生变化。
+
+> **注意：**
+>
+> 当 `tidb_analyze_version = 2` 时，如果执行 ANALYZE 语句后发生 OOM，请设置全局变量 `tidb_analyze_version = 1`，然后进行以下操作之一：
+>
+> - 如果 ANALYZE 语句是手动执行的，请手动 analyze 每张需要的表：
+>
+>    ```sql
+>    SELECT DISTINCT(CONCAT('ANALYZE TABLE ', table_schema, '.', table_name, ';')) FROM information_schema.tables, mysql.stats_histograms WHERE stats_ver = 2 AND table_id = tidb_table_id;
+>     ```
+>
+> - 如果 ANALYZE 语句是开启了自动 analyze 后 TiDB 自动执行的，请使用以下 SQL 语句生成 DROP STATS 的语句并执行：
+>
+>    ```sql
+>    SELECT DISTINCT(CONCAT('DROP STATS ', table_schema, '.', table_name, ';')) FROM information_schema.tables, mysql.stats_histograms WHERE stats_ver = 2 AND table_id = tidb_table_id;
+>    ```
+>
+> - 如果上一条语句返回结果太长，不方便拷贝粘贴，可以将结果导出到临时文件后，再执行:
+>
+>    ```sql
+>    select distinct... into outfile '/tmp/sql.txt';
+>    mysql -h XXX -u user -P 4000 ... < '/tmp/sql.txt';
+>    ```
+
+两种版本中，TiDB 维护的统计信息如下：
 
 | 信息 | Version 1 | Version 2|
 | --- | --- | ---|
@@ -73,7 +98,7 @@ Top-N 即是这个列或者这个索引中，出现次数前 n 的值。TiDB 会
 {{< copyable "sql" >}}
 
 ```sql
-ANALYZE TABLE TableNameList [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH|SAMPLES];
+ANALYZE TABLE TableNameList [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH]|[WITH NUM SAMPLES|WITH FLOATNUM SAMPLERATE];
 ```
 
 - `WITH NUM BUCKETS` 用于指定生成直方图的桶数量上限。
@@ -81,36 +106,200 @@ ANALYZE TABLE TableNameList [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH
 - `WITH NUM CMSKETCH DEPTH` 用于指定 CM Sketch 的长。
 - `WITH NUM CMSKETCH WIDTH` 用于指定 CM Sketch 的宽。
 - `WITH NUM SAMPLES` 用于指定采样的数目。
+- `WITH FLOAT_NUM SAMPLERATE` 用于指定采样率。
 
-收集 TableName 中所有的 IndexNameList 中的索引列的统计信息：
+`WITH NUM SAMPLES` 与 `WITH FLOAT_NUM SAMPLERATE` 这两种设置对应了两种不同的收集采样的算法。
 
-{{< copyable "sql" >}}
+- `WITH NUM SAMPLES` 指定了采样集的大小，在 TiDB 中是以蓄水池采样的方式实现。当表较大时，不推荐使用这种方式收集统计信息。因为蓄水池采样中间结果集会产生一定的冗余结果，会对内存等资源造成额外的压力。
+- `WITH FLOAT_NUM SAMPLERATE` 是在 v5.3.0 中引入的采样方式，指定的采样率的大小，是取值范围 `(0, 1]` 的参数。在 TiDB 中是以伯努利采样的方式实现，更适合对较大的表进行采样，在收集效率和资源使用上更有优势。
 
-```sql
-ANALYZE TABLE TableName INDEX [IndexNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH|SAMPLES];
-```
-
-IndexNameList 为空时会收集所有索引列的统计信息。
-
-收集 TableName 中所有的 PartitionNameList 中分区的统计信息：
-
-{{< copyable "sql" >}}
-
-```sql
-ANALYZE TABLE TableName PARTITION PartitionNameList [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH|SAMPLES];
-```
-
-收集 TableName 中所有的 PartitionNameList 中分区的索引列统计信息：
-
-{{< copyable "sql" >}}
-
-```sql
-ANALYZE TABLE TableName PARTITION PartitionNameList INDEX [IndexNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH|SAMPLES];
-```
+在 v5.3.0 之前 TiDB 采用蓄水池采样的方式收集统计信息。自 v5.3.0 版本起，TiDB Version 2 的统计信息默认会选取伯努利采样的方式收集统计信息。若要重新使用蓄水池采样的方式采样，可以使用 `WITH NUM SAMPLES` 语句。
 
 > **注意：**
 >
-> 为了保证前后统计信息的一致性，在设置 `tidb_analyze_version=2` 时，`ANALYZE TABLE TableName INDEX` 也会收集整个表而不是所给索引的统计信息。
+> 目前采样率基于自适应算法进行计算。当你通过 [`SHOW STATS_META`](/sql-statements/sql-statement-show-stats-meta.md) 可以观察到一个表的行数时，可通过这个行数去计算采集 10 万行所对应的采样率。如果你观察不到这个值，可通过 [`TABLE_STORAGE_STATS`](/information-schema/information-schema-table-storage-stats.md) 表的 `TABLE_KEYS` 列作为另一个参考来计算采样率。
+>
+> 通常情况下，`STATS_META` 相对 `TABLE_KEYS` 更可信，但是通过 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 等方式导入数据结束后，`STATS_META` 结果是 `0`。为了处理这个情况，你可以在 `STATS_META` 的结果远小于 `TABLE_KEYS` 的结果时，使用 `TABLE_KEYS` 计算采样率。
+
+##### 收集部分列的统计信息
+
+执行 SQL 语句时，优化器在大多数情况下只会用到部分列（例如，`WHERE`、`JOIN`、`ORDER BY`、`GROUP BY` 子句中出现的列）的统计信息，这些被用到的列称为 `PREDICATE COLUMNS`。
+
+如果一个表有很多列，收集所有列的统计信息会有较大的开销。为了降低开销，你可以只收集指定列或者 `PREDICATE COLUMNS` 的统计信息供优化器使用。
+
+> **注意：**
+>
+> 收集部分列的统计信息的功能仅适用于 `tidb_analyze_version = 2` 的情况。
+
+- 如果要收集指定列的统计信息，请使用以下语法：
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    ANALYZE TABLE TableName COLUMNS ColumnNameList [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH]|[WITH NUM SAMPLES|WITH FLOATNUM SAMPLERATE];
+    ```
+
+    其中，`ColumnNameList` 表示指定列的名称列表。如果需要指定多列，请使用用逗号 `,` 分隔列名。例如, `ANALYZE table t columns a, b`。该语法除了收集指定表中指定列的统计信息，将同时收集该表中索引列的统计信息以及所有索引的统计信息。
+
+    > **注意：**
+    >
+    > 该语法为全量收集。例如，在使用该语法收集了 a 列和 b 列的统计信息之后，如果还想要增加收集 c 列的统计信息，需要在语法中同时指定这三列 `ANALYZE TABLE t columns a, b, c`，而不是只指定新增的那一列 `ANALYZE TABLE t COLUMNS c`。
+
+- 如果要收集 `PREDICATE COLUMNS` 的统计信息，请进行以下操作：
+
+    > **警告：**
+    >
+    > 收集 `PREDICATE COLUMNS` 的统计信息目前为实验特性，不建议在生产环境中使用。
+
+    1. 设置系统变量 [`tidb_enable_column_tracking`](/system-variables.md#tidb_enable_column_tracking-从-v540-版本开始引入) 的值为 `ON` 开启 TiDB 对 `PREDICATE COLUMNS` 的收集。
+
+        开启后，TiDB 将每隔 100 * [`stats-lease`](/tidb-configuration-file.md#stats-lease) 时间将 `PREDICATE COLUMNS` 信息写入系统表 `mysql.column_stats_usage`。
+
+    2. 在业务的查询模式稳定以后，使用以下语法收集 `PREDICATE COLUMNS` 的统计信息。
+
+        {{< copyable "sql" >}}
+
+        ```sql
+        ANALYZE TABLE TableName PREDICATE COLUMNS [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH]|[WITH NUM SAMPLES|WITH FLOATNUM SAMPLERATE];
+        ```
+
+        该语法除了收集指定表中 `PREDICATE COLUMNS` 的统计信息，将同时收集该表中索引列的统计信息以及所有索引的统计信息。
+
+        > **注意：**
+        >
+        > - 如果系统表 `mysql.column_stats_usage` 中没有关于该表的`PREDICATE COLUMNS` 记录，执行以上语句会收集该表中所有列的统计信息以及所有索引的统计信息。
+        > - 使用该语法收集统计信息后，当执行一种新的类型的 SQL 查询时，优化器可能会暂时使用旧的或者 pseudo 的列统计信息，然后在下一次收集统计信息的时候收集该列的统计信息。
+
+- 如果要收集所有列的统计信息以及所有索引的统计信息，可以使用以下语法：
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    ANALYZE TABLE TableName ALL COLUMNS [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH]|[WITH NUM SAMPLES|WITH FLOATNUM SAMPLERATE];
+    ```
+
+如果要持久化 `ANALYZE` 语句中列的配置（包括 `COLUMNS ColumnNameList`、`PREDICATE COLUMNS`、`ALL COLUMNS`），请设置系统变量 `tidb_persist_analyze_options` 的值设置为 `ON` 以开启 [ANALYZE 配置持久化](/statistics.md#analyze-配置持久化)特性。开启 ANALYZE 配置持久化特性后：
+
+- 当 TiDB 自动收集统计信息或者你手动执行 `ANALYZE` 语句收集统计信息但未指定列的配置时，TiDB 会继续沿用之前持久化的配置。
+- 当多次手动执行 `ANALYZE` 语句并指定列的配置时，TiDB 会使用最新一次 `ANALYZE` 指定的配置项覆盖上一次记录的持久化配置。
+
+如果你想查看一个表中哪些列是 `PREDICATE COLUMNS`，哪些列的统计信息已经被收集，可以使用以下语法：
+
+{{< copyable "sql" >}}
+
+```sql
+SHOW COLUMN_STATS_USAGE [ShowLikeOrWhere];
+```
+
+`SHOW COLUMN_STATS_USAGE` 会输出 6 列，具体如下：
+
+| 列名 | 说明            |
+| -------- | ------------- |
+| Db_name  |  数据库名    |
+| Table_name | 表名 |
+| Partition_name | 分区名 |
+| Column_name | 列名 |
+| Last_used_at | 该列统计信息在最近一次查询优化中被用到的时间 |
+| Last_analyzed_at | 该列统计信息最近一次被收集的时间 |
+
+在以下示例中，执行 `ANALYZE TABLE t PREDICATE COLUMNS;` 后，TiDB 将收集 `b`，`c`，`d` 列的统计信息，其中 `b` 列是 `PREDICATE COLUMN`，`c` 列和 `d` 列是索引列。
+
+{{< copyable "sql" >}}
+
+```sql
+SET GLOBAL tidb_enable_column_tracking = ON;
+Query OK, 0 rows affected (0.00 sec)
+
+CREATE TABLE t (a INT, b INT, c INT, d INT, INDEX idx_c_d(c, d));
+Query OK, 0 rows affected (0.00 sec)
+
+-- 在此查询中优化器用到了 b 列的统计信息。
+SELECT * FROM t WHERE b > 1;
+Empty set (0.00 sec)
+
+-- 等待一段时间（100 * stats-lease）后，TiDB 将收集的 `PREDICATE COLUMNS` 写入 mysql.column_stats_usage。
+-- 指定 `last_used_at IS NOT NULL` 表示显示 TiDB 收集到的 `PREDICATE COLUMNS`。
+SHOW COLUMN_STATS_USAGE WHERE db_name = 'test' AND table_name = 't' AND last_used_at IS NOT NULL;
++---------+------------+----------------+-------------+---------------------+------------------+
+| Db_name | Table_name | Partition_name | Column_name | Last_used_at        | Last_analyzed_at |
++---------+------------+----------------+-------------+---------------------+------------------+
+| test    | t          |                | b           | 2022-01-05 17:21:33 | NULL             |
++---------+------------+----------------+-------------+---------------------+------------------+
+1 row in set (0.00 sec)
+
+ANALYZE TABLE t PREDICATE COLUMNS;
+Query OK, 0 rows affected, 1 warning (0.03 sec)
+
+-- 指定 `last_analyzed_at IS NOT NULL` 表示显示收集过统计信息的列。
+SHOW COLUMN_STATS_USAGE WHERE db_name = 'test' AND table_name = 't' AND last_analyzed_at IS NOT NULL;
++---------+------------+----------------+-------------+---------------------+---------------------+
+| Db_name | Table_name | Partition_name | Column_name | Last_used_at        | Last_analyzed_at    |
++---------+------------+----------------+-------------+---------------------+---------------------+
+| test    | t          |                | b           | 2022-01-05 17:21:33 | 2022-01-05 17:23:06 |
+| test    | t          |                | c           | NULL                | 2022-01-05 17:23:06 |
+| test    | t          |                | d           | NULL                | 2022-01-05 17:23:06 |
++---------+------------+----------------+-------------+---------------------+---------------------+
+3 rows in set (0.00 sec)
+```
+
+##### 收集索引的统计信息
+
+如果要收集 TableName 中 IndexNameList 里所有索引的统计信息，请使用以下语法：
+
+{{< copyable "sql" >}}
+
+```sql
+ANALYZE TABLE TableName INDEX [IndexNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH]|[WITH NUM SAMPLES|WITH FLOATNUM SAMPLERATE];
+```
+
+当 IndexNameList 为空时，该语法将收集 TableName 中所有索引的统计信息。
+
+> **注意：**
+>
+> 为了保证前后统计信息的一致性，当设置 `tidb_analyze_version=2` 时，该语句也会收集整个表的统计信息（包括所有列和所有索引的统计信息）而不限于索引的统计信息。
+
+##### 收集分区的统计信息
+
+- 如果要收集 TableName 中所有的 PartitionNameList 中分区的统计信息，请使用以下语法：
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    ANALYZE TABLE TableName PARTITION PartitionNameList [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH]|[WITH NUM SAMPLES|WITH FLOATNUM SAMPLERATE];
+    ```
+
+- 如果要收集 TableName 中所有的 PartitionNameList 中分区的索引统计信息，请使用以下语法：
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    ANALYZE TABLE TableName PARTITION PartitionNameList INDEX [IndexNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH]|[WITH NUM SAMPLES|WITH FLOATNUM SAMPLERATE];
+    ```
+
+- 当收集分区的统计信息时，如果只[收集部分列的统计信息](/statistics.md#收集部分列的统计信息)，请使用以下语法：
+
+    > **警告：**
+    >
+    > 收集 `PREDICATE COLUMNS` 的统计信息目前为实验特性，不建议在生产环境中使用。
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    ANALYZE TABLE TableName PARTITION PartitionNameList [COLUMNS ColumnNameList|PREDICATE COLUMNS|ALL COLUMNS] [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH]|[WITH NUM SAMPLES|WITH FLOATNUM SAMPLERATE];
+    ```
+
+##### 动态裁剪模式下的分区表统计信息
+
+分区表在开启[动态裁剪模式](/partitioned-table.md#动态裁剪模式)的情况下，TiDB 将收集表级别的汇总统计信息，以下称 GlobalStats。 目前 GlobalStats 由分区统计信息合并汇总得到。在动态裁剪模式开启的情况下，任一分区上的统计信息更新都会触发 GlobalStats 的更新。
+
+> **注意：**
+>
+> - 当触发 GlobalStats 更新时：
+>
+>     - 若某些分区上缺少统计信息（比如新增的未 analyze 过的分区），会停止生成 GlobalStats，并通过 warning 信息提示用户缺少分区的统计信息。
+>     - 若某些列的统计信息合并过程中，缺少某些分区在该列上的统计信息（在不同分区上 analyze 时指定了不同的列），会停止生成 GlobalStats，并通过 warning 信息提示用户缺少列在分区上的统计信息。
+>
+> - 在动态裁剪模式开启的情况下，分区和表的 ANALYZE 配置需要保持一致，因此 ANALYZE TABLE TableName PARTITION PartitionNameList 命令后指定的 COLUMNS 配置和 WITH 后指定的 OPTIONS 配置将被忽略，并会通过 warning 信息提示用户。
 
 #### 增量收集
 
@@ -128,7 +317,7 @@ ANALYZE TABLE TableName PARTITION PartitionNameList INDEX [IndexNameList] [WITH 
 {{< copyable "sql" >}}
 
 ```sql
-ANALYZE INCREMENTAL TABLE TableName INDEX [IndexNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH|SAMPLES];
+ANALYZE INCREMENTAL TABLE TableName INDEX [IndexNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH]|[WITH NUM SAMPLES|WITH FLOATNUM SAMPLERATE];
 ```
 
 增量收集 TableName 中所有的 PartitionNameList 中分区的索引列统计信息：
@@ -136,7 +325,7 @@ ANALYZE INCREMENTAL TABLE TableName INDEX [IndexNameList] [WITH NUM BUCKETS|TOPN
 {{< copyable "sql" >}}
 
 ```sql
-ANALYZE INCREMENTAL TABLE TableName PARTITION PartitionNameList INDEX [IndexNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH|SAMPLES];
+ANALYZE INCREMENTAL TABLE TableName PARTITION PartitionNameList INDEX [IndexNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH]|[WITH NUM SAMPLES|WITH FLOATNUM SAMPLERATE];
 ```
 
 ### 自动更新
@@ -153,7 +342,26 @@ ANALYZE INCREMENTAL TABLE TableName PARTITION PartitionNameList INDEX [IndexName
 
 当某个表 `tbl` 的修改行数与总行数的比值大于 `tidb_auto_analyze_ratio`，并且当前时间在 `tidb_auto_analyze_start_time` 和 `tidb_auto_analyze_end_time` 之间时，TiDB 会在后台执行 `ANALYZE TABLE tbl` 语句自动更新这个表的统计信息。
 
-在 v5.0 版本之前，执行查询语句时，TiDB 会以 [`feedback-probability`](/tidb-configuration-file.md#feedback-probability) 的概率收集反馈信息，并将其用于更新直方图和 Count-Min Sketch。**对于 v5.0 版本，该功能默认关闭，暂不建议开启此功能。**
+为了避免小表因为少量数据修改而频繁触发自动更新，当表的行数小于 1000 时，TiDB 不会触发对此表的自动更新。你可以通过 `SHOW STATS_META` 来查看表的行数情况。
+
+从 TiDB v6.0 起，TiDB 支持通过 `KILL` 语句终止正在后台运行的 `ANALYZE` 任务。如果发现正在后台运行的 `ANALYZE` 任务消耗大量资源影响业务，你可以通过以下步骤终止该 `ANALYZE` 任务：
+
+1. 执行以下 SQL 语句：
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    SHOW ANALYZE STATUS
+    ```
+
+    查看 `instance` 列和 `process_id` 列获得正在执行后台 `ANALYZE` 任务的 TiDB 实例地址和任务 `ID`。
+
+2. 终止正在后台运行的 `ANALYZE` 任务。
+
+   - 如果 [`enable-global-kill`](/tidb-configuration-file.md#enable-global-kill-从-v610-版本开始引入) 的值为 `true` (默认为 `true`），你可以直接执行 `KILL TIDB ${id};` 语句。其中，${id} 为上一步中查询得到的后台 `ANALYZE` 任务的 `ID`。
+   - 如果 `enable-global-kill` 的值为 `false`，你需要先使用客户端连接到执行后台 `ANALYZE` 任务的 TiDB 实例，然后再执行 `KILL TIDB ${id};` 语句。如果使用客户端连接到其他 TiDB 实例，或者客户端和 TiDB 中间有代理，`KILL` 语句不能终止后台的 `ANALYZE` 任务。
+  
+关于 `KILL` 语句的更多信息，请参考 [`KILL [TIDB]`](/sql-statements/sql-statement-kill.md)。
 
 ### 控制 ANALYZE 并发度
 
@@ -171,6 +379,70 @@ ANALYZE INCREMENTAL TABLE TableName PARTITION PartitionNameList INDEX [IndexName
 
 在执行分析索引列任务的时候，`tidb_index_serial_scan_concurrency` 可以用于控制一次读取的 Region 数量，其默认值是 1。
 
+### ANALYZE 配置持久化
+
+从 v5.4.0 起，TiDB 支持 `ANALYZE` 配置持久化功能，方便后续收集统计信息时沿用已有配置项。
+
+TiDB 支持持久化的配置项包括：
+
+| 配置项 | 对应的 ANALYZE 语法 |
+| --- | --- |
+| 直方图桶数 | WITH NUM BUCKETS |
+| TopN 个数 | WITH NUM TOPN |
+| 采样数 | WITH NUM SAMPLES |
+| 采样率 | WITH FLOATNUM SAMPLERATE |
+| ANALYZE 的列的类型 | AnalyzeColumnOption ::= ( 'ALL COLUMNS' \| 'PREDICATE COLUMNS' \| 'COLUMNS' ColumnNameList ) |
+| ANALYZE 的列 | ColumnNameList ::= Identifier ( ',' Identifier )* |
+
+#### 开启 ANALYZE 配置持久化功能
+
+`ANALYZE` 配置持久化功能默认开启（系统变量 `tidb_analyze_version` 为默认值 `2`，`tidb_persist_analyze_options` 为默认值 `ON`），用于记录手动执行 `ANALYZE` 语句时指定的持久化配置项。记录后，当 TiDB 下一次自动更新统计信息或者你手动收集统计信息但未指定配置项时，TiDB 会按照记录的配置项收集统计信息。
+
+多次手动执行 `ANALYZE` 语句并指定持久化配置项时，TiDB 会使用最新一次 `ANALYZE` 指定的配置项覆盖上一次记录的持久化配置。
+
+#### 关闭 ANALYZE 配置持久化功能
+
+要关闭 `ANALYZE` 配置持久化功能，请设置系统变量 `tidb_persist_analyze_options` 为 `OFF`。由于 `ANALYZE` 配置持久化功能在 `tidb_analyze_version = 1` 的情况下不适用，因此设置 `tidb_analyze_version = 1` 同样会达到关闭配置持久化的效果。
+
+关闭 `ANALYZE` 配置持久化功能后，已持久化的配置记录不会被清除。因此，当再次开启该功能时，TiDB 会继续使用之前记录的持久化配置收集统计信息。
+
+> **注意：**
+>
+> 当再次开启 `ANALYZE` 配置持久化功能时，如果之前记录的持久化配置项已经不适用当前的数据，请手动执行 `ANALYZE` 语句并指定新的持久化配置项。
+
+#### 分区表的 ANALYZE 配置持久化功能
+
+在静态裁剪模式下 ANALYZE 分区表时，配置持久化遵守：
+
+- ANALYZE TABLE 时会持久化表级别的配置和实际被 ANALYZE 的所有分区的配置
+- 分区的统计信息会继承使用表级别的持久化配置
+- ANALYZE TABLE ... PARTITION ... WITH ... 所指定的分区配置只持久化到分区级别，不会影响表级别的持久化配置
+- 当 ANALYZE 语句指定了配置，且同时存在持久化配置时，按照语句 > 分区 > 表的优先级继承和重写配置信息
+
+在[动态裁剪模式](/partitioned-table.md#动态裁剪模式)下 ANALYZE 分区表时，配置持久化遵守：
+
+- ANALYZE TABLE 时只持久化表级别的配置
+- 分区的统计信息会继承使用表级别的持久化配置
+- GlobalStats 会使用表级别的持久化配置
+- ANALYZE TABLE ... PARTITION ... WITH ... 所指定的分区配置会被忽略，且不会被持久化
+
+### 统计信息收集的内存限制
+
+> **警告：**
+>
+> 目前限制 ANALYZE 的内存使用量为实验特性，在生产环境中使用时可能存在内存统计有误差的情况。
+
+TiDB 从 v6.1.0 开始引入了统计信息收集的内存限制，你可以通过 [`tidb_mem_quota_analyze`](/system-variables.md#tidb_mem_quota_analyze-从-v610-版本开始引入) 变量来控制 TiDB 更新统计信息时的最大总内存占用。
+
+要合理地配置 `tidb_mem_quota_analyze` 值，你需要考虑集群的数据。在使用默认采样率的情况下，主要考虑列的数量、列上的值的大小，以及 TiDB 的内存配置。你可参考以下建议来配置变量的最大值和最小值：
+
+> **注意：**
+>
+> 以下配置建议仅供参考，实际配置需要在真实场景中测试确定。
+
+- 最小值：需要大于 TiDB 从集群上列最多的表收集统计信息时使用的最大内存。一个粗略的参考信息是，在测试集上，20 列的表在默认配置下，统计信息收集的最大内存使用约为 800 MiB；160 列的表在默认配置下，统计信息收集的最大内存使用约为 5 GiB。
+- 最大值：需要小于集群在不进行统计信息收集时的内存空余量。
+
 ### 查看 ANALYZE 状态
 
 在执行 `ANALYZE` 时，可以通过 SQL 语句来查看当前 `ANALYZE` 的状态。
@@ -185,17 +457,38 @@ SHOW ANALYZE STATUS [ShowLikeOrWhere];
 
 该语句会输出 `ANALYZE` 的状态，可以通过使用 `ShowLikeOrWhere` 来筛选需要的信息。
 
-目前 `SHOW ANALYZE STATUS` 会输出 7 列，具体如下：
+目前 `SHOW ANALYZE STATUS` 会输出 11 列，具体如下：
 
-| 语法元素 | 说明            |
+| 列名 | 说明            |
 | -------- | ------------- |
 | table_schema  |  数据库名    |
 | table_name | 表名 |
 | partition_name| 分区名 |
-| job_info | 任务具体信息。如果分析索引则会包含索引名 |
-| row_count | 已经分析的行数 |
+| job_info | 任务具体信息。如果分析索引，该信息会包含索引名。当 `tidb_analyze_version =2` 时，该信息会包含采样率等配置项。 |
+| processed_rows | 已经分析的行数 |
 | start_time | 任务开始执行的时间 |
+| end_time | 任务结束执行的时间 |
 | state | 任务状态，包括 pending（等待）、running（正在执行）、finished（执行成功）和 failed（执行失败）|
+| fail_reason | 任务失败的原因。如果执行成功则为 `NULL`。 |
+| instance | 执行任务的 TiDB 实例 |
+| process_id | 执行任务的 process ID |
+
+从 TiDB v6.1.0 起，执行 `SHOW ANALYZE STATUS` 语句将显示集群级别的任务，且 TiDB 重启后仍能看到重启之前的任务记录。在 TiDB v6.1.0 之前，执行 `SHOW ANALYZE STATUS` 语句仅显示实例级别的任务，且 TiDB 重启后任务记录会被清空。
+
+`SHOW ANALYZE STATUS` 仅显示最近的任务记录。从 TiDB v6.1 起，你可以通过系统表 `mysql.analyze_jobs` 查看过去 7 天内的历史记录。
+
+当设置了 [`tidb_mem_quota_analyze`](/system-variables.md#tidb_mem_quota_analyze-从-v610-版本开始引入) 且 TiDB 后台的统计信息自动更新任务的内存占用超过了这个阈值时，自动更新任务会重试。失败的任务和重试的任务都可以在 `SHOW ANALYZE STATUS` 的结果中查看。
+
+当 [`tidb_max_auto_analyze_time`](/system-variables.md#tidb_max_auto_analyze_time-从-v610-版本开始引入) 大于 0 时，如果后台统计信息自动更新任务的执行时间超过这个阈值，该任务会被终止。
+
+```sql
+mysql> SHOW ANALYZE STATUS [ShowLikeOrWhere];
++--------------+------------+----------------+-------------------------------------------------------------------------------------------+----------------+---------------------+---------------------+----------+-------------------------------------------------------------------------------|
+| Table_schema | Table_name | Partition_name | Job_info                                                                                  | Processed_rows | Start_time          | End_time            | State    | Fail_reason                                                                   | 
++--------------+------------+----------------+-------------------------------------------------------------------------------------------+----------------+---------------------+---------------------+----------+-------------------------------------------------------------------------------|
+| test         | sbtest1    |                | retry auto analyze table all columns with 100 topn, 0.055 samplerate                      |        2000000 | 2022-05-07 16:41:09 | 2022-05-07 16:41:20 | finished | NULL                                                                          | 
+| test         | sbtest1    |                | auto analyze table all columns with 100 topn, 0.5 samplerate                              |              0 | 2022-05-07 16:40:50 | 2022-05-07 16:41:09 | failed   | analyze panic due to memory quota exceeds, please try with smaller samplerate |
+```
 
 ## 统计信息的查看
 
@@ -209,15 +502,17 @@ SHOW ANALYZE STATUS [ShowLikeOrWhere];
 
 {{< copyable "sql" >}}
 
-其中，`ShowLikeOrWhereOpt` 部分的语法图为：
-
 ```sql
 SHOW STATS_META [ShowLikeOrWhere];
 ```
 
+其中，`ShowLikeOrWhereOpt` 部分的语法图为：
+
+![ShowLikeOrWhereOpt](/media/sqlgram/ShowLikeOrWhereOpt.png)
+
 目前 `SHOW STATS_META` 会输出 6 列，具体如下：
 
-| 语法元素 | 说明            |
+| 列名 | 说明            |
 | -------- | ------------- |
 | db_name  |  数据库名    |
 | table_name | 表名 |
@@ -234,17 +529,21 @@ SHOW STATS_META [ShowLikeOrWhere];
 
 通过 `SHOW STATS_HEALTHY` 可以查看表的统计信息健康度，并粗略估计表上统计信息的准确度。当 `modify_count` >= `row_count` 时，健康度为 0；当 `modify_count` < `row_count` 时，健康度为 (1 - `modify_count`/`row_count`) * 100。
 
+语法如下：
+
+{{< copyable "sql" >}}
+
+```sql
+SHOW STATS_HEALTHY [ShowLikeOrWhere];
+```
+
 `SHOW STATS_HEALTHY` 的语法图为：
 
 ![ShowStatsHealthy](/media/sqlgram/ShowStatsHealthy.png)
 
-其中，`ShowLikeOrWhereOpt` 部分的语法图为：
-
-![ShowLikeOrWhereOpt](/media/sqlgram/ShowLikeOrWhereOpt.png)
-
 目前，`SHOW STATS_HEALTHY` 会输出 4 列，具体如下：
 
-| 语法元素 | 说明            |
+| 列名 | 说明            |
 | :-------- | :------------- |
 | db_name  |  数据库名    |
 | table_name | 表名 |
@@ -267,7 +566,7 @@ SHOW STATS_HISTOGRAMS [ShowLikeOrWhere];
 
 目前 `SHOW STATS_HISTOGRAMS` 会输出 10 列，具体如下：
 
-| 语法元素 | 说明            |
+| 列名 | 说明            |
 | -------- | ------------- |
 | db_name  |  数据库名    |
 | table_name | 表名 |
@@ -302,7 +601,7 @@ SHOW STATS_BUCKETS [ShowLikeOrWhere];
 
 目前 `SHOW STATS_BUCKETS` 会输出 11 列，具体如下：
 
-| 语法元素 | 说明            |
+| 列名 | 说明            |
 | -------- | ------------- |
 | db_name  |  数据库名    |
 | table_name | 表名 |
@@ -330,7 +629,7 @@ SHOW STATS_TOPN [ShowLikeOrWhere];
 
 目前 `SHOW STATS_TOPN` 会输出 7 列，具体如下：
 
-| 语法元素 | 说明            |
+| 列名 | 说明            |
 | -------- | ------------- |
 | db_name  |  数据库名    |
 | table_name | 表名 |
@@ -344,15 +643,57 @@ SHOW STATS_TOPN [ShowLikeOrWhere];
 
 可以通过执行 `DROP STATS` 语句来删除统计信息。
 
-语法如下：
-
 {{< copyable "sql" >}}
 
 ```sql
 DROP STATS TableName;
 ```
 
-该语句会删除 TableName 中所有的统计信息。
+该语句会删除 TableName 中所有的统计信息，如果是分区表，包括所有分区的统计信息和分区动态裁剪模式下生成的 GlobalStats。
+
+{{< copyable "sql" >}}
+
+```sql
+DROP STATS TableName PARTITION PartitionNameList;
+```
+
+该语句只删除 PartitionNameList 中对应的分区的统计信息。
+
+{{< copyable "sql" >}}
+
+```sql
+DROP STATS TableName GLOBAL;
+```
+
+该语句只删除该表在分区动态裁剪模式下生成的 GlobalStats。
+
+## 统计信息的加载
+
+默认情况下，列的统计信息占用空间大小不同，TiDB 对统计信息的加载方式也会不同。
+
+- 对于 count、distinctCount、nullCount 等占用空间较小的统计信息，只要有数据更新，TiDB 就会自动将对应的统计信息加载进内存供 SQL 优化阶段使用。
+- 对于直方图、TopN、CMSketch 等占用空间较大的统计信息，为了确保 SQL 执行的性能，TiDB 会按需进行异步加载。例如，对于直方图，只有当某条 SQL 语句的优化阶段使用到了某列的直方图统计信息时，TiDB 才会将该列的直方图信息加载到内存。按需异步加载的优势是统计信息加载不会影响到 SQL 执行的性能，但在 SQL 优化时有可能使用不完整的统计信息。
+
+从 v5.4.0 开始，TiDB 引入了统计信息同步加载的特性，支持执行当前 SQL 语句时将直方图、TopN、CMSketch 等占用空间较大的统计信息同步加载到内存，提高该 SQL 语句优化时统计信息的完整性。
+
+要开启该特性，请将系统变量 [`tidb_stats_load_sync_wait`](/system-variables.md#tidb_stats_load_sync_wait-从-v540-版本开始引入) 的值设置为 SQL 优化等待加载列的完整统计信息的超时时间（单位为毫秒）。该变量默认值为 100，代表开启统计信息同步加载。
+
+开启该特性后，你可以进一步配置该特性：
+
+- 通过修改系统变量 [`tidb_stats_load_pseudo_timeout`](/system-variables.md#tidb_stats_load_pseudo_timeout-从-v540-版本开始引入) 的值控制 SQL 优化等待超时后的行为。该变量默认值为 `ON`，代表超时后 SQL 优化过程不会使用任何列上的直方图、TopN 或 CMSketch。当设置该变量为 `OFF` 时，代表超时后 SQL 执行失败。
+- 通过修改 TiDB 配置项 [`stats-load-concurrency`](/tidb-configuration-file.md#stats-load-concurrency-从-v540-版本开始引入) 的值控制统计信息同步加载可以并发处理的最大列数。该配置项的默认值为 `5`。
+- 通过修改 TiDB 配置项 [`stats-load-queue-size`](/tidb-configuration-file.md#stats-load-queue-size-从-v540-版本开始引入) 的值设置统计信息同步加载最多可以缓存多少列的请求。该配置项的默认值为 `1000`。
+
+> **警告：**
+>
+> 轻量级的统计信息初始化目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+
+从 v7.1.0 开始，TiDB 引入了配置参数 [`lite-init-stats`](/tidb-configuration-file.md#lite-init-stats-从-v710-版本开始引入) 用于控制是否开启轻量级的统计信息初始化。
+
+- 当 `lite-init-stats` 为 `true` 时，统计信息初始化时列和索引的直方图、TopN、Count-Min Sketch 均不会加载到内存中。
+- 当 `lite-init-stats` 为 `false` 时，统计信息初始化时索引和主键的直方图、TopN、Count-Min Sketch 会被加载到内存中，非主键列的直方图、TopN、Count-Min Sketch 不会加载到内存中。当优化器需要某一索引或者列的直方图、TopN、Count-Min Sketch 时，这些统计信息会被同步或异步加载到内存中。
+
+`lite-init-stats` 默认值为 `false`，即关闭轻量级的统计信息初始化。将 `lite-init-stats` 设置为 `true` 可以加速统计信息初始化，避免加载不必要的统计信息，从而降低 TiDB 的内存使用。
 
 ## 统计信息的导入导出
 
@@ -360,31 +701,35 @@ DROP STATS TableName;
 
 统计信息的导出接口如下。
 
-通过以下接口可以获取数据库 `${db_name}` 中的表 `${table_name}` 的 json 格式的统计信息：
++ 通过以下接口可以获取数据库 `${db_name}` 中的表 `${table_name}` 的 JSON 格式的统计信息：
 
-{{< copyable "" >}}
+    {{< copyable "" >}}
 
-```
-http://${tidb-server-ip}:${tidb-server-status-port}/stats/dump/${db_name}/${table_name}
-```
+    ```
+    http://${tidb-server-ip}:${tidb-server-status-port}/stats/dump/${db_name}/${table_name}
+    ```
 
-通过以下接口可以获取数据库 `${db_name}` 中的表 `${table_name}` 在指定时间上的 json 格式统计信息。指定的时间应在 GC SafePoint 之后。
+    示例如下：
 
-{{< copyable "" >}}
+    {{< copyable "" >}}
 
-```
-http://${tidb-server-ip}:${tidb-server-status-port}/stats/dump/${db_name}/${table_name}/${yyyyMMddHHmmss}
-```
+    ```
+    curl -s http://127.0.0.1:10080/stats/dump/test/t1 -o /tmp/t1.json
+    ```
 
-通过以下接口可以获取数据库 `${db_name}` 中的表 `${table_name}` 在指定时间上的 json 格式统计信息。指定的时间应在 GC SafePoint 之后。
++ 通过以下接口可以获取数据库 `${db_name}` 中的表 `${table_name}` 在指定时间上的 JSON 格式统计信息。指定的时间应在 GC SafePoint 之后。
 
-{{< copyable "" >}}
+    {{< copyable "" >}}
 
-```
-http://${tidb-server-ip}:${tidb-server-status-port}/stats/dump/${db_name}/${table_name}/${yyyy-MM-dd HH:mm:ss}
-```
+    ```
+    http://${tidb-server-ip}:${tidb-server-status-port}/stats/dump/${db_name}/${table_name}/${yyyyMMddHHmmss}
+    ```
 
 ### 导入统计信息
+
+> **注意：**
+>
+> 启动 MySQL 客户端时，请使用 `--local-infile=1` 参数。
 
 导入的统计信息一般是通过统计信息导出接口得到的 json 文件。
 
@@ -398,6 +743,85 @@ LOAD STATS 'file_name';
 
 `file_name` 为要导入的统计信息的文件名。
 
+## 锁定统计信息
+
+> **警告：**
+>
+> 锁定统计信息目前为实验特性，不建议在生产环境中使用。
+
+从 v6.5.0 开始，TiDB 引入了锁定统计信息的特性。当一张表的统计信息被锁定以后，该表的统计信息将无法被修改，也无法对该表进行 `ANALYZE` 操作。用例如下：
+
+创建表 `t`，插入一些数据，在未锁定表 `t` 的统计信息的情况下成功执行 `ANALYZE` 语句。
+
+```sql
+mysql> create table t(a int, b int);
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> insert into t values (1,2), (3,4), (5,6), (7,8);
+Query OK, 4 rows affected (0.00 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> analyze table t;
+Query OK, 0 rows affected, 1 warning (0.02 sec)
+
+mysql> show warnings;
++-------+------+-----------------------------------------------------------------+
+| Level | Code | Message                                                         |
++-------+------+-----------------------------------------------------------------+
+| Note  | 1105 | Analyze use auto adjusted sample rate 1.000000 for table test.t |
++-------+------+-----------------------------------------------------------------+
+1 row in set (0.00 sec)
+```
+
+锁定表 `t` 的统计信息，执行 `ANALYZE` 语句，warning 提示跳过对表 `t` 的 `ANALYZE`。
+
+```sql
+mysql> lock stats t;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> show stats_locked;
++---------+------------+----------------+--------+
+| Db_name | Table_name | Partition_name | Status |
++---------+------------+----------------+--------+
+| test    | t          |                | locked |
++---------+------------+----------------+--------+
+1 row in set (0.01 sec)
+
+mysql> analyze table t;
+Query OK, 0 rows affected, 2 warnings (0.00 sec)
+
+mysql> show warnings;
++---------+------+-----------------------------------------------------------------+
+| Level   | Code | Message                                                         |
++---------+------+-----------------------------------------------------------------+
+| Note    | 1105 | Analyze use auto adjusted sample rate 1.000000 for table test.t |
+| Warning | 1105 | skip analyze locked table: t                                    |
++---------+------+-----------------------------------------------------------------+
+2 rows in set (0.00 sec)
+```
+
+解锁表 `t` 的统计信息，成功执行 `ANALYZE` 语句。
+
+```sql
+mysql> unlock stats t;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> analyze table t;
+Query OK, 0 rows affected, 1 warning (0.03 sec)
+
+mysql> show warnings;
++-------+------+-----------------------------------------------------------------+
+| Level | Code | Message                                                         |
++-------+------+-----------------------------------------------------------------+
+| Note  | 1105 | Analyze use auto adjusted sample rate 1.000000 for table test.t |
++-------+------+-----------------------------------------------------------------+
+1 row in set (0.00 sec)
+```
+
 ## 另请参阅
 
+* [LOAD STATS](/sql-statements/sql-statement-load-stats.md)
 * [DROP STATS](/sql-statements/sql-statement-drop-stats.md)
+* [LOCK STATS](/sql-statements/sql-statement-lock-stats.md)
+* [UNLOCK STATS](/sql-statements/sql-statement-unlock-stats.md)
+* [SHOW STATS_LOCKED](/sql-statements/sql-statement-show-stats-locked.md)

@@ -88,7 +88,7 @@ TiDB Dashboard 支持基于 [OIDC](https://openid.net/connect/) 协议的单点�
 
 3. 你将被重定向回 TiDB Dashboard 完成登录。
 
-## 示例：使用 Okta 进行 TiDB Dashboard SSO 登录认证
+## 示例一：使用 Okta 进行 TiDB Dashboard SSO 登录认证
 
 [Okta](https://www.okta.com/) 是一个提供 OIDC SSO 的身份认证服务。以下步骤展示了如何配置 Okta 及 TiDB Dashboard，使得 TiDB Dashboard 可以通过 Okta 进行 SSO 登录。
 
@@ -149,3 +149,89 @@ TiDB Dashboard 支持基于 [OIDC](https://openid.net/connect/) 协议的单点�
     ![操作示例 3](/media/dashboard/dashboard-session-sso-okta-info-3.png)
 
 至此，TiDB Dashboard 已被配置为使用 Okta 进行 SSO 登录。
+
+## 示例二：使用 Auth0 进行 TiDB Dashboard SSO 登录认证
+
+和 Okta 类似，[Auth0](https://auth0.com/) 也可以提供 OIDC SSO 的身份认证服务。
+
+### 步骤一：配置 Auth0
+
+1. 访问 Auth0 的管理后台。
+
+2. 点击左侧边栏的 **Applications** > **Applications**。
+
+3. 点击 **Create Application**，在弹出窗口中输入 Name，例如 "TiDB Dashboard"。在 **Choose an application type** 下选择 "Single Page Web Application"。
+
+    ![Create Application](/media/dashboard/dashboard-session-sso-auth0-create-app.png)
+
+4. 点击 **Settings** 栏。
+
+    ![Settings](/media/dashboard/dashboard-session-sso-auth0-settings-1.png)
+
+5. 在 **Allowed Callback URLs** 字段中填写如下内容：
+
+    ```
+    http://DASHBOARD_IP:PORT/dashboard/?sso_callback=1
+    ```
+
+    在以上内容中，将 `DASHBOARD_IP:PORT` 替换为你在浏览器中实际访问 TiDB Dashboard 所使用的域名（或 IP）及端口。
+
+6. 在 **Allowed Logout URLs** 字段中填写如下内容：
+
+    ```
+    http://DASHBOARD_IP:PORT/dashboard/
+    ```
+
+    类似地，将 `DASHBOARD_IP:PORT` 替换为实际的域名（或 IP）及端口。
+
+    ![Settings](/media/dashboard/dashboard-session-sso-auth0-settings-2.png)
+
+7. 其它设置保持默认，点击 **Save Changes** 保存。
+
+### 步骤二：获取 TiDB Dashboard 所需的配置参数并填入 TiDB Dashboard
+
+1. 将 Auth0 **Settings** 栏 **Basic Information** 项的 **Client ID** 字段的值填入 TiDB Dashboard 的 **OIDC Client ID**，将 **Domain** 字段的值，加上 `https://` 前缀和 `/` 后缀后填入 **OIDC Discovery URL** 中，例如 `https://example.us.auth0.com/`。完成授权并保存配置即可。
+
+    ![Settings](/media/dashboard/dashboard-session-sso-auth0-settings-3.png)
+
+至此，TiDB Dashboard 已被配置为使用 Auth0 进行 SSO 登录。
+
+## 示例三：使用 Casdoor 进行 TiDB Dashboard SSO 登录认证
+
+[Casdoor](https://casdoor.org/) 是一个开源的、可以部署在私人服务器上的 SSO 平台。它与 TiDB Dashboard 的 SSO 功能兼容。以下步骤展示了如何配置 Casdoor 及 TiDB Dashboard，使得 TiDB Dashboard 可以通过 Casdoor 进行 SSO 登录。
+
+### 步骤一：配置 Casdoor
+
+1. 部署并访问 Casdoor 的管理后台。
+
+2. 点击上方菜单栏的**应用**。
+
+3. 点击**添加**按钮。
+
+    ![Settings](/media/dashboard/dashboard-session-sso-casdoor-settings-1.png)
+
+4. 填写**名称**和**显示名称**，比如：**TiDB Dashboard**。
+
+5. 在**回调 URLs** 中添加如下内容：
+
+   ```
+   http://DASHBOARD_IP:PORT/dashboard/?sso_callback=1
+   ```
+
+   在以上内容中，将 `DASHBOARD_IP:PORT` 替换为你在浏览器中实际访问 TiDB Dashboard 所使用的域名（或 IP）及端口。   
+
+   ![Settings](/media/dashboard/dashboard-session-sso-casdoor-settings-2.png)
+
+6. 其他设置保留默认值，点击**保存 & 退出**。
+
+7. 保存页面上的**客户端 ID**。
+
+### 步骤二：获取 TiDB Dashboard 所需的配置参数并填入 TiDB Dashboard
+
+1. 将上一步获得的**客户端 ID** 字段的值填入 TiDB Dashboard 的 **OIDC Client ID**。
+
+2. 将 Casdoor 部署地址加上 `https://` 前缀和 `/` 后缀后填入 **OIDC Discovery URL** 中，例如 `https://casdoor.example.com/`。完成授权并保存配置即可。
+
+    ![Settings](/media/dashboard/dashboard-session-sso-casdoor-settings-3.png)
+
+至此，TiDB Dashboard 已被配置为使用 Casdoor 进行 SSO 登录。

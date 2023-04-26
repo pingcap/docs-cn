@@ -98,7 +98,7 @@ SHOW KEYS FROM t1;
 
 ## MySQL 兼容性
 
-`SHOW INDEXES [FROM|IN]` 语句与 MySQL 完全兼容。如发现任何兼容性差异，请在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues/new/choose)。
+MySQL 中的 `Cardinality` 列返回该索引上不同值的个数，而 TiDB 中的 `Cardinality` 列始终返回 `0`。
 
 ## 另请参阅
 

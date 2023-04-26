@@ -37,7 +37,7 @@ aliases: ['/docs-cn/dev/releases/release-2.0.9/','/docs-cn/dev/releases/209/']
 - 修复 etcd 启动失败导致的服务挂起问题 [#1267](https://github.com/pingcap/pd/pull/1267)
 - 修复 `pd-ctl` 读取 Region key 的相关问题 [#1298](https://github.com/pingcap/pd/pull/1298) [#1299](https://github.com/pingcap/pd/pull/1299) [#1308](https://github.com/pingcap/pd/pull/1308)
 - 修复 `regions/check` API 输出错误的问题 [#1311](https://github.com/pingcap/pd/pull/1311)
-- 修复 PD join 失败后无法重新 join 的问题 [1279](https://github.com/pingcap/pd/pull/1279)
+- 修复 PD join 失败后无法重新 join 的问题 [#1279](https://github.com/pingcap/pd/pull/1279)
 
 ## TiKV
 
