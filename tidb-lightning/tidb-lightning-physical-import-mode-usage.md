@@ -80,13 +80,51 @@ Lightning 的完整配置文件可参考[完整配置及命令行参数](/tidb-l
 
 ## 冲突数据检测
 
-冲突数据，即两条或两条以上的记录存在 PK/UK 列数据重复的情况。当数据源中的记录存在冲突数据，将导致该表真实总行数和使用唯一索引查询的总行数不一致的情况。冲突数据检测支持三种策略：
+冲突数据，即两条或两条以上的记录存在 PK/UK 列数据重复的情况。当数据源中的记录存在冲突数据，将导致该表真实总行数和使用唯一索引查询的总行数不一致的情况。
 
-- record: 仅将冲突记录添加到目的 TiDB 中的 `lightning_task_info.conflict_error_v1` 表中。注意，该方法要求目的 TiKV 的版本为 v5.2.0 或更新版本。如果版本过低，则会启用 'none' 模式。
-- remove: 推荐方式。记录所有的冲突记录，和 'record' 模式相似。但是会删除所有的冲突记录，以确保目的 TiDB 中的数据状态保持一致。
-- none: 关闭冲突数据检测。该模式是三种模式中性能最佳的，但是可能会导致目的 TiDB 中出现数据不一致的情况。
+当使用 Physical Import Mode 导入数据时，可以在 TiDB Lightning 任务配置文件中配置 `duplicate-detection` 选项以进行冲突数据检测。
 
-在 v5.3 版本之前，Lightning 不具备冲突数据检测特性，若存在冲突数据将导致导入过程最后的 checksum 环节失败；开启冲突检测特性的情况下，无论 `record` 还是 `remove` 策略，只要检测到冲突数据，Lightning 都会跳过最后的 checksum 环节（因为必定失败）。
+冲突数据检测支持三种策略：
+
+- `record`: 仅将冲突记录添加到目的 TiDB 中的 `lightning_task_info.conflict_error_v1` 表中。
+- `remove`: 推荐方式。记录所有的冲突记录，和 'record' 模式相似。但是会删除所有的冲突记录，以确保目的 TiDB 中的数据状态保持一致。
+- `none`: 关闭冲突数据检测。该模式是三种模式中性能最佳的，但是可能会导致目的 TiDB 中出现数据不一致的情况。
+
+在 v5.3 版本之前，TiDB Lightning 不具备冲突数据检测特性，若存在冲突数据将导致导入过程最后的 checksum 环节失败；开启冲突检测特性的情况下，无论 `record` 还是 `remove` 策略，只要检测到冲突数据，Lightning 都会跳过最后的 checksum 环节（因为必定失败99）。
+
+### `record` 策略
+
+> **注意：**
+>
+> 该方法要求目的 TiKV 的版本为 v5.2.0 或更新版本。如果版本过低，则会启用 `none` 模式。
+
+当 `duplicate-detection` 设置为 `record` 时，仅将冲突数据添加到目的 TiDB 中的 `lightning_task_info.conflict_error_v1` 表中。该表结构如下：
+
+```sql
+CREATE TABLE conflict_error_v1 (
+    task_id     bigint NOT NULL,
+    create_time datetime(6) NOT NULL DEFAULT now(6),
+    table_name  varchar(261) NOT NULL,
+    index_name  varchar(128) NOT NULL,
+    key_data    text NOT NULL,
+    row_data    text NOT NULL,
+    raw_key     mediumblob NOT NULL,
+    raw_value   mediumblob NOT NULL,
+    raw_handle  mediumblob NOT NULL,
+    raw_row     mediumblob NOT NULL,
+    KEY (task_id, table_name)
+);
+```
+
+`record` 模式会保留所有数据，并跳过 checksum 环节，因此 TiDB Lightning 不会报错。你可以根据`lightning_task_info.conflict_error_v1` 表中记录的信息手动处理这些冲突数据。
+
+与 `none` 模式相同，假设一张表中有且仅有两条冲突数据，使用 `record` 模式导入该表后，TiDB 中全表扫描查询数据和主键查询数据返回的结果不相符，后者只会返回符合该查询条件的第一条数据。
+
+### `remove` 策略
+
+当 `duplicate-detection` 设置为 `remove` 时，和 `record` 模式类似，会将冲突数据添加到 `lightning_task_info.conflict_error_v1` 表中，并跳过 checksum。但 `remove` 模式下 TiDB Lightning 还会将所有冲突数据从 TiDB 中删除。
+
+如果若干条数据发生冲突，这些冲突数据均不会被保留在 TiDB 中，但可以在 `lightning_task_info.conflict_error_v1` 表中查询。
 
 假设一张表 `order_line` 的表结构如下：
 
@@ -106,29 +144,85 @@ CREATE TABLE IF NOT EXISTS `order_line` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 ```
 
-若在导入过程中检测到冲突数据，则可以查询 `lightning_task_info.conflict_error_v1` 表得到以下内容：
+若在导入过程中检测到冲突数据，在 `none` 和 `remove` 模式下均可以查询 `lightning_task_info.conflict_error_v1` 表得到以下内容：
 
 ```sql
-mysql> select table_name,index_name,key_data,row_data from conflict_error_v1 limit 10;
+SELECT table_name,index_name,key_data,row_data FROM conflict_error_v1;
+   table_name         | index_name | key_data |row_data
 +---------------------+------------+----------+-----------------------------------------------------------------------------+
-|  table_name         | index_name | key_data | row_data                                                                    |
-+---------------------+------------+----------+-----------------------------------------------------------------------------+
-| `tpcc`.`order_line` | PRIMARY    | 21829216 | (2677, 10, 10, 11, 75656, 10, NULL, 5, 5831.97, "HT5DN3EVb6kWTd4L37bsbogj") |
-| `tpcc`.`order_line` | PRIMARY    | 49931672 | (2677, 10, 10, 11, 75656, 10, NULL, 5, 5831.97, "HT5DN3EVb6kWTd4L37bsbogj") |
-| `tpcc`.`order_line` | PRIMARY    | 21829217 | (2677, 10, 10, 12, 76007, 10, NULL, 5, 9644.36, "bHuVoRfidQ0q2rJ6ZC9Hd12E") |
-| `tpcc`.`order_line` | PRIMARY    | 49931673 | (2677, 10, 10, 12, 76007, 10, NULL, 5, 9644.36, "bHuVoRfidQ0q2rJ6ZC9Hd12E") |
-| `tpcc`.`order_line` | PRIMARY    | 21829218 | (2677, 10, 10, 13, 85618, 10, NULL, 5, 7427.98, "t3rsesgi9rVAKi9tf6an5Rpv") |
-| `tpcc`.`order_line` | PRIMARY    | 49931674 | (2677, 10, 10, 13, 85618, 10, NULL, 5, 7427.98, "t3rsesgi9rVAKi9tf6an5Rpv") |
-| `tpcc`.`order_line` | PRIMARY    | 21829219 | (2677, 10, 10, 14, 15873, 10, NULL, 5, 133.21, "z1vH0e31tQydJGhfNYNa4ScD")  |
-| `tpcc`.`order_line` | PRIMARY    | 49931675 | (2677, 10, 10, 14, 15873, 10, NULL, 5, 133.21, "z1vH0e31tQydJGhfNYNa4ScD")  |
-| `tpcc`.`order_line` | PRIMARY    | 21829220 | (2678, 10, 10, 1, 44644, 10, NULL, 5, 8463.76, "TWKJBt5iJA4eF7FIVxnugNmz")  |
-| `tpcc`.`order_line` | PRIMARY    | 49931676 | (2678, 10, 10, 1, 44644, 10, NULL, 5, 8463.76, "TWKJBt5iJA4eF7FIVxnugNmz")  |
+  `tpcc`.`order_line` | PRIMARY    | 2        | (2677, 10, 10, 11, 75656, 10, NULL, 5, 5831.97, "HT5DN3EVb6kWTd4L37bsbogj")
+  `tpcc`.`order_line` | PRIMARY    | 3        | (2677, 10, 10, 11, 75656, 10, NULL, 6, 6666.66, "HT5DN3EVb6kWTd4L37bsbogj")
 +---------------------+------------+----------------------------------------------------------------------------------------+
-10 rows in set (0.14 sec)
-
 ```
 
-根据上述信息人工甄别需要保留的重复数据，手动插回原表即可。
+当用 `SELECT * FROM order_line` 查询该表数据时，TiDB 仅保留了非冲突数据，冲突数据会被全部移除：
+
+```
+ ol_o_id | ol_d_id | ol_w_id | ol_number | ol_i_id | ol_supply_w_id | ol_delivery_d | ol_quantity | ol_amount | ol_dist_info
+---------+---------+---------+-----------+---------+----------------+---------------+-------------+-----------+--------------------------
+    2676 |      10 |      13 |        12 |   75658 |             11 |               |           5 | 5831.97   | HT5DN3EVb6kWTd4L37bsbogj
+(1 rows)
+```
+
+### `none` 策略（默认）
+
+TiDB Lightning 默认的配置为 `none`，即不会开启冲突检测。如果存在冲突数据时（PK/UK 列重复），则会导致该表真实总行数和使用唯一索引查询的总行数不一致的情况，并且 checksum 验证无法通过（`checksum mismatched remote vs local`），从而造成 TiDB Lightning 报错退出，但 TiDB Lightning 仍会将全部数据写入到 TiDB 中。
+
+```
+Error: [Lighting:Restore:ErrChecksumMismatch]checksum mismatched remote vs local => (checksum: 16695241788915789231 vs 12854679390123074615) (total_kvs: 5 vs 6) (total_bytes:402 vs 465)
+tidb lightning encountered error: [Lighting:Restore:ErrChecksumMismatch]checksum mismatched remote vs local => (checksum: 16695241788915789231 vs 12854679390123074615) (total_kvs: 5 vs 6) (total_bytes:402 vs 465)
+```
+
+假设一张表 `order_line` 的表结构如下：
+
+```sql
+CREATE TABLE IF NOT EXISTS `order_line` (
+  `ol_o_id` int(11) NOT NULL,
+  `ol_d_id` int(11) NOT NULL,
+  `ol_w_id` int(11) NOT NULL,
+  `ol_number` int(11) NOT NULL,
+  `ol_i_id` int(11) NOT NULL,
+  `ol_supply_w_id` int(11) DEFAULT NULL,
+  `ol_delivery_d` datetime DEFAULT NULL,
+  `ol_quantity` int(11) DEFAULT NULL,
+  `ol_amount` decimal(6,2) DEFAULT NULL,
+  `ol_dist_info` char(24) DEFAULT NULL,
+  PRIMARY KEY (`ol_w_id`,`ol_d_id`,`ol_o_id`,`ol_number`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+```
+
+使用 `SELECT * FROM order_line` 进行全表扫描查询数据可得：
+
+```
+ ol_o_id | ol_d_id | ol_w_id | ol_number | ol_i_id | ol_supply_w_id | ol_delivery_d | ol_quantity | ol_amount |       ol_dist_info
+---------+---------+---------+-----------+---------+----------------+---------------+-------------+-----------+--------------------------
+    2677 |      10 |      10 |        11 |   75656 |             10 |               |           5 | 5831.97   | HT5DN3EVb6kWTd4L37bsbogj
+    2677 |      10 |      10 |        11 |   75656 |             10 |               |           6 | 6666.66   | HT5DN3EVb6kWTd4L37bsbogj
+(2 rows)
+```
+
+当你在 TiDB 中查询主键时，该索引已创建。
+
+```
+   Table    | Non_unique | Key_name | Seq_in_index | Column_name | Collation | Cardinality | Sub_part | Packed | Null | Index_type | Comment | Index_comment | Visible | Expression | Clustered
+------------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+-----------
+ order_line |          0 | PRIMARY  |            1 | ol_w_id     | A         |           0 |          |        |      | BTREE      |         |               | YES     |            | NO
+ order_line |          0 | PRIMARY  |            2 | ol_d_id     | A         |           0 |          |        |      | BTREE      |         |               | YES     |            | NO
+ order_line |          0 | PRIMARY  |            3 | ol_o_id     | A         |           0 |          |        |      | BTREE      |         |               | YES     |            | NO
+ order_line |          0 | PRIMARY  |            4 | ol_number   | A         |           0 |          |        |      | BTREE      |         |               | YES     |            | NO
+(4 rows)
+```
+
+如果使用 `SELECT * FROM order_line WHERE (ol_o_id, ol_d_id, ol_w_id, ol_number) = (2677, 10, 10, 11)` 以主键查询数据，返回数据如下：
+
+```
+ ol_o_id | ol_d_id | ol_w_id | ol_number | ol_i_id | ol_supply_w_id | ol_delivery_d | ol_quantity | ol_amount | ol_dist_info
+---------+---------+---------+-----------+---------+----------------+---------------+-------------+-----------+--------------------------
+    2677 |      10 |      10 |        11 |   75656 |             10 |               |           5 | 5831.97   | HT5DN3EVb6kWTd4L37bsbogj
+(1 row)
+```
+
+返回结果与实际情况并不一致，仅返回了以主键查找数据时符合条件的第一条数据。
 
 ## 导入时限制调度范围从集群降低到表级别
 

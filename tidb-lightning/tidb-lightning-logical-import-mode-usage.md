@@ -55,11 +55,24 @@ TiDB Lightning 的完整配置文件可参考[完整配置及命令行参数](/t
 
 冲突数据，即两条或两条以上的记录存在主键或唯一键列数据重复的情况。当数据源中的记录存在冲突数据，将导致该表真实总行数和使用唯一索引查询的总行数不一致的情况。TiDB Lightning 的 Logical Import Mode 通过 `on-duplicate` 配置冲突数据检测的策略，TiDB Lightning 根据策略使用不同的 SQL 语句进行插入。
 
-| 策略 | 冲突时默认行为 | 对应 SQL 语句 |
-|:---|:---|:---|
-| `replace` | 新数据替代旧数据 | `REPLACE INTO ...` |
-| `ignore` | 保留旧数据，忽略新数据 | `INSERT IGNORE INTO ...` |
-| `error` | 中止导入 | `INSERT INTO ...` |
+### `replace` 策略
+
+在 `replace` 模式下，遇到冲突数据时，会执行 `REPLACE INTO …`，该 SQL 语句会将数据库中的冲突数据替换为当前的冲突数据。
+
+### `ignore` 策略
+
+在 `ignore` 模式下，遇到冲突数据时，会执行 `INSERT IGNORE INTO …`，如果插入的数据与 TiDB 中的数据发生冲突，该 SQL 语句会忽略该插入指令。也就是说，保留 TiDB 中的数据并忽略当前的冲突数据。
+
+### `error` 策略
+
+在 `error` 模式下，TiDB Lightning 直接执行 `INSERT INTO …`，遇到冲突数据插入时，TiDB Lightning 会在导入过程中直接报错，并中止导入。查询TiDB 可发现，含有冲突数据的表只导入了表结构，表中无数据存在，但在有冲突数据的表之前导入的表已正常写入数据到 TiDB 中。
+
+```
+Error: restore table `test`.`order_line` failed: Error 1062: Duplicate entry '10-10-2677-11' for key 'PRIMARY'
+tidb lightning encountered error:  restore table `test`.`order_line` failed: Error 1062: Duplicate entry '10-10-2677-11' for key 'PRIMARY'
+```
+
+在 Logical Import Mode 中，由于执行的 SQL 语句的特性，三种配置下 TiDB 中均不会存在冲突数据。
 
 ## 性能调优
 
