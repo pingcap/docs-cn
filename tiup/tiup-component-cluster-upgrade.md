@@ -27,7 +27,7 @@ tiup cluster upgrade <cluster-name> <version> [flags]
 > 
 > 对正在提供服务的集群强制升级可能导致集群服务不可用。对于未启动的集群，升级成功后会自动启动集群。
 
-### --transfer-timeout（uint，默认 300）
+### --transfer-timeout（uint，默认 600）
 
 在升级 PD 或 TiKV 时，会先将被升级节点的 leader 迁移到其他节点，迁移过程会需要一定时间，可以通过设置 `--transfer-timeout` 设置最长等待时间（单位为秒），超时之后会跳过等待直接升级服务。
 
