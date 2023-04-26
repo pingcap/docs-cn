@@ -194,7 +194,7 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 | [Dumpling 逻辑导出](/dumpling-overview.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y |
 | [事务 `LOAD DATA`](/sql-statements/sql-statement-load-data.md) | E [^5] | Y | Y | Y | Y | Y | Y | Y | Y | N [^6] |
 | [数据迁移工具](/migration-overview.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y |
-| [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y |
+| [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md) | N | N | N | Y | Y | Y | Y | Y | Y | Y |
 | [Change data capture (CDC)](/ticdc/ticdc-overview.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y |
 | [TiCDC 支持保存数据到存储服务 (S3/NFS/Azure Blob Storage/GCP)](/ticdc/ticdc-sink-to-cloud-storage.md) | Y | E | E | N | N | N | N | N | N | N |
 | [TiCDC 支持在两个 TiDB 集群之间进行双向复制](/ticdc/ticdc-bidirectional-replication.md) | Y | Y | Y | N | N | N | N | N | N | N |
