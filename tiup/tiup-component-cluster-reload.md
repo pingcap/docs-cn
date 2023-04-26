@@ -26,7 +26,7 @@ tiup cluster reload <cluster-name> [flags]
 
 - When restarting PD or TiKV, the leader of the restarted node is migrated to other nodes first, and the migration process takes some time. You can set the maximum wait time (in seconds) by setting `-transfer-timeout`. After the timeout, the service can be restarted directly without waiting.
 - Data type: `UINT`
-- Default: 300
+- Default: 600
 
 > **Note:**
 >

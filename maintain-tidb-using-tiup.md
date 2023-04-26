@@ -156,7 +156,7 @@ Flags:
   -N, --node strings           Specify the nodes
       --overwrite              Use this package in the future scale-out operations
   -R, --role strings           Specify the role
-      --transfer-timeout int   Timeout in seconds when transferring PD and TiKV store leaders (default 300)
+      --transfer-timeout int   Timeout in seconds when transferring PD and TiKV store leaders (default 600)
 
 Global Flags:
 

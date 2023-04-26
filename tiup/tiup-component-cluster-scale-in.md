@@ -55,7 +55,7 @@ tiup cluster scale-in <cluster-name> [flags]
 
 - When a PD or TiKV node is to be removed, the Region leader on the node will be transferred to another node first. Because the transferring process takes some time, you can set the maximum waiting time (in seconds) by configuring `--transfer-timeout`. After the timeout, the `tiup cluster scale-in` command skips waiting and starts the scaling-in directly.
 - Data type: `UINT`
-- The option is enabled by default with `300` seconds (the default value) passed in.
+- The option is enabled by default with `600` seconds (the default value) passed in.
 
 > **Note:**
 >

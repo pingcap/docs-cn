@@ -77,7 +77,7 @@ After you have completed the preceding steps, you can use `/tmp/${component}-hot
 
 - When restarting the PD or TiKV service, TiKV/PD first transfers the leader of the node to be restarted to another node. Because the transfer process takes some time, you can use the option `--transfer-timeout` to set the maximum waiting time (in seconds). After the timeout, TiUP directly restarts the service.
 - Data type: `UINT`
-- If this option is not specified, TiUP directly restarts the service after waiting for `300` seconds.
+- If this option is not specified, TiUP directly restarts the service after waiting for `600` seconds.
 
 > **Note:**
 >

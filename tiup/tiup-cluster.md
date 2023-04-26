@@ -381,7 +381,7 @@ Usage:
 Flags:
       --force                  Force upgrade won't transfer leader
   -h, --help                   help for upgrade
-      --transfer-timeout int   Timeout in seconds when transferring PD and TiKV store leaders (default 300)
+      --transfer-timeout int   Timeout in seconds when transferring PD and TiKV store leaders (default 600)
 
 Global Flags:
       --ssh string          (Experimental) The executor type. Optional values are 'builtin', 'system', and 'none'.
@@ -473,17 +473,20 @@ Usage:
   cluster patch <cluster-name> <package-path> [flags]
 
 Flags:
-  -h, --help                   help for patch
-  -N, --node strings           Specify the nodes
-      --overwrite              Use this package in the future scale-out operations
-  -R, --role strings           Specify the role
-      --transfer-timeout int   Timeout in seconds when transferring PD and TiKV store leaders (default 300)
+  -h, --help                    help for patch
+  -N, --node strings            Specify the nodes
+      --offline                 Patch a stopped cluster
+      --overwrite               Use this package in the future scale-out operations
+  -R, --role strings            Specify the roles
+      --transfer-timeout uint   Timeout in seconds when transferring PD and TiKV store leaders, also for TiCDC drain one capture (default 600)
 
 Global Flags:
-      --ssh string          (Experimental) The executor type. Optional values are 'builtin', 'system', and 'none'.
-      --wait-timeout int  Timeout of waiting the operation
-      --ssh-timeout int   Timeout in seconds to connect host via SSH, ignored for operations that don't need an SSH connection. (default 5)
-  -y, --yes               Skip all confirmations and assumes 'yes'
+  -c, --concurrency int     max number of parallel tasks allowed (default 5)
+      --format string       (EXPERIMENTAL) The format of output, available values are [default, json] (default "default")
+      --ssh string          (EXPERIMENTAL) The executor type: 'builtin', 'system', 'none'.
+      --ssh-timeout uint    Timeout in seconds to connect host via SSH, ignored for operations that don't need an SSH connection. (default 5)
+      --wait-timeout uint   Timeout in seconds to wait for an operation to complete, ignored for operations that don't fit. (default 120)
+  -y, --yes                 Skip all confirmations and assumes 'yes'
 ```
 
 If a TiDB hotfix package is in `/tmp/tidb-hotfix.tar.gz` and you want to replace all the TiDB packages in the cluster, run the following command:

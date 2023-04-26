@@ -240,7 +240,7 @@ Flags:
   -N, --node strings           Specify the nodes
       --overwrite              Use this package in the future scale-out operations
   -R, --role strings           Specify the role
-      --transfer-timeout int   Timeout in seconds when transferring dm-master leaders (default 300)
+      --transfer-timeout int   Timeout in seconds when transferring dm-master leaders (default 600)
 
 Global Flags:
       --native-ssh         Use the native SSH client installed on local system instead of the build-in one.
