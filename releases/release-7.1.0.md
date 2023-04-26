@@ -182,14 +182,14 @@ TiDB 版本：7.1.0 (upcoming)
 
     TiDB v7.1.0 之前的版本中，当 DDL 任务执行期间遇到业务高峰时间点时，为了减少对业务的影响，只能手动取消 DDL 任务。TiDB v7.1.0 引入了 DDL 任务的暂停和恢复功能，你可以在高峰时间点暂停 DDL 任务，等到业务高峰时间结束后再恢复 DDL 任务，从而避免了 DDL 操作对业务负载的影响。
 
-    例如，可以通过如下 [`ADMIN PAUSE DDL JOBS`](/sql-statements/sql-statement-admin-pause-ddl.md) 或 [`ADMIN RESUME DDL JOBS`](/sql-statements/sql-statement-admin-resume-ddl.md) 语句暂停或者恢复多个 DDL 任务：
+    例如，可以通过如下 `ADMIN PAUSE DDL JOBS` 或 `ADMIN RESUME DDL JOBS` 语句暂停或者恢复多个 DDL 任务：
 
     ```sql
     ADMIN PAUSE DDL JOBS 1,2;
     ADMIN RESUME DDL JOBS 1,2;
     ```
 
-    更多信息，请参考 [`ADMIN PAUSE DDL JOBS`](/sql-statements/sql-statement-admin-pause-ddl.md) 和 [`ADMIN RESUME DDL JOBS`](/sql-statements/sql-statement-admin-resume-ddl.md)。
+    更多信息，请参考[用户文档](/ddl-introduction.md#ddl-相关的命令介绍)。
 
 ### 可观测性
 
