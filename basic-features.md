@@ -113,7 +113,7 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 | [生成列](/generated-columns.md) | Y | E | E | E | E | E | E | E | E |
 | [视图](/views.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y |
 | [序列](/sql-statements/sql-statement-create-sequence.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y |
-| [`AUTO_INCREMENT` 列](/auto-increment.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y |
+| [`AUTO_INCREMENT` 列](/auto-increment.md) | Y | Y[^4] | Y | Y | Y | Y | Y | Y | Y |
 | [`AUTO_RANDOM` 列](/auto-random.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y |
 | [TTL (Time to Live)](/time-to-live.md) | Y | E | N | N | N | N | N | N | N |
 | [DDL 算法断言](/sql-statements/sql-statement-alter-table.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y |
