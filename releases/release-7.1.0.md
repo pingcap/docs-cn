@@ -39,7 +39,7 @@ TiDB 版本：7.1.0 (upcoming)
   </tr>
   <tr>
     <td>生成列 (GA)</td>
-    <td>生成列 (Generated Columns) 的值是通过实时计算列定义中的 SQL 表达式得到的。该功能将一些应用逻辑推向数据库层，从而提升效率。
+    <td>生成列 (Generated Columns) 的值是通过实时计算列定义中的 SQL 表达式得到的。该功能将一些应用逻辑推向数据库层，从而提升查询效率。
     </td>
   </tr>
 </tbody>
