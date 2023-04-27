@@ -32,6 +32,11 @@ TiDB 版本：7.1.0 (upcoming)
     <td>在读热点场景中，TiDB 可以将热点 TiKV 节点的读请求转发到副本。该功能有效地打散了读热点并优化了集群资源的利用。你可以通过调整系统变量 <a href="https://docs.pingcap.com/zh/tidb/dev/system-variables#tidb_load_based_replica_read_threshold-从-v700-版本开始引入" target="_blank"><code>tidb_load_based_replica_read_threshold</code></a> 控制基于负载的副本读取的触发阈值。</td>
   </tr>
   <tr>
+    <td rowspan="1">稳定性与高可用</td>
+    <td><a href="https://docs.pingcap.com/zh/tidb/dev/tidb-resource-control" target="_blank">资源管控</a> (GA)</td>
+   <td>支持基于资源组的资源管控，将数据库用户映射到对应的资源组中，并根据实际需求设置每个资源组的配额。</td>
+ </tr>
+  <tr>
     <td rowspan="2">SQL</td>
     <td><a href="https://docs.pingcap.com/zh/tidb/dev/sql-statement-create-index#多值索引" target="_blank">多值索引</a> (GA)</td>
     <td>引入 MySQL 兼容的多值索引，增强 JSON 类型，提升 TiDB 对 MySQL 8.0 的兼容性。该功能提升了对多值列进行成员检查的效率。</td>
@@ -40,11 +45,6 @@ TiDB 版本：7.1.0 (upcoming)
     <td><a href="https://docs.pingcap.com/zh/tidb/dev/generated-columns" target="_blank">生成列</a> (GA)</td>
     <td>生成列 (Generated Columns) 的值是通过实时计算列定义中的 SQL 表达式得到的。该功能将一些应用逻辑推向数据库层，从而提升查询效率。</td>
   </tr>
-  <tr>
-    <td rowspan="1">稳定性与高可用</td>
-    <td><a href="https://docs.pingcap.com/zh/tidb/dev/tidb-resource-control" target="_blank">资源管控</a> (GA)</td>
-   <td>支持基于资源组的资源管控，将数据库用户映射到对应的资源组中，并根据实际需求设置每个资源组的配额。</td>
- </tr>
 </tbody>
 </table>
 
@@ -203,7 +203,7 @@ TiDB 版本：7.1.0 (upcoming)
 
     * 在 [`PLAN REPLAYER`](/sql-plan-replayer.md) 的输出中增加 `debug_trace.json` 文件。
     * 在 [`EXPLAIN`](/explain-walkthrough.md) 的输出中为 `operator info` 添加部分统计信息详情。
-    * 为[`慢日志`](/identify-slow-queries.md)的 `Stats` 字段添加部分统计信息详情。
+    * 为[慢日志](/identify-slow-queries.md)的 `Stats` 字段添加部分统计信息详情。
 
   更多信息，请参考[使用 `PLAN REPLAYER` 保存和恢复集群线程信息](/sql-plan-replayer.md)、[使用 `EXPLAIN` 解读执行计划](/explain-walkthrough.md)和[慢日志查询](/identify-slow-queries.md)。
 
