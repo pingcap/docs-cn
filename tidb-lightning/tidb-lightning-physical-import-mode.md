@@ -5,7 +5,9 @@ summary: 了解 TiDB Lightning 的 Physical Import Mode。
 
 # Physical Import Mode 简介
 
-Physical Import Mode 是 TiDB Lightning 支持的一种数据导入方式。Physical Import Mode 不经过 SQL 接口，而是直接将数据以键值对的形式插入 TiKV 节点，是一种高效、快速的导入模式。Physical Import Mode 适合导入最高 100 TB 数据量，使用前请务必自行阅读[必要条件及限制](/tidb-lightning/tidb-lightning-physical-import-mode.md#必要条件及限制)。
+Physical Import Mode 是 TiDB Lightning 支持的一种数据导入方式。Physical Import Mode 不经过 SQL 接口，而是直接将数据以键值对的形式插入 TiKV 节点，是一种高效、快速的导入模式。Physical Import Mode 适合导入最高 100 TB 数据量，实现方式是通过[并行导入](/tidb-lightning/tidb-lightning-distributed-import.md) 10 个任务、每个任务导入 10 TB 数据。
+
+使用前请务必自行阅读[必要条件及限制](/tidb-lightning/tidb-lightning-physical-import-mode.md#必要条件及限制)。
 
 Physical Import Mode 对应的后端模式为 `local`。
 
