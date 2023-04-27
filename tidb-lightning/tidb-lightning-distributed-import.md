@@ -191,7 +191,7 @@ incremental-import = true
 
 2. 如果是不影响数据正确性的报错，如网络超时，可以在每一个失败的节点上使用 tidb-lightning-ctl 工具清除断点续传源数据中记录的错误，然后重启这些异常的节点，从断点位置继续导入，详见 [checkpoint-error-ignore](/tidb-lightning/tidb-lightning-checkpoints.md#--checkpoint-error-ignore)。
 
-3. 如果是影响数据正确性的报错，如 checksum mismatched，表示源文件中有非法的数据，请按以下步骤操作来解决：
+3. 如果是影响数据正确性的报错，如 checksum mismatched，表示源文件中有非法的数据，请按以下步骤解决：
 
     1. 在每一个 Lightning 节点（无论是否成功导入数据）上使用 tidb-lightning-ctl 工具，清除失败的表中已导入的数据及断点续传相关的源数据，详见 [checkpoint-error-destroy](/tidb-lightning/tidb-lightning-checkpoints.md#--checkpoint-error-destroy)。此命令会删除下游导入失败的表中已导入的数据、相应的 checkpoint、多个并行导入任务的 Meta 表信息等。
 
