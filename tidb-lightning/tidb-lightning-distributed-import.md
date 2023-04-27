@@ -183,7 +183,11 @@ incremental-import = true
 
 1. 如果是正常退出(如手动 Kill 等)，或内存溢出被操作系统终止等，可以在适当调整配置后直接重启 TiDB Lightning，无须任何其他操作。
 
-2. 如果是不影响数据正确性的报错，如网络超时，可以在每一个失败的节点上使用 tidb-lightning-ctl 工具清除断点续传源数据中记录的错误，然后重启这些异常的节点，从断点位置继续导入，详见 [checkpoint-error-ignore](/tidb-lightning/tidb-lightning-checkpoints.md#--checkpoint-error-ignore)。
+2. 如果是不影响数据正确性的报错，例如网络超时，请按以下步骤解决：
+
+    1. 在每一个失败的节点上，使用 tidb-lightning-ctl 工具执行 [checkpoint-error-ignore](/tidb-lightning/tidb-lightning-checkpoints.md#--checkpoint-error-ignore)命令，清除断点续传源数据中记录的错误。
+
+    2. 重启这些异常的节点，从断点位置继续导入。
 
 3. 如果是影响数据正确性的报错，如 checksum mismatched，表示源文件中有非法的数据，请按以下步骤解决：
 
