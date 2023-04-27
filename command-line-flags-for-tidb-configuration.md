@@ -132,7 +132,7 @@ aliases: ['/docs-cn/dev/command-line-flags-for-tidb-configuration/','/docs-cn/de
 
 ## `--proxy-protocol-fallbackable`
 
-+ 用于控制是否启用 PROXY 协议回退模式。如果设置为 `true`，TiDB 可以接受非 PROXY 协议规范或者没有发送 PROXY 协议头的客户端连接。默认情况下，TiDB 仅接受发送 PROXY 协议头的客户端连接。
++ 用于控制是否启用 PROXY 协议回退模式。如果设置为 `true`，TiDB 可以接受属于 `--proxy-protocol-networks` 的客户端使用非 PROXY 协议规范或者没有发送 PROXY 协议头的客户端连接。默认情况下，TiDB 仅接受属于 `--proxy-protocol-networks` 的客户端发送 PROXY 协议头的客户端连接。
 + 默认：`false`
 
 ## `--proxy-protocol-header-timeout`

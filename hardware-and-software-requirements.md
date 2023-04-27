@@ -107,7 +107,7 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 
 | **组件** | **CPU** | **内存** | **硬盘类型** | **网络** | **实例数量(最低要求)** |
 | --- | --- | --- | --- | --- | --- |
-| TiDB | 16 核+ | 48 GB+ | SAS | 万兆网卡（2 块最佳） | 2 |
+| TiDB | 16 核+ | 48 GB+ | SSD | 万兆网卡（2 块最佳） | 2 |
 | PD | 8 核+ | 16 GB+ | SSD | 万兆网卡（2 块最佳） | 3 |
 | TiKV | 16 核+ | 64 GB+ | SSD | 万兆网卡（2 块最佳） | 3 |
 | TiFlash | 48 核+ | 128 GB+ | 1 or more SSDs | 万兆网卡（2 块最佳） | 2 |
@@ -146,7 +146,6 @@ TiDB 作为开源一栈式实时 HTAP 数据库，其正常运行需要网络环
 | PD | 2379 | 提供 TiDB 和 PD 通信端口 |
 | PD | 2380 | PD 集群节点间通信端口 |
 |TiFlash|9000|TiFlash TCP 服务端口|
-|TiFlash|8123|TiFlash HTTP 服务端口|
 |TiFlash|3930|TiFlash RAFT 服务和 Coprocessor 服务端口|
 |TiFlash|20170|TiFlash Proxy 服务端口|
 |TiFlash|20292|Prometheus 拉取 TiFlash Proxy metrics 端口|

@@ -46,6 +46,10 @@ ACID 是指数据库管理系统在写入或更新资料的过程中，为保证
 
 缓存表 (Cached Table) 是指 TiDB 把整张表的数据加载到服务器的内存中，直接从内存中获取表数据，避免从 TiKV 获取表数据，从而提升读性能。详情参见[缓存表](/cached-tables.md)。
 
+### Coalesce Partition
+
+Coalesce Partition 是一种减少 Hash 分区表或 Key 分区表中分区数量的方法。详情参见[管理 Hash 分区和 Key 分区](/partitioned-table.md#管理-hash-分区和-key-分区)。
+
 ### Continuous Profiling
 
 持续性能分析 (Continuous Profiling) 是从 TiDB v5.3 起引入的一种从系统调用层面解读资源开销的方法。引入该方法后，TiDB 可提供数据库源码级性能观测，通过火焰图的形式帮助研发、运维人员定位性能问题的根因。详情参见 [TiDB Dashboard 实例性能分析 - 持续分析页面](/dashboard/continuous-profiling.md)。
@@ -98,6 +102,10 @@ Operator Step 是 Operator 执行过程的一个步骤，一个 Operator 常常�
 - `SplitRegion`：将指定 Region 一分为二
 
 ## P
+
+### Partitioning
+
+[Partitioning](/partitioned-table.md)（分区）指通过 `RANGE`、`LIST`、`HASH` 和 `KEY` 等分区方法在物理上将一张表划分为较小的分区。
 
 ### Pending/Down
 
