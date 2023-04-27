@@ -181,15 +181,15 @@ incremental-import = true
 
 在并行导入过程中，如果一个或多个 TiDB Lightning 节点异常终止，需要首先根据日志中的报错明确异常退出的原因，然后根据错误类型做不同处理：
 
-1. 如果是正常退出(如手动 Kill 等)，或内存溢出被操作系统终止等，可以在适当调整配置后直接重启 TiDB Lightning，无须任何其他操作。
+- 如果是正常退出(如手动 Kill 等)，或内存溢出被操作系统终止等，可以在适当调整配置后直接重启 TiDB Lightning，无须任何其他操作。
 
-2. 如果是不影响数据正确性的报错，例如网络超时，请按以下步骤解决：
+- 如果是不影响数据正确性的报错，例如网络超时，请按以下步骤解决：
 
     1. 在每一个失败的节点上，执行 [checkpoint-error-ignore](/tidb-lightning/tidb-lightning-checkpoints.md#--checkpoint-error-ignore) 命令，清除断点续传源数据中记录的错误。
 
     2. 重启这些异常的节点，从断点位置继续导入。
 
-3. 如果是影响数据正确性的报错，如 checksum mismatched，表示源文件中有非法的数据，请按以下步骤解决：
+- 如果是影响数据正确性的报错，如 checksum mismatched，表示源文件中有非法的数据，请按以下步骤解决：
 
     1. 在每一个 Lightning 节点（无论是否成功导入数据）上执行 [checkpoint-error-destroy](/tidb-lightning/tidb-lightning-checkpoints.md#--checkpoint-error-destroy) 命令，清除失败的表中已导入的数据及断点续传相关的源数据。此命令会删除下游导入失败的表中已导入的数据、相应的 checkpoint、多个并行导入任务的 Meta 表信息等。
 
