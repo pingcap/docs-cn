@@ -24,8 +24,8 @@ TiDB 版本：7.1.0 (upcoming)
 <tbody>
   <tr>
     <td rowspan="2">可扩展性与性能</td>
-    <td>会话级别内<a href="https://docs.pingcap.com/zh/tidb/dev/sql-non-prepared-plan-cache" target="_blank">无需手动准备 SQL 执行计划缓存</a> (GA)</td>
-    <td>支持在会话级别自动重用执行计划缓存，可以减少编译并缩短相同 SQL 查询的时间，而无需事先手动准备 Prepare Statement 语句。</td>
+    <td><a href="https://docs.pingcap.com/zh/tidb/dev/sql-non-prepared-plan-cache" target="_blank">会话级别非 Prepare 语句执行计划缓存</a> (GA)</td>
+    <td>支持在会话级别自动重用执行计划缓存，减少查询计划时间，缩短相同 SQL 查询的时间，而无需事先手动准备 Prepare Statement 语句。</td>
   </tr>
   <tr>
     <td><a href="https://docs.pingcap.com/zh/tidb/dev/troubleshoot-hot-spot-issues#打散读热点" target="_blank">基于负载的副本读取</a></td>
@@ -40,6 +40,11 @@ TiDB 版本：7.1.0 (upcoming)
     <td><a href="https://docs.pingcap.com/zh/tidb/dev/generated-columns" target="_blank">生成列</a> (GA)</td>
     <td>生成列 (Generated Columns) 的值是通过实时计算列定义中的 SQL 表达式得到的。该功能将一些应用逻辑推向数据库层，从而提升查询效率。</td>
   </tr>
+  <tr>
+    <td rowspan="1">稳定性与高可用</td>
+    <td><a href="https://docs.pingcap.com/zh/tidb/dev/tidb-resource-control" target="_blank">资源管控</a> (GA)</td>
+   <td>支持基于资源组的资源管控，将数据库用户映射到对应的资源组中，并根据实际需求设置每个资源组的配额。</td>
+ </tr>
 </tbody>
 </table>
 
