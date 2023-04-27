@@ -126,7 +126,7 @@ ALTER TABLE t1 CHANGE col3 col4 BIGINT, CHANGE id id2 INT NOT NULL;
 ERROR 8200 (HY000): Unsupported modify column: can't remove auto_increment without @@tidb_allow_remove_auto_inc enabled
 ```
 
-由于 `id` 是自增列，所以不能直接将其重命名为 `id2`。需要先开启 `tidb_allow_remove_auto_inc`，然后再执行 `ALTER TABLE` 语句：
+由于 `id` 是自增列，所以不能直接将其重命名为 `id2`。需要先开启 [`tidb_allow_remove_auto_inc`](/system-variables.md#tidb_allow_remove_auto_inc-从-v2118-和-v304-版本开始引入)，然后再执行 `ALTER TABLE` 语句：
 
 ```sql
 SET tidb_allow_remove_auto_inc = ON;
