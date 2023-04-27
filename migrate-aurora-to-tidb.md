@@ -56,7 +56,7 @@ aliases: ['/zh/tidb/dev/migrate-from-aurora-using-lightning/','/docs-cn/dev/migr
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup dumpling --host ${host} --port 3306 --user root --password ${password} --filter 'my_db1.table[12]' --no-data --output 's3://my-bucket/schema-backup' --filter "mydb.*"
+tiup dumpling --host ${host} --port 3306 --user root --password ${password} --filter 'my_db1.table[12],mydb.*' --consistency none --no-data --output 's3://my-bucket/schema-backup'
 ```
 
 命令中所用参数描述如下。如需更多信息可参考 [Dumpling overview](/dumpling-overview.md)。
@@ -74,7 +74,8 @@ tiup dumpling --host ${host} --port 3306 --user root --password ${password} --fi
 |-B 或 --database   |导出指定数据库|
 |-T 或 --tables-list |导出指定数据表|
 |-d 或 --no-data    |不导出数据，仅导出 schema|
-|-f 或 --filter     |导出能匹配模式的表，不可用 -T 一起使用，语法可参考[table filter](/table-filter.md)|
+|-f 或 --filter     |导出能匹配模式的表，不可与 -T 一起使用，语法可参考[table filter](/table-filter.md)|
+|--consistency     |导出期间的一致性模式，Aurora 只能使用 `none`，即不加锁 dump，不保证一致性|
 
 ### 第 3 步：编写 Lightning 配置文件
 
