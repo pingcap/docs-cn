@@ -192,7 +192,7 @@ incremental-import = true
 
 2. 如果是不影响数据正确性的报错，如网络超时，可以在每一个失败的节点上使用 tidb-lightning-ctl 工具清除断点续传源数据中记录的错误，然后重启这些异常的节点，从断点位置继续导入，详见 [checkpoint-error-ignore](/tidb-lightning/tidb-lightning-checkpoints.md#--checkpoint-error-ignore)。
 
-3. 如果是影响数据正确性的报错，如 checksum mismatched，表示源文件中有非法的数据，则需要在每一个 Lightning 节点（无论是否成功导入数据）上使用 tidb-lightning-ctl 工具，清除失败的表中已导入的数据及断点续传相关的源数据，详见 [checkpoint-error-destroy](/tidb-lightning/tidb-lightning-checkpoints.md#--checkpoint-error-destroy)。此命令会删除下游导入失败的表中已导入的数据、checkpoint、多个并行导入任务的 meta 表信息等。之后在所有 TiDB Lightning 节点（包括任务正常结束的）重新配置和导入失败的表的数据，可以配置 filters 参数只导入报错失败的表。重新配置任务时，注意请不要将 checkpoint-error-destroy 命令放在每一个 Lightning 节点的启动脚本中，否则会多次删除本次并行任务对应的 Meta 表，新建的并行导入任务导入数据时会产生异常行为。
+3. 如果是影响数据正确性的报错，如 checksum mismatched，表示源文件中有非法的数据，则需要在每一个 Lightning 节点（无论是否成功导入数据）上使用 tidb-lightning-ctl 工具，清除失败的表中已导入的数据及断点续传相关的源数据，详见 [checkpoint-error-destroy](/tidb-lightning/tidb-lightning-checkpoints.md#--checkpoint-error-destroy)。此命令会删除下游导入失败的表中已导入的数据、checkpoint、多个并行导入任务的 Meta 表信息等。之后你需要在所有 TiDB Lightning 节点（包括任务正常结束的）重新配置和导入失败的表的数据，此时你可以配置 filters 参数只导入报错失败的表。重新配置任务时，注意请不要将 checkpoint-error-destroy 命令放在每一个 Lightning 节点的启动脚本中，否则会多次删除本次并行任务对应的 Meta 表，导致新建的并行导入任务导入数据时会产生异常行为。
 
 ### 导入过程中报错 "Target table is calculating checksum. Please wait until the checksum is finished and try again"
 
