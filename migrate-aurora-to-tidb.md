@@ -75,7 +75,7 @@ tiup dumpling --host ${host} --port 3306 --user root --password ${password} --fi
 |-T 或 --tables-list |导出指定数据表|
 |-d 或 --no-data    |不导出数据，仅导出 schema|
 |-f 或 --filter     |导出能匹配模式的表，不可与 -T 一起使用，语法可参考[table filter](/table-filter.md)|
-|--consistency     |导出期间的一致性模式，Aurora 只能使用 none|
+|--consistency     |导出期间的一致性模式，Aurora 只能使用 `none`，即不加锁 dump，不保证一致性|
 
 
 ### 第 3 步：编写 Lightning 配置文件
