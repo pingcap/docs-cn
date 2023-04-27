@@ -196,11 +196,11 @@ incremental-import = true
 
     2. 重启这些异常的节点，从断点位置继续导入。
 
-- 如果是影响数据正确性的报错，如 checksum mismatched，表示源文件中有非法的数据，请按以下步骤解决：
+- 如果在日志中看到影响数据正确性的报错，如 checksum mismatched，表示源文件中有非法的数据，请按以下步骤解决：
 
-    1. 在每一个 Lightning 节点（无论是否成功导入数据）上执行 [checkpoint-error-destroy](/tidb-lightning/tidb-lightning-checkpoints.md#--checkpoint-error-destroy) 命令，清除失败的表中已导入的数据及断点续传相关的源数据。此命令会删除下游导入失败的表中已导入的数据、相应的 checkpoint、多个并行导入任务的 Meta 表信息等。
+    1. 在每一个 Lightning 节点（包括成功导入数据的节点）上执行 [checkpoint-error-destroy](/tidb-lightning/tidb-lightning-checkpoints.md#--checkpoint-error-destroy) 命令，以清除失败的表中已导入的数据，并将这些表的 checkpoint 状态重置为 "not yet started"。
 
-    2. 在所有 TiDB Lightning 节点（包括任务正常结束的）重新配置和导入失败的表的数据，此时你可以配置 [`filter`](/table-filter.md) 参数只导入报错失败的表。重新配置任务时，不要将 checkpoint-error-destroy 命令放在每一个 Lightning 节点的启动脚本中，否则会多次删除本次并行导入任务对应的 Meta 表，导致新建的并行导入任务导入数据时产生异常行为。
+    2. 使用 [`filter`](/table-filter.md) 参数在所有 TiDB Lightning 节点（包括任务正常结束的节点）上重新配置和导入失败表的数据。重新配置任务时，不要将 checkpoint-error-destroy 命令放在每一个 Lightning 节点的启动脚本中，否则会删除多个并行导入任务使用的共享元数据，可能会导致数据导入过程出现问题。例如，如果启动了第二个 Lightning 导入任务，它将删除第一个数据导入任务写入的元数据，导致数据导入异常。
 
 ### 导入过程中报错 "Target table is calculating checksum. Please wait until the checksum is finished and try again"
 
