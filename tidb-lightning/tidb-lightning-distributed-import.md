@@ -191,7 +191,7 @@ incremental-import = true
 
 - 如果是不影响数据正确性的报错，例如网络超时，请按以下步骤解决：
 
-    1. 在每一个失败的节点上，执行 [checkpoint-error-ignore](/tidb-lightning/tidb-lightning-checkpoints.md#--checkpoint-error-ignore) 命令，清除断点续传源数据中记录的错误。
+    1. 在每一个失败的节点上，执行 [checkpoint-error-ignore](/tidb-lightning/tidb-lightning-checkpoints.md#--checkpoint-error-ignore) 命令，值设置为 `all`，以清除断点续传源数据中记录的错误。
 
     2. 重启这些异常的节点，从断点位置继续导入。
 
