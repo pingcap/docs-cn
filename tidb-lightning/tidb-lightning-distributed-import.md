@@ -181,11 +181,19 @@ incremental-import = true
 
 在并行导入过程中，如果一个或多个 TiDB Lightning 节点异常终止，需要首先根据日志中的报错明确异常退出的原因，然后根据错误类型做不同处理：
 
-1. 如果是正常退出(如手动 Kill 等)，或内存溢出被操作系统终止等，可以在适当调整配置后直接重启 TiDB Lightning，无须任何其他操作。
+- 如果是正常退出，例如手动 Kill 或内存溢出被操作系统终止等，可以在适当调整配置后直接重启 TiDB Lightning，无须任何其他操作。
 
-2. 如果是不影响数据正确性的报错，如网络超时，可以在每一个失败的节点上使用 tidb-lightning-ctl 工具清除断点续传源数据中记录的错误，然后重启这些异常的节点，从断点位置继续导入，详见 [checkpoint-error-ignore](/tidb-lightning/tidb-lightning-checkpoints.md#--checkpoint-error-ignore)。
+- 如果是不影响数据正确性的报错，例如网络超时，请按以下步骤解决：
 
-3. 如果是影响数据正确性的报错，如 checksum mismatched，表示源文件中有非法的数据，则需要在每一个失败的节点上使用 tidb-lightning-ctl 工具，清除失败的表中已导入的数据及断点续传相关的源数据，详见 [checkpoint-error-destroy](/tidb-lightning/tidb-lightning-checkpoints.md#--checkpoint-error-destroy)。此命令会删除下游导入失败表中已导入的数据，因此，应在所有 TiDB Lightning 节点（包括任务正常结束的）重新配置和导入失败的表的数据，可以配置 filters 参数只导入报错失败的表。
+    1. 在每一个失败的节点上，执行 [checkpoint-error-ignore](/tidb-lightning/tidb-lightning-checkpoints.md#--checkpoint-error-ignore) 命令，值设置为 `all`，以清除断点续传源数据中记录的错误。
+
+    2. 重启这些异常的节点，从断点位置继续导入。
+
+- 如果在日志中看到影响数据正确性的报错，如 checksum mismatched，表示源文件中有非法的数据，请按以下步骤解决：
+
+    1. 在每一个 Lightning 节点（包括成功导入数据的节点）上执行 [checkpoint-error-destroy](/tidb-lightning/tidb-lightning-checkpoints.md#--checkpoint-error-destroy) 命令，以清除失败的表中已导入的数据，并将这些表的 checkpoint 状态重置为 "not yet started"。
+
+    2. 使用 [`filter`](/table-filter.md) 参数在所有 TiDB Lightning 节点（包括任务正常结束的节点）上重新配置和导入失败表的数据。重新配置任务时，不要将 checkpoint-error-destroy 命令放在每一个 Lightning 节点的启动脚本中，否则会删除多个并行导入任务使用的共享元数据，可能会导致数据导入过程出现问题。例如，如果启动了第二个 Lightning 导入任务，它将删除第一个数据导入任务写入的元数据，导致数据导入异常。
 
 ### 导入过程中报错 "Target table is calculating checksum. Please wait until the checksum is finished and try again"
 
