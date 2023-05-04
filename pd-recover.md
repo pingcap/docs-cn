@@ -34,7 +34,7 @@ PD Recover 的安装包位于 TiDB 离线工具包中。下载方式，请参考
 
 ### 第 2 步：启动存活的 PD 节点
 
-加上特定地启动参数 `--force-new-cluster` 拉起该存活的 PD 节点, 如：
+使用特定的启动参数 `--force-new-cluster` 拉起该存活的 PD 节点，如：
 
 {{< copyable "shell-regular" >}}
 
