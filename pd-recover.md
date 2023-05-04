@@ -70,7 +70,7 @@ PD Recover 的安装包位于 TiDB 离线工具包中。下载方式，请参考
 
 该方式适用于所有 PD 的数据都丢失，但其他组件数据都还存在的情况。
 
-### 第 1 步： 获取 Cluster ID
+### 第 1 步：获取 Cluster ID
 
 一般在 PD、TiKV 或 TiDB 的日志中都可以获取 Cluster ID。你可以直接在服务器上查看日志以获取 Cluster ID。
 
