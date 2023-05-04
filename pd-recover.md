@@ -42,7 +42,7 @@ PD Recover 的安装包位于 TiDB 离线工具包中。下载方式，请参考
  ./bin/pd-server --force-new-cluster --name=pd-127.0.0.10-2379 --client-urls=http://0.0.0.0:2379 --advertise-client-urls=http://127.0.0.1:2379 --peer-urls=http://0.0.0.0:2380 --advertise-peer-urls=http://127.0.0.1:2380 --config=conf/pd.toml 
 ```
 
-### 第 3 步： 使用 pd-recover 修复元数据
+### 第 3 步：使用 `pd-recover` 修复元数据
 
 由于该方法是利用少数派 PD 节点恢复服务，该节点可能存在数据落后的情况。对于 `alloc_id`、`tso` 这类数据，一旦发生回退，则可能会导致集群数据错乱或不可用。因此，需要使用 `pd-recover` 修改元数据，以确保该节点能提供正确的分配 ID、TSO 等服务。具体命令参考：
 
