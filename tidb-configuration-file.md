@@ -826,7 +826,7 @@ TiDB 服务状态相关配置。
 
 + 用于表示该 tidb-server 是否可以成为 DDL owner。
 + 默认值：true
-+ 该值作为系统变量 [`tidb_enable_ddl`](/system-variables.md#tidb_enable_ddl) 的初始值。
++ 该值作为系统变量 [`tidb_enable_ddl`](/system-variables.md#tidb_enable_ddl-从-v630-版本开始引入) 的初始值。
 + 在 v6.3.0 之前，该功能由配置项 `run-ddl` 进行设置。
 
 ### `tidb_stmt_summary_enable_persistent` <span class="version-mark">从 v6.6.0 版本开始引入</span>
