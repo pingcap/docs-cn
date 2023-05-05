@@ -18,7 +18,7 @@ If you need to deploy and operate TiDB on Kubernetes, you can deploy a Kubernete
 
 ## Import data from CSV to TiDB
 
-If you need to import the compatible CSV files exported by other tools to TiDB, use [TiDB Lightning](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md).
+If you need to import the compatible CSV files exported by other tools to TiDB, use [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md).
 
 ## Import full data from MySQL/Aurora
 

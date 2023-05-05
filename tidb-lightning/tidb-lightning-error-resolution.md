@@ -39,7 +39,7 @@ The following errors are always fatal, and cannot be skipped by changing `max-er
 * Syntax error (such as unclosed quotation marks) in the original CSV, SQL or Parquet file.
 * I/O, network or system permission errors.
 
-Unique/Primary key conflict in the Local-backend is handled separately and explained in the next section.
+Unique/Primary key conflict in the physical import mode is handled separately and explained in the next section.
 
 ## Error report
 

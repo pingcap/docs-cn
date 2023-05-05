@@ -47,7 +47,7 @@ In this command,
 - `-t 16`: means 16 threads are used to export the data.
 - `-F 256MB`: means a table is partitioned into chunks and one chunk is 256 MB.
 
-If the data source consists of CSV files, see [CSV support](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md) for configuration.
+If the data source consists of CSV files, see [CSV support](/tidb-lightning/tidb-lightning-data-source.md#csv) for configuration.
 
 ## Deploy TiDB Lightning
 
