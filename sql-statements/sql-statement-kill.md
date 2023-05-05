@@ -34,9 +34,6 @@ SHOW PROCESSLIST;
 ```
 
 可以查询 `INFORMATION_SCHEMA.CLUSTER_PROCESSLIST` 的 `INSTANCE` 列，获取被 kill 的会话连接的 TiDB Server 信息。
-
-{{< copyable "sql" >}}
-
 ```sql
 SELECT ID, USER, INSTANCE, INFO FROM INFORMATION_SCHEMA.CLUSTER_PROCESSLIST;
 ```
@@ -54,7 +51,7 @@ SELECT ID, USER, INSTANCE, INFO FROM INFORMATION_SCHEMA.CLUSTER_PROCESSLIST;
 连接到与被 kill 的会话相同的 TiDB 节点，执行 `KILL TIDB` 语句。
 
 ```shell
-mysql -h127.0.0.1 -P10080 -uroot -p
+mysql -h 127.0.0.1 -P 10080 -u root -p
 ```
 
 {{< copyable "sql" >}}
