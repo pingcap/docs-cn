@@ -5,7 +5,7 @@ summary: 了解 TiDB Lightning 的 Physical Import Mode。
 
 # Physical Import Mode 简介
 
-Physical Import Mode 是 TiDB Lightning 支持的一种数据导入方式。Physical Import Mode 不经过 SQL 接口，而是直接将数据以键值对的形式插入 TiKV 节点，是一种高效、快速的导入模式。Physical Import Mode 适合导入最高 100 TB 数据量，实现方式是通过[并行导入](/tidb-lightning/tidb-lightning-distributed-import.md) 10 个任务、每个任务导入 10 TB 数据。
+Physical Import Mode 是 TiDB Lightning 支持的一种数据导入方式。Physical Import Mode 不经过 SQL 接口，而是直接将数据以键值对的形式插入 TiKV 节点，是一种高效、快速的导入模式。使用 Physical Import Mode 时，单个 Lightning 实例可导入的数据量为 10 TiB，理论上导入的数据量可以随着 Lightning 实例数量的增加而增加，目前已经有多个用户验证基于[并行导入](/tidb-lightning/tidb-lightning-distributed-import.md)功能可以导入的数据量达 20 TiB。
 
 使用前请务必自行阅读[必要条件及限制](/tidb-lightning/tidb-lightning-physical-import-mode.md#必要条件及限制)。
 
@@ -28,7 +28,7 @@ Physical Import Mode 对应的后端模式为 `local`。
 
 5. 当一个引擎文件数据写入完毕时，`tidb-lightning` 便开始对目标 TiKV 集群数据进行分裂和调度，然后导入数据到 TiKV 集群。
 
-    引擎文件包含两种：**数据引擎**与**索引引擎**，各自又对应两种键值对：行数据和次级索引。通常行数据在数据源里是完全有序的，而次级索引是无序的。因此，数据引擎文件在对应区块写入完成后会被立即上传，而所有的索引引擎文件只有在整张表所有区块编码完成后才会执行导入。 
+    引擎文件包含两种：**数据引擎**与**索引引擎**，各自又对应两种键值对：行数据和次级索引。通常行数据在数据源里是完全有序的，而次级索引是无序的。因此，数据引擎文件在对应区块写入完成后会被立即上传，而所有的索引引擎文件只有在整张表所有区块编码完成后才会执行导入。
 
     注意当 `tidb-lightning` 使用 SQL 接口添加索引时（即 `add-index-by-sql` 设置为 `true`），索引引擎将不会写入数据，因为此时目标表的次级索引已经在第 2 步中被移除。
 
