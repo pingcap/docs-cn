@@ -165,22 +165,16 @@ CREATE TABLE t (
   name varchar(255) CHARACTER SET ascii,
   notes text
 )
-PARTITION BY RANGE COLUMNS(name,valid_until)
+PARTITION BY RANGE COLUMNS(name, valid_until)
 (PARTITION `p2022-g` VALUES LESS THAN ('G','2023-01-01 00:00:00'),
  PARTITION `p2023-g` VALUES LESS THAN ('G','2024-01-01 00:00:00'),
- PARTITION `p2024-g` VALUES LESS THAN ('G','2025-01-01 00:00:00'),
  PARTITION `p2022-m` VALUES LESS THAN ('M','2023-01-01 00:00:00'),
  PARTITION `p2023-m` VALUES LESS THAN ('M','2024-01-01 00:00:00'),
- PARTITION `p2024-m` VALUES LESS THAN ('M','2025-01-01 00:00:00'),
  PARTITION `p2022-s` VALUES LESS THAN ('S','2023-01-01 00:00:00'),
- PARTITION `p2023-s` VALUES LESS THAN ('S','2024-01-01 00:00:00'),
- PARTITION `p2024-s` VALUES LESS THAN ('S','2025-01-01 00:00:00'),
- PARTITION `p2022-` VALUES LESS THAN (0x7f,'2023-01-01 00:00:00'),
- PARTITION `p2023-` VALUES LESS THAN (0x7f,'2024-01-01 00:00:00'),
- PARTITION `p2024-` VALUES LESS THAN (0x7f,'2025-01-01 00:00:00'))
+ PARTITION `p2023-s` VALUES LESS THAN ('S','2024-01-01 00:00:00'))
 ```
 
-该语句将按年份和名字的范围 ['', 'G')、['G', 'M')、['M', 'S')、['S',) 进行分区，删除无效数据，同时仍然可以在 `name` 和 `valid_until` 列上进行分区裁剪。其中，`[,)` 是一个半开半闭区间，比如 ['G', 'M')，表示包含 `G`、大于 `G` 并小于 `M` 的数据，但不包含 `M`。
+该语句将按名字和年份的范围 `[ ('', ''), ('G', '2023-01-01 00:00:00') )`，`[ ('G', '2023-01-01 00:00:00'), ('G', '2024-01-01 00:00:00') )`，`[ ('G', '2024-01-01 00:00:00'), ('M', '2023-01-01 00:00:00') )`，`[ ('M', '2023-01-01 00:00:00'), ('M', '2024-01-01 00:00:00') )`，`[ ('M', '2024-01-01 00:00:00'), ('S', '2023-01-01 00:00:00') )`，`[ ('S', '2023-01-01 00:00:00'), ('S', '2024-01-01 00:00:00') )` 进行分区，删除无效数据，同时仍然可以在 name 和 valid_until 列上进行分区裁剪。其中，`[,)` 是一个左闭右开区间，比如 `[ ('G', '2023-01-01 00:00:00'), ('G', '2024-01-01 00:00:00') )`，表示 name 为 `'G'` ，年份包含 2023-01-01 00:00:00 并大于 2023-01-01 00:00:00 但小于 2024-01-01 00:00:00 的数据，其中不包含 `(G, 2024-01-01 00:00:00)`。
 
 ### Range INTERVAL 分区
 
