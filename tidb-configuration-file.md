@@ -850,7 +850,7 @@ Configuration items related to read isolation.
 - This configuration controls whether the corresponding TiDB instance can become a DDL owner or not.
 - Default value: `true`
 - Possible values: `OFF`, `ON`
-- The value of this configuration will initialize the value of the system variable [`tidb_enable_ddl`](/system-variables.md#tidb_enable_ddl)
+- The value of this configuration will initialize the value of the system variable [`tidb_enable_ddl`](/system-variables.md#tidb_enable_ddl-new-in-v630)
 - Before v6.3.0, this configuration is set by `run-ddl`.
 
 ### `tidb_stmt_summary_enable_persistent` <span class="version-mark">New in v6.6.0</span>

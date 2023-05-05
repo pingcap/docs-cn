@@ -701,6 +701,7 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 - Persists to cluster: Yes
 - Default value: `4096`
 - Range: `[0, 9223372036854775807]`
+- Unit: Bytes
 - This variable is used to control the threshold at which the TiDB server prefers to send read requests to a replica in the same availability zone as the TiDB server when [`tidb_replica_read`](#tidb_replica_read-new-in-v40) is set to `closest-adaptive`. If the estimated result is higher than or equal to this threshold, TiDB prefers to send read requests to a replica in the same availability zone. Otherwise, TiDB sends read requests to the leader replica.
 
 ### tidb_allow_batch_cop <span class="version-mark">New in v4.0</span>
@@ -1406,7 +1407,7 @@ MPP is a distributed computing framework provided by the TiFlash engine, which a
     - `ON` indicates that primary keys are created as clustered indexes by default.
     - `INT_ONLY` indicates that the behavior is controlled by the configuration item `alter-primary-key`. If `alter-primary-key` is set to `true`, all primary keys are created as non-clustered indexes by default. If it is set to `false`, only the primary keys which consist of an integer column are created as clustered indexes.
 
-### tidb_enable_ddl
+### tidb_enable_ddl <span class="version-mark">New in v6.3.0</span>
 
 - Scope: GLOBAL
 - Persists to cluster: No, only applicable to the current TiDB instance that you are connecting to.
