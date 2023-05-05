@@ -101,6 +101,8 @@ The following fields are related to transaction execution:
 * `Write_keys`: The count of keys that the transaction writes to the Write CF in TiKV.
 * `Write_size`: The total size of the keys or values to be written when the transaction commits.
 * `Prewrite_region`: The number of TiKV Regions involved in the first phase (prewrite) of the two-phase transaction commit. Each Region triggers a remote procedure call.
+* `Wait_prewrite_binlog_time`: The time used to write binlogs when a transaction is committed.
+* `Resolve_lock_time`: The time to resolve or wait for the lock to be expired after a lock is encountered during a transaction commit.
 
 Memory usage fields:
 
@@ -133,12 +135,31 @@ TiKV Coprocessor Task fields:
 * `Cop_wait_p90`: The P90 waiting time of cop-tasks.
 * `Cop_wait_max`: The maximum waiting time of cop-tasks.
 * `Cop_wait_addr`: The address of the cop-task whose waiting time is the longest.
+* `Rocksdb_delete_skipped_count`: The number of scans on deleted keys during RocksDB reads.
+* `Rocksdb_key_skipped_count`: The number of deleted (tombstone) keys that RocksDB encounters when scanning data.
+* `Rocksdb_block_cache_hit_count`: The number of times RocksDB reads data from the block cache.
+* `Rocksdb_block_read_count`: The number of times RocksDB reads data from the file system.
+* `Rocksdb_block_read_byte`: The amount of data RocksDB reads from the file system.
+* `Rocksdb_block_read_time`: The time RocksDB takes to read data from the file system.
 * `Cop_backoff_{backoff-type}_total_times`: The total times of backoff caused by an error.
 * `Cop_backoff_{backoff-type}_total_time`: The total time of backoff caused by an error.
 * `Cop_backoff_{backoff-type}_max_time`: The longest time of backoff caused by an error.
 * `Cop_backoff_{backoff-type}_max_addr`: The address of the cop-task that has the longest backoff time caused by an error.
 * `Cop_backoff_{backoff-type}_avg_time`: The average time of backoff caused by an error.
 * `Cop_backoff_{backoff-type}_p90_time`: The P90 percentile backoff time caused by an error.
+
+`backoff-type` generally includes the following types:
+
+* `tikvRPC`: The backoff caused by failing to send RPC requests to TiKV.
+* `tiflashRPC`: The backoff caused by failing to send RPC requests to TiFlash.
+* `pdRPC`: The backoff caused by failing to send RPC requests to PD.
+* `txnLock`: The backoff caused by lock conflicts.
+* `regionMiss`: The backoff caused by that processing requests fails when the TiDB Region cache information is outdated after Regions are split or merged.
+* `regionScheduling`: The backoff caused by that TiDB cannot process requests when Regions are being scheduled and the Leader is not selected.
+* `tikvServerBusy`: The backoff caused by that the TiKV load is too high to handle new requests.
+* `tiflashServerBusy`: The backoff caused by that the TiFlash load is too high to handle new requests.
+* `tikvDiskFull`: The backoff caused by that the TiKV disk is full.
+* `txnLockFast`: The backoff caused by that locks are encountered during data reads.
 
 ## Related system variables
 
