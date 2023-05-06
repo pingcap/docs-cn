@@ -47,7 +47,7 @@ PD Recover 的安装包位于 TiDB 离线工具包中。下载方式，请参考
 由于该方法是利用少数派 PD 节点恢复服务，该节点可能存在数据落后的情况。对于 `alloc_id` 和 `tso` 等数据，一旦发生回退，可能导致集群数据错乱或不可用。因此，需要使用 `pd-recover` 修改元数据，以确保该节点能提供正确的分配 ID 和 TSO 等服务。具体命令参考：
 
 ```shell
- ./bin/pd-recover --from-old-member --endpoints=http://127.0.0.1:2379 // 指定对应的 PD 地址
+./bin/pd-recover --from-old-member --endpoints=http://127.0.0.1:2379 // 指定对应的 PD 地址
 ```
 
 > **注意：**
