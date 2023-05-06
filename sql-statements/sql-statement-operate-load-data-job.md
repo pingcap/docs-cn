@@ -13,10 +13,10 @@ summary: TiDB 数据库中 CANCEL LOAD DATA 和 DROP LOAD DATA 的使用概况�
 
 ```ebnf+diagram
 CancelLoadDataJobsStmt ::=
-    'CANCEL' 'LAOD' 'DATA' 'JOB' JobID
+    'CANCEL' 'LOAD' 'DATA' 'JOB' JobID
 
 DropLoadDataJobsStmt ::=
-    'DROP' 'LAOD' 'DATA' 'JOB' JobID
+    'DROP' 'LOAD' 'DATA' 'JOB' JobID
 ```
 
 ## 示例
