@@ -104,7 +104,7 @@ TiDB 中，所有支持的 DDL 变更操作都是在线执行的。与 MySQL 相
 * TiDB 中，`ALGORITHM={INSTANT,INPLACE,COPY}` 语法只作为一种指定，并不更改 `ALTER` 算法，详情参阅 [`ALTER TABLE`](/sql-statements/sql-statement-alter-table.md)。
 * 不支持添加或删除 `CLUSTERED` 类型的主键。要了解关于 `CLUSTERED` 主键的详细信息，请参考[聚簇索引](/clustered-indexes.md)。
 * 不支持指定不同类型的索引 (`HASH|BTREE|RTREE|FULLTEXT`)。若指定了不同类型的索引，TiDB 会解析并忽略这些索引。
-* 分区表支持 Hash、Range 和 `Add`/`Drop`/`Truncate`/`Coalesce`。其他分区操作将被忽略，可能会返回 `Warning: Unsupported partition type, treat as normal table`。不支持以下分区表语法：
+* 分区表支持 `HASH`、`RANGE`、`LIST` 分区类型。对于不支持的分区类型，TiDB 会返回 `Warning: Unsupported partition type, treat as normal table`。
     + `PARTITION BY LIST`
     + `PARTITION BY KEY`
     + `SUBPARTITION`
