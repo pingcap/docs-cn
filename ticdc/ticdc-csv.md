@@ -9,7 +9,7 @@ summary: 了解 TiCDC CSV Protocol 的概念和使用方法。
 
 > **警告：**
 >
-> 在 enable-old-value = true 开启 Old Value 功能时，CSV 格式无法输出更新事件的旧值。
+> 当开启 Old Value 功能时 (`enable-old-value = true`)，Avro 协议数据格式无法输出更新事件的旧值。
 >
 > 具体原因请参考 [TiCDC 在开启 Old Value 功能后更新事件格式有何变化？](/ticdc/ticdc-faq.md#ticdc-在开启-old-value-功能后更新事件格式有何变化)
 
