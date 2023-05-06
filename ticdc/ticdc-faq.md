@@ -202,7 +202,7 @@ TiCDC 对大事务（大小超过 5 GB）提供部分支持，根据场景不同
 4. 建立一个新的 changefeed，从 `BackupTS` 开始同步任务。
 5. 删除旧的 changefeed。
 
-## TiCDC 是否会将有损 DDL 造成的数据变更同步到下游？
+## TiCDC 是否会将有损 DDL 产生的数据变更同步到下游？
 
 有损 DDL 是指在 TiDB 中执行可能会导致数据改变的 DDL。一些常见的有损 DDL 操作包括：
 
