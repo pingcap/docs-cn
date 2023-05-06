@@ -250,6 +250,7 @@ In v7.1.0, the key new features and improvements are as follows:
 
 | Configuration file | Configuration parameter | Change type | Description |
 | -------- | -------- | -------- | -------- |
+| TiDB | [`force-init-stats`](/tidb-configuration-file.md#force-init-stats-new-in-v710) | Newly added | Controls whether to wait for statistics initialization to finish before providing services during TiDB startup. |
 | TiDB | [`lite-init-stats`](/tidb-configuration-file.md#lite-init-stats-new-in-v710) | Newly added | Controls whether to use lightweight statistics initialization during TiDB startup. |
 | PD | [`store-limit-version`](/pd-configuration-file.md#store-limit-version-new-in-v710) | Newly added | Controls the mode of store limit. Value options are `"v1"` and `"v2"`. |
 | TiFlash | `http_port` | Deleted | Deprecates the HTTP service port (default `8123`). |
