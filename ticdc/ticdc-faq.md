@@ -278,12 +278,12 @@ TiDB 有事务超时的机制，当事务运行超过 [`max-txn-ttl`](/tidb-conf
 
 ## TiCDC 在开启 Old Value 功能后更新事件格式有何变化？
 
-在下面的说明中，有效索引列指的是：
+在下面的说明中，有效索引的定义如下：
 
-- 主键 (PRIMARY KEY)
-- 唯一索引 (UNIQUE INDEX)，并且其中每一列在表结构中明确定义非空 (NOT NULL) ，且不存在虚拟生成列 (VIRTUAL GENERATED COLUMNS)
+- 主键 (`PRIMARY KEY`) 为有效索引。
+- 唯一索引 (`UNIQUE INDEX`) 中每一列在表结构中明确定义非空 (`NOT NULL`) 且不存在虚拟生成列 (`VIRTUAL GENERATED COLUMNS`)。
 
-聚簇索引指的是 TiDB 5.0 中引入的新特性，详见[聚簇索引](/clustered-indexes.md)。
+聚簇索引指的是 TiDB 从 v5.0 开始支持的特性，用于控制含有主键的表数据的存储方式。详见[聚簇索引](/clustered-indexes.md)。
 
 TiCDC 在开启 Old Value 功能后：
 
