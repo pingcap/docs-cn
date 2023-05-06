@@ -295,47 +295,46 @@ TiDB 有事务超时的机制，当事务运行超过 [`max-txn-ttl`](/tidb-conf
 
 以上行为的变化可能导致以下问题：
 
-#### 当更新有效索引列的事件同时包含新值和旧值时，Kafka Sink 的分发行为可能无法保证将具有相同索引列的更新事件分发到同一分区
+### 当更新有效索引列的事件同时包含新值和旧值时，Kafka Sink 的分发行为可能无法保证将具有相同索引列的更新事件分发到同一分区
 
-> **解析：**
-> Kafka Sink 的 index-value 分发行为是根据索引列的值来分发的，如果更新事件同时包含新值和旧值时，那么索引列的值就会发生变化，因此会导致相同索引列的更新事件被分发到不同的分区。
-> 例如：
-> 在关闭 TiDB 聚簇索引功能时，创建如下表：
-> 
-> ```sql
-> CREATE TABLE t ( a VARCHAR(255)  PRIMARY KEY  NONCLUSTERED);
-> ```
->
-> 执行如下 DML：
->
-> ```sql
-> INSERT INTO t VALUES ("2");
-> UPDATE t SET a="1" WHERE a="2";
-> INSERT INTO t VALUES ("2");
-> UPDATE t SET a="3" WHERE a="2";
-> ```
+Kafka Sink 的 index-value 分发行为是根据索引列的值来分发的。当更新事件同时包含新值和旧值时，索引列的值会发生变化，从而导致相同索引列的更新事件被分发到不同的分区。下面是一个示例：
 
-> 在未开启 Old Value 功能时，更新事件将会被拆分成对旧值的删除事件和对新值的插入事件，Kafka Sink 的 index-value 分发行为会分别对两条事件计算相应的 Partition。上述 DML 产生的事件，会被发送到如下分区：
-> | partition-1  | partition-2  | partition-3  |
-> | ------------ | ------------ | ------------ |
-> | INSERT a = 2 | INSERT a = 1 | INSERT a = 3 |
-> | DELETE a = 2 |              |              |
-> | INSERT a = 2 |              |              |
-> | DELETE a = 2 |              |              |
->
-> 因为 Kafka 的每个分区内可以保证消息的顺序，Kafka 消费者可以独立地消费每个 Partition 中的数据，最终结果和 DML 执行顺序相同。
->
-> 在开启 Old Value 功能时，Kafka Sink 的 index-value 分发行为会将相同索引列的更新事件分发到不同的分区，因此上述 DML 会被分发到如下分区（更新事件同时包含新值和旧值）：
-> | partition-1  | partition-2              | partition-3              |
-> | ------------ | ------------------------ | ------------------------ |
-> | INSERT a = 2 | UPDATE a = 1 WHERE a = 2 | UPDATE a = 3 WHERE a = 2 |
-> | INSERT a = 2 |                          |                          |
-> |              |                          |                          |
-> |              |                          |                          |
->
-> 因为 Kafka 的各个分区之间不能保证消息的顺序，因此上述 DML 在消费过程中可能无法保证索引列的更新顺序。
->
-> **所以，如果需要在更新唯一索引列，并且该表不存在主键或者上游 TiDB 集群未开启聚簇索引，更新非 int 类型的主键列时保证索引列的更新顺序，建议在开启 Old Value 功能时，使用 default 分发模式。**
+在关闭 TiDB 聚簇索引功能时，创建表 `t`：
+
+```sql
+CREATE TABLE t (a VARCHAR(255) PRIMARY KEY NONCLUSTERED);
+```
+
+执行如下 DML 语句：
+
+```sql
+INSERT INTO t VALUES ("2");
+UPDATE t SET a="1" WHERE a="2";
+INSERT INTO t VALUES ("2");
+UPDATE t SET a="3" WHERE a="2";
+```
+
+- 在未开启 Old Value 功能时，更新事件被拆分为删除旧值事件和插入新值事件。Kafka Sink 的 index-value 分发模式针对每个事件计算相应的分区。上述 DML 产生的事件会被发送到如下分区：
+
+    | partition-1  | partition-2  | partition-3  |
+    | ------------ | ------------ | ------------ |
+    | INSERT a = 2 | INSERT a = 1 | INSERT a = 3 |
+    | DELETE a = 2 |              |              |
+    | INSERT a = 2 |              |              |
+    | DELETE a = 2 |              |              |
+
+    因为 Kafka 的每个分区内可以保证消息的顺序，Kafka 消费者可以独立地消费每个分区中的数据，最终结果和 DML 执行顺序相同。
+
+- 在开启 Old Value 功能时，Kafka Sink 的 index-value 分发模式会将相同索引列的更新事件分发到不同的分区。因此上述 DML 会被分发到如下分区（更新事件同时包含新值和旧值）：
+
+    | partition-1  | partition-2              | partition-3              |
+    | ------------ | ------------------------ | ------------------------ |
+    | INSERT a = 2 | UPDATE a = 1 WHERE a = 2 | UPDATE a = 3 WHERE a = 2 |
+    | INSERT a = 2 |                          |                          |
+    |              |                          |                          |
+    |              |                          |                          |
+
+    因为 Kafka 的各个分区之间不能保证消息的顺序，因此上述 DML 在消费过程中可能无法保证索引列的更新顺序。如果需要在输出的数据中会同时包含新值和旧值时保证索引列的更新顺序，建议在开启 Old Value 功能时，使用 default 分发模式。
 
 ### 对于非有效索引列的更新事件和有效索引列的更新事件同时包含新值和旧值时，Kafka Sink 的 Avro 格式无法正确输出旧值
 
