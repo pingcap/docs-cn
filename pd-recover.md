@@ -58,7 +58,7 @@ PD Recover 的安装包位于 TiDB 离线工具包中。下载方式，请参考
 
 ### 第 4 步：重启这个 PD
 
-当上一步出现 `recovery is successful` 的提示信息后，重启整个集群。
+当上一步出现 `recovery is successful` 的提示信息后，重启 PD。
 
 ### 第 5 步：扩容 PD 并启动集群
 
