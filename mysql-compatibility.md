@@ -107,22 +107,11 @@ TiDB 中，所有支持的 DDL 变更操作都是在线执行的。与 MySQL 相
 * 更改/修改 DECIMAL 类型时，不支持更改精度。
 * 更改/修改整数列时，不允许更改 `UNSIGNED` 属性。
 * TiDB 中，`ALGORITHM={INSTANT,INPLACE,COPY}` 语法只作为一种指定，并不更改 `ALTER` 算法，详情参阅 [`ALTER TABLE`](/sql-statements/sql-statement-alter-table.md)。
-<<<<<<< HEAD
-* 分区表支持 Hash、Range 和 `Add`/`Drop`/`Truncate`/`Coalesce`。其他分区操作将被忽略，可能会报 `Warning: Unsupported partition type, treat as normal table` 错误。不支持以下分区表语法：
-    + `PARTITION BY LIST`
+* 分区表支持 `HASH`、`RANGE`、`LIST` 分区类型。对于不支持的分区类型，TiDB 会返回 `Warning: Unsupported partition type, treat as normal table`。
+* 分区表支持 `ADD`、`DROP`、`TRUNCATE` 操作，其他分区操作会被忽略。TiDB 不支持以下分区表语法：
     + `PARTITION BY KEY`
     + `SUBPARTITION`
-    + `{CHECK|EXCHANGE|TRUNCATE|OPTIMIZE|REPAIR|IMPORT|DISCARD|REBUILD|REORGANIZE} PARTITION`
-=======
-* 不支持添加或删除 `CLUSTERED` 类型的主键。要了解关于 `CLUSTERED` 主键的详细信息，请参考[聚簇索引](/clustered-indexes.md)。
-* 不支持指定不同类型的索引 (`HASH|BTREE|RTREE|FULLTEXT`)。若指定了不同类型的索引，TiDB 会解析并忽略这些索引。
-* 分区表支持 `HASH`、`RANGE`、`LIST` 和 `KEY` 分区类型。`KEY` 分区类型暂不支持分区字段列表为空的语句。对于不支持的分区类型，TiDB 会返回 `Warning: Unsupported partition type %s, treat as normal table`，其中 `%s` 为不支持的具体分区类型。
-* 分区表还支持 `ADD`、`DROP`、`TRUNCATE`、`REORGANIZE` 操作，其他分区操作会被忽略。TiDB 不支持以下分区表语法：
-    + `SUBPARTITION`
-    + `{CHECK|OPTIMIZE|REPAIR|IMPORT|DISCARD|REBUILD|COALESCE} PARTITION`
-
-  更多详情，请参考[分区表文档](/partitioned-table.md)。
->>>>>>> 335efcc17c (Remove TRUNCATE PARTITION as non-supported (#13868))
+    + `{CHECK|OPTIMIZE|REPAIR|IMPORT|DISCARD|REBUILD|REORGANIZE|COALESCE} PARTITION`
 
 ### `ANALYZE TABLE`
 
