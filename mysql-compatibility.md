@@ -111,7 +111,6 @@ TiDB 支持常用的 MySQL 内建函数，但是不是所有的函数都已经�
 
 在 TiDB 中，运行的 DDL 操作不会影响对表的读取或写入。但是，目前 DDL 变更有如下一些限制：
 
-<<<<<<< HEAD
 + Add Index
     - 不支持同时创建多个索引
     - 不支持 `VISIBLE/INVISIBLE` 的索引
@@ -143,21 +142,7 @@ TiDB 支持常用的 MySQL 内建函数，但是不是所有的函数都已经�
     - `PARTITION BY LIST`
     - `PARTITION BY KEY`
     - `SUBPARTITION`
-    - `{CHECK|EXCHANGE|TRUNCATE|OPTIMIZE|REPAIR|IMPORT|DISCARD|REBUILD|REORGANIZE} PARTITION`
-=======
-* 使用 `ALTER TABLE` 语句修改一个表的多个模式对象（如列、索引）时，不允许在多个更改中指定同一个模式对象。例如，`ALTER TABLE t1 MODIFY COLUMN c1 INT, DROP COLUMN c1` 在两个更改中都指定了 `c1` 列，执行该语句会输出 `Unsupported operate same column/index` 的错误。
-* 不支持使用单个 `ALTER TABLE` 语句同时修改多个 TiDB 特有的模式对象，包括 `TIFLASH REPLICA`，`SHARD_ROW_ID_BITS`，`AUTO_ID_CACHE` 等。
-* `ALTER TABLE` 不支持少部分类型的变更。比如，TiDB 不支持从 `DECIMAL` 到 `DATE` 的变更。当遇到不支持的类型变更时，TiDB 将会报 `Unsupported modify column: type %d not match origin %d` 的错误。更多细节，请参考 [`ALTER TABLE`](/sql-statements/sql-statement-modify-column.md)。
-* TiDB 中，`ALGORITHM={INSTANT,INPLACE,COPY}` 语法只作为一种指定，并不更改 `ALTER` 算法，详情参阅 [`ALTER TABLE`](/sql-statements/sql-statement-alter-table.md)。
-* 不支持添加或删除 `CLUSTERED` 类型的主键。要了解关于 `CLUSTERED` 主键的详细信息，请参考[聚簇索引](/clustered-indexes.md)。
-* 不支持指定不同类型的索引 (`HASH|BTREE|RTREE|FULLTEXT`)。若指定了不同类型的索引，TiDB 会解析并忽略这些索引。
-* 分区表支持 `HASH`、`RANGE`、`LIST` 和 `KEY` 分区类型。`KEY` 分区类型暂不支持分区字段列表为空的语句。对于不支持的分区类型，TiDB 会返回 `Warning: Unsupported partition type %s, treat as normal table`，其中 `%s` 为不支持的具体分区类型。
-* 分区表还支持 `ADD`、`DROP`、`TRUNCATE`、`REORGANIZE` 操作，其他分区操作会被忽略。TiDB 不支持以下分区表语法：
-    + `SUBPARTITION`
-    + `{CHECK|OPTIMIZE|REPAIR|IMPORT|DISCARD|REBUILD|COALESCE} PARTITION`
-
-  更多详情，请参考[分区表文档](/partitioned-table.md)。
->>>>>>> 335efcc17c (Remove TRUNCATE PARTITION as non-supported (#13868))
+    - `{CHECK|EXCHANGE|OPTIMIZE|REPAIR|IMPORT|DISCARD|REBUILD|REORGANIZE} PARTITION`
 
 ### `ANALYZE TABLE`
 
