@@ -316,7 +316,7 @@ ANALYZE INCREMENTAL TABLE TableName PARTITION PartitionNameList INDEX [IndexName
 
 在发生增加，删除以及修改语句时，TiDB 会自动更新表的总行数以及修改的行数。这些信息会定期持久化下来，更新的周期是 20 * `stats-lease`。`stats-lease` 配置项的默认值是 3s，如果将其指定为 0，那么将不会自动更新，详细说明参见 [TiDB 配置项文档 - `stats-lease`](/tidb-configuration-file.md#stats-lease)。
 
-#### 系统变量
+#### 相关系统变量
 
 |  系统变量名 | 默认值 | 功能 |
 |---|---|---|
