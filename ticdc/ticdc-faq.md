@@ -285,7 +285,7 @@ TiDB 有事务超时的机制，当事务运行超过 [`max-txn-ttl`](/tidb-conf
 
 聚簇索引指的是 TiDB 从 v5.0 开始支持的特性，用于控制含有主键的表数据的存储方式。详见[聚簇索引](/clustered-indexes.md)。
 
-在开启 Old Value 功能后，TiCDC 的表现如下：
+在开启 [Old Value 功能](/ticdc/ticdc-manage-changefeed.md#输出行变更的历史值-从-v405-版本开始引入)后，TiCDC 的表现如下：
 
 - 对于非有效索引列的更新事件，输出的数据中会同时包含新值和旧值。
 - 对于有效索引列的更新事件，输出的数据视不同情况而定：
