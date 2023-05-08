@@ -34,10 +34,10 @@ TiDB 版本：5.2.2
 
     + TiCDC
 
-        - 通过修改 Kafka sink 配置项 `MaxMessageBytes` 的默认值，由 64 MB 减小为 1 MB，以修复消息过大会被 Kafka Broker 拒收的问题 [#3104](https://github.com/pingcap/ticdc/pull/3104)
-        - 减少同步链路中的内存占用 [#2553](https://github.com/pingcap/ticdc/issues/2553)[#3037](https://github.com/pingcap/ticdc/pull/3037) [#2726](https://github.com/pingcap/ticdc/pull/2726) 
-        - 优化监控项和告警规则，提升了同步链路、内存 GC、存量数据扫描过程的可观测性 [#2735](https://github.com/pingcap/ticdc/pull/2735) [#1606](https://github.com/pingcap/ticdc/issues/1606) [#3000](https://github.com/pingcap/ticdc/pull/3000) [#2985](https://github.com/pingcap/ticdc/issues/2985) [#2156](https://github.com/pingcap/ticdc/issues/2156)
-        - 当同步任务状态正常时，不再显示历史错误信息，避免误导用户 [#2242](https://github.com/pingcap/ticdc/issues/2242)
+        - 通过修改 Kafka sink 配置项 `MaxMessageBytes` 的默认值，由 64 MB 减小为 1 MB，以修复消息过大会被 Kafka Broker 拒收的问题 [#3104](https://github.com/pingcap/tiflow/pull/3104)
+        - 减少同步链路中的内存占用 [#2553](https://github.com/pingcap/tiflow/issues/2553)[#3037](https://github.com/pingcap/tiflow/pull/3037) [#2726](https://github.com/pingcap/tiflow/pull/2726)
+        - 优化监控项和告警规则，提升了同步链路、内存 GC、存量数据扫描过程的可观测性 [#2735](https://github.com/pingcap/tiflow/pull/2735) [#1606](https://github.com/pingcap/tiflow/issues/1606) [#3000](https://github.com/pingcap/tiflow/pull/3000) [#2985](https://github.com/pingcap/tiflow/issues/2985) [#2156](https://github.com/pingcap/tiflow/issues/2156)
+        - 当同步任务状态正常时，不再显示历史错误信息，避免误导用户 [#2242](https://github.com/pingcap/tiflow/issues/2242)
 
 ## Bug 修复
 
@@ -72,10 +72,10 @@ TiDB 版本：5.2.2
     - 修复当设置 `NO_UNSIGNED_SUBTRACTION` 时创建分区失败的问题 [#26765](https://github.com/pingcap/tidb/issues/26765)
     - 避免在列修剪和聚合下推中使用有副作用的表达式 [#27106](https://github.com/pingcap/tidb/issues/27106)
     - 删除无用的 gRPC 日志 [#24190](https://github.com/pingcap/tidb/issues/24190)
-    - 限制有效的小数点长度以修复精度相关的问题 [3091](https://github.com/pingcap/tics/issues/3091)
-    - 修复 `plus` 表达式中检查溢出方法出错的问题 [26977](https://github.com/pingcap/tidb/issues/26977)
-    - 修复当导出带有 `new collation` 数据的表的统计信息时报 `data too long` 错误的问题 [27024](https://github.com/pingcap/tidb/issues/27024)
-    - 修复 `TIDB_TRX` 中不包含重试事务的问题 [28670](https://github.com/pingcap/tidb/pull/28670)
+    - 限制有效的小数点长度以修复精度相关的问题 [#3091](https://github.com/pingcap/tics/issues/3091)
+    - 修复 `plus` 表达式中检查溢出方法出错的问题 [#26977](https://github.com/pingcap/tidb/issues/26977)
+    - 修复当导出带有 `new collation` 数据的表的统计信息时报 `data too long` 错误的问题 [#27024](https://github.com/pingcap/tidb/issues/27024)
+    - 修复 `TIDB_TRX` 中不包含重试事务的问题 [#28670](https://github.com/pingcap/tidb/pull/28670)
 
 + TiKV
 
@@ -104,16 +104,16 @@ TiDB 版本：5.2.2
 
     + TiCDC
 
-        - 修复当上游 TiDB 实例意外退出时，TiCDC 同步任务推进可能停滞的问题 [#3061](https://github.com/pingcap/ticdc/issues/3061)
-        - 修复当 TiKV 向同一 Region 发送重复请求时，TiCDC 进程 panic 的问题 [#2386](https://github.com/pingcap/ticdc/issues/2386)
-        - 修复在验证下游 TiDB/MySQL 可用性时产生的不必要的 CPU 消耗 [#3073](https://github.com/pingcap/ticdc/issues/3073)
-        - 修复 TiCDC 产生的 Kafka 消息体积不受 `max-message-size` 约束的问题 [#2962](https://github.com/pingcap/ticdc/issues/2962)
-        - 修复当写入 Kafka 消息发生错误时，TiCDC 同步任务推进可能停滞的问题 [#2978](https://github.com/pingcap/ticdc/issues/2978)
-        - 修复当开启 `force-replicate` 时，可能某些没有有效索引的分区表被忽略的问题 [#2834](https://github.com/pingcap/ticdc/issues/2834)
-        - 修复当扫描存量数据耗时过长时，可能由于 TiKV 进行 GC 而导致存量数据扫描失败的问题 [#2470](https://github.com/pingcap/ticdc/issues/2470)
-        - 修复在将某些类型的列编码为 Open Protocol 格式时，TiCDC 进程可能 panic 的问题 [#2758](https://github.com/pingcap/ticdc/issues/2758)
-        - 修复在将某些类型的列编码为 Avro 格式时，TiCDC 进程可能 panic 的问题 [#2648](https://github.com/pingcap/ticdc/issues/2648)
-    
+        - 修复当上游 TiDB 实例意外退出时，TiCDC 同步任务推进可能停滞的问题 [#3061](https://github.com/pingcap/tiflow/issues/3061)
+        - 修复当 TiKV 向同一 Region 发送重复请求时，TiCDC 进程 panic 的问题 [#2386](https://github.com/pingcap/tiflow/issues/2386)
+        - 修复在验证下游 TiDB/MySQL 可用性时产生的不必要的 CPU 消耗 [#3073](https://github.com/pingcap/tiflow/issues/3073)
+        - 修复 TiCDC 产生的 Kafka 消息体积不受 `max-message-size` 约束的问题 [#2962](https://github.com/pingcap/tiflow/issues/2962)
+        - 修复当写入 Kafka 消息发生错误时，TiCDC 同步任务推进可能停滞的问题 [#2978](https://github.com/pingcap/tiflow/issues/2978)
+        - 修复当开启 `force-replicate` 时，可能某些没有有效索引的分区表被忽略的问题 [#2834](https://github.com/pingcap/tiflow/issues/2834)
+        - 修复当扫描存量数据耗时过长时，可能由于 TiKV 进行 GC 而导致存量数据扫描失败的问题 [#2470](https://github.com/pingcap/tiflow/issues/2470)
+        - 修复在将某些类型的列编码为 Open Protocol 格式时，TiCDC 进程可能 panic 的问题 [#2758](https://github.com/pingcap/tiflow/issues/2758)
+        - 修复在将某些类型的列编码为 Avro 格式时，TiCDC 进程可能 panic 的问题 [#2648](https://github.com/pingcap/tiflow/issues/2648)
+
     + TiDB Binlog
 
         - 修复当大部分表被过滤掉时，在某些特殊的负载下，checkpoint 不更新的问题 [#1075](https://github.com/pingcap/tidb-binlog/pull/1075)

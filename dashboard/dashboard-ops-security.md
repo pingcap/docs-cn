@@ -7,15 +7,29 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-ops-security/']
 
 尽管访问 TiDB Dashboard 需要登录，但它被设计为默认供可信的用户实体访问。当你希望将 TiDB Dashboard 提供给外部网络用户或不可信用户访问时，需要注意采取以下措施以避免安全漏洞。
 
-## 为 TiDB `root` 用户设置强密码
+## 提高 TiDB 用户安全性
+
+### 为 `root` 用户设置强密码
 
 TiDB Dashboard 的账号体系与 TiDB SQL 用户一致。默认部署情况下，TiDB 的 `root` 用户没有密码，因而访问 TiDB Dashboard 也不需要密码验证。这将会给恶意访问者极大的集群权限，包括执行特权 SQL 等。
 
 建议的措施：
 
-- 为 TiDB `root` 用户设置一个强密码。请参见 [TiDB 用户账户管理](/user-account-management.md)了解详情。
+- 为 TiDB 的 `root` 用户设置一个强密码（请参见 [TiDB 用户账户管理](/user-account-management.md)了解详情），或禁用 `root` 账户。
+
+### 为 TiDB Dashboard 创建最小权限用户
+
+TiDB Dashboard 的账号体系与 TiDB SQL 用户一致，并基于 TiDB SQL 用户的权限进行 TiDB Dashboard 授权验证。TiDB Dashboard 所需的权限较少，甚至可以只有只读权限。可以基于最小权限原则配置合适的用户访问 TiDB Dashboard，减少高权限用户的使用场景。
+
+建议的措施：
+
+- 为访问 TiDB Dashboard 创建一个最小权限的 SQL 用户，并用该用户登录 TiDB Dashboard，避免使用高权限用户，提升安全性。请参见 [TiDB Dashboard 用户管理](/dashboard/dashboard-user.md)了解详情。
 
 ## 使用防火墙阻止不可信访问
+
+> **注意：**
+>
+> TiDB v6.5.0 且 TiDB Operator v1.4.0 之后，在 Kubernetes 上支持将 TiDB Dashboard 作为独立的 Pod 部署。在 TiDB Operator 环境，可直接访问该 Pod 的 IP 来打开 TiDB Dashboard，该端口不与其他 PD 内部特权接口关联，对外提供该端口不需要额外的防火墙操作。具体信息，参考 [TiDB Operator 部署独立的 TiDB Dashboard](https://docs.pingcap.com/zh/tidb-in-kubernetes/dev/get-started#部署独立的-tidb-dashboard)。
 
 TiDB Dashboard 通过 PD Client 端口提供服务，默认为 <http://IP:2379/dashboard/>。尽管 TiDB Dashboard 需要验证身份，但 PD Client 端口上承载的其他 PD 内部特权接口不需要验证身份，且能进行特权操作，例如 <http://IP:2379/pd/api/v1/members>。因此，将 PD Client 端口直接暴露给外部网络具有极大的风险。
 

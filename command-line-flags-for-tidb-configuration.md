@@ -5,7 +5,13 @@ aliases: ['/docs-cn/dev/command-line-flags-for-tidb-configuration/','/docs-cn/de
 
 # TiDB 配置参数
 
-在启动 TiDB 时，你可以使用命令行参数或环境变量来配置 TiDB。本文将详细介绍 TiDB 的命令行启动参数。TiDB 的默认端口为 4000（客户端请求）与 10080（状态报告）。
+在启动 TiDB 时，你可以使用命令行参数或环境变量来配置 TiDB。
+
+要快速了解 TiDB 的参数体系与参数作用域，建议先观看下面的培训视频（时长 17 分钟）。
+
+<video src="https://download.pingcap.com/docs-cn%2FLesson10_config.mp4" width="600px" height="450px" controls="controls" poster="https://download.pingcap.com/docs-cn/poster_lesson10.png"></video> 
+
+本文将详细介绍 TiDB 的命令行启动参数。TiDB 的默认端口为 4000（客户端请求）与 10080（状态报告）。
 
 ## `--advertise-address`
 
@@ -34,22 +40,37 @@ aliases: ['/docs-cn/dev/command-line-flags-for-tidb-configuration/','/docs-cn/de
 + 用于设置 TiDB HTTP 状态服务的 Access-Control-Allow-Origin
 + 默认：""
 
+## `--enable-binlog`
+
++ 开启或关闭 TiDB 中 binlog 的生成
++ 默认：false
+
 ## `--host`
 
 + TiDB 服务监听的 host
 + 默认："0.0.0.0"
 + 0.0.0.0 默认会监听所有的网卡地址。如果有多块网卡，可以指定对外提供服务的网卡，如 192.168.100.113
 
-## `--enable-binlog`
+## `--initialize-insecure`
 
-+ 是否产生 TiDB Binlog
-+ 默认：false
+- 在不安全模式下启动 tidb-server
+- 默认：true
+
+## `--initialize-secure`
+
+- 在安全模式下启动 tidb-server
+- 默认：false
+
+## `--initialize-sql-file`
+
+- 用于指定 TiDB 集群初次启动时执行的 SQL 脚本。参考[配置项 `initialize-sql-file`](/tidb-configuration-file.md#initialize-sql-file-从-v660-版本开始引入)
+- 默认：""
 
 ## `-L`
 
 + Log 级别
 + 默认："info"
-+ 可选项为：debug、info、warn、error、fatal
++ 可选："debug"，"info"，"warn"，"error"，"fatal"
 
 ## `--lease`
 
@@ -60,7 +81,7 @@ aliases: ['/docs-cn/dev/command-line-flags-for-tidb-configuration/','/docs-cn/de
 
 + Log 文件
 + 默认：""
-+ 如果未设置该参数，log 会默认输出到 "stderr"；如果设置了该参数，log 会输出到对应的文件中。每天凌晨，log 会自动轮转使用一个新的文件，并且将以前的文件改名备份
++ 如果未设置该参数，log 会默认输出到 "stderr"；如果设置了该参数，log 会输出到对应的文件中。
 
 ## `--log-slow-query`
 
@@ -105,11 +126,24 @@ aliases: ['/docs-cn/dev/command-line-flags-for-tidb-configuration/','/docs-cn/de
 >
 > 需谨慎使用 `*` 符号，因为它可能引入安全风险，允许来自任何 IP 的客户端自行汇报其 IP 地址。另外，它可能会导致部分直接连接 TiDB 的内部组件无法使用，例如 TiDB Dashboard。
 
+> **注意：**
+>
+> 如果使用 AWS 的 Network Load Balancer (NLB) 并开启 PROXY 协议，需要设置 NLB 的 `target group` 属性：将 `proxy_protocol_v2.client_to_server.header_place` 设为 `on_first_ack`。同时向 AWS 的 Support 提工单开通此功能的支持。注意，AWS NLB 在开启 PROXY 协议后，客户端将无法获取服务器端的握手报文，因此报文会一直阻塞到客户端超时。这是因为，NLB 默认只在客户端发送数据之后才会发送 PROXY 的报文，而在客户端发送数据包之前，服务器端发送的任何数据包都会在内网被丢弃。
+
+## `--proxy-protocol-fallbackable`
+
++ 用于控制是否启用 PROXY 协议回退模式。如果设置为 `true`，TiDB 可以接受属于 `--proxy-protocol-networks` 的客户端使用非 PROXY 协议规范或者没有发送 PROXY 协议头的客户端连接。默认情况下，TiDB 仅接受属于 `--proxy-protocol-networks` 的客户端发送 PROXY 协议头的客户端连接。
++ 默认：`false`
+
 ## `--proxy-protocol-header-timeout`
 
-+ PROXY Protocol 请求头读取超时时间
++ PROXY 协议请求头读取超时时间
 + 默认：5
 + 单位：秒
+
+> **警告：**
+>
+> 自 v6.3.0 起，该参数被废弃。因为自 v6.3.0 起，读取 PROXY 协议报头的操作会在第一次读取网络数据时进行，废弃该参数可避免影响首次读取网络数据时设置的超时时间。
 
 > **注意：**
 >
@@ -152,6 +186,11 @@ aliases: ['/docs-cn/dev/command-line-flags-for-tidb-configuration/','/docs-cn/de
 + 默认："unistore"
 + 可以选择 "unistore"（本地存储引擎）或者 "tikv"（分布式存储引擎）
 
+## `--temp-dir`
+
+- TiDB 用于存放临时文件的目录
+- 默认："/tmp/tidb"
+
 ## `--token-limit`
 
 + TiDB 中同时允许运行的 Session 数量，用于流量控制
@@ -187,8 +226,3 @@ aliases: ['/docs-cn/dev/command-line-flags-for-tidb-configuration/','/docs-cn/de
 
 + 修复模式下需要修复的表名
 + 默认：""
-
-## `--require-secure-transport`
-
-+ 是否要求客户端使用安全传输模式
-+ 默认：false

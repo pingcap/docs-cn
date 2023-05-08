@@ -70,4 +70,4 @@ TiDB 支持 `BEGIN PESSIMISTIC` 或 `BEGIN OPTIMISTIC` 的语法扩展，用户�
 * [ROLLBACK](/sql-statements/sql-statement-rollback.md)
 * [START TRANSACTION](/sql-statements/sql-statement-start-transaction.md)
 * [TiDB 乐观事务模型](/optimistic-transaction.md)
-* [TiDB 悲观事务模型](/pessimistic-transaction.md)
+* [TiDB 悲观事务模式](/pessimistic-transaction.md)

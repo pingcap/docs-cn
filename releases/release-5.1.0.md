@@ -22,7 +22,7 @@ TiDB 版本：5.1
 
 > **注意：**
 >
-> 当从一个早期的 TiDB 版本升级到 TiDB 5.1 时，如需了解所有中间版本对应的兼容性更改说明，请查看对应版本的 [Release Note](/releases/release-notes.md)。 
+> 当从一个早期的 TiDB 版本升级到 TiDB 5.1 时，如需了解所有中间版本对应的兼容性更改说明，请查看对应版本的 [Release Note](/releases/release-notes.md)。
 
 ### 系统变量
 
@@ -40,7 +40,7 @@ TiDB 版本：5.1
 | 配置文件   | 配置项   | 修改类型   | 描述   |
 |:----------|:-----------|:-----------|:-----------|
 | TiDB 配置文件  | [`security.enable-sem`](/tidb-configuration-file.md#enable-sem)  | 新增  | 控制是否启用安全增强模式 (SEM)。默认值为 `false`，代表未启用。 |
-| TiDB 配置文件  | [`performance.committer-concurrency`](/tidb-configuration-file.md#committer-concurrency)  | 修改  | 在单个事务的提交阶段，控制用于执行提交操作相关请求的并发数。默认值从 `16` 修改为 `128`。|
+| TiDB 配置文件  | `performance.committer-concurrency` | 修改  | 在单个事务的提交阶段，控制用于执行提交操作相关请求的并发数。默认值从 `16` 修改为 `128`。|
 | TiDB 配置文件  | [`performance.tcp-no-delay`](/tidb-configuration-file.md#tcp-no-delay)  | 新增  | 控制 TiDB 是否在 TCP 层开启 TCP_NODELAY。 默认值为 `true`，代表开启。 |
 | TiDB 配置文件  | [`performance.enforce-mpp`](/tidb-configuration-file.md#enforce-mpp)  | 新增  | 用于在实例级别控制 TiDB 是否忽略优化器代价估算，强制使用 MPP 模式，默认值为 `false`。该配置项可以控制系统变量 [`tidb_enforce_mpp`](/system-variables.md#tidb_enforce_mpp-从-v51-版本开始引入) 的初始值。 |
 | TiDB 配置文件  | [`pessimistic-txn.deadlock-history-capacity`](/tidb-configuration-file.md#deadlock-history-capacity)  | 新增  | 控制单个 TiDB 节点的 [`INFORMATION_SCHEMA.DEADLOCKS`](/information-schema/information-schema-deadlocks.md) 表最多可记录的死锁事件个数，默认值为 “10”。 |
@@ -58,12 +58,12 @@ TiDB 版本：5.1
 
 ### 其他
 
-- 升级前，请检查 TiDB 配置项 [`feedback-probability`](/tidb-configuration-file.md#feedback-probability) 的值。如果不为 0，升级后会触发 "panic in the recoverable goroutine" 报错，但不影响升级。
+- 升级前，请检查 TiDB 配置项 [`feedback-probability`](https://docs.pingcap.com/zh/tidb/v5.1/tidb-configuration-file#feedback-probability) 的值。如果不为 0，升级后会触发 "panic in the recoverable goroutine" 报错，但不影响升级。
 - 为了提升 TiDB 性能，TiDB 的 Go 编译器版本从 go1.13.7 升级到了 go1.16.4。如果你是 TiDB 的开发者，为了能保证顺利编译，请对应升级你的 Go 编译器版本。
 - 请避免在对使用 TiDB Binlog 的集群进行滚动升级的过程中新创建聚簇索引表。
 - 请避免在 TiDB 滚动升级时执行 `alter table ... modify column` 或 `alter table ... change column`。
 - 当按表构建 TiFlash 副本时，v5.1 版本及后续版本将不再支持设置系统表的 replica。在集群升级前，需要清除相关系统表的 replica，否则会导致升级失败。
-- 在 TiCDC 的 `cdc cli changefeed` 命令中废弃 `--sort-dir` 参数，用户可在 `cdc server` 命令中设定 `--sort-dir`。[#1795](https://github.com/pingcap/ticdc/pull/1795)
+- 在 TiCDC 的 `cdc cli changefeed` 命令中废弃 `--sort-dir` 参数，用户可在 `cdc server` 命令中设定 `--sort-dir`。[#1795](https://github.com/pingcap/tiflow/pull/1795)
 - 升级到 TiDB 5.1 之后，如果遇到 "function READ ONLY has only noop implementation" 错误，可以将系统变量 [`tidb_enable_noop_functions`](/system-variables.md#tidb_enable_noop_functions-从-v40-版本开始引入) 的值设置为 `ON` 以忽略此报错。因为 MySQL 的 'read_only' 变量在 TiDB 中尚不生效（属于 'noop' 行为），即使在 TiDB 中设置了此变量，集群仍然是可写的。
 
 ## 新功能
@@ -119,19 +119,19 @@ TiDB 版本：5.1
     `tidb_analyze_version = 2` 默认启用，避免了 Version 1 中因为哈希冲突导致的在较大的数据量中可能产生的较大误差，并保持了大多数场景中的估算精度。
 
     [用户文档](/statistics.md)
- 
+
 ### 事务
 
 + 新增锁视图 (Lock View)（实验特性）
 
     Lock View 用于提供关于悲观锁的锁冲突和锁等待的更多信息，方便 DBA 通过锁视图功能来观察事务加锁情况以及排查死锁问题等 [#24199](https://github.com/pingcap/tidb/issues/24199)
-    
+
     用户文档：
 
     - 查看集群中所有 TiKV 节点上当前正在发生的悲观锁等锁：[`DATA_LOCK_WAITS`](/information-schema/information-schema-data-lock-waits.md)
     - 查看 TiDB 节点上最近发生的若干次死锁错误：[`DEADLOCKS`](/information-schema/information-schema-deadlocks.md)
     - 查看 TiDB 节点上正在执行的事务的信息：[`TIDB_TRX`](/information-schema/information-schema-tidb-trx.md)
-    
+
 ### 性能
 
 + 数据副本非一致性读 (Stale Read)（实验特性）
@@ -155,7 +155,7 @@ TiDB 版本：5.1
         - 同步中断期间积累大量数据，超过 1TB，重新同步出现 OOM 问题
         - 大量数据写入造成 TiCDC 出现 OOM 问题
 
-    - 改善 TiCDC 同步中断问题，缓解以下场景的问题 [project#11](https://github.com/pingcap/ticdc/projects/11)
+    - 改善 TiCDC 同步中断问题，缓解以下场景的问题 [project#11](https://github.com/pingcap/tiflow/projects/11)
 
         - 网络不稳定情况下出现的同步中断问题
         - 在部分 TiKV/PD/TiCDC 节点宕机情况下出现的同步中断问题
@@ -184,6 +184,7 @@ TiDB 在遥测中新增收集集群请求的运行状态，包括执行情况、
 
     - 支持 `VITESS_HASH()` 函数 [#23915](https://github.com/pingcap/tidb/pull/23915)
     - 支持枚举类型下推到 TiKV ，提升 WHERE 子句中使用枚举类型时的性能 [#23619](https://github.com/pingcap/tidb/issues/23619)
+    - 支持 `RENAME USER` 语法 [#23648](https://github.com/pingcap/tidb/issues/23648)
     - 优化 Window Function 计算过程，解决了使用 ROW_NUMBER() 对数据分页时 TiDB OOM 的问题 [#23807](https://github.com/pingcap/tidb/issues/23807)
     - 优化 UNION ALL 的计算过程，解决了使用 UNION ALL 连接大量 SELECT 语句时 TiDB OOM 的问题 [#21441](https://github.com/pingcap/tidb/issues/21441)
     - 优化分区表动态裁剪模式，提升其性能和稳定性 [#24150](https://github.com/pingcap/tidb/issues/24150)
@@ -234,7 +235,7 @@ TiDB 在遥测中新增收集集群请求的运行状态，包括执行情况、
 
     + TiCDC
 
-        - 改进了部分日志信息的描述使其更加明确清晰，对诊断问题更有帮助 [#1759](https://github.com/pingcap/ticdc/pull/1759)
+        - 改进了部分日志信息的描述使其更加明确清晰，对诊断问题更有帮助 [#1759](https://github.com/pingcap/tiflow/pull/1759)
         - 为 TiCDC 扫描的速度添加感知下游处理能力的 (back pressure) 功能 [#10151](https://github.com/tikv/tikv/pull/10151)
         - 减少 TiCDC 进行初次扫描的内存使用量 [#10133](https://github.com/tikv/tikv/pull/10133)
         - 提升了悲观事务中 TiCDC Old Value 的缓存命中率 [#10089](https://github.com/tikv/tikv/pull/10089)
@@ -266,7 +267,7 @@ TiDB 在遥测中新增收集集群请求的运行状态，包括执行情况、
     - 修复某些情况下 `IN` 语句的执行结果可能错误的问题 [#23889](https://github.com/pingcap/tidb/issues/23889)
     - 修复某些字符串函数的返回结果错误的问题 [#23759](https://github.com/pingcap/tidb/issues/23759)
     - 执行 `REPLACE` 语句需要用户同时拥有 `INSERT` 和 `DELETE` 权限 [#23909](https://github.com/pingcap/tidb/issues/23909)
-    - 修复点查时出现的的性能回退 [#24070](https://github.com/pingcap/tidb/pull/24070)
+    - 修复点查时出现的性能回退 [#24070](https://github.com/pingcap/tidb/pull/24070)
     - 修复因错误比较二进制与字节而导致的 `TableDual` 计划错误的问题 [#23846](https://github.com/pingcap/tidb/issues/23846)
     - 修复了在某些情况下，使用前缀索引和 Index Join 导致的 panic 的问题 [#24547](https://github.com/pingcap/tidb/issues/24547) [#24716](https://github.com/pingcap/tidb/issues/24716) [#24717](https://github.com/pingcap/tidb/issues/24717)
     - 修复了 `point get` 的 prepare plan cache 被事务中的 `point get` 语句不正确使用的问题 [#24741](https://github.com/pingcap/tidb/issues/24741)
@@ -335,17 +336,17 @@ TiDB 在遥测中新增收集集群请求的运行状态，包括执行情况、
 
     + TiCDC
 
-        - 修复 Unified Sorter 中的并发问题并过滤无用的错误消息 [#1678](https://github.com/pingcap/ticdc/pull/1678)
-        - 修复同步到 MinIO 时，重复创建目录会导致同步中断的问题 [#1463](https://github.com/pingcap/ticdc/issues/1463)
-        - 默认开启会话变量 `explicit_defaults_for_timestamp`，使得下游 MySQL 5.7 和上游 TiDB 的行为保持一致 [#1585](https://github.com/pingcap/ticdc/issues/1585)
-        - 修复错误地处理 `io.EOF` 可能导致同步中断的问题 [#1633](https://github.com/pingcap/ticdc/issues/1633)
-        - 修正 TiCDC 面板中的 TiKV CDC endpoint CPU 统计信息 [#1645](https://github.com/pingcap/ticdc/pull/1645)
-        - 增加 `defaultBufferChanSize` 来避免某些情况下同步阻塞的问题 [#1259](https://github.com/pingcap/ticdc/issues/1259)
-        - 修复 Avro 输出中丢失时区信息的问题 [#1712](https://github.com/pingcap/ticdc/pull/1712)
-        - 支持清理 Unified Sorter 过期的文件并禁止共享 `sort-dir` 目录 [#1742](https://github.com/pingcap/ticdc/pull/1742)
-        - 修复存在大量过期 Region 信息时 KV 客户端可能锁死的问题 [#1599](https://github.com/pingcap/ticdc/issues/1599)
-        - 修复 `--cert-allowed-cn` 参数中错误的帮助消息 [#1697](https://github.com/pingcap/ticdc/pull/1697)
-        - 修复因更新 `explicit_defaults_for_timestamp` 而需要 MySQL `SUPER` 权限的问题 [#1750](https://github.com/pingcap/ticdc/pull/1750)
-        - 添加 sink 流控以降低内存溢出的风险 [#1840](https://github.com/pingcap/ticdc/pull/1840)
-        - 修复调度数据表时可能发生的同步终止问题 [#1828](https://github.com/pingcap/ticdc/pull/1828)
-        - 修复 TiCDC changefeed 断点卡住导致 TiKV GC safe point 不推进的问题 [#1759](https://github.com/pingcap/ticdc/pull/1759)
+        - 修复 Unified Sorter 中的并发问题并过滤无用的错误消息 [#1678](https://github.com/pingcap/tiflow/pull/1678)
+        - 修复同步到 MinIO 时，重复创建目录会导致同步中断的问题 [#1463](https://github.com/pingcap/tiflow/issues/1463)
+        - 默认开启会话变量 `explicit_defaults_for_timestamp`，使得下游 MySQL 5.7 和上游 TiDB 的行为保持一致 [#1585](https://github.com/pingcap/tiflow/issues/1585)
+        - 修复错误地处理 `io.EOF` 可能导致同步中断的问题 [#1633](https://github.com/pingcap/tiflow/issues/1633)
+        - 修正 TiCDC 面板中的 TiKV CDC endpoint CPU 统计信息 [#1645](https://github.com/pingcap/tiflow/pull/1645)
+        - 增加 `defaultBufferChanSize` 来避免某些情况下同步阻塞的问题 [#1259](https://github.com/pingcap/tiflow/issues/1259)
+        - 修复 Avro 输出中丢失时区信息的问题 [#1712](https://github.com/pingcap/tiflow/pull/1712)
+        - 支持清理 Unified Sorter 过期的文件并禁止共享 `sort-dir` 目录 [#1742](https://github.com/pingcap/tiflow/pull/1742)
+        - 修复存在大量过期 Region 信息时 KV 客户端可能锁死的问题 [#1599](https://github.com/pingcap/tiflow/issues/1599)
+        - 修复 `--cert-allowed-cn` 参数中错误的帮助消息 [#1697](https://github.com/pingcap/tiflow/pull/1697)
+        - 修复因更新 `explicit_defaults_for_timestamp` 而需要 MySQL `SUPER` 权限的问题 [#1750](https://github.com/pingcap/tiflow/pull/1750)
+        - 添加 sink 流控以降低内存溢出的风险 [#1840](https://github.com/pingcap/tiflow/pull/1840)
+        - 修复调度数据表时可能发生的同步终止问题 [#1828](https://github.com/pingcap/tiflow/pull/1828)
+        - 修复 TiCDC changefeed 断点卡住导致 TiKV GC safe point 不推进的问题 [#1759](https://github.com/pingcap/tiflow/pull/1759)

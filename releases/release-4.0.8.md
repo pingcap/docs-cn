@@ -22,7 +22,7 @@ TiDB 版本：4.0.8
 
     + TiCDC
 
-        - 支持快照级别一致性复制 [#932](https://github.com/pingcap/ticdc/pull/932)
+        - 支持快照级别一致性复制 [#932](https://github.com/pingcap/tiflow/pull/932)
 
 ## 优化提升
 
@@ -75,7 +75,7 @@ TiDB 版本：4.0.8
 
     + TiCDC
 
-        - 在 MySQL sink 中定期输出统计信息 [#1023](https://github.com/pingcap/ticdc/pull/1023)
+        - 在 MySQL sink 中定期输出统计信息 [#1023](https://github.com/pingcap/tiflow/pull/1023)
 
     + Dumpling
 
@@ -146,9 +146,9 @@ TiDB 版本：4.0.8
 
     + TiCDC
 
-        - 修复 owner 因更新 GC safepoint 失败而非预期退出的问题 [#979](https://github.com/pingcap/ticdc/pull/979)
-        - 修复非预期的任务信息更新 [#1017](https://github.com/pingcap/ticdc/pull/1017)
-        - 修复非预期的空 Maxwell 消息 [#978](https://github.com/pingcap/ticdc/pull/978)
+        - 修复 owner 因更新 GC safepoint 失败而非预期退出的问题 [#979](https://github.com/pingcap/tiflow/pull/979)
+        - 修复非预期的任务信息更新 [#1017](https://github.com/pingcap/tiflow/pull/1017)
+        - 修复非预期的空 Maxwell 消息 [#978](https://github.com/pingcap/tiflow/pull/978)
 
     + TiDB Lightning
 

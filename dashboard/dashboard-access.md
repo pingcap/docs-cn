@@ -7,6 +7,10 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-access/']
 
 通过浏览器访问 <http://127.0.0.1:2379/dashboard/>（将 `127.0.0.1:2379` 替换为实际 PD 实例的地址和端口）即可打开 TiDB Dashboard。
 
+> **注意：**
+>
+> TiDB v6.5.0 且 TiDB Operator v1.4.0 之后，在 Kubernetes 上支持将 TiDB Dashboard 作为独立的 Pod 部署。在 TiDB Operator 环境，可直接访问该 Pod 的 IP 来打开 TiDB Dashboard。具体信息，参考 [TiDB Operator 部署独立的 TiDB Dashboard](https://docs.pingcap.com/zh/tidb-in-kubernetes/dev/get-started#部署独立的-tidb-dashboard)。
+
 ## 多 PD 实例访问
 
 当集群中部署有多个 PD 实例、且您可以直接访问到**每个** PD 实例地址和端口时，可以简单地将 <http://127.0.0.1:2379/dashboard/> 地址中的 `127.0.0.1:2379` 替换为集群中**任意一个** PD 实例的地址和端口进行访问。
@@ -29,7 +33,10 @@ TiDB Dashboard 可在常见的、更新及时的桌面浏览器中使用，具�
 
 ## 登录
 
-首次访问 TiDB Dashboard 将会显示用户登录界面，如下图所示，可使用 TiDB root 账号登录。默认情况下，root 账号密码为空。
+访问 TiDB Dashboard 将会显示用户登录界面。 
+
+- 可使用 TiDB 的 root 用户登录。
+- 如果创建了[自定义 SQL 用户](/dashboard/dashboard-user.md)，也可以使用自定义的 SQL 用户和密码登录。
 
 ![登录界面](/media/dashboard/dashboard-access-login.png)
 

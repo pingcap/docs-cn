@@ -7,7 +7,7 @@ aliases: ['/docs-cn/dev/scale-tidb-using-tiup/','/docs-cn/dev/how-to/scale/with-
 
 TiDB 集群可以在不中断线上服务的情况下进行扩容和缩容。
 
-本文介绍如何使用 TiUP 扩容缩容集群中的 TiDB、TiKV、PD、TiCDC 或者 TiFlash 节点。如未安装 TiUP，可参考[部署文档中的步骤](/production-deployment-using-tiup.md#第-2-步在中控机上安装-tiup-组件)。
+本文介绍如何使用 TiUP 扩容缩容集群中的 TiDB、TiKV、PD、TiCDC 或者 TiFlash 节点。如未安装 TiUP，可参考[部署文档中的步骤](/production-deployment-using-tiup.md#第-2-步在中控机上部署-tiup-组件)。
 
 你可以通过 `tiup cluster list` 查看当前的集群名称列表。
 
@@ -37,12 +37,10 @@ TiDB 集群可以在不中断线上服务的情况下进行扩容和缩容。
 >
 > - 从 TiUP v1.0.0 开始，扩容配置会继承原集群配置的 global 部分。
 
-在 scale-out.yaml 文件添加扩容拓扑配置：
-
-{{< copyable "shell-regular" >}}
+在 scale-out.yml 文件添加扩容拓扑配置：
 
 ```shell
-vi scale-out.yaml
+vi scale-out.yml
 ```
 
 {{< copyable "" >}}
@@ -53,8 +51,8 @@ tidb_servers:
     ssh_port: 22
     port: 4000
     status_port: 10080
-    deploy_dir: /data/deploy/install/deploy/tidb-4000
-    log_dir: /data/deploy/install/log/tidb-4000
+    deploy_dir: /tidb-deploy/tidb-4000
+    log_dir: /tidb-deploy/tidb-4000/log
 ```
 
 TiKV 配置文件参考：
@@ -67,9 +65,9 @@ tikv_servers:
     ssh_port: 22
     port: 20160
     status_port: 20180
-    deploy_dir: /data/deploy/install/deploy/tikv-20160
-    data_dir: /data/deploy/install/data/tikv-20160
-    log_dir: /data/deploy/install/log/tikv-20160
+    deploy_dir: /tidb-deploy/tikv-20160
+    data_dir: /tidb-data/tikv-20160
+    log_dir: /tidb-deploy/tikv-20160/log
 ```
 
 PD 配置文件参考：
@@ -83,26 +81,52 @@ pd_servers:
     name: pd-1
     client_port: 2379
     peer_port: 2380
-    deploy_dir: /data/deploy/install/deploy/pd-2379
-    data_dir: /data/deploy/install/data/pd-2379
-    log_dir: /data/deploy/install/log/pd-2379
+    deploy_dir: /tidb-deploy/pd-2379
+    data_dir: /tidb-data/pd-2379
+    log_dir: /tidb-deploy/pd-2379/log
 ```
 
-可以使用 `tiup cluster edit-config <cluster-name>` 查看当前集群的配置信息，因为其中的 `global` 和 `server_configs` 参数配置默认会被 `scale-out.yaml` 继承，因此也会在 `scale-out.yaml` 中生效。
+可以使用 `tiup cluster edit-config <cluster-name>` 查看当前集群的配置信息，因为其中的 `global` 和 `server_configs` 参数配置默认会被 `scale-out.yml` 继承，因此也会在 `scale-out.yml` 中生效。
 
 ### 2. 执行扩容命令
 
-{{< copyable "shell-regular" >}}
-
-```shell
-tiup cluster scale-out <cluster-name> scale-out.yaml
-```
+执行 scale-out 命令前，先使用 `check` 及 `check --apply` 命令，检查和自动修复集群存在的潜在风险：
 
 > **注意：**
 >
-> 此处假设当前执行命令的用户和新增的机器打通了互信，如果不满足已打通互信的条件，需要通过 `-p` 来输入新机器的密码，或通过 `-i` 指定私钥文件。
+> 针对 scale-out 命令的检查功能在 tiup cluster v1.9.3 及后续版本中支持，请操作前先升级 tiup cluster 版本。
 
-预期输出 Scaled cluster `<cluster-name>` out successfully 信息，表示扩容操作成功。
+（1）检查集群存在的潜在风险：
+
+  {{< copyable "shell-regular" >}}
+
+  ```shell
+  tiup cluster check <cluster-name> scale-out.yml --cluster --user root [-p] [-i /home/root/.ssh/gcp_rsa]
+  ```
+
+（2）自动修复集群存在的潜在风险：
+
+  {{< copyable "shell-regular" >}}
+
+  ```shell
+  tiup cluster check <cluster-name> scale-out.yml --cluster --apply --user root [-p] [-i /home/root/.ssh/gcp_rsa]
+  ```
+
+（3）执行 scale-out 命令扩容 TiDB 集群：
+
+  {{< copyable "shell-regular" >}}
+
+  ```shell
+  tiup cluster scale-out <cluster-name> scale-out.yml [-p] [-i /home/root/.ssh/gcp_rsa]
+  ```
+
+以上操作示例中：
+
+- 扩容配置文件为 `scale-out.yml`。
+- `--user root` 表示通过 root 用户登录到目标主机完成集群部署，该用户需要有 ssh 到目标机器的权限，并且在目标机器有 sudo 权限。也可以用其他有 ssh 和 sudo 权限的用户完成部署。
+- [-i] 及 [-p] 为可选项，如果已经配置免密登录目标机，则不需填写。否则选择其一即可，[-i] 为可登录到目标机的 root 用户（或 --user 指定的其他用户）的私钥，也可使用 [-p] 交互式输入该用户的密码。
+
+预期日志结尾输出 ```Scaled cluster `<cluster-name>` out successfully``` 信息，表示扩容操作成功。
 
 ### 3. 检查集群状态
 
@@ -118,11 +142,11 @@ tiup cluster display <cluster-name>
 
 | 主机 IP   | 服务   |
 |:----|:----|
-| 10.0.1.3   | TiDB + TiFlash   |
+| 10.0.1.3   | TiDB + TiFlash  |
 | 10.0.1.4   | TiDB + PD   |
 | 10.0.1.5   | **TiDB** + TiKV + Monitor   |
-| 10.0.1.1   | TiKV    |
-| 10.0.1.2   | TiKV    |
+| 10.0.1.1   | TiKV   |
+| 10.0.1.2   | TiKV   |
 
 ## 扩容 TiFlash 节点
 
@@ -133,11 +157,11 @@ tiup cluster display <cluster-name>
 > 在原有 TiDB 集群上新增 TiFlash 组件需要注意：
 >
 > 1. 首先确认当前 TiDB 的版本支持 TiFlash，否则需要先升级 TiDB 集群至 v5.0 以上版本。
-> 2. 执行 `tiup ctl:<cluster-version> pd -u http://<pd_ip>:<pd_port> config set enable-placement-rules true` 命令，以开启 PD 的 Placement Rules 功能。或通过 [pd-ctl](/pd-control.md) 执行对应的命令。
+> 2. 执行 `tiup ctl:v<CLUSTER_VERSION> pd -u http://<pd_ip>:<pd_port> config set enable-placement-rules true` 命令，以开启 PD 的 Placement Rules 功能。或通过 [pd-ctl](/pd-control.md) 执行对应的命令。
 
-### 1. 添加节点信息到 scale-out.yaml 文件
+### 1. 添加节点信息到 scale-out.yml 文件
 
-编写 scale-out.yaml 文件，添加该 TiFlash 节点信息（目前只支持 ip，不支持域名）：
+编写 scale-out.yml 文件，添加该 TiFlash 节点信息（目前只支持 ip，不支持域名）：
 
 {{< copyable "" >}}
 
@@ -151,7 +175,7 @@ tiflash_servers:
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup cluster scale-out <cluster-name> scale-out.yaml
+tiup cluster scale-out <cluster-name> scale-out.yml
 ```
 
 > **注意：**
@@ -172,19 +196,19 @@ tiup cluster display <cluster-name>
 
 | 主机 IP   | 服务   |
 |:----|:----|
-| 10.0.1.3   | TiDB + TiFlash   |
+| 10.0.1.3   | TiDB + TiFlash  |
 | 10.0.1.4   | TiDB + PD + **TiFlash**    |
 | 10.0.1.5   | TiDB+ TiKV + Monitor   |
-| 10.0.1.1   | TiKV    |
-| 10.0.1.2   | TiKV    |
+| 10.0.1.1   | TiKV   |
+| 10.0.1.2   | TiKV   |
 
 ## 扩容 TiCDC 节点
 
 如果要添加 TiCDC 节点，IP 地址为 10.0.1.3、10.0.1.4，可以按照如下步骤进行操作。
 
-### 1. 添加节点信息到 scale-out.yaml 文件
+### 1. 添加节点信息到 scale-out.yml 文件
 
-编写 scale-out.yaml 文件：
+编写 scale-out.yml 文件：
 
 {{< copyable "" >}}
 
@@ -192,10 +216,10 @@ tiup cluster display <cluster-name>
 cdc_servers:
   - host: 10.0.1.3
     gc-ttl: 86400
-    data_dir: /data/deploy/install/data/cdc-8300
+    data_dir: /tidb-data/cdc-8300
   - host: 10.0.1.4
     gc-ttl: 86400
-    data_dir: /data/deploy/install/data/cdc-8300
+    data_dir: /tidb-data/cdc-8300
 ```
 
 ### 2. 运行扩容命令
@@ -203,7 +227,7 @@ cdc_servers:
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup cluster scale-out <cluster-name> scale-out.yaml
+tiup cluster scale-out <cluster-name> scale-out.yml
 ```
 
 > **注意：**
@@ -227,8 +251,8 @@ tiup cluster display <cluster-name>
 | 10.0.1.3   | TiDB + TiFlash + **TiCDC**  |
 | 10.0.1.4   | TiDB + PD + TiFlash + **TiCDC**  |
 | 10.0.1.5   | TiDB+ TiKV + Monitor   |
-| 10.0.1.1   | TiKV    |
-| 10.0.1.2   | TiKV    |
+| 10.0.1.1   | TiKV   |
+| 10.0.1.2   | TiKV   |
 
 ## 缩容 TiDB/PD/TiKV 节点
 
@@ -236,7 +260,8 @@ tiup cluster display <cluster-name>
 
 > **注意：**
 >
-> 移除 TiDB、PD 节点和移除 TiKV 节点的步骤类似。
+> - 移除 TiDB、PD 节点和移除 TiKV 节点的步骤类似。
+> - 由于 TiKV、TiFlash 和 TiDB Binlog 组件是异步下线的，且下线过程耗时较长，所以 TiUP 对 TiKV、TiFlash 和 TiDB Binlog 组件做了特殊处理，详情参考[下线特殊处理](/tiup/tiup-component-cluster-scale-in.md#下线特殊处理)。
 
 > **注意：**
 >
@@ -251,43 +276,43 @@ tiup cluster display <cluster-name>
 ```
 
 ```
-Starting /root/.tiup/components/cluster/v1.5.0/cluster display <cluster-name> 
+Starting /root/.tiup/components/cluster/v1.11.3/cluster display <cluster-name>
 
 TiDB Cluster: <cluster-name>
 
-TiDB Version: v5.2.2
+TiDB Version: v7.0.0
 
-ID              Role         Host        Ports                            Status  Data Dir                Deploy Dir
+ID       Role         Host    Ports                            Status  Data Dir        Deploy Dir
 
---              ----         ----        -----                            ------  --------                ----------
+--       ----         ----      -----                            ------  --------        ----------
 
-10.0.1.3:8300   cdc          10.0.1.3    8300                             Up      data/cdc-8300           deploy/cdc-8300
+10.0.1.3:8300  cdc          10.0.1.3    8300                            Up      data/cdc-8300      deploy/cdc-8300
 
-10.0.1.4:8300   cdc          10.0.1.4    8300                             Up      data/cdc-8300           deploy/cdc-8300
+10.0.1.4:8300  cdc          10.0.1.4    8300                            Up      data/cdc-8300      deploy/cdc-8300
 
-10.0.1.4:2379   pd           10.0.1.4    2379/2380                        Healthy data/pd-2379            deploy/pd-2379
+10.0.1.4:2379  pd           10.0.1.4    2379/2380                        Healthy data/pd-2379      deploy/pd-2379
 
-10.0.1.1:20160  tikv         10.0.1.1    20160/20180                      Up      data/tikv-20160         deploy/tikv-20160
+10.0.1.1:20160 tikv         10.0.1.1    20160/20180                      Up      data/tikv-20160     deploy/tikv-20160
 
-10.0.1.2:20160  tikv         10.0.1.2    20160/20180                      Up      data/tikv-20160         deploy/tikv-20160
+10.0.1.2:20160 tikv         10.0.1.2    20160/20180                      Up      data/tikv-20160     deploy/tikv-20160
 
-10.0.1.5:20160  tikv         10.0.1.5    20160/20180                      Up      data/tikv-20160         deploy/tikv-20160
+10.0.1.5:20160 tikv        10.0.1.5    20160/20180                     Up      data/tikv-20160     deploy/tikv-20160
 
-10.0.1.3:4000   tidb         10.0.1.3    4000/10080                       Up      -                       deploy/tidb-4000
+10.0.1.3:4000  tidb        10.0.1.3    4000/10080                      Up      -                 deploy/tidb-4000
 
-10.0.1.4:4000   tidb         10.0.1.4    4000/10080                       Up      -                       deploy/tidb-4000
+10.0.1.4:4000  tidb        10.0.1.4    4000/10080                      Up      -                 deploy/tidb-4000
 
-10.0.1.5:4000   tidb         10.0.1.5    4000/10080                       Up      -                       deploy/tidb-4000
+10.0.1.5:4000  tidb         10.0.1.5    4000/10080                       Up      -            deploy/tidb-4000
 
 10.0.1.3:9000   tiflash      10.0.1.3    9000/8123/3930/20170/20292/8234  Up      data/tiflash-9000       deploy/tiflash-9000
 
 10.0.1.4:9000   tiflash      10.0.1.4    9000/8123/3930/20170/20292/8234  Up      data/tiflash-9000       deploy/tiflash-9000
 
-10.0.1.5:9090   prometheus   10.0.1.5    9090                             Up      data/prometheus-9090    deploy/prometheus-9090
+10.0.1.5:9090  prometheus   10.0.1.5    9090                             Up      data/prometheus-9090  deploy/prometheus-9090
 
-10.0.1.5:3000   grafana      10.0.1.5    3000                             Up      -                       deploy/grafana-3000
+10.0.1.5:3000  grafana      10.0.1.5    3000                             Up      -            deploy/grafana-3000
 
-10.0.1.5:9093   alertmanager 10.0.1.5    9093/9094                        Up      data/alertmanager-9093  deploy/alertmanager-9093
+10.0.1.5:9093  alertmanager 10.0.1.5    9093/9094                        Up      data/alertmanager-9093 deploy/alertmanager-9093
 ```
 
 ### 2. 执行缩容操作
@@ -320,11 +345,11 @@ tiup cluster display <cluster-name>
 
 | Host IP   | Service   |
 |:----|:----|
-| 10.0.1.3   | TiDB + TiFlash + TiCDC  |
-| 10.0.1.4   | TiDB + PD + TiFlash + TiCDC |
+| 10.0.1.3   | TiDB + TiFlash + TiCDC  |
+| 10.0.1.4   | TiDB + PD + TiFlash + TiCDC |
 | 10.0.1.5   | TiDB + Monitor**（TiKV 已删除）**   |
-| 10.0.1.1   | TiKV    |
-| 10.0.1.2   | TiKV    |
+| 10.0.1.1   | TiKV    |
+| 10.0.1.2   | TiKV    |
 
 ## 缩容 TiFlash 节点
 
@@ -332,17 +357,21 @@ tiup cluster display <cluster-name>
 
 ### 1. 根据 TiFlash 剩余节点数调整数据表的副本数
 
-在下线节点之前，确保 TiFlash 集群剩余节点数大于等于所有数据表的最大副本数，否则需要修改相关表的 TiFlash 副本数。
+1. 查询是否有数据表的 TiFlash 副本数大于缩容后的 TiFlash 节点数。`tobe_left_nodes` 表示缩容后的 TiFlash 节点数。如果查询结果为空，可以开始执行缩容。如果查询结果不为空，则需要修改相关表的 TiFlash 副本数。
 
-1. 在 TiDB 客户端中针对所有副本数大于集群剩余 TiFlash 节点数的表执行：
+    ```sql
+    SELECT * FROM information_schema.tiflash_replica WHERE REPLICA_COUNT >  'tobe_left_nodes';
+    ```
+
+2. 对所有 TiFlash 副本数大于缩容后的 TiFlash 节点数的表执行以下语句，`new_replica_num` 必须小于等于 `tobe_left_nodes`：
 
     {{< copyable "sql" >}}
 
     ```sql
-    alter table <db-name>.<table-name> set tiflash replica 0;
+    ALTER TABLE <db-name>.<table-name> SET tiflash replica 'new_replica_num';
     ```
 
-2. 等待相关表的 TiFlash 副本被删除（按照[查看表同步进度](/tiflash/use-tiflash.md#查看表同步进度)一节操作，查不到相关表的同步信息时即为副本被删除）。
+3. 重新执行步骤 1，确保没有数据表的 TiFlash 副本数大于缩容后的 TiFlash 节点数。
 
 ### 2. 执行缩容操作
 
@@ -379,7 +408,7 @@ tiup cluster display <cluster-name>
         {{< copyable "shell-regular" >}}
 
         ```shell
-        tiup ctl:<cluster-version> pd -u http://<pd_ip>:<pd_port> store
+        tiup ctl:v<CLUSTER_VERSION> pd -u http://<pd_ip>:<pd_port> store
         ```
 
         > **注意：**
@@ -395,7 +424,7 @@ tiup cluster display <cluster-name>
         {{< copyable "shell-regular" >}}
 
         ```shell
-        tiup ctl:<cluster-version> pd -u http://<pd_ip>:<pd_port> store delete <store_id>
+        tiup ctl:v<CLUSTER_VERSION> pd -u http://<pd_ip>:<pd_port> store delete <store_id>
         ```
 
         > **注意：**
@@ -406,12 +435,12 @@ tiup cluster display <cluster-name>
 
 4. 手动删除 TiFlash 的数据文件，具体位置可查看在集群拓扑配置文件中 TiFlash 配置部分下的 data_dir 目录。
 
-5. 手动更新 TiUP 的集群配置文件，在编辑模式中手动删除我们已经下线的 TiFlash 节点信息：
+5. 从 TiUP 拓扑信息中删除已经下线的 TiFlash 节点信息：
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    tiup cluster edit-config <cluster-name>
+    tiup cluster scale-in <cluster-name> --node <pd_ip>:<pd_port> --force
     ```
 
 > **注意：**
@@ -420,7 +449,7 @@ tiup cluster display <cluster-name>
 
 手动在 PD 中清除同步规则的步骤如下：
 
-1. 查询当前 PD 实例中所有与 TiFlash 相关的的数据同步规则。
+1. 查询当前 PD 实例中所有与 TiFlash 相关的数据同步规则。
 
     {{< copyable "shell-regular" >}}
 
@@ -473,11 +502,11 @@ tiup cluster display <cluster-name>
 
 | Host IP   | Service   |
 |:----|:----|
-| 10.0.1.3   | TiDB + TiFlash + TiCDC  |
+| 10.0.1.3   | TiDB + TiFlash + TiCDC  |
 | 10.0.1.4   | TiDB + PD + TiCDC **（TiFlash 已删除）**  |
 | 10.0.1.5   | TiDB + Monitor  |
-| 10.0.1.1   | TiKV    |
-| 10.0.1.2   | TiKV    |
+| 10.0.1.1   | TiKV    |
+| 10.0.1.2   | TiKV    |
 
 ## 缩容 TiCDC 节点
 
@@ -505,8 +534,8 @@ tiup cluster display <cluster-name>
 
 | Host IP   | Service   |
 |:----|:----|
-| 10.0.1.3   | TiDB + TiFlash + TiCDC  |
+| 10.0.1.3   | TiDB + TiFlash + TiCDC  |
 | 10.0.1.4   | TiDB + PD + **(TiCDC 已删除）**  |
 | 10.0.1.5   | TiDB + Monitor  |
-| 10.0.1.1   | TiKV    |
-| 10.0.1.2   | TiKV    |
+| 10.0.1.1   | TiKV    |
+| 10.0.1.2   | TiKV    |

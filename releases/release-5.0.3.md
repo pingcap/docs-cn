@@ -21,9 +21,9 @@ TiDB 版本：5.0.3
 
     + TiCDC
 
-        - 增加 HTTP API 获取 TiCDC changefeed 信息和节点健康信息 [#1955](https://github.com/pingcap/ticdc/pull/1955)
-        - 为 kafka 下游增加 SASL/SCRAM 支持 [#1942](https://github.com/pingcap/ticdc/pull/1942)
-        - 使 TiCDC 在 server 级别支持 `--data-dir` 配置 [#2070](https://github.com/pingcap/ticdc/pull/2070)
+        - 增加 HTTP API 获取 TiCDC changefeed 信息和节点健康信息 [#1955](https://github.com/pingcap/tiflow/pull/1955)
+        - 为 kafka 下游增加 SASL/SCRAM 支持 [#1942](https://github.com/pingcap/tiflow/pull/1942)
+        - 使 TiCDC 在 server 级别支持 `--data-dir` 配置 [#2070](https://github.com/pingcap/tiflow/pull/2070)
 
 ## 提升改进
 
@@ -68,7 +68,7 @@ TiDB 版本：5.0.3
 
     + TiCDC
 
-        - 优化 gRPC 的重连逻辑，提升 KV client 的吞吐 [#1586](https://github.com/pingcap/ticdc/issues/1586) [#1501](https://github.com/pingcap/ticdc/issues/1501#issuecomment-820027078) [#1682](https://github.com/pingcap/ticdc/pull/1682) [#1393](https://github.com/pingcap/ticdc/issues/1393) [#1847](https://github.com/pingcap/ticdc/pull/1847) [#1905](https://github.com/pingcap/ticdc/issues/1905) [#1904](https://github.com/pingcap/ticdc/issues/1904)
+        - 优化 gRPC 的重连逻辑，提升 KV client 的吞吐 [#1586](https://github.com/pingcap/tiflow/issues/1586) [#1501](https://github.com/pingcap/tiflow/issues/1501#issuecomment-820027078) [#1682](https://github.com/pingcap/tiflow/pull/1682) [#1393](https://github.com/pingcap/tiflow/issues/1393) [#1847](https://github.com/pingcap/tiflow/pull/1847) [#1905](https://github.com/pingcap/tiflow/issues/1905) [#1904](https://github.com/pingcap/tiflow/issues/1904)
         - 优化 sorter I/O 报错信息
 
 ## Bug 修复
@@ -87,7 +87,7 @@ TiDB 版本：5.0.3
     - 修复了操作符 `<=>` 不能正确生效的问题 [#24477](https://github.com/pingcap/tidb/issues/24477)
     - 修复并行 `Apply` 算子的数据竞争问题 [#23280](https://github.com/pingcap/tidb/issues/23280)
     - 修复对 PartitionUnion 算子的 IndexMerge 结果排序时出现 `index out of range` 错误 [#23919](https://github.com/pingcap/tidb/issues/23919)
-    - 修复 `tidb_snapshot` 被允许设置为非预期的过大值，而可能造成事务隔离性被破坏的问题 [25680]( https://github.com/pingcap/tidb/issues/25680)
+    - 修复 `tidb_snapshot` 被允许设置为非预期的过大值，而可能造成事务隔离性被破坏的问题 [#25680]( https://github.com/pingcap/tidb/issues/25680)
     - 修复 ODBC 类常数（例如 `{d '2020-01-01'}`）不能被用作表达式的问题 [#25531](https://github.com/pingcap/tidb/issues/25531)
     - 修复 `SELECT DISTINCT` 被转化为 Batch Get 而导致结果不正确的问题 [#25320](https://github.com/pingcap/tidb/issues/25320)
     - 修复无法触发将查询从 TiFlash 回退到 TiKV 的问题 [#23665](https://github.com/pingcap/tidb/issues/23665) [#24421](https://github.com/pingcap/tidb/issues/24421)
@@ -124,12 +124,12 @@ TiDB 版本：5.0.3
 
     + TiCDC
 
-        - 修复 TiCDC owner 在刷新 checkpoint 时异常退出的问题 [#1902](https://github.com/pingcap/ticdc/issues/1902)
-        - 修复写 MySQL 下游出错暂停时 MySQL 连接泄漏的问题 [#1946](https://github.com/pingcap/ticdc/pull/1946)
-        - 修复 TiCDC 读取 `/proc/meminfo` 失败时出现的 panic 问题 [#2024](https://github.com/pingcap/ticdc/pull/2024)
-        - 减少 TiCDC 运行时的内存使用 [#2012](https://github.com/pingcap/ticdc/pull/2012) [#1958](https://github.com/pingcap/ticdc/pull/1958)
-        - 修复 resolved ts 计算慢导致 TiCDC panic 的问题 [#1576](https://github.com/pingcap/ticdc/issues/1576)
-        - 修复 processor 潜在的死锁问题 [#2142](https://github.com/pingcap/ticdc/pull/2142)
+        - 修复 TiCDC owner 在刷新 checkpoint 时异常退出的问题 [#1902](https://github.com/pingcap/tiflow/issues/1902)
+        - 修复写 MySQL 下游出错暂停时 MySQL 连接泄漏的问题 [#1946](https://github.com/pingcap/tiflow/pull/1946)
+        - 修复 TiCDC 读取 `/proc/meminfo` 失败时出现的 panic 问题 [#2024](https://github.com/pingcap/tiflow/pull/2024)
+        - 减少 TiCDC 运行时的内存使用 [#2012](https://github.com/pingcap/tiflow/pull/2012) [#1958](https://github.com/pingcap/tiflow/pull/1958)
+        - 修复 resolved ts 计算慢导致 TiCDC panic 的问题 [#1576](https://github.com/pingcap/tiflow/issues/1576)
+        - 修复 processor 潜在的死锁问题 [#2142](https://github.com/pingcap/tiflow/pull/2142)
 
     + Backup & Restore (BR)
 

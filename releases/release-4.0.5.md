@@ -29,10 +29,10 @@ TiDB 版本：4.0.5
 
     - TiCDC
 
-        - 支持加密 Kafka 链接 [#764](https://github.com/pingcap/ticdc/pull/764)
-        - 支持输出 old value [#708](https://github.com/pingcap/ticdc/pull/708)
-        - 添加列的特征的标识 [#796](https://github.com/pingcap/ticdc/pull/796)
-        - 支持输出上一版本的 DDL 和表结构 [#799](https://github.com/pingcap/ticdc/pull/799)
+        - 支持加密 Kafka 链接 [#764](https://github.com/pingcap/tiflow/pull/764)
+        - 支持输出 old value [#708](https://github.com/pingcap/tiflow/pull/708)
+        - 添加列的特征的标识 [#796](https://github.com/pingcap/tiflow/pull/796)
+        - 支持输出上一版本的 DDL 和表结构 [#799](https://github.com/pingcap/tiflow/pull/799)
 
 ## 优化提升
 
@@ -84,7 +84,7 @@ TiDB 版本：4.0.5
 
     + TiCDC
 
-        - 减少了获取时间戳的频率 [#801](https://github.com/pingcap/ticdc/pull/801)
+        - 减少了获取时间戳的频率 [#801](https://github.com/pingcap/tiflow/pull/801)
 
     + Backup & Restore (BR)
 
@@ -164,11 +164,11 @@ TiDB 版本：4.0.5
 
     + TiCDC
 
-        - 解决了同步任务不能被移除的问题 [#782](https://github.com/pingcap/ticdc/pull/782)
-        - 修正了错误的删除事件 [#787](https://github.com/pingcap/ticdc/pull/787)
-        - 解决了已停止的同步任务会卡住 GC 的问题 [#797](https://github.com/pingcap/ticdc/pull/797)
-        - 解决了网络阻塞导致同步任务不能退出的问题 [#825](https://github.com/pingcap/ticdc/pull/825)
-        - 修复在某些情况下无关数据被错误地到下游的问题 [#743](https://github.com/pingcap/ticdc/issues/743)
+        - 解决了同步任务不能被移除的问题 [#782](https://github.com/pingcap/tiflow/pull/782)
+        - 修正了错误的删除事件 [#787](https://github.com/pingcap/tiflow/pull/787)
+        - 解决了已停止的同步任务会卡住 GC 的问题 [#797](https://github.com/pingcap/tiflow/pull/797)
+        - 解决了网络阻塞导致同步任务不能退出的问题 [#825](https://github.com/pingcap/tiflow/pull/825)
+        - 修复在某些情况下无关数据被错误地到下游的问题 [#743](https://github.com/pingcap/tiflow/issues/743)
 
     + TiDB Lightning
 
