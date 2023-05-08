@@ -236,6 +236,12 @@ partition 分发器用 partition = "xxx" 来指定，支持 default、ts、index
 > {matcher = ['*.*'], dispatcher = "ts", partition = "table"},
 > ```
 
+> **警告：**
+>
+> 当开启 [Old Value 功能](/ticdc/ticdc-manage-changefeed.md#输出行变更的历史值-从-v405-版本开始引入)时 (`enable-old-value = true`)，使用 index-value 分发器可能导致无法确保相同索引值的行变更顺序。因此，建议使用 default 分发器。
+>
+> 具体原因请参考 [TiCDC 在开启 Old Value 功能后更新事件格式有何变化？](/ticdc/ticdc-faq.md#ticdc-在开启-old-value-功能后更新事件格式有何变化)
+
 ## 横向扩展大单表的负载到多个 TiCDC 节点
 
 该功能通过将大单表按 Region 个数切分成多个数据范围，将这些数据范围分布到多个 TiCDC 节点上，使得多个 TiCDC 节点可以同时同步大单表。该功能可以解决以下两个问题：
