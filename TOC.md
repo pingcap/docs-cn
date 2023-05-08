@@ -386,43 +386,7 @@
       - [tiup-cluster](/tiup/tiup-cluster.md)
       - [tiup-mirror](/tiup/tiup-mirror.md)
       - [tiup-bench](/tiup/tiup-bench.md)
-  - PingCAP Clinic Diagnostic Service
-    - [Overview](/clinic/clinic-introduction.md)
-    - [Quick Start](/clinic/quick-start-with-clinic.md)
-    - [Troubleshoot Clusters Using PingCAP Clinic](/clinic/clinic-user-guide-for-tiup.md)
-    - [PingCAP Clinic Diagnostic Data](/clinic/clinic-data-instruction-for-tiup.md)
   - [TiDB Operator](/tidb-operator-overview.md)
-  - [Dumpling](/dumpling-overview.md)
-  - TiDB Lightning
-    - [Overview](/tidb-lightning/tidb-lightning-overview.md)
-    - [Get Started](/get-started-with-tidb-lightning.md)
-    - [Deploy TiDB Lightning](/tidb-lightning/deploy-tidb-lightning.md)
-    - [Target Database Requirements](/tidb-lightning/tidb-lightning-requirements.md)
-    - Data Sources
-      - [Data Match Rules](/tidb-lightning/tidb-lightning-data-source.md)
-      - [CSV](/tidb-lightning/tidb-lightning-data-source.md#csv)
-      - [SQL](/tidb-lightning/tidb-lightning-data-source.md#sql)
-      - [Parquet](/tidb-lightning/tidb-lightning-data-source.md#parquet)
-      - [Customized File](/tidb-lightning/tidb-lightning-data-source.md#match-customized-files)
-    - Physical Import Mode
-      - [Requirements and Limitations](/tidb-lightning/tidb-lightning-physical-import-mode.md)
-      - [Use Physical Import Mode](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md)
-    - Logical Import Mode
-      - [Requirements and Limitations](/tidb-lightning/tidb-lightning-logical-import-mode.md)
-      - [Use Logical Import Mode](/tidb-lightning/tidb-lightning-logical-import-mode-usage.md)
-    - [Prechecks](/tidb-lightning/tidb-lightning-prechecks.md)
-    - [Table Filter](/table-filter.md)
-    - [Checkpoints](/tidb-lightning/tidb-lightning-checkpoints.md)
-    - [Import Data in Parallel](/tidb-lightning/tidb-lightning-distributed-import.md)
-    - [Error Resolution](/tidb-lightning/tidb-lightning-error-resolution.md)
-    - [Troubleshooting](/tidb-lightning/troubleshoot-tidb-lightning.md)
-    - Reference
-      - [Configuration File](/tidb-lightning/tidb-lightning-configuration.md)
-      - [Command Line Flags](/tidb-lightning/tidb-lightning-command-line-full.md)
-      - [Monitoring](/tidb-lightning/monitor-tidb-lightning.md)
-      - [Web Interface](/tidb-lightning/tidb-lightning-web-interface.md)
-      - [FAQ](/tidb-lightning/tidb-lightning-faq.md)
-      - [Glossary](/tidb-lightning/tidb-lightning-glossary.md)
   - TiDB Data Migration
     - [About TiDB Data Migration](/dm/dm-overview.md)
     - [Architecture](/dm/dm-arch.md)
@@ -507,14 +471,45 @@
         - [Alert Rules](/dm/dm-alert-rules.md)
       - [Error Codes](/dm/dm-error-handling.md#handle-common-errors)
       - [Glossary](/dm/dm-glossary.md)
-    - Example
-      - [Migrate Data Using DM](/dm/migrate-data-using-dm.md)
-      - [Create a Data Migration Task](/dm/quick-start-create-task.md)
-      - [Best Practices of Data Migration in the Shard Merge Scenario](/dm/shard-merge-best-practices.md)
-    - Troubleshoot
-      - [FAQ](/dm/dm-faq.md)
-      - [Handle Errors](/dm/dm-error-handling.md)
-    - [Release Notes](/dm/dm-release-notes.md)
+      - Example
+        - [Migrate Data Using DM](/dm/migrate-data-using-dm.md)
+        - [Create a Data Migration Task](/dm/quick-start-create-task.md)
+        - [Best Practices of Data Migration in the Shard Merge Scenario](/dm/shard-merge-best-practices.md)
+      - Troubleshoot
+        - [FAQ](/dm/dm-faq.md)
+        - [Handle Errors](/dm/dm-error-handling.md)
+      - [Release Notes](/dm/dm-release-notes.md)
+  - TiDB Lightning
+    - [Overview](/tidb-lightning/tidb-lightning-overview.md)
+    - [Get Started](/get-started-with-tidb-lightning.md)
+    - [Deploy TiDB Lightning](/tidb-lightning/deploy-tidb-lightning.md)
+    - [Target Database Requirements](/tidb-lightning/tidb-lightning-requirements.md)
+    - Data Sources
+      - [Data Match Rules](/tidb-lightning/tidb-lightning-data-source.md)
+      - [CSV](/tidb-lightning/tidb-lightning-data-source.md#csv)
+      - [SQL](/tidb-lightning/tidb-lightning-data-source.md#sql)
+      - [Parquet](/tidb-lightning/tidb-lightning-data-source.md#parquet)
+      - [Customized File](/tidb-lightning/tidb-lightning-data-source.md#match-customized-files)
+    - Physical Import Mode
+      - [Requirements and Limitations](/tidb-lightning/tidb-lightning-physical-import-mode.md)
+      - [Use Physical Import Mode](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md)
+    - Logical Import Mode
+      - [Requirements and Limitations](/tidb-lightning/tidb-lightning-logical-import-mode.md)
+      - [Use Logical Import Mode](/tidb-lightning/tidb-lightning-logical-import-mode-usage.md)
+    - [Prechecks](/tidb-lightning/tidb-lightning-prechecks.md)
+    - [Table Filter](/table-filter.md)
+    - [Checkpoints](/tidb-lightning/tidb-lightning-checkpoints.md)
+    - [Import Data in Parallel](/tidb-lightning/tidb-lightning-distributed-import.md)
+    - [Error Resolution](/tidb-lightning/tidb-lightning-error-resolution.md)
+    - [Troubleshooting](/tidb-lightning/troubleshoot-tidb-lightning.md)
+    - Reference
+      - [Configuration File](/tidb-lightning/tidb-lightning-configuration.md)
+      - [Command Line Flags](/tidb-lightning/tidb-lightning-command-line-full.md)
+      - [Monitoring](/tidb-lightning/monitor-tidb-lightning.md)
+      - [Web Interface](/tidb-lightning/tidb-lightning-web-interface.md)
+      - [FAQ](/tidb-lightning/tidb-lightning-faq.md)
+      - [Glossary](/tidb-lightning/tidb-lightning-glossary.md)
+  - [Dumpling](/dumpling-overview.md)
   - TiCDC
     - [Overview](/ticdc/ticdc-overview.md)
     - [Deploy and Maintain](/ticdc/deploy-ticdc.md)
@@ -567,14 +562,19 @@
       - [Troubleshoot](/tidb-binlog/troubleshoot-tidb-binlog.md)
       - [Handle Errors](/tidb-binlog/handle-tidb-binlog-errors.md)
     - [FAQ](/tidb-binlog/tidb-binlog-faq.md)
+  - PingCAP Clinic Diagnostic Service
+    - [Overview](/clinic/clinic-introduction.md)
+    - [Quick Start](/clinic/quick-start-with-clinic.md)
+    - [Troubleshoot Clusters Using PingCAP Clinic](/clinic/clinic-user-guide-for-tiup.md)
+    - [PingCAP Clinic Diagnostic Data](/clinic/clinic-data-instruction-for-tiup.md)
+  - TiSpark
+    - [User Guide](/tispark-overview.md)
   - sync-diff-inspector
     - [Overview](/sync-diff-inspector/sync-diff-inspector-overview.md)
     - [Data Check for Tables with Different Schema/Table Names](/sync-diff-inspector/route-diff.md)
     - [Data Check in the Sharding Scenario](/sync-diff-inspector/shard-diff.md)
     - [Data Check for TiDB Upstream/Downstream Clusters](/sync-diff-inspector/upstream-downstream-diff.md)
     - [Data Check in the DM Replication Scenario](/sync-diff-inspector/dm-diff.md)
-  - TiSpark
-    - [User Guide](/tispark-overview.md)
 - Reference
   - Cluster Architecture
     - [Overview](/tidb-architecture.md)
