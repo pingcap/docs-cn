@@ -261,28 +261,6 @@ TiCDC 需要磁盘是为了缓冲上游写入高峰时下游消费不及时堆�
 ## 为什么恢复暂停的 changefeed 后，changefeed 同步延迟越来越高，数分钟后才恢复正常？
 
 当 changefeed 启动时，为了补齐 changefeed 暂停期间产生的增量数据日志，TiCDC 需要扫描 TiKV 中数据的历史版本，待扫描完毕后，才能够继续推进复制过程，扫描过程可能长达数分钟到数十分钟。
-<<<<<<< HEAD
-=======
-
-## 在两个异地 TiDB 集群之间同步数据，如何部署 TiCDC？
-
-建议将 TiCDC 部署在下游 TiDB 集群。这是因为，如果上下游网络延迟较大，例如超过 100 ms 时，由于 MySQL 传输协议的原因，TiCDC 向下游执行 SQL 的延迟会急剧增加，导致系统的吞吐下降。部署在下游能够极大缓解该问题。
-
-## 如何理解 DML 和 DDL 语句之间的执行顺序？
-
-按照 DML -> DDL -> DML 的顺序执行。在数据同步过程中，为了确保 DML 事件在下游执行时有对应正确的表结构，需要协调 DDL 和 DML 的执行顺序。目前 TiCDC 采用了简洁的方式处理该问题，会将 DDL ts 之前的 DML 都同步到下游之后，再同步 DDL。
-
-## 如何对比上下游数据的一致性？
-
-如果下游是 TiDB 集群或者 MySQL，我们推荐使用 [sync diff inspector](/sync-diff-inspector/sync-diff-inspector-overview.md) 工具进行数据对比。
-
-## 单表数据同步只能在一个 TiCDC 节点上运行，TiCDC 是否考虑使用多个节点同步多表数据？
-
-目前正在开发中，未来 TiCDC 会支持按照 TiKV Region 粒度来同步数据变更日志，实现处理能力上的可扩展性。
-
-## 上游有运行时间比较长的未提交事务，TiCDC 同步是否会被卡住？
-
-TiDB 有事务超时的机制，当事务运行超过 [`max-txn-ttl`](/tidb-configuration-file.md#max-txn-ttl) 后，会被 TiDB 强制回滚。TiCDC 遇到未提交的事务，会等待其提交后再继续同步其数据，因此会出现同步延迟。
 
 ## TiCDC 在开启 Old Value 功能后更新事件格式有何变化？
 
@@ -349,4 +327,3 @@ UPDATE t SET a="3" WHERE a="2";
 ### 对于非有效索引列的更新事件和有效索引列的更新事件同时包含新值和旧值时，Cloud Storage Sink 的 CSV 格式无法正确输出旧值
 
 因为 CSV 文件的列数是固定的，当一个事件既有新值也有旧值时，无法正确输出旧值。如果需要输出旧值，建议使用 Canal-JSON 格式。
->>>>>>> bdf4920c99 (ticdc: add docs for old value behavior (#13623))
