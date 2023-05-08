@@ -1554,7 +1554,7 @@ MPP is a distributed computing framework provided by the TiFlash engine, which a
 ### tidb_enable_gogc_tuner <span class="version-mark">New in v6.4.0</span>
 
 - Scope: GLOBAL
-- Persists to cluster: No, only applicable to the current TiDB instance that you are connecting to.
+- Persists to cluster: Yes
 - Type: Boolean
 - Default value: `ON`
 - This variable controls whether to enable GOGC Tuner.
@@ -2354,7 +2354,7 @@ For a system upgraded to v5.0 from an earlier version, if you have not modified 
 ### tidb_gogc_tuner_threshold <span class="version-mark">New in v6.4.0</span>
 
 - Scope: GLOBAL
-- Persists to cluster:  No, only applicable to the current TiDB instance that you are connecting to.
+- Persists to cluster: Yes
 - Default value: `0.6`
 - Range: `[0, 0.9)`
 - This variable specifies the maximum memory threshold for tuning GOGC. When the memory exceeds this threshold, GOGC Tuner stops working.
