@@ -263,7 +263,7 @@ TiDB 版本：7.1.0 (upcoming)
     - 支持在 Semi Join 或 Anti Semi Join 中，通过选择较小的表作为 Build 端来优化查询性能 [#7280](https://github.com/pingcap/tiflash/issues/7280) @[yibin87](https://github.com/yibin87)
 
 + TiCDC
-    - TiCDC 过滤了由有损 DDL 语句引起的数据变更，避免发送无效数据变更 [#43227](https://github.com/pingcap/tidb/issues/43227) @[hi-rustin](https://github.com/hi-rustin)
+    - TiCDC 过滤了由有损 DDL 语句导致的数据变更，避免发送无效数据变更 [#43227](https://github.com/pingcap/tidb/issues/43227) @[hi-rustin](https://github.com/hi-rustin)
 
 ## 贡献者
 
