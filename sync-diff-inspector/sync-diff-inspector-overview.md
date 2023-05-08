@@ -246,13 +246,12 @@ The running sync-diff-inspector periodically (every 10 seconds) prints the progr
 After the check is finished, sync-diff-inspector outputs a report. It is located at `${output}/summary.txt`, and `${output}` is the value of `output-dir` in the `config.toml` file.
 
 ```summary
-+---------------------+---------+--------------------+----------------+---------+-----------+
-|        TABLE        | RESULT  | STRUCTURE EQUALITY | DATA DIFF ROWS | UPCOUNT | DOWNCOUNT |
-+---------------------+---------+--------------------+----------------+---------+-----------+
-| `sbtest`.`sbtest99` | succeed | true               | +97/-97        |  999999 |    999999 |
-| `sbtest`.`sbtest96` | succeed | true               | +0/-101        |  999999 |   1000100 |
-| `sbtest`.`sbtest97` | skipped | false              | +999999/-0     |  999999 |         0 |
-+---------------------+---------+--------------------+----------------+---------+-----------+
++---------------------+--------------------+----------------+---------+-----------+
+|        TABLE        | STRUCTURE EQUALITY | DATA DIFF ROWS | UPCOUNT | DOWNCOUNT |
++---------------------+--------------------+----------------+---------+-----------+
+| `sbtest`.`sbtest99` | true               | +97/-97        |  999999 |    999999 |
+| `sbtest`.`sbtest96` | true               | +0/-101        |  999999 |   1000100 |
++---------------------+--------------------+----------------+---------+-----------+
 Time Cost: 16.75370462s
 Average Speed: 113.277149MB/s
 ```
