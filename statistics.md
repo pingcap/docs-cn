@@ -58,7 +58,7 @@ Version 2 的统计信息避免了 Version 1 中因为哈希冲突导致的在�
 
 ``` sql
 select 
-	distinct(concat('ANALYZE ',table_schema, '.', table_name,';')) 
+	distinct(concat('ANALYZE TABLE ', table_schema, '.', table_name,';')) 
 from 
 	information_schema.tables, mysql.stats_histograms
 where 
