@@ -63,7 +63,7 @@ SELECT /*+ HASH_JOIN(@sel_1 t1@sel_1, t3) */ * FROM (SELECT t1.a, t1.b FROM t t1
 
 ## Hint 中的表名
 
-在使用诸如 [MERGE_JOIN](#MERGE_JOIN(t1_name-[,-tl_name-...])) 的 Hint 时，需要在 Hint 中提供表名。为了确保语法解析时对表名的处理逻辑与 MySQL 的处理逻辑相同，在使用 Hint 中使用表名时，需要注意，如果表有别名，必须使用它的别名才可以生效。如果这个表不在当前通过 `USE DATABASE` 命令所指定的数据库中，那么需要使用`数据库名.别名` 的方式指定这个表。参考以下示例。
+在使用诸如 [MERGE_JOIN](#MERGE_JOIN(t1_name-[,-tl_name-...])) 的 Hint 时，需要在 Hint 中提供表名。为了确保语法解析时对表名的处理逻辑与 MySQL 的处理逻辑相同，在使用 Hint 中使用表名时，需要注意，如果表有别名，必须使用它的别名才可以生效。如果这个表不在当前通过 `USE DATABASE` 命令所指定的数据库中，那么需要使用 `table_name.alias` 的方式指定这个表。参考以下示例。
 
 
 ```sql
