@@ -330,7 +330,8 @@ ANALYZE INCREMENTAL TABLE TableName PARTITION PartitionNameList INDEX [IndexName
 
 在 TiDB v5.0 之前，执行查询语句时，TiDB 会以 [`feedback-probability`](/tidb-configuration-file.md#feedback-probability) 的概率收集反馈信息，并将其用于更新直方图和 Count-Min Sketch。**从 v5.0 起，该功能默认关闭，暂不建议开启此功能。**
 
-#### 是否开启自动更新
+#### 开启或关闭自动更新
+
 如果发现自动更新统计信息消耗过多的资源，影响在线业务，可以通过 [`run-auto-analyze`](/tidb-configuration-file.md#run-auto-analyze) 参数关闭自动更新。
 
 从 TiDB v6.0 起，TiDB 支持通过 `KILL` 语句终止正在后台运行的 `ANALYZE` 任务。如果发现正在后台运行的 `ANALYZE` 任务消耗大量资源影响业务，你可以通过以下步骤终止该 `ANALYZE` 任务：
