@@ -202,6 +202,19 @@ TiCDC 对大事务（大小超过 5 GB）提供部分支持，根据场景不同
 4. 建立一个新的 changefeed，从 `BackupTS` 开始同步任务。
 5. 删除旧的 changefeed。
 
+## TiCDC 是否会将有损 DDL 产生的数据变更同步到下游？
+
+有损 DDL 是指在 TiDB 中执行可能会导致数据改变的 DDL。一些常见的有损 DDL 操作包括：
+
+- 修改列的类型，例如：INT -> VARCHAR
+- 修改列的长度，例如：VARCHAR(20) -> VARCHAR(10)
+- 修改列的精度，例如：DECIMAL(10, 3) -> DECIMAL(10, 2)
+- 修改列的符号（有符号数/无符号数），例如：INT UNSIGNED -> INT SIGNED
+
+在 TiDB v7.1.0 之前，TiCDC 会将一条新旧数据相同的 DML 事件同步到下游。当下游是 MySQL 时，这些 DML 事件不会产生任何数据变更，只有下游接收并执行该 DDL 语句后，数据才会发生变更。但是当下游是 Kafka 或者云存储时，TiCDC 会写入一条无用的数据到下游。
+
+从 TiDB v7.1.0 开始，TiCDC 会过滤掉这些无用的 DML 事件，不再将它们同步到下游。
+
 ## 同步 DDL 到下游 MySQL 5.7 时为什么时间类型字段默认值不一致？
 
 比如上游 TiDB 的建表语句为 `create table test (id int primary key, ts timestamp)`，TiCDC 同步该语句到下游 MySQL 5.7，MySQL 使用默认配置，同步得到的表结构如下所示，timestamp 字段默认值会变成 `CURRENT_TIMESTAMP`：
