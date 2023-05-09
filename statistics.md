@@ -344,6 +344,12 @@ ANALYZE INCREMENTAL TABLE TableName PARTITION PartitionNameList INDEX [IndexName
 
 为了避免小表因为少量数据修改而频繁触发自动更新，当表的行数小于 1000 时，TiDB 不会触发对此表的自动更新。你可以通过 `SHOW STATS_META` 来查看表的行数情况。
 
+#### 关闭自动更新
+
+如果发现自动更新统计信息消耗过多的资源，影响在线业务，可以通过 [`run-auto-analyze`](/tidb-configuration-file.md#run-auto-analyze) 参数关闭自动更新。
+
+#### 终止后台 `ANALYZE` 任务
+
 从 TiDB v6.0 起，TiDB 支持通过 `KILL` 语句终止正在后台运行的 `ANALYZE` 任务。如果发现正在后台运行的 `ANALYZE` 任务消耗大量资源影响业务，你可以通过以下步骤终止该 `ANALYZE` 任务：
 
 1. 执行以下 SQL 语句：
