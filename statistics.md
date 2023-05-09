@@ -346,9 +346,9 @@ ANALYZE INCREMENTAL TABLE TableName PARTITION PartitionNameList INDEX [IndexName
 
 #### 关闭自动更新
 
-如果发现自动更新统计信息消耗过多的资源，影响在线业务，可以通过 [`run-auto-analyze`](/tidb-configuration-file.md#run-auto-analyze) 参数关闭自动更新。
+如果发现自动更新统计信息消耗过多的资源，影响在线业务，可以通过 [`tidb_enable_auto_analyze`](/system-variables.md#tidb_enable_auto_analyze-从-v610-版本开始引入) 参数关闭自动更新。
 
-#### 终止后台 `ANALYZE` 任务
+#### 终止后台的 `ANALYZE` 任务
 
 从 TiDB v6.0 起，TiDB 支持通过 `KILL` 语句终止正在后台运行的 `ANALYZE` 任务。如果发现正在后台运行的 `ANALYZE` 任务消耗大量资源影响业务，你可以通过以下步骤终止该 `ANALYZE` 任务：
 
