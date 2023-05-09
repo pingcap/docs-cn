@@ -25,8 +25,6 @@ Version 2 的统计信息避免了 Version 1 中因为哈希冲突导致的在�
 | 列的平均长度 | √ | √ |
 | 索引的平均长度 | √ | √ |
 
-**解决 OOM 问题**
-
 当 `tidb_analyze_version = 2` 时，如果执行 ANALYZE 语句后发生 OOM，需要设置全局变量 `tidb_analyze_version = 1`，然后根据情况进行以下操作：
 
 - 如果 ANALYZE 语句是手动执行的，你需要手动 ANALYZE 每张需要的表：
@@ -47,22 +45,6 @@ Version 2 的统计信息避免了 Version 1 中因为哈希冲突导致的在�
    SELECT DISTINCT... INTO outfile '/tmp/sql.txt';
    mysql -h XXX -u user -P 4000 ... < '/tmp/sql.txt';
    ```
-
-**回退到 Version 1**
-
-在 v5.3.0 之前，Version 2 在优化了读取存储的同时，在没有改变采样算法的情况下扩大了最终的采样集的大小。因此提升 TiDB 的资源开销。如果使用过程中发生了内存 OOM，可以通过如下的方式回退为 Version 1 的统计信息：
-
-- 如果 ANALYZE 语句是手动执行的，请手动 ANALYZE 每张需要的表。可以通过如下的 SQL 获得对应的 ANALYZE 语句。
-
-    ``` sql
-    SELECT DISTINCT(CONCAT('ANALYZE TABLE ', table_schema, '.', table_name,';')) FROM information_schema.tables, mysql.stats_histograms WHERE stats_ver = 2 and table_id = tidb_table_id;
-    ```
-
-- 如果 ANALYZE 语句是开启了自动 ANALYZE 之后由 TIDB 自动执行的，可以通过如下的 SQL 生成对应的 DROP STATS 语句并执行，等待自动 ANALYZE 自动收集。
-
-    ```sql
-    SELECT DISTINCT(CONCAT('DROP STATS ',table_schema, '.', table_name,';')) FROM information_schema.tables, mysql.stats_histograms WHERE stats_ver = 2 and table_id = tidb_table_id;
-    ```
 
 本文接下来将简单介绍其中出现的直方图和 Count-Min Sketch 以及 Top-N 这些数据结构，以及详细介绍统计信息的收集和维护。
 
