@@ -58,7 +58,7 @@ Version 2 的统计信息避免了 Version 1 中因为哈希冲突导致的在�
     SELECT DISTINCT(CONCAT('ANALYZE TABLE ', table_schema, '.', table_name,';')) FROM information_schema.tables, mysql.stats_histograms WHERE stats_ver = 2 and table_id = tidb_table_id;
     ```
 
-- 如果 ANALYZE 语句是开启了自动 ANALYZE 之后由 TIDB 自动执行的，可以通过如下的 SQL 生成对应的 DROP STATS 语句并执行，等待自动ANALYZE 自动收集。
+- 如果 ANALYZE 语句是开启了自动 ANALYZE 之后由 TIDB 自动执行的，可以通过如下的 SQL 生成对应的 DROP STATS 语句并执行，等待自动 ANALYZE 自动收集。
 
     ```sql
     SELECT DISTINCT(CONCAT('DROP STATS ',table_schema, '.', table_name,';')) FROM information_schema.tables, mysql.stats_histograms WHERE stats_ver = 2 and table_id = tidb_table_id;
