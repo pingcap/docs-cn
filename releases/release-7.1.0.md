@@ -5,11 +5,11 @@ summary: 了解 TiDB 7.1.0 版本的新功能、兼容性变更、改进提升�
 
 # TiDB 7.1.0 Release Notes
 
-TiDB 版本：7.1.0 (upcoming)
+发版日期：xxxx 年 xx 月 xx 日
 
-> **注意：**
->
-> TiDB v7.1.0 尚未正式发布。此 Release Notes 旨在帮助你提前了解即将发布的版本，但其中内容可能会有所调整。本文列出的功能并不保证会包含在最终发布的版本中。
+TiDB 版本：7.1.0 (LTS)
+
+试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v7.1/quick-start-with-tidb) | [生产部署](https://docs.pingcap.com/zh/tidb/v7.1/production-deployment-using-tiup) | [下载离线包](https://cn.pingcap.com/product-community/?version=v7.1.0#version-list)
 
 在 7.1.0 版本中，你可以获得以下关键特性：
 
@@ -52,6 +52,12 @@ TiDB 版本：7.1.0 (upcoming)
 
 ### 性能
 
+* 下一代 [`Partitioned Raft KV`](/partitioned-raft-kv.md) 存储引擎  [#issue号](链接) @[busyjay](https://github.com/busyjay) @[tonyxuqqi](https://github.com/tonyxuqqi) @[tabokie](https://github.com/tabokie) @[bufferflies](https://github.com/bufferflies) @[5kbpers](https://github.com/5kbpers) @[SpadeA-Tang](https://github.com/SpadeA-Tang) @[nolouch](https://github.com/nolouch) **tw:Oreoxmt**
+
+    TiDB v7.1.0 的 [`Partitioned Raft KV`](/partitioned-raft-kv.md)  存储引擎使用多个 RocksDB 实例存储 TiKV 的 Region 数据，为每个 Region 提供独立的 RocksDB 实例。该引擎能够更好地管理 RocksDB 实例的文件数和层级，实现 Region 间的数据操作物理隔离，并支持更多数据的平滑扩展。与原 TiKV 存储引擎相比，使用该引擎在相同硬件条件和读写混合场景下，可实现约 2 倍的写入吞吐、3 倍的读取吞吐，并缩短约 4/5 的弹性伸缩时间。该引擎与 TiFlash 引擎兼容，支持 Lightning / BR / TiCDC 等周边工具。该引擎目前仅支持在新集群中使用，暂不支持从原 TiKV 存储引擎直接升级到该引擎。
+
+    更多信息，请参考[用户文档](/partitioned-raft-kv.md)。
+
 * TiFlash 查询支持延迟物化功能 (GA) [#5829](https://github.com/pingcap/tiflash/issues/5829) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
 
     在 v7.0.0 中，TiFlash 引入了延迟物化实验特性，用于优化查询性能。该特性默认关闭（系统变量 [`tidb_opt_enable_late_materialization`](/system-variables.md#tidb_opt_enable_late_materialization-从-v700-版本开始引入) 默认为 `OFF`）。当 `SELECT` 语句中包含过滤条件（`WHERE` 子句）时，TiFlash 默认会先读取该查询所需列的全部数据，然后再根据查询条件对数据进行过滤、聚合等计算任务。开启该特性后，TiFlash 支持下推部分过滤条件到 TableScan 算子，即先扫描过滤条件相关的列数据，过滤得到符合条件的行后，再扫描这些行的其他列数据，继续后续计算，从而减少 IO 扫描和数据处理的计算量。
@@ -84,6 +90,16 @@ TiDB 版本：7.1.0 (upcoming)
 
     更多信息，请参考[用户文档](/sql-non-prepared-plan-cache.md)。
 
+* DDL 支持分布式并行执行框架 [#41495](https://github.com/pingcap/tidb/issues/41495) @[benjamin2037](https://github.com/benjamin2037) **tw:ran-huang**
+
+    TiDB v7.1.0 之前的版本中，只有一个 TiDB 节点能够担任 DDL Owner 并执行 DDL 任务。但是，从 TiDB v7.1.0 开始，新的分布式并行执行框架支持多个 TiDB 节点并行执行同一个 DDL 任务，从而更好地利用 TiDB 集群的资源，大幅提升 DDL 的性能。此外，用户还可以通过增加 TiDB 节点来线性提升 DDL 的性能。需要注意的是，该特性是实验性特性，仅支持 `ADD INDEX` 操作。如果要使用分布式框架，只需将 [`tidb_enable_dist_task`](/system-variables.md#tidb_enable_dist_task) 为 `ON`
+
+    ```sql
+    SET GLOBAL tidb_enable_dist_task = ON;
+    ```
+
+    更多信息，请参考[用户文档](/tidb-distributed-execution-framework.md)。
+
 ### 稳定性
 
 * 资源管控成为正式功能 (GA) [#38825](https://github.com/pingcap/tidb/issues/38825) @[nolouch](https://github.com/nolouch) @[BornChanger](https://github.com/BornChanger) @[glorv](https://github.com/glorv) @[tiancaiamao](https://github.com/tiancaiamao) @[Connor1996](https://github.com/Connor1996) @[JmPotato](https://github.com/JmPotato) @[hnes](https://github.com/hnes) @[CabinfeverB](https://github.com/CabinfeverB) @[HuSharp](https://github.com/HuSharp)
@@ -115,6 +131,12 @@ TiDB 版本：7.1.0 (upcoming)
     开启统计信息同步加载后，TiDB 可以大幅减少启动时必须载入的统计信息的数量，从而提升启动过程中统计信息的加载速度。该特性提升了 TiDB 在复杂运行环境下的稳定性，并降低了部分 TiDB 节点重启对整体服务的影响。
 
     更多信息，请参考[用户文档](/statistics.md#统计信息的加载)。
+
+* TiCDC 支持单行数据正确性校验功能 [#8718](https://github.com/pingcap/tiflow/issues/8718) [#42747](https://github.com/pingcap/tidb/issues/42747) @[3AceShowHand](https://github.com/3AceShowHand) @[zyguan](https://github.com/zyguan) **tw:Oreoxmt**
+
+    从 v7.1.0 开始，TiCDC 引入了单行数据正确性校验功能，该功能基于 Checksum 算法对单行数据的正确性进行校验。该功能可以校验一行数据从 TiDB 写入、通过 TiCDC 同步，到写入 Kafka 集群的过程中是否出现错误。TiCDC 数据正确性校验功能仅支持下游是 Kafka 的 Changefeed，目前支持 Avro 协议。
+
+    更多信息，请参考[用户文档](/ticdc/ticdc-integrity-check.md)。
 
 ### SQL 功能
 
@@ -194,6 +216,12 @@ TiDB 版本：7.1.0 (upcoming)
     ```
 
     更多信息，请参考[用户文档](/ddl-introduction.md#ddl-相关的命令介绍)。
+
+* 支持无需取消 DDL 的平滑集群升级功能 [#issue号](链接) @[zimulala](https://github.com/zimulala) @[hawkingrei](https://github.com/hawkingrei) **tw:ran-huang**
+
+    在 TiDB v7.1.0 之前的版本中，升级集群时需要先手动取消正在运行或排队的 DDL 任务，并在升级完成后再手动添加这些任务。
+
+    为了让用户享受更加平滑的升级体验，TiDB v7.1.0 引入了自动暂停和恢复 DDL 任务的功能。从 v7.1.0 开始，用户无需手动取消 DDL 任务即可升级集群。系统会自动暂停正在执行或排队的 DDL 任务，等待整个集群完成滚动升级后再自动恢复这些任务，让用户可以更加轻松地升级 TiDB 集群。
 
 ### 可观测性
 
