@@ -24,7 +24,7 @@ Version 2 的统计信息避免了 Version 1 中因为哈希冲突导致的在�
 | 列的平均长度 | √ | √ |
 | 索引的平均长度 | √ | √ |
 
-当 `tidb_analyze_version = 2` 时，如果执行 ANALYZE 语句后发生 OOM，需要设置全局变量 `tidb_analyze_version = 1`，然后根据情况进行以下操作：
+当 `tidb_analyze_version = 2` 时，如果执行 ANALYZE 语句后发生 OOM，需要设置全局变量 `tidb_analyze_version = 1`，回退到 Version 1，然后根据情况进行以下操作：
 
 - 如果 ANALYZE 语句是手动执行的，你需要手动 ANALYZE 每张需要的表：
 
