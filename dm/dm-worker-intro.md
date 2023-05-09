@@ -80,6 +80,7 @@ Execute the following `GRANT` statement for the databases or tables that you nee
 
 ```sql
 GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP,ALTER,INDEX ON db.table TO 'your_user'@'your_wildcard_of_host';
+GRANT ALL ON dm_meta.* TO 'your_user'@'your_wildcard_of_host';
 ```
 
 ### Minimal privilege required by each processing unit
