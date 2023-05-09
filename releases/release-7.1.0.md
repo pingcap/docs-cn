@@ -92,7 +92,9 @@ TiDB 版本：7.1.0 (LTS)
 
 * DDL 支持分布式并行执行框架 [#41495](https://github.com/pingcap/tidb/issues/41495) @[benjamin2037](https://github.com/benjamin2037) **tw:ran-huang**
 
-    TiDB v7.1.0 之前的版本中，只有一个 TiDB 节点能够担任 DDL Owner 并执行 DDL 任务。但是，从 TiDB v7.1.0 开始，新的分布式并行执行框架支持多个 TiDB 节点并行执行同一个 DDL 任务，从而更好地利用 TiDB 集群的资源，大幅提升 DDL 的性能。此外，用户还可以通过增加 TiDB 节点来线性提升 DDL 的性能。需要注意的是，该特性是实验性特性，仅支持 `ADD INDEX` 操作。如果要使用分布式框架，只需将 [`tidb_enable_dist_task`](/system-variables.md#tidb_enable_dist_task) 为 `ON`
+    TiDB v7.1.0 之前的版本中，只有一个 TiDB 节点能够担任 DDL Owner 并执行 DDL 任务。但是，从 TiDB v7.1.0 开始，新的分布式并行执行框架支持多个 TiDB 节点并行执行同一项 DDL 任务，从而更好地利用 TiDB 集群的资源，大幅提升 DDL 的性能。此外，你还可以通过增加 TiDB 节点来线性提升 DDL 的性能。需要注意的是，该特性是实验性特性，仅支持 `ADD INDEX` 操作。
+
+        如果要使用分布式并行执行框架，只需将 [`tidb_enable_dist_task`](/system-variables.md#tidb_enable_dist_task) 的值设置为 `ON`：
 
     ```sql
     SET GLOBAL tidb_enable_dist_task = ON;
