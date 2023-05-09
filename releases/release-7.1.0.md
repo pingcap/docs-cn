@@ -138,6 +138,12 @@ TiDB 版本：7.1.0 (LTS)
 
     更多信息，请参考[用户文档](/ticdc/ticdc-integrity-check.md)。
 
+* TiCDC 优化 DDL 同步操作 [#8686](https://github.com/pingcap/tiflow/issues/8686) @[hi-rustin](https://github.com/hi-rustin) **tw:ran-huang**
+
+    在 v7.1.0 之前，当用户在一个大表上进行 DDL 操作时，如果 DDL 操作影响该表中的所有行（例如添加或删除列），TiCDC 的同步延迟会显著增加。从 v7.1.0 开始，TiCDC 对此进行了优化，减轻 DDL 操作对下游延迟的影响。
+
+    更多信息，请参考[用户文档](/ticdc/ticdc-faq.md#ticdc-是否会将有损-ddl-产生的数据变更同步到下游)。
+
 ### SQL 功能
 
 * 支持通过 `INSERT INTO SELECT` 语句保存 TiFlash 查询结果 (GA) [#37515](https://github.com/pingcap/tidb/issues/37515) @[gengliqi](https://github.com/gengliqi)
