@@ -5,7 +5,7 @@ summary: 使用 Dumpling 从 TiDB 导出数据。
 
 # 使用 Dumpling 导出数据
 
-使用数据导出工具 [Dumpling](https://github.com/pingcap/dumpling)，你可以把存储在 TiDB 或 MySQL 中的数据导出为 SQL 或 CSV 格式，用于逻辑全量备份。Dumpling 也支持将数据导出到 Amazon S3 中。
+使用数据导出工具 [Dumpling](https://github.com/pingcap/tidb/tree/master/dumpling)，你可以把存储在 TiDB 或 MySQL 中的数据导出为 SQL 或 CSV 格式，用于逻辑全量备份。Dumpling 也支持将数据导出到 Amazon S3 中。
 
 要快速了解 Dumpling 的基本功能，建议先观看下面的培训视频（时长 28 分钟）。注意本视频只作为功能介绍、学习参考，具体操作步骤和最新功能，请以文档内容为准。
 
@@ -37,9 +37,18 @@ TiDB 还提供了其他工具，你可以根据需要选择使用：
 - 支持导出到 Amazon S3 云盘。
 - 针对 TiDB 进行了更多优化：
     - 支持配置 TiDB 单条 SQL 内存限制。
-    - 针对 TiDB v4.0.0 及更新版本支持自动调整 TiDB GC 时间。
+    - 针对 TiDB v4.0.0 及更新版本，如果 Dumpling 能够直接连接到 PD，则支持自动调整 TiDB GC 时间。
     - 使用 TiDB 的隐藏列 `_tidb_rowid` 优化了单表内数据的并发导出性能。
     - 对于 TiDB 可以设置 [tidb_snapshot](/read-historical-data.md#操作流程) 的值指定备份数据的时间点，从而保证备份的一致性，而不是通过 `FLUSH TABLES WITH READ LOCK` 来保证备份一致性。
+
+> **注意：**
+>
+> 在以下情况下，Dumpling 无法连接到 PD：
+>
+> - TiDB 集群正在 Kubernetes 上运行（Dumpling 本身在 Kubernetes 环境中运行时除外）。
+> - TiDB 集群正在 TiDB Cloud 上运行。
+>
+> 在这种情况下，你需要手动[调整 TiDB GC 时间](#manually-set-the-tidb-gc-time)，以避免导出失败。
 
 ## 从 TiDB/MySQL 导出数据
 
@@ -290,21 +299,24 @@ Dumpling 导出 TiDB 较大单表（超过 1 TB）时，可能会因为导出数
 + 调小 `--tidb-mem-quota-query` 参数到 `8589934592` (8GB) 或更小。可控制 TiDB 单条查询语句的内存使用。
 + 调整 `--params "tidb_distsql_scan_concurrency=5"` 参数，即设置导出时的 session 变量 [`tidb_distsql_scan_concurrency`](/system-variables.md#tidb_distsql_scan_concurrency) 从而减少 TiDB scan 操作的并发度。
 
-### 导出大规模数据时的 TiDB GC 设置
+### 手动设置 TiDB GC 时间
 
 如果导出的 TiDB 版本为 v4.0.0 或更新版本，并且 Dumpling 可以访问 TiDB 集群的 PD 地址，Dumpling 会自动配置延长 GC 时间且不会对原集群造成影响。
 
-其他情况下，假如导出的数据量非常大，可以提前调长 GC 时间，以避免因为导出过程中发生 GC 导致导出失败：
+但是，在以下场景中，Dumpling 无法自动调整 GC 时间：
 
-{{< copyable "sql" >}}
+- 数据量非常大（超过 1 TB）。
+- Dumpling 无法直接连接到 PD，例如 TiDB 集群运行在 TiDB Cloud 上，或者 TiDB 集群运行在 Kubernetes 上且与 Dumpling 分离。
+
+在这些场景中，你必须提前手动调长 GC 时间，以避免因为导出过程中发生 GC 导致导出失败。
+
+使用以下 SQL 语句手动调整 GC 时间：
 
 ```sql
 SET GLOBAL tidb_gc_life_time = '720h';
 ```
 
-操作结束之后，再恢复 GC 时间为默认值 `10m`：
-
-{{< copyable "sql" >}}
+在 Dumpling 退出后，无论导出是否成功，都必须将 GC 时间恢复为其原始值（默认值为 `10m`）。
 
 ```sql
 SET GLOBAL tidb_gc_life_time = '10m';
