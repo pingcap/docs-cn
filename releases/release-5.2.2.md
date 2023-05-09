@@ -72,10 +72,10 @@ TiDB 版本：5.2.2
     - 修复当设置 `NO_UNSIGNED_SUBTRACTION` 时创建分区失败的问题 [#26765](https://github.com/pingcap/tidb/issues/26765)
     - 避免在列修剪和聚合下推中使用有副作用的表达式 [#27106](https://github.com/pingcap/tidb/issues/27106)
     - 删除无用的 gRPC 日志 [#24190](https://github.com/pingcap/tidb/issues/24190)
-    - 限制有效的小数点长度以修复精度相关的问题 [3091](https://github.com/pingcap/tics/issues/3091)
-    - 修复 `plus` 表达式中检查溢出方法出错的问题 [26977](https://github.com/pingcap/tidb/issues/26977)
-    - 修复当导出带有 `new collation` 数据的表的统计信息时报 `data too long` 错误的问题 [27024](https://github.com/pingcap/tidb/issues/27024)
-    - 修复 `TIDB_TRX` 中不包含重试事务的问题 [28670](https://github.com/pingcap/tidb/pull/28670)
+    - 限制有效的小数点长度以修复精度相关的问题 [#3091](https://github.com/pingcap/tics/issues/3091)
+    - 修复 `plus` 表达式中检查溢出方法出错的问题 [#26977](https://github.com/pingcap/tidb/issues/26977)
+    - 修复当导出带有 `new collation` 数据的表的统计信息时报 `data too long` 错误的问题 [#27024](https://github.com/pingcap/tidb/issues/27024)
+    - 修复 `TIDB_TRX` 中不包含重试事务的问题 [#28670](https://github.com/pingcap/tidb/pull/28670)
 
 + TiKV
 

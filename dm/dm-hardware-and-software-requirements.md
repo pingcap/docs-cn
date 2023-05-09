@@ -1,14 +1,14 @@
 ---
-title: DM 集群软硬件环境需求
+title: TiDB Data Migration 集群软硬件环境需求
 summary: 了解部署 DM 集群的软件和硬件要求。
 aliases: ['/docs-cn/tidb-data-migration/dev/hardware-and-software-requirements/']
 ---
 
-# DM 集群软硬件环境需求
+# TiDB Data Migration 集群软硬件环境需求
 
-DM 支持主流的 Linux 操作系统，具体版本要求见下表：
+TiDB Data Migration (DM) 支持主流的 Linux 操作系统，具体版本要求见下表：
 
-| Linux 操作系统平台       | 版本         |
+| Linux 操作系统       | 版本         |
 | :----------------------- | :----------: |
 | Red Hat Enterprise Linux | 7.3 及以上   |
 | CentOS                   | 7.3 及以上   |

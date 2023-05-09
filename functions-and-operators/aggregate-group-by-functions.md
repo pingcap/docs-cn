@@ -64,6 +64,8 @@ TiDB 支持的 MySQL `GROUP BY` 聚合函数如下所示：
     1 row in set (0.00 sec)
     ```
 
+上述聚合函数除 `GROUP_CONCAT()` 和 `APPROX_PERCENTILE()` 以外，均可作为[窗口函数](/functions-and-operators/window-functions.md)使用。
+
 ## GROUP BY 修饰符
 
 TiDB 目前不支持 `GROUP BY` 修饰符，例如 `WITH ROLLUP`，将来会提供支持。详情参阅 [#4250](https://github.com/pingcap/tidb/issues/4250)。
@@ -183,8 +185,6 @@ from tbl_name
 group by id, val;
 ```
 
-## TiDB 不支持的聚合函数
+## 相关系统变量
 
-TiDB 目前不支持的聚合函数如下所示，相关进展参阅 [TiDB #7623](https://github.com/pingcap/tidb/issues/7623)。
-
-- `JSON_ARRAYAGG`
+`group_concat_max_len` 变量设置 `GROUP_CONCAT()` 函数中的最大项目数。

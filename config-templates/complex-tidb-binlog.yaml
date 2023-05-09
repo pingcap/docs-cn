@@ -16,9 +16,9 @@ monitored:
 
 # # Server configs are used to specify the runtime configuration of TiDB components.
 # # All configuration items can be found in TiDB docs:
-# # - TiDB: https://pingcap.com/docs/stable/reference/configuration/tidb-server/configuration-file/
-# # - TiKV: https://pingcap.com/docs/stable/reference/configuration/tikv-server/configuration-file/
-# # - PD: https://pingcap.com/docs/stable/reference/configuration/pd-server/configuration-file/
+# # - TiDB: https://docs.pingcap.com/zh/tidb/stable/tidb-configuration-file
+# # - TiKV: https://docs.pingcap.com/zh/tidb/stable/tikv-configuration-file
+# # - PD: https://docs.pingcap.com/zh/tidb/stable/pd-configuration-file
 # # All configuration items use points to represent the hierarchy, e.g:
 # #   readpool.storage.use-unified-pool
 # #      
@@ -129,7 +129,7 @@ drainer_servers:
       syncer.to.password: ""
       syncer.to.port: 4000
       syncer.to.checkpoint:
-        schema: "tidb-binlog"
+        schema: "tidb_binlog"
         type: "tidb"
         host: "10.0.1.14"
         user: "root"
@@ -149,7 +149,7 @@ drainer_servers:
       - db1
       - db2
       syncer.to.kafka-addrs: "10.0.1.20:9092,10.0.1.21:9092,10.0.1.22:9092"
-      syncer.to.kafka-version: "0.10.0.0"
+      syncer.to.kafka-version: "2.4.0"
       syncer.to.topic-name: "asyouwish"
 
 monitoring_servers:

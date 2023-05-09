@@ -1,9 +1,9 @@
 ---
-title: 数据迁移场景综述
-summary: 总体描述各种数据迁移场景和对应的数据迁移方案。
+title: 数据迁移概述
+summary: 了解各种数据迁移场景和对应的数据迁移方案。
 ---
 
-# 数据迁移场景综述
+# 数据迁移概述
 
 本文档总体介绍可用于 TiDB 的数据迁移方案。数据迁移方案如下：
 
@@ -17,6 +17,8 @@ summary: 总体描述各种数据迁移场景和对应的数据迁移方案。
 - 增量数据迁移：使用 TiDB DM 从 MySQL，MariaDB 或 Aurora 同步 Binlog 到 TiDB，该功能可以极大降低业务迁移过程中停机窗口时间。
 
 - TiDB 集群复制：TiDB 支持备份恢复功能，该功能可以实现将 TiDB 的某个快照初始化到另一个全新的 TiDB 集群。
+
+- TiDB 集群增量数据同步：TiCDC 支持同构数据库之间的灾备场景，能够在灾难发生时保证主备集群数据的最终一致性。目前该场景仅支持 TiDB 作为主备集群。
 
 根据迁移数据所在数据库类型、部署位置、业务数据规模大小、业务需求等因素，会有不同数据迁移选择。下面展示一些常用的数据迁移场景，方便用户依据这些线索选择到最适合自己的数据迁移方案。
 
@@ -50,6 +52,11 @@ summary: 总体描述各种数据迁移场景和对应的数据迁移方案。
 
 - [从 CSV 文件迁移数据到 TiDB](/migrate-from-csv-files-to-tidb.md)
 - [从 SQL 文件迁移数据到 TiDB](/migrate-from-sql-files-to-tidb.md)
+- [从 Parquet 文件迁移数据到 TiDB](/migrate-from-parquet-files-to-tidb.md)
+
+## TiDB 集群增量数据同步
+
+可以使用 TiCDC 进行 TiDB 集群间的增量数据同步。详情请参考 [TiCDC 简介](/ticdc/ticdc-overview.md)。
 
 ## 复杂迁移场景
 

@@ -43,26 +43,7 @@ max-error = 0
 * 原始 CSV、SQL 或者 Parquet 文件中的语法错误，例如未闭合的引号
 * I/O、网络、或系统权限错误
 
-在 Local 后端模式下，唯一键/主键的冲突是单独处理的。相关内容将在接下来的章节进行介绍。
-
-## Local-backend 模式下解决重复问题
-
-Local-backend 模式下，TiDB Lightning 导入数据时先将数据转换成 KV 对数组（KV pairs），然后批量添加到 TiKV 中。与 TiDB-backend 模式不同，TiDB Lightning 在 Local-backend 模式下直到任务结束才会检测重复行。因此，Local-backend 模式下的重复错误不是通过 `max-error` 进行控制，而是通过 `duplicate-resolution` 配置项进行控制的。你可以通过配置该参数的行为，来决定如何处理有冲突的数据。
-
-{{< copyable "" >}}
-
-```toml
-[tikv-importer]
-duplicate-resolution = 'none'
-```
-
-`duplicate-resolution` 有以下三个选项：
-
-* **'none'**：不对重复数据进行检测。如果唯一键或主键冲突确实存在，那么导入的表格里会出现不一致的数据和索引，checksum 检查的时候会失败。
-* **'record'**：检测重复数据，但不会对重复数据进行修复。如果唯一键或主键冲突确实存在，那么导入的表格里会出现不一致的数据和索引，checksum 检查的时候会失败。
-* **'remove'**：检测重复数据，并且删除*全部*重复行。导入的表格会保持一致，但是重复的行会被忽略，只能通过手动方式添加回来。
-
-TiDB Lightning 只能检测数据源的重复项，不能解决运行 TiDB Lightning 之前的存量数据的冲突问题。
+在 Physical Import Mode 下，唯一键/主键的冲突是单独处理的。相关内容将在接下来的章节进行介绍。
 
 ## 错误报告
 
@@ -131,12 +112,12 @@ CREATE TABLE conflict_error_v1 (
 
 **type_error_v1** 记录由 `max-error` 配置项管理的所有[类型错误 (Type error)](#类型错误-type-error)。每个错误一行。
 
-**conflict_error_v1** 记录所有[后端中的唯一键/主键冲突](#local-backend-模式下解决重复问题)。每对冲突有两行。
+**conflict_error_v1** 记录所有后端中的唯一键/主键冲突，每对冲突有两行。
 
 | 列名     | 语法 | 类型 | 冲突 | 说明                                                                                                                         |
 | ------------ | ------ | ---- | ---------- | ----------------------------------------------------------------------------------------------------------------------------------- |
 | task_id      | ✓      | ✓    | ✓        | 生成此错误的 TiDB Lightning 任务 ID                                            |
-| create_table | ✓      | ✓    | ✓        | 记录错误的时间                                                                   |
+| create_time | ✓      | ✓    | ✓        | 记录错误的时间                                                                   |
 | table_name   | ✓      | ✓    | ✓        | 包含错误的表的名称，格式为 ``'`db`.`tbl`'``                                                                |
 | path         | ✓      | ✓    |          | 包含错误文件的路径                                                       |
 | offset       | ✓      | ✓    |          | 文件中发现错误的字节位置                                         |
@@ -196,7 +177,7 @@ CREATE TABLE conflict_error_v1 (
         (54, 'fifty-four'),     -- 与下面的 `'fifty-four'` 冲突
         (77, 'seventy-seven'),  -- 字符串长度超过 12 个字符
         (600, 'six hundred'),   -- 数字超出了 TINYINT 数据类型支持的范围
-        (40, 'fourty'),         -- 与上面的 `40` 冲突
+        (40, 'forty'),         -- 与上面的 `40` 冲突
         (42, 'fifty-four');     -- 与上面的 `'fifty-four'` 冲突
     EOF
     ```

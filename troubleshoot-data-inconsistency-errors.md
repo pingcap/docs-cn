@@ -7,7 +7,7 @@ summary: 了解如何处理数据索引一致性检查的报错。
 
 当执行事务或执行 [`ADMIN CHECK [TABLE|INDEX]`](/sql-statements/sql-statement-admin-check-table-index.md) 命令时，TiDB 会对数据索引的一致性进行检查。如果检查发现 record key-value 和 index key-value 不一致，即存储行数据的键值对和存储其对应索引的键值对之间不一致（例如多索引或缺索引），TiDB 会报数据索引一致性错误，并在日志文件中打印相关错误日志。
 
-本文对数据索引一致性的报错信息进行了说明，并提供了一些绕过检查的方法。遇到报错时，请联系 PingCAP 技术支持进行修复或排查。
+本文对数据索引一致性的报错信息进行了说明，并提供了一些绕过检查的方法。遇到报错时，你可以前往 [AskTUG 论坛](https://asktug.com/)，与社区用户交流；如果是订阅用户，请联系 [PingCAP 服务与支持](https://cn.pingcap.com/support/)。
 
 ## 错误样例解读
 
@@ -27,7 +27,7 @@ summary: 了解如何处理数据索引一致性检查的报错。
 
 `ERROR 8138 (HY000): writing inconsistent data in table: t, expected-values:{KindString green} != record-values:{KindString GREEN}`
 
-上述错误表明，事务试图写入的行值有误。即将写入的数据中，编码后的行数据与编码前的原始数据不符，编解码过程存在问题。
+上述错误表明，事务试图写入的行值有误。即将写入的数据中，编码后的行数据与编码前的原始数据不符。
 
 #### Error 8139
 
@@ -55,29 +55,27 @@ summary: 了解如何处理数据索引一致性检查的报错。
 
 `ERROR 8003 (HY000): table count 3 != index(idx) count 2`
 
-上述错误表明，在 `ADMIN CHECK` 语句所执行的表上有 3 个行键值对，但只有 2 个索引键值对。
+上述错误表明，在 [`ADMIN CHECK`](/sql-statements/sql-statement-admin-check-table-index.md) 语句所执行的表上有 3 个行键值对，但只有 2 个索引键值对。
 
 #### Error 8134
 
 `ERROR 8134 (HY000): data inconsistency in table: t, index: c2, col: c2, handle: "2", index-values:"KindInt64 13" != record-values:"KindInt64 12", compare err:<nil>`
 
-上述错误表明，对于表 `t` 中的 `c2` 索引，某行对应的索引键值对中的 handle 值是 13，行记录键值对中的 handle 值是 12，存在不一致。
+上述错误表明，对于表 `t` 中的 `c2` 索引，handle 为 2 的行对应的索引键值对中列 c2 的值是 13，行记录键值对中列 c2 的值是 12。
 
 #### Error 8223
 
 `ERROR 8223 (HY000): data inconsistency in table: t2, index: i1, handle: {hello, hello}, index-values:"" != record-values:"handle: {hello, hello}, values: [KindString hello KindString hello]"`
 
-上述错误表明，`index-values` 为空，`record-values` 不为空，说明不存在对应的索引，但存在对应的行， 存在不一致。
+上述错误表明，`index-values` 为空，`record-values` 不为空，说明不存在对应的索引，但存在对应的行。
 
-## 报错的原因及处理方法
+## 报错处理
 
-当发生数据索引一致性报错时，可能有以下几种情况：
+发生报错时，不要自行处理，请从 PingCAP 官方或 TiDB 社区[获取支持](/support.md)。如果业务急需跳过此类报错，可以使用以下方法绕过检查。
 
-- 已存在的数据中数据索引一致，当前版本的 TiDB 存在 bug。正在进行的事务将要写入不一致的数据，该事务被 abort。
-- 已存在的数据中已有数据索引不一致。不一致的数据可能来自于过去的错误或危险操作，或者是 TiDB 存在 bug。
-- 数据索引一致，检测算法有 bug，即误报。
+### 改写 SQL
 
-发生报错时，不要自行处理，请立即联系 PingCAP 技术支持进行修复或排查。如果技术支持判断为误报，或业务急需跳过此类报错，可以使用以下方法绕过检查。
+如果只有某一条 SQL 语句报错，可以尝试将其改写为其它等价的 SQL 形式，以使用不同的执行算子来尝试绕过。
 
 ### 关闭错误检查
 
@@ -86,8 +84,8 @@ summary: 了解如何处理数据索引一致性检查的报错。
 - 对于错误代码为 8138、8139 和 8140 的错误，可以通过设置 `set @@tidb_enable_mutation_checker=0` 跳过检查。
 - 对于错误代码为 8141 的错误，可以通过设置 `set @@tidb_txn_assertion_level=OFF` 跳过检查。
 
-对于其它错误代码，包括执行 `ADMIN CHECK [TABLE|INDEX]` 系列语句或执行事务中的报错，说明数据中已经存在不一致，无法跳过对应的检查。
+> **注意：**
+>
+> 关闭 `tidb_enable_mutation_checker` 和 `tidb_txn_assertion_level` 开关会关闭对所有 SQL 语句的对应检查。
 
-### 改写 SQL
-
-关闭上面提到的 `tidb_enable_mutation_checker` 和 `tidb_txn_assertion_level` 开关会关闭对所有 SQL 语句的检查。如果只有某一条 SQL 误报，可以尝试将其改写为其它等价的 SQL 形式，以使用不同的执行算子来尝试绕过。
+对于其它错误代码，包括执行 [`ADMIN CHECK [TABLE|INDEX]`](/sql-statements/sql-statement-admin-check-table-index.md) 系列语句或执行事务中的报错，由于数据中已经存在不一致，无法跳过对应的检查。

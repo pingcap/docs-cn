@@ -19,28 +19,22 @@ Event 分为三类：
 
 使用 `Canal-JSON` 时的配置样例如下所示：
 
-{{< copyable "shell-regular" >}}
-
 ```shell
-cdc cli changefeed create --pd=http://127.0.0.1:2379 --changefeed-id="kafka-canal-json" --sink-uri="kafka://127.0.0.1:9092/topic-name?kafka-version=2.6.0&protocol=canal-json"
+cdc cli changefeed create --server=http://127.0.0.1:8300 --changefeed-id="kafka-canal-json" --sink-uri="kafka://127.0.0.1:9092/topic-name?kafka-version=2.4.0&protocol=canal-json"
 ```
 
 ## TiDB 扩展字段
 
-Canal-JSON 协议本是为 MySQL 设计的，其中并不包含 TiDB 专有的 CommitTS 事务唯一标识等重要字段。为了解决这个问题，TiCDC 在 Canal-JSON 协议格式中附加了 TiDB 扩展字段。在 `sink-uri` 中设置 `enable-tidb-extension` 为 `true` 后，TiCDC 生成 Canal-JSON 消息时的行为如下：
+Canal-JSON 协议本是为 MySQL 设计的，其中并不包含 TiDB 专有的 CommitTS 事务唯一标识等重要字段。为了解决这个问题，TiCDC 在 Canal-JSON 协议格式中附加了 TiDB 扩展字段。在 `sink-uri` 中设置 `enable-tidb-extension` 为 `true`（默认为 `false`）后，TiCDC 生成 Canal-JSON 消息时的行为如下：
 
 * TiCDC 发送的 DML Event 和 DDL Event 类型消息中，将会含有一个名为 `_tidb` 的字段。
 * TiCDC 将会发送 WATERMARK Event 消息。·
 
 配置样例如下所示：
 
-{{< copyable "shell-regular" >}}
-
 ```shell
-cdc cli changefeed create --pd=http://127.0.0.1:2379 --changefeed-id="kafka-canal-json-enable-tidb-extension" --sink-uri="kafka://127.0.0.1:9092/topic-name?kafka-version=2.6.0&protocol=canal-json&enable-tidb-extension=true"
+cdc cli changefeed create --server=http://127.0.0.1:8300 --changefeed-id="kafka-canal-json-enable-tidb-extension" --sink-uri="kafka://127.0.0.1:9092/topic-name?kafka-version=2.4.0&protocol=canal-json&enable-tidb-extension=true"
 ```
-
-`enable-tidb-extension` 默认为 `false`，仅当使用 Canal-JSON 时生效。
 
 ## Message 格式定义
 
@@ -462,7 +456,7 @@ TiCDC 实现的 Canal-JSON 格式，v5.4.0 及以后版本的实现，和之前�
 
 如下是一个 `DELETE` 事件的数据内容，在 v5.4.0 前的实现中，"old" 的内容和 "data" 相同，在 v5.4.0 及之后的实现中，"old" 将被设为 null。你可以通过 "data" 字段获取到被删除的数据。
 
-```
+```shell
 {
     "id": 0,
     "database": "test",
