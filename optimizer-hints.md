@@ -14,9 +14,35 @@ TiDB supports optimizer hints, which are based on the comment-like syntax introd
 
 ## Syntax
 
+> **Note:**
+>
+> If the table you want to hint is not in the database specified by `USE DATABASE`, you need to specify the database name explicitly. For example:
+>
+> ```sql
+> tidb> SELECT /*+ HASH_JOIN(t2, t) */ * FROM t, test2.t2;
+> Empty set, 1 warning (0.00 sec)
+>
+> tidb> SHOW WARNINGS;
+> +---------+------+-------------------------------------------------------------------------------------------------------------------------------------------------------+
+> | Level   | Code | Message                                                                                                                                               |
+> +---------+------+-------------------------------------------------------------------------------------------------------------------------------------------------------+
+> | Warning | 1815 | There are no matching table names for (t2) in optimizer hint /*+ HASH_JOIN(t2, t) */ or /*+ TIDB_HJ(t2, t) */. Maybe you can use the table alias name |
+> +---------+------+-------------------------------------------------------------------------------------------------------------------------------------------------------+
+> 1 row in set (0.00 sec)
+>
+> tidb> SELECT /*+ HASH_JOIN(test2.t2, t) */ * FROM t, test2.t2;
+> Empty set (0.00 sec)
+>
+> tidb> SELECT /*+ READ_FROM_STORAGE(TIFLASH[test1.t1,test2.t2]) */ t1.a FROM test1.t t1, test2.t t2 WHERE t1.a = t2.a;
+> Empty set (0.00 sec)
+>
+> ```
+>
+> The examples in this document are all tables in the same database. If the tables you use are not in the same database, refer to the instructions to explicitly specify the database name.
+
 Optimizer hints are case insensitive and specified within `/*+ ... */` comments following the `SELECT`, `UPDATE` or `DELETE` keyword in a SQL statement. Optimizer hints are not currently supported for `INSERT` statements.
 
- Multiple hints can be specified by separating with commas. For example, the following query uses three different hints:
+Multiple hints can be specified by separating with commas. For example, the following query uses three different hints:
 
 {{< copyable "sql" >}}
 
@@ -464,14 +490,6 @@ The `READ_FROM_STORAGE(TIFLASH[t1_name [, tl_name ...]], TIKV[t2_name [, tl_name
 ```sql
 select /*+ READ_FROM_STORAGE(TIFLASH[t1], TIKV[t2]) */ t1.a from t t1, t t2 where t1.a = t2.a;
 ```
-
-> **Note:**
->
-> If you want the optimizer to use a table from another schema, you need to explicitly specify the schema name. For example:
->
-> ```sql
-> SELECT /*+ READ_FROM_STORAGE(TIFLASH[test1.t1,test2.t2]) */ t1.a FROM test1.t t1, test2.t t2 WHERE t1.a = t2.a;
-> ```
 
 ### USE_INDEX_MERGE(t1_name, idx1_name [, idx2_name ...])
 
