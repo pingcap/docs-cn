@@ -42,7 +42,7 @@ Version 2 的统计信息避免了 Version 1 中因为哈希冲突导致的在�
 
    ```sql
    SELECT DISTINCT... INTO outfile '/tmp/sql.txt';
-   mysql -h XXX -u user -P 4000 ... < '/tmp/sql.txt';
+   mysql -h ${TiDB_IP} -u user -P 4000 ... < '/tmp/sql.txt';
    ```
 
 本文接下来将简单介绍其中出现的直方图和 Count-Min Sketch 以及 Top-N 这些数据结构，以及详细介绍统计信息的收集和维护。
