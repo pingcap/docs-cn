@@ -123,7 +123,7 @@ title: TiDB 配置参数
 
 > **警告：**
 >
-> 需谨慎使用 `*` 符号，因为它可能引入安全风险，允许来自任何 IP 的客户端自行汇报其 IP 地址。另外，除非将 [`--proxy-protocol-fallbackable`](#proxy-protocol-fallbackable) 设置为 `true`，否则使用 `*` 可能会导致部分直接连接 TiDB 的内部组件无法使用，例如 TiDB Dashboard。
+> 需谨慎使用 `*` 符号，因为它可能引入安全风险，允许来自任何 IP 的客户端自行汇报其 IP 地址。另外，当 [`--proxy-protocol-fallbackable`](#proxy-protocol-fallbackable) 设置为 `true` 以外的值时，使用 `*` 可能会导致部分直接连接 TiDB 的内部组件无法使用，例如 TiDB Dashboard。
 
 > **注意：**
 >
