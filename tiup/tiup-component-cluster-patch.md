@@ -19,7 +19,7 @@ tiup cluster patch <cluster-name> <package-path> [flags]
 ```
 
 - `<cluster-name>` 代表要操作的集群名
-- `<package-path>` 为用于替换的二进制包
+- `<package-path>` 为用于替换的二进制包路径
 
 ### 准备二进制包
 
