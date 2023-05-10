@@ -75,7 +75,7 @@ Request Unit (RU) 是 TiDB 对 CPU、IO 等系统资源的统一抽象的单位,
 - [根据实际负载估算容量](/sql-statements/sql-statement-calibrate-resource.md#根据实际负载估算容量)
 - [基于硬件部署估算容量](/sql-statements/sql-statement-calibrate-resource.md#基于硬件部署估算容量)
 
-详情请参考 [`CALIBRATE RESOURCE` 预估方式](/sql-statements/sql-statement-calibrate-resource.md#预估方式)。
+可通过 [Dashboard 资源管控页面](/dashboard/dashboard-resource-control.md) 进行查看，详情请参考 [`CALIBRATE RESOURCE` 预估方式](/sql-statements/sql-statement-calibrate-resource.md#预估方式)。
 
 ### 管理资源组
 
@@ -172,9 +172,11 @@ SELECT /*+ RESOURCE_GROUP(rg1) */ * FROM t limit 10;
 
 ## 监控与图表
 
-TiDB 会定时采集资源管控的运行时信息，并在 Grafana 的 **Resource Control Dashboard** 中提供了相关指标的可视化图表。指标详情参见 [Resource Control 监控指标详解](/grafana-resource-control-dashboard.md) 。
+TiDB 会定时采集资源管控的运行时信息，并在 Grafana 的 **Resource Control Dashboard** 中提供了相关指标的可视化图表，详见 [Resource Control 监控指标详解](/grafana-resource-control-dashboard.md) 。
 
-TiKV 中也记录了来自于不同资源组的请求 QPS，详见 [TiKV监控指标详解](/grafana-tikv-dashboard.md#grpc)
+TiKV 中也记录了来自于不同资源组的请求 QPS，详见 [TiKV 监控指标详解](/grafana-tikv-dashboard.md#grpc)
+
+Dashboard 中可以查看当前 [RESOURCE_GROUPS](/information-schema/information-schema-resource-groups#resource_groups) 表，详见 [Dashboard 资源管控页面](/dashboard/dashboard-resource-control.md) 。
 
 ## 工具兼容性
 
