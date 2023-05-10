@@ -313,7 +313,7 @@ Create Table | CREATE TABLE `child` (
 
 创建外键未指定名称时，TiDB 自动生成的外键名称和 MySQL 不一样。例如 TiDB 生成的外键名称为 `fk_1`、`fk_2`、`fk_3` 等，MySQL 生成的外键名称为 `table_name_ibfk_1`、 `table_name_ibfk_2`、`table_name_ibfk_3` 等。
 
-MySQL 和 TiDB 均能解析但会忽略内联 `REFERENCES` 定义的外键。只有当 `REFERENCES` 作为 `FOREIGN KEY` 定义的一部分时，才会进行检查和执行。下面的示例使用 `REFERENCES` 子句创建外键约束：
+MySQL 和 TiDB 均能解析但会忽略以内联 `REFERENCES` 的方式定义的外键。只有当 `REFERENCES` 作为 `FOREIGN KEY` 定义的一部分时，才会进行检查和执行。下面的示例在定义外键约束时只使用了 `REFERENCES`：
 
 ```sql
 CREATE TABLE parent (
