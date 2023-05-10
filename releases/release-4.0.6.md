@@ -26,7 +26,7 @@ TiDB 版本：4.0.6
 
     + TiCDC（自 v4.0.6 起，TiCDC 成为**正式功能**，可用于生产环境）
 
-        - 支持输出 `maxwell` 格式的数据 [#869](https://github.com/pingcap/ticdc/pull/869)
+        - 支持输出 `maxwell` 格式的数据 [#869](https://github.com/pingcap/tiflow/pull/869)
 
 ## 优化提升
 
@@ -75,8 +75,8 @@ TiDB 版本：4.0.6
 
     + TiCDC
 
-        - 在初始化阶段跳过 resolved lock [#910](https://github.com/pingcap/ticdc/pull/910)
-        - 减少写 PD 的频率 [#937](https://github.com/pingcap/ticdc/pull/937)
+        - 在初始化阶段跳过 resolved lock [#910](https://github.com/pingcap/tiflow/pull/910)
+        - 减少写 PD 的频率 [#937](https://github.com/pingcap/tiflow/pull/937)
 
     + Backup & Restore (BR)
 
@@ -177,10 +177,10 @@ TiDB 版本：4.0.6
 
     + TiCDC
 
-        - 解决某些场景下内存泄露的问题 [#942](https://github.com/pingcap/ticdc/pull/942)
-        - 解决 Kafka sink 可能会出现的异常退出的问题 [#912](https://github.com/pingcap/ticdc/pull/912)
-        - 解决 CRTs 小于 Resolved Ts 而异常退出的问题 [#927](https://github.com/pingcap/ticdc/pull/927)
-        - 解决同步任务可能卡在 MySQL 上的问题 [#936](https://github.com/pingcap/ticdc/pull/936)
+        - 解决某些场景下内存泄露的问题 [#942](https://github.com/pingcap/tiflow/pull/942)
+        - 解决 Kafka sink 可能会出现的异常退出的问题 [#912](https://github.com/pingcap/tiflow/pull/912)
+        - 解决 CRTs 小于 Resolved Ts 而异常退出的问题 [#927](https://github.com/pingcap/tiflow/pull/927)
+        - 解决同步任务可能卡在 MySQL 上的问题 [#936](https://github.com/pingcap/tiflow/pull/936)
         - 修复 TiCDC 不合理的 Resolved Ts 超时等待 [#8573](https://github.com/tikv/tikv/pull/8573)
 
     + Backup & Restore (BR)

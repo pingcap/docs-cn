@@ -41,24 +41,24 @@ aliases: ['/docs-cn/dev/tidb-limitations/']
 | Indexs    | 默认为 64，最大可调至 512        |
 | Rows      | 无限制                         |
 | Size      | 无限制                         |
-| Partitions| 1024                          |
+| Partitions| 8192                          |
 
 * Columns 的最大限制可通过 [`table-column-count-limit`](/tidb-configuration-file.md#table-column-count-limit-从-v50-版本开始引入) 修改。
 * Indexs 的最大限制可通过 [`index-limit`](/tidb-configuration-file.md#index-limit-从-v50-版本开始引入) 修改。
 
 ## 单行的限制
 
-| 类型       | 最大限制   |
+| 类型       | 最大限制（默认值）   |
 |:----------|:----------|
-| Size       | 默认为 6MB，可通过 [`txn-entry-size-limit`](/tidb-configuration-file.md#txn-entry-size-limit-从-v50-版本开始引入) 配置项调整 |
+| Size       | 默认为 6 MiB，可通过 [`txn-entry-size-limit`](/tidb-configuration-file.md#txn-entry-size-limit-从-v50-版本开始引入) 配置项调至 120 MiB |
 
 ## 单列的限制
 
-| 类型       | 最大限制   |
+| 类型       | 最大限制（默认值）   |
 |:----------|:----------|
-| Size       | 6MB       |
+| Size       | 默认为 6 MiB，可通过 [`txn-entry-size-limit`](/tidb-configuration-file.md#txn-entry-size-limit-从-v50-版本开始引入) 配置项调至 120 MiB       |
 
-## 字符串类型限制
+## 数据类型限制
 
 | 类型       | 最大限制   |
 |:----------|:----------|
@@ -66,11 +66,15 @@ aliases: ['/docs-cn/dev/tidb-limitations/']
 | BINARY     | 256 字节      |
 | VARBINARY  | 65535 字节    |
 | VARCHAR    | 16383 字符    |
-| TEXT       | 6MB 字节      |
-| BLOB       | 6MB 字节      |
+| TEXT       | 默认为 6291456 字节（即 6 MiB），可调至 125829120 字节（即 120 MiB）      |
+| BLOB       | 默认为 6291456 字节（即 6 MiB），可调至 125829120 字节（即 120 MiB）      |
 
 ## SQL Statements 的限制
 
 | 类型       | 最大限制   |
 |:----------|:----------|
 | 单个事务最大语句数 |  在使用乐观事务并开启事务重试的情况下，默认限制 5000，可通过 [`stmt-count-limit`](/tidb-configuration-file.md#stmt-count-limit) 调整 |
+
+## TiKV 版本的限制
+
+在集群中，如果 TiDB 组件的版本为 v6.2.0 及以上，则 TiKV 组件版本不得低于 v6.2.0。

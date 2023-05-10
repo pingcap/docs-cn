@@ -139,4 +139,4 @@ EXPLAIN SELECT COUNT(*) FROM t1 WHERE YEAR(d) = 2017;
 + [子查询的执行计划](/explain-subqueries.md)
 + [聚合查询的执行计划](/explain-aggregation.md)
 + [视图查询的执行计划](/explain-views.md)
-+ [开启 IndexMerge 查询的执行计划](/explain-index-merge.md)
++ [索引合并查询的执行计划](/explain-index-merge.md)

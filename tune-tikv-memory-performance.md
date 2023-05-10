@@ -5,7 +5,7 @@ aliases: ['/docs-cn/dev/tune-tikv-memory-performance/','/docs-cn/dev/reference/p
 
 # TiKV 内存参数性能调优
 
-本文档用于描述如何根据机器配置情况来调整 TiKV 的参数，使 TiKV 的性能达到最优。
+本文档用于描述如何根据机器配置情况来调整 TiKV 的参数，使 TiKV 的性能达到最优。你可以在 [etc/config-template.toml](https://github.com/tikv/tikv/blob/master/etc/config-template.toml) 找到配置文件模版，参考[使用 TiUP 修改配置参数](/maintain-tidb-using-tiup.md#修改配置参数)进行操作，部分配置项可以通过[在线修改 TiKV 配置](/dynamic-config.md#在线修改-tikv-配置)方式在线更新。具体配置项的含义可参考 [TiKV 配置文件描述](/tikv-configuration-file.md)。
 
 TiKV 最底层使用的是 RocksDB 做为持久化存储，所以 TiKV 的很多性能相关的参数都是与 RocksDB 相关的。TiKV 使用了两个 RocksDB 实例，默认 RocksDB 实例存储 KV 数据，Raft RocksDB 实例（简称 RaftDB）存储 Raft 数据。
 
@@ -21,7 +21,7 @@ TiKV 使用了 RocksDB 的 `Column Families` (CF) 特性。
 
     - `default` CF 主要存储的是 Raft log，与其对应的参数位于 `[raftdb.defaultcf]` 项中。
 
-所有的 CF 默认共同使用一个 block cache 实例。通过在 `[storage.block-cache]` 下设置 `capacity` 参数，你可以配置该 block cache 的大小。block cache 越大，能够缓存的热点数据越多，读取数据越容易，同时占用的系统内存也越多。如果要为每个 CF 使用单独的 block cache 实例，需要在 `[storage.block-cache]` 下设置 `shared=false`，并为每个 CF 配置单独的 block cache 大小。例如，可以在 `[rocksdb.writecf]` 下设置 `block-cache-size` 参数来配置 `write` CF 的大小。
+所有的 CF 默认共同使用一个 block cache 实例。通过在 `[storage.block-cache]` 下设置 `capacity` 参数，你可以配置该 block cache 的大小。block cache 越大，能够缓存的热点数据越多，读取数据越容易，同时占用的系统内存也越多。
 
 > **注意：**
 >
@@ -72,6 +72,7 @@ log-level = "info"
 ## 在大多数情况下，可以通过 LRU 算法在各 CF 间自动平衡缓存用量。
 ##
 ## `storage.block-cache` 会话中的其余配置仅在开启 `shared block cache` 时起作用。
+## 从 v6.6.0 开始，该选项永远开启且无法关闭。
 # shared = true
 ## `shared block cache` 的大小。正常情况下应设置为系统全部内存的 30%-50%。
 ## 如果未设置该参数，则由以下字段或其默认值的总和决定。
@@ -101,12 +102,16 @@ job = "tikv"
 # 如果机器上有多块磁盘，可以将 Raft RocksDB 的数据放在不同的盘上，提高 TiKV 的性能。
 # raftdb-path = "/tmp/tikv/store/raft"
 
-region-max-size = "384MB"
-# Region 分裂阈值
-region-split-size = "256MB"
 # 当 Region 写入的数据量超过该阈值的时候，TiKV 会检查该 Region 是否需要分裂。为了减少检查过程
-# 中扫描数据的成本，数据过程中可以将该值设置为32MB，正常运行状态下使用默认值即可。
+# 中扫描数据的成本，导入数据过程中可以将该值设置为 32 MB，正常运行状态下使用默认值即可。
 region-split-check-diff = "32MB"
+
+[coprocessor]
+
+## 当区间为 [a,e) 的 Region 的大小超过 `region_max_size`，TiKV 会尝试分裂该 Region，例如分裂成 [a,b)、[b,c)、[c,d)、[d,e) 等区间的 Region 后
+## 这些 Region [a,b), [b,c), [c,d) 的大小为 `region_split_size` (或者稍大于 `region_split_size`）
+# region-max-size = "144MB"
+# region-split-size = "96MB"
 
 [rocksdb]
 # RocksDB 进行后台任务的最大线程数，后台任务包括 compaction 和 flush。具体 RocksDB 为什么需要进行 compaction，
@@ -131,9 +136,6 @@ max-manifest-file-size = "20MB"
 
 # RocksDB WAL 日志的最大总大小，通常情况下使用默认值就可以了。
 # max-total-wal-size = "4GB"
-
-# 可以通过该参数打开或者关闭 RocksDB 的统计信息。
-# enable-statistics = true
 
 # 开启 RocksDB compaction 过程中的预读功能，如果使用的是机械磁盘，建议该值至少为2MB。
 # compaction-readahead-size = "2MB"
@@ -213,9 +215,6 @@ target-file-size-base = "32MB"
 [raftdb]
 # RaftDB 能够打开的最大文件句柄数。
 # max-open-files = 40960
-
-# 可以通过该参数打开或者关闭 RaftDB 的统计信息。
-# enable-statistics = true
 
 # 开启 RaftDB compaction 过程中的预读功能，如果使用的是机械磁盘，建议该值至少为2MB。
 # compaction-readahead-size = "2MB"

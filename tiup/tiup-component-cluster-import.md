@@ -27,7 +27,7 @@ tiup cluster import [flags]
 
 ## 选项
 
-### -d, --dir string（string, 默认 当前目录）
+### -d, --dir string（string，默认 当前目录）
 
 指定 TiDB Ansible 所在目录。
 

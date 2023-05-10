@@ -10,11 +10,11 @@ aliases: ['/docs-cn/dev/faq/migration-tidb-faq/']
 
 如果要查看迁移相关工具的常见问题，请参考以下链接：
 
-- [Backup & Restore 常见问题](/br/backup-and-restore-faq.md)
+- [备份与恢复常见问题](/faq/backup-and-restore-faq.md)
 - [TiDB Binlog 常见问题](/tidb-binlog/tidb-binlog-faq.md)
 - [TiDB Lightning 常见问题](/tidb-lightning/tidb-lightning-faq.md)
-- [Data Migration 常见问题](https://docs.pingcap.com/zh/tidb-data-migration/stable/faq)
-- [TiCDC 常见问题和故障处理](/ticdc/troubleshoot-ticdc.md)
+- [Data Migration 常见问题](/dm/dm-faq.md)
+- [TiCDC 常见问题](/ticdc/ticdc-faq.md)
 
 ## 全量数据导出导入
 
@@ -29,7 +29,7 @@ TiDB 支持绝大多数 MySQL 语法，一般不需要修改代码。
 + 在出现重试、EOF 错误的服务器端节点执行以下命令：
 
     {{< copyable "shell-regular" >}}
-    
+
     ```shell
     iperf3 -s
     ```
@@ -135,7 +135,7 @@ DB2、Oracle 到 TiDB 数据迁移（增量+全量），通常做法有：
 
 ### 如何快速迁移业务流量？
 
-我们建议通过 [TiDB Data Migration](https://docs.pingcap.com/zh/tidb-data-migration/v2.0/overview) 进行 MySQL -> TiDB 的业务数据的迁移；业务读写可以按照需求分阶段通过修改网络配置进行流量迁移，建议 DB 上层部署一个稳定的网络 LB（HAproxy、LVS、F5、DNS 等），这样直接修改网络配置就能实现无缝流量迁移。
+我们建议通过 [TiDB Data Migration](/dm/dm-overview.md) 进行 MySQL -> TiDB 的业务数据的迁移；业务读写可以按照需求分阶段通过修改网络配置进行流量迁移，建议 DB 上层部署一个稳定的网络 LB（HAproxy、LVS、F5、DNS 等），这样直接修改网络配置就能实现无缝流量迁移。
 
 ### TiDB 总读写流量有限制吗？
 
@@ -163,11 +163,11 @@ DELETE，TRUNCATE 和 DROP 都不会立即释放空间。对于 TRUNCATE 和 DRO
 
 ### TiDB 是否支持 replace into 语法？
 
-支持，但是 load data 不支持 replace into 语法。
+支持。
 
-### 数据删除后查询速度为何会变慢？
+### 删除数据后查询速度为何会变慢？
 
-大量删除数据后，会有很多无用的 key 存在，影响查询效率。目前正在开发 Region Merge 功能，完善之后可以解决这个问题，具体看参考[最佳实践](https://pingcap.com/blog-cn/tidb-best-practice/)中的删除数据部分。
+删除大量数据后，会有很多无用的 key 存在，影响查询效率。要解决该问题，可以尝试开启 [Region Merge](/best-practices/massive-regions-best-practices.md#方法五开启-region-merge) 功能，具体可参考[最佳实践](https://pingcap.com/blog-cn/tidb-best-practice/)中的删除数据部分。
 
 ### 数据删除最高效最快的方式？
 

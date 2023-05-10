@@ -1,5 +1,6 @@
 ---
 title: TiCDC Open Protocol
+summary: 了解 TiCDC Open Protocol 的概念和使用方法。
 aliases: ['/docs-cn/dev/ticdc/ticdc-open-protocol/','/docs-cn/dev/reference/tools/ticdc/open-protocol/','/docs-cn/dev/ticdc/column-ddl-type-codes/','/docs-cn/stable/reference/tools/ticdc/column-ddl-type/']
 ---
 
@@ -209,8 +210,6 @@ Value:
 
 假设在上游执行以下 SQL 语句，MQ Partition 数量为 2：
 
-{{< copyable "sql" >}}
-
 ```sql
 CREATE TABLE test.t1(id int primary key, val varchar(16));
 ```
@@ -226,8 +225,6 @@ CREATE TABLE test.t1(id int primary key, val varchar(16));
 
 在上游执行以下 SQL 语句：
 
-{{< copyable "sql" >}}
-
 ```sql
 BEGIN;
 INSERT INTO test.t1(id, val) VALUES (1, 'aa');
@@ -237,9 +234,9 @@ INSERT INTO test.t1(id, val) VALUES (3, 'cc');
 COMMIT;
 ```
 
-+ 如以下执行日志中的 Log 5 和 Log 6 所示，同一张表内的 Row Changed Event 可能会根据主键被分派到不同的 Partition，但同一行的变更一定会分派到同一个 Partition，方便下游并发处理。
-+ 如 Log 6 所示，在一个事务内对同一行进行多次修改，只会发出一个 Row Changed Event。
-+ Log 8 是 Log 7 的重复 Event。Row Changed Event 可能重复，但每个版本的 Event 第一次发出的次序一定是有序的。
+- 如以下执行日志中的 Log 5 和 Log 6 所示，同一张表内的 Row Changed Event 可能会根据主键被分派到不同的 Partition，但同一行的变更一定会分派到同一个 Partition，方便下游并发处理。
+- 如 Log 6 所示，在一个事务内对同一行进行多次修改，只会发出一个 Row Changed Event。
+- Log 8 是 Log 7 的重复 Event。Row Changed Event 可能重复，但每个版本的 Event 第一次发出的次序一定是有序的。
 
 ```
 5. [partition=0] [key="{\"ts\":415508878783938562,\"scm\":\"test\",\"tbl\":\"t1\",\"t\":1}"] [value="{\"u\":{\"id\":{\"t\":3,\"h\":true,\"v\":1},\"val\":{\"t\":15,\"v\":\"YWE=\"}}}"]
@@ -249,8 +246,6 @@ COMMIT;
 ```
 
 在上游执行以下 SQL 语句：
-
-{{< copyable "sql" >}}
 
 ```sql
 BEGIN;
@@ -276,8 +271,8 @@ COMMIT;
 
 目前 TiCDC 没有提供 Open Protocol 协议解析的标准实现，但是提供了 Golang 版本和 Java 版本的解析例子。你可以参考本文档提供的数据格式和以下例子实现消费端协议解析。
 
-- [Golang demo](https://github.com/pingcap/ticdc/tree/master/cmd/kafka-consumer)
-- [Java demo](https://github.com/pingcap/ticdc/tree/master/exapmles/java)
+- [Golang 例子](https://github.com/pingcap/tiflow/tree/master/cmd/kafka-consumer)
+- [Java 例子](https://github.com/pingcap/tiflow/tree/master/examples/java)
 
 ## Column 的类型码
 
@@ -388,4 +383,4 @@ DDL 的类型码用于标识 DDL Event 中的 DDL 语句的类型。
 > **注意：**
 >
 > + BinaryFlag 仅在列为 BLOB/TEXT（包括 TINYBLOB/TINYTEXT、BINARY/CHAR 等）类型时才有意义。当上游列为 BLOB 类型时，BinaryFlag 置 `1`；当上游列为 TEXT 类型时，BinaryFlag 置 `0`。
-> + 若要同步上游的一张表，TiCDC 会选择一个[有效索引](/ticdc/ticdc-overview.md#同步限制)作为 Handle Index。Handle Index 包含的列的 HandleKeyFlag 置 `1`。
+> + 若要同步上游的一张表，TiCDC 会选择一个[有效索引](/ticdc/ticdc-overview.md#最佳实践)作为 Handle Index。Handle Index 包含的列的 HandleKeyFlag 置 `1`。

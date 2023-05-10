@@ -111,14 +111,26 @@ Hibernate Region 在 [TiKV master](https://github.com/tikv/tikv/tree/master) 分
 {{< copyable "" >}}
 
 ```
->> pd-ctl config set max-merge-region-size 20
->> pd-ctl config set max-merge-region-keys 200000
->> pd-ctl config set merge-schedule-limit 8
+config set max-merge-region-size 20
+config set max-merge-region-keys 200000
+config set merge-schedule-limit 8
 ```
 
 详情请参考[如何配置 Region Merge（英文）](https://tikv.org/docs/4.0/tasks/configure/region-merge/) 和 [PD 配置文件描述](/pd-configuration-file.md#schedule)。
 
 同时，默认配置的 `Region Merge` 的参数设置较为保守，可以根据需求参考 [PD 调度策略最佳实践](/best-practices/pd-scheduling-best-practices.md#region-merge-速度慢)中提供的方法加快 `Region Merge` 过程的速度。
+
+### 方法六：调整 Region 大小
+
+Region 默认的大小约为 96 MiB，将其调大也可以减少 Region 个数，具体介绍可参考[使用更大的 Region](/tune-region-performance.md)。
+
+> **警告：**
+>
+> 自定义 Region 大小是在 TiDB v6.1.0 引入的实验特性，不建议在生产环境中配置。使用此特性的风险包括：
+>
+> + 更容易发生性能抖动。
+> + 查询性能回退，尤其是大范围数据查询的性能会有回退。
+> + 调度变慢。
 
 ## 其他问题和解决方案
 
