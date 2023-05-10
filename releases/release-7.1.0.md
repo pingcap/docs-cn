@@ -116,9 +116,9 @@ TiDB 版本：7.1.0 (LTS)
 
     在 TiDB v7.1.0 中，该特性增加了基于实际负载和硬件部署来估算系统容量上限的能力，为你进行容量规划提供更准确的参考。这有助于你更好地管理 TiDB 的资源分配，从而满足企业级场景的稳定性需求。
 
-    为了更好的用户体验， TiDB Dashboard 增加了资源管控的管理页面。 用户在页面中能够查看资源组配置，并通过可视化的方式进行容量预估，协助用户合理配置资源。 
+    为了更好的用户体验，TiDB Dashboard 增加了资源管控的管理页面。你可以在该页面查看资源组配置，并通过可视化的方式进行容量预估，便于合理配置资源。 
 
-    更多信息，请参考[用户文档](/tidb-resource-control.md)。
+    更多信息，请参考[用户文档](/dashboard/dashboard-resource-control.md)。
 
 * 支持 Fast Online DDL 的检查点机制，提升容错性和自动恢复能力 [#42164](https://github.com/pingcap/tidb/issues/42164) @[tangenta](https://github.com/tangenta)
 
@@ -136,11 +136,11 @@ TiDB 版本：7.1.0 (LTS)
 
 * 优化统计信息缓存加载策略 (实验特性) [#42160](https://github.com/pingcap/tidb/issues/42160) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes)
 
-    开启统计信息同步加载后，TiDB 可以大幅减少启动时必须载入的统计信息的数量，从而提升启动过程中统计信息的加载速度。该特性提升了 TiDB 在复杂运行环境下的稳定性，并降低了部分 TiDB 节点重启对整体服务的影响。 通过修改 TiDB 配置参数 [`lite-init-stats`](/tidb-configuration-file.md#lite-init-stats-从-v710-版本开始引入) 为 `ON` 来开启这个功能。 
+    开启统计信息同步加载特性后，TiDB 可以大幅减少启动时必须载入的统计信息的数量，从而提升启动过程中统计信息的加载速度。该特性提升了 TiDB 在复杂运行环境下的稳定性，并降低了部分 TiDB 节点重启对整体服务的影响。你可以通过修改 TiDB 配置参数 [`lite-init-stats`](/tidb-configuration-file.md#lite-init-stats-从-v710-版本开始引入) 为 `ON` 来开启该特性。 
 
     同时引入配置 [`force-init-stats`](/tidb-configuration-file.md#force-init-stats-从-v710-版本开始引入) 强制 TiDB 在统计信息缓存加载完成后再对外提供服务，避免了启动阶段由于统计信息未加载造成的 SQL 性能问题。 这个配置默认为关闭。 
 
-    更多信息，请参考[用户文档](/statistics.md#统计信息的加载)。
+    更多信息，请参考[用户文档](/tidb-configuration-file.md)。
 
 * TiCDC 支持单行数据正确性校验功能 [#8718](https://github.com/pingcap/tiflow/issues/8718) [#42747](https://github.com/pingcap/tidb/issues/42747) @[3AceShowHand](https://github.com/3AceShowHand) @[zyguan](https://github.com/zyguan) **tw:Oreoxmt**
 
