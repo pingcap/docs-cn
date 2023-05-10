@@ -38,26 +38,26 @@ TiCDC 复制功能只会将指定时间点之后的增量变更复制到下游�
 
 ## 执行 DDL
 
-开启双向复制功能后，TiCDC 不会同步任何的 DDL 。用户需要手动在开启双向复制的集群中执行 DDL。并且，因为有的 DDL 会造成 表结构的变更，可能会影响 TiCDC 同步数据的正确性。因此，在双向同步期间，只能不停机执行某些 DDL，下列表格给出了这些 DDL 和其注意事项。
+开启双向复制功能后，TiCDC 不会同步任何的 DDL。用户需要手动在开启双向复制的集群中执行 DDL。并且，因为有的 DDL 会造成 表结构的变更，可能会影响 TiCDC 同步数据的正确性。因此，在双向同步期间，只能不停机执行某些 DDL，下列表格给出了这些 DDL 和其注意事项。
 
 | Event                        | 是否会引起 changefeed 错误 | 说明    |
 | ---------------------------- | ------ |--------------------------|
 | create database              | 是     | 错误可以自动恢复|
-| drop database                | 是     | 需要手动重启 changefeed，指定 start-ts 为该条 ddl 的commiTs 来恢复         |
-| create table                 | 是   |错误可以自动恢复       |
-| drop table                   | 是   |需要手动重启 changefeed，指定 start-ts 为该条 ddl 的commiTs 来恢复        |
-| alter table comment          |      |        |
-| rename index                 |      |   |
-| add partition                | 是   |错误可以自动恢复    |
-| drop partition               |    |    |
-| create view                  |    |    |
-| drop view                    |    |    |
-| rebase auto id               |    |    |
-| reorganize partition         | 是   |错误可以自动恢复    |
-| alter table ttl              |    |   |
-| alter table remove ttl       |    |   |
-| add **not unique** index     |    |   |
-| drop **not unique** index    |    |   |
+| drop database                | 是     | 需要手动重启 changefeed，指定 `--overwrite-checkpoint-ts` 为该条 ddl 的commiTs 来恢复         |
+| create table                 | 是   | 错误可以自动恢复       |
+| drop table                   | 是   | 需要手动重启 changefeed，指定 `--overwrite-checkpoint-ts` 为该条 ddl 的commiTs 来恢复        |
+| alter table comment          | 否   |        |
+| rename index                 | 否   |   |
+| add partition                | 是   | 错误可以自动恢复    |
+| drop partition               | 否   |    |
+| create view                  | 否   |    |
+| drop view                    | 否  |    |
+| rebase auto id               | 否   |    |
+| reorganize partition         | 是   | 错误可以自动恢复    |
+| alter table ttl              | 否  |   |
+| alter table remove ttl       | 否   |   |
+| add **not unique** index     | 否  |   |
+| drop **not unique** index    | 否   |   |
 
 如果需要执行以上列表中不存在的 DDL，需要采取以下步骤：
 
