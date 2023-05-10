@@ -181,6 +181,8 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 | [`caching_sha2_password` 认证](/system-variables.md#default_authentication_plugin) | Y | Y | Y | Y | Y | Y | N | N | N |
 | [`tidb_sm3_password` 认证](/system-variables.md#default_authentication_plugin) | Y | Y | N | N | N | N | N | N | N |
 | [`tidb_auth_token` 认证](/system-variables.md#default_authentication_plugin) | Y | Y | N | N | N | N | N | N | N |
+| [`authentication_ldap_sasl` 认证](/system-variables.md#default_authentication_plugin) | Y | N | N | N | N | N | N | N | N |
+| [`authentication_ldap_simple` 认证](/system-variables.md#default_authentication_plugin) | Y | N | N | N | N | N | N | N | N |
 | [密码管理](/password-management.md) | Y | Y | N | N | N | N | N | N | N |
 | [与 MySQL 兼容的 `GRANT` 权限管理](/privilege-management.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y |
 | [动态权限](/privilege-management.md#动态权限) | Y | Y | Y | Y | Y | Y | Y | N | N |
