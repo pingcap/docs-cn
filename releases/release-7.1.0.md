@@ -136,7 +136,7 @@ TiDB 版本：7.1.0 (LTS)
 
 * 优化统计信息缓存加载策略 [#42160](https://github.com/pingcap/tidb/issues/42160) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes) **tw:hfxsd**
 
-    开启统计信息同步加载特性后，TiDB 可以大幅减少启动时必须载入的统计信息的数量，从而提升启动过程中统计信息的加载速度。该特性提升了 TiDB 在复杂运行环境下的稳定性，并降低了部分 TiDB 节点重启对整体服务的影响。你可以通过修改 TiDB 配置参数 [`lite-init-stats`](/tidb-configuration-file.md#lite-init-stats-从-v710-版本开始引入) 为 `ON` 来开启该特性。注意该参数为实验特性。
+    开启统计信息同步加载特性后，TiDB 可以大幅减少启动时必须载入的统计信息的数量，从而提升启动过程中统计信息的加载速度。该特性提升了 TiDB 在复杂运行环境下的稳定性，并降低了部分 TiDB 节点重启对整体服务的影响。你可以通过修改 TiDB 配置参数 [`lite-init-stats`](/tidb-configuration-file.md#lite-init-stats-从-v710-版本开始引入) 为 `true` 来开启该特性。注意该参数为实验特性。
 
     同时引入了配置参数 [`force-init-stats`](/tidb-configuration-file.md#force-init-stats-从-v710-版本开始引入)。该参数可以强制 TiDB 在统计信息缓存加载完成后再对外提供服务，避免了启动阶段由于统计信息未加载造成的 SQL 性能问题。该配置默认关闭。 
 
