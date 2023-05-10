@@ -19,15 +19,50 @@ tiup cluster patch <cluster-name> <package-path> [flags]
 ```
 
 - `<cluster-name>` 代表要操作的集群名
-- `<package-path>` 为用于替换的二进制包，其打包方式如下：
-    - 确定当前要替换的组件名称 `${component}` (tidb, tikv, pd...) 以及其版本 `${version}` (v4.0.0, v4.0.1 ...)，以及其运行的平台 `${os}` (linux) 和 `${arch}` (amd64, arm64)
-    - 下载当前的组件包：`wget https://tiup-mirrors.pingcap.com/${component}-${version}-${os}-${arch}.tar.gz -O /tmp/${component}-${version}-${os}-${arch}.tar.gz`
-    - 建立临时打包目录：`mkdir -p /tmp/package && cd /tmp/package`
-    - 解压原来的二进制包：`tar xf /tmp/${component}-${version}-${os}-${arch}.tar.gz`
-    - 查看临时打包目录中的文件结构：`find .`
-    - 将要替换的二进制文件或配置文件复制到临时目录的对应位置
-    - 重新打包 `tar czf /tmp/${component}-hotfix-${os}-${arch}.tar.gz *`
-    - 通过以上步骤之后，`/tmp/${component}-hotfix-${os}-${arch}.tar.gz` 就可以用于 patch 命令了
+- `<package-path>` 为用于替换的二进制包路径
+
+### 准备二进制包
+
+在运行 `tiup cluster patch` 命令之前，你需要打包所需的二进制文件。请按照以下步骤操作：
+
+1. 确定以下变量的值：
+
+    - `${component}`：需要替换的组件名（例如 `tidb`、`tikv`、`pd`）。
+    - `${version}`：组件的版本（例如 `v7.0.0`、`v6.5.1`）。
+    - `${os}`：操作系统 (`linux`)。
+    - `${arch}`：组件运行的平台 (`amd64`、`arm64`)。
+2. 下载当前的组件包：
+
+    ```shell
+    wget https://tiup-mirrors.pingcap.com/${component}-${version}-${os}-${arch}.tar.gz -O /tmp/${component}-${version}-${os}-${arch}.tar.gz
+    ```
+
+3. 创建临时打包目录：
+
+    ```shell
+    mkdir -p /tmp/package && cd /tmp/package
+    ```
+
+4. 解压原来的二进制包：
+
+    ```shell
+    tar xf /tmp/${component}-${version}-${os}-${arch}.tar.gz
+    ```
+
+5. 查看临时打包目录中的文件结构：
+
+    ```shell
+    find .
+    ```
+
+6. 将要替换的二进制文件或配置文件复制到临时目录的对应位置。
+7. 将临时目录中的所有文件打包：
+
+    ```shell
+    tar czf /tmp/${component}-hotfix-${os}-${arch}.tar.gz *
+    ```
+
+完成上述步骤后，你可以在 `tiup cluster patch` 命令中使用 `/tmp/${component}-hotfix-${os}-${arch}.tar.gz` 作为 `<package-path>`。
 
 ## 选项
 
