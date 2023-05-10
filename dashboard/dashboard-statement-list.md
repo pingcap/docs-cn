@@ -14,7 +14,7 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-statement-list/']
 
 可以通过以下两种方法访问 SQL 语句分析页面：
 
-- 登录后，左侧导航条点击 "**SQL 语句分析**" (SQL Statements)。
+- 登录 Dashboard 后，左侧导航条点击 "**SQL 语句分析**" (SQL Statements)。
 
   ![访问](/media/dashboard/dashboard-statement-access.png)
 

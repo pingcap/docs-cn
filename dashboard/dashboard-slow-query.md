@@ -18,11 +18,11 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-slow-query/']
 
 可以通过以下两种方法访问慢查询页面：
 
-* 登录后，左侧导航条点击**慢查询** (**Slow Queries**)：
+* 登录 Dashboard 后，左侧导航条点击**慢查询** (**Slow Queries**)：
 
 ![access 访问页面](/media/dashboard/dashboard-slow-queries-access-v620.png)
 
-* 在浏览器中访问 <http://127.0.0.1:2379/dashboard/#/slow_query>（将 `127.0.0.1:2379` 替换为任意实际 PD 地址和端口）。
+* 在浏览器中访问 <http://127.0.0.1:2379/dashboard/#/slow_query>（将 `127.0.0.1:2379` 替换为你的实际 PD 地址和端口）。
 
 慢查询页面所展示的所有数据都来自于 TiDB 慢查询系统表及慢查询日志，参见[慢查询日志](/identify-slow-queries.md)文档了解详细情况。
 

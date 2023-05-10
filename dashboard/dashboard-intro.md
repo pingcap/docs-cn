@@ -61,10 +61,9 @@ TiDB Dashboard 在 GitHub 上[开源](https://github.com/pingcap-incubator/tidb-
 
 ## 资源管控容量预估
 
-为[使用资源管控 (Resource Control) 实现资源隔离](/tidb-resource-control.md)，集群管理员可以定义资源组 (Resource Group)，通过资源组限定读写的配额。在进行资源规划之前，你需要了解集群的整体容量。
+为[使用资源管控 (Resource Control) 实现资源隔离](/tidb-resource-control.md)，集群管理员可以定义资源组 (Resource Group)，通过资源组限定读写的配额。
 
-参阅[资源管控页面](/dashboard/dashboard-resource-control.md)了解详情。
-
+在进行资源规划之前，你需要了解集群的整体容量。请参见 [TiDB Dashboard 资源管控页面](/dashboard/dashboard-resource-control.md)了解详情。
 
 ## 收集分析各个组件的性能数据
 
