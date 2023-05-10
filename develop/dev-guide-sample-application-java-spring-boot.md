@@ -1,11 +1,12 @@
 ---
-title: Build a TiDB Application Using Spring Boot
+title: Build a TiDB App Using Spring Boot
 summary: Learn an example of how to build a TiDB application using Spring Boot.
+aliases: ['/tidbcloud/dev-guide-sample-application-spring-boot']
 ---
 
 <!-- markdownlint-disable MD029 -->
 
-# Build a TiDB Application Using Spring Boot
+# Build a TiDB App Using Spring Boot
 
 This tutorial shows you how to build a [Spring Boot](https://spring.io/projects/spring-boot) web application using TiDB. The [Spring Data JPA](https://spring.io/projects/spring-data-jpa) module is used as the framework for data access capabilities. You can download the code for this sample application from [GitHub](https://github.com/pingcap-inc/tidb-example-java).
 

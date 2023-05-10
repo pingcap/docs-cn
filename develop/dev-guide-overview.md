@@ -1,7 +1,7 @@
 ---
 title: Developer Guide Overview
 summary: Introduce the overview of the developer guide.
-aliases: ['/tidb/dev/connectors-and-apis/','/tidb/stable/connectors-and-apis/','/appdev/dev/','/tidb/dev/dev-guide-outdated-for-laravel']
+aliases: ['/tidb/dev/connectors-and-apis/','/appdev/dev/','/tidb/dev/dev-guide-outdated-for-laravel']
 ---
 
 # Developer Guide Overview
@@ -68,7 +68,7 @@ Since TiDB is compatible with the MySQL protocol and MySQL syntax, most of the O
 - [Read Data](/develop/dev-guide-get-data-from-single-table.md)
 - [Transaction](/develop/dev-guide-transaction-overview.md)
 - [Optimize](/develop/dev-guide-optimize-sql-overview.md)
-- [Example Applications](/develop/dev-guide-sample-application-spring-boot.md)
+- [Example Applications](/develop/dev-guide-sample-application-java-spring-boot.md)
 
 </CustomContent>
 
@@ -81,6 +81,6 @@ Since TiDB is compatible with the MySQL protocol and MySQL syntax, most of the O
 - [Read Data](/develop/dev-guide-get-data-from-single-table.md)
 - [Transaction](/develop/dev-guide-transaction-overview.md)
 - [Optimize](/develop/dev-guide-optimize-sql-overview.md)
-- [Example Applications](/develop/dev-guide-sample-application-spring-boot.md)
+- [Example Applications](/develop/dev-guide-sample-application-java-spring-boot.md)
 
 </CustomContent>

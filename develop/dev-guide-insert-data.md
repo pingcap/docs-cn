@@ -115,9 +115,9 @@ jdbc:mysql://127.0.0.1:4000/test?user=root&useConfigs=maxPerformance&useServerPr
 
 For complete examples in Java, see:
 
-- [Build a simple CRUD application with TiDB and Java - using JDBC](/develop/dev-guide-sample-application-java.md#step-2-get-the-code)
-- [Build a simple CRUD application with TiDB and Java - using Hibernate](/develop/dev-guide-sample-application-java.md#step-2-get-the-code)
-- [Build the TiDB application using Spring Boot](/develop/dev-guide-sample-application-spring-boot.md)
+- [Build a simple CRUD app with TiDB and JDBC](/develop/dev-guide-sample-application-java-jdbc.md#step-2-get-the-code)
+- [Build a simple CRUD app with TiDB and Hibernate](/develop/dev-guide-sample-application-java-hibernate.md#step-2-get-the-code)
+- [Build the TiDB app using Spring Boot](/develop/dev-guide-sample-application-java-spring-boot.md)
 
 </div>
 
@@ -191,8 +191,8 @@ func buildBulkInsertSQL(amount int) string {
 
 For complete examples in Golang, see:
 
-- [Use go-sql-driver/mysql to build a simple CRUD application with TiDB and Golang](/develop/dev-guide-sample-application-golang.md#step-2-get-the-code)
-- [Use GORM to build a simple CRUD application with TiDB and Golang](/develop/dev-guide-sample-application-java.md#step-2-get-the-code)
+- [Use Go-MySQL-Driver to build a simple CRUD app with TiDB and Golang](/develop/dev-guide-sample-application-golang-sql-driver.md#step-2-get-the-code)
+- [Use GORM to build a simple CRUD app with TiDB and Golang](/develop/dev-guide-sample-application-golang-gorm.md#step-2-get-the-code)
 
 </div>
 
@@ -218,11 +218,11 @@ with get_connection(autocommit=True) as connection:
 
 For complete examples in Python, see:
 
-- [Use PyMySQL to build a simple CRUD application with TiDB and Python](/develop/dev-guide-sample-application-python.md#step-2-get-the-code)
-- [Use mysqlclient to build a simple CRUD application with TiDB and Python](/develop/dev-guide-sample-application-python.md#step-2-get-the-code)
-- [Use mysql-connector-python to build a simple CRUD application with TiDB and Python](/develop/dev-guide-sample-application-python.md#step-2-get-the-code)
-- [Use SQLAlchemy to build a simple CRUD application with TiDB and Python](/develop/dev-guide-sample-application-python.md#step-2-get-the-code)
-- [Use peewee to build a simple CRUD application with TiDB and Python](/develop/dev-guide-sample-application-python.md#step-2-get-the-code)
+- [Use PyMySQL to build a simple CRUD app with TiDB and Python](/develop/dev-guide-sample-application-python-pymysql.md#step-2-get-the-code)
+- [Use mysqlclient to build a simple CRUD app with TiDB and Python](/develop/dev-guide-sample-application-python-mysqlclient.md#step-2-get-the-code)
+- [Use MySQL Connector/Python to build a simple CRUD app with TiDB and Python](/develop/dev-guide-sample-application-python-mysql-connector.md#step-2-get-the-code)
+- [Use SQLAlchemy to build a simple CRUD app with TiDB and Python](/develop/dev-guide-sample-application-python-sqlalchemy.md#step-2-get-the-code)
+- [Use peewee to build a simple CRUD app with TiDB and Python](/develop/dev-guide-sample-application-python-peewee.md#step-2-get-the-code)
 
 </div>
 

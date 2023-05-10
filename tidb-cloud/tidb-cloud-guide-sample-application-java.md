@@ -15,7 +15,7 @@ This document describes how to use TiDB and Java to build a simple CRUD applicat
 >
 > It is recommended to use Java 8 or a later Java version.
 >
-> If you want to use Spring Boot for application development, refer to [Build the TiDB Application using Spring Boot](/develop/dev-guide-sample-application-spring-boot.md)
+> If you want to use Spring Boot for application development, refer to [Build the TiDB app using Spring Boot](/develop/dev-guide-sample-application-java-spring-boot.md)
 
 ## Step 1. Launch your TiDB cluster
 

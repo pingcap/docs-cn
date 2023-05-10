@@ -26,7 +26,7 @@ Gitpod is an open-source Kubernetes application (GitHub repository address: <htt
 
 After completing the [quick-start](#quick-start) steps, it will take a while for Gitpod to set up your workspace.
 
-Take the [Spring Boot Web](/develop/dev-guide-sample-application-spring-boot.md) application as an example. You can create a new workspace by the `https://gitpod.io/#targetFile=spring-jpa-hibernate_Makefile,targetMode=spring-jpa-hibernate/https://github.com/pingcap-inc/tidb-example-java` URL.
+Take the [Spring Boot Web](/develop/dev-guide-sample-application-java-spring-boot.md) application as an example. You can create a new workspace by the `https://gitpod.io/#targetFile=spring-jpa-hibernate_Makefile,targetMode=spring-jpa-hibernate/https://github.com/pingcap-inc/tidb-example-java` URL.
 
 After that, you will see a page similar to the following:
 
@@ -40,7 +40,7 @@ After all these tasks are finished, you will see a page similar to the following
 
 ![playground gitpod workspace ready](/media/develop/playground-gitpod-workspace-ready.png)
 
-You can test the API by [sending an HTTP request](/develop/dev-guide-sample-application-spring-boot.md#step-6-http-requests). Make sure to replace the `http://localhost:8080` URL with the one you found in the `REMOTE EXPLORER` area.
+You can test the API by [sending an HTTP request](/develop/dev-guide-sample-application-java-spring-boot.md#step-6-http-requests). Make sure to replace the `http://localhost:8080` URL with the one you found in the `REMOTE EXPLORER` area.
 
 ## Using custom Gitpod configuration and Docker image
 
