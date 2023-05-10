@@ -88,3 +88,40 @@ ignore-update-new-value-expr = "gender = 'male' and age > 18" # 过滤掉新值 
 > - TiDB 在更新聚簇索引的列值时，会将一个 UPDATE 事件拆分成为 DELETE 和 INSERT 事件，TiCDC 无法将该类事件识别为 UPDATE 事件，因此无法正确地进行过滤。
 >
 > - 在配置 SQL 表达式时，请确保符合 matcher 规则的所有表均包含了对应 SQL 表达式中指明的所有列，否则同步任务将无法创建成功。此外，若在同步的过程中表的结构发生变化，不再包含 SQL 表达式中的列，那么同步任务将会进入无法自动恢复的错误状态，你需要手动修改配置并进行恢复操作。
+
+## DDL 白名单
+
+目前 TiCDC 在同步 DDL 时使用白名单策略，只有在白名单内部的 DDL 才支持同步。不在白名单内的 DDL 会被 TiCDC 直接丢弃。
+
+以下为 TiCDC 支持同步的 DDL 的列表。
+
+1. create database
+2. drop database
+3. create table 
+4. drop table 
+5. add column 
+6. drop column
+7. create index / add index 
+8. drop index 
+9. truncate table 
+10. modify column 
+11. rename table 
+12. alter column default value
+13. alter table comment 
+14. rename index 
+15. add partition
+16. drop partition 
+17. truncate partition 
+18. create view 
+19. drop view 
+20. alter table character set 
+21. alter database character set
+22. recover table 
+23. add primary key 
+24. drop primary key 
+25. rebase auto id
+26. alter table index visibility 
+27. exchange partition 
+28. reorganize partition 
+29. alter table ttl 
+30. alter table remove ttl 
