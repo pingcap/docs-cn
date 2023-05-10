@@ -569,6 +569,10 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 ### `force-init-stats` <span class="version-mark">从 v7.1.0 版本开始引入</span>
 
+> **警告：**
+>
+> 该功能目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+
 + 用于控制 TiDB 启动时是否在统计信息初始化完成后再对外提供服务。
 + 默认值：false
 + 当 `force-init-stats` 为 `true` 时，TiDB 启动时会等到统计信息初始化完成后再对外提供服务。在表和分区数量较多的情况下，将 `force-init-stats` 设置为 `true` 可能会导致 TiDB 从启动到开始对外提供服务的时间变长。
