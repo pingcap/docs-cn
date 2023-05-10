@@ -67,9 +67,9 @@ summary: 在集群中搜索所有节点上的日志
 - Total RU Consumed：实时统计的 [Request Unit (RU)](/tidb-resource-control#什么是-request-unit-ru) 总消耗量
 - RU Consumed by Resource Groups：以 Resource Group（资源组）为单位进行实时统计的 [Request Unit (RU)](/tidb-resource-control.md#什么是-request-unit-ru) 消耗数量
 - TiDB
-  - CPU Quota: TiDB 最大 CPU 占用率
-  - CPU Usage: 所有 TiDB 实例 CPU 占用率
+    - CPU Quota: TiDB 最大 CPU 占用率
+    - CPU Usage: 所有 TiDB 实例 CPU 占用率
 - TiKV
-  - CPU Quota: TiKV 最大 CPU 占用率
-  - CPU Usage: 所有 TiKV 实例 CPU 占用率
-  - IO MBps: 所有 TiKV 实例 MBps
+    - CPU Quota: TiKV 最大 CPU 占用率
+    - CPU Usage: 所有 TiKV 实例 CPU 占用率
+    - IO MBps: 所有 TiKV 实例 MBps
