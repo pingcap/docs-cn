@@ -5,10 +5,6 @@ on:
     paths-ignore:
       - ".github/**"
     branches:
-<<<<<<< HEAD
-#       - master
-      - release-*
-=======
       - master
       - release-7.0
       - release-6.6
@@ -21,7 +17,6 @@ on:
       - release-5.0
       - release-4.0
       - release-3.0
->>>>>>> 745e69597a (limit trigger branches to release branch (#13922))
 
 jobs:
   trigger:
