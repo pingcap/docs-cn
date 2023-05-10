@@ -91,7 +91,7 @@ ignore-update-new-value-expr = "gender = 'male' and age > 18" # 过滤掉新值 
 
 ## DDL 白名单
 
-目前 TiCDC 在同步 DDL 时使用白名单策略，只有在白名单内部的 DDL 才支持同步。不在白名单内的 DDL 会被 TiCDC 直接丢弃。
+目前 TiCDC 在同步 DDL 时使用白名单策略，只有在白名单内部的 DDL 会同步到下游，不在白名单内的 DDL 会被 TiCDC 不会同步到下游。
 
 以下为 TiCDC 支持同步的 DDL 的列表。
 
