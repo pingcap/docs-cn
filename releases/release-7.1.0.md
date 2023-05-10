@@ -54,11 +54,11 @@ TiDB 版本：7.1.0 (LTS)
 
 * 增强下一代分区 Raft KV 存储引擎（实验特性）[#11515](https://github.com/tikv/tikv/issues/11515) [#12842](https://github.com/tikv/tikv/issues/12842) @[busyjay](https://github.com/busyjay) @[tonyxuqqi](https://github.com/tonyxuqqi) @[tabokie](https://github.com/tabokie) @[bufferflies](https://github.com/bufferflies) @[5kbpers](https://github.com/5kbpers) @[SpadeA-Tang](https://github.com/SpadeA-Tang) @[nolouch](https://github.com/nolouch) **tw:Oreoxmt**
 
-    TiDB v6.6.0 引入了分区 Raft KV 存储引擎作为实验特性，该引擎使用多个 RocksDB 实例存储 TiKV 的 Region 数据，每个 Region 的数据都独立存储在单独的 RocksDB 实例中。分区 Raft KV 能够更好地控制 RocksDB 实例的文件数和层级，实现 Region 间数据操作的物理隔离，并支持平稳管理更多的数据。与原 TiKV 存储引擎相比，使用分区 Raft KV 引擎在相同硬件条件和读写混合场景下，可实现约两倍的写入吞吐、三倍的读取吞吐以及缩短约 4/5 的弹性伸缩时间。
+    TiDB v6.6.0 引入了分区 Raft KV 存储引擎作为实验特性，该引擎使用多个 RocksDB 实例存储 TiKV 的 Region 数据，每个 Region 的数据都独立存储在单独的 RocksDB 实例中。分区 Raft KV 能够更好地控制 RocksDB 实例的文件数和层级，实现 Region 间数据操作的物理隔离，并支持平稳管理更多的数据。与原 TiKV 存储引擎相比，使用分区 Raft KV 引擎在相同硬件条件和读写混合场景下，可以实现大约两倍的写入吞吐量、三倍的读取吞吐量并缩短大约 4/5 的弹性扩展时间。
 
-    在 TiDB v7.1.0 中，分区 Raft KV 引擎与 TiFlash 兼容，支持 TiDB Lightning、br 和 TiCDC 等工具。该引擎目前仅支持在新集群中使用，暂不支持从原 TiKV 存储引擎直接升级到该引擎。
+    在 TiDB v7.1.0 中，分区 Raft KV 引擎与 TiFlash 兼容，并支持 TiDB Lightning、BR 和 TiCDC 等工具。
 
-    该功能目前是实验特性，不推荐在生产环境中使用。
+    该功能目前是实验特性，不推荐在生产环境中使用。目前仅支持在新集群中使用新引擎，暂不支持从原 TiKV 存储引擎直接升级到该引擎。
 
     更多信息，请参考[用户文档](/partitioned-raft-kv.md)。
 
