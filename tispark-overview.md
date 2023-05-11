@@ -105,7 +105,7 @@ TiSpark 2.4.4, 2.5.2, 3.0.2 and 3.1.1 are the latest stable versions and are hig
 
 You can get the TiSpark jar using one of the following methods:
 
-- Get from [maven central](https://search.maven.org/) and search with GroupId [![Maven Search](https://img.shields.io/badge/com.pingcap/tispark-green.svg)](http://search.maven.org/#search%7Cga%7C1%7Cpingcap)
+- Get from [maven central](https://search.maven.org/) and search for [`pingcap`](http://search.maven.org/#search%7Cga%7C1%7Cpingcap)
 - Get from [TiSpark releases](https://github.com/pingcap/tispark/releases)
 - Build from source with the steps below
 
