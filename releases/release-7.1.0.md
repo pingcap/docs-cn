@@ -24,7 +24,7 @@ TiDB 版本：7.1.0 (LTS)
 <tbody>
   <tr>
     <td rowspan="2">可扩展性与性能</td>
-    <td><a href="https://docs.pingcap.com/zh/tidb/dev/sql-non-prepared-plan-cache" target="_blank">会话级别非 Prepare 语句执行计划缓存</a> (GA)</td>
+    <td><a href="https://docs.pingcap.com/zh/tidb/dev/sql-non-prepared-plan-cache" target="_blank">会话级别非 Prepare 语句执行计划缓存</a> 持续增强</td>
     <td>支持在会话级别自动重用执行计划缓存，减少查询计划时间，缩短相同 SQL 查询的时间，而无需事先手动准备 Prepare Statement 语句。</td>
   </tr>
   <tr>
@@ -84,13 +84,13 @@ TiDB 版本：7.1.0 (LTS)
 
     更多信息，请参考[用户文档](/troubleshoot-hot-spot-issues.md#打散读热点)。
 
-* 支持缓存非 Prepare 语句的执行计划 (GA) [#36598](https://github.com/pingcap/tidb/issues/36598) @[qw4990](https://github.com/qw4990)
+* 增强缓存非 Prepare 语句执行计划的能力 (实验特性) [#36598](https://github.com/pingcap/tidb/issues/36598) @[qw4990](https://github.com/qw4990)
 
-    TiDB v7.0.0 引入了非 Prepare 语句的执行计划缓存作为实验特性，以提升在线交易场景的并发处理能力。该功能在 v7.1.0 正式 GA 并默认打开，支持缓存更多模式的 SQL。
+    TiDB 在 v7.1.0 继续对非 Prepare 语句执行计划进行增强，支持缓存更多模式的 SQL。
 
     为了提升内存利用率，TiDB v7.1.0 将非 Prepare 与 Prepare 语句的缓存池合并。你可以通过系统变量 [`tidb_session_plan_cache_size`](/system-variables.md#tidb_session_plan_cache_size-从-v710-版本开始引入) 设置缓存大小。原有的系统变量 [`tidb_prepared_plan_cache_size`](/system-variables.md#tidb_prepared_plan_cache_size-从-v610-版本开始引入) 和 [`tidb_non_prepared_plan_cache_size`](/system-variables.md#tidb_non_prepared_plan_cache_size) 被废弃。
 
-    为保持向前兼容，从旧版本升级到 v7.1.0 时，缓存池大小 `tidb_session_plan_cache_size` 的值与 `tidb_prepared_plan_cache_size` 保持一致，[`tidb_enable_non_prepared_plan_cache`](/system-variables.md#tidb_enable_non_prepared_plan_cache) 保持升级前的设置。经过性能测试后，你可通过 `tidb_enable_non_prepared_plan_cache` 开启非 Parepare 语句的执行计划缓存功能。对于新创建的 v7.1.0 集群，非 Parepare 语句的缓存功能默认打开。
+    为保持向前兼容，从旧版本升级到 v7.1.0 时，缓存池大小 `tidb_session_plan_cache_size` 的值与 `tidb_prepared_plan_cache_size` 保持一致，[`tidb_enable_non_prepared_plan_cache`](/system-variables.md#tidb_enable_non_prepared_plan_cache) 保持升级前的设置。经过性能测试后，你可通过 `tidb_enable_non_prepared_plan_cache` 开启非 Parepare 语句的执行计划缓存功能。 DML 执行计划的缓存受另一个变量 [`tidb_enable_non_prepared_plan_cache_for_dml`](/system-variables.md#tidb_enable_non_prepared_plan_cache_for_dml-从-v710-版本开始引入) 的控制， 默认关闭，即默认情况下，非 Prepare 的 DML 的计划不会被缓存。
 
     更多信息，请参考[用户文档](/sql-non-prepared-plan-cache.md)。
 
@@ -281,7 +281,6 @@ TiDB 版本：7.1.0 (LTS)
 | [`tidb_non_prepared_plan_cache_size`](/system-variables.md#tidb_non_prepared_plan_cache_size) | 废弃 | 从 v7.1.0 起，该变量被废弃，你可以使用 [`tidb_session_plan_cache_size`](/system-variables.md#tidb_session_plan_cache_size-从-v710-版本开始引入) 控制 Plan Cache 最多能够缓存的计划数量。 |
 | [`tidb_prepared_plan_cache_size`](/system-variables.md#tidb_prepared_plan_cache_size-从-v610-版本开始引入) | 废弃 | 从 v7.1.0 起，该变量被废弃，你可以使用 [`tidb_session_plan_cache_size`](/system-variables.md#tidb_session_plan_cache_size-从-v710-版本开始引入) 控制 Plan Cache 最多能够缓存的计划数量。 |
 | `tidb_ddl_distribute_reorg` | 删除 | 重命名为 [`tidb_enable_dist_task`](/system-variables.md#tidb_enable_dist_task-从-v710-版本开始引入)。 |
-| [`tidb_enable_non_prepared_plan_cache`](/system-variables.md#tidb_enable_non_prepared_plan_cache) | 修改 | 经进一步的测试后，该变量默认值从 `OFF` 修改为 `ON`，表示默认开启非 Prepare 语句执行计划缓存。 |
 | [`tidb_load_based_replica_read_threshold`](/system-variables.md#tidb_load_based_replica_read_threshold-从-v700-版本开始引入) | 修改 | 该变量从 v7.1.0 开始生效，用于设置基于负载的 replica read 的触发阈值。经进一步的测试后，该变量默认值从 `"0s"` 修改为 `"1s"`。 |
 | [`tidb_opt_enable_late_materialization`](/system-variables.md#tidb_opt_enable_late_materialization-从-v700-版本开始引入) | 修改 | 默认值从 `OFF` 修改为 `ON`，代表 [TiFlash 延迟物化](/tiflash/tiflash-late-materialization.md)功能默认开启。 |
 | [`tidb_enable_dist_task`](/system-variables.md#tidb_enable_dist_task-从-v710-版本开始引入) | 新增 | 控制是否开启分布式执行框架。开启分布式执行后，DDL、Import 等支持的后端任务将会由集群中多个 TiDB 节点共同完成。该变量由 `tidb_ddl_distribute_reorg` 改名而来。|
