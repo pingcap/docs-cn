@@ -261,6 +261,12 @@ TiDB 版本：7.1.0 (LTS)
 
     从 v7.1.0 起，TiFlash 在向 TiDB 提供 [`INFORMATION_SCHEMA.TIFLASH_TABLES`](/information-schema/information-schema-tiflash-tables.md) 和 [`INFORMATION_SCHEMA.TIFLASH_SEGMENTS`](/information-schema/information-schema-tiflash-segments.md) 系统表的查询服务时，不再使用 HTTP 端口，而是使用 gRPC 端口，从而避免 HTTP 服务的安全风险。
 
+* 支持 LDAP 身份认证[#43580](https://github.com/pingcap/tidb/issues/43580)@[YangKeao](https://github.com/YangKeao)
+
+    从 v7.1.0 起，TiDB 支持 LDAP 身份认证，支持认证插件：authentication_ldap_sasl、authentication_ldap_simple。
+
+     更多信息，请参考[用户文档](/security-compatibility-with-mysql.md)。
+
 ## 兼容性变更
 
 > **注意：**
