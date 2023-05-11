@@ -5,6 +5,10 @@ summary: 介绍 TiDB 中非 Prepare 语句执行计划缓存的原理、使用�
 
 # 非 Prepare 语句执行计划缓存
 
+> **警告：**
+>
+> 非 Prepare 语句执行计划缓存 (Non-Prepared Plan Cache) 目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+
 对于某些非 `PREPARE` 语句，TiDB 可以像 [`Prepare`/`Execute` 语句](/sql-prepared-plan-cache.md)一样支持执行计划缓存。这可以让这些语句跳过优化器阶段，以提升性能。
 
 ## 原理
@@ -19,8 +23,6 @@ Non-Prepared Plan Cache 为会话级别，并且与 [Prepared Plan Cache](/sql-p
 ## 使用方法
 
 目前，你可以通过 [`tidb_enable_non_prepared_plan_cache`](/system-variables.md#tidb_enable_non_prepared_plan_cache) 开启或关闭 Non-Prepared Plan Cache。同时，你还可以通过 [`tidb_session_plan_cache_size`](/system-variables.md#tidb_session_plan_cache_size-从-v710-版本开始引入) 来控制 Plan Cache 的大小。当缓存的计划数超过 `tidb_session_plan_cache_size` 时，TiDB 会使用 LRU (Least Recently Used) 策略进行逐出。
-
-`tidb_enable_non_prepared_plan_cache` 在 v7.1.0 之前版本中默认值为 `OFF`，即默认关闭。在 v7.1.0 及之后的版本中默认值为 `ON`，即默认开启。
 
 从 v7.1.0 开始，你可以通过变量 [`tidb_plan_cache_max_plan_size`](/system-variables.md#tidb_plan_cache_max_plan_size-从-v710-版本开始引入) 来设置可以缓存的计划的最大大小，默认为 2 MB。超过该值的执行计划将不会被缓存到 Plan Cache 中。
 
