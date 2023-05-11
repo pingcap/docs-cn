@@ -98,7 +98,7 @@ enable-table-across-nodes = false
 region-threshold = 100000
 # 打开该功能后，该功能会对每分钟修改行数大于 `write-key-threshold` 值的表生效。
 # 注意：
-# * 该参数默认值为 0，代表该功能默认不会按表的修改行数来切分表的同步范围。
+# * `write-key-threshold` 参数默认值为 0，代表该功能默认不会按表的修改行数来切分表的同步范围。
 # * 你可以根据集群负载来配置该参数，如 30000，代表当表每分钟的更新行数超过 30000 时，该功能将会切分表的同步范围。
 # * 当 `region-threshold` 和 `write-key-threshold` 同时配置时，
 #   TiCDC 将优先检查修改行数是否大于 `write-key-threshold`，
