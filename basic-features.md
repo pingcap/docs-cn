@@ -169,7 +169,7 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 | [限制统计信息的内存使用量](/statistics.md#统计信息收集的内存限制) | E | E | E | N | N | N | N | N | N |
 | [随机采样约 10000 行数据来快速构建统计信息](/system-variables.md#tidb_enable_fast_analyze) | E | E | E | E | E | E | E | E | E |
 | [锁定统计信息](/statistics.md#锁定统计信息) | E | E | N | N | N | N | N | N | N |
-| [轻量级统计信息初始化](/statistics#统计信息的加载) | E | N | N | N | N | N | N | N | N |
+| [轻量级统计信息初始化](/statistics.md#统计信息的加载) | E | N | N | N | N | N | N | N | N |
 
 ## 安全
 
