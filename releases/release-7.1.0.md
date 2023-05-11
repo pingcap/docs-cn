@@ -24,7 +24,7 @@ TiDB 版本：7.1.0 (LTS)
 <tbody>
   <tr>
     <td rowspan="2">可扩展性与性能</td>
-    <td><a href="https://docs.pingcap.com/zh/tidb/dev/sql-non-prepared-plan-cache" target="_blank">会话级别非 Prepare 语句执行计划缓存</a> 持续增强</td>
+    <td>持续增强<a href="https://docs.pingcap.com/zh/tidb/dev/sql-non-prepared-plan-cache" target="_blank">会话级别非 Prepare 语句执行计划缓存</a>（实验特性）</td>
     <td>支持在会话级别自动重用执行计划缓存，减少查询计划时间，缩短相同 SQL 查询的时间，而无需事先手动准备 Prepare Statement 语句。</td>
   </tr>
   <tr>
@@ -84,13 +84,15 @@ TiDB 版本：7.1.0 (LTS)
 
     更多信息，请参考[用户文档](/troubleshoot-hot-spot-issues.md#打散读热点)。
 
-* 增强缓存非 Prepare 语句执行计划的能力 (实验特性) [#36598](https://github.com/pingcap/tidb/issues/36598) @[qw4990](https://github.com/qw4990)
+* 增强缓存非 Prepare 语句执行计划的能力（实验特性）[#36598](https://github.com/pingcap/tidb/issues/36598) @[qw4990](https://github.com/qw4990) **tw:Oreoxmt**
 
-    TiDB 在 v7.1.0 继续对非 Prepare 语句执行计划进行增强，支持缓存更多模式的 SQL。
+    TiDB v7.0.0 引入了非 Prepare 语句的执行计划缓存作为实验特性，以提升在线交易场景的并发处理能力。在 v7.1.0 中，TiDB 继续增强非 Prepare 语句执行计划，支持缓存更多模式的 SQL。
 
     为了提升内存利用率，TiDB v7.1.0 将非 Prepare 与 Prepare 语句的缓存池合并。你可以通过系统变量 [`tidb_session_plan_cache_size`](/system-variables.md#tidb_session_plan_cache_size-从-v710-版本开始引入) 设置缓存大小。原有的系统变量 [`tidb_prepared_plan_cache_size`](/system-variables.md#tidb_prepared_plan_cache_size-从-v610-版本开始引入) 和 [`tidb_non_prepared_plan_cache_size`](/system-variables.md#tidb_non_prepared_plan_cache_size) 被废弃。
 
-    为保持向前兼容，从旧版本升级到 v7.1.0 时，缓存池大小 `tidb_session_plan_cache_size` 的值与 `tidb_prepared_plan_cache_size` 保持一致，[`tidb_enable_non_prepared_plan_cache`](/system-variables.md#tidb_enable_non_prepared_plan_cache) 保持升级前的设置。经过性能测试后，你可通过 `tidb_enable_non_prepared_plan_cache` 开启非 Parepare 语句的执行计划缓存功能。 DML 执行计划的缓存受另一个变量 [`tidb_enable_non_prepared_plan_cache_for_dml`](/system-variables.md#tidb_enable_non_prepared_plan_cache_for_dml-从-v710-版本开始引入) 的控制， 默认关闭，即默认情况下，非 Prepare 的 DML 的计划不会被缓存。
+    为了保持向前兼容，从旧版本升级到 v7.1.0 时，缓存池大小 `tidb_session_plan_cache_size` 的值与 `tidb_prepared_plan_cache_size` 保持一致，[`tidb_enable_non_prepared_plan_cache`](/system-variables.md#tidb_enable_non_prepared_plan_cache) 保持升级前的设置。经过性能测试后，你可通过 `tidb_enable_non_prepared_plan_cache` 开启非 Parepare 语句的执行计划缓存功能。
+
+    非 Prepare 语句执行计划缓存默认不支持 DML 语句，若要启用支持，你可以将 [`tidb_enable_non_prepared_plan_cache_for_dml`](/system-variables.md#tidb_enable_non_prepared_plan_cache_for_dml-从-v710-版本开始引入) 系统变量设置为 `ON`。
 
     更多信息，请参考[用户文档](/sql-non-prepared-plan-cache.md)。
 
@@ -108,7 +110,7 @@ TiDB 版本：7.1.0 (LTS)
 
 ### 稳定性
 
-* 资源管控成为正式功能 (GA) [#38825](https://github.com/pingcap/tidb/issues/38825) @[nolouch](https://github.com/nolouch) @[BornChanger](https://github.com/BornChanger) @[glorv](https://github.com/glorv) @[tiancaiamao](https://github.com/tiancaiamao) @[Connor1996](https://github.com/Connor1996) @[JmPotato](https://github.com/JmPotato) @[hnes](https://github.com/hnes) @[CabinfeverB](https://github.com/CabinfeverB) @[HuSharp](https://github.com/HuSharp)
+* 资源管控成为正式功能 (GA) [#38825](https://github.com/pingcap/tidb/issues/38825) @[nolouch](https://github.com/nolouch) @[BornChanger](https://github.com/BornChanger) @[glorv](https://github.com/glorv) @[tiancaiamao](https://github.com/tiancaiamao) @[Connor1996](https://github.com/Connor1996) @[JmPotato](https://github.com/JmPotato) @[hnes](https://github.com/hnes) @[CabinfeverB](https://github.com/CabinfeverB) @[HuSharp](https://github.com/HuSharp) **tw:hfxsd**
 
     TiDB 持续增强资源管控能力，在 v7.1.0 该功能正式 GA。该特性将极大地提升 TiDB 集群的资源利用率和性能表现。资源管控特性的引入对 TiDB 具有里程碑的意义，你可以将一个分布式数据库集群划分成多个逻辑单元，将不同的数据库用户映射到对应的资源组中，并根据实际需求设置每个资源组的配额。当集群资源紧张时，同一资源组内的会话所使用的全部资源将受到配额限制，防止某一资源组的过度消耗对其他资源组的会话造成影响。
 
@@ -116,7 +118,7 @@ TiDB 版本：7.1.0 (LTS)
 
     在 TiDB v7.1.0 中，该特性增加了基于实际负载和硬件部署来估算系统容量上限的能力，为你进行容量规划提供更准确的参考。这有助于你更好地管理 TiDB 的资源分配，从而满足企业级场景的稳定性需求。
 
-    为了更好的用户体验，TiDB Dashboard 增加了资源管控的管理页面。你可以在该页面查看资源组配置，并通过可视化的方式进行容量预估，便于合理配置资源。 
+    为了更好的用户体验，TiDB Dashboard 增加了资源管控的管理页面。你可以在该页面查看资源组配置，并通过可视化的方式进行容量预估，便于合理配置资源。
 
     更多信息，请参考[用户文档](/tidb-resource-control.md)。
 
@@ -138,7 +140,7 @@ TiDB 版本：7.1.0 (LTS)
 
     开启统计信息同步加载特性后，TiDB 可以大幅减少启动时必须载入的统计信息的数量，从而提升启动过程中统计信息的加载速度。该特性提升了 TiDB 在复杂运行环境下的稳定性，并降低了部分 TiDB 节点重启对整体服务的影响。你可以通过修改 TiDB 配置参数 [`lite-init-stats`](/tidb-configuration-file.md#lite-init-stats-从-v710-版本开始引入) 为 `true` 来开启该特性。注意该参数为实验特性。
 
-    同时引入了配置参数 [`force-init-stats`](/tidb-configuration-file.md#force-init-stats-从-v710-版本开始引入)。该参数可以强制 TiDB 在统计信息缓存加载完成后再对外提供服务，避免了启动阶段由于统计信息未加载造成的 SQL 性能问题。该参数默认关闭。 
+    同时引入了配置参数 [`force-init-stats`](/tidb-configuration-file.md#force-init-stats-从-v710-版本开始引入)。该参数可以强制 TiDB 在统计信息缓存加载完成后再对外提供服务，避免了启动阶段由于统计信息未加载造成的 SQL 性能问题。该参数默认关闭。
 
     更多信息，请参考[用户文档](/tidb-configuration-file.md)。
 
