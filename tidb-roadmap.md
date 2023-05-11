@@ -1,6 +1,6 @@
 ---
 title: TiDB 路线图
-summary:
+summary: 了解 TiDB 未来的发展方向，包括新特性和改进提升。
 ---
 
 # TiDB 路线图
