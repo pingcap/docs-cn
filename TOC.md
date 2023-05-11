@@ -124,6 +124,7 @@
     - [Migrate and Merge MySQL Shards of Large Datasets](/migrate-large-mysql-shards-to-tidb.md)
     - [Migrate from CSV Files](/migrate-from-csv-files-to-tidb.md)
     - [Migrate from SQL Files](/migrate-from-sql-files-to-tidb.md)
+    - [Migrate from Parquet Files](/migrate-from-parquet-files-to-tidb.md)
     - [Migrate from One TiDB Cluster to Another TiDB Cluster](/migrate-from-tidb-to-tidb.md)
     - [Migrate from TiDB to MySQL-compatible Databases](/migrate-from-tidb-to-mysql.md)
   - Advanced Migration

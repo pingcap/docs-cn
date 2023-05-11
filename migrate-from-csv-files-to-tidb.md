@@ -13,7 +13,7 @@ TiDB Lightning can read data from CSV files and other delimiter formats, such as
 ## Prerequisites
 
 - [Install TiDB Lightning](/migration-tools.md).
-- [Get the target database privileges required for TiDB Lightning](/tidb-lightning/tidb-lightning-faq.md#what-are-the-privilege-requirements-for-the-target-database).
+- [Get the target database privileges required for TiDB Lightning](/tidb-lightning/tidb-lightning-requirements.md#privileges-of-the-target-database).
 
 ## Step 1. Prepare the CSV files
 
@@ -39,8 +39,6 @@ Because CSV files do not contain schema information, before importing data from 
 
 Create a `tidb-lightning.toml` file with the following content:
 
-{{< copyable "shell-regular" >}}
-
 ```toml
 [lightning]
 # Log
@@ -50,6 +48,7 @@ file = "tidb-lightning.log"
 [tikv-importer]
 # "local": Default backend. The local backend is recommended to import large volumes of data (1 TiB or more). During the import, the target TiDB cluster cannot provide any service.
 # "tidb": The "tidb" backend is recommended to import data less than 1 TiB. During the import, the target TiDB cluster can provide service normally.
+# For more information on import mode, refer to <https://docs.pingcap.com/tidb/stable/tidb-lightning-overview#tidb-lightning-architecture>
 backend = "local"
 # Set the temporary storage directory for the sorted Key-Value files. The directory must be empty, and the storage space must be greater than the size of the dataset to be imported. For better import performance, it is recommended to use a directory different from `data-source-dir` and use flash storage, which can use I/O exclusively.
 sorted-kv-dir = "/mnt/ssd/sorted-kv-dir"

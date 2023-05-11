@@ -52,6 +52,7 @@ If the data size of the sharded tables is large (for example, larger than 1 TiB)
 
 - [Migrate data from CSV files to TiDB](/migrate-from-csv-files-to-tidb.md)
 - [Migrate data from SQL files to TiDB](/migrate-from-sql-files-to-tidb.md)
+- [Migrate data from Parquet files to TiDB](/migrate-from-parquet-files-to-tidb.md)
 
 ## Incremental replication between TiDB clusters
 
