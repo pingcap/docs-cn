@@ -176,7 +176,7 @@ TiDB 会定时采集资源管控的运行时信息，并在 Grafana 的 **Resour
 
 TiKV 中也记录了来自于不同资源组的请求 QPS，详见 [TiKV 监控指标详解](/grafana-tikv-dashboard.md#grpc)。
 
-Dashboard 中可以查看当前 [RESOURCE_GROUPS](/information-schema/information-schema-resource-groups.md#resource_groups) 表。详见 [Dashboard 资源管控页面](/dashboard/dashboard-resource-control.md) 。
+TiDB Dashboard 中可以查看当前 [`RESOURCE_GROUPS`](/information-schema/information-schema-resource-groups.md) 表中资源组的数据。详见 [TiDB Dashboard 资源管控页面](/dashboard/dashboard-resource-control.md)。
 
 ## 工具兼容性
 

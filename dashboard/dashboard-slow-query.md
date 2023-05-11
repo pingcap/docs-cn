@@ -18,7 +18,7 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-slow-query/']
 
 可以通过以下两种方法访问慢查询页面：
 
-* 登录 TiDB Dashboard 后，在左侧导航条点击**慢查询** (**Slow Queries**)：
+* 登录 TiDB Dashboard 后，在左侧导航栏中点击**慢查询** (**Slow Queries**)：
 
 ![access 访问页面](/media/dashboard/dashboard-slow-queries-access-v620.png)
 

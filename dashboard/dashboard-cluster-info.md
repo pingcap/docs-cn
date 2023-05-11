@@ -12,7 +12,7 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-cluster-info/']
 
 可以通过以下两种方法访问集群信息页面：
 
-- 登录 TiDB Dashboard 后，在左侧导航条点击**集群信息** (Cluster Info)：
+- 登录 TiDB Dashboard 后，在左侧导航栏中点击**集群信息** (Cluster Info)：
 
   ![访问](/media/dashboard/dashboard-cluster-info-access-v650.png)
 
