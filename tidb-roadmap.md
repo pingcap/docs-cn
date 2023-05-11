@@ -257,7 +257,7 @@ TiDB 路线图展示了 TiDB 未来的发展方向，包括新特性和改进提
           <br />
           <li>
             <b>TiCDC 支持多个上游数据源</b>
-            <br /><i>支持从多个 TiDB 集群到 TiCD (N:1)</i>
+            <br /><i>支持从多个 TiDB 集群到 TiCDC (N:1)</i>
           </li>
           <br />
           <li>
