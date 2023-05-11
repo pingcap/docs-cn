@@ -35,23 +35,13 @@ Info: {"upstream_id":7171388873935111376,"namespace":"default","id":"simple-repl
 
 ## Configure sink URI
 
-This section describes how to configure storage services in the changefeed URI, including Amazon S3, Azure Blob Storage, and NFS.
-
-### Configure external storage
-
-The URI parameters of Amazon S3, GCS, and Azure Blob Storage in TiCDC are the same as their URI parameters in BR. For details, see [Backup storage URI format](/br/backup-and-restore-storages.md#uri-format-description).
-
-### Configure NFS
-
-The following configuration saves row change events to NFS:
+This section describes how to configure Sink URI for storage services, including Amazon S3, GCS, Azure Blob Storage, and NFS. Sink URI is used to specify the connection information of the TiCDC target system. The format is as follows:
 
 ```shell
---sink-uri="file:///my-directory/prefix"
+[scheme]://[host]/[path]?[query_parameters]
 ```
 
-### Optional parameters
-
-Other optional parameters in the URI are as follows:
+For `[query_parameters]` in the URI, the following parameters can be configured:
 
 | Parameter | Description | Default value | Value range |
 | :---------| :---------- | :------------ | :---------- |
@@ -59,10 +49,44 @@ Other optional parameters in the URI are as follows:
 | `flush-interval` | Interval for saving data changes to cloud storage in the downstream.   | `5s` | `[2s, 10m]` |
 | `file-size` | A data change file is stored to cloud storage if the number of bytes exceeds the value of this parameter. | `67108864` | `[1048576, 536870912]` |
 | `protocol` | The protocol format of the messages sent to the downstream.  | N/A |  `canal-json` and `csv` |
+| `enable-tidb-extension` | When `protocol` is set to `canal-json` and `enable-tidb-extension` is set to `true`, TiCDC sends [WATERMARK events](/ticdc/ticdc-canal-json.md#watermark-event) and adds the [TiDB extension field](/ticdc/ticdc-canal-json.md#tidb-extension-field) to Canal-JSON messages. | `false` | `false` and `true` |
 
 > **Note:**
 >
 > Data change files are saved to the downstream when either `flush-interval` or `file-size` meets the requirements.
+> The `protocol` parameter is mandatory. If TiCDC does not receive this parameter when creating a changefeed, the `CDC:ErrSinkUnknownProtocol` error is returned.
+
+### Configure sink URI for external storage
+
+The following is an example configuration for Amazon S3:
+
+```shell
+--sink-uri="s3://bucket/prefix?protocol=canal-json"
+```
+
+The following is an example configuration for GCS:
+
+```shell
+--sink-uri="gcs://bucket/prefix?protocol=canal-json"
+```
+
+The following is an example configuration for Azure Blob Storage:
+
+```shell
+--sink-uri="azure://bucket/prefix?protocol=canal-json"
+```
+
+> **Tip:**
+>
+> The URI parameters of Amazon S3, GCS, and Azure Blob Storage in TiCDC are the same as their URI parameters in BR. For details, see [Backup storage URI format](/br/backup-and-restore-storages.md#uri-format-description).
+
+### Configure sink URI for NFS
+
+The following is an example configuration for NFS:
+
+```shell
+--sink-uri="file:///my-directory/prefix?protocol=canal-json"
+```
 
 ## Storage path structure
 
@@ -76,7 +100,7 @@ Data change records are saved to the following path:
 {scheme}://{prefix}/{schema}/{table}/{table-version-separator}/{partition-separator}/{date-separator}/CDC{num}.{extension}
 ```
 
-- `scheme`: specifies the data transmission protocol, or the storage type, for example, <code>**s3**://xxxxx</code>.
+- `scheme`: specifies the storage type, for example, `s3`, `gcs`, `azure`, or `file`.
 - `prefix`: specifies the user-defined parent directory, for example, <code>s3://**bucket/bbb/ccc**</code>.
 - `schema`: specifies the schema name, for example, <code>s3://bucket/bbb/ccc/**test**</code>.
 - `table`: specifies the table name, for example, <code>s3://bucket/bbb/ccc/test/**table1**</code>.
@@ -92,10 +116,11 @@ Data change records are saved to the following path:
 
 > **Note:**
 >
-> The table version changes in the following two cases:
+> The table version changes in the following three cases:
 >
 > - After a DDL operation is performed, the table version is the TSO when the DDL is executed in the upstream TiDB. However, the change of the table version does not mean the change of the table schema. For example, adding a comment to a column does not cause the `schema.json` file content to change.
 > - The changefeed process restarts. The table version is the checkpoint TSO when the process restarts. When there are many tables and the process restarts, it takes a long time to traverse all directories and find the position where each table was written last time. Therefore, data is written to a new directory with the version being the checkpoint TSO, instead of to the earlier directory.
+> - After a table scheduling occurs, the table version is the Changefeed checkpoint TSO when the table is scheduled to the current node.
 
 ### Index files
 
