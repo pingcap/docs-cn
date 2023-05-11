@@ -91,7 +91,7 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 | 高级 SQL 功能 | 7.1 | 6.5 | 6.1 | 5.4 | 5.3 | 5.2 | 5.1 | 5.0 | 4.0 |
 |---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
 | [Prepare 语句执行计划缓存](/sql-prepared-plan-cache.md) | Y | Y | Y | Y | Y | E | E | E | E |
-| [非 Prepare 语句执行计划缓存](/sql-non-prepared-plan-cache.md) | Y | N | N | N | N | N | N | N | N |
+| [非 Prepare 语句执行计划缓存](/sql-non-prepared-plan-cache.md) | E | N | N | N | N | N | N | N | N |
 | [执行计划管理 (SPM)](/sql-plan-management.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y |
 | [根据历史执行计划创建绑定](/sql-plan-management.md#根据历史执行计划创建绑定) | Y | E | N | N | N | N | N | N | N |
 | [下推计算结果缓存 (Coprocessor Cache)](/coprocessor-cache.md) | Y | Y | Y | Y | Y | Y | Y | Y | E |
@@ -169,6 +169,7 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 | [限制统计信息的内存使用量](/statistics.md#统计信息收集的内存限制) | E | E | E | N | N | N | N | N | N |
 | [随机采样约 10000 行数据来快速构建统计信息](/system-variables.md#tidb_enable_fast_analyze) | E | E | E | E | E | E | E | E | E |
 | [锁定统计信息](/statistics.md#锁定统计信息) | E | E | N | N | N | N | N | N | N |
+| [轻量级统计信息初始化](/statistics#统计信息的加载) | E | N | N | N | N | N | N | N | N |
 
 ## 安全
 
