@@ -346,7 +346,7 @@ ANALYZE INCREMENTAL TABLE TableName PARTITION PartitionNameList INDEX [IndexName
 
 #### 关闭自动更新
 
-如果发现自动更新统计信息消耗过多的资源，影响在线业务，可以通过 [`tidb_enable_auto_analyze`](/system-variables.md#tidb_enable_auto_analyze-从-v610-版本开始引入) 参数关闭自动更新。
+如果发现自动更新统计信息消耗过多的资源，影响在线业务，可以通过系统变量 [`tidb_enable_auto_analyze`](/system-variables.md#tidb_enable_auto_analyze-从-v610-版本开始引入) 关闭自动更新。
 
 #### 终止后台的 `ANALYZE` 任务
 
