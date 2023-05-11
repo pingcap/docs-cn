@@ -427,8 +427,10 @@ This section gives the alert rules for the PD component.
 
 * Solution:
 
-    * Check whether the performance of the store is proper.
-    * Set the `raftstore.inspect-interval` configuration item to a larger value to increase the timeout limit of latency.
+    * Watch the [**TiKV-Details** > **PD** dashboard](/grafana-tikv-dashboard.md#pd) and view the Store Slow Score metric. Identify the node with a metric value exceeding 80, which is detected as a slow node.
+    * Watch the [**TiKV-Details** > **Raft IO** dashboard](/grafana-tikv-dashboard.md#raft-io) and see whether the latency increases. If the latency is high, it means a bottleneck might exist in the disk.
+    * Set the [`raftstore.inspect-interval`](/tikv-configuration-file.md#inspect-interval) configuration item to a larger value to increase the timeout limit of latency.
+    * For further analysis of performance issues of the alerted TiKV node and tuning methods, see [Performance analysis and tuning](/performance-tuning-methods.md#storage-async-write-duration-store-duration-and-apply-duration).
 
 ## TiKV alert rules
 
@@ -496,9 +498,9 @@ This section gives the alert rules for the TiKV component.
 
 * Solution:
 
-    1. Watch the Raft Propose monitor, and see whether the alerted TiKV node has a much higher Raft propose than other TiKV nodes. If so, it means that there are one or more hot spots on this TiKV. You need to check whether the hot spot scheduling can work properly.
-    2. Watch the Raft I/O monitor, and see whether the latency increases. If the latency is high, it means a bottleneck might exist in the disk. One feasible but unsafe solution is setting `sync-log` to `false`.
-    3. Watch the Raft Process monitor, and see whether the tick duration is high. If so, you need to add `raft-base-tick-interval = "2s"` under the `[raftstore]` configuration.
+    1. Watch the [**TiKV-Details** > **Raft Propose** dashboard](/grafana-tikv-dashboard.md#raft-propose), and see whether the alerted TiKV node has a much higher Raft propose than other TiKV nodes. If so, it means that there are one or more hot spots on this TiKV. You need to check whether the hot spot scheduling can work properly.
+    2. Watch the [**TiKV-Details** > **Raft IO** dashboard](/grafana-tikv-dashboard.md#raft-io), and see whether the latency increases. If the latency is high, it means a bottleneck might exist in the disk.
+    3. Watch the [**TiKV-Details** > **Raft process** dashboard](/grafana-tikv-dashboard.md#raft-process), and see whether the `tick duration` is high. If so, you need to set [`raftstore.raft-base-tick-interval`](/tikv-configuration-file.md#raft-base-tick-interval) to `"2s"`.
 
 #### `TiKV_write_stall`
 
@@ -552,8 +554,9 @@ This section gives the alert rules for the TiKV component.
 
 * Solution:
 
-    1. Check the pressure on Raftstore. See the solution in [`TiKV_channel_full_total`](#tikv_channel_full_total).
-    2. Check the pressure on the apply worker thread.
+    1. Watch the [**TiKV-Details** > **Raft propose** dashboard](/grafana-tikv-dashboard.md#raft-propose) and see whether the **99% Propose wait duration per server** metric of the alerted TiKV node is significantly higher than that of other TiKV nodes. If so, it indicates that hotspots exist on this TiKV node, and you need to check whether the hotspot scheduling works properly.
+    2. Watch the [**TiKV-Details** > **Raft IO** dashboard](/grafana-tikv-dashboard.md#raft-io) and see whether the latency increases. If the latency is high, it means a bottleneck might exist in the disk.
+    3. For further analysis of performance issues of the alerted TiKV node and tuning methods, see [Performance analysis and tuning](/performance-tuning-methods.md#storage-async-write-duration-store-duration-and-apply-duration).
 
 #### `TiKV_coprocessor_request_wait_seconds`
 
@@ -751,7 +754,7 @@ This section gives the alert rules for the TiKV component.
 
 * Solution:
 
-    Check which kind of tasks has a higher value from the `Worker pending tasks` metric in the [**TiKV-Details** > **Task** dashboard](/grafana-tikv-dashboard.md#task). If it is a coprocessor task, you can refer to [`TiKV_coprocessor_request_wait_seconds`](#tikv_coprocessor_request_wait_seconds).
+    Check which kind of tasks has a higher value from the `Worker pending tasks` metric in the [**TiKV-Details** > **Task** dashboard](/grafana-tikv-dashboard.md#task).
 
 #### `TiKV_low_space`
 
