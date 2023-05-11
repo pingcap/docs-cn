@@ -451,7 +451,7 @@ summary: 了解如何处理 TiDB 集群常见问题。
 
 ### 6.3 TiDB Lightning 问题
 
-- 6.3.1 TiDB Lightning 是快速的全量数据导入工具，见 [TiDB Lightning on GitHub](https://github.com/pingcap/tidb-lightning)。
+- 6.3.1 TiDB Lightning 是快速的全量数据导入工具，见 [TiDB Lightning on GitHub](https://github.com/pingcap/tidb/tree/master/br/pkg/lightning)。
 
 - 6.3.2 导入速度太慢。
 
