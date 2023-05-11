@@ -124,7 +124,8 @@ Restore KV Files <--------------------------------------------------------------
 测试场景 1（[TiDB Cloud](https://tidbcloud.com) 上部署）
 
 - TiKV 节点（8 core，16 GB 内存）数量：21
-- 配置：[import] num-threads: 8
+- TiKV 配置：[import] num-threads: 8
+- br 配置: concurrency: 128
 - Region 数量：183,000
 - 集群新增日志数据：10 GB/h
 - 写入 (INSERT/UPDATE/DELETE) QPS：10,000
@@ -132,7 +133,8 @@ Restore KV Files <--------------------------------------------------------------
 测试场景 2（本地部署）
 
 - TiKV 节点（8 core，64 GB 内存）数量：6
-- 配置：[import] num-threads: 8
+- TiKV 配置：[import] num-threads: 8
+- br 配置: concurrency: 128
 - Region 数量：50,000
 - 集群新增日志数据：10 GB/h
 - 写入 (INSERT/UPDATE/DELETE) QPS：10,000
