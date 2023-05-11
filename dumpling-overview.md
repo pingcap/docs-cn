@@ -49,7 +49,7 @@ TiDB 还提供了其他工具，你可以根据需要选择使用：
 > - TiDB 集群正在 Kubernetes 上运行（Dumpling 本身在 Kubernetes 环境中运行时除外）。
 > - TiDB 集群正在 TiDB Cloud 上运行。
 >
-> 在这种情况下，你需要手动[调整 TiDB GC 时间](#manually-set-the-tidb-gc-time)，以避免导出失败。
+> 在这种情况下，你需要手动[调整 TiDB GC 时间](#手动设置-tidb-gc-时间)，以避免导出失败。
 
 ## 从 TiDB/MySQL 导出数据
 
