@@ -656,6 +656,7 @@ Query OK, 0 rows affected (0.08 sec)
 - THAN
 - THEN (R)
 - TIDB (R)
+- TiDB_CURRENT_TSO (R)
 - TIFLASH (R)
 - TIKV_IMPORTER
 - TIME
@@ -679,7 +680,6 @@ Query OK, 0 rows affected (0.08 sec)
 - TTL_ENABLE
 - TTL_JOB_INTERVAL
 - TYPE
-- TiDB_CURRENT_TSO (R)
 
 <a id="U" class="letter" href="#U">U</a>
 
