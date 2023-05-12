@@ -10,13 +10,13 @@ summary: TiDB 数据库中 DROP RESOURCE GROUP 的使用概况。
 ## 语法图
 
 ```ebnf+diagram
-DropResourceGroupStmt:
+DropResourceGroupStmt ::=
     "DROP" "RESOURCE" "GROUP" IfExists ResourceGroupName
 
 IfExists ::=
     ('IF' 'EXISTS')?
 
-ResourceGroupName:
+ResourceGroupName ::=
     Identifier
 ```
 

@@ -10,26 +10,26 @@ summary: TiDB 数据库中 CREATE RESOURCE GROUP 的使用概况。
 ## 语法图
 
 ```ebnf+diagram
-CreateResourceGroupStmt:
+CreateResourceGroupStmt ::=
    "CREATE" "RESOURCE" "GROUP" IfNotExists ResourceGroupName ResourceGroupOptionList
 
 IfNotExists ::=
     ('IF' 'NOT' 'EXISTS')?
 
-ResourceGroupName:
+ResourceGroupName ::=
    Identifier
 
-ResourceGroupOptionList:
+ResourceGroupOptionList ::=
     DirectResourceGroupOption
 |   ResourceGroupOptionList DirectResourceGroupOption
 |   ResourceGroupOptionList ',' DirectResourceGroupOption
 
-DirectResourceGroupOption:
+DirectResourceGroupOption ::=
     "RU_PER_SEC" EqOpt stringLit
 |   "PRIORITY" EqOpt ResourceGroupPriorityOption
 |   "BURSTABLE"
 
-ResourceGroupPriorityOption:
+ResourceGroupPriorityOption ::=
     LOW
 |   MEDIUM
 |   HIGH
