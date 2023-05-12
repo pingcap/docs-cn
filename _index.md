@@ -42,7 +42,11 @@ hide_commit: true
 
 [使用 TiUP 部署 TiDB（推荐）](https://docs.pingcap.com/zh/tidb/v6.5/production-deployment-using-tiup)
 
+<<<<<<< HEAD
 [在 Kubernetes 上部署 TiDB](https://docs.pingcap.com/zh/tidb/v6.5/tidb-in-kubernetes)
+=======
+[在 Kubernetes 上部署 TiDB](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable)
+>>>>>>> 474239d0a5 (learning path: update the link for deployment on k8s (#13952))
 
 </LearningPath>
 
