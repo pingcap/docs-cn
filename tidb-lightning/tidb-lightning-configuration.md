@@ -52,7 +52,7 @@ table-concurrency = 6
 
 # 数据的并发数。默认与逻辑 CPU 的数量相同。
 # 混合部署的情况下可以将其大小配置为逻辑 CPU 数的 75%，以限制 CPU 的使用。
-# region-concurrency = 
+# region-concurrency =
 
 # I/O 最大并发数。I/O 并发量太高时，会因硬盘内部缓存频繁被刷新
 # 而增加 I/O 等待时间，导致缓存未命中和读取速度降低。
@@ -145,7 +145,7 @@ addr = "172.16.31.10:8287"
 # 使用 Physical Import Mode 时，配置 TiDB Lightning 本地临时文件使用的磁盘配额 (disk quota)。当磁盘配额不足时，TiDB Lightning 会暂停读取源数据以及写入临时文件的过程，优先将已经完成排序的 key-value 写入到 TiKV，TiDB Lightning 删除本地临时文件后，再继续导入过程。
 # 需要同时配合把 `backend` 设置为 `local` 模式才能生效。
 # 默认值为 MaxInt64 字节，即 9223372036854775807 字节。
-# disk-quota = "10GB" 
+# disk-quota = "10GB"
 
 # Physical Import Mode 是否通过 SQL 方式添加索引。默认为 `false`，表示 TiDB Lightning 会将行数据以及索引数据都编码成 KV pairs 后一同导入 TiKV，实现机制和历史版本保持一致。如果设置为 `true`，即 TiDB Lightning 会在导入数据完成后，使用 add index 的 SQL 来添加索引。
 # 通过 SQL 方式添加索引的优点是将导入数据与导入索引分开，可以快速导入数据，即使导入数据后，索引添加失败，也不会影响数据的一致性。
@@ -153,6 +153,22 @@ addr = "172.16.31.10:8287"
 
 # 在使用 TiDB Lightning 导入多租户的 TiDB cluster 的场景下，指定对应的 key space 名称。默认取值为空字符串，表示 TiDB Lightning 会自动获取导入对应租户的 key space 名称；如果指定了值，则使用指定的 key space 名称来导入。
 # keyspace-name = ""
+
+# Physical Import Mode 下，用于控制 TiDB Lightning 停止 PD 调度的范围，可取值包括
+# - table 即仅停止针对目标导入表的调度，为默认值
+# - global 即停止全局调度，当导入数据到无业务流量的集群时，建议设置为 global 来避免其他调度带来的干扰
+# 该参数自 7.1.0 版本引入，只有目标 TiDB 集群版本 >= 6.1.0 时才可以取值 table
+# pause-pd-scheduler-scope = "table"
+
+# Physical Import Mode 下，用于控制批量 split region 时的 region 个数，每个 lightning 实例最多同时 split region 个数为
+# region-split-batch-size * region-split-concurrency
+# 该参数自 7.1.0 版本引入，默认值为 4096
+# region-split-batch-size = 4096
+
+# Physical Import Mode 下，用于控制 split region 时的并发度，默认为 CPU 核数
+# 该参数自 7.1.0 版本引入
+# region-split-concurrency =
+
 [mydumper]
 # 设置文件读取的区块大小，确保该值比数据源的最长字符串长。
 read-block-size = "64KiB" # 默认值

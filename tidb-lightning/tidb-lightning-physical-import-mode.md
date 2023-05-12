@@ -13,7 +13,7 @@ Physical Import Mode 对应的后端模式为 `local`。
 
 ## 原理说明
 
-1. 在导入数据之前，`tidb-lightning` 会自动将 TiKV 节点切换为“导入模式” (import mode)，优化写入效率并停止自动压缩。`tidb-lightning` 会根据 TiDB 集群的版本决定是否停止全局调度。
+1. 在导入数据之前，`tidb-lightning` 会自动将 TiKV 节点切换为“导入模式” (import mode)，优化写入效率并停止自动压缩。6.2.0 ~ 7.0.0 版本的 `tidb-lightning` 会根据 TiDB 集群的版本决定是否停止全局调度。自 7.1.0 开始是否停止全局调度通过 [pause-pd-scheduler-scope](/tidb-lightning/tidb-lightning-configuration.md) 来控制。以下为 6.2.0 ~ 7.0.0 版本的 `tidb-lightning` 决定停止调度的策略：
 
     - 当 TiDB 集群版本 >= v6.1.0 且 TiDB Lightning 版本 >= v6.2.0 时，`tidb-lightning` 在向 TiKV 导入数据时，只会暂停目标表数据范围所在 region 的调度，并在目标表导入完成后恢复调度。
     - 当 TiDB 集群版本 < v6.1.0 或 TiDB Lightning 版本 < v6.2.0 时，`tidb-lightning` 会暂停全局调度。
