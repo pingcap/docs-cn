@@ -4019,7 +4019,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 类型：枚举型
 - 默认值： `SCRAM-SHA-1`
 - 可选值： `SCRAM-SHA-1`, `SCRAM-SHA-256`, `GSSAPI`.
-- LDAP SASL 身份验证中， 验证方法的名称。
+- LDAP SASL 身份验证中，验证方法的名称。
 
 ### `authentication_ldap_sasl_bind_base_dn` <span class="version-mark">从 v7.1.0 版本开始引入</span>
 
@@ -4103,7 +4103,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 类型：枚举型
 - 默认值： `SIMPLE`
 - 可选值： `SIMPLE`.
-- LDAP simple 身份验证中， 验证方法的名称。现在仅支持 `SIMPLE`。
+- LDAP simple 身份验证中，验证方法的名称。现在仅支持 `SIMPLE`。
 
 ### `authentication_ldap_simple_bind_base_dn` <span class="version-mark">从 v7.1.0 版本开始引入</span>
 
