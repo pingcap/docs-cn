@@ -22,6 +22,8 @@ Non-Prepared Plan Cache 为会话级别，并且与 [Prepared Plan Cache](/sql-p
 
 `tidb_enable_non_prepared_plan_cache` 在 v7.1.0 之前版本中默认值为 `OFF`，即默认关闭。在 v7.1.0 及之后的版本中默认值为 `ON`，即默认开启。
 
+从 v7.1.0 开始，你可以通过变量 [`tidb_plan_cache_max_plan_size`](/system-variables.md#tidb_plan_cache_max_plan_size-从-v710-版本开始引入) 来设置可以缓存的计划的最大大小，默认为 2 MB。超过该值的执行计划将不会被缓存到 Plan Cache 中。
+
 > **注意：**
 >
 > `tidb_session_plan_cache_size` 定义的内存会被 Prepared 和 Non-Prepared Plan Cache 共享。如果集群已经开启 Prepared Plan Cache，那么开启 Non-Prepared Plan Cache 可能降低原先 Prepared Plan Cache 的命中率。

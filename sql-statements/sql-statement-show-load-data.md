@@ -11,10 +11,10 @@ summary: TiDB 数据库中 SHOW LOAD DATA 的使用概况。
 
 ```ebnf+diagram
 ShowLoadDataJobsStmt ::=
-    'SHOW' 'LAOD' 'DATA' 'JOBS'
+    'SHOW' 'LOAD' 'DATA' 'JOBS'
 
 ShowLoadDataJobStmt ::=
-    'SHOW' 'LAOD' 'DATA' 'JOB' JobID
+    'SHOW' 'LOAD' 'DATA' 'JOB' JobID
 ```
 
 `SHOW LOAD DATA` 语句显示的字段含义如下:

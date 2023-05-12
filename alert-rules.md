@@ -752,7 +752,7 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
 * 处理方法：
 
-    查看是哪一类任务的值偏高，通常 Coprocessor、apply worker 这类任务都可以在其他指标里找到解决办法。
+    观察 [**TiKV-Details** > **Task** 面板](/grafana-tikv-dashboard.md#task)，查看是哪一类任务的 `Worker pending tasks` 值偏高。
 
 #### `TiKV_low_space`
 

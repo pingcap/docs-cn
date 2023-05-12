@@ -40,8 +40,6 @@ aliases: ['/docs-cn/dev/tiflash/tiflash-configuration/','/docs-cn/dev/reference/
 listen_host = "0.0.0.0"
 ## TiFlash TCP 服务的端口
 tcp_port = 9000
-## TiFlash HTTP 服务的端口
-http_port = 8123
 ## 数据块元信息的内存 cache 大小限制，通常不需要修改
 mark_cache_size = 5368709120
 ## 数据块 min-max 索引的内存 cache 大小限制，通常不需要修改

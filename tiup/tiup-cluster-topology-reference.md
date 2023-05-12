@@ -251,7 +251,6 @@ tikv_servers:
 - `host`：指定部署到哪台机器，字段值填 IP 地址，不可省略
 - `ssh_port`：指定连接目标机器进行操作的时候使用的 SSH 端口，若不指定，则使用 global 区块中的 `ssh_port`
 - `tcp_port`：TiFlash TCP 服务的端口，默认 9000
-- `http_port`：TiFlash HTTP 服务的端口，默认 8123
 - `flash_service_port`：TiFlash 提供服务的端口，TiDB 通过该端口从 TiFlash 读数据，默认 3930
 - `metrics_port`：TiFlash 的状态端口，用于输出 metric 数据，默认 8234
 - `flash_proxy_port`：内置 TiKV 的端口，默认 20170
