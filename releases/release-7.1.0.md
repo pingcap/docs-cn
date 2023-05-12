@@ -140,7 +140,7 @@ TiDB 版本：7.1.0 (LTS)
 
     TiDB v7.1.0 引入了轻量级的统计信息初始化功能作为实验特性。轻量级的统计信息初始化可以大幅减少启动时必须载入的统计信息的数量，从而提升启动过程中统计信息的加载速度。该功能提升了 TiDB 在复杂运行环境下的稳定性，并降低了部分 TiDB 节点重启对整体服务的影响。你可以通过修改 TiDB 配置参数 [`lite-init-stats`](/tidb-configuration-file.md#lite-init-stats-从-v710-版本开始引入) 为 `true` 来开启该特性。
 
-    为了避免启动阶段由于统计信息未加载造成的 SQL 性能问题，TiDB v7.1.0 引入了配置项 [`force-init-stats`](/tidb-configuration-file.md#force-init-stats-从-v710-版本开始引入)。你可以控制 TiDB 启动时是否在统计信息初始化完成后再对外提供服务。该配置项默认关闭。
+    在 TiDB 启动阶段，初始统计信息加载完成之前执行的 SQL 可能有不合理的执行计划，进而造成性能问题。为了避免这种情况，TiDB v7.1.0 引入了配置项 [`force-init-stats`](/tidb-configuration-file.md#force-init-stats-从-v710-版本开始引入)。你可以控制 TiDB 启动时是否在统计信息初始化完成后再对外提供服务。该配置项默认关闭。
 
     更多信息，请参考[用户文档](/statistics.md#统计信息的加载)。
 
