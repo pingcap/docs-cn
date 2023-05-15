@@ -16,7 +16,7 @@ TiDB 采用计算存储分离架构，具有出色的扩展性和弹性的扩缩
 
 在数据库中，最核心的任务是事务型负载任务 (TP) 和分析型查询任务 (AP)。但除此之外，其他任务也非常重要，例如 DDL 语句、Load Data、TTL、Analyze 和 Backup/Restore 等, 即**后端任务**。
 
-这些任务通常需要处理数据库某一个 schema 或者一个对象的所有数据，这就意味着后端任务通常都会有如下特点：
+这些任务通常需要处理相应需要处理大量的用户存储在数据库中的数据，这就意味着后端任务通常都会有如下特点：
 
 - 通常需要处理一个 schema 或者一个数据库对象（表）中的所有数据。
 - 可能需要周期执行，但是频率不会很高。
@@ -47,16 +47,16 @@ create index idx1 on table t1(c1);
 
 ### 启用前提条件
 
-目前，分布式框架仅支持 `Add index` 启动快速模式任务的分布式执行，使用前，你需要启动 DDL 的快速模式：
+目前，分布式框架仅支持 `Add index` 启动快速模式任务的分布式执行，使用前，你需要启动 Fast DDL 模式[Fast Online DDL](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入)。：
 
-Fast DDL 相关系统变量：
+调整 Fast Online DDL 相关系统变量：
 
-* [tidb_ddl_enable_fast_reorg](https://docs.pingcap.com/tidb/stable/system-variables#tidb_ddl_enable_fast_reorg-new-in-v630)：从 TiDB v6.5 开始 `tidb_ddl_enable_fast_reorg` 默认打开。
-* [tidb_ddl_disk_quota](https://docs.pingcap.com/tidb/stable/system-variables#tidb_ddl_disk_quota-new-in-v630)
+* [tidb_ddl_enable_fast_reorg](https://docs.pingcap.com/tidb/stable/system-variables#tidb_ddl_enable_fast_reorg-new-in-v630)：从 TiDB v6.5 开始 `tidb_ddl_enable_fast_reorg` 默认打开，用来启动快速模式。
+* [tidb_ddl_disk_quota](https://docs.pingcap.com/tidb/stable/system-variables#tidb_ddl_disk_quota-new-in-v630): 用来控制快速模式可使用的本地磁盘最大配额。
 
-配置项：
+调整 Fast Online DDL 相关的配置项：
 
-* [temp-dir](https://docs.pingcap.com/tidb/stable/tidb-configuration-file#temp-dir-new-in-v630)
+* [temp-dir](https://docs.pingcap.com/tidb/stable/tidb-configuration-file#temp-dir-new-in-v630)：配置参数用来指定，快速模式能够使用的本地盘路径；
 
 > **注意：**
 >
@@ -70,7 +70,7 @@ Fast DDL 相关系统变量：
 SET GLOBAL tidb_enable_dist_task = ON;
 ```
 
-### 调整分布式 DDL 任务执行的其他相关参数
+### 调整可能影响 DDL 任务分布式执行的其他相关参数
 
 此处的参数均为 DDL 相关的系统变量，这里对于分布式 `Add index` 执行来讲，只需要设置 tidb_ddl_reorg_worker_cnt。**注意** tidb_ddl_reorg_worker_cnt 使用默认值 4 即可，建议最大不超过 16。
 tidb_ddl_reorg_batch_size 请保持默认即可，最大不超过 1024。
@@ -94,6 +94,6 @@ TiDB 后端任务分布式执行框架的架构图如下：
 - Subtask Executor：是真正的分布式子任务的执行者，并且将子任务执行状况返回给 Scheduler， 由 Scheduler 来统一更新子任务执行状态。
 - 资源池：通过将上述各类模块的计算资源的池化，提供量化资源的使用与管理的基础。
 
-## 另请参阅
+# 另请参阅
 
 * [DDL 执行原理及最佳实践](/ddl-introduction.md)
