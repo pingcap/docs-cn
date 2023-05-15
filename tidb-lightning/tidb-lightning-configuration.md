@@ -161,7 +161,7 @@ addr = "172.16.31.10:8287"
 # pause-pd-scheduler-scope = "table"
 
 # Physical Import Mode 下，用于控制批量 split region 时的 Region 个数，每个 TiDB Lightning 实例最多同时 split region 个数为
-# region-split-batch-size * region-split-concurrency
+# region-split-batch-size * region-split-concurrency * table-concurrency
 # 该参数自 v7.1.0 版本引入，默认值为 `4096`。
 # region-split-batch-size = 4096
 
