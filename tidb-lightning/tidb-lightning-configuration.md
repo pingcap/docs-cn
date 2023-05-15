@@ -155,8 +155,8 @@ addr = "172.16.31.10:8287"
 # keyspace-name = ""
 
 # Physical Import Mode 下，用于控制 TiDB Lightning 停止 PD 调度的范围，可取值包括
-# - table 即仅停止针对目标导入表的调度，为默认值
-# - global 即停止全局调度，当导入数据到无业务流量的集群时，建议设置为 global 来避免其他调度带来的干扰
+# - "table" 即仅即只暂停目标表数据范围所在 Region 的调度，为默认值。
+# - "global" 即停止全局调度，当导入数据到无业务流量的集群时，建议设置为 "global" 避免其他调度的干扰。
 # 该参数自 7.1.0 版本引入，只有目标 TiDB 集群版本 >= 6.1.0 时才可以取值 table
 # pause-pd-scheduler-scope = "table"
 
