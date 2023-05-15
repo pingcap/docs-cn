@@ -147,6 +147,10 @@ DOUBLE PRECISION [(M,D)] [UNSIGNED] [ZEROFILL], REAL[(M,D)] [UNSIGNED] [ZEROFILL
 >
 > As in MySQL, the `DOUBLE` data type stores approximate values. For values such as currency, it is recommended to use the `DECIMAL` type instead.
 
+> **Note:**
+>
+> When TiDB converts a double-precision floating-point number represented in scientific notation to the `CHAR` type, the result is displayed inconsistently with that in MySQL. See [Cast functions and operators](/functions-and-operators/cast-functions-and-operators.md) for details.
+
 ## Fixed-point types
 
 TiDB supports all the MySQL floating-point types, including DECIMAL, and NUMERIC. For more information, [Fixed-Point Types (Exact Value) - DECIMAL, NUMERIC in MySQL](https://dev.mysql.com/doc/refman/5.7/en/fixed-point-types.html).
