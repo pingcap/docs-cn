@@ -277,9 +277,9 @@ TiDB 版本：7.1.0 (LTS)
 
 * 支持 LDAP 身份认证[#43580](https://github.com/pingcap/tidb/issues/43580)@[YangKeao](https://github.com/YangKeao) **tw:ran-huang**
 
-    从 v7.1.0 起，TiDB 支持 LDAP 身份认证，支持认证插件：`authentication_ldap_sasl`、`authentication_ldap_simple`。
+    从 v7.1.0 起，TiDB 支持 LDAP 身份认证，并提供了两种认证插件：`authentication_ldap_sasl` 和 `authentication_ldap_simple`。
 
-     更多信息，请参考[用户文档](/security-compatibility-with-mysql.md)。
+    更多信息，请参考[用户文档](/security-compatibility-with-mysql.md)。
 
 ## 兼容性变更
 
