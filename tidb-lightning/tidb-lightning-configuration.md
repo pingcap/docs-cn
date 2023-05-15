@@ -169,6 +169,9 @@ addr = "172.16.31.10:8287"
 # 该参数自 v7.1.0 版本引入。
 # region-split-concurrency =
 
+# Physical Import Mode 下，用于控制 split 和 scatter 操作后等待 Region 上线的重试次数，默认值为 `1800`。重试符合指数回退策略，最大重试间隔为 2 秒，两次重试之间有任何 Region 上线时不会记为重试次数增加。
+# 该参数自 v7.1.0 版本引入。
+# region-check-backoff-limit = 1800
 [mydumper]
 # 设置文件读取的区块大小，确保该值比数据源的最长字符串长。
 read-block-size = "64KiB" # 默认值
