@@ -18,25 +18,25 @@ The `ALTER RESOURCE GROUP` statement is used to modify a resource group in a dat
 ## Synopsis
 
 ```ebnf+diagram
-AlterResourceGroupStmt:
+AlterResourceGroupStmt ::=
    "ALTER" "RESOURCE" "GROUP" IfExists ResourceGroupName ResourceGroupOptionList
 
 IfExists ::=
     ('IF' 'EXISTS')?
 
-ResourceGroupName:
+ResourceGroupName ::=
    Identifier
 
-ResourceGroupOptionList:
+ResourceGroupOptionList ::=
     DirectResourceGroupOption
 |   ResourceGroupOptionList DirectResourceGroupOption
 |   ResourceGroupOptionList ',' DirectResourceGroupOption
 
-DirectResourceGroupOption:
+DirectResourceGroupOption ::=
     "RU_PER_SEC" EqOpt stringLit
 |   "PRIORITY" EqOpt ResourceGroupPriorityOption
 |   "BURSTABLE"
-ResourceGroupPriorityOption:
+ResourceGroupPriorityOption ::=
     LOW
 |   MEDIUM
 |   HIGH

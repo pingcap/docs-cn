@@ -18,25 +18,25 @@ You can use the `CREATE RESOURCE GROUP` statement to create a resource group.
 ## Synopsis
 
 ```ebnf+diagram
-CreateResourceGroupStmt:
+CreateResourceGroupStmt ::=
    "CREATE" "RESOURCE" "GROUP" IfNotExists ResourceGroupName ResourceGroupOptionList
 
 IfNotExists ::=
     ('IF' 'NOT' 'EXISTS')?
 
-ResourceGroupName:
+ResourceGroupName ::=
    Identifier
 
-ResourceGroupOptionList:
+ResourceGroupOptionList ::=
     DirectResourceGroupOption
 |   ResourceGroupOptionList DirectResourceGroupOption
 |   ResourceGroupOptionList ',' DirectResourceGroupOption
 
-DirectResourceGroupOption:
+DirectResourceGroupOption ::=
     "RU_PER_SEC" EqOpt stringLit
 |   "PRIORITY" EqOpt ResourceGroupPriorityOption
 |   "BURSTABLE"
-ResourceGroupPriorityOption:
+ResourceGroupPriorityOption ::=
     LOW
 |   MEDIUM
 |   HIGH

@@ -18,13 +18,13 @@ You can use the `DROP RESOURCE GROUP` statement to drop a resource group.
 ## Synopsis
 
 ```ebnf+diagram
-DropResourceGroupStmt:
+DropResourceGroupStmt ::=
     "DROP" "RESOURCE" "GROUP" IfExists ResourceGroupName
 
 IfExists ::=
     ('IF' 'EXISTS')?
 
-ResourceGroupName:
+ResourceGroupName ::=
     Identifier
 ```
 

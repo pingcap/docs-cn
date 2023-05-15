@@ -20,10 +20,10 @@ summary: An overview of the usage of SET RESOURCE GROUP in the TiDB database.
 **SetResourceGroupStmt:**
 
 ```ebnf+diagram
-SetResourceGroupStmt:
+SetResourceGroupStmt ::=
    "SET" "RESOURCE" "GROUP" ResourceGroupName
 
-ResourceGroupName:
+ResourceGroupName ::=
    Identifier
 ```
 
