@@ -154,18 +154,18 @@ addr = "172.16.31.10:8287"
 # 在使用 TiDB Lightning 导入多租户的 TiDB cluster 的场景下，指定对应的 key space 名称。默认取值为空字符串，表示 TiDB Lightning 会自动获取导入对应租户的 key space 名称；如果指定了值，则使用指定的 key space 名称来导入。
 # keyspace-name = ""
 
-# Physical Import Mode 下，用于控制 TiDB Lightning 停止 PD 调度的范围，可取值包括
-# - "table" 即仅即只暂停目标表数据范围所在 Region 的调度，为默认值。
-# - "global" 即停止全局调度，当导入数据到无业务流量的集群时，建议设置为 "global" 避免其他调度的干扰。
+# Physical Import Mode 下，用于控制 TiDB Lightning 停止 PD 调度的范围，可取值包括：
+# - "table"：仅即只暂停目标表数据范围所在 Region 的调度。默认值为 "table"。
+# - "global"：停止全局调度，当导入数据到无业务流量的集群时，建议设置为 "global" 避免其他调度的干扰。
 # 该参数自 v7.1.0 版本引入，且 "table" 仅适用于版本为 TiDB v6.1.0 及以上的目标集群。
 # pause-pd-scheduler-scope = "table"
 
-# Physical Import Mode 下，用于控制批量 split region 时的 Region 个数，每个 TiDB Lightning 实例最多同时 split region 个数为
+# Physical Import Mode 下，用于控制批量 split region 时的 Region 个数，每个 TiDB Lightning 实例最多同时 split region 个数为：
 # region-split-batch-size * region-split-concurrency * table-concurrency
 # 该参数自 v7.1.0 版本引入，默认值为 `4096`。
 # region-split-batch-size = 4096
 
-# Physical Import Mode 下，用于控制 split region 时的并发度，默认值为 CPU 核数。
+# Physical Import Mode 下，用于控制 split region 时的并发度。默认值为 CPU 核数。
 # 该参数自 v7.1.0 版本引入。
 # region-split-concurrency =
 
