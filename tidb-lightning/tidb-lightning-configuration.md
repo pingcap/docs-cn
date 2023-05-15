@@ -165,8 +165,8 @@ addr = "172.16.31.10:8287"
 # 该参数自 v7.1.0 版本引入，默认值为 `4096`。
 # region-split-batch-size = 4096
 
-# Physical Import Mode 下，用于控制 split region 时的并发度，默认为 CPU 核数
-# 该参数自 7.1.0 版本引入
+# Physical Import Mode 下，用于控制 split region 时的并发度，默认为 CPU 核数。
+# 该参数自 v7.1.0 版本引入。
 # region-split-concurrency =
 
 [mydumper]
