@@ -10,24 +10,31 @@ summary: TiDB 数据库中 ALTER RESOURCE GROUP 的使用概况。
 ## 语法图
 
 ```ebnf+diagram
-AlterResourceGroupStmt:
+AlterResourceGroupStmt ::=
    "ALTER" "RESOURCE" "GROUP" IfExists ResourceGroupName ResourceGroupOptionList
 
 IfExists ::=
     ('IF' 'EXISTS')?
 
-ResourceGroupName:
+ResourceGroupName ::=
    Identifier
 
-ResourceGroupOptionList:
+ResourceGroupOptionList ::=
     DirectResourceGroupOption
 |   ResourceGroupOptionList DirectResourceGroupOption
 |   ResourceGroupOptionList ',' DirectResourceGroupOption
 
-DirectResourceGroupOption:
+DirectResourceGroupOption ::=
     "RU_PER_SEC" EqOpt stringLit
 |   "BURSTABLE"
 
+<<<<<<< HEAD
+=======
+ResourceGroupPriorityOption ::=
+    LOW 
+|   MEDIUM
+|   HIGH
+>>>>>>> ac8ff13d0 (resource_control: fix resource group related ebnf syntax (#13957))
 ```
 
 TiDB 支持以下 `DirectResourceGroupOption`, 其中 [Request Unit (RU)](/tidb-resource-control.md#什么是-request-unit-ru) 是 TiDB 对 CPU、IO 等系统资源统一抽象的单位。
