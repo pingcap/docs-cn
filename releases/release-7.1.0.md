@@ -290,7 +290,9 @@ TiDB 版本：7.1.0 (LTS)
 
     如果你已经将 TiFlash 升级到 v7.1.0，那么在升级 TiDB 到 v7.1.0 的过程中，TiDB 无法读取 TiFlash 系统表（[`INFORMATION_SCHEMA.TIFLASH_TABLES`](/information-schema/information-schema-tiflash-tables.md) 和 [`INFORMATION_SCHEMA.TIFLASH_SEGMENTS`](/information-schema/information-schema-tiflash-segments.md)）。
 
-* [`SHOW LOAD DATA`](/sql-statements/sql-statement-show-load-data.md) 的返回值中废弃了参数 `Loaded_File_Size`，修改为参数 `Imported_Rows`
+* [`SHOW LOAD DATA`](/sql-statements/sql-statement-show-load-data.md) 的返回值中废弃了参数 `Loaded_File_Size`，修改为参数 `Imported_Rows`。
+
+* TiDB v6.2.0 ~ v7.0.0 版本的 `tidb-lightning` 会根据 TiDB 集群的版本决定是否停止全局调度。当 TiDB 集群版本 >= v6.1.0，只会暂停目标表数据范围所在 Region 的调度，并在目标表导入完成后恢复调度，其他版本会停止全局调度。自 TiDB v7.1.0 开始，你可以通过 [pause-pd-scheduler-scope](/tidb-lightning/tidb-lightning-configuration.md) 来控制是否停止全局调度，默认暂停目标表数据范围所在 Region 的调度，如果目标集群版本低于 v6.1.0 则报错。
 
 ### 系统变量
 
