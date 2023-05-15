@@ -156,17 +156,14 @@ TiDB 版本：7.1.0 (LTS)
 
     更多信息，请参考[用户文档](/ticdc/ticdc-faq.md#ticdc-是否会将有损-ddl-产生的数据变更同步到下游)。
     
-* Lightning 在导入 TiB 级别数据时的稳定性得到了提升 [#43654](https://github.com/pingcap/tidb/pull/43654) @[D3Hunter](https://github.com/D3Hunter) @[lance6716](https://github.com/lance6716) **tw:hfxsd** 
+* TiDB Lightning 在导入 TiB 级别数据时的稳定性得到了提升 [#43513](https://github.com/pingcap/tidb/pull/43513) [#43654](https://github.com/pingcap/tidb/pull/43654) @[D3Hunter](https://github.com/D3Hunter) @[lance6716](https://github.com/lance6716) **tw:hfxsd** 
 
-    从 v7.1.0 开始，Lightning 增加了 4 个配置项，可提升在导入 TiB 级数据时的稳定性。
+    从 v7.1.0 开始，TiDB Lightning 增加了 4 个配置项，可提升在导入 TiB 级数据时的稳定性。
     
     - `tikv-importer.region-split-batch-size` 用于控制一个 batch 执行 split 和 scatter 的最大 Region 数量，默认值为 `4096`。
-
     - `tikv-importer.region-split-concurrency` 用于控制处理 Region split 和 scatter 的 worker 数量，默认值为 CPU 核心数。
-
-    - `region-check-backoff-limit` 的默认值为 1800，最大回退间隔为 2 秒，因此 Lightning 会等待大约 3600 秒，以避免等待超时后任务中断退出。
-
-    - `pause-pd-scheduler-scope`，该配置项可取值为 `"cluster"` 或 `"table"`。对于 TiDB v6.1 及之前的版本，只能选择 `"cluster"` 选项，即导入数据过程中限制对整个集群的调度。从 v6.2 开始，支持 `"Table"` 选项，表示在导入数据的表无法被调度，且默认值为 `"table"`。而在数据量较大的场景建议设置为 `"cluster"`，以提升稳定性。 
+    - `tikv-importer.region-check-backoff-limit` 用于控制 split 和 scatter 操作后等待 Region 上线的重试次数。重试符合指数回退策略，最大重试间隔为 2 秒，两次重试之间有任何 Region 上线时不会记为重试次数增加。
+    - `tikv-importer.pause-pd-scheduler-scope` 用于控制导入数据过程中的调度限制范围。该配置项可取值为 `"cluster"` 或 `"table"`。对于 TiDB v6.1 及之前的版本，只能选择 `"cluster"` 选项，即导入数据过程中限制对整个集群的调度。从 v6.2 开始，支持 `"table"` 选项，表示在导入数据的表无法被调度，且默认值为 `"table"`。而在数据量较大的场景建议设置为 `"cluster"`，以提升稳定性。 
 
   更多信息，请参考[用户文档](/tidb-lightning/tidb-lightning-configuration.md)。
 
