@@ -85,7 +85,5 @@ Checksum 计算算法的伪代码如下：
     * 对于 varbianry, binary, blob (包括 tiny / medium / long)，直接使用它的 bytes。
     * 对于 varchar, char, text(包括 tiny / medium / long)，编码成 UTF8 编码的 bytes 类型。
     * 对于 null， geometry，不会被纳入到 checksum 计算中，返回 empty bytes。
-    
-    for a value of type varbinary, binary, blob (include tiny/medium/long), use its bytes value directly.
 
 Golang 的消费者代码实现，可以参考 [avro decoder 实现] (https://github.com/pingcap/tiflow/blob/master/pkg/sink/codec/avro/decoder.go)，包含有如何解码从 kafka 读取到的数据，按照 schema fields 排序，以及 checksum 计算等。
