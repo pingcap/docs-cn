@@ -1536,14 +1536,21 @@ MPP is a distributed computing framework provided by the TiFlash engine, which a
 
 ### tidb_enable_non_prepared_plan_cache
 
+> **Warning:**
+>
+> The non-prepared execution plan cache is an experimental feature. It is not recommended that you use it in the production environment. This feature might be changed or removed without prior notice. If you find a bug, you can report an [issue](https://github.com/pingcap/tidb/issues) on GitHub.
+
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
 - Type: Boolean
-- Default value: Before v7.1.0, the default value is `OFF`. Starting from v7.1.0, the default value is `ON`.
+- Default value: `OFF`
 - This variable controls whether to enable the [Non-prepared plan cache](/sql-non-prepared-plan-cache.md) feature.
-- When you upgrade from an earlier version to a v7.1.0 or later version, this variable remains the setting before the upgrade.
 
 ### tidb_enable_non_prepared_plan_cache_for_dml <span class="version-mark">New in v7.1.0</span>
+
+> **Warning:**
+>
+> The non-prepared execution plan cache is an experimental feature. It is not recommended that you use it in the production environment. This feature might be changed or removed without prior notice. If you find a bug, you can report an [issue](https://github.com/pingcap/tidb/issues) on GitHub.
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes

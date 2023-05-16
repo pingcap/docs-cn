@@ -5,6 +5,10 @@ summary: Learn about the principle, usage, and examples of the SQL non-prepared 
 
 # SQL Non-Prepared Execution Plan Cache
 
+> **Warning:**
+>
+> The non-prepared execution plan cache is an experimental feature. It is not recommended that you use it in the production environment. This feature might be changed or removed without prior notice. If you find a bug, you can report an [issue](https://github.com/pingcap/tidb/issues) on GitHub.
+
 TiDB supports execution plan caching for some non-`PREPARE` statements, similar to the [`Prepare`/`Execute` statements](/sql-prepared-plan-cache.md). This feature allows these statements to skip the optimization phase and improve performance.
 
 ## Principle
@@ -19,8 +23,6 @@ The non-prepared plan cache is a session-level feature that shares a cache with 
 ## Usage
 
 To enable or disable the non-prepared plan cache, you can set the [`tidb_enable_non_prepared_plan_cache`](/system-variables.md#tidb_enable_non_prepared_plan_cache) system variable. You can also control the size of the non-prepared plan cache using the [`tidb_session_plan_cache_size`](/system-variables.md#tidb_session_plan_cache_size-new-in-v710) system variable. When the number of cached plans exceeds `tidb_session_plan_cache_size`, TiDB evicts plans using the least recently used (LRU) strategy.
-
-Before TiDB v7.1.0, the default value of `tidb_enable_non_prepared_plan_cache` is `OFF`, which means that the non-prepared plan cache is disabled by default. Starting from v7.1.0, the default value is `ON`, which means that the non-prepared plan cache is enabled by default.
 
 Starting from v7.1.0, you can control the maximum size of a plan that can be cached using the system variable [`tidb_plan_cache_max_plan_size`](/system-variables.md#tidb_plan_cache_max_plan_size-new-in-v710). The default value is 2 MB. If the size of a plan exceeds this value, the plan will not be cached.
 
