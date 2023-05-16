@@ -5,13 +5,13 @@ summary: 介绍 TiCDC 数据正确性校验功能的实现原理和使用方法�
 
 # TiCDC 数据正确性校验
 
-从 v7.1.0 开始，TiCDC 引入了单行数据正确性校验功能，该功能基于 Checksum 算法对单行数据的正确性进行校验。该功能可以校验一行数据从 TiDB 写入、通过 TiCDC 同步，到写入 Kafka 集群的过程中是否出现错误。TiCDC 数据正确性校验功能仅支持下游是 Kafka 的 Changefeed，目前支持 Avro 协议。
+从 v7.1.0 开始，TiCDC 引入了单行数据正确性校验功能。该功能基于 Checksum 算法，校验一行数据从 TiDB 写入、通过 TiCDC 同步，到写入 Kafka 集群的过程中数据内容是否发生错误。TiCDC 数据正确性校验功能仅支持下游是 Kafka 的 Changefeed，目前支持 Avro 协议。
 
 ## 实现原理
 
-在启用单行数据 Checksum 正确性校验功能后，TiDB 使用 CRC32 算法计算该行数据的 Checksum 值，并将其一并写入 TiKV。TiCDC 从 TiKV 读取数据，根据相同的算法重新计算 Checksum。如果该值与 TiDB 写入的值相同，则可以证明数据在 TiDB 至 TiCDC 的传输过程中是正确的。
+在启用单行数据 Checksum 正确性校验功能后，TiDB 使用 CRC32 算法计算该行数据的 Checksum 值，并将其一并写入 TiKV。TiCDC 从 TiKV 读取数据，根据相同的算法重新计算 Checksum，如果该值与 TiDB 写入的值相同，则可以证明数据在 TiDB 至 TiCDC 的传输过程中是正确的。
 
-TiCDC 将数据编码成特定格式并发送至 Kafka。Kafka Consumer 读取数据后，可以使用与 TiDB 相同的算法计算得到新的 Checksum。将此值与数据中携带的 Checksum 值进行比较，若二者一致，则可证明从 TiCDC 至 Kafka Consumer 的传输链路上的数据是正确的。
+TiCDC 将数据编码成特定格式并发送至 Kafka。Kafka Consumer 读取数据后，可以使用与 TiDB 相同的算法计算得到新的 Checksum，将此值与数据中携带的 Checksum 值进行比较，若二者一致，则可证明从 TiCDC 至 Kafka Consumer 的传输链路上的数据是正确的。
 
 ## 启用功能
 
@@ -36,7 +36,7 @@ TiCDC 数据正确性校验功能默认关闭，要使用该功能，请执行�
 3. 当使用 Avro 作为数据编码格式时，你需要在 [`sink-uri`](/ticdc/ticdc-sink-to-kafka.md#sink-uri-配置-kafka) 中设置 [`enable-tidb-extension=true`](/ticdc/ticdc-sink-to-kafka.md#sink-uri-配置-kafka)，同时还需设置 [`avro-decimal-handling-mode=string`](/ticdc/ticdc-sink-to-kafka.md#sink-uri-配置-kafka) 和 [`avro-bigint-unsigned-handling-mode=string`](/ticdc/ticdc-sink-to-kafka.md#sink-uri-配置-kafka)。下面是一个配置示例：
 
     ```shell
-    cdc cli changefeed create --server=http://127.0.0.1:8300 --changefeed-id="kafka-avro-enable-extension" --sink-uri="kafka://127.0.0.1:9092/topic-name?protocol=avro&enable-tidb-extension=true&avro-decimal-handling-mode=string&avro-bigint-unsigned-handling-mode=string" --schema-registry=http://127.0.0.1:8081 --config changefeed_config.toml
+    cdc cli changefeed create --server=http://127.0.0.1:8300 --changefeed-id="kafka-avro-checksum" --sink-uri="kafka://127.0.0.1:9092/topic-name?protocol=avro&enable-tidb-extension=true&avro-decimal-handling-mode=string&avro-bigint-unsigned-handling-mode=string" --schema-registry=http://127.0.0.1:8081 --config changefeed_config.toml
     ```
 
     通过上述配置，Changefeed 会在每条写入 Kafka 的消息中携带该消息对应数据的 Checksum，你可以根据此 Checksum 的值进行数据一致性校验。
@@ -45,7 +45,13 @@ TiCDC 数据正确性校验功能默认关闭，要使用该功能，请执行�
 
 TiCDC 默认关闭单行数据的 Checksum 校验功能。若要在开启此功能后将其关闭，请执行以下步骤：
 
-1. 首先，按照 [TiCDC 更新同步任务配置](/ticdc/ticdc-manage-changefeed.md#更新同步任务配置)的说明，按照 `暂停任务 -> 修改配置 -> 恢复任务` 的流程，在 Changefeed 的 `--config` 参数所指定的配置文件中移除 `[Integrity]` 的所有配置。
+1. 首先，按照 [TiCDC 更新同步任务配置](/ticdc/ticdc-manage-changefeed.md#更新同步任务配置)的说明，按照 `暂停任务 -> 修改配置 -> 恢复任务` 的流程更新 changefeed 的配置内容。在 Changefeed 的 `--config` 参数所指定的配置文件中调整`[Integrity]` 的配置内容为：
+
+    ```toml
+    [integrity]
+    integrity-check-level = "none"
+    corruption-handle-level = "warn"
+    ```
 
 2. 在上游 TiDB 中关闭行数据 Checksum 功能 ([`tidb_enable_row_level_checksum`](/system-variables.md#tidb_enable_row_level_checksum-从-v710-版本开始引入))，执行如下 SQL 语句：
 
@@ -54,3 +60,32 @@ TiCDC 默认关闭单行数据的 Checksum 校验功能。若要在开启此功�
     ```
 
     上述配置仅对新创建的会话生效。在所有写入 TiDB 的客户端都完成数据库连接重建后，Changefeed 写入 Kafka 的消息中将不再携带该条消息对应数据的 Checksum 值。
+
+## Checksum 计算规则
+
+Checksum 计算算法的伪代码如下：
+
+    ```
+    fn checksum(columns) {
+        let result = 0
+        for column in sort_by_schema_order(columns) {
+            result = crc32.update(result, encode(column))
+        }
+        return result
+    }
+    ```
+
+* columns 应该按照 column id 排序。在 avro schema 中，每个字段的顺序已经是按照 column id 排序的，因此按照该顺序将 columns 排序即可。
+
+* encode(column) 方法，将 column 中的值编码成 bytes，编码时需要参考该 column 的 MysQL Type，具体规则如下：
+    * 对于 tinyint, smallint, int, bigint, mediumint, year 将会被转换成 uint64 类型，按照小端序编码。(例子：数字 0x0123456789abcdef 将会被编码成 hex'0x0123456789abcdef')
+    * 对于 float, double 将会被转换成 double 类型， 然后转换成 IEEE754 格式的 uint64 类型。
+    * 对于 bit, enum, set 将会被转换成 uint64 类型。bit 类型的值按照二进制转换成 uint64 类型。enum, set 类型的值按照其对应的 int 值转换成 uint64 类型。(例子： 假设有类型 set('a','b','c')，数据值为 'a,c', 那么该值将会被编码成 0b101)
+    * 对于 timestamp, date, duration, datetime, json, decimal 将会被转换成 string 类型，然后转换成 UTF8 编码的 bytes 类型。
+    * 对于 varbianry, binary, blob (包括 tiny / medium / long)，直接使用它的 bytes。
+    * 对于 varchar, char, text(包括 tiny / medium / long)，编码成 UTF8 编码的 bytes 类型。
+    * 对于 null， geometry，不会被纳入到 checksum 计算中，返回 empty bytes。
+    
+    for a value of type varbinary, binary, blob (include tiny/medium/long), use its bytes value directly.
+
+Golang 的消费者代码实现，可以参考 [avro decoder 实现] (https://github.com/pingcap/tiflow/blob/master/pkg/sink/codec/avro/decoder.go)，包含有如何解码从 kafka 读取到的数据，按照 schema fields 排序，以及 checksum 计算等。
