@@ -63,16 +63,16 @@ CREATE INDEX idx1 ON table t1(c1);
     SET GLOBAL tidb_enable_dist_task = ON;
     ```
 
-    在运行任务的时候，运行后端任务时，框架支持的语句会采用分布式方式执行。
+    在运行后端任务时，框架支持的语句会采用分布式方式执行。
 
 2. 根据实际需求，调整可能影响 DDL 任务分布式执行的系统变量：
 
-    * [tidb_ddl_reorg_worker_cnt](https://docs.pingcap.com/tidb/stable/system-variables#tidb_ddl_reorg_worker_cnt)：使用默认值 `4` 即可，建议最大不超过 `16`。
-    * [tidb_ddl_reorg_priority](https://docs.pingcap.com/tidb/stable/system-variables#tidb_ddl_reorg_priority)
-    * [tidb_ddl_error_count_limit](https://docs.pingcap.com/tidb/stable/system-variables#tidb_ddl_error_count_limit)
-    * [tidb_ddl_reorg_batch_size](https://docs.pingcap.com/tidb/stable/system-variables#tidb_ddl_reorg_batch_size)：使用默认值即可，建议最大不超过 `1024`。
+    * [tidb_ddl_reorg_worker_cnt](/system-variables.md#tidb_ddl_reorg_worker_cnt)：使用默认值 `4` 即可，建议最大不超过 `16`。
+    * [tidb_ddl_reorg_priority](/system-variables.md#tidb_ddl_reorg_priority)
+    * [tidb_ddl_error_count_limit](/system-variables.md#tidb_ddl_error_count_limit)
+    * [tidb_ddl_reorg_batch_size](/system-variables.md#tidb_ddl_reorg_batch_size)：使用默认值即可，建议最大不超过 `1024`。
 
-> ***建议：**
+> **建议：**
 >
 > 对于分布式执行 `ADD INDEX` 语句，只需要设置 `tidb_ddl_reorg_worker_cnt`。
 
