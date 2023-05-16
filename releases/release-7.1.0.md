@@ -163,7 +163,7 @@ TiDB 版本：7.1.0 (LTS)
     - `tikv-importer.region-split-batch-size` 用于控制一个 batch 中执行 split 和 scatter 操作的最大 Region 数量，默认值为 `4096`。
     - `tikv-importer.region-split-concurrency` 用于控制 Split Region 时的并发度，默认值为 CPU 核心数。
     - `tikv-importer.region-check-backoff-limit` 用于控制 split 和 scatter 操作后等待 Region 上线的重试次数，默认值为 `1800`。重试符合指数回退策略，最大重试间隔为 2 秒。若两次重试之间有任何 Region 上线，该次操作不会被计为重试次数。
-    - `tikv-importer.pause-pd-scheduler-scope` 用于控制导入数据过程中停止 PD 调度的范围。该配置项可选值为 `"table"` 或 `"global"`，默认值为 `"table"`。对于 TiDB v6.1.0 之前的版本，只能配置 `"global"` 选项，即导入数据过程中暂停全局调度。从 v6.1.0 开始，支持 `"table"` 选项，表示仅暂停目标表数据范围所在 Region 的调度。在数据量较大的场景建议设置为 `"global"`，以提升稳定性。
+    - `tikv-importer.pause-pd-scheduler-scope` 用于控制导入数据过程中暂停 PD 调度的范围。该配置项可选值为 `"table"` 或 `"global"`，默认值为 `"table"`。对于 TiDB v6.1.0 之前的版本，只能配置 `"global"` 选项，即导入数据过程中暂停全局调度。从 v6.1.0 开始，支持 `"table"` 选项，表示仅暂停目标表数据范围所在 Region 的调度。在数据量较大的场景建议设置为 `"global"`，以提升稳定性。
 
   更多信息，请参考[用户文档](/tidb-lightning/tidb-lightning-configuration.md)。
 
