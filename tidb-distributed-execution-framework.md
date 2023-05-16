@@ -57,7 +57,7 @@ CREATE INDEX idx1 ON table t1(c1);
 
 ## 启用步骤
 
-1. 启用分布式框架，只需将 [`tidb_enable_dist_task`](/system-variables.md#tidb_enable_dist_task) 设置为 `ON`：
+1. 启用分布式框架，只需将 [`tidb_enable_dist_task`](/system-variables.md#tidb_enable_dist_task-从-v710-版本开始引入) 设置为 `ON`：
 
     ```sql
     SET GLOBAL tidb_enable_dist_task = ON;
