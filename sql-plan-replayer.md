@@ -50,7 +50,7 @@ analyze table t;
 plan replayer dump explain select * from t;
 ```
 
-`PLAN REPLAYER DUMP` 会将以上信息打包整理成 `ZIP` 文件，并返回文件标识作为执行结果。该文件为一次性文件，被下载后 TiDB 会将其删除。
+`PLAN REPLAYER DUMP` 会将以上信息打包整理成 `ZIP` 文件，并返回文件标识作为执行结果。
 
 > **注意：**
 >
@@ -242,7 +242,7 @@ mysql> SELECT * FROM mysql.plan_replayer_status;
 
 > **注意：**
 >
-> `PLAN REPLAYER CAPTURE` 的结果文件最多会在 TiDB 集群中保存一个小时，超时后 TiDB 会将其删除。
+> `PLAN REPLAYER CAPTURE` 的结果文件最多会在 TiDB 集群中保存一周，超时后 TiDB 会将其删除。
 
 ## 使用 `PLAN REPLAYER CONTINUOUS CAPTURE`
 
