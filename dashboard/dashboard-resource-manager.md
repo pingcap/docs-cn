@@ -34,7 +34,7 @@ summary: 介绍如何使用 TiDB Dashboard 的资源管控页面查看资源管�
 
 ## 容量估算
 
-在进行资源规划之前，你需要了解集群的整体容量。目前提供两种估算方式预估当前集群的 [`Request Unit (RU)`](/tidb-resource-control.md#什么是-request-unit-ru#什么是-request-unit-ru) 的容量：
+在进行资源规划之前，你需要了解集群的整体容量。目前提供两种估算方式预估当前集群的 [Request Unit (RU)](/tidb-resource-control.md#什么是-request-unit-ru#什么是-request-unit-ru) 的容量：
 
 - [基于硬件部署估算容量](/sql-statements/sql-statement-calibrate-resource.md#基于硬件部署估算容量) (Calibrate by Hardware)
     
