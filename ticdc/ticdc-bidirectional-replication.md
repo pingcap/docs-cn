@@ -50,6 +50,7 @@ TiCDC 复制功能只会将指定时间点之后的增量变更复制到下游�
 | drop table                   | 是   | 需要手动重启 changefeed，指定 `--overwrite-checkpoint-ts` 为该条 ddl 的commitTs 来恢复        |
 | alter table comment          | 否   |    |
 | rename index                 | 否   |    |
+|alter table index visibility  | 否   |    |
 | add partition                | 是   | 错误可以自动恢复    |
 | drop partition               | 否   |    |
 | create view                  | 否   |    |
