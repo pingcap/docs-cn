@@ -5,30 +5,13 @@ aliases: ['/docs-cn/dev/statistics/','/docs-cn/dev/reference/performance/statist
 
 # 统计信息简介
 
-TiDB 使用统计信息来决定[索引的选择](/choose-index.md)。变量 `tidb_analyze_version` 用于控制所收集到的统计信息。目前 TiDB 中支持两种统计信息：`tidb_analyze_version = 1` 以及 `tidb_analyze_version = 2`。在 v5.3.0 及之后的版本中，该变量的默认值为 `2`。如果从 v5.3.0 之前版本的集群升级至 v5.3.0 及之后的版本，`tidb_analyze_version` 的默认值不发生变化。
+TiDB 使用统计信息来决定[索引的选择](/choose-index.md)。
 
-> **注意：**
->
-> 当 `tidb_analyze_version = 2` 时，如果执行 ANALYZE 语句后发生 OOM，请设置全局变量 `tidb_analyze_version = 1`，然后进行以下操作之一：
->
-> - 如果 ANALYZE 语句是手动执行的，请手动 analyze 每张需要的表：
->
->    ```sql
->    SELECT DISTINCT(CONCAT('ANALYZE TABLE ', table_schema, '.', table_name, ';')) FROM information_schema.tables, mysql.stats_histograms WHERE stats_ver = 2 AND table_id = tidb_table_id;
->     ```
->
-> - 如果 ANALYZE 语句是开启了自动 analyze 后 TiDB 自动执行的，请使用以下 SQL 语句生成 DROP STATS 的语句并执行：
->
->    ```sql
->    SELECT DISTINCT(CONCAT('DROP STATS ', table_schema, '.', table_name, ';')) FROM information_schema.tables, mysql.stats_histograms WHERE stats_ver = 2 AND table_id = tidb_table_id;
->    ```
->
-> - 如果上一条语句返回结果太长，不方便拷贝粘贴，可以将结果导出到临时文件后，再执行:
->
->    ```sql
->    select distinct... into outfile '/tmp/sql.txt';
->    mysql -h XXX -u user -P 4000 ... < '/tmp/sql.txt';
->    ```
+## 统计信息版本
+
+变量 `tidb_analyze_version` 用于控制所收集到的统计信息。目前 TiDB 中支持两种统计信息：`tidb_analyze_version = 1` 以及 `tidb_analyze_version = 2`。在 v5.3.0 及之后的版本中，该变量的默认值为 `2`。如果从 v5.3.0 之前版本的集群升级至 v5.3.0 及之后的版本，`tidb_analyze_version` 的默认值不发生变化。
+
+Version 2 的统计信息避免了 Version 1 中因为哈希冲突导致的在较大的数据量中可能产生的较大误差，并保持了大多数场景中的估算精度。
 
 两种版本中，TiDB 维护的统计信息如下：
 
@@ -46,7 +29,26 @@ TiDB 使用统计信息来决定[索引的选择](/choose-index.md)。变量 `ti
 | 列的平均长度 | √ | √ |
 | 索引的平均长度 | √ | √ |
 
-Version 2 的统计信息避免了 Version 1 中因为哈希冲突导致的在较大的数据量中可能产生的较大误差，并保持了大多数场景中的估算精度。
+当 `tidb_analyze_version = 2` 时，如果执行 ANALYZE 语句后发生 OOM，需要设置全局变量 `tidb_analyze_version = 1`，回退到 Version 1，然后根据情况进行以下操作：
+
+- 如果 ANALYZE 语句是手动执行的，你需要手动 ANALYZE 每张需要的表：
+
+    ```sql
+    SELECT DISTINCT(CONCAT('ANALYZE TABLE ', table_schema, '.', table_name, ';')) FROM information_schema.tables, mysql.stats_histograms WHERE stats_ver = 2 AND table_id = tidb_table_id;
+    ```
+
+- 如果 ANALYZE 语句是开启了自动 ANALYZE 后 TiDB 自动执行的，使用以下 SQL 语句生成 DROP STATS 的语句并执行：
+
+   ```sql
+   SELECT DISTINCT(CONCAT('DROP STATS ', table_schema, '.', table_name, ';')) FROM information_schema.tables, mysql.stats_histograms WHERE stats_ver = 2 AND table_id = tidb_table_id;
+   ```
+
+- 如果上一条语句返回结果太长，不方便复制粘贴，可以将结果导出到临时文件后，再执行:
+
+   ```sql
+   SELECT DISTINCT... INTO outfile '/tmp/sql.txt';
+   mysql -h ${TiDB_IP} -u user -P ${TIDB_PORT} ... < '/tmp/sql.txt';
+   ```
 
 本文接下来将简单介绍其中出现的直方图和 Count-Min Sketch 以及 Top-N 这些数据结构，以及详细介绍统计信息的收集和维护。
 
@@ -683,6 +685,19 @@ DROP STATS TableName GLOBAL;
 - 通过修改系统变量 [`tidb_stats_load_pseudo_timeout`](/system-variables.md#tidb_stats_load_pseudo_timeout-从-v540-版本开始引入) 的值控制 SQL 优化等待超时后的行为。该变量默认值为 `ON`，代表超时后 SQL 优化过程不会使用任何列上的直方图、TopN 或 CMSketch。当设置该变量为 `OFF` 时，代表超时后 SQL 执行失败。
 - 通过修改 TiDB 配置项 [`stats-load-concurrency`](/tidb-configuration-file.md#stats-load-concurrency-从-v540-版本开始引入) 的值控制统计信息同步加载可以并发处理的最大列数。该配置项的默认值为 `5`。
 - 通过修改 TiDB 配置项 [`stats-load-queue-size`](/tidb-configuration-file.md#stats-load-queue-size-从-v540-版本开始引入) 的值设置统计信息同步加载最多可以缓存多少列的请求。该配置项的默认值为 `1000`。
+
+在 TiDB 启动阶段，初始统计信息加载完成之前执行的 SQL 可能有不合理的执行计划，从而影响性能。为了避免这种情况，从 v7.1.0 开始，TiDB 引入了配置项 [`force-init-stats`](/tidb-configuration-file.md#force-init-stats-从-v710-版本开始引入)。你可以控制 TiDB 启动时是否在统计信息初始化完成后再对外提供服务。该配置项默认关闭。
+
+> **警告：**
+>
+> 轻量级的统计信息初始化目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+
+从 v7.1.0 开始，TiDB 引入了配置参数 [`lite-init-stats`](/tidb-configuration-file.md#lite-init-stats-从-v710-版本开始引入) 用于控制是否开启轻量级的统计信息初始化。
+
+- 当 `lite-init-stats` 为 `true` 时，统计信息初始化时列和索引的直方图、TopN、Count-Min Sketch 均不会加载到内存中。
+- 当 `lite-init-stats` 为 `false` 时，统计信息初始化时索引和主键的直方图、TopN、Count-Min Sketch 会被加载到内存中，非主键列的直方图、TopN、Count-Min Sketch 不会加载到内存中。当优化器需要某一索引或者列的直方图、TopN、Count-Min Sketch 时，这些统计信息会被同步或异步加载到内存中。
+
+`lite-init-stats` 默认值为 `false`，即关闭轻量级的统计信息初始化。将 `lite-init-stats` 设置为 `true` 可以加速统计信息初始化，避免加载不必要的统计信息，从而降低 TiDB 的内存使用。
 
 ## 统计信息的导入导出
 

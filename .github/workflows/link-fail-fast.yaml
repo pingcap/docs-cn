@@ -23,7 +23,7 @@ jobs:
 
       - name: Link Checker
         if: ${{ steps.changed-files.outputs.all_changed_files }}
-        uses: lycheeverse/lychee-action@v1.5.0
+        uses: lycheeverse/lychee-action@v1.6.1
         with:
           fail: true
           args: -E --exclude-mail -i -n -t 45 -- '${{ steps.changed-files.outputs.all_changed_files }}'

@@ -100,29 +100,29 @@ TiSpark 是 Spark 的第三方 jar 包，提供读写 TiKV 的能力。
 
 你能用以下方式获取 jar 包：
 
-- 从 [maven 中央仓库](https://search.maven.org/)获取，你可以搜索 [![Maven Search](https://img.shields.io/badge/com.pingcap/tispark-green.svg)](http://search.maven.org/#search%7Cga%7C1%7Cpingcap)。
+- 从 [maven 中央仓库](https://search.maven.org/)获取，你可以搜索 [`pingcap`](http://search.maven.org/#search%7Cga%7C1%7Cpingcap) 关键词。
 - 从 [TiSpark releases](https://github.com/pingcap/tispark/releases) 获取。
 - 通过以下步骤从源码构建：
 
-  1. 下载 TiSpark 源码：
-  
-      ```
-      git clone https://github.com/pingcap/tispark.git
-      cd tisapark
-      ```
-  
-  2. 在 TiSpark 根目录运行如下命令：
-  
-      ```
-      // add -Dmaven.test.skip=true to skip the tests
-      mvn clean install -Dmaven.test.skip=true
-      // or you can add properties to specify spark version
-      mvn clean install -Dmaven.test.skip=true -Pspark3.2.1
-      ```
+1. 下载 TiSpark 源码：
 
-  > **注意：**
-  >
-  > 目前，你只能使用 java8 构架 TiSpark。运行 `mvn -version` 来检查 java 版本。
+    ```
+    git clone https://github.com/pingcap/tispark.git
+    cd tisapark
+    ```
+
+2. 在 TiSpark 根目录运行如下命令：
+
+    ```
+    // add -Dmaven.test.skip=true to skip the tests
+    mvn clean install -Dmaven.test.skip=true
+    // or you can add properties to specify spark version
+    mvn clean install -Dmaven.test.skip=true -Pspark3.2.1
+    ```
+
+> **注意：**
+>
+> 目前，你只能使用 java8 构架 TiSpark。运行 `mvn -version` 来检查 java 版本。
 
 ### TiSpark jar 包的 artifact ID
 

@@ -9,18 +9,14 @@ summary: TiDB 数据库中 CANCEL LOAD DATA 和 DROP LOAD DATA 的使用概况�
 
 `DROP LOAD DATA` 语句用于删除系统中创建的 LOAD DATA 任务。
 
-> **警告：**
->
-> 当前该功能为实验特性，不建议在生产环境中使用。
-
 ## 语法图
 
 ```ebnf+diagram
 CancelLoadDataJobsStmt ::=
-    'CANCEL' 'LAOD' 'DATA' 'JOB' JobID
+    'CANCEL' 'LOAD' 'DATA' 'JOB' JobID
 
 DropLoadDataJobsStmt ::=
-    'DROP' 'LAOD' 'DATA' 'JOB' JobID
+    'DROP' 'LOAD' 'DATA' 'JOB' JobID
 ```
 
 ## 示例
