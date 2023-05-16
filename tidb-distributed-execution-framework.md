@@ -9,7 +9,7 @@ summary: 了解 TiDB 后端任务分布式框架的使用场景与限制、使�
 >
 > 当前该功能为实验特性，不建议在生产环境中使用。
 
-TiDB 采用计算存储分离架构，具有出色的扩展性和弹性的扩缩容能力。从 TiDB v7.1.0 开始引入了一个后端任务分布式执行框架，以进一步挖掘 TiDB 分布式架构的资源优势。该框架的目标是实现对所有后端任务的统一调度与分布式执行，并为接入的后端任务提供统一的资源管理能力，从整体和单个后端任务两个维度提供资源管理的能力，更好地满足用户对于资源使用的预期。
+TiDB 采用计算存储分离架构，具有出色的扩展性和弹性的扩缩容能力。从 v7.1.0 开始， TiDB 引入了一个后端任务分布式执行框架，以进一步发挥分布式架构的资源优势。该框架的目标是实现对所有后端任务的统一调度与分布式执行，并为接入的后端任务提供统一的资源管理能力，从整体和单个后端任务两个维度提供资源管理的能力，更好地满足用户对于资源使用的预期。
 
 本文档介绍了 TiDB 后端任务分布式框架的使用场景与限制、使用方法和实现原理。
 
@@ -19,7 +19,7 @@ TiDB 采用计算存储分离架构，具有出色的扩展性和弹性的扩缩
 
 ## 使用场景与限制
 
-在数据库中，除了最核心的事务型负载任务 (TP) 和分析型查询任务 (AP) ，也存在着其他重要任务，如 DDL 语句、Load Data、TTL、Analyze 和 Backup/Restore 等，即**后端任务**。这些任务需要处理数据库对象（表）中的大量用户数据，通常具有如下特点：
+在数据库中，除了核心的事务型负载任务 (TP) 和分析型查询任务 (AP)，也存在着其他重要任务，如 DDL 语句、Load Data、TTL、Analyze 和 Backup/Restore 等，即**后端任务**。这些任务需要处理数据库对象（表）中的大量数据，通常具有如下特点：
 
 - 需要处理一个 schema 或者一个数据库对象（表）中的所有数据。
 - 可能需要周期执行，但频率较低。
@@ -31,7 +31,7 @@ TiDB 采用计算存储分离架构，具有出色的扩展性和弹性的扩缩
 - 支持后端任务分布式执行，可以在整个 TiDB 集群可用的计算资源范围内进行灵活的调度，从而更好地利用 TiDB 集群内的计算资源。
 - 提供统一的资源使用和管理能力，从整体和单个后端任务两个维度提供资源管理的能力。
 
-目前，后端任务分布式框架仅支持以快速模式分布式执行 `ADD INDEX`，即 DDL 创建索引的场景。例如以下 SQL 语句：
+目前，后端任务分布式框架仅支持分布式执行 `ADD INDEX`，即 DDL 创建索引的场景。例如以下 SQL 语句：
 
 ```sql
 ALTER TABLE t1 ADD INDEX idx1(c1);
@@ -40,7 +40,7 @@ CREATE INDEX idx1 ON table t1(c1);
 
 ## 启用前提
 
-使用分布式框架前，你需要启动 [Fast Online DDL](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入)模式。
+使用分布式框架前，你需要启动 [Fast Online DDL](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 模式。
 
 1. 调整 Fast Online DDL 相关的系统变量：
 
@@ -72,9 +72,9 @@ CREATE INDEX idx1 ON table t1(c1);
     * [tidb_ddl_error_count_limit](https://docs.pingcap.com/tidb/stable/system-variables#tidb_ddl_error_count_limit)
     * [tidb_ddl_reorg_batch_size](https://docs.pingcap.com/tidb/stable/system-variables#tidb_ddl_reorg_batch_size)：使用默认值即可，建议最大不超过 `1024`。
 
-    <Tip>
-    对于分布式 `ADD INDEX` 语句，只需要设置 `tidb_ddl_reorg_worker_cnt`。
-    </Tip>
+> ***建议：**
+>
+> 对于分布式执行 `ADD INDEX` 语句，只需要设置 `tidb_ddl_reorg_worker_cnt`。
 
 ## 实现原理
 
