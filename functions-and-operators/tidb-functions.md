@@ -399,3 +399,39 @@ TIDBShardExpr ::=
 ### MySQL 兼容性
 
 `TIDB_SHARD` 是 TiDB 特有的函数，和 MySQL 不兼容。
+
+## TIDB_ROW_CHECKSUM
+
+`TIDB_ROW_CHECKSUM` 函数用于查询行数据的 checksum ，该函数只能用于走 FastPlan 的 select 语句，即你可通过形如 `select tidb_row_checksum() from t where id = ?` 或 `select tidb_row_checksum() from t where id in (?, ?, ...)` 这样的语句进行查询。
+
+### 语法图
+
+```ebnf+diagram
+TableStmt ::=
+    "TIDB_ROW_CHECKSUM()"
+```
+
+### 示例
+
+{{< copyable "sql" >}}
+
+```sql
+select *, tidb_row_checksum() from t where id = 1;
+```
+
+```sql
++----+------+------+---------------------+
+| id | k    | c    | tidb_row_checksum() |
++----+------+------+---------------------+
+|  1 |   10 | a    | 3813955661          |
++----+------+------+---------------------+
+1 row in set (0.000 sec)
+```
+
+### MySQL 兼容性
+
+`TIDB_ROW_CHECKSUM` 是 TiDB 特有的函数，和 MySQL 不兼容。
+
+### 另请参阅
+
+- [数据正确性校验](/ticdc/ticdc-integrity-check.md)
