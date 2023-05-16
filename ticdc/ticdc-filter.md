@@ -91,37 +91,37 @@ ignore-update-new-value-expr = "gender = 'male' and age > 18" # 过滤掉新值 
 
 ## DDL 白名单
 
-目前 TiCDC 在同步 DDL 时使用白名单策略，只有在白名单内部的 DDL 会同步到下游，不在白名单内的 DDL 会被 TiCDC 不会同步到下游。
+目前 TiCDC 在同步 DDL 时使用白名单策略，只有在白名单内部的 DDL 会同步到下游，不在白名单内的 DDL 不会被 TiCDC 同步到下游。
 
 以下为 TiCDC 支持同步的 DDL 的列表。
 
-1. create database
-2. drop database
-3. create table 
-4. drop table 
-5. add column 
-6. drop column
-7. create index / add index 
-8. drop index 
-9. truncate table 
-10. modify column 
-11. rename table 
-12. alter column default value
-13. alter table comment 
-14. rename index 
-15. add partition
-16. drop partition 
-17. truncate partition 
-18. create view 
-19. drop view 
-20. alter table character set 
-21. alter database character set
-22. recover table 
-23. add primary key 
-24. drop primary key 
-25. rebase auto id
-26. alter table index visibility 
-27. exchange partition 
-28. reorganize partition 
-29. alter table ttl 
-30. alter table remove ttl 
+- create database
+- drop database
+- create table 
+- drop table 
+- add column 
+- drop column
+- create index / add index 
+- drop index 
+- truncate table 
+- modify column 
+- rename table 
+- alter column default value
+- alter table comment 
+- rename index 
+- add partition
+- drop partition 
+- truncate partition 
+- create view 
+- drop view 
+- alter table character set 
+- alter database character set
+- recover table 
+- add primary key 
+- drop primary key 
+- rebase auto id
+- alter table index visibility 
+- exchange partition 
+- reorganize partition 
+- alter table ttl 
+- alter table remove ttl
