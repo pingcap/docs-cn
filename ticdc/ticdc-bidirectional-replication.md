@@ -44,19 +44,19 @@ TiCDC 复制功能只会将指定时间点之后的增量变更复制到下游�
 
 | 事件                        | 是否会引起 changefeed 错误 | 说明    |
 | ---------------------------- | ------ |--------------------------|
-| create database              | 是     | 错误可以自动恢复|
+| create database              | 是     | 用户手动在上下游都执行了 DDL 之后，错误可以自动恢复|
 | drop database                | 是     | 需要手动重启 changefeed，指定 `--overwrite-checkpoint-ts` 为该条 DDL 的commitTs 来恢复         |
-| create table                 | 是   | 错误可以自动恢复       |
+| create table                 | 是   | 用户手动在上下游都执行了 DDL 之后，错误可以自动恢复       |
 | drop table                   | 是   | 需要手动重启 changefeed，指定 `--overwrite-checkpoint-ts` 为该条 ddl 的commitTs 来恢复        |
 | alter table comment          | 否   |    |
 | rename index                 | 否   |    |
 | alter table index visibility | 否   |    |
-| add partition                | 是   | 错误可以自动恢复    |
+| add partition                | 是   | 用户手动在上下游都执行了 DDL 之后，错误可以自动恢复    |
 | drop partition               | 否   |    |
 | create view                  | 否   |    |
 | drop view                    | 否   |    |
-| alter column default value   | 是   |    |
-| reorganize partition         | 是   | 错误可以自动恢复    |
+| alter column default value   | 否  |    |
+| reorganize partition         | 是   | 用户手动在上下游都执行了 DDL 之后，错误可以自动恢复    |
 | alter table ttl              | 否   |    |
 | alter table remove ttl       | 否   |    |
 | add **not unique** index     | 否   |    |
