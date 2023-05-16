@@ -451,7 +451,13 @@ config show cluster-version
 
 - `enable-placement-rules` 用于开启 placement rules，在 v5.0 及以上的版本默认开启。
 
-- `store-limit-mode` 用于控制 store 限速机制的模式。主要有两种模式：`auto` 和 `manual`。`auto` 模式下会根据 load 自动进行平衡调整（实验性功能）。
+- `store-limit-mode` 用于控制 store 限速机制的模式。主要有两种模式：`auto` 和 `manual`。`auto` 模式下会根据 load 自动进行平衡调整（弃用）。
+
+- `store-limit-version` 用于设置 `store limit` 限制模式，目前提供两种方式：`v1` 和 `v2`。默认值为 `v1`。在 `v1` 模式下，你可以手动修改 `store limit` 以限制单个 TiKV 调度速度。`v2` 模式为实验特性，在 `v2` 模式下，你无需关注 `store limit` 值，PD 将根据 TiKV Snapshot 执行情况动态调整 TiKV 调度速度。详情请参考 [Store Limit v2 原理](/configure-store-limit.md#store-limit-v2-原理)。
+
+    ```bash
+    config set store-limit-version v2       // 使用 Store Limit v2
+    ```
 
 - PD 会对流量信息的末尾数字进行四舍五入处理，减少 Region 流量信息变化引起的统计信息更新。该配置项用于指定对 Region 流量信息的末尾进行四舍五入的位数。例如流量 `100512` 会归约到 `101000`。默认值为 `3`。该配置替换了 `trace-region-flow`。
 
