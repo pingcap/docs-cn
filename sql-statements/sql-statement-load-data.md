@@ -82,7 +82,6 @@ Records: 815264  Deleted: 0  Skipped: 0  Warnings: 0
 
 ## MySQL 兼容性
 
-* TiDB 中的 `LOAD DATA` 语句语法上兼容 MySQL（除字符集选项被解析但会被忽略以外）。若发现任何语法兼容性差异，请在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues/new/choose)。
 * 默认情况下，TiDB 每 20,000 行会进行一次提交。这类似于 MySQL NDB Cluster，但并非 InnoDB 存储引擎的默认配置。
 
 > **注意：**
