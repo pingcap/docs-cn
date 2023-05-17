@@ -424,6 +424,7 @@ SET GLOBAL tidb_enable_row_level_checksum = ON;
 ```sql
 USE test;
 CREATE TABLE t (id INT PRIMARY KEY, k INT, c int);
+INSERT INTO TABLE t values (1, 10, a);
 ```
 
 查询表 `t` 中 `id = 1` 的行数据的 Checksum 值：
