@@ -13,6 +13,8 @@ summary: 介绍 TiCDC 数据正确性校验功能的实现原理和使用方法�
 
 TiCDC 将数据编码成特定格式并发送至 Kafka。Kafka Consumer 读取数据后，可以使用与 TiDB 相同的算法计算得到新的 Checksum，将此值与数据中携带的 Checksum 值进行比较，若二者一致，则可证明从 TiCDC 至 Kafka Consumer 的传输链路上的数据是正确的。
 
+关于 Checksum 值的计算规则，请参考 [Checksum 计算规则](#checksum-计算规则)。
+
 ## 启用功能
 
 TiCDC 数据正确性校验功能默认关闭，要使用该功能，请执行以下步骤：
