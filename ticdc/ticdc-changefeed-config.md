@@ -37,6 +37,10 @@ Info: {"upstream_id":7178706266519722477,"namespace":"default","id":"simple-repl
 本章节详细介绍了同步任务的配置。
 
 ```toml
+# 指定该 changefeed 在 capture server 中的内存配额的上限。对于超额使用部分，
+# 会在运行中被 go runtime 优先回收，默认为 1GB
+# memory-quota = 1073741824 # 1 GB 
+
 # 指定配置文件中涉及的库名、表名是否为大小写敏感
 # 该配置会同时影响 filter 和 sink 相关配置，默认为 true
 case-sensitive = true
@@ -119,14 +123,17 @@ write-key-threshold = 0
 # protocol 用于指定传递到下游的协议格式
 # 当下游类型是 Kafka 时，支持 canal-json、avro 两种协议。
 # 当下游类型是存储服务时，目前仅支持 canal-json、csv 两种协议。
+# 注意：该字段只有当下游为 Kafka 或 Storage Service 时，才会生效。
 # protocol = "canal-json"
 
 # 以下三个配置项仅在同步到存储服务的 sink 中使用，在 MQ 和 MySQL 类 sink 中无需设置。
 # 换行符，用来分隔两个数据变更事件。默认值为空，表示使用 "\r\n" 作为换行符。
 # terminator = ''
 # 文件路径的日期分隔类型。可选类型有 `none`、`year`、`month` 和 `day`。默认值为 `none`，即不使用日期分隔。详见 <https://docs.pingcap.com/zh/tidb/dev/ticdc-sink-to-cloud-storage#数据变更记录>。
+# 注意：该字段只有当下游为 Storage Service 时，才会生效。
 date-separator = 'none'
 # 是否使用 partition 作为分隔字符串。默认值为 true，即一张表中各个 partition 的数据会分不同的目录来存储。建议保持该配置项为 true 以避免下游分区表可能丢数据的问题 <https://github.com/pingcap/tiflow/issues/8581>。使用示例详见 <https://docs.pingcap.com/zh/tidb/dev/ticdc-sink-to-cloud-storage#数据变更记录>。
+# 注意：该字段只有当下游为 Storage Service 时，才会生效。
 enable-partition-separator = true
 
 # 从 v6.5.0 开始，TiCDC 支持以 CSV 格式将数据变更记录保存至存储服务中，在 MQ 和 MySQL 类 sink 中无需设置。
@@ -139,4 +146,24 @@ enable-partition-separator = true
 # null = '\N'
 # 是否在 CSV 行中包含 commit-ts。默认值为 false。
 # include-commit-ts = false
+
+# 以下配置项用来配置 changefeed 的一致性。以下配置项只在 redo log 功能开启的情况下，有效。更详细的细节，请参考  https://docs.pingcap.com/tidb/stable/ticdc-sink-to-mysql#eventually-consistent-replication-in-disaster-scenarios. 注意：该字段只有当下游为数据库时，才会生效。
+[sink.consistent]
+# 数据一致性级别。可选级别为 none 和 eventual。当设置为 none 时，相当于关闭 redo log 功能。默认值为 none。
+level = "none"
+# redo log 的最大容量，单位为 megabytes。默认值为 64。
+max-log-size = 64
+# 两次 redo log 刷新间隔，单位是毫秒。默认值为2000。
+flush-interval = 2000 
+# redo log 使用的存储 URI。 默认值为空。
+storage = "" 
+# 是否将 redo log 存到文件中。默认值为 false。
+use-file-backend = false
+
+# 用于配置数据完整性检验。注意：该字段只有当下游为消息队列时，才会生效。
+[sink.integrity]
+# 数据完整性级别。可选项为 none 和 correctness。当设置为 none 时，相当于不会做数据完整性校验。当设置为 correctness 时，相当于会对每一行数据做完整性校验。默认值为 none。
+integrity-check-level = "none"
+# 当检测到数据不完整后的系统行为。可选项包括 warn 和 error。如果设置成 warn，会将不完整事件记录到文档中并发送到下游。如果设置成 error，会停止同步数据。默认值为 warn。
+corruption-handle-level = "warn"
 ```
