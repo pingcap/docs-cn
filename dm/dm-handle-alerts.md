@@ -91,7 +91,7 @@ This document introduces how to deal with the alert information in DM.
     You can take the following methods to handle the alert:
 
     - Delete unwanted data manually to increase free disk space.
-    - Reconfigure the [automatic data purge strategy of the relay log](/dm/relay-log.md#automatic-data-purge) or [purge data manually](/dm/relay-log.md#manual-data-purge).
+    - Reconfigure the [automatic data purge strategy of the relay log](/dm/relay-log.md#automatic-purge) or [purge data manually](/dm/relay-log.md#manual-purge).
     - Execute the command `pause-relay` to pause the relay log pulling process. After there is enough free disk space, resume the process by running the command `resume-relay`. Note that you must not purge upstream binlog files that have not been pulled after the relay log pulling process is paused.
 
 ### `DM_relay_log_data_corruption`

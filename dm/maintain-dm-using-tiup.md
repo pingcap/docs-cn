@@ -185,7 +185,7 @@ For example, to scale out a DM-worker node in the `prod-cluster` cluster, take t
 >
 > For clusters earlier than v2.0.5, you can use dmctl v2.0.5 or later to export and import the data source and task configuration files.
 >
-> For clusters later than v2.0.2, currently, it is not supported to automatically import the configuration related to relay worker. You can use `start-relay` command to manually [start relay log](/dm/relay-log.md#start-and-stop-the-relay-log-feature).
+> For clusters later than v2.0.2, currently, it is not supported to automatically import the configuration related to relay worker. You can use `start-relay` command to manually [start relay log](/dm/relay-log.md#enable-and-disable-relay-log).
 
 The rolling upgrade process is made as transparent as possible to the application, and does not affect the business. The operations vary with different nodes.
 
