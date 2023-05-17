@@ -13,7 +13,6 @@ summary: 了解如何将 Grafana 监控数据导出为快照以及如何将快�
 > **注意：**
 >
 > 目前该工具仅支持在 Grafana v6.x.x 上使用。
->
 
 在故障诊断中，监控数据十分重要。当你请求远程协助时，技术支持人员有时需要查看 Grafana Dashboard 以确认问题所在。[MetricsTool](https://metricstool.pingcap.net/) 用于将 Grafana Dashboard 的快照导出为本地文件，并将快照可视化。因此，你可以在不泄露 Grafana 服务器上其他敏感信息的前提下，将监控数据以快照形式分享给外部人员，同时也方便外部人员准确识读数据图表。
 
