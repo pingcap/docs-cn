@@ -44,12 +44,12 @@ CREATE INDEX idx1 ON table t1(c1);
 
 1. 调整 Fast Online DDL 相关的系统变量：
 
-    * [`tidb_ddl_enable_fast_reorg`](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入)：从 TiDB v6.5 开始默认打开，用于启用快速模式。
+    * [`tidb_ddl_enable_fast_reorg`](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入)：从 TiDB v6.5.0 开始默认打开，用于启用快速模式。
     * [`tidb_ddl_disk_quota`](/system-variables.md#tidb_ddl_disk_quota-从-v630-版本开始引入)：用于控制快速模式可使用的本地磁盘最大配额。
 
-2. 调整 Fast DDL 相关的配置项：
+2. 调整 Fast Online DDL 相关的配置项：
 
-    * [temp-dir](/tidb-configuration-file.md#temp-dir-从-v630-版本开始引入)：指定快速模式能够使用的本地盘路径。
+    * [`temp-dir`](/tidb-configuration-file.md#temp-dir-从-v630-版本开始引入)：指定快速模式能够使用的本地盘路径。
 
 > **注意：**
 >
@@ -67,10 +67,10 @@ CREATE INDEX idx1 ON table t1(c1);
 
 2. 根据实际需求，调整可能影响 DDL 任务分布式执行的系统变量：
 
-    * [tidb_ddl_reorg_worker_cnt](/system-variables.md#tidb_ddl_reorg_worker_cnt)：使用默认值 `4` 即可，建议最大不超过 `16`。
-    * [tidb_ddl_reorg_priority](/system-variables.md#tidb_ddl_reorg_priority)
-    * [tidb_ddl_error_count_limit](/system-variables.md#tidb_ddl_error_count_limit)
-    * [tidb_ddl_reorg_batch_size](/system-variables.md#tidb_ddl_reorg_batch_size)：使用默认值即可，建议最大不超过 `1024`。
+    * [`tidb_ddl_reorg_worker_cnt`](/system-variables.md#tidb_ddl_reorg_worker_cnt)：使用默认值 `4` 即可，建议最大不超过 `16`。
+    * [`tidb_ddl_reorg_priority`](/system-variables.md#tidb_ddl_reorg_priority)
+    * [`tidb_ddl_error_count_limit`](/system-variables.md#tidb_ddl_error_count_limit)
+    * [`tidb_ddl_reorg_batch_size`](/system-variables.md#tidb_ddl_reorg_batch_size)：使用默认值即可，建议最大不超过 `1024`。
 
 > **建议：**
 >
