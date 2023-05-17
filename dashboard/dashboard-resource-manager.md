@@ -5,7 +5,7 @@ summary: 介绍如何使用 TiDB Dashboard 的资源管控页面查看资源管�
 
 # TiDB Dashboard 资源管控页面
 
-为使用[资源管控 (Resource Control)](/tidb-resource-control.md) 特性实现资源隔离，集群管理员可以定义资源组 (Resource Group)，通过资源组限定读写的配额。在进行资源规划之前，你需要了解集群的整体容量。该页面可以帮助你查看资源管控相关信息，以便预估集群容量，更好地进行资源配置。
+为使用[资源管控 (Resource Control)](/tidb-resource-control.md) 特性实现资源隔离，集群管理员可以定义资源组 (Resource Group)，通过资源组限定配额。在进行资源规划之前，你需要了解集群的整体容量。该页面可以帮助你查看资源管控相关信息，以便预估集群容量，更好地进行资源配置。
 
 ## 访问方式
 
