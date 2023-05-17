@@ -984,6 +984,10 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 >
 > 目前，PITR 恢复会额外处理日志备份时间段内通过索引加速功能创建的索引，以达到兼容效果。详细内容请参考[索引加速功能为什么与 PITR 功能不兼容](/faq/backup-and-restore-faq.md#索引加速功能为什么与-pitr-功能不兼容)。
 
+> **注意：**
+>
+> 在升级到 v6.5.0 及以上版本时，建议你检查 TiDB 的 [temp-dir](/tidb-configuration-file.md#temp-dir-从-v630-版本开始引入) 路径是否正确挂载了 SSD 磁盘。该参数是 TiDB 的配置参数，设置后需要重启 TiDB 才能生效。因此，在升级前提前进行设置，可以避免再次重启。
+
 ### `tidb_enable_dist_task` <span class="version-mark">从 v7.1.0 版本开始引入</span>
 
 > **警告：**
@@ -993,7 +997,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 作用域：GLOBAL
 - 是否持久化到集群：是
 - 默认值：`OFF`
-- 这个变量用于控制是否开启分布式执行框架。开启分布式执行后，DDL 和 Import 等后端任务将会由集群中多个 TiDB 节点共同完成。
+- 这个变量用于控制是否开启 [TiDB 后端任务分布式框架](/tidb-distributed-execution-framework.md)。开启分布式框架后，DDL 和 Import 等后端任务将会由集群中多个 TiDB 节点共同完成。
 - 在 TiDB v7.1.0 中，只支持分布式执行分区表的 `ADD INDEX`。
 - 该变量由 `tidb_ddl_distribute_reorg` 改名而来。
 
