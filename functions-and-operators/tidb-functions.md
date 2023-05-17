@@ -402,7 +402,7 @@ TIDBShardExpr ::=
 
 ## TIDB_ROW_CHECKSUM
 
-`TIDB_ROW_CHECKSUM` 函数用于查询行数据的 checksum ，该函数只能用于走 FastPlan 的 select 语句，即你可通过形如 `select tidb_row_checksum() from t where id = ?` 或 `select tidb_row_checksum() from t where id in (?, ?, ...)` 这样的语句进行查询。
+`TIDB_ROW_CHECKSUM` 函数用于查询行数据的 Checksum 值。该函数只能用于走 FastPlan 流程的 `SELECT` 语句，即你可通过形如 `SELECT TIDB_ROW_CHECKSUM() FROM t WHERE id = ?` 或 `SELECT TIDB_ROW_CHECKSUM() FROM t WHERE id IN (?, ?, ...)` 的语句进行查询。
 
 ### 语法图
 
@@ -413,15 +413,28 @@ TableStmt ::=
 
 ### 示例
 
-{{< copyable "sql" >}}
+在 TiDB 中开启行数据 Checksum 功能 `tidb_enable_row_level_checksum`：
 
 ```sql
-select *, tidb_row_checksum() from t where id = 1;
+SET GLOBAL tidb_enable_row_level_checksum = ON;
+```
+
+创建表 `t` 并插入数据：
+
+```sql
+USE test;
+CREATE TABLE t (id INT PRIMARY KEY, k INT, c int);
+```
+
+查询表 `t` 中 `id = 1` 的行数据的 Checksum 值：
+
+```sql
+SELECT *, TIDB_ROW_CHECKSUM() FROM t WHERE id = 1;
 ```
 
 ```sql
 +----+------+------+---------------------+
-| id | k    | c    | tidb_row_checksum() |
+| id | k    | c    | TIDB_ROW_CHECKSUM() |
 +----+------+------+---------------------+
 |  1 |   10 | a    | 3813955661          |
 +----+------+------+---------------------+
