@@ -65,15 +65,15 @@ TiCDC 默认关闭单行数据的 Checksum 校验功能。若要在开启此功�
 
 Checksum 计算算法的伪代码如下：
 
-    ```
-    fn checksum(columns) {
-        let result = 0
-        for column in sort_by_schema_order(columns) {
-            result = crc32.update(result, encode(column))
-        }
-        return result
+```
+fn checksum(columns) {
+    let result = 0
+    for column in sort_by_schema_order(columns) {
+        result = crc32.update(result, encode(column))
     }
-    ```
+    return result
+}
+```
 
 * columns 应该按照 column id 排序。在 avro schema 中，每个字段的顺序已经是按照 column id 排序的，因此按照该顺序将 columns 排序即可。
 
