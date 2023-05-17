@@ -133,7 +133,7 @@ sysbench --config-file=config oltp_point_select --tables=32 --table-size=1000000
 To warm data, we load data from disk into the block cache of memory. The warmed data has significantly improved the overall performance of the system. It is recommended to warm data once after restarting the cluster.
 
 ```bash
-sysbench --config-file=config oltp_point_select --tables=32 --table-size=10000000 warmup
+sysbench --config-file=config oltp_point_select --tables=32 --table-size=10000000 prewarm
 ```
 
 ### Point select test command
