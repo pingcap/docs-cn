@@ -125,6 +125,7 @@
     - [与 Apache Kafka 和 Apache Flink 进行数据集成](/replicate-data-to-kafka.md)
 - 运维操作
   - 升级 TiDB 版本
+    - [平滑升级 TiDB](/upgrade-tidb.md)
     - [使用 TiUP 升级](/upgrade-tidb-using-tiup.md)
     - [使用 TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/upgrade-a-tidb-cluster)
     - [TiFlash v6.2 升级帮助](/tiflash-620-upgrade-guide.md)
