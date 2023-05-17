@@ -75,15 +75,19 @@ fn checksum(columns) {
 }
 ```
 
-* columns 应该按照 column id 排序。在 avro schema 中，每个字段的顺序已经是按照 column id 排序的，因此按照该顺序将 columns 排序即可。
+* `columns` 应该按照 column ID 排序。在 Avro schema 中，各个字段已经按照 column ID 的顺序排序，因此可以直接按照此顺序排序 `columns`。
 
-* encode(column) 方法，将 column 中的值编码成 bytes，编码时需要参考该 column 的 MysQL Type，具体规则如下：
-    * 对于 tinyint, smallint, int, bigint, mediumint, year 将会被转换成 uint64 类型，按照小端序编码。(例子：数字 0x0123456789abcdef 将会被编码成 hex'0x0123456789abcdef')
-    * 对于 float, double 将会被转换成 double 类型， 然后转换成 IEEE754 格式的 uint64 类型。
-    * 对于 bit, enum, set 将会被转换成 uint64 类型。bit 类型的值按照二进制转换成 uint64 类型。enum, set 类型的值按照其对应的 int 值转换成 uint64 类型。(例子： 假设有类型 set('a','b','c')，数据值为 'a,c', 那么该值将会被编码成 0b101)
-    * 对于 timestamp, date, duration, datetime, json, decimal 将会被转换成 string 类型，然后转换成 UTF8 编码的 bytes 类型。
-    * 对于 varbianry, binary, blob (包括 tiny / medium / long)，直接使用它的 bytes。
-    * 对于 varchar, char, text(包括 tiny / medium / long)，编码成 UTF8 编码的 bytes 类型。
-    * 对于 null， geometry，不会被纳入到 checksum 计算中，返回 empty bytes。
+* `encode(column)` 函数将 column 的值编码为字节，编码规则取决于该 column 的数据类型。具体规则如下：
+    * TINYINT、SMALLINT、INT、BIGINT、MEDIUMINT 和 YEAR 类型会被转换为 UINT64 类型，并按照小端序编码。例如，数字 `0x0123456789abcdef` 会被编码为 `hex'0x0123456789abcdef'`。
+    * FLOAT 和 DOUBLE 类型会被转换为 DOUBLE 类型，然后转换为 IEEE754 格式的 UINT64 类型。
+    * BIT、ENUM 和 SET 类型会被转换为 UINT64 类型。
 
-Golang 的消费者代码实现，可以参考 [avro decoder 实现] (https://github.com/pingcap/tiflow/blob/master/pkg/sink/codec/avro/decoder.go)，包含有如何解码从 kafka 读取到的数据，按照 schema fields 排序，以及 checksum 计算等。
+        * BIT 类型按照二进制转换为 UINT64 类型。
+        * ENUM 和 SET 类型按照其对应的 INT 值转换为 UINT64 类型。例如，`SET('a','b','c')` 类型 column 的数据值为 `'a,c'`，则该值将被编码为 `0b101`。
+
+    * TIMESTAMP、DATE、DURATION、DATETIME、JSON 和 DECIMAL 类型会被转换为 STRING 类型，然后转换为 UTF8 编码的字节。
+    * VARBIANRY、BINARY 和 BLOB（包括 TINY、MEDIUM 和 LONG）类型会直接使用它的字节。
+    * VARCHAR、CHAR 和 TEXT（包括 TINY、MEDIUM 和 LONG）类型会被编码为 UTF8 编码的字节。
+    * NULL 和 GEOMETRY 类型不会被纳入到 Checksum 计算中，返回空字节。
+
+Golang 消费者代码实现包括解码从 kafka 读取到的数据、按照 schema fields 排序以及 Checksum 计算等步骤。详情请参考 [`avro/decoder.go`] (https://github.com/pingcap/tiflow/blob/master/pkg/sink/codec/avro/decoder.go)。
