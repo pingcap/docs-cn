@@ -132,7 +132,7 @@ addr = "172.16.31.10:8287"
 #  - remove: 记录所有目标表中的重复记录，和 'record' 模式相似。但是会删除目标表所有的重复记录，以确保目标 TiDB 中的数据状态保持一致。
 # duplicate-resolution = 'none'
 # Physical Import Mode 一次请求中发送的 KV 数量。
-# send-kv-pairs = 32768
+# send-kv-pairs = 3200
 # Physical Import Mode 向 TiKV 发送 KV 时是否启用压缩。目前只支持 Gzip 压缩算法，可填写 "gzip" 或者 "gz"。默认不启用压缩。
 # compress-kv-pairs = ""
 # Physical Import Mode 本地进行 KV 排序的路径。如果磁盘性能较低（如使用机械盘），建议设置成与 `data-source-dir` 不同的磁盘，这样可有效提升导入性能。
