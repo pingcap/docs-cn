@@ -147,23 +147,23 @@ enable-partition-separator = true
 # 是否在 CSV 行中包含 commit-ts。默认值为 false。
 # include-commit-ts = false
 
-# 以下配置项用来配置 changefeed 的一致性。以下配置项只在 redo log 功能开启的情况下，有效。更详细的细节，请参考  https://docs.pingcap.com/tidb/stable/ticdc-sink-to-mysql#eventually-consistent-replication-in-disaster-scenarios. 注意：该字段只有当下游为数据库时，才会生效。
+# sink.consistent 包含字段可用来配置 changefeed 的数据一致性。详细的信息，请参考 https://docs.pingcap.com/tidb/stable/ticdc-sink-to-mysql#eventually-consistent-replication-in-disaster-scenarios. 注意：一致性相关字段只有当下游为数据库并且开启 redo log 功能时，才会生效。
 [sink.consistent]
-# 数据一致性级别。可选级别为 none 和 eventual。当设置为 none 时，相当于关闭 redo log 功能。默认值为 none。
+# 数据一致性级别。可选级别为 none 和 eventual。设置为 none 时，redo log 将被关闭。默认值为 none。
 level = "none"
-# redo log 的最大容量，单位为 megabytes。默认值为 64。
+# redo log 的最大日志大小，单位为 megabytes。默认值为 64。
 max-log-size = 64
-# 两次 redo log 刷新间隔，单位是毫秒。默认值为2000。
+# 两次 redo log 的刷新间隔，单位为毫秒。默认值为2000。
 flush-interval = 2000 
-# redo log 使用的存储 URI。 默认值为空。
+# redo log 使用存储服务的 URI。默认值为空。
 storage = "" 
 # 是否将 redo log 存到文件中。默认值为 false。
 use-file-backend = false
 
-# 用于配置数据完整性检验。注意：该字段只有当下游为消息队列时，才会生效。
+# sink.integrity 所包含字段可用于配置数据完整性检验。注意：该字段只有当下游为消息队列时，才会生效。
 [sink.integrity]
-# 数据完整性级别。可选项为 none 和 correctness。当设置为 none 时，相当于不会做数据完整性校验。当设置为 correctness 时，相当于会对每一行数据做完整性校验。默认值为 none。
+# 数据完整性级别。可选项为 none 和 correctness。当设为 none，将关闭数据完整性校验。当设为 correctness，将会对每一行数据进行完整性校验。默认值为 none。
 integrity-check-level = "none"
-# 当检测到数据不完整后的系统行为。可选项包括 warn 和 error。如果设置成 warn，会将不完整事件记录到文档中并发送到下游。如果设置成 error，会停止同步数据。默认值为 warn。
+# 当检测到数据不完整后的系统行为。可选项包括 warn 和 error。当设为 warn，会将不完整事件记录到日志中并发送到下游。当设为 error，会停止同步数据。默认值为 warn。
 corruption-handle-level = "warn"
 ```
