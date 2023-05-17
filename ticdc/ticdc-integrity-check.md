@@ -92,4 +92,4 @@ fn checksum(columns) {
     * VARCHAR、CHAR 和 TEXT（包括 TINY、MEDIUM 和 LONG）类型会被编码为 UTF8 编码的字节。
     * NULL 和 GEOMETRY 类型不会被纳入到 Checksum 计算中，返回空字节。
 
-Golang 消费者代码实现了解码从 Kafka 读取到的数据、按照 schema fields 排序以及 Checksum 计算等步骤。详情请参考 [`avro/decoder.go`] (https://github.com/pingcap/tiflow/blob/master/pkg/sink/codec/avro/decoder.go)。
+Golang 消费者代码实现了解码从 Kafka 读取到的数据、按照 schema fields 排序以及 Checksum 计算等步骤。详情请参考 [`avro/decoder.go`](https://github.com/pingcap/tiflow/blob/master/pkg/sink/codec/avro/decoder.go)。
