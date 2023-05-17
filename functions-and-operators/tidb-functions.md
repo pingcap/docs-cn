@@ -402,7 +402,7 @@ TIDBShardExpr ::=
 
 ## TIDB_ROW_CHECKSUM
 
-`TIDB_ROW_CHECKSUM` 函数用于查询行数据的 Checksum 值。该函数只能用于走 FastPlan 流程的 `SELECT` 语句，即你可通过形如 `SELECT TIDB_ROW_CHECKSUM() FROM t WHERE id = ?` 或 `SELECT TIDB_ROW_CHECKSUM() FROM t WHERE id IN (?, ?, ...)` 的语句进行查询。
+`TIDB_ROW_CHECKSUM` 函数用于查询行数据的 Checksum 值。该函数只能用于 FastPlan 流程的 `SELECT` 语句，即你可通过形如 `SELECT TIDB_ROW_CHECKSUM() FROM t WHERE id = ?` 或 `SELECT TIDB_ROW_CHECKSUM() FROM t WHERE id IN (?, ?, ...)` 的语句进行查询。
 
 ### 语法图
 
