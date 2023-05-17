@@ -97,7 +97,6 @@ LOAD DATA LOCAL INFILE '/mnt/evo970/data-sets/bikeshare-data/2017Q4-capitalbikes
 
 ## MySQL 兼容性
 
-<<<<<<< HEAD
 * 默认情况下，TiDB 每 20,000 行会进行一次提交。这类似于 MySQL NDB Cluster，但并非 InnoDB 存储引擎的默认配置。
 
 > **注意：**
@@ -110,10 +109,4 @@ LOAD DATA LOCAL INFILE '/mnt/evo970/data-sets/bikeshare-data/2017Q4-capitalbikes
 
 * [INSERT](/sql-statements/sql-statement-insert.md)
 * [乐观事务模型](/optimistic-transaction.md)
-<<<<<<< HEAD
-=======
 * [悲观事务模式](/pessimistic-transaction.md)
-* [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md)
-* [`SHOW LOAD DATA`](/sql-statements/sql-statement-show-load-data.md)
-* [`CANCEL LOAD DATA` 和 `DROP LOAD DATA`](/sql-statements/sql-statement-operate-load-data-job.md)
->>>>>>> eb46daf9b (sql-statements: clarify the MySQL compatibility of `LOAD DATA` (#13968))
