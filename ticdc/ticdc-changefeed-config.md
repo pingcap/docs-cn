@@ -50,19 +50,19 @@ enable-old-value = true
 
 # 是否开启 Syncpoint 功能，从 v6.3.0 开始支持，该功能默认关闭。
 # 从 v6.4.0 开始，使用 Syncpoint 功能需要同步任务拥有下游集群的 SYSTEM_VARIABLES_ADMIN 或者 SUPER 权限。
-# 注意：该字段只有当下游为 Kafka 或 Storage Service 时，才会生效。
+# 注意：该参数只有当下游为 Kafka 或 Storage Service 时，才会生效。
 # enable-sync-point = false
 
 # Syncpoint 功能对齐上下游 snapshot 的时间间隔
 # 配置格式为 h m s，例如 "1h30m30s"
 # 默认值为 10m，最小值为 30s
-# 注意：该字段只有当下游为 Kafka 或 Storage Service 时，才会生效。
+# 注意：该参数只有当下游为 Kafka 或 Storage Service 时，才会生效。
 # sync-point-interval = "5m"
 
 # Syncpoint 功能在下游表中保存的数据的时长，超过这个时间的数据会被清理
 # 配置格式为 h m s，例如 "24h30m30s"
 # 默认值为 24h
-# 注意：该字段只有当下游为 Kafka 或 Storage Service 时，才会生效。
+# 注意：该参数只有当下游为 Kafka 或 Storage Service 时，才会生效。
 # sync-point-retention = "1h"
 
 [mounter]
@@ -122,7 +122,7 @@ write-key-threshold = 0
 # 对于 MQ 类的 Sink，可以通过 dispatchers 配置 event 分发器
 # 支持 partition 及 topic（从 v6.1 开始支持）两种 event 分发器。二者的详细说明见下一节。
 # matcher 的匹配语法和过滤器规则语法相同，matcher 匹配规则的详细说明见下一节。
-# 注意：该字段只有当下游为 MQ 时，才会生效。
+# 注意：该参数只有当下游为 MQ 时，才会生效。
 # dispatchers = [
 #    {matcher = ['test1.*', 'test2.*'], topic = "Topic 表达式 1", partition = "ts" },
 #    {matcher = ['test3.*', 'test4.*'], topic = "Topic 表达式 2", partition = "index-value" },
@@ -133,7 +133,7 @@ write-key-threshold = 0
 # protocol 用于指定传递到下游的协议格式
 # 当下游类型是 Kafka 时，支持 canal-json、avro 两种协议。
 # 当下游类型是存储服务时，目前仅支持 canal-json、csv 两种协议。
-# 注意：该字段只有当下游为 Kafka 或 Storage Service 时，才会生效。
+# 注意：该参数只有当下游为 Kafka 或 Storage Service 时，才会生效。
 # protocol = "canal-json"
 
 # 以下三个配置项仅在同步到存储服务的 sink 中使用，在 MQ 和 MySQL 类 sink 中无需设置。
@@ -141,29 +141,29 @@ write-key-threshold = 0
 # terminator = ''
 
 # 文件路径的日期分隔类型。可选类型有 `none`、`year`、`month` 和 `day`。默认值为 `none`，即不使用日期分隔。详见 <https://docs.pingcap.com/zh/tidb/dev/ticdc-sink-to-cloud-storage#数据变更记录>。
-# 注意：该字段只有当下游为 Storage Service 时，才会生效。
+# 注意：该参数只有当下游为 Storage Service 时，才会生效。
 date-separator = 'none'
 
 # 是否使用 partition 作为分隔字符串。默认值为 true，即一张表中各个 partition 的数据会分不同的目录来存储。建议保持该配置项为 true 以避免下游分区表可能丢数据的问题 <https://github.com/pingcap/tiflow/issues/8581>。使用示例详见 <https://docs.pingcap.com/zh/tidb/dev/ticdc-sink-to-cloud-storage#数据变更记录>。
-# 注意：该字段只有当下游为 Storage Service 时，才会生效。
+# 注意：该参数只有当下游为 Storage Service 时，才会生效。
 enable-partition-separator = true
 
 # Schema registry URL。
-# 注意：该字段只有当下游为消息队列时，才会生效。
+# 注意：该参数只有当下游为消息队列时，才会生效。
 # schema-registry = "http://localhost:80801/subjects/{subject-name}/versions/{version-number}/schema"
 
 # 编码数据时使用的编码器的线程数。
 # 默认值为 16。
-# 注意：该字段只有当下游为消息队列时，才会生效。
+# 注意：该参数只有当下游为消息队列时，才会生效。
 # encoder-concurrency = 16
 
 # 是否开启 kafka-sink-v2，kafka-sink-v2 内部使用 kafka-go 实现。
-# 注意：该字段只有当下游为消息队列时，才会生效。
+# 注意：该参数只有当下游为消息队列时，才会生效。
 # 默认值为 false。
 # enable-kafka-sink-v2 = false
 
 # 是否只向下游同步有内容更新的列。
-# 注意：该字段只有当下游为消息队列，并且使用 open-protocol 或者 canal-json 时，才会生效。
+# 注意：该参数只有当下游为消息队列，并且使用 open-protocol 或者 canal-json 时，才会生效。
 # 默认值为 false。
 # only-output-updated-columns = false
 
@@ -179,7 +179,7 @@ enable-partition-separator = true
 # include-commit-ts = false
 
 # sink.consistent 包含字段可用来配置 Changefeed 的数据一致性。详细的信息，请参考 https://docs.pingcap.com/tidb/stable/ticdc-sink-to-mysql#eventually-consistent-replication-in-disaster-scenarios.
-# 注意：一致性相关字段只有当下游为数据库并且开启 redo log 功能时，才会生效。
+# 注意：一致性相关参数只有当下游为数据库并且开启 redo log 功能时，才会生效。
 [sink.consistent]
 # 数据一致性级别。可选级别为 "none" 和 "eventual"。设置为 "none" 时，redo log 将被关闭。默认值为 "none"。
 level = "none"
@@ -192,8 +192,8 @@ storage = ""
 # 是否将 redo log 存到文件中。默认值为 false。
 use-file-backend = false
 
-# sink.integrity 所包含字段可用于配置数据完整性检验。
-# 注意：完整性检查相关字段只有当下游为消息队列时，才会生效。
+# sink.integrity 所包含参数可用于配置数据完整性检验。
+# 注意：完整性检查相关参数只有当下游为消息队列时，才会生效。
 [sink.integrity]
 # 数据完整性级别。可选项为 "none" 和 "correctness"。
 # 当设为 "none"，将关闭数据完整性校验。
