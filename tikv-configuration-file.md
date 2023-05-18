@@ -2242,6 +2242,7 @@ Raft Engine 相关的配置项。
 
 + 控制某个 Region 被识别为热点 Region 的流量阈值。
 + 默认值：
+
     + 当 [`region-split-size`](#region-split-size) 小于 4 GB 时，默认值为每秒 `30MiB` 流量。
     + 当 [`region-split-size`](#region-split-size) 大于或等于 4 GB 时，默认值为每秒 `100MiB` 流量。
 
@@ -2257,5 +2258,6 @@ Raft Engine 相关的配置项。
 
 + 控制某个 Region 被识别为热点 Region 的 CPU 使用率阈值。
 + 默认值：
+
     + 当 [`region-split-size`](#region-split-size) 小于 4 GB 时，默认值为 `0.25`。
     + 当 [`region-split-size`](#region-split-size) 大于或等于 4 GB 时，默认值为 `0.75`。
