@@ -50,19 +50,19 @@ enable-old-value = true
 
 # 是否开启 Syncpoint 功能，从 v6.3.0 开始支持，该功能默认关闭。
 # 从 v6.4.0 开始，使用 Syncpoint 功能需要同步任务拥有下游集群的 SYSTEM_VARIABLES_ADMIN 或者 SUPER 权限。
-# 注意：该参数只有当下游为 Kafka 或 Storage Service 时，才会生效。
+# 注意：该参数只有当下游为 Kafka 或存储服务时，才会生效。
 # enable-sync-point = false
 
 # Syncpoint 功能对齐上下游 snapshot 的时间间隔
 # 配置格式为 h m s，例如 "1h30m30s"
 # 默认值为 10m，最小值为 30s
-# 注意：该参数只有当下游为 Kafka 或 Storage Service 时，才会生效。
+# 注意：该参数只有当下游为 Kafka 或存储服务时，才会生效。
 # sync-point-interval = "5m"
 
 # Syncpoint 功能在下游表中保存的数据的时长，超过这个时间的数据会被清理
 # 配置格式为 h m s，例如 "24h30m30s"
 # 默认值为 24h
-# 注意：该参数只有当下游为 Kafka 或 Storage Service 时，才会生效。
+# 注意：该参数只有当下游为 Kafka 或存储服务时，才会生效。
 # sync-point-retention = "1h"
 
 [mounter]
@@ -122,7 +122,7 @@ write-key-threshold = 0
 # 对于 MQ 类的 Sink，可以通过 dispatchers 配置 event 分发器
 # 支持 partition 及 topic（从 v6.1 开始支持）两种 event 分发器。二者的详细说明见下一节。
 # matcher 的匹配语法和过滤器规则语法相同，matcher 匹配规则的详细说明见下一节。
-# 注意：该参数只有当下游为 MQ 时，才会生效。
+# 注意：该参数只有当下游为消息队列时，才会生效。
 # dispatchers = [
 #    {matcher = ['test1.*', 'test2.*'], topic = "Topic 表达式 1", partition = "ts" },
 #    {matcher = ['test3.*', 'test4.*'], topic = "Topic 表达式 2", partition = "index-value" },
