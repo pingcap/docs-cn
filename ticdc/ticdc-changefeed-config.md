@@ -49,17 +49,20 @@ case-sensitive = true
 enable-old-value = true
 
 # 是否开启 Syncpoint 功能，从 v6.3.0 开始支持，该功能默认关闭。
-# 从 v6.4.0 开始，使用 Syncpoint 功能需要同步任务拥有下游集群的 SYSTEM_VARIABLES_ADMIN 或者 SUPER 权限
+# 从 v6.4.0 开始，使用 Syncpoint 功能需要同步任务拥有下游集群的 SYSTEM_VARIABLES_ADMIN 或者 SUPER 权限。
+# 注意：该字段只有当下游为 Kafka 或 Storage Service 时，才会生效。
 # enable-sync-point = false
 
 # Syncpoint 功能对齐上下游 snapshot 的时间间隔
 # 配置格式为 h m s，例如 "1h30m30s"
 # 默认值为 10m，最小值为 30s
+# 注意：该字段只有当下游为 Kafka 或 Storage Service 时，才会生效。
 # sync-point-interval = "5m"
 
 # Syncpoint 功能在下游表中保存的数据的时长，超过这个时间的数据会被清理
 # 配置格式为 h m s，例如 "24h30m30s"
 # 默认值为 24h
+# 注意：该字段只有当下游为 Kafka 或 Storage Service 时，才会生效。
 # sync-point-retention = "1h"
 
 [mounter]
@@ -73,6 +76,11 @@ enable-old-value = true
 # 过滤器规则
 # 过滤规则语法：https://docs.pingcap.com/zh/tidb/stable/table-filter#表库过滤语法
 rules = ['*.*', '!test.*']
+
+# 忽略特定 start_ts 的事务
+# 默认值为空列表。
+# IgnoreTxnStartTs = [1683225923]
+
 
 # 事件过滤器规则 
 # 事件过滤器的详细配置规则可参考：https://docs.pingcap.com/zh/tidb/stable/ticdc-filter
@@ -113,6 +121,7 @@ write-key-threshold = 0
 # 对于 MQ 类的 Sink，可以通过 dispatchers 配置 event 分发器
 # 支持 partition 及 topic（从 v6.1 开始支持）两种 event 分发器。二者的详细说明见下一节。
 # matcher 的匹配语法和过滤器规则语法相同，matcher 匹配规则的详细说明见下一节。
+# 注意：该字段只有当下游为 MQ 时，才会生效。
 # dispatchers = [
 #    {matcher = ['test1.*', 'test2.*'], topic = "Topic 表达式 1", partition = "ts" },
 #    {matcher = ['test3.*', 'test4.*'], topic = "Topic 表达式 2", partition = "index-value" },
@@ -129,9 +138,11 @@ write-key-threshold = 0
 # 以下三个配置项仅在同步到存储服务的 sink 中使用，在 MQ 和 MySQL 类 sink 中无需设置。
 # 换行符，用来分隔两个数据变更事件。默认值为空，表示使用 "\r\n" 作为换行符。
 # terminator = ''
+
 # 文件路径的日期分隔类型。可选类型有 `none`、`year`、`month` 和 `day`。默认值为 `none`，即不使用日期分隔。详见 <https://docs.pingcap.com/zh/tidb/dev/ticdc-sink-to-cloud-storage#数据变更记录>。
 # 注意：该字段只有当下游为 Storage Service 时，才会生效。
 date-separator = 'none'
+
 # 是否使用 partition 作为分隔字符串。默认值为 true，即一张表中各个 partition 的数据会分不同的目录来存储。建议保持该配置项为 true 以避免下游分区表可能丢数据的问题 <https://github.com/pingcap/tiflow/issues/8581>。使用示例详见 <https://docs.pingcap.com/zh/tidb/dev/ticdc-sink-to-cloud-storage#数据变更记录>。
 # 注意：该字段只有当下游为 Storage Service 时，才会生效。
 enable-partition-separator = true
@@ -162,7 +173,7 @@ enable-partition-separator = true
 # 是否在 CSV 行中包含 commit-ts。默认值为 false。
 # include-commit-ts = false
 
-# sink.consistent 包含字段可用来配置 Changefeed 的数据一致性。详细的信息，请参考 https://docs.pingcap.com/tidb/stable/ticdc-sink-to-mysql#eventually-consistent-replication-in-disaster-scenarios. 
+# sink.consistent 包含字段可用来配置 Changefeed 的数据一致性。详细的信息，请参考 https://docs.pingcap.com/tidb/stable/ticdc-sink-to-mysql#eventually-consistent-replication-in-disaster-scenarios.
 # 注意：一致性相关字段只有当下游为数据库并且开启 redo log 功能时，才会生效。
 [sink.consistent]
 # 数据一致性级别。可选级别为 "none" 和 "eventual"。设置为 "none" 时，redo log 将被关闭。默认值为 "none"。
@@ -170,16 +181,24 @@ level = "none"
 # redo log 的最大日志大小，单位为 MB。默认值为 64。
 max-log-size = 64
 # 两次 redo log 的刷新间隔，单位为毫秒。默认值为 2000。
-flush-interval = 2000 
+flush-interval = 2000
 # redo log 使用存储服务的 URI。默认值为空。
-storage = "" 
+storage = ""
 # 是否将 redo log 存到文件中。默认值为 false。
 use-file-backend = false
 
-# sink.integrity 所包含字段可用于配置数据完整性检验。注意：该字段只有当下游为消息队列时，才会生效。
+# sink.integrity 所包含字段可用于配置数据完整性检验。
+# 注意：该字段只有当下游为消息队列时，才会生效。
 [sink.integrity]
-# 数据完整性级别。可选项为 none 和 correctness。当设为 none，将关闭数据完整性校验。当设为 correctness，将会对每一行数据进行完整性校验。默认值为 none。
+# 数据完整性级别。可选项为 "none" 和 "correctness"。
+# 当设为 "none"，将关闭数据完整性校验。
+# 当设为 "correctness"，将会对每一行数据进行完整性校验。
+# 默认值为 "none"。
 integrity-check-level = "none"
-# 当检测到数据不完整后的系统行为。可选项包括 "warn" 和 "error"。当设为 "warn"，会将不完整事件记录到日志中并发送到下游。当设为 "error"，会停止同步数据。默认值为 "warn"。
+
+# 当检测到数据不完整后的系统行为。可选项包括 "warn" 和 "error"。
+# 当设为 "warn"，会将不完整事件记录到日志中并发送到下游。
+# 当设为 "error"，会停止同步数据。
+# 默认值为 "warn"。
 corruption-handle-level = "warn"
 ```
