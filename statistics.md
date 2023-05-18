@@ -332,9 +332,9 @@ ANALYZE INCREMENTAL TABLE TableName PARTITION PartitionNameList INDEX [IndexName
 
 ### 自动更新
 
-在发生增加，删除以及修改语句时，TiDB 会自动更新表的总行数以及修改的行数。这些信息会定期持久化下来，更新的周期是 20 * `stats-lease`，`stats-lease` 的默认值是 3s，如果将其指定为 0，那么将不会自动更新。
+在发生增加，删除以及修改语句时，TiDB 会自动更新表的总行数以及修改的行数。这些信息会定期持久化下来，更新的周期为 20 * [`stats-lease`](/tidb-configuration-file.md#stats-lease)。`stats-lease` 配置项的默认值是 3s，如果将其指定为 0，那么统计信息将不会自动更新。
 
-和统计信息自动更新相关的三个系统变量如下：
+#### 相关系统变量
 
 |  系统变量名 | 默认值 | 功能 |
 |---|---|---|
@@ -345,6 +345,12 @@ ANALYZE INCREMENTAL TABLE TableName PARTITION PartitionNameList INDEX [IndexName
 当某个表 `tbl` 的修改行数与总行数的比值大于 `tidb_auto_analyze_ratio`，并且当前时间在 `tidb_auto_analyze_start_time` 和 `tidb_auto_analyze_end_time` 之间时，TiDB 会在后台执行 `ANALYZE TABLE tbl` 语句自动更新这个表的统计信息。
 
 为了避免小表因为少量数据修改而频繁触发自动更新，当表的行数小于 1000 时，TiDB 不会触发对此表的自动更新。你可以通过 `SHOW STATS_META` 来查看表的行数情况。
+
+#### 关闭自动更新
+
+如果发现自动更新统计信息消耗过多的资源，影响在线业务，可以通过系统变量 [`tidb_enable_auto_analyze`](/system-variables.md#tidb_enable_auto_analyze-从-v610-版本开始引入) 关闭自动更新。
+
+#### 终止后台的 `ANALYZE` 任务
 
 从 TiDB v6.0 起，TiDB 支持通过 `KILL` 语句终止正在后台运行的 `ANALYZE` 任务。如果发现正在后台运行的 `ANALYZE` 任务消耗大量资源影响业务，你可以通过以下步骤终止该 `ANALYZE` 任务：
 
@@ -685,6 +691,8 @@ DROP STATS TableName GLOBAL;
 - 通过修改系统变量 [`tidb_stats_load_pseudo_timeout`](/system-variables.md#tidb_stats_load_pseudo_timeout-从-v540-版本开始引入) 的值控制 SQL 优化等待超时后的行为。该变量默认值为 `ON`，代表超时后 SQL 优化过程不会使用任何列上的直方图、TopN 或 CMSketch。当设置该变量为 `OFF` 时，代表超时后 SQL 执行失败。
 - 通过修改 TiDB 配置项 [`stats-load-concurrency`](/tidb-configuration-file.md#stats-load-concurrency-从-v540-版本开始引入) 的值控制统计信息同步加载可以并发处理的最大列数。该配置项的默认值为 `5`。
 - 通过修改 TiDB 配置项 [`stats-load-queue-size`](/tidb-configuration-file.md#stats-load-queue-size-从-v540-版本开始引入) 的值设置统计信息同步加载最多可以缓存多少列的请求。该配置项的默认值为 `1000`。
+
+在 TiDB 启动阶段，初始统计信息加载完成之前执行的 SQL 可能有不合理的执行计划，从而影响性能。为了避免这种情况，从 v7.1.0 开始，TiDB 引入了配置项 [`force-init-stats`](/tidb-configuration-file.md#force-init-stats-从-v710-版本开始引入)。你可以控制 TiDB 启动时是否在统计信息初始化完成后再对外提供服务。该配置项默认关闭。
 
 > **警告：**
 >
