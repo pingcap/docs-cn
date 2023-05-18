@@ -128,4 +128,3 @@ TiDB 中的 `LOAD DATA` 语句语法上兼容 MySQL（除字符集选项被解�
 * [INSERT](/sql-statements/sql-statement-insert.md)
 * [乐观事务模型](/optimistic-transaction.md)
 * [悲观事务模式](/pessimistic-transaction.md)
-* [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md)
