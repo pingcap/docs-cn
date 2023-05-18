@@ -283,6 +283,7 @@ In v6.2.0-DMR, the key new features and improvements are as follows:
 | TiKV | [log-backup.initial-scan-rate-limit](/tikv-configuration-file.md#initial-scan-rate-limit-new-in-v620) | Newly added | This configuration specifies the rate limit on throughput in an incremental data scan in log backup. |
 | TiKV | [log-backup.num-threads](/tikv-configuration-file.md#num-threads-new-in-v620) | Newly added | This configuration specifies the number of threads used in log backup. |
 | TiKV | [log-backup.temp-path](/tikv-configuration-file.md#temp-path-new-in-v620) | Newly added | This configuration specifies temporary path to which log files are written before being flushed to external storage. |
+| TiKV | [rocksdb.defaultcf|writecf|lockcf.format-version](/tikv-configuration-file.md#format-version-new-in-v620) | Newly added | The format version of SST files. |
 | PD | replication-mode.dr-auto-sync.wait-async-timeout | Deleted | This configuration does not take effect and is deleted. |
 | PD | replication-mode.dr-auto-sync.wait-sync-timeout | Deleted | This configuration does not take effect and is deleted. |
 | TiFlash | [`storage.format_version`](/tiflash/tiflash-configuration.md#configure-the-tiflashtoml-file) | Modified | The default value of `format_version` changes to `4`, the default format for v6.2.0 and later versions, which reduces write amplification and background task resource consumption. |
