@@ -207,6 +207,19 @@ If you still encounter an error above, it is recommended to use BR to restore th
 4. Create a new changefeed and start the replication task from `BackupTS`.
 5. Delete the old changefeed.
 
+## Does TiCDC replicate data changes caused by lossy DDL operations to the downstream?
+
+Lossy DDL refers to DDL that might cause data changes when executed in TiDB. Some common lossy DDL operations include:
+
+- Modifying the type of a column, for example, INT -> VARCHAR
+- Modifying the length of a column, for example, VARCHAR(20) -> VARCHAR(10)
+- Modifying the precision of a column, for example, DECIMAL(10, 3) -> DECIMAL(10, 2)
+- Modifying the UNSIGNED or SIGNED attribute of a column, for example, INT UNSIGNED -> INT SIGNED
+
+Before TiDB v7.1.0, TiCDC replicates DML events with identical old and new data to the downstream. When the downstream is MySQL, these DML events do not cause any data changes until the downstream receives and executes the DDL statement. However, when the downstream is Kafka or a cloud storage service, TiCDC writes a row of redundant data to the downstream.
+
+Starting from TiDB v7.1.0, TiCDC eliminates these redundant DML events and no longer replicates them to downstream.
+
 ## The default value of the time type field is inconsistent when replicating a DDL statement to the downstream MySQL 5.7. What can I do?
 
 Suppose that the `create table test (id int primary key, ts timestamp)` statement is executed in the upstream TiDB. When TiCDC replicates this statement to the downstream MySQL 5.7, MySQL uses the default configuration. The table schema after the replication is as follows. The default value of the `timestamp` field becomes `CURRENT_TIMESTAMP`:
