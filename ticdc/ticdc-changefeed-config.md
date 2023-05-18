@@ -136,6 +136,19 @@ date-separator = 'none'
 # 注意：该字段只有当下游为 Storage Service 时，才会生效。
 enable-partition-separator = true
 
+# Schema registry URL。注意： 该字段只有当下游为消息队列时，才会生效。
+# schema-registry = "http://localhost:80801/subjects/{subject-name}/versions/{version-number}/schema"
+# Specifies the number of encoder threads used when encoding data.
+# encoder 线程数。注意： 该字段只有当下游为消息队列时，才会生效。默认值为16
+# encoder-concurrency = 16
+# Specifies whether to enable kafka-sink-v2 that uses the kafka-go sink library.
+# 声明是否开启 kafka-sink-v2，kafka-sink-v2 内部使用 kafka-go 实现。
+# 注意： 该字段只有当下游为消息队列时，才会生效。默认值为 false。
+# enable-kafka-sink-v2 = false
+# 声明是否只向下游同步有内容更新的列
+# 注意： 该字段只有当下游为消息队列，并且使用 open-protocol 或者 canal-json 时，才会生效。默认值为 false。
+# only-output-updated-columns = false
+
 # 从 v6.5.0 开始，TiCDC 支持以 CSV 格式将数据变更记录保存至存储服务中，在 MQ 和 MySQL 类 sink 中无需设置。
 # [sink.csv]
 # 字段之间的分隔符。必须为 ASCII 字符，默认值为 `,`。
