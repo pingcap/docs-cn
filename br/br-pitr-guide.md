@@ -117,15 +117,15 @@ Restore KV Files <--------------------------------------------------------------
 > - 全量恢复速度 = 全量恢复数据量 /（时间 * TiKV 数量）
 > - 日志恢复速度 = 日志恢复总量 /（时间 * TiKV 数量）
 >
-> 其中全量恢复数据量，统计的是单副本所有 KV 的逻辑大小。由于恢复时会根据集群设置的副本数来恢复全部副本，所以这里的全量恢复数据量并不严格等于实际恢复数据量的大小。且副本数越多，实际恢复的数据量也就越多。
+> 其中全量恢复数据量，是指单个副本中所有 KV 的逻辑大小，并不代表实际恢复的数据量。BR 恢复数据时会根据集群设置的副本数来恢复全部副本，当副本数越多时，实际恢复的数据量也就越多。
 > 所有测试集群默认设置 3 副本。
-> 如果想提升恢复速度，可以通过根据实际情况调整 tikv.toml 下的 [import] num-threads 参数以及 br 命令的 concurrency 参数来提升整体恢复的性能。
+> 如果想提升整体恢复的性能，可以通过根据实际情况调整 TiKV 配置文件中的 [`import.num-threads`](/tikv-configuration-file#num-threads) 配置项以及 BR 命令的 `concurrency` 参数。
 
 测试场景 1（[TiDB Cloud](https://tidbcloud.com) 上部署）
 
 - TiKV 节点（8 core，16 GB 内存）数量：21
 - TiKV 配置：[import] num-threads: 8
-- br 配置: concurrency: 128
+- BR 配置: concurrency: 128
 - Region 数量：183,000
 - 集群新增日志数据：10 GB/h
 - 写入 (INSERT/UPDATE/DELETE) QPS：10,000
@@ -134,7 +134,7 @@ Restore KV Files <--------------------------------------------------------------
 
 - TiKV 节点（8 core，64 GB 内存）数量：6
 - TiKV 配置：[import] num-threads: 8
-- br 配置: concurrency: 128
+- BR 配置: concurrency: 128
 - Region 数量：50,000
 - 集群新增日志数据：10 GB/h
 - 写入 (INSERT/UPDATE/DELETE) QPS：10,000
