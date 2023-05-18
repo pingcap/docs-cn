@@ -46,7 +46,6 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 + TiDB 用于存放临时数据的路径。如果一个功能需要使用 TiDB 节点的本地存储，TiDB 将把对应数据临时存放在这个目录下。
 + 在创建索引的过程中，如果开启了[创建索引加速](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入)，那么新创建索引需要回填的数据会被先存放在 TiDB 本地临时存储路径，然后批量导入到 TiKV，从而提升索引创建速度。
-+ 在使用 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md) 的物理导入模式时，排序后的数据会被先存放在 TiDB 本地临时存储路径，然后批量导入到 TiKV。
 + 默认值："/tmp/tidb"
 
 ### `oom-use-tmp-storage`
