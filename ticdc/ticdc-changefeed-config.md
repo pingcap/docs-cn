@@ -94,8 +94,16 @@ rules = ['*.*', '!test.*']
 # 注意：该功能只在 Kafka changefeed 上生效，暂不支持 MySQL changefeed。
 # 默认为 "false"。设置为 "true" 以打开该功能。
 enable-table-across-nodes = false
-# 打开该功能后，该功能只对 Region 个数大于 `region-threshold` 值的表生效。
+# 打开该功能后，该功能会对 Region 个数大于 `region-threshold` 值的表生效。
 region-threshold = 100000
+# 打开该功能后，该功能会对每分钟修改行数大于 `write-key-threshold` 值的表生效。
+# 注意：
+# * `write-key-threshold` 参数默认值为 0，代表该功能默认不会按表的修改行数来切分表的同步范围。
+# * 你可以根据集群负载来配置该参数，如 30000，代表当表每分钟的更新行数超过 30000 时，该功能将会切分表的同步范围。
+# * 当 `region-threshold` 和 `write-key-threshold` 同时配置时，
+#   TiCDC 将优先检查修改行数是否大于 `write-key-threshold`，
+#   如果不超过，则再检查 Region 个数是否大于 `region-threshold`。
+write-key-threshold = 0
 
 [sink]
 # 对于 MQ 类的 Sink，可以通过 dispatchers 配置 event 分发器
