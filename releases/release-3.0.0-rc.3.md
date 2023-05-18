@@ -34,7 +34,7 @@ TiDB Ansible 版本：3.0.0-rc.3
     - 修复 UUID 在多节点上可能生成重复值的问题 [#10712](https://github.com/pingcap/tidb/pull/10712)
     - 修复 `explain` 没考虑 `show view` 权限的问题 [#10635](https://github.com/pingcap/tidb/pull/10635)
     - 新增 `split table region` 语句，手动分裂表的 Region，缓解热点问题 [#10765](https://github.com/pingcap/tidb/pull/10765)
-    - 新增  `split index region` 语句，手动分裂索引的 region 缓解热点问题 [#10764](https://github.com/pingcap/tidb/pull/10764)
+    - 新增 `split index region` 语句，手动分裂索引的 region 缓解热点问题 [#10764](https://github.com/pingcap/tidb/pull/10764)
     - 修复连续执行多个 `create user`、`grant` 或 `revoke` 等类似语句执行不正确的问题 [#10737](https://github.com/pingcap/tidb/pull/10737)
     - 新增黑名单禁止下推表达式到 coprocessor 功能 [#10791](https://github.com/pingcap/tidb/pull/10791)
     - 新增查询超出内存配置限制时打印 `expensive query` 日志的功能 [#10849](https://github.com/pingcap/tidb/pull/10849)

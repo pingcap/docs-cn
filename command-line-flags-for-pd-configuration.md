@@ -48,32 +48,32 @@ PD 可以通过命令行参数或环境变量配置。
 
 + 初始化 PD 集群配置。
 + 默认：`"{name}=http://{advertise-peer-url}"`
-+ 例如，如果 name 是 "pd", 并且 `advertise-peer-urls` 是 `http://192.168.100.113:2380`，那么 `initial-cluster` 就是 `pd=http://192.168.100.113:2380`。
++ 例如，如果 name 是 "pd"，并且 `advertise-peer-urls` 是 `http://192.168.100.113:2380`，那么 `initial-cluster` 就是 `pd=http://192.168.100.113:2380`。
 + 如果你需要启动三台 PD，那么 `initial-cluster` 可能就是 `pd1=http://192.168.100.113:2380, pd2=http://192.168.100.114:2380, pd3=192.168.100.115:2380`。
 
 ## `--join`
 
 + 动态加入 PD 集群。
 + 默认：""
-+ 如果你想动态将一台 PD 加入集群，你可以使用 `--join="${advertise-client-urls}"`， `advertise-client-url` 是当前集群里面任意 PD 的 `advertise-client-url`，你也可以使用多个 PD 的，需要用逗号分隔。
++ 如果你想动态将一台 PD 加入集群，你可以使用 `--join="${advertise-client-urls}"`，`advertise-client-url` 是当前集群里面任意 PD 的 `advertise-client-url`，你也可以使用多个 PD 的，需要用逗号分隔。
 
 ## `-L`
 
 + Log 级别。
 + 默认："info"
-+ 我们能选择 debug, info, warn, error 或者 fatal。
++ 可选："debug"，"info"，"warn"，"error"，"fatal"
 
 ## `--log-file`
 
 + Log 文件。
 + 默认：""
-+ 如果没设置这个参数，log 会默认输出到 "stderr"，如果设置了，log 就会输出到对应的文件里面，在每天凌晨，log 会自动轮转使用一个新的文件，并且将以前的文件改名备份。
++ 如果没设置这个参数，log 会默认输出到 "stderr"，如果设置了，log 就会输出到对应的文件里面。
 
 ## `--log-rotate`
 
 + 是否开启日志切割。
 + 默认：true
-+ 当值为 true 时,按照 PD 配置文件中 `[log.file]` 信息执行。
++ 当值为 true 时，按照 PD 配置文件中 `[log.file]` 信息执行。
 
 ## `--name`
 

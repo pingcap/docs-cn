@@ -42,7 +42,7 @@ aliases: ['/docs-cn/dev/check-before-deployment/']
 
     > **注意：**
     >
-    > 使用 `lsblk` 命令查看分区的设备号：对于 nvme 磁盘，生成的分区设备号一般为 `nvme0n1p1`；对于普通磁盘（例如 `/dev/sdb`），生成的的分区设备号一般为 `sdb1`。
+    > 使用 `lsblk` 命令查看分区的设备号：对于 nvme 磁盘，生成的分区设备号一般为 `nvme0n1p1`；对于普通磁盘（例如 `/dev/sdb`），生成的分区设备号一般为 `sdb1`。
 
 3. 格式化文件系统。
 
@@ -108,9 +108,9 @@ aliases: ['/docs-cn/dev/check-before-deployment/']
 
 ## 检测及关闭系统 swap
 
-本段介绍 swap 关闭方法。TiDB 运行需要有足够的内存，并且不建议使用 swap 作为内存不足的缓冲，这会降低性能。因此建议永久关闭系统 swap，并且不要使用 `swapoff -a` 方式关闭，否则重启机器后该操作会失效。
+TiDB 运行需要有足够的内存。如果内存不足，不建议使用 swap 作为内存不足的缓冲，因为这会降低性能。建议永久关闭系统 swap。
 
-建议执行以下命令关闭系统 swap：
+要永久关闭 swap，可执行以如下命令:
 
 {{< copyable "shell-regular" >}}
 
@@ -119,6 +119,11 @@ echo "vm.swappiness = 0">> /etc/sysctl.conf
 swapoff -a && swapon -a
 sysctl -p
 ```
+
+> **注意：**
+>
+> - 一起执行 `swapoff -a` 和 `swapon -a` 命令是为了刷新 swap，将 swap 里的数据转储回内存，并清空 swap 里的数据。不可省略 swappiness 设置而只执行 `swapoff -a`；否则，重启后 swap 会再次自动打开，使得操作失效。
+> - 执行 `sysctl -p` 命令是为了在不重启的情况下使配置生效。
 
 ## 检测及关闭目标部署机器的防火墙
 
@@ -177,6 +182,24 @@ TiDB 是一套分布式数据库系统，需要节点间保证时间的同步，
     Active: active (running) since 一 2017-12-18 13:13:19 CST; 3s ago
     ```
 
+    - 若返回报错信息 `Unit ntpd.service could not be found.`，请尝试执行以下命令，以查看与 NTP 进行时钟同步所使用的系统配置是 `chronyd` 还是 `ntpd`：
+
+        {{< copyable "shell-regular" >}}
+
+        ```bash
+        sudo systemctl status chronyd.service
+        ```
+
+        ```
+        chronyd.service - NTP client/server
+        Loaded: loaded (/usr/lib/systemd/system/chronyd.service; enabled; vendor preset: enabled)
+        Active: active (running) since Mon 2021-04-05 09:55:29 EDT; 3 days ago
+        ```
+
+      若发现系统既没有配置 `chronyd` 也没有配置 `ntpd`，则表示系统尚未安装任一服务。此时，应先安装其中一个服务，并保证它可以自动启动，默认使用 `ntpd`。
+
+        如果你使用的系统配置是 `chronyd`，请直接执行步骤 3。
+
 2. 执行 `ntpstat` 命令检测是否与 NTP 服务器同步：
 
     > **注意：**
@@ -207,6 +230,48 @@ TiDB 是一套分布式数据库系统，需要节点间保证时间的同步，
 
         ```
         Unable to talk to NTP daemon. Is it running?
+        ```
+
+3. 执行 `chronyc tracking` 命令查看 Chrony 服务是否与 NTP 服务器同步。
+
+    > **注意：**
+    >
+    > 该操作仅适用于使用 Chrony 的系统，不适用于使用 NTPd 的系统。
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    chronyc tracking
+    ```
+
+    - 如果该命令返回结果为 `Leap status : Normal`，则代表同步过程正常。
+
+        ```
+        Reference ID    : 5EC69F0A (ntp1.time.nl)
+        Stratum         : 2
+        Ref time (UTC)  : Thu May 20 15:19:08 2021
+        System time     : 0.000022151 seconds slow of NTP time
+        Last offset     : -0.000041040 seconds
+        RMS offset      : 0.000053422 seconds
+        Frequency       : 2.286 ppm slow
+        Residual freq   : -0.000 ppm
+        Skew            : 0.012 ppm
+        Root delay      : 0.012706812 seconds
+        Root dispersion : 0.000430042 seconds
+        Update interval : 1029.8 seconds
+        Leap status     : Normal
+        ```
+
+    - 如果该命令返回结果如下，则表示同步过程出错：
+
+        ```
+        Leap status    : Not synchronised
+        ```
+
+    - 如果该命令返回结果如下，则表示 Chrony 服务未正常运行：
+
+        ```
+        506 Cannot talk to daemon
         ```
 
 如果要使 NTP 服务尽快开始同步，执行以下命令。可以将 `pool.ntp.org` 替换为你的 NTP 服务器：
@@ -528,7 +593,6 @@ sudo systemctl enable ntpd.service
     echo "net.ipv4.tcp_tw_recycle = 0">> /etc/sysctl.conf
     echo "net.ipv4.tcp_syncookies = 0">> /etc/sysctl.conf
     echo "vm.overcommit_memory = 1">> /etc/sysctl.conf
-    echo "vm.swappiness = 0">> /etc/sysctl.conf
     sysctl -p
     ```
 
@@ -547,7 +611,7 @@ sudo systemctl enable ntpd.service
 
 ## 手动配置 SSH 互信及 sudo 免密码
 
-对于有需求，通过手动配置中控机至目标节点互信的场景，可参考本段。通常推荐使用 TiUP 部署工具会自动配置 SSH 互信及免密登陆，可忽略本段内容。
+对于有需求，通过手动配置中控机至目标节点互信的场景，可参考本段。通常推荐使用 TiUP 部署工具会自动配置 SSH 互信及免密登录，可忽略本段内容。
 
 1. 以 `root` 用户依次登录到部署目标机器创建 `tidb` 用户并设置登录密码。
 
@@ -605,45 +669,33 @@ sudo systemctl enable ntpd.service
 
 ## 安装 numactl 工具
 
-本段主要介绍如果安装 NUMA 工具。在生产环境中，因为硬件机器配置往往高于需求，为了更合理规划资源，会考虑单机多实例部署 TiDB 或者 TiKV。NUMA 绑核工具的使用，主要为了防止 CPU 资源的争抢，引发性能衰退。
+本段主要介绍如何安装 NUMA 工具。在生产环境中，因为硬件机器配置往往高于需求，为了更合理规划资源，会考虑单机多实例部署 TiDB 或者 TiKV。NUMA 绑核工具的使用，主要为了防止 CPU 资源的争抢，引发性能衰退。
 
 > **注意：**
 >
 > - NUMA 绑核是用来隔离 CPU 资源的一种方法，适合高配置物理机环境部署多实例使用。
 > - 通过 `tiup cluster deploy` 完成部署操作，就可以通过 `exec` 命令来进行集群级别管理工作。
 
-1. 登录到目标节点进行安装（以 CentOS Linux release 7.7.1908 (Core) 为例）
+安装 NUMA 工具有两种方法：
 
-    {{< copyable "shell-regular" >}}
+方法 1：登录到目标节点进行安装（以 CentOS Linux release 7.7.1908 (Core) 为例）。
+
+```bash
+sudo yum -y install numactl
+```
+
+方法 2：通过 `tiup cluster exec` 在集群上批量安装 NUMA。
+
+1. 使用 TiUP 安装 TiDB 集群，参考[使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)完成 `tidb-test` 集群的部署。如果本地已有集群，可跳过这一步。
 
     ```bash
-    sudo yum -y install numactl
+    tiup cluster deploy tidb-test v6.1.0 ./topology.yaml --user root [-p] [-i /home/root/.ssh/gcp_rsa]
     ```
 
-2. 通过 TiUP 的 cluster 执行完 exec 命令来完成批量安装
-
-    {{< copyable "shell-regular" >}}
-
-    ```bash
-    tiup cluster exec --help
-    ```
-
-    ```
-    Run shell command on host in the tidb cluster
-
-    Usage:
-    cluster exec <cluster-name> [flags]
-
-    Flags:
-        --command string   the command run on cluster host (default "ls")
-    -h, --help             help for exec
-        --sudo             use root permissions (default false)
-    ```
-
-    将 tidb-test 集群所有目标主机通过 sudo 权限执行安装命令
-
-    {{< copyable "shell-regular" >}}
+2. 执行 `tiup cluster exec` 命令，以 `sudo` 权限在 `tidb-test` 集群所有目标主机上安装 NUMA。
 
     ```bash
     tiup cluster exec tidb-test --sudo --command "yum -y install numactl"
     ```
+
+    你可以执行 `tiup cluster exec --help` 查看的 `tiup cluster exec` 命令的说明信息。

@@ -7,7 +7,7 @@ aliases: ['/docs-cn/dev/grafana-pd-dashboard/','/docs-cn/dev/reference/key-monit
 
 使用 TiUP 部署 TiDB 集群时，一键部署监控系统 (Prometheus & Grafana)，监控架构参见 [TiDB 监控框架概述](/tidb-monitoring-framework.md)。
 
-目前 Grafana Dashboard 整体分为 PD、TiDB、TiKV、Node\_exporter、Overview 等。
+目前 Grafana Dashboard 整体分为 PD、TiDB、TiKV、Node\_exporter、Overview、Performance\_overview 等。
 
 对于日常运维，我们通过观察 PD 面板上的 Metrics，可以了解 PD 当前的状态。
 
@@ -72,7 +72,7 @@ aliases: ['/docs-cn/dev/grafana-pd-dashboard/','/docs-cn/dev/reference/key-monit
 - Store Write rate bytes：每个 TiKV 实例总的写入的流量
 - Store Write rate keys：每个 TiKV 实例总的写入 keys
 - Hot cache write entry number：每个 TiKV 实例进入热点统计模块的 peer 的数量
-- Selector events： 热点调度中选择器的事件发生次数
+- Selector events：热点调度中选择器的事件发生次数
 - Direction of hotspot move leader：热点调度中 leader 的调度方向，正数代表调入，负数代表调出
 - Direction of hotspot move peer：热点调度中 peer 的调度方向，正数代表调入，负数代表调出
 
@@ -80,8 +80,8 @@ aliases: ['/docs-cn/dev/grafana-pd-dashboard/','/docs-cn/dev/reference/key-monit
 
 ## Statistics - hot read
 
-- Hot Region's leader distribution：每个 TiKV 实例上成为读取热点的 leader 的数量
-- Total read bytes on hot leader Regions：每个 TiKV 实例上所有成为读取热点的 leader 的总的读取流量大小
+- Hot Region's peer distribution：每个 TiKV 实例上成为读取热点的 peer 的数量
+- Total read bytes on hot peer Regions：每个 TiKV 实例上所有成为读取热点的 peer 的总的读取流量大小
 - Store read rate bytes：每个 TiKV 实例总的读取的流量
 - Store read rate keys：每个 TiKV 实例总的读取 keys
 - Hot cache read entry number：每个 TiKV 实例进入热点统计模块的 peer 的数量
@@ -137,7 +137,7 @@ aliases: ['/docs-cn/dev/grafana-pd-dashboard/','/docs-cn/dev/reference/key-monit
 
 ## Heartbeat
 
-- Heartbeat region event QPS：心跳处理 region 的 QPS， 包括更新缓存和持久化
+- Heartbeat region event QPS：心跳处理 region 的 QPS，包括更新缓存和持久化
 - Region heartbeat report：TiKV 向 PD 发送的心跳个数
 - Region heartbeat report error：TiKV 向 PD 发送的异常的心跳个数
 - Region heartbeat report active：TiKV 向 PD 发送的正常的心跳个数

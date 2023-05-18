@@ -6,7 +6,7 @@ title: 通过 TiUP 部署 DM 集群的拓扑文件配置
 
 在部署或扩容 TiDB Data Migration (DM) 集群时，需要提供一份拓扑文件来描述集群拓扑，同样，修改配置也是通过编辑拓扑文件来实现的，区别在于修改配置时仅允许修改部分字段。
 
-拓扑文件[示例参考](https://github.com/pingcap/tiup/blob/master/embed/templates/examples/dm/topology.example.yaml)。
+拓扑文件[示例参考](https://github.com/pingcap/tiup/blob/master/embed/examples/dm/topology.example.yaml)。
 
 ## 文件结构
 
@@ -32,11 +32,11 @@ title: 通过 TiUP 部署 DM 集群的拓扑文件配置
     - 对于每个实例，如果用户未配置 `deploy_dir`，其默认值为相对路径 `<component-name>-<component-port>`
     - 如果 `global.deploy_dir` 为绝对路径，那么组件会部署到 `<global.deploy_dir>/<instance.deploy_dir>` 目录
     - 如果 `global.deploy_dir` 为相对路径，那么组件会部署到 `/home/<global.user>/<global.deploy_dir>/<instance.deploy_dir>` 目录
-- `data_dir`：数据目录, 默认值："data"，其应用规则如下：
+- `data_dir`：数据目录，默认值："data"，其应用规则如下：
     - 如果在实例级别配置了绝对路径的 `data_dir`，那么实际数据目录为该实例设定的 `data_dir`
     - 对于每个实例，如果用户未配置 `data_dir`，其默认值为 `<global.data_dir>`
     - 如果 `data_dir` 为相对路径，那么组件数据将放到 `<deploy_dir>/<data_dir>` 中，其中 `<deploy_dir>` 的计算规则请参考 `deploy_dir` 字段的应用规则
-- `log_dir`：数据目录, 默认值："log"，其应用规则如下：
+- `log_dir`：数据目录，默认值："log"，其应用规则如下：
     - 如果在实例级别配置了绝对路径的 `log_dir`，那么实际日志目录为该实例设定的 `log_dir`
     - 对于每个实例，如果用户未配置 `log_dir`，其默认值为 `<global.log_dir>`
     - 如果 `log_dir` 为相对路径，那么组件日志将放到 `<deploy_dir>/<log_dir>` 中，其中 `<deploy_dir>` 的计算规则请参考 `deploy_dir` 字段的应用规则
@@ -64,8 +64,8 @@ global:
 
 `server_configs` 用于配置服务，生成各组件的配置文件，类似 `global` 区块，该区块内的配置可以在具体的实例中被覆盖。主要包含以下字段：
 
-- `master`：DM master 服务的相关配置，支持的完整配置请参考[DM-master 配置文件介绍](https://docs.pingcap.com/zh/tidb-data-migration/stable/dm-master-configuration-file)
-- `worker`：DM worker 服务的相关配置，支持的完整配置请参考[DM-worker 配置文件介绍](https://docs.pingcap.com/zh/tidb-data-migration/stable/dm-worker-configuration-file)
+- `master`：DM master 服务的相关配置，支持的完整配置请参考[DM-master 配置文件介绍](/dm/dm-master-configuration-file.md)
+- `worker`：DM worker 服务的相关配置，支持的完整配置请参考[DM-worker 配置文件介绍](/dm/dm-worker-configuration-file.md)
 
 `server_configs` 配置示例：
 
@@ -245,7 +245,7 @@ monitoring_servers:
 - `deploy_dir`：指定部署目录，若不指定，或指定为相对目录，则按照 `global` 中配置的 `deploy_dir` 生成
 - `os`：`host` 字段所指定的机器的操作系统，若不指定该字段，则默认为 `global` 中的 `os`
 - `arch`：`host` 字段所指定的机器的架构，若不指定该字段，则默认为 `global` 中的 `arch`
-- `username`：Grafana 登陆界面的用户名
+- `username`：Grafana 登录界面的用户名
 - `password`：Grafana 对应的密码
 - `dashboard_dir`：该字段指定一个本地目录，该目录中应当含有完整的 `dashboard(*.json)` 文件，这些文件会在集群配置初始化阶段被传输到目标机器上，作为 Grafana 的 dashboards
 - `resource_control`：针对该服务的资源控制，如果配置了该字段，会将该字段和 `global` 中的 `resource_control` 内容合并（若字段重叠，以本字段内容为准），然后生成 systemd 配置文件并下发到 `host` 指定机器。`resource_control` 的配置规则同 `global`中的 `resource_control`
@@ -280,7 +280,7 @@ grafana_servers:
 - `host`：指定部署到哪台机器，字段值填 IP 地址，不可省略
 - `ssh_port`：指定连接目标机器进行操作的时候使用的 SSH 端口，若不指定，则使用 `global` 区块中的 `ssh_port`
 - `web_port`：指定 Alertmanager 提供网页服务的端口，默认值：9093
-- `cluster_port`：指定 Alertmanger 和 其他 Alertmanager 通讯的端口，默认值：9094
+- `cluster_port`：指定 Alertmanager 和其他 Alertmanager 通讯的端口，默认值：9094
 - `deploy_dir`：指定部署目录，若不指定，或指定为相对目录，则按照 `global` 中配置的 `deploy_dir` 生成
 - `data_dir`：指定数据目录，若不指定，或指定为相对目录，则按照 `global` 中配置的 `data_dir` 生成
 - `log_dir`：指定日志目录，若不指定，或指定为相对目录，则按照 `global` 中配置的 `log_dir` 生成

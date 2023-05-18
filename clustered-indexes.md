@@ -59,13 +59,13 @@ CREATE TABLE t (a BIGINT, b VARCHAR(255), PRIMARY KEY(a, b) /*T![clustered_index
 CREATE TABLE t (a BIGINT, b VARCHAR(255), PRIMARY KEY(a, b) /*T![clustered_index] NONCLUSTERED */);
 ```
 
-对于未显式指定该关键字的语句，默认行为受系统变量 `@@global.tidb_enable_clustered_index` 影响。该变量有三个取值：
+对于未显式指定该关键字的语句，默认行为受系统变量 [`@@global.tidb_enable_clustered_index`](/system-variables.md#tidb_enable_clustered_index-从-v50-版本开始引入) 影响。该变量有三个取值：
 
 - `OFF` 表示所有主键默认使用非聚簇索引。
 - `ON` 表示所有主键默认使用聚簇索引。
 - `INT_ONLY` 此时的行为受配置项 `alter-primary-key` 控制。如果该配置项取值为 `true`，则所有主键默认使用非聚簇索引；如果该配置项取值为 `false`，则由单个整数类型的列构成的主键默认使用聚簇索引，其他类型的主键默认使用非聚簇索引。
 
-系统变量 `@@global.tidb_enable_clustered_index` 本身的默认值为 `INT_ONLY`。
+系统变量 `@@global.tidb_enable_clustered_index` 本身的默认值为 `ON`。
 
 ### 添加、删除聚簇索引
 
@@ -138,14 +138,14 @@ mysql> SELECT TIDB_PK_TYPE FROM information_schema.tables WHERE table_schema = '
 
 ## 限制
 
-目前 TiDB 的聚簇索引具有以下两类限制：
+目前 TiDB 的聚簇索引具有以下几类限制：
 
 - 明确不支持且没有支持计划的使用限制：
     - 不支持与 [`SHARD_ROW_ID_BITS`](/shard-row-id-bits.md) 一起使用；[`PRE_SPLIT_REGIONS`](/sql-statements/sql-statement-split-region.md#pre_split_regions) 在聚簇索引表上不生效。
     - 不支持对聚簇索引表进行降级。如需降级，请使用逻辑备份工具迁移数据。
-- 另一类是尚未支持，但未来有计划支持的使用限制：
+- 尚未支持，但未来有计划支持的使用限制：
     - 尚未支持通过 `ALTER TABLE` 语句增加、删除、修改聚簇索引。
-- 特定版本的限制    
+- 特定版本的限制：
     - 在 v5.0 版本中，聚簇索引不支持与 TiDB Binlog 一起使用。开启 TiDB Binlog 后，TiDB 只允许创建单个整数列作为主键的聚簇索引；已创建的聚簇索引表的数据插入、删除和更新动作不会通过 TiDB Binlog 同步到下游。如需同步聚簇索引表，请升级至 v5.1 版本或使用 [TiCDC](/ticdc/ticdc-overview.md)。
 
 开启 TiDB Binlog 之后，要创建的聚簇索引如果不是由单个整数列构成，会报以下错误：
@@ -180,9 +180,9 @@ TiDB v5.0 完成了所有类型主键的支持，但默认行为与 TiDB v3.0 �
 
 TiDB 支持使用可执行注释的语法来包裹 `CLUSTERED` 或 `NONCLUSTERED` 关键字，且 `SHOW CREATE TABLE` 的结果均包含 TiDB 特有的可执行注释，这些注释在 MySQL 或低版本的 TiDB 中会被忽略。
 
-### TiDB 生态工具兼容性
+### TiDB 数据迁移工具兼容性
 
-聚簇索引仅与 v5.0 及以后版本的以下生态工具兼容：
+聚簇索引仅与 v5.0 及以后版本的以下数据迁移工具兼容：
 
 - 备份与恢复工具 BR、Dumpling、TiDB Lightning。
 - 数据迁移和同步工具 DM、TiCDC。

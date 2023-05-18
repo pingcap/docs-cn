@@ -25,7 +25,7 @@
 
 ### 翻译中文文档
 
-TiDB 中文文档的日常更新特别活跃，相应地，[TiDB 英文文档](https://docs.pingcap.com/tidb/dev/) 也需要频繁更新。这一过程会涉及很多的**中译英**，即将 pingcap/docs-cn 仓库里已 merge 但尚未进行翻译处理的 Pull Request 翻译为英文，并提交 Pull Request 至 [pingcap/docs 仓库](https://github.com/pingcap/docs) 中。**具体的认领方式**如下。
+TiDB 中文文档的日常更新特别活跃，相应地，[TiDB 英文文档](https://docs.pingcap.com/tidb/dev/)也需要频繁更新。这一过程会涉及很多的**中译英**，即将 pingcap/docs-cn 仓库里已 merge 但尚未进行翻译处理的 Pull Request 翻译为英文，并提交 Pull Request 至 [pingcap/docs 仓库](https://github.com/pingcap/docs)中。**具体的认领方式**如下。
 
 > **注意：**
 >
@@ -39,7 +39,7 @@ TiDB 中文文档的日常更新特别活跃，相应地，[TiDB 英文文档](h
 
 你可以通过以下简单几步来认领并提交一个 PR 翻译任务：
 
-> **注意**：
+> **注意：**
 >
 > 关于下面步骤中所提到的 comment 式命令，详细说明请参考[常用 bot 命令](#常用-bot-命令)。
 
@@ -78,7 +78,7 @@ TiDB 中文文档的日常更新特别活跃，相应地，[TiDB 英文文档](h
     - [常用 bot 命令](#常用-bot-命令)
 - [PingCAP 中文文档风格指南](/resources/pingcap-style-guide-zh.pdf)
 - [PingCAP 中英术语表](https://shimo.im/sheets/tTRyydP8Xkdv8yxq/MODOC)
-- [TiDB 中文用户文档模板](/resources/tidb-docs-template-zh-v1.0.pdf)
+- [TiDB 中文用户文档模板](/resources/doc-templates)
 - [必须遵循的 Markdown 规范](#必须遵循的-markdown-规范)
 - [代码注释规范](https://github.com/pingcap/community/blob/master/contributors/code-comment-style.md)
 - 图片风格：[Figma 快速上手教程](/resources/figma-quick-start-guide.md)
@@ -91,7 +91,7 @@ TiDB 文档的修改需要遵循一定的流程，具体如下。考虑到有些
 
 > **注意：**
 >
-> 目前 TiDB 主要维护以下几个版本的文档：dev（最新开发版）、v5.0、v4.0、v3.1、v3.0 以及 v2.1。提 Pull Request 前请务必考虑修改会影响的文档版本，并据此修改所有相应的版本。
+> 目前 TiDB 主要维护以下几个版本的文档：dev（最新开发版，对应文档仓库的 master 分支）、v6.1、v6.0、v5.4、v5.3、v5.2、v5.1、v5.0、v4.0、v3.1、v3.0 以及 v2.1。提 Pull Request 前请务必考虑修改会影响的文档版本，并据此修改所有相应的版本。选择版本时，请参考[版本选择指南](#版本选择指南)。
 
 ### 第 0 步：签署 Contributor License Agreement
 
@@ -142,7 +142,7 @@ git add <file> ... # 如果你想提交所有的文档修改，可直接使用 `
 git commit -m "commit-message: update the xx"
 ```
 
-参考[如何写 commit message](https://github.com/pingcap/community/blob/master/commit-message-pr-style.md#how-to-write-a-good-commit-message)。
+参考[如何写 commit message](https://github.com/pingcap/community/blob/master/contributors/commit-message-pr-style.md#how-to-write-a-good-commit-message)。
 
 ### 第 6 步：保持新建 branch 与 upstream/master 一致
 
@@ -194,6 +194,23 @@ TiDB 中文文档使用 Markdown 语言进行编写，为了保证文档质量�
 | `/cc` | 将 PR 分配给指定的 reviewer，需 @指定用户的 GitHub ID，多个 GitHub ID 间用逗号分隔。 | `/cc @TomShawn, @yikeke` |
 | `/uncc` | 移除 PR 之前指定的 reviewer。  | `/uncc @TomShawn`|
 
+## 版本选择指南
+
+创建 Pull Request 时，你需要在 Pull Request 的描述模版中选择文档改动适用的版本分支。
+
+如果你的 PR 改动符合以下任一情况，推荐**只选择 master 分支**。此 PR 的改动在合并后将显示到[官网文档 Dev 页面](https://docs.pingcap.com/zh/tidb/dev/)，在下一次 TiDB 发新版本时将显示到对应版本的文档页面。
+
+- 完善和优化文档内容，例如补充缺失或不完整的信息。
+- 修正不准确或错误的文档内容，例如默认值错误、描述不准确、示例错误、拼写错误等。
+- 重新组织现有文档的某个局部，例如“部署标准集群”、“数据迁移”、“TiDB 数据迁移工具”等。
+
+如果你的 PR 改动符合以下任一情况，请**选择 master 分支以及受影响的 release 分支**：
+
+- 涉及与版本相关的功能行为变化。
+- 涉及与版本相关的兼容性变化，例如更改某个配置项或变量的默认值。
+- 修复文档页面的渲染或显示错误。
+- 修复文档内的死链。
+
 ## 联系我们
 
-加入 Slack channel：[#sig-docs](https://slack.tidb.io/invite?team=tidb-community&channel=sig-docs&ref=pingcap-docs-cn)
+欢迎来 [TiDB Internals](https://internals.tidb.io/) 参与讨论。

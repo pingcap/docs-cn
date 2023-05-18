@@ -71,7 +71,7 @@ TiDB 会根据 `tidb_disable_txn_auto_retry` 和 `tidb_retry_limit` 参数设置
 {{< copyable "" >}}
 
 ```shell
-./pd-ctl -u https://127.0.0.1:2379 tso {TIMESTAMP}
+tiup ctl:v<CLUSTER_VERSION> pd -u https://127.0.0.1:2379 tso {TIMESTAMP}
 ```
 
 通过 tableID 查找具体的表名：
@@ -87,7 +87,7 @@ curl http://{TiDBIP}:10080/db-table/{tableID}
 {{< copyable "sql" >}}
 
 ```sql
-SELECT * FROM INFORMATION_SCHEMA.TIDB_INDEXES WHERE TABLE_SCHEMA='{table_name}' AND TABLE_NAME='{table_name}' AND INDEX_ID={indexID};
+SELECT * FROM INFORMATION_SCHEMA.TIDB_INDEXES WHERE TABLE_SCHEMA='{db_name}' AND TABLE_NAME='{table_name}' AND INDEX_ID={indexID};
 ```
 
 另外在 v3.0.8 及之后版本默认使用悲观事务模式，从而避免在事务提交的时候因为冲突而导致失败，无需修改应用程序。悲观事务模式下会在每个 DML 语句执行的时候，加上悲观锁，用于防止其他事务修改相同 Key，从而保证在最后提交的 prewrite 阶段不会出现写写冲突的情况。

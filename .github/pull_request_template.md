@@ -12,13 +12,24 @@
 
 <!-- Fill in "x" in [] to tick the checkbox below.-->
 
+**Tips for choosing the affected version(s):**
+
+By default, **CHOOSE MASTER ONLY** so your changes will be applied to the next TiDB major or minor releases. If your PR involves a product feature behavior change or a compatibility change, **CHOOSE THE AFFECTED RELEASE BRANCH(ES) AND MASTER**.
+
+For details, see [tips for choosing the affected versions (in Chinese)](https://github.com/pingcap/docs-cn/blob/master/CONTRIBUTING.md#版本选择指南).
+
 - [ ] master (the latest development version)
+- [ ] v7.2 (TiDB 7.2 versions)
+- [ ] v7.1 (TiDB 7.1 versions)
+- [ ] v7.0 (TiDB 7.0 versions)
+- [ ] v6.6 (TiDB 6.6 versions)
+- [ ] v6.5 (TiDB 6.5 versions)
+- [ ] v6.1 (TiDB 6.1 versions)
+- [ ] v5.4 (TiDB 5.4 versions)
+- [ ] v5.3 (TiDB 5.3 versions)
+- [ ] v5.2 (TiDB 5.2 versions)
 - [ ] v5.1 (TiDB 5.1 versions)
 - [ ] v5.0 (TiDB 5.0 versions)
-- [ ] v4.0 (TiDB 4.0 versions)
-- [ ] v3.1 (TiDB 3.1 versions)
-- [ ] v3.0 (TiDB 3.0 versions)
-- [ ] v2.1 (TiDB 2.1 versions)
 
 ### What is the related PR or file link(s)?
 

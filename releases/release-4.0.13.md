@@ -46,9 +46,9 @@ TiDB 版本：4.0.13
 
     + TiCDC
 
-        - 为内部处理单元增加流程控制，避免出现内存溢出问题 [#1751](https://github.com/pingcap/ticdc/pull/1751)
-        - 增加 Unified Sorter 清理陈旧临时文件的功能，禁止多个 `cdc` 服务共享 `sort-dir` 目录 [#1741](https://github.com/pingcap/ticdc/pull/1741)
-        - 给 Failpoint 增加 HTTP 接口调用 [#1732](https://github.com/pingcap/ticdc/pull/1732)
+        - 为内部处理单元增加流程控制，避免出现内存溢出问题 [#1751](https://github.com/pingcap/tiflow/pull/1751)
+        - 增加 Unified Sorter 清理陈旧临时文件的功能，禁止多个 `cdc` 服务共享 `sort-dir` 目录 [#1741](https://github.com/pingcap/tiflow/pull/1741)
+        - 给 Failpoint 增加 HTTP 接口调用 [#1732](https://github.com/pingcap/tiflow/pull/1732)
 
 ## Bug 修复
 
@@ -133,9 +133,9 @@ TiDB 版本：4.0.13
 
     + TiCDC
 
-        - 修复当 Sorter 的输入通道卡住时，流控导致的死锁问题 [#1779](https://github.com/pingcap/ticdc/pull/1779)
-        - 修复 TiCDC changefeed 断点卡住导致 TiKV GC safe point 不推进的问题 [#1756](https://github.com/pingcap/ticdc/pull/1756)
-        - 回滚 `explicit_defaults_for_timestamp` 的改动，确保不用 `SUPER` 权限也可以同步数据到 MySQL [#1749](https://github.com/pingcap/ticdc/pull/1749)
+        - 修复当 Sorter 的输入通道卡住时，流控导致的死锁问题 [#1779](https://github.com/pingcap/tiflow/pull/1779)
+        - 修复 TiCDC changefeed 断点卡住导致 TiKV GC safe point 不推进的问题 [#1756](https://github.com/pingcap/tiflow/pull/1756)
+        - 回滚 `explicit_defaults_for_timestamp` 的改动，确保不用 `SUPER` 权限也可以同步数据到 MySQL [#1749](https://github.com/pingcap/tiflow/pull/1749)
 
     + TiDB Lightning
 

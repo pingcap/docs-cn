@@ -3,14 +3,7 @@ title: TiDB Lightning 教程
 aliases: ['/docs-cn/dev/get-started-with-tidb-lightning/','/docs-cn/dev/how-to/get-started/tidb-lightning/']
 ---
 
-# TiDB Lightning 教程
-
-TiDB Lightning 是一个将全量数据高速导入到 TiDB 集群的工具，目前支持 SQL 或 CSV 输出格式的数据源。你可以在以下两种场景下使用 TiDB Lightning：
-
-- **迅速**导入**大量新**数据。
-- 备份恢复所有数据。
-
-![TiDB Lightning 整体架构](/media/tidb-lightning-architecture.png)
+# TiDB Lightning 快速上手
 
 本教程假设使用的是若干新的、纯净版 CentOS 7 实例，你可以（使用 VMware、VirtualBox 及其他工具）在本地虚拟化或在供应商提供的平台上部署一台小型的云虚拟主机。因为 TiDB Lightning 对计算机资源消耗较高，建议分配 16 GB 以上的内存以及 32 核以上的 CPU 以获取最佳性能。
 
@@ -25,7 +18,7 @@ TiDB Lightning 是一个将全量数据高速导入到 TiDB 集群的工具，�
 {{< copyable "shell-regular" >}}
 
 ```sh
-./bin/dumpling -h 127.0.0.1 -P 3306 -u root -t 16 -F 256MB -B test -f 'test.t[12]' -o /data/my_database/
+tiup dumpling -h 127.0.0.1 -P 3306 -u root -t 16 -F 256MB -B test -f 'test.t[12]' -o /data/my_database/
 ```
 
 其中：
@@ -41,13 +34,11 @@ TiDB Lightning 是一个将全量数据高速导入到 TiDB 集群的工具，�
 
 ### 第 1 步：部署 TiDB 集群
 
-在开始数据导入之前，需先部署一套要进行导入的 TiDB 集群。本教程以 TiDB v5.0.0 版本为例，具体部署方法可参考[使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)。
+在开始数据导入之前，需先部署一套要进行导入的 TiDB 集群。本教程以 TiDB v5.4.0 版本为例，具体部署方法可参考[使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)。
 
 ### 第 2 步：下载 TiDB Lightning 安装包
 
-通过以下链接获取 TiDB Lightning 安装包（TiDB Lightning 完全兼容较低版本的 TiDB 集群，建议选择最新稳定版本）：
-
-- **v5.0.0**: [tidb-toolkit-v5.0.0-linux-amd64.tar.gz](https://download.pingcap.org/tidb-toolkit-v5.0.0-linux-amd64.tar.gz)
+TiDB Lightning 的安装包位于 TiDB 离线工具包中。下载方式，请参考 [TiDB 工具下载](/download-ecosystem-tools.md)。
 
 ### 第 3 步：启动 `tidb-lightning`
 
@@ -64,7 +55,7 @@ TiDB Lightning 是一个将全量数据高速导入到 TiDB 集群的工具，�
     file = "tidb-lightning.log"
 
     [tikv-importer]
-    # 选择使用的 local 后端
+    # 选择使用的导入模式
     backend = "local"
     # 设置排序的键值对的临时存放地址，目标路径需要是一个空目录
     sorted-kv-dir = "/mnt/ssd/sorted-kv-dir"
@@ -94,7 +85,7 @@ TiDB Lightning 是一个将全量数据高速导入到 TiDB 集群的工具，�
 
     ```sh
     #!/bin/bash
-    nohup ./tidb-lightning -config tidb-lightning.toml > nohup.out &
+    nohup tiup tidb-lightning -config tidb-lightning.toml > nohup.out &
     ```
 
 ### 第 4 步：检查数据

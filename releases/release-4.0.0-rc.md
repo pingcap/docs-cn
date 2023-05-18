@@ -46,7 +46,7 @@ TiUP 版本：0.0.3
 
 + TiDB
 
-    - 新增大小写敏感的排序规则，用户可在新集群上启用 `utf8mb4_general_ci` 和 `utf8_general_ci` [#33](https://github.com/pingcap/tidb/projects/33)
+    - 新增大小写不敏感的排序规则，用户可在新集群上启用 `utf8mb4_general_ci` 和 `utf8_general_ci` [#33](https://github.com/pingcap/tidb/projects/33)
     - 增强 `RECOVER TABLE` 语法，现在该语法支持恢复被 Truncate 的表 [#15398](https://github.com/pingcap/tidb/pull/15398)
     - 当 tidb-server 状态端口被占用时由原来打印一条告警日志改成拒绝启动 [#15177](https://github.com/pingcap/tidb/pull/15177)
     - 优化使用 Sequence 作为列的默认值时的写入性能 [#15216](https://github.com/pingcap/tidb/pull/15216)
@@ -98,7 +98,7 @@ TiUP 版本：0.0.3
         * 修复 backend 是 TiDB 时由于字符转换错误导致数据错误的问题 [#283](https://github.com/pingcap/tidb-lightning/pull/283)
 
     - TiCDC
-        * 修复 MySQL sink 执行 DDL 时，若下游没有 test 库系统报错的问题 [#353](https://github.com/pingcap/ticdc/pull/353)
-        * CDC cli 新增实时交互模式功能 [#351](https://github.com/pingcap/ticdc/pull/351)
-        * 同步数据时增加对上游表是否可同步的检查 [#368](https://github.com/pingcap/ticdc/pull/368)
-        * 新增异步写入 Kafka 的功能 [#344](https://github.com/pingcap/ticdc/pull/344)
+        * 修复 MySQL sink 执行 DDL 时，若下游没有 test 库系统报错的问题 [#353](https://github.com/pingcap/tiflow/pull/353)
+        * CDC cli 新增实时交互模式功能 [#351](https://github.com/pingcap/tiflow/pull/351)
+        * 同步数据时增加对上游表是否可同步的检查 [#368](https://github.com/pingcap/tiflow/pull/368)
+        * 新增异步写入 Kafka 的功能 [#344](https://github.com/pingcap/tiflow/pull/344)

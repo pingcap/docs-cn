@@ -45,7 +45,6 @@ SHOW GLOBAL VARIABLES LIKE 'tidb%';
 | tidb_backoff_weight                 | 2                   |
 | tidb_batch_commit                   | 0                   |
 | tidb_batch_delete                   | 0                   |
-| tidb_batch_insert                   | 0                   |
 | tidb_build_stats_concurrency        | 4                   |
 | tidb_capture_plan_baselines         | off                 |
 | tidb_check_mb4_value_in_utf8        | 1                   |
@@ -135,7 +134,7 @@ SHOW GLOBAL VARIABLES LIKE 'tidb%';
 | tidb_stmt_summary_history_size      | 24                  |
 | tidb_stmt_summary_internal_query    | 0                   |
 | tidb_stmt_summary_max_sql_length    | 4096                |
-| tidb_stmt_summary_max_stmt_count    | 200                 |
+| tidb_stmt_summary_max_stmt_count    | 3000                |
 | tidb_stmt_summary_refresh_interval  | 1800                |
 | tidb_store_limit                    | 0                   |
 | tidb_txn_mode                       |                     |

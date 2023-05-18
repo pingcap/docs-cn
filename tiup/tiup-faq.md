@@ -20,11 +20,11 @@ TiUP 暂时不支持外部开发的组件，但是 TiUP Team 已经制定了 TiU
 
 ## tiup-playground 和 tiup-cluster 有什么区别？
 
-TiUP Playground 组件主要定位是快速上手和搭建单机的开发环境，支持 Linux/MacOS，要运行一个指定版本的 TiUP 集群更加简单。TiUP Cluster 组件主要是部署生产环境集群，通常是一个大规模的集群，还包含运维相关操作。
+TiUP Playground 组件主要定位是快速上手和搭建单机的开发环境，支持 Linux/macOS，要运行一个指定版本的 TiUP 集群更加简单。TiUP Cluster 组件主要是部署生产环境集群，通常是一个大规模的集群，还包含运维相关操作。
 
 ## 怎么样编写 tiup-cluster 组件的拓扑文件？
 
-可以参考拓扑文件的[样例](https://github.com/pingcap/tiup/tree/master/embed/templates/examples)，样例中包含了：
+可以参考拓扑文件的[样例](https://github.com/pingcap/tiup/tree/master/embed/examples/cluster)，样例中包含了：
 
 1. 两地三中心
 2. 最小部署拓扑
@@ -51,5 +51,5 @@ TiUP Playground 组件主要定位是快速上手和搭建单机的开发环境�
 ```
 vi /etc/ssh/sshd_config
 MaxSessions 1000
-MaxStartups 1000 
+MaxStartups 1000
 ```

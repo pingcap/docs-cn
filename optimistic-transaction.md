@@ -12,7 +12,7 @@ aliases: ['/docs-cn/dev/optimistic-transaction/','/docs-cn/dev/reference/transac
 
 > **注意：**
 >
-> 自 v3.0.8 开始，TiDB 集群默认使用[悲观事务模型](/pessimistic-transaction.md)。但如果从 3.0.7 及之前版本创建的集群升级到 3.0.8 及之后的版本，不会改变默认事务模型，即**只有新创建的集群才会默认使用悲观事务模型**。
+> 自 v3.0.8 开始，TiDB 集群默认使用[悲观事务模式](/pessimistic-transaction.md)。但如果从 3.0.7 及之前版本创建的集群升级到 3.0.8 及之后的版本，不会改变默认事务模式，即**只有新创建的集群才会默认使用悲观事务模式**。
 
 ## 乐观事务原理
 
@@ -22,7 +22,7 @@ aliases: ['/docs-cn/dev/optimistic-transaction/','/docs-cn/dev/reference/transac
 
 1. 客户端开始一个事务。
 
-    TiDB 从 PD 获取一个全局唯一递增的时间戳作为当前事务的唯一事务 ID，这里称为该事务的 `start_ts`。TiDB 实现了多版本并发控制（MVCC），因此 `start_ts` 同时也作为该事务获取的数据库快照版本。该事务只能读到此 `start_ts` 版本可以读到的数据。
+    TiDB 从 PD 获取一个全局唯一递增的时间戳作为当前事务的唯一事务 ID，这里称为该事务的 `start_ts`。TiDB 实现了多版本并发控制 (MVCC)，因此 `start_ts` 同时也作为该事务获取的数据库快照版本。该事务只能读到此 `start_ts` 版本可以读到的数据。
 
 2. 客户端发起读请求。
 
@@ -65,7 +65,7 @@ aliases: ['/docs-cn/dev/optimistic-transaction/','/docs-cn/dev/reference/transac
 
 ## 事务的重试
 
-使用乐观事务模型时，在高冲突率的场景中，事务容易发生写写冲突而导致提交失败。MySQL 使用悲观事务模型，在执行 SQL 语句的过程中进行加锁并且其 Repeatable Read 隔离级别允许出现不可重复读，所以提交时一般不会出现异常。为了降低应用改造难度，TiDB 提供了数据库内部自动重试机制。
+使用乐观事务模型时，在高冲突率的场景中，事务容易发生写写冲突而导致提交失败。MySQL 使用悲观事务模型，在执行写入类型的 SQL 语句的过程中进行加锁并且在 Repeatable Read 隔离级别下使用了当前读的机制，能够读取到最新的数据，所以提交时一般不会出现异常。为了降低应用改造难度，TiDB 提供了数据库内部自动重试机制。
 
 ### 重试机制
 

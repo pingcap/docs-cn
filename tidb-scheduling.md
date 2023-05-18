@@ -33,13 +33,13 @@ TiKV 集群是 TiDB 数据库的分布式 KV 存储引擎，数据以 Region 为
 
 对以上的问题和场景进行分类和整理，可归为以下两类：
 
-**第一类：作为一个分布式高可用存储系统，必须满足的需求，包括几种：**
+**第一类：作为一个分布式高可用存储系统，必须满足的需求，包括几种**
 
 * 副本数量不能多也不能少
 * 副本需要根据拓扑结构分布在不同属性的机器上
 * 节点宕机或异常能够自动合理快速地进行容灾
 
-**第二类：作为一个良好的分布式系统，需要考虑的地方包括：**
+**第二类：作为一个良好的分布式系统，需要考虑的地方包括**
 
 * 维持整个集群的 Leader 分布均匀
 * 维持每个节点的储存容量均匀
@@ -57,7 +57,7 @@ TiKV 集群是 TiDB 数据库的分布式 KV 存储引擎，数据以 Region 为
 
 * 增加一个副本
 * 删除一个副本
-* 将 Leader 角色在一个 Raft Group 的不同副本之间 transfer（迁移）。
+* 将 Leader 角色在一个 Raft Group 的不同副本之间 transfer（迁移）
 
 刚好 Raft 协议通过 `AddReplica`、`RemoveReplica`、`TransferLeader` 这三个命令，可以支撑上述三种基本操作。
 
@@ -67,7 +67,7 @@ TiKV 集群是 TiDB 数据库的分布式 KV 存储引擎，数据以 Region 为
 
 **每个 TiKV 节点会定期向 PD 汇报节点的状态信息**
 
-TiKV 节点（Store）与 PD 之间存在心跳包，一方面 PD 通过心跳包检测每个 Store 是否存活，以及是否有新加入的 Store；另一方面，心跳包中也会携带这个 [Store 的状态信息](https://github.com/pingcap/kvproto/blob/master/proto/pdpb.proto#L473)，主要包括：
+TiKV 节点 (Store) 与 PD 之间存在心跳包，一方面 PD 通过心跳包检测每个 Store 是否存活，以及是否有新加入的 Store；另一方面，心跳包中也会携带这个 [Store 的状态信息](https://github.com/pingcap/kvproto/blob/master/proto/pdpb.proto#L473)，主要包括：
 
 * 总磁盘容量
 * 可用磁盘容量
@@ -77,9 +77,19 @@ TiKV 节点（Store）与 PD 之间存在心跳包，一方面 PD 通过心跳�
 * 是否过载
 * labels 标签信息（标签是具备层级关系的一系列 Tag，能够[感知拓扑信息](/schedule-replicas-by-topology-labels.md)）
 
+通过使用 `pd-ctl` 可以查看到 TiKV Store 的状态信息。TiKV Store 的状态具体分为 Up，Disconnect，Offline，Down，Tombstone。各状态的关系如下：
+
++ **Up**：表示当前的 TiKV Store 处于提供服务的状态。
++ **Disconnect**：当 PD 和 TiKV Store 的心跳信息丢失超过 20 秒后，该 Store 的状态会变为 Disconnect 状态，当时间超过 `max-store-down-time` 指定的时间后，该 Store 会变为 Down 状态。
++ **Down**：表示该 TiKV Store 与集群失去连接的时间已经超过了 `max-store-down-time` 指定的时间，默认 30 分钟。超过该时间后，对应的 Store 会变为 Down，并且开始在存活的 Store 上补足各个 Region 的副本。
++ **Offline**：当对某个 TiKV Store 通过 PD Control 进行手动下线操作，该 Store 会变为 Offline 状态。该状态只是 Store 下线的中间状态，处于该状态的 Store 会将其上的所有 Region 搬离至其它满足搬迁条件的 Up 状态 Store。当该 Store 的 `leader_count` 和 `region_count` (在 PD Control 中获取) 均显示为 0 后，该 Store 会由 Offline 状态变为 Tombstone 状态。在 Offline 状态下，禁止关闭该 Store 服务以及其所在的物理服务器。下线过程中，如果集群里不存在满足搬迁条件的其它目标 Store（例如没有足够的 Store 能够继续满足集群的副本数量要求），该 Store 将一直处于 Offline 状态。
++ **Tombstone**：表示该 TiKV Store 已处于完全下线状态，可以使用 `remove-tombstone` 接口安全地清理该状态的 TiKV。
+
+![TiKV store status relationship](/media/tikv-store-status-relationship.png)
+
 **每个 Raft Group 的 Leader 会定期向 PD 汇报 Region 的状态信息**
 
-每个 Raft Group 的 Leader 和 PD 之间存在心跳包，用于汇报这个[Region 的状态](https://github.com/pingcap/kvproto/blob/master/proto/pdpb.proto#L312)，主要包括下面几点信息：
+每个 Raft Group 的 Leader 和 PD 之间存在心跳包，用于汇报这个 [Region 的状态](https://github.com/pingcap/kvproto/blob/master/proto/pdpb.proto#L312)，主要包括下面几点信息：
 
 * Leader 的位置
 * Followers 的位置

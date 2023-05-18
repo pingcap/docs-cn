@@ -6,7 +6,7 @@ aliases: ['/docs-cn/dev/transaction-overview/','/docs-cn/dev/reference/transacti
 
 # TiDB 事务概览
 
-TiDB 支持分布式事务，提供[乐观事务](/optimistic-transaction.md)与[悲观事务](/pessimistic-transaction.md)两种事务模型。TiDB 3.0.8 及以后版本，TiDB 默认采用悲观事务模型。
+TiDB 支持分布式事务，提供[乐观事务](/optimistic-transaction.md)与[悲观事务](/pessimistic-transaction.md)两种事务模式。TiDB 3.0.8 及以后版本，TiDB 默认采用悲观事务模式。
 
 本文主要介绍涉及事务的常用语句、显式/隐式事务、事务的隔离级别和惰性检查，以及事务大小的限制。
 
@@ -180,7 +180,7 @@ SET GLOBAL autocommit = 0;
 >
 > 有些语句是隐式提交的。例如，执行 `[BEGIN|START TRANCATION]` 语句时，TiDB 会隐式提交上一个事务，并开启一个新的事务以满足 MySQL 兼容性的需求。详情参见 [implicit commit](https://dev.mysql.com/doc/refman/8.0/en/implicit-commit.html)。
 
-TiDB 可以显式地使用事务（通过 `[BEGIN|START TRANSACTION]`/`COMMIT` 语句定义事务的开始和结束) 或者隐式地使用事务 (`SET autocommit = 1`)。
+TiDB 可以显式地使用事务（通过 `[BEGIN|START TRANSACTION]`/`COMMIT` 语句定义事务的开始和结束）或者隐式地使用事务 (`SET autocommit = 1`)。
 
 在自动提交状态下，使用 `[BEGIN|START TRANSACTION]` 语句会显式地开启一个事务，同时也会禁用自动提交，使隐式事务变成显式事务。直到执行 `COMMIT` 或 `ROLLBACK` 语句时才会恢复到此前默认的自动提交状态。
 
@@ -221,7 +221,7 @@ mysql> INSERT INTO t1 VALUES (2);
 Query OK, 1 row affected (0.00 sec)
 
 mysql> COMMIT; -- MySQL 提交成功；TiDB 返回错误，事务回滚。
-ERROR 1062 (23000): Duplicate entry '1' for key 'PRIMARY'
+ERROR 1062 (23000): Duplicate entry '1' for key 't1.PRIMARY'
 mysql> SELECT * FROM t1; -- MySQL 返回 1 2；TiDB 返回 1。
 +----+
 | id |
@@ -231,7 +231,7 @@ mysql> SELECT * FROM t1; -- MySQL 返回 1 2；TiDB 返回 1。
 1 row in set (0.01 sec)
 ```
 
-惰性检查优化通过批处理约束检查并减少网络通信来提升性能。可以通过设置 [`tidb_constraint_check_in_place = TRUE`](/system-variables.md#tidb_constraint_check_in_place) 禁用该行为。
+惰性检查优化通过批处理约束检查并减少网络通信来提升性能。可以通过设置 [`tidb_constraint_check_in_place = ON`](/system-variables.md#tidb_constraint_check_in_place) 禁用该行为。
 
 > **注意：**
 >
@@ -268,7 +268,7 @@ Query OK, 1 row affected (0.02 sec)
 mysql> INSERT INTO tset VALUES (2);  -- tset 拼写错误，使该语句执行出错。
 ERROR 1146 (42S02): Table 'test.tset' doesn't exist
 mysql> INSERT INTO test VALUES (1),(2);  -- 违反 PRIMARY KEY 约束，语句不生效。
-ERROR 1062 (23000): Duplicate entry '1' for key 'PRIMARY'
+ERROR 1062 (23000): Duplicate entry '1' for key 'test.PRIMARY'
 mysql> INSERT INTO test VALUES (3);
 Query OK, 1 row affected (0.00 sec)
 
@@ -293,7 +293,7 @@ mysql> SELECT * FROM test;
 
 TiDB 同时支持乐观事务与悲观事务，其中乐观事务是悲观事务的基础。由于乐观事务是先将修改缓存在私有内存中，因此，TiDB 对于单个事务的容量做了限制。
 
-TiDB 中，单个事务的总大小默认不超过 100 MB，这个默认值可以通过配置文件中的配置项 `txn-total-size-limit` 进行修改，最大支持 10 GB。实际的单个事务大小限制还取决于服务器剩余可用内存的大小，执行事务时 TiDB 进程的内存消耗大约是事务大小的 6 倍以上。
+TiDB 中，单个事务的总大小默认不超过 100 MB，这个默认值可以通过配置文件中的配置项 `txn-total-size-limit` 进行修改，最大支持 1 TB。单个事务的实际大小限制还取决于服务器剩余可用内存的大小，执行事务时 TiDB 进程的内存消耗相对于事务大小会存在一定程度的放大，最大可能达到提交事务大小的 2 到 3 倍以上。
 
 在 4.0 以前的版本，TiDB 限制了单个事务的键值对的总数量不超过 30 万条，从 4.0 版本起 TiDB 取消了这项限制。
 
@@ -319,7 +319,7 @@ START TRANSACTION WITH CAUSAL CONSISTENCY ONLY;
 
 默认情况下，TiDB 保证线性一致性。在线性一致性的情况下，如果事务 2 在事务 1 提交完成后提交，逻辑上事务 2 就应该在事务 1 后发生。
 
-因果一致性弱于线性一致性。在因果一致性的情况下， 只有事务 1 和事务 2 加锁或写入的数据有交集时（即事务 1 和事务 2 存在数据库可知的因果关系时），才能保证事务的提交顺序与事务的发生顺序保持一致。目前暂不支持传入数据库外部的因果关系。
+因果一致性弱于线性一致性。在因果一致性的情况下，只有事务 1 和事务 2 加锁或写入的数据有交集时（即事务 1 和事务 2 存在数据库可知的因果关系时），才能保证事务的提交顺序与事务的发生顺序保持一致。目前暂不支持传入数据库外部的因果关系。
 
 采用因果一致性的两个事务有以下特性：
 
@@ -329,7 +329,7 @@ START TRANSACTION WITH CAUSAL CONSISTENCY ONLY;
 
 ### 有潜在因果关系的事务之间的逻辑顺序与物理提交顺序一致
 
-假设事务 1 和 事务 2 都采用因果一致性，并先后执行如下语句：
+假设事务 1 和事务 2 都采用因果一致性，并先后执行如下语句：
 
 | 事务 1 | 事务 2 |
 |-------|-------|
@@ -340,11 +340,11 @@ START TRANSACTION WITH CAUSAL CONSISTENCY ONLY;
 | | UPDATE t SET v = 2 WHERE id = 1 |
 | | COMMIT |
 
-上面的例子中，事务 1 对 `id = 1` 的记录加了锁，事务 2 的事务对 `id = 1` 的记录进行了修改，所以事务 1 和 事务 2 有潜在的因果关系。所以即使用因果一致性开启事务，只要事务 2 在事务 1 提交成功后才提交，逻辑上事务 2 就必定比事务 1 晚发生。因此，不存在某个事务读到了事务 2 对 `id = 1` 记录的修改，但却没有读到事务 1 对 `id = 2` 记录的修改的情况。
+上面的例子中，事务 1 对 `id = 1` 的记录加了锁，事务 2 的事务对 `id = 1` 的记录进行了修改，所以事务 1 和事务 2 有潜在的因果关系。所以即使用因果一致性开启事务，只要事务 2 在事务 1 提交成功后才提交，逻辑上事务 2 就必定比事务 1 晚发生。因此，不存在某个事务读到了事务 2 对 `id = 1` 记录的修改，但却没有读到事务 1 对 `id = 2` 记录的修改的情况。
 
 ### 无因果关系的事务之间的逻辑顺序与物理提交顺序不保证一致
 
-假设 `id = 1` 和 `id = 2` 的记录最初值都为 0，事务 1 和 事务 2 都采用因果一致性，并先后执行如下语句：
+假设 `id = 1` 和 `id = 2` 的记录最初值都为 0，事务 1 和事务 2 都采用因果一致性，并先后执行如下语句：
 
 | 事务 1 | 事务 2 | 事务 3 |
 |-------|-------|-------|
@@ -362,7 +362,7 @@ START TRANSACTION WITH CAUSAL CONSISTENCY ONLY;
 
 ### 不加锁的读取不产生因果关系
 
-假设事务 1 和 事务 2 都采用因果一致性，并先后执行如下语句：
+假设事务 1 和事务 2 都采用因果一致性，并先后执行如下语句：
 
 | 事务 1 | 事务 2 |
 |-------|-------|

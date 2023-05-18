@@ -1,0 +1,55 @@
+includes:
+  - "/*.md"
+  - "s*/*.md"
+ignore:
+  - path: encryption-at-rest.md
+    scope: all
+    ruleId: ZH426
+  # 括号作为开闭区间标记，忽略左右括号匹配
+  - path: sql-statements/sql-statement-split-region.md
+    scope: all
+    ruleId: ZH423
+  - path: experimental-features.md
+    scope: all
+    ruleId: ZH417
+  # 忽略顿号带来的中英文符号检测
+  - path: mysql-compatibility.md
+    scope: all
+    ruleId: ZH417
+  - path: tidb-storage.md
+    scope: line
+    ruleId: ZH423
+    line: 51
+  - path: statistics.md
+    scope: line
+    ruleId: ZH400
+    line: 32
+  - path: tidb-troubleshooting-map.md
+    scope: all
+    ruleId: ZH417
+  - path: sql-statements/sql-statement-show-table-regions.md
+    scope: line
+    line: 165
+    ruleId: ZH423
+  - path: sql-statements/sql-statement-explain-analyze.md
+    scope: all
+    ruleId: ZH403
+  - path: sql-statements/sql-statement-explain-analyze.md
+    scope: all
+    ruleId: ZH428
+  - path: tidb-configuration-file.md
+    scope: line
+    line: 120
+    ruleId: ZH417
+  - path: storage-engine/titan-overview.md
+    line: 77
+    scope: line
+    ruleId: ZH427
+  - path: storage-engine/rocksdb-overview.md 
+    scope: all
+    ruleId: ZH403
+  - path: pd-control.md
+    scope: all
+    ruleId: ZH403
+
+failed_msg: "以上报错结果仅供参考，请 PR 作者二次确认错误信息后再修改文档。"

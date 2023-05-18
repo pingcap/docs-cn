@@ -16,13 +16,34 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-analyze-table/','/docs-cn/d
 
 ```ebnf+diagram
 AnalyzeTableStmt ::=
-    'ANALYZE' ( 'TABLE' ( TableNameList | TableName ( 'INDEX' IndexNameList | 'PARTITION' PartitionNameList ( 'INDEX' IndexNameList )? ) ) | 'INCREMENTAL' 'TABLE' TableName ( 'PARTITION' PartitionNameList )? 'INDEX' IndexNameList ) AnalyzeOptionListOpt
+    'ANALYZE' ( 'TABLE' ( TableNameList ( 'ALL COLUMNS' | 'PREDICATE COLUMNS' ) | TableName ( 'INDEX' IndexNameList? | AnalyzeColumnOption | 'PARTITION' PartitionNameList ( 'INDEX' IndexNameList? | AnalyzeColumnOption )? )? ) | 'INCREMENTAL' 'TABLE' TableName ( 'PARTITION' PartitionNameList )? 'INDEX' IndexNameList? ) AnalyzeOptionListOpt
+
+AnalyzeOptionListOpt ::=
+( WITH AnalyzeOptionList )?
+
+AnalyzeOptionList ::=
+AnalyzeOption ( ',' AnlyzeOption )*
+
+AnalyzeOption ::=
+( NUM ( 'BUCKETS' | 'TOPN' | ( 'CMSKETCH' ( 'DEPTH' | 'WIDTH' ) ) | 'SAMPLES' ) ) | ( FLOATNUM 'SAMPLERATE' )
+
+AnalyzeColumnOption ::=
+( 'ALL COLUMNS' | 'PREDICATE COLUMNS' | 'COLUMNS' ColumnNameList )
 
 TableNameList ::=
     TableName (',' TableName)*
 
 TableName ::=
     Identifier ( '.' Identifier )?
+
+ColumnNameList ::=
+    Identifier ( ',' Identifier )*
+
+IndexNameList ::=
+    Identifier ( ',' Identifier )*
+
+PartitionNameList ::=
+    Identifier ( ',' Identifier )*
 ```
 
 ## 示例

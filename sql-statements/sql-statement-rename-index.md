@@ -11,12 +11,11 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-rename-index/','/docs-cn/de
 ## 语法图
 
 ```ebnf+diagram
-AlterTableStmt ::=
-    'ALTER' IgnoreOptional 'TABLE' TableName ( AlterTableSpecListOpt AlterTablePartitionOpt | 'ANALYZE' 'PARTITION' PartitionNameList ( 'INDEX' IndexNameList )? AnalyzeOptionListOpt )
+AlterTableStmt
+         ::= 'ALTER' 'IGNORE'? 'TABLE' TableName RenameIndexSpec ( ',' RenameIndexSpec )*
 
-KeyOrIndex ::=
-    'KEY'
-|   'INDEX'
+RenameIndexSpec
+         ::= 'RENAME' ( 'KEY' | 'INDEX' ) Identifier 'TO' Identifier
 ```
 
 ## 示例

@@ -19,7 +19,7 @@ tiup cluster list
 
 ## 启动集群
 
-启动集群操作会按 PD -> TiKV -> Pump -> TiDB -> TiFlash -> Drainer 的顺序启动整个 TiDB 集群所有组件（同时也会启动监控组件）：
+启动集群操作会按 PD -> TiKV -> Pump -> TiDB -> TiFlash -> Drainer -> TiCDC -> Prometheus -> Grafana -> Alertmanager 的顺序启动整个 TiDB 集群所有组件：
 
 {{< copyable "shell-regular" >}}
 
@@ -55,7 +55,7 @@ tiup cluster start ${cluster-name} -N 1.2.3.4:2379,1.2.3.5:2379
 
 ## 查看集群状态
 
-集群启动之后需要检查每个组件的运行状态，以确保每个组件工作正常。TiUP 提供了 display 命令，节省了登陆到每台机器上去查看进程的时间。
+集群启动之后需要检查每个组件的运行状态，以确保每个组件工作正常。TiUP 提供了 display 命令，节省了登录到每台机器上去查看进程的时间。
 
 {{< copyable "shell-regular" >}}
 
@@ -92,12 +92,12 @@ tiup cluster display ${cluster-name}
         ```
         tidb_servers:
         - host: 10.0.1.11
-            port: 4000
-            config:
-                log.slow-threshold: 300
+          port: 4000
+          config:
+              log.slow-threshold: 300
         ```
 
-    参数的格式参考 [TiUP 配置参数模版](https://github.com/pingcap/tiup/blob/master/embed/templates/examples/topology.example.yaml)。
+    参数的格式参考 [TiUP 配置参数模版](https://github.com/pingcap/tiup/blob/master/embed/examples/cluster/topology.example.yaml)。
 
     **配置项层次结构使用 `.` 表示**。
 
@@ -186,7 +186,7 @@ tiup cluster rename ${cluster-name} ${new-name}
 
 ## 关闭集群
 
-关闭集群操作会按 Drainer -> TiFlash -> TiDB -> Pump -> TiKV -> PD 的顺序关闭整个 TiDB 集群所有组件（同时也会关闭监控组件）：
+关闭集群操作会按 Alertmanager -> Grafana -> Prometheus -> TiCDC -> Drainer -> TiFlash -> TiDB -> Pump -> TiKV -> PD 的顺序关闭整个 TiDB 集群所有组件（同时也会关闭监控组件）：
 
 {{< copyable "shell-regular" >}}
 

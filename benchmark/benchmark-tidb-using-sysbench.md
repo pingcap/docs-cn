@@ -5,20 +5,25 @@ aliases: ['/docs-cn/dev/benchmark/benchmark-tidb-using-sysbench/','/docs-cn/dev/
 
 # 如何用 Sysbench 测试 TiDB
 
-建议使用 Sysbench 1.0 或之后的更新版本，可在 [Sysbench Release 1.0.14 页面](https://github.com/akopytov/sysbench/releases/tag/1.0.14)下载。
+建议使用 Sysbench 1.0 或之后的更新版本，可在 [Sysbench Release 1.0.20 页面](https://github.com/akopytov/sysbench/releases/tag/1.0.20)下载。
 
 ## 测试方案
 
 ### TiDB 配置
 
-升高日志级别，可以减少打印日志数量，对 TiDB 的性能有积极影响。开启 TiDB 配置中的 `prepared plan cache`，以减少优化执行计划的开销。具体在 TiUP 配置文件中加入：
+升高日志级别，可以减少打印日志数量，对 TiDB 的性能有积极影响。具体在 TiUP 配置文件中加入：
 
 ```yaml
 server_configs:
   tidb:
     log.level: "error"
-    prepared-plan-cache.enabled: true
 ```
+
+同时，推荐启用 [`tidb_enable_prepared_plan_cache`](/system-variables.md#tidb_enable_prepared_plan_cache-从-v610-版本开始引入)，并保证 `--db-ps-mode` 设置为 `auto`，这样 Sysbench 就可以使用预处理语句。关于 SQL 执行计划缓存的功能及监控，请参考[执行计划缓存](/sql-prepared-plan-cache.md)。
+
+> **注意：**
+>
+> 不同版本 Sysbench 的 `db-ps-mode` 参数默认值可能会不同，建议在命令中显式指定。
 
 ### TiKV 配置
 
@@ -28,7 +33,7 @@ TiKV 集群存在多个 Column Family，包括 Default CF、Write CF 和 LockCF�
 
 Default CF : Write CF = 4 : 1
 
-在 TiKV 中需要根据机器内存大小配置 RocksDB 的 block cache，以充分利用内存。以 40 GB 内存的虚拟机部署一个 TiKV 为例，其 block cache 建议配置如下:
+在 TiKV 中需要根据机器内存大小配置 RocksDB 的 block cache，以充分利用内存。以 40 GB 内存的虚拟机部署一个 TiKV 为例，其 block cache 建议配置如下：
 
 ```yaml
 server_configs:
@@ -112,10 +117,10 @@ create database sbtest;
 
 调整 Sysbench 脚本创建索引的顺序。Sysbench 按照“建表->插入数据->创建索引”的顺序导入数据。对于 TiDB 而言，该方式会花费更多的导入时间。你可以通过调整顺序来加速数据的导入。
 
-假设使用的 Sysbench 版本为 [1.0.14](https://github.com/akopytov/sysbench/tree/1.0.14)，可以通过以下两种方式来修改：
+假设使用的 Sysbench 版本为 [1.0.20](https://github.com/akopytov/sysbench/tree/1.0.20)，可以通过以下两种方式来修改：
 
 1. 直接下载为 TiDB 修改好的 [oltp_common.lua](https://raw.githubusercontent.com/pingcap/tidb-bench/master/sysbench/sysbench-patch/oltp_common.lua) 文件，覆盖 `/usr/share/sysbench/oltp_common.lua` 文件。
-2. 将 `/usr/share/sysbench/oltp_common.lua` 的第 [235](https://github.com/akopytov/sysbench/blob/1.0.14/src/lua/oltp_common.lua#L235) 行到第 [240](https://github.com/akopytov/sysbench/blob/1.0.14/src/lua/oltp_common.lua#L240) 行移动到第 198 行以后。
+2. 将 `/usr/share/sysbench/oltp_common.lua` 的第 [235-240](https://github.com/akopytov/sysbench/blob/1.0.20/src/lua/oltp_common.lua#L235-L240) 行移动到第 198 行以后。
 
 > **注意：**
 >
@@ -133,22 +138,8 @@ sysbench --config-file=config oltp_point_select --tables=32 --table-size=1000000
 
 数据预热可将磁盘中的数据载入内存的 block cache 中，预热后的数据对系统整体的性能有较大的改善，建议在每次重启集群后进行一次数据预热。
 
-Sysbench 1.0.14 没有提供数据预热的功能，因此需要手动进行数据预热。如果使用更新的 Sysbench 版本，可以使用自带的预热功能。
-
-以 Sysbench 中某张表 sbtest7 为例，执行如下 SQL 语句 进行数据预热：
-
-{{< copyable "sql" >}}
-
-```sql
-SELECT COUNT(pad) FROM sbtest7 USE INDEX (k_7);
-```
-
-统计信息收集有助于优化器选择更为准确的执行计划，可以通过 `analyze` 命令来收集表 sbtest 的统计信息，每个表都需要统计。
-
-{{< copyable "sql" >}}
-
-```sql
-ANALYZE TABLE sbtest7;
+```bash
+sysbench --config-file=config oltp_point_select --tables=32 --table-size=10000000 prewarm
 ```
 
 ### Point select 测试命令
@@ -156,7 +147,7 @@ ANALYZE TABLE sbtest7;
 {{< copyable "shell-regular" >}}
 
 ```bash
-sysbench --config-file=config oltp_point_select --tables=32 --table-size=10000000 run
+sysbench --config-file=config oltp_point_select --tables=32 --table-size=10000000 --db-ps-mode=auto --rand-type=uniform run
 ```
 
 ### Update index 测试命令
@@ -164,7 +155,7 @@ sysbench --config-file=config oltp_point_select --tables=32 --table-size=1000000
 {{< copyable "shell-regular" >}}
 
 ```bash
-sysbench --config-file=config oltp_update_index --tables=32 --table-size=10000000 run
+sysbench --config-file=config oltp_update_index --tables=32 --table-size=10000000 --db-ps-mode=auto --rand-type=uniform run
 ```
 
 ### Read-only 测试命令
@@ -172,7 +163,7 @@ sysbench --config-file=config oltp_update_index --tables=32 --table-size=1000000
 {{< copyable "shell-regular" >}}
 
 ```bash
-sysbench --config-file=config oltp_read_only --tables=32 --table-size=10000000 run
+sysbench --config-file=config oltp_read_only --tables=32 --table-size=10000000 --db-ps-mode=auto --rand-type=uniform run
 ```
 
 ## 常见问题

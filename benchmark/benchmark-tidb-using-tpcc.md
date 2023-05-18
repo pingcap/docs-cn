@@ -25,9 +25,9 @@ TPC-C 是一个对 OLTP（联机交易处理）系统进行测试的规范，使
 
 我们将以 1000 WAREHOUSE 为例进行测试。
 
-TPC-C 使用 tpmC 值（Transactions per Minute）来衡量系统最大有效吞吐量 (MQTh, Max Qualified Throughput)，其中 Transactions 以 NewOrder Transaction 为准，即最终衡量单位为每分钟处理的新订单数。
+TPC-C 使用 tpmC 值 (Transactions per Minute) 来衡量系统最大有效吞吐量 (MQTh, Max Qualified Throughput)，其中 Transactions 以 NewOrder Transaction 为准，即最终衡量单位为每分钟处理的新订单数。
 
-本文使用 [go-tpc](https://github.com/pingcap/go-tpc) 作为 TPC-C 测试实现，可以通过 [TiUP](/tiup/tiup-overview.md) 命令下载测试程序:
+本文使用 [go-tpc](https://github.com/pingcap/go-tpc) 作为 TPC-C 测试实现，可以通过 [TiUP](/tiup/tiup-overview.md) 命令下载测试程序：
 
 {{< copyable "shell-regular" >}}
 
@@ -36,6 +36,8 @@ tiup install bench
 ```
 
 关于 TiUP Bench 组件的详细用法可参考 [TiUP Bench](/tiup/tiup-bench.md)。
+
+假设已部署 TiDB 集群，其中 TiDB 节点部署在 172.16.5.140、 172.16.5.141 实例上，端口都为 4000，可按如下步骤进行 TPC-C 测试。
 
 ## 导入数据
 
@@ -46,7 +48,7 @@ tiup install bench
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup bench tpcc -H 172.16.5.140 -P 4000 -D tpcc --warehouses 1000 prepare
+tiup bench tpcc -H 172.16.5.140,172.16.5.141 -P 4000 -D tpcc --warehouses 1000 --threads 20 prepare
 ```
 
 基于不同的机器配置，这个过程可能会持续几个小时。如果是小型集群，可以使用较小的 WAREHOUSE 值进行测试。
@@ -60,7 +62,7 @@ tiup bench tpcc -H 172.16.5.140 -P 4000 -D tpcc --warehouses 1000 prepare
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup bench tpcc -H 172.16.5.140 -P 4000 -D tpcc --warehouses 1000 run
+tiup bench tpcc -H 172.16.5.140,172.16.5.141 -P 4000 -D tpcc --warehouses 1000 --threads 100 --time 10m run
 ```
 
 运行过程中控制台上会持续打印测试结果：

@@ -24,7 +24,7 @@ TiDB 5.0.0-rc 版本是 5.0 版本的前序版本。在 5.0 版本中，我们�
 
 ### 支持聚簇索引（实验特性）
 
-开启聚簇索引功能后，TiDB 性能在以下条件下会有较大幅度的提升, 例如： TPC-C tpmC 的性能提升了 39%。聚簇索引主要在以下条件时会有性能提升：
+开启聚簇索引功能后，TiDB 性能在以下条件下会有较大幅度的提升，例如：TPC-C tpmC 的性能提升了 39%。聚簇索引主要在以下条件时会有性能提升：
 
 + 插入数据时会减少一次从网络写入索引数据。
 + 等值条件查询仅涉及主键时会减少一次从网络读取数据。
@@ -64,7 +64,6 @@ DBA 通过 `ALTER INDEX` 语句来修改某个索引的可见性。修改后优�
 
 悲观事务模式下，如果事务所涉及到的表存在并发 DDL 操作和 `SCHEMA VERSION` 变更，系统会自动将该事务的 `SCHEMA VERSION` 更新到最新版本，确保事务会提交成功，避免事务因 DDL 操作而中断。事务中断时客户端会收到 `Information schema is changed` 的错误信息。
 
-+ [用户文档](/system-variables.md#tidb_enable_amend_pessimistic_txn-从-v407-版本开始引入)
 + 相关 issue：[#18005](https://github.com/pingcap/tidb/issues/18005)
 
 ## 字符集和排序规则
@@ -123,7 +122,7 @@ TiDB 调度过程中会占用 I/O、Network、CPU、Memory 等资源，若不对
 + 减少节点的容量总是在水位线附近波动引起的调度及 PD 的 `store-limit` 配置项设置过大引起的调度，引入一套新的调度算分公式并通过 `region-score-formula-version = v2` 配置项启用新的调度算分公式 [#3269](https://github.com/tikv/pd/pull/3269)
 + 通过修改 `enable-cross-table-merge = true` 开启跨 Region 合并功能，减少空 Region 的数量 [#3129](https://github.com/tikv/pd/pull/3129)
 + TiKV 后台压缩数据会占用大量 I/O 资源，系统通过自动调整压缩的速度来平衡后台任务与前端的数据读写对 I/O 资源的争抢，通过 `rate-limiter-auto-tuned` 配置项开启此功能后，延迟抖动比未开启此功能时的抖动大幅减少 [#18011](https://github.com/pingcap/tidb/issues/18011)
-+ TiKV 在进行垃圾数据回收和数据压缩时，分区会占用 CPU、I/O 资源，系统执行这两个任务过程中存在数据重叠。GC Compaction Filter 特性将这两个任务合二为一在同一个任务中完成，减 I/O 的占用。此特性为实验性特性，通过 `gc.enable-compaction-filter = ture` 开启 [#18009](https://github.com/pingcap/tidb/issues/18009)
++ TiKV 在进行垃圾数据回收和数据压缩时，分区会占用 CPU、I/O 资源，系统执行这两个任务过程中存在数据重叠。GC Compaction Filter 特性将这两个任务合二为一在同一个任务中完成，减 I/O 的占用。此特性为实验性特性，通过 `gc.enable-compaction-filter = true` 开启 [#18009](https://github.com/pingcap/tidb/issues/18009)
 + TiFlash 压缩或者整理数据会占用大量 I/O 资源，系统通过限制压缩或整理数据占用的 I/O 量缓解资源争抢。此特性为实验性特性，通过 `bg_task_io_rate_limit` 配置项开启限制压缩或整理数据 I/O 资源。
 
 相关 issue：[#18005](https://github.com/pingcap/tidb/issues/18005)
@@ -136,7 +135,7 @@ TiDB 调度过程中会占用 I/O、Network、CPU、Memory 等资源，若不对
 
 ### 其他性能优化
 
-+ 提升 `delete * from table where id < ?` 语句执行的性能，p99 性能提升了 4 倍 [#18028](https://github.com/pingcap/tidb/issues/18028)
++ 提升 `delete from table where id < ?` 语句执行的性能，p99 性能提升了 4 倍 [#18028](https://github.com/pingcap/tidb/issues/18028)
 + TiFlash 支持同时向本地多块磁盘并发读、写数据，充分利用本地多块磁盘并发的读、写数据的能力，提升性能
 
 ## 高可用和容灾
@@ -156,8 +155,8 @@ Region 在完成成员变更时，由于“添加”和“删除”成员操作�
 
 ## 备份与恢复
 
-+ BR 支持将数据备份到 AWS S3、Google Cloud GCS（[用户文档](/br/use-br-command-line-tool.md#备份数据到-amazon-s3-后端存储)）
-+ BR 支持从 AWS S3、Google Cloud GCS 恢复数据到 TiDB（[用户文档](/br/use-br-command-line-tool.md#从-amazon-s3-后端存储恢复数据)）
++ BR 支持将数据备份到 AWS S3、Google Cloud GCS（[用户文档](/br/backup-and-restore-storages.md)）
++ BR 支持从 AWS S3、Google Cloud GCS 恢复数据到 TiDB（[用户文档](/br/backup-and-restore-storages.md)）
 + 相关 issue：[#89](https://github.com/pingcap/br/issues/89)
 
 ## 数据的导入和导出
@@ -170,7 +169,7 @@ Region 在完成成员变更时，由于“添加”和“删除”成员操作�
 
 ### 优化 `EXPLAIN` 功能，收集更多的信息，方便 DBA 排查性能问题
 
-DBA 在排查 SQL 语句性能问题时，需要比较详细的信息来判断引起性能问题的原因。之前版本中 `EXPLAIN` 收集的信息不够完善， DBA 只能通过日志信息、监控信息或者盲猜的方式来判断问题的原因，效率比较低。此版本通过以下几项优化事项提升排查问题效率：
+DBA 在排查 SQL 语句性能问题时，需要比较详细的信息来判断引起性能问题的原因。之前版本中 `EXPLAIN` 收集的信息不够完善，DBA 只能通过日志信息、监控信息或者盲猜的方式来判断问题的原因，效率比较低。此版本通过以下几项优化事项提升排查问题效率：
 
 + 支持对所有 DML 语句使用 `EXPLAIN ANALYZE` 语句以查看实际的执行计划及各个算子的执行详情 [#18056](https://github.com/pingcap/tidb/issues/18056)
 + 支持对正在执行的 SQL 语句使用 `EXPLAIN FOR CONNECTION` 语句以查看实时执行状态，如各个算子的执行时间、已处理的数据行数等 [#18233](https://github.com/pingcap/tidb/issues/18233)

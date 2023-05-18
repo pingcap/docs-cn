@@ -8,81 +8,35 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-add-index/','/docs-cn/dev/r
 
 `ALTER TABLE.. ADD INDEX` 语句用于在已有表中添加一个索引。在 TiDB 中，`ADD INDEX` 为在线操作，不会阻塞表中的数据读写。
 
+> **警告：**
+>
+> - 在升级 TiDB 集群的过程中，**请勿执行** DDL 语句，否则可能会出现行为未定义的问题。
+> - 集群中有 DDL 语句正在被执行时（通常为 `ADD INDEX` 和列类型变更等耗时较久的 DDL 语句），**请勿进行**升级操作。在升级前，建议使用 [`ADMIN SHOW DDL`](/sql-statements/sql-statement-admin-show-ddl.md) 命令查看集群中是否有正在进行的 DDL Job。如需升级，请等待 DDL 执行完成或使用 [`ADMIN CANCEL DDL`](/sql-statements/sql-statement-admin-cancel-ddl.md) 命令取消该 DDL Job 后再进行升级。
+
 ## 语法图
 
 ```ebnf+diagram
-AlterTableStmt ::=
-    'ALTER' IgnoreOptional 'TABLE' TableName ( AlterTableSpecListOpt AlterTablePartitionOpt | 'ANALYZE' 'PARTITION' PartitionNameList ( 'INDEX' IndexNameList )? AnalyzeOptionListOpt )
+AlterTableStmt
+         ::= 'ALTER' 'IGNORE'? 'TABLE' TableName AddIndexSpec ( ',' AddIndexSpec )*
 
-AlterTableSpec ::=
-    TableOptionList
-|   'SET' 'TIFLASH' 'REPLICA' LengthNum LocationLabelList
-|   'CONVERT' 'TO' CharsetKw ( CharsetName | 'DEFAULT' ) OptCollate
-|   'ADD' ( ColumnKeywordOpt IfNotExists ( ColumnDef ColumnPosition | '(' TableElementList ')' ) | Constraint | 'PARTITION' IfNotExists NoWriteToBinLogAliasOpt ( PartitionDefinitionListOpt | 'PARTITIONS' NUM ) )
-|   ( ( 'CHECK' | 'TRUNCATE' ) 'PARTITION' | ( 'OPTIMIZE' | 'REPAIR' | 'REBUILD' ) 'PARTITION' NoWriteToBinLogAliasOpt ) AllOrPartitionNameList
-|   'COALESCE' 'PARTITION' NoWriteToBinLogAliasOpt NUM
-|   'DROP' ( ColumnKeywordOpt IfExists ColumnName RestrictOrCascadeOpt | 'PRIMARY' 'KEY' | 'PARTITION' IfExists PartitionNameList | ( KeyOrIndex IfExists | 'CHECK' ) Identifier | 'FOREIGN' 'KEY' IfExists Symbol )
-|   'EXCHANGE' 'PARTITION' Identifier 'WITH' 'TABLE' TableName WithValidationOpt
-|   ( 'IMPORT' | 'DISCARD' ) ( 'PARTITION' AllOrPartitionNameList )? 'TABLESPACE'
-|   'REORGANIZE' 'PARTITION' NoWriteToBinLogAliasOpt ReorganizePartitionRuleOpt
-|   'ORDER' 'BY' AlterOrderItem ( ',' AlterOrderItem )*
-|   ( 'DISABLE' | 'ENABLE' ) 'KEYS'
-|   ( 'MODIFY' ColumnKeywordOpt IfExists | 'CHANGE' ColumnKeywordOpt IfExists ColumnName ) ColumnDef ColumnPosition
-|   'ALTER' ( ColumnKeywordOpt ColumnName ( 'SET' 'DEFAULT' ( SignedLiteral | '(' Expression ')' ) | 'DROP' 'DEFAULT' ) | 'CHECK' Identifier EnforcedOrNot | 'INDEX' Identifier IndexInvisible )
-|   'RENAME' ( ( 'COLUMN' | KeyOrIndex ) Identifier 'TO' Identifier | ( 'TO' | '='? | 'AS' ) TableName )
-|   LockClause
-|   AlgorithmClause
-|   'FORCE'
-|   ( 'WITH' | 'WITHOUT' ) 'VALIDATION'
-|   'SECONDARY_LOAD'
-|   'SECONDARY_UNLOAD'
+AddIndexSpec
+         ::= 'ADD' ( ( 'PRIMARY' 'KEY' | ( 'KEY' | 'INDEX' ) 'IF NOT EXISTS'? | 'UNIQUE' ( 'KEY' | 'INDEX' )? ) ( ( Identifier? 'USING' | Identifier 'TYPE' ) IndexType )? | 'FULLTEXT' ( 'KEY' | 'INDEX' )? IndexName ) '(' IndexPartSpecification ( ',' IndexPartSpecification )* ')' IndexOption*
 
-Constraint ::=
-    ConstraintKeywordOpt ConstraintElem
+IndexPartSpecification
+         ::= ( ColumnName ( '(' LengthNum ')' )? | '(' Expression ')' ) ( 'ASC' | 'DESC' )
 
-ConstraintKeywordOpt ::=
-    ( 'CONSTRAINT' Symbol? )?
+IndexOption
+         ::= 'KEY_BLOCK_SIZE' '='? LengthNum
+           | IndexType
+           | 'WITH' 'PARSER' Identifier
+           | 'COMMENT' stringLit
+           | 'VISIBLE'
+           | 'INVISIBLE'
 
-ConstraintElem ::=
-    ( ( 'PRIMARY' 'KEY' | KeyOrIndex IfNotExists | 'UNIQUE' KeyOrIndexOpt ) IndexNameAndTypeOpt | 'FULLTEXT' KeyOrIndexOpt IndexName ) '(' IndexPartSpecificationList ')' IndexOptionList
-|   'FOREIGN' 'KEY' IfNotExists IndexName '(' IndexPartSpecificationList ')' ReferDef
-|   'CHECK' '(' Expression ')' EnforcedOrNotOpt
-
-IndexNameAndTypeOpt ::=
-    IndexName ( 'USING' IndexTypeName )?
-|   Identifier 'TYPE' IndexTypeName
-
-IndexPartSpecificationList ::=
-    IndexPartSpecification ( ',' IndexPartSpecification )*
-
-IndexPartSpecification ::=
-    ( ColumnName OptFieldLen | '(' Expression ')' ) Order
-
-IndexOptionList ::=
-    IndexOption*
-
-IndexOption ::=
-    'KEY_BLOCK_SIZE' '='? LengthNum
-|   IndexType
-|   'WITH' 'PARSER' Identifier
-|   'COMMENT' stringLit
-|   IndexInvisible
-
-KeyOrIndex ::=
-    'KEY'
-|   'INDEX'
-
-IndexKeyTypeOpt ::=
-    ( 'UNIQUE' | 'SPATIAL' | 'FULLTEXT' )?
-
-IndexInvisible ::=
-    'VISIBLE'
-|   'INVISIBLE'
-
-IndexTypeName ::=
-    'BTREE'
-|   'HASH'
-|   'RTREE'
+IndexType
+         ::= 'BTREE'
+           | 'HASH'
+           | 'RTREE'
 ```
 
 ## 示例
@@ -155,7 +109,6 @@ EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
 
 * 不支持 `FULLTEXT`，`HASH` 和 `SPATIAL` 索引。
 * 不支持降序索引（类似于 MySQL 5.7）。
-* 目前尚不支持在一条中同时添加多个索引。
 * 无法向表中添加 `CLUSTERED` 类型的 `PRIMARY KEY`。要了解关于 `CLUSTERED` 主键的详细信息，请参考[聚簇索引](/clustered-indexes.md)。
 
 ## 另请参阅

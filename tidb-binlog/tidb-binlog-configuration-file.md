@@ -172,8 +172,12 @@ aliases: ['/docs-cn/dev/tidb-binlog/tidb-binlog-configuration-file/','/docs-cn/d
 
 ### initial-commit-ts
 
-* 指定从哪个 commit timestamp 之后开始同步。这个配置仅适用于初次开始同步的 Drainer 节点。如果下游已经有 checkpoint 存在，则会根据 checkpoint 里记录的时间进行同步。
-* 默认：`-1`。Drainer 会从 PD 得到一个最新的 timestamp 作为初始时间。
+* 指定从哪个事务提交时间点（事务的 commit ts） 之后开始同步。这个配置仅适用于初次开始同步的 Drainer 节点。如果下游已经有 checkpoint 存在，则会根据 checkpoint 里记录的时间进行同步。
+* commit ts（即 commit timestamp）是 TiDB [事务](/transaction-overview.md)的提交时间点。该时间点是从 PD 获取的全局唯一递增的时间戳，作为当前事务的唯一 ID。典型的 `initial-commit-ts` 配置可以通过以下方式获得：
+    - BR 备份的元信息（即 backupmeta）中记录的 backup TS
+    - Dumpling 备份的元信息（即 metadata）中记录的 Pos
+    - PD Control 中 `tso` 命令返回的结果
+* 默认：`-1`。Drainer 会从 PD 得到一个最新的 timestamp 作为初始时间。即从当前的时间点开始同步。
 
 ### synced-check-time
 
@@ -313,6 +317,7 @@ tbl-name = "~^a.*"
 * `port`：如果没有设置，会尝试检查环境变量 `MYSQL_PORT`，默认值为 `3306`。
 * `user`：如果没有设置，会尝试检查环境变量 `MYSQL_USER`，默认值为 `"root"`。
 * `password`：如果没有设置，会尝试检查环境变量 `MYSQL_PSWD`，默认值为 `""`。
+* `read-timeout`：指定下游数据库连接的 IO 读取超时时间，默认值为 `1m`。如果 drainer 在一些耗时长的 DDL 上不断失败，你可以将这个变量设置为更大的值。
 
 #### file
 
@@ -326,26 +331,22 @@ tbl-name = "~^a.*"
 * `kafka-addrs`
 * `kafka-version`
 * `kafka-max-messages`
+* `kafka-max-message-size`
 * `topic-name`
 
 ### syncer.to.checkpoint
 
-以下是 `syncer.to.checkpoint` 相关的配置项。
+* `type`：指定用哪种方式保存同步进度，目前支持的选项为 `mysql`、`tidb` 和 `file`。
 
-### type
+    该配置选项默认与下游类型相同。例如 `file` 类型的下游 checkpoint 进度保存在本地文件 `<data-dir>/savepoint` 中，`mysql` 类型的下游进度保存在下游数据库。当明确指定要使用 `mysql` 或 `tidb` 保存同步进度时，需要指定以下配置项：
 
-* 指定用哪种方式保存同步进度。
-* 目前支持的选项：`mysql` 和 `tidb`
+* `schema`：默认为 `"tidb_binlog"`。
 
-* 默认：与下游类型相同。例如 `file` 类型的下游进度保存在本地文件系统，`mysql` 类型的下游进度保存在下游数据库。当明确指定要使用 `mysql` 或 `tidb` 保存同步进度时，需要指定以下配置项：
+    > **注意：**
+    >
+    > 在同个 TiDB 集群中部署多个 Drainer 时，需要为每个 Drainer 节点指定不同的 checkpoint schema，否则两个实例的同步进度会互相覆盖。
 
-    * `schema`：默认为 `"tidb_binlog"`。
-
-        > **注意：**
-        >
-        > 在同个 TiDB 集群中部署多个 Drainer 时，需要为每个 Drainer 节点指定不同的 checkpoint schema，否则两个实例的同步进度会互相覆盖。
-
-    * `host`
-    * `user`
-    * `password`
-    * `port`
+* `host`
+* `user`
+* `password`
+* `port`

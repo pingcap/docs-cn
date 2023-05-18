@@ -12,7 +12,7 @@ aliases: ['/docs-cn/dev/releases/release-2.1.3/','/docs-cn/dev/releases/2.1.3/']
 + 优化器/执行器
     - 修复某些情况下 Prepared Plan Cache panic 的问题 [#8826](https://github.com/pingcap/tidb/pull/8826)
     - 修复在有前缀索引的某些情况下，Range 计算错误的问题 [#8851](https://github.com/pingcap/tidb/pull/8851)
-    - 当 `SQL_MODE` 不为 STRICT 时, `CAST(str AS TIME(N))` 在 `str` 为非法的 TIME 格式的字符串时返回 NULL [#8966](https://github.com/pingcap/tidb/pull/8966)
+    - 当 `SQL_MODE` 不为 STRICT 时，`CAST(str AS TIME(N))` 在 `str` 为非法的 TIME 格式的字符串时返回 NULL [#8966](https://github.com/pingcap/tidb/pull/8966)
     - 修复某些情况下 Generated Column 在 Update 中 Panic 的问题 [#8980](https://github.com/pingcap/tidb/pull/8980)
     - 修复统计信息直方图某些情况下上界溢出的问题 [#8989](https://github.com/pingcap/tidb/pull/8989)
     - 支持对 `_tidb_rowid` 构造查询的 Range，避免全表扫，减轻集群压力 [#9059](https://github.com/pingcap/tidb/pull/9059)

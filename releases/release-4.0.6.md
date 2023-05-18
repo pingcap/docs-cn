@@ -16,9 +16,9 @@ TiDB 版本：4.0.6
 
 + TiDB Dashboard
 
-    - 添加 Query 编辑和执行页面 (实验性功能) [#713](https://github.com/pingcap-incubator/tidb-dashboard/pull/713)
+    - 添加 Query 编辑和执行页面（实验性功能）[#713](https://github.com/pingcap-incubator/tidb-dashboard/pull/713)
     - 添加 Store 地理拓扑显示页面 [#719](https://github.com/pingcap-incubator/tidb-dashboard/pull/719)
-    - 添加集群配置调整页面 (实验性功能) [#733](https://github.com/pingcap-incubator/tidb-dashboard/pull/733)
+    - 添加集群配置调整页面（实验性功能）[#733](https://github.com/pingcap-incubator/tidb-dashboard/pull/733)
     - 支持共享当前 session [#741](https://github.com/pingcap-incubator/tidb-dashboard/pull/741)
     - 支持显示 SQL 语句分析中执行计划的数量 [#746](https://github.com/pingcap-incubator/tidb-dashboard/pull/746)
 
@@ -26,7 +26,7 @@ TiDB 版本：4.0.6
 
     + TiCDC（自 v4.0.6 起，TiCDC 成为**正式功能**，可用于生产环境）
 
-        - 支持输出 `maxwell` 格式的数据 [#869](https://github.com/pingcap/ticdc/pull/869)
+        - 支持输出 `maxwell` 格式的数据 [#869](https://github.com/pingcap/tiflow/pull/869)
 
 ## 优化提升
 
@@ -65,7 +65,7 @@ TiDB 版本：4.0.6
 
 + TiFlash
 
-    - 在 Grafana 中添加关于数据同步 (`apply Region snapshots` 和 `ingest SST files`) 的监控面板
+    - 在 Grafana 中添加关于数据同步（`apply Region snapshots` 和 `ingest SST files`）的监控面板
     - 在 Grafana 中添加关于 `write stall` 的监控面板
     - 添加 `dt_segment_force_merge_delta_rows` 及 `dt_segment_force_merge_delta_deletes` 用于调整阈值以避免 `write stall` 发生
     - 支持在 TiFlash-Proxy 中把 `raftstore.snap-handle-pool-size` 设为 `0` 以禁用多线程同步 Region snapshot，可降低同步数据时内存消耗
@@ -75,8 +75,8 @@ TiDB 版本：4.0.6
 
     + TiCDC
 
-        - 在初始化阶段跳过 resolved lock [#910](https://github.com/pingcap/ticdc/pull/910)
-        - 减少写 PD 的频率 [#937](https://github.com/pingcap/ticdc/pull/937)
+        - 在初始化阶段跳过 resolved lock [#910](https://github.com/pingcap/tiflow/pull/910)
+        - 减少写 PD 的频率 [#937](https://github.com/pingcap/tiflow/pull/937)
 
     + Backup & Restore (BR)
 
@@ -177,10 +177,10 @@ TiDB 版本：4.0.6
 
     + TiCDC
 
-        - 解决某些场景下内存泄露的问题 [#942](https://github.com/pingcap/ticdc/pull/942)
-        - 解决 Kafka sink 可能会出现的异常退出的问题 [#912](https://github.com/pingcap/ticdc/pull/912)
-        - 解决 CRTs 小于 Resolved Ts 而异常退出的问题 [#927](https://github.com/pingcap/ticdc/pull/927)
-        - 解决同步任务可能卡在 MySQL 上的问题 [#936](https://github.com/pingcap/ticdc/pull/936)
+        - 解决某些场景下内存泄露的问题 [#942](https://github.com/pingcap/tiflow/pull/942)
+        - 解决 Kafka sink 可能会出现的异常退出的问题 [#912](https://github.com/pingcap/tiflow/pull/912)
+        - 解决 CRTs 小于 Resolved Ts 而异常退出的问题 [#927](https://github.com/pingcap/tiflow/pull/927)
+        - 解决同步任务可能卡在 MySQL 上的问题 [#936](https://github.com/pingcap/tiflow/pull/936)
         - 修复 TiCDC 不合理的 Resolved Ts 超时等待 [#8573](https://github.com/tikv/tikv/pull/8573)
 
     + Backup & Restore (BR)
