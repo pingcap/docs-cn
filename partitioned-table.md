@@ -1037,7 +1037,7 @@ Decrease the number of partitions for the `example` table by 1 (from 5 to 4):
 ALTER TABLE example COALESCE PARTITION 1;
 ```
 
-> **Notes:**
+> **Note:**
 >
 > The process of changing the number of partitions for Hash or Key partitioned tables reorganizes the partitions by copying all data to the new number of partitions. Therefore, after changing the number of partitions for a Hash or Key partitioned table, you will get the following warning about the outdated statistics. In this case, you can use the [`ANALYZE TABLE`](/sql-statements/sql-statement-analyze-table.md) statement to update the statistics.
 >
