@@ -83,8 +83,12 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 + 设置 `KILL` 语句的兼容性。
 + 默认值：false
-+ TiDB 中 `KILL xxx` 的行为和 MySQL 中的行为不相同。为杀死一条查询，在 TiDB 里需要加上 `TIDB` 关键词，即 `KILL TIDB xxx`。但如果把 `compatible-kill-query` 设置为 true，则不需要加上 `TIDB` 关键词。
-+ 这种区别很重要，因为当用户按下 <kbd>Ctrl</kbd>+<kbd>C</kbd> 时，MySQL 命令行客户端的默认行为是：创建与后台的新连接，并在该新连接中执行 `KILL` 语句。如果负载均衡器或代理已将该新连接发送到与原始会话不同的 TiDB 服务器实例，则该错误会话可能被终止，从而导致使用 TiDB 集群的业务中断。只有当您确定在 `KILL` 语句中引用的连接正好位于 `KILL` 语句发送到的服务器上时，才可以启用 `compatible-kill-query`。
++ `compatible-kill-query` 仅在 [`enable-global-kill`](#enable-global-kill-从-v610-版本开始引入) 为 `false` 时生效。
++ 当 [`enable-global-kill`](#enable-global-kill-从-v610-版本开始引入) 为 `false` 时，`compatible-kill-query` 控制杀死一条查询时是否需要加上 `TIDB` 关键词。
+    - `compatible-kill-query` 为 `false` 时，TiDB 中 `KILL xxx` 的行为和 MySQL 中的行为不同。为杀死一条查询，在 TiDB 中需要加上 `TIDB` 关键词，即 `KILL TIDB xxx`。
+    - `compatible-kill-query` 为 `true` 时，为杀死一条查询，在 TiDB 中无需加上 `TIDB` 关键词。**强烈不建议**设置 `compatible-kill-query` 为 `true`，**除非**你确定客户端将始终连接到同一个 TiDB 节点。这是因为当你在默认的 MySQL 客户端按下 <kbd>Control</kbd>+<kbd>C</kbd> 时，客户端会开启一个新连接，并在这个新连接中执行 `KILL` 语句。此时，如果客户端和 TiDB 之间存在代理，新连接可能会被路由到其他 TiDB 节点，从而错误地终止其他会话。
++ 当 [`enable-global-kill`](#enable-global-kill-从-v610-版本开始引入) 为 `true` 时，`KILL xxx` 和 `KILL TIDB xxx` 的作用相同，但是暂不支持 <kbd>Control</kbd>+<kbd>C</kbd> 终止查询。
++ 关于 `KILL` 语句的更多信息，请参考 [KILL [TIDB]](/sql-statements/sql-statement-kill.md)。
 
 ### `check-mb4-value-in-utf8`
 
@@ -282,6 +286,13 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 输出 `expensive` 操作的行数阈值。
 + 默认值：10000
 + 当查询的行数（包括中间结果，基于统计信息）大于这个值，该操作会被认为是 `expensive` 查询，并输出一个前缀带有 `[EXPENSIVE_QUERY]` 的日志。
+
+### `timeout` <span class="version-mark">从 v7.1.0 版本开始引入</span>
+
++ 用于设置 TiDB 写日志操作的超时时间。当磁盘故障导致日志无法写入时，该配置可以让 TiDB 进程崩溃而不是卡死。
++ 默认值：0，表示不设置超时
++ 单位：秒
++ 在某些用户场景中，TiDB 日志可能是保存在热插拔盘或网络挂载盘上，这些磁盘可能会永久丢失。在这种场景下，TiDB 无法自动恢复，写日志操作会永久阻塞。尽管 TiDB 进程看起来仍在运行，但不会响应任何请求。该配置项用于处理这样的场景。
 
 ## log.file
 
