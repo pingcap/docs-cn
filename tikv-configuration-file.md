@@ -2222,3 +2222,31 @@ Configuration items related to resource control of the TiKV storage layer.
 + Controls whether to enable scheduling for user foreground read/write requests according to [Request Unit (RU)](/tidb-resource-control.md#what-is-request-unit-ru) of the corresponding resource groups. For information about TiDB resource groups and resource control, see [TiDB resource control](/tidb-resource-control.md).
 + Enabling this configuration item only works when [`tidb_enable_resource_control](/system-variables.md#tidb_enable_resource_control-new-in-v660) is enabled on TiDB. When this configuration item is enabled, TiKV will use the priority queue to schedule the queued read/write requests from foreground users. The scheduling priority of a request is inversely related to the amount of resources already consumed by the resource group that receives this request, and positively related to the quota of the corresponding resource group.
 + Default value: `true`, which means scheduling based on the RU of the resource group is enabled.
+
+## split
+
+Configuration items related to [Load Base Split](/configure-load-base-split.md).
+
+### `byte-threshold` <span class="version-mark">New in v5.0</span>
+
++ Controls the traffic threshold at which a Region is identified as a hotspot.
++ Default value:
+
+    + `30MiB` per second when [`region-split-size`](#region-split-size) is less than 4 GB.
+    + `100MiB` per second when [`region-split-size`](#region-split-size) is greater than or equal to 4 GB.
+
+### `qps-threshold`
+
++ Controls the QPS threshold at which a Region is identified as a hotspot.
++ Default value:
+
+    + `3000` when [`region-split-size`](#region-split-size) is less than 4 GB.
+    + `7000` when  [`region-split-size`](#region-split-size) is greater than or equal to 4 GB.
+
+### `region-cpu-overload-threshold-ratio` <span class="version-mark">New in v6.2.0</span>
+
++ Controls the CPU usage threshold at which a Region is identified as a hotspot.
++ Default value:
+
+    + `0.25` when [`region-split-size`](#region-split-size) is less than 4 GB.
+    + `0.75` when  [`region-split-size`](#region-split-size) is greater than or equal to 4 GB.

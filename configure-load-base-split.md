@@ -31,9 +31,9 @@ The Region split by Load Base Split will not be merged quickly. On the one hand,
 
 The Load Base Split feature is currently controlled by the following parameters:
 
-- `split.qps-threshold`: The QPS threshold at which a Region is identified as a hotspot. The default value is `3000` per second.
-- `split.byte-threshold`: The traffic threshold at which a Region is identified as a hotspot. The unit is byte and the default value is 30 MiB per second. (Introduced in v5.0)
-- `split.region-cpu-overload-threshold-ratio`: The CPU usage threshold (the percentage of CPU time of the read thread pool) at which a Region is identified as a hotspot. The default value is `0.25`. (Introduced in v6.2.0)
+- [`split.qps-threshold`](/tikv-configuration-file.md#qps-threshold): The QPS threshold at which a Region is identified as a hotspot. The default value is `3000` per second when [`region-split-size`](/tikv-configuration-file.md#region-split-size) is less than 4 GB; otherwise the default value is `7000`.
+- [`split.byte-threshold`](/tikv-configuration-file.md#byte-threshold-new-in-v50): (Introduced in v5.0) The traffic threshold at which a Region is identified as a hotspot. The unit is byte. The default value is 30 MiB per second when `region-split-size` is less than 4 GB; otherwise the default value is 100 MiB per second.
+- [`split.region-cpu-overload-threshold-ratio`](/tikv-configuration-file.md#region-cpu-overload-threshold-ratio-new-in-v620): (Introduced in v6.2.0) The CPU usage threshold (the percentage of CPU time of the read thread pool) at which a Region is identified as a hotspot. The default value is `0.25` when `region-split-size` is less than 4 GB; otherwise the default value is `0.75`.
 
 If a Region meets one of the following conditions for 10 consecutive seconds, TiKV tries to split the Region:
 
