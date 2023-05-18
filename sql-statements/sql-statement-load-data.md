@@ -15,7 +15,7 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-load-data/','/docs-cn/dev/r
 
 > **警告：**
 >
-> 新增的能力和参数为实验特性，不建议在生产环境中使用。
+> v7.0.0 新增支持从 S3、GCS 导入数据和 `FIELDS DEFINED NULL BY` 参数为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
 
 ## 语法图
 
