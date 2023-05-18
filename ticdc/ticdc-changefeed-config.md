@@ -81,7 +81,6 @@ rules = ['*.*', '!test.*']
 # 默认值为空列表。
 # IgnoreTxnStartTs = [1683225923]
 
-
 # 事件过滤器规则 
 # 事件过滤器的详细配置规则可参考：https://docs.pingcap.com/zh/tidb/stable/ticdc-filter
 # 第一个事件过滤器规则
@@ -147,19 +146,23 @@ date-separator = 'none'
 # 注意：该字段只有当下游为 Storage Service 时，才会生效。
 enable-partition-separator = true
 
-# Schema registry URL。注意： 该字段只有当下游为消息队列时，才会生效。
+# Schema registry URL。
+# 注意： 该字段只有当下游为消息队列时，才会生效。
 # schema-registry = "http://localhost:80801/subjects/{subject-name}/versions/{version-number}/schema"
+
 # 编码数据时使用的编码器的线程数。
 # 默认值为 16。
 # 注意： 该字段只有当下游为消息队列时，才会生效。
 # encoder-concurrency = 16
 
 # 是否开启 kafka-sink-v2，kafka-sink-v2 内部使用 kafka-go 实现。
-# 注意：该字段只有当下游为消息队列时，才会生效。默认值为 false。
+# 注意：该字段只有当下游为消息队列时，才会生效。
+# 默认值为 false。
 # enable-kafka-sink-v2 = false
 
 # 是否只向下游同步有内容更新的列。
-# 注意：该字段只有当下游为消息队列，并且使用 open-protocol 或者 canal-json 时，才会生效。默认值为 false。
+# 注意：该字段只有当下游为消息队列，并且使用 open-protocol 或者 canal-json 时，才会生效。
+# 默认值为 false。
 # only-output-updated-columns = false
 
 # 从 v6.5.0 开始，TiCDC 支持以 CSV 格式将数据变更记录保存至存储服务中，在 MQ 和 MySQL 类 sink 中无需设置。
