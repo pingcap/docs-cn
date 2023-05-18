@@ -228,7 +228,7 @@ LOAD DATA LOCAL INFILE '/mnt/evo970/data-sets/bikeshare-data/2017Q4-capitalbikes
 
 ## MySQL 兼容性
 
-TiDB 中的 `LOAD DATA` 语句应该完全兼容 MySQL（除字符集选项被解析但会被忽略以外）。若发现任何兼容性差异，请在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues/new/choose)。
+TiDB 中的 `LOAD DATA` 语句语法上兼容 MySQL（除字符集选项被解析但会被忽略以外）。若发现任何语法兼容性差异，请在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues/new/choose)。
 
 > **注意：**
 >
@@ -236,11 +236,14 @@ TiDB 中的 `LOAD DATA` 语句应该完全兼容 MySQL（除字符集选项被�
 > - 从 TiDB v4.0.0 开始一直到 TiDB v6.6.0 的版本，TiDB 默认在一个事务中提交所有行。
 > - 从 TiDB v7.0.0 开始，批量提交的行数由 `LOAD DATA` 语句的 `WITH batch_size=<number>` 参数控制，默认 1000 行提交一次。
 > - 从 TiDB v4.0.0 及以前版本升级后，可能出现 `ERROR 8004 (HY000) at line 1: Transaction is too large, size: 100000058` 错误。要解决该问题，建议调大 `tidb.toml` 文件中的 [`txn-total-size-limit`](/tidb-configuration-file.md#txn-total-size-limit) 值。如果无法增加此限制，还可以将 [`tidb_dml_batch_size`](/system-variables.md#tidb_dml_batch_size) 的值设置为 `20000` 来恢复升级前的行为。
+> - 无论以多少行为一个事务提交，`LOAD DATA` 都不会被显式事务中的 [`ROLLBACK`](/sql-statements/sql-statement-rollback.md) 语句回滚。
+> - `LOAD DATA` 语句始终以乐观事务模式执行，不受 TiDB 事务模式设置的影响。
 
 ## 另请参阅
 
 * [INSERT](/sql-statements/sql-statement-insert.md)
 * [乐观事务模型](/optimistic-transaction.md)
+* [悲观事务模式](/pessimistic-transaction.md)
 * [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md)
 * [`SHOW LOAD DATA`](/sql-statements/sql-statement-show-load-data.md)
 * [`CANCEL LOAD DATA` 和 `DROP LOAD DATA`](/sql-statements/sql-statement-operate-load-data-job.md)
