@@ -119,7 +119,7 @@ Restore KV Files <--------------------------------------------------------------
 >
 > 其中全量恢复数据量，是指单个副本中所有 KV 的逻辑大小，并不代表实际恢复的数据量。BR 恢复数据时会根据集群设置的副本数来恢复全部副本，当副本数越多时，实际恢复的数据量也就越多。
 > 所有测试集群默认设置 3 副本。
-> 如果想提升整体恢复的性能，可以通过根据实际情况调整 TiKV 配置文件中的 [`import.num-threads`](/tikv-configuration-file#num-threads) 配置项以及 BR 命令的 `concurrency` 参数。
+> 如果想提升整体恢复的性能，可以通过根据实际情况调整 TiKV 配置文件中的 [`import.num-threads`](/tikv-configuration-file#import) 配置项以及 BR 命令的 `concurrency` 参数。
 
 测试场景 1（[TiDB Cloud](https://tidbcloud.com) 上部署）
 
