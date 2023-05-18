@@ -143,7 +143,6 @@ enable-partition-separator = true
 # 注意： 该字段只有当下游为消息队列时，才会生效。
 # encoder-concurrency = 16
 
-# Specifies whether to enable kafka-sink-v2 that uses the kafka-go sink library.
 # 是否开启 kafka-sink-v2，kafka-sink-v2 内部使用 kafka-go 实现。
 # 注意：该字段只有当下游为消息队列时，才会生效。默认值为 false。
 # enable-kafka-sink-v2 = false
