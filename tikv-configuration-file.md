@@ -2236,19 +2236,26 @@ Raft Engine 相关的配置项。
 
 ## split
 
-Load Base Split 相关的配置项。
+[Load Base Split](/configure-load-base-split.md) 相关的配置项。
+
+### `byte-threshold` <span class="version-mark">从 v5.0 版本开始引入</span>
+
++ 控制某个 Region 被识别为热点 Region 的流量阈值。
++ 默认值：
+    + 当 [`region-split-size`](#region-split-size) 小于 4 GB 时，默认值为每秒 `30MiB` 流量。
+    + 当 [`region-split-size`](#region-split-size) 大于或等于 4 GB 时，默认值为每秒 `100MiB` 流量。
 
 ### `qps-threshold`
 
-+ 控制某个 Region 成为热点 Region 的读 QPS 阈值。
-+ 默认值：当 `region-split-size` 小于 4 GB 时，默认值为每秒 `3000` QPS; 大于或等于 4 GB 时，默认值为每秒 `7000` QPS。
++ 控制某个 Region 被识别为热点 Region 的 QPS 阈值。
++ 默认值：
 
-### `byte-threshold`
+    + 当 [`region-split-size`](#region-split-size) 小于 4 GB 时，默认值为每秒 `3000` QPS。
+    + 当 [`region-split-size`](#region-split-size) 大于或等于 4 GB 时，默认值为每秒 `7000` QPS。
 
-+ 控制某个 Region 成为热点 Region 的读吞吐阈值。
-+ 默认值：当 `region-split-size` 小于 4 GB 时，默认值为每秒 `30MiB` 流量；大于或等于 4 GB 时，默认值为每秒 `100MiB` 流量。
+### `region-cpu-overload-threshold-ratio` <span class="version-mark">从 v6.2.0 版本开始引入</span>
 
-### `region-cpu-overload-threshold-ratio`
-
-+ 控制某个 Region 成为热点 Region 的 CPU 占用阈值。
-+ 默认值：当 `region-split-size` 小于 4 GB 时，默认值为 `0.25`；大于或等于 4 GB 时，默认值为 `0.75`。
++ 控制某个 Region 被识别为热点 Region 的 CPU 使用率阈值。
++ 默认值：
+    + 当 [`region-split-size`](#region-split-size) 小于 4 GB 时，默认值为 `0.25`。
+    + 当 [`region-split-size`](#region-split-size) 大于或等于 4 GB 时，默认值为 `0.75`。
