@@ -37,9 +37,9 @@ Info: {"upstream_id":7178706266519722477,"namespace":"default","id":"simple-repl
 本章节详细介绍了同步任务的配置。
 
 ```toml
-# 指定该 changefeed 在 capture server 中的内存配额的上限。对于超额使用部分，
-# 会在运行中被 go runtime 优先回收，默认为 1GB
-# memory-quota = 1073741824 # 1 GB 
+# 指定该 Changefeed 在 Capture Server 中的内存配额的上限。对于超额使用部分，
+# 会在运行中被 go runtime 优先回收，默认值为 `1073741824` (即 1 GB)。
+# memory-quota = 1073741824
 
 # 指定配置文件中涉及的库名、表名是否为大小写敏感
 # 该配置会同时影响 filter 和 sink 相关配置，默认为 true
@@ -147,13 +147,14 @@ enable-partition-separator = true
 # 是否在 CSV 行中包含 commit-ts。默认值为 false。
 # include-commit-ts = false
 
-# sink.consistent 包含字段可用来配置 changefeed 的数据一致性。详细的信息，请参考 https://docs.pingcap.com/tidb/stable/ticdc-sink-to-mysql#eventually-consistent-replication-in-disaster-scenarios. 注意：一致性相关字段只有当下游为数据库并且开启 redo log 功能时，才会生效。
+# sink.consistent 包含字段可用来配置 Changefeed 的数据一致性。详细的信息，请参考 https://docs.pingcap.com/tidb/stable/ticdc-sink-to-mysql#eventually-consistent-replication-in-disaster-scenarios. 
+# 注意：一致性相关字段只有当下游为数据库并且开启 redo log 功能时，才会生效。
 [sink.consistent]
-# 数据一致性级别。可选级别为 none 和 eventual。设置为 none 时，redo log 将被关闭。默认值为 none。
+# 数据一致性级别。可选级别为 "none" 和 "eventual"。设置为 "none" 时，redo log 将被关闭。默认值为 "none"。
 level = "none"
-# redo log 的最大日志大小，单位为 megabytes。默认值为 64。
+# redo log 的最大日志大小，单位为 MB。默认值为 64。
 max-log-size = 64
-# 两次 redo log 的刷新间隔，单位为毫秒。默认值为2000。
+# 两次 redo log 的刷新间隔，单位为毫秒。默认值为 2000。
 flush-interval = 2000 
 # redo log 使用存储服务的 URI。默认值为空。
 storage = "" 
@@ -164,6 +165,6 @@ use-file-backend = false
 [sink.integrity]
 # 数据完整性级别。可选项为 none 和 correctness。当设为 none，将关闭数据完整性校验。当设为 correctness，将会对每一行数据进行完整性校验。默认值为 none。
 integrity-check-level = "none"
-# 当检测到数据不完整后的系统行为。可选项包括 warn 和 error。当设为 warn，会将不完整事件记录到日志中并发送到下游。当设为 error，会停止同步数据。默认值为 warn。
+# 当检测到数据不完整后的系统行为。可选项包括 "warn" 和 "error"。当设为 "warn"，会将不完整事件记录到日志中并发送到下游。当设为 "error"，会停止同步数据。默认值为 "warn"。
 corruption-handle-level = "warn"
 ```
