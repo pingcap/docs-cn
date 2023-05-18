@@ -287,6 +287,13 @@ Configuration items related to log.
 - Default value: `10000`
 - When the number of query rows (including the intermediate results based on statistics) is larger than this value, it is an `expensive` operation and outputs log with the `[EXPENSIVE_QUERY]` prefix.
 
+### `timeout` <span class="version-mark">New in v7.1.0</span>
+
+- Sets the timeout for log-writing operations in TiDB. In case of a disk failure that prevents logs from being written, this configuration item can trigger the TiDB process to panic instead of hang.
+- Default value: `0`, indicating no timeout is set.
+- Unit: second
+- In some user scenarios, TiDB logs might be stored on hot-pluggable or network-attached disks, which might become permanently unavailable. In these cases, TiDB cannot recover automatically from such disaster and the log-writing operations will be permanently blocked. Although the TiDB process might seem to be running, it does not respond to any requests. This configuration item is designed to handle such situations.
+
 ## log.file
 
 Configuration items related to log files.
