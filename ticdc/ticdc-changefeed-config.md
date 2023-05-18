@@ -37,8 +37,8 @@ Info: {"upstream_id":7178706266519722477,"namespace":"default","id":"simple-repl
 本章节详细介绍了同步任务的配置。
 
 ```toml
-# 指定该 Changefeed 在 Capture Server 中的内存配额的上限。对于超额使用部分，
-# 会在运行中被 go runtime 优先回收，默认值为 `1073741824` (即 1 GB)。
+# 指定该 Changefeed 在 Capture Server 中内存配额的上限。对于超额使用部分，
+# 会在运行中被 Go runtime 优先回收。默认值为 `1073741824`，即 1 GB。
 # memory-quota = 1073741824
 
 # 指定配置文件中涉及的库名、表名是否为大小写敏感
@@ -79,7 +79,7 @@ rules = ['*.*', '!test.*']
 
 # 忽略特定 start_ts 的事务
 # 默认值为空列表。
-# IgnoreTxnStartTs = [1683225923]
+# IgnoreTxnStartTs = []
 
 # 事件过滤器规则 
 # 事件过滤器的详细配置规则可参考：https://docs.pingcap.com/zh/tidb/stable/ticdc-filter
@@ -133,7 +133,7 @@ write-key-threshold = 0
 # protocol 用于指定传递到下游的协议格式
 # 当下游类型是 Kafka 时，支持 canal-json、avro 两种协议。
 # 当下游类型是存储服务时，目前仅支持 canal-json、csv 两种协议。
-# 注意：该参数只有当下游为 Kafka 或 Storage Service 时，才会生效。
+# 注意：该参数只有当下游为 Kafka 或存储服务时，才会生效。
 # protocol = "canal-json"
 
 # 以下三个配置项仅在同步到存储服务的 sink 中使用，在 MQ 和 MySQL 类 sink 中无需设置。
@@ -141,30 +141,30 @@ write-key-threshold = 0
 # terminator = ''
 
 # 文件路径的日期分隔类型。可选类型有 `none`、`year`、`month` 和 `day`。默认值为 `none`，即不使用日期分隔。详见 <https://docs.pingcap.com/zh/tidb/dev/ticdc-sink-to-cloud-storage#数据变更记录>。
-# 注意：该参数只有当下游为 Storage Service 时，才会生效。
+# 注意：该参数只有当下游为存储服务时，才会生效。
 date-separator = 'none'
 
 # 是否使用 partition 作为分隔字符串。默认值为 true，即一张表中各个 partition 的数据会分不同的目录来存储。建议保持该配置项为 true 以避免下游分区表可能丢数据的问题 <https://github.com/pingcap/tiflow/issues/8581>。使用示例详见 <https://docs.pingcap.com/zh/tidb/dev/ticdc-sink-to-cloud-storage#数据变更记录>。
-# 注意：该参数只有当下游为 Storage Service 时，才会生效。
+# 注意：该参数只有当下游为存储服务时，才会生效。
 enable-partition-separator = true
 
-# Schema registry URL。
+# Schema 注册表的 URL。
 # 注意：该参数只有当下游为消息队列时，才会生效。
 # schema-registry = "http://localhost:80801/subjects/{subject-name}/versions/{version-number}/schema"
 
-# 编码数据时使用的编码器的线程数。
+# 编码数据时所用编码器的线程数。
 # 默认值为 16。
 # 注意：该参数只有当下游为消息队列时，才会生效。
 # encoder-concurrency = 16
 
-# 是否开启 kafka-sink-v2，kafka-sink-v2 内部使用 kafka-go 实现。
-# 注意：该参数只有当下游为消息队列时，才会生效。
+# 是否开启 Kafka Sink V2。Kafka Sink V2 内部使用 kafka-go 实现。
 # 默认值为 false。
+# 注意：该参数只有当下游为消息队列时，才会生效。
 # enable-kafka-sink-v2 = false
 
 # 是否只向下游同步有内容更新的列。
-# 注意：该参数只有当下游为消息队列，并且使用 open-protocol 或者 canal-json 时，才会生效。
 # 默认值为 false。
+# 注意：该参数只有当下游为消息队列，并且使用 Open Protocol 或 Canal-JSON 时，才会生效。
 # only-output-updated-columns = false
 
 # 从 v6.5.0 开始，TiCDC 支持以 CSV 格式将数据变更记录保存至存储服务中，在 MQ 和 MySQL 类 sink 中无需设置。
@@ -178,32 +178,18 @@ enable-partition-separator = true
 # 是否在 CSV 行中包含 commit-ts。默认值为 false。
 # include-commit-ts = false
 
-# sink.consistent 包含字段可用来配置 Changefeed 的数据一致性。详细的信息，请参考 https://docs.pingcap.com/tidb/stable/ticdc-sink-to-mysql#eventually-consistent-replication-in-disaster-scenarios.
+# sink.consistent 中的字段用于配置 Changefeed 的数据一致性。详细的信息，请参考 <https://docs.pingcap.com/tidb/stable/ticdc-sink-to-mysql#eventually-consistent-replication-in-disaster-scenarios>
 # 注意：一致性相关参数只有当下游为数据库并且开启 redo log 功能时，才会生效。
 [sink.consistent]
-# 数据一致性级别。可选级别为 "none" 和 "eventual"。设置为 "none" 时，redo log 将被关闭。默认值为 "none"。
+# 数据一致性级别。默认值为 "none"，可选值为 "none" 和 "eventual"。
+# 设置为 "none" 时将关闭 redo log。
 level = "none"
 # redo log 的最大日志大小，单位为 MB。默认值为 64。
 max-log-size = 64
-# 两次 redo log 的刷新间隔，单位为毫秒。默认值为 2000。
+# 两次 redo log 刷新的时间间隔，单位为毫秒。默认值为 2000。
 flush-interval = 2000
 # redo log 使用存储服务的 URI。默认值为空。
 storage = ""
-# 是否将 redo log 存到文件中。默认值为 false。
+# 是否将 redo log 存储到文件中。默认值为 false。
 use-file-backend = false
-
-# sink.integrity 所包含参数可用于配置数据完整性检验。
-# 注意：完整性检查相关参数只有当下游为消息队列时，才会生效。
-[sink.integrity]
-# 数据完整性级别。可选项为 "none" 和 "correctness"。
-# 当设为 "none"，将关闭数据完整性校验。
-# 当设为 "correctness"，将会对每一行数据进行完整性校验。
-# 默认值为 "none"。
-integrity-check-level = "none"
-
-# 当检测到数据不完整后的系统行为。可选项包括 "warn" 和 "error"。
-# 当设为 "warn"，会将不完整事件记录到日志中并发送到下游。
-# 当设为 "error"，会停止同步数据。
-# 默认值为 "warn"。
-corruption-handle-level = "warn"
 ```
