@@ -21,13 +21,53 @@ PD Recover is a disaster recovery tool of PD, used to recover the PD cluster whi
 
 The PD Recover installation package is included in the TiDB Toolkit. To download the TiDB Toolkit, see [Download TiDB Tools](/download-ecosystem-tools.md).
 
-## Quick Start
+The following sections introduce two methods to recover a PD cluster: recover from a surviving PD node and rebuild a PD cluster entirely.
 
-This section describes how to use PD Recover to recover a PD cluster.
+## Method 1: Recover a PD cluster using a surviving PD node
 
-### Get cluster ID
+When a majority of PD nodes in a cluster experience an unrecoverable error, the cluster becomes unable to provide services. If there are any surviving PD nodes, you can recover the service by selecting a surviving PD node and forcibly modifying the members of the Raft Group. The steps are as follows:
 
-The cluster ID can be obtained from the log of PD, TiKV or TiDB. To get the cluster ID, you can view the log directly on the server.
+### Step 1: Stop all nodes
+
+To prevent data corruption or other unrecoverable errors caused by interactions with PD parameters during the recovery process, stop the TiDB, TiKV, and TiFlash processes in the cluster.
+
+### Step 2: Start the surviving PD node
+
+Start the surviving PD node using the `--force-new-cluster` startup parameter. The following is an example:
+
+```shell
+./bin/pd-server --force-new-cluster --name=pd-127.0.0.10-2379 --client-urls=http://0.0.0.0:2379 --advertise-client-urls=http://127.0.0.1:2379 --peer-urls=http://0.0.0.0:2380 --advertise-peer-urls=http://127.0.0.1:2380 --config=conf/pd.toml
+```
+
+### Step 3: Repair metadata using `pd-recover`
+
+Since this method relies on a minority PD node to recover the service, the node might contain outdated data. If the `alloc_id` and `tso` data roll back, the cluster data might be corrupted or unavailable. To prevent this, you need to use `pd-recover` to modify the metadata to ensure that the node can provide correct allocation IDs and TSO services. The following is an example:
+
+```shell
+./bin/pd-recover --from-old-member --endpoints=http://127.0.0.1:2379 # Specify the corresponding PD address
+```
+
+> **Note:**
+>
+> In this step, the `alloc_id` in the storage automatically increases by a safe value of `100000000`. As a result, the subsequent cluster will allocate larger IDs.
+>
+> Additionally, `pd-recover` does not modify the TSO. Therefore, before performing this step, make sure that the local time is later than the time when the failure occurs, and verify that the NTP clock synchronization service is enabled between the PD components before the failure. If it is not enabled, you need to adjust the local clock to a future time to prevent the TSO from rolling back.
+
+### Step 4: Restart the PD node
+
+Once you see the prompt message `recovery is successful`, restart the PD node.
+
+### Step 5: Scale out PD and start the cluster
+
+Scale out the PD cluster using the deployment tool and start the other components in the cluster. At this point, the PD service is available.
+
+## Method 2: Entirely rebuild a PD cluster
+
+This method is applicable to scenarios in which all PD data is lost, but the data of other components, such as TiDB, TiKV, and TiFlash, still exists.
+
+### Step 1: Get cluster ID
+
+The cluster ID can be obtained from the log of PD, TiKV, or TiDB. To get the cluster ID, you can view the log directly on the server.
 
 #### Get cluster ID from PD log (recommended)
 
@@ -74,7 +114,7 @@ cat {{/path/to}}/tikv.log | grep "connect to PD cluster"
 ...
 ```
 
-### Get allocated ID
+### Step 2: Get allocated ID
 
 The allocated ID value you specify must be larger than the currently largest allocated ID value. To get allocated ID, you can either get it from the monitor, or view the log directly on the server.
 
@@ -99,11 +139,11 @@ cat {{/path/to}}/pd*.log | grep "idAllocator allocates a new id" |  awk -F'=' '{
 
 Or you can simply run the above command in all PD servers to find the largest one.
 
-### Deploy a new PD cluster
+### Step 3: Deploy a new PD cluster
 
 Before deploying a new PD cluster, you need to stop the existing PD cluster and then delete the previous data directory or specify a new data directory using `--data-dir`.
 
-### Use pd-recover
+### Step 4: Use pd-recover
 
 You only need to run `pd-recover` on one PD node.
 
@@ -113,7 +153,7 @@ You only need to run `pd-recover` on one PD node.
 ./pd-recover -endpoints http://10.0.1.13:2379 -cluster-id 6747551640615446306 -alloc-id 10000
 ```
 
-### Restart the whole cluster
+### Step 5: Restart the whole cluster
 
 When you see the prompted information that the recovery is successful, restart the whole cluster.
 
