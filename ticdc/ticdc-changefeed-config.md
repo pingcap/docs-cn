@@ -149,12 +149,12 @@ date-separator = 'none'
 enable-partition-separator = true
 
 # Schema registry URL。
-# 注意： 该字段只有当下游为消息队列时，才会生效。
+# 注意：该字段只有当下游为消息队列时，才会生效。
 # schema-registry = "http://localhost:80801/subjects/{subject-name}/versions/{version-number}/schema"
 
 # 编码数据时使用的编码器的线程数。
 # 默认值为 16。
-# 注意： 该字段只有当下游为消息队列时，才会生效。
+# 注意：该字段只有当下游为消息队列时，才会生效。
 # encoder-concurrency = 16
 
 # 是否开启 kafka-sink-v2，kafka-sink-v2 内部使用 kafka-go 实现。
@@ -193,7 +193,7 @@ storage = ""
 use-file-backend = false
 
 # sink.integrity 所包含字段可用于配置数据完整性检验。
-# 注意：该字段只有当下游为消息队列时，才会生效。
+# 注意：完整性检查相关字段只有当下游为消息队列时，才会生效。
 [sink.integrity]
 # 数据完整性级别。可选项为 "none" 和 "correctness"。
 # 当设为 "none"，将关闭数据完整性校验。
