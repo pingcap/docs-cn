@@ -297,17 +297,9 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
     目前 `LOAD DATA` 不支持从 TiDB 服务器本地导入数据，可以指定 `LOCAL` 从客户端导入，或者将数据上传到 S3/GCS 再进行导入。请参考 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md)。
 
-* Error Number: 8155
-
-    目前 `LOAD DATA` 不支持从 local 导入 Parquet 格式的数据文件，只支持从 S3/GCS 导入 Parquet 格式的数据文件。你可以将数据上传到 S3/GCS 后再导入。请参考 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md)。
-
 * Error Number: 8156
 
     `LOAD DATA` 语句的文件路径不能为空。需要设置正确的路径再进行导入。请参考 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md)。
-
-* Error Number: 8157
-
-    不支持的数据格式。请参考 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md) 查看支持的数据格式。
 
 * Error Number: 8158
 
@@ -324,34 +316,6 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 * Error Number: 8162
 
     `LOAD DATA` 语句存在错误。请参考 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md) 查看已支持的功能。
-
-* Error Number: 8163
-
-    未知的 `LOAD DATA ... WITH ...` 选项。请参考 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md) 查看支持的选项。
-
-* Error Number: 8164
-
-    `LOAD DATA ... WITH ...` 选项取值无效。请参考 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md) 查看有效的取值。
-
-* Error Number: 8165
-
-    重复指定了 `LOAD DATA ... WITH ...` 选项，每个选项只能指定一次。
-
-* Error Number: 8166
-
-    某些 `LOAD DATA ... WITH ...` 选项只能在特定的导入模式下才可以使用。请参考 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md) 查看支持的选项。
-
-* Error Number: 8170
-
-    指定的 `LOAD DATA` job 不存在或不是由当前用户创建。目前用户只能查看自己创建的 job。
-
-* Error Number: 8171
-
-    对不支持的 `LOAD DATA` 任务状态不能进行运维操作。请根据具体的错误提示进行处理。
-
-* Error Number: 8172
-
-    指定 `LOCAL` 的 `LOAD DATA` 不能在后台运行，只有使用 S3/GCS 路径的 `LOAD DATA` 可以在后台运行。请参考 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md) 更改 SQL 语句。
 
 * Error Number: 8200
 
@@ -412,7 +376,7 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 * Error Number: 8250
 
     完整的报错信息如下：
-    
+
     `ERROR 8250 (HY000) : Resource control feature is disabled. Run "SET GLOBAL tidb_enable_resource_control='on'" to enable the feature`
 
     资源控制的功能没有打开时，使用资源管控 (Resource Control) 相关功能会返回该错误。你可以开启全局变量 [`tidb_enable_resource_control`](/system-variables.md#tidb_enable_resource_control-从-v660-版本开始引入) 启用资源管控。
@@ -424,7 +388,7 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 * Error Number: 8252
 
     完整的报错信息如下：
-    
+
     `ERROR 8252 (HY000) : Exceeded resource group quota limitation`
 
     在尝试消耗超过资源组的限制时返回该错误。一般出现该错误，是由于单次事务太大或者并发太多导致，需调整事务大小或减少客户端并发数。
