@@ -413,7 +413,7 @@ TableStmt ::=
 
 ### 示例
 
-在 TiDB 中开启行数据 Checksum 功能 `tidb_enable_row_level_checksum`：
+在 TiDB 中开启行数据 Checksum 功能 [`tidb_enable_row_level_checksum`](/system-variables.md#tidb_enable_row_level_checksum-从-v710-版本开始引入)：
 
 ```sql
 SET GLOBAL tidb_enable_row_level_checksum = ON;
