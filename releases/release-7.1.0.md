@@ -151,26 +151,10 @@ TiDB 版本：7.1.0 (upcoming)
     在 TiDB v7.1.0 中，以下 `LOAD DATA` 功能 GA：
 
     - 支持从 S3、GCS 导入数据。
-    - 支持导入 Parquet 格式的数据。
     - 支持解析源文件中的下列字符集：`ascii`、`latin1`、`binary`、`gbk` 和 `utf8mbd`
     - 支持设置 `FIELDS DEFINED NULL BY` 将源文件中的指定值转换为 `NULL` 并写入目标表。
-    - 支持设置 `batch_size` 指定批量写入目标表的行数，从而提升写入性能。
-    - 支持设置 `detached`，允许指定任务在后台运行。
-    - 支持使用 `SHOW LOAD DATA` 和 `DROP LOAD DATA` 管理任务。
 
   更多信息，请参考[用户文档](/sql-statements/sql-statement-load-data.md)。
-
-* `LOAD DATA` 集成 TiDB Lightning Physical Import Mode 的导入功能，提升导入性能（实验特性）[#42930](https://github.com/pingcap/tidb/issues/42930) @[D3Hunter](https://github.com/D3Hunter)
-
-    `LOAD DATA` 集成 TiDB Lightning 的物理导入模式 (Physical Import Mode)，你可以通过设置 `WITH import_mode = 'PHYSICAL'` 开启。相比逻辑导入模式 (Logical Import Mode)，可成倍提升数据导入的性能。
-
-    更多信息，请参考[用户文档](/sql-statements/sql-statement-load-data.md)。
-
-* `LOAD DATA` 支持并发导入，提升导入性能（实验特性）[#40499](https://github.com/pingcap/tidb/issues/40499) @[lance6716](https://github.com/lance6716)
-
-    在 v7.1.0 之前版本中，`LOAD DATA` 不支持并发导入数据，导致性能未达到预期。从 v7.1.0 开始，`LOAD DATA` 支持并发导入数据，你可以通过 `WITH thread=<number>` 提高并发度以提升导入的性能。在内部测试中，相较于 v7.0.0，测试负载下的逻辑导入性能提升了近 4 倍。
-
-    更多信息，请参考[用户文档](/sql-statements/sql-statement-load-data.md)。
 
 * 生成列 (Generated Columns) 成为正式功能 (GA) @[bb7133](https://github.com/bb7133)
 
@@ -224,8 +208,6 @@ TiDB 版本：7.1.0 (upcoming)
 * 为了提高安全性，TiFlash 废弃了 HTTP 服务端口（默认 `8123`），采用 gRPC 端口作为替代
 
     如果你已经将 TiFlash 升级到 v7.1.0，那么在升级 TiDB 到 v7.1.0 的过程中，TiDB 无法读取 TiFlash 系统表（[`INFORMATION_SCHEMA.TIFLASH_TABLES`](/information-schema/information-schema-tiflash-tables.md) 和 [`INFORMATION_SCHEMA.TIFLASH_SEGMENTS`](/information-schema/information-schema-tiflash-segments.md)）。
-
-* [`SHOW LOAD DATA`](/sql-statements/sql-statement-show-load-data.md) 的返回值中废弃了参数 `Loaded_File_Size`，修改为参数 `Imported_Rows`
 
 ### 系统变量
 
