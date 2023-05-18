@@ -252,6 +252,9 @@ TiDB 版本：7.1.0 (upcoming)
 | -------- | -------- | -------- | -------- |
 | TiDB | [`force-init-stats`](/tidb-configuration-file.md#force-init-stats-从-v710-版本开始引入) | 新增 | 用于控制 TiDB 启动时是否在统计信息初始化完成后再对外提供服务。 |
 | TiDB | [`lite-init-stats`](/tidb-configuration-file.md#lite-init-stats-从-v710-版本开始引入) | 新增 | 用于控制 TiDB 启动时是否采用轻量级的统计信息初始化。 |
+| TiKV | [`split.byte-threshold`](/tikv-configuration-file.md#byte-threshold-从-v50-版本开始引入) | 修改 | 当 [`region-split-size`](/tikv-configuration-file.md#region-split-size) 大于等于 4 GB 时，默认值从 `30MiB` 修改为 `100MiB`。 |
+| TiKV | [`split.qps-threshold`](/tikv-configuration-file.md#qps-threshold) | 修改 | 当 [`region-split-size`](/tikv-configuration-file.md#region-split-size) 大于等于 4 GB 时，默认值从 `3000` 修改为 `7000`。 |
+| TiKV | [`split.region-cpu-overload-threshold-ratio`](/tikv-configuration-file.md#region-cpu-overload-threshold-ratio-从-v620-版本开始引入) | 修改 | 当 [`region-split-size`](/tikv-configuration-file.md#region-split-size) 大于等于 4 GB 时，默认值从 `0.25` 修改为 `0.75`。 |
 | PD | [`store-limit-version`](/pd-configuration-file.md#store-limit-version-从-v710-版本开始引入) | 新增 | 用于设置 store limit 工作模式。可选值为 `"v1"` 和 `"v2"`。 |
 | PD | [`schedule.enable-diagnostic`](/pd-configuration-file.md#enable-diagnostic-从-v630-版本开始引入) | 修改 | 默认值从 `false` 修改为 `true`，默认打开调度器的诊断功能。 |
 | TiFlash | `http_port` | 删除 | 废弃 TiFlash HTTP 服务端口（默认 `8123`）。 |
