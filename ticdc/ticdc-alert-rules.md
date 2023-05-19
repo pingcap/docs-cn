@@ -71,20 +71,6 @@ summary: 了解 TiCDC 集群监控报警规则以及处理方法。
 
     收集 TiCDC 日志，定位原因。
 
-### `ticdc_mounter_unmarshal_and_mount_time_more_than_1s`
-
-* 报警规则：
-
-    `histogram_quantile(0.9, rate(ticdc_mounter_unmarshal_and_mount_bucket[1m])) * 1000 > 1000`
-
-* 规则描述：
-
-    TiCDC 某一同步任务解码变更数据的耗时超过 1 秒。
-
-* 处理方法：
-
-    收集 TiCDC 日志，定位原因。
-
 ### `cdc_sink_flush_duration_time_more_than_10s`
 
 * 报警规则：
