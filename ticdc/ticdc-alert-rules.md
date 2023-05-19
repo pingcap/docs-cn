@@ -15,7 +15,7 @@ summary: 了解 TiCDC 集群监控报警规则以及处理方法。
 
 * 报警规则：
 
-    (time() - ticdc_processor_checkpoint_ts / 1000) > 600
+    (time() - ticdc_owner_checkpoint_ts / 1000) > 600
 
 * 规则描述：
 
@@ -29,7 +29,7 @@ summary: 了解 TiCDC 集群监控报警规则以及处理方法。
 
 * 报警规则：
 
-    (time() - ticdc_processor_resolved_ts / 1000) > 300
+    (time() - ticdc_owner_resolved_ts / 1000) > 300
 
 * 规则描述：
 
@@ -85,11 +85,11 @@ summary: 了解 TiCDC 集群监控报警规则以及处理方法。
 
     收集 TiCDC 日志，定位原因。
 
-### `cdc_sink_execute_duration_time_more_than_10s`
+### `cdc_sink_flush_duration_time_more_than_10s`
 
 * 报警规则：
-
-    `histogram_quantile(0.9, rate(ticdc_sink_txn_exec_duration_bucket[1m])) > 10`
+  txn_worker_flush_duration
+    `histogram_quantile(0.9, rate(ticdc_sink_txn_worker_flush_duration[1m])) > 10`
 
 * 规则描述：
 
