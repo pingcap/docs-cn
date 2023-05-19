@@ -40,6 +40,7 @@ TiCDC 数据正确性校验功能默认关闭，要使用该功能，请执行�
     ```shell
     cdc cli changefeed create --server=http://127.0.0.1:8300 --changefeed-id="kafka-avro-checksum" --sink-uri="kafka://127.0.0.1:9092/topic-name?protocol=avro&enable-tidb-extension=true&avro-decimal-handling-mode=string&avro-bigint-unsigned-handling-mode=string" --schema-registry=http://127.0.0.1:8081 --config changefeed_config.toml
     ```
+    开启 Checksum 功能时，需要设置 `avro-decimal-handling-mode` 和 `avro-bigint-unsigned-handling-mode` 为 `string`，主要目的是为了防止数值类型在网络传输过程中发生精度丢失，导致 Checksum 校验失败。
 
     通过上述配置，Changefeed 会在每条写入 Kafka 的消息中携带该消息对应数据的 Checksum，你可以根据此 Checksum 的值进行数据一致性校验。
 
