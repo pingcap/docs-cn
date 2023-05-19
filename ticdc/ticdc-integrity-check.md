@@ -43,6 +43,8 @@ TiCDC 数据正确性校验功能默认关闭，要使用该功能，请执行�
 
     通过上述配置，Changefeed 会在每条写入 Kafka 的消息中携带该消息对应数据的 Checksum，你可以根据此 Checksum 的值进行数据一致性校验。
 
+开启 Checksum 功能时，需要设置 `avro-decimal-handling-mode` 和 `avro-bigint-unsigned-handling-mode` 为 `string`，主要目的是为了防止数值类型在网络传输过程中发生精度丢失，导致 Checksum 校验失败。
+
 > **注意：**
 >
 > 对于已有 Changefeed，如果未设置 `avro-decimal-handling-mode` 和 `avro-bigint-unsigned-handling-mode`，开启 Checksum 功能时会引起 Schema 不兼容问题。可以通过修改 Schema Registry 的兼容性为 `NONE` 解决该问题。详情可参考 [Schema 兼容性](https://docs.confluent.io/platform/current/schema-registry/fundamentals/avro.html)。
@@ -96,5 +98,8 @@ fn checksum(columns) {
     * VARBIANRY、BINARY 和 BLOB（包括 TINY、MEDIUM 和 LONG）类型会直接使用它的字节。
     * VARCHAR、CHAR 和 TEXT（包括 TINY、MEDIUM 和 LONG）类型会被编码为 UTF8 编码的字节。
     * NULL 和 GEOMETRY 类型不会被纳入到 Checksum 计算中，返回空字节。
+
+> **注意：**
+> 开启 Checksum 功能后，decimal 和 unsigned bigint 类型的数据会被转换为字符串类型，因此在下游消费者代码中需要将其转换为对应的数值类型，然后进行 Checksum 相关计算。·
 
 Golang 消费者代码实现了解码从 Kafka 读取到的数据、按照 schema fields 排序以及 Checksum 计算等步骤。详情请参考 [`avro/decoder.go`](https://github.com/pingcap/tiflow/blob/master/pkg/sink/codec/avro/decoder.go)。
