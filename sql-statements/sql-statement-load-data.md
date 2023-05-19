@@ -270,7 +270,7 @@ In the above example, `x'2c'` is the hexadecimal representation of the `,` chara
 
 ## MySQL compatibility
 
-This statement is understood to be fully compatible with MySQL, except for character set options which are parsed but ignored. If you find any compatibility difference, you can [report it via an issue](https://github.com/pingcap/tidb/issues/new/choose) on GitHub.
+The syntax of the `LOAD DATA` statement is compatible with that of MySQL, except for character set options which are parsed but ignored. If you find any syntax compatibility difference, you can [report it via an issue](https://github.com/pingcap/tidb/issues/new/choose) on GitHub.
 
 <CustomContent platform="tidb">
 
@@ -280,6 +280,8 @@ This statement is understood to be fully compatible with MySQL, except for chara
 > - For versions from TiDB v4.0.0 to v6.6.0, TiDB commits all rows in one transaction by default.
 > - Starting from TiDB v7.0.0, the number of rows to be committed in a batch is controlled by the `WITH batch_size=<number>` parameter of the `LOAD DATA` statement, which defaults to 1000 rows per commit.
 > - After upgrading from TiDB v4.0.0 or earlier versions, `ERROR 8004 (HY000) at line 1: Transaction is too large, size: 100000058` might occur. The recommended way to resolve this error is to increase the [`txn-total-size-limit`](/tidb-configuration-file.md#txn-total-size-limit) value in your `tidb.toml` file. If you are unable to increase this limit, you can also restore the behavior before the upgrade by setting [`tidb_dml_batch_size`](/system-variables.md#tidb_dml_batch_size) to `20000`.
+> - No matter how many rows are committed in a transaction, `LOAD DATA` is not rolled back by the [`ROLLBACK`](/sql-statements/sql-statement-rollback.md) statement in an explicit transaction.
+> - The `LOAD DATA` statement is always executed in optimistic transaction mode, regardless of the TiDB transaction mode configuration.
 
 </CustomContent>
 
@@ -291,6 +293,8 @@ This statement is understood to be fully compatible with MySQL, except for chara
 > - For versions from TiDB v4.0.0 to v6.6.0, TiDB commits all rows in one transaction by default.
 > - Starting from TiDB v7.0.0, the number of rows to be committed in a batch is controlled by the `WITH batch_size=<number>` parameter of the `LOAD DATA` statement, which defaults to 1000 rows per commit.
 > - After upgrading from TiDB v4.0.0 or earlier versions, `ERROR 8004 (HY000) at line 1: Transaction is too large, size: 100000058` might occur. To resolve this error, you can restore the behavior before the upgrade by setting [`tidb_dml_batch_size`](/system-variables.md#tidb_dml_batch_size) to `20000`.
+> - No matter how many rows are committed in a transaction, `LOAD DATA` is not rolled back by the [`ROLLBACK`](/sql-statements/sql-statement-rollback.md) statement in an explicit transaction.
+> - The `LOAD DATA` statement is always executed in optimistic transaction mode, regardless of the TiDB transaction mode configuration.
 
 </CustomContent>
 
@@ -300,6 +304,7 @@ This statement is understood to be fully compatible with MySQL, except for chara
 
 * [INSERT](/sql-statements/sql-statement-insert.md)
 * [TiDB Optimistic Transaction Model](/optimistic-transaction.md)
+* [TiDB Pessimistic Transaction Mode](/pessimistic-transaction.md)
 * [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md)
 * [`SHOW LOAD DATA`](/sql-statements/sql-statement-show-load-data.md)
 * [`CANCEL LOAD DATA` and `DROP LOAD DATA`](/sql-statements/sql-statement-operate-load-data-job.md)
@@ -310,6 +315,7 @@ This statement is understood to be fully compatible with MySQL, except for chara
 
 * [INSERT](/sql-statements/sql-statement-insert.md)
 * [TiDB Optimistic Transaction Model](/optimistic-transaction.md)
+* [TiDB Pessimistic Transaction Mode](/pessimistic-transaction.md)
 * [TiDB Lightning](https://docs.pingcap.com/tidb/stable/tidb-lightning-overview)
 * [`SHOW LOAD DATA`](/sql-statements/sql-statement-show-load-data.md)
 * [`CANCEL LOAD DATA` and `DROP LOAD DATA`](/sql-statements/sql-statement-operate-load-data-job.md)
