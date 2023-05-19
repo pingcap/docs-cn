@@ -35,7 +35,7 @@ TiCDC 数据正确性校验功能默认关闭，要使用该功能，请执行�
     corruption-handle-level = "warn"
     ```
 
-3. 当使用 Avro 作为数据编码格式时，你需要在 [`sink-uri`](/ticdc/ticdc-sink-to-kafka.md#sink-uri-配置-kafka) 中设置 [`enable-tidb-extension=true`](/ticdc/ticdc-sink-to-kafka.md#sink-uri-配置-kafka)，同时还需设置 [`avro-decimal-handling-mode=string`](/ticdc/ticdc-sink-to-kafka.md#sink-uri-配置-kafka) 和 [`avro-bigint-unsigned-handling-mode=string`](/ticdc/ticdc-sink-to-kafka.md#sink-uri-配置-kafka)。下面是一个配置示例：
+3. 当使用 Avro 作为数据编码格式时，你需要在 [`sink-uri`](/ticdc/ticdc-sink-to-kafka.md#sink-uri-配置-kafka) 中设置 [`enable-tidb-extension=true`](/ticdc/ticdc-sink-to-kafka.md#sink-uri-配置-kafka)。同时，为了防止数值类型在网络传输过程中发生精度丢失，导致 Checksum 校验失败，还需要设置 [`avro-decimal-handling-mode=string`](/ticdc/ticdc-sink-to-kafka.md#sink-uri-配置-kafka) 和 [`avro-bigint-unsigned-handling-mode=string`](/ticdc/ticdc-sink-to-kafka.md#sink-uri-配置-kafka)。下面是一个配置示例：
 
     ```shell
     cdc cli changefeed create --server=http://127.0.0.1:8300 --changefeed-id="kafka-avro-checksum" --sink-uri="kafka://127.0.0.1:9092/topic-name?protocol=avro&enable-tidb-extension=true&avro-decimal-handling-mode=string&avro-bigint-unsigned-handling-mode=string" --schema-registry=http://127.0.0.1:8081 --config changefeed_config.toml
@@ -43,11 +43,9 @@ TiCDC 数据正确性校验功能默认关闭，要使用该功能，请执行�
 
     通过上述配置，Changefeed 会在每条写入 Kafka 的消息中携带该消息对应数据的 Checksum，你可以根据此 Checksum 的值进行数据一致性校验。
 
-开启 Checksum 功能时，需要设置 `avro-decimal-handling-mode` 和 `avro-bigint-unsigned-handling-mode` 为 `string`，主要目的是为了防止数值类型在网络传输过程中发生精度丢失，导致 Checksum 校验失败。
-
-> **注意：**
->
-> 对于已有 Changefeed，如果未设置 `avro-decimal-handling-mode` 和 `avro-bigint-unsigned-handling-mode`，开启 Checksum 功能时会引起 Schema 不兼容问题。可以通过修改 Schema Registry 的兼容性为 `NONE` 解决该问题。详情可参考 [Schema 兼容性](https://docs.confluent.io/platform/current/schema-registry/fundamentals/avro.html#no-compatibility-checking)。
+    > **注意：**
+    >
+    > 对于已有 Changefeed，如果未设置 `avro-decimal-handling-mode` 和 `avro-bigint-unsigned-handling-mode`，开启 Checksum 校验功能时会引起 Schema 不兼容问题。可以通过修改 Schema Registry 的兼容性为 `NONE` 解决该问题。详情可参考 [Schema 兼容性](https://docs.confluent.io/platform/current/schema-registry/fundamentals/avro.html#no-compatibility-checking)。
 
 ## 关闭功能
 
