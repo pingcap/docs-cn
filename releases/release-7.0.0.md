@@ -324,6 +324,8 @@ TiDB 版本：7.0.0
 
     在升级 TiCDC 集群到 v7.0.0 时，如果使用 Avro 同步的表包含 `FLOAT` 类型数据，请在升级前手动调整 Confluent Schema Registry 的兼容性策略为 `None`，使 changefeed 能够成功更新 schema。否则，在升级之后 changefeed 将无法更新 schema 并进入错误状态。
 
+* 自 v7.0.0 起，[`tidb_dml_batch_size`](/system-variables.md#tidb_dml_batch_size) 对 [`LOAD DATA` 语句](/sql-statements/sql-statement-load-data.md)不再生效。
+
 ### 系统变量
 
 | 变量名  | 修改类型 | 描述 |
