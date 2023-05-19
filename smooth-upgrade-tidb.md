@@ -40,9 +40,9 @@ TiDB 引入平滑升级功能前，对于升级过程中的 DDL 操作有如下�
 
 * 升级过程中，不支持的一些组件操作如下：
 
-  * BR，Lightning (Physical Import Mode) 和通过 ingest 方式导入数据等组件：升级过程中不能处理这类组件的操作，是因为这些操作中可能将 paused 状态的 DDL 拷贝到 TiDB。但是此状态的 DDL 不能自动 resume，可能导致后续 DDL 卡住的情况。
+  * BR，Import Data 和通过 ingest 方式导入数据等组件：升级过程中不能处理这类组件的操作，是因为这些操作中可能将 paused 状态的 DDL 拷贝到 TiDB。但是此状态的 DDL 不能自动 resume，可能导致后续 DDL 卡住的情况。
 
-  * DM，Lightning (Logical Import Mode) 和 TiCDC 等组件。即在升级过程中，通过此类组件导入 SQL 到 TiDB，且其中有 DDL 操作，那么会导致此导入操作阻塞，此外可能存在未定义错误。
+  * DM，Import Data 和 TiCDC 等组件。即在升级过程中，通过此类组件导入 SQL 到 TiDB，且其中有 DDL 操作，那么会导致此导入操作阻塞，此外可能存在未定义错误。
 
 ## 支持版本
 
