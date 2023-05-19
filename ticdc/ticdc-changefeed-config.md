@@ -100,8 +100,6 @@ rules = ['*.*', '!test.*']
 # ignore-sql = ["^drop table", "alter table"] # 忽略以 drop table 开头的，或者包含 alter table 的 DDL 语句
 # ignore-insert-value-expr = "price > 1000 and origin = 'no where'" # 忽略包含 price > 1000 和 origin = 'no where' 条件的 insert DML
 
-<<<<<<< HEAD
-=======
 [scheduler]
 # 将表按 Region 个数划分成多个同步范围，这些范围可由多个 TiCDC 节点同步。
 # 注意：该功能只在 Kafka changefeed 上生效，暂不支持 MySQL changefeed。
@@ -120,7 +118,6 @@ region-threshold = 100000
 #   如果不超过，则再检查 Region 个数是否大于 `region-threshold`。
 write-key-threshold = 0
 
->>>>>>> 51e6762d59 (ticdc: refine the ticdc changefeed configuration file (#14014))
 [sink]
 # 对于 MQ 类的 Sink，可以通过 dispatchers 配置 event 分发器
 # 支持 partition 及 topic（从 v6.1 开始支持）两种 event 分发器。二者的详细说明见下一节。
@@ -146,13 +143,9 @@ write-key-threshold = 0
 # 文件路径的日期分隔类型。可选类型有 `none`、`year`、`month` 和 `day`。默认值为 `none`，即不使用日期分隔。详见 <https://docs.pingcap.com/zh/tidb/dev/ticdc-sink-to-cloud-storage#数据变更记录>。
 # 注意：该参数只有当下游为存储服务时，才会生效。
 date-separator = 'none'
-<<<<<<< HEAD
-# 是否使用 partition 作为分隔字符串，将一张表中各个 partition 的数据分不同的目录来存储。在 v6.5.0 和 v6.5.1 中，默认值为 false。在 v6.5.2 或更高的 v6.5.x 版本中，默认值为 true。建议保持该配置项为 true 以避免下游分区表可能丢数据的问题 <https://github.com/pingcap/tiflow/issues/8724>。使用示例详见 <https://docs.pingcap.com/zh/tidb/dev/ticdc-sink-to-cloud-storage#数据变更记录>。
-=======
 
 # 是否使用 partition 作为分隔字符串。默认值为 true，即一张表中各个 partition 的数据会分不同的目录来存储。建议保持该配置项为 true 以避免下游分区表可能丢数据的问题 <https://github.com/pingcap/tiflow/issues/8581>。使用示例详见 <https://docs.pingcap.com/zh/tidb/dev/ticdc-sink-to-cloud-storage#数据变更记录>。
 # 注意：该参数只有当下游为存储服务时，才会生效。
->>>>>>> 51e6762d59 (ticdc: refine the ticdc changefeed configuration file (#14014))
 enable-partition-separator = true
 
 # Schema 注册表的 URL。
