@@ -57,7 +57,7 @@ TiDB 版本：7.0.0
   <tr>
     <td rowspan="2">数据库管理与可观测性<br/></td>
     <td>TiDB 通过 <a href="https://docs.pingcap.com/zh/tidb/v7.0/sql-statement-load-data" target="_blank"><code>LOAD DATA</code> 语句集成 TiDB Lightning</a>（实验特性）</td>
-    <td>集成 TiDB Lightning 的逻辑导入模式使 <code>LOAD DATA</code> 语句更加强大，例如支持从 S3/GCS 导入数据、支持任务管理等。</td>
+    <td>集成 TiDB Lightning 的逻辑导入模式使 <code>LOAD DATA</code> 语句更加强大，例如支持从 S3/GCS 导入数据。</td>
   </tr>
   <tr>
     <td>TiCDC 支持<a href="https://docs.pingcap.com/zh/tidb/v7.0/ticdc-sink-to-cloud-storage" target="_blank">对象存储 Sink</a> (GA)</td>
