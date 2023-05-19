@@ -146,16 +146,6 @@ TiDB 版本：7.1.0 (upcoming)
 
     更多信息，请参考[用户文档](/partitioned-table.md#range-interval-分区)。
 
-* `LOAD DATA` 部分功能 GA [#40499](https://github.com/pingcap/tidb/issues/40499) @[lance6716](https://github.com/lance6716)
-
-    在 TiDB v7.1.0 中，以下 `LOAD DATA` 功能 GA：
-
-    - 支持从 S3、GCS 导入数据。
-    - 支持解析源文件中的下列字符集：`ascii`、`latin1`、`binary`、`gbk` 和 `utf8mbd`
-    - 支持设置 `FIELDS DEFINED NULL BY` 将源文件中的指定值转换为 `NULL` 并写入目标表。
-
-  更多信息，请参考[用户文档](/sql-statements/sql-statement-load-data.md)。
-
 * 生成列 (Generated Columns) 成为正式功能 (GA) @[bb7133](https://github.com/bb7133)
 
     生成列是数据库中非常有价值的一个功能。在创建表时，可以定义一列的值由表中其他列的值计算而来，而不是由用户显式插入或更新。这个生成列可以是虚拟列 (Virtual Column) 或存储列 (Stored Column)。TiDB 在早期版本就提供了与 MySQL 兼容的生成列功能，在 v7.1.0 中这个功能正式 GA。
