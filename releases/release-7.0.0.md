@@ -56,8 +56,8 @@ TiDB 版本：7.0.0
   </tr>
   <tr>
     <td rowspan="2">数据库管理与可观测性<br/></td>
-    <td>TiDB 通过 <a href="https://docs.pingcap.com/zh/tidb/v7.0/sql-statement-load-data" target="_blank"><code>LOAD DATA</code> 语句集成 TiDB Lightning</a>（实验特性）</td>
-    <td>集成 TiDB Lightning 的逻辑导入模式使 <code>LOAD DATA</code> 语句更加强大，例如支持从 S3/GCS 导入数据。</td>
+    <td><a href="https://docs.pingcap.com/zh/tidb/v7.0/sql-statement-load-data" target="_blank"><code>LOAD DATA</code> 语句功能增强</a>（实验特性）</td>
+    <td><code>LOAD DATA</code> 语句功能增强，例如支持从 S3/GCS 导入数据。</td>
   </tr>
   <tr>
     <td>TiCDC 支持<a href="https://docs.pingcap.com/zh/tidb/v7.0/ticdc-sink-to-cloud-storage" target="_blank">对象存储 Sink</a> (GA)</td>
@@ -258,9 +258,9 @@ TiDB 版本：7.0.0
 
 ### 数据迁移
 
-* `LOAD DATA` 语句集成 TiDB Lightning，你可以使用 `LOAD DATA` 语句完成原先需要使用 TiDB Lightning 才能完成的数据导入任务（实验特性）[#40499](https://github.com/pingcap/tidb/issues/40499) @[lance6716](https://github.com/lance6716)
+* 增强 `LOAD DATA` 语句功能，支持导入云存储中的数据（实验特性）[#40499](https://github.com/pingcap/tidb/issues/40499) @[lance6716](https://github.com/lance6716)
 
-    在集成 TiDB Lightning 之前，`LOAD DATA` 语句只能用于导入客户端的数据文件，如果你需要从云存储导入数据，不得不借助 TiDB Lightning 来实现。但是单独部署 TiDB Lightning 又会带来额外的部署成本和管理成本。将 TiDB Lightning 逻辑导入能力 (Logical Import Mode) 集成到 `LOAD DATA` 语句后，不仅可以省去 TiDB Lightning 的部署和管理成本，还可以借助 TiDB Lightning 的功能极大扩展 `LOAD DATA` 语句的能力。部分扩展的功能举例说明如下：
+    之前，`LOAD DATA` 语句只能用于导入客户端的数据文件，如果你需要从云存储导入数据，不得不借助 TiDB Lightning 来实现。但是单独部署 TiDB Lightning 又会带来额外的部署成本和管理成本。现在可直接通过`LOAD DATA` 语句导入云存储中的数据。功能举例说明如下：
 
     - 支持从 Amazon S3 和 Google Cloud Storage 导入数据到 TiDB，且支持使用通配符一次性匹配多个源文件导入到 TiDB。
     - 支持 `DEFINED NULL BY` 来定义 null。
