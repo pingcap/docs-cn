@@ -248,13 +248,13 @@ TiDB 7.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
     更多信息，请参考[用户文档](/ddl-introduction.md#ddl-相关的命令介绍)。
 
-* 支持无需手动取消 DDL 的平滑升级集群功能 [#39751](https://github.com/pingcap/tidb/issues/39751) @[zimulala](https://github.com/zimulala) @[hawkingrei](https://github.com/hawkingrei) **tw:ran-huang**
+* 支持无需手动取消 DDL 的平滑升级集群功能 [#39751](https://github.com/pingcap/tidb/issues/39751) @[zimulala](https://github.com/zimulala)**tw:ran-huang**
 
     在 TiDB v7.1.0 之前的版本中，升级集群时需要先手动取消正在运行或排队的 DDL 任务，并在升级完成后再手动添加这些任务。
 
-    为了提供更平滑的升级体验，TiDB v7.1.0 引入了自动暂停和恢复 DDL 任务的功能。从 v7.1.0 开始，你在升级集群前无需手动取消 DDL 任务。系统会自动暂停正在执行或排队的 DDL 任务，等待整个集群完成滚动升级后再自动恢复这些任务，让你可以更加轻松地升级 TiDB 集群。
+    为了提供更平滑的升级体验，TiDB v7.1.0 引入了自动暂停和恢复 DDL 任务的功能。从 v7.1.0 开始，你在升级集群前无需手动取消 DDL 任务。系统会自动暂停正在执行或排队的用户 DDL 任务，等待整个集群完成滚动升级后再自动恢复这些任务，让你可以更加轻松地升级 TiDB 集群。
 
-    更多信息，请参考[用户文档](to be added)。
+    更多信息，请参考[用户文档](/smooth-upgrade-tidb.md)。
 
 ### 可观测性
 
