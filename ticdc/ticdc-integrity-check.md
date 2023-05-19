@@ -47,7 +47,7 @@ TiCDC 数据正确性校验功能默认关闭，要使用该功能，请执行�
 
 > **注意：**
 >
-> 对于已有 Changefeed，如果未设置 `avro-decimal-handling-mode` 和 `avro-bigint-unsigned-handling-mode`，开启 Checksum 功能时会引起 Schema 不兼容问题。可以通过修改 Schema Registry 的兼容性为 `NONE` 解决该问题。详情可参考 [Schema 兼容性](https://docs.confluent.io/platform/current/schema-registry/fundamentals/avro.html)。
+> 对于已有 Changefeed，如果未设置 `avro-decimal-handling-mode` 和 `avro-bigint-unsigned-handling-mode`，开启 Checksum 功能时会引起 Schema 不兼容问题。可以通过修改 Schema Registry 的兼容性为 `NONE` 解决该问题。详情可参考 [Schema 兼容性](https://docs.confluent.io/platform/current/schema-registry/fundamentals/avro.html#no-compatibility-checking)。
 
 ## 关闭功能
 
