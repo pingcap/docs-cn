@@ -100,6 +100,7 @@ fn checksum(columns) {
     * NULL 和 GEOMETRY 类型不会被纳入到 Checksum 计算中，返回空字节。
 
 > **注意：**
-> 开启 Checksum 功能后，decimal 和 unsigned bigint 类型的数据会被转换为字符串类型，因此在下游消费者代码中需要将其转换为对应的数值类型，然后进行 Checksum 相关计算。·
+>
+> 开启 Checksum 校验功能后，DECIMAL 和 UNSIGNED BIGINT 类型的数据会被转换为字符串类型。因此在下游消费者代码中需要将其转换为对应的数值类型，然后进行 Checksum 相关计算。
 
 Golang 消费者代码实现了解码从 Kafka 读取到的数据、按照 schema fields 排序以及 Checksum 计算等步骤。详情请参考 [`avro/decoder.go`](https://github.com/pingcap/tiflow/blob/master/pkg/sink/codec/avro/decoder.go)。
