@@ -56,8 +56,8 @@ TiDB 版本：7.0.0
   </tr>
   <tr>
     <td rowspan="2">数据库管理与可观测性<br/></td>
-    <td>TiDB 通过 <a href="https://docs.pingcap.com/zh/tidb/v7.0/sql-statement-load-data" target="_blank"><code>LOAD DATA</code> 语句集成 TiDB Lightning</a>（实验特性）</td>
-    <td>集成 TiDB Lightning 的逻辑导入模式使 <code>LOAD DATA</code> 语句更加强大，例如支持从 S3/GCS 导入数据、支持任务管理等。</td>
+    <td><a href="https://docs.pingcap.com/zh/tidb/v7.0/sql-statement-load-data" target="_blank"><code>LOAD DATA</code> 语句功能增强</a>（实验特性）</td>
+    <td><code>LOAD DATA</code> 语句功能增强，例如支持从 S3/GCS 导入数据。</td>
   </tr>
   <tr>
     <td>TiCDC 支持<a href="https://docs.pingcap.com/zh/tidb/v7.0/ticdc-sink-to-cloud-storage" target="_blank">对象存储 Sink</a> (GA)</td>
@@ -258,15 +258,13 @@ TiDB 版本：7.0.0
 
 ### 数据迁移
 
-* `LOAD DATA` 语句集成 TiDB Lightning，你可以使用 `LOAD DATA` 语句完成原先需要使用 TiDB Lightning 才能完成的数据导入任务（实验特性）[#40499](https://github.com/pingcap/tidb/issues/40499) @[lance6716](https://github.com/lance6716)
+* 增强 `LOAD DATA` 语句功能，支持导入云存储中的数据（实验特性）[#40499](https://github.com/pingcap/tidb/issues/40499) @[lance6716](https://github.com/lance6716)
 
-    在集成 TiDB Lightning 之前，`LOAD DATA` 语句只能用于导入客户端的数据文件，如果你需要从云存储导入数据，不得不借助 TiDB Lightning 来实现。但是单独部署 TiDB Lightning 又会带来额外的部署成本和管理成本。将 TiDB Lightning 逻辑导入能力 (Logical Import Mode) 集成到 `LOAD DATA` 语句后，不仅可以省去 TiDB Lightning 的部署和管理成本，还可以借助 TiDB Lightning 的功能极大扩展 `LOAD DATA` 语句的能力。部分扩展的功能举例说明如下：
+    之前，`LOAD DATA` 语句只能用于导入客户端的数据文件，如果你需要从云存储导入数据，不得不借助 TiDB Lightning 来实现。但是单独部署 TiDB Lightning 又会带来额外的部署成本和管理成本。现在可直接通过`LOAD DATA` 语句导入云存储中的数据。功能举例说明如下：
 
     - 支持从 Amazon S3 和 Google Cloud Storage 导入数据到 TiDB，且支持使用通配符一次性匹配多个源文件导入到 TiDB。
     - 支持 `DEFINED NULL BY` 来定义 null。
-    - 支持 CSV、TSV、Parquet、SQL (mydumper/dumpling) 格式的源文件。
-    - 支持将任务设置为 `Detached`，让任务在后台执行。
-    - 支持任务管理，可通过 `SHOW LOAD DATA jobid` 查询任务状态和进展详情，方便管理和维护。
+    - 支持 CSV、TSV 格式的源文件。
 
   更多信息，请参考[用户文档](/sql-statements/sql-statement-load-data.md)。
 
@@ -326,7 +324,7 @@ TiDB 版本：7.0.0
 
     在升级 TiCDC 集群到 v7.0.0 时，如果使用 Avro 同步的表包含 `FLOAT` 类型数据，请在升级前手动调整 Confluent Schema Registry 的兼容性策略为 `None`，使 changefeed 能够成功更新 schema。否则，在升级之后 changefeed 将无法更新 schema 并进入错误状态。
 
-* [`LOAD DATA` SQL 语句](/sql-statements/sql-statement-load-data.md)在 v7.0.0 中新增参数 `batch_size` 来实现事务的拆分。`batch_size` 参数默认值为 `1000`，表示将待导入 TiDB 的数据拆分成多个事务提交，每一个事务插入 1000 行记录到 TiDB。在 v7.0.0 以前控制事务拆分的参数为 [`tidb_dml_batch_size`](/system-variables.md#tidb_dml_batch_size)，自 v7.0.0 起不再生效。
+* 自 v7.0.0 起，[`tidb_dml_batch_size`](/system-variables.md#tidb_dml_batch_size) 对 [`LOAD DATA` 语句](/sql-statements/sql-statement-load-data.md)不再生效。
 
 ### 系统变量
 
