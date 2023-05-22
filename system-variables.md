@@ -4484,7 +4484,6 @@ For details, see [Identify Slow Queries](/identify-slow-queries.md).
 - Type: Float
 - Default value: `0`
 - Range: `[0, 10]`
-- Range: `[0, 10]`
 - Unit: Milliseconds
 - This variable is used to set the maximum waiting time for a batch operation when TiDB requests TSO from PD. The default value is `0`, which means no extra waiting time.
 - When obtaining TSO requests from PD each time, PD Client, used by TiDB, collects as many TSO requests received at the same time as possible. Then, PD Client merges the collected requests in batch into one RPC request and sends the request to PD. This helps reduce the pressure on PD.
