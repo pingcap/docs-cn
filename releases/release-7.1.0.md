@@ -162,7 +162,7 @@ TiDB 7.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
     从 v7.1.0 开始，TiDB Lightning 增加了四个配置项，可以提升在导入 TiB 级数据时的稳定性。
 
-    - `tikv-importer.region-split-batch-size` 用于控制一个 batch 中执行 split 和 scatter 操作的最大 Region 数量，默认值为 `4096`。
+    - `tikv-importer.region-split-batch-size` 用于控制批量 split Region 时的 Region 个数，默认值为 `4096`。
     - `tikv-importer.region-split-concurrency` 用于控制 Split Region 时的并发度，默认值为 CPU 核心数。
     - `tikv-importer.region-check-backoff-limit` 用于控制 split 和 scatter 操作后等待 Region 上线的重试次数，默认值为 `1800`。重试符合指数回退策略，最大重试间隔为 2 秒。若两次重试之间有任何 Region 上线，该次操作不会被计为重试次数。
     - `tikv-importer.pause-pd-scheduler-scope` 用于控制导入数据过程中暂停 PD 调度的范围。该配置项可选值为 `"table"` 或 `"global"`，默认值为 `"table"`。对于 TiDB v6.1.0 之前的版本，只能配置 `"global"` 选项，即导入数据过程中暂停全局调度。从 v6.1.0 开始，支持 `"table"` 选项，表示仅暂停目标表数据范围所在 Region 的调度。在数据量较大的场景建议设置为 `"global"`，以提升稳定性。
@@ -266,7 +266,7 @@ TiDB 7.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
     如果你已经将 TiFlash 升级到 v7.1.0，那么在升级 TiDB 到 v7.1.0 的过程中，TiDB 无法读取 TiFlash 系统表（[`INFORMATION_SCHEMA.TIFLASH_TABLES`](/information-schema/information-schema-tiflash-tables.md) 和 [`INFORMATION_SCHEMA.TIFLASH_SEGMENTS`](/information-schema/information-schema-tiflash-segments.md)）。
 
-* TiDB v6.2.0 ~ v7.0.0 版本的 `tidb-lightning` 会根据 TiDB 集群的版本决定是否暂停全局调度。当 TiDB 集群版本 >= v6.1.0，只会暂停目标表数据范围所在 Region 的调度，并在目标表导入完成后恢复调度，其他版本会暂停全局调度。自 TiDB v7.1.0 开始，你可以通过 [pause-pd-scheduler-scope](/tidb-lightning/tidb-lightning-configuration.md) 来控制是否暂停全局调度，默认暂停目标表数据范围所在 Region 的调度，如果目标集群版本低于 v6.1.0 则报错，此时将参数取值改为 `"global"` 后重试即可。 **tw:hfxsd**
+* TiDB v6.2.0 ~ v7.0.0 版本的 `tidb-lightning` 会根据 TiDB 集群的版本决定是否暂停全局调度。当 TiDB 集群版本 >= v6.1.0，只会暂停目标表数据范围所在 Region 的调度，并在目标表导入完成后恢复调度，其他版本会暂停全局调度。自 TiDB v7.1.0 开始，你可以通过 [`pause-pd-scheduler-scope`](/tidb-lightning/tidb-lightning-configuration.md) 来控制是否暂停全局调度，默认暂停目标表数据范围所在 Region 的调度。如果目标集群版本低于 v6.1.0 则报错，此时将参数取值改为 `"global"` 后重试即可。 **tw:hfxsd**
 
 ### 系统变量
 
