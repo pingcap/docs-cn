@@ -56,8 +56,8 @@ In v7.0.0-DMR, the key new features and improvements are as follows:
   </tr>
   <tr>
     <td rowspan="2">DB Operations and Observability<br/></td>
-    <td><a href="https://docs.pingcap.com/tidb/v7.0/sql-statement-load-data" target="_blank">The <code>LOAD DATA</code> statement integrates with TiDB Lightning</a> (experimental)</td>
-    <td>The <code>LOAD DATA</code> SQL statement becomes more powerful by integrating TiDB Lightning's logical import mode, such as supporting data import from S3/GCS and supporting task management.<br/></td>
+    <td>TiDB enhances the functionalities of <a href="https://docs.pingcap.com/tidb/v7.0/sql-statement-load-data" target="_blank"><code>LOAD DATA</code> statements</a> (experimental)</td>
+    <td>TiDB enhances the functionalities of <code>LOAD DATA</code> SQL statements, such as supporting data import from S3/GCS.<br/></td>
   </tr>
   <tr>
     <td>TiCDC supports <a href="https://docs.pingcap.com/tidb/v7.0/ticdc-sink-to-cloud-storage" target="_blank">object storage sink</a> (GA)</td>
@@ -258,15 +258,13 @@ In v7.0.0-DMR, the key new features and improvements are as follows:
 
 ### Data migration
 
-* The `LOAD DATA` statement integrates with TiDB Lightning, so you can use the `LOAD DATA` statement to complete data import tasks that used to rely only on TiDB Lightning (experimental) [#40499](https://github.com/pingcap/tidb/issues/40499) @[lance6716](https://github.com/lance6716)
+* Enhance the functionalities of `LOAD DATA` statements and support importing data from cloud storage (experimental) [#40499](https://github.com/pingcap/tidb/issues/40499) @[lance6716](https://github.com/lance6716)
 
-    Before integrating TiDB Lightning, the `LOAD DATA` statement could only import data files from the client side. If you wanted to import data from cloud storage, you had to rely on TiDB Lightning. However, deploying TiDB Lightning separately would incur additional deployment and management costs. By integrating the TiDB Lightning logical import capability (TiDB Backend) into the `LOAD DATA` statement, you can not only eliminate the deployment and management costs of TiDB Lightning, but also greatly extend the capabilities of the `LOAD DATA` statement with the TiDB Lightning features. Some examples of the extended functionality are as follows:
+    Before TiDB v7.0.0, the `LOAD DATA` statement could only import data files from the client side. If you wanted to import data from cloud storage, you had to rely on TiDB Lightning. However, deploying TiDB Lightning separately would bring additional deployment and management costs. In v7.0.0, you can directly import data from cloud storage using the `LOAD DATA` statement. Some examples of the feature are as follows:
 
     - Supports importing data from Amazon S3 and Google Cloud Storage to TiDB. Supports importing multiple source files to TiDB in one go with wildcards.
     - Support using `DEFINED NULL BY` to define null.
-    - Support source files in CSV, TSV, Parquet, and SQL (mydumper/dumpling) formats.
-    - Support setting tasks as `Detached` to let tasks run in the background.
-    - Support task management. You can query task status and progress details by `SHOW LOAD DATA jobid`, which is convenient for management and maintenance.
+    - Support source files in CSV and TSV formats.
 
   For more information, see [documentation](/sql-statements/sql-statement-load-data.md).
 
@@ -326,7 +324,7 @@ In v7.0.0-DMR, the key new features and improvements are as follows:
 
     When upgrading the TiCDC cluster to v7.0.0, if a table replicated using Avro contains the `FLOAT` data type, you need to manually adjust the compatibility policy of Confluent Schema Registry to `None` before upgrading so that the changefeed can successfully update the schema. Otherwise, after upgrading, the changefeed will be unable to update the schema and enter an error state.
 
-* In v7.0.0, the [`LOAD DATA`](/sql-statements/sql-statement-load-data.md) SQL statement adds the `batch_size` parameter to split transactions. The default value of the `batch_size` parameter is `1000`, which means that the data to be imported into TiDB is split into multiple transactions, and each transaction inserts up to 1000 rows of records into TiDB. Prior to v7.0.0, you can use the [`tidb_dml_batch_size`](/system-variables.md#tidb_dml_batch_size) system variable to control the transaction size, but this variable no longer takes effect on `LOAD DATA` starting from v7.0.0.
+* Starting from v7.0.0, [`tidb_dml_batch_size`](/system-variables.md#tidb_dml_batch_size) system variable no longer takes effect on the [`LOAD DATA` statement](/sql-statements/sql-statement-load-data.md).
 
 ### System variables
 

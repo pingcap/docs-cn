@@ -39,7 +39,6 @@ Currently, the `help_topic` is NULL.
 - `column_stats_usage`: the usage of column statistics
 - `schema_index_usage`: the usage of indexes
 - `analyze_jobs`: the ongoing statistics collection tasks and the history task records within the last 7 days
-- `load_data_jobs`: the ongoing or historical `LOAD DATA` jobs
 
 ## Execution plan-related system tables
 

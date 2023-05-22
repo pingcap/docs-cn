@@ -146,32 +146,6 @@ In v7.1.0, the key new features and improvements are as follows:
 
     For more information, see [documentation](/partitioned-table.md#range-interval-partitioning).
 
-* Some `LOAD DATA` features become GA [#40499](https://github.com/pingcap/tidb/issues/40499) @[lance6716](https://github.com/lance6716)
-
-    In TiDB v7.1.0, the following `LOAD DATA` features become GA:
-
-    - Support importing data from S3 or GCS.
-    - Support importing data from Parquet files.
-    - Support parsing the following character sets in the source file: `ascii`, `latin1`, `binary`, `gbk`, and `utf8mbd`.
-    - Support setting `FIELDS DEFINED NULL BY` to convert the specified value in the source file to `NULL` for writing to the target table.
-    - Support setting `bath_size` which specifies the number of rows inserted into the target table per batch, to improve write performance.
-    - Support setting `detached` to allow the job to run in the background.
-    - Support using `SHOW LOAD DATA` and `DROP LOAD DATA` to manage jobs.
-
-  For more information, see [documentation](/sql-statements/sql-statement-load-data.md).
-
-* `LOAD DATA` integrates with TiDB Lightning Physical Import Mode to improve import performance (experimental) [#42930](https://github.com/pingcap/tidb/issues/42930) @[D3Hunter](https://github.com/D3Hunter)
-
-    `LOAD DATA` integrates with TiDB Lightning Physical Import Mode. You can enable it by setting `WITH import_mode = 'PHYSICAL'`. This feature can improve the performance of importing data exponentially compared to Logical Import Mode.
-
-    For more information, see [documentation](/sql-statements/sql-statement-load-data.md).
-
-* `LOAD DATA` supports concurrent data import to improve import performance (experimental) [#40499](https://github.com/pingcap/tidb/issues/40499) @[lance6716](https://github.com/lance6716)
-
-    Before v7.1.0, `LOAD DATA` does not support concurrent data import, which limits its performance. Starting from TiDB v7.1.0, `LOAD DATA` supports concurrent data import. To enhance import performance, you can increase the concurrency using `WITH thread=<number>`. In internal tests, the logical import performance of the test workload is nearly four times better than that in v7.0.0.
-
-    For more information, see [documentation](/sql-statements/sql-statement-load-data.md).
-
 * Generated columns become generally available (GA) @[bb7133](https://github.com/bb7133)
 
     Generated columns are a valuable feature for database. When creating a table, you can define that the value of a column is calculated based on the values of other columns in the table, rather than being explicitly inserted or updated by users. This generated column can be either a virtual column or a stored column. TiDB has supported MySQL-compatible generated columns since earlier versions, and this feature becomes GA in v7.1.0.
@@ -224,8 +198,6 @@ In v7.1.0, the key new features and improvements are as follows:
 * To improve security, TiFlash deprecates the HTTP service port (default `8123`) and uses the gRPC port as a replacement
 
     If you have upgraded TiFlash to v7.1.0, then during the TiDB upgrade to v7.1.0, TiDB cannot read the TiFlash system tables ([`INFORMATION_SCHEMA.TIFLASH_TABLES`](/information-schema/information-schema-tiflash-tables.md) and [`INFORMATION_SCHEMA.TIFLASH_SEGMENTS`](/information-schema/information-schema-tiflash-segments.md)).
-
-* In the outputs of [`SHOW LOAD DATA`](/sql-statements/sql-statement-show-load-data.md), the `Loaded_File_Size` parameter is deprecated and replaced with the `Imported_Rows` parameter.
 
 ### System variables
 

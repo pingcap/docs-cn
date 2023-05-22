@@ -362,17 +362,9 @@ TiDB is compatible with the error codes in MySQL, and in most cases returns the 
 
     Currently `LOAD DATA` does not support importing data locally from TiDB server. You can specify `LOCAL` to import from client, or upload data to S3 or GCS and then import it. See [`LOAD DATA`](/sql-statements/sql-statement-load-data.md).
 
-* Error Number: 8155
-
-    Currently, `LOAD DATA` only supports importing Parquet files from S3 or GCS. You can upload Parquet files to S3 or GCS and then import them. See [`LOAD DATA`](/sql-statements/sql-statement-load-data.md).
-
 * Error Number: 8156
 
     The file path of the `LOAD DATA` statement cannot be empty. You need to set the correct path before importing. See [`LOAD DATA`](/sql-statements/sql-statement-load-data.md).
-
-* Error Number: 8157
-
-    Unsupported data format. See [`LOAD DATA`](/sql-statements/sql-statement-load-data.md) to check the supported data formats.
 
 * Error Number: 8158
 
@@ -389,38 +381,6 @@ TiDB is compatible with the error codes in MySQL, and in most cases returns the 
 * Error Number: 8162
 
     There is an error in the `LOAD DATA` statement. See [`LOAD DATA`](/sql-statements/sql-statement-load-data.md) for supported features.
-
-* Error Number: 8163
-
-    Unknown `LOAD DATA...WITH...` option. See [`LOAD DATA`](/sql-statements/sql-statement-load-data.md) for supported options.
-
-* Error Number: 8164
-
-    The `LOAD DATA...WITH...` option takes an invalid value. See [`LOAD DATA`](/sql-statements/sql-statement-load-data.md) for valid values.
-
-* Error Number: 8165
-
-    Specify duplicated `LOAD DATA...WITH...` options. Each option can be specified only once.
-
-* Error Number: 8166
-
-    Some `LOAD DATA...WITH...` options can only be used in certain import modes. See [`LOAD DATA`](/sql-statements/sql-statement-load-data.md) to see the supported options.
-
-* Error Number: 8170
-
-    The specified `LOAD DATA` job does not exist or is not created by the current user. Currently you can only view jobs that you created.
-
-* Error Number: 8171
-
-    You cannot perform operation and maintenance for unsupported `LOAD DATA` task status. Refer to the specific error message for action.
-
-* Error Number: 8172
-
-    If you have specified `LOCAL`, you cannot specify specific options, such as `DETACHED` or `import_mode='PHYSICAL'`. See [`LOAD DATA`](/sql-statements/sql-statement-load-data.md) to change the SQL statement.
-
-* Error Number: 8173
-
-    In Physical Import Mode, TiDB checks the current environment, such as checking if the downstream table is empty. Follow the prompts to resolve the issue.
 
 * Error Number: 8200
 

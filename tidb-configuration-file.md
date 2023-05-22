@@ -44,7 +44,6 @@ The TiDB configuration file supports more options than command-line parameters. 
 
 + File system location used by TiDB to store temporary data. If a feature requires local storage in TiDB nodes, TiDB stores the corresponding temporary data in this location.
 + When creating an index, if [`tidb_ddl_enable_fast_reorg`](/system-variables.md#tidb_ddl_enable_fast_reorg-new-in-v630) is enabled, data that needs to be backfilled for a newly created index will be at first stored in the TiDB local temporary directory, and then imported into TiKV in batches, thus accelerating the index creation.
-+ When using physical import mode in [`LOAD DATA`](/sql-statements/sql-statement-load-data.md), the sorted data is first stored in the TiDB local temporary storage path and then imported to TiKV in batches.
 + Default value: `"/tmp/tidb"`
 
 ### `oom-use-tmp-storage`

@@ -243,6 +243,6 @@ This document lists the features supported in different TiDB versions, including
 
 [^4]: Starting from [v6.4.0](/releases/release-6.4.0.md), TiDB supports [high-performance and globally monotonic `AUTO_INCREMENT` columns](/auto-increment.md#mysql-compatibility-mode)
 
-[^5]: For [TiDB v7.1.0](/releases/release-7.1.0.md), supporting import concurrency and integrating with TiDB Lightning Physical Import Mode are experimental features.
+[^5]: For [TiDB v7.0.0](/releases/release-7.0.0.md), the new parameter `FIELDS DEFINED NULL BY` and support for importing data from S3 and GCS are experimental features.
 
 [^6]: For TiDB v4.0, the `LOAD DATA` transaction does not guarantee atomicity.
