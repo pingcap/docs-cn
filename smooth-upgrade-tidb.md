@@ -30,7 +30,7 @@ TiDB 引入平滑升级功能前，对于升级过程中的 DDL 操作有如下�
 
 ### 用户操作限制
 
-* 在升级前，如果集群中存在正在处理的 canceling DDL job，即有正在被处理的 DDL job 被用户取消了，由于处于 canceling 状态的 job 无法被 `pause`，TiDB 会尝试重试如果重试失败会报错并退出升级。
+* 在升级前，如果集群中存在正在处理的 canceling DDL job，即有正在被处理的 DDL job 被用户取消了，由于处于 canceling 状态的 job 无法被 `pause`，TiDB 会尝试重试。如果重试失败，会报错并退出升级。
 
 * 在升级过程中，不允许以下操作：
 
