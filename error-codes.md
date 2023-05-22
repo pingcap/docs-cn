@@ -296,17 +296,9 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
     目前 `LOAD DATA` 不支持从 TiDB 服务器本地导入数据，可以指定 `LOCAL` 从客户端导入，或者将数据上传到 S3/GCS 再进行导入。请参考 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md)。
 
-* Error Number: 8155
-
-    目前 `LOAD DATA` 不支持从 local 导入 Parquet 格式的数据文件，只支持从 S3/GCS 导入 Parquet 格式的数据文件。你可以将数据上传到 S3/GCS 后再导入。请参考 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md)。
-
 * Error Number: 8156
 
     `LOAD DATA` 语句的文件路径不能为空。需要设置正确的路径再进行导入。请参考 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md)。
-
-* Error Number: 8157
-
-    不支持的数据格式。请参考 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md) 查看支持的数据格式。
 
 * Error Number: 8158
 
@@ -324,6 +316,7 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
     `LOAD DATA` 语句存在错误。请参考 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md) 查看已支持的功能。
 
+<<<<<<< HEAD
 * Error Number: 8163
 
     未知的 `LOAD DATA ... WITH ...` 选项。请参考 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md) 查看支持的选项。
@@ -352,6 +345,8 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
     指定 `LOCAL` 的 `LOAD DATA` 不能在后台运行，只有使用 S3/GCS 路径的 `LOAD DATA` 可以在后台运行。请参考 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md) 更改 SQL 语句。
 
+=======
+>>>>>>> 67fd1d11ba (Revert "sql: GA load data logical mode and add experimental physical mode" (#14017))
 * Error Number: 8200
 
     尚不支持的 DDL 语法。请参考[与 MySQL DDL 的兼容性](/mysql-compatibility.md#ddl-的限制)。
