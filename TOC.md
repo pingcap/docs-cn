@@ -289,6 +289,7 @@
     - [监控告警](/tidb-lightning/monitor-tidb-lightning.md)
     - [FAQ](/tidb-lightning/tidb-lightning-faq.md)
     - [术语表](/tidb-lightning/tidb-lightning-glossary.md)
+    - [日志信息详解](/tidb-lightning/tidb-lightning-log-message-explanation.md)
   - TiDB Data Migration
     - 关于 TiDB Data Migration
       - [TiDB Data Migration 简介](/dm/dm-overview.md)
