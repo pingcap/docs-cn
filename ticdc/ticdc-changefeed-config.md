@@ -77,17 +77,12 @@ enable-old-value = true
 # 过滤规则语法：https://docs.pingcap.com/zh/tidb/stable/table-filter#表库过滤语法
 rules = ['*.*', '!test.*']
 
-<<<<<<< HEAD
-# 事件过滤器规则
-# 事件过滤器的详细配置规则在下方的 Event Filter 配置规则中描述
-=======
 # 忽略特定 start_ts 的事务
 # 默认值为空列表。
 # IgnoreTxnStartTs = []
 
 # 事件过滤器规则 
 # 事件过滤器的详细配置规则可参考：https://docs.pingcap.com/zh/tidb/stable/ticdc-filter
->>>>>>> 51e6762d59 (ticdc: refine the ticdc changefeed configuration file (#14014))
 # 第一个事件过滤器规则
 [[filter.event-filters]]
 matcher = ["test.worker"] # matcher 是一个白名单，表示该过滤规则只应用于 test 库中的 worker 表
@@ -107,8 +102,6 @@ ignore-insert-value-expr = "price > 1000 and origin = 'no where'" # 忽略包含
 
 [scheduler]
 # 将表按 Region 个数划分成多个同步范围，这些范围可由多个 TiCDC 节点同步。
-<<<<<<< HEAD
-=======
 # 注意：该功能只在 Kafka changefeed 上生效，暂不支持 MySQL changefeed。
 # 默认为 "false"。设置为 "true" 以打开该功能。
 enable-table-across-nodes = false
@@ -117,7 +110,6 @@ enable-table-across-nodes = false
 region-threshold = 100000
 
 # 打开该功能后，该功能会对每分钟修改行数大于 `write-key-threshold` 值的表生效。
->>>>>>> 51e6762d59 (ticdc: refine the ticdc changefeed configuration file (#14014))
 # 注意：
 # 1. 横向扩展功能目前为实验特性，不建议在生产环境中使用。
 # 2. 该参数只在 Kafka changefeed 上生效，暂不支持 MySQL changefeed。
@@ -128,14 +120,6 @@ region-threshold = 100000
 # 对于 MQ 类的 Sink，可以通过 dispatchers 配置 event 分发器
 # 支持 partition 及 topic（从 v6.1 开始支持）两种 event 分发器。二者的详细说明见下一节。
 # matcher 的匹配语法和过滤器规则语法相同，matcher 匹配规则的详细说明见下一节。
-<<<<<<< HEAD
-dispatchers = [
-    {matcher = ['test1.*', 'test2.*'], topic = "Topic 表达式 1", partition = "ts" },
-    {matcher = ['test3.*', 'test4.*'], topic = "Topic 表达式 2", partition = "index-value" },
-    {matcher = ['test1.*', 'test5.*'], topic = "Topic 表达式 3", partition = "table"},
-    {matcher = ['test6.*'], partition = "ts"}
-]
-=======
 # 注意：该参数只有当下游为消息队列时，才会生效。
 # dispatchers = [
 #    {matcher = ['test1.*', 'test2.*'], topic = "Topic 表达式 1", partition = "ts" },
@@ -143,18 +127,10 @@ dispatchers = [
 #    {matcher = ['test1.*', 'test5.*'], topic = "Topic 表达式 3", partition = "table"},
 #    {matcher = ['test6.*'], partition = "ts"}
 # ]
->>>>>>> 51e6762d59 (ticdc: refine the ticdc changefeed configuration file (#14014))
 
 # protocol 用于指定传递到下游的协议格式
 # 当下游类型是 Kafka 时，支持 canal-json、avro 两种协议。
 # 当下游类型是存储服务时，目前仅支持 canal-json、csv 两种协议。
-<<<<<<< HEAD
-protocol = "canal-json"
-
-# 以下三个配置项仅在同步到存储服务的 sink 中使用，在 MQ 和 MySQL 类 sink 中无需设置。
-# 换行符，用来分隔两个数据变更事件。默认值为空，表示使用 "\r\n" 作为换行符。
-terminator = ''
-=======
 # 注意：该参数只有当下游为 Kafka 或存储服务时，才会生效。
 # protocol = "canal-json"
 
@@ -162,19 +138,13 @@ terminator = ''
 # 换行符，用来分隔两个数据变更事件。默认值为空，表示使用 "\r\n" 作为换行符。
 # terminator = ''
 
->>>>>>> 51e6762d59 (ticdc: refine the ticdc changefeed configuration file (#14014))
 # 文件路径的日期分隔类型。可选类型有 `none`、`year`、`month` 和 `day`。默认值为 `none`，即不使用日期分隔。详见 <https://docs.pingcap.com/zh/tidb/dev/ticdc-sink-to-cloud-storage#数据变更记录>。
 # 注意：该参数只有当下游为存储服务时，才会生效。
 date-separator = 'none'
-<<<<<<< HEAD
-# 是否使用 partition 作为分隔字符串。默认值为 false，即一张表中各个 partition 的数据不会分不同的目录来存储。详见 <https://docs.pingcap.com/zh/tidb/dev/ticdc-sink-to-cloud-storage#数据变更记录>。
-enable-partition-separator = false
-=======
 
-# 是否使用 partition 作为分隔字符串。默认值为 true，即一张表中各个 partition 的数据会分不同的目录来存储。建议保持该配置项为 true 以避免下游分区表可能丢数据的问题 <https://github.com/pingcap/tiflow/issues/8581>。使用示例详见 <https://docs.pingcap.com/zh/tidb/dev/ticdc-sink-to-cloud-storage#数据变更记录>。
+# 是否使用 partition 作为分隔字符串。默认值为 true，即一张表中各个 partition 的数据会分不同的目录来存储。使用示例详见 <https://docs.pingcap.com/zh/tidb/dev/ticdc-sink-to-cloud-storage#数据变更记录>。
 # 注意：该参数只有当下游为存储服务时，才会生效。
-enable-partition-separator = true
->>>>>>> 51e6762d59 (ticdc: refine the ticdc changefeed configuration file (#14014))
+enable-partition-separator = false
 
 # Schema 注册表的 URL。
 # 注意：该参数只有当下游为消息队列时，才会生效。
@@ -204,9 +174,6 @@ quote = '"'
 # CSV 中列为 NULL 时将以什么字符来表示。默认值为 `\N`。
 null = '\N'
 # 是否在 CSV 行中包含 commit-ts。默认值为 false。
-<<<<<<< HEAD
-include-commit-ts = false
-=======
 # include-commit-ts = false
 
 # sink.consistent 中的字段用于配置 Changefeed 的数据一致性。详细的信息，请参考 <https://docs.pingcap.com/tidb/stable/ticdc-sink-to-mysql#eventually-consistent-replication-in-disaster-scenarios>。
@@ -223,5 +190,4 @@ flush-interval = 2000
 storage = ""
 # 是否将 redo log 存储到文件中。默认值为 false。
 use-file-backend = false
->>>>>>> 51e6762d59 (ticdc: refine the ticdc changefeed configuration file (#14014))
 ```
