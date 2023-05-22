@@ -1,7 +1,11 @@
 ---
 title: LOAD DATA
 summary: TiDB 数据库中 LOAD DATA 的使用概况。
+<<<<<<< HEAD
 aliases: ['/docs-cn/dev/sql-statements/sql-statement-load-data/','/docs-cn/dev/reference/sql/statements/load-data/']
+=======
+aliases: ['/zh/tidb/v7.0/sql-statement-operate-load-data-job','/zh/tidb/v7.0/sql-statement-show-load-data']
+>>>>>>> 9cef2dfb78 (LOAD DATA: remove two sql statements (#14031))
 ---
 
 # LOAD DATA
