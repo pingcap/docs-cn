@@ -1099,7 +1099,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 > **注意：**
 >
-> 自 v7.0.0 起，`tidb_dml_batch_size`对 [`LOAD DATA` 语句](/sql-statements/sql-statement-load-data.md)不再生效。如需控制 `LOAD DATA` 语句的事务大小，可使用参数 [`batch_size`](/sql-statements/sql-statement-load-data.md#with-batch_sizenumber)。
+> 自 v7.0.0 起，`tidb_dml_batch_size` 对 [`LOAD DATA` 语句](/sql-statements/sql-statement-load-data.md)不再生效。
 
 ### `tidb_enable_1pc` <span class="version-mark">从 v5.0 版本开始引入</span>
 
