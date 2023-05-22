@@ -7,17 +7,6 @@ summary: TiDB 数据库中 LOAD DATA 的使用概况。
 
 `LOAD DATA` 语句用于将数据批量加载到 TiDB 表中。
 
-<<<<<<< HEAD
-在 v7.0.0 版本集成 TiDB Lightning 的逻辑导入模式，使 `LOAD DATA` 语句更加强大，包括：
-
-- 支持从 S3、GCS 导入数据
-- 支持导入 Parquet 格式的数据
-- 新增参数 `FORMAT`、`FIELDS DEFINED NULL BY`、`With batch_size=<number>,detached`
-
-> **警告：**
->
-> 新增的能力和参数为实验特性，不建议在生产环境中使用。
-=======
 在 v7.0.0 版本支持以下功能：
 
 - 支持从 S3、GCS 导入数据
@@ -26,7 +15,6 @@ summary: TiDB 数据库中 LOAD DATA 的使用概况。
 > **警告：**
 >
 > v7.0.0 新增支持从 S3、GCS 导入数据和 `FIELDS DEFINED NULL BY` 参数为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
->>>>>>> 67fd1d11ba (Revert "sql: GA load data logical mode and add experimental physical mode" (#14017))
 
 ## 语法图
 
@@ -36,26 +24,11 @@ LoadDataStmt ::=
 
 LocalOpt ::= ('LOCAL')?
 
-<<<<<<< HEAD
-FormatOpt ::=
-    ('FORMAT' ('DELIMITED DATA' | 'SQL FILE' | 'PARQUET'))?
-
-=======
->>>>>>> 67fd1d11ba (Revert "sql: GA load data logical mode and add experimental physical mode" (#14017))
 Fields ::=
     ('TERMINATED' 'BY' stringLit
     | ('OPTIONALLY')? 'ENCLOSED' 'BY' stringLit
     | 'ESCAPED' 'BY' stringLit
     | 'DEFINED' 'NULL' 'BY' stringLit ('OPTIONALLY' 'ENCLOSED')?)?
-<<<<<<< HEAD
-
-LoadDataOptionListOpt ::=
-    ('WITH' (LoadDataOption (',' LoadDataOption)*))?
-
-LoadDataOption ::=
-    detached | batch_size '=' numberLiteral
-=======
->>>>>>> 67fd1d11ba (Revert "sql: GA load data logical mode and add experimental physical mode" (#14017))
 ```
 
 ## 参数说明
@@ -76,13 +49,6 @@ LoadDataOption ::=
 - 导入指定路径下所有以 `foo` 为前缀的文件：`s3://<bucket-name>/path/to/data/foo*`
 - 导入指定路径下以 `foo` 为前缀、以 `.csv` 结尾的文件：`s3://<bucket-name>/path/to/data/foo*.csv`
 
-<<<<<<< HEAD
-### `FORMAT`
-
-你可以通过 `FORMAT` 参数来指定数据文件的格式。如果不指定该参数，需要使用的格式为 `DELIMITED DATA`，该格式即 MySQL `LOAD DATA` 支持的数据格式。
-
-=======
->>>>>>> 67fd1d11ba (Revert "sql: GA load data logical mode and add experimental physical mode" (#14017))
 ### `Fields`、`Lines`、`Ignore Lines`
 
 你可以使用 `Fields` 和 `Lines` 参数来指定如何处理数据格式：
@@ -121,19 +87,6 @@ LINES TERMINATED BY '\n' STARTING BY ''
 
 你可以通过 `IGNORE <number> LINES` 参数来忽略文件开始的 `<number>` 行。例如，可以使用 `IGNORE 1 LINES` 来忽略文件的第一行。
 
-<<<<<<< HEAD
-### `WITH detached`
-
-如果你指定了 S3/GCS 路径（且未指定 `LOCAL` 参数），可以通过 `WITH detached` 来让 `LOAD DATA` 任务在后台运行。此时 `LOAD DATA` 会返回 job ID。
-
-可以通过 [`SHOW LOAD DATA`](/sql-statements/sql-statement-show-load-data.md) 查看创建的 job，也可以使用 [`CANCEL LOAD DATA` 和 `DROP LOAD DATA`](/sql-statements/sql-statement-operate-load-data-job.md) 取消或删除创建的 job。
-
-### `WITH batch_size=<number>`
-
-可以通过 `WITH batch_size=<number>` 来指定批量写入 TiDB 时的行数，默认值为 `1000`。如果不希望分批写入，可以指定为 `0`。
-
-=======
->>>>>>> 67fd1d11ba (Revert "sql: GA load data logical mode and add experimental physical mode" (#14017))
 ## 示例
 
 通过 `LOAD DATA` 导入数据，指定数据的分隔符为逗号，忽略包围数据的引号，并且忽略文件的第一行数据。
