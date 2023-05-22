@@ -67,7 +67,7 @@ SET GLOBAL tidb_server_memory_limit = "32GB";
 
 > **注意：**
 >
-> 在混合部署的情况下，`tidb_server_memory_limit` 为单个 tidb-server 实例的内存使用阈值，而不是整个容器的总内存阈值。
+> 在混合部署的情况下，`tidb_server_memory_limit` 为单个 tidb-server 实例的内存使用阈值，而不是整个物理机的总内存阈值。
 
 ## 使用 INFORMATION_SCHEMA 系统表查看当前 tidb-server 的内存用量
 
