@@ -316,37 +316,6 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
     `LOAD DATA` 语句存在错误。请参考 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md) 查看已支持的功能。
 
-<<<<<<< HEAD
-* Error Number: 8163
-
-    未知的 `LOAD DATA ... WITH ...` 选项。请参考 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md) 查看支持的选项。
-
-* Error Number: 8164
-
-    `LOAD DATA ... WITH ...` 选项取值无效。请参考 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md) 查看有效的取值。
-
-* Error Number: 8165
-
-    重复指定了 `LOAD DATA ... WITH ...` 选项，每个选项只能指定一次。
-
-* Error Number: 8166
-
-    某些 `LOAD DATA ... WITH ...` 选项只能在特定的导入模式下才可以使用。请参考 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md) 查看支持的选项。
-
-* Error Number: 8170
-
-    指定的 `LOAD DATA` job 不存在或不是由当前用户创建。目前用户只能查看自己创建的 job。
-
-* Error Number: 8171
-
-    对不支持的 `LOAD DATA` 任务状态不能进行运维操作。请根据具体的错误提示进行处理。
-
-* Error Number: 8172
-
-    指定 `LOCAL` 的 `LOAD DATA` 不能在后台运行，只有使用 S3/GCS 路径的 `LOAD DATA` 可以在后台运行。请参考 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md) 更改 SQL 语句。
-
-=======
->>>>>>> 67fd1d11ba (Revert "sql: GA load data logical mode and add experimental physical mode" (#14017))
 * Error Number: 8200
 
     尚不支持的 DDL 语法。请参考[与 MySQL DDL 的兼容性](/mysql-compatibility.md#ddl-的限制)。
