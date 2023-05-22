@@ -671,6 +671,7 @@ The following list shows the keywords in TiDB. Reserved keywords are marked with
 - THAN
 - THEN (R)
 - TIDB (R)
+- TiDB_CURRENT_TSO (R)
 - TIFLASH (R)
 - TIKV_IMPORTER
 - TIME
@@ -694,7 +695,6 @@ The following list shows the keywords in TiDB. Reserved keywords are marked with
 - TTL_ENABLE
 - TTL_JOB_INTERVAL
 - TYPE
-- TiDB_CURRENT_TSO (R)
 
 <a id="U" class="letter" href="#U">U</a>
 
