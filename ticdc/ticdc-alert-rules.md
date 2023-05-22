@@ -74,7 +74,7 @@ summary: 了解 TiCDC 集群监控报警规则以及处理方法。
 ### `cdc_sink_flush_duration_time_more_than_10s`
 
 * 报警规则：
-  txn_worker_flush_duration
+
     `histogram_quantile(0.9, rate(ticdc_sink_txn_worker_flush_duration[1m])) > 10`
 
 * 规则描述：
