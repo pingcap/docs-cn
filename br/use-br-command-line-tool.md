@@ -47,6 +47,7 @@ A `br` command consists of multiple layers of sub-commands. Currently, br comman
 * `--cert`: specifies the path to the SSL certificate in the PEM format.
 * `--key`: specifies the path to the SSL certificate key in the PEM format.
 * `--status-addr`: specifies the listening address through which `br` provides statistics to Prometheus.
+* `--concurrency`: the number of concurrent tasks during the backup or restore.
 
 ## Commands of full backup
 
