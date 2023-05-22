@@ -355,7 +355,7 @@ pd-server 相关配置项。
 ### `enable-diagnostic` <span class="version-mark">从 v6.3.0 版本开始引入</span>
 
 + 是否开启诊断功能。开启特性时，PD 将会记录调度中的一些状态来帮助诊断。开启时会略微影响调度速度，在 Store 数量较多时会消耗较大内存。
-+ 默认值：false
++ 默认值：true 
 
 ### `hot-regions-write-interval` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 
