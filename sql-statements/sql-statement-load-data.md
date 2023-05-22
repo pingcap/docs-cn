@@ -1,6 +1,7 @@
 ---
 title: LOAD DATA
 summary: TiDB 数据库中 LOAD DATA 的使用概况。
+aliases: ['/zh/tidb/v7.0/sql-statement-operate-load-data-job','/zh/tidb/v7.0/sql-statement-show-load-data']
 ---
 
 # LOAD DATA
