@@ -297,17 +297,9 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
     目前 `LOAD DATA` 不支持从 TiDB 服务器本地导入数据，可以指定 `LOCAL` 从客户端导入，或者将数据上传到 S3/GCS 再进行导入。请参考 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md)。
 
-* Error Number: 8155
-
-    目前 `LOAD DATA` 不支持从 local 导入 Parquet 格式的数据文件，只支持从 S3/GCS 导入 Parquet 格式的数据文件。你可以将数据上传到 S3/GCS 后再导入。请参考 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md)。
-
 * Error Number: 8156
 
     `LOAD DATA` 语句的文件路径不能为空。需要设置正确的路径再进行导入。请参考 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md)。
-
-* Error Number: 8157
-
-    不支持的数据格式。请参考 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md) 查看支持的数据格式。
 
 * Error Number: 8158
 
@@ -324,38 +316,6 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 * Error Number: 8162
 
     `LOAD DATA` 语句存在错误。请参考 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md) 查看已支持的功能。
-
-* Error Number: 8163
-
-    未知的 `LOAD DATA ... WITH ...` 选项。请参考 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md) 查看支持的选项。
-
-* Error Number: 8164
-
-    `LOAD DATA ... WITH ...` 选项取值无效。请参考 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md) 查看有效的取值。
-
-* Error Number: 8165
-
-    重复指定了 `LOAD DATA ... WITH ...` 选项，每个选项只能指定一次。
-
-* Error Number: 8166
-
-    某些 `LOAD DATA ... WITH ...` 选项只能在特定的导入模式下才可以使用。请参考 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md) 查看支持的选项。
-
-* Error Number: 8170
-
-    指定的 `LOAD DATA` job 不存在或不是由当前用户创建。目前用户只能查看自己创建的 job。
-
-* Error Number: 8171
-
-    对不支持的 `LOAD DATA` 任务状态不能进行运维操作。请根据具体的错误提示进行处理。
-
-* Error Number: 8172
-
-    指定 `LOCAL` 时，不能指定特定的选项，比如 `DETACHED` 和 `import_mode='PHYSICAL'`。请参考 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md) 更改 SQL 语句。
-
-* Error Number: 8173
-
-    执行 Physical Import 时，TiDB 会对当前环境进行检查，比如检查下游表是否为空等。请根据提示进行处理。
 
 * Error Number: 8200
 
