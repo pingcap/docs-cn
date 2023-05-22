@@ -34,19 +34,7 @@ TiDB 资源管控特性提供了两层资源管理能力，包括在 TiDB 层的
 
 Request Unit (RU) 是 TiDB 对 CPU、IO 等系统资源的统一抽象的单位, 目前包括 CPU、IOPS 和 IO 带宽三个指标。这三个指标的消耗会按照一定的比例统一到 RU 单位上。
 
-下表是用户请求对 TiKV 存储层 CPU 和 IO 资源的消耗以及对应的 RU 权重：
-
-| 资源       | RU 权重        |
-|:-----------|:-------------|
-| CPU        | 1/3 RU / 毫秒  |
-| 读 IO      | 1/64 RU / KB |
-| 写 IO      | 1 RU / KB    |
-| 一次读请求的基本开销 | 0.25 RU      |
-| 一次写请求的基本开销 | 1.5 RU       |
-
-基于上表，假设某个资源组消耗的 TiKV 时间是 `c` 毫秒，`r1` 次请求读取了 `r2` KB 数据，`w1` 次写请求写入了 `w2` KB 数据，集群中非 witness TiKV 节点数是 `n`，则该资源组消耗的总 RU 的公式如下：
-
-`c`\* 1/3 + (`r1` \* 0.25 + `r2` \* 1/64) + (`w1` \* 1.5  + `w2` \* 1 \* `n`)
+更全面的 RU 阐述，可参考 [TiDB Cloud Serverless Tier Pricing](https://www.pingcap.com/tidb-cloud-serverless-pricing-details/)。**注意在 self-host 部署时，不包括其中网络和存储部分**。
 
 ## 相关参数
 
