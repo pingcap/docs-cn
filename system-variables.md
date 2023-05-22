@@ -1682,8 +1682,8 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 类型：布尔型
 - 默认值：`ON`
+- 类型：布尔型
 - 该变量是[资源管控特性](/tidb-resource-control.md)的开关。该变量设置为 `ON` 时，集群支持应用按照资源组做资源隔离。
 
 ### `tidb_enable_reuse_chunk` <span class="version-mark">从 v6.4.0 版本开始引入</span>
