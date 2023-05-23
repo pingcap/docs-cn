@@ -198,7 +198,7 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 | [数据迁移工具](/migration-overview.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y |
 | [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y |
 | [Change data capture (CDC)](/ticdc/ticdc-overview.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y |
-| [TiCDC 支持保存数据到存储服务 (S3/NFS/Azure Blob Storage/GCP)](/ticdc/ticdc-sink-to-cloud-storage.md) | Y | E | N | N | N | N | N | N | N |
+| [TiCDC 支持保存数据到存储服务 (Amazon S3/GCS/Azure Blob Storage/NFS)](/ticdc/ticdc-sink-to-cloud-storage.md) | Y | E | N | N | N | N | N | N | N |
 | [TiCDC 支持在两个 TiDB 集群之间进行双向复制](/ticdc/ticdc-bidirectional-replication.md) | Y | Y | N | N | N | N | N | N | N |
 | [TiCDC OpenAPI v2](/ticdc/ticdc-open-api-v2.md) | Y | N | N | N | N | N | N | N | N |
 
