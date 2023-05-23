@@ -51,6 +51,175 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 - 默认值：`OFF`
 - 是否允许在 `INSERT` 语句中显式指定含有 `AUTO_RANDOM` 属性的列的值。
 
+
+### `authentication_ldap_sasl_auth_method_name` <span class="version-mark">从 v7.1.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 类型：枚举型
+- 默认值：`SCRAM-SHA-1`
+- 可选值：`SCRAM-SHA-1`、`SCRAM-SHA-256`、`GSSAPI`
+- LDAP SASL 身份验证中，验证方法的名称。
+
+### `authentication_ldap_sasl_bind_base_dn` <span class="version-mark">从 v7.1.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 类型：字符串
+- 默认值：""
+- LDAP SASL 身份验证中，搜索用户的范围。如果创建用户时没有通过 `AS ...` 指定 `dn`，TiDB 会自动在 LDAP Server 的该范围中根据用户名搜索用户 `dn`。例如 `dc=example,dc=org`。
+
+### `authentication_ldap_sasl_bind_root_dn` <span class="version-mark">从 v7.1.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 类型：字符串
+- 默认值：""
+- LDAP SASL 身份验证中，TiDB 登录 LDAP Server 搜索用户时使用的 `dn`。
+
+### `authentication_ldap_sasl_bind_root_pwd` <span class="version-mark">从 v7.1.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 类型：字符串
+- 默认值：""
+- LDAP SASL 身份验证中，TiDB 登录 LDAP Server 搜索用户时使用的密码。
+
+### `authentication_ldap_sasl_ca_path` <span class="version-mark">从 v7.1.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 类型：字符串
+- 默认值：""
+- LDAP SASL 身份验证中，TiDB 对 StartTLS 连接使用的 CA 证书的路径。
+
+### `authentication_ldap_sasl_init_pool_size` <span class="version-mark">从 v7.1.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 类型：整数型
+- 默认值：`10`
+- 范围：`[1, 32767]`
+- LDAP SASL 身份验证中，TiDB 与 LDAP Server 间连接池的初始连接数。
+
+### `authentication_ldap_sasl_max_pool_size` <span class="version-mark">从 v7.1.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 类型：整数型
+- 默认值：`1000`
+- 范围：`[1, 32767]`
+- LDAP SASL 身份验证中，TiDB 与 LDAP Server 间连接池的最大连接数。
+
+### `authentication_ldap_sasl_server_host` <span class="version-mark">从 v7.1.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 类型：字符串
+- 默认值：""
+- LDAP SASL 身份验证中，LDAP Server 的主机名或地址。
+
+### `authentication_ldap_sasl_server_port` <span class="version-mark">从 v7.1.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 类型：整数型
+- 默认值：`389`
+- 范围：`[1, 65535]`
+- LDAP SASL 身份验证中，LDAP Server 的 TCP/IP 端口号。
+
+### `authentication_ldap_sasl_tls` <span class="version-mark">从 v7.1.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 类型：布尔型
+- 默认值：`OFF`
+- LDAP SASL 身份验证中，是否使用 StartTLS 对连接加密。
+
+### `authentication_ldap_simple_auth_method_name` <span class="version-mark">从 v7.1.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 类型：枚举型
+- 默认值：`SIMPLE`
+- 可选值：`SIMPLE`.
+- LDAP simple 身份验证中，验证方法的名称。现在仅支持 `SIMPLE`。
+
+### `authentication_ldap_simple_bind_base_dn` <span class="version-mark">从 v7.1.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 类型：字符串
+- 默认值：""
+- LDAP simple 身份验证中，搜索用户的范围。如果创建用户时没有通过 `AS ...` 指定 `dn`，TiDB 会自动在 LDAP Server 的该范围中根据用户名搜索用户 `dn`。例如 `dc=example,dc=org`。
+
+### `authentication_ldap_simple_bind_root_dn` <span class="version-mark">从 v7.1.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 类型：字符串
+- 默认值：""
+- LDAP simple 身份验证中，TiDB 登录 LDAP Server 搜索用户时使用的 `dn`。
+
+### `authentication_ldap_simple_bind_root_pwd` <span class="version-mark">从 v7.1.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 类型：字符串
+- 默认值：""
+- LDAP simple 身份验证中，TiDB 登录 LDAP Server 搜索用户时使用的密码。
+
+### `authentication_ldap_simple_ca_path` <span class="version-mark">从 v7.1.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 类型：字符串
+- 默认值：""
+- LDAP simple 身份验证中，TiDB 对 StartTLS 连接使用的 CA 证书的路径。
+
+### `authentication_ldap_simple_init_pool_size` <span class="version-mark">从 v7.1.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 类型：整数型
+- 默认值：`10`
+- 范围：`[1, 32767]`
+- LDAP simple 身份验证中，TiDB 与 LDAP Server 间连接池的初始连接数。
+
+### `authentication_ldap_simple_max_pool_size` <span class="version-mark">从 v7.1.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 类型：整数型
+- 默认值：`1000`
+- 范围：`[1, 32767]`
+- LDAP simple 身份验证中，TiDB 与 LDAP Server 间连接池的最大连接数。
+
+### `authentication_ldap_simple_server_host` <span class="version-mark">从 v7.1.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 类型：字符串
+- 默认值：""
+- LDAP simple 身份验证中，LDAP Server 的主机名或地址。
+
+### `authentication_ldap_simple_server_port` <span class="version-mark">从 v7.1.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 类型：整数型
+- 默认值：`389`
+- 范围：`[1, 65535]`
+- LDAP simple 身份验证中，LDAP Server 的 TCP/IP 端口号。
+
+### `authentication_ldap_simple_tls` <span class="version-mark">从 v7.1.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 类型：布尔型
+- 默认值：`OFF`
+- LDAP simple 身份验证中，是否使用 StartTLS 对连接加密。
+
 ### `auto_increment_increment`
 
 - 作用域：SESSION | GLOBAL
@@ -4011,171 +4180,3 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 是否持久化到集群：是
 - 默认值：`ON`
 - 这个变量用于控制计算窗口函数时是否采用高精度模式。
-
-### `authentication_ldap_sasl_auth_method_name` <span class="version-mark">从 v7.1.0 版本开始引入</span>
-
-- 作用域：GLOBAL
-- 是否持久化到集群：是
-- 类型：枚举型
-- 默认值：`SCRAM-SHA-1`
-- 可选值：`SCRAM-SHA-1`、`SCRAM-SHA-256`、`GSSAPI`
-- LDAP SASL 身份验证中，验证方法的名称。
-
-### `authentication_ldap_sasl_bind_base_dn` <span class="version-mark">从 v7.1.0 版本开始引入</span>
-
-- 作用域：GLOBAL
-- 是否持久化到集群：是
-- 类型：字符串
-- 默认值：""
-- LDAP SASL 身份验证中，搜索用户的范围。如果创建用户时没有通过 `AS ...` 指定 `dn`，TiDB 会自动在 LDAP Server 的该范围中根据用户名搜索用户 `dn`。
-
-### `authentication_ldap_sasl_bind_root_dn` <span class="version-mark">从 v7.1.0 版本开始引入</span>
-
-- 作用域：GLOBAL
-- 是否持久化到集群：是
-- 类型：字符串
-- 默认值：""
-- LDAP SASL 身份验证中，TiDB 登录 LDAP Server 搜索用户时使用的 `dn`。
-
-### `authentication_ldap_sasl_bind_root_pwd` <span class="version-mark">从 v7.1.0 版本开始引入</span>
-
-- 作用域：GLOBAL
-- 是否持久化到集群：是
-- 类型：字符串
-- 默认值：""
-- LDAP SASL 身份验证中，TiDB 登录 LDAP Server 搜索用户时使用的密码。
-
-### `authentication_ldap_sasl_ca_path` <span class="version-mark">从 v7.1.0 版本开始引入</span>
-
-- 作用域：GLOBAL
-- 是否持久化到集群：是
-- 类型：字符串
-- 默认值：""
-- LDAP SASL 身份验证中，TiDB 对 StartTLS 连接使用的 CA 证书的路径。
-
-### `authentication_ldap_sasl_init_pool_size` <span class="version-mark">从 v7.1.0 版本开始引入</span>
-
-- 作用域：GLOBAL
-- 是否持久化到集群：是
-- 类型：整数型
-- 默认值：`10`
-- 范围：`[1, 32767]`
-- LDAP SASL 身份验证中，TiDB 与 LDAP Server 间连接池的初始大小。
-
-### `authentication_ldap_sasl_max_pool_size` <span class="version-mark">从 v7.1.0 版本开始引入</span>
-
-- 作用域：GLOBAL
-- 是否持久化到集群：是
-- 类型：整数型
-- 默认值：`1000`
-- 范围：`[1, 32767]`
-- LDAP SASL 身份验证中，TiDB 与 LDAP Server 间连接池的最大大小。
-
-### `authentication_ldap_sasl_server_host` <span class="version-mark">从 v7.1.0 版本开始引入</span>
-
-- 作用域：GLOBAL
-- 是否持久化到集群：是
-- 类型：字符串
-- 默认值：""
-- LDAP SASL 身份验证中，LDAP Server 的主机名或地址。
-
-### `authentication_ldap_sasl_server_port` <span class="version-mark">从 v7.1.0 版本开始引入</span>
-
-- 作用域：GLOBAL
-- 是否持久化到集群：是
-- 类型：整数型
-- 默认值：`389`
-- 范围：`[1, 65535]`
-- LDAP SASL 身份验证中，LDAP Server 的端口号。
-
-### `authentication_ldap_sasl_tls` <span class="version-mark">从 v7.1.0 版本开始引入</span>
-
-- 作用域：GLOBAL
-- 是否持久化到集群：是
-- 类型：布尔型
-- 默认值：`OFF`
-- LDAP SASL 身份验证中，是否使用 StartTLS 对连接加密。
-
-### `authentication_ldap_simple_auth_method_name` <span class="version-mark">从 v7.1.0 版本开始引入</span>
-
-- 作用域：GLOBAL
-- 是否持久化到集群：是
-- 类型：枚举型
-- 默认值：`SIMPLE`
-- 可选值：`SIMPLE`.
-- LDAP simple 身份验证中，验证方法的名称。现在仅支持 `SIMPLE`。
-
-### `authentication_ldap_simple_bind_base_dn` <span class="version-mark">从 v7.1.0 版本开始引入</span>
-
-- 作用域：GLOBAL
-- 是否持久化到集群：是
-- 类型：字符串
-- 默认值：""
-- LDAP simple 身份验证中，搜索用户的范围。如果创建用户时没有通过 `AS ...` 指定 `dn`，TiDB 会自动在 LDAP Server 的该范围中根据用户名搜索用户 `dn`。
-
-### `authentication_ldap_simple_bind_root_dn` <span class="version-mark">从 v7.1.0 版本开始引入</span>
-
-- 作用域：GLOBAL
-- 是否持久化到集群：是
-- 类型：字符串
-- 默认值：""
-- LDAP simple 身份验证中，TiDB 登录 LDAP Server 搜索用户时使用的 `dn`。
-
-### `authentication_ldap_simple_bind_root_pwd` <span class="version-mark">从 v7.1.0 版本开始引入</span>
-
-- 作用域：GLOBAL
-- 是否持久化到集群：是
-- 类型：字符串
-- 默认值：""
-- LDAP simple 身份验证中，TiDB 登录 LDAP Server 搜索用户时使用的密码。
-
-### `authentication_ldap_simple_ca_path` <span class="version-mark">从 v7.1.0 版本开始引入</span>
-
-- 作用域：GLOBAL
-- 是否持久化到集群：是
-- 类型：字符串
-- 默认值：""
-- LDAP simple 身份验证中，TiDB 对 StartTLS 连接使用的 CA 证书的路径。
-
-### `authentication_ldap_simple_init_pool_size` <span class="version-mark">从 v7.1.0 版本开始引入</span>
-
-- 作用域：GLOBAL
-- 是否持久化到集群：是
-- 类型：整数型
-- 默认值：`10`
-- 范围：`[1, 32767]`
-- LDAP simple 身份验证中，TiDB 与 LDAP Server 间连接池的初始大小。
-
-### `authentication_ldap_simple_max_pool_size` <span class="version-mark">从 v7.1.0 版本开始引入</span>
-
-- 作用域：GLOBAL
-- 是否持久化到集群：是
-- 类型：整数型
-- 默认值：`1000`
-- 范围：`[1, 32767]`
-- LDAP simple 身份验证中，TiDB 与 LDAP Server 间连接池的最大大小。
-
-### `authentication_ldap_simple_server_host` <span class="version-mark">从 v7.1.0 版本开始引入</span>
-
-- 作用域：GLOBAL
-- 是否持久化到集群：是
-- 类型：字符串
-- 默认值：""
-- LDAP simple 身份验证中，LDAP Server 的主机名或地址。
-
-### `authentication_ldap_simple_server_port` <span class="version-mark">从 v7.1.0 版本开始引入</span>
-
-- 作用域：GLOBAL
-- 是否持久化到集群：是
-- 类型：整数型
-- 默认值：`389`
-- 范围：`[1, 65535]`
-- LDAP simple 身份验证中，LDAP Server 的端口号。
-
-### `authentication_ldap_simple_tls` <span class="version-mark">从 v7.1.0 版本开始引入</span>
-
-- 作用域：GLOBAL
-- 是否持久化到集群：是
-- 类型：布尔型
-- 默认值：`OFF`
-- LDAP simple 身份验证中，是否使用 StartTLS 对连接加密。
