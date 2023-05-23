@@ -30,7 +30,7 @@
       - [GORM](/develop/dev-guide-sample-application-golang-gorm.md)
     - Python
       - [mysqlclient](/develop/dev-guide-sample-application-python-mysqlclient.md)
-      - [MySQL Connect/Python](/develop/dev-guide-sample-application-python-mysql-connector.md)
+      - [MySQL Connector/Python](/develop/dev-guide-sample-application-python-mysql-connector.md)
       - [PyMySQL](/develop/dev-guide-sample-application-python-pymysql.md)
       - [SQLAlchemy](/develop/dev-guide-sample-application-python-sqlalchemy.md)
       - [peewee](/develop/dev-guide-sample-application-python-peewee.md)
