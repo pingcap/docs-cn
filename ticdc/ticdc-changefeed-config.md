@@ -178,19 +178,24 @@ include-commit-ts = false
 # Specifies the replication consistency configurations for a changefeed when using the redo log. For more information, see https://docs.pingcap.com/tidb/stable/ticdc-sink-to-mysql#eventually-consistent-replication-in-disaster-scenarios. 
 # Note: The consistency-related configuration items only take effect when the downstream is a database and the redo log feature is enabled.
 [sink.consistent]
-# The data consistency level. Available options are "none" and "eventual". "none" means that the redo log is disabled.  
+# The data consistency level. Available options are "none" and "eventual". "none" means that the redo log is disabled.
 # The default value is "none".
 level = "none"
 # The max redo log size in MB.
-# The default value is 64.  
+# The default value is 64.
 max-log-size = 64
 # The flush interval for redo log. The default value is 2000 milliseconds.
-flush-interval = 2000 
+flush-interval = 2000
 # The storage URI of the redo log.
 # The default value is empty.
-storage = "" 
+storage = ""
 # Specifies whether to store the redo log in a file.
 # The default value is false.
 use-file-backend = false
 
+[integrity]
+# Whether to enable the checksum validation for single-row data. The default value is "none", which means to disable the feature. Value options are "none" and "correctness".
+integrity-check-level = "none"
+# Specifies the log level of the Changefeed when the checksum validation for single-row data fails. The default value is "warn". Value options are "warn" and "error".
+corruption-handle-level = "warn"
 ```
