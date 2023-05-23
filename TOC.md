@@ -527,6 +527,7 @@
       - [管理 Changefeed](/ticdc/ticdc-manage-changefeed.md)
       - [日志过滤器](/ticdc/ticdc-filter.md)
       - [双向复制](/ticdc/ticdc-bidirectional-replication.md)
+      - [单行数据正确性校验](/ticdc/ticdc-integrity-check.md)
     - 监控告警
       - [基本监控指标](/ticdc/ticdc-summary-monitor.md)
       - [详细监控指标](/ticdc/monitor-ticdc.md)
