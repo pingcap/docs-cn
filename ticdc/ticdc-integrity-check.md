@@ -84,7 +84,7 @@ fn checksum(columns) {
 * `columns` 应该按照 column ID 排序。在 Avro schema 中，各个字段已经按照 column ID 的顺序排序，因此可以直接按照此顺序排序 `columns`。
 
 * `encode(column)` 函数将 column 的值编码为字节，编码规则取决于该 column 的数据类型。具体规则如下：
-    
+
     * TINYINT、SMALLINT、INT、BIGINT、MEDIUMINT 和 YEAR 类型会被转换为 UINT64 类型，并按照小端序编码。例如，数字 `0x0123456789abcdef` 会被编码为 `hex'0x0123456789abcdef'`。
     * FLOAT 和 DOUBLE 类型会被转换为 DOUBLE 类型，然后转换为 IEEE754 格式的 UINT64 类型。
     * BIT、ENUM 和 SET 类型会被转换为 UINT64 类型。
