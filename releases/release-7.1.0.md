@@ -392,7 +392,7 @@ TiDB 7.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
     - 提升 TiFlash 在存算分离架构下的性能和稳定性 [#6882](https://github.com/pingcap/tiflash/issues/6882) @[JaySon-Huang](https://github.com/JaySon-Huang) @[breezewish](https://github.com/breezewish) @[JinheLin](https://github.com/JinheLin)
     - 支持在 Semi Join 或 Anti Semi Join 中，通过选择较小的表作为 Build 端来优化查询性能 [#7280](https://github.com/pingcap/tiflash/issues/7280) @[yibin87](https://github.com/yibin87)
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
+    - 提升 TiFlash 在默认参数下使用 BR/Lightning 恢复数据或者导入数据的性能 [#7272](https://github.com/pingcap/tiflash/issues/7272) @[breezewish](https://github.com/breezewish)
 
 + Tools
 
