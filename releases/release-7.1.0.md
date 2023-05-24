@@ -146,32 +146,6 @@ TiDB 版本：7.1.0 (upcoming)
 
     更多信息，请参考[用户文档](/partitioned-table.md#range-interval-分区)。
 
-* `LOAD DATA` 部分功能 GA [#40499](https://github.com/pingcap/tidb/issues/40499) @[lance6716](https://github.com/lance6716)
-
-    在 TiDB v7.1.0 中，以下 `LOAD DATA` 功能 GA：
-
-    - 支持从 S3、GCS 导入数据。
-    - 支持导入 Parquet 格式的数据。
-    - 支持解析源文件中的下列字符集：`ascii`、`latin1`、`binary`、`gbk` 和 `utf8mbd`
-    - 支持设置 `FIELDS DEFINED NULL BY` 将源文件中的指定值转换为 `NULL` 并写入目标表。
-    - 支持设置 `batch_size` 指定批量写入目标表的行数，从而提升写入性能。
-    - 支持设置 `detached`，允许指定任务在后台运行。
-    - 支持使用 `SHOW LOAD DATA` 和 `DROP LOAD DATA` 管理任务。
-
-  更多信息，请参考[用户文档](/sql-statements/sql-statement-load-data.md)。
-
-* `LOAD DATA` 集成 TiDB Lightning Physical Import Mode 的导入功能，提升导入性能（实验特性）[#42930](https://github.com/pingcap/tidb/issues/42930) @[D3Hunter](https://github.com/D3Hunter)
-
-    `LOAD DATA` 集成 TiDB Lightning 的物理导入模式 (Physical Import Mode)，你可以通过设置 `WITH import_mode = 'PHYSICAL'` 开启。相比逻辑导入模式 (Logical Import Mode)，可成倍提升数据导入的性能。
-
-    更多信息，请参考[用户文档](/sql-statements/sql-statement-load-data.md)。
-
-* `LOAD DATA` 支持并发导入，提升导入性能（实验特性）[#40499](https://github.com/pingcap/tidb/issues/40499) @[lance6716](https://github.com/lance6716)
-
-    在 v7.1.0 之前版本中，`LOAD DATA` 不支持并发导入数据，导致性能未达到预期。从 v7.1.0 开始，`LOAD DATA` 支持并发导入数据，你可以通过 `WITH thread=<number>` 提高并发度以提升导入的性能。在内部测试中，相较于 v7.0.0，测试负载下的逻辑导入性能提升了近 4 倍。
-
-    更多信息，请参考[用户文档](/sql-statements/sql-statement-load-data.md)。
-
 * 生成列 (Generated Columns) 成为正式功能 (GA) @[bb7133](https://github.com/bb7133)
 
     生成列是数据库中非常有价值的一个功能。在创建表时，可以定义一列的值由表中其他列的值计算而来，而不是由用户显式插入或更新。这个生成列可以是虚拟列 (Virtual Column) 或存储列 (Stored Column)。TiDB 在早期版本就提供了与 MySQL 兼容的生成列功能，在 v7.1.0 中这个功能正式 GA。
@@ -225,8 +199,6 @@ TiDB 版本：7.1.0 (upcoming)
 
     如果你已经将 TiFlash 升级到 v7.1.0，那么在升级 TiDB 到 v7.1.0 的过程中，TiDB 无法读取 TiFlash 系统表（[`INFORMATION_SCHEMA.TIFLASH_TABLES`](/information-schema/information-schema-tiflash-tables.md) 和 [`INFORMATION_SCHEMA.TIFLASH_SEGMENTS`](/information-schema/information-schema-tiflash-segments.md)）。
 
-* [`SHOW LOAD DATA`](/sql-statements/sql-statement-show-load-data.md) 的返回值中废弃了参数 `Loaded_File_Size`，修改为参数 `Imported_Rows`
-
 ### 系统变量
 
 | 变量名 | 修改类型 | 描述 |
@@ -252,6 +224,12 @@ TiDB 版本：7.1.0 (upcoming)
 | -------- | -------- | -------- | -------- |
 | TiDB | [`force-init-stats`](/tidb-configuration-file.md#force-init-stats-从-v710-版本开始引入) | 新增 | 用于控制 TiDB 启动时是否在统计信息初始化完成后再对外提供服务。 |
 | TiDB | [`lite-init-stats`](/tidb-configuration-file.md#lite-init-stats-从-v710-版本开始引入) | 新增 | 用于控制 TiDB 启动时是否采用轻量级的统计信息初始化。 |
+| TiDB | [`timeout`](/tidb-configuration-file.md#timeout-从-v710-版本开始引入) | 新增 | 用于控制 TiDB 写日志操作的超时时间，当磁盘故障导致日志无法写入时，该配置可以让 TiDB 进程崩溃而不是卡死。默认值为 `0`，即不设定超时时间。 |
+| TiKV | [`optimize-filters-for-memory`](/tikv-configuration-file.md#optimize-filters-for-memory-从-v710-版本开始引入) | 新增 | 控制是否生成能够最小化内存碎片的 Bloom/Ribbon filter。 |
+| TiKV | [`ribbon-filter-above-level`](/tikv-configuration-file.md#ribbon-filter-above-level-从-v710-版本开始引入) | 新增 | 控制是否对于大于等于该值的 level 使用 Ribbon filter，对于小于该值的 level，使用非 block-based bloom filter。 |
+| TiKV | [`split.byte-threshold`](/tikv-configuration-file.md#byte-threshold-从-v50-版本开始引入) | 修改 | 当 [`region-split-size`](/tikv-configuration-file.md#region-split-size) 大于等于 4 GB 时，默认值从 `30MiB` 修改为 `100MiB`。 |
+| TiKV | [`split.qps-threshold`](/tikv-configuration-file.md#qps-threshold) | 修改 | 当 [`region-split-size`](/tikv-configuration-file.md#region-split-size) 大于等于 4 GB 时，默认值从 `3000` 修改为 `7000`。 |
+| TiKV | [`split.region-cpu-overload-threshold-ratio`](/tikv-configuration-file.md#region-cpu-overload-threshold-ratio-从-v620-版本开始引入) | 修改 | 当 [`region-split-size`](/tikv-configuration-file.md#region-split-size) 大于等于 4 GB 时，默认值从 `0.25` 修改为 `0.75`。 |
 | PD | [`store-limit-version`](/pd-configuration-file.md#store-limit-version-从-v710-版本开始引入) | 新增 | 用于设置 store limit 工作模式。可选值为 `"v1"` 和 `"v2"`。 |
 | PD | [`schedule.enable-diagnostic`](/pd-configuration-file.md#enable-diagnostic-从-v630-版本开始引入) | 修改 | 默认值从 `false` 修改为 `true`，默认打开调度器的诊断功能。 |
 | TiFlash | `http_port` | 删除 | 废弃 TiFlash HTTP 服务端口（默认 `8123`）。 |
