@@ -527,6 +527,7 @@
       - [管理 Changefeed](/ticdc/ticdc-manage-changefeed.md)
       - [日志过滤器](/ticdc/ticdc-filter.md)
       - [双向复制](/ticdc/ticdc-bidirectional-replication.md)
+      - [单行数据正确性校验](/ticdc/ticdc-integrity-check.md)
     - 监控告警
       - [基本监控指标](/ticdc/ticdc-summary-monitor.md)
       - [详细监控指标](/ticdc/monitor-ticdc.md)
@@ -700,7 +701,6 @@
       - [`BACKUP`](/sql-statements/sql-statement-backup.md)
       - [`BATCH`](/sql-statements/sql-statement-batch.md)
       - [`BEGIN`](/sql-statements/sql-statement-begin.md)
-      - [`CANCEL LOAD DATA` 和 `DROP LOAD DATA`](/sql-statements/sql-statement-operate-load-data-job.md)
       - [`CALIBRATE RESOURCE`](/sql-statements/sql-statement-calibrate-resource.md)
       - [`CHANGE COLUMN`](/sql-statements/sql-statement-change-column.md)
       - [`CHANGE DRAINER`](/sql-statements/sql-statement-change-drainer.md)
@@ -794,7 +794,6 @@
       - [`SHOW INDEX [FROM|IN]`](/sql-statements/sql-statement-show-index.md)
       - [`SHOW INDEXES [FROM|IN]`](/sql-statements/sql-statement-show-indexes.md)
       - [`SHOW KEYS [FROM|IN]`](/sql-statements/sql-statement-show-keys.md)
-      - [`SHOW LOAD DATA`](/sql-statements/sql-statement-show-load-data.md)
       - [`SHOW MASTER STATUS`](/sql-statements/sql-statement-show-master-status.md)
       - [`SHOW PLACEMENT`](/sql-statements/sql-statement-show-placement.md)
       - [`SHOW PLACEMENT FOR`](/sql-statements/sql-statement-show-placement-for.md)
@@ -959,6 +958,7 @@
         - [使用示例](/dashboard/dashboard-diagnostics-usage.md)
       - [监控指标页面](/dashboard/dashboard-monitoring.md)
       - [日志搜索页面](/dashboard/dashboard-log-search.md)
+      - [资源管控页面](/dashboard/dashboard-resource-manager.md)
       - 实例性能分析
         - [手动分析页面](/dashboard/dashboard-profiling.md)
         - [持续分析页面](/dashboard/continuous-profiling.md)
@@ -969,6 +969,8 @@
   - [遥测](/telemetry.md)
   - [错误码](/error-codes.md)
   - [通过拓扑 label 进行副本调度](/schedule-replicas-by-topology-labels.md)
+  - 内部组件介绍
+    - [TiDB 后端任务分布式并行执行框架](/tidb-distributed-execution-framework.md)
 - 常见问题解答 (FAQ)
   - [FAQ 汇总](/faq/faq-overview.md)
   - [产品 FAQ](/faq/tidb-faq.md)

@@ -130,9 +130,11 @@ mysql> select table_name,index_name,key_data,row_data from conflict_error_v1 lim
 
 根据上述信息人工甄别需要保留的重复数据，手动插回原表即可。
 
-## 导入时限制调度范围从集群降低到表级别
+## 导入时暂停 PD 调度的范围
 
 自 TiDB Lightning v6.2.0 版本起，TiDB Lightning 提供机制控制导入数据过程对在线业务的影响。TiDB Lightning 不会暂停全局的调度，而是只暂停目标表数据范围所在 region 的调度，降低了对在线业务的影响。
+
+自 TiDB v7.1.0 版本起，你可以通过 TiDB Lightning 的参数 [`pause-pd-scheduler-scope`](/tidb-lightning/tidb-lightning-configuration.md) 来控制暂停调度的范围。默认为 `"table"`，即只暂停目标表数据所在 Region 的调度。当集群没有业务流量时，建议设置为 `"global"` 以减少来自调度器对导入的干扰。
 
 > **注意：**
 >
