@@ -443,7 +443,7 @@ TiDB 7.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
         - 修复宽表导入时可能 OOM 的问题 [#43728](https://github.com/pingcap/tidb/issues/43728)@[D3Hunter](https://github.com/D3Hunter)
         - 修复 lightning grafana 面板缺失数据的问题 [#43357](https://github.com/pingcap/tidb/issues/43357)@[lichunzhu](https://github.com/lichunzhu)
         - 修复未正确设置 keyspace name 导致导入失败的问题 [#43684](https://github.com/pingcap/tidb/issues/43684)@[zeminzhou](https://github.com/zeminzhou)
-        - 修复当range 部分写入时在一定情况会跳过数据导入的问题 [#43768](https://github.com/pingcap/tidb/issues/43768)@[lance6716](https://github.com/lance6716)
+        - 修复当 range 部分写入时在一定情况会跳过数据导入的问题 [#43768](https://github.com/pingcap/tidb/issues/43768)@[lance6716](https://github.com/lance6716)
 
 
     + TiUP
