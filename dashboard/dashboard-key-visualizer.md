@@ -12,7 +12,7 @@ The Key Visualizer page of TiDB Dashboard is used to analyze the usage of TiDB a
 
 You can use one of the following two methods to access the Key Visualizer page:
 
-* After logging into TiDB Dashboard, click **Key Visualizer** on the left navigation menu:
+* After logging in to TiDB Dashboard, click **Key Visualizer** in the left navigation menu.
 
     ![Access Key Visualizer](/media/dashboard/dashboard-keyviz-access-v650.png)
 

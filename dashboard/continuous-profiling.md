@@ -38,11 +38,11 @@ All performance data in [Manual Profiling](/dashboard/dashboard-profiling.md#sup
 
 You can access the Continuous Profiling page using either of the following methods:
 
-- After logging into TiDB Dashboard, click **Advanced Debugging** > **Profiling Instances** > **Continuous Profiling** on the left navigation bar.
+* After logging in to TiDB Dashboard, click **Advanced Debugging** > **Profiling Instances** > **Continuous Profiling** in the left navigation menu.
 
   ![Access page](/media/dashboard/dashboard-conprof-access.png)
 
-- Visit <http://127.0.0.1:2379/dashboard/#/continuous_profiling> in your browser. Replace `127.0.0.1:2379` with the actual PD instance address and port.
+* Visit <http://127.0.0.1:2379/dashboard/#/continuous_profiling> in your browser. Replace `127.0.0.1:2379` with the actual PD instance address and port.
 
 ## Enable Continuous Profiling
 

@@ -35,11 +35,11 @@ The Top SQL feature is still in an early stage and is being continuously enhance
 
 You can access the Top SQL page using either of the following methods:
 
-- After logging into TiDB Dashboard, click **Top SQL** on the left navigation bar.
+* After logging in to TiDB Dashboard, click **Top SQL** in the left navigation menu.
 
   ![Top SQL](/media/dashboard/top-sql-access.png)
 
-- Visit <http://127.0.0.1:2379/dashboard/#/topsql> in your browser. Replace `127.0.0.1:2379` with the actual PD instance address and port.
+* Visit <http://127.0.0.1:2379/dashboard/#/topsql> in your browser. Replace `127.0.0.1:2379` with the actual PD instance address and port.
 
 ## Enable Top SQL
 

@@ -12,11 +12,9 @@ On the cluster information page, you can view the running status of TiDB, TiKV, 
 
 You can use one of the following two methods to access the cluster information page:
 
-- After logging into TiDB Dashboard, click **Cluster Info** on the left navigation menu:
+* After logging in to TiDB Dashboard, click **Cluster Info** in the left navigation menu.
 
-  ![Access cluster information page](/media/dashboard/dashboard-cluster-info-access-v650.png)
-
-- Visit <http://127.0.0.1:2379/dashboard/#/cluster_info/instance> in your browser. Replace `127.0.0.1:2379` with the actual PD instance address and port.
+* Visit <http://127.0.0.1:2379/dashboard/#/cluster_info/instance> in your browser. Replace `127.0.0.1:2379` with the actual PD instance address and port.
 
 ## Instance list
 

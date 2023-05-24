@@ -17,7 +17,7 @@ This page shows the overview of the entire TiDB cluster, including the following
 
 ## Access the page
 
-After logging into TiDB Dashboard, the overview page is entered by default, or you can click **Overview** on the left navigation menu to enter this page:
+After logging in to TiDB Dashboard, the overview page is entered by default, or you can click **Overview** in the left navigation menu to enter this page:
 
 ![Enter overview page](/media/dashboard/dashboard-overview-access-v650.png)
 

@@ -10,7 +10,7 @@ On the log search page of TiDB Dashboard, you can search logs of all nodes, prev
 
 ## Access the page
 
-After logging into TiDB Dashboard, you can click **Search Logs** to enter this log search homepage.
+After logging in to TiDB Dashboard, you can click **Search Logs** to enter this log search homepage.
 
 ![Log Search Page](/media/dashboard/dashboard-log-search-home.png)
 
