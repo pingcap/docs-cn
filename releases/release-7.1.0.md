@@ -324,8 +324,8 @@ TiDB 7.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 | [`authentication_ldap_sasl_bind_root_dn`](/system-variables.md#authentication_ldap_sasl_bind_root_dn-从-v710-版本开始引入) | 新增 | 在 LDAP SASL 身份验证中，TiDB 登录 LDAP Server 搜索用户时使用的 `dn`。 |
 | [`authentication_ldap_sasl_bind_root_pwd`](/system-variables.md#authentication_ldap_sasl_bind_root_pwd-从-v710-版本开始引入) | 新增 | 在 LDAP SASL 身份验证中，TiDB 登录 LDAP Server 搜索用户时使用的密码。 |
 | [`authentication_ldap_sasl_ca_path`](/system-variables.md#authentication_ldap_sasl_ca_path-从-v710-版本开始引入) | 新增 | 在 LDAP SASL 身份验证中，TiDB 对 StartTLS 连接使用的 CA 证书的路径。 |
-| [`authentication_ldap_sasl_init_pool_size`](/system-variables.md#authentication_ldap_sasl_init_pool_size-从-v710-版本开始引入) | 新增 | 在 LDAP SASL 身份验证中，TiDB 与 LDAP Server 间连接池的初始大小。 |
-| [`authentication_ldap_sasl_max_pool_size`](/system-variables.md#authentication_ldap_sasl_max_pool_size-从-v710-版本开始引入) | 新增 | 在 LDAP SASL 身份验证中，TiDB 与 LDAP Server 间连接池的最大大小。 |
+| [`authentication_ldap_sasl_init_pool_size`](/system-variables.md#authentication_ldap_sasl_init_pool_size-从-v710-版本开始引入) | 新增 | 在 LDAP SASL 身份验证中，TiDB 与 LDAP Server 间连接池的初始连接数。 |
+| [`authentication_ldap_sasl_max_pool_size`](/system-variables.md#authentication_ldap_sasl_max_pool_size-从-v710-版本开始引入) | 新增 | 在 LDAP SASL 身份验证中，TiDB 与 LDAP Server 间连接池的最大连接数。 |
 | [`authentication_ldap_sasl_server_host`](/system-variables.md#authentication_ldap_sasl_server_host-从-v710-版本开始引入) | 新增 | 在 LDAP SASL 身份验证中，LDAP Server 的主机名或地址。 |
 | [`authentication_ldap_sasl_server_port`](/system-variables.md#authentication_ldap_sasl_server_port-从-v710-版本开始引入) | 新增 | 在 LDAP SASL 身份验证中，LDAP Server 的端口号。 |
 | [`authentication_ldap_sasl_tls`](/system-variables.md#authentication_ldap_sasl_tls-从-v710-版本开始引入) | 新增 | 在 LDAP SASL 身份验证中，是否使用 StartTLS 对连接加密。 |
@@ -334,8 +334,8 @@ TiDB 7.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 | [`authentication_ldap_simple_bind_root_dn`](/system-variables.md#authentication_ldap_simple_bind_root_dn-从-v710-版本开始引入) | 新增 | 在 LDAP simple 身份验证中，TiDB 登录 LDAP Server 搜索用户时使用的 `dn`。 |
 | [`authentication_ldap_simple_bind_root_pwd`](/system-variables.md#authentication_ldap_simple_bind_root_pwd-从-v710-版本开始引入) | 新增 | 在 LDAP simple 身份验证中，TiDB 登录 LDAP Server 搜索用户时使用的密码。 |
 | [`authentication_ldap_simple_ca_path`](/system-variables.md#authentication_ldap_simple_ca_path-从-v710-版本开始引入) | 新增 | 在 LDAP simple 身份验证中，TiDB 对 StartTLS 连接使用的 CA 证书的路径。 |
-| [`authentication_ldap_simple_init_pool_size`](/system-variables.md#authentication_ldap_simple_init_pool_size-从-v710-版本开始引入) | 新增 | 在 LDAP simple 身份验证中，TiDB 与 LDAP Server 间连接池的初始大小。 |
-| [`authentication_ldap_simple_max_pool_size`](/system-variables.md#authentication_ldap_simple_max_pool_size-从-v710-版本开始引入) | 新增 | 在 LDAP simple 身份验证中，TiDB 与 LDAP Server 间连接池的最大大小。 |
+| [`authentication_ldap_simple_init_pool_size`](/system-variables.md#authentication_ldap_simple_init_pool_size-从-v710-版本开始引入) | 新增 | 在 LDAP simple 身份验证中，TiDB 与 LDAP Server 间连接池的初始连接数。 |
+| [`authentication_ldap_simple_max_pool_size`](/system-variables.md#authentication_ldap_simple_max_pool_size-从-v710-版本开始引入) | 新增 | 在 LDAP simple 身份验证中，TiDB 与 LDAP Server 间连接池的最大连接数。 |
 | [`authentication_ldap_simple_server_host`](/system-variables.md#authentication_ldap_simple_server_host-从-v710-版本开始引入) | 新增 | 在 LDAP simple 身份验证中，LDAP Server 的主机名或地址。 |
 | [`authentication_ldap_simple_server_port`](/system-variables.md#authentication_ldap_simple_server_port-从-v710-版本开始引入) | 新增 | 在 LDAP simple 身份验证中，LDAP Server 的端口号。 |
 | [`authentication_ldap_simple_tls`](/system-variables.md#authentication_ldap_simple_tls-从-v710-版本开始引入) | 新增 | 在 LDAP simple 身份验证中，是否使用 StartTLS 对连接加密。 |
