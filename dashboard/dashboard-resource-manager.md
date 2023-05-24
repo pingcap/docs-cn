@@ -45,7 +45,7 @@ summary: 介绍如何使用 TiDB Dashboard 的资源管控页面查看资源管�
     - `oltp_read_write`：数据读写平衡的负载，根据类似 `sysbench oltp_read_write` 的负载模型预测。
     - `oltp_read_only`：数据读取较重的负载，根据类似 `sysbench oltp_read_only` 的负载模型预测。
 
-    ![基于硬件部署估算容量](/media/dashboard/dashboard-resource-manager-calibrate-by-hardware.png)
+  ![基于硬件部署估算容量](/media/dashboard/dashboard-resource-manager-calibrate-by-hardware.png)
 
     用户资源分组总请求单元 (Total RU of user resource groups) 表示当前除 `default` 用户外的 RU 总量。当该数值小于容量估算值时，系统会发出提醒。系统预定义的 `default` 资源组默认拥有无限用量。当所有用户都属于 `default` 资源组时，资源分配方式与关闭资源管控时相同。
 
