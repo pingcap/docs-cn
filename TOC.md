@@ -958,6 +958,7 @@
         - [使用示例](/dashboard/dashboard-diagnostics-usage.md)
       - [监控指标页面](/dashboard/dashboard-monitoring.md)
       - [日志搜索页面](/dashboard/dashboard-log-search.md)
+      - [资源管控页面](/dashboard/dashboard-resource-manager.md)
       - 实例性能分析
         - [手动分析页面](/dashboard/dashboard-profiling.md)
         - [持续分析页面](/dashboard/continuous-profiling.md)
