@@ -124,17 +124,19 @@ The support for TLS authentication is configured differently. For detailed infor
 
 </CustomContent>
 
-| Authentication Method    | Supported        |
-| :------------------------| :--------------- |
-| `mysql_native_password`  | Yes              |
-| `sha256_password`        | No               |
-| `caching_sha2_password`  | Yes, since 5.2.0 |
-| `auth_socket`            | Yes, since 5.3.0 |
-| `tidb_sm3_password`      | Yes, since 6.3.0 |
-| `tidb_auth_token`        | Yes, since 6.4.0 |
-| TLS Certificates         | Yes              |
-| LDAP                     | No               |
-| PAM                      | No               |
-| ed25519 (MariaDB)        | No               |
-| GSSAPI (MariaDB)         | No               |
-| FIDO                     | No               |
+| Authentication Method        | Supported        |
+| :----------------------------| :--------------- |
+| `mysql_native_password`      | Yes              |
+| `sha256_password`            | No               |
+| `caching_sha2_password`      | Yes, since 5.2.0 |
+| `auth_socket`                | Yes, since 5.3.0 |
+| `tidb_sm3_password`          | Yes, since 6.3.0 |
+| `tidb_auth_token`            | Yes, since 6.4.0 |
+| `authentication_ldap_sasl`   | Yes, since 7.1.0 |
+| `authentication_ldap_simple` | Yes, since 7.1.0 |
+| TLS Certificates             | Yes              |
+| LDAP                         | Yes, since 7.1.0 |
+| PAM                          | No               |
+| ed25519 (MariaDB)            | No               |
+| GSSAPI (MariaDB)             | No               |
+| FIDO                         | No               |

@@ -53,6 +53,174 @@ SET GLOBAL tidb_distsql_scan_concurrency = 10;
 - Default value: `OFF`
 - Determines whether to allow explicitly specifying the values of the column with the `AUTO_RANDOM` attribute in the `INSERT` statement.
 
+### authentication_ldap_sasl_auth_method_name <span class="version-mark">New in v7.1.0</span>
+
+- Scope: GLOBAL
+- Persists to cluster: Yes
+- Type: Enumeration
+- Default value: `SCRAM-SHA-1`
+- Possible values: `SCRAM-SHA-1`, `SCRAM-SHA-256`, and `GSSAPI`.
+- For LDAP SASL authentication, this variable specifies the authentication method name.
+
+### authentication_ldap_sasl_bind_base_dn <span class="version-mark">New in v7.1.0</span>
+
+- Scope: GLOBAL
+- Persists to cluster: Yes
+- Type: String
+- Default value: ""
+- For LDAP SASL authentication, this variable limits the search scope within the search tree. If a user is created without the `AS ...` clause, TiDB will automatically search the `dn` in LDAP server according to the user name.
+
+### authentication_ldap_sasl_bind_root_dn <span class="version-mark">New in v7.1.0</span>
+
+- Scope: GLOBAL
+- Persists to cluster: Yes
+- Type: String
+- Default value: ""
+- For LDAP SASL authentication, this variable specifies the `dn` used to log in to the LDAP server to search users.
+
+### authentication_ldap_sasl_bind_root_pwd <span class="version-mark">New in v7.1.0</span>
+
+- Scope: GLOBAL
+- Persists to cluster: Yes
+- Type: String
+- Default value: ""
+- For LDAP SASL authentication, this variable specifies the password used to log in to the LDAP server to search users.
+
+### authentication_ldap_sasl_ca_path <span class="version-mark">New in v7.1.0</span>
+
+- Scope: GLOBAL
+- Persists to cluster: Yes
+- Type: String
+- Default value: ""
+- For LDAP SASL authentication, this variable specifies the absolute path of the certificate authority file for StartTLS connections.
+
+### authentication_ldap_sasl_init_pool_size <span class="version-mark">New in v7.1.0</span>
+
+- Scope: GLOBAL
+- Persists to cluster: Yes
+- Type: Integer
+- Default value: `10`
+- Range: `[1, 32767]`
+- For LDAP SASL authentication, this variable specifies the initial connections in the connection pool to the LDAP server.
+
+### authentication_ldap_sasl_max_pool_size <span class="version-mark">New in v7.1.0</span>
+
+- Scope: GLOBAL
+- Persists to cluster: Yes
+- Type: Integer
+- Default value: `1000`
+- Range: `[1, 32767]`
+- For LDAP SASL authentication, this variable specifies the maximum connections in the connection pool to the LDAP server.
+
+### authentication_ldap_sasl_server_host <span class="version-mark">New in v7.1.0</span>
+
+- Scope: GLOBAL
+- Persists to cluster: Yes
+- Type: String
+- Default value: ""
+- For LDAP SASL authentication, this variable specifies the LDAP server host name or IP address.
+
+### authentication_ldap_sasl_server_port <span class="version-mark">New in v7.1.0</span>
+
+- Scope: GLOBAL
+- Persists to cluster: Yes
+- Type: Integer
+- Default value: `389`
+- Range: `[1, 65535]`
+- For LDAP SASL authentication, this variable specifies the TCP/IP port number of the LDAP server.
+
+### authentication_ldap_sasl_tls <span class="version-mark">New in v7.1.0</span>
+
+- Scope: GLOBAL
+- Persists to cluster: Yes
+- Type: Boolean
+- Default value: `OFF`
+- For LDAP SASL authentication, this variable controls whether connections by the plugin to the LDAP server are protected with StartTLS.
+
+### authentication_ldap_simple_auth_method_name <span class="version-mark">New in v7.1.0</span>
+
+- Scope: GLOBAL
+- Persists to cluster: Yes
+- Type: Enumeration
+- Default value: `SIMPLE`
+- Possible values: `SIMPLE`.
+- For LDAP simple authentication, this variable specifies the authentication method name. The only supported value is `SIMPLE`.
+
+### authentication_ldap_simple_bind_base_dn <span class="version-mark">New in v7.1.0</span>
+
+- Scope: GLOBAL
+- Persists to cluster: Yes
+- Type: String
+- Default value: ""
+- For LDAP simple authentication, this variable limits the search scope within the search tree. If a user is created without the `AS ...` clause, TiDB will automatically search the `dn` in LDAP server according to the user name.
+
+### authentication_ldap_simple_bind_root_dn <span class="version-mark">New in v7.1.0</span>
+
+- Scope: GLOBAL
+- Persists to cluster: Yes
+- Type: String
+- Default value: ""
+- For LDAP simple authentication, this variable specifies the `dn` used to log in to the LDAP server to search users.
+
+### authentication_ldap_simple_bind_root_pwd <span class="version-mark">New in v7.1.0</span>
+
+- Scope: GLOBAL
+- Persists to cluster: Yes
+- Type: String
+- Default value: ""
+- For LDAP simple authentication, this variable specifies the password used to log in to the LDAP server to search users.
+
+### authentication_ldap_simple_ca_path <span class="version-mark">New in v7.1.0</span>
+
+- Scope: GLOBAL
+- Persists to cluster: Yes
+- Type: String
+- Default value: ""
+- For LDAP simple authentication, this variable specifies the absolute path of the certificate authority file for StartTLS connections.
+
+### authentication_ldap_simple_init_pool_size <span class="version-mark">New in v7.1.0</span>
+
+- Scope: GLOBAL
+- Persists to cluster: Yes
+- Type: Integer
+- Default value: `10`
+- Range: `[1, 32767]`
+- For LDAP simple authentication, this variable specifies the initial connections in the connection pool to the LDAP server.
+
+### authentication_ldap_simple_max_pool_size <span class="version-mark">New in v7.1.0</span>
+
+- Scope: GLOBAL
+- Persists to cluster: Yes
+- Type: Integer
+- Default value: `1000`
+- Range: `[1, 32767]`
+- For LDAP simple authentication, this variable specifies the maximum connections in the connection pool to the LDAP server.
+
+### authentication_ldap_simple_server_host <span class="version-mark">New in v7.1.0</span>
+
+- Scope: GLOBAL
+- Persists to cluster: Yes
+- Type: String
+- Default value: ""
+- For LDAP simple authentication, this variable specifies the LDAP server host name or IP address.
+
+### authentication_ldap_simple_server_port <span class="version-mark">New in v7.1.0</span>
+
+- Scope: GLOBAL
+- Persists to cluster: Yes
+- Type: Integer
+- Default value: `389`
+- Range: `[1, 65535]`
+- For LDAP simple authentication, this variable specifies the TCP/IP port number of the LDAP server.
+
+### authentication_ldap_simple_tls <span class="version-mark">New in v7.1.0</span>
+
+- Scope: GLOBAL
+- Persists to cluster: Yes
+- Type: Boolean
+- Default value: `OFF`
+- For LDAP simple authentication, this variable controls whether connections by the plugin to the LDAP server are protected with StartTLS.
+
 ### auto_increment_increment
 
 - Scope: SESSION | GLOBAL
@@ -225,7 +393,7 @@ mysql> SELECT * FROM t1;
 - Persists to cluster: Yes
 - Type: Enumeration
 - Default value: `mysql_native_password`
-- Possible values: `mysql_native_password`, `caching_sha2_password`, `tidb_sm3_password`, and `tidb_auth_token`
+- Possible values: `mysql_native_password`, `caching_sha2_password`, `tidb_sm3_password`, `tidb_auth_token`, `authentication_ldap_sasl`, and `authentication_ldap_simple`.
 - The `tidb_auth_token` authentication method is used only for the internal operation of TiDB Cloud. **DO NOT** set the variable to this value.
 - This variable sets the authentication method that the server advertises when the server-client connection is being established.
 - To authenticate using the `tidb_sm3_password` method, you can connect to TiDB using [TiDB-JDBC](https://github.com/pingcap/mysql-connector-j/tree/release/8.0-sm3).
