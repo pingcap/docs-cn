@@ -439,8 +439,15 @@ TiDB 7.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
     + TiDB Lightning
 
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
+        - 修复 lightning 导入性能退化的问题 [#42456](https://github.com/pingcap/tidb/issues/42456)@[lance6716](https://github.com/lance6716)
+        - 修复大数据量导入时报 ”write to tikv with no leader returned“ 错误的问题 [#43055](https://github.com/pingcap/tidb/issues/43055)@[lance6716](https://github.com/lance6716)
+        - 修复导入期间输出过多 ”keys within region is empty, skip doIngest“日志的问题 [#43197](https://github.com/pingcap/tidb/issues/43197)@[D3Hunter](https://github.com/D3Hunter)
+        - 修复 range 部分写入时可能 panic 的问题 [#43363](https://github.com/pingcap/tidb/issues/43363)@[lance6716](https://github.com/lance6716)
+        - 修复宽表导入时可能 OOM 的问题 [#43728](https://github.com/pingcap/tidb/issues/43728)@[D3Hunter](https://github.com/D3Hunter)
+        - 修复 lightning grafana 面板缺失数据的问题 [#43357](https://github.com/pingcap/tidb/issues/43357)@[lichunzhu](https://github.com/lichunzhu)
+        - 修复未正确设置 keyspace name 导致导入失败的问题 [#43684](https://github.com/pingcap/tidb/issues/43684)@[zeminzhou](https://github.com/zeminzhou)
+        - 修复当range 部分写入时在一定情况会跳过数据导入的问题 [#43768](https://github.com/pingcap/tidb/issues/43768)@[lance6716](https://github.com/lance6716)
+
 
     + TiUP
 
