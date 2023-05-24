@@ -385,7 +385,6 @@ TiDB 7.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
     + TiDB Lightning
 
-        - 支持 Latin1、ASCII 字符集的源文件 [#42704](https://github.com/pingcap/tidb/issues/42704)@[lance6716](https://github.com/lance6716)
         - region 分布 precheck 项由 Critical 改为 Warn [#42836](https://github.com/pingcap/tidb/issues/42836)@[okJiang](https://github.com/okJiang)
         - 导入期间对 unknown RPC 错误增加 retry [#43291](https://github.com/pingcap/tidb/issues/43291)@[D3Hunter](https://github.com/D3Hunter)
         - 增强 region job retry [#43682](https://github.com/pingcap/tidb/issues/43682)@[lance6716](https://github.com/lance6716)
