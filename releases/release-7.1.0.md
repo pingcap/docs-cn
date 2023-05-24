@@ -441,6 +441,7 @@ TiDB 7.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 + TiFlash
 
     - 修复开启延迟物化优化（Late Materialization）后查询 Timestamp 或者 Time 类型报错的问题 [#7455](https://github.com/pingcap/tiflash/issues/7455) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
+    - 修复大更新事务可能会导致 TiFlash 反复报错重启的问题 [#7316](https://github.com/pingcap/tiflash/issues/7316) @[JaySon-Huang](https://github.com/JaySon-Huang)
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
 + Tools
