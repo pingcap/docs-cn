@@ -25,27 +25,53 @@ TiDB 7.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 </thead>
 <tbody>
   <tr>
-    <td rowspan="2">可扩展性与性能</td>
-    <td>持续增强<a href="https://docs.pingcap.com/zh/tidb/dev/sql-non-prepared-plan-cache" target="_blank">会话级别非 Prepare 语句执行计划缓存</a>（实验特性）</td>
-    <td>支持在会话级别自动重用执行计划缓存，减少查询计划时间，缩短相同 SQL 查询的时间，而无需事先手动准备 Prepare Statement 语句。</td>
+    <td rowspan="3">可扩展性与性能</td>
+    <td>TiFlash 支持<a href="https://docs.pingcap.com/zh/tidb/dev/tiflash-disaggregated-and-s3" target="_blank">存储计算分离和 S3 共享存储</a>（实验特性，从 v7.0.0 开始引入）</td>
+    <td>TiFlash 增加云原生架构的支持作为可选项：
+      <ul>
+        <li>支持存算分离架构，提升 HTAP 资源的弹性能力。</li>
+        <li>支持基于 S3 的存储引擎，以更低的成本提供共享存储。</li>
+      </ul>
+    </td>
+  </tr>
+  <tr>
+    <td>TiKV 支持<a href="https://docs.pingcap.com/zh/tidb/dev/system-variables#tidb_store_batch_size" target="_blank">批量聚合数据请求</a>（从 v6.6.0 开始引入）</td>
+    <td>TiDB 支持将发送到相同 TiKV 实例的数据请求部分合并，减少子任务的数量和 RPC 请求的开销。在数据离散分布且 gRPC 线程池资源紧张的情况下，批量化请求能够提升性能超 50%。</td>
   </tr>
   <tr>
     <td><a href="https://docs.pingcap.com/zh/tidb/dev/troubleshoot-hot-spot-issues#打散读热点" target="_blank">基于负载的副本读取</a></td>
     <td>在读热点场景中，TiDB 可以将热点 TiKV 节点的读请求转发到副本。该功能有效地打散了读热点并优化了集群资源的利用。你可以通过调整系统变量 <a href="https://docs.pingcap.com/zh/tidb/dev/system-variables#tidb_load_based_replica_read_threshold-从-v700-版本开始引入" target="_blank"><code>tidb_load_based_replica_read_threshold</code></a> 控制基于负载的副本读取的触发阈值。</td>
   </tr>
   <tr>
-    <td rowspan="1">稳定性与高可用</td>
+    <td rowspan="2">稳定性与高可用</td>
     <td><a href="https://docs.pingcap.com/zh/tidb/dev/tidb-resource-control" target="_blank">资源管控</a> (GA)</td>
-   <td>支持基于资源组的资源管控，将数据库用户映射到对应的资源组中，并根据实际需求设置每个资源组的配额。</td>
- </tr>
+   <td>支持基于资源组的资源管控，为同一集群中的不同工作负载分配并隔离资源。该功能显著提升了多应用集群的稳定性，并为多租户奠定了基础。在 v7.1.0 中，资源管控引入了根据实际负载或硬件部署估算集群容量的能力。</td>
+  </tr>
   <tr>
-    <td rowspan="2">SQL</td>
+    <td>TiFlash 支持<a href="https://docs.pingcap.com/zh/tidb/dev/tiflash-spill-disk" target="_blank">数据落盘</a>（从 v7.0.0 开始引入）</td>
+    <td>TiFlash 支持将中间结果落盘，以缓解数据密集型操作（如聚合、排序和 Hash Join）中的 OOM 问题。</td>
+  </tr>
+  <tr>
+    <td rowspan="3">SQL</td>
     <td><a href="https://docs.pingcap.com/zh/tidb/dev/sql-statement-create-index#多值索引" target="_blank">多值索引</a> (GA)</td>
     <td>引入 MySQL 兼容的多值索引，增强 JSON 类型，提升 TiDB 对 MySQL 8.0 的兼容性。该功能提升了对多值列进行成员检查的效率。</td>
   </tr>
   <tr>
+    <td><a href="https://docs.pingcap.com/zh/tidb/dev/time-to-live" target="_blank">行级 TTL</a>（从 v7.0.0 开始 GA）</td>
+    <td>支持通过后台任务自动删除超过生命周期 (Time to live) 的数据，并以此来自动管理数据规模并提高性能。</td>
+  </tr>
+  <tr>
     <td><a href="https://docs.pingcap.com/zh/tidb/dev/generated-columns" target="_blank">生成列</a> (GA)</td>
     <td>生成列 (Generated Columns) 的值是通过实时计算列定义中的 SQL 表达式得到的。该功能将一些应用逻辑推向数据库层，从而提升查询效率。</td>
+  </tr>
+  <tr>
+    <td rowspan="2">安全</td>
+    <td><a href="https://docs.pingcap.com/tidb/dev/security-compatibility-with-mysql" target="_blank">LDAP 身份认证</a></td>
+    <td>TiDB 支持与 <a href="https://dev.mysql.com/doc/refman/8.0/en/ldap-pluggable-authentication.html" target="_blank"> MySQL 8.0</a> 兼容的 LDAP 身份认证。</td>
+  </tr>
+  <tr>
+    <td>增强数据库审计功能（<a href="https://www.pingcap.com/tidb-enterprise/" target="_blank">企业版</a>）</td>
+    <td>TiDB 企业版增强了数据库审计功能，通过更细粒度的事件过滤控制、更友好的过滤条件设置方式、新增的 JSON 格式输出文件和审计日志的生命周期管理，大幅提升了系统的能力。</td>
   </tr>
 </tbody>
 </table>
@@ -54,7 +80,7 @@ TiDB 7.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 ### 性能
 
-* 增强下一代分区 Raft KV 存储引擎（实验特性）[#11515](https://github.com/tikv/tikv/issues/11515) [#12842](https://github.com/tikv/tikv/issues/12842) @[busyjay](https://github.com/busyjay) @[tonyxuqqi](https://github.com/tonyxuqqi) @[tabokie](https://github.com/tabokie) @[bufferflies](https://github.com/bufferflies) @[5kbpers](https://github.com/5kbpers) @[SpadeA-Tang](https://github.com/SpadeA-Tang) @[nolouch](https://github.com/nolouch) **tw:Oreoxmt**
+* 增强分区 Raft KV 存储引擎（实验特性）[#11515](https://github.com/tikv/tikv/issues/11515) [#12842](https://github.com/tikv/tikv/issues/12842) @[busyjay](https://github.com/busyjay) @[tonyxuqqi](https://github.com/tonyxuqqi) @[tabokie](https://github.com/tabokie) @[bufferflies](https://github.com/bufferflies) @[5kbpers](https://github.com/5kbpers) @[SpadeA-Tang](https://github.com/SpadeA-Tang) @[nolouch](https://github.com/nolouch) **tw:Oreoxmt**
 
     TiDB v6.6.0 引入了分区 Raft KV 存储引擎作为实验特性，该引擎使用多个 RocksDB 实例存储 TiKV 的 Region 数据，每个 Region 的数据都独立存储在单独的 RocksDB 实例中。分区 Raft KV 能够更好地控制 RocksDB 实例的文件数和层级，实现 Region 间数据操作的物理隔离，并支持平稳管理更多的数据。与原 TiKV 存储引擎相比，使用分区 Raft KV 引擎在相同硬件条件和读写混合场景下，可以实现大约两倍的写入吞吐量、三倍的读取吞吐量，并缩短大约 4/5 的弹性扩展时间。
 
