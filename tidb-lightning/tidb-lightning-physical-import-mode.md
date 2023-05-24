@@ -13,10 +13,11 @@ The backend for the physical import mode is `local`.
 
 ## Implementation
 
-1. Before importing data, TiDB Lightning automatically switches the TiKV nodes to "import mode", which improves write performance and stops auto-compaction. TiDB Lightning determines whether to pause global scheduling according to the TiDB cluster version.
+1. Before importing data, TiDB Lightning automatically switches the TiKV nodes to "import mode", which improves write performance and stops auto-compaction. TiDB Lightning determines whether to pause global scheduling according to the TiDB Lightning version.
 
-    - When the TiDB cluster >= v6.1.0 and TiDB Lightning >= v6.2.0, TiDB Lightning pauses scheduling for the region that stores the target table data. After the import is completed, TiDB Lightning recovers scheduling.
-    - When the TiDB cluster < v6.1.0 or TiDB Lightning < v6.2.0, TiDB Lightning pauses global scheduling.
+    - Starting from v7.1.0, you can you can control the scope of pausing scheduling by using the TiDB Lightning parameter [`pause-pd-scheduler-scope`](/tidb-lightning/tidb-lightning-configuration.md).
+    - For TiDB Lightning versions between v6.2.0 and v7.0.0, the behavior of pausing global scheduling depends on the TiDB cluster version. When the TiDB cluster >= v6.1.0, TiDB Lightning pauses scheduling for the Region that stores the target table data. After the import is completed, TiDB Lightning recovers scheduling. For other versions, TiDB Lightning pauses global scheduling.
+    - When TiDB Lightning < v6.2.0, TiDB Lightning pauses global scheduling.
 
 2. TiDB Lightning creates table schemas in the target database and fetches the metadata.
 
@@ -66,7 +67,7 @@ It is recommended that you allocate CPU more than 32 cores and memory greater th
 
 ### Limitations
 
-- Do not use the physical import mode to directly import data to TiDB clusters in production. It has severe performance implications. If you need to do so, refer to [Pause scheduling on the table level](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#pause-scheduling-on-the-table-level).
+- Do not use the physical import mode to directly import data to TiDB clusters in production. It has severe performance implications. If you need to do so, refer to [Pause scheduling on the table level](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#scope-of-pausing-scheduling-during-import).
 - Do not use multiple TiDB Lightning instances to import data to the same TiDB cluster by default. Use [Parallel Import](/tidb-lightning/tidb-lightning-distributed-import.md) instead.
 - When you use multiple TiDB Lightning to import data to the same target cluster, do not mix the import modes. That is, do not use the physical import mode and the logical import mode at the same time.
 - During the process of importing data, do not perform write operations in the target table. Otherwise the import will fail or the data will be inconsistent. At the same time, it is not recommended to perform read operations, because the data you read might be inconsistent. You can perform read and write operations after the import operation is completed.

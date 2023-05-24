@@ -168,6 +168,25 @@ addr = "172.16.31.10:8287"
 
 # When you use TiDB Lightning to import a multi-tenant TiDB cluster, use this parameter to specify the corresponding key space name. The default value is an empty string, which means TiDB Lightning will automatically get the key space name of the corresponding tenant to import data. If you specify a value, the specified key space name will be used to import data.
 # keyspace-name = ""
+
+# In Physical Import Mode, this parameter controls the scope in which TiDB Lightning stops PD scheduling. The value options are as follows:
+# - "table": pause scheduling only for the Region that stores the target table data. The default value is "table".
+# - "global": pause global scheduling. When importing data to a cluster without any business traffic, it is recommended to set this parameter to "global" to avoid interference from other scheduling.
+# pause-pd-scheduler-scope = "table"
+
+# In Physical Import Mode, this parameter controls the number of Regions when splitting Regions in a batch. The maximum number of Regions that can be split at the same time per TiDB Lightning instance is:
+# region-split-batch-size * region-split-concurrency * table-concurrency
+# This parameter is introduced in v7.1.0. The default value is `4096`.
+# region-split-batch-size = 4096
+
+# In Physical Import Mode, this parameter controls the concurrency when splitting Regions. The default value is the number of CPU cores.
+# This parameter is introduced in v7.1.0.
+# region-split-concurrency =
+
+# In Physical Import Mode, this parameter controls the number of retries to wait for the Region to come online after the split and scatter operations. The default value is `1800` and the maximum retry interval is two seconds. The number of retries will not be increased if any Region becomes online between retries.
+# This parameter is introduced in v7.1.0.
+# region-check-backoff-limit = 1800
+
 [mydumper]
 # Block size for file reading. Keep it longer than the longest string of the data source.
 read-block-size = "64KiB" # default value
