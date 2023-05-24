@@ -142,7 +142,7 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 - 是否持久化到集群：是
 - 类型：枚举型
 - 默认值：`SIMPLE`
-- 可选值：`SIMPLE`.
+- 可选值：`SIMPLE`
 - LDAP simple 身份验证中，验证方法的名称。现在仅支持 `SIMPLE`。
 
 ### `authentication_ldap_simple_bind_base_dn` <span class="version-mark">从 v7.1.0 版本开始引入</span>
