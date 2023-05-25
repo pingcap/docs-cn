@@ -497,6 +497,8 @@ TiDB 7.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
     + Backup & Restore (BR)
 
+- 修复当集群中 TiKV 出现宕机导致备份缓慢的问题 [#42973](https://github.com/pingcap/tidb/issues/42973) @[YuJuncen](https://github.com/YuJuncen)
+- 修复某些情况下备份失败丢失错误信息的问题 [#43236](https://github.com/pingcap/tidb/issues/43236) @[YuJuncen](https://github.com/YuJuncen)
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
