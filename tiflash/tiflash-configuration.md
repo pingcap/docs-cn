@@ -34,6 +34,10 @@ You can adjust the PD scheduling parameters using [pd-ctl](/pd-control.md). Note
 
 This section introduces the configuration parameters of TiFlash.
 
+> **Tip:**
+>
+> If you need to adjust the value of a configuration item, refer to [Modify the configuration](/maintain-tidb-using-tiup.md#modify-the-configuration).
+
 ### Configure the `tiflash.toml` file
 
 ```toml
