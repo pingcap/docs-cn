@@ -16,7 +16,7 @@ TiDB 备份恢复功能 (BR，Backup & Restore) 支持将 Google Cloud Storage �
 {{< copyable "shell-regular" >}}
 
 ```shell
-br backup full --pd "${PDIP}:2379" --Storage 'gcs://bucket-name/prefix?credentials-file=${credentials-file-path}' --send-credentials-to-tikv=true
+br backup full --pd "${PDIP}:2379" --storage 'gcs://bucket-name/prefix?credentials-file=${credentials-file-path}' --send-credentials-to-tikv=true
 ```
 
 备份数据到 GCS 的时候需要在 br 运行节点放置 credentials 文件。 credentials 文件包含访问 GCS 的账户凭证。 显示指定参数 `--send-credentials-to-tikv`, 表示将 GCS 的账户访问凭证传递给 TiKV 节点。
@@ -26,7 +26,7 @@ br backup full --pd "${PDIP}:2379" --Storage 'gcs://bucket-name/prefix?credentia
 ## 从 GCS 恢复集群数据
 
 ```shell
-br restore full --pd "${PDIP}:2379" --Storage 'gcs://bucket-name/prefix?credentials-file=${credentials-file-path}' --send-credentials-to-tikv=true
+br restore full --pd "${PDIP}:2379" --storage 'gcs://bucket-name/prefix?credentials-file=${credentials-file-path}' --send-credentials-to-tikv=true
 ```
 
 ## 探索更多
