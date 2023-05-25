@@ -98,22 +98,18 @@ ALTER DATABASE `tpch50` SET TIFLASH REPLICA 0;
 >     - 先设置 TiFlash 副本数量为 2，在库中所有的表都同步完成前，再设置 TiFlash 副本数量为 1，不能保证最终所有表的 TiFlash 副本数量都为 1 或都为 2。
 >     - 在命令执行到结束期间，如果在该库下创建表，则**可能**会对这些新增表创建 TiFlash 副本。
 >     - 在命令执行到结束期间，如果为该库下的表添加索引，则该命令可能陷入等待，直到添加索引完成。
-> - 该命令执行结束后，在该库中新建的表不会自动同步到 TIFlash 中。
+> - 该命令执行结束后，在该库中新建的表不会自动同步到 TiFlash 中。
 > - 该命令会跳过系统表、视图、临时表以及包含了 TiFlash 不支持字符集的表。
 
 ### 查看库同步进度
 
 类似于按表构建，按库构建 TiFlash 副本的命令执行成功，不代表所有表都已同步完成。可以执行下面的 SQL 语句检查数据库中所有已设置 TiFlash Replica 表的同步进度：
 
-{{< copyable "sql" >}}
-
 ```sql
 SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = '<db_name>';
 ```
 
 可以执行下面的 SQL 语句检查数据库中尚未设置 TiFlash Replica 的表名：
-
-{{< copyable "sql" >}}
 
 ```sql
 SELECT TABLE_NAME FROM information_schema.tables where TABLE_SCHEMA = "<db_name>" and TABLE_NAME not in (SELECT TABLE_NAME FROM information_schema.tiflash_replica where TABLE_SCHEMA = "<db_name>");
