@@ -11,8 +11,6 @@ summary: 了解如何构建 TiFlash 副本。
 
 TiFlash 接入 TiKV 集群后，默认不会开始同步数据。可通过 MySQL 客户端向 TiDB 发送 DDL 命令来为特定的表建立 TiFlash 副本：
 
-{{< copyable "sql" >}}
-
 ```sql
 ALTER TABLE table_name SET TIFLASH REPLICA count;
 ```
@@ -24,8 +22,6 @@ ALTER TABLE table_name SET TIFLASH REPLICA count;
 对于相同表的多次 DDL 命令，仅保证最后一次能生效。例如下面给出的操作 `tpch50` 表的两条 DDL 命令中，只有第二条删除副本的命令能生效：
 
 为表建立 2 个副本：
-
-{{< copyable "sql" >}}
 
 ```sql
 ALTER TABLE `tpch50`.`lineitem` SET TIFLASH REPLICA 2;
@@ -61,8 +57,6 @@ ALTER TABLE `tpch50`.`lineitem` SET TIFLASH REPLICA 0;
 
 可通过如下 SQL 语句查看特定表（通过 WHERE 语句指定，去掉 WHERE 语句则查看所有表）的 TiFlash 副本的状态：
 
-{{< copyable "sql" >}}
-
 ```sql
 SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = '<db_name>' and TABLE_NAME = '<table_name>';
 ```
@@ -76,8 +70,6 @@ SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = '<db_name>
 
 类似于按表构建 TiFlash 副本的方式，你可以在 MySQL 客户端向 TiDB 发送 DDL 命令来为指定数据库中的所有表建立 TiFlash 副本：
 
-{{< copyable "sql" >}}
-
 ```sql
 ALTER DATABASE db_name SET TIFLASH REPLICA count;
 ```
@@ -88,15 +80,11 @@ ALTER DATABASE db_name SET TIFLASH REPLICA count;
 
 执行以下命令可以为 `tpch50` 库中的所有表建立 2 个 TiFlash 副本。
 
-{{< copyable "sql" >}}
-
 ```sql
 ALTER DATABASE `tpch50` SET TIFLASH REPLICA 2;
 ```
 
 执行以下命令可以删除为 `tpch50` 库建立的 TiFlash 副本：
-
-{{< copyable "sql" >}}
 
 ```sql
 ALTER DATABASE `tpch50` SET TIFLASH REPLICA 0;
@@ -110,7 +98,7 @@ ALTER DATABASE `tpch50` SET TIFLASH REPLICA 0;
 >     - 先设置 TiFlash 副本数量为 2，在库中所有的表都同步完成前，再设置 TiFlash 副本数量为 1，不能保证最终所有表的 TiFlash 副本数量都为 1 或都为 2。
 >     - 在命令执行到结束期间，如果在该库下创建表，则**可能**会对这些新增表创建 TiFlash 副本。
 >     - 在命令执行到结束期间，如果为该库下的表添加索引，则该命令可能陷入等待，直到添加索引完成。
->
+> - 该命令执行结束后，在该库中新建的表不会自动同步到 TIFlash 中。
 > - 该命令会跳过系统表、视图、临时表以及包含了 TiFlash 不支持字符集的表。
 
 ### 查看库同步进度
