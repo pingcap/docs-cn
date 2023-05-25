@@ -378,6 +378,7 @@ TiDB 7.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
     - 使用 `SQL_NO_CACHE` 来避免 TTL Scan 查询对 TiKV block cache 造成影响 [#43206](https://github.com/pingcap/tidb/issues/43206) @[lcwangchao](https://github.com/lcwangchao)
     - 提升 `MAX_EXECUTION_TIME` 相关错误信息的 MySQL 兼容性 [#43031](https://github.com/pingcap/tidb/issues/43031) @[dveeden](https://github.com/dveeden)
     - `SHOW INDEX` 结果中的 Cardinality 列可以展示统计信息中对应列的不同值的个数 [#42441](https://github.com/pingcap/tidb/pull/42441) @[winoros](https://github.com/winoros)
+    - 在 IndexLookUp 中支持对分区表的 MergeSort [#26166](https://github.com/pingcap/tidb/issues/26166) @[Defined2014](https://github.com/Defined2014)
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
 + TiKV
@@ -470,6 +471,9 @@ TiDB 7.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
     - 修复 `ADMIN SHOW DDL JOBS LIMIT` 返回错误结果的问题 [#42298](https://github.com/pingcap/tidb/issues/42298) @[CbcWestwolf](https://github.com/CbcWestwolf)
     - 修复使用 UNION 查询联合视图和临时表时 TiDB 崩溃的问题 [#42563](https://github.com/pingcap/tidb/issues/42563) @[lcwangchao](https://github.com/lcwangchao)
     - 修复使用 multiple statements 在事务中间重命名表不生效的问题 [#39664](https://github.com/pingcap/tidb/issues/39664) @[tiancaiamao](https://github.com/tiancaiamao)
+    - 修复时间转换时 Prepared 同 Non-Prepared Plan Cache 的行为不兼容性的问题 [#42439](https://github.com/pingcap/tidb/issues/42439) @[qw4990](https://github.com/qw4990)
+    - 修复 Plan Cache 针对 Decimal 类型导致的结果错误的问题 [#43311](https://github.com/pingcap/tidb/issues/43311) @[qw4990](https://github.com/qw4990)
+    - 修复 NAAJ 中错误的类型检查导致 TiDB 崩溃的问题 [#42459](https://github.com/pingcap/tidb/issues/42459) @[AilinKid](https://github.com/AilinKid)
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
