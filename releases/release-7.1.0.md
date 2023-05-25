@@ -71,7 +71,7 @@ TiDB 7.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
   </tr>
   <tr>
     <td>增强数据库审计功能（<a href="https://www.pingcap.com/tidb-enterprise/" target="_blank">企业版</a>）</td>
-    <td>TiDB 企业版增强了数据库审计功能，通过更细粒度的事件过滤控制、更友好的过滤条件设置方式、新增的 JSON 格式输出文件和审计日志的生命周期管理，大幅提升了系统的能力。</td>
+    <td>TiDB 企业版增强了数据库审计功能，通过更细粒度的事件过滤控制、更友好的过滤条件设置方式、新增的 JSON 格式输出文件和审计日志的生命周期管理，大幅提升了系统的审计能力。</td>
   </tr>
 </tbody>
 </table>
@@ -316,7 +316,7 @@ TiDB 7.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 | [`tidb_non_prepared_plan_cache_size`](/system-variables.md#tidb_non_prepared_plan_cache_size) | 废弃 | 从 v7.1.0 起，该变量被废弃，你可以使用 [`tidb_session_plan_cache_size`](/system-variables.md#tidb_session_plan_cache_size-从-v710-版本开始引入) 控制 Plan Cache 最多能够缓存的计划数量。 |
 | [`tidb_prepared_plan_cache_size`](/system-variables.md#tidb_prepared_plan_cache_size-从-v610-版本开始引入) | 废弃 | 从 v7.1.0 起，该变量被废弃，你可以使用 [`tidb_session_plan_cache_size`](/system-variables.md#tidb_session_plan_cache_size-从-v710-版本开始引入) 控制 Plan Cache 最多能够缓存的计划数量。 |
 | `tidb_ddl_distribute_reorg` | 删除 | 重命名为 [`tidb_enable_dist_task`](/system-variables.md#tidb_enable_dist_task-从-v710-版本开始引入)。 |
-| [`default_authentication_plugin`](/system-variables.md#default_authentication_plugin) | 修改 | 扩展可选值范围：增加 `authentication_ldap_sasl` 和 `authentication_ldap_simpl`。 |
+| [`default_authentication_plugin`](/system-variables.md#default_authentication_plugin) | 修改 | 扩展可选值范围：增加 `authentication_ldap_sasl` 和 `authentication_ldap_simple`。 |
 | [`tidb_load_based_replica_read_threshold`](/system-variables.md#tidb_load_based_replica_read_threshold-从-v700-版本开始引入) | 修改 | 该变量从 v7.1.0 开始生效，用于设置基于负载的 replica read 的触发阈值。经进一步的测试后，该变量默认值从 `"0s"` 修改为 `"1s"`。 |
 | [`tidb_opt_enable_late_materialization`](/system-variables.md#tidb_opt_enable_late_materialization-从-v700-版本开始引入) | 修改 | 默认值从 `OFF` 修改为 `ON`，代表 [TiFlash 延迟物化](/tiflash/tiflash-late-materialization.md)功能默认开启。 |
 | [`authentication_ldap_sasl_auth_method_name`](/system-variables.md#authentication_ldap_sasl_auth_method_name-从-v710-版本开始引入) | 新增 | 在 LDAP SASL 身份验证中，验证方法的名称。 |
@@ -327,7 +327,7 @@ TiDB 7.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 | [`authentication_ldap_sasl_init_pool_size`](/system-variables.md#authentication_ldap_sasl_init_pool_size-从-v710-版本开始引入) | 新增 | 在 LDAP SASL 身份验证中，TiDB 与 LDAP Server 间连接池的初始连接数。 |
 | [`authentication_ldap_sasl_max_pool_size`](/system-variables.md#authentication_ldap_sasl_max_pool_size-从-v710-版本开始引入) | 新增 | 在 LDAP SASL 身份验证中，TiDB 与 LDAP Server 间连接池的最大连接数。 |
 | [`authentication_ldap_sasl_server_host`](/system-variables.md#authentication_ldap_sasl_server_host-从-v710-版本开始引入) | 新增 | 在 LDAP SASL 身份验证中，LDAP Server 的主机名或地址。 |
-| [`authentication_ldap_sasl_server_port`](/system-variables.md#authentication_ldap_sasl_server_port-从-v710-版本开始引入) | 新增 | 在 LDAP SASL 身份验证中，LDAP Server 的端口号。 |
+| [`authentication_ldap_sasl_server_port`](/system-variables.md#authentication_ldap_sasl_server_port-从-v710-版本开始引入) | 新增 | 在 LDAP SASL 身份验证中，LDAP Server 的 TCP/IP 端口号。 |
 | [`authentication_ldap_sasl_tls`](/system-variables.md#authentication_ldap_sasl_tls-从-v710-版本开始引入) | 新增 | 在 LDAP SASL 身份验证中，是否使用 StartTLS 对连接加密。 |
 | [`authentication_ldap_simple_auth_method_name`](/system-variables.md#authentication_ldap_simple_auth_method_name-从-v710-版本开始引入) | 新增 | 在 LDAP simple 身份验证中，验证方法的名称。现在仅支持 `SIMPLE`。 |
 | [`authentication_ldap_simple_bind_base_dn`](/system-variables.md#authentication_ldap_simple_bind_base_dn-从-v710-版本开始引入) | 新增 | 在 LDAP simple 身份验证中，搜索用户的范围。如果创建用户时没有通过 `AS ...` 指定 `dn`，TiDB 会自动在 LDAP Server 的该范围中根据用户名搜索用户 `dn`。 |
@@ -337,7 +337,7 @@ TiDB 7.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 | [`authentication_ldap_simple_init_pool_size`](/system-variables.md#authentication_ldap_simple_init_pool_size-从-v710-版本开始引入) | 新增 | 在 LDAP simple 身份验证中，TiDB 与 LDAP Server 间连接池的初始连接数。 |
 | [`authentication_ldap_simple_max_pool_size`](/system-variables.md#authentication_ldap_simple_max_pool_size-从-v710-版本开始引入) | 新增 | 在 LDAP simple 身份验证中，TiDB 与 LDAP Server 间连接池的最大连接数。 |
 | [`authentication_ldap_simple_server_host`](/system-variables.md#authentication_ldap_simple_server_host-从-v710-版本开始引入) | 新增 | 在 LDAP simple 身份验证中，LDAP Server 的主机名或地址。 |
-| [`authentication_ldap_simple_server_port`](/system-variables.md#authentication_ldap_simple_server_port-从-v710-版本开始引入) | 新增 | 在 LDAP simple 身份验证中，LDAP Server 的端口号。 |
+| [`authentication_ldap_simple_server_port`](/system-variables.md#authentication_ldap_simple_server_port-从-v710-版本开始引入) | 新增 | 在 LDAP simple 身份验证中，LDAP Server 的 TCP/IP 端口号。 |
 | [`authentication_ldap_simple_tls`](/system-variables.md#authentication_ldap_simple_tls-从-v710-版本开始引入) | 新增 | 在 LDAP simple 身份验证中，是否使用 StartTLS 对连接加密。 |
 | [`tidb_enable_dist_task`](/system-variables.md#tidb_enable_dist_task-从-v710-版本开始引入) | 新增 | 控制是否开启分布式执行框架。开启分布式执行后，DDL、Import 等支持的后端任务将会由集群中多个 TiDB 节点共同完成。该变量由 `tidb_ddl_distribute_reorg` 改名而来。|
 | [`tidb_enable_non_prepared_plan_cache_for_dml`](/system-variables.md#tidb_enable_non_prepared_plan_cache_for_dml-从-v710-版本开始引入) | 新增 | 控制非 Prepare 语句执行计划缓存是否支持 DML 语句。 |
