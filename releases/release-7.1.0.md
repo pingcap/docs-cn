@@ -25,7 +25,7 @@ TiDB 7.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 </thead>
 <tbody>
   <tr>
-    <td rowspan="3">可扩展性与性能</td>
+    <td rowspan="4">可扩展性与性能</td>
     <td>TiFlash 支持<a href="https://docs.pingcap.com/zh/tidb/dev/tiflash-disaggregated-and-s3" target="_blank">存储计算分离和 S3 共享存储</a>（实验特性，从 v7.0.0 开始引入）</td>
     <td>TiFlash 增加云原生架构的支持作为可选项：
       <ul>
@@ -41,6 +41,10 @@ TiDB 7.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
   <tr>
     <td><a href="https://docs.pingcap.com/zh/tidb/dev/troubleshoot-hot-spot-issues#打散读热点" target="_blank">基于负载的副本读取</a></td>
     <td>在读热点场景中，TiDB 可以将热点 TiKV 节点的读请求转发到副本。该功能有效地打散了读热点并优化了集群资源的利用。你可以通过调整系统变量 <a href="https://docs.pingcap.com/zh/tidb/dev/system-variables#tidb_load_based_replica_read_threshold-从-v700-版本开始引入" target="_blank"><code>tidb_load_based_replica_read_threshold</code></a> 控制基于负载的副本读取的触发阈值。</td>
+  </tr>
+  <tr>
+      <td>TiKV 支持<a href="https://docs.pingcap.com/tidb/dev/partitioned-raft-kv" target="_blank"> 分区 Raft KV 存储引擎 </a>（实验特性）</td>
+    <td>TiKV 引入下一代存储引擎分区 Raft KV，通过每个数据 Region 独享 RocksDB 实例，可将集群的存储能力从 TB 级扩展到 PB 级，并提供更稳定的写入延迟和更强大的扩容能力。</td>
   </tr>
   <tr>
     <td rowspan="2">稳定性与高可用</td>
@@ -371,14 +375,21 @@ TiDB 7.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 | TiCDC | [`integrity.integrity-check-level`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-配置文件说明) | 新增 | 用于控制是否开启单行数据的 Checksum 校验功能，默认值为 `"none"`，即不开启。 |
 | TiCDC | [`sink.enable-partition-separator`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-配置文件说明) | 修改 | 默认值从 `false` 修改为 `true`，代表默认会将表中各个分区的数据分不同的目录来存储。建议保持该配置项为 `true` 以避免同步分区表到存储服务时可能丢数据的问题。 |
 
+## 废弃功能
+
+TiDB 计划在未来版本废弃[乐观事务模式](/optimistic-transaction.md)。从 v7.1.0 开始，不推荐设置 [`tidb_txn_mode`](/system-variables.md#tidb_txn_mode) 的值为 `"optimistic"` 或 `""`。
+
 ## 改进提升
 
 + TiDB
 
+  <!-- **tw:hfxsd** (5) -->
+
     - 使用 `SQL_NO_CACHE` 来避免 TTL Scan 查询对 TiKV block cache 造成影响 [#43206](https://github.com/pingcap/tidb/issues/43206) @[lcwangchao](https://github.com/lcwangchao)
     - 提升 `MAX_EXECUTION_TIME` 相关错误信息的 MySQL 兼容性 [#43031](https://github.com/pingcap/tidb/issues/43031) @[dveeden](https://github.com/dveeden)
-    - `SHOW INDEX` 结果中的 Cardinality 列可以展示统计信息中对应列的不同值的个数 [#42441](https://github.com/pingcap/tidb/pull/42441) @[winoros](https://github.com/winoros)
+    - `SHOW INDEX` 结果中的 Cardinality 列可以展示统计信息中对应列的不同值的个数 [#42227](https://github.com/pingcap/tidb/issues/42227) @[winoros](https://github.com/winoros)
     - 在 IndexLookUp 中支持对分区表的 MergeSort [#26166](https://github.com/pingcap/tidb/issues/26166) @[Defined2014](https://github.com/Defined2014)
+    - 增强了在使用 caching_sha2_password 时与 MySQL 实现的兼容性 [#43576](https://github.com/pingcap/tidb/issues/43576) @[asjdf](https://github.com/asjdf)
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
 + TiKV
@@ -399,32 +410,22 @@ TiDB 7.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 + Tools
 
-    + Backup & Restore (BR)
-
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
-
     + TiCDC
 
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
-    + TiDB Data Migration (DM)
-
     + TiDB Lightning
-
+      <!-- **tw:hfxsd** (3) -->
         - Region 分布 precheck 项由 Critical 改为 Warn [#42836](https://github.com/pingcap/tidb/issues/42836) @[okJiang](https://github.com/okJiang)
         - 导入期间对 unknown RPC 错误增加 retry [#43291](https://github.com/pingcap/tidb/issues/43291) @[D3Hunter](https://github.com/D3Hunter)
         - 增强 Region job retry [#43682](https://github.com/pingcap/tidb/issues/43682) @[lance6716](https://github.com/lance6716)
 
-    + TiUP
-
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
-
 ## 错误修复
 
 + TiDB
+
+  <!-- **tw:Oreoxmt** (18) -->
 
     - 在 reorganize 分区之后增加了手动 analyze table 的提示 [#42183](https://github.com/pingcap/tidb/issues/42183) @[CbcWestwolf](https://github.com/CbcWestwolf)
     - (dup) 修复对于执行中的 `DROP TABLE` 操作，`ADMIN SHOW DDL JOBS` 的结果中缺少表名的问题 [#42268](https://github.com/pingcap/tidb/issues/42268) @[tiancaiamao](https://github.com/tiancaiamao)
@@ -435,16 +436,16 @@ TiDB 7.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
     - 修复谓词下推的情况下 CTE 结果的正确性问题 [#43645](https://github.com/pingcap/tidb/issues/43645) @[winoros](https://github.com/winoros)
     - (dup) 修复分区特别多并且带有 TiFlash 副本的分区表在执行 `TRUNCATE TABLE` 时，出现写冲突导致 DDL 重试的问题 [#42940](https://github.com/pingcap/tidb/issues/42940) @[mjonss](https://github.com/mjonss)
     - 如果用户在创建分区表时使用了 subpartition，给出 Warning 的提示 [#41198](https://github.com/pingcap/tidb/issues/41198) [#41200](https://github.com/pingcap/tidb/issues/41200) @[mjonss](https://github.com/mjonss)
-    - 增强了在使用 caching_sha2_password 时与 MySQL 实现的兼容性 [#43576](https://github.com/pingcap/tidb/issues/43576) @[asjdf](https://github.com/asjdf)
     - 修复生成列在处理值溢出问题时与 MySQL 不兼容的问题 [#40066](https://github.com/pingcap/tidb/issues/40066) @[jiyfhust](https://github.com/jiyfhust)
     - 修复 reorganize partition 和其他 DDL 操作不能并发的问题 [#42442](https://github.com/pingcap/tidb/issues/42442) @[bb7133](https://github.com/bb7133)
     - 修复查询使用 `FLOOR` 函数分区的分区表时报错的问题 [#42323](https://github.com/pingcap/tidb/issues/42323) @[jiyfhust](https://github.com/jiyfhust)
-    - 修复在取消 DDL 的 reorganize partition 任务后导致后续其他 DDL 报错的问题 [#42479](https://github.com/pingcap/tidb/pull/42479) @[lcwangchao](https://github.com/lcwangchao)
+    - 修复在取消 DDL 的 reorganize partition 任务后导致后续其他 DDL 报错的问题 [#42448](https://github.com/pingcap/tidb/issues/42448) @[lcwangchao](https://github.com/lcwangchao)
     - 修复某些情况下对删除操作的 assertion 不正确的问题 [#42426](https://github.com/pingcap/tidb/issues/42426) @[tiancaiamao](https://github.com/tiancaiamao)
     - (dup) 修复读取 cgroup 信息出错导致 TiDB Server 无法启动的问题，报错信息为 "can't read file memory.stat from cgroup v1: open /sys/memory.stat no such file or directory" [#42659](https://github.com/pingcap/tidb/issues/42659) @[hawkingrei](https://github.com/hawkingrei)
     - 修复在有 global index 的分区表上更新行的 partition key 的数据报错 `Duplicate Key` 的问题 [#42312](https://github.com/pingcap/tidb/issues/42312) @[L-maple](https://github.com/L-maple)
     - 修复 TTL 监控面板中 Scan Worker Time By Phase 的图表不显示数据的问题 [#42515](https://github.com/pingcap/tidb/issues/42515) @[lcwangchao](https://github.com/lcwangchao)
     - 修复在有 global index 的分区表上进行某些查询返回结果错误的问题 [#41991](https://github.com/pingcap/tidb/issues/41991) [#42065](https://github.com/pingcap/tidb/issues/42065) @[L-maple](https://github.com/L-maple)
+  <!-- **tw:ran-huang** (17) -->
     - 修复在 reorganize partition table 过程中会显示一些错误日志的问题 [#42180](https://github.com/pingcap/tidb/issues/42180) @[mjonss](https://github.com/mjonss)
     - 修复 `INFORMATION_SCHEMA.DDL_JOBS` 表中 QUERY 列中数据长度可能比列定义长的问题 [#42440](https://github.com/pingcap/tidb/issues/42440) @[tiancaiamao](https://github.com/tiancaiamao)
     - 修复表 `INFORMATION_SCHEMA.CLUSTER_HARDWARE` 在容器中可能显示错误的问题 [#42851](https://github.com/pingcap/tidb/issues/42851) @[hawkingrei](https://github.com/hawkingrei)
@@ -457,16 +458,16 @@ TiDB 7.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
     - 修复 `tidb_scatter_region` 打开时对某个 partition 进行 truncate 操作后没有自动分裂 Region 的问题 [#43174](https://github.com/pingcap/tidb/issues/43174) [#43028](https://github.com/pingcap/tidb/issues/43028) @[jiyfhust](https://github.com/jiyfhust)
     - 在具有生成列的表上增加一些检查，并对一些不支持的列的 DDL 操作报错 [#38988](https://github.com/pingcap/tidb/issues/38988) [#24321](https://github.com/pingcap/tidb/issues/24321) @[tiancaiamao](https://github.com/tiancaiamao)
     - 修复在某些类型转换出错的情况下报错信息不对的问题 [#41730](https://github.com/pingcap/tidb/issues/41730) @[hawkingrei](https://github.com/hawkingrei)
-    - 解决 TiDB 节点在正常 shutdown 后，在此节点上触发的 DDL 任务会被取消的问题 [#43871](https://github.com/pingcap/tidb/pull/43871) @[zimulala](https://github.com/zimulala)
+    - 解决 TiDB 节点在正常 shutdown 后，在此节点上触发的 DDL 任务会被取消的问题 [#43854](https://github.com/pingcap/tidb/issues/43854) @[zimulala](https://github.com/zimulala)
     - 修复当 PD 成员地址发生变化时，为 AUTO_INCREMENT 列分配 ID 会长时间阻塞的问题 [#42643](https://github.com/pingcap/tidb/issues/42643) @[tiancaiamao](https://github.com/tiancaiamao)
     - 修复执行 DDL 期间报 `GC lifetime is shorter than transaction duration` 错误的问题 [#40074](https://github.com/pingcap/tidb/issues/40074) @[tangenta](https://github.com/tangenta)
     - 修复元数据锁非预期地阻塞 DDL 执行的问题 [#43755](https://github.com/pingcap/tidb/issues/43755) @[wjhuang2016](https://github.com/wjhuang2016)
     - 修复 IPv6 环境下的集群无法查询部分系统视图的问题 [#43286](https://github.com/pingcap/tidb/issues/43286) @[Defined2014](https://github.com/Defined2014)
+  <!-- **tw:qiancai** (16) -->
     - 修复在 add 或者 coalesce 分区过程中，新的行被写入错误分区的问题 [#43892](https://github.com/pingcap/tidb/issues/43892) @[mjonss](https://github.com/mjonss)
     - 修复内连接动态裁剪时找不到分区的问题 [#43686](https://github.com/pingcap/tidb/issues/43686) @[mjonss](https://github.com/mjonss)
     - 修复 analyze 表时报语法错误的问题 [#43392](https://github.com/pingcap/tidb/issues/43392) @[guo-shaoge](https://github.com/guo-shaoge)
     - 修复在重命名表期间 TiCDC 可能丢失部分行变更的问题 [#43338](https://github.com/pingcap/tidb/issues/43338) @[tangenta](https://github.com/tangenta)
-    - 修复 truncate 分区以后没有触发 Region 分裂的问题 [#43174](https://github.com/pingcap/tidb/issues/43174) @[jiyfhust](https://github.com/jiyfhust)
     - 修复在客户端使用游标读导致 TiDB 崩溃的问题 [#38116](https://github.com/pingcap/tidb/issues/38116) @[YangKeao](https://github.com/YangKeao)
     - 修复 `ADMIN SHOW DDL JOBS LIMIT` 返回错误结果的问题 [#42298](https://github.com/pingcap/tidb/issues/42298) @[CbcWestwolf](https://github.com/CbcWestwolf)
     - 修复使用 UNION 查询联合视图和临时表时 TiDB 崩溃的问题 [#42563](https://github.com/pingcap/tidb/issues/42563) @[lcwangchao](https://github.com/lcwangchao)
@@ -474,12 +475,18 @@ TiDB 7.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
     - 修复时间转换时 Prepared 同 Non-Prepared Plan Cache 的行为不兼容性的问题 [#42439](https://github.com/pingcap/tidb/issues/42439) @[qw4990](https://github.com/qw4990)
     - 修复 Plan Cache 针对 Decimal 类型导致的结果错误的问题 [#43311](https://github.com/pingcap/tidb/issues/43311) @[qw4990](https://github.com/qw4990)
     - 修复 NAAJ 中错误的类型检查导致 TiDB 崩溃的问题 [#42459](https://github.com/pingcap/tidb/issues/42459) @[AilinKid](https://github.com/AilinKid)
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
+    - 修复 RC 隔离级别下悲观事务中失败的 DML 可能导致的数据索引不一致问题 [#43294](https://github.com/pingcap/tidb/issues/43294) @[ekexium](https://github.com/ekexium)
+    - 修复在一些极端情况下，悲观事务的第一条语句发生重试时，对该事务进行 resolve lock 可能影响事务正确性的问题 [#42937](https://github.com/pingcap/tidb/issues/42937) @[MyonKeminta](https://github.com/MyonKeminta)
+    - 修复在一些罕见的情况下，悲观事务的残留悲观锁在 GC resolve lock 时可能被影响数据正确性的问题 [#43243](https://github.com/pingcap/tidb/issues/43243) @[MyonKeminta](https://github.com/MyonKeminta)
+    - 修复 LOCK 转 PUT 优化导致特定查询返回重复数据的问题 [#28011](https://github.com/pingcap/tidb/issues/28011) @[zyguan](https://github.com/zyguan)
+    - 修复唯一索引加锁行为不一致的问题 [#36438](https://github.com/pingcap/tidb/issues/36438) @[zyguan](https://github.com/zyguan)
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
 + TiKV
 
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
+  <!-- **tw:hfxsd** (1)-->
+
+    - 修复在 `tidb_pessimistic_txn_fair_locking` 启用时，在一些极端情况下，RPC 失败重试导致的过期请求有可能影响数据正确性的问题 [#14551](https://github.com/tikv/tikv/issues/14551) @[MyonKeminta](https://github.com/MyonKeminta)
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
 + PD
@@ -489,18 +496,17 @@ TiDB 7.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 + TiFlash
 
-    - 修复开启延迟物化优化 (Late Materialization) 后查询 TIMESTAMP 或者 TIME 类型报错的问题 [#7455](https://github.com/pingcap/tiflash/issues/7455) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
+  <!-- **tw:qiancai** (2) -->
+
+    - 修复开启延迟物化 (Late Materialization) 后查询 TIMESTAMP 或者 TIME 类型报错的问题 [#7455](https://github.com/pingcap/tiflash/issues/7455) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
     - 修复大更新事务可能会导致 TiFlash 反复报错重启的问题 [#7316](https://github.com/pingcap/tiflash/issues/7316) @[JaySon-Huang](https://github.com/JaySon-Huang)
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
 + Tools
 
     + Backup & Restore (BR)
-
-- 修复当集群中 TiKV 出现宕机导致备份缓慢的问题 [#42973](https://github.com/pingcap/tidb/issues/42973) @[YuJuncen](https://github.com/YuJuncen)
-- 修复某些情况下备份失败丢失错误信息的问题 [#43236](https://github.com/pingcap/tidb/issues/43236) @[YuJuncen](https://github.com/YuJuncen)
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
+      <!-- **tw:hfxsd** (2)-->
+        - 修复当集群中 TiKV 出现宕机导致备份缓慢的问题 [#42973](https://github.com/pingcap/tidb/issues/42973) @[YuJuncen](https://github.com/YuJuncen)
+        - 修复某些情况下备份失败丢失错误信息的问题 [#43236](https://github.com/pingcap/tidb/issues/43236) @[YuJuncen](https://github.com/YuJuncen)
 
     + TiCDC
 
@@ -512,7 +518,7 @@ TiDB 7.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
         - (dup) 修复数据同步过程中，latin1 字符集数据可能损坏的问题 [#7028](https://github.com/pingcap/tiflow/issues/7028) @[lance6716](https://github.com/lance6716)
 
     + TiDB Lightning
-
+      <!-- **tw:hfxsd** (8)-->
         - 修复 Lightning 导入性能退化的问题 [#42456](https://github.com/pingcap/tidb/issues/42456) @[lance6716](https://github.com/lance6716)
         - 修复大数据量导入时报 `write to tikv with no leader returned` 错误的问题 [#43055](https://github.com/pingcap/tidb/issues/43055) @[lance6716](https://github.com/lance6716)
         - 修复导入期间输出过多 `keys within region is empty, skip doIngest` 日志的问题 [#43197](https://github.com/pingcap/tidb/issues/43197) @[D3Hunter](https://github.com/D3Hunter)
@@ -521,11 +527,6 @@ TiDB 7.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
         - 修复 Lightning Grafana 面板缺失数据的问题 [#43357](https://github.com/pingcap/tidb/issues/43357) @[lichunzhu](https://github.com/lichunzhu)
         - 修复未正确设置 keyspace name 导致导入失败的问题 [#43684](https://github.com/pingcap/tidb/issues/43684) @[zeminzhou](https://github.com/zeminzhou)
         - 修复当 range 部分写入时在一定情况会跳过数据导入的问题 [#43768](https://github.com/pingcap/tidb/issues/43768) @[lance6716](https://github.com/lance6716)
-
-    + TiUP
-
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
 ## 贡献者
 
