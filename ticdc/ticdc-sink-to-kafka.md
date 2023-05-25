@@ -134,7 +134,7 @@ URI 中可配置的的参数如下：
 
   TiCDC 能够正常工作所需的最小权限集合如下：
 
-    - 对 Topic [资源类型](https://docs.confluent.io/platform/current/kafka/authorization.html#resources)的 `Create` 和 `Write` 权限。
+    - 对 Topic [资源类型](https://docs.confluent.io/platform/current/kafka/authorization.html#resources)的 `Create` 、`Write` 和 `Describe` 权限。
     - 对 Cluster 资源类型的 `DescribeConfigs` 权限。
 
 ### TiCDC 集成 Kafka Connect (Confluent Platform)
