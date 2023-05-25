@@ -24,7 +24,7 @@ aliases: ['/docs-cn/dev/faq/upgrade-faq/','/docs-cn/dev/faq/upgrade/']
 
   * 在升级 TiDB 集群的过程中，**请勿执行** DDL 语句，否则可能会出现行为未定义的问题。
 
-* 从 TiDB v7.1 版本升级至更高的版本时：
+* 如果升级前 TiDB 的版本为 v7.1.0 或更高的版本：
 
   * 不用遵循限制低版本升级时的限制，即在升级时可以接收用户 DDL 任务。建议参考[平滑升级 TiDB](/smooth-upgrade-tidb.md)。
 
