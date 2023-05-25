@@ -363,7 +363,7 @@ TiDB 7.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 | PD | [`store-limit-version`](/pd-configuration-file.md#store-limit-version-从-v710-版本开始引入) | 新增 | 用于设置 store limit 工作模式。可选值为 `"v1"` 和 `"v2"`。 |
 | PD | [`schedule.enable-diagnostic`](/pd-configuration-file.md#enable-diagnostic-从-v630-版本开始引入) | 修改 | 默认值从 `false` 修改为 `true`，默认打开调度器的诊断功能。 |
 | TiFlash | `http_port` | 删除 | 废弃 TiFlash HTTP 服务端口（默认 `8123`）。 |
-| TiDB Lightning | [`tikv-importer.pause-pd-scheduler-scope`](/tidb-lightning/tidb-lightning-configuration.md) | 新增 | 用于控制导入数据过程中暂停 PD 调度的范围。默认值为 `"table"`，可选值为 `"cluster"` 和 `"table"`。 |
+| TiDB Lightning | [`tikv-importer.pause-pd-scheduler-scope`](/tidb-lightning/tidb-lightning-configuration.md) | 新增 | 用于控制导入数据过程中暂停 PD 调度的范围。默认值为 `"table"`，可选值为 `"global"` 和 `"table"`。 |
 | TiDB Lightning | [`tikv-importer.region-check-backoff-limit`](/tidb-lightning/tidb-lightning-configuration.md) | 新增 | 用于控制 split 和 scatter 操作后等待 Region 上线的重试次数，默认值为 `1800`。重试符合指数回退策略，最大重试间隔为 2 秒。若两次重试之间有任何 Region 上线，该次操作不会被计为重试次数。 |
 | TiDB Lightning | [`tikv-importer.region-split-batch-size`](/tidb-lightning/tidb-lightning-configuration.md) | 新增 | 用于控制一个 batch 中执行 split 和 scatter 操作的最大 Region 数量，默认值为 `4096`。 |
 | TiDB Lightning | [`tikv-importer.region-split-concurrency`](/tidb-lightning/tidb-lightning-configuration.md) | 新增 | 用于控制 Split Region 时的并发度，默认值为 CPU 核心数。 |
