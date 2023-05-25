@@ -41,14 +41,16 @@ TiDB 引入平滑升级功能前，对于升级过程中的 DDL 操作有如下�
 
 * 在升级过程中，不允许以下操作：
 
-  * 对系统表（`mysql.*`、`information_schema.*`、`performance_schema.*`、`metrics_schema.*`）进行 DDL 操作。
+    * 对系统表（`mysql.*`、`information_schema.*`、`performance_schema.*`、`metrics_schema.*`）进行 DDL 操作。
 
-  * 执行手动取消、暂停、恢复 DDL job 操作：`ADMIN CANCEL/PAUSE/RESUME DDL JOBS job_id [, job_id] ...;`。
+    * 执行手动取消、暂停、恢复 DDL job 操作：`ADMIN CANCEL/PAUSE/RESUME DDL JOBS job_id [, job_id] ...;`。
 
-### 组件使用限制
+    * 导入数据。
 
-* 在升级过程中，不支持以下组件操作：
+### 工具使用限制
 
-  * BR、Import Data 和通过 ingest 方式导入数据等组件：由于这些操作可能会将处于 paused 状态的 DDL 拷贝到 TiDB 中，而此状态的 DDL 不能自动 resume，可能导致后续 DDL 卡住的情况。因此无法处理此类组件的操作。
+在升级过程中，不支持使用以下工具：
 
-  * DM、Import Data 和 TiCDC 等组件。如果在升级过程中使用这些组件向 TiDB 导入 SQL，并且其中包含 DDL 操作，则会阻塞该导入操作，并可能出现未定义错误。
+    * BR：BR 可能会将处于 paused 状态的 DDL 拷贝到 TiDB 中，而此状态的 DDL 不能自动 resume，可能导致后续 DDL 卡住的情况。
+
+    * DM 和 TiCDC：如果在升级过程中使用 DM 和 TiCDC 向 TiDB 导入 SQL，并且其中包含 DDL 操作，则该导入操作会被阻塞，并可能出现未定义错误。
