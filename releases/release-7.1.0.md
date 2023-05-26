@@ -432,9 +432,9 @@ TiDB 计划在未来版本废弃[乐观事务模式](/optimistic-transaction.md)
 
     + TiDB Lightning
       <!-- **tw:hfxsd** (3) -->
-        - Region 分布 precheck 项由 Critical 改为 Warn [#42836](https://github.com/pingcap/tidb/issues/42836) @[okJiang](https://github.com/okJiang)
-        - 导入期间对 unknown RPC 错误增加 retry [#43291](https://github.com/pingcap/tidb/issues/43291) @[D3Hunter](https://github.com/D3Hunter)
-        - 增强 Region job retry [#43682](https://github.com/pingcap/tidb/issues/43682) @[lance6716](https://github.com/lance6716)
+        - 将 Precheck 项 `regionDistributionCheck` 的严重级别从 `Critical` 改为 `Warn` 以避免阻碍用户操作 [#42836](https://github.com/pingcap/tidb/issues/42836) @[okJiang](https://github.com/okJiang)
+        - 导入数据期间遇到 `unknown RPC` 错误后增加了重试 [#43291](https://github.com/pingcap/tidb/issues/43291) @[D3Hunter](https://github.com/D3Hunter)
+        - 增强 Region Job Retry [#43682](https://github.com/pingcap/tidb/issues/43682) @[lance6716](https://github.com/lance6716)
 
 ## 错误修复
 
@@ -500,12 +500,12 @@ TiDB 计划在未来版本废弃[乐观事务模式](/optimistic-transaction.md)
 
   <!-- **tw:hfxsd** (6) -->
 
-    - 修复在 `tidb_pessimistic_txn_fair_locking` 启用时，在一些极端情况下，RPC 失败重试导致的过期请求有可能影响数据正确性的问题 [#14551](https://github.com/tikv/tikv/issues/14551) @[MyonKeminta](https://github.com/MyonKeminta)
-    - 修复加密 Key ID 冲突会导致旧的 Key 被删除 [#14585](https://github.com/tikv/tikv/issues/14585) @[tabokie](https://github.com/tabokie)
-    - 修复集群从之前版本升级到 v6.5 或更高版本时由于累计的 lock 记录带来的性能问题 [#14780](https://github.com/tikv/tikv/issues/14780) @[MyonKeminta](https://github.com/MyonKeminta)
+    - 修复在 `tidb_pessimistic_txn_fair_locking` 启用时，在一些极端情况下，RPC 失败重试导致的过期请求可能影响数据正确性的问题 [#14551](https://github.com/tikv/tikv/issues/14551) @[MyonKeminta](https://github.com/MyonKeminta)
+    - 修复加密 Key ID 冲突会导致旧 Key 被删除 [#14585](https://github.com/tikv/tikv/issues/14585) @[tabokie](https://github.com/tabokie)
+    - 修复集群从之前版本升级到 v6.5 或更高版本时由于累计的 Lock 记录带来的性能问题 [#14780](https://github.com/tikv/tikv/issues/14780) @[MyonKeminta](https://github.com/MyonKeminta)
     - 修复 PITR 恢复过程中出现的 `raft entry is too large` 问题 @[YuJuncen](https://github.com/YuJuncen)
-    - 修复 PITR 恢复过程中 TiKV 由于 log_batch 超过 2G 导致 panic 的问题 @[YuJuncen](https://github.com/YuJuncen)
-    - 修复 Replay 悲观锁请求导致正确性问题 @[MyonKeminta](https://github.com/MyonKeminta)
+    - 修复 PITR 恢复过程中 TiKV 由于 log_batch 超过 2 GB 导致 panic 问题 @[YuJuncen](https://github.com/YuJuncen)
+    - 修复 Replay 悲观锁请求导致的正确性问题 @[MyonKeminta](https://github.com/MyonKeminta)
 
 + PD
 
@@ -545,14 +545,14 @@ TiDB 计划在未来版本废弃[乐观事务模式](/optimistic-transaction.md)
 
     + TiDB Lightning
       <!-- **tw:hfxsd** (8)-->
-        - 修复 Lightning 导入性能退化的问题 [#42456](https://github.com/pingcap/tidb/issues/42456) @[lance6716](https://github.com/lance6716)
+        - 修复 TiDB Lightning 导入性能退化的问题 [#42456](https://github.com/pingcap/tidb/issues/42456) @[lance6716](https://github.com/lance6716)
         - 修复大数据量导入时报 `write to tikv with no leader returned` 错误的问题 [#43055](https://github.com/pingcap/tidb/issues/43055) @[lance6716](https://github.com/lance6716)
         - 修复导入期间输出过多 `keys within region is empty, skip doIngest` 日志的问题 [#43197](https://github.com/pingcap/tidb/issues/43197) @[D3Hunter](https://github.com/D3Hunter)
-        - 修复 range 部分写入时可能 panic 的问题 [#43363](https://github.com/pingcap/tidb/issues/43363) @[lance6716](https://github.com/lance6716)
+        - 修复 Range 部分写入时可能 panic 的问题 [#43363](https://github.com/pingcap/tidb/issues/43363) @[lance6716](https://github.com/lance6716)
         - 修复宽表导入时可能 OOM 的问题 [#43728](https://github.com/pingcap/tidb/issues/43728) @[D3Hunter](https://github.com/D3Hunter)
-        - 修复 Lightning Grafana 面板缺失数据的问题 [#43357](https://github.com/pingcap/tidb/issues/43357) @[lichunzhu](https://github.com/lichunzhu)
-        - 修复未正确设置 keyspace name 导致导入失败的问题 [#43684](https://github.com/pingcap/tidb/issues/43684) @[zeminzhou](https://github.com/zeminzhou)
-        - 修复当 range 部分写入时在一定情况会跳过数据导入的问题 [#43768](https://github.com/pingcap/tidb/issues/43768) @[lance6716](https://github.com/lance6716)
+        - 修复 TiDB Lightning Grafana 面板缺失数据的问题 [#43357](https://github.com/pingcap/tidb/issues/43357) @[lichunzhu](https://github.com/lichunzhu)
+        - 修复未正确设置 Keyspace Name 导致导入失败的问题 [#43684](https://github.com/pingcap/tidb/issues/43684) @[zeminzhou](https://github.com/zeminzhou)
+        - 修复当 Range 部分写入时，在某些情况下会跳过数据导入的问题 [#43768](https://github.com/pingcap/tidb/issues/43768) @[lance6716](https://github.com/lance6716)
 
 ## 贡献者
 
