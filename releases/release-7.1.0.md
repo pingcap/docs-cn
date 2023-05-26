@@ -543,6 +543,15 @@ TiDB 计划在未来版本废弃[乐观事务模式](/optimistic-transaction.md)
 
         - (dup) 修复数据同步过程中，latin1 字符集数据可能损坏的问题 [#7028](https://github.com/pingcap/tiflow/issues/7028) @[lance6716](https://github.com/lance6716)
 
+    + TiDB Dumpling
+
+        - 修复 unsigned int 无法用于拆分 chunk 的问题 [#42620](https://github.com/pingcap/tidb/issues/42620) @[lichunzhu](https://github.com/lichunzhu)
+        - 修复当未正确设置 --output-file-template 时可能 panic 的问题 [#42391](https://github.com/pingcap/tidb/issues/42391) @[lichunzhu](https://github.com/lichunzhu)
+
+    + TiDB Binlog
+
+        - 修复当遇到失败的 DDL 语句时可能报错的问题 [#1228](https://github.com/pingcap/tidb-binlog/issues/1228] @[okJiang](https://github.com/okJiang)
+
     + TiDB Lightning
       <!-- **tw:hfxsd** (8)-->
         - 修复 TiDB Lightning 导入性能退化的问题 [#42456](https://github.com/pingcap/tidb/issues/42456) @[lance6716](https://github.com/lance6716)
