@@ -39,6 +39,8 @@ TiDB 引入平滑升级功能前，对于升级过程中的 DDL 操作有如下�
 
 * 在升级前，如果集群中存在正在处理的 canceling DDL job，即有正在被处理的 DDL job 被用户取消了，由于处于 canceling 状态的 job 无法被 `pause`，TiDB 会尝试重试。如果重试失败，会报错并退出升级。
 
+* 在升级前，如果集群有大量 DDL(超过 300 的 DDL)在处理队列中准备处理，且用 tiup 升级可能会失败(由于 tiup 升级有超时时间)。
+
 * 在升级过程中，不允许以下操作：
 
     * 对系统表（`mysql.*`、`information_schema.*`、`performance_schema.*`、`metrics_schema.*`）进行 DDL 操作。
