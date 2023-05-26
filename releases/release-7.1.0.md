@@ -43,8 +43,8 @@ TiDB 7.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
     <td>在读热点场景中，TiDB 可以将热点 TiKV 节点的读请求转发到副本。该功能有效地打散了读热点并优化了集群资源的利用。你可以通过调整系统变量 <a href="https://docs.pingcap.com/zh/tidb/dev/system-variables#tidb_load_based_replica_read_threshold-从-v700-版本开始引入" target="_blank"><code>tidb_load_based_replica_read_threshold</code></a> 控制基于负载的副本读取的触发阈值。</td>
   </tr>
   <tr>
-      <td>TiKV 支持<a href="https://docs.pingcap.com/tidb/dev/partitioned-raft-kv" target="_blank"> 分区 Raft KV 存储引擎 </a>（实验特性）</td>
-    <td>TiKV 引入下一代存储引擎分区 Raft KV，通过每个数据 Region 独享 RocksDB 实例，可将集群的存储能力从 TB 级扩展到 PB 级，并提供更稳定的写入延迟和更强大的扩容能力。</td>
+      <td>TiKV 支持<a href="https://docs.pingcap.com/tidb/dev/partitioned-raft-kv" target="_blank">分区 Raft KV 存储引擎 </a>（实验特性）</td>
+    <td>TiKV 引入新一代存储引擎分区 Raft KV，通过每个数据 Region 独享 RocksDB 实例，可将集群的存储能力从 TB 级扩展到 PB 级，并提供更稳定的写入延迟和更强大的扩容能力。</td>
   </tr>
   <tr>
     <td rowspan="2">稳定性与高可用</td>
@@ -75,7 +75,7 @@ TiDB 7.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
   </tr>
   <tr>
     <td>增强数据库审计功能（<a href="https://www.pingcap.com/tidb-enterprise/" target="_blank">企业版</a>）</td>
-    <td>TiDB 企业版增强了数据库审计功能，通过更细粒度的事件过滤控制、更友好的过滤条件设置方式、新增的 JSON 格式输出文件和审计日志的生命周期管理，大幅提升了系统的审计能力。</td>
+    <td>TiDB 企业版增强了数据库审计功能，通过更细粒度的事件过滤控制、更友好的过滤条件设置方式、新增的 JSON 文件输出格式、审计日志的生命周期管理，大幅提升了系统的审计能力。</td>
   </tr>
 </tbody>
 </table>
@@ -385,11 +385,11 @@ TiDB 计划在未来版本废弃[乐观事务模式](/optimistic-transaction.md)
 
   <!-- **tw:hfxsd** (5) -->
 
-    - 使用 `SQL_NO_CACHE` 来避免 TTL Scan 查询对 TiKV block cache 造成影响 [#43206](https://github.com/pingcap/tidb/issues/43206) @[lcwangchao](https://github.com/lcwangchao)
-    - 提升 `MAX_EXECUTION_TIME` 相关错误信息的 MySQL 兼容性 [#43031](https://github.com/pingcap/tidb/issues/43031) @[dveeden](https://github.com/dveeden)
+    - 使用 `SQL_NO_CACHE` 来避免 TTL Scan 查询对 TiKV Block Cache 造成影响 [#43206](https://github.com/pingcap/tidb/issues/43206) @[lcwangchao](https://github.com/lcwangchao)
+    - 改进 `MAX_EXECUTION_TIME` 相关错误信息使之与 MySQL 兼容 [#43031](https://github.com/pingcap/tidb/issues/43031) @[dveeden](https://github.com/dveeden)
     - `SHOW INDEX` 结果中的 Cardinality 列可以展示统计信息中对应列的不同值的个数 [#42227](https://github.com/pingcap/tidb/issues/42227) @[winoros](https://github.com/winoros)
-    - 在 IndexLookUp 中支持对分区表的 MergeSort [#26166](https://github.com/pingcap/tidb/issues/26166) @[Defined2014](https://github.com/Defined2014)
-    - 增强了在使用 caching_sha2_password 时与 MySQL 实现的兼容性 [#43576](https://github.com/pingcap/tidb/issues/43576) @[asjdf](https://github.com/asjdf)
+    - 在 IndexLookUp 中支持对分区表使用 MergeSort 算子 [#26166](https://github.com/pingcap/tidb/issues/26166) @[Defined2014](https://github.com/Defined2014)
+    - 增强 `caching_sha2_password` 与 MySQL 的兼容性 [#43576](https://github.com/pingcap/tidb/issues/43576) @[asjdf](https://github.com/asjdf)
 
 + TiKV
 
