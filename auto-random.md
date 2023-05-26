@@ -107,10 +107,13 @@ TiDB 自动分配的 `AUTO_RANDOM(S, R)` 列值共有 64 位：
 创建完一张含有 `AUTO_RANDOM` 属性的表后，可以使用 `SHOW WARNINGS` 查看当前表可支持的最大隐式分配的次数：
 
 ```sql
-tidb> CREATE TABLE t (a BIGINT AUTO_RANDOM, b VARCHAR(255), PRIMARY KEY (a));
-Query OK, 0 rows affected, 1 warning (0.16 sec)
+CREATE TABLE t (a BIGINT AUTO_RANDOM, b VARCHAR(255), PRIMARY KEY (a));
+SHOW WARNINGS;
+```
 
-tidb> SHOW WARNINGS;
+输出结果如下：
+
+```sql
 +-------+------+---------------------------------------------------------+
 | Level | Code | Message                                                 |
 +-------+------+---------------------------------------------------------+
