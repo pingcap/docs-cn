@@ -91,6 +91,21 @@ TiDB 自动分配的 `AUTO_RANDOM(S)` 列值共有 64 位。其中，`S` 表示�
 
 要查看某张含有 `AUTO_RANDOM` 属性的表的分片位数量，除了 `SHOW CREATE TABLE` 以外，还可以在系统表 `INFORMATION_SCHEMA.TABLES` 中 `TIDB_ROW_ID_SHARDING_INFO` 一列中查到模式为 `PK_AUTO_RANDOM_BITS=x` 的值，其中 `x` 为分片位的数量。
 
+创建完一张含有 `AUTO_RANDOM` 属性的表后，可以使用 `SHOW WARNINGS` 查看当前表可支持的最大隐式分配的次数：
+
+```sql
+tidb> CREATE TABLE t (a BIGINT AUTO_RANDOM, b VARCHAR(255), PRIMARY KEY (a));
+Query OK, 0 rows affected, 1 warning (0.16 sec)
+
+tidb> SHOW WARNINGS;
++-------+------+---------------------------------------------------------+
+| Level | Code | Message                                                 |
++-------+------+---------------------------------------------------------+
+| Note  | 1105 | Available implicit allocation times: 288230376151711743 |
++-------+------+---------------------------------------------------------+
+1 row in set (0.00 sec)
+```
+
 ## 使用限制
 
 目前在 TiDB 中使用 `AUTO_RANDOM` 有以下限制：
