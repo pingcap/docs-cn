@@ -500,12 +500,12 @@ TiDB 计划在未来版本废弃[乐观事务模式](/optimistic-transaction.md)
 
   <!-- **tw:hfxsd** (6) -->
 
-    - 修复在 `tidb_pessimistic_txn_fair_locking` 启用时，在一些极端情况下，RPC 失败重试导致的过期请求可能影响数据正确性的问题 [#14551](https://github.com/tikv/tikv/issues/14551) @[MyonKeminta](https://github.com/MyonKeminta)
+    - 修复在启用 `tidb_pessimistic_txn_fair_locking` 时，在某些极端情况下，RPC 失败重试导致的过期请求可能在 Resolve Lock 时影响数据正确性的问题 [#14551](https://github.com/tikv/tikv/issues/14551) @[MyonKeminta](https://github.com/MyonKeminta)
     - 修复加密 Key ID 冲突会导致旧 Key 被删除 [#14585](https://github.com/tikv/tikv/issues/14585) @[tabokie](https://github.com/tabokie)
     - 修复集群从之前版本升级到 v6.5 或更高版本时由于累计的 Lock 记录带来的性能问题 [#14780](https://github.com/tikv/tikv/issues/14780) @[MyonKeminta](https://github.com/MyonKeminta)
     - 修复 PITR 恢复过程中出现的 `raft entry is too large` 问题 @[YuJuncen](https://github.com/YuJuncen)
     - 修复 PITR 恢复过程中 TiKV 由于 log_batch 超过 2 GB 导致 panic 问题 @[YuJuncen](https://github.com/YuJuncen)
-    - 修复 Replay 悲观锁请求导致的正确性问题 @[MyonKeminta](https://github.com/MyonKeminta)
+    - 修复在启用 `tidb_pessimistic_txn_fair_locking` 时，在某些极端情况下，RPC 失败重试导致的过期请求可能会造成事务冲突被忽略，从而影响事务一致性的问题 [#14311](https://github.com/tikv/tikv/issues/14311) @[MyonKeminta](https://github.com/MyonKeminta)
 
 + PD
 
