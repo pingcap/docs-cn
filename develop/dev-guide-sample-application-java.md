@@ -32,7 +32,7 @@ aliases: ['/zh/tidb/dev/sample-application-java']
 
 <div label="TiDB Cloud" value="serverless-cluster">
 
-[创建 Serverless Tier 集群](/develop/dev-guide-build-cluster-in-cloud.md#第-1-步创建-serverless-tier-集群)。
+[创建 TiDB Serverless 集群](/develop/dev-guide-build-cluster-in-cloud.md#第-1-步创建-serverless-tier-集群)。
 
 </div>
 

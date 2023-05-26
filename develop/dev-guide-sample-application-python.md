@@ -22,7 +22,7 @@ summary: 给出一个 TiDB 和 Python 的简单 CRUD 应用程序示例。
 
 <div label="TiDB Cloud" value="serverless-cluster">
 
-[创建 Serverless Tier 集群](/develop/dev-guide-build-cluster-in-cloud.md#第-1-步创建-serverless-tier-集群)。
+[创建 TiDB Serverless 集群](/develop/dev-guide-build-cluster-in-cloud.md#第-1-步创建-serverless-tier-集群)。
 
 </div>
 
