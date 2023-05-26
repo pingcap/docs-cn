@@ -172,7 +172,7 @@ In v6.3.0-DMR, the key new features and improvements are as follows:
 
 * PITR supports [GCS and Azure Blob Storage](/br/backup-and-restore-storages.md) as backup storages @[joccau](https://github.com/joccau)
 
-    If your TiDB cluster is deployed on GCP or Azure, you can use the PITR feature after upgrading your cluster to v6.3.0.
+    If your TiDB cluster is deployed on Google Cloud or Azure, you can use the PITR feature after upgrading your cluster to v6.3.0.
 
 * BR supports AWS S3 Object Lock [#13442](https://github.com/tikv/tikv/issues/13442) @[3pointer](https://github.com/3pointer)
 

@@ -60,3 +60,5 @@ Feburary
 (?i)reslove
 (?i)schedulor
 (?i)ROCSDB
+GCP
+(?i)Google Cloud Platform
