@@ -492,9 +492,9 @@ TiDB 计划在未来版本废弃[乐观事务模式](/optimistic-transaction.md)
     - 修复 NAAJ 中错误的类型检查导致 TiDB panic 的问题 [#42459](https://github.com/pingcap/tidb/issues/42459) @[AilinKid](https://github.com/AilinKid)
     - 修复 RC 隔离级别下悲观事务中执行失败的 DML 可能导致数据索引不一致的问题 [#43294](https://github.com/pingcap/tidb/issues/43294) @[ekexium](https://github.com/ekexium)
     - 修复在一些极端情况下，悲观事务的第一条语句发生重试时，对该事务进行 resolve lock 可能影响事务正确性的问题 [#42937](https://github.com/pingcap/tidb/issues/42937) @[MyonKeminta](https://github.com/MyonKeminta)
-    - 修复在一些罕见的情况下，悲观事务的残留悲观锁在 GC resolve lock 时可能被影响数据正确性的问题 [#43243](https://github.com/pingcap/tidb/issues/43243) @[MyonKeminta](https://github.com/MyonKeminta)
+    - 修复在一些罕见的情况下，悲观事务的残留悲观锁在 GC resolve lock 时可能影响数据正确性的问题 [#43243](https://github.com/pingcap/tidb/issues/43243) @[MyonKeminta](https://github.com/MyonKeminta)
     - 修复 LOCK 转 PUT 优化导致特定查询返回重复数据的问题 [#28011](https://github.com/pingcap/tidb/issues/28011) @[zyguan](https://github.com/zyguan)
-    - 修复唯一索引加锁行为不一致的问题 [#36438](https://github.com/pingcap/tidb/issues/36438) @[zyguan](https://github.com/zyguan)
+    - 修复当数据未变更时唯一索引的加锁行为与数据发生变更时不一致的问题 [#36438](https://github.com/pingcap/tidb/issues/36438) @[zyguan](https://github.com/zyguan)
 
 + TiKV
 
@@ -520,8 +520,8 @@ TiDB 计划在未来版本废弃[乐观事务模式](/optimistic-transaction.md)
 
   <!-- **tw:qiancai** (2) -->
 
-    - 修复开启延迟物化 (Late Materialization) 后查询 TIMESTAMP 或者 TIME 类型报错的问题 [#7455](https://github.com/pingcap/tiflash/issues/7455) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
-    - 修复大更新事务可能会导致 TiFlash 反复报错重启的问题 [#7316](https://github.com/pingcap/tiflash/issues/7316) @[JaySon-Huang](https://github.com/JaySon-Huang)
+    - 修复开启延迟物化 (Late Materialization) 后查询 TIMESTAMP 或者 TIME 类型的数据报错的问题 [#7455](https://github.com/pingcap/tiflash/issues/7455) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
+    - 修复大的更新事务可能会导致 TiFlash 反复报错重启的问题 [#7316](https://github.com/pingcap/tiflash/issues/7316) @[JaySon-Huang](https://github.com/JaySon-Huang)
 
 + Tools
 
@@ -532,12 +532,12 @@ TiDB 计划在未来版本废弃[乐观事务模式](/optimistic-transaction.md)
 
     + TiCDC
       <!-- **tw:qiancai** (6) -->
-        - 修复设置 timezone 时相关的问题 [#8798](https://github.com/pingcap/tiflow/issues/8798) @[hi-rustin](https://github.com/hi-rustin)
+        - 修复 TiCDC 的时区设置问题 [#8798](https://github.com/pingcap/tiflow/issues/8798) @[hi-rustin](https://github.com/hi-rustin)
         - 修复 PD 地址或 leader 出现故障时 TiCDC 不能自动恢复的问题 [#8812](https://github.com/pingcap/tiflow/issues/8812) [#8877](https://github.com/pingcap/tiflow/issues/8877) @[asddongmen](https://github.com/asddongmen)
-        - 修复上游 tikv 节点 crash 时 checkpoint lag 上升的问题 [#8858](https://github.com/pingcap/tiflow/issues/8858) @[hicqu](https://github.com/hicqu)
-        - 修复同步到对象存储场景下上游做 exchange partition 时不能正常同步到下游的问题 [#8914](https://github.com/pingcap/tiflow/issues/8914) @[CharlesCheung96](https://github.com/CharlesCheung96)
-        - 修复在某些特殊场景下 sorter 组件内存使用过多导致 OOM 问题 [#8974](https://github.com/pingcap/tiflow/issues/8974) @[hicqu](https://github.com/hicqu)
-        - 修复下游 Kafka 滚动重启 CDC 节点 发生 panic 的问题 [#9023](https://github.com/pingcap/tiflow/issues/9023) @[asddongmen](https://github.com/asddongmen)
+        - 修复上游 TiKV 节点 crash 时 checkpoint lag 上升的问题 [#8858](https://github.com/pingcap/tiflow/issues/8858) @[hicqu](https://github.com/hicqu)
+        - 修复当同步数据到对象存储时上游的 `EXCHANGE PARTITION` 操作没有正常同步到下游的问题 [#8914](https://github.com/pingcap/tiflow/issues/8914) @[CharlesCheung96](https://github.com/CharlesCheung96)
+        - 修复在某些特殊场景下 sorter 组件内存使用过多导致 OOM 的问题 [#8974](https://github.com/pingcap/tiflow/issues/8974) @[hicqu](https://github.com/hicqu)
+        - 修复下游 Kafka 滚动重启时 TiCDC 节点发生 panic 的问题 [#9023](https://github.com/pingcap/tiflow/issues/9023) @[asddongmen](https://github.com/asddongmen)
 
     + TiDB Data Migration (DM)
 
