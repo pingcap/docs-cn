@@ -74,20 +74,20 @@ In addition, This SQL statement has an inner join executed, and the `ON` conditi
 ### Case 4: predicates that are not supported by storage layers cannot be pushed down
 
 ```sql
-create table t(id int primary key, a int not null);
-desc select * from t where substring('123', a, 1) = '1';
-+-------------------------+---------+-----------+---------------+----------------------------------------+
-| id                      | estRows | task      | access object | operator info                          |
-+-------------------------+---------+-----------+---------------+----------------------------------------+
-| Selection_7             | 2.00    | root      |               | eq(substring("123", test.t.a, 1), "1") |
-| └─TableReader_6         | 2.00    | root      |               | data:TableFullScan_5                   |
-|   └─TableFullScan_5     | 2.00    | cop[tikv] | table:t       | keep order:false, stats:pseudo         |
-+-------------------------+---------+-----------+---------------+----------------------------------------+
+create table t(id int primary key, a varchar(10) not null);
+desc select * from t where truncate(a, " ") = '1';
++-------------------------+----------+-----------+---------------+---------------------------------------------------+
+| id                      | estRows  | task      | access object | operator info                                     |
++-------------------------+----------+-----------+---------------+---------------------------------------------------+
+| Selection_5             | 8000.00  | root      |               | eq(truncate(cast(test.t.a, double BINARY), 0), 1) |
+| └─TableReader_7         | 10000.00 | root      |               | data:TableFullScan_6                              |
+|   └─TableFullScan_6     | 10000.00 | cop[tikv] | table:t       | keep order:false, stats:pseudo                    |
++-------------------------+----------+-----------+---------------+---------------------------------------------------+
 ```
 
-In this query, there is a predicate `substring('123', a, 1) = '1'`.
+In this query, there is a predicate `truncate(a, " ") = '1'`.
 
-From the `explain` results, we can see that the predicate is not pushed down to TiKV for calculation. This is because the TiKV coprocessor does not support the built-in function `substring`.
+From the `explain` results, you can see that the predicate is not pushed down to TiKV for calculation. This is because the TiKV coprocessor does not support the built-in function `truncate`.
 
 ### Case 5: predicates of inner tables on the outer join can't be pushed down
 
