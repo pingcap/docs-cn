@@ -548,7 +548,7 @@ TiDB 计划在未来版本废弃[乐观事务模式](/optimistic-transaction.md)
       <!-- **tw:hfxsd** (2)-->
 
         - 修复 unsigned int 无法用于拆分 chunk 的问题 [#42620](https://github.com/pingcap/tidb/issues/42620) @[lichunzhu](https://github.com/lichunzhu)
-        - 修复当未正确设置 --output-file-template 时可能 panic 的问题 [#42391](https://github.com/pingcap/tidb/issues/42391) @[lichunzhu](https://github.com/lichunzhu)
+        - 修复当未正确设置 `--output-file-template` 时可能 panic 的问题 [#42391](https://github.com/pingcap/tidb/issues/42391) @[lichunzhu](https://github.com/lichunzhu)
 
     + TiDB Binlog
 
