@@ -118,7 +118,7 @@ aliases: ['/zh/tidb/dev/build-cluster-in-cloud']
 > **注意：**
 >
 > - 在连接 Serverless Tier 集群时，[必须使用 TLS 连接](https://docs.pingcap.com/tidbcloud/secure-connections-to-serverless-tier-clusters)。
-> - 如果你在连接时遇到问题，可阅读 [TiDB Cloud Serverless Tier 集群安全连接](https://docs.pingcap.com/tidbcloud/secure-connections-to-serverless-tier-clusters) 来获得更多信息。
+> - 如果你在连接时遇到问题，可阅读 [TiDB Serverless 集群安全连接](https://docs.pingcap.com/tidbcloud/secure-connections-to-serverless-tier-clusters) 来获得更多信息。
 
 3. 填写密码，完成登录。
 
