@@ -405,8 +405,8 @@ TiDB 计划在未来版本废弃[乐观事务模式](/optimistic-transaction.md)
 
   <!-- **tw:ran-huang** (3)-->
 
-    - 新增基于 snapshot 执行细节来自动调整 store limit 大小的控制器。将 `store-limit-version` 设置为 `v2` 后启用，用户无需手动调整配置来控制 scale in 和 scale out 的速度 [#6147](https://github.com/tikv/pd/issues/6147) @[bufferflies](https://github.com/bufferflies)
-    - 新增历史负载信息，避免 storage engine 为 raft-kv2 时，热点调度器对不稳定负载所在 region 进行频繁调度 [#6297](https://github.com/tikv/pd/issues/6297) @[bufferflies](https://github.com/bufferflies)
+    - 新增基于 snapshot 执行细节来自动调整 store limit 大小的控制器。将 `store-limit-version` 设置为 `v2` 后开启该控制器，开启后，用户无需手动调整配置来控制扩缩容的速度 [#6147](https://github.com/tikv/pd/issues/6147) @[bufferflies](https://github.com/bufferflies)
+    - 新增历史负载信息，避免了存储引擎为 raft-kv2 时，热点调度器对不稳定负载所在 region 进行频繁调度 [#6297](https://github.com/tikv/pd/issues/6297) @[bufferflies](https://github.com/bufferflies)
     - 新增 leader 健康检查机制，当 etcd leader 所在 PD server 无法当选 leader 时，主动切换 etcd leader 来保证 PD leader 可用 [#6403](https://github.com/tikv/pd/issues/6403) @[nolouch](https://github.com/nolouch)
 
 + TiFlash
@@ -423,11 +423,11 @@ TiDB 计划在未来版本废弃[乐观事务模式](/optimistic-transaction.md)
 
     + TiCDC
       <!-- **tw:ran-huang** (6) -->
-        - 优化同步到对象存储场景下发生 DDL 时的目录结构 [#8890](https://github.com/pingcap/tiflow/issues/8890) @[CharlesCheung96](https://github.com/CharlesCheung96)
-        - 优化 CDC 的同步任务失败时对上游的 GC TLS 设置方法 [#8403](https://github.com/pingcap/tiflow/issues/8403) @[charleszheng44](https://github.com/charleszheng44)
-        - 增加支持同步到 KOP 下游 [#8892](https://github.com/pingcap/tiflow/issues/8892) @[hi-rustin](https://github.com/hi-rustin)
-        - 同步到 Kafka 时，支持采用 open-protocol 协议发生 update 只同步发生变更的列 [#8706](https://github.com/pingcap/tiflow/issues/8706) @[sdojjy](https://github.com/sdojjy)
-        - 优化下游出现故障等场景下 CDC 对错误处理的方式 [#8657](https://github.com/pingcap/tiflow/issues/8657) @[hicqu](https://github.com/hicqu)
+        - 优化同步数据到对象存储的场景下发生 DDL 事件时的目录结构 [#8890](https://github.com/pingcap/tiflow/issues/8890) @[CharlesCheung96](https://github.com/CharlesCheung96)
+        - 优化 TiCDC 在同步任务失败时对上游 GC TLS 的设置方法 [#8403](https://github.com/pingcap/tiflow/issues/8403) @[charleszheng44](https://github.com/charleszheng44)
+        - 支持同步到 Kafka-on-Pulsar 下游 [#8892](https://github.com/pingcap/tiflow/issues/8892) @[hi-rustin](https://github.com/hi-rustin)
+        - 在将数据同步到 Kafka 时，支持 open-protocol 协议在发生更新后只同步发生变更的列 [#8706](https://github.com/pingcap/tiflow/issues/8706) @[sdojjy](https://github.com/sdojjy)
+        - 优化 TiCDC 在下游出现故障等场景中的错误处理方式 [#8657](https://github.com/pingcap/tiflow/issues/8657) @[hicqu](https://github.com/hicqu)
         - 增加一个配置可以控制在打开 TLS 场景是否设置认证算法 [#8867](https://github.com/pingcap/tiflow/issues/8867) @[hi-rustin](https://github.com/hi-rustin)
 
     + TiDB Lightning
@@ -473,8 +473,8 @@ TiDB 计划在未来版本废弃[乐观事务模式](/optimistic-transaction.md)
     - 修复当 `tidb_scatter_region` 变量设置为开启时，对某个 partition 进行 truncate 操作后没有自动分裂 Region 的问题 [#43174](https://github.com/pingcap/tidb/issues/43174) [#43028](https://github.com/pingcap/tidb/issues/43028) @[jiyfhust](https://github.com/jiyfhust)
     - 在具有生成列的表上增加一些检查，并对一些不支持的列的 DDL 操作报错 [#38988](https://github.com/pingcap/tidb/issues/38988) [#24321](https://github.com/pingcap/tidb/issues/24321) @[tiancaiamao](https://github.com/tiancaiamao)
     - 修复在某些类型转换出错的情况下报错信息不对的问题 [#41730](https://github.com/pingcap/tidb/issues/41730) @[hawkingrei](https://github.com/hawkingrei)
-    - 解决 TiDB 节点在正常 shutdown 后，在此节点上触发的 DDL 任务会被取消的问题 [#43854](https://github.com/pingcap/tidb/issues/43854) @[zimulala](https://github.com/zimulala)
-    - 修复当 PD 成员地址发生变化时，为 AUTO_INCREMENT 列分配 ID 会长时间阻塞的问题 [#42643](https://github.com/pingcap/tidb/issues/42643) @[tiancaiamao](https://github.com/tiancaiamao)
+    - 修复 TiDB 节点在正常 shutdown 后，在此节点上触发的 DDL 任务会被取消的问题 [#43854](https://github.com/pingcap/tidb/issues/43854) @[zimulala](https://github.com/zimulala)
+    - 修复当 PD 成员地址发生变化时，为 `AUTO_INCREMENT` 列分配 ID 会被长时间阻塞的问题 [#42643](https://github.com/pingcap/tidb/issues/42643) @[tiancaiamao](https://github.com/tiancaiamao)
     - 修复执行 DDL 期间报 `GC lifetime is shorter than transaction duration` 错误的问题 [#40074](https://github.com/pingcap/tidb/issues/40074) @[tangenta](https://github.com/tangenta)
     - 修复元数据锁非预期地阻塞 DDL 执行的问题 [#43755](https://github.com/pingcap/tidb/issues/43755) @[wjhuang2016](https://github.com/wjhuang2016)
     - 修复 IPv6 环境下的集群无法查询部分系统视图的问题 [#43286](https://github.com/pingcap/tidb/issues/43286) @[Defined2014](https://github.com/Defined2014)
