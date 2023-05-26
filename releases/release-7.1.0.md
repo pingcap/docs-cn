@@ -390,25 +390,24 @@ TiDB 计划在未来版本废弃[乐观事务模式](/optimistic-transaction.md)
     - `SHOW INDEX` 结果中的 Cardinality 列可以展示统计信息中对应列的不同值的个数 [#42227](https://github.com/pingcap/tidb/issues/42227) @[winoros](https://github.com/winoros)
     - 在 IndexLookUp 中支持对分区表的 MergeSort [#26166](https://github.com/pingcap/tidb/issues/26166) @[Defined2014](https://github.com/Defined2014)
     - 增强了在使用 caching_sha2_password 时与 MySQL 实现的兼容性 [#43576](https://github.com/pingcap/tidb/issues/43576) @[asjdf](https://github.com/asjdf)
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
 + TiKV
 
+  <!-- **tw:Oreoxmt** (5)-->
+
     - 分区 Raft KV 下降低 Split 对写 QPS 的影响 [#14447](https://github.com/tikv/tikv/issues/14447) @[SpadeA-Tang](https://github.com/SpadeA-Tang)
-    - 分区 Raft KV 优化 snapshot 占用的空间[#14581](https://github.com/tikv/tikv/issues/14581) @[bufferflies](https://github.com/bufferflies)
-    - status API 增加 `GET /engine_type` 以获得当前 TiKV 是否正在运行分区 Raft KV [#12842](https://github.com/tikv/tikv/issues/12842) @[tonyxuqqi](https://github.com/tonyxuqqi)
+    - 分区 Raft KV 优化 snapshot 占用的空间 [#14581](https://github.com/tikv/tikv/issues/14581) @[bufferflies](https://github.com/bufferflies)
     - 根据 Region 的大小，优化 load based split 的默认参数 [#14834](https://github.com/tikv/tikv/issues/14834) @[tonyxuqqi](https://github.com/tonyxuqqi)
-    - 在已有数据的 TiKV 上更新 `storage.engine` 类型不能导致 TiKV 无法启动，应该忽略不正确的修改 [#12842](https://github.com/tikv/tikv/issues/12842) @[tonyxuqqi](https://github.com/tonyxuqqi)
     - 记录更新详细的 TiKV 处理请求各个阶段的时间 [#12362](https://github.com/tikv/tikv/issues/12362) @[cfzjywxk](https://github.com/cfzjywxk)
-    -  使用 PD 作为 metastore [#13867](https://github.com/tikv/tikv/issues/13867) @[YuJuncen](https://github.com/YuJuncen)
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
+    - 使用 PD 作为 metastore [#13867](https://github.com/tikv/tikv/issues/13867) @[YuJuncen](https://github.com/YuJuncen)
 
 + PD
+
+  <!-- **tw:ran-huang** (3)-->
 
     - 新增基于 snapshot 执行细节来自动调整 store limit 大小的控制器。将 `store-limit-version` 设置为 `v2` 后启用，用户无需手动调整配置来控制 scale in 和 scale out 的速度 [#6147](https://github.com/tikv/pd/issues/6147) @[bufferflies](https://github.com/bufferflies)
     - 新增历史负载信息，避免 storage engine 为 raft-kv2 时，热点调度器对不稳定负载所在 region 进行频繁调度 [#6297](https://github.com/tikv/pd/issues/6297) @[bufferflies](https://github.com/bufferflies)
     - 新增 leader 健康检查机制，当 etcd leader 所在 PD server 无法当选 leader 时，主动切换 etcd leader 来保证 PD leader 可用 [#6403](https://github.com/tikv/pd/issues/6403) @[nolouch](https://github.com/nolouch)
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
 + TiFlash
 
@@ -417,14 +416,19 @@ TiDB 计划在未来版本废弃[乐观事务模式](/optimistic-transaction.md)
     - (dup) 提升默认参数下 BR 和 TiDB Lightning 向 TiFlash 导入数据的性能 [#7272](https://github.com/pingcap/tiflash/issues/7272) @[breezewish](https://github.com/breezewish)
 
 + Tools
-    + Backup & Restore (BR)
-       - 支持在线修改 `tikv.log-backup.max-flush-interval` 配置 [#14433](https://github.com/tikv/tikv/issues/14433) @[joccau](https://github.com/joccau) 
 
+    + Backup & Restore (BR)
+      <!-- **tw:hfxsd** (1) -->
+        - 支持在线修改 `tikv.log-backup.max-flush-interval` 配置 [#14433](https://github.com/tikv/tikv/issues/14433) @[joccau](https://github.com/joccau)
 
     + TiCDC
-
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
+      <!-- **tw:ran-huang** (6) -->
+        - 优化同步到对象存储场景下发生 DDL 时的目录结构 [#8890](https://github.com/pingcap/tiflow/issues/8890) @[CharlesCheung96](https://github.com/CharlesCheung96)
+        - 优化 CDC 的同步任务失败时对上游的 GC TLS 设置方法 [#8403](https://github.com/pingcap/tiflow/issues/8403) @[charleszheng44](https://github.com/charleszheng44)
+        - 增加支持同步到 KOP 下游 [#8892](https://github.com/pingcap/tiflow/issues/8892) @[hi-rustin](https://github.com/hi-rustin)
+        - 同步到 Kafka 时，支持采用 open-protocol 协议发生 update 只同步发生变更的列 [#8706](https://github.com/pingcap/tiflow/issues/8706) @[sdojjy](https://github.com/sdojjy)
+        - 优化下游出现故障等场景下 CDC 对错误处理的方式 [#8657](https://github.com/pingcap/tiflow/issues/8657) @[hicqu](https://github.com/hicqu)
+        - 增加一个配置可以控制在打开 TLS 场景是否设置认证算法 [#8867](https://github.com/pingcap/tiflow/issues/8867) @[hi-rustin](https://github.com/hi-rustin)
 
     + TiDB Lightning
       <!-- **tw:hfxsd** (3) -->
@@ -491,28 +495,26 @@ TiDB 计划在未来版本废弃[乐观事务模式](/optimistic-transaction.md)
     - 修复在一些罕见的情况下，悲观事务的残留悲观锁在 GC resolve lock 时可能被影响数据正确性的问题 [#43243](https://github.com/pingcap/tidb/issues/43243) @[MyonKeminta](https://github.com/MyonKeminta)
     - 修复 LOCK 转 PUT 优化导致特定查询返回重复数据的问题 [#28011](https://github.com/pingcap/tidb/issues/28011) @[zyguan](https://github.com/zyguan)
     - 修复唯一索引加锁行为不一致的问题 [#36438](https://github.com/pingcap/tidb/issues/36438) @[zyguan](https://github.com/zyguan)
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
 + TiKV
 
-  <!-- **tw:hfxsd** (1)-->
+  <!-- **tw:hfxsd** (6) -->
 
     - 修复在 `tidb_pessimistic_txn_fair_locking` 启用时，在一些极端情况下，RPC 失败重试导致的过期请求有可能影响数据正确性的问题 [#14551](https://github.com/tikv/tikv/issues/14551) @[MyonKeminta](https://github.com/MyonKeminta)
     - 修复加密 Key ID 冲突会导致旧的 Key 被删除 [#14585](https://github.com/tikv/tikv/issues/14585) @[tabokie](https://github.com/tabokie)
-    - 修复旧的悲观锁请求在 force-lock 模式下导致当 lock 被 resolve 之后数据破坏或者不一致[#14551](https://github.com/tikv/tikv/issues/14551) @[MyonKeminta] (https://github.com/MyonKeminta)
-    - 修复集群从之前版本升级到 v6.5 或更高版本时由于累计的 lock 记录带来的性能问题 [#14780](https://github.com/tikv/tikv/issues/14780) @[MyonKeminta] (https://github.com/MyonKeminta)
-    - 修复 PITR 恢复过程中出现的 `raft entry is too large` 问题 @[YuJuncen] (https://github.com/YuJuncen)
-    - 修复 PITR 恢复过程中 TiKV 由于 log_batch 超过 2G 导致 panic 的问题 @[YuJuncen] (https://github.com/YuJuncen)
+    - 修复集群从之前版本升级到 v6.5 或更高版本时由于累计的 lock 记录带来的性能问题 [#14780](https://github.com/tikv/tikv/issues/14780) @[MyonKeminta](https://github.com/MyonKeminta)
+    - 修复 PITR 恢复过程中出现的 `raft entry is too large` 问题 @[YuJuncen](https://github.com/YuJuncen)
+    - 修复 PITR 恢复过程中 TiKV 由于 log_batch 超过 2G 导致 panic 的问题 @[YuJuncen](https://github.com/YuJuncen)
     - 修复 Replay 悲观锁请求导致正确性问题 @[MyonKeminta](https://github.com/MyonKeminta)
 
 + PD
 
+  <!-- **tw:Oreoxmt** (5) -->
     - 修复了在 TiKV panic 后，PD 监控面板 low space store 数量异常的问题 [#6252](https://github.com/tikv/pd/issues/6252) @[HuSharp](https://github.com/HuSharp)
     - 修复了在 PD leader 切换后，Region stats 监控数据被删除的问题 [#6366](https://github.com/tikv/pd/issues/6366) @[iosmanthus](https://github.com/iosmanthus)
     - 修复了 Rule checker 无法修复 label 为 `schedule=deny` 的不健康 Region 的问题 [#6426](https://github.com/tikv/pd/issues/6426) @[nolouch](https://github.com/nolouch)
     - 修复了 TiKV/TiFlash 重启后，部分已有 label 丢失的问题 [#6467](https://github.com/tikv/pd/issues/6467) @[JmPotato](https://github.com/JmPotato)
     - 修复了复制模式存在 learner 节点时可能无法切换状态的问题 [#14704](https://github.com/tikv/tikv/issues/14704) @[nolouch](https://github.com/nolouch)
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
 + TiFlash
 
@@ -529,20 +531,13 @@ TiDB 计划在未来版本废弃[乐观事务模式](/optimistic-transaction.md)
         - 修复某些情况下备份失败丢失错误信息的问题 [#43236](https://github.com/pingcap/tidb/issues/43236) @[YuJuncen](https://github.com/YuJuncen)
 
     + TiCDC
-- 修复设置 timezone 时相关的问题 [#8798](https://github.com/pingcap/tiflow/issues/8798)
-- 修复 PD 地址或 leader 出现故障时 TiCDC 不能自动恢复的问题 [#8812](https://github.com/pingcap/tiflow/issues/8812)[#8877](https://github.com/pingcap/tiflow/issues/8877)
-- 修复上游 tikv 节点 crash 时 checkpoint lag 上升的问题 [#8858](https://github.com/pingcap/tiflow/issues/8858)
-- 优化同步到对象存储场景下发生 DDL 时的目录结构 [#8890](https://github.com/pingcap/tiflow/issues/8890)
--  优化 CDC 的同步任务失败时对上游的 GC TLS 设置方法 [#8887](https://github.com/pingcap/tiflow/issues/8887)
-- 增加支持同步到 KOP 下游  [#8892](https://github.com/pingcap/tiflow/issues/8892)
-- 同步到 Kafka 时，支持采用 open-protocol 协议发生 update 只同步发生变更的列 [#8706](https://github.com/pingcap/tiflow/issues/8706)
-- 修复同步到对象存储场景下上游做 exchange partition 时不能正常同步到下游的问题 [#8914](https://github.com/pingcap/tiflow/issues/8914)
-- 优化下游出现故障等场景下 CDC 对错误处理的方式 [#8657](https://github.com/pingcap/tiflow/issues/8657)
-- 增加一个配置可以控制在打开 TLS 场景是否设置认证算法 [#8867](https://github.com/pingcap/tiflow/issues/8867)
-- 修复在某些特殊场景下 sorter 组件内存使用过多导致 OOM 问题 [#8974](https://github.com/pingcap/tiflow/issues/8974)
-- 修复下游 Kafka 滚动重启 CDC 节点 发生 panic 的问题 [#9023](https://github.com/pingcap/tiflow/issues/9023)
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
+      <!-- **tw:qiancai** (6) -->
+        - 修复设置 timezone 时相关的问题 [#8798](https://github.com/pingcap/tiflow/issues/8798) @[hi-rustin](https://github.com/hi-rustin)
+        - 修复 PD 地址或 leader 出现故障时 TiCDC 不能自动恢复的问题 [#8812](https://github.com/pingcap/tiflow/issues/8812) [#8877](https://github.com/pingcap/tiflow/issues/8877) @[asddongmen](https://github.com/asddongmen)
+        - 修复上游 tikv 节点 crash 时 checkpoint lag 上升的问题 [#8858](https://github.com/pingcap/tiflow/issues/8858) @[hicqu](https://github.com/hicqu)
+        - 修复同步到对象存储场景下上游做 exchange partition 时不能正常同步到下游的问题 [#8914](https://github.com/pingcap/tiflow/issues/8914) @[CharlesCheung96](https://github.com/CharlesCheung96)
+        - 修复在某些特殊场景下 sorter 组件内存使用过多导致 OOM 问题 [#8974](https://github.com/pingcap/tiflow/issues/8974) @[hicqu](https://github.com/hicqu)
+        - 修复下游 Kafka 滚动重启 CDC 节点 发生 panic 的问题 [#9023](https://github.com/pingcap/tiflow/issues/9023) @[asddongmen](https://github.com/asddongmen)
 
     + TiDB Data Migration (DM)
 
