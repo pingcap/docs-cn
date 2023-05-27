@@ -385,7 +385,7 @@ TiDB 计划在未来版本废弃[乐观事务模式](/optimistic-transaction.md)
 
   <!-- **tw:hfxsd** (5) -->
 
-    - 使用 `SQL_NO_CACHE` 来避免 TTL Scan 查询对 TiKV Block Cache 造成影响 [#43206](https://github.com/pingcap/tidb/issues/43206) @[lcwangchao](https://github.com/lcwangchao)
+    - 使用 `SQL_NO_CACHE` 以避免 TTL Scan 查询对 TiKV Block Cache 造成影响 [#43206](https://github.com/pingcap/tidb/issues/43206) @[lcwangchao](https://github.com/lcwangchao)
     - 改进 `MAX_EXECUTION_TIME` 相关错误信息使之与 MySQL 兼容 [#43031](https://github.com/pingcap/tidb/issues/43031) @[dveeden](https://github.com/dveeden)
     - `SHOW INDEX` 结果中的 Cardinality 列可以展示统计信息中对应列的不同值的个数 [#42227](https://github.com/pingcap/tidb/issues/42227) @[winoros](https://github.com/winoros)
     - 在 IndexLookUp 中支持对分区表使用 MergeSort 算子 [#26166](https://github.com/pingcap/tidb/issues/26166) @[Defined2014](https://github.com/Defined2014)
@@ -419,7 +419,7 @@ TiDB 计划在未来版本废弃[乐观事务模式](/optimistic-transaction.md)
 
     + Backup & Restore (BR)
       <!-- **tw:hfxsd** (1) -->
-        - 支持在线修改 `tikv.log-backup.max-flush-interval` 配置 [#14433](https://github.com/tikv/tikv/issues/14433) @[joccau](https://github.com/joccau)
+        - 支持在备份日志时修改 `tikv.log-backup.max-flush-interval` 配置项 [#14433](https://github.com/tikv/tikv/issues/14433) @[joccau](https://github.com/joccau)
 
     + TiCDC
       <!-- **tw:ran-huang** (6) -->
@@ -432,9 +432,9 @@ TiDB 计划在未来版本废弃[乐观事务模式](/optimistic-transaction.md)
 
     + TiDB Lightning
       <!-- **tw:hfxsd** (3) -->
-        - 将 Precheck 项 `regionDistributionCheck` 的严重级别从 `Critical` 改为 `Warn` 以避免阻碍用户操作 [#42836](https://github.com/pingcap/tidb/issues/42836) @[okJiang](https://github.com/okJiang)
-        - 导入数据期间遇到 `unknown RPC` 错误后增加了重试 [#43291](https://github.com/pingcap/tidb/issues/43291) @[D3Hunter](https://github.com/D3Hunter)
-        - 增强 Region Job Retry [#43682](https://github.com/pingcap/tidb/issues/43682) @[lance6716](https://github.com/lance6716)
+        - 将 Region 分布不均的相关 Precheck 项的严重级别从 `Critical` 调整为 `Warn` 以避免阻塞用户导入数据 [#42836](https://github.com/pingcap/tidb/issues/42836) @[okJiang](https://github.com/okJiang)
+        - 在导入数据期间遇到 `unknown RPC` 错误时增加了重试 [#43291](https://github.com/pingcap/tidb/issues/43291) @[D3Hunter](https://github.com/D3Hunter)
+        - 增强 Region Job 的重试机制 [#43682](https://github.com/pingcap/tidb/issues/43682) @[lance6716](https://github.com/lance6716)
 
 ## 错误修复
 
@@ -500,11 +500,11 @@ TiDB 计划在未来版本废弃[乐观事务模式](/optimistic-transaction.md)
   <!-- **tw:hfxsd** (6) -->
 
     - 修复在启用 `tidb_pessimistic_txn_fair_locking` 时，在某些极端情况下，RPC 失败重试导致的过期请求可能在 Resolve Lock 时影响数据正确性的问题 [#14551](https://github.com/tikv/tikv/issues/14551) @[MyonKeminta](https://github.com/MyonKeminta)
-    - 修复加密 Key ID 冲突会导致旧 Key 被删除 [#14585](https://github.com/tikv/tikv/issues/14585) @[tabokie](https://github.com/tabokie)
-    - 修复集群从之前版本升级到 v6.5 或更高版本时由于累计的 Lock 记录带来的性能问题 [#14780](https://github.com/tikv/tikv/issues/14780) @[MyonKeminta](https://github.com/MyonKeminta)
-    - 修复 PITR 恢复过程中出现的 `raft entry is too large` 问题 @[YuJuncen](https://github.com/YuJuncen)
-    - 修复 PITR 恢复过程中 TiKV 由于 log_batch 超过 2 GB 导致 panic 问题 @[YuJuncen](https://github.com/YuJuncen)
     - 修复在启用 `tidb_pessimistic_txn_fair_locking` 时，在某些极端情况下，RPC 失败重试导致的过期请求可能会造成事务冲突被忽略，从而影响事务一致性的问题 [#14311](https://github.com/tikv/tikv/issues/14311) @[MyonKeminta](https://github.com/MyonKeminta)
+    - 修复加密 Key ID 冲突会导致旧 Key 被删除的问题 [#14585](https://github.com/tikv/tikv/issues/14585) @[tabokie](https://github.com/tabokie)
+    - 修复集群从之前版本升级到 v6.5 或更高版本时由于累计的 Lock 记录带来的性能问题 [#14780](https://github.com/tikv/tikv/issues/14780) @[MyonKeminta](https://github.com/MyonKeminta)
+    - 修复 PITR 恢复过程中出现的 `raft entry is too large` 问题 [#14313](https://github.com/tikv/tikv/issues/14313) @[YuJuncen](https://github.com/YuJuncen)
+    - 修复 PITR 恢复过程中 TiKV 由于 log_batch 超过 2 GB 导致的 panic 问题 [#13848](https://github.com/tikv/tikv/issues/13848) @[YuJuncen](https://github.com/YuJuncen)
 
 + PD
 
@@ -527,7 +527,7 @@ TiDB 计划在未来版本废弃[乐观事务模式](/optimistic-transaction.md)
     + Backup & Restore (BR)
       <!-- **tw:hfxsd** (2)-->
         - 修复当集群中 TiKV 出现宕机导致备份缓慢的问题 [#42973](https://github.com/pingcap/tidb/issues/42973) @[YuJuncen](https://github.com/YuJuncen)
-        - 修复某些情况下备份失败丢失错误信息的问题 [#43236](https://github.com/pingcap/tidb/issues/43236) @[YuJuncen](https://github.com/YuJuncen)
+        - 修复某些情况下备份失败会导致错误信息不准确的问题 [#43236](https://github.com/pingcap/tidb/issues/43236) @[YuJuncen](https://github.com/YuJuncen)
 
     + TiCDC
       <!-- **tw:qiancai** (6) -->
@@ -546,12 +546,13 @@ TiDB 计划在未来版本废弃[乐观事务模式](/optimistic-transaction.md)
 
       <!-- **tw:hfxsd** (2)-->
 
-        - 修复 unsigned int 无法用于拆分 chunk 的问题 [#42620](https://github.com/pingcap/tidb/issues/42620) @[lichunzhu](https://github.com/lichunzhu)
-        - 修复当未正确设置 `--output-file-template` 时可能 panic 的问题 [#42391](https://github.com/pingcap/tidb/issues/42391) @[lichunzhu](https://github.com/lichunzhu)
+        - 修复 Unsigned Integer 类型的主键无法用于拆分 Chunk 的问题 [#42620](https://github.com/pingcap/tidb/issues/42620) @[lichunzhu](https://github.com/lichunzhu)
+        - 修复当错误设置 `--output-file-template` 时可能 panic 的问题 [#42391](https://github.com/pingcap/tidb/issues/42391) @[lichunzhu](https://github.com/lichunzhu)
 
     + TiDB Binlog
 
-      <!-- **tw:hfxsd** (1)-->
+       - 修复当遇到失败的 DDL 语句时可能报错的问题 [#1228](https://github.com/pingcap/tidb-binlog/issues/1228] @[okJiang](https://github.com/okJiang)
+        
 
         - 修复当遇到失败的 DDL 语句时可能报错的问题 [#1228](https://github.com/pingcap/tidb-binlog/issues/1228] @[okJiang](https://github.com/okJiang)
 
