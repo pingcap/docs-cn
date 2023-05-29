@@ -4094,6 +4094,10 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 ### `tidb_txn_mode`
 
+> **警告：**
+>
+> 乐观事务在近期将会被废弃。
+
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 类型：枚举型
