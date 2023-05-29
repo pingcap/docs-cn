@@ -482,11 +482,11 @@ TiDB 计划在未来版本废弃[乐观事务模式](/optimistic-transaction.md)
     - 修复在重命名表期间 TiCDC 可能丢失部分行变更的问题 [#43338](https://github.com/pingcap/tidb/issues/43338) @[tangenta](https://github.com/tangenta)
     - 修复在客户端使用游标读导致 TiDB server 崩溃的问题 [#38116](https://github.com/pingcap/tidb/issues/38116) @[YangKeao](https://github.com/YangKeao)
     - 修复 `ADMIN SHOW DDL JOBS LIMIT` 返回错误结果的问题 [#42298](https://github.com/pingcap/tidb/issues/42298) @[CbcWestwolf](https://github.com/CbcWestwolf)
-    - 修复使用 UNION 查询联合视图和临时表时 TiDB panic 的问题 [#42563](https://github.com/pingcap/tidb/issues/42563) @[lcwangchao](https://github.com/lcwangchao)
+    - 修复使用 `UNION` 查询联合视图和临时表时 TiDB panic 的问题 [#42563](https://github.com/pingcap/tidb/issues/42563) @[lcwangchao](https://github.com/lcwangchao)
     - 修复在一个事务中提交多条语句时重命名表不生效的问题 [#39664](https://github.com/pingcap/tidb/issues/39664) @[tiancaiamao](https://github.com/tiancaiamao)
     - 修复时间转换时 Prepared Plan Cache 与 Non-Prepared Plan Cache 的行为不兼容性的问题 [#42439](https://github.com/pingcap/tidb/issues/42439) @[qw4990](https://github.com/qw4990)
     - 修复 Plan Cache 导致 Decimal 类型的结果出错的问题 [#43311](https://github.com/pingcap/tidb/issues/43311) @[qw4990](https://github.com/qw4990)
-    - 修复 NAAJ 中错误的类型检查导致 TiDB panic 的问题 [#42459](https://github.com/pingcap/tidb/issues/42459) @[AilinKid](https://github.com/AilinKid)
+    - 修复 NAAJ (null-aware anti join) 中错误的类型检查导致 TiDB panic 的问题 [#42459](https://github.com/pingcap/tidb/issues/42459) @[AilinKid](https://github.com/AilinKid)
     - 修复 RC 隔离级别下悲观事务中执行失败的 DML 可能导致数据索引不一致的问题 [#43294](https://github.com/pingcap/tidb/issues/43294) @[ekexium](https://github.com/ekexium)
     - 修复在一些极端情况下，悲观事务的第一条语句发生重试时，对该事务进行 resolve lock 可能影响事务正确性的问题 [#42937](https://github.com/pingcap/tidb/issues/42937) @[MyonKeminta](https://github.com/MyonKeminta)
     - 修复在一些罕见的情况下，悲观事务的残留悲观锁在 GC resolve lock 时可能影响数据正确性的问题 [#43243](https://github.com/pingcap/tidb/issues/43243) @[MyonKeminta](https://github.com/MyonKeminta)
@@ -517,7 +517,7 @@ TiDB 计划在未来版本废弃[乐观事务模式](/optimistic-transaction.md)
 
   <!-- **tw:qiancai** (2) -->
 
-    - 修复开启延迟物化 (Late Materialization) 后查询 TIMESTAMP 或者 TIME 类型的数据报错的问题 [#7455](https://github.com/pingcap/tiflash/issues/7455) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
+    - 修复开启延迟物化 (Late Materialization) 后查询 `TIMESTAMP` 或者 `TIME` 类型的数据报错的问题 [#7455](https://github.com/pingcap/tiflash/issues/7455) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
     - 修复大的更新事务可能会导致 TiFlash 反复报错重启的问题 [#7316](https://github.com/pingcap/tiflash/issues/7316) @[JaySon-Huang](https://github.com/JaySon-Huang)
 
 + Tools
