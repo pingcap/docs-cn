@@ -1,6 +1,5 @@
 ---
 title: DM-master 配置文件介绍
-aliases: ['/docs-cn/tidb-data-migration/dev/dm-master-configuration-file/']
 ---
 
 # DM-master 配置文件介绍

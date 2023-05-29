@@ -1,6 +1,5 @@
 ---
 title: Prepare 语句执行计划缓存
-aliases: ['/docs-cn/dev/sql-prepare-plan-cache/','zh/tidb/dev/sql-prepare-plan-cache']
 ---
 
 # Prepare 语句执行计划缓存

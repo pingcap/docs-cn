@@ -1,7 +1,6 @@
 ---
 title: TiDB 日志备份与 PITR 使用指南
 summary: 了解 TiDB 的日志备份与 PITR 功能使用。
-aliases: ['/zh/tidb/dev/pitr-usage/']
 ---
 
 # TiDB 日志备份与 PITR 使用指南
