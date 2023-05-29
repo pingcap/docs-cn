@@ -452,7 +452,6 @@ TiDB 计划在未来版本废弃[乐观事务模式](/optimistic-transaction.md)
     - 修复在创建分区表时使用 `SUBPARTITION` 没有警告提醒的问题 [#41198](https://github.com/pingcap/tidb/issues/41198) [#41200](https://github.com/pingcap/tidb/issues/41200) @[mjonss](https://github.com/mjonss)
     - 修复生成列在处理值溢出问题时与 MySQL 不兼容的问题 [#40066](https://github.com/pingcap/tidb/issues/40066) @[jiyfhust](https://github.com/jiyfhust)
     - 修复 `REORGANIZE PARTITION` 不能与其他 DDL 操作并发的问题 [#42442](https://github.com/pingcap/tidb/issues/42442) @[bb7133](https://github.com/bb7133)
-    - 修复查询使用 `FLOOR` 函数分区的分区表时报错的问题 [#42323](https://github.com/pingcap/tidb/issues/42323) @[jiyfhust](https://github.com/jiyfhust)
     - 修复在取消 DDL 的重组分区任务后可能导致后续其他 DDL 报错的问题 [#42448](https://github.com/pingcap/tidb/issues/42448) @[lcwangchao](https://github.com/lcwangchao)
     - 修复某些情况下对删除操作的断言不正确的问题 [#42426](https://github.com/pingcap/tidb/issues/42426) @[tiancaiamao](https://github.com/tiancaiamao)
     - (dup) 修复读取 cgroup 信息出错导致 TiDB Server 无法启动的问题，报错信息为 "can't read file memory.stat from cgroup v1: open /sys/memory.stat no such file or directory" [#42659](https://github.com/pingcap/tidb/issues/42659) @[hawkingrei](https://github.com/hawkingrei)
@@ -549,11 +548,8 @@ TiDB 计划在未来版本废弃[乐观事务模式](/optimistic-transaction.md)
         - 修复错误设置 `--output-file-template` 可能导致 panic 的问题 [#42391](https://github.com/pingcap/tidb/issues/42391) @[lichunzhu](https://github.com/lichunzhu)
 
     + TiDB Binlog
-
-       - 修复当遇到失败的 DDL 语句时可能报错的问题 [#1228](https://github.com/pingcap/tidb-binlog/issues/1228] @[okJiang](https://github.com/okJiang)
-        
-
-        - 修复当遇到失败的 DDL 语句时可能报错的问题 [#1228](https://github.com/pingcap/tidb-binlog/issues/1228] @[okJiang](https://github.com/okJiang)
+      <!-- **tw:hfxsd** (1)-->
+        - 修复当遇到失败的 DDL 语句时可能报错的问题 [#1228](https://github.com/pingcap/tidb-binlog/issues/1228) @[okJiang](https://github.com/okJiang)
 
     + TiDB Lightning
       <!-- **tw:hfxsd** (8)-->
@@ -570,6 +566,9 @@ TiDB 计划在未来版本废弃[乐观事务模式](/optimistic-transaction.md)
 
 感谢来自 TiDB 社区的贡献者们：
 
+- [asjdf](https://github.com/asjdf)
+- [blacktear23](https://github.com/blacktear23)
+- [dhysum](https://github.com/dhysum)
 - [ethercflow](https://github.com/ethercflow)
 - [hihihuhu](https://github.com/hihihuhu)
 - [jiyfhust](https://github.com/jiyfhust)
