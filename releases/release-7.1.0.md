@@ -404,9 +404,9 @@ TiDB 计划在未来版本废弃[乐观事务模式](/optimistic-transaction.md)
 
   <!-- **tw:ran-huang** (3)-->
 
-    - 新增基于 snapshot 执行细节来自动调整 store limit 大小的控制器。将 `store-limit-version` 设置为 `v2` 后开启该控制器，开启后，用户无需手动调整配置来控制扩缩容的速度 [#6147](https://github.com/tikv/pd/issues/6147) @[bufferflies](https://github.com/bufferflies)
-    - 新增历史负载信息，避免了存储引擎为 raft-kv2 时，热点调度器对不稳定负载所在 region 进行频繁调度 [#6297](https://github.com/tikv/pd/issues/6297) @[bufferflies](https://github.com/bufferflies)
-    - 新增 leader 健康检查机制，当 etcd leader 所在 PD server 无法当选 leader 时，主动切换 etcd leader 来保证 PD leader 可用 [#6403](https://github.com/tikv/pd/issues/6403) @[nolouch](https://github.com/nolouch)
+    - 新增基于 snapshot 执行细节来自动调整 store limit 大小的控制器。将 `store-limit-version` 设置为 `v2` 即可开启该控制器，开启后，用户无需手动调整 `store limit` 配置来控制扩缩容的速度 [#6147](https://github.com/tikv/pd/issues/6147) @[bufferflies](https://github.com/bufferflies)
+    - 新增历史负载信息，避免了存储引擎为 raft-kv2 时，热点调度器对不稳定负载所在的 Region 进行频繁调度 [#6297](https://github.com/tikv/pd/issues/6297) @[bufferflies](https://github.com/bufferflies)
+    - 新增 leader 健康检查机制，当 etcd leader 所在的 PD server 无法当选 leader 时，主动切换 etcd leader 来保证 PD leader 可用 [#6403](https://github.com/tikv/pd/issues/6403) @[nolouch](https://github.com/nolouch)
 
 + TiFlash
 
@@ -425,7 +425,7 @@ TiDB 计划在未来版本废弃[乐观事务模式](/optimistic-transaction.md)
         - 优化同步数据到对象存储的场景下发生 DDL 事件时的目录结构 [#8890](https://github.com/pingcap/tiflow/issues/8890) @[CharlesCheung96](https://github.com/CharlesCheung96)
         - 优化 TiCDC 在同步任务失败时对上游 GC TLS 的设置方法 [#8403](https://github.com/pingcap/tiflow/issues/8403) @[charleszheng44](https://github.com/charleszheng44)
         - 支持同步到 Kafka-on-Pulsar 下游 [#8892](https://github.com/pingcap/tiflow/issues/8892) @[hi-rustin](https://github.com/hi-rustin)
-        - 在将数据同步到 Kafka 时，支持 open-protocol 协议在发生更新后只同步发生变更的列 [#8706](https://github.com/pingcap/tiflow/issues/8706) @[sdojjy](https://github.com/sdojjy)
+        - 在将数据同步到 Kafka 时，支持 open-protocol 协议在数据发生变更后只同步有变更的列 [#8706](https://github.com/pingcap/tiflow/issues/8706) @[sdojjy](https://github.com/sdojjy)
         - 优化 TiCDC 在下游出现故障等场景中的错误处理方式 [#8657](https://github.com/pingcap/tiflow/issues/8657) @[hicqu](https://github.com/hicqu)
         - 增加一个配置可以控制在打开 TLS 场景是否设置认证算法 [#8867](https://github.com/pingcap/tiflow/issues/8867) @[hi-rustin](https://github.com/hi-rustin)
 
@@ -468,7 +468,7 @@ TiDB 计划在未来版本废弃[乐观事务模式](/optimistic-transaction.md)
     - 修复 IPv6 环境下显示错误的 TiDB 地址的问题 [#43260](https://github.com/pingcap/tidb/issues/43260) @[nexustar](https://github.com/nexustar)
     - 修复系统变量 `tidb_enable_tiflash_read_for_write_stmt` 和 `tidb_enable_exchange_partition` 显示错误的值的问题 [#43281](https://github.com/pingcap/tidb/issues/43281) @[gengliqi](https://github.com/gengliqi)
     - 修复代理协议在处理某些错误数据时报错 `Header read timeout` 的问题 [#43205](https://github.com/pingcap/tidb/issues/43205) @[blacktear23](https://github.com/blacktear23)
-    - 修复当 `tidb_scatter_region` 变量设置为开启时，对某个 partition 进行 truncate 操作后没有自动分裂 Region 的问题 [#43174](https://github.com/pingcap/tidb/issues/43174) [#43028](https://github.com/pingcap/tidb/issues/43028) @[jiyfhust](https://github.com/jiyfhust)
+    - 修复当 `tidb_scatter_region` 变量设置为开启时，对某个分区进行 TRUNCATE 操作后没有自动分裂 Region 的问题 [#43174](https://github.com/pingcap/tidb/issues/43174) [#43028](https://github.com/pingcap/tidb/issues/43028) @[jiyfhust](https://github.com/jiyfhust)
     - 在具有生成列的表上增加检查，并对不支持的列的 DDL 操作报错 [#38988](https://github.com/pingcap/tidb/issues/38988) [#24321](https://github.com/pingcap/tidb/issues/24321) @[tiancaiamao](https://github.com/tiancaiamao)
     - 修复在某些类型转换出错的情况下报错信息不对的问题 [#41730](https://github.com/pingcap/tidb/issues/41730) @[hawkingrei](https://github.com/hawkingrei)
     - 修复 TiDB 节点在正常 shutdown 后，在此节点上触发的 DDL 任务会被取消的问题 [#43854](https://github.com/pingcap/tidb/issues/43854) @[zimulala](https://github.com/zimulala)
