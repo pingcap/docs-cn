@@ -371,6 +371,7 @@ TiDB 7.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 | TiDB Lightning | [`tikv-importer.region-check-backoff-limit`](/tidb-lightning/tidb-lightning-configuration.md) | 新增 | 用于控制 split 和 scatter 操作后等待 Region 上线的重试次数，默认值为 `1800`。重试符合指数回退策略，最大重试间隔为 2 秒。若两次重试之间有任何 Region 上线，该次操作不会被计为重试次数。 |
 | TiDB Lightning | [`tikv-importer.region-split-batch-size`](/tidb-lightning/tidb-lightning-configuration.md) | 新增 | 用于控制一个 batch 中执行 split 和 scatter 操作的最大 Region 数量，默认值为 `4096`。 |
 | TiDB Lightning | [`tikv-importer.region-split-concurrency`](/tidb-lightning/tidb-lightning-configuration.md) | 新增 | 用于控制 Split Region 时的并发度，默认值为 CPU 核心数。 |
+| TiCDC | [`insecure-skip-verify`](/ticdc/ticdc-sink-to-kafka.md) | 新增 | 用于控制在同步数据到 Kafka 的场景下，启用 TLS 时是否设置认证算法。 |
 | TiCDC | [`integrity.corruption-handle-level`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-配置文件说明) | 新增 | 用于控制当单行数据的 Checksum 校验失败时，Changefeed 打印错误行数据相关日志的级别。默认值为 `"warn"`，可选值为 `"warn"` 和 `"error"`。 |
 | TiCDC | [`integrity.integrity-check-level`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-配置文件说明) | 新增 | 用于控制是否开启单行数据的 Checksum 校验功能，默认值为 `"none"`，即不开启。 |
 | TiCDC | [`sink.enable-partition-separator`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-配置文件说明) | 修改 | 默认值从 `false` 修改为 `true`，代表默认会将表中各个分区的数据分不同的目录来存储。建议保持该配置项为 `true` 以避免同步分区表到存储服务时可能丢数据的问题。 |
@@ -396,7 +397,7 @@ TiDB 计划在未来版本废弃[乐观事务模式](/optimistic-transaction.md)
   <!-- **tw:Oreoxmt** (5)-->
 
     - 降低使用分区 Raft KV 时 Split 对写 QPS 的影响 [#14447](https://github.com/tikv/tikv/issues/14447) @[SpadeA-Tang](https://github.com/SpadeA-Tang)
-    - 优化使用分区 Raft KV 时 snapshot 占用的空间 [#14581](https://github.com/tikv/tikv/issues/14581) @[bufferflies](https://github.com/bufferflies)
+    - 优化使用分区 Raft KV 时 Snapshot 占用的空间 [#14581](https://github.com/tikv/tikv/issues/14581) @[bufferflies](https://github.com/bufferflies)
     - 为 TiKV 处理请求的各个阶段提供更详细的时间信息 [#12362](https://github.com/tikv/tikv/issues/12362) @[cfzjywxk](https://github.com/cfzjywxk)
     - 在日志备份中使用 PD 作为元数据存储 [#13867](https://github.com/tikv/tikv/issues/13867) @[YuJuncen](https://github.com/YuJuncen)
 
@@ -453,7 +454,7 @@ TiDB 计划在未来版本废弃[乐观事务模式](/optimistic-transaction.md)
     - 修复生成列在处理值溢出问题时与 MySQL 不兼容的问题 [#40066](https://github.com/pingcap/tidb/issues/40066) @[jiyfhust](https://github.com/jiyfhust)
     - 修复 `REORGANIZE PARTITION` 不能与其他 DDL 操作并发的问题 [#42442](https://github.com/pingcap/tidb/issues/42442) @[bb7133](https://github.com/bb7133)
     - 修复在取消 DDL 的重组分区任务后可能导致后续其他 DDL 报错的问题 [#42448](https://github.com/pingcap/tidb/issues/42448) @[lcwangchao](https://github.com/lcwangchao)
-    - 修复某些情况下对删除操作的断言不正确的问题 [#42426](https://github.com/pingcap/tidb/issues/42426) @[tiancaiamao](https://github.com/tiancaiamao)
+    - 修复某些情况下删除操作的断言不正确的问题 [#42426](https://github.com/pingcap/tidb/issues/42426) @[tiancaiamao](https://github.com/tiancaiamao)
     - (dup) 修复读取 cgroup 信息出错导致 TiDB Server 无法启动的问题，报错信息为 "can't read file memory.stat from cgroup v1: open /sys/memory.stat no such file or directory" [#42659](https://github.com/pingcap/tidb/issues/42659) @[hawkingrei](https://github.com/hawkingrei)
     - 修复在包含全局索引的分区表上更新分区键数据时报 `Duplicate Key` 错误的问题 [#42312](https://github.com/pingcap/tidb/issues/42312) @[L-maple](https://github.com/L-maple)
     - 修复 TTL 监控面板中 `Scan Worker Time By Phase` 图表不显示数据的问题 [#42515](https://github.com/pingcap/tidb/issues/42515) @[lcwangchao](https://github.com/lcwangchao)
@@ -510,7 +511,7 @@ TiDB 计划在未来版本废弃[乐观事务模式](/optimistic-transaction.md)
     - 修复 TiKV panic 后，PD 监控面板 `low space store` 数量异常的问题 [#6252](https://github.com/tikv/pd/issues/6252) @[HuSharp](https://github.com/HuSharp)
     - 修复在 PD leader 切换后 Region Health 监控数据被删除的问题 [#6366](https://github.com/tikv/pd/issues/6366) @[iosmanthus](https://github.com/iosmanthus)
     - 修复 Rule checker 无法修复 label 为 `schedule=deny` 的不健康 Region 的问题 [#6426](https://github.com/tikv/pd/issues/6426) @[nolouch](https://github.com/nolouch)
-    - 修复 TiKV/TiFlash 重启后部分已有 label 丢失的问题 [#6467](https://github.com/tikv/pd/issues/6467) @[JmPotato](https://github.com/JmPotato)
+    - 修复 TiKV 或 TiFlash 重启后部分已有 label 丢失的问题 [#6467](https://github.com/tikv/pd/issues/6467) @[JmPotato](https://github.com/JmPotato)
     - 修复复制模式存在 learner 节点时可能无法切换复制状态的问题 [#14704](https://github.com/tikv/tikv/issues/14704) @[nolouch](https://github.com/nolouch)
 
 + TiFlash
@@ -568,7 +569,6 @@ TiDB 计划在未来版本废弃[乐观事务模式](/optimistic-transaction.md)
 
 - [asjdf](https://github.com/asjdf)
 - [blacktear23](https://github.com/blacktear23)
-- [dhysum](https://github.com/dhysum)
 - [ethercflow](https://github.com/ethercflow)
 - [hihihuhu](https://github.com/hihihuhu)
 - [jiyfhust](https://github.com/jiyfhust)
