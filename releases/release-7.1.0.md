@@ -395,11 +395,10 @@ TiDB 计划在未来版本废弃[乐观事务模式](/optimistic-transaction.md)
 
   <!-- **tw:Oreoxmt** (5)-->
 
-    - 分区 Raft KV 下降低 Split 对写 QPS 的影响 [#14447](https://github.com/tikv/tikv/issues/14447) @[SpadeA-Tang](https://github.com/SpadeA-Tang)
-    - 分区 Raft KV 优化 snapshot 占用的空间 [#14581](https://github.com/tikv/tikv/issues/14581) @[bufferflies](https://github.com/bufferflies)
-    - 根据 Region 的大小，优化 load based split 的默认参数 [#14834](https://github.com/tikv/tikv/issues/14834) @[tonyxuqqi](https://github.com/tonyxuqqi)
-    - 记录更新详细的 TiKV 处理请求各个阶段的时间 [#12362](https://github.com/tikv/tikv/issues/12362) @[cfzjywxk](https://github.com/cfzjywxk)
-    - 使用 PD 作为 metastore [#13867](https://github.com/tikv/tikv/issues/13867) @[YuJuncen](https://github.com/YuJuncen)
+    - 降低使用分区 Raft KV 时 Split 对写 QPS 的影响 [#14447](https://github.com/tikv/tikv/issues/14447) @[SpadeA-Tang](https://github.com/SpadeA-Tang)
+    - 优化使用分区 Raft KV 时 snapshot 占用的空间 [#14581](https://github.com/tikv/tikv/issues/14581) @[bufferflies](https://github.com/bufferflies)
+    - 为 TiKV 处理请求的各个阶段提供更详细的时间信息 [#12362](https://github.com/tikv/tikv/issues/12362) @[cfzjywxk](https://github.com/cfzjywxk)
+    - 在日志备份中使用 PD 作为元数据存储 [#13867](https://github.com/tikv/tikv/issues/13867) @[YuJuncen](https://github.com/YuJuncen)
 
 + PD
 
@@ -442,24 +441,24 @@ TiDB 计划在未来版本废弃[乐观事务模式](/optimistic-transaction.md)
 
   <!-- **tw:Oreoxmt** (18) -->
 
-    - 在 reorganize 分区之后增加了手动 analyze table 的提示 [#42183](https://github.com/pingcap/tidb/issues/42183) @[CbcWestwolf](https://github.com/CbcWestwolf)
+    - 修复重组分区后没有提示手动 `ANALYZE TABLE` 的问题 [#42183](https://github.com/pingcap/tidb/issues/42183) @[CbcWestwolf](https://github.com/CbcWestwolf)
     - (dup) 修复对于执行中的 `DROP TABLE` 操作，`ADMIN SHOW DDL JOBS` 的结果中缺少表名的问题 [#42268](https://github.com/pingcap/tidb/issues/42268) @[tiancaiamao](https://github.com/tiancaiamao)
-    - 修复在监控面板中有时候无法看到 `Ignore Event Per Minute` 和 `Stats Cache LRU Cost` 这两个图表的问题 [#42562](https://github.com/pingcap/tidb/issues/42562) @[pingandb](https://github.com/pingandb)
-    - 修复查询表 `INFORMATION_SCHEMA.COLUMNS` 返回的 `ORDINAL_POSITION` 列结果错误的问题 [#43379](https://github.com/pingcap/tidb/issues/43379) @[bb7133](https://github.com/bb7133)
-    - 修复权限表一些列大小写敏感的问题 [#41048](https://github.com/pingcap/tidb/issues/41048) @[bb7133](https://github.com/bb7133)
+    - 修复 `Ignore Event Per Minute` 和 `Stats Cache LRU Cost` 图表在 Grafana 监控面板中有时不可见的问题 [#42562](https://github.com/pingcap/tidb/issues/42562) @[pingandb](https://github.com/pingandb)
+    - 修复查询表 `INFORMATION_SCHEMA.COLUMNS` 时，`ORDINAL_POSITION` 列返回结果错误的问题 [#43379](https://github.com/pingcap/tidb/issues/43379) @[bb7133](https://github.com/bb7133)
+    - 修复权限表中一些列大小写敏感的问题 [#41048](https://github.com/pingcap/tidb/issues/41048) @[bb7133](https://github.com/bb7133)
     - (dup) 修复缓存表执行新增列操作后，新增列值为 `NULL` 而非列的默认值的问题 [#42928](https://github.com/pingcap/tidb/issues/42928) @[lqs](https://github.com/lqs)
-    - 修复谓词下推的情况下 CTE 结果的正确性问题 [#43645](https://github.com/pingcap/tidb/issues/43645) @[winoros](https://github.com/winoros)
+    - 修复在谓词下推的情况下 CTE 结果错误的问题 [#43645](https://github.com/pingcap/tidb/issues/43645) @[winoros](https://github.com/winoros)
     - (dup) 修复分区特别多并且带有 TiFlash 副本的分区表在执行 `TRUNCATE TABLE` 时，出现写冲突导致 DDL 重试的问题 [#42940](https://github.com/pingcap/tidb/issues/42940) @[mjonss](https://github.com/mjonss)
-    - 如果用户在创建分区表时使用了 subpartition，给出 Warning 的提示 [#41198](https://github.com/pingcap/tidb/issues/41198) [#41200](https://github.com/pingcap/tidb/issues/41200) @[mjonss](https://github.com/mjonss)
+    - 修复在创建分区表时使用 `SUBPARTITION` 没有警告提醒的问题 [#41198](https://github.com/pingcap/tidb/issues/41198) [#41200](https://github.com/pingcap/tidb/issues/41200) @[mjonss](https://github.com/mjonss)
     - 修复生成列在处理值溢出问题时与 MySQL 不兼容的问题 [#40066](https://github.com/pingcap/tidb/issues/40066) @[jiyfhust](https://github.com/jiyfhust)
-    - 修复 reorganize partition 和其他 DDL 操作不能并发的问题 [#42442](https://github.com/pingcap/tidb/issues/42442) @[bb7133](https://github.com/bb7133)
+    - 修复 `REORGANIZE PARTITION` 不能与其他 DDL 操作并发的问题 [#42442](https://github.com/pingcap/tidb/issues/42442) @[bb7133](https://github.com/bb7133)
     - 修复查询使用 `FLOOR` 函数分区的分区表时报错的问题 [#42323](https://github.com/pingcap/tidb/issues/42323) @[jiyfhust](https://github.com/jiyfhust)
-    - 修复在取消 DDL 的 reorganize partition 任务后导致后续其他 DDL 报错的问题 [#42448](https://github.com/pingcap/tidb/issues/42448) @[lcwangchao](https://github.com/lcwangchao)
-    - 修复某些情况下对删除操作的 assertion 不正确的问题 [#42426](https://github.com/pingcap/tidb/issues/42426) @[tiancaiamao](https://github.com/tiancaiamao)
+    - 修复在取消 DDL 的重组分区任务后可能导致后续其他 DDL 报错的问题 [#42448](https://github.com/pingcap/tidb/issues/42448) @[lcwangchao](https://github.com/lcwangchao)
+    - 修复某些情况下对删除操作的断言不正确的问题 [#42426](https://github.com/pingcap/tidb/issues/42426) @[tiancaiamao](https://github.com/tiancaiamao)
     - (dup) 修复读取 cgroup 信息出错导致 TiDB Server 无法启动的问题，报错信息为 "can't read file memory.stat from cgroup v1: open /sys/memory.stat no such file or directory" [#42659](https://github.com/pingcap/tidb/issues/42659) @[hawkingrei](https://github.com/hawkingrei)
-    - 修复在有 global index 的分区表上更新行的 partition key 的数据报错 `Duplicate Key` 的问题 [#42312](https://github.com/pingcap/tidb/issues/42312) @[L-maple](https://github.com/L-maple)
-    - 修复 TTL 监控面板中 Scan Worker Time By Phase 的图表不显示数据的问题 [#42515](https://github.com/pingcap/tidb/issues/42515) @[lcwangchao](https://github.com/lcwangchao)
-    - 修复在有 global index 的分区表上进行某些查询返回结果错误的问题 [#41991](https://github.com/pingcap/tidb/issues/41991) [#42065](https://github.com/pingcap/tidb/issues/42065) @[L-maple](https://github.com/L-maple)
+    - 修复在包含全局索引的分区表上更新分区键数据时报 `Duplicate Key` 错误的问题 [#42312](https://github.com/pingcap/tidb/issues/42312) @[L-maple](https://github.com/L-maple)
+    - 修复 TTL 监控面板中 `Scan Worker Time By Phase` 图表不显示数据的问题 [#42515](https://github.com/pingcap/tidb/issues/42515) @[lcwangchao](https://github.com/lcwangchao)
+    - 修复在包含全局索引的分区表上进行某些查询时返回错误结果的问题 [#41991](https://github.com/pingcap/tidb/issues/41991) [#42065](https://github.com/pingcap/tidb/issues/42065) @[L-maple](https://github.com/L-maple)
   <!-- **tw:ran-huang** (17) -->
     - 修复在重组分区表的过程中会显示错误日志的问题 [#42180](https://github.com/pingcap/tidb/issues/42180) @[mjonss](https://github.com/mjonss)
     - 修复 `INFORMATION_SCHEMA.DDL_JOBS` 表中 `QUERY` 列的数据长度可能超出列定义的问题 [#42440](https://github.com/pingcap/tidb/issues/42440) @[tiancaiamao](https://github.com/tiancaiamao)
@@ -509,11 +508,11 @@ TiDB 计划在未来版本废弃[乐观事务模式](/optimistic-transaction.md)
 + PD
 
   <!-- **tw:Oreoxmt** (5) -->
-    - 修复了在 TiKV panic 后，PD 监控面板 low space store 数量异常的问题 [#6252](https://github.com/tikv/pd/issues/6252) @[HuSharp](https://github.com/HuSharp)
-    - 修复了在 PD leader 切换后，Region stats 监控数据被删除的问题 [#6366](https://github.com/tikv/pd/issues/6366) @[iosmanthus](https://github.com/iosmanthus)
-    - 修复了 Rule checker 无法修复 label 为 `schedule=deny` 的不健康 Region 的问题 [#6426](https://github.com/tikv/pd/issues/6426) @[nolouch](https://github.com/nolouch)
-    - 修复了 TiKV/TiFlash 重启后，部分已有 label 丢失的问题 [#6467](https://github.com/tikv/pd/issues/6467) @[JmPotato](https://github.com/JmPotato)
-    - 修复了复制模式存在 learner 节点时可能无法切换状态的问题 [#14704](https://github.com/tikv/tikv/issues/14704) @[nolouch](https://github.com/nolouch)
+    - 修复 TiKV panic 后，PD 监控面板 `low space store` 数量异常的问题 [#6252](https://github.com/tikv/pd/issues/6252) @[HuSharp](https://github.com/HuSharp)
+    - 修复在 PD leader 切换后 Region Health 监控数据被删除的问题 [#6366](https://github.com/tikv/pd/issues/6366) @[iosmanthus](https://github.com/iosmanthus)
+    - 修复 Rule checker 无法修复 label 为 `schedule=deny` 的不健康 Region 的问题 [#6426](https://github.com/tikv/pd/issues/6426) @[nolouch](https://github.com/nolouch)
+    - 修复 TiKV/TiFlash 重启后部分已有 label 丢失的问题 [#6467](https://github.com/tikv/pd/issues/6467) @[JmPotato](https://github.com/JmPotato)
+    - 修复复制模式存在 learner 节点时可能无法切换复制状态的问题 [#14704](https://github.com/tikv/tikv/issues/14704) @[nolouch](https://github.com/nolouch)
 
 + TiFlash
 
