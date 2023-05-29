@@ -139,7 +139,7 @@ sysbench --config-file=config oltp_point_select --tables=32 --table-size=1000000
 数据预热可将磁盘中的数据载入内存的 block cache 中，预热后的数据对系统整体的性能有较大的改善，建议在每次重启集群后进行一次数据预热。
 
 ```bash
-sysbench --config-file=config oltp_point_select --tables=32 --table-size=10000000 warmup
+sysbench --config-file=config oltp_point_select --tables=32 --table-size=10000000 prewarm
 ```
 
 ### Point select 测试命令

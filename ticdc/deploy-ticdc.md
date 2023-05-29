@@ -50,25 +50,25 @@ cdc_servers:
 
 扩容的方式与部署 TiCDC 集群的方式类似，推荐使用 TiUP 工具完成。
 
-1. 编写一个名为 `scale-out.yaml` 的配置文件，包含需要扩容的节点的配置信息。下面是一个示例：
+1. 编写一个名为 `scale-out.yml` 的配置文件，包含需要扩容的节点的配置信息。下面是一个示例：
 
     ```shell
     cdc_servers:
       - host: 10.1.1.1
         gc-ttl: 86400
-        data_dir: /data/deploy/install/data/cdc-8300
+        data_dir: /tidb-data/cdc-8300
       - host: 10.1.1.2
         gc-ttl: 86400
-        data_dir: /data/deploy/install/data/cdc-8300
+        data_dir: /tidb-data/cdc-8300
       - host: 10.0.1.4:8300
         gc-ttl: 86400
-        data_dir: /data/deploy/install/data/cdc-8300
+        data_dir: /tidb-data/cdc-8300
     ```
 
 2. 在 TiUP 中控机上执行类似下面的命令进行扩容：
 
     ```shell
-    tiup cluster scale-out <cluster-name> scale-out.yaml
+    tiup cluster scale-out <cluster-name> scale-out.yml
     ```
 
 更多用例说明，请参考[扩容 TiCDC 节点](/scale-tidb-using-tiup.md#扩容-ticdc-节点)。

@@ -355,7 +355,7 @@ pd-server 相关配置项。
 ### `enable-diagnostic` <span class="version-mark">从 v6.3.0 版本开始引入</span>
 
 + 是否开启诊断功能。开启特性时，PD 将会记录调度中的一些状态来帮助诊断。开启时会略微影响调度速度，在 Store 数量较多时会消耗较大内存。
-+ 默认值：false
++ 默认值：true 
 
 ### `hot-regions-write-interval` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 
@@ -402,6 +402,18 @@ pd-server 相关配置项。
 + 打开 `placement-rules`
 + 默认值：true
 + 参考 [Placement Rules 使用文档](/configure-placement-rules.md)
+
+### `store-limit-version` <span class="version-mark">从 v7.1.0 版本开始引入</span>
+
+> **警告：**
+>
+> 在当前版本中，将该配置项设置为 `"v2"` 为实验特性，不建议在生产环境中使用。
+
++ 设置 `store limit` 工作模式
++ 默认值：v1
++ 可选值：
+    + v1：在 v1 模式下，你可以手动修改 `store limit` 以限制单个 TiKV 调度速度。
+    + v2：（实验特性）在 v2 模式下，你无需关注 `store limit` 值，PD 将根据 TiKV Snapshot 执行情况动态调整 TiKV 调度速度。详情请参考 [Store Limit v2 原理](/configure-store-limit.md#store-limit-v2-原理)。
 
 ## label-property
 
