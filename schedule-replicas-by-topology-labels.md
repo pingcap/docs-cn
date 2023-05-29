@@ -1,6 +1,5 @@
 ---
 title: 通过拓扑 label 进行副本调度
-aliases: ['/docs-cn/dev/schedule-replicas-by-topology-labels/','/docs-cn/dev/how-to/deploy/geographic-redundancy/location-awareness/','/docs-cn/dev/location-awareness/']
 ---
 
 # 通过拓扑 label 进行副本调度

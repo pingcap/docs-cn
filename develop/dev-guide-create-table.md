@@ -1,7 +1,6 @@
 ---
 title: 创建表
 summary: 创建表的方法、规范及例子。
-aliases: ['/zh/tidb/dev/create-table']
 ---
 
 # 创建表

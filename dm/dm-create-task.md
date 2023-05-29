@@ -1,7 +1,6 @@
 ---
 title: 创建 TiDB Data Migration 数据迁移任务
 summary: 了解 TiDB Data Migration 如何创建数据迁移任务。
-aliases: ['/docs-cn/tidb-data-migration/dev/create-task/']
 ---
 
 # 创建 TiDB Data Migration 数据迁移任务
