@@ -389,7 +389,7 @@ TiDB 计划在未来版本废弃[乐观事务模式](/optimistic-transaction.md)
     - 改进 `MAX_EXECUTION_TIME` 相关错误信息使之与 MySQL 兼容 [#43031](https://github.com/pingcap/tidb/issues/43031) @[dveeden](https://github.com/dveeden)
     - `SHOW INDEX` 结果中的 Cardinality 列可以展示统计信息中对应列的不同值的个数 [#42227](https://github.com/pingcap/tidb/issues/42227) @[winoros](https://github.com/winoros)
     - 在 IndexLookUp 中支持对分区表使用 MergeSort 算子 [#26166](https://github.com/pingcap/tidb/issues/26166) @[Defined2014](https://github.com/Defined2014)
-    - 增强 `caching_sha2_password` 与 MySQL 的兼容性 [#43576](https://github.com/pingcap/tidb/issues/43576) @[asjdf](https://github.com/asjdf)
+    - 改进 `caching_sha2_password` 使之与 MySQL 兼容 [#43576](https://github.com/pingcap/tidb/issues/43576) @[asjdf](https://github.com/asjdf)
 
 + TiKV
 
@@ -432,7 +432,7 @@ TiDB 计划在未来版本废弃[乐观事务模式](/optimistic-transaction.md)
 
     + TiDB Lightning
       <!-- **tw:hfxsd** (3) -->
-        - 将 Region 分布不均的相关 Precheck 项的严重级别从 `Critical` 调整为 `Warn` 以避免阻塞用户导入数据 [#42836](https://github.com/pingcap/tidb/issues/42836) @[okJiang](https://github.com/okJiang)
+        - 将关于 Region 分布不均的 Precheck 项的严重级别从 `Critical` 调整为 `Warn` 以避免阻塞用户导入数据 [#42836](https://github.com/pingcap/tidb/issues/42836) @[okJiang](https://github.com/okJiang)
         - 在导入数据期间遇到 `unknown RPC` 错误时增加了重试 [#43291](https://github.com/pingcap/tidb/issues/43291) @[D3Hunter](https://github.com/D3Hunter)
         - 增强 Region Job 的重试机制 [#43682](https://github.com/pingcap/tidb/issues/43682) @[lance6716](https://github.com/lance6716)
 
@@ -504,7 +504,7 @@ TiDB 计划在未来版本废弃[乐观事务模式](/optimistic-transaction.md)
     - 修复加密 Key ID 冲突会导致旧 Key 被删除的问题 [#14585](https://github.com/tikv/tikv/issues/14585) @[tabokie](https://github.com/tabokie)
     - 修复集群从之前版本升级到 v6.5 或更高版本时由于累计的 Lock 记录带来的性能问题 [#14780](https://github.com/tikv/tikv/issues/14780) @[MyonKeminta](https://github.com/MyonKeminta)
     - 修复 PITR 恢复过程中出现的 `raft entry is too large` 问题 [#14313](https://github.com/tikv/tikv/issues/14313) @[YuJuncen](https://github.com/YuJuncen)
-    - 修复 PITR 恢复过程中 TiKV 由于 log_batch 超过 2 GB 导致的 panic 问题 [#13848](https://github.com/tikv/tikv/issues/13848) @[YuJuncen](https://github.com/YuJuncen)
+    - 修复 PITR 恢复过程中 TiKV 由于 `log_batch` 超过 2 GB 导致的 panic 问题 [#13848](https://github.com/tikv/tikv/issues/13848) @[YuJuncen](https://github.com/YuJuncen)
 
 + PD
 
@@ -547,7 +547,7 @@ TiDB 计划在未来版本废弃[乐观事务模式](/optimistic-transaction.md)
       <!-- **tw:hfxsd** (2)-->
 
         - 修复 Unsigned Integer 类型的主键无法用于拆分 Chunk 的问题 [#42620](https://github.com/pingcap/tidb/issues/42620) @[lichunzhu](https://github.com/lichunzhu)
-        - 修复当错误设置 `--output-file-template` 时可能 panic 的问题 [#42391](https://github.com/pingcap/tidb/issues/42391) @[lichunzhu](https://github.com/lichunzhu)
+        - 修复错误设置 `--output-file-template` 可能导致 panic 的问题 [#42391](https://github.com/pingcap/tidb/issues/42391) @[lichunzhu](https://github.com/lichunzhu)
 
     + TiDB Binlog
 
@@ -558,13 +558,13 @@ TiDB 计划在未来版本废弃[乐观事务模式](/optimistic-transaction.md)
 
     + TiDB Lightning
       <!-- **tw:hfxsd** (8)-->
-        - 修复 TiDB Lightning 导入性能退化的问题 [#42456](https://github.com/pingcap/tidb/issues/42456) @[lance6716](https://github.com/lance6716)
-        - 修复大数据量导入时报 `write to tikv with no leader returned` 错误的问题 [#43055](https://github.com/pingcap/tidb/issues/43055) @[lance6716](https://github.com/lance6716)
+        - 修复导入性能退化的问题 [#42456](https://github.com/pingcap/tidb/issues/42456) @[lance6716](https://github.com/lance6716)
+        - 修复大数据量导入时出现 `write to tikv with no leader returned` 错误的问题 [#43055](https://github.com/pingcap/tidb/issues/43055) @[lance6716](https://github.com/lance6716)
         - 修复导入期间输出过多 `keys within region is empty, skip doIngest` 日志的问题 [#43197](https://github.com/pingcap/tidb/issues/43197) @[D3Hunter](https://github.com/D3Hunter)
-        - 修复 Range 部分写入时可能 panic 的问题 [#43363](https://github.com/pingcap/tidb/issues/43363) @[lance6716](https://github.com/lance6716)
-        - 修复宽表导入时可能 OOM 的问题 [#43728](https://github.com/pingcap/tidb/issues/43728) @[D3Hunter](https://github.com/D3Hunter)
+        - 修复 Range 部分写入时可能出现 panic 的问题 [#43363](https://github.com/pingcap/tidb/issues/43363) @[lance6716](https://github.com/lance6716)
+        - 修复宽表导入时可能出现 OOM 的问题 [#43728](https://github.com/pingcap/tidb/issues/43728) @[D3Hunter](https://github.com/D3Hunter)
         - 修复 TiDB Lightning Grafana 面板缺失数据的问题 [#43357](https://github.com/pingcap/tidb/issues/43357) @[lichunzhu](https://github.com/lichunzhu)
-        - 修复未正确设置 Keyspace Name 导致导入失败的问题 [#43684](https://github.com/pingcap/tidb/issues/43684) @[zeminzhou](https://github.com/zeminzhou)
+        - 修复未正确设置 Keyspace Name 导致数据导入失败的问题 [#43684](https://github.com/pingcap/tidb/issues/43684) @[zeminzhou](https://github.com/zeminzhou)
         - 修复当 Range 部分写入时，在某些情况下会跳过数据导入的问题 [#43768](https://github.com/pingcap/tidb/issues/43768) @[lance6716](https://github.com/lance6716)
 
 ## 贡献者
