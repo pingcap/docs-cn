@@ -29,7 +29,7 @@ summary: 给出一个 Django 构建 TiDB 应用程序示例。
 
 <div label="TiDB Cloud" value="serverless-cluster">
 
-[创建 TiDB Serverless 集群](/develop/dev-guide-build-cluster-in-cloud.md#第-1-步创建-serverless-tier-集群)。
+[创建 TiDB Serverless 集群](/develop/dev-guide-build-cluster-in-cloud.md#第-1-步创建-tidb-serverless-集群)。
 
 </div>
 
