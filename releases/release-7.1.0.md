@@ -43,7 +43,7 @@ TiDB 7.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
     <td>在读热点场景中，TiDB 可以将热点 TiKV 节点的读请求转发到副本。该功能有效地打散了读热点并优化了集群资源的利用。你可以通过调整系统变量 <a href="https://docs.pingcap.com/zh/tidb/v7.1/system-variables#tidb_load_based_replica_read_threshold-从-v700-版本开始引入" target="_blank"><code>tidb_load_based_replica_read_threshold</code></a> 控制基于负载的副本读取的触发阈值。</td>
   </tr>
   <tr>
-      <td>TiKV 支持<a href="https://docs.pingcap.com/tidb/dev/partitioned-raft-kv" target="_blank">分区 Raft KV 存储引擎 </a>（实验特性）</td>
+      <td>TiKV 支持<a href="https://docs.pingcap.com/zh/tidb/v7.1/partitioned-raft-kv" target="_blank">分区 Raft KV 存储引擎 </a>（实验特性）</td>
     <td>TiKV 引入新一代存储引擎分区 Raft KV，通过每个数据 Region 独享 RocksDB 实例，可将集群的存储能力从 TB 级扩展到 PB 级，并提供更稳定的写入延迟和更强大的扩容能力。</td>
   </tr>
   <tr>
@@ -70,7 +70,7 @@ TiDB 7.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
   </tr>
   <tr>
     <td rowspan="2">安全</td>
-    <td><a href="https://docs.pingcap.com/tidb/dev/security-compatibility-with-mysql" target="_blank">LDAP 身份认证</a></td>
+    <td><a href="https://docs.pingcap.com/zh/tidb/v7.1/security-compatibility-with-mysql" target="_blank">LDAP 身份认证</a></td>
     <td>TiDB 支持与 <a href="https://dev.mysql.com/doc/refman/8.0/en/ldap-pluggable-authentication.html" target="_blank"> MySQL 8.0</a> 兼容的 LDAP 身份认证。</td>
   </tr>
   <tr>
@@ -132,7 +132,7 @@ TiDB 7.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
     TiDB v7.1.0 之前的版本中，在同一时间只有一个 TiDB 节点能够担任 DDL Owner 并执行 DDL 任务。从 TiDB v7.1.0 开始，在新的分布式并行执行框架下，多个 TiDB 节点可以并行执行同一项 DDL 任务，从而更好地利用 TiDB 集群的资源，大幅提升 DDL 的性能。此外，你还可以通过增加 TiDB 节点来线性提升 DDL 的性能。需要注意的是，该特性是实验性特性，目前仅支持 `ADD INDEX` 操作。
 
-    如果要使用分布式并行执行框架，只需将 [`tidb_enable_dist_task`](/system-variables.md#tidb_enable_dist_task) 的值设置为 `ON`：
+    如果要使用分布式并行执行框架，只需将 [`tidb_enable_dist_task`](/system-variables.md#tidb_enable_dist_task-从-v710-版本开始引入) 的值设置为 `ON`：
 
     ```sql
     SET GLOBAL tidb_enable_dist_task = ON;
