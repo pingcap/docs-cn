@@ -179,7 +179,7 @@ tiup cluster check <cluster-name> --cluster
 tiup cluster upgrade <cluster-name> <version>
 ```
 
-以升级到v7.1.0 版本为例：
+以升级到 v7.1.0 版本为例：
 
 {{< copyable "shell-regular" >}}
 
