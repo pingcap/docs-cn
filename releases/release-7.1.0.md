@@ -428,7 +428,7 @@ TiDB 计划在未来版本废弃[乐观事务模式](/optimistic-transaction.md)
         - 支持同步到 Kafka-on-Pulsar 下游 [#8892](https://github.com/pingcap/tiflow/issues/8892) @[hi-rustin](https://github.com/hi-rustin)
         - 在将数据同步到 Kafka 时，支持 open-protocol 协议在数据发生变更后只同步有变更的列 [#8706](https://github.com/pingcap/tiflow/issues/8706) @[sdojjy](https://github.com/sdojjy)
         - 优化 TiCDC 在下游出现故障等场景中的错误处理方式 [#8657](https://github.com/pingcap/tiflow/issues/8657) @[hicqu](https://github.com/hicqu)
-        - 增加一个配置可以控制在打开 TLS 场景是否设置认证算法 [#8867](https://github.com/pingcap/tiflow/issues/8867) @[hi-rustin](https://github.com/hi-rustin)
+        - 增加一个配置项 `insecure-skip-verify`，控制在同步数据到 Kafka 的场景下启用 TLS 时是否设置认证算法 [#8867](https://github.com/pingcap/tiflow/issues/8867) @[hi-rustin](https://github.com/hi-rustin)
 
     + TiDB Lightning
       <!-- **tw:hfxsd** (3) -->
