@@ -11,7 +11,7 @@ summary: 学习 TiDB Data Migration 相关术语
 
 ### Binlog
 
-在 TiDB DM 中，Binlog 通常指 MySQL/MariaDB 生成的 binary log 文件，具体请参考 [MySQL Binary Log](https://dev.mysql.com/doc/dev/mysql-server/latest/PAGE_PROTOCOL.html) 与 [MariaDB Binary Log](https://mariadb.com/kb/en/library/binary-log/)。
+在 TiDB DM 中，Binlog 通常指 MySQL/MariaDB 生成的 binary log 文件，具体请参考 [MySQL Binary Log](https://dev.mysql.com/doc/dev/mysql-server/latest/page_protocol_replication.html) 与 [MariaDB Binary Log](https://mariadb.com/kb/en/library/binary-log/)。
 
 ### Binlog event
 
