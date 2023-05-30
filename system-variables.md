@@ -4096,7 +4096,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 > **警告：**
 >
-> 乐观事务在近期将会被废弃。
+> TiDB 计划在未来版本废弃[乐观事务模式](/optimistic-transaction.md)。从 v7.1.0 开始，不推荐设置 `tidb_txn_mode` 的值为 `"optimistic"` 或 `""`。
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
