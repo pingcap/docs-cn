@@ -45,7 +45,7 @@ TiDB 引入平滑升级功能前，对于升级过程中的 DDL 操作有如下�
 
     * 对系统表（`mysql.*`、`information_schema.*`、`performance_schema.*`、`metrics_schema.*`）进行 DDL 操作。
 
-    * 执行手动取消、暂停、恢复 DDL job 操作：`ADMIN CANCEL/PAUSE/RESUME DDL JOBS job_id [, job_id] ...;`。
+    * 执行手动取消 DDL job 操作：`ADMIN CANCEL DDL JOBS job_id [, job_id] ...;`。
 
     * 导入数据。
 
