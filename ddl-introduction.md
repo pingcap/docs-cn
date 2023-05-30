@@ -176,7 +176,7 @@ absent -> delete only -> write only -> write reorg -> public
 
 - `ADMIN CANCEL DDL JOBS job_id [, job_id]`：用于取消已经提交但未执行完成的 DDL 任务。取消完成后，执行 DDL 任务的 SQL 语句会返回 `ERROR 8214 (HY000): Cancelled DDL job` 错误。
 
-    取消一个已经执行完成的 DDL 任务会在 RESULT 列看到 `DDL Job:90 not found` 的错误，表示该任务已从 DDL 等待队列中被移除。
+    取消一个已经执行完成的 DDL 任务会在 `RESULT` 列看到 `DDL Job:90 not found` 的错误，表示该任务已从 DDL 等待队列中被移除。
 
 ## 常见问题
 
