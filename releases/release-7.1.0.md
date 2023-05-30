@@ -26,7 +26,7 @@ TiDB 7.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 <tbody>
   <tr>
     <td rowspan="4">可扩展性与性能</td>
-    <td>TiFlash 支持<a href="https://docs.pingcap.com/zh/tidb/dev/tiflash-disaggregated-and-s3" target="_blank">存储计算分离和 S3 共享存储</a>（实验特性，从 v7.0.0 开始引入）</td>
+    <td>TiFlash 支持<a href="https://docs.pingcap.com/zh/tidb/v7.1/tiflash-disaggregated-and-s3" target="_blank">存储计算分离和 S3 共享存储</a>（实验特性，从 v7.0.0 开始引入）</td>
     <td>TiFlash 增加云原生架构的支持作为可选项：
       <ul>
         <li>支持存算分离架构，提升 HTAP 资源的弹性能力。</li>
@@ -35,12 +35,12 @@ TiDB 7.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
     </td>
   </tr>
   <tr>
-    <td>TiKV 支持<a href="https://docs.pingcap.com/zh/tidb/dev/system-variables#tidb_store_batch_size" target="_blank">批量聚合数据请求</a>（从 v6.6.0 开始引入）</td>
+    <td>TiKV 支持<a href="https://docs.pingcap.com/zh/tidb/v7.1/system-variables#tidb_store_batch_size" target="_blank">批量聚合数据请求</a>（从 v6.6.0 开始引入）</td>
     <td>TiDB 支持将发送到相同 TiKV 实例的数据请求部分合并，减少子任务的数量和 RPC 请求的开销。在数据离散分布且 gRPC 线程池资源紧张的情况下，批量化请求能够提升性能超 50%。</td>
   </tr>
   <tr>
-    <td><a href="https://docs.pingcap.com/zh/tidb/dev/troubleshoot-hot-spot-issues#打散读热点" target="_blank">基于负载的副本读取</a></td>
-    <td>在读热点场景中，TiDB 可以将热点 TiKV 节点的读请求转发到副本。该功能有效地打散了读热点并优化了集群资源的利用。你可以通过调整系统变量 <a href="https://docs.pingcap.com/zh/tidb/dev/system-variables#tidb_load_based_replica_read_threshold-从-v700-版本开始引入" target="_blank"><code>tidb_load_based_replica_read_threshold</code></a> 控制基于负载的副本读取的触发阈值。</td>
+    <td><a href="https://docs.pingcap.com/zh/tidb/v7.1/troubleshoot-hot-spot-issues#打散读热点" target="_blank">基于负载的副本读取</a></td>
+    <td>在读热点场景中，TiDB 可以将热点 TiKV 节点的读请求转发到副本。该功能有效地打散了读热点并优化了集群资源的利用。你可以通过调整系统变量 <a href="https://docs.pingcap.com/zh/tidb/v7.1/system-variables#tidb_load_based_replica_read_threshold-从-v700-版本开始引入" target="_blank"><code>tidb_load_based_replica_read_threshold</code></a> 控制基于负载的副本读取的触发阈值。</td>
   </tr>
   <tr>
       <td>TiKV 支持<a href="https://docs.pingcap.com/tidb/dev/partitioned-raft-kv" target="_blank">分区 Raft KV 存储引擎 </a>（实验特性）</td>
@@ -48,24 +48,24 @@ TiDB 7.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
   </tr>
   <tr>
     <td rowspan="2">稳定性与高可用</td>
-    <td><a href="https://docs.pingcap.com/zh/tidb/dev/tidb-resource-control" target="_blank">资源管控</a> (GA)</td>
+    <td><a href="https://docs.pingcap.com/zh/tidb/v7.1/tidb-resource-control" target="_blank">资源管控</a> (GA)</td>
    <td>支持基于资源组的资源管控，为同一集群中的不同工作负载分配并隔离资源。该功能显著提升了多应用集群的稳定性，并为多租户奠定了基础。在 v7.1.0 中，资源管控引入了根据实际负载或硬件部署估算集群容量的能力。</td>
   </tr>
   <tr>
-    <td>TiFlash 支持<a href="https://docs.pingcap.com/zh/tidb/dev/tiflash-spill-disk" target="_blank">数据落盘</a>（从 v7.0.0 开始引入）</td>
+    <td>TiFlash 支持<a href="https://docs.pingcap.com/zh/tidb/v7.1/tiflash-spill-disk" target="_blank">数据落盘</a>（从 v7.0.0 开始引入）</td>
     <td>TiFlash 支持将中间结果落盘，以缓解数据密集型操作（如聚合、排序和 Hash Join）中的 OOM 问题。</td>
   </tr>
   <tr>
     <td rowspan="3">SQL</td>
-    <td><a href="https://docs.pingcap.com/zh/tidb/dev/sql-statement-create-index#多值索引" target="_blank">多值索引</a> (GA)</td>
+    <td><a href="https://docs.pingcap.com/zh/tidb/v7.1/sql-statement-create-index#多值索引" target="_blank">多值索引</a> (GA)</td>
     <td>引入 MySQL 兼容的多值索引，增强 JSON 类型，提升 TiDB 对 MySQL 8.0 的兼容性。该功能提升了对多值列进行成员检查的效率。</td>
   </tr>
   <tr>
-    <td><a href="https://docs.pingcap.com/zh/tidb/dev/time-to-live" target="_blank">行级 TTL</a>（从 v7.0.0 开始 GA）</td>
+    <td><a href="https://docs.pingcap.com/zh/tidb/v7.1/time-to-live" target="_blank">行级 TTL</a>（从 v7.0.0 开始 GA）</td>
     <td>支持通过后台任务自动删除超过生命周期 (Time to live) 的数据，并以此来自动管理数据规模并提高性能。</td>
   </tr>
   <tr>
-    <td><a href="https://docs.pingcap.com/zh/tidb/dev/generated-columns" target="_blank">生成列</a> (GA)</td>
+    <td><a href="https://docs.pingcap.com/zh/tidb/v7.1/generated-columns" target="_blank">生成列</a> (GA)</td>
     <td>生成列 (Generated Columns) 的值是通过实时计算列定义中的 SQL 表达式得到的。该功能将一些应用逻辑推向数据库层，从而提升查询效率。</td>
   </tr>
   <tr>
@@ -238,19 +238,6 @@ TiDB 7.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
     更多信息，请参考[用户文档](/generated-columns.md)。
 
 ### 数据库管理
-
-* DDL 任务支持暂停和恢复操作（实验特性）[#18015](https://github.com/pingcap/tidb/issues/18015) @[godouxm](https://github.com/godouxm)
-
-    TiDB v7.1.0 之前的版本中，当 DDL 任务执行期间遇到业务高峰时间点时，为了减少对业务的影响，只能手动取消 DDL 任务。TiDB v7.1.0 引入了 DDL 任务的暂停和恢复功能，你可以在高峰时间点暂停 DDL 任务，等到业务高峰时间结束后再恢复 DDL 任务，从而避免了 DDL 操作对业务负载的影响。
-
-    例如，可以通过如下 `ADMIN PAUSE DDL JOBS` 或 `ADMIN RESUME DDL JOBS` 语句暂停或者恢复多个 DDL 任务：
-
-    ```sql
-    ADMIN PAUSE DDL JOBS 1,2;
-    ADMIN RESUME DDL JOBS 1,2;
-    ```
-
-    更多信息，请参考[用户文档](/ddl-introduction.md#ddl-相关的命令介绍)。
 
 * 支持无需手动取消 DDL 的平滑升级集群功能 [#39751](https://github.com/pingcap/tidb/issues/39751) @[zimulala](https://github.com/zimulala)**tw:ran-huang**
 
@@ -562,6 +549,10 @@ TiDB 计划在未来版本废弃[乐观事务模式](/optimistic-transaction.md)
         - 修复 TiDB Lightning Grafana 面板缺失数据的问题 [#43357](https://github.com/pingcap/tidb/issues/43357) @[lichunzhu](https://github.com/lichunzhu)
         - 修复未正确设置 `keyspace-name` 导致数据导入失败的问题 [#43684](https://github.com/pingcap/tidb/issues/43684) @[zeminzhou](https://github.com/zeminzhou)
         - 修复当 Range 部分写入时，在某些情况下会跳过数据导入的问题 [#43768](https://github.com/pingcap/tidb/issues/43768) @[lance6716](https://github.com/lance6716)
+
+## 性能测试
+
+如需了解 TiDB v7.1.0 的性能表现，你可以参考 TiDB Dedicated 集群的 [TPC-C 性能测试报告](https://docs.pingcap/tidbcloud/v7.1.0-performance-benchmarking-with-tpcc)（英文版）。
 
 ## 贡献者
 
