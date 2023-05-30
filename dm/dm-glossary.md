@@ -12,11 +12,11 @@ This document lists the terms used in the logs, monitoring, configurations, and 
 
 ### Binlog
 
-In TiDB DM, binlogs refer to the binary log files generated in the TiDB database. It has the same indications as that in MySQL or MariaDB. Refer to [MySQL Binary Log](https://dev.mysql.com/doc/internals/en/binary-log.html) and [MariaDB Binary Log](https://mariadb.com/kb/en/library/binary-log/) for details.
+In TiDB DM, binlogs refer to the binary log files generated in the TiDB database. It has the same indications as that in MySQL or MariaDB. Refer to [MySQL Binary Log](https://dev.mysql.com/doc/dev/mysql-server/latest/page_protocol_replication.html) and [MariaDB Binary Log](https://mariadb.com/kb/en/library/binary-log/) for details.
 
 ### Binlog event
 
-Binlog events are information about data modification made to a MySQL or MariaDB server instance. These binlog events are stored in the binlog files. Refer to [MySQL Binlog Event](https://dev.mysql.com/doc/internals/en/binlog-event.html) and [MariaDB Binlog Event](https://mariadb.com/kb/en/library/1-binlog-events/) for details.
+Binlog events are information about data modification made to a MySQL or MariaDB server instance. These binlog events are stored in the binlog files. Refer to [MySQL Binlog Event](https://dev.mysql.com/doc/dev/mysql-server/latest/page_protocol_replication_binlog_event.html) and [MariaDB Binlog Event](https://mariadb.com/kb/en/library/1-binlog-events/) for details.
 
 ### Binlog event filter
 
