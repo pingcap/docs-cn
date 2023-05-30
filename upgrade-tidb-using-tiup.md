@@ -141,7 +141,7 @@ tiup update cluster
 
 > **注意：**
 >
-> 升级到v7.1.0 版本前，请确认已在 4.0 修改的参数在v7.1.0 版本中是兼容的，可参考 [TiKV 配置文件描述](/tikv-configuration-file.md)。
+> 升级到 v7.1.0 版本前，请确认已在 4.0 修改的参数在 v7.1.0 版本中是兼容的，可参考 [TiKV 配置文件描述](/tikv-configuration-file.md)。
 
 ### 2.4 检查当前集群的健康状况
 
