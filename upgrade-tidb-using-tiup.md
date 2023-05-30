@@ -6,15 +6,15 @@ title: 使用 TiUP 升级 TiDB
 
 本文档适用于以下升级路径：
 
-- 使用 TiUP 从 TiDB 4.0 版本升级至 TiDB 7.0。
-- 使用 TiUP 从 TiDB 5.0-5.4 版本升级至 TiDB 7.0。
-- 使用 TiUP 从 TiDB 6.0 版本升级至 TiDB 7.0。
-- 使用 TiUP 从 TiDB 6.1 版本升级至 TiDB 7.0。
-- 使用 TiUP 从 TiDB 6.2 版本升级至 TiDB 7.0。
-- 使用 TiUP 从 TiDB 6.3 版本升级至 TiDB 7.0。
-- 使用 TiUP 从 TiDB 6.4 版本升级至 TiDB 7.0。
-- 使用 TiUP 从 TiDB 6.5 版本升级至 TiDB 7.0。
-- 使用 TiUP 从 TiDB 6.6 版本升级至 TiDB 7.0。
+- 使用 TiUP 从 TiDB 4.0 版本升级至 TiDB 7.1。
+- 使用 TiUP 从 TiDB 5.0-5.4 版本升级至 TiDB 7.1。
+- 使用 TiUP 从 TiDB 6.0 版本升级至 TiDB 7.1。
+- 使用 TiUP 从 TiDB 6.1 版本升级至 TiDB 7.1。
+- 使用 TiUP 从 TiDB 6.2 版本升级至 TiDB 7.1。
+- 使用 TiUP 从 TiDB 6.3 版本升级至 TiDB 7.1。
+- 使用 TiUP 从 TiDB 6.4 版本升级至 TiDB 7.1。
+- 使用 TiUP 从 TiDB 6.5 版本升级至 TiDB 7.1。
+- 使用 TiUP 从 TiDB 6.6 版本升级至 TiDB 7.1。
 
 > **警告：**
 >
@@ -48,7 +48,7 @@ title: 使用 TiUP 升级 TiDB
 
 ### 2.1 查阅兼容性变更
 
-查阅 TiDB v7.1.0 release notes 中的[兼容性变更](/releases/release-7.0.0.md#兼容性变更)。如果有任何变更影响到了你的升级，请采取相应的措施。
+查阅 TiDB v7.1.0 release notes 中的[兼容性变更](/releases/release-7.1.0.md#兼容性变更)。如果有任何变更影响到了你的升级，请采取相应的措施。
 
 ### 2.2 升级 TiUP 或更新 TiUP 离线镜像
 
