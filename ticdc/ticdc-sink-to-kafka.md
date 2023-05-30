@@ -66,6 +66,7 @@ The following are descriptions of sink URI parameters and values that can be con
 | `ca` | The path of the CA certificate file needed to connect to the downstream Kafka instance (optional).  |
 | `cert` | The path of the certificate file needed to connect to the downstream Kafka instance (optional). |
 | `key` | The path of the certificate key file needed to connect to the downstream Kafka instance (optional). |
+| `insecure-skip-verify` | Whether to skip certificate verification when connecting to the downstream Kafka instance (optional, `false` by default). |
 | `sasl-user` | The identity (authcid) of SASL/PLAIN or SASL/SCRAM authentication needed to connect to the downstream Kafka instance (optional). |
 | `sasl-password` | The password of SASL/PLAIN or SASL/SCRAM authentication needed to connect to the downstream Kafka instance (optional). |
 | `sasl-mechanism` | The name of SASL authentication needed to connect to the downstream Kafka instance. The value can be `plain`, `scram-sha-256`, `scram-sha-512`, or `gssapi`. |
