@@ -363,10 +363,6 @@ TiDB 7.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 | TiCDC | [`integrity.integrity-check-level`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-配置文件说明) | 新增 | 用于控制是否开启单行数据的 Checksum 校验功能，默认值为 `"none"`，即不开启。 |
 | TiCDC | [`sink.enable-partition-separator`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-配置文件说明) | 修改 | 默认值从 `false` 修改为 `true`，代表默认会将表中各个分区的数据分不同的目录来存储。建议保持该配置项为 `true` 以避免同步分区表到存储服务时可能丢数据的问题。 |
 
-## 废弃功能
-
-TiDB 计划在未来版本废弃[乐观事务模式](/optimistic-transaction.md)。从 v7.1.0 开始，不推荐设置 [`tidb_txn_mode`](/system-variables.md#tidb_txn_mode) 的值为 `"optimistic"` 或 `""`。
-
 ## 改进提升
 
 + TiDB
