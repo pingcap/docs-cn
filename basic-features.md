@@ -124,7 +124,6 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 | [添加索引加速](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) | Y | Y | N | N | N | N | N | N | N |
 | [元数据锁](/metadata-lock.md) | Y | Y | N | N | N | N | N | N | N |
 | [`FLASHBACK CLUSTER TO TIMESTAMP`](/sql-statements/sql-statement-flashback-to-timestamp.md) | Y | Y | N | N | N | N | N | N | N |
-| [暂停/恢复 DDL](/ddl-introduction.md#ddl-相关的命令介绍) | E | N | N | N | N | N | N | N | N |
 
 ## 事务
 
