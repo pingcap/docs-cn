@@ -150,7 +150,7 @@ TiDB 7.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
     在 TiDB v7.1.0 中，该特性增加了基于实际负载和硬件部署来估算系统容量上限的能力，为你进行容量规划提供更准确的参考。这有助于你更好地管理 TiDB 的资源分配，从而满足企业级场景的稳定性需求。
 
-    为了更好的用户体验，TiDB Dashboard 增加了[资源管控的管理页面](/dashboard/dashboard-resource-control.md)。你可以在该页面查看资源组配置，并通过可视化的方式进行容量预估，便于合理配置资源。
+    为了更好的用户体验，TiDB Dashboard 增加了[资源管控的管理页面](/dashboard/dashboard-resource-manager.md)。你可以在该页面查看资源组配置，并通过可视化的方式进行容量预估，便于合理配置资源。
 
     更多信息，请参考[用户文档](/tidb-resource-control.md)。
 
