@@ -9,7 +9,7 @@ TiDB v6.4.0 引入了 `FLASHBACK CLUSTER TO TIMESTAMP` 语法，其功能是将�
 
 > **警告：**
 >
-> 在 TiDB v7.1.0 中使用该功能可能会出现 FLASHBACK 完成后部分 Region 无法恢复的问题。请尽量避免在 v7.1.0 中使用该功能。详情可见 [#44292](https://github.com/pingcap/tidb/issues/44292)。
+> 在 TiDB v7.1.0 中使用该功能可能会出现 FLASHBACK 完成后部分 Region 仍处于 FLASHBACK 过程中的问题。请尽量避免在 v7.1.0 中使用该功能。详情可见 [#44292](https://github.com/pingcap/tidb/issues/44292)。
 >
 > 如果已经出现该问题，可以使用 [TiDB 快照备份与恢复](/br/br-snapshot-guide.md)功能进行数据恢复。
 
