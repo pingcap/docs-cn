@@ -124,7 +124,6 @@ This document lists the features supported in different TiDB versions, including
 | [Acceleration of `ADD INDEX` and `CREATE INDEX`](/system-variables.md#tidb_ddl_enable_fast_reorg-new-in-v630) | Y | Y | N | N | N | N | N | N | N |
 | [Metadata lock](/metadata-lock.md) | Y | Y | N | N | N | N | N | N | N |
 | [`FLASHBACK CLUSTER TO TIMESTAMP`](/sql-statements/sql-statement-flashback-to-timestamp.md) | Y | Y | N | N | N | N | N | N | N |
-| [Pause/Resume DDL](/ddl-introduction.md#ddl-related-commands) | E | N | N | N | N | N | N | N | N |
 
 ## Transactions
 

@@ -42,7 +42,7 @@ When using the smooth upgrade feature, note the following limitations.
 * During the upgrade, the following operations are not allowed:
 
     * Run DDL operations on system tables (`mysql.*`, `information_schema.*`, `performance_schema.*`, and `metrics_schema.*`).
-    * Manually cancel, pause, or resume DDL jobs: `ADMIN CANCEL/PAUSE/RESUME DDL JOBS job_id [, job_id] ...;`.
+    * Manually cancel DDL jobs: `ADMIN CANCEL DDL JOBS job_id [, job_id] ...;`.
     * Import data.
 
 ### Limitations on tools

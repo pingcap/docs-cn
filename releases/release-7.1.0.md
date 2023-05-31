@@ -154,21 +154,6 @@ In v7.1.0, the key new features and improvements are as follows:
 
     For more information, see [documentation](/generated-columns.md).
 
-### DB operations
-
-* DDL tasks support pause and resume operations (experimental) [#18015](https://github.com/pingcap/tidb/issues/18015) @[godouxm](https://github.com/godouxm)
-
-    Before TiDB v7.1.0, when a DDL task encounters a business peak period during execution, you can only manually cancel the DDL task to reduce its impact on the business. In v7.1.0, TiDB introduces pause and resume operations for DDL tasks. These operations let you pause DDL tasks during peak periods and resume them after the peak ends, thus avoiding any impact on your application workloads.
-
-    For example, you can pause and resume multiple DDL tasks using `ADMIN PAUSE DDL JOBS` or `ADMIN RESUME DDL JOBS`:
-
-    ```sql
-    ADMIN PAUSE DDL JOBS 1,2;
-    ADMIN RESUME DDL JOBS 1,2;
-    ```
-
-    For more information, see [documentation](/ddl-introduction.md#ddl-related-commands).
-
 ### Observability
 
 * Enhance optimizer diagnostic information [#43122](https://github.com/pingcap/tidb/issues/43122) @[time-and-fate](https://github.com/time-and-fate)
