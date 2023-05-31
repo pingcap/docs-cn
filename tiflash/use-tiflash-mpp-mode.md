@@ -173,8 +173,8 @@ mysql> explain SELECT count(*) FROM test.employees;
 在 TiDB 6.5.x 及之前的版本里面，TiFlash 使用一个查询的 `start_ts` 当做这个查询的 unique key。在绝大多数情况下，每个 query 的 `start_ts` 都可以唯一标识一个查询，但是在以下几种情况下，不同的查询会有相同的 `start_ts`：
 
 - 在同一个事务里的 query 都有相同的 `start_ts`
-- 用 [`tidb_snapshot`](/system-variables.md#tidb_snapshot) 来指定读取特定历史时刻数据的时候
-- 开启了 [Stale Read](/stale-read.md) 的时候
+- 用 [`tidb_snapshot`](/system-variables.md#tidb_snapshot) 来指定读取特定历史时刻数据时，手动指定了相同的时间点
+- 开启了 [Stale Read](/stale-read.md) 时，手动指定了相同的时间点
 
 当 `start_ts` 无法唯一表示 MPP query 的时候，如果 TiFlash 在同一时刻看到不同的 query 拥有相同的 `start_ts` 时，就可能会报错。典型的报错情况如下：
 
