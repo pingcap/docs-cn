@@ -534,7 +534,7 @@ tiup cluster display <cluster-name>
 | Host IP   | Service   |
 |:----|:----|
 | 10.0.1.3   | TiDB + TiFlash + TiCDC  |
-| 10.0.1.4   | TiDB + PD + **(TiCDC 已删除）**  |
+| 10.0.1.4   | TiDB + PD + **（TiCDC 已删除）**  |
 | 10.0.1.5   | TiDB + Monitor  |
 | 10.0.1.1   | TiKV    |
 | 10.0.1.2   | TiKV    |
