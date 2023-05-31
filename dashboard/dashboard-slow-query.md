@@ -36,11 +36,17 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-slow-query/']
 
 ![显示更多列信息](/media/dashboard/dashboard-slow-queries-list2-v620.png)
 
+### 导出慢查询到本地
+
+页面顶部**更多**下可以选择**导出**按钮。点击按钮后，将会把当前列表中的慢查询以 csv 文件形式进行导出。
+
+![导出慢查询到本地](/media/dashboard/dashboard-slow-queries-export-v620.png)
+
 ### 修改列表排序依据
 
 列表默认以**结束运行时间** (**Finish Time**) 逆序排序，点击不同的列标题可以修改排序依据或切换排序顺序：
 
-![修改列表排序依据](/media/dashboard/dashboard-slow-queries-list3-v620.png)
+![修改列表排序依据](/media/dashboard/dashboard-slow-queries-list3-v651.png)
 
 ## 查看执行详情
 
