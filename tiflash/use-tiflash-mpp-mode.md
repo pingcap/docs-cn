@@ -181,4 +181,4 @@ mysql> explain SELECT count(*) FROM test.employees;
 - 当多个相同的 `start_ts` 的 query 同时发给 TiFlash 时，可能会遇到 "task has been registered" 的报错
 - 当同一个事务里连续执行多个简单的使用 `LIMIT` 的查询时，TiDB 在 limit 条件满足后会给 TiFlash 发送 cancel request 的请求，这个请求也以 `start_ts` 来标识需要 cancel 的查询。假如 TiFlash 中有其他相同 `start_ts` 的查询的话，那其他查询就可能会被误 cancel。例如[这个 issue](https://github.com/pingcap/tidb/issues/43426) 里面碰到的问题。
 
-该问题已在 TiDB 6.6.0 中 fix
+该问题已在 TiDB v6.6.0 中修复，建议使用[最新的 LTS 版本](https://docs.pingcap.com/zh/tidb/stable)。
