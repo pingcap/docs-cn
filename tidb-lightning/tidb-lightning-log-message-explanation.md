@@ -73,7 +73,7 @@ summary: 了解使用 TiDB Lightning 导入数据的过程中生成的日志消�
 [INFO] [check_info.go:680] ["datafile to check"] [db=sysbench] [table=sbtest1] [path=sysbench.sbtest1.000000000.sql]
 ```
 
-[check_info.go:680](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/check_info.go#L680)：作为预检查的一部分，Lightning 使用每个表的第一个数据文件来检查源数据文件和目标集群表结构是否匹配。
+[check_info.go:680](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/check_info.go#L680)：作为预检查的一部分，TiDB Lightning 使用每个表的第一个数据文件来检查源数据文件和目标集群表结构是否匹配。
 
 ```
 [INFO] [version.go:360] ["detect server version"] [type=TiDB] [version=5.4.0]
@@ -87,10 +87,10 @@ summary: 了解使用 TiDB Lightning 导入数据的过程中生成的日志消�
 
 [check_info.go:995](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/check_info.go#L995)：作为预检查的一部分，估算源数据的大小以确定下列信息：
 
-- [如果 Lightning 使用 local 后端模式，检查本地盘是否有足够的空间](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/check_info.go#L462)。
+- [如果 TiDB Lightning 使用 local 后端模式，检查本地盘是否有足够的空间](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/check_info.go#L462)。
 - [目标集群是否有足够的空间来存储转换后的 KV 对](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/check_info.go#L102)。
 
-Lightning 通过对每个表的第一个源数据文件进行采样，计算文件大小与 KV 对大小的比率，并使用该比率乘以源数据文件大小来估算转换后的 KV 对的大小。
+TiDB Lightning 通过对每个表的第一个源数据文件进行采样，计算文件大小与 KV 对大小的比率，并使用该比率乘以源数据文件大小来估算转换后的 KV 对的大小。
 
 ```
 [INFO] [check_info.go:1080] ["Sample source data"] [table=sbtest1] [IndexRatio=1.3037832180660969] [IsSourceOrder=true]
@@ -109,13 +109,13 @@ Lightning 通过对每个表的第一个源数据文件进行采样，计算文�
 [INFO] [restore.go:1683] ["switch to import mode"]
 ```
 
-[restore.go:1683](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/restore.go#L1683)：在 local 后端模式下，Lightning 将每个 TiKV 节点切换到导入模式以加快导入过程，但这一操作会牺牲其存储空间。如果使用 tidb 后端模式，则不需要切换 TiKV 到[导入模式](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-glossary#import-mode)。
+[restore.go:1683](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/restore.go#L1683)：在 local 后端模式下，TiDB Lightning 将每个 TiKV 节点切换到导入模式以加快导入过程，但这一操作会牺牲其存储空间。如果使用 tidb 后端模式，则不需要切换 TiKV 到[导入模式](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-glossary#import-mode)。
 
 ```
 [INFO] [restore.go:1462] ["restore table start"] [table=`sysbench`.`sbtest1`]
 ```
 
-[restore.go:1462](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/restore.go#L1462)：开始恢复表 `sysbench`.`sbtest1`。Lightning 根据 [`index-concurrency`](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/restore.go#L1459) 配置项并发地恢复多个表。对于每个表，Lightning 根据 [`region-concurrency`](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/mydump/region.go#L157) 配置项并发地恢复表中的数据文件。
+[restore.go:1462](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/restore.go#L1462)：开始恢复表 `sysbench`.`sbtest1`。TiDB Lightning 根据 [`index-concurrency`](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/restore.go#L1459) 配置项并发地恢复多个表。对于每个表，TiDB Lightning 根据 [`region-concurrency`](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/mydump/region.go#L157) 配置项并发地恢复表中的数据文件。
 
 ```
 [INFO] [table_restore.go:91] ["load engines and files start"] [table=`sysbench`.`sbtest1`]
@@ -139,7 +139,7 @@ Lightning 通过对每个表的第一个源数据文件进行采样，计算文�
 [INFO] [backend.go:346] ["open engine"] [engineTag=`sysbench`.`sbtest1`:-1] [engineUUID=3942bab1-bd60-52e2-bf53-e17aebf962c6]
 ```
 
-[backend.go:346](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/backend/backend.go#L346)：Engine id `-1` 代表索引引擎。在[恢复引擎过程](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/table_restore.go#L199)开始时，Lightning 会打开索引引擎以存储转换后的索引 KV 对。
+[backend.go:346](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/backend/backend.go#L346)：Engine id `-1` 代表索引引擎。在[恢复引擎过程](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/table_restore.go#L199)开始时，TiDB Lightning 会打开索引引擎以存储转换后的索引 KV 对。
 
 ```
 [INFO] [table_restore.go:270] ["import whole table start"] [table=`sysbench`.`sbtest1`]
@@ -169,7 +169,7 @@ Lightning 通过对每个表的第一个源数据文件进行采样，计算文�
 [INFO] [restore.go:2482] ["restore file start"] [table=`sysbench`.`sbtest1`] [engineNumber=0] [fileIndex=0] [path=sysbench.sbtest1.000000000.sql:0]
 ```
 
-[restore.go:2482](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/restore.go#L2482)：这个日志可能会根据导入表数据的大小而出现多次。每一条这样的日志表示开始恢复一个 chunk/table region。Lightning 会根据内部的 [region workers](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/table_restore.go#L532) 并发地[恢复 chunks](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/table_restore.go#L386)，region workers 的数量由 [region concurrency](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/restore.go#L402) 定义。对于每个 chunk，恢复的过程如下：
+[restore.go:2482](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/restore.go#L2482)：这个日志可能会根据导入表数据的大小而出现多次。每一条这样的日志表示开始恢复一个 chunk/table region。TiDB Lightning 会根据内部的 [region workers](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/table_restore.go#L532) 并发地[恢复 chunks](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/table_restore.go#L386)，region workers 的数量由 [region concurrency](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/restore.go#L402) 定义。对于每个 chunk，恢复的过程如下：
 
 1. [将 SQL 编码为 KV 对](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/restore.go#L2389)。
 2. [将 KV 对写入数据引擎和索引引擎](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/restore.go#L2179)。
@@ -178,7 +178,7 @@ Lightning 通过对每个表的第一个源数据文件进行采样，计算文�
 [INFO] [engine.go:777] ["write data to local DB"] [size=134256327] [kvs=621576] [files=1] [sstFileSize=108984502] [file=/home/centos/tidb-lightning-temp-data/sorted-kv-dir/d173bb2e-b753-5da9-b72e-13a49a46f5d7.sst/11e65bc1-04d0-4a39-9666-cae49cd013a9.sst] [firstKey=74800000000000003F5F728000000000144577] [lastKey=74800000000000003F5F7280000000001DC17E]
 ```
 
-[engine.go:777](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/backend/local/engine.go#L777)：开始将生成的 SST 文件导入到 embeded engine 中。Lightning 将[并发地导入 SST 文件](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/backend/local/local.go#L624)。
+[engine.go:777](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/backend/local/engine.go#L777)：开始将生成的 SST 文件导入到 embeded engine 中。TiDB Lightning 将[并发地导入 SST 文件](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/backend/local/local.go#L624)。
 
 ```
 [INFO] [restore.go:2492] ["restore file completed"] [table=`sysbench`.`sbtest1`] [engineNumber=0] [fileIndex=1] [path=sysbench.sbtest1.000000001.sql:0] [readDur=3.123667511s] [encodeDur=5.627497136s] [deliverDur=6.653498837s] [checksum="{cksum=6610977918434119862,size=336040251,kvs=2646056}"] [takeTime=15.474211783s] []
@@ -281,14 +281,14 @@ Lightning 通过对每个表的第一个源数据文件进行采样，计算文�
 [INFO] [table_restore.go:345] ["import whole table completed"] [table=`sysbench`.`sbtest1`] [takeTime=47.421324969s] []
 ```
 
-[table_restore.go:345](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/table_restore.go#L345)：完成了导入表数据。Lightning 将所有表数据转换为 KV 对，并将其导入到 TiKV 集群中。
+[table_restore.go:345](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/table_restore.go#L345)：完成了导入表数据。TiDB Lightning 将所有表数据转换为 KV 对，并将其导入到 TiKV 集群中。
 
 ```
 [INFO] [tidb.go:401] ["alter table auto_increment start"] [table=`sysbench`.`sbtest1`] [auto_increment=10000002]
 [INFO] [tidb.go:403] ["alter table auto_increment completed"] [table=`sysbench`.`sbtest1`] [auto_increment=10000002] [takeTime=82.225557ms] []
 ```
 
-[tidb.go:401](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/tidb.go#L401)，[tidb.go:403](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/tidb.go#L403)：在 [post process](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/table_restore.go#L680) 阶段，Lightning 会[调整表的自增 ID](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/table_restore.go#L703) 以避免新添加的数据引入冲突。
+[tidb.go:401](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/tidb.go#L401)，[tidb.go:403](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/tidb.go#L403)：在 [post process](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/table_restore.go#L680) 阶段，TiDB Lightning 会[调整表的自增 ID](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/table_restore.go#L703) 以避免新添加的数据引入冲突。
 
 ```
 [INFO] [restore.go:1466] ["restore table completed"] [table=`sysbench`.`sbtest1`] [takeTime=53.280464651s] []
