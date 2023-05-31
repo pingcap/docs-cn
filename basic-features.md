@@ -243,7 +243,7 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 
 [^3]: TiDB 支持的完整 SQL 列表，见[语句参考](/sql-statements/sql-statement-select.md)。
 
-[^4]: 从 [TiDB v6.4.0](/releases/release-6.4.0.md) 开始，支持[高性能、全局单调递增的 `AUTO_INCREMENT` 列](/auto-increment.md#mysql-兼容模式)
+[^4]: 从 [TiDB v6.4.0](/releases/release-6.4.0.md) 开始，支持[高性能、全局单调递增的 `AUTO_INCREMENT` 列](/auto-increment.md#mysql-兼容模式)。
 
 [^5]: 对于 [TiDB v7.0.0](/releases/release-7.0.0.md)，新增参数 `FIELDS DEFINED NULL BY` 以及新增支持从 S3 和 GCS 导入数据，均为实验特性。
 
