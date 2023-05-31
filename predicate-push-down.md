@@ -46,7 +46,7 @@ explain select * from t where a < substring('123', 1, 1);
 
 该查询与示例 1 中的查询生成了完成一样的执行计划，这是因为谓词 `a < substring('123', 1, 1)` 的 `substring` 的入参均为常量，因此可以提前计算，进而简化得到等价的谓词 `a < 1`。进一步的，可以将 `a < 1` 下推至 TiKV 上。
 
-### 示例 3: 谓词下推到 join 下方 
+### 示例 3: 谓词下推到 join 下方
 
 ```sql
 create table t(id int primary key, a int not null);
@@ -73,20 +73,20 @@ explain select * from t join s on t.a = s.a where t.a < 1;
 ### 示例 4: 存储层不支持的谓词无法下推
 
 ```sql
-create table t(id int primary key, a int not null);
-desc select * from t where substring('123', a, 1) = '1';
-+-------------------------+---------+-----------+---------------+----------------------------------------+
-| id                      | estRows | task      | access object | operator info                          |
-+-------------------------+---------+-----------+---------------+----------------------------------------+
-| Selection_7             | 2.00    | root      |               | eq(substring("123", test.t.a, 1), "1") |
-| └─TableReader_6         | 2.00    | root      |               | data:TableFullScan_5                   |
-|   └─TableFullScan_5     | 2.00    | cop[tikv] | table:t       | keep order:false, stats:pseudo         |
-+-------------------------+---------+-----------+---------------+----------------------------------------+
+create table t(id int primary key, a varchar(10) not null);
+desc select * from t where truncate(a, " ") = '1';
++-------------------------+----------+-----------+---------------+---------------------------------------------------+
+| id                      | estRows  | task      | access object | operator info                                     |
++-------------------------+----------+-----------+---------------+---------------------------------------------------+
+| Selection_5             | 8000.00  | root      |               | eq(truncate(cast(test.t.a, double BINARY), 0), 1) |
+| └─TableReader_7         | 10000.00 | root      |               | data:TableFullScan_6                              |
+|   └─TableFullScan_6     | 10000.00 | cop[tikv] | table:t       | keep order:false, stats:pseudo                    |
++-------------------------+----------+-----------+---------------+---------------------------------------------------+
 ```
 
-在该查询中，存在谓词 `substring('123', a, 1) = '1'`。
+在该查询中，存在谓词 `truncate(a, " ") = '1'`。
 
-从 explain 结果中可以看到，该谓词没有被下推到 TiKV 上进行计算，这是因为 TiKV coprocessor 中没有对 `substring` 内置函数进行支持，因此无法将其下推到 TiKV 上。
+从 explain 结果中可以看到，该谓词没有被下推到 TiKV 上进行计算，这是因为 TiKV coprocessor 中没有对 `truncate` 内置函数进行支持，因此无法将其下推到 TiKV 上。
 
 ### 示例 5: 外连接中内表上的谓词不能下推
 

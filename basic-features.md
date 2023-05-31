@@ -124,7 +124,6 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 | [添加索引加速](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) | Y | Y | N | N | N | N | N | N | N |
 | [元数据锁](/metadata-lock.md) | Y | Y | N | N | N | N | N | N | N |
 | [`FLASHBACK CLUSTER TO TIMESTAMP`](/sql-statements/sql-statement-flashback-to-timestamp.md) | Y | Y | N | N | N | N | N | N | N |
-| [暂停/恢复 DDL](/ddl-introduction.md#ddl-相关的命令介绍) | E | N | N | N | N | N | N | N | N |
 
 ## 事务
 
@@ -201,7 +200,7 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 | [数据迁移工具](/migration-overview.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y |
 | [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y |
 | [Change data capture (CDC)](/ticdc/ticdc-overview.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y |
-| [TiCDC 支持保存数据到存储服务 (S3/NFS/Azure Blob Storage/GCP)](/ticdc/ticdc-sink-to-cloud-storage.md) | Y | E | N | N | N | N | N | N | N |
+| [TiCDC 支持保存数据到存储服务 (Amazon S3/GCS/Azure Blob Storage/NFS)](/ticdc/ticdc-sink-to-cloud-storage.md) | Y | E | N | N | N | N | N | N | N |
 | [TiCDC 支持在两个 TiDB 集群之间进行双向复制](/ticdc/ticdc-bidirectional-replication.md) | Y | Y | N | N | N | N | N | N | N |
 | [TiCDC OpenAPI v2](/ticdc/ticdc-open-api-v2.md) | Y | N | N | N | N | N | N | N | N |
 

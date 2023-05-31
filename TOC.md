@@ -127,6 +127,7 @@
   - 升级 TiDB 版本
     - [使用 TiUP 升级](/upgrade-tidb-using-tiup.md)
     - [使用 TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/upgrade-a-tidb-cluster)
+    - [平滑升级 TiDB](/smooth-upgrade-tidb.md)
     - [TiFlash v6.2 升级帮助](/tiflash-620-upgrade-guide.md)
   - 扩缩容
     - [使用 TiUP（推荐）](/scale-tidb-using-tiup.md)
@@ -527,6 +528,7 @@
       - [管理 Changefeed](/ticdc/ticdc-manage-changefeed.md)
       - [日志过滤器](/ticdc/ticdc-filter.md)
       - [双向复制](/ticdc/ticdc-bidirectional-replication.md)
+      - [单行数据正确性校验](/ticdc/ticdc-integrity-check.md)
     - 监控告警
       - [基本监控指标](/ticdc/ticdc-summary-monitor.md)
       - [详细监控指标](/ticdc/monitor-ticdc.md)
@@ -957,6 +959,7 @@
         - [使用示例](/dashboard/dashboard-diagnostics-usage.md)
       - [监控指标页面](/dashboard/dashboard-monitoring.md)
       - [日志搜索页面](/dashboard/dashboard-log-search.md)
+      - [资源管控页面](/dashboard/dashboard-resource-manager.md)
       - 实例性能分析
         - [手动分析页面](/dashboard/dashboard-profiling.md)
         - [持续分析页面](/dashboard/continuous-profiling.md)
