@@ -5,7 +5,7 @@ summary: 了解使用 TiDB Lightning 导入数据的过程中生成的日志消�
 
 # TiDB Lightning 日志信息详解
 
-本文档描述了使用 **TiDB Lightning v5.4** 的 **local backend** 成功导入数据时的日志消息，并详细解释了日志的来源和实际内容。你可以参考本文档更好地理解 TiDB Lightning 日志。
+本文档描述了使用 **TiDB Lightning v5.4** 的 **local backend** 成功导入数据时的日志消息，并详细解释了日志的来源和含义。你可以参考本文档更好地理解 TiDB Lightning 日志。
 
 在阅读本文档之前，请确保你已经熟悉 TiDB Lightning，并已了解 [TiDB Lightning 简介](/tidb-lightning/tidb-lightning-overview.md)中描述的整体架构和工作流。如果你遇到不熟悉的术语，可以参考[术语表](/tidb-lightning/tidb-lightning-glossary.md)。
 
@@ -31,13 +31,13 @@ summary: 了解使用 TiDB Lightning 导入数据的过程中生成的日志消�
 [INFO] [lightning.go:312] ["load data source start"]
 ```
 
-[lightning.go:312](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/lightning.go#L312)：开始扫描 Lightning [mydumper `data-source-dir` 配置项](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/config/config.go#L447)中定义的[数据源目录或外部存储](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/mydump/loader.go#L205)，并将所有数据源文件元信息加载到[内部数据结构](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/mydump/loader.go#L82)中以供将来使用。
+[lightning.go:312](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/lightning.go#L312)：开始扫描 TiDB Lightning [mydumper `data-source-dir` 配置项](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/config/config.go#L447)中定义的[数据源目录或外部存储](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/mydump/loader.go#L205)，并将所有数据源文件元信息加载到[内部数据结构](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/mydump/loader.go#L82)中以供将来使用。
 
 ```
 [INFO] [loader.go:289] ["[loader] file is filtered by file router"] [path=metadata]
 ```
 
-[loader.go:289](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/mydump/loader.go#L289)：打印根据[文件路由规则](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/mydump/loader.go#L139)跳过的数据源文件。文件路由规则由 Lightning [mydumper `files` 配置项](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/config/config.go#L452)中定义，如果 [`file` 规则未定义](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/config/config.go#L847)，则使用内部[默认文件路由规则](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/mydump/router.go#L105)。
+[loader.go:289](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/mydump/loader.go#L289)：打印根据[文件路由规则](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/mydump/loader.go#L139)跳过的数据源文件。文件路由规则由 TiDB Lightning [mydumper `files` 配置项](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/config/config.go#L452)中定义，如果 [`files` 规则未定义](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/config/config.go#L847)，则使用内部[默认文件路由规则](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/mydump/router.go#L105)。
 
 ```
 [INFO] [lightning.go:315] ["load data source completed"] [takeTime=273.964µs] []
@@ -49,7 +49,7 @@ summary: 了解使用 TiDB Lightning 导入数据的过程中生成的日志消�
 [INFO] [checkpoints.go:977] ["open checkpoint file failed, going to create a new one"] [path=/tmp/tidb_lightning_checkpoint.pb] [error="open /tmp/tidb_lightning_checkpoint.pb: no such file or directory"]
 ```
 
-[checkpoints.go:977](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/checkpoints/checkpoints.go#L977)：如果 Lightning 使用文件存储检查点，并且找不到任何本地检查点文件，则 Lightning 将创建一个新的检查点。
+[checkpoints.go:977](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/checkpoints/checkpoints.go#L977)：如果 TiDB Lightning 使用文件存储检查点，并且找不到任何本地检查点文件，则 TiDB Lightning 将创建一个新的检查点。
 
 ```
 [INFO] [restore.go:444] ["the whole procedure start"]
@@ -85,7 +85,7 @@ summary: 了解使用 TiDB Lightning 导入数据的过程中生成的日志消�
 [INFO] [check_info.go:995] ["sample file start"] [table=sbtest1]
 ```
 
-[check_info.go:995](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/check_info.go#L995)：作为预检查的一部分，估算源数据的大小以确定下列数据：
+[check_info.go:995](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/check_info.go#L995)：作为预检查的一部分，估算源数据的大小以确定下列信息：
 
 - [如果 Lightning 使用 local 后端模式，检查本地盘是否有足够的空间](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/check_info.go#L462)。
 - [目标集群是否有足够的空间来存储转换后的 KV 对](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/check_info.go#L102)。
@@ -103,7 +103,7 @@ Lightning 通过对每个表的第一个源数据文件进行采样，计算文�
 [INFO] [pd.go:423] ["pause configs successful at beginning"] [cfg="{\"enable-location-replacement\":\"false\",\"leader-schedule-limit\":4,\"max-merge-region-keys\":0,\"max-merge-region-size\":0,\"max-pending-peer-count\":2147483647,\"max-snapshot-count\":40,\"region-schedule-limit\":40}"]
 ```
 
-[pd.go:415](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/pdutil/pd.go#L415)，[pd.go:423](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/pdutil/pd.go#L423)：在 Local 后端模式下，禁用了一些 [pd 调度器](https://docs.pingcap.com/zh/tidb/stable/tidb-scheduling)，并且更改了一些[配置项](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/pdutil/pd.go#L417)，以分裂和打散 TiKV region 并导入 SST。
+[pd.go:415](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/pdutil/pd.go#L415)，[pd.go:423](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/pdutil/pd.go#L423)：在 Local 后端模式下，禁用了一些 [PD 调度器](https://docs.pingcap.com/zh/tidb/stable/tidb-scheduling)，并且更改了一些[配置项](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/pdutil/pd.go#L417)，以分裂和打散 TiKV region 并导入 SST。
 
 ```
 [INFO] [restore.go:1683] ["switch to import mode"]
@@ -127,7 +127,7 @@ Lightning 通过对每个表的第一个源数据文件进行采样，计算文�
 [INFO] [region.go:241] [makeTableRegions] [filesCount=8] [MaxRegionSize=268435456] [RegionsCount=8] [BatchSize=107374182400] [cost=53.207µs]
 ```
 
-[region.go:241](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/mydump/region.go#L241)：打印已处理的表数据文件数量 (`filesCount`)，CSV 文件的最大 chunk 大小 (`MaxRegionSize`)，生成的表 region 或 chunk 的数量 (`RegionsCount`) 以及用来分配不同 engine 来处理数据文件的 `batchSize`。
+[region.go:241](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/mydump/region.go#L241)：打印已处理的表数据文件的数量 (`filesCount`)、CSV 文件的最大 chunk 大小 (`MaxRegionSize`)、生成的表 region 或 chunk 的数量 (`RegionsCount`) 以及用来分配不同的 engine 来处理数据文件的 `batchSize`。
 
 ```
 [INFO] [table_restore.go:129] ["load engines and files completed"] [table=`sysbench`.`sbtest1`] [enginesCnt=2] [ime=75.563µs] []
@@ -139,7 +139,7 @@ Lightning 通过对每个表的第一个源数据文件进行采样，计算文�
 [INFO] [backend.go:346] ["open engine"] [engineTag=`sysbench`.`sbtest1`:-1] [engineUUID=3942bab1-bd60-52e2-bf53-e17aebf962c6]
 ```
 
-[backend.go:346](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/backend/backend.go#L346)：Engine id -1 代表索引引擎。在[恢复引擎过程](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/table_restore.go#L199)开始时，Lightning 会打开索引引擎以存储转换后的索引 KV 对。
+[backend.go:346](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/backend/backend.go#L346)：Engine id `-1` 代表索引引擎。在[恢复引擎过程](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/table_restore.go#L199)开始时，Lightning 会打开索引引擎以存储转换后的索引 KV 对。
 
 ```
 [INFO] [table_restore.go:270] ["import whole table start"] [table=`sysbench`.`sbtest1`]
@@ -151,7 +151,7 @@ Lightning 通过对每个表的第一个源数据文件进行采样，计算文�
 [INFO] [table_restore.go:317] ["restore engine start"] [table=`sysbench`.`sbtest1`] [engineNumber=0]
 ```
 
-[table_restore.go:317](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/table_restore.go#L317)：开始恢复 engine 0，非 -1 的 engine id 表示数据引擎。需要注意的是 "restore engine" 和 "import engine"（稍后在日志中出现）指的是不同的过程。"restore engine" 表示将 KV 对发送到分配的 engine 并对其进行排序的过程，而 "import engine" 表示将 engine 文件中的排序 KV 对导入到 TiKV 节点的过程。
+[table_restore.go:317](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/table_restore.go#L317)：开始恢复 engine `0`，非 `-1` 的 engine id 表示数据引擎。需要注意的是 "restore engine" 和 "import engine"（稍后在日志中出现）指的是不同的过程。"restore engine" 表示将 KV 对发送到分配的 engine 并对其进行排序的过程，而 "import engine" 表示将 engine 文件中已排序的 KV 对导入到 TiKV 节点的过程。
 
 ```
 [INFO] [table_restore.go:422] ["encode kv data and write start"] [table=`sysbench`.`sbtest1`] [engineNumber=0]
@@ -163,7 +163,7 @@ Lightning 通过对每个表的第一个源数据文件进行采样，计算文�
 [INFO] [backend.go:346] ["open engine"] [engineTag=`sysbench`.`sbtest1`:0] [engineUUID=d173bb2e-b753-5da9-b72e-13a49a46f5d7]
 ```
 
-[backend.go:346](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/backend/backend.go#L346)：打开 engine id = 0 的数据引擎以存储转换后的数据 KV 对。
+[backend.go:346](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/backend/backend.go#L346)：打开 engine id 为 `0` 的数据引擎以存储转换后的数据 KV 对。
 
 ```
 [INFO] [restore.go:2482] ["restore file start"] [table=`sysbench`.`sbtest1`] [engineNumber=0] [fileIndex=0] [path=sysbench.sbtest1.000000000.sql:0]
@@ -178,13 +178,13 @@ Lightning 通过对每个表的第一个源数据文件进行采样，计算文�
 [INFO] [engine.go:777] ["write data to local DB"] [size=134256327] [kvs=621576] [files=1] [sstFileSize=108984502] [file=/home/centos/tidb-lightning-temp-data/sorted-kv-dir/d173bb2e-b753-5da9-b72e-13a49a46f5d7.sst/11e65bc1-04d0-4a39-9666-cae49cd013a9.sst] [firstKey=74800000000000003F5F728000000000144577] [lastKey=74800000000000003F5F7280000000001DC17E]
 ```
 
-[engine.go:777](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/backend/local/engine.go#L777)：开始将生成的 SST 文件导入到 embeded engine 中。Lightning [并发地导入 SST 文件](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/backend/local/local.go#L624)。
+[engine.go:777](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/backend/local/engine.go#L777)：开始将生成的 SST 文件导入到 embeded engine 中。Lightning 将[并发地导入 SST 文件](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/backend/local/local.go#L624)。
 
 ```
 [INFO] [restore.go:2492] ["restore file completed"] [table=`sysbench`.`sbtest1`] [engineNumber=0] [fileIndex=1] [path=sysbench.sbtest1.000000001.sql:0] [readDur=3.123667511s] [encodeDur=5.627497136s] [deliverDur=6.653498837s] [checksum="{cksum=6610977918434119862,size=336040251,kvs=2646056}"] [takeTime=15.474211783s] []
 ```
 
-[restore.go:2492](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/restore.go#L2492)：一个指定的表的一个 chunk（由 fileIndex=1 定义的数据源文件）已经被编码并存储到引擎中。
+[restore.go:2492](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/restore.go#L2492)：一个指定的表的一个 chunk（由 `fileIndex=1` 定义的数据源文件）已经被编码并存储到引擎中。
 
 ```
 [INFO] [table_restore.go:584] ["encode kv data and write completed"] [table=`sysbench`.`sbtest1`] [engineNumber=0] [read=16] [written=2539933993] [takeTime=23.598662501s] []
@@ -204,7 +204,7 @@ Lightning 通过对每个表的第一个源数据文件进行采样，计算文�
 [INFO] [table_restore.go:319] ["restore engine completed"] [table=`sysbench`.`sbtest1`] [engineNumber=0] [takeTime=27.031916498s] []
 ```
 
-[table_restore.go:319](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/table_restore.go#L319)：完成了将 KV 对编码并写入数据引擎 0。
+[table_restore.go:319](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/table_restore.go#L319)：完成了将 KV 对编码并写入数据引擎 `0`。
 
 ```
 [INFO] [table_restore.go:927] ["import and cleanup engine start"] [engineTag=`sysbench`.`sbtest1`:0] [engineUUID=d173bb2e-b753-5da9-b72e-13a49a46f5d7]
@@ -223,7 +223,7 @@ Lightning 通过对每个表的第一个源数据文件进行采样，计算文�
 [INFO] [local.go:1336] ["start import engine"] [uuid=d173bb2e-b753-5da9-b72e-13a49a46f5d7] [ranges=22] [count=10000000] [size=2159933993]
 ```
 
-[local.go:1336](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/backend/local/local.go#L1336)：开始通过拆分范围将 KV 对导入引擎中。
+[local.go:1336](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/backend/local/local.go#L1336)：开始按照拆分范围将 KV 对导入引擎中。
 
 ```
 [INFO] [localhelper.go:89] ["split and scatter region"] [minKey=7480000000000000FF3F5F728000000000FF0000010000000000FA] [maxKey=7480000000000000FF3F5F728000000000FF9896810000000000FA] [retry=0]
