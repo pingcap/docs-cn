@@ -167,3 +167,16 @@ mysql> explain SELECT count(*) FROM test.employees;
 +------------------------------+----------+--------------+-----------------+---------------------------------------------------------+
 5 rows in set (0,00 sec)
 ```
+
+## MPP 的已知问题
+
+在 TiDB 6.5.x 及之前的版本里面，TiFlash 使用一个 query 的 `start_ts` 当做这个 query 的 unique key，在绝大多数情况下，每个 query 的 `start_ts` 都是可以唯一标识一个 query 的，但是在以下几种情况下，不同的 query 会有相同的 `start_ts`
+
+- 在同一个事务里的 query 都有相同的 `start_ts`
+- 用 [`tidb_snapshot`](/system-variables.md#tidb_snapshot) 来指定读取特定历史时刻数据的时候
+- 开启了 [Stale Read](/stale-read.md) 的时候
+
+当 `start_ts` 无法唯一表示 MPP query 的时候，如果 TiFlash 在同一时刻看到不同的 query 拥有相同的 `start_ts` 时，就可能会报错。典型的报错情况如下：
+
+- 当多个相同的 `start_ts` 的 query 同时发给 TiFlash 时，可能会遇到 “task has been registered“ 的报错
+- 当同一个事务里连续跑一些简单的带 limit 的 query 时，因为 TiDB 在 limit 条件满足后会给 TiFlash 发送 cancel request 的请求，这个请求也是以 `start_ts` 来标识需要 cancel 的 query 的，假如 TiFlash 中有其他相同 `start_ts` 的 query 的话，那其他 query 就可能会被误 cancel。例如 https://github.com/pingcap/tidb/issues/43426 里面碰到的问题
