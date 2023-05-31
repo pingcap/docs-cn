@@ -8,13 +8,8 @@ title: 使用 TiUP 升级 TiDB
 
 - 使用 TiUP 从 TiDB 4.0 版本升级至 TiDB 7.1。
 - 使用 TiUP 从 TiDB 5.0-5.4 版本升级至 TiDB 7.1。
-- 使用 TiUP 从 TiDB 6.0 版本升级至 TiDB 7.1。
-- 使用 TiUP 从 TiDB 6.1 版本升级至 TiDB 7.1。
-- 使用 TiUP 从 TiDB 6.2 版本升级至 TiDB 7.1。
-- 使用 TiUP 从 TiDB 6.3 版本升级至 TiDB 7.1。
-- 使用 TiUP 从 TiDB 6.4 版本升级至 TiDB 7.1。
-- 使用 TiUP 从 TiDB 6.5 版本升级至 TiDB 7.1。
-- 使用 TiUP 从 TiDB 6.6 版本升级至 TiDB 7.1。
+- 使用 TiUP 从 TiDB 6.0-6.6 版本升级至 TiDB 7.1。
+- 使用 TiUP 从 TiDB 7.0 版本升级至 TiDB 7.1。
 
 > **警告：**
 >
