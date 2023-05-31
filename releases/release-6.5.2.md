@@ -17,6 +17,8 @@ TiDB 版本：6.5.2
 
     在升级 TiCDC 集群到 v6.5.2 或更高的 v6.5.x 版本时，如果使用 Avro 同步的表包含 `FLOAT` 类型数据，请在升级前手动调整 Confluent Schema Registry 的兼容性策略为 `None`，使 changefeed 能够成功更新 schema。否则，在升级之后 changefeed 将无法更新 schema 并进入错误状态。
 
+- 为了解决同步分区表到存储服务时可能丢数据的问题，TiCDC 配置项 [`sink.enable-partition-separator`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-配置文件说明) 默认值从 `false` 修改为 `true`，代表默认会将表中各个分区的数据分不同的目录来存储。建议保持该配置项为 `true` 以避免该问题。[#8724](https://github.com/pingcap/tiflow/issues/8724) @[CharlesCheung96](https://github.com/CharlesCheung96)
+
 ## 改进提升
 
 + TiDB
@@ -63,6 +65,7 @@ TiDB 版本：6.5.2
     - 修复当同一个 SQL 中出现多个不同的分区表时，TiDB 可能执行得到错误结果的问题 [#42135](https://github.com/pingcap/tidb/issues/42135) @[mjonss](https://github.com/mjonss)
     - 修复在开启 Prepared Plan Cache 的情况下，索引全表扫可能会报错的问题 [#42150](https://github.com/pingcap/tidb/issues/42150) @[fzzf678](https://github.com/fzzf678)
     - 修复在开启 Prepared Plan Cache 时 Index Merge 可能得到错误结果的问题 [#41828](https://github.com/pingcap/tidb/issues/41828) @[qw4990](https://github.com/qw4990)
+    - 修复了设置 `max_prepared_stmt_count` 不生效的问题 [#39735](https://github.com/pingcap/tidb/issues/39735) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes)
     - 修复全局内存控制可能错误地 Kill 内存使用量小于 `tidb_server_memory_limit_sess_min_size` 的 SQL 的问题 [#42662](https://github.com/pingcap/tidb/issues/41828) @[XuHuaiyu](https://github.com/XuHuaiyu)
     - 修复分区表动态裁剪模式下 Index Join 可能导致 panic 的问题 [#40596](https://github.com/pingcap/tidb/issues/40596) @[tiancaiamao](https://github.com/tiancaiamao)
 

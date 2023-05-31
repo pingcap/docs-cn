@@ -15,6 +15,10 @@ Cast 函数和操作符用于将某种数据类型的值转换为另一种数据
 | [`CAST()`](https://dev.mysql.com/doc/refman/5.7/en/cast-functions.html#function_cast) | 将一个值转换成一个确定类型 |
 | [`CONVERT()`](https://dev.mysql.com/doc/refman/5.7/en/cast-functions.html#function_convert) | 将一个值转换成一个确定类型 |
 
+> **注意：**
+>
+> TiDB 和 MySQL 对于 `SELECT CAST(MeN AS CHAR)`（或者等价的 `SELECT CONVERT(MeM, CHAR)`）的结果显示不一致，其中 `MeN` 是用科学计数法表示的双精度浮点数。MySQL 在 `-15 <= N <= 14` 时显示完整数值，在 `N < -15` 或 `N > 14` 时显示科学计数法。而 TiDB 始终显示完整数值。例如，MySQL 对于 `SELECT CAST(3.1415e15 AS CHAR)` 的显示结果为 `3.1415e15`，而 TiDB 的显示结果为 `3141500000000000`
+
 ## MySQL 兼容性
 
 TiDB 不支持部分数据类型的变更，例如部分时间类型、Bit、Set、Enum 和 JSON 等。

@@ -555,6 +555,7 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
     - 修复查询 TiFlash 相关的系统表可能会卡住的问题 [#6745](https://github.com/pingcap/tiflash/pull/6745) @[lidezhu](https://github.com/lidezhu)
     - 修复半连接在计算笛卡尔积时，使用内存过量的问题 [#6730](https://github.com/pingcap/tiflash/issues/6730) @[gengliqi](https://github.com/gengliqi)
     - 修复对 DECIMAL 数据类型进行除法运算时结果不舍入的问题 [#6393](https://github.com/pingcap/tiflash/issues/6393) @[LittleFall](https://github.com/LittleFall)
+    - 修复了 TiFlash 查询中由于 `start_ts` 无法唯一标识一个 MPP query 导致 MPP query 可能会被误取消的问题 [#43426](https://github.com/pingcap/tidb/issues/43426) @[hehechen](https://github.com/hehechen)
 
 + Tools
 

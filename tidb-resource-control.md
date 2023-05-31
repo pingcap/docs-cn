@@ -5,9 +5,9 @@ summary: 介绍如何通过资源管控能力来实现对应用资源消耗的�
 
 # 使用资源管控 (Resource Control) 实现资源隔离
 
-使用资源管控特性，集群管理员可以定义资源组 (Resource Group)，通过资源组限定读写的配额。
+使用资源管控特性，集群管理员可以定义资源组 (Resource Group)，通过资源组限定配额。
 
-TiDB 资源管控特性提供了两层资源管理能力，包括在 TiDB 层的流控能力和 TiKV 层的优先级调度的能力。两个能力可以单独或者同时开启，详情请参见[参数组合效果表](#相关参数)。将用户绑定到某个资源组后，TiDB 层会根据用户所绑定资源组设定的读写配额对用户的读写请求做流控，TiKV 层会根据读写配额映射的优先级来对请求做调度。通过流控和调度这两层控制，可以实现应用的资源隔离，满足服务质量 (QoS) 要求。
+TiDB 资源管控特性提供了两层资源管理能力，包括在 TiDB 层的流控能力和 TiKV 层的优先级调度的能力。两个能力可以单独或者同时开启，详情请参见[参数组合效果表](#相关参数)。将用户绑定到某个资源组后，TiDB 层会根据用户所绑定资源组设定的配额对用户的读写请求做流控，TiKV 层会根据配额映射的优先级来对请求做调度。通过流控和调度这两层控制，可以实现应用的资源隔离，满足服务质量 (QoS) 要求。
 
 - TiDB 流控：TiDB 流控使用[令牌桶算法](https://en.wikipedia.org/wiki/Token_bucket) 做流控。如果桶内令牌数不够，而且资源组没有指定 `BURSTABLE` 特性，属于该资源组的请求会等待令牌桶回填令牌并重试，重试可能会超时失败。
 - TiKV 调度：你可以为资源组设置绝对优先级 ([`PRIORITY`](/information-schema/information-schema-resource-groups.md#示例))，不同的资源按照 `PRIORITY` 的设置进行调度，`PRIORITY` 高的任务会被优先调度。如果没有设置绝对优先级 (`PRIORITY`)，TiKV 会将资源组的 `RU_PER_SEC` 取值映射成各自资源组读写请求的优先级，并基于各自的优先级在存储层使用优先级队列调度处理请求。
@@ -75,7 +75,7 @@ Request Unit (RU) 是 TiDB 对 CPU、IO 等系统资源的统一抽象的单位,
 - [根据实际负载估算容量](/sql-statements/sql-statement-calibrate-resource.md#根据实际负载估算容量)
 - [基于硬件部署估算容量](/sql-statements/sql-statement-calibrate-resource.md#基于硬件部署估算容量)
 
-详情请参考 [`CALIBRATE RESOURCE` 预估方式](/sql-statements/sql-statement-calibrate-resource.md#预估方式)。
+可通过 [TiDB Dashboard 资源管控页面](/dashboard/dashboard-resource-manager.md)进行查看。详情请参考 [`CALIBRATE RESOURCE` 预估方式](/sql-statements/sql-statement-calibrate-resource.md#预估方式)。
 
 ### 管理资源组
 
@@ -83,7 +83,7 @@ Request Unit (RU) 是 TiDB 对 CPU、IO 等系统资源的统一抽象的单位,
 
 你可以通过 [`CREATE RESOURCE GROUP`](/sql-statements/sql-statement-create-resource-group.md) 在集群中创建资源组。
 
-对于已有的资源组，可以通过 [`ALTER RESOURCE GROUP`](/sql-statements/sql-statement-alter-resource-group.md) 修改资源组的读写配额，对资源组的配额修改会立即生效。
+对于已有的资源组，可以通过 [`ALTER RESOURCE GROUP`](/sql-statements/sql-statement-alter-resource-group.md) 修改资源组的配额，对资源组的配额修改会立即生效。
 
 可以使用 [`DROP RESOURCE GROUP`](/sql-statements/sql-statement-drop-resource-group.md) 删除资源组。
 
@@ -172,9 +172,11 @@ SELECT /*+ RESOURCE_GROUP(rg1) */ * FROM t limit 10;
 
 ## 监控与图表
 
-TiDB 会定时采集资源管控的运行时信息，并在 Grafana 的 **Resource Control Dashboard** 中提供了相关指标的可视化图表。指标详情参见 [Resource Control 监控指标详解](/grafana-resource-control-dashboard.md) 。
+TiDB 会定时采集资源管控的运行时信息，并在 Grafana 的 **Resource Control Dashboard** 中提供了相关指标的可视化图表，详见 [Resource Control 监控指标详解](/grafana-resource-control-dashboard.md)。
 
-TiKV 中也记录了来自于不同资源组的请求 QPS，详见 [TiKV监控指标详解](/grafana-tikv-dashboard.md#grpc)
+TiKV 中也记录了来自于不同资源组的请求 QPS，详见 [TiKV 监控指标详解](/grafana-tikv-dashboard.md#grpc)。
+
+TiDB Dashboard 中可以查看当前 [`RESOURCE_GROUPS`](/information-schema/information-schema-resource-groups.md) 表中资源组的数据。详见 [TiDB Dashboard 资源管控页面](/dashboard/dashboard-resource-manager.md)。
 
 ## 工具兼容性
 

@@ -44,11 +44,11 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
 * 规则描述：
 
-    TiDB 访问 TiKV 时发生了 Region 错误。如果在 10 分钟之内该错误多于 6000 次，则报警。
+    TiDB server 根据自己的缓存信息访问 TiKV 的 Region leader。如果 Region leader 有变化或者当前 TiKV 的 Region 信息与 TiDB 的缓存不一致，就会产生 Region 缓存错误。如果在 10 分钟之内该错误多于 6000 次，则报警。
 
 * 处理方法：
 
-    查看 TiKV 的监控状态。
+    查看 [**TiKV-Details** > **Cluster** 面板](/grafana-tikv-dashboard.md#cluster)，检查 leader 的分布是否均衡。
 
 #### `TiDB_domain_load_schema_total`
 
@@ -752,7 +752,7 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
 * 处理方法：
 
-    查看是哪一类任务的值偏高，通常 Coprocessor、apply worker 这类任务都可以在其他指标里找到解决办法。
+    观察 [**TiKV-Details** > **Task** 面板](/grafana-tikv-dashboard.md#task)，查看是哪一类任务的 `Worker pending tasks` 值偏高。
 
 #### `TiKV_low_space`
 
