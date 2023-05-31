@@ -12,7 +12,7 @@ aliases: ['/docs-cn/dev/auto-random/','/docs-cn/dev/reference/sql/attributes/aut
 
 关于如何在高并发写入场景下调优 TiDB，请参阅 [TiDB 高并发写入场景最佳实践](/best-practices/high-concurrency-best-practices.md)。
 
-在 [CREATE TABLE](/sql-statements/sql-statement-create-table.md) 语句中有一个 `AUTO_RANDOM_BASE` 参数，也可以用来指定 `AUTO_RANDOM` 自增部分的初始值，该参数可以被认为属于内部接口的一部分，对于用户而言请忽略。
+在 [CREATE TABLE](/sql-statements/sql-statement-create-table.md) 语句中的 `AUTO_RANDOM_BASE` 参数，也可以用来指定 `AUTO_RANDOM` 自增部分的初始值，该参数可以被认为属于内部接口的一部分，对于用户而言请忽略。
 
 ## 基本概念
 
