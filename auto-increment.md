@@ -12,6 +12,8 @@ aliases: ['/docs-cn/dev/auto-increment/']
 >
 > 使用 `AUTO_INCREMENT` 可能会给生产环境带热点问题，因此推荐使用 [`AUTO_RANDOM`](/auto-random.md) 代替。详情请参考 [TiDB 热点问题处理](/troubleshoot-hot-spot-issues.md#tidb-热点问题处理)。
 
+在 [`CREATE TABLE`](/sql-statements/sql-statement-create-table.md) 语句中也可以使用 `AUTO_INCREMENT` 参数来指定自增字段的初始值。
+
 ## 基本概念
 
 `AUTO_INCREMENT` 是用于自动填充缺省列值的列属性。当 `INSERT` 语句没有指定 `AUTO_INCREMENT` 列的具体值时，系统会自动地为该列分配一个值。
