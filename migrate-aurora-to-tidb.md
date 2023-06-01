@@ -13,7 +13,7 @@ aliases: ['/zh/tidb/dev/migrate-from-aurora-using-lightning/','/docs-cn/dev/migr
 
 ## 前提条件
 
-- [安装 Dumpling 和 Lightning](/migration-tools.md)。如果你计划或者已经手动在目标端创建好相应的表，则无需安装 Dumpling。
+- [安装 Dumpling 和 Lightning](/migration-tools.md)。如果你要在目标端手动创建相应的表，则无需安装 Dumpling。
 - [获取 Dumpling 所需上游数据库权限](/dumpling-overview.md#需要的权限)。
 - [获取 Lightning 所需下游数据库权限](/tidb-lightning/tidb-lightning-faq.md#tidb-lightning-对下游数据库的账号权限要求是怎样的)。
 
@@ -51,8 +51,9 @@ aliases: ['/zh/tidb/dev/migrate-from-aurora-using-lightning/','/docs-cn/dev/migr
 
 因为 Aurora 生成的快照文件并不包含建表语句文件，所以你需要使用 Dumpling 自行导出 schema 并使用 Lightning 在下游创建 schema。你也可以跳过此步骤，并以手动方式在下游自行创建 schema。
 
-将有权限访问该 Amazon S3 后端存储的账号的 SecretKey 和 AccessKey 作为环境变量传入 Lightning 节点。同时还支持从 `~/.aws/credentials` 读取凭证文件，该方式使得该 Lightning 节点上的所有任务无需再次传入Amazon S3 后端存储的账号的 SecretKey 和 AccessKey。
-运行以下命令建议使用 `--filter` 参数仅导出所需表的 schema：
+将有权限访问该 Amazon S3 后端存储的账号的 SecretKey 和 AccessKey 作为环境变量传入 Lightning 节点。同时还支持从 `~/.aws/credentials` 读取凭证文件，该方式使得该 Lightning 节点上的所有任务无需再次传入 Amazon S3 后端存储的账号的 SecretKey 和 AccessKey。
+
+运行以下命令时，建议使用 `--filter` 参数仅导出所需表的 schema：
 
 {{< copyable "shell-regular" >}}
 
@@ -61,7 +62,9 @@ export AWS_ACCESS_KEY_ID=${access_key}
 export AWS_SECRET_ACCESS_KEY=${secret_key}
 tiup dumpling --host ${host} --port 3306 --user root --password ${password} --filter 'my_db1.table[12],mydb.*' --consistency none --no-data --output 's3://my-bucket/schema-backup'
 ```
-请记住上面命令中存放导出的 schema 的 URI 如's3://my-bucket/schema-backup'，会在后面导入时用到。
+
+请记住上面命令中导出的 schema 的 URI，例如 's3://my-bucket/schema-backup'，后续导入数据时要用到。
+
 命令中所用参数描述如下。如需更多信息可参考 [Dumpling overview](/dumpling-overview.md)。
 
 |参数               |说明|
@@ -131,9 +134,9 @@ type = '$3'
 
 ### 第 4 步：导入全量数据到 TiDB
 
-1. 将有权限访问该 Amazon S3 后端存储的账号的 SecretKey 和 AccessKey 作为环境变量传入 Lightning 节点。同时还支持从 `~/.aws/credentials` 读取凭证文件，详情参考步骤 2 和 3。运行 `tidb-lightning`，如果直接在命令行中启动程序，可能会因为 `SIGHUP` 信号而退出，建议配合 `nohup` 或 `screen` 等工具，详情参考步骤 2 和 3 所示。 
+1. 将有权限访问该 Amazon S3 后端存储的账号的 SecretKey 和 AccessKey 作为环境变量传入 Lightning 节点。同时还支持从 `~/.aws/credentials` 读取凭证文件，详情参考步骤 2 和 3。运行 `tidb-lightning`，如果直接在命令行中启动程序，可能会因为 `SIGHUP` 信号而退出，建议配合 `nohup` 或 `screen` 等工具。详情参考步骤 2 和 3。 
 
-2. 使用 Lightning 在下游 TiDB 建表（如果你已经提前手动在目标库创建好了相应的表，该步骤可以忽略）:
+2. 使用 Lightning 在下游 TiDB 建表。如果你已经提前手动在目标库创建好了相应的表，该步骤可以忽略。
 
     {{< copyable "shell-regular" >}}
 
@@ -142,9 +145,9 @@ type = '$3'
     export AWS_SECRET_ACCESS_KEY=${secret_key}
     tiup tidb-lightning -config tidb-lightning.toml -d 's3://my-bucket/schema-backup' # 注意这里的 URI 是指存放 Dumpling 从 Aurora 导出的 schema 文件的 URI。
     ```
-    更多 URI 配置参数如指定AWS IAM 角色的 ARN 来访问 S3 数据等，请参考[S3 URI 配置参数](/tidb-lightning/tidb-lightning-data-source.md#从-amazon-s3-导入数据)
+    更多 URI 配置参数，如指定 AWS IAM 角色的 ARN 来访问 S3 数据等，请参考 [S3 URI 配置参数](/tidb-lightning/tidb-lightning-data-source.md#从-amazon-s3-导入数据)。
 
-3. 使用 Lightning 导入 Aurora Snapshot 的数据到 TiDB
+3. 使用 Lightning 导入 Aurora Snapshot 的数据到 TiDB。
 
      {{< copyable "shell-regular" >}}
 
