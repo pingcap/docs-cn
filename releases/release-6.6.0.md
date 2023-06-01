@@ -202,9 +202,9 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 
     更多信息，请参考[用户文档](/tidb-configuration-file.md#initialize-sql-file-从-v660-版本开始引入)。
 
-- TiDB Data Migration (DM) 集成了 TiDB Lightning 的 物理导入模式（实验特性）@[lance6716](https://github.com/lance6716)
+- TiDB Data Migration (DM) 集成了 TiDB Lightning 的物理导入模式（实验特性）@[lance6716](https://github.com/lance6716)
 
-    在 v6.6.0 版本中，DM 的全量迁移能力集成了 TiDB Lightning 的 物理导入模式，使得 DM 全量数据迁移的性能最高可提升 10 倍，大大缩短了大数据量场景下的迁移时间。在 v6.6.0 以前，数据量较多的场景下，需要单独配置 TiDB Lightning 的物理导入模式任务来进行快速的全量数据迁移，再用 DM 来进行增量数据迁移，配置较为复杂。从 v6.6.0 起，在迁移大数据量的场景，无需再配置 TiDB Lightning 的任务，使用一个 DM 任务即可完成。
+    在 v6.6.0 版本中，DM 的全量迁移能力集成了 TiDB Lightning 的物理导入模式，使得 DM 全量数据迁移的性能最高可提升 10 倍，大大缩短了大数据量场景下的迁移时间。在 v6.6.0 以前，数据量较多的场景下，需要单独配置 TiDB Lightning 的物理导入模式任务来进行快速的全量数据迁移，再用 DM 来进行增量数据迁移，配置较为复杂。从 v6.6.0 起，在迁移大数据量的场景，无需再配置 TiDB Lightning 的任务，使用一个 DM 任务即可完成。
 
     更多信息，请参考[用户文档](/dm/dm-precheck.md#physical-import-检查项)。
 

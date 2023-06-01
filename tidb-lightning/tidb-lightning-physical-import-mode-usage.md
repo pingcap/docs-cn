@@ -1,6 +1,6 @@
 ---
 title: 使用物理导入模式
-summary: 了解如何使用 TiDB Lightning 的 物理导入模式。
+summary: 了解如何使用 TiDB Lightning 的物理导入模式。
 ---
 
 # 使用物理导入模式
