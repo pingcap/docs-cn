@@ -110,65 +110,65 @@ driver = "file"
 # keep-after-success = false
 
 [tikv-importer]
-# "local"：Physical Import Mode，默认使用。适用于 TB 级以上大数据量，但导入期间下游 TiDB 无法对外提供服务。
-# "tidb"：Logical Import Mode。TB 级以下数据量可以采用，下游 TiDB 可正常提供服务。
+# "local"：物理导入模式（Physical Import Mode），默认使用。适用于 TB 级以上大数据量，但导入期间下游 TiDB 无法对外提供服务。
+# "tidb"：逻辑导入模式 (Logical Import Mode)。TB 级以下数据量可以采用，下游 TiDB 可正常提供服务。
 # backend = "local"
-# 是否允许启动多个 TiDB Lightning 实例（**physical import mode**）并行导入到一个或多个目标表。默认取值为 false。注意，这个参数**不是用于增量导入数据**，仅限目标表为空的场景使用。
-# 多个 TiDB Lightning 实例（physical import mode）同时导入一张表时，此开关必须设置为 true。但前提是目标表不能存在数据，即所有的数据都只能是由 TiDB Lightning 导入。
+# 是否允许启动多个 TiDB Lightning 实例（物理导入模式）并行导入到一个或多个目标表。默认取值为 false。注意，这个参数**不是用于增量导入数据**，仅限目标表为空的场景使用。
+# 多个 TiDB Lightning 实例（物理导入模式）同时导入一张表时，此开关必须设置为 true。但前提是目标表不能存在数据，即所有的数据都只能是由 TiDB Lightning 导入。
 # incremental-import = false
 # 当后端是 “importer” 时，tikv-importer 的监听地址（需改为实际地址）。
 addr = "172.16.31.10:8287"
-# Logical Import Mode 插入冲突数据时执行的操作。关于冲突检测详细信息请查阅：https://docs.pingcap.com/zh/tidb/v7.1/tidb-lightning-logical-import-mode-usage#冲突数据检测
+# 逻辑导入模式插入冲突数据时执行的操作。关于冲突检测详细信息请查阅：https://docs.pingcap.com/zh/tidb/dev/tidb-lightning-logical-import-mode-usage#冲突数据检测
 # - replace：新数据替代已有数据
 # - ignore：保留已有数据，忽略新数据
 # - error：中止导入并报错
 # on-duplicate = "replace"
 
-# Physical Import Mode 设置是否检测和解决重复的记录（唯一键冲突）。
+# 物理导入模式设置是否检测和解决重复的记录（唯一键冲突）。
 # 目前支持三种解决方法：
 #  - record: 数据写入目标表后，将目标表中重复记录添加到目标 TiDB 中的 `lightning_task_info.conflict_error_v1` 表中。注意，该方法要求目标 TiKV 的版本为 v5.2.0 或更新版本。如果版本过低，则会启用下面的 'none' 模式。
 #  - none: 不检测重复记录。该模式是三种模式中性能最佳的，但是如果数据源存在重复记录，会导致 TiDB 中出现数据不一致的情况。
 #  - remove: 记录所有目标表中的重复记录，和 'record' 模式相似。但是会删除目标表所有的重复记录，以确保目标 TiDB 中的数据状态保持一致。
 # duplicate-resolution = 'none'
-# Physical Import Mode 一次请求中发送的 KV 数量。
+# 物理导入模式一次请求中发送的 KV 数量。
 # send-kv-pairs = 32768
-# Physical Import Mode 向 TiKV 发送 KV 时是否启用压缩。目前只支持 Gzip 压缩算法，可填写 "gzip" 或者 "gz"。默认不启用压缩。
+# 物理导入模式向 TiKV 发送 KV 时是否启用压缩。目前只支持 Gzip 压缩算法，可填写 "gzip" 或者 "gz"。默认不启用压缩。
 # compress-kv-pairs = ""
-# Physical Import Mode 本地进行 KV 排序的路径。如果磁盘性能较低（如使用机械盘），建议设置成与 `data-source-dir` 不同的磁盘，这样可有效提升导入性能。
+# 物理导入模式本地进行 KV 排序的路径。如果磁盘性能较低（如使用机械盘），建议设置成与 `data-source-dir` 不同的磁盘，这样可有效提升导入性能。
 # sorted-kv-dir = ""
-# Physical Import Mode TiKV 写入 KV 数据的并发度。当 TiDB Lightning 和 TiKV 直接网络传输速度超过万兆的时候，可以适当增加这个值。
+# 物理导入模式TiKV 写入 KV 数据的并发度。当 TiDB Lightning 和 TiKV 直接网络传输速度超过万兆的时候，可以适当增加这个值。
 # range-concurrency = 16
-# Physical Import Mode 限制 TiDB Lightning 向每个 TiKV 节点写入的带宽大小，默认为 0，表示不限制。
+# 物理导入模式限制 TiDB Lightning 向每个 TiKV 节点写入的带宽大小，默认为 0，表示不限制。
 # store-write-bwlimit = "128MiB"
 
-# 使用 Physical Import Mode 时，配置 TiDB Lightning 本地临时文件使用的磁盘配额 (disk quota)。当磁盘配额不足时，TiDB Lightning 会暂停读取源数据以及写入临时文件的过程，优先将已经完成排序的 key-value 写入到 TiKV，TiDB Lightning 删除本地临时文件后，再继续导入过程。
+# 使用物理导入模式时，配置 TiDB Lightning 本地临时文件使用的磁盘配额 (disk quota)。当磁盘配额不足时，TiDB Lightning 会暂停读取源数据以及写入临时文件的过程，优先将已经完成排序的 key-value 写入到 TiKV，TiDB Lightning 删除本地临时文件后，再继续导入过程。
 # 需要同时配合把 `backend` 设置为 `local` 模式才能生效。
 # 默认值为 MaxInt64 字节，即 9223372036854775807 字节。
 # disk-quota = "10GB"
 
-# Physical Import Mode 是否通过 SQL 方式添加索引。默认为 `false`，表示 TiDB Lightning 会将行数据以及索引数据都编码成 KV pairs 后一同导入 TiKV，实现机制和历史版本保持一致。如果设置为 `true`，即 TiDB Lightning 会在导入数据完成后，使用 add index 的 SQL 来添加索引。
+# 物理导入模式是否通过 SQL 方式添加索引。默认为 `false`，表示 TiDB Lightning 会将行数据以及索引数据都编码成 KV pairs 后一同导入 TiKV，实现机制和历史版本保持一致。如果设置为 `true`，即 TiDB Lightning 会在导入数据完成后，使用 add index 的 SQL 来添加索引。
 # 通过 SQL 方式添加索引的优点是将导入数据与导入索引分开，可以快速导入数据，即使导入数据后，索引添加失败，也不会影响数据的一致性。
 # add-index-by-sql = false
 
 # 在使用 TiDB Lightning 导入多租户的 TiDB cluster 的场景下，指定对应的 key space 名称。默认取值为空字符串，表示 TiDB Lightning 会自动获取导入对应租户的 key space 名称；如果指定了值，则使用指定的 key space 名称来导入。
 # keyspace-name = ""
 
-# Physical Import Mode 下，用于控制 TiDB Lightning 暂停 PD 调度的范围，可选值包括：
+# 物理导入模式下，用于控制 TiDB Lightning 暂停 PD 调度的范围，可选值包括：
 # - "table"：仅暂停目标表数据所在 Region 的调度。默认值为 "table"。
 # - "global"：暂停全局调度。当导入数据到无业务流量的集群时，建议设置为 "global"，以避免其他调度的干扰。
 # 该参数自 v7.1.0 版本开始引入。注意："table" 选项仅适用于 TiDB v6.1.0 及以上版本的目标集群。
 # pause-pd-scheduler-scope = "table"
 
-# Physical Import Mode 下，用于控制批量 Split Region 时的 Region 个数。每个 TiDB Lightning 实例最多同时 Split Region 的个数为：
+# 物理导入模式下，用于控制批量 Split Region 时的 Region 个数。每个 TiDB Lightning 实例最多同时 Split Region 的个数为：
 # region-split-batch-size * region-split-concurrency * table-concurrency
 # 该参数自 v7.1.0 版本开始引入，默认值为 `4096`。
 # region-split-batch-size = 4096
 
-# Physical Import Mode 下，用于控制 Split Region 时的并发度。默认值为 CPU 核数。
+# 物理导入模式下，用于控制 Split Region 时的并发度。默认值为 CPU 核数。
 # 该参数自 v7.1.0 版本开始引入。
 # region-split-concurrency =
 
-# Physical Import Mode 下，用于控制 split 和 scatter 操作后等待 Region 上线的重试次数，默认值为 `1800`。重试符合指数回退策略，最大重试间隔为 2 秒。若两次重试之间有任何 Region 上线，该次操作不会被计为重试次数。
+# 物理导入模式下，用于控制 split 和 scatter 操作后等待 Region 上线的重试次数，默认值为 `1800`。重试符合指数回退策略，最大重试间隔为 2 秒。若两次重试之间有任何 Region 上线，该次操作不会被计为重试次数。
 # 该参数自 v7.1.0 版本开始引入。
 # region-check-backoff-limit = 1800
 
@@ -308,10 +308,10 @@ max-allowed-packet = 67_108_864
 # 此服务的私钥。默认为 `security.key-path` 的副本
 # key-path = "/path/to/lightning.key"
 
-# 对于 Physical Import Mode，数据导入完成后，TiDB Lightning 可以自动执行 Checksum 和 Analyze 操作。
+# 对于物理导入模式，数据导入完成后，TiDB Lightning 可以自动执行 Checksum 和 Analyze 操作。
 # 在生产环境中，建议总是开启 Checksum 和 Analyze。
 # 执行的顺序为：Checksum -> Analyze。
-# 注意：对于 Logical Import Mode, 无须执行这两个阶段，因此在实际运行时总是会直接跳过。
+# 注意：对于逻辑导入模式, 无须执行这两个阶段，因此在实际运行时总是会直接跳过。
 [post-restore]
 # 配置是否在导入完成后对每一个表执行 `ADMIN CHECKSUM TABLE <table>` 操作来验证数据的完整性。
 # 可选的配置项：
@@ -337,7 +337,7 @@ switch-mode = "5m"
 # 在日志中打印导入进度的持续时间。
 log-progress = "5m"
 
-# 使用 Physical Import Mode 时，检查本地磁盘配额的时间间隔，默认为 60 秒。
+# 使用物理导入模式时，检查本地磁盘配额的时间间隔，默认为 60 秒。
 # check-disk-quota = "60s"
 ```
 
@@ -354,7 +354,7 @@ log-progress = "5m"
 | -d *directory* | 读取数据的本地目录或[外部存储 URI](/br/backup-and-restore-storages.md#uri-格式) | `mydumper.data-source-dir` |
 | -L *level* | 日志的等级： debug、info、warn、error 或 fatal (默认为 info) | `lightning.log-level` |
 | -f *rule* | [表库过滤的规则](/table-filter.md) (可多次指定) | `mydumper.filter` |
-| --backend [*backend*](/tidb-lightning/tidb-lightning-overview.md) | 选择导入的模式：`local`为 Physical Import Mode，`tidb`为 Logical Import Mode  | `local` |
+| --backend [*backend*](/tidb-lightning/tidb-lightning-overview.md) | 选择导入的模式：`local` 为物理导入模式，`tidb` 为逻辑导入模式  | `local` |
 | --log-file *file* | 日志文件路径（默认值为 `/tmp/lightning.log.{timestamp}`，设置为 '-' 表示日志输出到终端） | `lightning.log-file` |
 | --status-addr *ip:port* | TiDB Lightning 服务器的监听地址 | `lightning.status-port` |
 | --importer *host:port* | TiKV Importer 的地址 | `tikv-importer.addr` |

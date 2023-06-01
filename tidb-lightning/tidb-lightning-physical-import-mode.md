@@ -1,15 +1,15 @@
 ---
-title: Physical Import Mode
-summary: 了解 TiDB Lightning 的 Physical Import Mode。
+title: 物理导入模式
+summary: 了解 TiDB Lightning 的物理导入模式。
 ---
 
-# Physical Import Mode 简介
+# 物理导入模式简介
 
-Physical Import Mode 是 TiDB Lightning 支持的一种数据导入方式。Physical Import Mode 不经过 SQL 接口，而是直接将数据以键值对的形式插入 TiKV 节点，是一种高效、快速的导入模式。使用 Physical Import Mode 时，单个 Lightning 实例可导入的数据量为 10 TiB，理论上导入的数据量可以随着 Lightning 实例数量的增加而增加，目前已经有多个用户验证基于[并行导入](/tidb-lightning/tidb-lightning-distributed-import.md)功能可以导入的数据量达 20 TiB。
+物理导入模式 (Physical Import Mode) 是 TiDB Lightning 支持的一种数据导入方式。物理导入模式不经过 SQL 接口，而是直接将数据以键值对的形式插入 TiKV 节点，是一种高效、快速的导入模式。使用物理导入模式时，单个 TiDB Lightning 实例可导入的数据量为 10 TiB，理论上导入的数据量可以随着 TiDB Lightning 实例数量的增加而增加，目前已经有多个用户验证基于[并行导入](/tidb-lightning/tidb-lightning-distributed-import.md)功能可以导入的数据量达 20 TiB。
 
 使用前请务必自行阅读[必要条件及限制](/tidb-lightning/tidb-lightning-physical-import-mode.md#必要条件及限制)。
 
-Physical Import Mode 对应的后端模式为 `local`。
+物理导入模式对应的后端模式为 `local`。
 
 ## 原理说明
 
@@ -65,11 +65,11 @@ Physical Import Mode 对应的后端模式为 `local`。
 
 ### 使用限制
 
-- 请勿直接使用 Physical Import Mode 向已经投入生产的 TiDB 集群导入数据，这将对在线业务产生严重影响。如需向生产集群导入数据，请参考[导入时限制调度范围从集群降低到表级别](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#导入时暂停-pd-调度的范围)。
+- 请勿直接使用物理导入模式向已经投入生产的 TiDB 集群导入数据，这将对在线业务产生严重影响。如需向生产集群导入数据，请参考[导入时限制调度范围从集群降低到表级别](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#导入时暂停-pd-调度的范围)。
 
 - 默认情况下，不应同时启动多个 TiDB Lightning 实例向同一 TiDB 集群导入数据，而应考虑使用[并行导入](/tidb-lightning/tidb-lightning-distributed-import.md)特性。
 
-- 使用多个 TiDB Lightning 向同一目标导入时，请勿混用不同的 backend，即不可同时使用 Physical Import Mode 和 Logical Import Mode 导入同一 TiDB 集群。
+- 使用多个 TiDB Lightning 向同一目标导入时，请勿混用不同的 backend，即不可同时使用物理导入模式和逻辑导入模式导入同一 TiDB 集群。
 
 - 在导入数据的过程中，请勿在目标表进行写操作，否则会导致导入失败或数据不一致。导入期间也不建议进行读操作，因为读取的数据可能不一致。请在导入操作完成后再进行读写操作。
 
@@ -87,4 +87,4 @@ Physical Import Mode 对应的后端模式为 `local`。
 
 - TiDB Lightning 与 TiCDC 一起使用时需要注意：
 
-    - TiCDC 无法捕获 Physical Import Mode 插入的数据。
+    - TiCDC 无法捕获物理导入模式插入的数据。

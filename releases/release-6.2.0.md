@@ -22,7 +22,7 @@ TiDB 版本：6.2.0-DMR
 - 引入新的 DDL 并行执行框架，减少 DDL 阻塞，大幅提升执行效率。
 - TiKV 支持[自适应调整 CPU 使用率](/tikv-configuration-file.md#后台限流)，确保数据库稳定高效运行。
 - 支持 [point-in-time recovery (PITR)](/br/backup-and-restore-overview.md)，允许恢复备份集群的历史任意时间点的快照。
-- TiDB Lightning 使用 Physical Import Mode [导入时限制调度范围从集群降低到表级别](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#导入时暂停-pd-调度的范围)。
+- TiDB Lightning 使用物理导入模式[导入时限制调度范围从集群降低到表级别](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#导入时暂停-pd-调度的范围)。
 - Backup & Restore (BR) 支持[恢复用户和权限数据](/br/br-snapshot-guide.md#恢复-mysql-数据库下的表)，备份恢复体验更平滑。
 - TiCDC 支持[过滤指定类型的 DDL 事件](/ticdc/ticdc-filter.md#event-filter-事件过滤器-从-v620-版本开始引入)，解锁更多数据同步场景。
 - 事务中支持 [`SAVEPOINT` 机制](/sql-statements/sql-statement-savepoint.md)，可以灵活地控制事务内的回退节点。
@@ -204,7 +204,7 @@ TiDB 版本：6.2.0-DMR
 
     [用户文档](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#磁盘资源配额-从-v620-版本开始引入) [#446](https://github.com/pingcap/tidb-lightning/issues/446) @[buchuitoudegou](https://github.com/buchuitoudegou)
 
-* TiDB Lightning 支持使用 Physical Import Mode 导入数据到生产集群
+* TiDB Lightning 支持使用物理导入模式导入数据到生产集群
 
     TiDB Lightning 原有的物理导入模式 (backend='local') 对目标集群影响较大，例如导入过程将停止 PD 调度等，因此仅适用于目标集群初次导入数据。
 
@@ -214,7 +214,7 @@ TiDB 版本：6.2.0-DMR
 
     [用户文档](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#导入时暂停-pd-调度的范围) [#35148](https://github.com/pingcap/tidb/issues/35148) @[gozssky](https://github.com/gozssky)
 
-* 调整 [TiDB Lightning 在线文档](/tidb-lightning/tidb-lightning-overview.md)，使其目录结构更加合理和清晰。同时对文档中关于“后端模式”的描述进行了修改，使用 Physical Import Mode 替代原有 local backend，使用 Logical Import  Mode 替代原有 tidb backend ，以降低新用户的理解难度。
+* 调整 [TiDB Lightning 在线文档](/tidb-lightning/tidb-lightning-overview.md)，使其目录结构更加合理和清晰。同时对文档中关于“后端模式”的描述进行了修改，使用物理导入模式替代原有 local backend，使用 Logical Import  Mode 替代原有 tidb backend ，以降低新用户的理解难度。
 
 ### 数据共享与订阅
 
