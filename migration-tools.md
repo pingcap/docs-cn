@@ -16,7 +16,7 @@ TiDB 提供了丰富的数据迁移相关的工具，用于全量迁移、增量
 | **上游** | MySQL，MariaDB，Aurora |
 | **下游** | TiDB |
 | **主要优势** | <ul><li>一体化的数据迁移任务管理工具，支持全量迁移和增量同步</li><li>支持对表与操作进行过滤</li><li>支持分库分表的合并迁移</li></ul>|
-| **使用限制** | 数据导入速度与 TiDB Lightning 的[逻辑导入模式](/tidb-lightning/tidb-lightning-logical-import-mode.md)大致相同，而比TiDB Lightning 的[物理导入模式](/tidb-lightning/tidb-lightning-physical-import-mode.md) 低很多。建议用于 1 TB 以内的存量数据迁移。 |
+| **使用限制** | 数据导入速度与 TiDB Lightning 的[逻辑导入模式](/tidb-lightning/tidb-lightning-logical-import-mode.md)大致相同，而比 TiDB Lightning 的[物理导入模式](/tidb-lightning/tidb-lightning-physical-import-mode.md)低很多。建议用于 1 TB 以内的存量数据迁移。 |
 
 ## [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md)
 
