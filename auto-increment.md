@@ -12,7 +12,7 @@ aliases: ['/docs-cn/dev/auto-increment/']
 >
 > 使用 `AUTO_INCREMENT` 可能会给生产环境带热点问题，因此推荐使用 [`AUTO_RANDOM`](/auto-random.md) 代替。详情请参考 [TiDB 热点问题处理](/troubleshoot-hot-spot-issues.md#tidb-热点问题处理)。
 
-也可以使用 [CREATE TABLE](/sql-statements/sql-statement-create-table.md) 语句中的 `AUTO_INCREMENT` 参数指定自增字段初始值。
+在 [`CREATE TABLE`](/sql-statements/sql-statement-create-table.md) 语句中也可以使用 `AUTO_INCREMENT` 参数来指定自增字段的初始值。
 
 ## 基本概念
 
