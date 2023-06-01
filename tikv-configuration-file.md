@@ -1350,6 +1350,12 @@ rocksdb defaultcf、rocksdb writecf 和 rocksdb lockcf 相关的配置项。
 + `writecf` 默认值：`false`
 + `lockcf` 默认值：`false`
 
+### `optimize-filters-for-memory` <span class="version-mark">从 v7.1.0 版本开始引入</span>
+
++ 控制是否生成能够最小化内存碎片的 Bloom/Ribbon filter。
++ 只有当 [`format-version`](#format-version-从-v620-版本开始引入) >= 5 时，该配置项才生效。
++ 默认值：`false`
+
 ### `whole-key-filtering`
 
 + 开启将整个 key 放到 bloom filter 中的开关。
@@ -1367,6 +1373,12 @@ rocksdb defaultcf、rocksdb writecf 和 rocksdb lockcf 相关的配置项。
 
 + 开启每个 block 建立 bloom filter 的开关。
 + 默认值：false
+
+### `ribbon-filter-above-level` <span class="version-mark">从 v7.1.0 版本开始引入</span>
+
++ 控制是否对于大于等于该值的 level 使用 Ribbon filter，对于小于该值的 level，使用非 block-based bloom filter。当该配置开启时，[`block-based-bloom-filter`](#block-based-bloom-filter) 将被忽略。
++ 只有当 [`format-version`](#format-version-从-v620-版本开始引入) >= 5 时，该配置项才生效。
++ 默认值：`false`
 
 ### `read-amp-bytes-per-bit`
 
@@ -1521,6 +1533,18 @@ rocksdb defaultcf、rocksdb writecf 和 rocksdb lockcf 相关的配置项。
 + 设置 compaction guard 启用时 SST 文件大小的最大值，防止 SST 文件过大。对于同一列族，此配置项的值会覆盖 `target-file-size-base`。
 + 默认值：128MB
 + 单位：KB|MB|GB
+
+### `format-version` <span class="version-mark">从 v6.2.0 版本开始引入</span>
+
++ 设置 SST 文件的格式版本。该配置项只影响新写入的表，对于已经存在的表，版本信息会从 footer 中读取。
++ 可选值：
+    - `0`：适用于所有 TiKV 版本。默认 checksum 类型为 CRC32。该版本不支持修改 checksum 类型。
+    - `1`：适用于所有 TiKV 版本。支持使用非默认的 checksum 类型，例如 xxHash。只有在 checksum 类型不是 CRC32 时，RocksDB 才会写入数据。（`0` 版本会自动升级）
+    - `2`：适用于所有 TiKV 版本。更改了压缩块的编码方式，使用 LZ4、BZip2 和 Zlib 压缩。
+    - `3`：适用于 TiKV v2.1 及以上版本。更改了索引块中 key 的编码方式。
+    - `4`：适用于 TiKV v3.0 及以上版本。更改了索引块中 value 的编码方式。
+    - `5`：适用于 TiKV v6.1 及以上版本。全量和分区 filter 采用一种具有不同模式的、更快、更准确的 Bloom filter 实现。
++ 默认值：`2`
 
 ## rocksdb.defaultcf.titan
 
