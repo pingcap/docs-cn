@@ -125,21 +125,21 @@ addr = "172.16.31.10:8287"
 # - error：中止导入并报错
 # on-duplicate = "replace"
 
-#物理导入模式设置是否检测和解决重复的记录（唯一键冲突）。
+# 物理导入模式设置是否检测和解决重复的记录（唯一键冲突）。
 # 目前支持三种解决方法：
 #  - record: 数据写入目标表后，将目标表中重复记录添加到目标 TiDB 中的 `lightning_task_info.conflict_error_v1` 表中。注意，该方法要求目标 TiKV 的版本为 v5.2.0 或更新版本。如果版本过低，则会启用下面的 'none' 模式。
 #  - none: 不检测重复记录。该模式是三种模式中性能最佳的，但是如果数据源存在重复记录，会导致 TiDB 中出现数据不一致的情况。
 #  - remove: 记录所有目标表中的重复记录，和 'record' 模式相似。但是会删除目标表所有的重复记录，以确保目标 TiDB 中的数据状态保持一致。
 # duplicate-resolution = 'none'
-#物理导入模式一次请求中发送的 KV 数量。
+# 物理导入模式一次请求中发送的 KV 数量。
 # send-kv-pairs = 32768
-#物理导入模式向 TiKV 发送 KV 时是否启用压缩。目前只支持 Gzip 压缩算法，可填写 "gzip" 或者 "gz"。默认不启用压缩。
+# 物理导入模式向 TiKV 发送 KV 时是否启用压缩。目前只支持 Gzip 压缩算法，可填写 "gzip" 或者 "gz"。默认不启用压缩。
 # compress-kv-pairs = ""
-#物理导入模式本地进行 KV 排序的路径。如果磁盘性能较低（如使用机械盘），建议设置成与 `data-source-dir` 不同的磁盘，这样可有效提升导入性能。
+# 物理导入模式本地进行 KV 排序的路径。如果磁盘性能较低（如使用机械盘），建议设置成与 `data-source-dir` 不同的磁盘，这样可有效提升导入性能。
 # sorted-kv-dir = ""
-#物理导入模式TiKV 写入 KV 数据的并发度。当 TiDB Lightning 和 TiKV 直接网络传输速度超过万兆的时候，可以适当增加这个值。
+# 物理导入模式TiKV 写入 KV 数据的并发度。当 TiDB Lightning 和 TiKV 直接网络传输速度超过万兆的时候，可以适当增加这个值。
 # range-concurrency = 16
-#物理导入模式限制 TiDB Lightning 向每个 TiKV 节点写入的带宽大小，默认为 0，表示不限制。
+# 物理导入模式限制 TiDB Lightning 向每个 TiKV 节点写入的带宽大小，默认为 0，表示不限制。
 # store-write-bwlimit = "128MiB"
 
 # 使用物理导入模式时，配置 TiDB Lightning 本地临时文件使用的磁盘配额 (disk quota)。当磁盘配额不足时，TiDB Lightning 会暂停读取源数据以及写入临时文件的过程，优先将已经完成排序的 key-value 写入到 TiKV，TiDB Lightning 删除本地临时文件后，再继续导入过程。
@@ -147,29 +147,29 @@ addr = "172.16.31.10:8287"
 # 默认值为 MaxInt64 字节，即 9223372036854775807 字节。
 # disk-quota = "10GB"
 
-#物理导入模式是否通过 SQL 方式添加索引。默认为 `false`，表示 TiDB Lightning 会将行数据以及索引数据都编码成 KV pairs 后一同导入 TiKV，实现机制和历史版本保持一致。如果设置为 `true`，即 TiDB Lightning 会在导入数据完成后，使用 add index 的 SQL 来添加索引。
+# 物理导入模式是否通过 SQL 方式添加索引。默认为 `false`，表示 TiDB Lightning 会将行数据以及索引数据都编码成 KV pairs 后一同导入 TiKV，实现机制和历史版本保持一致。如果设置为 `true`，即 TiDB Lightning 会在导入数据完成后，使用 add index 的 SQL 来添加索引。
 # 通过 SQL 方式添加索引的优点是将导入数据与导入索引分开，可以快速导入数据，即使导入数据后，索引添加失败，也不会影响数据的一致性。
 # add-index-by-sql = false
 
 # 在使用 TiDB Lightning 导入多租户的 TiDB cluster 的场景下，指定对应的 key space 名称。默认取值为空字符串，表示 TiDB Lightning 会自动获取导入对应租户的 key space 名称；如果指定了值，则使用指定的 key space 名称来导入。
 # keyspace-name = ""
 
-#物理导入模式下，用于控制 TiDB Lightning 暂停 PD 调度的范围，可选值包括：
+# 物理导入模式下，用于控制 TiDB Lightning 暂停 PD 调度的范围，可选值包括：
 # - "table"：仅暂停目标表数据所在 Region 的调度。默认值为 "table"。
 # - "global"：暂停全局调度。当导入数据到无业务流量的集群时，建议设置为 "global"，以避免其他调度的干扰。
 # 该参数自 v7.1.0 版本开始引入。注意："table" 选项仅适用于 TiDB v6.1.0 及以上版本的目标集群。
 # pause-pd-scheduler-scope = "table"
 
-#物理导入模式下，用于控制批量 Split Region 时的 Region 个数。每个 TiDB Lightning 实例最多同时 Split Region 的个数为：
+# 物理导入模式下，用于控制批量 Split Region 时的 Region 个数。每个 TiDB Lightning 实例最多同时 Split Region 的个数为：
 # region-split-batch-size * region-split-concurrency * table-concurrency
 # 该参数自 v7.1.0 版本开始引入，默认值为 `4096`。
 # region-split-batch-size = 4096
 
-#物理导入模式下，用于控制 Split Region 时的并发度。默认值为 CPU 核数。
+# 物理导入模式下，用于控制 Split Region 时的并发度。默认值为 CPU 核数。
 # 该参数自 v7.1.0 版本开始引入。
 # region-split-concurrency =
 
-#物理导入模式下，用于控制 split 和 scatter 操作后等待 Region 上线的重试次数，默认值为 `1800`。重试符合指数回退策略，最大重试间隔为 2 秒。若两次重试之间有任何 Region 上线，该次操作不会被计为重试次数。
+# 物理导入模式下，用于控制 split 和 scatter 操作后等待 Region 上线的重试次数，默认值为 `1800`。重试符合指数回退策略，最大重试间隔为 2 秒。若两次重试之间有任何 Region 上线，该次操作不会被计为重试次数。
 # 该参数自 v7.1.0 版本开始引入。
 # region-check-backoff-limit = 1800
 
@@ -355,7 +355,7 @@ log-progress = "5m"
 | -d *directory* | 读取数据的本地目录或[外部存储 URI](/br/backup-and-restore-storages.md#uri-格式) | `mydumper.data-source-dir` |
 | -L *level* | 日志的等级： debug、info、warn、error 或 fatal (默认为 info) | `lightning.log-level` |
 | -f *rule* | [表库过滤的规则](/table-filter.md) (可多次指定) | `mydumper.filter` |
-| --backend [*backend*](/tidb-lightning/tidb-lightning-overview.md) | 选择导入的模式：`local`为物理导入模式，`tidb`为逻辑导入模式  | `local` |
+| --backend [*backend*](/tidb-lightning/tidb-lightning-overview.md) | 选择导入的模式：`local` 为物理导入模式，`tidb` 为逻辑导入模式  | `local` |
 | --log-file *file* | 日志文件路径（默认值为 `/tmp/lightning.log.{timestamp}`，设置为 '-' 表示日志输出到终端） | `lightning.log-file` |
 | --status-addr *ip:port* | TiDB Lightning 服务器的监听地址 | `lightning.status-port` |
 | --importer *host:port* | TiKV Importer 的地址 | `tikv-importer.addr` |
