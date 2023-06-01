@@ -76,7 +76,9 @@ BACKUP DATABASE * TO 's3://bucket-name/prefix' SEND_CREDENTIALS_TO_TIKV = FALSE;
 
     - `account-name`：存储账户名
     - `account-key`：访问密钥
-    - `access-tier`：上传对象的存储类别，例如 `Hot`、`Cool`、`Archive`，默认为 `Hot`
+    - `sas-token`：共享访问签名
+    - `access-tier`：上传对象的存储类别，例如 `Hot`、`Cool`、`Archive`，默认值为该存储账户的默认访问层。
+    - `encryption-scope`：服务端加密
 
 </div>
 </SimpleTab>
@@ -185,11 +187,16 @@ BACKUP DATABASE * TO 's3://bucket-name/prefix' SEND_CREDENTIALS_TO_TIKV = FALSE;
 </div>
 <div label="Azure Blob Storage" value="azure">
 
-- 方式一：指定访问密钥
+- 方式一：指定共享访问签名
+
+    在 URI 配置 `account-name` 和 `sas-token`，则使用该参数指定的共享访问签名。由于共享访问签名中带有 `&` 的字符，需要在编码为 `%26` 后，再添加到 URI 中。 //（TODO： sig 中的 编码？）
+
+- 方式二：指定访问密钥
 
     在 URI 配置 `account-name` 和 `account-key`，则使用该参数指定的密钥。除了在 URI 中指定密钥文件外，还支持 br 命令行工具读取 `$AZURE_STORAGE_KEY` 的方式。
 
-- 方式二：使用 Azure AD 备份恢复
+
+- 方式三：使用 Azure AD 备份恢复
 
     在 br 命令行工具运行环境配置环境变量 `$AZURE_CLIENT_ID`、`$AZURE_TENANT_ID` 和 `$AZURE_CLIENT_SECRET`。
 
@@ -244,6 +251,10 @@ BACKUP DATABASE * TO 's3://bucket-name/prefix' SEND_CREDENTIALS_TO_TIKV = FALSE;
 ### Amazon S3 存储服务端加密备份数据
 
 TiDB 备份恢复功能支持对备份到 Amazon S3 的数据进行 S3 服务端加密 (SSE)。S3 服务端加密也支持使用用户自行创建的 AWS KMS 密钥，详细信息请参考 [BR S3 服务端加密](/encryption-at-rest.md#br-s3-服务端加密)。
+
+### Azure Blob Storage 存储服务端加密备份数据
+
+TiDB 备份恢复功能支持对备份到 Azure Blob Storage 的数据设置 Azure 服务端加密范围 (Encryption Scope)，为同一存储账户不同备份数据间创建安全边界，详细信息请参考 [BR Azure Blob Storage 服务端加密范围](/encryption-at-rest.md#br-azure-blob-storage-服务端加密范围)。
 
 ## 存储服务其他功能支持
 

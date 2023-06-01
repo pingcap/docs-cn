@@ -308,3 +308,25 @@ TiFlash 在 v4.0.9 同样对加密元数据操作进行了优化，其兼容性�
 ```
 ./br restore full --pd <pd-address> --storage "s3://<bucket>/<prefix>"
 ```
+
+## BR Azure Blob Storage 服务端加密范围
+
+使用 BR 备份数据到 Azure Blob Storage 时，若要为备份数据指定加密范围，需要传递 `--azblob.encryption-scope` 参数（或添加到 URI 中）并将参数值设置为指定的加密范围名。参见 Azure 文档中的 [上传具有加密范围的 blob](https://learn.microsoft.com/en-us/azure/storage/blobs/encryption-scope-manage?tabs=powershell#upload-a-blob-with-an-encryption-scope)。示例如下：
+
+    传递 `--azblob.encryption-scope` 参数
+
+    ```
+    ./br backup full --pd <pd-address> --storage "azure://<bucket>/<prefix>" --azblob.encryption-scope scope1
+    ```
+
+    或添加到 URI 中
+
+    ```
+    ./br backup full --pd <pd-address> --storage "azure://<bucket>/<prefix>?encryption-scope=scope1"
+    ```
+
+恢复备份时，不需要指定 `--azblob.encryption-scope` 参数。 Azure Blob Storage 将自动相应进行解密。示例如下：
+
+```
+./br backup full --pd <pd-address> --storage "azure://<bucket>/<prefix>"
+```
