@@ -533,7 +533,7 @@ TiDB 7.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 ## 性能测试
 
-如需了解 TiDB v7.1.0 的性能表现，你可以参考 TiDB Cloud Dedicated 集群的 [TPC-C 性能测试报告](https://docs.pingcap/tidbcloud/v7.1.0-performance-benchmarking-with-tpcc)（英文版）。
+如需了解 TiDB v7.1.0 的性能表现，你可以参考 TiDB Cloud Dedicated 集群的 [TPC-C 性能测试报告](https://docs.pingcap.com/tidbcloud/v7.1.0-performance-benchmarking-with-tpcc)（英文版）。
 
 ## 贡献者
 
