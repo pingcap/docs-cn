@@ -154,9 +154,9 @@ loaders:                             # load 处理单元的运行配置参数
     # - "off"。表示导入完成后不进行 ANALYZE 操作。
     # ANALYZE 只影响统计数据，在大部分场景下建议不开启 ANALYZE。
     analyze: "off"
-    # Physical Import Mode 向 TiKV 写入 KV 数据的并发度。当 dm-worker 和 TiKV 网络传输速度超过万兆时，可适当增加这个值。
+    # 物理导入模式向 TiKV 写入 KV 数据的并发度。当 dm-worker 和 TiKV 网络传输速度超过万兆时，可适当增加这个值。
     # range-concurrency: 16
-    # Physical Import Mode 向 TiKV 发送 KV 数据时是否启用压缩。目前仅支持 Gzip 压缩算法，可填写 "gzip" 或 "gz"。默认不启用压缩。
+    # 物理导入模式向 TiKV 发送 KV 数据时是否启用压缩。目前仅支持 Gzip 压缩算法，可填写 "gzip" 或 "gz"。默认不启用压缩。
     # compress-kv-pairs: ""
     # PD server 的地址，填一个即可。该值为空时，默认使用 TiDB 查询到的 PD 地址信息。
     # pd-addr: "192.168.0.1:2379"

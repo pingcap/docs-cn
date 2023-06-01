@@ -109,7 +109,7 @@ sql-mode = ""
 
 使用 TiDB Lightning 的 SST Mode 建议配置万兆网卡。
 
-千兆网卡的总带宽只有 120 MB/s，而且需要与整个 TiKV 集群共享。在使用 TiDB Lightning Physical Import Mode 导入时，极易用尽所有带宽，继而因 PD 无法联络集群使集群断连。
+千兆网卡的总带宽只有 120 MB/s，而且需要与整个 TiKV 集群共享。在使用 TiDB Lightning 物理导入模式导入时，极易用尽所有带宽，继而因 PD 无法联络集群使集群断连。
 
 ## 为什么 TiDB Lightning 需要在 TiKV 集群预留这么多空间？
 
