@@ -118,11 +118,7 @@ driver = "file"
 # incremental-import = false
 # 当后端是 “importer” 时，tikv-importer 的监听地址（需改为实际地址）。
 addr = "172.16.31.10:8287"
-<<<<<<< HEAD
-# Logical Import Mode 插入冲突数据时执行的操作。关于冲突检测详细信息请查阅：https://docs.pingcap.com/zh/tidb/v7.1/tidb-lightning-logical-import-mode-usage#冲突数据检测
-=======
 # 逻辑导入模式插入冲突数据时执行的操作。关于冲突检测详细信息请查阅：https://docs.pingcap.com/zh/tidb/dev/tidb-lightning-logical-import-mode-usage#冲突数据检测
->>>>>>> 648829ed01 (lightning: change english names to chinese (#14107))
 # - replace：新数据替代已有数据
 # - ignore：保留已有数据，忽略新数据
 # - error：中止导入并报错
