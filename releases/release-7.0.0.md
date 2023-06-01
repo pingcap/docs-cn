@@ -370,7 +370,7 @@ TiDB 版本：7.0.0
 | TiFlash | [`storage.s3.secret_access_key`](/tiflash/tiflash-disaggregated-and-s3.md) |  新增  | 访问 S3 的 SECRET_ACCESS_KEY。 |
 | TiFlash | [`storage.remote.cache.dir`](/tiflash/tiflash-disaggregated-and-s3.md) |  新增  | TiFlash Compute Node 的本地数据缓存目录。 |
 | TiFlash | [`storage.remote.cache.capacity`](/tiflash/tiflash-disaggregated-and-s3.md) |  新增  | TiFlash Compute Node 的本地数据缓存目录的大小。 |
-| TiDB Lightning   | [`add-index-by-sql`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置)       |    新增     |  控制 Physical Import Mode 是否通过 SQL 方式添加索引。默认为 `false`，表示 TiDB Lightning 会将行数据以及索引数据都编码成 KV pairs 后一同导入 TiKV，实现机制和历史版本保持一致。通过 SQL 方式添加索引的优点是将导入数据与导入索引分开，可以快速导入数据，即使导入数据后，索引添加失败，也不会影响数据的一致性。        |
+| TiDB Lightning   | [`add-index-by-sql`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置)       |    新增     |  控制物理导入模式是否通过 SQL 方式添加索引。默认为 `false`，表示 TiDB Lightning 会将行数据以及索引数据都编码成 KV pairs 后一同导入 TiKV，实现机制和历史版本保持一致。通过 SQL 方式添加索引的优点是将导入数据与导入索引分开，可以快速导入数据，即使导入数据后，索引添加失败，也不会影响数据的一致性。        |
 | TiCDC      | [`enable-table-across-nodes`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-配置文件说明)          |   新增    |    将表按 Region 个数划分成多个同步范围，这些范围可由多个 TiCDC 节点同步。    |
 | TiCDC      | [`region-threshold`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-配置文件说明)    | 新增         | 开启了 `enable-table-across-nodes` 后，该功能只对 Region 个数大于 `region-threshold` 值的表生效。      |
 | DM | [`analyze`](/dm/task-configuration-file-full.md#完整配置文件示例)  | 新增 | 配置是否在 CHECKSUM 结束后对所有表逐个执行 `ANALYZE TABLE <table>` 操作，可配置 `"required"`/`"optional"`/`"off"`。默认为 `"optional"`。|
@@ -490,8 +490,8 @@ TiDB 版本：7.0.0
 
     + TiDB Lightning
 
-        - 修复了当使用 Physical Import Mode 导入数据时，如果目标表的复合主键中存在 `auto_random` 列，但源数据中没有指定该列的值，TiDB Lightning 不能为 `auto_random` 列自动生成数据的问题 [#41454](https://github.com/pingcap/tidb/issues/41454) @[D3Hunter](https://github.com/D3Hunter)
-        - 修复了当使用 TiDB Lightning 的 Logical Import Mode 导入数据时，由于目标集群用户没有 `CONFIG` 权限导致导入失败的问题 [#41915](https://github.com/pingcap/tidb/issues/41915) @[lichunzhu](https://github.com/lichunzhu)
+        - 修复了当使用物理导入模式导入数据时，如果目标表的复合主键中存在 `auto_random` 列，但源数据中没有指定该列的值，TiDB Lightning 不能为 `auto_random` 列自动生成数据的问题 [#41454](https://github.com/pingcap/tidb/issues/41454) @[D3Hunter](https://github.com/D3Hunter)
+        - 修复了当使用 TiDB Lightning 的逻辑导入模式导入数据时，由于目标集群用户没有 `CONFIG` 权限导致导入失败的问题 [#41915](https://github.com/pingcap/tidb/issues/41915) @[lichunzhu](https://github.com/lichunzhu)
 
 ## 贡献者
 
