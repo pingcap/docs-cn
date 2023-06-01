@@ -275,3 +275,33 @@ TiCDC 需要磁盘是为了缓冲上游写入高峰时下游消费不及时堆�
 ## 上游有运行时间比较长的未提交事务，TiCDC 同步是否会被卡住？
 
 TiDB 有事务超时的机制，当事务运行超过 [`max-txn-ttl`](/tidb-configuration-file.md#max-txn-ttl) 后，会被 TiDB 强制回滚。TiCDC 遇到未提交的事务，会等待其提交后再继续同步其数据，因此会出现同步延迟。
+
+## 为什么通过 TiDB Operator 部署的 TiCDC 集群无法使用 cdc cli 命令进行操作？
+
+因为通过 TiDB Operator 部署的 TiCDC 集群的默认端口号为 8301, 而 cdc cli 命令默认连接的 cdc 服务器的端口号是 8300。在使用 cdc cli 操作 TiCDC 集群时，你需要显式地指定 `--server` 参数，如下：
+
+```shell
+./cdc cli changefeed list --server "127.0.0.1:8301"
+[
+  {
+    "id": "4k-table",
+    "namespace": "default",
+    "summary": {
+      "state": "stopped",
+      "tso": 441832628003799353,
+      "checkpoint": "2023-05-30 22:41:57.910",
+      "error": null
+    }
+  },
+  {
+    "id": "big-table",
+    "namespace": "default",
+    "summary": {
+      "state": "normal",
+      "tso": 441872834546892882,
+      "checkpoint": "2023-06-01 17:18:13.700",
+      "error": null
+    }
+  }
+]
+```
