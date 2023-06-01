@@ -16,6 +16,8 @@ For more information about how to handle highly concurrent write-heavy workloads
 
 </CustomContent>
 
+The `AUTO_RANDOM_BASE` parameter in the [CREATE TABLE](/sql-statements/sql-statement-create-table.md) statement is used to set the initial incremental part value of `auto_random`. This option can be considered as a part of the internal interface. You can ignore this parameter.
+
 ## Basic concepts
 
 `AUTO_RANDOM` is a column attribute that is used to automatically assign values to a `BIGINT` column. Values assigned automatically are **random** and **unique**.

@@ -24,6 +24,8 @@ This document introduces the `AUTO_INCREMENT` column attribute, including its co
 
 </CustomContent>
 
+You can also use the `AUTO_INCREMENT` parameter in the [`CREATE TABLE`](/sql-statements/sql-statement-create-table.md) statement to specify the initial value of the increment field.
+
 ## Concept
 
 `AUTO_INCREMENT` is a column attribute that is used to automatically fill in default column values. When the `INSERT` statement does not specify values for the `AUTO_INCREMENT` column, the system automatically assigns values to this column.
