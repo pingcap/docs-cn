@@ -424,7 +424,6 @@ TiFlash 提供了两个全局/会话变量决定是否选择 Broadcast Hash Join
 
 - 在同一个事务里的 query 都有相同的 `start_ts`
 - 用 [`tidb_snapshot`](/system-variables.md#tidb_snapshot) 来指定读取特定历史时刻数据时，手动指定了相同的时间点
-- 开启了 [Stale Read](/stale-read.md) 时，手动指定了相同的时间点
 
 当 `start_ts` 无法唯一表示 MPP query 的时候，如果 TiFlash 在同一时刻看到不同的 query 拥有相同的 `start_ts` 时，就可能会报错。典型的报错情况如下：
 
