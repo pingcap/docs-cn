@@ -33,7 +33,7 @@ TiDB Lightning 并行导入可以用于以下场景：
 
 ### 解决主键或者唯一索引的冲突
 
-在使用[物理导入模式](/tidb-lightning/tidb-lightning-physical-import-mode.md) 并行导入时，需要确保多个 TiDB Lightning 的数据源之间，以及它们和 TiDB 的目标表中的数据没有主键或者唯一索引的冲突，并且导入的目标表不能有其他应用进行数据写入。否则，TiDB Lightning 将无法保证导入结果的正确性，并且导入完成后相关的数据表将处于数据索引不一致的状态。
+在使用[物理导入模式](/tidb-lightning/tidb-lightning-physical-import-mode.md)并行导入时，需要确保多个 TiDB Lightning 的数据源之间，以及它们和 TiDB 的目标表中的数据没有主键或者唯一索引的冲突，并且导入的目标表不能有其他应用进行数据写入。否则，TiDB Lightning 将无法保证导入结果的正确性，并且导入完成后相关的数据表将处于数据索引不一致的状态。
 
 ### 导入性能优化
 
