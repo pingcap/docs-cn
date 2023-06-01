@@ -209,7 +209,7 @@ SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = '<db_name>
 
         ...
     ```
-    
+
 关于使用 label 进行副本调度划分可用区的更多内容，可以参考[通过拓扑 label 进行副本调度](/schedule-replicas-by-topology-labels.md)，[同城多数据中心部署 TiDB](/multi-data-centers-in-one-city-deployment.md) 与[两地三中心部署](/three-data-centers-in-two-cities-deployment.md)。
 
 ## 使用 TiDB 读取 TiFlash
@@ -432,18 +432,18 @@ Session 变量 `tidb_enforce_mpp` 的初始值等于这台 tidb-server 实例的
 > **注意：**
 >
 > `tidb_enforce_mpp=1` 在生效时，TiDB 优化器会忽略代价估算选择 MPP 模式。但如果存在其它不支持 MPP 的因素，例如没有 TiFlash 副本、TiFlash 副本同步未完成、语句中含有 MPP 模式不支持的算子或函数等，那么 TiDB 仍然不会选择 MPP 模式。
-> 
+>
 > 如果由于代价估算之外的原因导致 TiDB 优化器无法选择 MPP，在你使用 `EXPLAIN` 语句查看执行计划时，会返回警告说明原因，例如：
-> 
+>
 > {{< copyable "sql" >}}
-> 
+>
 > ```sql
 > set @@session.tidb_enforce_mpp=1;
 > create table t(a int);
-> explain select count(*) from t; 
+> explain select count(*) from t;
 > show warnings;
 > ```
-> 
+>
 > ```
 > +---------+------+-----------------------------------------------------------------------------+
 > | Level   | Code | Message                                                                     |
@@ -482,6 +482,21 @@ TiFlash 提供了两个全局/会话变量决定是否选择 Broadcast Hash Join
 
 - [`tidb_broadcast_join_threshold_size`](/system-variables.md#tidb_broadcast_join_threshold_count-从-v50-版本开始引入)，单位为 bytes。如果表大小（字节数）小于该值，则选择 Broadcast Hash Join 算法。否则选择 Shuffled Hash Join 算法。
 - [`tidb_broadcast_join_threshold_count`](/system-variables.md#tidb_broadcast_join_threshold_count-从-v50-版本开始引入)，单位为行数。如果 join 的对象为子查询，优化器无法估计子查询结果集大小，在这种情况下通过结果集行数判断。如果子查询的行数估计值小于该变量，则选择 Broadcast Hash Join 算法。否则选择 Shuffled Hash Join 算法。
+
+### MPP 的已知问题
+
+在当前版本中，TiFlash 使用一个查询的 `start_ts` 当做这个查询的 unique key。在绝大多数情况下，每个 query 的 `start_ts` 都可以唯一标识一个查询，但是在以下几种情况下，不同的查询会有相同的 `start_ts`：
+
+- 在同一个事务里的 query 都有相同的 `start_ts`
+- 用 [`tidb_snapshot`](/system-variables.md#tidb_snapshot) 来指定读取特定历史时刻数据时，手动指定了相同的时间点
+- 开启了 [Stale Read](/stale-read.md) 时，手动指定了相同的时间点
+
+当 `start_ts` 无法唯一表示 MPP query 的时候，如果 TiFlash 在同一时刻看到不同的 query 拥有相同的 `start_ts` 时，就可能会报错。典型的报错情况如下：
+
+- 当多个相同的 `start_ts` 的 query 同时发给 TiFlash 时，可能会遇到 "task has been registered" 的报错
+- 当同一个事务里连续执行多个简单的使用 `LIMIT` 的查询时，TiDB 在 limit 条件满足后会给 TiFlash 发送 cancel request 的请求，这个请求也以 `start_ts` 来标识需要 cancel 的查询。假如 TiFlash 中有其他相同 `start_ts` 的查询的话，那其他查询就可能会被误 cancel。例如[这个 issue](https://github.com/pingcap/tidb/issues/43426) 里面碰到的问题。
+
+该问题已在 TiDB v6.6.0 中修复，建议使用[最新的 LTS 版本](https://docs.pingcap.com/zh/tidb/stable)。
 
 ## 注意事项
 
