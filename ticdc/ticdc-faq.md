@@ -348,5 +348,26 @@ UPDATE t SET a="3" WHERE a="2";
 
 ```shell
 ./cdc cli changefeed list --server "127.0.0.1:8301"
-[]
+[
+    {
+    "id": "4k-table",
+    "namespace": "default",
+    "summary": {
+      "state": "stopped",
+      "tso": 441832628003799353,
+      "checkpoint": "2023-05-30 22:41:57.910",
+      "error": null
+    }
+  },
+  {
+    "id": "big-table",
+    "namespace": "default",
+    "summary": {
+      "state": "normal",
+      "tso": 441872834546892882,
+      "checkpoint": "2023-06-01 17:18:13.700",
+      "error": null
+    }
+  }
+]
 ```
