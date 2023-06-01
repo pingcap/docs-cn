@@ -362,7 +362,7 @@ UPDATE t SET a="3" WHERE a="2";
 ```shell
 ./cdc cli changefeed list --server "127.0.0.1:8301"
 [
-    {
+  {
     "id": "4k-table",
     "namespace": "default",
     "summary": {
