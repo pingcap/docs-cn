@@ -18,7 +18,7 @@ TTL 设计的目标是在不影响在线读写负载的前提下，帮助用户�
 > **警告：**
 >
 > 当前该功能为实验特性，不建议在生产环境中使用。
-> TTL 无法在 [Serverless Tier clusters](https://docs.pingcap.com/tidbcloud/select-cluster-tier#serverless-tier-beta) 上使用。
+> TTL 无法在 [TiDB Serverless](https://docs.pingcap.com/tidbcloud/select-cluster-tier#tidb-serverless-beta) 集群上使用。
 
 ## 语法
 
