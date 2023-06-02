@@ -18,11 +18,13 @@ TiDB Lightning has two configuration classes: "global" and "task", and they have
 ### tidb-lightning global configuration
 
 [lightning]
-# The HTTP port for displaying the web interface, pulling Prometheus metrics, exposing debug data, and submitting import tasks (in server mode). Setting it to 0 disables the port.
+# The HTTP port for displaying the web interface, pulling Prometheus metrics, exposing debug data,
+# and submitting import tasks (in server mode). Setting it to 0 disables the port.
 status-addr = ':8289'
 
 # Server mode. Defaults to false, which means an import task starts immediately after you execute the command.
-# If this value is set to true, after you execute the command, TiDB Lightning waits until you submit an import task in the web interface.
+# If this value is set to true, after you execute the command,
+# TiDB Lightning waits until you submit an import task in the web interface.
 # See the "TiDB Lightning Web Interface" section for details.
 server-mode = false
 
@@ -74,12 +76,16 @@ max-error = 0
 # To disable error recording, set this to an empty string.
 # task-info-schema-name = 'lightning_task_info'
 
-# In parallel import mode, the schema name that stores the meta information for each TiDB Lightning instance in the target cluster. By default, the value is "lightning_metadata".
+# In parallel import mode, the schema name that stores the meta information for each TiDB Lightning instance in the target cluster.
+# By default, the value is "lightning_metadata".
 # Configure this parameter only if parallel import is enabled.
 # **Note:**
-# - The value set for this parameter must be the same for each TiDB Lightning instance that participates in the same parallel import; otherwise, the correctness of the imported data cannot be ensured.
-# - If parallel import mode is enabled, make sure that the user used for import (for the tidb.user configuration) has permissions to create and access the databases corresponding to this configuration.
-# - TiDB Lightning removes this schema after the import is completed. So do not use any existing schema name to configure this parameter.
+# - The value set for this parameter must be the same for each TiDB Lightning instance
+#   that participates in the same parallel import; otherwise, the correctness of the imported data cannot be ensured.
+# - If parallel import mode is enabled, make sure that the user used for import (for the tidb.user configuration)
+#   has permissions to create and access the databases corresponding to this configuration.
+# - TiDB Lightning removes this schema after the import is completed.
+#   So do not use any existing schema name to configure this parameter.
 meta-schema-name = "lightning_metadata"
 
 [security]
@@ -117,16 +123,22 @@ driver = "file"
 # keep-after-success = false
 
 [tikv-importer]
-# "local": Physical import mode, used by default. It applies to large dataset import, for example, greater than 1 TiB. However, during the import, downstream TiDB is not available to provide services.
-# "tidb": Logical import mode. You can use this mode for small dataset import, for example, smaller than 1 TiB. During the import, downstream TiDB is available to provide services.
+# "local": Physical import mode, used by default. It applies to large dataset import,
+# for example, greater than 1 TiB. However, during the import, downstream TiDB is not available to provide services.
+# "tidb": Logical import mode. You can use this mode for small dataset import,
+# for example, smaller than 1 TiB. During the import, downstream TiDB is available to provide services.
 # backend = "local"
-# Whether to enable multiple TiDB Lightning instances (in physical import mode) to import data to one or more target tables in parallel. The default value is `false`.
-# When you use parallel import mode, you must set the parameter to `true`, but the premise is that no data exists in the target table, that is, all data can only be imported by TiDB Lightning. Note that this parameter **is not for incremental data import** and is only used in scenarios where the target table is empty.
+# Whether to enable multiple TiDB Lightning instances (in physical import mode) to import data to one or more target tables in parallel.
+# The default value is `false`.
+# When you use parallel import mode, you must set the parameter to `true`,
+# but the premise is that no data exists in the target table, that is, all data can only be imported by TiDB Lightning.
+# Note that this parameter **is not for incremental data import** and is only used in scenarios where the target table is empty.
 # incremental-import = false
 
 # The listening address of tikv-importer when backend is "importer". Change it to the actual address.
 addr = "172.16.31.10:8287"
-# Action to do when trying to insert a conflicting record in the logical import mode. For more information on the conflict detection, see the document: https://docs.pingcap.com/tidb/dev/tidb-lightning-logical-import-mode-usage#conflict-detection
+# Action to do when trying to insert a conflicting record in the logical import mode.
+# For more information on the conflict detection, see the document: https://docs.pingcap.com/tidb/dev/tidb-lightning-logical-import-mode-usage#conflict-detection
 #  - replace: use new entry to replace the existing entry
 #  - ignore: keep the existing entry, and ignore the new entry
 #  - error: report error and quit the program
@@ -134,13 +146,21 @@ addr = "172.16.31.10:8287"
 
 # Whether to detect and resolve duplicate records (unique key conflict) in the physical import mode.
 # The following resolution algorithms are supported:
-#  - record: After the data is written to the target table, add the duplicate records from the target table to the `lightning_task_info.conflict_error_v1` table in the target TiDB. Note that the required version of the target TiKV is no earlier than v5.2.0; otherwise it falls back to 'none'.
-#  - none: does not detect duplicate records, which has the best performance of the three algorithms. But if there are duplicate records in the data source, it might lead to inconsistent data in the target TiDB.
-#  - remove: records all duplicate records in the target table to the lightning_task_info database, like the 'record' algorithm. But it removes all duplicate records from the target table to ensure a consistent state in the target TiDB.
+#  - record: After the data is written to the target table,
+#    add the duplicate records from the target table to the `lightning_task_info.conflict_error_v1` table in the target TiDB.
+#    Note that the required version of the target TiKV is no earlier than v5.2.0;
+#    otherwise it falls back to 'none'.
+#  - none: does not detect duplicate records, which has the best performance of the three algorithms.
+#    But if there are duplicate records in the data source, it might lead to inconsistent data in the target TiDB.
+#  - remove: records all duplicate records in the target table to the lightning_task_info database, like the 'record' algorithm.
+#    But it removes all duplicate records from the target table to ensure a consistent state in the target TiDB.
 # duplicate-resolution = 'none'
 # The number of KV pairs sent in one request in the physical import mode.
 # send-kv-pairs = 32768
-# Whether to enable compression when sending KV pairs to TiKV in the physical import mode. Currently, only the Gzip compression algorithm is supported. To use this algorithm, you can fill in either "gzip" or "gz" for this parameter. By default, the compression is not enabled.
+# Whether to enable compression when sending KV pairs to TiKV in the physical import mode.
+# Currently, only the Gzip compression algorithm is supported.
+# To use this algorithm, you can fill in either "gzip" or "gz" for this parameter.
+# By default, the compression is not enabled.
 # compress-kv-pairs = ""
 # The directory of local KV sorting in the physical import mode. If the disk
 # performance is low (such as in HDD), it is recommended to set the directory
@@ -162,28 +182,43 @@ addr = "172.16.31.10:8287"
 # The default value is `MaxInt64` bytes, that is, 9223372036854775807 bytes.
 # disk-quota = "10GB"
 
-# Specifies whether Physical Import Mode adds indexes via SQL. The default value is `false`, which means that TiDB Lightning will encode both row data and index data into KV pairs and import them into TiKV together. This mechanism is consistent with that of the historical versions. If you set it to `true`, it means that TiDB Lightning adds indexes via SQL after importing the row data.
-# The benefit of adding indexes via SQL is that you can separately import data and import indexes, and import data more quickly. After the data is imported, even if the indexes fail to be added, it does not affect the consistency of the imported data.
+# Specifies whether Physical Import Mode adds indexes via SQL.
+# The default value is `false`, which means that TiDB Lightning will encode both row data and index data
+# into KV pairs and import them into TiKV together.
+# This mechanism is consistent with that of the historical versions.
+# If you set it to `true`, it means that TiDB Lightning adds indexes via SQL after importing the row data.
+# The benefit of adding indexes via SQL is that you can separately import data and import indexes,
+# and import data more quickly. After the data is imported, even if the indexes fail to be added,
+# it does not affect the consistency of the imported data.
 # add-index-by-sql = false
 
-# When you use TiDB Lightning to import a multi-tenant TiDB cluster, use this parameter to specify the corresponding key space name. The default value is an empty string, which means TiDB Lightning will automatically get the key space name of the corresponding tenant to import data. If you specify a value, the specified key space name will be used to import data.
+# When you use TiDB Lightning to import a multi-tenant TiDB cluster, use this parameter to specify the corresponding key space name.
+# The default value is an empty string, which means TiDB Lightning will automatically get the key space name of the corresponding tenant to import data.
+# If you specify a value, the specified key space name will be used to import data.
 # keyspace-name = ""
 
-# In Physical Import Mode, this parameter controls the scope in which TiDB Lightning stops PD scheduling. The value options are as follows:
+# In Physical Import Mode, this parameter controls the scope in which TiDB Lightning stops PD scheduling.
+# The value options are as follows:
 # - "table": pause scheduling only for the Region that stores the target table data. The default value is "table".
-# - "global": pause global scheduling. When importing data to a cluster without any business traffic, it is recommended to set this parameter to "global" to avoid interference from other scheduling.
+# - "global": pause global scheduling. When importing data to a cluster without any business traffic,
+#   it is recommended to set this parameter to "global" to avoid interference from other scheduling.
 # pause-pd-scheduler-scope = "table"
 
-# In Physical Import Mode, this parameter controls the number of Regions when splitting Regions in a batch. The maximum number of Regions that can be split at the same time per TiDB Lightning instance is:
+# In Physical Import Mode, this parameter controls the number of Regions when splitting Regions in a batch.
+# The maximum number of Regions that can be split at the same time per TiDB Lightning instance is:
 # region-split-batch-size * region-split-concurrency * table-concurrency
 # This parameter is introduced in v7.1.0. The default value is `4096`.
 # region-split-batch-size = 4096
 
-# In Physical Import Mode, this parameter controls the concurrency when splitting Regions. The default value is the number of CPU cores.
+# In Physical Import Mode, this parameter controls the concurrency when splitting Regions.
+# The default value is the number of CPU cores.
 # This parameter is introduced in v7.1.0.
 # region-split-concurrency =
 
-# In Physical Import Mode, this parameter controls the number of retries to wait for the Region to come online after the split and scatter operations. The default value is `1800` and the maximum retry interval is two seconds. The number of retries will not be increased if any Region becomes online between retries.
+# In Physical Import Mode, this parameter controls the number of retries to wait for the Region to come online
+# after the split and scatter operations.
+# The default value is `1800` and the maximum retry interval is two seconds.
+# The number of retries will not be increased if any Region becomes online between retries.
 # This parameter is introduced in v7.1.0.
 # region-check-backoff-limit = 1800
 
@@ -204,7 +239,8 @@ read-block-size = "64KiB" # default value
 # This value should be in the range (0 <= batch-import-ratio < 1).
 batch-import-ratio = 0.75
 
-# Local source data directory or the URI of the external storage. For more information about the URI of the external storage, see https://docs.pingcap.com/tidb/v6.6/backup-and-restore-storages#uri-format.
+# Local source data directory or the URI of the external storage.
+# For more information about the URI of the external storage, see https://docs.pingcap.com/tidb/v6.6/backup-and-restore-storages#uri-format.
 data-source-dir = "/data/my_database"
 
 # The character set of the schema files, containing CREATE TABLE statements;
@@ -217,15 +253,18 @@ data-source-dir = "/data/my_database"
 #  - binary:  do not try to decode the schema files
 character-set = "auto"
 
-# Specifies the character set of the source data file. Lightning converts the source file from the specified character set to UTF-8 encoding when importing.
+# Specifies the character set of the source data file.
+# Lightning converts the source file from the specified character set to UTF-8 encoding when importing.
 # Currently, this configuration only specifies the character set of the CSV files with the following options supported:
 # - utf8mb4: Indicates that the source data file uses UTF-8 encoding.
 # - GB18030: Indicates that the source data file uses the GB-18030 encoding.
 # - GBK: The source data file uses GBK encoding (GBK encoding is an extension of the GB-2312 character set, also known as Code Page 936).
 # - binary: Indicates that Lightning does not convert the encoding (by default).
 # If left blank, the default value "binary" is used, that is to say, Lightning does not convert the encoding.
-# Note that Lightning does not predict about the character set of the source data file and only converts the source file and import the data based on this configuration.
-# If the value of this configuration is not the same as the actual encoding of the source data file, a failed import, data loss or data disorder might appear.
+# Note that Lightning does not predict about the character set of the source data file
+# and only converts the source file and import the data based on this configuration.
+# If the value of this configuration is not the same as the actual encoding of the source data file,
+# a failed import, data loss or data disorder might appear.
 data-character-set = "binary"
 # Specifies the replacement character in case of incompatible characters during the character set conversion of the source data file.
 # This configuration must not be duplicated with field separators, quote definers, and line breaks.
@@ -259,14 +298,25 @@ delimiter = '"'
 # Line terminator. Empty value means both "\n" (LF) and "\r\n" (CRLF) are line terminators.
 terminator = ''
 # Whether the CSV files contain a header.
-# If `header` is true, TiDB Lightning treats the first row as a table header and does not import it as data. If `header` is false, the first row is also imported as CSV data.
+# If `header` is true, TiDB Lightning treats the first row as a table header and does not import it as data.
+# If `header` is false, the first row is also imported as CSV data.
 header = true
 # Whether the column names in the CSV file header are matched to those defined in the target table.
-# The default value is `true`, which means that you have confirmed that the column names in the CSV header are consistent with those in the target table, so that even if the order of the columns is different between the two, TiDB Lightning can still import the data successfully by mapping the column names.
-# If the column names between the CSV table header and the target table do not match (for example, some column names in the CSV table header cannot be found in the target table) but the column order is the same, set this configuration to `false`.
-# In this scenario, TiDB Lightning will ignore the CSV header to avoid errors and import the data directly in the order of the columns in the target table.
-# Therefore, if the columns are not in the same order, you need to manually adjust the order of the columns in the CSV file to be consistent with that in the target table before importing; otherwise data discrepancies might occur.
-# It is important to note that this parameter only applies if the `header` parameter is set to `true`. If `header` is set to `false`, it means that the CSV file does not contain a header, so this parameter is not relevant.
+# The default value is `true`, which means that you have confirmed that the column names in the CSV header
+# are consistent with those in the target table, so that even if the order of the columns is different between the two,
+# TiDB Lightning can still import the data successfully by mapping the column names.
+# If the column names between the CSV table header and the target table do not match
+# (for example, some column names in the CSV table header cannot be found in the target table)
+# but the column order is the same, set this configuration to `false`.
+# In this scenario, TiDB Lightning will ignore the CSV header to avoid errors and import the data
+# directly in the order of the columns in the target table.
+# Therefore, if the columns are not in the same order,
+# you need to manually adjust the order of the columns in the CSV file to be consistent with that
+# in the target table before importing;
+# otherwise data discrepancies might occur.
+# It is important to note that this parameter only applies if the `header` parameter is set to `true`.
+# If `header` is set to `false`, it means that the CSV file does not contain a header,
+# so this parameter is not relevant.
 header-schema-match = true
 # Whether the CSV contains any NULL value.
 # If `not-null` is true, all columns from CSV cannot be NULL.
