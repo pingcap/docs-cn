@@ -435,7 +435,7 @@ Other requirements for the target machine:
     ```
 
     - `<cluster-name>`: Set the cluster name
-    - `<version>`: Set the TiDB cluster version, such as `v6.5.0`. You can see all the supported TiDB versions by running the `tiup list tidb` command
+    - `<version>`: Set the TiDB cluster version, such as `v7.1.0`. You can see all the supported TiDB versions by running the `tiup list tidb` command
     - `-p`: Specify the password used to connect to the target machine.
 
         > **Note:**

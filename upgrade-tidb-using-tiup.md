@@ -213,7 +213,7 @@ tiup cluster upgrade <cluster-name> v7.1.0
     tiup cluster stop <cluster-name>
     ```
 
-2. Use the `upgrade` command with the `--offline` option to perform the offline upgrade. Fill in the name of your cluster for `<cluster-name>` and the version to upgrade to for `<version>`, such as `v6.5.0`.
+2. Use the `upgrade` command with the `--offline` option to perform the offline upgrade. Fill in the name of your cluster for `<cluster-name>` and the version to upgrade to for `<version>`, such as `v7.1.0`.
 
     {{< copyable "shell-regular" >}}
 
@@ -273,7 +273,7 @@ Re-execute the `tiup cluster upgrade` command to resume the upgrade. The upgrade
 
 ### The evict leader has waited too long during the upgrade. How to skip this step for a quick upgrade?
 
-You can specify `--force`. Then the processes of transferring PD leader and evicting TiKV leader are skipped during the upgrade. The cluster is directly restarted to update the version, which has a great impact on the cluster that runs online. In the following command, `<version>` is the version to upgrade to, such as `v6.5.0`.
+You can specify `--force`. Then the processes of transferring PD leader and evicting TiKV leader are skipped during the upgrade. The cluster is directly restarted to update the version, which has a great impact on the cluster that runs online. In the following command, `<version>` is the version to upgrade to, such as `v7.1.0`.
 
 {{< copyable "shell-regular" >}}
 

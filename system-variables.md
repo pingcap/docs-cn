@@ -5015,7 +5015,7 @@ Internally, the TiDB parser transforms the `SET TRANSACTION ISOLATION LEVEL [REA
 
 - Scope: NONE
 - Default value: `5.7.25-TiDB-`(tidb version)
-- This variable returns the MySQL version, followed by the TiDB version. For example '5.7.25-TiDB-v4.0.0-beta.2-716-g25e003253'.
+- This variable returns the MySQL version, followed by the TiDB version. For example '5.7.25-TiDB-v7.1.0'.
 
 ### version_comment
 

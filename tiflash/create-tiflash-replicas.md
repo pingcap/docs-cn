@@ -143,7 +143,7 @@ Before TiFlash replicas are added, each TiKV instance performs a full table scan
     tiup ctl:v<CLUSTER_VERSION> pd -u http://<PD_ADDRESS>:2379 store limit all engine tiflash 60 add-peer
     ```
 
-    > In the preceding command, you need to replace `v<CLUSTER_VERSION>` with the actual cluster version, such as `v6.5.0` and `<PD_ADDRESS>:2379` with the address of any PD node. For example:
+    > In the preceding command, you need to replace `v<CLUSTER_VERSION>` with the actual cluster version, such as `v7.1.0` and `<PD_ADDRESS>:2379` with the address of any PD node. For example:
     >
     > ```shell
     > tiup ctl:v6.1.1 pd -u http://192.168.1.4:2379 store limit all engine tiflash 60 add-peer

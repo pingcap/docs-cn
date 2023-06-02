@@ -28,7 +28,7 @@ The following example uses `http://${host}:${port}/status` to get the current st
 curl http://127.0.0.1:10080/status
 {
     connections: 0,  # The current number of clients connected to the TiDB server.
-    version: "5.7.25-TiDB-v3.0.0-beta-250-g778c3f4a5",  # The TiDB version number.
+    version: "5.7.25-TiDB-v7.1.0",  # The TiDB version number.
     git_hash: "778c3f4a5a716880bcd1d71b257c8165685f0d70"  # The Git Hash of the current TiDB code.
 }
 ```
