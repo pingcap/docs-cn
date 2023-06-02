@@ -1,15 +1,15 @@
 ---
-title: 使用 Physical Import Mode
-summary: 了解如何使用 TiDB Lightning 的 Physical Import Mode。
+title: 使用物理导入模式
+summary: 了解如何使用 TiDB Lightning 的物理导入模式。
 ---
 
-# 使用 Physical Import Mode
+# 使用物理导入模式
 
-本文档介绍如何编写 [Physical Import Mode](/tidb-lightning/tidb-lightning-physical-import-mode.md) 的配置文件，如何进行性能调优、使用磁盘资源配额等内容。
+本文档介绍如何编写[物理导入模式 (Physical Import Mode)](/tidb-lightning/tidb-lightning-physical-import-mode.md) 的配置文件，如何进行性能调优、使用磁盘资源配额等内容。
 
 ## 配置及使用
 
-可以通过以下配置文件使用 Physical Import Mode 执行数据导入：
+可以通过以下配置文件使用物理导入模式执行数据导入：
 
 ```toml
 [lightning]
@@ -28,7 +28,7 @@ check-requirements = true
 data-source-dir = "/data/my_database"
 
 [tikv-importer]
-# 导入模式配置，设为 local 即使用 Physical Import Mode
+# 导入模式配置，设为 local 即使用物理导入模式
 backend = "local"
 
 # 冲突数据处理方式
@@ -40,7 +40,7 @@ sorted-kv-dir = "./some-dir"
 # 限制 TiDB Lightning 向每个 TiKV 节点写入的带宽大小，默认为 0，表示不限制。
 # store-write-bwlimit = "128MiB"
 
-# Physical Import Mode 是否通过 SQL 方式添加索引。默认为 `false`，表示 TiDB Lightning 会将行数据以及索引数据都编码成 KV pairs 后一同导入 TiKV，实现机制和历史版本保持一致。如果设置为 `true`，即 TiDB Lightning 会导完数据后，再使用 add index 的 SQL 来添加索引。
+# 物理导入模式是否通过 SQL 方式添加索引。默认为 `false`，表示 TiDB Lightning 会将行数据以及索引数据都编码成 KV pairs 后一同导入 TiKV，实现机制和历史版本保持一致。如果设置为 `true`，即 TiDB Lightning 会导完数据后，再使用 add index 的 SQL 来添加索引。
 # 通过 SQL 方式添加索引的优点是将导入数据与导入索引分开，可以快速导入数据，即使导入数据后，索引添加失败，也不会影响数据的一致性。
 # add-index-by-sql = false
 
@@ -176,12 +176,12 @@ switch-mode = '0'
 
 ## 性能调优
 
-**提高 Lightning Physical Import Mode 导入性能最直接有效的方法：**
+**提高 Lightning 物理导入模式导入性能最直接有效的方法：**
 
 - **升级 Lightning 所在节点的硬件，尤其重要的是 CPU 和 sorted-key-dir 所在存储设备的性能。**
 - **使用[并行导入](/tidb-lightning/tidb-lightning-distributed-import.md)特性实现水平扩展。**
 
-当然，Lightning 也提供了部分并发相关配置以影响 Physical Import Mode 的导入性能。但是从长期实践的经验总结来看，以下四个配置项一般保持默认值即可，调整其数值并不会带来显著的性能提升，可作为了解内容阅读。
+当然，Lightning 也提供了部分并发相关配置以影响物理导入模式的导入性能。但是从长期实践的经验总结来看，以下四个配置项一般保持默认值即可，调整其数值并不会带来显著的性能提升，可作为了解内容阅读。
 
 ```
 [lightning]
