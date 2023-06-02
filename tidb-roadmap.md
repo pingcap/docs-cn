@@ -175,7 +175,7 @@ TiDB 路线图展示了 TiDB 未来的发展方向，包括新特性和改进提
           </li>
           <br />
           <li>
-            <b>级联优化器 (Cascades optimizer)</b>
+            <b>Cascades 优化器</b>
           </li>
           <br />
           <li>
@@ -247,7 +247,7 @@ TiDB 路线图展示了 TiDB 未来的发展方向，包括新特性和改进提
       <td>
         <ul>
           <li>
-            <b>AI 索引 (AI-indexing)</b>
+            <b>AI 索引</b>
           </li>
           <br />
           <li>
@@ -255,7 +255,7 @@ TiDB 路线图展示了 TiDB 未来的发展方向，包括新特性和改进提
           </li>
           <br />
           <li>
-            <b>使用 AI 赋能 SQL 性能优化 (Re-invented AI-SQL performance advisor)</b>
+            <b>使用 AI 赋能 SQL 性能优化</b>
           </li>
         </ul>
       </td>
