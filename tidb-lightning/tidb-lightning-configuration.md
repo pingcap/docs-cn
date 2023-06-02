@@ -114,8 +114,10 @@ driver = "file"
 # "local"：物理导入模式（Physical Import Mode），默认使用。适用于 TB 级以上大数据量，但导入期间下游 TiDB 无法对外提供服务。
 # "tidb"：逻辑导入模式 (Logical Import Mode)。TB 级以下数据量可以采用，下游 TiDB 可正常提供服务。
 # backend = "local"
-# 是否允许启动多个 TiDB Lightning 实例（物理导入模式）并行导入到一个或多个目标表。默认取值为 false。注意，这个参数**不是用于增量导入数据**，仅限目标表为空的场景使用。
-# 多个 TiDB Lightning 实例（物理导入模式）同时导入一张表时，此开关必须设置为 true。但前提是目标表不能存在数据，即所有的数据都只能是由 TiDB Lightning 导入。
+# 是否允许启动多个 TiDB Lightning 实例（物理导入模式）并行导入数据到一个或多个目标表。默认取值为 false。
+# 注意，该参数**不是用于增量导入数据**，仅限目标表为空的场景使用。
+# 多个 TiDB Lightning 实例（物理导入模式）同时导入一张表时，此开关必须设置为 true。
+# 但前提是目标表不能存在数据，即所有的数据都只能是由 TiDB Lightning 导入。
 # incremental-import = false
 # 当后端是 “importer” 时，tikv-importer 的监听地址（需改为实际地址）。
 addr = "172.16.31.10:8287"
@@ -127,7 +129,8 @@ addr = "172.16.31.10:8287"
 
 # 物理导入模式设置是否检测和解决重复的记录（唯一键冲突）。
 # 目前支持三种解决方法：
-#  - record: 数据写入目标表后，将目标表中重复记录添加到目标 TiDB 中的 `lightning_task_info.conflict_error_v1` 表中。注意，该方法要求目标 TiKV 的版本为 v5.2.0 或更新版本。如果版本过低，则会启用下面的 'none' 模式。
+#  - record: 数据写入目标表后，将目标表中重复记录添加到目标 TiDB 中的 `lightning_task_info.conflict_error_v1` 表中。
+#            注意，该方法要求目标 TiKV 的版本为 v5.2.0 或更新版本。如果版本过低，则会启用下面的 'none' 模式。
 #  - none: 不检测重复记录。该模式是三种模式中性能最佳的，但是如果数据源存在重复记录，会导致 TiDB 中出现数据不一致的情况。
 #  - remove: 记录所有目标表中的重复记录，和 'record' 模式相似。但是会删除目标表所有的重复记录，以确保目标 TiDB 中的数据状态保持一致。
 # duplicate-resolution = 'none'
@@ -142,16 +145,22 @@ addr = "172.16.31.10:8287"
 # 物理导入模式限制 TiDB Lightning 向每个 TiKV 节点写入的带宽大小，默认为 0，表示不限制。
 # store-write-bwlimit = "128MiB"
 
-# 使用物理导入模式时，配置 TiDB Lightning 本地临时文件使用的磁盘配额 (disk quota)。当磁盘配额不足时，TiDB Lightning 会暂停读取源数据以及写入临时文件的过程，优先将已经完成排序的 key-value 写入到 TiKV，TiDB Lightning 删除本地临时文件后，再继续导入过程。
+# 使用物理导入模式时，配置 TiDB Lightning 本地临时文件使用的磁盘配额 (disk quota)。
+# 当磁盘配额不足时，TiDB Lightning 会暂停读取源数据以及写入临时文件的过程，
+# 优先将已经完成排序的 key-value 写入到 TiKV，TiDB Lightning 删除本地临时文件后，再继续导入过程。
 # 需要同时配合把 `backend` 设置为 `local` 模式才能生效。
 # 默认值为 MaxInt64 字节，即 9223372036854775807 字节。
 # disk-quota = "10GB"
 
-# 物理导入模式是否通过 SQL 方式添加索引。默认为 `false`，表示 TiDB Lightning 会将行数据以及索引数据都编码成 KV pairs 后一同导入 TiKV，实现机制和历史版本保持一致。如果设置为 `true`，即 TiDB Lightning 会在导入数据完成后，使用 add index 的 SQL 来添加索引。
+# 物理导入模式是否通过 SQL 方式添加索引。
+# 默认为 `false`，表示 TiDB Lightning 会将行数据以及索引数据都编码成 KV pairs 后一同导入 TiKV，实现机制和历史版本保持一致。
+# 如果设置为 `true`，即 TiDB Lightning 会在导入数据完成后，使用 add index 的 SQL 来添加索引。
 # 通过 SQL 方式添加索引的优点是将导入数据与导入索引分开，可以快速导入数据，即使导入数据后，索引添加失败，也不会影响数据的一致性。
 # add-index-by-sql = false
 
-# 在使用 TiDB Lightning 导入多租户的 TiDB cluster 的场景下，指定对应的 key space 名称。默认取值为空字符串，表示 TiDB Lightning 会自动获取导入对应租户的 key space 名称；如果指定了值，则使用指定的 key space 名称来导入。
+# 在使用 TiDB Lightning 导入多租户的 TiDB cluster 的场景下，指定对应的 key space 名称。
+# 默认取值为空字符串，表示 TiDB Lightning 会自动获取导入对应租户的 key space 名称；
+# 如果指定了值，则使用指定的 key space 名称来导入。
 # keyspace-name = ""
 
 # 物理导入模式下，用于控制 TiDB Lightning 暂停 PD 调度的范围，可选值包括：
@@ -160,7 +169,8 @@ addr = "172.16.31.10:8287"
 # 该参数自 v7.1.0 版本开始引入。注意："table" 选项仅适用于 TiDB v6.1.0 及以上版本的目标集群。
 # pause-pd-scheduler-scope = "table"
 
-# 物理导入模式下，用于控制批量 Split Region 时的 Region 个数。每个 TiDB Lightning 实例最多同时 Split Region 的个数为：
+# 物理导入模式下，用于控制批量 Split Region 时的 Region 个数。
+# 每个 TiDB Lightning 实例最多同时 Split Region 的个数为：
 # region-split-batch-size * region-split-concurrency * table-concurrency
 # 该参数自 v7.1.0 版本开始引入，默认值为 `4096`。
 # region-split-batch-size = 4096
@@ -169,7 +179,9 @@ addr = "172.16.31.10:8287"
 # 该参数自 v7.1.0 版本开始引入。
 # region-split-concurrency =
 
-# 物理导入模式下，用于控制 split 和 scatter 操作后等待 Region 上线的重试次数，默认值为 `1800`。重试符合指数回退策略，最大重试间隔为 2 秒。若两次重试之间有任何 Region 上线，该次操作不会被计为重试次数。
+# 物理导入模式下，用于控制 split 和 scatter 操作后等待 Region 上线的重试次数，默认值为 `1800`。
+# 重试符合指数回退策略，最大重试间隔为 2 秒。
+# 若两次重试之间有任何 Region 上线，该次操作不会被计为重试次数。
 # 该参数自 v7.1.0 版本开始引入。
 # region-check-backoff-limit = 1800
 
@@ -221,7 +233,8 @@ data-invalid-char-replace = "\uFFFD"
 # 为保证数据安全而非追求处理速度，默认值为 false。
 strict-format = false
 
-# 如果 strict-format = true，TiDB Lightning 会将 CSV 大文件分割为多个文件块进行并行处理。max-region-size 是分割后每个文件块的最大大小。
+# 如果 strict-format = true，TiDB Lightning 会将 CSV 大文件分割为多个文件块进行并行处理。
+# max-region-size 是分割后每个文件块的最大大小。
 # max-region-size = "256MiB" # 默认值
 
 # 只导入与该通配符规则相匹配的表。详情见相应章节。
@@ -236,11 +249,14 @@ delimiter = '"'
 # 行尾定界字符，支持一个或多个字符。设置为空（默认值）表示 "\n"（换行）和 "\r\n" （回车+换行），均表示行尾。
 terminator = ""
 # CSV 文件是否包含表头。
-# 如果 header = true，将把首行的内容作为表头处理，不作为数据导入。如果设置为 false，首行也作为 CSV 数据导入，此时请确保 CSV 文件的列顺序与目标表的列顺序一致，否则可能会导致数据差异。
+# 如果 header = true，将把首行的内容作为表头处理，不作为数据导入。如果设置为 false，首行也作为 CSV 数据导入，
+# 此时请确保 CSV 文件的列顺序与目标表的列顺序一致，否则可能会导致数据差异。
 header = true
 # CSV 表头是否匹配目标表的表结构。
-# 默认为 true，表示在导入数据时，会根据 CSV 表头的字段名去匹配目标表对应的列名，这样即使 CSV 文件和目标表列的顺序不一致也能按照对应的列名进行导入。
-# 如果 CSV 表头中的字段名和目标表的列名不匹配（例如，CSV 表头中的某些字段名在目标表中可能找不到对应的同名列）但列的顺序是一致的，请将该配置设置为 false。
+# 默认为 true，表示在导入数据时，会根据 CSV 表头的字段名去匹配目标表对应的列名，
+# 这样即使 CSV 文件和目标表列的顺序不一致也能按照对应的列名进行导入。
+# 如果 CSV 表头中的字段名和目标表的列名不匹配（例如，CSV 表头中的某些字段名在目标表中可能找不到对应的同名列）但列的顺序是一致的，
+# 请将该配置设置为 false。
 # 这时，在导入的时候，会直接忽略 CSV 表头的内容，以避免导入错误。在这种情况下，直接把 CSV 数据按照目标表列的顺序导入。
 # 因此，如果列的顺序不一致，请手动调整一致后再导入，否则可能会导致数据差异。
 # 注意：只有在 header = true 时，该参数才会生效。如果 header = false ，表示 CSV 文件没有表头，此时不需要考虑相关列名匹配的问题。
