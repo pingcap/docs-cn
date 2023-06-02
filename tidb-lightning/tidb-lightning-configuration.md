@@ -114,8 +114,10 @@ driver = "file"
 # "local"：物理导入模式（Physical Import Mode），默认使用。适用于 TB 级以上大数据量，但导入期间下游 TiDB 无法对外提供服务。
 # "tidb"：逻辑导入模式 (Logical Import Mode)。TB 级以下数据量可以采用，下游 TiDB 可正常提供服务。
 # backend = "local"
-# 是否允许启动多个 TiDB Lightning 实例（物理导入模式）并行导入到一个或多个目标表。默认取值为 false。注意，这个参数**不是用于增量导入数据**，仅限目标表为空的场景使用。
-# 多个 TiDB Lightning 实例（物理导入模式）同时导入一张表时，此开关必须设置为 true。但前提是目标表不能存在数据，即所有的数据都只能是由 TiDB Lightning 导入。
+# 是否允许启动多个 TiDB Lightning 实例（物理导入模式）并行导入数据到一个或多个目标表。默认取值为 false。
+# 注意，该参数**不是用于增量导入数据**，仅限目标表为空的场景使用。
+# 多个 TiDB Lightning 实例（物理导入模式）同时导入一张表时，此开关必须设置为 true。
+# 但前提是目标表不能存在数据，即所有的数据都只能是由 TiDB Lightning 导入。
 # incremental-import = false
 # 当后端是 “importer” 时，tikv-importer 的监听地址（需改为实际地址）。
 addr = "172.16.31.10:8287"
