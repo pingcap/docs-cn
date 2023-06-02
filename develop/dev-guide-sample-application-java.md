@@ -31,7 +31,7 @@ summary: 给出一个 TiDB 和 Java 的简单 CRUD 应用程序示例。
 
 <div label="TiDB Cloud" value="serverless-cluster">
 
-[创建 Serverless Tier 集群](/develop/dev-guide-build-cluster-in-cloud.md#第-1-步创建-serverless-tier-集群)。
+[创建 TiDB Serverless 集群](/develop/dev-guide-build-cluster-in-cloud.md#第-1-步创建-tidb-serverless-集群)。
 
 </div>
 
@@ -1462,7 +1462,7 @@ mysql --host 127.0.0.1 --port 4000 -u root<src/main/resources/dbinit.sql
 
 <div label="使用 Mybatis（推荐）" value="mybatis">
 
-若你使用 TiDB Cloud Serverless Tier 集群，更改 `mybatis-config.xml` 内关于 `dataSource.url`、`dataSource.username`、`dataSource.password` 的参数：
+若你使用 TiDB Serverless 集群，更改 `mybatis-config.xml` 内关于 `dataSource.url`、`dataSource.username`、`dataSource.password` 的参数：
 
 ```xml
 <?xml version="1.0" encoding="UTF-8" ?>
@@ -1505,7 +1505,7 @@ mysql --host 127.0.0.1 --port 4000 -u root<src/main/resources/dbinit.sql
 </configuration>
 ```
 
-若你设定的密码为 `123456`，而且从 TiDB Cloud Serverless Tier 集群面板中得到的连接信息为：
+若你设定的密码为 `123456`，而且从 TiDB Serverless 集群面板中得到的连接信息为：
 
 - Endpoint: `xxx.tidbcloud.com`
 - Port: `4000`
@@ -1537,7 +1537,7 @@ mysql --host 127.0.0.1 --port 4000 -u root<src/main/resources/dbinit.sql
 
 <div label="使用 Hibernate（推荐）" value="hibernate">
 
-若你使用 TiDB Cloud Serverless Tier 集群，更改 `hibernate.cfg.xml` 内关于 `hibernate.connection.url`、`hibernate.connection.username`、`hibernate.connection.password` 的参数：
+若你使用 TiDB Serverless 集群，更改 `hibernate.cfg.xml` 内关于 `hibernate.connection.url`、`hibernate.connection.username`、`hibernate.connection.password` 的参数：
 
 ```xml
 <?xml version='1.0' encoding='utf-8'?>
@@ -1565,7 +1565,7 @@ mysql --host 127.0.0.1 --port 4000 -u root<src/main/resources/dbinit.sql
 </hibernate-configuration>
 ```
 
-若你设定的密码为 `123456`，而且从 TiDB Cloud Serverless Tier 集群面板中得到的连接信息为：
+若你设定的密码为 `123456`，而且从 TiDB Serverless 集群面板中得到的连接信息为：
 
 - Endpoint: `xxx.tidbcloud.com`
 - Port: `4000`
@@ -1603,7 +1603,7 @@ mysql --host 127.0.0.1 --port 4000 -u root<src/main/resources/dbinit.sql
 
 <div label="使用 JDBC" value="jdbc">
 
-若你使用 TiDB Cloud Serverless Tier 集群，更改 `JDBCExample.java` 内关于 Host、Port、User、Password 的参数：
+若你使用 TiDB Serverless 集群，更改 `JDBCExample.java` 内关于 Host、Port、User、Password 的参数：
 
 ```java
 mysqlDataSource.setServerName("localhost");
@@ -1613,7 +1613,7 @@ mysqlDataSource.setUser("root");
 mysqlDataSource.setPassword("");
 ```
 
-若你设定的密码为 `123456`，而且从 TiDB Cloud Serverless Tier 集群面板中得到的连接信息为：
+若你设定的密码为 `123456`，而且从 TiDB Serverless 集群面板中得到的连接信息为：
 
 - Endpoint: `xxx.tidbcloud.com`
 - Port: `4000`
