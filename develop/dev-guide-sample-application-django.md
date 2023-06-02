@@ -29,7 +29,7 @@ summary: 给出一个 Django 构建 TiDB 应用程序示例。
 
 <div label="TiDB Cloud" value="serverless-cluster">
 
-[创建 Serverless Tier 集群](/develop/dev-guide-build-cluster-in-cloud.md#第-1-步创建-serverless-tier-集群)。
+[创建 TiDB Serverless 集群](/develop/dev-guide-build-cluster-in-cloud.md#第-1-步创建-tidb-serverless-集群)。
 
 </div>
 
@@ -72,7 +72,7 @@ summary: 给出一个 Django 构建 TiDB 应用程序示例。
 
 ### 第 4 步第 1 部分：TiDB Cloud 更改参数
 
-若你使用 TiDB Cloud Serverless Tier 集群，更改 `example_project/settings.py` 中的 `DATABASES` 参数：
+若你使用 TiDB Serverless 集群，更改 `example_project/settings.py` 中的 `DATABASES` 参数：
 
 ```python
 DATABASES = {
@@ -87,9 +87,9 @@ DATABASES = {
 }
 ```
 
-另外，由于 TiDB Cloud Serverless Tier 需要使用 SSL 连接。因此，需要提供 CA 证书路径。你可以在 [TiDB Cloud Serverless Tier 安全连接文档](https://docs.pingcap.com/tidbcloud/secure-connections-to-serverless-tier-clusters#where-is-the-ca-root-path-on-my-system) 中查看不同操作系统的 CA 证书路径。
+另外，由于 TiDB Serverless 需要使用 SSL 连接。因此，需要提供 CA 证书路径。你可以在 [TiDB Serverless 安全连接文档](https://docs.pingcap.com/tidbcloud/secure-connections-to-serverless-tier-clusters#where-is-the-ca-root-path-on-my-system) 中查看不同操作系统的 CA 证书路径。
 
-若你设定的密码为 `123456`，而且从 TiDB Cloud Serverless Tier 集群面板中得到的连接信息为：
+若你设定的密码为 `123456`，而且从 TiDB Serverless 集群面板中得到的连接信息为：
 
 - Endpoint: `xxx.tidbcloud.com`
 - Port: `4000`
