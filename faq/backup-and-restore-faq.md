@@ -41,7 +41,7 @@ TiKV 支持[动态配置](/tikv-control.md#动态修改-tikv-的配置)自动调
 
 目前日志备份功能还没有完全适配 TiDB Lightning，导致 TiDB Lightning 物理导入模式导入的数据无法备份到日志中。
 
-在创建日志备份任务的上游集群中，请尽量避免使用 TiDB Lightning Physical 方式导入数据。可以选择使用 TiDB Lightning Logical 方式导入数据。若确实需要使用 Physical 导入方式，可在导入完成之后做一次快照备份操作，这样，PITR 就可以恢复到快照备份之后的时间点。
+在创建日志备份任务的上游集群中，请尽量避免使用 TiDB Lightning 物理导入模式导入数据。可以选择使用 TiDB Lightning 逻辑导入模式导入数据。若确实需要使用物理导入模式，可在导入完成之后做一次快照备份操作，这样，PITR 就可以恢复到快照备份之后的时间点。
 
 ### 索引加速功能为什么与 PITR 功能不兼容？
 
