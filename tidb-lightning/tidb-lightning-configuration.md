@@ -152,8 +152,9 @@ addr = "172.16.31.10:8287"
 # 默认值为 MaxInt64 字节，即 9223372036854775807 字节。
 # disk-quota = "10GB"
 
-# 物理导入模式是否通过 SQL 方式添加索引。默认为 `false`，表示 TiDB Lightning 会将行数据以及索引数据都编码成 KV pairs 后一同导入 TiKV，
-# 实现机制和历史版本保持一致。如果设置为 `true`，即 TiDB Lightning 会在导入数据完成后，使用 add index 的 SQL 来添加索引。
+# 物理导入模式是否通过 SQL 方式添加索引。
+# 默认为 `false`，表示 TiDB Lightning 会将行数据以及索引数据都编码成 KV pairs 后一同导入 TiKV，实现机制和历史版本保持一致。
+# 如果设置为 `true`，即 TiDB Lightning 会在导入数据完成后，使用 add index 的 SQL 来添加索引。
 # 通过 SQL 方式添加索引的优点是将导入数据与导入索引分开，可以快速导入数据，即使导入数据后，索引添加失败，也不会影响数据的一致性。
 # add-index-by-sql = false
 
@@ -168,7 +169,8 @@ addr = "172.16.31.10:8287"
 # 该参数自 v7.1.0 版本开始引入。注意："table" 选项仅适用于 TiDB v6.1.0 及以上版本的目标集群。
 # pause-pd-scheduler-scope = "table"
 
-# 物理导入模式下，用于控制批量 Split Region 时的 Region 个数。每个 TiDB Lightning 实例最多同时 Split Region 的个数为：
+# 物理导入模式下，用于控制批量 Split Region 时的 Region 个数。
+# 每个 TiDB Lightning 实例最多同时 Split Region 的个数为：
 # region-split-batch-size * region-split-concurrency * table-concurrency
 # 该参数自 v7.1.0 版本开始引入，默认值为 `4096`。
 # region-split-batch-size = 4096
