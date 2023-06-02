@@ -1,12 +1,6 @@
 ---
-<<<<<<< HEAD
-title: 使用 TiDB Cloud (Serverless Tier) 构建 TiDB 集群
-summary: 使用 TiDB Cloud (Serverless Tier) 构建 TiDB 集群，并连接 TiDB Cloud 集群。
-=======
 title: 使用 TiDB Serverless 构建 TiDB 集群
 summary: 使用 TiDB Serverless 构建 TiDB 集群，并连接 TiDB Serverless 集群。
-aliases: ['/zh/tidb/dev/build-cluster-in-cloud']
->>>>>>> 824b67b2cc (tidb: rename products (#14062))
 ---
 
 <!-- markdownlint-disable MD029 -->
