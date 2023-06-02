@@ -169,4 +169,38 @@ TiDB 会定时采集 TTL 的运行时信息，并在 Grafana 中提供了相关�
 * 不允许在临时表上设置 TTL 属性，包括本地临时表和全局临时表。
 * 具有 TTL 属性的表不支持作为外键约束的主表被其他表引用。
 * 不保证所有过期数据立即被删除，过期数据被删除的时间取决于后台清理任务的调度周期和调度窗口。
+<<<<<<< HEAD
 * 目前单个表的清理任务同时只能在同一个 TiDB Server 节点运行，这在某些场景下（比如表特别大的情况）可能会产生性能瓶颈。此问题会在后续版本中优化。
+=======
+* 对于使用[聚簇索引](/clustered-indexes.md)的表，如果主键的类型不是整数类型或二进制字符串类型，TTL 任务将无法被拆分成多个子任务。这将导致 TTL 任务只能在一个 TiDB 节点上按顺序执行。如果表中的数据量较大，TTL 任务的执行可能会变得缓慢。
+* TTL 无法在 [TiDB Serverless](https://docs.pingcap.com/tidbcloud/select-cluster-tier#tidb-serverless-beta) 集群上使用。
+
+## 常见问题
+
+- 如何判断删除的速度是否够快，能够保持数据总量相对稳定？
+
+    在 [Grafana `TiDB` 面板](/grafana-tidb-dashboard.md)中，监控项 `TTL Insert Rows Per Hour` 记录了前一小时总共插入数据的数量。相应的 `TTL Delete Rows Per Hour` 记录了前一小时 TTL 任务总共删除的数据总量。如果 `TTL Insert Rows Per Hour` 长期高于 `TTL Delete Rows Per Hour`， 说明插入的速度高于删除的速度，数据总量将会上升。例如：
+
+    ![insert fast example](/media/ttl/insert-fast.png)
+
+    值得注意的是，由于 TTL 并不能保证数据立即被删除，且当前插入的数据将会在将来的 TTL 任务中才会被删除，哪怕短时间内 TTL 删除的速度低于插入的速度，也不能说明 TTL 的效率一定过慢。需要结合具体情况分析。
+
+- 如何判断 TTL 任务的瓶颈在扫描还是删除？
+
+    观察面板中 `TTL Scan Worker Time By Phase` 与 `TTL Delete Worker Time By Phase` 监控项。如果 scan worker 处于 `dispatch` 状态的时间有很大占比，且 delete worker 很少处于 `idle` 状态，那么说明 scan worker 在等待 delete worker 完成删除工作，如果此时集群资源仍然较为宽松，可以考虑提高 `tidb_ttl_delete_worker_count` 来提高删除的 worker 数量。例如：
+
+    ![scan fast example](/media/ttl/scan-fast.png)
+
+    与之相对，如果 scan worker 很少处于 `dispatch` 的状态，且 delete worker 长期处于 `idle` 阶段，那么说明 delete worker 闲置，且 scan worker 较为忙碌。例如：
+
+    ![delete fast example](/media/ttl/delete-fast.png)
+
+    TTL 任务中扫描与删除的占比与机器配置、数据分布都有关系，所以每一时刻的数据只能代表正在执行的 TTL Job 的情况。用户可以通过查询表 `mysql.tidb_ttl_job_history` 来判断某一时刻运行的 TTL Job 对应哪一张表。
+
+- 如何合理配置 `tidb_ttl_scan_worker_count` 和 `tidb_ttl_delete_worker_count`？
+
+    1. 可以参考问题 "如何判断 TTL 任务的瓶颈在扫描还是删除？" 来考虑提升 `tidb_ttl_scan_worker_count` 还是 `tidb_ttl_delete_worker_count`。
+    2. 如果 TiKV 节点数量较多，提升 `tidb_ttl_scan_worker_count` 能够使 TTL 任务负载更加均匀。
+
+    由于过高的 TTL worker 数量将会造成较大的压力，所以需要综合观察 TiDB 的 CPU 水平与 TiKV 的磁盘与 CPU 使用量。根据不同场景和需求（需要尽量加速 TTL，或是需要减少 TTL 对其他请求的影响）来调整 `tidb_ttl_scan_worker_count` 与 `tidb_ttl_delete_worker_count`，从而提升 TTL 扫描和删除数据的速度，或降低 TTL 任务对性能的影响。
+>>>>>>> 824b67b2cc (tidb: rename products (#14062))

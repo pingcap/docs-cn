@@ -22,7 +22,7 @@ summary: 给出一个 TiDB 和 Python 的简单 CRUD 应用程序示例。
 
 <div label="TiDB Cloud" value="serverless-cluster">
 
-[创建 Serverless Tier 集群](/develop/dev-guide-build-cluster-in-cloud.md#第-1-步创建-serverless-tier-集群)。
+[创建 TiDB Serverless 集群](/develop/dev-guide-build-cluster-in-cloud.md#第-1-步创建-tidb-serverless-集群)。
 
 </div>
 
@@ -835,7 +835,7 @@ mycli --host 127.0.0.1 --port 4000 -u root --no-warn < player_init.sql
 
 ### 第 3 步第 2 部分：TiDB Cloud 更改参数
 
-若你使用了 TiDB Cloud Serverless Tier 集群，此处需使用系统本地的 CA 证书，并将证书路径记为 `<ca_path>` 以供后续指代。请参考以下系统相关的证书路径地址：
+若你使用了 TiDB Serverless 集群，此处需使用系统本地的 CA 证书，并将证书路径记为 `<ca_path>` 以供后续指代。请参考以下系统相关的证书路径地址：
 
 <SimpleTab groupId="ca">
 
@@ -865,19 +865,19 @@ mycli --host 127.0.0.1 --port 4000 -u root --no-warn < player_init.sql
 
 </SimpleTab>
 
-若设置后仍有证书错误，请查阅 [TiDB Cloud Serverless Tier 安全连接文档](https://docs.pingcap.com/tidbcloud/secure-connections-to-serverless-tier-clusters)。
+若设置后仍有证书错误，请查阅 [TiDB Serverless 安全连接文档](https://docs.pingcap.com/tidbcloud/secure-connections-to-serverless-tier-clusters)。
 
 <SimpleTab groupId="language">
 
 <div label="使用 SQLAlchemy（推荐）" value="SQLAlchemy">
 
-若你使用 TiDB Cloud Serverless Tier 集群，更改 `sqlalchemy_example.py` 内 `create_engine` 函数的入参：
+若你使用 TiDB Serverless 集群，更改 `sqlalchemy_example.py` 内 `create_engine` 函数的入参：
 
 ```python
 engine = create_engine('mysql://root:@127.0.0.1:4000/test')
 ```
 
-若你设定的密码为 `123456`，而且从 TiDB Cloud Serverless Tier 集群面板中得到的连接信息为：
+若你设定的密码为 `123456`，而且从 TiDB Serverless 集群面板中得到的连接信息为：
 
 - Endpoint: `xxx.tidbcloud.com`
 - Port: `4000`
@@ -898,13 +898,13 @@ engine = create_engine('mysql://2aEp24QWEDLqRFs.root:123456@xxx.tidbcloud.com:40
 
 <div label="使用 peewee（推荐）" value="peewee">
 
-若你使用 TiDB Cloud Serverless Tier 集群，更改 `peewee_example.py` 内 `connect` 函数的入参：
+若你使用 TiDB Serverless 集群，更改 `peewee_example.py` 内 `connect` 函数的入参：
 
 ```python
 db = connect('mysql://root:@127.0.0.1:4000/test')
 ```
 
-若你设定的密码为 `123456`，而且从 TiDB Cloud Serverless Tier 集群面板中得到的连接信息为：
+若你设定的密码为 `123456`，而且从 TiDB Serverless 集群面板中得到的连接信息为：
 
 - Endpoint: `xxx.tidbcloud.com`
 - Port: `4000`
@@ -932,7 +932,7 @@ db = connect('mysql://root:@127.0.0.1:4000/test')
 
 <div label="使用 mysqlclient" value="mysqlclient">
 
-若你使用 TiDB Cloud Serverless Tier 集群，更改 `mysqlclient_example.py` 内 `get_connection` 函数：
+若你使用 TiDB Serverless 集群，更改 `mysqlclient_example.py` 内 `get_connection` 函数：
 
 ```python
 def get_connection(autocommit: bool = True) -> MySQLdb.Connection:
@@ -946,7 +946,7 @@ def get_connection(autocommit: bool = True) -> MySQLdb.Connection:
     )
 ```
 
-若你设定的密码为 `123456`，而且从 TiDB Cloud Serverless Tier 集群面板中得到的连接信息为：
+若你设定的密码为 `123456`，而且从 TiDB Serverless 集群面板中得到的连接信息为：
 
 - Endpoint: `xxx.tidbcloud.com`
 - Port: `4000`
@@ -974,7 +974,7 @@ def get_connection(autocommit: bool = True) -> MySQLdb.Connection:
 
 <div label="使用 PyMySQL" value="PyMySQL">
 
-若你使用 TiDB Cloud Serverless Tier 集群，更改 `pymysql_example.py` 内 `get_connection` 函数：
+若你使用 TiDB Serverless 集群，更改 `pymysql_example.py` 内 `get_connection` 函数：
 
 ```python
 def get_connection(autocommit: bool = False) -> Connection:
@@ -987,7 +987,7 @@ def get_connection(autocommit: bool = False) -> Connection:
                            autocommit=autocommit)
 ```
 
-若你设定的密码为 `123456`，而且从 TiDB Cloud Serverless Tier 集群面板中得到的连接信息为：
+若你设定的密码为 `123456`，而且从 TiDB Serverless 集群面板中得到的连接信息为：
 
 - Endpoint: `xxx.tidbcloud.com`
 - Port: `4000`
@@ -1013,7 +1013,7 @@ def get_connection(autocommit: bool = False) -> Connection:
 
 <div label="使用 mysql-connector-python" value="mysql-connector-python">
 
-若你使用 TiDB Cloud Serverless Tier 集群，更改 `mysql_connector_python_example.py` 内 `get_connection` 函数：
+若你使用 TiDB Serverless 集群，更改 `mysql_connector_python_example.py` 内 `get_connection` 函数：
 
 ```python
 def get_connection(autocommit: bool = True) -> MySQLConnection:
@@ -1026,7 +1026,7 @@ def get_connection(autocommit: bool = True) -> MySQLConnection:
     return connection
 ```
 
-若你设定的密码为 `123456`，而且从 TiDB Cloud Serverless Tier 集群面板中得到的连接信息为：
+若你设定的密码为 `123456`，而且从 TiDB Serverless 集群面板中得到的连接信息为：
 
 - Endpoint: `xxx.tidbcloud.com`
 - Port: `4000`
