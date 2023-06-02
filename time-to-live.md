@@ -226,6 +226,11 @@ TiDB 会定时采集 TTL 的运行时信息，并在 Grafana 中提供了相关�
 * 不允许在临时表上设置 TTL 属性，包括本地临时表和全局临时表。
 * 具有 TTL 属性的表不支持作为外键约束的主表被其他表引用。
 * 不保证所有过期数据立即被删除，过期数据被删除的时间取决于后台清理任务的调度周期和调度窗口。
+<<<<<<< HEAD
+=======
+* 对于使用[聚簇索引](/clustered-indexes.md)的表，如果主键的类型不是整数类型或二进制字符串类型，TTL 任务将无法被拆分成多个子任务。这将导致 TTL 任务只能在一个 TiDB 节点上按顺序执行。如果表中的数据量较大，TTL 任务的执行可能会变得缓慢。
+* TTL 无法在 [TiDB Serverless](https://docs.pingcap.com/tidbcloud/select-cluster-tier#tidb-serverless-beta) 集群上使用。
+>>>>>>> 824b67b2cc (tidb: rename products (#14062))
 
 ## 常见问题
 
