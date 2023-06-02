@@ -9,7 +9,7 @@ This document briefly introduces how to use TiDB's CURD SQL.
 
 ## Before you start
 
-Please make sure you are connected to a TiDB cluster. If not, refer to [Build a TiDB Cluster in TiDB Cloud (Serverless Tier)](/develop/dev-guide-build-cluster-in-cloud.md#step-1-create-a-serverless-tier-cluster) to create a Serverless Tier cluster.
+Please make sure you are connected to a TiDB cluster. If not, refer to [Build a TiDB Serverless Cluster](/develop/dev-guide-build-cluster-in-cloud.md#step-1-create-a-tidb-serverless-cluster) to create a TiDB Serverless cluster.
 
 ## Explore SQL with TiDB
 

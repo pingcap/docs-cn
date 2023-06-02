@@ -14,7 +14,7 @@ This document describes how to use the following SQL statements to update the da
 
 Before reading this document, you need to prepare the following:
 
-- [Build a TiDB Cluster in TiDB Cloud (Serverless Tier)](/develop/dev-guide-build-cluster-in-cloud.md).
+- [Build a TiDB Serverless Cluster](/develop/dev-guide-build-cluster-in-cloud.md).
 - Read [Schema Design Overview](/develop/dev-guide-schema-design-overview.md), [Create a Database](/develop/dev-guide-create-database.md), [Create a Table](/develop/dev-guide-create-table.md), and [Create Secondary Indexes](/develop/dev-guide-create-secondary-indexes.md).
 - If you want to `UPDATE` data, you need to [insert data](/develop/dev-guide-insert-data.md) first.
 

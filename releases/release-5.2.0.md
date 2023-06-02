@@ -20,7 +20,7 @@ In v5.2, the key new features and improvements are as follows:
 - Add the TiFlash I/O traffic limit feature to improve the stability of read and write for TiFlash
 - TiKV introduces a new flow control mechanism to replace the previous RocksDB write stall mechanism to improve the stability of TiKV flow control
 - Simplify the operation and maintenance of Data Migration (DM) to reduce the management cost.
-- TiCDC supports HTTP protocol OpenAPI to manage TiCDC tasks. It provides a more user-friendly operation method for both Kubernetes and on-premises environments. (Experimental feature)
+- TiCDC supports HTTP protocol OpenAPI to manage TiCDC tasks. It provides a more user-friendly operation method for both Kubernetes and self-hosted environments. (Experimental feature)
 
 ## Compatibility changes
 
@@ -165,7 +165,7 @@ In v5.2, the key new features and improvements are as follows:
 
 ### TiDB data share subscription
 
-TiCDC supports using the HTTP protocol (OpenAPI) to manage TiCDC tasks, which is a more user-friendly operation method for both Kubernetes and on-premises environments. (Experimental feature)
+TiCDC supports using the HTTP protocol (OpenAPI) to manage TiCDC tasks, which is a more user-friendly operation method for both Kubernetes and self-hosted environments. (Experimental feature)
 
 [#2411](https://github.com/pingcap/tiflow/issues/2411)
 
@@ -210,7 +210,7 @@ Support running the `tiup playground` command on Mac computers with Apple M1 chi
     - Support completing the garbage collection automatically for the bindings in the "deleted" status [#26206](https://github.com/pingcap/tidb/pull/26206)
     - Support showing whether a binding is used for query optimization in the result of `EXPLAIN VERBOSE` [#26930](https://github.com/pingcap/tidb/pull/26930)
     - Add a new status variation `last_plan_binding_update_time` to view the timestamp corresponding to the binding cache in the current TiDB instance [#26340](https://github.com/pingcap/tidb/pull/26340)
-    - Support reporting an error when starting binding evolution or running `admin evolve bindings` to ban the baseline evolution (currently disabled in the on-premises TiDB version because it is an experimental feature) affecting other features [#26333](https://github.com/pingcap/tidb/pull/26333)
+    - Support reporting an error when starting binding evolution or running `admin evolve bindings` to ban the baseline evolution (currently disabled in the TiDB Self-Hosted version because it is an experimental feature) affecting other features [#26333](https://github.com/pingcap/tidb/pull/26333)
 
 + PD
 

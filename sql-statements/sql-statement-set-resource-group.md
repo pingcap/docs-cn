@@ -11,7 +11,7 @@ summary: An overview of the usage of SET RESOURCE GROUP in the TiDB database.
 
 > **Note:**
 >
-> This feature is not available on [Serverless Tier clusters](/tidb-cloud/select-cluster-tier.md#serverless-tier-beta).
+> This feature is not available on [TiDB Serverless clusters](https://docs.pingcap.com/tidbcloud/select-cluster-tier#tidb-serverless-beta).
 
 </CustomContent>
 

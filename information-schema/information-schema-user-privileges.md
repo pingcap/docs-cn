@@ -79,7 +79,7 @@ The output is as follows:
 
 <CustomContent platform="tidb-cloud">
 
-<!--Compared with on-premises TiDB, the root user in TiDB Cloud does not have the SHUTDOWN and CONFIG privileges.-->
+<!--Compared with TiDB Self-Hosted, the root user in TiDB Cloud does not have the SHUTDOWN and CONFIG privileges.-->
 
 ```sql
 +------------+---------------+-------------------------+--------------+

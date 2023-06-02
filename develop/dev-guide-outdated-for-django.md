@@ -25,7 +25,7 @@ The above command starts a temporary and single-node cluster with mock TiKV. The
 >
 > To deploy a "real" TiDB cluster for production, see the following guides:
 >
-> + [Deploy TiDB using TiUP for On-Premises](https://docs.pingcap.com/tidb/v5.1/production-deployment-using-tiup)
+> + [Deploy TiDB using TiUP for Self-Hosted Environment](https://docs.pingcap.com/tidb/v5.1/production-deployment-using-tiup)
 > + [Deploy TiDB on Kubernetes](https://docs.pingcap.com/tidb-in-kubernetes/stable)
 >
 > You can also [use TiDB Cloud](https://pingcap.com/products/tidbcloud/), a fully-managed Database-as-a-Service (DBaaS) of TiDB.

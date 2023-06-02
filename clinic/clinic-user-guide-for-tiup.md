@@ -9,7 +9,7 @@ For TiDB clusters and DM clusters deployed using TiUP, you can use PingCAP Clini
 
 > **Note:**
 >
-> - This document **only** applies to clusters deployed using TiUP in an on-premises environment. For clusters deployed using TiDB Operator on Kubernetes, see [PingCAP Clinic for TiDB Operator environments](https://docs.pingcap.com/tidb-in-kubernetes/stable/clinic-user-guide).
+> - This document **only** applies to clusters deployed using TiUP in a self-hosted environment. For clusters deployed using TiDB Operator on Kubernetes, see [PingCAP Clinic for TiDB Operator environments](https://docs.pingcap.com/tidb-in-kubernetes/stable/clinic-user-guide).
 >
 > - PingCAP Clinic **does not support** collecting data from clusters deployed using TiDB Ansible.
 

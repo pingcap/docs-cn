@@ -20,7 +20,7 @@ Therefore, starting from v4.0.0-rc.1, TiDB provides system tables in `informatio
 
 > **Note:**
 >
-> The following tables are unavailable for [Serverless Tier clusters](/tidb-cloud/select-cluster-tier.md#serverless-tier-beta): `statements_summary`, `statements_summary_history`, `cluster_statements_summary`, and `cluster_statements_summary_history`.
+> The following tables are unavailable for [TiDB Serverless clusters](https://docs.pingcap.com/tidbcloud/select-cluster-tier#tidb-serverless-beta): `statements_summary`, `statements_summary_history`, `cluster_statements_summary`, and `cluster_statements_summary_history`.
   
 </CustomContent>
 
@@ -201,7 +201,7 @@ To address this issue, TiDB v6.6.0 experimentally introduces the [statement summ
 
 <CustomContent platform="tidb-cloud">
 
-This section is only applicable to on-premises TiDB. For TiDB Cloud, the value of the `tidb_stmt_summary_enable_persistent` parameter is `false` by default and does not support dynamic modification.
+This section is only applicable to TiDB Self-Hosted. For TiDB Cloud, the value of the `tidb_stmt_summary_enable_persistent` parameter is `false` by default and does not support dynamic modification.
 
 </CustomContent>
 

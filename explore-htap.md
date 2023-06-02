@@ -13,7 +13,7 @@ This guide describes how to explore and use the features of TiDB Hybrid Transact
 
 ## Use cases
 
-TiDB HTAP can handle the massive data that increases rapidly, reduce the cost of DevOps, and be deployed in either on-premises or cloud environments easily, which brings the value of data assets in real time.
+TiDB HTAP can handle the massive data that increases rapidly, reduce the cost of DevOps, and be deployed in either self-hosted or cloud environments easily, which brings the value of data assets in real time.
 
 The following are the typical use cases of HTAP:
 

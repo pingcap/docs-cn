@@ -941,7 +941,7 @@ MPP is a distributed computing framework provided by the TiFlash engine, which a
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
 - Type: Integer
-- Default value: `2` for on-premises TiDB and `1` for TiDB Cloud
+- Default value: `2` for TiDB Self-Hosted and `1` for TiDB Cloud
 - Range: `[1, 2]`
 - Controls how TiDB collects statistics.
 
@@ -1310,7 +1310,7 @@ MPP is a distributed computing framework provided by the TiFlash engine, which a
 
 > **Note:**
 >
-> To improve the speed for index creation using this variable, make sure that your TiDB cluster is hosted on AWS and your TiDB node size is at least 8 vCPU. For [Serverless Tier](/tidb-cloud/select-cluster-tier.md#serverless-tier-beta) clusters, this feature is unavailable.
+> To improve the speed for index creation using this variable, make sure that your TiDB cluster is hosted on AWS and your TiDB node size is at least 8 vCPU. For [TiDB Serverless](https://docs.pingcap.com/tidbcloud/select-cluster-tier#tidb-serverless-beta) clusters, this feature is unavailable.
 
 </CustomContent>
 

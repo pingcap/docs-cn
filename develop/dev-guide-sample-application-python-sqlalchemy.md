@@ -23,9 +23,9 @@ This document describes how to use TiDB and SQLAlchemy to build a simple CRUD ap
 
 The following introduces how to start a TiDB cluster.
 
-**Use a TiDB Cloud Serverless Tier cluster**
+**Use a TiDB Serverless cluster**
 
-For detailed steps, see [Create a Serverless Tier cluster](/develop/dev-guide-build-cluster-in-cloud.md#step-1-create-a-serverless-tier-cluster).
+For detailed steps, see [Create a TiDB Serverless cluster](/develop/dev-guide-build-cluster-in-cloud.md#step-1-create-a-tidb-serverless-cluster).
 
 **Use a local cluster**
 
@@ -35,7 +35,7 @@ For detailed steps, see [Deploy a local test cluster](/quick-start-with-tidb.md#
 
 <CustomContent platform="tidb-cloud">
 
-See [Create a Serverless Tier cluster](/develop/dev-guide-build-cluster-in-cloud.md#step-1-create-a-serverless-tier-cluster).
+See [Create a TiDB Serverless cluster](/develop/dev-guide-build-cluster-in-cloud.md#step-1-create-a-tidb-serverless-cluster).
 
 </CustomContent>
 
@@ -205,9 +205,9 @@ If you are not using a local cluster, or have not installed a MySQL client, conn
 
 ### Step 3.2 Modify parameters for TiDB Cloud
 
-If you are using a TiDB Cloud Serverless Tier cluster, you need to provide your CA root path and replace `<ca_path>` in the following examples with your CA path. To get the CA root path on your system, refer to [Where is the CA root path on my system?](https://docs.pingcap.com/tidbcloud/secure-connections-to-serverless-tier-clusters#where-is-the-ca-root-path-on-my-system).
+If you are using a TiDB Serverless cluster, you need to provide your CA root path and replace `<ca_path>` in the following examples with your CA path. To get the CA root path on your system, refer to [Where is the CA root path on my system?](https://docs.pingcap.com/tidbcloud/secure-connections-to-serverless-tier-clusters#where-is-the-ca-root-path-on-my-system).
 
-If you are using a TiDB Cloud Serverless Tier cluster, modify the parameters of the `create_engine` function in `sqlalchemy_example.py`:
+If you are using a TiDB Serverless cluster, modify the parameters of the `create_engine` function in `sqlalchemy_example.py`:
 
 ```python
 engine = create_engine('mysql://root:@127.0.0.1:4000/test')

@@ -130,7 +130,7 @@ Testing scenario 1 (on [TiDB Cloud](https://tidbcloud.com)):
 - New log data created in the cluster: 10 GB/h
 - Write (INSERT/UPDATE/DELETE) QPS: 10,000
 
-Testing scenario 2 (on-premises):
+Testing scenario 2 (on TiDB Self-Hosted):
 
 - The number of TiKV nodes (8 core, 64 GB memory): 6
 - TiKV configuration item `import.num-threads`: 8

@@ -7,9 +7,9 @@ summary: Introduce how to integrate TiDB with Amazon AppFlow step by step.
 
 [Amazon AppFlow](https://aws.amazon.com/appflow/) is a fully managed API integration service that you use to connect your software as a service (SaaS) applications to AWS services, and securely transfer data. With Amazon AppFlow, you can import and export data from and to TiDB into many types of data providers, such as Salesforce, Amazon S3, LinkedIn, and GitHub. For more information, see [Supported source and destination applications](https://docs.aws.amazon.com/appflow/latest/userguide/app-specific.html) in AWS documentation.
 
-This document describes how to integrate TiDB with Amazon AppFlow and takes integrating a TiDB Cloud Serverless Tier cluster as an example.
+This document describes how to integrate TiDB with Amazon AppFlow and takes integrating a TiDB Serverless cluster as an example.
 
-If you do not have a TiDB cluster, you can create a [Serverless Tier](https://tidbcloud.com/console/clusters) cluster, which is free and can be created in approximately 30 seconds.
+If you do not have a TiDB cluster, you can create a [TiDB Serverless](https://tidbcloud.com/console/clusters) cluster, which is free and can be created in approximately 30 seconds.
 
 ## Prerequisites
 
@@ -66,7 +66,7 @@ git clone https://github.com/pingcap-inc/tidb-appflow-integration
     >
     > - The `--guided` option uses prompts to guide you through the deployment. Your input will be stored in a configuration file, which is `samconfig.toml` by default.
     > - `stack_name` specifies the name of AWS Lambda that you are deploying.
-    > - This prompted guide uses AWS as the cloud provider of TiDB Cloud Serverless Tier. To use Amazon S3 as the source or destination, you need to set the `region` of AWS Lambda as the same as that of Amazon S3.
+    > - This prompted guide uses AWS as the cloud provider of TiDB Serverless. To use Amazon S3 as the source or destination, you need to set the `region` of AWS Lambda as the same as that of Amazon S3.
     > - If you have already run `sam deploy --guided` before, you can just run `sam deploy` instead, and SAM CLI will use the configuration file `samconfig.toml` to simplify the interaction.
 
     If you see a similar output as follows, this Lambda is successfully deployed.
@@ -148,7 +148,7 @@ Choose the **Source details** and **Destination details**. TiDB connector can be
     ```
 
 5. After the `sf_account` table is created, click **Connect**. A connection dialog is displayed.
-6. In the **Connect to TiDB-Connector** dialog, enter the connection properties of the TiDB cluster. If you use a TiDB Cloud Serverless Tier cluster, you need to set the **TLS** option to `Yes`, which lets the TiDB connector use the TLS connection. Then, click **Connect**.
+6. In the **Connect to TiDB-Connector** dialog, enter the connection properties of the TiDB cluster. If you use a TiDB Serverless cluster, you need to set the **TLS** option to `Yes`, which lets the TiDB connector use the TLS connection. Then, click **Connect**.
 
     ![tidb connection message](/media/develop/aws-appflow-step-tidb-connection-message.png)
 
@@ -244,5 +244,5 @@ test> SELECT * FROM sf_account;
 
 - If anything goes wrong, you can navigate to the [CloudWatch](https://console.aws.amazon.com/cloudwatch/home) page on the AWS Management Console to get logs.
 - The steps in this document are based on [Building custom connectors using the Amazon AppFlow Custom Connector SDK](https://aws.amazon.com/blogs/compute/building-custom-connectors-using-the-amazon-appflow-custom-connector-sdk/).
-- [TiDB Cloud Serverless Tier](https://docs.pingcap.com/tidbcloud/select-cluster-tier#serverless-tier-beta) is **NOT** a production environment.
+- [TiDB Serverless](https://docs.pingcap.com/tidbcloud/select-cluster-tier#tidb-serverless-beta) is **NOT** a production environment.
 - To prevent excessive length, the examples in this document only show the `Insert` strategy, but `Update` and `Upsert` strategies are also tested and can be used.

@@ -22,9 +22,9 @@ You can build your own application based on this example.
 
 The following introduces how to start a TiDB cluster.
 
-**Use a TiDB Cloud Serverless Tier cluster**
+**Use a TiDB Serverless cluster**
 
-For detailed steps, see [Create a Serverless Tier cluster](/develop/dev-guide-build-cluster-in-cloud.md#step-1-create-a-serverless-tier-cluster).
+For detailed steps, see [Create a TiDB Serverless cluster](/develop/dev-guide-build-cluster-in-cloud.md#step-1-create-a-tidb-serverless-cluster).
 
 **Use a local cluster**
 
@@ -34,7 +34,7 @@ For detailed steps, see [Deploy a local test cluster](/quick-start-with-tidb.md#
 
 <CustomContent platform="tidb-cloud">
 
-See [Create a Serverless Tier cluster](/develop/dev-guide-build-cluster-in-cloud.md#step-1-create-a-serverless-tier-cluster).
+See [Create a TiDB Serverless cluster](/develop/dev-guide-build-cluster-in-cloud.md#step-1-create-a-tidb-serverless-cluster).
 
 </CustomContent>
 
@@ -98,7 +98,7 @@ If you want to learn more about the code of this application, refer to [Implemen
 
 ### Step 5.1 Change parameters
 
-If you are using a TiDB Cloud Serverless Tier cluster, change the `spring.datasource.url`, `spring.datasource.username`, `spring.datasource.password` parameters in the `application.yml` (located in `src/main/resources`).
+If you are using a TiDB Serverless cluster, change the `spring.datasource.url`, `spring.datasource.username`, `spring.datasource.password` parameters in the `application.yml` (located in `src/main/resources`).
 
 ```yaml
 spring:

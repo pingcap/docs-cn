@@ -20,9 +20,9 @@ This document describes how to use TiDB and Hibernate to build a simple CRUD app
 
 The following introduces how to start a TiDB cluster.
 
-**Use a TiDB Cloud Serverless Tier cluster**
+**Use a TiDB Serverless cluster**
 
-For detailed steps, see [Create a Serverless Tier cluster](/develop/dev-guide-build-cluster-in-cloud.md#step-1-create-a-serverless-tier-cluster).
+For detailed steps, see [Create a TiDB Serverless cluster](/develop/dev-guide-build-cluster-in-cloud.md#step-1-create-a-tidb-serverless-cluster).
 
 **Use a local cluster**
 
@@ -32,7 +32,7 @@ For detailed steps, see [Deploy a local test cluster](/quick-start-with-tidb.md#
 
 <CustomContent platform="tidb-cloud">
 
-See [Create a Serverless Tier cluster](/develop/dev-guide-build-cluster-in-cloud.md#step-1-create-a-serverless-tier-cluster).
+See [Create a TiDB Serverless cluster](/develop/dev-guide-build-cluster-in-cloud.md#step-1-create-a-tidb-serverless-cluster).
 
 </CustomContent>
 
@@ -341,7 +341,7 @@ No need to initialize tables manually.
 
 ### Step 3.2 Modify parameters for TiDB Cloud
 
-If you are using a TiDB Cloud Serverless Tier cluster, modify the `hibernate.connection.url`, `hibernate.connection.username`, `hibernate.connection.password` in `hibernate.cfg.xml`.
+If you are using a TiDB Serverless cluster, modify the `hibernate.connection.url`, `hibernate.connection.username`, `hibernate.connection.password` in `hibernate.cfg.xml`.
 
 ```xml
 <?xml version='1.0' encoding='utf-8'?>

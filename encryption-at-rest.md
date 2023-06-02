@@ -22,7 +22,7 @@ When a TiDB cluster is deployed, the majority of user data is stored on TiKV and
 
 TiKV supports encryption at rest. This feature allows TiKV to transparently encrypt data files using [AES](https://en.wikipedia.org/wiki/Advanced_Encryption_Standard) or [SM4](https://en.wikipedia.org/wiki/SM4_(cipher)) in [CTR](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation) mode. To enable encryption at rest, an encryption key must be provided by the user and this key is called master key. TiKV automatically rotates data keys that it used to encrypt actual data files. Manually rotating the master key can be done occasionally. Note that encryption at rest only encrypts data at rest (namely, on disk) and not while data is transferred over network. It is advised to use TLS together with encryption at rest.
 
-Optionally, you can use AWS KMS for both cloud and on-premises deployments. You can also supply the plaintext master key in a file.
+Optionally, you can use AWS KMS for both cloud and self-hosted deployments. You can also supply the plaintext master key in a file.
 
 TiKV currently does not exclude encryption keys and user data from core dumps. It is advised to disable core dumps for the TiKV process when using encryption at rest. This is not currently handled by TiKV itself.
 

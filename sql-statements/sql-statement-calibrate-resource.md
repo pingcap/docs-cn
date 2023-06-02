@@ -11,7 +11,7 @@ The `CALIBRATE RESOURCE` statement is used to estimate and output the ['Request 
 
 > **Note:**
 >
-> This feature is not available on [Serverless Tier clusters](/tidb-cloud/select-cluster-tier.md#serverless-tier-beta).
+> This feature is not available on [TiDB Serverless clusters](https://docs.pingcap.com/tidbcloud/select-cluster-tier#tidb-serverless-beta).
 
 </CustomContent>
 

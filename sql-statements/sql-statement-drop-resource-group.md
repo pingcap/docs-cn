@@ -9,7 +9,7 @@ summary: Learn the usage of DROP RESOURCE GROUP in TiDB.
 
 > **Note:**
 >
-> This feature is not available on [Serverless Tier clusters](/tidb-cloud/select-cluster-tier.md#serverless-tier-beta).
+> This feature is not available on [TiDB Serverless clusters](https://docs.pingcap.com/tidbcloud/select-cluster-tier#tidb-serverless-beta).
 
 </CustomContent>
 

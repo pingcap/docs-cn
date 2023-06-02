@@ -13,7 +13,7 @@ summary: Learn the use cases, limitations, usage, and implementation principles 
 
 > **Note:**
 >
-> Currently, this feature is only applicable to Dedicated Tier clusters. You cannot use it on Serverless Tier clusters.
+> Currently, this feature is only applicable to TiDB Dedicated clusters. You cannot use it on TiDB Serverless clusters.
 
 </CustomContent>
 

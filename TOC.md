@@ -19,7 +19,7 @@
 - Develop
   - [Overview](/develop/dev-guide-overview.md)
   - Quick Start
-    - [Build a TiDB Cluster in TiDB Cloud (Serverless Tier)](/develop/dev-guide-build-cluster-in-cloud.md)
+    - [Build a TiDB Serverless Cluster](/develop/dev-guide-build-cluster-in-cloud.md)
     - [CRUD SQL in TiDB](/develop/dev-guide-tidb-crud-sql.md)
   - Example Applications
     - Java
