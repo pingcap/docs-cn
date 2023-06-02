@@ -22,7 +22,7 @@ summary: 给出一个 TiDB 和 Golang 的简单 CRUD 应用程序示例。
 
 <div label="TiDB Cloud" value="serverless-cluster">
 
-[创建 Serverless Tier 集群](/develop/dev-guide-build-cluster-in-cloud.md#第-1-步创建-serverless-tier-集群)。
+[创建 TiDB Serverless 集群](/develop/dev-guide-build-cluster-in-cloud.md#第-1-步创建-tidb-serverless-集群)。
 
 </div>
 
@@ -750,13 +750,13 @@ mysql --host 127.0.0.1 --port 4000 -u root<sql/dbinit.sql
 
 <div label="使用 GORM（推荐）" value="gorm">
 
-若你使用 TiDB Cloud Serverless Tier 集群，更改 `gorm.go` 内 `dsn` 参数值：
+若你使用 TiDB Serverless 集群，更改 `gorm.go` 内 `dsn` 参数值：
 
 ```go
 dsn := "root:@tcp(127.0.0.1:4000)/test?charset=utf8mb4"
 ```
 
-若你设定的密码为 `123456`，而且从 TiDB Cloud Serverless Tier 集群面板中得到的连接信息为：
+若你设定的密码为 `123456`，而且从 TiDB Serverless 集群面板中得到的连接信息为：
 
 - Endpoint: `xxx.tidbcloud.com`
 - Port: `4000`
@@ -777,13 +777,13 @@ dsn := "2aEp24QWEDLqRFs.root:123456@tcp(xxx.tidbcloud.com:4000)/test?charset=utf
 
 <div label="使用 go-sql-driver/mysql" value="sqldriver">
 
-若你使用 TiDB Cloud Serverless Tier 集群，更改 `sqldriver.go` 内 `dsn` 参数的值：
+若你使用 TiDB Serverless 集群，更改 `sqldriver.go` 内 `dsn` 参数的值：
 
 ```go
 dsn := "root:@tcp(127.0.0.1:4000)/test?charset=utf8mb4"
 ```
 
-若你设定的密码为 `123456`，而且从 TiDB Cloud Serverless Tier 集群面板中得到的连接信息为：
+若你设定的密码为 `123456`，而且从 TiDB Serverless 集群面板中得到的连接信息为：
 
 - Endpoint: `xxx.tidbcloud.com`
 - Port: `4000`
