@@ -90,7 +90,7 @@ tiup dmctl check-task ./task.yaml
     
 #### Physical Import 检查项
 
-在任务配置中使用 `import-mode: "physical"` 后，会增加如下的前置检查项以保证 [Physical Import](/tidb-lightning/tidb-lightning-physical-import-mode.md) 正常运行。如果参照提示后仍然难以完成这些前置检查，你可以尝试使用 [Logical Import](/tidb-lightning/tidb-lightning-logical-import-mode.md) 进行导入。
+在任务配置中使用 `import-mode: "physical"` 后，会增加如下的前置检查项以保证[物理导入模式](/tidb-lightning/tidb-lightning-physical-import-mode.md)正常运行。如果参照提示后仍然难以完成这些前置检查，你可以尝试使用[逻辑导入模式](/tidb-lightning/tidb-lightning-logical-import-mode.md)进行导入。
 
 * 下游数据库中的空 Region
 
@@ -102,7 +102,7 @@ tiup dmctl check-task ./task.yaml
     
 * 下游数据库 TiDB、PD、TiKV 组件的版本
 
-    - Physical Import 需要调用 TiDB、PD、TiKV 接口，如果版本不符合要求，会返回错误。
+    - 物理导入模式需要调用 TiDB、PD、TiKV 接口，如果版本不符合要求，会返回错误。
     
 * 下游数据库的剩余空间
 
@@ -110,7 +110,7 @@ tiup dmctl check-task ./task.yaml
     
 * 下游数据库是否在运行与 Physical Import 不兼容的任务
 
-    - 目前 Physical Import 不兼容 [TiCDC](/ticdc/ticdc-overview.md)、[PITR](/br/br-pitr-guide.md) 任务，如果发现下游数据库正在运行这些任务，前置检查会返回错误。
+    - 目前物理导入模式不兼容 [TiCDC](/ticdc/ticdc-overview.md)、[PITR](/br/br-pitr-guide.md) 任务，如果发现下游数据库正在运行这些任务，前置检查会返回错误。
 
 ### 增量数据迁移检查项
 
@@ -153,11 +153,11 @@ tiup dmctl check-task ./task.yaml
 |schema_of_shard_tables|检查上游 MySQL 多实例分库分表的表结构一致性|
 |auto_increment_ID|检查上游 MySQL 多实例分库分表的自增主键冲突|
 |online_ddl|检查上游是否处于 [Online-DDL](/dm/feature-online-ddl.md) 过程中|
-|empty_region|Physical Import 检查空 Region 的数目|
-|region_distribution|Physical Import 检查 Region 的分布|
+|empty_region|物理导入模式检查空 Region 的数目|
+|region_distribution|物理导入模式检查 Region 的分布|
 |downstream_version|检查下游数据库 TiDB、PD、TiKV 的版本|
 |free_space|检查下游数据库的剩余空间|
-|downstream_mutex_features|检查下游数据库是否存在与 Physical Import 不兼容的任务|
+|downstream_mutex_features|检查下游数据库是否存在与物理导入模式不兼容的任务|
 
 > **注意：**
 >
