@@ -87,15 +87,15 @@ tiup dmctl check-task ./task.yaml
 * 分表中自增主键检查
 
     - 分表存在自增主键时返回警告。如果存在自增主键冲突，请参照[自增主键冲突处理](/dm/shard-merge-best-practices.md#自增主键冲突处理)解决。
-    
-#### Physical Import 检查项
+
+#### 物理导入模式检查项
 
 在任务配置中使用 `import-mode: "physical"` 后，会增加如下的前置检查项以保证[物理导入模式](/tidb-lightning/tidb-lightning-physical-import-mode.md)正常运行。如果参照提示后仍然难以完成这些前置检查，你可以尝试使用[逻辑导入模式](/tidb-lightning/tidb-lightning-logical-import-mode.md)进行导入。
 
 * 下游数据库中的空 Region
 
     - 如果空 Region 的数量大于 `max(1000, 表的数量 * 3)`，即大于“1000”和“3 倍表数量”二者中的较大者，前置检查会向用户返回警告。可以调整 PD 相关参数加快空 Region 的合并速度，并等待空 Region 数量下降以解除警告。参见 [PD 调度策略最佳实践 - Region Merge 速度慢](/best-practices/pd-scheduling-best-practices.md#region-merge-速度慢)
-    
+
 * 下游数据库中的 Region 分布
 
     - 统计不同的 TiKV 上的 Region 数目。假设 Region 数最少的 TiKV 节点上拥有 `a` 个 Region，Region 数最多的 TiKV 节点上拥有 `b` 个 Region，如果 a/b 小于 0.75，则前置检查会向用户返回警告。可以调整 PD 相关参数加快 Region 调度速度，并等待 Region 数目变化以解除警告。参见 [PD 调度策略最佳实践 - Leader/Region 分布不均衡](/best-practices/pd-scheduling-best-practices.md#leaderregion-分布不均衡)
