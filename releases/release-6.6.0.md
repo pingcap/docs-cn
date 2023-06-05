@@ -400,7 +400,7 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 | TiDB Lightning | [`compress-kv-pairs`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置) | 新增 | 该配置项控制物理导入模式向 TiKV 发送 KV 时是否启用压缩，默认值为空，表示不启用压缩。 |
 | DM | [`checksum-physical`](/dm/task-configuration-file-full.md) | 新增 | 该配置项控制物理导入模式在导入完成一张表后，对每一个表执行 `ADMIN CHECKSUM TABLE <table>` 进行数据校验。默认值为 `"required"`，表示导入完成后进行数据校验，如果校验失败会暂停任务，需要你手动处理。|
 | DM | [`disk-quota-physical`](/dm/task-configuration-file-full.md) | 新增 | 该配置项设置了磁盘的空间限制，对应 TiDB Lightning 的 [`disk-quota` 配置](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#磁盘资源配额-从-v620-版本开始引入)。|
-| DM | [`on-duplicate-logical`](/dm/task-configuration-file-full.md) | 新增 | 该配置项控制 Logical Import 针对冲突数据的解决方式。默认值为 `"replace"`，表示用最新数据替代已有数据。 |
+| DM | [`on-duplicate-logical`](/dm/task-configuration-file-full.md) | 新增 | 该配置项控制物理导入模式针对冲突数据的解决方式。默认值为 `"replace"`，表示用最新数据替代已有数据。 |
 | DM | [`on-duplicate-physical`](/dm/task-configuration-file-full.md) | 新增 | 该配置项控制物理导入模式针对冲突数据的解决方式。默认值为 `"none"`，表示遇到冲突数据时不进行处理。该模式性能最佳，但下游数据库会出现数据索引不一致的问题。  |
 | DM | [`sorting-dir-physical`](/dm/task-configuration-file-full.md) | 新增 | 该配置项控制物理导入模式用作本地排序的目录位置，该选项的默认值与 `dir` 配置项一致。 |
 | sync-diff-inspector   | [`skip-non-existing-table`](/sync-diff-inspector/sync-diff-inspector-overview.md#配置文件说明)   |  新增 | 当下游数据库的表在上游不存在时，该配置项决定是否跳过对上下游数据库表数量不一致场景的校验。  |
