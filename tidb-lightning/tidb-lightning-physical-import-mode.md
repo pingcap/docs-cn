@@ -21,7 +21,7 @@ The backend for the physical import mode is `local`.
 
 2. TiDB Lightning creates table schemas in the target database and fetches the metadata.
 
-    If you set `add-index-by-sql` to `true`, `tidb-lightning` adds indexes via the SQL interface, and drops all secondary indexes from the target table before importing the data.
+    If you set `add-index-by-sql` to `true`, `tidb-lightning` adds indexes via the SQL interface, and drops all secondary indexes from the target table before importing the data. The default value is `false`, which is consistent with earlier versions.
 
 3. Each table is divided into multiple contiguous **blocks**, so that TiDB Lightning can import data from large tables (greater than 200 GB) in parallel.
 
