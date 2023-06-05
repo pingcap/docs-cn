@@ -83,7 +83,9 @@ ADMIN CHECKSUM TABLE `schema`.`table`;
 
 可以。TiDB Lightning 默认的 [`sql_mode`](https://dev.mysql.com/doc/refman/5.7/en/sql-mode.html) 为 `"ONLY_FULL_GROUP_BY,NO_AUTO_CREATE_USER"`。
 
-这个设置允许导入某些不合规的数值，例如 `1970-00-00` 这样的日期。如不允许导入不合规的数据，可以修改配置文件 `[tidb]` 下的 `sql-mode` 值为 "STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION"。
+该设置允许导入某些不合规的数值，例如 `1970-00-00` 这样的日期。
+
+如果要禁止导入不合规的数据，可以修改配置文件 `[tidb]` 下的 `sql-mode` 值为 `"STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION"`。
 
 ```toml
 ...
