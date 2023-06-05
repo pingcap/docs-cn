@@ -1,5 +1,5 @@
 ---
-title: 逻辑导入模式
+title: 逻辑导入模式简介
 summary: 了解 TiDB Lightning 的逻辑导入模式 (Logical Import Mode)。
 ---
 

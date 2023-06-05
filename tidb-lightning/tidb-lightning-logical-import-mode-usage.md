@@ -5,7 +5,7 @@ summary: 了解在 TiDB Lightning 的逻辑导入模式下，如何编写数据�
 
 # 使用逻辑导入模式
 
-本文档介绍如何编写[逻辑导入模式 (Logical Import Mode)](/tidb-lightning/tidb-lightning-logical-import-mode.md) 的配置文件，如何进行性能调优等内容。
+本文档介绍如何编写[逻辑导入模式](/tidb-lightning/tidb-lightning-logical-import-mode.md)的配置文件，如何进行性能调优等内容。
 
 ## 配置及使用
 
