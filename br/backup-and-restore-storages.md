@@ -189,12 +189,11 @@ BACKUP DATABASE * TO 's3://bucket-name/prefix' SEND_CREDENTIALS_TO_TIKV = FALSE;
 
 - 方式一：指定共享访问签名
 
-    在 URI 配置 `account-name` 和 `sas-token`，则使用该参数指定的共享访问签名。由于共享访问签名中带有 `&` 的字符，需要在编码为 `%26` 后，再添加到 URI 中。 //（TODO： sig 中的 编码？）
+    在 URI 配置 `account-name` 和 `sas-token`，则使用该参数指定的共享访问签名。由于共享访问签名中带有 `&` 的字符，需要在编码为 `%26` 后，再添加到 URI 中。你也可以直接对整个 sas-token 进行一次编码。
 
 - 方式二：指定访问密钥
 
     在 URI 配置 `account-name` 和 `account-key`，则使用该参数指定的密钥。除了在 URI 中指定密钥文件外，还支持 br 命令行工具读取 `$AZURE_STORAGE_KEY` 的方式。
-
 
 - 方式三：使用 Azure AD 备份恢复
 
