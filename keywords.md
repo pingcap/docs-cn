@@ -141,6 +141,7 @@ Query OK, 0 rows affected (0.08 sec)
 - CLEANUP
 - CLIENT
 - CLIENT_ERRORS_SUMMARY
+- CLOSE
 - CLUSTER
 - CLUSTERED
 - CMSKETCH (R)
@@ -148,8 +149,8 @@ Query OK, 0 rows affected (0.08 sec)
 - COLLATE (R)
 - COLLATION
 - COLUMN (R)
-- COLUMNS
 - COLUMN_FORMAT
+- COLUMNS
 - COMMENT
 - COMMIT
 - COMMITTED
@@ -163,6 +164,7 @@ Query OK, 0 rows affected (0.08 sec)
 - CONSISTENT
 - CONSTRAINT (R)
 - CONTEXT
+- CONTINUE (R)
 - CONVERT (R)
 - CPU
 - CREATE (R)
@@ -181,6 +183,7 @@ Query OK, 0 rows affected (0.08 sec)
 - CURRENT_TIME (R)
 - CURRENT_TIMESTAMP (R)
 - CURRENT_USER (R)
+- CURSOR (R)
 - CYCLE
 
 <a id="D" class="letter" href="#D">D</a>
@@ -198,10 +201,11 @@ Query OK, 0 rows affected (0.08 sec)
 - DDL (R)
 - DEALLOCATE
 - DECIMAL (R)
+- DECLARE
 - DEFAULT (R)
 - DEFINER
-- DELAYED (R)
 - DELAY_KEY_WRITE
+- DELAYED (R)
 - DELETE (R)
 - DENSE_RANK (R-Window)
 - DEPTH (R)
@@ -227,6 +231,7 @@ Query OK, 0 rows affected (0.08 sec)
 <a id="E" class="letter" href="#E">E</a>
 
 - ELSE (R)
+- ELSEIF (R)
 - ENABLE
 - ENABLED
 - ENCLOSED (R)
@@ -248,6 +253,7 @@ Query OK, 0 rows affected (0.08 sec)
 - EXCLUSIVE
 - EXECUTE
 - EXISTS (R)
+- EXIT (R)
 - EXPANSION
 - EXPIRE
 - EXPLAIN (R)
@@ -271,6 +277,7 @@ Query OK, 0 rows affected (0.08 sec)
 - FORCE (R)
 - FOREIGN (R)
 - FORMAT
+- FOUND
 - FROM (R)
 - FULL
 - FULLTEXT (R)
@@ -288,6 +295,7 @@ Query OK, 0 rows affected (0.08 sec)
 
 <a id="H" class="letter" href="#H">H</a>
 
+- HANDLER
 - HASH
 - HAVING (R)
 - HELP
@@ -315,6 +323,7 @@ Query OK, 0 rows affected (0.08 sec)
 - INDEXES
 - INFILE (R)
 - INNER (R)
+- INOUT (R)
 - INSERT (R)
 - INSERT_METHOD
 - INSTANCE
@@ -335,6 +344,7 @@ Query OK, 0 rows affected (0.08 sec)
 - IS (R)
 - ISOLATION
 - ISSUER
+- ITERATE (R)
 
 <a id="J" class="letter" href="#J">J</a>
 
@@ -356,11 +366,12 @@ Query OK, 0 rows affected (0.08 sec)
 - LAG (R-Window)
 - LANGUAGE
 - LAST
-- LASTVAL
 - LAST_BACKUP
 - LAST_VALUE (R-Window)
+- LASTVAL
 - LEAD (R-Window)
 - LEADING (R)
+- LEAVE (R)
 - LEFT (R)
 - LESS
 - LEVEL
@@ -450,9 +461,9 @@ Query OK, 0 rows affected (0.08 sec)
 - OLTP_READ_WRITE
 - OLTP_WRITE_ONLY
 - ON (R)
+- ON_DUPLICATE
 - ONLINE
 - ONLY
-- ON_DUPLICATE
 - OPEN
 - OPTIMISTIC (R)
 - OPTIMIZE (R)
@@ -461,6 +472,7 @@ Query OK, 0 rows affected (0.08 sec)
 - OPTIONALLY (R)
 - OR (R)
 - ORDER (R)
+- OUT (R)
 - OUTER (R)
 - OUTFILE (R)
 - OVER (R-Window)
@@ -554,10 +566,10 @@ Query OK, 0 rows affected (0.08 sec)
 - ROLLBACK
 - ROUTINE
 - ROW (R)
-- ROWS (R-Window)
 - ROW_COUNT
 - ROW_FORMAT
 - ROW_NUMBER (R-Window)
+- ROWS (R-Window)
 - RTREE
 
 <a id="S" class="letter" href="#S">S</a>
@@ -566,10 +578,10 @@ Query OK, 0 rows affected (0.08 sec)
 - SAN
 - SAVEPOINT
 - SECOND
+- SECOND_MICROSECOND (R)
 - SECONDARY_ENGINE
 - SECONDARY_LOAD
 - SECONDARY_UNLOAD
-- SECOND_MICROSECOND (R)
 - SECURITY
 - SELECT (R)
 - SEND_CREDENTIALS_TO_TIKV
@@ -612,6 +624,9 @@ Query OK, 0 rows affected (0.08 sec)
 - SQL_TSI_SECOND
 - SQL_TSI_WEEK
 - SQL_TSI_YEAR
+- SQLEXCEPTION (R)
+- SQLSTATE (R)
+- SQLWARNING (R)
 - SSL (R)
 - START
 - STARTING (R)
@@ -656,7 +671,6 @@ Query OK, 0 rows affected (0.08 sec)
 - THAN
 - THEN (R)
 - TIDB (R)
-- TiDB_CURRENT_TSO (R)
 - TIFLASH (R)
 - TIKV_IMPORTER
 - TIME
@@ -680,6 +694,7 @@ Query OK, 0 rows affected (0.08 sec)
 - TTL_ENABLE
 - TTL_JOB_INTERVAL
 - TYPE
+- TiDB_CURRENT_TSO (R)
 
 <a id="U" class="letter" href="#U">U</a>
 
@@ -692,6 +707,7 @@ Query OK, 0 rows affected (0.08 sec)
 - UNKNOWN
 - UNLOCK (R)
 - UNSIGNED (R)
+- UNTIL (R)
 - UPDATE (R)
 - USAGE (R)
 - USE (R)
@@ -723,6 +739,7 @@ Query OK, 0 rows affected (0.08 sec)
 - WEIGHT_STRING
 - WHEN (R)
 - WHERE (R)
+- WHILE (R)
 - WIDTH (R)
 - WINDOW (R-Window)
 - WITH (R)

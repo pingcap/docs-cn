@@ -46,7 +46,6 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 + TiDB 用于存放临时数据的路径。如果一个功能需要使用 TiDB 节点的本地存储，TiDB 将把对应数据临时存放在这个目录下。
 + 在创建索引的过程中，如果开启了[创建索引加速](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入)，那么新创建索引需要回填的数据会被先存放在 TiDB 本地临时存储路径，然后批量导入到 TiKV，从而提升索引创建速度。
-+ 在使用 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md) 的物理导入模式时，排序后的数据会被先存放在 TiDB 本地临时存储路径，然后批量导入到 TiKV。
 + 默认值："/tmp/tidb"
 
 ### `oom-use-tmp-storage`
@@ -115,7 +114,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 + 用来修改 TiDB 在以下情况下返回的版本号：
     - 当使用内置函数 `VERSION()` 时。
-    - 当与客户端初始连接，TiDB 返回带有服务端版本号的初始握手包时。具体可以查看 MySQL 初始握手包的[描述](https://dev.mysql.com/doc/internals/en/connection-phase-packets.html#packet-Protocol::Handshake)。
+    - 当与客户端初始连接，TiDB 返回带有服务端版本号的初始握手包时。具体可以查看 MySQL 初始握手包的[描述](https://dev.mysql.com/doc/dev/mysql-server/latest/page_protocol_connection_phase.html#sect_protocol_connection_phase_initial_handshake)。
 + 默认值：""
 + 默认情况下，TiDB 版本号格式为：`5.7.${mysql_latest_minor_version}-TiDB-${tidb_version}`。
 
@@ -286,6 +285,13 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 输出 `expensive` 操作的行数阈值。
 + 默认值：10000
 + 当查询的行数（包括中间结果，基于统计信息）大于这个值，该操作会被认为是 `expensive` 查询，并输出一个前缀带有 `[EXPENSIVE_QUERY]` 的日志。
+
+### `timeout` <span class="version-mark">从 v7.1.0 版本开始引入</span>
+
++ 用于设置 TiDB 写日志操作的超时时间。当磁盘故障导致日志无法写入时，该配置可以让 TiDB 进程崩溃而不是卡死。
++ 默认值：0，表示不设置超时
++ 单位：秒
++ 在某些用户场景中，TiDB 日志可能是保存在热插拔盘或网络挂载盘上，这些磁盘可能会永久丢失。在这种场景下，TiDB 无法自动恢复，写日志操作会永久阻塞。尽管 TiDB 进程看起来仍在运行，但不会响应任何请求。该配置项用于处理这样的场景。
 
 ## log.file
 

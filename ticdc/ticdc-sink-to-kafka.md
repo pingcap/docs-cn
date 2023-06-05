@@ -67,6 +67,7 @@ URI 中可配置的的参数如下：
 | `ca`       | 连接下游 Kafka 实例所需的 CA 证书文件路径（可选）。 |
 | `cert`     | 连接下游 Kafka 实例所需的证书文件路径（可选）。 |
 | `key`      | 连接下游 Kafka 实例所需的证书密钥文件路径（可选）。 |
+| `insecure-skip-verify` | 连接下游 Kafka 实例时是否跳过证书验证（可选，默认值 `false`）。 |
 | `sasl-user` | 连接下游 Kafka 实例所需的 SASL/PLAIN 或 SASL/SCRAM 认证的用户名（authcid）（可选）。 |
 | `sasl-password` | 连接下游 Kafka 实例所需的 SASL/PLAIN 或 SASL/SCRAM 认证的密码（可选）。如有特殊字符，需要用 URL encode 转义。 |
 | `sasl-mechanism` | 连接下游 Kafka 实例所需的 SASL 认证方式的名称，可选值有 `plain`、`scram-sha-256`、`scram-sha-512` 和 `gssapi`。 |
@@ -244,7 +245,7 @@ partition 分发器用 partition = "xxx" 来指定，支持 default、ts、index
 
 ## 横向扩展大单表的负载到多个 TiCDC 节点
 
-该功能通过将大单表按 Region 个数切分成多个数据范围，将这些数据范围分布到多个 TiCDC 节点上，使得多个 TiCDC 节点可以同时同步大单表。该功能可以解决以下两个问题：
+该功能可以按照大单表的数据量和每分钟的修改行数将表的同步范围切分为多个，并使各个范围之间所同步的数据量和修改行数基本相同。该功能将这些范围分布到多个 TiCDC 节点进行同步，使得多个 TiCDC 节点可以同时同步大单表。该功能可以解决以下两个问题：
 
 - 单个 TiCDC 节点不能及时同步大单表。
 - TiCDC 节点之间资源（CPU、内存等）消耗不均匀。
@@ -257,10 +258,18 @@ partition 分发器用 partition = "xxx" 来指定，支持 default、ts、index
 
 ```toml
 [scheduler]
-# 设置为 "true" 以打开该功能。
+# 默认值为 "false"，设置为 "true" 以打开该功能。
 enable-table-across-nodes = true
 # 打开该功能后，该功能只对 Region 个数大于 `region-threshold` 值的表生效。
 region-threshold = 100000
+# 打开该功能后，该功能会对每分钟修改行数大于 `write-key-threshold` 值的表生效。
+# 注意：
+# * 该参数默认值为 0，代表该功能默认不会按表的修改行数来切分表的同步范围。
+# * 你可以根据集群负载来配置该参数，如 30000，代表当表每分钟的更新行数超过 30000 时，该功能将会切分表的同步范围。
+# * 当 `region-threshold` 和 `write-key-threshold` 同时配置时，
+#   TiCDC 将优先检查修改行数是否大于 `write-key-threshold`，
+#   如果不超过，则再检查 Region 个数是否大于 `region-threshold`。
+write-key-threshold = 30000
 ```
 
 一个表包含的 Region 个数可用如下 SQL 查询：
