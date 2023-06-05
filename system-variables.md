@@ -2067,10 +2067,6 @@ MPP is a distributed computing framework provided by the TiFlash engine, which a
 
 ### tidb_enable_resource_control <span class="version-mark">New in v6.6.0</span>
 
-> **Warning:**
->
-> This feature is experimental and its form and usage might change in subsequent versions.
-
 - Scope: GLOBAL
 - Persists to cluster: Yes
 - Default value: `ON`
