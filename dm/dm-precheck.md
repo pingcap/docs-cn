@@ -88,7 +88,7 @@ tiup dmctl check-task ./task.yaml
 
     - 分表存在自增主键时返回警告。如果存在自增主键冲突，请参照[自增主键冲突处理](/dm/shard-merge-best-practices.md#自增主键冲突处理)解决。
 
-#### 物理导入模式检查项
+#### Physical Import 检查项
 
 在任务配置中使用 `import-mode: "physical"` 后，会增加如下的前置检查项以保证[物理导入模式](/tidb-lightning/tidb-lightning-physical-import-mode.md)正常运行。如果参照提示后仍然难以完成这些前置检查，你可以尝试使用[逻辑导入模式](/tidb-lightning/tidb-lightning-logical-import-mode.md)进行导入。
 
