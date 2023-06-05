@@ -21,7 +21,7 @@ summary: 了解 TiDB Lightning 的物理导入模式。
 
 2. `tidb-lightning` 在目标数据库建立表结构，并获取其元数据。
 
-    如果将 `add-index-by-sql` 设置为 `true`，`tidb-lightning` 会使用 SQL 接口添加索引，并且会在导入数据前移除目标表的所有次级索引。
+    如果将 `add-index-by-sql` 设置为 `true`，`tidb-lightning` 会使用 SQL 接口添加索引，并且会在导入数据前移除目标表的所有次级索引。默认值为 `false`，和历史版本保持一致。
 
 3. 每张表都会被分割为多个连续的**区块**，这样来自大表 (200 GB+) 的数据就可以多个并发导入。
 
