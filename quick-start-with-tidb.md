@@ -11,6 +11,8 @@ This guide walks you through the quickest way to get started with TiDB. For non-
 - [Deploy a local test cluster](#deploy-a-local-test-cluster) (for macOS and Linux)
 - [Simulate production deployment on a single machine](#simulate-production-deployment-on-a-single-machine) (for Linux only)
 
+In addition, you can try out TiDB features on [TiDB Playground](https://play.tidbcloud.com/?utm_source=docs&utm_medium=tidb_quick_start).
+
 > **Note:**
 >
 > The deployment method provided in this guide is **ONLY FOR** quick start, **NOT FOR** production.

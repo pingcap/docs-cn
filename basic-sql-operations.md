@@ -10,7 +10,7 @@ TiDB is compatible with MySQL, you can use MySQL statements directly in most of 
 
 <CustomContent platform="tidb">
 
-To experiment with SQL and test out TiDB compatibility with MySQL queries, you can [run TiDB directly in your web browser without installing it](https://tour.tidb.io/). You can also first deploy a TiDB cluster and then run SQL statements in it.
+To experiment with SQL and test out TiDB compatibility with MySQL queries, you can try [TiDB Playground](https://play.tidbcloud.com/?utm_source=docs&utm_medium=basic-sql-operations). You can also first deploy a TiDB cluster and then run SQL statements in it.
 
 </CustomContent>
 
