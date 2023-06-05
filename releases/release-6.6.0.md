@@ -55,7 +55,7 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
   </tr>
   <tr>
     <td>数据库管理与可观测性<br /></td>
-    <td><a href="https://docs.pingcap.com/zh/tidb/v6.6/dm-precheck/#physical-import-检查项" target="_blank">DM 集成物理导入模式</a>（实验特性）</td>
+    <td><a href="https://docs.pingcap.com/zh/tidb/v6.6/dm-precheck/#物理导入模式检查项" target="_blank">DM 集成物理导入模式</a>（实验特性）</td>
     <td>TiDB Data Migration (DM) 集成 TiDB Lightning 的物理导入模式模式，提升 DM 全量数据迁移时的性能，大数据量场景下的迁移时间最多可提升 10 倍。</td>
   </tr>
 </tbody>
