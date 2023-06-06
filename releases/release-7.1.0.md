@@ -533,7 +533,7 @@ Compared with the previous LTS 6.5.0, 7.1.0 not only includes new features, impr
 
 ## Performance test
 
-To learn about the performance of TiDB v7.1.0, you can refer to the [TPC-C performance test report](https://docs.pingcap.com/tidbcloud/v7.1.0-performance-benchmarking-with-tpcc) of the TiDB Dedicated cluster.
+To learn about the performance of TiDB v7.1.0, you can refer to the [TPC-C performance test report](https://docs.pingcap.com/tidbcloud/v7.1.0-performance-benchmarking-with-tpcc) and [Sysbench performance test report](https://docs.pingcap.com/tidbcloud/v7.1.0-performance-benchmarking-with-sysbench) of the TiDB Dedicated cluster.
 
 ## Contributors
 
