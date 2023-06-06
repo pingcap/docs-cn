@@ -25,99 +25,81 @@ aliases: ['/zh/tidb/dev/migrate-from-aurora-using-lightning/','/docs-cn/dev/migr
 
 本节介绍如何导出和导入 shcema 文件。如果你已经提前手动在目标库创建好了相应的表，则本节介绍的内容可以忽略。
 
-#### 导出 schema 文件
+1. 导出 schema 文件
 
-因为 Amazon Aurora 生成的快照文件并不包含建表语句文件，所以你需要使用 Dumpling 自行导出 schema 并使用 TiDB Lightning 在下游创建 schema。你也可以跳过此步骤，并以手动方式在下游自行创建 schema。
+    因为 Amazon Aurora 生成的快照文件并不包含建表语句文件，所以你需要使用 Dumpling 自行导出 schema 并使用 TiDB Lightning 在下游创建 schema。
 
-将有权限访问该 Amazon S3 后端存储的账号的 SecretKey 和 AccessKey 作为环境变量传入 TiDB Lightning 节点。同时还支持从 `~/.aws/credentials` 读取凭证文件。该方式使得该 TiDB Lightning 节点上的所有任务无需再次传入相关 SecretKey 和 AccessKey。
+    将有权限访问该 Amazon S3 后端存储的账号的 SecretKey 和 AccessKey 作为环境变量传入 TiDB Lightning 节点。同时还支持从 `~/.aws/credentials` 读取凭证文件。该方式使得该 TiDB Lightning 节点上的所有任务无需再次传入相关 SecretKey 和 AccessKey。
 
-运行以下命令时，建议使用 `--filter` 参数仅导出所需表的 schema：
+    运行以下命令时，建议使用 `--filter` 参数仅导出所需表的 schema。命令中所用参数描述，请参考 [Dumpling overview](/dumpling-overview.md#dumpling-主要选项表)。
 
-```shell
-export AWS_ACCESS_KEY_ID=${access_key}
-export AWS_SECRET_ACCESS_KEY=${secret_key}
-tiup dumpling --host ${host} --port 3306 --user root --password ${password} --filter 'my_db1.table[12],mydb.*' --consistency none --no-data --output 's3://my-bucket/schema-backup'
-```
+    ```shell
+    export AWS_ACCESS_KEY_ID=${access_key}
+    export AWS_SECRET_ACCESS_KEY=${secret_key}
+    tiup dumpling --host ${host} --port 3306 --user root --password ${password} --filter 'my_db1.table[12],mydb.*' --consistency none --no-data --output 's3://my-bucket/schema-backup'
+    ```
 
-记录上面命令中导出的 schema 的 URI，例如 's3://my-bucket/schema-backup'，后续导入数据时要用到。
+    记录上面命令中导出的 schema 的 URI，例如 's3://my-bucket/schema-backup'，后续导入数据时要用到。
 
-命令中所用参数描述如下。如需更多信息可参考 [Dumpling overview](/dumpling-overview.md)。
+2. 编写 TiDB Lightning 配置文件
 
-|参数               |说明|
-|-                  |-|
-|-u 或 --user       |Aurora MySQL 数据库的用户|
-|-p 或 --password   |MySQL 数据库的用户密码|
-|-P 或 --port       |MySQL 数据库的端口|
-|-h 或 --host       |MySQL 数据库的 IP 地址|
-|-t 或 --thread     |导出的线程数|
-|-o 或 --output     |存储导出文件的目录，支持本地文件路径或[外部存储 URI 格式](/br/backup-and-restore-storages.md)|
-|-r 或 --row        |单个文件的最大行数|
-|-F                 |指定单个文件的最大大小，单位为 MiB，建议值 256 MiB|
-|-B 或 --database   |导出指定数据库|
-|-T 或 --tables-list |导出指定数据表|
-|-d 或 --no-data    |不导出数据，仅导出 schema|
-|-f 或 --filter     |导出能匹配模式的表，不可与 -T 一起使用，语法可参考[table filter](/table-filter.md)|
-|--consistency     |导出期间的一致性模式，Amazon Aurora 只能使用 `none`，即不加锁 dump，不保证一致性|
+    根据以下内容创建用于导入 schema 的配置文件 `tidb-lightning-schema.toml`：
 
-#### 编写 TiDB Lightning 配置文件
+    ```shell
+    vim tidb-lightning-schema.toml
+    ```
 
-根据以下内容创建用于导入 schema 的配置文件 `tidb-lightning-schema.toml`：
+    ```toml
+    [tidb]
 
-```shell
-vim tidb-lightning-schema.toml
-```
+    # 目标 TiDB 集群信息.
+    host = ${host}                # 例如：172.16.32.1
+    port = ${port}                # 例如：4000
+    user = "${user_name}"         # 例如："root"
+    password = "${password}"      # 例如："rootroot"
+    status-port = ${status-port}  # 表结构信息在从 TiDB 的“状态端口”获取例如：10080
+    pd-addr = "${ip}:${port}"     # 集群 PD 的地址，TiDB Lightning 通过 PD 获取部分信息，例如 172.16.31.3:2379。
+                                  # 当采用物理导入模式时 (backend = "local") status-port 和 pd-addr 必须正确填写，否则导入将出现异常。
 
-```toml
-[tidb]
+    [tikv-importer]
+    # "local"：物理导入模式。默认使用该模式，适用于 TB 级以上大数据量，但导入期间下游 TiDB 无法对外提供服务。
+    # "tidb"：逻辑导入模式。TB 级以下数据量也可以采用 `tidb` 后端模式，下游 TiDB 可正常提供服务。
+    # 关于后端模式更多信息请参阅：https://docs.pingcap.com/tidb/stable/tidb-lightning-backends
+    backend = "local"
 
-# 目标 TiDB 集群信息.
-host = ${host}                # 例如：172.16.32.1
-port = ${port}                # 例如：4000
-user = "${user_name}"         # 例如："root"
-password = "${password}"      # 例如："rootroot"
-status-port = ${status-port}  # 表结构信息在从 TiDB 的“状态端口”获取例如：10080
-pd-addr = "${ip}:${port}"     # 集群 PD 的地址，TiDB Lightning 通过 PD 获取部分信息，例如 172.16.31.3:2379。
-                              # 当采用物理导入模式时 (backend = "local") status-port 和 pd-addr 必须正确填写，否则导入将出现异常。
+    # 设置排序的键值对的临时存放地址，目标路径必须是一个空目录，目录空间须大于待导入数据集的大小。
+    # 建议设为与 `data-source-dir` 不同的磁盘目录并使用闪存介质，独占 IO 会获得更好的导入性能。
+    sorted-kv-dir = "${path}"
 
-[tikv-importer]
-# "local"：物理导入模式。默认使用该模式，适用于 TB 级以上大数据量，但导入期间下游 TiDB 无法对外提供服务。
-# "tidb"：逻辑导入模式。TB 级以下数据量也可以采用 `tidb` 后端模式，下游 TiDB 可正常提供服务。
-# 关于后端模式更多信息请参阅：https://docs.pingcap.com/tidb/stable/tidb-lightning-backends
-backend = "local"
+    [mydump]
+    # 解析 Dumpling 导出的 schema 文件
+    default-file-rules=true
 
-# 设置排序的键值对的临时存放地址，目标路径必须是一个空目录，目录空间须大于待导入数据集的大小。
-# 建议设为与 `data-source-dir` 不同的磁盘目录并使用闪存介质，独占 IO 会获得更好的导入性能。
-sorted-kv-dir = "${path}"
+    [mydumper]
+    # 从 Amazon Aurora 导出的快照文件的地址
+    data-source-dir = "${s3_path}"  # eg: s3://my-bucket/sql-backup
 
-[mydump]
-# 解析 Dumpling 导出的 schema 文件
-default-file-rules=true
+    [[mydumper.files]]
+    # 解析 parquet 文件所需的表达式
+    pattern = '(?i)^(?:[^/]*/)*([a-z0-9_]+)\.([a-z0-9_]+)/(?:[^/]*/)*(?:[a-z0-9\-_.]+\.(parquet))$'
+    schema = '$1'
+    table = '$2'
+    type = '$3'
+    ```
 
-[mydumper]
-# 从 Amazon Aurora 导出的快照文件的地址
-data-source-dir = "${s3_path}"  # eg: s3://my-bucket/sql-backup
+    如果需要在 TiDB 开启 TLS，请参考 [TiDB Lightning Configuration](/tidb-lightning/tidb-lightning-configuration.md)。
 
-[[mydumper.files]]
-# 解析 parquet 文件所需的表达式
-pattern = '(?i)^(?:[^/]*/)*([a-z0-9_]+)\.([a-z0-9_]+)/(?:[^/]*/)*(?:[a-z0-9\-_.]+\.(parquet))$'
-schema = '$1'
-table = '$2'
-type = '$3'
-```
+3. 导入 schema 文件
 
-如果需要在 TiDB 开启 TLS，请参考 [TiDB Lightning Configuration](/tidb-lightning/tidb-lightning-configuration.md)。
+    使用 TiDB Lightning 在下游 TiDB 建表，导入 schema 到 TiDB。
 
-#### 导入 schema 文件
+    ```shell
+    export AWS_ACCESS_KEY_ID=${access_key}
+    export AWS_SECRET_ACCESS_KEY=${secret_key}
+    tiup tidb-lightning -config tidb-lightning-schema.toml -d 's3://my-bucket/schema-backup' # 注意这里的 URI 是指存放 Dumpling 从 Amazon Aurora 导出的 schema 文件的 URI。
+    ```
 
-使用 TiDB Lightning 在下游 TiDB 建表，导入 schema 到 TiDB。
-
-```shell
-export AWS_ACCESS_KEY_ID=${access_key}
-export AWS_SECRET_ACCESS_KEY=${secret_key}
-tiup tidb-lightning -config tidb-lightning-schema.toml -d 's3://my-bucket/schema-backup' # 注意这里的 URI 是指存放 Dumpling 从 Amazon Aurora 导出的 schema 文件的 URI。
-```
-
-更多 URI 配置参数，如指定 AWS IAM 角色的 ARN 来访问 S3 数据等，请参考 [S3 URI 配置参数](/tidb-lightning/tidb-lightning-data-source.md#从-amazon-s3-导入数据)。
+    更多 URI 配置参数，如指定 AWS IAM 角色的 ARN 来访问 S3 数据等，请参考 [S3 URI 配置参数](/tidb-lightning/tidb-lightning-data-source.md#从-amazon-s3-导入数据)。
 
 ### 第 2 步：导出 Amazon Aurora 快照文件到 Amazon S3
 
