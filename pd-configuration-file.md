@@ -117,7 +117,7 @@ pd-server 相关配置项。
 
 > **注意：**
 >
-> 如果是从 v6.0.0~v6.2.x 升级上来的，`min-resolved-ts-persistence-interval` 将保持此前配置的 `"0s"`，使用该功能的话需要手动开启。
+> 对于从 v6.0.0~v6.2.0 升级上来的集群，`min-resolved-ts-persistence-interval` 的默认值不发生变化，即为 `"0s"`。若要开启该功能，需要手动修改该配置项的值。
 
 ## security
 
