@@ -59,7 +59,7 @@ aliases: ['/zh/tidb/dev/migrate-from-aurora-using-lightning/','/docs-cn/dev/migr
     password = "${password}"      # 例如："rootroot"
     status-port = ${status-port}  # 表结构信息在从 TiDB 的“状态端口”获取例如：10080
     pd-addr = "${ip}:${port}"     # 集群 PD 的地址，TiDB Lightning 通过 PD 获取部分信息，例如 172.16.31.3:2379。
-                                  # 当采用物理导入模式时 (backend = "local") status-port 和 pd-addr 必须正确填写，否则导入将出现异常。
+                                  # 当采用物理导入模式时 (backend = "local")，status-port 和 pd-addr 必须正确填写，否则导入将出现异常。
 
     [tikv-importer]
     # "local"：物理导入模式。默认使用该模式，适用于 TB 级以上大数据量，但导入期间下游 TiDB 无法对外提供服务。
