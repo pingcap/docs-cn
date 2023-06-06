@@ -9,7 +9,7 @@ summary: 了解 TiDB 7.0.0 版本的新功能、兼容性变更、改进提升�
 
 TiDB 版本：7.0.0
 
-试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v7.0/quick-start-with-tidb) | [下载离线包](https://cn.pingcap.com/product-community/)
+试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v7.0/quick-start-with-tidb) | [下载离线包](https://cn.pingcap.com/product-community/?version=v7.0.0-DMR#version-list)
 
 在 7.0.0 版本中，你可以获得以下关键特性：
 
@@ -56,8 +56,8 @@ TiDB 版本：7.0.0
   </tr>
   <tr>
     <td rowspan="2">数据库管理与可观测性<br/></td>
-    <td>TiDB 通过 <a href="https://docs.pingcap.com/zh/tidb/v7.0/sql-statement-load-data" target="_blank"><code>LOAD DATA</code> 语句集成 TiDB Lightning</a>（实验特性）</td>
-    <td>集成 TiDB Lightning 的逻辑导入模式使 <code>LOAD DATA</code> 语句更加强大，例如支持从 S3/GCS 导入数据、支持任务管理等。</td>
+    <td><a href="https://docs.pingcap.com/zh/tidb/v7.0/sql-statement-load-data" target="_blank"><code>LOAD DATA</code> 语句功能增强</a>（实验特性）</td>
+    <td><code>LOAD DATA</code> 语句功能增强，例如支持从 S3/GCS 导入数据。</td>
   </tr>
   <tr>
     <td>TiCDC 支持<a href="https://docs.pingcap.com/zh/tidb/v7.0/ticdc-sink-to-cloud-storage" target="_blank">对象存储 Sink</a> (GA)</td>
@@ -150,7 +150,7 @@ TiDB 版本：7.0.0
 
     TiDB 优化了基于资源组的资源管控特性。该特性将会极大地提升 TiDB 集群的资源利用效率和性能表现。资源管控特性的引入对 TiDB 具有里程碑的意义，你可以将一个分布式数据库集群划分成多个逻辑单元，将不同的数据库用户映射到对应的资源组中，并根据需要设置每个资源组的配额。当集群资源紧张时，来自同一个资源组的会话所使用的全部资源将被限制在配额内，避免其中一个资源组过度消耗，从而影响其他资源组中的会话正常运行。
 
-    该特性也可以将多个来自不同系统的中小型应用合入一个 TiDB 集群中，个别应用的负载提升，不会影响其他应用的正常运行。而在系统负载较低的时候，繁忙的应用即使超过设定的读写配额，也仍然可以被分配到所需的系统资源，达到资源的最大化利用。此外，合理利用资源管控特性可以减少集群数量，降低运维难度及管理成本。
+    该特性也可以将多个来自不同系统的中小型应用合入一个 TiDB 集群中，个别应用的负载提升，不会影响其他应用的正常运行。而在系统负载较低的时候，繁忙的应用即使超过设定的配额，也仍然可以被分配到所需的系统资源，达到资源的最大化利用。此外，合理利用资源管控特性可以减少集群数量，降低运维难度及管理成本。
 
     该特性不仅提供了 Grafana 内置的 Resource Control Dashboard 展示资源的实际使用情况，协助你更合理地配置资源，还支持基于会话和语句级别（Hint）的动态资源管控能力。这些功能的引入将帮助你更精确地掌控 TiDB 集群的资源使用情况，并根据实际需要动态调整配额。
 
@@ -248,7 +248,7 @@ TiDB 版本：7.0.0
 * [DBeaver](https://dbeaver.io/) v23.0.1 默认支持 TiDB [#17396](https://github.com/dbeaver/dbeaver/issues/17396) @[Icemap](https://github.com/Icemap)
 
     - 提供独立的 TiDB 模块、Icon 和标识。
-    - 默认配置支持 [TiDB Cloud Serverless Tier](https://docs.pingcap.com/tidbcloud/select-cluster-tier#serverless-tier-beta)，你可以更方便地连接 Serverless Tier。
+    - 默认配置支持 [TiDB Serverless](https://docs.pingcap.com/tidbcloud/select-cluster-tier#tidb-serverless-beta)，你可以更方便地连接 TiDB Serverless。
     - 支持识别 TiDB 版本，从而显示或隐藏外键 Tab。
     - 支持 Explain SQL 计划显示。
     - 支持 TiDB 语法高亮，如 `PESSIMISTIC`、`OPTIMISTIC`、`AUTO_RANDOM`、`PLACEMENT`、`POLICY`、`REORGANIZE`、`EXCHANGE`、`CACHE`、`NONCLUSTERED`、`CLUSTERED` 等。
@@ -258,15 +258,13 @@ TiDB 版本：7.0.0
 
 ### 数据迁移
 
-* `LOAD DATA` 语句集成 TiDB Lightning，你可以使用 `LOAD DATA` 语句完成原先需要使用 TiDB Lightning 才能完成的数据导入任务（实验特性）[#40499](https://github.com/pingcap/tidb/issues/40499) @[lance6716](https://github.com/lance6716)
+* 增强 `LOAD DATA` 语句功能，支持导入云存储中的数据（实验特性）[#40499](https://github.com/pingcap/tidb/issues/40499) @[lance6716](https://github.com/lance6716)
 
-    在集成 TiDB Lightning 之前，`LOAD DATA` 语句只能用于导入客户端的数据文件，如果你需要从云存储导入数据，不得不借助 TiDB Lightning 来实现。但是单独部署 TiDB Lightning 又会带来额外的部署成本和管理成本。将 TiDB Lightning 逻辑导入能力 (Logical Import Mode) 集成到 `LOAD DATA` 语句后，不仅可以省去 TiDB Lightning 的部署和管理成本，还可以借助 TiDB Lightning 的功能极大扩展 `LOAD DATA` 语句的能力。部分扩展的功能举例说明如下：
+    之前，`LOAD DATA` 语句只能用于导入客户端的数据文件，如果你需要从云存储导入数据，不得不借助 TiDB Lightning 来实现。但是单独部署 TiDB Lightning 又会带来额外的部署成本和管理成本。现在可直接通过`LOAD DATA` 语句导入云存储中的数据。功能举例说明如下：
 
     - 支持从 Amazon S3 和 Google Cloud Storage 导入数据到 TiDB，且支持使用通配符一次性匹配多个源文件导入到 TiDB。
     - 支持 `DEFINED NULL BY` 来定义 null。
-    - 支持 CSV、TSV、Parquet、SQL (mydumper/dumpling) 格式的源文件。
-    - 支持将任务设置为 `Detached`，让任务在后台执行。
-    - 支持任务管理，可通过 `SHOW LOAD DATA jobid` 查询任务状态和进展详情，方便管理和维护。
+    - 支持 CSV、TSV 格式的源文件。
 
   更多信息，请参考[用户文档](/sql-statements/sql-statement-load-data.md)。
 
@@ -326,7 +324,7 @@ TiDB 版本：7.0.0
 
     在升级 TiCDC 集群到 v7.0.0 时，如果使用 Avro 同步的表包含 `FLOAT` 类型数据，请在升级前手动调整 Confluent Schema Registry 的兼容性策略为 `None`，使 changefeed 能够成功更新 schema。否则，在升级之后 changefeed 将无法更新 schema 并进入错误状态。
 
-* [`LOAD DATA` SQL 语句](/sql-statements/sql-statement-load-data.md)在 v7.0.0 中新增参数 `batch_size` 来实现事务的拆分。`batch_size` 参数默认值为 `1000`，表示将待导入 TiDB 的数据拆分成多个事务提交，每一个事务插入 1000 行记录到 TiDB。在 v7.0.0 以前控制事务拆分的参数为 [`tidb_dml_batch_size`](/system-variables.md#tidb_dml_batch_size)，自 v7.0.0 起不再生效。
+* 自 v7.0.0 起，[`tidb_dml_batch_size`](/system-variables.md#tidb_dml_batch_size) 对 [`LOAD DATA` 语句](/sql-statements/sql-statement-load-data.md)不再生效。
 
 ### 系统变量
 
@@ -372,13 +370,13 @@ TiDB 版本：7.0.0
 | TiFlash | [`storage.s3.secret_access_key`](/tiflash/tiflash-disaggregated-and-s3.md) |  新增  | 访问 S3 的 SECRET_ACCESS_KEY。 |
 | TiFlash | [`storage.remote.cache.dir`](/tiflash/tiflash-disaggregated-and-s3.md) |  新增  | TiFlash Compute Node 的本地数据缓存目录。 |
 | TiFlash | [`storage.remote.cache.capacity`](/tiflash/tiflash-disaggregated-and-s3.md) |  新增  | TiFlash Compute Node 的本地数据缓存目录的大小。 |
-| TiDB Lightning   | [`add-index-by-sql`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置)       |    新增     |  控制 Physical Import Mode 是否通过 SQL 方式添加索引。默认为 `false`，表示 TiDB Lightning 会将行数据以及索引数据都编码成 KV pairs 后一同导入 TiKV，实现机制和历史版本保持一致。通过 SQL 方式添加索引的优点是将导入数据与导入索引分开，可以快速导入数据，即使导入数据后，索引添加失败，也不会影响数据的一致性。        |
+| TiDB Lightning   | [`add-index-by-sql`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置)       |    新增     |  控制物理导入模式是否通过 SQL 方式添加索引。默认为 `false`，表示 TiDB Lightning 会将行数据以及索引数据都编码成 KV pairs 后一同导入 TiKV，实现机制和历史版本保持一致。通过 SQL 方式添加索引的优点是将导入数据与导入索引分开，可以快速导入数据，即使导入数据后，索引添加失败，也不会影响数据的一致性。        |
 | TiCDC      | [`enable-table-across-nodes`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-配置文件说明)          |   新增    |    将表按 Region 个数划分成多个同步范围，这些范围可由多个 TiCDC 节点同步。    |
 | TiCDC      | [`region-threshold`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-配置文件说明)    | 新增         | 开启了 `enable-table-across-nodes` 后，该功能只对 Region 个数大于 `region-threshold` 值的表生效。      |
 | DM | [`analyze`](/dm/task-configuration-file-full.md#完整配置文件示例)  | 新增 | 配置是否在 CHECKSUM 结束后对所有表逐个执行 `ANALYZE TABLE <table>` 操作，可配置 `"required"`/`"optional"`/`"off"`。默认为 `"optional"`。|
 | DM | [`range-concurrency`](/dm/task-configuration-file-full.md#完整配置文件示例)  | 新增 | 配置 dm-worker 向 TiKV 写入 KV 数据的并发数。 |
 | DM | [`compress-kv-pairs`](/dm/task-configuration-file-full.md#完整配置文件示例)  | 新增 | 配置 dm-worker 向 TiKV 发送 KV 数据时是否启用压缩，可配置 `"gzip"`，默认为空表示不压缩。 |
-| DM | [`pd-addr`](/dm/task-configuration-file-full.md#完整配置文件示例)  | 新增 | 配置 Physical Import 时连接下游 PD server 的地址，填一个或多个均可。配置项为空时，默认使用 TiDB 中查询到的 PD 地址信息。 |
+| DM | [`pd-addr`](/dm/task-configuration-file-full.md#完整配置文件示例)  | 新增 | 配置物理导入模式时连接下游 PD server 的地址，填一个或多个均可。配置项为空时，默认使用 TiDB 中查询到的 PD 地址信息。 |
 
 ## 改进提升
 
@@ -487,13 +485,13 @@ TiDB 版本：7.0.0
 
     + TiDB Data Migration (DM)
 
-        - 修复了 DM worker 节点使用 GCP Cloud Storage 时，由于断点续传信息记录过于频繁，达到了 GCP Cloud Storage 的请求频次上限，导致 DM worker 无法把数据写入 GCP Cloud Storage 中，从而导致全量数据加载失败的问题 [#8482](https://github.com/pingcap/tiflow/issues/8482) @[maxshuang](https://github.com/maxshuang)
+        - 修复了 DM worker 节点使用 Google Cloud Storage 时，由于断点续传信息记录过于频繁，达到了 Google Cloud Storage 的请求频次上限，导致 DM worker 无法把数据写入 Google Cloud Storage 中，从而导致全量数据加载失败的问题 [#8482](https://github.com/pingcap/tiflow/issues/8482) @[maxshuang](https://github.com/maxshuang)
         - 修复了在多个导入任务同时同步同一个下游的数据，并且都使用了下游元数据表来记录断点续传信息时，所有任务的断点续传信息被写入了同一张元数据表，并且使用了相同的任务 ID 的问题 [#8500](https://github.com/pingcap/tiflow/issues/8500) @[maxshuang](https://github.com/maxshuang)
 
     + TiDB Lightning
 
-        - 修复了当使用 Physical Import Mode 导入数据时，如果目标表的复合主键中存在 `auto_random` 列，但源数据中没有指定该列的值，TiDB Lightning 不能为 `auto_random` 列自动生成数据的问题 [#41454](https://github.com/pingcap/tidb/issues/41454) @[D3Hunter](https://github.com/D3Hunter)
-        - 修复了当使用 TiDB Lightning 的 Logical Import Mode 导入数据时，由于目标集群用户没有 `CONFIG` 权限导致导入失败的问题 [#41915](https://github.com/pingcap/tidb/issues/41915) @[lichunzhu](https://github.com/lichunzhu)
+        - 修复了当使用物理导入模式导入数据时，如果目标表的复合主键中存在 `auto_random` 列，但源数据中没有指定该列的值，TiDB Lightning 不能为 `auto_random` 列自动生成数据的问题 [#41454](https://github.com/pingcap/tidb/issues/41454) @[D3Hunter](https://github.com/D3Hunter)
+        - 修复了当使用 TiDB Lightning 的逻辑导入模式导入数据时，由于目标集群用户没有 `CONFIG` 权限导致导入失败的问题 [#41915](https://github.com/pingcap/tidb/issues/41915) @[lichunzhu](https://github.com/lichunzhu)
 
 ## 贡献者
 

@@ -45,7 +45,7 @@ TiDB 备份恢复功能可以用于满足以下业务的需求：
 
 ## 功能使用
 
-根据 TiDB 部署方式的不同，使用备份恢复功能的方式也不同。本文主要介绍在 On-Premise 物理部署方式下，如何使用 br 命令行工具进行 TiDB 的备份和恢复。
+根据 TiDB 部署方式的不同，使用备份恢复功能的方式也不同。本文主要介绍在本地部署方式下，如何使用 br 命令行工具进行 TiDB 的备份和恢复。
 
 其它 TiDB 的部署方式的备份恢复功能使用，可以参考：
 
@@ -117,7 +117,7 @@ TiDB 支持将数据备份到 Amazon S3、Google Cloud Storage (GCS)、Azure Blo
 | 聚簇索引 | [#565](https://github.com/pingcap/br/issues/565)       | 确保恢复时集群的 `tidb_enable_clustered_index` 全局变量和备份时一致，否则会导致数据不一致的问题，例如 `default not found` 和数据索引不一致。 |
 | New collation  | [#352](https://github.com/pingcap/br/issues/352)       | 确保恢复时集群的 `new_collations_enabled_on_first_bootstrap` 变量值和备份时的一致，否则会导致数据索引不一致和 checksum 通不过。更多信息，请参考 [FAQ - BR 为什么会报 `new_collations_enabled_on_first_bootstrap` 不匹配？](/faq/backup-and-restore-faq.md#恢复时为什么会报-new_collations_enabled_on_first_bootstrap-不匹配)。 |
 | 全局临时表 | | 确保使用 BR v5.3.0 及以上版本进行备份和恢复，否则会导致全局临时表的表定义错误。 |
-| TiDB Lightning Physical Import| |上游数据库使用 TiDB Lightning Physical 方式导入的数据，无法作为数据日志备份下来。推荐在数据导入后执行一次全量备份，细节参考[上游数据库使用 TiDB Lightning Physical 方式导入数据的恢复](/faq/backup-and-restore-faq.md#上游数据库使用-tidb-lightning-physical-方式导入数据时为什么无法使用日志备份功能)。|
+| TiDB Lightning 物理导入模式| |上游数据库使用 TiDB Lightning 物理导入模式导入的数据，无法作为数据日志备份下来。推荐在数据导入后执行一次全量备份，细节参考[上游数据库使用 TiDB Lightning 物理导入模式导入数据的恢复](/faq/backup-and-restore-faq.md#上游数据库使用-tidb-lightning-物理导入模式导入数据时为什么无法使用日志备份功能)。|
 
 ### 版本间兼容性
 
