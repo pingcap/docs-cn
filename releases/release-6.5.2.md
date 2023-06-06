@@ -102,7 +102,7 @@ TiDB 版本：6.5.2
         - 修复在部分场景中 `cgroup` 的内存限制不生效问题 [#8588](https://github.com/pingcap/tiflow/issues/8588) @[amyangfei](https://github.com/amyangfei)
         - 修复 Redo log 在 apply 时，特殊情况下出现数据丢失的问题 [#8591](https://github.com/pingcap/tiflow/issues/8591) @[CharlesCheung96](https://github.com/CharlesCheung96)
         - 修复 `db sorter` 使用内存时未受 `cgroup memory limit` 限制的问题 [#8588](https://github.com/pingcap/tiflow/issues/8588) @[amyangfei](https://github.com/amyangfei)
-        - 修复同步数据时由于 `UPDATE` 和 `INSERT` 语句乱序可能导致 `Duplicate entry` 错误的问题 [#8597](https://github.com/pingcap/tiflow/issues/8597) @[sdojjy](https://github.com/sojjy)
+        - 修复同步数据时由于 `UPDATE` 和 `INSERT` 语句乱序可能导致 `Duplicate entry` 错误的问题 [#8597](https://github.com/pingcap/tiflow/issues/8597) @[sdojjy](https://github.com/sdojjy)
         - 修复由于 PD 和 TiCDC 之间的网络隔离引起 TiCDC 程序异常退出的问题 [#8562](https://github.com/pingcap/tiflow/issues/8562) @[overvenus](https://github.com/overvenus)
         - 修复了 Kubernetes 上不能平滑升级 (graceful upgrade) TiCDC 集群的问题 [#8484](https://github.com/pingcap/tiflow/issues/8484) @[overvenus](https://github.com/overvenus)
         - 修复了当所有 Kafka server 不可访问时会导致 TiCDC server panic 的问题 [#8523](https://github.com/pingcap/tiflow/issues/8523) @[3AceShowHand](https://github.com/3AceShowHand)
