@@ -160,8 +160,8 @@ CDC000005.csv
 
 当上游表的 DDL 事件引起表的版本变更时，TiCDC 将会自动进行以下操作：
 
-- 切换到新的路径下写入数据变更记录。例如，当 `test.table1` 的版本变更为 `441349361156227074` 时，TiCDC 将会在 `s3://bucket/bbb/ccc/test/table1/441349361156227074/2022-01-02/CDC000001.csv` 路径中写入数据。
-- 生成一个文件存储表结构信息，文件路径如下：
+- 切换到新的路径下写入数据变更记录。例如，当 `test.table1` 的版本变更为 `441349361156227074` 时，TiCDC 将会在 `s3://bucket/bbb/ccc/test/table1/441349361156227074/2022-01-02/` 路径下写入数据。
+- 生成一个 schema 文件存储表结构信息，文件路径如下：
 
 ```shell
 {scheme}://{prefix}/{schema}/{table}/meta/schema_{table-version}_{hash}.json
@@ -227,7 +227,6 @@ CDC000005.csv
 #### 库级 DDL 事件
 
 当上游数据库发生库级 DDL 事件时，TiCDC 将会自动生成一个文件存储数据库结构信息，文件路径如下：
-
 
 ```shell
 {scheme}://{prefix}/{schema}/meta/schema_{table-version}_{hash}.json
