@@ -76,14 +76,17 @@ port = ${port}                # 例如：4000
 user = "${user_name}"         # 例如："root"
 password = "${password}"      # 例如："rootroot"
 status-port = ${status-port}  # 表结构信息在从 TiDB 的“状态端口”获取例如：10080
-pd-addr = "${ip}:${port}"     # 集群 PD 的地址，TiDB Lightning 通过 PD 获取部分信息，例如 172.16.31.3:2379。当采用物理导入模式时 (backend = "local") status-port 和 pd-addr 必须正确填写，否则导入将出现异常。
+pd-addr = "${ip}:${port}"     # 集群 PD 的地址，TiDB Lightning 通过 PD 获取部分信息，例如 172.16.31.3:2379。
+                              # 当采用物理导入模式时 (backend = "local") status-port 和 pd-addr 必须正确填写，否则导入将出现异常。
 
 [tikv-importer]
 # "local"：物理导入模式。默认使用该模式，适用于 TB 级以上大数据量，但导入期间下游 TiDB 无法对外提供服务。
-# "tidb"：逻辑导入模式。TB 级以下数据量也可以采用 `tidb` 后端模式，下游 TiDB 可正常提供服务。关于后端模式更多信息请参阅：https://docs.pingcap.com/tidb/stable/tidb-lightning-backends
+# "tidb"：逻辑导入模式。TB 级以下数据量也可以采用 `tidb` 后端模式，下游 TiDB 可正常提供服务。
+# 关于后端模式更多信息请参阅：https://docs.pingcap.com/tidb/stable/tidb-lightning-backends
 backend = "local"
 
-# 设置排序的键值对的临时存放地址，目标路径必须是一个空目录，目录空间须大于待导入数据集的大小，建议设为与 `data-source-dir` 不同的磁盘目录并使用闪存介质，独占 IO 会获得更好的导入性能。
+# 设置排序的键值对的临时存放地址，目标路径必须是一个空目录，目录空间须大于待导入数据集的大小。
+# 建议设为与 `data-source-dir` 不同的磁盘目录并使用闪存介质，独占 IO 会获得更好的导入性能。
 sorted-kv-dir = "${path}"
 
 [mydump]
@@ -161,14 +164,17 @@ port = ${port}                # 例如：4000
 user = "${user_name}"         # 例如："root"
 password = "${password}"      # 例如："rootroot"
 status-port = ${status-port}  # 表结构信息在从 TiDB 的“状态端口”获取例如：10080
-pd-addr = "${ip}:${port}"     # 集群 PD 的地址，TiDB Lightning 通过 PD 获取部分信息，例如 172.16.31.3:2379。当采用物理导入模式时 (backend = "local") status-port 和 pd-addr 必须正确填写，否则导入将出现异常。
+pd-addr = "${ip}:${port}"     # 集群 PD 的地址，TiDB Lightning 通过 PD 获取部分信息，例如 172.16.31.3:2379。
+                              # 当采用物理导入模式时 (backend = "local") status-port 和 pd-addr 必须正确填写，否则导入将出现异常。
 
 [tikv-importer]
 # "local"：物理导入模式。默认使用该模式，适用于 TB 级以上大数据量，但导入期间下游 TiDB 无法对外提供服务。
-# "tidb"：逻辑导入模式。TB 级以下数据量也可以采用 `tidb` 后端模式，下游 TiDB 可正常提供服务。关于后端模式更多信息请参阅：https://docs.pingcap.com/tidb/stable/tidb-lightning-backends
+# "tidb"：逻辑导入模式。TB 级以下数据量也可以采用 `tidb` 后端模式，下游 TiDB 可正常提供服务。
+# 关于后端模式更多信息请参阅：https://docs.pingcap.com/tidb/stable/tidb-lightning-backends
 backend = "local"
 
-# 设置排序的键值对的临时存放地址，目标路径必须是一个空目录，目录空间须大于待导入数据集的大小，建议设为与 `data-source-dir` 不同的磁盘目录并使用闪存介质，独占 IO 会获得更好的导入性能。
+# 设置排序的键值对的临时存放地址，目标路径必须是一个空目录，目录空间须大于待导入数据集的大小。
+# 建议设为与 `data-source-dir` 不同的磁盘目录并使用闪存介质，独占 IO 会获得更好的导入性能。
 sorted-kv-dir = "${path}"
 
 [mydump]
