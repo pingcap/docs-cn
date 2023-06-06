@@ -226,7 +226,7 @@ CDC000005.csv
 
 #### 库级 DDL 事件
 
-当上游数据库发生库级 DDL 事件时，TiCDC 将会自动生成一个文件存储数据库结构信息，文件路径如下：
+当上游数据库发生库级 DDL 事件时，TiCDC 将会自动生成一个 schema 文件存储数据库结构信息，文件路径如下：
 
 ```shell
 {scheme}://{prefix}/{schema}/meta/schema_{table-version}_{hash}.json
