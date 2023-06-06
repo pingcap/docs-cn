@@ -119,9 +119,13 @@ pd-server 相关配置项。
 ### `min-resolved-ts-persistence-interval` <span class="version-mark">从 v6.0.0 版本开始引入</span>
 
 + 设置 PD leader 对集群中 Resolved TS 最小值进行持久化的间隔时间。如果该值设置为 `0`，表示禁用该功能。
-+ 默认值：`"1s"`，即最小正值(v6.3.0起)；v6.0.0、v6.1.0、v6.2.0 为 "0s"
++ 默认值：在 v6.3.0 之前版本中为 `"0s"`，在 v6.3.0 及之后的版本中为 `"1s"`，即最小正值。
 + 最小值：0
 + 单位：秒
+
+> **注意：**
+>
+> 如果是从 v6.0.0~v6.2.x 升级上来的，`min-resolved-ts-persistence-interval` 将保持此前配置的 `"0s"`，使用该功能的话需要手动开启。
 
 ## security
 
