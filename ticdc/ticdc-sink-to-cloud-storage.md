@@ -163,9 +163,9 @@ CDC000005.csv
 - 切换到新的路径下写入数据变更记录。例如，当 `test.table1` 的版本变更为 `441349361156227074` 时，TiCDC 将会在 `s3://bucket/bbb/ccc/test/table1/441349361156227074/2022-01-02/` 路径下写入数据。
 - 生成一个 schema 文件存储表结构信息，文件路径如下：
 
-```shell
-{scheme}://{prefix}/{schema}/{table}/meta/schema_{table-version}_{hash}.json
-```
+    ```shell
+    {scheme}://{prefix}/{schema}/{table}/meta/schema_{table-version}_{hash}.json
+    ```
 
 以 `schema_441349361156227074_3131721815.json` 为例，表结构信息文件的内容如下：
 
