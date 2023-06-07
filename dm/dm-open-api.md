@@ -29,7 +29,7 @@ TiDB Data Migration (DM) 提供 OpenAPI 功能，你可以通过 OpenAPI 方便�
 >
 > - 部署 DM-master 后，你可访问 `http://{master-addr}/api/v1/docs` 在线预览文档。
 >
-> - 配置文件中支持的某些功能在 OpenAPI 中是不支持的，二者的功能能力没有完全对齐。对于一些 OpenAPI 不支持的功能，建议使用[配置文件](/dm/dm-config-overview.md)来实现。
+> - 配置文件中支持的某些功能在 OpenAPI 中是不支持的，二者的功能能力没有完全对齐。在生产环境中，建议使用[配置文件](/dm/dm-config-overview.md)来实现。
 
 你可以通过 OpenAPI 完成 DM 集群的如下运维操作：
 
