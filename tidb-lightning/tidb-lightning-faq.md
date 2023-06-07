@@ -79,7 +79,7 @@ ADMIN CHECKSUM TABLE `schema`.`table`;
 
 自 v5.1 起，TiDB Lightning 可以自动识别下游的库和表。如果你使用低于 v5.1 的 TiDB Lightning，需在配置文档中的 `[mydumper]` 部分将 `no-schema` 设置为 `true` 即可。`no-schema=true` 会默认下游已经创建好所需的数据库和表，如果没有创建，会报错。
 
-## 有些不合法的数据，能否通过开启严格 SQL 模式 (Strict SQL Mode) 来禁止导入？
+## 有些不合规的数据，能否通过开启严格 SQL 模式 (Strict SQL Mode) 来禁止导入？
 
 可以。TiDB Lightning 默认的 [`sql_mode`](https://dev.mysql.com/doc/refman/5.7/en/sql-mode.html) 为 `"ONLY_FULL_GROUP_BY,NO_AUTO_CREATE_USER"`。该设置允许导入某些不合规的数值，例如 `1970-00-00` 这样的日期。
 
@@ -88,7 +88,7 @@ ADMIN CHECKSUM TABLE `schema`.`table`;
 ```toml
 ...
 [tidb]
-sql-mode = ""
+sql-mode = "STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION"
 ...
 ```
 
