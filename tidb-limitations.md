@@ -20,7 +20,7 @@ aliases: ['/docs-cn/dev/tidb-limitations/']
 
 ## Databases、Tables、Views、Connections 总个数限制
 
-| 标识符类型  | 最大个数   |
+| 类型  | 最大个数   |
 |:----------|:----------|
 | Databases | unlimited |
 | Tables    | unlimited |

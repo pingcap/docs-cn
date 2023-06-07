@@ -9,7 +9,7 @@ summary: 了解 TiDB 7.0.0 版本的新功能、兼容性变更、改进提升�
 
 TiDB 版本：7.0.0
 
-试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v7.0/quick-start-with-tidb) | [下载离线包](https://cn.pingcap.com/product-community/)
+试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v7.0/quick-start-with-tidb) | [下载离线包](https://cn.pingcap.com/product-community/?version=v7.0.0-DMR#version-list)
 
 在 7.0.0 版本中，你可以获得以下关键特性：
 
@@ -248,7 +248,7 @@ TiDB 版本：7.0.0
 * [DBeaver](https://dbeaver.io/) v23.0.1 默认支持 TiDB [#17396](https://github.com/dbeaver/dbeaver/issues/17396) @[Icemap](https://github.com/Icemap)
 
     - 提供独立的 TiDB 模块、Icon 和标识。
-    - 默认配置支持 [TiDB Cloud Serverless Tier](https://docs.pingcap.com/tidbcloud/select-cluster-tier#serverless-tier-beta)，你可以更方便地连接 Serverless Tier。
+    - 默认配置支持 [TiDB Serverless](https://docs.pingcap.com/tidbcloud/select-cluster-tier#tidb-serverless-beta)，你可以更方便地连接 TiDB Serverless。
     - 支持识别 TiDB 版本，从而显示或隐藏外键 Tab。
     - 支持 Explain SQL 计划显示。
     - 支持 TiDB 语法高亮，如 `PESSIMISTIC`、`OPTIMISTIC`、`AUTO_RANDOM`、`PLACEMENT`、`POLICY`、`REORGANIZE`、`EXCHANGE`、`CACHE`、`NONCLUSTERED`、`CLUSTERED` 等。
@@ -370,13 +370,13 @@ TiDB 版本：7.0.0
 | TiFlash | [`storage.s3.secret_access_key`](/tiflash/tiflash-disaggregated-and-s3.md) |  新增  | 访问 S3 的 SECRET_ACCESS_KEY。 |
 | TiFlash | [`storage.remote.cache.dir`](/tiflash/tiflash-disaggregated-and-s3.md) |  新增  | TiFlash Compute Node 的本地数据缓存目录。 |
 | TiFlash | [`storage.remote.cache.capacity`](/tiflash/tiflash-disaggregated-and-s3.md) |  新增  | TiFlash Compute Node 的本地数据缓存目录的大小。 |
-| TiDB Lightning   | [`add-index-by-sql`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置)       |    新增     |  控制 Physical Import Mode 是否通过 SQL 方式添加索引。默认为 `false`，表示 TiDB Lightning 会将行数据以及索引数据都编码成 KV pairs 后一同导入 TiKV，实现机制和历史版本保持一致。通过 SQL 方式添加索引的优点是将导入数据与导入索引分开，可以快速导入数据，即使导入数据后，索引添加失败，也不会影响数据的一致性。        |
+| TiDB Lightning   | [`add-index-by-sql`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置)       |    新增     |  控制物理导入模式是否通过 SQL 方式添加索引。默认为 `false`，表示 TiDB Lightning 会将行数据以及索引数据都编码成 KV pairs 后一同导入 TiKV，实现机制和历史版本保持一致。通过 SQL 方式添加索引的优点是将导入数据与导入索引分开，可以快速导入数据，即使导入数据后，索引添加失败，也不会影响数据的一致性。        |
 | TiCDC      | [`enable-table-across-nodes`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-配置文件说明)          |   新增    |    将表按 Region 个数划分成多个同步范围，这些范围可由多个 TiCDC 节点同步。    |
 | TiCDC      | [`region-threshold`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-配置文件说明)    | 新增         | 开启了 `enable-table-across-nodes` 后，该功能只对 Region 个数大于 `region-threshold` 值的表生效。      |
 | DM | [`analyze`](/dm/task-configuration-file-full.md#完整配置文件示例)  | 新增 | 配置是否在 CHECKSUM 结束后对所有表逐个执行 `ANALYZE TABLE <table>` 操作，可配置 `"required"`/`"optional"`/`"off"`。默认为 `"optional"`。|
 | DM | [`range-concurrency`](/dm/task-configuration-file-full.md#完整配置文件示例)  | 新增 | 配置 dm-worker 向 TiKV 写入 KV 数据的并发数。 |
 | DM | [`compress-kv-pairs`](/dm/task-configuration-file-full.md#完整配置文件示例)  | 新增 | 配置 dm-worker 向 TiKV 发送 KV 数据时是否启用压缩，可配置 `"gzip"`，默认为空表示不压缩。 |
-| DM | [`pd-addr`](/dm/task-configuration-file-full.md#完整配置文件示例)  | 新增 | 配置 Physical Import 时连接下游 PD server 的地址，填一个或多个均可。配置项为空时，默认使用 TiDB 中查询到的 PD 地址信息。 |
+| DM | [`pd-addr`](/dm/task-configuration-file-full.md#完整配置文件示例)  | 新增 | 配置物理导入模式时连接下游 PD server 的地址，填一个或多个均可。配置项为空时，默认使用 TiDB 中查询到的 PD 地址信息。 |
 
 ## 改进提升
 
@@ -485,13 +485,13 @@ TiDB 版本：7.0.0
 
     + TiDB Data Migration (DM)
 
-        - 修复了 DM worker 节点使用 GCP Cloud Storage 时，由于断点续传信息记录过于频繁，达到了 GCP Cloud Storage 的请求频次上限，导致 DM worker 无法把数据写入 GCP Cloud Storage 中，从而导致全量数据加载失败的问题 [#8482](https://github.com/pingcap/tiflow/issues/8482) @[maxshuang](https://github.com/maxshuang)
+        - 修复了 DM worker 节点使用 Google Cloud Storage 时，由于断点续传信息记录过于频繁，达到了 Google Cloud Storage 的请求频次上限，导致 DM worker 无法把数据写入 Google Cloud Storage 中，从而导致全量数据加载失败的问题 [#8482](https://github.com/pingcap/tiflow/issues/8482) @[maxshuang](https://github.com/maxshuang)
         - 修复了在多个导入任务同时同步同一个下游的数据，并且都使用了下游元数据表来记录断点续传信息时，所有任务的断点续传信息被写入了同一张元数据表，并且使用了相同的任务 ID 的问题 [#8500](https://github.com/pingcap/tiflow/issues/8500) @[maxshuang](https://github.com/maxshuang)
 
     + TiDB Lightning
 
-        - 修复了当使用 Physical Import Mode 导入数据时，如果目标表的复合主键中存在 `auto_random` 列，但源数据中没有指定该列的值，TiDB Lightning 不能为 `auto_random` 列自动生成数据的问题 [#41454](https://github.com/pingcap/tidb/issues/41454) @[D3Hunter](https://github.com/D3Hunter)
-        - 修复了当使用 TiDB Lightning 的 Logical Import Mode 导入数据时，由于目标集群用户没有 `CONFIG` 权限导致导入失败的问题 [#41915](https://github.com/pingcap/tidb/issues/41915) @[lichunzhu](https://github.com/lichunzhu)
+        - 修复了当使用物理导入模式导入数据时，如果目标表的复合主键中存在 `auto_random` 列，但源数据中没有指定该列的值，TiDB Lightning 不能为 `auto_random` 列自动生成数据的问题 [#41454](https://github.com/pingcap/tidb/issues/41454) @[D3Hunter](https://github.com/D3Hunter)
+        - 修复了当使用 TiDB Lightning 的逻辑导入模式导入数据时，由于目标集群用户没有 `CONFIG` 权限导致导入失败的问题 [#41915](https://github.com/pingcap/tidb/issues/41915) @[lichunzhu](https://github.com/lichunzhu)
 
 ## 贡献者
 

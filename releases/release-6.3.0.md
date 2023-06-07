@@ -170,7 +170,7 @@ TiDB 版本：6.3.0-DMR
 
 * PITR 支持 [GCS 和 Azure Blob Storage](/br/backup-and-restore-storages.md) 作为备份存储 @[joccau](https://github.com/joccau)
 
-    部署在 GCP 或者 Azure 上的用户，将 TiDB 集群升级至 v6.3.0 就可以使用 PITR 功能。
+    部署在 Google Cloud 或者 Azure 上的用户，将 TiDB 集群升级至 v6.3.0 就可以使用 PITR 功能。
 
 * BR 支持 AWS S3 Object Lock [#13442](https://github.com/tikv/tikv/issues/13442) @[3pointer](https://github.com/3pointer)
 
