@@ -91,7 +91,7 @@ aliases: ['/zh/tidb/dev/migrate-from-aurora-using-lightning/','/docs-cn/dev/migr
 
 3. 导入 schema 文件
 
-    使用 TiDB Lightning 在下游 TiDB 建表，导入 schema 到 TiDB。如果直接在命令行中运行 `tidb-lightning`，可能会因为 `SIGHUP` 信号而退出，建议配合 `nohup` 或 `screen` 等工具。
+    使用 TiDB Lightning 在下游 TiDB 建表（导入 schema 到 TiDB）。如果直接在命令行中运行 `tidb-lightning`，可能会因为 `SIGHUP` 信号而退出，建议配合 `nohup` 或 `screen` 等工具。
 
     ```shell
     export AWS_ACCESS_KEY_ID=${access_key}
@@ -172,7 +172,7 @@ data-source-dir = "${s3_path}"  # eg: s3://my-bucket/sql-backup
 
 将有权限访问该 Amazon S3 后端存储的账号的 SecretKey 和 AccessKey 作为环境变量传入 TiDB Lightning 节点。同时还支持从 `~/.aws/credentials` 读取凭证文件。
 
-1. 使用 TiDB Lightning 导入 Aurora Snapshot 的数据到 TiDB。如果直接在命令行中运行 `tidb-lightning`，可能会因为 `SIGHUP` 信号而退出，建议配合 `nohup` 或 `screen` 等工具。
+1. 使用 TiDB Lightning 导入 Aurora Snapshot 的数据到 TiDB。 
 
     ```shell
     export AWS_ACCESS_KEY_ID=${access_key}
