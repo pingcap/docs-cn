@@ -162,7 +162,7 @@ enable-partition-separator = true
 # 注意：该参数只有当下游为消息队列时，才会生效。
 # enable-kafka-sink-v2 = false
 
-# 是否只向下游同步有内容更新的列。
+# 是否只向下游同步有内容更新的列。从 v7.1.0 开始支持。
 # 默认值为 false。
 # 注意：该参数只有当下游为消息队列，并且使用 Open Protocol 或 Canal-JSON 时，才会生效。
 # only-output-updated-columns = false
