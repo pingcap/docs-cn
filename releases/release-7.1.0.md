@@ -361,6 +361,7 @@ TiDB 7.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 | TiDB Lightning | [`tikv-importer.region-split-batch-size`](/tidb-lightning/tidb-lightning-configuration.md) | 新增 | 用于控制一个 batch 中执行 split 和 scatter 操作的最大 Region 数量，默认值为 `4096`。 |
 | TiDB Lightning | [`tikv-importer.region-split-concurrency`](/tidb-lightning/tidb-lightning-configuration.md) | 新增 | 用于控制 Split Region 时的并发度，默认值为 CPU 核心数。 |
 | TiCDC | [`insecure-skip-verify`](/ticdc/ticdc-sink-to-kafka.md) | 新增 | 用于控制在同步数据到 Kafka 的场景下，启用 TLS 时是否设置认证算法。 |
+| TiCDC | [`sink.only-output-updated-columns`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-配置文件说明) | 新增 | 用于控制是否是否只向下游同步有内容更新的列，默认值为 `false`。 |
 | TiCDC | [`integrity.corruption-handle-level`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-配置文件说明) | 新增 | 用于控制当单行数据的 Checksum 校验失败时，Changefeed 打印错误行数据相关日志的级别。默认值为 `"warn"`，可选值为 `"warn"` 和 `"error"`。 |
 | TiCDC | [`integrity.integrity-check-level`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-配置文件说明) | 新增 | 用于控制是否开启单行数据的 Checksum 校验功能，默认值为 `"none"`，即不开启。 |
 | TiCDC | [`sink.enable-partition-separator`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-配置文件说明) | 修改 | 默认值从 `false` 修改为 `true`，代表默认会将表中各个分区的数据分不同的目录来存储。建议保持该配置项为 `true` 以避免同步分区表到存储服务时可能丢数据的问题。 |
