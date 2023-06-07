@@ -41,7 +41,7 @@ aliases: ['/zh/tidb/dev/migrate-from-aurora-using-lightning/','/docs-cn/dev/migr
 
     记录上面命令中导出的 schema 的 URI，例如 's3://my-bucket/schema-backup'，后续导入数据时要用到。
 
-2. 编写 TiDB Lightning 配置文件
+2. 编写用于导入 schema 文件的 TiDB Lightning 配置文件
 
     根据以下内容创建用于导入 schema 的配置文件 `tidb-lightning-schema.toml`：
 
@@ -129,7 +129,7 @@ aliases: ['/zh/tidb/dev/migrate-from-aurora-using-lightning/','/docs-cn/dev/migr
 - 创建快照点时，Amazon Aurora binlog 的名称及位置。
 - 快照文件的 S3 路径，以及具有访问权限的 SecretKey 和 AccessKey。
 
-### 第 3 步：编写 TiDB Lightning 配置文件
+### 第 3 步：编写用于导入数据的 TiDB Lightning 配置文件
 
 根据以下内容创建用于导入数据的配置文件 `tidb-lightning-data.toml`：
 
@@ -179,9 +179,9 @@ type = '$3'
 
 ### 第 4 步：导入全量数据到 TiDB
 
-1. 将有权限访问该 Amazon S3 后端存储的账号的 SecretKey 和 AccessKey 作为环境变量传入 TiDB Lightning 节点。同时还支持从 `~/.aws/credentials` 读取凭证文件，详情参考下面的步骤 2。运行 `tidb-lightning`，如果直接在命令行中启动程序，可能会因为 `SIGHUP` 信号而退出，建议配合 `nohup` 或 `screen` 等工具。详情参考下面的步骤 2。
+将有权限访问该 Amazon S3 后端存储的账号的 SecretKey 和 AccessKey 作为环境变量传入 TiDB Lightning 节点。同时还支持从 `~/.aws/credentials` 读取凭证文件。
 
-2. 使用 TiDB Lightning 导入 Aurora Snapshot 的数据到 TiDB。
+1. 使用 TiDB Lightning 导入 Aurora Snapshot 的数据到 TiDB。如果直接在命令行中运行 `tidb-lightning`，可能会因为 `SIGHUP` 信号而退出，建议配合 `nohup` 或 `screen` 等工具。
 
     ```shell
     export AWS_ACCESS_KEY_ID=${access_key}
@@ -189,13 +189,13 @@ type = '$3'
     nohup tiup tidb-lightning -config tidb-lightning-data.toml > nohup.out 2>&1 &
     ```
 
-3. 导入开始后，可以采用以下任意方式查看进度：
+2. 导入开始后，可以采用以下任意方式查看进度：
 
     - 通过 `grep` 日志关键字 `progress` 查看进度，默认 5 分钟更新一次。
     - 通过监控面板查看进度，请参考 [TiDB Lightning 监控](/tidb-lightning/monitor-tidb-lightning.md)。
     - 通过 Web 页面查看进度，请参考 [Web 界面](/tidb-lightning/tidb-lightning-web-interface.md)。
 
-4. 导入完毕后，TiDB Lightning 会自动退出。查看 `tidb-lightning.log` 日志末尾是否有 `the whole procedure completed` 信息，如果有，表示导入成功。如果没有，则表示导入遇到了问题，可根据日志中的 error 提示解决遇到的问题。
+3. 导入完毕后，TiDB Lightning 会自动退出。查看 `tidb-lightning.log` 日志末尾是否有 `the whole procedure completed` 信息，如果有，表示导入成功。如果没有，则表示导入遇到了问题，可根据日志中的 error 提示解决遇到的问题。
 
 > **注意：**
 >
