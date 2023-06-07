@@ -91,17 +91,19 @@ aliases: ['/zh/tidb/dev/migrate-from-aurora-using-lightning/','/docs-cn/dev/migr
 
 3. 导入 schema 文件
 
-    使用 TiDB Lightning 在下游 TiDB 建表，导入 schema 到 TiDB。
+    使用 TiDB Lightning 在下游 TiDB 建表，导入 schema 到 TiDB。如果直接在命令行中运行 `tidb-lightning`，可能会因为 `SIGHUP` 信号而退出，建议配合 `nohup` 或 `screen` 等工具。
 
     ```shell
     export AWS_ACCESS_KEY_ID=${access_key}
     export AWS_SECRET_ACCESS_KEY=${secret_key}
-    tiup tidb-lightning -config tidb-lightning-schema.toml -d 's3://my-bucket/schema-backup' # 注意这里的 URI 是指存放 Dumpling 从 Amazon Aurora 导出的 schema 文件的 URI。
+    tiup tidb-lightning -config tidb-lightning-schema.toml > nohup.out 2>&1 &
     ```
 
-    更多 URI 配置参数，如指定 AWS IAM 角色的 ARN 来访问 S3 数据等，请参考 [S3 URI 配置参数](/tidb-lightning/tidb-lightning-data-source.md#从-amazon-s3-导入数据)。
+### 第 2 步：导出和导入 Amazon Aurora 快照文件
 
-### 第 2 步：导出 Amazon Aurora 快照文件到 Amazon S3
+本节介绍如何导出和导入 Amazon Aurora 快照文件。
+
+#### 2.1 导出 Amazon Aurora 快照文件到 Amazon S3
 
 1. 在 Amazon Aurora 上，执行以下命令，查询并记录当前 binlog 位置：
 
@@ -129,9 +131,9 @@ aliases: ['/zh/tidb/dev/migrate-from-aurora-using-lightning/','/docs-cn/dev/migr
 - 创建快照点时，Amazon Aurora binlog 的名称及位置。
 - 快照文件的 S3 路径，以及具有访问权限的 SecretKey 和 AccessKey。
 
-### 第 3 步：编写用于导入数据的 TiDB Lightning 配置文件
+#### 2.2 编写用于导入数据的 TiDB Lightning 配置文件
 
-根据以下内容创建用于导入数据的配置文件 `tidb-lightning-data.toml`：
+根据以下内容创建用于导入数据的配置文件 `tidb-lightning-data.toml`。注意这里的配置文件的命名需要与上面导入 schema 的配置文件的命名不同。
 
 ```shell
 vim tidb-lightning-data.toml
@@ -177,7 +179,7 @@ type = '$3'
 
 如果需要在 TiDB 开启 TLS，请参考 [TiDB Lightning Configuration](/tidb-lightning/tidb-lightning-configuration.md)。
 
-### 第 4 步：导入全量数据到 TiDB
+#### 2.3 导入全量数据到 TiDB
 
 将有权限访问该 Amazon S3 后端存储的账号的 SecretKey 和 AccessKey 作为环境变量传入 TiDB Lightning 节点。同时还支持从 `~/.aws/credentials` 读取凭证文件。
 
