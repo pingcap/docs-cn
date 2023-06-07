@@ -159,7 +159,7 @@ enable-partition-separator = true
 # The default value is false.
 # enable-kafka-sink-v2 = false
 
-# Specifies whether to only output the updated columns.
+# Starting from v7.1.0, this configuration item specifies whether to only output the updated columns.
 # Note: This configuration item only applies to the MQ downstream using the open-protocol and canal-json.
 # The default value is false.
 # only-output-updated-columns = false
