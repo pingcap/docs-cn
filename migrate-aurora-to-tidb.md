@@ -76,8 +76,8 @@ aliases: ['/zh/tidb/dev/migrate-from-aurora-using-lightning/','/docs-cn/dev/migr
     default-file-rules=true
 
     [mydumper]
-    # 从 Amazon Aurora 导出的快照文件的地址
-    data-source-dir = "${s3_path}"  # eg: s3://my-bucket/sql-backup
+    # 从 Amazon Aurora 导出的 schema 文件的地址
+    data-source-dir = "${s3_path}"  # eg: s3://my-bucket/schema-backup
 
     [[mydumper.files]]
     # 解析 parquet 文件所需的表达式
@@ -161,20 +161,9 @@ backend = "local"
 # 建议设为与 `data-source-dir` 不同的磁盘目录并使用闪存介质，独占 IO 会获得更好的导入性能。
 sorted-kv-dir = "${path}"
 
-[mydump]
-# 解析 Dumpling 导出的 schema 文件
-default-file-rules=true
-
 [mydumper]
 # 从 Amazon Aurora 导出的快照文件的地址
 data-source-dir = "${s3_path}"  # eg: s3://my-bucket/sql-backup
-
-[[mydumper.files]]
-# 解析 parquet 文件所需的表达式
-pattern = '(?i)^(?:[^/]*/)*([a-z0-9_]+)\.([a-z0-9_]+)/(?:[^/]*/)*(?:[a-z0-9\-_.]+\.(parquet))$'
-schema = '$1'
-table = '$2'
-type = '$3'
 ```
 
 如果需要在 TiDB 开启 TLS，请参考 [TiDB Lightning Configuration](/tidb-lightning/tidb-lightning-configuration.md)。
