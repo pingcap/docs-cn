@@ -29,7 +29,7 @@ aliases: ['/zh/tidb/dev/migrate-from-aurora-using-lightning/','/docs-cn/dev/migr
 
 因为 Amazon Aurora 生成的快照文件并不包含建表语句文件，所以你需要使用 Dumpling 自行导出 schema 并使用 TiDB Lightning 在下游创建 schema。
 
-将有权限访问该 Amazon S3 后端存储的账号的 SecretKey 和 AccessKey 作为环境变量传入 TiDB Lightning 节点。同时还支持从 `~/.aws/credentials` 读取凭证文件。该方式使得该 TiDB Lightning 节点上的所有任务无需再次传入相关 SecretKey 和 AccessKey。
+将有权限访问该 Amazon S3 后端存储的账号的 Secret Key 和 Access Key 作为环境变量传入 TiDB Lightning 节点。同时还支持从 `~/.aws/credentials` 读取凭证文件。该方式使得该 TiDB Lightning 节点上的所有任务无需再次传入相关 Secret Key 和 Access Key。
 
 运行以下命令时，建议使用 `--filter` 参数仅导出所需表的 schema。命令中所用参数描述，请参考 [Dumpling overview](/dumpling-overview.md#dumpling-主要选项表)。
 
@@ -118,7 +118,7 @@ tiup tidb-lightning -config tidb-lightning-schema.toml > nohup.out 2>&1 &
 完成上述两步后，你需要准备好以下信息：
 
 - 创建快照点时，Amazon Aurora binlog 的名称及位置。
-- 快照文件的 S3 路径，以及具有访问权限的 SecretKey 和 AccessKey。
+- 快照文件的 S3 路径，以及具有访问权限的 Secret Key 和 Access Key。
 
 #### 2.2 编写用于导入数据的 TiDB Lightning 配置文件
 
@@ -165,8 +165,6 @@ type = '$3'
 如果需要在 TiDB 开启 TLS，请参考 [TiDB Lightning Configuration](/tidb-lightning/tidb-lightning-configuration.md)。
 
 #### 2.3 导入全量数据到 TiDB
-
-将有权限访问该 Amazon S3 后端存储的账号的 SecretKey 和 AccessKey 作为环境变量传入 TiDB Lightning 节点。同时还支持从 `~/.aws/credentials` 读取凭证文件。
 
 1. 使用 TiDB Lightning 导入 Aurora Snapshot 的数据到 TiDB。 
 
