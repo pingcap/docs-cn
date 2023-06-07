@@ -39,7 +39,7 @@ aliases: ['/zh/tidb/dev/migrate-from-aurora-using-lightning/','/docs-cn/dev/migr
     tiup dumpling --host ${host} --port 3306 --user root --password ${password} --filter 'my_db1.table[12],mydb.*' --consistency none --no-data --output 's3://my-bucket/schema-backup'
     ```
 
-    记录上面命令中导出的 schema 的 URI，例如 's3://my-bucket/schema-backup'，后续导入数据时要用到。
+    记录上面命令中导出的 schema 的 URI，例如 's3://my-bucket/schema-backup'，后续导入 schema 时要用到。
 
 2. 编写用于导入 schema 文件的 TiDB Lightning 配置文件
 
