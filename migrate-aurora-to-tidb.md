@@ -105,7 +105,7 @@ nohup tiup tidb-lightning -config tidb-lightning-schema.toml > nohup.out 2>&1 &
 
 2. 导出 Amazon Aurora 快照文件。具体方式请参考 Amazon Aurora 的官方文档：[Exporting DB snapshot data to Amazon S3](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/USER_ExportSnapshot.html)。请注意，执行 `SHOW MASTER STATUS` 命令和导出 Amazon Aurora 快照文件的时间间隔建议不要超过 5 分钟，否则记录的 binlog 位置过旧可能导致增量同步时产生数据冲突。
 
-#### 2.2 编写用于导入数据的 TiDB Lightning 配置文件
+#### 2.2 编写用于导入快照文件的 TiDB Lightning 配置文件
 
 新建 `tidb-lightning-data.toml` 文件，将以下内容复制到文件中并替换对应的内容。
 
