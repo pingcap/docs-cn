@@ -55,8 +55,8 @@ status-port = ${status-port}  # TiDB 的“状态端口”，通常为 10080
 pd-addr = "${ip}:${port}"     # 集群 PD 的地址，port 通常为 2379
 
 [tikv-importer]
-# 采用默认的物理导入模式 ("local")。注意，该模式在导入期间下游 TiDB 无法对外提供服务。
-# 关于后端模式更多信息请参阅：https://docs.pingcap.com/tidb/stable/tidb-lightning-backends
+# 采用默认的物理导入模式 ("local")。注意该模式在导入期间下游 TiDB 无法对外提供服务。
+# 关于后端模式更多信息请参阅：https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-overview
 backend = "local"
 
 # 设置排序的键值对的临时存放地址，目标路径必须是一个空目录，目录空间须大于待导入数据集的大小。
@@ -121,8 +121,8 @@ status-port = ${status-port}  # TiDB 的“状态端口”，通常为 10080
 pd-addr = "${ip}:${port}"     # 集群 PD 的地址，port 通常为 2379
 
 [tikv-importer]
-# 采用默认的物理导入模式 ("local")。注意，该模式在导入期间下游 TiDB 无法对外提供服务。
-# 关于后端模式更多信息请参阅：https://docs.pingcap.com/tidb/stable/tidb-lightning-backends
+# 采用默认的物理导入模式 ("local")。注意该模式在导入期间下游 TiDB 无法对外提供服务。
+# 关于后端模式更多信息请参阅：https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-overview
 backend = "local"
 
 # 设置排序的键值对的临时存放地址，目标路径必须是一个空目录，目录空间须大于待导入数据集的大小。
