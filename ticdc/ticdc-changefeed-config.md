@@ -130,11 +130,17 @@ write-key-threshold = 0
 #    {matcher = ['test6.*'], partition = "ts"}
 # ]
 
-# protocol 用于指定传递到下游的协议格式
-# 当下游类型是 Kafka 时，支持 canal-json、avro 两种协议。
+# protocol 用于指定编码消息时使用的格式协议
+# 当下游类型是 Kafka 时，支持 canal-json、avro、Open-Protocol 。
 # 当下游类型是存储服务时，目前仅支持 canal-json、csv 两种协议。
 # 注意：该参数只有当下游为 Kafka 或存储服务时，才会生效。
 # protocol = "canal-json"
+
+# 指定 Delete 事件的输出内容，只对 canal-json、Open-Protocl 协议有效。
+# 默认为 false，输出所有列的内容。当设置为 true，只输出一行的主键列，或唯一索引列的内容。
+# Avro 协议不受该参数控制，总是只输出一行的主键列，或唯一索引列的内容。
+# CSV 协议不受该参数控制，总是输出所有列的内容。
+delete-only-output-handle-key-columns = false
 
 # 以下三个配置项仅在同步到存储服务的 sink 中使用，在 MQ 和 MySQL 类 sink 中无需设置。
 # 换行符，用来分隔两个数据变更事件。默认值为空，表示使用 "\r\n" 作为换行符。
