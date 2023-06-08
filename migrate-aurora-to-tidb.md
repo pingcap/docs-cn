@@ -45,11 +45,10 @@ tiup dumpling --host ${host} --port 3306 --user root --password ${password} --fi
 
 新建 `tidb-lightning-schema.toml` 文件，将以下内容复制到文件中并替换对应的内容。
 
-
 ```toml
 [tidb]
 
-# 目标 TiDB 集群信息.
+# 目标 TiDB 集群信息。
 host = ${host}
 port = ${port}
 user = "${user_name}"
@@ -108,27 +107,20 @@ nohup tiup tidb-lightning -config tidb-lightning-schema.toml > nohup.out 2>&1 &
 
 2. 导出 Amazon Aurora 快照文件。具体方式请参考 Amazon Aurora 的官方文档：[Exporting DB snapshot data to Amazon S3](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/USER_ExportSnapshot.html)。请注意，上述两步的时间间隔建议不要超过 5 分钟，否则记录的 binlog 位置过旧可能导致增量同步时产生数据冲突。
 
-
-
 #### 2.2 编写用于导入数据的 TiDB Lightning 配置文件
 
 新建 `tidb-lightning-data.toml` 文件，将以下内容复制到文件中并替换对应的内容。
 
-```shell
-vim tidb-lightning-data.toml
-```
-
 ```toml
 [tidb]
 
-# 目标 TiDB 集群信息.
-host = ${host}                # 例如：172.16.32.1
-port = ${port}                # 例如：4000
-user = "${user_name}"         # 例如："root"
-password = "${password}"      # 例如："rootroot"
-status-port = ${status-port}  # 表结构信息在从 TiDB 的“状态端口”获取例如：10080
-pd-addr = "${ip}:${port}"     # 集群 PD 的地址，TiDB Lightning 通过 PD 获取部分信息，例如 172.16.31.3:2379。
-                              # 当采用物理导入模式时 (backend = "local") status-port 和 pd-addr 必须正确填写，否则导入将出现异常。
+# 目标 TiDB 集群信息。
+host = ${host}
+port = ${port}
+user = "${user_name}"
+password = "${password}"
+status-port = ${status-port}  # TiDB 的“状态端口”，通常为 10080
+pd-addr = "${ip}:${port}"     # 集群 PD 的地址，port 通常为 2379
 
 [tikv-importer]
 # "local"：物理导入模式。默认使用该模式，适用于 TB 级以上大数据量，但导入期间下游 TiDB 无法对外提供服务。
@@ -142,7 +134,7 @@ sorted-kv-dir = "${path}"
 
 [mydumper]
 # 从 Amazon Aurora 导出的快照文件的地址
-data-source-dir = "${s3_path}"  # eg: s3://my-bucket/sql-backup
+data-source-dir = "s3://my-bucket/sql-backup"
 
 [[mydumper.files]]
 # 解析 parquet 文件所需的表达式
