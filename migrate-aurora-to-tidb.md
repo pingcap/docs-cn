@@ -29,8 +29,6 @@ aliases: ['/zh/tidb/dev/migrate-from-aurora-using-lightning/','/docs-cn/dev/migr
 
 因为 Amazon Aurora 生成的快照文件并不包含建表语句文件，所以你需要使用 Dumpling 自行导出 schema 并使用 TiDB Lightning 在下游创建 schema。
 
-为了获取 Amazon S3 的访问权限，可以将该 Amazon S3 的 Secret Access Key 和 Access Key 作为环境变量传入 Dumpling 或 TiDB Lightning。另外，它们也可以通过 `~/.aws/credentials` 读取凭证文件。后者可以使得这台机器上所有的 Dumpling 或 TiDB Lightning 任务无需再次传入相关 Secret Access Key 和 Access Key。
-
 运行以下命令时，建议使用 `--filter` 参数仅导出所需表的 schema。命令中所用参数描述，请参考 [Dumpling overview](/dumpling-overview.md#dumpling-主要选项表)。
 
 ```shell
@@ -40,6 +38,8 @@ tiup dumpling --host ${host} --port 3306 --user root --password ${password} --fi
 ```
 
 记录上面命令中导出的 schema 的 URI，例如 's3://my-bucket/schema-backup'，后续导入 schema 时要用到。
+
+为了获取 Amazon S3 的访问权限，可以将该 Amazon S3 的 Secret Access Key 和 Access Key 作为环境变量传入 Dumpling 或 TiDB Lightning。另外，它们也可以通过 `~/.aws/credentials` 读取凭证文件。后者可以使得这台机器上所有的 Dumpling 或 TiDB Lightning 任务无需再次传入相关 Secret Access Key 和 Access Key。
 
 #### 1.2 编写用于导入 schema 文件的 TiDB Lightning 配置文件
 
