@@ -69,7 +69,7 @@ sorted-kv-dir = "${path}"
 
 [mydumper]
 # 从 Amazon Aurora 导出的 schema 文件的地址
-data-source-dir = "${s3_path}"  # eg: s3://my-bucket/schema-backup
+data-source-dir = "s3://my-bucket/schema-backup"
 ```
 
 如果需要在 TiDB 开启 TLS，请参考 [TiDB Lightning Configuration](/tidb-lightning/tidb-lightning-configuration.md)。
