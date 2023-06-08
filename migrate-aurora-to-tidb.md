@@ -121,8 +121,7 @@ status-port = ${status-port}  # TiDB 的“状态端口”，通常为 10080
 pd-addr = "${ip}:${port}"     # 集群 PD 的地址，port 通常为 2379
 
 [tikv-importer]
-# "local"：物理导入模式。默认使用该模式，适用于 TB 级以上大数据量，但导入期间下游 TiDB 无法对外提供服务。
-# "tidb"：逻辑导入模式。TB 级以下数据量也可以采用 `tidb` 后端模式，下游 TiDB 可正常提供服务。
+# 采用默认的物理导入模式 ("local")。注意，该模式在导入期间下游 TiDB 无法对外提供服务。
 # 关于后端模式更多信息请参阅：https://docs.pingcap.com/tidb/stable/tidb-lightning-backends
 backend = "local"
 
