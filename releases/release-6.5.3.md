@@ -19,7 +19,7 @@ TiDB 版本：6.5.3
 
 + TiDB
 
-    - note 1
+    - 提升了 TRUNCATE 分区表（带放置规则）操作的速度。[#43209](https://github.com/pingcap/tidb/pull/43209) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
 
 + TiKV
 
