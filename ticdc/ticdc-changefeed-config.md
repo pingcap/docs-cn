@@ -162,11 +162,6 @@ enable-partition-separator = true
 # 注意：该参数只有当下游为消息队列时，才会生效。
 # enable-kafka-sink-v2 = false
 
-# 是否只向下游同步有内容更新的列。
-# 默认值为 false。
-# 注意：该参数只有当下游为消息队列，并且使用 Open Protocol 或 Canal-JSON 时，才会生效。
-# only-output-updated-columns = false
-
 # 从 v6.5.0 开始，TiCDC 支持以 CSV 格式将数据变更记录保存至存储服务中，在 MQ 和 MySQL 类 sink 中无需设置。
 # [sink.csv]
 # 字段之间的分隔符。必须为 ASCII 字符，默认值为 `,`。
