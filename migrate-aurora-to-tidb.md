@@ -19,8 +19,6 @@ aliases: ['/zh/tidb/dev/migrate-from-aurora-using-lightning/','/docs-cn/dev/migr
 
 ## 导入全量数据到 TiDB
 
-本节介绍如何导入全量数据到 TiDB。
-
 ### 第 1 步：导出和导入 schema 文件
 
 如果你已经提前手动在目标库创建好了相应的表，则可以跳过本节内容。
