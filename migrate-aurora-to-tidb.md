@@ -89,7 +89,7 @@ nohup tiup tidb-lightning -config tidb-lightning-schema.toml > nohup.out 2>&1 &
 1. 获取 Amazon Aurora binlog 的名称及位置以便于后续的增量迁移。在 Amazon Aurora 上，执行 `SHOW MASTER STATUS` 并记录当前 binlog 位置：
 
     ```sql
-    mysql> SHOW MASTER STATUS;
+    SHOW MASTER STATUS;
     ```
 
     你将得到类似以下的输出，请记录 binlog 名称和位置，供后续步骤使用：
