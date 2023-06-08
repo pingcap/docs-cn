@@ -112,7 +112,7 @@ nohup tiup tidb-lightning -config tidb-lightning-schema.toml > nohup.out 2>&1 &
 
 #### 2.2 编写用于导入数据的 TiDB Lightning 配置文件
 
-根据以下内容创建用于导入数据的配置文件 `tidb-lightning-data.toml`。注意这里的配置文件的命名需要与上面导入 schema 的配置文件的命名不同。
+新建 `tidb-lightning-data.toml` 文件，将以下内容复制到文件中并替换对应的内容。
 
 ```shell
 vim tidb-lightning-data.toml
