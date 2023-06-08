@@ -23,13 +23,13 @@ aliases: ['/zh/tidb/dev/migrate-from-aurora-using-lightning/','/docs-cn/dev/migr
 
 ### 第 1 步：导出和导入 schema 文件
 
-本节介绍如何导出和导入 schema 文件。如果你已经提前手动在目标库创建好了相应的表，则本节介绍的内容可以忽略。
+如果你已经提前手动在目标库创建好了相应的表，则可以跳过本节内容。
 
 #### 1.1 导出 schema 文件
 
 因为 Amazon Aurora 生成的快照文件并不包含建表语句文件，所以你需要使用 Dumpling 自行导出 schema 并使用 TiDB Lightning 在下游创建 schema。
 
-将有权限访问该 Amazon S3 后端存储的账号的 Secret Access Key 和 Access Key 作为环境变量传入 TiDB Lightning 节点。同时还支持从 `~/.aws/credentials` 读取凭证文件。该方式使得该 TiDB Lightning 节点上的所有任务无需再次传入相关 Secret Access Key 和 Access Key。
+为了获取 Amazon S3 的访问权限，可以将该 Amazon S3 的 Secret Access Key 和 Access Key 作为环境变量传入 Dumpling 或 TiDB Lightning。另外，它们也可以通过 `~/.aws/credentials` 读取凭证文件。后者可以使得这台机器上所有的 Dumpling 或 TiDB Lightning 任务无需再次传入相关 Secret Access Key 和 Access Key。
 
 运行以下命令时，建议使用 `--filter` 参数仅导出所需表的 schema。命令中所用参数描述，请参考 [Dumpling overview](/dumpling-overview.md#dumpling-主要选项表)。
 
@@ -43,23 +43,19 @@ tiup dumpling --host ${host} --port 3306 --user root --password ${password} --fi
 
 #### 1.2 编写用于导入 schema 文件的 TiDB Lightning 配置文件
 
-根据以下内容创建用于导入 schema 的配置文件 `tidb-lightning-schema.toml`：
+新建 `tidb-lightning-schema.toml` 文件，将以下内容复制到文件中并替换对应的内容。
 
-```shell
-vim tidb-lightning-schema.toml
-```
 
 ```toml
 [tidb]
 
 # 目标 TiDB 集群信息.
-host = ${host}                # 例如：172.16.32.1
-port = ${port}                # 例如：4000
-user = "${user_name}"         # 例如："root"
-password = "${password}"      # 例如："rootroot"
-status-port = ${status-port}  # 表结构信息在从 TiDB 的“状态端口”获取例如：10080
-pd-addr = "${ip}:${port}"     # 集群 PD 的地址，TiDB Lightning 通过 PD 获取部分信息，例如 172.16.31.3:2379。
-                              # 当采用物理导入模式时 (backend = "local")，status-port 和 pd-addr 必须正确填写，否则导入将出现异常。
+host = ${host}
+port = ${port}
+user = "${user_name}"
+password = "${password}"
+status-port = ${status-port}  # TiDB 的“状态端口”，通常为 10080
+pd-addr = "${ip}:${port}"     # 集群 PD 的地址，port 通常为 2379
 
 [tikv-importer]
 # "local"：物理导入模式。默认使用该模式，适用于 TB 级以上大数据量，但导入期间下游 TiDB 无法对外提供服务。
@@ -80,12 +76,12 @@ data-source-dir = "${s3_path}"  # eg: s3://my-bucket/schema-backup
 
 #### 1.3 导入 schema 文件
 
-使用 TiDB Lightning 导入 schema 到下游的 TiDB。如果直接在命令行中运行 `tidb-lightning`，可能会因为 `SIGHUP` 信号而退出，建议配合 `nohup` 或 `screen` 等工具。
+使用 TiDB Lightning 导入 schema 到下游的 TiDB。
 
 ```shell
 export AWS_ACCESS_KEY_ID=${access_key}
 export AWS_SECRET_ACCESS_KEY=${secret_key}
-tiup tidb-lightning -config tidb-lightning-schema.toml > nohup.out 2>&1 &
+nohup tiup tidb-lightning -config tidb-lightning-schema.toml > nohup.out 2>&1 &
 ```
 
 ### 第 2 步：导出和导入 Amazon Aurora 快照文件
@@ -94,7 +90,7 @@ tiup tidb-lightning -config tidb-lightning-schema.toml > nohup.out 2>&1 &
 
 #### 2.1 导出 Amazon Aurora 快照文件到 Amazon S3
 
-1. 在 Amazon Aurora 上，执行以下命令，查询并记录当前 binlog 位置：
+1. 获取 Amazon Aurora binlog 的名称及位置以便于后续的增量迁移。在 Amazon Aurora 上，执行 `SHOW MASTER STATUS` 并记录当前 binlog 位置：
 
     ```sql
     mysql> SHOW MASTER STATUS;
@@ -111,14 +107,9 @@ tiup tidb-lightning -config tidb-lightning-schema.toml > nohup.out 2>&1 &
     1 row in set (0.012 sec)
     ```
 
-2. 导出 Amazon Aurora 快照文件。具体方式请参考 Amazon Aurora 的官方文档：[Exporting DB snapshot data to Amazon S3](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/USER_ExportSnapshot.html).
+2. 导出 Amazon Aurora 快照文件。具体方式请参考 Amazon Aurora 的官方文档：[Exporting DB snapshot data to Amazon S3](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/USER_ExportSnapshot.html)。请注意，上述两步的时间间隔建议不要超过 5 分钟，否则记录的 binlog 位置过旧可能导致增量同步时产生数据冲突。
 
-请注意，上述两步的时间间隔建议不要超过 5 分钟，否则记录的 binlog 位置过旧可能导致增量同步时产生数据冲突。
 
-完成上述两步后，你需要准备好以下信息：
-
-- 创建快照点时，Amazon Aurora binlog 的名称及位置。
-- 快照文件的 S3 路径，以及具有访问权限的 Secret Access Key 和 Access Key。
 
 #### 2.2 编写用于导入数据的 TiDB Lightning 配置文件
 
