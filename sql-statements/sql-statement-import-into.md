@@ -7,6 +7,12 @@ summary: TiDB 数据库中 IMPORT INTO 的使用概况。
 
 `IMPORT INTO` 语句使用 TiDB Lightning 的 [物理导入](/tidb-lightning/tidb-lightning-physical-import-mode.md) 机制，用于将 `CSV`, `SQL`, `PARQUET` 等格式的数据导入到一张空表中。
 
+`IMPORT INTO` 支持导入存储在 S3、GCS 和 TiDB 本地的数据文件。当导入 TiDB 本地的数据文件时，数据文件需要存放在用户连接的 TiDB 实例上。
+
+`IMPORT INTO` 通过 [分布式框架](/tidb-distributed-execution-framework.md) 运行，当 [tidb_enable_dist_task](/system-variables.md#tidb_enable_dist_task-new-in-v710) 开启时，`IMPORT INTO` 会将子任务分配到各个 TiDB 上运行，否则 `IMPORT INTO` 仅在当前用户连接到的 TiDB 实例上运行。
+
+当导入 TiDB 本地的数据文件时，`IMPORT INTO` 仅在当前用户连接到的 TiDB 实例上运行。
+
 > **警告：**
 >
 > 目前该语句为实验特性，不建议在生产环境中使用。
@@ -15,11 +21,12 @@ summary: TiDB 数据库中 IMPORT INTO 的使用概况。
 - `IMPORT INTO` 只能导入导入到数据库中已有的表，且该表需要是空表。
 - `IMPORT INTO` 不支持事务，也无法回滚，在显示事务(`BEGIN`/`END`)中执行会报错。
 - `IMPORT INTO` 在导入完成前会阻塞当前连接，如果需要异步执行，可以添加 `DETACHED` 选项。
-- `IMPORT INTO` 执行开始前会删除当前表的所有二级索引，等数据导入完成后，再将索引添加回来。
+- `IMPORT INTO` 执行开始前会删除当前表的所有二级索引，等数据导入完成后，再将索引添加回来，如果导入过程中出错，不会将这些索引添加回来。
 - `IMPORT INTO` 不支持跟 CDC, PiTR 等程序一起工作。
 - `IMPORT INTO` 每个集群上同时只能有一个 `IMPORT INTO` 任务在运行。
 - `IMPORT INTO` 导入数据的过程中，请勿在目标表进行 DDL 和 DML 操作，否则会导致导入失败或数据不一致。导入期间也不建议进行读操作，因为读取的数据可能不一致。请在导入操作完成后再进行读写操作。
 - `IMPORT INTO` 导入期间会占用大量系统资源，建议使用 32 核以上的 CPU 和 64 GiB 以上内存以获得更好的性能。导入期间会将排序好的数据写入到 TiDB [临时目录](/tidb-configuration-file.md#temp-dir-new-in-v630) 下，建议优先考虑配置闪存等高性能存储介质，详细请参考 [物理导入使用限制](/tidb-lightning/tidb-lightning-physical-import-mode.md#requirements-and-restrictions)。
+- `IMPORT INTO` 需要 TiDB [临时目录](/tidb-configuration-file.md#temp-dir-new-in-v630) 至少有 95 GiB 的可用空间。
 
 ## 导入前准备
 在使用 `IMPORT INTO` 开始导入数据前，请确保：
@@ -35,12 +42,12 @@ summary: TiDB 数据库中 IMPORT INTO 的使用概况。
 
 ```ebnf+diagram
 ImportIntoStmt ::=
-    'IMPORT' 'INTO' TableName ColumnNameOrUserVarList? SetSpec? FROM fileLocation Format? WithOptions?
+    'IMPORT' 'INTO' TableName ColumnNameOrUserVarList? SetClause? FROM fileLocation Format? WithOptions?
 
 ColumnNameOrUserVarList ::=
     '(' ColumnNameOrUserVar (',' ColumnNameOrUserVar)* ')'
 
-SetSpec ::=
+SetClause ::=
     'SET' SetItem (',' SetItem)*
 
 SetItem ::=
@@ -60,13 +67,13 @@ OptionItem ::=
 
 ### ColumnNameOrUserVarList
 
-用于指定数据文件中每行的各个字段如何对应到目标表列，也可以将字段对应到某个变量，用来跳过某些字段或者在 SetSpec 中使用。
+用于指定数据文件中每行的各个字段如何对应到目标表列，也可以将字段对应到某个变量，用来跳过某些字段或者在 SetClause 中使用。
 
 当指定该参数时，指定的列或变量个数需要跟数据文件每行的字段数一致。
 
 当不指定该参数，数据文件每行的字段数需要跟目标表列数一致，且各个字段会按顺序导入到对应的列，
 
-### SetSpec
+### SetClause
 
 用于指定目标列值的计算方式，在 SET 表达式右侧中可以引用 `ColumnNameOrUserVarList` 中保存的变量。
 
@@ -112,13 +119,98 @@ SET 表达式左侧只能引用 `ColumnNameOrUserVarList` 没有的列名，如�
 | CHECKSUM_TABLE='<string>' | 所有格式 | 配置是否在导入完成后对目标表指定 checksum 对比操作来验证导入的完整性。可选的配置项： "required"（默认）。在导入完成后执行 CHECKSUM 检查，如果 CHECKSUM 检查失败，则会报错退出；"optional" 在导入完成后执行 CHECKSUM 检查，如果报错，会输出一条 WARN 日志并忽略错误；"off"。导入结束后不执行 CHECKSUM 检查。 |
 | DETACHED | 所有格式 | 该参数用于控制 `IMPORT INTO` 是否异步执行，开启该参数后会输出任务 id，且该任务会在后台异步执行。 |
 
+## 输出内容
+
+当 `IMPORT INTO` 导入完成，或者开启了 `DETACHED` 模式时，`IMPORT INTO` 会返回当前任务的信息。以下为一些示例，字段的含义描述请参考 [`SHOW IMPORT JOB(s)`](/sql-statements/sql-statement-show-import-job.md)。
+
+当 `IMPORT INTO` 导入完成时输出：
+```sql
+mysql> IMPORT INTO t FROM '/path/to/small.csv';
++--------+--------------------+--------------+----------+-------+----------+------------------+---------------+----------------+----------------------------+----------------------------+----------------------------+------------+
+| Job_ID | Data_Source        | Target_Table | Table_ID | Phase | Status   | Source_File_Size | Imported_Rows | Result_Message | Create_Time                | Start_Time                 | End_Time                   | Created_By |
++--------+--------------------+--------------+----------+-------+----------+------------------+---------------+----------------+----------------------------+----------------------------+----------------------------+------------+
+|  60002 | /path/to/small.csv | `test`.`t`   |      363 |       | finished | 16B              |             2 |                | 2023-06-08 16:01:22.095698 | 2023-06-08 16:01:22.394418 | 2023-06-08 16:01:26.531821 | root@%     |
++--------+--------------------+--------------+----------+-------+----------+------------------+---------------+----------------+----------------------------+----------------------------+----------------------------+------------+
+```
+
+开启了 `DETACHED` 模式时，`IMPORT INTO` 提交任务后会立即返回，可以看到该任务状态为 `pending`，等待执行。
+
+```sql
+mysql> IMPORT INTO t FROM '/path/to/small.csv' WITH detached;
++--------+--------------------+--------------+----------+-------+---------+------------------+---------------+----------------+----------------------------+------------+----------+------------+
+| Job_ID | Data_Source        | Target_Table | Table_ID | Phase | Status  | Source_File_Size | Imported_Rows | Result_Message | Create_Time                | Start_Time | End_Time | Created_By |
++--------+--------------------+--------------+----------+-------+---------+------------------+---------------+----------------+----------------------------+------------+----------+------------+
+|  60001 | /path/to/small.csv | `test`.`t`   |      361 |       | pending | 16B              |          NULL |                | 2023-06-08 15:59:37.047703 | NULL       | NULL     | root@%     |
++--------+--------------------+--------------+----------+-------+---------+------------------+---------------+----------------+----------------------------+------------+----------+------------+
+```
+
 ## 查看和控制导入任务
 
-对于开启了 DETACHED 模式的任务，可通过 [`SHOW IMPORT JOB(s)`]() 来查看当前任务的执行进度。
+对于开启了 DETACHED 模式的任务，可通过 [`SHOW IMPORT JOB(s)`](/sql-statements/sql-statement-show-import-job.md) 来查看当前任务的执行进度。
 
-任务启动后，可通过 [`CANCEL IMPORT JOB`]() 来取消对应任务。
+任务启动后，可通过 [`CANCEL IMPORT JOB`](/sql-statements/sql-statement-cancel-import-job.md) 来取消对应任务。
 
 ## 使用示例
+
+### 导入带有 header 的 CSV 文件
+
+```sql
+IMPORT INTO t FROM '/path/to/file.csv' WITH skip_rows=1;
+```
+
+### 以 `DETACHED` 模式异步导入
+
+```sql
+IMPORT INTO t FROM '/path/to/file.csv' WITH detached;
+```
+
+### 忽略数据文件中的特定字段
+
+假设数据文件为以下 CSV 文件：
+```
+id,name,age
+1,Tom,23
+2,Jack,44
+```
+
+要导入的目标表结构为 `CREATE TABLE t(id int primary key, name varchar(100))`，则可通过以下方式来导入：
+```sql
+IMPORT INTO t(id, name, @1) FROM '/path/to/file.csv' WITH skip_rows=1;
+```
+
+### 使用通配符 `*` 导入多个数据文件
+
+假设在 `/path/to/` 目录下有 `file-01.csv`, `file-02.csv`, `file-03.csv` 三个文件，想通过 `IMPORT INTO` 将这三个文件导入到目标表 `t` 中，可使用如下 SQL：
+
+```sql
+IMPORT INTO t FROM '/path/to/file-*.csv'
+```
+
+### 从 S3、GCS 导入数据
+
+```sql
+IMPORT INTO t FROM 's3://bucket-name/test.csv?access_key=XXX&secret_access_key=XXX';
+```
+
+### 通过 SetClause 语句计算列值
+
+假设数据文件为以下 CSV 文件：
+```
+id,name,val
+1,phone,230
+2,book,440
+```
+
+要导入的目标表结构为 `CREATE TABLE t(id int primary key, name varchar(100), val int)`，并且希望在导入时将 `val` 列值扩大 100 倍，则可通过以下方式来导入：
+```sql
+IMPORT INTO t(id, name, @1) SET val=@1*100 FROM '/path/to/file.csv' WITH skip_rows=1;
+```
+
+### 导入 SQL 格式的数据文件
+
+```sql
+IMPORT INTO t FROM '/path/to/file.sql';
+```
 
 ## MySQL 兼容性
 
@@ -126,6 +218,5 @@ SET 表达式左侧只能引用 `ColumnNameOrUserVarList` 没有的列名，如�
 
 ## 另请参阅
 
-* [INSERT](/sql-statements/sql-statement-insert.md)
-* [乐观事务模型](/optimistic-transaction.md)
-* [悲观事务模式](/pessimistic-transaction.md)
+* [`SHOW IMPORT JOB(s)`](/sql-statements/sql-statement-show-import-job.md)
+* [`CANCEL IMPORT JOB`](/sql-statements/sql-statement-cancel-import-job.md)
