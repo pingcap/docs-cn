@@ -4351,3 +4351,18 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 类型：布尔型
 - 默认值：`ON`
 - 这个变量用于控制计算窗口函数时是否采用高精度模式。
+
+### tidb_tiflash_node_selection_policy
+
+- 作用范围：SESSION | GLOBAL
+- 持久化至集群：是
+- 类型：枚举
+- 默认值："all_nodes"
+- 可选值："all_nodes"、"priority_local_zone_nodes"、"only_local_zone_nodes"
+- 该变量用于设置当查询需要使用 TiFlash 引擎时，TiFlash 节点的选择策略。
+  - "all_nodes" 表示使用所有可用节点进行分析计算。
+  - "priority_local_zone_nodes" 表示使用与入口 TiDB 相同区域的节点。如果无法访问所有的 TiFlash 数据，则查询将通过与入口 TiDB 相同区域的节点访问来自其他区域的 TiFlash 节点。
+  - "only_local_zone_nodes" 表示仅使用与入口 TiDB 相同区域的节点。如果无法访问所有的 TiFlash 数据，则查询将报错。
+- 特殊情况
+  - 如果 TiDB 节点未设置区域属性，并且 TiFlash 节点选择策略不是 "all_nodes"，则会忽略 TiFlash 节点选择策略，将使用所有 TiFlash 节点进行 TiFlash 查询。并且会有一个警告消息：The variable tidb_tiflash_node_selection_policy is ignored。
+  - 如果 TiFlash 节点未设置区域属性，则将其视为不属于任何区域的节点。
