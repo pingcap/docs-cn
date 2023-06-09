@@ -1,9 +1,9 @@
 ---
-title: TiFlash pipeline model 执行模型
-summary: 介绍 TiFlash 新的执行模型 pipeline model。
+title: TiFlash Pipeline Model 执行模型
+summary: 介绍 TiFlash 新的执行模型 Pipeline Model。
 ---
 
-# TiFlash pipeline model
+# TiFlash Pipeline Model
 
 > **注意：**
 >
@@ -66,4 +66,5 @@ SET GLOBAL tidb_enable_tiflash_pipeline_model=OFF;
 ```
 
 ## 架构介绍
+
 
