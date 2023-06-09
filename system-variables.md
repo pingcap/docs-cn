@@ -4182,7 +4182,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 该变量用于设置当查询需要使用 TiFlash 引擎时，TiFlash 副本的选择策略。
   - "all_replicas" 表示使用所有的 TiFlash 副本进行分析计算。
   - "closest_adaptive" 表示使用与入口 TiDB 相同区域的节点。如果无法访问所有的 TiFlash 数据，则查询将通过与入口 TiDB 相同区域的节点访问来自其他区域的 TiFlash 节点。
-  - "closest_replicas" 表示仅使用与入口 TiDB 相同区域的节点。如果无法访问所有的 TiFlash 数据，则查询将报错。
+  - "closest_replicas" 表示仅使用与入口 TiDB 相同区域的 TiFlash 副本。如果无法访问所有的 TiFlash 数据，则查询将报错。
 - 特殊情况
   - 如果 TiDB 节点未设置区域属性，并且 TiFlash 节点选择策略不是 "all_replicas"，则会忽略 TiFlash 节点选择策略，将使用所有 TiFlash 节点进行 TiFlash 查询。并且会有一个警告消息：The variable tiflash_replica_read is ignored。
   - 如果 TiFlash 节点未设置区域属性，则将其视为不属于任何区域的节点。
