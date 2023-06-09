@@ -114,6 +114,28 @@ TiDB 版本：6.5.3
 
     + TiCDC
 
+        - 修复在表数量特别多场景下可能出现的 OOM 问题。[#7872](https://github.com/pingcap/tiflow/issues/7872)
+        - 优化 TiCDC 对 DDL 的处理方式，使 DDL 不阻塞住其他无关的 DML event 的使用，同时减少内存的使用。[#8106](https://github.com/pingcap/tiflow/issues/8106)
+        - 修复在表数量特别多（10k）场景下可能出现的 Panic 问题。[#8863](https://github.com/pingcap/tiflow/issues/8863)
+        - 修复TiCDC 在上游 TiDB 发生 OOM 时卡住的问题。[#8561](https://github.com/pingcap/tiflow/issues/8561)
+        - 修复 PD 出现网络隔离、PD owner 节点重启等故障时 CDC 卡住问题。[#8808](https://github.com/pingcap/tiflow/issues/8808)[#8812](https://github.com/pingcap/tiflow/issues/8812)[#8877](https://github.com/pingcap/tiflow/issues/8877)
+        -  修复 TiCDC 在设置 timezone 出现不正确的问题。[#8798](https://github.com/pingcap/tiflow/issues/8798)
+        - 修复上游 TiKV 节点 crash 场景下，TiCDC 延迟上升过高的问题。[#8858](https://github.com/pingcap/tiflow/issues/8858)
+        - 优化同步到云对象存储时的目录结构，即只有表的 schema 发生变化时才更新数据的目录。[#8890](https://github.com/pingcap/tiflow/issues/8890)
+        - 修复同步到 KOP 时出现参数不能获取的问题。[#8892](https://github.com/pingcap/tiflow/issues/8892)
+        - 修复同步到 mysql 场景下，上游执行 flashback 命令出现的问题 [#8040](https://github.com/pingcap/tiflow/issues/8040)
+        - 修复同步到云对象存储时，上游执行 exchange partition 数据不能正确同步的问题[#8914](https://github.com/pingcap/tiflow/issues/8914)
+        - 优化同步到 Kafka 用户设置 ssl 场景下，可以通过参数控制加密算法的问题 [#8867](https://github.com/pingcap/tiflow/issues/8867)
+        - 修复在同步到下游 TiDB 时，用户环境 pagesize 设置过大时导致的 OOM 问题。 [#8974](https://github.com/pingcap/tiflow/issues/8974)
+        - 优化上游在执行有损 DDL 时同步数据的行为，即 CDC 只同步 DDL ，不再下发 DML event. [#8686](https://github.com/pingcap/tiflow/issues/8686)
+        - 修复下游时 Kafka 场景下，TiCDC 查询下游元信息频率过高导致下游负载过大的问题。[#8957](https://github.com/pingcap/tiflow/issues/8957)[#8959](https://github.com/pingcap/tiflow/issues/8959)
+        - 修复同步 Kafka 消息过大出错时，在 Log 中记录了消息体的问题 [#9031](https://github.com/pingcap/tiflow/issues/9031)
+        - 优化 TiCDC 对上游 GC safe point 设置的计算方法 [#8403](https://github.com/pingcap/tiflow/issues/8403)
+        - 修复同步到 Kafka 场景下，滚动重启下游 Kafka 节点 CDC 发生 panic 问题. [#9023](https://github.com/pingcap/tiflow/issues/9023)
+        - 修复同步到云对象存储时，在下游 DDL 对应的 json 文件中没有记录表中字段的默认值问题. [#9066](https://github.com/pingcap/tiflow/issues/9066)
+        - 优化同步到 Kafka 场景下，支持 oauth 协议验证方式. [#8865](https://github.com/pingcap/tiflow/issues/8865)
+        - 优化采用 Avro 或 CSV 协议同步时，对 update 的处理方式，即拆分为 delete + insert ，用户可以获取 old value。[#9086](https://github.com/pingcap/tiflow/issues/9086)
+
         - note 1
 
     + TiDB Data Migration (DM)
