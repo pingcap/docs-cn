@@ -31,7 +31,9 @@ TiDB 版本：6.5.3
 
 + PD
 
-    - note 1
+    <!--tw:ran-huang-->
+    - PD Leader 选举使用单独的 gRPC 链接，防止受其它请求影响。#[6464](https://github.com/tikv/pd/pull/6454) @[rleungx](https://github.com/rleungx)
+
 
 + TiFlash
 
@@ -120,7 +122,7 @@ TiDB 版本：6.5.3
 
     + Backup & Restore (BR)
 
-        - note 1
+        - 修复备份失败时 "resolve lock timeout" 掩盖真正错误的问题 [#43236](https://github.com/pingcap/tidb/issues/43236) @[YuJuncen](https://github.com/YuJuncen)
 
     + TiCDC
 
