@@ -11,7 +11,11 @@ summary: 介绍了如何解决导入数据过程中的类型转换和冲突错�
 - 手动定位错误比较困难
 - 如果遇到错误就重启 TiDB Lightning，代价太大
 
-本文介绍了类型错误处理功能 (`lightning.max-error`) 和重复问题处理功能 (`tikv-importer.duplicate-resolution`) 的使用方法，以及保存这些错误的数据库 (`lightning.task-info-schema-name`)，并提供了一个示例。
+本文介绍了错误处理功能涉及的错误类型，查询方法，并提供了一个示例。该页面涉及到的配置项如下：
+
+- 容忍错误阈值 `lightning.max-error`
+- 记录错误上限 `lightning.max-error-records`
+- 记录错误的库表位置 `lightning.task-info-schema-name`
 
 ## 类型错误 (Type error)
 
