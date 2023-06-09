@@ -5,11 +5,11 @@ summary: TiDB 数据库中 IMPORT INTO 的使用概况。
 
 # IMPORT INTO
 
-`IMPORT INTO` 语句使用 TiDB Lightning 的 [物理导入](/tidb-lightning/tidb-lightning-physical-import-mode.md) 机制，用于将 `CSV`, `SQL`, `PARQUET` 等格式的数据导入到一张空表中。
+`IMPORT INTO` 语句使用 TiDB Lightning 的 [物理导入模式](/tidb-lightning/tidb-lightning-physical-import-mode.md)，用于将 `CSV`、`SQL`、`PARQUET` 等格式的数据导入到一张空表中。
 
 `IMPORT INTO` 支持导入存储在 S3、GCS 和 TiDB 本地的数据文件。当导入 TiDB 本地的数据文件时，数据文件需要存放在用户连接的 TiDB 实例上。
 
-`IMPORT INTO` 通过 [分布式框架](/tidb-distributed-execution-framework.md) 运行，当 [tidb_enable_dist_task](/system-variables.md#tidb_enable_dist_task-new-in-v710) 开启时，`IMPORT INTO` 会将子任务分配到各个 TiDB 上运行，否则 `IMPORT INTO` 仅在当前用户连接到的 TiDB 实例上运行。
+`IMPORT INTO` 通过[分布式框架](/tidb-distributed-execution-framework.md) 运行。当 [tidb_enable_dist_task](/system-variables.md#tidb_enable_dist_task-new-in-v710) 开启时，`IMPORT INTO` 会将子任务分配到各个 TiDB 上运行，否则 `IMPORT INTO` 仅在当前用户连接到的 TiDB 实例上运行。
 
 当导入 TiDB 本地的数据文件时，`IMPORT INTO` 仅在当前用户连接到的 TiDB 实例上运行。
 
@@ -18,17 +18,19 @@ summary: TiDB 数据库中 IMPORT INTO 的使用概况。
 > 目前该语句为实验特性，不建议在生产环境中使用。
 
 ## 使用限制
-- `IMPORT INTO` 只能导入导入到数据库中已有的表，且该表需要是空表。
-- `IMPORT INTO` 不支持事务，也无法回滚，在显示事务(`BEGIN`/`END`)中执行会报错。
-- `IMPORT INTO` 在导入完成前会阻塞当前连接，如果需要异步执行，可以添加 `DETACHED` 选项。
-- `IMPORT INTO` 执行开始前会删除当前表的所有二级索引，等数据导入完成后，再将索引添加回来，如果导入过程中出错，不会将这些索引添加回来。
-- `IMPORT INTO` 不支持跟 CDC, PiTR 等程序一起工作。
-- `IMPORT INTO` 每个集群上同时只能有一个 `IMPORT INTO` 任务在运行。
-- `IMPORT INTO` 导入数据的过程中，请勿在目标表进行 DDL 和 DML 操作，否则会导致导入失败或数据不一致。导入期间也不建议进行读操作，因为读取的数据可能不一致。请在导入操作完成后再进行读写操作。
-- `IMPORT INTO` 导入期间会占用大量系统资源，建议使用 32 核以上的 CPU 和 64 GiB 以上内存以获得更好的性能。导入期间会将排序好的数据写入到 TiDB [临时目录](/tidb-configuration-file.md#temp-dir-new-in-v630) 下，建议优先考虑配置闪存等高性能存储介质，详细请参考 [物理导入使用限制](/tidb-lightning/tidb-lightning-physical-import-mode.md#requirements-and-restrictions)。
-- `IMPORT INTO` 需要 TiDB [临时目录](/tidb-configuration-file.md#temp-dir-new-in-v630) 至少有 95 GiB 的可用空间。
+
+- 只能导入到数据库中已有的表，且该表必须是空表。
+- 不支持事务，也无法回滚，在显示事务 (`BEGIN`/`END`) 中执行会报错。
+- 在导入完成前会阻塞当前连接，如果需要异步执行，可以添加 `DETACHED` 选项。
+- 执行开始前会删除当前表的所有二级索引，等数据导入完成后，再将索引添加回来，如果导入过程中出错，不会将这些索引添加回来。
+- 不支持和 CDC、PiTR 等程序一起工作。
+- 每个集群上同时只能有一个 `IMPORT INTO` 任务在运行。
+- 导入数据的过程中，请勿在目标表进行 DDL 和 DML 操作，否则会导致导入失败或数据不一致。导入期间也不建议进行读操作，因为读取的数据可能不一致。请在导入完成后再进行读写操作。
+- 导入期间会占用大量系统资源，建议使用 32 核以上的 CPU 和 64 GiB 以上内存以获得更好的性能。导入期间会将排序好的数据写入到 TiDB [临时目录](/tidb-configuration-file.md#temp-dir-new-in-v630) 下，建议优先考虑配置闪存等高性能存储介质，详细请参考 [物理导入使用限制](/tidb-lightning/tidb-lightning-physical-import-mode.md#requirements-and-restrictions)。
+- 需要 TiDB [临时目录](/tidb-configuration-file.md#temp-dir-new-in-v630) 至少有 95 GiB 的可用空间。
 
 ## 导入前准备
+
 在使用 `IMPORT INTO` 开始导入数据前，请确保：
 - 要导入的目标表在下游已经创建，并且是空表。
 - 当前集群有足够的剩余空间能容纳要导入的数据。
@@ -83,7 +85,7 @@ SET 表达式左侧只能引用 `ColumnNameOrUserVarList` 没有的列名，如�
 
 用于指定数据文件的位置，该位置可以有效是 S3/GCS URI 路径，详见[外部存储](/br/backup-and-restore-storages.md)；也可以是本地文件路径，此时该路径对应的文件必须在当前连接的 TiDB 实例上。
 
-当 fileLocation 为本地文件路径时，必须是绝对路径，且数据文件必须以 `.csv`, `.sql`, `.parquet` 为后缀。且此时当前连接用户需要有 `FILE` 权限。
+当 fileLocation 为本地文件路径时，必须是绝对路径，且数据文件必须以 `.csv`、`.sql`、或 `.parquet` 为后缀。且此时当前连接用户需要有 `FILE` 权限。
 
 如果目标集群开启了 [SEM](/system-variables.md#tidb_enable_enhanced_security)，则 fileLocation 不能指定为本地文件路径。
 
@@ -97,33 +99,34 @@ SET 表达式左侧只能引用 `ColumnNameOrUserVarList` 没有的列名，如�
 
 ### Format
 
-`IMPORT INTO` 支持 3 种数据文件格式，`CSV`, `SQL`, `PARQUET`，当不指定该语句时，默认格式为 `CSV`。
+`IMPORT INTO` 支持 3 种数据文件格式，`CSV`、`SQL`、和 `PARQUET`。当不指定该参数时，默认格式为 `CSV`。
 
 ### WithOptions
 
-可通过 WithOptions 来指定选项值，来控制导入过程，目前支持的选项包括：
+可通过 WithOptions 来指定选项值，来控制导入过程。目前支持的选项包括：
 
 | 参数名 | 支持的数据格式 | 描述 |
 |:---|:---|:---|
-| CHARACTER_SET='<string>' | CSV | 指定数据文件的字符集，默认字符集为 utf8mb4。目前支持的字符集包括 `binary`, `utf8`, `utf8mb4`, `gb18030`, `gbk`, `latin1`, `ascii` |
+| CHARACTER_SET='<string>' | CSV | 指定数据文件的字符集，默认字符集为 `utf8mb4`。目前支持的字符集包括 `binary`、`utf8`、`utf8mb4`、`gb18030`、`gbk`、`latin1`、`ascii` |
 | FIELDS_TERMINATED_BY='<string>' | CSV | 指定字段分隔符，默认为 `,` |
 | FIELDS_ENCLOSED_BY='<char>' | CSV | 指定字段的定界符，默认为 `"` |
 | FIELDS_ESCAPED_BY='<char>' | CSV | 指定字段的转义符，默认为 `\` |
 | FIELDS_DEFINED_NULL_BY='<string>' | CSV | 指定字段为何值时将会被解析为 NULL，默认为 `\N` |
 | LINES_TERMINATED_BY='<string>' | CSV | 指定行分隔符，默认 `IMPORT INTO` 会自动识别分隔符为 `\n` 或 `\r` 或 `\r\n`，如果行分隔符为以上三种，不需要显示设置 |
 | SKIP_ROWS=<number> | CSV | 指定需要跳过的行数，默认为 0，可通过该参数跳过 CSV 中的 header，该参数会对 fileLocation 中匹配的所有文件生效 |
-| DISK_QUOTA='<string>' | 所有格式 | 该参数指定数据排序期间，可使用的磁盘空间阈值。默认值为 TiDB [临时目录](/tidb-configuration-file.md#temp-dir-new-in-v630) 所在磁盘空间的 80%，如果无法获取磁盘总大小，默认值为 50GiB。当显示设置 DISK_QUOTA 时，该值同样不能超过 TiDB [临时目录](/tidb-configuration-file.md#temp-dir-new-in-v630) 所在磁盘空间的 80% |
-| DISABLE_TIKV_IMPORT_MODE | 所有格式 | 该参数指定是否禁止导入期间将 TiKV 切换到 import mode，默认不禁止。如果当前集群存在正在运行的读写业务，为避免导入过程对这部分业务造成过多影响，可开启该参数 |
+| DISK_QUOTA='<string>' | 所有格式 | 该参数指定数据排序期间，可使用的磁盘空间阈值。默认值为 TiDB [临时目录](/tidb-configuration-file.md#temp-dir-new-in-v630) 所在磁盘空间的 80%，如果无法获取磁盘总大小，默认值为 50GiB。当显示设置 DISK_QUOTA 时，该值同样不能超过 TiDB [临时目录](/tidb-configuration-file.md#temp-dir-new-in-v630)所在磁盘空间的 80% |
+| DISABLE_TIKV_IMPORT_MODE | 所有格式 | 该参数指定是否禁止导入期间将 TiKV 切换到 Import Mode。默认不禁止。如果当前集群存在正在运行的读写业务，为避免导入过程对这部分业务造成影响，可开启该参数 |
 | THREAD=<number> | 所有格式 | 指定导入的并发度，当数据文件格式为 CSV 或 SQL 时，默认值为 CPU 核数，如果数据文件为 PARQUET，则默认为 CPU 核数的 75%。可以显示指定该参数来控制对资源的占用，但该值最大为 CPU 核数 |
 | MAX_WRITE_SPEED='<string>' | 所有格式 | 该参数用于控制写入到单个 TiKV 的速度，默认无速度限制 |
-| CHECKSUM_TABLE='<string>' | 所有格式 | 配置是否在导入完成后对目标表指定 checksum 对比操作来验证导入的完整性。可选的配置项： "required"（默认）。在导入完成后执行 CHECKSUM 检查，如果 CHECKSUM 检查失败，则会报错退出；"optional" 在导入完成后执行 CHECKSUM 检查，如果报错，会输出一条 WARN 日志并忽略错误；"off"。导入结束后不执行 CHECKSUM 检查。 |
-| DETACHED | 所有格式 | 该参数用于控制 `IMPORT INTO` 是否异步执行，开启该参数后会输出任务 id，且该任务会在后台异步执行。 |
+| CHECKSUM_TABLE='<string>' | 所有格式 | 配置是否在导入完成后对目标表指定 checksum 对比操作来验证导入的完整性。可选的配置项： "required"（默认）：在导入完成后执行 CHECKSUM 检查，如果 CHECKSUM 检查失败，则会报错退出。"optional"：在导入完成后执行 CHECKSUM 检查，如果报错，会输出一条 WARN 日志并忽略错误。"off"：导入结束后不执行 CHECKSUM 检查。 |
+| DETACHED | 所有格式 | 该参数用于控制 `IMPORT INTO` 是否异步执行。开启该参数后会输出任务 ID，且该任务会在后台异步执行。 |
 
 ## 输出内容
 
 当 `IMPORT INTO` 导入完成，或者开启了 `DETACHED` 模式时，`IMPORT INTO` 会返回当前任务的信息。以下为一些示例，字段的含义描述请参考 [`SHOW IMPORT JOB(s)`](/sql-statements/sql-statement-show-import-job.md)。
 
 当 `IMPORT INTO` 导入完成时输出：
+
 ```sql
 mysql> IMPORT INTO t FROM '/path/to/small.csv';
 +--------+--------------------+--------------+----------+-------+----------+------------------+---------------+----------------+----------------------------+----------------------------+----------------------------+------------+
@@ -133,10 +136,10 @@ mysql> IMPORT INTO t FROM '/path/to/small.csv';
 +--------+--------------------+--------------+----------+-------+----------+------------------+---------------+----------------+----------------------------+----------------------------+----------------------------+------------+
 ```
 
-开启了 `DETACHED` 模式时，`IMPORT INTO` 提交任务后会立即返回，可以看到该任务状态为 `pending`，等待执行。
+开启了 `DETACHED` 模式时，`IMPORT INTO` 提交任务后会立即返回，可以看到该任务状态 `Status` 为 `pending`，等待执行。
 
 ```sql
-mysql> IMPORT INTO t FROM '/path/to/small.csv' WITH detached;
+mysql> IMPORT INTO t FROM '/path/to/small.csv' WITH DETACHED;
 +--------+--------------------+--------------+----------+-------+---------+------------------+---------------+----------------+----------------------------+------------+----------+------------+
 | Job_ID | Data_Source        | Target_Table | Table_ID | Phase | Status  | Source_File_Size | Imported_Rows | Result_Message | Create_Time                | Start_Time | End_Time | Created_By |
 +--------+--------------------+--------------+----------+-------+---------+------------------+---------------+----------------+----------------------------+------------+----------+------------+
@@ -174,6 +177,7 @@ id,name,age
 ```
 
 要导入的目标表结构为 `CREATE TABLE t(id int primary key, name varchar(100))`，则可通过以下方式来导入：
+
 ```sql
 IMPORT INTO t(id, name, @1) FROM '/path/to/file.csv' WITH skip_rows=1;
 ```
@@ -202,6 +206,7 @@ id,name,val
 ```
 
 要导入的目标表结构为 `CREATE TABLE t(id int primary key, name varchar(100), val int)`，并且希望在导入时将 `val` 列值扩大 100 倍，则可通过以下方式来导入：
+
 ```sql
 IMPORT INTO t(id, name, @1) SET val=@1*100 FROM '/path/to/file.csv' WITH skip_rows=1;
 ```

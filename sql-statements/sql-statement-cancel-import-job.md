@@ -9,7 +9,7 @@ summary: TiDB 数据库中 CANCEL IMPORT 的使用概况。
 
 ## 所需权限
 
-用户需要是该 job 的创建者或有 `SUPER` 权限，才能够 CANCEL 该 job。
+你需要是该 job 的创建者或有 `SUPER` 权限，才能够取消任务。
 
 ## 语法图
 
