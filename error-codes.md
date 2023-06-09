@@ -310,7 +310,7 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 8159
 
-    TiDB 无法访问传入的 S3/GCS 路径。请确保填入的 S3/GCS bucket 存在，且你输入了正确的 access key 和 secret access key 以让 TiDB 服务器有权限访问 S3/GCS 对应的 bucket。
+    TiDB 无法访问传入的 S3/GCS 路径。请确保填写的 S3/GCS bucket 存在，且输入了正确的 Access Key 和 Secret Access Key 以让 TiDB 服务器有权限访问 S3/GCS 对应的 bucket。
 
 * Error Number: 8160
 
