@@ -122,3 +122,8 @@ TiDB 版本：6.5.3
     + Dumpling
 
         - note 1
+        
+    + TiDB Binlog
+        
+        - 优化 table info 获取方式，降低 drainer 初始化时间和内存占用 [#1137](https://github.com/pingcap/tidb-binlog/issues/1137) @[lichunzhu](https://github.com/lichunzhu)
+        - 修复遇到状态为 CANCELED 的 DDL 时报错的问题 [#1228](https://github.com/pingcap/tidb-binlog/issues/1228) @[okJiang](https://github.com/okJiang)
