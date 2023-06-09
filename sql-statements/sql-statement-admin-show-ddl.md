@@ -51,7 +51,10 @@ The `ADMIN SHOW DDL JOBS` statement is used to view all the results in the curre
 - `JOB_ID`: each DDL operation corresponds to a DDL job. `JOB_ID` is globally unique.
 - `DB_NAME`: the name of the database where the DDL operation is performed.
 - `TABLE_NAME`: the name of the table where the DDL operation is performed.
-- `JOB_TYPE`: the type of DDL operation.
+- `JOB_TYPE`: the type of DDL operation. Common job types include the following:
+    - `ingest`: Ingestion with accelerated index backfilling as configured by [`tidb_ddl_enable_fast_reorg`](/system-variables.md#tidb_ddl_enable_fast_reorg-new-in-v630).
+    - `txn`: Basic transactional backfill.
+    - `txn-merge`: Transactional backfill with a temporary index that gets merged with the original index when the backfill is finished.
 - `SCHEMA_STATE`: the current state of the schema object that the DDL operates on. If `JOB_TYPE` is `ADD INDEX`, it is the state of the index; if `JOB_TYPE` is `ADD COLUMN`, it is the state of the column; if `JOB_TYPE` is `CREATE TABLE`, it is the state of the table. Common states include the following:
     - `none`: indicates that it does not exist. Generally, after the `DROP` operation or after the `CREATE` operation fails and rolls back, it will become the `none` state.
     - `delete only`, `write only`, `delete reorganization`, `write reorganization`: these four states are intermediate states. For their specific meanings, see [How the Online DDL Asynchronous Change Works in TiDB](/ddl-introduction.md#how-the-online-ddl-asynchronous-change-works-in-tidb). As the intermediate state conversion is fast, these states are generally not visible during operation. Only when performing `ADD INDEX` operation can the `write reorganization` state be seen, indicating that index data is being added.
