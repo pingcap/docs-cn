@@ -59,7 +59,9 @@ TiDB Lightning 的完整配置文件可参考[完整配置及命令行参数](/t
 |:---|:---|:---|
 | `replace` | 新数据替代旧数据 | `REPLACE INTO ...` |
 | `ignore` | 保留旧数据，忽略新数据 | `INSERT IGNORE INTO ...` |
-| `error` | 中止导入 | `INSERT INTO ...` |
+| `error` | 报错 | `INSERT INTO ...` |
+
+配置为 `error` 时，冲突数据导致的报错会由[可容忍错误](/tidb-lightning/tidb-lightning-error-resolution.md)功能继续处理。目前逻辑导入模式下，冲突数据产生的错误属于[类型错误（Type error）](/tidb-lightning/tidb-lightning-error-resolution.md#类型错误-type-error)。在配置了大于 0 的 `lightning.max-error` 后，可以从相关表中查询冲突数据的信息。详见[可容忍错误](/tidb-lightning/tidb-lightning-error-resolution.md)功能介绍。
 
 ## 性能调优
 
