@@ -114,7 +114,10 @@ TiDB 版本：6.5.3
 
     + TiDB Lightning
 
-        - note 1
+        - 修复编码时可能 OOM 的问题 [#43728](https://github.com/pingcap/tidb/issues/43728) @[D3Hunter](https://github.com/D3Hunter)
+        - 修复导入时未正确重试导致报 "write to tikv with no leader returned" 的问题 [#43055](https://github.com/pingcap/tidb/issues/43055) @[lance6716](https://github.com/lance6716)
+        - 修复当数据文件存在格式错误可能 OOM 的问题 [#40400](https://github.com/pingcap/tidb/issues/40400) @[lance6716](https://github.com/lance6716)
+        - 为 unknown RPC 错误增加重试 [#43291](https://github.com/pingcap/tidb/issues/43291) @[D3Hunter](https://github.com/D3Hunter)
 
     + Dumpling
 
