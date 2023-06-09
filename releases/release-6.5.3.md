@@ -23,6 +23,7 @@ TiDB 版本：6.5.3
     - 提升了 TRUNCATE 分区表（带放置规则）操作的速度。[#43070](https://github.com/pingcap/tidb/issues/43070) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
     - 在 resolve lock 之后避免 stale-read 的无效重试。[#43659](https://github.com/pingcap/tidb/issues/43659) @[you06](https://github.com/you06)
     (dup: release-6.5.2.md > 改进提升> TiDB)- 优化带 Limit 的 Range 类型分区表的 `distsql_concurrency` 设置以降低查询延迟 [#41480](https://github.com/pingcap/tidb/issues/41480) @[you06](https://github.com/you06) @[you06](https://github.com/you06)
+    - 在 stale-read 遇到 data-is-not-ready 时使用 leader read 降低延迟。#[765](https://github.com/tikv/client-go/pull/765) @[Tema](https://github.com/Tema)
 
 + TiKV
 
