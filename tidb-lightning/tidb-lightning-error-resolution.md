@@ -76,18 +76,9 @@ max-error = 0
 task-info-schema-name = 'lightning_task_info'
 ```
 
-在此数据库中，TiDB Lightning 会按需创建 3 个表：
+在此数据库中，TiDB Lightning 会按需创建 2 个表：
 
 ```sql
-CREATE TABLE syntax_error_v1 (
-    task_id     bigint NOT NULL,
-    create_time datetime(6) NOT NULL DEFAULT now(6),
-    table_name  varchar(261) NOT NULL,
-    path        varchar(2048) NOT NULL,
-    offset      bigint NOT NULL,
-    error       text NOT NULL,
-    context     text
-);
 CREATE TABLE type_error_v1 (
     task_id     bigint NOT NULL,
     create_time datetime(6) NOT NULL DEFAULT now(6),
@@ -111,8 +102,6 @@ CREATE TABLE conflict_error_v1 (
     KEY (task_id, table_name)
 );
 ```
-
-<!--   **syntax_error_v1** 记录文件中的语法错误。目前尚未生效。-->
 
 **type_error_v1** 记录由 `max-error` 配置项管理的所有[类型错误 (Type error)](#类型错误-type-error)。每个错误一行。
 
