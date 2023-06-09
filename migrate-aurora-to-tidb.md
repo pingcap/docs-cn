@@ -37,7 +37,7 @@ tiup dumpling --host ${host} --port 3306 --user root --password ${password} --fi
 
 记录上面命令中导出的 schema 的 URI，例如 's3://my-bucket/schema-backup'，后续导入 schema 时要用到。
 
-为了获取 Amazon S3 的访问权限，可以将该 Amazon S3 的 Secret Access Key 和 Access Key 作为环境变量传入 Dumpling 或 TiDB Lightning。另外，Dumpling 或 TiDB Lightning 也可以通过 `~/.aws/credentials` 读取凭证文件。后者可以让这台机器上所有的 Dumpling 或 TiDB Lightning 任务无需再次传入相关 Secret Access Key 和 Access Key。
+为了获取 Amazon S3 的访问权限，可以将该 Amazon S3 的 Secret Access Key 和 Access Key 作为环境变量传入 Dumpling 或 TiDB Lightning。另外，Dumpling 或 TiDB Lightning 也可以通过 `~/.aws/credentials` 读取凭证文件。使用凭证文件可以让这台机器上所有的 Dumpling 或 TiDB Lightning 任务无需再次传入相关 Secret Access Key 和 Access Key。
 
 #### 1.2 编写用于导入 schema 文件的 TiDB Lightning 配置文件
 
@@ -56,7 +56,7 @@ pd-addr = "${ip}:${port}"     # 集群 PD 的地址，port 通常为 2379
 
 [tikv-importer]
 # 采用默认的物理导入模式 ("local")。注意该模式在导入期间下游 TiDB 无法对外提供服务。
-# 关于后端模式更多信息请参阅：https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-overview
+# 关于后端模式更多信息，请参阅：https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-overview
 backend = "local"
 
 # 设置排序的键值对的临时存放地址，目标路径必须是一个空目录，目录空间须大于待导入数据集的大小。
@@ -64,7 +64,7 @@ backend = "local"
 sorted-kv-dir = "${path}"
 
 [mydumper]
-# 从 Amazon Aurora 导出的 schema 文件的地址
+# 设置从 Amazon Aurora 导出的 schema 文件的地址
 data-source-dir = "s3://my-bucket/schema-backup"
 ```
 
@@ -76,7 +76,7 @@ data-source-dir = "s3://my-bucket/schema-backup"
 
 ```shell
 export AWS_ACCESS_KEY_ID=${access_key}
-export AWS_SECRET_ACCESS_KEY=${secret_key}
+export AWS_SECRET_ACCESS_KEY=${secret_access_key}
 nohup tiup tidb-lightning -config tidb-lightning-schema.toml > nohup.out 2>&1 &
 ```
 
@@ -130,7 +130,7 @@ backend = "local"
 sorted-kv-dir = "${path}"
 
 [mydumper]
-# 从 Amazon Aurora 导出的快照文件的地址
+# 设置从 Amazon Aurora 导出的快照文件的地址
 data-source-dir = "s3://my-bucket/sql-backup"
 
 [[mydumper.files]]
@@ -149,7 +149,7 @@ type = '$3'
 
     ```shell
     export AWS_ACCESS_KEY_ID=${access_key}
-    export AWS_SECRET_ACCESS_KEY=${secret_key}
+    export AWS_SECRET_ACCESS_KEY=${secret_access_key}
     nohup tiup tidb-lightning -config tidb-lightning-data.toml > nohup.out 2>&1 &
     ```
 
