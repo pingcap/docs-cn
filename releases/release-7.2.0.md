@@ -35,12 +35,12 @@ TiDB 版本：7.2.0
 
     更多信息，请参考[用户文档](链接)。
 
-* 新增支持下推两个[窗口函数](/tiflash/tiflash-supported-pushdown-calculations.md) 至 TiFlash [#7427](https://github.com/pingcap/tiflash/issues/7427)  @[xzhangxian1008](https://github.com/xzhangxian1008) **tw@xxx** <!--1234-->
+* 新增支持下推两个[窗口函数](/tiflash/tiflash-supported-pushdown-calculations.md) 至 TiFlash [#7427](https://github.com/pingcap/tiflash/issues/7427)  @[xzhangxian1008](https://github.com/xzhangxian1008) **tw@qiancai** <!--1310-->
 
     * `FIRST_VALUE`
     * `LAST_VALUE`
 
-* TiFlash 支持副本选择策略 [#44106](https://github.com/pingcap/tidb/issues/44106) @[XuHuaiyu](https://github.com/XuHuaiyu) **tw@xxx** <!--1234-->
+* TiFlash 支持副本选择策略 [#44106](https://github.com/pingcap/tidb/issues/44106) @[XuHuaiyu](https://github.com/XuHuaiyu) **tw@qiancai** <!--1394-->
 
     在 v7.2.0 版本之前，TiFlash 尽量使用所有节点的副本进行数据扫描及 MPP 计算，以提供最强大的性能。在 v7.2.0 版本中，TiFlash 引入副本选择策略，可以根据节点区域属性，选择特定的副本，并调度部分节点进行数据扫描及 MPP 计算。当集群部署在超过一个机房，并且每个机房都拥有完整的 TiFlash 数据副本时，可以只选择当前机房的 TiFlash 副本，在当前机房的 TiFlash 节点中进行数据扫描和 MPP 计算，避免大量跨机房的网络数据传输。新增系统变量 [`tiflash_replica_read`](/system-variables.md#tiflash_replica_read) 用于设定节点选择策略。
 
@@ -70,13 +70,13 @@ TiDB 版本：7.2.0
 
     更多信息，请参考[用户文档](链接)。
 
-* TiDB 支持完整的分区类型管理功能 [#42728](https://github.com/pingcap/tidb/issues/42728) @[mjonss](https://github.com/mjonss)
+* TiDB 支持完整的分区类型管理功能 [#42728](https://github.com/pingcap/tidb/issues/42728) @[mjonss](https://github.com/mjonss) **tw@qiancai** <!--1370-->
 
     在 v7.2.0 之前，TiDB 中的分区表不能调整分区类型。从 v7.2.0 开始，TiDB 支持将分区表修改为非分区表、将非分区表修改为分区表、修改分区类型功能。你可以根据需要灵活调整表的分区类型、数量。例如，通过 `ALTER TABLE t PARTITION BY ...` 语句修改分区类型。
 
     更多信息，请参考[用户文档](/partitioned-table.md#分区管理)。
 
-* LIST 分区表支持 DEFAULT 分区功能 [#42728](https://github.com/pingcap/tidb/issues/42728) @[mjonss](https://github.com/mjonss)
+* LIST 分区表支持 DEFAULT 分区功能 [#42728](https://github.com/pingcap/tidb/issues/42728) @[mjonss](https://github.com/mjonss) **tw@qiancai** <!--1342-->
 
     LIST 分区表必须指定所有的分区，不满足任何分区条件的数据，无法正常写入该表。从 v7.2.0 开始，TiDB 支持 [默认 LIST 分区](/partitioned-table.md#list-分区) 功能。该功能启用时，所有不符合已有 LIST 分区的数据将被保存在默认 LIST 分区中。通过系统变量 `tidb_enable_default_list_partition` 控制是否启用默认 LIST 分区gonna。
     
