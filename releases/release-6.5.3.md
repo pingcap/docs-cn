@@ -22,7 +22,7 @@ TiDB 版本：6.5.3
     <!--tw:ran-huang-->
     - 提升了 TRUNCATE 分区表（带放置规则）操作的速度。[#43070](https://github.com/pingcap/tidb/issues/43070) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
     - 在 resolve lock 之后避免 stale-read 的无效重试。[#43659](https://github.com/pingcap/tidb/issues/43659) @[you06](https://github.com/you06)
-    - 为 partition table 设置更多的并发度来加速 limit 语句下的执行。[#41480](https://github.com/pingcap/tidb/issues/41480) @[you06](https://github.com/you06)
+    (dup: release-6.5.2.md > 改进提升> TiDB)- 优化带 Limit 的 Range 类型分区表的 `distsql_concurrency` 设置以降低查询延迟 [#41480](https://github.com/pingcap/tidb/issues/41480) @[you06](https://github.com/you06) @[you06](https://github.com/you06)
 
 + TiKV
 
@@ -90,9 +90,9 @@ TiDB 版本：6.5.3
     (dup: release-7.1.0.md > 错误修复> TiDB)- 修复动态裁剪模式下内连接表时找不到分区的问题 [#43686](https://github.com/pingcap/tidb/issues/43686) @[mjonss](https://github.com/mjonss) @[AilinKid](https://github.com/AilinKid)
     - 修复了 CTE 被用在 non-correlated 子查询时可能出现错误结果的问题。[#44051](https://github.com/pingcap/tidb/issues/44051) @[winoros](https://github.com/winoros)
     - 修复了 join reorder 可能会造成 outer join 结果错误的问题。[#44314](https://github.com/pingcap/tidb/issues/44314) @[AilinKid](https://github.com/AilinKid)
-    - 修复了因悲观事务主键切换导致的可能破坏事务原子性的问题。[#42937](https://github.com/pingcap/tidb/issues/42937) @[MyonKeminta](https://github.com/MyonKeminta)
-    - 修复了 batch resolve lock 未正确处理过期的悲观锁可能造成数据不一致的问题。 [#43243](https://github.com/pingcap/tidb/issues/43243) @[MyonKeminta](https://github.com/MyonKeminta)
-    - 修复了 coprocessor 在某些情况下未统计 TiKV 返回 scan details 的问题。[#41582](https://github.com/pingcap/tidb/issues/41582) @[you06](https://github.com/you06)
+    (dup: release-7.1.0.md > 错误修复> TiDB)- 修复在一些极端情况下，悲观事务的第一条语句发生重试时，对该事务进行 resolve lock 可能影响事务正确性的问题 [#42937](https://github.com/pingcap/tidb/issues/42937) @[MyonKeminta](https://github.com/MyonKeminta)
+    (dup: release-7.1.0.md > 错误修复> TiDB)- 修复在一些罕见的情况下，悲观事务的残留悲观锁在 GC resolve lock 时可能影响数据正确性的问题 [#43243](https://github.com/pingcap/tidb/issues/43243) @[MyonKeminta](https://github.com/MyonKeminta)
+    (dup: release-6.5.1.md > 错误修复> TiDB)- 修复了 `batch cop` 在执行过程中的 scan detail 信息不准确的问题 [#41582](https://github.com/pingcap/tidb/issues/41582) @[you06](https://github.com/you06)
     - 为 stale-read 增加了命中和流量的指标。 [#43325](https://github.com/pingcap/tidb/issues/43325) @[you06](https://github.com/you06)
     - 修复了在同时使用 stale-read 和 prepare 语句时无法读取到数据更新的问题。 [#43044](https://github.com/pingcap/tidb/issues/43044) @[you06](https://github.com/you06)
     - 修复了在 load data 语句中可能误报 assertion 错误的问题。[#43849](https://github.com/pingcap/tidb/issues/43849) @[you06](https://github.com/you06)
