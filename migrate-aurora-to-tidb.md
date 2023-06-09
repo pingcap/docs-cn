@@ -27,7 +27,7 @@ aliases: ['/zh/tidb/dev/migrate-from-aurora-using-lightning/','/docs-cn/dev/migr
 
 因为 Amazon Aurora 生成的快照文件并不包含建表语句文件，所以你需要使用 Dumpling 自行导出 schema 并使用 TiDB Lightning 在下游创建 schema。
 
-运行以下命令时，建议使用 `--filter` 参数仅导出所需表的 schema。命令中所用参数描述，请参考 [Dumpling overview](/dumpling-overview.md#dumpling-主要选项表)。
+运行以下命令时，建议使用 `--filter` 参数仅导出所需表的 schema。命令中所用参数描述，请参考 [Dumpling 主要选项表](/dumpling-overview.md#dumpling-主要选项表)。
 
 ```shell
 export AWS_ACCESS_KEY_ID=${access_key}
