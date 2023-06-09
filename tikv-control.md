@@ -561,7 +561,7 @@ TiDB v6.4.0 引入了 [`FLASHBACK CLUSTER TO TIMESTAMP`](/sql-statements/sql-sta
 下面示例将整个集群的数据恢复到 430315739761082369 时间点：
 
 ```shell
-tikv-ctl --pd 127.0.0.1:2379 flashback --version 430315739761082369
+tikv-ctl --pd 127.0.0.1:2379 flashback -v 430315739761082369
 ```
 
 输出结果如下：
@@ -573,7 +573,7 @@ flashback all stores success!
 上述命令中各选项的含义如下：
 
 - `--pd` 用于指定 PD 的访问地址。
-- `--version` 用于指定 Flashback 目标的时间点。
+- `-v` 用于指定 Flashback 目标的时间点。
 - 默认情况下，该命令会对整个集群进行 Flashback。如果需要对指定 Region 或 key 范围进行操作，可以：
     - 使用 `-r` 选项指定 Region，多个 Region 之间用 `,` 分隔。
     - 使用 `--start` 和 `--end` 指定某个 key 范围内的所有 Region（默认无范围限制，采用 Hex 格式）。
