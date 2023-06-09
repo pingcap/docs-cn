@@ -123,6 +123,7 @@ TiDB 版本：6.5.3
 
     + TiCDC
 
+        <!--tw:hfxsd-->
         - 修复在表数量特别多场景下可能出现的 OOM 问题。[#7872](https://github.com/pingcap/tiflow/issues/7872)
         - 优化 TiCDC 对 DDL 的处理方式，使 DDL 不阻塞住其他无关的 DML event 的使用，同时减少内存的使用。[#8106](https://github.com/pingcap/tiflow/issues/8106)
         - 修复在表数量特别多（10k）场景下可能出现的 Panic 问题。[#8863](https://github.com/pingcap/tiflow/issues/8863)
@@ -132,6 +133,7 @@ TiDB 版本：6.5.3
         (dup: release-7.1.0.md > 错误修复> Tools> TiCDC)- 修复上游 TiKV 节点 crash 时 checkpoint lag 上升的问题 [#8858](https://github.com/pingcap/tiflow/issues/8858) @[hicqu](https://github.com/hicqu)
         (dup: release-7.1.0.md > 改进提升> Tools> TiCDC)- 优化同步数据到对象存储的场景下发生 DDL 事件时的目录结构 [#8890](https://github.com/pingcap/tiflow/issues/8890) @[CharlesCheung96](https://github.com/CharlesCheung96)
         (dup: release-7.1.0.md > 改进提升> Tools> TiCDC)- 支持同步到 Kafka-on-Pulsar 下游 [#8892](https://github.com/pingcap/tiflow/issues/8892) @[hi-rustin](https://github.com/hi-rustin)
+        <!--tw:qiancai-->
         - 修复同步到 mysql 场景下，上游执行 flashback 命令出现的问题 [#8040](https://github.com/pingcap/tiflow/issues/8040)
         (dup: release-7.1.0.md > 错误修复> Tools> TiCDC)- 修复当同步数据到对象存储时上游的 `EXCHANGE PARTITION` 操作没有正常同步到下游的问题 [#8914](https://github.com/pingcap/tiflow/issues/8914) @[CharlesCheung96](https://github.com/CharlesCheung96)
         (dup: release-7.1.0.md > 改进提升> Tools> TiCDC)- 增加一个配置项 `insecure-skip-verify`，控制在同步数据到 Kafka 的场景下启用 TLS 时是否设置认证算法 [#8867](https://github.com/pingcap/tiflow/issues/8867) @[hi-rustin](https://github.com/hi-rustin)
