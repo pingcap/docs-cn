@@ -3948,6 +3948,21 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 单位：秒
 - 这个变量用来控制[缓存表](/cached-tables.md)的 lease 时间，默认值是 3 秒。该变量值的大小会影响缓存表的修改。在缓存表上执行修改操作后，最长可能出现 `tidb_table_cache_lease` 变量值时长的等待。如果业务表为只读表，或者能接受很高的写入延迟，则可以将该变量值调大，从而增加缓存的有效时间，减少 lease 续租的频率。
 
+### tidb_tiflash_node_selection_policy
+
+- 作用范围：SESSION | GLOBAL
+- 持久化至集群：是
+- 类型：枚举
+- 默认值："all_nodes"
+- 可选值："all_nodes"、"priority_local_zone_nodes"、"only_local_zone_nodes"
+- 该变量用于设置当查询需要使用 TiFlash 引擎时，TiFlash 节点的选择策略。
+  - "all_nodes" 表示使用所有可用节点进行分析计算。
+  - "priority_local_zone_nodes" 表示使用与入口 TiDB 相同区域的节点。如果无法访问所有的 TiFlash 数据，则查询将通过与入口 TiDB 相同区域的节点访问来自其他区域的 TiFlash 节点。
+  - "only_local_zone_nodes" 表示仅使用与入口 TiDB 相同区域的节点。如果无法访问所有的 TiFlash 数据，则查询将报错。
+- 特殊情况
+  - 如果 TiDB 节点未设置区域属性，并且 TiFlash 节点选择策略不是 "all_nodes"，则会忽略 TiFlash 节点选择策略，将使用所有 TiFlash 节点进行 TiFlash 查询。并且会有一个警告消息：The variable tidb_tiflash_node_selection_policy is ignored。
+  - 如果 TiFlash 节点未设置区域属性，则将其视为不属于任何区域的节点。
+
 ### `tidb_tmp_table_max_size` <span class="version-mark">从 v5.3 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
@@ -4352,17 +4367,3 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 默认值：`ON`
 - 这个变量用于控制计算窗口函数时是否采用高精度模式。
 
-### tidb_tiflash_node_selection_policy
-
-- 作用范围：SESSION | GLOBAL
-- 持久化至集群：是
-- 类型：枚举
-- 默认值："all_nodes"
-- 可选值："all_nodes"、"priority_local_zone_nodes"、"only_local_zone_nodes"
-- 该变量用于设置当查询需要使用 TiFlash 引擎时，TiFlash 节点的选择策略。
-  - "all_nodes" 表示使用所有可用节点进行分析计算。
-  - "priority_local_zone_nodes" 表示使用与入口 TiDB 相同区域的节点。如果无法访问所有的 TiFlash 数据，则查询将通过与入口 TiDB 相同区域的节点访问来自其他区域的 TiFlash 节点。
-  - "only_local_zone_nodes" 表示仅使用与入口 TiDB 相同区域的节点。如果无法访问所有的 TiFlash 数据，则查询将报错。
-- 特殊情况
-  - 如果 TiDB 节点未设置区域属性，并且 TiFlash 节点选择策略不是 "all_nodes"，则会忽略 TiFlash 节点选择策略，将使用所有 TiFlash 节点进行 TiFlash 查询。并且会有一个警告消息：The variable tidb_tiflash_node_selection_policy is ignored。
-  - 如果 TiFlash 节点未设置区域属性，则将其视为不属于任何区域的节点。
