@@ -547,6 +547,7 @@ success!
 >
 > - 该命令只支持本地模式。在运行成功后，会打印 `success!`。
 > - `-p` 选项指定 PD 的 endpoint，不使用 `http` 前缀，用于查询指定的 `region_id` 是否有效。
+> - 对于指定 Region 的 peers 所在的每个 store，均须执行该命令。
 
 ### Flashback
 
