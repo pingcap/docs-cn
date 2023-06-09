@@ -81,6 +81,10 @@ TiDB 版本：6.5.3
     - 修复了分区表在做 index join 的时，其 key 没有定位到 partition 会报错的问题。[#44275](https://github.com/pingcap/tidb/pull/44275) @[mjonss](https://github.com/mjonss) 
     - 修复了在分区表上执行 modify column 时输出 truncate data 相关 warning 的问题。[#41115](https://github.com/pingcap/tidb/pull/41115)  @[mjonss](https://github.com/mjonss) 
     - 修复了 TRUNCATE 分区表后，没有分裂 region 的问题。[#44084](https://github.com/pingcap/tidb/pull/44084 @[jiyfhust](https://github.com/jiyfhust)
+    - 修复了下推 correlated filter 到 CTE 时可能造成错误结果的问题。[#43645](https://github.com/pingcap/tidb/issues/43645) @[winoros](https://github.com/winoros)
+    - 修复了 index join 的 probe 端定位 partition 发生错误的问题。[#43686](https://github.com/pingcap/tidb/issues/43686) @[AilinKid](https://github.com/AilinKid)
+    - 修复了 CTE 被用在 non-correlated 子查询时可能出现错误结果的问题。[#44051](https://github.com/pingcap/tidb/issues/44051) @[winoros](https://github.com/winoros)
+    - 修复了 join reorder 可能会造成 outer join 结果错误的问题。[#44314](https://github.com/pingcap/tidb/issues/44314) @[AilinKid](https://github.com/AilinKid)
 
 + TiKV
 
