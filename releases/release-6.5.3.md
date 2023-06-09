@@ -19,7 +19,7 @@ TiDB 版本：6.5.3
 
 + TiDB
 
-    - 提升了 TRUNCATE 分区表（带放置规则）操作的速度。[#43209](https://github.com/pingcap/tidb/pull/43209) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
+    - 提升了 TRUNCATE 分区表（带放置规则）操作的速度。[#43070](https://github.com/pingcap/tidb/issues/43070) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
 
 + TiKV
 
@@ -63,24 +63,24 @@ TiDB 版本：6.5.3
     - 修复一个窗口函数计算下推到 tiflash 时执行计划构造错误的问题 [#43981](https://github.com/pingcap/tidb/issues/43981) @[gengliqi](https://github.com/gengliqi)
     - 修复一个使用 CTE 的查询 hang 住的问题 [#43758](https://github.com/pingcap/tidb/issues/43758) @[guo-shaoge](https://github.com/guo-shaoge)
     - 修复一个使用 AES_DECRYPT 表达时，sql 报错 runtime error: index out of range 的问题 [#43086](https://github.com/pingcap/tidb/issues/43086) @[lcwangchao](https://github.com/lcwangchao)
-    - 修复 show processlist 无法显示子查询时间较长语句的事务的 start ts 的问题。[#44243](https://github.com/pingcap/tidb/pull/44243) @[crazycs520](https://github.com/crazycs520)
-    - 修复 PD 隔离有可能导致运行的 DDL 阻塞的问题。 [#44022](https://github.com/pingcap/tidb/pull/44022), [#43784](https://github.com/pingcap/tidb/pull/43784), [#44299](https://github.com/pingcap/tidb/pull/44299) @[wjhuang2016](https://github.com/wjhuang2016) 
-    - 修复了某些情况下临时表 union 视图时可能造成 Panic 的问题 [#42702](https://github.com/pingcap/tidb/pull/42702) @[lcwangchao](https://github.com/lcwangchao) 
-    - 修复放置规则在分区表下的一些行为，使得删除的分区放置规则被正确设置以及回收 [#44149](https://github.com/pingcap/tidb/pull/44149) @[lcwangchao](https://github.com/lcwangchao) 
-    - 修复了在 TRUNCATE 分区表的某个分区时可能造成分区的放置规则失效的问题 [#44061](https://github.com/pingcap/tidb/pull/44061) @[lcwangchao](https://github.com/lcwangchao) 
-    - 修复在重命名表期间 TiCDC 可能丢失部分行变更的问题 [#43458](https://github.com/pingcap/tidb/pull/43458) @[tangenta](https://github.com/tangenta) 
-    - 修复使用 BR 导入表后 DDL 作业历史记录丢失的问题 [#43878](https://github.com/pingcap/tidb/pull/43878) @[tangenta](https://github.com/tangenta) 
-    - 修复了在启用 CursorFetch 时执行其他语句后继续 Fetch 或 Close 可能出现 Panic 或错误结果的问题 [#42602](https://github.com/pingcap/tidb/pull/42602) @[YangKeao](https://github.com/YangKeao) 
-    - 修复了某些情况下 json_object 函数错误地返回 JSON 格式错误的问题 [#44100](https://github.com/pingcap/tidb/pull/44100) @[YangKeao](https://github.com/YangKeao) 
-    - 修复了在 IPv6 环境下读取 information_schema 失败和一些相关信息错误的问题。[#43834](https://github.com/pingcap/tidb/pull/43834)，[#44084]([https://github.com/pingcap/tidb/pull/44084) @[Defined2014](](https://github.com/pingcap/tidb/pull/44084)@[Defined2014]()https://github.com/Defined2014) ，@[nexustar](https://github.com/nexustar)
-    - 修复了 PD 增减节点，PD 集群的 leader IP 变更后，autoid 服务无法自动重连的问题。该问题触发后会导致 AUTO_ID_CACHE=0 的表上面的操作卡死。[#43537](https://github.com/pingcap/tidb/pull/43537) @[tiancaiamao](https://github.com/tiancaiamao) 
-    - 修复了放置规则回收时，TiDB 向 PD 发送重复请求，造成 PD 侧大量 "full config reset" 日志打印的问题 [#44335](https://github.com/pingcap/tidb/pull/44335) @[tiancaiamao](https://github.com/tiancaiamao) 
-    - 修复了 show privileges 显示权限列表不全的问题 [#40610](https://github.com/pingcap/tidb/pull/40610) @[CbcWestwolf](https://github.com/CbcWestwolf)
-    - 修复在 ADMIN SHOW DDL JOB QUERIES 中使用 LIMIT 子句时返回错误结果的问题 [#42427](https://github.com/pingcap/tidb/pull/42427) @[CbcWestwolf](https://github.com/CbcWestwolf) 
-    - 修复在开启密码强度校验时对 tidb_auth_token 用户进行校验的问题 [#44144](https://github.com/pingcap/tidb/pull/44144) @[CbcWestwolf](https://github.com/CbcWestwolf) 
-    - 修复了分区表在做 index join 的时，其 key 没有定位到 partition 会报错的问题。[#44275](https://github.com/pingcap/tidb/pull/44275) @[mjonss](https://github.com/mjonss) 
-    - 修复了在分区表上执行 modify column 时输出 truncate data 相关 warning 的问题。[#41115](https://github.com/pingcap/tidb/pull/41115)  @[mjonss](https://github.com/mjonss) 
-    - 修复了 TRUNCATE 分区表后，没有分裂 region 的问题。[#44084](https://github.com/pingcap/tidb/pull/44084 @[jiyfhust](https://github.com/jiyfhust)
+    - 修复 show processlist 无法显示子查询时间较长语句的事务的 start ts 的问题。[#40851](https://github.com/pingcap/tidb/issues/40851) @[crazycs520](https://github.com/crazycs520)
+    - 修复 PD 隔离有可能导致运行的 DDL 阻塞的问题。 [#44014](https://github.com/pingcap/tidb/issues/44014), [#43755](https://github.com/pingcap/tidb/issues/43755), [#44267]https://github.com/pingcap/tidb/issues/44267) @[wjhuang2016](https://github.com/wjhuang2016)
+    - 修复了某些情况下临时表 union 视图时可能造成 Panic 的问题 [#42563](https://github.com/pingcap/tidb/issues/42563) @[lcwangchao](https://github.com/lcwangchao)
+    - 修复放置规则在分区表下的一些行为，使得删除的分区放置规则被正确设置以及回收 [#44116](https://github.com/pingcap/tidb/issues/44116) @[lcwangchao](https://github.com/lcwangchao)
+    - 修复了在 TRUNCATE 分区表的某个分区时可能造成分区的放置规则失效的问题 [#44031](https://github.com/pingcap/tidb/issues/44031) @[lcwangchao](https://github.com/lcwangchao)
+    - 修复在重命名表期间 TiCDC 可能丢失部分行变更的问题 [#43338](https://github.com/pingcap/tidb/issues/43338) @[tangenta](https://github.com/tangenta)
+    - 修复使用 BR 导入表后 DDL 作业历史记录丢失的问题 [#43725](https://github.com/pingcap/tidb/issues/43725) @[tangenta](https://github.com/tangenta)
+    - 修复了在启用 CursorFetch 时执行其他语句后继续 Fetch 或 Close 可能出现 Panic 或错误结果的问题 [#40094](https://github.com/pingcap/tidb/issues/40094) @[YangKeao](https://github.com/YangKeao)
+    - 修复了某些情况下 json_object 函数错误地返回 JSON 格式错误的问题 [#39806](https://github.com/pingcap/tidb/issues/39806) @[YangKeao](https://github.com/YangKeao)
+    - 修复了在 IPv6 环境下读取 information_schema 失败和一些相关信息错误的问题。[#43286](https://github.com/pingcap/tidb/issues/43286)，[#43260](https://github.com/pingcap/tidb/issues/43260) @[Defined2014](https://github.com/Defined2014) ，@[nexustar](https://github.com/nexustar)
+    - 修复了 PD 增减节点，PD 集群的 leader IP 变更后，autoid 服务无法自动重连的问题。该问题触发后会导致 AUTO_ID_CACHE=0 的表上面的操作卡死。[#42643](https://github.com/pingcap/tidb/issues/42643) @[tiancaiamao](https://github.com/tiancaiamao)
+    - 修复了放置规则回收时，TiDB 向 PD 发送重复请求，造成 PD 侧大量 "full config reset" 日志打印的问题 [#33069](https://github.com/pingcap/tidb/issues/33069) @[tiancaiamao](https://github.com/tiancaiamao)
+    - 修复了 show privileges 显示权限列表不全的问题 [#40591](https://github.com/pingcap/tidb/issues/40591) @[CbcWestwolf](https://github.com/CbcWestwolf)
+    - 修复在 ADMIN SHOW DDL JOB QUERIES 中使用 LIMIT 子句时返回错误结果的问题 [#42298](https://github.com/pingcap/tidb/issues/42298) @[CbcWestwolf](https://github.com/CbcWestwolf)
+    - 修复在开启密码强度校验时对 tidb_auth_token 用户进行校验的问题 [#44098](https://github.com/pingcap/tidb/issues/44098) @[CbcWestwolf](https://github.com/CbcWestwolf)
+    - 修复了分区表在做 index join 的时，其 key 没有定位到 partition 会报错的问题。[#43686](https://github.com/pingcap/tidb/issues/43686) @[mjonss](https://github.com/mjonss)
+    - 修复了在分区表上执行 modify column 时输出 truncate data 相关 warning 的问题。[#41118](https://github.com/pingcap/tidb/issues/41118)  @[mjonss](https://github.com/mjonss)
+    - 修复了 TRUNCATE 分区表后，没有分裂 region 的问题。[#43260](https://github.com/pingcap/tidb/issues/43260) @[jiyfhust](https://github.com/jiyfhust)
     - 修复了下推 correlated filter 到 CTE 时可能造成错误结果的问题。[#43645](https://github.com/pingcap/tidb/issues/43645) @[winoros](https://github.com/winoros)
     - 修复了 index join 的 probe 端定位 partition 发生错误的问题。[#43686](https://github.com/pingcap/tidb/issues/43686) @[AilinKid](https://github.com/AilinKid)
     - 修复了 CTE 被用在 non-correlated 子查询时可能出现错误结果的问题。[#44051](https://github.com/pingcap/tidb/issues/44051) @[winoros](https://github.com/winoros)
@@ -126,8 +126,8 @@ TiDB 版本：6.5.3
     + Dumpling
 
         - note 1
-        
+
     + TiDB Binlog
-        
+
         - 优化 table info 获取方式，降低 drainer 初始化时间和内存占用 [#1137](https://github.com/pingcap/tidb-binlog/issues/1137) @[lichunzhu](https://github.com/lichunzhu)
         - 修复遇到状态为 CANCELED 的 DDL 时报错的问题 [#1228](https://github.com/pingcap/tidb-binlog/issues/1228) @[okJiang](https://github.com/okJiang)
