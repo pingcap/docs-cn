@@ -65,6 +65,8 @@ SET SESSION tidb_enable_tiflash_pipeline_model=OFF;
 SET GLOBAL tidb_enable_tiflash_pipeline_model=OFF;
 ```
 
-## 架构介绍
+## 设计实现
 
+![TiFlash Pipeline Model Design](/media/tiflash/tiflash-pipeline-model.png)
 
+如果，在 Pipeline Model 中，
