@@ -19,21 +19,24 @@ DESC analyze_status;
 ```
 
 ```sql
-+----------------+---------------------+------+------+---------+-------+
-| Field          | Type                | Null | Key  | Default | Extra |
-+----------------+---------------------+------+------+---------+-------+
-| TABLE_SCHEMA   | varchar(64)         | YES  |      | NULL    |       |
-| TABLE_NAME     | varchar(64)         | YES  |      | NULL    |       |
-| PARTITION_NAME | varchar(64)         | YES  |      | NULL    |       |
-| JOB_INFO       | longtext            | YES  |      | NULL    |       |
-| PROCESSED_ROWS | bigint(64) unsigned | YES  |      | NULL    |       |
-| START_TIME     | datetime            | YES  |      | NULL    |       |
-| END_TIME       | datetime            | YES  |      | NULL    |       |
-| STATE          | varchar(64)         | YES  |      | NULL    |       |
-| FAIL_REASON    | longtext            | YES  |      | NULL    |       |
-| INSTANCE       | varchar(512)        | YES  |      | NULL    |       |
-| PROCESS_ID     | bigint(64) unsigned | YES  |      | NULL    |       |
-+----------------+---------------------+------+------+---------+-------+
++----------------------+---------------------+------+-----+---------+-------+
+| Field                | Type                | Null | Key | Default | Extra |
++----------------------+---------------------+------+-----+---------+-------+
+| TABLE_SCHEMA         | varchar(64)         | YES  |     | <null>  |       |
+| TABLE_NAME           | varchar(64)         | YES  |     | <null>  |       |
+| PARTITION_NAME       | varchar(64)         | YES  |     | <null>  |       |
+| JOB_INFO             | longtext            | YES  |     | <null>  |       |
+| PROCESSED_ROWS       | bigint(64) unsigned | YES  |     | <null>  |       |
+| START_TIME           | datetime            | YES  |     | <null>  |       |
+| END_TIME             | datetime            | YES  |     | <null>  |       |
+| STATE                | varchar(64)         | YES  |     | <null>  |       |
+| FAIL_REASON          | longtext            | YES  |     | <null>  |       |
+| INSTANCE             | varchar(512)        | YES  |     | <null>  |       |
+| PROCESS_ID           | bigint(64) unsigned | YES  |     | <null>  |       |
+| Remaining_seconds    | bigint(64) unsigned | YES  |     | <null>  |       |
+| Progress             | varchar(20)         | YES  |     | <null>  |       |
+| Estimated_total_rows | bigint(64) unsigned | YES  |     | <null>  |       |
++----------------------+---------------------+------+-----+---------+-------+
 11 rows in set (0.00 sec)
 ```
 
@@ -44,16 +47,16 @@ SELECT * FROM information_schema.analyze_status;
 ```
 
 ```sql
-+--------------+------------+----------------+--------------------------------------------------------------------+----------------+---------------------+---------------------+----------+-------------+----------------+------------+
-| TABLE_SCHEMA | TABLE_NAME | PARTITION_NAME | JOB_INFO                                                           | PROCESSED_ROWS | START_TIME          | END_TIME            | STATE    | FAIL_REASON | INSTANCE       | PROCESS_ID |
-+--------------+------------+----------------+--------------------------------------------------------------------+----------------+---------------------+---------------------+----------+-------------+----------------+------------+
-| test         | t          | p1             | analyze table all columns with 256 buckets, 500 topn, 1 samplerate |              0 | 2022-05-27 11:30:12 | 2022-05-27 11:30:12 | finished | NULL        | 127.0.0.1:4000 |       NULL |
-| test         | t          | p0             | analyze table all columns with 256 buckets, 500 topn, 1 samplerate |              0 | 2022-05-27 11:30:12 | 2022-05-27 11:30:12 | finished | NULL        | 127.0.0.1:4000 |       NULL |
-| test         | t          | p1             | analyze index idx                                                  |              0 | 2022-05-27 11:29:46 | 2022-05-27 11:29:46 | finished | NULL        | 127.0.0.1:4000 |       NULL |
-| test         | t          | p0             | analyze index idx                                                  |              0 | 2022-05-27 11:29:46 | 2022-05-27 11:29:46 | finished | NULL        | 127.0.0.1:4000 |       NULL |
-| test         | t          | p1             | analyze columns                                                    |              0 | 2022-05-27 11:29:46 | 2022-05-27 11:29:46 | finished | NULL        | 127.0.0.1:4000 |       NULL |
-| test         | t          | p0             | analyze columns                                                    |              0 | 2022-05-27 11:29:46 | 2022-05-27 11:29:46 | finished | NULL        | 127.0.0.1:4000 |       NULL |
-+--------------+------------+----------------+--------------------------------------------------------------------+----------------+---------------------+---------------------+----------+-------------+----------------+------------+
++--------------+------------+----------------+--------------------------------------------------------------------+----------------+---------------------+---------------------+----------+-------------+----------------+------------+----------------------+----------+-----------------------+-------------------------+--------------------------+
+| TABLE_SCHEMA | TABLE_NAME | PARTITION_NAME | JOB_INFO | PROCESSED_ROWS | START_TIME | END_TIME | STATE | FAIL_REASON | INSTANCE | PROCESS_ID | Remaining_seconds | Progress | Estimated_total_rows |
++--------------+------------+----------------+--------------------------------------------------------------------+----------------+---------------------+---------------------+----------+-------------+----------------+------------+----------------------+----------+-----------------------+-------------------------+--------------------------+
+| test | t | p1 | analyze table all columns with 256 buckets, 500 topn, 1 samplerate | 0 | 2022-05-27 11:30:12 | 2022-05-27 11:30:12 | finished | NULL | 127.0.0.1:4000 | NULL | NULL | NULL | NULL |
+| test | t | p0 | analyze table all columns with 256 buckets, 500 topn, 1 samplerate | 0 | 2022-05-27 11:30:12 | 2022-05-27 11:30:12 | finished | NULL | 127.0.0.1:4000 | NULL | NULL | NULL | NULL |
+| test | t | p1 | analyze index idx | 0 | 2022-05-27 11:29:46 | 2022-05-27 11:29:46 | finished | NULL | 127.0.0.1:4000 | NULL | NULL | NULL | NULL |
+| test | t | p0 | analyze index idx | 0 | 2022-05-27 11:29:46 | 2022-05-27 11:29:46 | finished | NULL | 127.0.0.1:4000 | NULL | NULL | NULL | NULL |
+| test | t | p1 | analyze columns | 0 | 2022-05-27 11:29:46 | 2022-05-27 11:29:46 | finished | NULL | 127.0.0.1:4000 | NULL | NULL | NULL | NULL |
+| test | t | p0 | analyze columns | 0 | 2022-05-27 11:29:46 | 2022-05-27 11:29:46 | finished | NULL | 127.0.0.1:4000 | NULL | NULL | NULL | NULL |
++--------------+------------+----------------+--------------------------------------------------------------------+----------------+---------------------+---------------------+----------+-------------+----------------+------------+----------------------+----------+-----------------------+-------------------------+--------------------------+
 6 rows in set (0.00 sec)
 ```
 
@@ -70,3 +73,6 @@ SELECT * FROM information_schema.analyze_status;
 * `FAIL_REASON`：任务失败的原因。如果执行成功则为 `NULL`。
 * `INSTANCE`：执行任务的 TiDB 实例。
 * `PROCESS_ID`：执行任务的 process ID。
+* `Remaining_seconds`：表示作业预计还需要多少秒才能完成。
+* `Progress`：表示作业的进度。
+* `Estimated_total_rows`：表示需要分析的总行数。
