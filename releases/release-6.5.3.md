@@ -19,6 +19,7 @@ TiDB 版本：6.5.3
 
 + TiDB
 
+    <!--tw:ran-huang-->
     - 提升了 TRUNCATE 分区表（带放置规则）操作的速度。[#43070](https://github.com/pingcap/tidb/issues/43070) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
 
 + TiKV
@@ -59,6 +60,7 @@ TiDB 版本：6.5.3
 
 + TiDB
 
+    <!--tw:ran-huang-->
     - 修复一个 min, max 查询结果出错的问题  [#43805](https://github.com/pingcap/tidb/issues/43805) @[wshwsh12](https://github.com/wshwsh12)
     - 修复一个窗口函数计算下推到 tiflash 时执行计划构造错误的问题 [#43981](https://github.com/pingcap/tidb/issues/43981) @[gengliqi](https://github.com/gengliqi)
     - 修复一个使用 CTE 的查询 hang 住的问题 [#43758](https://github.com/pingcap/tidb/issues/43758) @[guo-shaoge](https://github.com/guo-shaoge)
@@ -74,6 +76,7 @@ TiDB 版本：6.5.3
     (dup: release-6.6.0.md > 错误修复> TiDB)- 修复了 `JSON_OBJECT` 在某些情况下会报错的问题 [#39806](https://github.com/pingcap/tidb/issues/39806) @[YangKeao](https://github.com/YangKeao)
     (dup: release-7.1.0.md > 错误修复> TiDB)- 修复 IPv6 环境下的集群无法查询部分系统视图的问题 [#43286](https://github.com/pingcap/tidb/issues/43286) @[Defined2014](https://github.com/Defined2014) ，@[nexustar](https://github.com/nexustar)
     (dup: release-7.1.0.md > 错误修复> TiDB)- 修复当 PD 成员地址发生变化时，为 `AUTO_INCREMENT` 列分配 ID 会被长时间阻塞的问题 [#42643](https://github.com/pingcap/tidb/issues/42643) @[tiancaiamao](https://github.com/tiancaiamao)
+    <!--tw:oreoxmt-->
     - 修复了放置规则回收时，TiDB 向 PD 发送重复请求，造成 PD 侧大量 "full config reset" 日志打印的问题 [#33069](https://github.com/pingcap/tidb/issues/33069) @[tiancaiamao](https://github.com/tiancaiamao)
     (dup: release-6.6.0.md > 错误修复> TiDB)- 修复了 `SHOW PRIVILEGES` 命令显示的权限列表不完整的问题 [#40591](https://github.com/pingcap/tidb/issues/40591) @[CbcWestwolf](https://github.com/CbcWestwolf)
     (dup: release-7.1.0.md > 错误修复> TiDB)- 修复 `ADMIN SHOW DDL JOBS LIMIT` 返回错误结果的问题 [#42298](https://github.com/pingcap/tidb/issues/42298) @[CbcWestwolf](https://github.com/CbcWestwolf)
@@ -96,6 +99,7 @@ TiDB 版本：6.5.3
 
 + TiFlash
 
+    <!--tw:hfxsd-->
     - 修复一个分区表查询报错的问题 [#7519](https://github.com/pingcap/tiflash/issues/7519) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
     - 修复在表字段同时存在 TIMESTAMP 或者 TIME 类型和 GENERATED 类型情况下，查询 TiFlash 可能会报错的问题 [#7468](https://github.com/pingcap/tiflash/issues/7468) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
     (dup: release-7.1.0.md > 错误修复> TiFlash)- 修复大的更新事务可能会导致 TiFlash 反复报错重启的问题 [#7316](https://github.com/pingcap/tiflash/issues/7316) @[JaySon-Huang](https://github.com/JaySon-Huang)
@@ -122,11 +126,12 @@ TiDB 版本：6.5.3
         (dup: release-7.1.0.md > 错误修复> Tools> TiDB Lightning)- 修复大数据量导入时报 `write to tikv with no leader returned` 错误的问题 [#43055](https://github.com/pingcap/tidb/issues/43055) @[lance6716](https://github.com/lance6716)
         (dup: release-6.6.0.md > 错误修复> Tools> TiDB Lightning)- 修复当数据文件中存在未闭合的 delimiter 时可能 OOM 的问题 [#40400](https://github.com/pingcap/tidb/issues/40400) @[buchuitoudegou](https://github.com/buchuitoudegou) @[lance6716](https://github.com/lance6716)
         (dup: release-7.1.0.md > 改进提升> Tools> TiDB Lightning)- 在导入数据期间遇到 `unknown RPC` 错误时，增加了重试机制 [#43291](https://github.com/pingcap/tidb/issues/43291) @[D3Hunter](https://github.com/D3Hunter)
+
     + Dumpling
 
         - note 1
 
     + TiDB Binlog
-
+        <!--tw:qiancai-->
         - 优化 table info 获取方式，降低 drainer 初始化时间和内存占用 [#1137](https://github.com/pingcap/tidb-binlog/issues/1137) @[lichunzhu](https://github.com/lichunzhu)
         - 修复遇到状态为 CANCELED 的 DDL 时报错的问题 [#1228](https://github.com/pingcap/tidb-binlog/issues/1228) @[okJiang](https://github.com/okJiang)
