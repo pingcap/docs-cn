@@ -3948,21 +3948,6 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 单位：秒
 - 这个变量用来控制[缓存表](/cached-tables.md)的 lease 时间，默认值是 3 秒。该变量值的大小会影响缓存表的修改。在缓存表上执行修改操作后，最长可能出现 `tidb_table_cache_lease` 变量值时长的等待。如果业务表为只读表，或者能接受很高的写入延迟，则可以将该变量值调大，从而增加缓存的有效时间，减少 lease 续租的频率。
 
-### tidb_tiflash_node_selection_policy
-
-- 作用范围：SESSION | GLOBAL
-- 持久化至集群：是
-- 类型：枚举
-- 默认值："all_nodes"
-- 可选值："all_nodes"、"priority_local_zone_nodes"、"only_local_zone_nodes"
-- 该变量用于设置当查询需要使用 TiFlash 引擎时，TiFlash 节点的选择策略。
-  - "all_nodes" 表示使用所有可用节点进行分析计算。
-  - "priority_local_zone_nodes" 表示使用与入口 TiDB 相同区域的节点。如果无法访问所有的 TiFlash 数据，则查询将通过与入口 TiDB 相同区域的节点访问来自其他区域的 TiFlash 节点。
-  - "only_local_zone_nodes" 表示仅使用与入口 TiDB 相同区域的节点。如果无法访问所有的 TiFlash 数据，则查询将报错。
-- 特殊情况
-  - 如果 TiDB 节点未设置区域属性，并且 TiFlash 节点选择策略不是 "all_nodes"，则会忽略 TiFlash 节点选择策略，将使用所有 TiFlash 节点进行 TiFlash 查询。并且会有一个警告消息：The variable tidb_tiflash_node_selection_policy is ignored。
-  - 如果 TiFlash 节点未设置区域属性，则将其视为不属于任何区域的节点。
-
 ### `tidb_tmp_table_max_size` <span class="version-mark">从 v5.3 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
@@ -4186,6 +4171,21 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
     * 0: 表示使用细粒度 shuffle 功能。如果 [`tidb_max_tiflash_threads`](/system-variables.md#tidb_max_tiflash_threads-从-v610-版本开始引入) 有效（大于 0），则 `tiflash_fine_grained_shuffle_stream_count` 会自动取值为 [`tidb_max_tiflash_threads`](/system-variables.md#tidb_max_tiflash_threads-从-v610-版本开始引入)，否则为默认值 8。最终在 TiFlash 上窗口函数的实际并发度为：min(`tiflash_fine_grained_shuffle_stream_count`，TiFlash 节点物理线程数)
     * 大于 0: 表示使用细粒度 shuffle 功能，下推到 TiFlash 的窗口函数会以多线程方式执行，并发度为： min(`tiflash_fine_grained_shuffle_stream_count`, TiFlash 节点物理线程数)
 - 理论上窗口函数的性能会随着该值的增加线性提升。但是如果设置的值超过实际的物理线程数，反而会导致性能下降。
+
+### tiflash_replica_read
+
+- 作用范围：SESSION | GLOBAL
+- 持久化至集群：是
+- 类型：枚举
+- 默认值："all_replicas"
+- 可选值："all_replicas"、"closest_adaptive"、"closest_replicas"
+- 该变量用于设置当查询需要使用 TiFlash 引擎时，TiFlash 节点的选择策略。
+  - "all_replicas" 表示使用所有可用节点进行分析计算。
+  - "closest_adaptive" 表示使用与入口 TiDB 相同区域的节点。如果无法访问所有的 TiFlash 数据，则查询将通过与入口 TiDB 相同区域的节点访问来自其他区域的 TiFlash 节点。
+  - "closest_replicas" 表示仅使用与入口 TiDB 相同区域的节点。如果无法访问所有的 TiFlash 数据，则查询将报错。
+- 特殊情况
+  - 如果 TiDB 节点未设置区域属性，并且 TiFlash 节点选择策略不是 "all_replicas"，则会忽略 TiFlash 节点选择策略，将使用所有 TiFlash 节点进行 TiFlash 查询。并且会有一个警告消息：The variable tidb_tiflash_node_selection_policy is ignored。
+  - 如果 TiFlash 节点未设置区域属性，则将其视为不属于任何区域的节点。
 
 ### `time_zone`
 
