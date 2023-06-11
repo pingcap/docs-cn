@@ -82,4 +82,3 @@ TiFlash 原有执行模型 Stream Model 是线程调度执行模型，每一个�
 - 将 pipeline 实例化成若干个 task，摆脱 OS 原生的线程调度模型，使用更加精细的 task 调度模型，同时使用固定线程池，减少了 OS 申请和调度线程的开销。
 
 ![TiFlash Pipeline Model Design](/media/tiflash/tiflash-pipeline-model.png)
-
