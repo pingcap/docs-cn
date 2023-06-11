@@ -72,9 +72,9 @@ TiFlash 原有执行模型 Stream Model 是线程调度执行模型，每一个�
 - 在高并发场景下，过多的线程会引起较多上下文切换，导致较高的线程调度代价。甚至在线程数达到一定数量时，申请线程会报错 `thread constructor failed: Resource temporarily unavailable`。
 - 线程调度模型无法精准计量查询的资源使用量以及做细粒度的资源管控。
 
-在新的执行模型 Pipeline Model 
-- 将 Query 划分为若干 pipeline，pipeline 是若干无停顿的算子的组合，可以最大化利用 cache。 
-- 摆脱 OS 原生的线程调度模型，在将 pipeline 实例化成若干个 task 提交到固定线程池中执行，减少了 OS 申请和调度线程的开销，并且可以基于线程池队列提供按优先级调度 task 的功能。
+在新的执行模型 Pipeline Model 中
+- Query 被划分为若干 pipeline 执行。在 pipeline 中数据块会尽可能被保留在 cache 中，有很好的时间局部性。
+- 将 pipeline 实例化成若干个 task，摆脱 OS 原生的线程调度模型，使用更加精细的 task 调度模型，同时使用固定线程池，减少了 OS 申请和调度线程的开销。
 
 ![TiFlash Pipeline Model Design](/media/tiflash/tiflash-pipeline-model.png)
 
