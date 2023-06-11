@@ -50,6 +50,12 @@ TiDB 版本：7.2.0
 
     v7.2.0 优化了统计信息的收集策略，会选择跳过一部分重复的信息，以及对优化器价值不高的信息，提升统计信息收集的整体速度达 30% 。 这个提升有利于 TiDB 对数据库对象的统计信息进行更及时的更新，使得生成的执行计划更准确， 从而达到提升数据库整体性能的目的。
 
+* 提升表和索引一致性检查的性能 [#issue号](链接) @[wjhuang2016](https://github.com/wjhuang2016)
+
+    TiDB 在新版本中优化了数据一致性校验的方式，大幅提升了 [`ADMIN CHECK [TABLE|INDEX]`](/sql-statements/sql-statement-admin-check-table-index.md) 的执行效率， 性能提升接近 200 倍。 这个能力可以大幅减少大型表数据导入的时间， 提升数据导入的体验。 设置 [`tidb_enable_fast_table_check`]() 为 `TRUE` 启用这个新机制。 
+
+    更多信息，请参考[用户文档](链接)
+
 ### 稳定性
 
 * 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
