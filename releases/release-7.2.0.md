@@ -46,6 +46,10 @@ TiDB 版本：7.2.0
 
     更多信息，请参考[用户文档](/system-variables.md#tiflash_replica_read)。
 
+* 提升统计信息收集的性能 [#issue号](链接) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes)
+
+    v7.2.0 优化了统计信息的收集策略，会选择跳过一部分重复的信息，以及对优化器价值不高的信息，提升统计信息收集的整体速度达 30% 。 这个提升有利于 TiDB 对数据库对象的统计信息进行更及时的更新，使得生成的执行计划更准确， 从而达到提升数据库整体性能的目的。
+
 ### 稳定性
 
 * 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
