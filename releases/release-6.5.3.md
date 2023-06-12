@@ -47,6 +47,7 @@ TiDB 版本：6.5.3
 
     + TiCDC
 
+       <!--tw:hfxsd-->
         - 优化 TiCDC 对 DDL 的处理方式，使 DDL 不阻塞其他无关的 DML Event 的使用，同时减少内存使用 [#8106](https://github.com/pingcap/tiflow/issues/8106) [asddongmen](https://github.com/asddongmen)
         - 调整 Decoder 接口，增加了新参数 `AddKeyValue` [#8861](https://github.com/pingcap/tiflow/issues/8861) [3AceShowHand](https://github.com/3AceShowHand)
 
