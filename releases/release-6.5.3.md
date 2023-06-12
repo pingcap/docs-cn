@@ -24,6 +24,8 @@ TiDB 版本：6.5.3
     - 在 resolve lock 之后避免 stale-read 的无效重试。[#43659](https://github.com/pingcap/tidb/issues/43659) @[you06](https://github.com/you06)
     (dup: release-6.5.2.md > 改进提升> TiDB)- 优化带 Limit 的 Range 类型分区表的 `distsql_concurrency` 设置以降低查询延迟 [#41480](https://github.com/pingcap/tidb/issues/41480) @[you06](https://github.com/you06) @[you06](https://github.com/you06)
     - 在 stale-read 遇到 data-is-not-ready 时使用 leader read 降低延迟。#[765](https://github.com/tikv/client-go/pull/765) @[Tema](https://github.com/Tema)
+    <!--tw:oreoxmt-->
+    - 为 Stale Read 增加 `Stale Read OPS` 和 `Stale Read MBps` 指标，用于监控命中率和流量 [#43325](https://github.com/pingcap/tidb/issues/43325) @[you06](https://github.com/you06)
 
 + TiKV
 
@@ -86,24 +88,23 @@ TiDB 版本：6.5.3
     (dup: release-7.1.0.md > 错误修复> TiDB)- 修复 IPv6 环境下的集群无法查询部分系统视图的问题 [#43286](https://github.com/pingcap/tidb/issues/43286) @[Defined2014](https://github.com/Defined2014) ，@[nexustar](https://github.com/nexustar)
     (dup: release-7.1.0.md > 错误修复> TiDB)- 修复当 PD 成员地址发生变化时，为 `AUTO_INCREMENT` 列分配 ID 会被长时间阻塞的问题 [#42643](https://github.com/pingcap/tidb/issues/42643) @[tiancaiamao](https://github.com/tiancaiamao)
     <!--tw:oreoxmt-->
-    - 修复了放置规则回收时，TiDB 向 PD 发送重复请求，造成 PD 侧大量 "full config reset" 日志打印的问题 [#33069](https://github.com/pingcap/tidb/issues/33069) @[tiancaiamao](https://github.com/tiancaiamao)
+    - 修复回收放置规则时，TiDB 向 PD 发送重复请求造成 PD 日志中出现大量 `full config reset` 的问题 [#33069](https://github.com/pingcap/tidb/issues/33069) @[tiancaiamao](https://github.com/tiancaiamao)
     (dup: release-6.6.0.md > 错误修复> TiDB)- 修复了 `SHOW PRIVILEGES` 命令显示的权限列表不完整的问题 [#40591](https://github.com/pingcap/tidb/issues/40591) @[CbcWestwolf](https://github.com/CbcWestwolf)
     (dup: release-7.1.0.md > 错误修复> TiDB)- 修复 `ADMIN SHOW DDL JOBS LIMIT` 返回错误结果的问题 [#42298](https://github.com/pingcap/tidb/issues/42298) @[CbcWestwolf](https://github.com/CbcWestwolf)
-    - 修复在开启密码强度校验时对 tidb_auth_token 用户进行校验的问题 [#44098](https://github.com/pingcap/tidb/issues/44098) @[CbcWestwolf](https://github.com/CbcWestwolf)
+    - 修复在开启密码强度校验时对 `tidb_auth_token` 用户进行校验导致用户创建失败的问题 [#44098](https://github.com/pingcap/tidb/issues/44098) @[CbcWestwolf](https://github.com/CbcWestwolf)
     (dup: release-7.1.0.md > 错误修复> TiDB)- 修复动态裁剪模式下内连接表时找不到分区的问题 [#43686](https://github.com/pingcap/tidb/issues/43686) @[mjonss](https://github.com/mjonss)
-    - 修复了在分区表上执行 modify column 时输出 truncate data 相关 warning 的问题。[#41118](https://github.com/pingcap/tidb/issues/41118)  @[mjonss](https://github.com/mjonss)
+    - 修复在分区表上执行 `MODIFY COLUMN` 时输出 `Data Truncated` 相关报错的问题 [#41118](https://github.com/pingcap/tidb/issues/41118)  @[mjonss](https://github.com/mjonss)
     (dup: release-7.1.0.md > 错误修复> TiDB)- 修复 IPv6 环境下显示错误的 TiDB 地址的问题 [#43260](https://github.com/pingcap/tidb/issues/43260) @[nexustar](https://github.com/nexustar)
     (dup: release-7.1.0.md > 错误修复> TiDB)- 修复在谓词下推的情况下 CTE 结果错误的问题 [#43645](https://github.com/pingcap/tidb/issues/43645) @[winoros](https://github.com/winoros)
     (dup: release-7.1.0.md > 错误修复> TiDB)- 修复动态裁剪模式下内连接表时找不到分区的问题 [#43686](https://github.com/pingcap/tidb/issues/43686) @[mjonss](https://github.com/mjonss) @[AilinKid](https://github.com/AilinKid)
-    - 修复了 CTE 被用在 non-correlated 子查询时可能出现错误结果的问题。[#44051](https://github.com/pingcap/tidb/issues/44051) @[winoros](https://github.com/winoros)
-    - 修复了 join reorder 可能会造成 outer join 结果错误的问题。[#44314](https://github.com/pingcap/tidb/issues/44314) @[AilinKid](https://github.com/AilinKid)
+    - 修复 CTE 在带有非关联子查询的语句中可能导致结果错误的问题 [#44051](https://github.com/pingcap/tidb/issues/44051) @[winoros](https://github.com/winoros)
+    - 修复 Join Reorder 可能会造成 Outer Join 结果错误的问题 [#44314](https://github.com/pingcap/tidb/issues/44314) @[AilinKid](https://github.com/AilinKid)
     (dup: release-7.1.0.md > 错误修复> TiDB)- 修复在一些极端情况下，悲观事务的第一条语句发生重试时，对该事务进行 resolve lock 可能影响事务正确性的问题 [#42937](https://github.com/pingcap/tidb/issues/42937) @[MyonKeminta](https://github.com/MyonKeminta)
     (dup: release-7.1.0.md > 错误修复> TiDB)- 修复在一些罕见的情况下，悲观事务的残留悲观锁在 GC resolve lock 时可能影响数据正确性的问题 [#43243](https://github.com/pingcap/tidb/issues/43243) @[MyonKeminta](https://github.com/MyonKeminta)
     (dup: release-6.5.1.md > 错误修复> TiDB)- 修复了 `batch cop` 在执行过程中的 scan detail 信息不准确的问题 [#41582](https://github.com/pingcap/tidb/issues/41582) @[you06](https://github.com/you06)
-    - 为 stale-read 增加了命中和流量的指标。 [#43325](https://github.com/pingcap/tidb/issues/43325) @[you06](https://github.com/you06)
-    - 修复了在同时使用 stale-read 和 prepare 语句时无法读取到数据更新的问题。 [#43044](https://github.com/pingcap/tidb/issues/43044) @[you06](https://github.com/you06)
-    - 修复了在 load data 语句中可能误报 assertion 错误的问题。[#43849](https://github.com/pingcap/tidb/issues/43849) @[you06](https://github.com/you06)
-    - 修复了使用 stale-read 时，coprocessor 在遇到 data-is-not-ready 的情况下不能 fallback 到 leader 的问题。 [#43365](https://github.com/pingcap/tidb/issues/43365) @[you06](https://github.com/you06)
+    - 修复在同时使用 Stale Read 和 `PREPARE` 语句时无法读取到数据更新的问题 [#43044](https://github.com/pingcap/tidb/issues/43044) @[you06](https://github.com/you06)
+    - 修复执行 `LOAD DATA` 语句可能误报 `assertion failed` 的问题 [#43849](https://github.com/pingcap/tidb/issues/43849) @[you06](https://github.com/you06)
+    - 修复使用 Stale Read 过程中，当 coprocessor 遇到 `region data not ready` 情况时无法 fallback 到 leader 的问题 [#43365](https://github.com/pingcap/tidb/issues/43365) @[you06](https://github.com/you06)
 
 + TiKV
 
