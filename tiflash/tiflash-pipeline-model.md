@@ -50,7 +50,7 @@ SHOW GLOBAL VARIABLES LIKE 'tidb_enable_tiflash_pipeline_model';
 - 如果需要在 global 级别开启 TiFlash Pipeline Model，可以通过以下语句设置：
 
     ```sql
-    SET GLOBAL tidb_enable_tiflash_pipeline_model=OFF;
+    SET GLOBAL tidb_enable_tiflash_pipeline_model=ON;
     ```
 
     设置后，新建的会话中 session 和 global 级别 `tidb_enable_tiflash_pipeline_model` 都将默认启用新值。
