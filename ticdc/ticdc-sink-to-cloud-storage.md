@@ -175,8 +175,8 @@ CDC000005.csv
     "Schema":"test",
     "Version":1,
     "TableVersion":441349361156227074,
-    "Query": "ALTER TABLE test.table1 ADD OfficeLocation blob(20)",
-    "Type": 5,
+    "Query":"ALTER TABLE test.table1 ADD OfficeLocation blob(20)",
+    "Type":5,
     "TableColumns":[
         {
             "ColumnName":"Id",
@@ -213,7 +213,7 @@ CDC000005.csv
 - `Version`：Storage sink 协议版本号。
 - `TableVersion`：表的版本号。
 - `Query`：DDL 语句。
-- `Type`: DDL 类型。
+- `Type`：DDL 类型。
 - `TableColumns`：该数组表示表中每一列的详细信息。
     - `ColumnName`：列名。
     - `ColumnType`：该列的类型。详见[数据类型](#数据类型)。
@@ -232,7 +232,7 @@ CDC000005.csv
 {scheme}://{prefix}/{schema}/meta/schema_{table-version}_{hash}.json
 ```
 
-以 `schema_441349361156227000_3131721815.json 为例，数据库结构信息文件的内容如下：
+以 `schema_441349361156227000_3131721815.json` 为例，数据库结构信息文件的内容如下：
 
 ```json
 {
