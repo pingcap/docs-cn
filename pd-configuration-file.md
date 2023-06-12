@@ -108,6 +108,13 @@ pd-server 相关配置项。
 >
 > 如果是从 v4.0 升级至当前版本，升级后的 `flow-round-by-digit` 行为和升级前的 `trace-region-flow` 行为默认保持一致：如果升级前 `trace-region-flow` 为 false，则升级后 `flow-round-by-digit` 为 127；如果升级前 `trace-region-flow` 为 true，则升级后 `flow-round-by-digit` 为 3。
 
+### `min-resolved-ts-persistence-interval` <span class="version-mark">从 v6.0.0 版本开始引入</span>
+
++ 设置 PD leader 对集群中 Resolved TS 最小值进行持久化的间隔时间。如果该值设置为 `0`，表示禁用该功能。
++ 默认值：`"0s"`
++ 最小值：`"0s"`
++ 单位：秒
+
 ## security
 
 安全相关配置项。
