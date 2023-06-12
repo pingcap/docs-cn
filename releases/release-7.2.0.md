@@ -52,7 +52,7 @@ TiDB 版本：7.2.0
 
 * 提升表和索引一致性检查的性能 [#issue号](链接) @[wjhuang2016](https://github.com/wjhuang2016) **tw@qiancai** <!--1436-->
 
-    TiDB 在新版本中优化了数据一致性校验的方式，大幅提升了 [`ADMIN CHECK [TABLE|INDEX]`](/sql-statements/sql-statement-admin-check-table-index.md) 的执行效率， 性能提升接近 200 倍。 这个能力可以大幅减少大型表数据导入的时间， 提升数据导入的体验。 设置 [`tidb_enable_fast_table_check`]() 为 `TRUE` 启用这个新机制。 
+    TiDB 在新版本中优化了数据一致性校验的方式，大幅提升了 [`ADMIN CHECK [TABLE|INDEX]`](/sql-statements/sql-statement-admin-check-table-index.md) 的执行效率， 性能提升接近 200 倍。 这个能力可以大幅减少大型表数据导入的时间， 提升数据导入的体验。 设置 [`tidb_enable_fast_table_check`](链接) 为 `TRUE` 启用这个新机制。
 
     更多信息，请参考[用户文档](链接)
 
@@ -66,14 +66,13 @@ TiDB 版本：7.2.0
 
 * 自动管理资源超出预期的查询 (实验特性) [#issue号](链接) @[nolouch](https://github.com/nolouch) @[glorv](https://github.com/glorv)  @[Connor1996](https://github.com/Connor1996) @[JmPotato](https://github.com/JmPotato) @[CabinfeverB](https://github.com/CabinfeverB) @[HuSharp](https://github.com/HuSharp) **tw@hfxsd** <!--1411-->
 
-    突发的 SQL 性能问题引发数据库整体性能下降，是数据库稳定性最常见的挑战。 造成 SQL 性能问题的原因有很多， 有可能是未经充分测试的新 SQL，数据量剧烈变化，执行计划突变等等，这些问题很难从源头上完全规避。 TiDB 在 v7.2.0 加入了对资源超出预期的查询的管理能力，在上述问题发生时，能够快速降低影响范围。 
+    突发的 SQL 性能问题引发数据库整体性能下降，是数据库稳定性最常见的挑战。 造成 SQL 性能问题的原因有很多， 有可能是未经充分测试的新 SQL，数据量剧烈变化，执行计划突变等等，这些问题很难从源头上完全规避。 TiDB 在 v7.2.0 加入了对资源超出预期的查询的管理能力，在上述问题发生时，能够快速降低影响范围。
 
-    用户可以针对某个资源组 (Resource Group) 设置查询的最长执行时间。 当查询的执行时间超过设置时， 自动降低查询的优先级或者取消查询。  用户还可以设置在一段时间内通过文本立即匹配已经识别出的查询， 从而避免问题查询的并发度太高时，在识别阶段就造成大量消耗的情况。 
+    用户可以针对某个资源组 (Resource Group) 设置查询的最长执行时间。 当查询的执行时间超过设置时， 自动降低查询的优先级或者取消查询。  用户还可以设置在一段时间内通过文本立即匹配已经识别出的查询， 从而避免问题查询的并发度太高时，在识别阶段就造成大量消耗的情况。
 
-    对资源超出预期查询的自动管理， 为用户提供了有效的手段，快速应对突发的查询性能问题，降低问题对数据库整体性能的影响，从而提升数据库的稳定性。 
+    对资源超出预期查询的自动管理， 为用户提供了有效的手段，快速应对突发的查询性能问题，降低问题对数据库整体性能的影响，从而提升数据库的稳定性。
 
     更多信息，请参考[用户文档](链接)。
-    
 
 ### 高可用
 
@@ -100,7 +99,7 @@ TiDB 版本：7.2.0
 * LIST 分区表支持 DEFAULT 分区功能 [#42728](https://github.com/pingcap/tidb/issues/42728) @[mjonss](https://github.com/mjonss) **tw@qiancai** <!--1342-->
 
     LIST 分区表必须指定所有的分区，不满足任何分区条件的数据，无法正常写入该表。从 v7.2.0 开始，TiDB 支持 [默认 LIST 分区](/partitioned-table.md#list-分区) 功能。该功能启用时，所有不符合已有 LIST 分区的数据将被保存在默认 LIST 分区中。通过系统变量 `tidb_enable_default_list_partition` 控制是否启用默认 LIST 分区gonna。
-    
+
     更多信息，请参考[用户文档](/partitioned-table.md#list-分区)。
 
 ### 数据库管理
@@ -121,7 +120,7 @@ TiDB 版本：7.2.0
 
 * 为统计信息收集增加进度展示 [#issue号](链接) @[hawkingrei](https://github.com/hawkingrei) **tw@Oreoxmt** <!--1380-->
 
-    对大表的统计信息收集经常会持续比较长的时间。 在过去的版本里，用户无从得知统计信息收集的进度，进而没法预测完成时间。 在 v7.2.0 中， TiDB 加入了对统计信息收集进度的信息展示。 新加入 [`SHOW ANALYZE SUMMARY`]() 命令，能够以表或分区为单位展示总体工作量，当前进度，以及对完成时间的预测。 在大规模数据导入、SQL 性能优化等场景下，用户能够了解整体任务进展，提升用户体验。 
+    对大表的统计信息收集经常会持续比较长的时间。 在过去的版本里，用户无从得知统计信息收集的进度，进而没法预测完成时间。 在 v7.2.0 中， TiDB 加入了对统计信息收集进度的信息展示。 新加入 [`SHOW ANALYZE SUMMARY`](链接) 命令，能够以表或分区为单位展示总体工作量，当前进度，以及对完成时间的预测。 在大规模数据导入、SQL 性能优化等场景下，用户能够了解整体任务进展，提升用户体验。
 
     更多信息，请参考[用户文档](链接)。
 
@@ -135,20 +134,26 @@ TiDB 版本：7.2.0
 
 ### 数据迁移
 
-* 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
+* 引入新的 SQL statement “import into” （实验特性）,该 SQL 集成了 Lightning 物理导入模式（local backend）的能力,大大提升导入数据的效率。[#42930](https://github.com/pingcap/tidb/issues/42930) @[D3Hunter](https://github.com/D3Hunter) **tw@hfxsd** <!--1413-->
 
-    功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
+    "import into " 集成了 Lightning 物理导入模式（local backend）的能力，用户可直接编写 "import into“ SQL 导入数据到 TiDB，同时还支持将数据导入任务拆分成多个子任务调度到多个 TiDB 节点，进行并行导入，提升导入性能。在导入空表的场景，用户无需再部署和管理 Lightning ，降低了导入数据难度的同时，大大提升了导入数据效率。
 
     更多信息，请参考[用户文档](链接)。
-* 引入新的 SQL statement “import into”,该 SQL 集成了 Lightning 物理导入模式（local backend）的能力,大大提升导入数据的效率。[#42930](https://github.com/pingcap/tidb/issues/42930) @[D3Hunter](https://github.com/D3Hunter)--实验特性
-"import into " 集成了 Lightning 物理导入模式（local backend）的能力，用户可直接编写 "import into“ SQL 导入数据到 TiDB，同时还支持将数据导入任务拆分成多个子任务调度到多个 TiDB 节点，进行并行导入，提升导入性能。在导入空表的场景，用户无需再部署和管理 Lightning ，降低了导入数据难度的同时，大大提升了导入数据效率。
-更多信息，请参考[用户文档](链接)。
-* Lightning 物理导入模式（local backend）支持在导入数据前对需要导入的数据是否存在键值冲突进行检测并处理。[#41629](https://github.com/pingcap/tidb/issues/41629)@[gozssky](https://github.com/gozssky) @[lance6716](https://github.com/lance6716)
-Lightning 物理导入模式（local backend）支持在导入数据前根据目标表的 PK、UK 定义对源文件的数据是否存在键值冲突进行检测。如发现存在冲突数据，在导入过程中用户可以通过配置策略如 replace 或 ignore 来处理冲突的数据，为用户提供了便利性。同时，用户也可以在实际数据导入之前，根据检测结果，提前发现冲突的记录，并排查原因，从源头保障数据质量，保证导入数据的准确性。
-更多信息，请参考[用户文档](链接)。
+
+* Lightning 物理导入模式（local backend）支持在导入数据前对需要导入的数据是否存在键值冲突进行检测并处理。[#41629](https://github.com/pingcap/tidb/issues/41629)@[gozssky](https://github.com/gozssky) @[lance6716](https://github.com/lance6716) **tw@hfxsd** <!--1296-->
+
+    Lightning 物理导入模式（local backend）支持在导入数据前根据目标表的 PK、UK 定义对源文件的数据是否存在键值冲突进行检测。如发现存在冲突数据，在导入过程中用户可以通过配置策略如 replace 或 ignore 来处理冲突的数据，为用户提供了便利性。同时，用户也可以在实际数据导入之前，根据检测结果，提前发现冲突的记录，并排查原因，从源头保障数据质量，保证导入数据的准确性。
+
+    更多信息，请参考[用户文档](链接)。
+
+* Lightning 支持将字符集为 latin1 和 utf8 的源文件导入到 TiDB。[#44434](https://github.com/pingcap/tidb/issues/44434) @[lance6716](https://github.com/lance6716) **tw@qiancai** <!--1432-->
+
+    通过此功能，用户现在可以使用 Lightning 数据导入工具直接将字符集为 latin1 和 utf8 的源文件导入到 TiDB 中。这扩展了用户在处理各种字符集时的数据导入选项的兼容性和灵活性。以前，导入这样的文件需要额外的预处理或转换。现在用户只需在运行 Lightning 导入过程时指定源文件的字符集（latin1 或 utf8）。Lightning 工具会在导入过程中自动处理字符集转换，确保数据的完整性和准确性。
+
+    更多信息，请参考[用户文档](https://github.com/pingcap/docs-cn/pull/14172/files)
+
 ## 兼容性变更
-从 7.2 版本开始 Lightning 配置文件的参数 "send-kv-pairs" 不再生效，由新的参数 "send-kv-size" 代替。
-该新参数用于指定 KV 键值对的大小阈值，单位为 KiB 或 MiB，默认值为 "16 KiB"。当 KV 键值对的大小达到设定的阈值时，它们将立即发送到 TiKV，避免在导入大宽表等一些场景，因为 Lightning 节点内存积累键值对过多导致 OOM 的问题。
+
 > **注意：**
 >
 > 以下为从 v7.1.0 升级至当前版本 (v7.2.0) 所需兼容性变更信息。如果从 v7.0.0 或之前版本升级到当前版本，可能也需要考虑和查看中间版本 release notes 中提到的兼容性变更信息。
@@ -176,10 +181,13 @@ Lightning 物理导入模式（local backend）支持在导入数据前根据目
 | -------- | -------- | -------- | -------- |
 |          |          |          |          |
 |          |          |          |          |
-|          |          |          |          |
-|          |          |          |          |
+| TiDB Lightning | `send-kv-pairs` | 废弃 | 从 7.2 版本开始 TiDB Lightning 配置文件的参数 "send-kv-pairs" 不再生效，由新的参数 "send-kv-size" 代替。该新参数用于指定 KV 键值对的大小阈值，单位为 KiB 或 MiB，默认值为 "16 KiB"。当 KV 键值对的大小达到设定的阈值时，它们将立即发送到 TiKV，避免在导入大宽表等一些场景因为 Lightning 节点内存积累键值对过多导致 OOM 的问题。**tw@hfxsd** <!--1420--> |
+| TiDB Lightning | `send-kv-size` | 新增 | 从 7.2 版本开始在 Lightning 配置文件 "[tikv-importer]" 这个 Session 中引入 `send-kv-size` 参数，用于设置发单次送到 TiKV 的 KV pairs 的大小。当 KV 键值对的大小达到设定的阈值时，它们将被 Lightning 立即发送到 TiKV，避免在导入大宽表的时候 Lightning 节点因为内存积累键值对过多导致 OOM 的问题。通过调整 "send-kv-size" 参数，你可以在内存使用和导入速度之间找到平衡，提高导入过程的稳定性和效率。**tw@hfxsd** <!--1420-->|
+| Data Migration | `strict-optimistic-shard-mode` | 新增 | 用于兼容历史版本 2.0 分库分表同步 DDL 的行为。当用户选择乐观模式时，可以启用该参数，开启后，乐观模式下，同步任务遇到二类 DDL 时，整个任务会中断，在多个表的 DDL变更有依赖关系的场景，可以及时中断，用户手动处理完各表的 DDL 后，再继续同步数据，保障上下游数据的一致性。 **tw@ran-huang** <!--1414-->|
 
 ## 废弃功能
+
+- note [#issue](链接) @[贡献者 GitHub ID](链接)
 
 ## 改进提升
 
@@ -216,19 +224,12 @@ Lightning 物理导入模式（local backend）支持在导入数据前根据目
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
     + TiDB Data Migration (DM)
-功能：在 DataMigration（DM）7.2 版本中引入了一个新的参数"strict-optimistic-shard-mode" 用于兼容历史版本 2.0 分库分表同步 DDL 的行为。
-当用户选择乐观模式时，可以启用该参数，开启后，乐观模式下，同步任务遇到二类 DDL 时，整个任务会中断，在多个表的 DDL变更有依赖关系的场景，可以及时中断，用户手动处理完各表的 DDL 后，再继续同步数据，保障上下游数据的一致性。详细的参数设置和使用说明，请参考相关文档。
 
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
     + TiDB Lightning
-    + TiDB Lightning
-- Lightning 支持将字符集为 latin1 和 utf8 的源文件导入到 TiDB。
-通过此功能，用户现在可以使用 Lightning 数据导入工具直接将字符集为 latin1 和 utf8 的源文件导入到 TiDB 中。这扩展了用户在处理各种字符集时的数据导入选项的兼容性和灵活性。以前，导入这样的文件需要额外的预处理或转换。现在用户只需在运行 Lightning 导入过程时指定源文件的字符集（latin1 或 utf8）。Lightning 工具会在导入过程中自动处理字符集转换，确保数据的完整性和准确性。 [#44434](https://github.com/pingcap/tidb/issues/44434) @[lance6716](https://github.com/lance6716)
-更多信息，请参考[用户文档](https://github.com/pingcap/docs-cn/pull/14172/files) 
-- Lightning 引入了新的参数 "send-kv-size" ，用于设置发单次送到 TiKV 的 KV pairs 的大小。
-在 Lightning 配置文件 "[tikv-importer]" 这个 Session 中引入了新的参数"send-kv-size" 。当 KV 键值对的大小达到设定的阈值时，它们将被 Lightning 立即发送到 TiKV，避免在导入大宽表的时候 Lightning 节点因为内存积累键值对过多导致 OOM 的问题。通过调整 "send-kv-size" 参数，您可以在内存使用和导入速度之间找到平衡，提高导入过程的稳定性和效率。[#43853](https://github.com/pingcap/tidb/issues/43853) @[D3Hunter](https://github.com/D3Hunter)
+
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
