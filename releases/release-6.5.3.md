@@ -54,6 +54,9 @@ TiDB 版本：6.5.3
         - 调整 Decoder 接口，增加了新方法 `AddKeyValue` [#8861](https://github.com/pingcap/tiflow/issues/8861) @[3AceShowHand](https://github.com/3AceShowHand)
         (dup)- 优化同步数据到对象存储的场景下发生 DDL 事件时的目录结构 [#8890](https://github.com/pingcap/tiflow/issues/8890) @[CharlesCheung96](https://github.com/CharlesCheung96)
         (dup)- 支持同步到 Kafka-on-Pulsar 下游 [#8892](https://github.com/pingcap/tiflow/issues/8892) @[hi-rustin](https://github.com/hi-rustin)
+       <!--tw:qiancai-->
+        - 当同步数据到 Kafka 时，支持 OAUTH 协议验证方式 [#8865](https://github.com/pingcap/tiflow/issues/8865) @[hi-rustin](https://github.com/hi-rustin)
+        - 优化采用 Avro 或 CSV 协议同步数据时 TiCDC 对 `UPDATE` 语句的处理方式，即将其拆分为 `DELETE` 和 `INSERT` 语句，这样用户从 `DELETE` 语句中即可获取修改前的 old value [#9086](https://github.com/pingcap/tiflow/issues/9086) @[3AceShowHand](https://github.com/3AceShowHand)
 
     + TiDB Data Migration (DM)
 
@@ -66,6 +69,10 @@ TiDB 版本：6.5.3
     + Dumpling
 
         - note 1
+
+    + TiDB Binlog
+        <!--tw:qiancai-->
+        - 优化表信息的获取方式，降低 Drainer 的初始化时间和内存占用 [#1137](https://github.com/pingcap/tidb-binlog/issues/1137) @[lichunzhu](https://github.com/lichunzhu)
 
 ## 错误修复
 
@@ -154,8 +161,6 @@ TiDB 版本：6.5.3
         (dup: release-7.1.0.md > 改进提升> Tools> TiCDC)- 优化 TiCDC 在同步任务失败时对上游 GC TLS 的设置方法 [#8403](https://github.com/pingcap/tiflow/issues/8403) @[charleszheng44](https://github.com/charleszheng44)
         (dup: release-7.1.0.md > 错误修复> Tools> TiCDC)- 修复下游 Kafka 滚动重启时 TiCDC 节点发生 panic 的问题 [#9023](https://github.com/pingcap/tiflow/issues/9023) @[asddongmen](https://github.com/asddongmen)
         - 修复同步数据到存储服务时，下游 DDL 语句对应的 JSON 文件中没有记录表中字段默认值的问题 [#9066](https://github.com/pingcap/tiflow/issues/9066) @[CharlesCheung96](https://github.com/CharlesCheung96)
-        - 在同步数据到 Kafka 的场景中，支持 OAUTH 协议验证方式 [#8865](https://github.com/pingcap/tiflow/issues/8865) @[hi-rustin](https://github.com/hi-rustin)
-        - 优化采用 Avro 或 CSV 协议同步数据时 TiCDC 对 `UPDATE` 语句的处理方式，即拆分为 `DELETE` + `INSERT`  语句，用户可以通过 `DELETE` 获取修改前的 old value [#9086](https://github.com/pingcap/tiflow/issues/9086) @[3AceShowHand](https://github.com/3AceShowHand)
 
         - note 1
 
@@ -176,5 +181,4 @@ TiDB 版本：6.5.3
 
     + TiDB Binlog
         <!--tw:qiancai-->
-        - 优化表信息的获取方式，降低 Drainer 的初始化时间和内存占用 [#1137](https://github.com/pingcap/tidb-binlog/issues/1137) @[lichunzhu](https://github.com/lichunzhu)
         - 修复遇到状态为 CANCELED 的 DDL 时 TiDB Binlog 报错的问题 [#1228](https://github.com/pingcap/tidb-binlog/issues/1228) @[okJiang](https://github.com/okJiang)
