@@ -89,11 +89,11 @@ TiFlash 原有执行模型 Stream Model 是线程调度执行模型，每一个�
 
     负责将从 TiDB 节点发过来的查询请求转换为 pipeline dag。
 
-    它会找到查询中的 pipeline breaker 算子，以 pipeline breaker 为边界将查询切分成若干个 pipeline，根据以 pipeline 之间的依赖关系，将 pipeline 组装成一个有向无环图。
+    它会找到查询中的 pipeline breaker 算子，以 pipeline breaker 为边界将查询切分成若干个 pipeline，根据 pipeline 之间的依赖关系，将 pipeline 组装成一个有向无环图。
 
-    pipeline breaker 用于指代存在停顿/阻塞逻辑的算子，这一类算子会持续接收上游算子传来的数据块，直到所有数据块都接收后，才会将处理结果返回给下游算子，这类算子会破坏数据处理流水线，所以被称为 pipeline breaker。pipeline breaker 的代表有 Aggregation，Aggregation 会将上游算子的数据都写入到哈希表后，才对哈希表中的数据做计算返回给下游算子。
+    pipeline breaker 用于指代存在停顿/阻塞逻辑的算子，这一类算子会持续接收上游算子传来的数据块，直到所有数据块都被接收后，才会将处理结果返回给下游算子，这类算子会破坏数据处理流水线，所以被称为 pipeline breaker。pipeline breaker 的代表有 Aggregation，Aggregation 会将上游算子的数据都写入到哈希表后，才对哈希表中的数据做计算返回给下游算子。
 
-    在查询被转换为 pipeline dag 后，Pipeline Query Executor 会按照依赖关系依次执行每个 pipeline。pipeline 会根据查询并发度被实例化成若干个 task 提交给 Task Scheduler。
+    在查询被转换为 pipeline dag 后，Pipeline Query Executor 会按照依赖关系依次执行每个 pipeline。pipeline 会根据查询并发度被实例化成若干个 task 提交给 Task Scheduler 执行。
 
 - Task Scheduler
 
