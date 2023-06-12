@@ -12,6 +12,39 @@ aliases: ['/zh/tidb/dev/sql-statement-set-tiflash-mode/','/zh/tidb/dev/dev-guide
 
 某些 OLAP 对查询结果精度可以容忍一定误差。如果对查询性能有更高要求，可以在 session 级别或 global 级别开启 FastScan 功能，你可以通过修改变量 `tiflash_fastscan` 的值来选择是否启用 FastScan 功能。
 
+> **警告：**
+> 当开启 FastScan 功能时，查询结果会包含相同主键的多个版本的数据, 如下所示：
+
+> 
+```
+create table t1 (a int, b int);
+alter table t1 set tiflash replica 1;
+insert into t1 values(1,2);
+insert into t1 values(10,20);
+update t1 set a = 4 where b = 2;
+set session tidb_isolation_read_engines='tiflash';
+
+select * from t1;
++------+------+
+| a    | b    |
++------+------+
+|    4 |    2 |
+|   10 |   20 |
++------+------+
+
+set session tiflash_fastscan=ON;
+select * from t1;
++------+------+
+| a    | b    |
++------+------+
+|    1 |    2 |
+|    4 |    2 |
+|   10 |   20 |
++------+------+
+```
+
+> 仅表中当所有的数据都进行了 compact 整理，并且旧版本数据超过 GC 时间后，相同主键的多版本数据才会被删除，此时 FastScan 的查询结果和非 FastScan 模式下保持相同。数据 compact 的时机受多种因素的自动触发，用户也可以通过 [`Alter Table ... Compact`](/sql-statements/sql-statement-alter-table-compact.md) 手动触发数据 compact 整理。 
+
 ## 启用和禁用 FastScan
 
 默认情况下，session 和 global 级别的变量 `tiflash_fastscan=OFF`，即没有开启 FastScan 功能。你可以通过以下语句来查看对应的变量信息。
