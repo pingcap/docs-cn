@@ -452,7 +452,7 @@ config show cluster-version
 
 - `store-limit-mode` 用于控制 store 限速机制的模式。主要有两种模式：`auto` 和 `manual`。`auto` 模式下会根据 load 自动进行平衡调整（实验性功能）。
 
-- `halt-scheduling` 用于停止调度。开启该配置后，PD 将停止调度，并且忽略其他的调度配置。
+- `halt-scheduling` 用于停止调度。开启该配置后，PD 将停止调度，并且忽略其他的调度配置。从 v6.5.3 起引入。
 
 - PD 会对流量信息的末尾数字进行四舍五入处理，减少 Region 流量信息变化引起的统计信息更新。该配置项用于指定对 Region 流量信息的末尾进行四舍五入的位数。例如流量 `100512` 会归约到 `101000`。默认值为 `3`。该配置替换了 `trace-region-flow`。
 
