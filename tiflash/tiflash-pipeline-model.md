@@ -71,14 +71,42 @@ TiFlash 原有执行模型 Stream Model 是线程调度执行模型，每一个�
 
 线程调度模型存在两个缺陷
 
-- 在高并发场景下，过多的线程会引起较多上下文切换，导致较高的线程调度代价。甚至在线程数达到一定数量时，申请线程会报错 `thread constructor failed: Resource temporarily unavailable`。
+- 在高并发场景下，过多的线程会引起较多上下文切换，导致较高的线程调度代价。
 
 - 线程调度模型无法精准计量查询的资源使用量以及做细粒度的资源管控。
 
 在新的执行模型 Pipeline Model 中
 
-- Query 被划分为若干 pipeline 执行。在 pipeline 中数据块会尽可能被保留在 cache 中，有很好的时间局部性。
+- 查询会被划分为多个 pipeline 并依次执行。在每个 pipeline 中，数据块会被尽可能保留在缓存中，从而实现更好的时间局部性，从而提高整个执行过程的效率。
 
-- 将 pipeline 实例化成若干个 task，摆脱 OS 原生的线程调度模型，使用更加精细的 task 调度模型，同时使用固定线程池，减少了 OS 申请和调度线程的开销。
+- 为了摆脱 OS 原生的线程调度模型，实现更加精细的调度机制，每个 pipeline 会被实例化成若干个 task，使用 task 调度模型，同时使用固定线程池，减少了 OS 申请和调度线程的开销。
 
 ![TiFlash Pipeline Model Design](/media/tiflash/tiflash-pipeline-model.png)
+
+如上图所示，Pipline Model 中有两个主要组成部分：Pipeline Query Executor 和 Task Scheduler。
+
+- Pipeline Query Executor
+
+    负责将从 TiDB 节点发过来的查询请求转换为 pipeline dag。
+
+    它会找到查询中的 pipeline breaker 算子，以 pipeline breaker 为边界将查询切分成若干个 pipeline，根据以 pipeline 之间的依赖关系，将 pipeline 组装成一个有向无环图。
+
+    pipeline breaker 用于指代存在停顿/阻塞逻辑的算子，这一类算子会持续接收上游算子传来的数据块，直到所有数据块都接收后，才会将处理结果返回给下游算子，这类算子会破坏数据处理流水线，所以被称为 pipeline breaker。pipeline breaker 的代表有 Aggregation，Aggregation 会将上游算子的数据都写入到哈希表后，才对哈希表中的数据做计算返回给下游算子。
+
+    在查询被转换为 pipeline dag 后，Pipeline Query Executor 会按照依赖关系依次执行每个 pipeline。pipeline 会根据查询并发度被实例化成若干个 task 提交给 Task Scheduler。
+
+- Task Scheduler
+
+    负责执行由 Pipeline Query Executor 提交过来的 task。task 会根据执行的逻辑的不同，在 task scheduler 里的不同组件中动态切换执行。
+
+    - CPU Task Thread Pool
+
+      执行 task 中 cpu 密集型的计算逻辑，比如数据过滤，函数计算等等。通常一个 task 中大部分的逻辑都是 cpu 密集型的计算逻辑。
+
+    - IO Task Thread Pool
+
+      执行 task 中 io 密集型的计算逻辑，比如算子计算的中间结果落盘等等。
+
+    - Wait Reactor
+
+      执行 task 中的等待逻辑，比如等待网络层将数据包传输给计算层等等。
