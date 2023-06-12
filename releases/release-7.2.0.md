@@ -140,9 +140,15 @@ TiDB 版本：7.2.0
     功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
 
     更多信息，请参考[用户文档](链接)。
-
+* 引入新的 SQL statement “import into”,该 SQL 集成了 Lightning 物理导入模式（local backend）的能力,大大提升导入数据的效率。[#42930](https://github.com/pingcap/tidb/issues/42930) @[D3Hunter](https://github.com/D3Hunter)--实验特性
+"import into " 集成了 Lightning 物理导入模式（local backend）的能力，用户可直接编写 "import into“ SQL 导入数据到 TiDB，同时还支持将数据导入任务拆分成多个子任务调度到多个 TiDB 节点，进行并行导入，提升导入性能。在导入空表的场景，用户无需再部署和管理 Lightning ，降低了导入数据难度的同时，大大提升了导入数据效率。
+更多信息，请参考[用户文档](链接)。
+* Lightning 物理导入模式（local backend）支持在导入数据前对需要导入的数据是否存在键值冲突进行检测并处理。[#41629](https://github.com/pingcap/tidb/issues/41629)@[gozssky](https://github.com/gozssky) @[lance6716](https://github.com/lance6716)
+Lightning 物理导入模式（local backend）支持在导入数据前根据目标表的 PK、UK 定义对源文件的数据是否存在键值冲突进行检测。如发现存在冲突数据，在导入过程中用户可以通过配置策略如 replace 或 ignore 来处理冲突的数据，为用户提供了便利性。同时，用户也可以在实际数据导入之前，根据检测结果，提前发现冲突的记录，并排查原因，从源头保障数据质量，保证导入数据的准确性。
+更多信息，请参考[用户文档](链接)。
 ## 兼容性变更
-
+从 7.2 版本开始 Lightning 配置文件的参数 "send-kv-pairs" 不再生效，由新的参数 "send-kv-size" 代替。
+该新参数用于指定 KV 键值对的大小阈值，单位为 KiB 或 MiB，默认值为 "16 KiB"。当 KV 键值对的大小达到设定的阈值时，它们将立即发送到 TiKV，避免在导入大宽表等一些场景，因为 Lightning 节点内存积累键值对过多导致 OOM 的问题。
 > **注意：**
 >
 > 以下为从 v7.1.0 升级至当前版本 (v7.2.0) 所需兼容性变更信息。如果从 v7.0.0 或之前版本升级到当前版本，可能也需要考虑和查看中间版本 release notes 中提到的兼容性变更信息。
