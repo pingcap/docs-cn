@@ -20,21 +20,22 @@ TiDB 版本：6.5.3
 + TiDB
 
     <!--tw:ran-huang-->
-    - 提升了 TRUNCATE 分区表（带放置规则）操作的速度。[#43070](https://github.com/pingcap/tidb/issues/43070) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
-    - 在 resolve lock 之后避免 stale-read 的无效重试。[#43659](https://github.com/pingcap/tidb/issues/43659) @[you06](https://github.com/you06)
+    - 提升了对带有 Placement Rules 的分区表的 `TRUNCATE` 操作速度 [#43070](https://github.com/pingcap/tidb/issues/43070) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
+    - 在 resolve lock 之后避免无效的 Stale Read 重试 [#43659](https://github.com/pingcap/tidb/issues/43659) @[you06](https://github.com/you06)
     (dup: release-6.5.2.md > 改进提升> TiDB)- 优化带 Limit 的 Range 类型分区表的 `distsql_concurrency` 设置以降低查询延迟 [#41480](https://github.com/pingcap/tidb/issues/41480) @[you06](https://github.com/you06) @[you06](https://github.com/you06)
-    - 在 stale-read 遇到 data-is-not-ready 时使用 leader read 降低延迟。#[765](https://github.com/tikv/client-go/pull/765) @[Tema](https://github.com/Tema)
+    - 在 Stale Read 遇到 `data-is-not-ready` 报错时使用 leader read 来降低延迟 [#765](https://github.com/tikv/client-go/pull/765) @[Tema](https://github.com/Tema)
     <!--tw:oreoxmt-->
     - 为 Stale Read 增加 `Stale Read OPS` 和 `Stale Read MBps` 指标，用于监控命中率和流量 [#43325](https://github.com/pingcap/tidb/issues/43325) @[you06](https://github.com/you06)
 
 + TiKV
 
-    - check_leader请求压缩（减少流量）[#14839](https://github.com/tikv/tikv/issues/14839) @[cfzjywxk](https://github.com/cfzjywxk)]
+    <!--tw:ran-huang-->
+    - 使用 gzip 压缩 `check_leader` 请求以减少流量 [#14839](https://github.com/tikv/tikv/issues/14839) @[cfzjywxk](https://github.com/cfzjywxk)
 
 + PD
 
     <!--tw:ran-huang-->
-    - PD Leader 选举使用单独的 gRPC 链接，防止受其它请求影响。#[6464](https://github.com/tikv/pd/pull/6454) @[rleungx](https://github.com/rleungx)
+    - PD Leader 选举使用单独的 gRPC 链接，防止受到其他请求的影响 [#6464](https://github.com/tikv/pd/pull/6454) @[rleungx](https://github.com/rleungx)
 
 
 + TiFlash
@@ -72,15 +73,15 @@ TiDB 版本：6.5.3
 + TiDB
 
     <!--tw:ran-huang-->
-    - 修复一个 min, max 查询结果出错的问题  [#43805](https://github.com/pingcap/tidb/issues/43805) @[wshwsh12](https://github.com/wshwsh12)
-    - 修复一个窗口函数计算下推到 tiflash 时执行计划构造错误的问题 [#43981](https://github.com/pingcap/tidb/issues/43981) @[gengliqi](https://github.com/gengliqi)
-    - 修复一个使用 CTE 的查询 hang 住的问题 [#43758](https://github.com/pingcap/tidb/issues/43758) @[guo-shaoge](https://github.com/guo-shaoge)
-    - 修复一个使用 AES_DECRYPT 表达时，sql 报错 runtime error: index out of range 的问题 [#43086](https://github.com/pingcap/tidb/issues/43086) @[lcwangchao](https://github.com/lcwangchao)
-    - 修复 show processlist 无法显示子查询时间较长语句的事务的 start ts 的问题。[#40851](https://github.com/pingcap/tidb/issues/40851) @[crazycs520](https://github.com/crazycs520)
-    - 修复 PD 隔离有可能导致运行的 DDL 阻塞的问题。 [#44014](https://github.com/pingcap/tidb/issues/44014), [#43755](https://github.com/pingcap/tidb/issues/43755), [#44267]https://github.com/pingcap/tidb/issues/44267) @[wjhuang2016](https://github.com/wjhuang2016)
+    - 修复一个 `min, max` 查询结果出错的问题  [#43805](https://github.com/pingcap/tidb/issues/43805) @[wshwsh12](https://github.com/wshwsh12)
+    - 修复一个窗口函数计算下推到 TiFlash 时执行计划构造错误的问题 [#43981](https://github.com/pingcap/tidb/issues/43981) @[gengliqi](https://github.com/gengliqi)
+    - 修复一个使用 CTE 的查询导致 TiDB 卡住的问题 [#43749](https://github.com/pingcap/tidb/issues/43749) [#36896](https://github.com/pingcap/tidb/issues/36896) @[guo-shaoge](https://github.com/guo-shaoge)
+    - 修复一个在使用 `AES_DECRYPT` 表达式时，SQL 报错 `runtime error: index out of range` 的问题 [#43063](https://github.com/pingcap/tidb/issues/43063) @[lcwangchao](https://github.com/lcwangchao)
+    - 修复 `SHOW PROCESSLIST` 语句无法显示子查询时间较长语句的事务的 start ts 的问题 [#40851](https://github.com/pingcap/tidb/issues/40851) @[crazycs520](https://github.com/crazycs520)
+    - 修复 PD 隔离可能会导致运行的 DDL 阻塞的问题 [#44014](https://github.com/pingcap/tidb/issues/44014), [#43755](https://github.com/pingcap/tidb/issues/43755), [#44267]https://github.com/pingcap/tidb/issues/44267) @[wjhuang2016](https://github.com/wjhuang2016)
     (dup: release-7.1.0.md > 错误修复> TiDB)- 修复使用 `UNION` 查询联合视图和临时表时 TiDB panic 的问题 [#42563](https://github.com/pingcap/tidb/issues/42563) @[lcwangchao](https://github.com/lcwangchao)
-    - 修复放置规则在分区表下的一些行为，使得删除的分区放置规则被正确设置以及回收 [#44116](https://github.com/pingcap/tidb/issues/44116) @[lcwangchao](https://github.com/lcwangchao)
-    - 修复了在 TRUNCATE 分区表的某个分区时可能造成分区的放置规则失效的问题 [#44031](https://github.com/pingcap/tidb/issues/44031) @[lcwangchao](https://github.com/lcwangchao)
+    - 修复 Placement Rule 在分区表下的行为问题，使得删除的分区 Placement Rule 可以被正确设置病回收 [#44116](https://github.com/pingcap/tidb/issues/44116) @[lcwangchao](https://github.com/lcwangchao)
+    - 修复在 TRUNCATE 分区表的某个分区时可能造成分区的 Placement Rule 失效的问题 [#44031](https://github.com/pingcap/tidb/issues/44031) @[lcwangchao](https://github.com/lcwangchao)
     (dup: release-7.1.0.md > 错误修复> TiDB)- 修复在重命名表期间 TiCDC 可能丢失部分行变更的问题 [#43338](https://github.com/pingcap/tidb/issues/43338) @[tangenta](https://github.com/tangenta)
     - 修复使用 BR 导入表后 DDL 作业历史记录丢失的问题 [#43725](https://github.com/pingcap/tidb/issues/43725) @[tangenta](https://github.com/tangenta)
     (dup: release-6.5.2.md > 错误修复> TiDB)- 修复在使用 Cursor Fetch 且在 Execute、Fetch、Close 之间运行其它语句后，Fetch 与 Close 命令可能会返回错误结果或造成 TiDB Panic 的问题 [#40094](https://github.com/pingcap/tidb/issues/40094) @[YangKeao](https://github.com/YangKeao)
@@ -107,13 +108,14 @@ TiDB 版本：6.5.3
 
 + TiKV
 
-    - 修复continuous profiling中的文件句柄泄露[#14224] (https://github.com/tikv/tikv/issues/14224) @[tabokie](https://github.com/tabokie)
-    - 修复当PD宕机时可能造成PITR无法推进[#14184](https://github.com/tikv/tikv/issues/14184) @[YuJuncen](https://github.com/YuJuncen)
-    - 修复新产生的加密密钥可能覆盖已经存在的加密密钥导致部分加密数据无法读取[#14585](https://github.com/tikv/tikv/issues/14585) @[tabokie](https://github.com/tabokie)
-    - 修复autocommit和point get replica read之间可能破坏线性一致性[#14715](https://github.com/tikv/tikv/issues/14715) @[cfzjywxk](https://github.com/cfzjywxk)
-    - 修复累计的锁可能导致升级后读性能变慢[#14780](https://github.com/tikv/tikv/issues/14780) @[ekexium](https://github.com/ekexium)
-    - 修复lightning SST文件泄露[#14745](https://github.com/tikv/tikv/issues/14745) @[YuJuncen](https://github.com/YuJuncen)
-    - 修复加密密钥和raft log文件删除的潜在的冲突导致tikv无法启动[#14761](https://github.com/tikv/tikv/issues/14761) @[Connor1996](https://github.com/Connor1996)
+    <!--tw:ran-huang-->
+    - 修复 Continuous Profiling 中的文件句柄泄露的问题 [#14224] (https://github.com/tikv/tikv/issues/14224) @[tabokie](https://github.com/tabokie)
+    - 修复 PD 宕机可能造成 PITR 无法推进的问题 [#14184](https://github.com/tikv/tikv/issues/14184) @[YuJuncen](https://github.com/YuJuncen)
+    (dup) - 修复加密 Key ID 冲突会导致旧 Key 被删除的问题 [#14585](https://github.com/tikv/tikv/issues/14585) @[tabokie](https://github.com/tabokie)
+    - 修复 autocommit 和 point get replica read 可能破坏线性一致性的问题 [#14715](https://github.com/tikv/tikv/issues/14715) @[cfzjywxk](https://github.com/cfzjywxk)
+    (dup) - 修复集群从较低版本升级到 v6.5 或更高版本时，由于累计的 Lock 记录可能导致性能下降到问题 [#14780](https://github.com/tikv/tikv/issues/14780) @[MyonKeminta](https://github.com/MyonKeminta)
+    - 修复 TiDB Lightning 可能导致 SST 文件泄露的问题 [#14745](https://github.com/tikv/tikv/issues/14745) @[YuJuncen](https://github.com/YuJuncen)
+    - 修复加密密钥和 raft log 文件删除之间的潜在冲突导致 TiKV 无法启动的问题 [#14761](https://github.com/tikv/tikv/issues/14761) @[Connor1996](https://github.com/Connor1996)
 
 + PD
 
@@ -132,7 +134,8 @@ TiDB 版本：6.5.3
 
     + Backup & Restore (BR)
 
-        - 修复备份失败时 "resolve lock timeout" 掩盖真正错误的问题 [#43236](https://github.com/pingcap/tidb/issues/43236) @[YuJuncen](https://github.com/YuJuncen)
+        <!--tw:ran-huang-->
+        - 修复备份失败时 BR 的报错信息 "resolve lock timeout" 具有误导性，掩盖了实际错误的问题 [#43236](https://github.com/pingcap/tidb/issues/43236) @[YuJuncen](https://github.com/YuJuncen)
 
     + TiCDC
 
