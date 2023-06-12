@@ -47,7 +47,8 @@ TiDB 版本：6.5.3
 
     + TiCDC
 
-        - note 1
+        - 优化 TiCDC 对 DDL 的处理方式，使 DDL 不阻塞其他无关的 DML Event 的使用，同时减少内存使用 [#8106](https://github.com/pingcap/tiflow/issues/8106) [asddongmen](https://github.com/asddongmen)
+        - 调整 Decoder 接口，增加了新参数 `AddKeyValue` [#8861](https://github.com/pingcap/tiflow/issues/8861) [3AceShowHand](https://github.com/3AceShowHand)
 
     + TiDB Data Migration (DM)
 
@@ -112,11 +113,11 @@ TiDB 版本：6.5.3
 + TiFlash
 
     <!--tw:hfxsd-->
-    - 修复一个分区表查询报错的问题 [#7519](https://github.com/pingcap/tiflash/issues/7519) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
-    - 修复在表字段同时存在 TIMESTAMP 或者 TIME 类型和 GENERATED 类型情况下，查询 TiFlash 可能会报错的问题 [#7468](https://github.com/pingcap/tiflash/issues/7468) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
+    - 修复分区表查询报错的问题 [#7519](https://github.com/pingcap/tiflash/issues/7519) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
+    - 修复在 GENERATED 类型表字段与 TIMESTAMP 或 TIME 类型同时存在的情况下，查询 TiFlash 可能会报错的问题 [#7468](https://github.com/pingcap/tiflash/issues/7468) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
     (dup: release-7.1.0.md > 错误修复> TiFlash)- 修复大的更新事务可能会导致 TiFlash 反复报错重启的问题 [#7316](https://github.com/pingcap/tiflash/issues/7316) @[JaySon-Huang](https://github.com/JaySon-Huang)
-    - 修复一个 insert select 语句从 tiflash 读取数据时，sql 报错 Truncate error cast decimal as decimal 的问题 [#7348](https://github.com/pingcap/tiflash/issues/7348) @[windtalker](https://github.com/windtalker)
-    - 修复查询在 Join build 侧数据非常大，且包含许多小型字符串类型列时，可能会使用比实际需要更大的内存的问题。 [#7416](https://github.com/pingcap/tiflash/issues/7416) @[yibin87](https://github.com/yibin87)
+    - 修复 INSERT SELECT 语句从 TiFlash 读取数据时报错 "Truncate error cast decimal as decimal" 的问题 [#7348](https://github.com/pingcap/tiflash/issues/7348) @[windtalker](https://github.com/windtalker)
+    - 修复查询在 Join build 侧数据非常大，且包含许多小型字符串类型列时，消耗的内存可能会超过实际需要的问题 [#7416](https://github.com/pingcap/tiflash/issues/7416) @[yibin87](https://github.com/yibin87)
 
 + Tools
 
@@ -127,11 +128,9 @@ TiDB 版本：6.5.3
     + TiCDC
 
         <!--tw:hfxsd-->
-        - 修复在表数量特别多场景下可能出现的 OOM 问题。[#7872](https://github.com/pingcap/tiflow/issues/7872)
-        - 优化 TiCDC 对 DDL 的处理方式，使 DDL 不阻塞住其他无关的 DML event 的使用，同时减少内存的使用。[#8106](https://github.com/pingcap/tiflow/issues/8106)
-        - 修复在表数量特别多（10k）场景下可能出现的 Panic 问题。[#8863](https://github.com/pingcap/tiflow/issues/8863)
-        - 修复TiCDC 在上游 TiDB 发生 OOM 时卡住的问题。[#8561](https://github.com/pingcap/tiflow/issues/8561)
-        - 修复 PD 出现网络隔离、PD owner 节点重启等故障时 CDC 卡住问题。[#8808](https://github.com/pingcap/tiflow/issues/8808)[#8812](https://github.com/pingcap/tiflow/issues/8812)[#8877](https://github.com/pingcap/tiflow/issues/8877)
+        - 修复在表数量多达 50000 个时可能出现 OOM 的问题 [#7872](https://github.com/pingcap/tiflow/issues/7872) [sdojjy](https://github.com/sdojjy)
+        - 修复 TiCDC 在上游 TiDB 发生 OOM 时卡住的问题 [#8561](https://github.com/pingcap/tiflow/issues/8561) [overvenus](https://github.com/overvenus)
+        - 修复 PD 出现网络隔离或 PD Owner 节点重启等故障时 TiCDC 卡住问题 [#8808](https://github.com/pingcap/tiflow/issues/8808) [#8812](https://github.com/pingcap/tiflow/issues/8812) [#8877](https://github.com/pingcap/tiflow/issues/8877) [asddongmen](https://github.com/asddongmen)
         (dup: release-7.1.0.md > 错误修复> Tools> TiCDC)- 修复 TiCDC 的时区设置问题 [#8798](https://github.com/pingcap/tiflow/issues/8798) @[hi-rustin](https://github.com/hi-rustin)
         (dup: release-7.1.0.md > 错误修复> Tools> TiCDC)- 修复上游 TiKV 节点 crash 时 checkpoint lag 上升的问题 [#8858](https://github.com/pingcap/tiflow/issues/8858) @[hicqu](https://github.com/hicqu)
         (dup: release-7.1.0.md > 改进提升> Tools> TiCDC)- 优化同步数据到对象存储的场景下发生 DDL 事件时的目录结构 [#8890](https://github.com/pingcap/tiflow/issues/8890) @[CharlesCheung96](https://github.com/CharlesCheung96)
