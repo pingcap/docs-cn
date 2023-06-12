@@ -206,18 +206,19 @@ integrity-check-level = "none"
 corruption-handle-level = "warn"
 
 # 以下参数仅在下游为 Kafka 时生效。
+[sink.kafka-config]
 # Kafka SASL 认证机制。默认值为空。当该参数为空时，表示不使用 SASL 认证。
-kafka-config.sasl-mechanism = "OAUTHBEARER"
+sasl-mechanism = "OAUTHBEARER"
 # Kafka SASL OAUTHBEARER 认证机制中的 client-id。默认值为空。在使用该认证机制时，该参数必填。
-kafka-config.sasl-oauth-client-id = "producer-kafka"
+sasl-oauth-client-id = "producer-kafka"
 # Kafka SASL OAUTHBEARER 认证机制中的 client-secret。默认值为空。需要 base64 编码。在使用该认证机制时，该参数必填。
-kafka-config.sasl-oauth-client-secret = "cHJvZHVjZXIta2Fma2E="
-# Kafka SASL OAUTHBEARER 认证机制中的 token-url。默认值为空。在使用该认证机制时，该参数必填。
-kafka-config.sasl-oauth-token-url = "http://127.0.0.1:4444/oauth2/token"
+sasl-oauth-client-secret = "cHJvZHVjZXIta2Fma2E="
+# Kafka SASL OAUTHBEARER 认证机制中的 token-url 用于获取 token。默认值为空。在使用该认证机制时，该参数必填。
+sasl-oauth-token-url = "http://127.0.0.1:4444/oauth2/token"
 # Kafka SASL OAUTHBEARER 认证机制中的 scopes。默认值为空。在使用该认证机制时，该参数可选填。
-kafka-config.sasl-oauth-scopes = ["producer.kafka", "consumer.kafka"]
+sasl-oauth-scopes = ["producer.kafka", "consumer.kafka"]
 # Kafka SASL OAUTHBEARER 认证机制中的 grant-type。默认值为 "client_credentials"。在使用该认证机制时，该参数可选填。
-kafka-config.sasl-oauth-grant-type = "client_credentials"
+sasl-oauth-grant-type = "client_credentials"
 # Kafka SASL OAUTHBEARER 认证机制中的 audience。默认值为空。在使用该认证机制时，该参数可选填。
-kafka-config.sasl-oauth-audience = "kafka"
+sasl-oauth-audience = "kafka"
 ```
