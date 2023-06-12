@@ -125,7 +125,7 @@ TiDB 版本：6.5.3
     - 修复分区表 TableScan 算子在 Region 迁移时性能劣化的问题 [#7519](https://github.com/pingcap/tiflash/issues/7519) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
     - 修复在 GENERATED 类型表字段与 TIMESTAMP 或 TIME 类型同时存在的情况下，查询 TiFlash 可能会报错的问题 [#7468](https://github.com/pingcap/tiflash/issues/7468) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
     - 修复大的更新事务可能会导致 TiFlash 反复报错重启的问题 [#7316](https://github.com/pingcap/tiflash/issues/7316) @[JaySon-Huang](https://github.com/JaySon-Huang)
-    - 修复 INSERT SELECT 语句从 TiFlash 读取数据时报错 "Truncate error cast decimal as decimal" 的问题 [#7348](https://github.com/pingcap/tiflash/issues/7348) @[windtalker](https://github.com/windtalker)
+    - 修复 `INSERT SELECT` 语句从 TiFlash 读取数据时报错 "Truncate error cast decimal as decimal" 的问题 [#7348](https://github.com/pingcap/tiflash/issues/7348) @[windtalker](https://github.com/windtalker)
     - 修复查询在 Join build 侧数据非常大，且包含许多小型字符串类型列时，消耗的内存可能会超过实际需要的问题 [#7416](https://github.com/pingcap/tiflash/issues/7416) @[yibin87](https://github.com/yibin87)
 
 + Tools
