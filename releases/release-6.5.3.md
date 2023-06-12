@@ -22,7 +22,6 @@ TiDB 版本：6.5.3
     <!--tw:ran-huang-->
     - 提升了对带有 Placement Rules 的分区表的 `TRUNCATE` 操作速度 [#43070](https://github.com/pingcap/tidb/issues/43070) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
     - 在 resolve lock 之后避免无效的 Stale Read 重试 [#43659](https://github.com/pingcap/tidb/issues/43659) @[you06](https://github.com/you06)
-    (dup: release-6.5.2.md > 改进提升> TiDB)- 优化带 Limit 的 Range 类型分区表的 `distsql_concurrency` 设置以降低查询延迟 [#41480](https://github.com/pingcap/tidb/issues/41480) @[you06](https://github.com/you06) @[you06](https://github.com/you06)
     - 在 Stale Read 遇到 `data-is-not-ready` 报错时使用 leader read 来降低延迟 [#765](https://github.com/tikv/client-go/pull/765) @[Tema](https://github.com/Tema)
     <!--tw:oreoxmt-->
     - 为 Stale Read 增加 `Stale Read OPS` 和 `Stale Read MBps` 指标，用于监控命中率和流量 [#43325](https://github.com/pingcap/tidb/issues/43325) @[you06](https://github.com/you06)
@@ -73,18 +72,17 @@ TiDB 版本：6.5.3
 + TiDB
 
     <!--tw:ran-huang-->
-    - 修复一个 `min, max` 查询结果出错的问题  [#43805](https://github.com/pingcap/tidb/issues/43805) @[wshwsh12](https://github.com/wshwsh12)
-    - 修复一个窗口函数计算下推到 TiFlash 时执行计划构造错误的问题 [#43981](https://github.com/pingcap/tidb/issues/43981) @[gengliqi](https://github.com/gengliqi)
+    - 修复一个 `min, max` 查询结果出错的问题 [#43805](https://github.com/pingcap/tidb/issues/43805) @[wshwsh12](https://github.com/wshwsh12)
+    - 修复一个窗口函数计算下推到 TiFlash 时执行计划构造错误的问题 [#43922](https://github.com/pingcap/tidb/issues/43922) @[gengliqi](https://github.com/gengliqi)
     - 修复一个使用 CTE 的查询导致 TiDB 卡住的问题 [#43749](https://github.com/pingcap/tidb/issues/43749) [#36896](https://github.com/pingcap/tidb/issues/36896) @[guo-shaoge](https://github.com/guo-shaoge)
     - 修复一个在使用 `AES_DECRYPT` 表达式时，SQL 报错 `runtime error: index out of range` 的问题 [#43063](https://github.com/pingcap/tidb/issues/43063) @[lcwangchao](https://github.com/lcwangchao)
     - 修复 `SHOW PROCESSLIST` 语句无法显示子查询时间较长语句的事务的 start ts 的问题 [#40851](https://github.com/pingcap/tidb/issues/40851) @[crazycs520](https://github.com/crazycs520)
-    - 修复 PD 隔离可能会导致运行的 DDL 阻塞的问题 [#44014](https://github.com/pingcap/tidb/issues/44014), [#43755](https://github.com/pingcap/tidb/issues/43755), [#44267]https://github.com/pingcap/tidb/issues/44267) @[wjhuang2016](https://github.com/wjhuang2016)
+    - 修复 PD 隔离可能会导致运行的 DDL 阻塞的问题 [#44014](https://github.com/pingcap/tidb/issues/44014) [#43755](https://github.com/pingcap/tidb/issues/43755) [#44267](https://github.com/pingcap/tidb/issues/44267) @[wjhuang2016](https://github.com/wjhuang2016)
     (dup: release-7.1.0.md > 错误修复> TiDB)- 修复使用 `UNION` 查询联合视图和临时表时 TiDB panic 的问题 [#42563](https://github.com/pingcap/tidb/issues/42563) @[lcwangchao](https://github.com/lcwangchao)
-    - 修复 Placement Rule 在分区表下的行为问题，使得删除的分区 Placement Rule 可以被正确设置病回收 [#44116](https://github.com/pingcap/tidb/issues/44116) @[lcwangchao](https://github.com/lcwangchao)
+    - 修复 Placement Rule 在分区表下的行为问题，使得删除的分区 Placement Rule 可以被正确设置并回收 [#44116](https://github.com/pingcap/tidb/issues/44116) @[lcwangchao](https://github.com/lcwangchao)
     - 修复在 TRUNCATE 分区表的某个分区时可能造成分区的 Placement Rule 失效的问题 [#44031](https://github.com/pingcap/tidb/issues/44031) @[lcwangchao](https://github.com/lcwangchao)
     (dup: release-7.1.0.md > 错误修复> TiDB)- 修复在重命名表期间 TiCDC 可能丢失部分行变更的问题 [#43338](https://github.com/pingcap/tidb/issues/43338) @[tangenta](https://github.com/tangenta)
     - 修复使用 BR 导入表后 DDL 作业历史记录丢失的问题 [#43725](https://github.com/pingcap/tidb/issues/43725) @[tangenta](https://github.com/tangenta)
-    (dup: release-6.5.2.md > 错误修复> TiDB)- 修复在使用 Cursor Fetch 且在 Execute、Fetch、Close 之间运行其它语句后，Fetch 与 Close 命令可能会返回错误结果或造成 TiDB Panic 的问题 [#40094](https://github.com/pingcap/tidb/issues/40094) @[YangKeao](https://github.com/YangKeao)
     (dup: release-6.6.0.md > 错误修复> TiDB)- 修复了 `JSON_OBJECT` 在某些情况下会报错的问题 [#39806](https://github.com/pingcap/tidb/issues/39806) @[YangKeao](https://github.com/YangKeao)
     (dup: release-7.1.0.md > 错误修复> TiDB)- 修复 IPv6 环境下的集群无法查询部分系统视图的问题 [#43286](https://github.com/pingcap/tidb/issues/43286) @[Defined2014](https://github.com/Defined2014) ，@[nexustar](https://github.com/nexustar)
     (dup: release-7.1.0.md > 错误修复> TiDB)- 修复当 PD 成员地址发生变化时，为 `AUTO_INCREMENT` 列分配 ID 会被长时间阻塞的问题 [#42643](https://github.com/pingcap/tidb/issues/42643) @[tiancaiamao](https://github.com/tiancaiamao)
@@ -109,7 +107,7 @@ TiDB 版本：6.5.3
 + TiKV
 
     <!--tw:ran-huang-->
-    - 修复 Continuous Profiling 中的文件句柄泄露的问题 [#14224] (https://github.com/tikv/tikv/issues/14224) @[tabokie](https://github.com/tabokie)
+    - 修复 Continuous Profiling 中的文件句柄泄露的问题 [#14224](https://github.com/tikv/tikv/issues/14224) @[tabokie](https://github.com/tabokie)
     - 修复 PD 宕机可能造成 PITR 无法推进的问题 [#14184](https://github.com/tikv/tikv/issues/14184) @[YuJuncen](https://github.com/YuJuncen)
     (dup) - 修复加密 Key ID 冲突会导致旧 Key 被删除的问题 [#14585](https://github.com/tikv/tikv/issues/14585) @[tabokie](https://github.com/tabokie)
     - 修复 autocommit 和 point get replica read 可能破坏线性一致性的问题 [#14715](https://github.com/tikv/tikv/issues/14715) @[cfzjywxk](https://github.com/cfzjywxk)
