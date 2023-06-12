@@ -27,7 +27,7 @@ TiDB 版本：6.5.3
 
 + TiKV
 
-    - note 1
+    - check_leader请求压缩（减少流量）[#14839](https://github.com/tikv/tikv/issues/14839) @[cfzjywxk](https://github.com/cfzjywxk)]
 
 + PD
 
@@ -107,7 +107,13 @@ TiDB 版本：6.5.3
 
 + TiKV
 
-    - note 1
+    - 修复continuous profiling中的文件句柄泄露[#14224] (https://github.com/tikv/tikv/issues/14224) @[tabokie](https://github.com/tabokie)
+    - 修复当PD宕机时可能造成PITR无法推进[#14184](https://github.com/tikv/tikv/issues/14184) @[YuJuncen](https://github.com/YuJuncen)
+    - 修复新产生的加密密钥可能覆盖已经存在的加密密钥导致部分加密数据无法读取[#14585](https://github.com/tikv/tikv/issues/14585) @[tabokie](https://github.com/tabokie)
+    - 修复autocommit和point get replica read之间可能破坏线性一致性[#14715](https://github.com/tikv/tikv/issues/14715) @[cfzjywxk](https://github.com/cfzjywxk)
+    - 修复累计的锁可能导致升级后读性能变慢[#14780](https://github.com/tikv/tikv/issues/14780) @[ekexium](https://github.com/ekexium)
+    - 修复lightning SST文件泄露[#14745](https://github.com/tikv/tikv/issues/14745) @[YuJuncen](https://github.com/YuJuncen)
+    - 修复加密密钥和raft log文件删除的潜在的冲突导致tikv无法启动[#14761](https://github.com/tikv/tikv/issues/14761) @[Connor1996](https://github.com/Connor1996)
 
 + PD
 
