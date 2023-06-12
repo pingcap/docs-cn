@@ -50,8 +50,8 @@ TiDB 版本：6.5.3
     + TiCDC
 
        <!--tw:hfxsd-->
-        - 优化 TiCDC 对 DDL 的处理方式，使 DDL 不阻塞其他无关的 DML Event 的使用，同时减少内存使用 [#8106](https://github.com/pingcap/tiflow/issues/8106) [asddongmen](https://github.com/asddongmen)
-        - 调整 Decoder 接口，增加了新方法 `AddKeyValue` [#8861](https://github.com/pingcap/tiflow/issues/8861) [3AceShowHand](https://github.com/3AceShowHand)
+        - 优化 TiCDC 对 DDL 的处理方式，使 DDL 不阻塞其他无关的 DML Event 的使用，同时减少内存使用 [#8106](https://github.com/pingcap/tiflow/issues/8106) @[asddongmen](https://github.com/asddongmen)
+        - 调整 Decoder 接口，增加了新方法 `AddKeyValue` [#8861](https://github.com/pingcap/tiflow/issues/8861) @[3AceShowHand](https://github.com/3AceShowHand)
         (dup)- 优化同步数据到对象存储的场景下发生 DDL 事件时的目录结构 [#8890](https://github.com/pingcap/tiflow/issues/8890) @[CharlesCheung96](https://github.com/CharlesCheung96)
         (dup)- 支持同步到 Kafka-on-Pulsar 下游 [#8892](https://github.com/pingcap/tiflow/issues/8892) @[hi-rustin](https://github.com/hi-rustin)
 
@@ -84,7 +84,7 @@ TiDB 版本：6.5.3
     (dup: release-7.1.0.md > 错误修复> TiDB)- 修复在重命名表期间 TiCDC 可能丢失部分行变更的问题 [#43338](https://github.com/pingcap/tidb/issues/43338) @[tangenta](https://github.com/tangenta)
     - 修复使用 BR 导入表后 DDL 作业历史记录丢失的问题 [#43725](https://github.com/pingcap/tidb/issues/43725) @[tangenta](https://github.com/tangenta)
     (dup: release-6.6.0.md > 错误修复> TiDB)- 修复了 `JSON_OBJECT` 在某些情况下会报错的问题 [#39806](https://github.com/pingcap/tidb/issues/39806) @[YangKeao](https://github.com/YangKeao)
-    (dup: release-7.1.0.md > 错误修复> TiDB)- 修复 IPv6 环境下的集群无法查询部分系统视图的问题 [#43286](https://github.com/pingcap/tidb/issues/43286) @[Defined2014](https://github.com/Defined2014) ，@[nexustar](https://github.com/nexustar)
+    (dup: release-7.1.0.md > 错误修复> TiDB)- 修复 IPv6 环境下的集群无法查询部分系统视图的问题 [#43286](https://github.com/pingcap/tidb/issues/43286) @[Defined2014](https://github.com/Defined2014) @[nexustar](https://github.com/nexustar)
     (dup: release-7.1.0.md > 错误修复> TiDB)- 修复当 PD 成员地址发生变化时，为 `AUTO_INCREMENT` 列分配 ID 会被长时间阻塞的问题 [#42643](https://github.com/pingcap/tidb/issues/42643) @[tiancaiamao](https://github.com/tiancaiamao)
     <!--tw:oreoxmt-->
     - 修复回收放置规则时，TiDB 向 PD 发送重复请求造成 PD 日志中出现大量 `full config reset` 的问题 [#33069](https://github.com/pingcap/tidb/issues/33069) @[tiancaiamao](https://github.com/tiancaiamao)
@@ -138,9 +138,9 @@ TiDB 版本：6.5.3
     + TiCDC
 
         <!--tw:hfxsd-->
-        - 修复在表数量多达 50000 个时可能出现 OOM 的问题 [#7872](https://github.com/pingcap/tiflow/issues/7872) [sdojjy](https://github.com/sdojjy)
-        - 修复 TiCDC 在上游 TiDB 发生 OOM 时卡住的问题 [#8561](https://github.com/pingcap/tiflow/issues/8561) [overvenus](https://github.com/overvenus)
-        - 修复 PD 出现网络隔离或 PD Owner 节点重启等故障时 TiCDC 卡住问题 [#8808](https://github.com/pingcap/tiflow/issues/8808) [#8812](https://github.com/pingcap/tiflow/issues/8812) [#8877](https://github.com/pingcap/tiflow/issues/8877) [asddongmen](https://github.com/asddongmen)
+        - 修复在表数量多达 50000 个时可能出现 OOM 的问题 [#7872](https://github.com/pingcap/tiflow/issues/7872) @[sdojjy](https://github.com/sdojjy)
+        - 修复 TiCDC 在上游 TiDB 发生 OOM 时卡住的问题 [#8561](https://github.com/pingcap/tiflow/issues/8561) @[overvenus](https://github.com/overvenus)
+        - 修复 PD 出现网络隔离或 PD Owner 节点重启等故障时 TiCDC 卡住问题 [#8808](https://github.com/pingcap/tiflow/issues/8808) [#8812](https://github.com/pingcap/tiflow/issues/8812) [#8877](https://github.com/pingcap/tiflow/issues/8877) @[asddongmen](https://github.com/asddongmen)
         (dup: release-7.1.0.md > 错误修复> Tools> TiCDC)- 修复 TiCDC 的时区设置问题 [#8798](https://github.com/pingcap/tiflow/issues/8798) @[hi-rustin](https://github.com/hi-rustin)
         (dup: release-7.1.0.md > 错误修复> Tools> TiCDC)- 修复上游 TiKV 节点 crash 时 checkpoint lag 上升的问题 [#8858](https://github.com/pingcap/tiflow/issues/8858) @[hicqu](https://github.com/hicqu)
         <!--tw:qiancai-->
