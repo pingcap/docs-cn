@@ -175,6 +175,8 @@ SELECT tidb_is_ddl_owner();
 
 - [ADMIN SHOW DDL](/sql-statements/sql-statement-admin-show-ddl.md)
 - [ADMIN CANCEL DDL](/sql-statements/sql-statement-admin-cancel-ddl.md)
+- [ADMIN PAUSE DDL](/sql-statements/sql-statement-admin-pause-ddl.md)
+- [ADMIN RESUME DDL](/sql-statements/sql-statement-admin-resume-ddl.md)
 
 ## TIDB_PARSE_TSO
 

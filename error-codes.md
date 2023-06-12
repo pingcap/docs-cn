@@ -393,6 +393,18 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
     在尝试消耗超过资源组的限制时返回该错误。一般出现该错误，是由于单次事务太大或者并发太多导致，需调整事务大小或减少客户端并发数。
 
+* Error Number: 8260
+
+    DDL 操作无法被 `admin pause` 暂停运行。
+
+* Error Number: 8261
+
+    DDL 操作无法被 `admin resume` 恢复运行。
+
+* Error Number: 8262
+
+    DDL 已经被 `admin pause` 暂停，无法再次执行。
+
 * Error Number: 9001
 
     完整的报错信息为 `ERROR 9001 (HY000) : PD Server Timeout`。
