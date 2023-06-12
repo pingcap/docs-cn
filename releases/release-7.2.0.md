@@ -216,12 +216,19 @@ Lightning 物理导入模式（local backend）支持在导入数据前根据目
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
     + TiDB Data Migration (DM)
+功能：在 DataMigration（DM）7.2 版本中引入了一个新的参数"strict-optimistic-shard-mode" 用于兼容历史版本 2.0 分库分表同步 DDL 的行为。
+当用户选择乐观模式时，可以启用该参数，开启后，乐观模式下，同步任务遇到二类 DDL 时，整个任务会中断，在多个表的 DDL变更有依赖关系的场景，可以及时中断，用户手动处理完各表的 DDL 后，再继续同步数据，保障上下游数据的一致性。详细的参数设置和使用说明，请参考相关文档。
 
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
     + TiDB Lightning
-
+    + TiDB Lightning
+- Lightning 支持将字符集为 latin1 和 utf8 的源文件导入到 TiDB。
+通过此功能，用户现在可以使用 Lightning 数据导入工具直接将字符集为 latin1 和 utf8 的源文件导入到 TiDB 中。这扩展了用户在处理各种字符集时的数据导入选项的兼容性和灵活性。以前，导入这样的文件需要额外的预处理或转换。现在用户只需在运行 Lightning 导入过程时指定源文件的字符集（latin1 或 utf8）。Lightning 工具会在导入过程中自动处理字符集转换，确保数据的完整性和准确性。 [#44434](https://github.com/pingcap/tidb/issues/44434) @[lance6716](https://github.com/lance6716)
+更多信息，请参考[用户文档](https://github.com/pingcap/docs-cn/pull/14172/files) 
+- Lightning 引入了新的参数 "send-kv-size" ，用于设置发单次送到 TiKV 的 KV pairs 的大小。
+在 Lightning 配置文件 "[tikv-importer]" 这个 Session 中引入了新的参数"send-kv-size" 。当 KV 键值对的大小达到设定的阈值时，它们将被 Lightning 立即发送到 TiKV，避免在导入大宽表的时候 Lightning 节点因为内存积累键值对过多导致 OOM 的问题。通过调整 "send-kv-size" 参数，您可以在内存使用和导入速度之间找到平衡，提高导入过程的稳定性和效率。[#43853](https://github.com/pingcap/tidb/issues/43853) @[D3Hunter](https://github.com/D3Hunter)
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
