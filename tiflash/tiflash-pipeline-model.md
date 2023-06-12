@@ -101,11 +101,11 @@ TiFlash 原有执行模型 Stream Model 是线程调度执行模型，每一个�
 
     - CPU Task Thread Pool
 
-      执行 task 中 cpu 密集型的计算逻辑，比如数据过滤，函数计算等等。通常一个 task 中大部分的逻辑都是 cpu 密集型的计算逻辑。
+      执行 task 中 cpu 密集型的计算逻辑，比如数据过滤，函数计算等等。
 
     - IO Task Thread Pool
 
-      执行 task 中 io 密集型的计算逻辑，比如算子计算的中间结果落盘等等。
+      执行 task 中 io 密集型的计算逻辑，比如计算中间结果落盘等等。
 
     - Wait Reactor
 
