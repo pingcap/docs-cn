@@ -51,9 +51,7 @@ Request Unit (RU) 是 TiDB 对 CPU、IO 等系统资源的统一抽象的单位,
         <tr>
             <td>8 storage read requests 消耗 1 RU</td>
         </tr>
-           <tr>
             <td>64 KiB read request payload 消耗 1 RU</td>
-        </tr>
         <tr>
             <td rowspan=3>Write</td>
             <td>1 storage write batch 消耗 1 RU</td>
@@ -61,7 +59,7 @@ Request Unit (RU) 是 TiDB 对 CPU、IO 等系统资源的统一抽象的单位,
         <tr>
             <td>1 storage write request 消耗 1 RU</td>
         </tr>
-         <tr>
+        <tr>
             <td>1 KiB write request payload 消耗 1 RU</td>
         </tr>
         <tr>
