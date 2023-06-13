@@ -53,15 +53,15 @@ TiDB Lightning 的完整配置文件可参考[完整配置及命令行参数](/t
 
 ## 冲突数据检测
 
-冲突数据，即两条或两条以上存在主键或唯一键列数据重复的记录。当数据源中存在冲突数据，在逻辑导入模式将导致该表导入后总行数和数据源总行数不一致。TiDB Lightning 的逻辑导入模式通过 `on-duplicate` 配置冲突数据检测的策略，TiDB Lightning 根据策略使用不同的 SQL 语句进行插入。
+冲突数据，即两条或两条以上存在主键或唯一键列数据重复的记录。TiDB Lightning 的逻辑导入模式通过 `on-duplicate` 配置冲突数据的行为，使用不同的 SQL 语句进行导入。
 
-| 策略 | 冲突时默认行为 | 对应 SQL 语句 |
+| 配置 | 冲突时默认行为 | 对应 SQL 语句 |
 |:---|:---|:---|
 | `replace` | 新数据替代旧数据 | `REPLACE INTO ...` |
 | `ignore` | 保留旧数据，忽略新数据 | `INSERT IGNORE INTO ...` |
 | `error` | 报错 | `INSERT INTO ...` |
 
-配置为 `error` 时，冲突数据导致的报错会由[可容忍错误](/tidb-lightning/tidb-lightning-error-resolution.md)功能继续处理。目前逻辑导入模式下，冲突数据产生的错误属于[类型错误（Type error）](/tidb-lightning/tidb-lightning-error-resolution.md#类型错误-type-error)。在配置了大于 0 的 `lightning.max-error` 后，可以从相关表中查询冲突数据的信息。详见[可容忍错误](/tidb-lightning/tidb-lightning-error-resolution.md)功能介绍。
+配置为 `error` 时，冲突数据导致的报错会由[可容忍错误](/tidb-lightning/tidb-lightning-error-resolution.md)功能继续处理。冲突数据产生的错误属于[冲突错误（Conflict error）](/tidb-lightning/tidb-lightning-error-resolution.md#冲突错误-conflict-error)。配置了大于 0 的 `lightning.max-error.conflict` 后，可以容忍一定数目的冲突错误。默认值为 0，表示不容忍冲突错误。详见[可容忍错误](/tidb-lightning/tidb-lightning-error-resolution.md)功能介绍。
 
 ## 性能调优
 
