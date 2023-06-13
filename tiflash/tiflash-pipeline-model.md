@@ -53,7 +53,7 @@ SHOW GLOBAL VARIABLES LIKE 'tidb_enable_tiflash_pipeline_model';
     SET GLOBAL tidb_enable_tiflash_pipeline_model=ON;
     ```
 
-    设置后，新建的会话中 session 和 global 级别 `tidb_enable_tiflash_pipeline_model` 都将默认启用新值。
+    设置 global 级别后，新建的会话中 session 和 global 级别的 `tidb_enable_tiflash_pipeline_model` 都将默认启用新值。
 
 如需关闭 TiFlash Pipeline Model，可以通过以下语句设置：
 
