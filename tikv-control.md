@@ -576,7 +576,7 @@ tikv-ctl --pd <pd_address:port> flashback -v <target_timestamp>
 
 命令运行成功后，会打印 `flashback all stores success!`。你也可以通过 [Raft admin > Peer in Flashback State](/grafana-tikv-dashboard.md#raft-admin) 监控项查看执行进度。
 
-## 示例
+#### 示例
 
 下面示例将整个集群的数据恢复到时间点 `430315739761082369`：
 
