@@ -6,80 +6,7 @@ title: Optimizer Hints
 
 TiDB 支持 Optimizer Hints 语法，它基于 MySQL 5.7 中介绍的类似 comment 的语法，例如 `/*+ HINT_NAME(t1, t2) */`。当 TiDB 优化器选择的不是最优查询计划时，建议使用 Optimizer Hints。
 
-## 常见 Hint 不生效问题排查
-
-### MySQL 命令行客户端清除 Hint 导致不生效
-
-MySQL 命令行客户端在 5.7.7 版本之前默认清除了 Optimizer Hints。如果需要在这些早期版本的客户端中使用 `Hint` 语法，需要在启动客户端时加上 `--comments` 选项，例如 `mysql -h 127.0.0.1 -P 4000 -uroot --comments`。
-
-### 不指定库名导致 Hint 不生效
-
-如果创建链接时未指定数据库名，则可能出现 Hint 失效的情况。例如：
-
-使用 `mysql -h127.0.0.1 -P4000 -uroot` 连入数据库，不使用 `-D` 参数指定数据库名。然后执行下面的 SQL：
-
-```sql
-mysql> select /*+ use_index(t, a) */ a from test.t;
-Empty set, 1 warning (0.00 sec)
-
-mysql> show warnings;
-+---------+------+----------------------------------------------------------------------+
-| Level   | Code | Message                                                              |
-+---------+------+----------------------------------------------------------------------+
-| Warning | 1815 | use_index(.t, a) is inapplicable, check whether the table(.t) exists |
-+---------+------+----------------------------------------------------------------------+
-1 row in set (0.00 sec)
-```
-
-由于无法识别表 `t` 对应的数据库名，因此 `use_index(t, a)` 无法生效。
-
-### 跨库查询不指定库名导致 Hint 不生效
-
-对于跨库查询中需要访问的表，需要显示的指定库名，否则可能出现 Hint 失效的情况。例如：
-
-```sql
-mysql> use test1;
-Database changed
-mysql> create table t1(a int, key(a));
-Query OK, 0 rows affected (0.02 sec)
-
-mysql> use test2;
-Database changed
-mysql> create table t2(a int, key(a));
-Query OK, 0 rows affected (0.01 sec)
-
-mysql> select /*+ use_index(t1, a) */ * from test1.t1, t2;
-Empty set, 1 warning (0.00 sec)
-
-mysql> show warnings;
-+---------+------+----------------------------------------------------------------------------------+
-| Level   | Code | Message                                                                          |
-+---------+------+----------------------------------------------------------------------------------+
-| Warning | 1815 | use_index(test2.t1, a) is inapplicable, check whether the table(test2.t1) exists |
-+---------+------+----------------------------------------------------------------------------------+
-1 row in set (0.00 sec)
-```
-
-由于 `t1` 不在当前数据库 `test2` 下，因此 Hint `use_index(t1, a)` 无法正确的识别，需要显示加上库名 `use_index(test1.t1, a)`。
-
-### Hint 位置不正确导致不生效
-
-如果 Hint 的位置没有跟在指定的关键字后面，会无法生效。例如：
-
-```sql
-mysql> select * /*+ use_index(t, a) */ from t;
-Empty set, 1 warning (0.01 sec)
-
-mysql> show warnings;
-+---------+------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| Level   | Code | Message                                                                                                                                                                                                                 |
-+---------+------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| Warning | 1064 | You have an error in your SQL syntax; check the manual that corresponds to your TiDB version for the right syntax to use [parser:8066]Optimizer hint can only be followed by certain keywords like SELECT, INSERT, etc. |
-+---------+------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-1 row in set (0.01 sec)
-```
-
-具体见 Hint 语法部分。
+如果遇到 Hint 无法生效的情况，请参考[常见 Hint 不生效问题排查](#常见-hint-不生效问题排查)。
 
 ## 语法
 
@@ -858,3 +785,78 @@ SELECT /*+ NTH_PLAN(3) */ count(*) from t where a > 5;
 ```sql
 SELECT /*+ RESOURCE_GROUP(rg1) */ * FROM t limit 10;
 ```
+
+## 常见 Hint 不生效问题排查
+
+### MySQL 命令行客户端清除 Hint 导致不生效
+
+MySQL 命令行客户端在 5.7.7 版本之前默认清除了 Optimizer Hints。如果需要在这些早期版本的客户端中使用 `Hint` 语法，需要在启动客户端时加上 `--comments` 选项，例如 `mysql -h 127.0.0.1 -P 4000 -uroot --comments`。
+
+### 不指定库名导致 Hint 不生效
+
+如果创建链接时未指定数据库名，则可能出现 Hint 失效的情况。例如：
+
+使用 `mysql -h127.0.0.1 -P4000 -uroot` 连入数据库，不使用 `-D` 参数指定数据库名。然后执行下面的 SQL：
+
+```sql
+mysql> select /*+ use_index(t, a) */ a from test.t;
+Empty set, 1 warning (0.00 sec)
+
+mysql> show warnings;
++---------+------+----------------------------------------------------------------------+
+| Level   | Code | Message                                                              |
++---------+------+----------------------------------------------------------------------+
+| Warning | 1815 | use_index(.t, a) is inapplicable, check whether the table(.t) exists |
++---------+------+----------------------------------------------------------------------+
+1 row in set (0.00 sec)
+```
+
+由于无法识别表 `t` 对应的数据库名，因此 `use_index(t, a)` 无法生效。
+
+### 跨库查询不指定库名导致 Hint 不生效
+
+对于跨库查询中需要访问的表，需要显示的指定库名，否则可能出现 Hint 失效的情况。例如：
+
+```sql
+mysql> use test1;
+Database changed
+mysql> create table t1(a int, key(a));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> use test2;
+Database changed
+mysql> create table t2(a int, key(a));
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> select /*+ use_index(t1, a) */ * from test1.t1, t2;
+Empty set, 1 warning (0.00 sec)
+
+mysql> show warnings;
++---------+------+----------------------------------------------------------------------------------+
+| Level   | Code | Message                                                                          |
++---------+------+----------------------------------------------------------------------------------+
+| Warning | 1815 | use_index(test2.t1, a) is inapplicable, check whether the table(test2.t1) exists |
++---------+------+----------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+```
+
+由于 `t1` 不在当前数据库 `test2` 下，因此 Hint `use_index(t1, a)` 无法正确的识别，需要显示加上库名 `use_index(test1.t1, a)`。
+
+### Hint 位置不正确导致不生效
+
+如果 Hint 的位置没有跟在指定的关键字后面，会无法生效。例如：
+
+```sql
+mysql> select * /*+ use_index(t, a) */ from t;
+Empty set, 1 warning (0.01 sec)
+
+mysql> show warnings;
++---------+------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Level   | Code | Message                                                                                                                                                                                                                 |
++---------+------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Warning | 1064 | You have an error in your SQL syntax; check the manual that corresponds to your TiDB version for the right syntax to use [parser:8066]Optimizer hint can only be followed by certain keywords like SELECT, INSERT, etc. |
++---------+------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.01 sec)
+```
+
+具体见 [Hint 语法](#语法)部分。
