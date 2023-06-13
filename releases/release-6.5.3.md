@@ -57,6 +57,9 @@ TiDB 版本：6.5.3
        <!--tw:qiancai-->
         - 当同步数据到 Kafka 时，支持 OAUTH 协议验证方式 [#8865](https://github.com/pingcap/tiflow/issues/8865) @[hi-rustin](https://github.com/hi-rustin)
         - 优化采用 Avro 或 CSV 协议同步数据时 TiCDC 对 `UPDATE` 语句的处理方式，即将其拆分为 `DELETE` 和 `INSERT` 语句，这样用户从 `DELETE` 语句中即可获取修改前的 old value [#9086](https://github.com/pingcap/tiflow/issues/9086) @[3AceShowHand](https://github.com/3AceShowHand)
+        (dup: release-7.1.0.md > 改进提升> Tools> TiCDC)- 增加一个配置项 `insecure-skip-verify`，控制在同步数据到 Kafka 的场景下启用 TLS 时是否设置认证算法 [#8867](https://github.com/pingcap/tiflow/issues/8867) @[hi-rustin](https://github.com/hi-rustin)
+        (dup: release-7.1.0.md > # 稳定性)- TiCDC 优化 DDL 同步操作，减轻 DDL 操作对下游延迟的影响 [#8686](https://github.com/pingcap/tiflow/issues/8686) @[hi-rustin](https://github.com/hi-rustin)
+        (dup: release-7.1.0.md > 改进提升> Tools> TiCDC)- 优化 TiCDC 在同步任务失败时对上游 GC TLS 的设置方法 [#8403](https://github.com/pingcap/tiflow/issues/8403) @[charleszheng44](https://github.com/charleszheng44)
 
     + TiDB Data Migration (DM)
 
@@ -64,7 +67,7 @@ TiDB 版本：6.5.3
 
     + TiDB Lightning
 
-        - note 1
+        (dup: release-7.1.0.md > 改进提升> Tools> TiDB Lightning)- 在导入数据期间遇到 `unknown RPC` 错误时，增加了重试机制 [#43291](https://github.com/pingcap/tidb/issues/43291) @[D3Hunter](https://github.com/D3Hunter)
 
     + Dumpling
 
@@ -153,12 +156,9 @@ TiDB 版本：6.5.3
         <!--tw:qiancai-->
         - 修复在同步数据到下游 MySQL 的场景中，当上游 TiDB 执行 `FLASHBACK CLUSTER TO TIMESTAMP` 语句后同步出错的问题 [#8040](https://github.com/pingcap/tiflow/issues/8040) @[asddongmen](https://github.com/asddongmen)
         (dup: release-7.1.0.md > 错误修复> Tools> TiCDC)- 修复当同步数据到对象存储时上游的 `EXCHANGE PARTITION` 操作没有正常同步到下游的问题 [#8914](https://github.com/pingcap/tiflow/issues/8914) @[CharlesCheung96](https://github.com/CharlesCheung96)
-        (dup: release-7.1.0.md > 改进提升> Tools> TiCDC)- 增加一个配置项 `insecure-skip-verify`，控制在同步数据到 Kafka 的场景下启用 TLS 时是否设置认证算法 [#8867](https://github.com/pingcap/tiflow/issues/8867) @[hi-rustin](https://github.com/hi-rustin)
         (dup: release-7.1.0.md > 错误修复> Tools> TiCDC)- 修复在某些特殊场景下 sorter 组件内存使用过多导致 OOM 的问题 [#8974](https://github.com/pingcap/tiflow/issues/8974) @[hicqu](https://github.com/hicqu)
-        (dup: release-7.1.0.md > # 稳定性)* TiCDC 优化 DDL 同步操作 [#8686](https://github.com/pingcap/tiflow/issues/8686) @[hi-rustin](https://github.com/hi-rustin)
         - 修复当下游为 Kafka 时，TiCDC 查询下游的元信息频率过高导致下游负载过大的问题 [#8957](https://github.com/pingcap/tiflow/issues/8957) [#8959](https://github.com/pingcap/tiflow/issues/8959) @[hi-rustin](https://github.com/hi-rustin)
         - 修复当 Kafka 消息过大导致同步出错时，在 Log 中记录了消息体的问题 [#9031](https://github.com/pingcap/tiflow/issues/9031) @[darraes](https://github.com/darraes)
-        (dup: release-7.1.0.md > 改进提升> Tools> TiCDC)- 优化 TiCDC 在同步任务失败时对上游 GC TLS 的设置方法 [#8403](https://github.com/pingcap/tiflow/issues/8403) @[charleszheng44](https://github.com/charleszheng44)
         (dup: release-7.1.0.md > 错误修复> Tools> TiCDC)- 修复下游 Kafka 滚动重启时 TiCDC 节点发生 panic 的问题 [#9023](https://github.com/pingcap/tiflow/issues/9023) @[asddongmen](https://github.com/asddongmen)
         - 修复同步数据到存储服务时，下游 DDL 语句对应的 JSON 文件中没有记录表中字段默认值的问题 [#9066](https://github.com/pingcap/tiflow/issues/9066) @[CharlesCheung96](https://github.com/CharlesCheung96)
 
@@ -173,7 +173,6 @@ TiDB 版本：6.5.3
         (dup: release-7.1.0.md > 错误修复> Tools> TiDB Lightning)- 修复宽表导入时可能出现 OOM 的问题 [#43728](https://github.com/pingcap/tidb/issues/43728) @[D3Hunter](https://github.com/D3Hunter)
         (dup: release-7.1.0.md > 错误修复> Tools> TiDB Lightning)- 修复大数据量导入时报 `write to tikv with no leader returned` 错误的问题 [#43055](https://github.com/pingcap/tidb/issues/43055) @[lance6716](https://github.com/lance6716)
         (dup: release-6.6.0.md > 错误修复> Tools> TiDB Lightning)- 修复当数据文件中存在未闭合的 delimiter 时可能 OOM 的问题 [#40400](https://github.com/pingcap/tidb/issues/40400) @[buchuitoudegou](https://github.com/buchuitoudegou) @[lance6716](https://github.com/lance6716)
-        (dup: release-7.1.0.md > 改进提升> Tools> TiDB Lightning)- 在导入数据期间遇到 `unknown RPC` 错误时，增加了重试机制 [#43291](https://github.com/pingcap/tidb/issues/43291) @[D3Hunter](https://github.com/D3Hunter)
 
     + Dumpling
 
