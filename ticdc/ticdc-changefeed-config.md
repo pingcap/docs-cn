@@ -205,7 +205,7 @@ integrity-check-level = "none"
 # 当单行数据的 Checksum 校验失败时，Changefeed 打印错误行数据相关日志的级别。默认值为 "warn"，可选值为 "warn" 和 "error"。
 corruption-handle-level = "warn"
 
-# 以下参数仅在下游为 Kafka 时生效。
+# 以下参数仅在下游为 Kafka 时生效。从 v6.5.3 开始支持。
 [sink.kafka-config]
 # Kafka SASL 认证机制。该参数默认值为空，表示不使用 SASL 认证。
 sasl-mechanism = "OAUTHBEARER"
