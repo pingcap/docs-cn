@@ -69,7 +69,7 @@ SET GLOBAL tidb_enable_tiflash_pipeline_model=OFF;
 
 TiFlash 原有执行模型 Stream Model 是线程调度执行模型，每一个查询会独立申请若干条线程协同执行。
 
-线程调度模型存在两个缺陷
+线程调度模型存在两个缺陷：
 
 - 在高并发场景下，过多的线程会引起较多上下文切换，导致较高的线程调度代价。
 
