@@ -554,53 +554,46 @@ TiDB v6.4.0 引入了 [`FLASHBACK CLUSTER TO TIMESTAMP`](/sql-statements/sql-sta
 
 > **注意：**
 >
-> - 在执行 `flashback` 命令前，需要先通过 `./pd-ctl config set halt-scheduling true` 命令[停止 PD 调度](pd-control.md#config-show--set-option-value--placement-rules)。
 > - `flashback` 命令使用最新的时间戳写入特定时间点的旧数据，但不会删除当前数据，所以在使用前请确保集群有足够的存储空间来同时容纳旧数据和当前数据。
-> - 该命令只支持本地模式。运行成功后，会打印 `flashback all stores success!`。
-> - 可以通过 [Raft admin > Peer in Flashback State](/grafana-tikv-dashboard.md#raft-admin) 监控项查看执行进度。
+> - `flashback` 命令只支持本地模式。
 
-下面示例将整个集群的数据恢复到 430315739761082369 时间点：
+#### 前置条件
+
+在执行 `flashback` 命令前，需要先通过 `./pd-ctl config set halt-scheduling true` 命令[停止 PD 调度](pd-control.md#config-show--set-option-value--placement-rules)。
+
+#### 使用方式
+
+```shell
+tikv-ctl --pd <pd_address:port> flashback -v <target_timestamp>
+```
+
+使用 `--pd` 选项指定 PD 的访问地址。使用 `-v` 选项指定 Flashback 目标的时间点。
+
+默认情况下，该命令会对整个集群进行 Flashback。如果需要对指定 Region 或 key 范围进行操作，可以使用以下选项：
+
+- 使用 `-r` 选项指定 Region，多个 Region 之间用 `,` 分隔。
+- 使用 `--start` 和 `--end` 指定某个 key 范围内的所有 Region（默认无范围限制，采用 Hex 格式）。
+
+命令运行成功后，会打印 `flashback all stores success!`。你也可以通过 [Raft admin > Peer in Flashback State](/grafana-tikv-dashboard.md#raft-admin) 监控项查看执行进度。
+
+## 示例
+
+下面示例将整个集群的数据恢复到时间点 `430315739761082369`：
 
 ```shell
 tikv-ctl --pd 127.0.0.1:2379 flashback -v 430315739761082369
 ```
 
-输出结果如下：
-
-```
-flashback all stores success!
-```
-
-上述命令中各选项的含义如下：
-
-- `--pd` 用于指定 PD 的访问地址。
-- `-v` 用于指定 Flashback 目标的时间点。
-- 默认情况下，该命令会对整个集群进行 Flashback。如果需要对指定 Region 或 key 范围进行操作，可以使用以下选项：
-    - 使用 `-r` 选项指定 Region，多个 Region 之间用 `,` 分隔。
-    - 使用 `--start` 和 `--end` 指定某个 key 范围内的所有 Region（默认无范围限制，采用 Hex 格式）。
-
-需要将 ID 为 `100` 和 `102` 的 Region 的数据恢复到 430315739761082369 时间点时，用法及输出内容如下所示：
+需要将 ID 为 `100` 和 `102` 的 Region 的数据恢复到时间点 `430315739761082369` 时，使用以下命令：
 
 ```shell
 tikv-ctl --pd 127.0.0.1:2379 flashback -v 430315739761082369 -r 100,102
 ```
 
-输出结果如下：
-
-```
-flashback all stores success!
-```
-
-需要将 key 范围的数据恢复到 430315739761082369 时间点时，用法及输出内容如下所示：
+需要将 key 范围的数据恢复到时间点 `430315739761082369` 时，使用以下命令：
 
 ```shell
 tikv-ctl --pd 127.0.0.1:2379 flashback -v 430315739761082369 --start 7480000000000000FF0800000000000000F8 --end 7480000000000000FF0C00000000000000F8
-```
-
-输出结果如下：
-
-```
-flashback all stores success!
 ```
 
 ### Ldb 命令
