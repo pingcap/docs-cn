@@ -181,4 +181,4 @@ TiDB 版本：6.5.3
 
     + TiDB Binlog
         <!--tw:qiancai-->
-        - 修复遇到状态为 CANCELED 的 DDL 时 TiDB Binlog 报错的问题 [#1228](https://github.com/pingcap/tidb-binlog/issues/1228) @[okJiang](https://github.com/okJiang)
+        - 修复遇到状态为 `CANCELED` 的 DDL 时 TiDB Binlog 报错的问题 [#1228](https://github.com/pingcap/tidb-binlog/issues/1228) @[okJiang](https://github.com/okJiang)
