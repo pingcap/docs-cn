@@ -578,7 +578,7 @@ tikv-ctl --pd <pd_address:port> flashback -v <target_timestamp>
 
 #### 示例
 
-- 下面示例将整个集群的数据恢复到时间点 `430315739761082369`：
+- 将整个集群的数据恢复到时间点 `430315739761082369`：
 
     ```shell
     tikv-ctl --pd 127.0.0.1:2379 flashback -v 430315739761082369
