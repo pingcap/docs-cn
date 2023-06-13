@@ -34,6 +34,8 @@ TiDB 资源管控特性提供了两层资源管理能力，包括在 TiDB 层的
 
 Request Unit (RU) 是 TiDB 对 CPU、IO 等系统资源的统一抽象的单位, 目前包括 CPU、IOPS 和 IO 带宽三个指标。这三个指标的消耗会按照一定的比例统一到 RU 单位上。
 
+以下是用户请求对资源的消耗以及对应的 RU 的对照表：
+
 <table>
     <thead>
         <tr>
