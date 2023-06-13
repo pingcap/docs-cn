@@ -59,7 +59,7 @@ TiDB Lightning 的完整配置文件可参考[完整配置及命令行参数](/t
 |:---|:---|:---|
 | `replace` | 新数据替代旧数据 | `REPLACE INTO ...` |
 | `ignore` | 保留旧数据，忽略新数据 | `INSERT IGNORE INTO ...` |
-| `error` | 报错 | `INSERT INTO ...` |
+| `error` | 跳过该行并报错 | `INSERT INTO ...` |
 
 配置为 `error` 时，冲突数据导致的报错会由[可容忍错误](/tidb-lightning/tidb-lightning-error-resolution.md)功能继续处理。冲突数据产生的错误属于[冲突错误（Conflict error）](/tidb-lightning/tidb-lightning-error-resolution.md#冲突错误-conflict-error)。配置了大于 0 的 `lightning.max-error.conflict` 后，可以容忍一定数目的冲突错误。默认值为 0，表示不容忍冲突错误。详见[可容忍错误](/tidb-lightning/tidb-lightning-error-resolution.md)功能介绍。
 
