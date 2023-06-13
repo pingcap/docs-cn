@@ -557,7 +557,7 @@ TiDB v6.4.0 引入了 [`FLASHBACK CLUSTER TO TIMESTAMP`](/sql-statements/sql-sta
 > - 在执行 `flashback` 命令前，需要先通过 `./pd-ctl config set halt-scheduling true` 命令[停止 PD 调度](pd-control.md#config-show--set-option-value--placement-rules)。
 > - `flashback` 命令使用最新的时间戳写入特定时间点的旧数据，但不会删除当前数据，所以在使用前请确保集群有足够的存储空间来同时容纳旧数据和当前数据。
 > - 该命令只支持本地模式。运行成功后，会打印 `flashback all stores success!`。
-> - 可以通过 [Peer in Flashback State](./grafana-tikv-dashboard.md#raft-admin) 查看执行进度。
+> - 可以通过 [Raft admin > Peer in Flashback State](/grafana-tikv-dashboard.md#raft-admin) 监控项查看执行进度。
 
 下面示例将整个集群的数据恢复到 430315739761082369 时间点：
 
