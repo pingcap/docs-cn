@@ -17,11 +17,12 @@ aliases: ['/zh/tidb/dev/sql-statement-set-tiflash-mode/','/zh/tidb/dev/dev-guide
 
 > 
 ```
-create table t1 (a int, b int);
+create table t1 (a int primary key, b int);
 alter table t1 set tiflash replica 1;
 insert into t1 values(1,2);
 insert into t1 values(10,20);
 update t1 set a = 4 where b = 2;
+delete from t1 where a = 10;
 set session tidb_isolation_read_engines='tiflash';
 
 select * from t1;
@@ -29,7 +30,6 @@ select * from t1;
 | a    | b    |
 +------+------+
 |    4 |    2 |
-|   10 |   20 |
 +------+------+
 
 set session tiflash_fastscan=ON;
