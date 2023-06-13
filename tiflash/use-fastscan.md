@@ -43,7 +43,7 @@ select * from t1;
 +------+------+
 ```
 
-> 在这些旧数据（相同主键的多版本旧数据和已经被 delete 语句删除的数据）被进行了 compact 整理，并且它们的数据版本小于 GC safe point 之后，才会被真正物理清理。此后在 FastScan 模式下不再返回这些数据 。数据被 compact 的时机受多种因素的自动触发，用户也可以通过 [`Alter Table ... Compact`](/sql-statements/sql-statement-alter-table-compact.md) 手动触发数据 compact 整理。 
+> 这些旧数据（相同主键的多版本旧数据和已经被 delete 语句删除的数据）在被进行了 compact 整理，并且它们的数据版本小于 GC safe point 之后，才会被真正物理清理。此后在 FastScan 模式下不再返回这些数据。数据被 compact 的时机受多种因素的自动触发，用户也可以通过 [`Alter Table ... Compact`](/sql-statements/sql-statement-alter-table-compact.md) 手动触发数据 compact 整理。 
 
 ## 启用和禁用 FastScan
 
