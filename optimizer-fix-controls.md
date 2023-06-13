@@ -10,6 +10,8 @@ TiDB 优化器的实现包含很多行为细节。随着产品演进，这些细
 - 对于某些实现细节，不同的使用场景更适合不同的行为。有的行为改变，能在大多数场景下带来改进，但可能在极少数场景下导致回退。
 - 有时，行为细节的变化和其导致的结果之间的关系十分复杂。即使是对某处行为细节的改进，也可能在整体上导致执行计划回退。
 
+因此，TiDB 提供了 Optimizer Fix Controls 功能，允许用户通过设置一系列 Fix 控制 TiDB 优化器的行为细节。本文档描述了 Optimizer Fix Controls 以及如何使用 `tidb_opt_fix_control` 细粒度地控制 TiDB 优化器的行为。
+
 ## `tidb_opt_fix_control` 介绍
 
 从 TiDB v7.1.0 开始，提供了 [`tidb_opt_fix_control`](/system-variables.md#tidb_opt_fix_control-从-v710-版本开始引入) 系统变量来更细粒度地控制优化器的行为。
