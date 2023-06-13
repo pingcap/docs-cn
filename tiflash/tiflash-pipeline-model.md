@@ -13,7 +13,7 @@ summary: 介绍 TiFlash 新的执行模型 Pipeline Model。
 
 ## 启用和禁用 TiFlash pipeline model
 
-默认情况下，session 和 global 级别的变量 `tidb_enable_tiflash_pipeline_model=OFF`，即关闭 TiFlash Pipeline Model。你可以通过以下语句来查看对应的变量信息。
+你可以使用系统变量 [`tidb_enable_tiflash_pipeline_model`](/system-variables.md#tidb_enable_tiflash_pipeline_model-从-v720-版本开始引入) 来开启或禁用 TiFlash pipeline model。该变量可以在 Session 级别和 Global 级别生效。默认情况下，`tidb_enable_tiflash_pipeline_model=OFF`，即关闭 TiFlash Pipeline Model。你可以通过以下语句来查看对应的变量信息：
 
 ```sql
 SHOW VARIABLES LIKE 'tidb_enable_tiflash_pipeline_model';
