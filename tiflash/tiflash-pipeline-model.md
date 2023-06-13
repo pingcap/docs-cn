@@ -3,7 +3,7 @@ title: TiFlash Pipeline Model 执行模型
 summary: 介绍 TiFlash 新的执行模型 Pipeline Model。
 ---
 
-# TiFlash Pipeline Model
+# TiFlash Pipeline Model 执行模型
 
 > **注意：**
 >
