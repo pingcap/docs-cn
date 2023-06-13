@@ -201,7 +201,7 @@ corruption-handle-level = "warn"
 
 # 以下参数仅在下游为 Kafka 时生效。
 [sink.kafka-config]
-# Kafka SASL 认证机制。默认值为空。当该参数为空时，表示不使用 SASL 认证。
+# Kafka SASL 认证机制。该参数默认值为空，表示不使用 SASL 认证。
 sasl-mechanism = "OAUTHBEARER"
 # Kafka SASL OAUTHBEARER 认证机制中的 client-id。默认值为空。在使用该认证机制时，该参数必填。
 sasl-oauth-client-id = "producer-kafka"
