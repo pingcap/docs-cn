@@ -199,7 +199,7 @@ TiDB 版本：7.2.0
 
 + TiDB
 
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
+    - 优化构造索引扫描范围的逻辑，支持将一些复杂条件转化为索引扫描范围 [#41572](https://github.com/pingcap/tidb/issues/41572) [#44389](https://github.com/pingcap/tidb/issues/44389) @xuyifangreeneyes
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
 + TiKV
