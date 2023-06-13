@@ -13,7 +13,7 @@ aliases: ['/zh/tidb/dev/sql-statement-set-tiflash-mode/','/zh/tidb/dev/dev-guide
 某些 OLAP 对查询结果精度可以容忍一定误差。如果对查询性能有更高要求，可以在 session 级别或 global 级别开启 FastScan 功能，你可以通过修改变量 `tiflash_fastscan` 的值来选择是否启用 FastScan 功能。
 
 > **警告：**
-> 当开启 FastScan 功能时，查询结果会包含相同主键的多个版本的数据, 如下所示：
+> 当开启 FastScan 功能时，查询结果会包含相同主键的多个版本的数据，或者已经被删除的数据。如下所示：
 
 > 
 ```
