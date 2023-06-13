@@ -42,7 +42,7 @@ select * from t1;
 +------+------+
 ```
 
-> 仅表中当所有的数据都进行了 compact 整理，并且旧版本数据超过 GC 时间后，相同主键的多版本数据才会被删除，此时 FastScan 的查询结果和非 FastScan 模式下保持相同。数据 compact 的时机受多种因素的自动触发，用户也可以通过 [`Alter Table ... Compact`](/sql-statements/sql-statement-alter-table-compact.md) 手动触发数据 compact 整理。 
+> 仅表中当所有的数据都进行了 compact 整理，并且旧版本数据超过 GC 时间后，相同主键的多版本数据才会被删除。数据 compact 的时机受多种因素的自动触发，用户也可以通过 [`Alter Table ... Compact`](/sql-statements/sql-statement-alter-table-compact.md) 手动触发数据 compact 整理。 
 
 ## 启用和禁用 FastScan
 
