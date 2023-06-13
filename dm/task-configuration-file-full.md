@@ -18,7 +18,7 @@ The following is the task configuration file template which allows you to perfor
 ```yaml
 ---
 
-# ----------- Global setting -----------
+# ----------- Global configuration -----------
 ## ********* Basic configuration *********
 name: test                      # The name of the task. Should be globally unique.
 task-mode: all                  # The task mode. Can be set to `full`(only migrates full data)/`incremental`(replicates binlogs synchronously)/`all` (replicates both full data and incremental binlogs).
@@ -238,6 +238,8 @@ mysql-instances:
 ```
 
 ## Configuration order
+
+From the sample configuration file, you can see that the configuration file contains two parts: `Global configuration` and `Instance configuration`, where the `Global configuration` contains `Basic configuration` and `Feature configuration set`. The configuration order is as follows:
 
 1. Edit the [global configuration](#global-configuration).
 2. Edit the [instance configuration](#instance-configuration) based on the global configuration.
