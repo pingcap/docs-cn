@@ -46,6 +46,12 @@ TiDB 版本：7.2.0
 
     更多信息，请参考[用户文档](/system-variables.md#tiflash_replica_read)。
 
+* TiFlash 支持 pipeline 执行模型（实验特性） [#6518](https://github.com/pingcap/tiflash/issues/6518) @[SeaRise](https://github.com/SeaRise) **tw@qiancai** <!--1394-->
+
+    在 v7.2.0 版本之前，TiFlash 引擎中各个任务在执行时，需要自行申请线程资源。TiFlash 引擎通过控制任务数的方式限制线程资源使用，以避免线程资源超用，但是并不能完全避免。在 v7.2.0 版本中，TiFlash 引入 pipeline 执行模型，对所有线程资源进行统一管理，并对所有任务的执行进行统一调度，充分利用线程资源，同时避免资源超用。新增系统变量 [`tidb_enable_tiflash_pipeline_model`](/system-variables.md#tidb_enable_tiflash_pipeline_model) 用于设定是否启用 pipeline 执行模型。
+
+    更多信息，请参考[用户文档](/system-variables.md#tidb_enable_tiflash_pipeline_model)。
+
 * 提升统计信息收集的性能 [#issue号](链接) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes) **tw@hfxsd** <!--1352-->
 
     v7.2.0 优化了统计信息的收集策略，会选择跳过一部分重复的信息，以及对优化器价值不高的信息，提升统计信息收集的整体速度达 30% 。 这个提升有利于 TiDB 对数据库对象的统计信息进行更及时的更新，使得生成的执行计划更准确， 从而达到提升数据库整体性能的目的。
