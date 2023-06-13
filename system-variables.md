@@ -2540,8 +2540,10 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 > **注意：**
 >
 > - TiFlash Pipeline Model 目前为实验特性，不建议在生产环境中使用。
-> - TiFlash Pipeline Model 目前不支持 [join 算子落盘](/tiflash/tiflash-spill-disk.md)，在开启 join 算子落盘且 `tidb_enable_tiflash_pipeline_model` 设置为 `ON` 时，下推到 tiflash 的查询仍会使用原有的执行模型 Stream Model 来执行。
-> - TiFlash Pipeline Model 目前不支持 [TiFlash 存算分离架构与 S3](/tiflash/tiflash-disaggregated-and-s3.md)，在开启 TiFlash 存算分离架构与 S3 且 `tidb_enable_tiflash_pipeline_model` 设置为 `ON` 时，下推到 tiflash 的查询仍会使用原有的执行模型 Stream Model 来执行。
+> - TiFlash Pipeline Model 目前不支持以下功能。当下列功能开启时，即使 `tidb_enable_tiflash_pipeline_model` 设置为 `ON`，下推到 TiFlash 的查询仍会使用原有的执行模型 Stream Model 来执行。
+>
+>     - [Join 算子落盘](/tiflash/tiflash-spill-disk.md)
+>     - [TiFlash 存算分离架构与 S3](/tiflash/tiflash-disaggregated-and-s3.md)
 
 ### `tidb_max_chunk_size`
 
