@@ -559,7 +559,7 @@ TiDB v6.4.0 引入了 [`FLASHBACK CLUSTER TO TIMESTAMP`](/sql-statements/sql-sta
 
 #### 前置条件
 
-在执行 `flashback` 命令前，需要先通过 `./pd-ctl config set halt-scheduling true` 命令[停止 PD 调度](pd-control.md#config-show--set-option-value--placement-rules)。
+在执行 `flashback` 命令前，需要先通过 `./pd-ctl config set halt-scheduling true` 命令[停止 PD 调度](/pd-control.md#config-show--set-option-value--placement-rules)。
 
 #### 使用方式
 
