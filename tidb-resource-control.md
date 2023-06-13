@@ -32,9 +32,7 @@ TiDB 资源管控特性提供了两层资源管理能力，包括在 TiDB 层的
 
 ## 什么是 Request Unit (RU)
 
-Request Unit (RU) 是 TiDB 对 CPU、IO 等系统资源的统一抽象的单位, 目前包括 CPU、IOPS 和 IO 带宽三个指标。这三个指标的消耗会按照一定的比例统一到 RU 单位上。
-
-以下是用户请求对资源的消耗以及对应的 RU 的对照表：
+Request Unit (RU) 是 TiDB 对 CPU、IO 等系统资源的统一抽象的单位, 是一种计量单位，用于表示对数据库的单个请求消耗的资源量。 请求消耗的 RU 数量取决于各种因素，例如操作类型或正在检索或修改的数据量。 目前，RU 将包含以下资源的统计信息：
 
 <table>
     <thead>
@@ -54,7 +52,7 @@ Request Unit (RU) 是 TiDB 对 CPU、IO 等系统资源的统一抽象的单位,
             <td>64 KiB read request payload 消耗 1 RU</td>
         <tr>
             <td rowspan=3>Write</td>
-            <td>1 storage write batch 消耗 1 RU</td>
+            <td>1 storage write batch 消耗 1 RU * 副本数</td>
         </tr>
         <tr>
             <td>1 storage write request 消耗 1 RU</td>
@@ -68,6 +66,10 @@ Request Unit (RU) 是 TiDB 对 CPU、IO 等系统资源的统一抽象的单位,
         </tr>
     </tbody>
 </table>
+
+* 每个写操作都被复制到多个存储进程（3个用于没有索引的基于行的存储），并且每个重复被认为是一个不同的写操作。
+
+* 除了用户执行的查询之外，RU 还可以被后台任务消耗，例如自动统计信息收集。
 
 > **注意：**
 >
