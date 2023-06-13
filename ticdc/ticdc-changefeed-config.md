@@ -205,7 +205,7 @@ corruption-handle-level = "warn"
 sasl-mechanism = "OAUTHBEARER"
 # Kafka SASL OAUTHBEARER 认证机制中的 client-id。默认值为空。在使用该认证机制时，该参数必填。
 sasl-oauth-client-id = "producer-kafka"
-# Kafka SASL OAUTHBEARER 认证机制中的 client-secret。默认值为空。需要 base64 编码。在使用该认证机制时，该参数必填。
+# Kafka SASL OAUTHBEARER 认证机制中的 client-secret。默认值为空。需要 Base64 编码。在使用该认证机制时，该参数必填。
 sasl-oauth-client-secret = "cHJvZHVjZXIta2Fma2E="
 # Kafka SASL OAUTHBEARER 认证机制中的 token-url 用于获取 token。默认值为空。在使用该认证机制时，该参数必填。
 sasl-oauth-token-url = "http://127.0.0.1:4444/oauth2/token"
