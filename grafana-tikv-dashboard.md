@@ -146,6 +146,7 @@ title: TiKV 监控指标详解
 - Admin apply：apply 命令的 ops
 - Check split：split check 命令的 ops
 - 99.99% Check split duration：99.99% 的情况下，split check 所需花费的时间
+- Peer in Flashback State：处于 flashback 状态的 peer 的数量
 
 ![TiKV Dashboard - Raft admin metrics](/media/tikv-dashboard-raft-admin.png)
 
