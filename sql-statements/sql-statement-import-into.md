@@ -164,7 +164,7 @@ IMPORT INTO t FROM '/path/to/file.csv' WITH skip_rows=1;
 ### 以 `DETACHED` 模式异步导入
 
 ```sql
-IMPORT INTO t FROM '/path/to/file.csv' WITH detached;
+IMPORT INTO t FROM '/path/to/file.csv' WITH DETACHED;
 ```
 
 ### 忽略数据文件中的特定字段
