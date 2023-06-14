@@ -58,7 +58,7 @@ TiDB 版本：7.2.0
 
     更多信息，请参考[用户文档](链接)。
 
-* 增强对历史执行计划的绑定能力 [#issue号](链接) @[qw4990](https://github.com/qw4990)
+* 增强对历史执行计划的绑定能力 [#issue号](链接) @[qw4990](https://github.com/qw4990) **tw@Oreoxmt** <!--1349-->
 
     新版本的 TiDB 对历史执行计划绑定的能力做了进一步增强。 一方面加强了对复杂语句的解析和绑定， 另一方面， 也加入了对新 Hint 的支持，包括 [`AGG_TO_COP()`](/optimizer-hints.md#agg_to_cop)、[`LIMIT_TO_COP()`](/optimizer-hints.md#limit_to_cop)、[`ORDERED_INDEX`](/optimizer-hints.md#order_indext1_name-idx1_name--idx2_name)、[`NO_ORDERED_INDEX()`](/optimizer-hints.md#no_order_indext1_name-idx1_name--idx2_name)。 借助这个能力， 从历史执行计划中创建的 [SQL Binding](/sql-plan-management.md#执行计划绑定-sql-binding) 能够更加稳定的固定住执行计划。 
 
@@ -67,6 +67,12 @@ TiDB 版本：7.2.0
 
 ### SQL 功能
 
+* 支持 `CHECK` 约束 [#41711](https://github.com/pingcap/tidb/issues/41711) @[fzzf678] (https://github.com/fzzf678) **tw@qiancai** <!--1404-->
+
+    v7.2.0 版本开始，用户可以通过 `CHECK` 约束功能约束表中一个或者多个字段值必须满足特定条件。添加 `CHECK` 约束后，TiDB 会在数据插入或者更新时检查约束条件是否满足，只允许满足约束的数据写入。
+     
+    更多信息，请参考[用户文档](链接)。
+     
 ### 数据库管理
 
 * DDL 任务支持暂停和恢复操作（实验特性）[#18015](https://github.com/pingcap/tidb/issues/18015) @[godouxm](https://github.com/godouxm) **tw@ran-huang** <!--1185-->
