@@ -17,23 +17,7 @@ TiDB 版本：7.2.0
 
 ## 功能详情
 
-### 可扩展性
-
-<!-- 请将 **tw@xxx** 中的 xxx 替换为这个 feature 的 writer 的 ID，这个标记会在发布前删除-->
-
-* 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
-
-    功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
-
-    更多信息，请参考[用户文档](链接)。
-
 ### 性能
-
-* 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
-
-    功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
-
-    更多信息，请参考[用户文档](链接)。
 
 * 新增支持下推两个[窗口函数](/tiflash/tiflash-supported-pushdown-calculations.md) 至 TiFlash [#7427](https://github.com/pingcap/tiflash/issues/7427)  @[xzhangxian1008](https://github.com/xzhangxian1008) **tw@qiancai** <!--1310-->
 
@@ -64,12 +48,6 @@ TiDB 版本：7.2.0
 
 ### 稳定性
 
-* 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
-
-    功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
-
-    更多信息，请参考[用户文档](链接)。
-
 * 自动管理资源超出预期的查询 (实验特性) [#issue号](链接) @[nolouch](https://github.com/nolouch) @[glorv](https://github.com/glorv)  @[Connor1996](https://github.com/Connor1996) @[JmPotato](https://github.com/JmPotato) @[CabinfeverB](https://github.com/CabinfeverB) @[HuSharp](https://github.com/HuSharp) **tw@hfxsd** <!--1411-->
 
     突发的 SQL 性能问题引发数据库整体性能下降，是数据库稳定性最常见的挑战。 造成 SQL 性能问题的原因有很多， 有可能是未经充分测试的新 SQL，数据量剧烈变化，执行计划突变等等，这些问题很难从源头上完全规避。 TiDB 在 v7.2.0 加入了对资源超出预期的查询的管理能力，在上述问题发生时，能够快速降低影响范围。
@@ -80,21 +58,7 @@ TiDB 版本：7.2.0
 
     更多信息，请参考[用户文档](链接)。
 
-### 高可用
-
-* 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
-
-    功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
-
-    更多信息，请参考[用户文档](链接)。
-
 ### SQL 功能
-
-* 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
-
-    功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
-
-    更多信息，请参考[用户文档](链接)。
 
 * TiDB 支持完整的分区类型管理功能 [#42728](https://github.com/pingcap/tidb/issues/42728) @[mjonss](https://github.com/mjonss) **tw@qiancai** <!--1370-->
 
@@ -112,7 +76,7 @@ TiDB 版本：7.2.0
 
 * DDL 任务支持暂停和恢复操作（实验特性）[#18015](https://github.com/pingcap/tidb/issues/18015) @[godouxm](https://github.com/godouxm) **tw@ran-huang** <!--1185-->
 
-    TiDB v7.1.0 之前的版本中，当 DDL 任务执行期间遇到业务高峰时间点时，为了减少对业务的影响，只能手动取消 DDL 任务。TiDB v7.1.0 引入了 DDL 任务的暂停和恢复功能，你可以在高峰时间点暂停 DDL 任务，等到业务高峰时间结束后再恢复 DDL 任务，从而避免了 DDL 操作对业务负载的影响。
+    TiDB v7.2.0 之前的版本中，当 DDL 任务执行期间遇到业务高峰时间点时，为了减少对业务的影响，只能手动取消 DDL 任务。TiDB v7.2.0 引入了 DDL 任务的暂停和恢复功能，你可以在高峰时间点暂停 DDL 任务，等到业务高峰时间结束后再恢复 DDL 任务，从而避免了 DDL 操作对业务负载的影响。
 
     例如，可以通过如下 `ADMIN PAUSE DDL JOBS` 或 `ADMIN RESUME DDL JOBS` 语句暂停或者恢复多个 DDL 任务：
 
@@ -124,23 +88,9 @@ TiDB 版本：7.2.0
 
 ### 可观测性
 
-* 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
-
-    功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
-
-    更多信息，请参考[用户文档](链接)。
-
 * 为统计信息收集增加进度展示 [#issue号](链接) @[hawkingrei](https://github.com/hawkingrei) **tw@Oreoxmt** <!--1380-->
 
     对大表的统计信息收集经常会持续比较长的时间。 在过去的版本里，用户无从得知统计信息收集的进度，进而没法预测完成时间。 在 v7.2.0 中， TiDB 加入了对统计信息收集进度的信息展示。 新加入 [`SHOW ANALYZE SUMMARY`](链接) 命令，能够以表或分区为单位展示总体工作量，当前进度，以及对完成时间的预测。 在大规模数据导入、SQL 性能优化等场景下，用户能够了解整体任务进展，提升用户体验。
-
-    更多信息，请参考[用户文档](链接)。
-
-### 安全
-
-* 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
-
-    功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
 
     更多信息，请参考[用户文档](链接)。
 
@@ -303,4 +253,4 @@ TiDB 版本：7.2.0
 
 感谢来自 TiDB 社区的贡献者们：
 
-- [贡献者 GitHub ID]()
+- [贡献者 GitHub ID](链接)
