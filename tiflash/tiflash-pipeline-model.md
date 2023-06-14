@@ -19,9 +19,9 @@ Pipeline Model 主要借鉴了 [Morsel-Driven Parallelism: A NUMA-Aware Query Ev
 >     - [Join 算子落盘](/system-variables.md#tidb_max_bytes_before_tiflash_external_join-从-v700-版本开始引入)
 >     - [TiFlash 存算分离架构与 S3](/tiflash/tiflash-disaggregated-and-s3.md)
 
-## 启用和禁用 TiFlash pipeline model
+## 启用和禁用 TiFlash Pipeline Model
 
-你可以使用系统变量 [`tidb_enable_tiflash_pipeline_model`](/system-variables.md#tidb_enable_tiflash_pipeline_model-从-v720-版本开始引入) 来开启或禁用 TiFlash pipeline model。该变量可以在 Session 级别和 Global 级别生效。默认情况下，`tidb_enable_tiflash_pipeline_model=OFF`，即关闭 TiFlash Pipeline Model。你可以通过以下语句来查看对应的变量信息：
+你可以使用系统变量 [`tidb_enable_tiflash_pipeline_model`](/system-variables.md#tidb_enable_tiflash_pipeline_model-从-v720-版本开始引入) 来开启或禁用 TiFlash Pipeline Model。该变量可以在 Session 级别和 Global 级别生效。默认情况下，`tidb_enable_tiflash_pipeline_model=OFF`，即关闭 TiFlash Pipeline Model。你可以通过以下语句来查看对应的变量信息：
 
 ```sql
 SHOW VARIABLES LIKE 'tidb_enable_tiflash_pipeline_model';
