@@ -816,23 +816,20 @@ SHOW WARNINGS;
 
 ### 跨库查询不指定库名导致 Hint 不生效
 
-对于跨库查询中需要访问的表，需要显示的指定库名，否则可能出现 Hint 失效的情况。例如：
+对于跨库查询中需要访问的表，需要显式地指定数据库名，否则可能出现 Hint 失效的情况。例如执行下面跨库查询的 SQL 语句：
 
 ```sql
-mysql> use test1;
-Database changed
-mysql> create table t1(a int, key(a));
-Query OK, 0 rows affected (0.02 sec)
+USE test1;
+CREATE TABLE t1(a INT, KEY(a));
+USE test2;
+CREATE TABLE t2(a INT, KEY(a));
+SELECT /*+ use_index(t1, a) */ * FROM test1.t1, t2;
+SHOW WARNINGS;
+```
 
-mysql> use test2;
-Database changed
-mysql> create table t2(a int, key(a));
-Query OK, 0 rows affected (0.01 sec)
+由于 `t1` 不在当前数据库 `test2` 下，因此 `use_index(t1, a)` Hint 无法被正确地识别。此时，需要显式地指定库名，即修改为 `use_index(test1.t1, a)`。
 
-mysql> select /*+ use_index(t1, a) */ * from test1.t1, t2;
-Empty set, 1 warning (0.00 sec)
-
-mysql> show warnings;
+```sql
 +---------+------+----------------------------------------------------------------------------------+
 | Level   | Code | Message                                                                          |
 +---------+------+----------------------------------------------------------------------------------+
@@ -840,8 +837,6 @@ mysql> show warnings;
 +---------+------+----------------------------------------------------------------------------------+
 1 row in set (0.00 sec)
 ```
-
-由于 `t1` 不在当前数据库 `test2` 下，因此 Hint `use_index(t1, a)` 无法正确的识别，需要显示加上库名 `use_index(test1.t1, a)`。
 
 ### Hint 位置不正确导致不生效
 
