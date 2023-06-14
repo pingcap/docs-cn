@@ -92,7 +92,7 @@ mysql> FLASHBACK CLUSTER TO TIMESTAMP '2022-10-09 16:40:51';
 ERROR 1105 (HY000): Detected schema change due to another DDL job during [2022-10-09 16:40:51 +0800 CST, now), can't do flashback
 ```
 
-可以通过日志查看 `FLASHBACK` 执行进度，具体的日志如下所示：
+可以通过 [Raft admin > Peer in Flashback State](/grafana-tikv-dashboard.md#raft-admin) 监控项和日志查看 `FLASHBACK` 执行进度，具体的日志如下所示：
 
 ```
 [2022/10/09 17:25:59.316 +08:00] [INFO] [cluster.go:463] ["flashback cluster stats"] ["complete regions"=9] ["total regions"=10] []
