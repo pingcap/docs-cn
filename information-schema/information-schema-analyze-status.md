@@ -19,25 +19,25 @@ DESC analyze_status;
 ```
 
 ```sql
-+----------------------+---------------------+------+-----+---------+-------+
-| Field                | Type                | Null | Key | Default | Extra |
-+----------------------+---------------------+------+-----+---------+-------+
-| TABLE_SCHEMA         | varchar(64)         | YES  |     | <null>  |       |
-| TABLE_NAME           | varchar(64)         | YES  |     | <null>  |       |
-| PARTITION_NAME       | varchar(64)         | YES  |     | <null>  |       |
-| JOB_INFO             | longtext            | YES  |     | <null>  |       |
-| PROCESSED_ROWS       | bigint(64) unsigned | YES  |     | <null>  |       |
-| START_TIME           | datetime            | YES  |     | <null>  |       |
-| END_TIME             | datetime            | YES  |     | <null>  |       |
-| STATE                | varchar(64)         | YES  |     | <null>  |       |
-| FAIL_REASON          | longtext            | YES  |     | <null>  |       |
-| INSTANCE             | varchar(512)        | YES  |     | <null>  |       |
-| PROCESS_ID           | bigint(64) unsigned | YES  |     | <null>  |       |
-| Remaining_seconds    | bigint(64) unsigned | YES  |     | <null>  |       |
-| Progress             | varchar(20)         | YES  |     | <null>  |       |
-| Estimated_total_rows | bigint(64) unsigned | YES  |     | <null>  |       |
-+----------------------+---------------------+------+-----+---------+-------+
-11 rows in set (0.00 sec)
++----------------------+---------------------+------+------+---------+-------+
+| Field                | Type                | Null | Key  | Default | Extra |
++----------------------+---------------------+------+------+---------+-------+
+| TABLE_SCHEMA         | varchar(64)         | YES  |      | NULL    |       |
+| TABLE_NAME           | varchar(64)         | YES  |      | NULL    |       |
+| PARTITION_NAME       | varchar(64)         | YES  |      | NULL    |       |
+| JOB_INFO             | longtext            | YES  |      | NULL    |       |
+| PROCESSED_ROWS       | bigint(64) unsigned | YES  |      | NULL    |       |
+| START_TIME           | datetime            | YES  |      | NULL    |       |
+| END_TIME             | datetime            | YES  |      | NULL    |       |
+| STATE                | varchar(64)         | YES  |      | NULL    |       |
+| FAIL_REASON          | longtext            | YES  |      | NULL    |       |
+| INSTANCE             | varchar(512)        | YES  |      | NULL    |       |
+| PROCESS_ID           | bigint(64) unsigned | YES  |      | NULL    |       |
+| Remaining_seconds    | bigint(64) unsigned | YES  |      | NULL    |       |
+| Progress             | varchar(20)         | YES  |      | NULL    |       |
+| Estimated_total_rows | bigint(64) unsigned | YES  |      | NULL    |       |
++----------------------+---------------------+------+------+---------+-------+
+14 rows in set (0.00 sec)
 ```
 
 {{< copyable "sql" >}}
