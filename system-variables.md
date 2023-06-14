@@ -4180,7 +4180,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 默认值：`all_replicas`
 - 可选值：`all_replicas`、`closest_adaptive`、`closest_replicas`
 - 该变量用于设置当查询需要使用 TiFlash 引擎时，TiFlash 副本的选择策略。
-  - "all_replicas" 表示使用所有的 TiFlash 副本进行分析计算。
+  - `all_replicas` 表示使用所有的 TiFlash 副本进行分析计算。
   - `closest_adaptive` 表示尽量使用与当前发起查询请求的 TiDB 节点相同区域的 TiFlash 副本进行分析计算。如果此区域的 TiFlash 副本未包含查询所需的全部数据，则再使用其他区域的 TiFlash 副本及对应的 TiFlash 节点。
   - "closest_replicas" 表示仅使用与入口 TiDB 相同区域的 TiFlash 副本。如果无法访问所有的 TiFlash 数据，则查询将报错。
 - 特殊情况
