@@ -111,7 +111,7 @@ TiFlash Pipeline Model 的架构如下：
 
     - CPU Task Thread Pool
 
-      执行 task 中 cpu 密集型的计算逻辑，比如数据过滤，函数计算等等。
+      执行 task 中 CPU 密集型的计算逻辑，比如数据过滤、函数计算等。
 
     - IO Task Thread Pool
 
