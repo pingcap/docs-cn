@@ -60,6 +60,7 @@ Query OK, 1 row affected (0.03 sec)
 其中`[]`中的内容表示可选项，`CONSTRAINT [symbol]` 表示 `CHECK` 约束的名称。`CHECK (expr)` 表示约束条件, 其中 `expr` 是一个布尔表达式，对于表的每一行，该表达式的计算结果必须为 `TRUE`、`FALSE` 或者 `UNKNOWN` (对于 `NULL` 值)，如果对于某条数据表达式计算结果为 `FALSE`，则表示约束违反。`[NOT] ENFORCED` 表示是否执行约束，可以用来启用或者禁用 `CHECK` 约束。
 
 ### 添加约束
+
 在 TiDB 中，可以在 `CREATE TABLE` 或者 `ALTER TABLE` 语句中添加 `CHECK` 约束，语法为：
 
 在 `CREATE TABLE` 语句中添加约束：
@@ -93,12 +94,14 @@ CONSTRAINT `t_chk_2` CHECK ((1 < `c`))
 ```
 
 ### 删除约束
+
 删除 `CHECK` 约束时使用名称 `symbol` 来删除指定的约束。语法为:
 ```sql
 ALTER TABLE t DROP CONSTRAINT t_chk_1;
 ```
 
 ### 启用/禁用约束
+
 在添加约束的时候，可以指定是否执行约束，如果指定了 `NOT ENFORCED`，那么在插入或者更新数据的时候，不会检查约束条件，如果不指定 `NOT ENFORCED` 或者指定 `ENFORCED`，那么在插入或者更新数据的时候，会检查约束条件。
 
 除了在添加约束时候指定 `[NOT] ENFORCED`，你还可以在 `ALTER TABLE` 语句中启用或者禁用 `CHECK` 约束，语法为:
