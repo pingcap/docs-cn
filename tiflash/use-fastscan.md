@@ -16,24 +16,24 @@ aliases: ['/zh/tidb/dev/sql-statement-set-tiflash-mode/','/zh/tidb/dev/dev-guide
 
 当开启 FastScan 功能时，查询结果可能会包含表中的旧数据，即相同主键的多个历史版本的数据或者已经删除的数据。如下所示：
 
-```
-create table t1 (a int primary key, b int);
-alter table t1 set tiflash replica 1;
-insert into t1 values(1,2);
-insert into t1 values(10,20);
-update t1 set b = 4 where a = 1;
-delete from t1 where a = 10;
-set session tidb_isolation_read_engines='tiflash';
+```sql
+CREATE TABLE t1 (a INT PRIMARY KEY, b INT);
+ALTER TABLE t1 SET TIFLASH REPLICA 1;
+INSERT INTO t1 VALUES(1,2);
+INSERT INTO t1 VALUES(10,20);
+UPDATE t1 SET b = 4 WHERE a = 1;
+DELETE FROM t1 WHERE a = 10;
+SET SESSION tidb_isolation_read_engines='tiflash';
 
-select * from t1;
+SELECT * FROM t1;
 +------+------+
 | a    | b    |
 +------+------+
 |    1 |    4 |
 +------+------+
 
-set session tiflash_fastscan=ON;
-select * from t1;
+SET SESSION tiflash_fastscan=ON;
+SELECT * FROM t1;
 +------+------+
 | a    | b    |
 +------+------+
