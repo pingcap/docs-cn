@@ -82,37 +82,9 @@ Warning: Unable to load '/usr/share/zoneinfo/zone.tab' as time zone. Skipping it
 Warning: Unable to load '/usr/share/zoneinfo/zone1970.tab' as time zone. Skipping it.
 ```
 
-如果下游是特殊的 MySQL 环境（某种公有云 RDS 或某些 MySQL 衍生版本等），使用上述方式导入时区失败，就需要通过 sink-uri 中的 `time-zone` 参数指定下游的 MySQL 时区。可以首先在 MySQL 中查询其使用的时区：
+如果下游是特殊的 MySQL 环境（某种公有云 RDS 或某些 MySQL 衍生版本等），使用上述方式导入时区失败，则可以通过设置 `time-zone` 为空值来使用下游默认时区，例如：`time-zone=""`。
 
-```shell
-show variables like '%time_zone%';
-```
-
-```shell
-+------------------+--------+
-| Variable_name    | Value  |
-+------------------+--------+
-| system_time_zone | CST    |
-| time_zone        | SYSTEM |
-+------------------+--------+
-```
-
-然后在创建同步任务和创建 TiCDC 服务时使用该时区：
-
-```shell
-cdc cli changefeed create --sink-uri="mysql://root@127.0.0.1:3306/?time-zone=CST" --server=http://127.0.0.1:8300
-```
-
-> **注意：**
->
-> CST 可能是以下四个不同时区的缩写：
->
-> - 美国中部时间：Central Standard Time (USA) UT-6:00
-> - 澳大利亚中部时间：Central Standard Time (Australia) UT+9:30
-> - 中国标准时间：China Standard Time UT+8:00
-> - 古巴标准时间：Cuba Standard Time UT-4:00
->
-> 在中国，CST 通常表示中国标准时间，使用时请注意甄别。
+在 TiCDC 中使用时区时，建议显式指定时区，例如：`time-zone="Asia/Shanghai"`。同时，请确保 TiCDC Server 的 `tz` 时区配置、Sink URI 中的 `time-zone` 时区配置和下游数据库的时区配置保持一致。这样可以避免因时区不一致导致的数据不一致问题。
 
 ## 如何处理升级 TiCDC 后配置文件不兼容的问题？
 
