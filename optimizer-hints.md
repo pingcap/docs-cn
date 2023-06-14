@@ -840,7 +840,7 @@ SHOW WARNINGS;
 
 ### Hint 位置不正确导致不生效
 
-如果没有将 Hint 正确地放在指定关键字的后面，它将无法生效。例如：
+如果没有按照 Optimizer Hints  语法将 Hint 正确地放在指定关键字的后面，它将无法生效。例如：
 
 ```sql
 SELECT * /*+ use_index(t, a) */ FROM t;
