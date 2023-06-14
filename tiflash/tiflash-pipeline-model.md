@@ -93,7 +93,7 @@ TiFlash Pipeline Model 的架构如下：
 
 ![TiFlash Pipeline Model Design](/media/tiflash/tiflash-pipeline-model.png)
 
-如上图所示，Pipline Model 中有两个主要组成部分：Pipeline Query Executor 和 Task Scheduler。
+如上图所示，Pipeline Model 中有两个主要组成部分：Pipeline Query Executor 和 Task Scheduler。
 
 - Pipeline Query Executor
 
