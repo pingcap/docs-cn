@@ -4184,7 +4184,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
   - `closest_adaptive` 表示尽量使用与当前发起查询请求的 TiDB 节点相同区域的 TiFlash 副本进行分析计算。如果此区域的 TiFlash 副本未包含查询所需的全部数据，则再使用其他区域的 TiFlash 副本及对应的 TiFlash 节点。
   - `closest_replicas` 表示仅使用与发起当前查询请求的 TiDB 节点相同区域的 TiFlash 副本进行分析计算。如果此区域的 TiFlash 副本未包含查询所需的全部数据，则查询将报错。
 - 特殊情况
-  - 如果 TiDB 节点未设置区域属性，并且 TiFlash 副本选择策略不是 "all_replicas"，则会忽略 TiFlash 副本选择策略，将使用所有 TiFlash 副本进行 TiFlash 查询。并且会有一个警告消息：The variable tiflash_replica_read is ignored。
+  - 如果 TiDB 节点未设置区域属性，并且 TiFlash 副本选择策略不是 `all_replicas` 时，TiFlash 引擎将忽略 TiFlash 副本选择策略，使用所有 TiFlash 副本进行 TiFlash 查询，并且返回警告 `The variable tiflash_replica_read is ignored`。
   - 如果 TiFlash 节点未设置区域属性，则将其视为不属于任何区域的节点。
 
 ### `time_zone`
