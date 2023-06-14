@@ -251,4 +251,4 @@ SELECT TABLE_NAME FROM information_schema.tables where TABLE_SCHEMA = "<db_name>
 
 关于使用 label 进行副本调度划分可用区的更多内容，可以参考[通过拓扑 label 进行副本调度](/schedule-replicas-by-topology-labels.md)，[同城多数据中心部署 TiDB](/multi-data-centers-in-one-city-deployment.md) 与[两地三中心部署](/three-data-centers-in-two-cities-deployment.md)。
 
-TiFlash 提供不同可用区的副本访问策略，具体请参考变量 [tiflash_replica_read](/system-variables.md#tiflash_replica_read)。
+TiFlash 提供不同区域的副本访问策略，具体请参考变量 [tiflash_replica_read](/system-variables.md#tiflash_replica_read)。
