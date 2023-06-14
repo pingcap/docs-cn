@@ -149,7 +149,7 @@ mysql> IMPORT INTO t FROM '/path/to/small.csv' WITH DETACHED;
 
 ## 查看和控制导入任务
 
-对于开启了 DETACHED 模式的任务，可通过 [`SHOW IMPORT JOB(s)`](/sql-statements/sql-statement-show-import-job.md) 来查看当前任务的执行进度。
+对于开启了 DETACHED 模式的任务，可通过 [`SHOW IMPORT`](/sql-statements/sql-statement-show-import-job.md) 来查看当前任务的执行进度。
 
 任务启动后，可通过 [`CANCEL IMPORT JOB`](/sql-statements/sql-statement-cancel-import-job.md) 来取消对应任务。
 
