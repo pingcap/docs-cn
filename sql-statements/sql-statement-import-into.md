@@ -22,19 +22,19 @@ summary: TiDB 数据库中 IMPORT INTO 的使用概况。
 - 只能导入到数据库中已有的表，且该表必须是空表。
 - 不支持事务，也无法回滚，在显示事务 (`BEGIN`/`END`) 中执行会报错。
 - 在导入完成前会阻塞当前连接，如果需要异步执行，可以添加 `DETACHED` 选项。
-- 执行开始前会删除当前表的所有二级索引，等数据导入完成后，再将索引添加回来，如果导入过程中出错，不会将这些索引添加回来。
 - 不支持和 CDC、PiTR 等程序一起工作。
 - 每个集群上同时只能有一个 `IMPORT INTO` 任务在运行。
+    - `IMPORT INTO` 会 precheck 是否存在运行中的任务，但并非硬限制，如果多个客户端同时执行 `IMPORT INTO` 仍有可能启动多个任务，请避免该情况。
 - 导入数据的过程中，请勿在目标表进行 DDL 和 DML 操作，否则会导致导入失败或数据不一致。导入期间也不建议进行读操作，因为读取的数据可能不一致。请在导入完成后再进行读写操作。
 - 导入期间会占用大量系统资源，建议使用 32 核以上的 CPU 和 64 GiB 以上内存以获得更好的性能。导入期间会将排序好的数据写入到 TiDB [临时目录](/tidb-configuration-file.md#temp-dir-new-in-v630) 下，建议优先考虑配置闪存等高性能存储介质，详细请参考 [物理导入使用限制](/tidb-lightning/tidb-lightning-physical-import-mode.md#requirements-and-restrictions)。
-- 需要 TiDB [临时目录](/tidb-configuration-file.md#temp-dir-new-in-v630) 至少有 95 GiB 的可用空间。
+- 需要 TiDB [临时目录](/tidb-configuration-file.md#temp-dir-new-in-v630) 至少有 90 GiB 的可用空间。
 
 ## 导入前准备
 
 在使用 `IMPORT INTO` 开始导入数据前，请确保：
 - 要导入的目标表在下游已经创建，并且是空表。
 - 当前集群有足够的剩余空间能容纳要导入的数据。
-- 确保当前连接的 TiDB 节点的[临时目录](/tidb-configuration-file.md#temp-dir-new-in-v630)至少有 90 GiB 的磁盘空间。如果开启了 [tidb_enable_dist_task](/system-variables.md#tidb_enable_dist_task-new-in-v710)，需要确保集群中所有的 TiDB 节点都有足够的磁盘空间。
+- 确保当前连接的 TiDB 节点的[临时目录](/tidb-configuration-file.md#temp-dir-new-in-v630)至少有 90 GiB 的磁盘空间。如果开启了 [tidb_enable_dist_task](/system-variables.md#tidb_enable_dist_task-new-in-v710)，需要确保集群中所有的 TiDB 节点 的临时目录都有足够的磁盘空间。
 
 ## 需要的权限
 
