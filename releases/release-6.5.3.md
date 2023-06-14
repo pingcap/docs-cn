@@ -36,7 +36,6 @@ TiDB 版本：6.5.3
     <!--tw:ran-huang-->
     - PD Leader 选举使用单独的 gRPC 链接，防止受到其他请求的影响 [#6403](https://github.com/tikv/pd/issues/6403) @[rleungx](https://github.com/rleungx)
 
-
 + TiFlash
 
     - note 1
@@ -55,7 +54,7 @@ TiDB 版本：6.5.3
         (dup)- 优化同步数据到对象存储的场景下发生 DDL 事件时的目录结构 [#8890](https://github.com/pingcap/tiflow/issues/8890) @[CharlesCheung96](https://github.com/CharlesCheung96)
         (dup)- 支持同步到 Kafka-on-Pulsar 下游 [#8892](https://github.com/pingcap/tiflow/issues/8892) @[hi-rustin](https://github.com/hi-rustin)
        <!--tw:qiancai-->
-        - 当同步数据到 Kafka 时，支持 OAUTH 协议验证方式 [#8865](https://github.com/pingcap/tiflow/issues/8865) @[hi-rustin](https://github.com/hi-rustin)
+        - 当同步数据到 Kafka 时，支持 OAuth 协议验证方式 [#8865](https://github.com/pingcap/tiflow/issues/8865) @[hi-rustin](https://github.com/hi-rustin)
         - 优化采用 Avro 或 CSV 协议同步数据时 TiCDC 对 `UPDATE` 语句的处理方式，即将其拆分为 `DELETE` 和 `INSERT` 语句，这样用户从 `DELETE` 语句中即可获取修改前的 old value [#9086](https://github.com/pingcap/tiflow/issues/9086) @[3AceShowHand](https://github.com/3AceShowHand)
         (dup: release-7.1.0.md > 改进提升> Tools> TiCDC)- 增加一个配置项 `insecure-skip-verify`，控制在同步数据到 Kafka 的场景下启用 TLS 时是否设置认证算法 [#8867](https://github.com/pingcap/tiflow/issues/8867) @[hi-rustin](https://github.com/hi-rustin)
         (dup: release-7.1.0.md > # 稳定性)- TiCDC 优化 DDL 同步操作，减轻 DDL 操作对下游延迟的影响 [#8686](https://github.com/pingcap/tiflow/issues/8686) @[hi-rustin](https://github.com/hi-rustin)
