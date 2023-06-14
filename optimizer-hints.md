@@ -860,3 +860,35 @@ Warning 信息如下：
 ```
 
 具体的语法规则参见 [Hint 语法](#语法)部分。
+
+### Collation 导致 INL_JOIN Hint 不生效
+
+如果两个表的 Join Key 的 Collation 设置不同，将无法使用 IndexJoin 来执行，此时 INL_JOIN 会无法生效。例如：
+
+```sql
+mysql> create table t1 (k varchar(8), key(k)) collate=utf8mb4_general_ci;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> create table t2 (k varchar(8), key(k)) collate=utf8mb4_bin;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> explain select /*+ tidb_inlj(t1) */ * from t1, t2 where t1.k=t2.k;
++-----------------------------+----------+-----------+----------------------+----------------------------------------------+
+| id                          | estRows  | task      | access object        | operator info                                |
++-----------------------------+----------+-----------+----------------------+----------------------------------------------+
+| HashJoin_19                 | 12487.50 | root      |                      | inner join, equal:[eq(test.t1.k, test.t2.k)] |
+| ├─IndexReader_24(Build)     | 9990.00  | root      |                      | index:IndexFullScan_23                       |
+| │ └─IndexFullScan_23        | 9990.00  | cop[tikv] | table:t2, index:k(k) | keep order:false, stats:pseudo               |
+| └─IndexReader_22(Probe)     | 9990.00  | root      |                      | index:IndexFullScan_21                       |
+|   └─IndexFullScan_21        | 9990.00  | cop[tikv] | table:t1, index:k(k) | keep order:false, stats:pseudo               |
++-----------------------------+----------+-----------+----------------------+----------------------------------------------+
+5 rows in set, 1 warning (0.00 sec)
+
+mysql> show warnings;
++---------+------+----------------------------------------------------------------------------+
+| Level   | Code | Message                                                                    |
++---------+------+----------------------------------------------------------------------------+
+| Warning | 1815 | Optimizer Hint /*+ INL_JOIN(t1) */ or /*+ TIDB_INLJ(t1) */ is inapplicable |
++---------+------+----------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+```
