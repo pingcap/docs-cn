@@ -57,11 +57,11 @@ Query OK, 1 row affected (0.03 sec)
 ```sql
 [CONSTRAINT [symbol]] CHECK (expr) [[NOT] ENFORCED]
 ```
-其中`[]`中的内容表示可选项，`CONSTRAINT [symbol]` 表示 `CHECK` 约束的名称。`CHECK (expr)` 表示约束条件, 其中 `expr` 是一个布尔表达式，对于表的每一行，该表达式的结算结果必须为 `TRUE`、`FALSE` 或者 `UNKNOWN` (对于 `NULL` 值)，如果对于某一条数据表达式计算结果为 `FALSE`，则表示约束违反。
+其中`[]`中的内容表示可选项，`CONSTRAINT [symbol]` 表示 `CHECK` 约束的名称。`CHECK (expr)` 表示约束条件, 其中 `expr` 是一个布尔表达式，对于表的每一行，该表达式的计算结果必须为 `TRUE`、`FALSE` 或者 `UNKNOWN` (对于 `NULL` 值)，如果对于某条数据表达式计算结果为 `FALSE`，则表示约束违反。
 `[NOT] ENFORCED` 表示是否执行约束。
 
 ### 添加约束
-在 TiDB 中，可以在 `CREATE TABLE` 语句中添加 `CHECK` 约束，也可以在 `ALTER TABLE` 语句中添加 `CHECK` 约束，语法为：
+在 TiDB 中，可以在 `CREATE TABLE` 或者 `ALTER TABLE` 语句中添加 `CHECK` 约束，语法为：
 
 在 `CREATE TABLE` 语句中添加约束：
 ```sql
@@ -73,9 +73,9 @@ ALTER TABLE t ADD CONSTRAINT CHECK (1 < c);
 ```
 在创建或者启用 `CHECK` 约束时候，会对表中的存量数据进行校验，如果有违反约束的数据存在，那么添加 `CHECK` 约束会失败并且报错。
 
-在添加 `CHECK` 约束的时候，可以指定约束的名称，也可以不指定约束的名称，如果不指定约束的名称，那么系统会自动生成一个约束的名称，生成的约束名格式为 `<tableName>_chk_<1, 2, 3...>`。
+在添加 `CHECK` 约束的时，可以指定约束的名称，也可以不指定约束的名称，如果不指定约束的名称，那么系统会自动生成一个约束的名称，生成的约束名格式为 `<tableName>_chk_<1, 2, 3...>`。
 
-如果需要查看表中 `CHECK` 约束的信息，可以通过 `SHOW CREATE TABLE` 查看约束信息，例如：
+如果需要查看表中 `CHECK` 约束的信息，你可以通过 `SHOW CREATE TABLE` 查看约束信息，例如：
 ```sql
 mysql> show create table t;
 +-------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
@@ -102,7 +102,7 @@ ALTER TABLE t DROP CONSTRAINT t_chk_1;
 ### 启用/禁用约束
 在添加约束的时候，可以指定是否执行约束，如果指定了 `NOT ENFORCED`，那么在插入或者更新数据的时候，不会检查约束条件，如果不指定 `NOT ENFORCED` 或者指定 `ENFORCED`，那么在插入或者更新数据的时候，会检查约束条件。
 
-除了在添加约束时候指定 `[NOT] ENFORCED`，还可以在 `ALTER TABLE` 语句中启用或者禁用 `CHECK` 约束，语法为:
+除了在添加约束时候指定 `[NOT] ENFORCED`，你还可以在 `ALTER TABLE` 语句中启用或者禁用 `CHECK` 约束，语法为:
 ```sql
 ALTER TABLE t ALTER CONSTRAINT c1 NOT ENFORCED;
 ```
