@@ -120,7 +120,7 @@ TiDB 版本：7.2.0
 
 | 变量名  | 修改类型（包括新增/修改/删除）    | 描述 |
 |--------|------------------------------|------|
-| [`tidb_remove_orderby_in_subquery`](/system-variables.md#tidb_remove_orderby_in_subquery-从-v610-版本开始引入)| 修改 | 从 v7.2.0 及之后版本中默认为 `ON`， 即优化器改写会考虑消除子查询中的排序操作。 |
+| [`tidb_remove_orderby_in_subquery`](/system-variables.md#tidb_remove_orderby_in_subquery-从-v610-版本开始引入) | 修改 | 经进一步的测试后，该变量默认值从 `OFF` 修改为 `ON`，即优化器改写会移除子查询中的 `ORDER BY` 子句。 |
 |        |                              |      |
 |        |                              |      |
 |        |                              |      |
