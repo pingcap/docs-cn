@@ -119,4 +119,4 @@ TiFlash Pipeline Model 的架构如下：
 
     - Wait Reactor
 
-      执行 task 中的等待逻辑，比如等待网络层将数据包传输给计算层等等。
+      执行 task 中的等待逻辑，比如等待网络层将数据包传输给计算层等。
