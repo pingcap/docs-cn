@@ -797,7 +797,7 @@ MySQL 命令行客户端在 5.7.7 版本之前默认清除了 Optimizer Hints。
 
 如果创建连接时未指定数据库名，则可能出现 Hint 失效的情况。例如：
 
-使用 `mysql -h127.0.0.1 -P4000 -uroot` 命令连接数据库时，未使用 `-D` 参数指定数据库名。然后执行下面的 SQL：
+使用 `mysql -h127.0.0.1 -P4000 -uroot` 命令连接数据库时，未使用 `-D` 参数指定数据库名。然后执行下面的 SQL 语句：
 
 ```sql
 SELECT /*+ use_index(t, a) */ a FROM test.t;
