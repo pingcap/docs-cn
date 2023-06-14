@@ -3,9 +3,9 @@ title: ADMIN RESUME DDL
 summary: TiDB 数据库中 ADMIN RESUME DDL 的使用概况。
 ---
 
-# ADMIN PAUSE DDL
+# ADMIN RESUME DDL
 
-`ADMIN PAUSE DDL` 语句用于恢复当前处于暂停中的 DDL 作业。可以通过 [`ADMIN SHOW DDL JOBS`](/sql-statements/sql-statement-admin-show-ddl.md) 语句获取 DDL 作业的 `job_id`。
+`ADMIN RESUME DDL` 语句用于恢复当前处于暂停中的 DDL 作业。可以通过 [`ADMIN SHOW DDL JOBS`](/sql-statements/sql-statement-admin-show-ddl.md) 语句获取 DDL 作业的 `job_id`。
 
 用于恢复处于暂停中的 DDL 任务。成功恢复后，执行 DDL 任务的 SQL 语句会一直表现为正在执行。恢复一个已经结束的 DDL 任务会在 RESULT 列看到 `DDL Job:90 not found` 的错误，表示该任务已从 DDL 等待队列中被移除。
 
