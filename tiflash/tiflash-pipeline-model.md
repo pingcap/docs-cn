@@ -115,7 +115,7 @@ TiFlash Pipeline Model 的架构如下：
 
     - IO Task Thread Pool
 
-      执行 task 中 io 密集型的计算逻辑，比如计算中间结果落盘等等。
+      执行 task 中 IO 密集型的计算逻辑，比如计算中间结果落盘等。
 
     - Wait Reactor
 
