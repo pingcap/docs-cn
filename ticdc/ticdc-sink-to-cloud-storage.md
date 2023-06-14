@@ -28,7 +28,7 @@ cdc cli changefeed create \
 输出结果如下：
 
 ```shell
-Info: {"upstream_id":7171388873935111376,"namespace":"default","id":"simple-replication-task","sink_uri":"s3://logbucket/storage_test?protocol=canal-json","create_time":"2023-03-10T18:52:05.566016967+08:00","start_ts":437706850431664129,"engine":"unified","config":{"case_sensitive":true,"enable_old_value":true,"force_replicate":false,"ignore_ineligible_table":false,"check_gc_safe_point":true,"enable_sync_point":false,"sync_point_interval":600000000000,"sync_point_retention":86400000000000,"filter":{"rules":["*.*"],"event_filters":null},"mounter":{"worker_num":16},"sink":{"protocol":"canal-json","schema_registry":"","csv":{"delimiter":",","quote":"\"","null":"\\N","include_commit_ts":false},"column_selectors":null,"transaction_atomicity":"none","encoder_concurrency":16,"terminator":"\r\n","date_separator":"none","enable_partition_separator":false},"consistent":{"level":"none","max_log_size":64,"flush_interval":2000,"storage":""}},"state":"normal","creator_version":"v6.5.2-master-dirty"}
+Info: {"upstream_id":7171388873935111376,"namespace":"default","id":"simple-replication-task","sink_uri":"s3://logbucket/storage_test?protocol=canal-json","create_time":"2023-03-10T18:52:05.566016967+08:00","start_ts":437706850431664129,"engine":"unified","config":{"case_sensitive":true,"enable_old_value":true,"force_replicate":false,"ignore_ineligible_table":false,"check_gc_safe_point":true,"enable_sync_point":false,"sync_point_interval":600000000000,"sync_point_retention":86400000000000,"filter":{"rules":["*.*"],"event_filters":null},"mounter":{"worker_num":16},"sink":{"protocol":"canal-json","schema_registry":"","csv":{"delimiter":",","quote":"\"","null":"\\N","include_commit_ts":false},"column_selectors":null,"transaction_atomicity":"none","encoder_concurrency":16,"terminator":"\r\n","date_separator":"none","enable_partition_separator":false},"consistent":{"level":"none","max_log_size":64,"flush_interval":2000,"storage":""}},"state":"normal","creator_version":"v6.5.3-master-dirty"}
 ```
 
 - `--server`：TiCDC 集群中任意一个 TiCDC 服务器的地址。
@@ -59,7 +59,7 @@ URI 的 `[query_parameters]` 中可配置的参数如下：
 > **注意：**
 >
 > `flush-interval` 与 `file-size` 二者只要满足其一就会向下游写入数据变更文件。
-> 
+>
 > `protocol` 是必选配置，如果 TiCDC 在创建 changefeed 时未解析到该配置，将会返回 `CDC:ErrSinkUnknownProtocol` 错误。
 
 ### 配置外部存储
@@ -83,7 +83,7 @@ Azure Blob Storage 配置样例如下：
 ```
 
 > **建议：**
-> 
+>
 > Amazon S3、GCS 以及 Azure Blob Storage 的 URI 参数与 BR 中这三种外部存储的 URI 参数相同。详细参数说明请参考 [BR 备份存储服务的 URI 格式](/br/backup-and-restore-storages.md#格式说明)。
 
 ### 配置 NFS
