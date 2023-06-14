@@ -51,6 +51,7 @@ title: 使用 TiUP 升级 TiDB
 - TiDB v6.5.0 release notes 中的[兼容性变更](/releases/release-6.5.0.md#兼容性变更)和[废弃功能](/releases/release-6.5.0.md#废弃功能)
 - TiDB v6.5.1 release notes 中的[兼容性变更](/releases/release-6.5.1.md#兼容性变更)
 - TiDB v6.5.2 release notes 中的[兼容性变更](/releases/release-6.5.2.md#兼容性变更)
+- TiDB v6.5.3 [release notes](/releases/release-6.5.3.md)
 
 ### 2.2 升级 TiUP 或更新 TiUP 离线镜像
 
