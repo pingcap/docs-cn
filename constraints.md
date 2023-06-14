@@ -58,7 +58,7 @@ Query OK, 1 row affected (0.03 sec)
 [CONSTRAINT [symbol]] CHECK (expr) [[NOT] ENFORCED]
 ```
 其中`[]`中的内容表示可选项，`CONSTRAINT [symbol]` 表示 `CHECK` 约束的名称。`CHECK (expr)` 表示约束条件, 其中 `expr` 是一个布尔表达式，对于表的每一行，该表达式的计算结果必须为 `TRUE`、`FALSE` 或者 `UNKNOWN` (对于 `NULL` 值)，如果对于某条数据表达式计算结果为 `FALSE`，则表示约束违反。
-`[NOT] ENFORCED` 表示是否执行约束。
+`[NOT] ENFORCED` 表示是否执行约束，可以用来启用或者禁用 `CHECK` 约束。
 
 ### 添加约束
 在 TiDB 中，可以在 `CREATE TABLE` 或者 `ALTER TABLE` 语句中添加 `CHECK` 约束，语法为：
