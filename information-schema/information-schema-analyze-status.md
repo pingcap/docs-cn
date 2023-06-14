@@ -73,6 +73,6 @@ SELECT * FROM information_schema.analyze_status;
 * `FAIL_REASON`：任务失败的原因。如果执行成功则为 `NULL`。
 * `INSTANCE`：执行任务的 TiDB 实例。
 * `PROCESS_ID`：执行任务的 process ID。
-* `Remaining_seconds`：表示作业预计还需要多少秒才能完成。
-* `Progress`：表示作业的进度。
-* `Estimated_total_rows`：表示需要分析的总行数。
+* `Remaining_seconds`：表示任务预计还需要多少秒才能完成。
+* `Progress`：表示任务的进度。
+* `Estimated_total_rows`：表示任务需要分析的总行数。
