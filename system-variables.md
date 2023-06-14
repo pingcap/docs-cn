@@ -4176,7 +4176,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 - 作用范围：SESSION | GLOBAL
 - 持久化至集群：是
-- 类型：枚举
+- 类型：枚举型
 - 默认值：`all_replicas`
 - 可选值：`all_replicas`、`closest_adaptive`、`closest_replicas`
 - 该变量用于设置当查询需要使用 TiFlash 引擎时，TiFlash 副本的选择策略。
