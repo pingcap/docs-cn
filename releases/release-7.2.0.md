@@ -60,18 +60,6 @@ TiDB 版本：7.2.0
 
 ### SQL 功能
 
-* TiDB 支持完整的分区类型管理功能 [#42728](https://github.com/pingcap/tidb/issues/42728) @[mjonss](https://github.com/mjonss) **tw@qiancai** <!--1370-->
-
-    在 v7.2.0 之前，TiDB 中的分区表不能调整分区类型。从 v7.2.0 开始，TiDB 支持将分区表修改为非分区表、将非分区表修改为分区表、修改分区类型功能。你可以根据需要灵活调整表的分区类型、数量。例如，通过 `ALTER TABLE t PARTITION BY ...` 语句修改分区类型。
-
-    更多信息，请参考[用户文档](/partitioned-table.md#分区管理)。
-
-* LIST 分区表支持 DEFAULT 分区功能 [#42728](https://github.com/pingcap/tidb/issues/42728) @[mjonss](https://github.com/mjonss) **tw@qiancai** <!--1342-->
-
-    LIST 分区表必须指定所有的分区，不满足任何分区条件的数据，无法正常写入该表。从 v7.2.0 开始，TiDB 支持 [默认 LIST 分区](/partitioned-table.md#list-分区) 功能。该功能启用时，所有不符合已有 LIST 分区的数据将被保存在默认 LIST 分区中。通过系统变量 `tidb_enable_default_list_partition` 控制是否启用默认 LIST 分区gonna。
-
-    更多信息，请参考[用户文档](/partitioned-table.md#list-分区)。
-
 ### 数据库管理
 
 * DDL 任务支持暂停和恢复操作（实验特性）[#18015](https://github.com/pingcap/tidb/issues/18015) @[godouxm](https://github.com/godouxm) **tw@ran-huang** <!--1185-->
