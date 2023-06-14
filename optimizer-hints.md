@@ -855,4 +855,4 @@ mysql> show warnings;
 1 row in set (0.01 sec)
 ```
 
-具体见 [Hint 语法](#语法)部分。
+具体的语法规则参见 [Hint 语法](#语法)部分。
