@@ -111,6 +111,8 @@ summary: 了解 Grafana Dashboard 中展示的关键指标。
 - KV Request OPS：KV Request 根据 TiKV 显示执行次数
 - KV Request Duration 99 by store：根据 TiKV 显示 KV Request 执行时间
 - KV Request Duration 99 by type：根据类型显示 KV Request 的执行时间
+- Stale Read OPS：每秒执行的 Stale Read 的数量，根据结果分为 hit 和 miss 进行统计
+- Stale Read Traffic：Stale Read 消耗的流量，根据结果分为 hit 和 miss 进行统计
 
 ### PD Client
 
