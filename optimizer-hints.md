@@ -863,7 +863,7 @@ Warning 信息如下：
 
 ### 排序规则不同导致 `INL_JOIN` Hint 不生效
 
-如果两个表的 Join key 的排序规则设置不同，将无法使用 IndexJoin 来执行查询。此时 `INL_JOIN` Hint 将无法生效。例如：
+如果两个表的 Join key 的排序规则设置不同，将无法使用 IndexJoin 来执行查询。此时 [`INL_JOIN` Hint](#inl_joint1_name--tl_name-) 将无法生效。例如：
 
 ```sql
 CREATE TABLE t1 (k varchar(8), key(k)) COLLATE=utf8mb4_general_ci;
