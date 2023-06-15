@@ -131,8 +131,6 @@ You can find TiDB execution plans in encoded form in the slow query log. The `TI
 
 This function is useful because a plan is captured at the time the statement is executed. Re-executing the statement in `EXPLAIN` might produce different results as data distribution and statistics evolves over time.
 
-{{< copyable "sql" >}}
-
 ```sql
 SELECT tidb_decode_plan('8QIYMAkzMV83CQEH8E85LjA0CWRhdGE6U2VsZWN0aW9uXzYJOTYwCXRpbWU6NzEzLjHCtXMsIGxvb3BzOjIsIGNvcF90YXNrOiB7bnVtOiAxLCBtYXg6IDU2OC41wgErRHByb2Nfa2V5czogMCwgcnBjXxEpAQwFWBAgNTQ5LglZyGNvcHJfY2FjaGVfaGl0X3JhdGlvOiAwLjAwfQkzLjk5IEtCCU4vQQoxCTFfNgkxXzAJMwm2SGx0KHRlc3QudC5hLCAxMDAwMCkNuQRrdgmiAHsFbBQzMTMuOMIBmQnEDDk2MH0BUgEEGAoyCTQzXzUFVwX1oGFibGU6dCwga2VlcCBvcmRlcjpmYWxzZSwgc3RhdHM6cHNldWRvCTk2ISE2aAAIMTUzXmYA')\G
 ```
@@ -154,8 +152,6 @@ A TSO is a number that consists of two parts:
 - A physical timestamp
 - A logical counter
 
-{{< copyable "sql" >}}
-
 ```sql
 BEGIN;
 SELECT TIDB_PARSE_TSO(@@tidb_current_ts);
@@ -176,8 +172,6 @@ Here `TIDB_PARSE_TSO` is used to extract the physical timestamp from the timesta
 ### TIDB_VERSION
 
 The `TIDB_VERSION` function can be used to get the version and build details of the TiDB server that you are connected to. You can use this function when reporting issues on GitHub.
-
-{{< copyable "sql" >}}
 
 ```sql
 SELECT TIDB_VERSION()\G
@@ -232,8 +226,6 @@ select tidb_decode_sql_digests(@digests);
 
 In the above example, the parameter is a JSON array containing 3 SQL digests, and the corresponding SQL statements are the three items in the query results. But the SQL statement corresponding to the second SQL digest cannot be found from the cluster, so the second item in the result is `null`.
 
-{{< copyable "sql" >}}
-
 ```sql
 select tidb_decode_sql_digests(@digests, 10);
 ```
@@ -258,8 +250,6 @@ See also:
 
 The `TIDB_SHARD` function can be used to create a shard index to scatter the index hotspot. A shard index is an expression index prefixed with a `TIDB_SHARD` function.
 
-#### Shard index
-
 - Creation:
 
     To create a shard index for the index field `a`, you can use `uk((tidb_shard(a)), a))`. When there is a hotspot caused by monotonically increasing or decreasing data on the index field `a` in the unique secondary index `uk((tidb_shard(a)), a))`, the index's prefix `tidb_shard(a)` can scatter the hotspot to improve the scalability of the cluster.
@@ -282,14 +272,7 @@ The `TIDB_SHARD` function can be used to create a shard index to scatter the ind
     - Cannot go through FastPlan process, which affects optimizer performance.
     - Cannot be used to prepare the execution plan cache.
 
-#### Synopsis
-
-```ebnf+diagram
-TIDBShardExpr ::=
-    "TIDB_SHARD" "(" expr ")"
-```
-
-#### Example
+The following example shows how to use the `TIDB_SHARD` function.
 
 - Use the `TIDB_SHARD` function to calculate the SHARD value.
 
@@ -323,15 +306,6 @@ TIDBShardExpr ::=
 ### TIDB_ROW_CHECKSUM
 
 The `TIDB_ROW_CHECKSUM` function is used to query the checksum value of a row. This function can only be used in `SELECT` statements within the FastPlan process. That is, you can query through statements like `SELECT TIDB_ROW_CHECKSUM() FROM t WHERE id = ?` or `SELECT TIDB_ROW_CHECKSUM() FROM t WHERE id IN (?, ?, ...)`.
-
-The synopsis is as follows:
-
-```ebnf+diagram
-TableStmt ::=
-    "TIDB_ROW_CHECKSUM()"
-```
-
-The following example shows how to use the `TIDB_ROW_CHECKSUM` function to query the checksum value of the row data:
 
 To enable the checksum feature of single-row data in TiDB (controlled by the system variable [`tidb_enable_row_level_checksum`](/system-variables.md#tidb_enable_row_level_checksum-new-in-v710)), run the following statement:
 
