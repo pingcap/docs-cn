@@ -33,9 +33,9 @@ DESC analyze_status;
 | FAIL_REASON          | longtext            | YES  |      | NULL    |       |
 | INSTANCE             | varchar(512)        | YES  |      | NULL    |       |
 | PROCESS_ID           | bigint(64) unsigned | YES  |      | NULL    |       |
-| Remaining_seconds    | bigint(64) unsigned | YES  |      | NULL    |       |
-| Progress             | varchar(20)         | YES  |      | NULL    |       |
-| Estimated_total_rows | bigint(64) unsigned | YES  |      | NULL    |       |
+| REMAINING_SECONDS    | bigint(64) unsigned | YES  |      | NULL    |       |
+| PROGRESS             | varchar(20)         | YES  |      | NULL    |       |
+| ESTIMATED_TOTAL_ROWS | bigint(64) unsigned | YES  |      | NULL    |       |
 +----------------------+---------------------+------+------+---------+-------+
 14 rows in set (0.00 sec)
 ```
@@ -48,7 +48,7 @@ SELECT * FROM information_schema.analyze_status;
 
 ```sql
 +--------------+------------+----------------+--------------------------------------------------------------------+----------------+---------------------+---------------------+----------+-------------+----------------+------------+----------------------+----------+-----------------------+-------------------------+--------------------------+
-| TABLE_SCHEMA | TABLE_NAME | PARTITION_NAME | JOB_INFO | PROCESSED_ROWS | START_TIME | END_TIME | STATE | FAIL_REASON | INSTANCE | PROCESS_ID | Remaining_seconds | Progress | Estimated_total_rows |
+| TABLE_SCHEMA | TABLE_NAME | PARTITION_NAME | JOB_INFO | PROCESSED_ROWS | START_TIME | END_TIME | STATE | FAIL_REASON | INSTANCE | PROCESS_ID | REMAINING_SECONDS | PROGRESS | ESTIMATED_TOTAL_ROWS |
 +--------------+------------+----------------+--------------------------------------------------------------------+----------------+---------------------+---------------------+----------+-------------+----------------+------------+----------------------+----------+-----------------------+-------------------------+--------------------------+
 | test | t | p1 | analyze table all columns with 256 buckets, 500 topn, 1 samplerate | 0 | 2022-05-27 11:30:12 | 2022-05-27 11:30:12 | finished | NULL | 127.0.0.1:4000 | NULL | NULL | NULL | NULL |
 | test | t | p0 | analyze table all columns with 256 buckets, 500 topn, 1 samplerate | 0 | 2022-05-27 11:30:12 | 2022-05-27 11:30:12 | finished | NULL | 127.0.0.1:4000 | NULL | NULL | NULL | NULL |
@@ -73,6 +73,6 @@ SELECT * FROM information_schema.analyze_status;
 * `FAIL_REASON`：任务失败的原因。如果执行成功则为 `NULL`。
 * `INSTANCE`：执行任务的 TiDB 实例。
 * `PROCESS_ID`：执行任务的 process ID。
-* `Remaining_seconds`：表示任务预计还需要多少秒才能完成。
-* `Progress`：表示任务的进度。
-* `Estimated_total_rows`：表示任务需要分析的总行数。
+* `REMAINING_SECONDS`：表示任务预计还需要多少秒才能完成。
+* `PROGRESS`：表示任务的进度。
+* `ESTIMATED_TOTAL_ROWS`：表示任务需要分析的总行数。
