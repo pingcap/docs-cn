@@ -18,7 +18,7 @@ summary: 了解 Optimizer Fix Controls 以及如何使用 `tidb_opt_fix_control`
 
 一个 Fix 是用于调整 TiDB 优化器中一处行为的控制项。它以一个数字编号表示，该数字编号对应一个 GitHub Issue，在 Issue 中会有对技术细节的描述。例如 Fix `44262` 对应 [Issue 44262](https://github.com/pingcap/tidb/issues/44262)。
 
-该变量支持设置多个 Fix，不同 Fix 之间使用逗号 (`,`) 分隔。格式形如 `"<#issue1>:<value1>,<#issue2>:<value2>,...,<#issueN>:<valueN>"`，其中 `<#issueN>` 代表 Fix 编号。例如：
+`tidb_opt_fix_control` 支持设置多个 Fix，不同 Fix 之间使用逗号 (`,`) 分隔。格式形如 `"<#issue1>:<value1>,<#issue2>:<value2>,...,<#issueN>:<valueN>"`，其中 `<#issueN>` 代表 Fix 编号。例如：
 
 ```sql
 SET SESSION tidb_opt_fix_control = '44262:ON,44389:ON';
