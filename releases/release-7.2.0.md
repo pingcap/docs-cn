@@ -30,6 +30,10 @@ TiDB 版本：7.2.0
 
     更多信息，请参考[用户文档](/tiflash/tiflash-pipeline-model.md)。
 
+* 提升 TiFlash 处理超大量表的性能 [#7630](https://github.com/pingcap/tiflash/issues/7630) @[hongyunyan](https://github.com/hongyunyan) **tw@ran-huang** <!--1361-->
+
+    在 v7.2.0 版本之前，TiFlash 会同步所有表的 schema 信息，即使该表没有 TiFlash 副本。此外，TiFlash 进行读写时，如果检测到某张表的 schema 变动，需要同步所有表的 schema 信息。当数据库中有大量表时，同步所有表的 schema 信息严重影响 TiFlash 的处理性能。在 v7.2.0 版本中，TiFlash 优化机制，只会同步包含 TiFlash 副本的表的 schema 信息。在检测到某张表的 schema 变动时，只会同步该表的 schema 信息，大大提升 TiFlash 处理性能，从而支持对超大量表的处理。该优化自动生效，不需要任何设定调整。
+    
 * 提升统计信息收集的性能 [#issue号](链接) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes) **tw@hfxsd** <!--1352-->
 
     v7.2.0 优化了统计信息的收集策略，会选择跳过一部分重复的信息，以及对优化器价值不高的信息，提升统计信息收集的整体速度达 30% 。 这个提升有利于 TiDB 对数据库对象的统计信息进行更及时的更新，使得生成的执行计划更准确， 从而达到提升数据库整体性能的目的。
