@@ -60,7 +60,7 @@ cdc_servers:
       - host: 10.1.1.2
         gc-ttl: 86400
         data_dir: /tidb-data/cdc-8300
-      - host: 10.0.1.4:8300
+      - host: 10.0.1.4
         gc-ttl: 86400
         data_dir: /tidb-data/cdc-8300
     ```
