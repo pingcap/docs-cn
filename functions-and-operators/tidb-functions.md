@@ -24,13 +24,7 @@ summary: 学习使用 TiDB 特有的函数。
 
 下面为部分以上函数的示例。
 
-## TIDB_BOUNDED_STALENESS
-
-`TIDB_BOUNDED_STALENESS` 是 TiDB 的内部函数，用于指定一个时间范围。用法为 `TIDB_BOUNDED_STALENESS(t1, t2)`，其中 t1 和 t2 为时间范围的两端，支持使用日期时间和时间函数。
-
-使用该函数，TiDB 会在指定的时间范围内选择一个合适的时间戳，该时间戳能保证所访问的副本上不存在开始于这个时间戳之前且还没有提交的相关事务，即能保证所访问的可用副本上执行读取操作而且不会被阻塞。
-
-## TIDB_DECODE_KEY
+### TIDB_DECODE_KEY
 
 `TIDB_DECODE_KEY` 函数用于将 TiDB 编码的键输入解码为包含 `_tidb_rowid` 和 `table_id` 的 JSON 结构。你可以在一些系统表和日志输出中找到 TiDB 的编码键。
 
@@ -112,7 +106,7 @@ select tidb_decode_key('7480000000000000FF3E5F720400000000FF0000000601633430FF33
 1 row in set (0.001 sec)
 ```
 
-## TIDB_DECODE_PLAN
+### TIDB_DECODE_PLAN
 
 你可以在慢查询日志中找到编码形式的 TiDB 执行计划，然后使用 `TIDB_DECODE_PLAN()` 函数将编码的执行计划解码为易读的形式。
 
@@ -130,7 +124,7 @@ SELECT tidb_decode_plan('8QIYMAkzMV83CQEH8E85LjA0CWRhdGE6U2VsZWN0aW9uXzYJOTYwCXR
       └─TableFullScan_5    cop[tikv]    960        table:t, keep order:false, stats:pseudo    960        tikv_task:{time:153µs, loops:960}                                                                                                     N/A        N/A
 ```
 
-## TIDB_PARSE_TSO
+### TIDB_PARSE_TSO
 
 `TIDB_PARSE_TSO` 函数用于从 TiDB TSO 时间戳中提取物理时间戳。
 
@@ -156,7 +150,7 @@ ROLLBACK;
 
 以上示例使用 `TIDB_PARSE_TSO` 函数从 `tidb_current_ts` 会话变量提供的可用时间戳编号中提取物理时间戳。因为每个事务都会分配到时间戳，所以此函数在事务中运行。
 
-## TIDB_VERSION
+### TIDB_VERSION
 
 `TIDB_VERSION` 函数用于获取当前连接的 TiDB 服务器版本和构建详细信息。向 GitHub 上提交 issue 时，你可使用此函数获取相关信息。
 
@@ -178,7 +172,7 @@ Check Table Before Drop: false
 1 row in set (0.00 sec)
 ```
 
-## TIDB_DECODE_SQL_DIGESTS
+### TIDB_DECODE_SQL_DIGESTS
 
 `TIDB_DECODE_SQL_DIGESTS()` 函数用于在集群中查询一组 SQL Digest 所对应的 SQL 语句的归一化形式（即去除格式和参数后的形式）。函数接受 1 个或 2 个参数：
 
@@ -231,7 +225,7 @@ select tidb_decode_sql_digests(@digests, 10);
 - [`Statement Summary Tables`](/statement-summary-tables.md)
 - [`INFORMATION_SCHEMA.TIDB_TRX`](/information-schema/information-schema-tidb-trx.md)
 
-## TIDB_SHARD
+### TIDB_SHARD
 
 `TIDB_SHARD` 函数用于创建一个 SHARD INDEX 来打散热点索引。SHARD INDEX 是一种以 `TIDB_SHARD` 函数为前缀的表达式索引。
 
@@ -288,7 +282,7 @@ select tidb_decode_sql_digests(@digests, 10);
     CREATE TABLE test(id INT PRIMARY KEY CLUSTERED, a INT, b INT, UNIQUE KEY uk((tidb_shard(a)), a));
     ```
 
-## TIDB_ROW_CHECKSUM
+### TIDB_ROW_CHECKSUM
 
 `TIDB_ROW_CHECKSUM` 函数用于查询行数据的 Checksum 值。该函数只能用于 FastPlan 流程的 `SELECT` 语句，即你可通过形如 `SELECT TIDB_ROW_CHECKSUM() FROM t WHERE id = ?` 或 `SELECT TIDB_ROW_CHECKSUM() FROM t WHERE id IN (?, ?, ...)` 的语句进行查询。
 
@@ -311,6 +305,8 @@ INSERT INTO TABLE t values (1, 10, a);
 ```sql
 SELECT *, TIDB_ROW_CHECKSUM() FROM t WHERE id = 1;
 ```
+
+输出结果如下：
 
 ```sql
 +----+------+------+---------------------+
