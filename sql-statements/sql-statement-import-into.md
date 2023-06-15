@@ -34,7 +34,7 @@ summary: TiDB 数据库中 IMPORT INTO 的使用概况。
 在使用 `IMPORT INTO` 开始导入数据前，请确保：
 - 要导入的目标表在下游已经创建，并且是空表。
 - 当前集群有足够的剩余空间能容纳要导入的数据。
-- 确保当前连接的 TiDB 节点的[临时目录](/tidb-configuration-file.md#temp-dir-new-in-v630)至少有 90 GiB 的磁盘空间。如果开启了 [tidb_enable_dist_task](/system-variables.md#tidb_enable_dist_task-new-in-v710)，需要确保集群中所有的 TiDB 节点 的临时目录都有足够的磁盘空间。
+- 确保当前连接的 TiDB 节点的[临时目录](/tidb-configuration-file.md#temp-dir-new-in-v630)至少有 90 GiB 的磁盘空间。如果开启了 [tidb_enable_dist_task](/system-variables.md#tidb_enable_dist_task-new-in-v710)，需要确保集群中所有 TiDB 节点的临时目录都有足够的磁盘空间。
 
 ## 需要的权限
 
