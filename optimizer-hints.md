@@ -919,7 +919,7 @@ mysql> explain select /*+ tidb_inlj(t1, t3) */ * from t1, t2, t3 where t1.id=t2.
 
 在上面例子中，`t1` 和 `t3` 并没有直接被一个 `IndexJoin` 连接起来。
 
-如果想要直接使用 `IndexJoin` 来连接 `t1` 和 `t3`，需要先使用 `LEADING` Hint 指定连接顺序，让 `t1` 和 `t3` 会被直接进行连接，再配合 `INL_JION`。例如：
+如果想要直接使用 `IndexJoin` 来连接 `t1` 和 `t3`，需要先使用 `LEADING(t1, t3)` Hint 指定连接顺序，让 `t1` 和 `t3` 会被直接进行连接，再配合 `INL_JOIN`。例如：
 
 ```sql
 mysql> explain select /*+ leading(t1, t3), tidb_inlj(t3) */ * from t1, t2, t3 where t1.id=t2.id and t2.id=t3.id and t1.id=t3.id;
