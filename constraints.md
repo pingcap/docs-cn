@@ -68,7 +68,7 @@ TiDB 中 `CHECK` 约束的语法如下，与 MySQL 中相同：
 
 ### 添加 `CHECK` 约束
 
-在 TiDB 中，只支持在 `CREATE TABLE` 或者 `ALTER TABLE` 语句中添加 `CHECK` 约束，语法为：
+在 TiDB 中，只支持在 `CREATE TABLE` 或者 `ALTER TABLE` 语句中添加 `CHECK` 约束。
 
 在 `CREATE TABLE` 语句中添加 `CHECK` 约束的语法为：
 
