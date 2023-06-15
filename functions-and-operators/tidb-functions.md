@@ -5,26 +5,25 @@ summary: 学习使用 TiDB 特有的函数。
 
 # TiDB 特有的函数
 
-本文档介绍 TiDB 特有的函数。
+以下函数为 TiDB 中特有的函数，与 MySQL 不兼容：
 
-## TIDB_BOUNDED_STALENESS
+| 函数名 | 函数说明 |
+| :-------------- | :------------------------------------- |
+| `TIDB_BOUNDED_STALENESS()` |  `TIDB_BOUNDED_STALENESS` 函数指示 TiDB 在指定时间范围内读取尽可能新的数据。|
+| [`TIDB_DECODE_KEY(str)`](#tidb_decode_key) | `TIDB_DECODE_KEY` 函数用于将 TiDB 编码的键输入解码为包含 `_tidb_rowid` 和 `table_id` 的 JSON 结构。你可以在一些系统表和日志输出中找到 TiDB 的编码键。 |
+| [`TIDB_DECODE_PLAN(str)`](#tidb_decode_plan) | `TIDB_DECODE_PLAN` 函数用于解码 TiDB 执行计划。 |
+| `TIDB_IS_DDL_OWNER()` | `TIDB_IS_DDL_OWNER` 函数用于检查你连接的 TiDB 实例是否是 DDL Owner。DDL Owner 代表集群中所有其他节点执行 DDL 语句的 TiDB 实例。 |
+| [`TIDB_PARSE_TSO(num)`](#tidb_parse_tso) | `TIDB_PARSE_TSO` 函数用于从 TiDB TSO 时间戳中提取物理时间戳。参见 [`tidb_current_ts`](/system-variables.md#tidb_current_ts)。 |
+| [`TIDB_VERSION()`](#tidb_version) | `TIDB_VERSION` 函数用于获取当前连接的 TiDB 服务器版本和构建详细信息。 |
+| `VITESS_HASH(str)` |  `VITESS_HASH` 函数返回与 Vitess 的 `HASH` 函数兼容的字符串哈希值，有助于从 Vitess 迁移数据。 |
 
-`TIDB_BOUNDED_STALENESS` 是 TiDB 的内部函数，用于指定一个时间范围。用法为 `TIDB_BOUNDED_STALENESS(t1, t2)`，其中 t1 和 t2 为时间范围的两端，支持使用日期时间和时间函数。
+## 示例
 
-使用该函数，TiDB 会在指定的时间范围内选择一个合适的时间戳，该时间戳能保证所访问的副本上不存在开始于这个时间戳之前且还没有提交的相关事务，即能保证所访问的可用副本上执行读取操作而且不会被阻塞。
+下面为部分以上函数的示例。
 
-## TIDB_DECODE_KEY
+### TIDB_DECODE_KEY
 
 `TIDB_DECODE_KEY` 函数用于将 TiDB 编码的键输入解码为包含 `_tidb_rowid` 和 `table_id` 的 JSON 结构。你可以在一些系统表和日志输出中找到 TiDB 的编码键。
-
-### 语法图
-
-```ebnf+diagram
-TableStmt ::=
-    "TIDB_DECODE_KEY(" STR ")"
-```
-
-### 示例
 
 以下示例中，表 `t1` 有一个隐藏的 `rowid`，该 `rowid` 由 TiDB 生成。语句中使用了 `TIDB_DECODE_KEY` 函数。结果显示，隐藏的 `rowid` 被解码后并输出，这是典型的非聚簇主键结果。
 
@@ -104,24 +103,11 @@ select tidb_decode_key('7480000000000000FF3E5F720400000000FF0000000601633430FF33
 1 row in set (0.001 sec)
 ```
 
-### MySQL 兼容性
+### TIDB_DECODE_PLAN
 
-`TIDB_DECODE_KEY` 是 TiDB 特有的函数，和 MySQL 不兼容。
+你可以在慢查询日志中找到编码形式的 TiDB 执行计划，然后使用 `TIDB_DECODE_PLAN()` 函数将编码的执行计划解码为易读的形式。
 
-## TIDB_DECODE_PLAN
-
-`TIDB_DECODE_PLAN` 函数用于解码 TiDB 执行计划。你可以在慢查询日志中找到 TiDB 执行计划。
-
-### 语法图
-
-```ebnf+diagram
-TableStmt ::=
-    "TIDB_DECODE_PLAN(" STR ")"
-```
-
-### 示例
-
-{{< copyable "sql" >}}
+该函数很有用，因为在执行语句时 TiDB 会捕获执行计划。重新执行 `EXPLAIN` 中的语句可能会产生不同的结果，因为数据分布和统计数据会随着时间的推移而变化。
 
 ```sql
 SELECT tidb_decode_plan('8QIYMAkzMV83CQEH8E85LjA0CWRhdGE6U2VsZWN0aW9uXzYJOTYwCXRpbWU6NzEzLjHCtXMsIGxvb3BzOjIsIGNvcF90YXNrOiB7bnVtOiAxLCBtYXg6IDU2OC41wgErRHByb2Nfa2V5czogMCwgcnBjXxEpAQwFWBAgNTQ5LglZyGNvcHJfY2FjaGVfaGl0X3JhdGlvOiAwLjAwfQkzLjk5IEtCCU4vQQoxCTFfNgkxXzAJMwm2SGx0KHRlc3QudC5hLCAxMDAwMCkNuQRrdgmiAHsFbBQzMTMuOMIBmQnEDDk2MH0BUgEEGAoyCTQzXzUFVwX1oGFibGU6dCwga2VlcCBvcmRlcjpmYWxzZSwgc3RhdHM6cHNldWRvCTk2ISE2aAAIMTUzXmYA')\G
@@ -135,68 +121,14 @@ SELECT tidb_decode_plan('8QIYMAkzMV83CQEH8E85LjA0CWRhdGE6U2VsZWN0aW9uXzYJOTYwCXR
       └─TableFullScan_5    cop[tikv]    960        table:t, keep order:false, stats:pseudo    960        tikv_task:{time:153µs, loops:960}                                                                                                     N/A        N/A
 ```
 
-### MySQL 兼容性
-
-`TIDB_DECODE_PLAN` 是 TiDB 特有的函数，和 MySQL 不兼容。
-
-## TIDB_IS_DDL_OWNER
-
-`TIDB_IS_DDL_OWNER` 函数用于检查你连接的 TiDB 实例是否是 DDL Owner。DDL Owner 代表集群中所有其他节点执行 DDL 语句的 TiDB 实例。
-
-### 语法图
-
-```ebnf+diagram
-TableStmt ::=
-    "TIDB_IS_DDL_OWNER())"
-```
-
-### 示例
-
-{{< copyable "sql" >}}
-
-```sql
-SELECT tidb_is_ddl_owner();
-```
-
-```sql
-+---------------------+
-| tidb_is_ddl_owner() |
-+---------------------+
-|                   1 |
-+---------------------+
-1 row in set (0.00 sec)
-```
-
-### MySQL 兼容性
-
-`TIDB_IS_DDL_OWNER` 是 TiDB 特有的函数，和 MySQL 不兼容。
-
-### 另请参阅
-
-- [ADMIN SHOW DDL](/sql-statements/sql-statement-admin-show-ddl.md)
-- [ADMIN CANCEL DDL](/sql-statements/sql-statement-admin-cancel-ddl.md)
-
-## TIDB_PARSE_TSO
+### TIDB_PARSE_TSO
 
 `TIDB_PARSE_TSO` 函数用于从 TiDB TSO 时间戳中提取物理时间戳。
 
-TSO 指 Time Stamp Oracle，是 PD (Placement Driver) 为每个事务提供的单调递增的时间戳。
-
-TSO 是一串数字，包含以下两部分：
+TSO 指 Time Stamp Oracle，是 PD (Placement Driver) 为每个事务提供的单调递增的时间戳。TSO 是一串数字，包含以下两部分：
 
 - 一个物理时间戳
 - 一个逻辑计数器
-
-### 语法图
-
-```ebnf+diagram
-TableStmt ::=
-    "TIDB_PARSE_TSO(" NUM ")"
-```
-
-### 示例
-
-{{< copyable "sql" >}}
 
 ```sql
 BEGIN;
@@ -215,28 +147,9 @@ ROLLBACK;
 
 以上示例使用 `TIDB_PARSE_TSO` 函数从 `tidb_current_ts` 会话变量提供的可用时间戳编号中提取物理时间戳。因为每个事务都会分配到时间戳，所以此函数在事务中运行。
 
-### MySQL 兼容性
-
-`TIDB_PARSE_TSO` 是 TiDB 特有的函数，和 MySQL 不兼容。
-
-### 另请参阅
-
-- [`tidb_current_ts`](/system-variables.md#tidb_current_ts)
-
-## TIDB_VERSION
+### TIDB_VERSION
 
 `TIDB_VERSION` 函数用于获取当前连接的 TiDB 服务器版本和构建详细信息。向 GitHub 上提交 issue 时，你可使用此函数获取相关信息。
-
-### 语法图
-
-```ebnf+diagram
-TableStmt ::=
-    "TIDB_VERSION()"
-```
-
-### 示例
-
-{{< copyable "sql" >}}
 
 ```sql
 SELECT TIDB_VERSION()\G
@@ -255,7 +168,3 @@ TiKV Min Version: v3.0.0-60965b006877ca7234adaced7890d7b029ed1306
 Check Table Before Drop: false
 1 row in set (0.00 sec)
 ```
-
-### MySQL 兼容性
-
-`TIDB_VERSION` 是 TiDB 特有的函数，和 MySQL 不兼容。如果要求兼容 MySQL，可以使用 `VERSION` 获取版本信息，但结果不包含详细的构建信息。
