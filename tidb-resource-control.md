@@ -176,7 +176,7 @@ Runaway 查询是指那些执行时间很长或者消耗很多资源的查询。
 |---------------|--------------|--------------------------------------|
 | `EXEC_ELAPSED`  | 当查询执行时间超过该值后被识别为 Runaway 查询 | EXEC_ELAPSED =`60s` 表示查询的执行时间超过 60 秒则被认为是 Runaway 查询。 |
 | `ACTION`    | 当识别到 Runaway 查询时进行的动作 | 可选值有 `DRYRUN`（无操作）, `COOLDOWN` （降低至最低优先级执行），`KILL`（终止查询）。 |
-| `WATCH`   | 免疫已经识别到的 Runaway 查询，即再碰到相同或相似查询直接进行相应动作 | 可选项，配置例如 `SIMILAR/EXACT DURATION 60s`, SIMILAR 表示使用 plan digest 匹配，EXACT 表示使用 SQL 匹配。  |
+| `WATCH`   | 免疫已经识别到的 Runaway 查询，即在一定时间内再碰到相同或相似查询直接进行相应动作 | 可选项，配置例如 `SIMILAR/EXACT DURATION 60s`, SIMILAR 表示使用 plan digest 匹配，EXACT 表示使用 SQL 匹配。  |
 
 下面为一些使用举例：
 
