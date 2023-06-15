@@ -24,12 +24,6 @@ TiDB 版本：7.2.0
     * `FIRST_VALUE`
     * `LAST_VALUE`
 
-* TiFlash 支持副本选择策略 [#44106](https://github.com/pingcap/tidb/issues/44106) @[XuHuaiyu](https://github.com/XuHuaiyu) **tw@qiancai** <!--1394-->
-
-    在 v7.2.0 版本之前，TiFlash 尽量使用所有节点的副本进行数据扫描及 MPP 计算，以提供最强大的性能。在 v7.2.0 版本中，TiFlash 引入副本选择策略，可以根据节点区域属性，选择特定的副本，并调度部分节点进行数据扫描及 MPP 计算。当集群部署在超过一个机房，并且每个机房都拥有完整的 TiFlash 数据副本时，可以只选择当前机房的 TiFlash 副本，在当前机房的 TiFlash 节点中进行数据扫描和 MPP 计算，避免大量跨机房的网络数据传输。新增系统变量 [`tiflash_replica_read`](/system-variables.md#tiflash_replica_read) 用于设定节点选择策略。
-
-    更多信息，请参考[用户文档](/system-variables.md#tiflash_replica_read)。
-
 * TiFlash 支持 pipeline 执行模型（实验特性） [#6518](https://github.com/pingcap/tiflash/issues/6518) @[SeaRise](https://github.com/SeaRise) **tw@ran-huang** <!--1440-->
 
     在 v7.2.0 版本之前，TiFlash 引擎中各个任务在执行时，需要自行申请线程资源。TiFlash 引擎通过控制任务数的方式限制线程资源使用，以避免线程资源超用，但是并不能完全避免。在 v7.2.0 版本中，TiFlash 引入 pipeline 执行模型，对所有线程资源进行统一管理，并对所有任务的执行进行统一调度，充分利用线程资源，同时避免资源超用。新增系统变量 [`tidb_enable_tiflash_pipeline_model`](/system-variables.md#tidb_enable_tiflash_pipeline_model) 用于设定是否启用 pipeline 执行模型。
