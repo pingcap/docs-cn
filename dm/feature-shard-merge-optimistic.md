@@ -41,7 +41,7 @@ DM 支持在线上执行分库分表的 DDL 语句（通称 Sharding DDL），�
 - 增加没有默认值且非空的列：`ALTER TABLE table_name ADD COLUMN column_1 NOT NULL;`。
 - 重命名索引：`ALTER TABLE table_name RENAME INDEX index_1 TO index_2;`。
 
-各分表在执行以上 DDL 时，如果指定 `strict-optimistic-shard-mode: true`，会直接中断任务并报错。否则, 若分表 DDL 顺序不同将导致同步中断，例如下述场景：
+各分表在执行以上 DDL 时，如果指定 `strict-optimistic-shard-mode: true`，会直接中断任务并报错。否则，若分表 DDL 顺序不同将导致同步中断，例如下述场景：
 
 - 分表 1 先重命名列，再修改列类型
     1. 重命名列：`ALTER TABLE table_name RENAME COLUMN column_1 TO column_2;`。
