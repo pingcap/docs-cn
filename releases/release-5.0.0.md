@@ -38,7 +38,7 @@ TiDB 版本：5.0.0
 + 临时表的语法兼容性受到 [`tidb_enable_noop_functions`](/system-variables.md#tidb_enable_noop_functions-从-v40-版本开始引入) 系统变量的控制：当 `tidb_enable_noop_functions` 为 `OFF` 时，`CREATE TEMPORARY TABLE` 语法将会报错。
 + 新增 [`tidb_gc_concurrency`](/system-variables.md#tidb_gc_concurrency-从-v50-版本开始引入)、[`tidb_gc_enable`](/system-variables.md#tidb_gc_enable-从-v50-版本开始引入)、[`tidb_gc_life_time`](/system-variables.md#tidb_gc_life_time-从-v50-版本开始引入)、[`tidb_gc_run_interval`](/system-variables.md#tidb_gc_run_interval-从-v50-版本开始引入)、[`tidb_gc_scan_lock_mode`](/system-variables.md#tidb_gc_scan_lock_mode-从-v50-版本开始引入) 系统变量，用于直接通过系统变量调整垃圾回收相关参数。
 + 系统变量 [`enable-joint-consensus`](/pd-configuration-file.md#enable-joint-consensus-从-v50-版本开始引入) 默认值由 `false` 改成 `true`，默认开启 Joint consensus 功能。
-+ 系统变量 [`tidb_enable_amend_pessimistic_txn`](/system-variables.md#tidb_enable_amend_pessimistic_txn-从-v407-版本开始引入) 的值由数字 0 或者 1 变更成 ON 或者 OFF。
++ 系统变量 `tidb_enable_amend_pessimistic_txn` 的值由数字 0 或者 1 变更成 ON 或者 OFF。
 + 系统变量 [`tidb_enable_clustered_index`](/system-variables.md#tidb_enable_clustered_index-从-v50-版本开始引入) 默认值由 OFF 改成 INT_ONLY 且含义有如下变化：
     + ON：开启聚簇索引，支持添加或者删除非聚簇索引。
     + OFF：关闭聚簇索引，支持添加或者删除非聚簇索引。
@@ -106,11 +106,11 @@ DBA 通过 `ALTER INDEX` 语句可以修改某个索引的可见性。修改后�
 
 ### 事务
 
-[用户文档](/system-variables.md#tidb_enable_amend_pessimistic_txn-从-v407-版本开始引入)，[#18005](https://github.com/pingcap/tidb/issues/18005)
+[#18005](https://github.com/pingcap/tidb/issues/18005)
 
 悲观事务模式下，如果事务所涉及到的表存在并发的 DDL 操作或者 SCHEMA VERSION 变更，系统自动将该事务的 SCHEMA VERSION 更新到最新版本，以此确保事务会提交成功，避免事务因并发的 DDL 操作或者 SCHEMA VERSION 变更而中断时客户端收到 `Information schema is changed` 的错误信息。
 
-系统默认关闭此功能，你可以通过修改 [`tidb_enable_amend_pessimistic_txn`](/system-variables.md#tidb_enable_amend_pessimistic_txn-从-v407-版本开始引入) 系统变量开启此功能，此功能从 4.0.7 版本开始提供，5.0 版本主要修复了以下问题：
+系统默认关闭此功能，你可以通过修改 `tidb_enable_amend_pessimistic_txn` 系统变量开启此功能，此功能从 4.0.7 版本开始提供，5.0 版本主要修复了以下问题：
 
 + TiDB Binlog 在执行 Add column 操作的兼容性问题
 + 与唯一索引一起使用时存在的数据不一致性的问题

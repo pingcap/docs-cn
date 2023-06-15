@@ -15,7 +15,7 @@ aliases: ['/zh/tidb/dev/update-data']
 
 在阅读本页面之前，你需要准备以下事项：
 
-- [使用 TiDB Cloud (Serverless Tier) 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md)
+- [使用 TiDB Serverless 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md)
 - 阅读[数据库模式概览](/develop/dev-guide-schema-design-overview.md)，并[创建数据库](/develop/dev-guide-create-database.md)、[创建表](/develop/dev-guide-create-table.md)、[创建二级索引](/develop/dev-guide-create-secondary-indexes.md)
 - 若需使用 `UPDATE` 语句更新数据，需先[插入数据](/develop/dev-guide-insert-data.md)
 
@@ -31,8 +31,6 @@ aliases: ['/zh/tidb/dev/update-data']
 ### SQL 语法
 
 在 SQL 中，`UPDATE` 语句一般为以下形式：
-
-{{< copyable "sql" >}}
 
 ```sql
 UPDATE {table} SET {update_column} = {update_value} WHERE {filter_column} = {filter_value}
@@ -96,8 +94,6 @@ try (Connection connection = ds.getConnection()) {
 ### SQL 语法
 
 在 SQL 中，`INSERT ... ON DUPLICATE KEY UPDATE ...` 语句一般为以下形式：
-
-{{< copyable "sql" >}}
 
 ```sql
 INSERT INTO {table} ({columns}) VALUES ({values})
@@ -180,8 +176,6 @@ VALUES (?, ?, ?, NOW()) ON DUPLICATE KEY UPDATE `score` = ?, `rated_at` = NOW()"
 这时需要对 `ratings` 表内之前 5 分制的数据进行乘 2 操作，同时需向 `ratings` 表内添加一个新列，以指示行是否已经被更新了。使用此列，可以在 `SELECT` 中过滤掉已经更新的行，这将防止脚本崩溃时对行进行多次更新，导致不合理的数据出现。
 
 例如，你可以创建一个名为 `ten_point`，数据类型为 [BOOL](/data-type-numeric.md#boolean-类型) 的列作为是否为 10 分制的标识：
-
-{{< copyable "sql" >}}
 
 ```sql
 ALTER TABLE `bookshop`.`ratings` ADD COLUMN `ten_point` BOOL NOT NULL DEFAULT FALSE;
@@ -279,8 +273,6 @@ func placeHolder(n int) string {
 在 Java (JDBC) 中，批量更新程序类似于以下内容：
 
 **Java 代码部分：**
-
-{{< copyable "" >}}
 
 ```java
 package com.pingcap.bulkUpdate;
@@ -413,8 +405,6 @@ public class BatchUpdateExample {
 ```
 
 **`hibernate.cfg.xml` 配置部分：**
-
-{{< copyable "" >}}
 
 ```xml
 <?xml version='1.0' encoding='utf-8'?>

@@ -15,19 +15,7 @@ aliases: ['/zh/tidb/dev/choose-driver-or-orm']
 >
 > 关于更多 TiDB 支持的第三方工具，你可以查看 [TiDB 支持的第三方工具](/develop/dev-guide-third-party-support.md)。
 
-TiDB 兼容 MySQL 的协议，但存在部分与 MySQL 不兼容的特性，例如：
-
-TiDB 不支持：
-
-- 存储过程与函数
-- 触发器
-- 外键约束
-
-TiDB 与 MySQL 有差异：
-
-- 自增 ID：可保证全局唯一，或单 TiDB 节点的自增，但无法保证全局自增。
-
-全部兼容性差异可查看[与 MySQL 兼容性对比](/mysql-compatibility.md)
+TiDB 兼容 MySQL 的协议，但存在部分与 MySQL 不兼容或有差异的特性，具体信息可查看[与 MySQL 兼容性对比](/mysql-compatibility.md)。
 
 ## Java
 
@@ -40,11 +28,11 @@ TiDB 与 MySQL 有差异：
 
 支持等级：**Full**
 
-按照 [MySQL 文档](https://dev.mysql.com/doc/connector-j/8.0/en/)中的说明下载并配置 Java JDBC 驱动程序即可使用。对于 TiDB v6.3.0 及以上版本，建议使用 MySQL Connector/J 8.0.29 及以上版本。
+按照 [MySQL 文档](https://dev.mysql.com/doc/connector-j/8.0/en/)中的说明下载并配置 Java JDBC 驱动程序即可使用。对于 TiDB v6.3.0 及以上版本，建议使用 MySQL Connector/J 8.0.33 及以上版本。
 
 > **建议：**
 >
-> 因为当前 8.0.30 版本有未合并的 [Bug 修复](https://bugs.mysql.com/bug.php?id=106252)，在与 TiDB v6.3.0 以前版本共同使用时，可能会导致线程卡死。因此，对于 v6.3.0 以前的 TiDB 版本，在 MySQL Connector/J 8.0 合并此修复之前，建议不要升级至 8.0 版本。此外，你也可以使用 TiDB 版本的 MySQL Connector/J，它是一个 fork 版本，修复了此 Bug。（详情见 *TiDB-JDBC* 标签）
+> 在 8.0.32 之前的 MySQL Connector/J 8.0 版本中存在一个 [bug](https://bugs.mysql.com/bug.php?id=106252)，当与 TiDB v6.3.0 之前的版本一起使用时，可能会导致线程卡死。为了避免此问题，建议使用 MySQL Connector/J 8.0.32 或更高版本，或者使用 TiDB JDBC（见 *TiDB-JDBC* 标签）。
 
 有关一个完整的实例应用程序，可参阅使用 [TiDB 和 JDBC 构建一个 Java 应用](/develop/dev-guide-sample-application-java.md#第-2-步获取代码)。
 
@@ -138,7 +126,7 @@ implementation 'mysql:mysql-connector-java:5.1.49'
 - 有关原生 Java 使用 Hibernate 进行 TiDB 应用程序构建的例子，可参阅 [TiDB 和 Java 的简单 CRUD 应用程序 - 使用 Hibernate](/develop/dev-guide-sample-application-java.md#第-2-步获取代码)。
 - 有关 Spring 使用 Spring Data JPA、Hibernate 进行 TiDB 应用程序构建的例子，可参阅[使用 Spring Boot 构建 TiDB 应用程序](/develop/dev-guide-sample-application-spring-boot.md)。
 
-额外的，你需要在 [Hibernate 配置文件](https://www.tutorialspoint.com/hibernate/hibernate_configuration.htm)中指定 TiDB 方言： `org.hibernate.dialect.TiDBDialect`，此方言在 Hibernate `6.0.0.Beta2` 以上才可支持。若你无法升级 Hibernate 版本，那么请你直接使用 MySQL 5.7 的方言 `org.hibernate.dialect.MySQL57Dialect`。但这可能造成不可预料的使用结果，及部分 TiDB 特有特性的缺失，如：[序列](/sql-statements/sql-statement-create-sequence.md)等。
+额外的，你需要在 [Hibernate 配置文件](https://www.tutorialspoint.com/hibernate/hibernate_configuration.htm)中指定 TiDB 方言 `org.hibernate.dialect.TiDBDialect`，此方言在 Hibernate `6.0.0.Beta2` 以上才可支持。若你无法升级 Hibernate 版本，那么请你直接使用 MySQL 5.7 的方言 `org.hibernate.dialect.MySQL57Dialect`。但这可能造成不可预料的使用结果，及部分 TiDB 特有特性的缺失，如：[序列](/sql-statements/sql-statement-create-sequence.md)等。
 
 </div>
 
@@ -281,6 +269,17 @@ go get -u gorm.io/driver/mysql
 ### Python ORM 框架
 
 <SimpleTab>
+
+<div label="Django">
+
+支持等级：**Compatible**
+
+[Django](https://docs.djangoproject.com/) 是一个流行的 Python 的开发框架，你可以使用 `pip install Django==3.2.16 django-tidb>=3.0.0` 获取你的应用程序的所有依赖项。建议使用 Django **3.2.16** 及以上版本。
+
+使用 Django 构建 TiDB 应用程序的例子，可参阅[使用 Django 构建 TiDB 应用程序](/develop/dev-guide-sample-application-django.md)。
+
+</div>
+
 <div label="SQLAlchemy">
 
 支持等级：**Compatible**
@@ -290,6 +289,7 @@ go get -u gorm.io/driver/mysql
 使用 SQLAlchemy 构建 TiDB 应用程序的例子，可参阅 [TiDB 和 Python 的简单 CRUD 应用程序 - 使用 SQLAlchemy](/develop/dev-guide-sample-application-python.md#第-2-步获取代码)。
 
 </div>
+
 <div label="peewee">
 
 支持等级：**Compatible**
@@ -299,4 +299,5 @@ go get -u gorm.io/driver/mysql
 使用 peewee 构建 TiDB 应用程序的例子，可参阅 [TiDB 和 Python 的简单 CRUD 应用程序 - 使用 peewee](/develop/dev-guide-sample-application-python.md#第-2-步获取代码)。
 
 </div>
+
 </SimpleTab>

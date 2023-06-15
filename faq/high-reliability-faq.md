@@ -8,6 +8,10 @@ aliases: ['/docs-cn/dev/faq/high-reliability-faq/']
 
 本文档介绍高可靠相关的常见问题。
 
+## TiDB 是否支持数据加密？
+
+支持。要加密传输中的数据，可以[在 TiDB 客户端和服务器之间启用 TLS](/enable-tls-between-clients-and-servers.md)。要加密存储引擎中的数据，可以启用[透明数据加密 (TDE)](/encryption-at-rest.md)。
+
 ## 我们的安全漏洞扫描工具对 MySQL version 有要求，TiDB 是否支持修改 server 版本号呢？
 
 TiDB 在 v3.0.8 后支持通过 TiDB 配置文件中的 [`server-version`](/tidb-configuration-file.md#server-version) 配置项来修改 server 版本号。
@@ -35,6 +39,6 @@ TiDB 和 MySQL 一样，在用户登录认证时使用 SASL 认证协议对密�
 
 ## 如何修改用户名密码和权限？
 
-因为 TiDB 是分布式数据库，想要在 TiDB 中修改用户密码，建议使用 `set password for 'root'@'%' = '0101001';` 或 `alter` 的方法。
+因为 TiDB 是分布式数据库，想要在 TiDB 中修改用户密码，建议使用 `ALTER USER` 的方法，例如 `ALTER USER 'test'@'localhost' IDENTIFIED BY 'mypass';`。
 
-不推荐使用 `update mysql.user` 的方法，因为这种方法可能会造成其它节点刷新不及时的情况。修改权限也一样，建议参考 [TiDB 用户账户管理](/user-account-management.md)文档中的方法。
+不推荐使用 `UPDATE mysql.user` 的方法，因为这种方法可能会造成其它节点刷新不及时的情况。修改权限也一样，建议参考 [TiDB 用户账户管理](/user-account-management.md)文档中的方法。

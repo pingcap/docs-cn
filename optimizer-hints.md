@@ -13,6 +13,32 @@ TiDB 支持 Optimizer Hints 语法，它基于 MySQL 5.7 中介绍的类似 comm
 
 ## 语法
 
+> **注意：**
+>
+> 如果需要提示优化器使用的表不在 `USE DATABASE` 所指定的数据库内，需要显式指定数据库名。例如：
+>
+> ```sql
+> tidb> SELECT /*+ HASH_JOIN(t2, t) */ * FROM t, test2.t2;
+> Empty set, 1 warning (0.00 sec)
+> 
+> tidb> SHOW WARNINGS;
+> +---------+------+-------------------------------------------------------------------------------------------------------------------------------------------------------+
+> | Level   | Code | Message                                                                                                                                               |
+> +---------+------+-------------------------------------------------------------------------------------------------------------------------------------------------------+
+> | Warning | 1815 | There are no matching table names for (t2) in optimizer hint /*+ HASH_JOIN(t2, t) */ or /*+ TIDB_HJ(t2, t) */. Maybe you can use the table alias name |
+> +---------+------+-------------------------------------------------------------------------------------------------------------------------------------------------------+
+> 1 row in set (0.00 sec)
+>
+> tidb> SELECT /*+ HASH_JOIN(test2.t2, t) */ * FROM t, test2.t2;
+> Empty set (0.00 sec)
+> 
+> tidb> SELECT /*+ READ_FROM_STORAGE(TIFLASH[test1.t1,test2.t2]) */ t1.a FROM test1.t t1, test2.t t2 WHERE t1.a = t2.a;
+> Empty set (0.00 sec)
+> 
+> ```
+>
+> 本文档中后续示例演示部分，皆是同一个数据库范围内的表。如果你使用的表不在同一个数据库内，请参照指示显式指定数据库名。
+
 Optimizer Hints 不区分大小写，通过 `/*+ ... */` 注释的形式跟在 `SELECT`、`UPDATE` 或 `DELETE` 关键字的后面。`INSERT` 关键字后不支持 Optimizer Hints。
 
 多个不同的 Hint 之间需用逗号隔开，例如：
@@ -191,6 +217,32 @@ EXPLAIN SELECT * FROM t WHERE EXISTS (SELECT /*+ SEMI_JOIN_REWRITE() */ 1 FROM t
 
 在上述例子中可以看到，在使用了 Hint 之后，TiDB 可以选择由表 `t1` 作为驱动表的 IndexJoin 的执行方式。
 
+### SHUFFLE_JOIN(t1_name [, tl_name ...])
+
+`SHUFFLE_JOIN(t1_name [, tl_name ...])` 提示优化器对指定表使用 Shuffle Join 算法，该 Hint 只在 MPP 模式下生效。例如：
+
+```sql
+SELECT /*+ SHUFFLE_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id = t2.id;
+```
+
+> **注意：**
+>
+> - 使用该 Hint 前，需要保证当前 TiDB 集群能够支持在查询中使用 TiFlash MPP 模式，具体细节见文档[使用 TiFlash MPP 模式](/tiflash/use-tiflash-mpp-mode.md)。
+> - 该 Hint 能与 [`HASH_JOIN_BUILD` Hint](#hash_join_buildt1_name--tl_name-) 和 [`HASH_JOIN_PROBE` Hint](#hash_join_probet1_name--tl_name-) 组合使用，达到控制 Shuffle Join 算法的 Build 端和 Probe 端的作用。
+
+### BROADCAST_JOIN(t1_name [, tl_name ...])
+
+`BROADCAST_JOIN(t1_name [, tl_name ...])` 提示优化器对指定表使用 Broadcast Join 算法，该 Hint 只在 MPP 模式下生效。例如：
+
+```sql
+SELECT /*+ BROADCAST_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id = t2.id;
+```
+
+> **注意：**
+>
+> - 使用该 Hint 前，需要保证当前 TiDB 集群能够支持在查询中使用 TiFlash MPP 模式，具体细节见文档[使用 TiFlash MPP 模式](/tiflash/use-tiflash-mpp-mode.md)。
+> - 该 Hint 能与 [`HASH_JOIN_BUILD` Hint](#hash_join_buildt1_name--tl_name-) 和 [`HASH_JOIN_PROBE` Hint](#hash_join_probet1_name--tl_name-) 组合使用，达到控制 Broadcast Join 算法的 Build 端和 Probe 端的作用。
+
 ### NO_DECORRELATE()
 
 `NO_DECORRELATE()` 提示优化器不要尝试解除指定查询块中对应子查询的关联。该 Hint 适用于包含关联列的 `EXISTS`、`IN`、`ANY`、`ALL`、`SOME` 和标量子查询，即关联子查询。
@@ -277,6 +329,30 @@ SELECT /*+ HASH_AGG() */ count(*) FROM t1, t2 WHERE t1.a > 10 GROUP BY t1.id;
 SELECT /*+ STREAM_AGG() */ count(*) FROM t1, t2 WHERE t1.a > 10 GROUP BY t1.id;
 ```
 
+### MPP_1PHASE_AGG()
+
+`MPP_1PHASE_AGG()` 提示优化器对指定查询块中所有聚合函数使用一阶段聚合算法，该 Hint 只在 MPP 模式下生效。例如：
+
+```sql
+SELECT /*+ MPP_1PHASE_AGG() */ COUNT(*) FROM t1, t2 WHERE t1.a > 10 GROUP BY t1.id;
+```
+
+> **注意：**
+>
+> 使用该 Hint 前，需要保证当前 TiDB 集群能够支持在查询中使用 TiFlash MPP 模式，具体细节见文档[使用 TiFlash MPP 模式](/tiflash/use-tiflash-mpp-mode.md)。
+
+### MPP_2PHASE_AGG()
+
+`MPP_2PHASE_AGG()` 提示优化器对指定查询块中所有聚合函数使用二阶段聚合算法，该 Hint 只在 MPP 模式下生效。例如：
+
+```sql
+SELECT /*+ MPP_2PHASE_AGG() */ COUNT(*) FROM t1, t2 WHERE t1.a > 10 GROUP BY t1.id;
+```
+
+> **注意：**
+>
+> 使用该 Hint 前，需要保证当前 TiDB 集群能够支持在查询中使用 TiFlash MPP 模式，具体细节见文档[使用 TiFlash MPP 模式](/tiflash/use-tiflash-mpp-mode.md)。
+
 ### USE_INDEX(t1_name, idx1_name [, idx2_name ...])
 
 `USE_INDEX(t1_name, idx1_name [, idx2_name ...])` 提示优化器对指定表仅使用给出的索引。
@@ -322,6 +398,64 @@ SELECT * FROM t force index(idx1);
 SELECT /*+ IGNORE_INDEX(t1, idx1, idx2) */ * FROM t t1;
 ```
 
+### ORDER_INDEX(t1_name, idx1_name [, idx2_name ...])
+
+`ORDER_INDEX(t1_name, idx1_name [, idx2_name ...])` 提示优化器对指定表仅使用给出的索引，并且按顺序读取指定的索引。
+
+> **警告：**
+>
+> 这个 hint 有可能会导致 SQL 语句报错，建议先进行测试。如果测试时发生报错，请移除该 Hint。如果测试时运行正常，则可以继续使用。 
+
+此 hint 通常应用在下面这种场景中：
+
+```sql
+CREATE TABLE t(a INT, b INT, key(a), key(b));
+EXPLAIN SELECT /*+ ORDER_INDEX(t, a) */ a FROM t ORDER BY a LIMIT 10;
+```
+
+```sql
++----------------------------+---------+-----------+---------------------+-------------------------------+
+| id                         | estRows | task      | access object       | operator info                 |
++----------------------------+---------+-----------+---------------------+-------------------------------+
+| Limit_10                   | 10.00   | root      |                     | offset:0, count:10            |
+| └─IndexReader_14           | 10.00   | root      |                     | index:Limit_13                |
+|   └─Limit_13               | 10.00   | cop[tikv] |                     | offset:0, count:10            |
+|     └─IndexFullScan_12     | 10.00   | cop[tikv] | table:t, index:a(a) | keep order:true, stats:pseudo |
++----------------------------+---------+-----------+---------------------+-------------------------------+
+```
+
+优化器对该查询会生成两类计划：`Limit + IndexScan(keep order: true)` 和 `TopN + IndexScan(keep order: false)`，当使用了 `ORDER_INDEX` Hint，优化器会选择前一种按照顺序读取索引的计划。
+
+> **注意：**
+>
+> - 如果查询本身并不需要按顺序读取索引，即在不使用 Hint 的前提下，优化器在任何情况下都不会生成按顺序读取索引的计划。此时，如果指定了 `ORDER_INDEX` Hint，会出现报错 `Can't find a proper physical plan for this query`，此时应考虑移除对应的 `ORDER_INDEX` Hint。 
+>
+> - 分区表上的索引无法支持按顺序读取，所以不应该对分区表及其相关的索引使用 `ORDER_INDEX` Hint。
+
+### NO_ORDER_INDEX(t1_name, idx1_name [, idx2_name ...])
+
+`NO_ORDER_INDEX(t1_name, idx1_name [, idx2_name ...])` 提示优化器对指定表仅使用给出的索引，并且不按顺序读取指定的索引。通常应用在下面这种场景中:
+
+以下示例中查询语句的效果等价于 `SELECT * FROM t t1 use index(idx1, idx2);`：
+
+```sql
+CREATE TABLE t(a INT, b INT, key(a), key(b));
+EXPLAIN SELECT /*+ NO_ORDER_INDEX(t, a) */ a FROM t ORDER BY a LIMIT 10;
+```
+
+```sql
++----------------------------+----------+-----------+---------------------+--------------------------------+
+| id                         | estRows  | task      | access object       | operator info                  |
++----------------------------+----------+-----------+---------------------+--------------------------------+
+| TopN_7                     | 10.00    | root      |                     | test.t.a, offset:0, count:10   |
+| └─IndexReader_14           | 10.00    | root      |                     | index:TopN_13                  |
+|   └─TopN_13                | 10.00    | cop[tikv] |                     | test.t.a, offset:0, count:10   |
+|     └─IndexFullScan_12     | 10000.00 | cop[tikv] | table:t, index:a(a) | keep order:false, stats:pseudo |
++----------------------------+----------+-----------+---------------------+--------------------------------+
+```
+
+和 `ORDER_INDEX` Hint 的示例相同，优化器对该查询会生成两类计划：`Limit + IndexScan(keep order: true)` 和 `TopN + IndexScan(keep order: false)`，当使用了 `NO_ORDER_INDEX` Hint，优化器会选择后一种不按照顺序读取索引的计划。
+
 ### AGG_TO_COP()
 
 `AGG_TO_COP()` 提示优化器将指定查询块中的聚合函数下推到 coprocessor。如果优化器没有下推某些适合下推的聚合函数，建议尝试使用。例如：
@@ -351,10 +485,6 @@ SELECT /*+ LIMIT_TO_COP() */ * FROM t WHERE a = 1 AND b > 10 ORDER BY c LIMIT 1;
 ```sql
 SELECT /*+ READ_FROM_STORAGE(TIFLASH[t1], TIKV[t2]) */ t1.a FROM t t1, t t2 WHERE t1.a = t2.a;
 ```
-
-> **注意：**
->
-> 如果需要提示优化器使用的表不在同一个数据库内，需要显式指定数据库名。例如 `SELECT /*+ READ_FROM_STORAGE(TIFLASH[test1.t1,test2.t2]) */ t1.a FROM test1.t t1, test2.t t2 WHERE t1.a = t2.a;`。
 
 ### USE_INDEX_MERGE(t1_name, idx1_name [, idx2_name ...])
 
@@ -674,3 +804,13 @@ SELECT /*+ NTH_PLAN(3) */ count(*) from t where a > 5;
 > **注意：**
 >
 > `NTH_PLAN(N)` 主要用于测试用途，并且在未来不保证其兼容性，请谨慎使用。
+
+### RESOURCE_GROUP(resource_group_name)
+
+`RESOURCE_GROUP(resource_group_name)` 用于[使用资源管控 (Resource Control) 实现资源隔离](/tidb-resource-control.md)。此 Hint 将临时使用指定的资源组执行当前的语句。如果指定的资源组不存在，则该 Hint 将被忽略。
+
+示例：
+
+```sql
+SELECT /*+ RESOURCE_GROUP(rg1) */ * FROM t limit 10;
+```

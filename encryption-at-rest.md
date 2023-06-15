@@ -93,7 +93,7 @@ data-encryption-method = "aes128-ctr"
 data-key-rotation-period = "168h" # 7 days
 ```
 
-`data-encryption-method` 的可选值为 `"aes128-ctr"`、`"aes192-ctr"`、`"aes256-ctr"`、`"sm4-ctr"` (仅 v6.3.0 及之后版本) 和 `"plaintext"`。默认值为 `"plaintext"`，即默认不开启加密功能。`data-key-rotation-period` 指定 TiKV 轮换密钥的频率。可以为新 TiKV 群集或现有 TiKV 群集开启加密，但只有启用后写入的数据才保证被加密。要禁用加密，请在配置文件中删除 `data-encryption-method`，或将该参数值为 `"plaintext"`，然后重启 TiKV。若要替换加密算法，则将 `data-encryption-method` 替换成已支持的加密算法，然后重启 TiKV。替换加密算法后，旧加密算法生成的加密文件会随着新数据的写入逐渐被重写成新加密算法所生成的加密文件。
+`data-encryption-method` 的可选值为 `"aes128-ctr"`、`"aes192-ctr"`、`"aes256-ctr"`、`"sm4-ctr"` (仅 v6.3.0 及之后版本) 和 `"plaintext"`。默认值为 `"plaintext"`，即默认不开启加密功能。`data-key-rotation-period` 指定 TiKV 轮换密钥的频率。可以为新 TiKV 集群或现有 TiKV 集群开启加密，但只有启用后写入的数据才保证被加密。要禁用加密，请在配置文件中删除 `data-encryption-method`，或将该参数值为 `"plaintext"`，然后重启 TiKV。若要替换加密算法，则将 `data-encryption-method` 替换成已支持的加密算法，然后重启 TiKV。替换加密算法后，旧加密算法生成的加密文件会随着新数据的写入逐渐被重写成新加密算法所生成的加密文件。
 
 如果启用了加密（即 `data-encryption-method` 的值不是 `"plaintext"`），则必须指定主密钥。要使用 AWS KMS 方式指定为主密钥，请在 `[security.encryption]` 部分之后添加 `[security.encryption.master-key]` 部分：
 
@@ -149,7 +149,7 @@ region = "us-west-2"
 
 * Encryption initialized：如果在 TiKV 启动期间初始化了加密，则为 `1`，否则为 `0`。进行主密钥轮换时可通过该监控项确认主密钥轮换是否已完成。
 * Encryption data keys：现有数据密钥的数量。每次轮换数据密钥后，该数字都会增加 `1`。通过此监控指标可以监测数据密钥是否按预期轮换。
-* Encrypted files：当前的加密数据文件数量。为先前未加密的群集启用加密时，将此数量与数据目录中的当前数据文件进行比较，可通过此监控指标估计已经被加密的数据量。
+* Encrypted files：当前的加密数据文件数量。为先前未加密的集群启用加密时，将此数量与数据目录中的当前数据文件进行比较，可通过此监控指标估计已经被加密的数据量。
 * Encryption meta file size：加密元数据文件的大小。
 * Read/Write encryption meta duration：对用于加密的元数据进行操作带来的额外开销。
 
@@ -167,6 +167,127 @@ region = "us-west-2"
 ```
 
 为了避免上面所示错误，你可以首先将 `security.encryption.enable-file-dictionary-log` 设置为 `false`，然后启动 TiKV v4.0.9 或更高版本。TiKV 成功启动后，加密元数据的数据格式将降级为 TiKV 早期版本可以识别的格式。此时，你可再将 TiKV 集群降级到较早的版本。
+
+## TiFlash 静态加密
+
+TiFlash 当前支持的加密算法与 TiKV 一致，包括 AES128-CTR、AES192-CTR、AES256-CTR 和 SM4-CTR（仅 v6.4.0 及之后版本）。TiFlash 同样使用信封加密 (envelop encryption)，所以启用加密后，TiFlash 使用以下两种类型的密钥：
+
+* 主密钥 (master key)：主密钥由用户提供，用于加密 TiFlash 生成的数据密钥。用户在 TiFlash 外部进行主密钥的管理。
+* 数据密钥 (data key)：数据密钥由 TiFlash 生成，是实际用于加密的密钥。
+
+多个 TiFlash 实例可共用一个主密钥，并且也可以和 TiKV 共用一个主密钥。在生产环境中，推荐通过 AWS KMS 提供主密钥。另外，你也可以通过文件形式提供主密钥。具体的主密钥生成方式和格式均与 TiKV 相同。
+
+TiFlash 使用数据密钥加密所有落盘的数据文件，包括数据文件、Schmea 文件和计算过程中产生的临时数据文件等。默认情况下，TiFlash 每周自动轮换数据密钥，该轮换周期也可根据需要自定义配置。密钥轮换时，TiFlash 不会重写全部现有文件来替换密钥，但如果集群的写入量恒定，则后台 compaction 任务将会用最新的数据密钥对数据重新加密。TiFlash 跟踪密钥和加密方法，并使用密钥信息对读取的内容进行解密。
+
+### 创建密钥
+
+如需在 AWS 上创建一个密钥，请参考 TiKV 密钥的创建方式。
+
+### 配置加密
+
+启用加密的配置，可以在 `tiflash-learner.toml` 文件中添加以下内容：
+
+```
+[security.encryption]
+data-encryption-method = "aes128-ctr"
+data-key-rotation-period = "168h" # 7 days
+```
+
+或者，在 TiUP 集群模板文件中添加以下内容：
+
+```
+server_configs:
+  tiflash-learner:
+    security.encryption.data-encryption-method: "aes128-ctr"
+    security.encryption.data-key-rotation-period: "168h" # 7 days
+```
+
+`data-encryption-method` 的可选值为 `"aes128-ctr"`、`"aes192-ctr"`、`"aes256-ctr"`、`"sm4-ctr"` (仅 v6.4.0 及之后版本) 和 `"plaintext"`。默认值为 `"plaintext"`，即默认不开启加密功能。`data-key-rotation-period` 指定 TiFlash 轮换密钥的频率。可以为新 TiFlash 集群或现有 TiFlash 集群开启加密，但只有启用后写入的数据才保证被加密。要禁用加密，请在配置文件中删除 `data-encryption-method`，或将该参数值为 `"plaintext"`，然后重启 TiFlash。若要替换加密算法，则将 `data-encryption-method` 替换成已支持的加密算法，然后重启 TiFlash。替换加密算法后，旧加密算法生成的加密文件会随着新数据的写入逐渐被重写成新加密算法所生成的加密文件。
+
+如果启用了加密（即 `data-encryption-method` 的值不是 `"plaintext"`），则必须指定主密钥。要使用 AWS KMS 方式指定为主密钥，配置方式如下：
+
+在 `tiflash-learner.toml` 配置文件的 `[security.encryption]` 部分之后添加 `[security.encryption.master-key]`：
+
+```
+[security.encryption.master-key]
+type = "kms"
+key-id = "0987dcba-09fe-87dc-65ba-ab0987654321"
+region = "us-west-2"
+endpoint = "https://kms.us-west-2.amazonaws.com"
+```
+
+或者，在 TiUP 集群模板文件中添加以下内容：
+
+```
+server_configs:
+  tiflash-learner:
+    security.encryption.master-key.type: "kms"
+    security.encryption.master-key.key-id: "0987dcba-09fe-87dc-65ba-ab0987654321"
+    security.encryption.master-key.region: "us-west-2"
+    security.encryption.master-key.endpoint: "https://kms.us-west-2.amazonaws.com"
+```
+
+上述配置项的含义与 TiKV 均相同。
+
+若要使用文件方式指定主密钥，可以在 `tiflash-learner.toml` 配置文件中添加以下内容：
+
+```
+[security.encryption.master-key]
+type = "file"
+path = "/path/to/key/file"
+```
+
+或者，在 TiUP 集群模板文件中添加以下内容：
+
+```
+server_configs:
+  tiflash-learner:
+    security.encryption.master-key.type: "file"
+    security.encryption.master-key.path: "/path/to/key/file"
+```
+
+上述配置项的含义以及密钥文件的内容格式与 TiKV 均相同。
+
+### 轮换主密钥
+
+TiFlash 轮换主秘钥的方法与 TiKV 相同。TiFlash 当前也不支持在线轮换主密钥，因此你需要重启 TiFlash 进行主密钥轮换。建议对运行中的、提供在线查询的 TiFlash 集群进行滚动重启。
+
+要轮换 KMS CMK，可以在 `tiflash-learner.toml` 配置文件中添加以下内容：
+
+```
+[security.encryption.master-key]
+type = "kms"
+key-id = "50a0c603-1c6f-11e6-bb9e-3fadde80ce75"
+region = "us-west-2"
+
+[security.encryption.previous-master-key]
+type = "kms"
+key-id = "0987dcba-09fe-87dc-65ba-ab0987654321"
+region = "us-west-2"
+```
+
+或者，在 TiUP 集群模板文件中添加以下内容：
+
+```
+server_configs:
+  tiflash-learner:
+    security.encryption.master-key.type: "kms"
+    security.encryption.master-key.key-id: "50a0c603-1c6f-11e6-bb9e-3fadde80ce75"
+    security.encryption.master-key.region: "us-west-2"
+    security.encryption.previous-master-key.type: "kms"
+    security.encryption.previous-master-key.key-id: "0987dcba-09fe-87dc-65ba-ab0987654321"
+    security.encryption.previous-master-key.region: "us-west-2"
+```
+
+### 监控和调试
+
+要监控静态加密（如果 TiFlash 中部署了 Grafana 组件），可以查看 **TiFlash-Proxy-Details** -> **Encryption** 面板中的监控项，其中监控项的含义与 TiKV 相同。
+
+在调试方面，由于 TiFlash 复用了 TiKV 管理加密元数据的逻辑，因此也可使用 `tikv-ctl` 命令查看加密元数据（例如使用的加密方法和数据密钥列表）。该操作可能会暴露密钥，因此不推荐在生产环境中使用。详情参阅 [TiKV Control](/tikv-control.md#打印加密元数据)。
+
+### TiFlash 版本间兼容性
+
+TiFlash 在 v4.0.9 同样对加密元数据操作进行了优化，其兼容性要求与 TiKV 相同，详情参考 [TiKV 版本间兼容性](#tikv-版本间兼容性)。
 
 ## BR S3 服务端加密
 

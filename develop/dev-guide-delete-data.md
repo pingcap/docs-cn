@@ -12,15 +12,13 @@ aliases: ['/zh/tidb/dev/delete-data']
 
 在阅读本页面之前，你需要准备以下事项：
 
-- [使用 TiDB Cloud (Serverless Tier) 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md)。
+- [使用 TiDB Serverless 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md)。
 - 阅读[数据库模式概览](/develop/dev-guide-schema-design-overview.md)，并[创建数据库](/develop/dev-guide-create-database.md)、[创建表](/develop/dev-guide-create-table.md)、[创建二级索引](/develop/dev-guide-create-secondary-indexes.md)。
 - 需先[插入数据](/develop/dev-guide-insert-data.md)才可删除。
 
 ## SQL 语法
 
 在 SQL 中，`DELETE` 语句一般为以下形式：
-
-{{< copyable "sql" >}}
 
 ```sql
 DELETE FROM {table} WHERE {filter}
@@ -46,8 +44,6 @@ DELETE FROM {table} WHERE {filter}
 ## 例子
 
 假设在开发中发现在特定时间段内，发生了业务错误，需要删除这期间内的所有 [rating](/develop/dev-guide-bookshop-schema-design.md#ratings-表) 的数据，例如，`2022-04-15 00:00:00` 至 `2022-04-15 00:15:00` 的数据。此时，可使用 `SELECT` 语句查看需删除的数据条数：
-
-{{< copyable "sql" >}}
 
 ```sql
 SELECT COUNT(*) FROM `ratings` WHERE `rated_at` >= "2022-04-15 00:00:00" AND  `rated_at` <= "2022-04-15 00:15:00";
@@ -205,8 +201,6 @@ TiDB 使用[统计信息](/statistics.md)来决定索引的选择，因此，在
 
 在 Java 中，批量删除程序类似于以下内容：
 
-{{< copyable "" >}}
-
 ```java
 package com.pingcap.bulkDelete;
 
@@ -273,8 +267,6 @@ public class BatchDeleteExample
 <div label="Golang" value="golang">
 
 在 Golang 中，批量删除程序类似于以下内容：
-
-{{< copyable "" >}}
 
 ```go
 package main
@@ -378,8 +370,6 @@ with connection:
 ### 非事务批量删除 SQL 语法
 
 非事务批量删除的 SQL 语法如下：
-
-{{< copyable "sql" >}}
 
 ```sql
 BATCH ON {shard_column} LIMIT {batch_size} {delete_statement};

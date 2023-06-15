@@ -68,6 +68,9 @@ aliases: ['/docs-cn/dev/grafana-tikv-dashboard/','/docs-cn/dev/reference/key-mon
 - Average gRPC message duration：gRPC 请求平均的执行时间
 - gRPC batch size：TiDB 与 TiKV 之间 grpc 请求的 batch 大小
 - raft message batch size：TiKV 与 TiKV 之间 raft 消息的 batch 大小
+- gRPC request sources QPS: 不同 gRPC 请求来源的速度
+- gRPC request sources duration: 不同 gRPC 请求来源的执行总时间
+- gRPC resource group QPS: 不同 resource group 的 gRPC 请求速度 
 
 ### Thread CPU
 

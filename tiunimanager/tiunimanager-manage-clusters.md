@@ -160,7 +160,7 @@ TiUniManager 部署完成后，你可以通过 TiUniManager 创建 TiDB 集群�
 进行操作前，确保以下条件已满足：
 
 * 已登录 TiUniManager 控制台。
-* 集群已创建。 ß
+* 集群已创建。
 
 性能分析的操作步骤如下：
 

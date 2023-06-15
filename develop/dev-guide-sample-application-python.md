@@ -18,26 +18,34 @@ summary: 给出一个 TiDB 和 Python 的简单 CRUD 应用程序示例。
 
 本节将介绍 TiDB 集群的启动方法。
 
-### 使用 TiDB Cloud Serverless Tier 集群
+<SimpleTab groupId="cluster">
 
-[创建 Serverless Tier 集群](/develop/dev-guide-build-cluster-in-cloud.md#第-1-步创建-serverless-tier-集群)
+<div label="TiDB Cloud" value="serverless-cluster">
 
-### 使用本地集群
+[创建 TiDB Serverless 集群](/develop/dev-guide-build-cluster-in-cloud.md#第-1-步创建-tidb-serverless-集群)。
+
+</div>
+
+<div label="本地集群" value="local-cluster">
 
 你可以部署一个本地测试的 TiDB 集群或正式的 TiDB 集群。详细步骤，请参考：
 
 - [部署本地测试 TiDB 集群](/quick-start-with-tidb.md#部署本地测试集群)
-- [部署正式 TiDB 集群](/production-deployment-using-tiup.md)。
+- [部署正式 TiDB 集群](/production-deployment-using-tiup.md)
 
-### 使用云原生开发环境
+</div>
+
+<div label="Gitpod" value="gitpod-cluster">
 
 基于 Git 的预配置的开发环境：[现在就试试](/develop/dev-guide-playground-gitpod.md)
 
 该环境会自动克隆代码，并通过 TiUP 部署测试集群。
 
-## 第 2 步：获取代码
+</div>
 
-{{< copyable "shell-regular" >}}
+</SimpleTab>
+
+## 第 2 步：获取代码
 
 ```shell
 git clone https://github.com/pingcap-inc/tidb-example-python.git
@@ -303,7 +311,7 @@ trade_example()
 
 相较于直接使用 Driver，peewee 屏蔽了创建数据库连接时，不同数据库差异的细节。peewee 还封装了大量的操作，如会话管理、基本对象的 CRUD 等，极大地简化了代码量。
 
-`Player` 类为数据库表在程序内的映射。`Player` 的每个属性都对应着 `player` 表的一个字段。SQLAlchemy 使用 `Player` 类为了给 SQLAlchemy 提供更多的信息，使用了形如以上示例中的 `id = CharField(max_length=36, primary_key=True)` 的类型定义，用来指示字段类型和其附加属性。`id = CharField(max_length=36, primary_key=True)` 表示 `id` 字段为 `CharField` 类型，对应数据库类型为 `VARCHAR`，长度为 `36`，且为主键。
+`Player` 类为数据库表在程序内的映射。`Player` 的每个属性都对应着 `player` 表的一个字段。peewee 使用 `Player` 类为了给 peewee 提供更多的信息，使用了形如以上示例中的 `id = CharField(max_length=36, primary_key=True)` 的类型定义，用来指示字段类型和其附加属性。`id = CharField(max_length=36, primary_key=True)` 表示 `id` 字段为 `CharField` 类型，对应数据库类型为 `VARCHAR`，长度为 `36`，且为主键。
 
 关于 peewee 的更多使用方法，你可以参考 [peewee 官网](http://docs.peewee-orm.com/en/latest/)。
 
@@ -827,7 +835,7 @@ mycli --host 127.0.0.1 --port 4000 -u root --no-warn < player_init.sql
 
 ### 第 3 步第 2 部分：TiDB Cloud 更改参数
 
-若你使用了 TiDB Cloud Serverless Tier 集群，此处需使用系统本地的 CA 证书，并将证书路径记为 `<ca_path>` 以供后续指代。请参考以下系统相关的证书路径地址：
+若你使用了 TiDB Serverless 集群，此处需使用系统本地的 CA 证书，并将证书路径记为 `<ca_path>` 以供后续指代。请参考以下系统相关的证书路径地址：
 
 <SimpleTab groupId="ca">
 
@@ -857,19 +865,19 @@ mycli --host 127.0.0.1 --port 4000 -u root --no-warn < player_init.sql
 
 </SimpleTab>
 
-若设置后仍有证书错误，请查阅 [TiDB Cloud Serverless Tier 安全连接文档](https://docs.pingcap.com/tidbcloud/secure-connections-to-serverless-tier-clusters)。
+若设置后仍有证书错误，请查阅 [TiDB Serverless 安全连接文档](https://docs.pingcap.com/tidbcloud/secure-connections-to-serverless-tier-clusters)。
 
 <SimpleTab groupId="language">
 
 <div label="使用 SQLAlchemy（推荐）" value="SQLAlchemy">
 
-若你使用 TiDB Cloud Serverless Tier 集群，更改 `sqlalchemy_example.py` 内 `create_engine` 函数的入参：
+若你使用 TiDB Serverless 集群，更改 `sqlalchemy_example.py` 内 `create_engine` 函数的入参：
 
 ```python
 engine = create_engine('mysql://root:@127.0.0.1:4000/test')
 ```
 
-若你设定的密码为 `123456`，而且从 TiDB Cloud Serverless Tier 集群面板中得到的连接信息为：
+若你设定的密码为 `123456`，而且从 TiDB Serverless 集群面板中得到的连接信息为：
 
 - Endpoint: `xxx.tidbcloud.com`
 - Port: `4000`
@@ -890,13 +898,13 @@ engine = create_engine('mysql://2aEp24QWEDLqRFs.root:123456@xxx.tidbcloud.com:40
 
 <div label="使用 peewee（推荐）" value="peewee">
 
-若你使用 TiDB Cloud Serverless Tier 集群，更改 `peewee_example.py` 内 `connect` 函数的入参：
+若你使用 TiDB Serverless 集群，更改 `peewee_example.py` 内 `connect` 函数的入参：
 
 ```python
 db = connect('mysql://root:@127.0.0.1:4000/test')
 ```
 
-若你设定的密码为 `123456`，而且从 TiDB Cloud Serverless Tier 集群面板中得到的连接信息为：
+若你设定的密码为 `123456`，而且从 TiDB Serverless 集群面板中得到的连接信息为：
 
 - Endpoint: `xxx.tidbcloud.com`
 - Port: `4000`
@@ -915,7 +923,7 @@ db = connect('mysql://root:@127.0.0.1:4000/test')
 
     ```python
     db = connect('mysql://2aEp24QWEDLqRFs.root:123456@xxx.tidbcloud.com:4000/test',
-        ssl_mode="VERIFY_IDENTITY", ssl={"ca": "<ca_path>"}
+        ssl_mode="VERIFY_IDENTITY", ssl={"ca": "<ca_path>"})
     ```
 
 由于 peewee 会将参数透传至 Driver 中，使用 peewee 时请注意 Driver 的使用类型。
@@ -924,7 +932,7 @@ db = connect('mysql://root:@127.0.0.1:4000/test')
 
 <div label="使用 mysqlclient" value="mysqlclient">
 
-若你使用 TiDB Cloud Serverless Tier 集群，更改 `mysqlclient_example.py` 内 `get_connection` 函数：
+若你使用 TiDB Serverless 集群，更改 `mysqlclient_example.py` 内 `get_connection` 函数：
 
 ```python
 def get_connection(autocommit: bool = True) -> MySQLdb.Connection:
@@ -938,7 +946,7 @@ def get_connection(autocommit: bool = True) -> MySQLdb.Connection:
     )
 ```
 
-若你设定的密码为 `123456`，而且从 TiDB Cloud Serverless Tier 集群面板中得到的连接信息为：
+若你设定的密码为 `123456`，而且从 TiDB Serverless 集群面板中得到的连接信息为：
 
 - Endpoint: `xxx.tidbcloud.com`
 - Port: `4000`
@@ -966,7 +974,7 @@ def get_connection(autocommit: bool = True) -> MySQLdb.Connection:
 
 <div label="使用 PyMySQL" value="PyMySQL">
 
-若你使用 TiDB Cloud Serverless Tier 集群，更改 `pymysql_example.py` 内 `get_connection` 函数：
+若你使用 TiDB Serverless 集群，更改 `pymysql_example.py` 内 `get_connection` 函数：
 
 ```python
 def get_connection(autocommit: bool = False) -> Connection:
@@ -979,7 +987,7 @@ def get_connection(autocommit: bool = False) -> Connection:
                            autocommit=autocommit)
 ```
 
-若你设定的密码为 `123456`，而且从 TiDB Cloud Serverless Tier 集群面板中得到的连接信息为：
+若你设定的密码为 `123456`，而且从 TiDB Serverless 集群面板中得到的连接信息为：
 
 - Endpoint: `xxx.tidbcloud.com`
 - Port: `4000`
@@ -1005,7 +1013,7 @@ def get_connection(autocommit: bool = False) -> Connection:
 
 <div label="使用 mysql-connector-python" value="mysql-connector-python">
 
-若你使用 TiDB Cloud Serverless Tier 集群，更改 `mysql_connector_python_example.py` 内 `get_connection` 函数：
+若你使用 TiDB Serverless 集群，更改 `mysql_connector_python_example.py` 内 `get_connection` 函数：
 
 ```python
 def get_connection(autocommit: bool = True) -> MySQLConnection:
@@ -1018,7 +1026,7 @@ def get_connection(autocommit: bool = True) -> MySQLConnection:
     return connection
 ```
 
-若你设定的密码为 `123456`，而且从 TiDB Cloud Serverless Tier 集群面板中得到的连接信息为：
+若你设定的密码为 `123456`，而且从 TiDB Serverless 集群面板中得到的连接信息为：
 
 - Endpoint: `xxx.tidbcloud.com`
 - Port: `4000`

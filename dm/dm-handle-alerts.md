@@ -36,7 +36,7 @@ aliases: ['/docs-cn/tidb-data-migration/dev/handle-alerts/']
 
 ### `DM_relay_process_exits_with_error`
 
-当 relay log 处理单元遇到错误时，会转为 `Paused` 状态并立即触发该告警，此时需要参考 [DM 故障诊断](/dm/dm-error-handling.md#dm-故障诊断)进行处理。
+当 relay log 处理单元遇到无法自动恢复的错误时（如找不到 binlog 文件），或者短时间内多次遇到（如 2 分钟内遇到 3 次以上）可自动恢复的错误时（如网络问题），会触发该告警，此时需要参考 [DM 故障诊断](/dm/dm-error-handling.md#dm-故障诊断)进行处理。
 
 ### `DM_remain_storage_of_relay_log`
 
@@ -66,17 +66,17 @@ aliases: ['/docs-cn/tidb-data-migration/dev/handle-alerts/']
 
 ### `DM_dump_process_exists_with_error`
 
-当 Dump 处理单元遇到错误时，会转为 `Paused` 状态并立即触发该告警，此时需要参考 [DM 故障诊断](/dm/dm-error-handling.md#dm-故障诊断)进行处理。
+当 Dump 处理单元遇到无法自动恢复的错误时（如找不到 binlog 文件），或者短时间内多次遇到（如 2 分钟内遇到 3 次以上）可自动恢复的错误时（如网络问题），会触发该告警，此时需要参考 [DM 故障诊断](/dm/dm-error-handling.md#dm-故障诊断)进行处理。
 
 ### `DM_load_process_exists_with_error`
 
-当 Load 处理单元遇到错误时，会转为 `Paused` 状态并立即触发该告警，此时需要参考 [DM 故障诊断](/dm/dm-error-handling.md#dm-故障诊断)进行处理。
+当 Load 处理单元遇到无法自动恢复的错误时（如找不到 binlog 文件），或者短时间内多次遇到（如 2 分钟内遇到 3 次以上）可自动恢复的错误时（如网络问题），会触发该告警，此时需要参考 [DM 故障诊断](/dm/dm-error-handling.md#dm-故障诊断)进行处理。
 
 ## Binlog replication 告警
 
 ### `DM_sync_process_exists_with_error`
 
-当 Binlog replication 处理单元遇到错误时，会转为 `Paused` 状态并立即触发该告警，此时需要参考 [DM 故障诊断](/dm/dm-error-handling.md#dm-故障诊断)进行处理。
+当 Binlog replication 处理单元遇到无法自动恢复的错误时（如找不到 binlog 文件），或者短时间内多次遇到（如 2 分钟内遇到 3 次以上）可自动恢复的错误时（如网络问题），会触发该告警，此时需要参考 [DM 故障诊断](/dm/dm-error-handling.md#dm-故障诊断)进行处理。
 
 ### `DM_binlog_file_gap_between_master_syncer`
 

@@ -9,7 +9,7 @@ aliases: ['/docs-cn/dev/tiflash/tiflash-configuration/','/docs-cn/dev/reference/
 
 ## PD 调度参数
 
-可通过 [pd-ctl](/pd-control.md) 调整参数。如果你使用 TiUP 部署，可以用 `tiup ctl:<cluster-version> pd` 代替 `pd-ctl -u <pd_ip:pd_port>` 命令。
+可通过 [pd-ctl](/pd-control.md) 调整参数。如果你使用 TiUP 部署，可以用 `tiup ctl:v<CLUSTER_VERSION> pd` 代替 `pd-ctl -u <pd_ip:pd_port>` 命令。
 
 - [`replica-schedule-limit`](/pd-configuration-file.md#replica-schedule-limit)：用来控制 replica 相关 operator 的产生速度（涉及到下线、补副本的操作都与该参数有关）
 
@@ -29,6 +29,10 @@ aliases: ['/docs-cn/dev/tiflash/tiflash-configuration/','/docs-cn/dev/reference/
 
 ## TiFlash 配置参数
 
+> **Tip:**
+>
+> 如果你需要调整配置项的值，请参考[修改配置参数](/maintain-tidb-using-tiup.md#修改配置参数)进行操作。
+
 ### 配置文件 tiflash.toml
 
 ```toml
@@ -36,8 +40,6 @@ aliases: ['/docs-cn/dev/tiflash/tiflash-configuration/','/docs-cn/dev/reference/
 listen_host = "0.0.0.0"
 ## TiFlash TCP 服务的端口
 tcp_port = 9000
-## TiFlash HTTP 服务的端口
-http_port = 8123
 ## 数据块元信息的内存 cache 大小限制，通常不需要修改
 mark_cache_size = 5368709120
 ## 数据块 min-max 索引的内存 cache 大小限制，通常不需要修改
@@ -93,7 +95,7 @@ delta_index_cache_size = 0
     ## I/O 限流功能限制下的读写流量总带宽，单位为 Byte，默认值为 0，即默认关闭 I/O 限流功能。
     # max_bytes_per_sec = 0
     ## max_read_bytes_per_sec 和 max_write_bytes_per_sec 的含义和 max_bytes_per_sec 类似，分别指 I/O 限流功能限制下的读流量总带宽和写流量总带宽。
-    ## 分别用两个配置项控制读写带宽限制，适用于一些读写带宽限制分开计算的云盘，例如 GCP 上的 persistent disk。
+    ## 分别用两个配置项控制读写带宽限制，适用于一些读写带宽限制分开计算的云盘，例如 Google Cloud 上的 persistent disk。
     ## 当 max_bytes_per_sec 配置不为 0 时，优先使用 max_bytes_per_sec。
     # max_read_bytes_per_sec = 0
     # max_write_bytes_per_sec = 0
@@ -111,9 +113,24 @@ delta_index_cache_size = 0
     ## auto_tune_sec 表示自动调整的执行间隔，单位为秒。设为 0 表示关闭自动调整。
     # auto_tune_sec = 5
 
+    ## 下面的配置只针对存算分离模式生效，详细请参考 TiFlash 存算分离架构与 S3 支持文档 https://docs.pingcap.com/zh/tidb/dev/tiflash-disaggregated-and-s3
+    # [storage.s3]
+    # endpoint: http://s3.{region}.amazonaws.com # S3 的 endpoint 地址
+    # bucket: mybucket                           # TiFlash 的所有数据存储在这个 bucket 中
+    # root: /cluster1_data                       # S3 bucket 中存储数据的根目录
+    # access_key_id: {ACCESS_KEY_ID}             # 访问 S3 的 ACCESS_KEY_ID
+    # secret_access_key: {SECRET_ACCESS_KEY}     # 访问 S3 的 SECRET_ACCESS_KEY
+
+    # [storage.remote.cache]
+    # dir: /data1/tiflash/cache        # TiFlash Compute Node 的本地数据缓存目录
+    # capacity: 858993459200           # 800 GiB
+
 [flash]
     tidb_status_addr = tidb status 端口地址 # 多个地址以逗号分割
     service_addr =  TiFlash raft 服务 和 coprocessor 服务监听地址
+
+    ## 下面的配置只针对存算分离模式生效，详情请参考 TiFlash 存算分离架构与 S3 支持文档 https://docs.pingcap.com/zh/tidb/dev/tiflash-disaggregated-and-s3
+    # disaggregated_mode = tiflash_write # 可选值为 tiflash_write 或者 tiflash_compute
 
 # 多个 TiFlash 节点会选一个 master 来负责往 PD 增删 placement rule，通过 flash.flash_cluster 中的参数控制。
 [flash.flash_cluster]
@@ -134,8 +151,8 @@ delta_index_cache_size = 0
     advertise-status-addr = 外部访问 status-addr 的地址，不填则默认是 "status-addr"
 
 [logger]
-    ## log 级别（支持 trace、debug、information、warning、error），默认是 "debug"
-    level = debug
+    ## log 级别（支持 "trace"、"debug"、"info"、"warn"、"error"），默认是 "debug"
+    level = "debug"
     log = TiFlash log 路径
     errorlog = TiFlash error log 路径
     ## 单个日志文件的大小，默认是 "100M"
@@ -157,11 +174,19 @@ delta_index_cache_size = 0
     ## 在 v6.2.0 以及后续版本，强烈建议保留默认值 `false`，不要将其修改为 `true`。具体请参考已知问题 [#5576](https://github.com/pingcap/tiflash/issues/5576)。
     # dt_enable_logical_split = false
 
-    ## 单次 coprocessor 查询过程中，对中间数据的内存限制，单位为 byte，默认为 0，表示不限制
+    ## 单次查询过程中，节点对中间数据的内存限制
+    ## 设置为整数时，单位为 byte，比如 34359738368 表示 32 GiB 的内存限制，0 表示无限制
+    ## 设置为 [0.0, 1.0) 之间的浮点数时，指节点总内存的比值，比如 0.8 表示总内存的 80%，0.0 表示无限制
+    ## 默认值为 0，表示不限制
+    ## 当查询试图申请超过限制的内存时，查询终止执行并且报错
     max_memory_usage = 0
 
-    ## 所有查询过程中，对中间数据的内存限制，单位为 byte，默认为 0，表示不限制
-    max_memory_usage_for_all_queries = 0
+    ## 所有查询过程中，节点对中间数据的内存限制
+    ## 设置为整数时，单位为 byte，比如 34359738368 表示 32 GiB 的内存限制，0 表示无限制
+    ## 设置为 [0.0, 1.0) 之间的浮点数时，指节点总内存的比值，比如 0.8 表示总内存的 80%，0.0 表示无限制
+    ## 默认值为 0.8，表示总内存的 80%
+    ## 当查询试图申请超过限制的内存时，查询终止执行并且报错
+    max_memory_usage_for_all_queries = 0.8
 
     ## 从 v5.0 引入，表示 TiFlash Coprocessor 最多同时执行的 cop 请求数量。如果请求数量超过了该配置指定的值，多出的请求会排队等待。如果设为 0 或不设置，则使用默认值，即物理核数的两倍。
     cop_pool_size = 0
@@ -187,6 +212,15 @@ delta_index_cache_size = 0
 
     ## 从 v6.2.0 引入，表示 PageStorage 单个数据文件中有效数据的最低比例。当某个数据文件的有效数据比例低于该值时，会触发 GC 对该文件的数据进行整理。默认为 0.5。
     dt_page_gc_threshold = 0.5
+
+    ## 从 v7.0.0 引入，表示带 group by key 的 HashAggregation 算子在触发 spill 之前的最大可用内存，超过该阈值之后 HashAggregation 会采用 spill to disk 的方式来减小内存使用。默认值为 0，表示内存使用无限制，即不会触发 spill。
+    max_bytes_before_external_group_by = 0
+
+    ## 从 v7.0.0 引入，表示 sort/topN 算子在触发 spill 之前的最大可用内存，超过该阈值之后 sort/TopN 会采用 spill to disk 的方式来减小内存使用。默认值为 0，表示内存使用无限制，即不会触发 spill。
+    max_bytes_before_external_sort = 0
+
+    ## 从 v7.0.0 引入，表示带等值 join 条件的 HashJoin 算子在触发 spill 之前的最大可用内存，超过该阈值之后 HashJoin 算子会采用 spill to disk 的方式来减小内存使用。默认值为 0，表示内存使用无限制，即不会触发 spill。
+    max_bytes_before_external_join = 0
 
 ## 安全相关配置，从 v4.0.5 开始生效
 [security]

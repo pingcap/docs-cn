@@ -12,8 +12,6 @@ aliases: ['/zh/tidb/dev/transaction-troubleshoot']
 
 如果应用程序遇到下面错误时，说明遇到了死锁问题：
 
-{{< copyable "sql" >}}
-
 ```sql
 ERROR 1213: Deadlock found when trying to get lock; try restarting transaction
 ```
@@ -21,8 +19,6 @@ ERROR 1213: Deadlock found when trying to get lock; try restarting transaction
 当两个及以上的事务，双方都在等待对方释放已经持有的锁或因为加锁顺序不一致，造成循环等待锁资源，就会出现“死锁”。这里以 [bookshop](/develop/dev-guide-bookshop-schema-design.md) 数据库中的 `books` 表为示例演示死锁：
 
 先给 `books` 表中写入 2 条数据：
-
-{{< copyable "sql" >}}
 
 ```sql
 INSERT INTO books (id, title, stock, published_at) VALUES (1, 'book-1', 10, now()), (2, 'book-2', 10, now());
@@ -57,8 +53,6 @@ INSERT INTO books (id, title, stock, published_at) VALUES (1, 'book-1', 10, now(
 |                                            | COMMIT;                                                                               |
 
 或者直接用 1 条 SQL 购买 2 本书，也能避免死锁，而且执行效率更高：
-
-{{< copyable "sql" >}}
 
 ```sql
 UPDATE books SET stock=stock-1 WHERE id IN (1, 2);

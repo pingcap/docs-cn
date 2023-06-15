@@ -7,7 +7,7 @@ summary: 介绍如何从大数据量 MySQL 迁移数据到 TiDB。
 
 通常数据量较低时，使用 DM 进行迁移较为简单，可直接完成全量+持续增量迁移工作。但当数据量较大时，DM 较低的数据导入速度 (30~50 GiB/h) 可能令整个迁移周期过长。本文所称“大数据量”通常指 TiB 级别以上。
 
-因此，本文档介绍使用 Dumpling 和 TiDB Lightning 进行全量数据迁移，其本地导入 (local backend) 模式导入速度可达每小时 500 GiB。完成全量数据迁移后，再使用 DM 完成增量数据迁移。
+因此，本文档介绍如何使用 Dumpling 和 TiDB Lightning 进行全量数据迁移，其[物理导入模式](/tidb-lightning/tidb-lightning-physical-import-mode.md)导入速度可达每小时 500 GiB。完成全量数据迁移后，再使用 DM 完成增量数据迁移。
 
 ## 前提条件
 
@@ -65,7 +65,7 @@ SELECT table_name,table_schema,SUM(data_length)/1024/1024 AS data_length,SUM(ind
     | `-P` 或 `--port`       | MySQL 数据库的端口 |
     | `-h` 或 `--host`       | MySQL 数据库的 IP 地址 |
     | `-t` 或 `--thread`     | 导出的线程数。增加线程数会增加 Dumpling 并发度提高导出速度，但也会加大数据库内存消耗，因此不宜设置过大，一般不超过 64 |
-    | `-o` 或 `--output`     | 存储导出文件的目录，支持本地文件路径或[外部存储 URL 格式](/br/external-storage.md) |
+    | `-o` 或 `--output`     | 存储导出文件的目录，支持本地文件路径或[外部存储 URI 格式](/br/backup-and-restore-storages.md#uri-格式) |
     | `-r` 或 `--row`        | 用于指定单个文件的最大行数，指定该参数后 Dumpling 会开启表内并发加速导出，同时减少内存使用 |
     | `-F`                   | 指定单个文件的最大大小，单位为 MiB。强烈建议使用 `-F` 参数以避免单表过大导致备份过程中断 |
     | `-B` 或 `--database`   | 导出指定数据库 |

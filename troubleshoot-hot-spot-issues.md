@@ -82,9 +82,9 @@ Value: null
 
 ## 使用 SHARD_ROW_ID_BITS 处理热点表
 
-对于主键非整数或没有主键的表或者是联合主键，TiDB 会使用一个隐式的自增 RowID，大量 INSERT 时会把数据集中写入单个 Region，造成写入热点。
+对于非聚簇索引主键或没有主键的表，TiDB 会使用一个隐式的自增 RowID，大量 `INSERT` 时会把数据集中写入单个 Region，造成写入热点。
 
-通过设置 `SHARD_ROW_ID_BITS`，可以把 RowID 打散写入多个不同的 Region，缓解写入热点问题。
+通过设置 [`SHARD_ROW_ID_BITS`](/shard-row-id-bits.md)，可以把 RowID 打散写入多个不同的 Region，缓解写入热点问题。
 
 ```
 SHARD_ROW_ID_BITS = 4 表示 16 个分片
@@ -171,3 +171,7 @@ TiDB 的 Coprocessor Cache 功能支持下推计算结果缓存。开启该功�
 
 + [TiDB 高并发写入场景最佳实践](/best-practices/high-concurrency-best-practices.md)
 + [Split Region 使用文档](/sql-statements/sql-statement-split-region.md)
+
+## 打散读热点
+
+在读热点场景中，热点 TiKV 无法及时处理读请求，导致读请求排队。但是，此时并非所有 TiKV 资源都已耗尽。为了降低延迟，TiDB v7.1.0 引入了负载自适应副本读取功能，允许从其他 TiKV 节点读取副本，而无需在热点 TiKV 节点排队等待。你可以通过 [`tidb_load_based_replica_read_threshold`](/system-variables.md#tidb_load_based_replica_read_threshold-从-v700-版本开始引入) 系统变量控制读请求的排队长度。当 leader 节点的预估排队时间超过该阈值时，TiDB 会优先从 follower 节点读取数据。在读热点的情况下，与不打散读热点相比，该功能可提高读取吞吐量 70%～200%。

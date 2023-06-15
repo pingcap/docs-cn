@@ -54,6 +54,12 @@ aliases: ['/docs-cn/dev/system-tables/system-table-overview/','/docs-cn/dev/refe
 
 * `table_cache_meta` 存储了缓存表的元信息
 
+## TTL 相关系统表
+
+* `mysql.tidb_ttl_table_status` 所有 TTL 表的上一次执行与正在执行的 TTL 任务
+* `mysql.tidb_ttl_task` 正在执行的 TTL 子任务
+* `mysql.tidb_ttl_job_history` 过去 90 天内 TTL 任务的执行历史
+
 ## 其它系统表
 
 * `GLOBAL_VARIABLES` 全局系统变量表

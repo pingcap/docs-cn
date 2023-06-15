@@ -246,6 +246,8 @@ ERROR 1062 (23000): Duplicate entry 'bill' for key 'users.username'
     ERROR 9007 (HY000): Write conflict, txnStartTS=435688780611190794, conflictStartTS=435688783311536129, conflictCommitTS=435688783311536130, key={tableID=74, indexID=1, indexValues={bill, }} primary={tableID=74, indexID=1, indexValues={bill, }}, reason=LazyUniquenessCheck [try again later]
     ```
 
+- 关闭该变量时，如果多个悲观事务之间存在写冲突，悲观锁可能会在其它悲观事务提交时被强制回滚，因此产生 `PessimisticLockNotFound` 错误。发生该错误时，说明该业务不适合推迟悲观事务的唯一约束检查，应考虑调整业务避免冲突，或在发生错误后重试事务。
+
 - 关闭该变量会导致悲观事务中可能报出错误 `8147: LazyUniquenessCheckFailure`。
 
     > **注意：**
@@ -335,7 +337,7 @@ Query OK, 0 rows affected (0.10 sec)
 
 > **注意：**
 >
-> TiDB 仅部分支持外键约束功能。
+> TiDB 从 v6.6.0 开始支持[外键约束](/foreign-key.md)。在 v6.6.0 之前，TiDB 支持创建和删除外键约束，但外键约束并不生效。升级到 v6.6.0 后，可以先删除不生效的外键后再创建外键使外键约束生效。
 
 TiDB 支持创建外键约束。例如：
 
@@ -374,13 +376,3 @@ TiDB 也支持使用 `ALTER TABLE` 命令来删除外键 (`DROP FOREIGN KEY`) �
 ALTER TABLE orders DROP FOREIGN KEY fk_user_id;
 ALTER TABLE orders ADD FOREIGN KEY fk_user_id (user_id) REFERENCES users(id);
 ```
-
-### 注意
-
-* TiDB 支持外键是为了在将其他数据库迁移到 TiDB 时，不会因为此语法报错。但是，TiDB 不会在 DML 语句中对外键进行约束检查。例如，即使 `users` 表中不存在 `id=123` 的记录，下列事务也能提交成功：
-
-    ```
-    START TRANSACTION;
-    INSERT INTO orders (user_id, doc) VALUES (123, NULL);
-    COMMIT;
-    ```

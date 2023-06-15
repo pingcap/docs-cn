@@ -14,8 +14,8 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-drop-binding/']
 
 ```ebnf+diagram
 DropBindingStmt ::=
-    'DROP' GlobalScope 'BINDING' 'FOR' ( BindableStmt ( 'USING' BindableStmt )? )
-|   ('SQL' 'DIGEST' SqlDigest)
+    'DROP' GlobalScope 'BINDING' 'FOR' ( BindableStmt ( 'USING' BindableStmt )? 
+|   'SQL' 'DIGEST' SqlDigest)
 
 GlobalScope ::=
     ( 'GLOBAL' | 'SESSION' )?

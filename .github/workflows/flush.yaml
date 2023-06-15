@@ -1,9 +1,9 @@
-name: Flush PDF
+name: Flush All PDF
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 0 * * *"
+    - cron: "0 0 * * 0" # auto flush pdf on sunday
 
 jobs:
   flush-pdf:
@@ -23,4 +23,10 @@ jobs:
       - name: refresh url
         run: |
           qshell account ${{ secrets.QINIU_ACCESS_KEY }} ${{ secrets.QINIU_SECRET_KEY }} tidb
-          qshell cdnrefresh -i cdnfresh.txt
+          result=$(qshell cdnrefresh -i cdnfresh.txt)
+          if echo $result | grep -w '200'; then
+            echo 'CDN refresh success'
+          else
+            echo "CDN refresh failed: $result"
+            exit 1
+          fi

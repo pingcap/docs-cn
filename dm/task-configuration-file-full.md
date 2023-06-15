@@ -32,7 +32,7 @@ online-ddl: true                # 支持上游 "gh-ost" 、"pt" 的自动处理
 online-ddl-scheme: "gh-ost"     # `online-ddl-scheme` 已被弃用，建议使用 `online-ddl`。
 clean-dump-file: true           # 是否清理 dump 阶段产生的文件，包括 metadata 文件、建库建表 SQL 文件以及数据导入 SQL 文件
 collation_compatible: "loose"   # 同步 CREATE 语句中缺省 Collation 的方式，可选 "loose" 和 "strict"，默认为 "loose"。"loose" 模式不会显式补充上游缺省的 Collation，"strict" 会显式补充上游缺省的 Collation。当使用 "strict" 模式，但下游不支持上游缺省的 Collation 时，下游可能会报错。
-ignore-checking-items: []       # 忽略检查项。可用值请参考 precheck 说明页面。
+ignore-checking-items: []       # 忽略检查项。可用值请参考 precheck 说明：https://docs.pingcap.com/zh/tidb/stable/dm-precheck。
 
 target-database:                # 下游数据库实例配置
   host: "192.168.0.1"
@@ -119,14 +119,48 @@ loaders:                             # load 处理单元的运行配置参数
     dir: "./dumped_data"
 
     # 全量阶段数据导入的模式。可以设置为如下几种模式：
-    # - "sql"(默认)。使用 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) TiDB-backend 进行导入。
-    # - "loader"。使用 Loader 导入。此模式仅作为兼容模式保留，目前用于支持 TiDB Lightning 尚未包含的功能，预计会在后续的版本废弃。
-    import-mode: "sql"
-    # 全量导入阶段针对冲突数据的解决方式：
-    # - "replace"（默认值）。仅支持 import-mode 为 "sql"，表示用最新数据替代已有数据。
-    # - "ignore"。仅支持 import-mode 为 "sql"，保留已有数据，忽略新数据。
-    # - "error"。仅支持 import-mode 为 "loader"。插入重复数据时报错并停止同步任务。
-    on-duplicate: "replace"
+    # - "logical"(默认)。使用 TiDB Lightning 逻辑导入模式进行导入。文档：https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-logical-import-mode
+    # - "physical"。使用 TiDB Lightning 物理导入模式进行导入。文档：https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-physical-import-mode
+    #   当前 "physical" 为实验特性，不建议在生产环境中使用。
+    import-mode: "logical"
+    # 逻辑导入模式针对冲突数据的解决方式：
+    # - "replace"（默认值）。表示用最新数据替代已有数据。
+    # - "ignore"。保留已有数据，忽略新数据。
+    # - "error"。插入重复数据时报错并停止同步任务。
+    on-duplicate-logical: "replace"
+    # 物理导入模式针对冲突数据的解决方式：
+    # - "none"（默认）。对应 TiDB Lightning 物理导入模式冲突数据检测的 "none" 选项 
+    # (https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-physical-import-mode-usage#冲突数据检测)，
+    # 表示遇到冲突数据时不进行处理。该模式性能最佳，但下游数据库会遇到数据索引不一致的问题。
+    # - "manual"。对应 TiDB Lightning 物理导入模式冲突数据检测的 "remove" 选项 
+    # (https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-physical-import-mode-usage#冲突数据检测)。
+    # 在遇到冲突数据时将所有相互冲突的数据删除，并记录在 ${meta-schema}_${name}.conflict_error_v1 表中。
+    # 在本配置文件中，会记录在 dm_meta_test.conflict_error_v1 表中。全量导入阶段结束后，任务
+    # 会暂停并提示用户查询这张表并按照文档进行手动处理。使用 resume-task 命令让任务恢复运行并
+    # 进入到增量同步阶段。
+    on-duplicate-physical: "none"
+    # 物理导入模式用作本地排序的目录位置，该选项的默认值与 dir 配置项一致。具体说明可以参见 TiDB Lightning 对存储空间的需求：https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-physical-import-mode#运行环境需求
+    sorting-dir-physical: "./dumped_data"
+    # 磁盘空间限制，对应 TiDB Lightning disk-quota 配置。具体说明参见文档：https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-physical-import-mode-usage#磁盘资源配额-从-v620-版本开始引入
+    disk-quota-physical: "0"
+    # 物理导入模式在导入完成一张表后，对每一个表执行 `ADMIN CHECKSUM TABLE <table>` 进行数据校验的配置：
+    # - "required"（默认值）。表示导入完成后进行数据校验，如果校验失败会让任务暂停，需要用户手动处理。
+    # - "optional"。表示导入完成后进行数据校验，如果校验失败会打印 warn 日志，任务不会暂停。
+    # - "off"。表示导入完成后不进行数据校验。
+    # Checksum 对比失败通常表示导入异常（数据丢失或数据不一致），因此建议总是开启 Checksum。
+    checksum-physical: "required"
+    # 配置在 CHECKSUM 结束后是否对所有表执行 `ANALYZE TABLE <table>` 操作。
+    # - "required"（默认值）。表示导入完成后进行 ANALYZE 操作，ANALYZE 操作失败时任务暂停，需要用户手动处理。
+    # - "optional"。表示导入完成后进行 ANALYZE 操作，ANALYZE 操作失败时输出警告日志，任务不会暂停。
+    # - "off"。表示导入完成后不进行 ANALYZE 操作。
+    # ANALYZE 只影响统计数据，在大部分场景下建议不开启 ANALYZE。
+    analyze: "off"
+    # 物理导入模式向 TiKV 写入 KV 数据的并发度。当 dm-worker 和 TiKV 网络传输速度超过万兆时，可适当增加这个值。
+    # range-concurrency: 16
+    # 物理导入模式向 TiKV 发送 KV 数据时是否启用压缩。目前仅支持 Gzip 压缩算法，可填写 "gzip" 或 "gz"。默认不启用压缩。
+    # compress-kv-pairs: ""
+    # PD server 的地址，填一个即可。该值为空时，默认使用 TiDB 查询到的 PD 地址信息。
+    # pd-addr: "192.168.0.1:2379"
 
 syncers:                             # sync 处理单元的运行配置参数
   global:                            # 配置名称

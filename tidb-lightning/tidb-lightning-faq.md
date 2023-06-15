@@ -73,7 +73,7 @@ ADMIN CHECKSUM TABLE `schema`.`table`;
 目前，TiDB Lightning 支持：
 
 - 导入 [Dumpling](/dumpling-overview.md)、CSV 或 [Amazon Aurora Parquet](/migrate-aurora-to-tidb.md) 输出格式的数据源。
-- 从本地盘或 [Amazon S3 云盘](/br/external-storage.md)读取数据。
+- 从本地盘或 Amazon S3 云盘读取数据。
 
 ## 我已经在下游创建好库和表了，TiDB Lightning 可以忽略建库建表操作吗？
 
@@ -110,7 +110,7 @@ sql-mode = ""
 
 使用 TiDB Lightning 的 SST Mode 建议配置万兆网卡。
 
-千兆网卡的总带宽只有 120 MB/s，而且需要与整个 TiKV 集群共享。在使用 TiDB Lightning Physical Import Mode 导入时，极易用尽所有带宽，继而因 PD 无法联络集群使集群断连。
+千兆网卡的总带宽只有 120 MB/s，而且需要与整个 TiKV 集群共享。在使用 TiDB Lightning 物理导入模式导入时，极易用尽所有带宽，继而因 PD 无法联络集群使集群断连。
 
 ## 为什么 TiDB Lightning 需要在 TiKV 集群预留这么多空间？
 

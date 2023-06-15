@@ -14,8 +14,6 @@ aliases: ['/zh/tidb/dev/index-best-practice']
 
 本章内容将会用 [bookshop](/develop/dev-guide-bookshop-schema-design.md) 数据库中的 `books` 表作为示例。
 
-{{< copyable "sql" >}}
-
 ```sql
 CREATE TABLE `books` (
   `id` bigint(20) AUTO_RANDOM NOT NULL,
