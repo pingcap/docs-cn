@@ -64,12 +64,12 @@ TiDB 支持以下 `DirectResourceGroupOption`, 其中 [Request Unit (RU)](/tidb-
 | `RU_PER_SEC`  | 每秒 RU 填充的速度 | `RU_PER_SEC = 500` 表示此资源组每秒回填 500 个 RU。 |
 | `PRIORITY`    | 任务在 TiKV 上处理的绝对优先级  | `PRIORITY = HIGH` 表示优先级高。若未指定则默认为 `MEDIUM`。 |
 | `BURSTABLE`   | 允许对应的资源组超出配额后使用空余的系统资源。 |
-| `QUERY_LIMIT` | 当 query 执行满足该条件时，识别为 Runaway 并进行相应的控制 | `QUERY_LIMIT=(EXEC_ELAPSED=60s, ACTION=DRYRUN, WATCH=EXACT 10m)` 表示。若未指定，或 `QUERY_LIMIT=()` 或 `QUERY_LIMIT=NULL` 则表示不进行 Runaway 控制 
+| `QUERY_LIMIT` | 当 query 执行满足该条件时，识别为 Runaway 并进行相应的控制 | `QUERY_LIMIT=(EXEC_ELAPSED=60s, ACTION=DRYRUN, WATCH=EXACT 10m)` 表示。 `QUERY_LIMIT=()` 或 `QUERY_LIMIT=NULL` 则表示不进行 Runaway 控制 
 
 > **注意：**
 > 
 > `ALTER RESOURCE GROUP` 语句只能在全局变量 [`tidb_enable_resource_control`](/system-variables.md#tidb_enable_resource_control-从-v660-版本开始引入) 参数设置为 `ON` 时才能执行。
-> `ALTER RESOURCE GROUP` 语句以增量方式修改，未指定的参数保持不变。但其中 `QUERY_LIMIT` 作为一个整体, 无法部分修改其中的参数。
+> `ALTER RESOURCE GROUP` 语句支持以增量方式修改，未指定的参数保持不变。但其中 `QUERY_LIMIT` 作为一个整体, 无法部分修改其中的参数。
 
 ## 示例
 
@@ -110,7 +110,7 @@ SELECT * FROM information_schema.resource_groups WHERE NAME ='rg1';
 ALTER RESOURCE GROUP rg1
   RU_PER_SEC = 200
   PRIORITY = LOW
-  QUERY_LIMIT = (EXEC_ELAPSED='1s' ACTION=COOLDOWN WATCH=EXACT DURATION='30s');
+  QUERY_LIMIT = (EXEC_ELAPSED='1s' ACTION=COOLDOWN WATCH=EXACT[30s]);
 ```
 
 ```sql
@@ -125,7 +125,7 @@ SELECT * FROM information_schema.resource_groups WHERE NAME ='rg1';
 +------+------------+----------+-----------+------------------------------------------------------------+
 | NAME | RU_PER_SEC | PRIORITY | BURSTABLE | QUERY_LIMIT                                                |
 +------+------------+----------+-----------+------------------------------------------------------------+
-| rg1  |       200  | LOW      | YES        | EXEC_ELAPSED=100ms, ACTION=KILL, WATCH=EXACT, DURATION=30s |
+| rg1  |       200  | LOW      | YES        | EXEC_ELAPSED=1s, ACTION=COOLDOWN, WATCH=EXACT[30s] |
 +------+------------+----------+-----------+------------------------------------------------------------+
 1 rows in set (1.30 sec)
 ```
