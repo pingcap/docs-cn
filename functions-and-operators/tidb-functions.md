@@ -18,6 +18,7 @@ summary: 学习使用 TiDB 特有的函数。
 | [`TIDB_DECODE_SQL_DIGESTS(digests, stmtTruncateLength)`](#tidb_decode_sql_digests) | `TIDB_DECODE_SQL_DIGESTS` 函数用于在集群中查询一组 SQL Digest 所对应的 SQL 语句的归一化形式（即去除格式和参数后的形式）。 |
 | `VITESS_HASH(str)` |  `VITESS_HASH` 函数返回与 Vitess 的 `HASH` 函数兼容的字符串哈希值，有助于从 Vitess 迁移数据。 |
 | `TIDB_SHARD()` | `TIDB_SHARD` 函数用于创建一个 SHARD INDEX 来打散热点索引。SHARD INDEX 是一种以 `TIDB_SHARD` 函数为前缀的表达式索引。 |
+| `TIDB_ROW_CHECKSUM()` | `TIDB_ROW_CHECKSUM()` 函数用于查询行数据的 Checksum 值。该函数只能用于 FastPlan 流程的 `SELECT` 语句，即你可通过形如 `SELECT TIDB_ROW_CHECKSUM() FROM t WHERE id = ?` 或 `SELECT TIDB_ROW_CHECKSUM() FROM t WHERE id IN (?, ?, ...)` 的语句进行查询。参见[数据正确性校验](/ticdc/ticdc-integrity-check.md)。 |
 
 ## 示例
 
@@ -234,8 +235,6 @@ select tidb_decode_sql_digests(@digests, 10);
 
 `TIDB_SHARD` 函数用于创建一个 SHARD INDEX 来打散热点索引。SHARD INDEX 是一种以 `TIDB_SHARD` 函数为前缀的表达式索引。
 
-### SHARD INDEX
-
 - 创建方式：
 
     使用 `uk((tidb_shard(a)), a))` 为字段 `a` 创建一个 SHARD INDEX。当二级唯一索引 `uk((tidb_shard(a)), a))` 的索引字段 `a` 上存在因单调递增或递减而产生的热点时，索引的前缀 `tidb_shard(a)` 会打散热点，从而提升集群可扩展性。
@@ -289,22 +288,9 @@ select tidb_decode_sql_digests(@digests, 10);
     CREATE TABLE test(id INT PRIMARY KEY CLUSTERED, a INT, b INT, UNIQUE KEY uk((tidb_shard(a)), a));
     ```
 
-### MySQL 兼容性
-
-`TIDB_SHARD` 是 TiDB 特有的函数，和 MySQL 不兼容。
-
 ## TIDB_ROW_CHECKSUM
 
 `TIDB_ROW_CHECKSUM` 函数用于查询行数据的 Checksum 值。该函数只能用于 FastPlan 流程的 `SELECT` 语句，即你可通过形如 `SELECT TIDB_ROW_CHECKSUM() FROM t WHERE id = ?` 或 `SELECT TIDB_ROW_CHECKSUM() FROM t WHERE id IN (?, ?, ...)` 的语句进行查询。
-
-### 语法图
-
-```ebnf+diagram
-TableStmt ::=
-    "TIDB_ROW_CHECKSUM()"
-```
-
-### 示例
 
 在 TiDB 中开启行数据 Checksum 功能 [`tidb_enable_row_level_checksum`](/system-variables.md#tidb_enable_row_level_checksum-从-v710-版本开始引入)：
 
@@ -334,11 +320,3 @@ SELECT *, TIDB_ROW_CHECKSUM() FROM t WHERE id = 1;
 +----+------+------+---------------------+
 1 row in set (0.000 sec)
 ```
-
-### MySQL 兼容性
-
-`TIDB_ROW_CHECKSUM` 是 TiDB 特有的函数，和 MySQL 不兼容。
-
-### 另请参阅
-
-- [数据正确性校验](/ticdc/ticdc-integrity-check.md)
