@@ -35,7 +35,7 @@ ADMIN RESUME DDL JOBS job_id [, job_id] ...;
 > + 版本升级时，正在运行的 DDL 作业将被暂停，同时在升级过程中发起的 DDL 作业也将被暂停。升级结束后，所有已暂停的 DDL 作业将恢复执行。升级过程中的操作为自动进行，详情查阅 [TiDB 平滑升级](/smooth-upgrade-tidb.md)。
 > + 该操作可以同时恢复多个 DDL 作业，可以通过 [`ADMIN SHOW DDL JOBS`](/sql-statements/sql-statement-admin-show-ddl.md) 语句来获取 DDL 作业的 `job_id`。
 > + 处于其他状态中的作业无法被恢复，操作将失败。
-> + 再次恢复时时，会报错 `Error Number: 8261`
+> + 再次恢复时，会报错 `Error Number: 8261`
 
 ## MySQL 兼容性
 
