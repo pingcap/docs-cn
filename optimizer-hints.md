@@ -861,18 +861,19 @@ Warning 信息如下：
 
 具体的语法规则参见 [Hint 语法](#语法)部分。
 
-### Collation 导致 INL_JOIN Hint 不生效
+### 排序规则不同导致 `INL_JOIN` Hint 不生效
 
-如果两个表的 Join Key 的 Collation 设置不同，将无法使用 IndexJoin 来执行，此时 INL_JOIN 会无法生效。例如：
+如果两个表的 Join key 的排序规则设置不同，将无法使用 IndexJoin 来执行查询。此时 `INL_JOIN` Hint 将无法生效。例如：
 
 ```sql
-mysql> create table t1 (k varchar(8), key(k)) collate=utf8mb4_general_ci;
-Query OK, 0 rows affected (0.01 sec)
+CREATE TABLE t1 (k varchar(8), key(k)) COLLATE=utf8mb4_general_ci;
+CREATE TABLE t2 (k varchar(8), key(k)) COLLATE=utf8mb4_bin;
+EXPLAIN SELECT /*+ tidb_inlj(t1) */ * FROM t1, t2 WHERE t1.k=t2.k;
+```
 
-mysql> create table t2 (k varchar(8), key(k)) collate=utf8mb4_bin;
-Query OK, 0 rows affected (0.01 sec)
+查询计划输出结果如下：
 
-mysql> explain select /*+ tidb_inlj(t1) */ * from t1, t2 where t1.k=t2.k;
+```sql
 +-----------------------------+----------+-----------+----------------------+----------------------------------------------+
 | id                          | estRows  | task      | access object        | operator info                                |
 +-----------------------------+----------+-----------+----------------------+----------------------------------------------+
@@ -883,8 +884,12 @@ mysql> explain select /*+ tidb_inlj(t1) */ * from t1, t2 where t1.k=t2.k;
 |   └─IndexFullScan_21        | 9990.00  | cop[tikv] | table:t1, index:k(k) | keep order:false, stats:pseudo               |
 +-----------------------------+----------+-----------+----------------------+----------------------------------------------+
 5 rows in set, 1 warning (0.00 sec)
+```
 
-mysql> show warnings;
+上面的 SQL 语句中 `t1.k` 和 `t2.k` 的排序规则不同（分别为 `utf8mb4_general_ci` 和 `utf8mb4_bin`），导致 IndexJoin 无法适用。因此 `INL_JOIN` 或 `TIDB_INLJ` Hint 也无法生效。
+
+```sql
+SHOW WARNINGS;
 +---------+------+----------------------------------------------------------------------------+
 | Level   | Code | Message                                                                    |
 +---------+------+----------------------------------------------------------------------------+
@@ -892,5 +897,3 @@ mysql> show warnings;
 +---------+------+----------------------------------------------------------------------------+
 1 row in set (0.00 sec)
 ```
-
-上面的例子中 `t1.k` 和 `t2.k` 的 Collation 设置不同（分别为 `utf8mb4_general_ci` 和 `utf8mb4_bin`），导致 IndexJoin 无法适用，因此 `INL_JOIN` 或者 `TIDB_INLJ` Hint 也会无法生效。
