@@ -900,7 +900,7 @@ SHOW WARNINGS;
 
 ### 连接顺序导致 `INL_JOIN` Hint 不生效
 
-`INL_JOIN(t1, t2)` 或 `TIDB_INLJ(t1, t2)` 的语义是让 `t1` 和 `t2` 在与其他表连接时使用 `IndexJoin`，而不是用 `IndexJoin` 直接连接 `t1` 和 `t2`。例如：
+[`INL_JOIN(t1, t2)`](#inl_joint1_name--tl_name-) 或 `TIDB_INLJ(t1, t2)` 的语义是让 `t1` 和 `t2` 在与其他表连接时使用 `IndexJoin`，而不是直接将 `t1` 和 `t2` 进行 `IndexJoin` 连接。例如：
 
 ```sql
 mysql> explain select /*+ tidb_inlj(t1, t3) */ * from t1, t2, t3 where t1.id=t2.id and t2.id=t3.id and t1.id=t3.id;
