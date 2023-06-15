@@ -60,7 +60,7 @@ The method of scaling out a TiCDC cluster is similar to that of deploying one. I
       - host: 10.1.1.2
         gc-ttl: 86400
         data_dir: /tidb-data/cdc-8300
-      - host: 10.0.1.4:8300
+      - host: 10.0.1.4
         gc-ttl: 86400
         data_dir: /tidb-data/cdc-8300
     ```
