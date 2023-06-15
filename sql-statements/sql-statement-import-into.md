@@ -83,9 +83,11 @@ SET 表达式左侧只能引用 `ColumnNameOrUserVarList` 没有的列名，如�
 
 ### fileLocation
 
-用于指定数据文件的位置，该位置可以有效是 S3/GCS URI 路径，详见[外部存储](/br/backup-and-restore-storages.md)；也可以是本地文件路径，此时该路径对应的文件必须在当前连接的 TiDB 实例上。
+用于指定数据文件的存储位置，该位置可以是 S3 或 GCS URI 路径，也可以是 TiDB 本地文件路径。
 
-当 fileLocation 为本地文件路径时，必须是绝对路径，且数据文件必须以 `.csv`、`.sql`、或 `.parquet` 为后缀。且此时当前连接用户需要有 `FILE` 权限。
+- S3 或 GCS URI 路径：配置详见[外部存储](/br/backup-and-restore-storages.md)。 
+此时该路径对应的文件必须存储在当前用户连接的 TiDB 节点上。
+-  TiDB 本地文件路径：必须为绝对路径，数据文件后缀必须为 `.csv`、`.sql`、或 `.parquet` ，且确保当前连接用户有 `FILE` 权限。
 
 如果目标集群开启了 [SEM](/system-variables.md#tidb_enable_enhanced_security)，则 fileLocation 不能指定为本地文件路径。
 
