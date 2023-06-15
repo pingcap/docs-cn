@@ -120,7 +120,7 @@ ALTER TABLE t DROP CONSTRAINT t_chk_1;
 
 在为表[添加约束](#添加约束)的时候，可以指定当插入或者更新数据时 TiDB 是否执行约束。
 
-- 如果指定了 `NOT ENFORCED`， 当插入或者更新数据时，TiDB 不会检查约束条件。 
+- 如果指定了 `NOT ENFORCED`，当插入或者更新数据时，TiDB 不会检查约束条件。 
 - 如果未指定 `NOT ENFORCED` 或者指定了 `ENFORCED`，当插入或者更新数据的时候，TiDB 会检查约束条件。
 
 除了在添加约束时候指定 `[NOT] ENFORCED`，你还可以在 `ALTER TABLE` 语句中启用或者禁用 `CHECK` 约束，语法为：
