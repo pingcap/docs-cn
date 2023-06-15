@@ -160,6 +160,40 @@ SET RESOURCE GROUP rg1;
 SELECT /*+ RESOURCE_GROUP(rg1) */ * FROM t limit 10;
 ```
 
+### Runaway 管理（实验特性）
+
+Runaway 查询是指那些执行时间很长或者消耗很多资源的查询。Resource Control 允许用户自定义判断 Runaway 的条件并进行相应的动作，以此防止集群资源完全被 Runaway 查询占用而影响其他的正常查询。
+
+通过在 `CREATE RESOURCE GROUP` 或者 `ALTER RESOURCE GROUP` 中配置 `QUERY_LIMIT` 字段，使资源组进行 Runaway 管理。
+
+`QUERY_LIMIT` 具体格式如下：
+
+| 参数            | 含义           | 备注                                   |
+|---------------|--------------|--------------------------------------|
+| `EXEC_ELAPSED`  | 当查询执行时间超过该值后被识别为 Runaway 查询 | EXEC_ELAPSED = 60s` 表示执行时间超过 60s 的查询认为是 Runaway 查询。 |
+| `ACTION`    | 当识别到 Runaway 查询时进行的动作 | 可定义为 DRYRUN（无操作）, COOLDOWN(降低至最低优先级执行), KILL（终止查询） 
+| `WATCH`   | 免疫已经识别到的 Runaway 查询，即再碰到相同或相似查询直接进行相应动作 | 可选项，配置例如 SIMILAR/EXACT DURATION 60s, SIMILAR 使用 plan digest 匹配，EXACT 使用 sql 匹配
+
+下面为一些使用举例：
+
+1. 创建 `rg1` 资源组，限额是每秒 500 RU，并且定义超过 60s 为 Runaway 查询，并对 Runaway 查询降低优先级执行。
+
+    ```sql
+    CREATE RESOURCE GROUP IF NOT EXISTS rg1 RU_PER_SEC = 500 QUERY_LIMIT=(EXEC_ELAPSED='60s', ACTION=COOLDOWN);
+    ```
+
+2. 修改 `rg1` 资源组, 对 Runaway 查询直接终止，并且保持免疫该 Runaway 查询 10 分钟。
+    
+    ```sql
+    ALTER RESOURCE GROUP rg1 QUERY_LIMIT=(EXEC_ELAPSED='60s', ACTION=KILL, WATCH=SIMILAR DURATION='10m');
+    ```
+
+3. 修改 `rg1` 资源组，取消 Runaway 查询检查。
+
+    ```sql
+    ALTER RESOURCE GROUP rg1 QUERY_LIMIT=NULL;
+    ```
+
 ## 关闭资源管控特性
 
 1. 执行以下命令关闭资源管控特性：

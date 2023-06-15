@@ -27,12 +27,34 @@ ResourceGroupOptionList ::=
 DirectResourceGroupOption ::=
     "RU_PER_SEC" EqOpt stringLit
 |   "PRIORITY" EqOpt ResourceGroupPriorityOption
-|   "BURSTABLE"
+|   "BURSTABLE" EqOpt Boolean
+|   "QUERY_LIMIT" EqOpt '(' ResourceGroupRunawayOptionList ')'
+|   "QUERY_LIMIT" EqOpt '(' ')'
+|   "QUERY_LIMIT" EqOpt "NULL"
 
 ResourceGroupPriorityOption ::=
     LOW
 |   MEDIUM
 |   HIGH
+
+ResourceGroupRunawayOptionList ::= 
+    DirectResourceGroupRunawayOption
+|   ResourceGroupRunawayOptionList DirectResourceGroupRunawayOption
+|   ResourceGroupRunawayOptionList ',' DirectResourceGroupRunawayOption
+
+DirectResourceGroupRunawayOption ::=
+    "EXEC_ELAPSED" EqOpt stringLit
+|   "ACTION" EqOpt ResourceGroupRunawayActionOption
+|   "WATCH" EqOpt ResourceGroupRunawayWatchOption "DURATION" EqOpt stringLit
+
+ResourceGroupRunawayWatchOption ::=
+    EXACT
+|   SIMILAR
+
+ResourceGroupRunawayActionOption ::=
+    DRYRUN
+|   COOLDOWN
+|   KILL
 ```
 
 资源组的 `ResourceGroupName` 是全局唯一的，不允许重复。
@@ -43,7 +65,8 @@ TiDB 支持以下 `DirectResourceGroupOption`, 其中 [Request Unit (RU)](/tidb-
 |---------------|--------------|--------------------------------------|
 | `RU_PER_SEC`  | 每秒 RU 填充的速度 | `RU_PER_SEC = 500` 表示此资源组每秒回填 500 个 RU。 |
 | `PRIORITY`    | 任务在 TiKV 上处理的绝对优先级  | `PRIORITY = HIGH` 表示优先级高。若未指定，则默认为 `MEDIUM`。 |
-| `BURSTABLE`   | 允许对应的资源组超出配额后使用空余的系统资源。 |
+| `BURSTABLE`   | 允许对应的资源组超出配额后使用空余的系统资源。 | 
+| `QUERY_LIMIT` | 当 query 执行满足该条件时，识别为 Runaway 并进行相应的控制 | `QUERY_LIMIT=(EXEC_ELAPSED=60s, ACTION=DRYRUN, WATCH=EXACT 10m)` 表示。若未指定，或 `QUERY_LIMIT=()` 或 `QUERY_LIMIT=NULL` 则表示不进行 Runaway 控制 
 
 > **注意：**
 >
@@ -75,7 +98,7 @@ Query OK, 0 rows affected (0.08 sec)
 
 ```sql
 CREATE RESOURCE GROUP IF NOT EXISTS rg2
-  RU_PER_SEC = 200;
+  RU_PER_SEC = 200 QUERY_LIMIT=(EXEC_ELAPSED='100ms', ACTION=KILL);
 ```
 
 ```sql
@@ -87,12 +110,12 @@ SELECT * FROM information_schema.resource_groups WHERE NAME ='rg1' or NAME = 'rg
 ```
 
 ```sql
-+------+------------+----------+-----------+
-| NAME | RU_PER_SEC | PRIORITY | BURSTABLE |
-+------+------------+----------+-----------+
-| rg1  |        100 | HIGH     | YES       |
-| rg2  |        200 | MEDIUM   | NO        |
-+------+------------+----------+-----------+
++------+------------+----------+-----------+---------------------------------+
+| NAME | RU_PER_SEC | PRIORITY | BURSTABLE | QUERY_LIMIT                     |
++------+------------+----------+-----------+---------------------------------+
+| rg1  |        100 | HIGH     | YES       | NULL                            |
+| rg2  |        200 | MEDIUM   | NO        | EXEC_ELAPSED=100ms, ACTION=KILL |
++------+------------+----------+-----------+---------------------------------+
 2 rows in set (1.30 sec)
 ```
 
