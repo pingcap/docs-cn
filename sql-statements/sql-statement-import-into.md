@@ -118,7 +118,7 @@ SET 表达式左侧只能引用 `ColumnNameOrUserVarList` 没有的列名，如�
 | SKIP_ROWS=<number> | CSV | 指定需要跳过的行数，默认为 0，可通过该参数跳过 CSV 中的 header，该参数会对 fileLocation 中匹配的所有文件生效 |
 | DISK_QUOTA='<string>' | 所有格式 | 该参数指定数据排序期间，可使用的磁盘空间阈值。默认值为 TiDB [临时目录](/tidb-configuration-file.md#temp-dir-new-in-v630) 所在磁盘空间的 80%，如果无法获取磁盘总大小，默认值为 50GiB。当显示设置 DISK_QUOTA 时，该值同样不能超过 TiDB [临时目录](/tidb-configuration-file.md#temp-dir-new-in-v630)所在磁盘空间的 80% |
 | DISABLE_TIKV_IMPORT_MODE | 所有格式 | 该参数指定是否禁止导入期间将 TiKV 切换到 Import Mode。默认不禁止。如果当前集群存在正在运行的读写业务，为避免导入过程对这部分业务造成影响，可开启该参数 |
-| THREAD=<number> | 所有格式 | 指定导入的并发度，当数据文件格式为 CSV 或 SQL 时，默认值为 CPU 核数的 50%。可以显示指定该参数来控制对资源的占用，但该值最大为 CPU 核数 |
+| THREAD=<number> | 所有格式 | 指定导入的并发度，当数据文件格式为 CSV 或 SQL 时，默认值为 CPU 核数的 50%，最小为 1。可以显示指定该参数来控制对资源的占用，但该值最大为 CPU 核数 |
 | MAX_WRITE_SPEED='<string>' | 所有格式 | 该参数用于控制写入到单个 TiKV 的速度，默认无速度限制 |
 | CHECKSUM_TABLE='<string>' | 所有格式 | 配置是否在导入完成后对目标表指定 checksum 对比操作来验证导入的完整性。可选的配置项： "required"（默认）：在导入完成后执行 CHECKSUM 检查，如果 CHECKSUM 检查失败，则会报错退出。"optional"：在导入完成后执行 CHECKSUM 检查，如果报错，会输出一条 WARN 日志并忽略错误。"off"：导入结束后不执行 CHECKSUM 检查。 |
 | DETACHED | 所有格式 | 该参数用于控制 `IMPORT INTO` 是否异步执行。开启该参数后会输出任务 ID，且该任务会在后台异步执行。 |
@@ -195,7 +195,7 @@ IMPORT INTO t FROM '/path/to/file-*.csv'
 ### 从 S3、GCS 导入数据
 
 ```sql
-IMPORT INTO t FROM 's3://bucket-name/test.csv?access_key=XXX&secret_access_key=XXX';
+IMPORT INTO t FROM 's3://bucket-name/test.csv?access-key=XXX&secret-access-key=XXX';
 ```
 
 ### 通过 SetClause 语句计算列值
@@ -216,7 +216,7 @@ IMPORT INTO t(id, name, @1) SET val=@1*100 FROM '/path/to/file.csv' WITH skip_ro
 ### 导入 SQL 格式的数据文件
 
 ```sql
-IMPORT INTO t FROM '/path/to/file.sql';
+IMPORT INTO t FROM '/path/to/file.sql' FORMAT 'sql';
 ```
 
 ## MySQL 兼容性
