@@ -18,7 +18,6 @@ summary: 学习使用 TiDB 特有的函数。
 | [`TIDB_DECODE_SQL_DIGESTS(digests, stmtTruncateLength)`](#tidb_decode_sql_digests) | `TIDB_DECODE_SQL_DIGESTS` 函数用于在集群中查询一组 SQL Digest 所对应的 SQL 语句的归一化形式（即去除格式和参数后的形式）。 |
 | `VITESS_HASH(str)` |  `VITESS_HASH` 函数返回与 Vitess 的 `HASH` 函数兼容的字符串哈希值，有助于从 Vitess 迁移数据。 |
 | `TIDB_SHARD()` | `TIDB_SHARD` 函数用于创建一个 SHARD INDEX 来打散热点索引。SHARD INDEX 是一种以 `TIDB_SHARD` 函数为前缀的表达式索引。 |
-| `TIDB_ROW_CHECKSUM()` | `TIDB_ROW_CHECKSUM()` 函数用于查询行数据的 Checksum 值。该函数只能用于 FastPlan 流程的 `SELECT` 语句，即你可通过形如 `SELECT TIDB_ROW_CHECKSUM() FROM t WHERE id = ?` 或 `SELECT TIDB_ROW_CHECKSUM() FROM t WHERE id IN (?, ?, ...)` 的语句进行查询。参见[数据正确性校验](/ticdc/ticdc-integrity-check.md)。 |
 
 ## 示例
 
@@ -281,44 +280,3 @@ select tidb_decode_sql_digests(@digests, 10);
     ```sql
     CREATE TABLE test(id INT PRIMARY KEY CLUSTERED, a INT, b INT, UNIQUE KEY uk((tidb_shard(a)), a));
     ```
-
-<<<<<<< HEAD
-### MySQL 兼容性
-
-`TIDB_SHARD` 是 TiDB 特有的函数，和 MySQL 不兼容。
-=======
-### TIDB_ROW_CHECKSUM
-
-`TIDB_ROW_CHECKSUM` 函数用于查询行数据的 Checksum 值。该函数只能用于 FastPlan 流程的 `SELECT` 语句，即你可通过形如 `SELECT TIDB_ROW_CHECKSUM() FROM t WHERE id = ?` 或 `SELECT TIDB_ROW_CHECKSUM() FROM t WHERE id IN (?, ?, ...)` 的语句进行查询。
-
-在 TiDB 中开启行数据 Checksum 功能 [`tidb_enable_row_level_checksum`](/system-variables.md#tidb_enable_row_level_checksum-从-v710-版本开始引入)：
-
-```sql
-SET GLOBAL tidb_enable_row_level_checksum = ON;
-```
-
-创建表 `t` 并插入数据：
-
-```sql
-USE test;
-CREATE TABLE t (id INT PRIMARY KEY, k INT, c int);
-INSERT INTO TABLE t values (1, 10, a);
-```
-
-查询表 `t` 中 `id = 1` 的行数据的 Checksum 值：
-
-```sql
-SELECT *, TIDB_ROW_CHECKSUM() FROM t WHERE id = 1;
-```
-
-输出结果如下：
-
-```sql
-+----+------+------+---------------------+
-| id | k    | c    | TIDB_ROW_CHECKSUM() |
-+----+------+------+---------------------+
-|  1 |   10 | a    | 3813955661          |
-+----+------+------+---------------------+
-1 row in set (0.000 sec)
-```
->>>>>>> 5a545788fd (functions-and-operators: Improve format, add vitess_hash (#12571))
