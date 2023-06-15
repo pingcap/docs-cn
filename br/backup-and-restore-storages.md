@@ -188,7 +188,7 @@ BACKUP DATABASE * TO 's3://bucket-name/prefix' SEND_CREDENTIALS_TO_TIKV = FALSE;
 
 - 方式一：指定共享访问签名
 
-    在 URI 配置 `account-name` 和 `sas-token`，则使用该参数指定的共享访问签名。由于共享访问签名中带有 `&` 的字符，需要在编码为 `%26` 后，再添加到 URI 中。你也可以直接对整个 sas-token 进行一次编码。
+    在 URI 配置 `account-name` 和 `sas-token`，则使用该参数指定的共享访问签名。由于共享访问签名中带有 `&` 的字符，需要在编码为 `%26` 后，再添加到 URI 中。你也可以直接对整个 sas-token 进行一次编码。<!-- TODO: add an example -->
 
 - 方式二：指定访问密钥
 
