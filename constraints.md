@@ -61,7 +61,7 @@ Query OK, 1 row affected (0.03 sec)
 
 ### 添加约束
 
-在 TiDB 中，可以在 `CREATE TABLE` 或者 `ALTER TABLE` 语句中添加 `CHECK` 约束，语法为：
+在 TiDB 中，只支持在 `CREATE TABLE` 或者 `ALTER TABLE` 语句中添加 `CHECK` 约束，语法为：
 
 在 `CREATE TABLE` 语句中添加约束：
 ```sql
