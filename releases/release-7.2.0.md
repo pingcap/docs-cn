@@ -151,6 +151,7 @@ TiDB 版本：7.2.0
 + TiDB
 
     - 优化构造索引扫描范围的逻辑，支持将一些复杂条件转化为索引扫描范围 [#41572](https://github.com/pingcap/tidb/issues/41572) [#44389](https://github.com/pingcap/tidb/issues/44389) @xuyifangreeneyes
+    - 支持分区表下推 TopN 逻辑，在减少了 indexLookUp 和 IndexMerge 算子回表次数，提升了 SQL 执行性能 [#26166](https://github.com/pingcap/tidb/issues/26166) [#41028](https://github.com/pingcap/tidb/issues/41028)
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
 + TiKV
