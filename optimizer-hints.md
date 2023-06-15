@@ -896,3 +896,45 @@ SHOW WARNINGS;
 +---------+------+----------------------------------------------------------------------------+
 1 row in set (0.00 sec)
 ```
+
+### 连接顺序导致 `INL_JOIN` Hint 不生效
+
+`INL_JOIN(t1, t2)` 或 `TIDB_INLJ(t1, t2)` 的语义是让 `t1` 和 `t2` 在与其他表连接时使用 `IndexJoin`，而不是用 `IndexJoin` 直接连接 `t1` 和 `t2`。例如：
+
+```sql
+mysql> explain select /*+ tidb_inlj(t1, t3) */ * from t1, t2, t3 where t1.id=t2.id and t2.id=t3.id and t1.id=t3.id;
++---------------------------------+----------+-----------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| id                              | estRows  | task      | access object | operator info                                                                                                                                                           |
++---------------------------------+----------+-----------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| IndexJoin_16                    | 15625.00 | root      |               | inner join, inner:TableReader_13, outer key:test.t2.id, test.t1.id, inner key:test.t3.id, test.t3.id, equal cond:eq(test.t1.id, test.t3.id), eq(test.t2.id, test.t3.id) |
+| ├─IndexJoin_34(Build)           | 12500.00 | root      |               | inner join, inner:TableReader_31, outer key:test.t2.id, inner key:test.t1.id, equal cond:eq(test.t2.id, test.t1.id)                                                     |
+| │ ├─TableReader_40(Build)       | 10000.00 | root      |               | data:TableFullScan_39                                                                                                                                                   |
+| │ │ └─TableFullScan_39          | 10000.00 | cop[tikv] | table:t2      | keep order:false, stats:pseudo                                                                                                                                          |
+| │ └─TableReader_31(Probe)       | 10000.00 | root      |               | data:TableRangeScan_30                                                                                                                                                  |
+| │   └─TableRangeScan_30         | 10000.00 | cop[tikv] | table:t1      | range: decided by [test.t2.id], keep order:false, stats:pseudo                                                                                                          |
+| └─TableReader_13(Probe)         | 12500.00 | root      |               | data:TableRangeScan_12                                                                                                                                                  |
+|   └─TableRangeScan_12           | 12500.00 | cop[tikv] | table:t3      | range: decided by [test.t2.id test.t1.id], keep order:false, stats:pseudo                                                                                               |
++---------------------------------+----------+-----------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+```
+
+在上面例子中，`t1` 和 `t3` 并没有直接被一个 `IndexJoin` 连接起来。
+
+如果想要直接使用 `IndexJoin` 来连接 `t1` 和 `t3`，需要先使用 `LEADING` Hint 指定连接顺序，让 `t1` 和 `t3` 会被直接进行连接，再配合 `INL_JION`。例如：
+
+```sql
+mysql> explain select /*+ leading(t1, t3), tidb_inlj(t3) */ * from t1, t2, t3 where t1.id=t2.id and t2.id=t3.id and t1.id=t3.id;
++---------------------------------+----------+-----------+---------------+---------------------------------------------------------------------------------------------------------------------+
+| id                              | estRows  | task      | access object | operator info                                                                                                       |
++---------------------------------+----------+-----------+---------------+---------------------------------------------------------------------------------------------------------------------+
+| Projection_12                   | 15625.00 | root      |               | test.t1.id, test.t1.name, test.t2.id, test.t2.name, test.t3.id, test.t3.name                                        |
+| └─HashJoin_21                   | 15625.00 | root      |               | inner join, equal:[eq(test.t1.id, test.t2.id) eq(test.t3.id, test.t2.id)]                                           |
+|   ├─TableReader_36(Build)       | 10000.00 | root      |               | data:TableFullScan_35                                                                                               |
+|   │ └─TableFullScan_35          | 10000.00 | cop[tikv] | table:t2      | keep order:false, stats:pseudo                                                                                      |
+|   └─IndexJoin_28(Probe)         | 12500.00 | root      |               | inner join, inner:TableReader_25, outer key:test.t1.id, inner key:test.t3.id, equal cond:eq(test.t1.id, test.t3.id) |
+|     ├─TableReader_34(Build)     | 10000.00 | root      |               | data:TableFullScan_33                                                                                               |
+|     │ └─TableFullScan_33        | 10000.00 | cop[tikv] | table:t1      | keep order:false, stats:pseudo                                                                                      |
+|     └─TableReader_25(Probe)     | 10000.00 | root      |               | data:TableRangeScan_24                                                                                              |
+|       └─TableRangeScan_24       | 10000.00 | cop[tikv] | table:t3      | range: decided by [test.t1.id], keep order:false, stats:pseudo                                                      |
++---------------------------------+----------+-----------+---------------+---------------------------------------------------------------------------------------------------------------------+
+9 rows in set (0.01 sec)
+```
