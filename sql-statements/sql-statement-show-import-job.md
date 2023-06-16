@@ -29,7 +29,7 @@ ShowImportJobStmt ::=
 | Job_ID           | 任务 ID                  |
 | Data_Source      | 数据源信息                |
 | Target_Table     | 目标表                    |
-| Phase        | 表示任务当前所处的步骤，导入过程分为 `importing`, `validating`, `add-index` 等步骤|
+| Phase        | 表示任务当前所处的阶段，导入过程分为 `importing`、`validating`、`add-index` 等阶段 |
 | Status       | 表示当前任务的状态。有以下几种状态：`pending` 表示任务已创建但还未开始运行；`running` 表示运行中；`canceled` 表示已经取消的任务；`failed` 表示任务失败并退出；`finished` 表示任务已完成。|
 | Source_File_Size | 源文件大小 |
 | Imported_Rows | 已经读到并写入目标表的数据行数 |
