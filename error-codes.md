@@ -322,7 +322,7 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 8163
 
-    未知的选项。请参考 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md) 查看支持的选项。
+    未知的选项。请参考 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md#参数说明) 查看支持的选项。
 
 * Error Number: 8164
 
