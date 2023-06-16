@@ -167,32 +167,43 @@ SELECT /*+ RESOURCE_GROUP(rg1) */ * FROM t limit 10;
 > 当前该功能为实验特性，不建议在生产环境中使用。
 
 Runaway Queries 指那些执行时间或者消耗的资源超出预期的查询。自 v7.2.0 起，TiDB 资源管控引入了对 Runaway Queries 的管理。你可以设置条件对 Runaway Queries 进行识别，并自动发起操作，防止集群资源完全被 Runaway 查询占用而影响其他正常查询。
+支持的条件设置：
+- `EXEC_ELAPSED`: 当查询执行的时间超限时，识别为 Runaway Query。 
 
-通过在 [`CREATE RESOURCE GROUP`](/sql-statements/sql-statement-create-resource-group.md) 或者 [`ALTER RESOURCE GROUP`](/sql-statements/sql-statement-alter-resource-group.md) 中配置 `QUERY_LIMIT` 字段，可以实现管理资源组的 Runaway 查询。
+支持的应对操作：
+- `DRYRUN`：不做任何应对。主要用于观测设置条件是否合理。 
+- `COOLDOWN`：将查询的执行优先级降到最低，查询仍旧会以低优先级继续执行，不占用其他操作的资源。 
+- `KILL`：识别到的查询将被自动终止。 
+
+为了避免并发的 Runaway Queries 太多，在被条件识别前就将系统资源耗尽，这里引入了一个快速识别的机制。借助子句 `WATCH`，当某一个查询被识别为 Runaway Quey 之后，在接下来的一段时间里 (通过 `DURATION` 定义) ，当前 TiDB 实例会将匹配到的查询直接标记为 Runaway Query，而不再等待其被条件识别。快速识别的匹配有两种方式：
+
+- `EXACT` 表示 SQL 文本完全相同的才会被快速识别
+- `SIMILAR` 表示会忽略字面值 (Literal)，直接匹配所有模式 (pattern) 相同的 SQL
+通过在 [`CREATE RESOURCE GROUP`](/sql-statements/sql-statement-create-resource-group.md) 或者 [`ALTER RESOURCE GROUP`](/sql-statements/sql-statement-alter-resource-group.md) 中配置 `QUERY_LIMIT` 字段，可以实现管理资源组的 Runaway Query。
 
 `QUERY_LIMIT` 具体格式如下：
 
 | 参数            | 含义           | 备注                                   |
 |---------------|--------------|--------------------------------------|
-| `EXEC_ELAPSED`  | 当查询执行时间超过该值后被识别为 Runaway 查询 | EXEC_ELAPSED =`60s` 表示查询的执行时间超过 60 秒则被认为是 Runaway 查询。 |
-| `ACTION`    | 当识别到 Runaway 查询时进行的动作 | 可选值有 `DRYRUN`（无操作）, `COOLDOWN` （降低至最低优先级执行），`KILL`（终止查询）。 |
-| `WATCH`   | 免疫已经识别到的 Runaway 查询，即在一定时间内再碰到相同或相似查询直接进行相应动作 | 可选项，配置例如 `SIMILAR DURATION 60s`、`EXACT DURATION 60s`, `SIMILAR` 表示使用 Plan Digest 匹配，`EXACT` 表示使用 SQL 匹配。  |
+| `EXEC_ELAPSED`  | 当查询执行时间超过该值后被识别为 Runaway Query | EXEC_ELAPSED =`60s` 表示查询的执行时间超过 60 秒则被认为是 Runaway Query。 |
+| `ACTION`    | 当识别到 Runaway Query时进行的动作 | 可选值有 `DRYRUN`（无操作）, `COOLDOWN` （降低至最低优先级执行），`KILL`（终止查询）。 |
+| `WATCH`   | 快速匹配已经识别到的 Runaway Queries，即在一定时间内再碰到相同或相似查询直接进行相应动作 | 可选项，配置例如 `SIMILAR DURATION 60s`、`EXACT DURATION 60s`, `SIMILAR` 表示使用 Plan Digest 匹配，`EXACT` 表示使用 SQL 匹配。  |
 
 下面为一些使用举例：
 
-1. 创建 `rg1` 资源组，限额是每秒 500 RU，并且定义超过 60s 为 Runaway 查询，并对 Runaway 查询降低优先级执行。
+1. 创建 `rg1` 资源组，限额是每秒 500 RU，并且定义超过 60s 为 Runaway Query，并对 Runaway Query 降低优先级执行。
 
     ```sql
     CREATE RESOURCE GROUP IF NOT EXISTS rg1 RU_PER_SEC = 500 QUERY_LIMIT=(EXEC_ELAPSED='60s', ACTION=COOLDOWN);
     ```
 
-2. 修改 `rg1` 资源组, 对 Runaway 查询直接终止，并且保持免疫该 Runaway 查询 10 分钟。
+2. 修改 `rg1` 资源组, 对 Runaway Query 直接终止，并且在接下来的 10 分钟里，把相同模式的查询直接标记为 Runaway Query。
     
     ```sql
     ALTER RESOURCE GROUP rg1 QUERY_LIMIT=(EXEC_ELAPSED='60s', ACTION=KILL, WATCH=SIMILAR DURATION='10m');
     ```
 
-3. 修改 `rg1` 资源组，取消 Runaway 查询检查。
+3. 修改 `rg1` 资源组，取消 Runaway Queries 检查。
 
     ```sql
     ALTER RESOURCE GROUP rg1 QUERY_LIMIT=NULL;
