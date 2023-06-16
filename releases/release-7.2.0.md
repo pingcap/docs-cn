@@ -101,12 +101,6 @@ TiDB 版本：7.2.0
 
     更多信息，请参考[用户文档](链接)。
 
-* Lightning 物理导入模式（local backend）支持在导入数据前对需要导入的数据是否存在键值冲突进行检测并处理（实验特性）[#41629](https://github.com/pingcap/tidb/issues/41629)@[gozssky](https://github.com/gozssky) @[lance6716](https://github.com/lance6716) **tw@hfxsd** <!--1296-->
-
-    Lightning 物理导入模式（local backend）支持在导入数据前根据目标表的 PK、UK 定义对源文件的数据是否存在键值冲突进行检测。如发现存在冲突数据，在导入过程中用户可以通过配置策略如 replace 或 ignore 来处理冲突的数据，为用户提供了便利性。同时，用户也可以在实际数据导入之前，根据检测结果，提前发现冲突的记录，并排查原因，从源头保障数据质量，保证导入数据的准确性。
-
-    更多信息，请参考[用户文档](链接)。
-
 * Lightning 支持将字符集为 latin1 和 utf8 的源文件导入到 TiDB。[#44434](https://github.com/pingcap/tidb/issues/44434) @[lance6716](https://github.com/lance6716) **tw@qiancai** <!--1432-->
 
     通过此功能，用户现在可以使用 Lightning 数据导入工具直接将字符集为 latin1 和 utf8 的源文件导入到 TiDB 中。这扩展了用户在处理各种字符集时的数据导入选项的兼容性和灵活性。以前，导入这样的文件需要额外的预处理或转换。现在用户只需在运行 Lightning 导入过程时指定源文件的字符集（latin1 或 utf8）。Lightning 工具会在导入过程中自动处理字符集转换，确保数据的完整性和准确性。
