@@ -393,6 +393,14 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
     在尝试消耗超过资源组的限制时返回该错误。一般出现该错误，是由于单次事务太大或者并发太多导致，需调整事务大小或减少客户端并发数。
 
+* Error Number: 8253
+
+    查询终止，因为满足 Runaway 查询的条件。请参考[Runaway Queries](/tidb-resource-control.md#管理资源消耗超出预期的查询-runaway-queries)
+
+* Error Number: 8254
+
+    查询终止，因为被 Runaway 查询免疫命中。请参考[Runaway Queries](/tidb-resource-control.md#管理资源消耗超出预期的查询-runaway-queries)
+
 * Error Number: 9001
 
     完整的报错信息为 `ERROR 9001 (HY000) : PD Server Timeout`。

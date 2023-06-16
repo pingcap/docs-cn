@@ -176,9 +176,11 @@ Runaway Queries 指那些执行时间或者消耗的资源超出预期的查询�
 
 - `DRYRUN`：不做任何应对。主要用于观测设置条件是否合理。 
 - `COOLDOWN`：将查询的执行优先级降到最低，查询仍旧会以低优先级继续执行，不占用其他操作的资源。 
-- `KILL`：识别到的查询将被自动终止。 
+- `KILL`：识别到的查询将被自动终止，报错 `Query execution was interrupted, identified as runaway query`。
 
-为了避免并发的 Runaway Queries 太多，在被条件识别前就将系统资源耗尽，资源管控引入了一个快速识别的机制。借助子句 `WATCH`，当某一个查询被识别为 Runaway Quey 之后，在接下来的一段时间里 (通过 `DURATION` 定义) ，当前 TiDB 实例会将匹配到的查询直接标记为 Runaway Query，而不再等待其被条件识别。快速识别的匹配有两种方式：
+为了避免并发的 Runaway Queries 太多，在被条件识别前就将系统资源耗尽，资源管控引入了一个快速识别的机制。借助子句 `WATCH`，当某一个查询被识别为 Runaway Quey 之后，在接下来的一段时间里 (通过 `DURATION` 定义) ，当前 TiDB 实例会将匹配到的查询直接标记为 Runaway Query，而不再等待其被条件识别，并按照当前应对操作执行。其中 `KILL` 操作报错 `Quarantined and interrupted because of being in runaway watch list`。
+
+快速识别的匹配有两种方式：
 
 - `EXACT` 表示 SQL 文本完全相同的才会被快速识别
 - `SIMILAR` 表示会忽略字面值 (Literal)，直接匹配所有模式 (pattern) 相同的 SQL
@@ -190,8 +192,8 @@ Runaway Queries 指那些执行时间或者消耗的资源超出预期的查询�
 | 参数            | 含义           | 备注                                   |
 |---------------|--------------|--------------------------------------|
 | `EXEC_ELAPSED`  | 当查询执行时间超过该值后被识别为 Runaway Query | EXEC_ELAPSED =`60s` 表示查询的执行时间超过 60 秒则被认为是 Runaway Query。 |
-| `ACTION`    | 当识别到 Runaway Query 时进行的动作 | 可选值有 `DRYRUN`（无操作）, `COOLDOWN`（降低至最低优先级执行），`KILL`（终止查询）。 |
-| `WATCH`   | 快速匹配已经识别到的 Runaway Query，即在一定时间内再碰到相同或相似查询直接进行相应动作 | 可选项，配置例如 `SIMILAR DURATION 60s`、`EXACT DURATION 60s`，`SIMILAR` 表示使用 Plan Digest 匹配，`EXACT` 表示使用 SQL 匹配。  |
+| `ACTION`    | 当识别到 Runaway Query 时进行的动作 | 可选值有 `DRYRUN`，`COOLDOWN`，`KILL`。 |
+| `WATCH`   | 快速匹配已经识别到的 Runaway Query，即在一定时间内再碰到相同或相似查询直接进行相应动作 | 可选项，配置例如 `WATCH=SIMILAR DURATION '60s'`、`WATCH=EXACT DURATION '1m'`。 |
 
 示例如下：
 
