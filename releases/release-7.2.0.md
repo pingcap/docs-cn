@@ -87,12 +87,6 @@ TiDB 版本：7.2.0
 
 ### 可观测性
 
-* 为统计信息收集增加进度展示 [#issue号](链接) @[hawkingrei](https://github.com/hawkingrei) **tw@Oreoxmt** <!--1380-->
-
-    对大表的统计信息收集经常会持续比较长的时间。 在过去的版本里，用户无从得知统计信息收集的进度，进而没法预测完成时间。 在 v7.2.0 中， TiDB 加入了对统计信息收集进度的信息展示。 新加入 [`SHOW ANALYZE SUMMARY`](链接) 命令，能够以表或分区为单位展示总体工作量，当前进度，以及对完成时间的预测。 在大规模数据导入、SQL 性能优化等场景下，用户能够了解整体任务进展，提升用户体验。
-
-    更多信息，请参考[用户文档](链接)。
-
 ### 数据迁移
 
 * 引入新的 SQL statement “import into” （实验特性）,该 SQL 集成了 Lightning 物理导入模式（local backend）的能力,大大提升导入数据的效率。[#42930](https://github.com/pingcap/tidb/issues/42930) @[D3Hunter](https://github.com/D3Hunter) **tw@hfxsd** <!--1413-->
