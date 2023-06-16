@@ -326,7 +326,7 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 8164
 
-    选项取值无效。请参考 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md) 查看有效的取值。
+    选项取值无效。请参考 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md#参数说明) 查看有效的取值。
 
 * Error Number: 8165
 
