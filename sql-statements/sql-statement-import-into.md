@@ -28,8 +28,8 @@ summary: TiDB 数据库中 IMPORT INTO 的使用概况。
 - 不支持和 TiCDC 数据同步、[Point-in-time recovery (PITR)](/br/br-log-architecture.md) 等功能同时工作。
 - 每个集群上同时只能有一个 `IMPORT INTO` 任务在运行。`IMPORT INTO` 会 precheck 是否存在运行中的任务，但并非硬限制，如果多个客户端同时执行 `IMPORT INTO` 仍有可能启动多个任务，请避免该情况。
 - 导入数据的过程中，请勿在目标表进行 DDL 和 DML 操作，否则会导致导入失败或数据不一致。导入期间也不建议进行读操作，因为读取的数据可能不一致。请在导入完成后再进行读写操作。
-- 导入期间会占用大量系统资源，建议 TiDB 节点使用 32 核以上的 CPU 和 64 GiB 以上内存以获得更好的性能。导入期间会将排序好的数据写入到 TiDB [临时目录](/tidb-configuration-file.md#temp-dir-new-in-v630) 下，建议优先考虑配置闪存等高性能存储介质，详细请参考 [物理导入使用限制](/tidb-lightning/tidb-lightning-physical-import-mode.md#requirements-and-restrictions)。
-- TiDB [临时目录](/tidb-configuration-file.md#temp-dir-new-in-v630) 需要至少有 90 GiB 的可用空间。
+- 导入期间会占用大量系统资源，建议 TiDB 节点使用 32 核以上的 CPU 和 64 GiB 以上内存以获得更好的性能。导入期间会将排序好的数据写入到 TiDB [临时目录](/tidb-configuration-file.md#temp-dir) 下，建议优先考虑配置闪存等高性能存储介质，详细请参考 [物理导入使用限制](/tidb-lightning/tidb-lightning-physical-import-mode.md#必要条件及限制)。
+- TiDB [临时目录](/tidb-configuration-file.md#temp-dir) 需要至少有 90 GiB 的可用空间。
 
 ## 导入前准备
 
@@ -37,7 +37,7 @@ summary: TiDB 数据库中 IMPORT INTO 的使用概况。
 
 - 要导入的目标表在 TiDB 中已经创建，并且是空表。
 - 当前集群有足够的剩余空间能容纳要导入的数据。
-- 确保当前连接的 TiDB 节点的[临时目录](/tidb-configuration-file.md#temp-dir-new-in-v630)至少有 90 GiB 的磁盘空间。如果开启了 [tidb_enable_dist_task](/system-variables.md#tidb_enable_dist_task-new-in-v710)，需要确保集群中所有 TiDB 节点的临时目录都有足够的磁盘空间。
+- 确保当前连接的 TiDB 节点的[临时目录](/tidb-configuration-file.md#temp-dir)至少有 90 GiB 的磁盘空间。如果开启了 [tidb_enable_dist_task](/system-variables.md#tidb_enable_dist_task)，需要确保集群中所有 TiDB 节点的临时目录都有足够的磁盘空间。
 
 ## 需要的权限
 
@@ -121,7 +121,7 @@ SET 表达式左侧只能引用 `ColumnNameOrUserVarList` 中没有的列名，�
 | FIELDS_DEFINED_NULL_BY='<string>' | CSV | 指定字段为何值时将会被解析为 NULL，默认为 `\N` |
 | LINES_TERMINATED_BY='<string>' | CSV | 指定行分隔符，默认 `IMPORT INTO` 会自动识别分隔符为 `\n` 或 `\r` 或 `\r\n`，如果行分隔符为以上三种，无须显式指定该选项 |
 | SKIP_ROWS=<number> | CSV | 指定需要跳过的行数，默认为 0，可通过该参数跳过 CSV 中的 header，该参数会对 fileLocation 中匹配的所有文件生效 |
-| DISK_QUOTA='<string>' | 所有格式 | 该参数指定数据排序期间，可使用的磁盘空间阈值。默认值为 TiDB [临时目录](/tidb-configuration-file.md#temp-dir-new-in-v630) 所在磁盘空间的 80%，如果无法获取磁盘总大小，默认值为 50 GiB。当显式指定 DISK_QUOTA 时，该值同样不能超过 TiDB [临时目录](/tidb-configuration-file.md#temp-dir-new-in-v630)所在磁盘空间的 80% |
+| DISK_QUOTA='<string>' | 所有格式 | 该参数指定数据排序期间，可使用的磁盘空间阈值。默认值为 TiDB [临时目录](/tidb-configuration-file.md#temp-dir) 所在磁盘空间的 80%，如果无法获取磁盘总大小，默认值为 50 GiB。当显式指定 DISK_QUOTA 时，该值同样不能超过 TiDB [临时目录](/tidb-configuration-file.md#temp-dir)所在磁盘空间的 80% |
 | DISABLE_TIKV_IMPORT_MODE | 所有格式 | 该参数指定是否禁止导入期间将 TiKV 切换到导入模式。默认不禁止。如果当前集群存在正在运行的读写业务，为避免导入过程对这部分业务造成影响，可开启该参数 |
 | THREAD=<number> | 所有格式 | 指定导入的并发度，当数据文件格式为 CSV 或 SQL 时，默认值为 CPU 核数的 50%，最小为 1。可以显示指定该参数来控制对资源的占用，但该值最大不能超过 CPU 核数 |
 | MAX_WRITE_SPEED='<string>' | 所有格式 | 该参数用于控制写入到单个 TiKV 的速度，默认无速度限制。比如指定为 `1MiB`，则限制写入速度为 `1MiB/s`。|
