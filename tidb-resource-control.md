@@ -166,7 +166,7 @@ SELECT /*+ RESOURCE_GROUP(rg1) */ * FROM t limit 10;
 >
 > 当前该功能为实验特性，不建议在生产环境中使用。
 
-Runaway Queries 指那些执行时间或者消耗的资源超出预期的查询。自 v7.2.0 起，TiDB 资源管控引入了对 Runaway Queries 的管理。你可以设置条件对 Runaway Queries 进行识别，并自动发起操作，防止集群资源完全被 Runaway Queries 占用而影响其他正常查询。
+Runaway Queries 指那些执行时间或者消耗的资源超出预期的查询。自 v7.2.0 起，TiDB 资源管控引入了对 Runaway Queries 的管理。你可以针对某个资源组设置条件来识别 Runaway Queries ，并自动发起应对操作，防止集群资源完全被 Runaway Queries 占用而影响其他正常查询。
 
 支持的条件设置：
 
