@@ -20,7 +20,7 @@ summary: TiDB 数据库中 IMPORT INTO 的使用概况。
 ## 使用限制
 
 - 只支持导入数据到数据库中已有的空表。
-- 不支持事务，也无法回滚，在显示事务 (`BEGIN`/`END`) 中执行会报错。
+- 不支持事务，也无法回滚，在显式事务 (`BEGIN`/`END`) 中执行会报错。
 - 在导入完成前会阻塞当前连接，如果需要异步执行，可以添加 `DETACHED` 选项。
 - 不支持和 TiCDC、[Point-in-time recovery (PITR)](/br/br-log-architecture.md) 等功能同时工作。
 - 每个集群上同时只能有一个 `IMPORT INTO` 任务在运行。
