@@ -197,6 +197,7 @@ IMPORT INTO t FROM '/path/to/file-*.csv'
 ```sql
 IMPORT INTO t FROM 's3://bucket-name/test.csv?access-key=XXX&secret-access-key=XXX';
 ```
+S3 或 GCS 的 URI 路径配置详见[外部存储](/br/backup-and-restore-storages.md)。
 
 ### 通过 SetClause 语句计算列值
 
