@@ -10,7 +10,7 @@ summary: TiDB 数据库中 SHOW IMPORT 的使用概况。
 ## 所需权限
 
 - 对于 `SHOW IMPORT JOBS` 语句，如果用户有 `SUPER` 权限，则可以看到所有 job，否则只能看到当前用户创建的 job。
-- 对于 `SHOW IMPORT JOB <job-id>` 如果用户是创建者或者拥有 `SUPER` 权限才可以查看。
+- 对于 `SHOW IMPORT JOB <job-id>`，需要用户是 job 创建者或者拥有 `SUPER` 权限才可以查看。
 
 ## 语法图
 
