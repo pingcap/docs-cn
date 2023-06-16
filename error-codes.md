@@ -303,7 +303,7 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 8157
 
-    不支持的数据格式。请参考 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md) 查看支持的格式。
+    不支持的数据格式。请参考 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md#format) 查看支持的格式。
 
 * Error Number: 8158
 
