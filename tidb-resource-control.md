@@ -168,7 +168,7 @@ SELECT /*+ RESOURCE_GROUP(rg1) */ * FROM t limit 10;
 
 Runaway 查询是指那些执行时间很长或者消耗很多资源的查询。你可以自行判断 Runaway 的条件并进行相应的操作，以防止集群资源完全被 Runaway 查询占用而影响其他正常查询。
 
-通过在 `CREATE RESOURCE GROUP` 或者 `ALTER RESOURCE GROUP` 中配置 `QUERY_LIMIT` 字段，使资源组进行 Runaway 管理。
+通过在 [`CREATE RESOURCE GROUP`](/sql-statements/sql-statement-create-resource-group.md) 或者 [`ALTER RESOURCE GROUP`](/sql-statements/sql-statement-alter-resource-group.md) 中配置 `QUERY_LIMIT` 字段，可以实现管理资源组的 Runaway 查询。
 
 `QUERY_LIMIT` 具体格式如下：
 
