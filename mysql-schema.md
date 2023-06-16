@@ -56,9 +56,14 @@ aliases: ['/docs-cn/dev/system-tables/system-table-overview/','/docs-cn/dev/refe
 
 ## TTL 相关系统表
 
-* `mysql.tidb_ttl_table_status` 所有 TTL 表的上一次执行与正在执行的 TTL 任务
-* `mysql.tidb_ttl_task` 正在执行的 TTL 子任务
-* `mysql.tidb_ttl_job_history` 过去 90 天内 TTL 任务的执行历史
+* `tidb_ttl_table_status` 所有 TTL 表的上一次执行与正在执行的 TTL 任务
+* `tidb_ttl_task` 正在执行的 TTL 子任务
+* `tidb_ttl_job_history` 过去 90 天内 TTL 任务的执行历史
+
+## Runaway 相关系统表
+
+* `runaway_queries` 过去一定时间内所有识别到的 Runaway Queries 的历史记录
+* `quarantined_watch` 现在有效的 Runaway Queries 的免疫规则
 
 ## 其它系统表
 

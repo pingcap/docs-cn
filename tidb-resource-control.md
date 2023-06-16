@@ -178,12 +178,12 @@ Runaway Queries 指那些执行时间或者消耗的资源超出预期的查询�
 - `COOLDOWN`：将查询的执行优先级降到最低，查询仍旧会以低优先级继续执行，不占用其他操作的资源。 
 - `KILL`：识别到的查询将被自动终止，报错 `Query execution was interrupted, identified as runaway query`。
 
-为了避免并发的 Runaway Queries 太多，在被条件识别前就将系统资源耗尽，资源管控引入了一个快速识别的机制。借助子句 `WATCH`，当某一个查询被识别为 Runaway Quey 之后，在接下来的一段时间里 (通过 `DURATION` 定义) ，当前 TiDB 实例会将匹配到的查询直接标记为 Runaway Query，而不再等待其被条件识别，并按照当前应对操作执行。其中 `KILL` 操作报错 `Quarantined and interrupted because of being in runaway watch list`。
+为了避免并发的 Runaway Queries 太多，在被条件识别前就将系统资源耗尽，资源管控引入了一个快速识别的免疫机制。借助子句 `WATCH`，当某一个查询被识别为 Runaway Quey 之后，在接下来的一段时间里 (通过 `DURATION` 定义) ，当前 TiDB 实例会将匹配到的查询直接标记为 Runaway Query，而不再等待其被条件识别，并按照当前应对操作执行。其中 `KILL` 操作报错 `Quarantined and interrupted because of being in runaway watch list`。
 
 快速识别的匹配有两种方式：
 
 - `EXACT` 表示 SQL 文本完全相同的才会被快速识别
-- `SIMILAR` 表示会忽略字面值 (Literal)，直接匹配所有模式 (pattern) 相同的 SQL
+- `SIMILAR` 表示会忽略字面值 (Literal)，通过 Plan Digest 匹配所有模式 (Pattern) 相同的 SQL
 
 通过在 [`CREATE RESOURCE GROUP`](/sql-statements/sql-statement-create-resource-group.md) 或者 [`ALTER RESOURCE GROUP`](/sql-statements/sql-statement-alter-resource-group.md) 中配置 `QUERY_LIMIT` 字段，可以实现管理资源组的 Runaway Query。
 
@@ -214,6 +214,50 @@ Runaway Queries 指那些执行时间或者消耗的资源超出预期的查询�
     ```sql
     ALTER RESOURCE GROUP rg1 QUERY_LIMIT=NULL;
     ```
+
+#### 可观测性
+
+TiDB 会定时采集 TTL 的运行时信息，并在 Grafana 中提供了相关指标的可视化图表。你可以在 TiDB -> TTL 的面板下看到这些信息。指标详情见 [TiDB 重要监控指标详解](/grafana-tidb-dashboard.md) 中的 `TTL` 部分。
+
+可以通过以下两个系统表获得 Runaway 相关的更多信息：
+
++ `mysql.runaway_queries` 表中包含了过去一定时间内所有识别到的 Runaway Queries 的历史记录。以其中一行为例：
+
+    ```sql
+    MySQL [(none)]> SELECT * FROM mysql.runaway_queries LIMIT 1\G;
+    *************************** 1. row ***************************
+    resource_group_name: rg1
+                   time: 2023-06-16 17:40:22
+             match_type: identify
+                 action: kill
+           original_sql: select * from sbtest.sbtest1
+            plan_digest: 5b7d445c5756a16f910192ad449c02348656a5e9d2aa61615e6049afbc4a82e
+            tidb_server: 127.0.0.1:4000       
+    ```
+
+    其中列 `match_type` 为该 Runaway 的来源，`identify` 表示命中条件，`watch` 表示被免疫命中。
+
++ `mysql.quarantined_watch` 表中包含了现在有效的 Runaway Queries 的免疫规则。以其中两行为例：
+
+    ```sql
+    MySQL [(none)]> SELECT * FROM mysql.runaway_queries LIMIT 2\G;
+    *************************** 1. row ***************************
+    resource_group_name: rg1
+             start_time: 2023-06-16 17:40:22
+               end_time: 2023-06-16 18:10:22
+                  watch: similar
+             watch_text: 5b7d445c5756a16f910192ad449c02348656a5e9d2aa61615e6049afbc4a82e
+            tidb_server: 127.0.0.1:4000       
+    *************************** 2. row ***************************
+    resource_group_name: rg1
+             start_time: 2023-06-16 17:42:35
+               end_time: 2023-06-16 18:12:35
+                  watch: exact 
+             watch_text: select * from sbtest.sbtest1
+            tidb_server: 127.0.0.1:4000      
+    ``` 
+
+    其中列 `start_time` 和 `end_time` 表示该免疫有效的时间范围。列 `watch` 为 `similar` 表明按照 Plan Digest 匹配，此时列 `watch_text` 显示的是 Plan Digest；为 `exact` 表明按照 SQL 文本匹配，此时列 `watch_text` 显示的是 SQL 文本。
 
 ## 关闭资源管控特性
 
