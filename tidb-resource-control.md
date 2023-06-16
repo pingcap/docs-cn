@@ -167,7 +167,9 @@ SELECT /*+ RESOURCE_GROUP(rg1) */ * FROM t limit 10;
 > 当前该功能为实验特性，不建议在生产环境中使用。
 
 Runaway Queries 指那些执行时间或者消耗的资源超出预期的查询。自 v7.2.0 起，TiDB 资源管控引入了对 Runaway Queries 的管理。你可以设置条件对 Runaway Queries 进行识别，并自动发起操作，防止集群资源完全被 Runaway 查询占用而影响其他正常查询。
+
 支持的条件设置：
+
 - `EXEC_ELAPSED`: 当查询执行的时间超限时，识别为 Runaway Query。 
 
 支持的应对操作：
@@ -191,7 +193,7 @@ Runaway Queries 指那些执行时间或者消耗的资源超出预期的查询�
 | `ACTION`    | 当识别到 Runaway Query时进行的动作 | 可选值有 `DRYRUN`（无操作）, `COOLDOWN` （降低至最低优先级执行），`KILL`（终止查询）。 |
 | `WATCH`   | 快速匹配已经识别到的 Runaway Queries，即在一定时间内再碰到相同或相似查询直接进行相应动作 | 可选项，配置例如 `SIMILAR DURATION 60s`、`EXACT DURATION 60s`, `SIMILAR` 表示使用 Plan Digest 匹配，`EXACT` 表示使用 SQL 匹配。  |
 
-下面为一些使用举例：
+示例如下：
 
 1. 创建 `rg1` 资源组，限额是每秒 500 RU，并且定义超过 60s 为 Runaway Query，并对 Runaway Query 降低优先级执行。
 
