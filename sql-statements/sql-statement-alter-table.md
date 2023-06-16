@@ -186,11 +186,11 @@ The following major restrictions apply to `ALTER TABLE` in TiDB:
 
 - `ALTER TABLE t CACHE | NOCACHE` is a TiDB extension to MySQL syntax. For details, see [Cached Tables](/cached-tables.md).
 
-For further restrictions, see [MySQL Compatibility](/mysql-compatibility.md#ddl).
+For further restrictions, see [MySQL Compatibility](/mysql-compatibility.md#ddl-operations).
 
 ## See also
 
-- [MySQL Compatibility](/mysql-compatibility.md#ddl)
+- [MySQL Compatibility](/mysql-compatibility.md#ddl-operations)
 - [ADD COLUMN](/sql-statements/sql-statement-add-column.md)
 - [DROP COLUMN](/sql-statements/sql-statement-drop-column.md)
 - [ADD INDEX](/sql-statements/sql-statement-add-index.md)

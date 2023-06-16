@@ -33,7 +33,7 @@ When you encounter a DDL statement unsupported by TiDB, you need to manually han
 
 > **Note:**
 >
-> Currently, TiDB is not compatible with all the DDL statements that MySQL supports. See [MySQL Compatibility](/mysql-compatibility.md#ddl).
+> Currently, TiDB is not compatible with all the DDL statements that MySQL supports. See [MySQL Compatibility](/mysql-compatibility.md#ddl-operations).
 
 ## Does DM replicate view-related DDL statements and DML statements to TiDB?
 

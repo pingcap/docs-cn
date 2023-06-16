@@ -8,7 +8,7 @@ aliases: ['/docs/tidb-data-migration/dev/skip-or-replace-abnormal-sql-statements
 
 This document introduces how to handle failed DDL statements when you're using the TiDB Data Migration (DM) tool to migrate data.
 
-Currently, TiDB is not completely compatible with all MySQL syntax (see [the DDL statements supported by TiDB](/mysql-compatibility.md#ddl)). Therefore, when DM is migrating data from MySQL to TiDB and TiDB does not support the corresponding DDL statement, an error might occur and break the migration process. In this case, you can use the `binlog` command of DM to resume the migration.
+Currently, TiDB is not completely compatible with all MySQL syntax (see [the DDL statements supported by TiDB](/mysql-compatibility.md#ddl-operations)). Therefore, when DM is migrating data from MySQL to TiDB and TiDB does not support the corresponding DDL statement, an error might occur and break the migration process. In this case, you can use the `binlog` command of DM to resume the migration.
 
 ## Restrictions
 
