@@ -34,11 +34,11 @@ TiDB 版本：7.2.0
 
     当表的 schema 变动时，TiFlash 需要及时和 TiKV 同步表的 schema 信息。在 v7.2.0 版本之前，TiFlash 访问表数据时，如果检测到某张表的 schema 变动时，会同步所有表的 schema 信息。即使一张表没有 TiFlash 副本，TiFlash 也会同步该表的 schema 信息。当数据库中有大量表时，读取一张表的数据需要同步所有表的 schema 信息，schema 同步的时延非常高。在 v7.2.0 版本中，TiFlash 优化 schema 同步机制，只同步包含 TiFlash 副本的表的 schema 信息，并且当检测到某张表的 schema 变动时，只同步该表的 schema 信息，降低 TiFlash 同步 schema 的时延。该优化自动生效，不需要任何设定调整。
 
-* 提升统计信息收集的性能 [#issue号](链接) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes) **tw@hfxsd** <!--1352-->
+* 提升统计信息收集的性能 [#44725](https://github.com/pingcap/tidb/issues/44725) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes) **tw@hfxsd** <!--1352-->
 
     v7.2.0 优化了统计信息的收集策略，会选择跳过一部分重复的信息，以及对优化器价值不高的信息，提升统计信息收集的整体速度达 30% 。 这个提升有利于 TiDB 对数据库对象的统计信息进行更及时的更新，使得生成的执行计划更准确， 从而达到提升数据库整体性能的目的。
 
-* 提升表和索引一致性检查的性能 [#issue号](链接) @[wjhuang2016](https://github.com/wjhuang2016) **tw@qiancai** <!--1436-->
+* 提升表和索引一致性检查的性能 [#43693](https://github.com/pingcap/tidb/issues/43693) @[wjhuang2016](https://github.com/wjhuang2016) **tw@qiancai** <!--1436-->
 
     TiDB 在新版本中优化了数据一致性校验的方式，大幅提升了 [`ADMIN CHECK [TABLE|INDEX]`](/sql-statements/sql-statement-admin-check-table-index.md) 的执行效率， 性能提升接近 200 倍。 这个能力可以大幅减少大型表数据一致性检查的时间， 提升运维体验。 设置 [`tidb_enable_fast_table_check`](链接) 为 `TRUE` 启用这个新机制。
 
