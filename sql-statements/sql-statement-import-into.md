@@ -120,7 +120,7 @@ SET 表达式左侧只能引用 `ColumnNameOrUserVarList` 没有的列名，如�
 | DISABLE_TIKV_IMPORT_MODE | 所有格式 | 该参数指定是否禁止导入期间将 TiKV 切换到 Import Mode。默认不禁止。如果当前集群存在正在运行的读写业务，为避免导入过程对这部分业务造成影响，可开启该参数 |
 | THREAD=<number> | 所有格式 | 指定导入的并发度，当数据文件格式为 CSV 或 SQL 时，默认值为 CPU 核数的 50%，最小为 1。可以显示指定该参数来控制对资源的占用，但该值最大为 CPU 核数 |
 | MAX_WRITE_SPEED='<string>' | 所有格式 | 该参数用于控制写入到单个 TiKV 的速度，默认无速度限制 |
-| CHECKSUM_TABLE='<string>' | 所有格式 | 配置是否在导入完成后对目标表指定 checksum 对比操作来验证导入的完整性。可选的配置项： "required"（默认）：在导入完成后执行 CHECKSUM 检查，如果 CHECKSUM 检查失败，则会报错退出。"optional"：在导入完成后执行 CHECKSUM 检查，如果报错，会输出一条 WARN 日志并忽略错误。"off"：导入结束后不执行 CHECKSUM 检查。 |
+| CHECKSUM_TABLE='<string>' | 所有格式 | 配置是否在导入完成后对目标表是否执行 CHECKSUM 检查来验证导入的完整性。可选的配置项为 "required"（默认）、"optional"、"off"。"required" 表示在导入完成后执行 CHECKSUM 检查，如果 CHECKSUM 检查失败，则会报错退出。"optional" 表示在导入完成后执行 CHECKSUM 检查，如果报错，会输出一条警告日志并忽略报错。"off" 代表导入结束后不执行 CHECKSUM 检查。 |
 | DETACHED | 所有格式 | 该参数用于控制 `IMPORT INTO` 是否异步执行。开启该参数后，执行 `IMPORT INTO` 会立即返回该导入任务的 `Job_ID`，且该任务会在后台异步执行。 |
 
 ## 输出内容
