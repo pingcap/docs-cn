@@ -5,7 +5,7 @@ summary: TiDB 数据库中 CANCEL IMPORT 的使用概况。
 
 # CANCEL IMPORT
 
-`CANCEL IMPORT` 语句用于取消系统中创建的 IMPORT 任务。
+`CANCEL IMPORT` 语句用于取消 TiDB 中创建的数据导入任务。
 
 ## 所需权限
 
