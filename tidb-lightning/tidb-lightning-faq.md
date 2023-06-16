@@ -176,7 +176,7 @@ upload-speed-limit = "100MB"
 3. 如果需要的话，删除 TiDB 集群上创建的所有表和库。
 
 4. 清理残留的元信息。如果存在以下任意一种情况，需要手动清理元信息库：
-    
+
     - 对于 v5.1.x 和 v5.2.x 版本的 TiDB Lightning, tidb-lightning-ctl 命令没有同时清理存储在目标集群的 metadata 库，需要手动清理。
     - 如果手动删除过断点文件，则需要手动清理下游的元信息库，否则可能影响后续导入的正确性。
 
@@ -329,7 +329,7 @@ tidb-lightning-ctl --config conf/tidb-lightning.toml --checkpoint-error-destroy=
 
 **解决办法**:
 
-目前无法绕过 TiDB 的限制，只能忽略这张表，确保其它表顺利导入。
+同时修改 TiDB 配置项 [`txn-entry-size-limit`](/tidb-configuration-file.md#txn-entry-size-limit-从-v50-版本开始引入) 和 TiKV 配置项 [`raft-entry-max-size`](/tikv-configuration-file.md#raft-entry-max-size)，将取值设置为大于需要导入的数据大小并重试后即可绕过该限制。
 
 ## switch-mode 时遇到 `rpc error: code = Unimplemented ...`
 
