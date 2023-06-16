@@ -46,7 +46,7 @@ TiDB 版本：7.2.0
 
 ### 稳定性
 
-* 自动管理资源超出预期的查询 (实验特性) [#issue号](链接) @[nolouch](https://github.com/nolouch) @[glorv](https://github.com/glorv)  @[Connor1996](https://github.com/Connor1996) @[JmPotato](https://github.com/JmPotato) @[CabinfeverB](https://github.com/CabinfeverB) @[HuSharp](https://github.com/HuSharp) **tw@hfxsd** <!--1411-->
+* 自动管理资源超出预期的查询 (实验特性) [#43691](https://github.com/pingcap/tidb/issues/43691) @[Connor1996](https://github.com/Connor1996) @[CabinfeverB](https://github.com/CabinfeverB) @[glorv](https://github.com/glorv) @[HuSharp](https://github.com/HuSharp) @[nolouch](https://github.com/nolouch) **tw@hfxsd** <!--1411-->
 
     突发的 SQL 性能问题引发数据库整体性能下降，是数据库稳定性最常见的挑战。 造成 SQL 性能问题的原因有很多， 有可能是未经充分测试的新 SQL，数据量剧烈变化，执行计划突变等等，这些问题很难从源头上完全规避。 TiDB 在 v7.2.0 加入了对资源超出预期的查询的管理能力，在上述问题发生时，能够快速降低影响范围。
 
@@ -54,7 +54,7 @@ TiDB 版本：7.2.0
 
     对资源超出预期查询的自动管理， 为用户提供了有效的手段，快速应对突发的查询性能问题，降低问题对数据库整体性能的影响，从而提升数据库的稳定性。
 
-    更多信息，请参考[用户文档](链接)。
+    更多信息，请参考[用户文档](/tidb-resource-control.md###管理Runaway查询)。
 
 * 增强对历史执行计划的绑定能力 [#issue号](链接) @[qw4990](https://github.com/qw4990) **tw@Oreoxmt** <!--1349-->
 
