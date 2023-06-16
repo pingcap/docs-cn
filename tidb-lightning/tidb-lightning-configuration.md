@@ -133,7 +133,7 @@ addr = "172.16.31.10:8287"
 #            则会将 A 和 B 这两条冲突数据从目标表移除，同时记录到目标 TiDB 中的 `lightning_task_info.conflict_error_v1` 表中。
 #            你可以根据业务需求选择正确的记录重新手动写入到目标表中。注意，该方法要求目标 TiKV 的版本为 v5.2.0 或更新版本。
 #            如果版本过低，则会启用 'none' 模式。
-# 默认值为 'none'。
+# 默认值为 'none'。 
 # duplicate-resolution = 'none'
 # 物理导入模式一次请求中发送的 KV 数量。
 # send-kv-pairs = 32768
