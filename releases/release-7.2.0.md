@@ -95,9 +95,9 @@ TiDB 版本：7.2.0
 
     更多信息，请参考[用户文档](链接)。
 
-* Lightning 支持将字符集为 latin1 和 utf8 的源文件导入到 TiDB。[#44434](https://github.com/pingcap/tidb/issues/44434) @[lance6716](https://github.com/lance6716) **tw@qiancai** <!--1432-->
+* Lightning 支持将字符集为 latin1 的源文件导入到 TiDB。[#44434](https://github.com/pingcap/tidb/issues/44434) @[lance6716](https://github.com/lance6716) **tw@qiancai** <!--1432-->
 
-    通过此功能，用户现在可以使用 Lightning 数据导入工具直接将字符集为 latin1 和 utf8 的源文件导入到 TiDB 中。这扩展了用户在处理各种字符集时的数据导入选项的兼容性和灵活性。以前，导入这样的文件需要额外的预处理或转换。现在用户只需在运行 Lightning 导入过程时指定源文件的字符集（latin1 或 utf8）。Lightning 工具会在导入过程中自动处理字符集转换，确保数据的完整性和准确性。
+    通过此功能，用户现在可以使用 Lightning 数据导入工具直接将字符集为 latin1 的源文件导入到 TiDB 中。这扩展了用户在处理各种字符集时的数据导入选项的兼容性和灵活性。以前，导入这样的文件需要额外的预处理或转换。现在用户只需在运行 Lightning 导入过程时指定源文件的字符集。Lightning 工具会在导入过程中自动处理字符集转换，确保数据的完整性和准确性。
 
     更多信息，请参考[用户文档](https://github.com/pingcap/docs-cn/pull/14172/files)
 
