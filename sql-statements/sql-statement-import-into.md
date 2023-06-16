@@ -105,7 +105,9 @@ SET 表达式左侧只能引用 `ColumnNameOrUserVarList` 没有的列名，如�
 
 ### WithOptions
 
-可通过 WithOptions 来指定选项值，来控制导入过程。目前支持的选项包括：
+你可以通过 WithOptions 来指定导入选项，控制数据导入过程。例如，如需使导入任务在后台异步执行，你可以通过在 `IMPORT INTO` 语句中添加 `WITH DETACHED` 选项来开启导入任务的 `DETACHED` 模式。
+
+目前支持的选项包括：
 
 | 参数名 | 支持的数据格式 | 描述 |
 |:---|:---|:---|
