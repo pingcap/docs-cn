@@ -178,7 +178,7 @@ id,name,age
 2,Jack,44
 ```
 
-要导入的目标表结构为 `CREATE TABLE t(id int primary key, name varchar(100))`，则可通过以下方式来导入：
+要导入的目标表结构为 `CREATE TABLE t(id int primary key, name varchar(100))`，则可通过以下方式来忽略导入文件中的 `age` 字段：
 
 ```sql
 IMPORT INTO t(id, name, @1) FROM '/path/to/file.csv' WITH skip_rows=1;
