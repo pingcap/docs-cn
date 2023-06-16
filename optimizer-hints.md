@@ -793,7 +793,7 @@ SELECT /*+ RESOURCE_GROUP(rg1) */ * FROM t limit 10;
 
 MySQL 命令行客户端在 5.7.7 版本之前默认清除了 Optimizer Hints。如果需要在这些早期版本的客户端中使用 Hint 语法，需要在启动客户端时加上 `--comments` 选项。例如 `mysql -h 127.0.0.1 -P 4000 -uroot --comments`。
 
-### 不指定库名导致 Hint 不生效
+### 创建连接时不指定库名导致 Hint 不生效
 
 如果创建连接时未指定数据库名，则可能出现 Hint 失效的情况。例如：
 
