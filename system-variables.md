@@ -2112,7 +2112,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 默认值：`600`
 - 范围：`[60, 2147483647]`
 - 单位：秒
-- 这个变量用来控制打印 expensive transaction 日志的阈值时间，默认值是 600 秒。expensive transaction 日志会把未 COMMIT/ROLLBACK 的事务且持续时间超过该阈值的事务相关信息打印出来。
+- 这个变量用来控制打印 expensive transaction 日志的阈值时间，默认值是 600 秒。expensive transaction 日志会将尚未 COMMIT 或 ROLLBACK 且持续时间超过该阈值的事务的相关信息打印出来。
 
 ### `tidb_force_priority`
 
