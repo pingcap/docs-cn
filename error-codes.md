@@ -335,7 +335,7 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 8166
 
-    某些选项只能在特定的条件下才可以使用。请根据具体的错误提示进行处理。请参考 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md) 查看支持的选项。
+    某些选项只能在特定的条件下才可以使用。请根据具体的错误提示进行处理。请参考 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md#参数说明) 查看支持的选项。
 
 * Error Number: 8170
 
