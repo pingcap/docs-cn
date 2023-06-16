@@ -56,7 +56,7 @@ TiDB 版本：7.2.0
 
     更多信息，请参考[用户文档](/tidb-resource-control.md###管理Runaway查询)。
 
-* 增强对历史执行计划的绑定能力 [#issue号](链接) @[qw4990](https://github.com/qw4990) **tw@Oreoxmt** <!--1349-->
+* 增强对历史执行计划的绑定能力 [#39199](https://github.com/pingcap/tidb/issues/39199) @[qw4990](https://github.com/qw4990) **tw@Oreoxmt** <!--1349-->
 
     新版本的 TiDB 对历史执行计划绑定的能力做了进一步增强。 一方面加强了对复杂语句的解析和绑定， 另一方面， 也加入了对新 Hint 的支持，包括 [`AGG_TO_COP()`](/optimizer-hints.md#agg_to_cop)、[`LIMIT_TO_COP()`](/optimizer-hints.md#limit_to_cop)、[`ORDERED_INDEX`](/optimizer-hints.md#order_indext1_name-idx1_name--idx2_name)、[`NO_ORDERED_INDEX()`](/optimizer-hints.md#no_order_indext1_name-idx1_name--idx2_name)。 借助这个能力， 从历史执行计划中创建的 [SQL Binding](/sql-plan-management.md#执行计划绑定-sql-binding) 能够更加稳定的固定住执行计划。
 
