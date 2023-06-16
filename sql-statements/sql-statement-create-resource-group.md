@@ -27,6 +27,7 @@ ResourceGroupOptionList ::=
 DirectResourceGroupOption ::=
     "RU_PER_SEC" EqOpt stringLit
 |   "PRIORITY" EqOpt ResourceGroupPriorityOption
+|   "BURSTABLE"
 |   "BURSTABLE" EqOpt Boolean
 |   "QUERY_LIMIT" EqOpt '(' ResourceGroupRunawayOptionList ')'
 |   "QUERY_LIMIT" EqOpt '(' ')'

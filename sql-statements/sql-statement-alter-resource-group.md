@@ -27,13 +27,13 @@ ResourceGroupOptionList ::=
 DirectResourceGroupOption ::=
     "RU_PER_SEC" EqOpt stringLit
 |   "PRIORITY" EqOpt ResourceGroupPriorityOption
+|   "BURSTABLE"
 |   "BURSTABLE" EqOpt Boolean
 |   "QUERY_LIMIT" EqOpt '(' ResourceGroupRunawayOptionList ')'
 |   "QUERY_LIMIT" EqOpt '(' ')'
 |   "QUERY_LIMIT" EqOpt "NULL"
 
-ResourceGroupPriorityOption ::=![image](https://github.com/Connor1996/docs-cn/assets/35301108/b5cf0fc8-f26c-448b-aa3e-e948a67f5ecf)
-
+ResourceGroupPriorityOption ::=
     LOW
 |   MEDIUM
 |   HIGH
