@@ -179,6 +179,7 @@ Runaway Queries 指那些执行时间或者消耗的资源超出预期的查询�
 
 - `EXACT` 表示 SQL 文本完全相同的才会被快速识别
 - `SIMILAR` 表示会忽略字面值 (Literal)，直接匹配所有模式 (pattern) 相同的 SQL
+
 通过在 [`CREATE RESOURCE GROUP`](/sql-statements/sql-statement-create-resource-group.md) 或者 [`ALTER RESOURCE GROUP`](/sql-statements/sql-statement-alter-resource-group.md) 中配置 `QUERY_LIMIT` 字段，可以实现管理资源组的 Runaway Query。
 
 `QUERY_LIMIT` 具体格式如下：
