@@ -5,7 +5,7 @@ summary: TiDB 数据库中 SHOW IMPORT 的使用概况。
 
 # SHOW IMPORT
 
-`SHOW IMPORT` 语句用于显示系统中创建的 IMPORT 任务。该语句只能显示由当前用户创建的任务。
+`SHOW IMPORT` 语句用于显示 TiDB 中已经创建的 IMPORT 任务。该语句只能显示由当前用户创建的任务。
 
 ## 所需权限
 
