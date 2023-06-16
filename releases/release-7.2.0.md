@@ -30,9 +30,9 @@ TiDB 版本：7.2.0
 
     更多信息，请参考[用户文档](/tiflash/tiflash-pipeline-model.md)。
 
-* 提升 TiFlash 处理超大量表的性能 [#7630](https://github.com/pingcap/tiflash/issues/7630) @[hongyunyan](https://github.com/hongyunyan) **tw@qiancai** <!--1361-->
+* 降低 TiFlash 等待 schema 同步的时延 [#7630](https://github.com/pingcap/tiflash/issues/7630) @[hongyunyan](https://github.com/hongyunyan) **tw@qiancai** <!--1361-->
 
-    在 v7.2.0 版本之前，TiFlash 会同步所有表的 schema 信息，即使该表没有 TiFlash 副本。此外，TiFlash 进行读写时，如果检测到某张表的 schema 变动，需要同步所有表的 schema 信息。当数据库中有大量表时，同步所有表的 schema 信息严重影响 TiFlash 的处理性能。在 v7.2.0 版本中，TiFlash 优化机制，只会同步包含 TiFlash 副本的表的 schema 信息。在检测到某张表的 schema 变动时，只会同步该表的 schema 信息，大大提升 TiFlash 处理性能，从而支持对超大量表的处理。该优化自动生效，不需要任何设定调整。
+    当表的 schema 变动时，TiFlash 需要及时和 TiKV 同步表的 schema 信息。在 v7.2.0 版本之前，TiFlash 访问表数据时，如果检测到某张表的 schema 变动时，会同步所有表的 schema 信息。即使一张表没有 TiFlash 副本，TiFlash 也会同步该表的 schema 信息。当数据库中有大量表时，读取一张表的数据需要同步所有表的 schema 信息，schema 同步的时延非常高。在 v7.2.0 版本中，TiFlash 优化 schema 同步机制，只同步包含 TiFlash 副本的表的 schema 信息，并且当检测到某张表的 schema 变动时，只同步该表的 schema 信息，降低 TiFlash 同步 schema 的时延。该优化自动生效，不需要任何设定调整。
     
 * 提升统计信息收集的性能 [#issue号](链接) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes) **tw@hfxsd** <!--1352-->
 
