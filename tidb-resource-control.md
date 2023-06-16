@@ -160,7 +160,7 @@ SET RESOURCE GROUP rg1;
 SELECT /*+ RESOURCE_GROUP(rg1) */ * FROM t limit 10;
 ```
 
-### 管理 Runaway 查询
+### 管理资源消耗超出预期的查询 (Runaway Quries)
 
 > **警告：**
 >
