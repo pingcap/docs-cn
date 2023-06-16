@@ -186,7 +186,7 @@ IMPORT INTO t(id, name, @1) FROM '/path/to/file.csv' WITH skip_rows=1;
 
 ### 使用通配符 `*` 导入多个数据文件
 
-假设在 `/path/to/` 目录下有 `file-01.csv`, `file-02.csv`, `file-03.csv` 三个文件，想通过 `IMPORT INTO` 将这三个文件导入到目标表 `t` 中，可使用如下 SQL：
+假设在 `/path/to/` 目录下有 `file-01.csv`, `file-02.csv`, `file-03.csv` 三个文件，如需通过 `IMPORT INTO` 将这三个文件导入到目标表 `t` 中，可使用如下 SQL 语句：
 
 ```sql
 IMPORT INTO t FROM '/path/to/file-*.csv'
