@@ -923,7 +923,7 @@ mysql> explain select /*+ tidb_inlj(t1, t3) */ * from t1, t2, t3 where t1.id=t2.
 如果想要直接使用 `IndexJoin` 来连接 `t1` 和 `t3`，需要先使用 [`LEADING` Hint](#leadingt1_name--tl_name-) 指定 `t1` 和 `t3` 的连接顺序，然后再配合使用 `INL_JION`。例如：
 
 ```sql
-mysql> explain select /*+ leading(t1, t3), tidb_inlj(t3) */ * from t1, t2, t3 where t1.id=t2.id and t2.id=t3.id and t1.id=t3.id;
+EXPLAIN SELECT /*+ leading(t1, t3), inl_join(t3) */ * FROM t1, t2, t3 WHERE t1.id = t2.id AND t2.id = t3.id AND t1.id = t3.id;
 +---------------------------------+----------+-----------+---------------+---------------------------------------------------------------------------------------------------------------------+
 | id                              | estRows  | task      | access object | operator info                                                                                                       |
 +---------------------------------+----------+-----------+---------------+---------------------------------------------------------------------------------------------------------------------+
