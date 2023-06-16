@@ -191,7 +191,7 @@ Runaway Queries 指那些执行时间或者消耗的资源超出预期的查询�
 |---------------|--------------|--------------------------------------|
 | `EXEC_ELAPSED`  | 当查询执行时间超过该值后被识别为 Runaway Query | EXEC_ELAPSED =`60s` 表示查询的执行时间超过 60 秒则被认为是 Runaway Query。 |
 | `ACTION`    | 当识别到 Runaway Query 时进行的动作 | 可选值有 `DRYRUN`（无操作）, `COOLDOWN`（降低至最低优先级执行），`KILL`（终止查询）。 |
-| `WATCH`   | 快速匹配已经识别到的 Runaway Queries，即在一定时间内再碰到相同或相似查询直接进行相应动作 | 可选项，配置例如 `SIMILAR DURATION 60s`、`EXACT DURATION 60s`, `SIMILAR` 表示使用 Plan Digest 匹配，`EXACT` 表示使用 SQL 匹配。  |
+| `WATCH`   | 快速匹配已经识别到的 Runaway Query，即在一定时间内再碰到相同或相似查询直接进行相应动作 | 可选项，配置例如 `SIMILAR DURATION 60s`、`EXACT DURATION 60s`，`SIMILAR` 表示使用 Plan Digest 匹配，`EXACT` 表示使用 SQL 匹配。  |
 
 示例如下：
 
