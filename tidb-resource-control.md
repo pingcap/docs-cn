@@ -221,10 +221,10 @@ TiDB 会定时采集 TTL 的运行时信息，并在 Grafana 中提供了相关�
 
 可以通过以下两个系统表获得 Runaway 相关的更多信息：
 
-+ `mysql.runaway_queries` 表中包含了过去一定时间内所有识别到的 Runaway Queries 的历史记录。以其中一行为例：
++ `mysql.tidb_runaway_queries` 表中包含了过去一定时间内所有识别到的 Runaway Queries 的历史记录。以其中一行为例：
 
     ```sql
-    MySQL [(none)]> SELECT * FROM mysql.runaway_queries LIMIT 1\G;
+    MySQL [(none)]> SELECT * FROM mysql.tidb_runaway_queries LIMIT 1\G;
     *************************** 1. row ***************************
     resource_group_name: rg1
                    time: 2023-06-16 17:40:22
@@ -237,10 +237,10 @@ TiDB 会定时采集 TTL 的运行时信息，并在 Grafana 中提供了相关�
 
     其中列 `match_type` 为该 Runaway 的来源，`identify` 表示命中条件，`watch` 表示被免疫命中。
 
-+ `mysql.quarantined_watch` 表中包含了现在有效的 Runaway Queries 的免疫规则。以其中两行为例：
++ `mysql.tidb_quarantined_watch` 表中包含了现在有效的 Runaway Queries 的免疫规则。以其中两行为例：
 
     ```sql
-    MySQL [(none)]> SELECT * FROM mysql.runaway_queries LIMIT 2\G;
+    MySQL [(none)]> SELECT * FROM mysql.tidb_runaway_queries LIMIT 2\G;
     *************************** 1. row ***************************
     resource_group_name: rg1
              start_time: 2023-06-16 17:40:22
