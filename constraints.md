@@ -68,7 +68,7 @@ TiDB 中 `CHECK` 约束的语法如下，与 MySQL 中一致：
 
 ### 添加 `CHECK` 约束
 
-在 TiDB 中，你可以在 `CREATE TABLE` 或者 `ALTER TABLE` 语句中为表添加 `CHECK` 约束。
+在 TiDB 中，你可以在 [`CREATE TABLE`](/sql-statements/sql-statement-create-table.md) 或者 [`ALTER TABLE`](/sql-statements/sql-statement-modify-column.md) 语句中为表添加 `CHECK` 约束。
 
 - 在 `CREATE TABLE` 语句中添加 `CHECK` 约束的示例：
 
@@ -82,13 +82,13 @@ TiDB 中 `CHECK` 约束的语法如下，与 MySQL 中一致：
     ALTER TABLE t ADD CONSTRAINT CHECK (1 < c);
     ```
 
-在添加或者启用 `CHECK` 约束时候，TiDB 会对表中的存量数据进行校验，如果有违反约束的数据存在，那么添加 `CHECK` 约束将会失败并且报错。
+在添加或者启用 `CHECK` 约束时，TiDB 会对表中的存量数据进行校验。如果存在违反约束的数据，添加 `CHECK` 约束操作将失败并且报错。
 
-在添加 `CHECK` 约束的时，可以指定约束名，也可以不指定约束名，如果不指定约束名，那么 TiDB 会自动生成一个约束名，生成的约束名格式为 `<tableName>_chk_<1, 2, 3...>`。
+在添加 `CHECK` 约束时，可以指定约束名，也可以不指定约束名。如果不指定约束名，那么 TiDB 会自动生成一个格式为 `<tableName>_chk_<1, 2, 3...>` 的约束名。
 
 ### 查看 `CHECK` 约束
 
-你可以通过 `SHOW CREATE TABLE` 查看表中的约束信息。例如：
+你可以通过 [`SHOW CREATE TABLE`](/sql-statements/sql-statement-show-create-table.md) 查看表中的约束信息。例如：
 
 ```sql
 SHOW CREATE TABLE t;
@@ -109,9 +109,7 @@ CONSTRAINT `t_chk_2` CHECK ((1 < `c`))
 
 ### 删除 `CHECK` 约束
 
-删除 `CHECK` 约束时，你需要指定需要删除的约束名。
-
-例如：
+删除 `CHECK` 约束时，你需要指定需要删除的约束名。例如：
 
 ```sql
 ALTER TABLE t DROP CONSTRAINT t_chk_1;
@@ -119,7 +117,7 @@ ALTER TABLE t DROP CONSTRAINT t_chk_1;
 
 ### 启用或禁用 `CHECK` 约束
 
-在为表[添加 `CHECK` 约束](#添加-check-约束)的时候，可以指定当插入或者更新数据时 TiDB 是否执行约束。
+在为表[添加 `CHECK` 约束](#添加-check-约束)的时候，可以指定当插入或者更新数据时 TiDB 是否执行约束检查。
 
 - 如果指定了 `NOT ENFORCED`，当插入或者更新数据时，TiDB 不会检查约束条件。
 - 如果未指定 `NOT ENFORCED` 或者指定了 `ENFORCED`，当插入或者更新数据的时候，TiDB 会检查约束条件。
