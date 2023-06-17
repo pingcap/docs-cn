@@ -56,6 +56,7 @@ By using a dedicated 20 GB [gp3](https://aws.amazon.com/ebs/general-purpose/) Ra
 - a 17.5% increase in QPS (queries per second)
 - an 18.7% decrease in average latency for insert statements
 - a 45.6% decrease in p99 latency for insert statements.
+
 | Metric | Shared Raft Engine disk | Dedicated Raft Engine disk | Difference (%) |
 | ------------- | ------------- |------------- |------------- |
 | QPS (K/s)| 8.0 | 9.4 | 17.5|
