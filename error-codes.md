@@ -399,7 +399,7 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 8254
 
-    查询终止，因为被 Runaway Queries 免疫命中。请参考 [Runaway Queries](/tidb-resource-control.md#管理资源消耗超出预期的查询-runaway-queries)
+    查询终止，因为被 Runaway Queries 免疫命中。请参考 [Runaway Queries](/tidb-resource-control.md#管理资源消耗超出预期的查询-runaway-queries)。
 
 * Error Number: 9001
 
