@@ -52,6 +52,7 @@ TiDB Lightning（[物理导入模式](/tidb-lightning/tidb-lightning-physical-im
     - send-kv-pairs： TiDB Lightning 发送给 TiKV 单次请求的 Key、Value 数量。
     - `disk-quota`： 使用物理导入模式时，配置 TiDB Lightning 本地临时文件使用的磁盘配额 (disk quota)。
     - `GOMEMLIMIT`：TiDB Lightning 采用 Go 语言实现，需要合理配置GOMEMLIMIT。
+
     关于 TiDB Lightning 参数信息，请参考 [TiDB Lightning 配置参数](/tidb-lightning/tidb-lightning-configuration.md)。
 
 - 数据校验
@@ -84,6 +85,7 @@ TiDB Lightning（[物理导入模式](/tidb-lightning/tidb-lightning-physical-im
 
 - 假设数据总大小为 A，索引总大小为 B，副本数为 3，压缩率为 α（一般在在 2.5 左右），则总的占用空间为：(A+B)*3/α。该方法主要用于不进行任何数据导入时的估算，以此规划集群拓扑。
 - 预先导入 10% 的数据，实际占用空间再乘以 10，即可认为是该批数据最终的空间占用。该方法更加准确，尤其是对于导入大量数据时比较有效。
+
 注意要预留 20% 的存储空间，后台任务如压缩、复制快照等会使用部分存储空间。
 
 ## 配置参数
