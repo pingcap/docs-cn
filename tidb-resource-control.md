@@ -235,7 +235,7 @@ TiDB 会定时采集 TTL 的运行时信息，并在 Grafana 中提供了相关�
             tidb_server: 127.0.0.1:4000       
     ```
 
-    其中列 `match_type` 为该 Runaway 的来源，`identify` 表示命中条件，`watch` 表示被免疫命中。
+    其中列 `match_type` 为该 Runaway Query 的来源，`identify` 表示命中条件，`watch` 表示被免疫命中。
 
 + `mysql.tidb_quarantined_watch` 表中包含了现在有效的 Runaway Queries 的免疫规则。以其中两行为例：
 
@@ -257,7 +257,11 @@ TiDB 会定时采集 TTL 的运行时信息，并在 Grafana 中提供了相关�
             tidb_server: 127.0.0.1:4000      
     ``` 
 
-    其中列 `start_time` 和 `end_time` 表示该免疫有效的时间范围。列 `watch` 为 `similar` 表明按照 Plan Digest 匹配，此时列 `watch_text` 显示的是 Plan Digest；为 `exact` 表明按照 SQL 文本匹配，此时列 `watch_text` 显示的是 SQL 文本。
+    其中：
+    
+    -  `start_time` 和 `end_time` 表示该免疫有效的时间范围。
+    - `watch` 列的值为 `similar`，表明按照 Plan Digest 匹配，此时列 `watch_text` 显示的是 Plan Digest。
+    - `watch` 列的值为 `exact`，表明按照 SQL 文本匹配，此时列 `watch_text` 显示的是 SQL 文本。
 
 ## 关闭资源管控特性
 

@@ -60,7 +60,7 @@ aliases: ['/docs-cn/dev/system-tables/system-table-overview/','/docs-cn/dev/refe
 * `tidb_ttl_task` 正在执行的 TTL 子任务
 * `tidb_ttl_job_history` 过去 90 天内 TTL 任务的执行历史
 
-## Runaway 相关系统表
+## Runaway Queries 相关系统表
 
 * `tidb_runaway_queries` 过去一定时间内所有识别到的 Runaway Queries 的历史记录
 * `tidb_quarantined_watch` 现在有效的 Runaway Queries 的免疫规则
