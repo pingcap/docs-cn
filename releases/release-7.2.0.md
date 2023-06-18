@@ -62,6 +62,16 @@ TiDB 版本：7.2.0
 
     更多信息，请参考[用户文档](/sql-plan-management.md#执行计划绑定-sql-binding)。
 
+* Fix Controls 机制对优化器行为做细粒度控制 [#43169](https://github.com/pingcap/tidb/issues/43169) @[time-and-fate](https://github.com/time-and-fate)
+
+    为了生成更合理的执行计划，TiDB 优化器的行为会随产品迭代而不断演进。但在某些特定和极端场景下，这些变化可能引发性能的回退。因此 TiDB 引入了 Fix Controls 来控制优化器的一部分细粒度行为，允许客户对一些新的变化进行回滚或控制。
+
+    每一个可控的行为，都有一个与 Fix 号码对应的 Github Issue 进行说明。所有可控的行为列举在文档 [Optimizer Fix Controls](/optimizer-fix-controls.md) 中。通过设置系统变量 [`tidb_opt_fix_control`](/system-variables.md#tidb_opt_fix_control-从-v710-版本开始引入) 可以为一个或多个行为设置目标值，进而达到行为控制的目的。 
+
+    Fix Controls 机制加强了用户对 TiDB 优化器的细粒度管控能力，为升级过程引发的性能问题提供了新的修复手段，提升 TiDB 的稳定性。 
+
+    更多信息，请参考 [Optimizer Fix Controls](/optimizer-fix-controls.md)。
+
 ### SQL 功能
 
 * 支持 `CHECK` 约束 [#41711](https://github.com/pingcap/tidb/issues/41711) @[fzzf678] (https://github.com/fzzf678) **tw@qiancai** <!--1404-->
