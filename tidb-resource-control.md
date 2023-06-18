@@ -164,18 +164,22 @@ SELECT /*+ RESOURCE_GROUP(rg1) */ * FROM t limit 10;
 
 > **警告：**
 >
-> 当前该功能为实验特性，不建议在生产环境中使用。
+> 该功能目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
 
-Runaway Queries 指那些执行时间或者消耗的资源超出预期的查询。自 v7.2.0 起，TiDB 资源管控引入了对 Runaway Queries 的管理。你可以针对某个资源组设置条件来识别 Runaway Queries ，并自动发起应对操作，防止集群资源完全被 Runaway Queries 占用而影响其他正常查询。
+Runaway Queries 指那些执行时间或者消耗的资源超出预期的查询。自 v7.2.0 起，TiDB 资源管控引入了对 Runaway Queries 的管理。你可以针对某个资源组设置条件来识别 Runaway Queries，并自动发起应对操作，防止集群资源完全被 Runaway Queries 占用而影响其他正常查询。
+
+你可以通过在 [`CREATE RESOURCE GROUP`](/sql-statements/sql-statement-create-resource-group.md) 或者 [`ALTER RESOURCE GROUP`](/sql-statements/sql-statement-alter-resource-group.md) 中配置 `QUERY_LIMIT` 字段，管理资源组的 Runaway Queries。
+
+#### `QUERY_LIMIT` 参数说明
 
 支持的条件设置：
 
-- `EXEC_ELAPSED`: 当查询执行的时间超限时，识别为 Runaway Query。 
+- `EXEC_ELAPSED`: 当查询执行的时间超限时，识别为 Runaway Query。
 
 支持的应对操作：
 
-- `DRYRUN`：不做任何应对。主要用于观测设置条件是否合理。 
-- `COOLDOWN`：将查询的执行优先级降到最低，查询仍旧会以低优先级继续执行，不占用其他操作的资源。 
+- `DRYRUN`：不做任何应对。主要用于观测设置条件是否合理。
+- `COOLDOWN`：将查询的执行优先级降到最低，查询仍旧会以低优先级继续执行，不占用其他操作的资源。
 - `KILL`：识别到的查询将被自动终止，报错 `Query execution was interrupted, identified as runaway query`。
 
 为了避免并发的 Runaway Queries 太多，在被条件识别前就将系统资源耗尽，资源管控引入了一个快速识别的免疫机制。借助子句 `WATCH`，当某一个查询被识别为 Runaway Quey 之后，在接下来的一段时间里 (通过 `DURATION` 定义) ，当前 TiDB 实例会将匹配到的查询直接标记为 Runaway Query，而不再等待其被条件识别，并按照当前应对操作执行。其中 `KILL` 操作报错 `Quarantined and interrupted because of being in runaway watch list`。
@@ -185,8 +189,6 @@ Runaway Queries 指那些执行时间或者消耗的资源超出预期的查询�
 - `EXACT` 表示 SQL 文本完全相同的才会被快速识别
 - `SIMILAR` 表示会忽略字面值 (Literal)，通过 Plan Digest 匹配所有模式 (Pattern) 相同的 SQL
 
-通过在 [`CREATE RESOURCE GROUP`](/sql-statements/sql-statement-create-resource-group.md) 或者 [`ALTER RESOURCE GROUP`](/sql-statements/sql-statement-alter-resource-group.md) 中配置 `QUERY_LIMIT` 字段，可以实现管理资源组的 Runaway Query。
-
 `QUERY_LIMIT` 具体格式如下：
 
 | 参数            | 含义           | 备注                                   |
@@ -195,7 +197,7 @@ Runaway Queries 指那些执行时间或者消耗的资源超出预期的查询�
 | `ACTION`    | 当识别到 Runaway Query 时进行的动作 | 可选值有 `DRYRUN`，`COOLDOWN`，`KILL`。 |
 | `WATCH`   | 快速匹配已经识别到的 Runaway Query，即在一定时间内再碰到相同或相似查询直接进行相应动作 | 可选项，配置例如 `WATCH=SIMILAR DURATION '60s'`、`WATCH=EXACT DURATION '1m'`。 |
 
-示例如下：
+#### 示例
 
 1. 创建 `rg1` 资源组，限额是每秒 500 RU，并且定义超过 60s 为 Runaway Query，并对 Runaway Query 降低优先级执行。
 
@@ -204,7 +206,7 @@ Runaway Queries 指那些执行时间或者消耗的资源超出预期的查询�
     ```
 
 2. 修改 `rg1` 资源组, 对 Runaway Query 直接终止，并且在接下来的 10 分钟里，把相同模式的查询直接标记为 Runaway Query。
-    
+
     ```sql
     ALTER RESOURCE GROUP rg1 QUERY_LIMIT=(EXEC_ELAPSED='60s', ACTION=KILL, WATCH=SIMILAR DURATION='10m');
     ```
@@ -217,9 +219,9 @@ Runaway Queries 指那些执行时间或者消耗的资源超出预期的查询�
 
 #### 可观测性
 
-TiDB 会定时采集 TTL 的运行时信息，并在 Grafana 中提供了相关指标的可视化图表。你可以在 TiDB -> TTL 的面板下看到这些信息。指标详情见 [TiDB 重要监控指标详解](/grafana-tidb-dashboard.md) 中的 `TTL` 部分。
+TiDB 会定时采集 TTL 的运行时信息，并在 Grafana 中提供了相关指标的可视化图表。你可以在 TiDB 的 TTL 的面板下看到这些信息。指标详情见 [TiDB 重要监控指标详解](/grafana-tidb-dashboard.md#ttl)。
 
-可以通过以下两个系统表获得 Runaway 相关的更多信息：
+可以通过以下系统表获得 Runaway 相关的更多信息：
 
 + `mysql.tidb_runaway_queries` 表中包含了过去一定时间内所有识别到的 Runaway Queries 的历史记录。以其中一行为例：
 
@@ -232,10 +234,14 @@ TiDB 会定时采集 TTL 的运行时信息，并在 Grafana 中提供了相关�
                  action: kill
            original_sql: select * from sbtest.sbtest1
             plan_digest: 5b7d445c5756a16f910192ad449c02348656a5e9d2aa61615e6049afbc4a82e
-            tidb_server: 127.0.0.1:4000       
+            tidb_server: 127.0.0.1:4000
     ```
 
-    其中列 `match_type` 为该 Runaway Query 的来源，`identify` 表示命中条件，`watch` 表示被免疫命中。
+    其中：
+
+    - `match_type` 为该 Runaway Query 的来源。
+    - `identify` 表示命中条件。
+    - `watch` 表示被免疫命中。
 
 + `mysql.tidb_runaway_quarantined_watch` 表中包含了 Runaway Queries 的免疫规则记录。以其中两行为例：
 
@@ -247,18 +253,18 @@ TiDB 会定时采集 TTL 的运行时信息，并在 Grafana 中提供了相关�
                end_time: 2023-06-16 18:10:22
                   watch: similar
              watch_text: 5b7d445c5756a16f910192ad449c02348656a5e9d2aa61615e6049afbc4a82e
-            tidb_server: 127.0.0.1:4000       
+            tidb_server: 127.0.0.1:4000
     *************************** 2. row ***************************
     resource_group_name: rg1
              start_time: 2023-06-16 17:42:35
                end_time: 2023-06-16 18:12:35
-                  watch: exact 
+                  watch: exact
              watch_text: select * from sbtest.sbtest1
-            tidb_server: 127.0.0.1:4000      
-    ``` 
+            tidb_server: 127.0.0.1:4000
+    ```
 
     其中：
-    
+
     - `start_time` 和 `end_time` 表示该免疫有效的时间范围。
     - `watch` 列的值为 `similar`，表明按照 Plan Digest 匹配，此时列 `watch_text` 显示的是 Plan Digest。
     - `watch` 列的值为 `exact`，表明按照 SQL 文本匹配，此时列 `watch_text` 显示的是 SQL 文本。
@@ -287,7 +293,7 @@ TiDB Dashboard 中可以查看当前 [`RESOURCE_GROUPS`](/information-schema/inf
 
 ## 常见问题
 
-1. 如果我暂时不想使用资源组对资源进行管控，是否一定要关闭这个特性？ 
+1. 如果我暂时不想使用资源组对资源进行管控，是否一定要关闭这个特性？
 
     不需要。没有指定任何资源组的用户，将被放入系统预定义的 `default` 资源组，而 `default` 资源组默认拥有无限用量。当所有用户都属于 `default` 资源组时，资源分配方式与关闭资源管控时相同。
 
