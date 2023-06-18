@@ -237,7 +237,7 @@ TiDB 会定时采集 TTL 的运行时信息，并在 Grafana 中提供了相关�
 
     其中列 `match_type` 为该 Runaway Query 的来源，`identify` 表示命中条件，`watch` 表示被免疫命中。
 
-+ `mysql.tidb_quarantined_watch` 表中包含了现在有效的 Runaway Queries 的免疫规则。以其中两行为例：
++ `mysql.tidb_runaway_quarantined_watch` 表中包含了 Runaway Queries 的免疫规则记录。以其中两行为例：
 
     ```sql
     MySQL [(none)]> SELECT * FROM mysql.tidb_runaway_queries LIMIT 2\G;
