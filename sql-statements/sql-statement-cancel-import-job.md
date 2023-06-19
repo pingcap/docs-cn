@@ -20,9 +20,13 @@ CancelImportJobsStmt ::=
 
 ## 示例
 
+下面示例取消 ID 为 1 的导入任务：
+
 ```sql
 CANCEL IMPORT JOB 1;
 ```
+
+输出结果如下：
 
 ```
 Query OK, 0 rows affected (0.01 sec)
