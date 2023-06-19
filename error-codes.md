@@ -346,7 +346,7 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 8173
 
-    执行 `IMPORT INTO` 时，TiDB 会对当前环境进行检查，比如检查下游表是否为空等。请根据提示进行处理。
+    执行 `IMPORT INTO` 时，TiDB 会对当前环境进行检查，比如检查下游表是否为空等。请根据具体的错误提示进行处理。
 
 * Error Number: 8200
 
