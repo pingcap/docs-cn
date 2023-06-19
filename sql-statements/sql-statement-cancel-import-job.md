@@ -38,5 +38,5 @@ Query OK, 0 rows affected (0.01 sec)
 
 ## 另请参阅
 
-* [IMPORT INTO](/sql-statements/sql-statement-import-into.md)
-* [SHOW IMPORT JOB](/sql-statements/sql-statement-show-import-job.md)
+* [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md)
+* [`SHOW IMPORT JOB`](/sql-statements/sql-statement-show-import-job.md)
