@@ -184,7 +184,7 @@ Runaway Queries 指那些执行时间或者消耗的资源超出预期的查询�
 
 为了避免并发的 Runaway Queries 太多，在被条件识别前就将系统资源耗尽，资源管控引入了一个快速识别的免疫机制。借助子句 `WATCH`，当某一个查询被识别为 Runaway Quey 之后，在接下来的一段时间里 (通过 `DURATION` 定义) ，当前 TiDB 实例会将匹配到的查询直接标记为 Runaway Query，而不再等待其被条件识别，并按照当前应对操作执行。其中 `KILL` 操作报错 `Quarantined and interrupted because of being in runaway watch list`。
 
-快速识别的匹配有两种方式：
+`WATCH` 有两种匹配方式：
 
 - `EXACT` 表示 SQL 文本完全相同的才会被快速识别
 - `SIMILAR` 表示会忽略字面值 (Literal)，通过 Plan Digest 匹配所有模式 (Pattern) 相同的 SQL
