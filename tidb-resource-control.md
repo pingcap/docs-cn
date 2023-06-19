@@ -219,8 +219,6 @@ Runaway Queries 指那些执行时间或者消耗的资源超出预期的查询�
 
 #### 可观测性
 
-TiDB 会定时采集 TTL 的运行时信息，并在 Grafana 中提供了相关指标的可视化图表。你可以在 TiDB 的 TTL 的面板下看到这些信息。指标详情见 [TiDB 重要监控指标详解](/grafana-tidb-dashboard.md#ttl)。
-
 可以通过以下系统表获得 Runaway 相关的更多信息：
 
 + `mysql.tidb_runaway_queries` 表中包含了过去一定时间内所有识别到的 Runaway Queries 的历史记录。以其中一行为例：
