@@ -79,7 +79,7 @@ OptionItem ::=
 
 ### SetClause
 
-用于指定目标列值的计算方式，在 SET 表达式右侧中可以引用 `ColumnNameOrUserVarList` 中指定的变量。
+用于指定目标列值的计算方式。在 SET 表达式的右侧，可以引用在 `ColumnNameOrUserVarList` 中指定的变量。
 
 SET 表达式左侧只能引用 `ColumnNameOrUserVarList` 中没有的列名。如果目标列名已经在 `ColumnNameOrUserVarList` 中，则该 SET 表达式无效。
 
