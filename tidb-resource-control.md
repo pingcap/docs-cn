@@ -266,8 +266,9 @@ TiDB 会定时采集 TTL 的运行时信息，并在 Grafana 中提供了相关�
     其中：
 
     - `start_time` 和 `end_time` 表示该免疫有效的时间范围。
-    - `watch` 列的值为 `similar`，表明按照 Plan Digest 匹配，此时列 `watch_text` 显示的是 Plan Digest。
-    - `watch` 列的值为 `exact`，表明按照 SQL 文本匹配，此时列 `watch_text` 显示的是 SQL 文本。
+    - `watch` 表示被免疫命中，其值如下：
+        - `similar` 表示按照 Plan Digest 匹配，此时列 `watch_text` 显示的是 Plan Digest。
+        - `exact` 表示按照 SQL 文本匹配，此时列 `watch_text` 显示的是 SQL 文本。
 
 ## 关闭资源管控特性
 
