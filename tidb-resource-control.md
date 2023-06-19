@@ -178,7 +178,7 @@ Runaway Queries 指那些执行时间或者消耗的资源超出预期的查询�
 
 支持的应对操作：
 
-- `DRYRUN`：不做任何应对。主要用于观测设置条件是否合理。
+- `DRYRUN`：对执行 Query 不做任何操作，仅记录识别的 Runaway Query。主要用于观测设置条件是否合理。
 - `COOLDOWN`：将查询的执行优先级降到最低，查询仍旧会以低优先级继续执行，不占用其他操作的资源。
 - `KILL`：识别到的查询将被自动终止，报错 `Query execution was interrupted, identified as runaway query`。
 
@@ -237,16 +237,15 @@ TiDB 会定时采集 TTL 的运行时信息，并在 Grafana 中提供了相关�
             tidb_server: 127.0.0.1:4000
     ```
 
-    其中：
-
-    - `match_type` 为该 Runaway Query 的来源。
+    其中，`match_type` 为该 Runaway Query 的来源，其值如下：
+    
     - `identify` 表示命中条件。
     - `watch` 表示被免疫命中。
 
 + `mysql.tidb_runaway_quarantined_watch` 表中包含了 Runaway Queries 的免疫规则记录。以其中两行为例：
 
     ```sql
-    MySQL [(none)]> SELECT * FROM mysql.tidb_runaway_queries LIMIT 2\G;
+    MySQL [(none)]> SELECT * FROM mysql.tidb_runaway_quarantined_watch LIMIT 2\G;
     *************************** 1. row ***************************
     resource_group_name: rg1
              start_time: 2023-06-16 17:40:22

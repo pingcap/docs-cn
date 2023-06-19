@@ -63,7 +63,7 @@ aliases: ['/docs-cn/dev/system-tables/system-table-overview/','/docs-cn/dev/refe
 ## Runaway Queries 相关系统表
 
 * `tidb_runaway_queries` 过去一定时间内所有识别到的 Runaway Queries 的历史记录
-* `tidb_runaway_quarantined_watch` 现在有效的 Runaway Queries 的免疫规则
+* `tidb_runaway_quarantined_watch` 现在有效的和已过期的 Runaway Queries 的免疫规则
 
 ## 其它系统表
 
