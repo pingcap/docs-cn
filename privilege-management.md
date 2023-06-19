@@ -380,7 +380,7 @@ SELECT * FROM INFORMATION_SCHEMA.USER_PRIVILEGES WHERE grantee = "'root'@'%'";
 
 ### IMPORT INTO
 
-需要对目标表的 `SELECT`、`UPDATE`、`INSERT`、`DELETE`、`ALTER` 权限，如果是导入存储在 TiDB 本地的文件，还需要有 `FILE` 权限。
+需要对目标表拥有 `SELECT`、`UPDATE`、`INSERT`、`DELETE` 和 `ALTER` 权限。如果是导入存储在 TiDB 本地的文件，还需要有 `FILE` 权限。
 
 ### LOAD DATA
 
