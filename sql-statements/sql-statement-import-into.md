@@ -119,7 +119,7 @@ SET 表达式左侧只能引用 `ColumnNameOrUserVarList` 中没有的列名。�
 | FIELDS_ENCLOSED_BY='<char>' | CSV | 指定字段的定界符，默认为 `"`。 |
 | FIELDS_ESCAPED_BY='<char>' | CSV | 指定字段的转义符，默认为 `\`。 |
 | FIELDS_DEFINED_NULL_BY='<string>' | CSV | 指定字段为何值时将会被解析为 NULL，默认为 `\N`。 |
-| LINES_TERMINATED_BY='<string>' | CSV | 指定行分隔符，默认 `IMPORT INTO` 会自动识别分隔符为 `\n` 或 `\r` 或 `\r\n`，如果行分隔符为以上三种，无须显式指定该选项 |
+| LINES_TERMINATED_BY='<string>' | CSV | 指定行分隔符，默认 `IMPORT INTO` 会自动识别分隔符为 `\n`、`\r` 或 `\r\n`，如果行分隔符为以上三种，无须显式指定该选项。 |
 | SKIP_ROWS=<number> | CSV | 指定需要跳过的行数，默认为 0，可通过该参数跳过 CSV 中的 header，该参数会对 fileLocation 中匹配的所有文件生效 |
 | DISK_QUOTA='<string>' | 所有格式 | 指定数据排序期间可使用的磁盘空间阈值。默认值为 TiDB [临时目录](/tidb-configuration-file.md#temp-dir)所在磁盘空间的 80%。如果无法获取磁盘总大小，默认值为 50 GiB。当显式指定 DISK_QUOTA 时，该值同样不能超过 TiDB [临时目录](/tidb-configuration-file.md#temp-dir)所在磁盘空间的 80%。 |
 | DISABLE_TIKV_IMPORT_MODE | 所有格式 | 指定是否禁止导入期间将 TiKV 切换到导入模式。默认不禁止。如果当前集群存在正在运行的读写业务，为避免导入过程对这部分业务造成影响，可开启该参数。 |
