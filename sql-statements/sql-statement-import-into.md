@@ -121,7 +121,7 @@ SET 表达式左侧只能引用 `ColumnNameOrUserVarList` 中没有的列名。�
 | FIELDS_DEFINED_NULL_BY='<string>' | CSV | 指定字段为何值时将会被解析为 NULL，默认为 `\N`。 |
 | LINES_TERMINATED_BY='<string>' | CSV | 指定行分隔符，默认 `IMPORT INTO` 会自动识别分隔符为 `\n` 或 `\r` 或 `\r\n`，如果行分隔符为以上三种，无须显式指定该选项 |
 | SKIP_ROWS=<number> | CSV | 指定需要跳过的行数，默认为 0，可通过该参数跳过 CSV 中的 header，该参数会对 fileLocation 中匹配的所有文件生效 |
-| DISK_QUOTA='<string>' | 所有格式 | 该参数指定数据排序期间，可使用的磁盘空间阈值。默认值为 TiDB [临时目录](/tidb-configuration-file.md#temp-dir) 所在磁盘空间的 80%，如果无法获取磁盘总大小，默认值为 50 GiB。当显式指定 DISK_QUOTA 时，该值同样不能超过 TiDB [临时目录](/tidb-configuration-file.md#temp-dir)所在磁盘空间的 80% |
+| DISK_QUOTA='<string>' | 所有格式 | 指定数据排序期间可使用的磁盘空间阈值。默认值为 TiDB [临时目录](/tidb-configuration-file.md#temp-dir)所在磁盘空间的 80%。如果无法获取磁盘总大小，默认值为 50 GiB。当显式指定 DISK_QUOTA 时，该值同样不能超过 TiDB [临时目录](/tidb-configuration-file.md#temp-dir)所在磁盘空间的 80%。 |
 | DISABLE_TIKV_IMPORT_MODE | 所有格式 | 指定是否禁止导入期间将 TiKV 切换到导入模式。默认不禁止。如果当前集群存在正在运行的读写业务，为避免导入过程对这部分业务造成影响，可开启该参数。 |
 | THREAD=<number> | 所有格式 | 指定导入的并发度，当数据文件格式为 CSV 或 SQL 时，默认值为 CPU 核数的 50%，最小为 1。可以显示指定该参数来控制对资源的占用，但该值最大不能超过 CPU 核数 |
 | MAX_WRITE_SPEED='<string>' | 所有格式 | 控制写入到单个 TiKV 的速度，默认无速度限制。例如设置为 `1MiB`，则限制写入速度为 1 MiB/s。|
