@@ -22,7 +22,7 @@ ShowImportJobStmt ::=
     'SHOW' 'IMPORT' 'JOB' JobID
 ```
 
-`SHOW IMPORT` 语句显示的字段含义如下:
+`SHOW IMPORT` 语句输出结果的字段含义如下:
 
 | 列名              | 说明                    |
 |------------------|-------------------------|
