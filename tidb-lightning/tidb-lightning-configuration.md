@@ -250,6 +250,7 @@ data-source-dir = "/data/my_database"
 #             an error is reported
 #  - auto:    (default) automatically detects whether the schema is UTF-8 or
 #             GB-18030. An error is reported if the encoding is neither.
+#  - latin1： the schema files uses MySQL latin1 encoding, also known as Code Page 1252.
 #  - binary:  do not try to decode the schema files
 character-set = "auto"
 
@@ -259,6 +260,7 @@ character-set = "auto"
 # - utf8mb4: Indicates that the source data file uses UTF-8 encoding.
 # - GB18030: Indicates that the source data file uses the GB-18030 encoding.
 # - GBK: The source data file uses GBK encoding (GBK encoding is an extension of the GB-2312 character set, also known as Code Page 936).
+# - latin1: The source data file uses MySQL latin1 encoding, also known as Code Page 1252.
 # - binary: Indicates that Lightning does not convert the encoding (by default).
 # If left blank, the default value "binary" is used, that is to say, Lightning does not convert the encoding.
 # Note that Lightning does not predict about the character set of the source data file
