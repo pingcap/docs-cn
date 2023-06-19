@@ -176,7 +176,7 @@ Runaway Queries 指那些执行时间或者消耗的资源超出预期的查询�
 
 - `EXEC_ELAPSED`: 当查询执行的时间超限时，识别为 Runaway Query。
 
-支持的应对操作：
+支持的应对操作 (`ACTION`)：
 
 - `DRYRUN`：对执行 Query 不做任何操作，仅记录识别的 Runaway Query。主要用于观测设置条件是否合理。
 - `COOLDOWN`：将查询的执行优先级降到最低，查询仍旧会以低优先级继续执行，不占用其他操作的资源。
@@ -199,7 +199,7 @@ Runaway Queries 指那些执行时间或者消耗的资源超出预期的查询�
 
 #### 示例
 
-1. 创建 `rg1` 资源组，限额是每秒 500 RU，并且定义超过 60s 为 Runaway Query，并对 Runaway Query 降低优先级执行。
+1. 创建 `rg1` 资源组，限额是每秒 500 RU，并且定义超过 60 秒为 Runaway Query，并对 Runaway Query 降低优先级执行。
 
     ```sql
     CREATE RESOURCE GROUP IF NOT EXISTS rg1 RU_PER_SEC = 500 QUERY_LIMIT=(EXEC_ELAPSED='60s', ACTION=COOLDOWN);
