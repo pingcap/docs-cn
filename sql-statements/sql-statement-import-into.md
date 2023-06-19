@@ -29,7 +29,7 @@ summary: TiDB 数据库中 IMPORT INTO 的使用概况。
 - 每个集群上同时只能有一个 `IMPORT INTO` 任务在运行。`IMPORT INTO` 会 precheck 是否存在运行中的任务，但并非硬限制，如果多个客户端同时执行 `IMPORT INTO` 仍有可能启动多个任务，请避免该情况。
 - 导入数据的过程中，请勿在目标表上执行 DDL 和 DML 操作，否则会导致导入失败或数据不一致。导入期间也不建议进行读操作，因为读取的数据可能不一致。请在导入完成后再进行读写操作。
 - 导入期间会占用大量系统资源，建议 TiDB 节点使用 32 核以上的 CPU 和 64 GiB 以上内存以获得更好的性能。导入期间会将排序好的数据写入到 TiDB [临时目录](/tidb-configuration-file.md#temp-dir)下，建议优先考虑配置闪存等高性能存储介质。详情请参考[物理导入使用限制](/tidb-lightning/tidb-lightning-physical-import-mode.md#必要条件及限制)。
-- TiDB [临时目录](/tidb-configuration-file.md#temp-dir) 需要至少有 90 GiB 的可用空间。
+- TiDB [临时目录](/tidb-configuration-file.md#temp-dir)至少需要有 90 GiB 的可用空间。
 
 ## 导入前准备
 
