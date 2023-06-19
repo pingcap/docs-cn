@@ -41,7 +41,7 @@ summary: TiDB 数据库中 IMPORT INTO 的使用概况。
 
 ## 需要的权限
 
-执行 `IMPORT INTO` 的用户需要有目标表的 `SELECT`、`UPDATE`、`INSERT`、`DELETE`、`ALTER` 权限，如果是导入存储在 TiDB 本地的文件，还需要有 `FILE` 权限。
+执行 `IMPORT INTO` 的用户需要有目标表的 `SELECT`、`UPDATE`、`INSERT`、`DELETE` 和 `ALTER` 权限。如果是导入存储在 TiDB 本地的文件，还需要有 `FILE` 权限。
 
 ## 语法图
 
