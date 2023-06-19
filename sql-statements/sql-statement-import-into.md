@@ -13,7 +13,7 @@ summary: TiDB 数据库中 IMPORT INTO 的使用概况。
 
 `IMPORT INTO` 支持导入存储在 S3、GCS 和 TiDB 本地的数据文件。
 
-- 对于存储在 S3 或 GCS 的数据文件，`IMPORT INTO` 支持通过[后端任务分布式框架](/tidb-distributed-execution-framework.md) 运行。
+- 对于存储在 S3 或 GCS 的数据文件，`IMPORT INTO` 支持通过[后端任务分布式框架](/tidb-distributed-execution-framework.md)运行。
 
     - 当此框架功能开启时（即 [tidb_enable_dist_task](/system-variables.md#tidb_enable_dist_task-从-v710-版本开始引入) 为 `ON`），`IMPORT INTO` 会将子任务分配到各个 TiDB 节点上运行，以提高导入效率。
     - 当此框架功能关闭时， `IMPORT INTO` 仅支持在当前用户连接的 TiDB 节点上运行。
