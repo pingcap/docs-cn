@@ -845,10 +845,10 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 是否持久化到集群：是
 - 默认值："json,blob,mediumblob,longblob"
 - 可选值："json,blob,mediumblob,longblob,text,mediumtext,longtext"
-- 这个变量表示在执行 `ANALYZE` 命令收集统计信息时，跳过哪些类型的列的统计信息收集。该变量仅适用于 `tidb_analyze_version = 2` 的情况。使用 `analyze table t columns c1, ..., cn` 语法时，如果指定的列的类型在 `tidb_analyze_skip_column_types` 中，则不会收集该列的统计信息。
+- 这个变量表示在执行 `ANALYZE` 命令收集统计信息时，跳过哪些类型的列的统计信息收集。该变量仅适用于 [`tidb_analyze_version = 2`](#tidb_analyze_version-从-v510-版本开始引入) 的情况。使用 `ANALYZE TABLE t COLUMNS c1, ..., cn` 语法时，如果指定的列的类型在 `tidb_analyze_skip_column_types` 中，则不会收集该列的统计信息。
 
-```
-mysql> show create table t;
+```sql
+mysql> SHOW CREATE TABLE t;
 +-------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | Table | Create Table                                                                                                                                                                                                             |
 +-------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
@@ -862,7 +862,7 @@ mysql> show create table t;
 +-------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 1 row in set (0.00 sec)
 
-mysql> select @@tidb_analyze_skip_column_types;
+mysql> SELECT @@tidb_analyze_skip_column_types;
 +----------------------------------+
 | @@tidb_analyze_skip_column_types |
 +----------------------------------+
@@ -870,10 +870,10 @@ mysql> select @@tidb_analyze_skip_column_types;
 +----------------------------------+
 1 row in set (0.00 sec)
 
-mysql> analyze table t;
+mysql> ANALYZE TABLE t;
 Query OK, 0 rows affected, 1 warning (0.05 sec)
 
-mysql> select job_info from mysql.analyze_jobs order by end_time desc limit 1;
+mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 +---------------------------------------------------------------------+
 | job_info                                                            |
 +---------------------------------------------------------------------+
@@ -881,10 +881,10 @@ mysql> select job_info from mysql.analyze_jobs order by end_time desc limit 1;
 +---------------------------------------------------------------------+
 1 row in set (0.00 sec)
 
-mysql> analyze table t columns a, c;
+mysql> ANALYZE TABLE t COLUMNS a, c;
 Query OK, 0 rows affected, 1 warning (0.04 sec)
 
-mysql> select job_info from mysql.analyze_jobs order by end_time desc limit 1;
+mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 +------------------------------------------------------------------+
 | job_info                                                         |
 +------------------------------------------------------------------+
