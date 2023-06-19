@@ -93,6 +93,7 @@ TiDB 版本：7.2.0
     ```sql
     ADMIN PAUSE DDL JOBS 1,2;
     ADMIN RESUME DDL JOBS 1,2;
+```
 
    更多信息，请参考 [用户文档](/ddl-introduction.md#ddl - 相关的命令介绍)。
 
