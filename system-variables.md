@@ -1254,8 +1254,8 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 是否持久化到集群：是
 - 默认值：`OFF`
 - 这个变量用于控制是否开启 [TiDB 后端任务分布式框架](/tidb-distributed-execution-framework.md)。开启分布式框架后，DDL 和 Import 等后端任务将会由集群中多个 TiDB 节点共同完成。
-- 从 TiDB v7.1.0 开始，支持分布式执行分区表的 `ADD INDEX`。
-- 从 TiDB v7.2.0 开始，支持分布式导入任务 `IMPORT INTO`。
+- 从 TiDB v7.1.0 开始，支持分布式执行分区表的 [`ADD INDEX`](/sql-statements/sql-statement-add-index.md)。
+- 从 TiDB v7.2.0 开始，支持分布式导入任务 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md)。
 - 该变量由 `tidb_ddl_distribute_reorg` 改名而来。
 
 ### `tidb_ddl_error_count_limit`
