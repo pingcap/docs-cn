@@ -230,7 +230,7 @@ IMPORT INTO t FROM '/path/to/file.sql' FORMAT 'sql';
 
 ### 限制写入 TiKV 的速度
 
-限制写入单个 TiKV 的速度为 `10 MiB/s`:
+限制写入单个 TiKV 的速度为 10 MiB/s：
 
 ```sql
 IMPORT INTO t FROM 's3://bucket/path/to/file.parquet' FORMAT 'parquet' WITH MAX_WRITE_SPEED='10MiB';
