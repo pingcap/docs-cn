@@ -58,7 +58,7 @@ TiDB Lightning（[物理导入模式](/tidb-lightning/tidb-lightning-physical-im
 
 - 数据校验
 
-    数据和索引导入完成后，会对每个表执行 [`admin checksum`](/sql-statements/sql-statement-admin-checksum-table.md)，然后跟 TiDB Lightning 本地 checksum 值做对比。当有很多表或单个表行数很多时，Checksum 阶段耗时会很长。
+    数据和索引导入完成后，会对每个表执行 [`ADMIN CHECKSUM`](/sql-statements/sql-statement-admin-checksum-table.md)，然后跟 TiDB Lightning 本地 Checksum 值做对比。当有很多表或单个表行数很多时，Checksum 阶段耗时会很长。
 
 - 执行计划
 
@@ -112,7 +112,7 @@ TiDB Lightning（[物理导入模式](/tidb-lightning/tidb-lightning-physical-im
 
 大体量的数据导入，一定要参照[断点续传](/tidb-lightning/tidb-lightning-checkpoints.md)文档，开启断点续传，并推荐优先使用 MySQL 作为 Driver，避免因为 TiDB Lightning 运行在容器环境，容器退出后断点信息被一并删除。
 
-如果导入过程中遇到下游 TiKV 空间不足，可以手动执行 kill 命令关闭（不要带 `-9` 选项）所有 TiDB Lightning 实例，待扩容后，基于断点信息继续导入。
+如果导入过程中遇到下游 TiKV 空间不足，可以手动执行 `kill` 命令关闭（不要带 `-9` 选项）所有 TiDB Lightning 实例，待扩容后，基于断点信息继续导入。
 
 ## 导入大单表的最佳实践
 
