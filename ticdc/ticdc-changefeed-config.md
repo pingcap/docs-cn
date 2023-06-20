@@ -75,6 +75,7 @@ enable-old-value = true
 
 # 过滤器规则
 # 过滤规则语法：https://docs.pingcap.com/zh/tidb/stable/table-filter#表库过滤语法
+# 以下规则会同步除了 `test` 数据库之外的其他所有数据库中的数据
 rules = ['*.*', '!test.*']
 
 # 忽略特定 start_ts 的事务
@@ -99,24 +100,6 @@ rules = ['*.*', '!test.*']
 # ignore-event = ["drop table", "delete"] # 忽略 drop table 的 DDL 事件和 delete 类型的 DML 事件
 # ignore-sql = ["^drop table", "alter table"] # 忽略以 drop table 开头的，或者包含 alter table 的 DDL 语句
 # ignore-insert-value-expr = "price > 1000 and origin = 'no where'" # 忽略包含 price > 1000 和 origin = 'no where' 条件的 insert DML
-
-[scheduler]
-# 将表按 Region 个数划分成多个同步范围，这些范围可由多个 TiCDC 节点同步。
-# 注意：该功能只在 Kafka changefeed 上生效，暂不支持 MySQL changefeed。
-# 默认为 "false"。设置为 "true" 以打开该功能。
-enable-table-across-nodes = false
-
-# 打开该功能后，该功能会对 Region 个数大于 `region-threshold` 值的表生效。
-region-threshold = 100000
-
-# 打开该功能后，该功能会对每分钟修改行数大于 `write-key-threshold` 值的表生效。
-# 注意：
-# * `write-key-threshold` 参数默认值为 0，代表该功能默认不会按表的修改行数来切分表的同步范围。
-# * 你可以根据集群负载来配置该参数，如 30000，代表当表每分钟的更新行数超过 30000 时，该功能将会切分表的同步范围。
-# * 当 `region-threshold` 和 `write-key-threshold` 同时配置时，
-#   TiCDC 将优先检查修改行数是否大于 `write-key-threshold`，
-#   如果不超过，则再检查 Region 个数是否大于 `region-threshold`。
-write-key-threshold = 0
 
 [sink]
 # 对于 MQ 类的 Sink，可以通过 dispatchers 配置 event 分发器
