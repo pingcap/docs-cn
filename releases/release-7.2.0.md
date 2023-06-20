@@ -19,7 +19,7 @@ TiDB 版本：7.2.0
 
 ### 性能
 
-* 新增支持下推两个[窗口函数](/tiflash/tiflash-supported-pushdown-calculations.md) 至 TiFlash [#7427](https://github.com/pingcap/tiflash/issues/7427)  @[xzhangxian1008](https://github.com/xzhangxian1008) **tw@qiancai** <!--1310-->
+* 新增支持下推以下两个[窗口函数](/tiflash/tiflash-supported-pushdown-calculations.md) 到 TiFlash [#7427](https://github.com/pingcap/tiflash/issues/7427)  @[xzhangxian1008](https://github.com/xzhangxian1008) **tw@qiancai** <!--1310-->
 
     * `FIRST_VALUE`
     * `LAST_VALUE`
@@ -44,9 +44,9 @@ TiDB 版本：7.2.0
 
 * 提升表和索引一致性检查的性能 [#43693](https://github.com/pingcap/tidb/issues/43693) @[wjhuang2016](https://github.com/wjhuang2016) **tw@qiancai** <!--1436-->
 
-    TiDB 在新版本中优化了数据一致性校验的方式，大幅提升了 [`ADMIN CHECK [TABLE|INDEX]`](/sql-statements/sql-statement-admin-check-table-index.md) 的执行效率， 性能提升接近 200 倍。 这个能力可以大幅减少大型表数据一致性检查的时间， 提升运维体验。 设置 [`tidb_enable_fast_table_check`](链接) 为 `TRUE` 启用这个新机制。
+    [`ADMIN CHECK [TABLE|INDEX]`](/sql-statements/sql-statement-admin-check-table-index.md) 语句用于校验表中数据和对应索引的一致性。在 v7.2.0 中，TiDB 优化了数据一致性的校验方式，大幅提升了 [`ADMIN CHECK [TABLE|INDEX]`](/sql-statements/sql-statement-admin-check-table-index.md) 语句的执行效率，性能提升接近 200 倍。该优化默认开启 ([`tidb_enable_fast_table_check`](/system-variables.md#tidb_enable_fast_table_check-从-v720-版本开始引入) 默认为 `ON`)，可以大幅减少大型表数据一致性检查的时间， 提升运维体验。
 
-    更多信息，请参考[用户文档](链接)
+    更多信息，请参考[用户文档](/system-variables.md#tidb_enable_fast_table_check-从-v720-版本开始引入)。
 
 ### 稳定性
 
@@ -80,9 +80,9 @@ TiDB 版本：7.2.0
 
 * 支持 `CHECK` 约束 [#41711](https://github.com/pingcap/tidb/issues/41711) @[fzzf678] (https://github.com/fzzf678) **tw@qiancai** <!--1404-->
 
-    v7.2.0 版本开始，用户可以通过 `CHECK` 约束功能约束表中一个或者多个字段值必须满足特定条件。添加 `CHECK` 约束后，TiDB 会在数据插入或者更新时检查约束条件是否满足，只允许满足约束的数据写入。
+    从 v7.2.0 开始，你可以通过 `CHECK` 约束限制表中的一个或者多个字段值必须满足特定的条件。当为表添加 `CHECK` 约束后，在插入或者更新表的数据时，TiDB 会先检查约束条件是否满足，只允许满足约束的数据写入。
 
-    更多信息，请参考[用户文档](链接)。
+    更多信息，请参考[用户文档](/constraints.md#check-约束)。
 
 ### 数据库管理
 
@@ -107,13 +107,13 @@ TiDB 版本：7.2.0
 
     "import into " 集成了 Lightning 物理导入模式（local backend）的能力，用户可直接编写 "import into“ SQL 导入数据到 TiDB，同时还支持将数据导入任务拆分成多个子任务调度到多个 TiDB 节点，进行并行导入，提升导入性能。在导入空表的场景，用户无需再部署和管理 Lightning ，降低了导入数据难度的同时，大大提升了导入数据效率。
 
-    更多信息，请参考[用户文档](链接)。
+    更多信息，请参考[用户文档](sql-statements/sql-statement-import-into.md)。
 
-* Lightning 支持将字符集为 latin1 的源文件导入到 TiDB。[#44434](https://github.com/pingcap/tidb/issues/44434) @[lance6716](https://github.com/lance6716) **tw@qiancai** <!--1432-->
+* TiDB Lightning 支持将字符集为 latin1 的源文件导入到 TiDB 中 [#44434](https://github.com/pingcap/tidb/issues/44434) @[lance6716](https://github.com/lance6716) **tw@qiancai** <!--1432-->
 
     通过此功能，用户现在可以使用 Lightning 数据导入工具直接将字符集为 latin1 的源文件导入到 TiDB 中。这扩展了用户在处理各种字符集时的数据导入选项的兼容性和灵活性。以前，导入这样的文件需要额外的预处理或转换。现在用户只需在运行 Lightning 导入过程时指定源文件的字符集。Lightning 工具会在导入过程中自动处理字符集转换，确保数据的完整性和准确性。
 
-    更多信息，请参考[用户文档](https://github.com/pingcap/docs-cn/pull/14172/files)
+    更多信息，请参考[用户文档](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置)
 
 ## 兼容性变更
 
