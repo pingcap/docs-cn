@@ -75,7 +75,7 @@ enable-old-value = true
 
 # 过滤器规则
 # 过滤规则语法：https://docs.pingcap.com/zh/tidb/stable/table-filter#表库过滤语法
-# 以下规则的含义为同步除了 test 数据库之外的其他所以数据库的数据
+# 以下规则会同步除了 test 数据库之外的其他所有数据库的数据
 rules = ['*.*', '!test.*']
 
 # 忽略特定 start_ts 的事务
