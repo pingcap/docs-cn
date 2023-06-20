@@ -62,7 +62,12 @@ TiDB 版本：7.2.0
 
 * 增强根据历史执行计划创建绑定的能力 [#39199](https://github.com/pingcap/tidb/issues/39199) @[qw4990](https://github.com/qw4990) **tw@Oreoxmt** <!--1349-->
 
-    TiDB v7.2.0 进一步增强根据历史执行计划创建绑定的能力，加强对复杂语句的解析和绑定，并新增对新 Hint 的支持，包括 [`AGG_TO_COP()`](/optimizer-hints.md#agg_to_cop)、[`LIMIT_TO_COP()`](/optimizer-hints.md#limit_to_cop)、[`ORDER_INDEX`](/optimizer-hints.md#order_indext1_name-idx1_name--idx2_name) 和 [`NO_ORDER_INDEX()`](/optimizer-hints.md#no_order_indext1_name-idx1_name--idx2_name)。借助这个能力，根据历史执行计划创建的 SQL Binding 能够更稳定地固定住执行计划。
+    TiDB v7.2.0 进一步增强[根据历史执行计划创建绑定](/sql-plan-management.md#根据历史执行计划创建绑定)的能力，加强对复杂语句的解析和绑定，使绑定更稳固，并新增支持对以下 Hint 的绑定。
+    
+   - [`AGG_TO_COP()`](/optimizer-hints.md#agg_to_cop)
+   - [`LIMIT_TO_COP()`](/optimizer-hints.md#limit_to_cop)
+   - [`ORDER_INDEX`](/optimizer-hints.md#order_indext1_name-idx1_name--idx2_name) 
+   - [`NO_ORDER_INDEX()`](/optimizer-hints.md#no_order_indext1_name-idx1_name--idx2_name)。
 
     更多信息，请参考[用户文档](/sql-plan-management.md)。
 
