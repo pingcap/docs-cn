@@ -55,6 +55,7 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 | [使用 bucket 提高数据扫描并发度](/tune-region-performance.md#使用-bucket-增加并发) | E | E | E | E | N | N | N | N | N | N |
 | [不可见索引](/sql-statements/sql-statement-add-index.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y | N |
 | [复合主键](/constraints.md#主键约束) | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y |
+| [`CHECK` 约束](/constraints.md#check-约束 | Y | N | N | N | N | N | N | N | N | N |
 | [唯一约束](/constraints.md#唯一约束) | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y |
 | [整型主键上的聚簇索引](/constraints.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y |
 | [复合或非整型主键上的聚簇索引](/constraints.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y | N |
