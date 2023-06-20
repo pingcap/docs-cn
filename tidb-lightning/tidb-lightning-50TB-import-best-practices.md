@@ -147,3 +147,7 @@ TiDB Lightning 按照每个实例处理 5 TB 到 10 TB 源数据进行准备，�
 ### 关闭执行计划
 
 当存在单个大表的情况，建议关掉 `analyze`（`analyze="off"`），在导入结束后，再手动执行 [ANALYZE TABLE](/sql-statements/sql-statement-analyze-table.md#analyze)。
+
+## 故障处理
+
+如果在使用 TiDB Lightning 的过程中遇到问题，请参考 [TiDB Lightning 故障处理](/tidb-lightning/troubleshoot-tidb-lightning.md)。
