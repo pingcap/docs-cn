@@ -52,7 +52,7 @@ TiDB Lightning（[物理导入模式](/tidb-lightning/tidb-lightning-physical-im
     - `region-concurrency`：TiDB Lightning 主逻辑处理的并发度。
     - `send-kv-pairs`：TiDB Lightning 发送给 TiKV 单次请求的 Key、Value 数量。
     - `disk-quota`：使用物理导入模式时，配置 TiDB Lightning 本地临时文件使用的磁盘配额 (disk quota)。
-    - `GOMEMLIMIT`：TiDB Lightning 采用 Go 语言实现，需要合理配置GOMEMLIMIT。
+    - `GOMEMLIMIT`：TiDB Lightning 采用 Go 语言实现，需要合理配置 `GOMEMLIMIT`。
 
     关于 TiDB Lightning 参数信息，请参考 [TiDB Lightning 配置参数](/tidb-lightning/tidb-lightning-configuration.md)。
 
