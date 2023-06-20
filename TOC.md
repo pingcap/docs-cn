@@ -103,6 +103,7 @@
 - 数据迁移
   - [数据迁移概述](/migration-overview.md)
   - [迁移工具](/migration-tools.md)
+  - [最佳实践](/tidb-lightning/tidb-lightning-50tb-data-import-best-practices.md)
   - 数据迁移场景
     - [从 Aurora 迁移数据到 TiDB](/migrate-aurora-to-tidb.md)
     - [从小数据量 MySQL 迁移数据到 TiDB](/migrate-small-mysql-to-tidb.md)
