@@ -19,7 +19,7 @@ TiDB Lightning（[物理导入模式](/tidb-lightning/tidb-lightning-physical-im
 - [准备源文件](#准备源文件)
 - [预估存储空间](#预估存储空间)
 - [配置参数](#配置参数)
-- [解决 "checksum mismatch" 问题](#解决-checksum mismatch-问题)
+- [解决 "checksum mismatch" 问题](#解决-checksum-mismatch-问题)
 - [开启断点续传](#开启断点续传)
 - [故障处理](#故障处理)
 
