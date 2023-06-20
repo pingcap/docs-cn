@@ -25,7 +25,7 @@ TiDB 的事务的实现采用了 MVCC（多版本并发控制）机制，当新�
 
 ## SQL 执行时间超时
 
-TiDB 还提供了一个系统变量来限制单条 SQL 语句的执行时间, 用来控制只读语句的执行时长：max_execution_time，它的默认值为 0，表示无限制。`max_execution_time`, 其单位为 ms，但实际精度在 100ms 级别，而非更准确的毫秒级别。
+TiDB 还提供了一个系统变量来限制单条 SQL 语句的执行时间，仅对“只读”语句生效：`max_execution_time`，它的默认值为 0，表示无限制。`max_execution_time` 的单位为 ms，但实际精度在 100ms 级别，而非更准确的毫秒级别。
 
 ## JDBC 查询超时
 
