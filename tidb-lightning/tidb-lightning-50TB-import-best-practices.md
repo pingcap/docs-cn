@@ -21,6 +21,7 @@ TiDB Lightning（[物理导入模式](/tidb-lightning/tidb-lightning-physical-im
 - [配置参数](#配置参数)
 - [解决 "checksum mismatch" 问题](#解决-checksum mismatch-问题)
 - [开启断点续传](#开启断点续传)
+- [故障处理](#故障处理)
 
 由于导入大单表的特殊性，以下章节单独介绍了相关最佳实践：
 
