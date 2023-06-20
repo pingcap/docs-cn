@@ -103,15 +103,17 @@ TiDB 版本：7.2.0
 
 ### 数据迁移
 
-* 引入新的 SQL statement “import into” （实验特性）,该 SQL 集成了 Lightning 物理导入模式（local backend）的能力,大大提升导入数据的效率。[#42930](https://github.com/pingcap/tidb/issues/42930) @[D3Hunter](https://github.com/D3Hunter) **tw@qiancai** <!--1413-->
+* 引入新的 SQL 语句 `IMPORT INTO`，大幅提升导入效率（实验特性）[#42930](https://github.com/pingcap/tidb/issues/42930) @[D3Hunter](https://github.com/D3Hunter) **tw@qiancai** <!--1413-->
 
-    "import into " 集成了 Lightning 物理导入模式（local backend）的能力，用户可直接编写 "import into“ SQL 导入数据到 TiDB，同时还支持将数据导入任务拆分成多个子任务调度到多个 TiDB 节点，进行并行导入，提升导入性能。在导入空表的场景，用户无需再部署和管理 Lightning ，降低了导入数据难度的同时，大大提升了导入数据效率。
+    `IMPORT INTO` 集成了 TiDB Lightning 的[物理导入模式](/tidb-lightning/tidb-lightning-physical-import-mode.md) 的能力。通过该语句，你可以将 `CSV`、`SQL`、`PARQUET` 等格式的数据快速导入到 TiDB 的一张空表中。这种导入方式无需单独部署和管理 TiDB Lightning，在降低了数据导入难度的同时，大幅提升了数据导入效率。
+    
+    对于存储在 Amazon S3 或 GCS 的数据文件，在开启了[后端任务分布式框架](/tidb-distributed-execution-framework.md) 后，`IMPORT INTO` 还支持将数据导入任务拆分成多个子任务，并将子任务调度到多个 TiDB 节点并行导入，进一步提升导入性能。
 
     更多信息，请参考[用户文档](sql-statements/sql-statement-import-into.md)。
 
 * TiDB Lightning 支持将字符集为 latin1 的源文件导入到 TiDB 中 [#44434](https://github.com/pingcap/tidb/issues/44434) @[lance6716](https://github.com/lance6716) **tw@qiancai** <!--1432-->
 
-    通过此功能，用户现在可以使用 Lightning 数据导入工具直接将字符集为 latin1 的源文件导入到 TiDB 中。这扩展了用户在处理各种字符集时的数据导入选项的兼容性和灵活性。以前，导入这样的文件需要额外的预处理或转换。现在用户只需在运行 Lightning 导入过程时指定源文件的字符集。Lightning 工具会在导入过程中自动处理字符集转换，确保数据的完整性和准确性。
+    通过此功能，你可以使用 TiDB Lightning 将字符集为 latin1 的源文件直接导入到 TiDB 中。在 v7.2.0 之前，导入这样的文件需要额外的预处理或转换。从 v7.2.0 起，你只需在配置 TiDB Lightning 导入任务时指定 `character-set = "latin1"`，TiDB Lightning 就会在导入过程中自动处理字符集的转换，确保数据的完整性和准确性。
 
     更多信息，请参考[用户文档](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置)
 
