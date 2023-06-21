@@ -77,8 +77,8 @@ TiDB Lightning（[物理导入模式](/tidb-lightning/tidb-lightning-physical-im
 
 - 生成文件时，单个文件内，尽量按照主键排序；如果表定义没有主键，可以添加一个自增主键，此时对文件内容顺序无要求。
 - 给多个 TiDB Lightning 实例分配要导入的源文件时，尽量避免多个源文件之间存在重叠的主键或非空唯一索引的情况。如果生成文件是全局有序，可以按照范围划分不同的文件给不同 TiDB Lightning 实例进行导入，达到最佳导入效果。
-- 在生成文件时，每个文件尽量控制在 96 MB 以下。
-- 如果文件特别大，超过 256 MB，需要开启 [strict-format](/migrate-from-csv-files-to-tidb.md#第-4-步导入性能优化可选)。
+- 在生成文件时，每个文件尽量控制在 96 MiB 以下。
+- 如果文件特别大，超过 256 MiB，需要开启 [strict-format](/migrate-from-csv-files-to-tidb.md#第-4-步导入性能优化可选)。
 
 ## 预估存储空间
 
@@ -125,7 +125,7 @@ TiDB Lightning（[物理导入模式](/tidb-lightning/tidb-lightning-physical-im
 
 ### 准备源文件
 
-根据上述源文件准备的步骤产生源文件，对于大单表，如果你不能做到全局有序，但是可以做到文件内按主键有序，且是标准的 CSV 文件，可以尽量生成单个大文件（每个 20 GB），然后开启 [strict-format](/migrate-from-csv-files-to-tidb.md#第-4-步导入性能优化可选)，既可以降低 TiDB Lightning 实例之间导入的数据文件中存在主键和唯一键的重叠，又能在导入前由 TiDB Lightning 实例对大文件进行切分，达到最佳的导入速度。
+根据上述源文件准备的步骤产生源文件，对于大单表，如果你不能做到全局有序，但是可以做到文件内按主键有序，且是标准的 CSV 文件，可以尽量生成单个大文件（每个 20 GiB），然后开启 [strict-format](/migrate-from-csv-files-to-tidb.md#第-4-步导入性能优化可选)，既可以降低 TiDB Lightning 实例之间导入的数据文件中存在主键和唯一键的重叠，又能在导入前由 TiDB Lightning 实例对大文件进行切分，达到最佳的导入速度。
 
 ### 规划集群拓扑
 
@@ -145,9 +145,11 @@ TiDB Lightning 按照每个实例处理 5 TiB 到 10 TiB 源数据进行准备�
 - 调高 TiKV `raftstore.apply-pool-size`，从默认值 `2` 调整为 `4` 或 `8`。
 - 降低 TiDB Lightning `region-split-concurrency` 为 CPU 核数的一半，最低可调整为 `1`。
 
-### 关闭执行计划
+### 关闭执行计划 `analyze`
 
-当存在单个大表的情况，建议关掉 `analyze`（`analyze="off"`）。在导入结束后，再手动执行 [ANALYZE TABLE](/sql-statements/sql-statement-analyze-table.md#analyze)。
+当存在单个大表的情况，建议关闭 `analyze`（`analyze="off"`）。在导入结束后，再手动执行 [ANALYZE TABLE](/sql-statements/sql-statement-analyze-table.md#analyze)。
+
+关于 `analyze` 的相关配置，请参考 [TiDB Lightning 任务配置](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置)。
 
 ## 故障处理
 
