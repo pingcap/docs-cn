@@ -40,7 +40,7 @@ TiDB 版本：7.2.0
 
     TiDB v7.2.0 优化了统计信息的收集策略，会选择跳过一部分重复的信息，以及对优化器价值不高的信息，从而将统计信息收集的整体速度提升了 30%。这一改进有利于 TiDB 更及时地更新数据库对象的统计信息，生成更准确的执行计划，从而提升数据库整体性能。
 
-    默认设置下，统计信息收集会跳过类型为 `json`, `blob`, `mediumblob`, `longblob` 的列。你可以通过设置系统变量[``tidb_analyze_skip_column_types`](/system-variables.md#tidb_analyze_skip_column_types-从-v720-版本开始引入) 来修改默认行为。当前支持设置跳过 JSON, BLOB, TEXT 这几个类型及其子类型。
+    默认设置下，统计信息收集会跳过类型为 `json`, `blob`, `mediumblob`, `longblob` 的列。你可以通过设置系统变量 [`tidb_analyze_skip_column_types`](/system-variables.md#tidb_analyze_skip_column_types-从-v720-版本开始引入) 来修改默认行为。当前支持设置跳过 `JSON`、`BLOB`、`TEXT` 这几个类型及其子类型。
     
     更多信息，请参考[用户文档](/system-variables.md#tidb_analyze_skip_column_types-从-v720-版本开始引入)。
 
