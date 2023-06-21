@@ -213,8 +213,8 @@ ADMIN SHOW DDL JOBS 5 WHERE state != 'synced' AND db_name = 'test';
     * `synced`：表示该操作已经执行成功，且所有 TiDB 实例都已经同步该状态。
     * `rollback done`：表示该操作执行失败，回滚完成。
     * `rollingback`：表示该操作执行失败，正在回滚。
-    * `cancelling`：表示正在取消该操作。这个状态只有在用 `ADMIN CANCEL DDL JOBS` 命令取消 DDL 作业时才会出现。
-    * `paused`：表示 DDL 已被暂停运行。这个状态只有在用 `ADMIN PAUSED DDL JOBS` 命令暂停 DDL 任务时才会出现。可以通过 `ADMIN RESUME DDL JOBS` 命令进行恢复运行。
+    * `cancelling`：表示正在取消该操作。这个状态只有在用 [`ADMIN CANCEL DDL JOBS`](/sql-statements/sql-statement-admin-cancel-ddl.md) 命令取消 DDL 作业时才会出现。
+    * `paused`：表示 DDL 已被暂停运行。这个状态只有在用 [`ADMIN PAUSED DDL JOBS`](/sql-statements/sql-statement-admin-pause-ddl.md) 命令暂停 DDL 任务时才会出现。可以通过 [`ADMIN RESUME DDL JOBS`](/sql-statements/sql-statement-admin-resume-ddl.md) 命令进行恢复运行。
 
 ## MySQL 兼容性
 
