@@ -101,16 +101,7 @@ fn checksum(columns) {
 TiCDC 提供了基于 Golang 的 Checksum 计算过程，你可以参考该过程实现自己的 Checksum 计算逻辑。主要代码逻辑位于 TiCDC Avro Decoder 实现的 [NextRowChangedEvent](https://github.com/pingcap/tiflow/blob/eb04aecaf8e61f7f9d67597c2d2ef1f44583dd79/pkg/sink/codec/avro/decoder.go#L100) 方法。该方法的具体工作过程如下：
 
 1. 默认已经从 Kafka 读取到了消息，设置上 Key 和 Value 字段。分别对 Key 和 Value 进行解码操作，得到解码之后的数据值和 schema。具体的过程，可以参考 [decodeKey](https://github.com/pingcap/tiflow/blob/eb04aecaf8e61f7f9d67597c2d2ef1f44583dd79/pkg/sink/codec/avro/decoder.go#L395) 和 [decodeValue](https://github.com/pingcap/tiflow/blob/eb04aecaf8e61f7f9d67597c2d2ef1f44583dd79/pkg/sink/codec/avro/decoder.go#L419) 方法。
-2. 使用上一步骤解码得到的 Key，Value，Schema 等内容，重新构建 RowChangedEvent，主要是构建每一列的数据内容，详情可见 [assembleEvent](https://github.com/pingcap/tiflow/blob/eb04aecaf8e61f7f9d67597c2d2ef1f44583dd79/pkg/sink/codec/avro/decoder.go#L176) 方法。它的函数签名如下：
-
-```go
-func assembleEvent(keyMap, valueMap, schema map[string]interface{}, isDelete bool) (*model.RowChangedEvent, error) 
-```
-
-* keyMap 记录了 Handle Key 列数据。
-* valueMap 记录了所有列数据。
-* schema 对应于 valueMap，记录了 valueMap 中每个值在 TiDB 中的类型信息，有助于帮助我们重建每一列。
-* isDelete 用于判断这是不是一个 Delete 事件。
+2. 使用上一步骤解码得到的 Key，Value，Schema 等内容，重新构建 RowChangedEvent，主要是构建每一列的数据内容，详情可见 [assembleEvent](https://github.com/pingcap/tiflow/blob/eb04aecaf8e61f7f9d67597c2d2ef1f44583dd79/pkg/sink/codec/avro/decoder.go#L176) 方法。
 
 构建 RowChangedEvent 的过程如下：
 
