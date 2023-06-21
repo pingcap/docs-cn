@@ -51,17 +51,7 @@ title: TiDB 使用限制
 |:----------|:----------|
 | Size       | 默认为 6MB，可通过 [`txn-entry-size-limit`](/tidb-configuration-file.md#txn-entry-size-limit-从-v50-版本开始引入) 配置项调整 |
 
-<<<<<<< HEAD
-## 单列的限制
-
-| 类型       | 最大限制   |
-|:----------|:----------|
-| Size       | 6MB       |
-
 ## 字符串类型限制
-=======
-## 数据类型限制
->>>>>>> b32601b1bc (*: remove the limit on single column data size (#14291))
 
 | 类型       | 最大限制   |
 |:----------|:----------|
