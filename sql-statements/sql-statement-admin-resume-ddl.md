@@ -9,6 +9,10 @@ summary: TiDB 数据库中 ADMIN RESUME DDL 的使用概况。
 
 该语句可用于恢复处于暂停中的 DDL 任务。成功恢复后，执行 DDL 任务的 SQL 语句会一直表现为正在执行。如果尝试恢复已经完成的 DDL 任务，会在 `RESULT` 列看到 `DDL Job:90 not found` 的错误，表示该任务已从 DDL 等待队列中被移除。
 
+> **警告：**
+>
+> 该功能目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+
 ## 语法图
 
 ```ebnf+diagram
