@@ -93,7 +93,7 @@ fn checksum(columns) {
         * ENUM 和 SET 类型按照其对应的 INT 值转换为 UINT64 类型。例如，`SET('a','b','c')` 类型 column 的数据值为 `'a,c'`，则该值将被编码为 `0b101`，即 `5`。
 
     * TIMESTAMP、DATE、DURATION、DATETIME、JSON 和 DECIMAL 类型会被转换为 STRING 类型，然后转换为 UTF8 编码的字节。
-    * CHAR、VARCHAR、VARSTRING、STRING 和 Text、BLOB（包括 TINY、MEDIUM 和 LONG）等字符类型，会直接使用它的字节。
+    * CHAR、VARCHAR、VARSTRING、STRING、TEXT、BLOB（包括 TINY、MEDIUM 和 LONG）等字符类型，会直接使用它的字节。
     * NULL 和 GEOMETRY 类型不会被纳入到 Checksum 计算中，返回空字节。
 
 ## 基于 Golang 的 Avro 数据消费和 Checksum 计算过程解释
