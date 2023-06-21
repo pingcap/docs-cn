@@ -94,7 +94,7 @@ TiDB Lightning（[物理导入模式](/tidb-lightning/tidb-lightning-physical-im
 需要正确设置以下配置参数：
 
 - `region-concurrency`：TiDB Lightning 主逻辑处理的并发度。在并行导入时，可以设置为 CPU 核数的 75%，防止出现资源过载带来 OOM 问题。
-- `send-kv-pairs`：TiDB Lightning 发送给 TiKV 单次请求的 Key、Value 数量，建议按照 send-kv-pairs * row-size < 1 MB 调整该值。v7.2.0 版本会用 `send-kv-size` 代替该参数，且无需单独设置。
+- `send-kv-pairs`：TiDB Lightning 发送给 TiKV 单次请求的 Key、Value 数量，建议按照 send-kv-pairs * row-size < 1 MiB 调整该值。v7.2.0 版本会用 `send-kv-size` 代替该参数，且无需单独设置。
 - `disk-quota`：尽量保证 TiDB Lightning 排序目录空间大于数据源大小。如无法保证，可以设置 `disk-quota` 为 TiDB Lightning 排序目录空间的 80%。此时 TiDB Lightning 会按照 `disk-quota` 的大小为一个批次去排序、写入，导入性能低于完整排序。
 - `GOMEMLIMIT`：TiDB Lightning 采用 Go 语言实现，设置 `GOMEMLIMIT` 为实例内存的 80%，降低因为 Go GC 机制带来的 OOM 概率。
 
