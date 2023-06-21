@@ -76,7 +76,8 @@ BACKUP DATABASE * TO 's3://bucket-name/prefix' SEND_CREDENTIALS_TO_TIKV = FALSE;
 
     - `account-name`：存储账户名
     - `account-key`：访问密钥
-    - `access-tier`：上传对象的存储类别，例如 `Hot`、`Cool`、`Archive`，默认为 `Hot`
+    - `sas-token`：共享访问签名令牌
+    - `access-tier`：上传对象的存储类别，例如 `Hot`、`Cool`、`Archive`，默认值为该存储账户的默认访问层。
 
 </div>
 </SimpleTab>
@@ -185,11 +186,15 @@ BACKUP DATABASE * TO 's3://bucket-name/prefix' SEND_CREDENTIALS_TO_TIKV = FALSE;
 </div>
 <div label="Azure Blob Storage" value="azure">
 
-- 方式一：指定访问密钥
+- 方式一：指定共享访问签名
 
-    在 URI 配置 `account-name` 和 `account-key`，则使用该参数指定的密钥。除了在 URI 中指定密钥文件外，还支持 br 命令行工具读取 `$AZURE_STORAGE_KEY` 的方式。
+    在 URI 中配置 `account-name` 和 `sas-token`，则使用该参数指定的存储账户名和共享访问签名令牌。由于共享访问签名令牌中带有 `&` 的字符，需要将其编码为 `%26` 后再添加到 URI 中。你也可以直接对整个 `sas-token` 进行一次百分号编码。<!-- TODO: add an example -->
 
-- 方式二：使用 Azure AD 备份恢复
+- 方式二：指定访问密钥
+
+    在 URI 中配置 `account-name` 和 `account-key`，则使用该参数指定的存储账户名和密钥。除了在 URI 中指定密钥文件外，还支持 br 命令行工具读取 `$AZURE_STORAGE_KEY` 的方式。
+
+- 方式三：使用 Azure AD 备份恢复
 
     在 br 命令行工具运行环境配置环境变量 `$AZURE_CLIENT_ID`、`$AZURE_TENANT_ID` 和 `$AZURE_CLIENT_SECRET`。
 
