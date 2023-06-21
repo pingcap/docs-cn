@@ -1,11 +1,11 @@
 ---
 title: 50 TB 数据导入最佳实践
-summary: 本文根据大单表导入的经验，总结出了一套导入大量数据的最佳实践，希望对大数据量、大单表导入有所帮助。
+summary: 本文根据导入大单表的经验，总结出了一套导入大量数据的最佳实践，希望对你在导入大数据量、大单表的场景有所帮助。
 ---
 
 # 50 TB 数据导入最佳实践
 
-TiDB Lightning（[物理导入模式](/tidb-lightning/tidb-lightning-physical-import-mode.md)）是一款用于空表导入、空集群初始化的全量和高效的数据导入工具。并且 TiDB Lightning 以文件作为数据源。TiDB Lightning 提供了两种运行方式：单实例和[并行导入](/tidb-lightning/tidb-lightning-distributed-import.md)，满足不同规模的源文件导入。
+TiDB Lightning（[物理导入模式](/tidb-lightning/tidb-lightning-physical-import-mode.md)）是一款用于将离线数据导入空表、空集群的高效的数据导入工具。并且 TiDB Lightning 以文件作为数据源。TiDB Lightning 提供了两种运行方式：单实例和[并行导入](/tidb-lightning/tidb-lightning-distributed-import.md)，满足不同规模的源文件导入。
 
 - 如果源文件数据规模在 10 TB 以内，建议通过单个 TiDB Lightning 实例进行导入。
 - 如果源文件数据规模超过 10 TB，建议通过多个 TiDB Lightning 实例进行[并行导入](/tidb-lightning/tidb-lightning-distributed-import.md)。
@@ -34,7 +34,7 @@ TiDB Lightning（[物理导入模式](/tidb-lightning/tidb-lightning-physical-im
 - 源文件
 
     - 单个文件内数据是否按照主键有序。有序可以达到最优导入性能。
-    - 多个 TiDB Lightning 实例对应的源文件内容是否按照主键有交叠。交叠越小，导入性能越好。
+    - 多个 TiDB Lightning 实例导入的源文件之间，是否存在重叠的主键或者非空唯一索引。重叠越少，导入性能越好。
 
 - 表定义
 
@@ -76,7 +76,7 @@ TiDB Lightning（[物理导入模式](/tidb-lightning/tidb-lightning-physical-im
 ## 准备源文件
 
 - 生成文件时，单个文件内，尽量按照主键排序；如果表定义没有主键，可以添加一个自增主键，此时对文件内容顺序无要求。
-- 多个 TiDB Lightning 实例在划分源文件时，尽量降低主键交叠。如果生成文件时全局有序，可以按照范围划分文件给不同 TiDB Lightning 实例，达到最佳导入效果。
+- 给多个 TiDB Lightning 实例分配要导入的源文件时，尽量避免多个源文件之间存在重叠的主键或非空唯一索引的情况。如果生成文件是全局有序，可以按照范围划分不同的文件给不同 TiDB Lightning 实例进行导入，达到最佳导入效果。
 - 在生成文件时，每个文件尽量控制在 96 MB 以下。
 - 如果文件特别大，超过 256 MB，需要开启 [strict-format](/migrate-from-csv-files-to-tidb.md#第-4-步导入性能优化可选)。
 
@@ -121,11 +121,11 @@ TiDB Lightning（[物理导入模式](/tidb-lightning/tidb-lightning-physical-im
 本小节重点介绍大单表导入的最佳实践。大单表没有严格的定义，一般认为符合以下任一条件者即为大单表：
 
 - 大小超过 10 TB
-- 行数超过 10 亿、列超过 50 的宽表
+- 行数超过 10 亿、列数超过 50 的宽表
 
 ### 准备源文件
 
-根据上述源文件准备的步骤产生源文件，对于大单表，如果你不能做到全局有序，但是可以做到文件内按主键有序，且是标准的 CSV 文件，可以尽量生成单个大文件（每个 20 GB），然后开启 [strict-format](/migrate-from-csv-files-to-tidb.md#第-4-步导入性能优化可选)，既可以降低 TiDB Lightning 实例之间的交叠，又能在导入前由 TiDB Lightning 进行大文件切分，达到最佳的导入速度。
+根据上述源文件准备的步骤产生源文件，对于大单表，如果你不能做到全局有序，但是可以做到文件内按主键有序，且是标准的 CSV 文件，可以尽量生成单个大文件（每个 20 GB），然后开启 [strict-format](/migrate-from-csv-files-to-tidb.md#第-4-步导入性能优化可选)，既可以降低 TiDB Lightning 实例之间导入的数据文件中存在主键和唯一键的重叠，又能在导入前由 TiDB Lightning 实例对大文件进行切分，达到最佳的导入速度。
 
 ### 规划集群拓扑
 
