@@ -2104,6 +2104,16 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 单位：秒
 - 这个变量用来控制打印 expensive query 日志的阈值时间，默认值是 60 秒。expensive query 日志和慢日志的差别是，慢日志是在语句执行完后才打印，expensive query 日志可以把正在执行中的语句且执行时间超过阈值的语句及其相关信息打印出来。
 
+### `tidb_expensive_txn_time_threshold` <span class="version-mark">从 v7.2.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
+- 类型：整数型
+- 默认值：`600`
+- 范围：`[60, 2147483647]`
+- 单位：秒
+- 这个变量用来控制打印 expensive transaction 日志的阈值时间，默认值是 600 秒。expensive transaction 日志会将尚未 COMMIT 或 ROLLBACK 且持续时间超过该阈值的事务的相关信息打印出来。
+
 ### `tidb_force_priority`
 
 - 作用域：GLOBAL
