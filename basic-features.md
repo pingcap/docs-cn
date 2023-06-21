@@ -124,6 +124,7 @@ summary: 了解 TiDB 的功能概览。
 | [添加索引加速](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) | Y | Y | Y | N | N | N | N | N | N | N |
 | [元数据锁](/metadata-lock.md) | Y | Y | Y | N | N | N | N | N | N | N |
 | [`FLASHBACK CLUSTER TO TIMESTAMP`](/sql-statements/sql-statement-flashback-to-timestamp.md) | Y | Y | Y | N | N | N | N | N | N | N |
+| [暂停](/sql-statements/sql-statement-admin-pause-ddl.md)/[恢复](/sql-statements/sql-statement-admin-resume-ddl.md) DDL | E | N | N | N | N | N | N | N | N | N |
 
 ## 事务
 
