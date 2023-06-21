@@ -177,15 +177,24 @@ TiDB 版本：7.2.0
 
     - 优化构造索引扫描范围的逻辑，支持将一些复杂条件转化为索引扫描范围 [#41572](https://github.com/pingcap/tidb/issues/41572) [#44389](https://github.com/pingcap/tidb/issues/44389) @xuyifangreeneyes
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
+- 为 stale read 新增相关监控指标 [#43325](https://github.com/pingcap/tidb/issues/43325) @[you06](https://github.com/you06)
+- 当 stale read retry leader 遇到 lock，resolve lock 之后强制走 leader 避免无谓开销 [#43659](https://github.com/pingcap/tidb/issues/43659) @[you06](https://github.com/you06)
+- 使用估计时间计算 stale read ts，减少 stale read 开销 [#44215](https://github.com/pingcap/tidb/issues/44215) @[you06](https://github.com/you06)
+- 添加 long running 事务日志和系统变量 [#41471](https://github.com/pingcap/tidb/issues/41471) @[crazycs520](https://github.com/crazycs520)
 
 + TiKV
 
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
+    - 使用 gzip 压缩 check leader 请求减少流量消耗   [#14553](https://github.com/tikv/tikv/issues/14553) @[you06](https://github.com/you06)
+    - 添加 check leader 相关 metric [#14658](https://github.com/tikv/tikv/issues/14658) @[you06](https://github.com/you06)
+    - 详细记录 write command 处理时间细节 [#12362](https://github.com/tikv/tikv/issues/12362) @[cfzjywxk](https://github.com/cfzjywxk)
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
 + PD
 
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
+    - PD Leader 选举使用单独的 gRPC 链接，防止受到其他请求的影响 [#6403](https://github.com/tikv/pd/issues/6403) @[rleungx](https://github.com/rleungx)
+    - 默认打开 bucket split，改善 Multi-Region 的热点问题 [#6433](https://github.com/tikv/pd/issues/6433) @[bufferflies](https://github.com/bufferflies)
+    - 新增历史负载信息，避免了存储引擎为 raft-kv2 时，热点调度器对不稳定负载所在的 Region 进行频繁调度 [#6297](https://github.com/tikv/pd/issues/6297) @[bufferflies](https://github.com/bufferflies)
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
 + TiFlash
@@ -227,15 +236,36 @@ TiDB 版本：7.2.0
     - 修复关联子查询中含有 CTE 时可能出现的查询 hang 住的问题 [#36896](https://github.com/pingcap/tidb/issues/36896) @[guo-shaoge](https://github.com/guo-shaoge)
     - 修复某些情况下 max/min 结果出错的问题 [#43805](https://github.com/pingcap/tidb/issues/43508)@[wshwsh12](https://github.com/wshwsh12)
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
-
+    - 修复当 query 包含子查询时，information schema 显示中 `TxnStart` 字段为空的问题 [#40851](https://github.com/pingcap/tidb/issues/40851) @[crazycs520](https://github.com/crazycs520)
+    - 修复 cop task 中 txn scope 缺失导致 stale read global optimization 不生效的问题 [#43365](https://github.com/pingcap/tidb/issues/43365) @[you06](https://github.com/you06)
+    - 修复 follower read 未处理 flashback 错误进行重试导致查询报错的问题 [#43673](https://github.com/pingcap/tidb/issues/43673) @[you06](https://github.com/you06)
+    - 修复 prepared stale read 语句无法读到预期结果机会的问题 [#43044](https://github.com/pingcap/tidb/issues/43044) @[you06](https://github.com/you06)
+    - 修复 on update 语句没有正确更新 primary key 导致数据索引不一致问题 @[zyguan](https://github.com/zyguan)
+    - 修复 RC 模式悲观锁缓存可能导致数据不一致的问题 [43294](https://github.com/pingcap/tidb/issues/43294) @[ekexium](https://github.com/ekexium)
+```suggestion
+ - 修复部分 TiDB 内部 SQL 解析错误问题 [#43392] (https://github.com/pingcap/tidb/issues/43392) @[guo-shaoge](https://github.com/guo-shaoge)
+ - 修改 UNIX_TIMESTAMP 函数的上限为 `3001-01-19 03:14:07.999999 UTC` 和 MySQL 8.0.28+ 保持一致 [#43987](https://github.com/pingcap/tidb/issues/43987) @[YangKeao](https://github.com/YangKeao)
+ - 修复了 add Index 在 ingest 模式下失败的问题 [#44137](https://github.com/pingcap/tidb/issues/44137) @[tangenta](https://github.com/tangenta)
+ - 修复了 cancel 处于在 rollback 状态的 DDL 任务导致相关元数据出错的问题 [#44143](https://github.com/pingcap/tidb/issues/44143)  @[wjhuang2016](https://github.com/wjhuang2016)
+ - 修复了 memtracker 配合 cursor 使用导致内存泄漏的问题 [#44254](https://github.com/pingcap/tidb/issues/44254) @[YangKeao](https://github.com/YangKeao)
+ - 修复了删除 database 导致 GC 推进慢的问题 [#33069](https://github.com/pingcap/tidb/issues/33069) @[tiancaiamao](https://github.com/tiancaiamao)
+ - 修复了分区表在 Index join 的 probe 阶段找不到对应行而报错的问题 [#43686](https://github.com/pingcap/tidb/issues/43686) @[AilinKid](https://github.com/AilinKid) @[mjonss](https://github.com/mjonss)
+ - 修复了创建 subpartition 的报错信息 [#41198](https://github.com/pingcap/tidb/issues/41198) [#41200](https://github.com/pingcap/tidb/issues/41200) @[mjonss](https://github.com/mjonss)
+ - 修复了执行时间超过 `MAX_EXECUTION_TIME` 被 kill 的返回值和 MySQL 不一致的问题 [#43031] (https://github.com/pingcap/tidb/issues/43031) @[dveeden](https://github.com/dveeden)
 + TiKV
 
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
+    - 修复锁堆积优化在老版本升级情况下不生效的问题 #[14780](https://github.com/tikv/tikv/issues/14780) @[ekexium](https://github.com/ekexium)
+    - 修复 fair lock 在出现 stale req 情况下的正确性问题 #[13298](https://github.com/tikv/tikv/issues/13298) @[cfzjywxk](https://github.com/cfzjywxk)
+    - 修复 autocommit point get 在 follower read 情况下线性一致性可能被破坏的问题 #[14715](https://github.com/tikv/tikv/issues/14715) @[cfzjywxkj](https://github.com/cfzjywxk)
 
 + PD
 
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
+    - 修复在特殊情况下冗余副本无法自动修复的问题 [#6573](https://github.com/tikv/pd/issues/6573) @[nolouch](https://github.com/nolouch)
+    - 修复 region health 监控项在 pd leader 发生变化后丢失的问题 [#6366](https://github.com/tikv/pd/issues/6366)@[iosmanthus](https://github.com/iosmanthus)
+    - 修复 nightling 在使用 region label 暂停调度时，导致不健康的副本无法自动修复的问题 [#6426](https://github.com/tikv/pd/issues/6426) @[nolouch](https://github.com/nolouch)
+    - 修复使用 pd control 标记 tikv, tikv 重启后 label 丢失的问题 [#6467](https://github.com/tikv/pd/issues/6467) @[JmPotato](https://github.com/JmPotato)
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
 + TiFlash
@@ -251,7 +281,23 @@ TiDB 版本：7.2.0
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
-    + TiCDC
++ TiCDC
+
+- 优化 CDC 同步任务失败时设置 gc ttl 的方法  [#8403](https://github.com/pingcap/tiflow/issues/8403)
+- 优化 canal-json 协议在发生 update 操作时输出数据的格式  [#8706](https://github.com/pingcap/tiflow/issues/8706)
+- 优化同步到对象存储场景下发生 DDL 时存放数据文件目录的结构  [#8891](https://github.com/pingcap/tiflow/issues/8891)
+- 修复同步到对象存储场下上游执行 exchange partition 命令时不能正常执行的问题  [#8914](https://github.com/pingcap/tiflow/issues/8914)
+- 优化 CDC 同步有损 DDL 时的行为  [#8686](https://github.com/pingcap/tiflow/issues/8686)
+- 增加在 Kafka 场景下 OAuth 认证方式的支持 [#8865](https://github.com/pingcap/tiflow/issues/8865)
+- 修复在某些特殊情况下 resolved ts 不能正常推进的问题  [#8963](https://github.com/pingcap/tiflow/issues/8963)
+- 修复使用 Avro 或 csv 协议场景下 update  操作不能输出旧值的问题  [#9086](https://github.com/pingcap/tiflow/issues/9086)
+- 修复同步到 Kafka 场景下，读取下游 meta 信息太频繁导致下游压力过大的问题  [#8959](https://github.com/pingcap/tiflow/issues/8959)
+- 增加同步到 Kafka 场景下，对于 delete 操作，用户可以只选择输出 handle key 的方式  [#9143](https://github.com/pingcap/tiflow/issues/9143)
+- 修复同步到 TiDB/MySQL场景下频繁设置下游 BDR 相关变量导致下游日志过多的问题   [#9180](https://github.com/pingcap/tiflow/issues/9180)
+- 修复 PD 节点 crash 时导致 CDC节点重启的问题  [#8868](https://github.com/pingcap/tiflow/issues/8868)
+- 优化 CDC 做增量扫时的并发控制逻辑，降低 CDC 节点在 crash 时对同步延时的影响  [#8858](https://github.com/pingcap/tiflow/issues/8858)
+- 修复 TiCDC 同步到 KOP 时不能正确建立链接的问题  [#8892](https://github.com/pingcap/tiflow/issues/8892)
+- 优化 CDC 同步任务失败时设置 gc ttl 的方法  [#8403](https://github.com/pingcap/tiflow/issues/8403)
 
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
