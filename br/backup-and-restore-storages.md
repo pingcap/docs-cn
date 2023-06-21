@@ -76,7 +76,8 @@ This section describes the URI format of the storage services:
 
     - `account-name`: Specifies the account name of the storage.
     - `account-key`: Specifies the access key.
-    - `access-tier`: Specifies the access tier of the uploaded objects, for example, `Hot`, `Cool`, or `Archive`. The value is `Hot` by default.
+    - `sas-token`: Specifies the shared access signature (SAS) token.
+    - `access-tier`: Specifies the access tier of the uploaded objects, for example, `Hot`, `Cool`, or `Archive`. The default value is the default access tier of the storage account.
 
 </div>
 </SimpleTab>
@@ -185,11 +186,15 @@ You can configure the account used to access GCS by specifying the access key. I
 </div>
 <div label="Azure Blob Storage" value="azure">
 
-- Method 1: Specify the access key
+- Method 1: Specify the shared access signature
 
-    If you specify `account-name` and `account-key` in the URI, the authentication is performed using the specified access key and secret access key. Besides the method of specifying the key in the URI, BR can also read the key from the environment variable `$AZURE_STORAGE_KEY`.
+    If you specify `account-name` and `sas-token` in the URI, the authentication is performed using the specified account name and shared access signature (SAS) token. Note that the SAS token contains the `&` character. You need to encode it as `%26` before appending it to the URI. You can also directly encode the entire `sas-token` using percent-encoding.
 
-- Method 2: Use Azure AD for backup and restore
+- Method 2: Specify the access key
+
+    If you specify `account-name` and `account-key` in the URI, the authentication is performed using the specified account name and account key. Besides the method of specifying the key in the URI, BR can also read the key from the environment variable `$AZURE_STORAGE_KEY`.
+
+- Method 3: Use Azure AD for backup and restore
 
     Configure the environment variables `$AZURE_CLIENT_ID`, `$AZURE_TENANT_ID`, and `$AZURE_CLIENT_SECRET` on the node where BR is running.
 
