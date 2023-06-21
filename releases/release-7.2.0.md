@@ -33,7 +33,7 @@ TiDB 版本：7.2.0
 * 降低 TiFlash 等待 schema 同步的时延 [#7630](https://github.com/pingcap/tiflash/issues/7630) @[hongyunyan](https://github.com/hongyunyan) **tw@qiancai** <!--1361-->
 
     当表的 schema 发生变化时，TiFlash 需要及时从 TiKV 同步新的表结构信息。在 v7.2.0 之前，当 TiFlash 访问表数据时，只要检测到数据库中的某张表的 schema 发生了变化，TiFlash 就会重新同步该数据库中所有表的 schema 信息。即使一张表没有 TiFlash 副本，TiFlash 也会同步该表的 schema 信息。当数据库中有大量表时，通过 TiFlash 只读取一张表的数据也可能因为需要等待所有表的 schema 信息同步完成而造成较高的时延。
-    
+
     在 v7.2.0 中，TiFlash 优化了 schema 的同步机制，只同步拥有 TiFlash 副本的表的 schema 信息。当检测到某张有 TiFlash 副本的表的 schema 有变化时，TiFlash 只同步该表的 schema 信息，从而降低了 TiFlash 同步 schema 的时延。该优化自动生效，无须任何设置。
 
 * 提升统计信息收集的性能 [#44725](https://github.com/pingcap/tidb/issues/44725) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes) **tw@hfxsd** <!--1352-->
@@ -41,13 +41,13 @@ TiDB 版本：7.2.0
     TiDB v7.2.0 优化了统计信息的收集策略，会选择跳过一部分重复的信息，以及对优化器价值不高的信息，从而将统计信息收集的整体速度提升了 30%。这一改进有利于 TiDB 更及时地更新数据库对象的统计信息，生成更准确的执行计划，从而提升数据库整体性能。
 
     默认设置下，统计信息收集会跳过类型为 `json`、`blob`、`mediumblob`、`longblob` 的列。你可以通过设置系统变量 [`tidb_analyze_skip_column_types`](/system-variables.md#tidb_analyze_skip_column_types-从-v720-版本开始引入) 来修改默认行为。当前支持设置跳过 `JSON`、`BLOB`、`TEXT` 这几个类型及其子类型。
-    
+
     更多信息，请参考[用户文档](/system-variables.md#tidb_analyze_skip_column_types-从-v720-版本开始引入)。
 
 * 提升数据和索引一致性检查的性能 [#43693](https://github.com/pingcap/tidb/issues/43693) @[wjhuang2016](https://github.com/wjhuang2016) **tw@qiancai** <!--1436-->
 
     [`ADMIN CHECK [TABLE|INDEX]`](/sql-statements/sql-statement-admin-check-table-index.md) 语句用于校验表中数据和对应索引的一致性。在 v7.2.0 中，TiDB 优化了数据一致性的校验方式，大幅提升了 [`ADMIN CHECK [TABLE|INDEX]`](/sql-statements/sql-statement-admin-check-table-index.md) 语句的执行效率，在大数据量场景中性能能够提升百倍。
-    
+
     该优化默认开启 ([`tidb_enable_fast_table_check`](/system-variables.md#tidb_enable_fast_table_check-从-v720-版本开始引入) 默认为 `ON`)，可以大幅减少大型表数据一致性检查的时间， 提升运维体验。
 
     更多信息，请参考[用户文档](/system-variables.md#tidb_enable_fast_table_check-从-v720-版本开始引入)。
@@ -67,21 +67,21 @@ TiDB 版本：7.2.0
 * 增强根据历史执行计划创建绑定的能力 [#39199](https://github.com/pingcap/tidb/issues/39199) @[qw4990](https://github.com/qw4990) **tw@Oreoxmt** <!--1349-->
 
     TiDB v7.2.0 进一步增强[根据历史执行计划创建绑定](/sql-plan-management.md#根据历史执行计划创建绑定)的能力，加强对复杂语句的解析和绑定，使绑定更稳固，并新增支持对以下 Hint 的绑定。
-    
-   - [`AGG_TO_COP()`](/optimizer-hints.md#agg_to_cop)
-   - [`LIMIT_TO_COP()`](/optimizer-hints.md#limit_to_cop)
-   - [`ORDER_INDEX`](/optimizer-hints.md#order_indext1_name-idx1_name--idx2_name) 
-   - [`NO_ORDER_INDEX()`](/optimizer-hints.md#no_order_indext1_name-idx1_name--idx2_name)。
 
-    更多信息，请参考[用户文档](/sql-plan-management.md)。
+    - [`AGG_TO_COP()`](/optimizer-hints.md#agg_to_cop)
+    - [`LIMIT_TO_COP()`](/optimizer-hints.md#limit_to_cop)
+    - [`ORDER_INDEX`](/optimizer-hints.md#order_indext1_name-idx1_name--idx2_name)
+    - [`NO_ORDER_INDEX()`](/optimizer-hints.md#no_order_indext1_name-idx1_name--idx2_name)。
+
+  更多信息，请参考[用户文档](/sql-plan-management.md)。
 
 * 提供 Optimizer Fix Controls 机制对优化器行为进行细粒度控制 [#43169](https://github.com/pingcap/tidb/issues/43169) @[time-and-fate](https://github.com/time-and-fate) **tw@hfxsd**
 
     为了生成更合理的执行计划，TiDB 优化器的行为会随产品迭代而不断演进。但在某些特定场景下，这些变化可能引发性能回退。因此 TiDB 引入了 Optimizer Fix Controls 来控制优化器的一部分细粒度行为，你可以对一些新的变化进行回滚或控制。
 
-    每一个可控的行为，都有一个与 Fix 号码对应的 GitHub Issue 进行说明。所有可控的行为列举在文档 [Optimizer Fix Controls](/optimizer-fix-controls.md) 中。通过设置系统变量 [`tidb_opt_fix_control`](/system-variables.md#tidb_opt_fix_control-从-v710-版本开始引入) 可以为一个或多个行为设置目标值，进而达到行为控制的目的。 
+    每一个可控的行为，都有一个与 Fix 号码对应的 GitHub Issue 进行说明。所有可控的行为列举在文档 [Optimizer Fix Controls](/optimizer-fix-controls.md) 中。通过设置系统变量 [`tidb_opt_fix_control`](/system-variables.md#tidb_opt_fix_control-从-v710-版本开始引入) 可以为一个或多个行为设置目标值，进而达到行为控制的目的。
 
-    Optimizer Fix Controls 机制加强了你对 TiDB 优化器的细粒度管控能力，为升级过程引发的性能问题提供了新的修复手段，提升 TiDB 的稳定性。 
+    Optimizer Fix Controls 机制加强了你对 TiDB 优化器的细粒度管控能力，为升级过程引发的性能问题提供了新的修复手段，提升 TiDB 的稳定性。
 
     更多信息，请参考[用户文档](/optimizer-fix-controls.md)。
 
@@ -115,7 +115,7 @@ TiDB 版本：7.2.0
 * 引入新的 SQL 语句 `IMPORT INTO`，大幅提升导入效率（实验特性）[#42930](https://github.com/pingcap/tidb/issues/42930) @[D3Hunter](https://github.com/D3Hunter) **tw@qiancai** <!--1413-->
 
     `IMPORT INTO` 集成了 TiDB Lightning 的[物理导入模式](/tidb-lightning/tidb-lightning-physical-import-mode.md) 的能力。通过该语句，你可以将 `CSV`、`SQL`、`PARQUET` 等格式的数据快速导入到 TiDB 的一张空表中。这种导入方式无需单独部署和管理 TiDB Lightning，在降低了数据导入难度的同时，大幅提升了数据导入效率。
-    
+
     对于存储在 Amazon S3 或 GCS 的数据文件，在开启了[后端任务分布式框架](/tidb-distributed-execution-framework.md) 后，`IMPORT INTO` 还支持将数据导入任务拆分成多个子任务，并将子任务调度到多个 TiDB 节点并行导入，进一步提升导入性能。
 
     更多信息，请参考[用户文档](sql-statements/sql-statement-import-into.md)。
@@ -142,7 +142,7 @@ TiDB 版本：7.2.0
 
 ### 系统变量
 
-| 变量名  | 修改类型（包括新增/修改/删除）    | 描述 |
+| 变量名  | 修改类型                      | 描述  |
 |--------|------------------------------|------|
 | [`last_insert_id`](/system-variables.md#last_insert_id-从-v530-版本开始引入)  | 修改 |  该变量的最大值从 `9223372036854775807` 修改为 `18446744073709551615`，和 MySQL 保持一致。  |
 | [`tidb_remove_orderby_in_subquery`](/system-variables.md#tidb_remove_orderby_in_subquery-从-v610-版本开始引入) | 修改 | 经进一步的测试后，该变量默认值从 `OFF` 修改为 `ON`，即优化器改写会移除子查询中的 `ORDER BY` 子句。 |
@@ -156,8 +156,6 @@ TiDB 版本：7.2.0
 
 | 配置文件 | 配置项 | 修改类型 | 描述 |
 | -------- | -------- | -------- | -------- |
-|          |          |          |          |
-|          |          |          |          |
 | TiKV | [<code>rocksdb.\[defaultcf\|writecf\|lockcf\].optimize-filters-for-memory</code>](/tikv-configuration-file.md#optimize-filters-for-memory-从-v710-版本开始引入) | 新增 | 控制是否生成能够最小化内存碎片的 Bloom/Ribbon filter。 |
 | TiKV | [<code>rocksdb.\[defaultcf\|writecf\|lockcf\].ribbon-filter-above-level</code>](/tikv-configuration-file.md#ribbon-filter-above-level-从-v710-版本开始引入) | 新增 | 控制是否对于大于等于该值的 level 使用 Ribbon filter，对于小于该值的 level，使用非 block-based bloom filter。 |
 | TiDB Lightning | `send-kv-pairs` | 废弃 | 从 v7.2.0 版本开始，`send-kv-pairs` 不再生效。你可以使用新参数 [`send-kv-size`](/tidb-lightning/tidb-lightning-configuration.md) 来指定物理导入模式下向 TiKV 发送数据时一次请求的最大大小。**tw@hfxsd** <!--1420--> |
@@ -176,18 +174,18 @@ TiDB 版本：7.2.0
 + TiDB
 
     - 优化构造索引扫描范围的逻辑，支持将一些复杂条件转化为索引扫描范围 [#41572](https://github.com/pingcap/tidb/issues/41572) [#44389](https://github.com/pingcap/tidb/issues/44389) @xuyifangreeneyes
+    - 为 stale read 新增相关监控指标 [#43325](https://github.com/pingcap/tidb/issues/43325) @[you06](https://github.com/you06)
+    - 当 stale read retry leader 遇到 lock，resolve lock 之后强制走 leader 避免无谓开销 [#43659](https://github.com/pingcap/tidb/issues/43659) @[you06](https://github.com/you06)
+    - 使用估计时间计算 stale read ts，减少 stale read 开销 [#44215](https://github.com/pingcap/tidb/issues/44215) @[you06](https://github.com/you06)
+    - 添加 long running 事务日志和系统变量 [#41471](https://github.com/pingcap/tidb/issues/41471) @[crazycs520](https://github.com/crazycs520)
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
-- 为 stale read 新增相关监控指标 [#43325](https://github.com/pingcap/tidb/issues/43325) @[you06](https://github.com/you06)
-- 当 stale read retry leader 遇到 lock，resolve lock 之后强制走 leader 避免无谓开销 [#43659](https://github.com/pingcap/tidb/issues/43659) @[you06](https://github.com/you06)
-- 使用估计时间计算 stale read ts，减少 stale read 开销 [#44215](https://github.com/pingcap/tidb/issues/44215) @[you06](https://github.com/you06)
-- 添加 long running 事务日志和系统变量 [#41471](https://github.com/pingcap/tidb/issues/41471) @[crazycs520](https://github.com/crazycs520)
 
 + TiKV
 
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
     - 使用 gzip 压缩 check leader 请求减少流量消耗   [#14553](https://github.com/tikv/tikv/issues/14553) @[you06](https://github.com/you06)
     - 添加 check leader 相关 metric [#14658](https://github.com/tikv/tikv/issues/14658) @[you06](https://github.com/you06)
     - 详细记录 write command 处理时间细节 [#12362](https://github.com/tikv/tikv/issues/12362) @[cfzjywxk](https://github.com/cfzjywxk)
+    - note [#issue](链接) @[贡献者 GitHub ID](链接)
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
 + PD
@@ -242,16 +240,16 @@ TiDB 版本：7.2.0
     - 修复 prepared stale read 语句无法读到预期结果机会的问题 [#43044](https://github.com/pingcap/tidb/issues/43044) @[you06](https://github.com/you06)
     - 修复 on update 语句没有正确更新 primary key 导致数据索引不一致问题 @[zyguan](https://github.com/zyguan)
     - 修复 RC 模式悲观锁缓存可能导致数据不一致的问题 [43294](https://github.com/pingcap/tidb/issues/43294) @[ekexium](https://github.com/ekexium)
-```suggestion
- - 修复部分 TiDB 内部 SQL 解析错误问题 [#43392] (https://github.com/pingcap/tidb/issues/43392) @[guo-shaoge](https://github.com/guo-shaoge)
- - 修改 UNIX_TIMESTAMP 函数的上限为 `3001-01-19 03:14:07.999999 UTC` 和 MySQL 8.0.28+ 保持一致 [#43987](https://github.com/pingcap/tidb/issues/43987) @[YangKeao](https://github.com/YangKeao)
- - 修复了 add Index 在 ingest 模式下失败的问题 [#44137](https://github.com/pingcap/tidb/issues/44137) @[tangenta](https://github.com/tangenta)
- - 修复了 cancel 处于在 rollback 状态的 DDL 任务导致相关元数据出错的问题 [#44143](https://github.com/pingcap/tidb/issues/44143)  @[wjhuang2016](https://github.com/wjhuang2016)
- - 修复了 memtracker 配合 cursor 使用导致内存泄漏的问题 [#44254](https://github.com/pingcap/tidb/issues/44254) @[YangKeao](https://github.com/YangKeao)
- - 修复了删除 database 导致 GC 推进慢的问题 [#33069](https://github.com/pingcap/tidb/issues/33069) @[tiancaiamao](https://github.com/tiancaiamao)
- - 修复了分区表在 Index join 的 probe 阶段找不到对应行而报错的问题 [#43686](https://github.com/pingcap/tidb/issues/43686) @[AilinKid](https://github.com/AilinKid) @[mjonss](https://github.com/mjonss)
- - 修复了创建 subpartition 的报错信息 [#41198](https://github.com/pingcap/tidb/issues/41198) [#41200](https://github.com/pingcap/tidb/issues/41200) @[mjonss](https://github.com/mjonss)
- - 修复了执行时间超过 `MAX_EXECUTION_TIME` 被 kill 的返回值和 MySQL 不一致的问题 [#43031] (https://github.com/pingcap/tidb/issues/43031) @[dveeden](https://github.com/dveeden)
+    - 修复部分 TiDB 内部 SQL 解析错误问题 [#43392] (https://github.com/pingcap/tidb/issues/43392) @[guo-shaoge](https://github.com/guo-shaoge)
+    - 修改 UNIX_TIMESTAMP 函数的上限为 `3001-01-19 03:14:07.999999 UTC` 和 MySQL 8.0.28+ 保持一致 [#43987](https://github.com/pingcap/tidb/issues/43987) @[YangKeao](https://github.com/YangKeao)
+    - 修复了 add Index 在 ingest 模式下失败的问题 [#44137](https://github.com/pingcap/tidb/issues/44137) @[tangenta](https://github.com/tangenta)
+    - 修复了 cancel 处于在 rollback 状态的 DDL 任务导致相关元数据出错的问题 [#44143](https://github.com/pingcap/tidb/issues/44143)  @[wjhuang2016](https://github.com/wjhuang2016)
+    - 修复了 memtracker 配合 cursor 使用导致内存泄漏的问题 [#44254](https://github.com/pingcap/tidb/issues/44254) @[YangKeao](https://github.com/YangKeao)
+    - 修复了删除 database 导致 GC 推进慢的问题 [#33069](https://github.com/pingcap/tidb/issues/33069) @[tiancaiamao](https://github.com/tiancaiamao)
+    - 修复了分区表在 Index join 的 probe 阶段找不到对应行而报错的问题 [#43686](https://github.com/pingcap/tidb/issues/43686) @[AilinKid](https://github.com/AilinKid) @[mjonss](https://github.com/mjonss)
+    - 修复了创建 subpartition 的报错信息 [#41198](https://github.com/pingcap/tidb/issues/41198) [#41200](https://github.com/pingcap/tidb/issues/41200) @[mjonss](https://github.com/mjonss)
+    - 修复了执行时间超过 `MAX_EXECUTION_TIME` 被 kill 的返回值和 MySQL 不一致的问题 [#43031](https://github.com/pingcap/tidb/issues/43031) @[dveeden](https://github.com/dveeden)
+
 + TiKV
 
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
@@ -277,30 +275,27 @@ TiDB 版本：7.2.0
 
     + Backup & Restore (BR)
 
-        - 为外部存储 Azure Blob Storage 提供 SAS (shared access signature) 的访问方式 [#44199](https://github.com/pingcap/tidb/issues/44199) @Leavrth 
+        - 为外部存储 Azure Blob Storage 提供 SAS (shared access signature) 的访问方式 [#44199](https://github.com/pingcap/tidb/issues/44199) @Leavrth
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
-+ TiCDC
+    + TiCDC
 
-- 优化 CDC 同步任务失败时设置 gc ttl 的方法  [#8403](https://github.com/pingcap/tiflow/issues/8403)
-- 优化 canal-json 协议在发生 update 操作时输出数据的格式  [#8706](https://github.com/pingcap/tiflow/issues/8706)
-- 优化同步到对象存储场景下发生 DDL 时存放数据文件目录的结构  [#8891](https://github.com/pingcap/tiflow/issues/8891)
-- 修复同步到对象存储场下上游执行 exchange partition 命令时不能正常执行的问题  [#8914](https://github.com/pingcap/tiflow/issues/8914)
-- 优化 CDC 同步有损 DDL 时的行为  [#8686](https://github.com/pingcap/tiflow/issues/8686)
-- 增加在 Kafka 场景下 OAuth 认证方式的支持 [#8865](https://github.com/pingcap/tiflow/issues/8865)
-- 修复在某些特殊情况下 resolved ts 不能正常推进的问题  [#8963](https://github.com/pingcap/tiflow/issues/8963)
-- 修复使用 Avro 或 csv 协议场景下 update  操作不能输出旧值的问题  [#9086](https://github.com/pingcap/tiflow/issues/9086)
-- 修复同步到 Kafka 场景下，读取下游 meta 信息太频繁导致下游压力过大的问题  [#8959](https://github.com/pingcap/tiflow/issues/8959)
-- 增加同步到 Kafka 场景下，对于 delete 操作，用户可以只选择输出 handle key 的方式  [#9143](https://github.com/pingcap/tiflow/issues/9143)
-- 修复同步到 TiDB/MySQL场景下频繁设置下游 BDR 相关变量导致下游日志过多的问题   [#9180](https://github.com/pingcap/tiflow/issues/9180)
-- 修复 PD 节点 crash 时导致 CDC节点重启的问题  [#8868](https://github.com/pingcap/tiflow/issues/8868)
-- 优化 CDC 做增量扫时的并发控制逻辑，降低 CDC 节点在 crash 时对同步延时的影响  [#8858](https://github.com/pingcap/tiflow/issues/8858)
-- 修复 TiCDC 同步到 KOP 时不能正确建立链接的问题  [#8892](https://github.com/pingcap/tiflow/issues/8892)
-- 优化 CDC 同步任务失败时设置 gc ttl 的方法  [#8403](https://github.com/pingcap/tiflow/issues/8403)
-
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
+        - 优化 CDC 同步任务失败时设置 gc ttl 的方法  [#8403](https://github.com/pingcap/tiflow/issues/8403)
+        - 优化 canal-json 协议在发生 update 操作时输出数据的格式  [#8706](https://github.com/pingcap/tiflow/issues/8706)
+        - 优化同步到对象存储场景下发生 DDL 时存放数据文件目录的结构  [#8891](https://github.com/pingcap/tiflow/issues/8891)
+        - 修复同步到对象存储场下上游执行 exchange partition 命令时不能正常执行的问题  [#8914](https://github.com/pingcap/tiflow/issues/8914)
+        - 优化 CDC 同步有损 DDL 时的行为  [#8686](https://github.com/pingcap/tiflow/issues/8686)
+        - 增加在 Kafka 场景下 OAuth 认证方式的支持 [#8865](https://github.com/pingcap/tiflow/issues/8865)
+        - 修复在某些特殊情况下 resolved ts 不能正常推进的问题  [#8963](https://github.com/pingcap/tiflow/issues/8963)
+        - 修复使用 Avro 或 csv 协议场景下 update  操作不能输出旧值的问题  [#9086](https://github.com/pingcap/tiflow/issues/9086)
+        - 修复同步到 Kafka 场景下，读取下游 meta 信息太频繁导致下游压力过大的问题  [#8959](https://github.com/pingcap/tiflow/issues/8959)
+        - 增加同步到 Kafka 场景下，对于 delete 操作，用户可以只选择输出 handle key 的方式  [#9143](https://github.com/pingcap/tiflow/issues/9143)
+        - 修复同步到 TiDB/MySQL场景下频繁设置下游 BDR 相关变量导致下游日志过多的问题   [#9180](https://github.com/pingcap/tiflow/issues/9180)
+        - 修复 PD 节点 crash 时导致 CDC节点重启的问题  [#8868](https://github.com/pingcap/tiflow/issues/8868)
+        - 优化 CDC 做增量扫时的并发控制逻辑，降低 CDC 节点在 crash 时对同步延时的影响  [#8858](https://github.com/pingcap/tiflow/issues/8858)
+        - 修复 TiCDC 同步到 KOP 时不能正确建立链接的问题  [#8892](https://github.com/pingcap/tiflow/issues/8892)
+        - 优化 CDC 同步任务失败时设置 gc ttl 的方法  [#8403](https://github.com/pingcap/tiflow/issues/8403)
 
     + TiDB Data Migration (DM)
 
