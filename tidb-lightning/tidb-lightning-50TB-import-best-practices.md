@@ -1,17 +1,17 @@
 ---
-title: 50 TB 数据导入最佳实践
+title: 50 TiB 数据导入最佳实践
 summary: 本文根据导入大单表的经验，总结出了一套导入大量数据的最佳实践，希望对你在导入大数据量、大单表的场景有所帮助。
 ---
 
-# 50 TB 数据导入最佳实践
+# 50 TiB 数据导入最佳实践
 
 TiDB Lightning（[物理导入模式](/tidb-lightning/tidb-lightning-physical-import-mode.md)）是一款用于将离线数据导入空表、空集群的高效的数据导入工具。并且 TiDB Lightning 以文件作为数据源。TiDB Lightning 提供了两种运行方式：单实例和[并行导入](/tidb-lightning/tidb-lightning-distributed-import.md)，满足不同规模的源文件导入。
 
-- 如果源文件数据规模在 10 TB 以内，建议通过单个 TiDB Lightning 实例进行导入。
-- 如果源文件数据规模超过 10 TB，建议通过多个 TiDB Lightning 实例进行[并行导入](/tidb-lightning/tidb-lightning-distributed-import.md)。
-- 如果源文件数据规模特别大（比如达到 50 TB 及以上），在使用并行导入的同时，还需要针对源数据特点、表定义、参数配置等进行一定的准备和调优，才能更好、更快的完成大规模的数据导入。
+- 如果源文件数据规模在 10 TiB 以内，建议通过单个 TiDB Lightning 实例进行导入。
+- 如果源文件数据规模超过 10 TiB，建议通过多个 TiDB Lightning 实例进行[并行导入](/tidb-lightning/tidb-lightning-distributed-import.md)。
+- 如果源文件数据规模特别大（比如达到 50 TiB 及以上），在使用并行导入的同时，还需要针对源数据特点、表定义、参数配置等进行一定的准备和调优，才能更好、更快的完成大规模的数据导入。
 
-本文主要介绍了影响 TiDB Lightning 数据导入的一些关键因素及操作步骤。我们在内部环境和客户现场都曾成功导入过 50 TB 以上的大单表数据，基于这些真实的应用场景，沉淀了本文中的最佳实践。这些最佳实践可以帮助你成功导入大型数据。
+本文主要介绍了影响 TiDB Lightning 数据导入的一些关键因素及操作步骤。我们在内部环境和客户现场都曾成功导入过 50 TiB 以上的大单表数据，基于这些真实的应用场景，沉淀了本文中的最佳实践。这些最佳实践可以帮助你成功导入大型数据。
 
 本文中的以下内容同时适用于导入多表和导入大单表：
 
@@ -66,7 +66,7 @@ TiDB Lightning（[物理导入模式](/tidb-lightning/tidb-lightning-physical-im
 
 - 相关 Issue
 
-    在实际导入 50 TB 数据的过程中，存在一些在海量源文件及大规模集群下才会暴露出的一些问题。在选择产品版本时，请检查是否包含对应的 Issue 修复。以下 Issue 在 v6.5.3、v7.1.0 及更新的版本都已修复。
+    在实际导入 50 TiB 数据的过程中，存在一些在海量源文件及大规模集群下才会暴露出的一些问题。在选择产品版本时，请检查是否包含对应的 Issue 修复。以下 Issue 在 v6.5.3、v7.1.0 及更新的版本都已修复。
 
     - [Issue-14745](https://github.com/tikv/tikv/issues/14745)：导入完成后 TiKV Import 目录遗留大量临时文件。
     - [Issue-6426](https://github.com/tikv/pd/issues/6426)：PD [范围调度](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#导入时暂停-pd-调度的范围)接口存在未打散 Region 的情况，导致 Scatter Region 超时。v6.2.0 之前采用停止全局调度的方式，不会出现该问题。
@@ -120,7 +120,7 @@ TiDB Lightning（[物理导入模式](/tidb-lightning/tidb-lightning-physical-im
 
 本小节重点介绍大单表导入的最佳实践。大单表没有严格的定义，一般认为符合以下任一条件者即为大单表：
 
-- 大小超过 10 TB
+- 大小超过 10 TiB
 - 行数超过 10 亿、列数超过 50 的宽表
 
 ### 准备源文件
@@ -129,7 +129,7 @@ TiDB Lightning（[物理导入模式](/tidb-lightning/tidb-lightning-physical-im
 
 ### 规划集群拓扑
 
-TiDB Lightning 按照每个实例处理 5 TB 到 10 TB 源数据进行准备，每个机器节点部署一个 TiDB Lightning 实例，机器节点规格可以参照 [TiDB Lightning 实例必要条件及限制](/tidb-lightning/tidb-lightning-physical-import-mode.md#必要条件及限制)。
+TiDB Lightning 按照每个实例处理 5 TiB 到 10 TiB 源数据进行准备，每个机器节点部署一个 TiDB Lightning 实例，机器节点规格可以参照 [TiDB Lightning 实例必要条件及限制](/tidb-lightning/tidb-lightning-physical-import-mode.md#必要条件及限制)。
 
 ### 调整配置参数
 
