@@ -3552,7 +3552,7 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 类型：布尔型
-- 默认值：`OFF`
+- 默认值：在 v7.2.0 之前版本中为 `OFF`，在 v7.2.0 及之后版本中为 `ON`。
 - 指定是否在子查询中移除 `ORDER BY` 子句。
 
 ### `tidb_replica_read` <span class="version-mark">从 v4.0 版本开始引入</span>
