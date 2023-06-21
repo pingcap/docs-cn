@@ -113,6 +113,7 @@ func assembleEvent(keyMap, valueMap, schema map[string]interface{}, isDelete boo
 * isDelete 用于判断这是不是一个 Delete 事件。
 
 构建 RowChangedEvent 的过程如下：
+
 * 从 schema 中拿出所有的 `fields` 内容，它已经是按照 Column ID 有序排列的，遍历 `fields` 中的每一个元素 `field`，构建对应的列。
 * `field` 中含有每一列的类型信息，利用该信息重建出每一列的 MySQL Type，利用 keyMap，识别到 Handle Key 列，设置相应的 flag。
 * valueMap 中的值，需要经过 [getColumnValue](https://github.com/pingcap/tiflow/blob/eb04aecaf8e61f7f9d67597c2d2ef1f44583dd79/pkg/sink/codec/avro/decoder.go#L299) 转换，主要原因是在编码过程中，因为某些列允许 NULL 存在，此时会把 value 编码成一个 map，解码时就需要应对这种情况，从 map 中拿出具体的值，它是 map 中的第一个元素。如果该列是一个 mysql.TypeEnum 或者 mysql.TypeSet 类型，则需要再映射到它们的数字形式表示上。
