@@ -249,7 +249,7 @@ TiDB 版本：7.2.0
     - 修复了分区表在 Index join 的 probe 阶段找不到对应行而报错的问题 [#43686](https://github.com/pingcap/tidb/issues/43686) @[AilinKid](https://github.com/AilinKid) @[mjonss](https://github.com/mjonss)
     - 修复了创建 subpartition 的报错信息 [#41198](https://github.com/pingcap/tidb/issues/41198) [#41200](https://github.com/pingcap/tidb/issues/41200) @[mjonss](https://github.com/mjonss)
     - 修复了执行时间超过 `MAX_EXECUTION_TIME` 被 kill 的返回值和 MySQL 不一致的问题 [#43031](https://github.com/pingcap/tidb/issues/43031) @[dveeden](https://github.com/dveeden)
-
+- 修复了 Leading Hint 无法支持 query block alias 的问题 [#44645] (https://github.com/pingcap/tidb/issues/44645)  @[qw4990](https://github.com/qw4990)
 + TiKV
 
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
@@ -276,7 +276,9 @@ TiDB 版本：7.2.0
     + Backup & Restore (BR)
 
         - 为外部存储 Azure Blob Storage 提供 SAS (shared access signature) 的访问方式 [#44199](https://github.com/pingcap/tidb/issues/44199) @Leavrth
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
+        - 修复了在一些情况下误报 checksum mismatch 的问题。[#44472](https://github.com/pingcap/tidb/issues/44472) @[Leavrth](https://github.com/Leavrth)
+        - 修复了在一些情况下误报 resolved lock timeout 的问题。[#43236](https://github.com/pingcap/tidb/issues/43236) @[YuJuncen](https://github.com/YuJuncen)
+        - 修复了在恢复统计信息的时候可能会 panic 的问题。[#44490](https://github.com/pingcap/tidb/issues/44490) @[tangenta](https://github.com/tangenta)
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
     + TiCDC
