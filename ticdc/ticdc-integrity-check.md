@@ -113,6 +113,7 @@ Checksum 计算和校验的过程如下：
 1. 调用 [`extractExpectedChecksum`](https://github.com/pingcap/tiflow/blob/eb04aecaf8e61f7f9d67597c2d2ef1f44583dd79/pkg/sink/codec/avro/decoder.go#L281) 方法，获取期望的 Checksum 值。如果该方法返回 `false`，则说明该事件不需要进行 Checksum 校验，因为上游并没有发送 Checksum。这可能发生在 TiCDC 开启了 Checksum 但 TiDB 没有开启该功能时，或者当前事件发生在 Checksum 校验功能开启之前等场景。
 2. 调用 [`calculateChecksum`](https://github.com/pingcap/tiflow/blob/eb04aecaf8e61f7f9d67597c2d2ef1f44583dd79/pkg/sink/codec/avro/decoder.go#L461) 方法，遍历之前重建出来的所有列。利用 [buildChecksumBytes](https://github.com/pingcap/tiflow/blob/eb04aecaf8e61f7f9d67597c2d2ef1f44583dd79/pkg/sink/codec/avro/decoder.go#L482) 方法将每一列的 value 和 MySQL Type 编码为一个字节切片，然后使用该字节切片更新 Checksum 值。
 3. 通过 [`verifyChecksum`](https://github.com/pingcap/tiflow/blob/eb04aecaf8e61f7f9d67597c2d2ef1f44583dd79/pkg/sink/codec/avro/decoder.go#L444) 方法，进行 Checksum 计算和校验。将步骤 2 计算的值与步骤 1 获取的期望值进行比较。如果不相等，则说明 Checksum 校验失败，数据可能存在损坏的情况。
+
 > **注意：**
 >
 > - 开启 Checksum 校验功能后，DECIMAL 和 UNSIGNED BIGINT 类型的数据会被转换为字符串类型。因此在下游消费者代码中需要将其转换为对应的数值类型，然后进行 Checksum 相关计算。
