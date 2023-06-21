@@ -42,9 +42,11 @@ TiDB 版本：7.2.0
     
     更多信息，请参考[用户文档](/system-variables.md#tidb_analyze_skip_column_types-从-v720-版本开始引入)。
 
-* 提升表和索引一致性检查的性能 [#43693](https://github.com/pingcap/tidb/issues/43693) @[wjhuang2016](https://github.com/wjhuang2016) **tw@qiancai** <!--1436-->
+* 提升数据和索引一致性检查的性能 [#43693](https://github.com/pingcap/tidb/issues/43693) @[wjhuang2016](https://github.com/wjhuang2016) **tw@qiancai** <!--1436-->
 
-    [`ADMIN CHECK [TABLE|INDEX]`](/sql-statements/sql-statement-admin-check-table-index.md) 语句用于校验表中数据和对应索引的一致性。在 v7.2.0 中，TiDB 优化了数据一致性的校验方式，大幅提升了 [`ADMIN CHECK [TABLE|INDEX]`](/sql-statements/sql-statement-admin-check-table-index.md) 语句的执行效率，在大数据量场景中性能能够提升百倍。该优化默认开启 ([`tidb_enable_fast_table_check`](/system-variables.md#tidb_enable_fast_table_check-从-v720-版本开始引入) 默认为 `ON`)，可以大幅减少大型表数据一致性检查的时间， 提升运维体验。
+    [`ADMIN CHECK [TABLE|INDEX]`](/sql-statements/sql-statement-admin-check-table-index.md) 语句用于校验表中数据和对应索引的一致性。在 v7.2.0 中，TiDB 优化了数据一致性的校验方式，大幅提升了 [`ADMIN CHECK [TABLE|INDEX]`](/sql-statements/sql-statement-admin-check-table-index.md) 语句的执行效率，在大数据量场景中性能能够提升百倍。
+    
+    该优化默认开启 ([`tidb_enable_fast_table_check`](/system-variables.md#tidb_enable_fast_table_check-从-v720-版本开始引入) 默认为 `ON`)，可以大幅减少大型表数据一致性检查的时间， 提升运维体验。
 
     更多信息，请参考[用户文档](/system-variables.md#tidb_enable_fast_table_check-从-v720-版本开始引入)。
 
