@@ -181,7 +181,9 @@ TiDB 版本：7.2.0
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
 + TiKV
-
+ - 支持配置PDclient的重连间隔 [#14964](https://github.com/tikv/tikv/issues/14964) @[rleungx](https://github.com/rleungx)
+ - resource control提高调度算法将全局的资源使用作为调度因素 [#14604](https://github.com/tikv/tikv/issues/14604) @[Connor1996](https://github.com/Connor1996)
+ - compaction-guard-min-output-file-size默认值从8MB改为1MB [#14888](https://github.com/tikv/tikv/issues/14888) @[tonyxuqqi](https://github.com/tonyxuqqi)
     - 使用 gzip 压缩 check leader 请求减少流量消耗   [#14553](https://github.com/tikv/tikv/issues/14553) @[you06](https://github.com/you06)
     - 添加 check leader 相关 metric [#14658](https://github.com/tikv/tikv/issues/14658) @[you06](https://github.com/you06)
     - 详细记录 write command 处理时间细节 [#12362](https://github.com/tikv/tikv/issues/12362) @[cfzjywxk](https://github.com/cfzjywxk)
@@ -251,7 +253,8 @@ TiDB 版本：7.2.0
     - 修复了执行时间超过 `MAX_EXECUTION_TIME` 被 kill 的返回值和 MySQL 不一致的问题 [#43031](https://github.com/pingcap/tidb/issues/43031) @[dveeden](https://github.com/dveeden)
 - 修复了 Leading Hint 无法支持 query block alias 的问题 [#44645] (https://github.com/pingcap/tidb/issues/44645)  @[qw4990](https://github.com/qw4990)
 + TiKV
-
+    - 修复处理stale悲观锁冲突时不正确的事务返回值. [#13298](https://github.com/tikv/tikv/issues/13298) @[cfzjywxk](https://github.com/cfzjywxk)
+    - 修复in-memory pessimistic locks可能导致flashback失败和数据不一致. [#13303](https://github.com/tikv/tikv/issues/13303) @[JmPotato](https://github.com/JmPotato)
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
     - 修复锁堆积优化在老版本升级情况下不生效的问题 #[14780](https://github.com/tikv/tikv/issues/14780) @[ekexium](https://github.com/ekexium)
