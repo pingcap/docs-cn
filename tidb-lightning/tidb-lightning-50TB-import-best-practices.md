@@ -1,17 +1,17 @@
 ---
 title: 50 TiB 数据导入最佳实践
-summary: 本文根据导入大单表的经验，总结出了一套导入大量数据的最佳实践，希望对你在导入大数据量、大单表的场景有所帮助。
+summary: 根据导入大单表的经验总结出的导入大量数据的一套最佳实践。
 ---
 
 # 50 TiB 数据导入最佳实践
 
-TiDB Lightning（[物理导入模式](/tidb-lightning/tidb-lightning-physical-import-mode.md)）是一款用于将离线数据导入空表、空集群的高效的数据导入工具。并且 TiDB Lightning 以文件作为数据源。TiDB Lightning 提供了两种运行方式：单实例和[并行导入](/tidb-lightning/tidb-lightning-distributed-import.md)，满足不同规模的源文件导入。
+TiDB Lightning（[物理导入模式](/tidb-lightning/tidb-lightning-physical-import-mode.md)）是一款用于将离线数据导入空表、空集群的高效的数据导入工具。TiDB Lightning 以文件作为数据源，提供了单实例和[并行导入](/tidb-lightning/tidb-lightning-distributed-import.md)两种运行方式，以满足不同规模的源文件导入。
 
 - 如果源文件数据规模在 10 TiB 以内，建议通过单个 TiDB Lightning 实例进行导入。
 - 如果源文件数据规模超过 10 TiB，建议通过多个 TiDB Lightning 实例进行[并行导入](/tidb-lightning/tidb-lightning-distributed-import.md)。
-- 如果源文件数据规模特别大（比如达到 50 TiB 及以上），在使用并行导入的同时，还需要针对源数据特点、表定义、参数配置等进行一定的准备和调优，才能更好、更快的完成大规模的数据导入。
+- 如果源文件数据规模特别大（比如达到 50 TiB 及以上），在使用并行导入的同时，还需要针对源数据特点、表定义、参数配置等进行一定的准备和调优，才能更好、更快地完成大规模的数据导入。
 
-本文主要介绍了影响 TiDB Lightning 数据导入的一些关键因素及操作步骤。我们在内部环境和客户现场都曾成功导入过 50 TiB 以上的大单表数据，基于这些真实的应用场景，沉淀了本文中的最佳实践。这些最佳实践可以帮助你成功导入大型数据。
+本文主要介绍影响 TiDB Lightning 数据导入的一些关键因素和操作步骤。PingCAP 在内部环境和客户现场都曾成功导入过 50 TiB 以上的大单表数据，基于这些真实的应用场景，沉淀了本文中的最佳实践，希望可以帮你成功导入大规模数据。
 
 本文中的以下内容同时适用于导入多表和导入大单表：
 
