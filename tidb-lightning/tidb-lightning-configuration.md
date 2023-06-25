@@ -207,6 +207,7 @@ data-source-dir = "/data/my_database"
 #  - utf8mb4：表结构文件必须使用 UTF-8 编码，否则会报错。
 #  - gb18030：表结构文件必须使用 GB-18030 编码，否则会报错。
 #  - auto：自动判断文件编码是 UTF-8 还是 GB-18030，两者皆非则会报错（默认）。
+#  - latin1：源数据文件使用 MySQL latin1 字符集编码（也被称为 Code Page 1252）。
 #  - binary：不尝试转换编码。
 character-set = "auto"
 
@@ -215,6 +216,7 @@ character-set = "auto"
 #  - utf8mb4：源数据文件使用 UTF-8 编码。
 #  - GB18030：源数据文件使用 GB-18030 编码。
 #  - GBK：源数据文件使用 GBK 编码（GBK 编码是对 GB-2312 字符集的拓展，也被称为 Code Page 936）。
+#  - latin1：源数据文件使用 MySQL latin1 字符集编码（也被称为 Code Page 1252）。
 #  - binary：不尝试转换编码（默认）。
 # 留空此配置将默认使用 "binary"，即不尝试转换编码。
 # 需要注意的是，Lightning 不会对源数据文件的字符集做假定，仅会根据此配置对数据进行转码并导入。
