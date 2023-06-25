@@ -573,7 +573,7 @@ I/O rate limiter 相关的配置项。
 
 ### `retry-interval`
 
-+ 初始化 PD 连接时的重试间隔。
++ PD 连接时的重试间隔。
 + 默认值：`"300ms"`
 
 ### `retry-log-every`
