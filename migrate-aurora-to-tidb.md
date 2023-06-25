@@ -68,7 +68,7 @@ sorted-kv-dir = "${path}"
 data-source-dir = "s3://my-bucket/schema-backup"
 ```
 
-如果需要在 TiDB 开启 TLS，请参考 [TiDB Lightning Configuration](/tidb-lightning/tidb-lightning-configuration.md)。
+如果需要在 TiDB 开启 TLS，请参考 [TiDB Lightning 配置参数](/tidb-lightning/tidb-lightning-configuration.md)。
 
 #### 1.3 导入 schema 文件
 
@@ -141,7 +141,7 @@ table = '$2'
 type = '$3'
 ```
 
-如果需要在 TiDB 开启 TLS，请参考 [TiDB Lightning Configuration](/tidb-lightning/tidb-lightning-configuration.md)。
+如果需要在 TiDB 开启 TLS，请参考 [TiDB Lightning 配置参数](/tidb-lightning/tidb-lightning-configuration.md)。
 
 #### 2.3 导入全量数据到 TiDB
 
