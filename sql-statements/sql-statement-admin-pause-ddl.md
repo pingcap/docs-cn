@@ -7,7 +7,7 @@ summary: TiDB 数据库中 ADMIN PAUSE DDL JOBS 的使用概况。
 
 `ADMIN PAUSE DDL` 语句用于暂停当前正在运行的 DDL 作业。可以通过 [`ADMIN SHOW DDL JOBS`](/sql-statements/sql-statement-admin-show-ddl.md) 语句获取 DDL 作业的 `job_id`。
 
-该语句可用于暂停已经提交但未执行完成的 DDL 任务。成功暂停后，执行 DDL 任务的 SQL 语句不会立即返回，表现为正在执行。如果尝试暂停一个已经完成的 DDL 任务，会在 `RESULT` 列看到 `DDL Job:90 not found` 的错误，表示该任务已从 DDL 等待队列中被移除。
+该语句可用于暂停已经发起但未执行完成的 DDL 任务。成功暂停后，执行 DDL 任务的 SQL 语句不会立即返回，表现为正在执行。如果尝试暂停一个已经完成的 DDL 任务，会在 `RESULT` 列看到 `DDL Job:90 not found` 的错误，表示该任务已从 DDL 等待队列中被移除。
 
 > **注意：**
 >
