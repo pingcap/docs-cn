@@ -628,6 +628,7 @@
     - [TiFlash 数据落盘](/tiflash/tiflash-spill-disk.md)
     - [TiFlash 数据校验](/tiflash/tiflash-data-validation.md)
     - [TiFlash 兼容性说明](/tiflash/tiflash-compatibility.md)
+    - [TiFlash Pipeline Model 执行模型](/tiflash/tiflash-pipeline-model.md)
   - [系统变量](/system-variables.md)
   - 配置文件参数
     - [tidb-server](/tidb-configuration-file.md)
