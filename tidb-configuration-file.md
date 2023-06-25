@@ -535,19 +535,11 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 ### `stats-load-concurrency` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 
-> **警告：**
->
-> 统计信息同步加载功能目前为实验性特性，不建议在生产环境中使用。
-
 + TiDB 统计信息同步加载功能可以并发处理的最大列数
 + 默认值：5
 + 目前的合法值范围：`[1, 128]`
 
 ### `stats-load-queue-size` <span class="version-mark">从 v5.4.0 版本开始引入</span>
-
-> **警告：**
->
-> 统计信息同步加载功能目前为实验性特性，不建议在生产环境中使用。
 
 + 用于设置 TiDB 统计信息同步加载功能最多可以缓存多少列的请求
 + 默认值：1000
@@ -563,10 +555,6 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：false
 
 ### `lite-init-stats` <span class="version-mark">从 v7.1.0 版本开始引入</span>
-
-> **警告：**
->
-> 该变量控制的功能目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
 
 + 用于控制 TiDB 启动时是否采用轻量级的统计信息初始化。
 + 默认值：在 v7.2.0 之前版本中为 `false`，在 v7.2.0 及之后的版本中为 `true`。
