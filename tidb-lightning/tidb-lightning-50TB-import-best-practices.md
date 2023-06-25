@@ -147,7 +147,7 @@ TiDB Lightning（[物理导入模式](/tidb-lightning/tidb-lightning-physical-im
 
 ### 关闭执行计划 `analyze`
 
-当存在单个大表的情况，建议关闭 `analyze`（`analyze="off"`）。在导入结束后，再手动执行 [ANALYZE TABLE](/sql-statements/sql-statement-analyze-table.md#analyze)。
+当存在单个大表的情况，建议关闭 `analyze`（`analyze="off"`）。在导入结束后，再手动执行 [ANALYZE TABLE](/sql-statements/sql-statement-analyze-table.md)。
 
 关于 `analyze` 的相关配置，请参考 [TiDB Lightning 任务配置](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置)。
 
