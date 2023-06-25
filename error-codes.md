@@ -395,15 +395,15 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 8260
 
-    DDL 操作无法被 `admin pause` 暂停运行。
+    DDL 操作无法被 `ADMIN PAUSE`` 暂停运行。
 
 * Error Number: 8261
 
-    DDL 操作无法被 `admin resume` 恢复运行。
+    DDL 操作无法被 `ADMIN RESUME` 恢复运行。
 
 * Error Number: 8262
 
-    DDL 已经被 `admin pause` 暂停，无法再次执行。
+    DDL 已经被 `ADMIN PAUSE` 暂停，无法再次执行。
 
 * Error Number: 9001
 
