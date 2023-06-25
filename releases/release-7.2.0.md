@@ -211,11 +211,11 @@ TiDB 版本：7.2.0
         - 增加在 Kafka 场景下 OAuth 认证方式的支持 [#8865](https://github.com/pingcap/tiflow/issues/8865)
         - 增加同步到 Kafka 场景下，对于 delete 操作，用户可以只选择输出 handle key 的方式 [#9143](https://github.com/pingcap/tiflow/issues/9143)
 
-    + TiDB Data Migration (DM)
+    + TiDB Data Migration (DM) <!--**tw@hfxsd**-->
 
         - 支持 MySQL 8.0 压缩 binlog 的增量同步 [#6381](https://github.com/pingcap/tiflow/issues/6381) @[dveeden](https://github.com/dveeden)
 
-    + TiDB Lightning
+    + TiDB Lightning <!--**tw@ran-huang**-->
 
        - 优化导入时遇到 leader 切换导致的错误的重试机制 [#44478](https://github.com/pingcap/tidb/pull/44478)
        - 导入完成后通过 SQL 的方式校验 checksum，提升检验的稳定性 [#41941](https://github.com/pingcap/tidb/issues/41941)
@@ -286,7 +286,7 @@ TiDB 版本：7.2.0
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
-    + TiDB Lightning
+    + TiDB Lightning <!--**tw@hfxsd**-->
 
         - 修复开启 expression index 且默认值是 uuid 导致 lightning panic 的问题 [#44516](https://github.com/pingcap/tidb/pull/44516)
         - 修复划分数据文件时任务退出导致 lightning panic 的问题 [#43195](https://github.com/pingcap/tidb/issues/43195)
