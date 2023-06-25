@@ -23,13 +23,13 @@ TiDB Lightning（[物理导入模式](/tidb-lightning/tidb-lightning-physical-im
 - [开启断点续传](#开启断点续传)
 - [故障处理](#故障处理)
 
-由于导入大单表的特殊性，以下章节单独介绍了相关最佳实践：
+由于导入大单表有一些特殊要求，以下章节单独介绍了相关最佳实践：
 
 - [导入大单表的最佳实践](#导入大单表的最佳实践)
 
 ## 关键因素
 
-在导入数据时，有一些关键因素会影响导入性能，甚至可能导致导入失败。一些常见的关键因素如下：
+在导入大量数据时，以下关键因素会影响导入性能，甚至可能导致导入失败：
 
 - 源文件
 
@@ -38,19 +38,19 @@ TiDB Lightning（[物理导入模式](/tidb-lightning/tidb-lightning-physical-im
 
 - 表定义
 
-    - 每个表二级索引数量、大小会影响导入速度。索引越少，导入越快，导入后空间占用越小。
+    - 每个表二级索引数量、大小会影响导入速度。索引越少，导入越快，导入后占用空间越小。
     - 索引数据大小 = 索引数量 \* 索引大小 \* 数据行数。
 
 - 压缩率
 
-    数据导入 TiDB 集群后会被压缩存储，而压缩率无法预先计算，只有数据真正导入到 TiKV 集群后才能知道。可以先导入少量数据（如 10%），获取到集群对应的压缩率，然后以此作为全部数据导入后的压缩率。
+    数据导入 TiDB 集群后会被压缩存储，而压缩率无法预先计算，只有数据真正导入到 TiKV 集群后才能知道。可以先尝试导入少量数据（如 10%），获取到集群对应的压缩率，然后以此作为全部数据导入后的压缩率。
 
 - 配置参数
 
-    以下配置参数的设置也会影响数据导入：
+    以下配置参数的设置也会影响导入性能：
 
     - `region-concurrency`：TiDB Lightning 主逻辑处理的并发度。
-    - `send-kv-pairs`：TiDB Lightning 发送给 TiKV 单次请求的 Key、Value 数量。
+    - `send-kv-pairs`：TiDB Lightning 发送给 TiKV 单次请求中发送的 KV 数量。
     - `disk-quota`：使用物理导入模式时，配置 TiDB Lightning 本地临时文件使用的磁盘配额 (disk quota)。
     - `GOMEMLIMIT`：TiDB Lightning 采用 Go 语言实现，需要合理配置 `GOMEMLIMIT`。
 
@@ -58,15 +58,15 @@ TiDB Lightning（[物理导入模式](/tidb-lightning/tidb-lightning-physical-im
 
 - 数据校验
 
-    数据和索引导入完成后，会对每个表执行 [`ADMIN CHECKSUM`](/sql-statements/sql-statement-admin-checksum-table.md)，然后跟 TiDB Lightning 本地 Checksum 值做对比。当有很多表或单个表行数很多时，Checksum 阶段耗时会很长。
+    数据和索引导入完成后，会对每个表执行 [`ADMIN CHECKSUM`](/sql-statements/sql-statement-admin-checksum-table.md)，然后和 TiDB Lightning 本地 Checksum 值做对比。当有很多表或单个表有很多行时，Checksum 阶段耗时会很长。
 
 - 执行计划
 
-    Checksum 通过后会对每个表执行 [`ANALYZE TABLE`](/sql-statements/sql-statement-analyze-table.md)，构建最佳的执行计划。当有很多表或单个表很大时，ANALYZE 阶段耗时会很长。
+    Checksum 通过后，会对每个表执行 [`ANALYZE TABLE`](/sql-statements/sql-statement-analyze-table.md)，构建最佳的执行计划。当有很多表或单个表很大时，ANALYZE 阶段耗时会很长。
 
 - 相关 Issue
 
-    在实际导入 50 TiB 数据的过程中，存在一些在海量源文件及大规模集群下才会暴露出的一些问题。在选择产品版本时，请检查是否包含对应的 Issue 修复。以下 Issue 在 v6.5.3、v7.1.0 及更新的版本都已修复。
+    在实际导入 50 TiB 数据的过程中，存在一些在海量源文件及大规模集群下才会暴露出的一些问题。在选择产品版本时，请检查该版本是否已经修复了某些影响导入性能的 Issue。以下 Issue 在 v6.5.3、v7.1.0 及更新的版本都已修复。
 
     - [Issue-14745](https://github.com/tikv/tikv/issues/14745)：导入完成后 TiKV Import 目录遗留大量临时文件。
     - [Issue-6426](https://github.com/tikv/pd/issues/6426)：PD [范围调度](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#导入时暂停-pd-调度的范围)接口存在未打散 Region 的情况，导致 Scatter Region 超时。v6.2.0 之前采用停止全局调度的方式，不会出现该问题。
@@ -75,7 +75,7 @@ TiDB Lightning（[物理导入模式](/tidb-lightning/tidb-lightning-physical-im
 
 ## 准备源文件
 
-- 生成文件时，单个文件内，尽量按照主键排序；如果表定义没有主键，可以添加一个自增主键，此时对文件内容顺序无要求。
+- 在生成文件时，在单个文件内尽量按照主键排序；如果表定义没有主键，可以添加一个自增主键，此时对文件内容顺序无要求。
 - 给多个 TiDB Lightning 实例分配要导入的源文件时，尽量避免多个源文件之间存在重叠的主键或非空唯一索引的情况。如果生成文件是全局有序，可以按照范围划分不同的文件给不同 TiDB Lightning 实例进行导入，达到最佳导入效果。
 - 在生成文件时，每个文件尽量控制在 96 MiB 以下。
 - 如果文件特别大，超过 256 MiB，需要开启 [strict-format](/migrate-from-csv-files-to-tidb.md#第-4-步导入性能优化可选)。
@@ -85,7 +85,7 @@ TiDB Lightning（[物理导入模式](/tidb-lightning/tidb-lightning-physical-im
 目前有以下两种有效的空间预估方法：
 
 - 假设数据总大小为 A，索引总大小为 B，副本数为 3，压缩率为 α（一般在在 2.5 左右），则总的占用空间为：(A+B)*3/α。该方法主要用于不进行任何数据导入时的估算，以此规划集群拓扑。
-- 预先导入 10% 的数据，实际占用空间再乘以 10，即可认为是该批数据最终的空间占用。该方法更加准确，尤其是对于导入大量数据时比较有效。
+- 预先导入 10% 的数据，实际占用空间再乘以 10，即可认为是该批数据最终的占用空间。该方法更加准确，尤其是对于导入大量数据时比较有效。
 
 注意要预留 20% 的存储空间，后台任务如压缩、复制快照等会使用部分存储空间。
 
@@ -94,7 +94,7 @@ TiDB Lightning（[物理导入模式](/tidb-lightning/tidb-lightning-physical-im
 需要正确设置以下配置参数：
 
 - `region-concurrency`：TiDB Lightning 主逻辑处理的并发度。在并行导入时，可以设置为 CPU 核数的 75%，防止出现资源过载带来 OOM 问题。
-- `send-kv-pairs`：TiDB Lightning 发送给 TiKV 单次请求的 Key、Value 数量，建议按照 send-kv-pairs * row-size < 1 MiB 调整该值。v7.2.0 版本会用 `send-kv-size` 代替该参数，且无需单独设置。
+- `send-kv-pairs`：TiDB Lightning 发送给 TiKV 单次请求中发送的 KV 数量。建议按照 send-kv-pairs * row-size < 1 MiB 调整该值。v7.2.0 版本会用 `send-kv-size` 代替该参数，且无需单独设置。
 - `disk-quota`：尽量保证 TiDB Lightning 排序目录空间大于数据源大小。如无法保证，可以设置 `disk-quota` 为 TiDB Lightning 排序目录空间的 80%。此时 TiDB Lightning 会按照 `disk-quota` 的大小为一个批次去排序、写入，导入性能低于完整排序。
 - `GOMEMLIMIT`：TiDB Lightning 采用 Go 语言实现，设置 `GOMEMLIMIT` 为实例内存的 80%，降低因为 Go GC 机制带来的 OOM 概率。
 
@@ -104,9 +104,9 @@ TiDB Lightning（[物理导入模式](/tidb-lightning/tidb-lightning-physical-im
 
 在数据校验过程中，可能会出现冲突数据，报错信息为："checksum mismatch"。出现该问题，可以按照以下思路解决：
 
-1. 排查源数据是否有主键、唯一键冲突，解决冲突后再重新导入。从过往经验来看，这是主要原因及解决方式。
-2. 表主键、唯一键定义是否合理。如果不合理，更改表定义后重新导入。
-3. 开启[冲突检测功能](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#冲突数据检测)。该功能是在上述两个步骤排查后，认为源数据中有少量（低于 10%）不可预期的冲突数据，需要 TiDB Lightning 帮助检测、解决冲突数据。
+1. 排查源数据是否有主键、唯一键冲突，解决冲突后再重新导入。根据以往经验，主键和唯一键冲突是导致该报错的主要原因。
+2. 表的主键、唯一键定义是否合理。如果不合理，更改表定义后重新导入。
+3. 如果按上述两个步骤操作后仍未解决问题，需要进一步判断源数据中是否有少量（低于 10%）不可预期的冲突数据。如果需要 TiDB Lightning 帮助检测、解决冲突数据，需要开启[冲突检测功能](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#冲突数据检测)。
 
 ## 开启断点续传
 
@@ -125,21 +125,21 @@ TiDB Lightning（[物理导入模式](/tidb-lightning/tidb-lightning-physical-im
 
 ### 准备源文件
 
-根据上述源文件准备的步骤产生源文件，对于大单表，如果你不能做到全局有序，但是可以做到文件内按主键有序，且是标准的 CSV 文件，可以尽量生成单个大文件（每个 20 GiB），然后开启 [strict-format](/migrate-from-csv-files-to-tidb.md#第-4-步导入性能优化可选)，既可以降低 TiDB Lightning 实例之间导入的数据文件中存在主键和唯一键的重叠，又能在导入前由 TiDB Lightning 实例对大文件进行切分，达到最佳的导入速度。
+根据上述源文件准备的步骤产生源文件，对于大单表，如果不能做到全局有序，但是可以做到文件内按主键有序，且是标准的 CSV 文件，可以尽量生成单个大文件（例如每个 20 GiB），然后开启 [strict-format](/migrate-from-csv-files-to-tidb.md#第-4-步导入性能优化可选)，既可以降低 TiDB Lightning 实例之间导入的数据文件中存在主键和唯一键的重叠，又能在导入前由 TiDB Lightning 实例对大文件进行切分，达到最佳的导入速度。
 
 ### 规划集群拓扑
 
-TiDB Lightning 按照每个实例处理 5 TiB 到 10 TiB 源数据进行准备，每个机器节点部署一个 TiDB Lightning 实例，机器节点规格可以参照 [TiDB Lightning 实例必要条件及限制](/tidb-lightning/tidb-lightning-physical-import-mode.md#必要条件及限制)。
+按照每个 TiDB Lightning 实例处理 5 TiB 到 10 TiB 源数据进行准备，每个机器节点部署一个 TiDB Lightning 实例。机器节点规格可以参照 [TiDB Lightning 实例必要条件及限制](/tidb-lightning/tidb-lightning-physical-import-mode.md#必要条件及限制)。
 
 ### 调整配置参数
 
 需要调整以下配置参数：
 
 - `region-concurrency` 设置为 TiDB Lightning 实例核数的 75%。
-- `send-kv-pairs` 设置为 `3200`。适用于 v7.1.0 及更早的版本。v7.2.0 开始引入了 `send-kv-size` 参数，无需配置。
+- `send-kv-pairs` 设置为 `3200`。适用于 v7.1.0 及更早的版本。v7.2.0 开始引入了 `send-kv-size` 参数代替 `send-kv-pairs`，改参数无需配置。
 - `GOMEMLIMIT` 调整为实例所在节点内存的 80%。
 
-如果导入过程中发现 PD Scatter Region 的时延超过 30 分钟，可以从以下维度调优：
+如果导入过程中发现 PD Scatter Region 的时延超过 30 分钟，可以从以下维度进行调优：
 
 - 排查 TiKV 集群是否遇到 IO 瓶颈。
 - 调高 TiKV `raftstore.apply-pool-size`，从默认值 `2` 调整为 `4` 或 `8`。
