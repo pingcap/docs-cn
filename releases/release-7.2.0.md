@@ -207,9 +207,9 @@ TiDB 版本：7.2.0
 
     + TiCDC <!--**tw@hfxsd**-->
 
-        - 优化同步到对象存储场景下发生 DDL 时存放数据文件目录的结构 [#8891](https://github.com/pingcap/tiflow/issues/8891)
-        - 增加在 Kafka 场景下 OAuth 认证方式的支持 [#8865](https://github.com/pingcap/tiflow/issues/8865)
-        - 增加同步到 Kafka 场景下，对于 delete 操作，用户可以只选择输出 handle key 的方式 [#9143](https://github.com/pingcap/tiflow/issues/9143)
+        - 优化同步到对象存储场景下发生 DDL 时存放数据文件目录的结构 [#8891](https://github.com/pingcap/tiflow/issues/8891) @[CharlesCheung96](https://github.com/CharlesCheung96)
+        - 增加在 Kafka 场景下支持 OAUTHBEARER 认证方式 [#8865](https://github.com/pingcap/tiflow/issues/8865) @[hi-rustin](https://github.com/hi-rustin)
+        - 增加同步到 Kafka 场景下，对于 `DELETE` 操作，支持选择只输出 Handle Key [#9143](https://github.com/pingcap/tiflow/issues/9143) @[3AceShowHand](https://github.com/3AceShowHand)
 
     + TiDB Data Migration (DM) <!--**tw@hfxsd**-->
 
@@ -268,18 +268,18 @@ TiDB 版本：7.2.0
 
     + Backup & Restore (BR) <!--**tw@hfxsd**-->
 
-        - 修复了在一些情况下误报 checksum mismatch 的问题 [#44472](https://github.com/pingcap/tidb/issues/44472) @[Leavrth](https://github.com/Leavrth)
-        - 修复了在一些情况下误报 resolved lock timeout 的问题 [#43236](https://github.com/pingcap/tidb/issues/43236) @[YuJuncen](https://github.com/YuJuncen)
-        - 修复了在恢复统计信息的时候可能会 panic 的问题 [#44490](https://github.com/pingcap/tidb/issues/44490) @[tangenta](https://github.com/tangenta)
+        - 修复某些情况下误报 `checksum mismatch` 的问题 [#44472](https://github.com/pingcap/tidb/issues/44472) @[Leavrth](https://github.com/Leavrth)
+        - 修复某些情况下误报 `resolved lock timeout` 的问题 [#43236](https://github.com/pingcap/tidb/issues/43236) @[YuJuncen](https://github.com/YuJuncen)
+        - 修复在恢复统计信息的时候可能会 panic 的问题 [#44490](https://github.com/pingcap/tidb/issues/44490) @[tangenta](https://github.com/tangenta)
 
     + TiCDC <!--**tw@hfxsd**-->
 
-        - 修复在某些特殊情况下 resolved ts 不能正常推进的问题 [#8963](https://github.com/pingcap/tiflow/issues/8963)
-        - 修复使用 Avro 或 csv 协议场景下 update  操作不能输出旧值的问题 [#9086](https://github.com/pingcap/tiflow/issues/9086)
-        - 修复同步到 Kafka 场景下，读取下游 meta 信息太频繁导致下游压力过大的问题 [#8959](https://github.com/pingcap/tiflow/issues/8959)
-        - 修复同步到 TiDB/MySQL场景下频繁设置下游 BDR 相关变量导致下游日志过多的问题 [#9180](https://github.com/pingcap/tiflow/issues/9180)
-        - 修复 PD 节点 crash 时导致 CDC节点重启的问题 [#8868](https://github.com/pingcap/tiflow/issues/8868)
-        - 修复 TiCDC 同步到 KOP 时不能正确建立链接的问题 [#8892](https://github.com/pingcap/tiflow/issues/8892)
+        - 修复在某些特殊情况下 Resolved TS 不能正常推进的问题 [#8963](https://github.com/pingcap/tiflow/issues/8963) @[CharlesCheung96](https://github.com/CharlesCheung96)
+        - 修复使用 Avro 或 CSV 协议场景下 `UPDATE` 操作不能输出旧值的问题 [#9086](https://github.com/pingcap/tiflow/issues/9086) @[3AceShowHand](https://github.com/3AceShowHand)
+        - 修复同步到 Kafka 场景下，读取下游 Metadata 太频繁导致下游压力过大的问题 [#8959](https://github.com/pingcap/tiflow/issues/8959) @[hi-rustin](https://github.com/hi-rustin)
+        - 修复同步到 TiDB 或 MySQL 场景下，频繁设置下游 BDR 相关变量导致下游日志过多的问题 [#9180](https://github.com/pingcap/tiflow/issues/9180) @[asddongmen](https://github.com/asddongmen)
+        - 修复 PD 节点宕机导致 TiCDC 节点重启的问题 [#8868](https://github.com/pingcap/tiflow/issues/8868) @[asddongmen](https://github.com/asddongmen)
+        - 修复 TiCDC 同步到 KOP 时不能正确建立链接的问题 [#8892](https://github.com/pingcap/tiflow/issues/8892) @[hi-rustin](https://github.com/hi-rustin)
 
     + TiDB Data Migration (DM)
 
@@ -288,8 +288,8 @@ TiDB 版本：7.2.0
 
     + TiDB Lightning <!--**tw@hfxsd**-->
 
-        - 修复开启 expression index 且默认值是 uuid 导致 lightning panic 的问题 [#44516](https://github.com/pingcap/tidb/pull/44516)
-        - 修复划分数据文件时任务退出导致 lightning panic 的问题 [#43195](https://github.com/pingcap/tidb/issues/43195)
+        - 修复开启 `experimental.allow-expression-index` 且默认值是 UUID 时导致 TiDB Lightning panic 的问题 [#44497](https://github.com/pingcap/tidb/issues/44497) @[lichunzhu](https://github.com/lichunzhu)
+        - 修复划分数据文件时任务退出导致 TiDB Lightning panic 的问题 [#43195](https://github.com/pingcap/tidb/issues/43195) @[lance6716](https://github.com/lance6716)
 
 ## 贡献者
 
