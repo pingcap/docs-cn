@@ -213,13 +213,13 @@ TiDB 版本：7.2.0
 
     + TiDB Data Migration (DM)
 
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
+        - 支持 MySQL 8.0 压缩 binlog 的增量同步 [#6381](https://github.com/pingcap/tiflow/issues/6381) @[dveeden](https://github.com/dveeden)
 
     + TiDB Lightning
 
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
+       - 优化导入时遇到 leader 切换导致的错误的重试机制 [#44478](https://github.com/pingcap/tidb/pull/44478)
+       - 导入完成后通过 SQL 的方式校验 checksum，提升检验的稳定性 [#41941](https://github.com/pingcap/tidb/issues/41941)
+       - 优化宽表导入下 lightning OOM 的问题 [43853](https://github.com/pingcap/tidb/issues/43853)
 
 ## 错误修复
 
@@ -245,6 +245,9 @@ TiDB 版本：7.2.0
     - 修复了执行时间超过 `MAX_EXECUTION_TIME` 被 kill 的返回值和 MySQL 不一致的问题 [#43031](https://github.com/pingcap/tidb/issues/43031) @[dveeden](https://github.com/dveeden)
     - 修复了 Leading Hint 无法支持 query block alias 的问题 [#44645](https://github.com/pingcap/tidb/issues/44645)  @[qw4990](https://github.com/qw4990)
     - last_insert_id函数的返回类型从varchar变更为longlong，与MySQL相同，同时last_insert_id的最大上限也变更为MaxUint64。[#44574](https://github.com/pingcap/tidb/issues/44574)  @[Defined2014](https://github.com/Defined2014)
+- 修复了 CTE 多次被非关联子查询引用的情况下，因过滤条件下推导致的结果错误 [#44051] (https://github.com/pingcap/tidb/issues/44051)  @[winoros](https://github.com/winoros)
+- 修复了 outer join reorder 对 condition 的错误处理导致的结果正确性问题 [#44314] (https://github.com/pingcap/tidb/issues/44314)  @[AilinKid](https://github.com/AilinKid)
+- 修复了 `prepare stmt from "analyze table xxx"` 会被 `tidb_mem_quota_query` kill 掉的问题 [#44320] (https://github.com/pingcap/tidb/issues/44320) @[chrysan](https://github.com/chrysan)
 
 + TiKV <!--**tw@Oreoxmt**-->
 
@@ -285,8 +288,8 @@ TiDB 版本：7.2.0
 
     + TiDB Lightning
 
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
+        - 修复开启 expression index 且默认值是 uuid 导致 lightning panic 的问题 [#44516](https://github.com/pingcap/tidb/pull/44516)
+        - 修复划分数据文件时任务退出导致 lightning panic 的问题 [#43195](https://github.com/pingcap/tidb/issues/43195)
 
 ## 贡献者
 
