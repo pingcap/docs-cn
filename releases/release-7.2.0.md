@@ -179,7 +179,9 @@ TiDB 版本：7.2.0
     - 使用估计时间计算 stale read ts，减少 stale read 开销 [#44215](https://github.com/pingcap/tidb/issues/44215) @[you06](https://github.com/you06)
     - 添加 long running 事务日志和系统变量 [#41471](https://github.com/pingcap/tidb/issues/41471) @[crazycs520](https://github.com/crazycs520)
     - 支持通过 MySQL 压缩协议连接 TiDB (在连接时加上  `--compress` 选项），提升数据密集型查询在低网络质量下的性能，并节省带宽成本的开销 [#22605](https://github.com/pingcap/tidb/issues/22605) @[dveeden](https://github.com/dveeden)
-
+     - 支持将utf8和utf8mb3都识别为旧的三字节字符集编码。[#26226](https://github.com/pingcap/tidb/issues/26226) @[dveeden](https://github.com/dveeden) 
+     - 支持将 := 用于 update 语句中赋值。[#44751](https://github.com/pingcap/tidb/issues/44751) @[CbcWestwolf](https://github.com/CbcWestwolf)
+ 
 + TiKV
 
      <!--tw@Oreoxmt-->
@@ -255,6 +257,7 @@ TiDB 版本：7.2.0
     - 修复了创建 subpartition 的报错信息 [#41198](https://github.com/pingcap/tidb/issues/41198) [#41200](https://github.com/pingcap/tidb/issues/41200) @[mjonss](https://github.com/mjonss)
     - 修复了执行时间超过 `MAX_EXECUTION_TIME` 被 kill 的返回值和 MySQL 不一致的问题 [#43031](https://github.com/pingcap/tidb/issues/43031) @[dveeden](https://github.com/dveeden)
     - 修复了 Leading Hint 无法支持 query block alias 的问题 [#44645] (https://github.com/pingcap/tidb/issues/44645)  @[qw4990](https://github.com/qw4990)
+     - last_insert_id函数的返回类型从varchar变更为longlong，与MySQL相同，同时last_insert_id的最大上限也变更为MaxUint64。[#44574](https://github.com/pingcap/tidb/issues/44574)  @[Defined2014](https://github.com/Defined2014)
 
 + TiKV
 
