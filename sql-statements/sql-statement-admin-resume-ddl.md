@@ -1,9 +1,9 @@
 ---
-title: ADMIN RESUME DDL
+title: ADMIN RESUME DDL JOBS
 summary: TiDB 数据库中 ADMIN RESUME DDL 的使用概况。
 ---
 
-# ADMIN RESUME DDL
+# ADMIN RESUME DDL JOBS
 
 `ADMIN RESUME DDL` 语句用于恢复当前处于暂停中的 DDL 作业。可以通过 [`ADMIN SHOW DDL JOBS`](/sql-statements/sql-statement-admin-show-ddl.md) 语句获取 DDL 作业的 `job_id`。
 

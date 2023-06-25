@@ -1,9 +1,9 @@
 ---
-title: ADMIN PAUSE DDL
+title: ADMIN PAUSE DDL JOBS
 summary: TiDB 数据库中 ADMIN PAUSE DDL JOBS 的使用概况。
 ---
 
-# ADMIN PAUSE DDL
+# ADMIN PAUSE DDL JOBS
 
 `ADMIN PAUSE DDL` 语句用于暂停当前正在运行的 DDL 作业。可以通过 [`ADMIN SHOW DDL JOBS`](/sql-statements/sql-statement-admin-show-ddl.md) 语句获取 DDL 作业的 `job_id`。
 
