@@ -9,6 +9,14 @@ summary: TiDB 数据库中 ADMIN RESUME DDL 的使用概况。
 
 该语句可用于恢复处于暂停中的 DDL 任务。成功恢复后，执行 DDL 任务的 SQL 语句会一直表现为正在执行。如果尝试恢复已经完成的 DDL 任务，会在 `RESULT` 列看到 `DDL Job:90 not found` 的错误，表示该任务已从 DDL 等待队列中被移除。
 
+> **注意：**
+>
+> + 该操作可以恢复已被暂停的 DDL 作业。
+> + 版本升级时，正在运行的 DDL 作业将被暂停，同时在升级过程中发起的 DDL 作业也将被暂停。升级结束后，所有已暂停的 DDL 作业将恢复执行。升级过程中的操作为自动进行，详情查阅 [TiDB 平滑升级](/smooth-upgrade-tidb.md)。
+> + 该操作可以同时恢复多个 DDL 作业，可以通过 [`ADMIN SHOW DDL JOBS`](/sql-statements/sql-statement-admin-show-ddl.md) 语句来获取 DDL 作业的 `job_id`。
+> + 处于非暂停状态中的作业无法被恢复，操作将失败。
+> + 如果重复恢复同一个 DDL 作业，会报错 `Error Number: 8261`。
+
 > **警告：**
 >
 > 该功能目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
@@ -32,14 +40,6 @@ ADMIN RESUME DDL JOBS job_id [, job_id] ...;
 ```
 
 如果恢复失败，会显示失败的具体原因。
-
-> **注意：**
->
-> + 该操作可以恢复已被暂停的 DDL 作业。
-> + 版本升级时，正在运行的 DDL 作业将被暂停，同时在升级过程中发起的 DDL 作业也将被暂停。升级结束后，所有已暂停的 DDL 作业将恢复执行。升级过程中的操作为自动进行，详情查阅 [TiDB 平滑升级](/smooth-upgrade-tidb.md)。
-> + 该操作可以同时恢复多个 DDL 作业，可以通过 [`ADMIN SHOW DDL JOBS`](/sql-statements/sql-statement-admin-show-ddl.md) 语句来获取 DDL 作业的 `job_id`。
-> + 处于其他状态中的作业无法被恢复，操作将失败。
-> + 再次恢复时，会报错 `Error Number: 8261`
 
 ## MySQL 兼容性
 
