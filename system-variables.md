@@ -539,7 +539,7 @@ mysql> SELECT * FROM t1;
 
 > **注意：**
 >
-> - `max_execution_time` 目前对所有类型的语句生效，并非只对 `SELECT` 语句生效，与 MySQL 不同（只对`SELECT` 语句生效）。实际精度在 100ms 级别，而非更准确的毫秒级别。
+> - `max_execution_time` 目前只用于控制只读语句的最大执行时长，实际精度在 100ms 级别，而非更准确的毫秒级别。
 > - 对于使用了 [`MAX_EXECUTION_TIME`](/optimizer-hints.md#max_execution_timen) Hint 的 SQL 语句，这些语句的最长执行时间将不受该变量限制，而是由该 Hint 进行限制。你也可以使用该 Hint 来创建 SQL 绑定，详情请参考 [SQL 操作常见问题](/faq/sql-faq.md#如何阻止特定的-sql-语句执行或者将某个-sql-语句加入黑名单)。
 
 ### `max_prepared_stmt_count`
@@ -1857,10 +1857,6 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 ### `tidb_enable_resource_control` <span class="version-mark">从 v6.6.0 版本开始引入</span>
 
-> **警告：**
->
-> [资源管控](/tidb-resource-control.md) 目前为实验性特性，此变量定义可能在之后发生变化或者删除。
-
 - 作用域：GLOBAL
 - 是否持久化到集群：是
 - 默认值：`ON`
@@ -1935,6 +1931,24 @@ Query OK, 0 rows affected (0.09 sec)
 - 类型：布尔型
 - 默认值：`OFF`
 - 这个变量用于动态地控制 TiDB 遥测功能是否开启，当前版本默认关闭 TiDB 的遥测功能。当所有 TiDB 实例都设置配置项 [`enable-telemetry`](/tidb-configuration-file.md#enable-telemetry-从-v402-版本开始引入) 为 `false` 时，将忽略该系统变量，并总是关闭 TiDB 遥测功能。参阅[遥测](/telemetry.md)了解该功能详情。
+
+### `tidb_enable_tiflash_pipeline_model` <span class="version-mark">从 v7.2.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 类型：布尔型
+- 默认值：`OFF`
+- 这个变量用来控制是否启用 TiFlash 新的执行模型 [Pipeline Model](/tiflash/tiflash-pipeline-model.md)。
+- 当设置该变量为 `OFF` 关闭 TiFlash Pipeline Model 时，下推到 TiFlash 的查询会使用 TiFlash 原有的执行模型 Stream Model 来执行。
+- 当设置该变量为 `ON` 开启 TiFlash Pipeline Model 时，下推到 TiFlash 的查询会使用 TiFlash 新的执行模型 Pipeline Model 来执行。
+
+> **注意：**
+>
+> - TiFlash Pipeline Model 目前为实验特性，不建议在生产环境中使用。
+> - TiFlash Pipeline Model 目前不支持以下功能。当下列功能开启时，即使 `tidb_enable_tiflash_pipeline_model` 设置为 `ON`，下推到 TiFlash 的查询仍会使用原有的执行模型 Stream Model 来执行。
+>
+>     - [Join 算子落盘](#tidb_max_bytes_before_tiflash_external_join-从-v700-版本开始引入)
+>     - [TiFlash 存算分离架构与 S3](/tiflash/tiflash-disaggregated-and-s3.md)
 
 ### `tidb_enable_tiflash_read_for_write_stmt` <span class="version-mark">从 v6.3.0 版本开始引入</span>
 
@@ -2107,6 +2121,16 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 范围：`[10, 2147483647]`
 - 单位：秒
 - 这个变量用来控制打印 expensive query 日志的阈值时间，默认值是 60 秒。expensive query 日志和慢日志的差别是，慢日志是在语句执行完后才打印，expensive query 日志可以把正在执行中的语句且执行时间超过阈值的语句及其相关信息打印出来。
+
+### `tidb_expensive_txn_time_threshold` <span class="version-mark">从 v7.2.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
+- 类型：整数型
+- 默认值：`600`
+- 范围：`[60, 2147483647]`
+- 单位：秒
+- 这个变量用来控制打印 expensive transaction 日志的阈值时间，默认值是 600 秒。expensive transaction 日志会将尚未 COMMIT 或 ROLLBACK 且持续时间超过该阈值的事务的相关信息打印出来。
 
 ### `tidb_force_priority`
 
@@ -3556,7 +3580,7 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 类型：布尔型
-- 默认值：`OFF`
+- 默认值：在 v7.2.0 之前版本中为 `OFF`，在 v7.2.0 及之后版本中为 `ON`。
 - 指定是否在子查询中移除 `ORDER BY` 子句。
 
 ### `tidb_replica_read` <span class="version-mark">从 v4.0 版本开始引入</span>

@@ -9,6 +9,7 @@
   - [与 MySQL 的兼容性](/mysql-compatibility.md)
   - [使用限制](/tidb-limitations.md)
   - [荣誉列表](/credits.md)
+  - [路线图](/tidb-roadmap.md)
 - 快速上手
   - [快速上手 TiDB](/quick-start-with-tidb.md)
   - [快速上手 HTAP](/quick-start-with-htap.md)
@@ -627,6 +628,7 @@
     - [TiFlash 数据落盘](/tiflash/tiflash-spill-disk.md)
     - [TiFlash 数据校验](/tiflash/tiflash-data-validation.md)
     - [TiFlash 兼容性说明](/tiflash/tiflash-compatibility.md)
+    - [TiFlash Pipeline Model 执行模型](/tiflash/tiflash-pipeline-model.md)
   - [系统变量](/system-variables.md)
   - 配置文件参数
     - [tidb-server](/tidb-configuration-file.md)
@@ -996,6 +998,7 @@
   - v6.6
     - [6.6.0-DMR](/releases/release-6.6.0.md)
   - v6.5
+    - [6.5.3](/releases/release-6.5.3.md)
     - [6.5.2](/releases/release-6.5.2.md)
     - [6.5.1](/releases/release-6.5.1.md)
     - [6.5.0](/releases/release-6.5.0.md)

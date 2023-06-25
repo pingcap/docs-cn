@@ -128,11 +128,13 @@ addr = "172.16.31.10:8287"
 # on-duplicate = "replace"
 
 # 物理导入模式设置是否检测和解决重复的记录（唯一键冲突）。
-# 目前支持三种解决方法：
-#  - record: 数据写入目标表后，将目标表中重复记录添加到目标 TiDB 中的 `lightning_task_info.conflict_error_v1` 表中。
-#            注意，该方法要求目标 TiKV 的版本为 v5.2.0 或更新版本。如果版本过低，则会启用下面的 'none' 模式。
-#  - none: 不检测重复记录。该模式是三种模式中性能最佳的，但是如果数据源存在重复记录，会导致 TiDB 中出现数据不一致的情况。
-#  - remove: 记录所有目标表中的重复记录，和 'record' 模式相似。但是会删除目标表所有的重复记录，以确保目标 TiDB 中的数据状态保持一致。
+# 目前支持两种解决方法：
+#  - none: 不检测重复记录。该模式是两种模式中性能最佳的，但是如果数据源存在重复记录，会导致 TiDB 中出现数据不一致的情况。
+#  - remove：如果写入的数据 A 和 B 存在 Primary Key 或 Unique Key 冲突，
+#            则会将 A 和 B 这两条冲突数据从目标表移除，同时记录到目标 TiDB 中的 `lightning_task_info.conflict_error_v1` 表中。
+#            你可以根据业务需求选择正确的记录重新手动写入到目标表中。注意，该方法要求目标 TiKV 的版本为 v5.2.0 或更新版本。
+#            如果版本过低，则会启用 'none' 模式。
+# 默认值为 'none'。 
 # duplicate-resolution = 'none'
 # 物理导入模式一次请求中发送的 KV 数量。
 # send-kv-pairs = 32768
@@ -205,6 +207,7 @@ data-source-dir = "/data/my_database"
 #  - utf8mb4：表结构文件必须使用 UTF-8 编码，否则会报错。
 #  - gb18030：表结构文件必须使用 GB-18030 编码，否则会报错。
 #  - auto：自动判断文件编码是 UTF-8 还是 GB-18030，两者皆非则会报错（默认）。
+#  - latin1：源数据文件使用 MySQL latin1 字符集编码（也被称为 Code Page 1252）。
 #  - binary：不尝试转换编码。
 character-set = "auto"
 
@@ -213,6 +216,7 @@ character-set = "auto"
 #  - utf8mb4：源数据文件使用 UTF-8 编码。
 #  - GB18030：源数据文件使用 GB-18030 编码。
 #  - GBK：源数据文件使用 GBK 编码（GBK 编码是对 GB-2312 字符集的拓展，也被称为 Code Page 936）。
+#  - latin1：源数据文件使用 MySQL latin1 字符集编码（也被称为 Code Page 1252）。
 #  - binary：不尝试转换编码（默认）。
 # 留空此配置将默认使用 "binary"，即不尝试转换编码。
 # 需要注意的是，Lightning 不会对源数据文件的字符集做假定，仅会根据此配置对数据进行转码并导入。
