@@ -71,7 +71,7 @@ TiDB 版本：7.2.0
     - [`AGG_TO_COP()`](/optimizer-hints.md#agg_to_cop)
     - [`LIMIT_TO_COP()`](/optimizer-hints.md#limit_to_cop)
     - [`ORDER_INDEX`](/optimizer-hints.md#order_indext1_name-idx1_name--idx2_name)
-    - [`NO_ORDER_INDEX()`](/optimizer-hints.md#no_order_indext1_name-idx1_name--idx2_name)。
+    - [`NO_ORDER_INDEX()`](/optimizer-hints.md#no_order_indext1_name-idx1_name--idx2_name)
 
   更多信息，请参考[用户文档](/sql-plan-management.md)。
 
