@@ -311,4 +311,15 @@ TiDB 版本：7.2.0
 
 感谢来自 TiDB 社区的贡献者们：
 
-- [贡献者 GitHub ID](链接)
+- [asjdf](https://github.com/asjdf)
+- [blacktear23](https://github.com/blacktear23)
+- [Cavan-xu](https://github.com/Cavan-xu)
+- [darraes](https://github.com/darraes)
+- [demoManito](https://github.com/demoManito)
+- [dhysum](https://github.com/dhysum)
+- [HappyUncle](https://github.com/HappyUncle)
+- [jiyfhust](https://github.com/jiyfhust)
+- [L-maple](https://github.com/L-maple)
+- [nyurik](https://github.com/nyurik)
+- [SeigeC](https://github.com/SeigeC)
+- [tangjingyu97](https://github.com/tangjingyu97)
