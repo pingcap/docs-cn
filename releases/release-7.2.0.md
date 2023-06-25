@@ -203,7 +203,7 @@ TiDB 版本：7.2.0
 
     + Backup & Restore (BR) <!--**tw@hfxsd**-->
 
-        - 为外部存储 Azure Blob Storage 提供 SAS (shared access signature) 的访问方式 [#44199](https://github.com/pingcap/tidb/issues/44199) @[Leavrth](https://github.com/Leavrth)
+        - 为外部存储 Azure Blob Storage 提供 shared access signature (SAS) 的访问方式 [#44199](https://github.com/pingcap/tidb/issues/44199) @[Leavrth](https://github.com/Leavrth)
 
     + TiCDC <!--**tw@hfxsd**-->
 
