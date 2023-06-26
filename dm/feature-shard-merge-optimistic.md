@@ -21,7 +21,7 @@ Therefore, an "optimistic mode" is needed. In this mode, a DDL statement execute
 
 ## Configuration of the optimistic mode
 
-To use the optimistic mode, specify the `shard-mode` item in the task configuration file as `optimistic`. For the detailed sample configuration file, see [DM Advanced Task Configuration File](/dm/task-configuration-file-full.md).
+To use the optimistic mode, specify the `shard-mode` item in the task configuration file as `optimistic`. You can restrict the behavior of the optimistic mode by enabling the `strict-optimistic-shard-mode` configuration. For the detailed sample configuration file, see [DM Advanced Task Configuration File](/dm/task-configuration-file-full.md).
 
 ## Restrictions
 
@@ -46,7 +46,7 @@ Some examples of Type 2 DDL statements are as follows:
 - Add a `NOT NULL` column without a default value: `ALTER TABLE table_name ADD COLUMN column_1 NOT NULL;`.
 - Rename an index: `ALTER TABLE table_name RENAME INDEX index_1 TO index_2;`.
 
-When the sharded tables execute the DDL statements above, if the execution order is different, the migration is interrupted. For example:
+When the sharded tables execute the DDL statements above, if `strict-optimistic-shard-mode: true` is set, the task is directly interrupted and an error is reported. If `strict-optimistic-shard-mode: false` is set or not specified, different execution order of the DDL statements in sharded tables will cause migration interruption. For example:
 
 - Shard 1 renames a column and then alters the column type:
     1. Rename a column: `ALTER TABLE table_name RENAME COLUMN column_1 TO column_2;`.
