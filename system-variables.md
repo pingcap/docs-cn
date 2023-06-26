@@ -2995,6 +2995,19 @@ mysql> desc select count(distinct a) from test.t;
 - 这个变量用来控制是否启用 [TiFlash 延迟物化](/tiflash/tiflash-late-materialization.md)功能。注意在 TiFlash [Fast Scan 模式](/tiflash/use-fastscan.md)下，延迟物化功能暂不可用。
 - 当设置该变量为 `OFF` 关闭 TiFlash 延迟物化功能时，如果 `SELECT` 语句中包含过滤条件（`WHERE` 子句），TiFlash 会先扫描查询所需列的全部数据后再进行过滤。当设置该变量为 `ON` 开启 TiFlash 延迟物化功能时，TiFlash 会先扫描下推到 TableScan 算子的过滤条件相关的列数据，过滤得到符合条件的行后，再扫描这些行的其他列数据，继续后续计算，从而减少 IO 扫描和数据处理的计算量。
 
+### `tidb_opt_enable_mpp_shared_cte_execution <span class="version-mark">从 v6.2.0 版本开始引入</span>
+
+> **警告：**
+>
+> 目前 CTE 直接在 TiFlash MPP 环境的执行仍然为实验性特性，代价计算仍在调整，需要搭配变量 `tidb_enforce_mpp` 使用，否则容易出现 CTE 可以在 TiFlash MPP 执行但是依旧是在 TiDB 执行的情况。
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 类型：布尔型
+- 默认值：`OFF`
+- 该变量控制 CTE 是否可以直接在 TiFlash MPP 执行而不是在 TiDB 上执行，打开该开关后，可以极大的提升含大量 CTE 的查询在 TiFlash MPP 的执行速度。
+- 该变量目前支持控制非递归 CTE 能否在 TiFlash MPP 执行，无法控制递归 CTE。
+
 ### `tidb_opt_fix_control` <span class="version-mark">从 v7.1.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
