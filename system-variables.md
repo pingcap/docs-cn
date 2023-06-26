@@ -1622,7 +1622,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 类型：布尔型
-- 默认值：`OFF`
+- 默认值：`ON`
 - 这个变量用来控制是否开启[非 Prepare 语句执行计划缓存](/sql-non-prepared-plan-cache.md)。
 
 ### `tidb_enable_non_prepared_plan_cache_for_dml` <span class="version-mark">从 v7.1.0 版本开始引入</span>
