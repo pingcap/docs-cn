@@ -1499,6 +1499,16 @@ rocksdb defaultcf、rocksdb writecf 和 rocksdb lockcf 相关的配置项。
     - `5`：适用于 TiKV v6.1 及以上版本。全量和分区 filter 采用一种具有不同模式的、更快、更准确的 Bloom filter 实现。
 + 默认值：`2`
 
+### `ttl` <span class="version-mark">从 v7.2.0 版本开始引入</span>
++ 设置 SST 文件被自动选中执行 compaction 的 TTL 时间。更新时间超过 TTL 的 SST 文件将被选中并进行 compaction。通常情况下，这些对象将以级联的方式进行 compaction，使其压缩到最底层/文件中.
++ 默认值: "`30d`"
++ 单位: s(second)|h(hour)|d(day)
+
+### `periodic-compaction-seconds` <span class="version-mark">从 v7.2.0 版本开始引入</span>
++ 设置周期性 compaction 的时间，超过此值的 SST 文件将被选中进行 compaction，并重新写入到与它们之前所在的同一层级.
++ 默认值: "`30d`"
++ 单位: s(second)|h(hour)|d(day)
+
 ## rocksdb.defaultcf.titan
 
 rocksdb defaultcf titan 相关的配置项。
