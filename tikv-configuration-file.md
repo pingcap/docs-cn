@@ -1598,7 +1598,7 @@ rocksdb defaultcf、rocksdb writecf 和 rocksdb lockcf 相关的配置项。
 
 ### `periodic-compaction-seconds` <span class="version-mark">从 v7.2.0 版本开始引入</span>
 
-+ 设置周期性 compaction 的时间，超过此值的 SST 文件将被选中进行 compaction，并重新写入到与它们之前所在的同一层级.
++ 设置周期性 compaction 的时间，修改时间超过此值的 SST 文件将被选中进行 compaction，并被重新写入这些 SST 文件所在的层级。
 + 默认值：30d
 + 单位：s(second)|h(hour)|d(day)
 
