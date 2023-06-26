@@ -338,26 +338,26 @@ title: TiKV 监控指标详解
 ### Raft Engine
 
 - Operations
-  - write: Raft Engine每秒写操作的次数
-  - read-entry: Raft Engine每秒读raft数据的次数
-  - read-message: Raft Engine每秒读raft消息的次数
+    - write: Raft Engine每秒写操作的次数
+    - read-entry: Raft Engine每秒读raft数据的次数
+    - read-message: Raft Engine每秒读raft消息的次数
 - Write duration：Raft Engine写操作的耗时，该耗时基本接近写入这些数据所包含的磁盘IO的latency之和
 - Flow
-  - write: Raft Engine写流量
-  - rewrite append: 重写append日志的流量
-  - rewrite rewrite: 重写rewrite日志的流量
+    - write: Raft Engine写流量
+    - rewrite append: 重写append日志的流量
+    - rewrite rewrite: 重写rewrite日志的流量
 - Write Duration Breakdown(99%)
-  - wal: 写Raft Engine WAL的延迟
-  - wait: 写入前等待时间
-  - apply: apply到内存的时间
+    - wal: 写Raft Engine WAL的延迟
+    - wait: 写入前等待时间
+    - apply: apply到内存的时间
 - Bytes/Written 每次写入对应的bytes
 - WAL Duration Breakdown (P99%): 写WAL内部各个阶段所花的时间
 - File Count
-  - append: Raft Engine append数据用的文件个数
-  - rewrite: Raft Engine rewrite文件用的个数（rewrite类似于RocksDB的compaction)
+    - append: Raft Engine append数据用的文件个数
+    - rewrite: Raft Engine rewrite文件用的个数（rewrite类似于RocksDB的compaction)
 - Entry Count
-  - rewrite:  Raft Engine中rewrite过的记录条数
-  - append: Raft Engine中append的记录条数
+    - rewrite:  Raft Engine中rewrite过的记录条数
+    - append: Raft Engine中append的记录条数
 
 ### Titan - All
 
