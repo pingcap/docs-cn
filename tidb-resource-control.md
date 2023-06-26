@@ -182,7 +182,7 @@ Runaway Queries 指那些执行时间或者消耗的资源超出预期的查询�
 - `COOLDOWN`：将查询的执行优先级降到最低，查询仍旧会以低优先级继续执行，不占用其他操作的资源。
 - `KILL`：识别到的查询将被自动终止，报错 `Query execution was interrupted, identified as runaway query`。
 
-为了避免并发的 Runaway Queries 太多，在被条件识别前就将系统资源耗尽，资源管控引入了一个快速识别的免疫机制。借助子句 `WATCH`，当某一个查询被识别为 Runaway Query 之后，在接下来的一段时间里（通过 `DURATION` 定义） ，当前 TiDB 实例会将匹配到的查询直接标记为 Runaway Query，而不再等待其被条件识别，并按照当前应对操作执行。其中 `KILL` 操作报错 `Quarantined and interrupted because of being in runaway watch list`。
+为了避免并发的 Runaway Queries 太多，在被条件识别前就将系统资源耗尽，资源管控引入了一个快速识别的机制。借助子句 `WATCH`，当某一个查询被识别为 Runaway Query 之后，在接下来的一段时间里（通过 `DURATION` 定义） ，当前 TiDB 实例会将匹配到的查询直接标记为 Runaway Query，而不再等待其被条件识别，并按照当前应对操作执行。其中 `KILL` 操作报错 `Quarantined and interrupted because of being in runaway watch list`。
 
 `WATCH` 有两种匹配方式：
 
@@ -238,9 +238,9 @@ Runaway Queries 指那些执行时间或者消耗的资源超出预期的查询�
     其中，`match_type` 为该 Runaway Query 的来源，其值如下：
     
     - `identify` 表示命中条件。
-    - `watch` 表示被免疫命中。
+    - `watch` 表示被快速识别机制命中。
 
-+ `mysql.tidb_runaway_quarantined_watch` 表中包含了 Runaway Queries 的免疫规则记录。以其中两行为例：
++ `mysql.tidb_runaway_quarantined_watch` 表中包含了 Runaway Queries 的快速识别规则记录。以其中两行为例：
 
     ```sql
     MySQL [(none)]> SELECT * FROM mysql.tidb_runaway_quarantined_watch LIMIT 2\G;
@@ -262,8 +262,8 @@ Runaway Queries 指那些执行时间或者消耗的资源超出预期的查询�
 
     其中：
 
-    - `start_time` 和 `end_time` 表示该免疫有效的时间范围。
-    - `watch` 表示被免疫命中，其值如下：
+    - `start_time` 和 `end_time` 表示该快速识别规则有效的时间范围。
+    - `watch` 表示被快速识别机制命中，其值如下：
         - `similar` 表示按照 Plan Digest 匹配，此时列 `watch_text` 显示的是 Plan Digest。
         - `exact` 表示按照 SQL 文本匹配，此时列 `watch_text` 显示的是 SQL 文本。
 
