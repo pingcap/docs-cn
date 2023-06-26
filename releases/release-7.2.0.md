@@ -13,7 +13,38 @@ TiDB 版本：7.2.0
 
 在 7.2.0 版本中，你可以获得以下关键特性：
 
-<!-- 关键特性表格 placeholder-->
+<table>
+<thead>
+  <tr>
+    <th>Category</th>
+    <th>Feature</th>
+    <th>Description</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td rowspan="2">可扩展性与性能</td>
+    <td>资源组支持管理资源消耗超出预期的查询（实验特性）</td>
+    <td>资源组可以通过降低优先级或终止查询来管理超出预期执行时间的查询。通过该功能，你可以在资源组级别设置查询的最长执行时间，并指定当查询超出此设置值时需要 TiDB 采取的操作，从而更好地控制超出预期长时间运行的查询对集群的影响。
+    </td>
+  </tr>
+  <tr>
+    <td>TiFlash 支持 Pipeline 执行模型（实验特性）</td>
+    <td>TiFlash 支持 Pipeline 执行模型，优化对线程资源的控制。
+当前，TiDB Serverless 的分析能力依赖于此功能。</td>
+  </tr>
+  <tr>
+    <td rowspan="1">SQL</td>
+    <td>支持新的 SQL 语句 `IMPORT INTO`, 可以通过 TiDB 进行数据导入 （实验特性）</td>
+    <td>TiDB 引入了一个新的 SQL 语句 `IMPORT INTO`。该语句集成了 TiDB Lightning 的物理导入模式的能力，使你无需单独部署和管理 TiDB Lightning 即可导入数据文件到 TiDB 中。例如，通过该语句，你可以直接从 Amazon S3 远程导入数据到 TiDB 中。</td>
+  </tr>
+  <tr>
+    <td rowspan="2">数据库管理与可观测性</td>
+    <td>DDL 任务支持暂停和恢复操作（实验特性）</td>
+    <td>DDL 操作（如添加索引）可能消耗大量资源并影响业务负载。与传统的 schema 更改工具（如 pt-osc 和 gh-ost）类似，TiDB 现在原生支持同时暂停多个后台 DDL 任务。该功能可以帮助你节省资源并最小化 DDL 操作对业务负载的影响，而无需取消和重新启动 DDL 任务。</td>
+  </tr>
+</tbody>
+</table>
 
 ## 功能详情
 
@@ -171,9 +202,10 @@ TiDB 版本：7.2.0
 
 ## 改进提升
 
+<!-- tw@ran-huang -->
+
 + TiDB
 
-    <!-- tw@ran-huang -->
     - 优化构造索引扫描范围的逻辑，支持将一些复杂条件转化为索引扫描范围 [#41572](https://github.com/pingcap/tidb/issues/41572) [#44389](https://github.com/pingcap/tidb/issues/44389) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes)
     - 为 Stale Read 新增相关监控指标 [#43325](https://github.com/pingcap/tidb/issues/43325) @[you06](https://github.com/you06)
     - 当 Stale Read 的 retry leader 遇到 lock 时，resolve lock 之后强制重试 leader，避免无谓开销 [#43659](https://github.com/pingcap/tidb/issues/43659) @[you06](https://github.com/you06)
@@ -183,9 +215,9 @@ TiDB 版本：7.2.0
     - 支持将 utf8 和 utf8mb3 识别为旧的三字节字符集编码 [#26226](https://github.com/pingcap/tidb/issues/26226) @[dveeden](https://github.com/dveeden)
     - 支持在 UPDATE 语句中使用 `:=` 进行赋值操作 [#44751](https://github.com/pingcap/tidb/issues/44751) @[CbcWestwolf](https://github.com/CbcWestwolf)
 
-+ TiKV
+<!--**tw@Oreoxmt**-->
 
-    <!--**tw@Oreoxmt**-->
++ TiKV
 
     - 支持通过 `pd.retry-interval` 配置请求失败等场景下 PD 连接的重试间隔 [#14964](https://github.com/tikv/tikv/issues/14964) @[rleungx](https://github.com/rleungx)
     - 优化资源管控调度算法，将全局的资源使用量作为调度因素 [#14604](https://github.com/tikv/tikv/issues/14604) @[Connor1996](https://github.com/Connor1996)
@@ -193,38 +225,38 @@ TiDB 版本：7.2.0
     - 为 `check_leader` 请求增加相关监控项 [#14658](https://github.com/tikv/tikv/issues/14658) @[you06](https://github.com/you06)
     - 详细记录 TiKV 处理写入命令过程中的时间信息 [#12362](https://github.com/tikv/tikv/issues/12362) @[cfzjywxk](https://github.com/cfzjywxk)
 
-+ PD
+<!--**tw@Oreoxmt**-->
 
-    <!--**tw@Oreoxmt**-->
++ PD
 
     - PD Leader 选举使用单独的 gRPC 链接，防止受到其他请求的影响 [#6403](https://github.com/tikv/pd/issues/6403) @[rleungx](https://github.com/rleungx)
     - 默认开启 bucket split 以改善多 Region 的热点问题 [#6433](https://github.com/tikv/pd/issues/6433) @[bufferflies](https://github.com/bufferflies)
 
 + Tools
 
-    + Backup & Restore (BR)
+    <!--**tw@hfxsd**-->
 
-       <!--**tw@hfxsd**-->
+    + Backup & Restore (BR)
 
         - 为外部存储 Azure Blob Storage 提供 shared access signature (SAS) 的访问方式 [#44199](https://github.com/pingcap/tidb/issues/44199) @[Leavrth](https://github.com/Leavrth)
 
-    + TiCDC
+    <!--**tw@hfxsd**-->
 
-       <!--**tw@hfxsd**-->
+    + TiCDC
 
         - 优化同步到对象存储场景下发生 DDL 时存放数据文件目录的结构 [#8891](https://github.com/pingcap/tiflow/issues/8891) @[CharlesCheung96](https://github.com/CharlesCheung96)
         - 增加在 Kafka 场景下支持 OAUTHBEARER 认证方式 [#8865](https://github.com/pingcap/tiflow/issues/8865) @[hi-rustin](https://github.com/hi-rustin)
         - 增加同步到 Kafka 场景下，对于 `DELETE` 操作，支持选择只输出 Handle Key [#9143](https://github.com/pingcap/tiflow/issues/9143) @[3AceShowHand](https://github.com/3AceShowHand)
 
-    + TiDB Data Migration (DM)
+    <!--**tw@hfxsd**-->
 
-       <!--**tw@hfxsd**-->
+    + TiDB Data Migration (DM)
 
         - 支持 MySQL 8.0 压缩 binlog 的增量同步 [#6381](https://github.com/pingcap/tiflow/issues/6381) @[dveeden](https://github.com/dveeden)
 
-    + TiDB Lightning
+    <!--**tw@ran-huang**-->
 
-        <!--**tw@ran-huang**-->
+    + TiDB Lightning
 
         - 优化导入过程中的重试机制，避免因 leader 切换而导致的错误 [#44478](https://github.com/pingcap/tidb/issues/44263) @[lance6716](https://github.com/lance6716)
 	- 导入完成后通过 SQL 的方式校验 checksum，提升检验的稳定性 [#41941](https://github.com/pingcap/tidb/issues/41941) @[GMHDBJD](https://github.com/GMHDBJD)
@@ -232,9 +264,9 @@ TiDB 版本：7.2.0
 
 ## 错误修复
 
-+ TiDB
+<!--**tw@ran-huang**-->
 
-    <!--**tw@ran-huang**-->
++ TiDB
 
     (dup)- 修复使用 CTE 的查询导致 TiDB 卡住的问题 [#43749](https://github.com/pingcap/tidb/issues/43749) [#36896](https://github.com/pingcap/tidb/issues/36896) @[guo-shaoge](https://github.com/guo-shaoge)
     (dup)- 修复 `min, max` 查询结果出错的问题 [#43805](https://github.com/pingcap/tidb/issues/43805) @[wshwsh12](https://github.com/wshwsh12)
@@ -257,40 +289,40 @@ TiDB 版本：7.2.0
     - 修复了 outer join reorder 对 condition 的错误处理导致结果有误的问题 [#44314] (https://github.com/pingcap/tidb/issues/44314)  @[AilinKid](https://github.com/AilinKid)
     - 修复了 `PREPARE stmt FROM "analyze table xxx"` 会被 `tidb_mem_quota_query` kill 掉的问题 [#44320](https://github.com/pingcap/tidb/issues/44320) @[chrysan](https://github.com/chrysan)
 
-+ TiKV
+<!--**tw@Oreoxmt**-->
 
-    <!--**tw@Oreoxmt**-->
++ TiKV
 
     - 修复处理 stale 悲观锁冲突时事务返回值不正确的问题 [#13298](https://github.com/tikv/tikv/issues/13298) @[cfzjywxk](https://github.com/cfzjywxk)
     - 修复内存悲观锁可能导致 Flashback 失败和数据不一致的问题 [#13303](https://github.com/tikv/tikv/issues/13303) @[JmPotato](https://github.com/JmPotato)
     - 修复处理过期请求时 fair lock 的正确性问题 [#13298](https://github.com/tikv/tikv/issues/13298) @[cfzjywxk](https://github.com/cfzjywxk)
     - 修复 autocommit 和 point get replica read 可能破坏线性一致性的问题 [#14715](https://github.com/tikv/tikv/issues/14715) @[cfzjywxk](https://github.com/cfzjywxk)
 
-+ PD
+<!--**tw@Oreoxmt**-->
 
-    <!--**tw@Oreoxmt**-->
++ PD
 
     - 修复在特殊情况下冗余副本无法自动修复的问题 [#6573](https://github.com/tikv/pd/issues/6573) @[nolouch](https://github.com/nolouch)
 
-+ TiFlash
+<!--**tw@qiancai**-->
 
-     <!--**tw@qiancai**-->
++ TiFlash
 
     - 修复在 join 操作的 build 侧数据量很大且含有大量短字符串时内存消耗过大的问题 [#7416](https://github.com/pingcap/tiflash/issues/7416) @[yibin87](https://github.com/yibin87)
 
 + Tools
 
-    + Backup & Restore (BR)
+    <!--**tw@hfxsd**-->
 
-        <!--**tw@hfxsd**-->
+    + Backup & Restore (BR)
 
         - 修复某些情况下误报 `checksum mismatch` 的问题 [#44472](https://github.com/pingcap/tidb/issues/44472) @[Leavrth](https://github.com/Leavrth)
         - 修复某些情况下误报 `resolved lock timeout` 的问题 [#43236](https://github.com/pingcap/tidb/issues/43236) @[YuJuncen](https://github.com/YuJuncen)
         - 修复在恢复统计信息的时候可能会 panic 的问题 [#44490](https://github.com/pingcap/tidb/issues/44490) @[tangenta](https://github.com/tangenta)
 
-    + TiCDC
+    <!--**tw@hfxsd**-->
 
-        <!--**tw@hfxsd**-->
+    + TiCDC
 
         - 修复在某些特殊情况下 Resolved TS 不能正常推进的问题 [#8963](https://github.com/pingcap/tiflow/issues/8963) @[CharlesCheung96](https://github.com/CharlesCheung96)
         - 修复使用 Avro 或 CSV 协议场景下 `UPDATE` 操作不能输出旧值的问题 [#9086](https://github.com/pingcap/tiflow/issues/9086) @[3AceShowHand](https://github.com/3AceShowHand)
@@ -299,9 +331,9 @@ TiDB 版本：7.2.0
         - 修复 PD 节点宕机导致 TiCDC 节点重启的问题 [#8868](https://github.com/pingcap/tiflow/issues/8868) @[asddongmen](https://github.com/asddongmen)
         - 修复 TiCDC 同步到 KOP 时不能正确建立链接的问题 [#8892](https://github.com/pingcap/tiflow/issues/8892) @[hi-rustin](https://github.com/hi-rustin)
 
-    + TiDB Lightning
+    <!--**tw@hfxsd**-->
 
-        <!--**tw@hfxsd**-->
+    + TiDB Lightning
 
         - 修复开启 `experimental.allow-expression-index` 且默认值是 UUID 时导致 TiDB Lightning panic 的问题 [#44497](https://github.com/pingcap/tidb/issues/44497) @[lichunzhu](https://github.com/lichunzhu)
         - 修复划分数据文件时任务退出导致 TiDB Lightning panic 的问题 [#43195](https://github.com/pingcap/tidb/issues/43195) @[lance6716](https://github.com/lance6716)
