@@ -250,7 +250,7 @@ data-source-dir = "/data/my_database"
 #             an error is reported
 #  - auto:    (default) automatically detects whether the schema is UTF-8 or
 #             GB-18030. An error is reported if the encoding is neither.
-#  - latin1： the schema files uses MySQL latin1 encoding, also known as Code Page 1252.
+#  - latin1:  the schema files use MySQL latin1 encoding, also known as Code Page 1252.
 #  - binary:  do not try to decode the schema files
 character-set = "auto"
 
