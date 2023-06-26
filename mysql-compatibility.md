@@ -6,8 +6,18 @@ aliases: ['/docs/dev/mysql-compatibility/','/docs/dev/reference/mysql-compatibil
 
 # MySQL Compatibility
 
-TiDB is highly compatible with the MySQL 5.7 protocol and supports the common features and syntax of MySQL 5.7. This means that ecosystem tools such as PHPMyAdmin, Navicat, MySQL Workbench, mysqldump, and Mydumper/myloader, as well as the MySQL client, can be used for TiDB.
+<CustomContent platform="tidb">
+    
+TiDB is highly compatible with the MySQL protocol and the common features and syntax of MySQL 5.7 and MySQL 8.0. The ecosystem tools for MySQL (PHPMyAdmin, Navicat, MySQL Workbench, DBeaver and [more](/develop/dev-guide-third-party-support.md#gui)) and the MySQL client can be used for TiDB.
 
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+TiDB is highly compatible with the MySQL protocol and the common features and syntax of MySQL 5.7 and MySQL 8.0. The ecosystem tools for MySQL (PHPMyAdmin, Navicat, MySQL Workbench, DBeaver and [more](https://docs.pingcap.com/tidb/v7.2/dev-guide-third-party-support#gui)) and the MySQL client can be used for TiDB.
+
+</CustomContent>
+    
 However, some features of MySQL are not supported in TiDB. This could be because there is now a better way to solve the problem (such as the use of JSON instead of XML functions) or a lack of current demand versus effort required (such as stored procedures and functions). Additionally, some features might be difficult to implement in a distributed system.
 
 <CustomContent platform="tidb">
@@ -60,6 +70,9 @@ You can try out TiDB features on [TiDB Playground](https://play.tidbcloud.com/?u
 + `HANDLER` statement
 + `CREATE TABLESPACE` statement
 + "Session Tracker: Add GTIDs context to the OK packet"
++ Descending Index [#2519](https://github.com/pingcap/tidb/issues/2519)
++ `SKIP LOCKED` syntax [#18207](https://github.com/pingcap/tidb/issues/18207)
++ Lateral derived tables [#40328](https://github.com/pingcap/tidb/issues/40328)
 
 ## Differences from MySQL
 
