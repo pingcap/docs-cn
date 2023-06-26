@@ -22,7 +22,7 @@ TiFlash supports the push-down of the following operators:
     * The operator can be pushed down only in the [MPP mode](/tiflash/use-tiflash-mpp-mode.md).
     * Supported joins are Inner Join, Left Join, Semi Join, Anti Semi Join, Left Semi Join, and Anti Left Semi Join.
     * The preceding joins support both Equi Join and Non-Equi Join (Cartesian Join or Null-aware Semi Join). When calculating Cartesian Join or Null-aware Semi Join, the Broadcast algorithm, instead of the Shuffle Hash Join algorithm, is used.
-* [Window functions](/functions-and-operators/window-functions.md): Currently, TiFlash supports `ROW_NUMBER()`, `RANK()`, `DENSE_RANK()`, `LEAD()`, and `LAG()`.
+* [Window functions](/functions-and-operators/window-functions.md): Currently, TiFlash supports `ROW_NUMBER()`, `RANK()`, `DENSE_RANK()`, `LEAD()`, `LAG()`, `FIRST_VALUE()`, and `LAST_VALUE()`.
 
 In TiDB, operators are organized in a tree structure. For an operator to be pushed down to TiFlash, all of the following prerequisites must be met:
 
