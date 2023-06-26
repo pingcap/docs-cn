@@ -3004,7 +3004,7 @@ mysql> desc select count(distinct a) from test.t;
 - 默认值：`""`
 - 这个变量用来控制优化器的一些内部行为。
 - 一部分优化器行为的选择依赖用户场景或 SQL 编写方式。通过设置该变量，你可以更细粒度地控制优化器的行为，并且避免集群升级后优化器行为变化导致的性能回退。
-- 该变量支持设置多个控制项，不同控制项之间使用逗号 (`,`) 分隔。格式形如 `"<#issue1>:<value1>,<#issue2>:<value2>,...,<#issueN>:<valueN>"`，其中 `<#issueN>` 代表控制项编号，对应链接 `https://github.com/pingcap/tidb/issues/<#issue>` 对该控制项进行说明，`<valueN>` 是为该控制项设置的目标值。
+- 详细介绍请参考 [Optimizer Fix Controls](/optimizer-fix-controls.md)。
 
 ### `tidb_opt_force_inline_cte` <span class="version-mark">从 v6.3.0 版本开始引入</span>
 
