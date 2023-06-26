@@ -474,6 +474,14 @@ TiDB is compatible with the error codes in MySQL, and in most cases returns the 
 
     This error is returned when the attempted consumption exceeds the resource group limit. This error is usually caused by a single transaction that is too large or too many concurrent transactions. You need to adjust the transaction size or reduce the number of concurrent clients.
 
+* Error Number: 8253
+
+    The query stops because it meets the condition of a runaway query. See [Runaway Queries](/tidb-resource-control.md#manage-queries-that-consume-more-resources-than-expected-runaway-queries).
+
+* Error Number: 8254
+
+    The query stops because it meets the quarantined watch condition of a runaway query. See [Runaway Queries](/tidb-resource-control.md#manage-queries-that-consume-more-resources-than-expected-runaway-queries).
+
 * Error Number: 9001
 
     The complete error message: `ERROR 9001 (HY000): PD Server Timeout`

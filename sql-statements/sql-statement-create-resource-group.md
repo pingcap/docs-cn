@@ -36,10 +36,34 @@ DirectResourceGroupOption ::=
     "RU_PER_SEC" EqOpt stringLit
 |   "PRIORITY" EqOpt ResourceGroupPriorityOption
 |   "BURSTABLE"
+|   "BURSTABLE" EqOpt Boolean
+|   "QUERY_LIMIT" EqOpt '(' ResourceGroupRunawayOptionList ')'
+|   "QUERY_LIMIT" EqOpt '(' ')'
+|   "QUERY_LIMIT" EqOpt "NULL"
+
 ResourceGroupPriorityOption ::=
     LOW
 |   MEDIUM
 |   HIGH
+
+ResourceGroupRunawayOptionList ::=
+    DirectResourceGroupRunawayOption
+|   ResourceGroupRunawayOptionList DirectResourceGroupRunawayOption
+|   ResourceGroupRunawayOptionList ',' DirectResourceGroupRunawayOption
+
+DirectResourceGroupRunawayOption ::=
+    "EXEC_ELAPSED" EqOpt stringLit
+|   "ACTION" EqOpt ResourceGroupRunawayActionOption
+|   "WATCH" EqOpt ResourceGroupRunawayWatchOption "DURATION" EqOpt stringLit
+
+ResourceGroupRunawayWatchOption ::=
+    EXACT
+|   SIMILAR
+
+ResourceGroupRunawayActionOption ::=
+    DRYRUN
+|   COOLDOWN
+|   KILL
 ```
 
 The resource group name parameter (`ResourceGroupName`) must be globally unique.
@@ -51,6 +75,7 @@ TiDB supports the following `DirectResourceGroupOption`, where [Request Unit (RU
 | `RU_PER_SEC`  | Rate of RU backfilling per second   | `RU_PER_SEC = 500` indicates that this resource group is backfilled with 500 RUs per second    |
 | `PRIORITY`    | The absolute priority of tasks to be processed on TiKV  | `PRIORITY = HIGH` indicates that the priority is high. If not specified, the default value is `MEDIUM`. |
 | `BURSTABLE`   | If the `BURSTABLE` attribute is set, TiDB allows the corresponding resource group to use the available system resources when the quota is exceeded. |
+| `QUERY_LIMIT` | When the query execution meets this condition, the query is identified as a runaway query and the corresponding action is executed. | `QUERY_LIMIT=(EXEC_ELAPSED='60s', ACTION=KILL, WATCH=EXACT DURATION='10m')` indicates that the query is identified as a runaway query when the execution time exceeds 60 seconds. The query is terminated. All SQL statements with the same SQL text will be terminated immediately in the coming 10 minutes. `QUERY_LIMIT=()` or `QUERY_LIMIT=NULL` means that runaway control is not enabled. See [Runaway Queries](/tidb-resource-control.md#manage-queries-that-consume-more-resources-than-expected-runaway-queries). |
 
 > **Note:**
 >
@@ -82,7 +107,7 @@ Query OK, 0 rows affected (0.08 sec)
 
 ```sql
 CREATE RESOURCE GROUP IF NOT EXISTS rg2
-  RU_PER_SEC = 200;
+  RU_PER_SEC = 200 QUERY_LIMIT=(EXEC_ELAPSED='100ms', ACTION=KILL);
 ```
 
 ```sql
@@ -94,12 +119,12 @@ SELECT * FROM information_schema.resource_groups WHERE NAME ='rg1' or NAME = 'rg
 ```
 
 ```sql
-+------+------------+----------+-----------+
-| NAME | RU_PER_SEC | PRIORITY | BURSTABLE |
-+------+------------+----------+-----------+
-| rg1  |        100 | HIGH     | YES       |
-| rg2  |        200 | MEDIUM   | NO        |
-+------+------------+----------+-----------+
++------+------------+----------+-----------+---------------------------------+
+| NAME | RU_PER_SEC | PRIORITY | BURSTABLE | QUERY_LIMIT                     |
++------+------------+----------+-----------+---------------------------------+
+| rg1  | 100        | HIGH     | YES       | NULL                            |
+| rg2  | 200        | MEDIUM   | NO        | EXEC_ELAPSED=100ms, ACTION=KILL |
++------+------------+----------+-----------+---------------------------------+
 2 rows in set (1.30 sec)
 ```
 
