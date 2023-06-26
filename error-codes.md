@@ -401,6 +401,18 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
     查询终止，因为被 Runaway Queries 免疫命中。请参考 [Runaway Queries](/tidb-resource-control.md#管理资源消耗超出预期的查询-runaway-queries)。
 
+* Error Number: 8260
+
+    DDL 操作无法被 `ADMIN PAUSE` 暂停运行。
+
+* Error Number: 8261
+
+    DDL 操作无法被 `ADMIN RESUME` 恢复运行。
+
+* Error Number: 8262
+
+    DDL 已经被 `ADMIN PAUSE` 暂停，无法再次执行。
+
 * Error Number: 9001
 
     完整的报错信息为 `ERROR 9001 (HY000) : PD Server Timeout`。

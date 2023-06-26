@@ -51,20 +51,81 @@ Query OK, 1 row affected (0.03 sec)
 
 ## `CHECK` 约束
 
-TiDB 会解析并忽略 `CHECK` 约束。该行为与 MySQL 5.7 的相兼容。
+`CHECK` 约束用于限制表中某个字段的值必须满足指定条件。当为表添加 `CHECK` 约束后，在插入或者更新表的数据时，TiDB 会检查约束条件是否满足，如果不满足，则会报错。
 
-示例如下：
+TiDB 中 `CHECK` 约束的语法如下，与 MySQL 中一致：
 
 ```sql
-DROP TABLE IF EXISTS users;
-CREATE TABLE users (
- id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
- username VARCHAR(60) NOT NULL,
- UNIQUE KEY (username),
- CONSTRAINT min_username_length CHECK (CHARACTER_LENGTH(username) >=4)
-);
-INSERT INTO users (username) VALUES ('a');
-SELECT * FROM users;
+[CONSTRAINT [symbol]] CHECK (expr) [[NOT] ENFORCED]
+```
+
+语法说明：
+
+- `[]` 中的内容表示可选项。
+- `CONSTRAINT [symbol]` 表示 `CHECK` 约束的名称。
+- `CHECK (expr)` 表示约束条件，其中 `expr` 需要为一个布尔表达式。对于表中的每一行，该表达式的计算结果必须为 `TRUE`、`FALSE` 或 `UNKNOWN` (对于 `NULL` 值) 中的一个。对于某行数据，如果该表达式计算结果为 `FALSE`，则表示违反约束条件。
+- `[NOT] ENFORCED` 表示是否执行约束，可以用于启用或者禁用 `CHECK` 约束。
+
+### 添加 `CHECK` 约束
+
+在 TiDB 中，你可以在 [`CREATE TABLE`](/sql-statements/sql-statement-create-table.md) 或者 [`ALTER TABLE`](/sql-statements/sql-statement-modify-column.md) 语句中为表添加 `CHECK` 约束。
+
+- 在 `CREATE TABLE` 语句中添加 `CHECK` 约束的示例：
+
+    ```sql
+    CREATE TABLE t(a INT CHECK(a > 10) NOT ENFORCED, b INT, c INT, CONSTRAINT c1 CHECK (b > c));
+    ```
+
+- 在 `ALTER TABLE` 语句中添加 `CHECK` 约束的示例：
+
+    ```sql
+    ALTER TABLE t ADD CONSTRAINT CHECK (1 < c);
+    ```
+
+在添加或者启用 `CHECK` 约束时，TiDB 会对表中的存量数据进行校验。如果存在违反约束的数据，添加 `CHECK` 约束操作将失败并且报错。
+
+在添加 `CHECK` 约束时，可以指定约束名，也可以不指定约束名。如果不指定约束名，那么 TiDB 会自动生成一个格式为 `<tableName>_chk_<1, 2, 3...>` 的约束名。
+
+### 查看 `CHECK` 约束
+
+你可以通过 [`SHOW CREATE TABLE`](/sql-statements/sql-statement-show-create-table.md) 查看表中的约束信息。例如：
+
+```sql
+SHOW CREATE TABLE t;
++-------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table | Create Table                                                                                                                                                                                                                                                                                                     |
++-------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| t     | CREATE TABLE `t` (
+  `a` int(11) DEFAULT NULL,
+  `b` int(11) DEFAULT NULL,
+  `c` int(11) DEFAULT NULL,
+CONSTRAINT `c1` CHECK ((`b` > `c`)),
+CONSTRAINT `t_chk_1` CHECK ((`a` > 10)) /*!80016 NOT ENFORCED */,
+CONSTRAINT `t_chk_2` CHECK ((1 < `c`))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin |
++-------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+```
+
+### 删除 `CHECK` 约束
+
+删除 `CHECK` 约束时，你需要指定需要删除的约束名。例如：
+
+```sql
+ALTER TABLE t DROP CONSTRAINT t_chk_1;
+```
+
+### 启用或禁用 `CHECK` 约束
+
+在为表[添加 `CHECK` 约束](#添加-check-约束)的时候，可以指定当插入或者更新数据时 TiDB 是否执行约束检查。
+
+- 如果指定了 `NOT ENFORCED`，当插入或者更新数据时，TiDB 不会检查约束条件。
+- 如果未指定 `NOT ENFORCED` 或者指定了 `ENFORCED`，当插入或者更新数据时，TiDB 会检查约束条件。
+
+除了在添加约束时候指定 `[NOT] ENFORCED`，你还可以在 `ALTER TABLE` 语句中启用或者禁用 `CHECK` 约束。例如：
+
+```sql
+ALTER TABLE t ALTER CONSTRAINT c1 NOT ENFORCED;
 ```
 
 ## 唯一约束
