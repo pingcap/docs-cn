@@ -69,7 +69,8 @@ The `ADMIN SHOW DDL JOBS` statement is used to view all the results in the curre
     - `synced`: indicates that the operation has been executed successfully and all TiDB instances have been synchronized to this state.
     - `rollback done`: indicates that the operation has failed and the rollback has been completed.
     - `rollingback`: indicates that the operation has failed and is rolling back.
-    - `cancelling`: indicates that the operation is being canceled. This state only appears when you use the `ADMIN CANCEL DDL JOBS` command to cancel the DDL job.
+    - `cancelling`: indicates that the operation is being canceled. This state only appears when you use the [`ADMIN CANCEL DDL JOBS`](/sql-statements/sql-statement-admin-cancel-ddl.md) command to cancel the DDL job.
+    - `paused`: indicates that the operation has been paused. This state only appears when you use the [`ADMIN PAUSED DDL JOBS`](/sql-statements/sql-statement-admin-pause-ddl.md) command to pause the DDL job. You can use the [`ADMIN RESUME DDL JOBS`](/sql-statements/sql-statement-admin-resume-ddl.md) command to resume the DDL job.
 
 </CustomContent>
 
@@ -93,7 +94,8 @@ The `ADMIN SHOW DDL JOBS` statement is used to view all the results in the curre
     - `synced`: indicates that the operation has been executed successfully and all TiDB instances have been synchronized to this state.
     - `rollback done`: indicates that the operation has failed and the rollback has been completed.
     - `rollingback`: indicates that the operation has failed and is rolling back.
-    - `cancelling`: indicates that the operation is being canceled. This state only appears when you use the `ADMIN CANCEL DDL JOBS` command to cancel the DDL job.
+    - `cancelling`: indicates that the operation is being canceled. This state only appears when you use the [`ADMIN CANCEL DDL JOBS`](/sql-statements/sql-statement-admin-cancel-ddl.md) command to cancel the DDL job.
+    - `paused`: indicates that the operation has been paused. This state only appears when you use the [`ADMIN PAUSED DDL JOBS`](/sql-statements/sql-statement-admin-pause-ddl.md) command to pause the DDL job. You can use the [`ADMIN RESUME DDL JOBS`](/sql-statements/sql-statement-admin-resume-ddl.md) command to resume the DDL job.
 
 </CustomContent>
 
@@ -224,3 +226,5 @@ This statement is a TiDB extension to MySQL syntax.
 ## See also
 
 * [ADMIN CANCEL DDL](/sql-statements/sql-statement-admin-cancel-ddl.md)
+* [ADMIN PAUSE DDL](/sql-statements/sql-statement-admin-pause-ddl.md)
+* [ADMIN RESUME DDL](/sql-statements/sql-statement-admin-resume-ddl.md)

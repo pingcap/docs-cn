@@ -482,6 +482,18 @@ TiDB is compatible with the error codes in MySQL, and in most cases returns the 
 
     The query stops because it meets the quarantined watch condition of a runaway query. See [Runaway Queries](/tidb-resource-control.md#manage-queries-that-consume-more-resources-than-expected-runaway-queries).
 
+* Error Number: 8260
+
+    DDL operations cannot be paused by `ADMIN PAUSE`.
+
+* Error Number: 8261
+
+    DDL operations cannot be resumed by `ADMIN RESUME`.
+
+* Error Number: 8262
+
+    DDL is paused by `ADMIN PAUSE` and cannot be paused again.
+
 * Error Number: 9001
 
     The complete error message: `ERROR 9001 (HY000): PD Server Timeout`
