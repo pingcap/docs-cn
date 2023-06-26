@@ -1742,6 +1742,19 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - This variable is used to set whether to enable the statistics `Fast Analyze` feature.
 - If the statistics `Fast Analyze` feature is enabled, TiDB randomly samples about 10,000 rows of data as statistics. When the data is distributed unevenly or the data size is small, the statistics accuracy is low. This might lead to a non-optimal execution plan, for example, selecting a wrong index. If the execution time of the regular `Analyze` statement is acceptable, it is recommended to disable the `Fast Analyze` feature.
 
+### tidb_enable_fast_table_check <span class="version-mark">New in v7.2.0</span>
+
+> **Note:**
+>
+> This variable does not work for [multi-valued indexes](/sql-statements/sql-statement-create-index.md#multi-valued-index) and prefix indexes.
+
+- Scope: SESSION | GLOBAL
+- Persists to the cluster: Yes
+- Type: Boolean
+- Default value: `ON`
+- This variable is used to control whether to use a checksum-based approach to quickly check the integrity of data and indexes in a table. The default value `ON` means this feature is enabled by default.
+- When this variable is enabled, TiDB can execute the [`ADMIN CHECK [TABLE|INDEX]`](/sql-statements/sql-statement-admin-check-table-index.md) statement in a faster way.
+
 ### tidb_enable_foreign_key <span class="version-mark">New in v6.3.0</span>
 
 - Scope: GLOBAL
