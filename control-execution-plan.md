@@ -10,4 +10,14 @@ The first two chapters of SQL Tuning introduce how to understand TiDB's executio
 - But hints change the SQL statement intrusively. In some scenarios, hints cannot be simply inserted. In [SQL Plan Management](/sql-plan-management.md), you will know how TiDB uses another syntax to non-intrusively control the generation of execution plans, and the methods of automatic execution plan evolution in the background. This method helps address issues such as execution plan instability caused by version upgrades and cluster performance degradation.
 - Finally, you will learn how to use the blocklist in [Blocklist of Optimization Rules and Expression Pushdown](/blocklist-control-plan.md).
 
-Besides the preceding methods, the execution plan is also affected by some system variables. By modifying these variables at the system level or session level, you can control the generation of the execution plan. Starting from v7.1.0, TiDB introduces a relatively special variable [`tidb_opt_fix_control`](/system-variables.md#tidb_opt_fix_control-new-in-v710). This variable can accept multiple control items to control the behavior of the optimizer in a more fine-grained way, to prevent performance regression caused by behavior changes in the optimizer after cluster upgrade.
+<CustomContent platform="tidb">
+
+Besides the preceding methods, the execution plan is also affected by some system variables. By modifying these variables at the system level or session level, you can control the generation of the execution plan. Starting from v7.1.0, TiDB introduces a relatively special variable [`tidb_opt_fix_control`](/system-variables.md#tidb_opt_fix_control-new-in-v710). This variable can accept multiple control items to control the behavior of the optimizer in a more fine-grained way, to prevent performance regression caused by behavior changes in the optimizer after cluster upgrade. Refer to [Optimizer Fix Controls](/optimizer-fix-controls.md) for a more detailed introduction.
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+Besides the preceding methods, the execution plan is also affected by some system variables. By modifying these variables at the system level or session level, you can control the generation of the execution plan. Starting from v7.1.0, TiDB introduces a relatively special variable [`tidb_opt_fix_control`](/system-variables.md#tidb_opt_fix_control-new-in-v710). This variable can accept multiple control items to control the behavior of the optimizer in a more fine-grained way, to prevent performance regression caused by behavior changes in the optimizer after cluster upgrade. Refer to [Optimizer Fix Controls](https://docs.pingcap.com/tidb/v7.2/optimizer-fix-controls) for a more detailed introduction.
+
+</CustomContent>
