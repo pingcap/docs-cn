@@ -2458,7 +2458,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 类型：布尔型
 - 默认值：`ON`
 - 该变量控制在以下场景对某些 key 是否加锁。设置为 `ON` 时，都加锁，设置为 `OFF` 时，都不加锁。
-    - 在 `SELECT IGNORE` 语句和 `REPLACE` 语句中的重复的 key。在低于 v6.1 的版本中，这些 key 不加锁。这个问题在 [#42121](https://github.com/pingcap/tidb/issues/42121) 修复。
+    - 在 `INSERT IGNORE` 语句和 `REPLACE` 语句中的重复的 key。在低于 v6.1 的版本中，这些 key 不加锁。这个问题在 [#42121](https://github.com/pingcap/tidb/issues/42121) 修复。
     - 在 `UPDATE` 语句中值没有改变的唯一索引 key。在低于 v6.5 的版本中，这些 key 不加锁。这个问题在 [#36438](https://github.com/pingcap/tidb/issues/36438) 修复。
 - 为保证事务行为的一致和合理，不推荐修改该值。当升级 TiDB 后因为这两项修复导致严重的性能问题，且不加锁的行为（见上述 issue）可以接受时，可以设置为 `OFF` 绕过。
 
