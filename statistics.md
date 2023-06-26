@@ -147,7 +147,8 @@ If a table has many columns, collecting statistics on all the columns can cause 
 
 > **Note:**
 >
-> Collecting statistics on some columns is only applicable for `tidb_analyze_version = 2`.
+> - Collecting statistics on some columns is only applicable for [`tidb_analyze_version = 2`](/system-variables.md#tidb_analyze_version-new-in-v510).
+> - Starting from TiDB v7.2.0, TiDB introduces the [`tidb_analyze_skip_column_types`](/system-variables.md#tidb_analyze_skip_column_types-new-in-v720) system variable, indicating which types of columns are skipped for statistics collection when executing the `ANALYZE` command to collect statistics. The system variable is only applicable for `tidb_analyze_version = 2`.
 
 - To collect statistics on specific columns, use the following syntax:
 
