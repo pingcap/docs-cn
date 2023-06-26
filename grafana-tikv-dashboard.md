@@ -75,14 +75,21 @@ title: TiKV 监控指标详解
 
 - Raft store CPU：raftstore 线程的 CPU 使用率，通常应低于 80% * `raftstore.store-pool-size`
 - Async apply CPU：async apply 线程的 CPU 使用率，通常应低于 90% * `raftstore.apply-pool-size`
-- Scheduler worker CPU：scheduler worker 线程的 CPU 使用率，通常应低于 90% * `storage.scheduler-worker-pool-size`
+- Store writer CPU: async io线程的CPU使用率，通常应低于 90% * `raftstore.store-io-pool-size`
 - gRPC poll CPU：gRPC 线程的 CPU 使用率，通常应低于 80% * `server.grpc-concurrency`
-- Unified read pool CPU：unified read pool 线程的 CPU 使用率
+- Scheduler worker CPU：scheduler worker 线程的 CPU 使用率，通常应低于 90% * `storage.scheduler-worker-pool-size`
 - Storage ReadPool CPU：storage read pool 线程的 CPU 使用率
-- Coprocessor CPU：coprocessor 线程的 CPU 使用率
+- Unified read pool CPU：unified read pool 线程的 CPU 使用率
 - RocksDB CPU：RocksDB 线程的 CPU 使用率
+- Coprocessor CPU：coprocessor 线程的 CPU 使用率
 - GC worker CPU：GC worker 线程的 CPU 使用率
 - BackGround worker CPU：background worker 线程的 CPU 使用率
+- Import CPU: Import线程的CPU使用率
+- Backup Worker CPU: Backup线程的CPU使用率
+- CDC Worker CPU: CDC Worker线程的CPU使用率
+- CDC endpoint CPU: Cdc endpoint CPU使用率
+- Raftlog fetch worker CPU: Async raft log fetcher worker的CPU使用率
+- TSO Worker CPU: TSO Worker线程的CPU使用率
 
 ### PD
 
@@ -112,9 +119,9 @@ title: TiKV 监控指标详解
     - append: ready 内 Raft log entry 的 ops
     - commit: ready 内 committed Raft log entry 的 ops
     - snapshot: 携带 snapshot 的 ready 的 ops
-- 0.99 Duration of Raft store events：99% 的 raftstore 事件所花费的时间
-- Process ready duration：处理 ready 所花费的时间
-- Process ready duration per server：每个 TiKV 实例处理 ready 所花费的时间，99.99% 的情况下，应该小于 2s
+- Max Duration of Raft store events：100% 的 raftstore 事件所花费的时间
+- Replica read lock checking duration：处理 Replica Read时检查lock所花费的时间
+- Peer msg length distribution：每个TiKV中每个region一次性处理Peer消息的个数，消息越多说明peer越繁忙。
 
 ![TiKV Dashboard - Raft process metrics](/media/tikv-dashboard-raft-process.png)
 
@@ -329,6 +336,30 @@ title: TiKV 监控指标详解
 - Number files at each level：每一层的文件个数
 - Ingest SST duration seconds：ingest SST 所花费的时间
 - Stall conditions changed of each CF：每个 CF stall 的原因
+
+### Raft Engine
+
+- Operations
+  - write: Raft Engine每秒写操作的次数
+  - read-entry: Raft Engine每秒读raft数据的次数
+  - read-message: Raft Engine每秒读raft消息的次数
+- Write duration：Raft Engine写操作的耗时，该耗时基本接近写入这些数据所包含的磁盘IO的latency之和
+- Flow
+  - write: Raft Engine写流量
+  - rewrite append: 重写append日志的流量
+  - rewrite rewrite: 重写rewrite日志的流量
+- Write Duration Breakdown(99%)
+  - wal: 写Raft Engine WAL的延迟
+  - wait: 写入前等待时间
+  - apply: apply到内存的时间
+- Bytes/Written 每次写入对应的bytes
+- WAL Duration Breakdown (P99%): 写WAL内部各个阶段所花的时间
+- File Count
+  - append: Raft Engine append数据用的文件个数
+  - rewrite: Raft Engine rewrite文件用的个数（rewrite类似于RocksDB的compaction)
+- Entry Count
+  - rewrite:  Raft Engine中rewrite过的记录条数
+  - append: Raft Engine中append的记录条数
 
 ### Titan - All
 
