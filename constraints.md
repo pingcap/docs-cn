@@ -52,20 +52,81 @@ Query OK, 1 row affected (0.03 sec)
 
 ## CHECK
 
-TiDB parses but ignores `CHECK` constraints. This is MySQL 5.7 compatible behavior.
+A `CHECK` constraint restricts the values of a column in a table to meet your specified conditions. When the `CHECK` constraint is added to a table, TiDB checks whether the constraint is satisfied during the insertion or updates of data into the table. If the constraint is not met, an error is returned.
 
-For example:
+The syntax for the `CHECK` constraint in TiDB is the same as that in MySQL:
 
 ```sql
-DROP TABLE IF EXISTS users;
-CREATE TABLE users (
- id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
- username VARCHAR(60) NOT NULL,
- UNIQUE KEY (username),
- CONSTRAINT min_username_length CHECK (CHARACTER_LENGTH(username) >=4)
-);
-INSERT INTO users (username) VALUES ('a');
-SELECT * FROM users;
+[CONSTRAINT [symbol]] CHECK (expr) [[NOT] ENFORCED]
+```
+
+Syntax explanation:
+
+- `[]`: the content within `[]` is optional.
+- `CONSTRAINT [symbol]`: specifies the name of the `CHECK` constraint.
+- `CHECK (expr)`: specifies the constraint condition, where `expr` needs to be a boolean expression. For each row in the table, the calculation result of this expression must be one of `TRUE`, `FALSE`, or `UNKNOWN` (for `NULL` values). If the calculation result is `FALSE` for a row, it indicates that the constraint is violated.
+- `[NOT] ENFORCED`: specifies whether to implement the constraint check. You can use it to enable or disable a `CHECK` constraint.
+
+### Add `CHECK` constraints
+
+In TiDB, you can add a `CHECK` constraint to a table using either the [`CREATE TABLE`](/sql-statements/sql-statement-create-table.md) or the [`ALTER TABLE`](/sql-statements/sql-statement-modify-column.md) statement.
+
+- Example of adding a `CHECK` constraint using the `CREATE TABLE` statement:
+
+    ```sql
+    CREATE TABLE t(a INT CHECK(a > 10) NOT ENFORCED, b INT, c INT, CONSTRAINT c1 CHECK (b > c));
+    ```
+
+- Example of adding a `CHECK` constraint using the `ALTER TABLE` statement:
+
+    ```sql
+    ALTER TABLE t ADD CONSTRAINT CHECK (1 < c);
+    ```
+
+When adding or enabling a `CHECK` constraint, TiDB checks the existing data in the table. If any data violates the constraint, the operation of adding the `CHECK` constraint will fail and return an error.
+
+When adding a `CHECK` constraint, you can either specify a constraint name or leave the name unspecified. If no constraint name is specified, TiDB automatically generates a constraint name in the `<tableName>_chk_<1, 2, 3...>` format.
+
+### View `CHECK` constraints
+
+You can view the constraint information in a table using the [`SHOW CREATE TABLE`](/sql-statements/sql-statement-show-create-table.md) statement. For example:
+
+```sql
+SHOW CREATE TABLE t;
++-------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table | Create Table                                                                                                                                                                                                                                                                                                     |
++-------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| t     | CREATE TABLE `t` (
+  `a` int(11) DEFAULT NULL,
+  `b` int(11) DEFAULT NULL,
+  `c` int(11) DEFAULT NULL,
+CONSTRAINT `c1` CHECK ((`b` > `c`)),
+CONSTRAINT `t_chk_1` CHECK ((`a` > 10)) /*!80016 NOT ENFORCED */,
+CONSTRAINT `t_chk_2` CHECK ((1 < `c`))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin |
++-------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+```
+
+### Delete `CHECK` constraints
+
+When deleting a `CHECK` constraint, you need to specify the name of the constraint to be deleted. For example:
+
+```sql
+ALTER TABLE t DROP CONSTRAINT t_chk_1;
+```
+
+### Enable or disable `CHECK` constraints
+
+When [adding a `CHECK` constraint](#add-check-constraints) to a table, you can specify whether TiDB needs to implement the constraint check during data insertion or updates.
+
+- If `NOT ENFORCED` is specified, TiDB does not check the constraint conditions during data insertion or updates.
+- If `NOT ENFORCED` is not specified or `ENFORCED` is specified, TiDB checks the constraint conditions during data insertion or updates.
+
+In addition to specifying `[NOT] ENFORCED` when adding the constraint, you can also enable or disable a `CHECK` constraint using the `ALTER TABLE` statement. For example:
+
+```sql
+ALTER TABLE t ALTER CONSTRAINT c1 NOT ENFORCED;
 ```
 
 ## UNIQUE KEY
