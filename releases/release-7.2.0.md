@@ -227,9 +227,9 @@ TiDB 版本：7.2.0
 
         <!--**tw@ran-huang**-->
 
-        - 优化导入时遇到 leader 切换导致的错误的重试机制 [#44478](https://github.com/pingcap/tidb/pull/44478)
-        - 导入完成后通过 SQL 的方式校验 checksum，提升检验的稳定性 [#41941](https://github.com/pingcap/tidb/issues/41941)
-        - 优化宽表导入下 lightning OOM 的问题 [43853](https://github.com/pingcap/tidb/issues/43853)
+        - 优化导入过程中的重试机制，避免因 leader 切换而导致的错误 [#44478](https://github.com/pingcap/tidb/issues/44263) @[lance6716](https://github.com/lance6716)
+	- 导入完成后通过 SQL 的方式校验 checksum，提升检验的稳定性 [#41941](https://github.com/pingcap/tidb/issues/41941) @[GMHDBJD](https://github.com/GMHDBJD)
+	- 优化导入宽表时 TiDB Lightning 发生 OOM 的问题 [#43853](https://github.com/pingcap/tidb/issues/43853) @[D3Hunter](https://github.com/D3Hunter)
 
 ## 错误修复
 
