@@ -223,7 +223,7 @@ TiDB 版本：7.2.0
 
 + TiKV
 
-    - 支持通过 `pd.retry-interval` 配置请求失败等场景下 PD 连接的重试间隔 [#14964](https://github.com/tikv/tikv/issues/14964) @[rleungx](https://github.com/rleungx)
+    - 支持通过 `pd.retry-interval` 配置在连接请求失败等场景下 PD 连接的重试间隔 [#14964](https://github.com/tikv/tikv/issues/14964) @[rleungx](https://github.com/rleungx)
     - 优化资源管控调度算法，将全局的资源使用量作为调度因素 [#14604](https://github.com/tikv/tikv/issues/14604) @[Connor1996](https://github.com/Connor1996)
     - 使用 gzip 压缩 `check_leader` 请求以减少流量 [#14553](https://github.com/tikv/tikv/issues/14553) @[you06](https://github.com/you06)
     - 为 `check_leader` 请求增加相关监控项 [#14658](https://github.com/tikv/tikv/issues/14658) @[you06](https://github.com/you06)
@@ -233,7 +233,7 @@ TiDB 版本：7.2.0
 
 + PD
 
-    - PD Leader 选举使用单独的 gRPC 链接，防止受到其他请求的影响 [#6403](https://github.com/tikv/pd/issues/6403) @[rleungx](https://github.com/rleungx)
+    - PD Leader 选举使用单独的 gRPC 连接，防止受到其他请求的影响 [#6403](https://github.com/tikv/pd/issues/6403) @[rleungx](https://github.com/rleungx)
     - 默认开启 bucket split 以改善多 Region 的热点问题 [#6433](https://github.com/tikv/pd/issues/6433) @[bufferflies](https://github.com/bufferflies)
 
 + Tools
