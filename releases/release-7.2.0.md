@@ -207,13 +207,13 @@ TiDB 版本：7.2.0
 + TiDB
 
     - 优化构造索引扫描范围的逻辑，支持将一些复杂条件转化为索引扫描范围 [#41572](https://github.com/pingcap/tidb/issues/41572) [#44389](https://github.com/pingcap/tidb/issues/44389) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes)
-    - 为 Stale Read 新增相关监控指标 [#43325](https://github.com/pingcap/tidb/issues/43325) @[you06](https://github.com/you06)
+    - 新增 `Stale Read OPS`、`Stale Read Traffic` 监控指标 [#43325](https://github.com/pingcap/tidb/issues/43325) @[you06](https://github.com/you06)
     - 当 Stale Read 的 retry leader 遇到 lock 时，resolve lock 之后强制重试 leader，避免无谓开销 [#43659](https://github.com/pingcap/tidb/issues/43659) @[you06](https://github.com/you06)
     - 使用估计时间计算 Stale Read ts，减少 Stale Read 的开销 [#44215](https://github.com/pingcap/tidb/issues/44215) @[you06](https://github.com/you06)
-    - 添加 long running 事务日志和系统变量 [#41471](https://github.com/pingcap/tidb/issues/41471) @[crazycs520](https://github.com/crazycs520)
+    - 添加 long-running 事务日志和系统变量 [#41471](https://github.com/pingcap/tidb/issues/41471) @[crazycs520](https://github.com/crazycs520)
     - 支持通过 MySQL 压缩协议连接 TiDB（在连接时加上 `--compress` 选项），提升数据密集型查询在低网络质量下的性能，并节省带宽成本的开销 [#22605](https://github.com/pingcap/tidb/issues/22605) @[dveeden](https://github.com/dveeden)
-    - 支持将 utf8 和 utf8mb3 识别为旧的三字节字符集编码 [#26226](https://github.com/pingcap/tidb/issues/26226) @[dveeden](https://github.com/dveeden)
-    - 支持在 UPDATE 语句中使用 `:=` 进行赋值操作 [#44751](https://github.com/pingcap/tidb/issues/44751) @[CbcWestwolf](https://github.com/CbcWestwolf)
+    - 支持将 `utf8` 和 `utf8mb3` 识别为旧的三字节字符集编码 [#26226](https://github.com/pingcap/tidb/issues/26226) @[dveeden](https://github.com/dveeden)
+    - 支持在 `UPDATE` 语句中使用 `:=` 进行赋值操作 [#44751](https://github.com/pingcap/tidb/issues/44751) @[CbcWestwolf](https://github.com/CbcWestwolf)
 
 <!--**tw@Oreoxmt**-->
 
@@ -250,8 +250,8 @@ TiDB 版本：7.2.0
 
     + TiDB Lightning <!--**tw@ran-huang**-->
 
-        - 优化导入过程中的重试机制，避免因 leader 切换而导致的错误 [#44478](https://github.com/pingcap/tidb/issues/44263) @[lance6716](https://github.com/lance6716)
-	- 导入完成后通过 SQL 的方式校验 checksum，提升检验的稳定性 [#41941](https://github.com/pingcap/tidb/issues/41941) @[GMHDBJD](https://github.com/GMHDBJD)
+        - 优化导入数据过程中的重试机制，避免因 leader 切换而导致的错误 [#44478](https://github.com/pingcap/tidb/issues/44263) @[lance6716](https://github.com/lance6716)
+	- 数据导入完成后使用 SQL 方式校验 checksum，提升数据校验的稳定性 [#41941](https://github.com/pingcap/tidb/issues/41941) @[GMHDBJD](https://github.com/GMHDBJD)
 	- 优化导入宽表时 TiDB Lightning 发生 OOM 的问题 [#43853](https://github.com/pingcap/tidb/issues/43853) @[D3Hunter](https://github.com/D3Hunter)
 
 ## 错误修复
