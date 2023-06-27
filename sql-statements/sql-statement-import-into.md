@@ -204,6 +204,10 @@ IMPORT INTO t FROM '/path/to/file-*.csv'
 IMPORT INTO t FROM 's3://bucket-name/test.csv?access-key=XXX&secret-access-key=XXX';
 ```
 
+```sql
+IMPORT INTO t FROM 'gs://bucket-name/test.csv';
+```
+
 S3 或 GCS 的 URI 路径配置详见[外部存储](/br/backup-and-restore-storages.md#uri-格式)。
 
 ### 通过 SetClause 语句计算列值
@@ -233,7 +237,7 @@ IMPORT INTO t FROM '/path/to/file.sql' FORMAT 'sql';
 限制写入单个 TiKV 的速度为 10 MiB/s：
 
 ```sql
-IMPORT INTO t FROM 's3://bucket/path/to/file.parquet' FORMAT 'parquet' WITH MAX_WRITE_SPEED='10MiB';
+IMPORT INTO t FROM 's3://bucket/path/to/file.parquet?access-key=XXX&secret-access-key=XXX' FORMAT 'parquet' WITH MAX_WRITE_SPEED='10MiB';
 ```
 
 ## MySQL 兼容性
