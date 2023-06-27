@@ -2999,13 +2999,13 @@ mysql> desc select count(distinct a) from test.t;
 
 > **警告：**
 >
-> 目前 CTE 直接在 TiFlash MPP 环境的执行仍然为实验性特性，代价计算仍在调整，需要搭配变量 `tidb_enforce_mpp` 使用，否则容易出现 CTE 可以在 TiFlash MPP 执行但是依旧是在 TiDB 执行的情况。
+> 目前 CTE 直接在 TiFlash MPP 环境执行为实验特性，代价计算仍在调整。如需开启此变量，需要同时开启变量 [`tidb_enforce_mpp`](/system-variables.md#tidb_enforce_mpp-从-v51-版本开始引入)，避免 CTE 可以在 TiFlash MPP 执行的情况下依旧在 TiDB 执行。
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 类型：布尔型
 - 默认值：`OFF`
-- 该变量控制 CTE 是否可以直接在 TiFlash MPP 执行而不是在 TiDB 上执行，打开该开关后，可以极大的提升含大量 CTE 的查询在 TiFlash MPP 的执行速度。
+- 该变量控制 CTE 是否可以直接在 TiFlash MPP 执行而不是在 TiDB 上执行。打开该开关后，可以极大地提升含大量 CTE 的查询在 TiFlash MPP 的执行速度。
 - 该变量目前支持控制非递归 CTE 能否在 TiFlash MPP 执行，无法控制递归 CTE。
 
 ### `tidb_opt_fix_control` <span class="version-mark">从 v7.1.0 版本开始引入</span>
