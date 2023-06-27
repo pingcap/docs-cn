@@ -133,7 +133,7 @@ ALTER TABLE t ALTER CONSTRAINT c1 NOT ENFORCED;
 
 ### 与 MySQL 的兼容性
 
-- 不支持在添加列的同时添加 `CHECK` 约束 (例如，`ALTER TABLE t ADD COLUMN a CHECK(a > 0)`) ，否则只有列会被添加成功，TiDB 会忽略 `CHECK` 约束但不会报错。
+- 不支持在添加列的同时添加 `CHECK` 约束（例如，`ALTER TABLE t ADD COLUMN a CHECK(a > 0)`)），否则只有列会被添加成功，TiDB 会忽略 `CHECK` 约束但不会报错。
 - 不支持使用 `ALTER TABLE t CHANGE a b int CHECK(b > 0)` 添加 `CHECK` 约束，使用该语句时 TiDB 会报错。
 
 ## 唯一约束
