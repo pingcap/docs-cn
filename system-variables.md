@@ -3702,6 +3702,24 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 
 - 需要注意的是修改该变量不会对已保存的老数据产生影响，只会对修改变量后的新写入数据使用对应版本格式保存。
 
+### `tidb_runtime_filter_mode`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 类型：枚举型
+- 默认值: `OFF`
+- 可选值: `OFF`, `LOCAL`
+- 该变量用于控制 Runtime Filter 功能的模式。从 v7.2 开始引入，目前为实验性功能。`OFF` 指的是不开启 Runtime Filter 功能，`LOCAL` 指的开启并使用 LOCAL 模式的 Runtime Filter 功能。
+
+### `tidb_runtime_filter_type`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 类型：枚举型
+- 默认值: `IN`
+- 可选值: `IN`
+- 该变量用于调整 Runtime Filter 的类型。从 v7.2 开始引入。`IN` 指的是 Runtime Filter 的类型为 IN，即使用 IN 类型的谓词作为 Filter。
+
 ### `tidb_scatter_region`
 
 - 作用域：GLOBAL
