@@ -55,7 +55,7 @@ TiDB 版本：7.2.0
     * `FIRST_VALUE`
     * `LAST_VALUE`
 
-* TiFlash 支持 Pipeline 执行模型（实验特性） [#6518](https://github.com/pingcap/tiflash/issues/6518) @[SeaRise](https://github.com/SeaRise) **tw@ran-huang** <!--1440-->
+* TiFlash 支持 Pipeline 执行模型（实验特性）[#6518](https://github.com/pingcap/tiflash/issues/6518) @[SeaRise](https://github.com/SeaRise) **tw@ran-huang** <!--1440-->
 
     在 v7.2.0 版本之前，TiFlash 引擎中各个任务在执行时，需要自行申请线程资源。TiFlash 引擎通过控制任务数的方式限制线程资源使用，以避免线程资源超用，但并不能完全避免此问题。因此，在 v7.2.0 中，TiFlash 引入 Pipeline 执行模型，对所有线程资源进行统一管理，并对所有任务的执行进行统一调度，充分利用线程资源，同时避免资源超用。新增系统变量 [`tidb_enable_tiflash_pipeline_model`](/system-variables.md#tidb_enable_tiflash_pipeline_model) 用于设置是否启用 Pipeline 执行模型。
 
@@ -270,20 +270,20 @@ TiDB 版本：7.2.0
     - 修复由于 Coprocessor task 中 `TxnScope` 缺失导致 Stale Read 全局优化不生效的问题 [#43365](https://github.com/pingcap/tidb/issues/43365) @[you06](https://github.com/you06)
     - 修复 follower read 未处理 flashback 错误而进行重试，导致查询报错的问题 [#43673](https://github.com/pingcap/tidb/issues/43673) @[you06](https://github.com/you06)
     <!--**tw@qiancai**-->
-    - 修复 `ON UPDATE` 语句没有正确更新 primary key 导致数据索引不一致问题 [#44565](https://github.com/pingcap/tidb/issues/44565) @[zyguan](https://github.com/zyguan)
-    - 修改 UNIX_TIMESTAMP 函数的上限为 `3001-01-19 03:14:07.999999 UTC`，与 MySQL 8.0.28+ 保持一致 [#43987](https://github.com/pingcap/tidb/issues/43987) @[YangKeao](https://github.com/YangKeao)
+    - 修复 `ON UPDATE` 语句没有正确更新主键导致数据索引不一致的问题 [#44565](https://github.com/pingcap/tidb/issues/44565) @[zyguan](https://github.com/zyguan)
+    - 修改 `UNIX_TIMESTAMP()` 函数的上限为 `3001-01-19 03:14:07.999999 UTC`，与 MySQL 8.0.28+ 保持一致 [#43987](https://github.com/pingcap/tidb/issues/43987) @[YangKeao](https://github.com/YangKeao)
     - 修复在 ingest 模式下创建索引失败的问题 [#44137](https://github.com/pingcap/tidb/issues/44137) @[tangenta](https://github.com/tangenta)
     - 修复取消处于 rollback 状态的 DDL 任务导致相关元数据出错的问题 [#44143](https://github.com/pingcap/tidb/issues/44143) @[wjhuang2016](https://github.com/wjhuang2016)
     - 修复 `memTracker` 配合 cursor fetch 使用导致内存泄漏的问题 [#44254](https://github.com/pingcap/tidb/issues/44254) @[YangKeao](https://github.com/YangKeao)
-    - 修复删除 database 导致 GC 推进慢的问题 [#33069](https://github.com/pingcap/tidb/issues/33069) @[tiancaiamao](https://github.com/tiancaiamao)
-    - 修复分区表在 Index join 的 probe 阶段找不到对应行而报错的问题 [#43686](https://github.com/pingcap/tidb/issues/43686) @[AilinKid](https://github.com/AilinKid) @[mjonss](https://github.com/mjonss)
+    - 修复删除数据库导致 GC 推进慢的问题 [#33069](https://github.com/pingcap/tidb/issues/33069) @[tiancaiamao](https://github.com/tiancaiamao)
+    - 修复分区表在 Index Join 的 probe 阶段找不到对应行而报错的问题 [#43686](https://github.com/pingcap/tidb/issues/43686) @[AilinKid](https://github.com/AilinKid) @[mjonss](https://github.com/mjonss)
     - 修复在创建分区表时使用 `SUBPARTITION` 没有警告提醒的问题 [#41198](https://github.com/pingcap/tidb/issues/41198) [#41200](https://github.com/pingcap/tidb/issues/41200) @[mjonss](https://github.com/mjonss)
-    - 修复了执行时间超过 `MAX_EXECUTION_TIME` 的 query 被 kill 时的返回值和 MySQL 不一致的问题 [#43031](https://github.com/pingcap/tidb/issues/43031) @[dveeden](https://github.com/dveeden)
-    - 修复了 `LEADING` hint 不支持查询块别名 (query block alias) 的问题 [#44645](https://github.com/pingcap/tidb/issues/44645)  @[qw4990](https://github.com/qw4990)
-    - 修复 `LAST_INSERT_ID()` 函数的返回类型，从 VARCHAR 变更为 LONGLONG，与 MySQL 一致 [#44574](https://github.com/pingcap/tidb/issues/44574)  @[Defined2014](https://github.com/Defined2014)
-    - 修复当公共表表达式 (CTE) 多次被非关联子查询引用时，因过滤条件下推导致结果有误的问题 [#44051](https://github.com/pingcap/tidb/issues/44051)  @[winoros](https://github.com/winoros)
-    - 修复了 outer join reorder 对 condition 的错误处理导致结果有误的问题 [#44314] (https://github.com/pingcap/tidb/issues/44314)  @[AilinKid](https://github.com/AilinKid)
-    - 修复了 `PREPARE stmt FROM "analyze table xxx"` 会被 `tidb_mem_quota_query` kill 掉的问题 [#44320](https://github.com/pingcap/tidb/issues/44320) @[chrysan](https://github.com/chrysan)
+    - 修复了执行时间超过 `MAX_EXECUTION_TIME` 的 query 被 kill 时的报错信息和 MySQL 不一致的问题 [#43031](https://github.com/pingcap/tidb/issues/43031) @[dveeden](https://github.com/dveeden)
+    - 修复了 `LEADING` hint 不支持查询块别名 (query block alias) 的问题 [#44645](https://github.com/pingcap/tidb/issues/44645) @[qw4990](https://github.com/qw4990)
+    - 修复 `LAST_INSERT_ID()` 函数的返回类型，从 VARCHAR 变更为 LONGLONG，与 MySQL 一致 [#44574](https://github.com/pingcap/tidb/issues/44574) @[Defined2014](https://github.com/Defined2014)
+    - 修复在带有非关联子查询的语句中使用公共表表达式 (CTE) 可能导致结果错误的问题 [#44051](https://github.com/pingcap/tidb/issues/44051) @[winoros](https://github.com/winoros)
+    - 修复 Join Reorder 可能会造成 Outer Join 结果错误的问题 [#44314](https://github.com/pingcap/tidb/issues/44314) @[AilinKid](https://github.com/AilinKid)
+    - 修复了 `PREPARE stmt FROM "ANALYZE TABLE xxx"` 会被 `tidb_mem_quota_query` kill 掉的问题 [#44320](https://github.com/pingcap/tidb/issues/44320) @[chrysan](https://github.com/chrysan)
 
 <!--**tw@Oreoxmt**-->
 
