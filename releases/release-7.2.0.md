@@ -170,26 +170,18 @@ TiDB 版本：7.2.0
 >
 > 以下为从 v7.1.0 升级至当前版本 (v7.2.0) 所需兼容性变更信息。如果从 v7.0.0 或之前版本升级到当前版本，可能也需要考虑和查看中间版本 release notes 中提到的兼容性变更信息。
 
-### 行为变更
-
-<!-- 此小节包含 MySQL 兼容性变更-->
-
-* 兼容性 1
-
-* 兼容性 2
-
 ### 系统变量
 
 | 变量名  | 修改类型                      | 描述  |
 |--------|------------------------------|------|
 | [`last_insert_id`](/system-variables.md#last_insert_id-从-v530-版本开始引入) | 修改 | 该变量的最大值从 `9223372036854775807` 修改为 `18446744073709551615`，和 MySQL 保持一致。  |
+| [`tidb_enable_non_prepared_plan_cache`](/system-variables.md#tidb_enable_non_prepared_plan_cache) | 修改 | 经进一步的测试后，该变量默认值从 `OFF` 修改为 `ON`，即默认开启非 Prepare 语句执行计划缓存。 |
 | [`tidb_remove_orderby_in_subquery`](/system-variables.md#tidb_remove_orderby_in_subquery-从-v610-版本开始引入) | 修改 | 经进一步的测试后，该变量默认值从 `OFF` 修改为 `ON`，即优化器改写会移除子查询中的 `ORDER BY` 子句。 |
 | [`tidb_analyze_skip_column_types`](/system-variables.md#tidb_analyze_skip_column_types-从-v720-版本开始引入) | 新增 | 这个变量表示在执行 `ANALYZE` 命令收集统计信息时，跳过哪些类型的列的统计信息收集。该变量仅适用于 [`tidb_analyze_version = 2`](#tidb_analyze_version-从-v510-版本开始引入) 的情况。使用 `ANALYZE TABLE t COLUMNS c1, ..., cn` 语法时，如果指定的列的类型在 `tidb_analyze_skip_column_types` 中，则不会收集该列的统计信息。 |
+| [`tidb_enable_check_constraint`](/system-variables.md#tidb_enable_check_constraint-从-v720-版本开始引入) | 新增 | 这个变量用于控制`CHECK` 约束功能是否开启。默认值为 `OFF` 表示该功能默认关闭。 |
 | [`tidb_enable_fast_table_check`](/system-variables.md#tidb_enable_fast_table_check-从-v720-版本开始引入) | 新增 | 这个变量用于控制是否使用基于校验和的方式来快速检查表中数据和索引的一致性。默认值 `ON` 表示该功能默认开启。  |
 | [`tidb_enable_tiflash_pipeline_model`](/system-variables.md#tidb_enable_tiflash_pipeline_model-从-v720-版本开始引入) | 新增 | 这个变量用来控制是否启用 TiFlash 新的执行模型 [Pipeline Model](/tiflash/tiflash-pipeline-model.md)，默认值为 `OFF`，即关闭 Pipeline Model。 |
 | [`tidb_expensive_txn_time_threshold`](/system-variables.md#tidb_expensive_txn_time_threshold-从-v720-版本开始引入) | 新增 | 控制打印 expensive transaction 日志的阈值时间，默认值是 600 秒。expensive transaction 日志会将尚未 COMMIT 或 ROLLBACK 且持续时间超过该阈值的事务的相关信息打印出来。 |
-| [`tidb_enable_non_prepared_plan_cache`](/system-variables.md#tidb_enable_non_prepared_plan_cache) | 修改 | 经进一步的测试后，该变量默认值从 `OFF` 修改为 `ON`，即默认开启非 Prepare 语句执行计划缓存。 |
-| [`tidb_enable_check_constraint`](/system-variables.md#tidb_enable_check_constraint-从-v720-版本开始引入) | 新增 | 这个变量用于控制`CHECK` 约束功能是否开启。默认值为 `OFF` 表示该功能默认关闭。 |
 
 ### 配置文件参数
 
@@ -197,7 +189,6 @@ TiDB 版本：7.2.0
 | -------- | -------- | -------- | -------- |
 | TiDB | [`lite-init-stats`](/tidb-configuration-file.md#lite-init-stats-从-v710-版本开始引入) | 修改 | 经进一步的测试后，默认值从 `false` 修改为 `true`，表示 TiDB 启动时默认将采用轻量级的统计信息初始化，以提高启动时统计信息初始化的效率。 |
 | TiDB | [`force-init-stats`](/tidb-configuration-file.md#force-init-stats-从-v710-版本开始引入) | 修改 | 配合 `lite-init-stats`，默认值从 `false` 修改为 `true`，表示 TiDB 启动时默认会在完成统计信息初始化后再对外提供服务。 |
-
 | TiKV | [<code>rocksdb.\[defaultcf\|writecf\|lockcf\].compaction-guard-min-output-file-size</code>](/tikv-configuration-file.md#compaction-guard-min-output-file-size) | 修改 | 为减小 RocksDB 中 compaction 任务的数据量，该变量默认值从 `"8MB"` 修改为 `"1MB"`。 |
 | TiKV | [<code>rocksdb.\[defaultcf\|writecf\|lockcf\].optimize-filters-for-memory</code>](/tikv-configuration-file.md#optimize-filters-for-memory-从-v710-版本开始引入) | 新增 | 控制是否生成能够最小化内存碎片的 Bloom/Ribbon filter。 |
 | TiKV | [<code>rocksdb.\[defaultcf\|writecf\|lockcf\].ribbon-filter-above-level</code>](/tikv-configuration-file.md#ribbon-filter-above-level-从-v710-版本开始引入) | 新增 | 控制是否对于大于等于该值的 level 使用 Ribbon filter，对于小于该值的 level，使用非 block-based bloom filter。 |
@@ -259,8 +250,8 @@ TiDB 版本：7.2.0
     + TiDB Lightning <!--**tw@ran-huang**-->
 
         - 优化导入数据过程中的重试机制，避免因 leader 切换而导致的错误 [#44478](https://github.com/pingcap/tidb/issues/44263) @[lance6716](https://github.com/lance6716)
-	- 数据导入完成后使用 SQL 方式校验 checksum，提升数据校验的稳定性 [#41941](https://github.com/pingcap/tidb/issues/41941) @[GMHDBJD](https://github.com/GMHDBJD)
-	- 优化导入宽表时 TiDB Lightning 发生 OOM 的问题 [#43853](https://github.com/pingcap/tidb/issues/43853) @[D3Hunter](https://github.com/D3Hunter)
+        - 数据导入完成后使用 SQL 方式校验 checksum，提升数据校验的稳定性 [#41941](https://github.com/pingcap/tidb/issues/41941) @[GMHDBJD](https://github.com/GMHDBJD)
+        - 优化导入宽表时 TiDB Lightning 发生 OOM 的问题 [#43853](https://github.com/pingcap/tidb/issues/43853) @[D3Hunter](https://github.com/D3Hunter)
 
 ## 错误修复
 
