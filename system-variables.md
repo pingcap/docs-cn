@@ -3683,7 +3683,9 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 - 需要注意的是修改该变量不会对已保存的老数据产生影响，只会对修改变量后的新写入数据使用对应版本格式保存。
 
 ### `tidb_runtime_filter_mode`
-
+> **警告：**
+>
+> 该功能为实验特性，不建议在生产环境中使用。
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 类型：枚举型
