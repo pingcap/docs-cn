@@ -131,6 +131,10 @@ ALTER TABLE t DROP CONSTRAINT t_chk_1;
 ALTER TABLE t ALTER CONSTRAINT c1 NOT ENFORCED;
 ```
 
+### 与 MySQL 的兼容性
+1. 不支持使用 `ALTER TABLE t ADD COLUMN a CHECK(a > 0)` 添加列的同时添加 `CHECK` 约束，使用该语句时 TiDB 不会报错，但是会忽略 `CHECK` 约束，列会被添加成功。
+2. 不支持使用 `ALTER TABLE t CHANGE a b int CHECK(b > 0)` 添加 `CHECK` 约束，使用该语句时 TiDB 会报错。
+
 ## 唯一约束
 
 唯一约束是指唯一索引和主键列中所有的非空值都是唯一的。
