@@ -15,102 +15,131 @@ The whole migration has two processes:
 
 ## Prerequisites
 
-- [Install Dumpling and TiDB Lightning](/migration-tools.md)
+- [Install Dumpling and TiDB Lightning](/migration-tools.md). If you want to create the corresponding tables manually on the target side, do not install Dumpling.
+- [Get the upstream database privileges required by Dumpling](/dumpling-overview.md#required-privileges).
 - [Get the target database privileges required for TiDB Lightning](/tidb-lightning/tidb-lightning-faq.md#what-are-the-privilege-requirements-for-the-target-database).
 
 ## Import full data to TiDB
 
-### Step 1. Export an Aurora snapshot to Amazon S3
+### Step 1. Export and import the schema file
 
-1. In Aurora, query the current binlog position by running the following command:
+This section describes how to export the schema file from Amazon Aurora and import it to TiDB. If you have manually created the table in the target database, you can skip this step.
 
-    ```sql
-    mysql> SHOW MASTER STATUS;
-    ```
+#### 1.1 Export the schema file from Amazon Aurora
 
-    The output is similar to the following. Record the binlog name and position for later use.
+Because the snapshot file from Amazon Aurora does not contain the DDL statements, you need to export the schema using Dumpling and create the schema in the target database using TiDB Lightning.
 
-    ```
-    +------------------+----------+--------------+------------------+-------------------+
-    | File             | Position | Binlog_Do_DB | Binlog_Ignore_DB | Executed_Gtid_Set |
-    +------------------+----------+--------------+------------------+-------------------+
-    | mysql-bin.000002 |    52806 |              |                  |                   |
-    +------------------+----------+--------------+------------------+-------------------+
-    1 row in set (0.012 sec)
-    ```
-
-2. Export the Aurora snapshot. For detailed steps, refer to [Exporting DB snapshot data to Amazon S3](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/USER_ExportSnapshot.html).
-
-After you obtain the binlog position, export the snapshot within 5 minutes. Otherwise, the recorded binlog position might be outdated and thus cause data conflict during the incremental replication.
-
-After the two steps above, make sure you have the following information ready:
-
-- The Aurora binlog name and position at the time of the snapshot creation.
-- The S3 path where the snapshot is stored, and the SecretKey and AccessKey with access to the S3 path.
-
-### Step 2. Export schema
-
-Because the snapshot file from Aurora does not contain the DDL statements, you need to export the schema using Dumpling and create the schema in the target database using TiDB Lightning. If you want to manually create the schema, you can skip this step.
-
-Export the schema using Dumpling by running the following command. The command includes the `--filter` parameter to only export the desired table schema:
-
-{{< copyable "shell-regular" >}}
+Export the schema using Dumpling by running the following command. The command includes the `--filter` parameter to only export the desired table schema. For more information about the parameters, see the [Option list of Dumpling](/dumpling-overview.md#option-list-of-dumpling).
 
 ```shell
-tiup dumpling --host ${host} --port 3306 --user root --password ${password} --filter 'my_db1.table[12]' --no-data --output 's3://my-bucket/schema-backup' --filter "mydb.*"
+export AWS_ACCESS_KEY_ID=${access_key}
+export AWS_SECRET_ACCESS_KEY=${secret_key}
+tiup dumpling --host ${host} --port 3306 --user root --password ${password} --filter 'my_db1.table[12],mydb.*' --consistency none --no-data --output 's3://my-bucket/schema-backup'
 ```
 
-The parameters used in the command above are as follows. For more parameters, refer to [Dumpling overview](/dumpling-overview.md).
+Record the URI of the schema exported in the above command, such as 's3://my-bucket/schema-backup', which will be used when importing the schema file later.
 
-|Parameter              |Description    |
-|-                      |-              |
-|`-u` or `--user`       |Aurora MySQL user|
-|`-p` or `--password`   |MySQL user password|
-|`-P` or `--port`       |MySQL port|
-|`-h` or `--host`       |MySQL IP address|
-|`-t` or `--thread`     |The number of threads used for export|
-|`-o` or `--output`     |The directory that stores the exported file. Supports local path or [external storage URI](/br/backup-and-restore-storages.md)|
-|`-r` or `--row`        |The maximum number of rows in a single file|
-|`-F`                   |The maximum size of a single file, in MiB. Recommended value: 256 MiB.|
-|`-B` or `--database`   |Specifies a database to be exported|
-|`-T` or `--tables-list`|Exports the specified tables|
-|`-d` or `--no-data`    |Does not export data. Only exports schema.|
-|`-f` or `--filter` |Exports tables that match the pattern. Do not use `-f` and `-T` at the same time. Refer to [table-filter](/table-filter.md) for the syntax.|
+To get access to Amazon S3, you can pass the secret access key and access key of the account that has access to this Amazon S3 storage path into the Dumpling or TiDB Lightning node as environment variables. Dumpling and TiDB Lightning also support reading credential files from `~/.aws/credentials`. This method eliminates the need to provide the secret access key and access key again for all tasks on that Dumpling or TiDB Lightning node.
 
-### Step 3. Create the TiDB Lightning configuration file
+#### 1.2 Create the TiDB Lightning configuration file for the schema file
 
-Create the `tidb-lightning.toml` configuration file as follows:
-
-{{< copyable "shell-regular" >}}
-
-```shell
-vim tidb-lightning.toml
-```
-
-{{< copyable "" >}}
+Create a new `tidb-lightning-schema.toml` file, copy the following content into the file, and replace the corresponding content.
 
 ```toml
 [tidb]
 
 # The target TiDB cluster information.
-host = ${host}                # e.g.: 172.16.32.1
-port = ${port}                # e.g.: 4000
-user = "${user_name}          # e.g.: "root"
-password = "${password}"      # e.g.: "rootroot"
-status-port = ${status-port}  # Obtains the table schema information from TiDB status port, e.g.: 10080
-pd-addr = "${ip}:${port}"     # The cluster PD address, e.g.: 172.16.31.3:2379. TiDB Lightning obtains some information from PD. When backend = "local", you must specify status-port and pd-addr correctly. Otherwise, the import will be abnormal.
+host = ${host}
+port = ${port}
+user = "${user_name}
+password = "${password}"
+status-port = ${status-port}  # The TiDB status port. Usually the port is 10080.
+pd-addr = "${ip}:${port}"     # The cluster PD address. Usually the port is 2379.
 
 [tikv-importer]
-# "local": Default backend. The local backend is recommended to import large volumes of data (1 TiB or more). During the import, the target TiDB cluster cannot provide any service.
-# "tidb": The "tidb" backend is recommended to import data less than 1 TiB. During the import, the target TiDB cluster can provide service normally.
+# "local": Use the default Physical Import Mode (the "local" backend).
+# During the import, the target TiDB cluster cannot provide any service.
+# For more information about import modes, see https://docs.pingcap.com/tidb/stable/tidb-lightning-overview
 backend = "local"
 
-# Set the temporary storage directory for the sorted Key-Value files. The directory must be empty, and the storage space must be greater than the size of the dataset to be imported. For better import performance, it is recommended to use a directory different from `data-source-dir` and use flash storage, which can use I/O exclusively.
-sorted-kv-dir = "/mnt/ssd/sorted-kv-dir"
+# Set the temporary storage directory for the sorted Key-Value files.
+# The directory must be empty, and the storage space must be greater than the size of the dataset to be imported.
+# For better import performance, it is recommended to use a directory different from `data-source-dir` and use flash storage,
+# which can use I/O exclusively.
+sorted-kv-dir = "${path}"
 
 [mydumper]
-# The path that stores the snapshot file.
-data-source-dir = "${s3_path}"  # e.g.: s3://my-bucket/sql-backup
+# Set the directory of the schema file exported from Amazon Aurora
+data-source-dir = "s3://my-bucket/schema-backup"
+```
+
+If you need to enable TLS in the TiDB cluster, refer to [TiDB Lightning Configuration](/tidb-lightning/tidb-lightning-configuration.md).
+
+#### 1.3 Import the schema file to TiDB
+
+Use TiDB Lightning to import the schema file to the downstream TiDB.
+
+```shell
+export AWS_ACCESS_KEY_ID=${access_key}
+export AWS_SECRET_ACCESS_KEY=${secret_key}
+nohup tiup tidb-lightning -config tidb-lightning-schema.toml > nohup.out 2>&1 &
+```
+
+### Step 2. Export and import an Amazon Aurora snapshot to Amazon S3
+
+This section describes how to export an Amazon Aurora snapshot to Amazon S3 and import it into TiDB by TiDB Lightning.
+
+#### 2.1 Export an Amazon Aurora snapshot to Amazon S3
+
+1. Get the name and location of the Amazon Aurora binlog for subsequent incremental migration. In Amazon Aurora, run the `SHOW MASTER STATUS` command and record the current binlog position:
+
+    ```sql
+    SHOW MASTER STATUS;
+    ```
+
+    The output is similar to the following. Record the binlog name and position for later use.
+
+    ```
+    +----------------------------+----------+--------------+------------------+-------------------+
+    | File                       | Position | Binlog_Do_DB | Binlog_Ignore_DB | Executed_Gtid_Set |
+    +----------------------------+----------+--------------+------------------+-------------------+
+    | mysql-bin-changelog.018128 |    52806 |              |                  |                   |
+    +----------------------------+----------+--------------+------------------+-------------------+
+    1 row in set (0.012 sec)
+    ```
+
+2. Export the Amazon Aurora snapshot. For detailed steps, refer to [Exporting DB snapshot data to Amazon S3](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/USER_ExportSnapshot.html). After you obtain the binlog position, export the snapshot within 5 minutes. Otherwise, the recorded binlog position might be outdated and thus cause data conflict during the incremental replication.
+
+#### 2.2 Create the TiDB Lightning configuration file for the data file
+
+Create a new `tidb-lightning-data.toml` configuration file, copy the following content into the file, and replace the corresponding content.
+
+```toml
+[tidb]
+
+# The target TiDB cluster information.
+host = ${host}
+port = ${port}
+user = "${user_name}
+password = "${password}"
+status-port = ${status-port}  # The TiDB status port. Usually the port is 10080.
+pd-addr = "${ip}:${port}"     # The cluster PD address. Usually the port is 2379.
+
+[tikv-importer]
+# "local": Use the default Physical Import Mode (the "local" backend).
+# During the import, the target TiDB cluster cannot provide any service.
+# For more information about import modes, see https://docs.pingcap.com/tidb/stable/tidb-lightning-overview
+backend = "local"
+
+# Set the temporary storage directory for the sorted Key-Value files.
+# The directory must be empty, and the storage space must be greater than the size of the dataset to be imported.
+# For better import performance, it is recommended to use a directory different from `data-source-dir` and use flash storage,
+# which can use I/O exclusively.
+sorted-kv-dir = "${path}"
+
+[mydumper]
+# Set the directory of the snapshot file exported from Amazon Aurora
+data-source-dir = "${s3_path}"  # eg: s3://my-bucket/sql-backup
 
 [[mydumper.files]]
 # The expression that parses the parquet file.
@@ -122,35 +151,23 @@ type = '$3'
 
 If you need to enable TLS in the TiDB cluster, refer to [TiDB Lightning Configuration](/tidb-lightning/tidb-lightning-configuration.md).
 
-### Step 4. Import full data to TiDB
+#### 2.3 Import full data to TiDB
 
-1. Create the tables in the target database using TiDB Lightning:
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    tiup tidb-lightning -config tidb-lightning.toml -d 's3://my-bucket/schema-backup'
-    ```
-
-2. Start the import by running `tidb-lightning`. If you launch the program directly in the command line, the process might exit unexpectedly after receiving a SIGHUP signal. In this case, it is recommended to run the program using a `nohup` or `screen` tool. For example:
-
-    Pass the SecretKey and AccessKey that have access to the S3 storage path as environment variables to the Dumpling node. You can also read the credentials from `~/.aws/credentials`.
-
-    {{< copyable "shell-regular" >}}
+1. Use TiDB Lightning to import data from an Amazon Aurora snapshot to TiDB.
 
     ```shell
     export AWS_ACCESS_KEY_ID=${access_key}
     export AWS_SECRET_ACCESS_KEY=${secret_key}
-    nohup tiup tidb-lightning -config tidb-lightning.toml > nohup.out 2>&1 &
+    nohup tiup tidb-lightning -config tidb-lightning-data.toml > nohup.out 2>&1 &
     ```
 
-3. After the import starts, you can check the progress of the import by either of the following methods:
+2. After the import starts, you can check the progress of the import by either of the following methods:
 
     - `grep` the keyword `progress` in the log. The progress is updated every 5 minutes by default.
     - Check progress in [the monitoring dashboard](/tidb-lightning/monitor-tidb-lightning.md).
     - Check progress in [the TiDB Lightning web interface](/tidb-lightning/tidb-lightning-web-interface.md).
 
-4. After TiDB Lightning completes the import, it exits automatically. Check whether `tidb-lightning.log` contains `the whole procedure completed` in the last lines. If yes, the import is successful. If no, the import encounters an error. Address the error as instructed in the error message.
+3. After TiDB Lightning completes the import, it exits automatically. Check whether `tidb-lightning.log` contains `the whole procedure completed` in the last lines. If yes, the import is successful. If no, the import encounters an error. Address the error as instructed in the error message.
 
 > **Note:**
 >
@@ -169,8 +186,6 @@ If you encounter any problem during the import, refer to [TiDB Lightning FAQ](/t
 
 1. Create the `source1.yaml` file as follows:
 
-    {{< copyable "" >}}
-
     ```yaml
     # Must be unique.
     source-id: "mysql-01"
@@ -186,8 +201,6 @@ If you encounter any problem during the import, refer to [TiDB Lightning FAQ](/t
 
 2. Load the data source configuration to the DM cluster using `tiup dmctl` by running the following command:
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     tiup dmctl --master-addr ${advertise-addr} operate-source create source1.yaml
     ```
@@ -202,8 +215,6 @@ If you encounter any problem during the import, refer to [TiDB Lightning FAQ](/t
 ### Step 2: Create the migration task
 
 Create the `task1.yaml` file as follows:
-
-{{< copyable "" >}}
 
 ```yaml
 # Task name. Multiple tasks that are running at the same time must each have a unique name.
@@ -233,7 +244,7 @@ mysql-instances:
     block-allow-list: "listA"           # References the block-allow-list configuration above.
 #       syncer-config-name: "global"    # Name of the syncer configuration.
     meta:                               # The position where the binlog replication starts when `task-mode` is `incremental` and the downstream database checkpoint does not exist. If the checkpoint exists, the checkpoint is used. If neither the `meta` configuration item nor the downstream database checkpoint exists, the migration starts from the latest binlog position of the upstream.
-      binlog-name: "mysql-bin.000004"   # The binlog position recorded in "Step 1. Export an Aurora snapshot to Amazon S3". When the upstream database has source-replica switching, GTID mode is required.
+      binlog-name: "mysql-bin.000004"   # The binlog position recorded in "Step 1. Export an Amazon Aurora snapshot to Amazon S3". When the upstream database has source-replica switching, GTID mode is required.
       binlog-pos: 109227
       # binlog-gtid: "09bec856-ba95-11ea-850a-58f2b4af5188:1-9"
 
@@ -250,15 +261,11 @@ The YAML file above is the minimum configuration required for the migration task
 
 Before you start the migration task, to reduce the probability of errors, it is recommended to confirm that the configuration meets the requirements of DM by running the `check-task` command:
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 tiup dmctl --master-addr ${advertise-addr} check-task task.yaml
 ```
 
 After that, start the migration task by running `tiup dmctl`:
-
-{{< copyable "shell-regular" >}}
 
 ```shell
 tiup dmctl --master-addr ${advertise-addr} start-task task.yaml
@@ -278,8 +285,6 @@ If you encounter any problem, refer to [DM error handling](/dm/dm-error-handling
 ### Step 4. Check the migration task status
 
 To learn whether the DM cluster has an ongoing migration task and the task status, run the `query-status` command using `tiup dmctl`:
-
-{{< copyable "shell-regular" >}}
 
 ```shell
 tiup dmctl --master-addr ${advertise-addr} query-status ${task-name}

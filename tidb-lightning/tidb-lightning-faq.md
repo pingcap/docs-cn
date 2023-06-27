@@ -78,14 +78,18 @@ TiDB Lightning supports:
 
 Starting from v5.1, TiDB Lightning can automatically recognize the schema and tables in the downstream. If you use TiDB Lightning earlier than v5.1, you need to set `no-schema = true` in the `[mydumper]` section in `tidb-lightning.toml`. This makes TiDB Lightning skip the `CREATE TABLE` invocations and fetch the metadata directly from the target database. TiDB Lightning will exit with error if a table is actually missing.
 
-## Can the Strict SQL Mode be disabled to allow importing invalid data?
+## How to prohibit importing invalid data?
 
-Yes. By default, the [`sql_mode`](https://dev.mysql.com/doc/refman/5.7/en/sql-mode.html) used by TiDB Lightning is `"STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION"`, which disallows invalid data such as the date `1970-00-00`. The mode can be changed by modifying the `sql-mode` setting in the `[tidb]` section in `tidb-lightning.toml`.
+You can prohibit importing invalid data by enabling Strict SQL Mode.
+
+By default, the [`sql_mode`](https://dev.mysql.com/doc/refman/5.7/en/sql-mode.html) used by TiDB Lightning is `"ONLY_FULL_GROUP_BY,NO_AUTO_CREATE_USER"`, which allows invalid data such as the date `1970-00-00`.
+
+To prohibit importing invalid data, you need to change the `sql-mode` setting to `"STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION"` in the `[tidb]` section in `tidb-lightning.toml`.
 
 ```toml
 ...
 [tidb]
-sql-mode = ""
+sql-mode = "STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION"
 ...
 ```
 
