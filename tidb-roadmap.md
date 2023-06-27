@@ -5,16 +5,18 @@ summary: Learn about what's coming in the future for TiDB.
 
 # TiDB Roadmap
 
-This roadmap brings you what's coming in the future, so you can see the new features or improvements in advance, follow the progress, learn about the key milestones on the way, and give feedback as the development work goes on. In the course of development, this roadmap is subject to change based on user needs and feedback. If you have a feature request or want to prioritize a feature, please file an issue on [GitHub](https://github.com/pingcap/tidb/issues).
+This roadmap provides a look into the proposed future. This will be continually updated as we release long-term stable (LTS) versions. The purpose is to provide visibility into what is coming, so that you can more closely follow the progress, learn about the key milestones on the way, and give feedback as the development work goes on.
 
-## Highlights of what we are planning
+In the course of development, this roadmap is subject to change based on user needs and feedback. As expected, as the columns move right, the items under them are less committed. If you have a feature request or want to prioritize a feature, please file an issue on [GitHub](https://github.com/pingcap/tidb/issues).
+
+## Rolling roadmap highlights
 
 <table>
   <thead>
     <tr>
       <th>Category</th>
-      <th>Mid-calendar-year LTS release</th>
-      <th>End-calendar-year LTS release</th>
+      <th>End of CY23 LTS release</th>
+      <th>Mid of CY24 LTS release</th>
       <th>Future releases</th>
     </tr>
   </thead>
@@ -26,29 +28,14 @@ This roadmap brings you what's coming in the future, so you can see the new feat
       <td>
         <ul>
           <li>
-            <b>General plan cache</b><br /><i
-              >Improve general read performance</i
+            <b>GA of Partitioned Raft KV storage engine</b><br /><i
+              >PB-scale clusters, increased write velocity, faster scaling operations, and improved compaction stability</i
             >
           </li>
           <br />
           <li>
-            <b>Partitioned Raft KV storage engine</b><br /><i>
-              Provide increased write velocity, faster scaling operations,
-              and larger clusters
-            </i>
-          </li>
-          <br />
-          <li>
-            <b>TiFlash performance boost</b><br /><i>
-              Implement TiFlash optimization such as late materialization
-              and runtime filter
-            </i>
-          </li>
-          <br />
-          <li>
-            <b>Fastest online DDL distributed framework</b><br /><i>
-              Complete the distributed framework to support the fastest
-              online DDL
+            <b>Augmented replica read</b><br /><i>
+              Reduced cross-AZ data transfer costs in TiKV
             </i>
           </li>
           <br />
@@ -57,38 +44,24 @@ This roadmap brings you what's coming in the future, so you can see the new feat
       <td>
         <ul>
           <li>
-            <b>Stability at PB scale</b><br />
-            <i
-              >Provide reliable and consistent performance for tremendous
-              data</i
-            >
+            <b>Performance optimization framework for all applicable background tasks, like DDL, TTL, and cluster analysis</b><br />
+            <i>This distributes the workload of these operations throughout the cluster, leading to accelerated performance and reduced resource utilization on individual nodes. This framework already applies to the <code>ADD INDEX</code> operation</i>
           </li>
           <br />
           <li>
-            <b>Disaggregate TiFlash compute and storage (auto-scaling) </b><br />
-            <i>Realize elastic HTAP resource utilization</i>
+            <b>GA of disaggregated storage and compute architecture and S3 shared storage in TiFlash</b><br />
+            <i>Enable more cost-effective and elastic HTAP</i>
           </li>
           <br />
-          <li>
-            <b>TiFlash S3 based storage engine</b>
-            <br /><i>Provide shared storage at lower cost</i>
-          </li>
           <br />
         </ul>
       </td>
       <td>
         <ul>
-          <li>
-            <b>Next generation, more powerful storage engine</b>
-          </li>
-          <br />
           <li>
             <b>Unlimited transaction size</b>
           </li>
           <br />
-          <li>
-            <b>Multi-model support</b>
-          </li>
           <br />
         </ul>
       </td>
@@ -101,55 +74,18 @@ This roadmap brings you what's coming in the future, so you can see the new feat
       <td>
         <ul>
           <li>
-            <b>Resource control: quotas and scheduling for resource groups
-              and background tasks</b><br />
+            <b>Resource control for background tasks</b><br />
             <i>
-              Reliably and efficiently manage workloads and applications
-              that share the same cluster
+              Control over how background tasks, such as imports, DDL, TTL, auto-analyze, and compactions, can affect foreground traffic
             </i>
           </li>
-          <br />
-          <li>
-            <b>TiCDC/PITR recovery objective enhancements</b>
-            <br /><i>
-              Increase business continuity and minimize the impact of system
-              failures
-            </i>
-          </li>
-          <br />
-          <li>
-            <b>TiProxy</b>
-            <br /><i>
-              Keep database connections during cluster upgrade and scale
-              in/out, and avoid impact on applications
-            </i>
-          </li>
-          <br />
-          <li>
-            <b>End-to-end data correctness check</b>
-            <br /><i>Prevent data error or corruption through TiCDC</i>
-          </li>
-          <br />
         </ul>
       </td>
       <td>
         <ul>
           <li>
             <b>Multi-tenancy</b>
-            <br /><i
-              >Provide fine-grained resource control and isolation to reduce
-              cost</i
-            >
-          </li>
-          <br />
-          <li>
-            <b>Improved cluster/node level fault tolerance</b>
-            <br /><i>Enhance cluster resilience</i>
-          </li>
-          <br />
-          <li>
-            <b>TiFlash spill to disk</b>
-            <br /><i>Avoid TiFlash OOM</i>
+            <br /><i>Resource isolation on top of resource control</i>
           </li>
           <br />
         </ul>
@@ -159,11 +95,6 @@ This roadmap brings you what's coming in the future, so you can see the new feat
           <li>
             <b>Enhanced TiDB memory management</b>
           </li>
-          <br />
-          <li>
-            <b>Global table</b>
-          </li>
-          <br />
         </ul>
       </td>
     </tr>
@@ -175,39 +106,26 @@ This roadmap brings you what's coming in the future, so you can see the new feat
       <td>
         <ul>
           <li>
-            <b>Production-ready TTL (time-to-live) data management</b>
-            <br /><i>
-              Manage database size and improve performance by automatically
-              expiring outdated data
-            </i>
+            <b>MySQL 8.0 compatibility</b>
           </li>
           <br />
-          <li>
-            <b>Table level flashback</b>
-            <br /><i>
-              Support traveling a single table to a specific time via SQL
-            </i>
+                    <li>
+            <b>Unified SQL interface for import, Backup & Restore, and PITR</b>
           </li>
-          <br />
         </ul>
       </td>
       <td>
         <ul>
           <li>
-            <b>Materialized views</b>
-            <br /><i>Support pre-calculation to boost query performance</i>
+            <b>Cascades framework for optimizer</b>
+            <br /><i>Improved framework for query optimization, and make the optimizer more extensible and future-proof</i>
           </li>
-          <br />
         </ul>
       </td>
       <td>
         <ul>
           <li>
             <b>Federated query</b>
-          </li>
-          <br />
-          <li>
-            <b>Cascades optimizer</b>
           </li>
           <br />
           <li>
@@ -231,58 +149,30 @@ This roadmap brings you what's coming in the future, so you can see the new feat
           <li>
             <b>Distributed TiCDC single table replication</b>
             <br /><i>
-              Dramatically improve TiCDC throughput by distributing the
-              workload to multiple nodes
+              Dramatically improve TiDB-TiDB replication throughput
             </i>
           </li>
           <br />
           <li>
             <b
-              >Production-ready TiCDC sink to Amazon S3 and Azure object
-              storage</b
+              >Automatic pause/resume DDL during upgrade</b
             >
-            <br /><i>Enhance ecosystem to better work with big data</i>
+            <br /><i>Ensure a smooth upgrade experience</i>
           </li>
           <br />
           <li>
-            <b>TiDB Operator fast scale-in</b>
+            <b>TiCDC native integrations with big data systems</b>
             <br /><i
-              >Improve from scaling in one by one to scaling in at once</i
+              >Such as Snowflake and Iceburg</i
             >
           </li>
-          <br />
-          <li>
-            <b>SQL-based data import</b>
-            <br /><i
-              >Improve user-friendliness through operational enhancements</i
-            >
-          </li>
-          <br />
         </ul>
       </td>
       <td>
         <ul>
           <li>
-            <b>Major performance boost for data import</b>
-            <br /><i>Expect 3-4 times of improvements</i>
-          </li>
-          <br />
-          <li>
             <b>Multiple upstreams for TiCDC</b>
             <br /><i>Support N:1 TiDB to TiCDC</i>
-          </li>
-          <br />
-          <li>
-            <b> SQL-based data management </b>
-            <br /><i
-              >Improve data management for TiCDC, data migration, and backup
-              and restore tools</i
-            >
-          </li>
-          <br />
-          <li>
-            <b> Automatic pause/resume DDL during upgrade </b>
-            <br /><i>Ensure a smooth upgrade experience</i>
           </li>
           <br />
         </ul>
@@ -311,48 +201,41 @@ This roadmap brings you what's coming in the future, so you can see the new feat
       <td>
         <ul>
           <li>
-            <b>JWT authentication</b>
-            <br /><i>Provide secure and standard authentication</i>
+            <b>Key management via Azure Key Vault</b>
+            <br /><i>Static encryption managed by Azure Key Vault</i>
           </li>
           <br />
           <li>
-            <b> LDAP integration </b>
-            <br /><i>Authenticate via LDAP server over TLS</i>
+            <b>Column-level access control</b>
+            <br /><i>Grant and restrict access to specific columns</i>
           </li>
           <br />
           <li>
-            <b> Audit log enhancement </b>
-            <br />
-            <i>Enhance logs with greater details</i>
+            <b>Database-level encryption</b>
+            <br /><i>At-rest encryption configured at database level</i>
           </li>
-          <br />
         </ul>
       </td>
       <td>
         <ul>
           <li>
-            <b>Column-level/row-level access control</b>
-            <br />
-            <i>Provide finer-grained control</i>
-          </li>
-          <br />
-          <li>
-            <b>Database encryption</b>
-            <br /><i>Encryption at rest with more granularity at the table level and column level</i>
+            <b>IAM authentication for AWS</b>
+            <br /><i>TiDB as AWS third-party ARN for AWS IAM access</i>
           </li>
           <br />
           <li>
             <b>Unified TLS CA/Key rotation policy</b>
-            <br /><i>
-              Enhance security and operational efficiency for all TiDB
-              components
-            </i>
+            <br /><i>Unified certificate management mechanism for all TiDB components</i>
           </li>
-          <br />
         </ul>
       </td>
       <td>
         <ul>
+          <li>
+            <b>Label-based access control</b>
+            <br /><i>Access permissions granted by configured labels</i>
+          </li>
+          <br />
           <li>
             <b>Enhanced client-side encryption</b>
           </li>
@@ -364,7 +247,6 @@ This roadmap brings you what's coming in the future, so you can see the new feat
           <li>
             <b>Enhanced data lifecycle management</b>
           </li>
-          <br />
         </ul>
       </td>
     </tr>
@@ -373,8 +255,24 @@ This roadmap brings you what's coming in the future, so you can see the new feat
 
 These are non-exhaustive plans and are subject to change. Features might differ per service subscriptions.
 
+## Previously delivered roadmap items
+
+You might have been waiting on some items from the last version. The following lists some previously delivered features. For more details, refer to the [v7.1.0 release notes](/releases/release-7.1.0.md).
+
+- Foundation of multi-tenancy framework: resource control quotas and scheduling for resource groups
+- TiCDC supports object storage sink, including Amazon S3 and Azure Blob Storage (GA)
+- Fastest online `ADD INDEX` (GA)
+- TiFlash late materialization (GA)
+- TiFlash supports spill to disk (GA)
+- LDAP authentication
+- SQL audit log enhancement (Enterprise-only)
+- Partitioned Raft KV storage engine (experimental)
+- General session-level plan cache (experimental)
+- TiCDC distributed per table with Kafka downstream (experimental)
+
 ## Recently shipped
 
+- [TiDB 7.1.0 Release Notes](https://docs.pingcap.com/tidb/v7.1/release-7.1.0)
 - [TiDB 7.0.0 Release Notes](https://docs.pingcap.com/tidb/v7.0/release-7.0.0)
 - [TiDB 6.6.0 Release Notes](https://docs.pingcap.com/tidb/v6.6/release-6.6.0)
 - [TiDB 6.5.0 Release Notes](https://docs.pingcap.com/tidb/v6.5/release-6.5.0)
