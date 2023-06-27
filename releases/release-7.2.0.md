@@ -116,6 +116,14 @@ TiDB 版本：7.2.0
 
     更多信息，请参考[用户文档](/optimizer-fix-controls.md)。
 
+* 轻量统计信息初始化 GA [#42160](https://github.com/pingcap/tidb/issues/42160) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes)
+
+    轻量统计信息初始化自 v7.2.0 成为正式功能。轻量级的统计信息初始化可以大幅减少启动时必须加载的统计信息的数量，从而提升启动过程中统计信息的加载速度。该功能提升了 TiDB 在复杂运行环境下的稳定性，并降低了部分 TiDB 节点重启对整体服务的影响。
+
+    从 v7.2.0 开始，新建集群默认加载轻量统计信息，TiDB 在初始统计信息加载完成前不对外提供服务。从旧版本升级的集群，可通过修改 TiDB 配置参数 [`lite-init-stats`](/tidb-configuration-file.md#lite-init-stats-从-v710-版本开始引入) 和 [`force-init-stats`](/tidb-configuration-file.md#force-init-stats-从-v710-版本开始引入) 手工开启。 
+
+    更多信息，请参考[用户文档](/statistics.md#统计信息的加载)。
+
 ### SQL 功能
 
 * 支持 `CHECK` 约束 [#41711](https://github.com/pingcap/tidb/issues/41711) @[fzzf678](https://github.com/fzzf678) **tw@qiancai** <!--1404-->
