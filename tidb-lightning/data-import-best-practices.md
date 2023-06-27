@@ -116,7 +116,7 @@ TiDB Lightning（[物理导入模式](/tidb-lightning/tidb-lightning-physical-im
 
 ## 导入大单表的最佳实践
 
-多表导入会带来 Checksum、Analyze 时间的增加，甚至超过数据导入本身，但是一般不需要调整配置。如果多表中存在单个或多个大表的情况，可以把这类大表的源文件划分出来，单独进行导入。
+多表导入会导致 Checksum、ANALYZE 时间的增加，甚至超过数据导入本身，但是一般不需要调整配置。如果多表中存在单个或多个大表的情况，可以把这类大表的源文件划分出来，单独进行导入。
 
 本小节重点介绍大单表导入的最佳实践。大单表没有严格的定义，一般认为符合以下任一条件者即为大单表：
 
@@ -136,7 +136,7 @@ TiDB Lightning（[物理导入模式](/tidb-lightning/tidb-lightning-physical-im
 需要调整以下配置参数：
 
 - `region-concurrency` 设置为 TiDB Lightning 实例核数的 75%。
-- `send-kv-pairs` 设置为 `3200`。适用于 v7.1.0 及更早的版本。v7.2.0 开始引入了 `send-kv-size` 参数代替 `send-kv-pairs`，改参数无需配置。
+- `send-kv-pairs` 设置为 `3200`。适用于 v7.1.0 及更早的版本。v7.2.0 开始引入了 `send-kv-size` 参数代替 `send-kv-pairs`，该参数无需配置。
 - `GOMEMLIMIT` 调整为实例所在节点内存的 80%。
 
 如果导入过程中发现 PD Scatter Region 的时延超过 30 分钟，可以从以下维度进行调优：
