@@ -54,7 +54,7 @@ summary: 了解 TiDB 的功能概览。
 | [使用 bucket 提高数据扫描并发度](/tune-region-performance.md#使用-bucket-增加并发) | E | E | E | E | N | N | N | N | N | N |
 | [不可见索引](/sql-statements/sql-statement-add-index.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y | N |
 | [复合主键](/constraints.md#主键约束) | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y |
-| [`CHECK` 约束](/constraints.md#check-约束 | Y | N | N | N | N | N | N | N | N | N |
+| [`CHECK` 约束](/constraints.md#check-约束) | Y | N | N | N | N | N | N | N | N | N |
 | [唯一约束](/constraints.md#唯一约束) | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y |
 | [整型主键上的聚簇索引](/constraints.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y |
 | [复合或非整型主键上的聚簇索引](/constraints.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y | N |
@@ -196,7 +196,7 @@ summary: 了解 TiDB 的功能概览。
 | 数据导入和导出 | 7.2 | 7.1 | 6.5 | 6.1 | 5.4 | 5.3 | 5.2 | 5.1 | 5.0 | 4.0 |
 |---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
 | [快速导入 (TiDB Lightning)](/tidb-lightning/tidb-lightning-overview.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y |
-| [快速导入 (`IMPORT INTO`)](sql-statements/sql-statement-import-into.md) | Y | N | N | N | N | N | N | N | N | N |
+| [快速导入 (`IMPORT INTO`)](sql-statements/sql-statement-import-into.md) | E | N | N | N | N | N | N | N | N | N |
 | mydumper 逻辑导出 | 已废弃 | 已废弃 | 已废弃 | 已废弃 | 已废弃 | 已废弃 | 已废弃 | 已废弃 | 已废弃 | 已废弃 |
 | [Dumpling 逻辑导出](/dumpling-overview.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y |
 | [事务 `LOAD DATA`](/sql-statements/sql-statement-load-data.md) [^5] | Y | Y | Y | Y | Y | Y | Y | Y | Y | N [^6] |
