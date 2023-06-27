@@ -1449,13 +1449,13 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 默认值：`OFF`
 - 这个变量用于控制是否开启 cascades planner。
 
-### `tidb_enable_check_constraint` <span class="version-mark">从 v7.2 版本开始引入</span>
+### `tidb_enable_check_constraint` <span class="version-mark">从 v7.2.0 版本开始引入</span>
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
 - 类型：布尔型
 - 默认值：`OFF`
-- 该变量用于控制是否启用[`CHECK` 约束](/constraints.md#check-约束)。
+- 这个变量用于控制是否启用[`CHECK` 约束](/constraints.md#check-约束)。
 
 ### `tidb_enable_chunk_rpc` <span class="version-mark">从 v4.0 版本开始引入</span>
 
