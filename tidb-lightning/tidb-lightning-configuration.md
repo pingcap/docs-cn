@@ -136,7 +136,7 @@ addr = "172.16.31.10:8287"
 # 默认值为 'none'。 
 # duplicate-resolution = 'none'
 # 物理导入模式一次请求中发送的 KV 数量。
-# send-kv-pairs = 32768
+# send-kv-pairs = 3200
 # 物理导入模式向 TiKV 发送 KV 时是否启用压缩。目前只支持 Gzip 压缩算法，可填写 "gzip" 或者 "gz"。默认不启用压缩。
 # compress-kv-pairs = ""
 # 物理导入模式本地进行 KV 排序的路径。如果磁盘性能较低（如使用机械盘），建议设置成与 `data-source-dir` 不同的磁盘，这样可有效提升导入性能。
