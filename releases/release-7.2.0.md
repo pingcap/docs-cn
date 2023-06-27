@@ -24,24 +24,23 @@ TiDB 版本：7.2.0
 <tbody>
   <tr>
     <td rowspan="2">可扩展性与性能</td>
-    <td>资源组支持管理资源消耗超出预期的查询（实验特性）</td>
+    <td>资源组支持<a href="https://docs.pingcap.com/zh/tidb/v7.2/tidb-resource-control#管理资源消耗超出预期的查询-runaway-queries">管理资源消耗超出预期的查询</a>（实验特性）</td>
     <td>资源组可以通过降低优先级或终止查询来管理超出预期执行时间的查询。通过该功能，你可以在资源组级别设置查询的最长执行时间，并指定当查询超出此设置值时需要 TiDB 采取的操作，从而更好地控制超出预期长时间运行的查询对集群的影响。
     </td>
   </tr>
   <tr>
-    <td>TiFlash 支持 Pipeline 执行模型（实验特性）</td>
-    <td>TiFlash 支持 Pipeline 执行模型，优化对线程资源的控制。
-当前，TiDB Serverless 的分析能力依赖于此功能。</td>
+    <td>TiFlash 支持 <a href="https://docs.pingcap.com/zh/tidb/v7.2/tiflash-pipeline-model">Pipeline 执行模型</a>（实验特性）</td>
+    <td>TiFlash 支持 Pipeline 执行模型，优化对线程资源的控制。</td>
   </tr>
   <tr>
     <td rowspan="1">SQL</td>
-    <td>支持新的 SQL 语句 `IMPORT INTO`, 可以通过 TiDB 进行数据导入 （实验特性）</td>
+    <td>支持新的 SQL 语句 <a href="https://docs.pingcap.com/zh/tidb/v7.2/sql-statement-import-into">`IMPORT INTO`</a>, 可以通过 TiDB 进行数据导入 （实验特性）</td>
     <td>TiDB 引入了一个新的 SQL 语句 `IMPORT INTO`。该语句集成了 TiDB Lightning 的物理导入模式的能力，使你无需单独部署和管理 TiDB Lightning 即可导入数据文件到 TiDB 中。例如，通过该语句，你可以直接从 Amazon S3 远程导入数据到 TiDB 中。</td>
   </tr>
   <tr>
     <td rowspan="2">数据库管理与可观测性</td>
-    <td>DDL 任务支持暂停和恢复操作（实验特性）</td>
-    <td>DDL 操作（如添加索引）可能消耗大量资源并影响业务负载。与传统的 schema 更改工具（如 pt-osc 和 gh-ost）类似，TiDB 现在原生支持同时暂停多个后台 DDL 任务。该功能可以帮助你节省资源并最小化 DDL 操作对业务负载的影响，而无需取消和重新启动 DDL 任务。</td>
+    <td>DDL 任务支持<a href="https://docs.pingcap.com/zh/tidb/v7.2/ddl-introduction#ddl-相关的命令介绍">暂停和恢复操作</a>（实验特性）</td>
+    <td>DDL 操作（如添加索引）可能消耗大量资源并影响业务负载。受传统的 schema 更改工具（如 pt-osc 和 gh-ost）功能启发，TiDB 现在原生支持同时暂停多个后台 DDL 任务。该功能可以帮助你节省资源并最小化 DDL 操作对业务负载的影响，而无需取消和重新启动 DDL 任务。</td>
   </tr>
 </tbody>
 </table>
