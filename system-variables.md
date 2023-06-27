@@ -3006,7 +3006,7 @@ mysql> desc select count(distinct a) from test.t;
 - 是否持久化到集群：是
 - 类型：布尔型
 - 默认值：`OFF`
-- 该变量控制 CTE 是否可以直接在 TiFlash MPP 执行而不是在 TiDB 上执行。打开该开关后，可以极大地提升含大量 CTE 的查询在 TiFlash MPP 的执行速度。
+- 该变量控制 CTE 是否可以直接在 TiFlash MPP 执行而不是在 TiDB 上执行。开启该变量后，可以极大地提升含大量 CTE 的查询在 TiFlash MPP 的执行速度。
 - 该变量目前仅支持控制非递归 CTE 能否在 TiFlash MPP 执行，无法控制递归 CTE。
 
 ### `tidb_opt_fix_control` <span class="version-mark">从 v7.1.0 版本开始引入</span>
