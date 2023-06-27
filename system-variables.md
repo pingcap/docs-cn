@@ -2999,7 +2999,7 @@ mysql> desc select count(distinct a) from test.t;
 
 > **警告：**
 >
-> 目前在 TiFlash MPP 模式下直接执行[公共表表达式 (CTE)](/sql-statements/sql-statement-with.md) 为实验特性，代价计算仍在调整，不建议在生产环境中未经测试直接使用。如需开启此变量，需要同时开启变量 [`tidb_enforce_mpp`](/system-variables.md#tidb_enforce_mpp-从-v51-版本开始引入)，避免 CTE 可以在 TiFlash MPP 执行的情况下依旧在 TiDB 执行。
+> 目前在 TiFlash MPP 模式下直接执行[公共表表达式 (CTE)](/sql-statements/sql-statement-with.md) 的功能仍在开发中，代价计算仍在调整，不建议在生产环境中未经测试直接使用。如需开启此变量，需要同时开启变量 [`tidb_enforce_mpp`](/system-variables.md#tidb_enforce_mpp-从-v51-版本开始引入)，避免 CTE 可以在 TiFlash MPP 执行的情况下依旧在 TiDB 执行。
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
