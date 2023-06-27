@@ -204,10 +204,6 @@ TiDB 版本：7.2.0
 | TiCDC | [`sink.protocol`](/ticdc/ticdc-changefeed-config.md) | 修改 | 扩展下游类型是 Kafka 时的可选值范围：增加 `"open-protocol"`。用于指定编码消息时使用的格式协议。|
 | TiCDC | [`sink.delete-only-output-handle-key-columns`](/ticdc/ticdc-changefeed-config.md) | 新增 | 指定 Delete 事件的输出内容，只对 canal-json 和 open-protocol 协议有效。默认值为 false，即输出所有列的内容。当设置为 true 时，只输出主键列，或唯一索引列的内容。 |
 
-## 废弃功能
-
-- note [#issue](链接) @[贡献者 GitHub ID](链接)
-
 ## 改进提升
 
 <!-- tw@ran-huang -->
