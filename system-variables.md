@@ -3007,7 +3007,6 @@ mysql> desc select count(distinct a) from test.t;
 - 类型：布尔型
 - 默认值：`OFF`
 - 该变量控制非递归的[公共表表达式 (CTE)](/sql-statements/sql-statement-with.md) 是否可以直接在 TiFlash MPP 执行而不是在 TiDB 上执行。
-- 该变量目前仅支持控制非递归 CTE 能否在 TiFlash MPP 执行，无法控制递归 CTE。
 
 ### `tidb_opt_fix_control` <span class="version-mark">从 v7.1.0 版本开始引入</span>
 
