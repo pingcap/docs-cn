@@ -136,6 +136,7 @@ addr = "172.16.31.10:8287"
 #            如果版本过低，则会启用 'none' 模式。
 # 默认值为 'none'。 
 # duplicate-resolution = 'none'
+<<<<<<< HEAD
 # 物理导入模式下，向 TiKV 发送数据时一次请求中最大 KV 数量。
 # 自 v7.2.0 开始，该参数废弃，设置后不再生效。如果希望调整一次请求中向 TiKV 发送的数据量，请使用 `send-kv-size` 参数。
 # send-kv-pairs = 32768
@@ -143,6 +144,10 @@ addr = "172.16.31.10:8287"
 # 默认值为 "16K"，一般情况下不建议调整该参数。
 # 该参数自 v7.2.0 开始引入。
 # send-kv-size = "16K"
+=======
+# 物理导入模式一次请求中发送的 KV 数量。
+# send-kv-pairs = 3200
+>>>>>>> f5fa3a800d (lightning: correct send-kv-pairs value (#14326))
 # 物理导入模式向 TiKV 发送 KV 时是否启用压缩。目前只支持 Gzip 压缩算法，可填写 "gzip" 或者 "gz"。默认不启用压缩。
 # compress-kv-pairs = ""
 # 物理导入模式本地进行 KV 排序的路径。如果磁盘性能较低（如使用机械盘），建议设置成与 `data-source-dir` 不同的磁盘，这样可有效提升导入性能。
