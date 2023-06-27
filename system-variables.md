@@ -3705,7 +3705,6 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 - 类型：枚举型
 - 默认值：`IN`
 - 可选值：`IN`
-- 该变量用于调整 Runtime Filter 的类型。从 v7.2 开始引入。`IN` 指的是 Runtime Filter 的类型为 IN，即使用 IN 类型的谓词作为 Filter。
 
 ### `tidb_scatter_region`
 
