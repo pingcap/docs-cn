@@ -3715,7 +3715,8 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 - 可选值: `OFF`, `LOCAL`
 - 该变量用于控制 Runtime Filter 功能的模式。从 v7.2 开始引入，目前为实验性功能。`OFF` 指的是不开启 Runtime Filter 功能，`LOCAL` 指的开启并使用 LOCAL 模式的 Runtime Filter 功能。
 
-### `tidb_runtime_filter_type`
+### `tidb_runtime_filter_type` <span class="version-mark">从 v7.2.0 版本开始引入</span>
+
 > **警告：**
 >
 > 该功能为实验特性，不建议在生产环境中使用。
