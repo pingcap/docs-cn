@@ -3686,6 +3686,7 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 > **警告：**
 >
 > 该功能为实验特性，不建议在生产环境中使用。
+
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 类型：枚举型
