@@ -2996,11 +2996,11 @@ mysql> desc select count(distinct a) from test.t;
 - 这个变量用来控制是否启用 [TiFlash 延迟物化](/tiflash/tiflash-late-materialization.md)功能。注意在 TiFlash [Fast Scan 模式](/tiflash/use-fastscan.md)下，延迟物化功能暂不可用。
 - 当设置该变量为 `OFF` 关闭 TiFlash 延迟物化功能时，如果 `SELECT` 语句中包含过滤条件（`WHERE` 子句），TiFlash 会先扫描查询所需列的全部数据后再进行过滤。当设置该变量为 `ON` 开启 TiFlash 延迟物化功能时，TiFlash 会先扫描下推到 TableScan 算子的过滤条件相关的列数据，过滤得到符合条件的行后，再扫描这些行的其他列数据，继续后续计算，从而减少 IO 扫描和数据处理的计算量。
 
-### `tidb_opt_enable_mpp_shared_cte_execution <span class="version-mark">从 v7.2.0 版本开始引入</span>
+### `tidb_opt_enable_mpp_shared_cte_execution` <span class="version-mark">从 v7.2.0 版本开始引入</span>
 
 > **警告：**
 >
-> 目前[公共表表达式 (CTE)](/sql-statements/sql-statement-with.md) 直接在 TiFlash MPP 环境执行为实验特性，代价计算仍在调整，不建议在生产环境中未经测试直接使用。如需开启此变量，需要同时开启变量 [`tidb_enforce_mpp`](/system-variables.md#tidb_enforce_mpp-从-v51-版本开始引入)，避免 CTE 可以在 TiFlash MPP 执行的情况下依旧在 TiDB 执行。
+> 目前在 TiFlash MPP 模式下直接执行[公共表表达式 (CTE)](/sql-statements/sql-statement-with.md) 为实验特性，代价计算仍在调整，不建议在生产环境中未经测试直接使用。如需开启此变量，需要同时开启变量 [`tidb_enforce_mpp`](/system-variables.md#tidb_enforce_mpp-从-v51-版本开始引入)，避免 CTE 可以在 TiFlash MPP 执行的情况下依旧在 TiDB 执行。
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
