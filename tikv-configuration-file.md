@@ -988,10 +988,10 @@ Configuration items related to Raftstore.
 + Default value: `1MB`
 + Minimum value: `0`
 
-### `report-min-resolved-ts-interval`
+### `report-min-resolved-ts-interval` <span class="version-mark">New in v6.0.0</span>
 
-+ Determines the minimum interval at which the resolved timestamp is reported to the PD leader. If this value is set to `0`, it means that the reporting is disabled.
-+ Default value: `"1s"`, which is the smallest positive value
++ Determines the interval at which the minimum resolved timestamp is reported to the PD leader. If this value is set to `0`, it means that the reporting is disabled.
++ Default value: Before v6.3.0, the default value is `"0s"`. Starting from v6.3.0, the default value is `"1s"`, which is the smallest positive value.
 + Minimum value: `0`
 + Unit: second
 
