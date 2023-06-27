@@ -25,9 +25,9 @@ summary: TiDB 数据库中 IMPORT INTO 的使用概况。
 - 只支持导入数据到数据库中已有的空表。
 - 不支持事务，也无法回滚。在显式事务 (`BEGIN`/`END`) 中执行会报错。
 - 在导入完成前会阻塞当前连接，如果需要异步执行，可以添加 `DETACHED` 选项。
-- 不支持和 [FLASHBACK CLUSTER TO TIMESTAMP](/sql-statements/sql-statement-flashback-to-timestamp.md)、[创建索引加速](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入)、TiDB Lightning 导入、TiCDC 数据同步、[Point-in-time recovery (PITR)](/br/br-log-architecture.md) 等功能同时工作。
+- 不支持和 [`FLASHBACK CLUSTER TO TIMESTAMP`](/sql-statements/sql-statement-flashback-to-timestamp.md)、[创建索引加速](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入)、TiDB Lightning 导入、TiCDC 数据同步、[Point-in-time recovery (PITR)](/br/br-log-architecture.md) 等功能同时工作。
 - 每个集群上同时只能有一个 `IMPORT INTO` 任务在运行。`IMPORT INTO` 会 precheck 是否存在运行中的任务，但并非硬限制，如果多个客户端同时执行 `IMPORT INTO` 仍有可能启动多个任务，请避免该情况。
-- 导入数据的过程中，请勿在目标表上执行 DDL 和 DML 操作，也不要在目标数据库上执行 [FLASHBACK DATABASE](/sql-statements/sql-statement-flashback-database.md)，否则会导致导入失败或数据不一致。导入期间也不建议进行读操作，因为读取的数据可能不一致。请在导入完成后再进行读写操作。
+- 导入数据的过程中，请勿在目标表上执行 DDL 和 DML 操作，也不要在目标数据库上执行 [`FLASHBACK DATABASE`](/sql-statements/sql-statement-flashback-database.md)，否则会导致导入失败或数据不一致。导入期间也不建议进行读操作，因为读取的数据可能不一致。请在导入完成后再进行读写操作。
 - 导入期间会占用大量系统资源，建议 TiDB 节点使用 32 核以上的 CPU 和 64 GiB 以上内存以获得更好的性能。导入期间会将排序好的数据写入到 TiDB [临时目录](/tidb-configuration-file.md#temp-dir-从-v630-版本开始引入)下，建议优先考虑配置闪存等高性能存储介质。详情请参考[物理导入使用限制](/tidb-lightning/tidb-lightning-physical-import-mode.md#必要条件及限制)。
 - TiDB [临时目录](/tidb-configuration-file.md#temp-dir-从-v630-版本开始引入)至少需要有 90 GiB 的可用空间。
 
@@ -72,7 +72,7 @@ OptionItem ::=
 
 ### ColumnNameOrUserVarList
 
-用于指定数据文件中每行的各个字段如何对应到目标表列，也可以将字段对应到某个变量，用来跳过导入某些字段或者在 SetClause 中使用。
+用于指定数据文件中每行的各个字段如何对应到目标表列，也可以将字段对应到某个变量，用来跳过导入某些字段或者在 `SetClause` 中使用。
 
 - 当不指定该参数时，数据文件中每行的字段数需要和目标表的列数一致，且各个字段会按顺序导入到对应的列。
 - 当指定该参数时，指定的列或变量个数需要和数据文件中每行的字段数一致。
@@ -146,7 +146,7 @@ IMPORT INTO t FROM '/path/to/small.csv';
 开启了 `DETACHED` 模式时，执行 `IMPORT INTO` 语句会立即返回输出。从输出中，你可以看到该任务状态 `Status` 为 `pending`，表示等待执行。
 
 ```sql
-mysql> IMPORT INTO t FROM '/path/to/small.csv' WITH DETACHED;
+IMPORT INTO t FROM '/path/to/small.csv' WITH DETACHED;
 +--------+--------------------+--------------+----------+-------+---------+------------------+---------------+----------------+----------------------------+------------+----------+------------+
 | Job_ID | Data_Source        | Target_Table | Table_ID | Phase | Status  | Source_File_Size | Imported_Rows | Result_Message | Create_Time                | Start_Time | End_Time | Created_By |
 +--------+--------------------+--------------+----------+-------+---------+------------------+---------------+----------------+----------------------------+------------+----------+------------+
@@ -158,7 +158,7 @@ mysql> IMPORT INTO t FROM '/path/to/small.csv' WITH DETACHED;
 
 对于开启了 `DETACHED` 模式的任务，可通过 [`SHOW IMPORT`](/sql-statements/sql-statement-show-import-job.md) 来查看当前任务的执行进度。
 
-任务启动后，可通过 [`CANCEL IMPORT JOB`](/sql-statements/sql-statement-cancel-import-job.md) 来取消对应任务。
+任务启动后，可通过 [`CANCEL IMPORT JOB <job-id> `](/sql-statements/sql-statement-cancel-import-job.md) 来取消对应任务。
 
 ## 使用示例
 
