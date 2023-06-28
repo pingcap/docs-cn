@@ -90,7 +90,6 @@ func main() {
         }
     }
 }
-
 ```
 
 从上面的代码可以看出，`getValueMapAndSchema` 和 `CalculateAndVerifyChecksum` 是计算 Checksum 的关键步骤，下面分别介绍这两个函数的实现。
