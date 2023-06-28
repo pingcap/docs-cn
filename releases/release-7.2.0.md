@@ -40,7 +40,7 @@ TiDB 版本：7.2.0
   <tr>
     <td rowspan="2">数据库管理与可观测性</td>
     <td>DDL 任务支持<a href="https://docs.pingcap.com/zh/tidb/v7.2/ddl-introduction#ddl-相关的命令介绍">暂停和恢复操作</a>（实验特性）</td>
-    <td>DDL 操作（如添加索引）可能消耗大量资源并影响业务负载。受传统的 schema 更改工具（如 pt-osc 和 gh-ost）功能启发，TiDB 现在原生支持同时暂停多个后台 DDL 任务。该功能可以帮助你节省资源并最小化 DDL 操作对业务负载的影响，而无需取消和重新启动 DDL 任务。</td>
+    <td>支持暂停消耗资源较大的 DDL 任务（如添加索引），以节省资源并降低对在线负载的影响。当需要执行这些暂停的 DDL 任务时，你可以无缝恢复这些任务，而无需取消并重新开始。此功能可以增强资源利用率，提升使用体验，并简化 schema 更改流程。</td>
   </tr>
 </tbody>
 </table>
