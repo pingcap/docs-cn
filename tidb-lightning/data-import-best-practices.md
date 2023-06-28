@@ -78,7 +78,7 @@ TiDB Lightning（[物理导入模式](/tidb-lightning/tidb-lightning-physical-im
 - 在生成文件时，在单个文件内尽量按照主键排序；如果表定义没有主键，可以添加一个自增主键，此时对文件内容顺序无要求。
 - 在给多个 TiDB Lightning 实例分配要导入的源文件时，尽量避免多个源文件之间存在重叠的主键或非空唯一索引的情况。如果生成文件是全局有序，可以按照范围划分不同的文件给不同 TiDB Lightning 实例进行导入，达到最佳导入效果。
 - 在生成文件时，每个文件尽量控制在 96 MiB 以下。
-- 如果文件特别大，超过 256 MiB，需要开启 [strict-format](/migrate-from-csv-files-to-tidb.md#第-4-步导入性能优化可选)。
+- 如果文件特别大，超过 256 MiB，需要开启 [`strict-format`](/migrate-from-csv-files-to-tidb.md#第-4-步导入性能优化可选)。
 
 ## 预估存储空间
 
