@@ -205,7 +205,7 @@ SELECT USER, JSON_EXTRACT(User_attributes, "$.resource_group") FROM mysql.user W
 +---------+---------------------------------------------------+
 | USER    | JSON_EXTRACT(User_attributes, "$.resource_group") |
 +---------+---------------------------------------------------+
-| newuser | "default"                                                |
+| newuser | "default"                                         |
 +---------+---------------------------------------------------+
 1 row in set (0.02 sec)
 ```
