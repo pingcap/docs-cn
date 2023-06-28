@@ -19,7 +19,7 @@ TiDB 采用计算存储分离架构，具有出色的扩展性和弹性的扩缩
 
 ## 使用场景与限制
 
-在数据库中，除了核心的事务型负载任务 (TP) 和分析型查询任务 (AP)，也存在着其他重要任务，如 DDL 语句、Load Data、TTL、Analyze 和 Backup/Restore 等，即**后端任务**。这些任务需要处理数据库对象（表）中的大量数据，通常具有如下特点：
+在数据库中，除了核心的事务型负载任务 (TP) 和分析型查询任务 (AP)，也存在着其他重要任务，如 DDL 语句、IMPORT INTO、TTL、Analyze 和 Backup/Restore 等，即**后端任务**。这些任务需要处理数据库对象（表）中的大量数据，通常具有如下特点：
 
 - 需要处理一个 schema 或者一个数据库对象（表）中的所有数据。
 - 可能需要周期执行，但频率较低。
@@ -31,12 +31,16 @@ TiDB 采用计算存储分离架构，具有出色的扩展性和弹性的扩缩
 - 支持后端任务分布式执行，可以在整个 TiDB 集群可用的计算资源范围内进行灵活的调度，从而更好地利用 TiDB 集群内的计算资源。
 - 提供统一的资源使用和管理能力，从整体和单个后端任务两个维度提供资源管理的能力。
 
-目前，后端任务分布式框架仅支持分布式执行 `ADD INDEX`，即 DDL 创建索引的场景。例如以下 SQL 语句：
+目前，后端任务分布式框架支持分布式执行 `ADD INDEX` 和 `IMPORT INTO`。
 
-```sql
-ALTER TABLE t1 ADD INDEX idx1(c1);
-CREATE INDEX idx1 ON table t1(c1);
-```
+- `ADD INDEX`，即 DDL 创建索引的场景。例如以下 SQL 语句：
+
+    ```sql
+    ALTER TABLE t1 ADD INDEX idx1(c1);
+    CREATE INDEX idx1 ON table t1(c1);
+    ```
+
+- `IMPORT INTO` 用于将 `CSV`、`SQL`、`PARQUET` 等格式的数据导入到一张空表中。详情请参考 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md)。
 
 ## 启用前提
 
