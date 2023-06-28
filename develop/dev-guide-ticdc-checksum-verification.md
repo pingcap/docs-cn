@@ -1,6 +1,6 @@
 ---
 title: TiCDC 行数据 Checksum 校验
-summary: TiCDC、Kafka、行数据 Checksum 校验
+summary: 介绍 TiCDC 行数据 Checksum 校验的具体实现。
 ---
 
 # TiCDC 行数据 Checksum 校验
