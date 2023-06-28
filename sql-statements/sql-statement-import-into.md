@@ -200,13 +200,16 @@ IMPORT INTO t FROM '/path/to/file-*.csv'
 
 ### 从 S3、GCS 导入数据
 
-```sql
-IMPORT INTO t FROM 's3://bucket-name/test.csv?access-key=XXX&secret-access-key=XXX';
-```
+- 从 S3 导入数据
 
-```sql
-IMPORT INTO t FROM 'gs://bucket-name/test.csv';
-```
+    ```sql
+    IMPORT INTO t FROM 's3://bucket-name/test.csv?access-key=XXX&secret-access-key=XXX';
+    ```
+- 从 GCS 导入数据
+
+    ```sql
+    IMPORT INTO t FROM 'gs://bucket-name/test.csv';
+    ```
 
 S3 或 GCS 的 URI 路径配置详见[外部存储](/br/backup-and-restore-storages.md#uri-格式)。
 
