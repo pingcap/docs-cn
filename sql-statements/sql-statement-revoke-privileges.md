@@ -1,7 +1,6 @@
 ---
 title: REVOKE <privileges>
 summary: TiDB 数据库中 REVOKE <privileges> 的使用概况。
-aliases: ['/docs-cn/dev/sql-statements/sql-statement-revoke-privileges/','/docs-cn/dev/reference/sql/statements/revoke-privileges/']
 ---
 
 # `REVOKE <privileges>`
