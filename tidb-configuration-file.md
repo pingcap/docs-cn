@@ -535,19 +535,11 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 ### `stats-load-concurrency` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 
-> **警告：**
->
-> 统计信息同步加载功能目前为实验性特性，不建议在生产环境中使用。
-
 + TiDB 统计信息同步加载功能可以并发处理的最大列数
 + 默认值：5
 + 目前的合法值范围：`[1, 128]`
 
 ### `stats-load-queue-size` <span class="version-mark">从 v5.4.0 版本开始引入</span>
-
-> **警告：**
->
-> 统计信息同步加载功能目前为实验性特性，不建议在生产环境中使用。
 
 + 用于设置 TiDB 统计信息同步加载功能最多可以缓存多少列的请求
 + 默认值：1000
@@ -564,20 +556,16 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 ### `lite-init-stats` <span class="version-mark">从 v7.1.0 版本开始引入</span>
 
-> **警告：**
->
-> 该变量控制的功能目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
-
 + 用于控制 TiDB 启动时是否采用轻量级的统计信息初始化。
-+ 默认值：false
++ 默认值：在 v7.2.0 之前版本中为 `false`，在 v7.2.0 及之后的版本中为 `true`。
 + 当 `lite-init-stats` 为 `true` 时，统计信息初始化时列和索引的直方图、TopN、Count-Min Sketch 均不会加载到内存中。当 `lite-init-stats` 为 `false` 时，统计信息初始化时索引和主键的直方图、TopN、Count-Min Sketch 会被加载到内存中，非主键列的直方图、TopN、Count-Min Sketch 不会加载到内存中。当优化器需要某一索引或者列的直方图、TopN、Count-Min Sketch 时，这些统计信息会被同步或异步加载到内存中（由 [`tidb_stats_load_sync_wait`](/system-variables.md#tidb_stats_load_sync_wait-从-v540-版本开始引入) 控制）。
 + 将 `lite-init-stats` 设置为 true，可以加速统计信息初始化，避免加载不必要的统计信息，从而降低 TiDB 的内存使用。详情请参考[统计信息的加载](/statistics.md#统计信息的加载)。
 
 ### `force-init-stats` <span class="version-mark">从 v7.1.0 版本开始引入</span>
 
 + 用于控制 TiDB 启动时是否在统计信息初始化完成后再对外提供服务。
-+ 默认值：false
-+ 当 `force-init-stats` 为 `true` 时，TiDB 启动时会等到统计信息初始化完成后再对外提供服务。在表和分区数量较多的情况下，将 `force-init-stats` 设置为 `true` 可能会导致 TiDB 从启动到开始对外提供服务的时间变长。
++ 默认值：在 v7.2.0 之前版本中为 `false`，在 v7.2.0 及之后的版本中为 `true`。
++ 当 `force-init-stats` 为 `true` 时，TiDB 启动时会等到统计信息初始化完成后再对外提供服务。需要注意的是，在表和分区数量较多且 [`lite-init-stats`](/tidb-configuration-file.md#lite-init-stats-从-v710-版本开始引入) 为 `false` 的情况下，`force-init-stats` 为 `true` 可能会导致 TiDB 从启动到开始对外提供服务的时间变长。
 + 当 `force-init-stats` 为 `false` 时，TiDB 在统计信息初始化未完成时即可对外提供服务，但由于统计信息初始化未完成，优化器会用 pseudo 统计信息进行决策，可能会产生不合理的执行计划。
 
 ## opentracing
