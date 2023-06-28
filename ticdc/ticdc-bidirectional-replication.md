@@ -38,15 +38,35 @@ After the configuration takes effect, the clusters can perform bi-directional re
 
 ## Execute DDL
 
-Bi-directional replication does not support replicating DDL statements.
+After the bidirectional replication is enabled, TiCDC does not replicate any DDL statements. You need to execute DDL statements in the upstream and downstream clusters respectively.
 
-If you need to execute DDL statements, take the following steps:
+Note that some DDL statements might cause table structure changes or data change time sequence problems, which might lead to data inconsistency after the replication. Therefore, after enabling bidirectional replication, only the DDL statements in the following table can be executed without stopping the write operations of the application.
 
-1. Pause the write operations in the tables that need to execute DDL in all clusters. If the DDL statement is adding a non-unique index, skip this step.
+| Event | Does it cause changefeed errors | Note |
+|---|---|---|
+| create database | Yes | After you manually execute the DDL statements in the upstream and downstream clusters, the errors can be automatically recovered. |
+| drop database | Yes | You need to manually restart the changefeed and specify `--overwrite-checkpoint-ts` as the `commitTs` of the DDL statement to recover the errors. |
+| create table | Yes | After you manually execute the DDL statements in the upstream and downstream clusters, the errors can be automatically recovered. |
+| drop table | Yes | You need to manually restart the changefeed and specify `--overwrite-checkpoint-ts` as the `commitTs` of the DDL statement to recover the errors. |
+| alter table comment | No |  |
+| rename index | No |  |
+| alter table index visibility | No |  |
+| add partition | Yes | After you manually execute the DDL statements in the upstream and downstream clusters, the errors can be automatically recovered. |
+| drop partition | No |  |
+| create view | No |  |
+| drop view | No |  |
+| alter column default value | No |  |
+| reorganize partition | Yes | After you manually execute the DDL statements in the upstream and downstream clusters, the errors can be automatically recovered. |
+| alter table ttl | No |  |
+| alter table remove ttl | No |  |
+| add **not unique** index | No |  |
+| drop **not unique** index | No |  |
+
+If you need to execute DDL statements that are not in the preceding table, take the following steps:
+
+1. Pause the write operations in the tables that need to execute DDL in all clusters.
 2. After the write operations of the corresponding tables in all clusters have been replicated to other clusters, manually execute all DDL statements in each TiDB cluster.
 3. After the DDL statements are executed, resume the write operations.
-
-Note that a DDL statement that adds non-unique index does not break bi-directional replication, so you do not need to pause the write operations in the corresponding table.
 
 ## Stop bi-directional replication
 

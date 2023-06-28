@@ -87,3 +87,40 @@ Description of configuration parameters:
 >
 > - When TiDB updates a value in the column of the clustered index, TiDB splits an `UPDATE` event into a `DELETE` event and an `INSERT` event. TiCDC does not identify such events as an `UPDATE` event and thus cannot correctly filter out such events.
 > - When you configure a SQL expression, make sure all tables that matches `matcher` contain all the columns specified in the SQL expression. Otherwise, the replication task cannot be created. In addition, if the table schema changes during the replication, which results in a table no longer containing a required column, the replication task fails and cannot be resumed automatically. In such a situation, you must manually modify the configuration and resume the task.
+
+## DDL allow list
+
+Currently, TiCDC uses an allow list to replicate DDL statements. Only the DDL statements in the allow list are replicated to the downstream. The DDL statements not in the allow list are not replicated to the downstream.
+
+The allow list of DDL statements supported by TiCDC is as follows:
+
+- create database
+- drop database
+- create table
+- drop table
+- add column
+- drop column
+- create index / add index
+- drop index
+- truncate table
+- modify column
+- rename table
+- alter column default value
+- alter table comment
+- rename index
+- add partition
+- drop partition
+- truncate partition
+- create view
+- drop view
+- alter table character set
+- alter database character set
+- recover table
+- add primary key
+- drop primary key
+- rebase auto id
+- alter table index visibility
+- exchange partition
+- reorganize partition
+- alter table ttl
+- alter table remove ttl
