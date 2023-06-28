@@ -573,7 +573,7 @@ I/O rate limiter 相关的配置项。
 
 ### `retry-interval`
 
-+ 初始化 PD 连接时的重试间隔。
++ 设置 PD 连接的重试间隔。
 + 默认值：`"300ms"`
 
 ### `retry-log-every`
@@ -1350,7 +1350,7 @@ rocksdb defaultcf、rocksdb writecf 和 rocksdb lockcf 相关的配置项。
 + `writecf` 默认值：`false`
 + `lockcf` 默认值：`false`
 
-### `optimize-filters-for-memory` <span class="version-mark">从 v7.1.0 版本开始引入</span>
+### `optimize-filters-for-memory` <span class="version-mark">从 v7.2.0 版本开始引入</span>
 
 + 控制是否生成能够最小化内存碎片的 Bloom/Ribbon filter。
 + 只有当 [`format-version`](#format-version-从-v620-版本开始引入) >= 5 时，该配置项才生效。
@@ -1374,7 +1374,7 @@ rocksdb defaultcf、rocksdb writecf 和 rocksdb lockcf 相关的配置项。
 + 开启每个 block 建立 bloom filter 的开关。
 + 默认值：false
 
-### `ribbon-filter-above-level` <span class="version-mark">从 v7.1.0 版本开始引入</span>
+### `ribbon-filter-above-level` <span class="version-mark">从 v7.2.0 版本开始引入</span>
 
 + 控制是否对于大于等于该值的 level 使用 Ribbon filter，对于小于该值的 level，使用非 block-based bloom filter。当该配置开启时，[`block-based-bloom-filter`](#block-based-bloom-filter) 将被忽略。
 + 只有当 [`format-version`](#format-version-从-v620-版本开始引入) >= 5 时，该配置项才生效。
@@ -1525,7 +1525,7 @@ rocksdb defaultcf、rocksdb writecf 和 rocksdb lockcf 相关的配置项。
 ### `compaction-guard-min-output-file-size`
 
 + 设置 compaction guard 启用时 SST 文件大小的最小值，防止 SST 文件过小。
-+ 默认值：8MB
++ 默认值：从 v7.2.0 起，默认值从 8MB 变更为 1MB。
 + 单位：KB|MB|GB
 
 ### `compaction-guard-max-output-file-size`
@@ -1545,6 +1545,18 @@ rocksdb defaultcf、rocksdb writecf 和 rocksdb lockcf 相关的配置项。
     - `4`：适用于 TiKV v3.0 及以上版本。更改了索引块中 value 的编码方式。
     - `5`：适用于 TiKV v6.1 及以上版本。全量和分区 filter 采用一种具有不同模式的、更快、更准确的 Bloom filter 实现。
 + 默认值：`2`
+
+### `ttl` <span class="version-mark">从 v7.2.0 版本开始引入</span>
+
++ 设置 SST 文件被自动选中执行 compaction 的 TTL 时间。更新时间超过此值的 SST 文件将被选中并进行 compaction。在执行 compaction 时，这些 SST 文件通常以级联的方式进行压缩，以便被压缩到最底层或最底层的文件中。
++ 默认值：`30d`
++ 单位：s(second)|h(hour)|d(day)
+
+### `periodic-compaction-seconds` <span class="version-mark">从 v7.2.0 版本开始引入</span>
+
++ 设置周期性 compaction 的时间。更新时间超过此值的 SST 文件将被选中进行 compaction，并被重新写入这些 SST 文件所在的层级。
++ 默认值：`30d`
++ 单位：s(second)|h(hour)|d(day)
 
 ## rocksdb.defaultcf.titan
 
