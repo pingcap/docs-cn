@@ -212,8 +212,8 @@ TiDB 版本：7.2.0
     - 当 Stale Read 的 retry leader 遇到 lock 时，resolve lock 之后强制重试 leader，避免无谓开销 [#43659](https://github.com/pingcap/tidb/issues/43659) @[you06](https://github.com/you06)
     - 使用估计时间计算 Stale Read ts，减少 Stale Read 的开销 [#44215](https://github.com/pingcap/tidb/issues/44215) @[you06](https://github.com/you06)
     - 添加 long-running 事务日志和系统变量 [#41471](https://github.com/pingcap/tidb/issues/41471) @[crazycs520](https://github.com/crazycs520)
-    - 支持通过 MySQL 压缩协议连接 TiDB（在连接时加上 `--compress` 选项），提升数据密集型查询在低网络质量下的性能，并节省带宽成本的开销 [#22605](https://github.com/pingcap/tidb/issues/22605) @[dveeden](https://github.com/dveeden)
-    - 支持将 `utf8` 和 `utf8mb3` 识别为旧的三字节字符集编码 [#26226](https://github.com/pingcap/tidb/issues/26226) @[dveeden](https://github.com/dveeden)
+    - 支持通过压缩的 MySQL 协议连接 TiDB，提升数据密集型查询在低网络质量下的性能，并节省带宽成本。该功能支持基于 `zlib` 和 `zstd` 的压缩算法 [#22605](https://github.com/pingcap/tidb/issues/22605) @[dveeden](https://github.com/dveeden)
+    - 支持将 `utf8` 和 `utf8mb3` 识别为旧的三字节 UTF-8 字符集编码，有助于将具有旧字符集编码的表从 MySQL 8.0 迁移到 TiDB [#26226](https://github.com/pingcap/tidb/issues/26226) @[dveeden](https://github.com/dveeden)
     - 支持在 `UPDATE` 语句中使用 `:=` 进行赋值操作 [#44751](https://github.com/pingcap/tidb/issues/44751) @[CbcWestwolf](https://github.com/CbcWestwolf)
 
 <!--**tw@Oreoxmt**-->
