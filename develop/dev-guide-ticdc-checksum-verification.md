@@ -352,12 +352,10 @@ func mysqlTypeFromTiDBType(tidbType string) byte {
     return result
 }
 
-// value is an interface, need to convert it to the real value with the help of type info.
-// holder has the value's column info.
+// value 是一个 interface 类型的值，需要根据 holder 提供的类型信息，做一次转换处理
 func getColumnValue(value interface{}, holder map[string]interface{}, mysqlType byte) (interface{}, error) {
     switch t := value.(type) {
-    // for nullable columns, the value is encoded as a map with one pair.
-    // key is the encoded type, value is the encoded value, only care about the value here.
+    // nullable 的列，其值被编码成一个 map，只有一个键值对，键是类型，值是真实的值，此处只关心真实的值
     case map[string]interface{}:
         for _, v := range t {
             value = v
@@ -366,8 +364,7 @@ func getColumnValue(value interface{}, holder map[string]interface{}, mysqlType 
 
     switch mysqlType {
     case mysql.TypeEnum:
-        // enum type is encoded as string,
-        // we need to convert it to int by the order of the enum values definition.
+        // Enum 被编码成了 string，此处转换为对应于 Enum 定义的 int 值
         allowed := strings.Split(holder["allowed"].(string), ",")
         switch t := value.(type) {
         case string:
@@ -380,8 +377,7 @@ func getColumnValue(value interface{}, holder map[string]interface{}, mysqlType 
             value = nil
         }
     case mysql.TypeSet:
-        // set type is encoded as string,
-        // we need to convert it to int by the order of the set values definition.
+        // Set 被编码成了 string，根据 set 定义的顺序，转换为对应的 int 值
         elems := strings.Split(holder["allowed"].(string), ",")
         switch t := value.(type) {
         case string:
@@ -397,18 +393,17 @@ func getColumnValue(value interface{}, holder map[string]interface{}, mysqlType 
     return value, nil
 }
 
-// buildChecksumBytes append value the buf, mysqlType is used to is used to convert value interface to concrete type.
-// by follow: https://github.com/pingcap/tidb/blob/e3417913f58cdd5a136259b902bf177eaf3aa637/util/rowcodec/common.go#L308
+// buildChecksumBytes 生成用于更新 checksum 的字节切片, 参考 https://github.com/pingcap/tidb/blob/e3417913f58cdd5a136259b902bf177eaf3aa637/util/rowcodec/common.go#L308
 func buildChecksumBytes(buf []byte, value interface{}, mysqlType byte) ([]byte, error) {
     if value == nil {
         return buf, nil
     }
 
     switch mysqlType {
-    // TypeTiny, TypeShort, TypeInt32 is encoded as int32
-    // TypeLong is encoded as int32 if signed, else int64.
-    // TypeLongLong is encoded as int64 if signed, else uint64,
-    // if bigintUnsignedHandlingMode set as string, encode as string.
+    // TypeTiny, TypeShort, TypeInt32 被编码成 int32
+    // TypeLong 被编码成 int32 if signed, else int64
+    // TypeLongLong，如果是 signed，被编码成 int64，否则被编码成 uint64,
+    // 开启 checksum 功能，bigintUnsignedHandlingMode 必须设置为 string，被编码成 string.
     case mysql.TypeTiny, mysql.TypeShort, mysql.TypeLong, mysql.TypeLonglong, mysql.TypeInt24, mysql.TypeYear:
         switch a := value.(type) {
         case int32:
@@ -429,7 +424,7 @@ func buildChecksumBytes(buf []byte, value interface{}, mysqlType byte) ([]byte, 
             log.Panic("unknown golang type for the integral value",
                 zap.Any("value", value), zap.Any("mysqlType", mysqlType))
         }
-    // TypeFloat encoded as float32, TypeDouble encoded as float64
+    // Float 类型编码为 float32，Double 编码为 float64
     case mysql.TypeFloat, mysql.TypeDouble:
         var v float64
         switch a := value.(type) {
@@ -442,19 +437,17 @@ func buildChecksumBytes(buf []byte, value interface{}, mysqlType byte) ([]byte, 
             v = 0
         }
         buf = binary.LittleEndian.AppendUint64(buf, math.Float64bits(v))
-    // TypeEnum, TypeSet encoded as string
-    // but convert to int by the getColumnValue function
+    // getColumnValue 将 Enum 和 Set 转换为了 uint64 类型
     case mysql.TypeEnum, mysql.TypeSet:
         buf = binary.LittleEndian.AppendUint64(buf, value.(uint64))
-    // TypeBit encoded as bytes
     case mysql.TypeBit:
-        // bit is store as bytes, convert to uint64.
+        // bit 类型编码为 []bytes，需要进一步转换为 uint64
         v, err := binaryLiteralToInt(value.([]byte))
         if err != nil {
             return nil, errors.Trace(err)
         }
         buf = binary.LittleEndian.AppendUint64(buf, v)
-    // encoded as bytes if binary flag set to true, else string
+    // 非二进制类型时，编码成 string， 反之则为 []byte
     case mysql.TypeVarchar, mysql.TypeVarString, mysql.TypeString, mysql.TypeTinyBlob, mysql.TypeMediumBlob, mysql.TypeLongBlob, mysql.TypeBlob:
         switch a := value.(type) {
         case string:
@@ -465,17 +458,15 @@ func buildChecksumBytes(buf []byte, value interface{}, mysqlType byte) ([]byte, 
             log.Panic("unknown golang type for the string value",
                 zap.Any("value", value), zap.Any("mysqlType", mysqlType))
         }
-    // all encoded as string
     case mysql.TypeTimestamp, mysql.TypeDatetime, mysql.TypeDate, mysql.TypeDuration, mysql.TypeNewDate:
         v := value.(string)
         buf = appendLengthValue(buf, []byte(v))
-    // encoded as string if decimalHandlingMode set to string, it's required to enable checksum.
+    // 开启 checksum 功能时，decimalHandlingMode 必须设置为 string
     case mysql.TypeNewDecimal:
         buf = appendLengthValue(buf, []byte(value.(string)))
-    // encoded as string
     case mysql.TypeJSON:
         buf = appendLengthValue(buf, []byte(value.(string)))
-    // this should not happen, does not take into the checksum calculation.
+    // Null 和 Geometry 不参与到 checksum 计算
     case mysql.TypeNull, mysql.TypeGeometry:
     // do nothing
     default:
@@ -490,8 +481,7 @@ func appendLengthValue(buf []byte, val []byte) []byte {
     return buf
 }
 
-// convert bytes into uint64,
-// by follow https://github.com/pingcap/tidb/blob/e3417913f58cdd5a136259b902bf177eaf3aa637/types/binary_literal.go#L105
+// 将 []byte 转换为 uint64，参考 https://github.com/pingcap/tidb/blob/e3417913f58cdd5a136259b902bf177eaf3aa637/types/binary_literal.go#L105
 func binaryLiteralToInt(bytes []byte) (uint64, error) {
     bytes = trimLeadingZeroBytes(bytes)
     length := len(bytes)
@@ -505,7 +495,6 @@ func binaryLiteralToInt(bytes []byte) (uint64, error) {
         return 0, nil
     }
 
-    // Note: the byte-order is BigEndian.
     val := uint64(bytes[0])
     for i := 1; i < length; i++ {
         val = (val << 8) | uint64(bytes[i])
