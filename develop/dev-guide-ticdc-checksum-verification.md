@@ -210,7 +210,7 @@ type lookupResponse struct {
 
 上一步获取的 `valueMap` 和 `valueSchema` 包含了所有用于 Checksum 计算和校验的元素。
 
-在消费端计算和校验 Checksum 的过程可以总结为以下几个步骤：
+在消费端计算和校验 Checksum 的过程包含以下几个步骤：
 
 1. schema 中含有每个列的类型信息，列顺序和 Checksum 计算顺序相同。
 2. 遍历每一列，根据列的数据值和对应的 MySQL Type，生成字节切片，不断更新 Checksum。
