@@ -573,7 +573,7 @@ I/O rate limiter 相关的配置项。
 
 ### `retry-interval`
 
-+ 初始化 PD 连接时的重试间隔。
++ 设置 PD 连接的重试间隔。
 + 默认值：`"300ms"`
 
 ### `retry-log-every`
@@ -989,10 +989,10 @@ raftstore 相关的配置项。
 + 默认值：1MB
 + 最小值：0
 
-### `report-min-resolved-ts-interval`
+### `report-min-resolved-ts-interval` <span class="version-mark">从 v6.0.0 版本开始引入</span>
 
-+ 设置 PD leader 收到 Resolved TS 的最小间隔时间。如果该值设置为 `0`，表示禁用该功能。
-+ 默认值：`"1s"`，即最小正值
++ 设置 PD leader 收到 Resolved TS 的间隔时间。如果该值设置为 `0`，表示禁用该功能。
++ 默认值：在 v6.3.0 之前版本中为 `"0s"`，在 v6.3.0 及之后的版本中为 `"1s"`，即最小正值。
 + 最小值：0
 + 单位：秒
 
@@ -1350,7 +1350,7 @@ rocksdb defaultcf、rocksdb writecf 和 rocksdb lockcf 相关的配置项。
 + `writecf` 默认值：`false`
 + `lockcf` 默认值：`false`
 
-### `optimize-filters-for-memory` <span class="version-mark">从 v7.1.0 版本开始引入</span>
+### `optimize-filters-for-memory` <span class="version-mark">从 v7.2.0 版本开始引入</span>
 
 + 控制是否生成能够最小化内存碎片的 Bloom/Ribbon filter。
 + 只有当 [`format-version`](#format-version-从-v620-版本开始引入) >= 5 时，该配置项才生效。
@@ -1374,7 +1374,7 @@ rocksdb defaultcf、rocksdb writecf 和 rocksdb lockcf 相关的配置项。
 + 开启每个 block 建立 bloom filter 的开关。
 + 默认值：false
 
-### `ribbon-filter-above-level` <span class="version-mark">从 v7.1.0 版本开始引入</span>
+### `ribbon-filter-above-level` <span class="version-mark">从 v7.2.0 版本开始引入</span>
 
 + 控制是否对于大于等于该值的 level 使用 Ribbon filter，对于小于该值的 level，使用非 block-based bloom filter。当该配置开启时，[`block-based-bloom-filter`](#block-based-bloom-filter) 将被忽略。
 + 只有当 [`format-version`](#format-version-从-v620-版本开始引入) >= 5 时，该配置项才生效。
@@ -1525,7 +1525,7 @@ rocksdb defaultcf、rocksdb writecf 和 rocksdb lockcf 相关的配置项。
 ### `compaction-guard-min-output-file-size`
 
 + 设置 compaction guard 启用时 SST 文件大小的最小值，防止 SST 文件过小。
-+ 默认值：8MB
++ 默认值：从 v7.2.0 起，默认值从 8MB 变更为 1MB。
 + 单位：KB|MB|GB
 
 ### `compaction-guard-max-output-file-size`

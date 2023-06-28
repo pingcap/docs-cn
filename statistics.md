@@ -131,7 +131,8 @@ ANALYZE TABLE TableNameList [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH
 
 > **注意：**
 >
-> 收集部分列的统计信息的功能仅适用于 `tidb_analyze_version = 2` 的情况。
+> - 收集部分列的统计信息的功能仅适用于 [`tidb_analyze_version = 2`](/system-variables.md#tidb_analyze_version-从-v510-版本开始引入) 的情况。
+> - TiDB v7.2.0 引入了系统变量 [`tidb_analyze_skip_column_types`](/system-variables.md#tidb_analyze_skip_column_types-从-v720-版本开始引入)，该变量可以控制在执行 `ANALYZE` 命令收集统计信息时，跳过哪些类型的列的统计信息收集。该变量仅适用于 `tidb_analyze_version = 2` 的情况。
 
 - 如果要收集指定列的统计信息，请使用以下语法：
 
