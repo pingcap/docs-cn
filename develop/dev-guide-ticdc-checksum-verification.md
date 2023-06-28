@@ -227,8 +227,8 @@ func CalculateAndVerifyChecksum(valueMap, valueSchema map[string]interface{}) er
         return errors.New("schema fields should be a map")
     }
 
-	// 1. 从 valueMap 里面查找期望的 checksum 值，它被编码成 string 类型
-	// 如果找不到，说明 TiCDC 发送该条数据时，还没有开启 checksum 功能，直接返回即可
+    // 1. 从 valueMap 里面查找期望的 checksum 值，它被编码成 string 类型
+    // 如果找不到，说明 TiCDC 发送该条数据时，还没有开启 checksum 功能，直接返回即可
     o, ok := valueMap["_tidb_row_level_checksum"]
     if !ok {
         return nil
@@ -260,7 +260,7 @@ func CalculateAndVerifyChecksum(valueMap, valueSchema map[string]interface{}) er
             break
         }
 
-		// holder 存放有列类型信息
+        // holder 存放有列类型信息
         var holder map[string]interface{}
         switch ty := field["type"].(type) {
         case []interface{}:
@@ -301,7 +301,7 @@ func CalculateAndVerifyChecksum(valueMap, valueSchema map[string]interface{}) er
         actualChecksum = crc32.Update(actualChecksum, crc32.IEEETable, buf)
     }
 
-	if uint64(actualChecksum) != expectedChecksum {
+    if uint64(actualChecksum) != expectedChecksum {
         log.Error("checksum mismatch",
             zap.Uint64("expected", expectedChecksum),
             zap.Uint64("actual", uint64(actualChecksum)))
@@ -506,7 +506,7 @@ func binaryLiteralToInt(bytes []byte) (uint64, error) {
         return 0, nil
     }
 
-	// Note: the byte-order is BigEndian.
+    // Note: the byte-order is BigEndian.
     val := uint64(bytes[0])
     for i := 1; i < length; i++ {
         val = (val << 8) | uint64(bytes[i])
