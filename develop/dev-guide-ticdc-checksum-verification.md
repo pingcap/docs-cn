@@ -208,7 +208,7 @@ type lookupResponse struct {
 
 ## 计算并校验 Checksum
 
-上一步拿到的 `valueMap` 和 `valueSchema`，即含有用于 checksum 计算和校验的所有元素。
+上一步获取的 `valueMap` 和 `valueSchema` 包含了所有用于 Checksum 计算和校验的元素。
 
 在消费端计算和校验 Checksum 的过程可以总结为以下几个步骤：
 
