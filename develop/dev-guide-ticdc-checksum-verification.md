@@ -6,9 +6,9 @@ aliases: ['/zh/tidb/dev/ticdc-checksum-verification']
 
 # TiCDC 行数据 Checksum 校验
 
-本文主要介绍如何消费 TiCDC 发送到 Kafka 的经由 Avro 协议编码的数据，以及基于单行数据 Checksum 功能进行数据校验。
+本文主要介绍如何消费 TiCDC 发送到 Kafka 的经由 Avro 协议编码的数据，以及[基于单行数据 Checksum 功能进行数据校验](https://docs.pingcap.com/zh/tidb/dev/ticdc-integrity-check)。
 
-本示例代码位于 [avro-checksum-verification](https://github.com/pingcap/tiflow/example/golang/avro-checksum-verification) 目录下。
+本示例代码位于 [avro-checksum-verification](https://github.com/pingcap/tiflow/tree/master/examples/golang/avro-checksum-verification) 目录下。
 
 使用 [kafka-go](https://github.com/segmentio/kafka-go) 实现一个简单的 kafka consumer 程序，该程序不断地从指定的 Topic 读取数据，计算并且校验 Checksum。
 
@@ -34,6 +34,12 @@ import (
 	"github.com/pingcap/tiflow/pkg/errors"
 	"github.com/segmentio/kafka-go"
 	"go.uber.org/zap"
+)
+
+const (
+	// confluent avro wire format, the first byte is always 0
+	// https://docs.confluent.io/platform/current/schema-registry/fundamentals/serdes-develop/index.html#wire-format
+	magicByte = uint8(0)
 )
 
 func main() {
@@ -93,7 +99,7 @@ func main() {
 
 ## 解码数据以及获取相应的 Schema
 
-`getValueMapAndSchema` 方法的主要作用是解码数据以及获取相应的 Schema，二者均以 `map[string]interface{}` 的类型返回。
+`getValueMapAndSchema` 方法的主要作用是解码数据以及获取相应的 Schema，二者均以类型 `map[string]interface{}` 返回。
 
 ```go
 
@@ -207,9 +213,9 @@ type lookupResponse struct {
 
 在消费端计算和校验 Checksum 的过程可以总结为以下几个步骤：
 
-1. 从 schema 中拿到列存放顺序，该顺序和 Checksum 计算顺序相同。
-2. 遍历每一个列，根据列的数据值和对应的 MySQL Type，生成字节切片，不断更新 Checksum。
-3. 将上一步计算得到的 Checksum 和从收到的消息里提取出来的 Checksum 做比较。如果不一致，则说明 Checksum 校验失败，数据可能存在损坏的情况。
+1. schema 中含有每个列的类型信息，列顺序和 Checksum 计算顺序相同。
+2. 遍历每一列，根据列的数据值和对应的 MySQL Type，生成字节切片，不断更新 Checksum。
+3. 将上一步计算得到的 Checksum 和从收到的消息里提取出来的 Checksum 做比较。如果不一致，则说明 Checksum 校验失败，数据可能发生损坏。
 
 示例代码如下：
 
@@ -222,7 +228,7 @@ func CalculateAndVerifyChecksum(valueMap, valueSchema map[string]interface{}) er
 	}
 
 	// 1. 从 valueMap 里面查找期望的 checksum 值，它被编码成 string 类型
-	// 如果找不到，说明 TiCDC 发送该条数据时，还没有开启 checksum 功能，直接返回即可。
+	// 如果找不到，说明 TiCDC 发送该条数据时，还没有开启 checksum 功能，直接返回即可
 	o, ok := valueMap["_tidb_row_level_checksum"]
 	if !ok {
 		return nil
@@ -250,7 +256,7 @@ func CalculateAndVerifyChecksum(valueMap, valueSchema map[string]interface{}) er
 
 		// `tidbOp` 及之后的列不参与到 checksum 计算中，因为它们是一些用于辅助数据消费的列，并非真实的 TiDB 列数据
 		colName := field["name"].(string)
-		if colName == tidbOp {
+		if colName == "_tidb_op" {
 			break
 		}
 
