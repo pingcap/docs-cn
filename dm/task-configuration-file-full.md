@@ -24,6 +24,7 @@ name: test                      # 任务名称，需要全局唯一
 task-mode: all                  # 任务模式，可设为 "full" - "只进行全量数据迁移"、"incremental" - "Binlog 实时同步"、"all" - "全量 + Binlog 实时同步"
 shard-mode: "pessimistic"       # 任务协调模式，可选的模式有 ""、"pessimistic、"optimistic"。默认值为 "" 即无需协调。如果是分库分表合并任务，请设置为悲观协调模式 "pessimistic"。
                                 # 在 v2.0.6 版本后乐观模式逐渐成熟，深入了解乐观协调模式的原理和使用限制后，也可以设置为乐观协调模式 "optimistic"
+strict-optimistic-shard-mode: false # 仅在乐观协调模式下生效，限制乐观协调模式的行为，默认值为 false。在 v7.2.0 中引入，详见 https://docs.pingcap.com/zh/tidb/v7.2/feature-shard-merge-optimistic
 meta-schema: "dm_meta"          # 下游储存 `meta` 信息的数据库
 # timezone: "Asia/Shanghai"     # 指定数据迁移任务时 SQL Session 使用的时区。DM 默认使用目标库的全局时区配置进行数据迁移，并且自动确保同步数据的正确性。使用自定义时区依然可以确保整个流程的正确性，但一般不需要手动指定。
 
@@ -119,31 +120,31 @@ loaders:                             # load 处理单元的运行配置参数
     dir: "./dumped_data"
 
     # 全量阶段数据导入的模式。可以设置为如下几种模式：
-    # - "logical"(默认)。使用 TiDB Lightning logical import 进行导入。文档：https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-logical-import-mode
-    # - "physical"。使用 TiDB Lightning physical import 进行导入。文档：https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-physical-import-mode
+    # - "logical"(默认)。使用 TiDB Lightning 逻辑导入模式进行导入。文档：https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-logical-import-mode
+    # - "physical"。使用 TiDB Lightning 物理导入模式进行导入。文档：https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-physical-import-mode
     #   当前 "physical" 为实验特性，不建议在生产环境中使用。
     import-mode: "logical"
-    # logical import 针对冲突数据的解决方式：
+    # 逻辑导入模式针对冲突数据的解决方式：
     # - "replace"（默认值）。表示用最新数据替代已有数据。
     # - "ignore"。保留已有数据，忽略新数据。
     # - "error"。插入重复数据时报错并停止同步任务。
     on-duplicate-logical: "replace"
-    # physical import 针对冲突数据的解决方式：
-    # - "none"（默认）。对应 TiDB Lightning physical import 冲突数据检测的 "none" 选项 
+    # 物理导入模式针对冲突数据的解决方式：
+    # - "none"（默认）。对应 TiDB Lightning 物理导入模式冲突数据检测的 "none" 选项 
     # (https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-physical-import-mode-usage#冲突数据检测)，
     # 表示遇到冲突数据时不进行处理。该模式性能最佳，但下游数据库会遇到数据索引不一致的问题。
-    # - "manual"。对应 TiDB Lightning physical import 冲突数据检测的 "remove" 选项 
+    # - "manual"。对应 TiDB Lightning 物理导入模式冲突数据检测的 "remove" 选项 
     # (https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-physical-import-mode-usage#冲突数据检测)。
     # 在遇到冲突数据时将所有相互冲突的数据删除，并记录在 ${meta-schema}_${name}.conflict_error_v1 表中。
     # 在本配置文件中，会记录在 dm_meta_test.conflict_error_v1 表中。全量导入阶段结束后，任务
     # 会暂停并提示用户查询这张表并按照文档进行手动处理。使用 resume-task 命令让任务恢复运行并
     # 进入到增量同步阶段。
     on-duplicate-physical: "none"
-    # physical import 用作本地排序的目录位置，该选项的默认值与 dir 配置项一致。具体说明可以参见 TiDB Lightning 对存储空间的需求：https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-physical-import-mode#运行环境需求
+    # 物理导入模式用作本地排序的目录位置，该选项的默认值与 dir 配置项一致。具体说明可以参见 TiDB Lightning 对存储空间的需求：https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-physical-import-mode#运行环境需求
     sorting-dir-physical: "./dumped_data"
     # 磁盘空间限制，对应 TiDB Lightning disk-quota 配置。具体说明参见文档：https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-physical-import-mode-usage#磁盘资源配额-从-v620-版本开始引入
     disk-quota-physical: "0"
-    # physical import 在导入完成一张表后，对每一个表执行 `ADMIN CHECKSUM TABLE <table>` 进行数据校验的配置：
+    # 物理导入模式在导入完成一张表后，对每一个表执行 `ADMIN CHECKSUM TABLE <table>` 进行数据校验的配置：
     # - "required"（默认值）。表示导入完成后进行数据校验，如果校验失败会让任务暂停，需要用户手动处理。
     # - "optional"。表示导入完成后进行数据校验，如果校验失败会打印 warn 日志，任务不会暂停。
     # - "off"。表示导入完成后不进行数据校验。
@@ -222,7 +223,7 @@ mysql-instances:
 
 ## 配置顺序
 
-通过上面的配置文件示例，可以看出配置文件总共分为两个部分：`全局配置`和`实例配置`，其中`全局配置`又分为`基本信息配置`和`实例配置`，配置顺序如下：
+通过上面的配置文件示例，可以看出配置文件总共分为两个部分：`全局配置`和`实例配置`，其中`全局配置`又分为`基本信息配置`和`功能配置集`。配置顺序如下：
 
 1. 编辑[全局配置](#全局配置)。
 2. 根据全局配置编辑[实例配置](#实例配置)。
