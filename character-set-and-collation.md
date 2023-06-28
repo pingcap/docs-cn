@@ -1,5 +1,6 @@
 ---
-title: 字符集和排序规则Empty
+title: 字符集和排序规则
+aliases: ['/docs-cn/dev/character-set-and-collation/','/docs-cn/dev/reference/sql/characterset-and-collation/','/docs-cn/dev/reference/sql/character-set/']
 ---
 
 # 字符集和排序规则

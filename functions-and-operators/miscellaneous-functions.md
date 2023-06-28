@@ -1,5 +1,6 @@
 ---
-title: 其他函数Empty
+title: 其他函数
+aliases: ['/docs-cn/dev/functions-and-operators/miscellaneous-functions/','/docs-cn/dev/reference/sql/functions-and-operators/miscellaneous-functions/']
 ---
 
 # 其他函数

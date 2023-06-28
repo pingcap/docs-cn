@@ -1,6 +1,7 @@
 ---
 title: 备份恢复监控告警
-summary: 了解备份恢复的监控告警。Empty
+summary: 了解备份恢复的监控告警。
+aliases: ['/zh/tidb/dev/pitr-monitoring-and-alert/']
 ---
 
 # 备份恢复监控告警

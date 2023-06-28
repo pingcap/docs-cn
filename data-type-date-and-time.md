@@ -1,5 +1,6 @@
 ---
-title: 日期和时间类型Empty
+title: 日期和时间类型
+aliases: ['/docs-cn/dev/data-type-date-and-time/','/docs-cn/dev/reference/sql/data-types/date-and-time/']
 ---
 
 # 日期和时间类型

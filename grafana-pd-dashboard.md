@@ -1,5 +1,6 @@
 ---
-title: PD 重要监控指标详解Empty
+title: PD 重要监控指标详解
+aliases: ['/docs-cn/dev/grafana-pd-dashboard/','/docs-cn/dev/reference/key-monitoring-metrics/pd-dashboard/']
 ---
 
 # PD 重要监控指标详解

@@ -1,5 +1,6 @@
 ---
-title: PD Control 使用说明Empty
+title: PD Control 使用说明
+aliases: ['/docs-cn/dev/pd-control/','/docs-cn/dev/reference/tools/pd-control/']
 ---
 
 # PD Control 使用说明

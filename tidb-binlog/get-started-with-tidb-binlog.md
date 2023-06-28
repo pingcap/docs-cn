@@ -1,5 +1,6 @@
 ---
-title: TiDB Binlog 教程Empty
+title: TiDB Binlog 教程
+aliases: ['/docs-cn/dev/tidb-binlog/get-started-with-tidb-binlog/','/docs-cn/dev/how-to/get-started/tidb-binlog/','/docs-cn/dev/get-started-with-tidb-binlog/']
 ---
 
 # TiDB Binlog 教程

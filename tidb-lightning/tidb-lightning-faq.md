@@ -1,5 +1,6 @@
 ---
-title: TiDB Lightning 常见问题Empty
+title: TiDB Lightning 常见问题
+aliases: ['/docs-cn/dev/tidb-lightning/tidb-lightning-faq/','/docs-cn/dev/faq/tidb-lightning/']
 ---
 
 # TiDB Lightning 常见问题

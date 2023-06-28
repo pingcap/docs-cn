@@ -1,5 +1,6 @@
 ---
-title: 位函数和操作符Empty
+title: 位函数和操作符
+aliases: ['/docs-cn/dev/functions-and-operators/bit-functions-and-operators/','/docs-cn/dev/reference/sql/functions-and-operators/bit-functions-and-operators/']
 ---
 
 # 位函数和操作符

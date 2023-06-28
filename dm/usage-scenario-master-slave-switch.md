@@ -1,6 +1,7 @@
 ---
 title: 切换 DM-worker 与上游 MySQL 实例的连接
-summary: 了解如何切换 DM-worker 与上游 MySQL 实例的连接。Empty
+summary: 了解如何切换 DM-worker 与上游 MySQL 实例的连接。
+aliases: ['/docs-cn/tidb-data-migration/dev/usage-scenario-master-slave-switch/']
 ---
 
 # 切换 DM-worker 与上游 MySQL 实例的连接

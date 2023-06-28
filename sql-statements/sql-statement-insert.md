@@ -1,6 +1,7 @@
 ---
 title: INSERT
-summary: TiDB 数据库中 INSERT 的使用概况。Empty
+summary: TiDB 数据库中 INSERT 的使用概况。
+aliases: ['/docs-cn/dev/sql-statements/sql-statement-insert/','/docs-cn/dev/reference/sql/statements/insert/']
 ---
 
 # INSERT

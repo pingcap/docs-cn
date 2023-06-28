@@ -1,5 +1,6 @@
 ---
-title: TiKV 内存参数性能调优Empty
+title: TiKV 内存参数性能调优
+aliases: ['/docs-cn/dev/tune-tikv-memory-performance/','/docs-cn/dev/reference/performance/tune-tikv/', '/docs-cn/dev/tune-tikv-performance/']
 ---
 
 # TiKV 内存参数性能调优

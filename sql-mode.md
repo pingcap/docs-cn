@@ -1,5 +1,6 @@
 ---
-title: SQL 模式Empty
+title: SQL 模式
+aliases: ['/docs-cn/dev/sql-mode/','/docs-cn/dev/reference/sql/sql-mode/']
 ---
 
 # SQL 模式

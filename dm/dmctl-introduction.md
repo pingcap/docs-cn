@@ -1,6 +1,7 @@
 ---
 title: 使用 dmctl 运维 TiDB Data Migration 集群
-summary: 了解如何使用 dmctl 运维 DM 集群。Empty
+summary: 了解如何使用 dmctl 运维 DM 集群。
+aliases: ['/docs-cn/tidb-data-migration/dev/dmctl-introduction/','/docs-cn/tidb-data-migration/dev/manage-replication-tasks/']
 ---
 
 # 使用 dmctl 运维 TiDB Data Migration 集群

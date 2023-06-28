@@ -1,5 +1,6 @@
 ---
-title: GC 配置Empty
+title: GC 配置
+aliases: ['/docs-cn/dev/garbage-collection-configuration/','/docs-cn/dev/reference/garbage-collection/configuration/']
 ---
 
 # GC 配置

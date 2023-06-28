@@ -1,6 +1,7 @@
 ---
 title: TiDB 悲观事务模式
-summary: 了解 TiDB 的悲观事务模式。Empty
+summary: 了解 TiDB 的悲观事务模式。
+aliases: ['/docs-cn/dev/pessimistic-transaction/','/docs-cn/dev/reference/transactions/transaction-pessimistic/']
 ---
 
 # TiDB 悲观事务模式

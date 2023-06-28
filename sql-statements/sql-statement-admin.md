@@ -1,5 +1,6 @@
 ---
-title: ADMINEmpty
+title: ADMIN
+aliases: ['/docs-cn/dev/sql-statements/sql-statement-admin/','/docs-cn/dev/reference/sql/statements/admin/']
 ---
 
 # ADMIN

@@ -1,6 +1,7 @@
 ---
 title: 客户端连接参数
-summary: 介绍客户端连接参数。Empty
+summary: 介绍客户端连接参数。
+aliases: ['/zh/tidb/dev/client-connection-parameters']
 ---
 
 # 客户端连接参数

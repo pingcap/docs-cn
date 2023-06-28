@@ -1,6 +1,7 @@
 ---
 title: TiDB 功能概览
-summary: 了解 TiDB 的功能概览。Empty
+summary: 了解 TiDB 的功能概览。
+aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0/','/zh/tidb/dev/experimental-features-4.0/','/zh/tidb/dev/experimental-features']
 ---
 
 # TiDB 功能概览

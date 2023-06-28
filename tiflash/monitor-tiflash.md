@@ -1,5 +1,6 @@
 ---
-title: TiFlash 集群监控Empty
+title: TiFlash 集群监控
+aliases: ['/docs-cn/dev/tiflash/monitor-tiflash/','/docs-cn/dev/reference/tiflash/monitor/']
 ---
 
 # TiFlash 集群监控

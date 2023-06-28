@@ -1,5 +1,6 @@
 ---
-title: JSON 类型Empty
+title: JSON 类型
+aliases: ['/docs-cn/dev/data-type-json/','/docs-cn/dev/reference/sql/data-types/json/']
 ---
 
 # JSON 类型

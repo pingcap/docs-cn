@@ -1,6 +1,7 @@
 ---
 title: TRACE
-summary: TiDB 数据库中 TRACE 的使用概况。Empty
+summary: TiDB 数据库中 TRACE 的使用概况。
+aliases: ['/docs-cn/dev/sql-statements/sql-statement-trace/','/docs-cn/dev/reference/sql/statements/trace/']
 ---
 
 # TRACE

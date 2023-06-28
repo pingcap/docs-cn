@@ -1,6 +1,7 @@
 ---
 title: COMMIT
-summary: TiDB 数据库中 COMMIT 的使用概况。Empty
+summary: TiDB 数据库中 COMMIT 的使用概况。
+aliases: ['/docs-cn/dev/sql-statements/sql-statement-commit/','/docs-cn/dev/reference/sql/statements/commit/']
 ---
 
 # COMMIT

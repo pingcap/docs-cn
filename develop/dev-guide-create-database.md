@@ -1,6 +1,7 @@
 ---
 title: 创建数据库
-summary: 创建数据库的方法、规范及例子。Empty
+summary: 创建数据库的方法、规范及例子。
+aliases: ['/zh/tidb/dev/create-database']
 ---
 
 # 创建数据库

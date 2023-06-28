@@ -1,5 +1,6 @@
 ---
-title: TiDB RC3 Release NotesEmpty
+title: TiDB RC3 Release Notes
+aliases: ['/docs-cn/dev/releases/release-rc.3/','/docs-cn/dev/releases/rc3/']
 ---
 
 # TiDB RC3 Release Notes

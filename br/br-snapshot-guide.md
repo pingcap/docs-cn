@@ -1,6 +1,7 @@
 ---
 title: TiDB 快照备份与恢复使用指南
-summary: 了解如何使用 br 命令行工具进行 TiDB 快照备份与恢复。Empty
+summary: 了解如何使用 br 命令行工具进行 TiDB 快照备份与恢复。
+aliases: ['/zh/tidb/dev/br-usage-backup/','/zh/tidb/dev/br-usage-restore/','/zh/tidb/dev/br-usage-restore-for-maintain/', '/zh/tidb/dev/br-usage-backup-for-maintain/']
 ---
 
 # TiDB 快照备份与恢复使用指南

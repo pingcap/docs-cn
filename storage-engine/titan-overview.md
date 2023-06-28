@@ -1,5 +1,6 @@
 ---
-title: Titan 介绍Empty
+title: Titan 介绍
+aliases: ['/docs-cn/dev/storage-engine/titan-overview/','/docs-cn/dev/reference/titan/overview/']
 ---
 
 # Titan 介绍

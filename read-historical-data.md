@@ -1,5 +1,6 @@
 ---
-title: 通过系统变量 tidb_snapshot 读取历史数据Empty
+title: 通过系统变量 tidb_snapshot 读取历史数据
+aliases: ['/docs-cn/dev/read-historical-data/','/docs-cn/dev/how-to/get-started/read-historical-data/']
 ---
 
 # 通过系统变量 tidb_snapshot 读取历史数据

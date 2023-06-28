@@ -1,5 +1,6 @@
 ---
-title: TiDB Lightning 监控告警Empty
+title: TiDB Lightning 监控告警
+aliases: ['/docs-cn/dev/tidb-lightning/monitor-tidb-lightning/','/docs-cn/dev/reference/tools/tidb-lightning/monitor/']
 ---
 
 # TiDB Lightning 监控告警

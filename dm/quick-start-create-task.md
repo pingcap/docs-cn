@@ -1,6 +1,7 @@
 ---
 title: 创建 TiDB Data Migration 数据迁移任务
-summary: 了解在部署 DM 集群后，如何快速创建数据迁移任务。Empty
+summary: 了解在部署 DM 集群后，如何快速创建数据迁移任务。
+aliases: ['/docs-cn/tidb-data-migration/dev/quick-start-create-task/']
 ---
 
 # 创建 TiDB Data Migration 数据迁移任务

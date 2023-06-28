@@ -1,5 +1,6 @@
 ---
-title: 使用 TiUP bench 组件压测 TiDBEmpty
+title: 使用 TiUP bench 组件压测 TiDB
+aliases: ['/docs-cn/dev/tiup/tiup-bench/','/docs-cn/dev/reference/tools/tiup/bench/']
 ---
 
 # 使用 TiUP bench 组件压测 TiDB

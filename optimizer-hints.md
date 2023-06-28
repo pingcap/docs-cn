@@ -1,5 +1,6 @@
 ---
-title: Optimizer HintsEmpty
+title: Optimizer Hints
+aliases: ['/docs-cn/dev/optimizer-hints/','/docs-cn/dev/reference/performance/optimizer-hints/']
 ---
 
 # Optimizer Hints

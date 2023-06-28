@@ -1,6 +1,7 @@
 ---
 title: TiDB 工具的使用场景
-summary: 本文档介绍 TiDB 工具的常见使用场景与工具选择。Empty
+summary: 本文档介绍 TiDB 工具的常见使用场景与工具选择。
+aliases: ['/docs-cn/dev/ecosystem-tool-user-case/']
 ---
 
 # TiDB 工具的使用场景

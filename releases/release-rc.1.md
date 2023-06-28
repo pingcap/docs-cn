@@ -1,5 +1,6 @@
 ---
-title: TiDB RC1 Release NotesEmpty
+title: TiDB RC1 Release Notes
+aliases: ['/docs-cn/dev/releases/release-rc.1/','/docs-cn/dev/releases/rc1/']
 ---
 
 # TiDB RC1 Release Notes

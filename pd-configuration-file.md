@@ -1,5 +1,6 @@
 ---
-title: PD 配置文件描述Empty
+title: PD 配置文件描述
+aliases: ['/docs-cn/dev/pd-configuration-file/','/docs-cn/dev/reference/configuration/pd-server/configuration-file/']
 ---
 
 # PD 配置文件描述

@@ -1,5 +1,6 @@
 ---
-title: TiUP 文档地图Empty
+title: TiUP 文档地图
+aliases: ['/docs-cn/dev/tiup/tiup-documentation-guide/']
 ---
 
 # TiUP 文档地图

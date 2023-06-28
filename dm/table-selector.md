@@ -1,6 +1,7 @@
 ---
 title: DM Table Selector
-summary: 介绍 DM 的 Table SelectorEmpty
+summary: 介绍 DM 的 Table Selector
+aliases: ['/docs-cn/tidb-data-migration/dev/table-selector/']
 ---
 
 # DM Table Selector
