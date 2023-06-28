@@ -512,5 +512,4 @@ func trimLeadingZeroBytes(bytes []byte) []byte {
     }
     return bytes[pos:]
 }
-
 ```
