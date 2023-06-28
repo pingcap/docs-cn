@@ -96,7 +96,7 @@ fn checksum(columns) {
     * CHAR、VARCHAR、VARSTRING、STRING、TEXT、BLOB（包括 TINY、MEDIUM 和 LONG）等字符类型，会直接使用字节。
     * NULL 和 GEOMETRY 类型不会被纳入到 Checksum 计算中，返回空字节。
 
-基于 Golang 的 Avro 数据消费和 Checksum 校验，可以参考 [TiCDC 行数据 Checksum 校验](/develop/dev-guide-ticdc-checksum-verification.md)
+基于 Golang 的 Avro 数据消费和 Checksum 校验，可以参考 [TiCDC 行数据 Checksum 校验](/develop/dev-guide-ticdc-checksum-verification.md)。
 
 > **注意：**
 >
