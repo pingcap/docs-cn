@@ -16,9 +16,9 @@ TiDB 版本：7.2.0
 <table>
 <thead>
   <tr>
-    <th>Category</th>
-    <th>Feature</th>
-    <th>Description</th>
+    <th>分类</th>
+    <th>功能</th>
+    <th>描述</th>
   </tr>
 </thead>
 <tbody>
@@ -34,8 +34,8 @@ TiDB 版本：7.2.0
   </tr>
   <tr>
     <td rowspan="1">SQL</td>
-    <td>支持新的 SQL 语句 <a href="https://docs.pingcap.com/zh/tidb/v7.2/sql-statement-import-into">`IMPORT INTO`</a>, 可以通过 TiDB 进行数据导入 （实验特性）</td>
-    <td>TiDB 引入了一个新的 SQL 语句 `IMPORT INTO`。该语句集成了 TiDB Lightning 的物理导入模式的能力，使你无需单独部署和管理 TiDB Lightning 即可导入数据文件到 TiDB 中。例如，通过该语句，你可以直接从 Amazon S3 远程导入数据到 TiDB 中。</td>
+    <td>支持新的 SQL 语句 <a href="https://docs.pingcap.com/zh/tidb/v7.2/sql-statement-import-into"><code>IMPORT INTO</code></a>，可以通过 TiDB 进行数据导入（实验特性）</td>
+    <td>TiDB 引入了一个新的 SQL 语句 <code>IMPORT INTO</code>。该语句集成了 TiDB Lightning 的物理导入模式的能力，使你无需单独部署和管理 TiDB Lightning 即可导入数据文件到 TiDB 中。例如，通过该语句，你可以直接从 Amazon S3 远程导入数据到 TiDB 中。</td>
   </tr>
   <tr>
     <td rowspan="2">数据库管理与可观测性</td>
@@ -178,7 +178,7 @@ TiDB 版本：7.2.0
 | [`tidb_enable_non_prepared_plan_cache`](/system-variables.md#tidb_enable_non_prepared_plan_cache) | 修改 | 经进一步的测试后，该变量默认值从 `OFF` 修改为 `ON`，即默认开启非 Prepare 语句执行计划缓存。 |
 | [`tidb_remove_orderby_in_subquery`](/system-variables.md#tidb_remove_orderby_in_subquery-从-v610-版本开始引入) | 修改 | 经进一步的测试后，该变量默认值从 `OFF` 修改为 `ON`，即优化器改写会移除子查询中的 `ORDER BY` 子句。 |
 | [`tidb_analyze_skip_column_types`](/system-variables.md#tidb_analyze_skip_column_types-从-v720-版本开始引入) | 新增 | 这个变量表示在执行 `ANALYZE` 命令收集统计信息时，跳过哪些类型的列的统计信息收集。该变量仅适用于 [`tidb_analyze_version = 2`](#tidb_analyze_version-从-v510-版本开始引入) 的情况。使用 `ANALYZE TABLE t COLUMNS c1, ..., cn` 语法时，如果指定的列的类型在 `tidb_analyze_skip_column_types` 中，则不会收集该列的统计信息。 |
-| [`tidb_enable_check_constraint`](/system-variables.md#tidb_enable_check_constraint-从-v720-版本开始引入) | 新增 | 这个变量用于控制`CHECK` 约束功能是否开启。默认值为 `OFF` 表示该功能默认关闭。 |
+| [`tidb_enable_check_constraint`](/system-variables.md#tidb_enable_check_constraint-从-v720-版本开始引入) | 新增 | 这个变量用于控制 `CHECK` 约束功能是否开启。默认值 `OFF` 表示该功能默认关闭。 |
 | [`tidb_enable_fast_table_check`](/system-variables.md#tidb_enable_fast_table_check-从-v720-版本开始引入) | 新增 | 这个变量用于控制是否使用基于校验和的方式来快速检查表中数据和索引的一致性。默认值 `ON` 表示该功能默认开启。  |
 | [`tidb_enable_tiflash_pipeline_model`](/system-variables.md#tidb_enable_tiflash_pipeline_model-从-v720-版本开始引入) | 新增 | 这个变量用来控制是否启用 TiFlash 新的执行模型 [Pipeline Model](/tiflash/tiflash-pipeline-model.md)，默认值为 `OFF`，即关闭 Pipeline Model。 |
 | [`tidb_expensive_txn_time_threshold`](/system-variables.md#tidb_expensive_txn_time_threshold-从-v720-版本开始引入) | 新增 | 控制打印 expensive transaction 日志的阈值时间，默认值是 600 秒。expensive transaction 日志会将尚未 COMMIT 或 ROLLBACK 且持续时间超过该阈值的事务的相关信息打印出来。 |
@@ -187,8 +187,8 @@ TiDB 版本：7.2.0
 
 | 配置文件 | 配置项 | 修改类型 | 描述 |
 | -------- | -------- | -------- | -------- |
-| TiDB | [`lite-init-stats`](/tidb-configuration-file.md#lite-init-stats-从-v710-版本开始引入) | 修改 | 经进一步的测试后，默认值从 `false` 修改为 `true`，表示 TiDB 启动时默认将采用轻量级的统计信息初始化，以提高启动时统计信息初始化的效率。 |
-| TiDB | [`force-init-stats`](/tidb-configuration-file.md#force-init-stats-从-v710-版本开始引入) | 修改 | 配合 `lite-init-stats`，默认值从 `false` 修改为 `true`，表示 TiDB 启动时默认会在完成统计信息初始化后再对外提供服务。 |
+| TiDB | [`lite-init-stats`](/tidb-configuration-file.md#lite-init-stats-从-v710-版本开始引入) | 修改 | 经进一步的测试后，默认值从 `false` 修改为 `true`，表示 TiDB 启动时默认采用轻量级的统计信息初始化，以提高启动时统计信息初始化的效率。 |
+| TiDB | [`force-init-stats`](/tidb-configuration-file.md#force-init-stats-从-v710-版本开始引入) | 修改 | 配合 `lite-init-stats`，默认值从 `false` 修改为 `true`，表示 TiDB 启动时会等到统计信息初始化完成后再对外提供服务。 |
 | TiKV | [<code>rocksdb.\[defaultcf\|writecf\|lockcf\].compaction-guard-min-output-file-size</code>](/tikv-configuration-file.md#compaction-guard-min-output-file-size) | 修改 | 为减小 RocksDB 中 compaction 任务的数据量，该变量默认值从 `"8MB"` 修改为 `"1MB"`。 |
 | TiKV | [<code>rocksdb.\[defaultcf\|writecf\|lockcf\].optimize-filters-for-memory</code>](/tikv-configuration-file.md#optimize-filters-for-memory-从-v720-版本开始引入) | 新增 | 控制是否生成能够最小化内存碎片的 Bloom/Ribbon filter。 |
 | TiKV | [<code>rocksdb.\[defaultcf\|writecf\|lockcf\].periodic-compaction-seconds</code>](/tikv-configuration-file.md#periodic-compaction-seconds-从-v720-版本开始引入) | 新增 | 控制周期性 compaction 的时间，修改时间超过此值的 SST 文件将被选中进行 compaction，并被重新写入这些 SST 文件所在的层级。 |
