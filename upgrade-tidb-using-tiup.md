@@ -174,12 +174,12 @@ tiup cluster check <cluster-name> --cluster
 tiup cluster upgrade <cluster-name> <version>
 ```
 
-以升级到 v7.1.0 版本为例：
+以升级到 v7.2.0 版本为例：
 
 {{< copyable "shell-regular" >}}
 
 ```
-tiup cluster upgrade <cluster-name> v7.1.0
+tiup cluster upgrade <cluster-name> v7.2.0
 ```
 
 > **注意：**
@@ -203,7 +203,7 @@ tiup cluster upgrade <cluster-name> v7.1.0
 tiup cluster stop <cluster-name>
 ```
 
-之后通过 `upgrade` 命令添加 `--offline` 参数来进行停机升级，其中 `<cluster-name>` 为集群名，`<version>` 为升级的目标版本，例如 `v7.1.0`。
+之后通过 `upgrade` 命令添加 `--offline` 参数来进行停机升级，其中 `<cluster-name>` 为集群名，`<version>` 为升级的目标版本，例如 `v7.2.0`。
 
 {{< copyable "shell-regular" >}}
 
@@ -232,7 +232,7 @@ tiup cluster display <cluster-name>
 ```
 Cluster type:       tidb
 Cluster name:       <cluster-name>
-Cluster version:    v7.1.0
+Cluster version:    v7.2.0
 ```
 
 ## 4. 升级 FAQ
@@ -263,7 +263,7 @@ Cluster version:    v7.1.0
 
 ### 4.2 升级过程中 evict leader 等待时间过长，如何跳过该步骤快速升级
 
-可以指定 `--force`，升级时会跳过 `PD transfer leader` 和 `TiKV evict leader` 过程，直接重启并升级版本，对线上运行的集群性能影响较大。命令如下，其中 `<version>` 为升级的目标版本，例如 `v7.1.0`：
+可以指定 `--force`，升级时会跳过 `PD transfer leader` 和 `TiKV evict leader` 过程，直接重启并升级版本，对线上运行的集群性能影响较大。命令如下，其中 `<version>` 为升级的目标版本，例如 `v7.2.0`：
 
 {{< copyable "shell-regular" >}}
 
@@ -278,5 +278,5 @@ tiup cluster upgrade <cluster-name> <version> --force
 {{< copyable "" >}}
 
 ```
-tiup install ctl:v7.1.0
+tiup install ctl:v7.2.0
 ```
