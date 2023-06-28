@@ -1,7 +1,6 @@
 ---
 title: TiCDC 行数据 Checksum 校验
 summary: TiCDC、Kafka、行数据 Checksum 校验
-aliases: ['/zh/tidb/dev/ticdc-checksum-verification']
 ---
 
 # TiCDC 行数据 Checksum 校验
