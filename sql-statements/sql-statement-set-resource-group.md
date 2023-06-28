@@ -71,7 +71,7 @@ SELECT CURRENT_RESOURCE_GROUP();
 Execute `SET RESOURCE GROUP` to specify the current session to use the default resource group.
 
 ```sql
-SET RESOURCE GROUP ``;
+SET RESOURCE GROUP `default`;
 SELECT CURRENT_RESOURCE_GROUP();
 ```
 
