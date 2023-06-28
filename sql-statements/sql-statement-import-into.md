@@ -18,7 +18,7 @@ summary: TiDB 数据库中 IMPORT INTO 的使用概况。
     - 当此框架功能开启时（即 [tidb_enable_dist_task](/system-variables.md#tidb_enable_dist_task-从-v710-版本开始引入) 为 `ON`），`IMPORT INTO` 会将一个数据导入任务拆分成多个子任务并分配到各个 TiDB 节点上运行，以提高导入效率。
     - 当此框架功能关闭时，`IMPORT INTO` 仅支持在当前用户连接的 TiDB 节点上运行。
 
-- 对于存储在 TiDB 本地的数据文件，`IMPORT INTO` 仅支持在当前用户连接的 TiDB 节点上运行，因此数据文件需要存放在当前用户连接的 TiDB 节点上。如果是通过 proxy 或者 load balancer 去访问 TiDB，则无法导入存储在 TiDB 本地的数据文件。
+- 对于存储在 TiDB 本地的数据文件，`IMPORT INTO` 仅支持在当前用户连接的 TiDB 节点上运行，因此数据文件需要存放在当前用户连接的 TiDB 节点上。如果是通过 PROXY 或者 Load Balancer 访问 TiDB，则无法导入存储在 TiDB 本地的数据文件。
 
 ## 使用限制
 
@@ -122,10 +122,10 @@ SET 表达式左侧只能引用 `ColumnNameOrUserVarList` 中没有的列名。�
 | `FIELDS_ESCAPED_BY='<char>'` | CSV | 指定字段的转义符，默认为 `\`。 |
 | `FIELDS_DEFINED_NULL_BY='<string>'` | CSV | 指定字段为何值时将会被解析为 NULL，默认为 `\N`。 |
 | `LINES_TERMINATED_BY='<string>'` | CSV | 指定行分隔符，默认 `IMPORT INTO` 会自动识别分隔符为 `\n`、`\r` 或 `\r\n`，如果行分隔符为以上三种，无须显式指定该选项。 |
-| `SKIP_ROWS=<number>` | CSV | 指定需要跳过的行数，默认为 `0`。可通过该参数跳过 CSV 中的 header，如果是通过通配符来指定所需导入的源文件，该参数会对 fileLocation 中通配符匹配到的所有源文件生效。 |
+| `SKIP_ROWS=<number>` | CSV | 指定需要跳过的行数，默认为 `0`。可通过该参数跳过 CSV 中的 header，如果是通过通配符来指定所需导入的源文件，该参数会对 fileLocation 中通配符匹配的所有源文件生效。 |
 | `DISK_QUOTA='<string>'` | 所有格式 | 指定数据排序期间可使用的磁盘空间阈值。默认值为 TiDB [临时目录](/tidb-configuration-file.md#temp-dir-从-v630-版本开始引入)所在磁盘空间的 80%。如果无法获取磁盘总大小，默认值为 50 GiB。当显式指定 DISK_QUOTA 时，该值同样不能超过 TiDB [临时目录](/tidb-configuration-file.md#temp-dir-从-v630-版本开始引入)所在磁盘空间的 80%。 |
 | `DISABLE_TIKV_IMPORT_MODE` | 所有格式 | 指定是否禁止导入期间将 TiKV 切换到导入模式。默认不禁止。如果当前集群存在正在运行的读写业务，为避免导入过程对这部分业务造成影响，可开启该参数。 |
-| `THREAD=<number>` | 所有格式 | 指定导入的并发度。默认值为 TiDB 节点的 CPU 核数的 50%，最小值为 1。可以显示指定该参数来控制对资源的占用，但最大值不能超过 CPU 核数。如需导入数据到一个空集群，建议可以适当调大该值，以提升导入性能；如果目标集群已经用于生产环境，请根据业务要求按需调整该参数值。 |
+| `THREAD=<number>` | 所有格式 | 指定导入的并发度。默认值为 TiDB 节点的 CPU 核数的 50%，最小值为 1。可以显示指定该参数来控制对资源的占用，但最大值不能超过 CPU 核数。如需导入数据到一个空集群，建议可以适当调大该值，以提升导入性能。如果目标集群已经用于生产环境，请根据业务要求按需调整该参数值。 |
 | `MAX_WRITE_SPEED='<string>'` | 所有格式 | 控制写入到单个 TiKV 的速度，默认无速度限制。例如设置为 `1MiB`，则限制写入速度为 1 MiB/s。|
 | `CHECKSUM_TABLE='<string>'` | 所有格式 | 配置是否在导入完成后对目标表是否执行 CHECKSUM 检查来验证导入的完整性。可选的配置项为 `"required"`（默认）、`"optional"` 和 `"off"`。`"required"` 表示在导入完成后执行 CHECKSUM 检查，如果 CHECKSUM 检查失败，则会报错退出。`"optional"` 表示在导入完成后执行 CHECKSUM 检查，如果报错，会输出一条警告日志并忽略报错。`"off"` 表示导入结束后不执行 CHECKSUM 检查。 |
 | `DETACHED` | 所有格式 | 该参数用于控制 `IMPORT INTO` 是否异步执行。开启该参数后，执行 `IMPORT INTO` 会立即返回该导入任务的 `Job_ID` 等信息，且该任务会在后台异步执行。 |
@@ -160,7 +160,7 @@ IMPORT INTO t FROM '/path/to/small.csv' WITH DETACHED;
 
 对于开启了 `DETACHED` 模式的任务，可通过 [`SHOW IMPORT`](/sql-statements/sql-statement-show-import-job.md) 来查看当前任务的执行进度。
 
-任务启动后，可通过 [`CANCEL IMPORT JOB <job-id> `](/sql-statements/sql-statement-cancel-import-job.md) 来取消对应任务。
+任务启动后，可通过 [`CANCEL IMPORT JOB <job-id>`](/sql-statements/sql-statement-cancel-import-job.md) 来取消对应任务。
 
 ## 使用示例
 
