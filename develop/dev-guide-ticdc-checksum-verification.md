@@ -213,7 +213,7 @@ type lookupResponse struct {
 在消费端计算和校验 Checksum 的过程包含以下几个步骤：
 
 1. schema 中含有每个列的类型信息，列顺序和 Checksum 计算顺序相同。
-2. 遍历每一列，根据列的数据值和对应的 MySQL Type，生成字节切片，不断更新 Checksum。
+2. 遍历每一列，根据列的数据值和对应的 MySQL Type，生成字节切片，不断更新 Checksum 值。
 3. 将上一步计算得到的 Checksum 和从收到的消息里提取出来的 Checksum 做比较。如果不一致，则说明 Checksum 校验失败，数据可能发生损坏。
 
 示例代码如下：
