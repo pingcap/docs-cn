@@ -50,6 +50,10 @@ Query OK, 1 row affected (0.03 sec)
 
 ## `CHECK` 约束
 
+> **注意：**
+>
+> `CHECK` 约束功能默认关闭，需要将变量 [`tidb_enable_check_constraint`](/system-variables.md#tidb_enable_check_constraint-从-v720-版本开始引入) 设置为 `ON` 后才能开启。
+
 `CHECK` 约束用于限制表中某个字段的值必须满足指定条件。当为表添加 `CHECK` 约束后，在插入或者更新表的数据时，TiDB 会检查约束条件是否满足，如果不满足，则会报错。
 
 TiDB 中 `CHECK` 约束的语法如下，与 MySQL 中一致：
@@ -126,6 +130,11 @@ ALTER TABLE t DROP CONSTRAINT t_chk_1;
 ```sql
 ALTER TABLE t ALTER CONSTRAINT c1 NOT ENFORCED;
 ```
+
+### 与 MySQL 的兼容性
+
+- 不支持在添加列的同时添加 `CHECK` 约束（例如，`ALTER TABLE t ADD COLUMN a CHECK(a > 0)`)），否则只有列会被添加成功，TiDB 会忽略 `CHECK` 约束但不会报错。
+- 不支持使用 `ALTER TABLE t CHANGE a b int CHECK(b > 0)` 添加 `CHECK` 约束，使用该语句时 TiDB 会报错。
 
 ## 唯一约束
 
