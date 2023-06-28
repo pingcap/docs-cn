@@ -4303,6 +4303,30 @@ SHOW WARNINGS;
 - If you upgrade from a TiDB version earlier than v4.0.0 to v4.0.0 or later versions, the format version is not changed, and TiDB continues to use the old format of version `1` to write data to the table, which means that **only newly created clusters use the new data format by default**.
 - Note that modifying this variable does not affect the old data that has been saved, but applies the corresponding version format only to the newly written data after modifying this variable.
 
+### tidb_runtime_filter_mode <span class="version-mark">New in v7.2.0</span>
+
+> **Warning:**
+>
+> The feature controlled by this variable is not fully functional in the current TiDB version. Do not change the default value.
+
+- Scope: SESSION | GLOBAL
+- Persists to cluster: Yes
+- Type: Enumeration
+- Default value: `OFF`
+- Value options: `OFF`, `LOCAL`
+
+### tidb_runtime_filter_type <span class="version-mark">New in v7.2.0</span>
+
+> **Warning:**
+>
+> The feature controlled by this variable is not fully functional in the current TiDB version. Do not change the default value.
+
+- Scope: SESSION | GLOBAL
+- Persists to cluster: Yes
+- Type: Enumeration
+- Default value: `IN`
+- Value options: `IN`
+
 ### tidb_scatter_region
 
 - Scope: GLOBAL
