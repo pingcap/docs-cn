@@ -156,7 +156,7 @@ TiDB 版本：7.2.0
 
     对于存储在 Amazon S3 或 GCS 的数据文件，在开启了[后端任务分布式框架](/tidb-distributed-execution-framework.md)后，`IMPORT INTO` 还支持将数据导入任务拆分成多个子任务，并将子任务调度到多个 TiDB 节点并行导入，进一步提升导入性能。
 
-    更多信息，请参考[用户文档](sql-statements/sql-statement-import-into.md)。
+    更多信息，请参考[用户文档](/sql-statements/sql-statement-import-into.md)。
 
 * TiDB Lightning 支持将字符集为 latin1 的源文件导入到 TiDB 中 [#44434](https://github.com/pingcap/tidb/issues/44434) @[lance6716](https://github.com/lance6716)
 
