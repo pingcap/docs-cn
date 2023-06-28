@@ -52,6 +52,10 @@ Query OK, 1 row affected (0.03 sec)
 
 ## CHECK
 
+> **Note:**
+>
+> The `CHECK` constraint feature is disabled by default. To enable it, you need to set the [`tidb_enable_check_constraint`](/system-variables.md#tidb_enable_check_constraint-new-in-v720) variable to `ON`.
+
 A `CHECK` constraint restricts the values of a column in a table to meet your specified conditions. When the `CHECK` constraint is added to a table, TiDB checks whether the constraint is satisfied during the insertion or updates of data into the table. If the constraint is not met, an error is returned.
 
 The syntax for the `CHECK` constraint in TiDB is the same as that in MySQL:
@@ -128,6 +132,11 @@ In addition to specifying `[NOT] ENFORCED` when adding the constraint, you can a
 ```sql
 ALTER TABLE t ALTER CONSTRAINT c1 NOT ENFORCED;
 ```
+
+### MySQL compatibility
+
+- It is not supported to add a `CHECK` constraint while adding a column (for example, `ALTER TABLE t ADD COLUMN a CHECK(a > 0)`). In this case, only the column is added successfully, and TiDB ignores the `CHECK` constraint without reporting any error.
+- It is not supported to use `ALTER TABLE t CHANGE a b int CHECK(b > 0)` to add a `CHECK` constraint. When this statement is executed, TiDB reports an error.
 
 ## UNIQUE KEY
 
