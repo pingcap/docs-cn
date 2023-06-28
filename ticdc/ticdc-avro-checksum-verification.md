@@ -1,5 +1,5 @@
 ---
-title: TiCDC 行数据 Checksum 校验
+title: 基于 Avro 的 TiCDC 行数据 Checksum 校验
 summary: 介绍 TiCDC 行数据 Checksum 校验的具体实现。
 ---
 
