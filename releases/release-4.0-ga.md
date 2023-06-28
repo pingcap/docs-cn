@@ -1,6 +1,5 @@
 ---
-title: TiDB 4.0 GA Release Notes
-aliases: ['/docs-cn/dev/releases/release-4.0-ga/']
+title: TiDB 4.0 GA Release NotesEmpty
 ---
 
 # TiDB 4.0 GA Release Notes

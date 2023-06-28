@@ -1,6 +1,5 @@
 ---
-title: TiDB 使用限制
-aliases: ['/docs-cn/dev/tidb-limitations/']
+title: TiDB 使用限制Empty
 ---
 
 # 使用限制

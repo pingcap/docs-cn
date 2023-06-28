@@ -1,6 +1,5 @@
 ---
-title: TiFlash 配置参数
-aliases: ['/docs-cn/dev/tiflash/tiflash-configuration/','/docs-cn/dev/reference/tiflash/configuration/']
+title: TiFlash 配置参数Empty
 ---
 
 # TiFlash 配置参数

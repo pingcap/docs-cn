@@ -1,7 +1,6 @@
 ---
 title: 备份与恢复常见问题
-summary: 了解备份恢复相关的常见问题以及解决方法。
-aliases: ['/docs-cn/dev/br/backup-and-restore-faq/','/zh/tidb/dev/pitr-troubleshoot/','/zh/tidb/dev/pitr-known-issues/']
+summary: 了解备份恢复相关的常见问题以及解决方法。Empty
 ---
 
 # 备份与恢复常见问题

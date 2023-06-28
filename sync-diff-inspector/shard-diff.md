@@ -1,6 +1,5 @@
 ---
-title: 分库分表场景下的数据校验
-aliases: ['/docs-cn/dev/sync-diff-inspector/shard-diff/','/docs-cn/dev/reference/tools/sync-diff-inspector/shard-diff/']
+title: 分库分表场景下的数据校验Empty
 ---
 
 # 分库分表场景下的数据校验

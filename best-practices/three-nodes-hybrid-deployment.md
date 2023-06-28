@@ -1,7 +1,6 @@
 ---
 title: 三节点混合部署最佳实践
-summary: 了解三节点混合部署最佳实践。
-aliases: ['/docs-cn/dev/best-practices/three-nodes-hybrid-deployment/']
+summary: 了解三节点混合部署最佳实践。Empty
 ---
 
 # 三节点混合部署的最佳实践

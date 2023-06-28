@@ -1,7 +1,6 @@
 ---
 title: 创建二级索引
-summary: 创建二级索引的方法、规范及例子。
-aliases: ['/zh/tidb/dev/create-secondary-indexes']
+summary: 创建二级索引的方法、规范及例子。Empty
 ---
 
 # 创建二级索引

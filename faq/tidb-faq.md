@@ -1,6 +1,5 @@
 ---
-title: TiDB 产品常见问题
-aliases: ['/docs-cn/dev/faq/tidb-faq/','/docs-cn/dev/faq/tidb/']
+title: TiDB 产品常见问题Empty
 ---
 
 # TiDB 产品常见问题

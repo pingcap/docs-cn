@@ -1,7 +1,6 @@
 ---
 title: SQL 开发规范
-summary: TiDB 的 SQL 开发规范。
-aliases: ['/zh/tidb/dev/sql-development-specification']
+summary: TiDB 的 SQL 开发规范。Empty
 ---
 
 # SQL 开发规范

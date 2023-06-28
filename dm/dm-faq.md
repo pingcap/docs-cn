@@ -1,6 +1,5 @@
 ---
-title: Data Migration 常见问题
-aliases: ['/docs-cn/tidb-data-migration/dev/faq/']
+title: Data Migration 常见问题Empty
 ---
 
 # Data Migration 常见问题

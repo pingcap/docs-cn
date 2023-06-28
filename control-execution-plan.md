@@ -1,6 +1,5 @@
 ---
-title: 控制执行计划
-aliases: ['/docs-cn/dev/control-execution-plan/']
+title: 控制执行计划Empty
 ---
 
 # 控制执行计划

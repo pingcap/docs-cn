@@ -1,7 +1,6 @@
 ---
 title: 事务错误处理
-summary: 介绍 TiDB 中的事务错误处理办法。
-aliases: ['/zh/tidb/dev/transaction-troubleshoot']
+summary: 介绍 TiDB 中的事务错误处理办法。Empty
 ---
 
 # 事务错误处理

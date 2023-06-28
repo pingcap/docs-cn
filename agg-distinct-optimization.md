@@ -1,6 +1,5 @@
 ---
-title: Distinct 优化
-aliases: ['/docs-cn/dev/agg-distinct-optimization/']
+title: Distinct 优化Empty
 ---
 
 # Distinct 优化

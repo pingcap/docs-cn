@@ -1,7 +1,6 @@
 ---
 title: Follower Read
-summary: 使用 Follower Read 在特定情况下加速查询。
-aliases: ['/zh/tidb/dev/use-follower-read']
+summary: 使用 Follower Read 在特定情况下加速查询。Empty
 ---
 
 # Follower Read

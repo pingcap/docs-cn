@@ -1,6 +1,5 @@
 ---
-title: SQL 性能调优
-aliases: ['/docs-cn/dev/sql-tuning-overview/']
+title: SQL 性能调优Empty
 ---
 
 # SQL 性能调优

@@ -1,6 +1,5 @@
 ---
-title: TiUP 简介
-aliases: ['/docs-cn/dev/tiup/tiup-overview/','/docs-cn/dev/reference/tools/tiup/overview/']
+title: TiUP 简介Empty
 ---
 
 # TiUP 简介

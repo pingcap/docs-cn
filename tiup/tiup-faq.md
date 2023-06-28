@@ -1,6 +1,5 @@
 ---
-title: TiUP FAQ
-aliases: ['/docs-cn/dev/tiup/tiup-faq/']
+title: TiUP FAQEmpty
 ---
 
 # TiUP FAQ

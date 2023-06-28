@@ -1,6 +1,5 @@
 ---
-title: TiDB Binlog 故障诊断
-aliases: ['/docs-cn/dev/tidb-binlog/troubleshoot-tidb-binlog/','/docs-cn/dev/reference/tidb-binlog/troubleshoot/binlog/','/docs-cn/dev/how-to/troubleshoot/tidb-binlog/']
+title: TiDB Binlog 故障诊断Empty
 ---
 
 # TiDB Binlog 故障诊断

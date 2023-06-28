@@ -1,6 +1,5 @@
 ---
-title: 迁移使用 GH-ost/PT-osc 的源数据库
-aliases: ['/docs-cn/tidb-data-migration/dev/feature-online-ddl-scheme/','/zh/tidb-data-migration/stable/feature-online-ddl-scheme']
+title: 迁移使用 GH-ost/PT-osc 的源数据库Empty
 ---
 
 # 迁移使用 GH-ost/PT-osc 的源数据库

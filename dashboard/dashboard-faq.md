@@ -1,6 +1,5 @@
 ---
-title: TiDB Dashboard 常见问题
-aliases: ['/docs-cn/dev/dashboard/dashboard-faq/']
+title: TiDB Dashboard 常见问题Empty
 ---
 
 # TiDB Dashboard 常见问题

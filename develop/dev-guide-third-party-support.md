@@ -1,6 +1,5 @@
 ---
-title: TiDB 支持的第三方工具
-aliases: ['/zh/tidb/dev/supported-by-pingcap']
+title: TiDB 支持的第三方工具Empty
 ---
 
 # TiDB 支持的第三方工具

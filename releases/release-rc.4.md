@@ -1,6 +1,5 @@
 ---
-title: TiDB RC4 Release Notes
-aliases: ['/docs-cn/dev/releases/release-rc.4/','/docs-cn/dev/releases/rc4/']
+title: TiDB RC4 Release NotesEmpty
 ---
 
 # TiDB RC4 Release Notes

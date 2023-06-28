@@ -1,7 +1,6 @@
 ---
 title: DM 监控指标
-summary: 介绍 DM 的监控指标
-aliases: ['/docs-cn/tidb-data-migration/dev/monitor-a-dm-cluster/']
+summary: 介绍 DM 的监控指标Empty
 ---
 
 # DM 监控指标

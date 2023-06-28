@@ -1,6 +1,5 @@
 ---
-title: TiFlash 集群运维
-aliases: ['/docs-cn/dev/tiflash/maintain-tiflash/','/docs-cn/dev/reference/tiflash/maintain/']
+title: TiFlash 集群运维Empty
 ---
 
 # TiFlash 集群运维

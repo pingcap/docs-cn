@@ -1,6 +1,5 @@
 ---
-title: 列裁剪
-aliases: ['/docs-cn/dev/column-pruning/']
+title: 列裁剪Empty
 ---
 
 # 列裁剪

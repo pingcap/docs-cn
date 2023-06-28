@@ -1,6 +1,5 @@
 ---
-title: TiKV 配置参数
-aliases: ['/docs-cn/dev/command-line-flags-for-tikv-configuration/','/docs-cn/dev/reference/configuration/tikv-server/configuration/']
+title: TiKV 配置参数Empty
 ---
 
 # TiKV 配置参数

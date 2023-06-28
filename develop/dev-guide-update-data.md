@@ -1,7 +1,6 @@
 ---
 title: 更新数据
-summary: 更新数据、批量更新数据的方法、最佳实践及例子。
-aliases: ['/zh/tidb/dev/update-data']
+summary: 更新数据、批量更新数据的方法、最佳实践及例子。Empty
 ---
 
 # 更新数据

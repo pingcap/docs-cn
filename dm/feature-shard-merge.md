@@ -1,6 +1,5 @@
 ---
-title: 分库分表合并迁移
-aliases: ['/docs-cn/tidb-data-migration/dev/feature-shard-merge/']
+title: 分库分表合并迁移Empty
 ---
 
 # 分库分表合并迁移

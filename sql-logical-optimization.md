@@ -1,6 +1,5 @@
 ---
-title: 逻辑优化
-aliases: ['/docs-cn/dev/sql-logical-optimization/']
+title: 逻辑优化Empty
 ---
 
 # 逻辑优化

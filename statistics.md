@@ -1,6 +1,5 @@
 ---
-title: 统计信息简介
-aliases: ['/docs-cn/dev/statistics/','/docs-cn/dev/reference/performance/statistics/']
+title: 统计信息简介Empty
 ---
 
 # 统计信息简介

@@ -1,6 +1,5 @@
 ---
-title: PD Recover 使用文档
-aliases: ['/docs-cn/dev/pd-recover/','/docs-cn/dev/reference/tools/pd-recover/']
+title: PD Recover 使用文档Empty
 ---
 
 # PD Recover 使用文档

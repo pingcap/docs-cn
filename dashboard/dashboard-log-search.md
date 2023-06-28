@@ -1,7 +1,6 @@
 ---
 title: TiDB Dashboard 日志搜索页面
-summary: 在集群中搜索所有节点上的日志
-aliases: ['/docs-cn/dev/dashboard/dashboard-log-search/']
+summary: 在集群中搜索所有节点上的日志Empty
 ---
 
 # TiDB Dashboard 日志搜索页面

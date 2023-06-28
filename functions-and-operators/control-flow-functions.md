@@ -1,6 +1,5 @@
 ---
-title: 控制流程函数
-aliases: ['/docs-cn/dev/functions-and-operators/control-flow-functions/','/docs-cn/dev/reference/sql/functions-and-operators/control-flow-functions/']
+title: 控制流程函数Empty
 ---
 
 # 控制流程函数

@@ -1,6 +1,5 @@
 ---
-title: TiKV 简介
-aliases: ['/docs-cn/dev/tikv-overview/']
+title: TiKV 简介Empty
 ---
 
 # TiKV 简介

@@ -1,6 +1,5 @@
 ---
-title: SQL 优化流程简介
-aliases: ['/docs-cn/dev/sql-optimization-concepts/','/docs-cn/dev/reference/performance/sql-optimizer-overview/']
+title: SQL 优化流程简介Empty
 ---
 
 # SQL 优化流程简介

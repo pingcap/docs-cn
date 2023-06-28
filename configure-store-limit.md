@@ -1,7 +1,6 @@
 ---
 title: Store Limit
-summary: 介绍 Store Limit 功能。
-aliases: ['/docs-cn/dev/configure-store-limit/']
+summary: 介绍 Store Limit 功能。Empty
 ---
 
 # Store Limit

@@ -1,7 +1,6 @@
 ---
 title: 索引的最佳实践
-summary: 介绍 TiDB 中索引的最佳实践。
-aliases: ['/zh/tidb/dev/index-best-practice']
+summary: 介绍 TiDB 中索引的最佳实践。Empty
 ---
 
 <!-- markdownlint-disable MD029 -->

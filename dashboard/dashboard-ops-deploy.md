@@ -1,6 +1,5 @@
 ---
-title: 部署 TiDB Dashboard
-aliases: ['/docs-cn/dev/dashboard/dashboard-ops-deploy/']
+title: 部署 TiDB DashboardEmpty
 ---
 
 # 部署 TiDB Dashboard

@@ -1,6 +1,5 @@
 ---
-title: TopN 和 Limit 下推
-aliases: ['/docs-cn/dev/topn-limit-push-down/']
+title: TopN 和 Limit 下推Empty
 ---
 
 # TopN 和 Limit 下推

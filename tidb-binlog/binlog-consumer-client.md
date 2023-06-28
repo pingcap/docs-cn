@@ -1,6 +1,5 @@
 ---
-title: Binlog Consumer Client 用户文档
-aliases: ['/zh/tidb/dev/binlog-slave-client','/docs-cn/dev/tidb-binlog/binlog-slave-client/','/docs-cn/dev/reference/tidb-binlog/binlog-slave-client/','/docs-cn/dev/reference/tools/tidb-binlog/binlog-slave-client/']
+title: Binlog Consumer Client 用户文档Empty
 ---
 
 # Binlog Consumer Client 用户文档

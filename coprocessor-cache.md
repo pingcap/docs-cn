@@ -1,6 +1,5 @@
 ---
-title: 下推计算结果缓存
-aliases: ['/docs-cn/dev/coprocessor-cache/']
+title: 下推计算结果缓存Empty
 ---
 
 # 下推计算结果缓存

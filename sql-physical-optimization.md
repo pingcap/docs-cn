@@ -1,6 +1,5 @@
 ---
-title: 物理优化
-aliases: ['/docs-cn/dev/sql-physical-optimization/']
+title: 物理优化Empty
 ---
 
 # 物理优化

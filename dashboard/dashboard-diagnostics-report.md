@@ -1,6 +1,5 @@
 ---
-title: TiDB Dashboard 诊断报告
-aliases: ['/docs-cn/dev/dashboard/dashboard-diagnostics-report/']
+title: TiDB Dashboard 诊断报告Empty
 ---
 
 # TiDB Dashboard 诊断报告

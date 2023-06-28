@@ -1,6 +1,5 @@
 ---
-title: TiDB 版本发布历史
-aliases: ['/docs-cn/dev/releases/release-notes/','/docs-cn/dev/releases/rn/']
+title: TiDB 版本发布历史Empty
 ---
 
 # TiDB 版本发布历史

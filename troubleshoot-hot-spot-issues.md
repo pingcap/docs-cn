@@ -1,6 +1,5 @@
 ---
-title: TiDB 热点问题处理
-aliases: ['/docs-cn/dev/troubleshoot-hot-spot-issues/']
+title: TiDB 热点问题处理Empty
 ---
 
 # TiDB 热点问题处理

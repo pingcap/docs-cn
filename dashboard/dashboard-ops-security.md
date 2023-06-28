@@ -1,6 +1,5 @@
 ---
-title: 提高 TiDB Dashboard 安全性
-aliases: ['/docs-cn/dev/dashboard/dashboard-ops-security/']
+title: 提高 TiDB Dashboard 安全性Empty
 ---
 
 # 提高 TiDB Dashboard 安全性

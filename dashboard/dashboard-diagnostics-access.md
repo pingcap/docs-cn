@@ -1,6 +1,5 @@
 ---
-title: TiDB Dashboard 集群诊断页面
-aliases: ['/docs-cn/dev/dashboard/dashboard-diagnostics-access/']
+title: TiDB Dashboard 集群诊断页面Empty
 ---
 
 # TiDB Dashboard 集群诊断页面

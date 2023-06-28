@@ -1,7 +1,6 @@
 ---
 title: 对象命名规范
-summary: 介绍 TiDB 中的对象命名规范。
-aliases: ['/zh/tidb/dev/object-naming-guidelines']
+summary: 介绍 TiDB 中的对象命名规范。Empty
 ---
 
 # 对象命名规范
