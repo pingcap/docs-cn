@@ -1792,7 +1792,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
 - Type: Boolean
-- Default value: `OFF`
+- Default value: `ON`
 - This variable controls whether to enable the [Non-prepared plan cache](/sql-non-prepared-plan-cache.md) feature.
 
 ### tidb_enable_non_prepared_plan_cache_for_dml <span class="version-mark">New in v7.1.0</span>
