@@ -115,11 +115,11 @@ TiDB 版本：7.2.0
 
     更多信息，请参考[用户文档](/optimizer-fix-controls.md)。
 
-* 轻量统计信息初始化 GA [#42160](https://github.com/pingcap/tidb/issues/42160) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes)
+* 轻量统计信息初始化 GA [#42160](https://github.com/pingcap/tidb/issues/42160) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes) **tw@qiancai** <!--1464-->
 
     轻量统计信息初始化自 v7.2.0 成为正式功能。轻量级的统计信息初始化可以大幅减少启动时必须加载的统计信息的数量，从而提升启动过程中统计信息的加载速度。该功能提升了 TiDB 在复杂运行环境下的稳定性，并降低了部分 TiDB 节点重启对整体服务的影响。
 
-    从 v7.2.0 开始，新建集群默认加载轻量统计信息，TiDB 在初始统计信息加载完成前不对外提供服务。从旧版本升级的集群，可通过修改 TiDB 配置参数 [`lite-init-stats`](/tidb-configuration-file.md#lite-init-stats-从-v710-版本开始引入) 和 [`force-init-stats`](/tidb-configuration-file.md#force-init-stats-从-v710-版本开始引入) 手工开启。 
+    从 v7.2.0 起，新建的集群在启动阶段将默认加载轻量级统计信息，并在加载完成后再对外提供服务。对于从旧版本升级上来的集群，可通过修改 TiDB 配置项 [`lite-init-stats`](/tidb-configuration-file.md#lite-init-stats-从-v710-版本开始引入) 和 [`force-init-stats`](/tidb-configuration-file.md#force-init-stats-从-v710-版本开始引入) 为 `true` 开启此功能。 
 
     更多信息，请参考[用户文档](/statistics.md#统计信息的加载)。
 
