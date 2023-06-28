@@ -27,7 +27,17 @@ This document describes the use cases, limitations, usage, and implementation pr
 
 ## Use cases and limitations
 
-In a database management system, in addition to the core transactional processing (TP) and analytical processing (AP) workloads, there are other important tasks, such as DDL operations, Load Data, TTL, Analyze, and Backup/Restore, which are called **backend tasks**. These backend tasks need to process a large amount of data in database objects (tables), so they typically have the following characteristics:
+<CustomContent platform="tidb">
+
+In a database management system, in addition to the core transactional processing (TP) and analytical processing (AP) workloads, there are other important tasks, such as DDL operations, IMPORT INTO, TTL, Analyze, and Backup/Restore, which are called **backend tasks**. These backend tasks need to process a large amount of data in database objects (tables), so they typically have the following characteristics:
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+In a database management system, in addition to the core transactional processing (TP) and analytical processing (AP) workloads, there are other important tasks, such as DDL operations, TTL, Analyze, and Backup/Restore, which are called **backend tasks**. These backend tasks need to process a large amount of data in database objects (tables), so they typically have the following characteristics:
+
+</CustomContent>
 
 - Need to process all data in a schema or a database object (table).
 - Might need to be executed periodically, but at a low frequency.
@@ -39,12 +49,16 @@ Enabling the TiDB backend task distributed execution framework can solve the abo
 - The framework supports distributed execution of backend tasks, which can flexibly schedule the available computing resources of the entire TiDB cluster, thereby better utilizing the computing resources in a TiDB cluster.
 - The framework provides unified resource usage and management capabilities for both overall and individual backend tasks.
 
-Currently, the TiDB backend task distributed execution framework only supports the distributed execution of `ADD INDEX` statements, that is, the DDL statements for creating indexes. For example, the following SQL statements are supported:
+Currently, for TiDB Self-Hosted, the TiDB backend task distributed execution framework supports the distributed execution of the `ADD INDEX` and `IMPORT INTO` statements. For TiDB Cloud, the `IMPORT INTO` statement is not applicable.
 
-```sql
-ALTER TABLE t1 ADD INDEX idx1(c1);
-CREATE INDEX idx1 ON table t1(c1);
-```
+- `ADD INDEX` is a DDL statement used to create indexes. For example:
+
+    ```sql
+    ALTER TABLE t1 ADD INDEX idx1(c1);
+    CREATE INDEX idx1 ON table t1(c1);
+    ```
+
+- `IMPORT INTO` is used to import data in formats such as `CSV`, `SQL`, and `PARQUET` into an empty table. For more information, see [`IMPORT INTO`](https://docs.pingcap.com/tidb/v7.2/sql-statement-import-into).
 
 ## Prerequisites
 

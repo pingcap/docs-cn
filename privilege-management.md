@@ -271,6 +271,10 @@ mysql> SELECT * FROM INFORMATION_SCHEMA.USER_PRIVILEGES WHERE grantee = "'root'@
 
 Requires the `SUPER` or `BACKUP_ADMIN` privilege.
 
+### CANCEL IMPORT JOB
+
+Requires the `SUPER` privilege to cancel jobs created by other users. Otherwise, only jobs created by the current user can be canceled.
+
 ### CREATE DATABASE
 
 Requires the `CREATE` privilege for the database.
@@ -305,6 +309,10 @@ Requires the `INDEX` privilege for the table.
 
 Requires the `DROP` privilege for the table.
 
+### IMPORT INTO
+
+Requires the `SELECT`, `UPDATE`, `INSERT`, `DELETE`, and `ALTER` privileges for the target table. To import files stored locally in TiDB, the `FILE` privilege is also required.
+
 ### LOAD DATA
 
 Requires the `INSERT` privilege for the table. When you use `REPLACE INTO`, the `DELETE` privilege is also required.
@@ -329,7 +337,9 @@ Requires the `INSERT` and `SELECT` privileges for the table.
 
 `SHOW GRANTS` requires the `SELECT` privilege to the `mysql` database. If the target user is current user, `SHOW GRANTS` does not require any privilege.
 
-`SHOW PROCESSLIST` requires `SUPER` to show connections belonging to other users.
+`SHOW PROCESSLIST` requires the `SUPER` privilege to show connections belonging to other users.
+
+`SHOW IMPORT JOB` requires the `SUPER` privilege to show connections belonging to other users. Otherwise, it only shows jobs created by the current user.
 
 ### CREATE ROLE/USER
 
