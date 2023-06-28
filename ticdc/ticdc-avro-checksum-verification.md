@@ -100,7 +100,6 @@ func main() {
 `getValueMapAndSchema` 方法的主要作用是解码数据以及获取相应的 Schema，二者均以类型 `map[string]interface{}` 返回。
 
 ```go
-
 // data is received kafka message's key or value, url is the schema registry url.
 // return the decoded value and corresponding schema as map.
 func getValueMapAndSchema(data []byte, url string) (map[string]interface{}, map[string]interface{}, error) {
