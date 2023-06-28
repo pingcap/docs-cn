@@ -123,9 +123,9 @@ TiDB Lightning（[物理导入模式](/tidb-lightning/tidb-lightning-physical-im
 - 大小超过 10 TiB
 - 行数超过 10 亿、列数超过 50 的宽表
 
-### 准备源文件
+### 生成源文件
 
-根据上述源文件准备的步骤产生源文件，对于大单表，如果不能做到全局有序，但是可以做到文件内按主键有序，且是标准的 CSV 文件，可以尽量生成单个大文件（例如每个 20 GiB），然后开启 [`strict-format`](/migrate-from-csv-files-to-tidb.md#第-4-步导入性能优化可选)，既可以降低 TiDB Lightning 实例之间导入的数据文件中存在主键和唯一键的重叠，又能在导入前由 TiDB Lightning 实例对大文件进行切分，达到最佳的导入速度。
+根据上述[准备源文件的步骤](#准备源文件)生成源文件，对于大单表，如果不能做到全局有序，但是可以做到文件内按主键有序，且是标准的 CSV 文件，可以尽量生成单个大文件（例如每个 20 GiB），然后开启 [`strict-format`](/migrate-from-csv-files-to-tidb.md#第-4-步导入性能优化可选)，既可以降低 TiDB Lightning 实例之间导入的数据文件中存在主键和唯一键的重叠，又能在导入前由 TiDB Lightning 实例对大文件进行切分，达到最佳的导入速度。
 
 ### 规划集群拓扑
 
