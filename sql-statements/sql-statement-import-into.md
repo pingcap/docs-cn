@@ -207,6 +207,7 @@ IMPORT INTO t FROM '/path/to/file-*.csv'
     ```sql
     IMPORT INTO t FROM 's3://bucket-name/test.csv?access-key=XXX&secret-access-key=XXX';
     ```
+
 - 从 GCS 导入数据
 
     ```sql
