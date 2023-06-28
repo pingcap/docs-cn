@@ -1348,7 +1348,7 @@ Configuration items related to `rocksdb.defaultcf`, `rocksdb.writecf`, and `rock
 + Default value for `defaultcf`: `true`
 + Default value for `writecf` and `lockcf`: `false`
 
-### `optimize-filters-for-memory` <span class="version-mark">New in v7.1.0</span>
+### `optimize-filters-for-memory` <span class="version-mark">New in v7.2.0</span>
 
 + Determines whether to generate Bloom/Ribbon filters that minimize memory internal fragmentation.
 + Note that this configuration item takes effect only when [`format-version`](#format-version-new-in-v620) >= 5.
@@ -1371,7 +1371,7 @@ Configuration items related to `rocksdb.defaultcf`, `rocksdb.writecf`, and `rock
 + Determines whether each block creates a bloom filter
 + Default value: `false`
 
-### `ribbon-filter-above-level` <span class="version-mark">New in v7.1.0</span>
+### `ribbon-filter-above-level` <span class="version-mark">New in v7.2.0</span>
 
 + Determines whether to use Ribbon filters for levels greater than or equal to this value and use non-block-based bloom filters for levels less than this value. When this configuration item is set, [`block-based-bloom-filter`](#block-based-bloom-filter) will be ignored.
 + Note that this configuration item takes effect only when [`format-version`](#format-version-new-in-v620) >= 5.
