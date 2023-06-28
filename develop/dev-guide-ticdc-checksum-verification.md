@@ -7,9 +7,9 @@ summary: 介绍 TiCDC 行数据 Checksum 校验的具体实现。
 
 本文主要介绍如何消费 TiCDC 发送到 Kafka 的经由 Avro 协议编码的数据，以及[基于单行数据 Checksum 功能进行数据校验](https://docs.pingcap.com/zh/tidb/dev/ticdc-integrity-check)。
 
-本示例代码位于 [avro-checksum-verification](https://github.com/pingcap/tiflow/tree/master/examples/golang/avro-checksum-verification) 目录下。
+本示例代码位于 [`avro-checksum-verification`](https://github.com/pingcap/tiflow/tree/master/examples/golang/avro-checksum-verification) 目录下。
 
-使用 [kafka-go](https://github.com/segmentio/kafka-go) 实现一个简单的 kafka consumer 程序，该程序不断地从指定的 Topic 读取数据，计算并且校验 Checksum。
+本文使用 [kafka-go](https://github.com/segmentio/kafka-go) 实现一个简单的 Kafka consumer 程序。该程序不断地从指定的 Topic 中读取数据、计算并校验 Checksum 值。
 
 ```go
 
