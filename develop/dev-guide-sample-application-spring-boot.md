@@ -1,7 +1,6 @@
 ---
 title: 使用 Spring Boot 构建 TiDB 应用程序
 summary: 给出一个 Spring Boot 构建 TiDB 应用程序示例。
-aliases: ['/zh/tidb/dev/sample-application-spring-boot']
 ---
 
 <!-- markdownlint-disable MD029 -->

@@ -1,6 +1,5 @@
 ---
 title: 使用 DM 迁移数据
-aliases: ['/docs-cn/tidb-data-migration/dev/replicate-data-using-dm/']
 ---
 
 # 使用 DM 迁移数据
