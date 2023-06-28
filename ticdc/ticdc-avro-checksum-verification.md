@@ -3,7 +3,7 @@ title: 基于 Avro 的 TiCDC 行数据 Checksum 校验
 summary: 介绍 TiCDC 行数据 Checksum 校验的具体实现。
 ---
 
-# TiCDC 行数据 Checksum 校验
+# 基于 Avro 的 TiCDC 行数据 Checksum 校验
 
 本文主要介绍如何消费 TiCDC 发送到 Kafka 的经由 Avro 协议编码的数据，以及[基于单行数据 Checksum 功能进行数据校验](https://docs.pingcap.com/zh/tidb/dev/ticdc-integrity-check)。
 
