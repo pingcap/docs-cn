@@ -82,7 +82,7 @@ rules = ['*.*', '!test.*']
 # 默认值为空列表。
 # IgnoreTxnStartTs = []
 
-# 事件过滤器规则 
+# 事件过滤器规则
 # 事件过滤器的详细配置规则可参考：https://docs.pingcap.com/zh/tidb/stable/ticdc-filter
 # 第一个事件过滤器规则
 # [[filter.event-filters]]
@@ -170,4 +170,30 @@ flush-interval = 2000
 storage = ""
 # 是否将 redo log 存储到文件中。默认值为 false。
 use-file-backend = false
+<<<<<<< HEAD
+=======
+
+[integrity]
+# 是否开启单行数据的 Checksum 校验功能，默认值为 "none"，即不开启。可选值为 "none" 和 "correctness"。
+integrity-check-level = "none"
+# 当单行数据的 Checksum 校验失败时，Changefeed 打印错误行数据相关日志的级别。默认值为 "warn"，可选值为 "warn" 和 "error"。
+corruption-handle-level = "warn"
+
+# 以下参数仅在下游为 Kafka 时生效。
+[sink.kafka-config]
+# Kafka SASL 认证机制。该参数默认值为空，表示不使用 SASL 认证。
+sasl-mechanism = "OAUTHBEARER"
+# Kafka SASL OAUTHBEARER 认证机制中的 client-id。默认值为空。在使用该认证机制时，该参数必填。
+sasl-oauth-client-id = "producer-kafka"
+# Kafka SASL OAUTHBEARER 认证机制中的 client-secret。默认值为空。需要 Base64 编码。在使用该认证机制时，该参数必填。
+sasl-oauth-client-secret = "cHJvZHVjZXIta2Fma2E="
+# Kafka SASL OAUTHBEARER 认证机制中的 token-url 用于获取 token。默认值为空。在使用该认证机制时，该参数必填。
+sasl-oauth-token-url = "http://127.0.0.1:4444/oauth2/token"
+# Kafka SASL OAUTHBEARER 认证机制中的 scopes。默认值为空。在使用该认证机制时，该参数可选填。
+sasl-oauth-scopes = ["producer.kafka", "consumer.kafka"]
+# Kafka SASL OAUTHBEARER 认证机制中的 grant-type。默认值为 "client_credentials"。在使用该认证机制时，该参数可选填。
+sasl-oauth-grant-type = "client_credentials"
+# Kafka SASL OAUTHBEARER 认证机制中的 audience。默认值为空。在使用该认证机制时，该参数可选填。
+sasl-oauth-audience = "kafka"
+>>>>>>> 2cdfe73530 (ticdc: add kafka oauth configurations (#14198))
 ```
