@@ -170,6 +170,7 @@ flush-interval = 2000
 storage = ""
 # 是否将 redo log 存储到文件中。默认值为 false。
 use-file-backend = false
+
 # 以下参数仅在下游为 Kafka 时生效。从 v6.5.3 开始支持。
 [sink.kafka-config]
 # Kafka SASL 认证机制。该参数默认值为空，表示不使用 SASL 认证。
