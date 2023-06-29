@@ -11,7 +11,7 @@ summary: TiDB 数据库中 IMPORT INTO 的使用概况。
 >
 > 目前该语句为实验特性，不建议在生产环境中使用。
 >
-> 已知问题：当本地排序使用的磁盘空间超过 disk-quota 并开始提前向 TiKV 写入数据时，如果取消任务或者任务失败，后台 routine 会继续跑一段时间才会真正退出，参考 [#45048](https://github.com/pingcap/tidb/issues/45048)。
+> 已知问题：任务启动后，对要导入的数据在本地进行排序时，如果使用的磁盘空间超过了设定的 disk-quota 值或本地磁盘空间的 80% ，并且开始向 TiKV 写入数据时，如果取消该任务或该任务运行失败，后台 routine 将会继续运行一段时间，然后才会真正退出。参考 [#45048](https://github.com/pingcap/tidb/issues/45048)。
 
 `IMPORT INTO` 支持导入存储在 Amazon S3、GCS 和 TiDB 本地的数据文件。
 
