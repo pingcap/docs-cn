@@ -116,6 +116,7 @@
 - Migrate
   - [Overview](/migration-overview.md)
   - [Migration Tools](/migration-tools.md)
+  - [Import Best Practices](/tidb-lightning/data-import-best-practices.md)
   - Migration Scenarios
     - [Migrate from Aurora](/migrate-aurora-to-tidb.md)
     - [Migrate MySQL of Small Datasets](/migrate-small-mysql-to-tidb.md)
