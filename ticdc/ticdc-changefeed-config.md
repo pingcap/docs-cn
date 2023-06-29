@@ -170,16 +170,7 @@ flush-interval = 2000
 storage = ""
 # 是否将 redo log 存储到文件中。默认值为 false。
 use-file-backend = false
-<<<<<<< HEAD
-=======
-
-[integrity]
-# 是否开启单行数据的 Checksum 校验功能，默认值为 "none"，即不开启。可选值为 "none" 和 "correctness"。
-integrity-check-level = "none"
-# 当单行数据的 Checksum 校验失败时，Changefeed 打印错误行数据相关日志的级别。默认值为 "warn"，可选值为 "warn" 和 "error"。
-corruption-handle-level = "warn"
-
-# 以下参数仅在下游为 Kafka 时生效。
+# 以下参数仅在下游为 Kafka 时生效。从 v6.5.3 开始支持。
 [sink.kafka-config]
 # Kafka SASL 认证机制。该参数默认值为空，表示不使用 SASL 认证。
 sasl-mechanism = "OAUTHBEARER"
@@ -195,5 +186,4 @@ sasl-oauth-scopes = ["producer.kafka", "consumer.kafka"]
 sasl-oauth-grant-type = "client_credentials"
 # Kafka SASL OAUTHBEARER 认证机制中的 audience。默认值为空。在使用该认证机制时，该参数可选填。
 sasl-oauth-audience = "kafka"
->>>>>>> 2cdfe73530 (ticdc: add kafka oauth configurations (#14198))
 ```
