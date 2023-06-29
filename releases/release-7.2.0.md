@@ -199,7 +199,7 @@ TiDB 版本：7.2.0
 | TiDB Lightning | [`send-kv-size`](/tidb-lightning/tidb-lightning-configuration.md) | 新增 | 用于设置单次发送到 TiKV 的键值对的大小。当键值对的大小达到设定的阈值时，它们将被 TiDB Lightning 立即发送到 TiKV，避免在导入大宽表的时候由于 TiDB Lightning 节点内存积累键值对过多导致 OOM 的问题。通过调整该参数，你可以在内存使用和导入速度之间找到平衡，提高导入过程的稳定性和效率。|
 | Data Migration | [`strict-optimistic-shard-mode`](/dm/feature-shard-merge-optimistic.md) | 新增 | 用于兼容历史版本 TiDB Data Migration v2.0 的分库分表同步 DDL 的行为。当用户选择乐观模式时，可以启用该参数，开启后，乐观模式下，同步任务遇到二类 DDL 时，整个任务会中断。在多个表的 DDL 变更有依赖关系的场景，可以及时中断同步，在用户手动处理完各表的 DDL 后，再继续同步数据，保障上下游数据的一致性。|
 | TiCDC | [`sink.protocol`](/ticdc/ticdc-changefeed-config.md) | 修改 | 扩展下游类型是 Kafka 时的可选值范围：增加 `"open-protocol"`。用于指定编码消息时使用的格式协议。|
-| TiCDC | [`sink.delete-only-output-handle-key-columns`](/ticdc/ticdc-changefeed-config.md) | 新增 | 指定 Delete 事件的输出内容，只对 canal-json 和 open-protocol 协议有效。默认值为 false，即输出所有列的内容。当设置为 true 时，只输出主键列，或唯一索引列的内容。 |
+| TiCDC | [`sink.delete-only-output-handle-key-columns`](/ticdc/ticdc-changefeed-config.md) | 新增 | 指定 DELETE 事件的输出内容，只对 `"canal-json"` 和 `"open-protocol"` 协议有效。默认值为 `false`，即输出所有列的内容。当设置为 `true` 时，只输出主键列，或唯一索引列的内容。 |
 
 ## 改进提升
 
