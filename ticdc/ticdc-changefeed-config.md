@@ -183,7 +183,7 @@ enable-partition-separator = true
 
 # Specifies the replication consistency configurations for a changefeed when using the redo log. For more information, see https://docs.pingcap.com/tidb/stable/ticdc-sink-to-mysql#eventually-consistent-replication-in-disaster-scenarios.
 # Note: The consistency-related configuration items only take effect when the downstream is a database and the redo log feature is enabled.
-[sink.consistent]
+[consistent]
 # The data consistency level. Available options are "none" and "eventual". "none" means that the redo log is disabled.
 # The default value is "none".
 level = "none"
