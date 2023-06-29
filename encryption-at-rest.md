@@ -308,3 +308,73 @@ TiFlash 在 v4.0.9 同样对加密元数据操作进行了优化，其兼容性�
 ```
 ./br restore full --pd <pd-address> --storage "s3://<bucket>/<prefix>"
 ```
+
+## BR Azure Blob Storage 服务端加密
+
+使用 BR 备份数据到 Azure Blob Storage 时，可以选择使用加密范围（Encryption Scope）或加密密钥（Encryption Key）进行数据的服务端加密。
+
+### 服务端加密：使用加密范围
+
+若要为备份数据指定加密范围，需要传递 `--azblob.encryption-scope` 参数（或添加到 URI 中）并将参数值设置为指定的加密范围名。参见 Azure 文档中的 [上传具有加密范围的 blob](https://learn.microsoft.com/zh-cn/azure/storage/blobs/encryption-scope-manage?tabs=powershell#upload-a-blob-with-an-encryption-scope)。示例如下：
+
+传递 `--azblob.encryption-scope` 参数
+
+```
+./br backup full --pd <pd-address> --storage "azure://<bucket>/<prefix>" --azblob.encryption-scope scope1
+```
+
+或添加到 URI 中
+
+```
+./br backup full --pd <pd-address> --storage "azure://<bucket>/<prefix>?encryption-scope=scope1"
+```
+
+恢复备份时，不需要指定 `--azblob.encryption-scope` 参数。 Azure Blob Storage 将自动相应进行解密。示例如下：
+
+```
+./br restore full --pd <pd-address> --storage "azure://<bucket>/<prefix>"
+```
+
+### 服务端加密：使用加密密钥
+
+若要为备份数据指定加密密钥，需要传递 `--azblob.encryption-key` 参数（或添加到 URI 中，或添加到 BR 的环境变量中）并将参数值设置为加密算法 AES256 的加密密钥。参见 Azure 文档中的 [在对 Blob 存储的请求中提供加密密钥](https://learn.microsoft.com/zh-cn/azure/storage/blobs/encryption-customer-provided-keys)。示例如下：
+
+传递 `--azblob.encryption-key` 参数
+
+```
+./br backup full --pd <pd-address> --storage "azure://<bucket>/<prefix>" --azblob.encryption-key <aes256-key>
+```
+
+或添加到 URI 中（若密钥中带有 URI 保留字符，例如 '&', '%' 等，需要先进行百分号编码）
+
+```
+./br backup full --pd <pd-address> --storage "azure://<bucket>/<prefix>?encryption-key=<aes256-key>"
+```
+
+或添加到 BR 的环境变量中
+
+```
+export AZURE_ENCRYPTION_KEY=<aes256-key>
+./br backup full --pd <pd-address> --storage "azure://<bucket>/<prefix>"
+```
+
+恢复备份时，也需要指定加密密钥，示例如下：
+
+传递 `--azblob.encryption-key` 参数
+
+```
+./br restore full --pd <pd-address> --storage "azure://<bucket>/<prefix>" --azblob.encryption-key <aes256-key>
+```
+
+或添加到 URI 中（若密钥中带有 URI 保留字符，例如 '&', '%' 等，需要先进行百分号编码）
+
+```
+./br restore full --pd <pd-address> --storage "azure://<bucket>/<prefix>?encryption-key=<aes256-key>"
+```
+
+或添加到 BR 的环境变量中
+
+```
+export AZURE_ENCRYPTION_KEY=<aes256-key>
+./br restore full --pd <pd-address> --storage "azure://<bucket>/<prefix>"
+```
