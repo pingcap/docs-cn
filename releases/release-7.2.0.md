@@ -35,7 +35,7 @@ TiDB 版本：7.2.0
   <tr>
     <td rowspan="1">SQL</td>
     <td>支持新的 SQL 语句 <a href="https://docs.pingcap.com/zh/tidb/v7.2/sql-statement-import-into"><code>IMPORT INTO</code></a>，可以通过 TiDB 进行数据导入（实验特性）</td>
-    <td>TiDB 引入了一个新的 SQL 语句 <code>IMPORT INTO</code>。该语句集成了 TiDB Lightning 的物理导入模式的能力，使你无需单独部署和管理 TiDB Lightning 即可导入数据文件到 TiDB 中。例如，通过该语句，你可以直接从 Amazon S3 或 Google Cloud Storage（GCS）远程导入数据到 TiDB 中。</td>
+    <td>TiDB 引入了一个新的 SQL 语句 <code>IMPORT INTO</code>。该语句集成了 TiDB Lightning 的物理导入模式的能力，使你无需单独部署和管理 TiDB Lightning 即可导入数据文件到 TiDB 中。例如，通过该语句，你可以直接从 Amazon S3 或 Google Cloud Storage (GCS) 远程导入数据到 TiDB 中。</td>
   </tr>
   <tr>
     <td rowspan="2">数据库管理与可观测性</td>
@@ -49,7 +49,7 @@ TiDB 版本：7.2.0
 
 ### 性能
 
-* 新增支持下推以下两个[窗口函数](/tiflash/tiflash-supported-pushdown-calculations.md) 到 TiFlash [#7427](https://github.com/pingcap/tiflash/issues/7427) @[xzhangxian1008](https://github.com/xzhangxian1008)
+* 新增支持下推以下两个[窗口函数](/tiflash/tiflash-supported-pushdown-calculations.md)到 TiFlash [#7427](https://github.com/pingcap/tiflash/issues/7427) @[xzhangxian1008](https://github.com/xzhangxian1008)
 
     * `FIRST_VALUE`
     * `LAST_VALUE`
@@ -96,7 +96,7 @@ TiDB 版本：7.2.0
 
 * 增强根据历史执行计划创建绑定的能力 [#39199](https://github.com/pingcap/tidb/issues/39199) @[qw4990](https://github.com/qw4990)
 
-    TiDB v7.2.0 进一步增强[根据历史执行计划创建绑定](/sql-plan-management.md#根据历史执行计划创建绑定)的能力，加强对复杂语句的解析和绑定，使绑定更稳固，并新增支持对以下 Hint 的绑定。
+    TiDB v7.2.0 进一步增强[根据历史执行计划创建绑定](/sql-plan-management.md#根据历史执行计划创建绑定)的能力，加强对复杂语句的解析和绑定，使绑定更稳固，并新增支持对以下 Hint 的绑定：
 
     - [`AGG_TO_COP()`](/optimizer-hints.md#agg_to_cop)
     - [`LIMIT_TO_COP()`](/optimizer-hints.md#limit_to_cop)
@@ -231,7 +231,7 @@ TiDB 版本：7.2.0
 
     + Backup & Restore (BR)
 
-        - 为外部存储 Azure Blob Storage 提供 shared access signature (SAS) 的访问方式 [#44199](https://github.com/pingcap/tidb/issues/44199) @[Leavrth](https://github.com/Leavrth)
+        - 为外部存储 Azure Blob Storage 提供共享访问签名 (SAS) 的访问方式 [#44199](https://github.com/pingcap/tidb/issues/44199) @[Leavrth](https://github.com/Leavrth)
 
     + TiCDC
 
@@ -266,12 +266,12 @@ TiDB 版本：7.2.0
     - 修复删除数据库导致 GC 推进慢的问题 [#33069](https://github.com/pingcap/tidb/issues/33069) @[tiancaiamao](https://github.com/tiancaiamao)
     - 修复分区表在 Index Join 的 probe 阶段找不到对应行而报错的问题 [#43686](https://github.com/pingcap/tidb/issues/43686) @[AilinKid](https://github.com/AilinKid) @[mjonss](https://github.com/mjonss)
     - 修复在创建分区表时使用 `SUBPARTITION` 没有警告提醒的问题 [#41198](https://github.com/pingcap/tidb/issues/41198) [#41200](https://github.com/pingcap/tidb/issues/41200) @[mjonss](https://github.com/mjonss)
-    - 修复了执行时间超过 `MAX_EXECUTION_TIME` 的 query 被 kill 时的报错信息和 MySQL 不一致的问题 [#43031](https://github.com/pingcap/tidb/issues/43031) @[dveeden](https://github.com/dveeden)
-    - 修复了 `LEADING` hint 不支持查询块别名 (query block alias) 的问题 [#44645](https://github.com/pingcap/tidb/issues/44645) @[qw4990](https://github.com/qw4990)
+    - 修复执行时间超过 `MAX_EXECUTION_TIME` 的 query 被 kill 时的报错信息和 MySQL 不一致的问题 [#43031](https://github.com/pingcap/tidb/issues/43031) @[dveeden](https://github.com/dveeden)
+    - 修复 `LEADING` hint 不支持查询块别名 (query block alias) 的问题 [#44645](https://github.com/pingcap/tidb/issues/44645) @[qw4990](https://github.com/qw4990)
     - 修复 `LAST_INSERT_ID()` 函数的返回类型，从 VARCHAR 变更为 LONGLONG，与 MySQL 一致 [#44574](https://github.com/pingcap/tidb/issues/44574) @[Defined2014](https://github.com/Defined2014)
     - 修复在带有非关联子查询的语句中使用公共表表达式 (CTE) 可能导致结果错误的问题 [#44051](https://github.com/pingcap/tidb/issues/44051) @[winoros](https://github.com/winoros)
     - 修复 Join Reorder 可能会造成 Outer Join 结果错误的问题 [#44314](https://github.com/pingcap/tidb/issues/44314) @[AilinKid](https://github.com/AilinKid)
-    - 修复了 `PREPARE stmt FROM "ANALYZE TABLE xxx"` 会被 `tidb_mem_quota_query` kill 掉的问题 [#44320](https://github.com/pingcap/tidb/issues/44320) @[chrysan](https://github.com/chrysan)
+    - 修复 `PREPARE stmt FROM "ANALYZE TABLE xxx"` 会被 `tidb_mem_quota_query` kill 掉的问题 [#44320](https://github.com/pingcap/tidb/issues/44320) @[chrysan](https://github.com/chrysan)
 
 + TiKV
 
