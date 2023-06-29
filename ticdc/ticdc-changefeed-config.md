@@ -171,9 +171,9 @@ null = '\N'
 # 是否在 CSV 行中包含 commit-ts。默认值为 false。
 # include-commit-ts = false
 
-# sink.consistent 中的字段用于配置 Changefeed 的数据一致性。详细的信息，请参考 <https://docs.pingcap.com/tidb/stable/ticdc-sink-to-mysql#eventually-consistent-replication-in-disaster-scenarios>。
+# consistent 中的字段用于配置 Changefeed 的数据一致性。详细的信息，请参考 <https://docs.pingcap.com/tidb/stable/ticdc-sink-to-mysql#eventually-consistent-replication-in-disaster-scenarios>。
 # 注意：一致性相关参数只有当下游为数据库并且开启 redo log 功能时，才会生效。
-[sink.consistent]
+[consistent]
 # 数据一致性级别。默认值为 "none"，可选值为 "none" 和 "eventual"。
 # 设置为 "none" 时将关闭 redo log。
 level = "none"
