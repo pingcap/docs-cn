@@ -73,7 +73,7 @@ Request Unit (RU) 是 TiDB 对 CPU、IO 等系统资源的统一抽象的单位�
 
 > **注意：**
 >
-> 上表只列举了 self-host 部署的计算 RU 时涉及的相关资源，其中不包括网络和存储部分。TiDB Cloud Serverless 的 RU 可参考 [TiDB Cloud Serverless Tier Pricing](https://www.pingcap.com/tidb-cloud-serverless-pricing-details/)。
+> 上表只列举了自托管  (Self-Host) 部署的计算 RU 时涉及的相关资源，其中不包括网络和存储部分。TiDB Serverless 的 RU 可参考 [TiDB Serverless Pricing Details](https://www.pingcap.com/tidb-cloud-serverless-pricing-details/)。
 
 ## 相关参数
 
