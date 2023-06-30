@@ -37,8 +37,8 @@ Request Unit (RU) 是 TiDB 对 CPU、IO 等系统资源的统一抽象的单位�
 <table>
     <thead>
         <tr>
-            <th>Resource</th>
-            <th>RU Consumption</th>
+            <th>资源类型</th>
+            <th>RU 消耗</th>
         </tr>
     </thead>
     <tbody>
