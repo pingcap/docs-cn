@@ -324,6 +324,7 @@ TiDB 路线图展示了 TiDB 未来的发展方向，包括新特性和改进提
 
 ## 近期已发布特性
 
+- [TiDB 7.2.0 Release Notes](/releases/release-7.2.0.md)
 - [TiDB 7.1.0 Release Notes](/releases/release-7.1.0.md)
 - [TiDB 7.0.0 Release Notes](/releases/release-7.0.0.md)
 - [TiDB 6.6.0 Release Notes](/releases/release-6.6.0.md)
