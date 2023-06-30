@@ -24,16 +24,16 @@ As an open-source distributed SQL database with high performance, TiDB can be de
 | <ul><li>Red Hat Enterprise Linux 7.3 or a later 7.x version</li><li>CentOS 7.3 or a later 7.x version</li></ul>  |  <ul><li>x86_64</li><li>ARM 64</li></ul>   |
 | Amazon Linux 2 | <ul><li>x86_64</li><li>ARM 64</li></ul> |
 | Kylin Euler V10 SP1/SP2   |   <ul><li>x86_64</li><li>ARM 64</li></ul>   |
-| UOS V20                 |   <ul><li>x86_64</li><li>ARM 64</li></ul>   |
+| UOS V20 |   <ul><li>x86_64</li><li>ARM 64</li></ul>   |
 | openEuler 22.03 LTS SP1 |   x86_64   |
-|   macOS Catalina or later   |  <ul><li>x86_64</li><li>ARM 64</li></ul>  |
-|  Oracle Enterprise Linux 7.3 or a later 7.x version  |  x86_64           |
-|   Ubuntu LTS 18.04 or later   |  x86_64           |
+| macOS 12 (Monterey) or later |  <ul><li>x86_64</li><li>ARM 64</li></ul>  |
+| Oracle Enterprise Linux 7.3 or a later 7.x version  |  x86_64           |
+| Ubuntu LTS 18.04 or later   |  x86_64           |
 | CentOS 8 Stream | <ul><li>x86_64</li><li>ARM 64</li></ul> |
-|  Debian 9 (Stretch) or later |  x86_64           |
-|  Fedora 35 or later   |  x86_64           |
-|  openSUSE Leap later than v15.3 (not including Tumbleweed) |  x86_64           |
-|  SUSE Linux Enterprise Server 15  |  x86_64                        |
+| Debian 9 (Stretch) or later |  x86_64           |
+| Fedora 35 or later   |  x86_64           |
+| openSUSE Leap later than v15.3 (not including Tumbleweed) |  x86_64           |
+| SUSE Linux Enterprise Server 15  |  x86_64                        |
 
 > **Note:**
 >
