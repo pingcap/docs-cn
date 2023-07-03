@@ -43,7 +43,7 @@ Request Unit (RU) 是 TiDB 对 CPU、IO 等系统资源的统一抽象的计量�
     </thead>
     <tbody>
         <tr>
-            <td rowspan=3>Read</td>
+            <td rowspan="3">Read</td>
             <td>2 storage read batches 消耗 1 RU</td>
         </tr>
         <tr>
@@ -51,7 +51,7 @@ Request Unit (RU) 是 TiDB 对 CPU、IO 等系统资源的统一抽象的计量�
         </tr>
             <td>64 KiB read request payload 消耗 1 RU</td>
         <tr>
-            <td rowspan=3>Write</td>
+            <td rowspan="3">Write</td>
             <td>1 storage write batch 消耗 1 RU * 副本数</td>
         </tr>
         <tr>
