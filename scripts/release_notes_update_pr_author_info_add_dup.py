@@ -57,10 +57,15 @@ def store_exst_rn(ext_path,main_path):
 def get_pr_info_from_github(cp_pr_link,cp_pr_title):
 
     target_repo_pr_link= cp_pr_link.rsplit('/', 1)[0]
-    target_pr_number = re.findall(r'\(#(\d+)\)$', cp_pr_title)
+    target_pr_number = re.findall(r'\(#(\d+)\)$', cp_pr_title) # Match the original PR number in the end of the cherry-pick PR
 
-    if len(target_pr_number) > 1:
-        print ("There is more than one match result of original PR number from the cherry-pick title: " + cp_pr_title )
+    if target_pr_number:
+        if len(target_pr_number) > 1:
+            print ("There is more than one match result of original PR number from the cherry-pick title: " + cp_pr_title )
+        else:
+            pass
+    else:
+        target_pr_number = re.findall(r'\(#(\d+)\)', cp_pr_title) # Match the original PR number in the cherry-pick PR
 
     target_pr_link = target_repo_pr_link + '/' + target_pr_number[0]
 
@@ -113,7 +118,7 @@ def update_pr_author_and_release_notes(excel_path):
             pass
 
         ## Add the dup release note info
-        issue_link = re.search('https://github.com/(pingcap|tikv)/\w+/issues/\d+', current_formated_rn)
+        issue_link = re.search('https://github.com/(pingcap|tikv)/[\w-]+/issues/\d+', current_formated_rn)
         for note_pair in note_pairs:
             if (issue_link.group() == note_pair[0]) and ((current_pr_author in note_pair[4]) or len(note_pair[4]) == 0): # Add the dup release notes only if the issues link is the same as the existing one and the current author is in the existing author list
                 print('A duplicated note is found in row ' + str(row_index) + " from " + note_pair[2] + note_pair[1])
