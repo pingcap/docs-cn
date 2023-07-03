@@ -80,8 +80,8 @@ BACKUP DATABASE * TO 's3://bucket-name/prefix' SEND_CREDENTIALS_TO_TIKV = FALSE;
     - `account-key`：访问密钥
     - `sas-token`：共享访问签名令牌
     - `access-tier`：上传对象的存储类别，例如 `Hot`、`Cool`、`Archive`，默认值为该存储账户的默认访问层。
-    - `encryption-scope`: 服务端加密，提供加密范围
-    - `encryption-key`: 服务端加密，提供加密算法 AES256 的加密密钥
+    - `encryption-scope`: 服务端加密，提供[加密范围](https://learn.microsoft.com/zh-cn/azure/storage/blobs/encryption-scope-manage?tabs=powershell#upload-a-blob-with-an-encryption-scope)
+    - `encryption-key`: 服务端加密，提供加密算法 AES256 的[加密密钥](https://learn.microsoft.com/zh-cn/azure/storage/blobs/encryption-customer-provided-keys)
 
 </div>
 </SimpleTab>

@@ -351,7 +351,7 @@ TiFlash 在 v4.0.9 同样对加密元数据操作进行了优化，其兼容性�
 ./br backup full --pd <pd-address> --storage "azure://<bucket>/<prefix>?encryption-key=<aes256-key>"
 ```
 
-或添加到 BR 的环境变量中
+或添加到 BR 的环境变量中（在运行前，请确保环境变量中存在的加密密钥是已知的，避免忘记密钥）
 
 ```
 export AZURE_ENCRYPTION_KEY=<aes256-key>
