@@ -8,7 +8,7 @@ TiDB Control 是 TiDB 的命令行工具，用于获取 TiDB 状态信息，多�
 
 > **注意：**
 >
-> TiDB Control 主要用作诊断调试， 不保证和 TiDB 未来引入的新特性完全兼容。 因此不推荐客户在应用程序开发或工具开发中利用 TiDB Control 获取结果。 
+> TiDB Control 主要用于诊断调试，不保证和 TiDB 未来引入的新特性完全兼容。因此不推荐客户在应用程序开发或工具开发中利用 TiDB Control 获取结果。 
 
 ## 获取 TiDB Control
 
