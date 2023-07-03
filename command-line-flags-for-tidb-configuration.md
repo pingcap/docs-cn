@@ -114,7 +114,7 @@ When you start the TiDB cluster, you can use command-line options or environment
 
 ## `--proxy-protocol-fallbackable`
 
-- Controls whether to enable PROXY protocol fallback mode. When this parameter is set to `true`, TiDB accepts PROXY client connections and client connections without any PROXY protocol header. By default, TiDB only accepts client connections with a PROXY protocol header.
+- Controls whether to enable PROXY protocol fallback mode. When this parameter is set to `true`, TiDB accepts client connections that belong to `--proxy-protocol-networks` without using the PROXY protocol specification or without sending a PROXY protocol header. By default, TiDB only accepts client connections that belong to `--proxy-protocol-networks` and send a PROXY protocol header.
 - Default value: `false`
 
 ## `--proxy-protocol-networks`

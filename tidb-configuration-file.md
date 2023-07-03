@@ -929,6 +929,11 @@ Configuration items related to the PROXY protocol.
 >
 > Use `*` with caution because it might introduce security risks by allowing a client of any IP address to report its IP address. In addition, using `*` might also cause the internal component that directly connects to TiDB (such as TiDB Dashboard) to be unavailable.
 
+### `fallbackable` <span class="version-mark">New in v6.5.1</span>
+
++ Controls whether to enable the PROXY protocol fallback mode. If this configuration item is set to `true`, TiDB can accept clients that belong to `proxy-protocol.networks` to connect to TiDB without using the PROXY protocol specification or without sending the PROXY protocol header. By default, TiDB only accepts client connections that belong to `proxy-protocol.networks` and send a PROXY protocol header.
++ Default value: `false`
+
 ## experimental
 
 The `experimental` section, introduced in v3.1.0, describes the configurations related to the experimental features of TiDB.
