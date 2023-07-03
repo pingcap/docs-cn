@@ -167,7 +167,7 @@ The configuration parameters of sink are as follows:
 
 ### Example
 
-The following request creates a replication task with an ID of `test5` and a `sink_uri` of `blackhome://`.
+The following request creates a replication task with an ID of `test5` and a `sink_uri` of `blackhole://`.
 
 {{< copyable "shell-regular" >}}
 

@@ -69,14 +69,14 @@ The following are descriptions of sink URI parameters and values that can be con
 | `key` | The path of the certificate key file needed to connect to the downstream Kafka instance (optional). |
 | `insecure-skip-verify` | Whether to skip certificate verification when connecting to the downstream Kafka instance (optional, `false` by default). |
 | `sasl-user` | The identity (authcid) of SASL/PLAIN or SASL/SCRAM authentication needed to connect to the downstream Kafka instance (optional). |
-| `sasl-password` | The password of SASL/PLAIN or SASL/SCRAM authentication needed to connect to the downstream Kafka instance (optional). |
+| `sasl-password` | The password of SASL/PLAIN or SASL/SCRAM authentication needed to connect to the downstream Kafka instance (optional). If it contains special characters, they need to be URL encoded. |
 | `sasl-mechanism` | The name of SASL authentication needed to connect to the downstream Kafka instance. The value can be `plain`, `scram-sha-256`, `scram-sha-512`, or `gssapi`. |
 | `sasl-gssapi-auth-type` | The gssapi authentication type. Values can be `user` or `keytab` (optional). |
 | `sasl-gssapi-keytab-path` | The gssapi keytab path (optional).|
 | `sasl-gssapi-kerberos-config-path` | The gssapi kerberos configuration path (optional). |
 | `sasl-gssapi-service-name` | The gssapi service name (optional). |
 | `sasl-gssapi-user` | The user name of gssapi authentication (optional). |
-| `sasl-gssapi-password` | The password of gssapi authentication (optional).  |
+| `sasl-gssapi-password` | The password of gssapi authentication (optional). If it contains special characters, they need to be URL encoded. |
 | `sasl-gssapi-realm` | The gssapi realm name (optional). |
 | `sasl-gssapi-disable-pafxfast` | Whether to disable the gssapi PA-FX-FAST (optional). |
 | `dial-timeout` | The timeout in establishing a connection with the downstream Kafka. The default value is `10s`. |
