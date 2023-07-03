@@ -34,7 +34,44 @@ TiDB 资源管控特性提供了两层资源管理能力，包括在 TiDB 层的
 
 Request Unit (RU) 是 TiDB 对 CPU、IO 等系统资源的统一抽象的单位, 目前包括 CPU、IOPS 和 IO 带宽三个指标。这三个指标的消耗会按照一定的比例统一到 RU 单位上。
 
+<<<<<<< HEAD
 下表是用户请求对 TiKV 存储层 CPU 和 IO 资源的消耗以及对应的 RU 权重：
+=======
+<table>
+    <thead>
+        <tr>
+            <th>资源类型</th>
+            <th>RU 消耗</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td rowspan="3">Read</td>
+            <td>2 storage read batches 消耗 1 RU</td>
+        </tr>
+        <tr>
+            <td>8 storage read requests 消耗 1 RU</td>
+        </tr>
+        <tr>
+            <td>64 KiB read request payload 消耗 1 RU</td>
+        </tr>
+        <tr>
+            <td rowspan="3">Write</td>
+            <td>1 storage write batch 消耗 1 RU * 副本数</td>
+        </tr>
+        <tr>
+            <td>1 storage write request 消耗 1 RU</td>
+        </tr>
+        <tr>
+            <td>1 KiB write request payload 消耗 1 RU</td>
+        </tr>
+        <tr>
+            <td>SQL CPU</td>
+            <td> 3 ms 消耗 1 RU</td>
+        </tr>
+    </tbody>
+</table>
+>>>>>>> 5a082bbe27 (*: fix html table in resource control (#14399))
 
 | 资源       | RU 权重        |
 |:-----------|:-------------|
@@ -236,7 +273,7 @@ Runaway Queries 指那些执行时间或者消耗的资源超出预期的查询�
     ```
 
     其中，`match_type` 为该 Runaway Query 的来源，其值如下：
-    
+
     - `identify` 表示命中条件。
     - `watch` 表示被快速识别机制命中。
 
