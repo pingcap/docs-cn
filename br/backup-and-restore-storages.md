@@ -94,7 +94,7 @@ This section provides some URI examples by using `external` as the `host` parame
 **Back up snapshot data to Amazon S3**
 
 ```shell
-./br restore full -u "${PD_IP}:2379" \
+./br backup full -u "${PD_IP}:2379" \
 --storage "s3://external/backup-20220915?access-key=${access-key}&secret-access-key=${secret-access-key}"
 ```
 
