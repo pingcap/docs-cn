@@ -43,21 +43,48 @@ Currently, the resource control feature has the following limitations:
 
 ## What is Request Unit (RU)
 
-Request Unit (RU) is a unified abstraction unit in TiDB for system resources, which currently includes CPU, IOPS, and IO bandwidth metrics. The consumption of these three metrics is represented by RU according to a certain ratio.
+Request Unit (RU) is a unified abstraction unit in TiDB for system resources, which currently includes CPU, IOPS, and IO bandwidth metrics. It is used to indicate the amount of resources consumed by a single request to the database. The number of RUs consumed by a request depends on a variety of factors, such as the type of operations, and the amount of data being queried or modified. Currently, the RU contains consumption statistics for the resources in the following table:
 
-The following table shows the consumption of TiKV storage layer CPU and IO resources by user requests and the corresponding RU weights.
+<table>
+    <thead>
+        <tr>
+            <th>Resource type</th>
+            <th>RU consumption</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td rowspan="3">Read</td>
+            <td>2 storage read batches consume 1 RU</td>
+        </tr>
+        <tr>
+            <td>8 storage read requests consume 1 RU</td>
+        </tr>
+        <tr>
+            <td>64 KiB read request payload consumes 1 RU</td>
+        </tr>
+        <tr>
+            <td rowspan="3">Write</td>
+            <td>1 storage write batch consumes 1 RU for each replica</td>
+        </tr>
+        <tr>
+            <td>1 storage write request consumes 1 RU</td>
+        </tr>
+        <tr>
+            <td>1 KiB write request payload consumes 1 RU</td>
+        </tr>
+        <tr>
+            <td>SQL CPU</td>
+            <td> 3 ms consumes 1 RU</td>
+        </tr>
+    </tbody>
+</table>
 
-| Resource        | RU Weight        |
-|:----------------|:-----------------|
-| CPU             | 1/3 RU per millisecond |
-| Read IO         | 1/64 RU per KB       |
-| Write IO        | 1 RU/KB          |
-| Basic overhead of a read request   | 0.25 RU  |
-| Basic overhead of a write request  | 1.5 RU   |
-
-Based on the above table, assuming that the TiKV time consumed by a resource group is `c` milliseconds, `r1` times of requests read `r2` KB data, `w1` times of write requests write `w2` KB data, and the number of non-witness TiKV nodes in the cluster is `n`. Then, the formula for the total RUs consumed by the resource group is as follows:
-
-`c`\* 1/3 + (`r1` \* 0.25 + `r2` \* 1/64) + (1.5 \* `w1` + `w2` \* 1 \* `n`)
+> **Note:**
+>
+> - Each write operation is eventually replicated to all replicas (by default, TiKV has 3 replicas). Each replication operation is considered a different write operation.
+> - In addition to queries executed by users, RU can be consumed by background tasks, such as automatic statistics collection.
+> - The preceding table lists only the resources involved in RU calculation for TiDB Self-Hosted clusters, excluding the network and storage consumption. For TiDB Serverless RUs, see [TiDB Serverless Pricing Details](https://www.pingcap.com/tidb-cloud-serverless-pricing-details/).
 
 ## Parameters for resource control
 
