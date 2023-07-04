@@ -6,6 +6,10 @@ title: TiDB Control 使用说明
 
 TiDB Control 是 TiDB 的命令行工具，用于获取 TiDB 状态信息，多用于调试。本文介绍了 TiDB Control 的主要功能和各个功能的使用方法。
 
+> **注意：**
+>
+> TiDB Control 主要用于诊断调试，不保证和 TiDB 未来引入的新特性完全兼容。因此不推荐客户在应用程序开发或工具开发中利用 TiDB Control 获取结果。 
+
 ## 获取 TiDB Control
 
 本节提供了两种方式获取 TiDB Control 工具。
