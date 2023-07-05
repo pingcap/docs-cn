@@ -43,6 +43,8 @@ TiDB 提供两种预估方式：
 > **注意：**
 >
 > 集群 RU 的容量会随集群的拓扑结构和各个组件软硬件配置的变化而变化，每个集群实际能消耗的 RU 还与实际的负载相关。基于硬件部署估算容量的预估值仅供参考，可能会与实际的最大值存在偏差。建议[根据实际负载估算容量](#根据实际负载估算容量)。
+>
+> 由于 TiKV 未在 macOS 上监控 CPU 使用率，所以不支持在 macOS 上试用估算容量功能。
 
 ## 权限
 
@@ -98,7 +100,14 @@ ERROR 1105 (HY000): The workload in selected time window is too low, with which 
 
 ```sql
 CALIBRATE RESOURCE START_TIME '2023-04-18 08:00:00' DURATION '60m';
-Error 1105 (HY000): metrics ‘resource_manager_resource_unit’ is empty
+Error 1105 (HY000): metrics 'resource_manager_resource_unit' is empty
+```
+
+由于 TiKV 未在 macOS 上监控 CPU 使用率，会报错提供无相应监控数据。
+
+```sql
+CALIBRATE RESOURCE START_TIME '2023-04-18 08:00:00' DURATION '60m';
+ERROR 1105 (HY000): metrics 'process_cpu_usage' is empty
 ```
 
 指定 `WORKLOAD` 查看 RU 容量，默认为 `TPCC`。
