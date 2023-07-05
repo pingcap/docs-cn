@@ -23,6 +23,8 @@ TiDB 使用[令牌桶算法](https://en.wikipedia.org/wiki/Token_bucket) 做流�
 - RRU Per Query：平均每个 SQL 语句消耗的 Read Request Unit 数量。计算方法是将前述 Read Request Unit 监控指标除以当前每秒执行的 SQL 语句数量。
 - WRU：以 Resource Group 为单位进行实时统计的写请求 Write Request Unit 消耗信息。`total` 为当前所有 Resource Group 消耗的 Write Request Unit 之和。
 - WRU Per Query：平均每个 SQL 语句消耗的 Write Request Unit 数量。计算方法是将前述 Write Request Unit 监控指标除以当前每秒执行的 SQL 语句数量。
+- Available RU：以 Resource Group 为单位显示 RU 令牌桶内可用的 token。当指标为 0 时，该 Resource Group 以 RU_PER_SEC 的速度消耗 token，可以认为处于限速状态。
+- Query Max Duration：以 Resource Group 为单位统计的最大 Query Duration。
 
 ## Resource 相关指标
 
