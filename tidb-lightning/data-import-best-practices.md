@@ -94,7 +94,7 @@ TiDB Lightning（[物理导入模式](/tidb-lightning/tidb-lightning-physical-im
 需要正确设置以下配置参数：
 
 - `region-concurrency`：TiDB Lightning 主逻辑处理的并发度。在并行导入时，可以设置为 CPU 核数的 75%，防止出现资源过载带来 OOM 问题。
-- `send-kv-pairs`：TiDB Lightning 发送给 TiKV 单次请求中的 KV 数量。建议按照 send-kv-pairs \* row-size < 1 MiB 调整该值。v7.2.0 版本中，用 `send-kv-size` 代替了该参数，且无需单独设置。
+- `send-kv-pairs`：TiDB Lightning 发送给 TiKV 单次请求中的 KV 数量。建议按照 send-kv-pairs \* row-size < 1 MiB 调整该值。
 - `disk-quota`：尽量保证 TiDB Lightning 排序目录空间大于数据源大小。如无法保证，可以设置 `disk-quota` 为 TiDB Lightning 排序目录空间的 80%。此时 TiDB Lightning 会按照 `disk-quota` 的大小为一个批次去排序、写入，导入性能低于完整排序。
 - `GOMEMLIMIT`：TiDB Lightning 采用 Go 语言实现，设置 `GOMEMLIMIT` 为实例内存的 80%，降低因为 Go GC 机制带来的 OOM 概率。
 
@@ -136,7 +136,7 @@ TiDB Lightning（[物理导入模式](/tidb-lightning/tidb-lightning-physical-im
 需要调整以下配置参数：
 
 - `region-concurrency` 设置为 TiDB Lightning 实例核数的 75%。
-- `send-kv-pairs` 设置为 `3200`。适用于 v7.1.0 及更早的版本。v7.2.0 开始引入了 `send-kv-size` 参数代替 `send-kv-pairs`，该参数无需配置。
+- `send-kv-pairs` 设置为 `3200`。适用于 v7.1.0 及更早的版本。
 - `GOMEMLIMIT` 调整为实例所在节点内存的 80%。
 
 如果导入过程中发现 PD Scatter Region 的时延超过 30 分钟，可以从以下维度进行调优：
