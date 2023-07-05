@@ -90,15 +90,15 @@ fn checksum(columns) {
     * BIT, ENUM, and SET types are converted to UINT64.
 
         * BIT type is converted to UINT64 in binary format.
-        * ENUM and SET types are converted to their corresponding INT values in UINT64. For example, if the data value of a `SET('a','b','c')` type column is `'a,c'`, the value is encoded as `0b101`.
+        * ENUM and SET types are converted to their corresponding INT values in UINT64. For example, if the data value of a `SET('a','b','c')` type column is `'a,c'`, the value is encoded as `0b101`, which is `5` in decimal.
 
-    * TIMESTAMP, DATE, DURATION, DATETIME, JSON, and DECIMAL types are converted to STRING and then encoded as UTF8 bytes.
-    * VARBIANRY, BINARY, and BLOB types (including TINY, MEDIUM, and LONG) are directly encoded as bytes.
-    * VARCHAR, CHAR, and TEXT types (including TINY, MEDIUM, and LONG) are encoded as UTF8 bytes.
+    * TIMESTAMP, DATE, DURATION, DATETIME, JSON, and DECIMAL types are first converted to STRING and then converted to bytes.
+    * CHAR, VARCHAR, VARSTRING, STRING, TEXT, and BLOB types (including TINY, MEDIUM, and LONG) are directly converted to bytes.
     * NULL and GEOMETRY types are excluded from the checksum calculation and this function returns empty bytes.
+
+For more information about the implementation of data consumption and checksum verification using Golang, see [TiCDC row data checksum verification](/ticdc/ticdc-avro-checksum-verification.md).
 
 > **Note:**
 >
-> After enabling the checksum validation feature, DECIMAL and UNSIGNED BIGINT types data will be converted to string types. Therefore, in the downstream consumer code, you need to convert them back to their corresponding numerical types before calculating checksum values.
-
-The consumer code written in Golang implements steps such as decoding data read from Kafka, sorting by schema fields, and calculating the checksum value. For more information, see [`avro/decoder.go`](https://github.com/pingcap/tiflow/blob/master/pkg/sink/codec/avro/decoder.go).
+> - After enabling the checksum validation feature, DECIMAL and UNSIGNED BIGINT types data will be converted to STRING types. Therefore, in the downstream consumer code, you need to convert them back to their corresponding numerical types before calculating checksum values.
+> - The checksum verification process does not include DELETE events. This is because DELETE events only contain the handle key column, while the checksum is calculated based on all columns.
