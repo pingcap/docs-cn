@@ -16,7 +16,7 @@ TiDB Cloud provides [Statement Analysis](#statement-analysis), [Slow Query](#slo
 > **Note:**
 >
 > Currently, these three features are unavailable for [Serverless Tier clusters](/tidb-cloud/select-cluster-tier.md#serverless-tier-beta).
-  
+
 ## Statement Analysis
 
 To use the statement analysis, perform the following steps:
@@ -37,7 +37,7 @@ For more information, see [Statement Execution Details in TiDB Dashboard](https:
 
 ## Slow Query
 
-By default, SQL queries that take more than 300 milliseconds are considered as slow queries. 
+By default, SQL queries that take more than 300 milliseconds are considered as slow queries.
 
 To view slow queries in a cluster, perform the following steps:
 

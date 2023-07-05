@@ -9,7 +9,7 @@ summary: Learn how to use the resource control feature to control and schedule a
 
 > **Note:**
 >
-> This feature is not available on [TiDB Serverless clusters](https://docs.pingcap.com/tidbcloud/select-cluster-tier#tidb-serverless-beta).
+> This feature is not available on [TiDB Serverless clusters](https://docs.pingcap.com/tidbcloud/select-cluster-tier#tidb-serverless).
 
 </CustomContent>
 
@@ -108,7 +108,7 @@ Starting from TiDB v7.0.0, both parameters are enabled by default. The results o
 
 | `resource-control.enabled`  | `tidb_enable_resource_control`= ON   | `tidb_enable_resource_control`= OFF  |
 |:----------------------------|:-------------------------------------|:-------------------------------------|
-| `resource-control.enabled`= true  |  Flow control and scheduling (recommended) | Invalid combination      |  
+| `resource-control.enabled`= true  |  Flow control and scheduling (recommended) | Invalid combination      |
 | `resource-control.enabled`= false |  Only flow control (not recommended)                 | The feature is disabled. |
 
 For more information about the resource control mechanism and parameters, see [RFC: Global Resource Control in TiDB](https://github.com/pingcap/tidb/blob/master/docs/design/2022-11-25-global-resource-control.md).

@@ -248,7 +248,7 @@ In v7.0.0-DMR, the key new features and improvements are as follows:
 * [DBeaver](https://dbeaver.io/) v23.0.1 supports TiDB by default [#17396](https://github.com/dbeaver/dbeaver/issues/17396) @[Icemap](https://github.com/Icemap)
 
     - Provides an independent TiDB module, icon, and logo.
-    - The default configuration supports [TiDB Serverless](https://docs.pingcap.com/tidbcloud/select-cluster-tier#tidb-serverless-beta), making it easier to connect to TiDB Serverless.
+    - The default configuration supports [TiDB Serverless](https://docs.pingcap.com/tidbcloud/select-cluster-tier#tidb-serverless), making it easier to connect to TiDB Serverless.
     - Supports identifying TiDB versions to display or hide foreign key tabs.
     - Supports visualizing SQL execution plans in `EXPLAIN` results.
     - Supports highlighting TiDB keywords such as `PESSIMISTIC`, `OPTIMISTIC`, `AUTO_RANDOM`, `PLACEMENT`, `POLICY`, `REORGANIZE`, `EXCHANGE`, `CACHE`, `NONCLUSTERED`, and `CLUSTERED`.

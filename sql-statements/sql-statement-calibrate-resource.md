@@ -11,7 +11,7 @@ The `CALIBRATE RESOURCE` statement is used to estimate and output the ['Request 
 
 > **Note:**
 >
-> This feature is not available on [TiDB Serverless clusters](https://docs.pingcap.com/tidbcloud/select-cluster-tier#tidb-serverless-beta).
+> This feature is not available on [TiDB Serverless clusters](https://docs.pingcap.com/tidbcloud/select-cluster-tier#tidb-serverless).
 
 </CustomContent>
 
@@ -34,7 +34,7 @@ To execute this command, make sure that the following requirements are met:
 - The user has `SUPER` or `RESOURCE_GROUP_ADMIN` privilege.
 - The user has the `SELECT` privilege for all tables in the `METRICS_SCHEMA` schema.
 
-## Methods for estimating capacity 
+## Methods for estimating capacity
 
 TiDB provides two methods for estimation:
 
