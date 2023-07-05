@@ -26,6 +26,10 @@ This TiDB statement is not applicable to TiDB Cloud.
 
 - For data files stored locally in TiDB, `IMPORT INTO` only supports running on the TiDB node where the current user is connected. Therefore, the data files need to be placed on the TiDB node where the current user is connected. If you access TiDB through a proxy or load balancer, you cannot import data files stored locally in TiDB.
 
+## Known issue
+
+After starting a data import job, TiDB sorts the data to be imported locally. During the sorting, in the case that the disk space used by TiDB exceeds the specified value of [`DISK_QUOTA`](#withoptions) or reaches 80% of the local disk space and TiDB has already started writing data to TiKV, if you cancel the import job or the import job fails, the background import thread will continue running for a while before exiting completely. For more information, see [#45048](https://github.com/pingcap/tidb/issues/45048).
+
 ## Restrictions
 
 - Currently, `IMPORT INTO` only supports importing data within 1 TiB.
