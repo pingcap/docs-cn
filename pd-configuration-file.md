@@ -312,7 +312,7 @@ Configuration items related to scheduling
 ### `enable-diagnostic` <span class="version-mark">New in v6.3.0</span>
 
 + Controls whether to enable the diagnostic feature. When it is enabled, PD records the state during scheduling to help diagnose. If enabled, it might slightly affect the scheduling speed and consume more memory when there are many stores.
-+ Default value: true
++ Default value: Starting from v7.1.0, the default value is changed from `false` to `true`. If your cluster is upgraded from a version earlier than v7.1.0 to v7.1.0 or later, the default value does not change.
 
 ### `hot-region-schedule-limit`
 
