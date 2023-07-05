@@ -251,8 +251,8 @@ If you encounter problems when connecting to TiDB using the tools listed in this
       <tr>
          <td rowspan="4">Python</td>
          <td><a href="https://pypi.org/project/Django/" target="_blank" referrerpolicy="no-referrer-when-downgrade">Django</a></td>
-         <td>v4.0.5</td>
-         <td>Compatible</td>
+         <td>v4.1</td>
+         <td>Full</td>
          <td><a href="https://github.com/pingcap/django-tidb" target="_blank" referrerpolicy="no-referrer-when-downgrade">django-tidb</a></td>
          <td>N/A</td>
       </tr>
