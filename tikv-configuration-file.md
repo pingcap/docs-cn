@@ -786,7 +786,7 @@ raftstore 相关的配置项。
 
 ### `region-compact-redundant-rows-percent` <span class="version-mark">从 v7.1.0 版本开始引入</span>
 
-+ 触发 RocksDB compaction 需要的冗余的 MVCC 数据行所占比例。该配置只对分区 Raft KV (storage.engine="partitioned-raft-kv") 生效。
++ 触发 RocksDB compaction 需要的冗余的 MVCC 数据行所占比例。该配置只对分区 Raft KV (`storage.engine="partitioned-raft-kv"`) 生效。
 + 默认值：`20`
 + 最小值：`1`
 + 最大值：`100`
