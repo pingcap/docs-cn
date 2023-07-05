@@ -760,7 +760,10 @@ Configuration items related to Raftstore.
 ### `region-compact-check-step`
 
 + The number of Regions checked at one time for each round of manual compaction
-+ Default value: `100`
++ Default value:
+
+    + When `storage.engine="raft-kv"`, the default value is `100`.
+    + When `storage.engine="partitioned-raft-kv"`, the default value is `5`.
 + Minimum value: `0`
 
 ### `region-compact-min-tombstones`
@@ -773,6 +776,19 @@ Configuration items related to Raftstore.
 
 + The proportion of tombstone required to trigger RocksDB compaction
 + Default value: `30`
++ Minimum value: `1`
++ Maximum value: `100`
+
+### `region-compact-min-redundant-rows` <span class="version-mark">New in v7.1.0</span>
+
++ The number of redundant MVCC rows required to trigger RocksDB compaction. This configuration only takes effect for Partitioned Raft KV (`storage.engine="partitioned-raft-kv"`).
++ Default value: `50000`
++ Minimum value: `0`
+
+### `region-compact-redundant-rows-percent` <span class="version-mark">New in v7.1.0</span>
+
++ The percentage of redundant MVCC rows required to trigger RocksDB compaction. This configuration only takes effect for Partitioned Raft KV (`storage.engine="partitioned-raft-kv"`).
++ Default value: `20`
 + Minimum value: `1`
 + Maximum value: `100`
 
