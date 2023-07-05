@@ -219,6 +219,6 @@ SET GLOBAL tidb_gc_life_time="60m";
 
 如果想要恢复历史版本的数据，可以使用以下任意一种方法进行设置：
 
-- 对于简单场景，在设置 `tidb_snapshot` 变量后使用 `SELECT` 语句并复制粘贴输出结果，或者使用 `SELECT ... INTO LOCAL OUTFLE` 语句并使用 `LOAD DATA` 语句来导入数据。
+- 对于简单场景，在设置 `tidb_snapshot` 变量后使用 [`SELECT`](/sql-statements/sql-statement-select.md) 语句并复制粘贴输出结果，或者使用 `SELECT ... INTO OUTFILE` 语句并使用 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md) 语句来导入数据。
 
 - 使用 [Dumpling](/dumpling-overview.md#导出-tidb-的历史数据快照) 导出 TiDB 的历史数据快照。Dumpling 在导出较大的数据集时有较好的性能。

@@ -38,7 +38,7 @@ Placement Rules 示意图如下所示：
 | `Override`        | `true`/`false`                     | 是否覆盖 index 的更小 Rule（限分组内） |
 | `StartKey`        | `string`，十六进制编码                | 适用 Range 起始 key                 |
 | `EndKey`          | `string`，十六进制编码                | 适用 Range 终止 key                 |
-| `Role`            | `string` | 副本角色，包括 leader/follower/learner                           |
+| `Role`            | `string` | 副本角色，包括 voter/leader/follower/learner                           |
 | `Count`           | `int`，正整数                     | 副本数量                            |
 | `LabelConstraint` | `[]Constraint`                    | 用于按 label 筛选节点               |
 | `LocationLabels`  | `[]string`                        | 用于物理隔离                        |
@@ -436,7 +436,7 @@ table ttt ranges: (NOTE: key range might be changed after DDL)
 
 ### 场景四：为某张表在有高性能磁盘的北京节点添加 2 个 Follower 副本
 
-这个例子展示了比较复杂的 `label_constraints` 配置，下面的例子限定了副本放置在 bj1 或 bj2 机房，且磁盘类型不能为 ssd。
+这个例子展示了比较复杂的 `label_constraints` 配置，下面的例子限定了副本放置在 bj1 或 bj2 机房，且磁盘类型为 `nvme`。
 
 {{< copyable "" >}}
 
@@ -450,7 +450,7 @@ table ttt ranges: (NOTE: key range might be changed after DDL)
   "count": 2,
   "label_constraints": [
     {"key": "zone", "op": "in", "values": ["bj1", "bj2"]},
-    {"key": "disk", "op": "notIn", "values": ["ssd"]}
+    {"key": "disk", "op": "in", "values": ["nvme"]}
   ],
   "location_labels": ["host"]
 }

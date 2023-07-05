@@ -18,7 +18,7 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-overview/']
 
 登录 TiDB Dashboard 后默认进入该页面，也可以左侧导航条点击**概况** (Overview) 进入：
 
-![访问](/media/dashboard/dashboard-overview-access.png)
+![访问](/media/dashboard/dashboard-overview-access-v650.png)
 
 ## QPS
 

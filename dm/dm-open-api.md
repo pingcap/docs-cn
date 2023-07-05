@@ -1,11 +1,11 @@
 ---
-title: 使用 OpenAPI 运维集群
-summary: 了解如何使用 OpenAPI 接口来管理集群状态和数据同步。
+title: 使用 OpenAPI 运维 TiDB Data Migration 集群
+summary: 了解如何使用 OpenAPI 接口来管理 DM 集群状态和数据同步。
 ---
 
-# 使用 OpenAPI 运维集群
+# 使用 OpenAPI 运维 TiDB Data Migration 集群
 
-DM 提供 OpenAPI 功能，您可以通过 OpenAPI 方便地对 DM 集群进行查询和运维操作。OpenAPI 的功能范围和 [dmctl 工具](/dm/dmctl-introduction.md)相当。
+TiDB Data Migration (DM) 提供 OpenAPI 功能，你可以通过 OpenAPI 方便地对 DM 集群进行查询和运维操作。OpenAPI 的功能范围和 [dmctl 工具](/dm/dmctl-introduction.md)相当。
 
 如需开启 OpenAPI，可通过以下方法：
 
@@ -28,6 +28,8 @@ DM 提供 OpenAPI 功能，您可以通过 OpenAPI 方便地对 DM 集群进行�
 > - DM 提供符合 OpenAPI 3.0.0 标准的 [Spec 文档](https://github.com/pingcap/tiflow/blob/master/dm/openapi/spec/dm.yaml)，其中包含了所有 API 的请求参数和返回体，你可自行复制到如 [Swagger Editor](https://editor.swagger.io/) 等工具中在线预览文档。
 >
 > - 部署 DM-master 后，你可访问 `http://{master-addr}/api/v1/docs` 在线预览文档。
+>
+> - 配置文件中支持的某些功能在 OpenAPI 中是不支持的，二者的功能没有完全对齐。在生产环境中，建议使用[配置文件](/dm/dm-config-overview.md)。
 
 你可以通过 OpenAPI 完成 DM 集群的如下运维操作：
 

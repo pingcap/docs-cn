@@ -20,7 +20,7 @@ aliases: ['/docs-cn/dev/tidb-limitations/']
 
 ## Databases、Tables、Views、Connections 总个数限制
 
-| 标识符类型  | 最大个数   |
+| 类型  | 最大个数   |
 |:----------|:----------|
 | Databases | unlimited |
 | Tables    | unlimited |
@@ -48,17 +48,11 @@ aliases: ['/docs-cn/dev/tidb-limitations/']
 
 ## 单行的限制
 
-| 类型       | 最大限制   |
+| 类型       | 最大限制（默认值）   |
 |:----------|:----------|
-| Size       | 默认为 6MB，可通过 [`txn-entry-size-limit`](/tidb-configuration-file.md#txn-entry-size-limit-从-v50-版本开始引入) 配置项调整 |
+| Size       | 默认为 6 MiB，可通过 [`txn-entry-size-limit`](/tidb-configuration-file.md#txn-entry-size-limit-从-v50-版本开始引入) 配置项调至 120 MiB |
 
-## 单列的限制
-
-| 类型       | 最大限制   |
-|:----------|:----------|
-| Size       | 6MB       |
-
-## 字符串类型限制
+## 数据类型限制
 
 | 类型       | 最大限制   |
 |:----------|:----------|
@@ -66,8 +60,8 @@ aliases: ['/docs-cn/dev/tidb-limitations/']
 | BINARY     | 256 字节      |
 | VARBINARY  | 65535 字节    |
 | VARCHAR    | 16383 字符    |
-| TEXT       | 6MB 字节      |
-| BLOB       | 6MB 字节      |
+| TEXT       | 默认为 6291456 字节（即 6 MiB），可调至 125829120 字节（即 120 MiB）      |
+| BLOB       | 默认为 6291456 字节（即 6 MiB），可调至 125829120 字节（即 120 MiB）      |
 
 ## SQL Statements 的限制
 

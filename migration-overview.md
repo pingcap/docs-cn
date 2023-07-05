@@ -52,6 +52,7 @@ summary: 了解各种数据迁移场景和对应的数据迁移方案。
 
 - [从 CSV 文件迁移数据到 TiDB](/migrate-from-csv-files-to-tidb.md)
 - [从 SQL 文件迁移数据到 TiDB](/migrate-from-sql-files-to-tidb.md)
+- [从 Parquet 文件迁移数据到 TiDB](/migrate-from-parquet-files-to-tidb.md)
 
 ## TiDB 集群增量数据同步
 

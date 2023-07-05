@@ -49,7 +49,7 @@ strict-format = true
 
 不推荐在命令行中直接使用 `nohup` 启动进程，推荐[使用脚本启动 `tidb-lightning`](/tidb-lightning/deploy-tidb-lightning.md)。
 
-另外，如果从 TiDB Lightning 的 log 的最后一条日志显示遇到的错误是 "Context canceled"，需要在日志中搜索第一条 "ERROR" 级别的日志。在这条日志之前，通常也会紧跟有一条 "got signal to exit"，表示 Lighting 是收到中断信号然后退出的。
+另外，如果从 TiDB Lightning 的 log 的最后一条日志显示遇到的错误是 "Context canceled"，需要在日志中搜索第一条 "ERROR" 级别的日志。在这条日志之前，通常也会紧跟有一条 "got signal to exit"，表示 Lightning 是收到中断信号然后退出的。
 
 ## 使用 TiDB Lightning 后，TiDB 集群变慢，CPU 占用高
 
@@ -206,3 +206,11 @@ TiDB Lightning Local-backend 只支持导入到 v4.0.0 及以上版本的 TiDB �
 [mydumper.csv]
 header = false
 ```
+
+### `Unknown character set`
+
+由于 TiDB 只支持部分 MySQL 字符集，因此，在导入流程中，如果创建表结构时使用了 TiDB 不支持的字符集，TiDB Lightning 会报这个错误。你可以结合数据内容选择 [TiDB 支持的字符集](/character-set-and-collation.md)，预先在下游创建表结构以绕过这个错误。
+
+### `invalid compression type ...`
+
+TiDB v6.4.0 及之后版本的 TiDB Lightning 不支持带有非 `.bak` 后缀的数据文件并报错。你需要提前修改文件名，或将该类文件移出导入数据目录来避免此类错误。更多详情请参考[压缩导出的数据文件](/tidb-lightning/tidb-lightning-data-source.md#压缩文件)。

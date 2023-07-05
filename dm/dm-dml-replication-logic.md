@@ -14,8 +14,8 @@ Sync 单元对 DML 的处理步骤如下：
 1. 从 MySQL、MariaDB 或 relay log 中，读取 binlog event。
 2. 转换读取到的 binlog event：
 
-    1. [Binlog filter](/dm/dm-key-features.md#binlog-event-filter)：根据 binlog 表达式过滤 binlog event，通过 `filters` 配置。
-    2. [Table routing](/dm/dm-key-features.md#table-routing)：根据“库/表”路由规则对“库/表”名进行转换，通过 `routes` 配置。
+    1. [Binlog filter](/dm/dm-binlog-event-filter.md)：根据 binlog 表达式过滤 binlog event，通过 `filters` 配置。
+    2. [Table routing](/dm/dm-table-routing.md)：根据“库/表”路由规则对“库/表”名进行转换，通过 `routes` 配置。
     3. [Expression filter](/filter-dml-event.md)：根据 SQL 表达式过滤 binlog event，通过 `expression-filter` 配置。
 
 3. 优化 DML 执行：
