@@ -760,8 +760,9 @@ raftstore 相关的配置项。
 ### `region-compact-check-step`
 
 + 每轮校验人工 compaction 时，一次性检查的 Region 个数。
-+ 默认值：100
-+ 最小值：0
++ 默认值：
+    + 当 `storage.engine="raft-kv"` 时，默认值为 100。
+    + 当 `storage.engine="partitioned-raft-kv"` 时，默认值为 5。
 
 ### `region-compact-min-tombstones`
 
@@ -775,6 +776,19 @@ raftstore 相关的配置项。
 + 默认值：30
 + 最小值：1
 + 最大值：100
+
+### `region-compact-min-redundant-rows` <span class="version-mark">从 v7.1.0 版本开始引入</span>
+
++ 触发 RocksDB compaction 需要的冗余的 MVCC 数据行数。该配置只对分区 Raft KV (storage.engine="partitioned-raft-kv") 生效。
++ 默认值：`50000`
++ 最小值：`0`
+
+### `region-compact-redundant-rows-percent` <span class="version-mark">从 v7.1.0 版本开始引入</span>
+
++ 触发 RocksDB compaction 需要的冗余的 MVCC 数据行所占比例。该配置只对分区 Raft KV (`storage.engine="partitioned-raft-kv"`) 生效。
++ 默认值：`20`
++ 最小值：`1`
++ 最大值：`100`
 
 ### `pd-heartbeat-tick-interval`
 
