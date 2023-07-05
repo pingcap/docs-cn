@@ -39,7 +39,7 @@ summary: 了解如何在 TiDB Dashboard 中查看慢查询。
 
 ### 导出慢查询到本地
 
-点击页面顶部 ☰ (**更多**) 可以显示**导出**选项。点击**导出**后，TiDB Dashboard 会将当前列表中的慢查询以 CSV 文件的格式进行导出。
+点击页面顶部 ☰ (**更多**) 可以显示**导出** (**Export**) 选项。点击**导出** (**Export**) 后，TiDB Dashboard 会将当前列表中的慢查询以 CSV 文件的格式进行导出。
 
 ![导出慢查询到本地](/media/dashboard/dashboard-slow-queries-export-v651.png)
 
