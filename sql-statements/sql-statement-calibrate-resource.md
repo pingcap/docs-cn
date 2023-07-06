@@ -98,7 +98,7 @@ CALIBRATE RESOURCE START_TIME '2023-04-18 08:00:00' DURATION '60m';
 ERROR 1105 (HY000): The workload in selected time window is too low, with which TiDB is unable to reach a capacity estimation; please select another time window with higher workload, or calibrate resource by hardware instead
 ```
 
-估算容量功能需要监控指标数据，包括 `resource_manager_resource_unit`、`process_cpu_usage`、`tikv_cpu_quota`、`tidb_server_maxprocs`。当对应监控数据为空，会有对应监控项名称的报错，如下面例子所示。当完全没有负载时，`resource_manager_resource_unit` 为空，也会报告此错误。
+估算容量功能需要监控指标数据，包括 `resource_manager_resource_unit`、`process_cpu_usage`、`tikv_cpu_quota`、`tidb_server_maxprocs`。当对应监控数据为空，会出现对应监控项名称的报错，如下面例子所示。当完全没有负载时，`resource_manager_resource_unit` 为空，也会出现此错误。
 
 ```sql
 CALIBRATE RESOURCE START_TIME '2023-04-18 08:00:00' DURATION '60m';
