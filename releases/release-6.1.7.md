@@ -120,7 +120,7 @@ TiDB 版本：6.1.7
 
 + PD
 
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
+    - 修复 gRPC 返回错误格式问题 [#5161](https://github.com/tikv/pd/issues/5161) @[HuSharp](https://github.com/HuSharp)
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
 + TiFlash
