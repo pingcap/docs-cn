@@ -6,7 +6,7 @@ aliases: ['/docs/dev/sql-statements/sql-statement-flush-privileges/','/docs/dev/
 
 # FLUSH PRIVILEGES
 
-This statement triggers TiDB to reload the in-memory copy of privileges from the privilege tables. You should execute `FLUSH PRIVILEGES` after making manual edits to tables such as `mysql.user`. Executing this statement is not required after using privilege statements such as `GRANT` or `REVOKE`. Executing this statement requires the `RELOAD` privilege.
+The statement `FLUSH PRIVILEGES` instructs TiDB to reload the in-memory copy of privileges from the privilege tables. You must execute this statement after manually editing tables such as `mysql.user`. However, executing this statement is not necessary after using privilege statements like `GRANT` or `REVOKE`. To execute this statement, the `RELOAD` privilege is required.
 
 ## Synopsis
 
@@ -35,7 +35,7 @@ Query OK, 0 rows affected (0.01 sec)
 
 ## MySQL compatibility
 
-This statement is understood to be fully compatible with MySQL. Any compatibility differences should be [reported via an issue](https://github.com/pingcap/tidb/issues/new/choose) on GitHub.
+This statement is fully compatible with MySQL. If you find any compatibility differences, report them via [an issue on GitHub](https://github.com/pingcap/tidb/issues/new/choose).
 
 ## See also
 

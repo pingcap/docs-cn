@@ -6,7 +6,7 @@ aliases: ['/docs/dev/quick-start-with-tidb/','/docs/dev/test-deployment-using-do
 
 # Quick Start Guide for the TiDB Database Platform
 
-This guide walks you through the quickest way to get started with TiDB. For non-production environments, you can deploy your TiDB database by either of the following methods:
+This guide provides the quickest way to get started with TiDB. For non-production environments, you can deploy your TiDB database using either of the following methods:
 
 - [Deploy a local test cluster](#deploy-a-local-test-cluster) (for macOS and Linux)
 - [Simulate production deployment on a single machine](#simulate-production-deployment-on-a-single-machine) (for Linux only)
@@ -17,7 +17,7 @@ In addition, you can try out TiDB features on [TiDB Playground](https://play.tid
 >
 > The deployment method provided in this guide is **ONLY FOR** quick start, **NOT FOR** production.
 >
-> - To deploy a self-hosted production cluster, see [production installation guide](/production-deployment-using-tiup.md).
+> - To deploy a self-hosted production cluster, see the [production installation guide](/production-deployment-using-tiup.md).
 > - To deploy TiDB on Kubernetes, see [Get Started with TiDB on Kubernetes](https://docs.pingcap.com/tidb-in-kubernetes/stable/get-started).
 > - To manage TiDB in the cloud, see [TiDB Cloud Quick Start](https://docs.pingcap.com/tidbcloud/tidb-cloud-quickstart).
 
@@ -28,7 +28,7 @@ In addition, you can try out TiDB features on [TiDB Playground](https://play.tid
 <SimpleTab>
 <div label="macOS">
 
-As a distributed system, a basic TiDB test cluster usually consists of 2 TiDB instances, 3 TiKV instances, 3 PD instances, and optional TiFlash instances. With TiUP Playground, you can quickly build the test cluster by taking the following steps:
+As a distributed system, a basic TiDB test cluster usually consists of 2 TiDB instances, 3 TiKV instances, 3 PD instances, and optional TiFlash instances. With TiUP Playground, you can quickly build the test cluster by following these steps:
 
 1. Download and install TiUP:
 
@@ -38,7 +38,7 @@ As a distributed system, a basic TiDB test cluster usually consists of 2 TiDB in
     curl --proto '=https' --tlsv1.2 -sSf https://tiup-mirrors.pingcap.com/install.sh | sh
     ```
 
-    If the following message is displayed, you have installed TiUP successfully:
+    If the following message is displayed, you have successfully installed TiUP:
 
     ```log
     Successfully set mirror to https://tiup-mirrors.pingcap.com
@@ -68,7 +68,7 @@ As a distributed system, a basic TiDB test cluster usually consists of 2 TiDB in
 
 3. Start the cluster in the current session:
 
-    - If you want to start a TiDB cluster of the latest version with 1 TiDB instance, 1 TiKV instance, 1 PD instance, and 1 TiFlash instance, run the following command:
+    - To start a TiDB cluster of the latest version with 1 TiDB instance, 1 TiKV instance, 1 PD instance, and 1 TiFlash instance, run the following command:
 
         {{< copyable "shell-regular" >}}
 
@@ -76,7 +76,7 @@ As a distributed system, a basic TiDB test cluster usually consists of 2 TiDB in
         tiup playground
         ```
 
-    - If you want to specify the TiDB version and the number of the instances of each component, run a command like this:
+    - To specify the TiDB version and the number of instances of each component, run a command like this:
 
         {{< copyable "shell-regular" >}}
 
@@ -102,7 +102,7 @@ As a distributed system, a basic TiDB test cluster usually consists of 2 TiDB in
         >
         > + Since v5.2.0, TiDB supports running `tiup playground` on the machine that uses the Apple M1 chip.
         > + For the playground operated in this way, after the test deployment is finished, TiUP will clean up the original cluster data. You will get a new cluster after re-running the command.
-        > + If you want the data to be persisted on storage, run `tiup --tag <your-tag> playground ...`. For details, refer to [TiUP Reference Guide](/tiup/tiup-reference.md#-t---tag).
+        > + If you want the data to be persisted on storage, run `tiup --tag <your-tag> playground ...`. For details, refer to the [TiUP Reference](/tiup/tiup-reference.md#-t---tag) guide.
 
 4. Start a new session to access TiDB:
 
@@ -114,7 +114,7 @@ As a distributed system, a basic TiDB test cluster usually consists of 2 TiDB in
         tiup client
         ```
 
-    + You can also use the MySQL client to connect to TiDB.
+    + Alternatively, you can use the MySQL client to connect to TiDB.
 
         {{< copyable "shell-regular" >}}
 
@@ -124,7 +124,7 @@ As a distributed system, a basic TiDB test cluster usually consists of 2 TiDB in
 
 5. Access the Prometheus dashboard of TiDB at <http://127.0.0.1:9090>.
 
-6. Access the [TiDB Dashboard](/dashboard/dashboard-intro.md) at <http://127.0.0.1:2379/dashboard>. The default username is `root`, with an empty password.
+6. Access the [TiDB Dashboard](/dashboard/dashboard-intro.md) at <http://127.0.0.1:2379/dashboard>. The default username is `root`, and the password is empty.
 
 7. Access the Grafana dashboard of TiDB through <http://127.0.0.1:3000>. Both the default username and password are `admin`.
 
@@ -149,7 +149,7 @@ As a distributed system, a basic TiDB test cluster usually consists of 2 TiDB in
 </div>
 <div label="Linux">
 
-As a distributed system, a basic TiDB test cluster usually consists of 2 TiDB instances, 3 TiKV instances, 3 PD instances, and optional TiFlash instances. With TiUP Playground, you can quickly build the test cluster by taking the following steps:
+As a distributed system, a basic TiDB test cluster usually consists of 2 TiDB instances, 3 TiKV instances, 3 PD instances, and optional TiFlash instances. With TiUP Playground, you can quickly build the test cluster by following these steps:
 
 1. Download and install TiUP:
 
@@ -159,7 +159,7 @@ As a distributed system, a basic TiDB test cluster usually consists of 2 TiDB in
     curl --proto '=https' --tlsv1.2 -sSf https://tiup-mirrors.pingcap.com/install.sh | sh
     ```
 
-    If the following message is displayed, you have installed TiUP successfully:
+    If the following message is displayed, you have successfully installed TiUP:
 
     ```log
     Successfully set mirror to https://tiup-mirrors.pingcap.com
@@ -189,7 +189,7 @@ As a distributed system, a basic TiDB test cluster usually consists of 2 TiDB in
 
 3. Start the cluster in the current session:
 
-    - If you want to start a TiDB cluster of the latest version with 1 TiDB instance, 1 TiKV instance, 1 PD instance, and 1 TiFlash instance, run the following command:
+    - To start a TiDB cluster of the latest version with 1 TiDB instance, 1 TiKV instance, 1 PD instance, and 1 TiFlash instance, run the following command:
 
         {{< copyable "shell-regular" >}}
 
@@ -197,7 +197,7 @@ As a distributed system, a basic TiDB test cluster usually consists of 2 TiDB in
         tiup playground
         ```
 
-    - If you want to specify the TiDB version and the number of the instances of each component, run a command like this:
+    - To specify the TiDB version and the number of instances of each component, run a command like this:
 
         {{< copyable "shell-regular" >}}
 
@@ -221,7 +221,7 @@ As a distributed system, a basic TiDB test cluster usually consists of 2 TiDB in
         > **Note:**
         >
         > For the playground operated in this way, after the test deployment is finished, TiUP will clean up the original cluster data. You will get a new cluster after re-running the command.
-        > If you want the data to be persisted on storage, run `tiup --tag <your-tag> playground ...`. For details, refer to [TiUP Reference Guide](/tiup/tiup-reference.md#-t---tag).
+        > If you want the data to be persisted on storage, run `tiup --tag <your-tag> playground ...`. For details, refer to the [TiUP Reference](/tiup/tiup-reference.md#-t---tag) guide.
 
 4. Start a new session to access TiDB:
 
@@ -233,7 +233,7 @@ As a distributed system, a basic TiDB test cluster usually consists of 2 TiDB in
         tiup client
         ```
 
-    + You can also use the MySQL client to connect to TiDB.
+    + Alternatively, you can use the MySQL client to connect to TiDB.
 
         {{< copyable "shell-regular" >}}
 
@@ -243,7 +243,7 @@ As a distributed system, a basic TiDB test cluster usually consists of 2 TiDB in
 
 5. Access the Prometheus dashboard of TiDB at <http://127.0.0.1:9090>.
 
-6. Access the [TiDB Dashboard](/dashboard/dashboard-intro.md) at <http://127.0.0.1:2379/dashboard>. The default username is `root`, with an empty password.
+6. Access the [TiDB Dashboard](/dashboard/dashboard-intro.md) at <http://127.0.0.1:2379/dashboard>. The default username is `root`, and the password is empty.
 
 7. Access the Grafana dashboard of TiDB through <http://127.0.0.1:3000>. Both the default username and password are `admin`.
 
@@ -276,16 +276,16 @@ This section describes how to deploy a TiDB cluster using a YAML file of the sma
 
 ### Prepare
 
-Prepare a target machine that meets the following requirements:
+Before deploying the TiDB cluster, ensure that the target machine meets the following requirements:
 
-- CentOS 7.3 or a later version is installed
-- The Linux OS has access to the Internet, which is required to download TiDB and related software installation packages
+- CentOS 7.3 or a later version is installed.
+- The Linux OS has access to the internet, which is required to download TiDB and related software installation packages.
 
-The smallest TiDB cluster topology is as follows:
+The smallest TiDB cluster topology consists of the following instances:
 
 > **Note:**
 >
-> The IP address of the following instances only serves as an example IP. In your actual deployment, you need to replace the IP with your actual IP.
+> The IP addresses of the instances are given as examples only. In your actual deployment, replace the IP addresses with your actual IP addresses.
 
 | Instance | Count | IP | Configuration |
 |:-- | :-- | :-- | :-- |
@@ -295,14 +295,14 @@ The smallest TiDB cluster topology is as follows:
 | TiFlash | 1 | 10.0.1.1 | The default port <br/> Global directory configuration |
 | Monitor | 1 | 10.0.1.1 | The default port <br/> Global directory configuration |
 
-Other requirements for the target machine:
+Other requirements for the target machine include:
 
-- The `root` user and its password is required
+- The `root` user and its password are required
 - [Stop the firewall service of the target machine](/check-before-deployment.md#check-and-stop-the-firewall-service-of-target-machines), or open the port needed by the TiDB cluster nodes
 - Currently, the TiUP cluster supports deploying TiDB on the x86_64 (AMD64) and ARM architectures:
 
-    - It is recommended to use CentOS 7.3 or later versions on AMD64
-    - It is recommended to use CentOS 7.6 1810 on ARM
+    - It is recommended to use CentOS 7.3 or later versions on AMD64.
+    - It is recommended to use CentOS 7.6 1810 on ARM.
 
 ### Deploy
 
@@ -346,7 +346,7 @@ Other requirements for the target machine:
     tiup update --self && tiup update cluster
     ```
 
-5. Use the root user privilege to increase the connection limit of the `sshd` service. This is because TiUP needs to simulate deployment on multiple machines.
+5. Increase the connection limit of the `sshd` service using the root user privilege. This is because TiUP needs to simulate deployment on multiple machines.
 
     1. Modify `/etc/ssh/sshd_config`, and set `MaxSessions` to `20`.
     2. Restart the `sshd` service:
@@ -499,17 +499,17 @@ Other requirements for the target machine:
 
 ## What's next
 
-- If you have just deployed a TiDB cluster for the local test environment:
+If you have just deployed a TiDB cluster for the local test environment, here are the next steps:
 
-    - Learn [Basic SQL operations in TiDB](/basic-sql-operations.md)
-    - [Migrate data to TiDB](/migration-overview.md)
+- Learn about basic SQL operations in TiDB by referring to [Basic SQL operations in TiDB](/basic-sql-operations.md).
+- You can also migrate data to TiDB by referring to [Migrate data to TiDB](/migration-overview.md).
 
-- If you are ready to deploy a TiDB cluster for the production environment:
+If you are ready to deploy a TiDB cluster for the production environment, here are the next steps:
 
-    - [Deploy TiDB using TiUP](/production-deployment-using-tiup.md)
-    - [Deploy TiDB on Cloud using TiDB Operator](https://docs.pingcap.com/tidb-in-kubernetes/stable)
+- [Deploy TiDB using TiUP](/production-deployment-using-tiup.md)
+- Alternatively, you can deploy TiDB on Cloud using TiDB Operator by referring to the [TiDB on Kubernetes](https://docs.pingcap.com/tidb-in-kubernetes/stable) documentation.
 
-- If you're looking for analytics solution with TiFlash:
+If you are looking for an analytics solution with TiFlash, here are the next steps:
 
-    - [Use TiFlash](/tiflash/tiflash-overview.md#use-tiflash)
-    - [TiFlash Overview](/tiflash/tiflash-overview.md)
+- [Use TiFlash](/tiflash/tiflash-overview.md#use-tiflash)
+- [TiFlash Overview](/tiflash/tiflash-overview.md)
