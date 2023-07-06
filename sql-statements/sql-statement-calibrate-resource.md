@@ -105,7 +105,7 @@ CALIBRATE RESOURCE START_TIME '2023-04-18 08:00:00' DURATION '60m';
 Error 1105 (HY000): metrics 'resource_manager_resource_unit' is empty
 ```
 
-由于 TiKV 未在 macOS 上监控 CPU 使用率，在 macOS 上执行 `CALIBRATE RESOURCE` 会出现以下错误：
+由于 TiKV 未在 macOS 上监控 CPU 使用率，在 macOS 上使用根据实际负载估算容量功能会出现以下错误：
 
 ```sql
 CALIBRATE RESOURCE START_TIME '2023-04-18 08:00:00' DURATION '60m';
