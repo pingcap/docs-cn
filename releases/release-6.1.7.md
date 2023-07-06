@@ -75,6 +75,9 @@ TiDB 版本：6.1.7
 
 + TiDB
 
+    - 修复 GC BatchResolvelocks 在处理 primary key 变化的悲观锁时可能破坏数据一致性问题 [#43243](https://github.com/pingcap/tidb/issues/43243) @[MyonKeminta](https://github.com/MyonKeminta)
+    - 修复 session txn info panic 的问题 [#43829](https://github.com/pingcap/tidb/issues/43829) @[zimulala](https://github.com/zimulala)
+    - 修复 resolve lock 在 pd 时间跳变情况下可能导致 hang 住的问题 [#44822](https://github.com/pingcap/tidb/issues/44822) @[zyguan](https://github.com/zyguan)
     - 修复包含 CTE 的查询可能导致的磁盘可用空间不足的问题 [#44477](https://github.com/pingcap/tidb/issues/44477) @[guo-shaoge](https://github.com/guo-shaoge)
     - 修复某些情况下 CTE 查询结果出错的问题 [#44649](https://github.com/pingcap/tidb/issues/44649) @[guo-shaoge](https://github.com/guo-shaoge)
     - 修复 select cast(n as char)，当 n 为负数时，查询结果出错的问题 [#44786](https://github.com/pingcap/tidb/issues/44786) @[xhebox](https://github.com/xhebox)
@@ -151,7 +154,6 @@ TiDB 版本：6.1.7
     + TiDB Lightning
 
         - 修复 NotLeader 错误未正确重试的问题 [#43055](https://github.com/pingcap/tidb/issues/43055) @[lance6716](https://github.com/lance6716)
-        - 修复当行宽比较大且内存不足时，可能导致 Lightning OOM 的问题 [#43728](https://github.com/pingcap/tidb/issues/43728) @[D3Hunter](https://github.com/D3Hunter) 
         - 修复 Lightning 内部 Buf 存在泄露可能导致 OOM 的问题 [#40400](https://github.com/pingcap/tidb/issues/40400) @[buchuitoudegou](https://github.com/buchuitoudegou)
         - 修复 Logical Mode 导入期间下游删除表可能会导致 Lightning 元信息未及时更新的问题 [#44614](https://github.com/pingcap/tidb/issues/44614) @[dsdashun](https://github.com/dsdashun)
         - 修复 Disk Quota 因为竞态条件可能导致磁盘配额不准确的问题 [#44867](https://github.com/pingcap/tidb/issues/44867) @[D3Hunter](https://github.com/D3Hunter) 
