@@ -4172,7 +4172,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
     * 大于 0: 表示使用细粒度 shuffle 功能，下推到 TiFlash 的窗口函数会以多线程方式执行，并发度为： min(`tiflash_fine_grained_shuffle_stream_count`, TiFlash 节点物理线程数)
 - 理论上窗口函数的性能会随着该值的增加线性提升。但是如果设置的值超过实际的物理线程数，反而会导致性能下降。
 
-### `tiflash_replica_read` <span class="version-mark">从 v7.2.0 版本开始引入</span>
+### `tiflash_replica_read` <span class="version-mark">从 v7.3.0 版本开始引入</span>
 
 - 作用范围：SESSION | GLOBAL
 - 持久化至集群：是
