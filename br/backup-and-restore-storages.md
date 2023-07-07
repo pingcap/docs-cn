@@ -98,7 +98,7 @@ BACKUP DATABASE * TO 's3://bucket-name/prefix' SEND_CREDENTIALS_TO_TIKV = FALSE;
 --storage "s3://external/backup-20220915?access-key=${access-key}&secret-access-key=${secret-access-key}"
 ```
 
-如果你想用临时安全凭证，那么还需要参数 `session-token`，（在 URI 中，需要先进行百分号编码）例如：
+如果你想用临时安全凭证，那么还需要参数 `session-token`（在 URI 中，需要先进行百分号编码），例如：
 
 ```shell
 ./br backup full -u "${PD_IP}:2379" \
@@ -112,7 +112,7 @@ BACKUP DATABASE * TO 's3://bucket-name/prefix' SEND_CREDENTIALS_TO_TIKV = FALSE;
 --storage "s3://external/backup-20220915?access-key=${access-key}&secret-access-key=${secret-access-key}"
 ```
 
-如果你想用临时安全凭证，那么还需要参数 `session-token`，（在 URI 中，需要先进行百分号编码）例如：
+如果你想用临时安全凭证，那么还需要参数 `session-token`（在 URI 中，需要先进行百分号编码），例如：
 
 ```shell
 ./br restore full -u "${PD_IP}:2379" \
