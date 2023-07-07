@@ -19,7 +19,7 @@ TiDB 版本：6.1.7
 
 + TiDB
 
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
+    - 内部事务重试使用悲观模式避免重试失败，降低耗时 [#38136](https://github.com/pingcap/tidb/issues/38136) @[jackysp](https://github.com/jackysp)
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
 + TiKV
@@ -79,13 +79,16 @@ TiDB 版本：6.1.7
     - 修复 session txn info panic 的问题 [#43829](https://github.com/pingcap/tidb/issues/43829) @[zimulala](https://github.com/zimulala)
     - 修复 resolve lock 在 pd 时间跳变情况下可能导致 hang 住的问题 [#44822](https://github.com/pingcap/tidb/issues/44822) @[zyguan](https://github.com/zyguan)
     - 修复包含 CTE 的查询可能导致的磁盘可用空间不足的问题 [#44477](https://github.com/pingcap/tidb/issues/44477) @[guo-shaoge](https://github.com/guo-shaoge)
-    - 修复某些情况下 CTE 查询结果出错的问题 [#44649](https://github.com/pingcap/tidb/issues/44649) @[guo-shaoge](https://github.com/guo-shaoge)
+    - 修复 CTE 和关联子查询同时使用时可能查询结果出错或者 panic 的问题 [#44649](https://github.com/pingcap/tidb/issues/44649) [#38170](https://github.com/pingcap/tidb/issues/38170) [#44774](https://github.com/pingcap/tidb/issues/44774) @[winoros](https://github.com/winoros) @[guo-shaoge](https://github.com/guo-shaoge)
     - 修复 select cast(n as char)，当 n 为负数时，查询结果出错的问题 [#44786](https://github.com/pingcap/tidb/issues/44786) @[xhebox](https://github.com/xhebox)
     - 修复同时使用 Join、Apply 算子和 CTE 时结果出错的问题 [#38170](https://github.com/pingcap/tidb/issues/38170) @[wjhuang2016](https://github.com/wjhuang2016)
     - 修复某些情况下 TiDB 查询时 Panic 的问题 [#40857](https://github.com/pingcap/tidb/issues/40857) @[Dousir9](https://github.com/Dousir9)
     - 修复 SQL compile error 日志未脱敏的问题 [#41831](https://github.com/pingcap/tidb/issues/41831) @[lance6716](https://github.com/lance6716)
     - 修复在分区表使用 `floor` 语句分区时 `select` 语句返回错误的问题 [#42323](https://github.com/pingcap/tidb/issues/42323) @[jiyfhust](https://github.com/pingcap/tidb/pull/42363)
-    - 修复使用分区表在 Region 分裂时请求可能返回错误的问题 [#43144](https://github.com/pingcap/tidb/issues/43144) @[lcwangchao](https://github.com/pingcap/tidb/pull/43146)
+    - 修复使用分区表在 Region 分裂时请求可能返回错误的问题 [#43144](https://github.com/pingcap/tidb/issues/43144) @[lcwangchao](https://github.com/lcwangchao)
+    - 修复读取统计信息时不必要的内存占用问题 [#42052](https://github.com/pingcap/tidb/issues/42052) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes)
+    - 修复创建大量空分区表后内存占用过多的问题 [#44308](https://github.com/pingcap/tidb/issues/44308) @[hawkingrei](https://github.com/hawkingrei)
+    - 修复某些情况下聚合下推过 join 时会 panic 的问题 [#44795](https://github.com/pingcap/tidb/issues/44795) @[AilinKid](https://github.com/AilinKid)
     - (dup): release-6.5.2.md > 错误修复> TiDB - 修复缓存表执行新增列操作后，新增列值为 `NULL` 而非列的默认值的问题 [#42928](https://github.com/pingcap/tidb/issues/42928) @[lqs](https://github.com/lqs)
     - (dup): release-7.2.0.md > 错误修复> TiDB - 修复分区表在 Index Join 的 probe 阶段找不到对应行而报错的问题 [#43686](https://github.com/pingcap/tidb/issues/43686) @[AilinKid](https://github.com/AilinKid) @[mjonss](https://github.com/mjonss)
     - (dup): release-7.2.0.md > 错误修复> TiDB - 修复删除数据库导致 GC 推进慢的问题 [#33069](https://github.com/pingcap/tidb/issues/33069) @[tiancaiamao](https://github.com/tiancaiamao)
