@@ -59,6 +59,8 @@ summary: 介绍如何使用 TiDB Dashboard 的资源管控页面查看资源管�
 
     - 如果时间窗口范围内的负载过低，会报错 `Error 1105 (HY000): The workload in selected time window is too low, with which TiDB is unable to reach a capacity estimation; please select another time window with higher workload, or calibrate resource by hardware instead`。
 
+    - 根据实际负载估算容量功能需要监控指标数据，包括 `resource_manager_resource_unit`、`process_cpu_usage`、`tikv_cpu_quota`、`tidb_server_maxprocs`。如果对应监控数据为空，会出现对应监控项名称的报错，如 `Error 1105 (HY000): metrics 'resource_manager_resource_unit' is empty`。当完全没有负载时，`resource_manager_resource_unit` 为空，也会出现此错误。此外，由于 TiKV 未在 macOS 上监控 CPU 使用率，所以不支持根据实际负载估算容量功能，会报错 `ERROR 1105 (HY000): metrics 'process_cpu_usage' is empty`。
+
   可以通过[监控指标](#监控指标)中的 **CPU Usage** 选择合适的时间范围。
 
 ## 监控指标

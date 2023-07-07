@@ -31,6 +31,10 @@ TiDB 提供两种预估方式：
 - 时间窗口范围为 10 分钟至 24 小时。
 - 在预估的时间窗口内，TiDB 与 TiKV 的 CPU 利用率不能过低，否则无法进行容量估算。
 
+> **注意：**
+>
+> 由于 TiKV 未在 macOS 上监控 CPU 使用率，所以不支持在 macOS 上根据实际负载估算容量。
+
 ### 基于硬件部署估算容量
 
 这种方式主要根据当前的集群配置，结合对不同负载观测的经验值进行预估。由于不同类型的负载对硬件的配比要求不同，相同配置的硬件所输出的容量也会有所不同。这里的 `WORKLOAD` 参数提供了以下不同的负载类型供选择，默认为 `TPCC`：
@@ -92,6 +96,20 @@ ERROR 1105 (HY000): the duration of calibration is too short, which could lead t
 ```sql
 CALIBRATE RESOURCE START_TIME '2023-04-18 08:00:00' DURATION '60m';
 ERROR 1105 (HY000): The workload in selected time window is too low, with which TiDB is unable to reach a capacity estimation; please select another time window with higher workload, or calibrate resource by hardware instead
+```
+
+估算容量功能需要监控指标数据，包括 `resource_manager_resource_unit`、`process_cpu_usage`、`tikv_cpu_quota`、`tidb_server_maxprocs`。当对应监控数据为空时，会出现对应监控项名称的报错，如下面例子所示。当完全没有负载时，`resource_manager_resource_unit` 为空，也会出现此错误。
+
+```sql
+CALIBRATE RESOURCE START_TIME '2023-04-18 08:00:00' DURATION '60m';
+Error 1105 (HY000): metrics 'resource_manager_resource_unit' is empty
+```
+
+由于 TiKV 未在 macOS 上监控 CPU 使用率，在 macOS 上使用根据实际负载估算容量功能会出现以下错误：
+
+```sql
+CALIBRATE RESOURCE START_TIME '2023-04-18 08:00:00' DURATION '60m';
+ERROR 1105 (HY000): metrics 'process_cpu_usage' is empty
 ```
 
 指定 `WORKLOAD` 查看 RU 容量，默认为 `TPCC`。
