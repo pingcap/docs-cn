@@ -9,6 +9,10 @@ summary: 了解 TiDB 6.6.0 版本的新功能、兼容性变更、改进提升�
 
 TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 
+> **注意：**
+>
+> TiDB 6.6.0-DMR 的用户文档已[归档](https://docs-archive.pingcap.com/zh/tidb/v6.6)。如无特殊需求，建议使用 TiDB 数据库的[最新 LTS 版本](https://docs.pingcap.com/zh/tidb/stable)。
+
 试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v6.6/quick-start-with-tidb) | [下载离线包](https://cn.pingcap.com/product-community/?version=v6.6.0-DMR#version-list)
 
 在 6.6.0 版本中，你可以获得以下关键特性：
