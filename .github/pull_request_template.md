@@ -23,7 +23,6 @@ For details, see [tips for choosing the affected versions](https://github.com/pi
 - [ ] v7.2 (TiDB 7.2 versions)
 - [ ] v7.1 (TiDB 7.1 versions)
 - [ ] v7.0 (TiDB 7.0 versions)
-- [ ] v6.6 (TiDB 6.6 versions)
 - [ ] v6.5 (TiDB 6.5 versions)
 - [ ] v6.1 (TiDB 6.1 versions)
 - [ ] v5.4 (TiDB 5.4 versions)

@@ -8,6 +8,10 @@ Release date: September 30, 2022
 
 TiDB version: 6.3.0-DMR
 
+> **Note:**
+>
+> The TiDB 6.3.0-DMR documentation has been [archived](https://docs-archive.pingcap.com/tidb/v6.3/). PingCAP encourages you to use [the latest LTS version](https://docs.pingcap.com/tidb/stable) of the TiDB database.
+
 Quick access: [Quick start](https://docs.pingcap.com/tidb/v6.3/quick-start-with-tidb) | [Installation packages](https://www.pingcap.com/download/?version=v6.3.0#version-list)
 
 In v6.3.0-DMR, the key new features and improvements are as follows:
