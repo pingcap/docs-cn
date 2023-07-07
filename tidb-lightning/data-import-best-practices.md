@@ -57,9 +57,9 @@ When you import data, some key factors can affect import performance and might e
 
     After data and index import is completed, the [`ADMIN CHECKSUM`](/sql-statements/sql-statement-admin-checksum-table.md) statement is executed on each table, and the checksum value is compared with the local checksum value of TiDB Lightning. When many tables exist, or an individual table has a large number of rows, the checksum phase can take a long time.
 
-- Execution plan
+- The analyze operation
 
-    After the checksum is successfully completed, the [`ANALYZE TABLE`](/sql-statements/sql-statement-analyze-table.md) statement is executed on each table to generate the optimal execution plan. The [`ANALYZE TABLE`](/sql-statements/sql-statement-analyze-table.md) operation can be time-consuming when dealing with a large number of tables or an individual table with a significant amount of data.
+    After the checksum is successfully completed, the [`ANALYZE TABLE`](/sql-statements/sql-statement-analyze-table.md) statement is executed on each table to generate the optimal execution plan. The analyze operation can be time-consuming when dealing with a large number of tables or an individual table with a significant amount of data.
 
 - Relevant issues
 
@@ -144,7 +144,7 @@ If the PD Scatter Region latency during the import process exceeds 30 minutes, c
 - Increase TiKV `raftstore.apply-pool-size` from the default value of `2` to `4` or `8`.
 - Reduce TiDB Lightning `region-split-concurrency` to half the number of CPU cores, with a minimum value of `1`.
 
-### Disable the execution plan
+### Disable the analyze operation
 
 In the case of a large single table (for example, with over 1 billion rows and more than 50 columns), it is recommended to disable the `analyze` operation (`analyze="off"`) during the import process, and manually execute the [`ANALYZE TABLE`](/sql-statements//sql-statement-analyze-table.md) statement after the import is completed.
 
