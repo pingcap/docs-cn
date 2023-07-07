@@ -20,6 +20,10 @@ summary: TiDB 数据库中 IMPORT INTO 的使用概况。
 
 - 对于存储在 TiDB 本地的数据文件，`IMPORT INTO` 仅支持在当前用户连接的 TiDB 节点上运行，因此数据文件需要存放在当前用户连接的 TiDB 节点上。如果是通过 PROXY 或者 Load Balancer 访问 TiDB，则无法导入存储在 TiDB 本地的数据文件。
 
+## 已知问题
+
+数据导入任务启动后，在对要导入的数据进行本地排序期间，当使用的 TiDB 磁盘空间超过了 [`DISK_QUOTA`](#withoptions) 的设定值或本地磁盘空间的 80%，并且 TiDB 已经开始向 TiKV 写入数据时，如果取消该任务或导入任务运行失败，后台导入线程会继续运行一段时间，然后才会真正退出。详情参考 [#45048](https://github.com/pingcap/tidb/issues/45048)。
+
 ## 使用限制
 
 - 目前该语句仅支持导入 1 TiB 以下的数据。
