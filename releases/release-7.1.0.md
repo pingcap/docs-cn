@@ -239,7 +239,7 @@ Compared with the previous LTS 6.5.0, 7.1.0 not only includes new features, impr
 
 ### DB operations
 
-* Support smooth cluster upgrade without manually canceling DDL operations [#39751](https://github.com/pingcap/tidb/issues/39751) @[zimulala](https://github.com/zimulala)
+* Support smooth cluster upgrade without manually canceling DDL operations (experimental) [#39751](https://github.com/pingcap/tidb/issues/39751) @[zimulala](https://github.com/zimulala)
 
     Before TiDB v7.1.0, to upgrade a cluster, you must manually cancel its running or queued DDL tasks before the upgrade and then add them back after the upgrade.
 
