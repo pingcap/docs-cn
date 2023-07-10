@@ -123,9 +123,9 @@ rules = ['*.*', '!test.*']
 # 换行符，用来分隔两个数据变更事件。默认值为空，表示使用 "\r\n" 作为换行符。
 # terminator = ''
 
-# 文件路径的日期分隔类型。可选类型有 `none`、`year`、`month` 和 `day`。默认值为 `none`，即不使用日期分隔。详见 <https://docs.pingcap.com/zh/tidb/dev/ticdc-sink-to-cloud-storage#数据变更记录>。
+# 文件路径的日期分隔类型。可选类型有 `none`、`year`、`month` 和 `day`。对于 TiDB v6.5.0 ～ v6.5.2，默认值为 `none`，即不使用日期分隔；对于 v6.5.3 以及之后的 v6.5.x 版本，默认值为 `day`，即按天分隔。详见 <https://docs.pingcap.com/zh/tidb/v6.5/ticdc-sink-to-cloud-storage#数据变更记录>。
 # 注意：该参数只有当下游为存储服务时，才会生效。
-date-separator = 'none'
+date-separator = 'day'
 
 # 是否使用 partition 作为分隔字符串。默认值为 true，即一张表中各个 partition 的数据会分不同的目录来存储。建议保持该配置项为 true 以避免下游分区表可能丢数据的问题 <https://github.com/pingcap/tiflow/issues/8581>。使用示例详见 <https://docs.pingcap.com/zh/tidb/dev/ticdc-sink-to-cloud-storage#数据变更记录>。
 # 注意：该参数只有当下游为存储服务时，才会生效。
