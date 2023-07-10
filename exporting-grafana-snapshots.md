@@ -10,6 +10,10 @@ summary: Learn how to export snapshots of Grafana Dashboard, and how to visualiz
 
 # Export Grafana Snapshots
 
+> **Note:**
+>
+> Currently, MetricsTool can only be used with Grafana v6.x.x.
+
 Metrics data is important in troubleshooting. When you request remote assistance, sometimes the support staff need to view the Grafana dashboards to diagnose problems. [MetricsTool](https://metricstool.pingcap.net/) can help export snapshots of Grafana dashboards as local files and visualize these snapshots. You can share these snapshots with outsiders and allow them to accurately read out the graphs, without giving out access to other sensitive information on the Grafana server.
 
 ## Usage
@@ -39,10 +43,6 @@ The snapshot file contains the values of all graphs and panels in the selected t
 ### Will the Visualizer save the uploaded snapshot files in PingCAP's servers?
 
 No, the Visualizer parses the snapshot files entirely inside your browser. Nothing will be sent to PingCAP. You are free to view snapshot files received from sensitive sources, and no need to worry about these leaking to third parties through the Visualizer.
-
-### Can it export metrics besides Grafana?
-
-No, we only support Grafana v6.x.x at the moment.
 
 ### Will there be problems to execute the script before all metrics are loaded?
 
