@@ -144,7 +144,7 @@ TiDB 版本：6.1.7
         <!--tw:@hfxsd 2-->
 
         - 修复逻辑导入模式下，导入期间下游删除表可能导致 TiDB Lightning 元信息未及时更新的问题 [#44614](https://github.com/pingcap/tidb/issues/44614) @[dsdashun](https://github.com/dsdashun)
-        - 修复 Disk Quota 因为竞态条件可能导致磁盘配额不准确的问题 [#44867](https://github.com/pingcap/tidb/issues/44867) @[D3Hunter](https://github.com/D3Hunter)
+        - 修复竞态条件可能导致磁盘配额 (disk quota) 不准确的问题 [#44867](https://github.com/pingcap/tidb/issues/44867) @[D3Hunter](https://github.com/D3Hunter)
         - (dup): release-6.5.3.md > 错误修复> Tools> TiDB Lightning - 修复 NotLeader 错误未正确重试的问题 [#43055](https://github.com/pingcap/tidb/issues/43055) @[lance6716](https://github.com/lance6716)
         - (dup): release-6.6.0.md > 错误修复> Tools> TiDB Lightning - 修复 Lightning 内部 Buf 存在泄露可能导致 OOM 的问题 [#40400](https://github.com/pingcap/tidb/issues/40400) @[buchuitoudegou](https://github.com/buchuitoudegou)
         - (dup): release-6.5.3.md > 错误修复> Tools> TiDB Lightning - 修复宽表导入时可能出现 OOM 的问题 [#43728](https://github.com/pingcap/tidb/issues/43728) @[D3Hunter](https://github.com/D3Hunter)
