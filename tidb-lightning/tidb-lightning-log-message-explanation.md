@@ -243,7 +243,7 @@ TiDB Lightning 通过对每个表的第一个源数据文件进行采样，计�
 [INFO] [split_client.go:113] ["skipping scatter because the replica number isn't less than store count."]
 ```
 
-[split_client.go:460](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/restore/split_client.go#L460), [split_client.go:113](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/restore/split_client.go#L113)：因为 max-replica <= TiKV store 数量，所以跳过打散 region 阶段。打散 region 是指 PD 调度器将 region 和副本分散到不同的 TiKV store 的过程。
+[split_client.go:460](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/restore/split_client.go#L460), [split_client.go:113](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/restore/split_client.go#L113)：因为 max-replica >= TiKV store 数量，所以跳过打散 region 阶段。打散 region 是指 PD 调度器将 region 和副本分散到不同的 TiKV store 的过程。
 
 ```
 [INFO] [localhelper.go:240] ["batch split region"] [region_id=2] [keys=23] [firstKey="dIAAAAAAAAA/X3KAAAAAAAAAAQ=="] [end="dIAAAAAAAAA/X3KAAAAAAJiWgQ=="]
