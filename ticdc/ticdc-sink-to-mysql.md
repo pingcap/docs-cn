@@ -36,7 +36,7 @@ Info: {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":
 Sink URI 用于指定 TiCDC 目标系统的连接信息，遵循以下格式：
 
 ```
-[scheme]://[userinfo@][host]:[port][/path]?[query_parameters]
+[schema]://[userinfo@][host]:[port][/path]?[query_parameters]
 ```
 
 > **注意：**
@@ -139,4 +139,4 @@ cdc redo apply --tmp-dir="/tmp/cdc/redo/apply" \
 
 - `tmp-dir`：指定用于下载 TiCDC 增量数据备份文件的临时目录。
 - `storage`：指定存储 TiCDC 增量数据备份文件的地址，为对象存储 URI 或者 NFS 目录。
-- `sink-uri`：数据恢复的目标地址。scheme 仅支持 `mysql`。
+- `sink-uri`：数据恢复的目标地址。schema 仅支持 `mysql`。
