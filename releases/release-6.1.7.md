@@ -143,7 +143,7 @@ TiDB 版本：6.1.7
 
         <!--tw:@hfxsd 2-->
 
-        - 修复逻辑导入模式下，导入期间下游删除表可能会导致 TiDB Lightning 元信息未及时更新的问题 [#44614](https://github.com/pingcap/tidb/issues/44614) @[dsdashun](https://github.com/dsdashun)
+        - 修复逻辑导入模式下，导入期间下游删除表可能导致 TiDB Lightning 元信息未及时更新的问题 [#44614](https://github.com/pingcap/tidb/issues/44614) @[dsdashun](https://github.com/dsdashun)
         - 修复 Disk Quota 因为竞态条件可能导致磁盘配额不准确的问题 [#44867](https://github.com/pingcap/tidb/issues/44867) @[D3Hunter](https://github.com/D3Hunter)
         - (dup): release-6.5.3.md > 错误修复> Tools> TiDB Lightning - 修复 NotLeader 错误未正确重试的问题 [#43055](https://github.com/pingcap/tidb/issues/43055) @[lance6716](https://github.com/lance6716)
         - (dup): release-6.6.0.md > 错误修复> Tools> TiDB Lightning - 修复 Lightning 内部 Buf 存在泄露可能导致 OOM 的问题 [#40400](https://github.com/pingcap/tidb/issues/40400) @[buchuitoudegou](https://github.com/buchuitoudegou)
@@ -157,6 +157,6 @@ TiDB 版本：6.1.7
 
         <!--tw:@hfxsd 3-->
 
-        - 修复 etcd Client 初始化时没有自动同步最新节点信息的问题 [#1236](https://github.com/pingcap/tidb-binlog/issues/1236) @[lichunzhu](https://github.com/lichunzhu)
-        - 更新 TiKV Client 版本，解决 Drainer 因为 TiKV Client 版本过老存在 Panic 的问题 [#1170](https://github.com/pingcap/tidb-binlog/issues/1170) @[lichunzhu](https://github.com/lichunzhu)
+        - 修复 etcd client 初始化时没有自动同步最新节点信息的问题 [#1236](https://github.com/pingcap/tidb-binlog/issues/1236) @[lichunzhu](https://github.com/lichunzhu)
+        - 更新 TiKV Client 版本，解决 Drainer 因为 TiKV Client 版本过老导致 panic 的问题 [#1170](https://github.com/pingcap/tidb-binlog/issues/1170) @[lichunzhu](https://github.com/lichunzhu)
         - 修复未过滤失败状态的 DDL 导致任务报错的问题 [#1228](https://github.com/pingcap/tidb-binlog/issues/1228) @[lichunzhu](https://github.com/lichunzhu)
