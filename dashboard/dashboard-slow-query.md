@@ -37,6 +37,12 @@ summary: 了解如何在 TiDB Dashboard 中查看慢查询。
 
 ![显示更多列信息](/media/dashboard/dashboard-slow-queries-list2-v620.png)
 
+### 导出慢查询到本地
+
+点击页面右上角 ☰ (**更多**) 可以显示**导出** (**Export**) 选项。点击**导出** (**Export**) 后，TiDB Dashboard 会将当前列表中的慢查询以 CSV 文件的格式进行导出。
+
+![导出慢查询到本地](/media/dashboard/dashboard-slow-queries-export-v651.png)
+
 ### 修改列表排序依据
 
 列表默认以**结束运行时间** (**Finish Time**) 逆序排序，点击不同的列标题可以修改排序依据或切换排序顺序：
