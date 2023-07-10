@@ -36,6 +36,12 @@ Click **Columns** on the page and you can choose to see more columns. You can mo
 
 ![Show more columns](/media/dashboard/dashboard-slow-queries-list2-v620.png)
 
+### Export slow queries locally
+
+Click ☰ (**More**) in the upper-right corner of the page to display the **Export** option. After you click **Export**, TiDB Dashboard exports slow queries in the current list as a CSV file.
+
+![Export slow queries locally](/media/dashboard/dashboard-slow-queries-export-v651.png)
+
 ### Sort by column
 
 By default, the list is sorted by **Finish Time** in the descending order. Click column headings to sort by the column or switch the sorting order:
