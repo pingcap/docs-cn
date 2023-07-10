@@ -75,10 +75,10 @@ TiDB 版本：6.1.7
     - 修复 SQL compile 报错的日志未脱敏的问题 [#41831](https://github.com/pingcap/tidb/issues/41831) @[lance6716](https://github.com/lance6716)
     - 修复当分区表定义中使用了 `FLOOR()` 函数对分区列进行取整时 `SELECT` 语句返回错误的问题 [#42323](https://github.com/pingcap/tidb/issues/42323) @[jiyfhust](https://github.com/jiyfhust)
     <!--tw:@Oreoxmt 4-->
-    - 修复使用分区表在 Region 分裂时请求可能返回错误的问题 [#43144](https://github.com/pingcap/tidb/issues/43144) @[lcwangchao](https://github.com/lcwangchao)
+    - 修复 Region 分裂时查询分区表可能报错的问题 [#43144](https://github.com/pingcap/tidb/issues/43144) @[lcwangchao](https://github.com/lcwangchao)
     - 修复读取统计信息时不必要的内存占用问题 [#42052](https://github.com/pingcap/tidb/issues/42052) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes)
     - 修复创建大量空分区表后内存占用过多的问题 [#44308](https://github.com/pingcap/tidb/issues/44308) @[hawkingrei](https://github.com/hawkingrei)
-    - 修复某些情况下聚合下推过 join 时会 panic 的问题 [#44795](https://github.com/pingcap/tidb/issues/44795) @[AilinKid](https://github.com/AilinKid)
+    - 修复开启 `tidb_opt_agg_push_down` 时查询可能返回错误结果的问题 [#44795](https://github.com/pingcap/tidb/issues/44795) @[AilinKid](https://github.com/AilinKid)
     - (dup): release-6.4.0.md > 错误修复> TiDB - 修复公共表表达式在 join 时可能得到错误结果的问题 [#38170](https://github.com/pingcap/tidb/issues/38170) @[wjhuang2016](https://github.com/wjhuang2016)
     - (dup): release-6.5.3.md > 错误修复> TiDB - 修复在一些罕见的情况下，悲观事务的残留悲观锁在 GC resolve lock 时可能影响数据正确性的问题 [#43243](https://github.com/pingcap/tidb/issues/43243) @[MyonKeminta](https://github.com/MyonKeminta)
     - (dup): release-6.5.2.md > 错误修复> TiDB - 修复缓存表执行新增列操作后，新增列值为 `NULL` 而非列的默认值的问题 [#42928](https://github.com/pingcap/tidb/issues/42928) @[lqs](https://github.com/lqs)
@@ -115,7 +115,7 @@ TiDB 版本：6.1.7
 
     <!--tw:@Oreoxmt 1-->
 
-    - 修复 gRPC 返回错误格式问题 [#5161](https://github.com/tikv/pd/issues/5161) @[HuSharp](https://github.com/HuSharp)
+    - 修复 gRPC 返回非预期格式错误的问题 [#5161](https://github.com/tikv/pd/issues/5161) @[HuSharp](https://github.com/HuSharp)
 
 + TiFlash
 
