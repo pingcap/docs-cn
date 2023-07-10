@@ -50,7 +50,7 @@ ADMIN SHOW DDL;
 - `DB_NAME`：执行 DDL 操作的数据库的名称。
 - `TABLE_NAME`：执行 DDL 操作的表的名称。
 - `JOB_TYPE`：DDL 任务的类型。常见的任务类型包括：
-    - `ingest`：通过 [`tidb_ddl_enable_fast_reorg`](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-引入) 配置的加速索引回填的 ingest 任务。
+    - `ingest`：通过 [`tidb_ddl_enable_fast_reorg`](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 配置的加速索引回填的 ingest 任务。
     - `txn`：基本的事务性回填。
     - `txn-merge`：在回填完成时将临时索引与原始索引合并的事务性回填。
 - `SCHEMA_STATE`：DDL 所操作的 schema 对象的当前状态。如果 `JOB_TYPE` 是 `ADD INDEX`，则为索引的状态；如果是 `ADD COLUMN`，则为列的状态；如果是 `CREATE TABLE`，则为表的状态。常见的状态有以下几种：
