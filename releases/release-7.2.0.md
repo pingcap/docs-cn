@@ -34,7 +34,7 @@ Quick access: [Quick start](https://docs.pingcap.com/tidb/v7.2/quick-start-with-
   </tr>
   <tr>
     <td rowspan="1">SQL</td>
-    <td>Support a new SQL statement, <a href="https://docs.pingcap.com/tidb/v7.2/sql-statement-import-into">IMPORT INTO</a>, to enable data import using the TiDB service, itself (experimental)</td>
+    <td>Support a new SQL statement, <a href="https://docs.pingcap.com/tidb/v7.2/sql-statement-import-into">IMPORT INTO</a>, for data import (experimental)</td>
    <td>To simplify the deployment and maintenance of TiDB Lightning, TiDB introduces a new SQL statement <code>IMPORT INTO</code>, which integrates physical import mode of TiDB Lightning, including remote import from Amazon S3 or Google Cloud Storage (GCS) directly into TiDB.</td>
   </tr>
   <tr>
