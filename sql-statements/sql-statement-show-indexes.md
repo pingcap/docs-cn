@@ -72,7 +72,7 @@ mysql> SHOW KEYS FROM t1;
 
 ## MySQL compatibility
 
-The `Cardinality` column in MySQL shows the number of different values on the index. In TiDB, the `Cardinality` column always shows `0`.
+The `SHOW INDEXES [FROM|IN]` statement in TiDB is fully compatible with MySQL. If you find any compatibility differences, report them via [an issue on GitHub](https://github.com/pingcap/tidb/issues/new/choose).
 
 ## See also
 
