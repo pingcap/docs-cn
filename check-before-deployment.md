@@ -124,6 +124,36 @@ sysctl -p
 > - 一起执行 `swapoff -a` 和 `swapon -a` 命令是为了刷新 swap，将 swap 里的数据转储回内存，并清空 swap 里的数据。不可省略 swappiness 设置而只执行 `swapoff -a`；否则，重启后 swap 会再次自动打开，使得操作失效。
 > - 执行 `sysctl -p` 命令是为了在不重启的情况下使配置生效。
 
+## 设置 TiDB 节点的临时空间 (推荐)
+
+TiDB 在一不分操作中需要向服务器上写入临时文件，因此要确保运行 TiDB 的操作系统用户具有足够的权限对目标目录进行读写。 如果 TiDB 不是以 `root` 权限启动， 则需要检查目录权限并做正确的设置。 
+
+1. TiDB 临时工作区
+
+    哈希表构建、排序等内存消耗较大的操作可能会向磁盘写入临时数据，用来提高减少内存消耗，提升稳定性。 写入的磁盘位置由配置项 [`tmp-storage-path`](/tidb-configuration-file#tmp-storage-path) 定义。 在默认设置下，确保运行 TiDB 的用户对"操作系统临时文件夹" (通常为 `/tmp` ) 有读写权限。 
+
+2. Fast Online DDL 工作区
+
+    如果要启用 [Fast Online DDL](/tidb-distributed-execution-framework#启用前提) 对添加索引等 DDL 操作进行加速。 推荐为 [`temp-dir`](/tidb-configuration-file#temp-dir-从-v630-版本开始引入) 设置更大的临时空间 (推荐 100 GB)，并确保运行 TiDB 的操作系统用户对该目录有读写权限，以默认目录`/tmp/tidb` 为例：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    sudo mkdir /tmp/tidb
+    ```
+    
+    如果目录 `/tmp/tidb` 已经存在， 确保有写入权限
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    sudo chmod -R 777 /tmp/tidb
+    ```
+
+    > **注意：**
+    >
+    > 如果目录不存在， TiDB 启动时会自动创建该目录。 如果目录创建失败，或者 TiDB 对该目录没有读写权限， [Fast Online DDL](/tidb-distributed-execution-framework#启用前提) 在运行时会产生不可预知的问题。 
+
 ## 检测及关闭目标部署机器的防火墙
 
 本段介绍如何关闭目标主机防火墙配置，因为在 TiDB 集群中，需要将节点间的访问端口打通才可以保证读写请求、数据心跳等信息的正常的传输。在普遍线上场景中，数据库到业务服务和数据库节点的网络联通都是在安全域内完成数据交互。如果没有特殊安全的要求，建议将目标节点的防火墙进行关闭。否则建议[按照端口使用规则](/hardware-and-software-requirements.md#网络要求)，将端口信息配置到防火墙服务的白名单中。
