@@ -1,6 +1,6 @@
 ---
 title: TiDB 6.1.7 Release Notes
-summary: 了解 TiDB 6.1.7 版本的兼容性变更、改进提升，以及错误修复。
+summary: 了解 TiDB 6.1.7 版本的改进提升与错误修复。
 ---
 
 # TiDB 6.1.7 Release Notes
@@ -51,7 +51,7 @@ TiDB 版本：6.1.7
     - 修复 `ON UPDATE` 语句没有正确更新主键导致数据索引不一致的问题 [#44565](https://github.com/pingcap/tidb/issues/44565) @[zyguan](https://github.com/zyguan)
     - 修复在重命名表期间 TiCDC 可能丢失部分行变更的问题 [#43338](https://github.com/pingcap/tidb/issues/43338) @[tangenta](https://github.com/tangenta)
     - 修复 Placement Rule 在分区表下的行为问题，使得删除的分区 Placement Rule 可以被正确设置并回收 [#44116](https://github.com/pingcap/tidb/issues/44116) @[lcwangchao](https://github.com/lcwangchao)
-    - 修复当 `tidb_scatter_region` 变量设置为开启时，对某个分区进行 TRUNCATE 操作后没有自动分裂 Region 的问题 [#43174](https://github.com/pingcap/tidb/issues/43174) [#43028](https://github.com/pingcap/tidb/issues/43028) @[jiyfhust](https://github.com/jiyfhust)
+    - 修复当 `tidb_scatter_region` 变量设置为开启时，对某个分区进行 `TRUNCATE` 操作后没有自动分裂 Region 的问题 [#43174](https://github.com/pingcap/tidb/issues/43174) [#43028](https://github.com/pingcap/tidb/issues/43028) @[jiyfhust](https://github.com/jiyfhust)
     - 修复分区特别多并且带有 TiFlash 副本的分区表在执行 `TRUNCATE TABLE` 时，出现写冲突导致 DDL 重试的问题 [#42940](https://github.com/pingcap/tidb/issues/42940) @[mjonss](https://github.com/mjonss)
     - 修复窗口函数计算下推到 TiFlash 时执行计划构造错误的问题 [#43922](https://github.com/pingcap/tidb/issues/43922) @[gengliqi](https://github.com/gengliqi)
     - 修复在带有非关联子查询的语句中使用公共表表达式 (CTE) 可能导致结果错误的问题 [#44051](https://github.com/pingcap/tidb/issues/44051) @[winoros](https://github.com/winoros)
