@@ -43,7 +43,7 @@ TiDB 7.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
     <td>在读热点场景中，TiDB 可以将热点 TiKV 节点的读请求转发到副本。该功能有效地打散了读热点并优化了集群资源的利用。你可以通过调整系统变量 <a href="https://docs.pingcap.com/zh/tidb/v7.1/system-variables#tidb_load_based_replica_read_threshold-从-v700-版本开始引入" target="_blank"><code>tidb_load_based_replica_read_threshold</code></a> 控制基于负载的副本读取的触发阈值。</td>
   </tr>
   <tr>
-      <td>TiKV 支持<a href="https://docs.pingcap.com/zh/tidb/v7.1/partitioned-raft-kv" target="_blank">Partitioned Raft KV 存储引擎 </a>（实验特性）</td>
+      <td>TiKV 支持 <a href="https://docs.pingcap.com/zh/tidb/v7.1/partitioned-raft-kv" target="_blank">Partitioned Raft KV 存储引擎 </a>（实验特性）</td>
     <td>TiKV 引入新一代存储引擎 Partitioned Raft KV，通过每个数据 Region 独享 RocksDB 实例，可将集群的存储能力从 TB 级扩展到 PB 级，并提供更稳定的写入延迟和更强大的扩容能力。</td>
   </tr>
   <tr>
