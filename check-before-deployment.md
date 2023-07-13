@@ -145,7 +145,7 @@ TiDB 的部分操作需要向服务器写入临时文件，因此需要确保运
     sudo mkdir /tmp/tidb
     ```
 
-    如果目录 `/tmp/tidb` 已经存在，确保有写入权限。
+    如果目录 `/tmp/tidb` 已经存在，需确保有写入权限。
 
     ```shell
     sudo chmod -R 777 /tmp/tidb
