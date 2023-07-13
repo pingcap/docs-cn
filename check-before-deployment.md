@@ -135,7 +135,7 @@ TiDB 的部分操作需要向服务器写入临时文件，因此需要确保运
 
 - Fast Online DDL 工作区
 
-    如果要启用 [Fast Online DDL](/tidb-distributed-execution-framework#启用前提) 对添加索引等 DDL 操作进行加速，推荐为 [`temp-dir`](/tidb-configuration-file.md#temp-dir-从-v630-版本开始引入) 设置更大的临时空间（推荐 100 GB），并确保运行 TiDB 的操作系统用户对该目录有读写权限。以默认目录 `/tmp/tidb` 为例：
+    如果要启用 [Fast Online DDL](/tidb-distributed-execution-framework.md#启用前提) 对添加索引等 DDL 操作进行加速，推荐为 [`temp-dir`](/tidb-configuration-file.md#temp-dir-从-v630-版本开始引入) 设置更大的临时空间（推荐 100 GB），并确保运行 TiDB 的操作系统用户对该目录有读写权限。以默认目录 `/tmp/tidb` 为例：
 
     ```shell
     sudo mkdir /tmp/tidb
