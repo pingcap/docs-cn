@@ -283,13 +283,13 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 ### `expensive-threshold`
 
-+ 输出 `expensive` 操作的行数阈值。
-+ 默认值：10000
-+ 当查询的行数（包括中间结果，基于统计信息）大于这个值，该操作会被认为是 `expensive` 查询，并输出一个前缀带有 `[EXPENSIVE_QUERY]` 的日志。
-
 > **警告：**
 >
 > 自 v5.4.0 起，该配置项被废弃。请使用 [`tidb_expensive_query_time_threshold`](/system-variables.md#tidb_expensive_query_time_threshold) 系统变量进行设置。
+
++ 输出 `expensive` 操作的行数阈值。
++ 默认值：10000
++ 当查询的行数（包括中间结果，基于统计信息）大于这个值，该操作会被认为是 `expensive` 查询，并输出一个前缀带有 `[EXPENSIVE_QUERY]` 的日志。
 
 ### `timeout` <span class="version-mark">从 v7.1.0 版本开始引入</span>
 
