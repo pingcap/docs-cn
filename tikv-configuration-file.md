@@ -780,13 +780,13 @@ raftstore 相关的配置项。
 
 ### `region-compact-min-redundant-rows` <span class="version-mark">从 v7.1.0 版本开始引入</span>
 
-+ 触发 RocksDB compaction 需要的冗余的 MVCC 数据行数。该配置只对分区 Raft KV (storage.engine="partitioned-raft-kv") 生效。
++ 触发 RocksDB compaction 需要的冗余的 MVCC 数据行数。该配置只对 Partitioned Raft KV (storage.engine="partitioned-raft-kv") 生效。
 + 默认值：`50000`
 + 最小值：`0`
 
 ### `region-compact-redundant-rows-percent` <span class="version-mark">从 v7.1.0 版本开始引入</span>
 
-+ 触发 RocksDB compaction 需要的冗余的 MVCC 数据行所占比例。该配置只对分区 Raft KV (`storage.engine="partitioned-raft-kv"`) 生效。
++ 触发 RocksDB compaction 需要的冗余的 MVCC 数据行所占比例。该配置只对 Partitioned Raft KV (`storage.engine="partitioned-raft-kv"`) 生效。
 + 默认值：`20`
 + 最小值：`1`
 + 最大值：`100`
@@ -1282,7 +1282,7 @@ RocksDB 相关的配置项。
 >
 > 该功能目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
 
-+ 设置单个 TiKV 中所有 RocksDB 实例使用的 memtable 的总内存上限，默认值为本机内存的 25%，推荐配置不低于 5 GiB 的内存。该配置只对分区 Raft KV (storage.engine="partitioned-raft-kv") 生效。
++ 设置单个 TiKV 中所有 RocksDB 实例使用的 memtable 的总内存上限，默认值为本机内存的 25%，推荐配置不低于 5 GiB 的内存。该配置只对 Partitioned Raft KV (storage.engine="partitioned-raft-kv") 生效。
 + 默认值：25%
 + 单位：KiB|MiB|GiB
 
