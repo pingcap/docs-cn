@@ -127,25 +127,21 @@ sysctl -p
 
 ## 设置 TiDB 节点的临时空间 (推荐)
 
-TiDB 的部分操作需要向服务器写入临时文件，因此需要确保运行 TiDB 的操作系统用户具有足够的权限对目标目录进行读写。如果你不是以 `root` 权限启动 TiDB，则需要检查目录权限并进行正确设置。 
+TiDB 的部分操作需要向服务器写入临时文件，因此需要确保运行 TiDB 的操作系统用户具有足够的权限对目标目录进行读写。如果你不是以 `root` 权限启动 TiDB，则需要检查目录权限并进行正确设置。
 
 1. TiDB 临时工作区
 
-    哈希表构建、排序等内存消耗较大的操作可能会向磁盘写入临时数据，用来提高减少内存消耗，提升稳定性。写入的磁盘位置由配置项 [`tmp-storage-path`](/tidb-configuration-file#tmp-storage-path) 定义。 在默认设置下，确保运行 TiDB 的用户对"操作系统临时文件夹" (通常为 `/tmp` ) 有读写权限。 
+    哈希表构建、排序等内存消耗较大的操作可能会向磁盘写入临时数据，用来提高减少内存消耗，提升稳定性。写入的磁盘位置由配置项 [`tmp-storage-path`](/tidb-configuration-file#tmp-storage-path) 定义。 在默认设置下，确保运行 TiDB 的用户对"操作系统临时文件夹" (通常为 `/tmp` ) 有读写权限。
 
 2. Fast Online DDL 工作区
 
     如果要启用 [Fast Online DDL](/tidb-distributed-execution-framework#启用前提) 对添加索引等 DDL 操作进行加速。 推荐为 [`temp-dir`](/tidb-configuration-file#temp-dir-从-v630-版本开始引入) 设置更大的临时空间 (推荐 100 GB)，并确保运行 TiDB 的操作系统用户对该目录有读写权限，以默认目录`/tmp/tidb` 为例：
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     sudo mkdir /tmp/tidb
     ```
-    
-    如果目录 `/tmp/tidb` 已经存在， 确保有写入权限
 
-    {{< copyable "shell-regular" >}}
+    如果目录 `/tmp/tidb` 已经存在， 确保有写入权限
 
     ```shell
     sudo chmod -R 777 /tmp/tidb
