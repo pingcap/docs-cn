@@ -776,22 +776,6 @@ raftstore 相关的配置项。
 + 最小值：1
 + 最大值：100
 
-<<<<<<< HEAD
-=======
-### `region-compact-min-redundant-rows` <span class="version-mark">从 v7.1.0 版本开始引入</span>
-
-+ 触发 RocksDB compaction 需要的冗余的 MVCC 数据行数。该配置只对 Partitioned Raft KV (storage.engine="partitioned-raft-kv") 生效。
-+ 默认值：`50000`
-+ 最小值：`0`
-
-### `region-compact-redundant-rows-percent` <span class="version-mark">从 v7.1.0 版本开始引入</span>
-
-+ 触发 RocksDB compaction 需要的冗余的 MVCC 数据行所占比例。该配置只对 Partitioned Raft KV (`storage.engine="partitioned-raft-kv"`) 生效。
-+ 默认值：`20`
-+ 最小值：`1`
-+ 最大值：`100`
-
->>>>>>> abaeadc1aa (update the feature name of Partitioned Raft KV (#14496))
 ### `report-region-buckets-tick-interval` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
 > **警告：**
