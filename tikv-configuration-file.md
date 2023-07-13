@@ -792,6 +792,15 @@ Configuration items related to Raftstore.
 + Minimum value: `1`
 + Maximum value: `100`
 
+### `report-region-buckets-tick-interval` <span class="version-mark">New in v6.1.0</span>
+
+> **Warning:**
+>
+> `report-region-buckets-tick-interval` is an experimental feature introduced in TiDB v6.1.0. It is not recommended that you use it in production environments.
+
++ The interval at which TiKV reports bucket information to PD when `enable-region-bucket` is true.
++ Default value: `10s`
+
 ### `pd-heartbeat-tick-interval`
 
 + The time interval at which a Region's heartbeat to PD is triggered. `0` means that this feature is disabled.
@@ -1081,15 +1090,6 @@ Configuration items related to Coprocessor.
 > **Warning:**
 >
 > `region-bucket-size` is an experimental feature introduced in TiDB v6.1.0. It is not recommended that you use it in production environments.
-
-### `report-region-buckets-tick-interval` <span class="version-mark">New in v6.1.0</span>
-
-> **Warning:**
->
-> `report-region-buckets-tick-interval` is an experimental feature introduced in TiDB v6.1.0. It is not recommended that you use it in production environments.
-
-+ The interval at which TiKV reports bucket information to PD when `enable-region-bucket` is true.
-+ Default value: `10s`
 
 ## rocksdb
 
