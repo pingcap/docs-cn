@@ -834,7 +834,7 @@ TiDB 服务状态相关配置。
 
 ### `tidb_expensive_query_time_threshold`
 
-+ 控制打印 expensive query 日志的阈值时间，默认值是 60 秒。expensive query 日志和慢日志的差别是，慢日志是在语句执行完后才打印，expensive query 日志可以把正在执行中的语句且执行时间超过阈值的语句及其相关信息打印出来。
++ 控制打印 expensive query 日志的阈值时间，默认值是 60 秒。expensive query 日志和慢日志的差别是，慢日志是在语句执行完后才打印，expensive query 日志可以把正在执行中且执行时间超过该阈值的语句及其相关信息打印出来。
 + 默认值：60
 + 范围：`[10, 2147483647]`
 + 单位：秒
