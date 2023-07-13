@@ -131,7 +131,7 @@ TiDB 的部分操作需要向服务器上写入临时文件，因此要确保运
 
 1. TiDB 临时工作区
 
-    哈希表构建、排序等内存消耗较大的操作可能会向磁盘写入临时数据，用来提高减少内存消耗，提升稳定性。 写入的磁盘位置由配置项 [`tmp-storage-path`](/tidb-configuration-file#tmp-storage-path) 定义。 在默认设置下，确保运行 TiDB 的用户对"操作系统临时文件夹" (通常为 `/tmp` ) 有读写权限。 
+    哈希表构建、排序等内存消耗较大的操作可能会向磁盘写入临时数据，用来提高减少内存消耗，提升稳定性。写入的磁盘位置由配置项 [`tmp-storage-path`](/tidb-configuration-file#tmp-storage-path) 定义。 在默认设置下，确保运行 TiDB 的用户对"操作系统临时文件夹" (通常为 `/tmp` ) 有读写权限。 
 
 2. Fast Online DDL 工作区
 
