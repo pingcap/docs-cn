@@ -102,7 +102,7 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 > - 如果仅验证功能，建议使用 [TiDB 数据库快速上手指南](/quick-start-with-tidb.md)进行单机功能测试。
 > - TiDB 对于磁盘的使用以存放日志为主，因此在测试环境中对于磁盘类型和容量并无特殊要求。
 > - 从 v6.3.0 开始，在 Linux AMD64 架构的硬件平台部署 TiFlash 时，CPU 必须支持 AVX2 指令集。确保命令 `cat /proc/cpuinfo | grep avx2` 有输出。而在 Linux ARM64 架构的硬件平台部署 TiFlash 时，CPU 必须支持 ARMv8 架构。确保命令 `cat /proc/cpuinfo | grep 'crc32' | grep 'asimd'` 有输出。通过使用向量扩展指令集，TiFlash 的向量化引擎能提供更好的性能。
-> - 如果要启用 [Fast Online DDL](/tidb-distributed-execution-framework#启用前提) 对添加索引等 DDL 操作进行加速。 推荐在 TiDB 中准备额外的 SSD 磁盘空间 (建议 100 GB)，配置方式详见[设置 TiDB 节点的临时空间](/check-before-deployment.md#设置-tidb-节点的临时空间-推荐)。
+> - 如果要启用 [Fast Online DDL](/tidb-distributed-execution-framework.md#启用前提) 对添加索引等 DDL 操作进行加速，推荐在 TiDB 中准备额外的 SSD 磁盘空间（建议 100 GB）。配置方式详见[设置 TiDB 节点的临时空间](/check-before-deployment.md#设置-tidb-节点的临时空间-推荐)。
 
 ### 生产环境
 
