@@ -43,8 +43,8 @@ TiDB 7.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
     <td>在读热点场景中，TiDB 可以将热点 TiKV 节点的读请求转发到副本。该功能有效地打散了读热点并优化了集群资源的利用。你可以通过调整系统变量 <a href="https://docs.pingcap.com/zh/tidb/v7.1/system-variables#tidb_load_based_replica_read_threshold-从-v700-版本开始引入" target="_blank"><code>tidb_load_based_replica_read_threshold</code></a> 控制基于负载的副本读取的触发阈值。</td>
   </tr>
   <tr>
-      <td>TiKV 支持<a href="https://docs.pingcap.com/zh/tidb/v7.1/partitioned-raft-kv" target="_blank">分区 Raft KV 存储引擎 </a>（实验特性）</td>
-    <td>TiKV 引入新一代存储引擎分区 Raft KV，通过每个数据 Region 独享 RocksDB 实例，可将集群的存储能力从 TB 级扩展到 PB 级，并提供更稳定的写入延迟和更强大的扩容能力。</td>
+      <td>TiKV 支持 <a href="https://docs.pingcap.com/zh/tidb/v7.1/partitioned-raft-kv" target="_blank">Partitioned Raft KV 存储引擎 </a>（实验特性）</td>
+    <td>TiKV 引入新一代存储引擎 Partitioned Raft KV，通过每个数据 Region 独享 RocksDB 实例，可将集群的存储能力从 TB 级扩展到 PB 级，并提供更稳定的写入延迟和更强大的扩容能力。</td>
   </tr>
   <tr>
     <td rowspan="2">稳定性与高可用</td>
@@ -84,11 +84,11 @@ TiDB 7.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 ### 性能
 
-* 增强分区 Raft KV 存储引擎（实验特性）[#11515](https://github.com/tikv/tikv/issues/11515) [#12842](https://github.com/tikv/tikv/issues/12842) @[busyjay](https://github.com/busyjay) @[tonyxuqqi](https://github.com/tonyxuqqi) @[tabokie](https://github.com/tabokie) @[bufferflies](https://github.com/bufferflies) @[5kbpers](https://github.com/5kbpers) @[SpadeA-Tang](https://github.com/SpadeA-Tang) @[nolouch](https://github.com/nolouch)
+* 增强 Partitioned Raft KV 存储引擎（实验特性）[#11515](https://github.com/tikv/tikv/issues/11515) [#12842](https://github.com/tikv/tikv/issues/12842) @[busyjay](https://github.com/busyjay) @[tonyxuqqi](https://github.com/tonyxuqqi) @[tabokie](https://github.com/tabokie) @[bufferflies](https://github.com/bufferflies) @[5kbpers](https://github.com/5kbpers) @[SpadeA-Tang](https://github.com/SpadeA-Tang) @[nolouch](https://github.com/nolouch)
 
-    TiDB v6.6.0 引入了分区 Raft KV 存储引擎作为实验特性，该引擎使用多个 RocksDB 实例存储 TiKV 的 Region 数据，每个 Region 的数据都独立存储在单独的 RocksDB 实例中。分区 Raft KV 能够更好地控制 RocksDB 实例的文件数和层级，实现 Region 间数据操作的物理隔离，并支持平稳管理更多的数据。与原 TiKV 存储引擎相比，使用分区 Raft KV 引擎在相同硬件条件和读写混合场景下，可以实现大约两倍的写入吞吐并缩短大约 4/5 的弹性扩展时间。
+    TiDB v6.6.0 引入了 Partitioned Raft KV 存储引擎作为实验特性，该引擎使用多个 RocksDB 实例存储 TiKV 的 Region 数据，每个 Region 的数据都独立存储在单独的 RocksDB 实例中。Partitioned Raft KV 能够更好地控制 RocksDB 实例的文件数和层级，实现 Region 间数据操作的物理隔离，并支持平稳管理更多的数据。与原 TiKV 存储引擎相比，使用 Partitioned Raft KV 引擎在相同硬件条件和读写混合场景下，可以实现大约两倍的写入吞吐并缩短大约 4/5 的弹性扩展时间。
 
-    在 TiDB v7.1.0 中，分区 Raft KV 引擎与 TiFlash 兼容，并支持 TiDB Lightning、BR 和 TiCDC 等工具。
+    在 TiDB v7.1.0 中，Partitioned Raft KV 引擎与 TiFlash 兼容，并支持 TiDB Lightning、BR 和 TiCDC 等工具。
 
     该功能目前是实验特性，不推荐在生产环境中使用。目前仅支持在新集群中使用新引擎，暂不支持从原 TiKV 存储引擎直接升级到该引擎。
 
@@ -353,7 +353,7 @@ TiDB 7.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 | TiKV | [`split.byte-threshold`](/tikv-configuration-file.md#byte-threshold-从-v50-版本开始引入) | 修改 | 当 [`region-split-size`](/tikv-configuration-file.md#region-split-size) 大于等于 4 GB 时，默认值从 `30MiB` 修改为 `100MiB`。 |
 | TiKV | [`split.qps-threshold`](/tikv-configuration-file.md#qps-threshold) | 修改 | 当 [`region-split-size`](/tikv-configuration-file.md#region-split-size) 大于等于 4 GB 时，默认值从 `3000` 修改为 `7000`。 |
 | TiKV | [`split.region-cpu-overload-threshold-ratio`](/tikv-configuration-file.md#region-cpu-overload-threshold-ratio-从-v620-版本开始引入) | 修改 | 当 [`region-split-size`](/tikv-configuration-file.md#region-split-size) 大于等于 4 GB 时，默认值从 `0.25` 修改为 `0.75`。 |
-| TiKV | [`region-compact-check-step`](/tikv-configuration-file.md#region-compact-check-step) | 修改 | 当使用分区 Raft KV (`storage.engine="partitioned-raft-kv"`) 时，默认值从 `100` 修改为 `5`。 |
+| TiKV | [`region-compact-check-step`](/tikv-configuration-file.md#region-compact-check-step) | 修改 | 当使用 Partitioned Raft KV (`storage.engine="partitioned-raft-kv"`) 时，默认值从 `100` 修改为 `5`。 |
 | PD | [`store-limit-version`](/pd-configuration-file.md#store-limit-version-从-v710-版本开始引入) | 新增 | 用于设置 store limit 工作模式。可选值为 `"v1"` 和 `"v2"`。 |
 | PD | [`schedule.enable-diagnostic`](/pd-configuration-file.md#enable-diagnostic-从-v630-版本开始引入) | 修改 | 默认值从 `false` 修改为 `true`，默认打开调度器的诊断功能。 |
 | TiFlash | `http_port` | 删除 | 废弃 TiFlash HTTP 服务端口（默认 `8123`）。 |
@@ -379,8 +379,8 @@ TiDB 7.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 + TiKV
 
-    - 降低使用分区 Raft KV 时 Split 对写 QPS 的影响 [#14447](https://github.com/tikv/tikv/issues/14447) @[SpadeA-Tang](https://github.com/SpadeA-Tang)
-    - 优化使用分区 Raft KV 时 Snapshot 占用的空间 [#14581](https://github.com/tikv/tikv/issues/14581) @[bufferflies](https://github.com/bufferflies)
+    - 降低使用 Partitioned Raft KV 时 Split 对写 QPS 的影响 [#14447](https://github.com/tikv/tikv/issues/14447) @[SpadeA-Tang](https://github.com/SpadeA-Tang)
+    - 优化使用 Partitioned Raft KV 时 Snapshot 占用的空间 [#14581](https://github.com/tikv/tikv/issues/14581) @[bufferflies](https://github.com/bufferflies)
     - 为 TiKV 处理请求的各个阶段提供更详细的时间信息 [#12362](https://github.com/tikv/tikv/issues/12362) @[cfzjywxk](https://github.com/cfzjywxk)
     - 在日志备份中使用 PD 作为元数据存储 [#13867](https://github.com/tikv/tikv/issues/13867) @[YuJuncen](https://github.com/YuJuncen)
 
