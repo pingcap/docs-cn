@@ -656,6 +656,15 @@ raftstore 相关的配置项。
 + 最小值：1
 + 最大值：100
 
+### `report-region-buckets-tick-interval` <span class="version-mark">从 v6.1.0 版本开始引入</span>
+
+> **警告：**
+>
+> `report-region-buckets-tick-interval` 是 TiDB 在 v6.1.0 中引入的实验特性，不建议在生产环境中使用。
+
++ 启用 `enable-region-bucket` 后，该配置项设置 TiKV 向 PD 上报 bucket 信息的间隔时间。
++ 默认值：10s
+
 ### `pd-heartbeat-tick-interval`
 
 + 触发 region 对 PD 心跳的时间间隔，0 表示不启用。
@@ -924,15 +933,6 @@ coprocessor 相关的配置项。
 > **警告：**
 >
 > `region-bucket-size` 是 TiDB 在 v6.1.0 中引入的实验特性，不建议在生产环境中使用。
-
-### `report-region-buckets-tick-interval` <span class="version-mark">从 v6.1.0 版本开始引入</span>
-
-> **警告：**
->
-> `report-region-buckets-tick-interval` 是 TiDB 在 v6.1.0 中引入的实验特性，不建议在生产环境中使用。
-
-+ 启用 `enable-region-bucket` 后，该配置项设置 TiKV 向 PD 上报 bucket 信息的间隔时间。
-+ 默认值：10s
 
 ## rocksdb
 
