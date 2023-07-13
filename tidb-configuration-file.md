@@ -281,6 +281,10 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 ### `expensive-threshold`
 
+> **警告：**
+>
+> 自 v5.4.0 起，该配置项被废弃。请使用 [`tidb_expensive_query_time_threshold`](/system-variables.md#tidb_expensive_query_time_threshold) 系统变量进行设置。
+
 + 输出 `expensive` 操作的行数阈值。
 + 默认值：10000
 + 当查询的行数（包括中间结果，基于统计信息）大于这个值，该操作会被认为是 `expensive` 查询，并输出一个前缀带有 `[EXPENSIVE_QUERY]` 的日志。
@@ -802,6 +806,14 @@ TiDB 服务状态相关配置。
 + 单位：毫秒
 + 当查询大于这个值，就会当做是一个慢查询，输出到慢查询日志。
 + 在 v6.1.0 之前，该功能通过配置项 `slow-threshold` 进行设置。
+
+### `tidb_expensive_query_time_threshold`
+
++ 控制打印 expensive query 日志的阈值时间，默认值是 60 秒。expensive query 日志和慢日志的差别是，慢日志是在语句执行完后才打印，expensive query 日志可以把正在执行中且执行时间超过该阈值的语句及其相关信息打印出来。
++ 默认值：60
++ 范围：`[10, 2147483647]`
++ 单位：秒
++ 在 v5.4.0 之前，该功能通过配置项 `expensive-threshold` 进行设置。
 
 ### `tidb_record_plan_in_slow_log`
 
