@@ -270,7 +270,7 @@ Compared with the previous LTS 6.1.0, 6.5.0 not only includes new features, impr
 
     To keep security of the database system, you need to set an expiration policy for the certificate used by the system. After the expiration period, the system needs a new certificate. TiCDC v6.5.0 supports online updates of TLS certificates. Without interrupting the replication tasks, TiCDC can automatically detect and update the certificate, without the need for manual intervention.
 
-* TiCDC performance improves significantly [#7540](https://github.com/pingcap/tiflow/issues/7540) [#7478](https://github.com/pingcap/tiflow/issues/7478) [#7532](https://github.com/pingcap/tiflow/issues/7532) @[sdojjy](https://github.com/sdojjy) [@3AceShowHand](https://github.com/3AceShowHand)
+* TiCDC performance improves significantly [#7540](https://github.com/pingcap/tiflow/issues/7540) [#7478](https://github.com/pingcap/tiflow/issues/7478) [#7532](https://github.com/pingcap/tiflow/issues/7532) @[sdojjy](https://github.com/sdojjy) @[3AceShowHand](https://github.com/3AceShowHand)
 
     In a test scenario of the TiDB cluster, the performance of TiCDC has improved significantly. Specifically, in the scenario of [replicating data to Kafka](/replicate-data-to-kafka.md), the maximum row changes that a single TiCDC can process reaches 30K rows/s, and the replication latency is reduced to 10s. Even during TiKV and TiCDC rolling upgrade, the replication latency is less than 30s.
 
@@ -284,7 +284,7 @@ Compared with the previous LTS 6.1.0, 6.5.0 not only includes new features, impr
 
     Note that if you do not recover the system from a failure within one hour after BR exits, the snapshot data to be backed up might be recycled by the GC mechanism, causing the backup to fail. For more information, see [documentation](/br/br-checkpoint-backup.md#backup-retry-must-be-prior-to-gc).
 
-* PITR performance improved remarkably [@joccau](https://github.com/joccau)
+* PITR performance improved remarkably @[joccau](https://github.com/joccau)
 
     In the log restore stage, the restore speed of one TiKV can reach 9 MiB/s, which is 50% faster than before. The restore speed is scalable and the RTO in DR scenarios is reduced greatly. The RPO in DR scenarios can be as short as 5 minutes. In normal cluster operation and maintenance (OM), for example, a rolling upgrade is performed or only one TiKV is down, the RPO can be 5 minutes.
 
@@ -385,8 +385,8 @@ Starting from v6.5.0, the `AMEND TRANSACTION` mechanism introduced in v4.0.7 is 
     - Reduce waiting time on failure recovery by notifying TiKV to wake up Regions [#13648](https://github.com/tikv/tikv/issues/13648) @[LykxSassinator](https://github.com/LykxSassinator)
     - Reduce the requested size of memory usage by code optimization [#13827](https://github.com/tikv/tikv/issues/13827) @[BusyJay](https://github.com/BusyJay)
     - Introduce the Raft extension to improve code extensibility [#13827](https://github.com/tikv/tikv/issues/13827) @[BusyJay](https://github.com/BusyJay)
-    - Support using tikv-ctl to query which Regions are included in a certain key range [#13760](https://github.com/tikv/tikv/issues/13760) [@HuSharp](https://github.com/HuSharp)
-    - Improve read and write performance for rows that are not updated but locked continuously [#13694](https://github.com/tikv/tikv/issues/13694) [@sticnarf](https://github.com/sticnarf)
+    - Support using tikv-ctl to query which Regions are included in a certain key range [#13760](https://github.com/tikv/tikv/issues/13760) @[HuSharp](https://github.com/HuSharp)
+    - Improve read and write performance for rows that are not updated but locked continuously [#13694](https://github.com/tikv/tikv/issues/13694) @[sticnarf](https://github.com/sticnarf)
 
 + PD
 
