@@ -77,7 +77,7 @@ Request Unit (RU) 是 TiDB 对 CPU、IO 等系统资源的统一抽象的计量�
 
 ### 估算 SQL 所消耗的 RU
 
-[explain analyze](/sql-statements/sql-statement-explain-analyze.md) 命令可以获取到 SQL 执行时所消耗的 RU 。 需要注意的是，RU 的大小会受缓存的影响 (比如[下推计算结果缓存](/coprocessor-cache.md))，多次执行同一条 SQL 所消耗的 RU 可能会有不同， 因此这个值并不代表每次执行的精确值， 但可以作为估算的参考。
+[explain analyze](/sql-statements/sql-statement-explain-analyze.md#ru-request-unit-消耗) 命令可以获取到 SQL 执行时所消耗的 RU 。 需要注意的是，RU 的大小会受缓存的影响 (比如[下推计算结果缓存](/coprocessor-cache.md))，多次执行同一条 SQL 所消耗的 RU 可能会有不同， 因此这个值并不代表每次执行的精确值， 但可以作为估算的参考。
 
 ## 相关参数
 
