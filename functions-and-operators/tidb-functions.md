@@ -317,3 +317,50 @@ SELECT *, TIDB_ROW_CHECKSUM() FROM t WHERE id = 1;
 +----+------+------+---------------------+
 1 row in set (0.000 sec)
 ```
+
+### CURRENT_RESOURCE_GROUP
+
+`CURRENT_RESOURCE_GROUP` 函数用于查询当前连接绑定的资源组名称。在开启 [使用资源管控 (Resource Control) 实现资源隔离](/tidb-resource-control.md) 功能时，执行 SQL 语句所使用的资源会受对应绑定的资源组资源配置的限制。
+
+连接在建立时默认会绑定至登录用户绑定的资源组，如果用户没有绑定任何资源组，则会绑定至 `default` 资源组。在会话建立之后，绑定的资源组默认不会发生变化，即使执行了 [修改用户绑定的资源组](/sql-statements/sql-statement-alter-user.md#修改用户绑定的资源组)。TiDB 支持使用 [`SET RESOURCE GROUP`](/sql-statements/sql-statement-set-resource-group.md) 修改当前会话绑定的资源组。
+
+#### 示例
+
+创建一个用户 `user1`，创建两个资源组 `rg1` 和 `rg2`，并将用户 `user1` 绑定资源组 `rg1`。
+
+```sql
+CREATE USER 'user1';
+CREATE RESOURCE GROUP 'rg1' RU_PER_SEC = 1000;
+ALTER USER 'user1' RESOURCE GROUP `rg1`;
+```
+
+使用 `user1` 登录，查看当前用户绑定的资源组。
+
+```sql
+SELECT CURRENT_RESOURCE_GROUP();
+```
+
+```sql
++--------------------------+
+| CURRENT_RESOURCE_GROUP() |
++--------------------------+
+| rg1                      |
++--------------------------+
+1 row in set (0.00 sec)
+```
+
+执行 `SET RESOURCE GROUP` 将当前会话的资源组设置为 `rg2`。
+
+```sql
+SET RESOURCE GROUP `rg2`;
+SELECT CURRENT_RESOURCE_GROUP();
+```
+
+```sql
++--------------------------+
+| CURRENT_RESOURCE_GROUP() |
++--------------------------+
+| rg2                      |
++--------------------------+
+1 row in set (0.00 sec)
+```
