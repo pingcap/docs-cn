@@ -270,7 +270,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
     为确保系统数据安全，用户会对系统使用的证书设置相应的过期策略，经过固定的时间后会将系统使用的证书更换成新证书。TiCDC v6.5.0 支持在线更新 TLS 证书，在不影响同步任务的前提下，TiCDC 会自动检测和更新证书，无需用户手动操作，满足用户对证书更新的需求。
 
-* TiCDC 性能提升 [#7540](https://github.com/pingcap/tiflow/issues/7540) [#7478](https://github.com/pingcap/tiflow/issues/7478) [#7532](https://github.com/pingcap/tiflow/issues/7532) @[sdojjy](https://github.com/sdojjy) [@3AceShowHand](https://github.com/3AceShowHand)
+* TiCDC 性能提升 [#7540](https://github.com/pingcap/tiflow/issues/7540) [#7478](https://github.com/pingcap/tiflow/issues/7478) [#7532](https://github.com/pingcap/tiflow/issues/7532) @[sdojjy](https://github.com/sdojjy) @[3AceShowHand](https://github.com/3AceShowHand)
 
     在 TiDB 场景测试验证中，TiCDC 的性能得到了比较大的提升。
 
@@ -286,7 +286,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
     需要注意的是，如果你没有在 BR 退出后一个小时内完成故障恢复，那么还未备份的快照数据可能会被 GC 机制回收，从而造成备份失败。更多信息，请参考[用户文档](/br/br-checkpoint-backup.md#确保在-gc-前重试)。
 
-* PITR 性能大幅提升 [@joccau](https://github.com/joccau)
+* PITR 性能大幅提升 @[joccau](https://github.com/joccau)
 
   PITR 恢复的日志恢复阶段，单台 TiKV 的恢复速度可以达到 9 MiB/s，提升了 50%，并且恢复速度可扩展，有效地降低容灾场景的 RTO 指标；容灾场景的 RPO 优化到 5 分钟，在常规的集群运维，如滚动升级，单 TiKV 故障等场景下，可以达到 RPO = 5 min 的目标。
 
@@ -387,8 +387,8 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
     - 故障恢复时通知 TiKV 唤醒休眠的 Region 以减少等待时间 [#13648](https://github.com/tikv/tikv/issues/13648) @[LykxSassinator](https://github.com/LykxSassinator)
     - 通过代码优化减少内存申请的大小 [#13827](https://github.com/tikv/tikv/issues/13827) @[BusyJay](https://github.com/BusyJay)
     - 引入 Raft extension 以提升代码可扩展性 [#13827](https://github.com/tikv/tikv/issues/13827) @[BusyJay](https://github.com/BusyJay)
-    - tikv-ctl 支持查询某个 key 范围中包含哪些 Region [#13760](https://github.com/tikv/tikv/issues/13760) [@HuSharp](https://github.com/HuSharp)
-    - 改进持续对特定行只加锁但不更新的情况下的读写性能 [#13694](https://github.com/tikv/tikv/issues/13694) [@sticnarf](https://github.com/sticnarf)
+    - tikv-ctl 支持查询某个 key 范围中包含哪些 Region [#13760](https://github.com/tikv/tikv/issues/13760) @[HuSharp](https://github.com/HuSharp)
+    - 改进持续对特定行只加锁但不更新的情况下的读写性能 [#13694](https://github.com/tikv/tikv/issues/13694) @[sticnarf](https://github.com/sticnarf)
 
 + PD
 
@@ -466,7 +466,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
     + Backup & Restore (BR)
 
         - 修复 BR 删除日志备份数据时，会删除不应被删除的数据的问题 [#38939](https://github.com/pingcap/tidb/issues/38939) @[Leavrth](https://github.com/Leavrth)
-        - 修复数据库或数据表中使用旧的排序规则框架时，数据恢复失败的问题[#39150](https://github.com/pingcap/tidb/issues/39150) @[MoCuishle28](https://github.com/MoCuishle28)
+        - 修复数据库或数据表中使用旧的排序规则框架时，数据恢复失败的问题 [#39150](https://github.com/pingcap/tidb/issues/39150) @[MoCuishle28](https://github.com/MoCuishle28)
         - 修复阿里云和华为云与 S3 存储不完全兼容导致的备份失败问题 [#39545](https://github.com/pingcap/tidb/issues/39545) @[3pointer](https://github.com/3pointer)
 
     + TiCDC
