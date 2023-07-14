@@ -236,6 +236,10 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 ### `expensive-threshold`
 
+> **警告：**
+>
+> 自 v5.4.0 起，该配置项被废弃。请使用 [`tidb_expensive_query_time_threshold`](/system-variables.md#tidb_expensive_query_time_threshold) 系统变量进行设置。
+
 + 输出 `expensive` 操作的行数阈值。
 + 默认值：10000
 + 当查询的行数（包括中间结果，基于统计信息）大于这个值，该操作会被认为是 `expensive` 查询，并输出一个前缀带有 `[EXPENSIVE_QUERY]` 的日志。
@@ -707,6 +711,52 @@ TiDB 服务状态相关配置。
 + 用于控制 TiDB 节点允许从哪种类型的引擎读取数据。
 + 默认值：["tikv", "tiflash", "tidb"]，表示由优化器自动选择存储引擎。
 + 可选值："tikv", "tiflash", "tidb" 的组合，如：["tikv", "tidb"]、["tiflash", "tidb"]。
+
+## instance
+
+### `tidb_enable_collect_execution_info`
+
++ 用于控制是否同时将各个执行算子的执行信息记录入 slow query log 中。
++ 默认值：true
++ 在 v6.1.0 之前，该功能通过配置项 `enable-collect-execution-info` 进行设置。
+
+### `tidb_enable_slow_log`
+
++ 是否开启慢查询日志。
++ 默认值：true
++ 可以设置成 `true` 或 `false` 来启用或禁用慢查询日志。
++ 在 v6.1.0 之前，该功能通过配置项 `enable-slow-log` 进行设置。
+
+### `tidb_slow_log_threshold`
+
++ 输出慢日志的耗时阈值。
++ 默认值：300
++ 范围：`[-1, 9223372036854775807]`
++ 单位：毫秒
++ 当查询大于这个值，就会当做是一个慢查询，输出到慢查询日志。
++ 在 v6.1.0 之前，该功能通过配置项 `slow-threshold` 进行设置。
+
+### `tidb_expensive_query_time_threshold`
+
++ 控制打印 expensive query 日志的阈值时间，默认值是 60 秒。expensive query 日志和慢日志的差别是，慢日志是在语句执行完后才打印，expensive query 日志可以把正在执行中且执行时间超过该阈值的语句及其相关信息打印出来。
++ 默认值：60
++ 范围：`[10, 2147483647]`
++ 单位：秒
++ 在 v5.4.0 之前，该功能通过配置项 `expensive-threshold` 进行设置。
+
+### `tidb_record_plan_in_slow_log`
+
++ 在慢日志中记录执行计划。
++ 默认值：1
++ 0 表示关闭，1 表示开启，默认开启，该值作为系统变量 [`tidb_record_plan_in_slow_log`](/system-variables.md#tidb_record_plan_in_slow_log) 的初始值。
++ 在 v6.1.0 之前，该功能通过配置项 `record-plan-in-slow-log` 进行设置。
+
+### `tidb_force_priority`
+
++ 把所有的语句优先级设置为系统变量 `tidb_force_priority` 的值。
++ 默认值：NO_PRIORITY
++ 默认值 NO_PRIORITY 表示不强制改变执行语句的优先级，其它优先级从低到高可设置为 LOW_PRIORITY、DELAYED 或 HIGH_PRIORITY。
++ 在 v6.1.0 之前，该功能通过配置项 `force-priority` 进行设置。
 
 ## proxy-protocol
 
