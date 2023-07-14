@@ -59,7 +59,7 @@ By default, this area shows the latest 10 slow queries in the entire cluster ove
 
 ![Recent slow queries](/media/dashboard/dashboard-overview-slow-query.png)
 
-By default, the SQL query that is executed longer than 300 milliseconds is counted as a slow query and displayed on the table. You can change this threshold by modifying the [tidb_slow_log_threshold](/system-variables.md#tidb_slow_log_threshold) variable or the [slow-threshold](/tidb-configuration-file.md#slow-threshold) TiDB parameter.
+By default, the SQL query that is executed longer than 300 milliseconds is counted as a slow query and displayed on the table. You can change this threshold by modifying the [tidb_slow_log_threshold](/system-variables.md#tidb_slow_log_threshold) variable or the [instance.tidb_slow_log_threshold](/tidb-configuration-file.md#tidb_slow_log_threshold) TiDB parameter.
 
 The content displayed in this area is consistent with the more detailed [Slow Queries Page](/dashboard/dashboard-slow-query.md). You can click the **Recent Slow Queries** title to view the complete list. For details of the columns in this table, see this [Slow Queries Page](/dashboard/dashboard-slow-query.md).
 

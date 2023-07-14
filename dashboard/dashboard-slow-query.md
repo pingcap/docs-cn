@@ -8,7 +8,7 @@ aliases: ['/docs/dev/dashboard/dashboard-slow-query/']
 
 On the Slow Queries page of TiDB Dashboard, you can search and view all slow queries in the cluster.
 
-By default, SQL queries with an execution time of more than 300 milliseconds are considered as slow queries. These queries are recorded in the [slow query logs](/identify-slow-queries.md) and can be searched via TiDB Dashboard. You can adjust the threshold of slow queries through the [`tidb_slow_log_threshold`](/system-variables.md#tidb_slow_log_threshold) session variable or the [`slow-threshold`](/tidb-configuration-file.md#slow-threshold) TiDB parameter.
+By default, SQL queries with an execution time of more than 300 milliseconds are considered as slow queries. These queries are recorded in the [slow query logs](/identify-slow-queries.md) and can be searched via TiDB Dashboard. You can adjust the threshold of slow queries through the [`tidb_slow_log_threshold`](/system-variables.md#tidb_slow_log_threshold) session variable or the [`instance.tidb_slow_log_threshold`](/tidb-configuration-file.md#tidb_slow_log_threshold) TiDB parameter.
 
 > **Note:**
 >

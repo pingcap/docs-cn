@@ -335,9 +335,9 @@ The following TiDB configuration items can be modified dynamically:
 
 | Configuration item | SQL variable | Description |
 | :--- | :--- |
-| `log.enable-slow-log` | `tidb_enable_slow_log` | Whether to enable slow log |
-| `log.slow-threshold` | `tidb_slow_log_threshold` | The threshold of slow log |
-| `log.expensive-threshold` | `tidb_expensive_query_time_threshold` | The threshold of a expensive query |
+| `instance.tidb_enable_slow_log` | `tidb_enable_slow_log` | Whether to enable slow log |
+| `instance.tidb_slow_log_threshold` | `tidb_slow_log_threshold` | The threshold of slow log |
+| `instance.tidb_expensive_query_time_threshold` | `tidb_expensive_query_time_threshold` | The threshold of a expensive query |
 
 ### Modify TiFlash configuration dynamically
 

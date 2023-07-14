@@ -379,7 +379,7 @@ Other requirements for the target machine include:
 
     server_configs:
      tidb:
-       log.slow-threshold: 300
+       instance.tidb_slow_log_threshold: 300
      tikv:
        readpool.storage.use-unified-pool: false
        readpool.coprocessor.use-unified-pool: true

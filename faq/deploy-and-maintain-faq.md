@@ -77,7 +77,7 @@ Check the time difference between the machine time of the monitor and the time w
 
 ### How to separately record the slow query log in TiDB? How to locate the slow query SQL statement?
 
-1. The slow query definition for TiDB is in the TiDB configuration file. The `slow-threshold: 300` parameter is used to configure the threshold value of the slow query (unit: millisecond).
+1. The slow query definition for TiDB is in the TiDB configuration file. The `tidb_slow_log_threshold: 300` parameter is used to configure the threshold value of the slow query (unit: millisecond).
 
 2. If a slow query occurs, you can locate the `tidb-server` instance where the slow query is and the slow query time point using Grafana and find the SQL statement information recorded in the log on the corresponding node.
 
