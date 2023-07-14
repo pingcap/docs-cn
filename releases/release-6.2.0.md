@@ -220,7 +220,7 @@ TiDB 版本：6.2.0-DMR
 
 * 支持 RawKV 跨集群复制（实验特性）
 
-    支持订阅 RawKV 的数据变更，并通过新的 TiKV-CDC 组件将变更实时同步到下游  TiKV 集群，从而实现 RawKV 的跨集群复制能力。
+    支持订阅 RawKV 的数据变更，并通过新的 TiKV-CDC 组件将变更实时同步到下游 TiKV 集群，从而实现 RawKV 的跨集群复制能力。
 
     [用户文档](/tikv-configuration-file.md#api-version-从-v610-版本开始引入) [#11965](https://github.com/tikv/tikv/issues/11965) @[pingyu](https://github.com/pingyu)
 
