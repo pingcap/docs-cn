@@ -1,4 +1,4 @@
-> Join 是一个·关系型数据库查询中的常见操作。通过连接多个表，来实现跨表之间的数据分析。其中 Hash Join 是  Join 操作的主要实现方式之一，通常也是查询的性能瓶颈之一。因此提升 Hash Join 的性能也是 TiDB 的主要任务。
+> Join 是一个关系型数据库查询中的常见操作。通过连接多个表，来实现跨表之间的数据分析。其中 Hash Join 是  Join 操作的主要实现方式之一，通常也是查询的性能瓶颈之一。因此提升 Hash Join 的性能也是 TiDB 的主要任务。
 
   Runtime Filter 是 TiDB v7.3 引入的新功能，旨在提升 Hash Join 的性能。通过动态生成 Filter 来提前过滤 Hash Join 的数据从而减少运行时的扫描量以及 Hash Join 的计算量，最终达到提升查询性能的效果。
 
@@ -11,7 +11,7 @@
 
 # 优化思路
 
-  Hash Join 通过将右表的数据构建 HashTable，左表的数据不断 probe HashTable 来完成 Join。Probe 过程一部分 Join Key 值中无法命中 Hash Table，则说明中的这部分数据在右表中不存在，也不会出现在最后 Join 的结果中。
+  Hash Join 通过将右表的数据构建 Hash Table，左表的数据不断 probe Hash Table 来完成 Join。Probe 过程一部分 Join Key 值中无法命中 Hash Table，则说明中的这部分数据在右表中不存在，也不会出现在最后 Join 的结果中。
 
   如果在扫描时能够**提前过滤掉这部分 Join Key** 的数据，将会减少扫描时间和网络开销，**从而大幅提升 Join 效率**。
 
@@ -21,7 +21,7 @@
 
   ### 例子
 
-  当前存在 store_sales 表与 date_dim 表的 Join 查询，它的 Join 方式为 Hash Join， store_sales 是一张事实表，主要存储门店销售数据，行数为 100万。T2 是一张时间维度表，主要存储时间信息。  当前查询想查询 2001 年的销售数据，则时间维度表的参与 Join 的数据量为 365 行。
+  当前存在 ```store_sales``` 表与 ```date_dim``` 表的 Join 查询，它的 Join 方式为 Hash Join， ```store_sales``` 是一张事实表，主要存储门店销售数据，行数为 100万。T2 是一张时间维度表，主要存储时间信息。  当前查询想查询 2001 年的销售数据，则时间维度表的参与 Join 的数据量为 365 行。
 
 ```sql
 SELECT * FROM store_sales, date_dim
@@ -47,7 +47,7 @@ WHERE ss_date_sk = d_date_sk
 +---------------+                   +----------------+
 ```
 
-  RF 的执行方式是，先扫描 date_dim 的数据，PhysicalHashJoin 根据 date_dim 的数据计算出一个过滤条件，比如 date_dim in (2001/01/01~2001/12/31)。接着将这个过滤条件发给等待扫描 store_sales 的 TableFullScan。store_sales 再应用这个过滤条件，将过滤后的数据交给 PhysicalHashJoin，从而减少 probe side 的扫表数据量以及 Hash Table match 的计算量。
+  RF 的执行方式是，先扫描 ```date_dim``` 的数据，PhysicalHashJoin 根据 ```date_dim``` 的数据计算出一个过滤条件，比如 ```date_dim in (2001/01/01~2001/12/31)```。接着将这个过滤条件发给等待扫描 ```store_sales``` 的 TableFullScan。```store_sales``` 再应用这个过滤条件，将过滤后的数据交给 PhysicalHashJoin，从而减少 Probe Side 的扫表数据量以及 Hash Table match 的计算量。
 
 ```
                          2. build RF values
@@ -64,15 +64,15 @@ WHERE ss_date_sk = d_date_sk
       +-----------------+                +----------------+
 ```
 
-  从两个图中对比可知。store_sales 的扫描量从 100W -> 5000。减少 Table Full Scan 扫描的数据量，进而减少 probe Hash Table的次数，避免不必要的 I/O 和网络传输。Runtime Filter 就是通过这种方式来大大提升 Join 的效率的。
+  从两个图中对比可知。```store_sales``` 的扫描量从 100W -> 5000。减少 Table Full Scan 扫描的数据量，进而减少 probe Hash Table的次数，避免不必要的 I/O 和网络传输。Runtime Filter 就是通过这种方式来大大提升 Join 的效率的。
 
 # 使用方法
 
 这里以 TPC-DS 的数据集为例。主要用到表 catalog_sales 和表 date_dim 二者进行 Join。
 
-#### Step1: 创建一个带 TiFlash Replica 的 表
+#### Step1: 创建带 TiFlash Replica 的表
 
-给表 catalog_sales 和 date_dim 各增加一个 TiFlash 的副本。
+给表 ```catalog_sales``` 和 ```date_dim``` 各增加一个 TiFlash 的副本。
 
 ```sql
 alter table catalog_sales set tiflash replica 1;
@@ -95,8 +95,6 @@ mysql> select * from INFORMATION_SCHEMA.TIFLASH_REPLICA where TABLE_NAME='date_d
 | tpcds50      | date_dim   |     1015 |             1 |                 |         1 |        1 |
 +--------------+------------+----------+---------------+-----------------+-----------+----------+
 ```
-
-
 
 #### Step2: 开启 Runtime Filter
 
@@ -131,30 +129,34 @@ where d_date = '2002-2-01' and
 
 在开启 Runtime Filter 的情况下，可以看到，HashJoin 节点和 TableScan 节点上分别挂在了对应的 Runtime Filter，说明 Runtime Filter 规划成功。
 
+```
 TableFullScan: runtime filter:0[IN] -> tpcds50.catalog_sales.cs_ship_date_sk   
 
 HashJoin: runtime filter:0[IN] <- tpcds50.date_dim.d_date_sk |
+```
+
+完整的查询规划如下：
 
 ```
 +----------------------------------------+-------------+--------------+---------------------+-----------------------------------------------------------------------------------------------------------------------------------------------+
 | id                                     | estRows     | task         | access object       | operator info                                                                                                                                 |
 +----------------------------------------+-------------+--------------+---------------------+-----------------------------------------------------------------------------------------------------------------------------------------------+
 | TableReader_53                         | 37343.19    | root         |                     | MppVersion: 1, data:ExchangeSender_52                                                                                                         |
-| └─ExchangeSender_52                | 37343.19    | mpp[tiflash] |                     | ExchangeType: PassThrough                                                                                                                     |
-|   └─Projection_51                  | 37343.19    | mpp[tiflash] |                     | tpcds50.catalog_sales.cs_ship_date_sk                                                                                                         |
-|     └─HashJoin_48                  | 37343.19    | mpp[tiflash] |                     | inner join, equal:[eq(tpcds50.date_dim.d_date_sk, tpcds50.catalog_sales.cs_ship_date_sk)], runtime filter:0[IN] <- tpcds50.date_dim.d_date_sk |
-|       ├─ExchangeReceiver_29(Build) | 1.00        | mpp[tiflash] |                     |                                                                                                                                               |
-|       │ └─ExchangeSender_28      | 1.00        | mpp[tiflash] |                     | ExchangeType: Broadcast, Compression: FAST                                                                                                    |
-|       │   └─TableFullScan_26     | 1.00        | mpp[tiflash] | table:date_dim      | pushed down filter:eq(tpcds50.date_dim.d_date, 2002-02-01 00:00:00.000000), keep order:false                                                  |
-|       └─Selection_31(Probe)        | 71638034.00 | mpp[tiflash] |                     | not(isnull(tpcds50.catalog_sales.cs_ship_date_sk))                                                                                            |
-|         └─TableFullScan_30         | 71997669.00 | mpp[tiflash] | table:catalog_sales | pushed down filter:empty, keep order:false, runtime filter:0[IN] -> tpcds50.catalog_sales.cs_ship_date_sk                                     |
+| └─ExchangeSender_52                    | 37343.19    | mpp[tiflash] |                     | ExchangeType: PassThrough                                                                                                                     |
+|   └─Projection_51                      | 37343.19    | mpp[tiflash] |                     | tpcds50.catalog_sales.cs_ship_date_sk                                                                                                         |
+|     └─HashJoin_48                      | 37343.19    | mpp[tiflash] |                     | inner join, equal:[eq(tpcds50.date_dim.d_date_sk, tpcds50.catalog_sales.cs_ship_date_sk)], runtime filter:0[IN] <- tpcds50.date_dim.d_date_sk |
+|       ├─ExchangeReceiver_29(Build)     | 1.00        | mpp[tiflash] |                     |                                                                                                                                               |
+|       │ └─ExchangeSender_28            | 1.00        | mpp[tiflash] |                     | ExchangeType: Broadcast, Compression: FAST                                                                                                    |
+|       │   └─TableFullScan_26           | 1.00        | mpp[tiflash] | table:date_dim      | pushed down filter:eq(tpcds50.date_dim.d_date, 2002-02-01 00:00:00.000000), keep order:false                                                  |
+|       └─Selection_31(Probe)            | 71638034.00 | mpp[tiflash] |                     | not(isnull(tpcds50.catalog_sales.cs_ship_date_sk))                                                                                            |
+|         └─TableFullScan_30             | 71997669.00 | mpp[tiflash] | table:catalog_sales | pushed down filter:empty, keep order:false, runtime filter:0[IN] -> tpcds50.catalog_sales.cs_ship_date_sk                                     |
 +----------------------------------------+-------------+--------------+---------------------+-----------------------------------------------------------------------------------------------------------------------------------------------+
 9 rows in set (0.01 sec)
 ```
 
 查询，即可应用 Runtime Filter。
 
-```
+```sql
 select cs_ship_date_sk from catalog_sales, date_dim 
 where d_date = '2002-2-01' and 
      cs_ship_date_sk = d_date_sk;
