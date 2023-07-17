@@ -170,8 +170,8 @@ TiDB 对其进行了两个维度的修复：
 - 不支持 `READ-UNCOMMITTED` 和 `SERIALIZABLE` [隔离级别](/system-variables.md#transaction_isolation)。
 - 默认不允许修改列的 `AUTO_INCREMENT` 属性。
 - 不支持 `FULLTEXT`、`HASH` 和 `SPATIAL` 索引。
-- 不支持 `sequelize.queryInterface.showIndex(Model.tableName);` 。
-- 不支持 `sequelize.options.databaseVersion` 。
+- 不支持 `sequelize.queryInterface.showIndex(Model.tableName);`。
+- 不支持 `sequelize.options.databaseVersion`。
 - 不支持使用 [`queryInterface.addColumn`](https://sequelize.org/api/v6/class/src/dialects/abstract/query-interface.js~queryinterface#instance-method-addColumn) 添加外键引用。
 
 ### 不支持修改整数主键
