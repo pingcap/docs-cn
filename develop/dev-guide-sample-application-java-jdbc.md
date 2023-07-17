@@ -21,7 +21,7 @@ summary: 给出一个 TiDB 和 JDBC 的简单 CRUD 应用程序示例。
 
 ## 第 1 步：启动你的 TiDB 集群
 
-The following introduces how to start a TiDB cluster.
+本节将介绍 TiDB 集群的启动方法。
 
 **使用 TiDB Serverless 集群**
 
