@@ -21,9 +21,12 @@
     - [使用 TiDB Serverless 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md)
     - [使用 TiDB 的增删改查 SQL](/develop/dev-guide-tidb-crud-sql.md)
   - 示例程序
+    - Java
+      - [JDBC](/develop/dev-guide-sample-application-java-jdbc.md)
+      - [MyBatis](/develop/dev-guide-sample-application-java-mybatis.md)
+      - [Hibernate](/develop/dev-guide-sample-application-java-hibernate.md)
+      - [Spring Boot](/develop/dev-guide-sample-application-java-spring-boot.md)
     - [Golang](/develop/dev-guide-sample-application-golang.md)
-    - [Java (Spring Boot)](/develop/dev-guide-sample-application-spring-boot.md)
-    - [Java](/develop/dev-guide-sample-application-java.md)
     - [Python (Django)](/develop/dev-guide-sample-application-django.md)
     - [Python](/develop/dev-guide-sample-application-python.md)
   - 连接到 TiDB
