@@ -17,7 +17,7 @@ aliases: ['/docs-cn/dev/deploy-monitoring-services/','/docs-cn/dev/monitor-a-tid
 
 ## 升级 Prometheus 
 
-TiDB 安装包中自带 Prometheus 组件包，该组件包中的 Prometheus 软件版本是固定的。升级操作需要先从 Prometheus 官网下载所需版本的软件安装包，然后重新构造可被 TiUP 使用的 Prometheus 组件安装包。
+TiDB 安装包中自带 Prometheus 组件包，该组件包中的 Prometheus 软件版本是固定的。推荐使用 TiDB 官方安装包中自带的 Prometheus 版本，如果您需要使用更高版本的 Prometheus 软件，可以在Prometheus 官网的[Release Note 页面](https://github.com/prometheus/prometheus/releases)查看新版本特性，选择适合您生产环境的版本，或者咨询 PingCAP 技术支持服务寻求版本建议。升级操作需要先从 Prometheus 官网下载所需版本的软件安装包，然后重新构造可被 TiUP 使用的 Prometheus 组件安装包。
 
 ### 第 1 步：从 Prometheus 官网下载新版本安装包
 
@@ -34,17 +34,18 @@ tar -xzf prometheus-v{version}-linux-amd64.tar.gz
 
 ### 第 3 步：构造新的适用于 TiUP 的 Prometheus 组件包
 
-复制第 1 步中解压的文件，替换第 2 步解压后 prometheus 子目录下的对应文件。替换完成后重新压缩,并将新压缩包命名为“prometheus-v{newversion}-linux-amd64.tar.gz”。
+复制第 1 步中解压的文件，替换第 2 步解压后 prometheus 子目录(./prometheus-v{version}-linux-amd64/prometheus)下的对应文件。替换完成后重新压缩,并将新压缩包命名为“prometheus-v{newversion}.tar.gz”。
 
 {{< copyable "shell-regular" >}}
 
 ```bash
-tar -zcvf prometheus-v8.0.0-linux-amd64.tar.gz ./
+cd prometheus-v{version}-linux-amd64.tar.gz
+tar -zcvf ../prometheus-v{new-version}.tar.gz ./
 ```
 
 > **注意：**
 >
-> - {newversion} 新的版本号可以不与 TiDB 版本一致，且一定要高于当前部署的 TiDB 版本号。
+> - {new-version} 可以由用户自行指定，无特殊要求。
 
 ### 第 4 步：使用新的组件包升级 Prometheus 
 
@@ -53,13 +54,13 @@ tar -zcvf prometheus-v8.0.0-linux-amd64.tar.gz ./
 {{< copyable "shell-regular" >}}
 
 ```bash
-tiup cluster patch <cluster-name> prometheus-v8.0.0-linux-amd64.tar.gz -R prometheus
+tiup cluster patch <cluster-name> prometheus-{new-version}.tar.gz -R prometheus
 ```
 升级完成后，可以打开 Prometheus 主页（地址通常是 http://<Prometheus-server-host-name>:9090）,点击顶部导航菜单“Status” 然后打开 “Runtime & Build Information” 页面，查看 Prometheus 的版本信息，确认升级成功。
 
 ## 升级 Grafana
 
-TiDB 安装包中自带 Grafana 组件包，该组件包中的 Grafana 软件版本是固定的。升级操作需要先从 Grafana 官网下载所需版本的软件安装包，然后重新构造可被 TiUP 使用的 Grafana 组件安装包。
+TiDB 安装包中自带 Grafana 组件包，该组件包中的 Grafana 软件版本是固定的。推荐使用 TiDB 官方安装包中自带的 Grafana 版本，如果您需要使用更高版本的 Grafana 软件，可以在 Grafana 官网的[Release Note 页面](https://grafana.com/docs/grafana/latest/whatsnew/)查看新版本特性，选择适合您生产环境的版本，或者咨询 PingCAP 技术支持服务寻求版本建议。升级操作需要先从 Grafana 官网下载所需版本的软件安装包，然后重新构造可被 TiUP 使用的 Grafana 组件安装包。
 
 ### 第 1 步：从 Grafana 官网的下载新版本安装包
 
@@ -76,17 +77,18 @@ tar -xzf grafana-v{version}-linux-amd64.tar.gz
 
 ### 第 3 步：构造新的适用于 TiUP 的 Grafana 组件包
 
-复制第 1 步中解压的文件，替换第 2 步解压后 Grafana 子目录下的对应文件。替换完成后重新压缩,并将新压缩包命名为“grafana-v{newversion}-linux-amd64.tar.gz”。
+复制第 1 步中解压的文件，替换第 2 步解压后目录(./grafana-v{version}-linux-amd64/prometheus)下的对应文件。替换完成后重新压缩,并将新压缩包命名为“grafna-v{newversion}.tar.gz”。
 
 {{< copyable "shell-regular" >}}
 
 ```bash
-tar -zcvf grafana-v8.0.0-linux-amd64.tar.gz ./
+cd grafana-v{version}-linux-amd64.tar.gz
+tar -zcvf ../grafana-v{new-version}.tar.gz ./
 ```
 
 > **注意：**
 >
-> - {newversion} 新的版本号可以不与 TiDB 版本一致，且一定要高于当前部署的 TiDB 版本号。
+> - {new-version} 可以由用户自行指定，无特殊要求。
 
 ### 第 4 步：使用新的组件包升级 Grafana 
 
@@ -95,7 +97,7 @@ tar -zcvf grafana-v8.0.0-linux-amd64.tar.gz ./
 {{< copyable "shell-regular" >}}
 
 ```bash
-tiup cluster patch <cluster-name> grafana-v8.0.0-linux-amd64.tar.gz -R grafana
+tiup cluster patch <cluster-name> grafana-v{new-version}.tar.gz -R grafana
 ```
 升级完成后，可以打开 Grafana 主页（地址通常是 http://<Grafana-server-host-name>:3000, 查看 Grafana 的版本信息，确认升级成功。
 
