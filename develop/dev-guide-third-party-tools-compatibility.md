@@ -161,7 +161,7 @@ TiDB 对其进行了两个维度的修复：
 
 ## 与 Sequelize 的兼容性
 
-本小节描述的兼容性信息基于 [Sequelize v6.21.4](https://www.npmjs.com/package/sequelize/v/6.21.4) 测试。
+本小节描述的兼容性信息基于 [Sequelize v6.32.1](https://www.npmjs.com/package/sequelize/v/6.32.1) 测试。
 
 根据测试结果，TiDB 支持绝大部分 Sequelize 功能（[使用 `MySQL` 作为方言](https://sequelize.org/docs/v6/other-topics/dialect-specific-things/#mysql)），不支持的功能有：
 
@@ -172,6 +172,9 @@ TiDB 对其进行了两个维度的修复：
 - 不支持 `READ-UNCOMMITTED` 和 `SERIALIZABLE` [隔离级别](/system-variables.md#transaction_isolation)。
 - 默认不允许修改列的 `AUTO_INCREMENT` 属性。
 - 不支持 `FULLTEXT`、`HASH` 和 `SPATIAL` 索引。
+- 不支持 `sequelize.queryInterface.showIndex(Model.tableName);`。
+- 不支持 `sequelize.options.databaseVersion`。
+- 不支持使用 [`queryInterface.addColumn`](https://sequelize.org/api/v6/class/src/dialects/abstract/query-interface.js~queryinterface#instance-method-addColumn) 添加外键引用。
 
 ### 不支持修改整数主键
 
