@@ -26,7 +26,9 @@
       - [MyBatis](/develop/dev-guide-sample-application-java-mybatis.md)
       - [Hibernate](/develop/dev-guide-sample-application-java-hibernate.md)
       - [Spring Boot](/develop/dev-guide-sample-application-java-spring-boot.md)
-    - [Golang](/develop/dev-guide-sample-application-golang.md)
+    - Go
+      - [Go-MySQL-Driver](/develop/dev-guide-sample-application-golang-sql-driver.md)
+      - [GORM](/develop/dev-guide-sample-application-golang-gorm.md)
     - [Python (Django)](/develop/dev-guide-sample-application-django.md)
     - [Python](/develop/dev-guide-sample-application-python.md)
   - 连接到 TiDB

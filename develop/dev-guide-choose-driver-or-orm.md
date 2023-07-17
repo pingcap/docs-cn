@@ -213,7 +213,7 @@ implementation group: 'io.github.lastincisor', name: 'tidb-loadbalance', version
 
 按照 [go-sql-driver/mysql 文档](https://github.com/go-sql-driver/mysql)中的说明获取并配置 Golang 驱动程序即可使用。
 
-有关一个完整的实例应用程序，可参阅使用 [TiDB 和 go-sql-driver/mysql 构建一个 Golang 应用](/develop/dev-guide-sample-application-golang.md#第-2-步获取代码)。
+有关一个完整的实例应用程序，可参阅使用 [TiDB 和 go-sql-driver/mysql 构建一个 Golang 应用](/develop/dev-guide-sample-application-golang-sql-driver.md#第-2-步获取代码)。
 
 ### Golang ORM 框架
 
@@ -228,7 +228,7 @@ go get -u gorm.io/gorm
 go get -u gorm.io/driver/mysql
 ```
 
-使用 GORM 进行 TiDB 应用程序构建的例子，可参阅 [TiDB 和 Golang 的简单 CRUD 应用程序 - 使用 GORM](/develop/dev-guide-sample-application-golang.md#第-2-步获取代码)。
+使用 GORM 进行 TiDB 应用程序构建的例子，可参阅 [TiDB 和 Golang 的简单 CRUD 应用程序 - 使用 GORM](/develop/dev-guide-sample-application-golang-gorm.md#第-2-步获取代码)。
 
 ## Python
 
