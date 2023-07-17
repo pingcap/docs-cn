@@ -39,7 +39,7 @@ max-backups = 14
 ### tidb-lightning 任务配置
 
 [lightning]
-# 启动之前检查集群是否满足最低需求，以及启动后检查 TiKV 剩余可用空间是否大于 10%。
+# 启动之前检查集群是否满足最低需求，以及运行过程中检查 TiKV 的可用存储空间是否大于 10%。
 # check-requirements = true
 
 # 引擎文件的最大并行数。
