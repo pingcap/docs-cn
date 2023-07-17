@@ -215,7 +215,7 @@ If you encounter problems when connecting to TiDB using the tools listed in this
          <td rowspan="4">JavaScript / TypeScript</td>
          <td><a href="https://www.npmjs.com/package/sequelize" target="_blank" referrerpolicy="no-referrer-when-downgrade">sequelize</a></td>
          <td>v6.20.1</td>
-         <td>Compatible</td>
+         <td>Full</td>
          <td>N/A</td>
          <td>N/A</td>
       </tr>
@@ -257,18 +257,18 @@ If you encounter problems when connecting to TiDB using the tools listed in this
          <td>N/A</td>
       </tr>
       <tr>
+         <td><a href="https://www.sqlalchemy.org/" target="_blank" referrerpolicy="no-referrer-when-downgrade">SQLAlchemy</a></td>
+         <td>v1.4.37</td>
+         <td>Full</td>
+         <td>N/A</td>
+         <td><a href="/tidb/dev/dev-guide-sample-application-python-sqlalchemy">Build a Simple CRUD App with TiDB and SQLAlchemy</a></td>
+      </tr>
+      <tr>
          <td><a href="https://github.com/coleifer/peewee/" target="_blank" referrerpolicy="no-referrer-when-downgrade">peewee</a></td>
          <td>v3.14.10</td>
          <td>Compatible</td>
          <td>N/A</td>
          <td><a href="/tidb/dev/dev-guide-sample-application-python-peewee">Build a Simple CRUD App with TiDB and peewee</a></td>
-      </tr>
-      <tr>
-         <td><a href="https://www.sqlalchemy.org/" target="_blank" referrerpolicy="no-referrer-when-downgrade">SQLAlchemy</a></td>
-         <td>v1.4.37</td>
-         <td>Compatible</td>
-         <td>N/A</td>
-         <td><a href="/tidb/dev/dev-guide-sample-application-python-sqlalchemy">Build a Simple CRUD App with TiDB and SQLAlchemy</a></td>
       </tr>
    </tbody>
 </table>

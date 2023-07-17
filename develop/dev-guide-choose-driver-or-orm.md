@@ -275,7 +275,7 @@ For an example of using MySQL Connector/Python to build a TiDB application, see 
 <SimpleTab>
 <div label="SQLAlchemy">
 
-Support level: **Compatible**
+Support level: **Full**
 
 [SQLAlchemy](https://www.sqlalchemy.org/) is a popular ORM framework for Python. To get all dependencies in your application, you can use the `pip install SQLAlchemy==1.4.44` command. It is recommended to use SQLAlchemy 1.4.44 or later versions.
 

@@ -180,7 +180,7 @@ TiDB fixes it in the following ways:
 
 ## Compatibility with Sequelize
 
-The compatibility information described in this section is based on [Sequelize v6.21.4](https://www.npmjs.com/package/sequelize/v/6.21.4).
+The compatibility information described in this section is based on [Sequelize v6.32.1](https://www.npmjs.com/package/sequelize/v/6.32.1).
 
 According to the test results, TiDB supports most of the Sequelize features ([using `MySQL` as the dialect](https://sequelize.org/docs/v6/other-topics/dialect-specific-things/#mysql)).
 
@@ -192,6 +192,9 @@ Unsupported features are:
 - The `READ-UNCOMMITTED` and `SERIALIZABLE` [isolation levels](/system-variables.md#transaction_isolation) are not supported.
 - Modification of a column's `AUTO_INCREMENT` attribute is not allowed by default.
 - `FULLTEXT`, `HASH`, and `SPATIAL` indexes are not supported.
+- `sequelize.queryInterface.showIndex(Model.tableName);` is not supported.
+- `sequelize.options.databaseVersion` is not supported.
+- Adding a foreign key reference using [`queryInterface.addColumn`](https://sequelize.org/api/v6/class/src/dialects/abstract/query-interface.js~queryinterface#instance-method-addColumn) is not supported.
 
 ### Modification of integer primary key is not supported
 
