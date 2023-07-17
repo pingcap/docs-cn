@@ -749,8 +749,7 @@ def simple_example() -> None:
             print(f'start to insert one by one, it will take a long time')
             player_list = random_player(1919)
             for idx in range(0, len(player_list), 114):
-                if idx % 100 == 0:
-                    print(f'inserted {idx} players')
+                print(f'inserted {idx} players')
                 bulk_create_player(cur, player_list[idx:idx + 114])
 
             # print the number of players
