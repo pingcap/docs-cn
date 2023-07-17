@@ -120,7 +120,7 @@ aliases: ['/docs-cn/dev/grafana-tikv-dashboard/','/docs-cn/dev/reference/key-mon
     - append: ready 内 Raft log entry 的 ops
     - commit: ready 内 committed Raft log entry 的 ops
     - snapshot: 携带 snapshot 的 ready 的 ops
-- Max Duration of Raft store events：100% 的 raftstore 事件所花费的时间
+- Max Duration of Raft store events：raftstore 处理事件最慢一次所花费的时间
 - Replica read lock checking duration：处理 Replica Read 时检查 lock 所花费的时间
 - Peer msg length distribution：每个 TiKV 中每个 region 一次性处理 Peer 消息的个数，消息越多说明 peer 越繁忙。
 
