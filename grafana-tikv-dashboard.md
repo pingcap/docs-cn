@@ -339,8 +339,8 @@ title: TiKV 监控指标详解
 
 - Operations
     - write：Raft Engine 每秒写操作的次数
-    - read-entry：Raft Engine 每秒读 raft 数据的次数
-    - read-message：Raft Engine 每秒读 raft 消息的次数
+    - read_entry：Raft Engine 每秒读 raft 日志的次数
+    - read_message：Raft Engine 每秒读 raft 元数据的次数
 - Write duration：Raft Engine 写操作的耗时，该耗时基本接近写入这些数据所包含的磁盘 IO 的 latency 之和
 - Flow
     - write：Raft Engine 写流量
