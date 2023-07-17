@@ -234,7 +234,7 @@ pd-addr = "172.16.31.4:2379"
 # 设置 TiDB 库的日志等级。
 log-level = "error"
 
-# 设置 TiDB 会话变量，提升 Checksum 和 Analyze 的速度。请注意，如果将 checksum-via-sql 参数设置为 true，则会通过 TiDB 执行 ADMIN CHECKSUM TABLE <table> SQL 语句来进行 Checksum 操作。在这种情况下，以下参数 distsql-scan-concurrency = 15 和 checksum-table-concurrency = 2 将不会生效。
+# 设置 TiDB 会话变量，提升 Checksum 和 Analyze 的速度。注意，如果将 checksum-via-sql 设置为 "true"，则会通过 TiDB 执行 ADMIN CHECKSUM TABLE <table> SQL 语句来进行 Checksum 操作。在这种情况下，以下参数 distsql-scan-concurrency = 15 和 checksum-table-concurrency = 2 将不会生效。
 # 各参数定义可参阅”控制 Analyze 并发度“文档
 build-stats-concurrency = 20
 distsql-scan-concurrency = 100
@@ -276,7 +276,7 @@ max-allowed-packet = 67_108_864
 # - "optional"。在导入完成后执行 CHECKSUM 检查，如果报错，会输出一条 WARN 日志并忽略错误。
 # - "off"。导入结束后不执行 CHECKSUM 检查。
 # 默认值为 "required"。从 v4.0.8 开始，checksum 的默认值由此前的 "true" 改为 "required"。
-# 设置是否通过 TiDB 执行 ADMIN CHECKSUM TABLE <table> 操作，默认值为 false，表示通过 Lightning 下发 ADMIN CHECKSUM TABLE <table> 命令给 TiKV 执行。建议将该值设为 true，以便在 checksum 失败时更容易定位问题。同时，当该值为 true 时，如果需要调整并发，请在 TiDB 中设置 tidb_checksum_table_concurrency 参数。
+# 设置是否通过 TiDB 执行 ADMIN CHECKSUM TABLE <table> 操作，默认值为 "false"，表示通过 TiDB Lightning 下发 ADMIN CHECKSUM TABLE <table> 命令给 TiKV 执行。建议将该值设为 "true"，以便在 checksum 失败时更容易定位问题。同时，当该值为 "true" 时，如果需要调整并发，请在 TiDB 中设置 tidb_checksum_table_concurrency 参数。
 # checksum-via-sql = false
 #
 # 注意：
