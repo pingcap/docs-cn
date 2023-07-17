@@ -345,7 +345,10 @@ max-allowed-packet = 67_108_864
 # - "optional"。在导入完成后执行 CHECKSUM 检查，如果报错，会输出一条 WARN 日志并忽略错误。
 # - "off"。导入结束后不执行 CHECKSUM 检查。
 # 默认值为 "required"。从 v4.0.8 开始，checksum 的默认值由此前的 "true" 改为 "required"。
-# 设置是否通过 TiDB 执行 ADMIN CHECKSUM TABLE <table> 操作，默认值为 "false"，表示通过 TiDB Lightning 下发 ADMIN CHECKSUM TABLE <table> 命令给 TiKV 执行。建议将该值设为 "true"，以便在 checksum 失败时更容易定位问题。同时，当该值为 "true" 时，如果需要调整并发，请在 TiDB 中设置 `tidb_checksum_table_concurrency` 参数。
+# 设置是否通过 TiDB 执行 ADMIN CHECKSUM TABLE <table> 操作。
+# 默认值为 "false"，表示通过 TiDB Lightning 下发 ADMIN CHECKSUM TABLE <table> 命令给 TiKV 执行。
+# 建议将该值设为 "true"，以便在 checksum 失败时更容易定位问题。
+# 同时，当该值为 "true" 时，如果需要调整并发，请在 TiDB 中设置 `tidb_checksum_table_concurrency` 参数。
 # checksum-via-sql = false
 #
 # 注意：
