@@ -151,9 +151,11 @@ def simple_example() -> None:
 
             # create players with bulk inserts.
             # insert 1919 players totally, with 114 players per batch.
-            # each player has a random UUID
+            # all players have random uuid
+            print(f'start to insert one by one, it will take a long time')
             player_list = random_player(1919)
             for idx in range(0, len(player_list), 114):
+                print(f'inserted {idx} players')
                 bulk_create_player(cur, player_list[idx:idx + 114])
 
             # print the number of players
