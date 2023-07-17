@@ -228,11 +228,11 @@ with get_connection(autocommit=True) as connection:
 
 有关 Python 的完整示例，可参阅：
 
-- [TiDB 和 Python 的简单 CRUD 应用程序 - 使用 PyMySQL](/develop/dev-guide-sample-application-python.md#第-2-步获取代码)
-- [TiDB 和 Python 的简单 CRUD 应用程序 - 使用 mysqlclient](/develop/dev-guide-sample-application-python.md#第-2-步获取代码)
-- [TiDB 和 Python 的简单 CRUD 应用程序 - 使用 mysql-connector-python](/develop/dev-guide-sample-application-python.md#第-2-步获取代码)
-- [TiDB 和 Python 的简单 CRUD 应用程序 - 使用 SQLAlchemy](/develop/dev-guide-sample-application-python.md#第-2-步获取代码)
-- [TiDB 和 Python 的简单 CRUD 应用程序 - 使用 peewee](/develop/dev-guide-sample-application-python.md#第-2-步获取代码)
+- [TiDB 和 Python 的简单 CRUD 应用程序 - 使用 PyMySQL](/develop/dev-guide-sample-application-python-pymysql.md#第-2-步获取代码)
+- [TiDB 和 Python 的简单 CRUD 应用程序 - 使用 mysqlclient](/develop/dev-guide-sample-application-python-mysqlclient.md#第-2-步获取代码)
+- [TiDB 和 Python 的简单 CRUD 应用程序 - 使用 mysql-connector-python](/develop/dev-guide-sample-application-python-mysql-connector.md#第-2-步获取代码)
+- [TiDB 和 Python 的简单 CRUD 应用程序 - 使用 SQLAlchemy](/develop/dev-guide-sample-application-python-sqlalchemy.md#第-2-步获取代码)
+- [TiDB 和 Python 的简单 CRUD 应用程序 - 使用 peewee](/develop/dev-guide-sample-application-python-peewee.md#第-2-步获取代码)
 
 </div>
 

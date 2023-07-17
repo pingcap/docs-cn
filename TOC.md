@@ -29,8 +29,13 @@
     - Go
       - [Go-MySQL-Driver](/develop/dev-guide-sample-application-golang-sql-driver.md)
       - [GORM](/develop/dev-guide-sample-application-golang-gorm.md)
-    - [Python (Django)](/develop/dev-guide-sample-application-django.md)
-    - [Python](/develop/dev-guide-sample-application-python.md)
+    - Python
+      - [mysqlclient](/develop/dev-guide-sample-application-python-mysqlclient.md)
+      - [MySQL Connector/Python](/develop/dev-guide-sample-application-python-mysql-connector.md)
+      - [PyMySQL](/develop/dev-guide-sample-application-python-pymysql.md)
+      - [SQLAlchemy](/develop/dev-guide-sample-application-python-sqlalchemy.md)
+      - [peewee](/develop/dev-guide-sample-application-python-peewee.md)
+      - [Django](/develop/dev-guide-sample-application-python-django.md)
   - 连接到 TiDB
     - [选择驱动或 ORM 框架](/develop/dev-guide-choose-driver-or-orm.md)
     - [连接到 TiDB](/develop/dev-guide-connect-to-tidb.md)
