@@ -1,6 +1,6 @@
 > Join 是一个关系型数据库查询中的常见操作。通过连接多个表，来实现跨表之间的数据分析。其中 Hash Join 是  Join 操作的主要实现方式之一，通常也是查询的性能瓶颈之一。因此提升 Hash Join 的性能也是 TiDB 的主要任务。
 
-  Runtime Filter 是 TiDB v7.3 引入的新功能，旨在提升 Hash Join 的性能。通过动态生成 Filter 来提前过滤 Hash Join 的数据从而减少运行时的扫描量以及 Hash Join 的计算量，最终达到提升查询性能的效果。
+  Runtime Filter 是 TiDB v7.3 引入的新功能，旨在提升 MPP 场景下 Hash Join 的性能。通过动态生成 Filter 来提前过滤 Hash Join 的数据从而减少运行时的扫描量以及 Hash Join 的计算量，最终达到提升查询性能的效果。
 
 # 名词解释
 
@@ -29,7 +29,7 @@ WHERE ss_date_sk = d_date_sk
       AND d_year = 2001
 ```
 
-  普通的 Hash Join 执行方式为：（简化版本，省略了 exchange 等节点）
+  Hash Join 通常情况下的执行方式为：（简化版本，省略了 exchange 等节点）
 
 ```
                  +-------------------+
