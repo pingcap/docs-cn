@@ -281,7 +281,7 @@ go get -u gorm.io/driver/mysql
 
 <div label="SQLAlchemy">
 
-支持等级：**Compatible**
+支持等级：**Full**
 
 [SQLAlchemy](https://www.sqlalchemy.org/) 是一个流行的 Python 的 ORM 框架，你可以使用 `pip install SQLAlchemy==1.4.44` 获取你的应用程序的所有依赖项。建议使用 **1.4.44** 及以上版本。
 
