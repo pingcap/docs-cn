@@ -1,13 +1,12 @@
 ---
-title: TiDB 和 Java 的简单 CRUD 应用程序
-summary: 给出一个 TiDB 和 Java 的简单 CRUD 应用程序示例。
-aliases: ['/zh/tidb/dev/sample-application-java']
+title: TiDB 和 Hibernate 的简单 CRUD 应用程序
+summary: 给出一个 TiDB 和 Hibernate 的简单 CRUD 应用程序示例。
 ---
 
 <!-- markdownlint-disable MD024 -->
 <!-- markdownlint-disable MD029 -->
 
-# TiDB 和 Java 的简单 CRUD 应用程序
+# TiDB 和 Hibernate 的简单 CRUD 应用程序
 
 本文档将展示如何使用 TiDB 和 Java 来构造一个简单的 CRUD 应用程序。
 
@@ -401,12 +400,21 @@ public class HibernateExample
 
 ### 第 3 步第 3 部分：运行
 
-运行 `make`，这是以下两个操作的组合：
+你可以分别运行 `make build` 和 `make run` 以运行此代码：
 
-- 清理并构建 (make build)：`mvn clean package`
-- 运行 (make run)：`java -jar target/plain-java-hibernate-0.0.1-jar-with-dependencies.jar`
+```shell
+make build # this command executes `mvn clean package`
+make run # this command executes `java -jar target/plain-java-hibernate-0.0.1-jar-with-dependencies.jar`
+```
 
-你也可以单独运行这两个 make 命令或原生命令。
+或者你也可以直接使用原生的命令：
+
+```shell
+mvn clean package
+java -jar target/plain-java-hibernate-0.0.1-jar-with-dependencies.jar
+```
+
+再或者直接运行 `make` 命令，这是 `make build` 和 `make run` 的组合。
 
 ## 第 4 步：预期输出
 

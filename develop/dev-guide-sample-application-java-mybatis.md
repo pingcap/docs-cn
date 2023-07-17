@@ -608,10 +608,6 @@ public class MybatisExample {
 
 ### 第 3 步第 1 部分：JDBC 表初始化
 
-> **建议：**
->
-> 在 Gitpod Playground 中尝试 Mybatis：[现在就试试](https://gitpod.io/#targetMode=plain-java-mybatis/https://github.com/pingcap-inc/tidb-example-java)
-
 使用 Mybatis 时，需手动初始化数据库表。若你本地已经安装了 `mysql-client`，且使用本地集群，可直接在 `plain-java-mybatis` 目录下通过 `make prepare` 运行：
 
 ```shell
@@ -701,32 +697,39 @@ mysql --host 127.0.0.1 --port 4000 -u root < src/main/resources/dbinit.sql
 
 ### 第 3 步第 3 部分：运行
 
-运行 `make`，这是以下四个操作的组合：
+你可以分别运行 `make prepare`, `make gen`, `make build` 和 `make run` 以运行此代码：
 
-- 创建表 (`make prepare`)：
+```shell
+make prepare
+# this command executes :
+# - `mysql --host 127.0.0.1 --port 4000 -u root < src/main/resources/dbinit.sql`
+# - `mysql --host 127.0.0.1 --port 4000 -u root -e "TRUNCATE test.player"`
 
-    {{< copyable "shell-regular" >}}
+make gen
+# this command executes :
+# - `rm -f src/main/java/com/pingcap/model/Player.java`
+# - `rm -f src/main/java/com/pingcap/model/PlayerMapper.java`
+# - `rm -f src/main/resources/mapper/PlayerMapper.xml`
+# - `mvn mybatis-generator:generate`
 
-    ```shell
-    mysql --host 127.0.0.1 --port 4000 -u root < src/main/resources/dbinit.sql
-    mysql --host 127.0.0.1 --port 4000 -u root -e "TRUNCATE test.player"
-    ```
+make build # this command executes `mvn clean package`
+make run # this command executes `java -jar target/plain-java-mybatis-0.0.1-jar-with-dependencies.jar`
+```
 
-- 清理并构建 (`make gen`)：
+或者你也可以直接使用原生的命令：
 
-    {{< copyable "shell-regular" >}}
+```shell
+mysql --host 127.0.0.1 --port 4000 -u root < src/main/resources/dbinit.sql
+mysql --host 127.0.0.1 --port 4000 -u root -e "TRUNCATE test.player"
+rm -f src/main/java/com/pingcap/model/Player.java
+rm -f src/main/java/com/pingcap/model/PlayerMapper.java
+rm -f src/main/resources/mapper/PlayerMapper.xml
+mvn mybatis-generator:generate
+mvn clean package
+java -jar target/plain-java-mybatis-0.0.1-jar-with-dependencies.jar
+```
 
-    ```shell
-    rm -f src/main/java/com/pingcap/model/Player.java
-    rm -f src/main/java/com/pingcap/model/PlayerMapper.java
-    rm -f src/main/resources/mapper/PlayerMapper.xml
-    mvn mybatis-generator:generate
-    ```
-
-- 清理并构建 (`make build`)：`mvn clean package`
-- 运行 (`make run`)：`java -jar target/plain-java-mybatis-0.0.1-jar-with-dependencies.jar`
-
-你也可以单独运行这四个 `make` 命令或原生命令。
+再或者直接运行 `make` 命令，这是 `make prepare`, `make gen`, `make build` 和 `make run` 的组合。
 
 ## 第 4 步：预期输出
 
