@@ -161,7 +161,7 @@ dispatchers = [
 
 ### Matcher 匹配规则
 
-以如下示例配置文件中的 dispatchers 配置项为例：
+以如下示例配置文件中的 `dispatchers` 配置项为例：
 
 ```toml
 [sink]
