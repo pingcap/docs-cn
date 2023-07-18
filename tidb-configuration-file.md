@@ -221,12 +221,14 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 ### `labels`
 
 + 指定服务器标签，例如 `{ zone = "us-west-1", dc = "dc1", rack = "rack1", host = "tidb1" }`。
++ 指定 `tidb_role`, 例如 `{ tidb_role = "dist_worker" }`。
 + 默认值：`{}`
 
 > **注意：**
 >
 > - 标签 `zone` 在 TiDB 中具有特殊用途，用于指定服务器所在的区域信息，当设置 `zone` 为非空值时，对应的值会被自动用于 [`txn-score`](/system-variables.md#txn_scope) 和 [`Follower read`](/follower-read.md) 等功能。
 > - 标签 `group` 在 TiDB Operator 中具有特殊用途。对于使用 [TiDB Operator](/tidb-operator-overview.md) 部署的集群，建议不要手动指定此标签。
+> - 标签 `tidb_role` 在 TiDB 中具有特殊用途，用户指定服务器是否可以执行后端分布式框架任务，当设置 `tidb_role` 值为 `dist_worker` 时，对应的节点将会执行分布式框架任务。如果所有 TiDB 节点均未设置 `tidb_role` 为 `dist_worker`，则默认所有 TiDB 服务器都会执行分布式框架任务。
 
 ## log
 
