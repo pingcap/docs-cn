@@ -161,7 +161,17 @@ For detailed integration guide, see [Quick Start Guide on Integrating TiDB with 
 
 ### Matcher rules
 
-In the example of the previous section:
+Take the following configuration of `dispatchers` as an example:
+
+```toml
+[sink]
+dispatchers = [
+  {matcher = ['test1.*', 'test2.*'], topic = "Topic expression 1", partition = "ts" },
+  {matcher = ['test3.*', 'test4.*'], topic = "Topic expression 2", partition = "index-value" },
+  {matcher = ['test1.*', 'test5.*'], topic = "Topic expression 3", partition = "table"},
+  {matcher = ['test6.*'], partition = "ts"}
+]
+```
 
 - For the tables that match the matcher rule, they are dispatched according to the policy specified by the corresponding topic expression. For example, the `test3.aa` table is dispatched according to "Topic expression 2"; the `test5.aa` table is dispatched according to "Topic expression 3".
 - For a table that matches multiple matcher rules, it is dispatched according to the first matching topic expression. For example, the `test1.aa` table is distributed according to "Topic expression 1".
