@@ -1,21 +1,26 @@
-> Join 是一个关系型数据库查询中的常见操作。通过连接多个表，来实现跨表之间的数据分析。其中 Hash Join 是  Join 操作的主要实现方式之一，通常也是查询的性能瓶颈之一。因此提升 Hash Join 的性能也是 TiDB 的主要任务。
+---
+title: Runtime Filter
+summary: 介绍 Runtime Filter 的原理及使用方式
+---
 
-  Runtime Filter 是 TiDB v7.3 引入的新功能，旨在提升 MPP 场景下 Hash Join 的性能。通过动态生成 Filter 来提前过滤 Hash Join 的数据从而减少运行时的扫描量以及 Hash Join 的计算量，最终达到提升查询性能的效果。
+# Runtime Filter  
 
-# 名词解释
+Runtime Filter 是 TiDB v7.3 引入的新功能，旨在提升 MPP 场景下 Hash Join 的性能。通过动态生成 Filter 来提前过滤 Hash Join 的数据从而减少运行时的扫描量以及 Hash Join 的计算量，最终达到提升查询性能的效果。
+
+## 名词解释
 
 1. Hash Join：一种实现 Join 关系代数的方式。通过一侧构建 Hash Table 来，另一侧不断 match Hash Table 来得到 Join 的结果。
 2. Build Side：Hash Join 中构建 Hash Table 的一侧称之为 Build Side。*文中默认以 Join 的右表作为 Build Side*
 3. Probe Side：Hash Join 中不断 match Hash Table 的一侧称之为 Probe Side。*文中默认以 Join 的左表作为 Probe Side*
 4. Filter: 文中也用谓词指代，指代过滤条件。
 
-# 优化思路
+## 优化思路
 
   Hash Join 通过将右表的数据构建 Hash Table，左表的数据不断 probe Hash Table 来完成 Join。Probe 过程一部分 Join Key 值中无法命中 Hash Table，则说明中的这部分数据在右表中不存在，也不会出现在最后 Join 的结果中。
 
   如果在扫描时能够**提前过滤掉这部分 Join Key** 的数据，将会减少扫描时间和网络开销，**从而大幅提升 Join 效率**。
 
-# 原理
+## 原理
 
   Runtime Filter 是一种在查询规划时生成的**动态取值的谓词。**这个谓词和 TiDB Selection 中的其他谓词的作用是一样的，都是应用在 Table Scan 上，用来过滤不满足谓词条件的行。唯一不同的就是，Runtime Filter 这个谓词的参数取值是在 Hash Join 中构建的。
 
@@ -68,7 +73,7 @@ WHERE ss_date_sk = d_date_sk
 
   从两个图中对比可知。```store_sales``` 的扫描量从 100W -> 5000。减少 Table Full Scan 扫描的数据量，进而减少 probe Hash Table的次数，避免不必要的 I/O 和网络传输。Runtime Filter 就是通过这种方式来大大提升 Join 的效率的。
 
-# 使用方法
+## 使用方法
 
 这里以 TPC-DS 的数据集为例。主要用到表 catalog_sales 和表 date_dim 二者进行 Join。
 
@@ -213,7 +218,7 @@ mysql> explain analyze select cs_ship_date_sk from catalog_sales, date_dim
 1. IO 的减少：对比Table Full Scan 算子的 ```total_scanned_rows```可知，开启 Runtime Filter 后 TableFullScan 的扫描量减少了 2/3 。
 2. Hash Join 的性能提升：Hash Join 算子的执行速度从 376.1ms 提升至 157.6ms。
 
-## 最佳实践
+### 最佳实践
 
 Runtime Filter 最适用于大表和小表进行 Join 的情况，比如事实表和维度表进行关联查询的业务逻辑。维度表的命中的数据量越小，意味着 Filter 的取值越少，事实表就能更多的过滤掉不满足条件的数据，对比默认情况下的扫全事实表的情况，其性能效果非常明显。
 
@@ -235,7 +240,7 @@ Runtime Filter Mode 指的是 Runtime Filter 的模式，简单来说就是 **�
 
 + IN：设置为 IN，默认也是 IN。即生成的 Runtime Filter 类型为 IN 类型的谓词。
 
-# 限制
+## 限制
 
 + Runtime Filter 是一个 MPP 架构下的优化，其仅可应用于 TiFlash 执行引擎。
 + Join Type：Left outer，Full outer，anti join（当左表为 Probe Side 时）均不可生成 Runtime Filter。由于 Runtime Filter 是提前过滤参与 Join 的数据，所以这些类型的 Join 其并不会丢弃未 match 上的数据所以不可使用该优化。
