@@ -82,7 +82,7 @@ URI 中可配置的的参数如下：
 | `read-timeout` | 读取下游 Kafka 返回的 response 的超时时长，默认值为 `10s`。 |
 | `write-timeout` | 向下游 Kafka 发送 request 的超时时长，默认值为 `10s`。 |
 | `avro-decimal-handling-mode` | 仅在输出协议是 `avro` 时有效。该参数决定了如何处理 DECIMAL 类型的字段，值可以是 `string` 或 `precise`，表明映射成字符串还是浮点数。 |
-| `avro-bigint-unsigned-handling-mode` | 仅在输出协议是 `avro` 时有效。该参数决定了如何处理 BIGINT UNSIGNED 类型的字段，值可以是 `string` 或 `long`，表明映射成字符串还是 64 位整形。|
+| `avro-bigint-unsigned-handling-mode` | 仅在输出协议是 `avro` 时有效。该参数决定了如何处理 BIGINT UNSIGNED 类型的字段，值可以是 `string` 或 `long`，表明映射成字符串还是 64 位整型。|
 
 ### 最佳实践
 
@@ -160,7 +160,17 @@ dispatchers = [
 
 ### Matcher 匹配规则
 
-以上一节示例配置文件中的 dispatchers 配置项为例：
+以如下示例配置文件中的 `dispatchers` 配置项为例：
+
+```toml
+[sink]
+dispatchers = [
+  {matcher = ['test1.*', 'test2.*'], topic = "Topic 表达式 1", partition = "ts" },
+  {matcher = ['test3.*', 'test4.*'], topic = "Topic 表达式 2", partition = "index-value" },
+  {matcher = ['test1.*', 'test5.*'], topic = "Topic 表达式 3", partition = "table"},
+  {matcher = ['test6.*'], partition = "ts"}
+]
+```
 
 - 对于匹配了 matcher 规则的表，按照对应的 topic 表达式指定的策略进行分发。例如表 test3.aa，按照 topic 表达式 2 分发；表 test5.aa，按照 topic 表达式 3 分发。
 - 对于匹配了多个 matcher 规则的表，以靠前的 matcher 对应的 topic 表达式为准。例如表 test1.aa，按照 topic 表达式 1 分发。
