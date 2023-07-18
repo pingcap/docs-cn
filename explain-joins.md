@@ -268,7 +268,7 @@ Hash Join 算法的性能受以下系统变量影响：
 
 ### 相关优化
 
-TiDB 提供了 Runtime Filter 功能，针对 Hash Join 进行性能优化，大幅提升 Hash Join 的执行速度。具体优化使用方式见文档[Runtime Filter](/runtime-filter.md)。
+TiDB 提供了 Runtime Filter 功能，针对 Hash Join 进行性能优化，大幅提升 Hash Join 的执行速度。具体优化使用方式见 [Runtime Filter](/runtime-filter.md)。
 
 ## Merge Join
 
