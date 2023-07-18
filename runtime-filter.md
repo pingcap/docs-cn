@@ -24,7 +24,7 @@ Runtime Filter 是 TiDB v7.3 引入的新功能，旨在提升 MPP 场景下 Has
 
   Runtime Filter 是一种在查询规划时生成的**动态取值的谓词。**这个谓词和 TiDB Selection 中的其他谓词的作用是一样的，都是应用在 Table Scan 上，用来过滤不满足谓词条件的行。唯一不同的就是，Runtime Filter 这个谓词的参数取值是在 Hash Join 中构建的。
 
-  ### 例子
+### 例子
 
   当前存在 ```store_sales``` 表与 ```date_dim``` 表的 Join 查询，它的 Join 方式为 Hash Join， ```store_sales``` 是一张事实表，主要存储门店销售数据，行数为 100万。T2 是一张时间维度表，主要存储时间信息。  当前查询想查询 2001 年的销售数据，则时间维度表的参与 Join 的数据量为 365 行。
 
@@ -77,7 +77,7 @@ WHERE ss_date_sk = d_date_sk
 
 这里以 TPC-DS 的数据集为例。主要用到表 catalog_sales 和表 date_dim 二者进行 Join。
 
-#### Step1: 创建带 TiFlash Replica 的表
+### Step1: 创建带 TiFlash Replica 的表
 
 给表 ```catalog_sales``` 和 ```date_dim``` 各增加一个 TiFlash 的副本。
 
@@ -103,7 +103,7 @@ mysql> select * from INFORMATION_SCHEMA.TIFLASH_REPLICA where TABLE_NAME='date_d
 +--------------+------------+----------+---------------+-----------------+-----------+----------+
 ```
 
-#### Step2: 开启 Runtime Filter
+### Step2: 开启 Runtime Filter
 
 将 ```tidb_runtime_filter_mode``` 设置为 LOCAL，即开启 Runtime Filter。
 
@@ -124,7 +124,7 @@ show variables like "tidb_runtime_filter_mode";
 
 显示 LOCAL 则成功开启 Runtime Filter。
 
-#### Step3: 查询
+### Step3: 查询
 
 在准备查询之前，先查看一下查询规划。
 
@@ -169,7 +169,7 @@ where d_date = '2002-2-01' and
      cs_ship_date_sk = d_date_sk;
 ```
 
-#### Step4: 性能对比
+### Step4: 性能对比
 
 以 TPCDS 的 50G 数据量为例，查询速度提升 50%，从 0.38s 提升至 0.17s。通过 analyze 语句可以看到具体的 Runtime Filter 生效后的各个算子的执行时间。
 
