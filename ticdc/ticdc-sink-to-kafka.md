@@ -161,7 +161,17 @@ dispatchers = [
 
 ### Matcher 匹配规则
 
-以上一节示例配置文件中的 dispatchers 配置项为例：
+以如下示例配置文件中的 dispatchers 配置项为例：
+
+```shell
+[sink]
+dispatchers = [
+  {matcher = ['test1.*', 'test2.*'], topic = "Topic 表达式 1", partition = "ts" },
+  {matcher = ['test3.*', 'test4.*'], topic = "Topic 表达式 2", partition = "index-value" },
+  {matcher = ['test1.*', 'test5.*'], topic = "Topic 表达式 3", partition = "table"},
+  {matcher = ['test6.*'], partition = "ts"}
+]
+```
 
 - 对于匹配了 matcher 规则的表，按照对应的 topic 表达式指定的策略进行分发。例如表 test3.aa，按照 topic 表达式 2 分发；表 test5.aa，按照 topic 表达式 3 分发。
 - 对于匹配了多个 matcher 规则的表，以靠前的 matcher 对应的 topic 表达式为准。例如表 test1.aa，按照 topic 表达式 1 分发。
