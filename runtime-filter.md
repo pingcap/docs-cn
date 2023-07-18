@@ -126,7 +126,7 @@ show variables like "tidb_runtime_filter_mode";
 
 ### Step3: 查询
 
-在准备查询之前，先查看一下查询规划。
+在准备查询之前，先查看一下查询规划。通过 [explain query](/sql-statements/sql-statement-explain.md) 方式检查 Runtime Filter 是否正确开启。
 
 ```sql
 explain select cs_ship_date_sk from catalog_sales, date_dim 
@@ -246,4 +246,4 @@ Runtime Filter Mode 指的是 Runtime Filter 的模式，简单来说就是 **�
 + Join Type：Left outer，Full outer，anti join（当左表为 Probe Side 时）均不可生成 Runtime Filter。由于 Runtime Filter 是提前过滤参与 Join 的数据，所以这些类型的 Join 其并不会丢弃未 match 上的数据所以不可使用该优化。
 + Equal Join expression：当等值 Join 表达式中的 Probe Column 为复杂表达式，或者 Probe Column 的类型为 Json，Blob，Array 等复合类型，则也不会生成 Runtime Filter。主要原因是这类 Column 一般很少作为 Equal Join 的关联列，且即使生成了 Filter 过滤率也一般很差。
 
-以上限制均可以通过 ```explain + query``` 的形式验证 Runtime Filter 是否正确的生成。
+以上限制均可以通过  [explain query](/sql-statements/sql-statement-explain.md)  命令验证 Runtime Filter 是否正确的生成。
