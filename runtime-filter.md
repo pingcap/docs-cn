@@ -232,7 +232,7 @@ Runtime Filter Mode 指的是 Runtime Filter 的模式，简单来说就是 **�
 + LOCAL：开启 LOCAL 模式的 Runtime Filter。LOCAL 模式指的是 **生成 Filter 的算子** 和 **接收 Filter 的算子**在同一个 Task 中。 简单说就是 Runtime Filter 可应用于 Hash Join 算子和 Table Scan 算子在同一个 Task 中的情况。*目前 Runtime Filter 仅支持 LOCAL 模式，如果要开启直接设置 LOCAL 即可。*
 + GLOBAL: 暂未支持 GLOBAL 模式。不可设置为该模式。
 
-```tidb_runtime_filter_mode```: 默认取值为 OFF，则查询不开启 Runtime Filter。LOCAL 则为开启 LOCAL 模式的 Runtime Filter。详细变量使用方式见[Ref](/system-variables.md#tidb_runtime_filter_mode-从-v7.2.0-版本开始引入)
+```tidb_runtime_filter_mode```: 默认取值为 OFF，则查询不开启 Runtime Filter。LOCAL 则为开启 LOCAL 模式的 Runtime Filter。详细变量使用方式见[Ref](/system-variables.md#tidb_runtime_filter_mode-从-v720-版本开始引入)
 
 ## Runtime Filter Type
 
