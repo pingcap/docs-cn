@@ -359,8 +359,8 @@ pd-addr = "172.16.31.4:2379"
 # This setting controls the log level of the TiDB library.
 log-level = "error"
 
-# Sets the TiDB session variable to speed up the Checksum and Analyze operations.
-# See https://pingcap.com/docs/dev/reference/performance/statistics/#control-analyze-concurrency
+# Sets the TiDB session variable to speed up the Checksum and Analyze operations. Note that if checksum-via-sql is set to "true", TiDB Lightning will execute the ADMIN CHECKSUM TABLE <table> SQL statement to perform the Checksum operation on TiDB. In this case, the following parameters `distsql-scan-concurrency` and `checksum-table-concurrency` will not take effect.
+# See https://docs.pingcap.com/tidb/stable/statistics#control-analyze-concurrency
 # for the meaning of each setting
 build-stats-concurrency = 20
 distsql-scan-concurrency = 15
@@ -407,6 +407,11 @@ max-allowed-packet = 67_108_864
 # For backward compatibility, bool values "true" and "false" are also allowed for this field.
 # "true" is equivalent to "required" and "false" is equivalent to "off".
 checksum = "required"
+# Specifies whether the ADMIN CHECKSUM TABLE <table> operation is executed via TiDB.
+# The default value is "false", which means that the ADMIN CHECKSUM TABLE <table> command is sent to TiKV for execution via TiDB Lightning.
+# It is recommended that you set this value to "true" to make it easier to locate the problem if checksum fails.
+# Meanwhile, if you want to adjust concurrency when this value is "true", you need to set the `tidb_checksum_table_concurrency` variable in TiDB (https://docs.pingcap.com/tidb/stable/system-variables#tidb_checksum_table_concurrency).
+checksum-via-sql = "false"
 # Specifies whether to perform `ANALYZE TABLE <table>` for each table after checksum is done.
 # Options available for this field are the same as `checksum`. However, the default value for this field is "optional".
 analyze = "optional"
