@@ -46,7 +46,7 @@ SET SESSION tidb_opt_fix_control = '44262:ON,44389:ON';
 
 - 默认值：`OFF`
 - 可选值：`ON`、`OFF`
-- TODO
+- 此开关控制是否让 Plan Cache 对在物理优化阶段形成的 `PointGet` 计划进行缓存
 
 ### [`44855`](https://github.com/pingcap/tidb/issues/44855) <span class="version-mark">从 v7.3.0 版本开始引入</span>
 
