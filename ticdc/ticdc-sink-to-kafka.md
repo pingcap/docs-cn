@@ -163,7 +163,7 @@ dispatchers = [
 
 以如下示例配置文件中的 dispatchers 配置项为例：
 
-```shell
+```toml
 [sink]
 dispatchers = [
   {matcher = ['test1.*', 'test2.*'], topic = "Topic 表达式 1", partition = "ts" },
