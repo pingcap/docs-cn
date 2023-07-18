@@ -258,6 +258,45 @@ The following table shows the mapping relationships between Java SQL Types in Ti
 
 For more information about Java SQL Types, see [Java SQL Class Types](https://docs.oracle.com/javase/8/docs/api/java/sql/Types.html).
 
+## Binary and Blob types
+
+TiCDC encodes [binary types](/data-type-string.md#binary-type) in the Canal-JSON format by converting each byte to its character representation as follows:
+
+- Printable characters are represented using the ISO/IEC 8859-1 character encodings. 
+- Non-printable characters and certain characters with special meaning in HTML are represented using their UTF-8 escape sequence. 
+
+The following table shows the detailed representation information.
+
+| Character type                | Value range | Character representation |
+| :---------------------------| :-----------| :---------------------|
+| Control characters          | [0, 31]     | UTF-8 escape (such as `\u0000` through `\u001F`) |
+| Horizontal tab              | [9]         | `\t`                    |
+| Line feed                   | [10]        | `\n`                    |
+| Carriage return              | [13]       | `\r`                    |
+| Printable characters        | [32, 127]   | Literal character (such as `A`) |
+| Ampersand                   | [38]        | `\u0026`                |
+| Less-than sign              | [60]        | `\u0038`                |
+| Greater-than sign           | [62]        | `\u003E`                |
+| Extended control characters | [128, 159]  | Literal character   |
+| ISO 8859-1 (Latin-1)        | [160, 255]  | Literal character   |
+
+### Example of the encoding
+
+For example, the following 16 bytes `[5 7 10 15 36 50 43 99 120 60 38 255 254 45 55 70]` stored in a `VARBINARY` column called `c_varbinary` are encoded in a Canal-JSON `Update` event as follows:
+
+```json
+{
+    ...
+    "data": [
+        {
+            ...
+            "c_varbinary": "\u0005\u0007\n\u000f$2+cx\u003c\u0026ÿþ-7F"
+        }
+    ]
+    ...
+}
+```
+
 ## Comparison of TiCDC Canal-JSON and the official Canal
 
 The way that TiCDC implements the Canal-JSON data format, including the `Update` Event and the `mysqlType` field, differs from the official Canal. The following table shows the main differences.
