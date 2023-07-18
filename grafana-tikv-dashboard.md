@@ -353,11 +353,11 @@ title: TiKV 监控指标详解
 - Bytes/Written 每次写入对应的 bytes
 - WAL Duration Breakdown (P99%)：写 WAL 内部各个阶段所花的时间
 - File Count
-    - append：Raft Engine append 数据用的文件个数
-    - rewrite：Raft Engine rewrite 文件用的个数（rewrite 类似于 RocksDB 的 compaction）
+    - append：Raft Engine 用于 append 数据的文件个数
+    - rewrite：Raft Engine 用于 rewrite 的文件个数（rewrite 类似于 RocksDB 的 compaction）
 - Entry Count
-    - rewrite：Raft Engine 中 rewrite 过的记录条数
-    - append：Raft Engine 中 append 的记录条数
+    - rewrite：Raft Engine 中已经 rewrite 的记录条数
+    - append：Raft Engine 中已经 append 的记录条数
 
 ### Titan - All
 
