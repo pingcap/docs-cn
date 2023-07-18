@@ -38,7 +38,7 @@ max-backups = 14
 ### tidb-lightning 任务配置
 
 [lightning]
-# 启动之前检查集群是否满足最低需求。
+# 启动之前检查集群是否满足最低需求，以及运行过程中检查 TiKV 的可用存储空间是否大于 10%。
 # check-requirements = true
 
 # 引擎文件的最大并行数。
@@ -381,7 +381,7 @@ min-available-ratio = 0.05
 | --enable-checkpoint *bool* | 是否启用断点 (默认值为 true) | `checkpoint.enable` |
 | --analyze *level* | 导入后分析表信息，可选值为 required、optional（默认值）、off | `post-restore.analyze` |
 | --checksum *level* | 导入后比较校验和，可选值为 required（默认值）、optional、off | `post-restore.checksum` |
-| --check-requirements *bool* | 开始之前检查集群版本兼容性（默认值为 true）| `lightning.check-requirements` |
+| --check-requirements *bool* | 开始任务之前检查集群版本兼容性，以及运行过程中检查 TiKV 的可用存储空间是否大于 10%（默认值为 true）| `lightning.check-requirements` |
 | --ca *file* | TLS 连接的 CA 证书路径 | `security.ca-path` |
 | --cert *file* | TLS 连接的证书路径 | `security.cert-path` |
 | --key *file* | TLS 连接的私钥路径 | `security.key-path` |
