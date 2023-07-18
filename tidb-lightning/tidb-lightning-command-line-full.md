@@ -33,7 +33,7 @@ You can configure the following parameters using `tidb-lightning`:
 | `--enable-checkpoint <bool>` | Whether to enable checkpoints (default = true) | `checkpoint.enable` |
 | `--analyze <level>` | Analyze tables after importing. Available values are "required", "optional" (default value), and "off". | `post-restore.analyze` |
 | `--checksum <level>` | Compare checksum after importing. Available values are "required" (default value), "optional", and "off". | `post-restore.checksum` |
-| `--check-requirements <bool>` | Check cluster version compatibility before starting (default = true) | `lightning.check-requirements` |
+| `--check-requirements <bool>` | Check cluster version compatibility before starting the task, and check whether TiKV has more than 10% free space left during running time. (default = true) | `lightning.check-requirements` |
 | `--ca <file>` | CA certificate path for TLS connection | `security.ca-path` |
 | `--cert <file>` | Certificate path for TLS connection | `security.cert-path` |
 | `--key <file>` | Private key path for TLS connection | `security.key-path` |
