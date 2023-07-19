@@ -3705,11 +3705,7 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 
 - 需要注意的是修改该变量不会对已保存的老数据产生影响，只会对修改变量后的新写入数据使用对应版本格式保存。
 
-### `tidb_runtime_filter_mode` <span class="version-mark">从 v7.2.0 版本开始引入</span>
-
-> **警告：**
->
-> 当前版本中该变量控制的功能尚未完全生效，请保留默认值。
+### `tidb_runtime_filter_mode` <span class="version-mark">从 v7.3.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
@@ -3717,11 +3713,7 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 - 默认值：`OFF`
 - 可选值：`OFF`，`LOCAL`
 
-### `tidb_runtime_filter_type` <span class="version-mark">从 v7.2.0 版本开始引入</span>
-
-> **警告：**
->
-> 当前版本中该变量控制的功能尚未完全生效，请保留默认值。
+### `tidb_runtime_filter_type` <span class="version-mark">从 v7.3.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
