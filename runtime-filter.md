@@ -10,15 +10,15 @@ Runtime Filter 是 TiDB v7.3 引入的新功能，旨在提升 MPP 场景下 Has
 ## 名词解释
 
 - Hash Join：一种实现 Join 关系代数的方式。它通过在一侧构建 Hash Table 并在另一侧不断匹配 Hash Table 来得到 Join 的结果。
-- Build Side：Hash Join 中用于构建 Hash Table 的一侧，称为 Build Side。*本文档默认以 Join 的右表作为 Build Side。*
-- Probe Side：Hash Join 中用于不断匹配 Hash Table 的一侧，称为 Probe Side。*本文档默认以 Join 的左表作为 Probe Side。*
+- Build Side：Hash Join 中用于构建 Hash Table 的一侧，称为 Build Side。本文档默认以 Join 的右表作为 Build Side。
+- Probe Side：Hash Join 中用于不断匹配 Hash Table 的一侧，称为 Probe Side。本文档默认以 Join 的左表作为 Probe Side。
 - Filter: 也称谓词，在本文档中指过滤条件。
 
 ## Runtime Filter 的原理
 
-Hash Join 通过将右表的数据构建 Hash Table，左表的数据不断 probe Hash Table 来完成 Join。如果在 Probe 过程中，发现一部分 Join Key 值无法命中 Hash Table，则说明这部分数据不存在于右表，并且不会出现在最终的 Join 结果中。因此，如果能够在扫描时**提前过滤掉这部分 Join Key 的数据**，将会减少扫描时间和网络开销，从而大幅提升 Join 效率。
+Hash Join 通过将右表的数据构建 Hash Table，并将左表的数据不断 probe Hash Table 来完成 Join。如果在 Probe 过程中，发现一部分 Join Key 值无法命中 Hash Table，则说明这部分数据不存在于右表，也不会出现在最终的 Join 结果中。因此，如果能够在扫描时**提前过滤掉这部分 Join Key 的数据**，将减少扫描时间和网络开销，从而大幅提升 Join 效率。
 
-Runtime Filter 是一种在查询规划阶段生成的**动态取值谓词**。该谓词和 TiDB Selection 中的其他谓词具有相同的作用，都应用于 Table Scan 操作上，用于筛选不满足谓词条件的行。唯一的区别在于，Runtime Filter 中的参数取值是在 Hash Join 中构建的。
+Runtime Filter 是在查询规划阶段生成的一种**动态取值谓词**。该谓词与 TiDB Selection 中的其他谓词具有相同作用，都应用于 Table Scan 操作上，用于筛选不满足谓词条件的行。唯一的区别在于，Runtime Filter 中的参数取值来自于 Hash Join 构建过程中产生的结果。
 
 ### 示例
 
@@ -50,7 +50,11 @@ Hash Join 通常情况下的执行方式为：
 
 *（上图为示意图，省略了 exchange 等节点）*
 
-RF 的执行方式是，先扫描 `date_dim` 的数据，PhysicalHashJoin 根据 `date_dim` 的数据计算出一个过滤条件，比如 `date_dim in (2001/01/01~2001/12/31)`。接着将这个过滤条件发给等待扫描 `store_sales` 的 TableFullScan。`store_sales` 再应用这个过滤条件，将过滤后的数据交给 PhysicalHashJoin，从而减少 Probe Side 的扫表数据量以及 Hash Table match 的计算量。
+Runtime Filter 的执行方式如下：
+
+1. 扫描 `date_dim` 的数据，PhysicalHashJoin 根据 `date_dim` 数据计算出一个过滤条件，比如 `date_dim in (2001/01/01~2001/12/31)`。
+2. 将该过滤条件发送给等待扫描 `store_sales` 的 TableFullScan。
+3. `store_sales` 应用该过滤条件，并将过滤后的数据传递给 PhysicalHashJoin，从而减少 Probe Side 的扫表数据量以及 Hash Table match 的计算量。
 
 ```
                          2. build RF values
@@ -67,22 +71,22 @@ RF 的执行方式是，先扫描 `date_dim` 的数据，PhysicalHashJoin 根据
       +-----------------+                +----------------+
 ```
 
-从两个图中对比可知。`store_sales` 的扫描量从 100W -> 5000。减少 Table Full Scan 扫描的数据量，进而减少 probe Hash Table的次数，避免不必要的 I/O 和网络传输。Runtime Filter 就是通过这种方式来大大提升 Join 的效率的。
+从对比两个图可以看出，`store_sales` 的扫描量从 100 万减少到了 5000。通过减少 Table Full Scan 扫描的数据量，可以减少 probe Hash Table 的次数，并避免不必要的 I/O 和网络传输。Runtime Filter 通过这种方式显著提升了 Join 操作的效率。
 
 ## 使用 Runtime Filter
 
-这里以 TPC-DS 的数据集为例。主要用到表 catalog_sales 和表 date_dim 二者进行 Join。
+本小节以 TPC-DS 的数据集为例，使用 `catalog_sales` 表和 `date_dim` 表进行 Join 操作。
 
-### Step 1：创建带 TiFlash Replica 的表
+### 第 1 步：创建带 TiFlash 副本的表
 
-给表 `catalog_sales` 和 `date_dim` 各增加一个 TiFlash 的副本。
+给 `catalog_sales` 表和 `date_dim` 表分别增加一个 TiFlash 副本。
 
 ```sql
 ALTER TABLE catalog_sales SET tiflash REPLICA 1;
 ALTER TABLE date_dim SET tiflash REPLICA 1;
 ```
 
-等待一段时间，并检查两个表的 TiFlash 副本已经 Ready。
+等待一段时间，并检查两个表的 TiFlash 副本已准备就绪。
 
 ```sql
 mysql> SELECT * FROM INFORMATION_SCHEMA.TIFLASH_REPLICA WHERE TABLE_NAME='catalog_sales';
@@ -91,6 +95,7 @@ mysql> SELECT * FROM INFORMATION_SCHEMA.TIFLASH_REPLICA WHERE TABLE_NAME='catalo
 +--------------+---------------+----------+---------------+-----------------+-----------+----------+
 | tpcds50      | catalog_sales |     1055 |             1 |                 |         1 |        1 |
 +--------------+---------------+----------+---------------+-----------------+-----------+----------+
+
 mysql> SELECT * FROM INFORMATION_SCHEMA.TIFLASH_REPLICA WHERE TABLE_NAME='date_dim';
 +--------------+------------+----------+---------------+-----------------+-----------+----------+
 | TABLE_SCHEMA | TABLE_NAME | TABLE_ID | REPLICA_COUNT | LOCATION_LABELS | AVAILABLE | PROGRESS |
@@ -99,18 +104,18 @@ mysql> SELECT * FROM INFORMATION_SCHEMA.TIFLASH_REPLICA WHERE TABLE_NAME='date_d
 +--------------+------------+----------+---------------+-----------------+-----------+----------+
 ```
 
-### Step 2：开启 Runtime Filter
+### 第 2 步：开启 Runtime Filter
 
-将 `tidb_runtime_filter_mode` 设置为 LOCAL，即开启 Runtime Filter。
+将系统变量 [`tidb_runtime_filter_mode`](/system-variables.md#tidb_runtime_filter_mode-从-v720-版本开始引入) 的值设置为 `LOCAL`，即开启 Runtime Filter。
 
 ```sql
-set tidb_runtime_filter_mode="LOCAL";
+SET tidb_runtime_filter_mode="LOCAL";
 ```
 
 查看是否更改成功：
 
 ```sql
-show variables like "tidb_runtime_filter_mode";
+SHOW VARIABLES LIKE "tidb_runtime_filter_mode";
 +--------------------------+-------+
 | Variable_name            | Value |
 +--------------------------+-------+
@@ -118,11 +123,11 @@ show variables like "tidb_runtime_filter_mode";
 +--------------------------+-------+
 ```
 
-显示 LOCAL 则成功开启 Runtime Filter。
+系统变量的值显示为 `LOCAL`，则已成功开启 Runtime Filter。
 
-### Step 3:查询
+### 第 3 步:执行查询
 
-在准备查询之前，先查看一下查询规划。通过 [explain query](/sql-statements/sql-statement-explain.md) 方式检查 Runtime Filter 是否正确开启。
+在进行查询之前，先查看一下查询计划。使用 [`EXPLAIN` 语句](/sql-statements/sql-statement-explain.md)来检查 Runtime Filter 是否已正确生效。
 
 ```sql
 EXPLAIN SELECT cs_ship_date_sk FROM catalog_sales, date_dim
@@ -130,7 +135,7 @@ WHERE d_date = '2002-2-01' AND
      cs_ship_date_sk = d_date_sk;
 ```
 
-在开启 Runtime Filter 的情况下，可以看到，HashJoin 节点和 TableScan 节点上分别挂在了对应的 Runtime Filter，说明 Runtime Filter 规划成功。
+当 Runtime Filter 启用时，可以看到 HashJoin 节点和 TableScan 节点上分别挂载了对应的 Runtime Filter，表示 Runtime Filter 规划成功。
 
 ```
 TableFullScan: runtime filter:0[IN] -> tpcds50.catalog_sales.cs_ship_date_sk
@@ -157,7 +162,7 @@ HashJoin: runtime filter:0[IN] <- tpcds50.date_dim.d_date_sk |
 9 rows in set (0.01 sec)
 ```
 
-查询，即可应用 Runtime Filter。
+此时执行 SQL 查询，即可应用 Runtime Filter。
 
 ```sql
 SELECT cs_ship_date_sk FROM catalog_sales, date_dim
@@ -165,14 +170,14 @@ WHERE d_date = '2002-2-01' AND
      cs_ship_date_sk = d_date_sk;
 ```
 
-### Step 4：性能对比
+### 第 4 步：性能对比
 
-以 TPCDS 的 50G 数据量为例，查询速度提升 50%，从 0.38s 提升至 0.17s。通过 analyze 语句可以看到具体的 Runtime Filter 生效后的各个算子的执行时间。
+以 TPCDS 的 50G 数据量为例，查询速度提升 50%，从 0.38 秒提升至 0.17 秒。通过 `ANALYZE` 语句可以看到具体的 Runtime Filter 生效后的各个算子的执行时间。
 
-下面为不开启 Runtime Filter 的查询 Summary：
+以下为未开启 Runtime Filter 的查询 Summary：
 
-```
-mysql> explain analyze select cs_ship_date_sk from catalog_sales, date_dim  where d_date = '2002-2-01' and       cs_ship_date_sk = d_date_sk;
+```sql
+mysql> EXPLAIN ANALYZE SELECT cs_ship_date_sk FROM catalog_sales, date_dim WHERE d_date = '2002-2-01' AND cs_ship_date_sk = d_date_sk;
 +----------------------------------------+-------------+----------+--------------+---------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------------------+---------+------+
 | id                                     | estRows     | actRows  | task         | access object       | execution info                                                                                                                                                                                                                                                                                                                                                                                    | operator info                                                                                | memory  | disk |
 +----------------------------------------+-------------+----------+--------------+---------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------------------+---------+------+
@@ -189,11 +194,11 @@ mysql> explain analyze select cs_ship_date_sk from catalog_sales, date_dim  wher
 9 rows in set (0.38 sec)
 ```
 
-下面为开启 Runtime Filter 后的查询 Summary：
+以下为开启 Runtime Filter 后的查询 Summary：
 
-```
-mysql> explain analyze select cs_ship_date_sk from catalog_sales, date_dim
-    -> where d_date = '2002-2-01' and
+```sql
+mysql> EXPLAIN ANALYZE SELECT cs_ship_date_sk FROM catalog_sales, date_dim
+    -> WHERE d_date = '2002-2-01' AND
     ->      cs_ship_date_sk = d_date_sk;
 +----------------------------------------+-------------+---------+--------------+---------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------+---------+------+
 | id                                     | estRows     | actRows | task         | access object       | execution info                                                                                                                                                                                                                                                                                                                                                                                       | operator info                                                                                                                                 | memory  | disk |
@@ -211,35 +216,37 @@ mysql> explain analyze select cs_ship_date_sk from catalog_sales, date_dim
 9 rows in set (0.17 sec)
 ```
 
-1. IO 的减少：对比Table Full Scan 算子的 `total_scanned_rows`可知，开启 Runtime Filter 后 TableFullScan 的扫描量减少了 2/3 。
-2. Hash Join 的性能提升：Hash Join 算子的执行速度从 376.1ms 提升至 157.6ms。
+对比两个查询 Summary 可发现以下改进：
+
+* IO 减少：对比 Table Full Scan 算子的 `total_scanned_rows` 可知，开启 Runtime Filter 后 TableFullScan 的扫描量减少了 2/3 。
+* Hash Join 性能提升：Hash Join 算子的执行速度从 376.1ms 提升至 157.6ms。
 
 ### 最佳实践
 
-Runtime Filter 最适用于大表和小表进行 Join 的情况，比如事实表和维度表进行关联查询的业务逻辑。维度表的命中的数据量越小，意味着 Filter 的取值越少，事实表就能更多的过滤掉不满足条件的数据，对比默认情况下的扫全事实表的情况，其性能效果非常明显。
+Runtime Filter 适用于大表和小表进行 Join 的情况，比如事实表和维度表的关联查询。当维度表的命中的数据量较少时，意味着 Filter 的取值较少，事实表能更多地过滤掉不满足条件的数据。与默认情况下扫描整个事实表相比，这将显著提高性能效果。
 
-比如 TPC-DS 中的 泛 Sales 表和 date_dim 表 Join 就是典型的例子。
+例如，在 TPC-DS 中，泛 `Sales` 表和 `date_dim` 表的 Join 就是一个典型例子。
 
 ## Runtime Filter Mode
 
-Runtime Filter Mode 指的是 Runtime Filter 的模式，简单来说就是 **生成 Filter 的算子** 和 **接收 Filter 算子**之间的关系。一共有三种 Mode：OFF, LOCAL, GLOBAL。目前（v7.3）仅支持 OFF，LOCAL。通过 Session Variable `tidb_runtime_filter_mode` 控制。
+Runtime Filter Mode 指的是 Runtime Filter 的模式，即 **生成 Filter 算子** 和 **接收 Filter 算子**之间的关系。共有三种模式：`OFF`、`LOCAL`、`GLOBAL`。在 v7.3.0 中仅支持 OFF 和 LOCAL 模式，通过会话系统变量 [`tidb_runtime_filter_mode`](/system-variables.md#tidb_runtime_filter_mode-从-v720-版本开始引入) 控制。
 
-+ OFF：设置为 OFF，则关闭 Runtime Filter。关闭 Runtime Filter 后查询行为和过去完全一致。
-+ LOCAL：开启 LOCAL 模式的 Runtime Filter。LOCAL 模式指的是 **生成 Filter 的算子** 和 **接收 Filter 的算子**在同一个 Task 中。 简单说就是 Runtime Filter 可应用于 Hash Join 算子和 Table Scan 算子在同一个 Task 中的情况。*目前 Runtime Filter 仅支持 LOCAL 模式，如果要开启直接设置 LOCAL 即可。*
-+ GLOBAL: 暂未支持 GLOBAL 模式。不可设置为该模式。
++ `OFF`：设置为 OFF，则关闭 Runtime Filter。关闭后，查询行为和过去完全一致。
++ `LOCAL`：开启 LOCAL 模式的 Runtime Filter。LOCAL 模式指的是 **生成 Filter 的算子** 和 **接收 Filter 的算子**在同一个 Task 中。简单来说，Runtime Filter 可应用于 Hash Join 算子和 Table Scan 算子在同一个 Task 中的情况。目前 Runtime Filter 仅支持 LOCAL 模式，要开启该模式，设置为 `LOCAL` 即可。
++ `GLOBAL`: 目前不支持 GLOBAL 模式，不可设置为该模式。
 
-```tidb_runtime_filter_mode```: 默认取值为 OFF，则查询不开启 Runtime Filter。LOCAL 则为开启 LOCAL 模式的 Runtime Filter。详细变量使用方式见[Ref](/system-variables.md#tidb_runtime_filter_mode-从-v720-版本开始引入)
+`tidb_runtime_filter_mode`: 默认取值为 OFF，则查询不开启 Runtime Filter。LOCAL 则为开启 LOCAL 模式的 Runtime Filter。详细变量使用方式见[Ref](/system-variables.md#tidb_runtime_filter_mode-从-v720-版本开始引入)
 
 ## Runtime Filter Type
 
-Runtime Filter Type 指的是 Runtime Filter 谓词的类型，简单来说就是生成的 Filter 算子他的谓词类型是什么。目前一共一种：IN，即生成的谓词类似于 `k1 in (xxx)`。通过 Session Variable `tidb_runtime_filter_type` 控制。
+Runtime Filter Type 指的是 Runtime Filter 谓词的类型，即生成的 Filter 算子使用的谓词类型。目前只有一种类型：`IN`，即生成的谓词类似于 `k1 in (xxx)`。通过会话系统变量 [`tidb_runtime_filter_type`](/system-variables.md#tidb_runtime_filter_type-从-v720-版本开始引入) 控制。
 
-+ IN：设置为 IN，默认也是 IN。即生成的 Runtime Filter 类型为 IN 类型的谓词。
++ IN：默认为 IN 类型。即生成的 Runtime Filter 使用 IN 类型的谓词。
 
 ## 限制
 
-+ Runtime Filter 是一个 MPP 架构下的优化，其仅可应用于 TiFlash 执行引擎。
-+ Join Type：Left outer，Full outer，anti join（当左表为 Probe Side 时）均不可生成 Runtime Filter。由于 Runtime Filter 是提前过滤参与 Join 的数据，所以这些类型的 Join 其并不会丢弃未 match 上的数据所以不可使用该优化。
-+ Equal Join expression：当等值 Join 表达式中的 Probe Column 为复杂表达式，或者 Probe Column 的类型为 Json，Blob，Array 等复合类型，则也不会生成 Runtime Filter。主要原因是这类 Column 一般很少作为 Equal Join 的关联列，且即使生成了 Filter 过滤率也一般很差。
++ Runtime Filter 是 MPP 架构下的优化，仅可应用于 TiFlash 执行引擎。
++ Join Type：Left outer，Full outer，anti join（当左表为 Probe Side 时）均不支持生成 Runtime Filter。由于 Runtime Filter 提前过滤参与 Join 的数据，这些类型的 Join 不会丢弃未匹配上的数据，所以无法使用该优化。
++ Equal Join expression：当等值 Join 表达式中的 Probe Column 是复杂表达式，或者其类型为 Json，Blob，Array 等复合类型时，也不会生成 Runtime Filter。主要原因是这类 Column 很少作为 Equal Join 的关联列，并且即使生成了 Filter，过滤率通常很低。
 
-以上限制均可以通过  [explain query](/sql-statements/sql-statement-explain.md)  命令验证 Runtime Filter 是否正确的生成。
+对于以上限制，如果你需要确认是否正确生成了 Runtime Filter，可以通过 [`EXPLAIN` 语句](/sql-statements/sql-statement-explain.md) 来验证。
