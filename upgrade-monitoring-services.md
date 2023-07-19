@@ -56,6 +56,7 @@ tar -zcvf ../prometheus-v{new-version}.tar.gz ./
 ```bash
 tiup cluster patch <cluster-name> prometheus-{new-version}.tar.gz -R prometheus
 ```
+
 升级完成后，可以打开 Prometheus 主页（地址通常是 http://<Prometheus-server-host-name>:9090）,点击顶部导航菜单“Status” 然后打开 “Runtime & Build Information” 页面，查看 Prometheus 的版本信息，确认升级成功。
 
 ## 升级 Grafana
@@ -99,6 +100,7 @@ tar -zcvf ../grafana-v{new-version}.tar.gz ./
 ```bash
 tiup cluster patch <cluster-name> grafana-v{new-version}.tar.gz -R grafana
 ```
+
 升级完成后，可以打开 Grafana 主页（地址通常是 http://<Grafana-server-host-name>:3000, 查看 Grafana 的版本信息，确认升级成功。
 
 ## 升级 AlertManager
