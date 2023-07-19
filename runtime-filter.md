@@ -22,7 +22,7 @@ Runtime Filter 是在查询规划阶段生成的一种**动态取值谓词**。�
 
 ### 示例
 
-假设当前存在 `store_sales` 表与 `date_dim` 表的 Join 查询，它的 Join 方式为 Hash Join。`store_sales` 是一张事实表，主要存储门店销售数据，行数为 100万。T2 是一张时间维度表，主要存储时间信息。当前查询想查询 2001 年的销售数据，则时间维度表的参与 Join 的数据量为 365 行。
+假设当前存在 `store_sales` 表与 `date_dim` 表的 Join 查询，它的 Join 方式为 Hash Join。`store_sales` 是一张事实表，主要存储门店销售数据，行数为 100万。`date_dim` 是一张时间维度表，主要存储时间信息。当前想要查询 2001 年的销售数据，则时间维度表的参与 Join 的数据量为 365 行。
 
 ```sql
 SELECT * FROM store_sales, date_dim
