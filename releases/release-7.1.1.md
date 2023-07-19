@@ -80,7 +80,7 @@ TiDB 版本：7.1.1
     - 修复带 `indexMerge` 的查询被 kill 时可能会 hang 住的问题 [#45279](https://github.com/pingcap/tidb/issues/45279) @[xzhangxian1008](https://github.com/xzhangxian1008)
     - 修复极端情况下，统计 SQL execution detail 的信息占用太多内存导致 TiDB OOM 的问题 [#44047](https://github.com/pingcap/tidb/issues/44047) @[wshwsh12](https://github.com/wshwsh12)
     - 修复对于非常长的 SQL 输入，`FormatSQL()` 方法无法正常截断的问题 [#44542](https://github.com/pingcap/tidb/issues/44542) @[hawkingrei](https://github.com/hawkingrei)
-    - 修复集群升级过程中，DDL 卡住导致升级失败的问题 [#44158](https://github.com/pingcap/tidb/issues/44158) @[zimulala](https://github.com/zimulala)
+    - 修复集群升级过程中，DDL 操作卡住导致升级失败的问题 [#44158](https://github.com/pingcap/tidb/issues/44158) @[zimulala](https://github.com/zimulala)
     - 修复 TTL 任务失败多次后，不会由其它 TiDB 接管的故障处理问题 [#45022](https://github.com/pingcap/tidb/issues/45022) @[lcwangchao](https://github.com/lcwangchao)
     <!--11 tw:@qiancai-->
     - 使用 mysql 的 cursor fetch 协议时，若结果集内存大小超过 `tidb_mem_quota_query` 则自动落盘 [#43233](https://github.com/pingcap/tidb/issues/43233) @[YangKeao](https://github.com/YangKeao)
