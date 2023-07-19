@@ -20,6 +20,12 @@
   - 快速开始
     - [使用 TiDB Serverless 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md)
     - [使用 TiDB 的增删改查 SQL](/develop/dev-guide-tidb-crud-sql.md)
+  - Hello World
+    - Java
+      - [Hibernate](/develop/dev-guide-hello-world-java-hibernate.md)
+      - MyBatis
+      - Spring Boot (JPA)
+      - Spring Boot (MyBatis)
   - 示例程序
     - [Golang](/develop/dev-guide-sample-application-golang.md)
     - [Java (Spring Boot)](/develop/dev-guide-sample-application-spring-boot.md)
