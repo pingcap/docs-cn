@@ -14,13 +14,14 @@ TiDB 版本：7.1.1
 ## 兼容性变更
 <!--1 tw:@Oreoxmt-->
 - 为减小 RocksDB 中 compaction 任务的数据量，TiKV 配置项 [<code>rocksdb.\[defaultcf\|writecf\|lockcf\].compaction-guard-min-output-file-size</code>](/tikv-configuration-file.md#compaction-guard-min-output-file-size) 的默认值从 `"8MB"` 修改为 `"1MB"` [#14888](https://github.com/tikv/tikv/issues/14888) @[tonyxuqqi](https://github.com/tonyxuqqi)
+- TiDB 新增 `tidb_lock_unchanged_keys` 变量用于控制是否对于没有修改的 key 加锁 [#44714](https://github.com/pingcap/tidb/issues/44714) @[ekexium](https://github.com/ekexium)
 
 ## 改进提升
 
 + TiDB
     <!--2 tw:@Oreoxmt-->
-    - 非 Prepare 语句执行计划缓存支持带有 200 个参数的查询 [#44823](https://github.com/pingcap/tidb/issues/44823) @[qw4990](https://github.com/qw4990)
-    - 优化了跟落盘相关的 chunk 读取的性能 [#45125](https://github.com/pingcap/tidb/issues/45125) @[YangKeao](https://github.com/YangKeao)
+    - 执行计划缓存支持带有 200 个参数的查询 [#44823](https://github.com/pingcap/tidb/issues/44823) @[qw4990](https://github.com/qw4990)
+    - 优化与落盘相关的 chunk 读取的性能 [#45125](https://github.com/pingcap/tidb/issues/45125) @[YangKeao](https://github.com/YangKeao)
     - (dup): release-7.2.0.md > 改进提升> TiDB - 优化构造索引扫描范围的逻辑，支持将一些复杂条件转化为索引扫描范围 [#41572](https://github.com/pingcap/tidb/issues/41572) [#44389](https://github.com/pingcap/tidb/issues/44389) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes)
     - (dup): release-7.2.0.md > 改进提升> TiDB - 当 Stale Read 的 retry leader 遇到 lock 时，resolve lock 之后强制重试 leader，避免无谓开销 [#43659](https://github.com/pingcap/tidb/issues/43659) @[you06](https://github.com/you06)
 
@@ -30,7 +31,7 @@ TiDB 版本：7.1.1
 
 + PD
     <!--1 tw:@Oreoxmt-->
-    - 默认屏蔽 swagger API 如果编译没有开启 swagger server [#6786](https://github.com/tikv/pd/issues/6786) @[bufferflies](https://github.com/bufferflies)
+    - 编译未开启 Swagger server 时，PD 默认屏蔽 Swagger API [#6786](https://github.com/tikv/pd/issues/6786) @[bufferflies](https://github.com/bufferflies)
 
 + TiFlash
 
@@ -44,7 +45,7 @@ TiDB 版本：7.1.1
 
     + TiCDC
         <!--1 tw:@Oreoxmt-->
-        - 优化同步到对象存储时对二进制字段的编码格式方式 [#9373](https://github.com/pingcap/tiflow/issues/9373)
+        - 优化 TiCDC 同步到对象存储时对二进制字段的编码格式 [#9373](https://github.com/pingcap/tiflow/issues/9373) @[CharlesCheung96](https://github.com/CharlesCheung96)
         - (dup): release-7.2.0.md > 改进提升> Tools> TiCDC - 在同步到 Kafka 场景下，支持 OAUTHBEARER 认证方式 [#8865](https://github.com/pingcap/tiflow/issues/8865) @[hi-rustin](https://github.com/hi-rustin)
 
     + TiDB Data Migration (DM)
@@ -53,7 +54,8 @@ TiDB 版本：7.1.1
 
     + TiDB Lightning
         <!--1 tw:@Oreoxmt-->
-        - 改进 Lightning 在 checksum 阶段针对 PD `ClientTSOStreamClosed` 错误的重试 [#45301](https://github.com/pingcap/tidb/issues/45301) @[lance6716](https://github.com/lance6716)
+        - 改进 TiDB Lightning 在 checksum 阶段对 PD `ClientTSOStreamClosed` 错误的重试逻辑 [#45301](https://github.com/pingcap/tidb/issues/45301) @[lance6716](https://github.com/lance6716)
+        ```
         - (dup): release-7.2.0.md > 改进提升> Tools> TiDB Lightning - 数据导入完成后使用 SQL 方式校验 checksum，提升数据校验的稳定性 [#41941](https://github.com/pingcap/tidb/issues/41941) @[GMHDBJD](https://github.com/GMHDBJD)
 
     + TiUP
@@ -62,7 +64,7 @@ TiDB 版本：7.1.1
 
     + Dumpling
         <!--1 tw:@Oreoxmt-->
-        - 避免 Dumpling 在 `--sql` 参数时执行表查询语句，从而减少导出开销 [#45239](https://github.com/pingcap/tidb/issues/45239) @[lance6716](https://github.com/lance6716)
+        - 避免 Dumpling 在使用 `--sql` 参数时执行表查询语句，从而减少导出开销 [#45239](https://github.com/pingcap/tidb/issues/45239) @[lance6716](https://github.com/lance6716)
 
     + TiDB Binlog
 
@@ -121,13 +123,13 @@ TiDB 版本：7.1.1
 + PD
     <!--2 tw:@Oreoxmt-->
     - 修复 Resource Manager 重复初始化 default 资源组的问题 [#6787](https://github.com/tikv/pd/issues/6787) @[glorv](https://github.com/glorv)
-    - 修复 placement rule in SQL 设置 location labels 在特定条件下不按预期调度的问题 [#6662](https://github.com/tikv/pd/issues/6662) @[rleungx](https://github.com/rleungx)
+    - 修复 Placement Rules in SQL 设置的 `location-labels` 在特定条件下不按预期调度的问题 [#6662](https://github.com/tikv/pd/issues/6662) @[rleungx](https://github.com/rleungx)
     - (dup): release-7.2.0.md > 错误修复> PD - 修复在特殊情况下冗余副本无法自动修复的问题 [#6573](https://github.com/tikv/pd/issues/6573) @[nolouch](https://github.com/nolouch)
 
 + TiFlash
     <!--2 tw:@Oreoxmt-->
     - 修复 `task_scheduler_active_set_soft_limit` 配置可能不生效的问题 [#7692](https://github.com/pingcap/tiflash/issues/7692) @[windtalker](https://github.com/windtalker)
-    - 修复存算分离模式下，TiFlash 计算节点获取的 cpu 核数信息不准确的问题 [#7436](https://github.com/pingcap/tiflash/issues/7436) @[guo-shaoge](https://github.com/guo-shaoge)
+    - 修复存算分离模式下，TiFlash 计算节点获取的 CPU 核数信息不准确的问题 [#7436](https://github.com/pingcap/tiflash/issues/7436) @[guo-shaoge](https://github.com/guo-shaoge)
 
 + Tools
 
