@@ -43,7 +43,7 @@ max-error = 0
 * 原始 CSV、SQL 或者 Parquet 文件中的语法错误，例如未闭合的引号
 * I/O、网络、或系统权限错误
 
-在 Physical Import Mode 下，唯一键/主键的冲突是单独处理的。相关内容将在接下来的章节进行介绍。
+在物理导入模式下，唯一键/主键的冲突是单独处理的。相关内容将在接下来的章节进行介绍。
 
 ## 错误报告
 
@@ -177,7 +177,7 @@ CREATE TABLE conflict_error_v1 (
         (54, 'fifty-four'),     -- 与下面的 `'fifty-four'` 冲突
         (77, 'seventy-seven'),  -- 字符串长度超过 12 个字符
         (600, 'six hundred'),   -- 数字超出了 TINYINT 数据类型支持的范围
-        (40, 'fourty'),         -- 与上面的 `40` 冲突
+        (40, 'forty'),         -- 与上面的 `40` 冲突
         (42, 'fifty-four');     -- 与上面的 `'fifty-four'` 冲突
     EOF
     ```

@@ -27,7 +27,7 @@ TiDB 支持 MySQL 所有的整数类型，包括 `INTEGER`/`INT`、`TINYINT`、`
 
 #### `BIT` 类型
 
-比特值类型。M 表示比特位的长度，取值范围从1到64，其默认值是1。
+比特值类型。M 表示比特位的长度，取值范围从 1 到 64，其默认值是 1。
 
 {{< copyable "sql" >}}
 
@@ -163,6 +163,10 @@ DOUBLE PRECISION [(M,D)] [UNSIGNED] [ZEROFILL], REAL[(M,D)] [UNSIGNED] [ZEROFILL
 >
 > 与在 MySQL 中一样，`DOUBLE` 数据类型存储近似值。对于货币之类的精确值，建议使用 `DECIMAL` 类型。
 
+> **注意：**
+>
+> 当 TiDB 将用科学计数法表示的双精度浮点数转换到 `CHAR` 类型时，其结果在显示上与 MySQL 不一致，详情参见 [Cast 函数和操作符](/functions-and-operators/cast-functions-and-operators.md)。
+
 ### 存储空间
 
 每种类型对存储空间的需求如下表所示：
@@ -170,7 +174,7 @@ DOUBLE PRECISION [(M,D)] [UNSIGNED] [ZEROFILL], REAL[(M,D)] [UNSIGNED] [ZEROFILL
 | 类型        | 存储空间 |
 | ----------- |----------|
 | `FLOAT`     | 4        |
-| `FLOAT(p)`  | 如果 0 <= p <= 24 为 4 个字节, 如果 25 <= p <= 53 为 8 个字节|
+| `FLOAT(p)`  | 如果 0 <= p <= 24 为 4 个字节，如果 25 <= p <= 53 为 8 个字节|
 | `DOUBLE`    | 8        |
 
 ## 定点类型

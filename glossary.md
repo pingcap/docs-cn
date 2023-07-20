@@ -19,9 +19,18 @@ ACID 是指数据库管理系统在写入或更新资料的过程中，为保证
 
 ## B
 
+### BR
+
+[TiDB 备份恢复功能](/br/backup-and-restore-overview.md)用户文档中的名词 **BR** 根据上下文不同有不同的解释，比较常见的指代用法：
+
+* TiDB 备份恢复功能，包含 br CLI、TiDB Operator、TiDB Cloud 提供的备份和恢复功能集合。
+* 架构中的 BR 功能组件。
+
+名词 **br** 一般用来指代 br CLI 工具。
+
 ### Batch Create Table
 
-批量建表 (Batch Create Table) 是在 TiDB v6.0.0 中引入的新功能，此功能默认开启。当需要恢复的数据中带有大量的表（约 50000 张）时，批量建表功能显著提升数据恢复的速度。详情参见 [批量建表](/br/br-batch-create-table.md)。
+批量建表 (Batch Create Table) 是在 TiDB v6.0.0 中引入的新功能，此功能默认开启。当需要恢复的数据中带有大量的表（约 50000 张）时，批量建表功能显著提升数据恢复的速度。详情参见[批量建表](/br/br-batch-create-table.md)。
 
 ### Baseline Capturing
 
@@ -40,6 +49,10 @@ ACID 是指数据库管理系统在写入或更新资料的过程中，为保证
 ### Cached Table
 
 缓存表 (Cached Table) 是指 TiDB 把整张表的数据加载到服务器的内存中，直接从内存中获取表数据，避免从 TiKV 获取表数据，从而提升读性能。详情参见[缓存表](/cached-tables.md)。
+
+### Coalesce Partition
+
+Coalesce Partition 是一种减少 Hash 分区表或 Key 分区表中分区数量的方法。详情参见[管理 Hash 分区和 Key 分区](/partitioned-table.md#管理-hash-分区和-key-分区)。
 
 ### Common table expression (CTE)
 
@@ -164,9 +177,9 @@ Operator Step 是 Operator 执行过程的一个步骤，一个 Operator 常常�
 
 ## P
 
-### Partitioned table
+### Partitioning
 
-将 TiDB 中的一张表根据某些条件在物理上拆分为若干张表存放，以提高查询的效率。详情参考[分区表](/partitioned-table.md)文档。
+[Partitioning](/partitioned-table.md)（分区）指通过 `RANGE`、`LIST`、`HASH` 和 `KEY` 等分区方法在物理上将一张表划分为较小的分区。这些较小的分区为分区表 (Partitioned Table)。
 
 ### Pending/Down
 
@@ -182,9 +195,13 @@ Placement Rules 特性用于通过 SQL 接口配置数据在 TiKV 集群中的�
 
 详情参见 [Placement Rules in SQL](/placement-rules-in-sql.md)。
 
+### Point get
+
+点查 (point get) 是指通过主键或唯一索引直接读取一行的查询方式。点查的返回结果最多是一行数据。
+
 ### Predicate columns
 
-执行 SQL 语句时，优化器在大多数情况下只会用到部分列（例如， `WHERE`、`JOIN`、`ORDER BY`、`GROUP BY` 子句中出现的列）的统计信息，这些用到的列称为 `PREDICATE COLUMNS`。详情参见[收集部分列的统计信息](/statistics.md#收集部分列的统计信息)。
+执行 SQL 语句时，优化器在大多数情况下只会用到部分列（例如，`WHERE`、`JOIN`、`ORDER BY`、`GROUP BY` 子句中出现的列）的统计信息，这些用到的列称为 `PREDICATE COLUMNS`。详情参见[收集部分列的统计信息](/statistics.md#收集部分列的统计信息)。
 
 ## Q
 
@@ -194,7 +211,7 @@ Placement Rules 特性用于通过 SQL 接口配置数据在 TiKV 集群中的�
 
 ## R
 
-## Raft Engine
+### Raft Engine
 
 一种内置的持久化存储引擎，有着日志结构的设计，为 TiKV 提供 multi-Raft 日志存储。从 v5.4 起，TiDB 支持使用 Raft Engine 作为 TiKV 的日志存储引擎。详情参见 [Raft Engine](/tikv-configuration-file.md#raft-engine)。
 
@@ -281,4 +298,8 @@ Top SQL 用于找到一段时间内对某个 TiDB 或 TiKV 节点消耗负载较
 
 ### TSO
 
-因为 TiKV 是一个分布式的储存系统，它需要一个全球性的授时服务 TSO（Timestamp Oracle），来分配一个单调递增的时间戳。 这样的功能在 TiKV 中是由 PD 提供的，在 Google 的 [Spanner](http://static.googleusercontent.com/media/research.google.com/en//archive/spanner-osdi2012.pdf) 中是由多个原子钟和 GPS 来提供的。
+因为 TiKV 是一个分布式的储存系统，它需要一个全球性的授时服务 TSO (Timestamp Oracle)，来分配一个单调递增的时间戳。这样的功能在 TiKV 中是由 PD 提供的，在 Google 的 [Spanner](http://static.googleusercontent.com/media/research.google.com/en//archive/spanner-osdi2012.pdf) 中是由多个原子钟和 GPS 来提供的。
+
+### TTL
+
+[Time to Live (TTL)](/time-to-live.md) 提供了行级别的生命周期控制策略。通过为表设置 TTL 属性，TiDB 可以周期性地自动检查并清理表中的过期数据。

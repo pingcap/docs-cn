@@ -20,7 +20,7 @@ DM 支持在线上执行分库分表的 DDL 语句（通称 Sharding DDL），�
 
 ## 乐观协调模式的配置
 
-在任务的配置文件中指定 `shard-mode` 为 `optimistic` 则使用“乐观协调”模式，示例配置文件可以参考 [DM 任务完整配置文件介绍](/dm/task-configuration-file-full.md)。
+在任务的配置文件中指定 `shard-mode` 为 `optimistic` 则使用“乐观协调”模式，可通过开启 `strict-optimistic-shard-mode` 限制“乐观协调”模式的行为，示例配置文件可以参考 [DM 任务完整配置文件介绍](/dm/task-configuration-file-full.md)。
 
 ## 使用限制
 
@@ -41,7 +41,7 @@ DM 支持在线上执行分库分表的 DDL 语句（通称 Sharding DDL），�
 - 增加没有默认值且非空的列：`ALTER TABLE table_name ADD COLUMN column_1 NOT NULL;`。
 - 重命名索引：`ALTER TABLE table_name RENAME INDEX index_1 TO index_2;`。
 
-各分表在执行以上 DDL 时，若顺序不同将导致同步中断，例如下述场景：
+各分表在执行以上 DDL 时，如果指定 `strict-optimistic-shard-mode: true`，会直接中断任务并报错。如果指定 `strict-optimistic-shard-mode: false` 或未指定，若分表 DDL 顺序不同，将导致同步中断，例如下述场景：
 
 - 分表 1 先重命名列，再修改列类型
     1. 重命名列：`ALTER TABLE table_name RENAME COLUMN column_1 TO column_2;`。

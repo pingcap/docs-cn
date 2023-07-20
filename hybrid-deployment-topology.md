@@ -48,12 +48,6 @@ aliases: ['/docs-cn/dev/hybrid-deployment-topology/']
 
     - storage CF (all RocksDB column families) 内存自适应，配置 `storage.block-cache.capacity` 参数即可实现 CF 之间自动平衡内存使用。
 
-        - `storage.block-cache` 默认开启 CF 自适应，无需修改。
-
-            ```yaml
-            storage.block-cache.shared: true
-            ```
-
         - 计算公式如下：
 
             ```

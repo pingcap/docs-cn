@@ -6,7 +6,18 @@ on:
       - ".github/**"
     branches:
       - master
-      - release-*
+      - release-7.2
+      - release-7.1
+      - release-7.0
+      - release-6.5
+      - release-6.1
+      - release-5.4
+      - release-5.3
+      - release-5.2
+      - release-5.1
+      - release-5.0
+      - release-4.0
+      - release-3.0
 
 jobs:
   trigger:
@@ -17,7 +28,7 @@ jobs:
         id: extract
         shell: bash
         run: |
-          echo "::set-output name=sha::$(sha=${{ github.sha }}; echo ${sha:0:6})"
+          echo "sha=$(sha=${{ github.sha }}; echo ${sha:0:6})" >> $GITHUB_OUTPUT
 
       - name: trigger docs-staging workflow
         run: |

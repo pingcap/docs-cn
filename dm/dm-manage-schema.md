@@ -1,11 +1,11 @@
 ---
-title: 管理迁移表的表结构
+title: 管理 TiDB Data Migration 迁移表的表结构
 summary: 了解如何管理待迁移表在 DM 内部的表结构。
 ---
 
-# 管理迁移表的表结构
+# 管理 TiDB Data Migration 迁移表的表结构
 
-本文介绍如何使用 [dmctl](/dm/dmctl-introduction.md) 组件来管理通过 DM 迁移的表在 DM 内部的表结构。
+[dmctl](/dm/dmctl-introduction.md) 是运维 TiDB Data Migration (DM) 集群的命令行工具，本文介绍如何使用 dmctl 组件来管理通过 DM 迁移的表在 DM 内部的表结构。
 
 DM 执行增量迁移时，首先读取上游的 binlog，然后生成 SQL 语句执行到下游。但是，上游的 binlog 中并不记录表的完整结构信息，为了生成 SQL 语句，DM 内部维护了待迁移的表的 schema 信息，即表结构信息。
 

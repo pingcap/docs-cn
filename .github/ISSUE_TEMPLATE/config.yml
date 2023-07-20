@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Ask TiDB User Group Forum (Chinese)
+    url: https://asktug.com/
+    about: Ask a question on the TiDB user group (Chinese).

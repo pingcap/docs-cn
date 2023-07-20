@@ -7,7 +7,7 @@ summary: 了解如何使用 Dumpling 和 TiDB Lightning 备份与恢复集群数
 
 本文档介绍如何使用 Dumpling 和 TiDB Lightning 进行全量备份与恢复。
 
-在备份与恢复场景中，如果需要全量备份少量数据（例如小于 50 GB），且不要求备份速度，你可以使用 [Dumpling](/dumpling-overview.md) 从 TiDB 数据库导出数据进行备份，再使用 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 将数据导入至 TiDB 数据库实现恢复。更多备份与恢复的相关信息，参见[使用 BR 备份集群](/br/br-usage-backup.md)与[使用 BR 恢复集群](/br/br-usage-restore.md)。
+在备份与恢复场景中，如果需要全量备份少量数据（例如小于 50 GB），且不要求备份速度，你可以使用 [Dumpling](/dumpling-overview.md) 从 TiDB 数据库导出数据进行备份，再使用 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 将数据导入至 TiDB 数据库实现恢复。更多备份与恢复的相关信息，参见 [TiDB 备份与恢复概述](/br/backup-and-restore-overview.md)。
 
 ## 前提条件
 
@@ -84,7 +84,7 @@ SELECT table_name,table_schema,SUM(data_length)/1024/1024 AS data_length,SUM(ind
 
     [tikv-importer]
     # "local"：默认使用该模式，适用于 TB 级以上大数据量，但导入期间下游 TiDB 无法对外提供服务。
-    # "tidb"：TB 级以下数据量也可以采用`tidb`后端模式，下游 TiDB 可正常提供服务。 关于后端模式更多信息请参阅：https://docs.pingcap.com/tidb/stable/tidb-lightning-backends
+    # "tidb"：TB 级以下数据量也可以采用`tidb`后端模式，下游 TiDB 可正常提供服务。关于后端模式更多信息请参阅：https://docs.pingcap.com/tidb/stable/tidb-lightning-backends
     backend = "local"
     # 设置排序的键值对的临时存放地址，目标路径必须是一个空目录，目录空间须大于待导入数据集的大小。建议设为与 `data-source-dir` 不同的磁盘目录并使用闪存介质，独占 IO 会获得更好的导入性能
     sorted-kv-dir = "${sorted-kv-dir}"

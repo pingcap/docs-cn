@@ -27,7 +27,7 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 8003
 
-    `ADMIN CHECK TABLE` 命令在遇到行数据跟索引不一致的时候返回该错误，在检查表中数据是否有损坏时常出现。出现该错误时，请向 PingCAP 工程师或通过官方论坛寻求帮助。
+    [`ADMIN CHECK TABLE`](/sql-statements/sql-statement-admin-check-table-index.md) 命令在遇到行数据跟索引不一致的时候返回该错误，在检查表中数据是否有损坏时常出现。出现该错误时，请向 PingCAP 工程师或通过官方论坛寻求帮助。
 
 * Error Number: 8004
 
@@ -37,7 +37,7 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
     完整的报错信息为 `ERROR 8005 (HY000) : Write Conflict, txnStartTS is stale`。
 
-    事务在 TiDB 中遇到了写入冲突。可以检查 `tidb_disable_txn_auto_retry` 是否为 on。如是，将其设置为 off；如已经是 off，将 `tidb_retry_limit` 调大到不再发生该错误。
+    事务在 TiDB 中遇到了写入冲突。请检查业务逻辑，重试写入操作。
 
 * Error Number: 8018
 
@@ -81,7 +81,9 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 8028
 
-    TiDB 没有表锁（在 MySQL 中称为元数据锁，在其他数据库中可能称为意向锁）。当事务执行时，TiDB 表结构发生了变化是无法被事务感知到的。因此，TiDB 在事务提交时，会对事务涉及表的结构进行检查。如果事务执行中表结构发生了变化，则事务将提交失败，并返回该错误。遇到该错误，应用程序可以安全地重新执行整个事务。
+    TiDB v6.3.0 引入了[元数据锁](/metadata-lock.md)特性。在关闭元数据锁的情况下，当事务执行时，事务无法感知到 TiDB 的表结构发生了变化。因此，TiDB 在事务提交时，会对事务涉及表的结构进行检查。如果事务执行中表结构发生了变化，则事务将提交失败，并返回该错误。遇到该错误，应用程序可以安全地重新执行整个事务。
+
+    在打开元数据锁的情况下，非 RC 隔离级别中，如果从事务开始到初次访问一个表之间，该表进行了有损的列类型变更操作（例如 `INT` 类型变成 `CHAR` 类型是有损的，`TINYINT` 类型变成 `INT` 类型这种不需要重写数据的则是无损的），则访问该表的语句报错，事务不会自动回滚。用户可以继续执行其他语句，并决定是否回滚或者提交事务。
 
 * Error Number: 8029
 
@@ -287,6 +289,66 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
     非事务 DML 语句的一个 batch 报错，语句中止，请参考[非事务 DML 语句](/non-transactional-dml.md)
 
+* Error Number: 8147
+
+   当 [`tidb_constraint_check_in_place_pessimistic`](/system-variables.md#tidb_constraint_check_in_place_pessimistic-从-v630-版本开始引入) 设置为 `OFF` 时，为保证事务的正确性，SQL 语句执行时产生的任何错误都可能导致 TiDB 返回 `8147` 报错并中止当前事务。具体的错误原因，请参考对应的报错信息。详见[约束](/constraints.md#悲观事务)。
+
+* Error Number: 8154
+
+    目前 `LOAD DATA` 不支持从 TiDB 服务器本地导入数据，可以指定 `LOCAL` 从客户端导入，或者将数据上传到 S3/GCS 再进行导入。请参考 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md)。
+
+* Error Number: 8156
+
+    传入的文件路径不能为空。需要设置正确的路径再进行导入。
+
+* Error Number: 8157
+
+    不支持的文件格式。请参考 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md#format) 查看支持的格式。
+
+* Error Number: 8158
+
+    传入的文件路径不合法。请根据具体的错误提示进行处理。S3/GCS 路径设置可参考[外部存储](/br/backup-and-restore-storages.md#uri-格式)。
+
+* Error Number: 8159
+
+    TiDB 无法访问传入的 S3/GCS 路径。请确保填写的 S3/GCS bucket 存在，且输入了正确的 Access Key 和 Secret Access Key 以让 TiDB 服务器有权限访问 S3/GCS 对应的 bucket。
+
+* Error Number: 8160
+
+    读取数据文件失败。请根据具体的错误提示进行处理。
+
+* Error Number: 8162
+
+    语句存在错误。请根据具体的错误提示进行处理。
+
+* Error Number: 8163
+
+    未知的选项。请参考 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md#参数说明) 查看支持的选项。
+
+* Error Number: 8164
+
+    选项取值无效。请参考 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md#参数说明) 查看有效的取值。
+
+* Error Number: 8165
+
+    重复指定了选项，每个选项只能指定一次。
+
+* Error Number: 8166
+
+    某些选项只能在特定的条件下才可以使用。请根据具体的错误提示进行处理。请参考 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md#参数说明) 查看支持的选项。
+
+* Error Number: 8170
+
+    指定的 job 不存在。
+
+* Error Number: 8171
+
+    该 job 的状态不能进行当前操作。请根据具体的错误提示进行处理。
+
+* Error Number: 8173
+
+    执行 `IMPORT INTO` 时，TiDB 会对当前环境进行检查，比如检查下游表是否为空等。请根据具体的错误提示进行处理。
+
 * Error Number: 8200
 
     尚不支持的 DDL 语法。请参考[与 MySQL DDL 的兼容性](/mysql-compatibility.md#ddl-的限制)。
@@ -335,6 +397,54 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
     TiDB 目前不支持在新添加的列上使用 Sequence 作为默认值，如果尝试进行这类操作会返回该错误。
 
+* Error Number: 8248
+
+    资源组已存在。在重复创建资源组时返回该错误。
+
+* Error Number: 8249
+
+    资源组不存在。在修改或绑定不存在的资源组时返回该错误。请参考[创建资源组](/tidb-resource-control.md#创建资源组)。
+
+* Error Number: 8250
+
+    完整的报错信息如下：
+
+    `ERROR 8250 (HY000) : Resource control feature is disabled. Run "SET GLOBAL tidb_enable_resource_control='on'" to enable the feature`
+
+    资源控制的功能没有打开时，使用资源管控 (Resource Control) 相关功能会返回该错误。你可以开启全局变量 [`tidb_enable_resource_control`](/system-variables.md#tidb_enable_resource_control-从-v660-版本开始引入) 启用资源管控。
+
+* Error Number: 8251
+
+    `Resource Control` 组件在 TiDB 启动时进行初始化，相关配置会从 `Resource Control` 的服务端 `Resource Manager` 上获取，如果此过程中出错，则会返回此错误。
+
+* Error Number: 8252
+
+    完整的报错信息如下：
+
+    `ERROR 8252 (HY000) : Exceeded resource group quota limitation`
+
+    在尝试消耗超过资源组的限制时返回该错误。一般出现该错误，是由于单次事务太大或者并发太多导致，需调整事务大小或减少客户端并发数。
+
+* Error Number: 8253
+
+    查询终止，因为满足 Runaway Queries 的条件。请参考 [Runaway Queries](/tidb-resource-control.md#管理资源消耗超出预期的查询-runaway-queries)。
+
+* Error Number: 8254
+
+    查询终止，因为被 Runaway Queries 免疫命中。请参考 [Runaway Queries](/tidb-resource-control.md#管理资源消耗超出预期的查询-runaway-queries)。
+
+* Error Number: 8260
+
+    DDL 操作无法被 `ADMIN PAUSE` 暂停运行。
+
+* Error Number: 8261
+
+    DDL 操作无法被 `ADMIN RESUME` 恢复运行。
+
+* Error Number: 8262
+
+    DDL 已经被 `ADMIN PAUSE` 暂停，无法再次执行。
+
 * Error Number: 9001
 
     完整的报错信息为 `ERROR 9001 (HY000) : PD Server Timeout`。
@@ -379,9 +489,9 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 9007
 
-    完整的报错信息为 `ERROR 9007 (HY000) : Write Conflict`。
+    报错信息以 `ERROR 9007 (HY000) : Write conflict` 开头。
 
-    事务在 TiKV 中遇到了写入冲突。可以检查 `tidb_disable_txn_auto_retry` 是否为 on。如是，将其设置为 off；如已经是 off，将 `tidb_retry_limit` 调大到不再发生该错误。
+    如果报错信息中含有 "reason=LazyUniquenessCheck"，说明是悲观事务并且设置了 `@@tidb_constraint_check_in_place_pessimistic=OFF`，业务中存在唯一索引上的写冲突，此时悲观事务不能保证执行成功。可以在应用测重试事务，或将该变量设置成 `ON` 绕过。详见[约束](/constraints.md#悲观事务)。
 
 * Error Number: 9008
 
