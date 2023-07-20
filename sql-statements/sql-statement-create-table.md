@@ -210,7 +210,7 @@ Query OK, 0 rows affected (0.22 sec)
 mysql> CREATE TABLE IF NOT EXISTS t1 (
           id BIGINT NOT NULL PRIMARY KEY auto_increment,
           b VARCHAR(200) NOT NULL
-          );
+         );
 Query OK, 0 rows affected (0.08 sec)
 mysql> DESC t1;
 +-------+--------------+------+------+---------+----------------+

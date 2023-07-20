@@ -352,11 +352,11 @@ PARTITION BY LIST (store_id) (
 test> CREATE TABLE t (
         a INT,
         b INT
-        )
-        PARTITION BY LIST (a) (
+      )
+      PARTITION BY LIST (a) (
         PARTITION p0 VALUES IN (1, 2, 3),
         PARTITION p1 VALUES IN (4, 5, 6)
-        );
+      );
 Query OK, 0 rows affected (0.11 sec)
 
 test> INSERT INTO t VALUES (7, 7);
@@ -1748,9 +1748,9 @@ mysql> explain select * from t1 where id < 150;
 ```sql
 mysql> create table t1 (id int, age int, key(id)) partition by range(id)
           (partition p0 values less than (100),
-          partition p1 values less than (200),
-          partition p2 values less than (300),
-          partition p3 values less than (400));
+           partition p1 values less than (200),
+           partition p2 values less than (300),
+           partition p3 values less than (400));
 Query OK, 0 rows affected (0,08 sec)
 mysql> create table t2 (id int, code int);
 
