@@ -11,9 +11,9 @@ summary: 给出一个 Hibernate 与 TiDB 的 Hello World 程序示例。
 >
 > 本文档仅展示 Hello World 程序构建核心片段，如需查看更全面，更详尽的增删改查及事务的程序示例，请参考 [TiDB 和 Java 的简单 CRUD 应用程序](/develop/dev-guide-sample-application-java.md)。
 
-本文档将展示如何使用 [Hibernate](https://www.djangoproject.com/) 构建一个 TiDB 的 Hello World 应用程序。在本文中，你将看到：
+本文档将展示如何使用 [Hibernate ORM](https://hibernate.org/orm/) 构建一个 TiDB 的 Hello World 应用程序。在本文中，你将看到：
 
-1. 分别访问本地部署的 TiDB 及 TiDB Cloud Serverless Tier 集群，运行 `SELECT 'Hello World'`。
+1. 访问 TiDB 集群，运行 `SELECT 'Hello World'`。
 2. 得到 `Hello World` 的返回值。
 3. 打印展示。
 
@@ -78,7 +78,7 @@ password: ''
 
 随后刷新 Maven 依赖
 
-![hello-world-java-maven-quickstart-dep-refresh](/media/develop/hello-world-java-maven-quickstart-dep-refresh.jpg)
+![hello-world-java-hibernate-dep-refresh](/media/develop/hello-world-java-hibernate-dep-refresh.jpg)
 
 ## 创建 Hibernate 配置文件
 
@@ -86,6 +86,16 @@ password: ''
 <div label="使用 TiDB Serverless 集群" value="serverless">
 
 在 `src/main/resources` 下创建 `hibernate.cfg.xml` 配置文件，内容如下，请使用在[获取你的 TiDB 参数信息](#获取你的-tidb-参数信息)一节中得到的 `host`, `port`, `user`, `password` 参数填充以下配置，在配置文件中，将使用形如 `${host}` 的占位符进行配置文件编写：
+
+> **建议：**
+>
+> 是否好奇配置中的 `&amp;` 是什么？这其实是一个转译字符，在 XML 文件里，你不应直接使用 `&`，因为这是一个特殊字符。你需要使用 `&amp;` 来替换 `&` 字符，从而让 XML 解析器正常解析你的字符串。类似的常见替换有：
+>
+> - `&`: `&amp;`
+> - `<`: `&lt;`
+> - `>`: `&gt;`
+> - `"`: `&quot;`
+> - `'`: `&apos;`
 
 ```xml
 <?xml version='1.0' encoding='utf-8'?>
