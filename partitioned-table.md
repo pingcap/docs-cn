@@ -347,13 +347,13 @@ PARTITION BY LIST (store_id) (
 
 ```sql
 test> CREATE TABLE t (
-    ->   a INT,
-    ->   b INT
-    -> )
-    -> PARTITION BY LIST (a) (
-    ->   PARTITION p0 VALUES IN (1, 2, 3),
-    ->   PARTITION p1 VALUES IN (4, 5, 6)
-    -> );
+        a INT,
+        b INT
+      )
+      PARTITION BY LIST (a) (
+        PARTITION p0 VALUES IN (1, 2, 3),
+        PARTITION p1 VALUES IN (4, 5, 6)
+      );
 Query OK, 0 rows affected (0.11 sec)
 
 test> INSERT INTO t VALUES (7, 7);
@@ -538,6 +538,87 @@ MOD(YEAR('2005-09-01'),4)
 =  1
 ```
 
+<<<<<<< HEAD
+=======
+### Key 分区
+
+TiDB 从 v7.0.0 开始支持 Key 分区。在 v7.0.0 之前的版本中，创建 Key 分区表时，TiDB 会将其创建为非分区表并给出告警。
+
+Key 分区与 Hash 分区都可以保证将数据均匀地分散到一定数量的分区里面，区别是 Hash 分区只能根据一个指定的整数表达式或字段进行分区，而 Key 分区可以根据字段列表进行分区，且 Key 分区的分区字段不局限于整数类型。TiDB Key 分区表的 Hash 算法与 MySQL 不一样，因此表的数据分布也不一样。
+
+创建 Key 分区表时，你需要在 `CREATE TABLE` 后面添加 `PARTITION BY KEY (columList)`，其中 `columnList` 是字段列表，可以包含一个或多个字段。每个字段的类型可以是除 `BLOB`、`JSON`、`GEOMETRY` 之外的任意类型（请注意 TiDB 不支持 `GEOMETRY` 类型）。此外，你很可能还需要加上 `PARTITIONS num`，其中 `num` 是一个正整数，表示将表划分多少个分区；或者加上分区名的定义，例如，加上 `(PARTITION p0, PARTITION p1)` 代表将表划分为两个分区，分区名为 `p0` 和 `p1`。
+
+下面的语句将创建一个 Key 分区表，按 `store_id` 分成 4 个分区：
+
+```sql
+CREATE TABLE employees (
+    id INT NOT NULL,
+    fname VARCHAR(30),
+    lname VARCHAR(30),
+    hired DATE NOT NULL DEFAULT '1970-01-01',
+    separated DATE DEFAULT '9999-12-31',
+    job_code INT,
+    store_id INT
+)
+
+PARTITION BY KEY(store_id)
+PARTITIONS 4;
+```
+
+如果不指定 `PARTITIONS num`，默认的分区数量为 1。
+
+你也可以根据 VARCHAR 等非整数字段创建 Key 分区表。下面的语句按 `fname` 将表分成 4 个分区：
+
+```sql
+CREATE TABLE employees (
+    id INT NOT NULL,
+    fname VARCHAR(30),
+    lname VARCHAR(30),
+    hired DATE NOT NULL DEFAULT '1970-01-01',
+    separated DATE DEFAULT '9999-12-31',
+    job_code INT,
+    store_id INT
+)
+
+PARTITION BY KEY(fname)
+PARTITIONS 4;
+```
+
+你还可以根据多列字段创建 Key 分区表。下面的语句按 `fname`、`store_id` 将表分成 4 个分区：
+
+```sql
+CREATE TABLE employees (
+    id INT NOT NULL,
+    fname VARCHAR(30),
+    lname VARCHAR(30),
+    hired DATE NOT NULL DEFAULT '1970-01-01',
+    separated DATE DEFAULT '9999-12-31',
+    job_code INT,
+    store_id INT
+)
+
+PARTITION BY KEY(fname, store_id)
+PARTITIONS 4;
+```
+
+目前，TiDB 不支持分区字段列表 `PARTITION BY KEY` 为空的 Key 分区表。下面的语句将创建一个非分区表，并向客户端返回 `Unsupported partition type KEY, treat as normal table` 警告。
+
+```sql
+CREATE TABLE employees (
+    id INT NOT NULL,
+    fname VARCHAR(30),
+    lname VARCHAR(30),
+    hired DATE NOT NULL DEFAULT '1970-01-01',
+    separated DATE DEFAULT '9999-12-31',
+    job_code INT,
+    store_id INT
+)
+
+PARTITION BY KEY()
+PARTITIONS 4;
+```
+
+>>>>>>> 241cab74c0 (*: remove unnecessary character from sql examples (#14587))
 ### TiDB 对 Linear Hash 分区的处理
 
 在 v6.4.0 之前，如果在 TiDB 上执行 [MySQL Linear Hash 分区](https://dev.mysql.com/doc/refman/5.7/en/partitioning-linear-hash.html) 的 DDL 语句，TiDB 只能创建非分区表。在这种情况下，如果你仍然想要在 TiDB 中创建分区表，你需要修改这些 DDL 语句。
@@ -1510,10 +1591,10 @@ set global tidb_partition_prune_mode = dynamic
 
 ```sql
 mysql> create table t1(id int, age int, key(id)) partition by range(id) (
-    ->     partition p0 values less than (100),
-    ->     partition p1 values less than (200),
-    ->     partition p2 values less than (300),
-    ->     partition p3 values less than (400));
+          partition p0 values less than (100),
+          partition p1 values less than (200),
+          partition p2 values less than (300),
+          partition p3 values less than (400));
 Query OK, 0 rows affected (0.01 sec)
 
 mysql> explain select * from t1 where id < 150;
@@ -1563,10 +1644,10 @@ mysql> explain select * from t1 where id < 150;
 
 ```sql
 mysql> create table t1 (id int, age int, key(id)) partition by range(id)
-    -> (partition p0 values less than (100),
-    ->  partition p1 values less than (200),
-    ->  partition p2 values less than (300),
-    ->  partition p3 values less than (400));
+          (partition p0 values less than (100),
+           partition p1 values less than (200),
+           partition p2 values less than (300),
+           partition p3 values less than (400));
 Query OK, 0 rows affected (0,08 sec)
 mysql> create table t2 (id int, code int);
 

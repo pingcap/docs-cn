@@ -13,8 +13,13 @@ summary: TiDB 数据库中 DROP [GLOBAL|SESSION] BINDING 的使用概况。
 
 ```ebnf+diagram
 DropBindingStmt ::=
+<<<<<<< HEAD
     'DROP' GlobalScope 'BINDING' 'FOR' ( BindableStmt ( 'USING' BindableStmt )? )
 |   ('SQL' 'DIGEST' SqlDigest)
+=======
+    'DROP' GlobalScope 'BINDING' 'FOR' ( BindableStmt ( 'USING' BindableStmt )?
+|   'SQL' 'DIGEST' SqlDigest)
+>>>>>>> 241cab74c0 (*: remove unnecessary character from sql examples (#14587))
 
 GlobalScope ::=
     ( 'GLOBAL' | 'SESSION' )?
@@ -33,11 +38,11 @@ BindableStmt ::=
 
 ```sql
 CREATE TABLE t1 (
-    ->  id INT NOT NULL PRIMARY KEY auto_increment,
-    ->  b INT NOT NULL,
-    ->  pad VARBINARY(255),
-    ->  INDEX(b)
-    -> );
+    id INT NOT NULL PRIMARY KEY auto_increment,
+    b INT NOT NULL,
+    pad VARBINARY(255),
+    INDEX(b)
+   );
 Query OK, 0 rows affected (0.07 sec)
 
 INSERT INTO t1 SELECT NULL, FLOOR(RAND()*1000), RANDOM_BYTES(255) FROM dual;
@@ -90,9 +95,9 @@ EXPLAIN ANALYZE SELECT * FROM t1 WHERE b = 123;
 3 rows in set (0.02 sec)
 
 CREATE SESSION BINDING FOR
-    ->  SELECT * FROM t1 WHERE b = 123
-    -> USING
-    ->  SELECT * FROM t1 IGNORE INDEX (b) WHERE b = 123;
+    SELECT * FROM t1 WHERE b = 123
+   USING
+    SELECT * FROM t1 IGNORE INDEX (b) WHERE b = 123;
 Query OK, 0 rows affected (0.00 sec)
 
 EXPLAIN ANALYZE  SELECT * FROM t1 WHERE b = 123;
