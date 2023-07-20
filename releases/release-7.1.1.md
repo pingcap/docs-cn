@@ -35,7 +35,7 @@ TiDB 版本：7.1.1
 
 + TiFlash
 
-    - 修复 TiFlash 在试用 Online Unsafe Recovery 之后重启时间过长的问题 [#7671](https://github.com/pingcap/tiflash/issues/7671) @[hongyunyan](https://github.com/hongyunyan)
+    - 
 
 + Tools
 
@@ -128,6 +128,7 @@ TiDB 版本：7.1.1
 + TiFlash
     <!--1 tw:@Oreoxmt-->
     - 修复存算分离模式下，TiFlash 计算节点获取的 CPU 核数信息不准确的问题 [#7436](https://github.com/pingcap/tiflash/issues/7436) @[guo-shaoge](https://github.com/guo-shaoge)
+    - 修复 TiFlash 在试用 Online Unsafe Recovery 之后重启时间过长的问题 [#7671](https://github.com/pingcap/tiflash/issues/7671) @[hongyunyan](https://github.com/hongyunyan)
 
 + Tools
 
