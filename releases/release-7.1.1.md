@@ -20,7 +20,7 @@ TiDB 版本：7.1.1
 
 + TiDB
     <!--2 tw:@Oreoxmt-->
-    - 执行计划缓存支持带有 200 个参数的查询 [#44823](https://github.com/pingcap/tidb/issues/44823) @[qw4990](https://github.com/qw4990)
+    - 执行计划缓存支持带有超过 200 个参数的查询 [#44823](https://github.com/pingcap/tidb/issues/44823) @[qw4990](https://github.com/qw4990)
     - 优化与落盘相关的 chunk 读取的性能 [#45125](https://github.com/pingcap/tidb/issues/45125) @[YangKeao](https://github.com/YangKeao)
     - (dup): release-7.2.0.md > 改进提升> TiDB - 优化构造索引扫描范围的逻辑，支持将一些复杂条件转化为索引扫描范围 [#41572](https://github.com/pingcap/tidb/issues/41572) [#44389](https://github.com/pingcap/tidb/issues/44389) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes)
     - (dup): release-7.2.0.md > 改进提升> TiDB - 当 Stale Read 的 retry leader 遇到 lock 时，resolve lock 之后强制重试 leader，避免无谓开销 [#43659](https://github.com/pingcap/tidb/issues/43659) @[you06](https://github.com/you06)
@@ -55,7 +55,6 @@ TiDB 版本：7.1.1
     + TiDB Lightning
         <!--1 tw:@Oreoxmt-->
         - 改进 TiDB Lightning 在 checksum 阶段对 PD `ClientTSOStreamClosed` 错误的重试逻辑 [#45301](https://github.com/pingcap/tidb/issues/45301) @[lance6716](https://github.com/lance6716)
-        ```
         - (dup): release-7.2.0.md > 改进提升> Tools> TiDB Lightning - 数据导入完成后使用 SQL 方式校验 checksum，提升数据校验的稳定性 [#41941](https://github.com/pingcap/tidb/issues/41941) @[GMHDBJD](https://github.com/GMHDBJD)
 
     + TiUP
@@ -127,8 +126,7 @@ TiDB 版本：7.1.1
     - (dup): release-7.2.0.md > 错误修复> PD - 修复在特殊情况下冗余副本无法自动修复的问题 [#6573](https://github.com/tikv/pd/issues/6573) @[nolouch](https://github.com/nolouch)
 
 + TiFlash
-    <!--2 tw:@Oreoxmt-->
-    - 修复 `task_scheduler_active_set_soft_limit` 配置可能不生效的问题 [#7692](https://github.com/pingcap/tiflash/issues/7692) @[windtalker](https://github.com/windtalker)
+    <!--1 tw:@Oreoxmt-->
     - 修复存算分离模式下，TiFlash 计算节点获取的 CPU 核数信息不准确的问题 [#7436](https://github.com/pingcap/tiflash/issues/7436) @[guo-shaoge](https://github.com/guo-shaoge)
 
 + Tools
