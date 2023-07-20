@@ -15,13 +15,8 @@ summary: TiDB 数据库中 CREATE [GLOBAL|SESSION] BINDING 的使用概况。
 
 ```ebnf+diagram
 CreateBindingStmt ::=
-<<<<<<< HEAD
     'CREATE' GlobalScope 'BINDING' ( 'FOR' BindableStmt 'USING' BindableStmt ) 
 |   ( 'FROM' 'HISTORY' 'USING' 'PLAN' 'DIGEST' PlanDigest )
-=======
-    'CREATE' GlobalScope 'BINDING' ( 'FOR' BindableStmt 'USING' BindableStmt
-|   'FROM' 'HISTORY' 'USING' 'PLAN' 'DIGEST' PlanDigest )
->>>>>>> 241cab74c0 (*: remove unnecessary character from sql examples (#14587))
 
 GlobalScope ::=
     ( 'GLOBAL' | 'SESSION' )?

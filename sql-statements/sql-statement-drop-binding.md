@@ -13,13 +13,8 @@ summary: TiDB 数据库中 DROP [GLOBAL|SESSION] BINDING 的使用概况。
 
 ```ebnf+diagram
 DropBindingStmt ::=
-<<<<<<< HEAD
     'DROP' GlobalScope 'BINDING' 'FOR' ( BindableStmt ( 'USING' BindableStmt )? )
 |   ('SQL' 'DIGEST' SqlDigest)
-=======
-    'DROP' GlobalScope 'BINDING' 'FOR' ( BindableStmt ( 'USING' BindableStmt )?
-|   'SQL' 'DIGEST' SqlDigest)
->>>>>>> 241cab74c0 (*: remove unnecessary character from sql examples (#14587))
 
 GlobalScope ::=
     ( 'GLOBAL' | 'SESSION' )?
