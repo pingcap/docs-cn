@@ -93,7 +93,7 @@ ROLLBACK;
 mysql> CREATE TABLE t1 (
           id INT NOT NULL PRIMARY KEY auto_increment,
           pad1 VARCHAR(100)
-          );
+         );
 Query OK, 0 rows affected (0.09 sec)
 
 mysql> SELECT @@autocommit;
@@ -133,7 +133,7 @@ COMMIT;
 mysql> CREATE TABLE t2 (
           id INT NOT NULL PRIMARY KEY auto_increment,
           pad1 VARCHAR(100)
-          );
+         );
 Query OK, 0 rows affected (0.10 sec)
 
 mysql> SELECT @@autocommit;
