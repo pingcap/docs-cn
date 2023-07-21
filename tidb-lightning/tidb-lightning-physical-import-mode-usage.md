@@ -31,8 +31,15 @@ data-source-dir = "/data/my_database"
 # 导入模式配置，设为 local 即使用物理导入模式
 backend = "local"
 
+# 前置冲突检测，支持三种策略:
+# - replace：后处理的数据会覆盖先处理的数据
+# - ignore：保留先处理的数据，忽略后处理的数据
+# - error：中止导入并报错
+# 默认值为空字符串，表示不进行前置冲突检测。
+# on-duplicate = ""
+
 # 冲突数据处理方式
-duplicate-resolution = 'remove'
+duplicate-resolution = 'none'
 
 # 本地进行 KV 排序的路径。
 sorted-kv-dir = "./some-dir"
@@ -80,7 +87,38 @@ Lightning 的完整配置文件可参考[完整配置及命令行参数](/tidb-l
 
 ## 冲突数据检测
 
-冲突数据，即两条或两条以上的记录存在 PK/UK 列数据重复的情况。当数据源中的记录存在冲突数据，将导致该表真实总行数和使用唯一索引查询的总行数不一致的情况。冲突数据检测支持三种策略：
+冲突数据，即两条或两条以上存在主键或唯一键列数据重复的记录。当数据源中的记录存在冲突数据，如果没有启用冲突数据检测功能，将导致该表真实总行数和使用唯一索引查询的总行数不一致。
+
+冲突数据检测分为前置冲突检测与后置冲突检测（旧版冲突检测）两种模式。目前两种模式不可同时使用
+
+### 前置冲突检测
+
+当配置 `tikv-importer.on-duplicate` 不为空时，会开启前置冲突检测。具体配置及含义如下
+
+| 配置 | 冲突时默认行为 | 类比 SQL 语句 |
+|:---|:---|:---|
+| `replace` | 保留后处理的数据，覆盖先处理的数据 | `REPLACE INTO ...` |
+| `ignore` | 保留先处理的数据，忽略后处理的数据 | `INSERT IGNORE INTO ...` |
+| `error` | 中止导入并报错 | `INSERT INTO ...` |
+
+需要注意由于 TiDB Lightning 内部并发处理以及实现限制，物理导入的冲突检测效果不会与 SQL 语句完全一致。
+
+配置为 `error` 时，遇到冲突数据会使 TiDB Lightning 报错退出。配置为 `replace` 或 `ignore` 时，冲突数据视作[冲突错误（Conflict error）](/tidb-lightning/tidb-lightning-error-resolution.md#冲突错误-conflict-error)，由[可容忍错误](/tidb-lightning/tidb-lightning-error-resolution.md)功能继续处理。配置了大于 0 的 `lightning.max-error.conflict` 后，可以容忍一定数目的冲突错误。物理导入模式下默认值为 9223372036854775807。详见[可容忍错误](/tidb-lightning/tidb-lightning-error-resolution.md)功能介绍。
+
+前置冲突检测具有如下的限制：
+
+- 在导入之前，前置冲突检测会先读取全部数据并编码，以检测潜在的冲突数据。检测过程中会使用 `tikv-importer.sorted-kv-dir` 存储临时文件。检测完成后结果会保留至导入阶段以供读取。因此在耗时、磁盘空间占用、读取数据的 API 请求三个方面会有额外开销
+- 前置冲突检测只能在单节点完成，不能适用于并行导入场景
+
+相较于后置冲突检测，前置冲突检测具有如下优势：
+
+- 如果原数据冲突数据较多，前置冲突检测的总耗时更少。
+
+我们推荐在已知数据含有冲突数据，且本地磁盘空间充足的情况的单节点导入任务中使用前置冲突检测。
+
+### 后置冲突检测（旧版冲突检测）
+
+当配置 `tikv-importer.duplicate-resolution` 不为空时，会开启后置冲突检测。在早于 v7.2.0 之前的版本中，仅存在这种冲突检测。后置冲突数据检测支持三种策略：
 
 - record: 仅将冲突记录添加到目的 TiDB 中的 `lightning_task_info.conflict_error_v1` 表中。注意，该方法要求目的 TiKV 的版本为 v5.2.0 或更新版本。如果版本过低，则会启用 'none' 模式。
 - remove: 推荐方式。记录所有的冲突记录，和 'record' 模式相似。但是会删除所有的冲突记录，以确保目的 TiDB 中的数据状态保持一致。

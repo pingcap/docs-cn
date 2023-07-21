@@ -11,19 +11,23 @@ summary: 介绍了如何解决导入数据过程中的类型转换和冲突错�
 - 手动定位错误比较困难
 - 如果遇到错误就重启 TiDB Lightning，代价太大
 
-本文介绍了类型错误处理功能 (`lightning.max-error`) 和重复问题处理功能 (`tikv-importer.duplicate-resolution`) 的使用方法，以及保存这些错误的数据库 (`lightning.task-info-schema-name`)，并提供了一个示例。
+本文介绍了错误处理功能涉及的错误类型，查询方法，并提供了一个示例。该页面涉及到的配置项如下：
+
+- 容忍错误阈值 `lightning.max-error`
+- 记录错误上限 `lightning.max-error-records`
+- 记录错误的库表位置 `lightning.task-info-schema-name`
 
 ## 类型错误 (Type error)
 
-你可以通过修改配置项 `lightning.max-error` 来增加数据类型相关的容错数量。如果设置为 *N*，那么 TiDB Lightning 允许数据源中出现 *N* 个错误，而且会跳过这些错误，一旦超过这个错误数就会退出。默认值为 0，表示不允许出现错误。
+你可以通过修改配置项 `lightning.max-error.type` 来增加数据类型相关的容错数量。如果设置为 *N*，那么 TiDB Lightning 允许数据源中出现 *N* 个类型错误，而且会跳过这些错误继续导入，一旦超过这个错误数就会退出。默认值为 0，表示不允许出现错误。
 
 这些错误会被记录到数据库中。在导入完成后，你可以查看数据库中的数据，手动进行处理。请参见[错误报告](#错误报告)。
 
 {{< copyable "" >}}
 
 ```toml
-[lightning]
-max-error = 0
+[lightning.max-error]
+type = 0
 ```
 
 该配置对下列错误有效：
@@ -43,7 +47,18 @@ max-error = 0
 * 原始 CSV、SQL 或者 Parquet 文件中的语法错误，例如未闭合的引号
 * I/O、网络、或系统权限错误
 
-在物理导入模式下，唯一键/主键的冲突是单独处理的。相关内容将在接下来的章节进行介绍。
+## 冲突错误 (Conflict error)
+
+你可以通过修改配置项 `lightning.max-error.conflict` 来增加冲突错误相关的容错数量。如果设置为 *N*，那么 TiDB Lightning 允许数据源中出现 *N* 个冲突错误，而且会跳过这些错误继续导入，一旦超过这个错误数就会退出。在逻辑导入或者物理导入时，不同的场景会产生冲突错误，你可以参考对应导入模式的“冲突检测”文档。在逻辑导入时，默认值为 0。在物理导入时，默认值为 9223372036854775807。
+
+这些错误会被记录到数据库中。在导入完成后，你可以查看数据库中的数据，手动进行处理。请参见[错误报告](#错误报告)。
+
+{{< copyable "" >}}
+
+```toml
+[lightning.max-error]
+conflict = 100
+```
 
 ## 错误报告
 
@@ -72,18 +87,9 @@ max-error = 0
 task-info-schema-name = 'lightning_task_info'
 ```
 
-在此数据库中，TiDB Lightning 创建了 3 个表：
+在此数据库中，TiDB Lightning 会按需创建 3 个表：
 
 ```sql
-CREATE TABLE syntax_error_v1 (
-    task_id     bigint NOT NULL,
-    create_time datetime(6) NOT NULL DEFAULT now(6),
-    table_name  varchar(261) NOT NULL,
-    path        varchar(2048) NOT NULL,
-    offset      bigint NOT NULL,
-    error       text NOT NULL,
-    context     text
-);
 CREATE TABLE type_error_v1 (
     task_id     bigint NOT NULL,
     create_time datetime(6) NOT NULL DEFAULT now(6),
@@ -106,13 +112,22 @@ CREATE TABLE conflict_error_v1 (
     raw_row     mediumblob NOT NULL,
     KEY (task_id, table_name)
 );
+CREATE TABLE conflict_error_v2 (
+	task_id     bigint NOT NULL,
+	create_time datetime(6) NOT NULL DEFAULT now(6),
+	table_name  varchar(261) NOT NULL,
+	path        varchar(2048) NOT NULL,
+	offset      bigint NOT NULL,
+	error       text NOT NULL,
+	row_id 	    bigint NOT NULL COMMENT 'the row id of the conflicted row',
+	row_data    text NOT NULL COMMENT 'the row data of the conflicted row',
+	KEY (task_id, table_name)
+);
 ```
 
-<!--   **syntax_error_v1** 记录文件中的语法错误。目前尚未生效。-->
+**type_error_v1** 记录由 `lightning.max-error.type` 配置项管理的所有[类型错误 (Type error)](#类型错误-type-error)。每个错误一行。
 
-**type_error_v1** 记录由 `max-error` 配置项管理的所有[类型错误 (Type error)](#类型错误-type-error)。每个错误一行。
-
-**conflict_error_v1** 记录所有后端中的唯一键/主键冲突，每对冲突有两行。
+**conflict_error_v1** 记录物理导入后置冲突检测功能的冲突错误，每对冲突有两行。
 
 | 列名     | 语法 | 类型 | 冲突 | 说明                                                                                                                         |
 | ------------ | ------ | ---- | ---------- | ----------------------------------------------------------------------------------------------------------------------------------- |
@@ -148,6 +163,12 @@ CREATE TABLE conflict_error_v1 (
 >     ```
 >
 > * vim：`:goto 183` 或 `183go`
+
+**conflict_error_v2** 记录逻辑导入和物理导入前置冲突检测功能的冲突错误。
+
+## 记录错误上限
+
+配置 `lightning.max-error-records` 控制了 type_error_v1 和 conflict_error_v2 表记录数目的上限。超过该上限后，可容忍错误功能会继续工作，只是不会将错误信息记录在表中。这有助于在大量错误的场景中减少表的写入，从而提升导入速度。
 
 ## 示例
 
