@@ -154,13 +154,13 @@ TiDB 版本：7.1.1
 
     + TiDB Data Migration (DM)
         <!--1 tw:@hfxsd-->
-        - 修复 DM-master 在迁移表结构中存在唯一索引包含空列的情况下异常退出的问题 [#9247](https://github.com/pingcap/tiflow/issues/9247) @[lance6716](https://github.com/lance6716)
+        - 修复 DM-master 在迁移唯一索引包含空列的表时异常退出的问题 [#9247](https://github.com/pingcap/tiflow/issues/9247) @[lance6716](https://github.com/lance6716)
 
     + TiDB Lightning
         <!--2 tw:@hfxsd-->
-        - 修复 TiDB Lightning 连接 PD 失败无法重试的问题，增加导入成功率 [#43400](https://github.com/pingcap/tidb/issues/43400) @[lichunzhu](https://github.com/lichunzhu)
+        - 修复 TiDB Lightning 连接 PD 失败无法重试的问题，提高导入成功率 [#43400](https://github.com/pingcap/tidb/issues/43400) @[lichunzhu](https://github.com/lichunzhu)
         - 修复 TiDB Lightning 写入数据到 TiKV 返回空间不足的错误时无法正确显示错误信息的问题 [#44733](https://github.com/pingcap/tidb/issues/44733) @[lance6716](https://github.com/lance6716)
-        - 修复 checksum 过程中报错 "region is unavailable" 的问题 [#45462](https://github.com/pingcap/tidb/issues/45462) @[D3Hunter](https://github.com/D3Hunter)
+        - 修复 checksum 过程中报错 `Region is unavailable` 的问题 [#45462](https://github.com/pingcap/tidb/issues/45462) @[D3Hunter](https://github.com/D3Hunter)
         - (dup): release-7.2.0.md > 错误修复> Tools> TiDB Lightning - 修复开启 `experimental.allow-expression-index` 且默认值是 UUID 时导致 TiDB Lightning panic 的问题 [#44497](https://github.com/pingcap/tidb/issues/44497) @[lichunzhu](https://github.com/lichunzhu)
         - (dup): release-6.1.7.md > 错误修复> Tools> TiDB Lightning - 修复竞态条件可能导致磁盘配额 (disk quota) 不准确的问题 [#44867](https://github.com/pingcap/tidb/issues/44867) @[D3Hunter](https://github.com/D3Hunter)
         - (dup): release-6.1.7.md > 错误修复> Tools> TiDB Lightning - 修复逻辑导入模式下，导入期间下游删除表可能导致 TiDB Lightning 元信息未及时更新的问题 [#44614](https://github.com/pingcap/tidb/issues/44614) @[dsdashun](https://github.com/dsdashun)
@@ -175,6 +175,6 @@ TiDB 版本：7.1.1
 
     + TiDB Binlog
         <!--2 tw:@hfxsd-->
-        - 修复 TiDB 在 PD 地址完全变更后无法通过 `SHOW PUMP STATUS` 或 `SHOW DRAINER STATUS` 正确查询 binlog 节点状态的问题 [#42643](https://github.com/pingcap/tidb/issues/42643) @[lichunzhu](https://github.com/lichunzhu)
+        - 修复 TiDB 在 PD 地址完全变更后无法通过 `SHOW PUMP STATUS` 或 `SHOW DRAINER STATUS` 正确查询 Binlog 节点状态的问题 [#42643](https://github.com/pingcap/tidb/issues/42643) @[lichunzhu](https://github.com/lichunzhu)
         - 修复 TiDB 在 PD 地址完全变更后无法写 binlog 的问题 [#42643](https://github.com/pingcap/tidb/issues/42643) @[lance6716](https://github.com/lance6716)
         - (dup): release-6.1.7.md > 错误修复> Tools> TiDB Binlog - 修复 etcd client 初始化时没有自动同步最新节点信息的问题 [#1236](https://github.com/pingcap/tidb-binlog/issues/1236) @[lichunzhu](https://github.com/lichunzhu)
