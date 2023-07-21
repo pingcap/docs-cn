@@ -50,7 +50,7 @@ TiDB 版本：7.3.0
 
     更多信息，请参考[用户文档](链接)。
 
-* 允许 DDL 任务运行在选中的 TiDB 实例上 [#issue号](链接) @[ywqzzy](https://github.com/ywqzzy)
+* 允许为 DDL 任务指定 TiDB 实例 [#issue号](链接) @[ywqzzy](https://github.com/ywqzzy)
 
     在繁忙的系统中，运行繁重的 DDL 工作会消耗大量计算资源，从而影响在线业务的服务质量。 TiDB 在新版本提供了对 TiDB 节点添加标记的能力，借助标签把 DDL 任务制定到部分 TiDB 节点，从而能够将 DDL 操作与在线业务的 TiDB 节点分离，提升在线业务的稳定性，保证业务的响应时间。 
 
