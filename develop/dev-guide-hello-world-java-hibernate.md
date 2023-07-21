@@ -87,16 +87,6 @@ password: ''
 
 在 `src/main/resources` 下创建 `hibernate.cfg.xml` 配置文件，内容如下，请使用在[获取你的 TiDB 参数信息](#获取你的-tidb-参数信息)一节中得到的 `host`, `port`, `user`, `password` 参数填充以下配置，在配置文件中，将使用形如 `${host}` 的占位符进行配置文件编写：
 
-> **建议：**
->
-> 是否好奇配置中的 `&amp;` 是什么？这其实是一个转译字符，在 XML 文件里，你不应直接使用 `&`，因为这是一个特殊字符。你需要使用 `&amp;` 来替换 `&` 字符，从而让 XML 解析器正常解析你的字符串。类似的常见替换有：
->
-> - `&`: `&amp;`
-> - `<`: `&lt;`
-> - `>`: `&gt;`
-> - `"`: `&quot;`
-> - `'`: `&apos;`
-
 ```xml
 <?xml version='1.0' encoding='utf-8'?>
 <!DOCTYPE hibernate-configuration PUBLIC
@@ -120,6 +110,20 @@ password: ''
 </hibernate-configuration>
 
 ```
+
+<details>
+
+<summary>是否好奇配置中的 <code>&amp;</code> 是什么？</summary>
+
+这其实是一个转译字符，在 XML 文件里，你不应直接使用 `&`，因为这是一个特殊字符。你需要使用 `&amp;` 来替换 `&` 字符，从而让 XML 解析器正常解析你的字符串。类似的常见替换有：
+>
+> - `&`: `&amp;`
+> - `<`: `&lt;`
+> - `>`: `&gt;`
+> - `"`: `&quot;`
+> - `'`: `&apos;`
+
+</details>
 
 配置完成后形如下图所示：
 
