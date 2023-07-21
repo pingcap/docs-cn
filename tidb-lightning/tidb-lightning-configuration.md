@@ -32,8 +32,8 @@ max-size = 128 # MB
 max-days = 28
 max-backups = 14
 
-# 是否开启 diagnose 日志，默认为 false，即只会输出跟导入有关的日志，不会输出依赖的其他组件的日志。
-# 开启后会输出依赖的其他组件的日志，并开启 GRPC debug，可用于问题诊断。
+# 是否开启 diagnose 日志。默认为 false，即只输出和导入有关的日志，不会输出依赖的其他组件的日志。
+# 设置为 true 开启后，会输出依赖的其他组件的日志，并开启 GRPC debug，可用于问题诊断。
 # 该参数自 v7.3.0 开始引入。
 enable-diagnose-logs = false
 ```
