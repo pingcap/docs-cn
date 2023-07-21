@@ -110,6 +110,12 @@ TiDB 版本：7.3.0
 
     更多信息，请参考[用户文档](链接)。
 
+* Plan Replayer 支持导出历史统计信息 [#issue号](链接) @[time-and-fate](https://github.com/time-and-fate)
+
+    在新版本的 TiDB 中，通过新增的 [`dump with stats as of timestamp`]() 子句，[Plan Replayer](/sql-plan-replayer) 能够导出指定 SQL 相关对象在指定时间点的统计信息。在执行计划问题的诊断过程中，通过对历史统计信息的准确抓取，能够更精确地分析出在问题发生时间点，执行计划是如何生成的，从而找到问题的根本原因，大大提升执行计划问题的诊断效率。 
+
+    更多信息，请参考[用户文档](链接)。
+
 ### 安全
 
 * 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
