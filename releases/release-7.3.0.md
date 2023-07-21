@@ -56,6 +56,16 @@ TiDB 版本：7.3.0
 
     更多信息，请参考[用户文档](链接)。
 
+* 新增部分优化器提示
+
+    TiDB 在 v7.3.0 新增了几个优化器提示，用来控制表之间的连接方式，包括：
+   
+    - [INDEX_JOIN()]() 选择 Index Nested Loop Join，利用索引过滤并将结果集作为内表连接
+    - [`NO_HASH_JOIN()`]() 选择哈希连接以外的连接方式。
+    - [`NO_INDEX_HASH_JOIN()`]() 选择除 [Index Nested Loop Hash Join](/optimizer-hints#inl_hash_join) 以外的连接方式。
+
+    更多信息，请参考[用户文档](/optimizer-hints)。
+
 ### 高可用
 
 * 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
