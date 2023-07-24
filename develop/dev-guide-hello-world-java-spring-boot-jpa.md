@@ -9,13 +9,13 @@ summary: 介绍如何使用 Spring Boot, JPA 和 TiDB 构建一个 Hello World �
 
 > **注意：**
 >
-> 本文档仅展示 Hello World 程序构建核心片段，如需查看更全面，更详尽的增删改查及事务的程序示例，请参考 [TiDB 和 Java 的简单 CRUD 应用程序](/develop/dev-guide-sample-application-java.md)。
+> 本文档仅展示构建 Hello World 程序的核心部分。如需查看更全面、更详尽的增删改查及事务的程序示例，请参考 [TiDB 和 Java 的简单 CRUD 应用程序](/develop/dev-guide-sample-application-java.md)。
 
-本文档将展示如何使用 [Spring Boot](https://spring.io/projects/spring-boot) 和 [Spring Data JPA](https://spring.io/projects/spring-data-jpa) 构建一个 TiDB 的 Hello World 应用程序。在本文中，你将看到：
+本文介绍如何使用 [Spring Boot](https://spring.io/projects/spring-boot) 和 [Spring Data JPA](https://spring.io/projects/spring-data-jpa) 构建一个 TiDB 的 Hello World 应用程序，主要包括以下内容：
 
-1. 访问 TiDB 集群，运行 `SELECT 'Hello World'`。
-2. 得到 `Hello World` 的返回值。
-3. HTTP 接口调用，并在返回值中展示。
+1. 连接到 TiDB 集群并执行 `SELECT 'Hello World'` SQL 查询。
+2. 获取 SQL 查询的返回值。
+3. HTTP 接口调用，并在返回值中展示 SQL 查询结果 `Hello World`。
 
 ## 获取你的 TiDB 参数信息
 
