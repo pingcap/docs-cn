@@ -52,7 +52,7 @@ password: ''
 
 - Name: 程序名称
 - Location: 需要创建程序的位置
-- JDK: 推荐 JDK 11 及以上
+- JDK: JDK 版本（推荐 JDK 11 及以上）
 - Archetype: 创建 Maven 程序的原型模板，此处使用 `org.apache.maven.archetypes:maven-archetype-quickstart` 创建命令行程序
 - Advanced Settings: 将会使用 GroupID, ArtifactID, 和 Version 组合，从而标识一个唯一的包
 
