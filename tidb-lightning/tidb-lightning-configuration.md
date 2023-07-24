@@ -100,7 +100,7 @@ driver = "file"
 
 # dsn 是数据源名称 (data source name)，表示断点的存放位置。
 # 若 driver = "file"，则 dsn 为断点信息存放的文件路径。
-#若不设置该路径，则默认存储路径为“/tmp/CHECKPOINT_SCHEMA.pb”。
+# 若不设置该路径，则默认存储路径为“/tmp/CHECKPOINT_SCHEMA.pb”。
 # 若 driver = "mysql"，则 dsn 为“用户:密码@tcp(地址:端口)/”格式的 URL。
 # 若不设置该 URL，则默认会使用 [tidb] 部分指定的 TiDB 服务器来存储断点。
 # 为减少目标 TiDB 集群的压力，建议指定另一台兼容 MySQL 的数据库服务器来存储断点。
@@ -109,6 +109,18 @@ driver = "file"
 # 所有数据导入成功后是否保留断点。设置为 false 时为删除断点。
 # 保留断点有利于进行调试，但会泄漏关于数据源的元数据。
 # keep-after-success = false
+
+[conflict]
+# 控制冲突数据处理策略
+# - ""：不额外处理，可能会在后需步骤报错
+# - "error"：冲突数据报错让导入终止
+# - "replace"：遇到冲突数据时，尽量保留更加新的数据
+# - "ignore"：遇到冲突数据时，尽量保留更加旧的数据
+strategy = ""
+# 控制 strategy 为 replace 和 ignore 时，能处理的冲突数据上限。仅在 strategy 为 replace 和 ignore 时可配置，默认为 9223372036854775807
+# threshold = 9223372036854775807
+# 控制冲突数据记录表（conflict_record）中记录的条数上限。默认为 100
+# max-record-rows = 100
 
 [tikv-importer]
 # "local"：物理导入模式（Physical Import Mode），默认使用。适用于 TB 级以上大数据量，但导入期间下游 TiDB 无法对外提供服务。
