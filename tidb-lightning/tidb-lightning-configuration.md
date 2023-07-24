@@ -133,11 +133,6 @@ strategy = ""
 # incremental-import = false
 # 当后端是 “importer” 时，tikv-importer 的监听地址（需改为实际地址）。
 addr = "172.16.31.10:8287"
-# 逻辑导入模式插入冲突数据时执行的操作。关于冲突检测详细信息请查阅：https://docs.pingcap.com/zh/tidb/dev/tidb-lightning-logical-import-mode-usage#冲突数据检测
-# - replace：新数据替代已有数据
-# - ignore：保留已有数据，忽略新数据
-# - error：中止导入并报错
-# on-duplicate = "replace"
 
 # 物理导入模式设置是否检测和解决重复的记录（唯一键冲突）。
 # 目前支持两种解决方法：
