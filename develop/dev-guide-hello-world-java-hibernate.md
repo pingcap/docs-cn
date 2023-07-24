@@ -25,7 +25,7 @@ summary: 介绍如何使用 Hibernate 和 TiDB 构建一个 Hello World 程序�
 - 安装 [JDK](https://openjdk.org/projects/jdk/17/), 要求版本 11 以上。
 - 安装 [IntelliJ IDEA](https://www.jetbrains.com/idea/)。
 
-## 获取你的 TiDB 参数信息
+## 1. 获取 TiDB 集群的连接参数
 
 <SimpleTab groupId="deploy-platform">
 <div label="TiDB Serverless 集群" value="serverless">
@@ -48,7 +48,7 @@ password: ''
 </div>
 </SimpleTab>
 
-## 使用 IntelliJ IDEA 创建空白 Maven 程序
+## 2. 使用 IntelliJ IDEA 创建空白 Maven 程序
 
 - Name: 程序名称
 - Location: 需要创建程序的位置
@@ -62,7 +62,7 @@ password: ''
 
 ![hello-world-java-maven-quickstart-project-init](/media/develop/hello-world-java-maven-quickstart-project-init.jpg)
 
-## 添加依赖
+## 3. 添加依赖
 
 将以下两个依赖添加入 `<dependencies></dependencies>` 节点中。
 
@@ -84,7 +84,7 @@ password: ''
 
 ![hello-world-java-hibernate-dep-refresh](/media/develop/hello-world-java-hibernate-dep-refresh.jpg)
 
-## 创建 Hibernate 配置文件
+## 4. 创建 Hibernate 配置文件
 
 <SimpleTab groupId="deploy-platform">
 <div label="使用 TiDB Serverless 集群" value="serverless">
@@ -169,7 +169,7 @@ password: ''
 </div>
 </SimpleTab>
 
-## 编写 Hello World 代码
+## 5. 编写 Hello World 代码
 
 更改 `App.java` 代码至：
 
@@ -187,7 +187,7 @@ public class App  {
 }
 ```
 
-## 运行及结果
+## 6. 运行及结果
 
 点击右上方运行按钮，输出结果如下：
 

@@ -25,7 +25,7 @@ summary: 介绍如何使用 Spring Boot, MyBatis 和 TiDB 构建一个 Hello Wor
 - 安装 [JDK](https://openjdk.org/projects/jdk/17/), 要求版本 17 以上。
 - 安装 [IntelliJ IDEA](https://www.jetbrains.com/idea/)。
 
-## 获取你的 TiDB 参数信息
+## 1. 获取 TiDB 集群的连接参数
 
 <SimpleTab groupId="deploy-platform">
 <div label="TiDB Serverless 集群" value="serverless">
@@ -48,7 +48,7 @@ password: ''
 </div>
 </SimpleTab>
 
-## 使用 IntelliJ IDEA 的 Spring Initializr 创建空白 Spring Boot 程序
+## 2. 使用 IntelliJ IDEA 的 Spring Initializr 创建空白 Spring Boot 程序
 
 - Name: 程序名称
 - Location: 需要创建程序的位置
@@ -67,7 +67,7 @@ password: ''
 
 ![hello-world-java-spring-boot-project-init](/media/develop/hello-world-java-spring-boot-project-init.jpg)
 
-## 更改配置文件
+## 3. 更改配置文件
 
 <SimpleTab groupId="deploy-platform">
 <div label="使用 TiDB Serverless 集群" value="serverless">
@@ -113,7 +113,7 @@ spring:
 </div>
 </SimpleTab>
 
-## 编写 Hello World 代码
+## 4. 编写 Hello World 代码
 
 添加 `HelloWorldController.java`：
 
@@ -147,7 +147,7 @@ public interface HelloWorldMapper {
 @MapperScan("com.pingcap.example")
 ```
 
-## 运行及结果
+## 5. 运行及结果
 
 点击右上方运行按钮，应用程序启动结果如下：
 
