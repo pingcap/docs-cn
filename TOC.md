@@ -23,9 +23,9 @@
   - Hello World
     - Java
       - [Hibernate](/develop/dev-guide-hello-world-java-hibernate.md)
-      - MyBatis
-      - Spring Boot (JPA)
-      - Spring Boot (MyBatis)
+      - [MyBatis](/develop/dev-guide-hello-world-java-mybatis.md)
+      - [Spring Boot (JPA)](/develop/dev-guide-hello-world-java-spring-boot-jpa.md)
+      - [Spring Boot (MyBatis)](/develop/dev-guide-hello-world-java-spring-boot-mybatis.md)
   - 示例程序
     - [Golang](/develop/dev-guide-sample-application-golang.md)
     - [Java (Spring Boot)](/develop/dev-guide-sample-application-spring-boot.md)
