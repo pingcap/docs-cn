@@ -119,7 +119,7 @@ password: ''
 
 <details>
 
-<summary>是否好奇配置中的 <code>&amp;</code> 是什么？</summary>
+<summary>是否好奇配置中的 <code>&amp;amp;</code> 是什么？</summary>
 
 这其实是一个转译字符，在 XML 文件里，你不应直接使用 `&`，因为这是一个特殊字符。你需要使用 `&amp;` 来替换 `&` 字符，从而让 XML 解析器正常解析你的字符串。类似的常见替换有：
 >
