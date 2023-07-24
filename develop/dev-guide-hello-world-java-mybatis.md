@@ -175,7 +175,7 @@ password: ''
 
 ## 5. 编写 Hello World 代码
 
-如果你有注意到我们上一步有创建一个 `<mapper>` 节点，`class` 属性为 `com.pingcap.HelloWorldMapper`。这代表着我们需要创建一个 `HelloWorldMapper` 接口在相应的位置，并且添加代码：
+在上一步骤创建的 `mybatis-config.xml` 配置文件中，我们创建了一个 `<mapper>` 节点，`class` 属性为 `com.pingcap.HelloWorldMapper`。下面将在对应包下创建一个`HelloWorldMapper` 接口，并且添加如下代码：
 
 ```java
 public interface HelloWorldMapper {
