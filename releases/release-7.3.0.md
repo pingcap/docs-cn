@@ -126,10 +126,18 @@ TiDB 版本：7.3.0
 
 ### 数据迁移
 
-* 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
-
-    功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
-
+* Lightning 引入新版冲突数据检测与处理的能力 [#41629](https://github.com/pingcap/tidb/issues/41629) @[lance6716](https://github.com/lance6716) **tw@lance6716** <!--1296-->
+     之前的版本 Lightning 逻辑导入和物理导入模式都有各自的冲突检测和处理的方式，配置较为复杂且不利于用户理解。同时使用物理导入模式，冲突的数据无法通过 replace 和 ignore 策略来处理。
+     新版的冲突检测和处理方式，逻辑导入和物理导入都是用同一套冲突检测和处理方式即遇到冲突数据报错，或者 replace 以及 ignore 掉冲突数据。同时还支持用户设置冲突记录的上限，如处理多少冲突记录后任务中断退出，用户也可以让程序记录哪些数据发生了冲突，方便用户排查。
+    在明确所需导入数据有较多的冲突数据时，推荐使用新版的冲突检测和处理策略，会有更好的性能。注意新、旧版冲突策略互斥使用，会在未来废弃掉旧版冲突检测和处理策略。
+    更多信息，请参考[用户文档](链接)。
+    
+* Lightning 支持 Partitioned Raft KV [#15069](https://github.com/tikv/tikv/pull/15069) @[GMHDBJD](https://github.com/GMHDBJD) **tw@GMHDBJD** <!--1507-->
+    该版本 Lightning 支持了 Partitioned Raft KV ，当用户使用了 Partitioned Raft KV 特性后，能提升 Lightning 导入数据的性能。
+    更多信息，请参考[用户文档](链接)。
+    
+* Lightning 引入新的参数"enable-diagnose-log" 用于打印更多的诊断日志，方便定位问题 [#45497](https://github.com/pingcap/tidb/issues/45497) @[D3Hunter](https://github.com/D3Hunter) **tw@D3Hunter** <!--1517-->
+     默认情况下，此功能未启用，只会打印包含 "lightning/main" 的日志。当启用时，将打印所有包（包括 "client-go" 和 "tidb"）的日志，以帮助诊断与 "client-go" 和 "tidb" 相关的问题。
     更多信息，请参考[用户文档](链接)。
 
 ## 兼容性变更
@@ -142,7 +150,9 @@ TiDB 版本：7.3.0
 
 <!-- 此小节包含 MySQL 兼容性变更-->
 
-* 兼容性 1
+* TiDB Lightning 
+   -逻辑导入模式插入冲突数据时执行的操作，默认配置从 on-duplicate = "replace" 改为 on-duplicate = "error" 即遇到冲突数据即报错。
+   -TiDB Lightning 停止迁移任务之前能容忍的最大非严重 (non-fatal errors) 错误数的参数 "max-error" 不再包含导入数据冲突的上限。而是由新的参数 "conflict.threshold" 来控制可容忍的最大冲突的记录数。
 
 * 兼容性 2
 
@@ -160,7 +170,12 @@ TiDB 版本：7.3.0
 
 | 配置文件 | 配置项 | 修改类型 | 描述 |
 | -------- | -------- | -------- | -------- |
-|  | | 新增/删除/修改 | |
+|TiDB Lightning  | conflict.strategy | 新增 |TiDB Lightning 新版冲突检测与处理的策略，包含”“， error，replace，ignore 四种策略，分别表示不做冲突检测，遇到冲突数据即报错并停止导入，遇到冲突记录 replace 掉已有的冲突记录，遇到冲突记录 ignore 掉需要插入的该条冲突记录。默认值为 ” “， 即不做冲突检测 |
+|TiDB Lightning  | conflict.threshold | 新增 |TiDB Lightning 新版冲突检测与处理策略允许的冲突上限，onflict.strategy="error" 时默认值为 0，当onflict.strategy="replace”/“ignore" 时默认值为 maxint |
+|TiDB Lightning  | conflict.max-record-rows | 新增 |TiDB Lightning 新版冲突检测与处理策略，用于记录在数据导入过程中遇到的冲突记录，并允许设置最大上限，默认值为 100 |
+|TiDB Lightning  | tikv-importer.parallel-import | 新增 |TiDB Lightning  并行导入的参数名，因为旧的参数名 tikv-importer.incremental-import 会被误认为是增量导入的参数而误用，因此使用该新的参数名代替 |
+|TiDB Lightning  | tikv-importer.incremental-import | 删除 | TiDB Lightning 并行导入参数的旧名称，因为该参数名会被误认为增量导入的参数而误用，因此用新的参数名 tikv-importer.parallel-import 代替，且如果用户传入旧的参数会被自动转成新的参数名|
+
 |  | | 新增/删除/修改 | |
 |  | | 新增/删除/修改 | |
 |  | | 新增/删除/修改 | |
