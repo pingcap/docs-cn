@@ -94,7 +94,7 @@ TiDB 版本：7.1.1
     - 修复开启 `tidb_opt_agg_push_down` 时查询可能返回错误结果的问题 [#44795](https://github.com/pingcap/tidb/issues/44795) @[AilinKid](https://github.com/AilinKid)
     - 修复同时使用 CTE 和关联子查询可能导致查询结果出错或者 panic 的问题 [#44649](https://github.com/pingcap/tidb/issues/44649) [#38170](https://github.com/pingcap/tidb/issues/38170) [#44774](https://github.com/pingcap/tidb/issues/44774) @[winoros](https://github.com/winoros) @[guo-shaoge](https://github.com/guo-shaoge)
     - 修复取消处于 rollback 状态的 DDL 任务导致相关元数据出错的问题 [#44143](https://github.com/pingcap/tidb/issues/44143) @[wjhuang2016](https://github.com/wjhuang2016)
-    - 修复 `UPDATE` 语句因为检查外键约束导致执行报错的问题 [#44848](https://github.com/pingcap/tidb/issues/44848) @[crazycs520](https://github.com/crazycs520)。
+    - 修复 `UPDATE` 语句因为检查外键约束导致执行报错的问题 [#44848](https://github.com/pingcap/tidb/issues/44848) @[crazycs520](https://github.com/crazycs520)
 
 + PD
 
