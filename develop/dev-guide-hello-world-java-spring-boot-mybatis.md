@@ -53,7 +53,7 @@ password: ''
 - Name: 程序名称
 - Location: 需要创建程序的位置
 - Language: 编写此程序使用的语言
-- Type: 包管理器，此处使用 `Maven`
+- Type: 项目类型，此处使用 `Maven`
 - Group, Artifact: 用于标识应用程序
 - JDK: Spring Boot 3 要求 JDK 版本为 17 及以上
 
