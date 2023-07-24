@@ -74,7 +74,7 @@ password: ''
 
 1. 将 `application.properties` 配置文件更名为 `application.yaml`。
 
-2. 请使用在[获取你的 TiDB 参数信息](#获取你的-tidb-参数信息)一节中得到的 `host`, `port`, `user`, `password` 参数填充 `application.yaml` 配置，在配置文件中，将使用形如 `${host}` 的占位符进行配置文件编写：
+2. 你可复制以下配置文件模板，并黏贴至 `application.yaml`，在配置文件模板中，将包含形如 `${host}` 的占位符：
 
 ```yaml
 spring:
@@ -85,7 +85,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
 ```
 
-配置完成后形如下图所示：
+3. 请使用在[获取你的 TiDB 参数信息](#获取你的-tidb-参数信息)一节中得到的 `host`, `port`, `user`, `password` 参数填充 `application.yaml` 配置文件，配置完成后形如下图所示：
 
 ![hello-world-java-spring-boot-mybatis-config-serverless](/media/develop/hello-world-java-spring-boot-mybatis-config-serverless.jpg)
 
@@ -95,7 +95,7 @@ spring:
 
 1. 将 `application.properties` 配置文件更名为 `application.yaml`。
 
-2. 请使用在[获取你的 TiDB 参数信息](#获取你的-tidb-参数信息)一节中得到的 `host`, `port`, `user`, `password` 参数填充 `application.yaml` 配置，在配置文件中，将使用形如 `${host}` 的占位符进行配置文件编写：
+2. 你可复制以下配置文件模板，并黏贴至 `application.yaml`，在配置文件模板中，将包含形如 `${host}` 的占位符：
 
 ```yaml
 spring:
@@ -106,7 +106,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
 ```
 
-配置完成后形如下图所示：
+3. 请使用在[获取你的 TiDB 参数信息](#获取你的-tidb-参数信息)一节中得到的 `host`, `port`, `user`, `password` 参数填充 `application.yaml` 配置文件，配置完成后形如下图所示：
 
 ![hello-world-java-spring-boot-mybatis-config](/media/develop/hello-world-java-spring-boot-mybatis-config.jpg)
 

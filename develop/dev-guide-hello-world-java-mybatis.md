@@ -89,7 +89,7 @@ password: ''
 <SimpleTab groupId="deploy-platform">
 <div label="使用 TiDB Serverless 集群" value="serverless">
 
-在 `src/main/resources` 下创建 `mybatis-config.xml` 配置文件，内容如下，请使用在[获取你的 TiDB 参数信息](#获取你的-tidb-参数信息)一节中得到的 `host`, `port`, `user`, `password` 参数填充以下配置，在配置文件中，将使用形如 `${host}` 的占位符进行配置文件编写：
+在 `src/main/resources` 下创建 `mybatis-config.xml` 配置文件，你可复制以下配置文件模板，在配置文件模板中，将包含形如 `${host}` 的占位符：
 
 ```xml
 <?xml version="1.0" encoding="UTF-8" ?>
@@ -131,7 +131,7 @@ password: ''
 
 </details>
 
-配置完成后形如下图所示：
+请使用在[获取你的 TiDB 参数信息](#获取你的-tidb-参数信息)一节中得到的 `host`, `port`, `user`, `password` 参数填充以上配置模板，配置完成后形如下图所示：
 
 ![hello-world-java-maven-quickstart-mybatis-config-serverless](/media/develop/hello-world-java-maven-quickstart-mybatis-config-serverless.jpeg)
 
@@ -139,7 +139,7 @@ password: ''
 
 <div label="使用本地测试集群" value="self-hosted">
 
-在 `src/main/resources` 下创建 `mybatis-config.xml` 配置文件，内容如下，请使用在[获取你的 TiDB 参数信息](#获取你的-tidb-参数信息)一节中得到的 `host`, `port`, `user`, `password` 参数填充以下配置，在配置文件中，将使用形如 `${host}` 的占位符进行配置文件编写：
+在 `src/main/resources` 下创建 `mybatis-config.xml` 配置文件，你可复制以下配置文件模板，在配置文件模板中，将包含形如 `${host}` 的占位符：
 
 ```xml
 <?xml version="1.0" encoding="UTF-8" ?>
@@ -166,7 +166,7 @@ password: ''
 </configuration>
 ```
 
-配置完成后形如下图所示：
+请使用在[获取你的 TiDB 参数信息](#获取你的-tidb-参数信息)一节中得到的 `host`, `port`, `user`, `password` 参数填充以上配置模板，配置完成后形如下图所示：
 
 ![hello-world-java-maven-quickstart-mybatis-config](/media/develop/hello-world-java-maven-quickstart-mybatis-config.jpg)
 
