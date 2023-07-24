@@ -1,11 +1,11 @@
 ---
-title: Hibernate 与 TiDB 的 Hello World 程序
-summary: 给出一个 Hibernate 与 TiDB 的 Hello World 程序示例。
+title: 使用 Hibernate 与 TiDB 实现 Hello World 程序
+summary: 介绍如何使用 Hibernate 和 TiDB 构建一个 Hello World 程序。
 ---
 
 <!-- markdownlint-disable MD029 -->
 
-# Hibernate 与 TiDB 的 Hello World 程序
+# 使用 Hibernate 与 TiDB 实现 Hello World 程序
 
 > **注意：**
 >

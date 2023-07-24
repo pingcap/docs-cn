@@ -1,11 +1,11 @@
 ---
-title: Spring Boot, MyBatis 与 TiDB 的 Hello World 程序
-summary: 给出一个 Spring Boot, MyBatis 与 TiDB 的 Hello World 程序示例。
+title: 使用 Spring Boot, MyBatis 与 TiDB 实现 Hello World 程序
+summary: 介绍如何使用 Spring Boot, MyBatis 和 TiDB 构建一个 Hello World 程序。
 ---
 
 <!-- markdownlint-disable MD029 -->
 
-# Spring Boot, MyBatis 与 TiDB 的 Hello World 程序
+# 使用 Spring Boot, MyBatis 与 TiDB 实现 Hello World 程序
 
 > **注意：**
 >
