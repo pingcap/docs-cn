@@ -50,13 +50,13 @@ TiDB 版本：7.3.0
 
     更多信息，请参考[用户文档](链接)。
 
-* 允许为 DDL 任务指定 TiDB 实例 [#issue号](链接) @[ywqzzy](https://github.com/ywqzzy)
+* 允许为 DDL 任务指定 TiDB 实例 [#issue号](链接) @[ywqzzy](https://github.com/ywqzzy) **tw@ran-huang** <!--1505-->
 
     在繁忙的系统中，运行繁重的 DDL 工作会消耗大量计算资源，从而影响在线业务的服务质量。 TiDB 在新版本提供了对 TiDB 节点添加标记的能力，借助标签把 DDL 任务制定到部分 TiDB 节点，从而能够将 DDL 操作与在线业务的 TiDB 节点分离，提升在线业务的稳定性，保证业务的响应时间。 
 
     更多信息，请参考[用户文档](链接)。
 
-* 新增部分优化器提示 [#issue号](链接) @[qw4990](https://github.com/qw4990)
+* 新增部分优化器提示 [#issue号](链接) @[qw4990](https://github.com/qw4990) **tw@ran-huang** <!--1457-->
 
     TiDB 在 v7.3.0 新增了几个优化器提示，用来控制表之间的连接方式，包括：
    
@@ -82,7 +82,7 @@ TiDB 版本：7.3.0
 
     更多信息，请参考[用户文档](链接)。
 
-* List、List COLUMNS 分区表支持默认分区 [#20679](https://github.com/pingcap/tidb/issues/20679) @[mjonss](https://github.com/mjonss) @[bb7133](https://github.com/bb7133) **tw@caiqian** <!--1234-->
+* List、List COLUMNS 分区表支持默认分区 [#20679](https://github.com/pingcap/tidb/issues/20679) @[mjonss](https://github.com/mjonss) @[bb7133](https://github.com/bb7133) **tw@caiqian** <!--1342-->
 
     List、List COLUMNS 分区表需要为分区指定分区条件。如果 INSERT 语句要插入的数据不匹配任何分区条件，则该语句将执行失败或不符合分区条件的数据被忽略。在 v7.3.0 版本，TiDB 为 List、List COLUMNS 分区表引入默认分区。在创建默认分区后，如果 INSERT 语句插入的数据不匹配任何分区条件，则数据将被写入默认分区。默认分区功能可以提升 List 分区和 List COLUMNS 分区的使用便捷性，避免不符合分区的数据导致 INSERT 语句执行失败或者数据被忽略的情况。该功能自动开启。
 
@@ -104,13 +104,13 @@ TiDB 版本：7.3.0
 
     更多信息，请参考[用户文档](链接)。
 
-* 显示统计信息收集的进度 [#issue号](链接) @[hawkingrei](https://github.com/hawkingrei)
+* 显示统计信息收集的进度 [#issue号](链接) @[hawkingrei](https://github.com/hawkingrei) **tw@Oreoxmt** <!--1380-->
 
     对大表的统计信息收集经常会持续比较长的时间。 在过去的版本里，用户无从得知统计信息收集的进度，进而没法预测完成时间。在 v7.3.0 中，TiDB 加入了对统计信息收集进度的信息展示， 能够显示各个子任务的总体工作量，当前进度，以及对完成时间的预测。在大规模数据导入、SQL 性能优化等场景下，用户能够了解整体任务进展，提升用户体验。 
 
     更多信息，请参考[用户文档](链接)。
 
-* Plan Replayer 支持导出历史统计信息 [#issue号](链接) @[time-and-fate](https://github.com/time-and-fate)
+* Plan Replayer 支持导出历史统计信息 [#issue号](链接) @[time-and-fate](https://github.com/time-and-fate) **tw@ran-huang** <!--1445-->
 
     在新版本的 TiDB 中，通过新增的 [`dump with stats as of timestamp`]() 子句，[Plan Replayer](/sql-plan-replayer) 能够导出指定 SQL 相关对象在指定时间点的统计信息。在执行计划问题的诊断过程中，通过对历史统计信息的准确抓取，能够更精确地分析出在问题发生时间点，执行计划是如何生成的，从而找到问题的根本原因，大大提升执行计划问题的诊断效率。 
 
@@ -206,8 +206,8 @@ TiDB 版本：7.3.0
 
 + TiFlash
 
-    - 支持新的 DTFile 格式版本，减少物理文件数量（实验特性） [#7595](https://github.com/pingcap/tiflash/issues/7595) @[hongyunyan](https://github.com/hongyunyan) **tw@caiqian** <!--1234-->
-    - 提升 TiFlash 在存算分离架构下的性能和稳定性（实验特性） [#6882](https://github.com/pingcap/tiflash/issues/6882)  @[JaySon-Huang](https://github.com/JaySon-Huang) @[breezewish](https://github.com/breezewish) @[JinheLin](https://github.com/JinheLin) **tw@caiqian** <!--1234-->
+    - 支持新的 DTFile 格式版本，减少物理文件数量（实验特性） [#7595](https://github.com/pingcap/tiflash/issues/7595) @[hongyunyan](https://github.com/hongyunyan) **tw@caiqian** <!--？-->
+    - 提升 TiFlash 在存算分离架构下的性能和稳定性（实验特性） [#6882](https://github.com/pingcap/tiflash/issues/6882)  @[JaySon-Huang](https://github.com/JaySon-Huang) @[breezewish](https://github.com/breezewish) @[JinheLin](https://github.com/JinheLin) **tw@caiqian** <!--1360-->
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
