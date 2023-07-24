@@ -77,14 +77,21 @@ This section provides a detailed description of these key metrics on the **TiKV-
 
 - Raft store CPU: The CPU utilization of the `raftstore` thread. The CPU utilization should be less than 80% * `raftstore.store-pool-size` in normal case.
 - Async apply CPU: The CPU utilization of the `async apply` thread. The CPU utilization should be less than 90% * `raftstore.apply-pool-size` in normal cases.
-- Scheduler worker CPU: The CPU utilization of the `scheduler worker` thread. The CPU utilization should be less than 90% * `storage.scheduler-worker-pool-size` in normal cases.
+- Store writer CPU: The CPU utilization of the async IO thread. The CPU utilization should be less than 90% * `raftstore.store-io-pool-size` in normal cases.
 - gRPC poll CPU: The CPU utilization of the `gRPC` thread. The CPU utilization should be less than 80% * `server.grpc-concurrency` in normal cases.
-- Unified read pool CPU: The CPU utilization of the `unified read pool` thread
+- Scheduler worker CPU: The CPU utilization of the `scheduler worker` thread. The CPU utilization should be less than 90% * `storage.scheduler-worker-pool-size` in normal cases.
 - Storage ReadPool CPU: The CPU utilization of the `storage read pool` thread
-- Coprocessor CPU: The CPU utilization of the `coprocessor` thread
+- Unified read pool CPU: The CPU utilization of the `unified read pool` thread
 - RocksDB CPU: The CPU utilization of the RocksDB thread
+- Coprocessor CPU: The CPU utilization of the `coprocessor` thread
 - GC worker CPU: The CPU utilization of the `GC worker` thread
 - BackGround worker CPU: The CPU utilization of the `background worker` thread
+- Import CPU: The CPU utilization of the `import` thread
+- Backup Worker CPU: The CPU utilization of the `backup` thread
+- CDC Worker CPU: The CPU utilization of the `CDC worker` thread
+- CDC endpoint CPU: The CPU utilization of the `CDC endpoint` thread
+- Raftlog fetch worker CPU: The CPU utilization of the async raft log fetcher worker
+- TSO Worker CPU: The CPU utilization of the `TSO worker` thread
 
 ### PD
 
@@ -117,6 +124,9 @@ This section provides a detailed description of these key metrics on the **TiKV-
 - 0.99 Duration of Raft store events: The time consumed by Raftstore events (P99)
 - Process ready duration: The time consumed for processes to be ready in Raft
 - Process ready duration per server: The time consumed for peer processes to be ready in Raft per TiKV instance. It should be less than 2 seconds (P99.99).
+- Max Duration of Raft store events: The time consumed by the slowest Raftstore event.
+- Replica read lock checking duration: The time consumed for checking locks when processing Replica Read.
+- Peer msg length distribution: The number of messages processed by each Region in each TiKV instance at a time. The more messages, the busier the peer is.
 
 ![TiKV Dashboard - Raft process metrics](/media/tikv-dashboard-raft-process.png)
 
@@ -330,6 +340,30 @@ This section provides a detailed description of these key metrics on the **TiKV-
 - Number files at each level: The number of SST files for different column families in each level
 - Ingest SST duration seconds: The time consumed to ingest SST files
 - Stall conditions changed of each CF: Stall conditions changed of each column family
+
+### Raft Engine
+
+- Operations
+    - write: the number of write operations by Raft Engine per second
+    - read_entry: the number of raft log read operations by Raft Engine per second
+    - read_message: the number of raft metadata read operations by Raft Engine per second
+- Write duration: the duration of write operations by Raft Engine. This duration is close to the sum of the latency of disk IOs involved in writing these data.
+- Flow
+    - write: the write traffic of Raft Engine
+    - rewrite append: the traffic of rewriting append logs
+    - rewrite rewrite: the traffic of rewriting rewrite logs
+- Write Duration Breakdown (99%)
+    - wal: the latency of writing Raft Engine WAL
+    - wait: the waiting time before writing
+    - apply: the time consumed for applying data to memory
+- Bytes/Written: the bytes written by Raft Engine every time
+- WAL Duration Breakdown (P99%): the time consumed for each stage of writing Raft Engine WAL
+- File Count
+    - append: the number of files used for appending data by Raft Engine
+    - rewrite: the number of files used for rewriting data by Raft Engine (rewrite is similar to RocksDB compaction)
+- Entry Count
+    - rewrite: the number of entries rewritten by Raft Engine
+    - append: the number of entries appended by Raft Engine
 
 ### Titan - All
 
