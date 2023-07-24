@@ -20,22 +20,18 @@ summary: 介绍如何使用 Hibernate 和 TiDB 构建一个 Hello World 程序�
 ## 获取你的 TiDB 参数信息
 
 <SimpleTab groupId="deploy-platform">
-<div label="使用 TiDB Serverless 集群" value="serverless">
+<div label="TiDB Serverless 集群" value="serverless">
 
-请获取 TiDB Serverless 集群的 `host`, `port`, `user`, `password`, `ssl_ca` 参数。
-
-详细步骤，请参考：[获取 TiDB Serverless 连接参数](https://docs.pingcap.com/tidbcloud/connect-via-standard-connection-serverless#obtain-tidb-serverless-connection-parameters)。
+获取 TiDB Serverless 集群的连接参数，包括 `host`、`port`、`user`、`password` 和 `ssl_ca`。详细步骤，请参考[获取 TiDB Serverless 连接参数](https://docs.pingcap.com/tidbcloud/connect-via-standard-connection-serverless#obtain-tidb-serverless-connection-parameter)。
 
 </div>
 
-<div label="使用本地测试集群" value="local-test">
+<div label="本地集群" value="self-hosted">
 
-请获取 TiDB 的 `host`, `port`, `user`, `password` 参数。
-
-本地 TiDB 测试集群的默认参数如下：
+获取本地部署的 TiDB 集群的 `host`、`port`、`user` 和 `password` 参数。通过 `tiup playground` 部署的集群默认的连接参数如下：
 
 ```properties
-host: 'localhost'
+host: '127.0.0.1'
 port: 4000
 user: 'root'
 password: ''
@@ -131,7 +127,7 @@ password: ''
 
 </div>
 
-<div label="使用本地测试集群" value="local-test">
+<div label="使用本地测试集群" value="self-hosted">
 
 在 `src/main/resources` 下创建 `hibernate.cfg.xml` 配置文件，内容如下，请使用在[获取你的 TiDB 参数信息](#获取你的-tidb-参数信息)一节中得到的 `host`, `port`, `user`, `password` 参数填充以下配置，在配置文件中，将使用形如 `${host}` 的占位符进行配置文件编写：
 
@@ -201,7 +197,7 @@ cd tidb-example-java/hello-world-apps/Hibernate/serverless/TiDBHibernateServerle
 
 </div>
 
-<div label="使用本地测试集群示例" value="local-test">
+<div label="使用本地测试集群示例" value="self-hosted">
 
 ```shell
 git clone https://github.com/pingcap-inc/tidb-example-java.git
