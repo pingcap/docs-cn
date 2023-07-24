@@ -44,7 +44,7 @@ password: ''
 </div>
 </SimpleTab>
 
-## 使用 Intellij IDEA 的 Spring Initializr 创建空白 Spring Boot 程序
+## 使用 IntelliJ IDEA 的 Spring Initializr 创建空白 Spring Boot 程序
 
 - Name: 程序名称
 - Location: 需要创建程序的位置
