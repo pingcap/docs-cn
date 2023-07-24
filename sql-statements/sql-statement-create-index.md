@@ -259,7 +259,7 @@ SELECT * FROM t ORDER BY lower(col1);
 {{< copyable "sql" >}}
 
 ```sql
-SELECT max(lower(col1)) FROM t；
+SELECT max(lower(col1)) FROM t;
 SELECT min(col1) FROM t GROUP BY lower(col1);
 ```
 
