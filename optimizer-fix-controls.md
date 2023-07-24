@@ -37,3 +37,18 @@ SET SESSION tidb_opt_fix_control = '44262:ON,44389:ON';
 - 默认值：`OFF`
 - 可选值：`ON`、`OFF`
 - 对形如 `c = 10 and (a = 'xx' or (a = 'kk' and b = 1))` 的过滤条件，是否尝试为 `IndexRangeScan` 更加完整地构造扫描范围，即 `range`。
+
+### [`44823`](https://github.com/pingcap/tidb/issues/44823) <span class="version-mark">从 v7.1.1 版本开始引入</span>
+
+- 默认值：`200`
+- 可选值：`[0, 2147483647]`
+- 为了节省内存，对于参数超过指定个数的查询，Plan Cache 将不会缓存。
+- 这个开关用来调节该参数个数的阈值，`0` 表示无限制。
+
+### [`44855`](https://github.com/pingcap/tidb/issues/44855) <span class="version-mark">从 v7.1.1 版本开始引入</span>
+
+- 默认值：`OFF`
+- 可选值：`ON`、`OFF`
+- 在某些场景下，当 `IndexJoin` 算子的 `Probe` 端包含 `Selection` 算子时，TiDB 会严重高估 `IndexScan` 的行数，导致在 `IndexJoin` 更好的时候选择了其它的执行计划。
+- TiDB 已经引入了缓解这类问题的逻辑。但是由于潜在的计划回退风险，该逻辑并没有被默认启用。
+- 此开关控制是否让这个改进生效。
