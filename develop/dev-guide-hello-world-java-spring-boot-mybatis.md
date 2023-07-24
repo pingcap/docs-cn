@@ -17,6 +17,14 @@ summary: 介绍如何使用 Spring Boot, MyBatis 和 TiDB 构建一个 Hello Wor
 2. 获取 SQL 查询的返回值。
 3. HTTP 接口调用，并在返回值中展示 SQL 查询结果 `Hello World`。
 
+## 前提条件
+
+请在阅读本文前，准备好以下资源：
+
+- 创建 [TiDB Serverless Tier 集群](/develop/dev-guide-build-cluster-in-cloud.md) 或 [TiDB 集群](/quick-start-with-tidb.md)。
+- 安装 [JDK](https://openjdk.org/projects/jdk/17/), 要求版本 17 以上。
+- 安装 [IntelliJ IDEA](https://www.jetbrains.com/idea/)。
+
 ## 获取你的 TiDB 参数信息
 
 <SimpleTab groupId="deploy-platform">
