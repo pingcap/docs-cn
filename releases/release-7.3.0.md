@@ -230,7 +230,7 @@ TiDB 版本：7.3.0
 
     + TiDB Lightning
 
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
+        - 更新 TiDB Lightning 并行导入的参数名称从 "tikv-importer.incremental-import" 变更为 “tikv-importer.parallel-import” ，避免用户误认为是增量导入而误用该参数。 [#45501](https://github.com/pingcap/tidb/issues/45501) @[lyzx2001](https://github.com/lyzx2001)
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
     + TiUP
