@@ -19,7 +19,11 @@ server_configs:
     log.level: "error"
 ```
 
-It is also recommended to make sure [`tidb_enable_prepared_plan_cache`](/system-variables.md#tidb_enable_prepared_plan_cache-new-in-v610) is enabled and that you allow sysbench to use prepared statements by _not_ using `--db-ps-mode=disabled`. See the [SQL Prepared Execution Plan Cache](/sql-prepared-plan-cache.md) for documetnation about what the SQL plan cache does and how to monitor it.
+It is also recommended to make sure [`tidb_enable_prepared_plan_cache`](/system-variables.md#tidb_enable_prepared_plan_cache-new-in-v610) is enabled and that you allow sysbench to use prepared statements by using `--db-ps-mode=auto`. See the [SQL Prepared Execution Plan Cache](/sql-prepared-plan-cache.md) for documetnation about what the SQL plan cache does and how to monitor it.
+
+> **Note:**
+>
+> In different versions of Sysbench, the default value of `db-ps-mode` might be different. It is recommended to explicitly specify it in the command.
 
 ### TiKV configuration
 
@@ -141,7 +145,7 @@ sysbench --config-file=config oltp_point_select --tables=32 --table-size=1000000
 {{< copyable "shell-regular" >}}
 
 ```bash
-sysbench --config-file=config oltp_point_select --tables=32 --table-size=10000000 run
+sysbench --config-file=config oltp_point_select --tables=32 --table-size=10000000 --db-ps-mode=auto --rand-type=uniform run
 ```
 
 ### Update index test command
@@ -149,7 +153,7 @@ sysbench --config-file=config oltp_point_select --tables=32 --table-size=1000000
 {{< copyable "shell-regular" >}}
 
 ```bash
-sysbench --config-file=config oltp_update_index --tables=32 --table-size=10000000 run
+sysbench --config-file=config oltp_update_index --tables=32 --table-size=10000000 --db-ps-mode=auto --rand-type=uniform run
 ```
 
 ### Read-only test command
@@ -157,7 +161,7 @@ sysbench --config-file=config oltp_update_index --tables=32 --table-size=1000000
 {{< copyable "shell-regular" >}}
 
 ```bash
-sysbench --config-file=config oltp_read_only --tables=32 --table-size=10000000 run
+sysbench --config-file=config oltp_read_only --tables=32 --table-size=10000000 --db-ps-mode=auto --rand-type=uniform run
 ```
 
 ## Common issues
