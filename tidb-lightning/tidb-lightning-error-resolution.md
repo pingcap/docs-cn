@@ -15,6 +15,7 @@ summary: 介绍了如何解决导入数据过程中的类型转换和冲突错�
 
 - 类型错误的容忍阈值 `lightning.max-error`
 - 数据冲突错误相关配置 `conflict.strategy`、`conflict.threshold`、`conflict.max-record-rows`
+- 物理导入专用冲突处理配置 `tikv-importer.duplicate-resolution`
 - 记录错误的库表位置 `lightning.task-info-schema-name`
 
 ## 类型错误 (Type error)
@@ -82,15 +83,6 @@ task-info-schema-name = 'lightning_task_info'
 在此数据库中，TiDB Lightning 创建了 3 个表：
 
 ```sql
-CREATE TABLE syntax_error_v1 (
-    task_id     bigint NOT NULL,
-    create_time datetime(6) NOT NULL DEFAULT now(6),
-    table_name  varchar(261) NOT NULL,
-    path        varchar(2048) NOT NULL,
-    offset      bigint NOT NULL,
-    error       text NOT NULL,
-    context     text
-);
 CREATE TABLE type_error_v1 (
     task_id     bigint NOT NULL,
     create_time datetime(6) NOT NULL DEFAULT now(6),
@@ -113,13 +105,24 @@ CREATE TABLE conflict_error_v1 (
     raw_row     mediumblob NOT NULL,
     KEY (task_id, table_name)
 );
+CREATE TABLE IF NOT EXISTS conflict_records (
+    task_id     bigint NOT NULL,
+    create_time datetime(6) NOT NULL DEFAULT now(6),
+    table_name  varchar(261) NOT NULL,
+    path        varchar(2048) NOT NULL,
+    offset      bigint NOT NULL,
+    error       text NOT NULL,
+    row_id 	    bigint NOT NULL COMMENT 'the row id of the conflicted row',
+    row_data    text NOT NULL COMMENT 'the row data of the conflicted row',
+    KEY (task_id, table_name)
+);
 ```
 
-<!--   **syntax_error_v1** 记录文件中的语法错误。目前尚未生效。-->
+**type_error_v1** 记录由 `lightning.max-error` 配置项管理的所有[类型错误 (Type error)](#类型错误-type-error)。每个错误一行。
 
-**type_error_v1** 记录由 `max-error` 配置项管理的所有[类型错误 (Type error)](#类型错误-type-error)。每个错误一行。
+**conflict_error_v1** 记录物理导入 `tikv-importer.duplicate-resolution` 功能的冲突错误，每对冲突有两行。
 
-**conflict_error_v1** 记录所有后端中的唯一键/主键冲突，每对冲突有两行。
+**conflict_records** 记录逻辑导入和物理导入 `conflict` 配置组的冲突错误，每个错误一行。
 
 | 列名     | 语法 | 类型 | 冲突 | 说明                                                                                                                         |
 | ------------ | ------ | ---- | ---------- | ----------------------------------------------------------------------------------------------------------------------------------- |
