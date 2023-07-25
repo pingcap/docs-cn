@@ -9,7 +9,13 @@ summary: 了解 TiDB Lightning 的物理导入模式。
 
 使用前请务必自行阅读[必要条件及限制](/tidb-lightning/tidb-lightning-physical-import-mode.md#必要条件及限制)。
 
-物理导入模式对应的后端模式为 `local`。
+物理导入模式对应的后端模式为 `local`。可以在配置文件 `tidb-lightning.toml` 中修改：
+
+```toml
+[tikv-importer]
+# 导入模式配置，设为 "local" 即使用物理导入模式
+backend = "local"
+```
 
 ## 原理说明
 
