@@ -33,7 +33,7 @@ TiDB 根据 `sql-statement` 整理出以下集群现场信息：
 - `EXPLAIN [ANALYZE] sql-statement` 的结果
 - 优化器进行查询优化的一些内部步骤的记录
 
-当历史统计信息被[启用](/system-variables.md#tidb_enable_historical_stats)时，可以在 `PLAN REPLAYER` 语句中指定时间来获取对应时间的统计信息。该语法支持直接指定日期时间或指定时间戳。此时，TiDB 会寻找指定时间之前的历史统计信息，并导出其中最新的一份。
+当[启用历史统计信息](/system-variables.md#tidb_enable_historical_stats)时，可以在 `PLAN REPLAYER` 语句中指定时间来获取对应时间的统计信息。该语法支持直接指定日期时间或指定时间戳。此时，TiDB 会寻找指定时间之前的历史统计信息，并导出其中最新的一份。
 
 如果没有符合指定时间的历史统计信息，TiDB 会直接导出最新统计信息，也就是和未指定时间时的行为一致，并且在导出的 `ZIP` 文件中的 `errors.txt` 中输出错误信息。
 
