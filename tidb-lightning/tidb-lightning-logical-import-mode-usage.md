@@ -53,13 +53,17 @@ TiDB Lightning 的完整配置文件可参考[完整配置及命令行参数](/t
 
 ## 冲突数据检测
 
-冲突数据，即两条或两条以上的记录存在主键或唯一键列数据重复的情况。当数据源中的记录存在冲突数据，将导致该表真实总行数和使用唯一索引查询的总行数不一致的情况。TiDB Lightning 的逻辑导入模式通过 `on-duplicate` 配置冲突数据检测的策略，TiDB Lightning 根据策略使用不同的 SQL 语句进行插入。
+冲突数据，即两条或两条以上存在主键或唯一键列数据重复的记录。TiDB Lightning 的逻辑导入模式通过 `conflict.strategy` 配置冲突数据的行为，使用不同的 SQL 语句进行导入。
 
 | 策略 | 冲突时默认行为 | 对应 SQL 语句 |
 |:---|:---|:---|
 | `replace` | 新数据替代旧数据 | `REPLACE INTO ...` |
 | `ignore` | 保留旧数据，忽略新数据 | `INSERT IGNORE INTO ...` |
-| `error` | 中止导入 | `INSERT INTO ...` |
+| ``、`error` | 中止导入 | `INSERT INTO ...` |
+
+配置为 `error` 时，冲突数据导致的报错会直接让导入任务终止。配置为 `replace`、`ignore` 时，可以进一步通过 `conflict.threshold` 控制冲突数据的上限，默认值为 9223372036854775807。
+
+配置为 `ignore` 时，冲突数据可以被记录到下游的 conflict_records 表中，详见[可容忍错误](/tidb-lightning/tidb-lightning-error-resolution.md)功能介绍。此时 `conflict.max-record-rows` 控制记录上限，超出上限的冲突数据会跳过导入而不再记录。默认值为 100。
 
 ## 性能调优
 
