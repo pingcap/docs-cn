@@ -1,5 +1,6 @@
 ---
 title: 升级集群监控组件
+summary: 介绍如何升级 TiDB 集群监控组件 Prometheus、Grafana 和 Alertmanager。
 ---
 
 # 升级 TiDB 集群监控组件
