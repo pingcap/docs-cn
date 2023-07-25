@@ -20,45 +20,25 @@ TiDB 版本：7.3.0
 
 ### 可扩展性
 
-<!-- 请将 **tw@xxx** 中的 xxx 替换为这个 feature 的 writer 的 ID，这个标记会在发布前删除-->
-
-* 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
-
-    功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
-
-    更多信息，请参考[用户文档](链接)。
-
 ### 性能
-
-* 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
-
-    功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
-
-    更多信息，请参考[用户文档](链接)。
 
 * TiFlash 支持副本选择策略 [#44106](https://github.com/pingcap/tidb/issues/44106) @[XuHuaiyu](https://github.com/XuHuaiyu) **tw@qiancai** <!--1394-->
 
-    在 v7.3.0 版本之前，TiFlash 尽量使用所有节点的副本进行数据扫描及 MPP 计算，以提供最强大的性能。在 v7.3.0 版本中，TiFlash 引入副本选择策略，可以根据节点区域属性，选择特定的副本，并调度部分节点进行数据扫描及 MPP 计算。当集群部署在超过一个机房，并且每个机房都拥有完整的 TiFlash 数据副本时，可以只选择当前机房的 TiFlash 副本，在当前机房的 TiFlash 节点中进行数据扫描和 MPP 计算，避免大量跨机房的网络数据传输。新增系统变量 [`tiflash_replica_read`](/system-variables.md#tiflash_replica_read) 用于设定节点选择策略。
+    在 v7.3.0 版本之前，TiFlash 尽量使用所有节点的副本进行数据扫描和 MPP 计算，以提供最强大的性能。在 v7.3.0 版本中，TiFlash 引入副本选择策略，该策略可以根据节点区域属性选择特定的副本，并调度部分节点进行数据扫描及 MPP 计算。当集群部署在多个机房且每个机房都拥有完整的 TiFlash 数据副本时，可以只选择当前机房的 TiFlash 副本，在当前机房的 TiFlash 节点中进行数据扫描和 MPP 计算，从而避免大量跨机房的网络数据传输。新增系统变量 [`tiflash_replica_read`](/system-variables.md#tiflash_replica_read) 用于设定节点选择策略。
 
     更多信息，请参考[用户文档](/system-variables.md#tiflash_replica_read)。
 
-* TiFlash 支持节点内 `Runtime Filter` [#40220](https://github.com/pingcap/tidb/issues/40220) @[elsa0520](https://github.com/elsa0520) **tw@ran-huang** <!--1130-->
+* TiFlash 支持节点内的 Runtime Filter [#40220](https://github.com/pingcap/tidb/issues/40220) @[elsa0520](https://github.com/elsa0520) **tw@ran-huang** <!--1130-->
 
-    `Runtime Filter` 是一种在查询规划时生成的动态取值的谓词，在表连接的过程中，这些动态谓词能够进一步过滤掉不满足条件的行，减少扫描时间和网络开销，提升表连接的效率。TiFlash 在 v7.3.0 支持节点内的 `Runtime Filter`，提升了数据分析类查询的性能，部分 TPC-H 查询有接近 30% 的性能提升。此特性在 v7.3.0 默认关闭，通过设置变量 [`tidb_runtime_filter_mode`](#tidb_runtime_filter_mode-从-v730-版本开始引入) 为 `LOCAL` 打开。
+    Runtime Filter 是一种在查询规划时生成的动态取值的谓词，在表连接的过程中，这些动态谓词能够进一步过滤掉不满足条件的行，减少扫描时间和网络开销，提升表连接的效率。TiFlash 在 v7.3.0 支持节点内的 Runtime Filter，提升了数据分析类查询的性能，在部分 TPC-H 查询中可达到接近 30% 的性能提升。此特性在 v7.3.0 默认关闭，通过设置变量 [`tidb_runtime_filter_mode`](#tidb_runtime_filter_mode-从-v730-版本开始引入) 为 `LOCAL` 打开。
 
     更多信息，请参考[用户文档](/runtime-filter)。
 
 ### 稳定性
 
-* 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
-
-    功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
-
-    更多信息，请参考[用户文档](链接)。
-
 * 允许为 DDL 任务指定 TiDB 实例 [#issue号](链接) @[ywqzzy](https://github.com/ywqzzy) **tw@ran-huang** <!--1505-->
 
-    在繁忙的系统中，运行繁重的 DDL 工作会消耗大量计算资源，从而影响在线业务的服务质量。 TiDB 在新版本提供了对 TiDB 节点添加标记的能力，借助标签把 DDL 任务制定到部分 TiDB 节点，从而能够将 DDL 操作与在线业务的 TiDB 节点分离，提升在线业务的稳定性，保证业务的响应时间。 
+    在繁忙的系统中，运行繁重的 DDL 工作会消耗大量计算资源，从而影响在线业务的服务质量。TiDB 在 v7.3.0 中提供了对 TiDB 节点添加标记的能力，通过使用标签把 DDL 任务指定到部分 TiDB 节点，从而能够将 DDL 操作与在线业务的 TiDB 节点分离，提升在线业务的稳定性，保证业务的响应时间。 
 
     更多信息，请参考[用户文档](链接)。
 
@@ -66,53 +46,29 @@ TiDB 版本：7.3.0
 
     TiDB 在 v7.3.0 新增了几个优化器提示，用来控制表之间的连接方式，包括：
    
-    - [INDEX_JOIN()]() 选择 Index Nested Loop Join，利用索引过滤并将结果集作为内表连接
-    - [`NO_HASH_JOIN()`]() 选择哈希连接以外的连接方式。
-    - [`NO_INDEX_HASH_JOIN()`]() 选择除 [Index Nested Loop Hash Join](/optimizer-hints#inl_hash_join) 以外的连接方式。
+    - [INDEX_JOIN()](链接) 选择 Index Nested Loop Join，利用索引过滤并将结果集作为内表连接。
+    - [`NO_HASH_JOIN()`](链接) 选择哈希连接以外的连接方式。
+    - [`NO_INDEX_HASH_JOIN()`](链接) 选择除 [Index Nested Loop Hash Join](/optimizer-hints#inl_hash_join) 以外的连接方式。
 
     更多信息，请参考[用户文档](/optimizer-hints)。
 
 ### 高可用
 
-* 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
-
-    功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
-
-    更多信息，请参考[用户文档](链接)。
-
 ### SQL 功能
 
-* 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
+* List、List COLUMNS 分区表支持默认分区 [#20679](https://github.com/pingcap/tidb/issues/20679) @[mjonss](https://github.com/mjonss) @[bb7133](https://github.com/bb7133) **tw@qiancai** <!--1342-->
 
-    功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
-
-    更多信息，请参考[用户文档](链接)。
-
-* List、List COLUMNS 分区表支持默认分区 [#20679](https://github.com/pingcap/tidb/issues/20679) @[mjonss](https://github.com/mjonss) @[bb7133](https://github.com/bb7133) **tw@caiqian** <!--1342-->
-
-    List、List COLUMNS 分区表需要为分区指定分区条件。如果 INSERT 语句要插入的数据不匹配任何分区条件，则该语句将执行失败或不符合分区条件的数据被忽略。在 v7.3.0 版本，TiDB 为 List、List COLUMNS 分区表引入默认分区。在创建默认分区后，如果 INSERT 语句插入的数据不匹配任何分区条件，则数据将被写入默认分区。默认分区功能可以提升 List 分区和 List COLUMNS 分区的使用便捷性，避免不符合分区的数据导致 INSERT 语句执行失败或者数据被忽略的情况。该功能自动开启。
+    List、List COLUMNS 分区表需要为分区指定分区条件。如果 `INSERT` 语句要插入的数据不匹配任何分区条件，则该语句将执行失败或不符合分区条件的数据被忽略。在 v7.3.0 中，TiDB 为 List、List COLUMNS 分区表引入默认分区。在创建默认分区后，如果 `INSERT` 语句插入的数据不匹配任何分区条件，则数据将被写入默认分区。默认分区功能可以提升 List 分区和 List COLUMNS 分区的使用便捷性，避免不符合分区的数据导致 INSERT 语句执行失败或者数据被忽略的情况。该功能自动开启。
 
     更多信息，请参考[用户文档](/partitioned-table.md#list-分区)。
 
 ### 数据库管理
 
-* 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
-
-    功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
-
-    更多信息，请参考[用户文档](链接)。
-
 ### 可观测性
-
-* 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
-
-    功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
-
-    更多信息，请参考[用户文档](链接)。
 
 * 显示统计信息收集的进度 [#issue号](链接) @[hawkingrei](https://github.com/hawkingrei) **tw@Oreoxmt** <!--1380-->
 
-    对大表的统计信息收集经常会持续比较长的时间。 在过去的版本里，用户无从得知统计信息收集的进度，进而没法预测完成时间。在 v7.3.0 中，TiDB 加入了对统计信息收集进度的信息展示， 能够显示各个子任务的总体工作量，当前进度，以及对完成时间的预测。在大规模数据导入、SQL 性能优化等场景下，用户能够了解整体任务进展，提升用户体验。 
+    对大表的统计信息收集经常会持续比较长的时间。在过去的版本里，用户无从得知统计信息收集的进度，进而没法预测完成时间。在 v7.3.0 中，TiDB 加入了对统计信息收集进度的信息展示，能够显示各个子任务的总体工作量、当前进度、以及对完成时间的预测。在大规模数据导入、SQL 性能优化等场景下，用户能够了解整体任务进展，提升用户体验。 
 
     更多信息，请参考[用户文档](链接)。
 
@@ -124,26 +80,26 @@ TiDB 版本：7.3.0
 
 ### 安全
 
-* 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
-
-    功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
-
-    更多信息，请参考[用户文档](链接)。
-
 ### 数据迁移
 
-* Lightning 引入新版冲突数据检测与处理的能力 [#41629](https://github.com/pingcap/tidb/issues/41629) @[lance6716](https://github.com/lance6716) **tw@lance6716** <!--1296-->
-     之前的版本 Lightning 逻辑导入和物理导入模式都有各自的冲突检测和处理的方式，配置较为复杂且不利于用户理解。同时使用物理导入模式，冲突的数据无法通过 replace 和 ignore 策略来处理。
-     新版的冲突检测和处理方式，逻辑导入和物理导入都是用同一套冲突检测和处理方式即遇到冲突数据报错，或者 replace 以及 ignore 掉冲突数据。同时还支持用户设置冲突记录的上限，如处理多少冲突记录后任务中断退出，用户也可以让程序记录哪些数据发生了冲突，方便用户排查。
+* Lightning 引入新版冲突数据检测与处理的能力 [#41629](https://github.com/pingcap/tidb/issues/41629) @[lance6716](https://github.com/lance6716) **tw@hfxsd** <!--1296-->
+     
+    之前的版本 Lightning 逻辑导入和物理导入模式都有各自的冲突检测和处理的方式，配置较为复杂且不利于用户理解。同时使用物理导入模式，冲突的数据无法通过 replace 和 ignore 策略来处理。新版的冲突检测和处理方式，逻辑导入和物理导入都是用同一套冲突检测和处理方式即遇到冲突数据报错，或者 replace 以及 ignore 掉冲突数据。同时还支持用户设置冲突记录的上限，如处理多少冲突记录后任务中断退出，用户也可以让程序记录哪些数据发生了冲突，方便用户排查。
+
     在明确所需导入数据有较多的冲突数据时，推荐使用新版的冲突检测和处理策略，会有更好的性能。注意新、旧版冲突策略互斥使用，会在未来废弃掉旧版冲突检测和处理策略。
+    
     更多信息，请参考[用户文档](链接)。
     
 * Lightning 支持 Partitioned Raft KV [#15069](https://github.com/tikv/tikv/pull/15069) @[GMHDBJD](https://github.com/GMHDBJD) **tw@hfxsd** <!--1507-->
+    
     该版本 Lightning 支持了 Partitioned Raft KV ，当用户使用了 Partitioned Raft KV 特性后，能提升 Lightning 导入数据的性能。
+    
     更多信息，请参考[用户文档](链接)。
     
 * Lightning 引入新的参数"enable-diagnose-log" 用于打印更多的诊断日志，方便定位问题 [#45497](https://github.com/pingcap/tidb/issues/45497) @[D3Hunter](https://github.com/D3Hunter) **tw@hfxsd** <!--1517-->
-     默认情况下，此功能未启用，只会打印包含 "lightning/main" 的日志。当启用时，将打印所有包（包括 "client-go" 和 "tidb"）的日志，以帮助诊断与 "client-go" 和 "tidb" 相关的问题。
+    
+    默认情况下，此功能未启用，只会打印包含 "lightning/main" 的日志。当启用时，将打印所有包（包括 "client-go" 和 "tidb"）的日志，以帮助诊断与 "client-go" 和 "tidb" 相关的问题。
+    
     更多信息，请参考[用户文档](链接)。
 
 ## 兼容性变更
@@ -156,9 +112,10 @@ TiDB 版本：7.3.0
 
 <!-- 此小节包含 MySQL 兼容性变更-->
 
-* TiDB Lightning 
-   -逻辑导入模式插入冲突数据时执行的操作，默认配置从 on-duplicate = "replace" 改为 on-duplicate = "error" 即遇到冲突数据即报错。
-   -TiDB Lightning 停止迁移任务之前能容忍的最大非严重 (non-fatal errors) 错误数的参数 "max-error" 不再包含导入数据冲突的上限。而是由新的参数 "conflict.threshold" 来控制可容忍的最大冲突的记录数。
+* TiDB Lightning **tw@hfxsd**
+
+    - 逻辑导入模式插入冲突数据时执行的操作，默认配置从 on-duplicate = "replace" 改为 on-duplicate = "error" 即遇到冲突数据即报错。
+    - TiDB Lightning 停止迁移任务之前能容忍的最大非严重 (non-fatal errors) 错误数的参数 "max-error" 不再包含导入数据冲突的上限。而是由新的参数 "conflict.threshold" 来控制可容忍的最大冲突的记录数。
 
 * 兼容性 2
 
@@ -212,8 +169,8 @@ TiDB 版本：7.3.0
 
 + TiFlash
 
-    - 支持新的 DTFile 格式版本，减少物理文件数量（实验特性） [#7595](https://github.com/pingcap/tiflash/issues/7595) @[hongyunyan](https://github.com/hongyunyan) **tw@caiqian** <!--？-->
-    - 提升 TiFlash 在存算分离架构下的性能和稳定性（实验特性） [#6882](https://github.com/pingcap/tiflash/issues/6882)  @[JaySon-Huang](https://github.com/JaySon-Huang) @[breezewish](https://github.com/breezewish) @[JinheLin](https://github.com/JinheLin) **tw@caiqian** <!--1360-->
+    - 支持新的 DTFile 格式版本，减少物理文件数量（实验特性） [#7595](https://github.com/pingcap/tiflash/issues/7595) @[hongyunyan](https://github.com/hongyunyan) **tw@qiancai** <!--？-->
+    - 提升 TiFlash 在存算分离架构下的性能和稳定性（实验特性） [#6882](https://github.com/pingcap/tiflash/issues/6882)  @[JaySon-Huang](https://github.com/JaySon-Huang) @[breezewish](https://github.com/breezewish) @[JinheLin](https://github.com/JinheLin) **tw@qiancai** <!--1360-->
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
@@ -236,7 +193,7 @@ TiDB 版本：7.3.0
 
     + TiDB Lightning
 
-        - 更新 TiDB Lightning 并行导入的参数名称从 "tikv-importer.incremental-import" 变更为 “tikv-importer.parallel-import” ，避免用户误认为是增量导入而误用该参数。 [#45501](https://github.com/pingcap/tidb/issues/45501) @[lyzx2001](https://github.com/lyzx2001)
+        - 更新 TiDB Lightning 并行导入的参数名称从 "tikv-importer.incremental-import" 变更为 “tikv-importer.parallel-import” ，避免用户误认为是增量导入而误用该参数。 [#45501](https://github.com/pingcap/tidb/issues/45501) @[lyzx2001](https://github.com/lyzx2001) **tw@hfxsd**
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
     + TiUP
