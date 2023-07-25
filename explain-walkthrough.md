@@ -210,3 +210,57 @@ EXPLAIN ANALYZE SELECT count(*) FROM trips WHERE start_date BETWEEN '2017-07-01 
 > **注意：**
 >
 > 以上示例另一个可用的优化方案是 [coprocessor cache](/coprocessor-cache.md)。如果你无法添加索引，可考虑开启 coprocessor cache 功能。开启后，只要算子上次执行以来 Region 未作更改，TiKV 将从缓存中返回值。这也有助于减少 `TableFullScan` 和 `Selection` 算子的大部分运算成本。
+
+## 禁止子查询提前执行
+
+在目前 TiDB 的优化过程中，会将可以在优化阶段直接计算的子查询提前在优化阶段执行
+
+{{< copyable "sql" >}}
+
+```sql
+create table t1(a int);
+insert into t1 values(1);
+create table t2(a int);
+explain select * from t2 where a = (select a from t1);
+```
+
+```sql
++--------------------------+----------+-----------+---------------+--------------------------------+
+| id                       | estRows  | task      | access object | operator info                  |
++--------------------------+----------+-----------+---------------+--------------------------------+
+| TableReader_14           | 10.00    | root      |               | data:Selection_13              |
+| └─Selection_13           | 10.00    | cop[tikv] |               | eq(test.t2.a, 1)               |
+|   └─TableFullScan_12     | 10000.00 | cop[tikv] | table:t2      | keep order:false, stats:pseudo |
++--------------------------+----------+-----------+---------------+--------------------------------+
+3 rows in set (0.00 sec)
+```
+可以看到在上述例子中 `a = (select a from t1)` 这个子查询被在优化阶段就进行了计算，表达式被改写为 `t2.a=1`。这种执行方式可以在优化阶段进行更多的常量传播和常量折叠的优化，但是会影响 EXPLAIN 语句的执行时间。当子查询本身耗时较高时，EXPLAIN 语句也无法执行完成，这是会对线上问题的调查产生影响。
+
+从 v7.3.0 版本开始，TiDB 引入了变量 [`tidb_opt_enable_non_eval_scalar_subquery`](system-variables.md#tidb_opt_enable_non_eval_scalar_subquery-从-v730-版本开始引入)，可以控制这类子查询在 EXPLAIN 语句中不进行计算开展。
+
+{{< copyable "sql" >}}
+```sql
+set @@tidb_opt_enable_non_eval_scalar_subquery = on;
+explain select * from t2 where a = (select a from t1);
+```
+
+```sql
++---------------------------+----------+-----------+---------------+---------------------------------+
+| id                        | estRows  | task      | access object | operator info                   |
++---------------------------+----------+-----------+---------------+---------------------------------+
+| Selection_13              | 8000.00  | root      |               | eq(test.t2.a, ScalarQueryCol#5) |
+| └─TableReader_15          | 10000.00 | root      |               | data:TableFullScan_14           |
+|   └─TableFullScan_14      | 10000.00 | cop[tikv] | table:t2      | keep order:false, stats:pseudo  |
+| ScalarSubQuery_10         | N/A      | root      |               | Output: ScalarQueryCol#5        |
+| └─MaxOneRow_6             | 1.00     | root      |               |                                 |
+|   └─TableReader_9         | 1.00     | root      |               | data:TableFullScan_8            |
+|     └─TableFullScan_8     | 1.00     | cop[tikv] | table:t1      | keep order:false, stats:pseudo  |
++---------------------------+----------+-----------+---------------+---------------------------------+
+7 rows in set (0.00 sec)
+```
+
+可以看到，标量子查询在执行阶段并没有被展开，通过这种手段可以更方便理解该类 SQL 具体的执行过程。
+
+> **注意：**
+>
+> 该变量目前只会控制 EXPLAIN 语句的行为，EXPLAIN ANALYZE 语句仍然会将子查询提前展开。
