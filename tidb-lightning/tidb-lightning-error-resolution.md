@@ -105,7 +105,7 @@ CREATE TABLE conflict_error_v1 (
     raw_row     mediumblob NOT NULL,
     KEY (task_id, table_name)
 );
-CREATE TABLE IF NOT EXISTS conflict_records (
+CREATE TABLE conflict_records (
     task_id     bigint NOT NULL,
     create_time datetime(6) NOT NULL DEFAULT now(6),
     table_name  varchar(261) NOT NULL,
