@@ -88,7 +88,7 @@ spring:
     database-platform: org.hibernate.dialect.TiDBDialect
 ```
 
-3. 请使用在[获取你的 TiDB 参数信息](#获取你的-tidb-参数信息)一节中得到的 `host`, `port`, `user`, `password` 参数填充 `application.yaml` 配置文件，配置完成后形如下图所示：
+3. 请使用在[获取 TiDB 集群的连接参数](#1-获取-tidb-集群的连接参数)一节中得到的 `host`, `port`, `user`, `password` 参数填充 `application.yaml` 配置文件，配置完成后形如下图所示：
 
 ![hello-world-java-spring-boot-jpa-config-serverless](/media/develop/hello-world-java-spring-boot-jpa-config-serverless.jpeg)
 
@@ -112,7 +112,7 @@ spring:
     database-platform: org.hibernate.dialect.TiDBDialect
 ```
 
-3. 请使用在[获取你的 TiDB 参数信息](#获取你的-tidb-参数信息)一节中得到的 `host`, `port`, `user`, `password` 参数填充 `application.yaml` 配置文件，配置完成后形如下图所示：
+3. 请使用在[获取 TiDB 集群的连接参数](#1-获取-tidb-集群的连接参数)一节中得到的 `host`, `port`, `user`, `password` 参数填充 `application.yaml` 配置文件，配置完成后形如下图所示：
 
 ![hello-world-java-spring-boot-jpa-config](/media/develop/hello-world-java-spring-boot-jpa-config.jpg)
 
