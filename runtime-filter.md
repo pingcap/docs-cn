@@ -244,7 +244,7 @@ Runtime Filter Mode 指的是 Runtime Filter 的模式，即 **生成 Filter 算
 
 `tidb_runtime_filter_mode`: 默认取值为 OFF，则查询不开启 Runtime Filter。LOCAL 则为开启 LOCAL 模式的 Runtime Filter。详细变量使用方式见[Ref](/system-variables.md#tidb_runtime_filter_mode-从-v730-版本开始引入)
 
-## Runtime Filter Type
+### Runtime Filter Type
 
 Runtime Filter Type 指的是 Runtime Filter 谓词的类型，即生成的 Filter 算子使用的谓词类型。目前只有一种类型：`IN`，即生成的谓词类似于 `k1 in (xxx)`。通过会话系统变量 [`tidb_runtime_filter_type`](/system-variables.md#tidb_runtime_filter_type-从-v730-版本开始引入) 控制。
 
