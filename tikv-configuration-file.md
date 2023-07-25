@@ -1349,12 +1349,6 @@ rocksdb defaultcf、rocksdb writecf 和 rocksdb lockcf 相关的配置项。
 + `writecf` 默认值：`false`
 + `lockcf` 默认值：`false`
 
-### `optimize-filters-for-memory` <span class="version-mark">从 v7.1.0 版本开始引入</span>
-
-+ 控制是否生成能够最小化内存碎片的 Bloom/Ribbon filter。
-+ 只有当 [`format-version`](#format-version-从-v620-版本开始引入) >= 5 时，该配置项才生效。
-+ 默认值：`false`
-
 ### `whole-key-filtering`
 
 + 开启将整个 key 放到 bloom filter 中的开关。
@@ -1372,12 +1366,6 @@ rocksdb defaultcf、rocksdb writecf 和 rocksdb lockcf 相关的配置项。
 
 + 开启每个 block 建立 bloom filter 的开关。
 + 默认值：false
-
-### `ribbon-filter-above-level` <span class="version-mark">从 v7.1.0 版本开始引入</span>
-
-+ 控制是否对于大于等于该值的 level 使用 Ribbon filter，对于小于该值的 level，使用非 block-based bloom filter。当该配置开启时，[`block-based-bloom-filter`](#block-based-bloom-filter) 将被忽略。
-+ 只有当 [`format-version`](#format-version-从-v620-版本开始引入) >= 5 时，该配置项才生效。
-+ 默认值：`false`
 
 ### `read-amp-bytes-per-bit`
 
