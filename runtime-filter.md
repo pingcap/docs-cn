@@ -75,7 +75,10 @@ Runtime Filter 的执行方式如下：
 
 ## 使用 Runtime Filter
 
-本小节以 TPC-DS 的数据集为例，使用 `catalog_sales` 表和 `date_dim` 表进行 Join 操作。
+
+要使用 Runtime Filter 的步骤，只需创建带 TiFlash 副本的表，并将 `tidb_runtime_filter_mode` 设置为 `LOCAL`。
+
+本小节以 TPC-DS 的数据集为例，使用 `catalog_sales` 表和 `date_dim` 表进行 Join 操作，说明如何使用 Runtime Filter 提升查询。
 
 ### 第 1 步：创建带 TiFlash 副本的表
 
