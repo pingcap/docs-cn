@@ -3705,21 +3705,23 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 
 - 需要注意的是修改该变量不会对已保存的老数据产生影响，只会对修改变量后的新写入数据使用对应版本格式保存。
 
-### `tidb_runtime_filter_mode` <span class="version-mark">从 v7.3.0 版本开始引入</span>
+### `tidb_runtime_filter_mode` <span class="version-mark">从 v7.2.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 类型：枚举型
 - 默认值：`OFF`
 - 可选值：`OFF`，`LOCAL`
+- 控制 Runtime Filter 的模式，即 **生成 Filter 算子** 和 **接收 Filter 算子**之间的关系。当前可设置为两种模式：`OFF`、`LOCAL`。`OFF` 则关闭 Runtime Filter，`LOCAL` 则开启 `LOCAL` 模式的 Runtime Filter。详细说明见[Runtime Filter Mode](/runtime-filter.md#Runtime-Filter-Mode)
 
-### `tidb_runtime_filter_type` <span class="version-mark">从 v7.3.0 版本开始引入</span>
+### `tidb_runtime_filter_type` <span class="version-mark">从 v7.2.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 类型：枚举型
 - 默认值：`IN`
 - 可选值：`IN`
+- 控制 Runtime Filter 的类型，即生成的 Filter 算子使用的谓词类型。当前仅支持 `IN`，所以无需更改此设置。详细说明见[Runtime Filter Type](runtime-filter.md#Runtime-Filter-Type)
 
 ### `tidb_scatter_region`
 
