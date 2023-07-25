@@ -134,11 +134,11 @@ TiDB 的部分操作需要向服务器写入临时文件，因此需要确保运
 
 - Fast Online DDL 工作区
 
-    当变量 [`tidb_ddl_enable_fast_reorg`](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 被设置为 `ON`（v6.5.0 及以上版本中默认值为 `ON`）时，会激活 Fast Online DDL，这时部分 DDL 要对临时文件进行读写。临时文件位置由配置 [`temp-dir`](/tidb-configuration-file.md#temp-dir-从-v630-版本开始引入) 定义，需要确保运行 TiDB 的操作系统用户对该目录有读写权限。以默认目录 `/tmp/tidb` 为例：
+    当变量 [`tidb_ddl_enable_fast_reorg`](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 被设置为 `ON`（v6.5.0 及以上版本中默认值为 `ON`）时，会激活 Fast Online DDL，这时部分 DDL 要对临时文件进行读写。临时文件位置由配置 [`temp-dir`](/tidb-configuration-file.md#temp-dir-从-v630-版本开始引入) 定义，需要确保运行 TiDB 的用户对操作系统中该目录有读写权限。以默认目录 `/tmp/tidb` 为例：
 
     > **注意：**
     >
-    > 如果系统中可能存在针对大对象的 DDL 操作，推荐为 [`temp-dir`](/tidb-configuration-file.md#temp-dir-从-v630-版本开始引入) 配置独立文件系统及更大的临时空间。
+    > 如果业务中可能存在针对大对象的 DDL 操作，推荐为 [`temp-dir`](/tidb-configuration-file.md#temp-dir-从-v630-版本开始引入) 配置独立文件系统及更大的临时空间。
 
     ```shell
     sudo mkdir /tmp/tidb
