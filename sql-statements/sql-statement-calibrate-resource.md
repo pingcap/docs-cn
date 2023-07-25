@@ -98,7 +98,7 @@ CALIBRATE RESOURCE START_TIME '2023-04-18 08:00:00' DURATION '60m';
 Error 1105 (HY000): There is no CPU quota metrics, metrics 'tikv_cpu_quota' is empty
 ```
 
-当时间窗口范围内的负载过低或者 `resource_manager_resource_unit` 及 `process_cpu_usage` 监控数据缺失，会导致报错提醒。此外，由于 TiKV 未在 macOS 上监控 CPU 使用率，也会导致报错提醒。
+当时间窗口范围内的负载过低或者 `resource_manager_resource_unit` 及 `process_cpu_usage` 监控数据缺失，会导致报错。此外，由于 TiKV 未在 macOS 上监控 CPU 使用率，也会导致报错。
 
 ```sql
 CALIBRATE RESOURCE START_TIME '2023-04-18 08:00:00' DURATION '60m';
