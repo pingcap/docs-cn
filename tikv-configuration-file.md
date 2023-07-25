@@ -1521,6 +1521,18 @@ rocksdb defaultcf、rocksdb writecf 和 rocksdb lockcf 相关的配置项。
 + 默认值：128MB
 + 单位：KB|MB|GB
 
+### `format-version` <span class="version-mark">从 v6.2.0 版本开始引入</span>
+
++ 设置 SST 文件的格式版本。该配置项只影响新写入的表，对于已经存在的表，版本信息会从 footer 中读取。
++ 可选值：
+    - `0`：适用于所有 TiKV 版本。默认 checksum 类型为 CRC32。该版本不支持修改 checksum 类型。
+    - `1`：适用于所有 TiKV 版本。支持使用非默认的 checksum 类型，例如 xxHash。只有在 checksum 类型不是 CRC32 时，RocksDB 才会写入数据。（`0` 版本会自动升级）
+    - `2`：适用于所有 TiKV 版本。更改了压缩块的编码方式，使用 LZ4、BZip2 和 Zlib 压缩。
+    - `3`：适用于 TiKV v2.1 及以上版本。更改了索引块中 key 的编码方式。
+    - `4`：适用于 TiKV v3.0 及以上版本。更改了索引块中 value 的编码方式。
+    - `5`：适用于 TiKV v6.1 及以上版本。全量和分区 filter 采用一种具有不同模式的、更快、更准确的 Bloom filter 实现。
++ 默认值：`2`
+
 ## rocksdb.defaultcf.titan
 
 rocksdb defaultcf titan 相关的配置项。
