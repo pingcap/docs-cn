@@ -42,7 +42,7 @@ TiDB 版本：7.3.0
 
     更多信息，请参考[用户文档](/system-variables.md#tiflash_replica_read)。
 
-* TiFlash 支持节点内 `Runtime Filter` [#40220](https://github.com/pingcap/tidb/issues/40220) @[elsa0520](https://github.com/elsa0520)
+* TiFlash 支持节点内 `Runtime Filter` [#40220](https://github.com/pingcap/tidb/issues/40220) @[elsa0520](https://github.com/elsa0520) **tw@ran-huang** <!--1130-->
 
     `Runtime Filter` 是一种在查询规划时生成的动态取值的谓词，在表连接的过程中，这些动态谓词能够进一步过滤掉不满足条件的行，减少扫描时间和网络开销，提升表连接的效率。TiFlash 在 v7.3.0 支持节点内的 `Runtime Filter`，提升了数据分析类查询的性能，部分 TPC-H 查询有接近 30% 的性能提升。此特性在 v7.3.0 默认关闭，通过设置变量 [`tidb_runtime_filter_mode`](#tidb_runtime_filter_mode-从-v730-版本开始引入) 为 `LOCAL` 打开。
 
