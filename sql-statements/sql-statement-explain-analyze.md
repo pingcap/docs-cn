@@ -284,7 +284,7 @@ commit_txn: {prewrite:48.564544ms, wait_prewrite_binlog:47.821579, get_commit_ts
 
 ### RU (Request Unit) 消耗
 
-[Request Unit (RU)](/tidb-resource-control#什么是-request-unit-ru) 是资源管控对系统资源统一抽象的计量单位。执行计划顶层算子的 `execution info` 会显示 SQL 整体的 RU 消耗。
+[Request Unit (RU)](/tidb-resource-control.md#什么是-request-unit-ru) 是资源管控对系统资源统一抽象的计量单位。执行计划顶层算子的 `execution info` 会显示 SQL 整体的 RU 消耗。
 
 ```
 RU:273.842670
@@ -292,7 +292,7 @@ RU:273.842670
 
 > **注意：**
 >
-> 这个值代表本次执行的实际 RU 消耗。受缓存的影响 (比如[下推计算结果缓存](/coprocessor-cache))，相同 SQL 每次执行消耗的 RU 可能会有不同。
+> 这个值代表本次执行的实际 RU 消耗。受缓存的影响（比如[下推计算结果缓存](/coprocessor-cache.md)），相同 SQL 每次执行消耗的 RU 可能会有不同。
 
 ### 其它常见执行信息
 
