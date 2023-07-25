@@ -230,7 +230,11 @@ Runtime Filter 适用于大表和小表进行 Join 的情况，比如事实表�
 
 例如，在 TPC-DS 中，泛 `Sales` 表和 `date_dim` 表的 Join 就是一个典型例子。
 
-## Runtime Filter Mode
+## 配置 Runtime Filter
+
+在使用 Runtime Filter 时，你可以配置 Runtime Filter 的模式和谓词的类型。
+
+### Runtime Filter Mode
 
 Runtime Filter Mode 指的是 Runtime Filter 的模式，即 **生成 Filter 算子** 和 **接收 Filter 算子**之间的关系。共有三种模式：`OFF`、`LOCAL`、`GLOBAL`。在 v7.3.0 中仅支持 OFF 和 LOCAL 模式，通过会话系统变量 [`tidb_runtime_filter_mode`](/system-variables.md#tidb_runtime_filter_mode-从-v730-版本开始引入) 控制。
 
