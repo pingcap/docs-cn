@@ -13,7 +13,7 @@ summary: 了解 TiDB Lightning 的物理导入模式。
 
 ```toml
 [tikv-importer]
-# 导入模式配置，设为 local 即使用物理导入模式
+# 导入模式配置，设为 "local" 即使用物理导入模式
 backend = "local"
 ```
 
