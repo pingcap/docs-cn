@@ -69,7 +69,7 @@ TIUP_CLUSTER_DEBUG=enable tiup cluster list
 
 > **Note:**
 >
-> Starting from v3.3, the telemetry collection is disabled by default in TiSpark, and usage information is not collected and shared with PingCAP.
+> Starting from v3.0.3, the telemetry collection is disabled by default in TiSpark, and usage information is not collected and shared with PingCAP.
 
 When the telemetry collection feature is enabled for TiSpark, the Spark module will share the usage details of TiSpark, including (but not limited to):
 
