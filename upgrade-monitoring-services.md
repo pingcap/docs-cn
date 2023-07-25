@@ -29,19 +29,19 @@ title: 升级集群监控组件
 1. 在 [TiDB 官网下载页面](https://cn.pingcap.com/product/#SelectProduct)下载 `TiDB-community-server` 软件包，并解压。
 2. 在解压文件中，找到 `prometheus-v{version}-linux-amd64.tar.gz`，并解压。
 
-```bash
-tar -xzf prometheus-v{version}-linux-amd64.tar.gz
-```
+    ```bash
+    tar -xzf prometheus-v{version}-linux-amd64.tar.gz
+    ```
 
 ### 第 3 步：构造新的适用于 TiUP 的 Prometheus 组件包
 
 1. 复制第 1 步中解压的文件，替换第 2 步解压后的 `./prometheus-v{version}-linux-amd64/prometheus` 目录下的对应文件。
-2. 重新压缩替换后的文件，并将新的压缩包命名为 `prometheus-v{new-version}.tar.gz`。其中，`{new-version}` 可以由你自行指定。
+2. 重新压缩替换文件后的 `./prometheus-v{version}-linux-amd64` 目录，并将新的压缩包命名为 `prometheus-v{new-version}.tar.gz`。其中，`{new-version}` 可以由你自行指定。
 
-```bash
-cd prometheus-v{version}-linux-amd64.tar.gz
-tar -zcvf ../prometheus-v{new-version}.tar.gz ./
-```
+    ```bash
+    cd prometheus-v{version}-linux-amd64.tar.gz
+    tar -zcvf ../prometheus-v{new-version}.tar.gz ./
+    ```
 
 ### 第 4 步：使用新的组件包升级 Prometheus 
 
@@ -69,19 +69,19 @@ tiup cluster patch <cluster-name> prometheus-{new-version}.tar.gz -R prometheus
 1. 在 [TiDB 官网下载页面](https://cn.pingcap.com/product/#SelectProduct)下载 `TiDB-community-server` 软件包，并解压。
 2. 在解压文件中，找到 `grafana-v{version}-linux-amd64.tar.gz`，并解压。
 
-```bash
-tar -xzf grafana-v{version}-linux-amd64.tar.gz
-```
+    ```bash
+    tar -xzf grafana-v{version}-linux-amd64.tar.gz
+    ```
 
 ### 第 3 步：构造新的适用于 TiUP 的 Grafana 组件包
 
 1. 复制第 1 步中解压的文件，替换第 2 步解压后的 `./grafana-v{version}-linux-amd64/prometheus` 目录下的对应文件。
-2. 重新压缩替换后的文件，并将新的压缩包命名为 `grafana-v{new-version}.tar.gz`。其中，`{new-version}` 可以由你自行指定。
+2. 重新压缩替换文件后的 `./grafana-v{version}-linux-amd64` 目录，并将新的压缩包命名为 `grafana-v{new-version}.tar.gz`。其中，`{new-version}` 可以由你自行指定。
 
-```bash
-cd grafana-v{version}-linux-amd64.tar.gz
-tar -zcvf ../grafana-v{new-version}.tar.gz ./
-```
+    ```bash
+    cd grafana-v{version}-linux-amd64.tar.gz
+    tar -zcvf ../grafana-v{new-version}.tar.gz ./
+    ```
 
 ### 第 4 步：使用新的组件包升级 Grafana 
 
