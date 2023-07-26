@@ -165,7 +165,7 @@ TiDB 作为开源一栈式实时 HTAP 数据库，其正常运行需要网络环
 
 | 组件 | 磁盘空间要求 | 健康水位使用率 |
 | :-- | :-- | :-- |
-| TiDB | 日志盘建议最少预留 30 GB | 低于 90% |
+| TiDB | <ul><li>日志盘建议最少预留 30 GB。</li> <li>v6.5.0 及以上版本默认启用了 Fast Online DDL 对添加索引等 DDL 操作进行加速（通过变量 [`tidb_ddl_enable_fast_reorg`](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 控制）。如果业务中可能存在针对大对象的 DDL 操作，推荐为 TiDB 准备额外的 SSD 磁盘空间（建议 100 GB+）。配置方式详见[设置 TiDB 节点的临时空间](/check-before-deployment.md#设置-tidb-节点的临时空间推荐)。</li></ul>| 低于 90% |
 | PD | 数据盘和日志盘建议最少各预留 20 GB | 低于 90% |
 | TiKV | 数据盘和日志盘建议最少各预留 100 GB | 低于 80% |
 | TiFlash | 数据盘建议最少预留 100 GB，日志盘建议最少预留 30 GB | 低于 80% |
