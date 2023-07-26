@@ -33,7 +33,7 @@ data-source-dir = "/data/my_database"
 # - "error"：表示遇到错误时快速退出
 # - "replace"：表示对冲突数据尽量保留新版本数据
 # - "error"：表示对冲突数据尽量保留旧版本数据
-# 目前与 tikv-importer.duplicate-resolution 不可同时使用
+# 目前不能与 tikv-importer.duplicate-resolution 同时使用
 # strategy = ""
 # threshold = 9223372036854775807
 # max-record-rows = 100
@@ -93,11 +93,11 @@ Lightning 的完整配置文件可参考[完整配置及命令行参数](/tidb-l
 
 冲突数据，即两条或两条以上存在主键或唯一键列数据重复的记录。当数据源中的记录存在冲突数据，如果没有启用冲突数据检测功能，将导致该表真实总行数和使用唯一索引查询的总行数不一致。
 
-冲突数据检测分为前置冲突检测（`conflict`）与后置冲突检测（旧版冲突检测，`tikv-importer.duplicate-resolution`）两种模式。目前两种模式不可同时使用
+冲突数据检测分为前置冲突检测（`conflict`）与后置冲突检测（旧版冲突检测，`tikv-importer.duplicate-resolution`）两种模式。目前两种模式不可同时使用。
 
 ### 前置冲突检测
 
-当配置 `conflict.strategy` 不为空时，会开启前置冲突检测。具体配置及含义如下
+当配置 [`conflict.strategy`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置) 不为空时，会开启前置冲突检测。具体配置及含义如下
 
 | 配置 | 冲突时默认行为 | 类比 SQL 语句 |
 |:---|:---|:---|
@@ -107,22 +107,22 @@ Lightning 的完整配置文件可参考[完整配置及命令行参数](/tidb-l
 
 需要注意由于 TiDB Lightning 内部并发处理以及实现限制，物理导入的冲突检测效果不会与 SQL 语句完全一致。
 
-配置为 `error` 时，遇到冲突数据会使 TiDB Lightning 报错退出。配置为 `replace` 或 `ignore` 时，冲突数据视作[冲突错误（Conflict error）](/tidb-lightning/tidb-lightning-error-resolution.md#冲突错误-conflict-error)，配置了大于 0 的 `conflict.threshold` 后，可以容忍一定数目的冲突错误，默认值为 9223372036854775807。详见[可容忍错误](/tidb-lightning/tidb-lightning-error-resolution.md)功能介绍。
+配置为 `error` 时，遇到冲突数据会使 TiDB Lightning 报错退出。配置为 `replace` 或 `ignore` 时，冲突数据视作[冲突错误（Conflict error）](/tidb-lightning/tidb-lightning-error-resolution.md#冲突错误-conflict-error)，配置了大于 0 的 [`conflict.threshold`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置) 后，可以容忍一定数目的冲突错误，默认值为 9223372036854775807。详见[可容忍错误](/tidb-lightning/tidb-lightning-error-resolution.md)功能介绍。
 
 前置冲突检测具有如下的限制：
 
-- 在导入之前，前置冲突检测会先读取全部数据并编码，以检测潜在的冲突数据。检测过程中会使用 `tikv-importer.sorted-kv-dir` 存储临时文件。检测完成后结果会保留至导入阶段以供读取。因此在耗时、磁盘空间占用、读取数据的 API 请求三个方面会有额外开销
+- 在导入之前，前置冲突检测会先读取全部数据并编码，以检测潜在的冲突数据。检测过程中会使用 `tikv-importer.sorted-kv-dir` 存储临时文件。检测完成后，会保留检查结果至导入阶段以供读取。因此在耗时、磁盘空间占用、读取数据的 API 请求三个方面会有额外开销。
 - 前置冲突检测只能在单节点完成，不能适用于并行导入场景
 
 相较于后置冲突检测，前置冲突检测具有如下优势：
 
 - 如果原数据冲突数据较多，前置冲突检测的总耗时更少。
 
-我们推荐在已知数据含有冲突数据，且本地磁盘空间充足的情况的单节点导入任务中使用前置冲突检测。
+推荐在已知数据含有冲突数据、且本地磁盘空间充足的单节点导入任务中使用前置冲突检测。
 
 ### 后置冲突检测（旧版冲突检测）
 
-当配置 `tikv-importer.duplicate-resolution` 不为空时，会开启后置冲突检测。在早于 v7.2.0 之前的版本中，仅存在这种冲突检测。后置冲突数据检测支持两种策略：
+当配置 `tikv-importer.duplicate-resolution` 不为空时，会开启后置冲突检测。在早于 v7.2.0 之前的版本中，仅支持这一种冲突检测。后置冲突数据检测支持两种策略：
 
 - remove: 推荐方式。记录所有的冲突记录，和 'record' 模式相似。但是会删除所有的冲突记录，以确保目的 TiDB 中的数据状态保持一致。
 - none: 关闭冲突数据检测。该模式是三种模式中性能最佳的，但是可能会导致目的 TiDB 中出现数据不一致的情况。
