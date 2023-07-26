@@ -3721,7 +3721,7 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 - 类型：枚举型
 - 默认值：`IN`
 - 可选值：`IN`
-- 控制 Runtime Filter 的类型，即生成的 Filter 算子使用的谓词类型。当前仅支持 `IN`，所以无需更改此设置。详细说明见[Runtime Filter Type](runtime-filter.md#Runtime-Filter-Type)
+- 控制 Runtime Filter 的类型，即生成的 Filter 算子使用的谓词类型。当前仅支持 `IN`，所以无需更改此设置。详细说明见[Runtime Filter Type](/runtime-filter.md#Runtime-Filter-Type)
 
 ### `tidb_scatter_region`
 
