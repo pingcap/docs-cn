@@ -1419,7 +1419,9 @@ rocksdb defaultcf、rocksdb writecf 和 rocksdb lockcf 相关的配置项。
 + memtable 大小。
 + `defaultcf` 默认值：`"128MB"`
 + `writecf` 默认值：`"128MB"`
-+ `lockcf` 默认值：当storage.engine为raft-kv时为`"32MB"`; 当storage.engine为partitioned-raft-kv时为`"4MB"`
++ `lockcf` 默认值：
+    + 当 `storage.engine="raft-kv"` 时，默认值为 `"32MB"`
+    + 当 `storage.engine="partitioned-raft-kv"` 时，默认值为 `"4MB"`
 + 最小值：0
 + 单位：KB|MB|GB
 
