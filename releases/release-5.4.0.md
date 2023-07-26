@@ -68,9 +68,9 @@ TiDB 版本：5.4.0
 | TiDB Data Migration (DM)  | [`collation_compatible`](/dm/task-configuration-file-full.md#完整配置文件示例) | 新增 | 同步 CREATE 语句中缺省 Collation 的方式，可选 "loose" 和 "strict"，默认为 "loose"。 |
 | TiCDC | `max-message-bytes` | 修改 | 将 Kafka sink 模块的 `max-message-bytes` 默认值设置为 `104857601`（10MB）。  |
 | TiCDC | `partition-num`      | 修改 | 将 Kafka Sink `partition-num` 的默认值改由 `4` 为 `3`，使 TiCDC 更加平均地分发消息到各个 Kafka partition。 |
-| TiDB Lightning | `meta-schema-name` | 修改 | 此配置项控制 TiDB Lightning 在目标 TiDB 中保存 metadata 对应的 schema name。从 v5.4.0 开始，只在开启了并行导入功能时（对应配置为 `tikv-importer.parallel-import = true` ），才会在目标 TiDB 中创建此库。 |
+| TiDB Lightning | `meta-schema-name` | 修改 | 此配置项控制 TiDB Lightning 在目标 TiDB 中保存 metadata 对应的 schema name。从 v5.4.0 开始，只在开启了并行导入功能时（对应配置为 `tikv-importer.incremental-import = true` ），才会在目标 TiDB 中创建此库。 |
 | TiDB Lightning | `task-info-schema-name` |  新增  | 用于配置当 TiDB Lightning 检测到冲突数据时，对应冲突数据存储的库名，默认值为 "lightning_task_info"。如果没有开启冲突检测功能，则无需配置此参数。  |
-| TiDB Lightning | `parallel-import` | 新增 | 是否允许向已存在数据的表导入数据。默认值为 false。 |
+| TiDB Lightning | `incremental-import` | 新增 | 是否允许向已存在数据的表导入数据。默认值为 false。 |
 
 ### 其他
 
@@ -220,7 +220,7 @@ TiDB 版本：5.4.0
 
 - **为 TiDB Lightning 增加已存在数据表是否允许导入的开关**
 
-    为 TiDB Lightning 增加 `parallel-import` 开关。默认值为 `false`，表明目标表已存在数据时将不会执行导入。将默认值改为 `true` 则继续导入。注意，当使用并行导入特性时，需要将该配置项设为 `true`。
+    为 TiDB Lightning 增加 `incremental-import` 开关。默认值为 `false`，表明目标表已存在数据时将不会执行导入。将默认值改为 `true` 则继续导入。注意，当使用并行导入特性时，需要将该配置项设为 `true`。
 
     [用户文档](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置)
 
