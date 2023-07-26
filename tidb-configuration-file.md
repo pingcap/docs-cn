@@ -48,6 +48,10 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 在使用 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md) 导入数据时，排序后的数据会被先存放在 TiDB 本地临时存储路径，然后批量导入到 TiKV。
 + 默认值："/tmp/tidb"
 
+> **注意：**
+>
+> 如果目录不存在，TiDB 在启动时会自动创建该目录。如果目录创建失败，或者 TiDB 对该目录没有读写权限，[Fast Online DDL](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 在运行时可能产生不可预知的问题。
+
 ### `oom-use-tmp-storage`
 
 > **警告：**
