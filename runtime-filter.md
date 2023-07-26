@@ -27,7 +27,7 @@ Runtime Filter 是在查询规划阶段生成的一种**动态取值谓词**。�
 ```sql
 SELECT * FROM store_sales, date_dim
 WHERE ss_date_sk = d_date_sk
-      AND d_year = 2001
+      AND d_year = 2001;
 ```
 
 Hash Join 通常情况下的执行方式为：
@@ -174,7 +174,7 @@ WHERE d_date = '2002-2-01' AND
 
 ### 第 4 步：性能对比
 
-以 TPCDS 的 50G 数据量为例，查询速度提升 50%，从 0.38 秒提升至 0.17 秒。通过 `ANALYZE` 语句可以看到具体的 Runtime Filter 生效后的各个算子的执行时间。
+以 TPCDS 的 50 GB 数据量为例，查询速度提升 50%，从 0.38 秒提升至 0.17 秒。通过 `ANALYZE` 语句可以看到具体的 Runtime Filter 生效后的各个算子的执行时间。
 
 以下为未开启 Runtime Filter 的查询 Summary：
 
@@ -238,10 +238,8 @@ Runtime Filter 适用于大表和小表进行 Join 的情况，比如事实表�
 Runtime Filter Mode 指的是 Runtime Filter 的模式，即 **生成 Filter 算子** 和 **接收 Filter 算子**之间的关系。共有三种模式：`OFF`、`LOCAL`、`GLOBAL`。在 v7.3.0 中仅支持 OFF 和 LOCAL 模式，通过会话系统变量 [`tidb_runtime_filter_mode`](/system-variables.md#tidb_runtime_filter_mode-从-v720-版本开始引入) 控制。
 
 + `OFF`：设置为 OFF，则关闭 Runtime Filter。关闭后，查询行为和过去完全一致。
-+ `LOCAL`：开启 LOCAL 模式的 Runtime Filter。LOCAL 模式指的是 **生成 Filter 的算子** 和 **接收 Filter 的算子**在同一个 MppTask 中。简单来说，Runtime Filter 可应用于 Hash Join 算子和 Table Scan 算子在同一个 Task 中的情况。目前 Runtime Filter 仅支持 LOCAL 模式，要开启该模式，设置为 `LOCAL` 即可。
-+ `GLOBAL`: 目前不支持 GLOBAL 模式，不可设置为该模式。
-
-`tidb_runtime_filter_mode`: 默认取值为 OFF，则查询不开启 Runtime Filter。LOCAL 则为开启 LOCAL 模式的 Runtime Filter。详细变量使用方式见[Ref](/system-variables.md#tidb_runtime_filter_mode-从-v720-版本开始引入)
++ `LOCAL`：开启 LOCAL 模式的 Runtime Filter。LOCAL 模式指的是**生成 Filter 的算子**和**接收 Filter 的算子**在同一个 MppTask 中。简单来说，Runtime Filter 可应用于 Hash Join 算子和 Table Scan 算子在同一个 Task 中的情况。目前 Runtime Filter 仅支持 LOCAL 模式，要开启该模式，设置为 `LOCAL` 即可。
++ `GLOBAL`：目前不支持 GLOBAL 模式，不可设置为该模式。
 
 ### Runtime Filter Type
 
@@ -253,6 +251,6 @@ Runtime Filter Type 指的是 Runtime Filter 谓词的类型，即生成的 Filt
 
 + Runtime Filter 是 MPP 架构下的优化，仅可应用于 TiFlash 执行引擎。
 + Join Type：Left outer，Full outer，anti join（当左表为 Probe Side 时）均不支持生成 Runtime Filter。由于 Runtime Filter 提前过滤参与 Join 的数据，这些类型的 Join 不会丢弃未匹配上的数据，所以无法使用该优化。
-+ Equal Join expression：当等值 Join 表达式中的 Probe Column 是复杂表达式，或者其类型为 Json，Blob，Array 等复合类型时，也不会生成 Runtime Filter。主要原因是这类 Column 很少作为 Equal Join 的关联列，并且即使生成了 Filter，过滤率通常很低。
++ Equal Join expression：当等值 Join 表达式中的 Probe Column 是复杂表达式，或者其类型为 JSON、Blob、Array 等复合类型时，也不会生成 Runtime Filter。主要原因是这类 Column 很少作为 Equal Join 的关联列，并且即使生成了 Filter，过滤率通常很低。
 
 对于以上限制，如果你需要确认是否正确生成了 Runtime Filter，可以通过 [`EXPLAIN` 语句](/sql-statements/sql-statement-explain.md) 来验证。
