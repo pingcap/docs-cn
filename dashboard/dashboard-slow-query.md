@@ -8,7 +8,7 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-slow-query/']
 
 该页面上能检索和查看集群中所有慢查询。
 
-默认情况下，执行时间超过 300ms 的 SQL 查询就会被视为慢查询，被记录到[慢查询日志](/identify-slow-queries.md)中，并可通过本功能对记录到的慢查询进行查询。可调整 [`tidb_slow_log_threshold`](/system-variables.md#tidb_slow_log_threshold) SESSION 变量或 TiDB [`slow-threshold`](/tidb-configuration-file.md#slow-threshold) 参数调整慢查询阈值。
+默认情况下，执行时间超过 300ms 的 SQL 查询就会被视为慢查询，被记录到[慢查询日志](/identify-slow-queries.md)中，并可通过本功能对记录到的慢查询进行查询。可调整 [`tidb_slow_log_threshold`](/system-variables.md#tidb_slow_log_threshold) SESSION 变量或 TiDB [`instance.tidb_slow_log_threshold`](/tidb-configuration-file.md#tidb_slow_log_threshold) 参数调整慢查询阈值。
 
 > **注意：**
 >
@@ -35,6 +35,12 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-slow-query/']
 页面顶部**选择列** (**Columns**) 选项中可选择显示更多列，可将鼠标移动到列名右侧的 **(i)** 图标处查看列的说明：
 
 ![显示更多列信息](/media/dashboard/dashboard-slow-queries-list2-v620.png)
+
+### 导出慢查询到本地
+
+点击页面右上角 ☰ (**更多**) 可以显示**导出** (**Export**) 选项。点击**导出** (**Export**) 后，TiDB Dashboard 会将当前列表中的慢查询以 CSV 文件的格式进行导出。
+
+![导出慢查询到本地](/media/dashboard/dashboard-slow-queries-export-v651.png)
 
 ### 修改列表排序依据
 

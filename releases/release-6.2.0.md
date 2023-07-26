@@ -220,7 +220,7 @@ TiDB 版本：6.2.0-DMR
 
 * 支持 RawKV 跨集群复制（实验特性）
 
-    支持订阅 RawKV 的数据变更，并通过新的 TiKV-CDC 组件将变更实时同步到下游  TiKV 集群，从而实现 RawKV 的跨集群复制能力。
+    支持订阅 RawKV 的数据变更，并通过新的 TiKV-CDC 组件将变更实时同步到下游 TiKV 集群，从而实现 RawKV 的跨集群复制能力。
 
     [用户文档](/tikv-configuration-file.md#api-version-从-v610-版本开始引入) [#11965](https://github.com/tikv/tikv/issues/11965) @[pingyu](https://github.com/pingyu)
 
@@ -262,7 +262,9 @@ TiDB 版本：6.2.0-DMR
 | TiKV | [quota.background-write-bandwidth](/tikv-configuration-file.md#background-write-bandwidth-从-v620-版本开始引入) | 新增 | 限制后台事务写入的带宽（暂未生效）。|
 | TiKV | [quota.background-read-bandwidth](/tikv-configuration-file.md#background-read-bandwidth-从-v620-版本开始引入) | 新增 | 限制后台事务读取数据和 Coprocessor 读取数据的带宽（暂未生效）。 |
 | TiKV | [quota.enable-auto-tune](/tikv-configuration-file.md#enable-auto-tune-从-v620-版本开始引入) | 新增 | 是否支持 quota 动态调整。如果打开该配置项，TiKV 会根据 TiKV 实例的负载情况动态调整对后台请求的限制 quota。 |
-| TiKV | [rocksdb.defaultcf|writecf|lockcf.format-version](/tikv-configuration-file.md#format-version-从-v620-版本开始引入) | 新增 | 设置 SST 文件的格式版本。 |
+| TiKV | [rocksdb.defaultcf.format-version](/tikv-configuration-file.md#format-version-从-v620-版本开始引入) | 新增 | 设置 SST 文件的格式版本。 |
+| TiKV | [rocksdb.lockcf.format-version](/tikv-configuration-file.md#format-version-从-v620-版本开始引入) | 新增 | 设置 SST 文件的格式版本。 |
+| TiKV | [rocksdb.writecf.format-version](/tikv-configuration-file.md#format-version-从-v620-版本开始引入) | 新增 | 设置 SST 文件的格式版本。 |
 | TiKV | rocksdb.enable-pipelined-commit | 删除 | 该配置不再生效。 |
 | TiKV | gc-merge-rewrite | 删除 | 该配置不再生效。 |
 | TiKV | [log-backup.enable](/tikv-configuration-file.md#enable-从-v620-版本开始引入) | 新增 | TiKV 是否开启日志备份功能。 |
