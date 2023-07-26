@@ -137,7 +137,7 @@ spring:
 
 ## 4. 编写 Hello World 代码
 
-添加 `HelloWorldController.java`：
+请在启动类的同级目录中添加 `HelloWorldController.java`：
 
 ```java
 @RestController
