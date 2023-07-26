@@ -16,7 +16,7 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-create-binding/']
 
 ```ebnf+diagram
 CreateBindingStmt ::=
-    'CREATE' GlobalScope 'BINDING' ( 'FOR' BindableStmt 'USING' BindableStmt  
+    'CREATE' GlobalScope 'BINDING' ( 'FOR' BindableStmt 'USING' BindableStmt
 |   'FROM' 'HISTORY' 'USING' 'PLAN' 'DIGEST' PlanDigest )
 
 GlobalScope ::=
@@ -31,18 +31,18 @@ BindableStmt ::=
 ## 示例
 
 你可以根据 SQL 或历史执行计划创建绑定。
- 
+
 下面的示例演示如何根据 SQL 创建绑定。
 
 {{< copyable "sql" >}}
 
 ```sql
 CREATE TABLE t1 (
-    ->  id INT NOT NULL PRIMARY KEY auto_increment,
-    ->  b INT NOT NULL,
-    ->  pad VARBINARY(255),
-    ->  INDEX(b)
-    -> );
+    id INT NOT NULL PRIMARY KEY auto_increment,
+    b INT NOT NULL,
+    pad VARBINARY(255),
+    INDEX(b)
+   );
 Query OK, 0 rows affected (0.07 sec)
 
 INSERT INTO t1 SELECT NULL, FLOOR(RAND()*1000), RANDOM_BYTES(255) FROM dual;
@@ -95,9 +95,9 @@ EXPLAIN ANALYZE SELECT * FROM t1 WHERE b = 123;
 3 rows in set (0.02 sec)
 
 CREATE SESSION BINDING FOR
-    ->  SELECT * FROM t1 WHERE b = 123
-    -> USING
-    ->  SELECT * FROM t1 IGNORE INDEX (b) WHERE b = 123;
+    SELECT * FROM t1 WHERE b = 123
+   USING
+    SELECT * FROM t1 IGNORE INDEX (b) WHERE b = 123;
 Query OK, 0 rows affected (0.00 sec)
 
 EXPLAIN ANALYZE  SELECT * FROM t1 WHERE b = 123;

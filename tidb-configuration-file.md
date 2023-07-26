@@ -49,6 +49,10 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 在使用 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md) 导入数据时，排序后的数据会被先存放在 TiDB 本地临时存储路径，然后批量导入到 TiKV。
 + 默认值："/tmp/tidb"
 
+> **注意：**
+>
+> 如果目录不存在，TiDB 在启动时会自动创建该目录。如果目录创建失败，或者 TiDB 对该目录没有读写权限，[Fast Online DDL](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 在运行时可能产生不可预知的问题。
+
 ### `oom-use-tmp-storage`
 
 > **警告：**
@@ -282,6 +286,10 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 自 v6.1.0 起，已改用配置项 [`instance.tidb_record_plan_in_slow_log`](/tidb-configuration-file.md#tidb_record_plan_in_slow_log) 或系统变量 [`tidb_record_plan_in_slow_log`](/system-variables.md#tidb_record_plan_in_slow_log) 来设置在慢日志中记录执行计划。`record-plan-in-slow-log` 仍可使用，但如果同时设置了 `record-plan-in-slow-log` 与 `instance.tidb_record_plan_in_slow_log`，TiDB 将采用 `instance.tidb_record_plan_in_slow_log` 的值。
 
 ### `expensive-threshold`
+
+> **警告：**
+>
+> 自 v5.4.0 起，该配置项被废弃。请使用 [`tidb_expensive_query_time_threshold`](/system-variables.md#tidb_expensive_query_time_threshold) 系统变量进行设置。
 
 + 输出 `expensive` 操作的行数阈值。
 + 默认值：10000
@@ -817,6 +825,14 @@ TiDB 服务状态相关配置。
 + 单位：毫秒
 + 当查询大于这个值，就会当做是一个慢查询，输出到慢查询日志。
 + 在 v6.1.0 之前，该功能通过配置项 `slow-threshold` 进行设置。
+
+### `tidb_expensive_query_time_threshold`
+
++ 控制打印 expensive query 日志的阈值时间，默认值是 60 秒。expensive query 日志和慢日志的差别是，慢日志是在语句执行完后才打印，expensive query 日志可以把正在执行中且执行时间超过该阈值的语句及其相关信息打印出来。
++ 默认值：60
++ 范围：`[10, 2147483647]`
++ 单位：秒
++ 在 v5.4.0 之前，该功能通过配置项 `expensive-threshold` 进行设置。
 
 ### `tidb_record_plan_in_slow_log`
 

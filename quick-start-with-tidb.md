@@ -378,7 +378,7 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
 
     server_configs:
      tidb:
-       log.slow-threshold: 300
+       instance.tidb_slow_log_threshold: 300
      tikv:
        readpool.storage.use-unified-pool: false
        readpool.coprocessor.use-unified-pool: true

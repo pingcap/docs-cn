@@ -617,7 +617,7 @@
     - [RocksDB 简介](/storage-engine/rocksdb-overview.md)
     - [Titan 简介](/storage-engine/titan-overview.md)
     - [Titan 配置说明](/storage-engine/titan-configuration.md)
-    - [分区 Raft KV](/partitioned-raft-kv.md)
+    - [Partitioned Raft KV](/partitioned-raft-kv.md)
   - 存储引擎 TiFlash
     - [TiFlash 简介](/tiflash/tiflash-overview.md)
     - [构建 TiFlash 副本](/tiflash/create-tiflash-replicas.md)
@@ -1003,6 +1003,7 @@
   - v7.2
     - [7.2.0-DMR](/releases/release-7.2.0.md)
   - v7.1
+    - [7.1.1](/releases/release-7.1.1.md)
     - [7.1.0](/releases/release-7.1.0.md)
   - v7.0
     - [7.0.0-DMR](/releases/release-7.0.0.md)
@@ -1020,6 +1021,7 @@
   - v6.2
     - [6.2.0-DMR](/releases/release-6.2.0.md)
   - v6.1
+    - [6.1.7](/releases/release-6.1.7.md)
     - [6.1.6](/releases/release-6.1.6.md)
     - [6.1.5](/releases/release-6.1.5.md)
     - [6.1.4](/releases/release-6.1.4.md)
