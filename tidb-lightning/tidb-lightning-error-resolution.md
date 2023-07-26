@@ -18,6 +18,8 @@ summary: 介绍了如何解决导入数据过程中的类型转换和冲突错�
 - 物理导入专用冲突处理配置 `tikv-importer.duplicate-resolution`
 - 记录错误的库表位置 `lightning.task-info-schema-name`
 
+相关配置项详情请参考 [TiDB Lightning 任务配置](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置)。
+
 ## 类型错误 (Type error)
 
 你可以通过修改配置项 `lightning.max-error` 来增加数据类型相关的容错数量。如果设置为 *N*，那么 TiDB Lightning 允许数据源中出现 *N* 个类型错误，而且会跳过这些错误继续导入，一旦超过这个错误数就会退出。默认值为 0，表示不允许出现错误。
@@ -42,7 +44,7 @@ max-error = 0
 * 列计数不匹配。行中数值的数量和列的数量不一致
 * 其他 SQL 错误
 
-下列错误是致命错误，不能通过配置 `max-error` 跳过：
+下列错误是致命错误，不能通过配置 `lightning.max-error` 跳过：
 
 * 原始 CSV、SQL 或者 Parquet 文件中的语法错误，例如未闭合的引号
 * I/O、网络、或系统权限错误
@@ -118,11 +120,11 @@ CREATE TABLE conflict_records (
 );
 ```
 
-**type_error_v1** 记录由 `lightning.max-error` 配置项管理的所有[类型错误 (Type error)](#类型错误-type-error)。每个错误一行。
+`type_error_v1` 记录由 `lightning.max-error` 配置项管理的所有[类型错误 (Type error)](#类型错误-type-error)。每个错误一行。
 
-**conflict_error_v1** 记录物理导入 `tikv-importer.duplicate-resolution` 功能的冲突错误，每对冲突有两行。
+`conflict_error_v1` 记录物理导入模式的 `tikv-importer.duplicate-resolution` 功能的冲突错误，每对冲突占两行。
 
-**conflict_records** 记录逻辑导入和物理导入 `conflict` 配置组的冲突错误，每个错误一行。
+`conflict_records` 记录逻辑导入模式和物理导入模式 `conflict` 配置组的冲突错误，每个错误占一行。
 
 | 列名     | 语法 | 类型 | 冲突 | 说明                                                                                                                         |
 | ------------ | ------ | ---- | ---------- | ----------------------------------------------------------------------------------------------------------------------------------- |

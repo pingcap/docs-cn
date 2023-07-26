@@ -112,14 +112,14 @@ driver = "file"
 
 [conflict]
 # 控制冲突数据处理策略
-# - ""：不额外处理，可能会在后需步骤报错
-# - "error"：冲突数据报错让导入终止
-# - "replace"：遇到冲突数据时，尽量保留更加新的数据
-# - "ignore"：遇到冲突数据时，尽量保留更加旧的数据
+# - ""：不进行处理，可能会在后续步骤报错
+# - "error"：终止导入并报错
+# - "replace"：遇到冲突数据时，保留新的数据
+# - "ignore"：遇到冲突数据时，保留旧的数据
 strategy = ""
 # 控制 `strategy` 为 "replace" 和 "ignore" 时，能处理的冲突数据上限。仅在 `strategy` 为 "replace" 和 "ignore" 时可配置，默认为 9223372036854775807。
 # threshold = 9223372036854775807
-# 控制冲突数据记录表（conflict_record）中记录的条数上限。默认为 100。
+# 控制冲突数据记录表 (conflict_record) 中记录的条数上限。默认为 100。
 # max-record-rows = 100
 
 [tikv-importer]
