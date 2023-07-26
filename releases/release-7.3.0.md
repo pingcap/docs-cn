@@ -144,7 +144,7 @@ TiDB 版本：7.3.0
 |TiDB Lightning  | conflict.strategy | 新增 |TiDB Lightning 新版冲突检测与处理的策略，包含”“， error，replace，ignore 四种策略，分别表示不做冲突检测，遇到冲突数据即报错并停止导入，遇到冲突记录 replace 掉已有的冲突记录，遇到冲突记录 ignore 掉需要插入的该条冲突记录。默认值为 ” “， 即不做冲突检测 |
 |TiDB Lightning  | conflict.threshold | 新增 |TiDB Lightning 新版冲突检测与处理策略允许的冲突上限，onflict.strategy="error" 时默认值为 0，当onflict.strategy="replace”/“ignore" 时默认值为 maxint |
 |TiDB Lightning  | conflict.max-record-rows | 新增 |TiDB Lightning 新版冲突检测与处理策略，用于记录在数据导入过程中遇到的冲突记录，并允许设置最大上限，默认值为 100 |
-|TiDB Lightning  | tikv-importer.parallel-import | 新增 |TiDB Lightning  并行导入的参数名，因为旧的参数名 tikv-importer.incremental-import 会被误认为是增量导入的参数而误用，因此使用该新的参数名代替 |
+|TiDB Lightning  | tikv-importer.parallel-import | 新增 |TiDB Lightning  并行导入的参数名，因为旧的参数名 tikv-importer.incremental-import 会被误认为是增量导入的参数而误用，因此使用该新的参数名代替 **tw:qiancai** <!--1516--> |
 |TiDB Lightning  | tikv-importer.incremental-import | 删除 | TiDB Lightning 并行导入参数的旧名称，因为该参数名会被误认为增量导入的参数而误用，因此用新的参数名 tikv-importer.parallel-import 代替，且如果用户传入旧的参数会被自动转成新的参数名|
 
 |  | | 新增/删除/修改 | |
