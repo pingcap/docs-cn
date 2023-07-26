@@ -964,7 +964,9 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 > **注意：**
 >
-> 要使用索引加速功能，你需要提供一个可写且具有足够空余空间的临时路径 [`temp-dir`](/tidb-configuration-file.md#temp-dir-从-v630-版本开始引入)。如果 `temp-dir` 无法使用，TiDB 会退回到非加速的索引创建方式。建议将 `temp-dir` 挂载在 SSD 磁盘上。
+> * 要使用索引加速功能，你需要提供一个可写且具有足够空余空间的临时路径 [`temp-dir`](/tidb-configuration-file.md#temp-dir-从-v630-版本开始引入)。如果 `temp-dir` 无法使用，TiDB 会退回到非加速的索引创建方式。建议将 `temp-dir` 挂载在 SSD 磁盘上。
+>
+> * 在升级到 v6.5.0 及以上版本时，请确保 TiDB 的 [`temp-dir`](/tidb-configuration-file.md#temp-dir-从-v630-版本开始引入) 路径已正确挂载了 SSD 磁盘，并确保运行 TiDB 的操作系统用户对该目录有读写权限，否则在运行时可能产生不可预知的问题。该参数是 TiDB 的配置参数，设置后需要重启 TiDB 才能生效。因此，在升级前提前进行设置，可以避免再次重启。
 
 ### `tidb_ddl_error_count_limit`
 
