@@ -111,8 +111,8 @@ CREATE TABLE conflict_records (
     table_name  varchar(261) NOT NULL,
     path        varchar(2048) NOT NULL,
     offset      bigint NOT NULL,
-    error       text NOT NULL,
-    row_id 	    bigint NOT NULL COMMENT 'the row id of the conflicted row',
+    error          text NOT NULL,
+    row_id        bigint NOT NULL COMMENT 'the row id of the conflicted row',
     row_data    text NOT NULL COMMENT 'the row data of the conflicted row',
     KEY (task_id, table_name)
 );
