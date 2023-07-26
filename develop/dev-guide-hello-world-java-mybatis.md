@@ -17,6 +17,22 @@ summary: 介绍如何使用 MyBatis 和 TiDB 构建一个 Hello World 程序。
 2. 获取 SQL 查询的返回值。
 3. 输出查询结果 `Hello World`。
 
+## 完整 Hello World 应用程序代码
+
+<SimpleTab groupId="deploy-platform">
+<div label="TiDB Serverless 集群示例" value="serverless">
+
+完整 Hello World 应用代码详见：[TiDBMyBatisServerlessExample](https://github.com/pingcap-inc/tidb-example-java/tree/main/hello-world-apps/MyBatis/serverless/TiDBMyBatisServerlessExample)。
+
+</div>
+
+<div label="使用本地测试集群示例" value="self-hosted">
+
+完整 Hello World 应用代码详见：[TiDBMyBatisNormalExample](https://github.com/pingcap-inc/tidb-example-java/tree/main/hello-world-apps/MyBatis/normal/TiDBMyBatisNormalExample)。
+
+</div>
+</SimpleTab>
+
 ## 前提条件
 
 请在阅读本文前，准备好以下资源：
@@ -206,24 +222,7 @@ public class App {
 
 ![hello-world-java-mybatis-run](/media/develop/hello-world-java-mybatis-run.jpg)
 
-## 完整 Hello World 应用程序代码
+## 扩展阅读
 
-<SimpleTab groupId="deploy-platform">
-<div label="TiDB Serverless 集群示例" value="serverless">
-
-```shell
-git clone https://github.com/pingcap-inc/tidb-example-java.git
-cd tidb-example-java/hello-world-apps/MyBatis/serverless/TiDBMyBatisServerlessExample
-```
-
-</div>
-
-<div label="使用本地测试集群示例" value="self-hosted">
-
-```shell
-git clone https://github.com/pingcap-inc/tidb-example-java.git
-cd tidb-example-java/hello-world-apps/MyBatis/normal/TiDBMyBatisNormalExample
-```
-
-</div>
-</SimpleTab>
+- 如需查看更全面、更详尽的增删改查及事务的程序示例，请参考 [TiDB 和 Java 的简单 CRUD 应用程序](/develop/dev-guide-sample-application-java.md)。
+- 此外，你还可以通过视频的形式学习免费的 [TiDB SQL 开发在线课程](https://pingcap.com/zh/courses-catalog/back-end-developer/?utm_source=docs-cn-dev-guide)。

@@ -7,15 +7,27 @@ summary: 介绍如何使用 Hibernate 和 TiDB 构建一个 Hello World 程序�
 
 # 使用 Hibernate 与 TiDB 实现 Hello World 程序
 
-> **注意：**
->
-> 本文档仅展示构建 Hello World 程序的核心部分。如需查看更全面、更详尽的增删改查及事务的程序示例，请参考 [TiDB 和 Java 的简单 CRUD 应用程序](/develop/dev-guide-sample-application-java.md)。
-
 本文介绍如何使用 [Hibernate ORM](https://hibernate.org/orm/) 构建一个 TiDB 的 Hello World 应用程序，主要包括以下内容：
 
 1. 连接到 TiDB 集群并执行 `SELECT 'Hello World'` SQL 查询。
 2. 获取 SQL 查询的返回值。
 3. 输出查询结果 `Hello World`。
+
+## 完整 Hello World 应用程序代码
+
+<SimpleTab groupId="deploy-platform">
+<div label="TiDB Serverless 集群示例" value="serverless">
+
+完整 Hello World 应用代码详见：[TiDBHibernateServerlessExample](https://github.com/pingcap-inc/tidb-example-java/tree/main/hello-world-apps/Hibernate/serverless/TiDBHibernateServerlessExample)。
+
+</div>
+
+<div label="使用本地测试集群示例" value="self-hosted">
+
+完整 Hello World 应用代码详见：[TiDBHibernateNormalExample](https://github.com/pingcap-inc/tidb-example-java/tree/main/hello-world-apps/Hibernate/normal/TiDBHibernateNormalExample)。
+
+</div>
+</SimpleTab>
 
 ## 前提条件
 
@@ -193,24 +205,7 @@ public class App  {
 
 ![hello-world-java-hibernate-run](/media/develop/hello-world-java-hibernate-run.jpg)
 
-## 完整 Hello World 应用程序代码
+## 扩展阅读
 
-<SimpleTab groupId="deploy-platform">
-<div label="TiDB Serverless 集群示例" value="serverless">
-
-```shell
-git clone https://github.com/pingcap-inc/tidb-example-java.git
-cd tidb-example-java/hello-world-apps/Hibernate/serverless/TiDBHibernateServerlessExample
-```
-
-</div>
-
-<div label="使用本地测试集群示例" value="self-hosted">
-
-```shell
-git clone https://github.com/pingcap-inc/tidb-example-java.git
-cd tidb-example-java/hello-world-apps/Hibernate/normal/TiDBHibernateNormalExample
-```
-
-</div>
-</SimpleTab>
+- 如需查看更全面、更详尽的增删改查及事务的程序示例，请参考 [TiDB 和 Java 的简单 CRUD 应用程序](/develop/dev-guide-sample-application-java.md)。
+- 此外，你还可以通过视频的形式学习免费的 [TiDB SQL 开发在线课程](https://pingcap.com/zh/courses-catalog/back-end-developer/?utm_source=docs-cn-dev-guide)。

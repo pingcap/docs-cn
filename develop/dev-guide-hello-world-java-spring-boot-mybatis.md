@@ -7,15 +7,27 @@ summary: 介绍如何使用 Spring Boot, MyBatis 和 TiDB 构建一个 Hello Wor
 
 # 使用 Spring Boot, MyBatis 与 TiDB 实现 Hello World 程序
 
-> **注意：**
->
-> 本文档仅展示构建 Hello World 程序的核心部分。如需查看更全面、更详尽的增删改查及事务的程序示例，请参考 [TiDB 和 Java 的简单 CRUD 应用程序](/develop/dev-guide-sample-application-java.md)。
-
 本文介绍如何使用 [Spring Boot](https://spring.io/projects/spring-boot) 和 [MyBatis](http://www.mybatis.org/mybatis-3/zh/index.html) 构建一个 TiDB 的 Hello World 应用程序，主要包括以下内容：
 
 1. 连接到 TiDB 集群并执行 `SELECT 'Hello World'` SQL 查询。
 2. 获取 SQL 查询的返回值。
 3. HTTP 接口调用，并在返回值中展示 SQL 查询结果 `Hello World`。
+
+## 完整 Hello World 应用程序代码
+
+<SimpleTab groupId="deploy-platform">
+<div label="TiDB Serverless 集群示例" value="serverless">
+
+完整 Hello World 应用代码详见：[TiDBSpringBootMyBatisServerlessExample](https://github.com/pingcap-inc/tidb-example-java/tree/main/hello-world-apps/SpringBoot-MyBatis/serverless/TiDBSpringBootMyBatisServerlessExample)。
+
+</div>
+
+<div label="使用本地测试集群示例" value="self-hosted">
+
+完整 Hello World 应用代码详见：[TiDBSpringBootMyBatisNormalExample](https://github.com/pingcap-inc/tidb-example-java/tree/main/hello-world-apps/SpringBoot-MyBatis/normal/TiDBSpringBootMyBatisNormalExample)。
+
+</div>
+</SimpleTab>
 
 ## 前提条件
 
@@ -157,24 +169,7 @@ public interface HelloWorldMapper {
 
 ![hello-world-java-spring-boot-jpa-result](/media/develop/hello-world-java-spring-boot-jpa-result.jpg)
 
-## 完整 Hello World 应用程序代码
+## 扩展阅读
 
-<SimpleTab groupId="deploy-platform">
-<div label="TiDB Serverless 集群示例" value="serverless">
-
-```shell
-git clone https://github.com/pingcap-inc/tidb-example-java.git
-cd tidb-example-java/hello-world-apps/SpringBoot-MyBatis/serverless/TiDBSpringBootMyBatisServerlessExample
-```
-
-</div>
-
-<div label="使用本地测试集群示例" value="self-hosted">
-
-```shell
-git clone https://github.com/pingcap-inc/tidb-example-java.git
-cd tidb-example-java/hello-world-apps/SpringBoot-MyBatis/normal/TiDBSpringBootMyBatisNormalExample
-```
-
-</div>
-</SimpleTab>
+- 如需查看更全面、更详尽的增删改查及事务的程序示例，请参考 [TiDB 和 Java 的简单 CRUD 应用程序](/develop/dev-guide-sample-application-java.md)。
+- 此外，你还可以通过视频的形式学习免费的 [TiDB SQL 开发在线课程](https://pingcap.com/zh/courses-catalog/back-end-developer/?utm_source=docs-cn-dev-guide)。
