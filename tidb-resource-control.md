@@ -193,9 +193,9 @@ SELECT /*+ RESOURCE_GROUP(rg1) */ * FROM t limit 10;
 >
 > 该功能目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
 
-Runaway Queries 指那些执行时间或者消耗的资源超出预期的查询。自 v7.2.0 起，TiDB 资源管控引入了对 Runaway Queries 的管理。你可以针对某个资源组设置条件来识别 Runaway Queries，并自动发起应对操作，防止集群资源完全被 Runaway Queries 占用而影响其他正常查询。
+Runaway Queries 指那些执行时间或者消耗的资源超出预期的查询。自 v7.2.0 起，TiDB 资源管控引入了对 Runaway Queries 的管理。你可以针对某个资源组设置条件来识别 Runaway Queries，并自动发起应对操作，防止集群资源完全被 Runaway Queries 占用而影响其他正常查询。自 v7.3.0 起，引入了手动管理 Runaway Watch，针对给定的 SQL 或者 Digest 实现快速识别 Runaway Queries。
 
-你可以通过在 [`CREATE RESOURCE GROUP`](/sql-statements/sql-statement-create-resource-group.md) 或者 [`ALTER RESOURCE GROUP`](/sql-statements/sql-statement-alter-resource-group.md) 中配置 `QUERY_LIMIT` 字段，管理资源组的 Runaway Queries。
+你可以通过在 [`CREATE RESOURCE GROUP`](/sql-statements/sql-statement-create-resource-group.md) 或者 [`ALTER RESOURCE GROUP`](/sql-statements/sql-statement-alter-resource-group.md) 中配置 `QUERY_LIMIT` 字段，通过规则识别来管理资源组的 Runaway Queries。你也可以执行语句 [`QUERY WATCH`](/sql-statements/sql-statement-query-watch.md) ，手动管理资源组中的 Runaway Queries 识别名单。
 
 #### `QUERY_LIMIT` 参数说明
 
@@ -209,12 +209,13 @@ Runaway Queries 指那些执行时间或者消耗的资源超出预期的查询�
 - `COOLDOWN`：将查询的执行优先级降到最低，查询仍旧会以低优先级继续执行，不占用其他操作的资源。
 - `KILL`：识别到的查询将被自动终止，报错 `Query execution was interrupted, identified as runaway query`。
 
-为了避免并发的 Runaway Queries 太多，在被条件识别前就将系统资源耗尽，资源管控引入了一个快速识别的机制。借助子句 `WATCH`，当某一个查询被识别为 Runaway Query 之后，在接下来的一段时间里（通过 `DURATION` 定义） ，当前 TiDB 实例会将匹配到的查询直接标记为 Runaway Query，而不再等待其被条件识别，并按照当前应对操作执行。其中 `KILL` 操作报错 `Quarantined and interrupted because of being in runaway watch list`。
+为了避免并发的 Runaway Queries 太多，在被条件识别前就将系统资源耗尽，资源管控引入了一个快速识别的机制。借助子句 `WATCH`，当某一个查询被识别为 Runaway Query 之后，在接下来的一段时间里（通过 `DURATION` 定义） ，当前 TiDB 实例会将匹配到的查询直接标记为 Runaway Query，而不再等待其被条件识别，并按照当前应对操作执行。其中 `KILL` 操作报错 `Quarantined and interrupted because of being in runaway watch list`。综上所述，可以认为`WATCH` 将被识别到的 Queries 放进了 Runaway Queries 识别名单，这些 Queries 在执行前就会被直接识别，从而达到了快速识别的效果。
 
-`WATCH` 有两种匹配方式：
+`WATCH` 有三种匹配方式：
 
 - `EXACT` 表示完全相同的 SQL 才会被快速识别
-- `SIMILAR` 表示会忽略字面值 (Literal)，通过 Plan Digest 匹配所有模式 (Pattern) 相同的 SQL
+- `SIMILAR` 表示会忽略字面值 (Literal)，通过 SQL Digest 匹配所有模式 (Pattern) 相同的 SQL
+- `PLAN` 表示通过 Plan Digest 匹配所有模式 (Pattern) 相同的 SQL
 
 `QUERY_LIMIT` 具体格式如下：
 
@@ -222,7 +223,7 @@ Runaway Queries 指那些执行时间或者消耗的资源超出预期的查询�
 |---------------|--------------|--------------------------------------|
 | `EXEC_ELAPSED`  | 当查询执行时间超过该值后被识别为 Runaway Query | EXEC_ELAPSED =`60s` 表示查询的执行时间超过 60 秒则被认为是 Runaway Query。 |
 | `ACTION`    | 当识别到 Runaway Query 时进行的动作 | 可选值有 `DRYRUN`，`COOLDOWN`，`KILL`。 |
-| `WATCH`   | 快速匹配已经识别到的 Runaway Query，即在一定时间内再碰到相同或相似查询直接进行相应动作 | 可选项，配置例如 `WATCH=SIMILAR DURATION '60s'`、`WATCH=EXACT DURATION '1m'`。 |
+| `WATCH`   | 快速匹配已经识别到的 Runaway Query，即在一定时间内再碰到相同或相似查询直接进行相应动作 | 可选项，配置例如 `WATCH=SIMILAR DURATION '60s'`、`WATCH=EXACT DURATION '1m'`、`WATCH=PLAN`。 |
 
 #### 示例
 
@@ -242,6 +243,22 @@ Runaway Queries 指那些执行时间或者消耗的资源超出预期的查询�
 
     ```sql
     ALTER RESOURCE GROUP rg1 QUERY_LIMIT=NULL;
+    ```
+
+#### `QUERY WATCH` 语句说明
+
+`QUERY WATCH` 语句中 `ACTION`、`WATCH` 的含义和 `QUERY_LIMIT` 相同，详见 [`QUERY WATCH`](/sql-statements/sql-statement-query-watch.md) 。 `QueryWatchTextOption` 中 `SQL DIGEST` 的含义与 `SIMILAR` 相同，后面紧跟的参数可以是字符串、用户自定义变量以及其他计算结果为字符串的表达式，但需要的字符串长度必须为 64 (与 TiDB 中关于 Digest 的定义一致)。`PLAN DIGEST` 的含义与 `PLAN` 相同。`SQL TEXT` 可以根据后面紧跟的参数，将输入的 SQL 的原始字符串 (`EXACT`) 作为模式匹配项，或者经过解析和编译转化为 `SQL DIGEST`(`SIMILAR`)、`PLAN DIGEST`(`PLAN`) 来作为模式匹配项。
+
+1. 未指定资源组时，即为默认资源组管理 Runaway Queries 识别名单。为默认资源组的 Runaway Queries 识别名单添加识别项(需要提前为默认资源组设置 QUERY LIMIT)。
+
+    ```sql
+    QUERY WATCH ADD ACTION KILL SQL TEXT EXACT TO 'select * from test.t2';
+    ```
+
+2. 为 `rg1` 资源组的 Runaway Queries 识别名单通过 SQL Digest 添加识别项。未指定 `ACTION` 时，使用 `rg1` 资源组已配置的 `ACTION` 。
+
+    ```sql
+    UERY WATCH ADD RESOURCE GROUP rg1 SQL TEXT SIMILAR TO 'select * from test.t2';
     ```
 
 #### 可观测性
@@ -267,10 +284,10 @@ Runaway Queries 指那些执行时间或者消耗的资源超出预期的查询�
     - `identify` 表示命中条件。
     - `watch` 表示被快速识别机制命中。
 
-+ `mysql.tidb_runaway_quarantined_watch` 表中包含了 Runaway Queries 的快速识别规则记录。以其中两行为例：
++ `mysql.tidb_runaway_watch` 表中包含了 Runaway Queries 的快速识别规则记录。以其中两行为例：
 
     ```sql
-    MySQL [(none)]> SELECT * FROM mysql.tidb_runaway_quarantined_watch LIMIT 2\G;
+    MySQL [(none)]> SELECT * FROM mysql.tidb_runaway_watch LIMIT 2\G;
     *************************** 1. row ***************************
     resource_group_name: rg1
              start_time: 2023-06-16 17:40:22
