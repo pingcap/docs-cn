@@ -12,7 +12,7 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-show-analyze-status/']
 
 从 TiDB v6.1.0 起，你可以通过系统表 `mysql.analyze_jobs` 查看过去 7 天内的历史记录。
 
-从 TiDB v7.2.0 起，你可以通过系统表 `mysql.analyze_jobs` 或者 `SHOW ANALYZE STATUS` 查看当前 `ANALYZE` 任务的进度。
+从 TiDB v7.3.0 起，你可以通过系统表 `mysql.analyze_jobs` 或者 `SHOW ANALYZE STATUS` 查看当前 `ANALYZE` 任务的进度。
 
 ## 语法图
 
