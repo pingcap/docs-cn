@@ -1,6 +1,7 @@
 ---
 title: TiDB 和 MySQL Connector/Python 的简单 CRUD 应用程序
 summary: 给出一个 TiDB 和 MySQL Connector/Python 的简单 CRUD 应用程序示例。
+aliases: ['/zh/tidb/dev/dev-guide-sample-application-python']
 ---
 
 <!-- markdownlint-disable MD024 -->
