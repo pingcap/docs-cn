@@ -13,7 +13,6 @@ Quick access: [Quick start](https://docs.pingcap.com/tidb/v7.1/quick-start-with-
 
 ## Compatibility changes
 
-- TiKV changes the default value of [<code>rocksdb.\[defaultcf\|writecf\|lockcf\].compaction-guard-min-output-file-size</code>](/tikv-configuration-file.md#compaction-guard-min-output-file-size) from `"8MB"` to `"1MB"` to reduce the data volume of compaction tasks in RocksDB [#14888](https://github.com/tikv/tikv/issues/14888) @[tonyxuqqi](https://github.com/tonyxuqqi)
 - TiDB introduces a new system variable `tidb_lock_unchanged_keys` to control whether to lock unchanged keys [#44714](https://github.com/pingcap/tidb/issues/44714) @[ekexium](https://github.com/ekexium)
 
 ## Improvements
