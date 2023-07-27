@@ -42,8 +42,7 @@ SET SESSION tidb_opt_fix_control = '44262:ON,44389:ON';
 
 - 默认值：`200`
 - 可选值：`[0, 2147483647]`
-- 为了节省内存，对于参数超过指定个数的查询，Plan Cache 将不会缓存。
-- 这个开关用来调节该参数个数的阈值，`0` 表示无限制。
+- 为了节省内存，对于参数个数超过此开关指定个数的查询，Plan Cache 将不会缓存。`0` 表示无限制。
 
 ### [`44830`](https://github.com/pingcap/tidb/issues/44830) <span class="version-mark">从 v7.3.0 版本开始引入</span>
 
