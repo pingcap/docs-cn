@@ -160,6 +160,7 @@ TiDB 版本：7.3.0
 
     - 游标 (Cursor) 结果过大时，写入 TiDB 临时磁盘空间从而避免OOM [#43233](https://github.com/pingcap/tidb/issues/43233) @[YangKeao](https://github.com/YangKeao) <!--1430-->
     - EXPLAIN 新增开关用以展示在优化期间被执行的子查询 [#22076](https://github.com/pingcap/tidb/issues/22076) @[winoros](https://github.com/winoros] 
+    - 在启用 [`Global Kill`](/tidb-configuration-file#enable-global-kill-从-v610-版本开始引入) 的情况下，可以通过 Ctrl+C 终止当前会话。 [#8854](https://github.com/pingcap/tidb/issues/8854) @[pingyu](https://github.com/pingyu)
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
 + TiKV
