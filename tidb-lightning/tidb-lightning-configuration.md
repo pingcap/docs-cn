@@ -112,12 +112,12 @@ driver = "file"
 
 [conflict]
 # 控制冲突数据处理策略
-# - ""：不进行处理，可能会在后续步骤报错
-# - "error"：终止导入并报错
-# - "replace"：遇到冲突数据时，保留新的数据
-# - "ignore"：遇到冲突数据时，保留旧的数据
+# - ""：不进行冲突数据检测和处理，但如果源文件里存在主键或者唯一键冲突的记录，则会在后续步骤（Checksum）报错
+# - "error"：检测到导入的数据存在 PK 或 UK 冲突时，终止导入并报错
+# - "replace"：遇到冲突数据时，保留新的数据，覆盖旧的数据。
+# - "ignore"：遇到冲突数据时，保留旧的数据，忽略新的数据。
 strategy = ""
-# 控制 `strategy` 为 "replace" 和 "ignore" 时，能处理的冲突数据上限。仅在 `strategy` 为 "replace" 和 "ignore" 时可配置，默认为 9223372036854775807。
+# 控制 `strategy` 为 "replace" 和 "ignore" 时，能处理的冲突数据上限。仅在 `strategy` 为 "replace" 和 "ignore" 时可配置，默认为 `9223372036854775807`，意味着几乎能容忍全部错误。
 # threshold = 9223372036854775807
 # 控制冲突数据记录表 (conflict_record) 中记录的条数上限。默认为 100。
 # max-record-rows = 100
