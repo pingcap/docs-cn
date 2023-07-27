@@ -11,31 +11,31 @@ summary: TiDB 数据库中 QUERY WATCH 的使用概况。
 
 ```ebnf+diagram
 AddQueryWatchStmt ::=
-	"QUERY" "WATCH" "ADD" QueryWatchOptionList
+    "QUERY" "WATCH" "ADD" QueryWatchOptionList
 QueryWatchOptionList ::=
-	QueryWatchOption
-|	QueryWatchOptionList QueryWatchOption
-|	QueryWatchOptionList ',' QueryWatchOption
+    QueryWatchOption
+|   QueryWatchOptionList QueryWatchOption
+|   QueryWatchOptionList ',' QueryWatchOption
 QueryWatchOption ::=
-	"RESOURCE" "GROUP" ResourceGroupName
-|	"RESOURCE" "GROUP" UserVariable
-|	"ACTION" EqOpt ResourceGroupRunawayActionOption
-|	QueryWatchTextOption
+    "RESOURCE" "GROUP" ResourceGroupName
+|   "RESOURCE" "GROUP" UserVariable
+|   "ACTION" EqOpt ResourceGroupRunawayActionOption
+|   QueryWatchTextOption
 ResourceGroupName ::=
    Identifier
    "DEFAULT"
 QueryWatchTextOption ::=
-	"SQL" "DIGEST" SimpleExpr
-|	"PLAN" "DIGEST" SimpleExpr
-|	"SQL" "TEXT" ResourceGroupRunawayWatchOption "TO" SimpleExpr
+    "SQL" "DIGEST" SimpleExpr
+|   "PLAN" "DIGEST" SimpleExpr
+|   "SQL" "TEXT" ResourceGroupRunawayWatchOption "TO" SimpleExpr
 
 ResourceGroupRunawayWatchOption ::=
-	"EXACT"
-|	"SIMILAR"
-|	"PLAN"
+    "EXACT"
+|   "SIMILAR"
+|   "PLAN"
 
 DropQueryWatchStmt ::=
-	"QUERY" "WATCH" "REMOVE" NUM
+    "QUERY" "WATCH" "REMOVE" NUM
 ```
 
 ## MySQL 兼容性
