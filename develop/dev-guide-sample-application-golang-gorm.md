@@ -63,7 +63,7 @@ func TiDBGormBegin(db *gorm.DB, pessimistic bool, fc func(tx *gorm.DB) error) (e
 }
 ```
 
-进入目录 `gorm` ：
+进入目录 `gorm`：
 
 ```shell
 cd gorm
@@ -79,9 +79,9 @@ cd gorm
 └── gorm.go
 ```
 
-其中，`gorm.go` 是 `gorm` 这个示例程序的主体。使用 gorm 时，相较于 go-sql-driver/mysql，gorm 屏蔽了创建数据库连接时，不同数据库差异的细节，其还封装了大量的操作，如 AutoMigrate、基本对象的 CRUD 等，极大的简化了代码量。
+其中，`gorm.go` 是 `gorm` 这个示例程序的主体。使用 gorm 时，相较于 go-sql-driver/mysql，gorm 屏蔽了创建数据库连接时，不同数据库差异的细节，其还封装了大量的操作，如 AutoMigrate、基本对象的 CRUD 等，极大地简化了代码量。
 
-`Player` 是数据结构体，为数据库表在程序内的映射。`Player` 的每个属性都对应着 `player` 表的一个字段。相较于 go-sql-driver/mysql，gorm 的 `Player` 数据结构体为了给 gorm 提供更多的信息，加入了形如 `` `gorm:"primaryKey;type:VARCHAR(36);column:id"` `` 的注解，用来指示映射关系。
+`Player` 是数据结构体，为数据库表在程序内的映射。`Player` 的每个属性都对应着 `player` 表的一个字段。相较于 go-sql-driver/mysql，gorm 的 `Player` 数据结构体为了给 gorm 提供更多的信息，加入了形如 `gorm:"primaryKey;type:VARCHAR(36);column:id"` 的注解，用来指示映射关系。
 
 ```go
 
@@ -149,7 +149,7 @@ func tradeExample(db *gorm.DB) {
 }
 
 func simpleExample(db *gorm.DB) {
-    // Create a player, who has a coin and a goods..
+    // Create a player, who has a coin and a goods.
     if err := db.Clauses(clause.OnConflict{UpdateAll: true}).
         Create(&Player{ID: "test", Coins: 1, Goods: 1}).Error; err != nil {
         panic(err)
@@ -241,11 +241,7 @@ func buyGoods(db *gorm.DB, sellID, buyID string, amount, price int) error {
 
 本节将逐步介绍代码的运行方法。
 
-### 第 3 步第 1 部分：go-sql-driver/mysql 表初始化
-
-无需手动初始化表。
-
-### 第 3 步第 2 部分：TiDB Cloud 更改参数
+### 第 3 步第 1 部分：TiDB Cloud 更改参数
 
 若你使用 TiDB Serverless 集群，更改 `gorm.go` 内 `dsn` 参数值：
 
@@ -270,7 +266,7 @@ mysql.RegisterTLSConfig("register-tidb-tls", &tls.Config {
 dsn := "2aEp24QWEDLqRFs.root:123456@tcp(xxx.tidbcloud.com:4000)/test?charset=utf8mb4&tls=register-tidb-tls"
 ```
 
-### 第 3 步第 3 部分：运行
+### 第 3 步第 2 部分：运行
 
 你可以分别运行 `make build` 和 `make run` 以运行此代码：
 
