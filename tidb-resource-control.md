@@ -195,10 +195,8 @@ SELECT /*+ RESOURCE_GROUP(rg1) */ * FROM t limit 10;
 
 Runaway Queries 指那些执行时间或者消耗的资源超出预期的查询。
 
-- 自 v7.2.0 起，TiDB 资源管控引入了对 Runaway Queries 的管理。你可以针对某个资源组设置条件来识别 Runaway Queries，并自动发起应对操作，防止集群资源完全被 Runaway Queries 占用而影响其他正常查询。
-- 自 v7.3.0 起，TiDB 资源管控引入了手动管理 Runaway Watch，针对给定的 SQL 或者 Digest 实现快速识别 Runaway Queries。
-
-你可以通过在 [`CREATE RESOURCE GROUP`](/sql-statements/sql-statement-create-resource-group.md) 或者 [`ALTER RESOURCE GROUP`](/sql-statements/sql-statement-alter-resource-group.md) 中配置 `QUERY_LIMIT` 字段，通过规则识别来管理资源组的 Runaway Queries。你也可以执行语句 [`QUERY WATCH`](/sql-statements/sql-statement-query-watch.md) ，手动管理资源组中的 Runaway Queries 识别名单。
+- 自 v7.2.0 起，TiDB 资源管控引入了对 Runaway Queries 的管理。你可以针对某个资源组设置条件来识别 Runaway Queries，并自动发起应对操作，防止集群资源完全被 Runaway Queries 占用而影响其他正常查询。你可以通过在 [`CREATE RESOURCE GROUP`](/sql-statements/sql-statement-create-resource-group.md) 或者 [`ALTER RESOURCE GROUP`](/sql-statements/sql-statement-alter-resource-group.md) 中配置 `QUERY_LIMIT` 字段，通过规则识别来管理资源组的 Runaway Queries。
+- 自 v7.3.0 起，TiDB 资源管控引入了手动管理 Runaway Watch，针对给定的 SQL 或者 Digest 实现快速识别 Runaway Queries。你可以执行语句 [`QUERY WATCH`](/sql-statements/sql-statement-query-watch.md)，手动管理资源组中的 Runaway Queries 识别名单。
 
 #### `QUERY_LIMIT` 参数说明
 
