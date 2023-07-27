@@ -37,8 +37,8 @@ v6.6.0 之前，基于 Raft 的存储引擎，TiKV 使用单个 RocksDB 实例�
 
 * 暂不支持基于 EBS 的快照备份
 * 暂不支持 Online Unsafe Recovery 和 Titan
-* tikv-ctl命令行管理工具中以下子命令不再支持
-  * unsafe-recover
-  * raw-scan
+* 不支持 tikv-ctl 命令行管理工具中的以下子命令：
+    * `unsafe-recover`
+    * `raw-scan`
+* 暂不兼容 TiFlash
 * 初始化以后不支持开启或者关闭
-* 暂不支持和TiFlash的兼容

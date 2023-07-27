@@ -9,13 +9,13 @@ aliases: ['/docs-cn/dev/error-codes/','/docs-cn/dev/reference/error-codes/']
 
 ## 错误码
 
-TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样的错误码。关于 MySQL 的错误码列表，详见 [[MySQL 5.7 Error Message Reference](https://dev.mysql.com/doc/mysql-errors/5.7/en/)。另外还有一些 TiDB 特有的错误码：
+TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样的错误码。关于 MySQL 的错误码列表，详见 [MySQL 5.7 Error Message Reference](https://dev.mysql.com/doc/mysql-errors/5.7/en/)。另外还有一些 TiDB 特有的错误码：
 
 > **注意：**
 >
 > 有一部分错误码属于内部错误，正常情况下 TiDB 会自行处理不会直接返回给用户，故没有在此列出。
 >
-> 如果您遇到了这里没有列出的错误码，请向 PingCAP 工程师或通过官方论坛寻求帮助。
+> 如果你遇到了这里没有列出的错误码，请从 PingCAP 官方或 TiDB 社区[获取支持](/support.md)。
 
 * Error Number: 8001
 
