@@ -606,9 +606,9 @@ public class MybatisExample {
 
 本节将逐步介绍代码的运行方法。
 
-### 第 3 步第 1 部分：JDBC 表初始化
+### 第 3 步第 1 部分：表初始化
 
-使用 Mybatis 时，需手动初始化数据库表。若你本地已经安装了 `mysql-client`，且使用本地集群，可直接在 `plain-java-mybatis` 目录下通过 `make prepare` 运行：
+使用 MyBatis 时，需手动初始化数据库表。若你本地已经安装了 `mysql-client`，且使用本地集群，可直接在 `plain-java-mybatis` 目录下通过 `make prepare` 运行：
 
 ```shell
 make prepare
@@ -733,4 +733,4 @@ java -jar target/plain-java-mybatis-0.0.1-jar-with-dependencies.jar
 
 ## 第 4 步：预期输出
 
-[Mybatis 预期输出](https://github.com/pingcap-inc/tidb-example-java/blob/main/Expected-Output.md#plain-java-mybatis)
+[MyBatis 预期输出](https://github.com/pingcap-inc/tidb-example-java/blob/main/Expected-Output.md#plain-java-mybatis)
