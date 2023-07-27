@@ -13,7 +13,6 @@ TiDB 版本：7.1.1
 
 ## 兼容性变更
 
-- 为减小 RocksDB 中 compaction 任务的数据量，TiKV 配置项 [<code>rocksdb.\[defaultcf\|writecf\|lockcf\].compaction-guard-min-output-file-size</code>](/tikv-configuration-file.md#compaction-guard-min-output-file-size) 的默认值从 `"8MB"` 修改为 `"1MB"` [#14888](https://github.com/tikv/tikv/issues/14888) @[tonyxuqqi](https://github.com/tonyxuqqi)
 - TiDB 新增 `tidb_lock_unchanged_keys` 变量用于控制是否对于没有修改的 key 加锁 [#44714](https://github.com/pingcap/tidb/issues/44714) @[ekexium](https://github.com/ekexium)
 
 ## 改进提升

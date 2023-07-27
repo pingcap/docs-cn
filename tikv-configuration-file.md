@@ -1526,7 +1526,7 @@ rocksdb defaultcf、rocksdb writecf 和 rocksdb lockcf 相关的配置项。
 ### `compaction-guard-min-output-file-size`
 
 + 设置 compaction guard 启用时 SST 文件大小的最小值，防止 SST 文件过小。
-+ 默认值：从 v7.1.1 起，默认值从 8MB 变更为 1MB。
++ 默认值：8MB
 + 单位：KB|MB|GB
 
 ### `compaction-guard-max-output-file-size`
