@@ -32,13 +32,16 @@ TiDB 版本：7.3.0
 
     Runtime Filter 是一种在查询规划时生成的动态取值的谓词，在表连接的过程中，这些动态谓词能够进一步过滤掉不满足条件的行，减少扫描时间和网络开销，提升表连接的效率。TiFlash 在 v7.3.0 支持节点内的 Runtime Filter，提升了数据分析类查询的性能，在部分 TPC-H 查询中可达到接近 30% 的性能提升。此特性在 v7.3.0 默认关闭，通过设置变量 [`tidb_runtime_filter_mode`](#tidb_runtime_filter_mode-从-v730-版本开始引入) 为 `LOCAL` 打开。
 
+* TiFlash 支持 CTE 执行（实验特性）[#43333](https://github.com/pingcap/tidb/issues/43333) @[winoros](https://github.com/winoros)
+
+	在 v7.3.0 版本之前，TiFlash 的 MPP 默认无法执行包含 CTE 的查询，需要通过系统变量 [tidb_opt_force_inline_cte](https://docs.pingcap.com/tidb/dev/system-variables#tidb_opt_force_inline_cte-new-in-v630) 将 CTE inline 展开来达到让查询尽可能在 MPP 框架下执行的效果。在 v7.3.0 版本中，TiFlash MPP 支持了 CTE 的执行，在不需要将 CTE inline 的情况下也可以将包含 CTE 的查询尽可能的放在 MPP 框架下执行。TPC-DS 中包含 CTE 的查询总耗时相比 inline 的执行方式相比，该功能可以将总执行时间提速 20%。该功能由变量 [tidb_opt_enable_mpp_shared_cte_execution](https://docs.pingcap.com/tidb/dev/system-variables#tidb_opt_enable_mpp_shared_cte_execution-new-in-v720) 控制。
     更多信息，请参考[用户文档](/runtime-filter)。
 
 ### 稳定性
 
-* 允许为 DDL 任务指定 TiDB 实例 [#issue号](链接) @[ywqzzy](https://github.com/ywqzzy) **tw@ran-huang** <!--1505-->
+* 允许为后端分布式框架 DDL 任务指定 TiDB 实例(实验特性) [#45430](https://github.com/pingcap/tidb/issues/45430) @[ywqzzy](https://github.com/ywqzzy) **tw@ran-huang** <!--1505-->
 
-    在繁忙的系统中，运行繁重的 DDL 工作会消耗大量计算资源，从而影响在线业务的服务质量。TiDB 在 v7.3.0 中提供了对 TiDB 节点添加标记的能力，通过使用标签把 DDL 任务指定到部分 TiDB 节点，从而能够将 DDL 操作与在线业务的 TiDB 节点分离，提升在线业务的稳定性，保证业务的响应时间。 
+    在繁忙的系统中，运行繁重的 DDL 工作会消耗大量计算资源，从而影响在线业务的服务质量。TiDB 在 v7.3.0 中为后端分布式框架提供了对 TiDB 节点添加标记的能力，通过使用标签把 DDL 任务指定到部分 TiDB 节点，从而能够将 DDL 操作与在线业务的 TiDB 节点分离，提升在线业务的稳定性，保证业务的响应时间。 本功能仅在分布式框架中有效。
 
     更多信息，请参考[用户文档](链接)。
 
@@ -54,7 +57,7 @@ TiDB 版本：7.3.0
 
 * 手工标记资源使用超出预期的查询 (实验特性) [#43691](https://github.com/pingcap/tidb/issues/43691) @[Connor1996](https://github.com/Connor1996) @[CabinfeverB](https://github.com/CabinfeverB) **tw@hfxsd** <!--1446-->
 
-    在 v7.2.0 中，TiDB 对资源使用超出预期的查询 (Runaway Queries) 实施自动管理，运行时间超过预期的查询能够被自动降级或取消。在实际运行时，只依靠规则无法筛覆盖所有情况。 因此，在 v7.2.0 中，TiDB 补充了手工标记查询的能力。 利用新增的命令 [`QUERY WATCH`]()，用户可以根据 SQL 的文本、SQL Digest、或者执行计划对查询进行标记，命中的查询可以被降级或取消。
+    在 v7.2.0 中，TiDB 对资源使用超出预期的查询 (Runaway Queries) 实施自动管理，运行时间超过预期的查询能够被自动降级或取消。在实际运行时，只依靠规则无法筛覆盖所有情况。 因此，在 v7.3.0 中，TiDB 补充了手工标记查询的能力。 利用新增的命令 [`QUERY WATCH`]()，用户可以根据 SQL 的文本、SQL Digest、或者执行计划对查询进行标记，命中的查询可以被降级或取消。
 
     手工标记 Runaway Queries 的能力，为数据库中突发的性能问题提供了有效的干预手段。针对由查询引发的性能问题，在找到问题根本原因之前，能够快速缓解其对整体性能的影响，提升系统服务质量。 
 
@@ -98,7 +101,7 @@ TiDB 版本：7.3.0
     
     更多信息，请参考[用户文档](链接)。
     
-* Lightning 支持 Partitioned Raft KV [#15069](https://github.com/tikv/tikv/pull/15069) @[GMHDBJD](https://github.com/GMHDBJD) **tw@hfxsd** <!--1507-->
+* Lightning 支持 Partitioned Raft KV（实验特性） [#15069](https://github.com/tikv/tikv/pull/15069) @[GMHDBJD](https://github.com/GMHDBJD) **tw@hfxsd** <!--1507-->
     
     该版本 Lightning 支持了 Partitioned Raft KV ，当用户使用了 Partitioned Raft KV 特性后，能提升 Lightning 导入数据的性能。
     
@@ -131,7 +134,6 @@ TiDB 版本：7.3.0
 
 | 变量名 | 修改类型 | 描述 |
 |---|----|------|
-| [`tidb_runtime_filter_mode`](#tidb_runtime_filter_mode-从-v730-版本开始引入) | 新增 | 控制是否启用 [`Runtime Filter`](/runtime-filter) 。 `OFF`，关闭`Runtime Filter`； `LOCAL`，在节点内启用 `Runtime Filter`。|
 |  | 新增/删除/修改 |  |
 |  | 新增/删除/修改 |  |
 |  | 新增/删除/修改 |  |
@@ -163,6 +165,7 @@ TiDB 版本：7.3.0
 + TiDB
 
     - 游标 (Cursor) 结果过大时，写入 TiDB 临时磁盘空间从而避免OOM [#43233](https://github.com/pingcap/tidb/issues/43233) @[YangKeao](https://github.com/YangKeao) <!--1430-->
+    - EXPLAIN 新增开关用以展示在优化期间被执行的子查询 [#22076](https://github.com/pingcap/tidb/issues/22076) @[winoros](https://github.com/winoros] 
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
 + TiKV
@@ -186,7 +189,7 @@ TiDB 版本：7.3.0
 
     + Backup & Restore (BR)
 
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
+        - 为外部存储 Azure Blob Storage 提供加密范围和加密密钥的支持 [#45025](https://github.com/pingcap/tidb/issues/45025) @[Leavrth](https://github.com/Leavrth)
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
     + TiCDC
