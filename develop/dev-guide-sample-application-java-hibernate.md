@@ -39,9 +39,9 @@ git clone https://github.com/pingcap-inc/tidb-example-java.git
 
 与 [Hibernate](https://hibernate.org/orm/) 对比，JDBC 的实现方式并非最优体验。你需要自行编写错误处理逻辑，并且代码无法简单复用。这会使你的代码有些冗余
 
-Hibernate 是当前比较流行的开源 Java 应用持久层框架，且 Hibernate 在版本 `6.0.0.Beta2` 及以后支持了 TiDB 方言。完美适配了 TiDB 的特性。因此，此处将以 6.0.0.Beta2 + 版本进行说明。
+Hibernate 是当前比较流行的开源 Java 应用持久层框架，且 Hibernate 在版本 `6.0.0.Beta2` 及以后支持了 TiDB 方言。完美适配了 TiDB 的特性。因此，此处将以 `6.0.0.Beta2` 版本进行说明。
 
-进入目录 `plain-java-hibernate` ：
+进入目录 `plain-java-hibernate`：
 
 ```shell
 cd plain-java-hibernate
@@ -94,7 +94,7 @@ cd plain-java-hibernate
 
 `HibernateExample.java` 是 `plain-java-hibernate` 这个示例程序的主体。使用 Hibernate 时，相较于 JDBC，这里仅需写入配置文件地址，Hibernate 屏蔽了创建数据库连接时，不同数据库差异的细节。
 
-`PlayerDAO` 是程序用来管理数据对象的类。其中 `DAO` 是 [Data Access Object](https://en.wikipedia.org/wiki/Data_access_object) 的缩写。其中定义了一系列数据的操作方法，用来提供数据的写入能力。相较于 JDBC，Hibernate 封装了大量的操作，如对象映射、基本对象的 CRUD 等，极大的简化了代码量。
+`PlayerDAO` 是程序用来管理数据对象的类。其中 `DAO` 是 [Data Access Object](https://en.wikipedia.org/wiki/Data_access_object) 的缩写。其中定义了一系列数据的操作方法，用来提供数据的写入能力。相较于 JDBC，Hibernate 封装了大量的操作，如对象映射、基本对象的 CRUD 等，极大地简化了代码量。
 
 `PlayerBean` 是数据实体类，为数据库表在程序内的映射。`PlayerBean` 的每个属性都对应着 `player` 表的一个字段。相较于 JDBC，Hibernate 的 `PlayerBean` 实体类为了给 Hibernate 提供更多的信息，加入了注解，用来指示映射关系。
 
@@ -330,11 +330,7 @@ public class HibernateExample
 
 本节将逐步介绍代码的运行方法。
 
-### 第 3 步第 1 部分：JDBC 表初始化
-
-无需手动初始化表。
-
-### 第 3 步第 2 部分：TiDB Cloud 更改参数
+### 第 3 步第 1 部分：TiDB Cloud 更改参数
 
 若你使用 TiDB Serverless 集群，更改 `hibernate.cfg.xml` 内关于 `hibernate.connection.url`、`hibernate.connection.username`、`hibernate.connection.password` 的参数：
 
@@ -398,7 +394,7 @@ public class HibernateExample
 </hibernate-configuration>
 ```
 
-### 第 3 步第 3 部分：运行
+### 第 3 步第 2 部分：运行
 
 你可以分别运行 `make build` 和 `make run` 以运行此代码：
 
