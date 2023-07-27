@@ -112,7 +112,7 @@ If you encounter problems when connecting to TiDB using the tools listed in this
          <td>2.1.1</td>
          <td>Compatible</td>
          <td>N/A</td>
-         <td><a href="/tidb/dev/dev-guide-sample-application-python-mysqlclien">Build a Simple CRUD App with TiDB and mysqlclient</a></td>
+         <td><a href="/tidb/dev/dev-guide-sample-application-python-mysqlclient">Build a Simple CRUD App with TiDB and mysqlclient</a></td>
       </tr>
       <tr>
          <td><a href="https://pypi.org/project/PyMySQL/" target="_blank" referrerpolicy="no-referrer-when-downgrade">PyMySQL</a></td>
