@@ -762,7 +762,7 @@ dsn := "root:@tcp(127.0.0.1:4000)/test?charset=utf8mb4"
 - Port: `4000`
 - User: `2aEp24QWEDLqRFs.root`
 
-那么此处应将 `mysql.RegisterTLSConfig` 和 `dsn` 更改为：
+那么此处应将 `dsn` 更改为：
 
 ```go
 dsn := "2aEp24QWEDLqRFs.root:123456@tcp(xxx.tidbcloud.com:4000)/test?charset=utf8mb4&tls=true"
