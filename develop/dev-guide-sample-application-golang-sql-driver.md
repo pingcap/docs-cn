@@ -1,6 +1,7 @@
 ---
 title: TiDB 和 Go-MySQL-Driver 的简单 CRUD 应用程序
 summary: 给出一个 TiDB 和 Go-MySQL-Driver 的简单 CRUD 应用程序示例。
+aliases: ['/zh/tidb/dev/dev-guide-sample-application-golang']
 ---
 
 <!-- markdownlint-disable MD024 -->
@@ -8,7 +9,7 @@ summary: 给出一个 TiDB 和 Go-MySQL-Driver 的简单 CRUD 应用程序示例
 
 # TiDB 和 Go-MySQL-Driver 的简单 CRUD 应用程序
 
-本文档将展示如何使用 TiDB 和 Go-MySQL-Driver 来构造一个简单的 CRUD 应用程序。
+本文档将展示如何使用 TiDB 和 [Go-MySQL-Driver](https://github.com/go-sql-driver/mysql) 来构造一个简单的 CRUD 应用程序。
 
 > **注意：**
 >
@@ -32,7 +33,7 @@ summary: 给出一个 TiDB 和 Go-MySQL-Driver 的简单 CRUD 应用程序示例
 git clone https://github.com/pingcap-inc/tidb-example-golang.git
 ```
 
-使用 go-sql-driver/mysql 时，首先进入目录 `sqldriver`：
+进入目录 `sqldriver`：
 
 ```shell
 cd sqldriver
@@ -470,7 +471,7 @@ const (
 
 本节将逐步介绍代码的运行方法。
 
-### 第 3 步第 1 部分：go-sql-driver/mysql 表初始化
+### 第 3 步第 1 部分：表初始化
 
 使用 go-sql-driver/mysql 时，需手动初始化数据库表，若你本地已经安装了 `mysql-client`，且使用本地集群，可直接在 `sqldriver` 目录下运行：
 
