@@ -79,9 +79,9 @@ cd plain-java-mybatis
 
 - `src/main/java/com/pingcap/model/Player.java`：Player 实体类文件
 - `src/main/java/com/pingcap/model/PlayerMapper.java`：Player Mapper 的接口文件
-- `src/main/resources/mapper/PlayerMapper.xml`：Player Mapper 的 XML 映射，它是 Mybatis 用于生成 Player Mapper 接口的实现类的配置
+- `src/main/resources/mapper/PlayerMapper.xml`：Player Mapper 的 XML 映射，它是 MyBatis 用于生成 Player Mapper 接口的实现类的配置
 
-这些文件的生成策略被写在了 `mybatis-generator.xml` 配置文件内，它是 [Mybatis Generator](https://mybatis.org/generator/quickstart.html) 的配置文件，下面配置文件中添加了使用方法的说明：
+这些文件的生成策略被写在了 `mybatis-generator.xml` 配置文件内，它是 [MyBatis Generator](https://mybatis.org/generator/quickstart.html) 的配置文件，下面配置文件中添加了使用方法的说明：
 
 ```xml
 <!DOCTYPE generatorConfiguration PUBLIC
@@ -193,9 +193,9 @@ cd plain-java-mybatis
 
 > **注意：**
 >
-> `mybatis-generator.xml` 中的属性 `configuration.overwrite` 仅可控制新生成的 Java 代码文件使用覆盖方式被写入，但 XML 映射文件仍会以追加方式写入。因此，推荐在 Mybaits Generator 生成新的文件前，先删除掉旧的文件。
+> `mybatis-generator.xml` 中的属性 `configuration.overwrite` 仅可控制新生成的 Java 代码文件使用覆盖方式被写入，但 XML 映射文件仍会以追加方式写入。因此，推荐在 MyBatis Generator 生成新的文件前，先删除掉旧的文件。
 
-`Player.java` 是使用 Mybatis Generator 生成出的数据实体类文件，为数据库表在程序内的映射。`Player` 类的每个属性都对应着 `player` 表的一个字段。
+`Player.java` 是使用 MyBatis Generator 生成出的数据实体类文件，为数据库表在程序内的映射。`Player` 类的每个属性都对应着 `player` 表的一个字段。
 
 ```java
 package com.pingcap.model;
@@ -243,7 +243,7 @@ public class Player {
 }
 ```
 
-`PlayerMapper.java` 是使用 Mybatis Generator 生成出的映射接口文件，它仅规定了接口，接口的实现类是由 Mybatis 来通过 XML 或注解自动生成的：
+`PlayerMapper.java` 是使用 MyBatis Generator 生成出的映射接口文件，它仅规定了接口，接口的实现类是由 MyBatis 来通过 XML 或注解自动生成的：
 
 ```java
 package com.pingcap.model;
@@ -265,7 +265,7 @@ public interface PlayerMapper {
 }
 ```
 
-`PlayerMapper.xml` 是使用 Mybatis Generator 生成出的映射 XML 文件，Mybatis 将使用这个文件自动生成 `PlayerMapper` 接口的实现类：
+`PlayerMapper.xml` 是使用 MyBatis Generator 生成出的映射 XML 文件，MyBatis 将使用这个文件自动生成 `PlayerMapper` 接口的实现类：
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -343,7 +343,7 @@ public interface PlayerMapper {
 </mapper>
 ```
 
-由于 Mybatis Generator 需要逆向生成源码，因此，数据库中需先行有此表结构，可使用 `dbinit.sql` 生成表结构：
+由于 MyBatis Generator 需要逆向生成源码，因此，数据库中需先行有此表结构，可使用 `dbinit.sql` 生成表结构：
 
 ```sql
 USE test;
@@ -357,7 +357,7 @@ CREATE TABLE player (
 );
 ```
 
-额外拆分接口 `PlayerMapperEx` 继承 `PlayerMapper`，并且编写与之匹配的 `PlayerMapperEx.xml`。避免直接更改 `PlayerMapper.java` 和 `PlayerMapper.xml`。这是为了规避 Mybatis Generator 的反复生成，影响到自行编写的代码。
+额外拆分接口 `PlayerMapperEx` 继承 `PlayerMapper`，并且编写与之匹配的 `PlayerMapperEx.xml`。避免直接更改 `PlayerMapper.java` 和 `PlayerMapper.xml`。这是为了规避 MyBatis Generator 的反复生成，影响到自行编写的代码。
 
 在 `PlayerMapperEx.java` 中定义自行增加的接口：
 
