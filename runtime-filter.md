@@ -1,6 +1,6 @@
 ---
 title: Runtime Filter
-summary: 介绍 Runtime Filter 的原理及使用方式
+summary: 介绍 Runtime Filter 的原理及使用方式。
 ---
 
 # Runtime Filter
