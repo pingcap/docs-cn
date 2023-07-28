@@ -174,7 +174,7 @@ WHERE d_date = '2002-2-01' AND
 
 ### 第 4 步：性能对比
 
-以 TPCDS 的 50 GB 数据量为例，查询速度提升 50%，从 0.38 秒提升至 0.17 秒。通过 `ANALYZE` 语句可以看到具体的 Runtime Filter 生效后的各个算子的执行时间。
+以 TPC-DS 的 50 GB 数据量为例，开启 Runtime Filter 后，查询时间从 0.38 秒减少到 0.17 秒，效率提升 50%。通过 `ANALYZE` 语句可以查看 Runtime Filter 生效后各个算子的执行时间。
 
 以下为未开启 Runtime Filter 的查询 Summary：
 
