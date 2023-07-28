@@ -30,13 +30,17 @@ TiDB 版本：7.3.0
 
 * TiFlash 支持节点内的 Runtime Filter [#40220](https://github.com/pingcap/tidb/issues/40220) @[elsa0520](https://github.com/elsa0520) **tw@ran-huang** <!--1130-->
 
-    Runtime Filter 是一种在查询规划时生成的动态取值的谓词，在表连接的过程中，这些动态谓词能够进一步过滤掉不满足条件的行，减少扫描时间和网络开销，提升表连接的效率。TiFlash 在 v7.3.0 支持节点内的 Runtime Filter，提升了数据分析类查询的整体性能，部分 TPC-DS 查询可达到 10% ~ 50% 的性能提升。此特性在 v7.3.0 默认关闭，通过设置变量 [`tidb_runtime_filter_mode`](#tidb_runtime_filter_mode-从-v720-版本开始引入) 为 `LOCAL` 打开。
+    Runtime Filter 是一种在查询规划时生成的动态取值的谓词。在表连接的过程中，这些动态谓词能够进一步过滤掉不满足条件的行，减少扫描时间和网络开销，提升表连接的效率。自 v7.3.0 起，TiFlash 支持节点内的 Runtime Filter，提升了数据分析类查询的整体性能，在部分 TPC-DS 查询中可达到 10% ~ 50% 的性能提升。
 
-    更多信息，请参考[用户文档](/runtime-filter)。
+    该特性在 v7.3.0 默认关闭。要启用此功能，需将变量 [`tidb_runtime_filter_mode`](#tidb_runtime_filter_mode-从-v720-版本开始引入) 设置为 `LOCAL`。
 
-* TiFlash 支持 CTE 执行（实验特性）[#43333](https://github.com/pingcap/tidb/issues/43333) @[winoros](https://github.com/winoros) **tw:ran-huang** <!--1244-->
+    更多信息，请参考[用户文档](/runtime-filter.md)。
 
-	在 v7.3.0 版本之前，TiFlash 的 MPP 默认无法执行包含 CTE 的查询，需要通过系统变量 [tidb_opt_force_inline_cte](https://docs.pingcap.com/tidb/dev/system-variables#tidb_opt_force_inline_cte-new-in-v630) 将 CTE inline 展开来达到让查询尽可能在 MPP 框架下执行的效果。在 v7.3.0 版本中，TiFlash MPP 支持了 CTE 的执行，在不需要将 CTE inline 的情况下也可以将包含 CTE 的查询尽可能的放在 MPP 框架下执行。TPC-DS 中包含 CTE 的查询总耗时相比 inline 的执行方式相比，该功能可以将总执行时间提速 20%。该功能由变量 [tidb_opt_enable_mpp_shared_cte_execution](https://docs.pingcap.com/tidb/dev/system-variables#tidb_opt_enable_mpp_shared_cte_execution-new-in-v720) 控制。
+* TiFlash 支持执行公共表表达式 (CTE)（实验特性）[#43333](https://github.com/pingcap/tidb/issues/43333) @[winoros](https://github.com/winoros) **tw@ran-huang** <!--1244-->
+
+    在 v7.3.0 版本之前，TiFlash 的 MPP 引擎默认无法执行包含 CTE 的查询，你需要通过系统变量 [`tidb_opt_force_inline_cte`](/system-variables.md#tidb_opt_force_inline_cte-从-v630-版本开始引入) 将 CTE inline 展开，达到让查询尽可能在 MPP 框架下执行的效果。在 v7.3.0 中，TiFlash MPP 引擎支持执行包含 CTE 的查询，无需将 CTE inline 展开也可以尽可能地在 MPP 框架中执行查询。在 TPC-DS 基准测试中，与 inline 的执行方式相比，该功能可以将包含 CTE 的查询的总执行速度提升 20%。
+    
+    该功能为实验特性，默认关闭，由变量 [`tidb_opt_enable_mpp_shared_cte_execution`](/system-variables.md#tidb_opt_enable_mpp_shared_cte_execution-从-v720-版本开始引入) 控制。
 
 ### 稳定性
 
@@ -44,7 +48,7 @@ TiDB 版本：7.3.0
 
     TiDB 在 v7.3.0 新增了几个优化器提示，用来控制表之间的连接方式，包括：
    
-    - [INDEX_JOIN()](链接) 选择 Index Nested Loop Join，利用索引过滤并将结果集作为内表连接。
+    - [`INDEX_JOIN()`](链接) 选择 Index Nested Loop Join，利用索引过滤并将结果集作为内表连接。
     - [`NO_HASH_JOIN()`](链接) 选择哈希连接以外的连接方式。
     - [`NO_INDEX_HASH_JOIN()`](链接) 选择除 [Index Nested Loop Hash Join](/optimizer-hints#inl_hash_join) 以外的连接方式。
 
@@ -80,9 +84,9 @@ TiDB 版本：7.3.0
 
 * Plan Replayer 支持导出历史统计信息 [#issue号](链接) @[time-and-fate](https://github.com/time-and-fate) **tw@ran-huang** <!--1445-->
 
-    在新版本的 TiDB 中，通过新增的 [`dump with stats as of timestamp`]() 子句，[Plan Replayer](/sql-plan-replayer) 能够导出指定 SQL 相关对象在指定时间点的统计信息。在执行计划问题的诊断过程中，通过对历史统计信息的准确抓取，能够更精确地分析出在问题发生时间点，执行计划是如何生成的，从而找到问题的根本原因，大大提升执行计划问题的诊断效率。 
+    自 v7.3.0 起，通过新增的 [`dump with stats as of timestamp`](/sql-plan-replayer.md) 子句，Plan Replayer 能够导出指定 SQL 相关对象在指定时间点的统计信息。在执行计划问题的诊断过程中，通过对历史统计信息的准确抓取，能够更精确地分析出执行计划在问题发生的时间点是如何生成的，从而找到问题的根本原因，大大提升执行计划问题的诊断效率。 
 
-    更多信息，请参考[用户文档](链接)。
+    更多信息，请参考[用户文档](/sql-plan-replayer.md)。
 
 ### 安全
 
