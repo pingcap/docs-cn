@@ -237,7 +237,7 @@ Runtime Filter 适用于大表和小表进行 Join 的情况，比如事实表�
 
 Runtime Filter Mode 指的是 Runtime Filter 的模式，即 **生成 Filter 算子** 和 **接收 Filter 算子**之间的关系。共有三种模式：`OFF`、`LOCAL`、`GLOBAL`。在 v7.3.0 中仅支持 `OFF` 和 `LOCAL` 模式，通过会话系统变量 [`tidb_runtime_filter_mode`](/system-variables.md#tidb_runtime_filter_mode-从-v720-版本开始引入) 控制。
 
-+ `OFF`：设置为 OFF，则关闭 Runtime Filter。关闭后，查询行为和过去完全一致。
++ `OFF`：代表关闭 Runtime Filter。关闭后，查询行为和过去完全一致。
 + `LOCAL`：开启 LOCAL 模式的 Runtime Filter。LOCAL 模式指的是**生成 Filter 的算子**和**接收 Filter 的算子**在同一个 MppTask 中。简单来说，Runtime Filter 可应用于 Hash Join 算子和 Table Scan 算子在同一个 Task 中的情况。目前 Runtime Filter 仅支持 LOCAL 模式，要开启该模式，设置为 `LOCAL` 即可。
 + `GLOBAL`：目前不支持 GLOBAL 模式，不可设置为该模式。
 
