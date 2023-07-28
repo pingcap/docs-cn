@@ -1180,7 +1180,7 @@ RocksDB 相关的配置项。
 + 默认值：
 
     + 当 `storage.engine="raft-kv"` 时，默认值为 `"10m"`。
-    + 当 `storage.engine="partitioned-raft-kv"` 时，默认值为 `0`。
+    + 当 `storage.engine="partitioned-raft-kv"` 时，默认值为 `"0"`。
 
 ### `compaction-readahead-size`
 
