@@ -252,14 +252,14 @@ Runaway Queries 指那些执行时间或者消耗的资源超出预期的查询�
 
 语法详见 [`QUERY WATCH`](/sql-statements/sql-statement-query-watch.md)。
 
-参数说明
+参数说明如下：
 
 - `RESOURCE GROUP` 用于指定资源组。此语句添加的 Runaway Queries 识别项将会在作用于该资源组。此参数可以省略，省略时作用于 `default` 资源组。
 - `ACTION` 的含义与 `QUERY LIMIT` 相同。此参数可以省略，省略时表示识别后的对应操作采用资源组中 `QUERY LIMIT` 配置的 `ACTION`。如果资源组没有配置 `ACTION`，会报错。
 - `QueryWatchTextOption` 参数有 `SQL DIGEST`、`PLAN DIGEST`、`SQL TEXT` 三种类型。
-  - `SQL DIGEST` 的含义与 `QUERY LIMIT` `WATCH` 类型中的 `SIMILAR` 相同，后面紧跟的参数可以是字符串、用户自定义变量以及其他计算结果为字符串的表达式，但需要的字符串长度必须为 64，该长度与 TiDB 中关于 Digest 的定义一致。
-  - `PLAN DIGEST` 的含义与 `PLAN` 相同。输入参数为 Digest 字符串。
-  - `SQL TEXT` 可以根据后面紧跟的参数，将输入的 SQL 的原始字符串 (使用 `EXACT` 选项) 作为模式匹配项，或者经过解析和编译转化为 `SQL DIGEST`(使用 `SIMILAR` 选项)、`PLAN DIGEST`(使用 `PLAN` 选项) 来作为模式匹配项。
+    - `SQL DIGEST` 的含义与 `QUERY LIMIT` `WATCH` 类型中的 `SIMILAR` 相同，后面紧跟的参数可以是字符串、用户自定义变量以及其他计算结果为字符串的表达式，但需要的字符串长度必须为 64，该长度与 TiDB 中关于 Digest 的定义一致。
+    - `PLAN DIGEST` 的含义与 `PLAN` 相同。输入参数为 Digest 字符串。
+    - `SQL TEXT` 可以根据后面紧跟的参数，将输入的 SQL 的原始字符串 (使用 `EXACT` 选项) 作为模式匹配项，或者经过解析和编译转化为 `SQL DIGEST`(使用 `SIMILAR` 选项)、`PLAN DIGEST`(使用 `PLAN` 选项) 来作为模式匹配项。
 
 1. 未指定资源组时，即为默认资源组管理 Runaway Queries 识别名单。为默认资源组的 Runaway Queries 识别名单添加识别项（需要提前为默认资源组设置 `QUERY LIMIT`）。
 
@@ -302,7 +302,7 @@ Runaway Queries 指那些执行时间或者消耗的资源超出预期的查询�
     - `identify` 表示命中条件。
     - `watch` 表示被快速识别机制命中。
 
-+ `information_schema.runaway_watches` 表中包含了 Runaway Queries 的快速识别规则记录。详见[`RUNAWAY_WATCHES`](/information-schema/information-schema-runaway-watches.md)
++ `information_schema.runaway_watches` 表中包含了 Runaway Queries 的快速识别规则记录。详见 [`RUNAWAY_WATCHES`](/information-schema/information-schema-runaway-watches.md)。
 
     其中：
 
