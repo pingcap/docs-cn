@@ -28,7 +28,7 @@ check-requirements = true
 data-source-dir = "/data/my_database"
 
 [conflict]
-# strategy 可选的值有
+# strategy 默认值为 ""。可选的值有
 # - ""：不填写，表示不开启新版冲突检测
 # - "error"：检测到所需导入的数据存在 PK 或 UK 冲突时，终止导入并报错
 # - "replace"：遇到冲突数据时，保留新的数据，覆盖旧的数据。
