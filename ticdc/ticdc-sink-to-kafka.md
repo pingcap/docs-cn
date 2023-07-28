@@ -305,7 +305,8 @@ Kafka Topic 对可以接收的消息大小有限制，由 [max.message.bytes](ht
 
 ```toml
 [sink.kafka-config.large-message-handle]
-# 默认为空，设置为 "handle-key-only" 时，以打开此功能。
+# 默认为空，消息超过大小限制后，同步任务失败。
+# 设置为 "handle-key-only"，如果消息超过大小，data 字段内容只发送 handle-key ，如果依旧超过大小，同步任务失败。
 large-message-handle-option = "handle-key-only"
 ```
 
