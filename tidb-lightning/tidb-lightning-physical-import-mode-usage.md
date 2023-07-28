@@ -28,7 +28,7 @@ check-requirements = true
 data-source-dir = "/data/my_database"
 
 [conflict]
-# strategy 默认值为 ""。可选的值有
+# 控制冲突数据处理策略。默认值为 ""。
 # - ""：不填写，表示不开启新版冲突检测
 # - "error"：检测到所需导入的数据存在 PK 或 UK 冲突时，终止导入并报错
 # - "replace"：遇到冲突数据时，保留新的数据，覆盖旧的数据。
@@ -124,7 +124,7 @@ Lightning 的完整配置文件可参考[完整配置及命令行参数](/tidb-l
 - remove: 推荐方式。记录所有的冲突记录，和 'record' 模式相似。但是会删除所有的冲突记录，以确保目的 TiDB 中的数据状态保持一致。
 - none: 关闭冲突数据检测。该模式是两种模式中性能最佳的，但是可能会导致目的 TiDB 中出现数据不一致的情况。
 
-在 v5.3 版本之前，Lightning 不具备冲突数据检测特性，若存在冲突数据将导致导入过程最后的 checksum 环节失败；开启冲突检测特性的情况下，只要检测到冲突数据，Lightning 都会跳过最后的 checksum 环节（因为必定失败）。
+在 v5.3 版本之前，TiDB Lightning 不具备冲突数据检测特性，若存在冲突数据将导致导入过程最后的 checksum 环节失败；开启冲突检测特性的情况下，只要检测到冲突数据，TiDB Lightning 都会跳过最后的 checksum 环节（因为必定失败）。
 
 假设一张表 `order_line` 的表结构如下：
 
