@@ -17,8 +17,8 @@ IfNotExists ::=
     ('IF' 'NOT' 'EXISTS')?
 
 ResourceGroupName ::=
-   Identifier
-|  "DEFAULT"
+    Identifier
+|   "DEFAULT"
 
 ResourceGroupOptionList ::=
     DirectResourceGroupOption

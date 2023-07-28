@@ -26,8 +26,8 @@ QueryWatchOption ::=
 |   "ACTION" EqOpt ResourceGroupRunawayActionOption
 |   QueryWatchTextOption
 ResourceGroupName ::=
-   Identifier
-|  "DEFAULT"
+    Identifier
+|   "DEFAULT"
 QueryWatchTextOption ::=
     "SQL" "DIGEST" SimpleExpr
 |   "PLAN" "DIGEST" SimpleExpr

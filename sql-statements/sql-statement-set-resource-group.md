@@ -13,11 +13,11 @@ summary: TiDB 数据库中 SET RESOURCE GROUP 的使用概况。
 
 ```ebnf+diagram
 SetResourceGroupStmt ::=
-   "SET" "RESOURCE" "GROUP" ResourceGroupName
+    "SET" "RESOURCE" "GROUP" ResourceGroupName
 
 ResourceGroupName ::=
-   Identifier
-|  "DEFAULT"
+    Identifier
+|   "DEFAULT"
 ```
 
 ## 示例

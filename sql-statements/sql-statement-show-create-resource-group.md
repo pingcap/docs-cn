@@ -14,8 +14,8 @@ ShowCreateResourceGroupStmt ::=
     "SHOW" "CREATE" "RESOURCE" "GROUP" ResourceGroupName
 
 ResourceGroupName ::=
-   Identifier
-|  "DEFAULT"
+    Identifier
+|   "DEFAULT"
 ```
 
 ## 示例
