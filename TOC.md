@@ -922,6 +922,7 @@
         - [`PROCESSLIST`](/information-schema/information-schema-processlist.md)
         - [`REFERENTIAL_CONSTRAINTS`](/information-schema/information-schema-referential-constraints.md)
         - [`RESOURCE_GROUPS`](/information-schema/information-schema-resource-groups.md)
+        - [`RUNAWAY_WATCHES`](/information-schema/information-schema-runaway-watches.md)
         - [`SCHEMATA`](/information-schema/information-schema-schemata.md)
         - [`SEQUENCES`](/information-schema/information-schema-sequences.md)
         - [`SESSION_VARIABLES`](/information-schema/information-schema-session-variables.md)

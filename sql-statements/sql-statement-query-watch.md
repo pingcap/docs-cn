@@ -7,6 +7,10 @@ summary: TiDB 数据库中 QUERY WATCH 的使用概况。
 
 `QUERY WATCH` 语句用于在资源组中手动管理 `Runaway Queries` 识别名单。
 
+> **警告：**
+>
+> 该功能目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+
 ## 语法图
 
 ```ebnf+diagram
@@ -37,6 +41,10 @@ ResourceGroupRunawayWatchOption ::=
 DropQueryWatchStmt ::=
     "QUERY" "WATCH" "REMOVE" NUM
 ```
+
+## 参数说明
+
+详见 [`QUERY WATCH` 语句说明](/tidb-resource-control.md#query-watch-语句说明)。
 
 ## MySQL 兼容性
 

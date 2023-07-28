@@ -218,6 +218,8 @@ Runaway Queries 指那些执行时间或者消耗的资源超出预期的查询�
 - `SIMILAR` 表示会忽略字面值 (Literal)，通过 SQL Digest 匹配所有模式 (Pattern) 相同的 SQL
 - `PLAN` 表示通过 Plan Digest 匹配所有模式 (Pattern) 相同的 SQL
 
+`WATCH` 中的 `DURATION` 选项，用于表示此识别项的持续时间，缺省时表示无限长。
+
 `QUERY_LIMIT` 具体格式如下：
 
 | 参数            | 含义           | 备注                                   |
@@ -248,23 +250,38 @@ Runaway Queries 指那些执行时间或者消耗的资源超出预期的查询�
 
 #### `QUERY WATCH` 语句说明
 
-`QUERY WATCH` 语句中 `ACTION`、`WATCH` 的含义和 `QUERY_LIMIT` 相同，详见 [`QUERY WATCH`](/sql-statements/sql-statement-query-watch.md) 。 `QueryWatchTextOption` 中 `SQL DIGEST` 的含义与 `SIMILAR` 相同，后面紧跟的参数可以是字符串、用户自定义变量以及其他计算结果为字符串的表达式，但需要的字符串长度必须为 64 (与 TiDB 中关于 Digest 的定义一致)。`PLAN DIGEST` 的含义与 `PLAN` 相同。`SQL TEXT` 可以根据后面紧跟的参数，将输入的 SQL 的原始字符串 (`EXACT`) 作为模式匹配项，或者经过解析和编译转化为 `SQL DIGEST`(`SIMILAR`)、`PLAN DIGEST`(`PLAN`) 来作为模式匹配项。
+语法详见 [`QUERY WATCH`](/sql-statements/sql-statement-query-watch.md)。
 
-1. 未指定资源组时，即为默认资源组管理 Runaway Queries 识别名单。为默认资源组的 Runaway Queries 识别名单添加识别项(需要提前为默认资源组设置 QUERY LIMIT)。
+参数说明
+
+- `RESOURCE GROUP` 用于指定资源组。此语句添加的 Runaway Queries 识别项将会在作用于该资源组。此参数可以省略，省略时作用于 `default` 资源组。
+- `ACTION` 的含义与 `QUERY LIMIT` 相同。此参数可以省略，省略时表示识别后的对应操作采用资源组中 `QUERY LIMIT` 配置的 `ACTION`。如果资源组没有配置 `ACTION`，会报错。
+- `QueryWatchTextOption` 参数有 `SQL DIGEST`、`PLAN DIGEST`、`SQL TEXT` 三种类型。
+  - `SQL DIGEST` 的含义与 `QUERY LIMIT` `WATCH` 类型中的 `SIMILAR` 相同，后面紧跟的参数可以是字符串、用户自定义变量以及其他计算结果为字符串的表达式，但需要的字符串长度必须为 64，该长度与 TiDB 中关于 Digest 的定义一致。
+  - `PLAN DIGEST` 的含义与 `PLAN` 相同。输入参数为 Digest 字符串。
+  - `SQL TEXT` 可以根据后面紧跟的参数，将输入的 SQL 的原始字符串 (使用 `EXACT` 选项) 作为模式匹配项，或者经过解析和编译转化为 `SQL DIGEST`(使用 `SIMILAR` 选项)、`PLAN DIGEST`(使用 `PLAN` 选项) 来作为模式匹配项。
+
+1. 未指定资源组时，即为默认资源组管理 Runaway Queries 识别名单。为默认资源组的 Runaway Queries 识别名单添加识别项（需要提前为默认资源组设置 `QUERY LIMIT`）。
 
     ```sql
     QUERY WATCH ADD ACTION KILL SQL TEXT EXACT TO 'select * from test.t2';
     ```
 
-2. 为 `rg1` 资源组的 Runaway Queries 识别名单通过 SQL Digest 添加识别项。未指定 `ACTION` 时，使用 `rg1` 资源组已配置的 `ACTION` 。
+2. 通过将 SQL 解析成 SQL Digest， 为 `rg1` 资源组的 Runaway Queries 识别名单添加识别项。未指定 `ACTION` 时，使用 `rg1` 资源组已配置的 `ACTION`。
 
     ```sql
-    UERY WATCH ADD RESOURCE GROUP rg1 SQL TEXT SIMILAR TO 'select * from test.t2';
+    QUERY WATCH ADD RESOURCE GROUP rg1 SQL TEXT SIMILAR TO 'select * from test.t2';
+    ```
+
+3. 通过 PLAN Digest 为 `rg1` 资源组的 Runaway Queries 识别名单添加识别项。
+
+    ```sql
+    QUERY WATCH ADD RESOURCE GROUP rg1 ACTION KILL PLAN DIGEST 'd08bc323a934c39dc41948b0a073725be3398479b6fa4f6dd1db2a9b115f7f57';
     ```
 
 #### 可观测性
 
-可以通过以下系统表获得 Runaway 相关的更多信息：
+可以通过以下系统表和 `INFORMATION_SCHEMA` 表获得 Runaway 相关的更多信息：
 
 + `mysql.tidb_runaway_queries` 表中包含了过去 7 天内所有识别到的 Runaway Queries 的历史记录。以其中一行为例：
 
@@ -285,25 +302,7 @@ Runaway Queries 指那些执行时间或者消耗的资源超出预期的查询�
     - `identify` 表示命中条件。
     - `watch` 表示被快速识别机制命中。
 
-+ `mysql.tidb_runaway_watch` 表中包含了 Runaway Queries 的快速识别规则记录。以其中两行为例：
-
-    ```sql
-    MySQL [(none)]> SELECT * FROM mysql.tidb_runaway_watch LIMIT 2\G;
-    *************************** 1. row ***************************
-    resource_group_name: rg1
-             start_time: 2023-06-16 17:40:22
-               end_time: 2023-06-16 18:10:22
-                  watch: similar
-             watch_text: 5b7d445c5756a16f910192ad449c02348656a5e9d2aa61615e6049afbc4a82e
-            tidb_server: 127.0.0.1:4000
-    *************************** 2. row ***************************
-    resource_group_name: rg1
-             start_time: 2023-06-16 17:42:35
-               end_time: 2023-06-16 18:12:35
-                  watch: exact
-             watch_text: select * from sbtest.sbtest1
-            tidb_server: 127.0.0.1:4000
-    ```
++ `information_schema.runaway_watches` 表中包含了 Runaway Queries 的快速识别规则记录。详见[`RUNAWAY_WATCHES`](/information-schema/information-schema-runaway-watches.md)
 
     其中：
 
