@@ -101,7 +101,7 @@ PingCAP 与开源社区合作，通过三方工具提供以下支持：
       </tr>
       <tr>
          <td rowspan="3">Python</td>
-         <td><a href="https://dev.mysql.com/doc/connector-python/en/" target="_blank" referrerpolicy="no-referrer-when-downgrade">mysql-connector-python</a></td>
+         <td><a href="https://dev.mysql.com/doc/connector-python/en/" target="_blank" referrerpolicy="no-referrer-when-downgrade">MySQL Connector/Python</a></td>
          <td>8.0</td>
          <td>Compatible</td>
          <td>N/A</td>

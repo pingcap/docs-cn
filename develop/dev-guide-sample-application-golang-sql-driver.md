@@ -1,6 +1,7 @@
 ---
-title: TiDB 和 Golang 的简单 CRUD 应用程序
-summary: 给出一个 TiDB 和 Golang 的简单 CRUD 应用程序示例。
+title: TiDB 和 Go-MySQL-Driver 的简单 CRUD 应用程序
+summary: 给出一个 TiDB 和 Go-MySQL-Driver 的简单 CRUD 应用程序示例。
+aliases: ['zh/tidb/dev/dev-guide-sample-application-golang','zh/tidb/stable/dev-guide-sample-application-golang',]
 ---
 
 <!-- markdownlint-disable MD024 -->
@@ -50,219 +51,6 @@ summary: 给出一个 TiDB 和 Golang 的简单 CRUD 应用程序示例。
 ```shell
 git clone https://github.com/pingcap-inc/tidb-example-golang.git
 ```
-
-<SimpleTab groupId="language">
-
-<div label="使用 GORM（推荐）" value="gorm">
-
-当前开源比较流行的 Golang ORM 为 GORM，此处将以 v1.23.5 版本进行说明。
-
-封装一个用于适配 TiDB 事务的工具包 [util](https://github.com/pingcap-inc/tidb-example-golang/tree/main/util)，编写以下代码备用：
-
-```go
-package util
-
-import (
-    "gorm.io/gorm"
-)
-
-// TiDBGormBegin start a TiDB and Gorm transaction as a block. If no error is returned, the transaction will be committed. Otherwise, the transaction will be rolled back.
-func TiDBGormBegin(db *gorm.DB, pessimistic bool, fc func(tx *gorm.DB) error) (err error) {
-    session := db.Session(&gorm.Session{})
-    if session.Error != nil {
-        return session.Error
-    }
-
-    if pessimistic {
-        session = session.Exec("set @@tidb_txn_mode=pessimistic")
-    } else {
-        session = session.Exec("set @@tidb_txn_mode=optimistic")
-    }
-
-    if session.Error != nil {
-        return session.Error
-    }
-    return session.Transaction(fc)
-}
-```
-
-进入目录 `gorm` ：
-
-```shell
-cd gorm
-```
-
-目录结构如下所示：
-
-```
-.
-├── Makefile
-├── go.mod
-├── go.sum
-└── gorm.go
-```
-
-其中，`gorm.go` 是 `gorm` 这个示例程序的主体。使用 gorm 时，相较于 go-sql-driver/mysql，gorm 屏蔽了创建数据库连接时，不同数据库差异的细节，其还封装了大量的操作，如 AutoMigrate、基本对象的 CRUD 等，极大的简化了代码量。
-
-`Player` 是数据结构体，为数据库表在程序内的映射。`Player` 的每个属性都对应着 `player` 表的一个字段。相较于 go-sql-driver/mysql，gorm 的 `Player` 数据结构体为了给 gorm 提供更多的信息，加入了形如 `` `gorm:"primaryKey;type:VARCHAR(36);column:id"` `` 的注解，用来指示映射关系。
-
-```go
-
-package main
-
-import (
-    "fmt"
-    "math/rand"
-
-    "github.com/google/uuid"
-    "github.com/pingcap-inc/tidb-example-golang/util"
-
-    "gorm.io/driver/mysql"
-    "gorm.io/gorm"
-    "gorm.io/gorm/clause"
-    "gorm.io/gorm/logger"
-)
-
-type Player struct {
-    ID    string `gorm:"primaryKey;type:VARCHAR(36);column:id"`
-    Coins int    `gorm:"column:coins"`
-    Goods int    `gorm:"column:goods"`
-}
-
-func (*Player) TableName() string {
-    return "player"
-}
-
-func main() {
-    // 1. Configure the example database connection.
-    db := createDB()
-
-    // AutoMigrate for player table
-    db.AutoMigrate(&Player{})
-
-    // 2. Run some simple examples.
-    simpleExample(db)
-
-    // 3. Explore more.
-    tradeExample(db)
-}
-
-func tradeExample(db *gorm.DB) {
-    // Player 1: id is "1", has only 100 coins.
-    // Player 2: id is "2", has 114514 coins, and 20 goods.
-    player1 := &Player{ID: "1", Coins: 100}
-    player2 := &Player{ID: "2", Coins: 114514, Goods: 20}
-
-    // Create two players "by hand", using the INSERT statement on the backend.
-    db.Clauses(clause.OnConflict{UpdateAll: true}).Create(player1)
-    db.Clauses(clause.OnConflict{UpdateAll: true}).Create(player2)
-
-    // Player 1 wants to buy 10 goods from player 2.
-    // It will cost 500 coins, but player 1 cannot afford it.
-    fmt.Println("\nbuyGoods:\n    => this trade will fail")
-    if err := buyGoods(db, player2.ID, player1.ID, 10, 500); err == nil {
-        panic("there shouldn't be success")
-    }
-
-    // So player 1 has to reduce the incoming quantity to two.
-    fmt.Println("\nbuyGoods:\n    => this trade will success")
-    if err := buyGoods(db, player2.ID, player1.ID, 2, 100); err != nil {
-        panic(err)
-    }
-}
-
-func simpleExample(db *gorm.DB) {
-    // Create a player, who has a coin and a goods..
-    if err := db.Clauses(clause.OnConflict{UpdateAll: true}).
-        Create(&Player{ID: "test", Coins: 1, Goods: 1}).Error; err != nil {
-        panic(err)
-    }
-
-    // Get a player.
-    var testPlayer Player
-    db.Find(&testPlayer, "id = ?", "test")
-    fmt.Printf("getPlayer: %+v\n", testPlayer)
-
-    // Create players with bulk inserts. Insert 1919 players totally, with 114 players per batch.
-    bulkInsertPlayers := make([]Player, 1919, 1919)
-    total, batch := 1919, 114
-    for i := 0; i < total; i++ {
-        bulkInsertPlayers[i] = Player{
-            ID:    uuid.New().String(),
-            Coins: rand.Intn(10000),
-            Goods: rand.Intn(10000),
-        }
-    }
-
-    if err := db.Session(&gorm.Session{Logger: db.Logger.LogMode(logger.Error)}).
-        CreateInBatches(bulkInsertPlayers, batch).Error; err != nil {
-        panic(err)
-    }
-
-    // Count players amount.
-    playersCount := int64(0)
-    db.Model(&Player{}).Count(&playersCount)
-    fmt.Printf("countPlayers: %d\n", playersCount)
-
-    // Print 3 players.
-    threePlayers := make([]Player, 3, 3)
-    db.Limit(3).Find(&threePlayers)
-    for index, player := range threePlayers {
-        fmt.Printf("print %d player: %+v\n", index+1, player)
-    }
-}
-
-func createDB() *gorm.DB {
-    dsn := "root:@tcp(127.0.0.1:4000)/test?charset=utf8mb4"
-    db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
-        Logger: logger.Default.LogMode(logger.Info),
-    })
-    if err != nil {
-        panic(err)
-    }
-
-    return db
-}
-
-func buyGoods(db *gorm.DB, sellID, buyID string, amount, price int) error {
-    return util.TiDBGormBegin(db, true, func(tx *gorm.DB) error {
-        var sellPlayer, buyPlayer Player
-        if err := tx.Clauses(clause.Locking{Strength: "UPDATE"}).
-            Find(&sellPlayer, "id = ?", sellID).Error; err != nil {
-            return err
-        }
-
-        if sellPlayer.ID != sellID || sellPlayer.Goods < amount {
-            return fmt.Errorf("sell player %s goods not enough", sellID)
-        }
-
-        if err := tx.Clauses(clause.Locking{Strength: "UPDATE"}).
-            Find(&buyPlayer, "id = ?", buyID).Error; err != nil {
-            return err
-        }
-
-        if buyPlayer.ID != buyID || buyPlayer.Coins < price {
-            return fmt.Errorf("buy player %s coins not enough", buyID)
-        }
-
-        updateSQL := "UPDATE player set goods = goods + ?, coins = coins + ? WHERE id = ?"
-        if err := tx.Exec(updateSQL, -amount, price, sellID).Error; err != nil {
-            return err
-        }
-
-        if err := tx.Exec(updateSQL, amount, -price, buyID).Error; err != nil {
-            return err
-        }
-
-        fmt.Println("\n[buyGoods]:\n    'trade success'")
-        return nil
-    })
-}
-```
-
-</div>
-
-<div label="使用 go-sql-driver/mysql" value="sqldriver">
 
 使用 go-sql-driver/mysql 时，首先进入目录 `sqldriver`：
 
@@ -698,29 +486,11 @@ const (
 )
 ```
 
-</div>
-
-</SimpleTab>
-
 ## 第 3 步：运行代码
 
 本节将逐步介绍代码的运行方法。
 
 ### 第 3 步第 1 部分：go-sql-driver/mysql 表初始化
-
-<SimpleTab groupId="language">
-
-<div label="使用 GORM（推荐）" value="gorm">
-
-> **注意：**
->
-> 在 Gitpod Playground 中尝试 GORM: [现在就试试](https://gitpod.io/#targetMode=gorm/https://github.com/pingcap-inc/tidb-example-golang)
-
-无需手动初始化表。
-
-</div>
-
-<div label="使用 go-sql-driver/mysql" value="sqldriver">
 
 > **注意：**
 >
@@ -740,42 +510,7 @@ mysql --host 127.0.0.1 --port 4000 -u root<sql/dbinit.sql
 
 若你不使用本地集群，或未安装 **mysql-client**，请直接登录你的集群，并运行 `sql/dbinit.sql` 文件内的 SQL 语句。
 
-</div>
-
-</SimpleTab>
-
 ### 第 3 步第 2 部分：TiDB Cloud 更改参数
-
-<SimpleTab groupId="language">
-
-<div label="使用 GORM（推荐）" value="gorm">
-
-若你使用 TiDB Serverless 集群，更改 `gorm.go` 内 `dsn` 参数值：
-
-```go
-dsn := "root:@tcp(127.0.0.1:4000)/test?charset=utf8mb4"
-```
-
-若你设定的密码为 `123456`，而且从 TiDB Serverless 集群面板中得到的连接信息为：
-
-- Endpoint: `xxx.tidbcloud.com`
-- Port: `4000`
-- User: `2aEp24QWEDLqRFs.root`
-
-那么此处应将 `mysql.RegisterTLSConfig` 和 `dsn` 更改为：
-
-```go
-mysql.RegisterTLSConfig("register-tidb-tls", &tls.Config {
-    MinVersion: tls.VersionTLS12,
-    ServerName: "xxx.tidbcloud.com",
-})
-
-dsn := "2aEp24QWEDLqRFs.root:123456@tcp(xxx.tidbcloud.com:4000)/test?charset=utf8mb4&tls=register-tidb-tls"
-```
-
-</div>
-
-<div label="使用 go-sql-driver/mysql" value="sqldriver">
 
 若你使用 TiDB Serverless 集群，更改 `sqldriver.go` 内 `dsn` 参数的值：
 
@@ -800,26 +535,7 @@ mysql.RegisterTLSConfig("register-tidb-tls", &tls.Config {
 dsn := "2aEp24QWEDLqRFs.root:123456@tcp(xxx.tidbcloud.com:4000)/test?charset=utf8mb4&tls=register-tidb-tls"
 ```
 
-</div>
-
-</SimpleTab>
-
 ### 第 3 步第 3 部分：运行
-
-<SimpleTab groupId="language">
-
-<div label="使用 GORM（推荐）" value="gorm">
-
-运行 `make all`，这是以下两个操作的组合：
-
-- 构建二进制 (make build)：`go build -o bin/gorm-example`
-- 运行 (make run)：`./bin/gorm-example`
-
-你也可以单独运行这两个 make 命令或原生命令。
-
-</div>
-
-<div label="使用 go-sql-driver/mysql" value="sqldriver">
 
 运行 `make all`，这是以下三个操作的组合：
 
@@ -829,24 +545,6 @@ dsn := "2aEp24QWEDLqRFs.root:123456@tcp(xxx.tidbcloud.com:4000)/test?charset=utf
 
 你也可以单独运行这三个 make 命令或原生命令。
 
-</div>
-
-</SimpleTab>
-
 ## 第 4 步：预期输出
 
-<SimpleTab groupId="language">
-
-<div label="使用 GORM（推荐）" value="gorm">
-
-[GORM 预期输出](https://github.com/pingcap-inc/tidb-example-golang/blob/main/Expected-Output.md#gorm)
-
-</div>
-
-<div label="使用 go-sql-driver/mysql" value="sqldriver">
-
 [go-sql-driver/mysql 预期输出](https://github.com/pingcap-inc/tidb-example-golang/blob/main/Expected-Output.md#sqldriver)
-
-</div>
-
-</SimpleTab>

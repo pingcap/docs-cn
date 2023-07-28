@@ -1,6 +1,7 @@
 ---
 title: 使用 Django 构建 TiDB 应用程序
 summary: 给出一个 Django 构建 TiDB 应用程序示例。
+aliases: ['zh/tidb/stable/dev-guide-sample-application-django','zh/tidb/dev/dev-guide-sample-application-django']
 ---
 
 <!-- markdownlint-disable MD029 -->
