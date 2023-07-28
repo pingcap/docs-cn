@@ -57,12 +57,12 @@ Runtime Filter 的执行方式如下：
 3. `store_sales` 应用该过滤条件，并将过滤后的数据传递给 PhysicalHashJoin，从而减少 Probe Side 的扫表数据量以及匹配 Hash Table 的计算量。
 
 ```
-                         2. build RF values
+                         2. Build RF values
             +-------->+-------------------+
             |         |PhysicalHashJoin   |<-----+
             |    +----+                   |      |
-4.after RF  |    |    +-------------------+      | 1. scan T2
-    5000    |    |3. send RF                     |      365
+4. After RF  |    |    +-------------------+      | 1. Scan T2
+    5000    |    |3. Send RF                     |      365
             |    | filter data                   |
             |    |                               |
       +-----+----v------+                +-------+--------+
