@@ -77,7 +77,7 @@ Runtime Filter 的执行方式如下：
 
 要使用 Runtime Filter，只需创建带 TiFlash 副本的表，并将 [`tidb_runtime_filter_mode`](/system-variables.md#tidb_runtime_filter_mode-从-v720-版本开始引入) 设置为 `LOCAL`。
 
-本小节以 TPC-DS 的数据集为例，使用 `catalog_sales` 表和 `date_dim` 表进行 Join 操作，说明如何使用 Runtime Filter 提升查询。
+本小节以 TPC-DS 的数据集为例，使用 `catalog_sales` 表和 `date_dim` 表进行 Join 操作，说明如何使用 Runtime Filter 提升查询效率。
 
 ### 第 1 步：创建带 TiFlash 副本的表
 
