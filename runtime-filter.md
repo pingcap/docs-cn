@@ -71,7 +71,7 @@ Runtime Filter 的执行方式如下：
       +-----------------+                +----------------+
 ```
 
-从对比两个图可以看出，`store_sales` 的扫描量从 100 万减少到了 5000。通过减少 Table Full Scan 扫描的数据量，可以减少 probe Hash Table 的次数，并避免不必要的 I/O 和网络传输。Runtime Filter 通过这种方式显著提升了 Join 操作的效率。
+对比以上两个图可以看出，`store_sales` 的扫描量从 100 万减少到了 5000。通过减少 Table Full Scan 扫描的数据量，Runtime Filter 可以减少匹配 Hash Table 的次数，避免不必要的 I/O 和网络传输，从而显著提升了 Join 操作的效率。
 
 ## 使用 Runtime Filter
 
