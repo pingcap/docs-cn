@@ -176,7 +176,7 @@ WHERE d_date = '2002-2-01' AND
 
 以 TPC-DS 的 50 GB 数据量为例，开启 Runtime Filter 后，查询时间从 0.38 秒减少到 0.17 秒，效率提升 50%。通过 `ANALYZE` 语句可以查看 Runtime Filter 生效后各个算子的执行时间。
 
-以下为未开启 Runtime Filter 的查询 Summary：
+以下为未开启 Runtime Filter 时查询的执行信息：
 
 ```sql
 mysql> EXPLAIN ANALYZE SELECT cs_ship_date_sk FROM catalog_sales, date_dim WHERE d_date = '2002-2-01' AND cs_ship_date_sk = d_date_sk;
