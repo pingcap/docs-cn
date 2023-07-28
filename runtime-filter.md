@@ -18,7 +18,7 @@ Runtime Filter 是 TiDB v7.3 引入的新功能，旨在提升 MPP 场景下 Has
 
 Hash Join 通过将右表的数据构建为 Hash Table，并将左表的数据不断匹配 Hash Table 来完成 Join。如果在匹配过程中，发现一部分 Join Key 值无法命中 Hash Table，则说明这部分数据不存在于右表，也不会出现在最终的 Join 结果中。因此，如果能够在扫描时**提前过滤掉这部分 Join Key 的数据**，将减少扫描时间和网络开销，从而大幅提升 Join 效率。
 
-Runtime Filter 是在查询规划阶段生成的一种**动态取值谓词**。该谓词与 TiDB Selection 中的其他谓词具有相同作用，都应用于 Table Scan 操作上，用于筛选不满足谓词条件的行。唯一的区别在于，Runtime Filter 中的参数取值来自于 Hash Join 构建过程中产生的结果。
+Runtime Filter 是在查询规划阶段生成的一种**动态取值谓词**。该谓词与 TiDB Selection 中的其他谓词具有相同作用，都应用于 Table Scan 操作上，用于筛选不满足谓词条件的行为。唯一的区别在于，Runtime Filter 中的参数取值来自于 Hash Join 构建过程中产生的结果。
 
 ### 示例
 
