@@ -67,7 +67,7 @@ CREATE TABLE player (
 );
 ```
 
-`sqldriver.go` 是 `sqldriver` 这个示例程序的主体。因为 TiDB 与 MySQL 协议兼容，因此，需要初始化一个 MySQL 协议的数据源 `db, err := sql.Open("mysql", dsn)`，以此连接到 TiDB。并在其后，调用 `dao.go` 中的一系列方法，用来管理数据对象，进行增删改查等操作。
+`sqldriver.go` 是 `sqldriver` 这个示例程序的主体。与 gorm 对比，go-sql-driver/mysql 的实现方式并非最优体验。你需要自行编写错误处理逻辑，手动关闭 `*sql.Rows`，并且代码无法简单复用。这会使你的代码有些冗余。因为 TiDB 与 MySQL 协议兼容，因此，需要初始化一个 MySQL 协议的数据源 `db, err := sql.Open("mysql", dsn)`，以此连接到 TiDB。并在其后，调用 `dao.go` 中的一系列方法，用来管理数据对象，进行增删改查等操作。
 
 ```go
 package main
