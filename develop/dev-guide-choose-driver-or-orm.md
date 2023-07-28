@@ -255,13 +255,13 @@ go get -u gorm.io/driver/mysql
 使用 mysqlclient 构建 TiDB 应用程序的例子，可参阅 [TiDB 和 mysqlclient 的简单 CRUD 应用程序](/develop/dev-guide-sample-application-python-mysqlclient.md)。
 
 </div>
-<div label="mysql-connector-python">
+<div label="MySQL Connector/Python">
 
 支持等级：**Compatible**
 
-按照 [mysql-connector-python 文档](https://dev.mysql.com/doc/connector-python/en/connector-python-installation-binary.html)中的说明下载并配置驱动程序即可使用。建议使用 **8.0.31** 及以上版本。
+按照 [MySQL Connector/Python 文档](https://dev.mysql.com/doc/connector-python/en/connector-python-installation-binary.html)中的说明下载并配置驱动程序即可使用。建议使用 **8.0.31** 及以上版本。
 
-使用 mysql-connector-python 构建 TiDB 应用程序的例子，可参阅 [TiDB 和 MySQL Connector/Python 的简单 CRUD 应用程序](/develop/dev-guide-sample-application-python-mysql-connector.md)。
+使用 MySQL Connector/Python 构建 TiDB 应用程序的例子，可参阅 [TiDB 和 MySQL Connector/Python 的简单 CRUD 应用程序](/develop/dev-guide-sample-application-python-mysql-connector.md)。
 
 </div>
 </SimpleTab>
