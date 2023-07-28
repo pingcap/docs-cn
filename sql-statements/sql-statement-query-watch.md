@@ -27,7 +27,7 @@ QueryWatchOption ::=
 |   QueryWatchTextOption
 ResourceGroupName ::=
    Identifier
-   "DEFAULT"
+|  "DEFAULT"
 QueryWatchTextOption ::=
     "SQL" "DIGEST" SimpleExpr
 |   "PLAN" "DIGEST" SimpleExpr

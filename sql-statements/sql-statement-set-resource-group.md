@@ -17,6 +17,7 @@ SetResourceGroupStmt ::=
 
 ResourceGroupName ::=
    Identifier
+|  "DEFAULT"
 ```
 
 ## 示例

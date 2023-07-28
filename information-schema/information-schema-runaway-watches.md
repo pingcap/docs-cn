@@ -5,7 +5,7 @@ summary: 了解 information_schema 表 `RUNAWAY_WATCHES`。
 
 # RUNAWAY_WATCHES
 
-`RUNAWAY_WATCHES` 表展示所有 Runaway Queries 识别名单，见 [Runaway Queries](/tidb-resource-control.md#管理资源消耗超出预期的查询-runaway-queries)。
+`RUNAWAY_WATCHES` 表展示 Runaway Queries 监视列表，见 [Runaway Queries](/tidb-resource-control.md#管理资源消耗超出预期的查询-runaway-queries)。
 
 ```sql
 USE information_schema;

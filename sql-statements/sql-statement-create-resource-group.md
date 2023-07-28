@@ -18,6 +18,7 @@ IfNotExists ::=
 
 ResourceGroupName ::=
    Identifier
+|  "DEFAULT"
 
 ResourceGroupOptionList ::=
     DirectResourceGroupOption

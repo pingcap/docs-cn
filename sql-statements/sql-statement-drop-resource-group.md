@@ -17,7 +17,8 @@ IfExists ::=
     ('IF' 'EXISTS')?
 
 ResourceGroupName ::=
-    Identifier
+   Identifier
+|  "DEFAULT"
 ```
 
 > **注意：**
