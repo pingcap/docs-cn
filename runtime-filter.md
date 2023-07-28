@@ -54,7 +54,7 @@ Runtime Filter 的执行方式如下：
 
 1. 扫描 `date_dim` 的数据，PhysicalHashJoin 根据 `date_dim` 数据计算出一个过滤条件，比如 `date_dim in (2001/01/01~2001/12/31)`。
 2. 将该过滤条件发送给等待扫描 `store_sales` 的 TableFullScan。
-3. `store_sales` 应用该过滤条件，并将过滤后的数据传递给 PhysicalHashJoin，从而减少 Probe Side 的扫表数据量以及 Hash Table match 的计算量。
+3. `store_sales` 应用该过滤条件，并将过滤后的数据传递给 PhysicalHashJoin，从而减少 Probe Side 的扫表数据量以及匹配 Hash Table 的计算量。
 
 ```
                          2. build RF values
