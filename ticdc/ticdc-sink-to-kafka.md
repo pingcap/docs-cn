@@ -294,7 +294,7 @@ Kafka Topic 对可以接收的消息大小有限制，由 [max.message.bytes](ht
 
 ### 只发送 Handle-Key 部分数据
 
-从 v7.3.0 开始，TiCDC Kafka sink 支持只发送 Handle-Key 部分数据, 这样可以大大减少消息的大小，从而避免超过 Kafka Topic 限制。 Handle-Key 指的是：
+从 v7.3.0 开始，TiCDC Kafka sink 支持在消息超过限制的时候只发送 Handle-Key 部分数据, 这样可以大大减少消息的大小，从而避免因为消息大小超过 Kafka Topic 限制，进而导致 changefeed 发生错误，同步任务失败。 Handle-Key 指的是：
 
 * 如果被同步的表有定义 Primary Key，即为 Primary Key。
 * 如果没有 Primary Key，但是有定义 Not NULL Unique Key，即为 Unique Key。
