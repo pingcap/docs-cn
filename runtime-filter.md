@@ -225,7 +225,7 @@ mysql> EXPLAIN ANALYZE SELECT cs_ship_date_sk FROM catalog_sales, date_dim
 
 ### 最佳实践
 
-Runtime Filter 适用于大表和小表进行 Join 的情况，比如事实表和维度表的关联查询。当维度表的命中的数据量较少时，意味着 Filter 的取值较少，事实表能更多地过滤掉不满足条件的数据。与默认情况下扫描整个事实表相比，这将显著提高性能效果。
+Runtime Filter 适用于大表和小表进行 Join 的情况，比如事实表和维度表的关联查询。当维度表的命中的数据量较少时，意味着 Filter 的取值较少，事实表能更多地过滤掉不满足条件的数据。与默认情况下扫描整个事实表相比，这将显著提高查询性能。
 
 例如，在 TPC-DS 中，泛 `Sales` 表和 `date_dim` 表的 Join 就是一个典型例子。
 
