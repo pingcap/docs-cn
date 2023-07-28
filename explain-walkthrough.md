@@ -234,7 +234,7 @@ explain select * from t2 where a = (select a from t1);
 +--------------------------+----------+-----------+---------------+--------------------------------+
 3 rows in set (0.00 sec)
 ```
-可以看到在上述例子中 `a = (select a from t1)` 这个子查询被在优化阶段就进行了计算，表达式被改写为 `t2.a=1`。这种执行方式可以在优化阶段进行更多的常量传播和常量折叠的优化，但是会影响 EXPLAIN 语句的执行时间。当子查询本身耗时较高时，EXPLAIN 语句也无法执行完成，这是会对线上问题的调查产生影响。
+可以看到，在上述例子中 `a = (select a from t1)` 这个子查询在优化阶段就进行了计算，表达式被改写为 `t2.a=1`。这种执行方式可以在优化阶段进行更多的常量传播和常量折叠的优化，但是会影响 EXPLAIN 语句的执行时间。当子查询本身耗时较高时，EXPLAIN 语句也无法执行完成，这时会对线上问题的调查产生影响。
 
 从 v7.3.0 版本开始，TiDB 引入了变量 [`tidb_opt_enable_non_eval_scalar_subquery`](system-variables.md#tidb_opt_enable_non_eval_scalar_subquery-从-v730-版本开始引入)，可以控制这类子查询在 EXPLAIN 语句中不进行计算开展。
 
