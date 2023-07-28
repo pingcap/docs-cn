@@ -3004,7 +3004,7 @@ mysql> desc select count(distinct a) from test.t;
 - 是否持久化到集群：是
 - 类型：布尔型
 - 默认值：`OFF`
-- 该变量目前会控制 EXPLAIN 语句是否会执行可以在优化阶段展开的常量子查询。详细情况可以参考使用 EXPLAIN 解读执行计划的[禁止子查询提前展开](explain-walkthrough.md#禁止子查询提前执行)章节。
+- 这个变量用来控制 `EXPLAIN` 语句是否禁止提前执行可以在优化阶段展开的常量子查询。该变量设置为 `OFF` 时，`EXPLAIN` 语句会在优化阶段提前展开子查询。该变量设置为 `ON` 时，`EXPLAIN` 语句不会在优化阶段展开子查询。更多信息请参考[禁止子查询提前展开](/explain-walkthrough.md#禁止子查询提前执行)。
 
 ### `tidb_opt_enable_late_materialization` <span class="version-mark">从 v7.0.0 版本开始引入</span>
 
@@ -3019,7 +3019,7 @@ mysql> desc select count(distinct a) from test.t;
 
 > **警告：**
 >
-> 该变量为实验特性，不推荐在生产环境中使用。
+> 该变量控制的功能为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
