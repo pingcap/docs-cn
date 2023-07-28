@@ -32,10 +32,11 @@ TiDB 版本：7.3.0
 
     Runtime Filter 是一种在查询规划时生成的动态取值的谓词，在表连接的过程中，这些动态谓词能够进一步过滤掉不满足条件的行，减少扫描时间和网络开销，提升表连接的效率。TiFlash 在 v7.3.0 支持节点内的 Runtime Filter，提升了数据分析类查询的整体性能，部分 TPC-DS 查询可达到 10% ~ 50% 的性能提升。此特性在 v7.3.0 默认关闭，通过设置变量 [`tidb_runtime_filter_mode`](#tidb_runtime_filter_mode-从-v720-版本开始引入) 为 `LOCAL` 打开。
 
+    更多信息，请参考[用户文档](/runtime-filter)。
+
 * TiFlash 支持 CTE 执行（实验特性）[#43333](https://github.com/pingcap/tidb/issues/43333) @[winoros](https://github.com/winoros) **tw:ran-huang** <!--1244-->
 
 	在 v7.3.0 版本之前，TiFlash 的 MPP 默认无法执行包含 CTE 的查询，需要通过系统变量 [tidb_opt_force_inline_cte](https://docs.pingcap.com/tidb/dev/system-variables#tidb_opt_force_inline_cte-new-in-v630) 将 CTE inline 展开来达到让查询尽可能在 MPP 框架下执行的效果。在 v7.3.0 版本中，TiFlash MPP 支持了 CTE 的执行，在不需要将 CTE inline 的情况下也可以将包含 CTE 的查询尽可能的放在 MPP 框架下执行。TPC-DS 中包含 CTE 的查询总耗时相比 inline 的执行方式相比，该功能可以将总执行时间提速 20%。该功能由变量 [tidb_opt_enable_mpp_shared_cte_execution](https://docs.pingcap.com/tidb/dev/system-variables#tidb_opt_enable_mpp_shared_cte_execution-new-in-v720) 控制。
-    更多信息，请参考[用户文档](/runtime-filter)。
 
 ### 稳定性
 
@@ -142,6 +143,8 @@ TiDB 版本：7.3.0
 |TiDB Lightning  | conflict.max-record-rows | 新增 |TiDB Lightning 新版冲突检测与处理策略，用于记录在数据导入过程中遇到的冲突记录，并允许设置最大上限，默认值为 100 |
 |TiDB Lightning  | tikv-importer.parallel-import | 新增 |TiDB Lightning  并行导入的参数名，因为旧的参数名 tikv-importer.incremental-import 会被误认为是增量导入的参数而误用，因此使用该新的参数名代替 **tw:qiancai** <!--1516--> |
 |TiDB Lightning  | tikv-importer.incremental-import | 删除 | TiDB Lightning 并行导入参数的旧名称，因为该参数名会被误认为增量导入的参数而误用，因此用新的参数名 tikv-importer.parallel-import 代替，且如果用户传入旧的参数会被自动转成新的参数名|
+|BR  | azblob.encryption-scope | 新增 |BR 为外部存储 Azure Blob Storage 提供加密范围支持 |
+|BR  | azblob.encryption-key | 新增 |BR 为外部存储 Azure Blob Storage 提供加密密钥支持 |
 
 |  | | 新增/删除/修改 | |
 |  | | 新增/删除/修改 | |
