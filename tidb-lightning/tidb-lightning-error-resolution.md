@@ -13,10 +13,10 @@ summary: 介绍了如何解决导入数据过程中的类型转换和冲突错�
 
 本文介绍了错误处理功能涉及的错误种类，查询方法，并提供了一个示例。该页面涉及到的配置项如下：
 
-- 类型错误的容忍阈值 `lightning.max-error`
-- 数据冲突错误相关配置 `conflict.strategy`、`conflict.threshold`、`conflict.max-record-rows`
-- 物理导入专用冲突处理配置 `tikv-importer.duplicate-resolution`
-- 记录错误的库表位置 `lightning.task-info-schema-name`
+- `lightning.max-error`：类型错误的容忍阈值
+- `conflict.strategy`、`conflict.threshold`、`conflict.max-record-rows`：数据冲突错误相关配置
+- `tikv-importer.duplicate-resolution`：物理导入模式下的冲突处理配置
+- `lightning.task-info-schema-name`：记录错误的库表位置
 
 相关配置项详情请参考 [TiDB Lightning 任务配置](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置)。
 
