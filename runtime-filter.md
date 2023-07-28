@@ -5,7 +5,7 @@ summary: 介绍 Runtime Filter 的原理及使用方式。
 
 # Runtime Filter
 
-Runtime Filter 是 TiDB v7.3 引入的新功能，旨在提升 MPP 场景下 Hash Join 的性能。它通过动态生成 Filter 来提前过滤 Hash Join 的数据，从而减少运行时的扫描量以及 Hash Join 的计算量，最终提升查询性能。
+Runtime Filter 是 TiDB v7.3 引入的新功能，旨在提升 MPP 场景下 Hash Join 的性能。它通过动态生成 Filter 来提前过滤 Hash Join 的数据，从而减少运行时的数据扫描量以及 Hash Join 的计算量，最终提升查询性能。
 
 ## 名词解释
 
