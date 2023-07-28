@@ -8,6 +8,8 @@ summary: 给出一个 TiDB 和 GORM 的简单 CRUD 应用程序示例。
 
 # TiDB 和 GORM 的简单 CRUD 应用程序
 
+[GORM](https://gorm.io/) 为当前比较流行的 Golang 开源 ORM 之一。
+
 本文档将展示如何使用 TiDB 和 GORM 来构造一个简单的 CRUD 应用程序。
 
 > **注意：**
@@ -32,7 +34,7 @@ summary: 给出一个 TiDB 和 GORM 的简单 CRUD 应用程序示例。
 git clone https://github.com/pingcap-inc/tidb-example-golang.git
 ```
 
-当前开源比较流行的 Golang ORM 为 GORM，此处将以 v1.23.5 版本进行说明。
+此处将以 GORM v1.23.5 版本进行说明。
 
 封装一个用于适配 TiDB 事务的工具包 [util](https://github.com/pingcap-inc/tidb-example-golang/tree/main/util)，编写以下代码备用：
 

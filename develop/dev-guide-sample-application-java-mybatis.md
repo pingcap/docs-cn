@@ -8,6 +8,8 @@ summary: 给出一个 TiDB 和 MyBatis 的简单 CRUD 应用程序示例。
 
 # TiDB 和 MyBatis 的简单 CRUD 应用程序
 
+[Mybatis](https://mybatis.org/mybatis-3/index.html) 是当前比较流行的开源 Java 应用持久层框架。
+
 本文档将展示如何使用 TiDB 和 MyBatis 来构造一个简单的 CRUD 应用程序。
 
 > **注意：**
@@ -39,7 +41,7 @@ git clone https://github.com/pingcap-inc/tidb-example-java.git
 
 与 [MyBatis](https://mybatis.org/mybatis-3/index.html) 对比，JDBC 的实现方式并非最优体验。你需要自行编写错误处理逻辑，并且代码无法简单复用。这会使你的代码有些冗余。
 
-MyBatis 是当前比较流行的开源 Java 应用持久层框架，本文将以 Maven 插件的方式使用 [MyBatis Generator](https://mybatis.org/generator/quickstart.html) 生成部分持久层代码。
+本文将以 Maven 插件的方式使用 [MyBatis Generator](https://mybatis.org/generator/quickstart.html) 生成部分持久层代码。
 
 进入目录 `plain-java-mybatis`：
 

@@ -8,6 +8,8 @@ summary: 给出一个 TiDB 和 Hibernate 的简单 CRUD 应用程序示例。
 
 # TiDB 和 Hibernate 的简单 CRUD 应用程序
 
+[Hibernate](https://hibernate.org/) 是当前比较流行的开源 Java 应用持久层框架，且 Hibernate 在版本 `6.0.0.Beta2` 及以后支持了 TiDB 方言，完美适配了 TiDB 的特性。
+
 本文档将展示如何使用 TiDB 和 Java 来构造一个简单的 CRUD 应用程序。
 
 > **注意：**
@@ -37,9 +39,9 @@ summary: 给出一个 TiDB 和 Hibernate 的简单 CRUD 应用程序示例。
 git clone https://github.com/pingcap-inc/tidb-example-java.git
 ```
 
-与 [Hibernate](https://hibernate.org/orm/) 对比，JDBC 的实现方式并非最优体验。你需要自行编写错误处理逻辑，并且代码无法简单复用。这会使你的代码有些冗余
+与 [Hibernate](https://hibernate.org/orm/) 对比，JDBC 的实现方式并非最优体验。你需要自行编写错误处理逻辑，并且代码无法简单复用。这会使你的代码有些冗余。
 
-Hibernate 是当前比较流行的开源 Java 应用持久层框架，且 Hibernate 在版本 `6.0.0.Beta2` 及以后支持了 TiDB 方言。完美适配了 TiDB 的特性。因此，此处将以 `6.0.0.Beta2` 版本进行说明。
+此处将以 `6.0.0.Beta2` 版本进行说明。
 
 进入目录 `plain-java-hibernate`：
 
