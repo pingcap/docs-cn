@@ -292,7 +292,7 @@ SELECT COUNT(*) FROM INFORMATION_SCHEMA.TIKV_REGION_STATUS WHERE DB_NAME="databa
 
 Kafka Topic 对可以接收的消息大小有限制，由 [max.message.bytes](https://kafka.apache.org/documentation/#topicconfigs_max.message.bytes) 参数控制。TiCDC Kafka sink 在发送数据时，如果发现数据大小超过了该限制，会导致 changefeed 报错，无法继续同步数据。为了解决这个问题，TiCDC 提供了如下解决方案。
 
-### 只发送 Handle-Key 部分数据
+### 只发送 Handle-Key
 
 从 v7.3.0 开始，TiCDC Kafka sink 支持在消息超过限制的时候只发送 Handle-Key 部分数据, 这样可以大大减少消息的大小，从而避免因为消息大小超过 Kafka Topic 限制，进而导致 changefeed 发生错误，同步任务失败的情况。 Handle-Key 指的是：
 
