@@ -127,7 +127,7 @@ SHOW VARIABLES LIKE "tidb_runtime_filter_mode";
 
 系统变量的值显示为 `LOCAL`，则已成功开启 Runtime Filter。
 
-### 第 3 步:执行查询
+### 第 3 步：执行查询
 
 在进行查询之前，先查看一下查询计划。使用 [`EXPLAIN` 语句](/sql-statements/sql-statement-explain.md)来检查 Runtime Filter 是否已正确生效。
 
