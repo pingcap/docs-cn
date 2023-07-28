@@ -125,7 +125,7 @@ SHOW VARIABLES LIKE "tidb_runtime_filter_mode";
 +--------------------------+-------+
 ```
 
-系统变量的值显示为 `LOCAL`，则已成功开启 Runtime Filter。
+系统变量的值显示为 `LOCAL`，则表示已成功开启 Runtime Filter。
 
 ### 第 3 步：执行查询
 
