@@ -221,7 +221,7 @@ mysql> EXPLAIN ANALYZE SELECT cs_ship_date_sk FROM catalog_sales, date_dim
 对比两个查询的执行信息，可发现以下改进：
 
 * IO 减少：对比 TableFullScan 算子的 `total_scanned_rows` 可知，开启 Runtime Filter 后 TableFullScan 的扫描量减少了 2/3 。
-* Hash Join 性能提升：Hash Join 算子的执行速度从 376.1ms 提升至 157.6ms。
+* Hash Join 性能提升：HashJoin 算子的执行速度从 376.1ms 提升至 157.6ms。
 
 ### 最佳实践
 
