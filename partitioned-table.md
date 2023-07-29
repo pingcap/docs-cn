@@ -396,11 +396,7 @@ PARTITION BY LIST (store_id) (
 );
 ```
 
-When [`tidb_enable_default_list_partition`](/system-variables.md#tidb_enable_default_list_partition-new-in-v730) is `OFF`, List partition table does not support a default partition to store all values that do not belong to other partitions. Therefore, all expected values of a partition expression must be included in the `PARTITION ... VALUES IN (...)` clause. If the value to be inserted in an `INSERT` statement does not match the column value set of any partition, the statement fails to execute and an error is reported. See the following example:
-
 当 [`tidb_enable_default_list_partition`](/system-variables.md#tidb_enable_default_list_partition-new-in-v730)为 `OFF` 时，List 分区表不支持默认分区来存储所有不属于其他分区的值。因此，分区表达式的所有期望值都应包含在 `PARTITION ... VALUES IN (...)` 子句中。如果 `INSERT` 语句要插入的值不匹配分区的列值，该语句将执行失败并报错，如下例所示：
-
-
 
 ```sql
 CREATE TABLE t (
