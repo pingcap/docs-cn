@@ -286,15 +286,10 @@ ALTER TABLE table_name LAST PARTITION LESS THAN (<expression>)
 
 ### List 分区
 
-在创建 List 分区表之前，需要先将 session 变量 `tidb_enable_list_partition` 的值设置为 `ON`。
+在创建 List 分区表之前，请确保以下事项：
 
-{{< copyable "sql" >}}
-
-```sql
-set @@session.tidb_enable_list_partition = ON
-```
-
-此外，还需保证 `tidb_enable_table_partition` 变量已开启（默认开启）。
+- [`tidb_enable_list_partition`](/system-variables#tidb_enable_list_partition-new-in-v50) 系统变量为其默认值 `ON`。
+- [`tidb_enable_table_partition`](/system-variables#tidb_enable_table_partition) 系统变量为其默认值 `ON`。
 
 List 分区和 Range 分区有很多相似的地方。不同之处主要在于 List 分区中，对于表的每个分区中包含的所有行，按分区表达式计算的值属于给定的数据集合。每个分区定义的数据集合有任意个值，但不能有重复的值，可通过 `PARTITION ... VALUES IN (...)` 子句对值进行定义。
 
@@ -343,20 +338,82 @@ PARTITION BY LIST (store_id) (
 
 使用 `ALTER TABLE employees DROP PARTITION pEast` 也能删除所有这些行，但同时也会从表的定义中删除分区 `pEast`。那样你还需要使用 `ALTER TABLE ... ADD PARTITION` 语句来还原表的原始分区方案。
 
-与 Range 分区的情况不同，List 分区没有类似的 `MAXVALUE` 分区来存储所有不属于其他 partition 的值。分区表达式的所有期望值都应包含在 `PARTITION ... VALUES IN (...)` 子句中。如果 `INSERT` 语句要插入的值不匹配分区的列值，该语句将执行失败并报错，如下例所示：
+#### 默认的 List 分区
+
+从 v7.3.0 版本开始，List 分区表支持默认分区功能，你可以为 List 分区表添加默认的 List 分区。默认的 List 分区作为一个总括分区，用于存放那些不匹配其他数据集合定义的行。
+
+该功能由 [`tidb_enable_default_list_partition`](/system-variables.md#tidb_enable_default_list_partition-new-in-v730) 变量控制，默认不启用，因为它是 TiDB 扩展，与 MySQL 不兼容。
+
+当设置 [`tidb_enable_default_list_partition`](/system-variables.md#tidb_enable_default_list_partition-new-in-v730) 为 `ON` 时，即可在现有的 List 分区表中添加默认分区。
+
+以下面的 List 分区表为例：
 
 ```sql
-test> CREATE TABLE t (
-        a INT,
-        b INT
-      )
-      PARTITION BY LIST (a) (
-        PARTITION p0 VALUES IN (1, 2, 3),
-        PARTITION p1 VALUES IN (4, 5, 6)
-      );
+CREATE TABLE t (
+  a INT,
+  b INT
+)
+PARTITION BY LIST (a) (
+  PARTITION p0 VALUES IN (1, 2, 3),
+  PARTITION p1 VALUES IN (4, 5, 6)
+);
+Query OK, 0 rows affected (0.11 sec)
+```
+
+通过以下语句，你可以在该表中添加一个名为 `pDef` 的默认的 List 分区：
+
+```sql
+ALTER TABLE t ADD PARTITION (PARTITION pDef DEFAULT);
+```
+
+或者
+
+```sql
+ALTER TABLE t ADD PARTITION (PARTITION pDef VALUES IN (DEFAULT));
+```
+
+此时，如果新插入该表的值不匹配任何分区的数据集合，对应的数据会自动写入默认的 List 分区。
+
+```sql
+INSERT INTO t VALUES (7, 7);
+Query OK, 1 row affected (0.01 sec)
+```
+
+你也可以在创建 List 分区表时添加默认分区。例如：
+
+```sql
+CREATE TABLE employees (
+    id INT NOT NULL,
+    hired DATE NOT NULL DEFAULT '1970-01-01',
+    store_id INT
+)
+PARTITION BY LIST (store_id) (
+    PARTITION pNorth VALUES IN (1, 2, 3, 4, 5),
+    PARTITION pEast VALUES IN (6, 7, 8, 9, 10),
+    PARTITION pWest VALUES IN (11, 12, 13, 14, 15),
+    PARTITION pCentral VALUES IN (16, 17, 18, 19, 20),
+    PARTITION pDefault DEFAULT
+);
+```
+
+When [`tidb_enable_default_list_partition`](/system-variables.md#tidb_enable_default_list_partition-new-in-v730) is `OFF`, List partition table does not support a default partition to store all values that do not belong to other partitions. Therefore, all expected values of a partition expression must be included in the `PARTITION ... VALUES IN (...)` clause. If the value to be inserted in an `INSERT` statement does not match the column value set of any partition, the statement fails to execute and an error is reported. See the following example:
+
+当 [`tidb_enable_default_list_partition`](/system-variables.md#tidb_enable_default_list_partition-new-in-v730)为 `OFF` 时，List 分区表不支持默认分区来存储所有不属于其他分区的值。因此，分区表达式的所有期望值都应包含在 `PARTITION ... VALUES IN (...)` 子句中。如果 `INSERT` 语句要插入的值不匹配分区的列值，该语句将执行失败并报错，如下例所示：
+
+
+
+```sql
+CREATE TABLE t (
+  a INT,
+  b INT
+)
+PARTITION BY LIST (a) (
+  PARTITION p0 VALUES IN (1, 2, 3),
+  PARTITION p1 VALUES IN (4, 5, 6)
+);
 Query OK, 0 rows affected (0.11 sec)
 
-test> INSERT INTO t VALUES (7, 7);
+INSERT INTO t VALUES (7, 7);
 ERROR 1525 (HY000): Table has no partition for value 7
 ```
 
