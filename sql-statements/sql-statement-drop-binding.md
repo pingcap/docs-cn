@@ -34,11 +34,11 @@ The following example shows how to remove a binding according to a SQL statement
 
 ```sql
 mysql> CREATE TABLE t1 (
-    ->  id INT NOT NULL PRIMARY KEY auto_increment,
-    ->  b INT NOT NULL,
-    ->  pad VARBINARY(255),
-    ->  INDEX(b)
-    -> );
+         id INT NOT NULL PRIMARY KEY auto_increment,
+         b INT NOT NULL,
+         pad VARBINARY(255),
+         INDEX(b)
+        );
 Query OK, 0 rows affected (0.07 sec)
 
 mysql> INSERT INTO t1 SELECT NULL, FLOOR(RAND()*1000), RANDOM_BYTES(255) FROM dual;
@@ -91,9 +91,9 @@ mysql> EXPLAIN ANALYZE SELECT * FROM t1 WHERE b = 123;
 3 rows in set (0.02 sec)
 
 mysql> CREATE SESSION BINDING FOR
-    ->  SELECT * FROM t1 WHERE b = 123
-    -> USING
-    ->  SELECT * FROM t1 IGNORE INDEX (b) WHERE b = 123;
+         SELECT * FROM t1 WHERE b = 123
+        USING
+         SELECT * FROM t1 IGNORE INDEX (b) WHERE b = 123;
 Query OK, 0 rows affected (0.00 sec)
 
 mysql> EXPLAIN ANALYZE SELECT * FROM t1 WHERE b = 123;

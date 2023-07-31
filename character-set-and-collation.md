@@ -147,8 +147,8 @@ The following demonstrates the default behavior when inserting a 4-byte emoji ch
 
 ```sql
 CREATE TABLE utf8_test (
-    ->  c char(1) NOT NULL
-    -> ) CHARACTER SET utf8;
+     c char(1) NOT NULL
+    ) CHARACTER SET utf8;
 ```
 
 ```sql
@@ -157,8 +157,8 @@ Query OK, 0 rows affected (0.09 sec)
 
 ```sql
 CREATE TABLE utf8m4_test (
-    ->  c char(1) NOT NULL
-    -> ) CHARACTER SET utf8mb4;
+     c char(1) NOT NULL
+    ) CHARACTER SET utf8mb4;
 ```
 
 ```sql
