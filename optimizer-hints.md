@@ -133,31 +133,13 @@ SELECT /*+ NO_INDEX_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id = t2.id;
 
 `NO_INDEX_HASH_JOIN(t1_name [, tl_name ...])` 提示优化器对指定表不要使用 Index Nested Loop Hash Join 算法。例如：
 
-{{< copyable "sql" >}}
-
-```sql
-SELECT /*+ NO_INDEX_HASH_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id = t2.id;
-```
-
 ### INL_MERGE_JOIN
 
 `INL_MERGE_JOIN(t1_name [, tl_name])` 提示优化器使用 Index Nested Loop Merge Join 算法。该算法与 Index Nested Loop Join 使用条件完全一样。例如：
 
-{{< copyable "sql" >}}
-
-```sql
-SELECT /*+ INL_MERGE_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id = t2.id;
-```
-
 ### NO_INDEX_MERGE_JOIN(t1_name [, tl_name ...])
 
 `NO_INDEX_MERGE_JOIN(t1_name [, tl_name ...])` 提示优化器对指定表不要使用 Index Nested Loop Merge Join 算法。例如：
-
-{{< copyable "sql" >}}
-
-```sql
-SELECT /*+ NO_INDEX_MERGE_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id = t2.id;
-```
 
 ### HASH_JOIN(t1_name [, tl_name ...])
 
@@ -1010,12 +992,8 @@ EXPLAIN SELECT /*+ leading(t1, t3), inl_join(t3) */ * FROM t1, t2, t3 WHERE t1.i
 - 使用 `NO_JOIN` 相关的 hint 排除了所有可能的 Join 方式。
 
 ```sql
-mysql> create table t1 (a int);
-Query OK, 0 rows affected (0.02 sec)
-
-mysql> create table t2 (a int);
-Query OK, 0 rows affected (0.02 sec)
-
-mysql> explain select /*+ no_hash_join(t1), no_merge_join(t1) */ * from t1, t2 where t1.a=t2.a;
+create table t1 (a int);
+create table t2 (a int);
+explain select /*+ no_hash_join(t1), no_merge_join(t1) */ * from t1, t2 where t1.a=t2.a;
 ERROR 1815 (HY000): Internal : Can't find a proper physical plan for this query
 ```
