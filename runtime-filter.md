@@ -245,7 +245,7 @@ Runtime Filter Mode 指的是 Runtime Filter 的模式，即 **生成 Filter 算
 
 Runtime Filter Type 指的是 Runtime Filter 谓词的类型，即生成的 Filter 算子使用的谓词类型。目前只支持一种类型：`IN`，即生成的谓词类似于 `k1 in (xxx)`。通过会话系统变量 [`tidb_runtime_filter_type`](/system-variables.md#tidb_runtime_filter_type-从-v720-版本开始引入) 控制。
 
-+ IN：默认为 IN 类型。即生成的 Runtime Filter 使用 IN 类型的谓词。
++ `IN`：默认为 `IN` 类型。即生成的 Runtime Filter 使用 `IN` 类型的谓词。
 
 ## 限制
 
