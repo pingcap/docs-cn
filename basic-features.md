@@ -61,7 +61,7 @@ You can try out TiDB features on [TiDB Playground](https://play.tidbcloud.com/?u
 | [Unique indexes](/constraints.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y |
 | [Clustered index on integer `PRIMARY KEY`](/constraints.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y |
 | [Clustered index on composite or non-integer key](/constraints.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y | N |
-| [Multi-valued index](/sql-statements/sql-statement-create-index.md#multi-valued-index) | Y | Y | N | N | N | N | N | N | N | N |
+| [Multi-valued indexes](/sql-statements/sql-statement-create-index.md#multi-valued-indexes) | Y | Y | N | N | N | N | N | N | N | N |
 | [Foreign key](/constraints.md#foreign-key) | Y | Y | N | N | N | N | N | N | N | N |
 | [TiFlash late materialization](/tiflash/tiflash-late-materialization.md) | Y | Y | N | N | N | N | N | N | N | N |
 

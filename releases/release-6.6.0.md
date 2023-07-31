@@ -54,7 +54,7 @@ In v6.6.0-DMR, the key new features and improvements are as follows:
     <td>Support MySQL-compatible foreign key constraints to maintain data consistency and improve data quality.</td>
   </tr>
   <tr>
-    <td><a href="https://docs.pingcap.com/tidb/v6.6/sql-statement-create-index/#multi-valued-index" target="_blank">Multi-valued index</a> (experimental)</td>
+    <td><a href="https://docs.pingcap.com/tidb/v6.6/sql-statement-create-index#multi-valued-indexes" target="_blank">Multi-valued indexes</a> (experimental)</td>
     <td>Introduce MySQL-compatible multi-valued indexes and enhance the JSON type to improve TiDB's compatibility with MySQL 8.0.</td>
   </tr>
   <tr>
@@ -182,13 +182,13 @@ In v6.6.0-DMR, the key new features and improvements are as follows:
 
     For more information, see [documentation](/foreign-key.md).
 
-* Support the MySQL-compatible multi-valued index (experimental) [#39592](https://github.com/pingcap/tidb/issues/39592) @[xiongjiwei](https://github.com/xiongjiwei) @[qw4990](https://github.com/qw4990)
+* Support MySQL-compatible multi-valued indexes (experimental) [#39592](https://github.com/pingcap/tidb/issues/39592) @[xiongjiwei](https://github.com/xiongjiwei) @[qw4990](https://github.com/qw4990)
 
-    TiDB introduces the MySQL-compatible multi-valued index in v6.6.0. Filtering the values of an array in a JSON column is a common operation, but normal indexes cannot help speed up such an operation. Creating a multi-valued index on an array can greatly improve filtering performance. If an array in the JSON column has a multi-valued index, you can use the multi-value index to filter the retrieval conditions with `MEMBER OF()`, `JSON_CONTAINS()`, `JSON_OVERLAPS()` functions, thereby reducing much I/O consumption and improving operation speed.
+    TiDB introduces MySQL-compatible multi-valued indexes in v6.6.0. Filtering the values of an array in a JSON column is a common operation, but normal indexes cannot help speed up such an operation. Creating a multi-valued index on an array can greatly improve filtering performance. If an array in the JSON column has a multi-valued index, you can use the multi-valued index to filter the retrieval conditions with `MEMBER OF()`, `JSON_CONTAINS()`, `JSON_OVERLAPS()` functions, thereby reducing much I/O consumption and improving operation speed.
 
     Introducing multi-valued indexes further enhances TiDB's support for the JSON data type and also improves TiDB's compatibility with MySQL 8.0.
 
-    For more information, see [documentation](/sql-statements/sql-statement-create-index.md#multi-valued-index).
+    For more information, see [documentation](/sql-statements/sql-statement-create-index.md#multi-valued-indexes).
 
 ### DB operations
 
@@ -341,9 +341,9 @@ In v6.6.0-DMR, the key new features and improvements are as follows:
 
     For more information, see the [SQL](#sql) section in this document and [documentation](/foreign-key.md).
 
-* Support the MySQL-compatible multi-valued index (experimental) [#39592](https://github.com/pingcap/tidb/issues/39592) @[xiongjiwei](https://github.com/xiongjiwei) @[qw4990](https://github.com/qw4990)
+* Support the MySQL-compatible multi-valued indexes (experimental) [#39592](https://github.com/pingcap/tidb/issues/39592) @[xiongjiwei](https://github.com/xiongjiwei) @[qw4990](https://github.com/qw4990)
 
-    For more information, see the [SQL](#sql) section in this document and [documentation](/sql-statements/sql-statement-create-index.md#multi-valued-index).
+    For more information, see the [SQL](#sql) section in this document and [documentation](/sql-statements/sql-statement-create-index.md#multi-valued-indexes).
 
 ### System variables
 

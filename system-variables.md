@@ -1755,7 +1755,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 > **Note:**
 >
-> This variable does not work for [multi-valued indexes](/sql-statements/sql-statement-create-index.md#multi-valued-index) and prefix indexes.
+> This variable does not work for [multi-valued indexes](/sql-statements/sql-statement-create-index.md#multi-valued-indexes) and prefix indexes.
 
 - Scope: SESSION | GLOBAL
 - Persists to the cluster: Yes

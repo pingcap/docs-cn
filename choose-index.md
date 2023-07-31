@@ -141,9 +141,11 @@ The index selection can be controlled by a single query through [Optimizer Hints
 
 - `READ_FROM_STORAGE` can force the optimizer to choose the TiKV / TiFlash storage engine for certain tables to execute queries.
 
-## Use a multi-valued index
+## Use multi-valued indexes
 
-[Multi-value indexes](/sql-statements/sql-statement-create-index.md#multi-valued-index) are different from normal indexes. TiDB currently only uses [IndexMerge](/explain-index-merge.md) to access multi-valued indexes. Therefore, to use multi-valued indexes for data access, make sure that the value of the sytem variable `tidb_enable_index_merge` is set to `ON`.
+[Multi-valued indexes](/sql-statements/sql-statement-create-index.md#multi-valued-indexes) are different from normal indexes. TiDB currently only uses [IndexMerge](/explain-index-merge.md) to access multi-valued indexes. Therefore, to use multi-valued indexes for data access, make sure that the value of the system variable `tidb_enable_index_merge` is set to `ON`.
+
+For the limitations of multi-valued indexes, refer to [`CREATE INDEX`](/sql-statements/sql-statement-create-index.md#limitations).
 
 Currently, TiDB supports accessing multi-valued indexes using IndexMerge that is automatically converted from `json_member_of`, `json_contains`, and `json_overlaps` conditions. You can either rely on the optimizer to automatically select IndexMerge based on cost, or specify the selection of multi-valued indexes through the optimizer hint [`use_index_merge`](/optimizer-hints.md#use_index_merget1_name-idx1_name--idx2_name-) or [`use_index`](/optimizer-hints.md#use_indext1_name-idx1_name--idx2_name-). See the following examples:
 
@@ -296,7 +298,7 @@ mysql> EXPLAIN SELECT /*+ use_index_merge(t3, idx) */ * FROM t3 WHERE ((1 member
 3 rows in set, 2 warnings (0.00 sec)
 ```
 
-Limited by the current implementation of multi-valued index, using [`use_index`](/optimizer-hints.md#use_indext1_name-idx1_name--idx2_name-) might return the `Can't find a proper physical plan for this query` error while using [`use_index_merge`](/optimizer-hints.md#use_index_merget1_name-idx1_name--idx2_name-) will not return such an error. Therefore, it is recommended to use `use_index_merge` if you want to use the multi-valued index.
+Limited by the current implementation of multi-valued indexes, using [`use_index`](/optimizer-hints.md#use_indext1_name-idx1_name--idx2_name-) might return the `Can't find a proper physical plan for this query` error while using [`use_index_merge`](/optimizer-hints.md#use_index_merget1_name-idx1_name--idx2_name-) will not return such an error. Therefore, it is recommended to use `use_index_merge` if you want to use multi-valued indexes.
 
 ```sql
 mysql> EXPLAIN SELECT /*+ use_index(t3, idx) */ * FROM t3 WHERE ((1 member of (j)) AND (2 member of (j))) OR ((3 member of (j)) AND (4 member of (j)));
