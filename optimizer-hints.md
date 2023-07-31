@@ -131,15 +131,15 @@ SELECT /*+ NO_INDEX_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id = t2.id;
 
 ### NO_INDEX_HASH_JOIN(t1_name [, tl_name ...])
 
-`NO_INDEX_HASH_JOIN(t1_name [, tl_name ...])` 提示优化器对指定表不要使用 Index Nested Loop Hash Join 算法。例如：
+`NO_INDEX_HASH_JOIN(t1_name [, tl_name ...])` 提示优化器对指定表不要使用 Index Nested Loop Hash Join 算法。
 
 ### INL_MERGE_JOIN
 
-`INL_MERGE_JOIN(t1_name [, tl_name])` 提示优化器使用 Index Nested Loop Merge Join 算法。该算法与 Index Nested Loop Join 使用条件完全一样。例如：
+`INL_MERGE_JOIN(t1_name [, tl_name])` 提示优化器使用 Index Nested Loop Merge Join 算法，该算法与 Index Nested Loop Join 使用条件完全一样。
 
 ### NO_INDEX_MERGE_JOIN(t1_name [, tl_name ...])
 
-`NO_INDEX_MERGE_JOIN(t1_name [, tl_name ...])` 提示优化器对指定表不要使用 Index Nested Loop Merge Join 算法。例如：
+`NO_INDEX_MERGE_JOIN(t1_name [, tl_name ...])` 提示优化器对指定表不要使用 Index Nested Loop Merge Join 算法。
 
 ### HASH_JOIN(t1_name [, tl_name ...])
 
