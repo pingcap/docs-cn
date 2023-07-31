@@ -150,6 +150,30 @@ SELECT /*+ NO_INDEX_HASH_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id = t2.id;
 >
 > 使用 `NO_JOIN` 相关的 hint 可能出现 `Can't find a proper physical plan for this query` 错误，具体见[使用 hint 导致 `Can't find a proper physical plan`](#使用-hint-导致错误-cant-find-a-proper-physical-plan-for-this-query)
 
+### INL_MERGE_JOIN
+
+`INL_MERGE_JOIN(t1_name [, tl_name])` 提示优化器使用 Index Nested Loop Merge Join 算法。该算法与 Index Nested Loop Join 使用条件完全一样。例如：
+
+{{< copyable "sql" >}}
+
+```sql
+SELECT /*+ INL_MERGE_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id = t2.id;
+```
+
+### NO_INDEX_MERGE_JOIN(t1_name [, tl_name ...])
+
+`NO_INDEX_MERGE_JOIN(t1_name [, tl_name ...])` 提示优化器对指定表不要使用 Index Nested Loop Merge Join 算法。例如：
+
+{{< copyable "sql" >}}
+
+```sql
+SELECT /*+ NO_INDEX_MERGE_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id = t2.id;
+```
+
+> **注意：**
+>
+> 使用 `NO_JOIN` 相关的 hint 可能出现 `Can't find a proper physical plan for this query` 错误，具体见[使用 hint 导致 `Can't find a proper physical plan`](#使用-hint-导致错误-cant-find-a-proper-physical-plan-for-this-query)
+
 ### HASH_JOIN(t1_name [, tl_name ...])
 
 `HASH_JOIN(t1_name [, tl_name ...])` 提示优化器对指定表使用 Hash Join 算法。这个算法多线程并发执行，执行速度较快，但会消耗较多内存。例如：
