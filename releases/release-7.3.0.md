@@ -46,7 +46,7 @@ TiDB 版本：7.3.0
 
 ### 稳定性
 
-* 新增部分优化器提示 [#issue号](链接) @[qw4990](https://github.com/qw4990) **tw@ran-huang** <!--1457-->
+* 新增部分优化器提示 [#45520](https://github.com/pingcap/tidb/issues/45520) @[qw4990](https://github.com/qw4990) **tw@ran-huang** <!--1457-->
 
     TiDB 在 v7.3.0 新增了几个优化器提示，用来控制表之间的连接方式，包括：
    
@@ -86,7 +86,7 @@ TiDB 版本：7.3.0
 
     更多信息，请参考[用户文档](链接)。
 
-* Plan Replayer 支持导出历史统计信息 [#issue号](链接) @[time-and-fate](https://github.com/time-and-fate) **tw@ran-huang** <!--1445-->
+* Plan Replayer 支持导出历史统计信息 [#45038](https://github.com/pingcap/tidb/issues/45038) @[time-and-fate](https://github.com/time-and-fate) **tw@ran-huang** <!--1445-->
 
     自 v7.3.0 起，通过新增的 [`dump with stats as of timestamp`](/sql-plan-replayer.md) 子句，Plan Replayer 能够导出指定 SQL 相关对象在指定时间点的统计信息。在执行计划问题的诊断过程中，通过对历史统计信息的准确抓取，能够更精确地分析出执行计划在问题发生的时间点是如何生成的，从而找到问题的根本原因，大大提升执行计划问题的诊断效率。 
 
@@ -199,7 +199,7 @@ TiDB 版本：7.3.0
 
     + TiCDC
 
-        - Kafka 支持消息过大时只发送 Handle Key 数据，减少数据大小 [#issue](https://github.com/pingcap/tiflow/issues/9382) @[3AceShowHand](https://github.com/3AceShowHand) **tw@ran-huang** <!--1406-->
+        - Kafka Sink 支持在消息过大时只发送 Handle Key 数据，减少数据大小 [#9382](https://github.com/pingcap/tiflow/issues/9382) @[3AceShowHand](https://github.com/3AceShowHand) **tw@ran-huang** <!--1406-->
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
     + TiDB Data Migration (DM)
