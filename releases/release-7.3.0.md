@@ -68,9 +68,11 @@ TiDB 版本：7.3.0
 
 ### SQL 功能
 
-* List、List COLUMNS 分区表支持默认分区 [#20679](https://github.com/pingcap/tidb/issues/20679) @[mjonss](https://github.com/mjonss) @[bb7133](https://github.com/bb7133) **tw@qiancai** <!--1342-->
+* List 和 List COLUMNS 分区表支持默认分区 [#20679](https://github.com/pingcap/tidb/issues/20679) @[mjonss](https://github.com/mjonss) @[bb7133](https://github.com/bb7133) **tw@qiancai** <!--1342-->
 
-    List、List COLUMNS 分区表需要为分区指定分区条件。如果 `INSERT` 语句要插入的数据不匹配任何分区条件，则该语句将执行失败或不符合分区条件的数据被忽略。在 v7.3.0 中，TiDB 为 List、List COLUMNS 分区表引入默认分区。在创建默认分区后，如果 `INSERT` 语句插入的数据不匹配任何分区条件，则数据将被写入默认分区。默认分区功能可以提升 List 分区和 List COLUMNS 分区的使用便捷性，避免不符合分区的数据导致 INSERT 语句执行失败或者数据被忽略的情况。该功能自动开启。
+    当使用 `INSERT` 语句向 List 或 List COLUMNS 分区表插入数据时，这些数据需要满足分区表指定的分区条件。如果要插入的数据不匹配任何分区条件，该语句将执行失败或不符合分区条件的数据被忽略。
+
+    在 v7.3.0 中，List 和 List COLUMNS 分区表支持默认分区功能。在创建默认分区后，如果要插入的数据不匹配任何分区条件，则数据将被写入默认分区。默认分区功能可以提升 List 分区和 List COLUMNS 分区的使用便捷性，避免不符合分区条件的数据导致 `INSERT` 语句执行失败或者数据被忽略。该功能默认关闭，可通过 [`tidb_enable_default_list_partition`](/system-variables.md#tidb_enable_default_list_partition-new-in-v730) 变量开启。
 
     更多信息，请参考[用户文档](/partitioned-table.md#list-分区)。
 
