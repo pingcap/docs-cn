@@ -35,6 +35,7 @@ The following is the description of PD Dashboard metrics items:
 - Current ID allocation: The maximum allocatable ID for new store/peer
 - Region label isolation level: The number of Regions in different label levels
 - Label distribution: The distribution status of the labels in the cluster
+- Store Limit: The flow control limitation of scheduling on the Store
 
 ![PD Dashboard - Cluster metrics](/media/pd-dashboard-cluster-v4.png)
 
@@ -107,7 +108,6 @@ The following is the description of PD Dashboard metrics items:
 - Filter target: The number of attempts that the store is selected as the scheduling target but failed to pass the filter
 - Filter source: The number of attempts that the store is selected as the scheduling source but failed to pass the filter
 - Balance Direction: The number of times that the Store is selected as the target or source of scheduling
-- Store Limit: The flow control limitation of scheduling on the Store
 
 ![PD Dashboard - Scheduler metrics](/media/pd-dashboard-scheduler-v4.png)
 
