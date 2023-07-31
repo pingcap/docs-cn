@@ -111,4 +111,3 @@ RESOURCE_GROUP_NAME: rg1
     - `Exact` 表示按照 SQL 文本匹配，此时列 `WATCH_TEXT` 显示的是 SQL 文本。
 * `SOURCE` 表示识别项来源，如果是被 `QUERY_LIMIT` 的规则识别，则是识别到的 TiDB IP；如果是手动添加，则是 `manual`。
 * `ACTION` 表示识别后的对应操作，如果是 `NoneAction`，则表示会采用资源组中 `QUERY_LIMIT` 配置的 `ACTION`。
-
