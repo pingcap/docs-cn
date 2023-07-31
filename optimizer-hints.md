@@ -98,10 +98,6 @@ SELECT /*+ MERGE_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id = t2.id;
 SELECT /*+ NO_MERGE_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id = t2.id;
 ```
 
-> **注意：**
->
-> 使用 `NO_JOIN` 相关的 hint 可能出现 `Can't find a proper physical plan for this query` 错误，具体见[使用 hint 导致 `Can't find a proper physical plan`](#使用-hint-导致错误-cant-find-a-proper-physical-plan-for-this-query)
-
 ### INL_JOIN(t1_name [, tl_name ...])
 
 `INL_JOIN(t1_name [, tl_name ...])` 提示优化器对指定表使用 Index Nested Loop Join 算法。这个算法可能会在某些场景更快，消耗更少系统资源，有的场景会更慢，消耗更多系统资源。对于外表经过 WHERE 条件过滤后结果集较小（小于 1 万行）的场景，可以尝试使用。例如：
@@ -128,10 +124,6 @@ SELECT /*+ INL_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id = t2.id;
 SELECT /*+ NO_INDEX_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id = t2.id;
 ```
 
-> **注意：**
->
-> 使用 `NO_JOIN` 相关的 hint 可能出现 `Can't find a proper physical plan for this query` 错误，具体见[使用 hint 导致 `Can't find a proper physical plan`](#使用-hint-导致错误-cant-find-a-proper-physical-plan-for-this-query)
-
 ### INL_HASH_JOIN
 
 `INL_HASH_JOIN(t1_name [, tl_name])` 提示优化器使用 Index Nested Loop Hash Join 算法。该算法与 Index Nested Loop Join 使用条件完全一样，两者的区别是 `INL_JOIN` 会在连接的内表上建哈希表，而 `INL_HASH_JOIN` 会在连接的外表上建哈希表，后者对于内存的使用是有固定上限的，而前者使用的内存使用取决于内表匹配到的行数。
@@ -145,10 +137,6 @@ SELECT /*+ NO_INDEX_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id = t2.id;
 ```sql
 SELECT /*+ NO_INDEX_HASH_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id = t2.id;
 ```
-
-> **注意：**
->
-> 使用 `NO_JOIN` 相关的 hint 可能出现 `Can't find a proper physical plan for this query` 错误，具体见[使用 hint 导致 `Can't find a proper physical plan`](#使用-hint-导致错误-cant-find-a-proper-physical-plan-for-this-query)
 
 ### INL_MERGE_JOIN
 
@@ -169,10 +157,6 @@ SELECT /*+ INL_MERGE_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id = t2.id;
 ```sql
 SELECT /*+ NO_INDEX_MERGE_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id = t2.id;
 ```
-
-> **注意：**
->
-> 使用 `NO_JOIN` 相关的 hint 可能出现 `Can't find a proper physical plan for this query` 错误，具体见[使用 hint 导致 `Can't find a proper physical plan`](#使用-hint-导致错误-cant-find-a-proper-physical-plan-for-this-query)
 
 ### HASH_JOIN(t1_name [, tl_name ...])
 
@@ -197,10 +181,6 @@ SELECT /*+ HASH_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id = t2.id;
 ```sql
 SELECT /*+ NO_HASH_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id = t2.id;
 ```
-
-> **注意：**
->
-> 使用 `NO_JOIN` 相关的 hint 可能出现 `Can't find a proper physical plan for this query` 错误，具体见[使用 hint 导致 `Can't find a proper physical plan`](#使用-hint-导致错误-cant-find-a-proper-physical-plan-for-this-query)
 
 ### HASH_JOIN_BUILD(t1_name [, tl_name ...])
 
