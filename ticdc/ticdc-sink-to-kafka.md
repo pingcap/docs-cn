@@ -346,7 +346,7 @@ large-message-handle-option = "handle-key-only"
 }
 ```
 
-Kafka 消费者收到消息之后，首先检查 `onlyHandleKey` 字段，如果存在该字段，那么必然为 true，表示该消息只包含 Handle-Key 部分数据。用户需要查选上游 TiDB，通过 [tidb_snapshot 读取历史数据](/read-historical-data.md) 读取完整的数据。
+Kafka 消费者收到消息之后，首先检查 `onlyHandleKey` 字段，如果存在该字段，那么必然为 true，表示该消息只包含 Handle-Key 部分数据。用户需要查选上游 TiDB，通过 [`tidb_snapshot` 读取历史数据](/read-historical-data.md)来获取完整的数据。
 
 > **警告：**
 >
