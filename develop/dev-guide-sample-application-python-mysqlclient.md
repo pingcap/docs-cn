@@ -67,7 +67,7 @@ with get_mysqlclient_connection(autocommit=True) as conn:
 with get_mysqlclient_connection(autocommit=True) as conn:
     with conn.cursor() as cur:
         sell_id, amount, price="2", 10, 500
-        cursor.execute("UPDATE player set goods = goods + %s, coins = coins + %s WHERE id = %s", (-amount, price, sell_id))
+        cursor.execute("UPDATE player SET goods = goods + %s, coins = coins + %s WHERE id = %s", (-amount, price, sell_id))
 ```
 
 [更多更新数据参考文档](/develop/dev-guide-update-data.md)
