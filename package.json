@@ -5,6 +5,7 @@
   "license": "MIT",
   "type": "module",
   "dependencies": {
+    "axios": "^1.4.0",
     "glob": "^8.0.3",
     "mdast-util-from-markdown": "^1.2.0",
     "mdast-util-frontmatter": "^1.0.0",
@@ -14,6 +15,7 @@
     "micromark-extension-frontmatter": "^1.0.0",
     "micromark-extension-gfm": "^2.0.1",
     "micromark-extension-mdxjs": "^1.0.0",
+    "octokit": "^3.1.0",
     "unist-util-visit": "^4.1.0"
   }
 }
