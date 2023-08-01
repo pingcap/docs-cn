@@ -193,10 +193,10 @@ SELECT /*+ RESOURCE_GROUP(rg1) */ * FROM t limit 10;
 >
 > 该功能目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
 
-Runaway Queries 指那些执行时间或者消耗的资源超出预期的查询。后续我们用 `Runaway Queries` 来表示管理 Runaway Queries 这一功能。
+Runaway Query 是指执行时间或消耗资源超出预期的查询。下面使用 **Runaway Queries** 表示管理 Runaway Query 这一功能。
 
-- 自 v7.2.0 起，TiDB 资源管控引入了对 Runaway Queries 的管理。你可以针对某个资源组设置条件来识别 Runaway Queries，并自动发起应对操作，防止集群资源完全被 Runaway Queries 占用而影响其他正常查询。你可以通过在 [`CREATE RESOURCE GROUP`](/sql-statements/sql-statement-create-resource-group.md) 或者 [`ALTER RESOURCE GROUP`](/sql-statements/sql-statement-alter-resource-group.md) 中配置 `QUERY_LIMIT` 字段，通过规则识别来管理资源组的 Runaway Queries。
-- 自 v7.3.0 起，TiDB 资源管控引入了手动管理 Runaway Queries 监控列表的功能，将给定的 SQL 或者 Digest 添加进隔离监控列表，从而实现快速隔离 Runaway Queries。你可以执行语句 [`QUERY WATCH`](/sql-statements/sql-statement-query-watch.md)，手动管理资源组中的 Runaway Queries 监控列表。
+- 自 v7.2.0 起，TiDB 资源管控引入了对 Runaway Queries 的管理。你可以针对某个资源组设置条件来识别 Runaway Queries，并自动发起应对操作，防止集群资源完全被 Runaway Queries 占用而影响其他正常查询。你可以在 [`CREATE RESOURCE GROUP`](/sql-statements/sql-statement-create-resource-group.md) 或者 [`ALTER RESOURCE GROUP`](/sql-statements/sql-statement-alter-resource-group.md) 中配置 `QUERY_LIMIT` 字段，通过规则识别来管理资源组的 Runaway Queries。
+- 自 v7.3.0 起，TiDB 资源管控引入了手动管理 Runaway Queries 监控列表的功能，将给定的 SQL 或者 Digest 添加到隔离监控列表，从而实现快速隔离 Runaway Queries。你可以执行语句 [`QUERY WATCH`](/sql-statements/sql-statement-query-watch.md)，手动管理资源组中的 Runaway Queries 监控列表。
 
 #### `QUERY_LIMIT` 参数说明
 
@@ -210,7 +210,7 @@ Runaway Queries 指那些执行时间或者消耗的资源超出预期的查询�
 - `COOLDOWN`：将查询的执行优先级降到最低，查询仍旧会以低优先级继续执行，不占用其他操作的资源。
 - `KILL`：识别到的查询将被自动终止，报错 `Query execution was interrupted, identified as runaway query`。
 
-为了避免并发的 Runaway Queries 太多，在被条件识别前就将系统资源耗尽，资源管控引入了一个 Runaway Queries 监控机制，来实现快速识别和隔离。借助子句 `WATCH`，当某一个查询被识别为 Runaway Query 之后，会从这个查询提取匹配特征（通过 `WATCH` 后的匹配方式参数决定），在接下来的一段时间里（通过 `DURATION` 定义），这个 Runaway Query 的匹配特征会被加入监控列表，TiDB 实例会将查询和监控列表进行匹配，匹配到的查询直接标记为 Runaway Query，而不再等待其被条件识别，并按照当前应对操作进行隔离。其中 `KILL` 会结束该查询，并报错 `Quarantined and interrupted because of being in runaway watch list`。
+为了避免并发的 Runaway Queries 太多，在被条件识别前就将系统资源耗尽，资源管控引入了一个 Runaway Queries 监控机制，来实现快速识别和隔离。借助子句 `WATCH`，当某一个查询被识别为 Runaway Query 之后，会从这个查询提取匹配特征（通过 `WATCH` 后的匹配方式参数决定），在接下来的一段时间里（通过 `DURATION` 定义），这个 Runaway Query 的匹配特征会被加入监控列表，TiDB 实例会将查询和监控列表进行匹配，匹配到的查询直接标记为 Runaway Query，而不再等待其被条件识别，并按照当前应对操作进行隔离。其中 `KILL` 会终止该查询，并报错 `Quarantined and interrupted because of being in runaway watch list`。
 
 `WATCH` 有三种匹配方式：
 

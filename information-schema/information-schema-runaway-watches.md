@@ -1,15 +1,15 @@
 ---
 title: RUNAWAY_WATCHES
-summary: 了解 information_schema 表 `RUNAWAY_WATCHES`。
+summary: 了解 INFORMATION_SCHEMA 表 `RUNAWAY_WATCHES`。
 ---
 
 # RUNAWAY_WATCHES
 
-`RUNAWAY_WATCHES` 表展示 Runaway Queries 监控列表，见 [Runaway Queries](/tidb-resource-control.md#管理资源消耗超出预期的查询-runaway-queries)。
+`RUNAWAY_WATCHES` 表展示资源消耗超出预期的查询 Runaway Queries 监控列表，见 [Runaway Queries](/tidb-resource-control.md#管理资源消耗超出预期的查询-runaway-queries)。
 
 ```sql
-USE information_schema;
-DESC runaway_watches;
+USE INFORMATION_SCHEMA;
+DESC RUNAWAY_WATCHES;
 ```
 
 ```sql
@@ -34,9 +34,13 @@ DESC runaway_watches;
 
 ## 示例
 
+查询 Runaway Queries 识别名单：
+
 ```sql
-select * from information_schema.runaway_watches\G; -- 查询 Runaway Queries 识别名单
+SELECT * FROM INFORMATION_SCHEMA.RUNAWAY_WATCHES\G;
 ```
+
+输出结果如下：
 
 ```sql
 *************************** 1. row ***************************
@@ -60,13 +64,19 @@ RESOURCE_GROUP_NAME: rg2
 2 rows in set (0.00 sec)
 ```
 
-```sql
-query watch add resource group rg1 sql text exact to 'select * from sbtest.sbtest1'; -- 添加识别名单
-```
+添加一个识别项到资源组 `rg1`：
 
 ```sql
-select * from information_schema.runaway_watches\G; -- 查询 Runaway Queries 识别名单
+QUERY WATCH ADD RESOURCE GROUP rg1 SQL TEXT EXACT TO 'select * from sbtest.sbtest1';
 ```
+
+再次查询 Runaway Queries 识别名单：
+
+```sql
+SELECT * FROM INFORMATION_SCHEMA.RUNAWAY_WATCHES\G;
+```
+
+输出结果如下：
 
 ```sql
 *************************** 1. row ***************************
@@ -104,11 +114,10 @@ RESOURCE_GROUP_NAME: rg1
 * `ID`：识别项 ID。
 * `RESOURCE_GROUP_NAME`：资源组名称。
 * `START_TIME`：开始时间。
-* `END_TIME`：结束时间，`UNLIMITED` 表示识别项有效时间无限长。
-* `WATCH` 表示被快速识别类型，其值如下：
-    - `Plan` 表示按照 Plan Digest 匹配，此时列 `WATCH_TEXT` 显示的是 Plan Digest。
-    - `Similar` 表示按照 SQL Digest 匹配，此时列 `WATCH_TEXT` 显示的是 SQL Digest。
-    - `Exact` 表示按照 SQL 文本匹配，此时列 `WATCH_TEXT` 显示的是 SQL 文本。
-* `SOURCE` 表示识别项来源，如果是被 `QUERY_LIMIT` 的规则识别，则是识别到的 TiDB IP；如果是手动添加，则是 `manual`。
-* `ACTION` 表示识别后的对应操作。
-
+* `END_TIME`：结束时间。`UNLIMITED` 表示识别项的有效时间无限长。
+* `WATCH`：识别匹配类型，其值如下：
+    - `Plan` 表示按照 Plan Digest 匹配，此时列 `WATCH_TEXT` 显示 Plan Digest。
+    - `Similar` 表示按照 SQL Digest 匹配，此时列 `WATCH_TEXT` 显示 SQL Digest。
+    - `Exact` 表示按照 SQL 文本匹配，此时列 `WATCH_TEXT` 显示 SQL 文本。
+* `SOURCE`：识别项来源，如果是被 `QUERY_LIMIT` 规则识别，则显示识别到的 TiDB IP；如果是手动添加，则显示 `manual`。
+* `ACTION`：识别后的对应操作。
