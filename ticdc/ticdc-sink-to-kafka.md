@@ -290,11 +290,11 @@ SELECT COUNT(*) FROM INFORMATION_SCHEMA.TIKV_REGION_STATUS WHERE DB_NAME="databa
 
 ## 处理超过 Kafka Topic 限制的消息
 
-Kafka Topic 对可以接收的消息大小有限制，由 [`max.message.bytes`](https://kafka.apache.org/documentation/#topicconfigs_max.message.bytes) 参数控制。TiCDC Kafka sink 在发送数据时，如果发现数据大小超过了该限制，会导致 changefeed 报错，无法继续同步数据。为了解决这个问题，TiCDC 提供了如下解决方案。
+Kafka Topic 对可以接收的消息大小有限制，该限制由 [`max.message.bytes`](https://kafka.apache.org/documentation/#topicconfigs_max.message.bytes) 参数控制。当 TiCDC Kafka sink 在发送数据时，如果发现数据大小超过了该限制，会导致 changefeed 报错，无法继续同步数据。为了解决这个问题，TiCDC 提供了如下解决方案。
 
-### 只发送 Handle-Key
+### 只发送 Handle Key
 
-从 v7.3.0 开始，TiCDC Kafka sink 支持在消息超过限制的时候只发送 Handle-Key 部分数据。这样可以显著减少消息的大小，避免因为消息大小超过 Kafka Topic 限制而导致 changefeed 发生错误和同步任务失败的情况。Handle-Key 指的是：
+从 v7.3.0 开始，TiCDC Kafka sink 支持在消息超过限制的时候只发送 Handle Key 部分数据。这样可以显著减少消息的大小，避免因为消息大小超过 Kafka Topic 限制而导致 changefeed 发生错误和同步任务失败的情况。Handle Key 指的是：
 
 * 如果被同步的表有定义主键，即为主键。
 * 如果没有主键，但是有定义 Not NULL Unique Key，即为 Unique Key。
@@ -310,9 +310,9 @@ Kafka Topic 对可以接收的消息大小有限制，由 [`max.message.bytes`](
 large-message-handle-option = "handle-key-only"
 ```
 
-### 消费只有 Handle-Key 的消息
+### 消费只有 Handle Key 的消息
 
-只有 Handle-key 数据的消息格式如下：
+只有 Handle Key 数据的消息格式如下：
 
 ```json
 {
@@ -346,7 +346,7 @@ large-message-handle-option = "handle-key-only"
 }
 ```
 
-Kafka 消费者收到消息之后，首先检查 `onlyHandleKey` 字段，如果存在该字段，那么必然为 true，表示该消息只包含 Handle-Key 部分数据。你需要查询上游 TiDB，通过 [`tidb_snapshot` 读取历史数据](/read-historical-data.md)来获取完整的数据。
+Kafka 消费者收到消息之后，首先检查 `onlyHandleKey` 字段，如果该字段存在且为 true，表示该消息只包含 Handle Key 部分数据。此时，你需要查询上游 TiDB，通过 [`tidb_snapshot` 读取历史数据](/read-historical-data.md)来获取完整的数据。
 
 > **警告：**
 >
