@@ -40,7 +40,7 @@ aliases: ['/docs-cn/dev/production-offline-deployment-using-tiup/', '/zh/tidb/de
 
         ```shell
         source .bash_profile
-         ```
+        ```
 
     2. 确认 TiUP 工具是否安装：
 
