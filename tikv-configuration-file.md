@@ -1709,7 +1709,9 @@ raftdb 相关配置项。
 ### `max-total-wal-size`
 
 + RocksDB WAL 文件的最大总大小。
-+ 默认值：当storage.engine为raft-kv时默认值为`"4GB"`; 当storage.engine为raft-kv时默认值为1（相当于禁用) 
++ 默认值：
+    + 当 `storage.engine="raft-kv"` 时，默认值为 `"4GB"`
+    + 当 `storage.engine="partitioned-raft-kv"` 时，默认值为 `1`
 
 ### `compaction-readahead-size`
 
