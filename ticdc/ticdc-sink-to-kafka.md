@@ -296,8 +296,8 @@ Kafka Topic 对可以接收的消息大小有限制，由 [`max.message.bytes`](
 
 从 v7.3.0 开始，TiCDC Kafka sink 支持在消息超过限制的时候只发送 Handle-Key 部分数据。这样可以显著减少消息的大小，避免因为消息大小超过 Kafka Topic 限制而导致 changefeed 发生错误和同步任务失败的情况。Handle-Key 指的是：
 
-* 如果被同步的表有定义 Primary Key，即为 Primary Key。
-* 如果没有 Primary Key，但是有定义 Not NULL Unique Key，即为 Unique Key。
+* 如果被同步的表有定义主键，即为主键。
+* 如果没有主键，但是有定义 Not NULL Unique Key，即为 Unique Key。
 
 目前，该功能至此 Canal-JSON 和 Open-Protocol 两种编码协议。使用 Canal-JSON 协议时，用户需要在 `sink-uri` 中指定 `enable-tidb-extension=true` 参数。
 
