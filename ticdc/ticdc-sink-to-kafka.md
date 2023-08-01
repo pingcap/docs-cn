@@ -290,7 +290,7 @@ SELECT COUNT(*) FROM INFORMATION_SCHEMA.TIKV_REGION_STATUS WHERE DB_NAME="databa
 
 ## 处理超过 Kafka Topic 限制的消息
 
-Kafka Topic 对可以接收的消息大小有限制，由 [max.message.bytes](https://kafka.apache.org/documentation/#topicconfigs_max.message.bytes) 参数控制。TiCDC Kafka sink 在发送数据时，如果发现数据大小超过了该限制，会导致 changefeed 报错，无法继续同步数据。为了解决这个问题，TiCDC 提供了如下解决方案。
+Kafka Topic 对可以接收的消息大小有限制，由 [`max.message.bytes`](https://kafka.apache.org/documentation/#topicconfigs_max.message.bytes) 参数控制。TiCDC Kafka sink 在发送数据时，如果发现数据大小超过了该限制，会导致 changefeed 报错，无法继续同步数据。为了解决这个问题，TiCDC 提供了如下解决方案。
 
 ### 只发送 Handle-Key
 
