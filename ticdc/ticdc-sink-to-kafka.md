@@ -299,7 +299,7 @@ Kafka Topic 对可以接收的消息大小有限制，由 [`max.message.bytes`](
 * 如果被同步的表有定义主键，即为主键。
 * 如果没有主键，但是有定义 Not NULL Unique Key，即为 Unique Key。
 
-目前，该功能至此 Canal-JSON 和 Open-Protocol 两种编码协议。使用 Canal-JSON 协议时，用户需要在 `sink-uri` 中指定 `enable-tidb-extension=true` 参数。
+目前，该功能支持 Canal-JSON 和 Open-Protocol 两种编码协议。使用 Canal-JSON 协议时，你需要在 `sink-uri` 中指定 `enable-tidb-extension=true` 参数。
 
 配置样例如下所示：
 
