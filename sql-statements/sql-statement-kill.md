@@ -47,11 +47,13 @@ Query OK, 0 rows affected (0.00 sec)
 ## MySQL 兼容性
 
 - MySQL 的 `KILL` 语句仅能终止当前连接的 MySQL 实例上的连接，TiDB 的 `KILL` 语句能终止整个集群中任意一个 TiDB 实例上的连接。
-- 暂时不支持使用 MySQL 命令行 <kbd>ctrl</kbd>+<kbd>c</kbd> 终止查询或连接。
+- 从 v7.3.0 开始支持使用 MySQL 命令行 <kbd>ctrl</kbd>+<kbd>c</kbd> 终止查询或连接。
 
 ## 行为变更说明
 
 TiDB 从 v6.1.0 起新增 Global Kill 功能（由 [`enable-global-kill`](/tidb-configuration-file.md#enable-global-kill-从-v610-版本开始引入) 配置项控制，默认启用）。启用 Global Kill 功能时，`KILL` 语句和 `KILL TIDB` 语句均能跨节点终止查询或连接，且无需担心错误地终止其他查询或连接。当你使用客户端连接到任何一个 TiDB 节点执行 `KILL` 语句或 `KILL TIDB` 语句时，该语句会被转发给对应的 TiDB 节点。当客户端和 TiDB 中间有代理时，`KILL` 及 `KILL TIDB` 语句也会被转发给对应的 TiDB 节点执行。
+
+TiDB 从 v7.3.0 起支持生成 32 位 connection ID（由 [`enable-32bits-connection-id`](/tidb-configuration-file.md#enable-32bits-connection-id-从-v730-版本开始引入) 配置项控制，默认启用）。同时启用 Global Kill 和 32 位 connection ID 后，TiDB 将生成 32 位的 connection ID，从而支持在 MySQL 命令行中通过 <kbd>ctrl</kbd>+<kbd>c</kbd> 终止查询或连接。
 
 对于 TiDB v6.1.0 之前的版本，或未启用 Global Kill 功能时：
 
