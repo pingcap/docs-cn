@@ -233,7 +233,7 @@ EXPLAIN SELECT * FROM t2 WHERE a = (SELECT a FROM t1);
 3 rows in set (0.00 sec)
 ```
 
-在上述例子中 `a = (SELECT a FROM t1)` 这个子查询在优化阶段就进行了计算，表达式被改写为 `t2.a=1`。这种执行方式可以在优化阶段进行更多的常量传播和常量折叠优化，但是会影响 `EXPLAIN` 语句的执行时间。当子查询本身耗时较长时，`EXPLAIN` 语句无法执行完成，可能会影响线上问题的排查。
+在上述例子中 `a = (SELECT a FROM t1)` 子查询在优化阶段就进行了计算，表达式被改写为 `t2.a=1`。这种执行方式可以在优化阶段进行更多的常量传播和常量折叠优化，但是会影响 `EXPLAIN` 语句的执行时间。当子查询本身耗时较长时，`EXPLAIN` 语句无法执行完成，可能会影响线上问题的排查。
 
 从 v7.3.0 开始，TiDB 引入 [`tidb_opt_enable_non_eval_scalar_subquery`](system-variables.md#tidb_opt_enable_non_eval_scalar_subquery-从-v730-版本开始引入) 系统变量，可以控制这类子查询在 `EXPLAIN` 语句中是否禁止提前执行计算展开。该变量默认值为 `OFF`，即提前计算子查询。你可以将该变量设置为 `ON` 来禁止子查询提前执行：
 
@@ -258,6 +258,7 @@ EXPLAIN SELECT * FROM t2 WHERE a = (SELECT a FROM t1);
 ```
 
 可以看到，标量子查询在执行阶段并没有被展开，这样更便于理解该类 SQL 具体的执行过程。
+
 > **注意：**
 >
-> [`tidb_opt_enable_non_eval_scalar_subquery`](system-variables.md#tidb_opt_enable_non_eval_scalar_subquery-从-v730-版本开始引入) 目前仅控制 `EXPLAIN` 语句的行为，`EXPLAIN ANALYZE` 语句仍然会将子查询提前展开。
+> [`tidb_opt_enable_non_eval_scalar_subquery`](/system-variables.md#tidb_opt_enable_non_eval_scalar_subquery-从-v730-版本开始引入) 目前仅控制 `EXPLAIN` 语句的行为，`EXPLAIN ANALYZE` 语句仍然会将子查询提前展开。
