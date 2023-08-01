@@ -118,7 +118,7 @@ driver = "file"
 # 注意，该参数**不是用于增量导入数据**，仅限目标表为空的场景使用。
 # 多个 TiDB Lightning 实例（物理导入模式）同时导入一张表时，此开关必须设置为 true。
 # 但前提是目标表不能存在数据，即所有的数据都只能是由 TiDB Lightning 导入。
-# incremental-import = false
+# parallel-import = false
 # 当后端是 “importer” 时，tikv-importer 的监听地址（需改为实际地址）。
 addr = "172.16.31.10:8287"
 # 逻辑导入模式插入冲突数据时执行的操作。关于冲突检测详细信息请查阅：https://docs.pingcap.com/zh/tidb/dev/tidb-lightning-logical-import-mode-usage#冲突数据检测
