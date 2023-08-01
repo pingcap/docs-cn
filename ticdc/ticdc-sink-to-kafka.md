@@ -310,7 +310,7 @@ Kafka Topic 对可以接收的消息大小有限制，由 [`max.message.bytes`](
 large-message-handle-option = "handle-key-only"
 ```
 
-#### 消费只有 Handle-Key 的消息
+### 消费只有 Handle-Key 的消息
 
 只有 Handle-key 数据的消息格式如下：
 
