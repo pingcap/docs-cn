@@ -220,6 +220,8 @@ Runaway Queries 指那些执行时间或者消耗的资源超出预期的查询�
 
 `WATCH` 中的 `DURATION` 选项，用于表示此识别项的持续时间，默认为无限长。
 
+当监控项被添加后，匹配特征和 ACTION 都不会随着 `QUERY_LIMIT` 配置的修改或删除而改变和删除。可以使用 `QUERY WATCH REMOVE` 来删除监控项。
+
 `QUERY_LIMIT` 具体格式如下：
 
 | 参数            | 含义           | 备注                                   |
@@ -255,7 +257,7 @@ Runaway Queries 指那些执行时间或者消耗的资源超出预期的查询�
 参数说明如下：
 
 - `RESOURCE GROUP` 用于指定资源组。此语句添加的 Runaway Queries 监控特征将添加到该资源组的监控列表。此参数可以省略，省略时作用于 `default` 资源组。
-- `ACTION` 的含义与 `QUERY LIMIT` 相同。此参数可以省略，省略时表示识别后的对应操作采用资源组中 `QUERY LIMIT` 配置的 `ACTION`。如果资源组没有配置 `ACTION`，会报错。
+- `ACTION` 的含义与 `QUERY LIMIT` 相同。此参数可以省略，省略时表示识别后的对应操作采用此时资源组中 `QUERY LIMIT` 配置的 `ACTION`，且不会随着 `QUERY LIMIT` 配置的改变而改变。如果资源组没有配置 `ACTION`，会报错。
 - `QueryWatchTextOption` 参数有 `SQL DIGEST`、`PLAN DIGEST`、`SQL TEXT` 三种类型。
     - `SQL DIGEST` 的含义与 `QUERY LIMIT` `WATCH` 类型中的 `SIMILAR` 相同，后面紧跟的参数可以是字符串、用户自定义变量以及其他计算结果为字符串的表达式，但需要的字符串长度必须为 64，该长度与 TiDB 中关于 Digest 的定义一致。
     - `PLAN DIGEST` 的含义与 `PLAN` 相同。输入参数为 Digest 字符串。
@@ -277,6 +279,29 @@ Runaway Queries 指那些执行时间或者消耗的资源超出预期的查询�
 
     ```sql
     QUERY WATCH ADD RESOURCE GROUP rg1 ACTION KILL PLAN DIGEST 'd08bc323a934c39dc41948b0a073725be3398479b6fa4f6dd1db2a9b115f7f57';
+    ```
+
+4. 通过查询 `information_schema.runaway_watches` 获取监控项 ID，删除该监控项。
+
+    ```sql
+    select * from information_schema.runaway_watches order by id;
+    ```
+
+    ```sql
+    *************************** 1. row ***************************
+                    ID: 20003
+    RESOURCE_GROUP_NAME: rg2
+            START_TIME: 2023-07-28 13:06:08
+            END_TIME: UNLIMITED
+                WATCH: Similar
+            WATCH_TEXT: 5b7fd445c5756a16f910192ad449c02348656a5e9d2aa61615e6049afbc4a82e
+                SOURCE: 127.0.0.1:4000
+                ACTION: Kill
+    1 row in set (0.00 sec)
+    ```
+
+    ```sql
+    query watch remove 20003;
     ```
 
 #### 可观测性

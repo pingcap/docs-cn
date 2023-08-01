@@ -110,5 +110,5 @@ RESOURCE_GROUP_NAME: rg1
     - `Similar` 表示按照 SQL Digest 匹配，此时列 `WATCH_TEXT` 显示的是 SQL Digest。
     - `Exact` 表示按照 SQL 文本匹配，此时列 `WATCH_TEXT` 显示的是 SQL 文本。
 * `SOURCE` 表示识别项来源，如果是被 `QUERY_LIMIT` 的规则识别，则是识别到的 TiDB IP；如果是手动添加，则是 `manual`。
-* `ACTION` 表示识别后的对应操作，如果是 `NoneAction`，则表示此条识别项未配置 ACTION，且资源组也无 `QUERY_LIMIT` 配置，不会有对应操作。
+* `ACTION` 表示识别后的对应操作。
 
