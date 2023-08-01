@@ -55,7 +55,7 @@ with get_mysqlclient_connection(autocommit=True) as conn:
 ```python
 with get_mysqlclient_connection(autocommit=True) as conn:
     with conn.cursor() as cur:
-        player_id = 1
+        player_id = "test"
         cursor.execute("DELETE FROM player WHERE id = %s", (player_id,))
 ```
 
