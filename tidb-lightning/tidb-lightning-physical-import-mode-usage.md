@@ -93,7 +93,7 @@ Lightning 的完整配置文件可参考[完整配置及命令行参数](/tidb-l
 
 冲突数据，即两条或两条以上存在主键或唯一键列数据重复的记录。当数据源中的记录存在冲突数据，如果没有启用冲突数据检测功能，将导致该表真实总行数和使用唯一索引查询的总行数不一致。
 
-冲突数据检测分为新版冲突检测 (`conflict`) 与旧版冲突检测（`tikv-importer.duplicate-resolution`）两种模式。目前两种模式不能同时使用。
+冲突数据检测分为新版冲突检测 (`conflict`) 与旧版冲突检测（`tikv-importer.duplicate-resolution`）两种模式。
 
 ### 新版冲突检测
 
@@ -114,7 +114,9 @@ Lightning 的完整配置文件可参考[完整配置及命令行参数](/tidb-l
 
 - 在导入之前，前置冲突检测会先读取全部数据并编码，以检测潜在的冲突数据。检测过程中会使用 `tikv-importer.sorted-kv-dir` 存储临时文件。检测完成后，会保留检查结果至导入阶段以供读取。因此在耗时、磁盘空间占用、读取数据的 API 请求三个方面会有额外开销。
 - 新版冲突检测只能在单节点完成，不适用于并行导入以及开启了 “disk-quota” 参数的场景。
-当配置 [`conflict.strategy`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置) 不为空时，TiDB Lightning 会开启新版冲突检测。
+- 当配置 [`conflict.strategy`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置) 不为空时，TiDB Lightning 会开启新版冲突检测。
+- 新版冲突检测 (`conflict`) 与旧版冲突检测（`tikv-importer.duplicate-resolution`）两种模式不能同时使用。
+
 相较于旧版冲突检测，如果原数据冲突数据较多的情况下，新版冲突检测的总耗时更少。因此建议在已知数据含有冲突数据、且本地磁盘空间充足的单节点导入任务中使用新版冲突检测。
 
 ### 旧版冲突检测
