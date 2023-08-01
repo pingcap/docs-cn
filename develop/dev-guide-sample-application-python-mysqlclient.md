@@ -1,12 +1,12 @@
 ---
-title: TiDB 和 mysqlclient 的简单 CRUD 应用程序
-summary: 给出一个 TiDB 和 mysqlclient 的简单 CRUD 应用程序示例。
+title: TiDB 和 mysqlclient 的简单示例
+summary: 给出 TiDB 和 mysqlclient 的简单示例代码片段。
 ---
 
 <!-- markdownlint-disable MD024 -->
 <!-- markdownlint-disable MD029 -->
 
-# TiDB 和 mysqlclient 的简单 CRUD 应用程序
+# TiDB 和 mysqlclient 的简单示例
 
 [mysqlclient](https://pypi.org/project/mysqlclient/) 为当前比较流行的开源 Python Driver 之一。
 
