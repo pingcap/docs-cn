@@ -14,7 +14,7 @@ This document describes how to use TiDB and GORM to build a simple CRUD applicat
 
 > **Note:**
 >
-> It is recommended to use Golang 1.16 or a later version.
+> It is recommended to use Golang 1.20 or a later version.
 
 ## Step 1. Launch your TiDB cluster
 
@@ -292,15 +292,10 @@ Suppose that the password you set is `123456`, and the connection parameters you
 - Port: `4000`
 - User: `2aEp24QWEDLqRFs.root`
 
-In this case, you can modify the `mysql.RegisterTLSConfig` and `dsn` as follows:
+In this case, you can modify the `dsn` as follows:
 
 ```go
-mysql.RegisterTLSConfig("register-tidb-tls", &tls.Config {
-    MinVersion: tls.VersionTLS12,
-    ServerName: "xxx.tidbcloud.com",
-})
-
-dsn := "2aEp24QWEDLqRFs.root:123456@tcp(xxx.tidbcloud.com:4000)/test?charset=utf8mb4&tls=register-tidb-tls"
+dsn := "2aEp24QWEDLqRFs.root:123456@tcp(xxx.tidbcloud.com:4000)/test?charset=utf8mb4&tls=true"
 ```
 
 ### Step 3.2 Run the code

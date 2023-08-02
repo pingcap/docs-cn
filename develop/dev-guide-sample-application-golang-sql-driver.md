@@ -13,7 +13,7 @@ This document describes how to use TiDB and [Go-MySQL-Driver](https://github.com
 
 > **Note:**
 >
-> It is recommended to use Golang 1.16 or a later version.
+> It is recommended to use Golang 1.20 or a later version.
 
 ## Step 1. Launch your TiDB cluster
 
