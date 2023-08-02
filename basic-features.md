@@ -171,6 +171,7 @@ summary: 了解 TiDB 的功能概览。
 | [随机采样约 10000 行数据来快速构建统计信息](/system-variables.md#tidb_enable_fast_analyze) | E | E | E | E | E | E | E | E | E | E | E |
 | [锁定统计信息](/statistics.md#锁定统计信息) | E | E | E | E | N | N | N | N | N | N | N |
 | [轻量级统计信息初始化](/statistics.md#统计信息的加载) | Y | Y | E | N | N | N | N | N | N | N | N |
+| [显示统计信息收集的进度](/sql-statements/sql-statement-show-analyze-status.md) | Y | N | N | N | N | N | N | N | N | N | N |
 
 ## 安全
 
