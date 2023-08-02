@@ -12,7 +12,7 @@ summary: 给出一个 TiDB 和 Golang 的简单 CRUD 应用程序示例。
 
 > **注意：**
 >
-> 推荐使用 Golang 1.16 以上版本进行 TiDB 的应用程序的编写。
+> 推荐使用 Golang 1.20 以上版本进行 TiDB 的应用程序的编写。
 
 ## 第 1 步：启动你的 TiDB 集群
 
@@ -762,15 +762,10 @@ dsn := "root:@tcp(127.0.0.1:4000)/test?charset=utf8mb4"
 - Port: `4000`
 - User: `2aEp24QWEDLqRFs.root`
 
-那么此处应将 `mysql.RegisterTLSConfig` 和 `dsn` 更改为：
+那么此处应将 `dsn` 更改为：
 
 ```go
-mysql.RegisterTLSConfig("register-tidb-tls", &tls.Config {
-    MinVersion: tls.VersionTLS12,
-    ServerName: "xxx.tidbcloud.com",
-})
-
-dsn := "2aEp24QWEDLqRFs.root:123456@tcp(xxx.tidbcloud.com:4000)/test?charset=utf8mb4&tls=register-tidb-tls"
+dsn := "2aEp24QWEDLqRFs.root:123456@tcp(xxx.tidbcloud.com:4000)/test?charset=utf8mb4&tls=true"
 ```
 
 </div>
