@@ -111,16 +111,16 @@ driver = "file"
 # keep-after-success = false
 
 [conflict]
-# 新版控制冲突数据处理策略。默认值为 ""。
-# - ""：不进行冲突数据检测和处理，但如果源文件里存在主键或者唯一键冲突的记录，则会在后续步骤（Checksum）报错
+# 从 v7.3.0 开始引入的新版冲突数据处理策略。默认值为 ""。
+# - ""：不进行冲突数据检测和处理。如果源文件存在主键或唯一键冲突的记录，后续步骤 (Checksum) 会报错
 # - "error"：检测到导入的数据存在主键或唯一键冲突的数据时，终止导入并报错
-# - "replace"：遇到主键或者唯一键冲突的数据时，保留新的数据，覆盖旧的数据。
-# - "ignore"：遇到主键或者唯一键冲突的数据时，保留旧的数据，忽略新的数据。
-# 目前不能与 tikv-importer.duplicate-resolution （旧版冲突检测处理）同时使用
+# - "replace"：遇到主键或唯一键冲突的数据时，保留新的数据，覆盖旧的数据
+# - "ignore"：遇到主键或唯一键冲突的数据时，保留旧的数据，忽略新的数据
+# 目前不能与 tikv-importer.duplicate-resolution（旧版冲突检测处理策略）同时使用
 strategy = ""
-# 控制 `strategy` 为 "replace" 和 "ignore" 时，能处理的冲突数据上限。仅在 `strategy` 为 "replace" 和 "ignore" 时可配置，默认为 `9223372036854775807`，意味着几乎能容忍全部错误。
+# 控制 strategy 为 "replace" 或 "ignore" 时，能处理的冲突数据上限。仅在 strategy 为 "replace" 或 "ignore" 时可配置。默认为 9223372036854775807，表示几乎可以容忍所有错误。
 # threshold = 9223372036854775807
-# 控制冲突数据记录表 (conflict_records) 中记录冲突数据的条数上限。默认为 `100`。如果 strategy 为 "ignore"，则会记录被忽略写入的冲突记录；如果 strategy 为 "replace"，则会记录被覆盖的冲突记录。但是逻辑导入模式时，有个限制选择 replace 策略是无法记录到冲突记录的。
+# 控制冲突数据记录表 (conflict_records) 中记录冲突数据的条数上限。默认为 100。如果 strategy 为 "ignore"，则会记录被忽略写入的冲突记录。如果 strategy 为 "replace"，则会记录被覆盖的冲突记录。但在逻辑导入模式下，replace 策略无法记录冲突记录。
 # max-record-rows = 100
 
 [tikv-importer]
