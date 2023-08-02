@@ -147,6 +147,8 @@ TiDB 版本：7.3.0
 |TiDB Lightning  | `conflict.threshold` | 新增 |TiDB Lightning 新版冲突检测与处理策略允许的冲突上限，`conflict.strategy="error"` 时默认值为 `0`，当 `conflict.strategy="replace"` 或 `conflict.strategy="ignore"` 时默认值为 maxint。 |
 |TiDB Lightning  | `enable-diagnose-logs` | 新增 | 是否开启诊断日志。默认为 `false`，即只输出和导入有关的日志，不会输出依赖的其他组件的日志。设置为 `true` 后，既输出和导入相关的日志，也输出依赖的其他组件的日志，并开启 GRPC debug，可用于问题诊断。 |
 |TiDB Lightning  | `tikv-importer.on-duplicate` | 废弃 | TiDB Lightning 逻辑导入模式插入冲突数据时执行的操作。从 v7.3.0 起，该参数由 [`conflict.strategy`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置) 取代。|
+| TiDB Lightning | `tikv-importer.incremental-import` | 删除 | TiDB Lightning 并行导入参数。因为该参数名容易被误认为是增量导入的参数，因此更名为 `tikv-importer.parallel-import`。如果用户传入旧的参数名，会被自动转成新的参数名。|
+| TiDB Lightning | [`tikv-importer.parallel-import`](/tidb-lightning/tidb-lightning-configuration.md) | 新增 | TiDB Lightning 并行导入参数。用于替代原有的 `tikv-importer.incremental-import` 参数，因为原有参数会被误认为是增量导入的参数而误用。 **tw:qiancai** <!--1516--> |
 |BR  | azblob.encryption-scope | 新增 |BR 为外部存储 Azure Blob Storage 提供加密范围支持 |
 |BR  | azblob.encryption-key | 新增 |BR 为外部存储 Azure Blob Storage 提供加密密钥支持 |
 | TiCDC | [`large-message-handle-option`](/ticdc/ticdc-sink-to-kafka.md#处理超过-kafka-topic-限制的消息) | 新增 | 默认为空，即消息大小超过 Kafka Topic 的限制后，同步任务失败。设置为 "handle-key-only" 时，如果消息超过大小，只发送 handle key 以减少消息的大小；如果依旧超过大小，则同步任务失败。 |
