@@ -1172,7 +1172,9 @@ RocksDB 相关的配置项。
 ### `max-total-wal-size`
 
 + RocksDB WAL 总大小限制，即 `data-dir` 目录下 `*.log` 文件的大小总和。
-+ 默认值：`"4GB"`
++ 默认值：
+    + 当 `storage.engine="raft-kv"` 时，默认值为 `"4GB"`
+    + 当 `storage.engine="partitioned-raft-kv"` 时，默认值为 `1`
 
 ### `stats-dump-period`
 
