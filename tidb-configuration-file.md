@@ -121,6 +121,10 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：""
 + 默认情况下，TiDB 版本号格式为：`5.7.${mysql_latest_minor_version}-TiDB-${tidb_version}`。
 
+> **注意：**
+>
+> `server-version` 的值会被 TiDB 节点用于验证当前 TiDB 的版本。因此在进行 TiDB 集群升级前，请将 `server-version` 的值设置为空或者当前 TiDB 真实的版本值，避免出现非预期行为。
+
 ### `repair-mode`
 
 + 用于开启非可信修复模式，启动该模式后，可以过滤 `repair-table-list` 名单中坏表的加载。
