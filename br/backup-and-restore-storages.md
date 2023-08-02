@@ -80,6 +80,8 @@ BACKUP DATABASE * TO 's3://bucket-name/prefix' SEND_CREDENTIALS_TO_TIKV = FALSE;
     - `account-key`：访问密钥
     - `sas-token`：共享访问签名令牌
     - `access-tier`：上传对象的存储类别，例如 `Hot`、`Cool`、`Archive`，默认值为该存储账户的默认访问层。
+    - `encryption-scope`：服务端的[加密范围 (Encryption Scope)](https://learn.microsoft.com/zh-cn/azure/storage/blobs/encryption-scope-manage?tabs=powershell#upload-a-blob-with-an-encryption-scope)
+    - `encryption-key`：服务端使用的[加密密钥 (Encryption Key)](https://learn.microsoft.com/zh-cn/azure/storage/blobs/encryption-customer-provided-keys)，采用的加密算法为 AES256
 
 </div>
 </SimpleTab>
@@ -251,6 +253,10 @@ BACKUP DATABASE * TO 's3://bucket-name/prefix' SEND_CREDENTIALS_TO_TIKV = FALSE;
 ### Amazon S3 存储服务端加密备份数据
 
 TiDB 备份恢复功能支持对备份到 Amazon S3 的数据进行 S3 服务端加密 (SSE)。S3 服务端加密也支持使用用户自行创建的 AWS KMS 密钥，详细信息请参考 [BR S3 服务端加密](/encryption-at-rest.md#br-s3-服务端加密)。
+
+### Azure Blob Storage 存储服务端加密备份数据
+
+TiDB 备份恢复功能支持对备份到 Azure Blob Storage 的数据设置 Azure 服务端加密范围 (Encryption Scope) 或提供加密密钥 (Encryption Key)，为同一存储账户的不同备份数据建立安全边界。详细信息请参考 [BR Azure Blob Storage 服务端加密](/encryption-at-rest.md#br-azure-blob-storage-服务端加密)。
 
 ## 存储服务其他功能支持
 
