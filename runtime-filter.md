@@ -79,7 +79,7 @@ Runtime Filter 的执行方式如下：
 
 本小节以 TPC-DS 的数据集为例，使用 `catalog_sales` 表和 `date_dim` 表进行 Join 操作，说明如何使用 Runtime Filter 提升查询效率。
 
-### 第 1 步：创建带 TiFlash 副本的表
+### 第 1 步：创建表的 TiFlash 副本
 
 给 `catalog_sales` 表和 `date_dim` 表分别增加一个 TiFlash 副本。
 
