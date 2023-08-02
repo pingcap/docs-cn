@@ -192,7 +192,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 > **注意：**
 >
->当集群中 TiDB 实例数量超过 2048 或者单个 TiDB 实例的同时连接数超过 1048576 后，由于 32 位 connection ID 空间不足，将自动升级为 64 位 connection ID。升级过程中业务以及已建立的连接不受影响，但后续的新建连接将无法用过 MySQL 命令行 <kbd>ctrl</kbd>+<kbd>c</kbd> 终止。
+> 当集群中 TiDB 实例数量超过 2048 或者单个 TiDB 实例的同时连接数超过 1048576 后，由于 32 位 connection ID 空间不足，将自动升级为 64 位 connection ID。升级过程中业务以及已建立的连接不受影响，但后续的新建连接将无法通过 MySQL 命令行 <kbd>ctrl</kbd>+<kbd>c</kbd> 终止。
 
 ### `enable-forwarding` <span class="version-mark">从 v5.0.0 版本开始引入</span>
 

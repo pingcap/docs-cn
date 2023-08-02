@@ -47,7 +47,7 @@ Query OK, 0 rows affected (0.00 sec)
 ## MySQL 兼容性
 
 - MySQL 的 `KILL` 语句仅能终止当前连接的 MySQL 实例上的连接，TiDB 的 `KILL` 语句能终止整个集群中任意一个 TiDB 实例上的连接。
-- v7.2.0 及以前的版本不支持 MySQL 命令行 <kbd>ctrl</kbd>+<kbd>c</kbd> 终止查询或连接。
+- v7.2.0 及以前的版本不支持使用 MySQL 命令行 <kbd>ctrl</kbd>+<kbd>c</kbd> 终止查询或连接。
 
 ## 行为变更说明
 
@@ -57,7 +57,7 @@ TiDB 从 v7.3.0 起支持生成 32 位 connection ID（由 [`enable-32bits-conne
 
 > **注意：**
 >
-> 当集群中 TiDB 实例数量超过 2048 或者单个 TiDB 实例的同时连接数超过 1048576 后，由于 32 位 connection ID 空间不足，将自动升级为 64 位 connection ID。升级过程中业务以及已建立的连接不受影响，但后续的新建连接将无法用过 MySQL 命令行 <kbd>ctrl</kbd>+<kbd>c</kbd> 终止。
+> 当集群中 TiDB 实例数量超过 2048 或者单个 TiDB 实例的同时连接数超过 1048576 后，由于 32 位 connection ID 空间不足，将自动升级为 64 位 connection ID。升级过程中业务以及已建立的连接不受影响，但后续的新建连接将无法通过 MySQL 命令行 <kbd>ctrl</kbd>+<kbd>c</kbd> 终止。
 
 对于 TiDB v6.1.0 之前的版本，或未启用 Global Kill 功能时：
 
