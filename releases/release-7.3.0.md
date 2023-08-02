@@ -56,11 +56,11 @@ TiDB 版本：7.3.0
 
     更多信息，请参考[用户文档](/optimizer-hints.md)。
 
-* 手动标记资源使用超出预期的查询 (实验特性) [#43691](https://github.com/pingcap/tidb/issues/43691) @[Connor1996](https://github.com/Connor1996) @[CabinfeverB](https://github.com/CabinfeverB) **tw@hfxsd** <!--1446-->
+* 手动标记资源使用超出预期的查询（实验特性）[#43691](https://github.com/pingcap/tidb/issues/43691) @[Connor1996](https://github.com/Connor1996) @[CabinfeverB](https://github.com/CabinfeverB) **tw@hfxsd** <!--1446-->
 
-    在 v7.2.0 中，TiDB 对资源使用超出预期的查询 (Runaway Queries) 实施自动管理，运行时间超过预期的查询能够被自动降级或取消。在实际运行时，只依靠规则无法筛覆盖所有情况。因此，在 v7.3.0 中，补充了手动标记查询的能力。利用新增的命令 [`QUERY WATCH`](/sql-statements/sql-statement-query-watch.md)，你可以根据 SQL 的文本、SQL Digest、或者执行计划对查询进行标记，命中的查询可以被降级或取消。
+    在 v7.2.0 中，TiDB 自动管理资源使用超出预期的查询 (Runaway Query)，即自动降级或取消运行时间超出预期的查询。在实际运行时，只依靠规则无法覆盖所有情况。因此，TiDB v7.3.0 新增手动标记查询的功能。利用新增的命令 [`QUERY WATCH`](/sql-statements/sql-statement-query-watch.md)，你可以根据 SQL 的文本、SQL Digest 或执行计划标记查询，命中的查询可以被降级或取消。
 
-    手动标记 Runaway Queries 的能力，为数据库中突发的性能问题提供了有效的干预手段。针对由查询引发的性能问题，在找到问题根本原因之前，能够快速缓解其对整体性能的影响，提升系统服务质量。 
+    手动标记 Runaway Query 的功能为数据库中突发的性能问题提供了有效的干预手段。针对由查询引发的性能问题，在定位根本原因之前，该功能可以快速缓解其对整体性能的影响，从而提升系统服务质量。
 
     更多信息，请参考[用户文档](/tidb-resource-control.md#query-watch-语句说明)。
 
@@ -98,17 +98,17 @@ TiDB 版本：7.3.0
 
 ### 数据迁移
 
-* TiDB Lightning 引入新版冲突数据检测与处理的能力 [#41629](https://github.com/pingcap/tidb/issues/41629) @[lance6716](https://github.com/lance6716) **tw@hfxsd** <!--1296-->
-     
-    在之前的版本中，TiDB Lightning 逻辑导入模式和物理导入模式都有各自的冲突检测和处理的方式，配置较为复杂且不易理解。另外使用物理导入模式，冲突的数据无法通过替换 (`replace`) 或忽略 (`ignore`) 策略来处理。新版的冲突检测和处理方式，逻辑导入模式和物理导入模式都使用同一套冲突检测和处理方式，即遇到冲突数据报错 (`error`)、替换 (`replace`) 或忽略 (`ignore`) 冲突数据。同时还支持设置冲突记录的上限，如处理多少冲突记录后任务中断退出，你也可以让程序记录哪些数据发生了冲突，方便排查。
+* TiDB Lightning 引入新版冲突数据检测和处理机制 [#41629](https://github.com/pingcap/tidb/issues/41629) @[lance6716](https://github.com/lance6716) **tw@hfxsd** <!--1296-->
 
-    如果导入数据有较多的冲突数据，推荐使用新版的冲突检测和处理策略，以获得更好的性能。注意新版和旧版冲突策略互斥，不能同时使用。未来将废弃旧版冲突检测和处理策略。
+    在之前的版本中，TiDB Lightning 的逻辑导入模式和物理导入模式各自使用独立的冲突检测和处理方式，其配置较为复杂且不易理解。另外，在物理导入模式下，无法通过替换 (`replace`) 或忽略 (`ignore`) 策略处理冲突的数据。从 v7.3.0 开始，TiDB Lightning 引入新版冲突检测和处理机制，逻辑导入模式和物理导入模式都使用相同的冲突检测和处理方式，即可以选择在遇到冲突数据时报错 (`error`)、替换 (`replace`) 或忽略 (`ignore`)。同时还支持设置冲突记录的上限，例如在处理指定数量冲突记录后任务中断退出，也可以记录哪些数据发生了冲突，以便后续排查。
+
+    当导入数据存在大量冲突时，推荐使用新版冲突检测和处理机制，以获得更好的性能。注意新版和旧版冲突处理机制不能同时使用。未来将废弃旧版冲突检测和处理机制。
     
     更多信息，请参考[用户文档](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#冲突数据检测)。  
 
 * TiDB Lightning 引入新的参数 `enable-diagnose-log` 用于打印更多的诊断日志，方便定位问题 [#45497](https://github.com/pingcap/tidb/issues/45497) @[D3Hunter](https://github.com/D3Hunter) **tw@hfxsd** <!--1517-->
     
-    默认情况下，此功能未启用，只会打印包含 `lightning/main` 的日志。当启用时，将打印所有包（包括 `client-go` 和 `tidb`）的日志，以帮助诊断与 `client-go` 和 `tidb` 相关的问题。
+    默认情况下，该功能未启用，即只打印包含 `lightning/main` 的日志。开启该功能后，将打印所有包（包括 `client-go` 和 `tidb`）的日志，以帮助诊断与 `client-go` 和 `tidb` 相关的问题。
     
     更多信息，请参考[用户文档](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-全局配置)。
 
@@ -124,8 +124,8 @@ TiDB 版本：7.3.0
 
 * TiDB Lightning **tw@hfxsd**
 
-    - `tikv-importer.on-duplicate` 废弃，由 [`conflict.strategy`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置) 取代。
-    - TiDB Lightning 停止迁移任务之前能容忍的最大非严重 (non-fatal errors) 错误数的参数 `max-error` 不再包含导入数据冲突的上限，而是由新的参数 [`conflict.threshold`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置) 来控制可容忍的最大冲突的记录数。
+    - 废弃 `tikv-importer.on-duplicate`，由 [`conflict.strategy`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置) 替代。
+    - TiDB Lightning 停止迁移任务之前能容忍的最大非严重 (non-fatal errors) 错误数的配置项 `max-error` 不再包含导入数据冲突记录的上限，由 [`conflict.threshold`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置) 控制可容忍的最大冲突的记录数。
 
 * 兼容性 2
 
