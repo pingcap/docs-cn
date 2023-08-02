@@ -80,6 +80,8 @@ This section describes the URI format of the storage services:
     - `account-key`: Specifies the access key.
     - `sas-token`: Specifies the shared access signature (SAS) token.
     - `access-tier`: Specifies the access tier of the uploaded objects, for example, `Hot`, `Cool`, or `Archive`. The default value is the default access tier of the storage account.
+    - `encryption-scope`: Specifies the [encryption scope](https://learn.microsoft.com/en-us/azure/storage/blobs/encryption-scope-manage?tabs=powershell#upload-a-blob-with-an-encryption-scope) for server-side encryption.
+    - `encryption-key`: Specifies the [encryption key](https://learn.microsoft.com/en-us/azure/storage/blobs/encryption-customer-provided-keys) for server-side encryption, which uses the AES256 encryption algorithm.
 
 </div>
 </SimpleTab>
@@ -251,6 +253,10 @@ You can configure the account used to access GCS by specifying the access key. I
 ### Amazon S3 server-side encryption
 
 BR supports server-side encryption when backing up data to Amazon S3. You can also use an AWS KMS key you create for S3 server-side encryption using BR. For details, see [BR S3 server-side encryption](/encryption-at-rest.md#br-s3-server-side-encryption).
+
+### Azure Blob Storage server-side encryption
+
+BR supports specifying the Azure server-side encryption scope or providing the encryption key when backing up data to Azure Blob Storage. This feature lets you establish a security boundary for different backup data of the same storage account. For details, see [BR Azure Blob Storage server-side encryption](/encryption-at-rest.md#br-azure-blob-storage-server-side-encryption).
 
 ## Other features supported by the storage service
 
