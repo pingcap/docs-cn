@@ -125,7 +125,7 @@ Lightning 的完整配置文件可参考[完整配置及命令行参数](/tidb-l
 
 当配置 `tikv-importer.duplicate-resolution` 不为空时，TiDB Lightning 会开启旧版冲突检测。在 v7.2.0 及之前的版本中，TiDB Lightning 仅支持旧版冲突检测。旧版冲突数据检测支持两种策略：
 
-- `remove`：推荐方式。记录所有的冲突记录，和 'record' 模式相似。但是会删除所有的冲突记录，以确保目的 TiDB 中的数据状态保持一致。
+- `remove`：推荐方式。记录并删除所有的冲突记录，以确保目的 TiDB 中的数据状态保持一致。
 - `none`：关闭冲突数据检测。该模式是两种模式中性能最佳的，但是可能会导致目的 TiDB 中出现数据不一致的情况。
 
 在 v5.3 之前，TiDB Lightning 不具备冲突数据检测特性，若存在冲突数据将导致导入过程最后的 Checksum 环节失败。开启冲突检测特性的情况下，只要检测到冲突数据，TiDB Lightning 都会跳过最后的 Checksum 环节（因为必定失败）。
