@@ -13,7 +13,7 @@ aliases: ['/zh/tidb/v7.2/dev-guide-sample-application-golang']
 
 > **注意：**
 >
-> 推荐使用 Golang 1.16 以上版本进行 TiDB 的应用程序的编写。
+> 推荐使用 Golang 1.20 以上版本进行 TiDB 的应用程序的编写。
 
 ## 第 1 步：启动你的 TiDB 集群
 
