@@ -13,7 +13,7 @@ Avro 是由 [Apache Avro™](https://avro.apache.org/) 定义的一种数据交�
 >
 > 具体原因请参考 [TiCDC 在开启 Old Value 功能后更新事件格式有何变化？](/ticdc/ticdc-faq.md#ticdc-在开启-old-value-功能后更新事件格式有何变化)
 >
-> 从 v7.3.0 开始，如果开启了 [同步没有有效索引的表](/ticdc/ticdc-manage-changefeed.md#同步没有有效索引的表)，创建使用 avro 协议的 changefeed 会报错。
+> 从 v7.3.0 起，如果开启了[同步没有有效索引的表](/ticdc/ticdc-manage-changefeed.md#同步没有有效索引的表)，创建使用 Avro 协议的 changefeed 时会报错。
 
 ## 使用 Avro
 
