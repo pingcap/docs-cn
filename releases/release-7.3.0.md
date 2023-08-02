@@ -127,7 +127,9 @@ TiDB 版本：7.3.0
     - 废弃 `tikv-importer.on-duplicate`，由 [`conflict.strategy`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置) 替代。
     - TiDB Lightning 停止迁移任务之前能容忍的最大非严重 (non-fatal errors) 错误数的配置项 `max-error` 不再包含导入数据冲突记录的上限，由 [`conflict.threshold`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置) 控制可容忍的最大冲突的记录数。
 
-* 兼容性 2
+* TiCDC **tw@ran-huang**
+      - 当 Kafka sink 使用 Avro 协议时，如果开启了 `force-replicate` 参数，创建 changefeed 会报错。
+      - 由于 `delete-only-output-handle-key-columns` 和 `force-replicate` 参数不兼容，同时开启两个参数时，创建 changefeed 会报错。
 
 ### 系统变量
 
