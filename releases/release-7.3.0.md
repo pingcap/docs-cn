@@ -145,14 +145,15 @@ TiDB 版本：7.3.0
 
 | 配置文件 | 配置项 | 修改类型 | 描述 |
 | -------- | -------- | -------- | -------- |
-| TiKV | [`compaction-guard-min-output-file-size`](/tikv-configuration-file.md#compaction-guard-min-output-file-size) | 修改 | 默认值从 `"1MB"` 修改为 `"8MB"`。 |
-| TiKV | [`format-version`](/tikv-configuration-file.md#format-version-从-v620-版本开始引入) | 修改 | 当使用 Partitioned Raft KV (`storage.engine="partitioned-raft-kv"`) 时，默认值从 `2` 修改为 `5`。 |
-| TiKV | [`format-version`](/tikv-configuration-file.md#format-version-从-v630-版本开始引入) | 修改 | 当使用 Partitioned Raft KV (`storage.engine="partitioned-raft-kv"`) 时，默认值从 `2` 修改为 `5`。 |
-| TiKV | [`max-total-wal-size`](/tikv-configuration-file.md#max-total-wal-size) | 修改 | 当使用 Partitioned Raft KV (`storage.engine="partitioned-raft-kv"`) 时，默认值从 `"4GB"` 修改为 `1`。 |
-| TiKV | [`stats-dump-period`](/tikv-configuration-file.md#stats-dump-period) | 修改 | 当使用 Partitioned Raft KV (`storage.engine="partitioned-raft-kv"`) 时，默认值从 `"10m"` 修改为 `"0"`。|
-| TiKV | [`storage.block-cache.capacity`](/tikv-configuration-file.md#capacity) | 修改 | 当使用 Partitioned Raft KV (`storage.engine="partitioned-raft-kv"`) 时，默认值从系统总内存大小的 45% 修改为系统总内存大小的 30%。 |
-| TiKV | [`write-buffer-limit`](/tikv-configuration-file.md#write-buffer-limit-从-v660-版本开始引入) | 修改 | 当 `storage.engine="raft-kv"` 时，默认值从本机内存的 25% 修改为 `0`，即不限制。当使用 Partitioned Raft KV (`storage.engine="partitioned-raft-kv"`) 时，默认值从本机内存的 25% 修改为本机内存的 20%。 |
-| TiKV | [`write-buffer-size`](/tikv-configuration-file.md#write-buffer-size) | 修改 | 当使用 Partitioned Raft KV (`storage.engine="partitioned-raft-kv"`) 时，默认值从 `"32MB"` 修改为 `"4MB"`。 |
+| TiKV | [<code>rocksdb.\[defaultcf\|writecf\|lockcf\].compaction-guard-min-output-file-size</code>](/tikv-configuration-file.md#compaction-guard-min-output-file-size) | 修改 | 为解决大数据写入情况下 compaction 速度跟不上写入速度的问题，默认值从 `"1MB"` 修改为 `"8MB"`。 |
+| TiKV | [<code>rocksdb.\[defaultcf\|writecf\|lockcf\].format-version</code>](/tikv-configuration-file.md#format-version-从-v620-版本开始引入) | 修改 | 当使用 Partitioned Raft KV (`storage.engine="partitioned-raft-kv"`) 时，会引入 Ribbon filter，因此将默认值从 `2` 修改为 `5`。 |
+| TiKV | [`raft-engine.format-version`](/tikv-configuration-file.md#format-version-从-v630-版本开始引入) | 修改 | 当使用 Partitioned Raft KV (`storage.engine="partitioned-raft-kv"`) 时，会引入 Ribbon filter，因此将默认值从 `2` 修改为 `5`。 |
+| TiKV | [`raftdb.max-total-wal-size`](/tikv-configuration-file.md#max-total-wal-size-1) | 修改 | 当使用 Partitioned Raft KV (`storage.engine="partitioned-raft-kv"`) 时，TiKV 会跳过写 WAL，因此默认值从 `"4GB"` 修改为 `1`，即禁用 WAL。 |
+| TiKV | [`rocksdb.max-total-wal-size`](/tikv-configuration-file.md#max-total-wal-size) | 修改 | 当使用 Partitioned Raft KV (`storage.engine="partitioned-raft-kv"`) 时，TiKV 会跳过写 WAL，因此默认值从 `"4GB"` 修改为 `1`，即禁用 WAL。 |
+| TiKV | [`rocksdb.stats-dump-period`](/tikv-configuration-file.md#stats-dump-period) | 修改 | 当使用 Partitioned Raft KV (`storage.engine="partitioned-raft-kv"`) 时，为关闭冗余日志的打印，默认值从 `"10m"` 修改为 `"0"`。|
+| TiKV | [`storage.block-cache.capacity`](/tikv-configuration-file.md#capacity) | 修改 | 当使用 Partitioned Raft KV (`storage.engine="partitioned-raft-kv"`) 时，为弥补 memtable 的内存开销，将默认值从系统总内存大小的 45% 修改为系统总内存大小的 30%。 |
+| TiKV | [`rocksdb.write-buffer-limit`](/tikv-configuration-file.md#write-buffer-limit-从-v660-版本开始引入) | 修改 | 为减小 memtable 的内存开销，当 `storage.engine="raft-kv"` 时，默认值从本机内存的 25% 修改为 `0`，即不限制。当使用 Partitioned Raft KV (`storage.engine="partitioned-raft-kv"`) 时，默认值从本机内存的 25% 修改为本机内存的 20%。 |
+| TiKV | [`rocksdb.lockcf.write-buffer-size`](/tikv-configuration-file.md#write-buffer-size) | 修改 | 当使用 Partitioned Raft KV (`storage.engine="partitioned-raft-kv"`) 时，为加快 lockcf 上 compaction 的速度，默认值从 `"32MB"` 修改为 `"4MB"`。 |
 |TiDB Lightning  | `conflict.max-record-rows` | 新增 | TiDB Lightning 新版冲突检测与处理策略，用于记录在数据导入过程中遇到的冲突记录，并允许设置最大上限，默认值为 `100`。 |
 |TiDB Lightning  | `conflict.strategy` | 新增 | TiDB Lightning 新版冲突检测与处理的策略，包含 ""（不做冲突检测），`error`（遇到冲突数据即报错并停止导入），`replace`（遇到冲突记录替换已有的冲突记录），`ignore`（遇到冲突记录忽略需要插入的该条冲突记录）四种策略。默认值为 ""， 即不做冲突检测。 |
 |TiDB Lightning  | `conflict.threshold` | 新增 |TiDB Lightning 新版冲突检测与处理策略允许的冲突上限，`conflict.strategy="error"` 时默认值为 `0`，当 `conflict.strategy="replace"` 或 `conflict.strategy="ignore"` 时默认值为 maxint。 |
@@ -179,7 +180,7 @@ TiDB 版本：7.3.0
 + TiDB
 
     - 游标 (Cursor) 结果过大时，写入 TiDB 临时磁盘空间从而避免OOM [#43233](https://github.com/pingcap/tidb/issues/43233) @[YangKeao](https://github.com/YangKeao) <!--1430-->
-    - 新增 `tidb_opt_enable_non_eval_scalar_subquery` 系统变量用于控制 `EXPLAIN` 语句是否在优化阶段提前执行子查询 [#22076](https://github.com/pingcap/tidb/issues/22076) @[winoros](https://github.com/winoros) **tw@Oreoxmt** <!--983-->
+    - 新增 [`tidb_opt_enable_non_eval_scalar_subquery`](/system-variables.md#tidb_opt_enable_non_eval_scalar_subquery-从-v730-版本开始引入) 系统变量用于控制 `EXPLAIN` 语句是否在优化阶段提前执行子查询 [#22076](https://github.com/pingcap/tidb/issues/22076) @[winoros](https://github.com/winoros) **tw@Oreoxmt** <!--983-->
     - 在启用 [Global Kill](/tidb-configuration-file#enable-global-kill-从-v610-版本开始引入) 的情况下，可以通过 <kbd>Control+C</kbd> 终止当前会话 [#8854](https://github.com/pingcap/tidb/issues/8854) @[pingyu](https://github.com/pingyu) **tw@Oreoxmt**
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
