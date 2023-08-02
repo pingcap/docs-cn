@@ -12,7 +12,7 @@ Runtime Filter 是 TiDB v7.3 引入的新功能，旨在提升 MPP 场景下 Has
 - Hash Join：一种实现 Join 关系代数的方式。它通过在 Join 的一侧构建 Hash Table 并在另一侧不断匹配 Hash Table 来得到 Join 的结果。
 - Build Side：Hash Join 中用于构建 Hash Table 的一侧，称为 Build Side。本文默认以 Join 的右表作为 Build Side。
 - Probe Side：Hash Join 中用于不断匹配 Hash Table 的一侧，称为 Probe Side。本文默认以 Join 的左表作为 Probe Side。
-- Filter: 也称谓词，在本文档中指过滤条件。
+- Filter：也称谓词，在本文中指过滤条件。
 
 ## Runtime Filter 的原理
 
