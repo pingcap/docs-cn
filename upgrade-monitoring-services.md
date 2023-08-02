@@ -108,4 +108,3 @@ TiDB 安装包中直接使用了 AlertManager 官方组件包，因此升级 Ale
 ```bash
 tiup cluster patch <cluster-name> alertmanager-v{new-version}-linux-amd64.tar.gz -R alertmanager
 ```
-
