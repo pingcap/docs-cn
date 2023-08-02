@@ -75,7 +75,7 @@ tiup cluster patch <cluster-name> prometheus-{new-version}.tar.gz -R prometheus
 
 ### 第 3 步：构造新的适用于 TiUP 的 Grafana 组件包
 
-1. 复制第 1 步中解压的文件，替换第 2 步解压后的 `./grafana-v{version}-linux-amd64/prometheus` 目录下的对应文件。
+1. 复制第 1 步中解压的文件，替换第 2 步解压后的 `./grafana-v{version}-linux-amd64/` 目录下的对应文件。
 2. 重新压缩替换文件后的 `./grafana-v{version}-linux-amd64` 目录，并将新的压缩包命名为 `grafana-v{new-version}.tar.gz`。其中，`{new-version}` 可以由你自行指定。
 
     ```bash
