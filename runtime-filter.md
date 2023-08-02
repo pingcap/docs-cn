@@ -52,7 +52,8 @@ Hash Join 通常情况下的执行方式为：
 
 Runtime Filter 的执行方式如下：
 
-1. 扫描 `date_dim` 的数据，PhysicalHashJoin 根据 `date_dim` 数据计算出一个过滤条件，比如 `date_dim in (2001/01/01~2001/12/31)`。
+1. 扫描 `date_dim` 的数据
+2. PhysicalHashJoin 根据 Build Side 数据计算出一个过滤条件，比如 `date_dim in (2001/01/01~2001/12/31)`。
 2. 将该过滤条件发送给等待扫描 `store_sales` 的 TableFullScan。
 3. `store_sales` 应用该过滤条件，并将过滤后的数据传递给 PhysicalHashJoin，从而减少 Probe Side 的扫表数据量以及匹配 Hash Table 的计算量。
 
@@ -61,7 +62,7 @@ Runtime Filter 的执行方式如下：
             +-------->+-------------------+
             |         |PhysicalHashJoin   |<-----+
             |    +----+                   |      |
-4. After RF  |    |    +-------------------+      | 1. Scan T2
+4. After RF |    |    +-------------------+      | 1. Scan T2
     5000    |    |3. Send RF                     |      365
             |    | filter data                   |
             |    |                               |
@@ -70,6 +71,8 @@ Runtime Filter 的执行方式如下：
       |  store_sales    |                |    date_dim    |
       +-----------------+                +----------------+
 ```
+
+* (上图中的 RF 是 Runtime Filter 的缩写) *
 
 对比以上两个图可以看出，`store_sales` 的扫描量从 100 万减少到了 5000。通过减少 Table Full Scan 扫描的数据量，Runtime Filter 可以减少匹配 Hash Table 的次数，避免不必要的 I/O 和网络传输，从而显著提升了 Join 操作的效率。
 
