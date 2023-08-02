@@ -298,6 +298,72 @@ This feature is currently not supported, which might be supported in a future re
 
 TiDB has a transaction timeout mechanism. When a transaction runs for a period longer than [`max-txn-ttl`](/tidb-configuration-file.md#max-txn-ttl), TiDB forcibly rolls it back. TiCDC waits for the transaction to be committed before proceeding with the replication, which causes replication delay.
 
+## What changes occur to the change event format when TiCDC enables the Old Value feature?
+
+In the following description, the definition of a valid index is as follows:
+
+- A primary key (`PRIMARY KEY`) is a valid index.
+- A unique index (`UNIQUE INDEX`) is valid if every column of the index is explicitly defined as non-nullable (`NOT NULL`) and the index does not have a virtual generated column (`VIRTUAL GENERATED COLUMNS`).
+
+TiDB supports the clustered index feature starting from v5.0. This feature controls how data is stored in tables containing primary keys. For more information, see [Clustered indexes](/clustered-indexes.md).
+
+After you enable the [Old Value feature](/ticdc/ticdc-manage-changefeed.md#output-the-historical-value-of-a-row-changed-event), TiCDC behaves as follows:
+
+- For change events on invalid index columns, the output contains both new and old values.
+- For change events on valid index columns, the output varies based on certain conditions:
+    - If a unique index column (`UNIQUE INDEX`) is updated and the table has no primary key, the output contains both new and old values.
+    - If the clustered index is disabled in the upstream TiDB cluster, and a non-INT type primary key column is updated, the output contains both new and old values.
+    - Otherwise, the change event is split into a delete event for the old value and an insert event for the new value.
+
+The preceding behavior change might lead to the following issues.
+
+### When change events on a valid index column contains both new and old values, the distribution behavior of Kafka Sink might not guarantee that change events with the same index columns are distributed to the same partition
+
+The index-value mode of Kafka Sink distributes events according to the value of the index column. When change events contain both new and old values, the value of the index column changes, which might cause change events with the same index column to be distributed to different partitions. The following is an example:
+
+Create table `t` when the TiDB clustered index feature is disabled:
+
+```sql
+CREATE TABLE t (a VARCHAR(255) PRIMARY KEY NONCLUSTERED);
+```
+
+Execute the following DML statements:
+
+```sql
+INSERT INTO t VALUES ("2");
+UPDATE t SET a="1" WHERE a="2";
+INSERT INTO t VALUES ("2");
+UPDATE t SET a="3" WHERE a="2";
+```
+
+- When the Old Value feature is disabled, the change event is split into a delete event for the old value and an insert event for the new value. The index-value dispatcher of Kafka Sink calculates the corresponding partition for each event. The preceding DML events will be distributed to the following partitions:
+
+    | partition-1  | partition-2  | partition-3  |
+    | ------------ | ------------ | ------------ |
+    | INSERT a = 2 | INSERT a = 1 | INSERT a = 3 |
+    | DELETE a = 2 |              |              |
+    | INSERT a = 2 |              |              |
+    | DELETE a = 2 |              |              |
+
+    Because Kafka guarantees message order in each partition, consumers can independently process data in each partition, and get the same result as the DML execution order.
+
+- When the Old Value feature is enabled, the index-value dispatcher of Kafka Sink distributes change events with the same index columns to different partitions. Therefore, the preceding DML will be distributed to the following partitions (change events contain both new and old values):
+
+    | partition-1  | partition-2              | partition-3              |
+    | ------------ | ------------------------ | ------------------------ |
+    | INSERT a = 2 | UPDATE a = 1 WHERE a = 2 | UPDATE a = 3 WHERE a = 2 |
+    | INSERT a = 2 |                          |                          |
+
+    Because Kafka does not guarantee message order between partitions, the preceding DML might not preserve the update order of the index column during consumption. To maintain the order of index column updates when the output contains both new and old values, you can use the default dispatcher when enabling the Old Value feature.
+
+### When change events on an invalid index column and change events on a valid index column both contain new and old values, the Avro format of Kafka Sink cannot correctly output the old value
+
+In the Avro implementation, Kafka message values only contain the current column values. Therefore, old values cannot be output correctly when an event contains both new and old values. To output the old value, you can disable the Old Value feature to get the split delete and insert events.
+
+### When change events on an invalid index column and change events on a valid index column both contain new and old values, the CSV format of Cloud Storage Sink cannot correctly output the old value
+
+Because a CSV file has a fixed number of columns, old values cannot be output correctly when an event contains both new and old values. To output the old value, you can use the Canal-JSON format.
+
 ## Why can't I use the `cdc cli` command to operate a TiCDC cluster deployed by TiDB Operator?
 
 This is because the default port number of the TiCDC cluster deployed by TiDB Operator is `8301`, while the default port number of the `cdc cli` command to connect to the TiCDC server is `8300`. When using the `cdc cli` command to operate the TiCDC cluster deployed by TiDB Operator, you need to explicitly specify the `--server` parameter, as follows:
