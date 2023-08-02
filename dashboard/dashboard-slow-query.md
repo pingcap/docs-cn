@@ -8,7 +8,7 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-slow-query/']
 
 该页面上能检索和查看集群中所有慢查询。
 
-默认情况下，执行时间超过 300ms 的 SQL 查询就会被视为慢查询，被记录到[慢查询日志](/identify-slow-queries.md)中，并可通过本功能对记录到的慢查询进行查询。可调整 [`tidb_slow_log_threshold`](/system-variables.md#tidb_slow_log_threshold) SESSION 变量或 TiDB [`slow-threshold`](/tidb-configuration-file.md#slow-threshold) 参数调整慢查询阈值。
+默认情况下，执行时间超过 300ms 的 SQL 查询就会被视为慢查询，被记录到[慢查询日志](/identify-slow-queries.md)中，并可通过本功能对记录到的慢查询进行查询。可调整 [`tidb_slow_log_threshold`](/system-variables.md#tidb_slow_log_threshold) SESSION 变量或 TiDB [`instance.tidb_slow_log_threshold`](/tidb-configuration-file.md#tidb_slow_log_threshold) 参数调整慢查询阈值。
 
 > **注意：**
 >
@@ -18,11 +18,9 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-slow-query/']
 
 可以通过以下两种方法访问慢查询页面：
 
-* 登录后，左侧导航条点击**慢查询** (**Slow Queries**)：
+* 登录 TiDB Dashboard 后，在左侧导航栏中点击**慢查询** (Slow Queries)。
 
-![access 访问页面](/media/dashboard/dashboard-slow-queries-access-v620.png)
-
-* 在浏览器中访问 <http://127.0.0.1:2379/dashboard/#/slow_query>（将 `127.0.0.1:2379` 替换为任意实际 PD 地址和端口）。
+* 在浏览器中访问 <http://127.0.0.1:2379/dashboard/#/slow_query>（将 `127.0.0.1:2379` 替换为你的实际 PD 地址和端口）。
 
 慢查询页面所展示的所有数据都来自于 TiDB 慢查询系统表及慢查询日志，参见[慢查询日志](/identify-slow-queries.md)文档了解详细情况。
 
@@ -37,6 +35,12 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-slow-query/']
 页面顶部**选择列** (**Columns**) 选项中可选择显示更多列，可将鼠标移动到列名右侧的 **(i)** 图标处查看列的说明：
 
 ![显示更多列信息](/media/dashboard/dashboard-slow-queries-list2-v620.png)
+
+### 导出慢查询到本地
+
+点击页面右上角 ☰ (**更多**) 可以显示**导出** (**Export**) 选项。点击**导出** (**Export**) 后，TiDB Dashboard 会将当前列表中的慢查询以 CSV 文件的格式进行导出。
+
+![导出慢查询到本地](/media/dashboard/dashboard-slow-queries-export-v651.png)
 
 ### 修改列表排序依据
 

@@ -1,6 +1,6 @@
 ---
 title: CLIENT_ERRORS_SUMMARY_BY_USER
-summary: 了解 information_schema 表 `CLIENT_ERRORS_SUMMARY_BY_USER`。
+summary: 了解 INFORMATION_SCHEMA 表 `CLIENT_ERRORS_SUMMARY_BY_USER`。
 ---
 
 # CLIENT_ERRORS_SUMMARY_BY_USER
@@ -13,7 +13,7 @@ summary: 了解 information_schema 表 `CLIENT_ERRORS_SUMMARY_BY_USER`。
 * 权限错误。
 * 表不存在。
 
-以上错误通过 MySQL 服务器协议返回给客户端，此时应用程序应在客户端采取适当操作。`information_schema`.`CLIENT_ERRORS_SUMMARY_BY_USER` 表提供了一种有效方法，能够在应用程序没有正确处理（或记录）TiDB 服务器返回的错误的情况下检查错误。
+以上错误通过 MySQL 服务器协议返回给客户端，此时应用程序应在客户端采取适当操作。`INFORMATION_SCHEMA.CLIENT_ERRORS_SUMMARY_BY_USER` 表提供了一种有效方法，能够在应用程序没有正确处理（或记录）TiDB 服务器返回的错误的情况下检查错误。
 
 因为 `CLIENT_ERRORS_SUMMARY_BY_USER` 会基于每个用户汇总错误，所以在诊断一个用户服务器比其他服务器产生更多错误的方案时很有用。可能的情况包括：
 
@@ -23,10 +23,8 @@ summary: 了解 information_schema 表 `CLIENT_ERRORS_SUMMARY_BY_USER`。
 
 可以使用 `FLUSH CLIENT_ERRORS_SUMMARY` 语句重置汇总的计数。所汇总的是每个 TiDB 服务器的本地数据，并且只保留在内存中。如果 TiDB 服务器重新启动，会丢失汇总信息。
 
-{{< copyable "sql" >}}
-
 ```sql
-USE information_schema;
+USE INFORMATION_SCHEMA;
 DESC CLIENT_ERRORS_SUMMARY_BY_USER;
 ```
 
@@ -57,14 +55,14 @@ DESC CLIENT_ERRORS_SUMMARY_BY_USER;
 
 以下示例显示了客户端连接到本地 TiDB 服务器时生成的警告。执行 `FLUSH CLIENT_ERRORS_SUMMARY` 语句后，会重置汇总。
 
-{{< copyable "sql" >}}
-
 ```sql
 SELECT 0/0;
 SELECT * FROM CLIENT_ERRORS_SUMMARY_BY_USER;
 FLUSH CLIENT_ERRORS_SUMMARY;
 SELECT * FROM CLIENT_ERRORS_SUMMARY_BY_USER;
 ```
+
+输出结果如下：
 
 ```sql
 +-----+

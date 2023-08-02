@@ -31,7 +31,7 @@ TiDB 使用起来很简单，可以将 TiDB 集群当成 MySQL 来用。你可�
 
 ### 1.1.6 TiDB 和 MySQL 兼容性如何？
 
-TiDB 支持绝大部分 MySQL 5.7 的语法，但目前还不支持触发器、存储过程、自定义函数、外键约束等。详情参见[与 MySQL 兼容性对比](/mysql-compatibility.md)。
+TiDB 支持绝大部分 MySQL 5.7 的语法，但目前还不支持触发器、存储过程、自定义函数等。详情参见[与 MySQL 兼容性对比](/mysql-compatibility.md)。
 
 ### 1.1.7 TiDB 支持分布式事务吗？
 
@@ -90,7 +90,7 @@ Usage of ./bin/tidb-server:
 
 ### 1.1.13 TiDB 是否支持 XA？
 
-虽然 TiDB 的 JDBC 驱动用的就是 MySQL JDBC (Connector/J)，但是当使用 Atomikos 的时候，数据源要配置成类似这样的配置：`type="com.mysql.jdbc.jdbc2.optional.MysqlXADataSource"`。MySQL JDBC XADataSource 连接 TiDB 的模式目前是不支持的。MySQL JDBC 中配置好的 XADataSource 模式，只对 MySQL 数据库起作用（DML 去修改 redo 等）。
+虽然 TiDB 的 JDBC 驱动用的就是 MySQL Connector/J，但是当使用 Atomikos 的时候，数据源要配置成类似这样的配置：`type="com.mysql.jdbc.jdbc2.optional.MysqlXADataSource"`。MySQL JDBC XADataSource 连接 TiDB 的模式目前是不支持的。MySQL JDBC 中配置好的 XADataSource 模式，只对 MySQL 数据库起作用（DML 去修改 redo 等）。
 
 Atomikos 配好两个数据源后，JDBC 驱动都要设置成 XA 模式，然后 Atomikos 在操作 TM 和 RM (DB) 的时候，会通过数据源的配置，发起带有 XA 指令到 JDBC 层。JDBC 层 XA 模式启用的情况下，会对 InnoDB（如果是 MySQL 的话）下发操作一连串 XA 逻辑的动作，包括 DML 去变更 redo log 等，就是两阶段递交的那些操作。TiDB 目前的引擎版本中，没有对上层应用层 JTA/XA 的支持，不解析这些 Atomikos 发过来的 XA 类型的操作。
 

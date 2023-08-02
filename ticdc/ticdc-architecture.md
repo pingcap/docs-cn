@@ -64,7 +64,7 @@ dispatchers = [
 
 如果将 Changefeed 和 Task 也包含到上文中提及的架构图，完整的 TiCDC 架构图如下：
 
-![TiCDC architecture](/media/ticdc/ticdc-architecture-4.jpg)
+![TiCDC architecture](/media/ticdc/ticdc-architecture-6.jpg)
 
 上图创建了一个 Changefeed，需要同步 4 张表，这个 Changefeed 被拆分成了 3 个任务，均匀的分发到了 TiCDC 集群的 3 个 Capture 节点上，在 TiCDC 对这些数据进行了处理之后，数据同步到了下游的系统。
 

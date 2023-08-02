@@ -11,6 +11,10 @@ aliases: ['/docs-cn/dev/sql-plan-management/','/docs-cn/dev/reference/performanc
 
 执行计划绑定是 SPM 的基础。在[优化器 Hints](/optimizer-hints.md) 中介绍了可以通过 Hint 的方式选择指定的执行计划，但有时需要在不修改 SQL 语句的情况下干预执行计划的选择。执行计划绑定功能使得可以在不修改 SQL 语句的情况下选择指定的执行计划。
 
+> **注意：**
+>
+> 要使用执行计划绑定，你需要拥有 `SUPER` 权限。如果在使用过程中系统提示权限不足，可参考[权限管理](/privilege-management.md)补充所需权限。
+
 ### 创建绑定
 
 你可以根据 SQL 或者历史执行计划为指定的 SQL 语句创建绑定。
@@ -173,15 +177,11 @@ CREATE BINDING FOR SELECT * FROM t WHERE a > 1 USING SELECT * FROM t use index(i
 
 如需将 SQL 语句的执行计划固定为之前使用过的执行计划，可以使用 `plan_digest` 为该 SQL 语句绑定一个历史的执行计划。相比于使用 SQL 创建绑定的方式，此方式更加简便。
 
-> **警告：**
->
-> 根据历史执行计划创建绑定目前为实验特性，存在未知风险，请勿在生产环境中使用。
-
-目前，根据历史执行计划创建绑定有一些限制：
+以下为根据历史执行计划创建绑定的注意事项：
 
 - 该功能是根据历史的执行计划生成 hint 而实现的绑定，历史的执行计划来源是 [Statement Summary Tables](/statement-summary-tables.md)，因此在使用此功能之前需开启系统变量 [`tidb_enable_stmt_summary`](/system-variables.md#tidb_enable_stmt_summary-从-v304-版本开始引入)。
-- 目前，该功能仅支持根据当前实例中的 `statements_summary` 和 `statements_summary_history` 表中的执行计划生成绑定。如果发现有 `can't find any plans` 的情况，请尝试连接集群中其他 TiDB 节点重试。
-- 对于带有子查询的查询、访问 TiFlash 的查询、3 张表或更多表进行 Join 的查询，目前还不支持通过历史执行计划进行绑定。
+- 对于包含子查询的查询、访问 TiFlash 的查询、3 张表或更多表进行 Join 的查询，目前还不支持通过历史执行计划进行绑定。
+- 原执行计划对应 SQL 语句中的 hint 也会被应用在创建的绑定中，如执行 `SELECT /*+ max_execution_time(1000) */ * FROM t` 后，使用其 `plan_digest` 创建的绑定中会带上 `max_execution_time(1000)`。
 
 使用方式:
 
@@ -303,6 +303,8 @@ DROP [GLOBAL | SESSION] BINDING FOR SQL DIGEST 'sql_digest';
 
 ### 变更绑定状态
 
+#### 根据 SQL 语句变更绑定状态
+
 {{< copyable "sql" >}}
 
 ```sql
@@ -312,6 +314,16 @@ SET BINDING [ENABLED | DISABLED] FOR BindableStmt;
 该语句可以在 GLOBAL 作用域内变更指定执行计划的绑定状态，默认作用域为 GLOBAL，该作用域不可更改。
 
 使用时，只能将 `Disabled` 的绑定改为 `Enabled` 状态，或将 `Enabled` 的绑定改为 `Disabled` 状态。如果没有可以改变状态的绑定，则会输出一条内容为 `There are no bindings can be set the status. Please check the SQL text` 的警告。需要注意的是，当绑定被设置成 `Disabled` 状态时，查询语句不会使用该绑定。
+
+#### 根据 `sql_digest` 变更绑定状态
+
+除了可以根据 SQL 语句变更对应的绑定状态以外，也可以根据 `sql_digest` 变更绑定状态：
+
+```sql
+SET BINDING [ENABLED | DISABLED] FOR SQL DIGEST 'sql_digest';
+```
+
+使用 `sql_digest` 所能变更的绑定状态和生效情况与[根据 SQL 语句变更绑定状态](#根据-sql-语句变更绑定状态)相同。如果没有可以改变状态的绑定，则会输出一条内容为 `can't find any binding for 'sql_digest'` 的警告。
 
 ### 查看绑定
 
@@ -420,6 +432,8 @@ SHOW binding_cache status;
 ## 自动捕获绑定 (Baseline Capturing)
 
 自动绑定会对符合捕获条件的查询进行捕获，为符合条件的查询生成相应的绑定。通常用于[升级时的计划回退防护](#升级时的计划回退防护)。
+
+Plan Baseline 是一组被允许用于 SQL 语句优化器的可接受计划。在典型的应用场景中，TiDB 仅在验证计划性能良好后才将其添加到 Baseline 中。这些计划包含优化器重新生成执行计划所需的所有信息（例如，SQL 计划标识符、提示集、绑定值、优化器环境）。 
 
 ### 使用方式
 
@@ -542,7 +556,7 @@ SET GLOBAL tidb_evolve_plan_baselines = ON;
 >
 > - 自动演进功能目前为实验特性，存在未知风险，不建议在生产环境中使用。
 >
-> - 此变量开关已强制关闭，直到自动演进成为正式功能 GA (Generally Available)。如果你尝试打开开关，会产生报错。如果你已经在生产环境中使用了此功能，请尽快将它禁用。如发现 binding 状态不如预期，请与 PingCAP 的技术支持联系获取相关支持。
+> - 此变量开关已强制关闭，直到自动演进成为正式功能 GA (Generally Available)。如果你尝试打开开关，会产生报错。如果你已经在生产环境中使用了此功能，请尽快将它禁用。如发现 binding 状态不如预期，请从 PingCAP 官方或 TiDB 社区[获取支持](/support.md)。
 
 在打开自动演进功能后，如果优化器选出的最优执行计划不在之前绑定的执行计划之中，会将其记录为待验证的执行计划。每隔 `bind-info-lease`（默认值为 `3s`），会选出一个待验证的执行计划，将其和已经绑定的执行计划中代价最小的比较实际运行时间。如果待验证的运行时间更优的话（目前判断标准是运行时间小于等于已绑定执行计划运行时间的 2/3），会将其标记为可使用的绑定。以下示例描述上述过程。
 

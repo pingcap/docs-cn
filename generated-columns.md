@@ -5,10 +5,6 @@ aliases: ['/docs-cn/dev/generated-columns/','/docs-cn/dev/reference/sql/generate
 
 # 生成列
 
-> **警告：**
->
-> 当前该功能为实验特性，不建议在生产环境中使用。
-
 本文介绍生成列的概念以及用法。
 
 ## 生成列的基本概念

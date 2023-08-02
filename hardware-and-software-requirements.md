@@ -24,7 +24,8 @@ TiDB 作为一款开源一栈式实时 HTAP 数据库，可以很好地部署和
 |  Amazon Linux 2         |  <ul><li>x86_64</li><li>ARM 64</li></ul>   |
 | 麒麟欧拉版 V10 SP1/SP2   |   <ul><li>x86_64</li><li>ARM 64</li></ul>   |
 | UOS V20                 |   <ul><li>x86_64</li><li>ARM 64</li></ul>   |
-|   macOS Catalina 及以上的版本  |  <ul><li>x86_64</li><li>ARM 64</li></ul>  |
+| openEuler 22.03 LTS SP1 |   x86_64   |
+| macOS 12 (Monterey) 及以上的版本 |  <ul><li>x86_64</li><li>ARM 64</li></ul>  |
 |  Oracle Enterprise Linux 7.3 及以上的 7.x 版本  |  x86_64           |
 |   Ubuntu LTS 18.04 及以上的版本  |  x86_64           |
 | CentOS 8 Stream | <ul><li>x86_64</li><li>ARM 64</li></ul> |
@@ -45,12 +46,19 @@ TiDB 作为一款开源一栈式实时 HTAP 数据库，可以很好地部署和
 
 |  编译和构建 TiDB 所需的依赖库   |  版本   |
 |   :---   |   :---   |
-|   Golang  |  1.18.5 及以上版本  |
+|   Golang  |  1.20 及以上版本  |
 |   Rust    |   nightly-2022-07-31 及以上版本  |
 |  GCC      |   7.x      |
 |  LLVM     |  13.0 及以上版本  |
 
 运行时所需的依赖库：glibc（2.28-151.el8 版本）
+
+### Docker 镜像依赖
+
+支持的 CPU 架构如下：
+
+- x86_64，从 TiDB v6.6.0 开始，需要 [x84-64-v2 指令集](https://developers.redhat.com/blog/2021/01/05/building-red-hat-enterprise-linux-9-for-the-x86-64-v2-microarchitecture-level)
+- ARM 64
 
 ## 软件配置要求
 
@@ -94,13 +102,13 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 > - TiKV 的 SSD 盘推荐使用 NVME 接口以保证读写更快。
 > - 如果仅验证功能，建议使用 [TiDB 数据库快速上手指南](/quick-start-with-tidb.md)进行单机功能测试。
 > - TiDB 对于磁盘的使用以存放日志为主，因此在测试环境中对于磁盘类型和容量并无特殊要求。
-> - 从 v6.3.0 开始，在 Linux AMD64 架构的硬件平台下部署 TiFlash 时，CPU 必须支持 AVX2 指令集。确保命令 `cat /proc/cpuinfo | grep avx2` 有输出。通过使用 AVX2 指令集，TiFlash 的向量化引擎能提供更好的性能。
+> - 从 v6.3.0 开始，在 Linux AMD64 架构的硬件平台部署 TiFlash 时，CPU 必须支持 AVX2 指令集。确保命令 `cat /proc/cpuinfo | grep avx2` 有输出。而在 Linux ARM64 架构的硬件平台部署 TiFlash 时，CPU 必须支持 ARMv8 架构。确保命令 `cat /proc/cpuinfo | grep 'crc32' | grep 'asimd'` 有输出。通过使用向量扩展指令集，TiFlash 的向量化引擎能提供更好的性能。
 
 ### 生产环境
 
 | **组件** | **CPU** | **内存** | **硬盘类型** | **网络** | **实例数量(最低要求)** |
 | --- | --- | --- | --- | --- | --- |
-| TiDB | 16 核+ | 48 GB+ | SAS | 万兆网卡（2 块最佳） | 2 |
+| TiDB | 16 核+ | 48 GB+ | SSD | 万兆网卡（2 块最佳） | 2 |
 | PD | 8 核+ | 16 GB+ | SSD | 万兆网卡（2 块最佳） | 3 |
 | TiKV | 16 核+ | 64 GB+ | SSD | 万兆网卡（2 块最佳） | 3 |
 | TiFlash | 48 核+ | 128 GB+ | 1 or more SSDs | 万兆网卡（2 块最佳） | 2 |
@@ -139,7 +147,6 @@ TiDB 作为开源一栈式实时 HTAP 数据库，其正常运行需要网络环
 | PD | 2379 | 提供 TiDB 和 PD 通信端口 |
 | PD | 2380 | PD 集群节点间通信端口 |
 |TiFlash|9000|TiFlash TCP 服务端口|
-|TiFlash|8123|TiFlash HTTP 服务端口|
 |TiFlash|3930|TiFlash RAFT 服务和 Coprocessor 服务端口|
 |TiFlash|20170|TiFlash Proxy 服务端口|
 |TiFlash|20292|Prometheus 拉取 TiFlash Proxy metrics 端口|
@@ -159,7 +166,7 @@ TiDB 作为开源一栈式实时 HTAP 数据库，其正常运行需要网络环
 
 | 组件 | 磁盘空间要求 | 健康水位使用率 |
 | :-- | :-- | :-- |
-| TiDB | 日志盘建议最少预留 30 GB | 低于 90% |
+| TiDB | <ul><li>日志盘建议最少预留 30 GB。</li> <li>v6.5.0 及以上版本默认启用了 Fast Online DDL 对添加索引等 DDL 操作进行加速（通过变量 [`tidb_ddl_enable_fast_reorg`](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 控制）。如果业务中可能存在针对大对象的 DDL 操作，推荐为 TiDB 准备额外的 SSD 磁盘空间（建议 100 GB+）。配置方式详见[设置 TiDB 节点的临时空间](/check-before-deployment.md#设置-tidb-节点的临时空间推荐)。</li></ul>| 低于 90% |
 | PD | 数据盘和日志盘建议最少各预留 20 GB | 低于 90% |
 | TiKV | 数据盘和日志盘建议最少各预留 100 GB | 低于 80% |
 | TiFlash | 数据盘建议最少预留 100 GB，日志盘建议最少预留 30 GB | 低于 80% |

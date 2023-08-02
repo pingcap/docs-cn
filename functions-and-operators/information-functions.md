@@ -7,7 +7,7 @@ aliases: ['/docs-cn/dev/functions-and-operators/information-functions/','/docs-c
 
 TiDB 支持使用 MySQL 5.7 中提供的大部分[信息函数](https://dev.mysql.com/doc/refman/5.7/en/information-functions.html)。
 
-## 支持的函数
+## TiDB 支持的 MySQL 信息函数
 
 | 函数名 | 功能描述                                 |
 | ------ | ---------------------------------------- |
@@ -24,7 +24,15 @@ TiDB 支持使用 MySQL 5.7 中提供的大部分[信息函数](https://dev.mysq
 | [`USER()`](https://dev.mysql.com/doc/refman/5.7/en/information-functions.html#function_user) | 返回客户端提供的用户名和主机名                          |
 | [`VERSION()`](https://dev.mysql.com/doc/refman/5.7/en/information-functions.html#function_version) | 返回当前 MySQL 服务器的版本信息                      |
 
-## 不支持的函数
+## TiDB 特有的信息函数
+
+下列函数为 TiDB 中特有的信息函数，MySQL 中无对应的函数。
+
+| 函数名 | 功能描述                                 |
+| ------ | ---------------------------------------- |
+| `CURRENT_RESOURCE_GROUP()` | 返回当前连接的资源组名 |
+
+## TiDB 不支持的信息函数
 
 * `CHARSET()`
 * `COERCIBILITY()`

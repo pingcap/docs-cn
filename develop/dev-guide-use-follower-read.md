@@ -33,7 +33,7 @@ aliases: ['/zh/tidb/dev/use-follower-read']
 <SimpleTab>
 <div label="SQL">
 
-在 SQL 中，你可以将变量 `tidb_replica_read` 的值（默认为 `leader`）设置为 `follower`、 `leader-and-follower`、 `closest-replicas` 或 `closest-adaptive` 开启 TiDB 的 Follower Read 功能：
+在 SQL 中，你可以将变量 `tidb_replica_read` 的值（默认为 `leader`）设置为 `follower`、`leader-and-follower`、`prefer-leader`、`closest-replicas` 或 `closest-adaptive` 开启 TiDB 的 Follower Read 功能：
 
 ```sql
 SET [GLOBAL] tidb_replica_read = 'follower';
@@ -52,7 +52,8 @@ public enum FollowReadMode {
     FOLLOWER("follower"),
     LEADER_AND_FOLLOWER("leader-and-follower"),
     CLOSEST_REPLICA("closest-replica"),
-    CLOSEST_ADAPTIVE("closest-adaptive");
+    CLOSEST_ADAPTIVE("closest-adaptive"),
+    PREFER_LEADER("prefer-leader");
 
     private final String mode;
 

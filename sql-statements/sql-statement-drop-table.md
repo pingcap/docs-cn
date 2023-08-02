@@ -72,7 +72,20 @@ DROP TABLE IF EXISTS table_not_exists;
 ```
 
 ```
-Query OK, 0 rows affected (0.01 sec)
+Query OK, 0 rows affected, 1 warning (0.01 sec)
+```
+
+```sql
+SHOW WARNINGS;
+```
+
+```
++-------+------+---------------------------------------+
+| Level | Code | Message                               |
++-------+------+---------------------------------------+
+| Note  | 1051 | Unknown table 'test.table_not_exists' |
++-------+------+---------------------------------------+
+1 row in set (0.01 sec)
 ```
 
 {{< copyable "sql" >}}
@@ -97,7 +110,6 @@ Query OK, 0 rows affected (0.23 sec)
 
 ## MySQL 兼容性
 
-* 在尝试删除不存在的表时，使用 `IF EXISTS` 删除表不会返回警告。[Issue #7867](https://github.com/pingcap/tidb/issues/7867)
 * 目前 `RESTRICT` 和 `CASCADE` 仅在语法上支持。
 
 ## 另请参阅

@@ -19,7 +19,7 @@ Changefeed 是 TiCDC 中的单个同步任务。Changefeed 将一个 TiDB 集群
 - Stopped：同步任务停止，由于用户手动暂停 (pause) changefeed。处于这个状态的 changefeed 会阻挡 GC 推进。
 - Error：同步任务报错，由于某些可恢复的错误导致同步无法继续进行，处于这个状态的 changefeed 会不断尝试继续推进，直到状态转为 Normal。处于这个状态的 changefeed 会阻挡 GC 推进。
 - Finished：同步任务完成，同步任务进度已经达到预设的 TargetTs。处于这个状态的 changefeed 不会阻挡 GC 推进。
-- Failed：同步任务失败。由于发生了某些不可恢复的错误，导致同步无法继续进行，并且无法恢复。处于这个状态的 changefeed 不会阻挡 GC 推进。
+- Failed：同步任务失败。由于发生了某些不可恢复的错误，导致同步无法继续进行，并且无法恢复。TiCDC 将为发生故障的 changefeed 保留数据 24 小时，以防止其在 GC 过程中被清除。
 
 以上状态流转图中的编号说明如下：
 
@@ -36,4 +36,4 @@ Changefeed 是 TiCDC 中的单个同步任务。Changefeed 将一个 TiDB 集群
 
 通过 TiCDC 提供的命令行工具 `cdc cli`，你可以管理 TiCDC 集群和同步任务，具体可参考[管理 TiCDC Changefeed](/ticdc/ticdc-manage-changefeed.md)。你也可以通过 HTTP 接口，即 TiCDC OpenAPI 来管理 TiCDC 集群和同步任务，详见 [TiCDC OpenAPI](/ticdc/ticdc-open-api.md)。
 
-如果你使用的 TiCDC 是用 TiUP 部署的，可以通过 `tiup ctl:<version> cdc` 来使用 TiCDC 命令行工具，注意需要将 `<version>` 替换为 TiCDC 集群版本。你也可以通过直接执行 `cdc cli` 直接使用命令行工具。
+如果你使用的 TiCDC 是用 TiUP 部署的，可以通过 `tiup ctl:v<CLUSTER_VERSION> cdc` 来使用 TiCDC 命令行工具，注意需要将 `<version>` 替换为 TiCDC 集群版本。你也可以通过直接执行 `cdc cli` 直接使用命令行工具。
