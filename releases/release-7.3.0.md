@@ -56,13 +56,13 @@ TiDB 版本：7.3.0
 
     更多信息，请参考[用户文档](/optimizer-hints.md)。
 
-* 手工标记资源使用超出预期的查询 (实验特性) [#43691](https://github.com/pingcap/tidb/issues/43691) @[Connor1996](https://github.com/Connor1996) @[CabinfeverB](https://github.com/CabinfeverB) **tw@hfxsd** <!--1446-->
+* 手动标记资源使用超出预期的查询 (实验特性) [#43691](https://github.com/pingcap/tidb/issues/43691) @[Connor1996](https://github.com/Connor1996) @[CabinfeverB](https://github.com/CabinfeverB) **tw@hfxsd** <!--1446-->
 
-    在 v7.2.0 中，TiDB 对资源使用超出预期的查询 (Runaway Queries) 实施自动管理，运行时间超过预期的查询能够被自动降级或取消。在实际运行时，只依靠规则无法筛覆盖所有情况。 因此，在 v7.3.0 中，TiDB 补充了手工标记查询的能力。 利用新增的命令 [`QUERY WATCH`]()，用户可以根据 SQL 的文本、SQL Digest、或者执行计划对查询进行标记，命中的查询可以被降级或取消。
+    在 v7.2.0 中，TiDB 对资源使用超出预期的查询 (Runaway Queries) 实施自动管理，运行时间超过预期的查询能够被自动降级或取消。在实际运行时，只依靠规则无法筛覆盖所有情况。因此，在 v7.3.0 中，补充了手动标记查询的能力。利用新增的命令 [`QUERY WATCH`](/sql-statements/sql-statement-query-watch.md)，你可以根据 SQL 的文本、SQL Digest、或者执行计划对查询进行标记，命中的查询可以被降级或取消。
 
-    手工标记 Runaway Queries 的能力，为数据库中突发的性能问题提供了有效的干预手段。针对由查询引发的性能问题，在找到问题根本原因之前，能够快速缓解其对整体性能的影响，提升系统服务质量。 
+    手动标记 Runaway Queries 的能力，为数据库中突发的性能问题提供了有效的干预手段。针对由查询引发的性能问题，在找到问题根本原因之前，能够快速缓解其对整体性能的影响，提升系统服务质量。 
 
-    更多信息，请参考[用户文档](/tidb-resource-control#管理资源消耗超出预期的查询-runaway-queries)。
+    更多信息，请参考[用户文档](/tidb-resource-control.md#query-watch-语句说明)。
 
 ### 高可用
 
@@ -98,25 +98,19 @@ TiDB 版本：7.3.0
 
 ### 数据迁移
 
-* Lightning 引入新版冲突数据检测与处理的能力 [#41629](https://github.com/pingcap/tidb/issues/41629) @[lance6716](https://github.com/lance6716) **tw@hfxsd** <!--1296-->
+* TiDB Lightning 引入新版冲突数据检测与处理的能力 [#41629](https://github.com/pingcap/tidb/issues/41629) @[lance6716](https://github.com/lance6716) **tw@hfxsd** <!--1296-->
      
-    之前的版本 Lightning 逻辑导入和物理导入模式都有各自的冲突检测和处理的方式，配置较为复杂且不利于用户理解。同时使用物理导入模式，冲突的数据无法通过 replace 和 ignore 策略来处理。新版的冲突检测和处理方式，逻辑导入和物理导入都是用同一套冲突检测和处理方式即遇到冲突数据报错，或者 replace 以及 ignore 掉冲突数据。同时还支持用户设置冲突记录的上限，如处理多少冲突记录后任务中断退出，用户也可以让程序记录哪些数据发生了冲突，方便用户排查。
+    在之前的版本中，TiDB Lightning 逻辑导入模式和物理导入模式都有各自的冲突检测和处理的方式，配置较为复杂且不易理解。另外使用物理导入模式，冲突的数据无法通过替换 (`replace`) 或忽略 (`ignore`) 策略来处理。新版的冲突检测和处理方式，逻辑导入模式和物理导入模式都使用同一套冲突检测和处理方式，即遇到冲突数据报错 (`error`)、替换 (`replace`) 或忽略 (`ignore`) 冲突数据。同时还支持设置冲突记录的上限，如处理多少冲突记录后任务中断退出，你也可以让程序记录哪些数据发生了冲突，方便排查。
 
-    在明确所需导入数据有较多的冲突数据时，推荐使用新版的冲突检测和处理策略，会有更好的性能。注意新、旧版冲突策略互斥使用，会在未来废弃掉旧版冲突检测和处理策略。
+    如果导入数据有较多的冲突数据，推荐使用新版的冲突检测和处理策略，以获得更好的性能。注意新版和旧版冲突策略互斥，不能同时使用。未来将废弃旧版冲突检测和处理策略。
     
-    更多信息，请参考[用户文档](链接)。
+    更多信息，请参考[用户文档](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#冲突数据检测)。  
+
+* TiDB Lightning 引入新的参数 `enable-diagnose-log` 用于打印更多的诊断日志，方便定位问题 [#45497](https://github.com/pingcap/tidb/issues/45497) @[D3Hunter](https://github.com/D3Hunter) **tw@hfxsd** <!--1517-->
     
-* Lightning 支持 Partitioned Raft KV（实验特性） [#15069](https://github.com/tikv/tikv/pull/15069) @[GMHDBJD](https://github.com/GMHDBJD) **tw@hfxsd** <!--1507-->
+    默认情况下，此功能未启用，只会打印包含 `lightning/main` 的日志。当启用时，将打印所有包（包括 `client-go` 和 `tidb`）的日志，以帮助诊断与 `client-go` 和 `tidb` 相关的问题。
     
-    该版本 Lightning 支持了 Partitioned Raft KV ，当用户使用了 Partitioned Raft KV 特性后，能提升 Lightning 导入数据的性能。
-    
-    更多信息，请参考[用户文档](链接)。
-    
-* Lightning 引入新的参数"enable-diagnose-log" 用于打印更多的诊断日志，方便定位问题 [#45497](https://github.com/pingcap/tidb/issues/45497) @[D3Hunter](https://github.com/D3Hunter) **tw@hfxsd** <!--1517-->
-    
-    默认情况下，此功能未启用，只会打印包含 "lightning/main" 的日志。当启用时，将打印所有包（包括 "client-go" 和 "tidb"）的日志，以帮助诊断与 "client-go" 和 "tidb" 相关的问题。
-    
-    更多信息，请参考[用户文档](链接)。
+    更多信息，请参考[用户文档](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-全局配置)。
 
 ## 兼容性变更
 
@@ -130,8 +124,8 @@ TiDB 版本：7.3.0
 
 * TiDB Lightning **tw@hfxsd**
 
-    - 逻辑导入模式插入冲突数据时执行的操作，默认配置从 on-duplicate = "replace" 改为 on-duplicate = "error" 即遇到冲突数据即报错。
-    - TiDB Lightning 停止迁移任务之前能容忍的最大非严重 (non-fatal errors) 错误数的参数 "max-error" 不再包含导入数据冲突的上限。而是由新的参数 "conflict.threshold" 来控制可容忍的最大冲突的记录数。
+    - `tikv-importer.on-duplicate` 废弃，由 [`conflict.strategy`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置) 取代。
+    - TiDB Lightning 停止迁移任务之前能容忍的最大非严重 (non-fatal errors) 错误数的参数 `max-error` 不再包含导入数据冲突的上限，而是由新的参数 [`conflict.threshold`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置) 来控制可容忍的最大冲突的记录数。
 
 * 兼容性 2
 
@@ -148,11 +142,11 @@ TiDB 版本：7.3.0
 
 | 配置文件 | 配置项 | 修改类型 | 描述 |
 | -------- | -------- | -------- | -------- |
-|TiDB Lightning  | conflict.strategy | 新增 |TiDB Lightning 新版冲突检测与处理的策略，包含”“， error，replace，ignore 四种策略，分别表示不做冲突检测，遇到冲突数据即报错并停止导入，遇到冲突记录 replace 掉已有的冲突记录，遇到冲突记录 ignore 掉需要插入的该条冲突记录。默认值为 ” “， 即不做冲突检测 |
-|TiDB Lightning  | conflict.threshold | 新增 |TiDB Lightning 新版冲突检测与处理策略允许的冲突上限，onflict.strategy="error" 时默认值为 0，当onflict.strategy="replace”/“ignore" 时默认值为 maxint |
-|TiDB Lightning  | conflict.max-record-rows | 新增 |TiDB Lightning 新版冲突检测与处理策略，用于记录在数据导入过程中遇到的冲突记录，并允许设置最大上限，默认值为 100 |
-|TiDB Lightning  | [`tikv-importer.parallel-import`](/tidb-lightning/tidb-lightning-configuration.md) | 新增 | TiDB Lightning 并行导入参数。用于替代原有的 `tikv-importer.incremental-import` 参数，因为原有参数会被误认为是增量导入的参数而误用。 **tw:qiancai** <!--1516--> |
-|TiDB Lightning  | `tikv-importer.incremental-import` | 删除 | TiDB Lightning 并行导入参数。因为该参数名容易被误认为是增量导入的参数，因此更名为 `tikv-importer.parallel-import`。如果用户传入旧的参数名，会被自动转成新的参数名。|
+|TiDB Lightning  | `conflict.max-record-rows` | 新增 | TiDB Lightning 新版冲突检测与处理策略，用于记录在数据导入过程中遇到的冲突记录，并允许设置最大上限，默认值为 `100`。 |
+|TiDB Lightning  | `conflict.strategy` | 新增 | TiDB Lightning 新版冲突检测与处理的策略，包含 ""（不做冲突检测），`error`（遇到冲突数据即报错并停止导入），`replace`（遇到冲突记录替换已有的冲突记录），`ignore`（遇到冲突记录忽略需要插入的该条冲突记录）四种策略。默认值为 ""， 即不做冲突检测。 |
+|TiDB Lightning  | `conflict.threshold` | 新增 |TiDB Lightning 新版冲突检测与处理策略允许的冲突上限，`conflict.strategy="error"` 时默认值为 `0`，当 `conflict.strategy="replace"` 或 `conflict.strategy="ignore"` 时默认值为 maxint。 |
+|TiDB Lightning  | `enable-diagnose-logs` | 新增 | 是否开启诊断日志。默认为 `false`，即只输出和导入有关的日志，不会输出依赖的其他组件的日志。设置为 `true` 后，既输出和导入相关的日志，也输出依赖的其他组件的日志，并开启 GRPC debug，可用于问题诊断。 |
+|TiDB Lightning  | `tikv-importer.on-duplicate` | 废弃 | TiDB Lightning 逻辑导入模式插入冲突数据时执行的操作。从 v7.3.0 起，该参数由 [`conflict.strategy`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置) 取代。|
 |BR  | azblob.encryption-scope | 新增 |BR 为外部存储 Azure Blob Storage 提供加密范围支持 |
 |BR  | azblob.encryption-key | 新增 |BR 为外部存储 Azure Blob Storage 提供加密密钥支持 |
 | TiCDC | [`large-message-handle-option`](/ticdc/ticdc-sink-to-kafka.md#处理超过-kafka-topic-限制的消息) | 新增 | 默认为空，即消息大小超过 Kafka Topic 的限制后，同步任务失败。设置为 "handle-key-only" 时，如果消息超过大小，只发送 handle key 以减少消息的大小；如果依旧超过大小，则同步任务失败。 |
