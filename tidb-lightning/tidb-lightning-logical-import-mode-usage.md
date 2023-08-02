@@ -31,12 +31,6 @@ data-source-dir = "/data/my_database"
 # 导入模式配置，设为 tidb 即使用逻辑导入模式
 backend = "tidb"
 
-# 逻辑导入模式插入重复数据时执行的操作。
-# - replace：新数据替代已有数据
-# - ignore：保留已有数据，忽略新数据
-# - error：中止导入并报错
-on-duplicate = "replace"
-
 [tidb]
 # 目标集群的信息。tidb-server 的地址，填一个即可。
 host = "172.16.31.1"
