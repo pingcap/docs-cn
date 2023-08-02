@@ -340,11 +340,11 @@ PARTITION BY LIST (store_id) (
 
 #### 默认的 List 分区
 
-从 v7.3.0 版本开始，List 分区表支持默认分区功能，你可以为 List 分区表添加默认的 List 分区。默认的 List 分区作为一个总括分区，用于存放那些不匹配其他数据集合定义的行。
+从 v7.3.0 版本开始，你可以为 List 或者 List COLUMNS 分区表添加默认的 List 分区。默认的 List 分区作为一个后备分区，可以存储那些不匹配任何分区数据集合的行。
 
-该功能由 [`tidb_enable_default_list_partition`](/system-variables.md#tidb_enable_default_list_partition-new-in-v730) 变量控制，默认不启用，因为它是 TiDB 扩展，与 MySQL 不兼容。
-
-当设置 [`tidb_enable_default_list_partition`](/system-variables.md#tidb_enable_default_list_partition-new-in-v730) 为 `ON` 时，即可在现有的 List 分区表中添加默认分区。
+> **注意：**
+>
+> 该功能是 TiDB 对 MySQL 语法的扩展。为 List 或 List COLUMNS 分区表添加默认分区后，该分区表的数据无法直接同步到 MySQL 中。
 
 以下面的 List 分区表为例：
 
@@ -372,14 +372,14 @@ ALTER TABLE t ADD PARTITION (PARTITION pDef DEFAULT);
 ALTER TABLE t ADD PARTITION (PARTITION pDef VALUES IN (DEFAULT));
 ```
 
-此时，如果新插入该表的值不匹配任何分区的数据集合，对应的数据会自动写入默认的 List 分区。
+此时，如果新插入该表中的值不匹配任何分区的数据集合，对应的数据会自动写入默认分区。
 
 ```sql
 INSERT INTO t VALUES (7, 7);
 Query OK, 1 row affected (0.01 sec)
 ```
 
-你也可以在创建 List 分区表时添加默认分区。例如：
+你也可以在创建 List 或 List COLUMNS 分区表时添加默认分区。例如：
 
 ```sql
 CREATE TABLE employees (
@@ -396,7 +396,7 @@ PARTITION BY LIST (store_id) (
 );
 ```
 
-当 [`tidb_enable_default_list_partition`](/system-variables.md#tidb_enable_default_list_partition-new-in-v730)为 `OFF` 时，List 分区表不支持默认分区来存储所有不属于其他分区的值。因此，分区表达式的所有期望值都应包含在 `PARTITION ... VALUES IN (...)` 子句中。如果 `INSERT` 语句要插入的值不匹配分区的列值，该语句将执行失败并报错，如下例所示：
+对于不包含默认分区的 List 或 List COLUMNS 分区表，`INSERT` 语句要插入的值需要匹配该表 `PARTITION ... VALUES IN (...)` 子句中定义的数据集合。如果 `INSERT` 语句要插入的值不匹配任何分区的数据集合，该语句将执行失败并报错，如下例所示：
 
 ```sql
 CREATE TABLE t (
@@ -413,7 +413,7 @@ INSERT INTO t VALUES (7, 7);
 ERROR 1525 (HY000): Table has no partition for value 7
 ```
 
-要忽略以上类型的错误，可以通过使用 `IGNORE` 关键字。使用该关键字后，就不会插入包含不匹配分区列值的行，但是会插入任何具有匹配值的行，并且不会报错：
+要忽略以上错误，可以在 `INSERT` 语句中添加 `IGNORE` 关键字。添加该关键字后，`INSERT` 语句只会插入那些匹配分区数据集合的行，不会插入不匹配的行，并且不会报错：
 
 ```sql
 test> TRUNCATE t;
