@@ -61,17 +61,6 @@ with get_mysqlclient_connection(autocommit=True) as conn:
 
 [更多查询数据参考文档](/develop/dev-guide-get-data-from-single-table.md)
 
-### 删除
-
-```python
-with get_mysqlclient_connection(autocommit=True) as conn:
-    with conn.cursor() as cur:
-        player_id = "test"
-        cursor.execute("DELETE FROM player WHERE id = %s", (player_id,))
-```
-
-[更多删除数据参考文档](/develop/dev-guide-delete-data.md)
-
 ### 更新
 
 ```python
@@ -82,6 +71,17 @@ with get_mysqlclient_connection(autocommit=True) as conn:
 ```
 
 [更多更新数据参考文档](/develop/dev-guide-update-data.md)
+
+### 删除
+
+```python
+with get_mysqlclient_connection(autocommit=True) as conn:
+    with conn.cursor() as cur:
+        player_id = "test"
+        cursor.execute("DELETE FROM player WHERE id = %s", (player_id,))
+```
+
+[更多删除数据参考文档](/develop/dev-guide-delete-data.md)
 
 ## 其他值得注意的事
 
