@@ -208,11 +208,6 @@ TiDB 版本：7.3.0
 + PD
 
     - 未开启 Swagger server 时，PD 默认屏蔽 Swagger API [#6785](https://github.com/tikv/pd/pull/6785) @[bufferflies](https://github.com/bufferflies)
-    - 修复了当重启 PD 时，可能会导致 default resource group 重新初始化的问题 [#6788](https://github.com/tikv/pd/pull/6788) @[glorv](https://github.com/glorv)
-    - 修复了当 etcd 已经启动，但 client 还未连接上去时，调用 client 会 panic 的问题 [#6866](https://github.com/tikv/pd/pull/6866) @[HuSharp](https://github.com/HuSharp)
-    - 修复了 region health-check 输出可能与通过 ID 所查 region 信息不一致的问题 [#6812](https://github.com/tikv/pd/pull/6812) @[JmPotato](https://github.com/JmPotato)
-    - 修复了 unsafe recovery 中失败的 learner peer 在 auto-detect 模式中被忽略的问题 [#6691](https://github.com/tikv/pd/pull/6691) @[v01dstar](https://github.com/v01dstar)
-    - 修复了 palcement rule 在选定没有满足 rule 的 tiflash learner 问题 [#6660](https://github.com/tikv/pd/pull/6660) @[rleungx](https://github.com/rleungx)
     - 提升 etcd 高可用性 [#6577](https://github.com/tikv/pd/pull/6577) @[lhy1024](https://github.com/lhy1024)
     - 减少 GetRegions 内存占用 [#6838](https://github.com/tikv/pd/pull/6838) @[lhy1024](https://github.com/lhy1024)
 
@@ -270,8 +265,11 @@ TiDB 版本：7.3.0
 
 + PD
 
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
+    - 修复了当重启 PD 时，可能会导致 default resource group 重新初始化的问题 [#6788](https://github.com/tikv/pd/pull/6788) @[glorv](https://github.com/glorv)
+    - 修复了当 etcd 已经启动，但 client 还未连接上去时，调用 client 会 panic 的问题 [#6866](https://github.com/tikv/pd/pull/6866) @[HuSharp](https://github.com/HuSharp)
+    - 修复了 region health-check 输出可能与通过 ID 所查 region 信息不一致的问题 [#6812](https://github.com/tikv/pd/pull/6812) @[JmPotato](https://github.com/JmPotato)
+    - 修复了 unsafe recovery 中失败的 learner peer 在 auto-detect 模式中被忽略的问题 [#6691](https://github.com/tikv/pd/pull/6691) @[v01dstar](https://github.com/v01dstar)
+    - 修复了 palcement rule 在选定没有满足 rule 的 tiflash learner 问题 [#6660](https://github.com/tikv/pd/pull/6660) @[rleungx](https://github.com/rleungx)
 
 + TiFlash
 
