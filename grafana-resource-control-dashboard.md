@@ -23,6 +23,8 @@ This document describes some key monitoring metrics displayed on the Resource Co
 - RRU Per Query: the average number of Read Request Units consumed by each SQL statement per second. It is obtained by dividing the above RRU metric by the number of SQL statements executed per second.
 - WRU: the Write Request Unit consumption information of each resource group, calculated in real time. `total` is the sum of the Write Request Units consumed by all Resource Groups.
 - WRU Per Query: the average number of Write Request Units consumed by each SQL statement per second. It is obtained by dividing the above WRU metric by the number of SQL statements executed per second.
+- Available RU: the available tokens in the RU token bucket of each resource group. When it is `0`, this resource group consumes tokens at the rate of `RU_PER_SEC` and can be considered to be in a rate-limited state.
+- Query Max Duration: the maximum Query Duration in terms of resource groups.
 
 ## Metrics about resources
 
