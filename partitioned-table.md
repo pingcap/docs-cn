@@ -360,7 +360,7 @@ PARTITION BY LIST (a) (
 Query OK, 0 rows affected (0.11 sec)
 ```
 
-通过以下语句，你可以在该表中添加一个名为 `pDef` 的默认的 List 分区：
+通过以下语句，你可以在该表中添加一个名为 `pDef` 的默认 List 分区：
 
 ```sql
 ALTER TABLE t ADD PARTITION (PARTITION pDef DEFAULT);
