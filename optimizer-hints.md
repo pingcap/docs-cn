@@ -873,8 +873,8 @@ EXPLAIN SELECT /*+ leading(t1, t3), inl_join(t3) */ * FROM t1, t2, t3 WHERE t1.i
 - 使用 `NO_JOIN` 相关的 hint 排除了所有可能的 Join 方式。
 
 ```sql
-create table t1 (a int);
-create table t2 (a int);
-explain select /*+ no_hash_join(t1), no_merge_join(t1) */ * from t1, t2 where t1.a=t2.a;
+CREATE TABLE t1 (a INT);
+CREATE TABLE t2 (a INT);
+EXPLAIN SELECT /*+ NO_HASH_JOIN(t1), NO_MERGE_JOIN(t1) */ * FROM t1, t2 WHERE t1.a=t2.a;
 ERROR 1815 (HY000): Internal : Can't find a proper physical plan for this query
 ```
