@@ -91,7 +91,7 @@ CALIBRATE RESOURCE START_TIME '2023-04-18 08:00:00' DURATION '9m';
 ERROR 1105 (HY000): the duration of calibration is too short, which could lead to inaccurate output. Please make the duration between 10m0s and 24h0m0s
 ```
 
-估算容量功能的监控指标包括 `tikv_cpu_quota`、`tidb_server_maxprocs`、`resource_manager_resource_unit`、`process_cpu_usage`。如果 CPU quota 监控数据为空，会有对应监控项名称的报错，如下面例子所示。
+[根据实际负载估算容量](#根据实际负载估算容量)功能的监控指标包括 `tikv_cpu_quota`、`tidb_server_maxprocs`、`resource_manager_resource_unit`、`process_cpu_usage`。如果 CPU quota 监控数据为空，会有对应监控项名称的报错，如下面例子所示。
 
 ```sql
 CALIBRATE RESOURCE START_TIME '2023-04-18 08:00:00' DURATION '60m';
