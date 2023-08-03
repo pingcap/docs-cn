@@ -286,3 +286,68 @@ You can query the number of Regions a table contains by the following SQL statem
 ```sql
 SELECT COUNT(*) FROM INFORMATION_SCHEMA.TIKV_REGION_STATUS WHERE DB_NAME="database1" AND TABLE_NAME="table1" AND IS_INDEX=0;
 ```
+
+## Handle messages that exceed the Kafka topic limit
+
+Kafka topic sets a limit on the size of messages it can receive. This limit is controlled by the [`max.message.bytes`](https://kafka.apache.org/documentation/#topicconfigs_max.message.bytes) parameter. If TiCDC Kafka sink sends data that exceeds this limit, the changefeed reports an error and cannot proceed to replicate data. To solve this problem, TiCDC provides the following solution.
+
+### Send handle keys only
+
+Starting from v7.3.0, TiCDC Kafka sink supports sending only the handle keys when the message size exceeds the limit. This can significantly reduce the message size and avoid changefeed errors and task failures caused by the message size exceeding the Kafka topic limit. Handle Key refers to the following:
+
+* If the table to be replicated has primary key, the primary key is the handle key.
+* If the table does not have primary key but has NOT NULL Unique Key, the NOT NULL Unique Key is the handle key.
+
+Currently, this feature supports two encoding protocols: Canal-JSON and Open Protocol. When using the Canal-JSON protocol, you must specify `enable-tidb-extension=true` in `sink-uri`.
+
+The sample configuration is as follows:
+
+```toml
+[sink.kafka-config.large-message-handle]
+# This configuration is introduced in v7.3.0.
+# Empty by default, which means when the message size exceeds the limit, the changefeed fails.
+# If this configuration is set to "handle-key-only", when the message size exceeds the limit, only the handle key is sent in the data field. If the message size still exceeds the limit, the changefeed fails.
+large-message-handle-option = "handle-key-only"
+```
+
+### Consume messages with handle keys only
+
+The message format with handle keys only is as follows:
+
+```json
+{
+    "id": 0,
+    "database": "test",
+    "table": "tp_int",
+    "pkNames": [
+        "id"
+    ],
+    "isDdl": false,
+    "type": "INSERT",
+    "es": 1639633141221,
+    "ts": 1639633142960,
+    "sql": "",
+    "sqlType": {
+        "id": 4
+    },
+    "mysqlType": {
+        "id": "int"
+    },
+    "data": [
+        {
+          "id": "2"
+        }
+    ],
+    "old": null,
+    "_tidb": {     // TiDB extension fields
+        "commitTs": 163963314122145239,
+        "onlyHandleKey": true
+    }
+}
+```
+
+When a Kafka consumer receives a message, it first checks the `onlyHandleKey` field. If this field exists and is `true`, it means that the message only contains the handle key of the complete data. In this case, to get the complete data, you need to query the upstream TiDB and use [`tidb_snapshot` to read historical data](/read-historical-data.md).
+
+> **Warning:**
+>
+> When the Kafka consumer processes data and queries TiDB, the data might have been deleted by GC. You need to [modify the GC Lifetime of the TiDB cluster](/system-variables.md#tidb_gc_life_time-new-in-v50) to a larger value to avoid this situation.
