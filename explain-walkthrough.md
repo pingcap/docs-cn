@@ -214,3 +214,55 @@ From the result above, the query time has reduced from 1.03 seconds to 0.0 secon
 > **Note:**
 >
 > Another optimization that applies here is the coprocessor cache. If you are unable to add indexes, consider enabling the [coprocessor cache](/coprocessor-cache.md). When it is enabled, as long as the Region has not been modified since the operator is last executed, TiKV will return the value from the cache. This will also help reduce much of the cost of the expensive `TableFullScan` and `Selection` operators.
+
+## Disable the early execution of subqueries
+
+During query optimization, TiDB pre-executes subqueries that can be directly calculated. For example:
+
+```sql
+CREATE TABLE t1(a int);
+INSERT INTO t1 VALUES(1);
+CREATE TABLE t2(a int);
+EXPLAIN SELECT * FROM t2 WHERE a = (SELECT a FROM t1);
+```
+
+```sql
++--------------------------+----------+-----------+---------------+--------------------------------+
+| id                       | estRows  | task      | access object | operator info                  |
++--------------------------+----------+-----------+---------------+--------------------------------+
+| TableReader_14           | 10.00    | root      |               | data:Selection_13              |
+| └─Selection_13           | 10.00    | cop[tikv] |               | eq(test.t2.a, 1)               |
+|   └─TableFullScan_12     | 10000.00 | cop[tikv] | table:t2      | keep order:false, stats:pseudo |
++--------------------------+----------+-----------+---------------+--------------------------------+
+3 rows in set (0.00 sec)
+```
+
+In the preceding example, the `a = (SELECT a FROM t1)` subquery is calculated during optimization and rewritten as `t2.a=1`. This allows more optimizations such as constant propagation and folding during optimization. However, it affects the execution time of the `EXPLAIN` statement. When the subquery itself takes a long time to execute, the `EXPLAIN` statement might not be completed, which could affect online troubleshooting.
+
+Starting from v7.3.0, TiDB introduces the [`tidb_opt_enable_non_eval_scalar_subquery`](/system-variables.md#tidb_opt_enable_non_eval_scalar_subquery-new-in-v730) system variable, which controls whether to disable the pre-execution of such subqueries in `EXPLAIN`. The default value of this variable is `OFF`, which means that the subquery is pre-calculated. You can set this variable to `ON` to disable the pre-execution of subqueries:
+
+```sql
+SET @@tidb_opt_enable_non_eval_scalar_subquery = ON;
+EXPLAIN SELECT * FROM t2 WHERE a = (SELECT a FROM t1);
+```
+
+```sql
++---------------------------+----------+-----------+---------------+---------------------------------+
+| id                        | estRows  | task      | access object | operator info                   |
++---------------------------+----------+-----------+---------------+---------------------------------+
+| Selection_13              | 8000.00  | root      |               | eq(test.t2.a, ScalarQueryCol#5) |
+| └─TableReader_15          | 10000.00 | root      |               | data:TableFullScan_14           |
+|   └─TableFullScan_14      | 10000.00 | cop[tikv] | table:t2      | keep order:false, stats:pseudo  |
+| ScalarSubQuery_10         | N/A      | root      |               | Output: ScalarQueryCol#5        |
+| └─MaxOneRow_6             | 1.00     | root      |               |                                 |
+|   └─TableReader_9         | 1.00     | root      |               | data:TableFullScan_8            |
+|     └─TableFullScan_8     | 1.00     | cop[tikv] | table:t1      | keep order:false, stats:pseudo  |
++---------------------------+----------+-----------+---------------+---------------------------------+
+7 rows in set (0.00 sec)
+```
+
+As you can see, the scalar subquery is not expanded during the execution, which makes it easier to understand the specific execution process of such SQL.
+
+> **Note:**
+>
+> [`tidb_opt_enable_non_eval_scalar_subquery`](/system-variables.md#tidb_opt_enable_non_eval_scalar_subquery-new-in-v730) only affects the behavior of the `EXPLAIN` statement, and the `EXPLAIN ANALYZE` statement still pre-executes the subquery in advance.

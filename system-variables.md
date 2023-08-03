@@ -3502,6 +3502,14 @@ mysql> desc select count(distinct a) from test.t;
 - Default value: `ON`
 - This variable is used to control whether the optimizer estimates the number of rows based on column order correlation
 
+### `tidb_opt_enable_non_eval_scalar_subquery` <span class="version-mark">New in v7.3.0</span>
+
+- Scope: SESSION | GLOBAL
+- Persists to cluster: Yes
+- Type: Boolean
+- Default value: `OFF`
+- This variable is used to control whether the `EXPLAIN` statement disables the execution of constant subqueries that can be expanded at the optimization stage. When this variable is set to `OFF`, the `EXPLAIN` statement expands the subquery in advance at the optimization stage. When this variable is set to `ON`, the `EXPLAIN` statement does not expand the subquery at the optimization stage. For more information, see [Disable subquery expansion](/explain-walkthrough.md#disable-the-early-execution-of-subqueries).
+
 ### tidb_opt_enable_late_materialization <span class="version-mark">New in v7.0.0</span>
 
 - Scope: SESSION | GLOBAL
@@ -3515,13 +3523,13 @@ mysql> desc select count(distinct a) from test.t;
 
 > **Warning:**
 >
-> The feature controlled by this variable is not fully functional in the current TiDB version. Do not change the default value.
+> The feature controlled by this variable is experimental. It is not recommended that you use it in the production environment. This feature might be changed or removed without prior notice. If you find a bug, you can report an [issue](https://github.com/pingcap/tidb/issues) on GitHub.
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
 - Type: Boolean
 - Default value: `OFF`
-- This variable controls whether the non-recursive [common table expressions (CTE)](/sql-statements/sql-statement-with.md) can be executed on TiFlash MPP instead of on TiDB.
+- This variable controls whether the non-recursive [Common Table Expressions (CTE)](/sql-statements/sql-statement-with.md) can be executed on TiFlash MPP. By default, when this variable is disabled, CTE is executed on TiDB, which has a large performance gap compared with enabling this feature.
 
 ### tidb_opt_fix_control <span class="version-mark">New in v7.1.0</span>
 
