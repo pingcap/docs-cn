@@ -307,7 +307,7 @@ Handle Key 指的是：
 
 ```toml
 [sink.kafka-config.large-message-handle]
-# 该参数 v7.3.0 引入
+# 该参数从 v7.3.0 开始引入
 # 默认为空，即消息超过大小限制后，同步任务失败
 # 设置为 "handle-key-only" 时，如果消息超过大小，data 字段内容只发送 handle key；如果依旧超过大小，同步任务失败
 large-message-handle-option = "handle-key-only"
