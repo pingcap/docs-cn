@@ -110,14 +110,13 @@ Lightning 的完整配置文件可参考[完整配置及命令行参数](/tidb-l
 >
 > 由于 TiDB Lightning 内部并发处理以及实现限制，物理导入模式下的冲突检测效果不会与 SQL 语句完全一致。
 
-配置为 `error` 时，遇到冲突数据时，TiDB Lightning 会报错并退出。配置为 `replace` 或 `ignore` 时，冲突数据被视作[冲突错误 (Conflict error)](/tidb-lightning/tidb-lightning-error-resolution.md#冲突错误-conflict-error)。配置了大于 `0` 的 [`conflict.threshold`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置) 后，TiDB Lightning 可以容忍一定数目的冲突错误，默认值为 `9223372036854775807`，意味着几乎能容忍全部错误。详见[可容忍错误](/tidb-lightning/tidb-lightning-error-resolution.md)功能介绍。
+配置为 `"error"` 时，遇到冲突数据时，TiDB Lightning 会报错并退出。配置为 `"replace"` 或 `"ignore"` 时，冲突数据被视作[冲突错误 (Conflict error)](/tidb-lightning/tidb-lightning-error-resolution.md#冲突错误-conflict-error)。配置了大于 `0` 的 [`conflict.threshold`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置) 后，TiDB Lightning 可以容忍一定数目的冲突错误，默认值为 `9223372036854775807`，意味着几乎能容忍全部错误。详见[可容忍错误](/tidb-lightning/tidb-lightning-error-resolution.md)功能介绍。
 
 新版冲突检测具有如下的限制：
 
 - 在导入之前，前置冲突检测会先读取全部数据并编码，以检测潜在的冲突数据。检测过程中会使用 `tikv-importer.sorted-kv-dir` 存储临时文件。检测完成后，会保留检查结果至导入阶段以供读取。因此，这将带来额外的耗时、磁盘空间占用以及数据读取 API 请求开销。
 - 新版冲突检测只能在单节点完成，不适用于并行导入以及开启了 `disk-quota` 参数的场景。
-- 当配置 [`conflict.strategy`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置) 不为空时，TiDB Lightning 会开启新版冲突检测。
-- 新版冲突检测 (`conflict`) 与旧版冲突检测 (`tikv-importer.duplicate-resolution`) 不能同时使用。
+- 新版冲突检测 (`conflict`) 与旧版冲突检测 (`tikv-importer.duplicate-resolution`) 不能同时使用。当配置 [`conflict.strategy`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置) 不为空时，TiDB Lightning 会开启新版冲突检测。
 
 相较于旧版冲突检测，在原数据冲突数据较多的情况下，新版冲突检测的总耗时更少。因此建议在已知数据含有冲突数据、且本地磁盘空间充足的单节点导入任务中使用新版冲突检测。
 
